@@ -12,5 +12,4 @@ AM_CPPFLAGS += -D__STDC_CONSTANT_MACROS
 
 noinst_LIBRARIES = libdvbsub.a
 
-libdvbsub_a_SOURCES = dvbsub.cpp dvbsubtitle.cpp \
-	tools.cpp PacketQueue.cpp helpers.cpp Debug.cpp
+libdvbsub_a_SOURCES = dvbsub.cpp dvbsubtitle.cpp tools.cpp

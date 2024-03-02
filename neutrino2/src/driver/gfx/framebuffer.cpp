@@ -1606,8 +1606,6 @@ void CFrameBuffer::blit2FB(void * fbbuff, uint32_t width, uint32_t height, uint3
 				int a = in[0];
 				out++; 
 				in++;
-#else
-#error neither big nor little endian???
 #endif				
 				*out = (*out + ((*in - *out) * a) / 256);
 				in++; out++;
@@ -1915,6 +1913,7 @@ unsigned char * CFrameBuffer::resize(unsigned char * origin, int ox, int oy, int
 		for(j = 0; j < dy; j++, l += dx*3)
 		{
 			p = origin + (j*oy/dy*ox*3);
+			
 			for(i = 0, k = 0; i < dx; i++, k += 3)
 			{
 				ip = i*ox/dx*3;
@@ -1933,6 +1932,7 @@ unsigned char * CFrameBuffer::resize(unsigned char * origin, int ox, int oy, int
 		int xa_v[dx];
 		for(i = 0; i < dx; i++)
 			xa_v[i] = i*ox/dx;
+			
 		int xb_v[dx+1];
 		
 		for(i = 0; i < dx; i++)
@@ -1956,6 +1956,7 @@ unsigned char * CFrameBuffer::resize(unsigned char * origin, int ox, int oy, int
 					for(l = ya, r = 0, g = 0, b = 0, a = 0, sq = 0; l <= yb; l++)
 					{
 						q = origin + ((l*ox + xa_v[i])*4);
+						
 						for(k = xa_v[i]; k <= xb_v[i]; k++, q += 4, sq++)
 						{
 							r += q[0]; g += q[1]; b += q[2]; a += q[3];

@@ -52,10 +52,9 @@ class cDvbSubtitleConverter  /*: public cThread */
 		void Pause(bool pause);
 		void Lock();
 		void Unlock();
-		int Convert(const uchar *Data, int Length, int64_t pts);
+		int Convert(const unsigned char *Data, int Length, int64_t pts);
 		bool Running() { return running; };
 };
 
 #endif //__DVBSUBTITLE_H
-
 

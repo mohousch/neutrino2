@@ -12,17 +12,13 @@
 
 #include <dmx_cs.h>	/* libdvbapi */
 
-#include "Debug.hpp"
-#include "PacketQueue.hpp"
 #include "semaphore.h"
-#include "helpers.hpp"
 #include "dvbsubtitle.h"
 
 #include <zapit/frontend_c.h>
 
 
 //// globals
-Debug sub_debug;
 static PacketQueue packet_queue;
 //
 static pthread_t threadReader;
@@ -55,8 +51,6 @@ int dvbsub_init()
 	
 	int trc;
 
-	sub_debug.set_level(1);
-
 	reader_running = true;
 	dvbsub_stopped = 1;
 	pid_change_req = 1;
@@ -72,6 +66,7 @@ int dvbsub_init()
 	}
 
 	dvbsub_running = true;
+	
 	// subtitle decoder-Thread starten
 	trc = pthread_create(&threadDvbsub, 0, dvbsub_thread, NULL);
 
@@ -111,6 +106,7 @@ int dvbsub_start(int pid)
 		if(pid != dvbsub_pid) 
 		{
 			dvbsub_pause();
+			
 			if(dvbSubtitleConverter)
 				dvbSubtitleConverter->Reset();
 			dvbsub_pid = pid;
@@ -124,11 +120,14 @@ int dvbsub_start(int pid)
 	{
 		dvbsub_stopped = 0;
 		dvbsub_paused = false;
+		
 		if(dvbSubtitleConverter)
 			dvbSubtitleConverter->Pause(false);
+			
 		pthread_mutex_lock(&readerMutex);
 		pthread_cond_broadcast(&readerCond);
 		pthread_mutex_unlock(&readerMutex);
+		
 		printf("[dvb-sub] started with pid 0x%x\n", pid);
 	}
 
@@ -220,6 +219,7 @@ static int64_t get_pts(unsigned char * packet)
 	int pts_dts_flag;
 
 	pts_dts_flag = getbits(packet, 7*8, 2);
+	
 	if ((pts_dts_flag == 2) || (pts_dts_flag == 3)) 
 	{
 		pts = (uint64_t)getbits(packet, 9*8+4, 3) << 30;  /* PTS[32..30] */
@@ -230,6 +230,7 @@ static int64_t get_pts(unsigned char * packet)
 	{
 		pts = 0;
 	}
+	
 	return pts;
 }
 
@@ -242,6 +243,7 @@ static int64_t get_pts_stc_delta(int64_t pts)
 	dvbsub_get_stc(&stc);
 	delta = LimitTo32Bit(pts) - LimitTo32Bit(stc);
 	delta /= 90;
+	
 	return delta;
 }
 
@@ -250,7 +252,9 @@ static void clear_queue()
 	uint8_t* packet;
 
 	pthread_mutex_lock(&packetMutex);
-	while(packet_queue.size()) {
+	
+	while(packet_queue.size()) 
+	{
 		packet = packet_queue.pop();
 		free(packet);
 	}
@@ -273,7 +277,6 @@ static void* reader_thread(void * /*arg*/)
 	{
 		if(dvbsub_stopped) 
 		{
-			sub_debug.print(Debug::VERBOSE, "%s stopped\n", __FUNCTION__);
 			dmx->Stop();
 
 			pthread_mutex_lock(&packetMutex);
@@ -283,15 +286,11 @@ static void* reader_thread(void * /*arg*/)
 			pthread_mutex_lock(&readerMutex );
 			int ret = pthread_cond_wait(&readerCond, &readerMutex);
 			pthread_mutex_unlock(&readerMutex);
-
-			if (ret) 
-			{
-				sub_debug.print(Debug::VERBOSE, "pthread_cond_timedwait fails with %d\n", ret);
-			}
+			
 			if(!reader_running)
 				break;
+				
 			dvbsub_stopped = 0;
-			sub_debug.print(Debug::VERBOSE, "%s (re)started with pid 0x%x\n", __FUNCTION__, dvbsub_pid);
 		}
 
 		if(pid_change_req) 
@@ -304,7 +303,6 @@ static void* reader_thread(void * /*arg*/)
 			//
 			dmx->pesFilter(dvbsub_pid);
 			dmx->Start();
-			sub_debug.print(Debug::VERBOSE, "%s changed to pid 0x%x\n", __FUNCTION__, dvbsub_pid);
 		}
 
 		len = 0;
@@ -317,7 +315,6 @@ static void* reader_thread(void * /*arg*/)
 
 		if(memcmp(tmp, "\x00\x00\x01\xbd", 4)) 
 		{
-			sub_debug.print(Debug::VERBOSE, "[subtitles] bad start code: %02x%02x%02x%02x\n", tmp[0], tmp[1], tmp[2], tmp[3]);
 			continue;
 		}
 		count = 6;
@@ -328,8 +325,8 @@ static void* reader_thread(void * /*arg*/)
 
 		memcpy(buf, tmp, 6);
 		
-		/* read rest of the packet */
-		while((count < packlen) /* && !dvbsub_paused*/) 
+		// read rest of the packet
+		while(count < packlen) 
 		{
 			len = dmx->Read(buf+count, packlen-count, 1000);
 			
@@ -345,9 +342,9 @@ static void* reader_thread(void * /*arg*/)
 
 		if(!dvbsub_stopped) 
 		{
-			/* Packet now in memory */
+			// Packet now in memory
 			packet_queue.push(buf);
-			/* TODO: allocation exception */
+
 			// wake up dvb thread
 			pthread_mutex_lock(&packetMutex);
 			pthread_cond_broadcast(&packetCond);
@@ -364,7 +361,6 @@ static void* reader_thread(void * /*arg*/)
 	delete dmx;
 	dmx = NULL;
 
-	sub_debug.print(Debug::VERBOSE, "%s shutdown\n", __FUNCTION__);
 	pthread_exit(NULL);
 }
 
@@ -372,8 +368,6 @@ static void* dvbsub_thread(void* /*arg*/)
 {
 	struct timespec restartWait;
 	struct timeval now;
-
-	sub_debug.print(Debug::VERBOSE, "%s started\n", __FUNCTION__);
 	
 	if (!dvbSubtitleConverter)
 		dvbSubtitleConverter = new cDvbSubtitleConverter;
@@ -423,10 +417,11 @@ static void* dvbsub_thread(void* /*arg*/)
 		packet = packet_queue.pop();
 		pthread_mutex_unlock(&packetMutex);
 
-		if (!packet) {
-			sub_debug.print(Debug::VERBOSE, "Error no packet found\n");
+		if (!packet) 
+		{
 			continue;
 		}
+		
 		packlen = (packet[4] << 8 | packet[5]) + 6;
 
 		pts = get_pts(packet);
@@ -439,8 +434,6 @@ static void* dvbsub_thread(void* /*arg*/)
 
 		if (packlen <= dataoffset + 3) 
 		{
-			sub_debug.print(Debug::INFO, "Packet too short, discard\n");
-			
 			goto next_round;
 		}
 
@@ -448,10 +441,7 @@ static void* dvbsub_thread(void* /*arg*/)
 		{
 			dvbSubtitleConverter->Convert(&packet[dataoffset + 2], packlen - (dataoffset + 2), pts);
 		} 
-		else 
-		{
-			sub_debug.print(Debug::INFO, "End_of_PES is missing\n");
-		}
+		
 		timeout = dvbSubtitleConverter->Action();
 
 next_round:
@@ -459,8 +449,6 @@ next_round:
 	}
 
 	delete dvbSubtitleConverter;
-
-	sub_debug.print(Debug::VERBOSE, "%s shutdown\n", __FUNCTION__);
 	
 	pthread_exit(NULL);
 }

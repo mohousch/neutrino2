@@ -19,12 +19,8 @@
 #include <unistd.h>
 #include <utime.h>
 
-int SysLogLevel = 0;
 
-#define MAXSYSLOGBUF 256
-
-// --- cListObject -----------------------------------------------------------
-
+//// cListObject
 cListObject::cListObject(void)
 {
   prev = next = NULL;
@@ -67,8 +63,7 @@ int cListObject::Index(void) const
   return i;
 }
 
-// --- cListBase -------------------------------------------------------------
-
+//// cListBase
 cListBase::cListBase(void)
 {
   objects = lastObject = NULL;
@@ -200,3 +195,112 @@ void cListBase::Sort(void)
       Add(a[i]);
       }
 }
+
+//// packetqueue
+PacketQueue::PacketQueue()
+{
+	pthread_mutex_init(&mutex, NULL);
+}
+
+PacketQueue::~PacketQueue()
+{
+	while (queue.begin() != queue.end()) 
+	{
+		delete[] queue.front();
+		queue.pop_front();
+	}
+}
+
+void PacketQueue::push(uint8_t* data)
+{
+	pthread_mutex_lock(&mutex);
+
+	queue.push_back(data);
+
+	pthread_mutex_unlock(&mutex);
+}
+
+uint8_t* PacketQueue::pop()
+{
+	uint8_t* retval;
+
+	pthread_mutex_lock(&mutex);
+
+	retval = queue.front();
+	queue.pop_front();
+
+	pthread_mutex_unlock(&mutex);
+	
+	return retval;
+}
+
+size_t PacketQueue::size()
+{
+	return queue.size();
+}
+
+
+////
+/* Max 24 bit */
+uint32_t getbits(const uint8_t* buf, uint32_t offset, uint8_t len)
+{
+	const uint8_t* a = buf + (offset / 8);
+	uint32_t retval = 0;
+	uint32_t mask = 1;
+
+	retval = ((*(a)<<8) | *(a+1));
+	mask <<= len;
+
+	if (len > 8) {
+		retval <<= 8;
+		retval |= *(a+2);
+		len -= 8;
+	}
+	if (len > 8) {
+		retval <<= 8;
+		retval |= *(a+3);
+		len -= 8;
+	}
+	if (len > 8) {
+		uint64_t tmp = retval << 8;
+		tmp |= *(a+4);
+		tmp >>= ((8-(offset%8)) + (8-(len)));
+		return tmp & (mask -1);
+	}
+
+	retval >>= ((8-(offset%8)) + (8-len));
+	return retval & (mask -1);
+}
+
+uint32_t * simple_resize32(uint8_t * origin, uint32_t * colors, int nb_colors, int ox, int oy, int dx, int dy)
+{
+	uint32_t  *cr, *l;
+	int i, j, k, ip;
+
+	cr = (uint32_t *) malloc(dx * dy * sizeof(uint32_t));
+
+	if(cr == NULL) 
+	{
+		printf("Error: malloc\n");
+		return NULL;
+	}
+	
+	l = cr;
+
+	for(j = 0; j < dy; j++, l += dx)
+	{
+		uint8_t * p = origin + (j*oy/dy*ox);
+		
+		for(i = 0, k = 0; i < dx; i++, k++) 
+		{
+			ip = i*ox/dx;
+			
+			int idx = p[ip];
+			if(idx < nb_colors)
+				l[k] = colors[idx];
+		}
+	}
+	
+	return(cr);
+}
+
