@@ -129,15 +129,6 @@ class CZapit
 		
 		typedef std::vector<commandAddSubServices> subServiceList;
 
-		struct commandSetScanSatelliteList
-		{
-			char satName[50];
-			int  position;
-			int type;
-		};
-		
-		typedef std::vector<commandSetScanSatelliteList> ScanSatelliteList;
-
 		struct responseGetLastChannel
 		{
 			unsigned int	channelNumber;
@@ -223,6 +214,15 @@ class CZapit
 		};
 		
 		typedef std::vector<responseGetSatelliteList> SatelliteList;
+		
+		struct commandSetScanSatelliteList
+		{
+			char satName[50];
+			int  position;
+			int type;
+		};
+		
+		typedef std::vector<commandSetScanSatelliteList> ScanSatelliteList;
 		
 		//
 		struct commandScanTP
