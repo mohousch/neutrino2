@@ -124,11 +124,10 @@ int CDVBSubSelectMenuHandler::doMenu()
 				}
 				
 				char spid[10];
-				//int pid = sd->pId;
-				snprintf(spid,sizeof(spid), "DVB:%d", sd->pId);
+				snprintf(spid, sizeof(spid), "DVB:%d", sd->pId);
 				char item[64];
 	
-				snprintf(item,sizeof(item), "DVB: %s", sd->ISO639_language_code.c_str());
+				snprintf(item, sizeof(item), "DVB: %s", sd->ISO639_language_code.c_str());
 				DVBSubSelector->addItem(new CMenuForwarder(item, sd->pId != dvbsub_getpid(), NULL, &SubtitleChanger, spid, CRCInput::convertDigitToKey(++count)));
 			}
 			
