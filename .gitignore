@@ -2209,3 +2209,12 @@
 /neutrino2/src/driver/lcd/lcddisplay.o
 /neutrino2/data/skins/elgato/Makefile
 /neutrino2/data/skins/elgato/Makefile.in
+/neutrino2/lib/libsubtitle/.deps/dvbsubtitle.Po
+/neutrino2/lib/libsubtitle/.deps/subtitle.Po
+/neutrino2/lib/libsubtitle/.deps/tools.Po
+/neutrino2/lib/libsubtitle/Makefile
+/neutrino2/lib/libsubtitle/Makefile.in
+/neutrino2/lib/libsubtitle/dvbsubtitle.o
+/neutrino2/lib/libsubtitle/libsubtitle.a
+/neutrino2/lib/libsubtitle/subtitle.o
+/neutrino2/lib/libsubtitle/tools.o

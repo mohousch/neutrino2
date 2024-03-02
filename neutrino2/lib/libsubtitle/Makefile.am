@@ -12,4 +12,4 @@ AM_CPPFLAGS += -D__STDC_CONSTANT_MACROS
 
 noinst_LIBRARIES = libsubtitle.a
 
-libsubtitle_a_SOURCES = dvbsub.cpp dvbsubtitle.cpp tools.cpp
+libsubtitle_a_SOURCES = subtitle.cpp dvbsubtitle.cpp tools.cpp
