@@ -50,7 +50,7 @@ class CColorSetupNotifier : public CChangeObserver
 		bool changeNotify(const std::string&, void *);
 };
 
-// subtitle change notifier
+// subtitle
 class CSubtitleChangeExec : public CMenuTarget
 {
 	public:
@@ -59,7 +59,7 @@ class CSubtitleChangeExec : public CMenuTarget
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
 
-// NVOD change notifier
+// NVOD
 class CNVODChangeExec : public CMenuTarget
 {
 	public:
@@ -68,7 +68,7 @@ class CNVODChangeExec : public CMenuTarget
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
 
-// tuxtxt notifier
+// tuxtxt
 class CTuxtxtChangeExec : public CMenuTarget
 {
 	public:

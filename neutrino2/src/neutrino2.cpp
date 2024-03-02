@@ -2940,7 +2940,6 @@ void CNeutrinoApp::stopSubtitles()
 		tuxtx_pause_subtitle(true);
 		
 		frameBuffer->paintBackground();
-
 		frameBuffer->blit();
 	}
 }
@@ -4065,7 +4064,7 @@ void CNeutrinoApp::realRun(void)
 					if(g_InfoViewer->is_visible)
 						g_InfoViewer->killTitle();
 
-					g_RCInput->clearRCMsg();
+//					g_RCInput->clearRCMsg();
 
 					stopSubtitles();
 					
@@ -4073,11 +4072,10 @@ void CNeutrinoApp::realRun(void)
 
 					tuxtx_main(g_RemoteControl->current_PIDs.PIDs.vtxtpid, 0);
 
-					frameBuffer->paintBackground();
-
-					frameBuffer->blit();
+//					frameBuffer->paintBackground();
+//					frameBuffer->blit();
 					
-					g_RCInput->clearRCMsg();
+//					g_RCInput->clearRCMsg();
 					
 					// restore mute symbol
 					audioMute(current_muted, true);

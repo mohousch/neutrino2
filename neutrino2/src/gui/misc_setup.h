@@ -88,7 +88,7 @@ class CChannelListSettings : public CMenuTarget, CChangeObserver
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
 
-// epg settings
+//// epg settings
 // epglanguage select notifier
 class CEPGlangSelectNotifier : public CChangeObserver
 {	
@@ -96,7 +96,7 @@ class CEPGlangSelectNotifier : public CChangeObserver
 		bool changeNotify(const std::string&, void * /*data*/);
 };
 
-// satip notifier
+// localepg notifier
 class COnlineEPGNotifier : public CChangeObserver
 {
 	private:
@@ -149,3 +149,4 @@ class CFileBrowserSettings : public CMenuTarget, CChangeObserver
 };
 
 #endif //__misc_setup__
+

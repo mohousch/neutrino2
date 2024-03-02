@@ -75,30 +75,30 @@ int fontheight, fontwidth, fontwidth_normal, fontwidth_small, fontwidth_topmenum
 int ymosaic[4];
 int displaywidth;
 
-#define TV43STARTX (ex - 146) 		//(StartX + 2 + (40-nofirst)*fontwidth_topmenumain + (40*fontwidth_topmenumain/abx))
-#define TV169FULLSTARTX /*(sx+ 8*40)*/ 	(sx +(ex +1 - sx)/2)
-#define TVENDX ex
-#define TVENDY (StartY + 25*fontheight)
-#define TV43WIDTH 144 			/* 120 */
-#define TV43HEIGHT 116 			/* 96 */
-#define TV43STARTY (TVENDY - TV43HEIGHT)
-#define TV169FULLSTARTY (720 - 360)/2 //sy
-#define TV169FULLWIDTH  (ex - sx)/2
-#define TV169FULLHEIGHT 360 //(ey - sy)
+#define TV43STARTX 		(ex - 146) 		
+#define TV169FULLSTARTX 	(sx +(ex +1 - sx)/2)
+#define TVENDX 			ex
+#define TVENDY 			(StartY + 25*fontheight)
+#define TV43WIDTH 		144 			/* 120 */
+#define TV43HEIGHT 		116 			/* 96 */
+#define TV43STARTY 		(TVENDY - TV43HEIGHT)
+#define TV169FULLSTARTY 	(720 - 360)/2 //sy
+#define TV169FULLWIDTH  	(ex - sx)/2
+#define TV169FULLHEIGHT 	360 //(ey - sy)
 //
-#define TOPMENUSTARTX TV43STARTX+2
-#define TOPMENUENDX TVENDX
-#define TOPMENUSTARTY StartY
-#define TOPMENUENDY TV43STARTY
+#define TOPMENUSTARTX 		TV43STARTX+2
+#define TOPMENUENDX 		TVENDX
+#define TOPMENUSTARTY 		StartY
+#define TOPMENUENDY 		TV43STARTY
 //
-#define TOPMENULINEWIDTH ((TOPMENUENDX-TOPMENU43STARTX+fontwidth_topmenusmall-1)/fontwidth_topmenusmall)
-#define TOPMENUINDENTBLK 0
-#define TOPMENUINDENTGRP 1
-#define TOPMENUINDENTDEF 2
+#define TOPMENULINEWIDTH 	((TOPMENUENDX-TOPMENU43STARTX+fontwidth_topmenusmall-1)/fontwidth_topmenusmall)
+#define TOPMENUINDENTBLK 	0
+#define TOPMENUINDENTGRP 	1
+#define TOPMENUINDENTDEF 	2
 #define TOPMENUSPC 0
-#define TOPMENUCHARS (TOPMENUINDENTDEF+12+TOPMENUSPC+4)
+#define TOPMENUCHARS 		(TOPMENUINDENTDEF+12+TOPMENUSPC+4)
 //
-#define FLOFSIZE 4
+#define FLOFSIZE 		4
 // spacing attributes
 #define alpha_black         0x00
 #define alpha_red           0x01
@@ -465,12 +465,24 @@ unsigned char restoreaudio = 0;
 
 // language dependent texts
 #define MAXMENULANGUAGE 10
-const int menusubset[] =   { NAT_DE   , NAT_UK    , NAT_FR       , NAT_UK          , NAT_GR      , NAT_IT       , NAT_PL    , NAT_SW      , NAT_SW ,   NAT_SP,      NAT_RB};//FIXME
+const int menusubset[] = { 
+	NAT_DE, 
+	NAT_UK, 
+	NAT_FR, 
+	NAT_UK, 
+	NAT_GR, 
+	NAT_IT, 
+	NAT_PL, 
+	NAT_SW, 
+	NAT_SW,   
+	NAT_SP,      
+	NAT_RB
+};
 
-#define Menu_StartX (StartX + fontwidth*9/2)
-#define Menu_StartY (StartY + fontheight)
-#define Menu_Height 23
-#define Menu_Width 31
+#define Menu_StartX 	(StartX + fontwidth*9/2)
+#define Menu_StartY 	(StartY + fontheight)
+#define Menu_Height 	23
+#define Menu_Width 	31
 
 const char MenuLine[] =
 {

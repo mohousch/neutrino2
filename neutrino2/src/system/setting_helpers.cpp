@@ -70,9 +70,8 @@
 #include <nhttpd/yconfig.h>
 
 
-// globals
+//// globals
 extern int dvbsub_stop();
-extern int dvbsub_close();
 extern int dvbsub_start(int pid);
 extern int dvbsub_pause();
 // tuxtxt
@@ -159,19 +158,18 @@ bool CColorSetupNotifier::changeNotify(const std::string&, void *)
 	return false;
 }
 
-// txt/dvb sub change exec
-int CSubtitleChangeExec::exec(CMenuTarget */*parent*/, const std::string & actionKey)
+// txt/dvb subtitle
+int CSubtitleChangeExec::exec(CMenuTarget *, const std::string & actionKey)
 {
 	dprintf(DEBUG_INFO, "CSubtitleChangeExec::exec: action %s\n", actionKey.c_str());
 	
 	if(actionKey == "off") 
 	{
 		// tuxtxt stop
-		tuxtx_stop_subtitle(); //this kill sub thread
+		tuxtx_stop_subtitle(); //this kill subthread
 		
 		// dvbsub stop
 		dvbsub_stop();
-		//dvbsub_close();
 		
 		return RETURN_EXIT;
 	}
@@ -179,7 +177,7 @@ int CSubtitleChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
 	if(!strncmp(actionKey.c_str(), "DVB", 3)) 
 	{
 		char const * pidptr = strchr(actionKey.c_str(), ':');
-		int pid = atoi(pidptr+1);
+		int pid = atoi(pidptr + 1);
 		
 		// tuxtxt stop
 		tuxtx_stop_subtitle();
@@ -213,7 +211,7 @@ int CSubtitleChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
         return RETURN_EXIT;
 }
 
-// nvod change exec
+// nvod
 int CNVODChangeExec::exec(CMenuTarget* parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_INFO, "CNVODChangeExec exec: %s\n", actionKey.c_str());
@@ -229,7 +227,7 @@ int CNVODChangeExec::exec(CMenuTarget* parent, const std::string &actionKey)
 	return RETURN_EXIT;
 }
 
-// tuxtxt changer
+// tuxtxt
 extern int current_muted;
 int CTuxtxtChangeExec::exec(CMenuTarget *parent, const std::string &actionKey)
 {
@@ -238,23 +236,25 @@ int CTuxtxtChangeExec::exec(CMenuTarget *parent, const std::string &actionKey)
 	if(parent)
 		parent->hide();
 	
-	g_RCInput->clearRCMsg();
+	if (!IS_WEBTV(live_channel_id))
+	{
+//		g_RCInput->clearRCMsg();
 
-	CNeutrinoApp::getInstance()->stopSubtitles();
+		CNeutrinoApp::getInstance()->stopSubtitles();
 				
-	tuxtx_stop_subtitle();
+		tuxtx_stop_subtitle();
 
-	tuxtx_main(g_RemoteControl->current_PIDs.PIDs.vtxtpid, 0);
+		tuxtx_main(g_RemoteControl->current_PIDs.PIDs.vtxtpid, 0);
 
-	CFrameBuffer::getInstance()->paintBackground();
-
-	CFrameBuffer::getInstance()->blit();
+//		CFrameBuffer::getInstance()->paintBackground();
+//		CFrameBuffer::getInstance()->blit();
 				
-	g_RCInput->clearRCMsg();
+//		g_RCInput->clearRCMsg();
 				
-	CNeutrinoApp::getInstance()->audioMute(current_muted, true);
+		CNeutrinoApp::getInstance()->audioMute(current_muted, true);
 
-	CNeutrinoApp::getInstance()->startSubtitles();
+		CNeutrinoApp::getInstance()->startSubtitles();
+	}
 
 	return RETURN_REPAINT;
 }

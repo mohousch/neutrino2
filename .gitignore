@@ -2218,3 +2218,5 @@
 /neutrino2/lib/libsubtitle/libsubtitle.a
 /neutrino2/lib/libsubtitle/subtitle.o
 /neutrino2/lib/libsubtitle/tools.o
+/neutrino2/lib/libsubtitle/.deps/dvbsub.Po
+/neutrino2/lib/libsubtitle/.deps/libsubtitle.Po
