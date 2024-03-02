@@ -53,9 +53,8 @@
 //// globals
 extern cVideo * videoDecoder;
 extern cAudio * audioDecoder;
-extern satellite_map_t satellitePositions;					// defined in getServices.cpp
-extern CRemoteControl *g_RemoteControl;	/* neutrino.cpp */
-extern CZapit::SatelliteList satList;
+extern satellite_map_t satellitePositions;		// defined in getServices.cpp
+extern CRemoteControl *g_RemoteControl;			// neutrino.cpp 
 extern CFrontend * live_fe;
 extern t_channel_id live_channel_id; 			//defined in zapit.cpp
 

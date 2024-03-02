@@ -202,24 +202,11 @@ class CZapit
 				uint32_t	rate;
 				fe_code_rate	fec;
 		};
-
-		struct responseGetSatelliteList
-		{
-			char satName[50];
-			t_satellite_position satPosition;
-			uint8_t motorPosition;
-			int satDiseqc;
-
-			uint32_t system;
-		};
-		
-		typedef std::vector<responseGetSatelliteList> SatelliteList;
 		
 		struct commandSetScanSatelliteList
 		{
 			char satName[50];
-			int  position;
-			int type;
+			t_satellite_position  position;
 		};
 		
 		typedef std::vector<commandSetScanSatelliteList> ScanSatelliteList;
@@ -546,19 +533,18 @@ class CZapit
 		void setVideoSystem(int video_system);
 		// own bouquetManager needed for nhttpd
 		bool getBouquetChannels(const unsigned int bouquet, BouquetChannelList &channels, const channelsMode mode = MODE_CURRENT, const bool utf_encoded = false);
-		// bouquetManager
+		//// bouquetManager
 		void saveBouquets();
 		void restoreBouquets();
 		void addChannelToBouquet(const unsigned int bouquet, const t_channel_id channel_id);
 		void removeChannelFromBouquet(const unsigned int bouquet, const t_channel_id channel_id);
-		// channelManager
+		//// channelManager
 		int loadMotorPositions(void);
 		void saveMotorPositions();
-		// scanManager
+		//// scanManager
 		int addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, bool fromnit = false, int feindex = 0);
 		bool tuneTP(transponder TP, int feindex = 0);
 		bool scanTP(commandScanTP &msg);
-		void getScanSatelliteList( SatelliteList &satelliteList );
 		void setScanSatelliteList( ScanSatelliteList &satelliteList );
 		void setScanType(const scanType mode);
 		void setFEMode(const fe_mode_t mode, int feindex = 0);

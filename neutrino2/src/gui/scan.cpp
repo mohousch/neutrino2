@@ -57,7 +57,6 @@
 
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
 extern CScanSettings * scanSettings;		// defined in scan_setup.cpp
-//extern t_channel_id live_channel_id; 		//defined in zapit.cpp
 
 //
 CScanTs::CScanTs(int num)
@@ -141,7 +140,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 
 	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8);
 
-	// refill sat list and set feparams for manuel scan
+	// refill satlist and set feparams for manuel scan
 	satList.clear();
 
 	if(manual) 

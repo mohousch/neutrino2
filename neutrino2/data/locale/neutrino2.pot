@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-03-01 16:15+0100\n"
+"POT-Creation-Date: 2024-03-02 10:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -99,7 +99,7 @@ msgstr ""
 msgid "AV Select"
 msgstr ""
 
-#: ../../src/gui/scan.cpp:351
+#: ../../src/gui/scan.cpp:351 ../../src/gui/scan.cpp:350
 msgid "Abortion of channel scan"
 msgstr ""
 
@@ -202,6 +202,7 @@ msgid "Arts / Culture magazines"
 msgstr ""
 
 #: ../../src/gui/streaminfo.cpp:585 ../../src/gui/streaminfo.cpp:611
+#: ../../src/gui/streaminfo.cpp:584 ../../src/gui/streaminfo.cpp:610
 msgid "Aspect Ratio"
 msgstr ""
 
@@ -210,6 +211,7 @@ msgid "Athletics"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:619 ../../src/gui/scan.cpp:620
+#: ../../src/gui/scan.cpp:618
 msgid "Atsc:"
 msgstr ""
 
@@ -255,7 +257,8 @@ msgid "Audioplayer settings"
 msgstr ""
 
 #: ../../src/gui/streaminfo.cpp:587 ../../src/gui/streaminfo.cpp:665
-#: ../../src/gui/streaminfo.cpp:671
+#: ../../src/gui/streaminfo.cpp:671 ../../src/gui/streaminfo.cpp:586
+#: ../../src/gui/streaminfo.cpp:664 ../../src/gui/streaminfo.cpp:670
 msgid "Audiotype"
 msgstr ""
 
@@ -321,6 +324,7 @@ msgid "Bandwidth"
 msgstr ""
 
 #: ../../src/gui/streaminfo.cpp:157 ../../src/gui/streaminfo.cpp:218
+#: ../../src/gui/streaminfo.cpp:156 ../../src/gui/streaminfo.cpp:217
 msgid "Bitrate"
 msgstr ""
 
@@ -521,6 +525,7 @@ msgid "Cable"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:601 ../../src/gui/scan.cpp:602
+#: ../../src/gui/scan.cpp:600
 msgid "Cable:"
 msgstr ""
 
@@ -552,7 +557,7 @@ msgstr ""
 
 #: ../../src/gui/eventlist.cpp:803 ../../src/gui/movieinfo.cpp:932
 #: ../../src/gui/streaminfo.cpp:710 ../../src/gui/timerlist.cpp:1192
-#: ../../src/gui/eventlist.cpp:804
+#: ../../src/gui/eventlist.cpp:804 ../../src/gui/streaminfo.cpp:709
 msgid "Channel"
 msgstr ""
 
@@ -577,6 +582,7 @@ msgid "Channel up"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:642 ../../src/gui/scan.cpp:643
+#: ../../src/gui/scan.cpp:641
 msgid "Channel:"
 msgstr ""
 
@@ -704,7 +710,7 @@ msgstr ""
 msgid "DHCP"
 msgstr ""
 
-#: ../../src/gui/scan.cpp:650
+#: ../../src/gui/scan.cpp:650 ../../src/gui/scan.cpp:649
 msgid "Data"
 msgstr ""
 
@@ -1274,6 +1280,7 @@ msgid ""
 msgstr ""
 
 #: ../../src/gui/streaminfo.cpp:586 ../../src/gui/streaminfo.cpp:639
+#: ../../src/gui/streaminfo.cpp:585 ../../src/gui/streaminfo.cpp:638
 msgid "Framerate"
 msgstr ""
 
@@ -1293,6 +1300,7 @@ msgid "Frequency"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:630 ../../src/gui/scan.cpp:631
+#: ../../src/gui/scan.cpp:629
 msgid "Frequency:"
 msgstr ""
 
@@ -2577,6 +2585,7 @@ msgid "Provider"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:637 ../../src/gui/scan.cpp:638
+#: ../../src/gui/scan.cpp:636
 msgid "Provider:"
 msgstr ""
 
@@ -2605,7 +2614,7 @@ msgstr ""
 msgid "RIGHT"
 msgstr ""
 
-#: ../../src/gui/scan.cpp:649
+#: ../../src/gui/scan.cpp:649 ../../src/gui/scan.cpp:648
 msgid "Radio"
 msgstr ""
 
@@ -2638,7 +2647,7 @@ msgstr ""
 msgid "Reboot"
 msgstr ""
 
-#: ../../src/gui/streaminfo.cpp:359
+#: ../../src/gui/streaminfo.cpp:359 ../../src/gui/streaminfo.cpp:358
 msgid "Receipt signal"
 msgstr ""
 
@@ -2805,6 +2814,7 @@ msgid "Reset to defaults"
 msgstr ""
 
 #: ../../src/gui/streaminfo.cpp:584 ../../src/gui/streaminfo.cpp:601
+#: ../../src/gui/streaminfo.cpp:583 ../../src/gui/streaminfo.cpp:600
 msgid "Resolution"
 msgstr ""
 
@@ -2848,7 +2858,7 @@ msgstr ""
 #: ../../src/gui/scan_setup.cpp:1474 ../../src/gui/scan_setup.cpp:1554
 #: ../../src/gui/streaminfo.cpp:687 ../../src/gui/scan_setup.cpp:1027
 #: ../../src/gui/scan_setup.cpp:1173 ../../src/gui/scan_setup.cpp:1473
-#: ../../src/gui/scan_setup.cpp:1553
+#: ../../src/gui/scan_setup.cpp:1553 ../../src/gui/streaminfo.cpp:686
 msgid "Satellite"
 msgstr ""
 
@@ -2861,6 +2871,7 @@ msgid "Satellite display on infobar"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:592 ../../src/gui/scan.cpp:593
+#: ../../src/gui/scan.cpp:591
 msgid "Satellite:"
 msgstr ""
 
@@ -2971,7 +2982,7 @@ msgstr ""
 
 #: ../../src/gui/scan.cpp:566 ../../src/gui/scan_setup.cpp:473
 #: ../../src/gui/service_menu.cpp:128 ../../src/gui/scan_setup.cpp:472
-#: ../../src/gui/service_menu.cpp:129
+#: ../../src/gui/service_menu.cpp:129 ../../src/gui/scan.cpp:565
 msgid "Scan transponder"
 msgstr ""
 
@@ -3190,7 +3201,7 @@ msgstr ""
 msgid "Shortest time (in ms) to recognize 2 keystrokes"
 msgstr ""
 
-#: ../../src/gui/scan.cpp:351
+#: ../../src/gui/scan.cpp:351 ../../src/gui/scan.cpp:350
 msgid "Should the search really be aborted?"
 msgstr ""
 
@@ -3401,7 +3412,8 @@ msgid "Store Motor Position (a)"
 msgstr ""
 
 #: ../../src/gui/dboxinfo.cpp:579 ../../src/gui/streaminfo.cpp:534
-#: ../../src/gui/streaminfo.cpp:557
+#: ../../src/gui/streaminfo.cpp:557 ../../src/gui/streaminfo.cpp:533
+#: ../../src/gui/streaminfo.cpp:556
 msgid "Stream information"
 msgstr ""
 
@@ -3507,7 +3519,7 @@ msgstr ""
 msgid "TOP RIGHT"
 msgstr ""
 
-#: ../../src/gui/scan.cpp:648
+#: ../../src/gui/scan.cpp:648 ../../src/gui/scan.cpp:647
 msgid "TV"
 msgstr ""
 
@@ -3562,6 +3574,7 @@ msgid "Tennis / Squash"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:610 ../../src/gui/scan.cpp:611
+#: ../../src/gui/scan.cpp:609
 msgid "Terrestrial:"
 msgstr ""
 
@@ -3571,7 +3584,7 @@ msgid "Test network now"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:566 ../../src/gui/scan_setup.cpp:1352
-#: ../../src/gui/scan_setup.cpp:1351
+#: ../../src/gui/scan_setup.cpp:1351 ../../src/gui/scan.cpp:565
 msgid "Test signal"
 msgstr ""
 
@@ -3726,7 +3739,7 @@ msgstr ""
 msgid "Tint"
 msgstr ""
 
-#: ../../src/gui/scan.cpp:651
+#: ../../src/gui/scan.cpp:651 ../../src/gui/scan.cpp:650
 msgid "Total"
 msgstr ""
 
@@ -3739,14 +3752,15 @@ msgid "Transmission mode"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:625 ../../src/gui/scan.cpp:626
+#: ../../src/gui/scan.cpp:624
 msgid "Transponders:"
 msgstr ""
 
-#: ../../src/gui/scan.cpp:373
+#: ../../src/gui/scan.cpp:373 ../../src/gui/scan.cpp:372
 msgid "Transponderscan failed!"
 msgstr ""
 
-#: ../../src/gui/scan.cpp:373
+#: ../../src/gui/scan.cpp:373 ../../src/gui/scan.cpp:372
 msgid "Transponderscan finished."
 msgstr ""
 
@@ -4591,7 +4605,8 @@ msgstr ""
 
 #: ../../src/gui/streaminfo.cpp:769 ../../src/gui/streaminfo.cpp:780
 #: ../../src/gui/streaminfo.cpp:809 ../../src/system/helpers.cpp:1311
-#: ../../src/system/helpers.cpp:1316
+#: ../../src/system/helpers.cpp:1316 ../../src/gui/streaminfo.cpp:768
+#: ../../src/gui/streaminfo.cpp:779 ../../src/gui/streaminfo.cpp:808
 msgid "not available"
 msgstr ""
 
@@ -4860,6 +4875,7 @@ msgstr ""
 
 #: ../../src/gui/epgview.cpp:390 ../../src/gui/streaminfo.cpp:631
 #: ../../src/gui/streaminfo.cpp:651 ../../src/gui/epgview.cpp:392
+#: ../../src/gui/streaminfo.cpp:630 ../../src/gui/streaminfo.cpp:650
 #, c-format
 msgid "unknown"
 msgstr ""

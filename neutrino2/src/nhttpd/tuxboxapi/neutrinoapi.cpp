@@ -45,12 +45,8 @@
 
 ////
 extern tallchans allchans;
-extern CFrontend * frontend;
 extern cVideo * videoDecoder;
 extern cAudio * audioDecoder;
-
-extern CRemoteControl *g_RemoteControl;	// neutrino.cpp
-extern CZapit::SatelliteList satList;
 
 // yhttpd
 #include "ylogging.h"

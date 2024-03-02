@@ -101,13 +101,11 @@ CZapitChannel * rec_channel = NULL;
 //
 cDemux *videoDemux = NULL;
 cDemux *audioDemux = NULL;
-cDemux * pcrDemux = NULL;			// defined in dmx_cs.pp (libdvbapi)
+cDemux * pcrDemux = NULL;					// defined in dmx_cs.pp (libdvbapi)
 // list of all channels (services)
 tallchans allchans;
 tallchans curchans;
 tallchans nvodchannels;
-//
-transponder_list_t transponders;    		// from services.xml
 // pmt update filter
 static int pmt_update_fd = -1;
 // frontend
@@ -117,8 +115,9 @@ CFrontend * record_fe = NULL;
 extern cVideo * videoDecoder;
 extern cAudio * audioDecoder;
 //// channelManager
+transponder_list_t transponders;    				// from services.xml
 satellite_map_t satellitePositions;				// satellite position as specified in satellites.xml
-std::map<transponder_id_t, transponder> select_transponders;	// TP map all tps from sats liste
+std::map<transponder_id_t, transponder> select_transponders;	// TP map all tps from sats lists
 static int newfound;
 ////scanManager
 scan_list_t scanProviders;
@@ -5163,24 +5162,6 @@ bool CZapit::scanTP(commandScanTP &msg)
 	retune = true;
 	
 	return ret;
-}
-
-void CZapit::getScanSatelliteList( SatelliteList &satelliteList )
-{
-	CZapit::responseGetSatelliteList sat;
-	
-	sat_iterator_t sit;
-	for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
-	{
-		strncpy(sat.satName, sit->second.name.c_str(), 50);
-		sat.satName[49] = 0;
-		sat.satPosition = sit->first;
-		sat.motorPosition = sit->second.motor_position;
-
-		sat.system = sit->second.system;
-		
-		satelliteList.push_back(sat);
-	}
 }
 
 void CZapit::setScanSatelliteList( ScanSatelliteList &satelliteList )
