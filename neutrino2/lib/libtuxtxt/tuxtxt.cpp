@@ -1428,9 +1428,7 @@ int tuxtx_main(int pid, int page)
 				case RC_PLUS:	 SwitchZoomMode();		break;
 				case RC_MINUS:	 SwitchScreenMode(-1);prevscreenmode = screenmode; break;
 				case RC_MUTE:	 SwitchTranspMode();	break;
-				case RC_TEXT:	 
-					if(transpmode == 1)
-						RCCode = RC_HOME;
+				case RC_TEXT:
 					SwitchTranspMode();	
 					break;
 				case RC_HELP:	 SwitchHintMode();		break;
@@ -3499,30 +3497,25 @@ void SwitchTranspMode()
 	if (screenmode)
 	{
 		prevscreenmode = screenmode;
-		SwitchScreenMode(0); /* turn off divided screen */
+		SwitchScreenMode(0); // turn off divided screen
 	}
 
-	/* toggle mode */
+	// toggle mode
 	if (!transpmode)
-		transpmode = 2;
+		transpmode = 1;
 	else
-		transpmode--; /* backward to immediately switch to TV-screen */
+		transpmode--; // backward to immediately switch to TV-screen
 
-	/* set mode */
-	if (!transpmode) /* normal text-only */
+	// set mode
+	if (!transpmode) // normal text-only
 	{
 		ClearBB(FullScrColor);
 		tuxtxt_cache.pageupdate = 1;
 	}
-	else if (transpmode == 1) /* semi-transparent BG with FG text */
+	else if (transpmode == 1) // semi-transparent BG with FG text
 	{
 		ClearBB(transp);
 		tuxtxt_cache.pageupdate = 1;
-	}
-	else /* TV mode */
-	{
-		ClearFB(transp);
-		clearbbcolor = FullScrColor;
 	}
 }
 
