@@ -6,10 +6,11 @@ SUBDIRS = \
 	libnet \
 	libxmltree \
 	libtuxtxt \
-	libdvbsub \
+	libsubtitle \
 	jsoncpp \
 	libiw \
-	libdvbapi libdvbci
+	libdvbapi \
+	libdvbci
 
 if !ENABLE_GSTREAMER
 SUBDIRS += libeplayer3

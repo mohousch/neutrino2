@@ -49,7 +49,7 @@
 extern tuxtxt_cache_struct tuxtxt_cache;
 extern int tuxtxt_init();
 extern void tuxtxt_close();
-extern void tuxtxt_start(int tpid, int source);  // Start caching
+extern void tuxtxt_start(int tpid);  // Start caching
 extern int  tuxtxt_stop(); // Stop caching
 extern void tuxtxt_next_dec(int *i); /* skip to next decimal */
 extern void tuxtxt_prev_dec(int *i); /* counting down */
@@ -864,7 +864,7 @@ unsigned char *aShapes[] =
 };
 
 /* functions */
-void ConfigMenu(int Init, int source);
+void ConfigMenu(int Init);
 void CleanUp();
 void PageInput(int Number);
 void ColorKey(int);
@@ -884,9 +884,9 @@ void RenderCharBB(int Char, tstPageAttr *Attribute);
 void RenderMessage(int Message);
 void RenderPage();
 void DecodePage();
-int  Init(int source);
+int  Init();
 int  GetNationalSubset(const char *country_code);
-int  GetTeletextPIDs(int source);
+int  GetTeletextPIDs();
 int  GetRCCode();
 int  eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 						unsigned char *pAPx, unsigned char *pAPy,

@@ -1161,8 +1161,8 @@ static void * reader_thread(void * /*arg*/)
 	pthread_exit(NULL);
 }
 
-int tuxtx_main(int pid, int page, int source);
-void tuxtx_pause_subtitle(bool pause, int source)
+int tuxtx_main(int pid, int page);
+void tuxtx_pause_subtitle(bool pause)
 {
 	if(!pause) 
 	{
@@ -1170,7 +1170,7 @@ void tuxtx_pause_subtitle(bool pause, int source)
 		
 		ttx_paused = 0;
 		if(!reader_running && sub_pid && sub_page)
-			tuxtx_main(sub_pid, sub_page, source);
+			tuxtx_main(sub_pid, sub_page);
 	}
 	else 
 	{
@@ -1231,7 +1231,7 @@ int tuxtx_subtitle_running(int *pid, int *page, int *running)
 }
 
 // main loop
-int tuxtx_main(int pid, int page, int source)
+int tuxtx_main(int pid, int page)
 {
 	char cvs_revision[] = "$Revision: 1.95 $";
 	
@@ -1290,8 +1290,8 @@ int tuxtx_main(int pid, int page, int source)
 	//initialisations
 	transpmode = 0;
 
-	// init source
-	if (Init(source) == 0)
+	// init
+	if (Init() == 0)
 		return 0;
 	
 	// create subthread
@@ -1434,7 +1434,7 @@ int tuxtx_main(int pid, int page, int source)
 				break;
 			case RC_HELP:	 SwitchHintMode();		break;
 
-			//case RC_DBOX:	 ConfigMenu(0, source);	break;	//FIXME:
+			//case RC_DBOX:	 ConfigMenu(0);	break;	//FIXME:
 
 			case RC_HOME:
 				break;
@@ -1471,7 +1471,7 @@ FT_Error MyFaceRequester(FTC_FaceID face_id, FT_Library _library, FT_Pointer /*r
 /*
  * Init
 */
-int Init( int source )
+int Init()
 {
 	int error, i;
 	unsigned char magazine;
@@ -1704,7 +1704,7 @@ int Init( int source )
 		/* get all vtxt-pids */
 		getpidsdone = -1;	 // don't kill thread
 
-		if (GetTeletextPIDs(source) == 0)
+		if (GetTeletextPIDs() == 0)
 		{
 			FTC_Manager_Done(manager);
 			FT_Done_FreeType(library);
@@ -1716,7 +1716,7 @@ int Init( int source )
 			national_subset = pid_table[0].national_subset;
 
 		if (pids_found > 1)
-			ConfigMenu(1, source);
+			ConfigMenu(1);
 		else
 		{
 			tuxtxt_cache.vtxtpid = pid_table[0].vtxt_pid;
@@ -1738,7 +1738,7 @@ int Init( int source )
 	}
 
 	//
-	tuxtxt_start(tuxtxt_cache.vtxtpid, source);
+	tuxtxt_start(tuxtxt_cache.vtxtpid);
 
 	gethotlist();
 	
@@ -1818,7 +1818,7 @@ void CleanUp()
  * GetTeletextPIDs
 */
 //TODO: multi demuxes needed
-int GetTeletextPIDs(int )
+int GetTeletextPIDs()
 {
 	int pat_scan, pmt_scan, sdt_scan, desc_scan, pid_test, byte, diff, first_sdt_sec;
 
@@ -1826,7 +1826,7 @@ int GetTeletextPIDs(int )
 	unsigned char bufSDT[1024];
 	unsigned char bufPMT[1024];
 
-	/* show infobar */
+	// show infobar
 	RenderMessage(ShowInfoBar);
 
         unsigned char filter[DMX_FILTER_SIZE];
@@ -1840,8 +1840,6 @@ int GetTeletextPIDs(int )
         memset(filter, 0x00, DMX_FILTER_SIZE);
         memset(mask, 0x00, DMX_FILTER_SIZE);
 
-        //filter[0] = 0x00;
-        //mask[0] = 0xFF;
         mask[0] = 0xFF;
         mask[4] = 0xFF;
 
@@ -1856,7 +1854,7 @@ int GetTeletextPIDs(int )
 		return 0;
 	}
 
-	/* scan each PMT for vtxt-pid */
+	// scan each PMT for vtxt-pid
 	pids_found = 0;
 
 	for (pat_scan = 0x0A; pat_scan < 0x0A + (((bufPAT[0x01]<<8 | bufPAT[0x02]) & 0x0FFF) - 9); pat_scan += 4)
@@ -1864,7 +1862,7 @@ int GetTeletextPIDs(int )
 		if (((bufPAT[pat_scan - 2]<<8) | (bufPAT[pat_scan - 1])) == 0)
 			continue;
 
-		int pid = (bufPAT[pat_scan]<<8 | bufPAT[pat_scan+1]) & 0x1FFF;
+		int pid = (bufPAT[pat_scan]<<8 | bufPAT[pat_scan + 1]) & 0x1FFF;
 		filter[0] = 0x02;
 		mask[0] = 0xFF;
 
@@ -1922,7 +1920,7 @@ skip_pid:
 		}
 	}
 
-	/* check for teletext */
+	// check for teletext
 	if (pids_found == 0)
 	{
 		dprintf(DEBUG_NORMAL, "TuxTxt <no Teletext on TS found>\n");
@@ -1933,7 +1931,7 @@ skip_pid:
 		return 0;
 	}
 
-	/* read SDT to get servicenames */
+	// read SDT to get servicenames
 	SDT_ready = 0;
 
 	filter[0] = 0x42;
@@ -1946,7 +1944,9 @@ skip_pid:
 	while (1)
 	{
 		res = dmx->Read(bufSDT, sizeof(bufSDT));
-		if(res <= 0) {
+		
+		if(res <= 0) 
+		{
 			perror("TuxTxt <read SDT>");
 			delete dmx;
 			RenderMessage(ShowServiceName);
@@ -1959,7 +1959,7 @@ skip_pid:
 		if (first_sdt_sec == -1)
 			first_sdt_sec = bufSDT[6];
 
-		/* scan SDT to get servicenames */
+		// scan SDT to get servicenames
 		for (sdt_scan = 0x0B; sdt_scan < ((bufSDT[1]<<8 | bufSDT[2]) & 0x0FFF) - 7; sdt_scan += 5 + ((bufSDT[sdt_scan + 3]<<8 | bufSDT[sdt_scan + 4]) & 0x0FFF))
 		{
 			for (pid_test = 0; pid_test < pids_found; pid_test++)
@@ -1999,7 +1999,7 @@ skip_pid:
 	delete dmx;
 	SDT_ready = 1;
 
-	/* show current servicename */
+	// show current servicename
 	current_service = 0;
 
 	if (tuxtxt_cache.vtxtpid != 0)
@@ -2315,7 +2315,7 @@ void Menu_Init(char *menu, int current_pid, int menuitem, int hotindex)
 	CFrameBuffer::getInstance()->blit();
 }
 
-void ConfigMenu(int Init, int source)
+void ConfigMenu(int Init)
 {
 	dprintf(DEBUG_NORMAL, "[tuxtxt] Menu\n");
 	
@@ -2446,7 +2446,7 @@ void ConfigMenu(int Init, int source)
 				{
 					if (!getpidsdone)
 					{
-						GetTeletextPIDs(source); //FIXME source???
+						GetTeletextPIDs(); 
 						ClearFB(transp);
 						
 						/* set current vtxt */
@@ -2577,7 +2577,7 @@ void ConfigMenu(int Init, int source)
 				case M_PID:
 					if (!getpidsdone)
 					{
-						GetTeletextPIDs(source); //FIXME: set source also
+						GetTeletextPIDs();
 						ClearFB(transp);
 						
 						/* set current vtxt */
@@ -2796,7 +2796,7 @@ void ConfigMenu(int Init, int source)
 				case M_PID:
 					if (!getpidsdone)
 					{
-						GetTeletextPIDs(source); //FIXME: source???
+						GetTeletextPIDs();
 						ClearFB(transp);
 						
 						/* set current vtxt */
@@ -2851,7 +2851,7 @@ void ConfigMenu(int Init, int source)
 							if (auto_national)
 								national_subset = pid_table[current_pid].national_subset;
 
-							tuxtxt_start(pid_table[current_pid].vtxt_pid, source); //FIXME:
+							tuxtxt_start(pid_table[current_pid].vtxt_pid);
 						}
 						
 						//tuxtxt_cache.pageupdate = 1;
