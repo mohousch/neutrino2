@@ -1,5 +1,5 @@
 //
-//  $Id: sectionsd.cpp 23.09.2023 mohousch Exp $
+//  $Id: sectionsd.cpp 02.03.2024 mohousch Exp $
 //
 //    (dbox-II-project)
 //
@@ -2721,7 +2721,7 @@ _done:
 	CFileHelpers::getInstance()->copyFile(tmpname, filename);
 	unlink(tmpname);
 _ret:
-	eventServer->sendEvent(NeutrinoMessages::EVT_SI_FINISHED, CEventServer::INITID_NEUTRINO);
+	eventServer->sendEvent(NeutrinoMessages::EVT_SI_FINISHED);
 	
 	return ;
 }
@@ -2767,7 +2767,7 @@ void *CSectionsd::timeThread(void *)
 				pthread_cond_broadcast(&timeIsSetCond);
 				pthread_mutex_unlock(&timeIsSetMutex );
 				
-				eventServer->sendEvent(NeutrinoMessages::EVT_TIMESET, CEventServer::INITID_NEUTRINO, &actTime, sizeof(actTime) );
+				eventServer->sendEvent(NeutrinoMessages::EVT_TIMESET, &actTime, sizeof(actTime) );
 				
 				dprintf(DEBUG_NORMAL, "CSectionsd::timeThread: Time is already set by system, no further timeThread work!\n");
 				break;
@@ -2784,7 +2784,7 @@ void *CSectionsd::timeThread(void *)
 			pthread_cond_broadcast(&timeIsSetCond);
 			pthread_mutex_unlock(&timeIsSetMutex );
 			
-			eventServer->sendEvent(NeutrinoMessages::EVT_TIMESET, CEventServer::INITID_NEUTRINO, &actTime, sizeof(actTime) );
+			eventServer->sendEvent(NeutrinoMessages::EVT_TIMESET, &actTime, sizeof(actTime) );
 			
 			dprintf(DEBUG_NORMAL, "CSectionsd::timeThread: Time is already set by system\n");
 		} 
@@ -2828,7 +2828,7 @@ void *CSectionsd::timeThread(void *)
 					pthread_cond_broadcast(&timeIsSetCond);
 					pthread_mutex_unlock(&timeIsSetMutex );
 					
-					eventServer->sendEvent(NeutrinoMessages::EVT_TIMESET, CEventServer::INITID_NEUTRINO, &tim, sizeof(tim));
+					eventServer->sendEvent(NeutrinoMessages::EVT_TIMESET, &tim, sizeof(tim));
 					
 					dprintf(DEBUG_NORMAL, "CSectionsd::timeThread: Time is already set by DVB\n");
 				}
@@ -3876,7 +3876,7 @@ void *CSectionsd::cnThread(void *)
 				{
 					dprintf(DEBUG_DEBUG, "CSectionsd::cnThread: waiting for more than %d seconds - bail out...\n", TIME_EIT_VERSION_WAIT);
 					/* send event anyway, so that we know there is no EPG */
-					eventServer->sendEvent(NeutrinoMessages::EVT_CURRENTNEXT_EPG, CEventServer::INITID_NEUTRINO, &messaging_current_servicekey, sizeof(messaging_current_servicekey));
+					eventServer->sendEvent(NeutrinoMessages::EVT_CURRENTNEXT_EPG, &messaging_current_servicekey, sizeof(messaging_current_servicekey));
 					
 					writeLockMessaging();
 					messaging_need_eit_version = false;
@@ -3896,7 +3896,7 @@ void *CSectionsd::cnThread(void *)
 			messaging_have_CN = messaging_got_CN;
 			unlockMessaging();
 			dprintf(DEBUG_DEBUG, "CSectionsd::cnThread: got current_next (0x%x) - sending event!\n", messaging_have_CN);
-			eventServer->sendEvent(NeutrinoMessages::EVT_CURRENTNEXT_EPG, CEventServer::INITID_NEUTRINO, &messaging_current_servicekey, sizeof(messaging_current_servicekey));
+			eventServer->sendEvent(NeutrinoMessages::EVT_CURRENTNEXT_EPG, &messaging_current_servicekey, sizeof(messaging_current_servicekey));
 			
 			/* we received an event => reset timeout timer... */
 			eit_waiting_since = zeit;
@@ -3984,7 +3984,7 @@ void *CSectionsd::cnThread(void *)
 			/* send a "no epg" event anyway before going to sleep */
 			if (messaging_have_CN == 0x00)
 			{
-				eventServer->sendEvent(NeutrinoMessages::EVT_CURRENTNEXT_EPG, CEventServer::INITID_NEUTRINO, &messaging_current_servicekey, sizeof(messaging_current_servicekey));
+				eventServer->sendEvent(NeutrinoMessages::EVT_CURRENTNEXT_EPG, &messaging_current_servicekey, sizeof(messaging_current_servicekey));
 			}
 			continue;
 		}

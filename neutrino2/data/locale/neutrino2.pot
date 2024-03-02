@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-03-02 17:31+0100\n"
+"POT-Creation-Date: 2024-03-02 21:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1738,7 +1738,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3730 ../../src/neutrino2.cpp:3764
 #: ../../src/neutrino2.cpp:3771 ../../src/neutrino2.cpp:3809
 #: ../../src/neutrino2.cpp:3852 ../../src/neutrino2.cpp:4277
-#: ../../src/neutrino2.cpp:4964
+#: ../../src/neutrino2.cpp:4964 ../../src/neutrino2.cpp:4906
 msgid "Information"
 msgstr ""
 
@@ -2334,6 +2334,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4974 ../../src/neutrino2.cpp:4962
 #: ../../src/neutrino2.cpp:4956 ../../src/neutrino2.cpp:4960
 #: ../../src/neutrino2.cpp:4965 ../../src/neutrino2.cpp:4964
+#: ../../src/neutrino2.cpp:4906
 msgid "No neutrino-settings found, Using defaults."
 msgstr ""
 
@@ -3667,6 +3668,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4974 ../../src/neutrino2.cpp:4962
 #: ../../src/neutrino2.cpp:4956 ../../src/neutrino2.cpp:4960
 #: ../../src/neutrino2.cpp:4965 ../../src/neutrino2.cpp:4964
+#: ../../src/neutrino2.cpp:4906
 msgid ""
 "The neutrino-settings have been updated.\n"
 "New Options will be set to default."

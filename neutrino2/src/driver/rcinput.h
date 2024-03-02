@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: rcinput.h 25.09.2023 mohousch Exp $
+	$Id: rcinput.h 02.03.2024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -139,7 +139,6 @@
 typedef unsigned long neutrino_msg_t;
 typedef unsigned long neutrino_msg_data_t;
 
-#define NEUTRINO_UDS_NAME 		"/tmp/neutrino.sock"
 #define NEUTRINO_RCCONFIG_FILE		CONFIGDIR "/rc.conf"
 
 class CRCInput

@@ -1,5 +1,5 @@
 /*
- * $Id: sectionsdtypes.h,v 1.1 2004/02/13 14:36:19 thegoodguy Exp $
+ * $Id: sectionsdtypes.h 02.03.2024 mohousch Exp $
  *
  * (C) 2004 by thegoodguy <thegoodguy@berlios.de>
  *

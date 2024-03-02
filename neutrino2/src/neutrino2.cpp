@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: neutrino2.cpp 23.09.2023 mohousch Exp $
+	$Id: neutrino2.cpp 02.03.2024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 	Homepage: http://dbox.cyberphoria.org/
@@ -4672,65 +4672,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// VFD clear	
 	CVFD::getInstance()->Clear();	
 	// show startup msg in vfd
-	CVFD::getInstance()->ShowText( (char *)"N2");
-	
-	// register events
-	// httpd
-	eventServer->registerEvent2(NeutrinoMessages::SHUTDOWN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::STANDBY_ON, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::STANDBY_OFF, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_POPUP, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_EXTMSG, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::CHANGEMODE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_START_PLUGIN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::LOCK_RC, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::UNLOCK_RC, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::REBOOT, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::RESTART, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	// sectionsd
-	eventServer->registerEvent2(NeutrinoMessages::EVT_TIMESET, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_CURRENTNEXT_EPG, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SI_FINISHED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	// zapit
-	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_COMPLETE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_ISNVOD, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_FAILED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_SUB_COMPLETE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_SUB_FAILED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_MOTOR, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_RECORDMODE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_COMPLETE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCY, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCYP, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_SATELLITE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_NUM_CHANNELS, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_PROVIDER, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_BOUQUETSCHANGED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SERVICESCHANGED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_SERVICENAME, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FOUND_TV_CHAN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FOUND_RADIO_CHAN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FOUND_DATA_CHAN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SERVICES_UPD, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_PMT_CHANGED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	// timerd
-	eventServer->registerEvent2(NeutrinoMessages::ANNOUNCE_SHUTDOWN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::SHUTDOWN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_NEXTPROGRAM, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::STANDBY_ON, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::STANDBY_OFF, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::ANNOUNCE_RECORD, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::RECORD_START, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::RECORD_STOP, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::ANNOUNCE_ZAPTO, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::ZAPTO, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::SLEEPTIMER, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::ANNOUNCE_SLEEPTIMER, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::REMIND, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_START_PLUGIN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	CVFD::getInstance()->ShowText( (char *)"NG²");
 
 	// rc set repeat
 	g_RCInput = new CRCInput();

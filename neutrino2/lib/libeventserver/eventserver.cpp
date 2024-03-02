@@ -1,6 +1,6 @@
 /*
 
-        $Header: /cvs/tuxbox/apps/misc/libs/libeventserver/eventserver.cpp,v 1.12 2003/03/14 06:25:49 obi Exp $
+        eventserver.cpp 02.03.2024 mohousch Exp $
 
 	Event-Server  -   DBoxII-Project
 
@@ -34,78 +34,38 @@
 #include <system/debug.h>
 
 
-void CEventServer::registerEvent2(const unsigned int eventID, const unsigned int ClientID, const std::string udsName)
-{
-	strcpy(eventData[eventID][ClientID].udsName, udsName.c_str());
-}
-
-void CEventServer::registerEvent(const int fd)
-{
-	commandRegisterEvent msg;
-
-	int readresult = read(fd, &msg, sizeof(msg));
-	if ( readresult <= 0 )
-		perror("[eventserver]: read");
-	
-	registerEvent2(msg.eventID, msg.clientID, msg.udsName);
-}
-
-void CEventServer::unRegisterEvent2(const unsigned int eventID, const unsigned int ClientID)
-{
-	eventData[eventID].erase( ClientID );
-}
-
-void CEventServer::unRegisterEvent(const int fd)
-{
-	commandUnRegisterEvent msg;
-	read(fd, &msg, sizeof(msg));
-	unRegisterEvent2(msg.eventID, msg.clientID);
-}
-
-void CEventServer::sendEvent(const unsigned int eventID, const initiators initiatorID, const void* eventbody, const unsigned int eventbodysize)
-{
-	eventClientMap notifyClients = eventData[eventID];
-
-	for(eventClientMap::iterator pos = notifyClients.begin(); pos != notifyClients.end(); pos++)
-	{
-		//allen clients ein event schicken
-		eventClient client = pos->second;
-		sendEvent2Client(eventID, initiatorID, &client, eventbody, eventbodysize);
-	}
-}
-
-bool CEventServer::sendEvent2Client(const unsigned int eventID, const initiators initiatorID, const eventClient* ClientData, const void* eventbody, const unsigned int eventbodysize)
+void CEventServer::sendEvent(const unsigned int eventID, const void* eventbody, const unsigned int eventbodysize, const char * udsname)
 {
 	struct sockaddr_un servaddr;
 	int clilen, sock_fd;
 
-	dprintf(DEBUG_NORMAL, "CEventServer::sendEvent2Client >(%s)\n", ClientData->udsName);
+	dprintf(DEBUG_NORMAL, "CEventServer::sendEvent >(%s)\n", udsname);
 
 	memset(&servaddr, 0, sizeof(struct sockaddr_un));
+	
 	servaddr.sun_family = AF_UNIX;
-	strcpy(servaddr.sun_path, ClientData->udsName);
+	strcpy(servaddr.sun_path, udsname);
 	clilen = sizeof(servaddr.sun_family) + strlen(servaddr.sun_path);
 
 	if ((sock_fd = socket(AF_UNIX, SOCK_STREAM, 0)) < 0)
 	{
 		perror("[eventserver]: socket");
-		dprintf(DEBUG_INFO, "CEventServer::sendEvent2Client <\n");
-		return false;
+		dprintf(DEBUG_INFO, "CEventServer::sendEvent <\n");
+		return;
 	}
 
-	if(connect(sock_fd, (struct sockaddr*) &servaddr, clilen) <0 )
+	if(connect(sock_fd, (struct sockaddr*) &servaddr, clilen) < 0 )
 	{
 		char errmsg[128];
-		snprintf(errmsg, 128, "[eventserver]: connect (%s)", ClientData->udsName);
+		snprintf(errmsg, 128, "[eventserver]: connect (%s)", udsname);
 		perror(errmsg);
 		close(sock_fd);
-		dprintf(DEBUG_NORMAL, "CEventServer::sendEvent2Client <(%s)\n", ClientData->udsName);
-		return false;
+		dprintf(DEBUG_NORMAL, "CEventServer::sendEvent <(%s)\n", udsname);
+		return;
 	}
 
 	eventHead head;
 	head.eventID = eventID;
-	head.initiatorID = initiatorID;
 	head.dataSize = eventbodysize;
 	
 	write(sock_fd, &head, sizeof(head));
@@ -117,6 +77,6 @@ bool CEventServer::sendEvent2Client(const unsigned int eventID, const initiators
 	
 	close(sock_fd);
 	
-	return true;
+	return;
 }
 

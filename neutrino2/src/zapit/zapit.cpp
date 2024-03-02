@@ -1,5 +1,5 @@
 /*
- * $Id: zapit.cpp 23.09.2023 mohousch Exp $
+ * $Id: zapit.cpp 02.03.2024 mohousch Exp $
  *
  * zapit - d-box2 linux project
  *
@@ -1158,7 +1158,7 @@ bool CZapit::tuneToChannel(CFrontend * frontend, CZapitChannel * thischannel, bo
 		if(waitForMotor > 0) 
 		{
 			dprintf(DEBUG_INFO, "CZapit::tuneToChannel: waiting %d seconds for motor to turn satellite dish.\n", waitForMotor);
-			eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_MOTOR, CEventServer::INITID_NEUTRINO, &waitForMotor, sizeof(waitForMotor));
+			eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_MOTOR, &waitForMotor, sizeof(waitForMotor));
 				
 			for(int i = 0; i < waitForMotor; i++) 
 			{
@@ -1420,7 +1420,7 @@ tune_again:
 		// send caid
 		int caid = 1;
 
-		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_CA_ID, CEventServer::INITID_NEUTRINO, &caid, sizeof(int));	
+		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_CA_ID, &caid, sizeof(int));	
 
 		// start pmt update filter
 		pmt.pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);
@@ -1711,7 +1711,7 @@ void CZapit::enableRecordMode(void)
 	
 	int status = 1;
 	 
-	eventServer->sendEvent(NeutrinoMessages::EVT_RECORDMODE, CEventServer::INITID_NEUTRINO, &status, sizeof(int) );
+	eventServer->sendEvent(NeutrinoMessages::EVT_RECORDMODE, &status, sizeof(int) );
 }
 
 void CZapit::disableRecordMode(void)
@@ -1735,7 +1735,7 @@ void CZapit::disableRecordMode(void)
 	
 	int status = 0;
  
-	eventServer->sendEvent(NeutrinoMessages::EVT_RECORDMODE, CEventServer::INITID_NEUTRINO, &status, sizeof(int) );
+	eventServer->sendEvent(NeutrinoMessages::EVT_RECORDMODE, &status, sizeof(int) );
 }
 
 void CZapit::renumServices(void)
@@ -3493,7 +3493,7 @@ unsigned int CZapit::zapToChannelID(t_channel_id channel_id, bool isSubService)
 	{
 		dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: zapit failed, chid 0x%llx\n", channel_id);
 		
-		eventServer->sendEvent((isSubService ? NeutrinoMessages::EVT_ZAP_SUB_FAILED : NeutrinoMessages::EVT_ZAP_FAILED), CEventServer::INITID_NEUTRINO, &channel_id, sizeof(channel_id));
+		eventServer->sendEvent((isSubService ? NeutrinoMessages::EVT_ZAP_SUB_FAILED : NeutrinoMessages::EVT_ZAP_FAILED), &channel_id, sizeof(channel_id));
 		
 		return result;
 	}
@@ -3506,19 +3506,19 @@ unsigned int CZapit::zapToChannelID(t_channel_id channel_id, bool isSubService)
 	{
 		dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: isSubService chid 0x%llx\n", channel_id);
 		
-		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_SUB_COMPLETE, CEventServer::INITID_NEUTRINO, &channel_id, sizeof(channel_id));
+		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_SUB_COMPLETE, &channel_id, sizeof(channel_id));
 	}
 	else if (current_is_nvod) 
 	{
 		dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: NVOD chid 0x%llx\n", channel_id);
 		
-		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_ISNVOD, CEventServer::INITID_NEUTRINO, &channel_id, sizeof(channel_id));
+		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_ISNVOD, &channel_id, sizeof(channel_id));
 		
 		result |= ZAP_IS_NVOD;
 	}
 	else
 	{
-		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_COMPLETE, CEventServer::INITID_NEUTRINO, &channel_id, sizeof(channel_id));
+		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_COMPLETE, &channel_id, sizeof(channel_id));
 	}
 
 	return result;
@@ -3910,7 +3910,7 @@ void *CZapit::updatePMTFilter(void *)
 						pmt.pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);
 					}
 						
-					eventServer->sendEvent(NeutrinoMessages::EVT_PMT_CHANGED, CEventServer::INITID_NEUTRINO, &channel_id, sizeof(channel_id));
+					eventServer->sendEvent(NeutrinoMessages::EVT_PMT_CHANGED, &channel_id, sizeof(channel_id));
 				}
 			}
 		}
@@ -4638,7 +4638,7 @@ bool CZapit::tuneFrequency(FrontendParameters *feparams, t_satellite_position sa
 		{
 			dprintf(DEBUG_INFO, "CZapit::tuneFrequency: waiting %d seconds for motor to turn satellite dish.\n", ret);
 			
-			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_PROVIDER, CEventServer::INITID_NEUTRINO, (void *) "moving rotor", 13);
+			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_PROVIDER, (void *) "moving rotor", 13);
 		
 			for(int i = 0; i < ret; i++) 
 			{
@@ -4775,10 +4775,10 @@ _repeat:
 
 		processed_transponders++;
 		
-		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, CEventServer::INITID_NEUTRINO, &processed_transponders, sizeof(processed_transponders));
-		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_PROVIDER, CEventServer::INITID_NEUTRINO, (void *) " ", 2);
-		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SERVICENAME, CEventServer::INITID_NEUTRINO, (void *) " ", 2);
-		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCY, CEventServer::INITID_NEUTRINO, &actual_freq, sizeof(actual_freq));
+		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, &processed_transponders, sizeof(processed_transponders));
+		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_PROVIDER, (void *) " ", 2);
+		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SERVICENAME, (void *) " ", 2);
+		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCY, &actual_freq, sizeof(actual_freq));
 
 		// by sat send pol to neutrino
 #if HAVE_DVB_API_VERSION >= 5
@@ -4789,7 +4789,7 @@ _repeat:
 		{
 			actual_polarisation = ((tI->second.feparams.symbol_rate/1000) << 16) | (tI->second.feparams.fec_inner << 8) | (uint)tI->second.feparams.polarization;
 
-			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCYP, CEventServer::INITID_NEUTRINO, &actual_polarisation, sizeof(actual_polarisation));
+			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCYP, &actual_polarisation, sizeof(actual_polarisation));
 		}
 		
 		// tune TP
@@ -4879,7 +4879,7 @@ _repeat:
 		
 		if(scantransponders.size()) 
 		{
-			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS, CEventServer::INITID_NEUTRINO, &found_transponders, sizeof(found_transponders));
+			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS, &found_transponders, sizeof(found_transponders));
 
 			goto _repeat;
 		}
@@ -5046,8 +5046,8 @@ bool CZapit::scanProvider(xmlNodePtr search, t_satellite_position satellitePosit
 		return false;
 	}
 
-	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, CEventServer::INITID_NEUTRINO, &processed_transponders, sizeof(processed_transponders));
-	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SATELLITE, CEventServer::INITID_NEUTRINO, sit->second.name.c_str(), sit->second.name.size() + 1);
+	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, &processed_transponders, sizeof(processed_transponders));
+	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SATELLITE, sit->second.name.c_str(), sit->second.name.size() + 1);
 	
 	tps = search->xmlChildrenNode;
 
@@ -5063,7 +5063,7 @@ bool CZapit::scanProvider(xmlNodePtr search, t_satellite_position satellitePosit
 		tps = tps->xmlNextNode;
 	}
 	
-	eventServer->sendEvent( NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS, CEventServer::INITID_NEUTRINO, &found_transponders, sizeof(found_transponders));
+	eventServer->sendEvent( NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS, &found_transponders, sizeof(found_transponders));
 
 	// start scanning
 	getSDTS(satellitePosition, feindex);
@@ -5460,7 +5460,7 @@ void * CZapit::scanTransponderThread(void * data)
 	
 	dprintf(DEBUG_NORMAL, "CZapit::scanTransponderThread: (fe:%d delsys:0x%x) scanning sat: %s position: %d fe(%d)\n", feindex, CZapit::getInstance()->getFE(feindex)->getForcedDelSys(), providerName, satellitePosition, feindex);
 	
-	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SATELLITE, CEventServer::INITID_NEUTRINO, providerName, strlen(providerName) + 1);
+	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SATELLITE, providerName, strlen(providerName) + 1);
 
 	//
 	freq_id_t freq;

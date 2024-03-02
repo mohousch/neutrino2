@@ -1,6 +1,6 @@
 /*
 
-        $Header: /cvs/tuxbox/apps/misc/libs/libeventserver/eventserver.h,v 1.14 2004/05/06 15:06:30 thegoodguy Exp $
+        eventserver.h 02.03.2024 mohousch Exp $
 
 	Event-Server  -   DBoxII-Project
 
@@ -29,57 +29,21 @@
 #define __libevent__
 
 #include <string>
-#include <map>
 
+
+#define NEUTRINO_UDS_NAME 		"/tmp/neutrino.sock"
 
 class CEventServer
 {
 	public:
-		enum initiators
-		{
-			INITID_NEUTRINO,
-			INITID_GENERIC_INPUT_EVENT_PROVIDER
-		};
-	
-		struct commandRegisterEvent
-		{
-			unsigned int eventID;
-			unsigned int clientID;
-			char udsName[50];
-		};
-	
-		struct commandUnRegisterEvent
-		{
-			unsigned int eventID;
-			unsigned int clientID;
-		};
-	
 		struct eventHead
 		{
 			unsigned int eventID;
-			unsigned int initiatorID;
 			unsigned int dataSize;
 		};
-	
-		void registerEvent2(const unsigned int eventID, const unsigned int ClientID, const std::string udsName);
-		void registerEvent(const int fd);
-		void unRegisterEvent2(const unsigned int eventID, const unsigned int ClientID);
-		void unRegisterEvent(const int fd);
-		void sendEvent(const unsigned int eventID, const initiators initiatorID = INITID_NEUTRINO, const void* eventbody = NULL, const unsigned int eventbodysize = 0);
-	
-	protected:
-		struct eventClient
-		{
-			char udsName[50];
-		};
-	
-		//key: ClientID                                              // Map is a Sorted Associative Container
-		typedef std::map<unsigned int, eventClient> eventClientMap;  // -> clients with lower ClientID receive events first
-	
-		//key: eventID
-		std::map<unsigned int, eventClientMap> eventData;
-	
-		bool sendEvent2Client(const unsigned int eventID, const initiators initiatorID, const eventClient* ClientData, const void* eventbody = NULL, const unsigned int eventbodysize = 0);
+
+		void sendEvent(const unsigned int eventID, const void* eventbody = NULL, const unsigned int eventbodysize = 0, const char * udsname = NEUTRINO_UDS_NAME);
 };
 
 #endif
+
