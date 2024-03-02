@@ -1240,6 +1240,7 @@ int tuxtx_main(int pid, int page)
 
 	// init
 	int initialized = tuxtxt_init();
+	
 	if ( initialized )
 		tuxtxt_cache.page = 0x100;
 	
@@ -1310,15 +1311,103 @@ int tuxtx_main(int pid, int page)
 			{
 				switch (RCCode)
 				{
-				case RC_OK:
-					if (showhex)
+					case RC_OK:
+						if (showhex)
+						{
+							dump_page(); /* hexdump of page contents to stdout for debugging */
+						}
+						continue; /* otherwise ignore key */
+						
+					case RC_UP:
+					case RC_DOWN:
+					case RC_0:
+					case RC_1:
+					case RC_2:
+					case RC_3:
+					case RC_4:
+					case RC_5:
+					case RC_6:
+					case RC_7:
+					case RC_8:
+					case RC_9:
+					case RC_GREEN:
+					case RC_YELLOW:
+					case RC_BLUE:
+					case RC_PLUS:
+					case RC_MINUS:
+					case RC_DBOX:
+					case RC_STANDBY:
+						transpmode = 1; /* switch to normal mode */
+						SwitchTranspMode();
+						break;		/* and evaluate key */
+
+					case RC_MUTE:		/* regular toggle to transparent */
+					case RC_TEXT:
+						break;
+
+					case RC_HELP: /* switch to scart input and back */
 					{
-						dump_page(); /* hexdump of page contents to stdout for debugging */
+						continue; /* otherwise ignore exit key */
 					}
-					continue; /* otherwise ignore key */
-					
+					default:
+						continue; /* ignore all other keys */
+				}
+			}
+
+			switch (RCCode)
+			{
 				case RC_UP:
+					GetNextPageOne(!swapupdown);
+					break;
+
 				case RC_DOWN:
+					GetNextPageOne(swapupdown);
+					break;
+
+				case RC_RIGHT:	
+					if (boxed)
+					{
+						subtitledelay++;				    
+						// display subtitledelay
+						PosY = StartY;
+						char ns[10];
+						SetPosX(1);
+						sprintf(ns,"+%d    ",subtitledelay);
+						RenderCharFB(ns[0],&atrtable[ATR_WB]);
+						RenderCharFB(ns[1],&atrtable[ATR_WB]);
+						RenderCharFB(ns[2],&atrtable[ATR_WB]);
+						RenderCharFB(ns[4],&atrtable[ATR_WB]);
+					}
+					else
+						GetNextSubPage(1);	
+					break;
+
+				case RC_LEFT:
+					if (boxed)
+					{
+						subtitledelay--;
+						if (subtitledelay < 0) 
+							subtitledelay = 0;
+						// display subtitledelay
+						PosY = StartY;
+						char ns[10];
+						SetPosX(1);
+						sprintf(ns,"+%d    ",subtitledelay);
+						RenderCharFB(ns[0],&atrtable[ATR_WB]);
+						RenderCharFB(ns[1],&atrtable[ATR_WB]);
+						RenderCharFB(ns[2],&atrtable[ATR_WB]);
+						RenderCharFB(ns[4],&atrtable[ATR_WB]);
+					}
+					else
+						GetNextSubPage(-1);	
+					break;
+
+				case RC_OK:
+					if (tuxtxt_cache.subpagetable[tuxtxt_cache.page] == 0xFF)
+						continue;
+					PageCatching();
+					break;
+
 				case RC_0:
 				case RC_1:
 				case RC_2:
@@ -1329,115 +1418,27 @@ int tuxtx_main(int pid, int page)
 				case RC_7:
 				case RC_8:
 				case RC_9:
-				case RC_GREEN:
-				case RC_YELLOW:
-				case RC_BLUE:
-				case RC_PLUS:
-				case RC_MINUS:
-				case RC_DBOX:
-				case RC_STANDBY:
-					transpmode = 1; /* switch to normal mode */
-					SwitchTranspMode();
-					break;		/* and evaluate key */
-
-				case RC_MUTE:		/* regular toggle to transparent */
-				case RC_TEXT:
+					PageInput(CRCInput::getNumericValue(RCCode));
 					break;
 
-				case RC_HELP: /* switch to scart input and back */
-				{
-					continue; /* otherwise ignore exit key */
-				}
-				default:
-					continue; /* ignore all other keys */
-				}
-			}
+				case RC_RED:	 ColorKey(prev_100);		break;
+				case RC_GREEN:	 ColorKey(prev_10);		break;
+				case RC_YELLOW:  ColorKey(next_10);		break;
+				case RC_BLUE:	 ColorKey(next_100);		break;
+				case RC_PLUS:	 SwitchZoomMode();		break;
+				case RC_MINUS:	 SwitchScreenMode(-1);prevscreenmode = screenmode; break;
+				case RC_MUTE:	 SwitchTranspMode();	break;
+				case RC_TEXT:	 
+					if(transpmode == 1)
+						RCCode = RC_HOME;
+					SwitchTranspMode();	
+					break;
+				case RC_HELP:	 SwitchHintMode();		break;
 
-			switch (RCCode)
-			{
-			case RC_UP:
-				GetNextPageOne(!swapupdown);
-				break;
+				//case RC_DBOX:	 ConfigMenu(0);	break;	//FIXME:
 
-			case RC_DOWN:
-				GetNextPageOne(swapupdown);
-				break;
-
-			case RC_RIGHT:	
-				if (boxed)
-				{
-					subtitledelay++;				    
-					// display subtitledelay
-					PosY = StartY;
-					char ns[10];
-					SetPosX(1);
-					sprintf(ns,"+%d    ",subtitledelay);
-					RenderCharFB(ns[0],&atrtable[ATR_WB]);
-					RenderCharFB(ns[1],&atrtable[ATR_WB]);
-					RenderCharFB(ns[2],&atrtable[ATR_WB]);
-					RenderCharFB(ns[4],&atrtable[ATR_WB]);
-				}
-				else
-					GetNextSubPage(1);	
-				break;
-
-			case RC_LEFT:
-				if (boxed)
-				{
-					subtitledelay--;
-					if (subtitledelay < 0) 
-						subtitledelay = 0;
-					// display subtitledelay
-					PosY = StartY;
-					char ns[10];
-					SetPosX(1);
-					sprintf(ns,"+%d    ",subtitledelay);
-					RenderCharFB(ns[0],&atrtable[ATR_WB]);
-					RenderCharFB(ns[1],&atrtable[ATR_WB]);
-					RenderCharFB(ns[2],&atrtable[ATR_WB]);
-					RenderCharFB(ns[4],&atrtable[ATR_WB]);
-				}
-				else
-					GetNextSubPage(-1);	
-				break;
-
-			case RC_OK:
-				if (tuxtxt_cache.subpagetable[tuxtxt_cache.page] == 0xFF)
-					continue;
-				PageCatching();
-				break;
-
-			case RC_0:
-			case RC_1:
-			case RC_2:
-			case RC_3:
-			case RC_4:
-			case RC_5:
-			case RC_6:
-			case RC_7:
-			case RC_8:
-			case RC_9:
-				PageInput(CRCInput::getNumericValue(RCCode));
-				break;
-
-			case RC_RED:	 ColorKey(prev_100);		break;
-			case RC_GREEN:	 ColorKey(prev_10);		break;
-			case RC_YELLOW:  ColorKey(next_10);		break;
-			case RC_BLUE:	 ColorKey(next_100);		break;
-			case RC_PLUS:	 SwitchZoomMode();		break;
-			case RC_MINUS:	 SwitchScreenMode(-1);prevscreenmode = screenmode; break;
-			case RC_MUTE:	 SwitchTranspMode();	break;
-			case RC_TEXT:	 
-				if(transpmode == 1)
-					RCCode = RC_HOME;
-				SwitchTranspMode();	
-				break;
-			case RC_HELP:	 SwitchHintMode();		break;
-
-			//case RC_DBOX:	 ConfigMenu(0);	break;	//FIXME:
-
-			case RC_HOME:
-				break;
+				case RC_HOME:
+					break;
 			}
 		}
 

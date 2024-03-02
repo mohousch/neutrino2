@@ -413,7 +413,7 @@ void tuxtxt_clear_cache()
 
 //
 static cDemux * dmx = NULL;
-int tuxtxt_init_demuxer( /*int source*/ )
+int tuxtxt_init_demuxer()
 {
 
 	if(dmx == NULL) 
@@ -550,6 +550,7 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 	printf("TuxTxt running thread...(%03x)\n",tuxtxt_cache.vtxtpid);
 	tuxtxt_cache.receiving = 1;
 	nice(3);
+	
 	while (!stop_cache)
 	{
 		/* check stopsignal */
@@ -561,13 +562,10 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 		ssize_t readcnt;
 
 		readcnt = dmx->Read(pes_packet, sizeof (pes_packet), 1000);
-		//if (readcnt != sizeof(pes_packet))
+		
+		//
 		if ((readcnt <= 0) || (readcnt % 184))
 		{
-#if TUXTXT_DEBUG
-			if(readcnt > 0)
-				printf ("TuxTxt: readerror: %d\n", readcnt);
-#endif
 			continue;
 		}
 
@@ -685,13 +683,7 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 
 					/* get country control bits */
 					b1 = dehamming[vtxt_row[9]];
-					if (b1 == 0xFF)
-					{
-#if TUXTXT_DEBUG
-						printf("TuxTxt <Biterror in CountryFlags>\n");
-#endif
-					}
-					else
+					if (b1 != 0xFF)
 					{
 						pageinfo_thread->nationalvalid = 1;
 						pageinfo_thread->national = rev_lut[b1] & 0x07;
@@ -829,9 +821,6 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 								int d2 = deh24(&vtxt_row[6*i + 6]);
 								if (d1 < 0 || d2 < 0)
 								{
-#if TUXTXT_DEBUG
-									printf("TuxTxt <Biterror in p27/4-5>\n");
-#endif
 									continue;
 								}
 								p->local = i & 0x01;
@@ -953,7 +942,7 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 }
 
 //
-int tuxtxt_start_thread( /*int source*/ )
+int tuxtxt_start_thread()
 {
 	printf("tuxtxt_start_thread: starting... tid %ld\n", syscall(__NR_gettid));
 	
@@ -961,7 +950,7 @@ int tuxtxt_start_thread( /*int source*/ )
 		return 0;
 
 	tuxtxt_cache.thread_starting = 1;
-	tuxtxt_init_demuxer( /*source*/);
+	tuxtxt_init_demuxer();
 
 	dmx->pesFilter(tuxtxt_cache.vtxtpid);
 	dmx->Start();

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-03-02 10:26+0100\n"
+"POT-Creation-Date: 2024-03-02 17:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1732,6 +1732,7 @@ msgstr ""
 #: ../../src/gui/cam_menu.cpp:332 ../../src/gui/cam_menu.cpp:470
 #: ../../src/gui/cam_menu.cpp:584 ../../src/gui/cam_menu.cpp:599
 #: ../../src/gui/network_setup.cpp:161 ../../src/gui/rc_setup.cpp:257
+#: ../../src/neutrino2.cpp:4279
 msgid "Information"
 msgstr ""
 
@@ -4011,7 +4012,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3187 ../../src/neutrino2.cpp:4285
 #: ../../src/neutrino2.cpp:4289 ../../src/neutrino2.cpp:3177
 #: ../../src/neutrino2.cpp:4278 ../../src/neutrino2.cpp:4272
-#: ../../src/neutrino2.cpp:4276
+#: ../../src/neutrino2.cpp:4276 ../../src/neutrino2.cpp:4279
 msgid "You really want to to stop record ?"
 msgstr ""
 

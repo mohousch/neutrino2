@@ -27,10 +27,6 @@ int tuxtxt_init()
 
 	tuxtxt_initialized = 1;
 
-	// init data
-	//memset(&tuxtxt_cache.astCachetable, 0, sizeof(tuxtxt_cache.astCachetable));
-	//memset(&tuxtxt_cache.astP29, 0, sizeof(tuxtxt_cache.astP29));
-
 	tuxtxt_clear_cache();
 	tuxtxt_cache.receiving = 0;
 	
@@ -54,7 +50,7 @@ int tuxtxt_stop()
 	return tuxtxt_stop_thread();
 }
 
-void tuxtxt_start(int tpid/*, int source*/)
+void tuxtxt_start(int tpid)
 {
 	if (tuxtxt_cache.vtxtpid != tpid)
 	{

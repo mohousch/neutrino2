@@ -153,7 +153,7 @@ const unsigned char deparity[] =
 	' ' , 0x71, 0x72, ' ' , 0x74, ' ' , ' ' , 0x77, 0x78, ' ' , ' ' , 0x7b, ' ' , 0x7d, 0x7e, ' ' ,
 };
 
-#if 1	/* lookup-table algorithm for decoding Hamming 24/18, credits to: */
+/* lookup-table algorithm for decoding Hamming 24/18, credits to: */
 /*
  *  libzvbi - Error correction functions
  *
@@ -314,40 +314,4 @@ static signed int deh24(unsigned char *p)
 
 	return (x ^ hamm24cor[e]) | hamm24err[e];
 }
-
-#else	 /* my (rm) slower but smaller solution without lookup tables */
-
-/* calc parity */
-int parity(int c)
-{
-	int n = 0;
-	for (; c; c &= (c-1)) /* reset least significant set bit */
-		n ^= 1;
-	return n;
-}
-
-/* decode hamming 24/18, error=-1 */
-signed int deh24(unsigned char *ph24)
-{
-	int h24 = *ph24 | (*(ph24+1)<<8) | (*(ph24+2)<<16);
-	int a = parity(h24 & 0x555555);
-	int f = parity(h24 & 0xaaaaaa) ^ a;
-	a |= (parity(h24 & 0x666666) << 1) |
-		(parity(h24 & 0x787878) << 2) |
-		(parity(h24 & 0x007f80) << 3) |
-		(parity(h24 & 0x7f8000) << 4);
-	if (a != 0x1f)
-	{
-		if (f) /* 2 biterrors */
-			return -1;
-		else /* correct 1 biterror */
-			h24 ^= (1 << ((a ^ 0x1f)-1));
-	}
-	return
-		((h24 & 0x000004) >> 2) |
-		((h24 & 0x000070) >> 3) |
-		((h24 & 0x007f00) >> 4) |
-		((h24 & 0x7f0000) >> 5);
-}
-#endif /* table or serial */
 

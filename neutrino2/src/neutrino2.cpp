@@ -4059,28 +4059,31 @@ void CNeutrinoApp::realRun(void)
 			}
 			else if( msg == CRCInput::RC_text ) 
 			{
-				//
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
+				if (!IS_WEBTV(live_channel_id))
+				{
+					//
+					if(g_InfoViewer->is_visible)
+						g_InfoViewer->killTitle();
 
-				g_RCInput->clearRCMsg();
+					g_RCInput->clearRCMsg();
 
-				stopSubtitles();
-				
-				tuxtx_stop_subtitle();
+					stopSubtitles();
+					
+					tuxtx_stop_subtitle();
 
-				tuxtx_main(g_RemoteControl->current_PIDs.PIDs.vtxtpid, 0);
+					tuxtx_main(g_RemoteControl->current_PIDs.PIDs.vtxtpid, 0);
 
-				frameBuffer->paintBackground();
+					frameBuffer->paintBackground();
 
-				frameBuffer->blit();
-				
-				g_RCInput->clearRCMsg();
-				
-				// restore mute symbol
-				audioMute(current_muted, true);
+					frameBuffer->blit();
+					
+					g_RCInput->clearRCMsg();
+					
+					// restore mute symbol
+					audioMute(current_muted, true);
 
-				startSubtitles();
+					startSubtitles();
+				}
 			}			
 			else if(msg == (neutrino_msg_t)g_settings.key_timerlist) //timerlist
 			{
@@ -4420,22 +4423,25 @@ void CNeutrinoApp::realRun(void)
 #endif			
 			else if( msg == CRCInput::RC_dvbsub )
 			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-				
-				// show list only if we have subs
-				if(live_channel)
+				if (!IS_WEBTV(live_channel_id))
 				{
-					if(live_channel->getSubtitleCount() > 0)
+					if(g_InfoViewer->is_visible)
+						g_InfoViewer->killTitle();
+
+					stopSubtitles();
+					
+					// show list only if we have subs
+					if(live_channel)
 					{
-						CDVBSubSelectMenuHandler tmpDVBSubSelectMenuHandler;
-						tmpDVBSubSelectMenuHandler.exec(NULL, "");
+						if(live_channel->getSubtitleCount() > 0)
+						{
+							CDVBSubSelectMenuHandler tmpDVBSubSelectMenuHandler;
+							tmpDVBSubSelectMenuHandler.exec(NULL, "");
+						}
 					}
+					
+					startSubtitles();
 				}
-				
-				startSubtitles();
 			}
 			else if( msg == (neutrino_msg_t)g_settings.key_audioplayer ) 
 			{
