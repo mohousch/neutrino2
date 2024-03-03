@@ -26,6 +26,7 @@ static pthread_mutex_t tuxtxt_cache_lock = PTHREAD_MUTEX_INITIALIZER;
 int tuxtxt_get_zipsize(int p,int sp)
 {
 	tstCachedPage* pg = tuxtxt_cache.astCachetable[p][sp];
+	
 	if (!pg) 
 		return 0;
 	
@@ -38,8 +39,9 @@ int tuxtxt_get_zipsize(int p,int sp)
 		for (j = 0; j < 8; j++)
 			zipsize += pg->bitmask[i]>>j & 0x01;
 
-	zipsize+=23*5;//bitmask
+	zipsize += 23*5;//bitmask
 	pthread_mutex_unlock(&tuxtxt_cache_lock);
+	
 	return zipsize;
 #else
 	return 23*40;
@@ -50,21 +52,27 @@ void tuxtxt_compress_page(int p, int sp, unsigned char* buffer)
 {
 	pthread_mutex_lock(&tuxtxt_cache_lock);
 	tstCachedPage* pg = tuxtxt_cache.astCachetable[p][sp];
+	
 	if (!pg)
 	{
 		printf("tuxtxt: trying to compress a not allocated page!!\n");
 		pthread_mutex_unlock(&tuxtxt_cache_lock);
+		
 		return;
 	}
 
 #if TUXTXT_COMPRESS == 1
 	unsigned char pagecompressed[23*40];
 	uLongf comprlen = 23*40;
+	
 	if (compress2(pagecompressed,&comprlen,buffer,23*40,Z_BEST_SPEED) == Z_OK)
 	{
-		if (pg->pData) free(pg->pData);//realloc(pg->pData,j); realloc scheint nicht richtig zu funktionieren?
+		if (pg->pData) 
+			free(pg->pData);//realloc(pg->pData,j); realloc scheint nicht richtig zu funktionieren?
+			
 		pg->pData = malloc(comprlen);
 		pg->ziplen = 0;
+		
 		if (pg->pData)
 		{
 			pg->ziplen = comprlen;
@@ -75,6 +83,7 @@ void tuxtxt_compress_page(int p, int sp, unsigned char* buffer)
 	int i,j=0;
 	unsigned char cbuf[23*40];
 	memset(pg->bitmask,0,sizeof(pg->bitmask));
+	
 	for (i = 0; i < 23*40; i++)
 	{
 		if (i && buffer[i] == buffer[i-1])
@@ -83,9 +92,12 @@ void tuxtxt_compress_page(int p, int sp, unsigned char* buffer)
 		pg->bitmask[i>>3] |= 0x80>>(i&0x07);
 		cbuf[j++]=buffer[i];
 	}
+	
 	if (pg->pData) 
 		free(pg->pData);//realloc(pg->pData,j); realloc scheint nicht richtig zu funktionieren?
+		
 	pg->pData = (unsigned char*)malloc(j);
+	
 	if (pg->pData)
 	{
 		memcpy(pg->pData,cbuf,j);
@@ -106,10 +118,12 @@ void tuxtxt_decompress_page(int p, int sp, unsigned char* buffer)
 	pthread_mutex_lock(&tuxtxt_cache_lock);
 	tstCachedPage* pg = tuxtxt_cache.astCachetable[p][sp];
 	memset(buffer,' ',23*40);
+	
 	if (!pg)
 	{
 		printf("tuxtxt: trying to decompress a not allocated page!!\n");
 		pthread_mutex_unlock(&tuxtxt_cache_lock);
+		
 		return;
 	}
 #if TUXTXT_COMPRESS == 1
@@ -124,8 +138,9 @@ void tuxtxt_decompress_page(int p, int sp, unsigned char* buffer)
 #elif TUXTXT_COMPRESS == 2
 	if (pg->pData)
 	{
-		int i,j=0;
-		char c=0x20;
+		int i,j = 0;
+		char c = 0x20;
+		
 		for (i = 0; i < 23*40; i++)
 		{
 		    if (pg->bitmask[i>>3] & 0x80>>(i&0x07))
@@ -139,6 +154,7 @@ void tuxtxt_decompress_page(int p, int sp, unsigned char* buffer)
 	}
 	pthread_mutex_unlock(&tuxtxt_cache_lock);
 }
+
 void tuxtxt_next_dec(int *i) /* skip to next decimal */
 {
 	(*i)++;
@@ -175,6 +191,7 @@ int tuxtxt_is_dec(int i)
 int tuxtxt_next_hex(int i) /* return next existing non-decimal page number */
 {
 	int startpage = i;
+	
 	if (startpage < 0x100)
 		startpage = 0x100;
 
@@ -186,6 +203,7 @@ int tuxtxt_next_hex(int i) /* return next existing non-decimal page number */
 		if (i == startpage)
 			break;
 	}  while ((tuxtxt_cache.subpagetable[i] == 0xFF) || tuxtxt_is_dec(i));
+	
 	return i;
 }
 /*
@@ -202,6 +220,7 @@ void tuxtxt_decode_btt()
 	if (tuxtxt_cache.subpagetable[0x1f0] == 0xff || 0 == tuxtxt_cache.astCachetable[0x1f0][tuxtxt_cache.subpagetable[0x1f0]]) /* not yet received */
 		return;
 	tuxtxt_decompress_page(0x1f0,tuxtxt_cache.subpagetable[0x1f0],btt);
+	
 	if (btt[799] == ' ') /* not completely received or error */
 		return;
 
@@ -361,6 +380,7 @@ void tuxtxt_clear_cache()
 	memset(&tuxtxt_cache.flofpages, 0 , sizeof(tuxtxt_cache.flofpages));
 	memset(&tuxtxt_cache.timestring, 0x20, 8);
  	unsigned char magazine;
+ 	
 	for (magazine = 1; magazine < 9; magazine++)
 	{
 		tuxtxt_cache.current_page  [magazine] = -1;
@@ -368,7 +388,9 @@ void tuxtxt_clear_cache()
 	}
 
 	for (clear_page = 0; clear_page < 0x900; clear_page++)
+	{
 		for (clear_subpage = 0; clear_subpage < 0x80; clear_subpage++)
+		{
 			if (tuxtxt_cache.astCachetable[clear_page][clear_subpage])
 			{
 				tstPageinfo *p = &(tuxtxt_cache.astCachetable[clear_page][clear_subpage]->pageinfo);
@@ -390,6 +412,9 @@ void tuxtxt_clear_cache()
 				free(tuxtxt_cache.astCachetable[clear_page][clear_subpage]);
 				tuxtxt_cache.astCachetable[clear_page][clear_subpage] = 0;
 			}
+		}
+	}
+			
 	for (clear_page = 0; clear_page < 9; clear_page++)
 	{
 		if (tuxtxt_cache.astP29[clear_page])
@@ -458,6 +483,7 @@ void tuxtxt_decode_p2829(unsigned char *vtxt_row, tstExtData **ptExtData)
 	bitsleft = 8; /* # of bits not evaluated in val */
 	t2 >>= 10; /* current data */
 	p = &vtxt_row[13-4];	/* pointer to next data triplet */
+	
 	for (colorindex = 0; colorindex < 16; colorindex++)
 	{
 		if (bitsleft < 12)
@@ -489,6 +515,7 @@ void tuxtxt_erase_page(int magazine)
 {
 	pthread_mutex_lock(&tuxtxt_cache_lock);
 	tstCachedPage* pg = tuxtxt_cache.astCachetable[tuxtxt_cache.current_page[magazine]][tuxtxt_cache.current_subpage[magazine]];
+	
 	if (pg)
 	{
 		memset(&(pg->pageinfo), 0, sizeof(tstPageinfo));	/* struct pageinfo */
@@ -537,6 +564,7 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 		0x20,0xa0,0x60,0xe0,
 		0x10,0x90,0x50,0xd0,
 		0x30,0xb0,0x70,0xf0 };
+		
 	unsigned char pes_packet[184*20];
 	unsigned char vtxt_row[42];
 	int line, byte/*, bit*/;
@@ -556,7 +584,8 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 		/* check stopsignal */
 		pthread_testcancel();
 
-		if (!tuxtxt_cache.receiving) continue;
+		if (!tuxtxt_cache.receiving) 
+			continue;
 
 		/* read packet */
 		ssize_t readcnt;
@@ -573,6 +602,7 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 		for (line = 0; line < readcnt/0x2e /*4*/; line++)
 		{
 			unsigned char *vtx_rowbyte = &pes_packet[line*0x2e];
+			
 			if ((vtx_rowbyte[1] == 0x2C) && (vtx_rowbyte[0] == 0x02 || vtx_rowbyte[0] == 0x03))
 			{
 				/* clear rowbuffer */
@@ -600,10 +630,10 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 
 				/* get magazine number */
 				magazine = dehamming[vtxt_row[0]] & 7;
-				if (!magazine) magazine = 8;
+				if (!magazine) 
+					magazine = 8;
 
-				if (packet_number == 0 && tuxtxt_cache.current_page[magazine] != -1 && tuxtxt_cache.current_subpage[magazine] != -1)
- 				    tuxtxt_compress_page(tuxtxt_cache.current_page[magazine],tuxtxt_cache.current_subpage[magazine],pagedata[magazine]);
+				if (packet_number == 0 && tuxtxt_cache.current_page[magazine] != -1 && tuxtxt_cache.current_subpage[magazine] != -1)				    						tuxtxt_compress_page(tuxtxt_cache.current_page[magazine],tuxtxt_cache.current_subpage[magazine],pagedata[magazine]);
 
 				/* analyze row */
 				if (packet_number == 0)
@@ -615,9 +645,7 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 					if (b2 == 0xFF || b3 == 0xFF)
 					{
 						tuxtxt_cache.current_page[magazine] = tuxtxt_cache.page_receiving = -1;
-#if TUXTXT_DEBUG
-						printf("TuxTxt <Biterror in Page>\n");
-#endif
+
 						continue;
 					}
 
@@ -637,9 +665,6 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 
 					if (b1 == 0xFF || b2 == 0xFF || b3 == 0xFF || b4 == 0xFF)
 					{
-#if TUXTXT_DEBUG
-						printf("TuxTxt <Biterror in SubPage>\n");
-#endif
 						tuxtxt_cache.current_subpage[magazine] = -1;
 						continue;
 					}

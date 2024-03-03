@@ -163,7 +163,7 @@ void savehotlist()
 }
 
 #define number2char(c) ((c) + (((c) <= 9) ? '0' : ('A' - 10)))
-/* print hex-number into string, s points to last digit, caller has to provide enough space, no termination */
+// print hex-number into string, s points to last digit, caller has to provide enough space, no termination
 void hex2str(char *s, unsigned int n)
 {
 	do {
@@ -884,7 +884,7 @@ int setnational(unsigned char sec)
         return countryconversiontable[sec & 0x07];
 }
 
-/* evaluate level 2.5 information */
+//// evaluate level 2.5 information
 void eval_l25()
 {
 	memset(FullRowColor, 0, sizeof(FullRowColor));
@@ -1230,7 +1230,7 @@ int tuxtx_subtitle_running(int *pid, int *page, int *running)
 	return ret;
 }
 
-// main loop
+//// main loop
 int tuxtx_main(int pid, int page)
 {
 	char cvs_revision[] = "$Revision: 1.95 $";
@@ -1455,9 +1455,7 @@ int tuxtx_main(int pid, int page)
 	return 1;
 }
 
-/*
-* MyFaceRequester
-*/
+//// MyFaceRequester
 FT_Error MyFaceRequester(FTC_FaceID face_id, FT_Library _library, FT_Pointer /*request_data*/, FT_Face *aface)
 {
 	FT_Error result;
@@ -1467,15 +1465,13 @@ FT_Error MyFaceRequester(FTC_FaceID face_id, FT_Library _library, FT_Pointer /*r
 	return result;
 }
 
-/*
- * Init
-*/
+//// Init
 int Init()
 {
 	int error, i;
 	unsigned char magazine;
 
-	/* init data */
+	// init data
  	//page_atrb[32] = transp<<4 | transp;
 	inputcounter  = 2;
 
@@ -1503,14 +1499,14 @@ int Init()
 	subtitledelay = 0;
 	delaystarted = 0;
 
-	/* config defaults */
+	// config defaults
 	screenmode = 0;
 	screen_mode1 = 0;
 	screen_mode2 = 0;
 	color_mode   = 10;
 	trans_mode   = 10;
-	menulanguage = 0;	/* german */
-	national_subset = 0;	/* default */
+	menulanguage = 0;	// german
+	national_subset = 0;	// default
 	auto_national   = 1;
 	swapupdown      = 0;
 	showhex         = 0;
@@ -1621,9 +1617,9 @@ int Init()
 		return 0;
 	}
 
-	fontwidth = 0;	/* initialize at first setting */
+	fontwidth = 0;	// initialize at first setting
 
-	/* calculate font dimensions */
+	// calculate font dimensions
 	displaywidth = (ex - sx);
 	fontheight = (ey - sy) / 25; //21;
 	fontwidth_normal = (ex - sx) / 40;
@@ -1631,7 +1627,7 @@ int Init()
 	fontwidth_topmenumain = (TV43STARTX - sx) / 40;
 	fontwidth_topmenusmall = (ex - TOPMENUSTARTX) / TOPMENUCHARS;
 	fontwidth_small = (TV169FULLSTARTX - sx)  / 40;
-	ymosaic[0] = 0; /* y-offsets for 2*3 mosaic */
+	ymosaic[0] = 0; 			// y-offsets for 2*3 mosaic
 	ymosaic[1] = (fontheight + 1) / 3;
 	ymosaic[2] = (fontheight * 2 + 1) / 3;
 	ymosaic[3] = fontheight;
@@ -1642,7 +1638,7 @@ int Init()
 		aydrcs[i1] = (fontheight * i1 + 5) / 10;
 	}
 
-	/* center screen */
+	// center screen
 	StartX = sx+ (((ex-sx) - 40*fontwidth) / 2);
 	StartY = sy + (((ey-sy) - 25*fontheight) / 2);
 
@@ -1681,11 +1677,12 @@ int Init()
 	
 	ascender = (usettf ? fontheight * face->ascender / face->units_per_EM : 16);
 
-	/* set new colormap */
+	// set new colormap
 	setcolors((unsigned short *)defaultcolors, 0, SIZECOLTABLE);
 
-	ClearBB(transp); /* initialize backbuffer */
+	ClearBB(transp); // initialize backbuffer
 
+	//
 	for (i = 0; i < 40 * 25; i++)
 	{
 		page_char[i] = ' ';
@@ -1700,7 +1697,7 @@ int Init()
 	//  if no vtxtpid for current service, search PIDs
 	if (tuxtxt_cache.vtxtpid == 0)
 	{
-		/* get all vtxt-pids */
+		// get all vtxt-pids
 		getpidsdone = -1;	 // don't kill thread
 
 		if (GetTeletextPIDs() == 0)
@@ -1713,10 +1710,10 @@ int Init()
 
 		if (auto_national)
 			national_subset = pid_table[0].national_subset;
-
-		if (pids_found > 1)
-			ConfigMenu(1);
-		else
+// FIXME: brocken configMenu
+//		if (pids_found > 1)
+//			ConfigMenu(1);
+//		else
 		{
 			tuxtxt_cache.vtxtpid = pid_table[0].vtxt_pid;
 			current_service = 0;
@@ -1728,7 +1725,7 @@ int Init()
 		SDT_ready = 0;
 		
 		//getpidsdone = 0;
-		//tuxtxt_cache.pageupdate = 1; /* force display of message page not found (but not twice) */
+		//tuxtxt_cache.pageupdate = 1; // force display of message page not found (but not twice)
 
 		if(auto_national && cfg_national_subset)
 			national_subset = cfg_national_subset;
@@ -1751,13 +1748,10 @@ int Init()
 	
 	dprintf(DEBUG_NORMAL, "TuxTxt: init ok\n");
 
-	/* init successfull */
 	return 1;
 }
 
-/*
- * Cleanup
-*/
+//// Cleanup
 void CleanUp()
 {
 	int curscreenmode = screenmode;
@@ -1813,10 +1807,7 @@ void CleanUp()
 	}
 }
 
-/*
- * GetTeletextPIDs
-*/
-//TODO: multi demuxes needed
+//// GetTeletextPIDs
 int GetTeletextPIDs()
 {
 	int pat_scan, pmt_scan, sdt_scan, desc_scan, pid_test, byte, diff, first_sdt_sec;
@@ -2016,9 +2007,7 @@ skip_pid:
 	return 1;
 }
 
-/*
- * GetNationalSubset
-*/
+//// GetNationalSubset
 int GetNationalSubset(const char *cc)
 {
         if (memcmp(cc, "cze", 3) == 0 || memcmp(cc, "ces", 3) == 0 ||
@@ -2070,108 +2059,7 @@ int GetNationalSubset(const char *cc)
 }
 
 
-/*
- * ConfigMenu
-*/
-#if TUXTXT_DEBUG
-void charpage()
-{
-	PosY = StartY;
-	PosX = StartX;
-	char cachefill[100];
-	int fullsize =0,hexcount = 0, col, p,sp;
-	int escpage = 0;
-	tstCachedPage* pg;
-	ClearFB(black);
-
-	int zipsize = 0;
-	for (p = 0; p < 0x900; p++)
-	{
-		for (sp = 0; sp < 0x80; sp++)
-		{
-			pg = tuxtxt_cache.astCachetable[p][sp];
-			if (pg)
-			{
-
-				fullsize+=23*40;
-				zipsize += tuxtxt_get_zipsize(p,sp);
-			}
-		}
-	}
-
-
-	memset(cachefill,' ',40);
-	sprintf(cachefill,"f:%d z:%d h:%d c:%d %03x",fullsize, zipsize, hexcount, tuxtxt_cache.cached_pages, escpage);
-
-	for (col = 0; col < 40; col++)
-	{
-		RenderCharFB(cachefill[col], &atrtable[ATR_WB]);
-	}
-
-	tstPageAttr atr;
-	memcpy(&atr,&atrtable[ATR_WB],sizeof(tstPageAttr));
-	int row;
-	atr.charset = C_G0P;
-	PosY = StartY+fontheight;
-
-	for (row = 0; row < 16; row++)
-	{
-		PosY+= fontheight;
-		SetPosX(1);
-		for (col=0; col < 6; col++)
-		{
-			RenderCharFB(col*16+row+0x20, &atr);
-		}
-	}
-
-	atr.setX26 = 1;
-	PosY = StartY + fontheight;
-
-	for (row = 0; row < 16; row++)
-	{
-		PosY+= fontheight;
-		SetPosX(10);
-		for (col=0; col < 6; col++)
-		{
-			RenderCharFB(col*16+row+0x20, &atr);
-		}
-	}
-
-	PosY = StartY + fontheight;
-	atr.charset = C_G2;
-	atr.setX26 = 0;
-
-	for (row = 0; row < 16; row++)
-	{
-		PosY+= fontheight;
-		SetPosX(20);
-		for (col=0; col < 6; col++)
-		{
-			RenderCharFB(col*16+row+0x20, &atr);
-		}
-	}
-
-	atr.charset = C_G3;
-	PosY = StartY+fontheight;
-
-	for (row = 0; row < 16; row++)
-	{
-		PosY+= fontheight;
-		SetPosX(30);
-		for (col=0; col < 6; col++)
-		{
-			RenderCharFB(col*16+row+0x20, &atr);
-		}
-	}
-
-	do
-	{
-		GetRCCode();
-	}
-	while (RCCode != RC_OK && RCCode != RC_HOME);
-}
-#endif
-
+//// Menu_HighlightLine
 void Menu_HighlightLine(char *menu, int line, int high)
 {
 	char hilitline[] = "0111111111111111111111111111102";
@@ -2314,9 +2202,10 @@ void Menu_Init(char *menu, int current_pid, int menuitem, int hotindex)
 	CFrameBuffer::getInstance()->blit();
 }
 
+//// configMenu
 void ConfigMenu(int Init)
 {
-	dprintf(DEBUG_NORMAL, "[tuxtxt] Menu\n");
+	dprintf(DEBUG_NORMAL, "[tuxtxt] configMenu: init:%d\n", Init);
 	
 	int menuitem = M_Start;
 	int current_pid = 0;
@@ -2779,13 +2668,6 @@ void ConfigMenu(int Init)
 					menu[MenuLine[M_PID]*Menu_Width + 27] = (showhex ? '?' : ' ');
 					Menu_HighlightLine(menu, MenuLine[menuitem], 1);
 				break;
-#if TUXTXT_DEBUG
-				case M_LNG:
-					charpage();
-					ClearFB(transp);
-					Menu_Init(menu, current_pid, menuitem, hotindex);
-				break;
-#endif
 				}
 				break; /* RC_MUTE */
 
@@ -2947,9 +2829,7 @@ void ConfigMenu(int Init)
 	dprintf(DEBUG_NORMAL, "[tuxtxt] Menu return\n");
 }
 
-/*
- * PageInput
-*/
+//// PageInput
 void PageInput(int Number)
 {
 	int zoom = 0;
@@ -3044,9 +2924,7 @@ void PageInput(int Number)
 	}
 }
 
-/*
- * GetNextPageOne
-*/
+//// GetNextPageOne
 void GetNextPageOne(int up)
 {
 	/* disable subpage zapping */
@@ -3079,7 +2957,7 @@ void GetNextPageOne(int up)
 	}
 }
 
-/* GetNextSubPage */
+//// GetNextSubPage
 void GetNextSubPage(int offset)
 {
 	int loop;
@@ -3114,9 +2992,7 @@ void GetNextSubPage(int offset)
 	}
 }
 
-/*
- * ColorKey
-*/
+//// ColorKey
 void ColorKey(int target)
 {
 	if (!target)
@@ -3131,9 +3007,7 @@ void ColorKey(int target)
 	tuxtxt_cache.pageupdate   = 1;
 }
 
-/*
- * PageCatching
-*/
+//// PageCatching
 void PageCatching()
 {
 	int byte;
@@ -3231,9 +3105,7 @@ void PageCatching()
 		tuxtxt_cache.subpage = 0;
 }
 
-/*
- * CatchNextPage
-*/
+//// CatchNextPage
 void CatchNextPage(int firstlineinc, int inc)
 {
 	int tmp_page, allowwrap = 1; /* allow first wrap around */
@@ -3321,9 +3193,7 @@ void CatchNextPage(int firstlineinc, int inc)
 	}
 }
 
-/*
- * RenderCatchedPage
-*/
+//// RenderCatchedPage
 void RenderCatchedPage()
 {
 	int zoom = 0;
@@ -3384,9 +3254,7 @@ void RenderCatchedPage()
 	RenderCharFB(page_char[catch_row*40 + catch_col + 2], &a2);
 }
 
-/*
- * SwitchZoomMode
-*/
+//// SwitchZoomMode
 void SwitchZoomMode()
 {
 	if (tuxtxt_cache.subpagetable[tuxtxt_cache.page] != 0xFF)
@@ -3489,9 +3357,7 @@ void SwitchScreenMode(int newscreenmode)
 	}
 }
 
-/*
- * SwitchTranspMode
-*/
+//// SwitchTranspMode
 void SwitchTranspMode()
 {
 	if (screenmode)
@@ -3519,9 +3385,7 @@ void SwitchTranspMode()
 	}
 }
 
-/*
- * SwitchHintMode
-*/
+//// SwitchHintMode
 void SwitchHintMode()
 {
 	/* toggle mode */
@@ -4317,25 +4181,19 @@ void RenderChar(int Char, tstPageAttr *Attribute, int zoom, int yoffset)
 	PosX += curfontwidth;
 }
 
-/*
- * RenderCharFB
-*/
+//// RenderCharFB
 void RenderCharFB(int Char, tstPageAttr *Attribute)
 {
 	RenderChar(Char, Attribute, zoommode, 0);
 }
 
-/*
- * RenderCharBB
-*/
+//// RenderCharBB
 void RenderCharBB(int Char, tstPageAttr *Attribute)
 {
 	RenderChar(Char, Attribute, 0, 0);
 }
 
-/*
- * RenderMessage
-*/
+//// RenderMessage
 void RenderMessage(int Message)
 {
 	int byte;
@@ -4390,7 +4248,7 @@ void RenderMessage(int Message)
 	else	//ShowInfoBar | PageNotFound
 		msg = &message_3[menulanguage][0];
 
-	/* render infobar */
+	// render infobar
 	PosX = StartX + fontwidth+5;
 	PosY = StartY + fontheight*16;
 	
@@ -4548,6 +4406,7 @@ void DoFlashing(int startrow)
 	CFrameBuffer::getInstance()->blit();
 }
 
+//// RenderPage
 void RenderPage()
 {
 	int row, col, byte, startrow = 0;;
@@ -4754,9 +4613,7 @@ void RenderPage()
 	}
 }
 
-/*
- * CreateLine25
-*/
+//// CreateLine25
 void showlink(int column, int linkpage)
 {
 	unsigned char *p, line[] = "   >???   ";
@@ -4958,9 +4815,7 @@ void CreateLine25()
 	}
 }
 
-/*
- * CopyBB2FB
-*/
+//// CopyBB2FB
 void CopyBB2FB()
 {
 	if (!pagecatching && use_gui)
@@ -5499,9 +5354,7 @@ void DecodePage()
 	return ;
 }
 
-//
-// GetRCCode
-//
+//// GetRCCode
 int GetRCCode()
 {
 	neutrino_msg_t msg;
