@@ -350,7 +350,7 @@ plugins-distclean:
 	rm -f $(PLUGINS)/config.status
 
 update:
-	git pull
+	git stash && git stash show -p > ./pull-stash-ng.patch || true && git pull && git stash pop || true;
 
 clean: neutrino2-clean plugins-clean
 distclean: neutrino2-distclean plugins-distclean
