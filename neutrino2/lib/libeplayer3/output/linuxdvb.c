@@ -49,6 +49,10 @@
 #include <linux/dvb/stm_ioctls.h>
 #endif
 
+//// opengl
+#include <libswscale/swscale.h>
+#include <libavutil/imgutils.h>
+
 
 /* ***************************** */
 /* Makros/Constants              */
@@ -62,7 +66,7 @@
 #endif
 #endif
 
-//#define LINUXDVB_DEBUG
+#define LINUXDVB_DEBUG
 
 static short debug_level = 10;
 
@@ -1053,7 +1057,6 @@ static int Write(void* _context, void* _out)
 	linuxdvb_printf(20, "DataLength=%u PrivateLength=%u Pts=%llu FrameRate=%f\n", out->len, out->extralen, out->pts, out->frameRate);
 	linuxdvb_printf(20, "v%d a%d\n", video, audio);
 
-#ifndef USE_OPENGL
 	if (audio) 
 	{
 		char * Encoding = NULL;
@@ -1061,6 +1064,7 @@ static int Write(void* _context, void* _out)
 
 		linuxdvb_printf(20, "%s::%s Encoding = %s\n", FILENAME, __FUNCTION__, Encoding);
 
+#ifndef USE_OPENGL
 		writer = getWriter(Encoding);
 
 		if (writer == NULL)
@@ -1093,7 +1097,7 @@ static int Write(void* _context, void* _out)
 
 			if (writer->writeData)
 				res = writer->writeData(&call);
-
+				
 			if (res <= 0)
 			{
 				linuxdvb_err("failed to write AUDIO data %d - %d\n", res, errno);
@@ -1101,6 +1105,69 @@ static int Write(void* _context, void* _out)
 				ret = cERR_LINUXDVB_ERROR;
 			}
 		}
+#else
+		AVFrame * aframe = NULL;
+		AVCodecContext *ctx = out->stream->codec;
+		int got_frame = 0;
+		uint64_t curr_pts = 0;
+						
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
+		res = avcodec_decode_audio4(ctx, aframe, &got_frame, &out->packet);
+#else
+		res = avcodec_send_packet(ctx, &out->packet);
+			
+		if (res != 0 && res != AVERROR(EAGAIN))
+		{
+			linuxdvb_printf(200, "%s: avcodec_send_packet %d\n", __func__, res);
+		}
+		else
+		{
+			res = avcodec_receive_frame(ctx, aframe);
+							
+			if (res != 0 && res != AVERROR(EAGAIN))
+			{
+				linuxdvb_printf(200,"%s: avcodec_send_packet %d\n", __func__, res);
+			}
+			else
+			{
+				got_frame = 1;
+			}
+		}
+#endif
+
+		if (got_frame)
+		{
+			int out_linesize;
+			/*
+			obuf_sz = av_rescale_rnd(swr_get_delay(swr, p->sample_rate) + aframe->nb_samples, o_sr, p->sample_rate, AV_ROUND_UP);
+
+			if (obuf_sz > obuf_sz_max)
+			{
+				av_free(obuf);
+								
+				if (av_samples_alloc(&obuf, &out_linesize, o_ch, aframe->nb_samples, AV_SAMPLE_FMT_S16, 1) < 0)
+				{
+					//av_packet_unref(&packet);
+					return -1;
+				}
+								
+				obuf_sz_max = obuf_sz;
+			}
+							
+			obuf_sz = swr_convert(swr, &obuf, obuf_sz, (const uint8_t **)aframe->extended_data, frame->nb_samples);
+			*/
+							
+#if (LIBAVUTIL_VERSION_MAJOR < 54)
+			curr_pts = av_frame_get_best_effort_timestamp(aframe);
+#else
+			curr_pts = aframe->best_effort_timestamp;
+#endif
+			//int o_buf_sz = av_samples_get_buffer_size(&out_linesize, o_ch, obuf_sz, AV_SAMPLE_FMT_S16, 1);
+							
+			//if (o_buf_sz > 0)
+			//	ao_play(adevice, (char *)obuf, o_buf_sz);
+		}
+#endif
 
 		free(Encoding);
 	}
@@ -1111,6 +1178,7 @@ static int Write(void* _context, void* _out)
 
 		linuxdvb_printf(20, "Encoding = %s\n", Encoding);
 
+#ifndef USE_OPENGL
 		writer = getWriter(Encoding);
 
 		if (writer == NULL)
@@ -1153,10 +1221,147 @@ static int Write(void* _context, void* _out)
 				ret = cERR_LINUXDVB_ERROR;
 			}
 		}
+#else
+		AVFrame *frame = NULL;
+		AVFrame *rgbframe = NULL;
+		struct SwsContext *convert = NULL;
+		AVCodec *codec = NULL;
+		int dec_w = 0;
+		int dec_h = 0;
+		int dec_r = 0;
+		bool w_h_changed = false;
+		int size = 0;
+		int numBytes = 0;
+		uint8_t *buf = NULL;
+		
+	
+		time_t warn_r = 0;
+		time_t warn_d = 0;
+	
+		frame = av_frame_alloc();
+		rgbframe = av_frame_alloc();
+	
+		codec = avcodec_find_decoder(out->stream->codec->codec_id);
+					
+		// init avcontext
+		res = avcodec_open2(out->stream->codec, codec, NULL);
+		
+		//
+		int got_frame = 0;
+	
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
+		res = avcodec_decode_video2(out->stream->codec, frame, &got_frame, out->packet);
+		
+		if (res < 0)
+		{
+			if (warn_d - time(NULL) > 4)
+			{
+				warn_d = time(NULL);
+			}
+		}
+#else
+		res = avcodec_send_packet(out->stream->codec, out->packet);
+			
+		if (res != 0 && res != AVERROR(EAGAIN))
+		{
+			if (warn_d - time(NULL) > 4)
+			{
+				warn_d = time(NULL);
+			}
+		}
+			
+		res = avcodec_receive_frame(out->stream->codec, frame);
+		
+		if (res == 0)
+			got_frame = 1;
+#endif
+					
+		// setup swsscaler
+		if (got_frame)
+		{
+			unsigned int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, out->stream->codec->width, out->stream->codec->height, 1);
+							
+			convert = sws_getContext(out->stream->codec->width, out->stream->codec->height, out->stream->codec->pix_fmt, out->stream->codec->width, out->stream->codec->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
+								
+			if (convert)
+			{
+				//buf_m.lock();
+					
+				//SWFramebuffer *f = &buffers[0];
+					
+				//if (f->size() < need)
+				//	f->resize(need);
+				
+				size = out->stream->codec->width * out->stream->codec->height;
+    				numBytes = avpicture_get_size(AV_PIX_FMT_RGB32, out->stream->codec->width, out->stream->codec->height);
+
+    				buf = (uint8_t *)av_malloc(numBytes);
+									
+				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, buf, AV_PIX_FMT_RGB32, out->stream->codec->width, out->stream->codec->height, 1);
+
+				sws_scale(convert, frame->data, frame->linesize, 0, out->stream->codec->height, rgbframe->data, rgbframe->linesize);
+				
+				//
+				if (dec_w != out->stream->codec->width || dec_h != out->stream->codec->height)
+				{
+					linuxdvb_printf(100, "CPlayBack::run: pic changed %dx%d -> %dx%d\n", dec_w, dec_h, out->stream->codec->width, out->stream->codec->height);
+					dec_w = out->stream->codec->width;
+					dec_h = out->stream->codec->height;
+					w_h_changed = true;
+				}
+								
+				//f->width(track->stream->codec->width);
+				//f->height(track->stream->codec->height);	
+				
+				//
+#if (LIBAVUTIL_VERSION_MAJOR < 54)
+				out->pts = av_frame_get_best_effort_timestamp(frame);
+#else
+				out->pts = frame->best_effort_timestamp;
+#endif
+
+				// a/v delay determined experimentally :-)
+				if (out->stream->codec->codec_id == AV_CODEC_ID_MPEG2VIDEO)
+					out->pts += 90000 * 4 / 10; // 400ms
+				else
+					out->pts += 90000 * 3 / 10; // 300ms
+
+				//f->pts(track->pts);
+								
+				//AVRational a = av_guess_sample_aspect_ratio(avContext, avContext->streams[0], frame);
+								
+				//f->AR(a);
+								
+				//dec_r = out->stream->codec->time_base.den / (out->stream->codec->time_base.num * out->stream->codec->ticks_per_frame);
+				dec_r = out->frameRate/1000;
+								
+				//buf_m.unlock();
+			}
+		}
+						
+		//av_packet_unref(packet);
+		
+		if (frame)
+		{
+			av_frame_free(&frame);
+			frame = NULL;
+		}
+		
+		if (rgbframe)
+		{
+			av_frame_free(&rgbframe);
+			rgbframe = NULL;
+		}
+		
+		if (convert)
+		{
+			sws_freeContext(convert);
+			convert = NULL;
+		}
+#endif
 
 		free(Encoding);
-	}
-#endif 
+	} 
 
 	return ret;
 }

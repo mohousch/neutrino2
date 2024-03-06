@@ -3292,9 +3292,9 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 			g_fontRenderer = NULL;
 		}
 		
-#ifdef USE_OPENGL
-		ao_shutdown();
-#endif
+//#ifdef USE_OPENGL
+//		ao_shutdown();
+//#endif
 
 		dprintf(DEBUG_NORMAL, ">>> CNeutrinoApp::exitRun: Good bye (retcode: %d) <<<\n", retcode);
 		
@@ -4993,9 +4993,9 @@ int main(int argc, char *argv[])
 	gst_init(NULL, NULL);
 #endif
 
-#ifdef USE_OPENGL
-	ao_initialize();
-#endif
+//#ifdef USE_OPENGL
+//	ao_initialize();
+//#endif
 
 	// set python path
 #if ENABLE_PYTHON

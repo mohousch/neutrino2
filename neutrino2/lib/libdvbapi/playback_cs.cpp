@@ -507,7 +507,7 @@ bool cPlayback::Open()
 	dprintf(DEBUG_NORMAL, "cPlayback::Open\n");
 	
 	mAudioStream = 0;
-	mSubStream = -1;
+	mSubStream = 0;
 	mSpeed = 0;
 	playing = false;
 	
@@ -1347,11 +1347,12 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 				printf("\t%s - %s\n", TrackList[i], TrackList[i + 1]);
 				apids[j] = j;
 
-				language[j] = TrackList[i];
+//				language[j] = TrackList[i]; // FIXME: segfault
 				
 				free(TrackList[i]);
 				free(TrackList[i + 1]);
 			}
+
 			free(TrackList);
 			*numpida = j;
 		}

@@ -3,6 +3,9 @@
 
 #include <stdio.h>
 
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+
 
 typedef enum {
 	OUTPUT_INIT,
@@ -26,7 +29,7 @@ typedef enum {
 	OUTPUT_REVERSE,
 	OUTPUT_DISCONTINUITY_REVERSE,
 	OUTPUT_GET_FRAME_COUNT,
-	OUTPUT_GET_SUBTITLE_OUTPUT,
+//	OUTPUT_GET_SUBTITLE_OUTPUT,
 	OUTPUT_SET_SUBTITLE_OUTPUT,
 	OUTPUT_DATA   
 } OutputCmd_t;
@@ -34,21 +37,25 @@ typedef enum {
 typedef struct
 {
 	//
-	unsigned char*         data;
-	unsigned int           len;
+	unsigned char*         	data;
+	unsigned int           	len;
 
-	unsigned char*         extradata;
-	unsigned int           extralen;
+	unsigned char*         	extradata;
+	unsigned int           	extralen;
 	
-	unsigned long long int pts;
+	unsigned long long int 	pts;
 	
-	float                  frameRate;
-	unsigned int           timeScale;
+	float                  	frameRate;
+	unsigned int           	timeScale;
 	
-	unsigned int           width;
-	unsigned int           height;
+	unsigned int           	width;
+	unsigned int           	height;
 	
-	char*                  type;
+	char*                  	type;
+	
+	//
+	AVStream* 		stream;
+	AVPacket* 		packet;
 } AudioVideoOut_t;
 
 typedef struct Output_s 
@@ -80,5 +87,4 @@ typedef struct OutputHandler_s
 } OutputHandler_t;
 
 #endif
-
 

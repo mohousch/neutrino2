@@ -554,16 +554,14 @@ static void FFMPEGThread(Context_t *context)
 					avOut.width      = videoTrack->width;
 					avOut.height     = videoTrack->height;
 					avOut.type       = "video";
+					// opengl
+					avOut.stream 	 = videoTrack->stream;
+					avOut.packet 	 = &packet;
 
-#ifdef USE_OPENGL
-					ffmpeg_printf(100, "writing data to video device failed\n");
-					
-#else
 					if (context->output->video->Write(context, &avOut) < 0) 
 					{
 						ffmpeg_err("writing data to video device failed\n");
 					}
-#endif
 				}
 			}
 
@@ -579,9 +577,6 @@ static void FFMPEGThread(Context_t *context)
 
 					ffmpeg_printf(200, "AudioTrack index = %d\n",index);
 					
-#ifdef USE_OPENGL
-					ffmpeg_printf(100, "writing data to audio device failed\n");
-#else
 					//
 					if (audioTrack->inject_as_pcm == 1)
 					{
@@ -641,6 +636,9 @@ static void FFMPEGThread(Context_t *context)
 							avOut.width      = 0;
 							avOut.height     = 0;
 							avOut.type       = "audio";
+							// opengl
+							avOut.stream 	 = audioTrack->stream;
+							avOut.packet 	= &packet;
 
 							if (!context->playback->BackWard)
 							{
@@ -665,6 +663,9 @@ static void FFMPEGThread(Context_t *context)
 						avOut.width      = 0;
 						avOut.height     = 0;
 						avOut.type       = "audio";
+						// opengl
+						avOut.stream 	 = audioTrack->stream;
+						avOut.packet 	 = &packet;
 
 						if (!context->playback->BackWard)
 						{
@@ -686,6 +687,9 @@ static void FFMPEGThread(Context_t *context)
 						avOut.width      = 0;
 						avOut.height     = 0;
 						avOut.type       = "audio";
+						// opengl
+						avOut.stream 	 = audioTrack->stream;
+						avOut.packet 	 = &packet;
 
 						if (!context->playback->BackWard)
 						{
@@ -695,7 +699,6 @@ static void FFMPEGThread(Context_t *context)
 							}
 						}
 					}
-#endif
 				}
 			}
 
@@ -810,9 +813,9 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	}
 
 	// initialize ffmpeg 
-	avcodec_register_all();
+//	avcodec_register_all();
 	av_register_all();
-	avformat_network_init();
+//	avformat_network_init();
 
 #if LIBAVCODEC_VERSION_MAJOR < 54
 	if ((err = av_open_input_file(&avContext, filename, NULL, 0, NULL)) != 0) 
@@ -903,17 +906,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				else
 					track.TimeScale = 1000;
 
-				ffmpeg_printf(10, "bit_rate = %d\n",stream->codec->bit_rate);
-				ffmpeg_printf(10, "flags = %d\n",stream->codec->flags);
-				ffmpeg_printf(10, "frame_bits = %d\n",stream->codec->frame_bits);
-				ffmpeg_printf(10, "time_base.den %d\n",stream->time_base.den);
-				ffmpeg_printf(10, "time_base.num %d\n",stream->time_base.num);
-				ffmpeg_printf(10, "frame_rate %d\n",stream->r_frame_rate.num);
-				ffmpeg_printf(10, "TimeScale %d\n",stream->r_frame_rate.den);
-
-				ffmpeg_printf(10, "frame_rate %d\n", track.frame_rate);
-				ffmpeg_printf(10, "TimeScale %d\n", track.TimeScale);
-
 				track.Name      = "und";
 				track.Encoding  = encoding;
 				track.Index     = n;
@@ -929,6 +921,18 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				{
 					track.duration = (double) stream->duration * av_q2d(stream->time_base) * 1000.0;
 				}
+				
+				//
+				ffmpeg_printf(10, "bit_rate = %d\n",stream->codec->bit_rate);
+				ffmpeg_printf(10, "flags = %d\n",stream->codec->flags);
+				ffmpeg_printf(10, "frame_bits = %d\n",stream->codec->frame_bits);
+				ffmpeg_printf(10, "time_base.den %d\n",stream->time_base.den);
+				ffmpeg_printf(10, "time_base.num %d\n",stream->time_base.num);
+				ffmpeg_printf(10, "frame_rate %d\n",stream->r_frame_rate.num);
+				ffmpeg_printf(10, "TimeScale %d\n",stream->r_frame_rate.den);
+
+				ffmpeg_printf(10, "frame_rate %d\n", track.frame_rate);
+				ffmpeg_printf(10, "TimeScale %d\n", track.TimeScale);
 
 				if (context->manager->video)
 				{
@@ -973,12 +977,12 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				if (lang)
 					track.Name = strdup(lang->value);
 				else
-					track.Name        = strdup("Stream");
+					track.Name = strdup("Stream");
 
 				ffmpeg_printf(10, "Language %s\n", track.Name);
 
 				track.Encoding       = encoding;
-				track.Index             = n;
+				track.Index          = n;
 
 				track.stream         = stream;
 				track.duration       = (double)stream->duration * av_q2d(stream->time_base) * 1000.0;
@@ -996,6 +1000,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 					track.duration = (double) stream->duration * av_q2d(stream->time_base) * 1000.0;
 				}
 
+#ifndef USE_OPENGL
 				// pcm
 				if(!strncmp(encoding, "A_IPCM", 6))
 				{
@@ -1149,6 +1154,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 
 					track.have_aacheader = 1;
 				}
+#endif
 
 				if (context->manager->audio)
 				{
@@ -1182,14 +1188,14 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 #endif	     
 
 				if (lang)
-					track.Name        = strdup(lang->value);
+					track.Name = strdup(lang->value);
 				else
-					track.Name        = strdup("und");
+					track.Name = strdup("und");
 
 				ffmpeg_printf(10, "Language %s\n", track.Name);
 
 				track.Encoding       = encoding;
-				track.Index             = n;
+				track.Index          = n;
 
 				track.stream         = stream;
 				track.duration       = (double)stream->duration * av_q2d(stream->time_base) * 1000.0;

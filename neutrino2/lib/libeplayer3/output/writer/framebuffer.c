@@ -51,7 +51,7 @@
 /* Makros/Constants              */
 /* ***************************** */
 
-//#define FB_DEBUG
+#define FB_DEBUG
 
 #ifdef FB_DEBUG
 
@@ -69,10 +69,10 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 #define fb_err(fmt, x...)
 #endif
 
-#define _r(c) ((c)>>24)
-#define _g(c) (((c)>>16)&0xFF)
-#define _b(c) (((c)>>8)&0xFF)
-#define _a(c) ((c)&0xFF)
+//#define _r(c) ((c)>>24)
+//#define _g(c) (((c)>>16)&0xFF)
+//#define _b(c) (((c)>>8)&0xFF)
+//#define _a(c) ((c)&0xFF)
 
 /* ***************************** */
 /* Types                         */
@@ -298,6 +298,7 @@ static int writeData(void* _call)
 	{
 		blit2FB(call->data, call->Width, call->Height, call->x, call->y, 0, 0, false);
 	}
+	
 	/*
 	if (call->data != NULL)
 	{
@@ -354,6 +355,7 @@ static int writeData(void* _call)
 	blit(call->fd);
     
 	fb_printf(100, "< %d\n", res);
+	
 	return res;
 }
 

@@ -98,6 +98,7 @@ cAudio::cAudio(int num)
 	dmxbuf = (uint8_t *)malloc(DMX_BUF_SZ);
 	bufpos = 0;
 	curr_pts = 0;
+	ao_initialize();
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	av_register_all();
 #endif
@@ -116,6 +117,7 @@ cAudio::~cAudio(void)
 		ao_close(adevice);
 		
 	adevice = NULL;
+	ao_shutdown();
 #endif
 }
 

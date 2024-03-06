@@ -925,7 +925,7 @@ static int Write(void* _context, void *data)
     Context_t * context = (Context_t  *) _context;
     SubtitleData_t * out;
     
-    subtitle_printf(20, "\n");
+    subtitle_printf(10, "\n");
 
     if (data == NULL)
     {
@@ -939,6 +939,8 @@ static int Write(void* _context, void *data)
     {
     	case AV_CODEC_ID_SSA:
     	case AV_CODEC_ID_ASS:
+    	case AV_CODEC_ID_SUBRIP: // FIXME:
+    	case AV_CODEC_ID_DVB_TELETEXT:
     	{
     		subtitle_printf(10, "Write: S_TEXT/ASS: %s\n", (char *)out->data);
     	
@@ -950,11 +952,11 @@ static int Write(void* _context, void *data)
     		break;
     	}
     		
-    	case AV_CODEC_ID_DVB_TELETEXT:
-    	{
-    		subtitle_printf(10, "Write: S_GRAPHIC/TELETEXT: %s\n", (char *)out->data);
-    		break;
-    	}
+//    	case AV_CODEC_ID_DVB_TELETEXT:
+//  	{
+//		subtitle_printf(10, "Write: S_GRAPHIC/TELETEXT: %s\n", (char *)out->data);
+//    		break;
+//    	}
     		
     	case AV_CODEC_ID_DVB_SUBTITLE:
     	{
@@ -968,7 +970,7 @@ static int Write(void* _context, void *data)
     		break;
     }
 
-    subtitle_printf(20, "<\n");
+    subtitle_printf(10, "<\n");
 
     return cERR_SUBTITLE_NO_ERROR;
 }
@@ -1170,19 +1172,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 		break;
 	    }
 	    
-	    case OUTPUT_GET_SUBTITLE_OUTPUT: 
-	    {
-		SubtitleOutputDef_t* out = (SubtitleOutputDef_t*)argument;
-		
-		out->screen_width = screen_width;
-		out->screen_height = screen_height;
-		out->shareFramebuffer = shareFramebuffer;
-		out->framebufferFD = framebufferFD;
-		out->destination = destination;
-		out->destStride = destStride;
-		break;
-	    }
-	    
 	    case OUTPUT_SET_SUBTITLE_OUTPUT: 
 	    {
 		SubtitleOutputDef_t* out = (SubtitleOutputDef_t*)argument;
@@ -1199,6 +1188,13 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 	    case OUTPUT_FLUSH: 
 	    {
 		subtitle_err("Subtitle Flush not implemented\n");
+		ret = cERR_SUBTITLE_ERROR;
+		break;
+	    }
+	    
+	    case OUTPUT_CLEAR: 
+	    {
+		subtitle_err("Subtitle Clear not implemented\n");
 		ret = cERR_SUBTITLE_ERROR;
 		break;
 	    }
