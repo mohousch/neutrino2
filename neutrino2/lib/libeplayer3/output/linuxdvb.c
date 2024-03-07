@@ -1405,7 +1405,6 @@ int LinuxDvbGetData(Context_t  *context, uint8_t* buffer)
 
 	getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 
-	//memcpy(buffer, buf, sizeof(buf));
 	buffer = buf;
 
 	releaseLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);	
@@ -1538,9 +1537,10 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 		
 		case OUTPUT_DATA:
 		{
-			uint8_t* buffer;
-			ret = LinuxDvbGetData(context, &buffer);
-			*((uint8_t*)argument) = (uint8_t*)buffer;
+//			uint8_t* buffer;
+//			ret = LinuxDvbGetData(context, &buffer);
+//			*((uint8_t*)argument) = (uint8_t*)buffer;
+			ret = LinuxDvbGetData(context, (uint8_t*)argument);
 			break;
 		}
 		

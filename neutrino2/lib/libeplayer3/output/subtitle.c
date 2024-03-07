@@ -497,7 +497,7 @@ static void ass_write(Context_t *context)
 {
     	Writer_t* writer;
     
-    	subtitle_printf(20, "\n");
+    	subtitle_printf(10, "\n");
 
     	writer = getDefaultFramebufferWriter();
 
@@ -523,7 +523,7 @@ static void ass_write(Context_t *context)
 
             	img = ass_render_frame(ass_renderer, ass_track, playPts / 90.0, &change);
 
-            	subtitle_printf(150, "img %p pts %lu %f\n", img, playPts, playPts / 90.0);
+            	subtitle_printf(10, "img %p pts %lu %f\n", img, playPts, playPts / 90.0);
 
             	if(img != NULL && ass_renderer && ass_track)
             	{
@@ -545,7 +545,7 @@ static void ass_write(Context_t *context)
                         		undisplay = now + ass_track->events->Duration / 1000 + 0.5;
                     		}
 
-                    		subtitle_printf(100, "w %d h %d s %d x %d y %d c %d chg %d now %ld und %ld\n", 
+                    		subtitle_printf(10, "w %d h %d s %d x %d y %d c %d chg %d now %ld und %ld\n", 
                                  img->w, img->h, img->stride, 
                                  img->dst_x, img->dst_y, img->color, 
                                  change, now, undisplay);
@@ -951,12 +951,6 @@ static int Write(void* _context, void *data)
     		ass_write(context);
     		break;
     	}
-    		
-//    	case AV_CODEC_ID_DVB_TELETEXT:
-//  	{
-//		subtitle_printf(10, "Write: S_GRAPHIC/TELETEXT: %s\n", (char *)out->data);
-//    		break;
-//    	}
     		
     	case AV_CODEC_ID_DVB_SUBTITLE:
     	{

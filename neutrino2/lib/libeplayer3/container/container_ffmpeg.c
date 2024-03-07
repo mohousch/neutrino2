@@ -1209,10 +1209,10 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				track.extraData      = stream->codec->extradata;
 				track.extraSize      = stream->codec->extradata_size;
 
-				ffmpeg_printf(1, "subtitle codec %d\n", stream->codec->codec_id);
-				ffmpeg_printf(1, "subtitle width %d\n", stream->codec->width);
-				ffmpeg_printf(1, "subtitle height %d\n", stream->codec->height);
-				ffmpeg_printf(1, "subtitle stream %p\n", stream);
+				ffmpeg_printf(10, "subtitle codec %d\n", stream->codec->codec_id);
+//				ffmpeg_printf(10, "subtitle width %d\n", stream->codec->width);
+//				ffmpeg_printf(10, "subtitle height %d\n", stream->codec->height);
+//				ffmpeg_printf(10, "subtitle stream %p\n", stream);
 
 				if(stream->duration == AV_NOPTS_VALUE) 
 				{
