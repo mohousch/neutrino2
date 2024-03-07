@@ -58,6 +58,9 @@ class cPlayback
 
 		cPlayback(int num = 0);
 		~cPlayback(){};	
+		
+		////
+		uint8_t* getDecBuf(void);
 };
 
 #endif

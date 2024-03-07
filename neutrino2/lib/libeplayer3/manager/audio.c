@@ -128,7 +128,7 @@ static char ** ManagerList(Context_t  *context)
             		return NULL;
         	}
 
-        	for (i = 0, j = 0; i < TrackCount; i++, j+= 2) 
+        	for (i = 0, j = 0; i < TrackCount; i++, j += 2) 
 		{
             		tracklist[j]    = strdup(Tracks[i].Name);
             		tracklist[j+1]  = strdup(Tracks[i].Encoding);
@@ -170,7 +170,6 @@ static int ManagerDel(Context_t * context)
 
     	return cERR_AUDIO_MGR_NO_ERROR;
 }
-
 
 static int Command(void  *_context, ManagerCmd_t command, void * argument) 
 {

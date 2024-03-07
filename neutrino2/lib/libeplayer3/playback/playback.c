@@ -1005,9 +1005,32 @@ static int PlaybackInfo(Context_t  *context, char** infoString)
 	return ret;
 }
 
+// buffer 
+static int PlaybackGetData(Context_t* context, uint8_t* buffer)
+{
+	int ret = cERR_PLAYBACK_NO_ERROR;
+
+	playback_printf(10, "\n");
+	
+	//
+	if (context->playback->isPlaying) 
+	{
+		ret = context->output->Command(context, OUTPUT_DATA, buffer);
+	} 
+	else
+	{
+		playback_err("not possible\n");
+		ret = cERR_PLAYBACK_ERROR;
+	}
+	
+	playback_printf(10, "exiting with value %d\n", ret);
+
+	return ret;
+}
+
 static int Command(void* _context, PlaybackCmd_t command, void * argument) 
 {
-	Context_t* context = (Context_t*) _context; /* to satisfy compiler */
+	Context_t* context = (Context_t*) _context;
 	int ret = cERR_PLAYBACK_NO_ERROR;
 
 	playback_printf(20, "Command %d\n", command);
@@ -1039,7 +1062,7 @@ static int Command(void* _context, PlaybackCmd_t command, void * argument)
 		}
 		
 		case PLAYBACK_PAUSE: 
-		{	// 4
+		{
 			ret = PlaybackPause(context);
 			break;
 		}
@@ -1069,13 +1092,13 @@ static int Command(void* _context, PlaybackCmd_t command, void * argument)
 		}
 		
 		case PLAYBACK_PTS: 
-		{ // 10
+		{
 			ret = PlaybackPts(context, (unsigned long long int*)argument);
 			break;
 		}
 		
 		case PLAYBACK_LENGTH: 
-		{ // 11
+		{
 			ret = PlaybackLength(context, (double*)argument);
 			break;
 		}
@@ -1111,8 +1134,14 @@ static int Command(void* _context, PlaybackCmd_t command, void * argument)
 		}
 		
 		case PLAYBACK_GET_FRAME_COUNT: 
-		{ // 17
+		{
 			ret = PlaybackGetFrameCount(context, (unsigned long long int*)argument);
+			break;
+		}
+		
+		case PLAYBACK_DATA:
+		{
+			ret = PlaybackGetData(context, (uint8_t*)argument);
 			break;
 		}
 		

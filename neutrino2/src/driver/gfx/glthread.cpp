@@ -39,6 +39,7 @@
 
 #include <audio_cs.h>
 #include <video_cs.h>
+#include <playback_cs.h>
 
 
 //// globals
@@ -296,7 +297,8 @@ void GLThreadObj::render()
 		glutReshapeWindow(mX, mY);
 		
 	//
-	bltDisplayBuffer(); // decoded video stream
+	bltDisplayBuffer(); 	// decoded video stream
+	bltPlayBuffer();	//
 
 	// OSD
 	if (mState.blit) 
@@ -490,5 +492,74 @@ void GLThreadObj::bltDisplayBuffer()
 		else if (sleep_us < 1)
 			sleep_us = 1;
 	}
+}
+
+////
+void GLThreadObj::bltPlayBuffer()
+{
+	if (!playback)
+		return;
+		 
+	if (playback && !playback->playing)
+		return;
+		
+	static bool warn = true;
+	uint8_t *buf = playback->getDecBuf();
+	
+	if (!buf)
+	{	
+		warn = false;
+		
+		//
+		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
+		glBufferData(GL_PIXEL_UNPACK_BUFFER, mOSDBuffer.size(), &mOSDBuffer[0], GL_STREAM_DRAW_ARB);
+		glBindTexture(GL_TEXTURE_2D, mState.displaytex);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+		
+		return;
+	}
+	
+	warn = true;
+	//int w = buf->width(), h = buf->height();
+	
+	//if (w == 0 || h == 0)
+	//	return;
+
+	//AVRational a = buf->AR();
+	
+	//if (a.den != 0 && a.num != 0 && av_cmp_q(a, _mVA))
+	{
+//		_mVA = a;
+		// _mVA is the raw buffer's aspect, mVA is the real scaled output aspect
+//		av_reduce(&mVA.num, &mVA.den, w * a.num, h * a.den, INT_MAX);
+//		mVAchanged = true;
+	}
+
+	// render frame
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
+	glBufferData(GL_PIXEL_UNPACK_BUFFER, sizeof(buf), &buf, GL_STREAM_DRAW_ARB);
+
+	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1280, 720, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+	
+	/*
+	int64_t last_pts = 0;
+	int64_t vpts = buf->pts() + 18000;
+	
+	if (last_pts != vpts)
+	{
+		sleep_us = (vpts - last_pts) / sleep_us;
+		
+		if (sleep_us > 50000)
+			sleep_us = 50000;
+		
+		last_pts = vpts;
+	}
+	
+	printf("sleep_us:%d\n", sleep_us);
+	*/
 }
 

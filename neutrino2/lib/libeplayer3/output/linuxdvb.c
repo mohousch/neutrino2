@@ -95,6 +95,7 @@ static int videofd 	= -1;
 static int audiofd 	= -1;
 
 unsigned long long int sCURRENT_PTS = 0;
+uint8_t* buf = NULL;
 
 
 pthread_mutex_t LinuxDVBmutex;
@@ -833,7 +834,7 @@ int LinuxDvbPts(Context_t  *context, unsigned long long int* pts)
 		ret = cERR_LINUXDVB_ERROR;
 	}
 
-	*((unsigned long long int *)pts)=(unsigned long long int)sCURRENT_PTS;
+	*((unsigned long long int *)pts) = (unsigned long long int)sCURRENT_PTS;
 #endif
 
 	return ret;
@@ -1232,9 +1233,7 @@ static int Write(void* _context, void* _out)
 		bool w_h_changed = false;
 		int size = 0;
 		int numBytes = 0;
-		uint8_t *buf = NULL;
 		
-	
 		time_t warn_r = 0;
 		time_t warn_d = 0;
 	
@@ -1285,13 +1284,6 @@ static int Write(void* _context, void* _out)
 								
 			if (convert)
 			{
-				//buf_m.lock();
-					
-				//SWFramebuffer *f = &buffers[0];
-					
-				//if (f->size() < need)
-				//	f->resize(need);
-				
 				size = out->stream->codec->width * out->stream->codec->height;
     				numBytes = avpicture_get_size(AV_PIX_FMT_RGB32, out->stream->codec->width, out->stream->codec->height);
 
@@ -1305,13 +1297,11 @@ static int Write(void* _context, void* _out)
 				if (dec_w != out->stream->codec->width || dec_h != out->stream->codec->height)
 				{
 					linuxdvb_printf(100, "CPlayBack::run: pic changed %dx%d -> %dx%d\n", dec_w, dec_h, out->stream->codec->width, out->stream->codec->height);
+					
 					dec_w = out->stream->codec->width;
 					dec_h = out->stream->codec->height;
 					w_h_changed = true;
 				}
-								
-				//f->width(track->stream->codec->width);
-				//f->height(track->stream->codec->height);	
 				
 				//
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
@@ -1325,21 +1315,11 @@ static int Write(void* _context, void* _out)
 					out->pts += 90000 * 4 / 10; // 400ms
 				else
 					out->pts += 90000 * 3 / 10; // 300ms
-
-				//f->pts(track->pts);
-								
-				//AVRational a = av_guess_sample_aspect_ratio(avContext, avContext->streams[0], frame);
-								
-				//f->AR(a);
 								
 				//dec_r = out->stream->codec->time_base.den / (out->stream->codec->time_base.num * out->stream->codec->ticks_per_frame);
 				dec_r = out->frameRate/1000;
-								
-				//buf_m.unlock();
 			}
 		}
-						
-		//av_packet_unref(packet);
 		
 		if (frame)
 		{
@@ -1357,6 +1337,12 @@ static int Write(void* _context, void* _out)
 		{
 			sws_freeContext(convert);
 			convert = NULL;
+		}
+		
+		if (buf)
+		{
+			av_free(buf);
+			buf = NULL;
 		}
 #endif
 
@@ -1410,6 +1396,24 @@ static int reset(Context_t  *context)
 	return ret;
 }
 
+////
+int LinuxDvbGetData(Context_t  *context, uint8_t* buffer) 
+{
+	int ret = cERR_LINUXDVB_NO_ERROR;
+
+	linuxdvb_printf(50, "\n");
+
+	getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
+
+	//memcpy(buffer, buf, sizeof(buf));
+	buffer = buf;
+
+	releaseLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);	
+
+	return ret;
+}
+
+
 static int Command(void  *_context, OutputCmd_t command, void * argument) 
 {
 	Context_t* context = (Context_t*) _context;
@@ -1434,7 +1438,7 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 		}
 		
 		case OUTPUT_PLAY: 
-		{	// 4
+		{
 			sCURRENT_PTS = 0;
 			ret = LinuxDvbPlay(context, (char*)argument);
 			break;
@@ -1444,7 +1448,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 		{
 			reset(context);
 			ret = LinuxDvbStop(context, (char*)argument);
-			//reset(context);
 			sCURRENT_PTS = 0;
 			break;
 		}
@@ -1530,6 +1533,14 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 			unsigned long long int frameCount = 0;
 			ret = LinuxDvbGetFrameCount(context, &frameCount);
 			*((unsigned long long int*)argument) = (unsigned long long int)frameCount;
+			break;
+		}
+		
+		case OUTPUT_DATA:
+		{
+			uint8_t* buffer;
+			ret = LinuxDvbGetData(context, &buffer);
+			*((uint8_t*)argument) = (uint8_t*)buffer;
 			break;
 		}
 		

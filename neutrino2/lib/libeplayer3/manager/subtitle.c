@@ -127,7 +127,7 @@ static char ** ManagerList(Context_t  *context)
             		return NULL;
         	}
 
-        	for (i = 0, j = 0; i < TrackCount; i++, j+=2) 
+        	for (i = 0, j = 0; i < TrackCount; i++, j += 2) 
 		{
             		tracklist[j]    = strdup(Tracks[i].Name);
             		tracklist[j+1]  = strdup(Tracks[i].Encoding);
@@ -188,7 +188,8 @@ static int Command(void  *_context, ManagerCmd_t command, void * argument)
         		break;
     		}
 
-	    	case MANAGER_LIST: {
+	    	case MANAGER_LIST: 
+	    	{
 			*((char***)argument) = (char **)ManagerList(context);
 			break;
 	    	}
@@ -270,7 +271,7 @@ static int Command(void  *_context, ManagerCmd_t command, void * argument)
     	return ret;
 }
 
-
+////
 struct Manager_s SubtitleManager = {
     	"Subtitle",
     	&Command,

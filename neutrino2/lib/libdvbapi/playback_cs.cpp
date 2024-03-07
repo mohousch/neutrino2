@@ -507,7 +507,7 @@ bool cPlayback::Open()
 	dprintf(DEBUG_NORMAL, "cPlayback::Open\n");
 	
 	mAudioStream = 0;
-	mSubStream = 0;
+	mSubStream = -1;
 	mSpeed = 0;
 	playing = false;
 	
@@ -856,7 +856,7 @@ bool cPlayback::SetAPid(unsigned short pid, int /*_ac3*/)
 	if(pid != mAudioStream)
 	{
 		if(player && player->playback)
-				player->playback->Command(player, PLAYBACK_SWITCH_AUDIO, (void*)&track);
+			player->playback->Command(player, PLAYBACK_SWITCH_AUDIO, (void*)&track);
 
 		mAudioStream = pid;
 	}
@@ -1347,7 +1347,7 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 				printf("\t%s - %s\n", TrackList[i], TrackList[i + 1]);
 				apids[j] = j;
 
-//				language[j] = TrackList[i]; // FIXME: segfault
+				language[j] = " "; //TrackList[i];
 				
 				free(TrackList[i]);
 				free(TrackList[i + 1]);
@@ -1358,5 +1358,14 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 		}
 	}
 #endif
+}
+
+////
+uint8_t* cPlayback::getDecBuf(void)
+{
+	uint8_t* buffer = NULL;
+	
+	if(player && player->playback)
+		player->playback->Command(player, PLAYBACK_DATA, (void*)&buffer);
 }
 
