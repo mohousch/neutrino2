@@ -102,6 +102,7 @@ int InsertPesHeader(unsigned char *data, int size, unsigned char stream_id, unsi
 	PutBits(&ld2,0x0  ,8);
 	PutBits(&ld2,0x1  ,8);  	// Start Code
 	PutBits(&ld2,stream_id ,8);  	// Stream_id = Audio Stream
+	
 	//4
 	if (size > 0) 
     	{
@@ -112,6 +113,7 @@ int InsertPesHeader(unsigned char *data, int size, unsigned char stream_id, unsi
     	{
         	size = 0; // unbounded
     	}
+    	
     	PutBits(&ld2, size, 16); // PES_packet_length
 	//6 = 4+2
 	PutBits(&ld2,0x2  ,2);  // 10
@@ -120,11 +122,13 @@ int InsertPesHeader(unsigned char *data, int size, unsigned char stream_id, unsi
 	PutBits(&ld2,0x0  ,1);  // data_alignment_indicator
 	PutBits(&ld2,0x0  ,1);  // Copyright
 	PutBits(&ld2,0x0  ,1);  // Original or Copy
+	
 	//7 = 6+1
 	if (pts != INVALID_PTS_VALUE)
 		PutBits(&ld2,0x2 ,2);
 	else
 		PutBits(&ld2,0x0 ,2);  // PTS_DTS flag
+		
 	//
 	PutBits(&ld2,0x0 ,1);  // ESCR_flag
 	PutBits(&ld2,0x0 ,1);  // ES_rate_flag

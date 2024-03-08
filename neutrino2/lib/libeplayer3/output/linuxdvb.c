@@ -97,7 +97,7 @@ static int audiofd 	= -1;
 unsigned long long int sCURRENT_PTS = 0;
 uint8_t* buf = NULL;
 
-
+//
 pthread_mutex_t LinuxDVBmutex;
 
 /* ***************************** */
@@ -833,9 +833,9 @@ int LinuxDvbPts(Context_t  *context, unsigned long long int* pts)
 		sCURRENT_PTS = 0;
 		ret = cERR_LINUXDVB_ERROR;
 	}
+#endif
 
 	*((unsigned long long int *)pts) = (unsigned long long int)sCURRENT_PTS;
-#endif
 
 	return ret;
 }
@@ -1159,9 +1159,9 @@ static int Write(void* _context, void* _out)
 			*/
 							
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-			curr_pts = av_frame_get_best_effort_timestamp(aframe);
+			sCURRENT_PTS = av_frame_get_best_effort_timestamp(aframe);
 #else
-			curr_pts = aframe->best_effort_timestamp;
+			sCURRENT_PTS = aframe->best_effort_timestamp;
 #endif
 			//int o_buf_sz = av_samples_get_buffer_size(&out_linesize, o_ch, obuf_sz, AV_SAMPLE_FMT_S16, 1);
 							
@@ -1305,16 +1305,16 @@ static int Write(void* _context, void* _out)
 				
 				//
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-				out->pts = av_frame_get_best_effort_timestamp(frame);
+				sCURRENT_PTS = av_frame_get_best_effort_timestamp(frame);
 #else
-				out->pts = frame->best_effort_timestamp;
+				sCURRENT_PTS = frame->best_effort_timestamp;
 #endif
 
 				// a/v delay determined experimentally :-)
-				if (out->stream->codec->codec_id == AV_CODEC_ID_MPEG2VIDEO)
-					out->pts += 90000 * 4 / 10; // 400ms
-				else
-					out->pts += 90000 * 3 / 10; // 300ms
+				//if (out->stream->codec->codec_id == AV_CODEC_ID_MPEG2VIDEO)
+				//	out->pts += 90000 * 4 / 10; // 400ms
+				//else
+				//	out->pts += 90000 * 3 / 10; // 300ms
 								
 				//dec_r = out->stream->codec->time_base.den / (out->stream->codec->time_base.num * out->stream->codec->ticks_per_frame);
 				dec_r = out->frameRate/1000;
@@ -1537,9 +1537,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 		
 		case OUTPUT_DATA:
 		{
-//			uint8_t* buffer;
-//			ret = LinuxDvbGetData(context, &buffer);
-//			*((uint8_t*)argument) = (uint8_t*)buffer;
 			ret = LinuxDvbGetData(context, (uint8_t*)argument);
 			break;
 		}

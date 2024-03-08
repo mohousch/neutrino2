@@ -504,7 +504,8 @@ void GLThreadObj::bltPlayBuffer()
 		return;
 		
 	static bool warn = true;
-	uint8_t *buf = playback->getDecBuf();
+	uint8_t *buf = NULL;
+	playback->getDecBuf(buf);
 	
 	if (!buf)
 	{	
@@ -538,7 +539,7 @@ void GLThreadObj::bltPlayBuffer()
 
 	// render frame
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
-	glBufferData(GL_PIXEL_UNPACK_BUFFER, sizeof(buf), &buf, GL_STREAM_DRAW_ARB);
+	glBufferData(GL_PIXEL_UNPACK_BUFFER, 1280*720*4, &buf, GL_STREAM_DRAW_ARB);
 
 	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1280, 720, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);

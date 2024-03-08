@@ -108,13 +108,15 @@ static int writeData(void *_call)
 
     size_t payload_len = call->len;
     bool hasCodecData = true;
+    
     if(NULL != call->private_data && call->private_size >= 17)
     {
         amr_err("wrong private_data. ignoring ...\n");
         hasCodecData = false;
     }
 
-    if(hasCodecData) {
+    if(hasCodecData) 
+    {
         payload_len += 9;
     }
 

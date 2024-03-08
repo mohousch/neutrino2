@@ -60,9 +60,9 @@ typedef struct
 typedef struct Output_s 
 {
 	char * Name;
-	int (* Command) (void  *, OutputCmd_t, void *);
-	int (* Write) (void  *, void* privateData);
-	char ** Capabilities;
+	int (* Command) (void*, OutputCmd_t, void*);
+	int (* Write) (void*, void* privateData);
+	char** Capabilities;
 } Output_t;
 
 //
@@ -82,7 +82,7 @@ typedef struct OutputHandler_s
 	Output_t * audio;
 	Output_t * video;    
 	Output_t * subtitle;    
-	int (* Command) (void  *, OutputCmd_t, void *);
+	int (* Command) (void*, OutputCmd_t, void*);
 } OutputHandler_t;
 
 #endif

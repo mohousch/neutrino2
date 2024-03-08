@@ -1361,10 +1361,8 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 }
 
 ////
-uint8_t* cPlayback::getDecBuf(void)
+void cPlayback::getDecBuf(uint8_t* buffer)
 {
-	uint8_t* buffer = NULL;
-	
 	if(player && player->playback)
 		player->playback->Command(player, PLAYBACK_DATA, (void*)&buffer);
 }

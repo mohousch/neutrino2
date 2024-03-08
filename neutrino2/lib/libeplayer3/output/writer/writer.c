@@ -140,7 +140,7 @@ Writer_t* getDefaultFramebufferWriter()
 	return NULL;
 }
 
-// used in mpeg2.c
+// used in mpeg2.c / vp.c
 ssize_t WriteExt(WriteV_t _call, int fd, void *data, size_t size)
 {
 	struct iovec iov[1];

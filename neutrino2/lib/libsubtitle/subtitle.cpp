@@ -38,7 +38,7 @@ static int pid_change_req;
 //
 cDvbSubtitleConverter *dvbSubtitleConverter;
 //
-static void* reader_thread(void *arg);
+static void* reader_thread(void* arg);
 static void* dvbsub_thread(void* arg);
 static void clear_queue();
 ////

@@ -38,9 +38,9 @@
 #include <pthread.h>
 
 #include <libavutil/avutil.h>
-#if LIBAVCODEC_VERSION_MAJOR > 54
+//#if LIBAVCODEC_VERSION_MAJOR > 54
 #include <libavutil/time.h>
-#endif
+//#endif
 #include <libavformat/avformat.h>
 #if LIBAVCODEC_VERSION_MAJOR > 54
 #include <libavutil/opt.h>
@@ -138,7 +138,7 @@ void getMutex(const char *filename, const char *function, int line)
 	ffmpeg_printf(100, "::%d received mutex\n", line);
 }
 
-void releaseMutex(const char *filename, const const char *function, int line) 
+void releaseMutex(const char *filename, const char *function, int line) 
 {
 	pthread_mutex_unlock(&mutex);
 
@@ -933,6 +933,9 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 
 				ffmpeg_printf(10, "frame_rate %d\n", track.frame_rate);
 				ffmpeg_printf(10, "TimeScale %d\n", track.TimeScale);
+				
+				ffmpeg_printf(10, "width %d\n", track.width);
+				ffmpeg_printf(10, "height %d\n", track.height);
 
 				if (context->manager->video)
 				{
@@ -1284,7 +1287,7 @@ static int container_ffmpeg_play(Context_t *context)
 		pthread_attr_init(&attr);
 		pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 
-		if((error = pthread_create(&PlayThread, &attr, (void *)&FFMPEGThread, context)) != 0) 
+		if((error = pthread_create(&PlayThread, &attr, (void*)&FFMPEGThread, context)) != 0) 
 		{
 			ffmpeg_printf(10, "Error creating thread, error:%d:%s\n", error,strerror(error));
 

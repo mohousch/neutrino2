@@ -60,7 +60,7 @@ class cPlayback
 		~cPlayback(){};	
 		
 		////
-		uint8_t* getDecBuf(void);
+		void getDecBuf(uint8_t* buffer);
 };
 
 #endif
