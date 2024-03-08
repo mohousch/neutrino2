@@ -52,6 +52,8 @@
 //// opengl
 #include <libswscale/swscale.h>
 #include <libavutil/imgutils.h>
+#include <libswresample/swresample.h>
+#include <ao/ao.h>
 
 
 /* ***************************** */
@@ -96,6 +98,8 @@ static int audiofd 	= -1;
 
 unsigned long long int sCURRENT_PTS = 0;
 uint8_t* buf = NULL;
+static ao_device *adevice = NULL;
+static ao_sample_format sformat;
 
 //
 pthread_mutex_t LinuxDVBmutex;
@@ -1111,11 +1115,58 @@ static int Write(void* _context, void* _out)
 		AVCodecContext *ctx = out->stream->codec;
 		int got_frame = 0;
 		uint64_t curr_pts = 0;
+		// resample
+		SwrContext *swr = NULL;
+		uint8_t *obuf = NULL;
+		int obuf_sz = 0; 	// in samples
+		int obuf_sz_max = 0;
+		int o_ch, o_sr; 	// output channels and sample rate
+		uint64_t o_layout; 	// output channels layout
+		char tmp[64] = "unknown";
+		int driver;
+		ao_info *ai;
+		
+		// output sample rate, channels, layout could be set here if necessary 
+		o_ch = 2; //out->stream->codec->channels;     	// 2
+		o_sr = 48000;//out->stream->codec->sample_rate;      	// 48000
+		o_layout = AV_CH_LAYOUT_STEREO; //out->stream->codec->channel_layout;   // AV_CH_LAYOUT_STEREO
+	
+		if (sformat.channels != o_ch || sformat.rate != o_sr || sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16 || adevice == NULL)
+		{
+			driver = ao_default_driver_id();
+			sformat.bits = 16;
+			sformat.channels = o_ch;
+			sformat.rate = o_sr;
+			sformat.byte_format = AO_FMT_NATIVE;
+			sformat.matrix = 0;
+			
+			if (adevice)
+				ao_close(adevice);
+				
+			adevice = ao_open_live(driver, &sformat, NULL);
+			ai = ao_driver_info(driver);
+		}
+
+		//av_get_sample_fmt_string(tmp, sizeof(tmp), c->sample_fmt);
+	/*
+		swr = swr_alloc_set_opts(swr,
+	        	o_layout, AV_SAMPLE_FMT_S16, o_sr,         		// output
+	        	out->stream->codec->channel_layout, out->stream->codec->sample_fmt, out->stream->codec->sample_rate,  	// input
+	        	0, NULL);
+	*/
+		swr = swr_alloc();
+	        
+		if (! swr)
+		{
+			return cERR_LINUXDVB_ERROR;;
+		}
+	
+		swr_init(swr);
 						
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
 		res = avcodec_decode_audio4(ctx, aframe, &got_frame, &out->packet);
 #else
-		res = avcodec_send_packet(ctx, &out->packet);
+//		res = avcodec_send_packet(ctx, &out->packet);
 			
 		if (res != 0 && res != AVERROR(EAGAIN))
 		{
@@ -1139,8 +1190,9 @@ static int Write(void* _context, void* _out)
 		if (got_frame)
 		{
 			int out_linesize;
-			/*
-			obuf_sz = av_rescale_rnd(swr_get_delay(swr, p->sample_rate) + aframe->nb_samples, o_sr, p->sample_rate, AV_ROUND_UP);
+			
+			//
+			obuf_sz = av_rescale_rnd(swr_get_delay(swr, out->stream->codec->sample_rate) + aframe->nb_samples, o_sr, out->stream->codec->sample_rate, AV_ROUND_UP);
 
 			if (obuf_sz > obuf_sz_max)
 			{
@@ -1155,19 +1207,22 @@ static int Write(void* _context, void* _out)
 				obuf_sz_max = obuf_sz;
 			}
 							
-			obuf_sz = swr_convert(swr, &obuf, obuf_sz, (const uint8_t **)aframe->extended_data, frame->nb_samples);
-			*/
+			obuf_sz = swr_convert(swr, &obuf, obuf_sz, (const uint8_t **)aframe->extended_data, aframe->nb_samples);
 							
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
 			sCURRENT_PTS = av_frame_get_best_effort_timestamp(aframe);
 #else
 			sCURRENT_PTS = aframe->best_effort_timestamp;
 #endif
-			//int o_buf_sz = av_samples_get_buffer_size(&out_linesize, o_ch, obuf_sz, AV_SAMPLE_FMT_S16, 1);
+			int o_buf_sz = av_samples_get_buffer_size(&out_linesize, o_ch, obuf_sz, AV_SAMPLE_FMT_S16, 1);
 							
-			//if (o_buf_sz > 0)
-			//	ao_play(adevice, (char *)obuf, o_buf_sz);
+			if (o_buf_sz > 0)
+				ao_play(adevice, (char *)obuf, o_buf_sz);
 		}
+		
+		av_free(obuf);
+		swr_free(&swr);
+//		av_frame_free(&aframe);
 #endif
 
 		free(Encoding);
@@ -1226,7 +1281,7 @@ static int Write(void* _context, void* _out)
 		AVFrame *frame = NULL;
 		AVFrame *rgbframe = NULL;
 		struct SwsContext *convert = NULL;
-		AVCodec *codec = NULL;
+		AVCodec *codec = avcodec_find_decoder(out->stream->codec->codec_id);;
 		int dec_w = 0;
 		int dec_h = 0;
 		int dec_r = 0;
@@ -1239,8 +1294,6 @@ static int Write(void* _context, void* _out)
 	
 		frame = av_frame_alloc();
 		rgbframe = av_frame_alloc();
-	
-		codec = avcodec_find_decoder(out->stream->codec->codec_id);
 					
 		// init avcontext
 		res = avcodec_open2(out->stream->codec, codec, NULL);
@@ -1259,7 +1312,7 @@ static int Write(void* _context, void* _out)
 			}
 		}
 #else
-		res = avcodec_send_packet(out->stream->codec, out->packet);
+//		res = avcodec_send_packet(out->stream->codec, &out->packet);
 			
 		if (res != 0 && res != AVERROR(EAGAIN))
 		{
@@ -1320,7 +1373,7 @@ static int Write(void* _context, void* _out)
 				dec_r = out->frameRate/1000;
 			}
 		}
-		
+		/*
 		if (frame)
 		{
 			av_frame_free(&frame);
@@ -1332,6 +1385,7 @@ static int Write(void* _context, void* _out)
 			av_frame_free(&rgbframe);
 			rgbframe = NULL;
 		}
+		*/
 		
 		if (convert)
 		{
