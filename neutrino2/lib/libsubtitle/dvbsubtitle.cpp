@@ -104,7 +104,6 @@ void cDvbSubtitleBitmaps::Draw(int &min_x, int &min_y, int &max_x, int &max_y)
 		
 		// blit2fb
 		CFrameBuffer::getInstance()->blit2FB(newdata, nw, nh, xoff, yoff, 0, 0, true);
-
 		CFrameBuffer::getInstance()->blit();
 
 		free(newdata);
@@ -184,8 +183,6 @@ cDvbSubtitleConverter::cDvbSubtitleConverter(void)
 	min_y = CFrameBuffer::getInstance()->getScreenHeight();		/* screenheight */
 	max_x = CFrameBuffer::getInstance()->getScreenX();		/* startX */
 	max_y = CFrameBuffer::getInstance()->getScreenY();		/* startY */
-
-	printf("cDvbSubtitleBitmaps::Draw: finish, min/max screen: x=% d y= %d, w= %d, h= %d\n", min_x, min_y, max_x-min_x, max_y-min_y);
 
 	Timeout.Set(0xFFFF*1000);
 }
@@ -346,8 +343,6 @@ int cDvbSubtitleConverter::Action(void)
 					Clear();
 
 					sb->Draw(min_x, min_y, max_x, max_y);
-
-					CFrameBuffer::getInstance()->blit();
 
 					Timeout.Set(sb->Timeout());
 				}
