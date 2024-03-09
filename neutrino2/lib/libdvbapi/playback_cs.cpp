@@ -611,7 +611,7 @@ void cPlayback::Close(void)
 #else
 	if(player && player->output) 
 	{
-		player->output->Command(player, OUTPUT_CLOSE, NULL);
+//		player->output->Command(player, OUTPUT_CLOSE, NULL);
 		player->output->Command(player,OUTPUT_DEL, (void*)"audio");
 		player->output->Command(player,OUTPUT_DEL, (void*)"video");		
 		player->output->Command(player,OUTPUT_DEL, (void*)"subtitle");	
@@ -759,7 +759,7 @@ bool cPlayback::Start(char *filename, const char * const suburi)
 		// play it baby 
 		if(player && player->output && player->playback) 
 		{
-        		player->output->Command(player, OUTPUT_OPEN, NULL);
+//        		player->output->Command(player, OUTPUT_OPEN, NULL);
 			
 			if (player->playback->Command(player, PLAYBACK_PLAY, NULL) == 0 ) // playback.c uses "int = 0" for "true"
 			{
@@ -797,7 +797,7 @@ bool cPlayback::Play(void)
 #else
 	if(player && player->output && player->playback) 
 	{
-        	player->output->Command(player, OUTPUT_OPEN, NULL);
+//        	player->output->Command(player, OUTPUT_OPEN, NULL);
 			
 		if (player->playback->Command(player, PLAYBACK_PLAY, NULL) == 0 ) // playback.c uses "int = 0" for "true"
 		{

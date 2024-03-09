@@ -111,10 +111,6 @@ typedef struct region_s
 /* ***************************** */
 
 static pthread_mutex_t mutex;
-
-static pthread_t thread_sub;
-
-static int hasThreadStarted = 0;
 static int isSubtitleOpened = 0;
 
 // ass
@@ -751,171 +747,6 @@ static void dvbsub_write(Context_t *context, SubtitleData_t* out)
     	subtitle_printf(10, "terminating\n");
 }
 
-/* **************************** */
-/* Worker Thread                */
-/* **************************** */
-
-static void* SubtitleThread(void* data) 
-{
-    Context_t *context = (Context_t*) data;
-    Writer_t* writer = NULL;
-
-    subtitle_printf(10, "\n");
-
-    while ( context->playback->isCreationPhase ) 
-    {
-        subtitle_err("Thread waiting for end of init phase...\n");
-        usleep(1000);
-    }
-
-    subtitle_printf(10, "done\n");
-    
-    //
-    writer = getDefaultFramebufferWriter();
-
-    if (writer == NULL)
-    {
-        subtitle_err("no framebuffer writer found!\n");
-    }
-
-    while ( context && context->playback && context->playback->isPlaying) 
-    {
-        //IF MOVIE IS PAUSED, WAIT
-        if (context->playback->isPaused) 
-        {
-            subtitle_printf(20, "paused\n");
-
-            usleep(100000);
-            continue;
-        }
-
-        if (context->playback->isSeeking) 
-        {
-            subtitle_printf(10, "seeking\n");
-
-            usleep(100000);
-            continue;
-        }
-
-	// ass
-        if (ass_track)
-        {
-            ASS_Image *       img   = NULL;
-            int               change = 0;
-            unsigned long int playPts;
-            
-            if (context && context->playback)
-            {
-                if (context->playback->Command(context, PLAYBACK_PTS, &playPts) < 0)
-                    continue;
-            }
-
-            getMutex(__LINE__);
-            
-            //FIXME: durch den sleep bleibt die cpu usage zw. 5 und 13%, ohne
-            //       steigt sie bei Verwendung von subtiteln bis auf 95%.
-            //       ich hoffe dadurch gehen keine subtitle verloren, wenn die playPts
-            //       durch den sleep verschlafen wird. Besser w�re es den n�chsten
-            //       subtitel zeitpunkt zu bestimmen und solange zu schlafen.
-            usleep(1000);
-
-            img = ass_render_frame(ass_renderer, ass_track, playPts / 90.0, &change);
-
-            subtitle_printf(150, "img %p pts %lu %f\n", img, playPts, playPts / 90.0);
-
-            if(img != NULL && ass_renderer && ass_track)
-            {
-                /* the spec says, that if a new set of regions is present
-                 * the complete display switches to the new state. So lets
-                 * release the old regions on display.
-                 */
-                if (change != 0)
-                    releaseRegions();
-
-                while (context && context->playback && context->playback->isPlaying && (img) && (change != 0))
-                {
-                    WriterFBCallData_t out;
-                    time_t now = time(NULL);
-                    time_t undisplay = now + 10;
-
-                    if (ass_track && ass_track->events)
-                    {
-                        undisplay = now + ass_track->events->Duration / 1000 + 0.5;
-                    }
-
-                    subtitle_printf(100, "w %d h %d s %d x %d y %d c %d chg %d now %ld und %ld\n", 
-                                 img->w, img->h, img->stride, 
-                                 img->dst_x, img->dst_y, img->color, 
-                                 change, now, undisplay);
-
-                    /* api docu said w and h can be zero which
-                     * means image should not be rendered
-                     */
-                    if ((img->w != 0) && (img->h != 0) && (writer)) 
-                    {
-                        out.fd            = framebufferFD;
-                        out.data          = img->bitmap;
-                        out.Width         = img->w;
-                        out.Height        = img->h;
-                        out.Stride        = img->stride;
-                        out.x             = img->dst_x;
-                        out.y             = img->dst_y;
-                        out.color         = img->color;
-                        
-                        out.Screen_Width  = screen_width; 
-                        out.Screen_Height = screen_height; 
-                        out.destination   = destination;
-                        out.destStride    = destStride;
-
-                        storeRegion(img->dst_x, img->dst_y, img->w, img->h, undisplay);
-                                    
-                        if (shareFramebuffer)
-                        {
-                            if(context && context->playback && context->playback->isPlaying && writer)
-                            {
-                                writer->writeData(&out);
-                                
-                                if(threeDMode == 1)
-                                {
-			            out.x = screen_width/2 + img->dst_x;
-			            writer->writeData(&out);
-                                }
-                                else if(threeDMode == 2)
-                                {
-                                    out.y = screen_height/2 + img->dst_y;
-                                    writer->writeData(&out);
-                                }
-                            }
-                        }
-                    }
-
-                    /* Next image */
-                    img = img->next;
-                }
-            }
-            else
-            {
-               /* noop */
-            }
-
-            releaseMutex(__LINE__);
-        } 
-        else
-        {
-            usleep(1000);
-        }
-        
-        /* cleanup no longer used but not overwritten regions */
-        checkRegions();
-    } /* outer while */
-    
-    subtitle_printf(0, "has ended\n");
- 
-    hasThreadStarted = 0;
-   
-    return NULL;
-}
-
 /* ***************************** */
 /* Functions                     */
 /* ***************************** */
@@ -1018,55 +849,6 @@ static int subtitle_Close(Context_t* context)
     return cERR_SUBTITLE_NO_ERROR;
 }
 
-static int subtitle_Play(Context_t* context) 
-{
-    pthread_attr_t attr;
-	 
-    subtitle_printf(10, "\n");
-
-    if (hasThreadStarted == 0)
-    {  
-        pthread_attr_init(&attr);
-        
-        pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-        
-        if (pthread_create (&thread_sub, &attr, &SubtitleThread, (void*) context) != 0)
-        {
-           subtitle_err("Error creating thread\n");
-           hasThreadStarted = 0;
-        } 
-        else
-        {
-           subtitle_printf(10, "Created thread\n");
-           hasThreadStarted = 1;
-        }
-    }
-    else
-    {
-        subtitle_err("thread already created.\n");
-        return cERR_SUBTITLE_ERROR;
-    }
-    
-    // ass
-    getMutex(__LINE__);
-
-    releaseRegions();
-
-    /* free the track so extradata will be written next time
-     * process_data is called.
-     */
-    if (ass_track)
-        ass_free_track(ass_track);
-
-    ass_track = NULL;
-
-    releaseMutex(__LINE__);
-
-    subtitle_printf(10, "<\n");
-
-    return cERR_SUBTITLE_NO_ERROR;
-}
-
 static int subtitle_Stop(context) 
 {
     int wait_time = 20;
@@ -1074,25 +856,6 @@ static int subtitle_Stop(context)
     Writer_t* writer;
     
     subtitle_printf(10, "\n");
-
-    while ( (hasThreadStarted != 0) && (--wait_time) > 0 ) 
-    {
-        subtitle_printf(10, "Waiting for subtitle thread to terminate itself, will try another %d times\n", wait_time);
-        usleep(100000);
-    }
-
-    if (wait_time == 0) 
-    {
-        subtitle_err("Timeout waiting for thread!\n");
-
-        return cERR_SUBTITLE_ERROR;
-    }
-    
-    hasThreadStarted = 0;
-
-    /* konfetti: thread has ended, so nobody will eat the date... 
-     * free the data...
-     */
 
     getMutex(__LINE__);
     
@@ -1149,7 +912,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 	    
 	    case OUTPUT_PLAY: 
 	    {
-		//ret = subtitle_Play(context);
 		break;
 	    }
 	    
@@ -1161,7 +923,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 	    
 	    case OUTPUT_SWITCH: 
 	    {
-		//ret = subtitle_Play(context);
 		ret = subtitle_Stop(context);
 		break;
 	    }
