@@ -1168,21 +1168,21 @@ static int Write(void* _context, void* _out)
 		aframe = av_frame_alloc();
 						
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
-		ret = avcodec_decode_audio4(ctx, aframe, &got_frame, &out->packet);
+		res = avcodec_decode_audio4(ctx, aframe, &got_frame, &out->packet);
 #else
-		ret = avcodec_send_packet(ctx, out->packet);
+		res = avcodec_send_packet(ctx, out->packet);
 		
-		if (ret != 0 && ret != AVERROR(EAGAIN))
+		if (res != 0 && res != AVERROR(EAGAIN))
 		{
-			linuxdvb_printf(200, "%s: avcodec_send_packet %d\n", __func__, ret);
+			linuxdvb_printf(200, "%s: avcodec_send_packet %d\n", __func__, res);
 		}
 		else
 		{
-			ret = avcodec_receive_frame(ctx, aframe);
+			res = avcodec_receive_frame(ctx, aframe);
 							
-			if (ret != 0 && ret != AVERROR(EAGAIN))
+			if (res != 0 && res != AVERROR(EAGAIN))
 			{
-				linuxdvb_printf(200,"%s: avcodec_send_packet %d\n", __func__, ret);
+				linuxdvb_printf(200,"%s: avcodec_send_packet %d\n", __func__, res);
 			}
 			else
 			{
@@ -1221,7 +1221,14 @@ static int Write(void* _context, void* _out)
 			int o_buf_sz = av_samples_get_buffer_size(&out_linesize, o_ch, obuf_sz, AV_SAMPLE_FMT_S16, 1);
 							
 			if (o_buf_sz > 0)
-				ao_play(adevice, (char *)obuf, o_buf_sz);
+				res = ao_play(adevice, (char *)obuf, o_buf_sz);
+				
+			if (res <= 0)
+			{
+				linuxdvb_err("failed to write AUDIO data %d - %d\n", res, errno);
+				linuxdvb_err("%s\n", strerror(errno));
+				ret = cERR_LINUXDVB_ERROR;
+			}
 		}
 		
 		av_free(obuf);
