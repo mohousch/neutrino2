@@ -100,8 +100,10 @@ static int audiofd 	= -1;
 
 unsigned long long int sCURRENT_PTS = 0;
 uint8_t* buf = NULL;
+#ifdef USE_OPENGL
 static ao_device *adevice = NULL;
 static ao_sample_format sformat;
+#endif
 
 //
 pthread_mutex_t LinuxDVBmutex;
