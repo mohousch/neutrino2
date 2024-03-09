@@ -50,10 +50,12 @@
 #endif
 
 //// opengl
+#ifdef USE_OPENGL
 #include <libswscale/swscale.h>
 #include <libavutil/imgutils.h>
 #include <libswresample/swresample.h>
 #include <ao/ao.h>
+#endif
 
 
 /* ***************************** */
