@@ -255,12 +255,10 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 			return "A_WMA";
 			
 		case AV_CODEC_ID_VORBIS:
-			//return "A_VORBIS"; //FIXME:
-			return "A_IPCM";
+			return "A_VORBIS"; //FIXME:
 			
 		case AV_CODEC_ID_FLAC: //86030
-			//return "A_FLAC"; //FIXME:
-			return "A_IPCM";
+			return "A_FLAC"; //FIXME:
 			
 		case AV_CODEC_ID_PCM_S8:
 		case AV_CODEC_ID_PCM_U8:

@@ -266,7 +266,7 @@ int LinuxDvbPlay(Context_t  *context, char * type)
 		char * Encoding = NULL;
 		context->manager->audio->Command(context, MANAGER_GETENCODING, &Encoding);
 
-		linuxdvb_printf(20, "0 A %s\n", Encoding);
+		linuxdvb_printf(10, "0 A %s\n", Encoding);
 
 		writer = getWriter(Encoding);
 
@@ -1164,21 +1164,21 @@ static int Write(void* _context, void* _out)
 		aframe = av_frame_alloc();
 						
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
-		res = avcodec_decode_audio4(ctx, aframe, &got_frame, &out->packet);
+		ret = avcodec_decode_audio4(ctx, aframe, &got_frame, &out->packet);
 #else
-		res = avcodec_send_packet(ctx, out->packet);
-			
-		if (res != 0 && res != AVERROR(EAGAIN))
+		ret = avcodec_send_packet(ctx, out->packet);
+		
+		if (ret != 0 && ret != AVERROR(EAGAIN))
 		{
-			linuxdvb_printf(200, "%s: avcodec_send_packet %d\n", __func__, res);
+			linuxdvb_printf(200, "%s: avcodec_send_packet %d\n", __func__, ret);
 		}
 		else
 		{
-			res = avcodec_receive_frame(ctx, aframe);
+			ret = avcodec_receive_frame(ctx, aframe);
 							
-			if (res != 0 && res != AVERROR(EAGAIN))
+			if (ret != 0 && ret != AVERROR(EAGAIN))
 			{
-				linuxdvb_printf(200,"%s: avcodec_send_packet %d\n", __func__, res);
+				linuxdvb_printf(200,"%s: avcodec_send_packet %d\n", __func__, ret);
 			}
 			else
 			{
