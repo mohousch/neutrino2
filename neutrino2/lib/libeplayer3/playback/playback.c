@@ -352,9 +352,6 @@ static int PlaybackOpen(Context_t  *context, char * uri)
 	    playback_err("playback alread running\n");
 	    return cERR_PLAYBACK_ERROR;
 	}
-	
-	////
-	context->output->Command(context, OUTPUT_OPEN, NULL);
 
 	playback_printf(10, "exiting with value 0\n");
 
@@ -377,9 +374,6 @@ static int PlaybackClose(Context_t  *context)
 	context->manager->audio->Command(context, MANAGER_DEL, NULL);
 	context->manager->video->Command(context, MANAGER_DEL, NULL);    
 	context->manager->subtitle->Command(context, MANAGER_DEL, NULL); 
-	
-	////
-	context->output->Command(context, OUTPUT_CLOSE, NULL); 
 
 	context->playback->isPaused     = 0;
 	context->playback->isPlaying    = 0;

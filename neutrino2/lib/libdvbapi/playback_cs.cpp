@@ -609,17 +609,17 @@ void cPlayback::Close(void)
 		dprintf(DEBUG_NORMAL, "GST playbin closed\n");
 	}
 #else
+	//
 	if(player && player->output) 
 	{
-//		player->output->Command(player, OUTPUT_CLOSE, NULL);
-		player->output->Command(player,OUTPUT_DEL, (void*)"audio");
-		player->output->Command(player,OUTPUT_DEL, (void*)"video");		
-		player->output->Command(player,OUTPUT_DEL, (void*)"subtitle");	
+		player->output->Command(player, OUTPUT_CLOSE, NULL);
+		player->output->Command(player, OUTPUT_DEL, (void*)"audio");
+		player->output->Command(player, OUTPUT_DEL, (void*)"video");		
+		player->output->Command(player, OUTPUT_DEL, (void*)"subtitle");	
 	}
-
+	
 	if(player && player->playback)
 		player->playback->Command(player, PLAYBACK_CLOSE, NULL);
-
 
 	if(player)
 		free(player);
@@ -759,7 +759,7 @@ bool cPlayback::Start(char *filename, const char * const suburi)
 		// play it baby 
 		if(player && player->output && player->playback) 
 		{
-//        		player->output->Command(player, OUTPUT_OPEN, NULL);
+        		player->output->Command(player, OUTPUT_OPEN, NULL);
 			
 			if (player->playback->Command(player, PLAYBACK_PLAY, NULL) == 0 ) // playback.c uses "int = 0" for "true"
 			{
@@ -797,7 +797,7 @@ bool cPlayback::Play(void)
 #else
 	if(player && player->output && player->playback) 
 	{
-//        	player->output->Command(player, OUTPUT_OPEN, NULL);
+        	player->output->Command(player, OUTPUT_OPEN, NULL);
 			
 		if (player->playback->Command(player, PLAYBACK_PLAY, NULL) == 0 ) // playback.c uses "int = 0" for "true"
 		{
@@ -876,7 +876,7 @@ bool cPlayback::SetSubPid(unsigned short pid)
 	if(pid != mSubStream)
 	{
 		if(player && player->playback)
-				player->playback->Command(player, PLAYBACK_SWITCH_SUBTITLE, (void*)&track);
+			player->playback->Command(player, PLAYBACK_SWITCH_SUBTITLE, (void*)&track);
 
 		mSubStream = pid;
 	}
