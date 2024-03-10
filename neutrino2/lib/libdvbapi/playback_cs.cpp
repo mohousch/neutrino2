@@ -1361,9 +1361,17 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 }
 
 ////
-void cPlayback::getDecBuf(uint8_t* buffer)
+#ifdef USE_OPENGL
+void cPlayback::getDecBuf(uint8_t* buffer, int* width, int* height)
 {
+	Data_t* out;
+	
 	if(player && player->playback)
-		player->playback->Command(player, PLAYBACK_DATA, (void*)&buffer);
+		player->playback->Command(player, PLAYBACK_DATA, (void*)out);
+		
+	buffer = out->buffer;
+	*width = out->width;
+	*height = out->height;
 }
+#endif
 

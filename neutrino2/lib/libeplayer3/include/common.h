@@ -16,6 +16,13 @@ typedef struct Context_s
 	ManagerHandler_t* manager;
 } Context_t;
 
+typedef struct Data_s
+{
+	uint8_t* buffer;
+	int width;
+	int height;
+}Data_t;
+
 // video stream type 
 typedef enum {
 	VIDEO_STREAMTYPE_MPEG2 		= 0,

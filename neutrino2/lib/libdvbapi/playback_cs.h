@@ -59,8 +59,10 @@ class cPlayback
 		cPlayback(int num = 0);
 		~cPlayback(){};	
 		
-		////
-		void getDecBuf(uint8_t* buffer);
+#ifdef USE_OPENGL
+		void getDecBuf(uint8_t* buffer, int* width, int* height);
+#endif
 };
 
 #endif
+

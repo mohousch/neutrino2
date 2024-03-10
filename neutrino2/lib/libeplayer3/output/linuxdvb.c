@@ -99,8 +99,11 @@ static int videofd 	= -1;
 static int audiofd 	= -1;
 
 unsigned long long int sCURRENT_PTS = 0;
-uint8_t* buf = NULL;
+
 #ifdef USE_OPENGL
+static uint8_t* buf = NULL;
+static int width = 1280;
+static int height = 720;
 static ao_device *adevice = NULL;
 static ao_sample_format sformat;
 #endif
@@ -1294,9 +1297,9 @@ static int Write(void* _context, void* _out)
 		AVFrame *rgbframe = NULL;
 		struct SwsContext *convert = NULL;
 		AVCodec *codec = avcodec_find_decoder(ctx->codec_id);;
-		int dec_w = 0;
-		int dec_h = 0;
-		int dec_r = 0;
+//		int dec_w = 0;
+//		int dec_h = 0;
+//		int dec_r = 0;
 		bool w_h_changed = false;
 		
 		time_t warn_r = 0;
@@ -1354,12 +1357,12 @@ static int Write(void* _context, void* _out)
 				sws_scale(convert, frame->data, frame->linesize, 0, ctx->height, rgbframe->data, rgbframe->linesize);
 				
 				//
-				if (dec_w != ctx->width || dec_h != ctx->height)
+				if (width != ctx->width || height != ctx->height)
 				{
-					linuxdvb_printf(100, "CPlayBack::run: pic changed %dx%d -> %dx%d\n", dec_w, dec_h, ctx->width, ctx->height);
+					linuxdvb_printf(100, "CPlayBack::run: pic changed %dx%d -> %dx%d\n", width, height, ctx->width, ctx->height);
 					
-					dec_w = ctx->width;
-					dec_h = ctx->height;
+					width = ctx->width;
+					height = ctx->height;
 					w_h_changed = true;
 				}
 				
@@ -1377,7 +1380,7 @@ static int Write(void* _context, void* _out)
 				//	out->pts += 90000 * 3 / 10; // 300ms
 								
 				//dec_r = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);
-				dec_r = out->frameRate/1000;
+				//dec_r = out->frameRate/1000;
 			}
 		}
 		
@@ -1457,15 +1460,20 @@ static int reset(Context_t  *context)
 }
 
 ////
-int LinuxDvbGetData(Context_t  *context, uint8_t* buffer) 
+int LinuxDvbGetData(Context_t* context, Data_t* _data) 
 {
+	Data_t* data = (Data_t*) _data;
 	int ret = cERR_LINUXDVB_NO_ERROR;
 
 	linuxdvb_printf(50, "\n");
 
 	getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
+	
+	memset(data, 0, sizeof(data));
 
-	buffer = buf;
+	data->width = width;
+	data->height = height;
+	data->buffer = buf;
 
 	releaseLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);	
 
@@ -1597,7 +1605,7 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 		
 		case OUTPUT_DATA:
 		{
-			ret = LinuxDvbGetData(context, (uint8_t*)argument);
+			ret = LinuxDvbGetData(context, (Data_t*)argument);
 			break;
 		}
 		

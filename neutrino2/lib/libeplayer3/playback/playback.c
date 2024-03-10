@@ -1006,8 +1006,9 @@ static int PlaybackInfo(Context_t  *context, char** infoString)
 }
 
 // buffer 
-static int PlaybackGetData(Context_t* context, uint8_t* buffer)
+static int PlaybackGetData(Context_t* context, Data_t* _data)
 {
+	Data_t* data = (Data_t*) _data;
 	int ret = cERR_PLAYBACK_NO_ERROR;
 
 	playback_printf(10, "\n");
@@ -1015,7 +1016,7 @@ static int PlaybackGetData(Context_t* context, uint8_t* buffer)
 	//
 	if (context->playback->isPlaying) 
 	{
-		ret = context->output->Command(context, OUTPUT_DATA, buffer);
+		ret = context->output->Command(context, OUTPUT_DATA, (Data_t*)data);
 	} 
 	else
 	{
@@ -1141,7 +1142,7 @@ static int Command(void* _context, PlaybackCmd_t command, void * argument)
 		
 		case PLAYBACK_DATA:
 		{
-			ret = PlaybackGetData(context, (uint8_t*)argument);
+			ret = PlaybackGetData(context, (Data_t*)argument);
 			break;
 		}
 		

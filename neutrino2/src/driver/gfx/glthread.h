@@ -73,7 +73,6 @@ class GLThreadObj : public OpenThreads::Thread
 		bool mInitDone;			/* condition predicate */
 
 		std::vector<unsigned char> mOSDBuffer; /* silly bounce buffer */
-		std::vector<unsigned char> mDisplayBuffer; /* silly bounce buffer */
 
 		std::map<unsigned char, neutrino_msg_t> mKeyMap;
 		std::map<int, neutrino_msg_t> mSpecialMap;

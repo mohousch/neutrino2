@@ -504,10 +504,14 @@ void GLThreadObj::bltPlayBuffer()
 		return;
 		
 	static bool warn = true;
-	uint8_t *buf = NULL;
-	playback->getDecBuf(buf);
+
+	uint8_t* buf = NULL;
+	int w = 0;
+	int h = 0;
+	playback->getDecBuf(buf, &w, &h);
 	
-	if (!buf)
+	/*
+	if (buf == NULL)
 	{	
 		warn = false;
 		
@@ -520,29 +524,30 @@ void GLThreadObj::bltPlayBuffer()
 		
 		return;
 	}
+	*/
 	
 	warn = true;
-	//int w = buf->width(), h = buf->height();
 	
-	//if (w == 0 || h == 0)
-	//	return;
-
-	//AVRational a = buf->AR();
+	if (w == 0 || h == 0)
+		return;
+/*
+	AVRational a = buf->AR();
 	
-	//if (a.den != 0 && a.num != 0 && av_cmp_q(a, _mVA))
+	if (a.den != 0 && a.num != 0 && av_cmp_q(a, _mVA))
 	{
-//		_mVA = a;
+		_mVA = a;
 		// _mVA is the raw buffer's aspect, mVA is the real scaled output aspect
-//		av_reduce(&mVA.num, &mVA.den, w * a.num, h * a.den, INT_MAX);
-//		mVAchanged = true;
+		av_reduce(&mVA.num, &mVA.den, w * a.num, h * a.den, INT_MAX);
+		mVAchanged = true;
 	}
+*/
 
 	// render frame
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
-	glBufferData(GL_PIXEL_UNPACK_BUFFER, 1280*720*4, &buf, GL_STREAM_DRAW_ARB);
+	glBufferData(GL_PIXEL_UNPACK_BUFFER, w*h, &buf, GL_STREAM_DRAW_ARB);
 
 	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1280, 720, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
 
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 	
@@ -559,8 +564,8 @@ void GLThreadObj::bltPlayBuffer()
 		
 		last_pts = vpts;
 	}
-	
-	printf("sleep_us:%d\n", sleep_us);
 	*/
+	
+	printf("w:%d h:%d\n", w, h);
 }
 
