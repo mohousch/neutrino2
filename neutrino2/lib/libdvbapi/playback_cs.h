@@ -34,7 +34,6 @@ extern "C" {
 
 #include <libavutil/samplefmt.h>
 #include <libswresample/swresample.h>
-#include <ao/ao.h>
 
 #include <libswscale/swscale.h>
 #include <libavutil/imgutils.h>
