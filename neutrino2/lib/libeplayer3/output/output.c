@@ -428,7 +428,7 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 			if (context && context->playback ) 
 			{
 				if (context->playback->isVideo)
-					return context->output->video->Command(context, OUTPUT_DATA, (Data_t*)argument);
+					return context->output->video->Command(context, OUTPUT_DATA, &argument);
 			} 
 			else
 				ret = cERR_OUTPUT_INTERNAL_ERROR;

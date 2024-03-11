@@ -1284,7 +1284,7 @@ void cPlayback::FindAllPids(uint16_t *apids, unsigned short *ac3flags, uint16_t 
 	// audio pids
 	if(player && player->manager && player->manager->audio) 
 	{
-		player->manager->audio->Command(player, MANAGER_LIST, &TrackList);
+		player->manager->audio->Command(player, MANAGER_LIST, (void*)&TrackList);
 
 		if (TrackList != NULL) 
 		{
@@ -1335,7 +1335,7 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 	
 	if(player && player->manager && player->manager->subtitle) 
 	{
-		player->manager->subtitle->Command(player, MANAGER_LIST, &TrackList);
+		player->manager->subtitle->Command(player, MANAGER_LIST, (void*)&TrackList);
 
 		if (TrackList != NULL) 
 		{
@@ -1362,16 +1362,19 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 
 ////
 #ifdef USE_OPENGL
-void cPlayback::getDecBuf(uint8_t* buffer, int* width, int* height)
+void cPlayback::getDecBuf(uint8_t** buffer, int* width, int* height, int* rate, uint64_t* pts, AVRational* a)
 {
 	Data_t* out;
 	
 	if(player && player->playback)
-		player->playback->Command(player, PLAYBACK_DATA, (void*)out);
+		player->playback->Command(player, PLAYBACK_DATA, (Data_t*)out);
 		
-	buffer = out->buffer;
+	*buffer = out->buffer;
 	*width = out->width;
 	*height = out->height;
+	*rate = out->rate;
+	*pts = out->pts;
+	*a = out->a;
 }
 #endif
 

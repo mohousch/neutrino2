@@ -98,12 +98,14 @@ static const char AUDIODEV[] 	= "/dev/dvb/adapter0/audio0";
 static int videofd 	= -1;
 static int audiofd 	= -1;
 
-unsigned long long int sCURRENT_PTS = 0;
+uint64_t sCURRENT_PTS = 0;
 
 #ifdef USE_OPENGL
-static uint8_t* buf = NULL;
-static int width = 1280;
-static int height = 720;
+uint8_t* buf = NULL;
+int width = 1280;
+int height = 720;
+AVRational a;
+int rate;
 static ao_device *adevice = NULL;
 static ao_sample_format sformat;
 #endif
@@ -1297,9 +1299,7 @@ static int Write(void* _context, void* _out)
 		AVFrame *rgbframe = NULL;
 		struct SwsContext *convert = NULL;
 		AVCodec *codec = avcodec_find_decoder(ctx->codec_id);;
-//		int dec_w = 0;
-//		int dec_h = 0;
-//		int dec_r = 0;
+
 		bool w_h_changed = false;
 		
 		time_t warn_r = 0;
@@ -1373,14 +1373,12 @@ static int Write(void* _context, void* _out)
 				sCURRENT_PTS = frame->best_effort_timestamp;
 #endif
 
-				// a/v delay determined experimentally :-)
-				//if (out->stream->codec->codec_id == AV_CODEC_ID_MPEG2VIDEO)
-				//	out->pts += 90000 * 4 / 10; // 400ms
-				//else
-				//	out->pts += 90000 * 3 / 10; // 300ms
-								
-				//dec_r = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);
-				//dec_r = out->frameRate/1000;
+				//
+				a = ctx->time_base;
+				
+				//				
+				//rate = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);
+				rate = out->frameRate/1000;
 			}
 		}
 		
@@ -1460,9 +1458,8 @@ static int reset(Context_t  *context)
 }
 
 ////
-int LinuxDvbGetData(Context_t* context, Data_t* _data) 
+int LinuxDvbGetData(Context_t* context, Data_t* data) 
 {
-	Data_t* data = (Data_t*) _data;
 	int ret = cERR_LINUXDVB_NO_ERROR;
 
 	linuxdvb_printf(50, "\n");
@@ -1474,6 +1471,9 @@ int LinuxDvbGetData(Context_t* context, Data_t* _data)
 	data->width = width;
 	data->height = height;
 	data->buffer = buf;
+	data->pts = sCURRENT_PTS;
+	data->a = a;
+	data->rate = rate;
 
 	releaseLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);	
 
@@ -1605,7 +1605,7 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 		
 		case OUTPUT_DATA:
 		{
-			ret = LinuxDvbGetData(context, (Data_t*)argument);
+			ret = LinuxDvbGetData(context, (Data_t*)&argument);
 			break;
 		}
 		

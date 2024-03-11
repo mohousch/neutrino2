@@ -124,7 +124,6 @@ static long long int latestPts = 0;
 static int container_ffmpeg_seek_bytes(off_t pos);
 static int container_ffmpeg_seek(Context_t *context, float sec);
 static int container_ffmpeg_seek_rel(Context_t *context, off_t pos, long long int pts, float sec);
-static int container_ffmpeg_seek_bytes_rel(off_t start, off_t bytes);
 
 /* ***************************** */
 /* MISC Functions                */
@@ -145,7 +144,7 @@ void releaseMutex(const char *filename, const char *function, int line)
 	ffmpeg_printf(100, "::%d released mutex\n", line);
 }
 
-static char* Codec2Encoding(AVCodecContext *codec, int* version)
+static char* Codec2Encoding(AVCodecContext* codec, int* version)
 {
 	switch (codec->codec_id)
 	{
@@ -255,10 +254,10 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 			return "A_WMA";
 			
 		case AV_CODEC_ID_VORBIS:
-			return "A_VORBIS"; //FIXME:
+			return "A_VORBIS"; 	//FIXME:
 			
-		case AV_CODEC_ID_FLAC: //86030
-			return "A_FLAC"; //FIXME:
+		case AV_CODEC_ID_FLAC: 		//86030
+			return "A_FLAC"; 	//FIXME:
 			
 		case AV_CODEC_ID_PCM_S8:
 		case AV_CODEC_ID_PCM_U8:
@@ -419,11 +418,17 @@ static char* searchMeta(AVDictionary * metadata, char* ourTag)
 static void FFMPEGThread(Context_t *context) 
 {
 	AVPacket   packet;
-	off_t currentReadPosition = 0; // last read position
+//	off_t currentReadPosition = 0; // last read position
 	off_t lastReverseSeek = 0;     // max address to read before seek again in reverse play 
 	off_t lastSeek = -1;
-	long long int lastPts = -1, currentVideoPts = -1, currentAudioPts = -1, showtime = 0, bofcount = 0;
-	int err = 0, gotlastPts = 0, audioMute = 0;
+	long long int lastPts = -1;
+	long long int currentVideoPts = -1;
+	long long int currentAudioPts = -1;
+	long long int showtime = 0;
+	long long int bofcount = 0;
+	int err = 0;
+	int gotlastPts = 0;
+	int audioMute = 0;
 	AudioVideoOut_t avOut;
 
 	// Softdecoding buffer
@@ -512,12 +517,13 @@ static void FFMPEGThread(Context_t *context)
 			Track_t * subtitleTrack = NULL;    
 
 			int index = packet.stream_index;
-
+/*
 #if LIBAVCODEC_VERSION_MAJOR < 54
 			currentReadPosition = url_ftell(avContext->pb);
 #else
 			currentReadPosition = avio_tell(avContext->pb);
 #endif
+*/
 
 			if (context->manager->video->Command(context, MANAGER_GET_TRACK, &videoTrack) < 0)
 				ffmpeg_err("error getting video track\n");
@@ -578,9 +584,8 @@ static void FFMPEGThread(Context_t *context)
 					//
 					if (audioTrack->inject_as_pcm == 1)
 					{
-						AVCodecContext *c = audioTrack->stream->codec;
+						AVCodecContext *ctx = audioTrack->stream->codec;
 						int bytesDone = 0;
-						
 						
 						if(samples == NULL)
 							samples = av_frame_alloc();
@@ -593,16 +598,16 @@ static void FFMPEGThread(Context_t *context)
 							int decoded_data_size = 0; //AVCODEC_MAX_AUDIO_FRAME_SIZE;
 							
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 37, 100)
-							bytesDone = avcodec_decode_audio4(c, samples, &decoded_data_size, &packet);
+							bytesDone = avcodec_decode_audio4(ctx, samples, &decoded_data_size, &packet);
 #else
-							bytesDone = avcodec_send_packet(c, &packet);
+							bytesDone = avcodec_send_packet(ctx, &packet);
 							
              						if (bytesDone < 0 && bytesDone != AVERROR(EAGAIN) && bytesDone != AVERROR_EOF) 
              						{
             						} 
             						else 
             						{
-             							bytesDone = avcodec_receive_frame(c, samples);
+             							bytesDone = avcodec_receive_frame(ctx, samples);
              						}
 #endif
 
@@ -811,9 +816,9 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	}
 
 	// initialize ffmpeg 
-//	avcodec_register_all();
+	avcodec_register_all();
 	av_register_all();
-//	avformat_network_init();
+	avformat_network_init();
 
 #if LIBAVCODEC_VERSION_MAJOR < 54
 	if ((err = av_open_input_file(&avContext, filename, NULL, 0, NULL)) != 0) 
@@ -855,10 +860,10 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	for ( n = 0; n < avContext->nb_streams; n++) 
 	{
 		Track_t track;
-		AVStream * stream = avContext->streams[n];
+		AVStream* stream = avContext->streams[n];
 		int version = 0;
 
-		char * encoding = Codec2Encoding(stream->codec, &version);
+		char* encoding = Codec2Encoding(stream->codec, &version);
 
 		if (encoding != NULL)
 			ffmpeg_printf(1, "%d. encoding = %s - version %d\n", n, encoding, version);
@@ -939,7 +944,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				{
 					if (context->manager->video->Command(context, MANAGER_ADD, &track) < 0) 
 					{
-						/* konfetti: fixme: is this a reason to return with error? */
 						ffmpeg_err("failed to add track %d\n", n);
 					}
 				}
@@ -1006,9 +1010,11 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				if(!strncmp(encoding, "A_IPCM", 6))
 				{
 					track.inject_as_pcm = 1;
+					
 					ffmpeg_printf(10, " Handle inject_as_pcm = %d\n", track.inject_as_pcm);
 
-					AVCodec *codec = avcodec_find_decoder(stream->codec->codec_id);
+					// init codec
+					AVCodec* codec = avcodec_find_decoder(stream->codec->codec_id);
 
 #if LIBAVCODEC_VERSION_MAJOR < 54
 					if(codec != NULL && !avcodec_open(stream->codec, codec))
@@ -1161,7 +1167,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				{
 					if (context->manager->audio->Command(context, MANAGER_ADD, &track) < 0) 
 					{
-						/* konfetti: fixme: is this a reason to return with error? */
 						ffmpeg_err("failed to add track %d\n", n);
 					}
 				}
@@ -1234,7 +1239,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				{
 					if (context->manager->subtitle->Command(context, MANAGER_ADD, &track) < 0) 
 					{
-						/* konfetti: fixme: is this a reason to return with error? */
 						ffmpeg_err("failed to add subtitle track %d\n", n);
 					}
 				}
@@ -1398,54 +1402,7 @@ static int container_ffmpeg_seek_bytes(off_t pos)
 	return cERR_CONTAINER_FFMPEG_NO_ERROR;
 }
 
-/* seeking relative to a given byteposition N bytes ->for reverse playback needed */
-static int container_ffmpeg_seek_bytes_rel(off_t start, off_t bytes) 
-{
-	int flag = AVSEEK_FLAG_BYTE;
-	off_t newpos;
-#if LIBAVCODEC_VERSION_MAJOR < 54
-	off_t current_pos = url_ftell(avContext->pb);
-#else
-	off_t current_pos = avio_tell(avContext->pb);
-#endif
-
-	if (start == -1)
-		start = current_pos;
-
-	ffmpeg_printf(250, "start:%lld bytes:%lld\n", start, bytes);
-
-	newpos = start + bytes;
-
-	if (current_pos > newpos)
-		flag |= AVSEEK_FLAG_BACKWARD;
-
-	if (newpos < 0)
-	{
-		ffmpeg_err("end of file reached\n");
-		return cERR_CONTAINER_FFMPEG_END_OF_FILE;
-	}
-
-	ffmpeg_printf(20, "seeking to position %lld (bytes)\n", newpos);
-
-/* fixme: should we adapt INT64_MIN/MAX to some better value?
- * take a loog in ffmpeg to be sure what this paramter are doing
- */
-	if (avformat_seek_file(avContext, -1, INT64_MIN, newpos, INT64_MAX, flag) < 0)
-	{
-		ffmpeg_err( "Error seeking\n");
-		return cERR_CONTAINER_FFMPEG_ERR;
-	}    
-
-#if LIBAVCODEC_VERSION_MAJOR < 54
-	ffmpeg_printf(30, "current_pos after seek %lld\n", url_ftell(avContext->pb));
-#else
-	ffmpeg_printf(30, "current_pos after seek %lld\n", avio_tell(avContext->pb));
-#endif
-
-	return cERR_CONTAINER_FFMPEG_NO_ERROR;
-}
-
-/* seeking relative to a given byteposition N seconds ->for reverse playback needed */
+// seeking relative to a given byteposition N seconds ->for reverse playback needed
 static int container_ffmpeg_seek_rel(Context_t *context, off_t pos, long long int pts, float sec) 
 {
 	Track_t * videoTrack = NULL;
@@ -1780,9 +1737,9 @@ static int container_ffmpeg_get_info(Context_t* context, char ** infoString)
 	return cERR_CONTAINER_FFMPEG_NO_ERROR;
 }
 
-static int Command(void  *_context, ContainerCmd_t command, void * argument)
+static int Command(void* _context, ContainerCmd_t command, void* argument)
 {
-	Context_t  *context = (Context_t*) _context;
+	Context_t* context = (Context_t*) _context;
 	int ret = cERR_CONTAINER_FFMPEG_NO_ERROR;
 
 	ffmpeg_printf(50, "Command %d\n", command);
@@ -1902,5 +1859,4 @@ Container_t FFMPEGContainer = {
 	&Command,
 	FFMPEG_Capabilities
 };
-
 

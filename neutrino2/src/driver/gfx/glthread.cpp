@@ -20,6 +20,8 @@
 	along with this program; if not, write to the Free Software
 	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
+#include <stdio.h>
+#include <stdlib.h>
 
 #include <iostream>
 #include <vector>
@@ -29,8 +31,8 @@
 
 #include <sys/types.h>
 #include <signal.h>
+#include <inttypes.h>
 
-#include <sys/types.h>
 #include <unistd.h>
 #include "glthread.h"
 #include <GL/glx.h>
@@ -505,12 +507,18 @@ void GLThreadObj::bltPlayBuffer()
 		
 	static bool warn = true;
 
-	uint8_t* buf = NULL;
-	int w = 0;
-	int h = 0;
-	playback->getDecBuf(buf, &w, &h);
+	uint8_t* buf;
+	int w;
+	int h;
+	int rate;
+	uint64_t pts;
+	AVRational a;
 	
-	/*
+	playback->getDecBuf(&buf, &w, &h, &rate, &pts, &a);
+	
+	printf("w:%d h:%d\n", w, h);
+	
+	//
 	if (buf == NULL)
 	{	
 		warn = false;
@@ -524,15 +532,13 @@ void GLThreadObj::bltPlayBuffer()
 		
 		return;
 	}
-	*/
 	
 	warn = true;
 	
 	if (w == 0 || h == 0)
 		return;
-/*
-	AVRational a = buf->AR();
 	
+	//
 	if (a.den != 0 && a.num != 0 && av_cmp_q(a, _mVA))
 	{
 		_mVA = a;
@@ -540,20 +546,19 @@ void GLThreadObj::bltPlayBuffer()
 		av_reduce(&mVA.num, &mVA.den, w * a.num, h * a.den, INT_MAX);
 		mVAchanged = true;
 	}
-*/
 
 	// render frame
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
-	glBufferData(GL_PIXEL_UNPACK_BUFFER, w*h, &buf, GL_STREAM_DRAW_ARB);
+	glBufferData(GL_PIXEL_UNPACK_BUFFER, w*h, buf, GL_STREAM_DRAW_ARB);
 
 	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
 
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 	
-	/*
+	//
 	int64_t last_pts = 0;
-	int64_t vpts = buf->pts() + 18000;
+	int64_t vpts = pts + 18000;
 	
 	if (last_pts != vpts)
 	{
@@ -564,7 +569,6 @@ void GLThreadObj::bltPlayBuffer()
 		
 		last_pts = vpts;
 	}
-	*/
 	
 	printf("w:%d h:%d\n", w, h);
 }

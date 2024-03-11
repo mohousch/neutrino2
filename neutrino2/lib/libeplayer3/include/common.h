@@ -21,6 +21,9 @@ typedef struct Data_s
 	uint8_t* buffer;
 	int width;
 	int height;
+	AVRational a;
+	uint64_t pts;
+	int rate;
 }Data_t;
 
 // video stream type 

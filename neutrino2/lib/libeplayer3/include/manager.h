@@ -27,44 +27,38 @@ typedef enum
 
 typedef struct Track_s 
 {
-	char *                Name;
-	char *                Encoding;
+	char*                 Name;
+	char*                 Encoding;
 	int                   Index;  // 
 
-	/* 
-	*new field for ffmpeg - add at the end so no problem
-    	*can occur with not changed srt saa container
-    	*/
+	//
 	char*                 language;
 
-	/* length of track */
+	// length of track
 	long long int         duration;
 	unsigned int          frame_rate;
 	unsigned int          TimeScale;
 	int                   version;
 	long long int         pts;
 
-	/* for later use: */
+	// for later use:
 	eTrackTypeEplayer     type;
 	int                   width;
 	int                   height;
 
-	/* stream from ffmpeg */
-	AVStream               * stream;
+	// stream from ffmpeg
+	AVStream* 	      stream;
 
-	/* codec extra data (header or some other stuff) */
-	void                * extraData;
+	// codec extra data (header or some other stuff)
+	void* 		      extraData;
 	int		      extraSize;
 
-	/* aac header*/
+	// aac header
 	uint8_t*              aacbuf;
 	unsigned int          aacbuflen;
 	int                   have_aacheader;
 
-	/* 
-	* If player2 or the elf do not support decoding of audio codec set this.
-	* AVCodec is than used for softdecoding and stream will be injected as PCM 
-	*/
+	//
 	int                   inject_as_pcm;
 } Track_t;
 

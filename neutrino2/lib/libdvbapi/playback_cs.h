@@ -23,6 +23,24 @@
 #include <stdint.h>
 #include <string>
 
+extern "C" {
+#include <libavutil/avutil.h>
+//#if LIBAVCODEC_VERSION_MAJOR > 54
+#include <libavutil/time.h>
+//#endif
+#include <libavformat/avformat.h>
+#if LIBAVCODEC_VERSION_MAJOR > 54
+#include <libavutil/opt.h>
+
+#include <libavutil/samplefmt.h>
+#include <libswresample/swresample.h>
+#include <ao/ao.h>
+
+#include <libswscale/swscale.h>
+#include <libavutil/imgutils.h>
+#endif
+}
+
 #include <config.h>
 
 
@@ -60,7 +78,7 @@ class cPlayback
 		~cPlayback(){};	
 		
 #ifdef USE_OPENGL
-		void getDecBuf(uint8_t* buffer, int* width, int* height);
+		void getDecBuf(uint8_t** buffer, int* width, int* height, int* rate, uint64_t* pts, AVRational* a);
 #endif
 };
 
