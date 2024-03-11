@@ -1464,6 +1464,7 @@ int LinuxDvbGetData(Context_t* context, Data_t* data)
 
 	linuxdvb_printf(50, "\n");
 
+#ifdef USE_OPENGL
 	getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 	
 	memset(data, 0, sizeof(data));
@@ -1476,6 +1477,7 @@ int LinuxDvbGetData(Context_t* context, Data_t* data)
 	data->rate = rate;
 
 	releaseLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);	
+#endif
 
 	return ret;
 }
