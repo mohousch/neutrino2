@@ -98,15 +98,15 @@ int InsertPesHeader(unsigned char *data, int size, unsigned char stream_id, unsi
 {
 	BitPacker_t ld2 = {data, 0, 32};
 
-	PutBits(&ld2,0x0  ,8);
-	PutBits(&ld2,0x0  ,8);
-	PutBits(&ld2,0x1  ,8);  	// Start Code
-	PutBits(&ld2,stream_id ,8);  	// Stream_id = Audio Stream
+	PutBits(&ld2, 0x0, 8);
+	PutBits(&ld2, 0x0, 8);
+	PutBits(&ld2, 0x1, 8);  	// Start Code
+	PutBits(&ld2, stream_id, 8);  	// Stream_id = Audio Stream
 	
 	//4
 	if (size > 0) 
     	{
-        	size += 3 + (pts != INVALID_PTS_VALUE ? 5:0) + (pic_start_code ? (5) : 0);
+        	size += 3 + (pts != INVALID_PTS_VALUE ? 5 : 0) + (pic_start_code ? (5) : 0);
     	}
 
     	if (size > MAX_PES_PACKET_SIZE || size < 0)
@@ -116,29 +116,29 @@ int InsertPesHeader(unsigned char *data, int size, unsigned char stream_id, unsi
     	
     	PutBits(&ld2, size, 16); // PES_packet_length
 	//6 = 4+2
-	PutBits(&ld2,0x2  ,2);  // 10
-	PutBits(&ld2,0x0  ,2);  // PES_Scrambling_control
-	PutBits(&ld2,0x0  ,1);  // PES_Priority
-	PutBits(&ld2,0x0  ,1);  // data_alignment_indicator
-	PutBits(&ld2,0x0  ,1);  // Copyright
-	PutBits(&ld2,0x0  ,1);  // Original or Copy
+	PutBits(&ld2, 0x2, 2);  // 10
+	PutBits(&ld2, 0x0, 2);  // PES_Scrambling_control
+	PutBits(&ld2, 0x0, 1);  // PES_Priority
+	PutBits(&ld2, 0x0, 1);  // data_alignment_indicator
+	PutBits(&ld2, 0x0, 1);  // Copyright
+	PutBits(&ld2, 0x0, 1);  // Original or Copy
 	
 	//7 = 6+1
 	if (pts != INVALID_PTS_VALUE)
-		PutBits(&ld2,0x2 ,2);
+		PutBits(&ld2, 0x2, 2);
 	else
-		PutBits(&ld2,0x0 ,2);  // PTS_DTS flag
+		PutBits(&ld2, 0x0, 2);  // PTS_DTS flag
 		
 	//
-	PutBits(&ld2,0x0 ,1);  // ESCR_flag
-	PutBits(&ld2,0x0 ,1);  // ES_rate_flag
-	PutBits(&ld2,0x0 ,1);  // DSM_trick_mode_flag
-	PutBits(&ld2,0x0 ,1);  // additional_copy_ingo_flag
-	PutBits(&ld2,0x0 ,1);  // PES_CRC_flag
-	PutBits(&ld2,0x0 ,1);  // PES_extension_flag
+	PutBits(&ld2, 0x0, 1);  // ESCR_flag
+	PutBits(&ld2, 0x0, 1);  // ES_rate_flag
+	PutBits(&ld2, 0x0, 1);  // DSM_trick_mode_flag
+	PutBits(&ld2, 0x0, 1);  // additional_copy_ingo_flag
+	PutBits(&ld2, 0x0, 1);  // PES_CRC_flag
+	PutBits(&ld2, 0x0, 1);  // PES_extension_flag
 	
 	//8 = 7+1
-	if (pts!=INVALID_PTS_VALUE)
+	if (pts != INVALID_PTS_VALUE)
 		PutBits(&ld2, 0x5, 8);
 	else
 		PutBits(&ld2, 0x0, 8);  // PES_header_data_length
@@ -146,23 +146,23 @@ int InsertPesHeader(unsigned char *data, int size, unsigned char stream_id, unsi
 	//9 = 8+1
 	if (pts != INVALID_PTS_VALUE)
 	{
-		PutBits(&ld2,0x2,4);
-		PutBits(&ld2,(pts>>30) & 0x7,3);
-		PutBits(&ld2,0x1,1);
-		PutBits(&ld2,(pts>>15) & 0x7fff,15);
-		PutBits(&ld2,0x1,1);
-		PutBits(&ld2,pts & 0x7fff,15);
-		PutBits(&ld2,0x1,1);
+		PutBits(&ld2, 0x2, 4);
+		PutBits(&ld2, (pts>>30) & 0x7, 3);
+		PutBits(&ld2, 0x1, 1);
+		PutBits(&ld2, (pts>>15) & 0x7fff, 15);
+		PutBits(&ld2, 0x1, 1);
+		PutBits(&ld2, pts & 0x7fff, 15);
+		PutBits(&ld2, 0x1, 1);
 	}
 	
 	//14 = 9+5
 	if (pic_start_code)
 	{
-		PutBits(&ld2,0x0 ,8);
-		PutBits(&ld2,0x0 ,8);
-		PutBits(&ld2,0x1 ,8);  				// Start Code
-		PutBits(&ld2,pic_start_code & 0xff ,8);  	// 00, for picture start
-		PutBits(&ld2,(pic_start_code >> 8 )&0xff,8);  	// For any extra information (like in mpeg4p2, the pic_start_code)
+		PutBits(&ld2, 0x0, 8);
+		PutBits(&ld2, 0x0, 8);
+		PutBits(&ld2, 0x1, 8);  				// Start Code
+		PutBits(&ld2, pic_start_code & 0xff, 8);  	// 00, for picture start
+		PutBits(&ld2, (pic_start_code >> 8 )&0xff, 8);  	// For any extra information (like in mpeg4p2, the pic_start_code)
 		//14 + 4 = 18
 	}
 

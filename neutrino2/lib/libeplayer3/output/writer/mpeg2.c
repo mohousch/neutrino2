@@ -151,6 +151,7 @@ static int writeData(void* _call)
 	}
 
 	mpeg2_printf(10, "< len %d\n", len);
+	
 	return len;
 #else
 	uint8_t *data = call->data;
@@ -272,6 +273,7 @@ static int writeData(void* _call)
 			iov[3].iov_len = data_len - pos;
 
 			must_send_header = false;
+			
 			return call->WriteV(call->fd, iov, 4);
 		}
 	}

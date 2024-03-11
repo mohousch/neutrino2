@@ -512,7 +512,7 @@ int LinuxDvbReverseDiscontinuity(Context_t  *context, int* surplus)
 }
 
 // audio mute
-int LinuxDvbAudioMute(Context_t  *context, char *flag) 
+int LinuxDvbAudioMute(Context_t* context, char* flag) 
 {
 	int ret = cERR_LINUXDVB_NO_ERROR;
 

@@ -79,7 +79,7 @@ if (debug_level >= level) printf(x); } while (0)
 /* MISC Functions                */
 /* ***************************** */
 
-void PutBits(BitPacker_t * ld, unsigned int code, unsigned int length)
+void PutBits(BitPacker_t* ld, unsigned int code, unsigned int length)
 {
 	unsigned int bit_buf;
 	int bit_left;
@@ -118,7 +118,7 @@ void PutBits(BitPacker_t * ld, unsigned int code, unsigned int length)
 	ld->Remaining = bit_left;
 }
 
-void FlushBits(BitPacker_t * ld)
+void FlushBits(BitPacker_t* ld)
 {
 	ld->BitBuffer <<= ld->Remaining;
 	

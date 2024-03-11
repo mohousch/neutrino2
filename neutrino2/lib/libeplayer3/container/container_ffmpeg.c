@@ -417,9 +417,7 @@ static char* searchMeta(AVDictionary * metadata, char* ourTag)
 //// play thread
 static void FFMPEGThread(Context_t *context) 
 {
-	AVPacket   packet;
-//	off_t currentReadPosition = 0; // last read position
-	off_t lastReverseSeek = 0;     // max address to read before seek again in reverse play 
+	AVPacket   packet; 
 	off_t lastSeek = -1;
 	long long int lastPts = -1;
 	long long int currentVideoPts = -1;
@@ -427,7 +425,6 @@ static void FFMPEGThread(Context_t *context)
 	long long int showtime = 0;
 	long long int bofcount = 0;
 	int err = 0;
-	int gotlastPts = 0;
 	int audioMute = 0;
 	AudioVideoOut_t avOut;
 
@@ -511,20 +508,13 @@ static void FFMPEGThread(Context_t *context)
 
 		if (av_read_frame(avContext, &packet) == 0 )
 		{
-			long long int pts;
 			Track_t * videoTrack = NULL;
 			Track_t * audioTrack = NULL;	    
 			Track_t * subtitleTrack = NULL;    
 
 			int index = packet.stream_index;
-/*
-#if LIBAVCODEC_VERSION_MAJOR < 54
-			currentReadPosition = url_ftell(avContext->pb);
-#else
-			currentReadPosition = avio_tell(avContext->pb);
-#endif
-*/
 
+			// 
 			if (context->manager->video->Command(context, MANAGER_GET_TRACK, &videoTrack) < 0)
 				ffmpeg_err("error getting video track\n");
 
@@ -541,7 +531,7 @@ static void FFMPEGThread(Context_t *context)
 			{
 				if (videoTrack->Index == index) 
 				{
-					currentVideoPts = videoTrack->pts = pts = calcPts(videoTrack->stream, &packet);
+					currentVideoPts = videoTrack->pts = calcPts(videoTrack->stream, &packet);
 
 					if ((currentVideoPts > latestPts) && (currentVideoPts != INVALID_PTS_VALUE))
 						latestPts = currentVideoPts;
@@ -550,7 +540,7 @@ static void FFMPEGThread(Context_t *context)
 
 					avOut.data       = packet.data;
 					avOut.len        = packet.size;
-					avOut.pts        = pts;
+					avOut.pts        = videoTrack->pts;
 					avOut.extradata  = videoTrack->extraData;
 					avOut.extralen   = videoTrack->extraSize;
 					avOut.frameRate  = videoTrack->frame_rate;
@@ -574,7 +564,7 @@ static void FFMPEGThread(Context_t *context)
 			{
 				if (audioTrack->Index == index) 
 				{
-					currentAudioPts = audioTrack->pts = pts = calcPts(audioTrack->stream, &packet);
+					currentAudioPts = audioTrack->pts = calcPts(audioTrack->stream, &packet);
 
 					if ((currentAudioPts > latestPts) && (!videoTrack))
 						latestPts = currentAudioPts;
@@ -631,7 +621,7 @@ static void FFMPEGThread(Context_t *context)
 							avOut.data       = samples;
 							avOut.len        = decoded_data_size;
 
-							avOut.pts        = pts;
+							avOut.pts        = audioTrack->pts;
 							avOut.extradata  = (unsigned char *) &extradata;
 							avOut.extralen   = sizeof(extradata);
 							avOut.frameRate  = 0;
@@ -658,7 +648,7 @@ static void FFMPEGThread(Context_t *context)
 
 						avOut.data       = packet.data;
 						avOut.len        = packet.size;
-						avOut.pts        = pts;
+						avOut.pts        = audioTrack->pts;
 						avOut.extradata  = audioTrack->aacbuf;
 						avOut.extralen   = audioTrack->aacbuflen;
 						avOut.frameRate  = 0;
@@ -682,7 +672,7 @@ static void FFMPEGThread(Context_t *context)
 					{
 						avOut.data       = packet.data;
 						avOut.len        = packet.size;
-						avOut.pts        = pts;
+						avOut.pts        = audioTrack->pts;
 						avOut.extradata  = NULL;
 						avOut.extralen   = 0;
 						avOut.frameRate  = 0;
@@ -713,10 +703,10 @@ static void FFMPEGThread(Context_t *context)
 					float duration = 3.0;
 					ffmpeg_printf(100, "subtitleTrack->stream %p \n", subtitleTrack->stream);
 
-					pts = calcPts(subtitleTrack->stream, &packet);
+					subtitleTrack->pts = calcPts(subtitleTrack->stream, &packet);
 
-					if ((pts > latestPts) && (!videoTrack) && (!audioTrack))
-						latestPts = pts;
+					if ((subtitleTrack->pts > latestPts) && (!videoTrack) && (!audioTrack))
+						latestPts = subtitleTrack->pts;
 
 					ffmpeg_printf(20, "Packet duration %d\n", packet.duration);
 					ffmpeg_printf(20, "Packet convergence_duration %lld\n", packet.convergence_duration);
@@ -746,7 +736,7 @@ static void FFMPEGThread(Context_t *context)
 						data.len       = packet.size;
 						data.extradata = subtitleTrack->extraData;
 						data.extralen  = subtitleTrack->extraSize;
-						data.pts       = pts;
+						data.pts       = subtitleTrack->pts;
 						data.duration  = duration;
 						data.width     = subtitleTrack->width;
 		           			data.height    = subtitleTrack->height;
