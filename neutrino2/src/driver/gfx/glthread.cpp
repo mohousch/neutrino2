@@ -516,8 +516,6 @@ void GLThreadObj::bltPlayBuffer()
 	
 	playback->getDecBuf(&buf, &w, &h, &rate, &pts, &a);
 	
-	printf("w:%d h:%d\n", w, h);
-	
 	//
 	if (buf == NULL)
 	{	
@@ -569,7 +567,5 @@ void GLThreadObj::bltPlayBuffer()
 		
 		last_pts = vpts;
 	}
-	
-	printf("w:%d h:%d\n", w, h);
 }
 

@@ -1121,7 +1121,7 @@ static int Write(void* _context, void* _out)
 		}
 #else
 		AVFrame * aframe = NULL;
-		AVCodecContext *ctx = out->stream->codec;
+//		AVCodecContext *ctx = out->stream->codec;
 		int got_frame = 0;
 		uint64_t curr_pts = 0;
 		// resample
@@ -1136,9 +1136,9 @@ static int Write(void* _context, void* _out)
 		ao_info *ai;
 		
 		// output sample rate, channels, layout could be set here if necessary 
-		o_ch = ctx->channels;     	// 2
-		o_sr = ctx->sample_rate;      	// 48000
-		o_layout = ctx->channel_layout;   // AV_CH_LAYOUT_STEREO
+		o_ch = out->stream->codec->channels;     	// 2
+		o_sr = out->stream->codec->sample_rate;      	// 48000
+		o_layout = out->stream->codec->channel_layout;   // AV_CH_LAYOUT_STEREO
 	
 		if (sformat.channels != o_ch || sformat.rate != o_sr || sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16 || adevice == NULL)
 		{
@@ -1159,7 +1159,7 @@ static int Write(void* _context, void* _out)
 		//av_get_sample_fmt_string(tmp, sizeof(tmp), c->sample_fmt);
 		swr = swr_alloc_set_opts(swr,
 	        	o_layout, AV_SAMPLE_FMT_S16, o_sr,         		// output
-	        	ctx->channel_layout, ctx->sample_fmt, ctx->sample_rate,  	// input
+	        	out->stream->codec->channel_layout, out->stream->codec->sample_fmt, out->stream->codec->sample_rate,  	// input
 	        	0, NULL);
 		//swr = swr_alloc();
 	        
@@ -1173,9 +1173,9 @@ static int Write(void* _context, void* _out)
 		aframe = av_frame_alloc();
 						
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
-		res = avcodec_decode_audio4(ctx, aframe, &got_frame, &out->packet);
+		res = avcodec_decode_audio4(out->stream->codec, aframe, &got_frame, &out->packet);
 #else
-		res = avcodec_send_packet(ctx, out->packet);
+		res = avcodec_send_packet(out->stream->codec, out->packet);
 		
 		if (res != 0 && res != AVERROR(EAGAIN))
 		{
@@ -1183,7 +1183,7 @@ static int Write(void* _context, void* _out)
 		}
 		else
 		{
-			res = avcodec_receive_frame(ctx, aframe);
+			res = avcodec_receive_frame(out->stream->codec, aframe);
 							
 			if (res != 0 && res != AVERROR(EAGAIN))
 			{
@@ -1201,7 +1201,7 @@ static int Write(void* _context, void* _out)
 			int out_linesize;
 			
 			//
-			obuf_sz = av_rescale_rnd(swr_get_delay(swr, ctx->sample_rate) + aframe->nb_samples, o_sr, ctx->sample_rate, AV_ROUND_UP);
+			obuf_sz = av_rescale_rnd(swr_get_delay(swr, out->stream->codec->sample_rate) + aframe->nb_samples, o_sr, out->stream->codec->sample_rate, AV_ROUND_UP);
 
 			if (obuf_sz > obuf_sz_max)
 			{
@@ -1294,11 +1294,11 @@ static int Write(void* _context, void* _out)
 			}
 		}
 #else
-		AVCodecContext* ctx = out->stream->codec;
+//		AVCodecContext* ctx = out->stream->codec;
 		AVFrame *frame = NULL;
 		AVFrame *rgbframe = NULL;
 		struct SwsContext *convert = NULL;
-		AVCodec *codec = avcodec_find_decoder(ctx->codec_id);;
+		AVCodec *codec = avcodec_find_decoder(out->stream->codec->codec_id);;
 
 		bool w_h_changed = false;
 		
@@ -1309,13 +1309,13 @@ static int Write(void* _context, void* _out)
 		rgbframe = av_frame_alloc();
 					
 		// init avcontext
-		res = avcodec_open2(ctx, codec, NULL);
+		res = avcodec_open2(out->stream->codec, codec, NULL);
 		
 		//
 		int got_frame = 0;
 	
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
-		ret = avcodec_decode_video2(ctx, frame, &got_frame, out->packet);
+		ret = avcodec_decode_video2(out->stream->codec, frame, &got_frame, out->packet);
 		
 		if (ret < 0)
 		{
@@ -1325,7 +1325,7 @@ static int Write(void* _context, void* _out)
 			}
 		}
 #else
-		ret = avcodec_send_packet(ctx, out->packet);
+		ret = avcodec_send_packet(out->stream->codec, out->packet);
 			
 		if (ret != 0 && res != AVERROR(EAGAIN))
 		{
@@ -1335,7 +1335,7 @@ static int Write(void* _context, void* _out)
 			}
 		}
 			
-		ret = avcodec_receive_frame(ctx, frame);
+		ret = avcodec_receive_frame(out->stream->codec, frame);
 		
 		if (ret == 0)
 			got_frame = 1;
@@ -1344,25 +1344,25 @@ static int Write(void* _context, void* _out)
 		// setup swsscaler
 		if (got_frame)
 		{
-			unsigned int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
+			unsigned int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, out->stream->codec->width, out->stream->codec->height, 1);
 							
-			convert = sws_getContext(ctx->width, ctx->height, ctx->pix_fmt, ctx->width, ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
+			convert = sws_getContext(out->stream->codec->width, out->stream->codec->height, out->stream->codec->pix_fmt, out->stream->codec->width, out->stream->codec->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
 								
 			if (convert)
 			{
     				buf = (uint8_t *)av_malloc(need);
 									
-				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, buf, AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
+				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, buf, AV_PIX_FMT_RGB32, out->stream->codec->width, out->stream->codec->height, 1);
 
-				sws_scale(convert, frame->data, frame->linesize, 0, ctx->height, rgbframe->data, rgbframe->linesize);
+				sws_scale(convert, frame->data, frame->linesize, 0, out->stream->codec->height, rgbframe->data, rgbframe->linesize);
 				
 				//
-				if (width != ctx->width || height != ctx->height)
+				if (width != out->stream->codec->width || height != out->stream->codec->height)
 				{
-					linuxdvb_printf(100, "CPlayBack::run: pic changed %dx%d -> %dx%d\n", width, height, ctx->width, ctx->height);
+					linuxdvb_printf(100, "CPlayBack::run: pic changed %dx%d -> %dx%d\n", width, height, out->stream->codec->width, out->stream->codec->height);
 					
-					width = ctx->width;
-					height = ctx->height;
+					width = out->stream->codec->width;
+					height = out->stream->codec->height;
 					w_h_changed = true;
 				}
 				
@@ -1374,7 +1374,7 @@ static int Write(void* _context, void* _out)
 #endif
 
 				//
-				a = ctx->time_base;
+				a = out->stream->codec->time_base;
 				
 				//				
 				//rate = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);
