@@ -997,12 +997,8 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 	// open
 	record->Open();
 
-	// start_recording
-#if defined (PLATFORM_COOLSTREAM)
-	if(!record->Start(fd, vpid, pids, numpids, 0))
-#else	  
-	if(!record->Start(fd, vpid, pids, numpids, record_fe)) 
-#endif	  
+	// start_recording	  
+	if(!record->Start(fd, vpid, pids, numpids, record_fe)) 	  
 	{
 		record->Stop();
 		delete record;
