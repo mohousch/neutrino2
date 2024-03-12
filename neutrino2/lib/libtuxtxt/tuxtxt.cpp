@@ -4390,11 +4390,13 @@ void DoFlashing(int startrow)
 						break;
 
 				}
+				
 				RenderCharFB(flashchar,&flashattr);
 				if (flashattr.doublew) col++;
 				if (flashattr.doubleh) dhset = 1;
 			}
 		}
+		
 		if (dhset)
 		{
 			row++;
@@ -5099,15 +5101,13 @@ void DecodePage()
 				case end_box:
 					boxwin = 0;
 					IgnoreAtBlackBgSubst = 0;
-					
-// TEST					
+									
 					if (boxed)
 					{
 						foreground = transp;
 						background = transp;
 						IgnoreAtBlackBgSubst = 0;
 					}
-//
 					break;
 
 				case start_box:
@@ -5117,7 +5117,6 @@ void DecodePage()
 						//background = 0x08;
 					}
 					
-// TEST
 					if (boxed)
 					{
 						int rowstart = row * 40;
@@ -5130,7 +5129,6 @@ void DecodePage()
 							page_atrb[rowstart + clear].IgnoreAtBlackBgSubst = 0;
 						}
 					}
-//
 					break;
 
 				case normal_size:

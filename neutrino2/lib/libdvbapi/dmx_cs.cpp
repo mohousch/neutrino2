@@ -458,8 +458,6 @@ void cDemux::addPid(unsigned short Pid)
 
 	if (::ioctl(demux_fd, DMX_ADD_PID, &Pid) < 0)
 		perror("DMX_ADD_PID");
-
-	return;
 }
 
 // remove pid
@@ -472,8 +470,6 @@ void cDemux::removePid(unsigned short Pid)
 
 	if (::ioctl(demux_fd, DMX_REMOVE_PID, &Pid) < 0)
 		perror("DMX_ADD_PID");
-	
-	return;
 }
 
 void cDemux::getSTC(int64_t * STC)
