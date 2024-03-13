@@ -207,7 +207,7 @@ static int Command(void  *_context, ManagerCmd_t command, void * argument)
 		{
 			subtitle_mgr_printf(20, "%s::%s MANAGER_GET_TRACK\n", FILENAME, __FUNCTION__);
 
-			if ((TrackCount > 0) && (CurrentTrack >=0))
+			if ((TrackCount > 0) && (CurrentTrack >= 0))
 			{
 			     subtitle_mgr_printf(120, "return %d, %p\n", CurrentTrack, &Tracks[CurrentTrack]);
 			    *((Track_t**)argument) = (Track_t*) &Tracks[CurrentTrack];

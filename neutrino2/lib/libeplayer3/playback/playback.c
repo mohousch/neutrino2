@@ -919,11 +919,17 @@ static int PlaybackSwitchAudio(Context_t  *context, int* track)
 
 		if(nextrackid != curtrackid) 
 		{
+			//
 			if (context->output && context->output->audio)
+			{
 				context->output->audio->Command(context, OUTPUT_SWITCH, (void*)"audio");
+			}
 
+			// dummy without effect
 			if (context->container && context->container->selectedContainer)
-				context->container->selectedContainer->Command(context, CONTAINER_SWITCH_AUDIO, &nextrackid);
+			{
+				context->container->selectedContainer->Command(context, CONTAINER_SWITCH_AUDIO, &nextrackid); 
+			}
 		}
 	} 
 	else
@@ -957,11 +963,13 @@ static int PlaybackSwitchSubtitle(Context_t *context, int* track)
 
 			context->manager->subtitle->Command(context, MANAGER_GET, &trackid);
 		  
+		  	//
 			if (context->output && context->output->subtitle)
 			{
 				context->output->subtitle->Command(context, OUTPUT_SWITCH, (void*)"subtitle");
 			}
 
+			// dummy without effect
 			if (context->container && context->container->selectedContainer)
 			{
 				context->container->selectedContainer->Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);

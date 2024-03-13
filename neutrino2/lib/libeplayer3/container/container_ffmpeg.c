@@ -426,7 +426,7 @@ static void FFMPEGThread(Context_t *context)
 	long long int bofcount = 0;
 	int err = 0;
 	int audioMute = 0;
-	AudioVideoOut_t avOut;
+	AudioVideoOut_t avOut;	
 
 	// Softdecoding buffer
 	AVFrame *samples = NULL;

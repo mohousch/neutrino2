@@ -195,10 +195,10 @@ static int Command(void  *_context, ManagerCmd_t command, void * argument)
 
 	    	case MANAGER_GET: 
 		{
-			if ((TrackCount > 0) && (CurrentTrack >=0))
+			if ((TrackCount > 0) && (CurrentTrack >= 0))
 		    		*((int*)argument) = (int)Tracks[CurrentTrack].Index;
 			else
-		    		*((int*)argument) = (int)-1;
+		    		*((int*)argument) = (int) - 1;
 			break;
 	    	}
 
@@ -206,7 +206,7 @@ static int Command(void  *_context, ManagerCmd_t command, void * argument)
 	    	{
 			video_mgr_printf(20, "%s::%s MANAGER_GET_TRACK\n", FILENAME, __FUNCTION__);
 
-			if ((TrackCount > 0) && (CurrentTrack >=0))
+			if ((TrackCount > 0) && (CurrentTrack >= 0))
 		    		*((Track_t**)argument) = (Track_t*) &Tracks[CurrentTrack];
 			else
 		    		*((Track_t**)argument) = NULL;
@@ -215,7 +215,7 @@ static int Command(void  *_context, ManagerCmd_t command, void * argument)
 
    		case MANAGER_GETENCODING: 
 		{
-        		if ((TrackCount > 0) && (CurrentTrack >=0))
+        		if ((TrackCount > 0) && (CurrentTrack >= 0))
             			*((char**)argument) = (char *)strdup(Tracks[CurrentTrack].Encoding);
         		else
             			*((char**)argument) = (char *)strdup("");
@@ -224,7 +224,7 @@ static int Command(void  *_context, ManagerCmd_t command, void * argument)
 
     		case MANAGER_GETNAME: 
 		{
-			if ((TrackCount > 0) && (CurrentTrack >=0))
+			if ((TrackCount > 0) && (CurrentTrack >= 0))
 			    *((char**)argument) = (char *)strdup(Tracks[CurrentTrack].Name);
 			else
 			    *((char**)argument) = (char *)strdup("");
@@ -262,7 +262,7 @@ static int Command(void  *_context, ManagerCmd_t command, void * argument)
     	return ret;
 }
 
-
+////
 struct Manager_s VideoManager = {
     	"Video",
     	&Command,
