@@ -33,6 +33,12 @@ typedef struct pcmPrivateData_s
 	//
 	uint8_t bResampling;
 	enum AVCodecID avCodecId;
+	uint8_t *private_data;
+    	uint32_t private_size;
+    	int32_t block_align;
+    	int32_t frame_size;
+    	int32_t bits_per_coded_sample;
+    	int32_t bit_rate;
 	
 } pcmPrivateData_t;
 

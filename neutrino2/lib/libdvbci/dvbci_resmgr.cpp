@@ -12,21 +12,12 @@ int eDVBCIResourceManagerSession::receivedAPDU(const unsigned char *tag,const vo
 		switch (tag[2])
 		{
 			case 0x10:  // profile enquiry
-				dprintf(DEBUG_DEBUG, "cam fragt was ich kann.");
+				printf("cam fragt was ich kann.");
 				state = stateProfileEnquiry;
 
 				return 1;
 				break;
 			case 0x11: // Tprofile
-				/*
-				printf("mein cam kann: ");
-				if (!len)
-					printf("nichts\n");
-				else
-					for (int i = 0; i<len; i++)
-						printf("%02x ", ((const unsigned char*)data)[i]);
-				*/
-
 				if (state == stateFirstProfileEnquiry)
 				{
 					// profile change
@@ -35,7 +26,7 @@ int eDVBCIResourceManagerSession::receivedAPDU(const unsigned char *tag,const vo
 				state = stateFinal;
 				break;
 			default:
-				dprintf(DEBUG_DEBUG, "unknown APDU tag 9F 80 %02x\n", tag[2]);
+				printf("unknown APDU tag 9F 80 %02x\n", tag[2]);
 		}
 	}
 	
@@ -66,7 +57,7 @@ int eDVBCIResourceManagerSession::doAction()
 
 		case stateProfileChange:
 		{
-			dprintf(DEBUG_DEBUG, "bla kaputt\n");
+			printf("bla kaputt\n");
 			break;
 		}
 
@@ -89,7 +80,7 @@ int eDVBCIResourceManagerSession::doAction()
 		}
 
 		case stateFinal:
-			dprintf(DEBUG_DEBUG, "stateFinal und action! kann doch garnicht sein ;)\n");
+			printf("stateFinal und action! kann doch garnicht sein ;)\n");
 		default:
 			break;
 	}

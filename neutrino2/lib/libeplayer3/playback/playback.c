@@ -649,7 +649,7 @@ static int PlaybackFastForward(Context_t  *context, int* speed)
 
 	playback_printf(10, "speed %d\n", *speed);
 
-	/* Audio only forwarding not supported */
+	// Audio only forwarding not supported
 	if (context->playback->isVideo && !context->playback->isHttp && !context->playback->BackWard && (!context->playback->isPaused || context->playback->isPlaying)) 
 	{
 		if ((*speed <= 0) || (*speed > cMaxSpeed_ff))
@@ -716,7 +716,7 @@ static int PlaybackFastBackward(Context_t  *context,int* speed)
 
 	playback_printf(10, "speed %d\n", *speed);
 
-	/* Audio only backwarding not supported */
+	// Audio only backwarding not supported
 	if (context->playback->isVideo && !context->playback->isHttp && !context->playback->isForwarding && (!context->playback->isPaused || context->playback->isPlaying)) 
 	{
 	    

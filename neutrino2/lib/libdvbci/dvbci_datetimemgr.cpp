@@ -29,7 +29,7 @@ int eDVBCIDateTimeSession::receivedAPDU(const unsigned char *tag,const void *dat
 				return 1;
 				break;
 			default:
-				dprintf(DEBUG_DEBUG, "unknown APDU tag 9F 84 %02x\n", tag[2]);
+				printf("unknown APDU tag 9F 84 %02x\n", tag[2]);
 				break;
 		}
 	}
@@ -52,7 +52,7 @@ int eDVBCIDateTimeSession::doAction()
 			return 0;
 		}
 		case stateFinal:
-			dprintf(DEBUG_DEBUG, "stateFinal und action! kann doch garnicht sein ;)\n");
+			printf("stateFinal und action! kann doch garnicht sein ;)\n");
 		default:
 			return 0;
 	}

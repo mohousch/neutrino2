@@ -3,9 +3,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
-//#ifdef __sh__
 #include <stdio.h>
-//#endif
 
 #include "dvbci_session.h"
 #include "dvbci_resmgr.h"
@@ -16,7 +14,6 @@
 
 #include <neutrinoMessages.h>
 #include <driver/rcinput.h>
-#include <system/debug.h>
 
 
 extern CRCInput *g_RCInput;
@@ -45,7 +42,7 @@ int eDVBCISession::buildLengthField(unsigned char *pkt, int len)
 	} 
 	else
 	{
-		dprintf(DEBUG_DEBUG, "too big length\n");
+		printf("too big length\n");
 		exit(0);
 	}
 }
@@ -170,42 +167,42 @@ eDVBCISession* eDVBCISession::createSession(tSlot *slot, const unsigned char *re
 	{
 		case 0x00010041:
 			sessions[session_nb - 1] = new eDVBCIResourceManagerSession;
-			dprintf(DEBUG_DEBUG, "RESOURCE MANAGER\n");
+			printf("RESOURCE MANAGER\n");
 			break;
 		case 0x00020041:
 			sessions[session_nb - 1] = new eDVBCIApplicationManagerSession(slot);
-			dprintf(DEBUG_DEBUG, "APPLICATION MANAGER\n");
+			printf("APPLICATION MANAGER\n");
 			break;
 		case 0x00030041:
 			sessions[session_nb - 1] = new eDVBCICAManagerSession(slot);
-			dprintf(DEBUG_DEBUG, "CA MANAGER\n");
+			printf("CA MANAGER\n");
 			break;
 		case 0x00240041:
 			sessions[session_nb - 1] = new eDVBCIDateTimeSession(slot);
-			dprintf(DEBUG_DEBUG, "DATE-TIME\n");
+			printf("DATE-TIME\n");
 			break;
 		case 0x00400041:
 			sessions[session_nb - 1] = new eDVBCIMMISession(slot);
-			dprintf(DEBUG_DEBUG, "MMI - create session\n");
+			printf("MMI - create session\n");
 			break;
 		case 0x00100041:
 	//		session = new eDVBCIAuthSession;
-			dprintf(DEBUG_DEBUG, "AuthSession\n");
+			printf("AuthSession\n");
 	//		break;
 		case 0x00200041:
 		default:
-			dprintf(DEBUG_DEBUG, "unknown resource type %02x %02x %02x %02x\n", resource_identifier[0], resource_identifier[1], resource_identifier[2],resource_identifier[3]);
+			printf("unknown resource type %02x %02x %02x %02x\n", resource_identifier[0], resource_identifier[1], resource_identifier[2],resource_identifier[3]);
 			sessions[session_nb - 1] = 0;
 			status = 0xF0;
 	}
 
 	if (!sessions[session_nb - 1])
 	{
-		dprintf(DEBUG_DEBUG, "unknown session.. expect crash\n");
+		printf("unknown session.. expect crash\n");
 		return NULL;
 	}
 
-	dprintf(DEBUG_DEBUG, "new session nb %d %p\n", session_nb, sessions[session_nb - 1]);
+	printf("new session nb %d %p\n", session_nb, sessions[session_nb - 1]);
 	sessions[session_nb - 1]->session_nb = session_nb;
 
 	if (sessions[session_nb - 1])
@@ -243,7 +240,7 @@ int eDVBCISession::pollAll()
 
 			if (r)
 			{
-				dprintf(DEBUG_DEBUG, "%s <\n", __func__);
+				printf("%s <\n", __func__);
 				return 1;
 			}
 		}
@@ -285,14 +282,14 @@ void eDVBCISession::receiveData(tSlot *slot, const unsigned char *ptr, size_t le
 		
 		if ((!session_nb) || (session_nb >= SLMS))
 		{
-			dprintf(DEBUG_DEBUG, "PROTOCOL: illegal session number %x\n", session_nb);
+			printf("PROTOCOL: illegal session number %x\n", session_nb);
 			return;
 		}
 		
 		session=sessions[session_nb-1];
 		if (!session)
 		{
-			dprintf(DEBUG_DEBUG, "PROTOCOL: data on closed session %x\n", session_nb);
+			printf("PROTOCOL: data on closed session %x\n", session_nb);
 			return;
 		}
 
@@ -304,11 +301,11 @@ void eDVBCISession::receiveData(tSlot *slot, const unsigned char *ptr, size_t le
 				session->recvCreateSessionResponse(pkt);
 				break;
 			case 0x95:
-				dprintf(DEBUG_DEBUG, "recvCloseSessionRequest");
+				printf("recvCloseSessionRequest");
 				session->recvCloseSessionRequest(pkt);
 				break;
 			default:
-				dprintf(DEBUG_DEBUG, "INTERNAL: nyi, tag %02x.\n", tag);
+				printf("INTERNAL: nyi, tag %02x.\n", tag);
 				return;
 		}
 	}
@@ -332,9 +329,9 @@ void eDVBCISession::receiveData(tSlot *slot, const unsigned char *ptr, size_t le
 
 			//if (eDVBCIModule::getInstance()->workarounds_active & eDVBCIModule::workaroundMagicAPDULength)
 			{
-				if (((len-alen) > 0) && ((len - alen) < 3))
+				if (((len - alen) > 0) && ((len - alen) < 3))
 				{
-					dprintf(DEBUG_DEBUG, "WORKAROUND: applying work around MagicAPDULength\n");
+					printf("WORKAROUND: applying work around MagicAPDULength\n");
 					alen=len;
 				}
 			}

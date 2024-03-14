@@ -615,9 +615,13 @@ static void FFMPEGThread(Context_t *context)
 							extradata.uSampleRate = audioTrack->stream->codec->sample_rate;
 							extradata.uBitsPerSample = 16;
 							extradata.bLittleEndian = 1;
-							
 							extradata.avCodecId = audioTrack->stream->codec->codec_id;
+							//extradata.bits_per_coded_sample = audioTrack->stream->bits_per_coded_sample;
+							//extradata.bit_rate = audioTrack->stream->bit_rate;
+                					//extradata.block_align = audioTrack->stream->block_align;
+                					//extradata.frame_size = audioTrack->stream->frame_size;
 
+							//
 							avOut.data       = samples;
 							avOut.len        = decoded_data_size;
 

@@ -30,7 +30,6 @@
 #include <global.h>
 #include <neutrino2.h>
 
-#include <system/debug.h>
 #include <system/helpers.h>
 
 #include "record_cs.h"
@@ -60,7 +59,7 @@ cRecord::~cRecord()
 
 bool cRecord::Open()
 {
-	dprintf(DEBUG_INFO, "cRecord::Open\n");
+	printf("cRecord::Open\n");
 	
 	exit_flag = RECORD_STOPPED;
 	
@@ -69,7 +68,7 @@ bool cRecord::Open()
 
 bool cRecord::Start(int fd, unsigned short vpid, unsigned short * apids, int numpids, CFrontend *fe)
 {
-	dprintf(DEBUG_INFO, "cRecord::Start\n");
+	printf("cRecord::Start\n");
 	
 	int i = 0;
 
@@ -91,7 +90,7 @@ bool cRecord::Start(int fd, unsigned short vpid, unsigned short * apids, int num
 	{
 		exit_flag = RECORD_FAILED_READ;
 		errno = i;
-		dprintf(DEBUG_INFO, "cRecord::Start: error creating thread!\n");
+		printf("cRecord::Start: error creating thread!\n");
 		
 		if (dmx)
 		{
@@ -109,7 +108,7 @@ bool cRecord::Start(int fd, unsigned short vpid, unsigned short * apids, int num
 
 bool cRecord::Stop(void)
 {
-	dprintf(DEBUG_INFO, "cRecord::Stop\n");
+	printf("cRecord::Stop\n");
 
 	exit_flag = RECORD_STOPPED;
 
@@ -147,7 +146,7 @@ void cRecord::RecordThread()
 	if (!buf)
 	{
 		exit_flag = RECORD_FAILED_MEMORY;
-		dprintf(DEBUG_INFO, "unable to allocate buffer! (out of memory)\n");
+		printf("unable to allocate buffer! (out of memory)\n");
 	}
 
 	if(dmx)
@@ -167,7 +166,7 @@ void cRecord::RecordThread()
 			{
 				if (errno != EAGAIN && errno != EOVERFLOW )
 				{
-					dprintf(DEBUG_INFO, "read failed\n");
+					printf("read failed\n");
 					exit_flag = RECORD_FAILED_READ;
 					break;
 				}
@@ -210,7 +209,7 @@ void cRecord::RecordThread()
 		if (r < 0)
 		{
 			exit_flag = RECORD_FAILED_FILE;
-			dprintf(DEBUG_INFO, "write error\n");
+			printf("write error\n");
 			break;
 		}
 		

@@ -32,8 +32,6 @@
 
 #include "audio_cs.h"
 
-#include <system/debug.h>
-
 
 #if defined (__sh__)
 #define VIDEO_FLUSH                     _IO('o',  82)
@@ -74,7 +72,7 @@ static int bufpos;
 ////
 cAudio::cAudio(int num)
 {  
-	dprintf(DEBUG_INFO, "cAudio::cAudio: num:%d\n", num);
+	printf("cAudio::cAudio: num:%d\n", num);
 
 	Muted = false;
 	
@@ -107,7 +105,7 @@ cAudio::cAudio(int num)
 
 cAudio::~cAudio(void)
 {  
-	dprintf(DEBUG_INFO, "cAudio::~cAudio\n");	
+	printf("cAudio::~cAudio\n");	
 
 	Close();
 	
@@ -142,7 +140,7 @@ bool cAudio::Open(CFrontend * fe)
 
 	if(audio_fd > 0)
 	{
-		dprintf(DEBUG_NORMAL, "cAudio::Open %s\n", devname);
+		printf("cAudio::Open %s\n", devname);
 		
 		return true;
 	}
@@ -153,7 +151,7 @@ bool cAudio::Open(CFrontend * fe)
 
 bool cAudio::Close()
 { 
-	dprintf(DEBUG_NORMAL, "cAudio::Close\n");
+	printf("cAudio::Close\n");
 	
 #if !defined USE_OPENGL 
 	if (audio_fd < 0)
@@ -172,7 +170,7 @@ bool cAudio::Close()
 // shut up
 int cAudio::SetMute(int enable)
 { 
-	dprintf(DEBUG_NORMAL, "cAudio::SetMute (%d)\n", enable);	
+	printf("cAudio::SetMute (%d)\n", enable);	
 	
 	Muted = enable?true:false;
 	
@@ -207,7 +205,7 @@ int cAudio::SetMute(int enable)
 /* volume, min = 0, max = 100 */
 int cAudio::setVolume(unsigned int left, unsigned int right)
 { 
-	dprintf(DEBUG_INFO, "cAudio::setVolume volume: %d\n", left);
+	printf("cAudio::setVolume volume: %d\n", left);
 	
 	int ret = -1;
 	
@@ -265,7 +263,7 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 /* start audio */
 int cAudio::Start(void)
 { 
-	dprintf(DEBUG_INFO, "cAudio::Start\n");
+	printf("cAudio::Start\n");
 	
 	int ret = -1;
 	
@@ -289,7 +287,7 @@ int cAudio::Start(void)
 
 int cAudio::Stop(void)
 { 
-	dprintf(DEBUG_INFO, "cAudio::Stop\n");
+	printf("cAudio::Stop\n");
 	
 	int ret = -1;
 	
@@ -314,7 +312,7 @@ int cAudio::Stop(void)
 
 bool cAudio::Pause()
 {
-	dprintf(DEBUG_INFO, "cAudio::Pause\n");
+	printf("cAudio::Pause\n");
 	 
 #if !defined USE_OPENGL
 	if (audio_fd < 0)
@@ -332,7 +330,7 @@ bool cAudio::Pause()
 
 bool cAudio::Resume()
 { 
-	dprintf(DEBUG_INFO, "cAudio::Resume\n");
+	printf("cAudio::Resume\n");
 	
 #if !defined USE_OPENGL
 	if (audio_fd < 0)
@@ -368,7 +366,7 @@ void cAudio::SetStreamType(AUDIO_FORMAT type)
 		"AUDIO_STREAMTYPE_RAW"
 	};
 
-	dprintf(DEBUG_INFO, "cAudio::SetStreamType - type=%s\n", aAUDIOFORMAT[type]);
+	printf("cAudio::SetStreamType - type=%s\n", aAUDIOFORMAT[type]);
 	
 #if !defined USE_OPENGL
 	if (audio_fd < 0)
@@ -386,7 +384,7 @@ void cAudio::SetStreamType(AUDIO_FORMAT type)
 
 void cAudio::SetSyncMode(int Mode)
 {
-	dprintf(DEBUG_INFO, "cAudio::SetSyncMode\n");	
+	printf("cAudio::SetSyncMode\n");	
 	
 #if !defined USE_OPENGL
 	if (audio_fd < 0)
@@ -402,7 +400,7 @@ void cAudio::SetSyncMode(int Mode)
 
 int cAudio::Flush(void)
 {  
-	dprintf(DEBUG_INFO, "cAudio::Flush\n");
+	printf("cAudio::Flush\n");
 	
 	int ret = -1;
 
@@ -432,7 +430,7 @@ int cAudio::setChannel(int channel)
 		"MONORIGHT",
 	};
 	 
-	dprintf(DEBUG_INFO, "cAudio::setChannel: %s\n", aAUDIOCHANNEL[channel]);
+	printf("cAudio::setChannel: %s\n", aAUDIOCHANNEL[channel]);
 	
 	int ret = -1;
 
@@ -454,7 +452,7 @@ void cAudio::SetHdmiDD(int ac3)
 		"passthrough"
 	};
 	
-	dprintf(DEBUG_NORMAL, "cAudio::SetHdmiDD: %s\n", aHDMIDD[ac3]);	
+	printf("cAudio::SetHdmiDD: %s\n", aHDMIDD[ac3]);	
 
 #if !defined (USE_OPENGL)
 #if defined (__sh__)
@@ -495,7 +493,7 @@ int cAudio::setSource(int source)
 		"AUDIO_SOURCE_HDMI"
 	};
 		
-	dprintf(DEBUG_INFO, "cAudio::setSource: - source=%s\n", aAUDIOSTREAMSOURCE[source]);
+	printf("cAudio::setSource: - source=%s\n", aAUDIOSTREAMSOURCE[source]);
 	
 #if !defined USE_OPENGL	
 	if (audio_fd < 0)
@@ -509,7 +507,7 @@ int cAudio::setSource(int source)
 
 int cAudio::setHwPCMDelay(int delay)
 {  
-	dprintf(DEBUG_INFO, "cAudio::setHwPCMDelay: delay=%d\n", delay);
+	printf("cAudio::setHwPCMDelay: delay=%d\n", delay);
 	
 #if !defined (USE_OPENGL)	
 	if (delay != m_pcm_delay )
@@ -530,7 +528,7 @@ int cAudio::setHwPCMDelay(int delay)
 
 int cAudio::setHwAC3Delay(int delay)
 {
-	dprintf(DEBUG_INFO, "cAudio::setHwAC3Delay: delay=%d\n", delay);
+	printf("cAudio::setHwAC3Delay: delay=%d\n", delay);
 	
 #if !defined (USE_OPENGL)	
 	if ( delay != m_ac3_delay )
@@ -587,7 +585,7 @@ static int my_read(void *, uint8_t *buf, int buf_size)
 
 void cAudio::run()
 {
-	dprintf(DEBUG_NORMAL, "cAudio::run: START\n");
+	printf("cAudio::run: START\n");
 
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59,37,100)
 	const AVCodec *codec;
@@ -638,16 +636,16 @@ void cAudio::run()
 
 	if (avformat_open_input(&avfc, NULL, inp, NULL) < 0)
 	{
-		dprintf(DEBUG_NORMAL, "cAudio::run: avformat_open_input() failed.\n");
+		printf("cAudio::run: avformat_open_input() failed.\n");
 		goto out;
 	}
 	
 	ret = avformat_find_stream_info(avfc, NULL);
-	dprintf(DEBUG_NORMAL, "cAudio::run: avformat_find_stream_info: %d\n", ret);
+	printf("cAudio::run: avformat_find_stream_info: %d\n", ret);
 	
 	if (avfc->nb_streams != 1)
 	{
-		dprintf(DEBUG_NORMAL, "cAudio::run: nb_streams: %d, should be 1!\n", avfc->nb_streams);
+		printf("cAudio::run: nb_streams: %d, should be 1!\n", avfc->nb_streams);
 		goto out;
 	}
 	
@@ -660,11 +658,11 @@ void cAudio::run()
 	
 	if (!codec)
 	{
-		dprintf(DEBUG_NORMAL, "cAudio::run: Codec for %s not found\n", avcodec_get_name(p->codec_id));
+		printf("cAudio::run: Codec for %s not found\n", avcodec_get_name(p->codec_id));
 		goto out;
 	}
 	
-	dprintf(DEBUG_NORMAL, "cAudio::run: decoding %s\n", avcodec_get_name(p->codec_id));
+	printf("cAudio::run: decoding %s\n", avcodec_get_name(p->codec_id));
 	
 	if (c)
 		av_free(c);
@@ -673,7 +671,7 @@ void cAudio::run()
 	
 	if (avcodec_open2(c, codec, NULL) < 0)
 	{
-		dprintf(DEBUG_NORMAL, "cAudio::run: avcodec_open2() failed\n");
+		printf("cAudio::run: avcodec_open2() failed\n");
 		goto out;
 	}
 	
@@ -681,7 +679,7 @@ void cAudio::run()
 	{
 		av_get_sample_fmt_string(tmp, sizeof(tmp), c->sample_fmt);
 		
-		dprintf(DEBUG_NORMAL, "cAudio::run: Header missing %s, sample_fmt %d (%s) sample_rate %d channels %d\n", avcodec_get_name(p->codec_id), c->sample_fmt, tmp, p->sample_rate, p->channels);
+		printf("cAudio::run: Header missing %s, sample_fmt %d (%s) sample_rate %d channels %d\n", avcodec_get_name(p->codec_id), c->sample_fmt, tmp, p->sample_rate, p->channels);
 		
 		goto out2;
 	}
@@ -690,7 +688,7 @@ void cAudio::run()
 	
 	if (!frame)
 	{
-		dprintf(DEBUG_NORMAL, "cAudio::run: av_frame_alloc failed\n");
+		printf("cAudio::run: av_frame_alloc failed\n");
 		goto out2;
 	}
 	
@@ -714,12 +712,12 @@ void cAudio::run()
 		adevice = ao_open_live(driver, &sformat, NULL);
 		ai = ao_driver_info(driver);
 		
-		dprintf(DEBUG_NORMAL, "cAudio::run: changed params ch %d srate %d bits %d adevice %p\n", o_ch, o_sr, 16, adevice);
+		printf("cAudio::run: changed params ch %d srate %d bits %d adevice %p\n", o_ch, o_sr, 16, adevice);
 	}
 
 	av_get_sample_fmt_string(tmp, sizeof(tmp), c->sample_fmt);
 	
-	dprintf(DEBUG_NORMAL, "cAudio::run: decoding %s, sample_fmt %d (%s) sample_rate %d channels %d\n", avcodec_get_name(p->codec_id), c->sample_fmt, tmp, p->sample_rate, p->channels);
+	printf("cAudio::run: decoding %s, sample_fmt %d (%s) sample_rate %d channels %d\n", avcodec_get_name(p->codec_id), c->sample_fmt, tmp, p->sample_rate, p->channels);
 	
 	swr = swr_alloc_set_opts(swr,
 	        o_layout, AV_SAMPLE_FMT_S16, o_sr,         		// output
@@ -728,7 +726,7 @@ void cAudio::run()
 	        
 	if (! swr)
 	{
-		dprintf(DEBUG_NORMAL, "cAudio::run: could not alloc resample context\n");
+		printf("cAudio::run: could not alloc resample context\n");
 		goto out3;
 	}
 	
@@ -811,7 +809,7 @@ out:
 	av_free(pIOCtx->buffer);
 	av_free(pIOCtx);
 	
-	dprintf(DEBUG_NORMAL, "cAudio::run: END\n");
+	printf("cAudio::run: END\n");
 }
 #endif
 

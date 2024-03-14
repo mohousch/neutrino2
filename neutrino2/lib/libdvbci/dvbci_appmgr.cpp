@@ -29,17 +29,17 @@ int eDVBCIApplicationManagerSession::receivedAPDU(const unsigned char *tag,const
 		case 0x21:
 		{
 			int dl;
-			dprintf(DEBUG_DEBUG, "application info:\n");
-			dprintf(DEBUG_DEBUG, "  len: %d\n", len);
-			dprintf(DEBUG_DEBUG, "  application_type: %d\n", ((unsigned char*)data)[0]);
-			dprintf(DEBUG_DEBUG, "  application_manufacturer: %02x %02x\n", ((unsigned char*)data)[2], ((unsigned char*)data)[1]);
-			dprintf(DEBUG_DEBUG, "  manufacturer_code: %02x %02x\n", ((unsigned char*)data)[4],((unsigned char*)data)[3]);
-			dprintf(DEBUG_DEBUG, "  menu string: \n");
+			printf("application info:\n");
+			printf("  len: %d\n", len);
+			printf("  application_type: %d\n", ((unsigned char*)data)[0]);
+			printf("  application_manufacturer: %02x %02x\n", ((unsigned char*)data)[2], ((unsigned char*)data)[1]);
+			printf("  manufacturer_code: %02x %02x\n", ((unsigned char*)data)[4],((unsigned char*)data)[3]);
+			printf("  menu string: \n");
 
 			dl=((unsigned char*)data)[5];
 			if ((dl + 6) > len)
 			{
-				dprintf(DEBUG_DEBUG, "warning, invalid length (%d vs %d)\n", dl+6, len);
+				printf("warning, invalid length (%d vs %d)\n", dl+6, len);
 				dl=len-6;
 			}
 			char str[dl + 1];
@@ -48,11 +48,11 @@ int eDVBCIApplicationManagerSession::receivedAPDU(const unsigned char *tag,const
 
 			strcpy(slot->name, str);
 
-			dprintf(DEBUG_DEBUG, "set name %s on slot %d, %p\n", slot->name, slot->slot, slot);
+			printf("set name %s on slot %d, %p\n", slot->name, slot->slot, slot);
 			break;
 		}
 		default:
-			dprintf(DEBUG_DEBUG, "unknown APDU tag 9F 80 %02x\n", tag[2]);
+			printf("unknown APDU tag 9F 80 %02x\n", tag[2]);
 			break;
 		}
 	}
@@ -97,7 +97,7 @@ int eDVBCIApplicationManagerSession::doAction()
 
 int eDVBCIApplicationManagerSession::startMMI()
 {
-	dprintf(DEBUG_NORMAL, "in appmanager -> startmmi()\n");
+	printf("in appmanager -> startmmi()\n");
 	
 	const unsigned char tag[3] = {0x9F, 0x80, 0x22};  // Tenter_menu
 	sendAPDU(tag);

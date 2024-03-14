@@ -40,8 +40,6 @@
 
 #include <driver/gfx/framebuffer.h>
 
-#include <system/debug.h>
-
 
 #if defined (__sh__)
 #define VIDEO_FLUSH                     _IO('o',  82)
@@ -73,7 +71,7 @@ static int bufpos;
 ////
 cVideo::cVideo(int num)
 { 
-	dprintf(DEBUG_INFO, "cVideo::cVideo: num:%d\n", num);
+	printf("cVideo::cVideo: num:%d\n", num);
 	
 	video_fd = -1;
 	video_adapter = 0;
@@ -102,14 +100,14 @@ cVideo::cVideo(int num)
 
 cVideo::~cVideo(void)
 {  
-	dprintf(DEBUG_INFO, "cVideo::~cVideo\n");	
+	printf("cVideo::~cVideo\n");	
 
 	Close();
 }
 
 bool cVideo::Open(CFrontend * fe)
 {
-	dprintf(DEBUG_NORMAL, "cVideo::Open\n");
+	printf("cVideo::Open\n");
 	
 #ifndef USE_OPENGL
 	if(fe)
@@ -130,11 +128,11 @@ bool cVideo::Open(CFrontend * fe)
 
 	if(video_fd > 0)
 	{
-		dprintf(DEBUG_NORMAL, "cVideo::Open %s\n", devname);
+		printf("cVideo::Open %s\n", devname);
 		return true;
 	}
 	
-	dprintf(DEBUG_INFO, "%s %s failed\n", __FUNCTION__, devname);
+	printf("%s %s failed\n", __FUNCTION__, devname);
 #endif
 
 	return false;
@@ -142,7 +140,7 @@ bool cVideo::Open(CFrontend * fe)
 
 bool cVideo::Close()
 { 
-	dprintf(DEBUG_NORMAL, "cVideo::Close\n");
+	printf("cVideo::Close\n");
 	
 #ifndef USE_OPENGL
 	if(video_fd < 0)
@@ -162,7 +160,7 @@ int cVideo::getAspectRatio(void)
 {  
 	int ratio = ASPECTRATIO_43; // 0 = 4:3, 1 = 16:9
 
-	dprintf(DEBUG_NORMAL, "cVideo::getAspectRatio\n");	
+	printf("cVideo::getAspectRatio\n");	
 	 
 #if !defined (USE_OPENGL)	 
 	unsigned char buffer[2];
@@ -210,7 +208,7 @@ int cVideo::getAspectRatio(void)
 		}
 	}
 	
-	dprintf(DEBUG_INFO, "cVideo::getAspectRatio (ratio=%d)\n", ratio);
+	printf("cVideo::getAspectRatio (ratio=%d)\n", ratio);
 #endif	
 	
 	return ratio;
@@ -225,7 +223,7 @@ bestfit
 /* set aspect ratio */
 int cVideo::setAspectRatio(int ratio, int format) 
 { 
-	dprintf(DEBUG_NORMAL, "cVideo::setAspectRatio\n");	
+	printf("cVideo::setAspectRatio\n");	
 
 #ifndef USE_OPENGL
 	const char * sRatio[] =
@@ -273,7 +271,7 @@ int cVideo::setAspectRatio(int ratio, int format)
 		::close(fd);
 	}
 	
-	dprintf(DEBUG_INFO, "cVideo::setAspectRatio: (aspect=%d format=%d) set %s %s\n", ratio, format, sRatio[ratio], sFormat[format]);
+	printf("cVideo::setAspectRatio: (aspect=%d format=%d) set %s %s\n", ratio, format, sRatio[ratio], sFormat[format]);
 #endif	
 
     	return 0; 
@@ -317,7 +315,7 @@ void cVideo::getPictureInfo(int &width, int &height, int &rate)
 	height = 576;
 	width = 720;
 	  
-	dprintf(DEBUG_INFO, "getPictureInfo\n"); 
+	printf("getPictureInfo\n"); 
 
   	unsigned char buffer[10];
 	int n, fd;	
@@ -369,13 +367,13 @@ void cVideo::getPictureInfo(int &width, int &height, int &rate)
 		}
 	}
 	
-	dprintf(DEBUG_INFO, "getPictureInfo < w %d, h %d, r %d\n", width, height, rate);
+	printf("getPictureInfo < w %d, h %d, r %d\n", width, height, rate);
 #endif	
 }
 
 int cVideo::Start(void)
 { 
-	dprintf(DEBUG_NORMAL, "cVideo::Start\n");
+	printf("cVideo::Start\n");
 	
 	int ret = -1;
 	
@@ -407,7 +405,7 @@ int cVideo::Start(void)
 
 int cVideo::Stop(bool blank)
 { 
-	dprintf(DEBUG_INFO, "cVideo::Stop: blank:%d\n", blank);	
+	printf("cVideo::Stop: blank:%d\n", blank);	
 	
 	int ret = -1;
 	
@@ -436,7 +434,7 @@ int cVideo::Stop(bool blank)
 
 bool cVideo::Pause(void)
 { 
-	dprintf(DEBUG_INFO, "cVideo::Pause\n");
+	printf("cVideo::Pause\n");
 	
 #ifndef USE_OPENGL
 	if(video_fd < 0)
@@ -453,7 +451,7 @@ bool cVideo::Pause(void)
 
 bool cVideo::Resume(void)
 {
-	dprintf(DEBUG_INFO, "cVideo::Resume\n");	
+	printf("cVideo::Resume\n");	
 	
 #ifndef USE_OPENGL
 	if(video_fd < 0)
@@ -470,7 +468,7 @@ bool cVideo::Resume(void)
 
 int cVideo::Flush(void)
 { 
-	dprintf(DEBUG_INFO, "cVideo::Flush\n");
+	printf("cVideo::Flush\n");
 	
 	int ret = -1;
 	
@@ -493,7 +491,7 @@ int cVideo::Flush(void)
 
 int cVideo::setSlowMotion(int repeat)
 {
-	dprintf(DEBUG_INFO, "cVideo::setSlowMotion: (%d)\n", repeat);
+	printf("cVideo::setSlowMotion: (%d)\n", repeat);
 	
 	int ret = -1;
 	
@@ -511,7 +509,7 @@ int cVideo::setSlowMotion(int repeat)
 
 int cVideo::setFastForward(int skip)
 {
-	dprintf(DEBUG_INFO, "cVideo::setFastForward: (%d)\n", skip);
+	printf("cVideo::setFastForward: (%d)\n", skip);
 	
 	int ret = -1;
 	
@@ -589,7 +587,7 @@ ntsc
 	};
 #endif
 
-	dprintf(DEBUG_INFO, "cVideo::setVideoSystem: video_system=%s\n", aVideoSystems[video_system][0]);	
+	printf("cVideo::setVideoSystem: video_system=%s\n", aVideoSystems[video_system][0]);	
 
 #if !defined (USE_OPENGL)	
 	int fd = ::open("/proc/stb/video/videomode", O_RDWR);
@@ -623,7 +621,7 @@ int cVideo::SetSpaceColour(int colour_space)
 	
 #endif
 	
-	dprintf(DEBUG_INFO, "cVideo::SetSpaceColour: mode=%s\n", aCOLORSPACE[colour_space]);	
+	printf("cVideo::SetSpaceColour: mode=%s\n", aCOLORSPACE[colour_space]);	
 
 #if !defined (USE_OPENGL)
 #if defined (__sh__)
@@ -663,7 +661,7 @@ void cVideo::SetStreamType(VIDEO_FORMAT type)
 		"VIDEO_STREAMTYPE_SPARK"
 	};
 
-	dprintf(DEBUG_INFO, "cVideo::SetStreamType: type=%s\n", aVIDEOFORMAT[type]);
+	printf("cVideo::SetStreamType: type=%s\n", aVIDEOFORMAT[type]);
 	
 #if !defined USE_OPENGL
 	if(video_fd < 0)
@@ -695,7 +693,7 @@ void cVideo::SetSyncMode(int mode)
 		"audio"
 	};
       	
-	dprintf(DEBUG_INFO, "cVideo::setSyncMode: mode=%s\n", aAVSYNCTYPE[mode]);	
+	printf("cVideo::setSyncMode: mode=%s\n", aAVSYNCTYPE[mode]);	
 
 #ifndef USE_OPENGL
 #if defined (__sh__)
@@ -718,7 +716,7 @@ void cVideo::SetSyncMode(int mode)
 	   	::close(fd);
         }
 		
-        dprintf(DEBUG_INFO, "cVideo::SetSyncMode: set master clock = %s\n", master_clock[clock]);	
+        printf("cVideo::SetSyncMode: set master clock = %s\n", master_clock[clock]);	
 
 	fd = ::open("/proc/stb/stream/policy/MASTER_CLOCK", O_RDWR);
         if (fd > 0)  
@@ -735,7 +733,7 @@ void cVideo::SetInput(int val)
 { 
 	const char *input[] = {"encoder", "scart", "aux"};
 	
-	dprintf(DEBUG_NORMAL, "cVideo::SetInput: %s\n", input[val]);	
+	printf("cVideo::SetInput: %s\n", input[val]);	
 
 #if !defined (USE_OPENGL)
 	// avs input
@@ -754,7 +752,7 @@ void cVideo::SetStandby(int val)
 { 
 	const char *sb[] = {"off", "on"};
 	
-	dprintf(DEBUG_INFO, "cVideo::SetStandby: %s\n", sb[val]);	
+	printf("cVideo::SetStandby: %s\n", sb[val]);	
 
 #if !defined (USE_OPENGL)
 	// standby
@@ -774,7 +772,7 @@ void cVideo::SetStandby(int val)
 void cVideo::Pig(int x, int y, int w, int h, int osd_w, int osd_h, int num)
 { 
 	//ugly we just resize the video display
-	dprintf(DEBUG_INFO, "cVideo::Pig: - x=%d y=%d w=%d h=%d (video_num=%d)\n", x, y, w, h, num);
+	printf("cVideo::Pig: - x=%d y=%d w=%d h=%d (video_num=%d)\n", x, y, w, h, num);
 	
 	int _x, _y, _w, _h;
 	/* the target "coordinates" seem to be in a PAL sized plane
@@ -889,7 +887,7 @@ void cVideo::SetWideScreen(int val) // 0 = auto, 1 = auto(4:3_off)
 	};
 #endif
 	
-	dprintf(DEBUG_INFO, "cVideo::SetWideScreen: mode=%s\n", wss[val]);
+	printf("cVideo::SetWideScreen: mode=%s\n", wss[val]);
 
 #if !defined (USE_OPENGL)	
 	int fd = ::open("/proc/stb/denc/0/wss", O_RDWR);
@@ -925,7 +923,7 @@ void cVideo::SetAnalogMode(int mode)
 	};
 #endif
 	
-	dprintf(DEBUG_INFO, "cVideo::SetAnalogMode: mode=%s\n", aANALOGMODE[mode]);	
+	printf("cVideo::SetAnalogMode: mode=%s\n", aANALOGMODE[mode]);	
 	
 #if !defined (USE_OPENGL)	
 	int fd = ::open("/proc/stb/avs/0/colorformat", O_RDWR);
@@ -941,7 +939,7 @@ void cVideo::SetAnalogMode(int mode)
 /* blank on freeze */
 int cVideo::getBlank(void) 
 { 
-	dprintf(DEBUG_INFO, "cVideo::getBlank\n");	
+	printf("cVideo::getBlank\n");	
 	
 #ifndef USE_OPENGL
 	if(video_fd < 0)
@@ -961,7 +959,7 @@ int cVideo::getBlank(void)
 /* set blank */
 int cVideo::setBlank(int enable) 
 { 
-	dprintf(DEBUG_INFO, "cVideo::setBlank\n");	
+	printf("cVideo::setBlank\n");	
 	 
 #ifndef USE_OPENGL
 	if(video_fd < 0)
@@ -976,7 +974,7 @@ int cVideo::setBlank(int enable)
 /* get play state */
 int cVideo::getPlayState(void) 
 { 
-	dprintf(DEBUG_INFO, "cVideo::getPlayState:\n");	
+	printf("cVideo::getPlayState:\n");	
 	
 #ifndef USE_OPENGL
 	if(video_fd < 0)
@@ -995,7 +993,7 @@ int cVideo::setSource(int source)
 		"VIDEO_SOURCE_HDMI"
 	};
 		
-	dprintf(DEBUG_INFO, "cVideo::setSource: source=%s\n", aVIDEOSTREAMSOURCE[source]);	
+	printf("cVideo::setSource: source=%s\n", aVIDEOSTREAMSOURCE[source]);	
 	
 #ifndef USE_OPENGL
 	if(video_fd < 0)
@@ -1034,7 +1032,7 @@ int64_t cVideo::GetPTS(void)
 int cVideo::showSinglePic(const char *filename)
 {
 	
-	dprintf(DEBUG_NORMAL, "cVideo::showSinglePic %s\n", filename);
+	printf("cVideo::showSinglePic %s\n", filename);
 	
 #ifndef USE_OPENGL
 	int f = ::open(filename, O_RDONLY);
@@ -1084,7 +1082,7 @@ int cVideo::showSinglePic(const char *filename)
 		}
 		else
 		{
-			dprintf(DEBUG_NORMAL, "video device not open\n");
+			printf("video device not open\n");
 			return -1;
 		}
 		
@@ -1092,7 +1090,7 @@ int cVideo::showSinglePic(const char *filename)
 	}
 	else
 	{
-		dprintf(DEBUG_NORMAL, "couldnt open %s\n", filename);
+		printf("couldnt open %s\n", filename);
 		return -1;
 	}
 #endif
@@ -1102,7 +1100,7 @@ int cVideo::showSinglePic(const char *filename)
 
 void cVideo::finishShowSinglePic()
 {
-	dprintf(DEBUG_NORMAL, "cVideo::finishShowSinglePic:\n");
+	printf("cVideo::finishShowSinglePic:\n");
 	
 #ifndef USE_OPENGL
 	if (video_fd >= 0)
@@ -1118,7 +1116,7 @@ void cVideo::finishShowSinglePic()
 
 void cVideo::setContrast(int Contrast)
 {
-	dprintf(DEBUG_NORMAL, "cVideo::setContrast: (%d)\n", Contrast);
+	printf("cVideo::setContrast: (%d)\n", Contrast);
 	
 #ifndef USE_OPENGL
 	FILE *fd;
@@ -1137,7 +1135,7 @@ void cVideo::setContrast(int Contrast)
 
 void cVideo::setSaturation(int Saturation)
 {
-	dprintf(DEBUG_NORMAL, "cVideo::setSaturation: (%d)\n", Saturation);
+	printf("cVideo::setSaturation: (%d)\n", Saturation);
 	
 #ifndef USE_OPENGL
 	FILE *fd;
@@ -1156,7 +1154,7 @@ void cVideo::setSaturation(int Saturation)
 
 void cVideo::setBrightness(int Brightness)
 {
-	dprintf(DEBUG_NORMAL, "cVideo::setBrightness: (%d)\n", Brightness);
+	printf("cVideo::setBrightness: (%d)\n", Brightness);
 	
 #ifndef USE_OPENGL
 	FILE *fd;
@@ -1175,7 +1173,7 @@ void cVideo::setBrightness(int Brightness)
 
 void cVideo::setTint(int Tint)
 {
-	dprintf(DEBUG_NORMAL, "cVideo::setTint: (%d)\n", Tint);
+	printf("cVideo::setTint: (%d)\n", Tint);
 	
 #ifndef USE_OPENGL
 	FILE *fd;
@@ -1249,7 +1247,7 @@ static int my_read(void *, uint8_t *buf, int buf_size)
 
 void cVideo::run(void)
 {
-	dprintf(DEBUG_NORMAL, "cVideo::run: START\n");
+	printf("cVideo::run: START\n");
 	
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59,37,100)
 	const AVCodec *codec;
@@ -1298,13 +1296,13 @@ void cVideo::run(void)
 	
 	if (avformat_open_input(&avfc, NULL, inp, NULL) < 0)
 	{
-		dprintf(DEBUG_NORMAL, "cVideo::run: Could not open input\n");
+		printf("cVideo::run: Could not open input\n");
 		goto out;
 	}
 	
 	while (avfc->nb_streams < 1)
 	{
-		dprintf(DEBUG_NORMAL, "cVideo::run: nb_streams %d, should be 1 => retry\n", avfc->nb_streams);
+		printf("cVideo::run: nb_streams %d, should be 1 => retry\n", avfc->nb_streams);
 		
 		if (av_read_frame(avfc, &avpkt) < 0)
 			printf("cVideo::run: av_read_frame < 0\n");
@@ -1324,7 +1322,7 @@ void cVideo::run(void)
 	
 	if (!codec)
 	{
-		dprintf(DEBUG_NORMAL, "cVideo::run: Codec for %s not found\n", avcodec_get_name(p->codec_id));
+		printf("cVideo::run: Codec for %s not found\n", avcodec_get_name(p->codec_id));
 		goto out;
 	}
 	
@@ -1332,7 +1330,7 @@ void cVideo::run(void)
 	c = avcodec_alloc_context3(codec);
 	if (avcodec_open2(c, codec, NULL) < 0)
 	{
-		dprintf(DEBUG_NORMAL, "cVideo::run: Could not open codec\n");
+		printf("cVideo::run: Could not open codec\n");
 		goto out;
 	}
 	
@@ -1342,11 +1340,11 @@ void cVideo::run(void)
 	
 	if (!frame || !rgbframe)
 	{
-		dprintf(DEBUG_NORMAL, "cVideo::run: Could not allocate video frame\n");
+		printf("cVideo::run: Could not allocate video frame\n");
 		goto out2;
 	}
 	
-	dprintf(DEBUG_NORMAL, "cVideo::run: decoding %s\n", avcodec_get_name(c->codec_id));
+	printf("cVideo::run: decoding %s\n", avcodec_get_name(c->codec_id));
 	
 	while (thread_running)
 	{
@@ -1487,7 +1485,7 @@ out:
 	}
 	still_m.unlock();
 	
-	dprintf(DEBUG_NORMAL, "cVideo::run: END\n");
+	printf("cVideo::run: END\n");
 }
 #endif
 

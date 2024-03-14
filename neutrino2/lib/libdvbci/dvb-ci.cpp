@@ -50,7 +50,6 @@
 #include <connection/messagetools.h>   // get_length_field_size
 
 #include <config.h>
-#include <system/debug.h>
 
 
 static const char * FILENAME = "dvb-ci.cpp";
@@ -67,7 +66,7 @@ bool cDvbCi::checkQueueSize(tSlot* slot)
 
 void cDvbCi::CI_MenuAnswer(unsigned char bSlotIndex,unsigned char choice)
 {
-	dprintf(DEBUG_NORMAL, "%s:%s: %d %c\n", FILENAME, __FUNCTION__, bSlotIndex, choice);
+	printf("%s:%s: %d %c\n", FILENAME, __FUNCTION__, bSlotIndex, choice);
 
 	std::list<tSlot*>::iterator it;
 	
@@ -83,7 +82,7 @@ void cDvbCi::CI_MenuAnswer(unsigned char bSlotIndex,unsigned char choice)
 
 void cDvbCi::CI_Answer(unsigned char bSlotIndex,unsigned char *pBuffer,unsigned char nLength)
 {
-	dprintf(DEBUG_NORMAL, "%s:%s: %d\n", FILENAME, __FUNCTION__, bSlotIndex);
+	printf("%s:%s: %d\n", FILENAME, __FUNCTION__, bSlotIndex);
 
 	std::list<tSlot*>::iterator it;
 	
@@ -102,7 +101,7 @@ void cDvbCi::CI_Answer(unsigned char bSlotIndex,unsigned char *pBuffer,unsigned 
 
 void cDvbCi::CI_CloseMMI(unsigned char bSlotIndex)
 {
-	dprintf(DEBUG_NORMAL, "%s:%s %d\n", FILENAME, __FUNCTION__, bSlotIndex);
+	printf("%s:%s %d\n", FILENAME, __FUNCTION__, bSlotIndex);
 
 	std::list<tSlot*>::iterator it;
 	
@@ -119,7 +118,7 @@ void cDvbCi::CI_CloseMMI(unsigned char bSlotIndex)
 
 void cDvbCi::CI_EnterMenu(unsigned char bSlotIndex)
 {
-	dprintf(DEBUG_NORMAL, "%s:%s %d\n", FILENAME, __FUNCTION__, bSlotIndex);
+	printf("%s:%s %d\n", FILENAME, __FUNCTION__, bSlotIndex);
 
 	std::list<tSlot*>::iterator it;
 	
@@ -232,7 +231,7 @@ eData waitData(int fd, unsigned char* buffer, int* len)
 //send some data on an fd, for a special slot and connection_id
 eData sendData(tSlot* slot, unsigned char* data, int len)
 {	
-        dprintf(DEBUG_NORMAL, "%s: %p, %d\n", __func__, data, len);
+        printf("%s: %p, %d\n", __func__, data, len);
         
         int res = 0;
 	
@@ -367,13 +366,13 @@ void cDvbCi::process_tpdu(tSlot* slot, unsigned char tpdu_tag, __u8* data, int a
 		}
 		
 		case T_DATA_LAST:	
-			dprintf(DEBUG_NORMAL, "Got \"Data Last\" from Module\n");
+			printf("Got \"Data Last\" from Module\n");
 			
 			// single package
 			if (slot->receivedData == NULL) 
 			{
 
-				dprintf(DEBUG_NORMAL, "->single package\n");
+				printf("->single package\n");
 
 				eDVBCISession::receiveData(slot, data, asn_data_length);
 				eDVBCISession::pollAll();
@@ -405,7 +404,7 @@ void cDvbCi::process_tpdu(tSlot* slot, unsigned char tpdu_tag, __u8* data, int a
 			
 		case T_SB:
 		{	
-			dprintf(DEBUG_NORMAL, "Got \"SB\" from Module\n");
+			printf("Got \"SB\" from Module\n");
 
 			if (data[0] & 0x80)
 			{
@@ -497,7 +496,7 @@ void cDvbCi::SetTSClock(uint32_t Speed, int slot)
 
 void cDvbCi::slot_pollthread(void *c)
 {
-	dprintf(DEBUG_NORMAL, "cDvbCi::slot_pollthread: starting... tid %ld\n", syscall(__NR_gettid));
+	printf("cDvbCi::slot_pollthread: starting... tid %ld\n", syscall(__NR_gettid));
 	
 	tSlot* slot = (tSlot*) c;
 	ca_slot_info_t info;
@@ -1051,7 +1050,7 @@ static cDvbCi* pDvbCiInstance = NULL;
 
 cDvbCi * cDvbCi::getInstance()
 {
-	dprintf(DEBUG_NORMAL, "%s:%s\n", FILENAME, __FUNCTION__);
+	printf("%s:%s\n", FILENAME, __FUNCTION__);
 	
 	if (pDvbCiInstance == NULL)
 		pDvbCiInstance = new cDvbCi(MAX_SLOTS);		
@@ -1061,7 +1060,7 @@ cDvbCi * cDvbCi::getInstance()
 
 bool cDvbCi::CamPresent(int slot)
 {
-	dprintf(DEBUG_NORMAL, "%s:%s(slot %d)\n", FILENAME, __FUNCTION__, slot);
+	printf("%s:%s(slot %d)\n", FILENAME, __FUNCTION__, slot);
 
 	std::list<tSlot*>::iterator it;
 	
@@ -1079,7 +1078,7 @@ bool cDvbCi::CamPresent(int slot)
 
 bool cDvbCi::GetName(int slot, char * name)
 {
-	dprintf(DEBUG_NORMAL, "%s:%s\n", FILENAME, __FUNCTION__);
+	printf("%s:%s\n", FILENAME, __FUNCTION__);
 
 	std::list<tSlot*>::iterator it;
 	

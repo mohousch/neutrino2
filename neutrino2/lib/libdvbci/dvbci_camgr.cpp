@@ -27,14 +27,14 @@ int eDVBCICAManagerSession::receivedAPDU(const unsigned char *tag, const void *d
 		switch (tag[2])
 		{
 		case 0x31:
-			dprintf(DEBUG_DEBUG, "ca info:\n");
+			printf("ca info:\n");
 			for (int i = 0; i < len; i += 2)
 			{
-				dprintf(DEBUG_DEBUG, "%04x ", (((const unsigned char*)data)[i]<<8)|(((const unsigned char*)data)[i+1]));
+				printf("%04x ", (((const unsigned char*)data)[i]<<8)|(((const unsigned char*)data)[i+1]));
 				caids.push_back((((const unsigned char*)data)[i]<<8)|(((const unsigned char*)data)[i+1]));
 			}
 			sort(caids.begin(), caids.end());
-			dprintf(DEBUG_DEBUG, "\n");
+			printf("\n");
 			
 			slot->pollConnection = false;
 	                slot->hasCAManager = true;
@@ -43,7 +43,7 @@ int eDVBCICAManagerSession::receivedAPDU(const unsigned char *tag, const void *d
 			//fixme eDVBCIInterfaces::getInstance()->recheckPMTHandlers();
 			break;
 		default:
-			dprintf(DEBUG_DEBUG, "unknown APDU tag 9F 80 %02x\n", tag[2]);
+			printf("unknown APDU tag 9F 80 %02x\n", tag[2]);
 			break;
 		}
 	}
@@ -64,7 +64,7 @@ int eDVBCICAManagerSession::doAction()
 			return 0;
 		}
 		case stateFinal:
-			dprintf(DEBUG_DEBUG, "stateFinal und action! kann doch garnicht sein ;)\n");
+			printf("stateFinal und action! kann doch garnicht sein ;)\n");
 		default:
 			return 0;
 	}

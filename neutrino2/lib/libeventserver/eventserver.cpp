@@ -31,15 +31,13 @@
 
 #include <eventserver.h>
 
-#include <system/debug.h>
-
 
 void CEventServer::sendEvent(const unsigned int eventID, const void* eventbody, const unsigned int eventbodysize, const char * udsname)
 {
 	struct sockaddr_un servaddr;
 	int clilen, sock_fd;
 
-	dprintf(DEBUG_NORMAL, "CEventServer::sendEvent >(%s)\n", udsname);
+	printf("CEventServer::sendEvent >(%s)\n", udsname);
 
 	memset(&servaddr, 0, sizeof(struct sockaddr_un));
 	
@@ -50,7 +48,6 @@ void CEventServer::sendEvent(const unsigned int eventID, const void* eventbody, 
 	if ((sock_fd = socket(AF_UNIX, SOCK_STREAM, 0)) < 0)
 	{
 		perror("[eventserver]: socket");
-		dprintf(DEBUG_INFO, "CEventServer::sendEvent <\n");
 		return;
 	}
 
@@ -60,7 +57,7 @@ void CEventServer::sendEvent(const unsigned int eventID, const void* eventbody, 
 		snprintf(errmsg, 128, "[eventserver]: connect (%s)", udsname);
 		perror(errmsg);
 		close(sock_fd);
-		dprintf(DEBUG_NORMAL, "CEventServer::sendEvent <(%s)\n", udsname);
+
 		return;
 	}
 

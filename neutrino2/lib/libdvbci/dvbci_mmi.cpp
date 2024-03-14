@@ -2,15 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <string>
-//#ifdef __sh__
 #include <stdio.h>
-//#endif
 
 #include "dvbci_mmi.h"
 
 #include <neutrinoMessages.h>
 #include <driver/rcinput.h>
-#include <system/debug.h>
 
 
 extern CRCInput *g_RCInput;
@@ -125,11 +122,11 @@ int eDVBCIMMISession::receivedAPDU(const unsigned char *tag, const void *data, i
 				       if ((d + 3) > max)
 					       break;
 				       
-				       dprintf(DEBUG_DEBUG, "text tag: %02x %02x %02x\n", d[0], d[1], d[2]);
+				       printf("text tag: %02x %02x %02x\n", d[0], d[1], d[2]);
 				       d += 3;
 				       d += eDVBCISession::parseLengthField(d, textlen);
 				       
-				       dprintf(DEBUG_DEBUG, "%d bytes text", textlen);
+				       printf("%d bytes text", textlen);
 
 				       if ((d + textlen) > max)
 					       break;
@@ -151,15 +148,8 @@ int eDVBCIMMISession::receivedAPDU(const unsigned char *tag, const void *data, i
 						   strcpy(listInfo->choice_item[listInfo->choice_nb], str);
 				                   listInfo->choice_nb++;
 						   
-						   dprintf(DEBUG_DEBUG, "%d. %s\n",listInfo->choice_nb, listInfo->choice_item[listInfo->choice_nb - 1]);
+						   printf("%d. %s\n",listInfo->choice_nb, listInfo->choice_item[listInfo->choice_nb - 1]);
 		                       }
-
-					/*
-				       	while (textlen--)
-					       printf("%c", *d++);
-				       	printf("\n");
-					*/
-
 			       	}
 
 		               	if (g_RCInput)

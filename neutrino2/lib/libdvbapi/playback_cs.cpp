@@ -35,7 +35,6 @@
 #include "playback_cs.h"
 
 #include <driver/gfx/framebuffer.h>
-#include <system/debug.h>
 
 
 //// global
@@ -167,7 +166,7 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 			g_message("End-of-stream");
 			
 			//
-			dprintf(DEBUG_NORMAL, "cPlayback::%s (EOS) !!!!EOF!!!! << -1\n", __func__);
+			printf("cPlayback::%s (EOS) !!!!EOF!!!! << -1\n", __func__);
 			end_eof = true;
 			//
 			break;
@@ -346,14 +345,14 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 					{
 						gst_object_unref(GST_OBJECT(audioSink));
 						audioSink = NULL;
-						dprintf(DEBUG_NORMAL, "Gst_bus_call: audio sink closed\n");
+						printf("Gst_bus_call: audio sink closed\n");
 					}
 					
 					if (videoSink)
 					{
 						gst_object_unref(GST_OBJECT(videoSink));
 						videoSink = NULL;
-						dprintf(DEBUG_NORMAL, "Gst_bus_call: video sink closed\n");
+						printf("Gst_bus_call: video sink closed\n");
 					}
 					
 					// set audio video sink
@@ -370,7 +369,7 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 #endif	
 					
 					if(audioSink)
-						dprintf(DEBUG_NORMAL, "Gst_bus_call: audio sink created\n");
+						printf("Gst_bus_call: audio sink created\n");
 					
 #if GST_VERSION_MAJOR < 1
 					videoSink = GST_ELEMENT_CAST(gst_iterator_find_custom(children, (GCompareFunc)match_sinktype, (gpointer)"GstDVBVideoSink"));
@@ -383,7 +382,7 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 #endif
 
 					if(videoSink)
-						dprintf(DEBUG_NORMAL, "Gst_bus_call: video sink created\n");
+						printf("Gst_bus_call: video sink created\n");
 					
 					gst_iterator_free(children);
 				}
@@ -405,13 +404,13 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 					{
 						gst_object_unref(GST_OBJECT(audioSink));
 						audioSink = NULL;
-						dprintf(DEBUG_NORMAL, "Gst_bus_call: audio sink closed\n");
+						printf("Gst_bus_call: audio sink closed\n");
 					}
 					if (videoSink)
 					{
 						gst_object_unref(GST_OBJECT(videoSink));
 						videoSink = NULL;
-						dprintf(DEBUG_NORMAL, "Gst_bus_call: video sink closed\n");
+						printf("Gst_bus_call: video sink closed\n");
 					}
 				}	
 				break;
@@ -504,7 +503,7 @@ cPlayback::cPlayback(int)
 
 bool cPlayback::Open()
 {
-	dprintf(DEBUG_NORMAL, "cPlayback::Open\n");
+	printf("cPlayback::Open\n");
 	
 	mAudioStream = 0;
 	mSubStream = -1;
@@ -556,7 +555,7 @@ bool cPlayback::Open()
 
 void cPlayback::Close(void)
 {  
-	dprintf(DEBUG_NORMAL, "cPlayback::Close\n");
+	printf("cPlayback::Close\n");
 	
 	Stop();
 	
@@ -581,7 +580,7 @@ void cPlayback::Close(void)
 #endif
 		gst_object_unref(bus);
 		
-		dprintf(DEBUG_NORMAL, "GST bus handler closed\n");
+		printf("GST bus handler closed\n");
 	}
 	
 	// sometimes video/audio event poll close only needed device, so be sure and decrease them 
@@ -589,14 +588,14 @@ void cPlayback::Close(void)
 	{
 		gst_object_unref(GST_OBJECT(audioSink));
 		audioSink = NULL;
-		dprintf(DEBUG_NORMAL, "cPlayback::Close: audio sink closed\n");
+		printf("cPlayback::Close: audio sink closed\n");
 	}
 	
 	if (videoSink)
 	{
 		gst_object_unref(GST_OBJECT(videoSink));
 		videoSink = NULL;
-		dprintf(DEBUG_NORMAL, "cPlayback::Close: audio sink closed\n");
+		printf("cPlayback::Close: audio sink closed\n");
 	}
 
 	// close gst
@@ -606,7 +605,7 @@ void cPlayback::Close(void)
 		gst_object_unref (GST_OBJECT (m_gst_playbin));
 		m_gst_playbin = NULL;
 		
-		dprintf(DEBUG_NORMAL, "GST playbin closed\n");
+		printf("GST playbin closed\n");
 	}
 #else
 	//
@@ -632,7 +631,7 @@ void cPlayback::Close(void)
 // start
 bool cPlayback::Start(char *filename, const char * const suburi)
 {
-	dprintf(DEBUG_NORMAL, "cPlayback::Start: filename=%s\n", filename);
+	printf("cPlayback::Start: filename=%s\n", filename);
 
 	if (filename == NULL)
 	{
@@ -746,7 +745,7 @@ bool cPlayback::Start(char *filename, const char * const suburi)
 
 		m_gst_playbin = 0;
 		
-		dprintf(DEBUG_NORMAL, "cPlayback::Start: failed to create GStreamer pipeline!, sorry we can not play\n");
+		printf("cPlayback::Start: failed to create GStreamer pipeline!, sorry we can not play\n");
 		playing = false;
 	}
 	
@@ -770,19 +769,19 @@ bool cPlayback::Start(char *filename, const char * const suburi)
 	}
 	else
 	{
-		dprintf(DEBUG_NORMAL, "cPlayback::Start: failed to start playing file, sorry we can not play\n");
+		printf("cPlayback::Start: failed to start playing file, sorry we can not play\n");
 		playing = false;
 	}
 #endif
 
-	dprintf(DEBUG_NORMAL, "cPlayback::Start: (playing %d)\n", playing);	
+	printf("cPlayback::Start: (playing %d)\n", playing);	
 
 	return playing;
 }
 
 bool cPlayback::Play(void)
 {
-	dprintf(DEBUG_NORMAL, "cPlayback::Play: (playing %d)\n", playing);	
+	printf("cPlayback::Play: (playing %d)\n", playing);	
 
 	if(playing == true) 
 		return true;
@@ -806,7 +805,7 @@ bool cPlayback::Play(void)
 	}
 #endif
 
-	dprintf(DEBUG_INFO, "cPlayback::Play: (playing %d)\n", playing);
+	printf("cPlayback::Play: (playing %d)\n", playing);
 
 	return playing;
 }
@@ -816,7 +815,7 @@ bool cPlayback::Stop(void)
 	if(playing == false) 
 		return false;
 	
-	dprintf(DEBUG_NORMAL, "cPlayback::Stop: (playing %d)\n", playing);
+	printf("cPlayback::Stop: (playing %d)\n", playing);
 
 #if defined (ENABLE_GSTREAMER)
 	// stop
@@ -834,14 +833,14 @@ bool cPlayback::Stop(void)
 
 	playing = false;
 	
-	dprintf(DEBUG_INFO, "cPlayback::Stop: (playing %d)\n", playing);
+	printf("cPlayback::Stop: (playing %d)\n", playing);
 
 	return true;
 }
 
 bool cPlayback::SetAPid(unsigned short pid, int /*_ac3*/)
 {
-	dprintf(DEBUG_NORMAL, "cPlayback::SetAPid: curpid:%d nextpid:%d\n", mAudioStream, pid);
+	printf("cPlayback::SetAPid: curpid:%d nextpid:%d\n", mAudioStream, pid);
 	
 #if ENABLE_GSTREAMER
 	if(pid != mAudioStream)
@@ -868,7 +867,7 @@ bool cPlayback::SetAPid(unsigned short pid, int /*_ac3*/)
 //
 bool cPlayback::SetSubPid(unsigned short pid)
 {
-	dprintf(DEBUG_NORMAL, "cPlayback::SetSubPid: curpid:%d nextpid:%d\n", mSubStream, pid);
+	printf("cPlayback::SetSubPid: curpid:%d nextpid:%d\n", mSubStream, pid);
 	
 #if !ENABLE_GSTREAMER
 	int track = pid;
@@ -934,7 +933,7 @@ void cPlayback::trickSeek(double ratio)
 
 bool cPlayback::SetSpeed(int speed)
 {  
-	dprintf(DEBUG_NORMAL, "cPlayback::SetSpeed: speed %d\n", speed);	
+	printf("cPlayback::SetSpeed: speed %d\n", speed);	
 
 	if(playing == false) 
 		return false;
@@ -1029,7 +1028,7 @@ bool cPlayback::SetSpeed(int speed)
 
 bool cPlayback::SetSlow(int slow)
 {  
-	dprintf(DEBUG_NORMAL, "cPlayback::SetSlow: (playing %d)\n", playing);	
+	printf("cPlayback::SetSlow: (playing %d)\n", playing);	
 
 	if(playing == false) 
 		return false;
@@ -1067,7 +1066,7 @@ bool cPlayback::GetPosition(int &position, int &duration)
 #if ENABLE_GSTREAMER
 	if(end_eof)
 	{
-		dprintf(DEBUG_NORMAL, "cPlayback::%s !!!!EOF!!!! < -1\n", __FUNCTION__);
+		printf("cPlayback::%s !!!!EOF!!!! < -1\n", __FUNCTION__);
 		return false;
 	}
 	
@@ -1104,7 +1103,7 @@ bool cPlayback::GetPosition(int &position, int &duration)
 			
 		position = pts / 1000000.0;	// in ms
 		
-		dprintf(DEBUG_DEBUG, "%s: position: %d msec ", __FUNCTION__, position);
+//		printf("%s: position: %d msec ", __FUNCTION__, position);
 		
 		//duration
 		gint64 len;
@@ -1117,12 +1116,12 @@ bool cPlayback::GetPosition(int &position, int &duration)
 		
 		duration = len / 1000000.0;	// in ms
 
-		dprintf(DEBUG_DEBUG, "(duration: %d msec)\n", duration);
+//		printf("(duration: %d msec)\n", duration);
 	}
 #else
 	if (player && player->playback && !player->playback->isPlaying) 
 	{	  
-		dprintf(DEBUG_NORMAL, "cPlayback::%s !!!!EOF!!!! < -1\n", __func__);
+		printf("cPlayback::%s !!!!EOF!!!! < -1\n", __func__);
 		
 		playing = false;
 	
@@ -1137,7 +1136,7 @@ bool cPlayback::GetPosition(int &position, int &duration)
 
 	position = vpts/90;
 	
-	dprintf(DEBUG_DEBUG, "%s: position: %d ms ", __FUNCTION__, position);
+//	printf("%s: position: %d ms ", __FUNCTION__, position);
 	
 	// duration
 	double length = 0;
@@ -1150,7 +1149,7 @@ bool cPlayback::GetPosition(int &position, int &duration)
 
 	duration = (int)(length*1000);
 	
-	dprintf(DEBUG_DEBUG, "(duration: %d ms)\n", duration);
+//	printf("(duration: %d ms)\n", duration);
 #endif
 	
 	return true;
@@ -1161,7 +1160,7 @@ bool cPlayback::SetPosition(int position)
 	if(playing == false) 
 		return false;
 	
-	dprintf(DEBUG_NORMAL, "cPlayback::SetPosition: position: %d msec\n", position);
+	printf("cPlayback::SetPosition: position: %d msec\n", position);
 	
 #if ENABLE_GSTREAMER
 	gint64 time_nanoseconds = (gint64)position * 1000000.0;
@@ -1192,7 +1191,7 @@ bool cPlayback::SetPosition(int position)
 
 void cPlayback::FindAllPids(uint16_t *apids, unsigned short *ac3flags, uint16_t *numpida, std::string *language)
 { 
-	dprintf(DEBUG_NORMAL, "cPlayback::FindAllPids\n");
+	printf("cPlayback::FindAllPids\n");
 
 #if defined (ENABLE_GSTREAMER)
 	if(m_gst_playbin)
@@ -1201,7 +1200,7 @@ void cPlayback::FindAllPids(uint16_t *apids, unsigned short *ac3flags, uint16_t 
 		
 		// get audio
 		g_object_get (m_gst_playbin, "n-audio", &n_audio, NULL);
-		dprintf(DEBUG_NORMAL, "cPlayback::FindAllPids: %d audio\n", n_audio);
+		printf("cPlayback::FindAllPids: %d audio\n", n_audio);
 		
 		if(n_audio == 0)
 			return;
@@ -1328,7 +1327,7 @@ void cPlayback::FindAllPids(uint16_t *apids, unsigned short *ac3flags, uint16_t 
 // subs pids
 void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *language)
 {
-	dprintf(DEBUG_NORMAL, "cPlayback::FindAllSubPids:\n");
+	printf("cPlayback::FindAllSubPids:\n");
 
 #if !defined (ENABLE_GSTREAMER)
 	char ** TrackList = NULL;
