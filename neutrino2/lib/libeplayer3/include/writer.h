@@ -85,7 +85,6 @@ extern Writer_t WriterAudioWMA;
 extern Writer_t WriterAudioWMAPRO;
 extern Writer_t WriterAudioVORBIS;
 extern Writer_t WriterAudioOPUS;
-extern Writer_t WriterAudioFLAC;
 extern Writer_t WriterAudioAMR;
 // video
 extern Writer_t WriterVideoMPEG1;
@@ -124,7 +123,6 @@ static Writer_t * AvailableWriter[] =
 	&WriterAudioWMAPRO,
 	&WriterAudioVORBIS,
 	&WriterAudioOPUS,
-	&WriterAudioFLAC,
 	//
 	&WriterVideoMPEG1,
 	&WriterVideoMPEG2,

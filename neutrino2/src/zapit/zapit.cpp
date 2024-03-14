@@ -1610,8 +1610,8 @@ int CZapit::changeAudioPid(uint8_t index)
 				audioDecoder->SetStreamType(AUDIO_STREAMTYPE_AAC);				
 				break;
 			
-			case CZapitAudioChannel::AACPLUS:
-				audioDecoder->SetStreamType(AUDIO_STREAMTYPE_AACPLUS);
+			case CZapitAudioChannel::AACHE:
+				audioDecoder->SetStreamType(AUDIO_STREAMTYPE_AAC_HE);
 				break;
 			
 			case CZapitAudioChannel::DTS:
@@ -1800,7 +1800,7 @@ void CZapit::sendCurrentAPIDs(APIDList &apids)
 		
 		if (live_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AC3
 			|| live_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AAC
-			|| live_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AACPLUS
+			|| live_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AACHE
 			|| live_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::EAC3
 			|| live_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::DTS
 			|| live_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::DTSHD
@@ -1865,7 +1865,7 @@ void CZapit::sendRecordAPIDs(APIDList &apids)
 		
 		if (rec_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AC3
 			|| rec_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AAC
-			|| rec_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AACPLUS
+			|| rec_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AACHE
 			|| rec_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::EAC3
 			|| rec_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::DTS
 			|| rec_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::DTSHD
@@ -1933,7 +1933,7 @@ void CZapit::sendAPIDs(t_channel_id chid, APIDList &apids)
 			
 			if (channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AC3
 				|| channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AAC
-				|| channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AACPLUS
+				|| channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AACHE
 				|| channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::EAC3
 				|| channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::DTS
 				|| channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::DTSHD
@@ -3182,9 +3182,9 @@ int CZapit::startPlayBack(CZapitChannel * thisChannel)
 						audioDecoder->SetStreamType(AUDIO_STREAMTYPE_AAC);				
 						break;
 					
-					case CZapitAudioChannel::AACPLUS:
-						audioStr = "AAC-PLUS";
-						audioDecoder->SetStreamType(AUDIO_STREAMTYPE_AACPLUS);
+					case CZapitAudioChannel::AACHE:
+						audioStr = "AAC-HE";
+						audioDecoder->SetStreamType(AUDIO_STREAMTYPE_AAC_HE);
 						break;
 					
 					case CZapitAudioChannel::DTS:

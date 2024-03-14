@@ -74,7 +74,7 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 	bool isAAC = false;
 	bool isDTSHD = false;
 	bool isEAC3 = false;
-	bool isAACPLUS = false;
+	bool isAACHE = false;
 	bool isLPCM = false;
 	
 	bool descramble = false;
@@ -136,7 +136,7 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 				break;
 				
 			case 0x1C: // MPEG4_AUDIO
-				isAACPLUS = true;
+				isAACHE = true;
 				break;
 				
 			case 0x2B:
@@ -228,7 +228,7 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 				break;
 
 			case AAC_DESCRIPTOR:
-				isAACPLUS = true;
+				isAACHE = true;
 				break;
 
 			case 0xC5:
@@ -341,7 +341,7 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 			break;
 			
 		case 0x06:
-			if ( (isAC3) || (isDTS) || (isAAC) || (isAACPLUS) || (isEAC3)) 
+			if ( (isAC3) || (isDTS) || (isAAC) || (isAACHE) || (isEAC3)) 
 			{
 				if (description == "") 
 				{
@@ -352,8 +352,8 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 						description += " (DTS)";
 					else if (isAAC)
 	                                        description += " (AAC)";
-					else if (isAACPLUS)
-	                                        description += " (AACPLUS)";
+					else if (isAACHE)
+	                                        description += " (AACHE)";
 					else if (isEAC3)
 	                                        description += " (EAC3)";
 				}
@@ -367,8 +367,8 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 						Type = CZapitAudioChannel::DTS;
 					else if (isAAC)
 						Type = CZapitAudioChannel::AAC;
-					else if (isAACPLUS)
-						Type = CZapitAudioChannel::AACPLUS;
+					else if (isAACHE)
+						Type = CZapitAudioChannel::AACHE;
 					else if (isEAC3)
 						Type = CZapitAudioChannel::EAC3;
 					else
@@ -394,15 +394,15 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 			
 			dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: apid 0x%x %s\n", esInfo->elementary_PID, description.c_str());
 			break;
-	        case 0x11:	 // AACPLUS
+	        case 0x11:	 // AACHE
 			if (description == "")
 				description = esInfo->elementary_PID;
 			
-			description += " (AACPLUS)";
-			isAACPLUS = true;
+			description += " (AACHE)";
+			isAACHE = true;
 			descramble = true;
 			if(!scan_runs)
-				channel->addAudioChannel(esInfo->elementary_PID, CZapitAudioChannel::AACPLUS, description, componentTag);
+				channel->addAudioChannel(esInfo->elementary_PID, CZapitAudioChannel::AACHE, description, componentTag);
 			
 			dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: apid 0x%x %s\n", esInfo->elementary_PID, description.c_str());
 			break;

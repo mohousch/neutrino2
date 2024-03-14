@@ -103,6 +103,7 @@ CMoviePlayer::CMoviePlayer()
 	fileFilter.addFilter("wma");
 	fileFilter.addFilter("ogg");
 	fileFilter.addFilter("m3u8");
+	fileFilter.addFilter("webm");
 }
 
 CMoviePlayer::~CMoviePlayer()

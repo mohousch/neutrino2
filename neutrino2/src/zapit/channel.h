@@ -115,7 +115,7 @@ class CZapitAudioChannel
 	                 MPEG,
 	                 AC3,
 	                 AAC,
-	                 AACPLUS, //?
+	                 AACHE,
 	                 DTS,
 			 DTSHD,
 	                 EAC3,

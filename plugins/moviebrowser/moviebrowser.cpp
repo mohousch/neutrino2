@@ -2584,6 +2584,7 @@ bool CMovieBrowser::loadTsFileNamesFromDir(const std::string & dirname)
 				fileFilter.addFilter("mp3");
 				fileFilter.addFilter("wma");
 				fileFilter.addFilter("ogg");
+				fileFilter.addFilter("webm");
 
 				if(fileFilter.matchFilter(flist[i].Name))
 					test = 0;
