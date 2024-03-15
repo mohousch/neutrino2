@@ -69,11 +69,6 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 #define fb_err(fmt, x...)
 #endif
 
-//#define _r(c) ((c)>>24)
-//#define _g(c) (((c)>>16)&0xFF)
-//#define _b(c) (((c)>>8)&0xFF)
-//#define _a(c) ((c)&0xFF)
-
 /* ***************************** */
 /* Types                         */
 /* ***************************** */
@@ -298,54 +293,6 @@ static int writeData(void* _call)
 	{
 		blit2FB(call->data, call->Width, call->Height, call->x, call->y, 0, 0, false);
 	}
-	
-	/*
-	if (call->data != NULL)
-	{
-		unsigned int opacity = 255 - ((unsigned int)_a(call->color));
-		unsigned int r = (unsigned int)_r(call->color);
-		unsigned int g = (unsigned int)_g(call->color);
-		unsigned int b = (unsigned int) _b(call->color);
-		int src_stride = call->Stride;
-		int dst_stride = call->destStride;
-		int dst_delta  = dst_stride - call->Width*4;
-		int x,y;
-		const unsigned char *src = call->data;
-		unsigned char *dst = call->destination + (call->y * dst_stride + call->x * 4);
-		unsigned int k,ck,t;
-
-		fb_printf(100, "x           %d\n", call->x);
-		fb_printf(100, "y           %d\n", call->y);
-		fb_printf(100, "width       %d\n", call->Width);
-		fb_printf(100, "height      %d\n", call->Height);
-		fb_printf(100, "stride      %d\n", call->Stride);
-		fb_printf(100, "color       %d\n", call->color);
-		fb_printf(100, "data        %p\n", call->data);
-		fb_printf(100, "dest        %p\n", call->destination);
-		fb_printf(100, "dest.stride %d\n", call->destStride);
-
-		fb_printf(100, "r 0x%hhx, g 0x%hhx, b 0x%hhx, a 0x%hhx, opacity %d\n", r, g, b, a, opacity);
-
-		for (y=0;y<call->Height;y++)
-		{
-			for (x = 0; x < call->Width; x++)
-			{
-				k = ((unsigned)src[x]) * opacity / 255;
-				ck = 255 - k;
-				t = *dst;
-				*dst++ = (k*b + ck*t) / 255;
-				t = *dst;
-				*dst++ = (k*g + ck*t) / 255;
-				t = *dst;
-				*dst++ = (k*r + ck*t) / 255;
-				*dst++ = 0;
-			}
-
-			dst += dst_delta;
-			src += src_stride;
-		}
-	}
-	*/ 
 	else
 	{
 		for (y = 0; y < call->Height; y++)

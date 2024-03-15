@@ -128,14 +128,14 @@ static int writeData(void* _call)
 	memcpy(Data, call->data, call->len);
 
 	/* 16-bit byte swap all data before injecting it */
-	for (i=0; i< call->len; i+=2)
+	for (i = 0; i < call->len; i += 2)
 	{
 		unsigned char Tmp = Data[i];
 		Data[i] = Data[i+1];
 		Data[i+1] = Tmp;
 	}
 
-	int HeaderLength    = InsertPesHeader (PesHeader, call->len, MPEG_AUDIO_PES_START_CODE/*PRIVATE_STREAM_1_PES_START_CODE*/, call->Pts, 0);
+	int HeaderLength    = InsertPesHeader (PesHeader, call->len, MPEG_AUDIO_PES_START_CODE, call->Pts, 0);
 	unsigned char* PacketStart = malloc(call->len + HeaderLength);
 	memcpy (PacketStart, PesHeader, HeaderLength);
 	memcpy (PacketStart + HeaderLength, call->data, call->len);
@@ -146,6 +146,7 @@ static int writeData(void* _call)
 	free(Data);
 
 	dts_printf(10, "< len %d\n", len);
+	
 	return len;
 }
 

@@ -131,7 +131,7 @@ static int writeData(void* _call)
         return 0;
     }
 
-    divx3_printf(10, "AudioPts %lld\n", call->Pts);
+    divx3_printf(10, "VideoPts %lld\n", call->Pts);
 
 
     struct iovec iov[8];

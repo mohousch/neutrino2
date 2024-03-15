@@ -148,24 +148,31 @@ static int prepareClipPlay(int uNoOfChannels, int uSampleRate, int uBitsPerSampl
 	//and set up sample rate
 	switch(uSampleRate) 
 	{
-		case 48000:             SubFrameLen = 40;
-				                break;
-		case 96000:             lpcm_prv[8] |= 0x10;
-				                SubFrameLen = 80;
-				                break;
-		case 192000:    lpcm_prv[8] |= 0x20;
-				                SubFrameLen = 160;
-				                break;
-		case 44100:             lpcm_prv[8] |= 0x80;
-				                SubFrameLen = 40;
-				                break;
-		case 88200:             lpcm_prv[8] |= 0x90;
-				                SubFrameLen = 80;
-				                break;
-		case 176400:    lpcm_prv[8] |= 0xA0;
-				                SubFrameLen = 160;
-				                break;
-		default:                break;
+		case 48000:             
+			SubFrameLen = 40;
+			break;
+		case 96000:             
+			lpcm_prv[8] |= 0x10;
+			SubFrameLen = 80;
+			break;
+		case 192000:    
+			lpcm_prv[8] |= 0x20;
+			SubFrameLen = 160;
+			break;
+		case 44100:             
+			lpcm_prv[8] |= 0x80;
+			SubFrameLen = 40;
+			break;
+		case 88200:             
+			lpcm_prv[8] |= 0x90;
+			SubFrameLen = 80;
+			break;
+		case 176400:    
+			lpcm_prv[8] |= 0xA0;
+			SubFrameLen = 160;
+			break;
+		default:                
+			break;
 	}
 
 	SubFrameLen *= uNoOfChannels;
@@ -183,11 +190,14 @@ static int prepareClipPlay(int uNoOfChannels, int uSampleRate, int uBitsPerSampl
 
 	switch(uBitsPerSample) 
 	{
-		case    16: break;
-		case    24: lpcm_prv[7] |= 0x20;
-				        break;
-		default:        printf("inappropriate bits per sample (%d) - must be 16 or 24\n",uBitsPerSample);
-				        return 1;
+		case 16: 
+			break;
+		case 24: 
+			lpcm_prv[7] |= 0x20;
+			break;
+		default:        
+			printf("inappropriate bits per sample (%d) - must be 16 or 24\n",uBitsPerSample);
+			return 1;
 	}
 
 	return 0;

@@ -259,6 +259,9 @@ static char* Codec2Encoding(AVCodecContext* codec, int* version)
 		case AV_CODEC_ID_FLAC: 		
 			return "A_IPCM"; 	//FIXME:
 			
+		case AV_CODEC_ID_OPUS:
+			return "A_IPCM";	//FIXME:
+			
 		case AV_CODEC_ID_PCM_S8:
 		case AV_CODEC_ID_PCM_U8:
 		case AV_CODEC_ID_PCM_S16LE:

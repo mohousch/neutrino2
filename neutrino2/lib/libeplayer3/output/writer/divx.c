@@ -115,8 +115,6 @@ static int writeData(void* _call)
 		return 0;
 	}
 
-	divx_printf(10, "AudioPts %lld\n", call->Pts);
-
 	if ((call->data == NULL) || (call->len <= 0))
 	{
 		divx_err("parsing NULL Data. ignoring...\n");
@@ -128,6 +126,8 @@ static int writeData(void* _call)
 		divx_err("file pointer < 0. ignoring ...\n");
 		return 0;
 	}
+	
+	divx_printf(10, "VideoPts %lld\n", call->Pts);
 
 #if defined (__sh__)
 	usecPerFrame = 1000000000 / call->FrameRate;

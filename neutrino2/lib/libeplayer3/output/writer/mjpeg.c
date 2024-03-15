@@ -178,7 +178,9 @@ static int writeData(void *_call)
     mjpeg_printf(10, "\n");
 
     WriterAVCallData_t *call = (WriterAVCallData_t *)_call;
-    if (call == NULL) {
+    
+    if (call == NULL) 
+    {
         mjpeg_err("call data is NULL...\n");
         return 0;
     }

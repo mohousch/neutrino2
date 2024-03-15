@@ -123,7 +123,7 @@ static int writeData(void* _call)
 
 	iov[0].iov_base = PesHeader;
 #if defined (__sh__)
-	iov[0].iov_len = InsertPesHeader(PesHeader, call->len, PRIVATE_STREAM_1_PES_START_CODE, call->Pts, 0);
+	iov[0].iov_len = InsertPesHeader(PesHeader, call->len, PCM_AUDIO_PES_START_CODE, call->Pts, 0);
 #else
 	iov[0].iov_len = InsertPesHeader(PesHeader, call->len, MPEG_AUDIO_PES_START_CODE, call->Pts, 0);
 #endif
