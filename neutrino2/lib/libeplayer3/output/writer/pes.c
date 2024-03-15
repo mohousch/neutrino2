@@ -161,7 +161,7 @@ int InsertPesHeader(unsigned char *data, int size, unsigned char stream_id, unsi
 		PutBits(&ld2, 0x0, 8);
 		PutBits(&ld2, 0x0, 8);
 		PutBits(&ld2, 0x1, 8);  				// Start Code
-		PutBits(&ld2, pic_start_code & 0xff, 8);  	// 00, for picture start
+		PutBits(&ld2, pic_start_code & 0xff, 8);  		// 00, for picture start
 		PutBits(&ld2, (pic_start_code >> 8 )&0xff, 8);  	// For any extra information (like in mpeg4p2, the pic_start_code)
 		//14 + 4 = 18
 	}

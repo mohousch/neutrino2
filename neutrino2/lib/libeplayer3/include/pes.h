@@ -1,6 +1,8 @@
 #ifndef pes_123
 #define pes_123
 
+
+////
 #define PES_HEADER_SIZE				9
 #define PES_MAX_HEADER_SIZE                     (PES_HEADER_SIZE + 256) // 64
 #define PES_PRIVATE_DATA_FLAG                   0x80
@@ -13,12 +15,12 @@
 #define PES_START_CODE_RESERVED_4               0xfd
 #define PES_VERSION_FAKE_START_CODE             0x31
 
-
+////
 #define MAX_PES_PACKET_SIZE                     (65535) //65400
 
 
-/* start codes */
-#define PCM_AUDIO_PES_START_CODE        		0xbd
+//// start codes
+#define PCM_AUDIO_PES_START_CODE        	0xbd
 #define H263_VIDEO_PES_START_CODE		0xfe
 #define H264_VIDEO_PES_START_CODE               0xe2
 #define MPEG_VIDEO_PES_START_CODE               0xe0
