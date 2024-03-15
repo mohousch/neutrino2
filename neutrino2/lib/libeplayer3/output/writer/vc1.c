@@ -152,7 +152,7 @@ static int writeData(void* _call)
 	if (initialHeader) 
 	{
 
-		unsigned char               PesPacket[PES_MIN_HEADER_SIZE+128];
+		unsigned char               PesPacket[PES_HEADER_SIZE + 128];
 		unsigned char*              PesPtr;
 		unsigned int                MetadataLength;
 		unsigned int                crazyFramerate = 0;
@@ -165,7 +165,7 @@ static int writeData(void* _call)
 		vc1_printf(10, "crazyFramerate: %u\n", crazyFramerate);
 
 		{
-			PesPtr          = &PesPacket[PES_MIN_HEADER_SIZE];
+			PesPtr          = &PesPacket[PES_HEADER_SIZE];
 
 			memcpy (PesPtr, SequenceLayerStartCode, sizeof(SequenceLayerStartCode));
 			PesPtr             += sizeof(SequenceLayerStartCode);
@@ -193,7 +193,7 @@ static int writeData(void* _call)
 			*PesPtr++           = (crazyFramerate >> 16) & 0xff;
 			*PesPtr++           =  crazyFramerate >> 24;
 
-			MetadataLength      = PesPtr - &PesPacket[PES_MIN_HEADER_SIZE];
+			MetadataLength      = PesPtr - &PesPacket[PES_HEADER_SIZE];
 
 			int HeaderLength        = InsertPesHeader (PesPacket, MetadataLength, VC1_VIDEO_PES_START_CODE, INVALID_PTS_VALUE, 0);
 
@@ -204,11 +204,11 @@ static int writeData(void* _call)
 			int i;
 
 			/* For VC1 the codec private data is a standard vc1 sequence header so we just copy it to the output */
-			memcpy (&PesPacket[PES_MIN_HEADER_SIZE], call->private_data, call->private_size);
+			memcpy (&PesPacket[PES_HEADER_SIZE], call->private_data, call->private_size);
 
 			vc1_printf(10, "Private Data:\n");
 			for (i = 0; i < call->private_size; i++)
-			    vc1_printf(10, "%02x ", PesPacket[PES_MIN_HEADER_SIZE+i]);
+			    vc1_printf(10, "%02x ", PesPacket[PES_HEADER_SIZE+i]);
 			vc1_printf(10, "\n");
 
 			int HeaderLength       = InsertPesHeader (PesPacket, call->private_size, VC1_VIDEO_PES_START_CODE, INVALID_PTS_VALUE, 0);
