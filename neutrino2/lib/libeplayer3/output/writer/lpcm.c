@@ -278,3 +278,4 @@ struct Writer_s WriterAudioLPCM =
     NULL,
     &caps_lpcm
 };
+

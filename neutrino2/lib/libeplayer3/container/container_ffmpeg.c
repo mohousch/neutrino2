@@ -616,44 +616,43 @@ static void FFMPEGThread(Context_t *context)
 					else if (audioTrack->inject_as_pcm == 1)
 					{
 						// FIXME:
-						/*
-						AVCodecContext *ctx = audioTrack->stream->codec;
-						int bytesDone = 0;
-						
+						int      bytesDone = 0;
+						unsigned int samples_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
+						AVPacket avpkt;
+						avpkt = packet;
+
 						if(samples == NULL)
 							samples = av_frame_alloc();
 						else
 							av_frame_unref(samples);
 
-						while(packet.size > 0)
+						while(avpkt.size > 0)
 						{
-							//
-							int decoded_data_size = 0; //AVCODEC_MAX_AUDIO_FRAME_SIZE;
-							
-#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 37, 100)
-							bytesDone = avcodec_decode_audio4(ctx, samples, &decoded_data_size, &packet);
+							int decoded_data_size = samples_size;
+
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
+							bytesDone = avcodec_decode_audio4(audioTrack->stream->codec, samples, &decoded_data_size, &avpkt);
 #else
-							bytesDone = avcodec_send_packet(ctx, &packet);
+							bytesDone = avcodec_send_packet(audioTrack->stream->codec, &avpkt);
 							
              						if (bytesDone < 0 && bytesDone != AVERROR(EAGAIN) && bytesDone != AVERROR_EOF) 
              						{
             						} 
             						else 
             						{
-             							bytesDone = avcodec_receive_frame(ctx, samples);
+             							bytesDone = avcodec_receive_frame(audioTrack->stream->codec, samples);
              						}
 #endif
 
 							if(bytesDone < 0) // Error Happend
 							    break;
 
-							packet.data += bytesDone;
-							packet.size -= bytesDone;
+							avpkt.data += bytesDone;
+							avpkt.size -= bytesDone;
 
 							if(decoded_data_size <= 0)
 							    continue;
 
-							//
 							avOut.data       = samples;
 							avOut.len        = decoded_data_size;
 
@@ -675,31 +674,6 @@ static void FFMPEGThread(Context_t *context)
 								{
 									ffmpeg_err("writing data to audio device failed\n");
 								}
-							}
-						}
-						*/
-						
-						//
-						avOut.data       = packet.data;
-						avOut.len        = packet.size;
-
-						avOut.pts        = audioTrack->pts;
-						avOut.extradata  = (unsigned char *) &extradata;
-						avOut.extralen   = sizeof(extradata);
-						avOut.frameRate  = 0;
-						avOut.timeScale  = 0;
-						avOut.width      = 0;
-						avOut.height     = 0;
-						avOut.type       = "audio";
-						// opengl
-						avOut.stream 	 = audioTrack->stream;
-						avOut.packet 	= &packet;
-
-						if (!context->playback->BackWard)
-						{
-							if (context->output->audio->Write(context, &avOut) < 0)
-							{
-								ffmpeg_err("writing data to audio device failed\n");
 							}
 						}
 					}
