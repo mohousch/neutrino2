@@ -53,7 +53,7 @@
 /* ***************************** */
 
 
-//#define PCM_DEBUG
+#define PCM_DEBUG
 
 #ifdef PCM_DEBUG
 
@@ -131,10 +131,10 @@ static unsigned int breakBufferFillSize = 0;
 static int prepareClipPlay(int uNoOfChannels, int uSampleRate, int uBitsPerSample, int bLittleEndian)
 {
 	pcm_printf(10, "rate: %d ch: %d bits: %d (%d bps)\n",
-		uSampleRate/*Format->dwSamplesPerSec*/,
-		uNoOfChannels/*Format->wChannels*/,
-		uBitsPerSample/*Format->wBitsPerSample*/,
-		(uBitsPerSample/*Format->wBitsPerSample*/ / 8)
+		uSampleRate,
+		uNoOfChannels,
+		uBitsPerSample,
+		(uBitsPerSample / 8)
 	);
 
 	SubFrameLen = 0;
@@ -144,8 +144,7 @@ static int prepareClipPlay(int uNoOfChannels, int uSampleRate, int uBitsPerSampl
 	memcpy(lpcm_pes, clpcm_pes, sizeof(lpcm_pes));
 	memcpy(lpcm_prv, clpcm_prv, sizeof(lpcm_prv));
 
-	//figure out size of subframe
-	//and set up sample rate
+	//figure out size of subframe and set up sample rate
 	switch(uSampleRate) 
 	{
 		case 48000:             
@@ -248,7 +247,7 @@ static int writeData(void* _call)
 	uint32_t size = call->len;
 
 #if defined (__sh__)
-	if (initialHeader)
+	if (initialHeader && pcmPrivateData != NULL)
 	{
 		uint32_t codecID = (uint32_t)pcmPrivateData->avCodecId;
 		uint8_t LE = 0;
@@ -279,6 +278,7 @@ static int writeData(void* _call)
 			default:
 				break;
 		}
+		
 		initialHeader = 0;
 		prepareClipPlay(pcmPrivateData->uNoOfChannels, pcmPrivateData->uSampleRate, pcmPrivateData->uBitsPerSample, LE);
 	}
@@ -320,7 +320,7 @@ static int writeData(void* _call)
 		iov[2].iov_len = SubFrameLen;
 
 		//write the PCM data
-		if (16 == pcmPrivateData->uBitsPerSample)
+		if (pcmPrivateData && 16 == pcmPrivateData->uBitsPerSample)
 		{
 			for (n = 0; n < SubFrameLen; n += 2)
 			{
@@ -369,12 +369,18 @@ static int writeData(void* _call)
 	{
 		int32_t width = 0;
 		int32_t depth = 0;
-		int32_t rate = (uint64_t)pcmPrivateData->uSampleRate;
-		int32_t channels = (uint8_t) pcmPrivateData->uNoOfChannels;
+		int32_t rate = 0;
+		int32_t channels = 0;
+		int32_t codecID = 0;
+		
+		if (pcmPrivateData)
+		{
+			rate = (uint64_t)pcmPrivateData->uSampleRate;
+			channels = (uint8_t) pcmPrivateData->uNoOfChannels;
+			codecID = (uint32_t)pcmPrivateData->avCodecId;
+		}
 		int32_t block_align = 0;
 		int32_t byterate = 0;
-
-		uint32_t codecID = (uint32_t)pcmPrivateData->avCodecId;
 
 		//uint8_t dataPrecision = 0;
 		uint8_t LE = 0;
@@ -458,6 +464,7 @@ static int writeData(void* _call)
 		fixed_bufferfilled = 0;
 		/* avoid compiler warning */
 		if (LE) {}
+		
 		pcm_printf(40, "PCM fixed_buffersize [%u] [%s]\n", fixed_buffersize, LE ? "LE" : "BE");
 	}
 	

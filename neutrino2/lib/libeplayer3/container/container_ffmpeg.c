@@ -572,8 +572,51 @@ static void FFMPEGThread(Context_t *context)
 					ffmpeg_printf(200, "AudioTrack index = %d\n",index);
 					
 					//
-					if (audioTrack->inject_as_pcm == 1)
+					pcmPrivateData_t extradata;
+					extradata.uNoOfChannels = audioTrack->stream->codec->channels;
+					extradata.uSampleRate = audioTrack->stream->codec->sample_rate;
+					extradata.uBitsPerSample = 16;
+					extradata.bLittleEndian = 1;
+					extradata.avCodecId = audioTrack->stream->codec->codec_id;
+					//extradata.bits_per_coded_sample = audioTrack->stream->bits_per_coded_sample;
+					//extradata.bit_rate = audioTrack->stream->bit_rate;
+                			//extradata.block_align = audioTrack->stream->block_align;
+                			//extradata.frame_size = audioTrack->stream->frame_size;
+                			
+                			//uint8_t *pAudioExtradata    = audioTrack->stream->extradata;
+                			//uint32_t audioExtradataSize = audioTrack->stream->extradata_size;
+					
+					//
+					if(!strncmp(audioTrack->Encoding, "A_PCM", 5))
 					{
+						ffmpeg_printf(200,"write audio raw pcm\n");
+
+						avOut.data       = packet.data;
+						avOut.len        = packet.size;
+						avOut.pts        = audioTrack->pts;
+						avOut.extradata  = (uint8_t *) &extradata;
+						avOut.extralen   = sizeof(extradata);
+						avOut.frameRate  = 0;
+						avOut.timeScale  = 0;
+						avOut.width      = 0;
+						avOut.height     = 0;
+						avOut.type       = "audio";
+						// opengl
+						avOut.stream 	 = audioTrack->stream;
+						avOut.packet 	= &packet;
+
+						if (!context->playback->BackWard)
+						{
+							if (context->output->audio->Write(context, &avOut) < 0)
+							{
+								ffmpeg_err("(raw pcm) writing data to audio device failed\n");
+							}
+						}
+					}
+					else if (audioTrack->inject_as_pcm == 1)
+					{
+						// FIXME:
+						/*
 						AVCodecContext *ctx = audioTrack->stream->codec;
 						int bytesDone = 0;
 						
@@ -610,17 +653,6 @@ static void FFMPEGThread(Context_t *context)
 							if(decoded_data_size <= 0)
 							    continue;
 
-							pcmPrivateData_t extradata;
-							extradata.uNoOfChannels = audioTrack->stream->codec->channels;
-							extradata.uSampleRate = audioTrack->stream->codec->sample_rate;
-							extradata.uBitsPerSample = 16;
-							extradata.bLittleEndian = 1;
-							extradata.avCodecId = audioTrack->stream->codec->codec_id;
-							//extradata.bits_per_coded_sample = audioTrack->stream->bits_per_coded_sample;
-							//extradata.bit_rate = audioTrack->stream->bit_rate;
-                					//extradata.block_align = audioTrack->stream->block_align;
-                					//extradata.frame_size = audioTrack->stream->frame_size;
-
 							//
 							avOut.data       = samples;
 							avOut.len        = decoded_data_size;
@@ -643,6 +675,31 @@ static void FFMPEGThread(Context_t *context)
 								{
 									ffmpeg_err("writing data to audio device failed\n");
 								}
+							}
+						}
+						*/
+						
+						//
+						avOut.data       = packet.data;
+						avOut.len        = packet.size;
+
+						avOut.pts        = audioTrack->pts;
+						avOut.extradata  = (unsigned char *) &extradata;
+						avOut.extralen   = sizeof(extradata);
+						avOut.frameRate  = 0;
+						avOut.timeScale  = 0;
+						avOut.width      = 0;
+						avOut.height     = 0;
+						avOut.type       = "audio";
+						// opengl
+						avOut.stream 	 = audioTrack->stream;
+						avOut.packet 	= &packet;
+
+						if (!context->playback->BackWard)
+						{
+							if (context->output->audio->Write(context, &avOut) < 0)
+							{
+								ffmpeg_err("writing data to audio device failed\n");
 							}
 						}
 					}
