@@ -1605,7 +1605,7 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 		
 		case OUTPUT_DATA:
 		{
-			ret = LinuxDvbGetData(context, (Data_t*)&argument);
+			ret = LinuxDvbGetData(context, (Data_t*)argument);
 			break;
 		}
 		

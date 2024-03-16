@@ -145,29 +145,9 @@ static void SupervisorThread(Context_t *context)
 		if (context->container->selectedContainer != NULL)
 			context->container->selectedContainer->Command(context, CONTAINER_LAST_PTS, &lastPts);
 
-#ifdef FRAMECOUNT_WORKS
-		// This is a good place to implement buffer managment
-		long long int frameCount = -1;
-		int ret = context->playback->Command(context, PLAYBACK_GET_FRAME_COUNT, &frameCount);
-		playback_printf(1, "Framecount = %ull\n", frameCount);
-		status = 1;
-#endif
-
 		if ((status == 0) && (status != lastStatus))
 		{
 			playback_printf(1, "container has ended, syncing to playback pts ...\n");
-
-//#define FLUSH_AFTER_CONTAINER_ENDED
-#ifdef FLUSH_AFTER_CONTAINER_ENDED
-			// These means that we have injected everything we got, so flush it.
-			// As this is a thread, the call should block the thread as long as frames are beeing played.
-			// The main thread should not be blocked by this.
-			// This also helps for files which dont have any pts at all
-			if (context->output->Command(context, OUTPUT_FLUSH, NULL) < 0)
-			{
-				playback_err("failed to flush output.\n");
-			}
-#endif
 
 			while (!dieNow)
 			{
@@ -518,7 +498,7 @@ static int PlaybackContinue(Context_t  *context)
 		context->output->Command(context, OUTPUT_CONTINUE, NULL);
 
 		context->playback->isPaused     = 0;
-		context->playback->isPlaying  = 1;
+		context->playback->isPlaying  	= 1;
 		context->playback->isForwarding = 0;
 		context->playback->BackWard     = 0;
 		context->playback->SlowMotion   = 0;
@@ -697,11 +677,9 @@ static void FastBackwardThread(Context_t *context)
 		context->playback->isSeeking = 0;
 		context->output->Command(context, OUTPUT_CONTINUE, NULL);
 
-		//context->container->selectedContainer->Command(context, CONTAINER_SEEK, &context->playback->BackWard);
-		//context->output->Command(context, OUTPUT_CLEAR, "video");
 		usleep(500000);
 	}
-	//context->output->Command(context, OUTPUT_CLEAR, NULL);
+	
 	context->output->Command(context, OUTPUT_AUDIOMUTE, "0");
 	isFBThreadStarted = 0;
 
@@ -1013,23 +991,25 @@ static int PlaybackInfo(Context_t  *context, char** infoString)
 	return ret;
 }
 
-// buffer 
+// data 
 static int PlaybackGetData(Context_t* context, Data_t* data)
 {
 	int ret = cERR_PLAYBACK_NO_ERROR;
 
 	playback_printf(10, "\n");
 	
+#ifdef USE_OPENGL
 	//
 	if (context->playback->isPlaying) 
 	{
-		ret = context->output->Command(context, OUTPUT_DATA, &data);
+		ret = context->output->Command(context, OUTPUT_DATA, data);
 	} 
 	else
 	{
 		playback_err("not possible\n");
 		ret = cERR_PLAYBACK_ERROR;
 	}
+#endif
 	
 	playback_printf(10, "exiting with value %d\n", ret);
 
@@ -1149,7 +1129,7 @@ static int Command(void* _context, PlaybackCmd_t command, void * argument)
 		
 		case PLAYBACK_DATA:
 		{
-			ret = PlaybackGetData(context, (Data_t*)&argument);
+			ret = PlaybackGetData(context, argument);
 			break;
 		}
 		

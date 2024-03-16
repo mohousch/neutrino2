@@ -77,7 +77,7 @@ class cPlayback
 		~cPlayback(){};	
 		
 #ifdef USE_OPENGL
-		void getDecBuf(uint8_t** buffer, int* width, int* height, int* rate, uint64_t* pts, AVRational* a);
+		void getDecBuf(uint8_t* buffer, int* width, int* height, int* rate, uint64_t* pts, AVRational* a);
 #endif
 };
 

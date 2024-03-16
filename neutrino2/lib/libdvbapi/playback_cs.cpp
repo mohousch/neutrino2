@@ -1361,7 +1361,7 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 
 ////
 #ifdef USE_OPENGL
-void cPlayback::getDecBuf(uint8_t** buffer, int* width, int* height, int* rate, uint64_t* pts, AVRational* a)
+void cPlayback::getDecBuf(uint8_t* buffer, int* width, int* height, int* rate, uint64_t* pts, AVRational* a)
 {
 #ifndef ENABLE_GSTREAMER
 	Data_t* out;
@@ -1369,7 +1369,7 @@ void cPlayback::getDecBuf(uint8_t** buffer, int* width, int* height, int* rate, 
 	if(player && player->playback)
 		player->playback->Command(player, PLAYBACK_DATA, (Data_t*)out);
 		
-	*buffer = out->buffer;
+	buffer = out->buffer;
 	*width = out->width;
 	*height = out->height;
 	*rate = out->rate;

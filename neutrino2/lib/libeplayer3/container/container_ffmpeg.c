@@ -225,9 +225,6 @@ static char* Codec2Encoding(AVCodecContext* codec, int* version)
     		case AV_CODEC_ID_HEVC:
         		return "V_HEVC";
 #endif
-
-		case AV_CODEC_ID_THEORA:	// no codec handler
-			return "V_THEORA";
 		
 		// audio
 		case AV_CODEC_ID_MP2:
@@ -254,13 +251,10 @@ static char* Codec2Encoding(AVCodecContext* codec, int* version)
 			return "A_WMA";
 			
 		case AV_CODEC_ID_VORBIS:
-			return "A_IPCM"; 	//FIXME:
-			
-		case AV_CODEC_ID_FLAC: 		
-			return "A_IPCM"; 	//FIXME:
+			return "A_VORBIS"; 	//FIXME:
 			
 		case AV_CODEC_ID_OPUS:
-			return "A_IPCM";	//FIXME:
+			return "A_OPUS";	//FIXME:
 			
 		case AV_CODEC_ID_PCM_S8:
 		case AV_CODEC_ID_PCM_U8:
@@ -276,7 +270,7 @@ static char* Codec2Encoding(AVCodecContext* codec, int* version)
 		case AV_CODEC_ID_PCM_S32BE:
 		case AV_CODEC_ID_PCM_U32LE:
 		case AV_CODEC_ID_PCM_U32BE:
-			return	"A_IPCM"; 
+			return	"A_PCM"; 
 			
 		case AV_CODEC_ID_AMR_NB:
     		case AV_CODEC_ID_AMR_WB:
@@ -446,7 +440,7 @@ static void FFMPEGThread(Context_t *context)
 
 	while ( context && context->playback && context->playback->isPlaying ) 
 	{
-		//IF MOVIE IS PAUSED, WAIT
+		// paused
 		if (context->playback->isPaused) 
 		{
 			ffmpeg_printf(20, "paused\n");
@@ -455,6 +449,7 @@ static void FFMPEGThread(Context_t *context)
 			continue;
 		}
 
+		// seeking
 		if (context->playback->isSeeking) 
 		{
 			ffmpeg_printf(10, "seeking\n");
@@ -463,6 +458,7 @@ static void FFMPEGThread(Context_t *context)
 			continue;
 		}
 
+		// backward
 		if (context->playback->BackWard && av_gettime() >= showtime)
 		{
 			audioMute = 1;
@@ -498,6 +494,7 @@ static void FFMPEGThread(Context_t *context)
 			showtime = av_gettime() + 300000; //jump back all 300ms
 		}
 
+		//
 		if(!context->playback->BackWard && audioMute)
 		{
 			lastPts = -1;
@@ -900,7 +897,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 
 				track.frame_rate = frame_rate * 1000.0;
 
-				/* fixme: revise this */
+				// fixme: revise this
 				if (track.frame_rate < 23970)
 					track.TimeScale = 1001;
 				else
@@ -1129,6 +1126,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 							codec_id = WMA_VERSION_1;
 							break;
 					}
+					
 					memcpy(track.aacbuf + 78, &codec_id, 2); //codec_id
 
 					unsigned short number_of_channels = stream->codec->channels;

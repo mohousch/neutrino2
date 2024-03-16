@@ -514,7 +514,7 @@ void GLThreadObj::bltPlayBuffer()
 	uint64_t pts;
 	AVRational a;
 	
-	playback->getDecBuf(&buf, &w, &h, &rate, &pts, &a);
+	playback->getDecBuf(buf, &w, &h, &rate, &pts, &a);
 	
 	//
 	if (buf == NULL)
@@ -550,7 +550,7 @@ void GLThreadObj::bltPlayBuffer()
 	glBufferData(GL_PIXEL_UNPACK_BUFFER, w*h, buf, GL_STREAM_DRAW_ARB);
 
 	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1280, 720, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
 
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 	
