@@ -573,8 +573,8 @@ static void FFMPEGThread(Context_t *context)
 					
 					//
 					pcmPrivateData_t extradata;
-					extradata.uNoOfChannels = audioTrack->stream->codec->channels;
-					extradata.uSampleRate = audioTrack->stream->codec->sample_rate;
+					extradata.uNoOfChannels = &audioTrack->stream->codec->channels;
+					extradata.uSampleRate = &audioTrack->stream->codec->sample_rate;
 					extradata.uBitsPerSample = 16;
 					extradata.bLittleEndian = 1;
 					extradata.avCodecId = audioTrack->stream->codec->codec_id;
@@ -582,9 +582,6 @@ static void FFMPEGThread(Context_t *context)
 					//extradata.bit_rate = audioTrack->stream->bit_rate;
                 			//extradata.block_align = audioTrack->stream->block_align;
                 			//extradata.frame_size = audioTrack->stream->frame_size;
-                			
-                			//uint8_t *pAudioExtradata    = audioTrack->stream->extradata;
-                			//uint32_t audioExtradataSize = audioTrack->stream->extradata_size;
 					
 					//
 					if(!strncmp(audioTrack->Encoding, "A_PCM", 5))
@@ -618,22 +615,20 @@ static void FFMPEGThread(Context_t *context)
 						// FIXME:
 						int      bytesDone = 0;
 						unsigned int samples_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
-						AVPacket avpkt;
-						avpkt = packet;
 
 						if(samples == NULL)
 							samples = av_frame_alloc();
 						else
 							av_frame_unref(samples);
 
-						while(avpkt.size > 0)
+						while(packet.size > 0)
 						{
 							int decoded_data_size = samples_size;
 
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
-							bytesDone = avcodec_decode_audio4(audioTrack->stream->codec, samples, &decoded_data_size, &avpkt);
+							bytesDone = avcodec_decode_audio4(audioTrack->stream->codec, samples, &decoded_data_size, &packet);
 #else
-							bytesDone = avcodec_send_packet(audioTrack->stream->codec, &avpkt);
+							bytesDone = avcodec_send_packet(&audioTrack->stream->codec, &packet);
 							
              						if (bytesDone < 0 && bytesDone != AVERROR(EAGAIN) && bytesDone != AVERROR_EOF) 
              						{
@@ -647,8 +642,8 @@ static void FFMPEGThread(Context_t *context)
 							if(bytesDone < 0) // Error Happend
 							    break;
 
-							avpkt.data += bytesDone;
-							avpkt.size -= bytesDone;
+							packet.data += bytesDone;
+							packet.size -= bytesDone;
 
 							if(decoded_data_size <= 0)
 							    continue;
