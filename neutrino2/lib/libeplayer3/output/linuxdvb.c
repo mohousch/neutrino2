@@ -1591,7 +1591,9 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 		case OUTPUT_DATA:
 		{
 //			ret = LinuxDvbGetData(context, (Data_t*)argument);
+#ifdef USE_OPENGL
 			Data_t* argument = &data;
+#endif
 			linuxdvb_printf(10, "command:%d: w:%d h:%d\n", command, data.width, data.height);
 			break;
 		}
