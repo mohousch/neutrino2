@@ -23,6 +23,8 @@
 #include "common.h"
 #include "misc.h"
 
+#include <config.h>
+
 /* ***************************** */
 /* Makros/Constants              */
 /* ***************************** */
@@ -1003,6 +1005,8 @@ static int PlaybackGetData(Context_t* context, Data_t* data)
 	if (context->playback->isPlaying) 
 	{
 		ret = context->output->Command(context, OUTPUT_DATA, data);
+		
+		playback_printf(10, "playback: w:%d h:%d\n", data->width, data->height);
 	} 
 	else
 	{
@@ -1129,7 +1133,7 @@ static int Command(void* _context, PlaybackCmd_t command, void * argument)
 		
 		case PLAYBACK_DATA:
 		{
-			ret = PlaybackGetData(context, argument);
+			ret = PlaybackGetData(context, (Data_t*)argument);
 			break;
 		}
 		

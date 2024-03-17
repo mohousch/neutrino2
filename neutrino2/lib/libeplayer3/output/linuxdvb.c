@@ -70,7 +70,7 @@
 #endif
 #endif
 
-#define LINUXDVB_DEBUG
+//#define LINUXDVB_DEBUG
 
 static short debug_level = 10;
 
@@ -101,11 +101,7 @@ static int audiofd 	= -1;
 uint64_t sCURRENT_PTS = 0;
 
 #ifdef USE_OPENGL
-uint8_t* buf = NULL;
-int width = 1280;
-int height = 720;
-AVRational a;
-int rate;
+Data_t data;
 static ao_device *adevice = NULL;
 static ao_sample_format sformat;
 #endif
@@ -1167,9 +1163,9 @@ static int Write(void* _context, void* _out)
 		aframe = av_frame_alloc();
 						
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
-		res = avcodec_decode_audio4(out->stream->codec, aframe, &got_frame, &out->packet);
+		res = avcodec_decode_audio4(out->stream->codec, aframe, &got_frame, out->packet);
 #else
-		res = avcodec_send_packet(&out->stream->codec, &out->packet);
+		res = avcodec_send_packet(out->stream->codec, out->packet);
 		
 		if (res != 0 && res != AVERROR(EAGAIN))
 		{
@@ -1233,6 +1229,10 @@ static int Write(void* _context, void* _out)
 		av_free(obuf);
 		swr_free(&swr);
 		av_frame_free(&aframe);
+		
+//		linuxdvb_err("failed to write AUDIO data %d - %d\n", res, errno);
+//		linuxdvb_err("%s\n", strerror(errno));
+		ret = cERR_LINUXDVB_ERROR;
 #endif
 
 		free(Encoding);
@@ -1291,9 +1291,7 @@ static int Write(void* _context, void* _out)
 		AVFrame *frame = NULL;
 		AVFrame *rgbframe = NULL;
 		struct SwsContext *convert = NULL;
-		AVCodec *codec = avcodec_find_decoder(out->stream->codec->codec_id);;
-
-		bool w_h_changed = false;
+		AVCodec *codec = avcodec_find_decoder(out->stream->codec->codec_id);
 		
 		time_t warn_r = 0;
 		time_t warn_d = 0;
@@ -1308,7 +1306,7 @@ static int Write(void* _context, void* _out)
 		int got_frame = 0;
 	
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
-		res = avcodec_decode_video2(out->stream->codec, frame, &got_frame, out->packet);
+		res = avcodec_decode_video2(&out->stream->codec, frame, &got_frame, out->packet);
 		
 		if (res < 0)
 		{
@@ -1318,7 +1316,7 @@ static int Write(void* _context, void* _out)
 			}
 		}
 #else
-		res = avcodec_send_packet(&out->stream->codec, &out->packet);
+		res = avcodec_send_packet(out->stream->codec, out->packet);
 			
 		if (res != 0 && res != AVERROR(EAGAIN))
 		{
@@ -1338,40 +1336,38 @@ static int Write(void* _context, void* _out)
 		if (got_frame)
 		{
 			unsigned int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, out->stream->codec->width, out->stream->codec->height, 1);
+			
+			realloc(data.buffer, need);
 							
 			convert = sws_getContext(out->stream->codec->width, out->stream->codec->height, out->stream->codec->pix_fmt, out->stream->codec->width, out->stream->codec->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
 								
 			if (convert)
-			{
-    				buf = (uint8_t *)av_malloc(need);
-									
-				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, buf, AV_PIX_FMT_RGB32, out->stream->codec->width, out->stream->codec->height, 1);
+			{					
+				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, data.buffer, AV_PIX_FMT_RGB32, out->stream->codec->width, out->stream->codec->height, 1);
 
 				sws_scale(convert, frame->data, frame->linesize, 0, out->stream->codec->height, rgbframe->data, rgbframe->linesize);
 				
 				//
-				if (width != out->stream->codec->width || height != out->stream->codec->height)
-				{
-					linuxdvb_printf(100, "CPlayBack::run: pic changed %dx%d -> %dx%d\n", width, height, out->stream->codec->width, out->stream->codec->height);
+				linuxdvb_printf(10, "pic changed %dx%d -> %dx%d\n", data.width, data.height, out->stream->codec->width, out->stream->codec->height);
 					
-					width = out->stream->codec->width;
-					height = out->stream->codec->height;
-					w_h_changed = true;
-				}
+				data.width = out->stream->codec->width;
+				data.height = out->stream->codec->height;
 				
 				//
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-				sCURRENT_PTS = av_frame_get_best_effort_timestamp(frame);
+				data.pts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(frame);
 #else
-				sCURRENT_PTS = frame->best_effort_timestamp;
+				data.pts = sCURRENT_PTS = frame->best_effort_timestamp;
 #endif
 
 				//
-				a = out->stream->codec->time_base;
+				data.a = out->stream->codec->time_base;
 				
 				//				
-				//rate = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);
-				rate = out->frameRate/1000;
+				//data.rate = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);
+				data.rate = out->frameRate/1000;
+				
+				data.size = need;
 			}
 		}
 		
@@ -1393,15 +1389,9 @@ static int Write(void* _context, void* _out)
 			convert = NULL;
 		}
 		
-		if (buf)
-		{
-			av_free(buf);
-			buf = NULL;
-		}
-		
 		//
-		linuxdvb_err("failed to write VIDEO data %d - %d\n", res, errno);
-		linuxdvb_err("%s\n", strerror(errno));
+//		linuxdvb_err("failed to write VIDEO data %d - %d\n", res, errno);
+//		linuxdvb_err("%s\n", strerror(errno));
 		ret = cERR_LINUXDVB_ERROR;
 #endif
 
@@ -1456,7 +1446,7 @@ static int reset(Context_t  *context)
 }
 
 ////
-int LinuxDvbGetData(Context_t* context, Data_t* data) 
+int LinuxDvbGetData(Context_t* context, Data_t* _data) 
 {
 	int ret = cERR_LINUXDVB_NO_ERROR;
 
@@ -1465,14 +1455,9 @@ int LinuxDvbGetData(Context_t* context, Data_t* data)
 #ifdef USE_OPENGL
 	getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 	
-	memset(data, 0, sizeof(data));
+ 	_data = &data;
 
-	data->width = width;
-	data->height = height;
-	data->buffer = buf;
-	data->pts = sCURRENT_PTS;
-	data->a = a;
-	data->rate = rate;
+	linuxdvb_printf(10, "linuxdvb: w:%d h:%d\n", _data->width, _data->height);
 
 	releaseLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);	
 #endif
@@ -1605,7 +1590,9 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 		
 		case OUTPUT_DATA:
 		{
-			ret = LinuxDvbGetData(context, (Data_t*)argument);
+//			ret = LinuxDvbGetData(context, (Data_t*)argument);
+			Data_t* argument = &data;
+			linuxdvb_printf(10, "command:%d: w:%d h:%d\n", command, data.width, data.height);
 			break;
 		}
 		

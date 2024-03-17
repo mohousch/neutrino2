@@ -383,6 +383,13 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 
 					if(videoSink)
 						printf("Gst_bus_call: video sink created\n");
+						
+					// subsin
+					if(subsink)
+					{
+						gst_object_ref_sink(subsink);
+						printf("subsink created ***\n");
+					}
 					
 					gst_iterator_free(children);
 				}
@@ -506,7 +513,7 @@ bool cPlayback::Open()
 	printf("cPlayback::Open\n");
 	
 	mAudioStream = 0;
-	mSubStream = -1;
+	mSubStream = 0;
 	mSpeed = 0;
 	playing = false;
 	
@@ -721,7 +728,7 @@ bool cPlayback::Start(char *filename, const char * const suburi)
 			g_object_set (G_OBJECT (subsink), "caps", gst_caps_from_string("text/plain; text/x-plain; text/x-raw; text/x-pango-markup; subpicture/x-dvd; subpicture/x-pgs"), NULL);
 #endif
 			g_object_set (G_OBJECT (m_gst_playbin), "text-sink", subsink, NULL);
-			//g_object_set (G_OBJECT (m_gst_playbin), "current-text", m_currentSubtitleStream, NULL);
+			g_object_set (G_OBJECT (m_gst_playbin), "current-text", mSubStream, NULL);
 		}	
 		
 		//gstbus handler
@@ -869,7 +876,14 @@ bool cPlayback::SetSubPid(unsigned short pid)
 {
 	printf("cPlayback::SetSubPid: curpid:%d nextpid:%d\n", mSubStream, pid);
 	
-#if !ENABLE_GSTREAMER
+#if ENABLE_GSTREAMER
+	if(pid != mSubStream)
+	{
+		g_object_set (G_OBJECT (m_gst_playbin), "current-text", pid, NULL);
+		printf("cPlayback::SetSubPid: switched to subtitle stream %i\n", pid);
+		mSubStream = pid;
+	}
+#else
 	int track = pid;
 
 	if(pid != mSubStream)
@@ -1361,20 +1375,26 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 
 ////
 #ifdef USE_OPENGL
-void cPlayback::getDecBuf(uint8_t* buffer, int* width, int* height, int* rate, uint64_t* pts, AVRational* a)
+#ifndef ENABLE_GSTREAMER
+extern Data_t data;
+#endif
+void cPlayback::getDecBuf(uint8_t* buffer, unsigned int* size, uint32_t* width, uint32_t* height, uint32_t* rate, uint64_t* pts, AVRational* a)
 {
 #ifndef ENABLE_GSTREAMER
-	Data_t* out;
+//	Data_t* data;
 	
-	if(player && player->playback)
-		player->playback->Command(player, PLAYBACK_DATA, (Data_t*)out);
+//	if(player && player->playback)
+//		player->playback->Command(player, PLAYBACK_DATA, (void*)data);
 		
-	buffer = out->buffer;
-	*width = out->width;
-	*height = out->height;
-	*rate = out->rate;
-	*pts = out->pts;
-	*a = out->a;
+//	printf("cPlayback::getDecBuf: w:%d h:%d\n", out->width, out->height);
+		
+	buffer = data.buffer;
+	*size = data.size;
+	*width = data.width;
+	*height = data.height;
+	*rate = data.rate;
+	*pts = data.pts;
+	*a = data.a;
 #endif
 }
 #endif

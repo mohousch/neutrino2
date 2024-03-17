@@ -19,11 +19,12 @@ typedef struct Context_s
 typedef struct Data_s
 {
 	uint8_t* buffer;
-	int width;
-	int height;
+	unsigned int size;
+	uint32_t width;
+	uint32_t height;
 	AVRational a;
 	uint64_t pts;
-	int rate;
+	uint32_t rate;
 }Data_t;
 
 // video stream type 

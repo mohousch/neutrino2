@@ -198,12 +198,14 @@ void GLThreadObj::setupGLObjects()
 {
 	glGenTextures(1, &mState.osdtex);
 	glGenTextures(1, &mState.displaytex);
+	
 	//
 	glBindTexture(GL_TEXTURE_2D, mState.osdtex);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mState.width, mState.height, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+	
 	// 
 	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -508,13 +510,16 @@ void GLThreadObj::bltPlayBuffer()
 	static bool warn = true;
 
 	uint8_t* buf;
-	int w;
-	int h;
-	int rate;
+	unsigned int size;
+	uint32_t w;
+	uint32_t h;
+	uint32_t rate;
 	uint64_t pts;
 	AVRational a;
 	
-	playback->getDecBuf(buf, &w, &h, &rate, &pts, &a);
+	playback->getDecBuf(buf, &size, &w, &h, &rate, &pts, &a);
+	
+//	printf("GLThreadObj::bltPlayBuffer: 1: w:%d h:%d\n", w, h);
 	
 	//
 	if (buf == NULL)
@@ -533,6 +538,8 @@ void GLThreadObj::bltPlayBuffer()
 	
 	warn = true;
 	
+//	printf("GLThreadObj::bltPlayBuffer: 2: w:%d h:%d size:%d\n", w, h, size);
+	
 	if (w == 0 || h == 0)
 		return;
 	
@@ -547,10 +554,10 @@ void GLThreadObj::bltPlayBuffer()
 
 	// render frame
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
-	glBufferData(GL_PIXEL_UNPACK_BUFFER, w*h, buf, GL_STREAM_DRAW_ARB);
+	glBufferData(GL_PIXEL_UNPACK_BUFFER, sizeof(buf), &buf, GL_STREAM_DRAW_ARB);
 
 	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1280, 720, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
 
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 	
@@ -567,5 +574,7 @@ void GLThreadObj::bltPlayBuffer()
 		
 		last_pts = vpts;
 	}
+	
+//	printf("GLThreadObj::bltPlayBuffer: 3: w:%d h:%d\n", w, h);
 }
 
