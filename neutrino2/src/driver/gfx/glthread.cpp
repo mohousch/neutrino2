@@ -561,7 +561,8 @@ void GLThreadObj::bltPlayBuffer()
 
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 	
-	//
+	// FIXME:
+	/*
 	int64_t last_pts = 0;
 	int64_t vpts = pts + 18000;
 	
@@ -574,6 +575,7 @@ void GLThreadObj::bltPlayBuffer()
 		
 		last_pts = vpts;
 	}
+	*/
 	
 //	printf("GLThreadObj::bltPlayBuffer: 3: w:%d h:%d\n", w, h);
 }
