@@ -71,6 +71,7 @@
 #endif
 
 //#define LINUXDVB_DEBUG
+#define LINUXDVB_SILENT
 
 static short debug_level = 10;
 

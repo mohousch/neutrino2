@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-03-02 21:24+0100\n"
+"POT-Creation-Date: 2024-03-17 12:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -96,6 +96,7 @@ msgid "AC3 Delay"
 msgstr ""
 
 #: ../../src/gui/audio_video_select.cpp:215
+#: ../../src/gui/audio_video_select.cpp:224
 msgid "AV Select"
 msgstr ""
 
@@ -921,6 +922,7 @@ msgstr ""
 #: ../../src/gui/audio_select.cpp:158 ../../src/gui/audio_setup.cpp:201
 #: ../../src/gui/audio_setup.cpp:219 ../../src/gui/audio_setup.cpp:293
 #: ../../src/gui/audio_video_select.cpp:314 ../../src/gui/audio_select.cpp:156
+#: ../../src/gui/audio_video_select.cpp:321
 msgid "Dolby Digital"
 msgstr ""
 
@@ -3413,6 +3415,7 @@ msgstr ""
 
 #: ../../src/gui/audio_select.cpp:217 ../../src/gui/dvbsub_select.cpp:160
 #: ../../src/gui/audio_select.cpp:215 ../../src/gui/dvbsub_select.cpp:161
+#: ../../src/gui/audio_video_select.cpp:373
 msgid "Stop subtitles"
 msgstr ""
 
@@ -3552,7 +3555,7 @@ msgid "TV Channel"
 msgstr ""
 
 #: ../../src/gui/audio_video_select.cpp:321 ../../src/gui/video_setup.cpp:405
-#: ../../src/gui/video_setup.cpp:475
+#: ../../src/gui/video_setup.cpp:475 ../../src/gui/audio_video_select.cpp:328
 msgid "TV-System"
 msgstr ""
 
@@ -3915,7 +3918,7 @@ msgid "Vertikal (in %)"
 msgstr ""
 
 #: ../../src/gui/audio_video_select.cpp:324 ../../src/gui/video_setup.cpp:408
-#: ../../src/gui/video_setup.cpp:475
+#: ../../src/gui/video_setup.cpp:475 ../../src/gui/audio_video_select.cpp:331
 msgid "Video Format"
 msgstr ""
 

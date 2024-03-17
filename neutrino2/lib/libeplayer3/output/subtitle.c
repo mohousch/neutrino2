@@ -792,7 +792,7 @@ static int Write(void* _context, void *data)
     	
     	case AV_CODEC_ID_DVB_TELETEXT:
     	{
-    		subtitle_printf(10, "Write: S_TEXT/TELETEXT: %s\n", (char *)out->data);
+    		subtitle_printf(10, "Write: S_TEXT/TELETEXT:\n");
     		break;
     	}
     	

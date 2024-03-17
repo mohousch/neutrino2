@@ -329,7 +329,7 @@ void GLThreadObj::render()
 	GLuint err = glGetError();
 	if(err != 0)
 	{
-		dprintf(DEBUG_NORMAL, "GLThreadObj::render: GLError:%d 0x%04x\n", err, err);
+//		dprintf(DEBUG_NORMAL, "GLThreadObj::render: GLError:%d 0x%04x\n", err, err);
 	}
 
 	// simply limit to 30 Hz, if anyone wants to do this properly, feel free	

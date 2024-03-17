@@ -67,6 +67,7 @@
 /* ***************************** */
 
 #define FFMPEG_DEBUG
+#define FFMPEG_SILENT
 
 #ifdef FFMPEG_DEBUG
 
