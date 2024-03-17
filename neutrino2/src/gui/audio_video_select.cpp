@@ -328,7 +328,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 	AVPIDSelector->addItem(new CMenuOptionChooser(_("TV-System"), &g_settings.video_Ratio, VIDEOMENU_VIDEORATIO_OPTIONS, VIDEOMENU_VIDEORATIO_OPTION_COUNT, true, CVideoSettings::getInstance()->videoSetupNotifier, CRCInput::RC_green, NEUTRINO_ICON_BUTTON_GREEN));
 	
 	// video format bestfit/letterbox/panscan/non
-	AVPIDSelector->addItem(new CMenuOptionChooser(_("Video Format"), &g_settings.video_Format, VIDEOMENU_VIDEOFORMAT_OPTIONS, VIDEOMENU_VIDEOFORMAT_OPTION_COUNT, true, CVideoSettings::getInstance()->videoSetupNotifier));
+	AVPIDSelector->addItem(new CMenuOptionChooser(_("Video Format"), &g_settings.video_Format, VIDEOMENU_VIDEOFORMAT_OPTIONS, VIDEOMENU_VIDEOFORMAT_OPTION_COUNT, true, CVideoSettings::getInstance()->videoSetupNotifier, CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW));
 	
 	// subs
 	CAVSubPIDChangeExec AVSubPIDChanger;
@@ -370,7 +370,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 		}
 		
 		if (numpids)
-			AVPIDSelector->addItem(new CMenuForwarder(_("Stop subtitles"), true, NULL, &AVSubPIDChanger, "off", CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW));
+			AVPIDSelector->addItem(new CMenuForwarder(_("Stop subtitles"), true, NULL, &AVSubPIDChanger, "off", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE));
 	} 
 
 	//	
