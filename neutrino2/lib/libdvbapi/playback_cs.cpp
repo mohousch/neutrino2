@@ -1307,7 +1307,67 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 {
 	printf("cPlayback::FindAllSubPids:\n");
 
-#if !defined (ENABLE_GSTREAMER)
+#if defined (ENABLE_GSTREAMER)
+	if(m_gst_playbin)
+	{
+		gint i, n_text = 0;
+		
+		// get audio
+		g_object_get (m_gst_playbin, "n-text", &n_text, NULL);
+		
+		if(n_text == 0)
+			return;
+
+		language->clear();
+		
+		for (i = 0; i < n_text; i++)
+		{
+			// apids
+			apids[i] = i;
+			
+			//
+			gchar *g_codec = NULL, *g_lang = NULL, *g_lang_title = NULL;
+			GstTagList *tags = NULL;
+			g_signal_emit_by_name (m_gst_playbin, "get-text-tags", i, &tags);
+
+#if GST_VERSION_MAJOR < 1
+			if (tags && gst_is_tag_list(tags))
+#else
+			if (tags && GST_IS_TAG_LIST(tags))
+#endif
+			{
+				//
+				language[i] = "Sub";
+				if (gst_tag_list_get_string(tags, GST_TAG_LANGUAGE_CODE, &g_lang))
+				{
+					language[i] = std::string(g_lang).c_str();
+					g_free(g_lang);
+				}
+				
+				//
+				if (gst_tag_list_get_string(tags, GST_TAG_TITLE, &g_lang_title))
+				{
+					g_free(g_lang_title);
+				}
+				
+				//
+				if (gst_tag_list_get_string(tags, GST_TAG_SUBTITLE_CODEC, &g_codec))
+				{
+					language[i] += " (";
+					language[i] += std::string(g_codec).c_str();
+					language[i] += ")";
+					
+					g_free(g_codec);
+				}
+				
+				gst_tag_list_free(tags);
+			}
+		}
+		
+		// numpids
+		*numpida = i;
+	}
+#else
 	char ** TrackList = NULL;
 	
 	if(player && player->manager && player->manager->subtitle) 
@@ -1316,15 +1376,13 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 
 		if (TrackList != NULL) 
 		{
-			printf("cPlayback::FindAllSubPids: SubTrack List\n");
 			int i = 0, j = 0;
 
 			for (i = 0, j = 0; TrackList[i] != NULL; i += 2, j++) 
 			{
-				printf("\t%s - %s\n", TrackList[i], TrackList[i + 1]);
 				apids[j] = j;
 
-				language[j] = " "; //TrackList[i];
+				language[j] = TrackList[i];
 				
 				free(TrackList[i]);
 				free(TrackList[i + 1]);

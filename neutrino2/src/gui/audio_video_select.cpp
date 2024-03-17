@@ -50,7 +50,7 @@ unsigned short ac3flags[10];
 unsigned short numpida = 0;
 unsigned short vpid = 0;
 unsigned short vtype = 0;
-std::string language[10];
+std::string language[100];
 //
 unsigned int currentapid = 0;
 unsigned int currentac3 = 0;
