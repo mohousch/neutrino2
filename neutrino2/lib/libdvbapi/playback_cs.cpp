@@ -1178,7 +1178,6 @@ void cPlayback::FindAllPids(uint16_t *apids, uint16_t *numpida, std::string *lan
 		
 		// get audio
 		g_object_get (m_gst_playbin, "n-audio", &n_audio, NULL);
-		printf("cPlayback::FindAllPids: %d audio\n", n_audio);
 		
 		if(n_audio == 0)
 			return;
@@ -1220,7 +1219,6 @@ void cPlayback::FindAllPids(uint16_t *apids, uint16_t *numpida, std::string *lan
 				language[i] = "Stream";
 				if (gst_tag_list_get_string(tags, GST_TAG_LANGUAGE_CODE, &g_lang))
 				{
-					printf("cPlayback::FindAllPids: language:%s\n", std::string(g_lang).c_str());
 					language[i] = std::string(g_lang).c_str();
 					g_free(g_lang);
 				}
@@ -1228,8 +1226,6 @@ void cPlayback::FindAllPids(uint16_t *apids, uint16_t *numpida, std::string *lan
 				// codec
 				if (gst_tag_list_get_string(tags, GST_TAG_AUDIO_CODEC, &g_codec))
 				{
-					printf("cPlayback::FindAllPids: codec:%s\n", std::string(g_codec).c_str());
-
 					language[i] += " (";
 					language[i] += std::string(g_codec).c_str();
 					language[i] += ")";
@@ -1241,6 +1237,8 @@ void cPlayback::FindAllPids(uint16_t *apids, uint16_t *numpida, std::string *lan
 			}
 			
 			gst_caps_unref(caps);
+			
+			printf("\t%s\n", std::string(language[i]).c_str());
 		}
 		
 		// numpids
@@ -1256,12 +1254,12 @@ void cPlayback::FindAllPids(uint16_t *apids, uint16_t *numpida, std::string *lan
 
 		if (TrackList != NULL) 
 		{
-			printf("cPlayback::FindAllPids: AudioTrack List\n");
 			int i = 0,j = 0;
 
 			for (i = 0, j = 0; TrackList[i] != NULL; i += 2, j++) 
 			{
 				printf("\t%s - %s\n", TrackList[i], TrackList[i + 1]);
+				
 				apids[j] = j;
 				
 				language[j] = "Stream";
@@ -1342,6 +1340,8 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 				
 				gst_tag_list_free(tags);
 			}
+			
+			printf("\t%s\n", std::string(language[i]).c_str());
 		}
 		
 		// numpids
@@ -1360,6 +1360,8 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 
 			for (i = 0, j = 0; TrackList[i] != NULL; i += 2, j++) 
 			{
+				printf("\t%s - %s\n", TrackList[i], TrackList[i + 1]);
+				
 				apids[j] = j;
 
 				language[j] = TrackList[i];
