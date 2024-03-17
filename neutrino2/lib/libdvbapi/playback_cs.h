@@ -60,7 +60,7 @@ class cPlayback
 		bool Play(void);
 		bool Stop(void);
 		bool SetAPid(unsigned short pid, int _ac = 0);
-		bool SetSubPid(unsigned short pid);
+		bool SetSubPid(short pid);
 
 #if ENABLE_GSTREAMER
 		void trickSeek(double ratio);

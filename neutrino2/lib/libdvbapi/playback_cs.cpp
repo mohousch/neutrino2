@@ -836,7 +836,7 @@ bool cPlayback::SetAPid(unsigned short pid, int /*_ac3*/)
 }
 
 //
-bool cPlayback::SetSubPid(unsigned short pid)
+bool cPlayback::SetSubPid(short pid)
 {
 	printf("cPlayback::SetSubPid: curpid:%d nextpid:%d\n", mSubStream, pid);
 	
