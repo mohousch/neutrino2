@@ -770,6 +770,9 @@ static void FFMPEGThread(Context_t *context)
 						data.duration  = duration;
 						data.width     = subtitleTrack->width;
 		           			data.height    = subtitleTrack->height;
+		           			//
+		           			data.stream    = subtitleTrack->stream;
+		           			data.packet    = &packet;
 							
 						if (context->output->subtitle->Write(context, &data) < 0) 
 						{

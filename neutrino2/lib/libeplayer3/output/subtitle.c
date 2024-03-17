@@ -667,25 +667,25 @@ static void dvbsub_write(Context_t *context, SubtitleData_t* out)
     	AVSubtitle sub;
     	memset(&sub, 0, sizeof(sub));
 
-    	AVPacket packet;
-    	av_init_packet(&packet);
+ //   	AVPacket packet;
+ //   	av_init_packet(&packet);
     	
-    	packet.data = out->data;
-    	packet.size = out->len;
-    	packet.pts  = out->pts;
+    	out->packet->data = out->data;
+    	out->packet->size = out->len;
+    	out->packet->pts  = out->pts;
     		
     	//
     	const AVCodec *codec;
     		
     	codec = avcodec_find_decoder(out->avCodecId);
-    	AVCodecContext *c = avcodec_alloc_context3(codec);
+ //   	AVCodecContext *c = avcodec_alloc_context3(codec);
     		
     	int got_sub_ptr = 0;
     		
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)			   
-	if (c && avcodec_decode_subtitle2(c, &sub, &got_sub_ptr, &packet) < 0)
+	if (out->stream->codec && avcodec_decode_subtitle2(out->stream->codec, &sub, &got_sub_ptr, out->packet) < 0)
 #else
-	if (c && avcodec_decode_subtitle(c, &sub, &got_sub_ptr, packet.data, packet.size ) < 0)
+	if (out->stream->codec && avcodec_decode_subtitle(out->stream->codec, &sub, &got_sub_ptr, out->packet->data, out->packet->size ) < 0)
 #endif
 	{
 		subtitle_err("error decoding subtitle\n");
@@ -726,7 +726,7 @@ static void dvbsub_write(Context_t *context, SubtitleData_t* out)
 			int nw = width * 1280 / width;
 			int nh = height * 720 / h2;
 
-			subtitle_printf(10, "cDvbSubtitleBitmaps::Draw: #%d at %d,%d size %dx%d colors %d (x=%d y=%d w=%d h=%d) \n", i+1, sub.rects[i]->x, sub.rects[i]->y, sub.rects[i]->w, sub.rects[i]->h, sub.rects[i]->nb_colors, xoff, yoff, nw, nh);
+			subtitle_printf(10, "#%d at %d,%d size %dx%d colors %d (x=%d y=%d w=%d h=%d) \n", i+1, sub.rects[i]->x, sub.rects[i]->y, sub.rects[i]->w, sub.rects[i]->h, sub.rects[i]->nb_colors, xoff, yoff, nw, nh);
 
 			// resize color to 32 bit
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
@@ -771,7 +771,6 @@ static int Write(void* _context, void *data)
     	case AV_CODEC_ID_SSA:
     	case AV_CODEC_ID_ASS:
     	case AV_CODEC_ID_SUBRIP: // FIXME:
-    	case AV_CODEC_ID_DVB_TELETEXT:
     	{
     		subtitle_printf(10, "Write: S_TEXT/ASS: %s\n", (char *)out->data);
     	
@@ -787,7 +786,13 @@ static int Write(void* _context, void *data)
     	{
     		subtitle_printf(10, "Write: S_GRAPHIC/DVB: %s\n", (char *)out->data);
     		
-    		//dvbsub_write(context, out); //FIXME: segfault
+    		dvbsub_write(context, out); //FIXME: segfault
+    		break;
+    	}
+    	
+    	case AV_CODEC_ID_DVB_TELETEXT:
+    	{
+    		subtitle_printf(10, "Write: S_TEXT/TELETEXT: %s\n", (char *)out->data);
     		break;
     	}
     	

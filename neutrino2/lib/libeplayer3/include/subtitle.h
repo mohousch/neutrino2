@@ -88,6 +88,10 @@ typedef struct
 	
 	int          width;
     	int          height;
+    	
+    	//
+	AVStream* 		stream;
+	AVPacket* 		packet;
 } SubtitleData_t;
 
 typedef struct
