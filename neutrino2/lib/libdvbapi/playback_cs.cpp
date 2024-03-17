@@ -809,7 +809,7 @@ bool cPlayback::Stop(void)
 	return true;
 }
 
-bool cPlayback::SetAPid(unsigned short pid, int /*_ac3*/)
+bool cPlayback::SetAPid(unsigned short pid)
 {
 	printf("cPlayback::SetAPid: curpid:%d nextpid:%d\n", mAudioStream, pid);
 	
@@ -1167,7 +1167,7 @@ bool cPlayback::SetPosition(int position)
 	return true;
 }
 
-void cPlayback::FindAllPids(uint16_t *apids, unsigned short *ac3flags, uint16_t *numpida, std::string *language)
+void cPlayback::FindAllPids(uint16_t *apids, uint16_t *numpida, std::string *language)
 { 
 	printf("cPlayback::FindAllPids\n");
 
@@ -1230,15 +1230,6 @@ void cPlayback::FindAllPids(uint16_t *apids, unsigned short *ac3flags, uint16_t 
 				{
 					printf("cPlayback::FindAllPids: codec:%s\n", std::string(g_codec).c_str());
 
-					if(std::string(g_codec) == "MPEG 1 Audio, Layer 2")
-						ac3flags[i] = 3;
-					else if(std::string(g_codec) == "Dolby Digital (AC-3)")
-						ac3flags[i] = 1;
-					else if(std::string(g_codec) == "MPEG-4 AAC")
-						ac3flags[i] = 5;
-					else if(std::string(g_codec) == "MPEG 1 Audio, Layer 3 (MP3)")
-						ac3flags[i] = 4;
-
 					language[i] += " (";
 					language[i] += std::string(g_codec).c_str();
 					language[i] += ")";
@@ -1273,24 +1264,13 @@ void cPlayback::FindAllPids(uint16_t *apids, unsigned short *ac3flags, uint16_t 
 				printf("\t%s - %s\n", TrackList[i], TrackList[i + 1]);
 				apids[j] = j;
 				
-				if( (!strncmp("A_MPEG/L3", TrackList[i + 1], 9)) || (!strncmp("A_MP3", TrackList[i + 1], 5)) )
-					ac3flags[j] = 4;
-				else if(!strncmp("A_AC3", TrackList[i + 1], 5))
-					ac3flags[j] = 1;
-				else if(!strncmp("A_DTS", TrackList[i + 1], 5))
-					ac3flags[j] = 6;
-				else if(!strncmp("A_AAC", TrackList[i + 1], 5))
-					ac3flags[j] = 5;
-				else if(!strncmp("A_PCM", TrackList[i + 1], 5))
-					ac3flags[j] = 0; 	//todo
-				else if(!strncmp("A_VORBIS", TrackList[i + 1], 8))
-					ac3flags[j] = 0;	//todo
-				else if(!strncmp("A_FLAC", TrackList[i + 1], 6))
-					ac3flags[j] = 0;	//todo
-				else
-					ac3flags[j] = 0;	//todo
+				language[j] = "Stream";
 
 				language[j] = TrackList[i];
+				
+				language[j] += " (";
+				language[j] += TrackList[i + 1];
+				language[j] += ")";
 				
 				free(TrackList[i]);
 				free(TrackList[i+1]);

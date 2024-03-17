@@ -59,7 +59,7 @@ class cPlayback
 		
 		bool Play(void);
 		bool Stop(void);
-		bool SetAPid(unsigned short pid, int _ac = 0);
+		bool SetAPid(unsigned short pid);
 		bool SetSubPid(short pid);
 
 #if ENABLE_GSTREAMER
@@ -70,7 +70,7 @@ class cPlayback
 		bool GetSpeed(int &speed) const;
 		bool GetPosition(int &position, int &duration);
 		bool SetPosition(int position);
-		void FindAllPids(uint16_t *apids, unsigned short *ac3flags, uint16_t *numpida, std::string *language);
+		void FindAllPids(uint16_t *apids, uint16_t *numpida, std::string *language);
 		void FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *language);
 
 		cPlayback(int num = 0);

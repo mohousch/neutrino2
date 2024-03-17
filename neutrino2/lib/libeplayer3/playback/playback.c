@@ -668,6 +668,7 @@ static void FastBackwardThread(Context_t *context)
 	playback_printf(10, "\n");
 
 	context->output->Command(context, OUTPUT_AUDIOMUTE, "1");
+	
 	while(context->playback && context->playback->isPlaying && context->playback->BackWard)
 	{
 		context->playback->isSeeking = 1;

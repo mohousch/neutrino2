@@ -46,14 +46,14 @@
 
 //// globals
 unsigned short apids[10];
-unsigned short ac3flags[10];
+//unsigned short ac3flags[10];
 unsigned short numpida = 0;
 unsigned short vpid = 0;
 unsigned short vtype = 0;
 std::string language[100];
 //
 unsigned int currentapid = 0;
-unsigned int currentac3 = 0;
+//unsigned int currentac3 = 0;
 //
 unsigned int ac3state = CInfoViewer::NO_AC3;
 //
@@ -133,13 +133,12 @@ int CAVPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actionKe
 	if (currentapid != apids[sel]) 
 	{
 		currentapid = apids[sel];
-		currentac3 = ac3flags[sel];
 		
 		if(playback)
-			playback->SetAPid(currentapid, currentac3);
+			playback->SetAPid(currentapid);
 		
-		if(currentac3)
-			ac3state = CInfoViewer::AC3_ACTIVE;
+//		if(currentac3)
+//			ac3state = CInfoViewer::AC3_ACTIVE;
 		
 		dprintf(DEBUG_NORMAL, "CAPIDSelect::exec: apid changed to %d\n", currentapid);
 	}
@@ -238,7 +237,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 	numpida = 0;
 	
 	if(playback)
-		playback->FindAllPids(apids, ac3flags, &numpida, language);
+		playback->FindAllPids(apids, &numpida, language);
 			
 	if (numpida > 0) 
 	{
@@ -264,47 +263,6 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 			{
 				apidtitle = "Stream ";
 				name_ok = true;
-			}
-
-			// title (name)
-			switch(ac3flags[count])
-			{
-				case 1: /*AC3,EAC3*/
-					{
-						apidtitle.append(" (AC3)");
-								
-						// ac3 state
-						ac3state = CInfoViewer::AC3_AVAILABLE;
-					}
-					break;
-
-				case 2: /*teletext*/
-					apidtitle.append(" (Teletext)");
-					enabled = false;
-					break;
-
-				case 3: /*MP2*/
-					apidtitle.append(" (MP2)");
-					break;
-
-				case 4: /*MP3*/
-					apidtitle.append(" (MP3)");
-					break;
-
-				case 5: /*AAC*/
-					apidtitle.append(" (AAC)");
-					break;
-
-				case 6: /*DTS*/
-					apidtitle.append(" (DTS)");
-					break;
-
-				case 7: /*MLP*/
-					apidtitle.append(" (MLP)");
-					break;
-
-				default:
-					break;
 			}
 
 			if (!name_ok)
