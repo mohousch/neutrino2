@@ -47,6 +47,8 @@
 #include "misc.h"
 #include "writer.h"
 
+#include <config.h>
+
 /* ***************************** */
 /* Makros/Constants              */
 /* ***************************** */
@@ -162,6 +164,7 @@ void blit(int fd)
 	if(ioctl(fd, STMFBIO_SYNC_BLITTER) < 0)
 		perror("ioctl STMFBIO_SYNC_BLITTER");
 #else
+#ifndef USE_OPENGL
 	// blit
 	unsigned char tmp = 1;
 	
@@ -175,6 +178,7 @@ void blit(int fd)
 		if (ioctl(fd, FBIO_BLIT) < 0)
 			perror("FBIO_BLIT");		
 	}
+#endif
 #endif	
 }
 
@@ -231,13 +235,12 @@ void blit2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint
 		
 		for (int count2 = 0; count2 < xc; count2++ ) 
 		{
-			//uint32_t pix = *(pixpos + xp);
+			uint32_t *pix = (pixpos + xp);
 			
-			//if (!transp || (pix & 0xff000000) == 0xff000000)
-			//	*d2 = pix;
-			//else //alpha blending
+			if (!transp || (*pix & 0xff000000) == 0xff000000)
+				d2 = pix;
+			else //alpha blending
 			{
-			#if 0
 				uint8_t *in = (uint8_t *)(pixpos + xp);
 				uint8_t *out = (uint8_t *)d2;
 #if __BYTE_ORDER == __LITTLE_ENDIAN
@@ -252,7 +255,6 @@ void blit2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint
 				*out = (*out + ((*in - *out) * a) / 256);
 				in++; out++;
 				*out = (*out + ((*in - *out) * a) / 256);
-			#endif
 			}
 			
 			d2++;

@@ -62,6 +62,7 @@ extern int GLxStart;
 extern int GLyStart;
 extern int GLWidth;
 extern int GLHeight;
+uint32_t framerate;
 #endif
 
 typedef enum
@@ -241,11 +242,10 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 			
 			////
 			guint value;
-			int frameRate = 0;
 			
 			if (gst_tag_list_get_uint(m_stream_tags, GST_TAG_BITRATE, &value))
 			{
-				frameRate = (int) value;
+				framerate = (uint32_t) value;
 			}
 			
 			gst_tag_list_free(tags);
@@ -1384,14 +1384,9 @@ extern Data_t data;
 #endif
 void cPlayback::getDecBuf(uint8_t* buffer, unsigned int* size, uint32_t* width, uint32_t* height, uint32_t* rate, uint64_t* pts, AVRational* a)
 {
-#ifndef ENABLE_GSTREAMER
-//	Data_t* data;
-	
-//	if(player && player->playback)
-//		player->playback->Command(player, PLAYBACK_DATA, (void*)data);
-		
-//	printf("cPlayback::getDecBuf: w:%d h:%d\n", out->width, out->height);
-		
+#ifdef ENABLE_GSTREAMER
+	*rate = framerate;
+#else	
 	buffer = data.buffer;
 	*size = data.size;
 	*width = data.width;

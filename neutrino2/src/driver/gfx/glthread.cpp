@@ -519,8 +519,16 @@ void GLThreadObj::bltPlayBuffer()
 	
 	playback->getDecBuf(buf, &size, &w, &h, &rate, &pts, &a);
 	
-//	printf("GLThreadObj::bltPlayBuffer: 1: w:%d h:%d\n", w, h);
+//	printf("GLThreadObj::bltPlayBuffer: 1: rate:%d\n", rate);
 	
+#ifdef ENABLE_GSTREAMER
+	sleep_us = rate;
+		
+	if (sleep_us < 30000)
+		sleep_us = 30000;
+	else if (sleep_us > 90000)
+		sleep_us /= 100;
+#else
 	//
 	if (buf == NULL)
 	{	
@@ -578,5 +586,6 @@ void GLThreadObj::bltPlayBuffer()
 	*/
 	
 //	printf("GLThreadObj::bltPlayBuffer: 3: w:%d h:%d\n", w, h);
+#endif
 }
 

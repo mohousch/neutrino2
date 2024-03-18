@@ -41,6 +41,8 @@
 #include "subtitle.h"
 #include "writer.h"
 
+#include <config.h>
+
 /* ***************************** */
 /* Makros/Constants              */
 /* ***************************** */
@@ -181,7 +183,7 @@ void replace_all(char ** string, char * search, char * replace)
 }
 
 // ass
-#define ASS_FONT "/usr/share/fonts/FreeSans.ttf"
+#define ASS_FONT DATADIR "/fonts/FreeSans.ttf"
 
 static ASS_Library *ass_library;
 static ASS_Renderer *ass_renderer;
