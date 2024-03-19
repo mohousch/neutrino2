@@ -427,6 +427,7 @@ static void* dvbsub_thread(void* /*arg*/)
 		pts = get_pts(packet);
 
 		dataoffset = packet[8] + 8 + 1;
+		
 		if (packet[dataoffset] != 0x20) 
 		{
 			goto next_round;

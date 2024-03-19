@@ -121,8 +121,7 @@ void cDvbSubtitleBitmaps::Draw(int &min_x, int &min_y, int &max_x, int &max_y)
 	}
 }
 
-// --- cDvbSubtitleConverter -------------------------------------------------
-
+//// cDvbSubtitleConverter
 cDvbSubtitleConverter::cDvbSubtitleConverter(void)
 {
 	printf("cDvbSubtitleConverter: new converter\n");
@@ -215,11 +214,9 @@ void cDvbSubtitleConverter::Pause(bool pause)
 		Clear();
 		running = false;
 		Unlock();
-		//Reset();
 	} 
 	else 
 	{
-		//Reset();
 		running = true;
 	}
 }
@@ -363,9 +360,6 @@ int cDvbSubtitleConverter::Action(void)
 	}
 
 	Unlock();
-
-	//if(WaitMs != WAITMS)
-	//	printf("cDvbSubtitleConverter::Action: finish, WaitMs %d\n", WaitMs);
 
 	return WaitMs*1000;
 }
