@@ -74,20 +74,20 @@ static inline unsigned char* text_to_ass(char *text, long long int pts, double d
 typedef struct
 {
 	//
-	enum AVCodecID 	      avCodecId;
+	enum AVCodecID 	      	avCodecId;
 	
 	//
-	unsigned char* data;
-	int            len;
+	unsigned char* 		data;
+	int            		len;
 
-	unsigned char* extradata;
-	int            extralen;
+	unsigned char* 		extradata;
+	int            		extralen;
 	
-	long long int  pts;
-	float          duration;
+	long long int  		pts;
+	float          		duration;
 	
-	int          width;
-    	int          height;
+	int          		width;
+    	int          		height;
     	
     	//
 	AVStream* 		stream;
@@ -96,13 +96,13 @@ typedef struct
 
 typedef struct
 {
-	unsigned char* destination;
-	unsigned int   screen_width;
-	unsigned int   screen_height;
-	unsigned int   destStride;
+	uint32_t* 	destination;
+	unsigned int   	screen_width;
+	unsigned int   	screen_height;
+	unsigned int   	destStride;
 	
-	int            shareFramebuffer;
-	int            framebufferFD;
+	int            	shareFramebuffer;
+	int            	framebufferFD;
 } SubtitleOutputDef_t;
 
 #endif

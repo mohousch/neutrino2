@@ -514,7 +514,7 @@ bool cPlayback::Open()
 	out.screen_width = CFrameBuffer::getInstance()->getScreenWidth();
 	out.screen_height = CFrameBuffer::getInstance()->getScreenHeight();
 	out.framebufferFD = CFrameBuffer::getInstance()->getFileHandle();
-	out.destination   = (unsigned char *)CFrameBuffer::getInstance()->getFrameBufferPointer();
+	out.destination   = CFrameBuffer::getInstance()->getFrameBufferPointer();
 	out.destStride    = CFrameBuffer::getInstance()->getStride();
 	out.shareFramebuffer = 1;
     

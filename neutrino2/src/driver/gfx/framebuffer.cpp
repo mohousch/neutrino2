@@ -1580,15 +1580,14 @@ void CFrameBuffer::blit2FB(void * fbbuff, uint32_t width, uint32_t height, uint3
 	int xc = (width > xRes) ? xRes : width;
 	int yc = (height > yRes) ? yRes : height;
 	
-	fb_pixel_t * data = (fb_pixel_t *) fbbuff;
+	fb_pixel_t* data = (fb_pixel_t*) fbbuff;
 
-	uint8_t * d = ((uint8_t *)getFrameBufferPointer()) + xoff * sizeof(fb_pixel_t) + stride * yoff;
-	fb_pixel_t * d2;
+	uint8_t* d = ((uint8_t*)getFrameBufferPointer()) + xoff * sizeof(fb_pixel_t) + stride * yoff;
 
 	for (int count = 0; count < yc; count++ ) 
 	{
 		fb_pixel_t * pixpos = &data[(count + yp) * width];
-		d2 = (fb_pixel_t *) d;
+		fb_pixel_t* d2 = (fb_pixel_t *) d;
 		
 		for (int count2 = 0; count2 < xc; count2++ ) 
 		{
@@ -1596,10 +1595,11 @@ void CFrameBuffer::blit2FB(void * fbbuff, uint32_t width, uint32_t height, uint3
 			
 			if (!transp || (pix & 0xff000000) == 0xff000000)
 				*d2 = pix;
+			//
 			else //alpha blending
 			{
-				uint8_t *in = (uint8_t *)(pixpos + xp);
-				uint8_t *out = (uint8_t *)d2;
+				uint8_t* in = (uint8_t *)(pixpos + xp);
+				uint8_t* out = (uint8_t *)d2;
 #if __BYTE_ORDER == __LITTLE_ENDIAN
 				int a = in[3];
 #elif __BYTE_ORDER == __BIG_ENDIAN

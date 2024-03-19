@@ -43,6 +43,7 @@
 
 #include <config.h>
 
+
 /* ***************************** */
 /* Makros/Constants              */
 /* ***************************** */
@@ -70,16 +71,6 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 #define cERR_SUBTITLE_ERROR            -1
 
 static const char FILENAME[] = "subtitle.c";
-
-/*
-Number, Style, Name,, MarginL, MarginR, MarginV, Effect,, Text
-
-1038,0,tdk,,0000,0000,0000,,That's not good.
-1037,0,tdk,,0000,0000,0000,,{\i1}Rack them up, rack them up,{\i0}\N{\i1}rack them up.{\i0} [90]
-1036,0,tdk,,0000,0000,0000,,Okay, rack them up.
-*/
-
-#define PUFFERSIZE 20
 
 /* ***************************** */
 /* Types                         */
@@ -183,7 +174,7 @@ void replace_all(char ** string, char * search, char * replace)
 }
 
 // ass
-#define ASS_FONT DATADIR "/fonts/FreeSans.ttf"
+#define ASS_FONT DATADIR "/fonts/arial.ttf"
 
 static ASS_Library *ass_library;
 static ASS_Renderer *ass_renderer;
@@ -283,42 +274,6 @@ int ass_init(Context_t *context)
         ass_set_aspect_ratio( ass_renderer, 1.0, 0.5);
     }
 
-    return cERR_SUBTITLE_NO_ERROR;
-}
-
-//
-int process_ass_data(Context_t *context, SubtitleData_t* data)
-{
-    int first_kiss;
-    
-    subtitle_printf(20, ">\n");
-
-    if (ass_track == NULL)
-    {
-        first_kiss = 1;
-        ass_track = ass_new_track(ass_library);
-
-        if (ass_track == NULL)
-        {
-            subtitle_err("error creating ass_track\n");
-            return cERR_SUBTITLE_ERROR;
-        }
-    }
-
-    if ((data->extradata) && (first_kiss))
-    {
-        subtitle_printf(20,"processing private %d bytes\n",data->extralen);
-        ass_process_codec_private(ass_track, (char*) data->extradata, data->extralen);
-        subtitle_printf(20,"processing private done\n");
-    } 
-
-    if (data->data)
-    {
-        subtitle_printf(20,"processing data %d bytes\n",data->len);
-        ass_process_data(ass_track, (char*) data->data, data->len);
-        subtitle_printf(20,"processing data done\n");
-    }
-    
     return cERR_SUBTITLE_NO_ERROR;
 }
 
@@ -491,7 +446,7 @@ void storeRegion(unsigned int x, unsigned int y, unsigned int w, unsigned int h,
 }
 
 // ass_write
-static void ass_write(Context_t *context) 
+static void ass_write(Context_t *context, SubtitleData_t* data) 
 {
     	Writer_t* writer;
     
@@ -503,7 +458,37 @@ static void ass_write(Context_t *context)
     	{
         	subtitle_err("no framebuffer writer found!\n");
     	}
+    	
+    	//
+    	int first_kiss;
 
+    	if (ass_track == NULL)
+    	{
+        	first_kiss = 1;
+        	ass_track = ass_new_track(ass_library);
+
+        	if (ass_track == NULL)
+        	{
+            		subtitle_err("error creating ass_track\n");
+            		return cERR_SUBTITLE_ERROR;
+        	}
+    	}
+
+    	if ((data->extradata) && (first_kiss))
+    	{
+        	subtitle_printf(20,"processing private %d bytes\n",data->extralen);
+        	ass_process_codec_private(ass_track, (char*) data->extradata, data->extralen);
+        	subtitle_printf(20,"processing private done\n");
+    	} 
+
+    	if (data->data)
+    	{
+        	subtitle_printf(20,"processing data %d bytes\n",data->len);
+        	ass_process_data(ass_track, (char*) data->data, data->len);
+        	subtitle_printf(20,"processing data done\n");
+    	}
+
+	//
 	if (ass_track)
     	{
 		ASS_Image *       img   = NULL;
@@ -701,10 +686,10 @@ static void dvbsub_write(Context_t *context, SubtitleData_t* out)
 		subtitle_printf(10, "num_rects %d\n", sub.num_rects);
 		
 		if (got_sub_ptr && sub.num_rects > 0)
-		{
+		{			
 			switch (sub.rects[0]->type)
 			{
-				case SUBTITLE_TEXT: // FIXME?
+				case SUBTITLE_TEXT:
 				case SUBTITLE_ASS:
 				{
 					for (i = 0; i < sub.num_rects; i++)
@@ -717,11 +702,6 @@ static void dvbsub_write(Context_t *context, SubtitleData_t* out)
 						subtitle_printf(10, "type %d\n", sub.rects[i]->type);
 						subtitle_printf(10, "text %s\n", sub.rects[i]->text);
 						subtitle_printf(10, "ass %s\n", sub.rects[i]->ass);
-						
-						process_ass_data(context, out);
-    	
-    						//
-    						ass_write(context);
 					}
 					break;
 				}
@@ -763,10 +743,25 @@ static void dvbsub_write(Context_t *context, SubtitleData_t* out)
 						uint32_t *newdata = simple_resize32(sub.rects[i]->data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
 #endif
 							
-						// blit2fb
-						blit2FB(newdata, nw, nh, xoff, yoff, 0, 0, false);
+						//
+						WriterFBCallData_t out;
 
-						blit(framebufferFD);
+             					out.fd            = framebufferFD;
+             					out.data          = newdata;
+             					out.Width         = nw;
+             					out.Height        = nh;
+             					out.x             = xoff;
+             					out.y             = yoff;
+             					
+             					out.color	  = 0;
+
+             					out.Screen_Width  = screen_width; 
+             					out.Screen_Height = screen_height; 
+             					out.destination   = destination;
+             					out.destStride    = destStride;
+
+             					writer->writeData(&out);
+						//
 
 						//free(newdata);
 					} //for
@@ -827,10 +822,7 @@ static int Write(void* _context, void *data)
     		case AV_CODEC_ID_SUBRIP: // FIXME:
     		{
     			//
-    			process_ass_data(context, data);
-    	
-    			//
-    			ass_write(context);
+    			ass_write(context, out);
     			break;
     		}
     		

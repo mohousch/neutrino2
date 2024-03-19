@@ -22,11 +22,11 @@ libeplayer3_a_SOURCES =  \
 	output/writer/framebuffer.c \
 	playback/playback.c
 
-AM_CFLAGS = -Wall -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D__STDC_CONSTANT_MACROS
+AM_CPPFLAGS += -Wall -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D__STDC_CONSTANT_MACROS
 
 # get rid of many warnings. This is not my project, so fixing them is not
 # top priority
-AM_CFLAGS += \
+AM_CPPFLAGS += \
 	-Wno-unused -Wno-unused-parameter -Wno-unused-function -Wno-unused-variable \
 	-Wno-sign-compare -Wno-missing-field-initializers
 

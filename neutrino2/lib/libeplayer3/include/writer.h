@@ -37,21 +37,21 @@ typedef struct
 
 typedef struct 
 {
-	unsigned char*         data;
-	unsigned int           Width;
-	unsigned int           Height;
-	unsigned int           Stride;
-	unsigned int           color;
+	uint32_t*         	data;
+	unsigned int           	Width;
+	unsigned int           	Height;
+	unsigned int           	Stride;
+	unsigned int           	color;
 
-	unsigned int           x;       /* dst x ->given by ass */
-	unsigned int           y;       /* dst y ->given by ass */
+	unsigned int           	x;       /* dst x ->given by ass */
+	unsigned int           	y;       /* dst y ->given by ass */
 
 	/* destination values if we use a shared framebuffer */
-	int                    fd;
-	unsigned int           Screen_Width;
-	unsigned int           Screen_Height;
-	unsigned char*         destination;
-	unsigned int           destStride;
+	int                    	fd;
+	unsigned int           	Screen_Width;
+	unsigned int           	Screen_Height;
+	uint32_t*         	destination;
+	unsigned int           	destStride;
 } WriterFBCallData_t;
 
 typedef struct WriterCaps_s 
@@ -157,13 +157,13 @@ ssize_t write_with_retry(int fd, const void *buf, int size);
 ssize_t writev_with_retry(int fd, const struct iovec *iov, int ic);
 
 //
-static int            screen_width     = 0;
-static int            screen_height    = 0;
-static int            destStride       = 0;
-static int            shareFramebuffer = 0;
-static int            framebufferFD    = -1;
-static unsigned char* destination      = NULL;
-static int	      threeDMode       = 0;
+static int            	screen_width     = 0;
+static int            	screen_height    = 0;
+static int            	destStride       = 0;
+static int            	shareFramebuffer = 0;
+static int            	framebufferFD    = -1;
+static uint32_t* 	destination      = NULL;
+static int	      	threeDMode       = 0;
 
 #endif
 

@@ -14,7 +14,6 @@
 #include <syscall.h>
 
 #include <dmx_cs.h>
-
 #include <zapit/frontend_c.h>
 
 
@@ -239,11 +238,14 @@ void tuxtxt_decode_btt()
 				return;
 			}
 		}
+		
 		tuxtxt_cache.basictop[current] = b1;
 		tuxtxt_next_dec(&current);
 	}
+	
 	/* page linking table */
 	tuxtxt_cache.maxadippg = -1; /* rebuild table of adip pages */
+	
 	for (i = 0; i < 10; i++)
 	{
 		b1 = dehamming[btt[800 + 8*i +0]];
