@@ -469,7 +469,7 @@ void CMoviePlayer::showMenu()
 	
 	//
 	widget->addCCItem(mlist);
-	widget->setTimeOut(g_settings.timing_menu);
+	widget->setTimeOut(g_settings.timing_filebrowser);
 
 	widget->exec(NULL, "");
 	
