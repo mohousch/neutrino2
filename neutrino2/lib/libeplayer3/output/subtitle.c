@@ -49,6 +49,7 @@
 /* ***************************** */
 
 #define SUBTITLE_DEBUG
+#define SUBTITLE_SILENT
 
 #ifdef SUBTITLE_DEBUG
 

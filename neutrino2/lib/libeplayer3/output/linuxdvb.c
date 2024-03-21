@@ -66,7 +66,7 @@
 #define AUDIO_FLUSH                     _IO('o',  71)
 #else
 #ifndef AUDIO_GET_PTS
-#define AUDIO_GET_PTS              _IOR('o', 19, __u64)
+#define AUDIO_GET_PTS              	_IOR('o', 19, __u64)
 #endif
 #endif
 
@@ -1231,8 +1231,8 @@ static int Write(void* _context, void* _out)
 		swr_free(&swr);
 		av_frame_free(&aframe);
 		
-//		linuxdvb_err("failed to write AUDIO data %d - %d\n", res, errno);
-//		linuxdvb_err("%s\n", strerror(errno));
+		linuxdvb_err("failed to write AUDIO data %d - %d\n", res, errno);
+		linuxdvb_err("%s\n", strerror(errno));
 		ret = cERR_LINUXDVB_ERROR;
 #endif
 
@@ -1391,8 +1391,8 @@ static int Write(void* _context, void* _out)
 		}
 		
 		//
-//		linuxdvb_err("failed to write VIDEO data %d - %d\n", res, errno);
-//		linuxdvb_err("%s\n", strerror(errno));
+		linuxdvb_err("failed to write VIDEO data %d - %d\n", res, errno);
+		linuxdvb_err("%s\n", strerror(errno));
 		ret = cERR_LINUXDVB_ERROR;
 #endif
 

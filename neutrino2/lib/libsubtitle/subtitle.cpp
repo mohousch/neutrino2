@@ -85,6 +85,7 @@ int dvbsub_pause()
 	if(reader_running) 
 	{
 		dvbsub_paused = true;
+		
 		if(dvbSubtitleConverter)
 			dvbSubtitleConverter->Pause(true);
 
@@ -109,6 +110,7 @@ int dvbsub_start(int pid)
 			
 			if(dvbSubtitleConverter)
 				dvbSubtitleConverter->Reset();
+				
 			dvbsub_pid = pid;
 			pid_change_req = 1;
 		}

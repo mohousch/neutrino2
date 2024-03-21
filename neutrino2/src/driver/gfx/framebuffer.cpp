@@ -1583,11 +1583,12 @@ void CFrameBuffer::blit2FB(void * fbbuff, uint32_t width, uint32_t height, uint3
 	fb_pixel_t* data = (fb_pixel_t*) fbbuff;
 
 	uint8_t* d = ((uint8_t*)getFrameBufferPointer()) + xoff * sizeof(fb_pixel_t) + stride * yoff;
+	fb_pixel_t* d2;
 
 	for (int count = 0; count < yc; count++ ) 
 	{
 		fb_pixel_t * pixpos = &data[(count + yp) * width];
-		fb_pixel_t* d2 = (fb_pixel_t *) d;
+		d2 = (fb_pixel_t *) d;
 		
 		for (int count2 = 0; count2 < xc; count2++ ) 
 		{

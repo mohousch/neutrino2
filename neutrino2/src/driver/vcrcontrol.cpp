@@ -468,7 +468,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 				
 				pids[numpids++] = sd->pId;
 				
-				::addPid(sd->pId, EN_TYPE_DVBSUB, 0);
+				::addPid(sd->pId, EN_TYPE_TELTEX, 0);
 			}
 		}
         }

@@ -27,6 +27,7 @@ $Id: genpsi.c,v 1.2 2006/01/16 12:45:54 sat_man Exp $
 #include <unistd.h>
 #include <driver/genpsi.h>
 
+
 #define SIZE_TS_PKT		188
 #define OFS_HDR_2		5
 #define OFS_PMT_DATA		13
@@ -149,7 +150,7 @@ void addPid(uint16_t pid, uint16_t pidart, short isAC3)
 }
 
 //-- special enigma stream description packet for  --
-//-- at least 1 video, 1 audo and 1 PCR-Pid stream --
+//-- at least 1 video, 1 audio and 1 PCR-Pid stream --
 //--
 static uint8_t pkt_enigma[] =
 {
@@ -211,7 +212,7 @@ int genpsi(int fd2)
 	data_len = COPY_TEMPLATE(pkt, pkt_enigma);
 
 	//-- adjust len dependent to number of audio streams --
-	data_len += ((SIZE_ENIGMA_TAB_ROW + 1) * (avPids.nba-1));
+	data_len += ((SIZE_ENIGMA_TAB_ROW + 1) * (avPids.nba - 1));
 
 	patch_len = data_len - OFS_HDR_2 + 1;
 	pkt[OFS_HDR_2 + 1] |= (patch_len>>8);
@@ -262,7 +263,7 @@ int genpsi(int fd2)
 	data_len = COPY_TEMPLATE(pkt, pkt_pmt);
 	
 	//-- adjust len dependent to count of audio streams --
-	data_len += (SIZE_STREAM_TAB_ROW * (avPids.nba-1));
+	data_len += (SIZE_STREAM_TAB_ROW * (avPids.nba - 1));
 	patch_len = data_len - OFS_HDR_2 + 1;
 	pkt[OFS_HDR_2 + 1] |= (patch_len>>8);
 	pkt[OFS_HDR_2 + 2]  = (patch_len & 0xFF); 
@@ -284,7 +285,7 @@ int genpsi(int fd2)
 	for (i=0; i < avPids.nba; i++)
 	{
 		ofs += SIZE_STREAM_TAB_ROW;
-		pkt[ofs]   = (avPids.isAC3[i]==1)? ES_TYPE_AC3 : ES_TYPE_MPA;
+		pkt[ofs]   = (avPids.isAC3[i] == 1)? ES_TYPE_AC3 : ES_TYPE_MPA;
 		pkt[ofs + 1] = 0xE0 | (avPids.apid[i]>>8);
 		pkt[ofs + 2] = (avPids.apid[i] & 0xFF);
 		pkt[ofs + 3] = 0xF0;
