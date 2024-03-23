@@ -994,33 +994,6 @@ static int PlaybackInfo(Context_t  *context, char** infoString)
 	return ret;
 }
 
-// data 
-static int PlaybackGetData(Context_t* context, Data_t* data)
-{
-	int ret = cERR_PLAYBACK_NO_ERROR;
-
-	playback_printf(10, "\n");
-	
-#ifdef USE_OPENGL
-	//
-	if (context->playback->isPlaying) 
-	{
-		ret = context->output->Command(context, OUTPUT_DATA, data);
-		
-		playback_printf(10, "playback: w:%d h:%d\n", data->width, data->height);
-	} 
-	else
-	{
-		playback_err("not possible\n");
-		ret = cERR_PLAYBACK_ERROR;
-	}
-#endif
-	
-	playback_printf(10, "exiting with value %d\n", ret);
-
-	return ret;
-}
-
 static int Command(void* _context, PlaybackCmd_t command, void * argument) 
 {
 	Context_t* context = (Context_t*) _context;
@@ -1129,12 +1102,6 @@ static int Command(void* _context, PlaybackCmd_t command, void * argument)
 		case PLAYBACK_GET_FRAME_COUNT: 
 		{
 			ret = PlaybackGetFrameCount(context, (unsigned long long int*)argument);
-			break;
-		}
-		
-		case PLAYBACK_DATA:
-		{
-			ret = PlaybackGetData(context, (Data_t*)argument);
 			break;
 		}
 		

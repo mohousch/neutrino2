@@ -36,6 +36,17 @@
 
 #include <driver/gfx/framebuffer.h>
 
+#ifdef USE_OPENGL
+#include "dmx_cs.h"
+
+extern "C" {
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+#include <libavutil/imgutils.h>
+#include <libswscale/swscale.h>
+}
+#endif
+
 
 //// global
 bool isTS = false;
@@ -1382,19 +1393,23 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 #ifndef ENABLE_GSTREAMER
 extern Data_t data;
 #endif
-void cPlayback::getDecBuf(uint8_t* buffer, unsigned int* size, uint32_t* width, uint32_t* height, uint32_t* rate, uint64_t* pts, AVRational* a)
+
+cPlayback::SWFramebuffer *cPlayback::getDecBuf(void)
 {
-#ifdef ENABLE_GSTREAMER
-	*rate = framerate;
-#else	
-	buffer = data.buffer;
-	*size = data.size;
-	*width = data.width;
-	*height = data.height;
-	*rate = data.rate;
-	*pts = data.pts;
-	*a = data.a;
+	SWFramebuffer *p = &buffers[0];
+	
+#ifndef ENABLE_GSTREAMER
+	p->resize(data.size);
+	p->width(data.width);
+	p->height(data.height);
+	p->rate(data.rate);
+	p->pts(data.pts);
+	p->AR(data.a);
+	
+	av_image_fill_arrays(&data.buffer, (int*)&data.size, &(*p)[0], AV_PIX_FMT_RGB32, data.width, data.height, 1);
 #endif
+
+	return p;
 }
 #endif
 

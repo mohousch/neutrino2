@@ -42,7 +42,7 @@
 
 double CPictureViewer::m_aspect_ratio_correction;
 
-CPictureViewer::CPictureViewer ()
+CPictureViewer::CPictureViewer()
 {
 	m_scaling = (CFrameBuffer::ScalingMode)g_settings.picviewer_scaling;
 
@@ -173,7 +173,9 @@ bool CPictureViewer::decodeImage(const std::string & name, bool showBusySign)
 				dprintf(DEBUG_INFO, "CPictureViewer::decodeImage: Error: malloc\n");
 				return false;
 			}
+			
 			memset(m_Pic_Buffer, 0, 3);
+			
 			m_Pic_X = 1;
 			m_Pic_Y = 1;
 			m_Pic_XPos = 0;
@@ -184,7 +186,7 @@ bool CPictureViewer::decodeImage(const std::string & name, bool showBusySign)
 	} 
 	else 
 	{
-		dprintf (DEBUG_INFO, "CPictureViewer::decodeImage: Unable to read file or format not recognized!\n");
+		dprintf(DEBUG_INFO, "CPictureViewer::decodeImage: Unable to read file or format not recognized!\n");
 		
 		if (m_Pic_Buffer != NULL) 
 		{
@@ -192,6 +194,7 @@ bool CPictureViewer::decodeImage(const std::string & name, bool showBusySign)
 		}
 
 		m_Pic_Buffer = (unsigned char *) malloc (3);
+		
 		if (m_Pic_Buffer == NULL) 
 		{
 			dprintf(DEBUG_INFO, "CPictureViewer::decodeImage: Error: malloc\n");
@@ -199,6 +202,7 @@ bool CPictureViewer::decodeImage(const std::string & name, bool showBusySign)
 		}
 
 		memset(m_Pic_Buffer, 0, 3);
+		
 		m_Pic_X = 1;
 		m_Pic_Y = 1;
 		m_Pic_XPos = 0;

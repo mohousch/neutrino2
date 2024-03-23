@@ -423,18 +423,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 			break;
 		}
 		
-		case OUTPUT_DATA:
-		{
-			if (context && context->playback ) 
-			{
-				if (context->playback->isVideo)
-					return context->output->video->Command(context, OUTPUT_DATA, argument);
-			} 
-			else
-				ret = cERR_OUTPUT_INTERNAL_ERROR;
-			break;
-		}
-		
 		default:
 			output_err("%s::%s OutputCmd %d not supported!\n", FILENAME, __FUNCTION__, command);
 			ret = cERR_OUTPUT_INTERNAL_ERROR;

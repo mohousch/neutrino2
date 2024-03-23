@@ -22,25 +22,15 @@
 
 #include <stdint.h>
 #include <string>
-
-extern "C" {
-#include <libavutil/avutil.h>
-//#if LIBAVCODEC_VERSION_MAJOR > 54
-#include <libavutil/time.h>
-//#endif
-#include <libavformat/avformat.h>
-#if LIBAVCODEC_VERSION_MAJOR > 54
-#include <libavutil/opt.h>
-
-#include <libavutil/samplefmt.h>
-#include <libswresample/swresample.h>
-
-#include <libswscale/swscale.h>
-#include <libavutil/imgutils.h>
-#endif
-}
+#include <vector>
 
 #include <config.h>
+
+#ifdef USE_OPENGL
+extern "C" {
+#include <libavutil/rational.h>
+}
+#endif
 
 
 class cPlayback
@@ -49,6 +39,75 @@ class cPlayback
 		int mSpeed;
 		int mAudioStream;
 		int mSubStream;
+		
+#ifdef USE_OPENGL
+	public:
+		////
+		class SWFramebuffer : public std::vector<unsigned char>
+		{
+			public:
+				SWFramebuffer() : mWidth(0), mHeight(0) {};
+				
+				void width(int w)
+				{
+					mWidth = w;
+				}
+				
+				void height(int h)
+				{
+					mHeight = h;
+				}
+				
+				void pts(uint64_t p)
+				{
+					mPts = p;
+				}
+				
+				void AR(AVRational a)
+				{
+					mAR = a;
+				}
+				
+				void rate(int r)
+				{
+					mRate = r;
+				}
+				
+				int width() const
+				{
+					return mWidth;
+				}
+				
+				int height() const
+				{
+					return mHeight;
+				}
+				
+				int64_t pts() const
+				{
+					return mPts;
+				}
+				
+				AVRational AR() const
+				{
+					return mAR;
+				}
+				
+				int rate() const
+				{
+					return mRate;
+				}
+				
+			private:
+				int mWidth;
+				int mHeight;
+				int64_t mPts;
+				AVRational mAR;
+				int mRate;
+		};
+		
+		SWFramebuffer buffers[0x40];
+#endif
 		
 	public:
 		bool playing;
@@ -77,7 +136,7 @@ class cPlayback
 		~cPlayback(){};	
 		
 #ifdef USE_OPENGL
-		void getDecBuf(uint8_t* buffer, unsigned int* size, uint32_t* width, uint32_t* height, uint32_t* rate, uint64_t* pts, AVRational* a);
+		cPlayback::SWFramebuffer *getDecBuf(void);
 #endif
 };
 

@@ -1446,27 +1446,6 @@ static int reset(Context_t  *context)
 	return ret;
 }
 
-////
-int LinuxDvbGetData(Context_t* context, Data_t* _data) 
-{
-	int ret = cERR_LINUXDVB_NO_ERROR;
-
-	linuxdvb_printf(50, "\n");
-
-#ifdef USE_OPENGL
-	getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
-	
- 	_data = &data;
-
-	linuxdvb_printf(10, "linuxdvb: w:%d h:%d\n", _data->width, _data->height);
-
-	releaseLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);	
-#endif
-
-	return ret;
-}
-
-
 static int Command(void  *_context, OutputCmd_t command, void * argument) 
 {
 	Context_t* context = (Context_t*) _context;
@@ -1586,16 +1565,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 			unsigned long long int frameCount = 0;
 			ret = LinuxDvbGetFrameCount(context, &frameCount);
 			*((unsigned long long int*)argument) = (unsigned long long int)frameCount;
-			break;
-		}
-		
-		case OUTPUT_DATA:
-		{
-//			ret = LinuxDvbGetData(context, (Data_t*)argument);
-#ifdef USE_OPENGL
-			Data_t* argument = &data;
-#endif
-			linuxdvb_printf(10, "command:%d: w:%d h:%d\n", command, data.width, data.height);
 			break;
 		}
 		
