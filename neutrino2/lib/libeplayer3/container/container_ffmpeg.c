@@ -122,8 +122,6 @@ static long long int latestPts = 0;
 /* ***************************** */
 /* Prototypes                    */
 /* ***************************** */
-static int container_ffmpeg_seek_bytes(off_t pos);
-static int container_ffmpeg_seek(Context_t *context, float sec);
 static int container_ffmpeg_seek_rel(Context_t *context, off_t pos, long long int pts, float sec);
 
 /* ***************************** */
@@ -843,6 +841,8 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	avcodec_register_all();
 	av_register_all();
 	avformat_network_init();
+	
+	avContext = avformat_alloc_context();
 
 #if LIBAVCODEC_VERSION_MAJOR < 54
 	if ((err = av_open_input_file(&avContext, filename, NULL, 0, NULL)) != 0) 
@@ -859,7 +859,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	
 	avContext->flags |= AVFMT_FLAG_GENPTS;
 
-	if (strstr(filename, ":31339") || strstr(filename, ":8001/") || strstr(filename, ".ts"))
+	if (strstr(filename, ":31339") || strstr(filename, ".ts"))
 		avContext->max_analyze_duration = 5;
 
 	// find stream info
@@ -1434,6 +1434,13 @@ static int container_ffmpeg_seek_rel(Context_t *context, off_t pos, long long in
 	Track_t * audioTrack = NULL;
 	Track_t * current = NULL;
 	int flag = 0;
+	
+	////
+	if (sec == 0.0)
+	{
+		ffmpeg_err("sec = 0.0 ignoring\n");
+		return cERR_CONTAINER_FFMPEG_ERR;
+	}
 
 	ffmpeg_printf(10, "seeking %f sec relativ to %lld\n", sec, pos);
 

@@ -1111,8 +1111,6 @@ static int Write(void* _context, void* _out)
 				
 			if (res <= 0)
 			{
-				linuxdvb_err("failed to write AUDIO data %d - %d\n", res, errno);
-				linuxdvb_err("%s\n", strerror(errno));
 				ret = cERR_LINUXDVB_ERROR;
 			}
 		}
@@ -1221,8 +1219,6 @@ static int Write(void* _context, void* _out)
 				
 			if (res <= 0)
 			{
-				linuxdvb_err("failed to write AUDIO data %d - %d\n", res, errno);
-				linuxdvb_err("%s\n", strerror(errno));
 				ret = cERR_LINUXDVB_ERROR;
 			}
 		}
@@ -1231,8 +1227,6 @@ static int Write(void* _context, void* _out)
 		swr_free(&swr);
 		av_frame_free(&aframe);
 		
-		linuxdvb_err("failed to write AUDIO data %d - %d\n", res, errno);
-		linuxdvb_err("%s\n", strerror(errno));
 		ret = cERR_LINUXDVB_ERROR;
 #endif
 
@@ -1283,8 +1277,6 @@ static int Write(void* _context, void* _out)
 
 			if (res <= 0)
 			{
-				linuxdvb_err("failed to write VIDEO data %d - %d\n", res, errno);
-				linuxdvb_err("%s\n", strerror(errno));
 				ret = cERR_LINUXDVB_ERROR;
 			}
 		}
@@ -1337,13 +1329,13 @@ static int Write(void* _context, void* _out)
 		if (got_frame)
 		{
 			unsigned int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, out->stream->codec->width, out->stream->codec->height, 1);
-			
-			realloc(data.buffer, need);
 							
 			convert = sws_getContext(out->stream->codec->width, out->stream->codec->height, out->stream->codec->pix_fmt, out->stream->codec->width, out->stream->codec->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
 								
 			if (convert)
-			{					
+			{
+				realloc(data.buffer, need);
+									
 				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, data.buffer, AV_PIX_FMT_RGB32, out->stream->codec->width, out->stream->codec->height, 1);
 
 				sws_scale(convert, frame->data, frame->linesize, 0, out->stream->codec->height, rgbframe->data, rgbframe->linesize);
@@ -1365,7 +1357,7 @@ static int Write(void* _context, void* _out)
 				data.a = out->stream->codec->time_base;
 				
 				//				
-				//data.rate = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);
+				//double rate = out->pts * (double)out->stream->codec->time_base.num /(double)out->stream->codec->time_base.den;
 				data.rate = out->frameRate/1000;
 				
 				data.size = need;
@@ -1390,9 +1382,6 @@ static int Write(void* _context, void* _out)
 			convert = NULL;
 		}
 		
-		//
-		linuxdvb_err("failed to write VIDEO data %d - %d\n", res, errno);
-		linuxdvb_err("%s\n", strerror(errno));
 		ret = cERR_LINUXDVB_ERROR;
 #endif
 

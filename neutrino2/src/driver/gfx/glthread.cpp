@@ -567,14 +567,14 @@ void GLThreadObj::bltPlayBuffer()
 	// FIXME:
 	/*
 	int64_t last_pts = 0;
-	int64_t vpts = buf->pts() + 18000;
+	int64_t vpts = buf->pts();
 	
 	if (last_pts != vpts)
 	{
-		sleep_us = (vpts - last_pts) / sleep_us;
+		sleep_us = (vpts - last_pts);
 		
-		if (sleep_us > 50000)
-			sleep_us = 50000;
+		//if (sleep_us > 50000)
+		//	sleep_us = 50000;
 		
 		last_pts = vpts;
 	}
