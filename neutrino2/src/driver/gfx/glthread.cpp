@@ -55,6 +55,9 @@ int GLHeight;
 extern cVideo *videoDecoder;
 extern cAudio *audioDecoder;
 extern cPlayback *playback;
+#ifdef ENABLE_GSTREAMER
+extern uint32_t framerate;
+#endif
 
 GLThreadObj::GLThreadObj(int x, int y) : mX(x), mY(y), mReInit(true), mShutDown(false), mInitDone(false)
 {
@@ -508,17 +511,17 @@ void GLThreadObj::bltPlayBuffer()
 		return;
 		
 	static bool warn = true;
-
-cPlayback::SWFramebuffer *buf = playback->getDecBuf();
 	
 #ifdef ENABLE_GSTREAMER
-	sleep_us = rate;
+	sleep_us = framerate;
 		
 	if (sleep_us < 30000)
 		sleep_us = 30000;
 	else if (sleep_us > 90000)
 		sleep_us /= 100;
 #else
+	cPlayback::SWFramebuffer *buf = playback->getDecBuf();
+	
 	//
 	if (buf == NULL)
 	{	
@@ -564,7 +567,7 @@ cPlayback::SWFramebuffer *buf = playback->getDecBuf();
 	// FIXME:
 	/*
 	int64_t last_pts = 0;
-	int64_t vpts = pts + 18000;
+	int64_t vpts = buf->pts() + 18000;
 	
 	if (last_pts != vpts)
 	{
@@ -575,6 +578,8 @@ cPlayback::SWFramebuffer *buf = playback->getDecBuf();
 		
 		last_pts = vpts;
 	}
+	
+	printf("sleep_us:%d\n", sleep_us);
 	*/
 	
 #endif

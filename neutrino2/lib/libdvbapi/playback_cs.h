@@ -136,7 +136,9 @@ class cPlayback
 		~cPlayback(){};	
 		
 #ifdef USE_OPENGL
+#ifndef ENABLE_GSTREAMER
 		cPlayback::SWFramebuffer *getDecBuf(void);
+#endif
 #endif
 };
 

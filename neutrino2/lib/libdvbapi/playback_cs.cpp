@@ -1392,13 +1392,11 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 #ifdef USE_OPENGL
 #ifndef ENABLE_GSTREAMER
 extern Data_t data;
-#endif
 
 cPlayback::SWFramebuffer *cPlayback::getDecBuf(void)
 {
 	SWFramebuffer *p = &buffers[0];
 	
-#ifndef ENABLE_GSTREAMER
 	p->resize(data.size);
 	p->width(data.width);
 	p->height(data.height);
@@ -1407,9 +1405,9 @@ cPlayback::SWFramebuffer *cPlayback::getDecBuf(void)
 	p->AR(data.a);
 	
 	av_image_fill_arrays(&data.buffer, (int*)&data.size, &(*p)[0], AV_PIX_FMT_RGB32, data.width, data.height, 1);
-#endif
 
 	return p;
 }
+#endif
 #endif
 
