@@ -1284,42 +1284,29 @@ static int Write(void* _context, void* _out)
 		AVFrame *frame = NULL;
 		AVFrame *rgbframe = NULL;
 		struct SwsContext *convert = NULL;
-		AVCodec *codec = avcodec_find_decoder(out->stream->codec->codec_id);
+		const AVCodec *codec = avcodec_find_decoder(out->stream->codec->codec_id);
+		AVCodecContext* ctx = out->stream->codec;
 		
-		time_t warn_r = 0;
-		time_t warn_d = 0;
-	
+		// init codec
+#if LIBAVCODEC_VERSION_MAJOR < 54
+		avcodec_open(ctx, codec);
+#else
+		avcodec_open2(ctx, codec, NULL);
+#endif
+
 		frame = av_frame_alloc();
 		rgbframe = av_frame_alloc();
-					
-		// init avcontext
-		res = avcodec_open2(out->stream->codec, codec, NULL);
 		
 		//
 		int got_frame = 0;
 	
+		// decode frame
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
-		res = avcodec_decode_video2(&out->stream->codec, frame, &got_frame, out->packet);
-		
-		if (res < 0)
-		{
-			if (warn_d - time(NULL) > 4)
-			{
-				warn_d = time(NULL);
-			}
-		}
+		avcodec_decode_video2(ctx, frame, &got_frame, out->packet);
 #else
-		res = avcodec_send_packet(out->stream->codec, out->packet);
+		avcodec_send_packet(ctx, out->packet);
 			
-		if (res != 0 && res != AVERROR(EAGAIN))
-		{
-			if (warn_d - time(NULL) > 4)
-			{
-				warn_d = time(NULL);
-			}
-		}
-			
-		res = avcodec_receive_frame(out->stream->codec, frame);
+		res = avcodec_receive_frame(ctx, frame);
 		
 		if (res == 0)
 			got_frame = 1;
@@ -1328,21 +1315,21 @@ static int Write(void* _context, void* _out)
 		// setup swsscaler
 		if (got_frame)
 		{
-			unsigned int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, out->stream->codec->width, out->stream->codec->height, 1);
+			unsigned int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 							
-			convert = sws_getContext(out->stream->codec->width, out->stream->codec->height, out->stream->codec->pix_fmt, out->stream->codec->width, out->stream->codec->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
+			convert = sws_getContext(ctx->width, ctx->height, ctx->pix_fmt, ctx->width, ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
 								
 			if (convert)
 			{					
-				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, data.buffer, AV_PIX_FMT_RGB32, out->stream->codec->width, out->stream->codec->height, 1);
+				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, data.buffer, AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 
-				sws_scale(convert, frame->data, frame->linesize, 0, out->stream->codec->height, rgbframe->data, rgbframe->linesize);
+				sws_scale(convert, frame->data, frame->linesize, 0, ctx->height, rgbframe->data, rgbframe->linesize);
 				
 				//
-				linuxdvb_printf(10, "pic changed %dx%d -> %dx%d\n", data.width, data.height, out->stream->codec->width, out->stream->codec->height);
+				linuxdvb_printf(10, "pic changed %dx%d -> %dx%d\n", data.width, data.height, ctx->width, ctx->height);
 					
-				data.width = out->stream->codec->width;
-				data.height = out->stream->codec->height;
+				data.width = ctx->width;
+				data.height = ctx->height;
 				
 				//
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
@@ -1352,10 +1339,9 @@ static int Write(void* _context, void* _out)
 #endif
 
 				//
-				data.a = out->stream->codec->time_base;
+				data.a = ctx->time_base;
 				
-				//				
-				//double rate = out->pts * (double)out->stream->codec->time_base.num /(double)out->stream->codec->time_base.den;
+				//
 				data.rate = out->frameRate;
 				
 				data.size = need;

@@ -226,7 +226,7 @@ void blit2FB(void* fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint3
 	for (int count = 0; count < yc; count++ ) 
 	{
 		uint32_t* pixpos = &data[(count + yp) * width];
-		uint32_t* d2 = (uint32_t*) d;
+		uint32_t* d2 = (uint32_t*)d;
 		
 		for (int count2 = 0; count2 < xc; count2++ ) 
 		{
@@ -234,7 +234,7 @@ void blit2FB(void* fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint3
 			
 			//
 			if (!transp || (pix & 0xff000000) == 0xff000000)
-				*d2 = pix;
+				d2 = (uint32_t*)pix;
 			//
 			d2++;
 			pixpos++;
@@ -273,8 +273,8 @@ static int writeData(void* _call)
 	}
 	else
 	{
-		for (int count = 0; count < call->Height; count++)
-			memset(call->destination + ((call->y + count) * call->destStride) + call->x * 4, 0, call->Width * 4);
+//		for (int count = 0; count < call->Height; count++)
+//			memset(call->destination + ((call->y + count) * call->destStride) + call->x * 4, 0, call->Width * 4);
 	}
 	
 	blit(call->fd);

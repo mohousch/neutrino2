@@ -167,7 +167,7 @@ int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
 		currentspid = -1;
 		
 		if(playback)
-			playback->SetSubPid(currentspid);
+			playback->SetSubPid(-1);
 		
 		return RETURN_EXIT;
 	}

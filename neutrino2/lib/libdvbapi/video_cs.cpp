@@ -1330,6 +1330,7 @@ void cVideo::run(void)
 	
 	// setup codec context for decoder
 	c = avcodec_alloc_context3(codec);
+	
 	if (avcodec_open2(c, codec, NULL) < 0)
 	{
 		printf("cVideo::run: Could not open codec\n");

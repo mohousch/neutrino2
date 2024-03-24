@@ -428,6 +428,9 @@ static void FFMPEGThread(Context_t *context)
 	AVFrame *samples = NULL;
 
 	ffmpeg_printf(10, "\n");
+	
+	//
+	av_init_packet(&packet);
 
 	while ( context->playback->isCreationPhase )
 	{
@@ -547,9 +550,11 @@ static void FFMPEGThread(Context_t *context)
 					avOut.width      = videoTrack->width;
 					avOut.height     = videoTrack->height;
 					avOut.type       = "video";
-					// opengl
+					
+#ifdef USE_OPENGL
 					avOut.stream 	 = videoTrack->stream;
 					avOut.packet 	 = &packet;
+#endif
 
 					if (context->output->video->Write(context, &avOut) < 0) 
 					{
@@ -570,6 +575,29 @@ static void FFMPEGThread(Context_t *context)
 
 					ffmpeg_printf(200, "AudioTrack index = %d\n",index);
 					
+#ifdef USE_OPENGL
+					avOut.data       = packet.data;
+					avOut.len        = packet.size;
+					avOut.pts        = audioTrack->pts;
+					avOut.extradata  = NULL;
+					avOut.extralen   = 0;
+					avOut.frameRate  = 0;
+					avOut.timeScale  = 0;
+					avOut.width      = 0;
+					avOut.height     = 0;
+					avOut.type       = "audio";
+					// opengl
+					avOut.stream 	 = audioTrack->stream;
+					avOut.packet 	 = &packet;
+
+					if (!context->playback->BackWard)
+					{
+						if (context->output->audio->Write(context, &avOut) < 0)
+						{
+							ffmpeg_err("writing data to audio device failed\n");
+						}
+					}
+#else
 					//
 					pcmPrivateData_t extradata;
 					extradata.uNoOfChannels = &audioTrack->stream->codec->channels;
@@ -597,9 +625,6 @@ static void FFMPEGThread(Context_t *context)
 						avOut.width      = 0;
 						avOut.height     = 0;
 						avOut.type       = "audio";
-						// opengl
-						avOut.stream 	 = audioTrack->stream;
-						avOut.packet 	= &packet;
 
 						if (!context->playback->BackWard)
 						{
@@ -658,9 +683,6 @@ static void FFMPEGThread(Context_t *context)
 							avOut.width      = 0;
 							avOut.height     = 0;
 							avOut.type       = "audio";
-							// opengl
-							avOut.stream 	 = audioTrack->stream;
-							avOut.packet 	= &packet;
 
 							if (!context->playback->BackWard)
 							{
@@ -685,9 +707,6 @@ static void FFMPEGThread(Context_t *context)
 						avOut.width      = 0;
 						avOut.height     = 0;
 						avOut.type       = "audio";
-						// opengl
-						avOut.stream 	 = audioTrack->stream;
-						avOut.packet 	 = &packet;
 
 						if (!context->playback->BackWard)
 						{
@@ -709,9 +728,6 @@ static void FFMPEGThread(Context_t *context)
 						avOut.width      = 0;
 						avOut.height     = 0;
 						avOut.type       = "audio";
-						// opengl
-						avOut.stream 	 = audioTrack->stream;
-						avOut.packet 	 = &packet;
 
 						if (!context->playback->BackWard)
 						{
@@ -721,6 +737,7 @@ static void FFMPEGThread(Context_t *context)
 							}
 						}
 					}
+#endif
 				}
 			}
 
@@ -842,6 +859,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	av_register_all();
 	avformat_network_init();
 	
+	//
 	avContext = avformat_alloc_context();
 
 #if LIBAVCODEC_VERSION_MAJOR < 54
@@ -1577,13 +1595,6 @@ static int container_ffmpeg_seek(Context_t *context, float sec)
 
 	if (avContext->iformat->flags & AVFMT_TS_DISCONT)
 	{
-/* konfetti: for ts streams seeking frame per seconds does not work (why?).
- * I take this algo partly from ffplay.c.
- *
- * seeking per HTTP does still not work very good. forward seeks everytime
- * about 10 seconds, backward does not work.
- */
-
 #if LIBAVCODEC_VERSION_MAJOR < 54
 		off_t pos = url_ftell(avContext->pb);
 #else
@@ -1692,26 +1703,15 @@ static int container_ffmpeg_get_length(Context_t *context, double * length)
 static int container_ffmpeg_swich_audio(Context_t* context, int* arg)
 {
 	ffmpeg_printf(10, "track %d\n", *arg);
-	/* Hellmaster1024: nothing to do here!*/
-	//float sec=-5.0;
-	//context->playback->Command(context, PLAYBACK_SEEK, (void*)&sec);
+
 	return cERR_CONTAINER_FFMPEG_NO_ERROR;
 }
 
 static int container_ffmpeg_swich_subtitle(Context_t* context, int* arg)
 {
-	/* Hellmaster1024: nothing to do here!*/
 	return cERR_CONTAINER_FFMPEG_NO_ERROR;
 }
 
-/* konfetti comment: I dont like the mechanism of overwriting
- * the pointer in infostring. This lead in most cases to
- * user errors, like it is in the current version (libeplayer2 <-->e2->servicemp3.cpp)
- * From e2 there is passed a tag=strdup here and we overwrite this
- * strdupped tag. This lead to dangling pointers which are never freed!
- * I do not free the string here because this is the wrong way. The mechanism
- * should be changed, or e2 should pass it in a different way...
- */
 static int container_ffmpeg_get_info(Context_t* context, char ** infoString)
 {
 	Track_t * videoTrack = NULL;
