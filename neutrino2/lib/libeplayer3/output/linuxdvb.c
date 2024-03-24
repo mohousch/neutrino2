@@ -240,7 +240,7 @@ int LinuxDvbClose(Context_t  *context, char * type)
 
 	getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 	
-#ifndef USE_OPENGL
+#ifdef USE_OPENGL
 	if (adevice)
 		ao_close(adevice);
 		
