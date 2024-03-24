@@ -593,7 +593,7 @@ void GLThreadObj::bltPlayBuffer()
 			sleep_us = 1;
 	}
 	
-	printf("GLThreadObj::bltPlayBuffer: 2-sleep_us:%d\n", sleep_us);
+//	printf("GLThreadObj::bltPlayBuffer: 2-sleep_us:%d\n", sleep_us);
 #endif
 }
 
