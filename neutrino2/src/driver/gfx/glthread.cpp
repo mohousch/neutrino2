@@ -429,23 +429,24 @@ void GLThreadObj::clear()
 
 void GLThreadObj::bltDisplayBuffer()
 {
-	if (!videoDecoder)
+	if (!videoDecoder || playback->playing)
 		return;
 		
 	static bool warn = true;
-	cVideo::SWFramebuffer *buf = videoDecoder->getDecBuf();
 	
-	if (!buf)
+	cVideo::SWFramebuffer* buf = videoDecoder->getDecBuf();
+	
+	if (!videoDecoder->getDecBuf())
 	{	
 		warn = false;
-		
+			
 		//
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
 		glBufferData(GL_PIXEL_UNPACK_BUFFER, mOSDBuffer.size(), &mOSDBuffer[0], GL_STREAM_DRAW_ARB);
 		glBindTexture(GL_TEXTURE_2D, mState.displaytex);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
-		
+			
 		return;
 	}
 	
@@ -490,8 +491,9 @@ void GLThreadObj::bltDisplayBuffer()
 		
 		last_apts = apts;
 		
-		//
+		//	
 		int rate, dummy1, dummy2;
+		
 		videoDecoder->getPictureInfo(dummy1, dummy2, rate);
 		
 		if (rate > 0)
@@ -504,8 +506,6 @@ void GLThreadObj::bltDisplayBuffer()
 		else if (sleep_us < 1)
 			sleep_us = 1;
 	}
-	
-	printf("GLThreadObj::bltDisplayBuffer: sleep_us:%d\n", sleep_us);
 }
 
 ////
@@ -520,12 +520,12 @@ void GLThreadObj::bltPlayBuffer()
 	static bool warn = true;
 	
 #ifdef ENABLE_GSTREAMER
-	sleep_us = framerate;
-		
-	if (sleep_us < 30000)
-		sleep_us = 30000;
-	else if (sleep_us > 90000)
-		sleep_us /= 100;
+	sleep_us = framerate / 100;
+			
+	if (sleep_us > framerate)
+		sleep_us = framerate;
+	else if (sleep_us < 1)
+		sleep_us = 1;
 #else
 	cPlayback::SWFramebuffer *buf = playback->getDecBuf();
 	
@@ -578,22 +578,25 @@ void GLThreadObj::bltPlayBuffer()
 	if (apts != last_apts)
 	{
 		if (apts < vpts)
-			sleep_us = ( (vpts - apts) * 10 / 9) / 3;
+			sleep_us = (sleep_us * 2 + (vpts - apts) * 10 / 9) / 3;
 		else if (sleep_us > 1000)
 			sleep_us -= 1000;
 		
 		last_apts = apts;
 		
 		//
-		int rate = buf->rate();
+		int rate = buf->rate() / 1000;
+		
+		if (rate > 0)
+			rate = 2000000 / rate;
+		else
+			rate = 50000;
 			
 		if (sleep_us > rate)
 			sleep_us = rate;
 		else if (sleep_us < 1)
 			sleep_us = 1;
 	}
-	
-//	printf("GLThreadObj::bltPlayBuffer: 2-sleep_us:%d\n", sleep_us);
 #endif
 }
 

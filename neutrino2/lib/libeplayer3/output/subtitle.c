@@ -972,7 +972,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 	    
 	    case OUTPUT_SWITCH: 
 	    {
-		ret = subtitle_Stop(context);
 		break;
 	    }
 	    

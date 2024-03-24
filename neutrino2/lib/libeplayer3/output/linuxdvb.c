@@ -236,11 +236,17 @@ int LinuxDvbClose(Context_t  *context, char * type)
 
 	linuxdvb_printf(10, "v%d a%d\n", video, audio);
 
-#ifndef USE_OPENGL
 	LinuxDvbStop(context, type);
 
 	getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 	
+#ifndef USE_OPENGL
+	if (adevice)
+		ao_close(adevice);
+		
+	adevice = NULL;
+	
+#else	
 	if (audio && audiofd != -1) 
 	{
 		close(audiofd);
@@ -252,9 +258,9 @@ int LinuxDvbClose(Context_t  *context, char * type)
 		close(videofd);
 		videofd = -1;
 	}
+#endif
 
 	releaseLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
-#endif
 	
 	return cERR_LINUXDVB_NO_ERROR;
 }
@@ -1203,7 +1209,7 @@ static int Write(void* _context, void* _out)
 			int out_linesize;
 			
 			//
-			obuf_size = av_rescale_rnd(swr_get_delay(swr, ctx->sample_rate) + aframe->nb_samples, ctx->sample_rate, ctx->sample_rate, AV_ROUND_UP);
+			obuf_size = av_rescale_rnd(/*(ctx->sample_rate? swr_get_delay(swr, ctx->sample_rate) : 0) +*/ aframe->nb_samples, ctx->sample_rate, ctx->sample_rate, AV_ROUND_UP);
 
 			if (obuf_size > obuf_size_max)
 			{
