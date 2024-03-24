@@ -584,11 +584,6 @@ void GLThreadObj::bltPlayBuffer()
 		
 		//
 		int rate = buf->rate();
-		
-		if (rate > 0)
-			rate = 2000000 / rate;
-		else
-			rate = 50000;
 			
 		if (sleep_us > rate)
 			sleep_us = rate;

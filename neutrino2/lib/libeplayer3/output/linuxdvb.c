@@ -1171,9 +1171,9 @@ static int Write(void* _context, void* _out)
 		aframe = av_frame_alloc();
 						
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
-		res = avcodec_decode_audio4(out->stream->codec, aframe, &got_frame, out->packet);
+		res = avcodec_decode_audio4(ctx, aframe, &got_frame, out->packet);
 #else
-		res = avcodec_send_packet(out->stream->codec, out->packet);
+		res = avcodec_send_packet(ctx, out->packet);
 		
 		if (res != 0 && res != AVERROR(EAGAIN))
 		{
@@ -1181,7 +1181,7 @@ static int Write(void* _context, void* _out)
 		}
 		else
 		{
-			res = avcodec_receive_frame(out->stream->codec, aframe);
+			res = avcodec_receive_frame(ctx, aframe);
 							
 			if (res != 0 && res != AVERROR(EAGAIN))
 			{
@@ -1216,9 +1216,9 @@ static int Write(void* _context, void* _out)
 			obuf_size = swr_convert(swr, &obuf, obuf_size, (const uint8_t **)aframe->extended_data, aframe->nb_samples);
 							
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-			data.apts = sCURRENT_PTS = out->pts;	//av_frame_get_best_effort_timestamp(aframe);
+			data.apts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(aframe);
 #else
-			data.apts = sCURRENT_PTS = out->pts; 	//aframe->best_effort_timestamp;
+			data.apts = sCURRENT_PTS = aframe->best_effort_timestamp;
 #endif
 			int o_buf_size = av_samples_get_buffer_size(&out_linesize, out->stream->codec->channels, obuf_size, AV_SAMPLE_FMT_S16, 1);
 							
@@ -1312,12 +1312,25 @@ static int Write(void* _context, void* _out)
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
 		avcodec_decode_video2(ctx, frame, &got_frame, out->packet);
 #else
-		avcodec_send_packet(ctx, out->packet);
-			
-		res = avcodec_receive_frame(ctx, frame);
+		res = avcodec_send_packet(ctx, out->packet);
 		
-		if (res == 0)
-			got_frame = 1;
+		if (res != 0 && res != AVERROR(EAGAIN))
+		{
+			linuxdvb_printf(200, "%s: avcodec_send_packet %d\n", __func__, res);
+		}
+		else
+		{
+			res = avcodec_receive_frame(ctx, frame);
+							
+			if (res != 0 && res != AVERROR(EAGAIN))
+			{
+				linuxdvb_printf(200,"%s: avcodec_send_packet %d\n", __func__, res);
+			}
+			else
+			{
+				got_frame = 1;
+			}
+		}
 #endif
 					
 		// setup swsscaler
@@ -1341,10 +1354,16 @@ static int Write(void* _context, void* _out)
 				
 				//
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-				data.vpts = sCURRENT_PTS = out->pts;//av_frame_get_best_effort_timestamp(frame);
+				sCURRENT_PTS = av_frame_get_best_effort_timestamp(frame);
 #else
-				data.vpts = sCURRENT_PTS = out->pts;//frame->best_effort_timestamp;
+				sCURRENT_PTS = frame->best_effort_timestamp;
 #endif
+
+				// a/v delay determined experimentally :-)
+				if (ctx->codec_id == AV_CODEC_ID_MPEG2VIDEO)
+					data.vpts = sCURRENT_PTS + 90000 * 4 / 10; // 400ms
+				else
+					data.vpts = sCURRENT_PTS + 90000 * 3 / 10; // 300ms
 
 				//
 				data.a = ctx->time_base;

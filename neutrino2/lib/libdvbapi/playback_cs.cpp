@@ -45,12 +45,12 @@ extern "C" {
 #include <libavutil/imgutils.h>
 #include <libswscale/swscale.h>
 }
+
+static int buf_in = 0;
 #endif
 
 
 //// global
-bool isTS = false;
-
 #if defined ENABLE_GSTREAMER
 #include <gst/gst.h>
 #include <gst/tag/tag.h>
@@ -624,7 +624,6 @@ bool cPlayback::Start(char *filename, const char * const suburi)
 	//
 	std::string file("");
 	bool isHTTP = false;
-	isTS = false;
 
 	if(!strncmp("http://", filename, 7))
 	{
@@ -658,9 +657,6 @@ bool cPlayback::Start(char *filename, const char * const suburi)
 		file = "file://";
 	
 	file.append(filename);
-	
-	if (file.rfind(".ts") == file.length() - 3 )
-		isTS = true;
 
 #if defined (ENABLE_GSTREAMER)
 	end_eof = false;
@@ -1395,7 +1391,7 @@ extern Data_t data;
 
 cPlayback::SWFramebuffer *cPlayback::getDecBuf(void)
 {
-	SWFramebuffer *p = &buffers[0];
+	SWFramebuffer *p = &buffers[buf_in];
 	
 	p->resize(data.size);
 	p->width(data.width);
@@ -1406,6 +1402,14 @@ cPlayback::SWFramebuffer *cPlayback::getDecBuf(void)
 	p->AR(data.a);
 	
 	av_image_fill_arrays(&data.buffer, (int*)&data.size, &(*p)[0], AV_PIX_FMT_RGB32, data.width, data.height, 1);
+	
+	buf_in++;
+	buf_in %= 0x40;
+	
+	if (buf_in > (0x40 - 1))
+	{
+		buf_in--;
+	}
 
 	return p;
 }
