@@ -1148,9 +1148,9 @@ static int Write(void* _context, void* _out)
 	
 		
 		// output sample rate, channels, layout could be set here if necessary 
-		o_ch = ctx->channels;     	// 2
-		o_sr = ctx->sample_rate;      	// 48000
-		o_layout = ctx->channel_layout;   // AV_CH_LAYOUT_STEREO
+		o_ch = ctx->channels;     		// 2
+		o_sr = ctx->sample_rate;      		// 48000
+		o_layout = ctx->channel_layout;   	// AV_CH_LAYOUT_STEREO
 	
 		if (sformat.channels != o_ch || sformat.rate != o_sr || sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16 || adevice == NULL)
 		{
@@ -1169,7 +1169,7 @@ static int Write(void* _context, void* _out)
 		}
 
 		//
-		swr = swr_alloc_set_opts(swr, ctx->channel_layout, AV_SAMPLE_FMT_S16, ctx->sample_rate, ctx->channel_layout, ctx->sample_fmt, ctx->sample_rate, 0, NULL);
+		swr = swr_alloc_set_opts(swr, o_layout, AV_SAMPLE_FMT_S16, o_sr, ctx->channel_layout, ctx->sample_fmt, ctx->sample_rate, 0, NULL);
 	        
 		if (!swr)
 		{
@@ -1209,7 +1209,7 @@ static int Write(void* _context, void* _out)
 			int out_linesize;
 			
 			//
-			obuf_size = av_rescale_rnd(/*(ctx->sample_rate? swr_get_delay(swr, ctx->sample_rate) : 0) +*/ aframe->nb_samples, ctx->sample_rate, ctx->sample_rate, AV_ROUND_UP);
+			obuf_size = av_rescale_rnd(/*swr_get_delay(swr, ctx->sample_rate) +*/ aframe->nb_samples, ctx->sample_rate, ctx->sample_rate, AV_ROUND_UP);
 
 			if (obuf_size > obuf_size_max)
 			{
@@ -1217,7 +1217,8 @@ static int Write(void* _context, void* _out)
 								
 				if (av_samples_alloc(&obuf, &out_linesize, ctx->channels, aframe->nb_samples, AV_SAMPLE_FMT_S16, 1) < 0)
 				{
-					return -1;
+					av_packet_unref(&out->packet);
+					ret = cERR_LINUXDVB_ERROR;
 				}
 								
 				obuf_size_max = obuf_size;
@@ -1240,7 +1241,7 @@ static int Write(void* _context, void* _out)
 				ret = cERR_LINUXDVB_ERROR;
 			}
 		}
-		
+
 		av_free(obuf);
 		swr_free(&swr);
 		av_frame_free(&aframe);
@@ -1370,11 +1371,12 @@ static int Write(void* _context, void* _out)
 #endif
 
 				// a/v delay determined experimentally :-)
-				//
+				/*
 				if (ctx->codec_id == AV_CODEC_ID_MPEG2VIDEO)
 					data.vpts += 90000 * 4 / 10; // 400ms
 				else
 					data.vpts += 90000 * 3 / 10; // 300ms
+				*/
 
 				//
 				data.a = ctx->time_base;

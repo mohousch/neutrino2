@@ -573,7 +573,7 @@ void GLThreadObj::bltPlayBuffer()
 	
 	// FIXME:
 	int64_t apts = buf->apts();
-	int64_t vpts = buf->vpts() + 18000;
+	int64_t vpts = buf->vpts();
 			
 	if (apts != last_apts)
 	{
