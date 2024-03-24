@@ -504,6 +504,8 @@ void GLThreadObj::bltDisplayBuffer()
 		else if (sleep_us < 1)
 			sleep_us = 1;
 	}
+	
+	printf("GLThreadObj::bltDisplayBuffer: sleep_us:%d\n", sleep_us);
 }
 
 ////
@@ -576,7 +578,7 @@ void GLThreadObj::bltPlayBuffer()
 	if (apts != last_apts)
 	{
 		if (apts < vpts)
-			sleep_us = (sleep_us * 2 + (vpts - apts) * 10 / 9) / 3;
+			sleep_us = ( (vpts - apts) * 10 / 9) / 3;
 		else if (sleep_us > 1000)
 			sleep_us -= 1000;
 		
@@ -590,6 +592,8 @@ void GLThreadObj::bltPlayBuffer()
 		else if (sleep_us < 1)
 			sleep_us = 1;
 	}
+	
+	printf("GLThreadObj::bltPlayBuffer: 2-sleep_us:%d\n", sleep_us);
 #endif
 }
 

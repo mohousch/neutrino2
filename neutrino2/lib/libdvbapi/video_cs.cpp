@@ -1411,10 +1411,13 @@ void cVideo::run(void)
 				
 				if (f->size() < need)
 					f->resize(need);
-					
+				
+				// fill	
 				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, &(*f)[0], AV_PIX_FMT_RGB32, c->width, c->height, 1);
 
+				// scale
 				sws_scale(convert, frame->data, frame->linesize, 0, c->height, rgbframe->data, rgbframe->linesize);
+				
 				//
 				if (dec_w != c->width || dec_h != c->height)
 				{

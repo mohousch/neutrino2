@@ -105,6 +105,10 @@ uint64_t sCURRENT_PTS = 0;
 Data_t data;
 static ao_device *adevice = NULL;
 static ao_sample_format sformat;
+////
+int buf_in = 0;
+int buf_out = 0;
+int buf_num = 0;
 #endif
 
 //
@@ -1338,32 +1342,33 @@ static int Write(void* _context, void* _out)
 		{
 			unsigned int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 							
-			convert = sws_getContext(ctx->width, ctx->height, ctx->pix_fmt, ctx->width, ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
+			convert = sws_getCachedContext(convert, ctx->width, ctx->height, ctx->pix_fmt, ctx->width, ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
 								
 			if (convert)
-			{					
+			{
+				// fill					
 				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, data.buffer, AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 
+				// scale
 				sws_scale(convert, frame->data, frame->linesize, 0, ctx->height, rgbframe->data, rgbframe->linesize);
 				
-				//
-				linuxdvb_printf(10, "pic changed %dx%d -> %dx%d\n", data.width, data.height, ctx->width, ctx->height);
-					
+				// fill our struct	
 				data.width = ctx->width;
 				data.height = ctx->height;
 				
 				//
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-				sCURRENT_PTS = av_frame_get_best_effort_timestamp(frame);
+				data.vpts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(frame);
 #else
-				sCURRENT_PTS = frame->best_effort_timestamp;
+				data.vpts = sCURRENT_PTS = frame->best_effort_timestamp;
 #endif
 
 				// a/v delay determined experimentally :-)
+				//
 				if (ctx->codec_id == AV_CODEC_ID_MPEG2VIDEO)
-					data.vpts = sCURRENT_PTS + 90000 * 4 / 10; // 400ms
+					data.vpts += 90000 * 4 / 10; // 400ms
 				else
-					data.vpts = sCURRENT_PTS + 90000 * 3 / 10; // 300ms
+					data.vpts += 90000 * 3 / 10; // 300ms
 
 				//
 				data.a = ctx->time_base;
@@ -1372,6 +1377,17 @@ static int Write(void* _context, void* _out)
 				data.rate = out->frameRate;
 				
 				data.size = need;
+				
+				buf_in++;
+				buf_in %= 64;
+				buf_num++;
+				
+				if (buf_num > (63))
+				{
+					buf_out++;
+					buf_out %= 64;
+					buf_num--;
+				}
 			}
 		}
 		

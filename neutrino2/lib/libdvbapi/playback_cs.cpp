@@ -45,8 +45,10 @@ extern "C" {
 #include <libavutil/imgutils.h>
 #include <libswscale/swscale.h>
 }
-
-static int buf_in = 0;
+////
+extern int buf_in;
+extern int buf_out;
+extern int buf_num;
 #endif
 
 
@@ -1391,7 +1393,7 @@ extern Data_t data;
 
 cPlayback::SWFramebuffer *cPlayback::getDecBuf(void)
 {
-	SWFramebuffer *p = &buffers[buf_in];
+	SWFramebuffer *p = &buffers[0];
 	
 	p->resize(data.size);
 	p->width(data.width);
@@ -1403,13 +1405,9 @@ cPlayback::SWFramebuffer *cPlayback::getDecBuf(void)
 	
 	av_image_fill_arrays(&data.buffer, (int*)&data.size, &(*p)[0], AV_PIX_FMT_RGB32, data.width, data.height, 1);
 	
-	buf_in++;
-	buf_in %= 0x40;
-	
-	if (buf_in > (0x40 - 1))
-	{
-		buf_in--;
-	}
+	buf_out++;
+	buf_num--;
+	buf_out %= 64;
 
 	return p;
 }
