@@ -4411,6 +4411,8 @@ void DoFlashing(int startrow)
 //// RenderPage
 void RenderPage()
 {
+	printf("tuxtxt: RenderPage\n");
+	
 	int row, col, byte, startrow = 0;;
 	int national_subset_bak = national_subset;
 
@@ -4446,6 +4448,7 @@ void RenderPage()
 		else
 			startrow = 1;
 		
+		//
 		if (boxed)
 		{ 
 			if (screenmode != 0) 
@@ -4462,6 +4465,7 @@ void RenderPage()
 		for (row = 1; row < 24; row++)
 		{
 			byte = page_char[row*40];
+			
 			if (byte != ' '  && byte != 0x00 && byte != 0xFF && page_atrb[row*40].fg != page_atrb[row*40].bg)
 			{
 				nofirst = 0;
@@ -4498,17 +4502,20 @@ void RenderPage()
 		
 		// render page
 		PosY = StartY + startrow*fontheight;
+		
 		for (row = startrow; row < 24; row++)
 		{
 			int index = row * 40;
 
 			PosX = StartX;
+			
 			for (col = nofirst; col < 40; col++)
 			{
 				RenderCharBB(page_char[index + col], &page_atrb[index + col]);
 
 				if (page_atrb[index + col].doubleh && page_char[index + col] != 0xff)	/* disable lower char in case of doubleh setting in l25 objects */
 					page_char[index + col + 40] = 0xff;
+					
 				if (page_atrb[index + col].doublew)	/* skip next column if double width */
 				{
 					col++;

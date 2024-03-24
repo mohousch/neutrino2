@@ -96,7 +96,7 @@ static inline void getUPNPExtension(char * FILENAMEname, char ** extension)
 }
 
 /* the function returns the base name */
-static inline char * basename(char * name)
+inline char * basename(char * name)
 {
 	int i = 0;
 	int pos = 0;

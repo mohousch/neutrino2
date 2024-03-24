@@ -1,8 +1,3 @@
-#ifndef _subtitle_123
-#define _subtitle_123
-
-#include <libavcodec/avcodec.h>
-
 /*
  * Interface File for subtitle handling (container input and output).
  *
@@ -22,6 +17,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
+#ifndef _subtitle_123
+#define _subtitle_123
+
+#include <libavcodec/avcodec.h>
+
 
 #define DEFAULT_ASS_HEAD "[Script Info]\n\
 Original Script: (c) 2008\n\

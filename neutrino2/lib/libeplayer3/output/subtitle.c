@@ -133,6 +133,40 @@ static void releaseMutex(int line)
     subtitle_printf(100, "%d released mutex\n", line);
 }
 
+//
+uint32_t * resize32(uint8_t * origin, uint32_t * colors, int nb_colors, int ox, int oy, int dx, int dy)
+{
+	uint32_t  *cr, *l;
+	int i, j, k, ip;
+
+	cr = (uint32_t *) malloc(dx * dy * sizeof(uint32_t));
+
+	if(cr == NULL) 
+	{
+		printf("Error: malloc\n");
+		return NULL;
+	}
+	
+	l = cr;
+
+	for(j = 0; j < dy; j++, l += dx)
+	{
+		uint8_t * p = origin + (j*oy/dy*ox);
+		
+		for(i = 0, k = 0; i < dx; i++, k++) 
+		{
+			ip = i*ox/dx;
+			
+			int idx = p[ip];
+			
+			if(idx < nb_colors)
+				l[k] = colors[idx];
+		}
+	}
+	
+	return(cr);
+}
+
 void replace_all(char ** string, char * search, char * replace) 
 {
     int len = 0;
@@ -739,9 +773,9 @@ static void dvbsub_write(Context_t *context, SubtitleData_t* out)
 
 						// resize color to 32 bit
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
-						uint32_t *newdata = simple_resize32(sub.rects[i]->pict.data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
+						uint32_t *newdata = resize32(sub.rects[i]->pict.data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
 #else
-						uint32_t *newdata = simple_resize32(sub.rects[i]->data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
+						uint32_t *newdata = resize32(sub.rects[i]->data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
 #endif
 							
 						//
@@ -762,9 +796,8 @@ static void dvbsub_write(Context_t *context, SubtitleData_t* out)
              					out.destStride    = destStride;
 
              					writer->writeData(&out);
-						//
 
-						//free(newdata);
+						free(newdata);
 					} //for
 					break;
 				}
