@@ -1115,6 +1115,8 @@ static int Write(void* _context, void* _out)
 			}
 		}
 #else
+		AVCodecContext* ctx = out->stream->codec;
+		const AVCodec* codec = avcodec_find_decoder(out->stream->codec->codec_id);
 		AVFrame * aframe = NULL;
 		int got_frame = 0;
 		// resample
@@ -1127,17 +1129,25 @@ static int Write(void* _context, void* _out)
 		int driver;
 		ao_info *ai;
 		
+// init codec
+#if LIBAVCODEC_VERSION_MAJOR < 54
+		avcodec_open(ctx, codec);
+#else
+		avcodec_open2(ctx, codec, NULL);
+#endif
+	
+		
 		// output sample rate, channels, layout could be set here if necessary 
-		o_ch = 2; //out->stream->codec->channels;     	// 2
-		o_sr = 48000; //out->stream->codec->sample_rate;      	// 48000
-		o_layout = AV_CH_LAYOUT_STEREO; //out->stream->codec->channel_layout;   // AV_CH_LAYOUT_STEREO
+		o_ch = ctx->channels;     	// 2
+		o_sr = ctx->sample_rate;      	// 48000
+		o_layout = ctx->channel_layout;   // AV_CH_LAYOUT_STEREO
 	
 		if (sformat.channels != o_ch || sformat.rate != o_sr || sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16 || adevice == NULL)
 		{
 			driver = ao_default_driver_id();
 			sformat.bits = 16;
-			sformat.channels = out->stream->codec->channels;
-			sformat.rate = out->stream->codec->sample_rate;
+			sformat.channels = ctx->channels;
+			sformat.rate = ctx->sample_rate;
 			sformat.byte_format = AO_FMT_NATIVE;
 			sformat.matrix = 0;
 			
@@ -1149,12 +1159,11 @@ static int Write(void* _context, void* _out)
 		}
 
 		//
-		//swr = swr_alloc_set_opts(swr, out->stream->codec->channel_layout, AV_SAMPLE_FMT_S16, out->stream->codec->sample_rate, out->stream->codec->channel_layout, out->stream->codec->sample_fmt, out->stream->codec->sample_rate, 0, NULL);
-		swr = swr_alloc();
+		swr = swr_alloc_set_opts(swr, ctx->channel_layout, AV_SAMPLE_FMT_S16, ctx->sample_rate, ctx->channel_layout, ctx->sample_fmt, ctx->sample_rate, 0, NULL);
 	        
 		if (!swr)
 		{
-			return cERR_LINUXDVB_ERROR;;
+			return cERR_LINUXDVB_ERROR;
 		}
 	
 		swr_init(swr);
@@ -1190,15 +1199,14 @@ static int Write(void* _context, void* _out)
 			int out_linesize;
 			
 			//
-			obuf_size = av_rescale_rnd(swr_get_delay(swr, out->stream->codec->sample_rate) + aframe->nb_samples, out->stream->codec->sample_rate, out->stream->codec->sample_rate, AV_ROUND_UP);
+			obuf_size = av_rescale_rnd(swr_get_delay(swr, ctx->sample_rate) + aframe->nb_samples, ctx->sample_rate, ctx->sample_rate, AV_ROUND_UP);
 
 			if (obuf_size > obuf_size_max)
 			{
 				av_free(obuf);
 								
-				if (av_samples_alloc(&obuf, &out_linesize, out->stream->codec->channels, aframe->nb_samples, AV_SAMPLE_FMT_S16, 1) < 0)
+				if (av_samples_alloc(&obuf, &out_linesize, ctx->channels, aframe->nb_samples, AV_SAMPLE_FMT_S16, 1) < 0)
 				{
-					//av_packet_unref(&packet);
 					return -1;
 				}
 								
@@ -1208,9 +1216,9 @@ static int Write(void* _context, void* _out)
 			obuf_size = swr_convert(swr, &obuf, obuf_size, (const uint8_t **)aframe->extended_data, aframe->nb_samples);
 							
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-			data.apts = sCURRENT_PTS = out->pts;//av_frame_get_best_effort_timestamp(aframe);
+			data.apts = sCURRENT_PTS = out->pts;	//av_frame_get_best_effort_timestamp(aframe);
 #else
-			data.apts = sCURRENT_PTS = out->pts; //aframe->best_effort_timestamp;
+			data.apts = sCURRENT_PTS = out->pts; 	//aframe->best_effort_timestamp;
 #endif
 			int o_buf_size = av_samples_get_buffer_size(&out_linesize, out->stream->codec->channels, obuf_size, AV_SAMPLE_FMT_S16, 1);
 							

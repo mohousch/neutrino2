@@ -570,7 +570,6 @@ void GLThreadObj::bltPlayBuffer()
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 	
 	// FIXME:
-	/*
 	int64_t apts = buf->apts();
 	int64_t vpts = buf->vpts() + 18000;
 			
@@ -582,28 +581,20 @@ void GLThreadObj::bltPlayBuffer()
 			sleep_us -= 1000;
 		
 		last_apts = apts;
-	}
-	*/
-	
-	/*
-	int64_t last_pts = 0;
-	int64_t vpts = buf->pts();
-	
-	if (vpts != last_pts)
-	{
-		//if (last_pts != AV_NOPTS_VALUE)
-		{
-			sleep_us = av_rescale_q(vpts - last_pts, buf->AR(), AV_TIME_BASE_Q);
+		
+		//
+		int rate = buf->rate();
+		
+		if (rate > 0)
+			rate = 2000000 / rate;
+		else
+			rate = 50000;
 			
-			printf("sleep_us:%d\n", sleep_us);
-		
-			if (sleep_us > 0 && sleep_us < 1000000)
-				sleep_us = sleep_us;
-		}
-		
-		last_pts = vpts;
+		if (sleep_us > rate)
+			sleep_us = rate;
+		else if (sleep_us < 1)
+			sleep_us = 1;
 	}
-	*/
 #endif
 }
 
