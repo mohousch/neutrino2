@@ -58,9 +58,14 @@ class cPlayback
 					mHeight = h;
 				}
 				
-				void pts(uint64_t p)
+				void vpts(uint64_t p)
 				{
-					mPts = p;
+					mVPts = p;
+				}
+				
+				void apts(uint64_t p)
+				{
+					mAPts = p;
 				}
 				
 				void AR(AVRational a)
@@ -83,9 +88,14 @@ class cPlayback
 					return mHeight;
 				}
 				
-				int64_t pts() const
+				int64_t vpts() const
 				{
-					return mPts;
+					return mVPts;
+				}
+				
+				int64_t apts() const
+				{
+					return mAPts;
 				}
 				
 				AVRational AR() const
@@ -101,7 +111,8 @@ class cPlayback
 			private:
 				int mWidth;
 				int mHeight;
-				int64_t mPts;
+				int64_t mVPts;
+				int64_t mAPts;
 				AVRational mAR;
 				int mRate;
 		};

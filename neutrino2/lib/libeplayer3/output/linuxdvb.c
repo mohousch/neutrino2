@@ -1208,9 +1208,9 @@ static int Write(void* _context, void* _out)
 			obuf_size = swr_convert(swr, &obuf, obuf_size, (const uint8_t **)aframe->extended_data, aframe->nb_samples);
 							
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-			sCURRENT_PTS = av_frame_get_best_effort_timestamp(aframe);
+			data.apts = sCURRENT_PTS = out->pts;//av_frame_get_best_effort_timestamp(aframe);
 #else
-			sCURRENT_PTS = aframe->best_effort_timestamp;
+			data.apts = sCURRENT_PTS = out->pts; //aframe->best_effort_timestamp;
 #endif
 			int o_buf_size = av_samples_get_buffer_size(&out_linesize, out->stream->codec->channels, obuf_size, AV_SAMPLE_FMT_S16, 1);
 							
@@ -1333,9 +1333,7 @@ static int Write(void* _context, void* _out)
 			convert = sws_getContext(out->stream->codec->width, out->stream->codec->height, out->stream->codec->pix_fmt, out->stream->codec->width, out->stream->codec->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
 								
 			if (convert)
-			{
-				realloc(data.buffer, need);
-									
+			{					
 				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, data.buffer, AV_PIX_FMT_RGB32, out->stream->codec->width, out->stream->codec->height, 1);
 
 				sws_scale(convert, frame->data, frame->linesize, 0, out->stream->codec->height, rgbframe->data, rgbframe->linesize);
@@ -1348,9 +1346,9 @@ static int Write(void* _context, void* _out)
 				
 				//
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-				data.pts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(frame);
+				data.vpts = sCURRENT_PTS = out->pts;//av_frame_get_best_effort_timestamp(frame);
 #else
-				data.pts = sCURRENT_PTS = frame->best_effort_timestamp;
+				data.vpts = sCURRENT_PTS = out->pts;//frame->best_effort_timestamp;
 #endif
 
 				//
@@ -1358,7 +1356,7 @@ static int Write(void* _context, void* _out)
 				
 				//				
 				//double rate = out->pts * (double)out->stream->codec->time_base.num /(double)out->stream->codec->time_base.den;
-				data.rate = out->frameRate/1000;
+				data.rate = out->frameRate;
 				
 				data.size = need;
 			}

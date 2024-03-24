@@ -1194,6 +1194,7 @@ void cVideo::setTint(int Tint)
 cVideo::SWFramebuffer *cVideo::getDecBuf(void)
 {
 	buf_m.lock();
+	
 	if (buf_num == 0)
 	{
 		buf_m.unlock();
@@ -1205,6 +1206,7 @@ cVideo::SWFramebuffer *cVideo::getDecBuf(void)
 	buf_out++;
 	buf_num--;
 	buf_out %= VDEC_MAXBUFS;
+
 	buf_m.unlock();
 	
 	return p;
@@ -1262,7 +1264,7 @@ void cVideo::run(void)
 	AVFrame *frame, *rgbframe;
 	uint8_t *inbuf = (uint8_t *)av_malloc(INBUF_SIZE);
 	AVPacket avpkt;
-	struct SwsContext *convert = NULL;
+	struct SwsContext* convert = NULL;
 
 	time_t warn_r = 0; // last read error
 	time_t warn_d = 0; // last decode error

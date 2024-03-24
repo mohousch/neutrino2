@@ -43,6 +43,12 @@
 #include <video_cs.h>
 #include <playback_cs.h>
 
+extern "C" {
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+#include <libavutil/mathematics.h>
+}
+
 
 //// globals
 GLThreadObj *gThiz = 0; /* GLUT does not allow for an arbitrary argument to the render func */
@@ -474,8 +480,7 @@ void GLThreadObj::bltDisplayBuffer()
 	
 	if (audioDecoder)
 		apts = audioDecoder->getPts();
-	
-	//		
+			
 	if (apts != last_apts)
 	{
 		if (apts < vpts)
@@ -566,22 +571,39 @@ void GLThreadObj::bltPlayBuffer()
 	
 	// FIXME:
 	/*
+	int64_t apts = buf->apts();
+	int64_t vpts = buf->vpts() + 18000;
+			
+	if (apts != last_apts)
+	{
+		if (apts < vpts)
+			sleep_us = (sleep_us * 2 + (vpts - apts) * 10 / 9) / 3;
+		else if (sleep_us > 1000)
+			sleep_us -= 1000;
+		
+		last_apts = apts;
+	}
+	*/
+	
+	/*
 	int64_t last_pts = 0;
 	int64_t vpts = buf->pts();
 	
-	if (last_pts != vpts)
+	if (vpts != last_pts)
 	{
-		sleep_us = (vpts - last_pts);
+		//if (last_pts != AV_NOPTS_VALUE)
+		{
+			sleep_us = av_rescale_q(vpts - last_pts, buf->AR(), AV_TIME_BASE_Q);
+			
+			printf("sleep_us:%d\n", sleep_us);
 		
-		//if (sleep_us > 50000)
-		//	sleep_us = 50000;
+			if (sleep_us > 0 && sleep_us < 1000000)
+				sleep_us = sleep_us;
+		}
 		
 		last_pts = vpts;
 	}
-	
-	printf("sleep_us:%d\n", sleep_us);
 	*/
-	
 #endif
 }
 

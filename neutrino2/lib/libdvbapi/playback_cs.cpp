@@ -1401,7 +1401,8 @@ cPlayback::SWFramebuffer *cPlayback::getDecBuf(void)
 	p->width(data.width);
 	p->height(data.height);
 	p->rate(data.rate);
-	p->pts(data.pts);
+	p->vpts(data.vpts);
+	p->apts(data.apts);
 	p->AR(data.a);
 	
 	av_image_fill_arrays(&data.buffer, (int*)&data.size, &(*p)[0], AV_PIX_FMT_RGB32, data.width, data.height, 1);
