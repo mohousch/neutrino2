@@ -49,6 +49,8 @@
 
 #include <config.h>
 #include <src/driver/gfx/framebuffer.h>
+#include <src/driver/gfx/fontrenderer.h>
+#include <src/gui/widget/widget_helpers.h>
 
 /* ***************************** */
 /* Makros/Constants              */
@@ -155,6 +157,48 @@ static int writeData(void* _call)
 	return 0;
 }
 
+static int writeReverseData(void* _call)
+{
+	WriterFBCallData_t * call = (WriterFBCallData_t*) _call;
+	
+	fb_printf(100, "\n");
+
+	if (call == NULL)
+	{
+		fb_err("call data is NULL...\n");
+		return 0;
+	}
+
+	if (call->destination == NULL)
+	{
+		fb_err("file pointer < 0. ignoring ...\n");
+		return 0;
+	}
+	
+	CCLabel textLabel;
+	textLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
+	textLabel.setColor(COL_WHITE_PLUS_0);
+	textLabel.paintMainFrame(true);
+	textLabel.setText((const char*)call->data);
+	textLabel.setHAlign(CComponent::CC_ALIGN_CENTER);
+	textLabel.setPosition(call->x, call->y, call->Width, call->Height);
+//	textLabel.enableSaveScreen(); // FIXME:
+	usleep(5000);
+	
+	if (call->data != NULL)
+	{
+		//
+		CFrameBuffer::getInstance()->paintBackgroundBoxRel (call->x, call->y, call->Width, call->Height);
+		textLabel.paint();
+	}
+	
+	blit();
+    
+	fb_printf(100, "<\n");
+	
+	return 0;
+}
+
 /* ***************************** */
 /* Writer  Definition            */
 /* ***************************** */
@@ -169,7 +213,7 @@ static WriterCaps_t caps = {
 struct Writer_s WriterFramebuffer = {
 	&reset,
 	&writeData,
-	NULL,
+	writeReverseData,
 	&caps,
 };
 

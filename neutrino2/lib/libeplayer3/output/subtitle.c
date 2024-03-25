@@ -676,7 +676,7 @@ static void dvbsub_write(Context_t *context, SubtitleData_t* out)
 {
     	Writer_t* writer;
     
-    	subtitle_printf(10, "\n");
+    	subtitle_printf(100, "\n");
 
     	writer = getDefaultFramebufferWriter();
 
@@ -715,10 +715,10 @@ static void dvbsub_write(Context_t *context, SubtitleData_t* out)
 	{
 		int i;
 
-		subtitle_printf(10, "format %d\n", sub.format);
-		subtitle_printf(10, "start_display_time %d\n", sub.start_display_time);
-		subtitle_printf(10, "end_display_time %d\n", sub.end_display_time);
-		subtitle_printf(10, "num_rects %d\n", sub.num_rects);
+		subtitle_printf(100, "format %d\n", sub.format);
+		subtitle_printf(100, "start_display_time %d\n", sub.start_display_time);
+		subtitle_printf(100, "end_display_time %d\n", sub.end_display_time);
+		subtitle_printf(100, "num_rects %d\n", sub.num_rects);
 		
 		if (got_sub_ptr && sub.num_rects > 0)
 		{			
@@ -729,14 +729,14 @@ static void dvbsub_write(Context_t *context, SubtitleData_t* out)
 				{
 					for (i = 0; i < sub.num_rects; i++)
 					{
-						subtitle_printf(10, "x %d\n", sub.rects[i]->x);
-						subtitle_printf(10, "y %d\n", sub.rects[i]->y);
-						subtitle_printf(10, "w %d\n", sub.rects[i]->w);
-						subtitle_printf(10, "h %d\n", sub.rects[i]->h);
-						subtitle_printf(10, "nb_colors %d\n", sub.rects[i]->nb_colors);
-						subtitle_printf(10, "type %d\n", sub.rects[i]->type);
-						subtitle_printf(10, "text %s\n", sub.rects[i]->text);
-						subtitle_printf(10, "ass %s\n", sub.rects[i]->ass);
+						subtitle_printf(100, "x %d\n", sub.rects[i]->x);
+						subtitle_printf(100, "y %d\n", sub.rects[i]->y);
+						subtitle_printf(100, "w %d\n", sub.rects[i]->w);
+						subtitle_printf(100, "h %d\n", sub.rects[i]->h);
+						subtitle_printf(100, "nb_colors %d\n", sub.rects[i]->nb_colors);
+						subtitle_printf(100, "type %d\n", sub.rects[i]->type);
+						subtitle_printf(100, "text %s\n", sub.rects[i]->text);
+						subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
 					}
 					break;
 				}
@@ -745,14 +745,14 @@ static void dvbsub_write(Context_t *context, SubtitleData_t* out)
 				{
 					for (i = 0; i < sub.num_rects; i++)
 					{
-						subtitle_printf(10, "x %d\n", sub.rects[i]->x);
-						subtitle_printf(10, "y %d\n", sub.rects[i]->y);
-						subtitle_printf(10, "w %d\n", sub.rects[i]->w);
-						subtitle_printf(10, "h %d\n", sub.rects[i]->h);
-						subtitle_printf(10, "nb_colors %d\n", sub.rects[i]->nb_colors);
-						subtitle_printf(10, "type %d\n", sub.rects[i]->type);
-						subtitle_printf(10, "text %s\n", sub.rects[i]->text);
-						subtitle_printf(10, "ass %s\n", sub.rects[i]->ass);
+						subtitle_printf(100, "x %d\n", sub.rects[i]->x);
+						subtitle_printf(100, "y %d\n", sub.rects[i]->y);
+						subtitle_printf(100, "w %d\n", sub.rects[i]->w);
+						subtitle_printf(100, "h %d\n", sub.rects[i]->h);
+						subtitle_printf(100, "nb_colors %d\n", sub.rects[i]->nb_colors);
+						subtitle_printf(100, "type %d\n", sub.rects[i]->type);
+						subtitle_printf(100, "text %s\n", sub.rects[i]->text);
+						subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
 														
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
 						uint32_t *colors = (uint32_t *) sub.rects[i]->pict.data[1];
@@ -769,7 +769,7 @@ static void dvbsub_write(Context_t *context, SubtitleData_t* out)
 						int nw = width * 1280 / width;
 						int nh = height * 720 / h2;
 
-						subtitle_printf(10, "#%d at %d,%d size %dx%d colors %d (x=%d y=%d w=%d h=%d) \n", i+1, sub.rects[i]->x, sub.rects[i]->y, sub.rects[i]->w, sub.rects[i]->h, sub.rects[i]->nb_colors, xoff, yoff, nw, nh);
+						subtitle_printf(100, "#%d at %d,%d size %dx%d colors %d (x=%d y=%d w=%d h=%d) \n", i+1, sub.rects[i]->x, sub.rects[i]->y, sub.rects[i]->w, sub.rects[i]->h, sub.rects[i]->nb_colors, xoff, yoff, nw, nh);
 
 						// resize color to 32 bit
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
@@ -808,7 +808,7 @@ static void dvbsub_write(Context_t *context, SubtitleData_t* out)
 		}
 	}
 
-    	subtitle_printf(10, "terminating\n");
+    	subtitle_printf(100, "terminating\n");
 }
 
 static void teletext_write(Context_t *context, SubtitleData_t* out) 
@@ -827,6 +827,41 @@ static void teletext_write(Context_t *context, SubtitleData_t* out)
     	// FIXME:
  
  	subtitle_printf(10, "terminating\n");   	
+}
+
+static void text_write(Context_t *context, SubtitleData_t* out) 
+{
+    	Writer_t* writer;
+    
+    	subtitle_printf(100, "\n");
+
+    	writer = getDefaultFramebufferWriter();
+
+    	if (writer == NULL)
+    	{
+        	subtitle_err("no framebuffer writer found!\n");
+    	}
+    	
+    	WriterFBCallData_t fb;
+
+        fb.fd            = framebufferFD;
+        fb.data          = (uint32_t*)out->data;
+        fb.Width         = 1200;
+        fb.Height        = 60;
+        fb.x             = 40;
+        fb.y             = 600;
+             					
+        fb.color	  = 0;
+
+        fb.Screen_Width  = screen_width; 
+        fb.Screen_Height = screen_height; 
+        fb.destination   = destination;
+        fb.destStride    = destStride;
+
+        writer->writeReverseData(&fb);
+    	
+ 
+ 	subtitle_printf(100, "terminating\n");   	
 }
 
 /* ***************************** */
@@ -853,7 +888,6 @@ static int Write(void* _context, void *data)
     	{
     		case AV_CODEC_ID_SSA:
     		case AV_CODEC_ID_ASS:
-    		case AV_CODEC_ID_SUBRIP: // FIXME:
     		{
     			//
     			ass_write(context, out);
@@ -871,6 +905,11 @@ static int Write(void* _context, void *data)
     			teletext_write(context, out); 
     		
     			break;
+    		}
+    		
+    		case AV_CODEC_ID_SUBRIP:
+    		{
+    			text_write(context, out);
     		}
     	
     		default:

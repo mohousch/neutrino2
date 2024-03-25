@@ -356,7 +356,7 @@ font_sizes_struct neutrino_font[FONT_TYPE_COUNT] =
         {_("Infobar info")       	,  20, FONT_STYLE_REGULAR, 1},
         {_("Infobar small")      	,  14, FONT_STYLE_REGULAR, 1},
         {_("Filebrowser item")   	,  16, FONT_STYLE_BOLD   , 1},
-        {_("Menu Title2")         	,  40, FONT_STYLE_REGULAR, 0},
+        {_("Menu Title large")         	,  40, FONT_STYLE_REGULAR, 0},
 };
 
 // signal font

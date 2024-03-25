@@ -7,7 +7,7 @@
 	<screen name="mainmenu" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
 		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1" disableitemicon="1" paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="300" iteminfoposy="50" iteminfowidth="300" iteminfoheight="300" iteminfocolor="COL_MENUCONTENTSELECTED_PLUS_0"/>
-		<label posx="650" posy="600" width="520" height="60" text="Main Menu" halign="1" font="FONT_TYPE_MENU_TITLE2"/>
+		<label posx="650" posy="600" width="520" height="60" text="Main Menu" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
 		<window posx="280" posy="400" width="340" height="100" paintframe="1"/>
 		<time posx="280" posy="410" width="340" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time posx="280" posy="440" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
@@ -16,7 +16,7 @@
 	<screen name="settings" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
 		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
-		<label posx="650" posy="600" width="520" height="60" text="Settings" halign="1" font="FONT_TYPE_MENU_TITLE2"/>
+		<label posx="650" posy="600" width="520" height="60" text="Settings" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
 		<window posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="image" posx="300" posy="50" width="300" height="300" image="hints/hint_settings.png"/>
 		<window posx="280" posy="400" width="340" height="100" paintframe="1"/>
@@ -27,7 +27,7 @@
 	<screen name="epgtimer" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
 		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
-		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="EPG / timer" halign="1" font="FONT_TYPE_MENU_TITLE2"/>
+		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="EPG / timer" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
 		<window posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="image" id="1" posx="300" posy="50" width="300" height="300" image="hints/hint_timers.png"/>
 		<window posx="280" posy="400" width="340" height="100" paintframe="1"/>
@@ -38,7 +38,7 @@
 	<screen name="features" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
 		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1" disableitemicon="1"/>
-		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="Features" halign="1" font="FONT_TYPE_MENU_TITLE2"/>
+		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="Features" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
 		<window posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="image" posx="300" posy="50" width="300" height="300" image="hints/hint_plugin.png"/>
 		<window posx="280" posy="400" width="340" height="100" paintframe="1"/>
@@ -50,7 +50,7 @@
 	<screen name="system" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
 		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
-		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="System" halign="1" font="FONT_TYPE_MENU_TITLE2"/>
+		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="System" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
 		<window posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="image" id="1" posx="300" posy="50" width="300" height="300" image="hints/hint_service.png"/>
 		<window posx="280" posy="400" width="340" height="100" paintframe="1"/>
@@ -61,7 +61,7 @@
 	<screen name="powermenu" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
 		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
-		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="Power Menu" halign="1" font="FONT_TYPE_MENU_TITLE2"/>
+		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="Power Menu" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
 		<window posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="image" posx="300" posy="50" width="300" height="300" image="hints/hint_shutdown.png"/>
 		<window posx="280" posy="400" width="340" height="100" paintframe="1"/>
@@ -72,7 +72,7 @@
 	<screen name="information" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
 		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
-		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="Information" halign="1" font="FONT_TYPE_MENU_TITLE2"/>
+		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="Information" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
 		<window posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="image" posx="300" posy="50" width="300" height="300" image="hints/hint_dboxinfo.png"/>
 		<window posx="280" posy="400" width="340" height="100" paintframe="1"/>
@@ -83,7 +83,7 @@
 	<screen name="mediaplayer" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
 		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
-		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="Media Player" halign="1" font="FONT_TYPE_MENU_TITLE2"/>
+		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="Media Player" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
 		<window posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="image" id="1" posx="300" posy="50" width="300" height="300" image="hints/hint_media.png"/>
 		<window posx="280" posy="400" width="340" height="100" paintframe="1"/>
@@ -97,7 +97,7 @@
 		
 		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
 		
-		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="OSD" halign="1" font="FONT_TYPE_MENU_TITLE2">
+		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="OSD" halign="1" font="FONT_TYPE_MENU_TITLELARGE">
 		</label>
 		
 		<window posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"></window>

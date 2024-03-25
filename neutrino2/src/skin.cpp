@@ -747,9 +747,9 @@ int CNeutrinoApp::convertFontSize(const char * const size)
 		{
 			fs = SNeutrinoSettings::FONT_TYPE_FILEBROWSER_ITEM;
 		}
-		else if ( strcmp(size, "FONT_TYPE_MENU_TITLE2") == 0)
+		else if ( strcmp(size, "FONT_TYPE_MENU_TITLELARGE") == 0)
 		{
-			fs = SNeutrinoSettings::FONT_TYPE_MENU_TITLE2;
+			fs = SNeutrinoSettings::FONT_TYPE_MENU_TITLELARGE;
 		}
 	}
 	

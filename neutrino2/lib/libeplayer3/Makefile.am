@@ -5,9 +5,15 @@ noinst_LIBRARIES = libeplayer3.a
 CXXFLAGS = -Wall
 
 AM_CPPFLAGS = \
+	-I$(top_builddir) \
 	-I$(top_srcdir) \
+	-I$(top_srcdir)/src \
+	-I$(top_srcdir)/lib \
+	-I$(top_srcdir)/lib/connection \
+	-I$(top_srcdir)/lib/libconfigfile \
 	-I$(srcdir)/include \
-	-I$(top_srcdir)/lib/libdvbapi
+	-I$(top_srcdir)/lib/libdvbapi \
+	@FREETYPE_CFLAGS@
 
 libeplayer3_a_SOURCES =  \
 	container/container.c container/container_ffmpeg.c \
