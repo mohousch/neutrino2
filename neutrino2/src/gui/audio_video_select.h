@@ -34,6 +34,7 @@
 
 extern unsigned int ac3state;
 extern unsigned int currentapid;
+extern int currentspid;
 
 class CAVPIDSelectWidget : public CMenuTarget
 {

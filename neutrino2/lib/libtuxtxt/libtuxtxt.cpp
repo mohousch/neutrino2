@@ -36,7 +36,7 @@ int tuxtxt_init()
 	tuxtxt_cache.vtxtpid = -1;
 	tuxtxt_cache.dmx = -1;
 	
-	return 1;//tuxtxt_init_demuxer();
+	return 1;
 }
 
 //

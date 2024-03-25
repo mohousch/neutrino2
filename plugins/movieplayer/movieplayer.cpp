@@ -104,6 +104,10 @@ CMoviePlayer::CMoviePlayer()
 	fileFilter.addFilter("ogg");
 	fileFilter.addFilter("m3u8");
 	fileFilter.addFilter("webm");
+	//
+	fileFilter.addFilter("srt");
+	fileFilter.addFilter("ass");
+	fileFilter.addFilter("ssa");
 }
 
 CMoviePlayer::~CMoviePlayer()

@@ -86,13 +86,14 @@ init:
 	echo ""
 # Media framework
 	@echo -e "\nMedia Framework:"
-	@echo "   1) buildinplayer (revisited libeplayer3 without playback)"
-	@echo -e "   \033[01;32m2) gstreamer (with playback)\033[00m"
+	@echo -e "   \033[01;32m1) buildinplayer\033[00m"
+	@echo "   2) gstreamer"
 	@read -p "Select media framework (1-2)?" MEDIAFW; \
 	MEDIAFW=$${MEDIAFW}; \
 	case "$$MEDIAFW" in \
 		1) echo "MEDIAFW=buildinplayer" >> config.local;; \
-		2|*) echo "MEDIAFW=gstreamer" >> config.local;; \
+		2) echo "MEDIAFW=gstreamer" >> config.local;; \
+		*) echo "MEDIAFW=buildinplayer" >> config.local;; \
 	esac; \
 	echo ""
 # gstreamer opengl overlay

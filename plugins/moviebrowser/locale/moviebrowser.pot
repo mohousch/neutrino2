@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-03-14 11:54+0200\n"
+"POT-Creation-Date: 2024-03-25 14:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,14 +33,14 @@ msgstr ""
 msgid "6 years"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3230
-#: ../../moviebrowser/moviebrowser.cpp:3898
+#: ../../moviebrowser/moviebrowser.cpp:3233
+#: ../../moviebrowser/moviebrowser.cpp:3901
 msgid "Additional paths"
 msgstr ""
 
 #: ../../moviebrowser/moviebrowser.cpp:106
 #: ../../moviebrowser/moviebrowser.cpp:163
-#: ../../moviebrowser/moviebrowser.cpp:3079
+#: ../../moviebrowser/moviebrowser.cpp:3082
 msgid "Age"
 msgstr ""
 
@@ -53,29 +53,29 @@ msgstr ""
 msgid "Bookmark"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2913
-#: ../../moviebrowser/moviebrowser.cpp:2914
-#: ../../moviebrowser/moviebrowser.cpp:2915
-#: ../../moviebrowser/moviebrowser.cpp:2930
-#: ../../moviebrowser/moviebrowser.cpp:2931
-#: ../../moviebrowser/moviebrowser.cpp:2932
+#: ../../moviebrowser/moviebrowser.cpp:2916
+#: ../../moviebrowser/moviebrowser.cpp:2917
+#: ../../moviebrowser/moviebrowser.cpp:2918
+#: ../../moviebrowser/moviebrowser.cpp:2933
+#: ../../moviebrowser/moviebrowser.cpp:2934
+#: ../../moviebrowser/moviebrowser.cpp:2935
 msgid "Bookmark change"
 msgstr ""
 
 #: ../../moviebrowser/moviebrowser.cpp:117
-#: ../../moviebrowser/moviebrowser.cpp:2917
-#: ../../moviebrowser/moviebrowser.cpp:2934
-#: ../../moviebrowser/moviebrowser.cpp:2940
-#: ../../moviebrowser/moviebrowser.cpp:3056
+#: ../../moviebrowser/moviebrowser.cpp:2920
+#: ../../moviebrowser/moviebrowser.cpp:2937
+#: ../../moviebrowser/moviebrowser.cpp:2943
+#: ../../moviebrowser/moviebrowser.cpp:3059
 msgid "Bookmarks"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3293
-#: ../../moviebrowser/moviebrowser.cpp:3358
+#: ../../moviebrowser/moviebrowser.cpp:3296
+#: ../../moviebrowser/moviebrowser.cpp:3361
 msgid "Browser Options"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3305
+#: ../../moviebrowser/moviebrowser.cpp:3308
 msgid "Browser hight [Pixel]"
 msgstr ""
 
@@ -85,12 +85,12 @@ msgstr ""
 
 #: ../../moviebrowser/moviebrowser.cpp:107
 #: ../../moviebrowser/moviebrowser.cpp:164
-#: ../../moviebrowser/moviebrowser.cpp:3020
-#: ../../moviebrowser/moviebrowser.cpp:3091
+#: ../../moviebrowser/moviebrowser.cpp:3023
+#: ../../moviebrowser/moviebrowser.cpp:3094
 msgid "Channel"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2921
+#: ../../moviebrowser/moviebrowser.cpp:2924
 msgid "Clear all"
 msgstr ""
 
@@ -102,11 +102,11 @@ msgstr ""
 msgid "Copy failed, is there jump bookmarks ? Or check free space."
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2979
+#: ../../moviebrowser/moviebrowser.cpp:2982
 msgid "Copy if destination is empty only"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3118
+#: ../../moviebrowser/moviebrowser.cpp:3121
 msgid "Copy jumps"
 msgstr ""
 
@@ -116,9 +116,9 @@ msgstr ""
 
 #: ../../moviebrowser/moviebrowser.cpp:112
 #: ../../moviebrowser/moviebrowser.cpp:170
-#: ../../moviebrowser/moviebrowser.cpp:3001
-#: ../../moviebrowser/moviebrowser.cpp:3038
-#: ../../moviebrowser/moviebrowser.cpp:3085
+#: ../../moviebrowser/moviebrowser.cpp:3004
+#: ../../moviebrowser/moviebrowser.cpp:3041
+#: ../../moviebrowser/moviebrowser.cpp:3088
 msgid "Country"
 msgstr ""
 
@@ -126,7 +126,7 @@ msgstr ""
 msgid "Cut failed, is there jump bookmarks ? Or check free space."
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3112
+#: ../../moviebrowser/moviebrowser.cpp:3115
 msgid "Cut jumps"
 msgstr ""
 
@@ -147,12 +147,12 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2913
-#: ../../moviebrowser/moviebrowser.cpp:2914
-#: ../../moviebrowser/moviebrowser.cpp:2915
-#: ../../moviebrowser/moviebrowser.cpp:2930
-#: ../../moviebrowser/moviebrowser.cpp:2931
-#: ../../moviebrowser/moviebrowser.cpp:2932
+#: ../../moviebrowser/moviebrowser.cpp:2916
+#: ../../moviebrowser/moviebrowser.cpp:2917
+#: ../../moviebrowser/moviebrowser.cpp:2918
+#: ../../moviebrowser/moviebrowser.cpp:2933
+#: ../../moviebrowser/moviebrowser.cpp:2934
+#: ../../moviebrowser/moviebrowser.cpp:2935
 msgid "Enter new Position (s)"
 msgstr ""
 
@@ -163,12 +163,12 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3104
+#: ../../moviebrowser/moviebrowser.cpp:3107
 msgid "File size (MB)"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3044
-#: ../../moviebrowser/moviebrowser.cpp:3152
+#: ../../moviebrowser/moviebrowser.cpp:3047
+#: ../../moviebrowser/moviebrowser.cpp:3155
 msgid "Film Informationen"
 msgstr ""
 
@@ -190,16 +190,16 @@ msgstr ""
 #: ../../moviebrowser/moviebrowser.cpp:160
 #: ../../moviebrowser/moviebrowser.cpp:161
 #: ../../moviebrowser/moviebrowser.cpp:1404
-#: ../../moviebrowser/moviebrowser.cpp:2997
-#: ../../moviebrowser/moviebrowser.cpp:3072
+#: ../../moviebrowser/moviebrowser.cpp:3000
+#: ../../moviebrowser/moviebrowser.cpp:3075
 msgid "Genre"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3166
+#: ../../moviebrowser/moviebrowser.cpp:3169
 msgid "Help"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3371
+#: ../../moviebrowser/moviebrowser.cpp:3374
 msgid "Hide series"
 msgstr ""
 
@@ -210,16 +210,16 @@ msgstr ""
 #: ../../moviebrowser/moviebrowser.cpp:103
 #: ../../moviebrowser/moviebrowser.cpp:159
 #: ../../moviebrowser/moviebrowser.cpp:1406
-#: ../../moviebrowser/moviebrowser.cpp:2986
-#: ../../moviebrowser/moviebrowser.cpp:3023
-#: ../../moviebrowser/moviebrowser.cpp:3066
+#: ../../moviebrowser/moviebrowser.cpp:2989
+#: ../../moviebrowser/moviebrowser.cpp:3026
+#: ../../moviebrowser/moviebrowser.cpp:3069
 msgid "Info 1"
 msgstr ""
 
 #: ../../moviebrowser/moviebrowser.cpp:162
-#: ../../moviebrowser/moviebrowser.cpp:2989
-#: ../../moviebrowser/moviebrowser.cpp:3026
-#: ../../moviebrowser/moviebrowser.cpp:3069
+#: ../../moviebrowser/moviebrowser.cpp:2992
+#: ../../moviebrowser/moviebrowser.cpp:3029
+#: ../../moviebrowser/moviebrowser.cpp:3072
 msgid "Info 2"
 msgstr ""
 
@@ -230,21 +230,21 @@ msgstr ""
 #: ../../moviebrowser/moviebrowser.cpp:975
 #: ../../moviebrowser/moviebrowser.cpp:986
 #: ../../moviebrowser/moviebrowser.cpp:1008
-#: ../../moviebrowser/moviebrowser.cpp:3696 ../../moviebrowser/tstool.cpp:279
+#: ../../moviebrowser/moviebrowser.cpp:3699 ../../moviebrowser/tstool.cpp:279
 msgid "Information"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2942
+#: ../../moviebrowser/moviebrowser.cpp:2945
 msgid "Jump (<0 back , >0 for):"
 msgstr ""
 
 #: ../../moviebrowser/moviebrowser.cpp:109
 #: ../../moviebrowser/moviebrowser.cpp:167
-#: ../../moviebrowser/moviebrowser.cpp:3098
+#: ../../moviebrowser/moviebrowser.cpp:3101
 msgid "Last play date"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2925
+#: ../../moviebrowser/moviebrowser.cpp:2928
 msgid "Last play stop:"
 msgstr ""
 
@@ -258,20 +258,20 @@ msgstr ""
 
 #: ../../moviebrowser/moviebrowser.cpp:115
 #: ../../moviebrowser/moviebrowser.cpp:173
-#: ../../moviebrowser/moviebrowser.cpp:3003
-#: ../../moviebrowser/moviebrowser.cpp:3029
+#: ../../moviebrowser/moviebrowser.cpp:3006
 #: ../../moviebrowser/moviebrowser.cpp:3032
 #: ../../moviebrowser/moviebrowser.cpp:3035
-#: ../../moviebrowser/moviebrowser.cpp:3088
+#: ../../moviebrowser/moviebrowser.cpp:3038
+#: ../../moviebrowser/moviebrowser.cpp:3091
 msgid "Length (Min)"
 msgstr ""
 
 #: ../../moviebrowser/moviebrowser.cpp:794
-#: ../../moviebrowser/moviebrowser.cpp:3356
+#: ../../moviebrowser/moviebrowser.cpp:3359
 msgid "Load default settings"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3218
+#: ../../moviebrowser/moviebrowser.cpp:3221
 msgid "Lock movies from"
 msgstr ""
 
@@ -282,11 +282,11 @@ msgstr ""
 msgid "Movie Browser"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2924
+#: ../../moviebrowser/moviebrowser.cpp:2927
 msgid "Movie end:"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2923
+#: ../../moviebrowser/moviebrowser.cpp:2926
 msgid "Movie start:"
 msgstr ""
 
@@ -296,11 +296,11 @@ msgstr ""
 #: ../../moviebrowser/moviebrowser.cpp:856
 #: ../../moviebrowser/moviebrowser.cpp:861
 #: ../../moviebrowser/moviebrowser.cpp:925
-#: ../../moviebrowser/moviebrowser.cpp:2859
+#: ../../moviebrowser/moviebrowser.cpp:2862
 msgid "Moviebrowser"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3162
+#: ../../moviebrowser/moviebrowser.cpp:3165
 msgid "NFS settings"
 msgstr ""
 
@@ -328,38 +328,38 @@ msgstr ""
 msgid "No End bookmark defined!"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3299
+#: ../../moviebrowser/moviebrowser.cpp:3302
 msgid "Number of lines last play"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3302
+#: ../../moviebrowser/moviebrowser.cpp:3305
 msgid "Number of lines last record"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3156
-#: ../../moviebrowser/moviebrowser.cpp:3347
+#: ../../moviebrowser/moviebrowser.cpp:3159
+#: ../../moviebrowser/moviebrowser.cpp:3350
 msgid "Options"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2995
-#: ../../moviebrowser/moviebrowser.cpp:3211
-#: ../../moviebrowser/moviebrowser.cpp:3363
+#: ../../moviebrowser/moviebrowser.cpp:2998
+#: ../../moviebrowser/moviebrowser.cpp:3214
+#: ../../moviebrowser/moviebrowser.cpp:3366
 msgid "Parental Lock"
 msgstr ""
 
 #: ../../moviebrowser/moviebrowser.cpp:100
 #: ../../moviebrowser/moviebrowser.cpp:156
 #: ../../moviebrowser/moviebrowser.cpp:1408
-#: ../../moviebrowser/moviebrowser.cpp:3095
-#: ../../moviebrowser/moviebrowser.cpp:3239
-#: ../../moviebrowser/moviebrowser.cpp:3245
-#: ../../moviebrowser/moviebrowser.cpp:3258
+#: ../../moviebrowser/moviebrowser.cpp:3098
+#: ../../moviebrowser/moviebrowser.cpp:3242
+#: ../../moviebrowser/moviebrowser.cpp:3248
+#: ../../moviebrowser/moviebrowser.cpp:3261
 msgid "Path"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3159
-#: ../../moviebrowser/moviebrowser.cpp:3248
-#: ../../moviebrowser/moviebrowser.cpp:3360
+#: ../../moviebrowser/moviebrowser.cpp:3162
+#: ../../moviebrowser/moviebrowser.cpp:3251
+#: ../../moviebrowser/moviebrowser.cpp:3363
 msgid "Paths"
 msgstr ""
 
@@ -367,51 +367,51 @@ msgstr ""
 msgid "Picture"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2941
+#: ../../moviebrowser/moviebrowser.cpp:2944
 msgid "Position:"
 msgstr ""
 
 #: ../../moviebrowser/moviebrowser.cpp:108
 #: ../../moviebrowser/moviebrowser.cpp:166
-#: ../../moviebrowser/moviebrowser.cpp:2993
-#: ../../moviebrowser/moviebrowser.cpp:3076
+#: ../../moviebrowser/moviebrowser.cpp:2996
+#: ../../moviebrowser/moviebrowser.cpp:3079
 msgid "Quality"
 msgstr ""
 
 #: ../../moviebrowser/moviebrowser.cpp:168
-#: ../../moviebrowser/moviebrowser.cpp:3101
+#: ../../moviebrowser/moviebrowser.cpp:3104
 msgid "Record date"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3366
+#: ../../moviebrowser/moviebrowser.cpp:3369
 msgid "Reload movie info at start"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3368
+#: ../../moviebrowser/moviebrowser.cpp:3371
 msgid "Remount at start"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3313
+#: ../../moviebrowser/moviebrowser.cpp:3316
 msgid "Row item"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3308
-#: ../../moviebrowser/moviebrowser.cpp:3309
+#: ../../moviebrowser/moviebrowser.cpp:3311
+#: ../../moviebrowser/moviebrowser.cpp:3312
 msgid "Row settings"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3314
+#: ../../moviebrowser/moviebrowser.cpp:3317
 msgid "Row width"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3050
-#: ../../moviebrowser/moviebrowser.cpp:3353
+#: ../../moviebrowser/moviebrowser.cpp:3053
+#: ../../moviebrowser/moviebrowser.cpp:3356
 msgid "Save changes"
 msgstr ""
 
 #: ../../moviebrowser/moviebrowser.cpp:861
-#: ../../moviebrowser/moviebrowser.cpp:2968
-#: ../../moviebrowser/moviebrowser.cpp:3053
+#: ../../moviebrowser/moviebrowser.cpp:2971
+#: ../../moviebrowser/moviebrowser.cpp:3056
 msgid "Save changes in all movie info files"
 msgstr ""
 
@@ -420,7 +420,7 @@ msgstr ""
 msgid "Save settings now"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2859
+#: ../../moviebrowser/moviebrowser.cpp:2862
 msgid "Scan for Movies ..."
 msgstr ""
 
@@ -431,19 +431,19 @@ msgstr ""
 #: ../../moviebrowser/moviebrowser.cpp:102
 #: ../../moviebrowser/moviebrowser.cpp:158
 #: ../../moviebrowser/moviebrowser.cpp:1410
-#: ../../moviebrowser/moviebrowser.cpp:2948
-#: ../../moviebrowser/moviebrowser.cpp:2950
-#: ../../moviebrowser/moviebrowser.cpp:2955
-#: ../../moviebrowser/moviebrowser.cpp:2991
-#: ../../moviebrowser/moviebrowser.cpp:3063
+#: ../../moviebrowser/moviebrowser.cpp:2951
+#: ../../moviebrowser/moviebrowser.cpp:2953
+#: ../../moviebrowser/moviebrowser.cpp:2958
+#: ../../moviebrowser/moviebrowser.cpp:2994
+#: ../../moviebrowser/moviebrowser.cpp:3066
 msgid "Serie"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3373
+#: ../../moviebrowser/moviebrowser.cpp:3376
 msgid "Serie auto create"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3146
+#: ../../moviebrowser/moviebrowser.cpp:3149
 msgid "Settings"
 msgstr ""
 
@@ -456,18 +456,18 @@ msgstr ""
 msgid "Size"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2974
+#: ../../moviebrowser/moviebrowser.cpp:2977
 msgid "Start update of movie info files"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2983
-#: ../../moviebrowser/moviebrowser.cpp:3060
+#: ../../moviebrowser/moviebrowser.cpp:2986
+#: ../../moviebrowser/moviebrowser.cpp:3063
 msgid "Titel"
 msgstr ""
 
 #: ../../moviebrowser/moviebrowser.cpp:101
 #: ../../moviebrowser/moviebrowser.cpp:157
-#: ../../moviebrowser/moviebrowser.cpp:3017
+#: ../../moviebrowser/moviebrowser.cpp:3020
 msgid "Title"
 msgstr ""
 
@@ -475,7 +475,7 @@ msgstr ""
 msgid "Truncate failed."
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3115
+#: ../../moviebrowser/moviebrowser.cpp:3118
 msgid "Truncate jumps"
 msgstr ""
 
@@ -487,23 +487,23 @@ msgstr ""
 msgid "Truncating, please wait"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3262
+#: ../../moviebrowser/moviebrowser.cpp:3265
 msgid "Use directory"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3242
+#: ../../moviebrowser/moviebrowser.cpp:3245
 msgid "Use movie directory"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3236
+#: ../../moviebrowser/moviebrowser.cpp:3239
 msgid "Use record directory"
 msgstr ""
 
 #: ../../moviebrowser/moviebrowser.cpp:111
 #: ../../moviebrowser/moviebrowser.cpp:169
-#: ../../moviebrowser/moviebrowser.cpp:2999
-#: ../../moviebrowser/moviebrowser.cpp:3041
-#: ../../moviebrowser/moviebrowser.cpp:3082
+#: ../../moviebrowser/moviebrowser.cpp:3002
+#: ../../moviebrowser/moviebrowser.cpp:3044
+#: ../../moviebrowser/moviebrowser.cpp:3085
 msgid "Year"
 msgstr ""
 
@@ -511,7 +511,7 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3216
+#: ../../moviebrowser/moviebrowser.cpp:3219
 msgid "activated"
 msgstr ""
 
@@ -635,7 +635,7 @@ msgstr ""
 msgid "foreign countries/expeditions"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3286
+#: ../../moviebrowser/moviebrowser.cpp:3289
 msgid "frame hight"
 msgstr ""
 
@@ -667,7 +667,7 @@ msgstr ""
 msgid "languages"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3284
+#: ../../moviebrowser/moviebrowser.cpp:3287
 msgid "last play max items"
 msgstr ""
 
@@ -743,7 +743,7 @@ msgstr ""
 msgid "pre-school children's programmes"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3285
+#: ../../moviebrowser/moviebrowser.cpp:3288
 msgid "record max items"
 msgstr ""
 
@@ -756,7 +756,7 @@ msgid "remarkable people"
 msgstr ""
 
 #: ../../moviebrowser/moviebrowser.cpp:1008
-#: ../../moviebrowser/moviebrowser.cpp:3121
+#: ../../moviebrowser/moviebrowser.cpp:3124
 msgid "remove screenshot?"
 msgstr ""
 
@@ -768,11 +768,11 @@ msgstr ""
 msgid "romance"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3287
+#: ../../moviebrowser/moviebrowser.cpp:3290
 msgid "row nr"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3291
+#: ../../moviebrowser/moviebrowser.cpp:3294
 msgid "row width"
 msgstr ""
 
@@ -836,7 +836,7 @@ msgstr ""
 msgid "tennis/squash"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3108
+#: ../../moviebrowser/moviebrowser.cpp:3111
 msgid "tmdb Info"
 msgstr ""
 

@@ -451,7 +451,6 @@ int tuxtxt_init_demuxer()
 		
 		dmx->Open(DMX_PES_CHANNEL, 2* 3008 * 62, live_fe );		
 	}
-	/* init successfull */
 
 	return 1;
 }
@@ -569,10 +568,10 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 		
 	unsigned char pes_packet[184*20];
 	unsigned char vtxt_row[42];
-	int line, byte/*, bit*/;
+	int line, byte;
 	int b1, b2, b3, b4;
 	int packet_number;
-	int doupdate=0;
+	int doupdate = 0;
 	unsigned char magazine = 0xff;
 	unsigned char pagedata[9][23*40];
 	tstPageinfo *pageinfo_thread;
@@ -882,7 +881,6 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 							}
 						}
 					}
-
 					else if (packet_number == 26)
 					{
 						int descode = dehamming[vtxt_row[2]]; /* designation code (0..15) */
@@ -891,10 +889,12 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 						{
 							continue;
 						}
+						
 						if (!pageinfo_thread->ext)
 							pageinfo_thread->ext = (tstExtData*) calloc(1, sizeof(tstExtData));
 						if (!pageinfo_thread->ext)
 							continue;
+							
 						if (!(pageinfo_thread->ext->p26[descode]))
 							pageinfo_thread->ext->p26[descode] = (unsigned char*) malloc(13 * 3);
 						if (pageinfo_thread->ext->p26[descode])
@@ -912,6 +912,7 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 						{
 							int t1 = deh24(&vtxt_row[7-4]);
 							pageinfo_thread->function = t1 & 0x0f;
+							
 							if (!pageinfo_thread->nationalvalid)
 							{
 								pageinfo_thread->nationalvalid = 1;
@@ -952,12 +953,14 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 					{
 					}
 				}
+				
 				/* set update flag */
 				if (tuxtxt_cache.current_page[magazine] == tuxtxt_cache.page && tuxtxt_cache.current_subpage[magazine] != -1)
 				{
- 				    tuxtxt_compress_page(tuxtxt_cache.current_page[magazine],tuxtxt_cache.current_subpage[magazine],pagedata[magazine]);
+    tuxtxt_compress_page(tuxtxt_cache.current_page[magazine],tuxtxt_cache.current_subpage[magazine],pagedata[magazine]);
 					tuxtxt_cache.pageupdate = 1+(doupdate == tuxtxt_cache.page ? 1: 0);
-					doupdate=0;
+					doupdate = 0;
+					
 					if (!tuxtxt_cache.zap_subpage_manual)
 						tuxtxt_cache.subpage = tuxtxt_cache.current_subpage[magazine];
 				}

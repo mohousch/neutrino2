@@ -320,6 +320,20 @@ void CMoviePlayerGui::killMovieInfoViewer(void)
 	}
 }
 
+void CMoviePlayerGui::startSubtitles(bool show)
+{
+	if(playback)
+		playback->SetSubPid(currentspid);
+}
+
+void CMoviePlayerGui::stopSubtitles()
+{
+	CFrameBuffer::getInstance()->clearFrameBuffer();
+	
+	if(playback)
+		playback->SetSubPid(-1);
+}
+
 int CMoviePlayerGui::exec(CMenuTarget * parent, const std::string & actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CMoviePlayerGui::exec: actionKey:%s\n", actionKey.c_str());
@@ -366,7 +380,9 @@ int CMoviePlayerGui::exec(CMenuTarget * parent, const std::string & actionKey)
 	g_vtype = 0;
 	g_currentapid = 0;
 	g_currentac3 = 0;
+	g_currentsubpid = -1;
 
+	//
 	sec_timer_id = 0;
 	
 	// cutneutrino
@@ -391,6 +407,9 @@ int CMoviePlayerGui::exec(CMenuTarget * parent, const std::string & actionKey)
 
 	// restore neutrino
 	restoreNeutrino();
+	
+	currentapid = 0;
+	currentspid = -1;
 	
 	//
 	CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
@@ -643,6 +662,8 @@ void CMoviePlayerGui::PlayFile(void)
 					frameBuffer->loadBackgroundPic(playlist[selected].tfile);
 			}
 		}
+		
+		// subs
 
 		//
 		update_lcd = true;
@@ -949,6 +970,8 @@ void CMoviePlayerGui::PlayFile(void)
 		} 
 		else if (msg == CRCInput::RC_blue) 
 		{
+			stopSubtitles();
+			
 			if (mplist && mplist->isPainted())
 			{
 				mplist->hide();
@@ -1050,10 +1073,14 @@ void CMoviePlayerGui::PlayFile(void)
 						}
 					}
 				}
-			}		
+			}
+			
+			startSubtitles();		
 		} 
 		else if ( msg == CRCInput::RC_audio || msg == CRCInput::RC_green) 
 		{
+			stopSubtitles();
+			
 			if (mplist && mplist->isPainted())
 			{
 				mplist->hide();
@@ -1074,9 +1101,13 @@ void CMoviePlayerGui::PlayFile(void)
 				delete AVSelectHandler;
 				AVSelectHandler = NULL;
 			}
+			
+			startSubtitles();
 		} 
 		else if(msg == CRCInput::RC_yellow)
 		{
+			stopSubtitles();
+			
 			if (mplist && mplist->isPainted())
 			{
 				clearPlaylist();
@@ -1093,9 +1124,13 @@ void CMoviePlayerGui::PlayFile(void)
 				//show help
 				showHelpTS();
 			}
+			
+			startSubtitles();
 		}
 		else if (msg == CRCInput::RC_info)
 		{
+			stopSubtitles();
+			
 			if (mplist && mplist->isPainted())
 			{
 				mplist->hide();
@@ -1112,9 +1147,13 @@ void CMoviePlayerGui::PlayFile(void)
 					cMovieInfo.showMovieInfo(playlist[selected]);
 				}	
 			}
+			
+			startSubtitles();
 		}
 		else if(msg == CRCInput::RC_setup)
 		{
+			stopSubtitles();
+			
 			if (mplist && !mplist->isPainted())
 			{
 				hide();
@@ -1125,9 +1164,13 @@ void CMoviePlayerGui::PlayFile(void)
 				delete moviePlayerSettings;
 				moviePlayerSettings = NULL;
 			}
+			
+			startSubtitles();
 		} 
 		else if (msg == CRCInput::RC_rewind) 
 		{
+			stopSubtitles();
+			
 			if (mplist && !mplist->isPainted())
 			{
 				// backward
@@ -1156,9 +1199,13 @@ void CMoviePlayerGui::PlayFile(void)
 					//showMovieInfo();//FIXME:
 				}
 			}
+			
+			startSubtitles();
 		}
 		else if (msg == CRCInput::RC_forward) 
-		{	
+		{
+			stopSubtitles();
+				
 			if (mplist && !mplist->isPainted())
 			{
 				// fast-forward
@@ -1188,6 +1235,8 @@ void CMoviePlayerGui::PlayFile(void)
 					//showMovieInfo();//FIXME:
 				}
 			}
+			
+			startSubtitles();
 		} 
 		else if (msg == CRCInput::RC_1) 
 		{
@@ -1298,6 +1347,8 @@ void CMoviePlayerGui::PlayFile(void)
 		} 
 		else if ( msg == CRCInput::RC_loop )
 		{
+			stopSubtitles();
+			
 			if (mplist && !mplist->isPainted())
 			{
 				if(m_loop)
@@ -1307,6 +1358,8 @@ void CMoviePlayerGui::PlayFile(void)
 				
 				dprintf(DEBUG_NORMAL, "CMoviePlayerGui::PlayFile: Repeat Modus: [%s]\n", m_loop? "ON" : "OFF");
 			}
+			
+			startSubtitles();
 		} 
 		else if (msg == CRCInput::RC_5) 
 		{
@@ -1340,6 +1393,8 @@ void CMoviePlayerGui::PlayFile(void)
 		} 
 		else if (msg == CRCInput::RC_page_up) 
 		{
+			stopSubtitles();
+			
 			if (mplist && mplist->isPainted())
 			{
 				mplist->scrollPageUp();
@@ -1355,9 +1410,13 @@ void CMoviePlayerGui::PlayFile(void)
 					//showMovieInfo();//FIXME:
 				}
 			}
+			
+			startSubtitles();
 		} 
 		else if (msg == CRCInput::RC_page_down) 
 		{
+			stopSubtitles();
+			
 			if (mplist && mplist->isPainted())
 			{
 				mplist->scrollPageDown();
@@ -1373,9 +1432,13 @@ void CMoviePlayerGui::PlayFile(void)
 					//showMovieInfo();//FIXME:
 				}
 			}
+			
+			startSubtitles();
 		} 
 		else if (msg == CRCInput::RC_0) 
 		{
+			stopSubtitles();
+			
 			if (mplist && !mplist->isPainted())
 			{
 				// cancel bookmark
@@ -1390,6 +1453,8 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 				jump_not_until = (position / 1000) + 10;
 			}
+			
+			startSubtitles();
 		} 		
 		else if (msg == CRCInput::RC_slow) 
 		{
@@ -1409,6 +1474,8 @@ void CMoviePlayerGui::PlayFile(void)
 		}		
 		else if(msg == CRCInput::RC_red)
 		{
+			stopSubtitles();
+			
 			if (mplist && mplist->isPainted())
 			{
 				// FIXME: segfault
@@ -1431,9 +1498,13 @@ void CMoviePlayerGui::PlayFile(void)
 					
 				cMovieInfo.showMovieInfo(playlist[selected]);
 			}
+			
+			startSubtitles();
 		}
 		else if(msg == CRCInput::RC_home)
 		{
+			stopSubtitles();
+			
 			if (mplist && mplist->isPainted())
 			{
 				mplist->hide();
@@ -1446,9 +1517,13 @@ void CMoviePlayerGui::PlayFile(void)
 					hide();
 				}
 			}
+			
+			startSubtitles();
 		}
 		else if(msg == CRCInput::RC_left || msg == CRCInput::RC_prev)
 		{
+			stopSubtitles();
+			
 			if (mplist && mplist->isPainted())
 			{
 				mplist->swipLeft();
@@ -1457,9 +1532,13 @@ void CMoviePlayerGui::PlayFile(void)
 			{
 				playPrev();
 			}
+			
+			startSubtitles();
 		}
 		else if(msg == CRCInput::RC_right || msg == CRCInput::RC_next)
 		{
+			stopSubtitles();
+			
 			if (mplist && mplist->isPainted())
 			{
 				mplist->swipRight();
@@ -1468,9 +1547,13 @@ void CMoviePlayerGui::PlayFile(void)
 			{
 				playNext();
 			}
+			
+			startSubtitles();
 		}
 		else if (msg == (neutrino_msg_t)g_settings.key_screenshot)
 		{
+			stopSubtitles();
+			
 			if (mplist && !mplist->isPainted())
 			{
 		 		if(MessageBox(_("Information"), _("create screenshot?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
@@ -1478,9 +1561,13 @@ void CMoviePlayerGui::PlayFile(void)
 					CVCRControl::getInstance()->Screenshot(0, (char *)playlist[selected].file.Name.c_str());
 				}
 			}
+			
+			startSubtitles();
 		}
 		else if(msg == CRCInput::RC_ok)
 		{
+			stopSubtitles();
+			
 			if (mplist && mplist->isPainted())
 			{
 				mplist->hide();
@@ -1491,20 +1578,30 @@ void CMoviePlayerGui::PlayFile(void)
 				hide();
 				showPlaylist();
 			}
+			
+			startSubtitles();
 		}
 		else if(msg == CRCInput::RC_up)
 		{
+			stopSubtitles();
+			
 			if (mplist && mplist->isPainted())
 			{
 				mplist->scrollLineUp();
 			}
+			
+			startSubtitles();
 		}
 		else if(msg == CRCInput::RC_down)
 		{
+			stopSubtitles();
+			
 			if (mplist && mplist->isPainted())
 			{
 				mplist->scrollLineDown();
 			}
+			
+			startSubtitles();
 		}
 		else if ((msg == NeutrinoMessages::ANNOUNCE_RECORD) || msg == NeutrinoMessages::RECORD_START || msg == NeutrinoMessages::ZAPTO || msg == NeutrinoMessages::STANDBY_ON || msg == NeutrinoMessages::SHUTDOWN || msg == NeutrinoMessages::SLEEPTIMER) 
 		{	

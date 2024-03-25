@@ -758,9 +758,9 @@ static void FFMPEGThread(Context_t *context)
 					ffmpeg_printf(20, "Packet convergence_duration %lld\n", packet.convergence_duration);
 
 					if(packet.duration != 0 && packet.duration != AV_NOPTS_VALUE )
-						duration=((float)packet.duration)/1000.0;
+						duration = ((float)packet.duration)/1000.0;
 					else if(packet.convergence_duration != 0 && packet.convergence_duration != AV_NOPTS_VALUE )
-						duration=((float)packet.convergence_duration)/1000.0;		    
+						duration = ((float)packet.convergence_duration)/1000.0;		    
 					else if(subtitleTrack->stream->codec->codec_id == AV_CODEC_ID_SSA)
 					{
 						duration = getDurationFromSSALine(packet.data);
@@ -1883,6 +1883,10 @@ static char *FFMPEG_Capabilities[] = {
 	"m3u8",
 	"amr", 
 	"webm",
+	// for testing
+	"srt",
+	"ass",
+	"ssa",
 	NULL 
 };
 

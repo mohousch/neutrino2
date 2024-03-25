@@ -73,6 +73,12 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 
 static const char FILENAME[] = "subtitle.c";
 
+////
+int min_x = 20;
+int min_y = 700;
+int max_x = 1240;
+int max_y = 28;
+
 /* ***************************** */
 /* Types                         */
 /* ***************************** */
@@ -480,7 +486,7 @@ void storeRegion(unsigned int x, unsigned int y, unsigned int w, unsigned int h,
     new->undisplay = undisplay;
 }
 
-// ass_write
+//// ass_write
 static void ass_write(Context_t *context, SubtitleData_t* data) 
 {
     	Writer_t* writer;
@@ -574,7 +580,7 @@ static void ass_write(Context_t *context, SubtitleData_t* data)
                     		if ((img->w != 0) && (img->h != 0) && (writer)) 
                     		{
                         		out.fd            = framebufferFD;
-                        		out.data          = img->bitmap;
+                        		out.data          = (uint32_t*)img->bitmap;
                         		out.Width         = img->w;
                         		out.Height        = img->h;
                         		out.Stride        = img->stride;
@@ -631,7 +637,7 @@ static void ass_write(Context_t *context, SubtitleData_t* data)
     	subtitle_printf(10, "terminating\n");
 }
 
-// 
+/*
 static int ass_stop(Context_t *context) 
 {
     int ret = cERR_SUBTITLE_NO_ERROR;
@@ -670,8 +676,9 @@ static int ass_stop(Context_t *context)
     
     return ret;
 }
+*/
 
-//
+//// bitmap_write
 static void dvbsub_write(Context_t *context, SubtitleData_t* out) 
 {
     	Writer_t* writer;
@@ -777,10 +784,26 @@ static void dvbsub_write(Context_t *context, SubtitleData_t* out)
 #else
 						uint32_t *newdata = resize32(sub.rects[i]->data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
 #endif
-							
-						//
 						WriterFBCallData_t out;
+						
+						// clear
+						out.fd            = framebufferFD;
+             					out.data          = NULL;
+             					out.Width         = max_x;
+             					out.Height        = max_y;
+             					out.x             = min_x;
+             					out.y             = min_y;
+             					
+             					out.color	  = 0;
 
+             					out.Screen_Width  = screen_width; 
+             					out.Screen_Height = screen_height; 
+             					out.destination   = destination;
+             					out.destStride    = destStride;
+
+             					//writer->writeData(&out); //FIXME:
+							
+						// writeData
              					out.fd            = framebufferFD;
              					out.data          = newdata;
              					out.Width         = nw;
@@ -798,6 +821,19 @@ static void dvbsub_write(Context_t *context, SubtitleData_t* out)
              					writer->writeData(&out);
 
 						free(newdata);
+						
+						//
+						if(min_x > xoff)
+							min_x = xoff;
+
+						if(min_y > yoff)
+							min_y = yoff;
+
+						if(max_x < nw)
+							max_x = nw;
+
+						if(max_y < nh)
+							max_y = nh;
 					} //for
 					break;
 				}
@@ -825,6 +861,7 @@ static void teletext_write(Context_t *context, SubtitleData_t* out)
     	}
     	
     	// FIXME:
+    	subtitle_printf(10, "%s\n", (char *)out->data);
  
  	subtitle_printf(10, "terminating\n");   	
 }
@@ -841,6 +878,8 @@ static void text_write(Context_t *context, SubtitleData_t* out)
     	{
         	subtitle_err("no framebuffer writer found!\n");
     	}
+    	
+    	subtitle_printf(100, "%s\n", (char *)out->data);
     	
     	WriterFBCallData_t fb;
 
@@ -867,13 +906,12 @@ static void text_write(Context_t *context, SubtitleData_t* out)
 /* ***************************** */
 /* Functions                     */
 /* ***************************** */
-
 static int Write(void* _context, void *data) 
 {
     	Context_t * context = (Context_t  *) _context;
     	SubtitleData_t * out;
     
-    	subtitle_printf(10, "\n");
+    	subtitle_printf(100, "\n");
 
 	if (data == NULL)
 	{
@@ -916,7 +954,7 @@ static int Write(void* _context, void *data)
     			break;
     	}
 
-    	subtitle_printf(10, "<\n");
+    	subtitle_printf(100, "<\n");
 
     	return cERR_SUBTITLE_NO_ERROR;
 }

@@ -75,6 +75,7 @@ class CMoviePlayerGui : public CMenuTarget
 		unsigned short g_vtype;
 		unsigned int g_currentapid;
 		unsigned int g_currentac3;
+		int g_currentsubpid;
 		
 		// playlist
 		CMoviePlayList playlist;
@@ -150,6 +151,10 @@ class CMoviePlayerGui : public CMenuTarget
 		void showPlaylist();
 		void openMovieFileBrowser();
 		void doTMDB(MI_MOVIE_INFO& movieFile);
+		
+		// subs
+		void stopSubtitles();
+		void startSubtitles(bool show = true);
 		
 	public:
 		CMoviePlayerGui();

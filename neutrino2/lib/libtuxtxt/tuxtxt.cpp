@@ -4420,6 +4420,7 @@ void RenderPage()
 	{
 		struct timeval tv;
 		gettimeofday(&tv,NULL);
+		
 		if (tv.tv_sec - tv_delay.tv_sec < subtitledelay)
 			return;
 	}

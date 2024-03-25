@@ -59,7 +59,7 @@ unsigned int ac3state = CInfoViewer::NO_AC3;
 //
 unsigned short spids[10];
 unsigned short numpids = 0;
-unsigned int currentspid = -1;
+int currentspid = -1;
 //
 extern cPlayback *playback;
 
@@ -168,8 +168,6 @@ int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
 		
 		if(playback)
 			playback->SetSubPid(-1);
-		
-		return RETURN_EXIT;
 	}
 	
 	return CMenuTarget::RETURN_EXIT;
@@ -300,7 +298,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 	{
 		AVPIDSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
-		for (unsigned int count = 0; count < numpids; count++) 
+		for (int count = 0; count < numpids; count++) 
 		{
 			bool name_ok = false;
 			char spidnumber[10];
