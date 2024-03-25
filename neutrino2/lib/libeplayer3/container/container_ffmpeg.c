@@ -777,7 +777,6 @@ static void FFMPEGThread(Context_t *context)
 						
 						ffmpeg_printf(100, "videoPts %lld\n", currentVideoPts);
 						
-						data.avCodecId = subtitleTrack->stream->codec->codec_id;
 						data.data      = packet.data;
 						data.len       = packet.size;
 						data.extradata = subtitleTrack->extraData;

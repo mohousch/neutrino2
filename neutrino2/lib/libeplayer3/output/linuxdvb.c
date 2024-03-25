@@ -1126,7 +1126,7 @@ static int Write(void* _context, void* _out)
 		}
 #else
 		AVCodecContext* ctx = out->stream->codec;
-		const AVCodec* codec = avcodec_find_decoder(out->stream->codec->codec_id);
+		const AVCodec* codec = avcodec_find_decoder(ctx->codec_id);
 		AVFrame * aframe = NULL;
 		int got_frame = 0;
 		// resample
@@ -1303,8 +1303,8 @@ static int Write(void* _context, void* _out)
 		AVFrame *frame = NULL;
 		AVFrame *rgbframe = NULL;
 		struct SwsContext *convert = NULL;
-		const AVCodec *codec = avcodec_find_decoder(out->stream->codec->codec_id);
 		AVCodecContext* ctx = out->stream->codec;
+		const AVCodec *codec = avcodec_find_decoder(ctx->codec_id);
 		
 		// init codec
 #if LIBAVCODEC_VERSION_MAJOR < 54

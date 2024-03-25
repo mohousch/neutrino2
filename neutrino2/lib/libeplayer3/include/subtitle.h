@@ -28,9 +28,6 @@
 typedef struct
 {
 	//
-	enum AVCodecID 	      	avCodecId;
-	
-	//
 	unsigned char* 		data;
 	int            		len;
 

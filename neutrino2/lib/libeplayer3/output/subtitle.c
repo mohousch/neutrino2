@@ -246,6 +246,8 @@ static void proccess_sub_data(Context_t *context, SubtitleData_t* out)
 
 	//
     	AVSubtitle sub;
+    	AVCodecContext* ctx = out->stream->codec;
+    	
     	memset(&sub, 0, sizeof(sub));
     	
     	out->packet->data = out->data;
@@ -253,19 +255,21 @@ static void proccess_sub_data(Context_t *context, SubtitleData_t* out)
     	out->packet->pts  = out->pts;
     		
     	//
-    	const AVCodec *codec  = avcodec_find_decoder(out->avCodecId);
+    	const AVCodec *codec  = avcodec_find_decoder(ctx->codec_id);
     		
     	int got_sub_ptr = 0;
     	
-    	if (avcodec_open2(out->stream->codec, codec, NULL) != 0)
+    	// init codec
+    	if (avcodec_open2(ctx, codec, NULL) != 0)
     	{
     		subtitle_err("error decoding subtitle\n");
 	}
-    		
+    	
+    	// decode 	
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)			   
-	if (out->stream->codec && avcodec_decode_subtitle2(out->stream->codec, &sub, &got_sub_ptr, out->packet) < 0)
+	if (ctx && avcodec_decode_subtitle2(ctx, &sub, &got_sub_ptr, out->packet) < 0)
 #else
-	if (out->stream->codec && avcodec_decode_subtitle(out->stream->codec, &sub, &got_sub_ptr, out->packet->data, out->packet->size ) < 0)
+	if (ctx && avcodec_decode_subtitle(ctx, &sub, &got_sub_ptr, out->packet->data, out->packet->size ) < 0)
 #endif
 	{
 		subtitle_err("error decoding subtitle\n");
@@ -274,10 +278,10 @@ static void proccess_sub_data(Context_t *context, SubtitleData_t* out)
 	{
 		int i;
 
-		subtitle_printf(10, "format %d\n", sub.format);
-		subtitle_printf(10, "start_display_time %d\n", sub.start_display_time);
-		subtitle_printf(10, "end_display_time %d\n", sub.end_display_time);
-		subtitle_printf(10, "num_rects %d\n", sub.num_rects);
+		subtitle_printf(100, "format %d\n", sub.format);
+		subtitle_printf(100, "start_display_time %d\n", sub.start_display_time);
+		subtitle_printf(100, "end_display_time %d\n", sub.end_display_time);
+		subtitle_printf(100, "num_rects %d\n", sub.num_rects);
 		
 		if (got_sub_ptr && sub.num_rects > 0)
 		{			
@@ -287,14 +291,14 @@ static void proccess_sub_data(Context_t *context, SubtitleData_t* out)
 				{
 					for (i = 0; i < sub.num_rects; i++)
 					{
-						subtitle_printf(10, "x %d\n", sub.rects[i]->x);
-						subtitle_printf(10, "y %d\n", sub.rects[i]->y);
-						subtitle_printf(10, "w %d\n", sub.rects[i]->w);
-						subtitle_printf(10, "h %d\n", sub.rects[i]->h);
-						subtitle_printf(10, "nb_colors %d\n", sub.rects[i]->nb_colors);
-						subtitle_printf(10, "type %d\n", sub.rects[i]->type);
-						subtitle_printf(10, "text %s\n", sub.rects[i]->text);
-						subtitle_printf(10, "ass %s\n", sub.rects[i]->ass);
+						subtitle_printf(100, "x %d\n", sub.rects[i]->x);
+						subtitle_printf(100, "y %d\n", sub.rects[i]->y);
+						subtitle_printf(100, "w %d\n", sub.rects[i]->w);
+						subtitle_printf(100, "h %d\n", sub.rects[i]->h);
+						subtitle_printf(100, "nb_colors %d\n", sub.rects[i]->nb_colors);
+						subtitle_printf(100, "type %d\n", sub.rects[i]->type);
+						subtitle_printf(100, "text %s\n", sub.rects[i]->text);
+						subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
 						
 						fb.fd            = framebufferFD;
              					fb.data          = sub.rects[i]->text;
@@ -319,14 +323,14 @@ static void proccess_sub_data(Context_t *context, SubtitleData_t* out)
 				{
 					for (i = 0; i < sub.num_rects; i++)
 					{
-						subtitle_printf(10, "x %d\n", sub.rects[i]->x);
-						subtitle_printf(10, "y %d\n", sub.rects[i]->y);
-						subtitle_printf(10, "w %d\n", sub.rects[i]->w);
-						subtitle_printf(10, "h %d\n", sub.rects[i]->h);
-						subtitle_printf(10, "nb_colors %d\n", sub.rects[i]->nb_colors);
-						subtitle_printf(10, "type %d\n", sub.rects[i]->type);
-						subtitle_printf(10, "text %s\n", sub.rects[i]->text);
-						subtitle_printf(10, "ass %s\n", sub.rects[i]->ass);
+						subtitle_printf(100, "x %d\n", sub.rects[i]->x);
+						subtitle_printf(100, "y %d\n", sub.rects[i]->y);
+						subtitle_printf(100, "w %d\n", sub.rects[i]->w);
+						subtitle_printf(100, "h %d\n", sub.rects[i]->h);
+						subtitle_printf(100, "nb_colors %d\n", sub.rects[i]->nb_colors);
+						subtitle_printf(100, "type %d\n", sub.rects[i]->type);
+						subtitle_printf(100, "text %s\n", sub.rects[i]->text);
+						subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
 						
 						fb.fd            = framebufferFD;
              					fb.data          = ass_get_text(sub.rects[i]->ass);
@@ -351,17 +355,17 @@ static void proccess_sub_data(Context_t *context, SubtitleData_t* out)
 				{
 					for (i = 0; i < sub.num_rects; i++)
 					{
-						subtitle_printf(10, "i %d\n", i);
-						subtitle_printf(10, "x %d\n", sub.rects[i]->x);
-						subtitle_printf(10, "y %d\n", sub.rects[i]->y);
-						subtitle_printf(10, "w %d\n", sub.rects[i]->w);
-						subtitle_printf(10, "h %d\n", sub.rects[i]->h);
-						subtitle_printf(10, "nb_colors %d\n", sub.rects[i]->nb_colors);
-						subtitle_printf(10, "type %d\n", sub.rects[i]->type);
-						subtitle_printf(10, "text %s\n", sub.rects[i]->text);
-						subtitle_printf(10, "ass %s\n", sub.rects[i]->ass);
-						subtitle_printf(10, "pic %p\n", sub.rects[i]->data[0]);
-						subtitle_printf(10, "colors %p\n\n", sub.rects[i]->data[1]);
+						subtitle_printf(100, "i %d\n", i);
+						subtitle_printf(100, "x %d\n", sub.rects[i]->x);
+						subtitle_printf(100, "y %d\n", sub.rects[i]->y);
+						subtitle_printf(100, "w %d\n", sub.rects[i]->w);
+						subtitle_printf(100, "h %d\n", sub.rects[i]->h);
+						subtitle_printf(100, "nb_colors %d\n", sub.rects[i]->nb_colors);
+						subtitle_printf(100, "type %d\n", sub.rects[i]->type);
+						subtitle_printf(100, "text %s\n", sub.rects[i]->text);
+						subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
+						subtitle_printf(100, "pic %p\n", sub.rects[i]->data[0]);
+						subtitle_printf(100, "colors %p\n\n", sub.rects[i]->data[1]);
 						
 						switch (sub.rects[i]->nb_colors)
 						{
