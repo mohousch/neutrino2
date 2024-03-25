@@ -37,7 +37,7 @@ typedef struct
 
 typedef struct 
 {
-	uint32_t*         	data;
+	uint8_t*         	data;
 	unsigned int           	Width;
 	unsigned int           	Height;
 	unsigned int           	Stride;

@@ -179,7 +179,7 @@ static int writeReverseData(void* _call)
 	textLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
 	textLabel.setColor(COL_WHITE_PLUS_0);
 	textLabel.paintMainFrame(true);
-	textLabel.setText((const char*)call->data);
+	textLabel.setText((const char *)call->data);
 	textLabel.setHAlign(CComponent::CC_ALIGN_CENTER);
 	textLabel.setPosition(call->x, call->y, call->Width, call->Height);
 //	textLabel.enableSaveScreen(); // FIXME:

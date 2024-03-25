@@ -83,38 +83,12 @@ int max_y = 28;
 /* Types                         */
 /* ***************************** */
 
-// ass
-typedef struct ass_s 
-{
-	unsigned char* data;
-	int            len;
-	unsigned char* extradata;
-	int            extralen;
-    
-	long long int  pts;
-	float          duration;
-} ass_t;
-
-typedef struct region_s
-{
-	unsigned int x;
-	unsigned int y;
-	unsigned int w;
-	unsigned int h;
-	time_t       undisplay;
-    
-	struct region_s* next;
-} region_t;
-
 /* ***************************** */
 /* Varaibles                     */
 /* ***************************** */
 
 static pthread_mutex_t mutex;
 static int isSubtitleOpened = 0;
-
-// ass
-static region_t* firstRegion = NULL;
 
 /* ***************************** */
 /* Prototypes                    */
@@ -173,515 +147,93 @@ uint32_t * resize32(uint8_t * origin, uint32_t * colors, int nb_colors, int ox, 
 	return(cr);
 }
 
-void replace_all(char ** string, char * search, char * replace) 
+static char * ass_get_text(char *str)
 {
-    int len = 0;
-    char * ptr = NULL;
-    char tempString[512];
-    char newString[512];
-
-    newString[0] = '\0';
-
-    if ((string == NULL) || (*string == NULL) || (search == NULL) || (replace == NULL))
-    {
-        subtitle_err("null pointer passed\n");
-        return;
-    }
-    
-    strncpy(tempString, *string, 511);
-    tempString[511] = '\0';
-
-    free(*string);
-
-    while ((ptr = strstr(tempString, search)) != NULL) 
-    {
-        len  = ptr - tempString;
-        strncpy(newString, tempString, len);
-        newString[len] = '\0';
-        strcat(newString, replace);
-
-        len += strlen(search);
-        strcat(newString, tempString+len);
-
-        strcpy(tempString, newString);
-    }
-
-    subtitle_printf(20, "strdup in line %d\n", __LINE__);
-
-    if(newString[0] != '\0')
-        *string = strdup(newString);
-    else
-        *string = strdup(tempString);
-}
-
-// ass
-#define ASS_FONT DATADIR "/fonts/arial.ttf"
-
-static ASS_Library *ass_library;
-static ASS_Renderer *ass_renderer;
-
-static float ass_font_scale = 0.7;
-static float ass_line_spacing = 0.7;
-
-static ASS_Track* ass_track = NULL;
-
-int ass_init(Context_t *context)
-{
-    int modefd;
-    char buf[16];
-    
-    subtitle_printf(10, ">\n");
-
-    ass_library = ass_library_init();
-
-    if (!ass_library) 
-    {
-        subtitle_err("ass_library_init failed!\n");
-        return cERR_SUBTITLE_ERROR;
-    }   
-    
-    ass_set_extract_fonts( ass_library, 1 );
-    ass_set_style_overrides( ass_library, NULL );
-    
-    ass_renderer = ass_renderer_init(ass_library);
-    
-    if (!ass_renderer) 
-    {
-        subtitle_err("ass_renderer_init failed!\n");
-
-        if (ass_library)
-            ass_library_done(ass_library);
-        ass_library = NULL;
-
-        return cERR_SUBTITLE_ERROR;
-    }
-
-    modefd = open("/proc/stb/video/3d_mode", O_RDWR);
-    
-    if(modefd > 0)
-    {
-        read(modefd, buf, 15);
-        buf[15]='\0';
-	close(modefd);
-    }
-    else 
-    	threeDMode = 0;
-
-    if(strncmp(buf,"sbs",3)==0)
-    	threeDMode = 1;
-    else if(strncmp(buf,"tab",3)==0)
-    	threeDMode = 2;
-    else 
-    	threeDMode = 0;
-    
-    subtitle_printf(10, "width %d, height %d, share %d, fd %d, 3D %d\n", screen_width, screen_height, shareFramebuffer, framebufferFD, threeDMode);
-
-    if(threeDMode == 0)
-    {
-        ass_set_frame_size(ass_renderer, screen_width, screen_height);
-        ass_set_margins(ass_renderer, (int)(0.03 * screen_height), (int)(0.03 * screen_height) ,
-                                      (int)(0.03 * screen_width ), (int)(0.03 * screen_width )  );
-    }
-    else if(threeDMode == 1)
-    {
-        ass_set_frame_size(ass_renderer, screen_width/2, screen_height);
-        ass_set_margins(ass_renderer, (int)(0.03 * screen_height), (int)(0.03 * screen_height) ,
-                                      (int)(0.03 * screen_width/2 ), (int)(0.03 * screen_width/2 )  );
-    }
-    else if(threeDMode == 2)
-    {
-        ass_set_frame_size(ass_renderer, screen_width, screen_height/2);
-        ass_set_margins(ass_renderer, (int)(0.03 * screen_height/2), (int)(0.03 * screen_height/2) ,
-                                      (int)(0.03 * screen_width ), (int)(0.03 * screen_width )  );
-    }
-    
-    ass_set_use_margins(ass_renderer, 0 );
-    ass_set_font_scale(ass_renderer, ass_font_scale);
-
-    ass_set_hinting(ass_renderer, ASS_HINTING_LIGHT);
-    ass_set_line_spacing(ass_renderer, ass_line_spacing);
-    ass_set_fonts(ass_renderer, ASS_FONT, "Arial", 0, NULL, 1);
-
-    if(threeDMode == 0)
-    {
-        ass_set_aspect_ratio( ass_renderer, 1.0, 1.0);
-    }
-    else if(threeDMode == 1)
-    {
-        ass_set_aspect_ratio( ass_renderer, 0.5, 1.0);
-    }
-    else if(threeDMode == 2)
-    {
-        ass_set_aspect_ratio( ass_renderer, 1.0, 0.5);
-    }
-
-    return cERR_SUBTITLE_NO_ERROR;
-}
-
-/* ********************************* */
-/* Region Undisplay handling         */
-/* ********************************* */
-
-/* release and undisplay all saved regions
- */
-void releaseRegions()
-{
-    region_t* next, *old;
-    Writer_t* writer;
-    
-    if (firstRegion == NULL)
-        return;
-
-    writer = getDefaultFramebufferWriter();
-
-    if (writer == NULL)
-    {
-        subtitle_err("no framebuffer writer found!\n");
-    }
-
-    next = firstRegion;
-    while (next != NULL)
-    {
-        if (writer)
-        {
-             WriterFBCallData_t out;
-                    
-             subtitle_printf(100, "release: w %d h %d x %d y %d\n", next->w, next->h, next->x, next->y);
-
-             out.fd            = framebufferFD;
-             out.data          = NULL;
-             out.Width         = next->w;
-             out.Height        = next->h;
-             out.x             = next->x;
-             out.y             = next->y;
-
-             out.Screen_Width  = screen_width; 
-             out.Screen_Height = screen_height; 
-             out.destination   = destination;
-             out.destStride    = destStride;
-
-             writer->writeData(&out);
-             if(threeDMode == 1)
-             {
-                 out.x = screen_width/2 + next->x;
-                 writer->writeData(&out);
-             }
-             else if(threeDMode == 2)
-             {
-                 out.y = screen_height/2 + next->y;
-                 writer->writeData(&out);
-             }
-        }
-        old  = next;         
-        next = next->next;
-        free(old);
-    }
-    
-    firstRegion = NULL;  
-}
-
-/* check for regions which should be undisplayed. 
- * we are very tolerant on time here, because
- * regions are also released when new regions are
- * detected (see ETSI EN 300 743 Chapter Page Composition)
- */
-void checkRegions()
-{
-#define cDeltaTime 2
-    region_t* next, *old, *prev;
-    Writer_t* writer;
-    time_t now = time(NULL);
-    
-    if (firstRegion == NULL)
-        return;
-
-    writer = getDefaultFramebufferWriter();
-
-    if (writer == NULL)
-    {
-        subtitle_err("no framebuffer writer found!\n");
-    }
-
-    prev = next = firstRegion;
-    
-    while (next != NULL)
-    {
-        if (now > next->undisplay + cDeltaTime)
-        {
-           subtitle_printf(100, "undisplay: %ld > %ld\n", now, next->undisplay + cDeltaTime);
-
-           if (writer)
-           {
-                WriterFBCallData_t out;
-
-                subtitle_printf(100, "release: w %d h %d x %d y %d\n", next->w, next->h, next->x, next->y);
-
-                out.fd            = framebufferFD;
-                out.data          = NULL;
-                out.Width         = next->w;
-                out.Height        = next->h;
-                out.x             = next->x;
-                out.y             = next->y;
-                
-                out.Screen_Width  = screen_width; 
-                out.Screen_Height = screen_height; 
-                out.destination   = destination;
-                out.destStride    = destStride;
-
-                writer->writeData(&out);
-                if(threeDMode == 1)
-                {
-                    out.x = screen_width/2 + next->x;
-                    writer->writeData(&out);
-                }
-                else if(threeDMode == 2)
-                {
-                    out.y = screen_height/2 + next->y;
-                    writer->writeData(&out);
-               }
-           }
-           
-           old = next;
-           next = prev->next = next->next;
-
-           if (old == firstRegion)
-               firstRegion = next;
-           free(old);
-        } 
-        else
-        {
-            prev = next;
-            next = next->next;
-        }
-    }
-}
-
-/* store a display region for later release */
-void storeRegion(unsigned int x, unsigned int y, unsigned int w, unsigned int h, time_t undisplay)
-{
-    region_t* new;
-    
-    subtitle_printf(100, "%d %d %d %d %ld\n", x, y, w, h, undisplay);
-    
-    if (firstRegion == NULL)
-    {
-        firstRegion = malloc(sizeof(region_t));
-        new = firstRegion;
-    } 
-    else
-    {
-        new = firstRegion;
-        while (new->next != NULL)
-            new = new->next;
-    
-        new->next = malloc(sizeof(region_t));
-        new = new->next;
-    }
-
-    new->next      = NULL;
-    new->x         = x;
-    new->y         = y;
-    new->w         = w;
-    new->h         = h;
-    new->undisplay = undisplay;
-}
-
-//// ass_write
-static void ass_write(Context_t *context, SubtitleData_t* data) 
-{
-    	Writer_t* writer;
-    
-    	subtitle_printf(10, "\n");
-
-    	writer = getDefaultFramebufferWriter();
-
-    	if (writer == NULL)
+    	// Events are stored in the Block in this order:
+    	// ReadOrder, Layer, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+    	// 91,0,Default,,0,0,0,,maar hij smaakt vast tof.
+    	int i = 0;
+    	char *p_str = str;
+    	
+    	while(i < 8 && *p_str != '\0')
     	{
-        	subtitle_err("no framebuffer writer found!\n");
+        	if (*p_str == ',')
+            		i++;
+        	p_str++;
     	}
     	
-    	//
-    	int first_kiss;
+    	// standardize hard break: '\N' -> '\n'
+    	// http://docs.aegisub.org/3.2/ASS_Tags/
+    	char *p_newline = NULL;
+    	
+    	while((p_newline = strstr(p_str, "\\N")) != NULL)
+        	*(p_newline + 1) = 'n';
+        	
+    	return p_str;
+}
 
-    	if (ass_track == NULL)
+static char * json_string_escape(char *str)
+{
+    	static char tmp[2048];
+    	char *ptr1 = tmp;
+    	char *ptr2 = str;
+    	
+    	while (*ptr2 != '\0')
     	{
-        	first_kiss = 1;
-        	ass_track = ass_new_track(ass_library);
-
-        	if (ass_track == NULL)
+        	switch (*ptr2) 
         	{
-            		subtitle_err("error creating ass_track\n");
-            		return cERR_SUBTITLE_ERROR;
-        	}
-    	}
-
-    	if ((data->extradata) && (first_kiss))
-    	{
-        	subtitle_printf(20,"processing private %d bytes\n",data->extralen);
-        	ass_process_codec_private(ass_track, (char*) data->extradata, data->extralen);
-        	subtitle_printf(20,"processing private done\n");
-    	} 
-
-    	if (data->data)
-    	{
-        	subtitle_printf(20,"processing data %d bytes\n",data->len);
-        	ass_process_data(ass_track, (char*) data->data, data->len);
-        	subtitle_printf(20,"processing data done\n");
-    	}
-
-	//
-	if (ass_track)
-    	{
-		ASS_Image *       img   = NULL;
-            	int               change = 0;
-            	unsigned long int playPts;
-
-            	getMutex(__LINE__);
-            
-            	//FIXME: durch den sleep bleibt die cpu usage zw. 5 und 13%, ohne
-            	//       steigt sie bei Verwendung von subtiteln bis auf 95%.
-            	//       ich hoffe dadurch gehen keine subtitle verloren, wenn die playPts
-            	//       durch den sleep verschlafen wird. Besser w�re es den n�chsten
-            	//       subtitel zeitpunkt zu bestimmen und solange zu schlafen.
-            	usleep(1000);
-
-            	img = ass_render_frame(ass_renderer, ass_track, playPts / 90.0, &change);
-
-            	subtitle_printf(10, "img %p pts %lu %f\n", img, playPts, playPts / 90.0);
-
-            	if(img != NULL && ass_renderer && ass_track)
-            	{
-                	/* the spec says, that if a new set of regions is present
-                 	* the complete display switches to the new state. So lets
-                 	* release the old regions on display.
-                 	*/
-                	if (change != 0)
-                    		releaseRegions();
-
-                	while (context && context->playback && context->playback->isPlaying && (img) && (change != 0))
-                	{
-                    		WriterFBCallData_t out;
-                    		time_t now = time(NULL);
-                    		time_t undisplay = now + 10;
-
-                    		if (ass_track && ass_track->events)
-                    		{
-                        		undisplay = now + ass_track->events->Duration / 1000 + 0.5;
-                    		}
-
-                    		subtitle_printf(10, "w %d h %d s %d x %d y %d c %d chg %d now %ld und %ld\n", 
-                                 img->w, img->h, img->stride, 
-                                 img->dst_x, img->dst_y, img->color, 
-                                 change, now, undisplay);
-
-                    		/* api docu said w and h can be zero which
-                     		* means image should not be rendered
-                     		*/
-                    		if ((img->w != 0) && (img->h != 0) && (writer)) 
-                    		{
-                        		out.fd            = framebufferFD;
-                        		out.data          = (uint32_t*)img->bitmap;
-                        		out.Width         = img->w;
-                        		out.Height        = img->h;
-                        		out.Stride        = img->stride;
-                        		out.x             = img->dst_x;
-                        		out.y             = img->dst_y;
-                        		out.color         = img->color;
-                        
-                        		out.Screen_Width  = screen_width; 
-                        		out.Screen_Height = screen_height; 
-                        		out.destination   = destination;
-                        		out.destStride    = destStride;
-
-                        		storeRegion(img->dst_x, img->dst_y, img->w, img->h, undisplay);
-                                    
-                        		if (shareFramebuffer)
-                        		{
-                            			if(context && context->playback && context->playback->isPlaying && writer)
-                            			{
-                                			writer->writeData(&out);
-                                
-                                			if(threeDMode == 1)
-                                			{
-			            				out.x = screen_width/2 + img->dst_x;
-			            				writer->writeData(&out);
-                                			}
-                                			else if(threeDMode == 2)
-                                			{
-                                    				out.y = screen_height/2 + img->dst_y;
-                                    				writer->writeData(&out);
-                                			}
-                            			}
-                        		}
-                    		}
-
-                    		/* Next image */
-                    		img = img->next;
-                	}
-            	}
-            	else
-            	{
-               		/* noop */
-            	}
-
-            	releaseMutex(__LINE__);
-        } 
-        else
-        {
-            usleep(1000);
+        		case '"':
+            			*ptr1++ = '\\';
+            			*ptr1++ = '\"';
+        			break;
+        			
+        		case '\\':
+            			*ptr1++ = '\\';
+            			*ptr1++ = '\\';
+        			break;
+        			
+        		case '\b':
+            			*ptr1++ = '\\';
+            			*ptr1++ = 'b';
+        			break;
+        			
+        		case '\f':
+            			*ptr1++ = '\\';
+            			*ptr1++ = 'f';
+        			break;
+        			
+        		case '\n':
+            			*ptr1++ = '\\';
+            			*ptr1++ = 'n';
+        			break;
+        			
+        		case '\r': 
+            			*ptr1++ = '\\';
+            			*ptr1++ = 'r';
+        			break;
+        			
+        		case '\t': 
+            			*ptr1++ = '\\';
+            			*ptr1++ = 't';
+        			break;
+        			
+        		default:
+            			*ptr1++ = *ptr2;
+            			break;
         }
         
-        /* cleanup no longer used but not overwritten regions */
-        checkRegions();
-
-    	subtitle_printf(10, "terminating\n");
+        ++ptr2;
+    	}
+    	*ptr1 = '\0';
+    	
+    	return tmp;
 }
 
-/*
-static int ass_stop(Context_t *context) 
-{
-    int ret = cERR_SUBTITLE_NO_ERROR;
-    int wait_time = 20;
-    Writer_t* writer;
-
-    subtitle_printf(10, "\n");
-
-    getMutex(__LINE__);
-
-    releaseRegions();
-
-    if (ass_track)
-        ass_free_track(ass_track);
-
-    ass_track = NULL;
-
-    if (ass_renderer)
-        ass_renderer_done(ass_renderer);
-    ass_renderer = NULL;
-
-    if (ass_library)
-        ass_library_done(ass_library);
-    ass_library = NULL;
-
-    writer = getDefaultFramebufferWriter();
-
-    if (writer != NULL)
-    {
-        writer->reset();
-    }
-
-    releaseMutex(__LINE__);
-
-    subtitle_printf(10, "ret %d\n", ret);
-    
-    return ret;
-}
-*/
-
-//// bitmap_write
-static void dvbsub_write(Context_t *context, SubtitleData_t* out) 
+//// proccess_sub_data
+static void proccess_sub_data(Context_t *context, SubtitleData_t* out) 
 {
     	Writer_t* writer;
+    	WriterFBCallData_t fb;
     
     	subtitle_printf(100, "\n");
 
@@ -722,118 +274,208 @@ static void dvbsub_write(Context_t *context, SubtitleData_t* out)
 	{
 		int i;
 
-		subtitle_printf(100, "format %d\n", sub.format);
-		subtitle_printf(100, "start_display_time %d\n", sub.start_display_time);
-		subtitle_printf(100, "end_display_time %d\n", sub.end_display_time);
-		subtitle_printf(100, "num_rects %d\n", sub.num_rects);
+		subtitle_printf(10, "format %d\n", sub.format);
+		subtitle_printf(10, "start_display_time %d\n", sub.start_display_time);
+		subtitle_printf(10, "end_display_time %d\n", sub.end_display_time);
+		subtitle_printf(10, "num_rects %d\n", sub.num_rects);
 		
 		if (got_sub_ptr && sub.num_rects > 0)
 		{			
 			switch (sub.rects[0]->type)
 			{
-				case SUBTITLE_TEXT:
-				case SUBTITLE_ASS:
+				case SUBTITLE_TEXT: // 2
 				{
 					for (i = 0; i < sub.num_rects; i++)
 					{
-						subtitle_printf(100, "x %d\n", sub.rects[i]->x);
-						subtitle_printf(100, "y %d\n", sub.rects[i]->y);
-						subtitle_printf(100, "w %d\n", sub.rects[i]->w);
-						subtitle_printf(100, "h %d\n", sub.rects[i]->h);
-						subtitle_printf(100, "nb_colors %d\n", sub.rects[i]->nb_colors);
-						subtitle_printf(100, "type %d\n", sub.rects[i]->type);
-						subtitle_printf(100, "text %s\n", sub.rects[i]->text);
-						subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
+						subtitle_printf(10, "x %d\n", sub.rects[i]->x);
+						subtitle_printf(10, "y %d\n", sub.rects[i]->y);
+						subtitle_printf(10, "w %d\n", sub.rects[i]->w);
+						subtitle_printf(10, "h %d\n", sub.rects[i]->h);
+						subtitle_printf(10, "nb_colors %d\n", sub.rects[i]->nb_colors);
+						subtitle_printf(10, "type %d\n", sub.rects[i]->type);
+						subtitle_printf(10, "text %s\n", sub.rects[i]->text);
+						subtitle_printf(10, "ass %s\n", sub.rects[i]->ass);
+						
+						fb.fd            = framebufferFD;
+             					fb.data          = sub.rects[i]->text;
+             					fb.Width         = 1200;
+        					fb.Height        = 60;
+        					fb.x             = 40;
+        					fb.y             = 600;
+             					
+             					fb.color	  = 0;
+
+             					fb.Screen_Width  = screen_width; 
+             					fb.Screen_Height = screen_height; 
+             					fb.destination   = destination;
+             					fb.destStride    = destStride;
+
+             					writer->writeReverseData(&fb);
 					}
 					break;
 				}
 				
-				case SUBTITLE_BITMAP:
+				case SUBTITLE_ASS: // 3
 				{
 					for (i = 0; i < sub.num_rects; i++)
 					{
-						subtitle_printf(100, "x %d\n", sub.rects[i]->x);
-						subtitle_printf(100, "y %d\n", sub.rects[i]->y);
-						subtitle_printf(100, "w %d\n", sub.rects[i]->w);
-						subtitle_printf(100, "h %d\n", sub.rects[i]->h);
-						subtitle_printf(100, "nb_colors %d\n", sub.rects[i]->nb_colors);
-						subtitle_printf(100, "type %d\n", sub.rects[i]->type);
-						subtitle_printf(100, "text %s\n", sub.rects[i]->text);
-						subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
-														
-#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
-						uint32_t *colors = (uint32_t *) sub.rects[i]->pict.data[1];
-#else
-						uint32_t *colors = (uint32_t *) sub.rects[i]->data[1];
-#endif
-						int width = sub.rects[i]->w;
-						int height = sub.rects[i]->h;
+						subtitle_printf(10, "x %d\n", sub.rects[i]->x);
+						subtitle_printf(10, "y %d\n", sub.rects[i]->y);
+						subtitle_printf(10, "w %d\n", sub.rects[i]->w);
+						subtitle_printf(10, "h %d\n", sub.rects[i]->h);
+						subtitle_printf(10, "nb_colors %d\n", sub.rects[i]->nb_colors);
+						subtitle_printf(10, "type %d\n", sub.rects[i]->type);
+						subtitle_printf(10, "text %s\n", sub.rects[i]->text);
+						subtitle_printf(10, "ass %s\n", sub.rects[i]->ass);
+						
+						fb.fd            = framebufferFD;
+             					fb.data          = ass_get_text(sub.rects[i]->ass);
+             					fb.Width         = 1200;
+        					fb.Height        = 60;
+        					fb.x             = 40;
+        					fb.y             = 600;
+             					
+             					fb.color	  = 0;
 
-						int h2 = (width == 1280) ? 720 : 576;
-							
-						int xoff = sub.rects[i]->x * 1280 / width;
-						int yoff = sub.rects[i]->y * 720 / h2;
-						int nw = width * 1280 / width;
-						int nh = height * 720 / h2;
+             					fb.Screen_Width  = screen_width; 
+             					fb.Screen_Height = screen_height; 
+             					fb.destination   = destination;
+             					fb.destStride    = destStride;
 
-						subtitle_printf(100, "#%d at %d,%d size %dx%d colors %d (x=%d y=%d w=%d h=%d) \n", i+1, sub.rects[i]->x, sub.rects[i]->y, sub.rects[i]->w, sub.rects[i]->h, sub.rects[i]->nb_colors, xoff, yoff, nw, nh);
+             					writer->writeReverseData(&fb);
+					}
+					break;
+				}
+				
+				case SUBTITLE_BITMAP: // 1: DVB / TELETEXT
+				{
+					for (i = 0; i < sub.num_rects; i++)
+					{
+						subtitle_printf(10, "i %d\n", i);
+						subtitle_printf(10, "x %d\n", sub.rects[i]->x);
+						subtitle_printf(10, "y %d\n", sub.rects[i]->y);
+						subtitle_printf(10, "w %d\n", sub.rects[i]->w);
+						subtitle_printf(10, "h %d\n", sub.rects[i]->h);
+						subtitle_printf(10, "nb_colors %d\n", sub.rects[i]->nb_colors);
+						subtitle_printf(10, "type %d\n", sub.rects[i]->type);
+						subtitle_printf(10, "text %s\n", sub.rects[i]->text);
+						subtitle_printf(10, "ass %s\n", sub.rects[i]->ass);
+						subtitle_printf(10, "pic %p\n", sub.rects[i]->data[0]);
+						subtitle_printf(10, "colors %p\n\n", sub.rects[i]->data[1]);
+						
+						switch (sub.rects[i]->nb_colors)
+						{
+							case 16:
+							{
+								//								
+								int width = sub.rects[i]->w;
+								int height = sub.rects[i]->h;
 
-						// resize color to 32 bit
+								int h2 = 720;
+									
+								int xoff = sub.rects[i]->x * 1280 / width;
+								int yoff = sub.rects[i]->y * 720 / h2;
+								int nw = width * 1280 / width;
+								int nh = height * 720 / h2;
+
+								// resize color to 32 bit
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
-						uint32_t *newdata = resize32(sub.rects[i]->pict.data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
+								uint32_t* newdata = resize32(sub.rects[i]->pict.data[0], sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
 #else
-						uint32_t *newdata = resize32(sub.rects[i]->data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
+								uint32_t* newdata = resize32(sub.rects[i]->data[0], sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
 #endif
-						WriterFBCallData_t out;
-						
-						// clear
-						out.fd            = framebufferFD;
-             					out.data          = NULL;
-             					out.Width         = max_x;
-             					out.Height        = max_y;
-             					out.x             = min_x;
-             					out.y             = min_y;
-             					
-             					out.color	  = 0;
+									
+								// writeData
+			     					fb.fd            = framebufferFD;
+			     					fb.data          = newdata;
+			     					fb.Width         = nw;
+			     					fb.Height        = nh;
+			     					fb.x             = xoff;
+			     					fb.y             = yoff;
+			     					
+			     					fb.color	  = 0;
 
-             					out.Screen_Width  = screen_width; 
-             					out.Screen_Height = screen_height; 
-             					out.destination   = destination;
-             					out.destStride    = destStride;
+			     					fb.Screen_Width  = screen_width; 
+			     					fb.Screen_Height = screen_height; 
+			     					fb.destination   = destination;
+			     					fb.destStride    = destStride;
 
-             					//writer->writeData(&out); //FIXME:
+			     					writer->writeData(&fb);
+
+								free(newdata);
+								
+								//
+								if(min_x > xoff)
+									min_x = xoff;
+
+								if(min_y > yoff)
+									min_y = yoff;
+
+								if(max_x < nw)
+									max_x = nw;
+
+								if(max_y < nh)
+									max_y = nh;
+							}
+							break;
 							
-						// writeData
-             					out.fd            = framebufferFD;
-             					out.data          = newdata;
-             					out.Width         = nw;
-             					out.Height        = nh;
-             					out.x             = xoff;
-             					out.y             = yoff;
-             					
-             					out.color	  = 0;
+							case 40: // TELETEXT
+							{
+								//								
+								int width = sub.rects[i]->w;
+								int height = sub.rects[i]->h;
 
-             					out.Screen_Width  = screen_width; 
-             					out.Screen_Height = screen_height; 
-             					out.destination   = destination;
-             					out.destStride    = destStride;
+								int h2 = height;
+									
+								int xoff = sub.rects[i]->x * 1280 / width;
+								int yoff = sub.rects[i]->y * 720 / h2;
+								int nw = width * 1280 / width;
+								int nh = height * 720 / h2;
 
-             					writer->writeData(&out);
+								// resize color to 32 bit
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
+								uint32_t* newdata = resize32(sub.rects[i]->pict.data[0], sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+#else
+								uint32_t* newdata = resize32(sub.rects[i]->data[0], sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+#endif
+									
+								// writeData
+			     					fb.fd            = framebufferFD;
+			     					fb.data          = newdata;
+			     					fb.Width         = nw;
+			     					fb.Height        = nh;
+			     					fb.x             = xoff;
+			     					fb.y             = yoff;
+			     					
+			     					fb.color	  = 0;
 
-						free(newdata);
-						
-						//
-						if(min_x > xoff)
-							min_x = xoff;
+			     					fb.Screen_Width  = screen_width; 
+			     					fb.Screen_Height = screen_height; 
+			     					fb.destination   = destination;
+			     					fb.destStride    = destStride;
 
-						if(min_y > yoff)
-							min_y = yoff;
+			     					writer->writeData(&fb);
 
-						if(max_x < nw)
-							max_x = nw;
+								free(newdata);
+								
+								//
+								if(min_x > xoff)
+									min_x = xoff;
 
-						if(max_y < nh)
-							max_y = nh;
+								if(min_y > yoff)
+									min_y = yoff;
+
+								if(max_x < nw)
+									max_x = nw;
+
+								if(max_y < nh)
+									max_y = nh;
+							}
+							break;
+							
+							default:
+								break;
+						}
 					} //for
 					break;
 				}
@@ -845,62 +487,6 @@ static void dvbsub_write(Context_t *context, SubtitleData_t* out)
 	}
 
     	subtitle_printf(100, "terminating\n");
-}
-
-static void teletext_write(Context_t *context, SubtitleData_t* out) 
-{
-    	Writer_t* writer;
-    
-    	subtitle_printf(10, "\n");
-
-    	writer = getDefaultFramebufferWriter();
-
-    	if (writer == NULL)
-    	{
-        	subtitle_err("no framebuffer writer found!\n");
-    	}
-    	
-    	// FIXME:
-    	subtitle_printf(10, "%s\n", (char *)out->data);
- 
- 	subtitle_printf(10, "terminating\n");   	
-}
-
-static void text_write(Context_t *context, SubtitleData_t* out) 
-{
-    	Writer_t* writer;
-    
-    	subtitle_printf(100, "\n");
-
-    	writer = getDefaultFramebufferWriter();
-
-    	if (writer == NULL)
-    	{
-        	subtitle_err("no framebuffer writer found!\n");
-    	}
-    	
-    	subtitle_printf(100, "%s\n", (char *)out->data);
-    	
-    	WriterFBCallData_t fb;
-
-        fb.fd            = framebufferFD;
-        fb.data          = (uint32_t*)out->data;
-        fb.Width         = 1200;
-        fb.Height        = 60;
-        fb.x             = 40;
-        fb.y             = 600;
-             					
-        fb.color	  = 0;
-
-        fb.Screen_Width  = screen_width; 
-        fb.Screen_Height = screen_height; 
-        fb.destination   = destination;
-        fb.destStride    = destStride;
-
-        writer->writeReverseData(&fb);
-    	
- 
- 	subtitle_printf(100, "terminating\n");   	
 }
 
 /* ***************************** */
@@ -922,37 +508,7 @@ static int Write(void* _context, void *data)
     	out = (SubtitleData_t*) data;
     	
     	//
-    	switch (out->avCodecId)
-    	{
-    		case AV_CODEC_ID_SSA:
-    		case AV_CODEC_ID_ASS:
-    		{
-    			//
-    			ass_write(context, out);
-    			break;
-    		}
-    		
-    		case AV_CODEC_ID_DVB_SUBTITLE:
-    		{    		
-    			dvbsub_write(context, out); 
-    			break;
-    		}
-    	
-    		case AV_CODEC_ID_DVB_TELETEXT:
-    		{
-    			teletext_write(context, out); 
-    		
-    			break;
-    		}
-    		
-    		case AV_CODEC_ID_SUBRIP:
-    		{
-    			text_write(context, out);
-    		}
-    	
-    		default:
-    			break;
-    	}
+    	proccess_sub_data(context, out);
 
     	subtitle_printf(100, "<\n");
 
@@ -972,9 +528,6 @@ static int subtitle_Open(context)
     }
 
     getMutex(__LINE__);
-    
-    // ass
-    ass_init(context);
 
     isSubtitleOpened = 1;
 
@@ -992,12 +545,6 @@ static int subtitle_Close(Context_t* context)
     subtitle_printf(10, "\n");
 
     getMutex(__LINE__);
-    
-    //
-     if (ass_track)
-        ass_free_track(ass_track);
-
-    ass_track = NULL;
 
     isSubtitleOpened = 0;
 
@@ -1017,29 +564,6 @@ static int subtitle_Stop(context)
     subtitle_printf(10, "\n");
 
     getMutex(__LINE__);
-    
-    // ass
-    releaseRegions();
-
-    if (ass_track)
-        ass_free_track(ass_track);
-
-    ass_track = NULL;
-
-    if (ass_renderer)
-        ass_renderer_done(ass_renderer);
-    ass_renderer = NULL;
-
-    if (ass_library)
-        ass_library_done(ass_library);
-    ass_library = NULL;
-    
-    writer = getDefaultFramebufferWriter();
-
-    if (writer != NULL)
-    {
-        writer->reset();
-    }
 
     releaseMutex(__LINE__);
 
