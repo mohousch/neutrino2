@@ -328,10 +328,12 @@ void CMoviePlayerGui::startSubtitles(bool show)
 
 void CMoviePlayerGui::stopSubtitles()
 {
-	CFrameBuffer::getInstance()->clearFrameBuffer();
-	
 	if(playback)
 		playback->SetSubPid(-1);
+		
+	usleep(5000);
+		
+	CFrameBuffer::getInstance()->clearFrameBuffer();
 }
 
 int CMoviePlayerGui::exec(CMenuTarget * parent, const std::string & actionKey)

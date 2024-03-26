@@ -296,7 +296,9 @@ static int Write(void* _context, void *data)
 		subtitle_printf(100, "num_rects %d\n", sub.num_rects);
 		
 		if (got_sub_ptr && sub.num_rects > 0)
-		{			
+		{
+			subtitle_printf(100, "type: %d\n", sub.rects[0]->type);
+						
 			switch (sub.rects[0]->type)
 			{
 				case SUBTITLE_TEXT: // 2
