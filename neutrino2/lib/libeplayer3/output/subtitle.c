@@ -53,7 +53,7 @@
 
 #ifdef SUBTITLE_DEBUG
 
-static short debug_level = 100;
+static short debug_level = 10;
 
 #define subtitle_printf(level, fmt, x...) do { \
 if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
@@ -274,17 +274,7 @@ static int Write(void* _context, void *data)
     	out->packet->size = out->len;
     	out->packet->pts  = out->pts;
     		
-    	//
-    	const AVCodec *codec  = avcodec_find_decoder(ctx->codec_id);
-    		
     	int got_sub_ptr = 0;
-    	
-    	// init codec
-    	if (avcodec_open2(ctx, codec, NULL) != 0)
-    	{
-    		subtitle_err("error decoding subtitle\n");
-    		return cERR_SUBTITLE_ERROR;
-	}
     	
     	// decode 	
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)			   

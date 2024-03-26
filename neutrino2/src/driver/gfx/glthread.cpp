@@ -346,6 +346,8 @@ void GLThreadObj::render()
 	// simply limit to 30 Hz, if anyone wants to do this properly, feel free	
 	usleep(sleep_us);
 	
+//	printf("sleep_us: %d\n", sleep_us);
+	
 	glutPostRedisplay();
 }
 
@@ -575,19 +577,19 @@ void GLThreadObj::bltPlayBuffer()
 	
 	// FIXME:
 	int64_t apts = buf->apts();
-	int64_t vpts = buf->vpts();
+	int64_t vpts = buf->vpts() + 18000;
 			
 	if (apts != last_apts)
 	{
 		if (apts < vpts)
-			sleep_us = (sleep_us * 2 + (vpts - apts) * 10 / 9) / 3;
+			//sleep_us = (sleep_us * 2 + (vpts - apts) * 10 / 9) / 3;
+			sleep_us = ((vpts - apts) * 10 / 9) / 3;
 		else if (sleep_us > 1000)
 			sleep_us -= 1000;
 		
 		last_apts = apts;
 		
-		//
-		int rate = buf->rate() / 1000;
+		int rate = buf->rate();
 		
 		if (rate > 0)
 			rate = 2000000 / rate;

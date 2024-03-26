@@ -860,9 +860,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	avcodec_register_all();
 	av_register_all();
 	avformat_network_init();
-	
-	//
-	avContext = avformat_alloc_context();
 
 #if LIBAVCODEC_VERSION_MAJOR < 54
 	if ((err = av_open_input_file(&avContext, filename, NULL, 0, NULL)) != 0) 
@@ -983,6 +980,15 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				
 				ffmpeg_printf(10, "width %d\n", track.width);
 				ffmpeg_printf(10, "height %d\n", track.height);
+				
+#ifdef USE_OPENGL
+				// init codec
+#if LIBAVCODEC_VERSION_MAJOR < 54
+				avcodec_open(stream->codec, avcodec_find_decoder(stream->codec->codec_id));
+#else
+				avcodec_open2(stream->codec, avcodec_find_decoder(stream->codec->codec_id), NULL);
+#endif
+#endif
 
 				if (context->manager->video)
 				{
@@ -1049,8 +1055,15 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 					track.duration = (double) stream->duration * av_q2d(stream->time_base) * 1000.0;
 				}
 
-#ifndef USE_OPENGL
-				// pcm
+#ifdef USE_OPENGL
+				// init codec
+#if LIBAVCODEC_VERSION_MAJOR < 54
+				avcodec_open(stream->codec, avcodec_find_decoder(stream->codec->codec_id));
+#else
+				avcodec_open2(stream->codec, avcodec_find_decoder(stream->codec->codec_id), NULL);
+#endif
+#else
+				// ipcm
 				if(!strncmp(encoding, "A_IPCM", 6))
 				{
 					track.inject_as_pcm = 1;
@@ -1279,6 +1292,13 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				{
 					ffmpeg_printf(10, "FOUND SUBTITLE %s\n", track.Name);
 				}
+				
+// init codec
+#if LIBAVCODEC_VERSION_MAJOR < 54
+				avcodec_open(stream->codec, avcodec_find_decoder(stream->codec->codec_id));
+#else
+				avcodec_open2(stream->codec, avcodec_find_decoder(stream->codec->codec_id), NULL);
+#endif
 
 				if (context->manager->subtitle)
 				{

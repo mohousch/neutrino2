@@ -1126,7 +1126,6 @@ static int Write(void* _context, void* _out)
 		}
 #else
 		AVCodecContext* ctx = out->stream->codec;
-		const AVCodec* codec = avcodec_find_decoder(ctx->codec_id);
 		AVFrame * aframe = NULL;
 		int got_frame = 0;
 		// resample
@@ -1138,14 +1137,6 @@ static int Write(void* _context, void* _out)
 		uint64_t o_layout; 	// output channels layout
 		int driver;
 		ao_info *ai;
-		
-		// init codec
-#if LIBAVCODEC_VERSION_MAJOR < 54
-		avcodec_open(ctx, codec);
-#else
-		avcodec_open2(ctx, codec, NULL);
-#endif
-	
 		
 		// output sample rate, channels, layout could be set here if necessary 
 		o_ch = ctx->channels;     		// 2
@@ -1256,7 +1247,7 @@ static int Write(void* _context, void* _out)
 		char * Encoding = NULL;
 		context->manager->video->Command(context, MANAGER_GETENCODING, &Encoding);
 
-		linuxdvb_printf(20, "Encoding = %s\n", Encoding);
+		linuxdvb_printf(20, "%s::%s Encoding = %s\n", FILENAME, __FUNCTION__, Encoding);
 
 #ifndef USE_OPENGL
 		writer = getWriter(Encoding);
@@ -1304,14 +1295,6 @@ static int Write(void* _context, void* _out)
 		AVFrame *rgbframe = NULL;
 		struct SwsContext *convert = NULL;
 		AVCodecContext* ctx = out->stream->codec;
-		const AVCodec *codec = avcodec_find_decoder(ctx->codec_id);
-		
-		// init codec
-#if LIBAVCODEC_VERSION_MAJOR < 54
-		avcodec_open(ctx, codec);
-#else
-		avcodec_open2(ctx, codec, NULL);
-#endif
 
 		frame = av_frame_alloc();
 		rgbframe = av_frame_alloc();
@@ -1369,13 +1352,47 @@ static int Write(void* _context, void* _out)
 #else
 				data.vpts = sCURRENT_PTS = frame->best_effort_timestamp;
 #endif
+				// a/v delay determined experimentally :-)
+				if (ctx->codec_id == AV_CODEC_ID_MPEG2VIDEO)
+					data.vpts += 90000 * 4 / 10; // 400ms
+				else
+					data.vpts += 90000 * 3 / 10; // 300ms
 
 				//
 				data.a = ctx->time_base;
 				
 				//
-				data.rate = out->frameRate;
+				int framerate = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);
 				
+				switch (framerate)
+				{
+					case 23://23.976fps
+						data.rate = 0;
+						break;
+					case 24:
+						data.rate = 1;
+						break;
+					case 25:
+						data.rate = 2;
+						break;
+					case 29://29,976fps
+						data.rate = 3;
+						break;
+					case 30:
+						data.rate = 4;
+						break;
+					case 50:
+						data.rate = 5;
+						break;
+					case 60:
+						data.rate = 6;
+						break;
+					default:
+						data.rate = framerate;
+						break;
+				}
+				
+				//
 				data.size = need;
 				
 				buf_in++;
