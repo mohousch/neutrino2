@@ -287,6 +287,8 @@ void GLThreadObj::render()
 	if(mReInit)
 	{
 		mReInit = false;
+			
+		//
 		glViewport(0, 0, mX, mY);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();

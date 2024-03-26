@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-03-25 15:45+0200\n"
+"POT-Creation-Date: 2024-03-26 02:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1088,7 +1088,9 @@ msgstr ""
 #: ../../src/gui/update.cpp:518 ../../src/gui/update.cpp:564
 #: ../../src/driver/vcrcontrol.cpp:623 ../../src/neutrino2.cpp:2007
 #: ../../src/gui/audioplayer.cpp:1212 ../../src/gui/audioplayer.cpp:1211
-#: ../../src/gui/infoviewer.cpp:1110
+#: ../../src/gui/infoviewer.cpp:1110 ../../src/driver/vcrcontrol.cpp:639
+#: ../../src/driver/vcrcontrol.cpp:626 ../../src/driver/vcrcontrol.cpp:638
+#: ../../src/driver/vcrcontrol.cpp:631
 msgid "Error"
 msgstr ""
 
@@ -2441,7 +2443,9 @@ msgstr ""
 msgid "One color"
 msgstr ""
 
-#: ../../src/driver/vcrcontrol.cpp:623
+#: ../../src/driver/vcrcontrol.cpp:623 ../../src/driver/vcrcontrol.cpp:639
+#: ../../src/driver/vcrcontrol.cpp:626 ../../src/driver/vcrcontrol.cpp:638
+#: ../../src/driver/vcrcontrol.cpp:631
 msgid ""
 "One or several recording processes are active.\n"
 "If you encounter this message and no recording is active, please restart Neutrino."
@@ -3748,13 +3752,17 @@ msgid ""
 "New Options will be set to default."
 msgstr ""
 
-#: ../../src/driver/vcrcontrol.cpp:623
+#: ../../src/driver/vcrcontrol.cpp:623 ../../src/driver/vcrcontrol.cpp:639
+#: ../../src/driver/vcrcontrol.cpp:626 ../../src/driver/vcrcontrol.cpp:638
+#: ../../src/driver/vcrcontrol.cpp:631
 msgid ""
 "The recording directory is not writable.\n"
 "Recording will not work."
 msgstr ""
 
-#: ../../src/driver/vcrcontrol.cpp:623
+#: ../../src/driver/vcrcontrol.cpp:623 ../../src/driver/vcrcontrol.cpp:639
+#: ../../src/driver/vcrcontrol.cpp:626 ../../src/driver/vcrcontrol.cpp:638
+#: ../../src/driver/vcrcontrol.cpp:631
 msgid ""
 "The recording was aborted,\n"
 "because the target file could not be opened."

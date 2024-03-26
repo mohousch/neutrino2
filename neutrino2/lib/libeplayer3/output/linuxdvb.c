@@ -1139,7 +1139,7 @@ static int Write(void* _context, void* _out)
 		int driver;
 		ao_info *ai;
 		
-// init codec
+		// init codec
 #if LIBAVCODEC_VERSION_MAJOR < 54
 		avcodec_open(ctx, codec);
 #else
@@ -1369,14 +1369,6 @@ static int Write(void* _context, void* _out)
 #else
 				data.vpts = sCURRENT_PTS = frame->best_effort_timestamp;
 #endif
-
-				// a/v delay determined experimentally :-)
-				/*
-				if (ctx->codec_id == AV_CODEC_ID_MPEG2VIDEO)
-					data.vpts += 90000 * 4 / 10; // 400ms
-				else
-					data.vpts += 90000 * 3 / 10; // 300ms
-				*/
 
 				//
 				data.a = ctx->time_base;

@@ -224,6 +224,9 @@ static char* Codec2Encoding(AVCodecContext* codec, int* version)
     		case AV_CODEC_ID_HEVC:
         		return "V_HEVC";
 #endif
+
+		case AV_CODEC_ID_THEORA:
+			return "V_THEORA";
 		
 		// audio
 		case AV_CODEC_ID_MP2:

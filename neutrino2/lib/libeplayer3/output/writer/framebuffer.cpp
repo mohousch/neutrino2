@@ -115,6 +115,26 @@ void blit2FB(void* fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint3
 	CFrameBuffer::getInstance()->blit2FB(fbbuff, width, height, xoff, yoff, xp, yp, transp);
 }
 
+void blitLabel(uint8_t* data, int x, int y, int w, int h)
+{
+	CCLabel textLabel;
+	textLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
+	textLabel.setColor(COL_WHITE_PLUS_0);
+//	textLabel.paintMainFrame(true);
+	textLabel.setText((const char *)data);
+	textLabel.setHAlign(CComponent::CC_ALIGN_CENTER);
+	textLabel.setPosition(x, y, w, h);
+//	textLabel.enableSaveScreen(); // FIXME:
+//	usleep(5000);
+	
+	if (data != NULL)
+	{
+		//
+		CFrameBuffer::getInstance()->paintBackgroundBoxRel (x, y, w, h);
+		textLabel.paint();
+	}
+}
+
 //
 static int reset()
 {
@@ -141,13 +161,7 @@ static int writeData(void* _call)
 	
 	if (call->data != NULL)
 	{
-		//
-		blit2FB(call->data, call->Width, call->Height, call->x, call->y, 0, 0, false);
-	}
-	else
-	{
-		//CFrameBuffer::getInstance()->paintBackgroundBoxRel (call->x, call->y, call->Width, call->Height);
-		CFrameBuffer::getInstance()->clearFrameBuffer();
+		CFrameBuffer::getInstance()->blit2FB(call->data, call->Width, call->Height, call->x, call->y, 0, 0, false);
 	}
 	
 	blit();
@@ -168,22 +182,16 @@ static int writeReverseData(void* _call)
 		fb_err("call data is NULL...\n");
 		return 0;
 	}
-
-	if (call->destination == NULL)
-	{
-		fb_err("file pointer < 0. ignoring ...\n");
-		return 0;
-	}
 	
 	CCLabel textLabel;
 	textLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
 	textLabel.setColor(COL_WHITE_PLUS_0);
-	textLabel.paintMainFrame(true);
+//	textLabel.paintMainFrame(true);
 	textLabel.setText((const char *)call->data);
 	textLabel.setHAlign(CComponent::CC_ALIGN_CENTER);
 	textLabel.setPosition(call->x, call->y, call->Width, call->Height);
 //	textLabel.enableSaveScreen(); // FIXME:
-	usleep(5000);
+//	usleep(5000);
 	
 	if (call->data != NULL)
 	{

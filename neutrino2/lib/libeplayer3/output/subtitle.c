@@ -53,7 +53,7 @@
 
 #ifdef SUBTITLE_DEBUG
 
-static short debug_level = 10;
+static short debug_level = 100;
 
 #define subtitle_printf(level, fmt, x...) do { \
 if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
@@ -67,17 +67,19 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 #define subtitle_err(fmt, x...)
 #endif
 
-/* Error Constants */
+//// Error Constants
 #define cERR_SUBTITLE_NO_ERROR         0
 #define cERR_SUBTITLE_ERROR            -1
 
 static const char FILENAME[] = "subtitle.c";
 
 ////
-int min_x = 20;
-int min_y = 700;
-int max_x = 1240;
-int max_y = 28;
+int min_x = 0;
+int min_y = 0;
+int max_x = 0;
+int max_y = 0;
+
+static int have_dvb = 0;
 
 /* ***************************** */
 /* Types                         */
@@ -147,6 +149,7 @@ uint32_t * resize32(uint8_t * origin, uint32_t * colors, int nb_colors, int ox, 
 	return(cr);
 }
 
+//
 static char * ass_get_text(char *str)
 {
     	// Events are stored in the Block in this order:
@@ -172,6 +175,7 @@ static char * ass_get_text(char *str)
     	return p_str;
 }
 
+//
 static char * json_string_escape(char *str)
 {
     	static char tmp[2048];
@@ -220,28 +224,44 @@ static char * json_string_escape(char *str)
         		default:
             			*ptr1++ = *ptr2;
             			break;
-        }
+        	}
         
-        ++ptr2;
+        	++ptr2;
     	}
+    	
     	*ptr1 = '\0';
     	
     	return tmp;
 }
 
-//// proccess_sub_data
-static void proccess_sub_data(Context_t *context, SubtitleData_t* out) 
+/* ***************************** */
+/* Functions                     */
+/* ***************************** */
+static int Write(void* _context, void *data) 
 {
-    	Writer_t* writer;
-    	WriterFBCallData_t fb;
+    	Context_t * context = (Context_t  *) _context;
+    	SubtitleData_t * out;
     
     	subtitle_printf(100, "\n");
+
+	if (data == NULL)
+	{
+		subtitle_err("null pointer passed\n");
+		return cERR_SUBTITLE_ERROR;
+	}
+
+    	out = (SubtitleData_t*) data;
+    	
+	//
+    	Writer_t* writer = NULL;
+    	WriterFBCallData_t fb;
 
     	writer = getDefaultFramebufferWriter();
 
     	if (writer == NULL)
     	{
         	subtitle_err("no framebuffer writer found!\n");
+        	return cERR_SUBTITLE_ERROR;
     	}
 
 	//
@@ -263,6 +283,7 @@ static void proccess_sub_data(Context_t *context, SubtitleData_t* out)
     	if (avcodec_open2(ctx, codec, NULL) != 0)
     	{
     		subtitle_err("error decoding subtitle\n");
+    		return cERR_SUBTITLE_ERROR;
 	}
     	
     	// decode 	
@@ -273,6 +294,7 @@ static void proccess_sub_data(Context_t *context, SubtitleData_t* out)
 #endif
 	{
 		subtitle_err("error decoding subtitle\n");
+		return cERR_SUBTITLE_ERROR;
 	} 
 	else
 	{
@@ -302,7 +324,7 @@ static void proccess_sub_data(Context_t *context, SubtitleData_t* out)
 						
 						fb.fd            = framebufferFD;
              					fb.data          = sub.rects[i]->text;
-             					fb.Width         = 1200;
+             					fb.Width         = screen_width - 80;
         					fb.Height        = 60;
         					fb.x             = 40;
         					fb.y             = 600;
@@ -334,7 +356,7 @@ static void proccess_sub_data(Context_t *context, SubtitleData_t* out)
 						
 						fb.fd            = framebufferFD;
              					fb.data          = ass_get_text(sub.rects[i]->ass);
-             					fb.Width         = 1200;
+             					fb.Width         = screen_width - 80;
         					fb.Height        = 60;
         					fb.x             = 40;
         					fb.y             = 600;
@@ -367,118 +389,119 @@ static void proccess_sub_data(Context_t *context, SubtitleData_t* out)
 						subtitle_printf(100, "pic %p\n", sub.rects[i]->data[0]);
 						subtitle_printf(100, "colors %p\n\n", sub.rects[i]->data[1]);
 						
-						switch (sub.rects[i]->nb_colors)
+						if (sub.rects[i]->nb_colors == 16) // DVB
 						{
-							case 16:
-							{
-								//								
-								int width = sub.rects[i]->w;
-								int height = sub.rects[i]->h;
+							int width = sub.rects[i]->w;
+							int height = sub.rects[i]->h;
 
-								int h2 = 720;
+							int h2 = screen_height;
 									
-								int xoff = sub.rects[i]->x * 1280 / width;
-								int yoff = sub.rects[i]->y * 720 / h2;
-								int nw = width * 1280 / width;
-								int nh = height * 720 / h2;
+							int xoff = sub.rects[i]->x * screen_width / width;
+							int yoff = sub.rects[i]->y * screen_height / h2;
+							int nw = width * screen_width / width;
+							int nh = height * screen_height / h2;
 
-								// resize color to 32 bit
+							// resize color to 32 bit
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
-								uint32_t* newdata = resize32(sub.rects[i]->pict.data[0], sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+							uint32_t* newdata = resize32(sub.rects[i]->pict.data[0], sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
 #else
-								uint32_t* newdata = resize32(sub.rects[i]->data[0], sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+							uint32_t* newdata = resize32(sub.rects[i]->data[0], sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
 #endif
 									
-								// writeData
-			     					fb.fd            = framebufferFD;
-			     					fb.data          = newdata;
-			     					fb.Width         = nw;
-			     					fb.Height        = nh;
-			     					fb.x             = xoff;
-			     					fb.y             = yoff;
+							// writeData
+			     				fb.fd            = framebufferFD;
+			     				fb.data          = newdata;
+			     				fb.Width         = nw;
+			     				fb.Height        = nh;
+			     				fb.x             = xoff;
+			     				fb.y             = yoff;
 			     					
-			     					fb.color	  = 0;
+			     				fb.color	  = 0;
 
-			     					fb.Screen_Width  = screen_width; 
-			     					fb.Screen_Height = screen_height; 
-			     					fb.destination   = destination;
-			     					fb.destStride    = destStride;
+			     				fb.Screen_Width  = screen_width; 
+			     				fb.Screen_Height = screen_height; 
+			     				fb.destination   = destination;
+			     				fb.destStride    = destStride;
 
-			     					writer->writeData(&fb);
+			     				writer->writeData(&fb);
 
-								free(newdata);
-								
-								//
-								if(min_x > xoff)
-									min_x = xoff;
+							free(newdata);
+						}
+						else if (sub.rects[i]->nb_colors == 40)// TELETXT
+						{
+							int width = sub.rects[i]->w;
+							int height = sub.rects[i]->h;
 
-								if(min_y > yoff)
-									min_y = yoff;
-
-								if(max_x < nw)
-									max_x = nw;
-
-								if(max_y < nh)
-									max_y = nh;
-							}
-							break;
-							
-							case 40: // TELETEXT
-							{
-								//								
-								int width = sub.rects[i]->w;
-								int height = sub.rects[i]->h;
-
-								int h2 = height;
+							int h2 = height;
 									
-								int xoff = sub.rects[i]->x * 1280 / width;
-								int yoff = sub.rects[i]->y * 720 / h2;
-								int nw = width * 1280 / width;
-								int nh = height * 720 / h2;
+							int xoff = sub.rects[i]->x * screen_width / width;
+							int yoff = sub.rects[i]->y * screen_height / h2;
+							int nw = width * screen_width / width;
+							int nh = height * screen_height / h2;
 
-								// resize color to 32 bit
+							// resize color to 32 bit
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
-								uint32_t* newdata = resize32(sub.rects[i]->pict.data[0], sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+							uint32_t* newdata = resize32(sub.rects[i]->pict.data[0], sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
 #else
-								uint32_t* newdata = resize32(sub.rects[i]->data[0], sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+							uint32_t* newdata = resize32(sub.rects[i]->data[0], sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
 #endif
 									
-								// writeData
-			     					fb.fd            = framebufferFD;
-			     					fb.data          = newdata;
-			     					fb.Width         = nw;
-			     					fb.Height        = nh;
-			     					fb.x             = xoff;
-			     					fb.y             = yoff;
+							// writeData
+			     				fb.fd            = framebufferFD;
+			     				fb.data          = newdata;
+			     				fb.Width         = nw;
+			     				fb.Height        = nh;
+			     				fb.x             = xoff;
+			     				fb.y             = yoff;
 			     					
-			     					fb.color	  = 0;
+			     				fb.color	  = 0;
 
-			     					fb.Screen_Width  = screen_width; 
-			     					fb.Screen_Height = screen_height; 
-			     					fb.destination   = destination;
-			     					fb.destStride    = destStride;
+			     				fb.Screen_Width  = screen_width; 
+			     				fb.Screen_Height = screen_height; 
+			     				fb.destination   = destination;
+			     				fb.destStride    = destStride;
 
-			     					writer->writeData(&fb);
+			     				writer->writeData(&fb);
 
-								free(newdata);
-								
-								//
-								if(min_x > xoff)
-									min_x = xoff;
+							free(newdata);
+						}
+						else // PGS (256 nb_colors)
+						{
+							int width = sub.rects[i]->w;
+							int height = sub.rects[i]->h;
 
-								if(min_y > yoff)
-									min_y = yoff;
+							int h2 = height;
+									
+							int xoff = 0; //sub.rects[i]->x * 1280 / width;
+							int yoff = 0; //sub.rects[i]->y * 720 / h2;
+							int nw = width * screen_width / width;
+							int nh = height * screen_height / h2;
 
-								if(max_x < nw)
-									max_x = nw;
+							// resize color to 32 bit
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
+							uint32_t* newdata = resize32(sub.rects[i]->pict.data[0], sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+#else
+							uint32_t* newdata = resize32(sub.rects[i]->data[0], sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+#endif
+									
+							// writeData
+			     				fb.fd            = framebufferFD;
+			     				fb.data          = newdata;
+			     				fb.Width         = nw;
+			     				fb.Height        = nh;
+			     				fb.x             = xoff;
+			     				fb.y             = yoff;
+			     					
+			     				fb.color	  = 0;
 
-								if(max_y < nh)
-									max_y = nh;
-							}
-							break;
-							
-							default:
-								break;
+			     				fb.Screen_Width  = screen_width; 
+			     				fb.Screen_Height = screen_height; 
+			     				fb.destination   = destination;
+			     				fb.destStride    = destStride;
+
+			     				writer->writeData(&fb);
+
+							free(newdata);
 						}
 					} //for
 					break;
@@ -491,89 +514,47 @@ static void proccess_sub_data(Context_t *context, SubtitleData_t* out)
 	}
 
     	subtitle_printf(100, "terminating\n");
+    	
+    	return cERR_SUBTITLE_NO_ERROR;
 }
 
-/* ***************************** */
-/* Functions                     */
-/* ***************************** */
-static int Write(void* _context, void *data) 
+//
+static int subtitle_Open(context) 
 {
-    	Context_t * context = (Context_t  *) _context;
-    	SubtitleData_t * out;
-    
-    	subtitle_printf(100, "\n");
+    	subtitle_printf(10, "\n");
 
-	if (data == NULL)
-	{
-		subtitle_err("null pointer passed\n");
-		return cERR_SUBTITLE_ERROR;
-	}
+    	if (isSubtitleOpened == 1)
+    	{
+        	subtitle_err("already opened! ignoring\n");
+        	return cERR_SUBTITLE_ERROR;
+    	}
 
-    	out = (SubtitleData_t*) data;
-    	
-    	//
-    	proccess_sub_data(context, out);
+    	getMutex(__LINE__);
 
-    	subtitle_printf(100, "<\n");
+    	isSubtitleOpened = 1;
+
+    	releaseMutex(__LINE__);
+
+    	subtitle_printf(10, "<\n");
 
     	return cERR_SUBTITLE_NO_ERROR;
 }
 
-static int subtitle_Open(context) 
-{
-    int i;
-
-    subtitle_printf(10, "\n");
-
-    if (isSubtitleOpened == 1)
-    {
-        subtitle_err("already opened! ignoring\n");
-        return cERR_SUBTITLE_ERROR;
-    }
-
-    getMutex(__LINE__);
-
-    isSubtitleOpened = 1;
-
-    releaseMutex(__LINE__);
-
-    subtitle_printf(10, "<\n");
-
-    return cERR_SUBTITLE_NO_ERROR;
-}
-
 static int subtitle_Close(Context_t* context) 
 {
-    int i;
+    	int i;
 
-    subtitle_printf(10, "\n");
+    	subtitle_printf(10, "\n");
 
-    getMutex(__LINE__);
+    	getMutex(__LINE__);
 
-    isSubtitleOpened = 0;
+    	isSubtitleOpened = 0;
 
-    releaseMutex(__LINE__);
+    	releaseMutex(__LINE__);
 
-    subtitle_printf(10, "<\n");
+    	subtitle_printf(10, "<\n");
 
-    return cERR_SUBTITLE_NO_ERROR;
-}
-
-static int subtitle_Stop(context) 
-{
-    int wait_time = 20;
-    int i;
-    Writer_t* writer;
-    
-    subtitle_printf(10, "\n");
-
-    getMutex(__LINE__);
-
-    releaseMutex(__LINE__);
-
-    subtitle_printf(10, "<\n");
-
-    return cERR_SUBTITLE_NO_ERROR;
+    	return cERR_SUBTITLE_NO_ERROR;
 }
 
 static int Command(void  *_context, OutputCmd_t command, void * argument) 
@@ -604,7 +585,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 	    
 	    case OUTPUT_STOP: 
 	    {
-		ret = subtitle_Stop(context);
 		break;
 	    }
 	    

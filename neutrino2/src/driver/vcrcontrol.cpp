@@ -427,6 +427,13 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	{
 		::addPid(si.vpid, si.vtype ? EN_TYPE_AVC : EN_TYPE_VIDEO, 0);
 	}
+	
+	if (si.vtxtpid != 0)
+	{
+		pids[numpids++] = si.vtxtpid;
+				
+		::addPid(si.vtxtpid, EN_TYPE_TELTEX, 0);
+	}
 		
 	// apids
         APIDList apid_list;
@@ -448,6 +455,18 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 		{
 			CZapitAbsSub* s = channel->getChannelSub(i);
 			
+			// teletext
+			if (s->thisSubType == CZapitAbsSub::TTX) 
+			{
+				CZapitTTXSub* sd = reinterpret_cast<CZapitTTXSub*>(s);
+				
+				dprintf(DEBUG_NORMAL, "CVCRControl::doRecord: adding TTX subtitle %s pid 0x%x mag 0x%X page 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId, sd->teletext_magazine_number, sd->teletext_page_number);
+				
+				pids[numpids++] = sd->pId;
+				
+				::addPid(sd->pId, EN_TYPE_TELTEX, 0);
+			}
+			
 			//dvbsub
 			if (s->thisSubType == CZapitAbsSub::DVB) 
 			{
@@ -458,17 +477,6 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 				pids[numpids++] = sd->pId;
 				
 				::addPid(sd->pId, EN_TYPE_DVBSUB, 0);
-			}
-			
-			// teletext sub
-			if (s->thisSubType == CZapitAbsSub::TTX) 
-			{
-				CZapitTTXSub* sd = reinterpret_cast<CZapitTTXSub*>(s);
-				dprintf(DEBUG_NORMAL, "CVCRControl::doRecord: adding TTX subtitle %s pid 0x%x mag 0x%X page 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId, sd->teletext_magazine_number, sd->teletext_page_number);
-				
-				pids[numpids++] = sd->pId;
-				
-				::addPid(sd->pId, EN_TYPE_TELTEX, 0);
 			}
 		}
         }
