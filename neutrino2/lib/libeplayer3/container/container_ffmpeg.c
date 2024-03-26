@@ -791,7 +791,7 @@ static void FFMPEGThread(Context_t *context)
 		           			//
 		           			data.stream    = subtitleTrack->stream;
 		           			data.packet    = &packet;
-							
+		           			
 						if (context->output->subtitle->Write(context, &data) < 0) 
 						{
 							ffmpeg_err("writing data to subtitle failed\n");

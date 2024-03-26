@@ -51,6 +51,9 @@ static int cfg_national_subset;
 ////
 extern cVideo * videoDecoder;
 extern CFrontend * live_fe;
+////
+bool isTtxEplayer = false;
+extern void tuxtxt_clear_cache();
 
 ////
 void FillRect(int x, int y, int w, int h, int color)
@@ -99,6 +102,8 @@ int getIndexOfPageInHotlist()
 
 void gethotlist()
 {
+	printf("gethotlist\n");
+	
 	FILE *hl;
 	char line[100];
 
@@ -1130,7 +1135,7 @@ void eval_l25()
 	} /* is_dec(page) */
 }
 
-//// reader thread
+//// subtitle reader thread
 static void * reader_thread(void * /*arg*/)
 {
 	dprintf(DEBUG_NORMAL, "TuxTxt subtitle thread started\n");
@@ -1161,7 +1166,7 @@ static void * reader_thread(void * /*arg*/)
 	pthread_exit(NULL);
 }
 
-int tuxtx_main(int pid, int page);
+int tuxtx_main(int pid, int page, bool isEplayer);
 void tuxtx_pause_subtitle(bool pause)
 {
 	if(!pause) 
@@ -1170,7 +1175,7 @@ void tuxtx_pause_subtitle(bool pause)
 		
 		ttx_paused = 0;
 		if(!reader_running && sub_pid && sub_page)
-			tuxtx_main(sub_pid, sub_page);
+			tuxtx_main(sub_pid, sub_page, isTtxEplayer);
 	}
 	else 
 	{
@@ -1207,7 +1212,6 @@ void tuxtx_set_pid(int pid, int page, const char * cc)
 
 	sub_pid = pid;
 	sub_page = page;
-
 	cfg_national_subset = GetNationalSubset(cc);
 	
 	dprintf(DEBUG_NORMAL, "tuxtx_set_pid: pid %d page %d lang %s (%d)\n", sub_pid, sub_page, cc, cfg_national_subset);
@@ -1229,11 +1233,22 @@ int tuxtx_subtitle_running(int *pid, int *page, int *running)
 
 	return ret;
 }
+////
 
 //// main loop
-int tuxtx_main(int pid, int page)
+int tuxtx_main(int pid, int page, bool isEplayer)
 {
+	printf("tuxtx_main\n");
+	
 	char cvs_revision[] = "$Revision: 1.95 $";
+	
+	////
+	if (isTtxEplayer != isEplayer)
+	{
+		tuxtxt_stop();
+		tuxtxt_clear_cache();
+		isTtxEplayer = isEplayer;
+	}
 	
 	use_gui = 1;
 	boxed = 0;
@@ -1247,7 +1262,6 @@ int tuxtx_main(int pid, int page)
 	// page
 	if(page) 
 	{
-		//tuxtxt_cache.page = page;
 		sub_page = tuxtxt_cache.page = page;
 		sub_pid = pid;
 		use_gui = 0;
@@ -1292,7 +1306,7 @@ int tuxtx_main(int pid, int page)
 	transpmode = 0;
 
 	// init
-	if (Init() == 0)
+	if (Init() == 0) // this create decode cache thread
 		return 0;
 	
 	// create subthread
@@ -1373,10 +1387,10 @@ int tuxtx_main(int pid, int page)
 						char ns[10];
 						SetPosX(1);
 						sprintf(ns,"+%d    ",subtitledelay);
-						RenderCharFB(ns[0],&atrtable[ATR_WB]);
-						RenderCharFB(ns[1],&atrtable[ATR_WB]);
-						RenderCharFB(ns[2],&atrtable[ATR_WB]);
-						RenderCharFB(ns[4],&atrtable[ATR_WB]);
+						RenderCharFB(ns[0], &atrtable[ATR_WB]);
+						RenderCharFB(ns[1], &atrtable[ATR_WB]);
+						RenderCharFB(ns[2], &atrtable[ATR_WB]);
+						RenderCharFB(ns[4], &atrtable[ATR_WB]);
 					}
 					else
 						GetNextSubPage(1);	
@@ -1393,10 +1407,10 @@ int tuxtx_main(int pid, int page)
 						char ns[10];
 						SetPosX(1);
 						sprintf(ns,"+%d    ",subtitledelay);
-						RenderCharFB(ns[0],&atrtable[ATR_WB]);
-						RenderCharFB(ns[1],&atrtable[ATR_WB]);
-						RenderCharFB(ns[2],&atrtable[ATR_WB]);
-						RenderCharFB(ns[4],&atrtable[ATR_WB]);
+						RenderCharFB(ns[0], &atrtable[ATR_WB]);
+						RenderCharFB(ns[1], &atrtable[ATR_WB]);
+						RenderCharFB(ns[2], &atrtable[ATR_WB]);
+						RenderCharFB(ns[4], &atrtable[ATR_WB]);
 					}
 					else
 						GetNextSubPage(-1);	
@@ -1468,6 +1482,8 @@ FT_Error MyFaceRequester(FTC_FaceID face_id, FT_Library _library, FT_Pointer /*r
 //// Init
 int Init()
 {
+	printf("Init\n");
+	
 	int error, i;
 	unsigned char magazine;
 
@@ -1702,9 +1718,6 @@ int Init()
 
 		if (GetTeletextPIDs() == 0)
 		{
-			FTC_Manager_Done(manager);
-			FT_Done_FreeType(library);
-
 			return 0;
 		}
 
@@ -1733,16 +1746,18 @@ int Init()
 		dprintf(DEBUG_NORMAL, "Tuxtxt: national_subset %d (cfg %d)\n", national_subset, cfg_national_subset);
 	}
 
-	//
+	// start decode cache Thread
 	tuxtxt_start(tuxtxt_cache.vtxtpid);
 
 	gethotlist();
 	
-	//SwitchScreenMode(screenmode);
+	SwitchScreenMode(screenmode);
+	/*
 	if(use_gui)
 		SwitchScreenMode(screenmode);
 	else
 		SwitchScreenMode(0);
+	*/
 	
 	prevscreenmode = screenmode;
 	
@@ -1810,6 +1825,11 @@ void CleanUp()
 //// GetTeletextPIDs
 int GetTeletextPIDs()
 {
+	printf("GetTeletextPIDs\n");
+	
+	if (isTtxEplayer)
+		return 1;
+		
 	int pat_scan, pmt_scan, sdt_scan, desc_scan, pid_test, byte, diff, first_sdt_sec;
 
 	unsigned char bufPAT[1024];
@@ -3287,13 +3307,13 @@ void SwitchScreenMode(int newscreenmode)
 	// update page
 	tuxtxt_cache.pageupdate = 1;
 
-	/* clear back buffer */
-	clearbbcolor = screenmode?transp:static_cast<int>(FullScrColor);
+	// clear back buffer
+	clearbbcolor = screenmode? transp:static_cast<int>(FullScrColor);
 
 	if(use_gui)
 		ClearBB(clearbbcolor);
 
-	dprintf(DEBUG_NORMAL, "screenmode %d\n", screenmode); 
+	dprintf(DEBUG_NORMAL, "SwitchScreenMode: screenmode %d\n", screenmode); 
 
 	// set mode
 	if (screenmode)								 // split
@@ -3678,21 +3698,7 @@ void DrawShape(int x, int y, int shapenumber, int curfontwidth, int curfontheigh
 	}
 }
 
-
-/*
- * RenderChar
-*/
-/* Dagobert:
- * So in this function is the problem with "�� ...".
- * The tables in tuxtxt_def.h are of type unsigned int short int
- * which is propably more than a char. So getting chars out of this
- * array gives us values >=255 which are not what we want with our
- * fonts. ok I added "& 0xFF" to get the correct value but this
- * takes us internationalization but this is ok for me for the first
- * shot. we take a shorter look why this works for dreambox but
- * not for us.
- */
-
+//
 void RenderChar(int Char, tstPageAttr *Attribute, int zoom, int yoffset)
 {
 	int Row, Pitch, Bit;
@@ -3766,7 +3772,7 @@ void RenderChar(int Char, tstPageAttr *Attribute, int zoom, int yoffset)
 		return;
 	}
 
-	/* get colors */
+	// get colors 
 	if (Attribute->inverted)
 	{
 		int t = Attribute->fg;
@@ -3786,7 +3792,7 @@ void RenderChar(int Char, tstPageAttr *Attribute, int zoom, int yoffset)
 	else
 		bgcolor = Attribute->bg;
 	
-	/* handle mosaic ->space*/
+	// handle mosaic ->space
 	if ((Attribute->charset == C_G1C || Attribute->charset == C_G1S) && ((Char&0xA0) == 0x20))
 	{
 		int w1 = (curfontwidth / 2 ) *xfactor;
@@ -3794,11 +3800,13 @@ void RenderChar(int Char, tstPageAttr *Attribute, int zoom, int yoffset)
 		int y;
 
 		Char = (Char & 0x1f) | ((Char & 0x40) >> 1);
+		
 		if (Attribute->charset == C_G1S) /* separated mosaic */
 		{
 			for (y = 0; y < 3; y++)
 			{
 				FillRectMosaicSeparated(PosX, PosY + yoffset + ymosaic[y]*factor, w1, (ymosaic[y+1] - ymosaic[y])*factor, fgcolor, bgcolor, Char & 0x01);
+				
 				FillRectMosaicSeparated(PosX + w1, PosY + yoffset + ymosaic[y]*factor, w2, (ymosaic[y+1] - ymosaic[y])*factor, fgcolor, bgcolor, Char & 0x02);
 				Char >>= 2;
 			}
@@ -3807,8 +3815,10 @@ void RenderChar(int Char, tstPageAttr *Attribute, int zoom, int yoffset)
 		{
 			for (y = 0; y < 3; y++)
 			{
-				FillRect(PosX,      PosY + yoffset + ymosaic[y]*factor, w1, (ymosaic[y+1] - ymosaic[y])*factor, (Char & 0x01) ? fgcolor : bgcolor);
+				FillRect(PosX, PosY + yoffset + ymosaic[y]*factor, w1, (ymosaic[y+1] - ymosaic[y])*factor, (Char & 0x01) ? fgcolor : bgcolor);
+				
 				FillRect(PosX + w1, PosY + yoffset + ymosaic[y]*factor, w2, (ymosaic[y+1] - ymosaic[y])*factor, (Char & 0x02) ? fgcolor : bgcolor);
+				
 				Char >>= 2;
 			}
 		}
@@ -3817,6 +3827,7 @@ void RenderChar(int Char, tstPageAttr *Attribute, int zoom, int yoffset)
 		return;
 	}
 
+	//
 	if (Attribute->charset == C_G3)
 	{
 		if (Char < 0x20 || Char > 0x7d)
@@ -3865,6 +3876,7 @@ void RenderChar(int Char, tstPageAttr *Attribute, int zoom, int yoffset)
 	{
 
 		tstCachedPage *pcache = tuxtxt_cache.astCachetable[(Attribute->charset & 0x10) ? drcs : gdrcs][Attribute->charset & 0x0f];
+		
 		if (pcache)
 		{
 			unsigned char drcs_data[23*40];
@@ -3917,7 +3929,7 @@ void RenderChar(int Char, tstPageAttr *Attribute, int zoom, int yoffset)
 		Char = G0table[5][Char-0x20];
 	else
 	{
-		/* load char */
+		// load char
 		switch (Char)
 		{
 			case 0x00:
@@ -4061,7 +4073,7 @@ void RenderChar(int Char, tstPageAttr *Attribute, int zoom, int yoffset)
 		return;
 	}
 
-	/* render char */
+	// render char
 	sbitbuffer = sbit->buffer;
 	unsigned char localbuffer[1000]; // should be enough to store one character-bitmap...
 	
@@ -4411,7 +4423,7 @@ void DoFlashing(int startrow)
 //// RenderPage
 void RenderPage()
 {
-	printf("tuxtxt: RenderPage\n");
+//	printf("tuxtxt: RenderPage\n");
 	
 	int row, col, byte, startrow = 0;;
 	int national_subset_bak = national_subset;
@@ -4476,9 +4488,9 @@ void RenderPage()
 		
 		fontwidth_normal = (ex - sx) / (40 - nofirst);
 		setfontwidth(fontwidth_normal);
-		fontwidth_topmenumain = (TV43STARTX-sx) / (40-nofirst);
+		fontwidth_topmenumain = (TV43STARTX-sx) / (40 - nofirst);
 		fontwidth_topmenusmall = (ex- TOPMENUSTARTX) / TOPMENUCHARS;
-		fontwidth_small = (TV169FULLSTARTX-sx)  / (40-nofirst);
+		fontwidth_small = (TV169FULLSTARTX-sx)  / (40 - nofirst);
 		
 		switch(screenmode)
 		{
@@ -4489,7 +4501,7 @@ void RenderPage()
 		
 		if (transpmode || (boxed && !screenmode))
 		{
-			FillBorder(transp);//ClearBB(transp);
+			FillBorder(transp);	//ClearBB(transp);
 			clearbbcolor = transp;
 		}
 
@@ -4539,6 +4551,7 @@ void RenderPage()
 		if (zoommode != 2)
 		{
 			PosY = StartY;
+			
 			if (tuxtxt_cache.subpagetable[tuxtxt_cache.page] == 0xff)
 			{
 				page_atrb[32].fg = yellow;
@@ -4613,9 +4626,9 @@ void RenderPage()
 		SetPosX(1);
 		hex2str(ns+2,tuxtxt_cache.page);
 
-		RenderCharFB(ns[0],&atrtable[ATR_WB]);
-		RenderCharFB(ns[1],&atrtable[ATR_WB]);
-		RenderCharFB(ns[2],&atrtable[ATR_WB]);
+		RenderCharFB(ns[0], &atrtable[ATR_WB]);
+		RenderCharFB(ns[1], &atrtable[ATR_WB]);
+		RenderCharFB(ns[2], &atrtable[ATR_WB]);
 		
 		CFrameBuffer::getInstance()->blit();	
 

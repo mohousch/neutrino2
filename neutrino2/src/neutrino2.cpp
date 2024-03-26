@@ -235,7 +235,7 @@ extern void tuxtx_pause_subtitle(bool pause);
 extern void tuxtx_stop_subtitle();
 extern void tuxtx_set_pid(int pid, int page, const char * cc);
 extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
-extern int tuxtx_main(int pid, int page);
+extern int tuxtx_main(int pid, int page, bool isEplayer);
 // dvbsub
 extern int dvbsub_init();
 extern int dvbsub_close();
@@ -4070,12 +4070,7 @@ void CNeutrinoApp::realRun(void)
 					
 					tuxtx_stop_subtitle();
 
-					tuxtx_main(g_RemoteControl->current_PIDs.PIDs.vtxtpid, 0);
-
-//					frameBuffer->paintBackground();
-//					frameBuffer->blit();
-					
-//					g_RCInput->clearRCMsg();
+					tuxtx_main(g_RemoteControl->current_PIDs.PIDs.vtxtpid, 0, false);
 					
 					// restore mute symbol
 					audioMute(current_muted, true);

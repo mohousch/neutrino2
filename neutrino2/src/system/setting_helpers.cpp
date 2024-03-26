@@ -77,7 +77,7 @@ extern int dvbsub_pause();
 // tuxtxt
 extern void tuxtx_stop_subtitle();
 extern void tuxtx_set_pid(int pid, int page, const char * cc);
-extern int tuxtx_main(int pid, int page);
+extern int tuxtx_main(int pid, int page, bool isEplayer);
 //
 extern CFrontend * live_fe;
 extern t_channel_id live_channel_id;
@@ -201,11 +201,8 @@ int CSubtitleChangeExec::exec(CMenuTarget *, const std::string & actionKey)
 		dvbsub_stop();
 		
 		tuxtx_stop_subtitle();
-		
 		tuxtx_set_pid(pid, page, ptr);
-		
-		// start tuxtxt
-		tuxtx_main(pid, page); //FIXME
+		tuxtx_main(pid, page, false); //FIXME
 	}
 	
         return RETURN_EXIT;
@@ -244,7 +241,7 @@ int CTuxtxtChangeExec::exec(CMenuTarget *parent, const std::string &actionKey)
 				
 		tuxtx_stop_subtitle();
 
-		tuxtx_main(g_RemoteControl->current_PIDs.PIDs.vtxtpid, 0);
+		tuxtx_main(g_RemoteControl->current_PIDs.PIDs.vtxtpid, 0, false);
 
 //		CFrameBuffer::getInstance()->paintBackground();
 //		CFrameBuffer::getInstance()->blit();

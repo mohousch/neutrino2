@@ -22,6 +22,8 @@ static int tuxtxt_initialized = 0;
 
 int tuxtxt_init()
 {
+	printf("tuxtxt_init\n");
+	
 	if ( tuxtxt_initialized )
 		return 0;
 
@@ -52,6 +54,8 @@ int tuxtxt_stop()
 
 void tuxtxt_start(int tpid)
 {
+	printf("tuxtxt_start: tpid: %d\n", tpid);
+	
 	if (tuxtxt_cache.vtxtpid != tpid)
 	{
 		tuxtxt_stop();

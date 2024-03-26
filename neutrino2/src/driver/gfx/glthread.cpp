@@ -433,7 +433,7 @@ void GLThreadObj::clear()
 
 void GLThreadObj::bltDisplayBuffer()
 {
-	if (!videoDecoder || playback->playing)
+	if (!videoDecoder)
 		return;
 		
 	static bool warn = true;

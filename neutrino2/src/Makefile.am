@@ -104,7 +104,7 @@ neutrino2_LDFLAGS = -Wl,--export-dynamic
 if ENABLE_GSTREAMER
 neutrino2_LDADD += @GSTREAMER_LIBS@
 else
-neutrino2_LDADD += $(top_builddir)/lib/libeplayer3/libeplayer3.a -lass
+neutrino2_LDADD += $(top_builddir)/lib/libeplayer3/libeplayer3.a
 endif
 
 if USE_OPENGL

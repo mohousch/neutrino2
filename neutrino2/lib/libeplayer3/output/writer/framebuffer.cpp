@@ -90,7 +90,6 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 /* MISC Functions                */
 /* ***************************** */
 
-
 /* ***************************** */
 /* Writer Functions              */
 /* ***************************** */
@@ -165,7 +164,7 @@ static int writeData(void* _call)
 	}
 	
 	blit();
-    
+    	
 	fb_printf(100, "<\n");
 	
 	return 0;
@@ -198,6 +197,7 @@ static int writeReverseData(void* _call)
 		//
 		CFrameBuffer::getInstance()->paintBackgroundBoxRel (call->x, call->y, call->Width, call->Height);
 		textLabel.paint();
+		//teletext_write(0, call->data, call->Width);
 	}
 	
 	blit();
