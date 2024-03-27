@@ -32,22 +32,6 @@ extern "C" {
 #endif
 
 //// cDvbSubtitleBitmaps
-class cDvbSubtitleBitmaps : public cListObject 
-{
-	private:
-		int64_t pts;
-		int timeout;
-		AVSubtitle sub;
-	public:
-		cDvbSubtitleBitmaps(int64_t Pts);
-		~cDvbSubtitleBitmaps();
-		int64_t Pts(void) { return pts; }
-		int Timeout(void) { return sub.end_display_time; }
-		void Draw(int &min_x, int &min_y, int &max_x, int &max_y);
-		int Count(void) { return sub.num_rects; };
-		AVSubtitle * GetSub(void) { return &sub; };
-};
-
 cDvbSubtitleBitmaps::cDvbSubtitleBitmaps(int64_t pPts)
 {
 //	printf("cDvbSubtitleBitmaps::new: PTS: %lld\n", pts);
@@ -241,6 +225,14 @@ void cDvbSubtitleConverter::Reset(void)
 	bitmaps->Clear();
 	Unlock();
 	Timeout.Set(0xFFFF*1000);
+}
+
+int cDvbSubtitleConverter::Convert(AVSubtitle *sub, int64_t pts)
+{
+	cDvbSubtitleBitmaps *Bitmaps = new cDvbSubtitleBitmaps(pts);
+	Bitmaps->SetSub(sub);
+	bitmaps->Add(Bitmaps);
+	return 0;
 }
 
 int cDvbSubtitleConverter::Convert(const unsigned char *Data, int Length, int64_t pts)

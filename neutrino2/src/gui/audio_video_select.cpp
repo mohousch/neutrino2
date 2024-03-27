@@ -63,6 +63,10 @@ int currentspid = -1;
 //
 extern cPlayback *playback;
 //
+extern int dvbsub_stop();
+extern int dvbsub_start(int pid, bool isEplayer);
+extern int dvbsub_pause();
+//
 extern int  tuxtxt_stop();
 extern void tuxtxt_close();
 extern void tuxtx_pause_subtitle(bool pause, bool isEplayer);
@@ -173,6 +177,10 @@ int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
 		tuxtx_stop_subtitle();
 		tuxtx_main(0, 0, true);
 		
+		// dvb
+//		dvbsub_pause();
+//		dvbsub_start(currentspid, true);
+		
 		dprintf(DEBUG_NORMAL, "CAVSubPIDSelect::exec: spid changed to %d\n", currentspid);
 	}
 	else 
@@ -182,6 +190,9 @@ int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
 		
 		if(playback)
 			playback->SetSubPid(-1);
+			
+		//
+//		dvbsub_stop();
 			
 		//
 		tuxtx_stop_subtitle();

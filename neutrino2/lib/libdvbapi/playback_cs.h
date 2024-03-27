@@ -139,6 +139,7 @@ class cPlayback
 		bool SetSlow(int slow);
 		bool GetSpeed(int &speed) const;
 		bool GetPosition(int &position, int &duration);
+		void GetPts(uint64_t &pts);
 		bool SetPosition(int position);
 		void FindAllPids(uint16_t *apids, uint16_t *numpida, std::string *language);
 		void FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *language);

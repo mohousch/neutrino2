@@ -72,7 +72,7 @@
 
 //// globals
 extern int dvbsub_stop();
-extern int dvbsub_start(int pid);
+extern int dvbsub_start(int pid, bool isEplayer);
 extern int dvbsub_pause();
 // tuxtxt
 extern void tuxtx_stop_subtitle();
@@ -184,7 +184,7 @@ int CSubtitleChangeExec::exec(CMenuTarget *, const std::string & actionKey)
 		tuxtx_stop_subtitle();
 		
 		dvbsub_pause();
-		dvbsub_start(pid);
+		dvbsub_start(pid, false);
 	} 
 	else if (!strncmp(actionKey.c_str(), "TTX", 3))
 	{
@@ -197,7 +197,7 @@ int CSubtitleChangeExec::exec(CMenuTarget *, const std::string & actionKey)
 		ptr = strchr(ptr, ':');
 		ptr++;
 		
-		dprintf(DEBUG_NORMAL, "CSubtitleChangeExec::exec: TTX, pid %x page %x lang %s\n", pid, page, ptr);
+		dprintf(DEBUG_NORMAL, "CSubtitleChangeExec::exec: TTX, pid 0x%x page 0x%x lang %s\n", pid, page, ptr);
 		
 		dvbsub_stop();
 		

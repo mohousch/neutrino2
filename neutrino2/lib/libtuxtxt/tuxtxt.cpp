@@ -1169,7 +1169,7 @@ void tuxtx_pause_subtitle(bool pause, bool isEplayer)
 {
 	if(!pause) 
 	{
-		dprintf(DEBUG_NORMAL, "TuxTxt subtitle unpause, running %d pid %d page %d\n", reader_running, sub_pid, sub_page);
+		dprintf(DEBUG_NORMAL, "TuxTxt subtitle unpause, running 0x%x pid 0x%x page %d\n", reader_running, sub_pid, sub_page);
 		
 		ttx_paused = 0;
 		
@@ -1216,7 +1216,7 @@ void tuxtx_set_pid(int pid, int page, const char * cc)
 	sub_page = page;
 	cfg_national_subset = GetNationalSubset(cc);
 	
-	dprintf(DEBUG_NORMAL, "tuxtx_set_pid: pid %d page %d lang %s (%d)\n", sub_pid, sub_page, cc, cfg_national_subset);
+	dprintf(DEBUG_NORMAL, "tuxtx_set_pid: pid 0x%x page 0x%x lang %s (%d)\n", sub_pid, sub_page, cc, cfg_national_subset);
 }
 
 int tuxtx_subtitle_running(int *pid, int *page, int *running)

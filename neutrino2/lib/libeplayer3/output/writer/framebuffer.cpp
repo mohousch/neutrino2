@@ -50,6 +50,7 @@
 #include <src/driver/gfx/framebuffer.h>
 #include <src/driver/gfx/fontrenderer.h>
 #include <src/gui/widget/widget_helpers.h>
+#include <src/gui/widget/textbox.h>
 
 /* ***************************** */
 /* Makros/Constants              */
@@ -102,38 +103,44 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 #define FBIO_BLIT 0x22
 #endif
 
-#if 0
-void blit()
-{	
-	CFrameBuffer::getInstance()->blit();
+extern "C" void clearBuffer(void);
+extern "C" int writeText(void* _call);
+
+void clearBuffer(void)
+{
+	CFrameBuffer::getInstance()->clearFrameBuffer();
 }
 
-//
-void blit2FB(void* fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp, uint32_t yp, bool transp )
+int writeText(void* _call)
 {
-	CFrameBuffer::getInstance()->blit2FB(fbbuff, width, height, xoff, yoff, xp, yp, transp);
-}
+	WriterFBCallData_t * call = (WriterFBCallData_t*) _call;
+	
+	fb_printf(100, "\n");
 
-void blitLabel(uint8_t* data, int x, int y, int w, int h)
-{
+	if (call == NULL)
+	{
+		fb_err("call data is NULL...\n");
+		return 0;
+	}
+	
 	CCLabel textLabel;
 	textLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
 	textLabel.setColor(COL_WHITE_PLUS_0);
-//	textLabel.paintMainFrame(true);
-	textLabel.setText((const char *)data);
+	textLabel.paintMainFrame(false);
+	textLabel.setText((const char *)call->data);
 	textLabel.setHAlign(CComponent::CC_ALIGN_CENTER);
-	textLabel.setPosition(x, y, w, h);
-//	textLabel.enableSaveScreen(); // FIXME:
-//	usleep(5000);
+	textLabel.setPosition(call->x, call->y, call->Width, call->Height);
 	
-	if (data != NULL)
+	if (call->data != NULL)
 	{
-		//
-		CFrameBuffer::getInstance()->paintBackgroundBoxRel (x, y, w, h);
 		textLabel.paint();
+		CFrameBuffer::getInstance()->blit();
 	}
+    
+	fb_printf(100, "<\n");
+	
+	return 0;
 }
-#endif
 
 //
 static int reset()
@@ -180,24 +187,6 @@ static int writeReverseData(void* _call)
 	{
 		fb_err("call data is NULL...\n");
 		return 0;
-	}
-	
-	CCLabel textLabel;
-	textLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
-	textLabel.setColor(COL_WHITE_PLUS_0);
-//	textLabel.paintMainFrame(true);
-	textLabel.setText((const char *)call->data);
-	textLabel.setHAlign(CComponent::CC_ALIGN_CENTER);
-	textLabel.setPosition(call->x, call->y, call->Width, call->Height);
-//	textLabel.enableSaveScreen(); // FIXME:
-//	usleep(5000);
-	
-	if (call->data != NULL)
-	{
-		//
-		CFrameBuffer::getInstance()->paintBackgroundBoxRel (call->x, call->y, call->Width, call->Height);
-		textLabel.paint();
-		CFrameBuffer::getInstance()->blit();
 	}
     
 	fb_printf(100, "<\n");

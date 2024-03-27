@@ -20,6 +20,7 @@
 
 //// globals
 static PacketQueue packet_queue;
+static PacketQueue bitmap_queue;
 //
 static pthread_t threadReader;
 static pthread_t threadDvbsub;
@@ -41,6 +42,8 @@ cDvbSubtitleConverter *dvbSubtitleConverter;
 static void* reader_thread(void* arg);
 static void* dvbsub_thread(void* arg);
 static void clear_queue();
+extern "C" void dvbsub_write(AVSubtitle *sub, int64_t pts);
+static bool isEplayer = false;
 ////
 extern CFrontend * live_fe;
 
@@ -95,16 +98,25 @@ int dvbsub_pause()
 	return 0;
 }
 
-int dvbsub_start(int pid)
+int dvbsub_start(int pid, bool _isEplayer)
 {
-	if(!dvbsub_paused && (pid == 0)) 
+	isEplayer = _isEplayer;
+	
+	if (isEplayer && !dvbsub_paused)
+		return 0;
+		
+	if (!isEplayer && !pid)
+		pid = -1;
+		
+	if(!dvbsub_paused && (pid < 0)) 
 	{
 		return 0;
 	}
 
-	if(pid) 
+	//if(pid) 
 	{
-		if(pid != dvbsub_pid) 
+		//if(pid != dvbsub_pid) 
+		if (pid > -1 && pid != dvbsub_pid)
 		{
 			dvbsub_pause();
 			
@@ -118,7 +130,7 @@ int dvbsub_start(int pid)
 	
 	printf("[dvb-sub] start, stopped %d pid %x\n", dvbsub_stopped, dvbsub_pid);
 
-	if(dvbsub_pid > 0) 
+	if(dvbsub_pid > -1) 
 	{
 		dvbsub_stopped = 0;
 		dvbsub_paused = false;
@@ -138,7 +150,7 @@ int dvbsub_start(int pid)
 
 int dvbsub_stop()
 {
-	dvbsub_pid = 0;
+	dvbsub_pid = -1;
 	
 	if(reader_running) 
 	{
@@ -157,9 +169,12 @@ int dvbsub_getpid()
 
 void dvbsub_setpid(int pid)
 {
+	if (!isEplayer && !pid)
+		pid = -1;
+		
 	dvbsub_pid = pid;
 
-	if(dvbsub_pid == 0)
+	if(dvbsub_pid < 0)
 		return;
 
 	clear_queue();
@@ -208,9 +223,15 @@ int dvbsub_close()
 }
 
 static cDemux * dmx;
-
+extern void getPlayerPts(int64_t *);
 void dvbsub_get_stc(int64_t * STC)
 {
+	if (isEplayer)
+	{
+		getPlayerPts(STC);
+		return;
+	}
+	
 	if(dmx)
 		dmx->getSTC(STC);
 }
@@ -252,6 +273,7 @@ static int64_t get_pts_stc_delta(int64_t pts)
 static void clear_queue()
 {
 	uint8_t* packet;
+	cDvbSubtitleBitmaps *Bitmaps;
 
 	pthread_mutex_lock(&packetMutex);
 	
@@ -260,11 +282,33 @@ static void clear_queue()
 		packet = packet_queue.pop();
 		free(packet);
 	}
+	
+	while (bitmap_queue.size())
+	{
+		Bitmaps = (cDvbSubtitleBitmaps *) bitmap_queue.pop();
+		delete Bitmaps;
+	}
+	
 	pthread_mutex_unlock(&packetMutex);
 }
 
+////
+void dvbsub_write(AVSubtitle *sub, int64_t pts)
+{
+	pthread_mutex_lock(&packetMutex);
+	cDvbSubtitleBitmaps *Bitmaps = new cDvbSubtitleBitmaps(pts);
+	Bitmaps->SetSub(sub); // Note: this will copy sub, including all references. DON'T call avsubtitle_free() from the caller.
+	memset(sub, 0, sizeof(AVSubtitle));
+	bitmap_queue.push((unsigned char *) Bitmaps);
+	pthread_cond_broadcast(&packetCond);
+	pthread_mutex_unlock(&packetMutex);
+}
+////
+
 static void* reader_thread(void * /*arg*/)
 {
+	printf("dvbsub_thread\n");
+	
 	uint8_t tmp[16];  /* actually 6 should be enough */
 	int count;
 	int len;
@@ -368,6 +412,8 @@ static void* reader_thread(void * /*arg*/)
 
 static void* dvbsub_thread(void* /*arg*/)
 {
+	printf("dvbsub_thread\n");
+	
 	struct timespec restartWait;
 	struct timeval now;
 	
@@ -404,7 +450,8 @@ static void* dvbsub_thread(void* /*arg*/)
 
 		timeout = dvbSubtitleConverter->Action();
 
-		if(packet_queue.size() == 0) {
+		if(packet_queue.size() == 0 && bitmap_queue.size() == 0) 
+		{
 			continue;
 		}
 
@@ -415,6 +462,8 @@ static void* dvbsub_thread(void* /*arg*/)
 			continue;
 		}
 
+		if (packet_queue.size())
+		{
 		pthread_mutex_lock(&packetMutex);
 		packet = packet_queue.pop();
 		pthread_mutex_unlock(&packetMutex);
@@ -445,10 +494,21 @@ static void* dvbsub_thread(void* /*arg*/)
 			dvbSubtitleConverter->Convert(&packet[dataoffset + 2], packlen - (dataoffset + 2), pts);
 		} 
 		
-		timeout = dvbSubtitleConverter->Action();
+//		timeout = dvbSubtitleConverter->Action();
 
 next_round:
-		free(packet);
+		if (packet)
+			free(packet);
+			
+		}
+		else
+		{
+			cDvbSubtitleBitmaps *Bitmaps = (cDvbSubtitleBitmaps *) bitmap_queue.pop();
+			pthread_mutex_unlock(&packetMutex);
+			dvbSubtitleConverter->Convert(Bitmaps->GetSub(), Bitmaps->Pts());
+		}
+		
+		timeout = dvbSubtitleConverter->Action();
 	}
 
 	delete dvbSubtitleConverter;

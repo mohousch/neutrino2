@@ -102,6 +102,12 @@
 #define BUTTON_BAR_HEIGHT	25
 #define TIMESCALE_BAR_HEIGHT	4
 
+void getPlayerPts(int64_t* pts)
+{
+	if (playback)
+		playback->GetPts((uint64_t &) *pts);
+}
+
 //// movieplayer
 CMoviePlayerGui::CMoviePlayerGui()
 {

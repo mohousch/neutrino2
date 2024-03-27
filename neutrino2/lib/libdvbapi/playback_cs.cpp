@@ -1037,6 +1037,12 @@ bool cPlayback::SetSlow(int slow)
 	return true;
 }
 
+void cPlayback::GetPts(uint64_t &pts)
+{
+	if (player && player->playback)
+		player->playback->Command(player, PLAYBACK_PTS, (void *)&pts);
+}
+
 bool cPlayback::GetSpeed(int &speed) const
 {
 	speed = mSpeed;

@@ -54,7 +54,7 @@ int tuxtxt_stop()
 
 void tuxtxt_start(int tpid)
 {
-	printf("tuxtxt_start: tpid: %d\n", tpid);
+	printf("tuxtxt_start: tpid: 0x%x\n", tpid);
 	
 	if (tuxtxt_cache.vtxtpid != tpid)
 	{

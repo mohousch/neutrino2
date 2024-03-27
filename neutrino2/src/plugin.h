@@ -204,7 +204,7 @@ extern int tuxtx_main(int pid, int page, bool isEplayer);
 extern int dvbsub_init();
 extern int dvbsub_stop();
 extern int dvbsub_close();
-extern int dvbsub_start(int pid);
+extern int dvbsub_start(int pid, bool isEplayer);
 extern int dvbsub_pause();
 extern int dvbsub_getpid();
 extern void dvbsub_setpid(int pid);

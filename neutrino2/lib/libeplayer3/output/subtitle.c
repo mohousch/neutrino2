@@ -77,8 +77,6 @@ int min_y = 0;
 int max_x = 0;
 int max_y = 0;
 
-static int have_dvb = 0;
-
 /* ***************************** */
 /* Types                         */
 /* ***************************** */
@@ -90,6 +88,9 @@ static int have_dvb = 0;
 static pthread_mutex_t mutex;
 static int isSubtitleOpened = 0;
 extern void teletext_write(int pid, uint8_t *data, int size);
+extern void dvbsub_write(AVSubtitle *sub, int64_t pts);
+extern int writeText(void* _call);
+extern void clearBuffer(void);
 
 /* ***************************** */
 /* Prototypes                    */
@@ -297,6 +298,8 @@ static int Write(void* _context, void *data)
 		if (got_sub_ptr && sub.num_rects > 0)
 		{
 			subtitle_printf(100, "type: %d\n", sub.rects[0]->type);
+			
+			clearBuffer();
 						
 			switch (sub.rects[0]->type)
 			{
@@ -327,7 +330,7 @@ static int Write(void* _context, void *data)
              					fb.destination   = destination;
              					fb.destStride    = destStride;
 
-             					writer->writeReverseData(&fb);
+             					writeText(&fb);
 					}
 					break;
 				}
@@ -359,7 +362,7 @@ static int Write(void* _context, void *data)
              					fb.destination   = destination;
              					fb.destStride    = destStride;
 
-             					writer->writeReverseData(&fb);
+             					writeText(&fb);
 					}
 					break;
 				}
@@ -499,7 +502,9 @@ static int Write(void* _context, void *data)
 
 							free(newdata);
 						}
-					} //for
+					} 
+					
+//					dvbsub_write(&sub, out->pts);
 					break;
 				}
 				
