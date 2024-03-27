@@ -231,7 +231,7 @@ extern tallchans allchans;				// defined in zapit.cpp
 // tuxtxt
 extern int  tuxtxt_stop();
 extern void tuxtxt_close();
-extern void tuxtx_pause_subtitle(bool pause);
+extern void tuxtx_pause_subtitle(bool pause, bool isEplayer);
 extern void tuxtx_stop_subtitle();
 extern void tuxtx_set_pid(int pid, int page, const char * cc);
 extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
@@ -2911,7 +2911,7 @@ void CNeutrinoApp::startSubtitles(bool show)
 	dvbsub_start(dvbsub_getpid());
 	
 	// start tuxtxt
-	tuxtx_pause_subtitle( false);
+	tuxtx_pause_subtitle( false, false);
 }
 
 // stop subtitle
@@ -2937,7 +2937,7 @@ void CNeutrinoApp::stopSubtitles()
 	
 	if(ttx) 
 	{
-		tuxtx_pause_subtitle(true);
+		tuxtx_pause_subtitle(true, false);
 		
 		frameBuffer->paintBackground();
 		frameBuffer->blit();
@@ -4063,8 +4063,6 @@ void CNeutrinoApp::realRun(void)
 					//
 					if(g_InfoViewer->is_visible)
 						g_InfoViewer->killTitle();
-
-//					g_RCInput->clearRCMsg();
 
 					stopSubtitles();
 					

@@ -210,6 +210,9 @@ class CTestMenu : public CMenuTarget
 		void testSkinWidget();
 		void testSkinWidget3();
 		
+		//// tuxtxt
+		void testTuxTxt();
+		
 		//// paint()
 		void showMenu();
 		
@@ -4694,6 +4697,17 @@ void CTestMenu::testSkinWidget3()
 	}
 }
 
+////
+void CTestMenu::testTuxTxt()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testTuxTxt\n");
+	
+	CZapit::CServiceInfo si;
+	si = CZapit::getInstance()->getServiceInfo(live_channel_id);
+	
+	tuxtx_main(si.vtxtpid, 0, false);
+}
+
 // exec
 int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 {
@@ -6208,6 +6222,46 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		
 		return RETURN_REPAINT;
 	}
+	else if (actionKey == "tuxtxtnopid")
+	{
+		dprintf(DEBUG_NORMAL, "CTestMenu::testTuxTxtNoPid\n");
+	
+		tuxtx_stop_subtitle();
+		tuxtx_main(0, 0, false);
+		
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "tuxtxt")
+	{
+		dprintf(DEBUG_NORMAL, "CTestMenu::testTuxTxt\n");
+	
+		CZapit::CServiceInfo si;
+		si = CZapit::getInstance()->getServiceInfo(live_channel_id);
+	
+		tuxtx_stop_subtitle();
+		tuxtx_main(si.vtxtpid, 0, false);
+		
+		return RETURN_REPAINT;
+	}
+	else if (!strncmp(actionKey.c_str(), "TTX", 3))
+	{
+		char const * ptr = strchr(actionKey.c_str(), ':');
+		ptr++;
+		int pid = atoi(ptr);
+		ptr = strchr(ptr, ':');
+		ptr++;
+		int page = strtol(ptr, NULL, 16);
+		ptr = strchr(ptr, ':');
+		ptr++;
+		
+		dprintf(DEBUG_NORMAL, "CTestMenu::exec: TTX, pid %x page %x lang %s\n", pid, page, ptr);
+		
+		tuxtx_stop_subtitle();
+		tuxtx_set_pid(pid, page, ptr);
+		tuxtx_main(pid, page, false);
+		
+		return RETURN_EXIT_ALL;
+	}
 
 	showMenu();
 	
@@ -6396,6 +6450,45 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "SKIN") );		
 	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET", true, NULL, this, "skin"));
 	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET3", true, NULL, this, "skin3"));
+	
+	//
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "Tuxtxt") );
+	mainMenu->addItem(new CMenuForwarder("Show Tuxtxt (No Pid)", true, NULL, this, "tuxtxtnopid"));		
+	mainMenu->addItem(new CMenuForwarder("Show Tuxtxt", true, NULL, this, "tuxtxt"));
+
+	unsigned int count = 0;
+	CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(live_channel_id);
+        
+        // subs
+        if (channel)
+        {
+        	for (int i = 0 ; i < (int)channel->getSubtitleCount() ; ++i) 
+		{
+			CZapitAbsSub* s = channel->getChannelSub(i);
+			
+			// teletext
+			if (s->thisSubType == CZapitAbsSub::TTX) 
+			{
+				CZapitTTXSub* sd = reinterpret_cast<CZapitTTXSub*>(s);
+				
+				dprintf(DEBUG_NORMAL, "TestMenu: adding TTX subtitle %s pid 0x%x mag 0x%X page 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId, sd->teletext_magazine_number, sd->teletext_page_number);
+				
+				char spid[64];
+				int page = ((sd->teletext_magazine_number & 0xFF) << 8) | sd->teletext_page_number;
+				int pid = sd->pId;
+				
+				snprintf(spid, sizeof(spid), "TTX:%d:%03X:%s", sd->pId, page, sd->ISO639_language_code.c_str()); 
+				
+				printf("TestMenu: %s\n", spid);
+				
+				char item[64];
+				
+				snprintf(item, sizeof(item), "TTX: %s", sd->ISO639_language_code.c_str());
+				
+				mainMenu->addItem(new CMenuForwarder(item, !tuxtx_subtitle_running(&pid, &page, NULL), NULL, this, spid, CRCInput::convertDigitToKey(++count)));
+			}
+		}
+        }
 	
 	mWidget->exec(NULL, "");
 	

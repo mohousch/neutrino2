@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-03-12 13:22+0200\n"
+"POT-Creation-Date: 2024-03-27 12:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,141 +17,141 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../../test/test.cpp:3149
+#: ../../test/test.cpp:3152
 msgid "CMenuWidget(Menu Mode)"
 msgstr ""
 
-#: ../../test/test.cpp:3234
+#: ../../test/test.cpp:3237
 msgid "CMenuWidget(Menu|ItemInfo)"
 msgstr ""
 
-#: ../../test/test.cpp:3321
+#: ../../test/test.cpp:3324
 msgid "CMenuWidget(Menu|classic)"
 msgstr ""
 
-#: ../../test/test.cpp:3407
+#: ../../test/test.cpp:3410
 msgid "CMenuWidget(Menu|extended)"
 msgstr ""
 
-#: ../../test/test.cpp:3493
+#: ../../test/test.cpp:3496
 msgid "CMenuWidget(Menu|frame)"
 msgstr ""
 
-#: ../../test/test.cpp:929
+#: ../../test/test.cpp:932
 msgid "CWidget(CFrameBox/ClistBox)"
 msgstr ""
 
-#: ../../test/test.cpp:3798
+#: ../../test/test.cpp:3801
 msgid "Error"
 msgstr ""
 
-#: ../../test/test.cpp:3166 ../../test/test.cpp:3251 ../../test/test.cpp:3338
-#: ../../test/test.cpp:3424 ../../test/test.cpp:3510
+#: ../../test/test.cpp:3169 ../../test/test.cpp:3254 ../../test/test.cpp:3341
+#: ../../test/test.cpp:3427 ../../test/test.cpp:3513
 msgid "Features"
 msgstr ""
 
-#: ../../test/test.cpp:3168 ../../test/test.cpp:3253 ../../test/test.cpp:3340
-#: ../../test/test.cpp:3426 ../../test/test.cpp:3512
+#: ../../test/test.cpp:3171 ../../test/test.cpp:3256 ../../test/test.cpp:3343
+#: ../../test/test.cpp:3429 ../../test/test.cpp:3515
 msgid "Here you can choose plugins"
 msgstr ""
 
-#: ../../test/test.cpp:3195 ../../test/test.cpp:3280 ../../test/test.cpp:3367
-#: ../../test/test.cpp:3453 ../../test/test.cpp:3539
+#: ../../test/test.cpp:3198 ../../test/test.cpp:3283 ../../test/test.cpp:3370
+#: ../../test/test.cpp:3456 ../../test/test.cpp:3542
 msgid "Here you can get device Info"
 msgstr ""
 
-#: ../../test/test.cpp:3209 ../../test/test.cpp:3294 ../../test/test.cpp:3381
-#: ../../test/test.cpp:3467 ../../test/test.cpp:3553
+#: ../../test/test.cpp:3212 ../../test/test.cpp:3297 ../../test/test.cpp:3384
+#: ../../test/test.cpp:3470 ../../test/test.cpp:3556
 msgid "Here you can play music / movies"
 msgstr ""
 
-#: ../../test/test.cpp:3202 ../../test/test.cpp:3287 ../../test/test.cpp:3374
-#: ../../test/test.cpp:3460 ../../test/test.cpp:3546
+#: ../../test/test.cpp:3205 ../../test/test.cpp:3290 ../../test/test.cpp:3377
+#: ../../test/test.cpp:3463 ../../test/test.cpp:3549
 msgid "Here you can power off or standby your device"
 msgstr ""
 
-#: ../../test/test.cpp:3161 ../../test/test.cpp:3246 ../../test/test.cpp:3333
-#: ../../test/test.cpp:3419 ../../test/test.cpp:3505
+#: ../../test/test.cpp:3164 ../../test/test.cpp:3249 ../../test/test.cpp:3336
+#: ../../test/test.cpp:3422 ../../test/test.cpp:3508
 msgid "Here you can set Timers and show EPG"
 msgstr ""
 
-#: ../../test/test.cpp:3175 ../../test/test.cpp:3260 ../../test/test.cpp:3347
-#: ../../test/test.cpp:3433 ../../test/test.cpp:3519
+#: ../../test/test.cpp:3178 ../../test/test.cpp:3263 ../../test/test.cpp:3350
+#: ../../test/test.cpp:3436 ../../test/test.cpp:3522
 msgid "Here you can set channel scan and more"
 msgstr ""
 
-#: ../../test/test.cpp:3189 ../../test/test.cpp:3274 ../../test/test.cpp:3361
-#: ../../test/test.cpp:3447 ../../test/test.cpp:3533
+#: ../../test/test.cpp:3192 ../../test/test.cpp:3277 ../../test/test.cpp:3364
+#: ../../test/test.cpp:3450 ../../test/test.cpp:3536
 msgid "Here you can setup OSD"
 msgstr ""
 
-#: ../../test/test.cpp:3182 ../../test/test.cpp:3267 ../../test/test.cpp:3354
-#: ../../test/test.cpp:3440 ../../test/test.cpp:3526
+#: ../../test/test.cpp:3185 ../../test/test.cpp:3270 ../../test/test.cpp:3357
+#: ../../test/test.cpp:3443 ../../test/test.cpp:3529
 msgid "Here you can setup your box"
 msgstr ""
 
-#: ../../test/test.cpp:3153 ../../test/test.cpp:3238 ../../test/test.cpp:3325
-#: ../../test/test.cpp:3411 ../../test/test.cpp:3497
+#: ../../test/test.cpp:3156 ../../test/test.cpp:3241 ../../test/test.cpp:3328
+#: ../../test/test.cpp:3414 ../../test/test.cpp:3500
 msgid "Here you can switch between TV / Radio"
 msgstr ""
 
-#: ../../test/test.cpp:3666
+#: ../../test/test.cpp:3669
 msgid "IP:"
 msgstr ""
 
-#: ../../test/test.cpp:3193 ../../test/test.cpp:3278 ../../test/test.cpp:3365
-#: ../../test/test.cpp:3451 ../../test/test.cpp:3537 ../../test/test.cpp:3775
-#: ../../test/test.cpp:3790
+#: ../../test/test.cpp:3196 ../../test/test.cpp:3281 ../../test/test.cpp:3368
+#: ../../test/test.cpp:3454 ../../test/test.cpp:3540 ../../test/test.cpp:3778
+#: ../../test/test.cpp:3793
 msgid "Information"
 msgstr ""
 
-#: ../../test/test.cpp:3207 ../../test/test.cpp:3292 ../../test/test.cpp:3379
-#: ../../test/test.cpp:3465 ../../test/test.cpp:3551
+#: ../../test/test.cpp:3210 ../../test/test.cpp:3295 ../../test/test.cpp:3382
+#: ../../test/test.cpp:3468 ../../test/test.cpp:3554
 msgid "Media Player"
 msgstr ""
 
-#: ../../test/test.cpp:3187 ../../test/test.cpp:3272 ../../test/test.cpp:3359
-#: ../../test/test.cpp:3445 ../../test/test.cpp:3531
+#: ../../test/test.cpp:3190 ../../test/test.cpp:3275 ../../test/test.cpp:3362
+#: ../../test/test.cpp:3448 ../../test/test.cpp:3534
 msgid "OSD"
 msgstr ""
 
-#: ../../test/test.cpp:3200 ../../test/test.cpp:3285 ../../test/test.cpp:3372
-#: ../../test/test.cpp:3458 ../../test/test.cpp:3544
+#: ../../test/test.cpp:3203 ../../test/test.cpp:3288 ../../test/test.cpp:3375
+#: ../../test/test.cpp:3461 ../../test/test.cpp:3547
 msgid "Power Menu"
 msgstr ""
 
-#: ../../test/test.cpp:1350 ../../test/test.cpp:1427 ../../test/test.cpp:2127
-#: ../../test/test.cpp:2196 ../../test/test.cpp:2271 ../../test/test.cpp:2349
-#: ../../test/test.cpp:2429 ../../test/test.cpp:2507 ../../test/test.cpp:2585
-#: ../../test/test.cpp:2665 ../../test/test.cpp:2746 ../../test/test.cpp:2827
-#: ../../test/test.cpp:2983
+#: ../../test/test.cpp:1353 ../../test/test.cpp:1430 ../../test/test.cpp:2130
+#: ../../test/test.cpp:2199 ../../test/test.cpp:2274 ../../test/test.cpp:2352
+#: ../../test/test.cpp:2432 ../../test/test.cpp:2510 ../../test/test.cpp:2588
+#: ../../test/test.cpp:2668 ../../test/test.cpp:2749 ../../test/test.cpp:2830
+#: ../../test/test.cpp:2986
 msgid "Scan for Movies ..."
 msgstr ""
 
-#: ../../test/test.cpp:3173 ../../test/test.cpp:3258 ../../test/test.cpp:3345
-#: ../../test/test.cpp:3431 ../../test/test.cpp:3517
+#: ../../test/test.cpp:3176 ../../test/test.cpp:3261 ../../test/test.cpp:3348
+#: ../../test/test.cpp:3434 ../../test/test.cpp:3520
 msgid "Service"
 msgstr ""
 
-#: ../../test/test.cpp:3180 ../../test/test.cpp:3265 ../../test/test.cpp:3352
-#: ../../test/test.cpp:3438 ../../test/test.cpp:3524
+#: ../../test/test.cpp:3183 ../../test/test.cpp:3268 ../../test/test.cpp:3355
+#: ../../test/test.cpp:3441 ../../test/test.cpp:3527
 msgid "Settings"
 msgstr ""
 
-#: ../../test/test.cpp:3151 ../../test/test.cpp:3236 ../../test/test.cpp:3323
-#: ../../test/test.cpp:3409 ../../test/test.cpp:3495
+#: ../../test/test.cpp:3154 ../../test/test.cpp:3239 ../../test/test.cpp:3326
+#: ../../test/test.cpp:3412 ../../test/test.cpp:3498
 msgid "TV / Radio"
 msgstr ""
 
-#: ../../test/test.cpp:3723
+#: ../../test/test.cpp:3726
 msgid "Test"
 msgstr ""
 
-#: ../../test/test.cpp:3708
+#: ../../test/test.cpp:3711
 msgid "Time:"
 msgstr ""
 
-#: ../../test/test.cpp:3159 ../../test/test.cpp:3244 ../../test/test.cpp:3331
-#: ../../test/test.cpp:3417 ../../test/test.cpp:3503
+#: ../../test/test.cpp:3162 ../../test/test.cpp:3247 ../../test/test.cpp:3334
+#: ../../test/test.cpp:3420 ../../test/test.cpp:3506
 msgid "Timer / EPG"
 msgstr ""

@@ -18,6 +18,7 @@
 #include <dmx_cs.h>
 #include <zapit/frontend_c.h>
 #include <system/set_threadname.h>
+#include <system/helpers.h>
 
 
 extern CFrontend * live_fe;
@@ -25,7 +26,9 @@ extern CFrontend * live_fe;
 //// defines
 tuxtxt_cache_struct tuxtxt_cache;
 static pthread_mutex_t tuxtxt_cache_lock = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t tuxtxt_cache_biglock = PTHREAD_MUTEX_INITIALIZER;
 
+////
 int tuxtxt_get_zipsize(int p,int sp)
 {
 	tstCachedPage* pg = tuxtxt_cache.astCachetable[p][sp];
@@ -591,10 +594,10 @@ static void clear_inject_queue(void)
 	pthread_mutex_unlock(&inject_mutex);
 }
 
-void teletext_write(int pid, uint8_t *data, int size)
-{
-//	printf("teletext_write: pid:%d data:%s size:%d\n", pid, data, size);
-	
+extern "C" void tuxtx_pause_subtitle(bool pause, bool isEplayer);
+extern "C" void tuxtx_stop_subtitle();
+extern "C" void teletext_write(int pid, uint8_t *data, int size)
+{	
 	if (last_injected_pid != pid)
 	{
 		clear_inject_queue();
@@ -630,9 +633,7 @@ void teletext_write(int pid, uint8_t *data, int size)
 }
 
 static bool read_injected_packet(unsigned char* &packet, ssize_t* size, int timeout_in_ms)
-{
-//	printf("read_injected_packet\n");
-	
+{	
 	struct timespec ts;
 	clock_gettime(CLOCK_REALTIME, &ts);
 	ts.tv_nsec += timeout_in_ms * 1000000;
@@ -671,6 +672,7 @@ static bool read_injected_packet(unsigned char* &packet, ssize_t* size, int time
 //
 extern bool isTtxEplayer;
 static int stop_cache = 0;
+
 void * tuxtxt_CacheThread(void * /*arg*/)
 {
 	printf("tuxtxt_CacheThread: starting... tid %ld\n", syscall(__NR_gettid));
@@ -699,17 +701,14 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 	
 	//
 	sem_init(&inject_sem, 0, 0);
-
-	printf("TuxTxt running thread...(%03x)\n", tuxtxt_cache.vtxtpid);
 	
 	tuxtxt_cache.receiving = 1;
 	nice(3);
 	
 	while (!stop_cache)
 	{
-		// check stopsignal
 		pthread_testcancel();
-
+		
 		if (!tuxtxt_cache.receiving) 
 			continue;
 
@@ -745,15 +744,17 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 			}
 		}
 		
-//		printf("packet: %s\n", pes_packet_ptr);
-//		printf("readcnt: %d\n", readcnt);
+		//
+//		Hexdump(pes_packet_ptr, readcnt);
 
 		// analyze data
+		pthread_mutex_lock(&tuxtxt_cache_biglock);
+		
 		for (line = 0; line < readcnt/0x2e; line++)
 		{
-			unsigned char *vtx_rowbyte = &pes_packet_ptr[line*0x2e];
-			
-			pes_packet_ptr += 0x2e;			
+//			unsigned char *vtx_rowbyte = &pes_packet_ptr[line*0x2e];			
+			unsigned char *vtx_rowbyte = pes_packet_ptr;
+			pes_packet_ptr += 0x2e;		
 			
 			if ((vtx_rowbyte[1] == 0x2C) && (vtx_rowbyte[0] == 0x02 || vtx_rowbyte[0] == 0x03))
 			{
@@ -762,9 +763,10 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 				for (byte = 4; byte < 46; byte++)
 				{
 					unsigned char upper, lower;
+					
 					upper = (vtx_rowbyte[byte] >> 4) & 0xf;
 					lower = vtx_rowbyte[byte] & 0xf;
-					vtxt_row[byte-4] = (rev_lut[upper]) | (rev_lut[lower+16]);
+					vtxt_row[byte-4] = (rev_lut[upper]) | (rev_lut[lower + 16]);
 				}
 
 				// get packet number
@@ -1124,7 +1126,12 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 				}
 			}
 		}
+		
+		pthread_mutex_unlock(&tuxtxt_cache_biglock);
 	}
+	
+	if (pes_packet_eplayer3)
+		free(pes_packet_eplayer3);
 	
 	pthread_exit(NULL);
 }
@@ -1187,6 +1194,8 @@ int tuxtxt_stop_thread()
 		delete dmx;
 		dmx = NULL;
 	}
+	
+	clear_inject_queue();
 
 	return 1;
 }

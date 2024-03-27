@@ -1123,8 +1123,6 @@ void eval_l25()
 		if (boxed || transpmode)
 			//FullScrColor = transp;
 			FillBorder(transp);
-		//else
-			//FillBorder(FullScrColor);
 		else if(use_gui) 
 		{
 			FillBorder(FullScrColor);
@@ -1167,15 +1165,18 @@ static void * reader_thread(void * /*arg*/)
 }
 
 int tuxtx_main(int pid, int page, bool isEplayer);
-void tuxtx_pause_subtitle(bool pause)
+void tuxtx_pause_subtitle(bool pause, bool isEplayer)
 {
 	if(!pause) 
 	{
 		dprintf(DEBUG_NORMAL, "TuxTxt subtitle unpause, running %d pid %d page %d\n", reader_running, sub_pid, sub_page);
 		
 		ttx_paused = 0;
-		if(!reader_running && sub_pid && sub_page)
-			tuxtx_main(sub_pid, sub_page, isTtxEplayer);
+		
+		if (isEplayer && !reader_running)
+			tuxtx_main(sub_pid, sub_page, isEplayer);
+		else if(!reader_running && sub_pid && sub_page)
+			tuxtx_main(sub_pid, sub_page, isEplayer);
 	}
 	else 
 	{
@@ -1184,6 +1185,7 @@ void tuxtx_pause_subtitle(bool pause)
 		
 		dprintf(DEBUG_NORMAL, "TuxTxt subtitle asking to pause...\n");
 		ttx_req_pause = 1;
+		
 		while(!ttx_paused)
 			usleep(10);
 		
@@ -1233,25 +1235,22 @@ int tuxtx_subtitle_running(int *pid, int *page, int *running)
 
 	return ret;
 }
-////
 
 //// main loop
 int tuxtx_main(int pid, int page, bool isEplayer)
 {
-	printf("tuxtx_main\n");
+	dprintf(DEBUG_NORMAL, "tuxtx_main: TuxTXT 32bpp framebuffer\n");
 	
-	char cvs_revision[] = "$Revision: 1.95 $";
+	use_gui = 1;
+	boxed = 0;
 	
-	////
+	//
 	if (isTtxEplayer != isEplayer)
 	{
 		tuxtxt_stop();
 		tuxtxt_clear_cache();
 		isTtxEplayer = isEplayer;
 	}
-	
-	use_gui = 1;
-	boxed = 0;
 
 	// init
 	int initialized = tuxtxt_init();
@@ -1260,28 +1259,16 @@ int tuxtx_main(int pid, int page, bool isEplayer)
 		tuxtxt_cache.page = 0x100;
 	
 	// page
-	if(page) 
+	if(page || isEplayer) 
 	{
 		sub_page = tuxtxt_cache.page = page;
 		sub_pid = pid;
 		use_gui = 0;
 		boxed = 1;
 	}
-
-	// show versioninfo
-	sscanf(cvs_revision, "%*s %s", versioninfo);
-	
-	dprintf(DEBUG_NORMAL, "TuxTxt %s for 32bpp framebuffer\n", versioninfo);
 	
 	//fb
 	lfb = (unsigned char *)CFrameBuffer::getInstance()->getFrameBufferPointer();
-
-	tuxtxt_cache.vtxtpid = pid;
-
-	if(tuxtxt_cache.vtxtpid == 0)
-		printf("Tuxtxt No PID given, so scanning for PIDs ...\n");
-	else
-		printf("Tuxtxt using PID 0x%x\n", tuxtxt_cache.vtxtpid);
 	
 	// coordinate
 	int x = CFrameBuffer::getInstance()->getScreenX();
@@ -1304,9 +1291,12 @@ int tuxtx_main(int pid, int page, bool isEplayer)
 
 	//initialisations
 	transpmode = 0;
+	
+	//
+	tuxtxt_cache.vtxtpid = pid;
 
 	// init
-	if (Init() == 0) // this create decode cache thread
+	if (Init(isEplayer) == 0) // this start getteletextpid and decode cache thread
 		return 0;
 	
 	// create subthread
@@ -1480,9 +1470,10 @@ FT_Error MyFaceRequester(FTC_FaceID face_id, FT_Library _library, FT_Pointer /*r
 }
 
 //// Init
-int Init()
+extern void decodePacket(bool eplayer);
+int Init(bool isEplayer)
 {
-	printf("Init\n");
+	printf("Init: isEplayer:%s\n", isEplayer? "true" : "false");
 	
 	int error, i;
 	unsigned char magazine;
@@ -1655,7 +1646,7 @@ int Init()
 	}
 
 	// center screen
-	StartX = sx+ (((ex-sx) - 40*fontwidth) / 2);
+	StartX = sx + (((ex-sx) - 40*fontwidth) / 2);
 	StartY = sy + (((ey-sy) - 25*fontheight) / 2);
 
 	//
@@ -1709,21 +1700,22 @@ int Init()
 		page_atrb[i].doublew = 0;
 		page_atrb[i].IgnoreAtBlackBgSubst = 0;
 	}
-
+	
 	//  if no vtxtpid for current service, search PIDs
 	if (tuxtxt_cache.vtxtpid == 0)
 	{
 		// get all vtxt-pids
 		getpidsdone = -1;	 // don't kill thread
 
-		if (GetTeletextPIDs() == 0)
+		if (GetTeletextPIDs(isEplayer) == 0)
 		{
 			return 0;
 		}
 
 		if (auto_national)
 			national_subset = pid_table[0].national_subset;
-// FIXME: brocken configMenu
+			
+// 		FIXME: brocken configMenu
 //		if (pids_found > 1)
 //			ConfigMenu(1);
 //		else
@@ -1752,12 +1744,6 @@ int Init()
 	gethotlist();
 	
 	SwitchScreenMode(screenmode);
-	/*
-	if(use_gui)
-		SwitchScreenMode(screenmode);
-	else
-		SwitchScreenMode(0);
-	*/
 	
 	prevscreenmode = screenmode;
 	
@@ -1823,11 +1809,11 @@ void CleanUp()
 }
 
 //// GetTeletextPIDs
-int GetTeletextPIDs()
+int GetTeletextPIDs(bool isEplayer)
 {
 	printf("GetTeletextPIDs\n");
 	
-	if (isTtxEplayer)
+	if (isEplayer)
 		return 1;
 		
 	int pat_scan, pmt_scan, sdt_scan, desc_scan, pid_test, byte, diff, first_sdt_sec;
@@ -3318,13 +3304,13 @@ void SwitchScreenMode(int newscreenmode)
 	// set mode
 	if (screenmode)								 // split
 	{
-		dprintf(DEBUG_NORMAL, "[TuxTxt] Slit Mode (1.)\n");
+		dprintf(DEBUG_NORMAL, "SwitchScreenMode: Slit Mode (1.)\n");
 		
 		ClearFB(clearbbcolor);
 
 		int fw, fh, tx, ty, tw, th;
 
-		dprintf(DEBUG_NORMAL, "Settup video picture\n");
+		dprintf(DEBUG_NORMAL, "SwitchScreenMode: Settup video picture\n");
 		
 		// ugly hack
 		// dont calculate rate when we have HD until to fix this
@@ -3364,7 +3350,7 @@ void SwitchScreenMode(int newscreenmode)
 	}
 	else // not split
 	{
-		dprintf(DEBUG_NORMAL, "[TuxTxt] Full txt Screen (2).\n"); 
+		dprintf(DEBUG_NORMAL, "SwitchScreenMode Full txt Screen (2).\n"); 
 
 		// set pig	
 		videoDecoder->Pig(-1, -1, -1, -1);
@@ -4461,7 +4447,7 @@ void RenderPage()
 		else
 			startrow = 1;
 		
-		//
+		// SwitchScreenmode
 		if (boxed)
 		{ 
 			if (screenmode != 0) 
@@ -4486,6 +4472,7 @@ void RenderPage()
 			}
 		}
 		
+		// setfontwidth
 		fontwidth_normal = (ex - sx) / (40 - nofirst);
 		setfontwidth(fontwidth_normal);
 		fontwidth_topmenumain = (TV43STARTX-sx) / (40 - nofirst);
@@ -4499,6 +4486,7 @@ void RenderPage()
 			case 2:  setfontwidth(fontwidth_small)      ; displaywidth= (TV169FULLSTARTX-sx);break;
 		}
 		
+		// fill border / clear BB
 		if (transpmode || (boxed && !screenmode))
 		{
 			FillBorder(transp);	//ClearBB(transp);

@@ -18,7 +18,6 @@
 ////
 #define MAX_PES_PACKET_SIZE                     (65535) //65400
 
-
 //// start codes
 #define PCM_AUDIO_PES_START_CODE        	0xbd
 #define H263_VIDEO_PES_START_CODE		0xfe

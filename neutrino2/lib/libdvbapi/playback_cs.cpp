@@ -1373,7 +1373,13 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 				
 				apids[j] = j;
 
+				language[j] = "Sub";
+
 				language[j] = TrackList[i];
+				
+				language[j] += " (";
+				language[j] += TrackList[i + 1];
+				language[j] += ")";
 				
 				free(TrackList[i]);
 				free(TrackList[i + 1]);

@@ -34,8 +34,6 @@
 #include <pthread.h>
 #include <errno.h>
 
-#include <ass/ass.h>
-
 #include "common.h"
 #include "output.h"
 #include "subtitle.h"
@@ -91,6 +89,7 @@ static int have_dvb = 0;
 
 static pthread_mutex_t mutex;
 static int isSubtitleOpened = 0;
+extern void teletext_write(int pid, uint8_t *data, int size);
 
 /* ***************************** */
 /* Prototypes                    */
@@ -263,7 +262,7 @@ static int Write(void* _context, void *data)
         	subtitle_err("no framebuffer writer found!\n");
         	return cERR_SUBTITLE_ERROR;
     	}
-
+    	
 	//
     	AVSubtitle sub;
     	AVCodecContext* ctx = out->stream->codec;
@@ -315,7 +314,7 @@ static int Write(void* _context, void *data)
 						subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
 						
 						fb.fd            = framebufferFD;
-             					fb.data          = sub.rects[i]->text;
+             					fb.data          = (uint8_t*)sub.rects[i]->text;
              					fb.Width         = screen_width - 80;
         					fb.Height        = 60;
         					fb.x             = 40;
@@ -347,7 +346,7 @@ static int Write(void* _context, void *data)
 						subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
 						
 						fb.fd            = framebufferFD;
-             					fb.data          = ass_get_text(sub.rects[i]->ass);
+             					fb.data          = (uint8_t*)ass_get_text(sub.rects[i]->ass);
              					fb.Width         = screen_width - 80;
         					fb.Height        = 60;
         					fb.x             = 40;
@@ -395,14 +394,14 @@ static int Write(void* _context, void *data)
 
 							// resize color to 32 bit
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
-							uint32_t* newdata = resize32(sub.rects[i]->pict.data[0], sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+							uint32_t* newdata = resize32(sub.rects[i]->pict.data[0], (uint32_t*)sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
 #else
-							uint32_t* newdata = resize32(sub.rects[i]->data[0], sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+							uint32_t* newdata = resize32(sub.rects[i]->data[0], (uint32_t*)sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
 #endif
 									
 							// writeData
 			     				fb.fd            = framebufferFD;
-			     				fb.data          = newdata;
+			     				fb.data          = (uint8_t*)newdata;
 			     				fb.Width         = nw;
 			     				fb.Height        = nh;
 			     				fb.x             = xoff;
@@ -421,6 +420,7 @@ static int Write(void* _context, void *data)
 						}
 						else if (sub.rects[i]->nb_colors == 40)// TELETXT
 						{
+							/*
 							int width = sub.rects[i]->w;
 							int height = sub.rects[i]->h;
 
@@ -433,15 +433,17 @@ static int Write(void* _context, void *data)
 
 							// resize color to 32 bit
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
-							uint32_t* newdata = resize32(sub.rects[i]->pict.data[0], sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+							uint32_t* newdata = resize32(sub.rects[i]->pict.data[0], (uint32_t*)sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
 #else
-							uint32_t* newdata = resize32(sub.rects[i]->data[0], sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+							uint32_t* newdata = resize32(sub.rects[i]->data[0], (uint32_t*)sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
 #endif
 									
 							// writeData
 			     				fb.fd            = framebufferFD;
-			     				fb.data          = newdata;
-			     				fb.Width         = nw;
+			     				//fb.data          = newdata;
+			     				fb.data		= out->data;
+			     				//fb.Width         = nw;
+			     				fb.Width	= out->len;
 			     				fb.Height        = nh;
 			     				fb.x             = xoff;
 			     				fb.y             = yoff;
@@ -456,6 +458,8 @@ static int Write(void* _context, void *data)
 			     				writer->writeData(&fb);
 
 							free(newdata);
+							*/
+							teletext_write(0, out->data + 1, out->len + 1);
 						}
 						else // PGS (256 nb_colors)
 						{
@@ -471,14 +475,14 @@ static int Write(void* _context, void *data)
 
 							// resize color to 32 bit
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
-							uint32_t* newdata = resize32(sub.rects[i]->pict.data[0], sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+							uint32_t* newdata = resize32(sub.rects[i]->pict.data[0], (uint32_t*)sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
 #else
-							uint32_t* newdata = resize32(sub.rects[i]->data[0], sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+							uint32_t* newdata = resize32(sub.rects[i]->data[0], (uint32_t*)sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
 #endif
 									
 							// writeData
 			     				fb.fd            = framebufferFD;
-			     				fb.data          = newdata;
+			     				fb.data          = (uint8_t*)newdata;
 			     				fb.Width         = nw;
 			     				fb.Height        = nh;
 			     				fb.x             = xoff;
@@ -511,7 +515,7 @@ static int Write(void* _context, void *data)
 }
 
 //
-static int subtitle_Open(context) 
+static int subtitle_Open(Context_t* context) 
 {
     	subtitle_printf(10, "\n");
 

@@ -78,6 +78,7 @@ extern int dvbsub_pause();
 extern void tuxtx_stop_subtitle();
 extern void tuxtx_set_pid(int pid, int page, const char * cc);
 extern int tuxtx_main(int pid, int page, bool isEplayer);
+extern void tuxtx_pause_subtitle(bool pause, bool isEplayer);
 //
 extern CFrontend * live_fe;
 extern t_channel_id live_channel_id;
@@ -185,7 +186,7 @@ int CSubtitleChangeExec::exec(CMenuTarget *, const std::string & actionKey)
 		dvbsub_pause();
 		dvbsub_start(pid);
 	} 
-	else 
+	else if (!strncmp(actionKey.c_str(), "TTX", 3))
 	{
 		char const * ptr = strchr(actionKey.c_str(), ':');
 		ptr++;
@@ -202,7 +203,7 @@ int CSubtitleChangeExec::exec(CMenuTarget *, const std::string & actionKey)
 		
 		tuxtx_stop_subtitle();
 		tuxtx_set_pid(pid, page, ptr);
-		tuxtx_main(pid, page, false); //FIXME
+		tuxtx_main(pid, page, false);
 	}
 	
         return RETURN_EXIT;
@@ -235,18 +236,11 @@ int CTuxtxtChangeExec::exec(CMenuTarget *parent, const std::string &actionKey)
 	
 	if (!IS_WEBTV(live_channel_id))
 	{
-//		g_RCInput->clearRCMsg();
 
 		CNeutrinoApp::getInstance()->stopSubtitles();
 				
 		tuxtx_stop_subtitle();
-
 		tuxtx_main(g_RemoteControl->current_PIDs.PIDs.vtxtpid, 0, false);
-
-//		CFrameBuffer::getInstance()->paintBackground();
-//		CFrameBuffer::getInstance()->blit();
-				
-//		g_RCInput->clearRCMsg();
 				
 		CNeutrinoApp::getInstance()->audioMute(current_muted, true);
 

@@ -39,7 +39,6 @@ typedef struct pcmPrivateData_s
     	int32_t frame_size;
     	int32_t bits_per_coded_sample;
     	int32_t bit_rate;
-	
 } pcmPrivateData_t;
 
 #endif

@@ -427,13 +427,6 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	{
 		::addPid(si.vpid, si.vtype ? EN_TYPE_AVC : EN_TYPE_VIDEO, 0);
 	}
-	
-	if (si.vtxtpid != 0)
-	{
-		pids[numpids++] = si.vtxtpid;
-				
-		::addPid(si.vtxtpid, EN_TYPE_TELTEX, 0);
-	}
 		
 	// apids
         APIDList apid_list;

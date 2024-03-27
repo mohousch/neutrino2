@@ -896,9 +896,9 @@ void RenderCharBB(int Char, tstPageAttr *Attribute);
 void RenderMessage(int Message);
 void RenderPage();
 void DecodePage();
-int  Init();
+int  Init(bool);
 int  GetNationalSubset(const char *country_code);
-int  GetTeletextPIDs();
+int  GetTeletextPIDs(bool isEplayer = false);
 int  GetRCCode();
 int  eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 						unsigned char *pAPx, unsigned char *pAPy,

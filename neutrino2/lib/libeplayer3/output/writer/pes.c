@@ -40,7 +40,6 @@
 
 #include "common.h"
 #include "output.h"
-#include "debug.h"
 #include "misc.h"
 #include "pes.h"
 #include "writer.h"
@@ -86,6 +85,7 @@ int InsertVideoPrivateDataHeader(unsigned char *data, int payload_size)
 
 }
 
+//
 void UpdatePesHeaderPayloadSize(uint8_t *data, int32_t size)
 {
 	if (size > MAX_PES_PACKET_SIZE || size < 0)

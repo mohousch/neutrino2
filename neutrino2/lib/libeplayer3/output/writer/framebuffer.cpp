@@ -43,7 +43,6 @@
 
 #include "common.h"
 #include "output.h"
-#include "debug.h"
 #include "misc.h"
 #include "writer.h"
 
@@ -103,6 +102,7 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 #define FBIO_BLIT 0x22
 #endif
 
+#if 0
 void blit()
 {	
 	CFrameBuffer::getInstance()->blit();
@@ -133,6 +133,7 @@ void blitLabel(uint8_t* data, int x, int y, int w, int h)
 		textLabel.paint();
 	}
 }
+#endif
 
 //
 static int reset()
@@ -161,9 +162,8 @@ static int writeData(void* _call)
 	if (call->data != NULL)
 	{
 		CFrameBuffer::getInstance()->blit2FB(call->data, call->Width, call->Height, call->x, call->y, 0, 0, false);
+		CFrameBuffer::getInstance()->blit();
 	}
-	
-	blit();
     	
 	fb_printf(100, "<\n");
 	
@@ -197,10 +197,8 @@ static int writeReverseData(void* _call)
 		//
 		CFrameBuffer::getInstance()->paintBackgroundBoxRel (call->x, call->y, call->Width, call->Height);
 		textLabel.paint();
-		//teletext_write(0, call->data, call->Width);
+		CFrameBuffer::getInstance()->blit();
 	}
-	
-	blit();
     
 	fb_printf(100, "<\n");
 	

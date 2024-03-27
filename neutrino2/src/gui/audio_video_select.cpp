@@ -62,6 +62,15 @@ unsigned short numpids = 0;
 int currentspid = -1;
 //
 extern cPlayback *playback;
+//
+extern int  tuxtxt_stop();
+extern void tuxtxt_close();
+extern void tuxtx_pause_subtitle(bool pause, bool isEplayer);
+extern void tuxtx_stop_subtitle();
+extern void tuxtxt_start(int tpid);
+extern void tuxtx_set_pid(int pid, int page, const char * cc);
+extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
+extern int tuxtx_main(int pid, int page, bool isEplayer);
 
 // aspect ratio
 #if defined (__sh__)
@@ -159,16 +168,42 @@ int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
 		
 		if(playback)
 			playback->SetSubPid(currentspid);
+			
+		//
+		tuxtx_stop_subtitle();
+		tuxtx_main(0, 0, true);
 		
 		dprintf(DEBUG_NORMAL, "CAVSubPIDSelect::exec: spid changed to %d\n", currentspid);
 	}
-	else if(actionKey == "off") 
+	else 
+	if(actionKey == "off") 
 	{
 		currentspid = -1;
 		
 		if(playback)
 			playback->SetSubPid(-1);
+			
+		//
+		tuxtx_stop_subtitle();
 	}
+/*
+	else if(!strncmp(actionKey.c_str(), "S_GRAPHIC/TELETEXT", 18))
+	{
+		if (currentspid != spids[sel]) 
+		{
+			currentspid = spids[sel];
+			
+			if(playback)
+				playback->SetSubPid(currentspid);
+				
+			//
+			tuxtx_stop_subtitle();
+			tuxtx_main(0, 0, true);
+			
+			dprintf(DEBUG_NORMAL, "CAVSubPIDSelect::exec: spid changed to %d\n", currentspid);
+		}
+	}
+*/
 	
 	return CMenuTarget::RETURN_EXIT;
 }

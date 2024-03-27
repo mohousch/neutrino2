@@ -324,6 +324,7 @@ void CMoviePlayerGui::startSubtitles(bool show)
 {
 	if(playback)
 		playback->SetSubPid(currentspid);
+
 }
 
 void CMoviePlayerGui::stopSubtitles()

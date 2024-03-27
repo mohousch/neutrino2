@@ -48,7 +48,6 @@
 
 #include "common.h"
 #include "misc.h"
-#include "debug.h"
 #include "aac.h"
 #include "pcm.h"
 #include "ffmpeg_metadata.h"
@@ -896,7 +895,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	av_dump_format(avContext, 0, filename, 0);
 #endif
 
-	ffmpeg_printf(1, "number streams %d\n", avContext->nb_streams);
+	ffmpeg_printf(10, "number streams %d\n", avContext->nb_streams);
 
 	for ( n = 0; n < avContext->nb_streams; n++) 
 	{
@@ -906,8 +905,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 
 		char* encoding = Codec2Encoding(stream->codec, &version);
 
-		if (encoding != NULL)
-			ffmpeg_printf(1, "%d. encoding = %s - version %d\n", n, encoding, version);
+		ffmpeg_printf(10, "%d. encoding = %s - version %d\n", n, encoding? encoding : "NULL", version);
 
 		//
 		memset(&track, 0, sizeof(track));
@@ -920,7 +918,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 #else
 			case CODEC_TYPE_VIDEO:
 #endif        
-			ffmpeg_printf(10, "CODEC_TYPE_VIDEO %d\n",stream->codec->codec_type);
+			ffmpeg_printf(10, "CODEC_TYPE_VIDEO %d\n", stream->codec->codec_type);
 
 			if (encoding != NULL) 
 			{
@@ -958,7 +956,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 
 				if(stream->duration == AV_NOPTS_VALUE) 
 				{
-					ffmpeg_printf(10, "Stream has no duration so we take the duration from context\n");
 					track.duration = (double) avContext->duration / 1000.0;
 				}
 				else 
@@ -980,6 +977,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				
 				ffmpeg_printf(10, "width %d\n", track.width);
 				ffmpeg_printf(10, "height %d\n", track.height);
+				ffmpeg_printf(10, "\n", track.height);
 				
 #ifdef USE_OPENGL
 				// init codec
@@ -1010,7 +1008,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 #else
 			case CODEC_TYPE_AUDIO:
 #endif        
-			ffmpeg_printf(10, "CODEC_TYPE_AUDIO %d\n",stream->codec->codec_type);
+			ffmpeg_printf(10, "CODEC_TYPE_AUDIO %d\n", stream->codec->codec_type);
 
 			if (encoding != NULL) 
 			{
@@ -1047,7 +1045,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 
 				if(stream->duration == AV_NOPTS_VALUE) 
 				{
-					ffmpeg_printf(10, "Stream has no duration so we take the duration from context\n");
 					track.duration = (double) avContext->duration / 1000.0;
 				}
 				else 
@@ -1137,6 +1134,8 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				else if(stream->codec->codec_id == AV_CODEC_ID_WMAV1 || stream->codec->codec_id == AV_CODEC_ID_WMAV2 || stream->codec->codec_id == AV_CODEC_ID_WMAPRO ) //if (stream->codec->extradata_size > 0)
 				{
 					ffmpeg_printf(10,"Create WMA ExtraData\n");
+					ffmpeg_printf(10,"stream->codec->extradata_size %d\n", stream->codec->extradata_size);
+					//Hexdump(stream->codec->extradata, stream->codec->extradata_size);
 					
 					track.aacbuflen = 104 + stream->codec->extradata_size;
 					track.aacbuf = malloc(track.aacbuflen);
@@ -1196,30 +1195,32 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 					memcpy(track.aacbuf + 80, &number_of_channels, 2); //number_of_channels
 
 					unsigned int samples_per_second = stream->codec->sample_rate;
-					ffmpeg_printf(1, "samples_per_second = %d\n", samples_per_second);
+					ffmpeg_printf(10, "samples_per_second = %d\n", samples_per_second);
 					memcpy(track.aacbuf + 82, &samples_per_second, 4); //samples_per_second
 
 					unsigned int average_number_of_bytes_per_second = stream->codec->bit_rate / 8;
-					ffmpeg_printf(1, "average_number_of_bytes_per_second = %d\n", average_number_of_bytes_per_second);
+					ffmpeg_printf(10, "average_number_of_bytes_per_second = %d\n", average_number_of_bytes_per_second);
 					memcpy(track.aacbuf + 86, &average_number_of_bytes_per_second, 4); //average_number_of_bytes_per_second
 
 					unsigned short block_alignment = stream->codec->block_align;
-					ffmpeg_printf(1, "block_alignment = %d\n", block_alignment);
+					ffmpeg_printf(10, "block_alignment = %d\n", block_alignment);
 					memcpy(track.aacbuf + 90, &block_alignment, 2); //block_alignment
 
 					unsigned short bits_per_sample = stream->codec->sample_fmt>=0?(stream->codec->sample_fmt+1)*8:8;
-					ffmpeg_printf(1, "bits_per_sample = %d (%d)\n", bits_per_sample, stream->codec->sample_fmt);
+					ffmpeg_printf(10, "bits_per_sample = %d (%d)\n", bits_per_sample, stream->codec->sample_fmt);
 					memcpy(track.aacbuf + 92, &bits_per_sample, 2); //bits_per_sample
 
 					memcpy(track.aacbuf + 94, &stream->codec->extradata_size, 2); //bits_per_sample
 
 					memcpy(track.aacbuf + 96, stream->codec->extradata, stream->codec->extradata_size);
 		    
-					ffmpeg_printf(1, "aacbuf:\n");
+					ffmpeg_printf(10, "aacbuf:\n");
 
 					track.have_aacheader = 1;
 				}
 #endif
+
+				ffmpeg_printf(10, "\n");
 
 				if (context->manager->audio)
 				{
@@ -1243,7 +1244,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 #else
 				AVDictionaryEntry * lang;
 #endif
-				ffmpeg_printf(10, "CODEC_TYPE_SUBTITLE %d\n",stream->codec->codec_type);
+				ffmpeg_printf(10, "CODEC_TYPE_SUBTITLE %d\n", stream->codec->codec_type);
 
 #if LIBAVCODEC_VERSION_MAJOR < 54
 				lang = av_metadata_get(stream->metadata, "language", NULL, 0);
@@ -1273,25 +1274,16 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				track.extraData      = stream->codec->extradata;
 				track.extraSize      = stream->codec->extradata_size;
 
-				ffmpeg_printf(10, "subtitle codec %d\n", stream->codec->codec_id);
-//				ffmpeg_printf(10, "subtitle width %d\n", stream->codec->width);
-//				ffmpeg_printf(10, "subtitle height %d\n", stream->codec->height);
-//				ffmpeg_printf(10, "subtitle stream %p\n", stream);
-
 				if(stream->duration == AV_NOPTS_VALUE) 
 				{
-					ffmpeg_printf(10, "Stream has no duration so we take the duration from context\n");
 					track.duration = (double) avContext->duration / 1000.0;
 				}
 				else 
 				{
 					track.duration = (double) stream->duration * av_q2d(stream->time_base) * 1000.0;
 				}
-
-				if (track.Name)
-				{
-					ffmpeg_printf(10, "FOUND SUBTITLE %s\n", track.Name);
-				}
+				
+				ffmpeg_printf(10, "\n", track.height);
 				
 // init codec
 #if LIBAVCODEC_VERSION_MAJOR < 54

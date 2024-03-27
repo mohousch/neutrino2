@@ -193,12 +193,12 @@ extern tallchans allchans;				// defined in zapit.cpp
 // tuxtxt
 extern int  tuxtxt_stop();
 extern void tuxtxt_close();
-extern void tuxtx_pause_subtitle(bool pause);
+extern void tuxtx_pause_subtitle(bool pause, bool isEplayer);
 extern void tuxtx_stop_subtitle();
 extern void tuxtxt_start(int tpid);
 extern void tuxtx_set_pid(int pid, int page, const char * cc);
 extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
-extern int tuxtx_main(int pid, int page);
+extern int tuxtx_main(int pid, int page, bool isEplayer);
 
 // dvbsub
 extern int dvbsub_init();
