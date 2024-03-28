@@ -51,7 +51,6 @@
 #include "aac.h"
 #include "pcm.h"
 #include "ffmpeg_metadata.h"
-#include "subtitle.h"
 #include "writer.h"
 
 #include <config.h>

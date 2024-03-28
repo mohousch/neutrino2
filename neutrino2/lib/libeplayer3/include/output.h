@@ -32,6 +32,7 @@ typedef enum {
 	OUTPUT_SET_SUBTITLE_OUTPUT  
 } OutputCmd_t;
 
+// audio / video
 typedef struct
 {
 	//
@@ -55,6 +56,39 @@ typedef struct
 	AVStream* 		stream;
 	AVPacket* 		packet;
 } AudioVideoOut_t;
+
+// subtitle
+typedef struct
+{
+	//
+	unsigned char* 		data;
+	int            		len;
+
+	unsigned char* 		extradata;
+	int            		extralen;
+	
+	long long int  		pts;
+	float          		duration;
+	
+	int          		width;
+    	int          		height;
+    	
+    	//
+	AVStream* 		stream;
+	AVPacket* 		packet;
+} SubtitleData_t;
+
+typedef struct
+{
+	uint32_t* 	destination;
+	unsigned int   	screen_width;
+	unsigned int   	screen_height;
+	unsigned int   	destStride;
+	
+	int            	shareFramebuffer;
+	int            	framebufferFD;
+} SubtitleOutputDef_t;
+////
 
 typedef struct Output_s 
 {

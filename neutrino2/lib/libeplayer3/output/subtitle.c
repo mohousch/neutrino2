@@ -36,7 +36,6 @@
 
 #include "common.h"
 #include "output.h"
-#include "subtitle.h"
 #include "writer.h"
 
 #include <config.h>
@@ -175,63 +174,45 @@ static char * ass_get_text(char *str)
     	return p_str;
 }
 
-//
-static char * json_string_escape(char *str)
+void replace_all(char ** string, char * search, char * replace) 
 {
-    	static char tmp[2048];
-    	char *ptr1 = tmp;
-    	char *ptr2 = str;
-    	
-    	while (*ptr2 != '\0')
-    	{
-        	switch (*ptr2) 
-        	{
-        		case '"':
-            			*ptr1++ = '\\';
-            			*ptr1++ = '\"';
-        			break;
-        			
-        		case '\\':
-            			*ptr1++ = '\\';
-            			*ptr1++ = '\\';
-        			break;
-        			
-        		case '\b':
-            			*ptr1++ = '\\';
-            			*ptr1++ = 'b';
-        			break;
-        			
-        		case '\f':
-            			*ptr1++ = '\\';
-            			*ptr1++ = 'f';
-        			break;
-        			
-        		case '\n':
-            			*ptr1++ = '\\';
-            			*ptr1++ = 'n';
-        			break;
-        			
-        		case '\r': 
-            			*ptr1++ = '\\';
-            			*ptr1++ = 'r';
-        			break;
-        			
-        		case '\t': 
-            			*ptr1++ = '\\';
-            			*ptr1++ = 't';
-        			break;
-        			
-        		default:
-            			*ptr1++ = *ptr2;
-            			break;
-        	}
-        
-        	++ptr2;
-    	}
-    	
-    	*ptr1 = '\0';
-    	
-    	return tmp;
+    int len = 0;
+    char * ptr = NULL;
+    char tempString[512];
+    char newString[512];
+
+    newString[0] = '\0';
+
+    if ((string == NULL) || (*string == NULL) || (search == NULL) || (replace == NULL))
+    {
+        subtitle_err("null pointer passed\n");
+        return;
+    }
+    
+    strncpy(tempString, *string, 511);
+    tempString[511] = '\0';
+
+    free(*string);
+
+    while ((ptr = strstr(tempString, search)) != NULL) 
+    {
+        len  = ptr - tempString;
+        strncpy(newString, tempString, len);
+        newString[len] = '\0';
+        strcat(newString, replace);
+
+        len += strlen(search);
+        strcat(newString, tempString+len);
+
+        strcpy(tempString, newString);
+    }
+
+    subtitle_printf(20, "strdup in line %d\n", __LINE__);
+
+    if(newString[0] != '\0')
+        *string = strdup(newString);
+    else
+        *string = strdup(tempString);
 }
 
 /* ***************************** */
@@ -297,7 +278,7 @@ static int Write(void* _context, void *data)
 		
 		if (got_sub_ptr && sub.num_rects > 0)
 		{
-			subtitle_printf(100, "type: %d\n", sub.rects[0]->type);
+			subtitle_printf(10, "type: %d\n", sub.rects[0]->type);
 			
 			clearBuffer();
 						

@@ -106,9 +106,9 @@ Data_t data;
 static ao_device *adevice = NULL;
 static ao_sample_format sformat;
 ////
-int buf_in = 0;
-int buf_out = 0;
-int buf_num = 0;
+//int buf_in = 0;
+//int buf_out = 0;
+//int buf_num = 0;
 #endif
 
 //
@@ -1395,16 +1395,16 @@ static int Write(void* _context, void* _out)
 				//
 				data.size = need;
 				
-				buf_in++;
-				buf_in %= 64;
-				buf_num++;
+//				buf_in++;
+//				buf_in %= 64;
+//				buf_num++;
 				
-				if (buf_num > (63))
-				{
-					buf_out++;
-					buf_out %= 64;
-					buf_num--;
-				}
+//				if (buf_num > (63))
+//				{
+//					buf_out++;
+//					buf_out %= 64;
+//					buf_num--;
+//				}
 			}
 		}
 		

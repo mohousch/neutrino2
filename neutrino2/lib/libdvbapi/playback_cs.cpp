@@ -104,7 +104,6 @@ bool end_eof = false;
 #define HTTP_TIMEOUT 30
 #else
 #include <common.h>
-#include <subtitle.h>
 #include <linux/fb.h>
 
 extern OutputHandler_t		OutputHandler;
@@ -1417,9 +1416,9 @@ cPlayback::SWFramebuffer *cPlayback::getDecBuf(void)
 	
 	av_image_fill_arrays(&data.buffer, (int*)&data.size, &(*p)[0], AV_PIX_FMT_RGB32, data.width, data.height, 1);
 	
-	buf_out++;
-	buf_num--;
-	buf_out %= 64;
+//	buf_out++;
+//	buf_num--;
+//	buf_out %= 64;
 
 	return p;
 }
