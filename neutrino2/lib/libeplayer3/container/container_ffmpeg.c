@@ -310,6 +310,8 @@ static char* Codec2Encoding(AVCodecContext* codec, int* version)
         		return "S_GRAPHIC/XSUB";
 
 		default:
+			ffmpeg_printf(10, "CODEC FOUND -> %d\n", codec->codec_id);
+			
 			if (codec->codec_type == AVMEDIA_TYPE_AUDIO)
 				return "A_IPCM";
 			else
@@ -904,7 +906,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 
 		char* encoding = Codec2Encoding(stream->codec, &version);
 
-		ffmpeg_printf(10, "%d. encoding = %s - version %d\n", n, encoding? encoding : "NULL", version);
+		ffmpeg_printf(10, "%d. encoding = %s - version %d CODEC_TYPE:%d\n", n, encoding? encoding : "NULL", version, stream->codec->codec_type);
 
 		//
 		memset(&track, 0, sizeof(track));
