@@ -860,20 +860,11 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	avcodec_register_all();
 	av_register_all();
 	avformat_network_init();
-	
-	////
-	avContext = avformat_alloc_context();
-	
-	AVDictionary *options = NULL;
-	av_dict_set(&options, "auth_type", "basic", 0);
-	////
 
 #if LIBAVCODEC_VERSION_MAJOR < 54
 	if ((err = av_open_input_file(&avContext, filename, NULL, 0, NULL)) != 0) 
 #else
-	////test
-	//if ((err = avformat_open_input(&avContext, filename, NULL, 0)) != 0)
-	if ((err = avformat_open_input(&avContext, filename, NULL, &options)) != 0)
+	if ((err = avformat_open_input(&avContext, filename, NULL, 0)) != 0)
 #endif
 	{
 		ffmpeg_err("avformat_open_input failed %d (%s)\n", err, filename);
@@ -885,11 +876,8 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	
 	avContext->flags |= AVFMT_FLAG_GENPTS;
 
-//	if (strstr(filename, ":31339") || strstr(filename, ".ts"))
+	if (strstr(filename, ":31339") || strstr(filename, ".ts"))
 	avContext->max_analyze_duration = 1;
-	
-	////test	
-	avContext->probesize = 131072;
 
 	// find stream info
 #if LIBAVCODEC_VERSION_MAJOR < 54

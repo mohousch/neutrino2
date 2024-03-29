@@ -67,6 +67,7 @@ void scaleImage(const std::string &tname, int *p_w, int *p_h, int dest_w = PIC_W
 void getTMDBInfo(const char * const text);
 
 ////
+std::string _getBaseName(std::string &path, std::string sep);
 std::string getPathName(std::string &path);
 std::string getBaseName(std::string &path);
 std::string getFileName(std::string &file);

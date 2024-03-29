@@ -90,6 +90,7 @@ static int isSubtitleOpened = 0;
 /* ***************************** */
 /* Prototypes                    */
 /* ***************************** */
+extern uint32_t * simple_resize32(uint8_t * origin, uint32_t * colors, int nb_colors, int ox, int oy, int dx, int dy);
 extern void teletext_write(int pid, uint8_t *data, int size);
 extern void clearFrameBuffer(void);
 extern void writeText(uint8_t* text, int x, int y, int w, int h);
@@ -113,7 +114,7 @@ static void releaseMutex(int line)
     subtitle_printf(100, "%d released mutex\n", line);
 }
 
-//
+/*
 uint32_t * resize32(uint8_t * origin, uint32_t * colors, int nb_colors, int ox, int oy, int dx, int dy)
 {
 	uint32_t  *cr, *l;
@@ -146,6 +147,7 @@ uint32_t * resize32(uint8_t * origin, uint32_t * colors, int nb_colors, int ox, 
 	
 	return(cr);
 }
+*/
 
 //
 static char * ass_get_text(char *str)
@@ -255,7 +257,7 @@ static int Write(void* _context, void *data)
 						subtitle_printf(100, "text %s\n", sub.rects[i]->text);
 						subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
 						
-             					writeText((uint8_t*)sub.rects[i]->text, screen_x + 40, screen_y + screen_height - 40, screen_width - 80, 60);
+             					writeText((uint8_t*)sub.rects[i]->text, screen_x + 40, screen_y + screen_height - 80, screen_width - 80, 60);
 					}
 					break;
 				}
@@ -273,7 +275,7 @@ static int Write(void* _context, void *data)
 						subtitle_printf(100, "text %s\n", sub.rects[i]->text);
 						subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
 						
-             					writeText((uint8_t*)ass_get_text(sub.rects[i]->ass), screen_x + 40, screen_y + screen_height - 40, screen_width - 80, 60);
+             					writeText((uint8_t*)ass_get_text(sub.rects[i]->ass), screen_x + 40, screen_y + screen_height - 80, screen_width - 80, 60);
 					}
 					break;
 				}
@@ -308,9 +310,9 @@ static int Write(void* _context, void *data)
 
 							// resize color to 32 bit
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
-							uint32_t* newdata = resize32(sub.rects[i]->pict.data[0], (uint32_t*)sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+							uint32_t* newdata = simple_resize32(sub.rects[i]->pict.data[0], (uint32_t*)sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
 #else
-							uint32_t* newdata = resize32(sub.rects[i]->data[0], (uint32_t*)sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+							uint32_t* newdata = simple_resize32(sub.rects[i]->data[0], (uint32_t*)sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
 #endif
 									
 							// writeData
@@ -344,15 +346,15 @@ static int Write(void* _context, void *data)
 							int h2 = height;
 									
 							int xoff = screen_x; //sub.rects[i]->x * 1280 / width;
-							int yoff = screen_y + screen_height - 40; //sub.rects[i]->y * 720 / h2;
+							int yoff = screen_y + screen_height - 80; //sub.rects[i]->y * 720 / h2;
 							int nw = width * screen_width / width;
 							int nh = 60; //height * screen_height / h2;
 
 							// resize color to 32 bit
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
-							uint32_t* newdata = resize32(sub.rects[i]->pict.data[0], (uint32_t*)sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+							uint32_t* newdata = simple_resize32(sub.rects[i]->pict.data[0], (uint32_t*)sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
 #else
-							uint32_t* newdata = resize32(sub.rects[i]->data[0], (uint32_t*)sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+							uint32_t* newdata = simple_resize32(sub.rects[i]->data[0], (uint32_t*)sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
 #endif
 									
 							// writeData

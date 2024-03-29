@@ -30,7 +30,7 @@
 
 ////
 uint32_t getbits(const uint8_t* buf, uint32_t offset, uint8_t len);
-uint32_t * simple_resize32(uint8_t * origin, uint32_t * colors, int nb_colors, int ox, int oy, int dx, int dy);
+extern "C" uint32_t * simple_resize32(uint8_t * origin, uint32_t * colors, int nb_colors, int ox, int oy, int dx, int dy);
 
 ////
 class cListObject 

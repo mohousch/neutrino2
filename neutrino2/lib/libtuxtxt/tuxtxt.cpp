@@ -1265,7 +1265,7 @@ int tuxtx_main(int pid, int page, bool isEplayer)
 		tuxtxt_cache.page = 0x100;
 	
 	// set subtitle pid / page and flag to start sub thread.
-	if(page || isEplayer) 
+	if(page /*|| isEplayer*/) // FIXME: 
 	{
 		sub_page = tuxtxt_cache.page = page;
 		sub_pid = pid;
@@ -1731,10 +1731,10 @@ int Init(bool isEplayer)
 			if (auto_national)
 				national_subset = pid_table[0].national_subset;
 				
-	// 		FIXME: brocken configMenu
-	//		if (pids_found > 1)
-	//			ConfigMenu(1);
-	//		else
+			//FIXME: brocken configMenu
+			//if (pids_found > 1)
+			//	ConfigMenu(1);
+			//else
 			{
 				tuxtxt_cache.vtxtpid = pid_table[0].vtxt_pid;
 				current_service = 0;
@@ -2210,8 +2210,8 @@ void Menu_Init(char *menu, int current_pid, int menuitem, int hotindex)
 		else
 			national_subset = menusubset[menulanguage];
 
-		if (line == Menu_Height-2)
-			memcpy(&menu[line*Menu_Width + 21], versioninfo, 4);
+//		if (line == Menu_Height-2)
+//			memcpy(&menu[line*Menu_Width + 21], versioninfo, 4);
 
 		for (byte = 0; byte < Menu_Width; byte++)
 			RenderCharFB(menu[line*Menu_Width + byte], &atrtable[menuatr[line*Menu_Width + byte] - '0' + ATR_MENU0]);
@@ -2244,7 +2244,7 @@ void ConfigMenu(int Init)
 
 	if (getpidsdone)
 	{
-		/* set current vtxt */
+		// set current vtxt
 		if (tuxtxt_cache.vtxtpid == 0)
 		{
 			tuxtxt_cache.vtxtpid = pid_table[0].vtxt_pid;
@@ -2258,7 +2258,7 @@ void ConfigMenu(int Init)
 		}
 	}
 
-	/* reset to normal mode */
+	// reset to normal mode
 	if (zoommode)
 		zoommode = 0;
 
@@ -2272,7 +2272,7 @@ void ConfigMenu(int Init)
 	oldscreenmode = screenmode;
 	
 	if (screenmode)
-		SwitchScreenMode(0); /* turn off divided screen */
+		SwitchScreenMode(0); // turn off divided screen
 
 	hotindex = getIndexOfPageInHotlist();
 
@@ -2289,15 +2289,15 @@ void ConfigMenu(int Init)
 			int rc_num = -1;
 
 			if (CRCInput::isNumeric(RCCode))
-				rc_num = CRCInput::getNumericValue(RCCode) -1; /* valid: 1 to M_MaxDirect */
+				rc_num = CRCInput::getNumericValue(RCCode) -1; // valid: 1 to M_MaxDirect
 				
-			if (rc_num >= 0 && rc_num <= M_MaxDirect) /* direct access */
+			if (rc_num >= 0 && rc_num <= M_MaxDirect) // direct access
 			{
 				Menu_HighlightLine(menu, MenuLine[menuitem], 0);
 				menuitem = rc_num;
 				Menu_HighlightLine(menu, MenuLine[menuitem], 1);
 
-				if (menuitem != M_PID) /* just select */
+				if (menuitem != M_PID) // just select
 					RCCode = RC_OK;
 			}
 
@@ -2332,8 +2332,8 @@ void ConfigMenu(int Init)
 					//menu[MenuLine[M_COL]*Menu_Width + 28] = (color_mode == 24 ? ' ' : '�');
 					menu[MenuLine[M_COL]*Menu_Width +  1] = (color_mode == 1  ? ' ' : 'í');
 					menu[MenuLine[M_COL]*Menu_Width + 28] = (color_mode == 24 ? ' ' : 'î');
-					memset(&menu[Menu_Width*MenuLine[M_COL] + 3             ], 0x7f,color_mode);
-					memset(&menu[Menu_Width*MenuLine[M_COL] + 3+color_mode  ], 0x20,24-color_mode);
+					memset(&menu[Menu_Width*MenuLine[M_COL] + 3], 0x7f,color_mode);
+					memset(&menu[Menu_Width*MenuLine[M_COL] + 3+color_mode], 0x20, 24-color_mode);
 					Menu_HighlightLine(menu, MenuLine[menuitem], 1);
 					setcolors((unsigned short *)defaultcolors, 0, SIZECOLTABLE);
 					Menu_Init(menu, current_pid, menuitem, hotindex);
@@ -2346,8 +2346,8 @@ void ConfigMenu(int Init)
 					//menu[MenuLine[M_TRA]*Menu_Width + 28] = (trans_mode == 24 ? ' ' : '�');
 					menu[MenuLine[M_TRA]*Menu_Width +  1] = (trans_mode == 1  ? ' ' : 'í');
 					menu[MenuLine[M_TRA]*Menu_Width + 28] = (trans_mode == 24 ? ' ' : 'î');
-					memset(&menu[Menu_Width*MenuLine[M_TRA] + 3             ], 0x7f,trans_mode);
-					memset(&menu[Menu_Width*MenuLine[M_TRA] + 3+trans_mode  ], 0x20,24-trans_mode);
+					memset(&menu[Menu_Width*MenuLine[M_TRA] + 3], 0x7f, trans_mode);
+					memset(&menu[Menu_Width*MenuLine[M_TRA] + 3 + trans_mode], 0x20, 24 - trans_mode);
 					Menu_HighlightLine(menu, MenuLine[menuitem], 1);
 					setcolors((unsigned short *)defaultcolors, 0, SIZECOLTABLE);
 					Menu_Init(menu, current_pid, menuitem, hotindex);
@@ -2360,7 +2360,7 @@ void ConfigMenu(int Init)
 						GetTeletextPIDs(); 
 						ClearFB(transp);
 						
-						/* set current vtxt */
+						// set current vtxt
 						if (tuxtxt_cache.vtxtpid == 0)
 						{
 							tuxtxt_cache.vtxtpid = pid_table[0].vtxt_pid;
@@ -2383,7 +2383,7 @@ void ConfigMenu(int Init)
 
 						if (SDT_ready)
 						{
-							memcpy(&menu[MenuLine[M_PID]*Menu_Width+3+(24-pid_table[current_pid].service_name_len)/2],
+							memcpy(&menu[MenuLine[M_PID]*Menu_Width + 3 + (24 -pid_table[current_pid].service_name_len)/2],
 							       &pid_table[current_pid].service_name,
 							       pid_table[current_pid].service_name_len);
 						}
@@ -2438,8 +2438,8 @@ void ConfigMenu(int Init)
 					}
 					break;
 
-				case M_HOT: /* move towards top of hotlist */
-					if (hotindex <= 0) /* if not found, start at end */
+				case M_HOT: // move towards top of hotlist
+					if (hotindex <= 0) // if not found, start at end
 						hotindex = maxhotlist;
 					else
 						hotindex--;
@@ -2452,8 +2452,8 @@ void ConfigMenu(int Init)
 						menulanguage = MAXMENULANGUAGE;
 					Menu_Init(menu, current_pid, menuitem, hotindex);
 					break;
-				} /* switch menuitem */
-				break; /* RC_LEFT */
+				} // switch menuitem
+				break; // RC_LEFT
 
 			case RC_RIGHT:
 				switch (menuitem)
@@ -2491,7 +2491,7 @@ void ConfigMenu(int Init)
 						GetTeletextPIDs();
 						ClearFB(transp);
 						
-						/* set current vtxt */
+						// set current vtxt
 						if (tuxtxt_cache.vtxtpid == 0)
 						{
 							tuxtxt_cache.vtxtpid = pid_table[0].vtxt_pid;
@@ -2505,6 +2505,7 @@ void ConfigMenu(int Init)
 						}
 						Menu_Init(menu, current_pid, menuitem, hotindex);
 					}
+					
 					if (current_pid < pids_found - 1)
 					{
 						current_pid++;
@@ -2566,8 +2567,8 @@ void ConfigMenu(int Init)
 					}
 					break;
 
-				case M_HOT: /* select hotindex */
-					if ((int)hotindex >= maxhotlist) /* if not found, start at 0 */
+				case M_HOT: // select hotindex
+					if ((int)hotindex >= maxhotlist) // if not found, start at 0
 						hotindex = 0;
 					else
 						hotindex++;
@@ -2581,14 +2582,14 @@ void ConfigMenu(int Init)
 					Menu_Init(menu, current_pid, menuitem, hotindex);
 					break;
 				}
-				break; /* RC_RIGHT */
+				break; // RC_RIGHT
 
 			case RC_PLUS:
 				switch (menuitem)
 				{
-				case M_HOT: /* move towards end of hotlist */
+				case M_HOT: // move towards end of hotlist
 				{
-					if (hotindex<0) /* not found: add page at end */
+					if (hotindex < 0) // not found: add page at end
 					{
 						if (maxhotlist < (int) (sizeof(hotlist)/sizeof(hotlist[0])-1)) /* only if still room left */
 						{
@@ -2857,23 +2858,23 @@ void PageInput(int Number)
 {
 	int zoom = 0;
 
-	/* clear temp_page */
+	// clear temp_page
 	if (inputcounter == 2)
 		temp_page = 0;
 
-	/* check for 0 & 9 on first position */
+	// check for 0 & 9 on first position
 	if (Number == 0 && inputcounter == 2)
 	{
-		/* set page */
-		temp_page = lastpage; /* 0 toggles to last page as in program switching */
+		// set page
+		temp_page = lastpage; // 0 toggles to last page as in program switching
 		inputcounter = -1;
 	}
 	else if (Number == 9 && inputcounter == 2)
 	{
-		/* set page */
-		temp_page = getIndexOfPageInHotlist(); /* 9 toggles through hotlist */
+		// set page
+		temp_page = getIndexOfPageInHotlist(); // 9 toggles through hotlist
 
-		if (temp_page<0 || temp_page==maxhotlist) /* from any (other) page go to first page in hotlist */
+		if (temp_page < 0 || temp_page == maxhotlist) // from any (other) page go to first page in hotlist
 			temp_page = (maxhotlist >= 0) ? hotlist[0] : 0x100;
 		else
 			temp_page = hotlist[temp_page+1];
@@ -2881,7 +2882,7 @@ void PageInput(int Number)
 		inputcounter = -1;
 	}
 
-	/* show pageinput */
+	// show pageinput
 	if (zoommode == 2)
 	{
 		zoommode = 1;
@@ -2913,26 +2914,26 @@ void PageInput(int Number)
 			break;
 	}
 
-	/* generate pagenumber */
+	// generate pagenumber
 	temp_page |= Number << inputcounter*4;
 
 	inputcounter--;
 
 	if (inputcounter < 0)
 	{
-		/* disable subpage zapping */
+		// disable subpage zapping
 		tuxtxt_cache.zap_subpage_manual = 0;
 
-		/* reset input */
+		// reset input
 		inputcounter = 2;
 
-		/* set new page */
+		// set new page
 		lastpage = tuxtxt_cache.page;
 
 		tuxtxt_cache.page = temp_page;
 		hintmode = 0;
 
-		/* check cache */
+		// check cache
 		int subp = tuxtxt_cache.subpagetable[tuxtxt_cache.page];
 		if (subp != 0xFF)
 		{
@@ -4223,13 +4224,13 @@ void RenderMessage(int Message)
 
 	/* 00000000001111111111222222222233333333334 */
 	/* 01234567890123456789012345678901234567890 */
-	char message_1[] = "�������� www.tuxtxt.com x.xx ���������";
+	char message_1[] = "������ www.tuxtxt.com        ���������";
 	char message_2[] = "�                                   ��";
 	char message_4[] = "�                                   ��";
 	char message_5[] = "��������������������������������������";
 	char message_6[] = "��������������������������������������";
 
-	memcpy(&message_1[24], versioninfo, 4);
+//	memcpy(&message_1[24], versioninfo, 4);
 	
 	// reset zoom
 	zoommode = 0;

@@ -44,6 +44,8 @@
 #include <gui/audio_setup.h>
 #include <gui/movieplayer.h>
 
+#include <system/helpers.h>
+
 
 //// globals
 unsigned short apids[10];
@@ -165,8 +167,9 @@ int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
 {
 	dprintf(DEBUG_NORMAL, "CAVSubPIDSelectWidget::exec: %s (currentspid:%d)\n", actionKey.c_str(), currentspid);
 	
-	unsigned int sel = atoi(actionKey.c_str());
+//	unsigned int sel = atoi(actionKey.c_str());
 
+/*
 	if (currentspid != spids[sel]) 
 	{
 		currentspid = spids[sel];
@@ -182,8 +185,38 @@ int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
 		
 		dprintf(DEBUG_NORMAL, "CAVSubPIDSelect::exec: spid changed to %d\n", currentspid);
 	}
-	else 
-	if(actionKey == "off") 
+*/
+	if (strstr(actionKey.c_str(), "DVB"))
+	{
+		char const * pidptr = strchr(actionKey.c_str(), ':');
+		
+		currentspid = atoi(pidptr + 1);
+		
+		printf("currentspid:%d\n", currentspid);
+		
+		tuxtx_stop_subtitle();
+		
+		if(playback)
+			playback->SetSubPid(currentspid);
+	}
+	else if (strstr(actionKey.c_str(), "TELETEXT"))
+	{
+		char const * pidptr = strchr(actionKey.c_str(), ':');
+		
+		currentspid = atoi(pidptr + 1);
+		
+		printf("currentspid:%d\n", currentspid);
+		
+		if(playback)
+			playback->SetSubPid(currentspid);
+		
+		tuxtx_stop_subtitle();
+		int page = 0; // FIXME: get page / language from player
+		
+		tuxtx_main(0, page, true);
+		
+	}
+	else if(actionKey == "off") 
 	{
 		currentspid = -1;
 		
@@ -324,9 +357,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 
 		for (int count = 0; count < numpids; count++) 
 		{
-			bool name_ok = false;
-			char spidnumber[10];
-			sprintf(spidnumber, "%d", count);
+			char spidnumber[64];
 			
 			std::string spidtitle = "Sub ";
 
@@ -334,17 +365,9 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 			if (!language[count].empty())
 			{
 				spidtitle = language[count];
-				name_ok = true;
 			}
-
-			if (!name_ok)
-			{
-				spidtitle = "Sub ";
-				name_ok = true;
-			}
-
-			if (!name_ok)
-				spidtitle.append(spidnumber);
+			
+			sprintf(spidnumber, "%s:%d", spidtitle.c_str(), count); // dont change this
 
 			AVPIDSelector->addItem(new CMenuForwarder(spidtitle.c_str(), currentspid == count? false : true, NULL, &AVSubPIDChanger, spidnumber, CRCInput::convertDigitToKey(count + 1)));
 		}

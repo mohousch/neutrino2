@@ -415,7 +415,7 @@ enum
 const unsigned char countryconversiontable[] = { NAT_UK, NAT_DE, NAT_SW, NAT_IT, NAT_FR, NAT_SP, NAT_CZ, NAT_RO};
 
 // some data
-char versioninfo[16];
+//char versioninfo[16];
 int hotlist[10];
 int maxhotlist;
 //
@@ -542,7 +542,7 @@ const char configonoff[][2*4] =
 	{ "EI ON " },
 };
 
-const char menuatr[Menu_Height*(Menu_Width+1)] =
+const char menuatr[Menu_Height*(Menu_Width + 1)] =
 {
 	"0000000000000000000000000000002"
 	"0111111111111111111111111111102"
@@ -569,13 +569,404 @@ const char menuatr[Menu_Height*(Menu_Width+1)] =
 	"2222222222222222222222222222222"
 };
 
-const char configmenu[][Menu_Height*(Menu_Width+1)] = {};
-const char catchmenutext[][81] = {};
+//const char configmenu[][Menu_Height*(Menu_Width+1)] = {};
+//const char catchmenutext[][81] = {};
+const char configmenu[][Menu_Height * (Menu_Width + 8)] =
+{
+	{
+		/*     0123456789012345678901234567890 */
+		"àááááááááááááááááááááááááááááâè"
+		"ã     Konfigurationsmen}     äé"
+		"åææææææææææææææææææææææææææææçé"
+		"ã1 Favoriten: Seite 111 dazu äé"
+		"ãíîñò                        äé"
+		"ã+-?                         äé"
+		"ã                            äé"
+		"ã2     Teletext-Auswahl      äé"
+		"ãí          suchen          îäé"
+		"ã                            äé"
+		"ã      Bildschirmformat      äé"
+		"ã3  Standard-Modus 16:9      äé"
+		"ã                            äé"
+		"ã4        Helligkeit         äé"
+		"ãí                          îäé"
+		"ã5       Transparenz         äé"
+		"ãí                          îäé"
+		"ã6  nationaler Zeichensatz   äé"
+		"ãautomatische Erkennung      äé"
+		"ãí                          îäé"
+		"ãí Sprache/Language deutsch îäé"
+		"åæ   www.tuxtxt.net  x.xx   æçé"
+		"ëìììììììììììììììììììììììììììììê"
+	},
+	/*     0000000000111111111122222222223 */
+	/*     0123456789012345678901234567890 */
+	{
+		"àááááááááááááááááááááááááááááâè"
+		"ã     Configuration menu     äé"
+		"åææææææææææææææææææææææææææææçé"
+		"ã1 Favorites:  add page 111  äé"
+		"ãíîñò                        äé"
+		"ã+-?                         äé"
+		"ã                            äé"
+		"ã2     Teletext selection    äé"
+		"ãí          search          îäé"
+		"ã                            äé"
+		"ã        Screen format       äé"
+		"ã3 Standard mode 16:9        äé"
+		"ã                            äé"
+		"ã4        Brightness         äé"
+		"ãí                          îäé"
+		"ã5       Transparency        äé"
+		"ãí                          îäé"
+		"ã6   national characterset   äé"
+		"ã automatic recognition      äé"
+		"ãí                          îäé"
+		"ãí Sprache/language english îäé"
+		"åæ   www.tuxtxt.net  x.xx   æçé"
+		"ëìììììììììììììììììììììììììììììê"
+	},
+	/*     0000000000111111111122222222223 */
+	/*     0123456789012345678901234567890 */
+	{
+		"àááááááááááááááááááááááááááááâè"
+		"ã    Menu de configuration   äé"
+		"åææææææææææææææææææææææææææææçé"
+		"ã1 Favorites: ajout. page 111äé"
+		"ãíîñò                        äé"
+		"ã+-?                         äé"
+		"ã                            äé"
+		"ã2  Selection de teletext    äé"
+		"ãí        recherche         îäé"
+		"ã                            äé"
+		"ã      Format de l'#cran     äé"
+		"ã3 Mode standard 16:9        äé"
+		"ã                            äé"
+		"ã4          Clarte           äé"
+		"ãí                          îäé"
+		"ã5       Transparence        äé"
+		"ãí                          îäé"
+		"ã6     police nationale      äé"
+		"ãreconn. automatique         äé"
+		"ãí                          îäé"
+		"ãí Sprache/language francaisîäé"
+		"åæ   www.tuxtxt.net  x.xx   æçé"
+		"ëìììììììììììììììììììììììììììììê"
+	},
+	/*     0000000000111111111122222222223 */
+	/*     0123456789012345678901234567890 */
+	{
+		"àááááááááááááááááááááááááááááâè"
+		"ã      Configuratiemenu      äé"
+		"åææææææææææææææææææææææææææææçé"
+		"ã1 Favorieten: toev. pag 111 äé"
+		"ãíîñò                        äé"
+		"ã+-?                         äé"
+		"ã                            äé"
+		"ã2     Teletekst-selectie    äé"
+		"ãí          zoeken          îäé"
+		"ã                            äé"
+		"ã     Beeldschermformaat     äé"
+		"ã3   Standaardmode 16:9      äé"
+		"ã                            äé"
+		"ã4        Helderheid         äé"
+		"ãí                          îäé"
+		"ã5       Transparantie       äé"
+		"ãí                          îäé"
+		"ã6    nationale tekenset     äé"
+		"ãautomatische herkenning     äé"
+		"ãí                          îäé"
+		"ãí Sprache/Language nederl. îäé"
+		"åæ   www.tuxtxt.net  x.xx   æçé"
+		"ëìììììììììììììììììììììììììììììê"
+	},
+	/*     0000000000111111111122222222223 */
+	/*     0123456789012345678901234567890 */
+	{
+		"àááááááááááááááááááááááááááááâè"
+		"ã      Lemo} quhl_seym       äé"
+		"åææææææææææææææææææææææææææææçé"
+		"ã1 Vaboq_:    pqo_h. sek. 111äé"
+		"ãíîñò                        äé"
+		"ã+-?                         äé"
+		"ã                            äé"
+		"ã2     Epikoc^ Teket]nt      äé"
+		"ãí        Amaf^tgsg         îäé"
+		"ã                            äé"
+		"ã       Loqv^ oh|mgr         äé"
+		"ã3 Tq|por pq|tupor   16:9    äé"
+		"ã                            äé"
+		"ã4       Kalpq|tgta          äé"
+		"ãí                          îäé"
+		"ã5       Diav\\meia           äé"
+		"ãí                          îäé"
+		"ã6    Ehmij^ tuposeiq\\       äé"
+		"ãaut|latg amacm~qisg         äé"
+		"ãí                          îäé"
+		"ãí Ck~ssa/Language ekkgmij\\ îäé"
+		"åæ   www.tuxtxt.net  x.xx   æçé"
+		"ëìììììììììììììììììììììììììììììê"
+	},
+	/*     0000000000111111111122222222223 */
+	/*     0123456789012345678901234567890 */
+	{
+		"àááááááááááááááááááááááááááááâè"
+		"ã   Menu di configurazione   äé"
+		"åææææææææææææææææææææææææææææçé"
+		"ã1  Preferiti:  agg. pag.111 äé"
+		"ãíîñò                        äé"
+		"ã+-?                         äé"
+		"ã                            äé"
+		"ã2   Selezione televideo     äé"
+		"ãí         ricerca          îäé"
+		"ã                            äé"
+		"ã      Formato schermo       äé"
+		"ã3  Modo standard 16:9       äé"
+		"ã                            äé"
+		"ã4        Luminosit{         äé"
+		"ãí                          îäé"
+		"ã5        Trasparenza        äé"
+		"ãí                          îäé"
+		"ã6   nazionalita'caratteri   äé"
+		"ã riconoscimento automatico  äé"
+		"ãí                          îäé"
+		"ãí Lingua/Language Italiana îäé"
+		"åæ   www.tuxtxt.net  x.xx   æçé"
+		"ëìììììììììììììììììììììììììììììê"
+	},
+	/*     0000000000111111111122222222223 */
+	/*     0123456789012345678901234567890 */
+	{
+		"àááááááááááááááááááááááááááááâè"
+		"ã        Konfiguracja        äé"
+		"åææææææææææææææææææææææææææææçé"
+		"ã1 Ulubione : kasuj  str. 111äé"
+		"ãíîñò                        äé"
+		"ã+-?                         äé"
+		"ã                            äé"
+		"ã2     Wyb_r telegazety      äé"
+		"ãí          szukaj          îäé"
+		"ã                            äé"
+		"ã       Format obrazu        äé"
+		"ã3 Tryb standard 16:9        äé"
+		"ã                            äé"
+		"ã4          Jasno|^          äé"
+		"ãí                          îäé"
+		"ã5      Prze~roczysto|^      äé"
+		"ãí                          îäé"
+		"ã6 Znaki charakterystyczne   äé"
+		"ã automatyczne rozpozn.      äé"
+		"ãí                          îäé"
+		"ãí  J`zyk/Language   polski îäé"
+		"åæ   www.tuxtxt.net  x.xx   æçé"
+		"ëìììììììììììììììììììììììììììììê"
+	},
+	/*     0000000000111111111122222222223 */
+	/*     0123456789012345678901234567890 */
+	{
+		"àááááááááááááááááááááááááááááâè"
+		"ã     Konfigurationsmeny     äé"
+		"åææææææææææææææææææææææææææææçé"
+		"ã1 Favoriter: sida 111 ny    äé"
+		"ãíîñò                        äé"
+		"ã+-?                         äé"
+		"ã                            äé"
+		"ã2      TextTV v{ljaren      äé"
+		"ãí            s|k           îäé"
+		"ã                            äé"
+		"ã        TV- format          äé"
+		"ã3 Standard l{ge 16:9        äé"
+		"ã                            äé"
+		"ã4        Ljusstyrka         äé"
+		"ãí                          îäé"
+		"ã5     Genomskinlighet       äé"
+		"ãí                          îäé"
+		"ã6nationell teckenupps{ttningäé"
+		"ã automatisk igenk{nning     äé"
+		"ãí                          îäé"
+		"ãí Sprache/language svenska îäé"
+		"åæ   www.tuxtxt.net  x.xx   æçé"
+		"ëìììììììììììììììììììììììììììììê"
+	},
+	/*     0000000000111111111122222222223 */
+	/*     0123456789012345678901234567890 */
+	{
+		"àááááááááááááááááááááááááááááâè"
+		"ã        Asetusvalikko       äé"
+		"åææææææææææææææææææææææææææææçé"
+		"ã1 Suosikit: sivu 111 lis{{  äé"
+		"ãíîñò                        äé"
+		"ã+-?                         äé"
+		"ã                            äé"
+		"ã2   Tekstikanavan valinta   äé"
+		"ãí          search          îäé"
+		"ã                            äé"
+		"ã         N{ytt|tila         äé"
+		"ã3 Vakiotila     16:9        äé"
+		"ã                            äé"
+		"ã4         Kirkkaus          äé"
+		"ãí                          îäé"
+		"ã5       L{pin{kyvyys        äé"
+		"ãí                          îäé"
+		"ã6   kansallinen merkist|    äé"
+		"ã automaattinen tunnistus    äé"
+		"ãí                          îäé"
+		"ãí Kieli            suomi   îäé"
+		"åæ   www.tuxtxt.net  x.xx   æçé"
+		"ëìììììììììììììììììììììììììììììê"
+	},
+	/*     0000000000111111111122222222223 */
+	/*     0123456789012345678901234567890 */
+	{
+		"àááááááááááááááááááááááááááááâè"
+		"ã    Menu de Configuracao    äé"
+		"åææææææææææææææææææææææææææææçé"
+		"ã1 Favoritos:  adi pag. 111  äé"
+		"ãíîñò                        äé"
+		"ã+-?                         äé"
+		"ã                            äé"
+		"ã2     Seleccao Teletext     äé"
+		"ãí         Procurar         îäé"
+		"ã                            äé"
+		"ã       formato ecran        äé"
+		"ã3 Standard mode 16:9        äé"
+		"ã                            äé"
+		"ã4          Brilho           äé"
+		"ãí                          îäé"
+		"ã5      Transparencia        äé"
+		"ãí                          îäé"
+		"ã6  Caracteres nacionaist    äé"
+		"ãreconhecimento utomatico    äé"
+		"ãí                          îäé"
+		"ãí Lingua      Portuguesa   îäé"
+		"åæ   www.tuxtxt.net  x.xx   æçé"
+		"ëìììììììììììììììììììììììììììììê"
+	},
+	/*     0000000000111111111122222222223 */
+	/*     0123456789012345678901234567890 */
+	{
+		"àááááááááááááááááááááááááááááâè"
+		"ã        Konfiguraciq        äé"
+		"åææææææææææææææææææææææææææææçé"
+		"ã1 Faworit&:   dob str. 111  äé"
+		"ãíîñò                        äé"
+		"ã+-?                         äé"
+		"ã                            äé"
+		"ã2     W&bor teleteksta      äé"
+		"ãí           Poisk          îäé"
+		"ã                            äé"
+		"ã       Format kartinki      äé"
+		"ã3 Stand. revim  16:9        äé"
+		"ã                            äé"
+		"ã4          Qrkostx          äé"
+		"ãí                          îäé"
+		"ã5       Prozra~nostx        äé"
+		"ãí                          îäé"
+		"ã6  Ispolxzuem&j alfawit     äé"
+		"ã      awtoopredelenie       äé"
+		"ãí                          îäé"
+		"ãí  Qz&k:         Russkij   îäé"
+		"åæ   www.tuxtxt.net  x.xx   æçé"
+		"ëìììììììììììììììììììììììììììììê"
+	}
+};
 
-const char message_3[][39] = {};
-const char message_3_blank[] = {};
-const char message_7[][39] = {};
-const char message_8[][39] = {};
+const char catchmenutext[][87] =
+{
+	{
+		"        íïðî w{hlen   ñò anzeigen       "
+		"0000000011110000000000110000000000000000"
+	},
+	{
+		"        íïðî select   ñò show           "
+		"0000000011110000000000110000000000000000"
+	},
+	{
+		"  íïðî selectionner   ñò montrer        "
+		"0011110000000000000000110000000000000000"
+	},
+	{
+		"        íïðî kiezen   ñò tonen          "
+		"0000000011110000000000110000000000000000"
+	},
+	{
+		"        íïðî epikoc^  ñò pqobok^        "
+		"0000000011110000000000110000000000000000"
+	},
+	{
+		"        íïðîseleziona ñò mostra         "
+		"0000000011110000000000110000000000000000"
+	},
+	{
+		"        íïðî wybiez   ñò wyswietl       "
+		"0000000011110000000000110000000000000000"
+	},
+	{
+		"        íïðî v{lj     ñò visa           "
+		"0000000011110000000000110000000000000000"
+	},
+	{
+		"        íïðî valitse  ñò n{yt{          "
+		"0000000011110000000000110000000000000000"
+	},
+	{
+		"        íïðî seleccao ñò mostrar        "
+		"0000000011110000000000110000000000000000"
+	},
+	{
+		"        íïðî w&bratx  ñò pokazatx       "
+		"0000000011110000000000110000000000000000"
+	}
+};
+
+
+//const char message_3[][39] = {"Page not found"};
+//const char message_3_blank[] = {};
+const char message_3[][39] =
+{
+	{ " suche nach Teletext-Anbietern " },
+	{ " searching for teletext Services " },
+	{ " recherche des services teletext " },
+	{ " zoeken naar teletekst aanbieders " },
+	{ " amaf^tgsg voq]ym Teket]nt " },
+	{ " attesa opzioni televideo " },
+	{ " poszukiwanie sygna}u telegazety " },
+	{ " s|ker efter TextTV tj{nster " },
+	{ " etsit{{n Teksti-TV -palvelua " },
+	{ " Procurar servicos de teletexto " },
+	{ " W&polnqetsq poisk teleteksta " }
+};
+const char message_3_blank[] = "ã                                   äé";
+//const char message_7[][39] = {};
+//const char message_8[][39] = {};
+const char message_7[][39] =
+{
+	{ "kein Teletext auf dem Transponder" },
+	{ "no teletext on the transponder" },
+	{ "pas de teletext sur le transponder" },
+	{ "geen teletekst op de transponder" },
+	{ "jal]la Teket]nt ston amaletadot^" },
+	{ "nessun televideo sul trasponder" },
+	{ "brak sygna}u na transponderze" },
+	{ "ingen TextTV p} denna transponder" },
+	{ "Ei Teksti-TV:t{ l{hettimell{" },
+	{ "nao ha teletexto no transponder" },
+	{ "Na transpondere net teleteksta" }
+};
+const char message_8[][39] =
+{
+	{ "warte auf Empfang von Seite 100" },
+	{ "waiting for reception of page 100" },
+	{ "attentre la réception de page 100" },
+	{ "wachten op ontvangst van pagina 100" },
+	{ "amal]my k^xg sek_dar 100" },
+	{ "attesa ricezione pagina 100" },
+	{ "oczekiwanie na stron` 100" },
+	{ "v{ntar p} mottagning av sida 100" },
+	{ "Odotetaan sivua 100" },
+	{ "esperando recepcao na pag 100" },
+	{ "Ovidanie priema stranic& 100" }
+};
 
 const char message8pagecolumn[] = /* last(!) column of page to show in each language */
 {
