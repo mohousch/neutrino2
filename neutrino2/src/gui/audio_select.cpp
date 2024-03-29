@@ -180,12 +180,13 @@ int CAudioSelectMenuHandler::doMenu()
 					sep_added = true;
 					AudioSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Subtitles")));
 				}
+				
 				char spid[10];
-				//int pid = sd->pId;
 				snprintf(spid,sizeof(spid), "DVB:%d", sd->pId);
 				char item[64];
 				//snprintf(item,sizeof(item), "DVB: %s (pid %x)", sd->ISO639_language_code.c_str(), sd->pId);
 				snprintf(item, sizeof(item), "DVB: %s", sd->ISO639_language_code.c_str());
+				
 				AudioSelector->addItem(new CMenuForwarder(item, sd->pId != dvbsub_getpid(), NULL, &SubtitleChanger, spid, CRCInput::convertDigitToKey(++count)));
 			}
 			
@@ -193,16 +194,20 @@ int CAudioSelectMenuHandler::doMenu()
 			if (s->thisSubType == CZapitAbsSub::TTX) 
 			{
 				CZapitTTXSub* sd = reinterpret_cast<CZapitTTXSub*>(s);
-				printf("[CAudioSelectMenuHandler] adding TTX subtitle %s pid 0x%x mag 0x%X page 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId, sd->teletext_magazine_number, sd->teletext_page_number);
+				
+				printf("[CAudioSelectMenuHandler] adding TTX subtitle %s pid 0x%x mag 0x%x page 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId, sd->teletext_magazine_number, sd->teletext_page_number);
+				
 				if(!sep_added) 
 				{
 					sep_added = true;
 					AudioSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Subtitles")));
 				}
+				
 				char spid[64];
 				int page = ((sd->teletext_magazine_number & 0xFF) << 8) | sd->teletext_page_number;
 				int pid = sd->pId;
-				snprintf(spid,sizeof(spid), "TTX:%d:%03X:%s", sd->pId, page, sd->ISO639_language_code.c_str()); 
+				
+				snprintf(spid, sizeof(spid), "TTX:%d:%03X:%s", sd->pId, page, sd->ISO639_language_code.c_str()); 
 				char item[64];
 				snprintf(item, sizeof(item), "TTX: %s", sd->ISO639_language_code.c_str());
 				AudioSelector->addItem(new CMenuForwarder(item,  !tuxtx_subtitle_running(&pid, &page, NULL), NULL, &SubtitleChanger, spid, CRCInput::convertDigitToKey(++count)));

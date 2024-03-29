@@ -164,13 +164,14 @@ bool CMovieInfo::encodeMovieInfoXml(std::string * extMessage, MI_MOVIE_INFO * mo
 	XML_ADD_TAG_UNSIGNED(*extMessage, MI_XML_TAG_VIDEOPID, movie_info->epgVideoPid);	//%u
 	XML_ADD_TAG_UNSIGNED(*extMessage, MI_XML_TAG_VIDEOTYPE, movie_info->VideoType);		//%u
 	
+	//
 	if (movie_info->audioPids.size() > 0) 
 	{
 		*extMessage += "\t\t<" MI_XML_TAG_AUDIOPIDS ">\n";
 
 		for (unsigned int i = 0; i < movie_info->audioPids.size(); i++)	// pids.APIDs.size()
 		{
-			*extMessage += "\t\t\t<" MI_XML_TAG_AUDIO " " MI_XML_TAG_PID "=\"";
+			*extMessage += "\t\t\t<" MI_XML_TAG_PID "=\"";
 			sprintf(tmp, "%u", movie_info->audioPids[i].epgAudioPid);	//pids.APIDs[i].pid);
 			*extMessage += tmp;
 			*extMessage += "\" " MI_XML_TAG_ATYPE "=\"";
@@ -185,8 +186,28 @@ bool CMovieInfo::encodeMovieInfoXml(std::string * extMessage, MI_MOVIE_INFO * mo
 		}
 		*extMessage += "\t\t</" MI_XML_TAG_AUDIOPIDS ">\n";
 	}
+	
+	//
+	if (movie_info->vtxtPids.size() > 0) 
+	{
+		*extMessage += "\t\t<" MI_XML_TAG_VTXTPIDS ">\n";
 
-	XML_ADD_TAG_UNSIGNED(*extMessage, MI_XML_TAG_VTXTPID, movie_info->epgVTXPID);	//%u
+		for (unsigned int i = 0; i < movie_info->vtxtPids.size(); i++)
+		{
+			*extMessage += "\t\t\t<" MI_XML_TAG_PID "=\"";
+			sprintf(tmp, "%u", movie_info->vtxtPids[i].pid);
+			*extMessage += tmp;
+			*extMessage += "\" " MI_XML_TAG_PAGE "=\"";
+			sprintf(tmp, "%u", movie_info->vtxtPids[i].page);
+			*extMessage += tmp;
+			*extMessage += "\" " MI_XML_TAG_LANGUAGE "=\"";
+			*extMessage += movie_info->vtxtPids[i].language;
+			*extMessage += "\"/>\n";
+		}
+		*extMessage += "\t\t</" MI_XML_TAG_VTXTPIDS ">\n";
+	}
+	
+	//
 	XML_ADD_TAG_UNSIGNED(*extMessage, MI_XML_TAG_GENRE_MAJOR, movie_info->genreMajor);
 	XML_ADD_TAG_UNSIGNED(*extMessage, MI_XML_TAG_GENRE_MINOR, movie_info->genreMinor);
 	XML_ADD_TAG_STRING(*extMessage, MI_XML_TAG_SERIE_NAME, movie_info->serieName);
@@ -367,6 +388,7 @@ bool CMovieInfo::loadMovieInfo(MI_MOVIE_INFO * movie_info, CFile * file)
 		}
 	}
 	
+	// fill empty
 	//epgTitle
 	if (movie_info->epgTitle.empty())
 	{
@@ -1077,7 +1099,7 @@ void CMovieInfo::printDebugMovieInfo(MI_MOVIE_INFO & movie_info)
 	dprintf(DEBUG_DEBUG, " epgEpgId: \t\t%llu\r\n", movie_info.epgEpgId);
 	dprintf(DEBUG_DEBUG, " epgMode: \t\t%d\r\n", movie_info.epgMode);
 	dprintf(DEBUG_DEBUG, " epgVideoPid: \t\t%d\r\n", movie_info.epgVideoPid);
-	dprintf(DEBUG_DEBUG, " epgVTXPID: \t\t%d\r\n", movie_info.epgVTXPID);
+//	dprintf(DEBUG_DEBUG, " epgVTXPID: \t\t%d\r\n", movie_info.epgVTXPID);
 	dprintf(DEBUG_DEBUG, " Size: \t\t%d\r\n", (int)movie_info.file.Size >> 20);
 	dprintf(DEBUG_DEBUG, " Date: \t\t%d\r\n", (int)movie_info.file.Time);
 
@@ -1162,6 +1184,7 @@ bool CMovieInfo::parseXmlQuickFix(char *text, MI_MOVIE_INFO * movie_info)
 	int pos = 0;
 
 	EPG_AUDIO_PIDS audio_pids;
+	EPG_VTXT_PIDS vtxt_pids;
 
 	while ((pos = find_next_char('<', text, pos, bytes)) != -1) 
 	{
@@ -1176,7 +1199,6 @@ bool CMovieInfo::parseXmlQuickFix(char *text, MI_MOVIE_INFO * movie_info)
 		GET_XML_DATA_INT(text, pos, MI_XML_TAG_VIDEOPID, movie_info->epgVideoPid)
 		GET_XML_DATA_INT(text, pos, MI_XML_TAG_VIDEOTYPE, movie_info->VideoType)
 		GET_XML_DATA_STRING(text, pos, MI_XML_TAG_NAME, movie_info->epgChannel)
-		GET_XML_DATA_INT(text, pos, MI_XML_TAG_VTXTPID, movie_info->epgVTXPID)
 		GET_XML_DATA_INT(text, pos, MI_XML_TAG_GENRE_MAJOR, movie_info->genreMajor)
 		GET_XML_DATA_INT(text, pos, MI_XML_TAG_GENRE_MINOR, movie_info->genreMinor)
 		GET_XML_DATA_STRING(text, pos, MI_XML_TAG_SERIE_NAME, movie_info->serieName)
@@ -1189,10 +1211,10 @@ bool CMovieInfo::parseXmlQuickFix(char *text, MI_MOVIE_INFO * movie_info)
 		GET_XML_DATA_STRING(text, pos, "genres", movie_info->genres)
 		GET_XML_DATA_INT(text, pos, "vote_average", movie_info->vote_average)
 		
+		// parse audio pids
 		if (strncmp(&text[pos], MI_XML_TAG_AUDIOPIDS, sizeof(MI_XML_TAG_AUDIOPIDS) - 1) == 0)
 			pos += sizeof(MI_XML_TAG_AUDIOPIDS);
 
-		/* parse audio pids */
 		if (strncmp(&text[pos], MI_XML_TAG_AUDIO, sizeof(MI_XML_TAG_AUDIO) - 1) == 0) 
 		{
 			pos += sizeof(MI_XML_TAG_AUDIO);
@@ -1265,8 +1287,81 @@ bool CMovieInfo::parseXmlQuickFix(char *text, MI_MOVIE_INFO * movie_info)
 						audio_pids.epgAudioPidName.append(&text[pos + pos2 + 1], pos3 - pos2 - 1);
 				}
 			}
-			//printf("MOVIE INFO: apid %d type %d name %s selected %d\n", audio_pids.epgAudioPid, audio_pids.atype, audio_pids.epgAudioPidName.c_str(), audio_pids.selected);
+
 			movie_info->audioPids.push_back(audio_pids);
+		}
+		
+		// parse vtxt pids
+		if (strncmp(&text[pos], MI_XML_TAG_VTXTPIDS, sizeof(MI_XML_TAG_VTXTPIDS) - 1) == 0)
+			pos += sizeof(MI_XML_TAG_VTXTPIDS);
+
+		if (strncmp(&text[pos], MI_XML_TAG_VTXT, sizeof(MI_XML_TAG_VTXT) - 1) == 0) 
+		{
+			pos += sizeof(MI_XML_TAG_VTXT);
+
+			size_t pos2;
+			char *ptr;
+
+			// pid
+			pos2 = -1;
+			ptr = strstr(&text[pos], MI_XML_TAG_PID);
+			if (ptr)
+				pos2 = (size_t)ptr - (size_t)&text[pos];
+
+			if (pos2 >= 0) 
+			{
+				pos2 += sizeof(MI_XML_TAG_PID);
+				while (text[pos + pos2] != '\"' && text[pos + pos2] != 0 && text[pos + pos2] != '/')
+					pos2++;
+				if (text[pos + pos2] == '\"')
+					vtxt_pids.pid = atoi(&text[pos + pos2 + 1]);
+			} 
+			else
+				vtxt_pids.pid = 0;
+
+			// page
+			vtxt_pids.page = 0;
+			pos2 = -1;
+			ptr = strstr(&text[pos], MI_XML_TAG_PAGE);
+			if (ptr)
+				pos2 = (size_t)ptr - (size_t)&text[pos];
+
+			if (pos2 >= 0) 
+			{
+				pos2 += sizeof(MI_XML_TAG_PAGE);
+				while (text[pos + pos2] != '\"' && text[pos + pos2] != 0 && text[pos + pos2] != '/')
+					pos2++;
+				if (text[pos + pos2] == '\"')
+					vtxt_pids.page = atoi(&text[pos + pos2 + 1]);
+			}
+
+			// language
+			vtxt_pids.language = "";
+			pos2 = -1;
+			ptr = strstr(&text[pos], MI_XML_TAG_LANGUAGE);
+			
+			if (ptr)
+				pos2 = (size_t)ptr - (size_t)&text[pos];
+				
+			if (pos2 >= 0) 
+			{
+				pos2 += sizeof(MI_XML_TAG_PID);
+				
+				while(text[pos + pos2] != '\"' && text[pos + pos2] != 0 && text[pos + pos2] != '/')
+					pos2++;
+					
+				if (text[pos + pos2] == '\"') 
+				{
+					size_t pos3 = pos2 + 1;
+					while (text[pos + pos3] != '\"' && text[pos + pos3] != 0 && text[pos + pos3] != '/')
+						pos3++;
+						
+					if (text[pos + pos3] == '\"')
+						vtxt_pids.language.append(&text[pos + pos2 + 1], pos3 - pos2 - 1);
+				}
+			}
+			
+			movie_info->vtxtPids.push_back(vtxt_pids);
 		}
 		
 		/* parse bookmarks */
@@ -1418,9 +1513,10 @@ void CMovieInfo::clearMovieInfo(MI_MOVIE_INFO * movie_info)
 	movie_info->epgMode = 0;
 	movie_info->epgVideoPid = 0;
 	movie_info->VideoType = 0;
-	movie_info->epgVTXPID = 0;
+//	movie_info->epgVTXPID = 0;
 
 	movie_info->audioPids.clear();
+	movie_info->vtxtPids.clear();
 
 	movie_info->productionCountry.clear();
 	movie_info->epgTitle.clear();
@@ -1527,7 +1623,7 @@ void CMovieInfo::copy(MI_MOVIE_INFO * src, MI_MOVIE_INFO * dst)
 	dst->epgMode = src->epgMode;
 	dst->epgVideoPid = src->epgVideoPid;
 	dst->VideoType = src->VideoType;
-	dst->epgVTXPID = src->epgVTXPID;
+//	dst->epgVTXPID = src->epgVTXPID;
 
 	dst->productionCountry = src->productionCountry;
 	dst->epgTitle = src->epgTitle;
@@ -1553,6 +1649,17 @@ void CMovieInfo::copy(MI_MOVIE_INFO * src, MI_MOVIE_INFO * dst)
 		audio_pids.epgAudioPidName = src->audioPids[i].epgAudioPidName;
 		audio_pids.atype = src->audioPids[i].atype;
 		dst->audioPids.push_back(audio_pids);
+	}
+
+	//	
+	for (unsigned int i = 0; i < src->vtxtPids.size(); i++) 
+	{
+		EPG_VTXT_PIDS vtxt_pids;
+		vtxt_pids.pid = src->vtxtPids[i].pid;
+		vtxt_pids.language = src->vtxtPids[i].language;
+		vtxt_pids.page = src->vtxtPids[i].page;
+		
+		dst->vtxtPids.push_back(vtxt_pids);
 	}
 	
 	//

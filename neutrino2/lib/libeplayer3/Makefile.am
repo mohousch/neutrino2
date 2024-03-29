@@ -22,7 +22,7 @@ libeplayer3_a_SOURCES =  \
 	output/writer/pcm.c output/writer/amr.c output/writer/lpcm.c \
 	output/writer/mpeg2.c output/writer/divx3.c output/writer/mjpeg.c output/writer/vp.c output/writer/wmv.c  \
 	output/writer/divx.c  output/writer/h264.c output/writer/h263.c output/writer/vc1.c output/writer/h265.c \
-	output/writer/framebuffer.cpp \
+	output/writer/framebuffer.c \
 	playback/playback.c
 
 AM_CPPFLAGS += -Wall -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D__STDC_CONSTANT_MACROS

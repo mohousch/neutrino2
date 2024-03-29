@@ -6257,7 +6257,7 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		dprintf(DEBUG_NORMAL, "CTestMenu::exec: TTX, pid %x page %x lang %s\n", pid, page, ptr);
 		
 		tuxtx_stop_subtitle();
-		tuxtx_set_pid(pid, page, ptr);
+//		tuxtx_set_pid(pid, page, ptr);
 		tuxtx_main(pid, page, false);
 		
 		return RETURN_EXIT_ALL;
@@ -6478,8 +6478,6 @@ void CTestMenu::showMenu()
 				int pid = sd->pId;
 				
 				snprintf(spid, sizeof(spid), "TTX:%d:%03X:%s", sd->pId, page, sd->ISO639_language_code.c_str()); 
-				
-				printf("TestMenu: %s\n", spid);
 				
 				char item[64];
 				

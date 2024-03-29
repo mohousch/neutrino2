@@ -860,11 +860,20 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	avcodec_register_all();
 	av_register_all();
 	avformat_network_init();
+	
+	////
+	avContext = avformat_alloc_context();
+	
+	AVDictionary *options = NULL;
+	av_dict_set(&options, "auth_type", "basic", 0);
+	////
 
 #if LIBAVCODEC_VERSION_MAJOR < 54
 	if ((err = av_open_input_file(&avContext, filename, NULL, 0, NULL)) != 0) 
 #else
-	if ((err = avformat_open_input(&avContext, filename, NULL, 0)) != 0)
+	////test
+	//if ((err = avformat_open_input(&avContext, filename, NULL, 0)) != 0)
+	if ((err = avformat_open_input(&avContext, filename, NULL, &options)) != 0)
 #endif
 	{
 		ffmpeg_err("avformat_open_input failed %d (%s)\n", err, filename);
@@ -876,8 +885,11 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	
 	avContext->flags |= AVFMT_FLAG_GENPTS;
 
-	if (strstr(filename, ":31339") || strstr(filename, ".ts"))
-		avContext->max_analyze_duration = 5;
+//	if (strstr(filename, ":31339") || strstr(filename, ".ts"))
+	avContext->max_analyze_duration = 1;
+	
+	////test	
+	avContext->probesize = 131072;
 
 	// find stream info
 #if LIBAVCODEC_VERSION_MAJOR < 54
@@ -888,13 +900,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	{
 		ffmpeg_err("Error avformat_find_stream_info\n");
 	}
-
-	// dump format
-#if LIBAVCODEC_VERSION_MAJOR < 54
-	dump_format(avContext, 0, filename, 0);
-#else
-	av_dump_format(avContext, 0, filename, 0);
-#endif
 
 	ffmpeg_printf(10, "number streams %d\n", avContext->nb_streams);
 
@@ -1256,7 +1261,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				if (lang)
 					track.Name = strdup(lang->value);
 				else
-					track.Name = strdup("und");
+					track.Name = strdup("Sub");
 
 				ffmpeg_printf(10, "Language %s\n", track.Name);
 
@@ -1286,12 +1291,34 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				
 				ffmpeg_printf(10, "\n", track.height);
 				
-// init codec
+				// init codec
 #if LIBAVCODEC_VERSION_MAJOR < 54
 				avcodec_open(stream->codec, avcodec_find_decoder(stream->codec->codec_id));
 #else
 				avcodec_open2(stream->codec, avcodec_find_decoder(stream->codec->codec_id), NULL);
 #endif
+
+				////test
+				if (stream->codec->codec_id == AV_CODEC_ID_DVB_TELETEXT)
+				{
+					AVCodecParameters *codecpar = stream->codecpar;
+					
+					ffmpeg_printf(10, "size:%d\n", codecpar->extradata_size); 
+					Hexdump(codecpar->extradata, codecpar->extradata_size);
+					
+					uint8_t *data = stream->codec->extradata;
+					int size = stream->codec->extradata_size;
+					if (size > 0 && 2 * size - 1 == (int) sizeof(track.Name))
+					{
+						for (int i = 0; i < size; i += 2)
+						{
+							ffmpeg_printf(10, "type:%d\n", data[i] >> 3);
+							ffmpeg_printf(10, "mag:%d\n", data[i] & 7);
+							ffmpeg_printf(10, "page:%d\n", data[i + 1]);
+						}
+					}
+				}
+				////
 
 				if (context->manager->subtitle)
 				{

@@ -86,14 +86,13 @@ int max_y = 0;
 
 static pthread_mutex_t mutex;
 static int isSubtitleOpened = 0;
-extern void teletext_write(int pid, uint8_t *data, int size);
-extern void dvbsub_write(AVSubtitle *sub, int64_t pts);
-extern int writeText(void* _call);
-extern void clearBuffer(void);
 
 /* ***************************** */
 /* Prototypes                    */
 /* ***************************** */
+extern void teletext_write(int pid, uint8_t *data, int size);
+extern void clearFrameBuffer(void);
+extern void writeText(uint8_t* text, int x, int y, int w, int h);
 
 /* ***************************** */
 /* MISC Functions                */
@@ -174,47 +173,6 @@ static char * ass_get_text(char *str)
     	return p_str;
 }
 
-void replace_all(char ** string, char * search, char * replace) 
-{
-    int len = 0;
-    char * ptr = NULL;
-    char tempString[512];
-    char newString[512];
-
-    newString[0] = '\0';
-
-    if ((string == NULL) || (*string == NULL) || (search == NULL) || (replace == NULL))
-    {
-        subtitle_err("null pointer passed\n");
-        return;
-    }
-    
-    strncpy(tempString, *string, 511);
-    tempString[511] = '\0';
-
-    free(*string);
-
-    while ((ptr = strstr(tempString, search)) != NULL) 
-    {
-        len  = ptr - tempString;
-        strncpy(newString, tempString, len);
-        newString[len] = '\0';
-        strcat(newString, replace);
-
-        len += strlen(search);
-        strcat(newString, tempString+len);
-
-        strcpy(tempString, newString);
-    }
-
-    subtitle_printf(20, "strdup in line %d\n", __LINE__);
-
-    if(newString[0] != '\0')
-        *string = strdup(newString);
-    else
-        *string = strdup(tempString);
-}
-
 /* ***************************** */
 /* Functions                     */
 /* ***************************** */
@@ -278,9 +236,9 @@ static int Write(void* _context, void *data)
 		
 		if (got_sub_ptr && sub.num_rects > 0)
 		{
-			subtitle_printf(10, "type: %d\n", sub.rects[0]->type);
+			subtitle_printf(100, "type: %d\n", sub.rects[0]->type);
 			
-			clearBuffer();
+			clearFrameBuffer();
 						
 			switch (sub.rects[0]->type)
 			{
@@ -297,21 +255,7 @@ static int Write(void* _context, void *data)
 						subtitle_printf(100, "text %s\n", sub.rects[i]->text);
 						subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
 						
-						fb.fd            = framebufferFD;
-             					fb.data          = (uint8_t*)sub.rects[i]->text;
-             					fb.Width         = screen_width - 80;
-        					fb.Height        = 60;
-        					fb.x             = 40;
-        					fb.y             = 600;
-             					
-             					fb.color	  = 0;
-
-             					fb.Screen_Width  = screen_width; 
-             					fb.Screen_Height = screen_height; 
-             					fb.destination   = destination;
-             					fb.destStride    = destStride;
-
-             					writeText(&fb);
+             					writeText((uint8_t*)sub.rects[i]->text, screen_x + 40, screen_y + screen_height - 40, screen_width - 80, 60);
 					}
 					break;
 				}
@@ -329,26 +273,12 @@ static int Write(void* _context, void *data)
 						subtitle_printf(100, "text %s\n", sub.rects[i]->text);
 						subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
 						
-						fb.fd            = framebufferFD;
-             					fb.data          = (uint8_t*)ass_get_text(sub.rects[i]->ass);
-             					fb.Width         = screen_width - 80;
-        					fb.Height        = 60;
-        					fb.x             = 40;
-        					fb.y             = 600;
-             					
-             					fb.color	  = 0;
-
-             					fb.Screen_Width  = screen_width; 
-             					fb.Screen_Height = screen_height; 
-             					fb.destination   = destination;
-             					fb.destStride    = destStride;
-
-             					writeText(&fb);
+             					writeText((uint8_t*)ass_get_text(sub.rects[i]->ass), screen_x + 40, screen_y + screen_height - 40, screen_width - 80, 60);
 					}
 					break;
 				}
 				
-				case SUBTITLE_BITMAP: // 1: DVB / TELETEXT
+				case SUBTITLE_BITMAP: // 1: DVB / TELETEXT / PGS
 				{
 					for (i = 0; i < sub.num_rects; i++)
 					{
@@ -404,45 +334,6 @@ static int Write(void* _context, void *data)
 						}
 						else if (sub.rects[i]->nb_colors == 40)// TELETXT
 						{
-							/*
-							int width = sub.rects[i]->w;
-							int height = sub.rects[i]->h;
-
-							int h2 = height;
-									
-							int xoff = sub.rects[i]->x * screen_width / width;
-							int yoff = sub.rects[i]->y * screen_height / h2;
-							int nw = width * screen_width / width;
-							int nh = height * screen_height / h2;
-
-							// resize color to 32 bit
-#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
-							uint32_t* newdata = resize32(sub.rects[i]->pict.data[0], (uint32_t*)sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
-#else
-							uint32_t* newdata = resize32(sub.rects[i]->data[0], (uint32_t*)sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
-#endif
-									
-							// writeData
-			     				fb.fd            = framebufferFD;
-			     				//fb.data          = newdata;
-			     				fb.data		= out->data;
-			     				//fb.Width         = nw;
-			     				fb.Width	= out->len;
-			     				fb.Height        = nh;
-			     				fb.x             = xoff;
-			     				fb.y             = yoff;
-			     					
-			     				fb.color	  = 0;
-
-			     				fb.Screen_Width  = screen_width; 
-			     				fb.Screen_Height = screen_height; 
-			     				fb.destination   = destination;
-			     				fb.destStride    = destStride;
-
-			     				writer->writeData(&fb);
-
-							free(newdata);
-							*/
 							teletext_write(0, out->data + 1, out->len + 1);
 						}
 						else // PGS (256 nb_colors)
@@ -452,10 +343,10 @@ static int Write(void* _context, void *data)
 
 							int h2 = height;
 									
-							int xoff = 0; //sub.rects[i]->x * 1280 / width;
-							int yoff = 0; //sub.rects[i]->y * 720 / h2;
+							int xoff = screen_x; //sub.rects[i]->x * 1280 / width;
+							int yoff = screen_y + screen_height - 40; //sub.rects[i]->y * 720 / h2;
 							int nw = width * screen_width / width;
-							int nh = height * screen_height / h2;
+							int nh = 60; //height * screen_height / h2;
 
 							// resize color to 32 bit
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
@@ -484,8 +375,6 @@ static int Write(void* _context, void *data)
 							free(newdata);
 						}
 					} 
-					
-//					dvbsub_write(&sub, out->pts);
 					break;
 				}
 				
@@ -579,9 +468,10 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 	    {
 		SubtitleOutputDef_t* out = (SubtitleOutputDef_t*)argument;
 		
+		screen_x = out->screen_x;
+		screen_y = out->screen_y;
 		screen_width = out->screen_width;
 		screen_height = out->screen_height;
-		shareFramebuffer = out->shareFramebuffer;
 		framebufferFD = out->framebufferFD;
 		destination = out->destination;
 		destStride = out->destStride;

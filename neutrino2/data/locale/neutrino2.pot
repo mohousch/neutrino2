@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-03-28 00:17+0200\n"
+"POT-Creation-Date: 2024-03-29 08:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -107,6 +107,13 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:257
 #: ../../src/gui/audio_video_select.cpp:256
 #: ../../src/gui/audio_video_select.cpp:267
+#: ../../src/gui/audio_video_select.cpp:260
+#: ../../src/gui/audio_video_select.cpp:265
+#: ../../src/gui/audio_video_select.cpp:250
+#: ../../src/gui/audio_video_select.cpp:251
+#: ../../src/gui/audio_video_select.cpp:253
+#: ../../src/gui/audio_video_select.cpp:254
+#: ../../src/gui/audio_video_select.cpp:245
 msgid "AV Select"
 msgstr ""
 
@@ -132,7 +139,8 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2240 ../../src/gui/movieplayer.cpp:2242
 #: ../../src/gui/movieplayer.cpp:2231 ../../src/gui/movieplayer.cpp:2245
 #: ../../src/gui/movieplayer.cpp:2244 ../../src/gui/movieplayer.cpp:2232
-#: ../../src/gui/movieplayer.cpp:2238
+#: ../../src/gui/movieplayer.cpp:2238 ../../src/gui/movieinfo.cpp:905
+#: ../../src/gui/movieinfo.cpp:903
 msgid "Actors"
 msgstr ""
 
@@ -169,7 +177,8 @@ msgstr ""
 msgid "Adventure / Western/War"
 msgstr ""
 
-#: ../../src/gui/movieinfo.cpp:955
+#: ../../src/gui/movieinfo.cpp:955 ../../src/gui/movieinfo.cpp:977
+#: ../../src/gui/movieinfo.cpp:975
 msgid "Age"
 msgstr ""
 
@@ -250,7 +259,8 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1934 ../../src/gui/movieplayer.cpp:1936
 #: ../../src/gui/movieplayer.cpp:1925 ../../src/gui/movieplayer.cpp:1939
 #: ../../src/gui/movieplayer.cpp:1938 ../../src/gui/movieplayer.cpp:1926
-#: ../../src/gui/movieplayer.cpp:1932
+#: ../../src/gui/movieplayer.cpp:1932 ../../src/gui/movieinfo.cpp:1002
+#: ../../src/gui/movieinfo.cpp:1000
 msgid "Audio"
 msgstr ""
 
@@ -604,6 +614,7 @@ msgstr ""
 #: ../../src/gui/eventlist.cpp:803 ../../src/gui/movieinfo.cpp:932
 #: ../../src/gui/streaminfo.cpp:710 ../../src/gui/timerlist.cpp:1192
 #: ../../src/gui/eventlist.cpp:804 ../../src/gui/streaminfo.cpp:709
+#: ../../src/gui/movieinfo.cpp:954 ../../src/gui/movieinfo.cpp:952
 msgid "Channel"
 msgstr ""
 
@@ -717,7 +728,8 @@ msgstr ""
 msgid "Correction time in min. (00=off). This time"
 msgstr ""
 
-#: ../../src/gui/movieinfo.cpp:899
+#: ../../src/gui/movieinfo.cpp:899 ../../src/gui/movieinfo.cpp:921
+#: ../../src/gui/movieinfo.cpp:919
 msgid "Country"
 msgstr ""
 
@@ -1002,6 +1014,12 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:313
 #: ../../src/gui/audio_video_select.cpp:312
 #: ../../src/gui/audio_video_select.cpp:323
+#: ../../src/gui/audio_video_select.cpp:316
+#: ../../src/gui/audio_video_select.cpp:306
+#: ../../src/gui/audio_video_select.cpp:307
+#: ../../src/gui/audio_video_select.cpp:309
+#: ../../src/gui/audio_video_select.cpp:310
+#: ../../src/gui/audio_video_select.cpp:301
 msgid "Dolby Digital"
 msgstr ""
 
@@ -1151,6 +1169,7 @@ msgstr ""
 #: ../../src/gui/infoviewer.cpp:1110 ../../src/driver/vcrcontrol.cpp:639
 #: ../../src/driver/vcrcontrol.cpp:626 ../../src/driver/vcrcontrol.cpp:638
 #: ../../src/driver/vcrcontrol.cpp:631 ../../src/driver/vcrcontrol.cpp:624
+#: ../../src/driver/vcrcontrol.cpp:618
 msgid "Error"
 msgstr ""
 
@@ -1428,7 +1447,8 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2232 ../../src/gui/movieplayer.cpp:2234
 #: ../../src/gui/movieplayer.cpp:2223 ../../src/gui/movieplayer.cpp:2237
 #: ../../src/gui/movieplayer.cpp:2236 ../../src/gui/movieplayer.cpp:2224
-#: ../../src/gui/movieplayer.cpp:2230
+#: ../../src/gui/movieplayer.cpp:2230 ../../src/gui/movieinfo.cpp:881
+#: ../../src/gui/movieinfo.cpp:879
 msgid "Genre"
 msgstr ""
 
@@ -1918,6 +1938,10 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:760 ../../src/gui/movieplayer.cpp:749
 #: ../../src/gui/movieplayer.cpp:763 ../../src/gui/movieplayer.cpp:762
 #: ../../src/gui/movieplayer.cpp:750 ../../src/gui/movieplayer.cpp:756
+#: ../../src/gui/movieinfo.cpp:1467 ../../src/gui/movieinfo.cpp:1465
+#: ../../src/gui/movieinfo.cpp:1473 ../../src/gui/movieinfo.cpp:1471
+#: ../../src/gui/movieinfo.cpp:1469 ../../src/gui/movieinfo.cpp:1470
+#: ../../src/gui/movieinfo.cpp:1472
 msgid "Jump over"
 msgstr ""
 
@@ -1990,7 +2014,8 @@ msgstr ""
 msgid "Last Channel"
 msgstr ""
 
-#: ../../src/gui/movieinfo.cpp:995
+#: ../../src/gui/movieinfo.cpp:995 ../../src/gui/movieinfo.cpp:1017
+#: ../../src/gui/movieinfo.cpp:1015
 msgid "Last play date"
 msgstr ""
 
@@ -2028,6 +2053,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2231 ../../src/gui/movieplayer.cpp:2220
 #: ../../src/gui/movieplayer.cpp:2234 ../../src/gui/movieplayer.cpp:2233
 #: ../../src/gui/movieplayer.cpp:2221 ../../src/gui/movieplayer.cpp:2227
+#: ../../src/gui/movieinfo.cpp:990 ../../src/gui/movieinfo.cpp:988
 msgid "Length (Min)"
 msgstr ""
 
@@ -2453,6 +2479,10 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:758 ../../src/gui/movieplayer.cpp:747
 #: ../../src/gui/movieplayer.cpp:761 ../../src/gui/movieplayer.cpp:760
 #: ../../src/gui/movieplayer.cpp:748 ../../src/gui/movieplayer.cpp:754
+#: ../../src/gui/movieinfo.cpp:1463 ../../src/gui/movieinfo.cpp:1461
+#: ../../src/gui/movieinfo.cpp:1469 ../../src/gui/movieinfo.cpp:1467
+#: ../../src/gui/movieinfo.cpp:1465 ../../src/gui/movieinfo.cpp:1466
+#: ../../src/gui/movieinfo.cpp:1468
 msgid "New Bookmark"
 msgstr ""
 
@@ -2615,6 +2645,7 @@ msgstr ""
 #: ../../src/driver/vcrcontrol.cpp:623 ../../src/driver/vcrcontrol.cpp:639
 #: ../../src/driver/vcrcontrol.cpp:626 ../../src/driver/vcrcontrol.cpp:638
 #: ../../src/driver/vcrcontrol.cpp:631 ../../src/driver/vcrcontrol.cpp:624
+#: ../../src/driver/vcrcontrol.cpp:618
 msgid ""
 "One or several recording processes are active.\n"
 "If you encounter this message and no recording is active, please restart Neutrino."
@@ -2633,6 +2664,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2236 ../../src/gui/movieplayer.cpp:2225
 #: ../../src/gui/movieplayer.cpp:2239 ../../src/gui/movieplayer.cpp:2238
 #: ../../src/gui/movieplayer.cpp:2226 ../../src/gui/movieplayer.cpp:2232
+#: ../../src/gui/movieinfo.cpp:888 ../../src/gui/movieinfo.cpp:886
 msgid "Original Title"
 msgstr ""
 
@@ -2693,7 +2725,8 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: ../../src/gui/movieinfo.cpp:1027
+#: ../../src/gui/movieinfo.cpp:1027 ../../src/gui/movieinfo.cpp:1049
+#: ../../src/gui/movieinfo.cpp:1047
 msgid "Path"
 msgstr ""
 
@@ -2857,7 +2890,8 @@ msgstr ""
 msgid "Proxyserver"
 msgstr ""
 
-#: ../../src/gui/movieinfo.cpp:943
+#: ../../src/gui/movieinfo.cpp:943 ../../src/gui/movieinfo.cpp:965
+#: ../../src/gui/movieinfo.cpp:963
 msgid "Quality"
 msgstr ""
 
@@ -2922,7 +2956,8 @@ msgstr ""
 msgid "Record alternative streams"
 msgstr ""
 
-#: ../../src/gui/movieinfo.cpp:1001
+#: ../../src/gui/movieinfo.cpp:1001 ../../src/gui/movieinfo.cpp:1023
+#: ../../src/gui/movieinfo.cpp:1021
 msgid "Record date"
 msgstr ""
 
@@ -3057,6 +3092,10 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:759 ../../src/gui/movieplayer.cpp:748
 #: ../../src/gui/movieplayer.cpp:762 ../../src/gui/movieplayer.cpp:761
 #: ../../src/gui/movieplayer.cpp:749 ../../src/gui/movieplayer.cpp:755
+#: ../../src/gui/movieinfo.cpp:1465 ../../src/gui/movieinfo.cpp:1463
+#: ../../src/gui/movieinfo.cpp:1471 ../../src/gui/movieinfo.cpp:1469
+#: ../../src/gui/movieinfo.cpp:1467 ../../src/gui/movieinfo.cpp:1468
+#: ../../src/gui/movieinfo.cpp:1470
 msgid "Repeat"
 msgstr ""
 
@@ -3390,7 +3429,8 @@ msgstr ""
 msgid "Separator Gradient"
 msgstr ""
 
-#: ../../src/gui/movieinfo.cpp:921
+#: ../../src/gui/movieinfo.cpp:921 ../../src/gui/movieinfo.cpp:943
+#: ../../src/gui/movieinfo.cpp:941
 msgid "Serie"
 msgstr ""
 
@@ -3519,7 +3559,8 @@ msgstr ""
 msgid "Signal small"
 msgstr ""
 
-#: ../../src/gui/movieinfo.cpp:1014
+#: ../../src/gui/movieinfo.cpp:1014 ../../src/gui/movieinfo.cpp:1036
+#: ../../src/gui/movieinfo.cpp:1034
 msgid "Size"
 msgstr ""
 
@@ -3698,6 +3739,12 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:365
 #: ../../src/gui/audio_video_select.cpp:364
 #: ../../src/gui/audio_video_select.cpp:375
+#: ../../src/gui/audio_video_select.cpp:368 ../../src/gui/audio_select.cpp:220
+#: ../../src/gui/audio_video_select.cpp:358
+#: ../../src/gui/audio_video_select.cpp:359
+#: ../../src/gui/audio_video_select.cpp:361
+#: ../../src/gui/audio_video_select.cpp:362
+#: ../../src/gui/audio_video_select.cpp:353
 msgid "Stop subtitles"
 msgstr ""
 
@@ -3743,6 +3790,7 @@ msgstr ""
 
 #: ../../src/gui/audio_select.cpp:183 ../../src/gui/audio_select.cpp:202
 #: ../../src/gui/audio_select.cpp:181 ../../src/gui/audio_select.cpp:200
+#: ../../src/gui/audio_select.cpp:203
 msgid "Subtitles"
 msgstr ""
 
@@ -3862,6 +3910,12 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:320
 #: ../../src/gui/audio_video_select.cpp:319
 #: ../../src/gui/audio_video_select.cpp:330
+#: ../../src/gui/audio_video_select.cpp:323
+#: ../../src/gui/audio_video_select.cpp:313
+#: ../../src/gui/audio_video_select.cpp:314
+#: ../../src/gui/audio_video_select.cpp:316
+#: ../../src/gui/audio_video_select.cpp:317
+#: ../../src/gui/audio_video_select.cpp:308
 msgid "TV-System"
 msgstr ""
 
@@ -3987,6 +4041,7 @@ msgstr ""
 #: ../../src/driver/vcrcontrol.cpp:623 ../../src/driver/vcrcontrol.cpp:639
 #: ../../src/driver/vcrcontrol.cpp:626 ../../src/driver/vcrcontrol.cpp:638
 #: ../../src/driver/vcrcontrol.cpp:631 ../../src/driver/vcrcontrol.cpp:624
+#: ../../src/driver/vcrcontrol.cpp:618
 msgid ""
 "The recording directory is not writable.\n"
 "Recording will not work."
@@ -3995,6 +4050,7 @@ msgstr ""
 #: ../../src/driver/vcrcontrol.cpp:623 ../../src/driver/vcrcontrol.cpp:639
 #: ../../src/driver/vcrcontrol.cpp:626 ../../src/driver/vcrcontrol.cpp:638
 #: ../../src/driver/vcrcontrol.cpp:631 ../../src/driver/vcrcontrol.cpp:624
+#: ../../src/driver/vcrcontrol.cpp:618
 msgid ""
 "The recording was aborted,\n"
 "because the target file could not be opened."
@@ -4245,6 +4301,12 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:323
 #: ../../src/gui/audio_video_select.cpp:322
 #: ../../src/gui/audio_video_select.cpp:333
+#: ../../src/gui/audio_video_select.cpp:326
+#: ../../src/gui/audio_video_select.cpp:316
+#: ../../src/gui/audio_video_select.cpp:317
+#: ../../src/gui/audio_video_select.cpp:319
+#: ../../src/gui/audio_video_select.cpp:320
+#: ../../src/gui/audio_video_select.cpp:311
 msgid "Video Format"
 msgstr ""
 
@@ -4272,6 +4334,7 @@ msgid "Volume Step Size"
 msgstr ""
 
 #: ../../src/gui/audio_select.cpp:235 ../../src/gui/audio_select.cpp:233
+#: ../../src/gui/audio_select.cpp:238
 msgid "Volume adjustment (in %)"
 msgstr ""
 
@@ -4352,7 +4415,8 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2236 ../../src/gui/movieplayer.cpp:2238
 #: ../../src/gui/movieplayer.cpp:2227 ../../src/gui/movieplayer.cpp:2241
 #: ../../src/gui/movieplayer.cpp:2240 ../../src/gui/movieplayer.cpp:2228
-#: ../../src/gui/movieplayer.cpp:2234
+#: ../../src/gui/movieplayer.cpp:2234 ../../src/gui/movieinfo.cpp:931
+#: ../../src/gui/movieinfo.cpp:929
 msgid "Year of production"
 msgstr ""
 

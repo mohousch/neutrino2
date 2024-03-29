@@ -44,7 +44,7 @@ class CMoviePlayer : public CMenuTarget
 
 		//
 		CMovieInfo m_movieInfo;
-		std::vector<MI_MOVIE_INFO> m_vMovieInfo;
+		CMoviePlayList m_vMovieInfo;
 		CFileFilter fileFilter;
 		CFileList filelist;
 		std::string Path;

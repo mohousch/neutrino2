@@ -507,14 +507,14 @@ void CMoviePlayerGui::playNext()
 
 			for (int i = 0; i < (int)playlist[selected].audioPids.size(); i++) 
 			{
-						if (playlist[selected].audioPids[i].selected) 
-						{
-							g_currentapid = i;							
-							g_currentac3 = playlist[selected].audioPids[i].atype;
+				if (playlist[selected].audioPids[i].selected) 
+				{
+					g_currentapid = i;							
+					g_currentac3 = playlist[selected].audioPids[i].atype;
 
-							//
-							currentapid = 0;
-						}
+					//
+					currentapid = 0;
+				}
 			}
 
 			//
@@ -559,11 +559,11 @@ void CMoviePlayerGui::playPrev()
 		{
 			if(!playlist[selected].audioPids.empty()) 
 			{
-						g_currentapid = playlist[selected].audioPids[0].epgAudioPid;
-						g_currentac3 = playlist[selected].audioPids[0].atype;
+				g_currentapid = playlist[selected].audioPids[0].epgAudioPid;
+				g_currentac3 = playlist[selected].audioPids[0].atype;
 
-							//
-							currentapid = g_currentapid;
+				//
+				currentapid = g_currentapid;
 			}
 
 			for (int i = 0; i < (int)playlist[selected].audioPids.size(); i++) 

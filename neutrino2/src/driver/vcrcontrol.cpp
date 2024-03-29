@@ -421,12 +421,6 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	// getRecordChannelInfo
 	CZapit::CServiceInfo si;
 	si = CZapit::getInstance()->getServiceInfo(channel_id);
-
-	// vpid
-	if (si.vpid != 0)
-	{
-		::addPid(si.vpid, si.vtype ? EN_TYPE_AVC : EN_TYPE_VIDEO, 0);
-	}
 		
 	// apids
         APIDList apid_list;
@@ -850,7 +844,18 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 
 		g_movieInfo->audioPids.push_back(audio_pids);
 	}
-	g_movieInfo->epgVTXPID = si.vtxtpid;
+	
+	// vtxt
+	EPG_VTXT_PIDS vtxt_pids;
+	
+	for(unsigned int i = 0; i < pids.SubPIDs.size(); i++) 
+	{
+		vtxt_pids.pid = pids.SubPIDs[i].pid;
+		vtxt_pids.page = pids.SubPIDs[i].composition_page /*| pids.SubPIDs[i].ancillary_page*/;
+		vtxt_pids.language = pids.SubPIDs[i].desc;
+
+		g_movieInfo->vtxtPids.push_back(vtxt_pids);
+	}
 	
 	// cover
 	CTmdb * tmdb = new CTmdb();
@@ -989,7 +994,7 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 	}
 	
 	//
-	::genpsi(fd);
+//	::genpsi(fd);
 	
 	// init record
 	if(!record)

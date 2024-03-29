@@ -42,6 +42,7 @@
 #include <gui/audio_video_select.h>
 #include <gui/video_setup.h>
 #include <gui/audio_setup.h>
+#include <gui/movieplayer.h>
 
 
 //// globals
@@ -173,13 +174,11 @@ int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
 		if(playback)
 			playback->SetSubPid(currentspid);
 			
-		//
+		// FIXME: get page / language from player
 		tuxtx_stop_subtitle();
-		tuxtx_main(0, 0, true);
+		int page = 0;
 		
-		// dvb
-//		dvbsub_pause();
-//		dvbsub_start(currentspid, true);
+		tuxtx_main(0, page, true);
 		
 		dprintf(DEBUG_NORMAL, "CAVSubPIDSelect::exec: spid changed to %d\n", currentspid);
 	}
@@ -192,29 +191,8 @@ int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
 			playback->SetSubPid(-1);
 			
 		//
-//		dvbsub_stop();
-			
-		//
 		tuxtx_stop_subtitle();
 	}
-/*
-	else if(!strncmp(actionKey.c_str(), "S_GRAPHIC/TELETEXT", 18))
-	{
-		if (currentspid != spids[sel]) 
-		{
-			currentspid = spids[sel];
-			
-			if(playback)
-				playback->SetSubPid(currentspid);
-				
-			//
-			tuxtx_stop_subtitle();
-			tuxtx_main(0, 0, true);
-			
-			dprintf(DEBUG_NORMAL, "CAVSubPIDSelect::exec: spid changed to %d\n", currentspid);
-		}
-	}
-*/
 	
 	return CMenuTarget::RETURN_EXIT;
 }

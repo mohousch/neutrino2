@@ -71,7 +71,10 @@
 #define MI_XML_TAG_NAME			"name"
 #define MI_XML_TAG_ATYPE	        "audiotype"
 #define MI_XML_TAG_SELECTED	        "selected"
-#define MI_XML_TAG_VTXTPID	        "vtxtpid"
+#define MI_XML_TAG_VTXTPIDS	        "vtxtpids"
+#define MI_XML_TAG_VTXT		        "vtxt"
+#define MI_XML_TAG_PAGE		        "page"
+#define MI_XML_TAG_LANGUAGE	        "language"
 #define MI_XML_TAG_GENRE_MAJOR 		"genremajor"
 #define MI_XML_TAG_GENRE_MINOR 		"genreminor"
 #define MI_XML_TAG_SERIE_NAME 		"seriename"
@@ -130,6 +133,13 @@ typedef struct
 
 typedef struct
 {
+	int pid;
+	int page;
+	std::string language;
+}EPG_VTXT_PIDS;
+
+typedef struct
+{
 	CFile file;				// not stored in xml
 	std::string productionCountry;		// user defined Country (not from EPG yet, but might be possible)
 	std::string epgTitle;			// plain movie name, usually filled by EPG
@@ -156,7 +166,8 @@ typedef struct
 	int  epgMode;				// currently not used, we just do not want to loose this info if movie info is saved backed
 	int  epgVideoPid; 			// currently not used, we just do not want to loose this info if movie info is saved backed
 	int  VideoType;
-	int epgVTXPID;				// currently not used, we just do not want to loose this info if movie info is saved backed 
+//	int epgVTXPID;				// currently not used, we just do not want to loose this info if movie info is saved backed
+	std::vector<EPG_VTXT_PIDS> vtxtPids;
 
 	//
 	std::string original_title;

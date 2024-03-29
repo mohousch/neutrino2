@@ -875,7 +875,7 @@ unsigned char *aShapes[] =
 	aG3_70, aG3_71, aG3_72, aG3_73, aG3_74, aG3_75, aG3_76, aG3_77, aG3_78, aG3_79, aG3_7a, aG3_7b, aG3_7c, aG3_7d, aG3_7e
 };
 
-/* functions */
+//// functions
 void ConfigMenu(int Init);
 void CleanUp();
 void PageInput(int Number);

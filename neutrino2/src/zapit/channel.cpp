@@ -261,7 +261,7 @@ void CZapitChannel::addTTXSubtitle(const unsigned int pid, const std::string lan
 	CZapitTTXSub* tmpSub = 0;
 	unsigned char mag_nr = magazine_number ? magazine_number : 8;
 
-	dprintf(DEBUG_NORMAL, "CZapitChannel::addTTXSubtitle: TTXSub: PID=0x%04x, lang=%3.3s, page=%1X%02X\n", pid, langCode.c_str(), mag_nr, page_number);
+	dprintf(DEBUG_NORMAL, "CZapitChannel::addTTXSubtitle: TTXSub: PID=0x%04x, lang=%3.3s, page=0x%1X%02X\n", pid, langCode.c_str(), mag_nr, page_number);
 	
 	std::vector<CZapitAbsSub*>::iterator subI;
 	for (subI = channelSubs.begin(); subI != channelSubs.end(); subI++)

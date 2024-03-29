@@ -80,15 +80,15 @@ typedef struct
 
 typedef struct
 {
-	uint32_t* 	destination;
+	unsigned int 	screen_x;
+	unsigned int 	screen_y;
 	unsigned int   	screen_width;
 	unsigned int   	screen_height;
-	unsigned int   	destStride;
 	
-	int            	shareFramebuffer;
+	unsigned int   	destStride;
+	uint32_t* 	destination;
 	int            	framebufferFD;
 } SubtitleOutputDef_t;
-////
 
 typedef struct Output_s 
 {

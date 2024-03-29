@@ -325,17 +325,20 @@ void dump_page()
 	if (!tuxtxt_cache.astCachetable[tuxtxt_cache.page][tuxtxt_cache.subpage])
 		return;
 		
-	tuxtxt_decompress_page(tuxtxt_cache.page,tuxtxt_cache.subpage,pagedata);
+	tuxtxt_decompress_page(tuxtxt_cache.page, tuxtxt_cache.subpage, pagedata);
 	
 	for (r = 1; r < 24; r++)
 	{
-		p = (char *) pagedata+40*(r-1);
-		for (c=0; c < 40; c++)
-			printf(" %02x", *p++);
-		printf("\n");
+//		p = (char *) pagedata + 40*(r - 1);
+		
+//		for (c = 0; c < 40; c++)
+//			printf(" %02x", *p++);
+//			
+//		printf("\n");
+		
 		p = (char *) page_char + 40*r;
-		for (c=0; c < 40; c++)
-			printf("  %c", *p++);
+		for (c = 0; c < 40 && c != '�'; c++)
+			printf(" %c", *p++);
 		printf("\n");
 	}
 }
@@ -1146,6 +1149,9 @@ static void * reader_thread(void * /*arg*/)
 			usleep(10);
 		else
 			RenderPage();
+			
+		////TEST
+//		dump_page();
 
 		if(ttx_req_pause) 
 		{
@@ -1169,7 +1175,7 @@ void tuxtx_pause_subtitle(bool pause, bool isEplayer)
 {
 	if(!pause) 
 	{
-		dprintf(DEBUG_NORMAL, "TuxTxt subtitle unpause, running 0x%x pid 0x%x page %d\n", reader_running, sub_pid, sub_page);
+		dprintf(DEBUG_NORMAL, "TuxTxt subtitle unpause, running %d pid 0x%x page %d\n", reader_running, sub_pid, sub_page);
 		
 		ttx_paused = 0;
 		
@@ -1239,7 +1245,7 @@ int tuxtx_subtitle_running(int *pid, int *page, int *running)
 //// main loop
 int tuxtx_main(int pid, int page, bool isEplayer)
 {
-	dprintf(DEBUG_NORMAL, "tuxtx_main: TuxTXT 32bpp framebuffer\n");
+	dprintf(DEBUG_NORMAL, "tuxtx_main: TuxTXT 32bpp framebuffer pid:0x%x page:0x%x isEplayer:%s\n", pid, page, isEplayer? "true" : "false");
 	
 	use_gui = 1;
 	boxed = 0;
@@ -1258,7 +1264,7 @@ int tuxtx_main(int pid, int page, bool isEplayer)
 	if ( initialized )
 		tuxtxt_cache.page = 0x100;
 	
-	// page
+	// set subtitle pid / page and flag to start sub thread.
 	if(page || isEplayer) 
 	{
 		sub_page = tuxtxt_cache.page = page;
@@ -1296,7 +1302,7 @@ int tuxtx_main(int pid, int page, bool isEplayer)
 	tuxtxt_cache.vtxtpid = pid;
 
 	// init
-	if (Init(isEplayer) == 0) // this start getteletextpid and decode cache thread
+	if (Init(isEplayer) == 0) // init all params and start getteletextpid if no pid given and decode cache thread
 		return 0;
 	
 	// create subthread
@@ -1470,7 +1476,6 @@ FT_Error MyFaceRequester(FTC_FaceID face_id, FT_Library _library, FT_Pointer /*r
 }
 
 //// Init
-extern void decodePacket(bool eplayer);
 int Init(bool isEplayer)
 {
 	printf("Init: isEplayer:%s\n", isEplayer? "true" : "false");
@@ -1484,8 +1489,8 @@ int Init(bool isEplayer)
 
 	for (magazine = 1; magazine < 9; magazine++)
 	{
-		tuxtxt_cache.current_page  [magazine] = -1;
-		tuxtxt_cache.current_subpage [magazine] = -1;
+		tuxtxt_cache.current_page[magazine] = -1;
+		tuxtxt_cache.current_subpage[magazine] = -1;
 	}
 	
 	//
@@ -1494,10 +1499,10 @@ int Init(bool isEplayer)
 	prev_10    = 0x100;
 	next_100   = 0x100;
 	next_10    = 0x100;
-	tuxtxt_cache.subpage    = tuxtxt_cache.subpagetable[tuxtxt_cache.page];
+	tuxtxt_cache.subpage = tuxtxt_cache.subpagetable[tuxtxt_cache.page];
 	
 	if (tuxtxt_cache.subpage == 0xff)
-		tuxtxt_cache.subpage    = 0;
+		tuxtxt_cache.subpage = 0;
 	
 	tuxtxt_cache.pageupdate = 0;
 
@@ -1701,44 +1706,56 @@ int Init(bool isEplayer)
 		page_atrb[i].IgnoreAtBlackBgSubst = 0;
 	}
 	
-	//  if no vtxtpid for current service, search PIDs
-	if (tuxtxt_cache.vtxtpid == 0)
-	{
-		// get all vtxt-pids
-		getpidsdone = -1;	 // don't kill thread
-
-		if (GetTeletextPIDs(isEplayer) == 0)
-		{
-			return 0;
-		}
-
-		if (auto_national)
-			national_subset = pid_table[0].national_subset;
-			
-// 		FIXME: brocken configMenu
-//		if (pids_found > 1)
-//			ConfigMenu(1);
-//		else
-		{
-			tuxtxt_cache.vtxtpid = pid_table[0].vtxt_pid;
-			current_service = 0;
-			RenderMessage(ShowServiceName);
-		}
-	}
-	else
+	if (isEplayer)
 	{
 		SDT_ready = 0;
-		
-		//getpidsdone = 0;
-		//tuxtxt_cache.pageupdate = 1; // force display of message page not found (but not twice)
 
 		if(auto_national && cfg_national_subset)
 			national_subset = cfg_national_subset;
 		
 		dprintf(DEBUG_NORMAL, "Tuxtxt: national_subset %d (cfg %d)\n", national_subset, cfg_national_subset);
 	}
+	else
+	{
+		//  if no vtxtpid for current service, search PIDs
+		if (tuxtxt_cache.vtxtpid == 0)
+		{
+			// get all vtxt-pids
+			getpidsdone = -1;	 // don't kill thread
 
-	// start decode cache Thread
+			if (GetTeletextPIDs(isEplayer) == 0)
+			{
+				return 0;
+			}
+
+			if (auto_national)
+				national_subset = pid_table[0].national_subset;
+				
+	// 		FIXME: brocken configMenu
+	//		if (pids_found > 1)
+	//			ConfigMenu(1);
+	//		else
+			{
+				tuxtxt_cache.vtxtpid = pid_table[0].vtxt_pid;
+				current_service = 0;
+				RenderMessage(ShowServiceName);
+			}
+		}
+		else
+		{
+			SDT_ready = 0;
+			
+			//getpidsdone = 0;
+			//tuxtxt_cache.pageupdate = 1; // force display of message page not found (but not twice)
+
+			if(auto_national && cfg_national_subset)
+				national_subset = cfg_national_subset;
+			
+			dprintf(DEBUG_NORMAL, "Tuxtxt: national_subset %d (cfg %d)\n", national_subset, cfg_national_subset);
+		}
+	}
+
+	// start decode Thread
 	tuxtxt_start(tuxtxt_cache.vtxtpid);
 
 	gethotlist();
@@ -2966,9 +2983,11 @@ void GetNextPageOne(int up)
 //// GetNextSubPage
 void GetNextSubPage(int offset)
 {
+	printf("GetNextSubPage: offset:%d\n", offset);
+	
 	int loop;
 
-	/* abort pageinput */
+	// abort pageinput
 	inputcounter = 2;
 
 	for (loop = tuxtxt_cache.subpage + offset; loop != tuxtxt_cache.subpage; loop += offset)
@@ -2977,21 +2996,24 @@ void GetNextSubPage(int offset)
 			loop = 0x79;
 		else if (loop > 0x79)
 			loop = 0;
+			
 		if (loop == tuxtxt_cache.subpage)
 			break;
 
 		if (tuxtxt_cache.astCachetable[tuxtxt_cache.page][loop])
 		{
-			/* enable manual subpage zapping */
+			// enable manual subpage zapping
 			tuxtxt_cache.zap_subpage_manual = 1;
 
-			/* update page */
-			if (zoommode == 2) /* if zoomed to lower half */
-				zoommode = 1; /* activate upper half */
+			// update page 
+			if (zoommode == 2) 	// if zoomed to lower half
+				zoommode = 1; 	// activate upper half
 
 			tuxtxt_cache.subpage = loop;
 			hintmode = 0;
 			tuxtxt_cache.pageupdate = 1;
+			
+			printf("GetNextSubPage: page:%d\n", loop);
 
 			return;
 		}
@@ -4300,14 +4322,16 @@ void RenderMessage(int Message)
 void DoFlashing(int startrow)
 {
 	int row, col;
-	/* get national subset */
+	
+	// get national subset
 	if (auto_national &&
 		 national_subset <= NAT_MAX_FROM_HEADER && /* not for GR/RU as long as line28 is not evaluated */
 		 pageinfo && pageinfo->nationalvalid) /* individual subset according to page header */
 	{
 		national_subset = countryconversiontable[pageinfo->national];
 	}
-	/* Flashing */
+	
+	// Flashing
 	tstPageAttr flashattr;
 	char flashchar;
 	struct timeval tv;
@@ -4315,7 +4339,8 @@ void DoFlashing(int startrow)
 	long flashphase = (tv.tv_usec / 1000) % 1000;
 	int srow = startrow;
 	int erow = 24;
-	int factor=1;
+	int factor = 1;
+	
 	switch (zoommode)
 	{
 		case 1: erow = 12; factor=2;break;
@@ -4337,6 +4362,7 @@ void DoFlashing(int startrow)
 				flashchar = page_char[index + col];
 				int doflash = 0;
 				memcpy(&flashattr,&page_atrb[index + col],sizeof(tstPageAttr));
+				
 				switch (flashattr.flashing &0x1c) // Flash Rate
 				{
 					case 0x00 :	// 1 Hz
@@ -4413,6 +4439,7 @@ void RenderPage()
 	
 	int row, col, byte, startrow = 0;;
 	int national_subset_bak = national_subset;
+
 
 	if (transpmode != 2 && delaystarted)
 	{
@@ -4832,7 +4859,7 @@ void CopyBB2FB()
 	if (!pagecatching && use_gui)
 		CreateLine25();
 	
-	/* copy backbuffer to framebuffer */
+	// copy backbuffer to framebuffer
 	if (!zoommode)
 	{
 		if (clearbbcolor >= 0)
@@ -4866,7 +4893,7 @@ void DecodePage()
 	if (!pCachedPage)	/* not cached: do nothing */
 		return;
 
-	tuxtxt_decompress_page(tuxtxt_cache.page,tuxtxt_cache.subpage,&page_char[40]);
+	tuxtxt_decompress_page(tuxtxt_cache.page,tuxtxt_cache.subpage, &page_char[40]);
 
 	memcpy(&page_char[8], pCachedPage->p0, 24); /* header line without timestring */
 

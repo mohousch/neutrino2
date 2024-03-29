@@ -31,15 +31,17 @@
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>
 
+#include <gui/movieinfo.h>
+
 
 extern unsigned int ac3state;
 extern unsigned int currentapid;
 extern int currentspid;
 
 class CAVPIDSelectWidget : public CMenuTarget
-{
+{	
 	public:
-		int showAudioDialog(void);
+		int showAudioDialog();
 		int exec(CMenuTarget * parent, const std::string & actionKey);
 };
 
@@ -51,7 +53,7 @@ class CAVPIDChangeExec : public CMenuTarget
 
 //
 class CAVSubPIDChangeExec : public CMenuTarget
-{
+{	
 	public:
 		int exec(CMenuTarget* parent, const std::string & actionKey);
 };

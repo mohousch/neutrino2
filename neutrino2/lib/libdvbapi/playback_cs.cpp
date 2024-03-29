@@ -523,12 +523,14 @@ bool cPlayback::Open()
 	// subtitle
 	SubtitleOutputDef_t out;
 
+	out.screen_x = CFrameBuffer::getInstance()->getScreenX();
+	out.screen_y = CFrameBuffer::getInstance()->getScreenY();
 	out.screen_width = CFrameBuffer::getInstance()->getScreenWidth();
 	out.screen_height = CFrameBuffer::getInstance()->getScreenHeight();
+	
 	out.framebufferFD = CFrameBuffer::getInstance()->getFileHandle();
 	out.destination   = CFrameBuffer::getInstance()->getFrameBufferPointer();
 	out.destStride    = CFrameBuffer::getInstance()->getStride();
-	out.shareFramebuffer = 1;
     
 	player->output->subtitle->Command(player, (OutputCmd_t)OUTPUT_SET_SUBTITLE_OUTPUT, (void*) &out);
 #endif

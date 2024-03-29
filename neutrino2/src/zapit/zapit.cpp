@@ -1958,6 +1958,7 @@ void CZapit::sendSubPIDs(t_channel_id chid, SubPIDList &subpids)
 		for (int i = 0 ; i < (int)channel->getSubtitleCount() ; ++i) 
 		{
 			responseGetSubPIDs response;
+			
 			CZapitAbsSub* s = channel->getChannelSub(i);
 			CZapitDVBSub* sd = reinterpret_cast<CZapitDVBSub*>(s);
 			CZapitTTXSub* st = reinterpret_cast<CZapitTTXSub*>(s);
@@ -1969,6 +1970,7 @@ void CZapit::sendSubPIDs(t_channel_id chid, SubPIDList &subpids)
 			{
 				response.composition_page = sd->composition_page_id;
 				response.ancillary_page = sd->ancillary_page_id;
+				
 				if (sd->subtitling_type >= 0x20) 
 				{
 					response.hearingImpaired = true;

@@ -396,8 +396,8 @@ void tuxtxt_clear_cache()
  	
 	for (magazine = 1; magazine < 9; magazine++)
 	{
-		tuxtxt_cache.current_page  [magazine] = -1;
-		tuxtxt_cache.current_subpage [magazine] = -1;
+		tuxtxt_cache.current_page [magazine] = -1;
+		tuxtxt_cache.current_subpage[magazine] = -1;
 	}
 
 	for (clear_page = 0; clear_page < 0x900; clear_page++)
@@ -440,8 +440,8 @@ void tuxtxt_clear_cache()
 		    free(tuxtxt_cache.astP29[clear_page]);
 		    tuxtxt_cache.astP29[clear_page] = 0;
 		}
-		tuxtxt_cache.current_page  [clear_page] = -1;
-		tuxtxt_cache.current_subpage [clear_page] = -1;
+		tuxtxt_cache.current_page [clear_page] = -1;
+		tuxtxt_cache.current_subpage[clear_page] = -1;
 	}
 	
 	memset(&tuxtxt_cache.astCachetable, 0, sizeof(tuxtxt_cache.astCachetable));
@@ -596,7 +596,7 @@ static void clear_inject_queue(void)
 
 extern "C" void tuxtx_pause_subtitle(bool pause, bool isEplayer);
 extern "C" void tuxtx_stop_subtitle();
-extern "C" void teletext_write(int pid, uint8_t *data, int size)
+extern "C" void teletext_write(int pid, uint8_t* data, int size)
 {	
 	if (last_injected_pid != pid)
 	{
@@ -751,8 +751,7 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 		pthread_mutex_lock(&tuxtxt_cache_biglock);
 		
 		for (line = 0; line < readcnt/0x2e; line++)
-		{
-//			unsigned char *vtx_rowbyte = &pes_packet_ptr[line*0x2e];			
+		{			
 			unsigned char *vtx_rowbyte = pes_packet_ptr;
 			pes_packet_ptr += 0x2e;		
 			
@@ -787,7 +786,7 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 				if (!magazine) 
 					magazine = 8;
 
-				// compress
+				// compress sub / page
 				if (packet_number == 0 && tuxtxt_cache.current_page[magazine] != -1 && tuxtxt_cache.current_subpage[magazine] != -1)				    							tuxtxt_compress_page(tuxtxt_cache.current_page[magazine], tuxtxt_cache.current_subpage[magazine],pagedata[magazine]);
 
 				// analyze row
@@ -835,11 +834,14 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 					else
 						tuxtxt_cache.current_subpage[magazine] = b4; /* max 16 subpages for hex pages */
 
+
 					// store current subpage for this page
 					tuxtxt_cache.subpagetable[tuxtxt_cache.current_page[magazine]] = tuxtxt_cache.current_subpage[magazine];
 
+					// allocate cache
 					tuxtxt_allocate_cache(magazine);
-					tuxtxt_decompress_page(tuxtxt_cache.current_page[magazine],tuxtxt_cache.current_subpage[magazine],pagedata[magazine]);
+				
+					// decompress sub / page	tuxtxt_decompress_page(tuxtxt_cache.current_page[magazine],tuxtxt_cache.current_subpage[magazine],pagedata[magazine]);
 					pageinfo_thread = &(tuxtxt_cache.astCachetable[tuxtxt_cache.current_page[magazine]][tuxtxt_cache.current_subpage[magazine]]->pageinfo);
 
 					if ((tuxtxt_cache.page_receiving & 0xff) == 0xfe) /* ?fe: magazine organization table (MOT) */
@@ -1118,7 +1120,7 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 				if (tuxtxt_cache.current_page[magazine] == tuxtxt_cache.page && tuxtxt_cache.current_subpage[magazine] != -1)
 				{
     tuxtxt_compress_page(tuxtxt_cache.current_page[magazine],tuxtxt_cache.current_subpage[magazine],pagedata[magazine]);
-					tuxtxt_cache.pageupdate = 1+(doupdate == tuxtxt_cache.page ? 1: 0);
+					tuxtxt_cache.pageupdate = 1 + (doupdate == tuxtxt_cache.page ? 1: 0);
 					doupdate = 0;
 					
 					if (!tuxtxt_cache.zap_subpage_manual)

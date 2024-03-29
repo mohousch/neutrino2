@@ -2006,3 +2006,29 @@ uint64_t cTimeMs::Elapsed(void)
   	return Now() - begin;
 }
 
+//// wrappers function for C
+void blit2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp, uint32_t yp, bool transp)
+{
+	CFrameBuffer::getInstance()->blit2FB(fbbuff, width, height, xoff, yoff, xp, yp, transp);
+}
+
+void clearFrameBuffer(void)
+{
+	CFrameBuffer::getInstance()->clearFrameBuffer();
+}
+
+void writeText(uint8_t* text, int x, int y, int w, int h)
+{
+	CCLabel textLabel;
+	textLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
+	textLabel.setColor(COL_WHITE_PLUS_0);
+	textLabel.paintMainFrame(false);
+	textLabel.setText((const char*)text);
+	textLabel.setHAlign(CComponent::CC_ALIGN_CENTER);
+	textLabel.setPosition(x, y, w, h);
+	
+	textLabel.paint();
+}
+
+
+

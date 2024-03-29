@@ -47,10 +47,13 @@
 #include "writer.h"
 
 #include <config.h>
+
+/*
 #include <src/driver/gfx/framebuffer.h>
 #include <src/driver/gfx/fontrenderer.h>
 #include <src/gui/widget/widget_helpers.h>
 #include <src/gui/widget/textbox.h>
+*/
 
 /* ***************************** */
 /* Makros/Constants              */
@@ -89,58 +92,11 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 /* ***************************** */
 /* MISC Functions                */
 /* ***************************** */
+extern void blit2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp, uint32_t yp, bool transp);
 
 /* ***************************** */
 /* Writer Functions              */
 /* ***************************** */
-// stmfb
-#ifdef __sh__
-#include <linux/stmfb.h>
-#endif
-
-#ifndef FBIO_BLIT
-#define FBIO_SET_MANUAL_BLIT _IOW('F', 0x21, __u8)
-#define FBIO_BLIT 0x22
-#endif
-
-extern "C" void clearBuffer(void);
-extern "C" int writeText(void* _call);
-
-void clearBuffer(void)
-{
-	CFrameBuffer::getInstance()->clearFrameBuffer();
-}
-
-int writeText(void* _call)
-{
-	WriterFBCallData_t * call = (WriterFBCallData_t*) _call;
-	
-	fb_printf(100, "\n");
-
-	if (call == NULL)
-	{
-		fb_err("call data is NULL...\n");
-		return 0;
-	}
-	
-	CCLabel textLabel;
-	textLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
-	textLabel.setColor(COL_WHITE_PLUS_0);
-	textLabel.paintMainFrame(false);
-	textLabel.setText((const char *)call->data);
-	textLabel.setHAlign(CComponent::CC_ALIGN_CENTER);
-	textLabel.setPosition(call->x, call->y, call->Width, call->Height);
-	
-	if (call->data != NULL)
-	{
-		textLabel.paint();
-		CFrameBuffer::getInstance()->blit();
-	}
-    
-	fb_printf(100, "<\n");
-	
-	return 0;
-}
 
 //
 static int reset()
@@ -168,27 +124,9 @@ static int writeData(void* _call)
 	
 	if (call->data != NULL)
 	{
-		CFrameBuffer::getInstance()->blit2FB(call->data, call->Width, call->Height, call->x, call->y, 0, 0, false);
-		CFrameBuffer::getInstance()->blit();
+		blit2FB(call->data, call->Width, call->Height, call->x, call->y, 0, 0, false);
 	}
     	
-	fb_printf(100, "<\n");
-	
-	return 0;
-}
-
-static int writeReverseData(void* _call)
-{
-	WriterFBCallData_t * call = (WriterFBCallData_t*) _call;
-	
-	fb_printf(100, "\n");
-
-	if (call == NULL)
-	{
-		fb_err("call data is NULL...\n");
-		return 0;
-	}
-    
 	fb_printf(100, "<\n");
 	
 	return 0;
@@ -208,7 +146,7 @@ static WriterCaps_t caps = {
 struct Writer_s WriterFramebuffer = {
 	&reset,
 	&writeData,
-	writeReverseData,
+	NULL,
 	&caps,
 };
 
