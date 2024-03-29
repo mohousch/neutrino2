@@ -337,6 +337,9 @@ bool CVCRControl::Stop()
 	// cleanup
 	if (g_movieInfo->audioPids.size())
 		g_movieInfo->audioPids.clear();
+		
+	if (g_movieInfo->vtxtPids.size())
+		g_movieInfo->vtxtPids.clear();
 	
 	if (g_movieInfo)
 	{
@@ -754,6 +757,8 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 		g_movieInfo = new MI_MOVIE_INFO();
 
 	g_cMovieInfo->clearMovieInfo(g_movieInfo);
+	
+	CZapitChannel * channel = CZapit::getInstance()->findChannelByChannelID(channel_id);
 
 	CZapit::getInstance()->getPIDS(channel_id, pids);
 
@@ -860,13 +865,19 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 	// vtxt
 	EPG_VTXT_PIDS vtxt_pids;
 	
-	for(unsigned int i = 0; i < pids.SubPIDs.size(); i++) 
+	for (int i = 0 ; i < (int)channel->getSubtitleCount() ; ++i) 
 	{
-		vtxt_pids.pid = pids.SubPIDs[i].pid;
-		vtxt_pids.page = pids.SubPIDs[i].composition_page /*| pids.SubPIDs[i].ancillary_page*/;
-		vtxt_pids.language = pids.SubPIDs[i].desc;
+		CZapitAbsSub* s = channel->getChannelSub(i);
+		CZapitTTXSub* st = reinterpret_cast<CZapitTTXSub*>(s);	
+			
+		if (s->thisSubType == CZapitAbsSub::TTX) 
+		{
+			vtxt_pids.language = st->ISO639_language_code.c_str();
+			vtxt_pids.pid = st->pId;
+			vtxt_pids.page = (st->teletext_magazine_number * 100) + ((st->teletext_page_number >> 4) * 10) + (st->teletext_page_number & 0xf);
 
-		g_movieInfo->vtxtPids.push_back(vtxt_pids);
+			g_movieInfo->vtxtPids.push_back(vtxt_pids);
+		}
 	}
 	
 	// cover
