@@ -1355,6 +1355,7 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 				//
 				if (gst_tag_list_get_string(tags, GST_TAG_TITLE, &g_lang_title))
 				{
+					language[i] += std::string(g_lang_title).c_str();
 					g_free(g_lang_title);
 				}
 				
