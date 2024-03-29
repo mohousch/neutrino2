@@ -211,7 +211,7 @@ int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
 			playback->SetSubPid(currentspid);
 		
 		tuxtx_stop_subtitle();
-		int page = 0; // FIXME: get page / language from player
+		int page = 0x149; // FIXME: get page / language from player
 		
 		tuxtx_main(0, page, true);
 		

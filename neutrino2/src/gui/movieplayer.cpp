@@ -102,6 +102,8 @@
 #define BUTTON_BAR_HEIGHT	25
 #define TIMESCALE_BAR_HEIGHT	4
 
+extern void tuxtx_pause_subtitle(bool pause, bool isEplayer);
+
 void getPlayerPts(int64_t* pts)
 {
 	if (playback)
@@ -330,6 +332,8 @@ void CMoviePlayerGui::startSubtitles(bool show)
 {
 	if(playback)
 		playback->SetSubPid(currentspid);
+		
+	tuxtx_pause_subtitle(false, true);
 
 }
 
@@ -337,6 +341,8 @@ void CMoviePlayerGui::stopSubtitles()
 {
 	if(playback)
 		playback->SetSubPid(-1);
+		
+	tuxtx_pause_subtitle(true, true);
 		
 	usleep(5000);
 		

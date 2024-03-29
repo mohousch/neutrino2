@@ -1265,7 +1265,7 @@ int tuxtx_main(int pid, int page, bool isEplayer)
 		tuxtxt_cache.page = 0x100;
 	
 	// set subtitle pid / page and flag to start sub thread.
-	if(page /*|| isEplayer*/) // FIXME: 
+	if(page || isEplayer) 
 	{
 		sub_page = tuxtxt_cache.page = page;
 		sub_pid = pid;
@@ -4891,39 +4891,40 @@ void DecodePage()
 		pCachedPage = tuxtxt_cache.astCachetable[tuxtxt_cache.page][tuxtxt_cache.subpagetable[tuxtxt_cache.page]];
 		
 	//
-	if (!pCachedPage)	/* not cached: do nothing */
+	if (!pCachedPage)	// not cached: do nothing
 		return;
 
-	tuxtxt_decompress_page(tuxtxt_cache.page,tuxtxt_cache.subpage, &page_char[40]);
+	tuxtxt_decompress_page(tuxtxt_cache.page, tuxtxt_cache.subpage, &page_char[40]);
 
-	memcpy(&page_char[8], pCachedPage->p0, 24); /* header line without timestring */
+	memcpy(&page_char[8], pCachedPage->p0, 24); // header line without timestring
 
 	pageinfo = &(pCachedPage->pageinfo);
 	
 	if (pageinfo->p24)
 		memcpy(&page_char[24*40], pageinfo->p24, 40); /* line 25 for FLOF */
 
-	/* copy timestring */
+	// copy timestring
 	memcpy(&page_char[32], &tuxtxt_cache.timestring, 8);
 
-	/* check for newsflash & subtitle */
+	// check for newsflash & subtitle
 	if (pageinfo->boxed && tuxtxt_is_dec(tuxtxt_cache.page))
 		boxed = 1;
 	else
 		boxed = 0;
 
-	/* modify header */
+	// modify header
 	if (boxed)
 		memset(&page_char, ' ', 40);
 	else
 	{
 		memset(page_char, ' ', 8);
-		hex2str((char*) page_char+3, tuxtxt_cache.page);
+		hex2str((char*) page_char + 3, tuxtxt_cache.page);
+		
 		if (tuxtxt_cache.subpage)
 		{
 			*(page_char+4) ='/';
 			*(page_char+5) ='0';
-			hex2str((char*) page_char+6, tuxtxt_cache.subpage);
+			hex2str((char*) page_char + 6, tuxtxt_cache.subpage);
 		}
 
 	}
@@ -5069,7 +5070,7 @@ void DecodePage()
 	// decode
 	for (row = 0; row < ((showflof && pageinfo->p24) ? 25 : 24); row++)
 	{
-		/* start-of-row default conditions */
+		// start-of-row default conditions
 		foreground   = white;
 		background   = black;
 		doubleheight = 0;
