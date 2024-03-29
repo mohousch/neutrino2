@@ -252,13 +252,15 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 				m_stream_tags = result;
 			}
 			
-			////
+#ifdef USE_OPENGL
+			//
 			guint value;
 			
 			if (gst_tag_list_get_uint(m_stream_tags, GST_TAG_BITRATE, &value))
 			{
 				framerate = (uint32_t) value;
 			}
+#endif
 			
 			gst_tag_list_free(tags);
 			break;
