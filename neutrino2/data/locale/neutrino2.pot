@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-03-29 18:30+0200\n"
+"POT-Creation-Date: 2024-03-30 00:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1192,7 +1192,7 @@ msgstr ""
 #: ../../src/gui/infoviewer.cpp:1110 ../../src/driver/vcrcontrol.cpp:639
 #: ../../src/driver/vcrcontrol.cpp:626 ../../src/driver/vcrcontrol.cpp:638
 #: ../../src/driver/vcrcontrol.cpp:631 ../../src/driver/vcrcontrol.cpp:624
-#: ../../src/driver/vcrcontrol.cpp:618
+#: ../../src/driver/vcrcontrol.cpp:618 ../../src/driver/vcrcontrol.cpp:630
 msgid "Error"
 msgstr ""
 
@@ -2681,7 +2681,7 @@ msgstr ""
 #: ../../src/driver/vcrcontrol.cpp:623 ../../src/driver/vcrcontrol.cpp:639
 #: ../../src/driver/vcrcontrol.cpp:626 ../../src/driver/vcrcontrol.cpp:638
 #: ../../src/driver/vcrcontrol.cpp:631 ../../src/driver/vcrcontrol.cpp:624
-#: ../../src/driver/vcrcontrol.cpp:618
+#: ../../src/driver/vcrcontrol.cpp:618 ../../src/driver/vcrcontrol.cpp:630
 msgid ""
 "One or several recording processes are active.\n"
 "If you encounter this message and no recording is active, please restart Neutrino."
@@ -4099,7 +4099,7 @@ msgstr ""
 #: ../../src/driver/vcrcontrol.cpp:623 ../../src/driver/vcrcontrol.cpp:639
 #: ../../src/driver/vcrcontrol.cpp:626 ../../src/driver/vcrcontrol.cpp:638
 #: ../../src/driver/vcrcontrol.cpp:631 ../../src/driver/vcrcontrol.cpp:624
-#: ../../src/driver/vcrcontrol.cpp:618
+#: ../../src/driver/vcrcontrol.cpp:618 ../../src/driver/vcrcontrol.cpp:630
 msgid ""
 "The recording directory is not writable.\n"
 "Recording will not work."
@@ -4108,7 +4108,7 @@ msgstr ""
 #: ../../src/driver/vcrcontrol.cpp:623 ../../src/driver/vcrcontrol.cpp:639
 #: ../../src/driver/vcrcontrol.cpp:626 ../../src/driver/vcrcontrol.cpp:638
 #: ../../src/driver/vcrcontrol.cpp:631 ../../src/driver/vcrcontrol.cpp:624
-#: ../../src/driver/vcrcontrol.cpp:618
+#: ../../src/driver/vcrcontrol.cpp:618 ../../src/driver/vcrcontrol.cpp:630
 msgid ""
 "The recording was aborted,\n"
 "because the target file could not be opened."

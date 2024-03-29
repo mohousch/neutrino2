@@ -38,6 +38,8 @@
 /*zapit includes*/
 #include <zapit/zapit.h>
 
+#include <driver/genpsi.h>
+
 
 enum stream2file_error_msg_t
 {
@@ -106,6 +108,9 @@ class CVCRControl
 		unsigned long long            record_EPGid;
 		unsigned long long            record_next_EPGid;
 		CZapit::responseGetPIDs pids;
+		
+		//
+		CGenPsi psi;
 		
 		//
 		void processAPIDnames();

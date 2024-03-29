@@ -149,6 +149,7 @@ std::string ReadMarkerValue(std::string strLine, const char* strMarkerName);
 std::string randomString(unsigned int length = 10);
 std::string randomFile(std::string suffix = "tmp", std::string directory = "/tmp", unsigned int length = 10);
 
+//
 static inline void Hexdump(unsigned char *Data, int length)
 {
 	int k;
