@@ -49,14 +49,13 @@
 
 //// globals
 unsigned short apids[10];
-//unsigned short ac3flags[10];
+bool ac3flags[10] = {false};
 unsigned short numpida = 0;
 unsigned short vpid = 0;
 unsigned short vtype = 0;
 std::string language[100];
-//
 unsigned int currentapid = 0;
-//unsigned int currentac3 = 0;
+unsigned int currentac3 = 0;
 //
 unsigned int ac3state = CInfoViewer::NO_AC3;
 //
@@ -140,7 +139,7 @@ const keyval AC3_OPTIONS[AC3_OPTION_COUNT] =
 };
 #endif
 
-int CAVPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actionKey)
+int CAVPIDChangeExec::exec(CMenuTarget*, const std::string & actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CAVPIDSelectWidget::exec: %s (currentapid:%d)\n", actionKey.c_str(), currentapid);
 	
@@ -149,12 +148,13 @@ int CAVPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actionKe
 	if (currentapid != apids[sel]) 
 	{
 		currentapid = apids[sel];
+		currentac3 = ac3flags[sel];
 		
 		if(playback)
 			playback->SetAPid(currentapid);
 		
-//		if(currentac3)
-//			ac3state = CInfoViewer::AC3_ACTIVE;
+		if(currentac3)
+			ac3state = CInfoViewer::AC3_ACTIVE;
 		
 		dprintf(DEBUG_NORMAL, "CAPIDSelect::exec: apid changed to %d\n", currentapid);
 	}
@@ -166,33 +166,30 @@ int CAVPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actionKe
 int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CAVSubPIDSelectWidget::exec: %s (currentspid:%d)\n", actionKey.c_str(), currentspid);
-	
-//	unsigned int sel = atoi(actionKey.c_str());
 
-/*
+#ifdef ENABLE_GSTREAMER
+	unsigned int sel = atoi(actionKey.c_str());
+
 	if (currentspid != spids[sel]) 
 	{
 		currentspid = spids[sel];
 		
 		if(playback)
 			playback->SetSubPid(currentspid);
-			
-		// FIXME: get page / language from player
-		tuxtx_stop_subtitle();
-		int page = 0;
-		
-		tuxtx_main(0, page, true);
-		
-		dprintf(DEBUG_NORMAL, "CAVSubPIDSelect::exec: spid changed to %d\n", currentspid);
 	}
-*/
+	else if(actionKey == "off") 
+	{
+		currentspid = -1;
+		
+		if(playback)
+			playback->SetSubPid(-1);
+	}
+#else
 	if (strstr(actionKey.c_str(), "DVB"))
 	{
 		char const * pidptr = strchr(actionKey.c_str(), ':');
 		
 		currentspid = atoi(pidptr + 1);
-		
-		printf("currentspid:%d\n", currentspid);
 		
 		tuxtx_stop_subtitle();
 		
@@ -205,16 +202,13 @@ int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
 		
 		currentspid = atoi(pidptr + 1);
 		
-		printf("currentspid:%d\n", currentspid);
-		
 		if(playback)
 			playback->SetSubPid(currentspid);
 		
 		tuxtx_stop_subtitle();
-		int page = 0x149; // FIXME: get page / language from player
+		int page = 0; // FIXME: get page / language from player
 		
-		tuxtx_main(0, page, true);
-		
+		tuxtx_main(0, page, true);		
 	}
 	else if(actionKey == "off") 
 	{
@@ -222,10 +216,11 @@ int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
 		
 		if(playback)
 			playback->SetSubPid(-1);
-			
+		
 		//
 		tuxtx_stop_subtitle();
 	}
+#endif
 	
 	return CMenuTarget::RETURN_EXIT;
 }
@@ -254,6 +249,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 	//
 	CWidget* widget = NULL;
 	ClistBox* AVPIDSelector = NULL;
+	CMenuItem* item = NULL;
 	
 	widget = CNeutrinoApp::getInstance()->getWidget("avselect");
 	
@@ -292,18 +288,14 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 	numpida = 0;
 	
 	if(playback)
-		playback->FindAllPids(apids, &numpida, language);
+		playback->FindAllPids(apids, ac3flags, &numpida, language);
 			
 	if (numpida > 0) 
 	{
-		bool enabled;
-
 		for (unsigned int count = 0; count < numpida; count++) 
 		{
-			bool name_ok = false;
-			char apidnumber[10];
+			char apidnumber[64];
 			sprintf(apidnumber, "%d", count);
-			enabled = true;
 			
 			std::string apidtitle = "Stream ";
 
@@ -311,19 +303,14 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 			if (!language[count].empty())
 			{
 				apidtitle = language[count];
-				name_ok = true;
 			}
+			
+			item = new CMenuForwarder(apidtitle.c_str(), true, NULL, &AVPIDChanger, apidnumber, CRCInput::convertDigitToKey(count + 1)), (count == currentapid);
+			
+			if (currentapid == count)
+				item->setIcon1(NEUTRINO_ICON_MARK);
 
-			if (!name_ok)
-			{
-				apidtitle = "Stream ";
-				name_ok = true;
-			}
-
-			if (!name_ok)
-				apidtitle.append(apidnumber);
-
-			AVPIDSelector->addItem(new CMenuForwarder(apidtitle.c_str(), enabled, NULL, &AVPIDChanger, apidnumber, CRCInput::convertDigitToKey(count + 1)), (count == currentapid) );
+			AVPIDSelector->addItem(item, (count == currentapid));
 		}
 		
 		AVPIDSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
@@ -367,7 +354,11 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 				spidtitle = language[count];
 			}
 			
+#ifdef ENABLE_GSTREAMER
+			sprintf(spidnumber, "%d", count);
+#else
 			sprintf(spidnumber, "%s:%d", spidtitle.c_str(), count); // dont change this
+#endif
 
 			AVPIDSelector->addItem(new CMenuForwarder(spidtitle.c_str(), currentspid == count? false : true, NULL, &AVSubPIDChanger, spidnumber, CRCInput::convertDigitToKey(count + 1)));
 		}

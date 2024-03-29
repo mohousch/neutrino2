@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-03-29 14:05+0200\n"
+"POT-Creation-Date: 2024-03-29 18:30+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -118,6 +118,10 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:277
 #: ../../src/gui/audio_video_select.cpp:279
 #: ../../src/gui/audio_video_select.cpp:278
+#: ../../src/gui/audio_video_select.cpp:283
+#: ../../src/gui/audio_video_select.cpp:281
+#: ../../src/gui/audio_video_select.cpp:289
+#: ../../src/gui/audio_video_select.cpp:274
 msgid "AV Select"
 msgstr ""
 
@@ -395,6 +399,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:736 ../../src/gui/movieplayer.cpp:1940
 #: ../../src/gui/movieplayer.cpp:742 ../../src/gui/movieplayer.cpp:1946
 #: ../../src/gui/movieplayer.cpp:1956 ../../src/gui/movieplayer.cpp:1957
+#: ../../src/gui/movieplayer.cpp:752
 msgid "Bookmarks"
 msgstr ""
 
@@ -1035,6 +1040,9 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:333
 #: ../../src/gui/audio_video_select.cpp:335
 #: ../../src/gui/audio_video_select.cpp:334
+#: ../../src/gui/audio_video_select.cpp:326
+#: ../../src/gui/audio_video_select.cpp:330
+#: ../../src/gui/audio_video_select.cpp:336
 msgid "Dolby Digital"
 msgstr ""
 
@@ -1912,7 +1920,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2294 ../../src/gui/movieplayer.cpp:1713
 #: ../../src/gui/movieplayer.cpp:2274 ../../src/gui/movieplayer.cpp:2304
 #: ../../src/gui/movieplayer.cpp:1714 ../../src/gui/movieplayer.cpp:2275
-#: ../../src/gui/movieplayer.cpp:2305
+#: ../../src/gui/movieplayer.cpp:2305 ../../src/gui/movieplayer.cpp:1578
 msgid "Information"
 msgstr ""
 
@@ -1962,7 +1970,7 @@ msgstr ""
 #: ../../src/gui/movieinfo.cpp:1467 ../../src/gui/movieinfo.cpp:1465
 #: ../../src/gui/movieinfo.cpp:1473 ../../src/gui/movieinfo.cpp:1471
 #: ../../src/gui/movieinfo.cpp:1469 ../../src/gui/movieinfo.cpp:1470
-#: ../../src/gui/movieinfo.cpp:1472
+#: ../../src/gui/movieinfo.cpp:1472 ../../src/gui/movieplayer.cpp:766
 msgid "Jump over"
 msgstr ""
 
@@ -2344,7 +2352,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:760 ../../src/gui/movieplayer.cpp:762
 #: ../../src/gui/movieplayer.cpp:751 ../../src/gui/movieplayer.cpp:765
 #: ../../src/gui/movieplayer.cpp:764 ../../src/gui/movieplayer.cpp:752
-#: ../../src/gui/movieplayer.cpp:758
+#: ../../src/gui/movieplayer.cpp:758 ../../src/gui/movieplayer.cpp:768
 msgid "Movie end:"
 msgstr ""
 
@@ -2386,7 +2394,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1765 ../../src/gui/movieplayer.cpp:757
 #: ../../src/gui/movieplayer.cpp:1771 ../../src/gui/movieplayer.cpp:1783
 #: ../../src/gui/movieplayer.cpp:1781 ../../src/gui/movieplayer.cpp:1793
-#: ../../src/gui/movieplayer.cpp:1794
+#: ../../src/gui/movieplayer.cpp:1794 ../../src/gui/movieplayer.cpp:767
 msgid "Movie start:"
 msgstr ""
 
@@ -2510,7 +2518,7 @@ msgstr ""
 #: ../../src/gui/movieinfo.cpp:1463 ../../src/gui/movieinfo.cpp:1461
 #: ../../src/gui/movieinfo.cpp:1469 ../../src/gui/movieinfo.cpp:1467
 #: ../../src/gui/movieinfo.cpp:1465 ../../src/gui/movieinfo.cpp:1466
-#: ../../src/gui/movieinfo.cpp:1468
+#: ../../src/gui/movieinfo.cpp:1468 ../../src/gui/movieplayer.cpp:764
 msgid "New Bookmark"
 msgstr ""
 
@@ -2522,7 +2530,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:707 ../../src/gui/movieplayer.cpp:709
 #: ../../src/gui/movieplayer.cpp:698 ../../src/gui/movieplayer.cpp:712
 #: ../../src/gui/movieplayer.cpp:711 ../../src/gui/movieplayer.cpp:699
-#: ../../src/gui/movieplayer.cpp:705
+#: ../../src/gui/movieplayer.cpp:705 ../../src/gui/movieplayer.cpp:715
 msgid ""
 "New jump back\n"
 " 'blue' for endposition"
@@ -2536,7 +2544,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:712 ../../src/gui/movieplayer.cpp:714
 #: ../../src/gui/movieplayer.cpp:703 ../../src/gui/movieplayer.cpp:717
 #: ../../src/gui/movieplayer.cpp:716 ../../src/gui/movieplayer.cpp:704
-#: ../../src/gui/movieplayer.cpp:710
+#: ../../src/gui/movieplayer.cpp:710 ../../src/gui/movieplayer.cpp:720
 msgid ""
 "New jump forward\n"
 " 'blue' for endposition"
@@ -3125,7 +3133,7 @@ msgstr ""
 #: ../../src/gui/movieinfo.cpp:1465 ../../src/gui/movieinfo.cpp:1463
 #: ../../src/gui/movieinfo.cpp:1471 ../../src/gui/movieinfo.cpp:1469
 #: ../../src/gui/movieinfo.cpp:1467 ../../src/gui/movieinfo.cpp:1468
-#: ../../src/gui/movieinfo.cpp:1470
+#: ../../src/gui/movieinfo.cpp:1470 ../../src/gui/movieplayer.cpp:765
 msgid "Repeat"
 msgstr ""
 
@@ -3781,6 +3789,11 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:376
 #: ../../src/gui/audio_video_select.cpp:378
 #: ../../src/gui/audio_video_select.cpp:377
+#: ../../src/gui/audio_video_select.cpp:371
+#: ../../src/gui/audio_video_select.cpp:372
+#: ../../src/gui/audio_video_select.cpp:370
+#: ../../src/gui/audio_video_select.cpp:382
+#: ../../src/gui/audio_video_select.cpp:367
 msgid "Stop subtitles"
 msgstr ""
 
@@ -3958,6 +3971,9 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:340
 #: ../../src/gui/audio_video_select.cpp:342
 #: ../../src/gui/audio_video_select.cpp:341
+#: ../../src/gui/audio_video_select.cpp:333
+#: ../../src/gui/audio_video_select.cpp:337
+#: ../../src/gui/audio_video_select.cpp:343
 msgid "TV-System"
 msgstr ""
 
@@ -4353,6 +4369,9 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:343
 #: ../../src/gui/audio_video_select.cpp:345
 #: ../../src/gui/audio_video_select.cpp:344
+#: ../../src/gui/audio_video_select.cpp:336
+#: ../../src/gui/audio_video_select.cpp:340
+#: ../../src/gui/audio_video_select.cpp:346
 msgid "Video Format"
 msgstr ""
 
@@ -4773,7 +4792,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1570 ../../src/gui/movieplayer.cpp:1572
 #: ../../src/gui/movieplayer.cpp:1561 ../../src/gui/movieplayer.cpp:1575
 #: ../../src/gui/movieplayer.cpp:1574 ../../src/gui/movieplayer.cpp:1562
-#: ../../src/gui/movieplayer.cpp:1568
+#: ../../src/gui/movieplayer.cpp:1568 ../../src/gui/movieplayer.cpp:1578
 msgid "create screenshot?"
 msgstr ""
 

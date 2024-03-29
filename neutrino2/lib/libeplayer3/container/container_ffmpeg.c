@@ -877,7 +877,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	avContext->flags |= AVFMT_FLAG_GENPTS;
 
 	if (strstr(filename, ":31339") || strstr(filename, ".ts"))
-	avContext->max_analyze_duration = 1;
+		avContext->max_analyze_duration = 1;
 
 	// find stream info
 #if LIBAVCODEC_VERSION_MAJOR < 54

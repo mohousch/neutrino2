@@ -1040,8 +1040,10 @@ bool cPlayback::SetSlow(int slow)
 
 void cPlayback::GetPts(uint64_t &pts)
 {
+#ifndef ENABLE_GSTREAMER
 	if (player && player->playback)
 		player->playback->Command(player, PLAYBACK_PTS, (void *)&pts);
+#endif
 }
 
 bool cPlayback::GetSpeed(int &speed) const
@@ -1183,9 +1185,11 @@ bool cPlayback::SetPosition(int position)
 	return true;
 }
 
-void cPlayback::FindAllPids(uint16_t *apids, uint16_t *numpida, std::string *language)
+void cPlayback::FindAllPids(uint16_t *apids, bool *ac3flags, uint16_t *numpida, std::string *language)
 { 
 	printf("cPlayback::FindAllPids\n");
+	
+	*ac3flags = false;
 
 #if defined (ENABLE_GSTREAMER)
 	if(m_gst_playbin)
@@ -1242,6 +1246,11 @@ void cPlayback::FindAllPids(uint16_t *apids, uint16_t *numpida, std::string *lan
 				// codec
 				if (gst_tag_list_get_string(tags, GST_TAG_AUDIO_CODEC, &g_codec))
 				{
+					//
+					if(std::string(g_codec) == "Dolby Digital (AC-3)" || std::string(g_codec) == "AC-3 (ATSC A/52)")
+						ac3flags[i] = true;
+					
+					//
 					language[i] += " (";
 					language[i] += std::string(g_codec).c_str();
 					language[i] += ")";
@@ -1278,6 +1287,11 @@ void cPlayback::FindAllPids(uint16_t *apids, uint16_t *numpida, std::string *lan
 				
 				apids[j] = j;
 				
+				//
+				if(!strncmp("A_AC3", TrackList[i + 1], 5))
+					ac3flags[j] = true;
+				
+				//
 				language[j] = "Stream";
 
 				language[j] = TrackList[i];

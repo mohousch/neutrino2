@@ -332,8 +332,10 @@ void CMoviePlayerGui::startSubtitles(bool show)
 {
 	if(playback)
 		playback->SetSubPid(currentspid);
-		
+	
+#ifndef ENABLE_GSTREAMER	
 	tuxtx_pause_subtitle(false, true);
+#endif
 
 }
 
@@ -341,8 +343,10 @@ void CMoviePlayerGui::stopSubtitles()
 {
 	if(playback)
 		playback->SetSubPid(-1);
-		
+	
+#ifndef ENABLE_GSTREAMER	
 	tuxtx_pause_subtitle(true, true);
+#endif
 		
 	usleep(5000);
 		
