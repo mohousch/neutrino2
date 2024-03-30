@@ -813,6 +813,7 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 	g_movieInfo->epgVideoPid	= si.vpid;
 	g_movieInfo->VideoType		= si.vtype;
 
+	// ???
 	g_vpid = si.vpid;
 	g_vtype = si.vtype;
 	g_currentapid = si.apid;
@@ -874,7 +875,7 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 		{
 			vtxt_pids.language = st->ISO639_language_code.c_str();
 			vtxt_pids.pid = st->pId;
-			vtxt_pids.page = (st->teletext_magazine_number * 100) + ((st->teletext_page_number >> 4) * 10) + (st->teletext_page_number & 0xf);
+			vtxt_pids.page = ((st->teletext_magazine_number & 0xFF) << 8) | st->teletext_page_number;
 
 			g_movieInfo->vtxtPids.push_back(vtxt_pids);
 		}

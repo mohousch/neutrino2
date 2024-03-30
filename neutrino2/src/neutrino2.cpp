@@ -2939,6 +2939,7 @@ void CNeutrinoApp::stopSubtitles()
 	{
 		tuxtx_pause_subtitle(true, false);
 		
+		// clear framebuffer
 		frameBuffer->paintBackground();
 		frameBuffer->blit();
 	}
@@ -2972,7 +2973,7 @@ void CNeutrinoApp::selectSubtitles()
 				{
 					if(temp == it->second && sd->ISO639_language_code == it->first) 
 					{
-						printf("CNeutrinoApp::selectSubtitles: found DVB %s, pid %x\n", sd->ISO639_language_code.c_str(), sd->pId);
+						printf("CNeutrinoApp::selectSubtitles: found DVB lang=%s pid=0x%x\n", sd->ISO639_language_code.c_str(), sd->pId);
 						dvbsub_stop();
 						dvbsub_setpid(sd->pId);
 						return;
@@ -2989,12 +2990,13 @@ void CNeutrinoApp::selectSubtitles()
 			{
 				CZapitTTXSub* sd = reinterpret_cast<CZapitTTXSub*>(s);
 				std::map<std::string, std::string>::const_iterator it;
+				
 				for(it = iso639.begin(); it != iso639.end(); it++) 
 				{
 					if(temp == it->second && sd->ISO639_language_code == it->first) 
 					{
 						int page = ((sd->teletext_magazine_number & 0xFF) << 8) | sd->teletext_page_number;
-						printf("CNeutrinoApp::selectSubtitles: found TTX %s, pid %x page %03X\n", sd->ISO639_language_code.c_str(), sd->pId, page);
+						printf("CNeutrinoApp::selectSubtitles: found TTX lang=%s, pid=0x%x page=0x%03X\n", sd->ISO639_language_code.c_str(), sd->pId, page);
 
 						tuxtx_stop_subtitle();
 

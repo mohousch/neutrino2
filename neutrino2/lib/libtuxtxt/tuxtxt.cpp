@@ -1723,7 +1723,7 @@ int Init(bool isEplayer)
 			// get all vtxt-pids
 			getpidsdone = -1;	 // don't kill thread
 
-			if (GetTeletextPIDs(isEplayer) == 0)
+			if (GetTeletextPIDs(/*isEplayer*/) == 0)
 			{
 				return 0;
 			}
@@ -1826,12 +1826,9 @@ void CleanUp()
 }
 
 //// GetTeletextPIDs
-int GetTeletextPIDs(bool isEplayer)
+int GetTeletextPIDs()
 {
 	printf("GetTeletextPIDs\n");
-	
-	if (isEplayer)
-		return 1;
 		
 	int pat_scan, pmt_scan, sdt_scan, desc_scan, pid_test, byte, diff, first_sdt_sec;
 
@@ -2033,52 +2030,56 @@ skip_pid:
 //// GetNationalSubset
 int GetNationalSubset(const char *cc)
 {
-        if (memcmp(cc, "cze", 3) == 0 || memcmp(cc, "ces", 3) == 0 ||
-            memcmp(cc, "slo", 3) == 0 || memcmp(cc, "slk", 3) == 0)
-                return NAT_CZ;
-        if (memcmp(cc, "eng", 3) == 0)
-                return NAT_UK;
-        if (memcmp(cc, "est", 3) == 0)
-                return NAT_ET;
-        if (memcmp(cc, "fre", 3) == 0 || memcmp(cc, "lb", 3) == 0 || memcmp(cc, "ltz", 3) == 0 || memcmp(cc, "fra", 3) == 0)
-                return NAT_FR;
-        if (memcmp(cc, "ger", 3) == 0 || memcmp(cc, "deu", 3) == 0)
-                return NAT_DE;
-        if (memcmp(cc, "ita", 3) == 0)
-                return NAT_IT;
-        if (memcmp(cc, "lav", 3) == 0 || memcmp(cc, "lit", 3) == 0)
-                return NAT_LV;
-        if (memcmp(cc, "pol", 3) == 0)
-                return NAT_PL;
-        if (memcmp(cc, "spa", 3) == 0 || memcmp(cc, "por", 3) == 0)
-                return NAT_SP;
-        if (memcmp(cc, "rum", 3) == 0 || memcmp(cc, "ron", 3) == 0)
-                return NAT_RO;
-        if (memcmp(cc, "scc", 3) == 0 || memcmp(cc, "srp", 3) == 0 ||
-            memcmp(cc, "scr", 3) == 0 || memcmp(cc, "hrv", 3) == 0 ||
-            memcmp(cc, "slv", 3) == 0)
-                return NAT_SR;
-        if (memcmp(cc, "swe", 3) == 0 ||
-            memcmp(cc, "dan", 3) == 0 ||
-            memcmp(cc, "nor", 3) == 0 ||
-            memcmp(cc, "fin", 3) == 0 ||
-            memcmp(cc, "hun", 3) == 0)
-                return NAT_SW;
-        if (memcmp(cc, "tur", 3) == 0)
-                return NAT_TR;
-        if (memcmp(cc, "rus", 3) == 0 || memcmp(cc, "bul", 3) == 0)
-		return NAT_RB;
-        if (memcmp(cc, "ser", 3) == 0 || memcmp(cc, "cro", 3) == 0)
-		return NAT_SC;
-        if (memcmp(cc, "ukr", 3) == 0)
-		return NAT_UA;
-        if (memcmp(cc, "gre", 3) == 0)
-                return NAT_GR;
-        if (memcmp(cc, "heb", 3) == 0)
-                return NAT_HB;
-        if (memcmp(cc, "ara", 3) == 0)
-                return NAT_AR;
-        return NAT_DEFAULT;     /* use default charset */
+	if (cc != NULL)
+	{
+		if (memcmp(cc, "cze", 3) == 0 || memcmp(cc, "ces", 3) == 0 ||
+		    memcmp(cc, "slo", 3) == 0 || memcmp(cc, "slk", 3) == 0)
+		        return NAT_CZ;
+		if (memcmp(cc, "eng", 3) == 0)
+		        return NAT_UK;
+		if (memcmp(cc, "est", 3) == 0)
+		        return NAT_ET;
+		if (memcmp(cc, "fre", 3) == 0 || memcmp(cc, "lb", 3) == 0 || memcmp(cc, "ltz", 3) == 0 || memcmp(cc, "fra", 3) == 0)
+		        return NAT_FR;
+		if (memcmp(cc, "ger", 3) == 0 || memcmp(cc, "deu", 3) == 0)
+		        return NAT_DE;
+		if (memcmp(cc, "ita", 3) == 0)
+		        return NAT_IT;
+		if (memcmp(cc, "lav", 3) == 0 || memcmp(cc, "lit", 3) == 0)
+		        return NAT_LV;
+		if (memcmp(cc, "pol", 3) == 0)
+		        return NAT_PL;
+		if (memcmp(cc, "spa", 3) == 0 || memcmp(cc, "por", 3) == 0)
+		        return NAT_SP;
+		if (memcmp(cc, "rum", 3) == 0 || memcmp(cc, "ron", 3) == 0)
+		        return NAT_RO;
+		if (memcmp(cc, "scc", 3) == 0 || memcmp(cc, "srp", 3) == 0 ||
+		    memcmp(cc, "scr", 3) == 0 || memcmp(cc, "hrv", 3) == 0 ||
+		    memcmp(cc, "slv", 3) == 0)
+		        return NAT_SR;
+		if (memcmp(cc, "swe", 3) == 0 ||
+		    memcmp(cc, "dan", 3) == 0 ||
+		    memcmp(cc, "nor", 3) == 0 ||
+		    memcmp(cc, "fin", 3) == 0 ||
+		    memcmp(cc, "hun", 3) == 0)
+		        return NAT_SW;
+		if (memcmp(cc, "tur", 3) == 0)
+		        return NAT_TR;
+		if (memcmp(cc, "rus", 3) == 0 || memcmp(cc, "bul", 3) == 0)
+			return NAT_RB;
+		if (memcmp(cc, "ser", 3) == 0 || memcmp(cc, "cro", 3) == 0)
+			return NAT_SC;
+		if (memcmp(cc, "ukr", 3) == 0)
+			return NAT_UA;
+		if (memcmp(cc, "gre", 3) == 0)
+		        return NAT_GR;
+		if (memcmp(cc, "heb", 3) == 0)
+		        return NAT_HB;
+		if (memcmp(cc, "ara", 3) == 0)
+		        return NAT_AR;
+	}
+	
+        return NAT_DEFAULT;
 }
 
 

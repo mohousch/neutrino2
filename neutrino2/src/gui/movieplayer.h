@@ -78,8 +78,8 @@ class CMoviePlayerGui : public CMenuTarget
 		int g_currentsubpid;
 		
 		// playlist
-//		CMoviePlayList playlist;
-//		unsigned int selected;
+		CMoviePlayList playlist;
+		unsigned int selected;
 		
 		// global flags
 		bool update_lcd;
@@ -168,7 +168,6 @@ class CMoviePlayerGui : public CMenuTarget
 		void addToPlaylist(const char* fileName, std::string title = "", std::string info1 = "", std::string info2 = "", std::string tfile = "");
 		void clearPlaylist(void);
 		void removeFromPlaylist(long pos);
-//		void setCurrent(int pos){selected = pos;};
 };
 
 #endif

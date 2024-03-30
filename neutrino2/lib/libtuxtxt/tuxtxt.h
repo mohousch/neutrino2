@@ -1288,8 +1288,8 @@ void RenderMessage(int Message);
 void RenderPage();
 void DecodePage();
 int  Init(bool);
-int  GetNationalSubset(const char *country_code);
-int  GetTeletextPIDs(bool isEplayer = false);
+int  GetNationalSubset(const char* cc);
+int  GetTeletextPIDs();
 int  GetRCCode();
 int  eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 						unsigned char *pAPx, unsigned char *pAPy,

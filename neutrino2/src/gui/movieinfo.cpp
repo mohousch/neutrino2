@@ -169,16 +169,16 @@ bool CMovieInfo::encodeMovieInfoXml(std::string * extMessage, MI_MOVIE_INFO * mo
 	{
 		*extMessage += "\t\t<" MI_XML_TAG_AUDIOPIDS ">\n";
 
-		for (unsigned int i = 0; i < movie_info->audioPids.size(); i++)	// pids.APIDs.size()
+		for (unsigned int i = 0; i < movie_info->audioPids.size(); i++)		// pids.APIDs.size()
 		{
-			*extMessage += "\t\t\t<" MI_XML_TAG_PID "=\"";
+			*extMessage += "\t\t\t<" MI_XML_TAG_AUDIO " " MI_XML_TAG_PID "=\"";
 			sprintf(tmp, "%u", movie_info->audioPids[i].epgAudioPid);	//pids.APIDs[i].pid);
 			*extMessage += tmp;
 			*extMessage += "\" " MI_XML_TAG_ATYPE "=\"";
-			sprintf(tmp, "%u", movie_info->audioPids[i].atype);	//pids.APIDs[i].pid);
+			sprintf(tmp, "%u", movie_info->audioPids[i].atype);		//pids.APIDs[i].pid);
 			*extMessage += tmp;
 			*extMessage += "\" " MI_XML_TAG_SELECTED "=\"";
-			sprintf(tmp, "%u", movie_info->audioPids[i].selected);	//pids.APIDs[i].pid);
+			sprintf(tmp, "%u", movie_info->audioPids[i].selected);		//pids.APIDs[i].pid);
 			*extMessage += tmp;
 			*extMessage += "\" " MI_XML_TAG_NAME "=\"";
 			*extMessage += movie_info->audioPids[i].epgAudioPidName;
@@ -194,7 +194,7 @@ bool CMovieInfo::encodeMovieInfoXml(std::string * extMessage, MI_MOVIE_INFO * mo
 
 		for (unsigned int i = 0; i < movie_info->vtxtPids.size(); i++)
 		{
-			*extMessage += "\t\t\t<" MI_XML_TAG_PID "=\"";
+			*extMessage += "\t\t\t<" MI_XML_TAG_VTXT " " MI_XML_TAG_PID "=\"";
 			sprintf(tmp, "%u", movie_info->vtxtPids[i].pid);
 			*extMessage += tmp;
 			*extMessage += "\" " MI_XML_TAG_PAGE "=\"";
@@ -245,10 +245,10 @@ bool CMovieInfo::encodeMovieInfoXml(std::string * extMessage, MI_MOVIE_INFO * mo
 	*extMessage += "\t\t</" MI_XML_TAG_BOOKMARK ">\n";
 
 	// vote_average
-	XML_ADD_TAG_UNSIGNED(*extMessage, "vote_average", movie_info->vote_average);
+	XML_ADD_TAG_UNSIGNED(*extMessage, MI_XML_TAG_VOTE_AVERAGE, movie_info->vote_average);
 	
 	// genres
-	XML_ADD_TAG_STRING(*extMessage, "genres", movie_info->genres);
+	XML_ADD_TAG_STRING(*extMessage, MI_XML_TAG_GENRES, movie_info->genres);
 
 	*extMessage += "\t</" MI_XML_TAG_RECORD ">\n";
 	*extMessage += "</" MI_XML_TAG_NEUTRINO ">\n";
@@ -1174,13 +1174,12 @@ int find_next_char(char to_find, char *text, int start_pos, int end_pos)
 		continue;\
 	}
 
-bool CMovieInfo::parseXmlQuickFix(char *text, MI_MOVIE_INFO * movie_info)
+bool CMovieInfo::parseXmlQuickFix(char* text, MI_MOVIE_INFO* movie_info)
 {
 	int bookmark_nr = 0;
 	movie_info->dateOfLastPlay = 0;	//100*366*24*60*60;              // (date, month, year)
 
 	int bytes = strlen(text);
-	//
 	int pos = 0;
 
 	EPG_AUDIO_PIDS audio_pids;
@@ -1208,8 +1207,8 @@ bool CMovieInfo::parseXmlQuickFix(char *text, MI_MOVIE_INFO * movie_info)
 		GET_XML_DATA_INT(text, pos, MI_XML_TAG_PARENTAL_LOCKAGE, movie_info->parentalLockAge)
 		GET_XML_DATA_INT(text, pos, MI_XML_TAG_QUALITY, movie_info->quality)
 		GET_XML_DATA_INT(text, pos, MI_XML_TAG_DATE_OF_LAST_PLAY, movie_info->dateOfLastPlay)
-		GET_XML_DATA_STRING(text, pos, "genres", movie_info->genres)
-		GET_XML_DATA_INT(text, pos, "vote_average", movie_info->vote_average)
+		GET_XML_DATA_STRING(text, pos, MI_XML_TAG_GENRES, movie_info->genres)
+		GET_XML_DATA_INT(text, pos, MI_XML_TAG_VOTE_AVERAGE, movie_info->vote_average)
 		
 		// parse audio pids
 		if (strncmp(&text[pos], MI_XML_TAG_AUDIOPIDS, sizeof(MI_XML_TAG_AUDIOPIDS) - 1) == 0)
@@ -1226,7 +1225,7 @@ bool CMovieInfo::parseXmlQuickFix(char *text, MI_MOVIE_INFO * movie_info)
 			ptr = strstr(&text[pos], MI_XML_TAG_PID);
 			if (ptr)
 				pos2 = (size_t)ptr - (size_t)&text[pos];
-			//pos2 = strcspn(&text[pos],MI_XML_TAG_PID);
+
 			if (pos2 >= 0) 
 			{
 				pos2 += sizeof(MI_XML_TAG_PID);
@@ -1234,7 +1233,8 @@ bool CMovieInfo::parseXmlQuickFix(char *text, MI_MOVIE_INFO * movie_info)
 					pos2++;
 				if (text[pos + pos2] == '\"')
 					audio_pids.epgAudioPid = atoi(&text[pos + pos2 + 1]);
-			} else
+			} 
+			else
 				audio_pids.epgAudioPid = 0;
 
 			audio_pids.atype = 0;
@@ -1242,7 +1242,7 @@ bool CMovieInfo::parseXmlQuickFix(char *text, MI_MOVIE_INFO * movie_info)
 			ptr = strstr(&text[pos], MI_XML_TAG_ATYPE);
 			if (ptr)
 				pos2 = (size_t)ptr - (size_t)&text[pos];
-			//pos2 = strcspn(&text[pos],MI_XML_TAG_ATYPE);
+
 			if (pos2 >= 0) 
 			{
 				pos2 += sizeof(MI_XML_TAG_ATYPE);
@@ -1257,7 +1257,7 @@ bool CMovieInfo::parseXmlQuickFix(char *text, MI_MOVIE_INFO * movie_info)
 			ptr = strstr(&text[pos], MI_XML_TAG_SELECTED);
 			if (ptr)
 				pos2 = (size_t)ptr - (size_t)&text[pos];
-			//pos2 = strcspn(&text[pos],MI_XML_TAG_SELECTED);
+
 			if (pos2 >= 0) 
 			{
 				pos2 += sizeof(MI_XML_TAG_SELECTED);
@@ -1268,7 +1268,7 @@ bool CMovieInfo::parseXmlQuickFix(char *text, MI_MOVIE_INFO * movie_info)
 			}
 
 			audio_pids.epgAudioPidName = "";
-			//pos2 = strcspn(&text[pos],MI_XML_TAG_NAME);
+
 			pos2 = -1;
 			ptr = strstr(&text[pos], MI_XML_TAG_NAME);
 			if (ptr)

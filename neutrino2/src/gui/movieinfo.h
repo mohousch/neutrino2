@@ -92,6 +92,8 @@
 #define MI_XML_TAG_BOOKMARK_USER_TYPE	"bookmarkusertype"
 #define MI_XML_TAG_BOOKMARK_USER_NAME	"bookmarkusername"
 #define MI_XML_TAG_DATE_OF_LAST_PLAY 	"dateoflastplay"
+#define MI_XML_TAG_GENRES		"genres"
+#define MI_XML_TAG_VOTE_AVERAGE		"vote_average"
 
 
 #define MI_MAX_AUDIO_PIDS 4       // just to avoid the buffer is filled endless, might be increased later on , but 4 audio pids might be enough
@@ -127,8 +129,8 @@ typedef struct
 {
 	int atype;
 	int selected;
-	int  epgAudioPid; 			 // epg audio pid nr, usually filled by VCR
-	std::string epgAudioPidName; 		// epg audio pid name, usually filled by VCR
+	int  epgAudioPid; 		// epg audio pid nr, usually filled by VCR
+	std::string epgAudioPidName; 	// epg audio pid name, usually filled by VCR
 }EPG_AUDIO_PIDS;
 
 typedef struct
@@ -166,12 +168,11 @@ typedef struct
 	int  epgMode;				// currently not used, we just do not want to loose this info if movie info is saved backed
 	int  epgVideoPid; 			// currently not used, we just do not want to loose this info if movie info is saved backed
 	int  VideoType;
-//	int epgVTXPID;				// currently not used, we just do not want to loose this info if movie info is saved backed
+	//
 	std::vector<EPG_VTXT_PIDS> vtxtPids;
 
 	//
 	std::string original_title;
-	//std::string release_date;
 	float vote_average;
 	int vote_count;
 	std::string media_type;
@@ -181,12 +182,10 @@ typedef struct
 	int seasons;
 	std::string cast;
 
-	//
-	std::string vid;					// for media future use
+	// yt
+	std::string vid;
 	std::string vkey;
 	std::string vname;
-	
-	//
 	std::string tfile; 			// thumbnail/cover file name
 	std::string ytdate; 			// yt published
 	std::string ytid; 			// yt published

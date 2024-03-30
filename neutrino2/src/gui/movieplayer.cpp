@@ -102,11 +102,25 @@
 #define BUTTON_BAR_HEIGHT	25
 #define TIMESCALE_BAR_HEIGHT	4
 
-//// globals
-CMoviePlayList playlist;
-unsigned int selected;
-
+////
+extern unsigned int ac3state;
+extern unsigned int currentapid;
+extern int currentsdvbpid;
+extern int currentstxtpid;
+extern int currentspid;
+//
+extern int dvbsub_stop();
+extern int dvbsub_start(int pid, bool isEplayer);
+extern int dvbsub_pause();
+//
+extern int  tuxtxt_stop();
+extern void tuxtxt_close();
 extern void tuxtx_pause_subtitle(bool pause, bool isEplayer);
+extern void tuxtx_stop_subtitle();
+extern void tuxtxt_start(int tpid);
+extern void tuxtx_set_pid(int pid, int page, const char * cc);
+extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
+extern int tuxtx_main(int pid, int page, bool isEplayer);
 
 void getPlayerPts(int64_t* pts)
 {
@@ -334,11 +348,27 @@ void CMoviePlayerGui::killMovieInfoViewer(void)
 
 void CMoviePlayerGui::startSubtitles(bool show)
 {
+	if (currentsdvbpid >= 0)
+		currentspid = currentsdvbpid;
+	else if (currentstxtpid >= 0)
+		currentspid = currentstxtpid;
+		
 	if(playback)
 		playback->SetSubPid(currentspid);
 	
 #ifndef ENABLE_GSTREAMER	
-	tuxtx_pause_subtitle(false, true);
+//	tuxtx_pause_subtitle(false, true);
+	if (currentstxtpid >= 0)
+	{
+		int txtpage = 0;
+		
+		if(!playlist[selected].vtxtPids.empty())
+		{
+			txtpage = playlist[selected].vtxtPids[currentstxtpid].page;
+		}
+			
+		tuxtx_main(0, txtpage, true);
+	}
 #endif
 
 }
@@ -349,7 +379,11 @@ void CMoviePlayerGui::stopSubtitles()
 		playback->SetSubPid(-1);
 	
 #ifndef ENABLE_GSTREAMER	
-	tuxtx_pause_subtitle(true, true);
+//	tuxtx_pause_subtitle(true, true);
+	if (currentstxtpid >= 0)
+	{
+		tuxtx_stop_subtitle();
+	}
 #endif
 		
 	usleep(5000);
@@ -432,7 +466,8 @@ int CMoviePlayerGui::exec(CMenuTarget * parent, const std::string & actionKey)
 	restoreNeutrino();
 	
 	currentapid = 0;
-	currentspid = -1;
+	currentsdvbpid = -1;
+	currentstxtpid = -1;
 	
 	//
 	CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
@@ -666,6 +701,8 @@ void CMoviePlayerGui::PlayFile(void)
 				{
 					g_currentapid = i;	//FIXME						
 					g_currentac3 = playlist[selected].audioPids[i].atype;
+					
+					//
 					currentapid = 0;
 				}
 			}
@@ -685,8 +722,6 @@ void CMoviePlayerGui::PlayFile(void)
 					frameBuffer->loadBackgroundPic(playlist[selected].tfile);
 			}
 		}
-		
-		// subs
 
 		//
 		update_lcd = true;

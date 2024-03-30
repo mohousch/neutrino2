@@ -113,19 +113,15 @@ int dvbsub_start(int pid, bool _isEplayer)
 		return 0;
 	}
 
-	//if(pid) 
+	if (pid > -1 && pid != dvbsub_pid)
 	{
-		//if(pid != dvbsub_pid) 
-		if (pid > -1 && pid != dvbsub_pid)
-		{
-			dvbsub_pause();
+		dvbsub_pause();
 			
-			if(dvbSubtitleConverter)
-				dvbSubtitleConverter->Reset();
+		if(dvbSubtitleConverter)
+			dvbSubtitleConverter->Reset();
 				
-			dvbsub_pid = pid;
-			pid_change_req = 1;
-		}
+		dvbsub_pid = pid;
+		pid_change_req = 1;
 	}
 	
 	printf("[dvb-sub] start, stopped %d pid %x\n", dvbsub_stopped, dvbsub_pid);

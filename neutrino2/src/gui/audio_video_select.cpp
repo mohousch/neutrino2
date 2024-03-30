@@ -56,30 +56,15 @@ unsigned short vtype = 0;
 std::string language[100];
 unsigned int currentapid = 0;
 unsigned int currentac3 = 0;
-//
 unsigned int ac3state = CInfoViewer::NO_AC3;
 //
 unsigned short spids[10];
 unsigned short numpids = 0;
+int currentsdvbpid = -1;
+int currentstxtpid = -1;
 int currentspid = -1;
 //
 extern cPlayback *playback;
-//
-extern int dvbsub_stop();
-extern int dvbsub_start(int pid, bool isEplayer);
-extern int dvbsub_pause();
-//
-extern int  tuxtxt_stop();
-extern void tuxtxt_close();
-extern void tuxtx_pause_subtitle(bool pause, bool isEplayer);
-extern void tuxtx_stop_subtitle();
-extern void tuxtxt_start(int tpid);
-extern void tuxtx_set_pid(int pid, int page, const char * cc);
-extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
-extern int tuxtx_main(int pid, int page, bool isEplayer);
-////
-extern CMoviePlayList playlist;
-extern unsigned int selected;
 
 // aspect ratio
 #if defined (__sh__)
@@ -192,39 +177,28 @@ int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
 	{
 		char const * pidptr = strchr(actionKey.c_str(), ':');
 		
-		currentspid = atoi(pidptr + 1);
-		
-		tuxtx_stop_subtitle();
+		currentspid = currentsdvbpid = atoi(pidptr + 1);
 		
 		if(playback)
-			playback->SetSubPid(currentspid);
+			playback->SetSubPid(currentsdvbpid);
 	}
 	else if (strstr(actionKey.c_str(), "TELETEXT"))
 	{
 		char const * pidptr = strchr(actionKey.c_str(), ':');
 		
-		currentspid = atoi(pidptr + 1);
+		currentspid = currentstxtpid = atoi(pidptr + 1);
 		
 		if(playback)
-			playback->SetSubPid(currentspid);
-		
-		tuxtx_stop_subtitle();
-		int page = 0; // FIXME: get page / language from player
-		
-		if (playlist[selected].vtxtPids.size())
-			page = playlist[selected].vtxtPids[currentspid].page;
-		
-		tuxtx_main(0, page, true);		
+			playback->SetSubPid(currentstxtpid);		
 	}
 	else if(actionKey == "off") 
 	{
+		currentsdvbpid = -1;
+		currentstxtpid = -1;
 		currentspid = -1;
 		
 		if(playback)
 			playback->SetSubPid(-1);
-		
-		//
-		tuxtx_stop_subtitle();
 	}
 #endif
 	
