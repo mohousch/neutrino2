@@ -156,12 +156,6 @@ void CGenPsi::addPid(uint16_t pid, uint16_t pidtype, short isAC3, const char *da
 				apid_lang[nba][1] = data[1];
 				apid_lang[nba][2] = data[2];
 			}
-			else
-			{
-				apid_lang[nba][0] = 'u';
-				apid_lang[nba][1] = 'n';
-				apid_lang[nba][2] = 'k';
-			}
 			nba++;
 			break;
 		case EN_TYPE_TELTEX:
@@ -172,12 +166,6 @@ void CGenPsi::addPid(uint16_t pid, uint16_t pidtype, short isAC3, const char *da
 				vtxtlang[1] = data[1];
 				vtxtlang[2] = data[2];
 			}
-			else
-			{
-				vtxtlang[0] = 'u';
-				vtxtlang[1] = 'n';
-				vtxtlang[2] = 'k';
-			}
 			break;
 		case EN_TYPE_DVBSUB:
 			dvbsubpid[nsub] = pid;
@@ -186,12 +174,6 @@ void CGenPsi::addPid(uint16_t pid, uint16_t pidtype, short isAC3, const char *da
 				dvbsublang[nsub][0] = data[0];
 				dvbsublang[nsub][1] = data[1];
 				dvbsublang[nsub][2] = data[2];
-			}
-			else
-			{
-				dvbsublang[nsub][0] = 'u';
-				dvbsublang[nsub][1] = 'n';
-				dvbsublang[nsub][2] = 'k';
 			}
 			nsub++;
 			break;
@@ -203,12 +185,6 @@ void CGenPsi::addPid(uint16_t pid, uint16_t pidtype, short isAC3, const char *da
 				eac3_lang[neac3][1] = data[1];
 				eac3_lang[neac3][2] = data[2];
 			}
-			else
-			{
-				eac3_lang[neac3][0] = 'u';
-				eac3_lang[neac3][1] = 'n';
-				eac3_lang[neac3][2] = 'k';
-			}
 			neac3++;
 			break;
 		case EN_TYPE_AUDIO_AAC:
@@ -219,12 +195,6 @@ void CGenPsi::addPid(uint16_t pid, uint16_t pidtype, short isAC3, const char *da
 				aac_lang[naac][1] = data[1];
 				aac_lang[naac][2] = data[2];
 			}
-			else
-			{
-				aac_lang[naac][0] = 'u';
-				aac_lang[naac][1] = 'n';
-				aac_lang[naac][2] = 'k';
-			}
 			naac++;
 			break;
 		case EN_TYPE_AUDIO_AACP:
@@ -234,12 +204,6 @@ void CGenPsi::addPid(uint16_t pid, uint16_t pidtype, short isAC3, const char *da
 				aacp_lang[naacp][0] = data[0];
 				aacp_lang[naacp][1] = data[1];
 				aacp_lang[naacp][2] = data[2];
-			}
-			else
-			{
-				aacp_lang[naacp][0] = 'u';
-				aacp_lang[naacp][1] = 'n';
-				aacp_lang[naacp][2] = 'k';
 			}
 			naacp++;
 			break;

@@ -102,6 +102,10 @@
 #define BUTTON_BAR_HEIGHT	25
 #define TIMESCALE_BAR_HEIGHT	4
 
+//// globals
+CMoviePlayList playlist;
+unsigned int selected;
+
 extern void tuxtx_pause_subtitle(bool pause, bool isEplayer);
 
 void getPlayerPts(int64_t* pts)

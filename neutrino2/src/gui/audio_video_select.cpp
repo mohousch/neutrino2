@@ -77,6 +77,9 @@ extern void tuxtxt_start(int tpid);
 extern void tuxtx_set_pid(int pid, int page, const char * cc);
 extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
 extern int tuxtx_main(int pid, int page, bool isEplayer);
+////
+extern CMoviePlayList playlist;
+extern unsigned int selected;
 
 // aspect ratio
 #if defined (__sh__)
@@ -185,7 +188,7 @@ int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
 			playback->SetSubPid(-1);
 	}
 #else
-	if (strstr(actionKey.c_str(), "DVB"))
+	if (strstr(actionKey.c_str(), "DVB") || strstr(actionKey.c_str(), "PGS") || strstr(actionKey.c_str(), "SUBRIP") || strstr(actionKey.c_str(), "ASS") || strstr(actionKey.c_str(), "SSA") || strstr(actionKey.c_str(), "SRT") || strstr(actionKey.c_str(), "UTF-8") || strstr(actionKey.c_str(), "XSUB"))
 	{
 		char const * pidptr = strchr(actionKey.c_str(), ':');
 		
@@ -207,6 +210,9 @@ int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
 		
 		tuxtx_stop_subtitle();
 		int page = 0; // FIXME: get page / language from player
+		
+		if (playlist[selected].vtxtPids.size())
+			page = playlist[selected].vtxtPids[currentspid].page;
 		
 		tuxtx_main(0, page, true);		
 	}
