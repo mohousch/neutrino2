@@ -68,14 +68,6 @@ class CMoviePlayerGui : public CMenuTarget
 		unsigned int file_prozent;
 		int startposition;
 		int g_jumpseconds;
-
-		//
-		unsigned short g_numpida;
-		unsigned short g_vpid;
-		unsigned short g_vtype;
-		unsigned int g_currentapid;
-		unsigned int g_currentac3;
-		int g_currentsubpid;
 		
 		// playlist
 		CMoviePlayList playlist;

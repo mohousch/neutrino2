@@ -141,8 +141,7 @@ int CAVPIDChangeExec::exec(CMenuTarget*, const std::string & actionKey)
 		if(playback)
 			playback->SetAPid(currentapid);
 		
-		if(currentac3)
-			ac3state = CInfoViewer::AC3_ACTIVE;
+		ac3state = currentac3? CInfoViewer::AC3_ACTIVE : CInfoViewer::NO_AC3;
 		
 		dprintf(DEBUG_NORMAL, "CAPIDSelect::exec: apid changed to %d\n", currentapid);
 	}

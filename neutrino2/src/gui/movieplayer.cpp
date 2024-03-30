@@ -105,6 +105,7 @@
 ////
 extern unsigned int ac3state;
 extern unsigned int currentapid;
+//
 extern int currentsdvbpid;
 extern int currentstxtpid;
 extern int currentspid;
@@ -433,14 +434,6 @@ int CMoviePlayerGui::exec(CMenuTarget * parent, const std::string & actionKey)
 	
 	//
 	time_forced = false;
-	
-	// 
-	g_numpida = 0;
-	g_vpid = 0;
-	g_vtype = 0;
-	g_currentapid = 0;
-	g_currentac3 = 0;
-	g_currentsubpid = -1;
 
 	//
 	sec_timer_id = 0;
@@ -471,6 +464,7 @@ int CMoviePlayerGui::exec(CMenuTarget * parent, const std::string & actionKey)
 	currentapid = 0;
 	currentsdvbpid = -1;
 	currentstxtpid = -1;
+	currentspid = -1;
 	
 	//
 	CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
@@ -550,28 +544,8 @@ void CMoviePlayerGui::playNext()
 		{
 			if(!playlist[selected].audioPids.empty()) 
 			{
-				g_currentapid = playlist[selected].audioPids[0].epgAudioPid;
-				g_currentac3 = playlist[selected].audioPids[0].atype;
-
-				//
-				currentapid = g_currentapid;
+				ac3state = playlist[selected].audioPids[currentapid].atype? CInfoViewer::AC3_ACTIVE : CInfoViewer::NO_AC3;
 			}
-
-			for (int i = 0; i < (int)playlist[selected].audioPids.size(); i++) 
-			{
-				if (playlist[selected].audioPids[i].selected) 
-				{
-					g_currentapid = i;							
-					g_currentac3 = playlist[selected].audioPids[i].atype;
-
-					//
-					currentapid = 0;
-				}
-			}
-
-			//
-			g_vpid = playlist[selected].epgVideoPid;
-			g_vtype = playlist[selected].VideoType;
 
 			// startposition
 			if (!m_multiselect)			
@@ -611,28 +585,8 @@ void CMoviePlayerGui::playPrev()
 		{
 			if(!playlist[selected].audioPids.empty()) 
 			{
-				g_currentapid = playlist[selected].audioPids[0].epgAudioPid;
-				g_currentac3 = playlist[selected].audioPids[0].atype;
-
-				//
-				currentapid = g_currentapid;
+				ac3state = playlist[selected].audioPids[currentapid].atype? CInfoViewer::AC3_ACTIVE : CInfoViewer::NO_AC3;
 			}
-
-			for (int i = 0; i < (int)playlist[selected].audioPids.size(); i++) 
-			{
-				if (playlist[selected].audioPids[i].selected) 
-				{
-					g_currentapid = i;
-					g_currentac3 = playlist[selected].audioPids[i].atype;
-
-					//
-					currentapid = 0;
-				}
-			}
-
-			//
-			g_vpid = playlist[selected].epgVideoPid;
-			g_vtype = playlist[selected].VideoType;
 
 			// startposition
 			if (!m_multiselect)			
@@ -691,28 +645,8 @@ void CMoviePlayerGui::PlayFile(void)
 		{
 			if(!playlist[selected].audioPids.empty()) 
 			{
-				g_currentapid = playlist[selected].audioPids[0].epgAudioPid;
-				g_currentac3 = playlist[selected].audioPids[0].atype;
-
-				//
-				currentapid = g_currentapid;
+				ac3state = playlist[selected].audioPids[currentapid].atype? CInfoViewer::AC3_ACTIVE : CInfoViewer::NO_AC3;
 			}
-
-			for (int i = 0; i < (int)playlist[selected].audioPids.size(); i++) 
-			{
-				if (playlist[selected].audioPids[i].selected) 
-				{
-					g_currentapid = i;	//FIXME						
-					g_currentac3 = playlist[selected].audioPids[i].atype;
-					
-					//
-					currentapid = 0;
-				}
-			}
-
-			//
-			g_vpid = playlist[selected].epgVideoPid;
-			g_vtype = playlist[selected].VideoType;
 
 			// startposition
 			if (!m_multiselect)			
