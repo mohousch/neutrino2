@@ -31,7 +31,7 @@
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>
 
-#include <gui/movieinfo.h>
+//#include <gui/movieinfo.h>
 
 
 ////

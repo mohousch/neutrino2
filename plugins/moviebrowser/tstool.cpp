@@ -17,7 +17,6 @@
 #include <gui/widget/helpbox.h>
 #include <gui/widget/messagebox.h>
 #include <gui/widget/stringinput_ext.h>
-#include <gui/movieinfo.h>
 
 #include <dirent.h>
 #include <sys/stat.h>
@@ -36,8 +35,8 @@
 
 #include <system/debug.h>
 
-#include <gui/movieinfo.h>
 
+#include <driver/movieinfo.h>
 #include <driver/gfx/color.h>
 #include <driver/gfx/framebuffer.h>
 

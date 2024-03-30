@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-03-25 14:15+0200\n"
+"POT-Creation-Date: 2024-03-31 01:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -79,7 +79,7 @@ msgstr ""
 msgid "Browser hight [Pixel]"
 msgstr ""
 
-#: ../../moviebrowser/tstool.cpp:279
+#: ../../moviebrowser/tstool.cpp:278
 msgid "Cancel movie cut/split ?"
 msgstr ""
 
@@ -230,7 +230,7 @@ msgstr ""
 #: ../../moviebrowser/moviebrowser.cpp:975
 #: ../../moviebrowser/moviebrowser.cpp:986
 #: ../../moviebrowser/moviebrowser.cpp:1008
-#: ../../moviebrowser/moviebrowser.cpp:3699 ../../moviebrowser/tstool.cpp:279
+#: ../../moviebrowser/moviebrowser.cpp:3699 ../../moviebrowser/tstool.cpp:278
 msgid "Information"
 msgstr ""
 
@@ -447,7 +447,7 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:463
+#: ../../moviebrowser/moviebrowser.h:464
 msgid "Show / Gameshow"
 msgstr ""
 
@@ -515,15 +515,15 @@ msgstr ""
 msgid "activated"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:457
+#: ../../moviebrowser/moviebrowser.h:458
 msgid "adult movie/drama"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:451
+#: ../../moviebrowser/moviebrowser.h:452
 msgid "adventure/western/war"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:522
+#: ../../moviebrowser/moviebrowser.h:523
 msgid "advertisement/shopping"
 msgstr ""
 
@@ -531,15 +531,15 @@ msgstr ""
 msgid "always"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:492
+#: ../../moviebrowser/moviebrowser.h:493
 msgid "arts / culture"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:502
+#: ../../moviebrowser/moviebrowser.h:503
 msgid "arts/culture magazines"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:473
+#: ../../moviebrowser/moviebrowser.h:474
 msgid "athletics"
 msgstr ""
 
@@ -547,91 +547,91 @@ msgstr ""
 msgid "back"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:491
+#: ../../moviebrowser/moviebrowser.h:492
 msgid "ballet"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:500
+#: ../../moviebrowser/moviebrowser.h:501
 msgid "broadcasting/press"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:484
+#: ../../moviebrowser/moviebrowser.h:485
 msgid "cartoons/puppets"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:479
+#: ../../moviebrowser/moviebrowser.h:480
 msgid "children / juvenile program"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:453
+#: ../../moviebrowser/moviebrowser.h:454
 msgid "comedy"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:521
+#: ../../moviebrowser/moviebrowser.h:522
 msgid "cooking"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:450
+#: ../../moviebrowser/moviebrowser.h:451
 msgid "detective/thriller"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:462
+#: ../../moviebrowser/moviebrowser.h:463
 msgid "discussion/interview/debate"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:461
+#: ../../moviebrowser/moviebrowser.h:462
 msgid "documentary"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:508
+#: ../../moviebrowser/moviebrowser.h:509
 msgid "documentation / magazine"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:506
+#: ../../moviebrowser/moviebrowser.h:507
 msgid "economics/social advisory"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:482
+#: ../../moviebrowser/moviebrowser.h:483
 msgid "entertainment programmes for 10 to 16"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:481
+#: ../../moviebrowser/moviebrowser.h:482
 msgid "entertainment programmes for 6 to 14"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:477
+#: ../../moviebrowser/moviebrowser.h:478
 msgid "equestrian"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:499
+#: ../../moviebrowser/moviebrowser.h:500
 msgid "experimental film/video"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:503
+#: ../../moviebrowser/moviebrowser.h:504
 msgid "fashion"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:498
+#: ../../moviebrowser/moviebrowser.h:499
 msgid "film/cinema"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:494
+#: ../../moviebrowser/moviebrowser.h:495
 msgid "fine arts"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:520
+#: ../../moviebrowser/moviebrowser.h:521
 msgid "fitness & health"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:488
+#: ../../moviebrowser/moviebrowser.h:489
 msgid "folk/traditional music"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:470
+#: ../../moviebrowser/moviebrowser.h:471
 msgid "football/soccer"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:512
+#: ../../moviebrowser/moviebrowser.h:513
 msgid "foreign countries/expeditions"
 msgstr ""
 
@@ -639,31 +639,31 @@ msgstr ""
 msgid "frame hight"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:514
+#: ../../moviebrowser/moviebrowser.h:515
 msgid "further education"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:464
+#: ../../moviebrowser/moviebrowser.h:465
 msgid "game show/quiz/contest"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:523
+#: ../../moviebrowser/moviebrowser.h:524
 msgid "gardening"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:518
+#: ../../moviebrowser/moviebrowser.h:519
 msgid "handicraft"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:483
+#: ../../moviebrowser/moviebrowser.h:484
 msgid "informational/educational/school programmes"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:489
+#: ../../moviebrowser/moviebrowser.h:490
 msgid "jazz"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:515
+#: ../../moviebrowser/moviebrowser.h:516
 msgid "languages"
 msgstr ""
 
@@ -671,43 +671,43 @@ msgstr ""
 msgid "last play max items"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:497
+#: ../../moviebrowser/moviebrowser.h:498
 msgid "literature"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:505
+#: ../../moviebrowser/moviebrowser.h:506
 msgid "magazines/reports/documentary"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:478
+#: ../../moviebrowser/moviebrowser.h:479
 msgid "martial sports"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:511
+#: ../../moviebrowser/moviebrowser.h:512
 msgid "medicine/physiology/psychology"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:474
+#: ../../moviebrowser/moviebrowser.h:475
 msgid "motor sports"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:519
+#: ../../moviebrowser/moviebrowser.h:520
 msgid "motoring"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:449
+#: ../../moviebrowser/moviebrowser.h:450
 msgid "movie/drama"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:485
+#: ../../moviebrowser/moviebrowser.h:486
 msgid "music / ballet / dance"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:490
+#: ../../moviebrowser/moviebrowser.h:491
 msgid "musical/opera"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:509
+#: ../../moviebrowser/moviebrowser.h:510
 msgid "nature/animals/environment"
 msgstr ""
 
@@ -715,31 +715,31 @@ msgstr ""
 msgid "never"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:501
+#: ../../moviebrowser/moviebrowser.h:502
 msgid "new media"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:458
+#: ../../moviebrowser/moviebrowser.h:459
 msgid "news"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:460
+#: ../../moviebrowser/moviebrowser.h:461
 msgid "news magazine"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:459
+#: ../../moviebrowser/moviebrowser.h:460
 msgid "news/weather report"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:493
+#: ../../moviebrowser/moviebrowser.h:494
 msgid "performing arts"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:496
+#: ../../moviebrowser/moviebrowser.h:497
 msgid "popular culture/traditional arts"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:480
+#: ../../moviebrowser/moviebrowser.h:481
 msgid "pre-school children's programmes"
 msgstr ""
 
@@ -747,11 +747,11 @@ msgstr ""
 msgid "record max items"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:495
+#: ../../moviebrowser/moviebrowser.h:496
 msgid "religion"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:507
+#: ../../moviebrowser/moviebrowser.h:508
 msgid "remarkable people"
 msgstr ""
 
@@ -760,11 +760,11 @@ msgstr ""
 msgid "remove screenshot?"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:486
+#: ../../moviebrowser/moviebrowser.h:487
 msgid "rock/pop"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:455
+#: ../../moviebrowser/moviebrowser.h:456
 msgid "romance"
 msgstr ""
 
@@ -784,55 +784,55 @@ msgstr ""
 msgid "scan for Movies ..."
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:452
+#: ../../moviebrowser/moviebrowser.h:453
 msgid "science fiction/fantasy/horror"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:487
+#: ../../moviebrowser/moviebrowser.h:488
 msgid "serious music/classical music"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:456
+#: ../../moviebrowser/moviebrowser.h:457
 msgid "serious/classical/religious/historical movie/drama"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:454
+#: ../../moviebrowser/moviebrowser.h:455
 msgid "soap/melodrama/folkloric"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:504
+#: ../../moviebrowser/moviebrowser.h:505
 msgid "social & politic events / business"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:513
+#: ../../moviebrowser/moviebrowser.h:514
 msgid "social/spiritual sciences"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:468
+#: ../../moviebrowser/moviebrowser.h:469
 msgid "special events (Olympic Games,World Cup etc.)"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:467
+#: ../../moviebrowser/moviebrowser.h:468
 msgid "sports"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:469
+#: ../../moviebrowser/moviebrowser.h:470
 msgid "sports magazines"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:466
+#: ../../moviebrowser/moviebrowser.h:467
 msgid "talk show"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:472
+#: ../../moviebrowser/moviebrowser.h:473
 msgid "team sports (excluding football)"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:510
+#: ../../moviebrowser/moviebrowser.h:511
 msgid "technology/natural sciences"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:471
+#: ../../moviebrowser/moviebrowser.h:472
 msgid "tennis/squash"
 msgstr ""
 
@@ -840,27 +840,27 @@ msgstr ""
 msgid "tmdb Info"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:517
+#: ../../moviebrowser/moviebrowser.h:518
 msgid "tourism/travel"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:516
+#: ../../moviebrowser/moviebrowser.h:517
 msgid "travel & recreation"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:448
+#: ../../moviebrowser/moviebrowser.h:449
 msgid "unknown"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:465
+#: ../../moviebrowser/moviebrowser.h:466
 msgid "variety show"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:475
+#: ../../moviebrowser/moviebrowser.h:476
 msgid "water sports"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:476
+#: ../../moviebrowser/moviebrowser.h:477
 msgid "winter sports"
 msgstr ""
 

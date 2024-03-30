@@ -33,7 +33,7 @@
 
 #include <neutrinoMessages.h>
 
-#include <gui/movieinfo.h>
+#include <driver/movieinfo.h>
 
 /*zapit includes*/
 #include <zapit/zapit.h>

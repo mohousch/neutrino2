@@ -44,7 +44,8 @@ libneutrino2_driver_a_SOURCES = \
 	radiotools.cpp \
 	netfile.cpp \
 	audiofile.cpp \
-	audioplay.cpp
+	audioplay.cpp \
+	movieinfo.cpp
 
 if !BOXTYPE_DGS 
 if !BOXTYPE_FULAN 

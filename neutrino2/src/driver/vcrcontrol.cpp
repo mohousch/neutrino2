@@ -47,8 +47,6 @@
 #include <global.h>
 #include <neutrino2.h>
 
-#include <gui/movieinfo.h>
-
 #include <driver/encoding.h>
 
 #include <gui/widget/messagebox.h>

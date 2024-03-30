@@ -41,7 +41,7 @@
 #include <gui/widget/widget_helpers.h>
 #include <gui/widget/listbox.h>
 
-#include <gui/movieinfo.h>
+#include <driver/movieinfo.h>
 
 
 //

@@ -55,7 +55,6 @@ libneutrino2_gui_a_SOURCES = \
 	plugins.cpp \
 	imageinfo.cpp \
 	audio_select.cpp \
-	movieinfo.cpp \
 	scan_setup.cpp \
 	zapit_setup.cpp \
 	proxyserver_setup.cpp \

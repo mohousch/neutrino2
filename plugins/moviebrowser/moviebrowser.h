@@ -72,7 +72,8 @@
 #include <gui/widget/listframe.h>
 #include <gui/widget/menue.h>
 #include <gui/widget/textbox.h>
-#include <gui/movieinfo.h>
+
+#include <driver/movieinfo.h>
 #include <driver/file.h>
 
 

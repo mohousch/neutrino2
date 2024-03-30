@@ -65,6 +65,7 @@
 #include <driver/shutdown_count.h>
 #include <driver/streamts.h>
 #include <driver/hdmi_cec.h>
+#include <driver/movieinfo.h>
 
 #include <driver/gfx/framebuffer.h>
 #include <driver/gfx/fontrenderer.h>
@@ -126,7 +127,6 @@
 #include <gui/misc_setup.h>
 #include <gui/vfdcontroler.h>
 #include <gui/dvbsub_select.h>
-#include <gui/movieinfo.h>
 #include <gui/epg_menu.h>
 
 #include <system/setting_helpers.h>

@@ -170,7 +170,6 @@
 %include <src/gui/widget/widget.h>
 
 // gui
-//%include <src/gui/movieinfo.h>
 %include <src/gui/audioplayer.h>
 %include <src/gui/movieplayer.h>
 %include <src/gui/pictureviewer.h>

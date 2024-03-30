@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-03-30 17:38+0200\n"
+"POT-Creation-Date: 2024-03-31 00:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -159,7 +159,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2288 ../../src/gui/movieplayer.cpp:2289
 #: ../../src/gui/movieplayer.cpp:2303 ../../src/gui/movieplayer.cpp:2287
 #: ../../src/gui/movieplayer.cpp:2290 ../../src/gui/movieplayer.cpp:2300
-#: ../../src/gui/movieplayer.cpp:2302
+#: ../../src/gui/movieplayer.cpp:2302 ../../src/driver/movieinfo.cpp:905
 msgid "Actors"
 msgstr ""
 
@@ -204,7 +204,7 @@ msgstr ""
 
 #: ../../src/gui/movieinfo.cpp:955 ../../src/gui/movieinfo.cpp:977
 #: ../../src/gui/movieinfo.cpp:975 ../../src/gui/movieinfo.cpp:978
-#: ../../src/gui/movieinfo.cpp:979
+#: ../../src/gui/movieinfo.cpp:979 ../../src/driver/movieinfo.cpp:977
 msgid "Age"
 msgstr ""
 
@@ -293,7 +293,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1982 ../../src/gui/movieplayer.cpp:1983
 #: ../../src/gui/movieplayer.cpp:1997 ../../src/gui/movieplayer.cpp:1981
 #: ../../src/gui/movieplayer.cpp:1984 ../../src/gui/movieplayer.cpp:1994
-#: ../../src/gui/movieplayer.cpp:1996
+#: ../../src/gui/movieplayer.cpp:1996 ../../src/driver/movieinfo.cpp:1002
 msgid "Audio"
 msgstr ""
 
@@ -660,6 +660,7 @@ msgstr ""
 #: ../../src/gui/eventlist.cpp:804 ../../src/gui/streaminfo.cpp:709
 #: ../../src/gui/movieinfo.cpp:954 ../../src/gui/movieinfo.cpp:952
 #: ../../src/gui/movieinfo.cpp:955 ../../src/gui/movieinfo.cpp:956
+#: ../../src/driver/movieinfo.cpp:954
 msgid "Channel"
 msgstr ""
 
@@ -775,7 +776,7 @@ msgstr ""
 
 #: ../../src/gui/movieinfo.cpp:899 ../../src/gui/movieinfo.cpp:921
 #: ../../src/gui/movieinfo.cpp:919 ../../src/gui/movieinfo.cpp:922
-#: ../../src/gui/movieinfo.cpp:923
+#: ../../src/gui/movieinfo.cpp:923 ../../src/driver/movieinfo.cpp:921
 msgid "Country"
 msgstr ""
 
@@ -1535,7 +1536,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2280 ../../src/gui/movieplayer.cpp:2281
 #: ../../src/gui/movieplayer.cpp:2295 ../../src/gui/movieplayer.cpp:2279
 #: ../../src/gui/movieplayer.cpp:2282 ../../src/gui/movieplayer.cpp:2292
-#: ../../src/gui/movieplayer.cpp:2294
+#: ../../src/gui/movieplayer.cpp:2294 ../../src/driver/movieinfo.cpp:881
 msgid "Genre"
 msgstr ""
 
@@ -2073,6 +2074,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:804 ../../src/gui/movieplayer.cpp:818
 #: ../../src/gui/movieplayer.cpp:805 ../../src/gui/movieplayer.cpp:808
 #: ../../src/gui/movieplayer.cpp:820 ../../src/gui/movieplayer.cpp:821
+#: ../../src/driver/movieinfo.cpp:1472
 msgid "Jump over"
 msgstr ""
 
@@ -2147,7 +2149,7 @@ msgstr ""
 
 #: ../../src/gui/movieinfo.cpp:995 ../../src/gui/movieinfo.cpp:1017
 #: ../../src/gui/movieinfo.cpp:1015 ../../src/gui/movieinfo.cpp:1018
-#: ../../src/gui/movieinfo.cpp:1019
+#: ../../src/gui/movieinfo.cpp:1019 ../../src/driver/movieinfo.cpp:1017
 msgid "Last play date"
 msgstr ""
 
@@ -2199,6 +2201,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2278 ../../src/gui/movieplayer.cpp:2292
 #: ../../src/gui/movieplayer.cpp:2276 ../../src/gui/movieplayer.cpp:2279
 #: ../../src/gui/movieplayer.cpp:2289 ../../src/gui/movieplayer.cpp:2291
+#: ../../src/driver/movieinfo.cpp:990
 msgid "Length (Min)"
 msgstr ""
 
@@ -2673,6 +2676,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:802 ../../src/gui/movieplayer.cpp:816
 #: ../../src/gui/movieplayer.cpp:803 ../../src/gui/movieplayer.cpp:806
 #: ../../src/gui/movieplayer.cpp:818 ../../src/gui/movieplayer.cpp:819
+#: ../../src/driver/movieinfo.cpp:1468
 msgid "New Bookmark"
 msgstr ""
 
@@ -2873,6 +2877,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2283 ../../src/gui/movieplayer.cpp:2297
 #: ../../src/gui/movieplayer.cpp:2281 ../../src/gui/movieplayer.cpp:2284
 #: ../../src/gui/movieplayer.cpp:2294 ../../src/gui/movieplayer.cpp:2296
+#: ../../src/driver/movieinfo.cpp:888
 msgid "Original Title"
 msgstr ""
 
@@ -2935,7 +2940,7 @@ msgstr ""
 
 #: ../../src/gui/movieinfo.cpp:1027 ../../src/gui/movieinfo.cpp:1049
 #: ../../src/gui/movieinfo.cpp:1047 ../../src/gui/movieinfo.cpp:1050
-#: ../../src/gui/movieinfo.cpp:1051
+#: ../../src/gui/movieinfo.cpp:1051 ../../src/driver/movieinfo.cpp:1049
 msgid "Path"
 msgstr ""
 
@@ -3108,7 +3113,7 @@ msgstr ""
 
 #: ../../src/gui/movieinfo.cpp:943 ../../src/gui/movieinfo.cpp:965
 #: ../../src/gui/movieinfo.cpp:963 ../../src/gui/movieinfo.cpp:966
-#: ../../src/gui/movieinfo.cpp:967
+#: ../../src/gui/movieinfo.cpp:967 ../../src/driver/movieinfo.cpp:965
 msgid "Quality"
 msgstr ""
 
@@ -3175,7 +3180,7 @@ msgstr ""
 
 #: ../../src/gui/movieinfo.cpp:1001 ../../src/gui/movieinfo.cpp:1023
 #: ../../src/gui/movieinfo.cpp:1021 ../../src/gui/movieinfo.cpp:1024
-#: ../../src/gui/movieinfo.cpp:1025
+#: ../../src/gui/movieinfo.cpp:1025 ../../src/driver/movieinfo.cpp:1023
 msgid "Record date"
 msgstr ""
 
@@ -3322,6 +3327,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:803 ../../src/gui/movieplayer.cpp:817
 #: ../../src/gui/movieplayer.cpp:804 ../../src/gui/movieplayer.cpp:807
 #: ../../src/gui/movieplayer.cpp:819 ../../src/gui/movieplayer.cpp:820
+#: ../../src/driver/movieinfo.cpp:1470
 msgid "Repeat"
 msgstr ""
 
@@ -3666,7 +3672,7 @@ msgstr ""
 
 #: ../../src/gui/movieinfo.cpp:921 ../../src/gui/movieinfo.cpp:943
 #: ../../src/gui/movieinfo.cpp:941 ../../src/gui/movieinfo.cpp:944
-#: ../../src/gui/movieinfo.cpp:945
+#: ../../src/gui/movieinfo.cpp:945 ../../src/driver/movieinfo.cpp:943
 msgid "Serie"
 msgstr ""
 
@@ -3797,7 +3803,7 @@ msgstr ""
 
 #: ../../src/gui/movieinfo.cpp:1014 ../../src/gui/movieinfo.cpp:1036
 #: ../../src/gui/movieinfo.cpp:1034 ../../src/gui/movieinfo.cpp:1037
-#: ../../src/gui/movieinfo.cpp:1038
+#: ../../src/gui/movieinfo.cpp:1038 ../../src/driver/movieinfo.cpp:1036
 msgid "Size"
 msgstr ""
 
@@ -4717,7 +4723,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2284 ../../src/gui/movieplayer.cpp:2285
 #: ../../src/gui/movieplayer.cpp:2299 ../../src/gui/movieplayer.cpp:2283
 #: ../../src/gui/movieplayer.cpp:2286 ../../src/gui/movieplayer.cpp:2296
-#: ../../src/gui/movieplayer.cpp:2298
+#: ../../src/gui/movieplayer.cpp:2298 ../../src/driver/movieinfo.cpp:931
 msgid "Year of production"
 msgstr ""
 

@@ -46,7 +46,6 @@
 #include <unistd.h>
 
 #include <gui/widget/infobox.h>
-#include <gui/movieinfo.h>
 
 #include <system/debug.h>
 #include <system/helpers.h>
@@ -54,6 +53,7 @@
 #include <system/settings.h>
 
 #include <driver/encoding.h>
+#include <driver/movieinfo.h>
 
 #include <driver/audioplay.h>
 #include <gui/movieplayer.h>

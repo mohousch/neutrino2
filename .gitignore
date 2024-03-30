@@ -2224,3 +2224,5 @@
 /neutrino2/lib/libeplayer3/output/.deps/subtitle.Po
 /neutrino2/lib/libeplayer3/output/subtitle.o
 /neutrino2/src/driver/lcd/stObGJvo
+/neutrino2/src/driver/.deps/movieinfo.Po
+/neutrino2/src/driver/movieinfo.o

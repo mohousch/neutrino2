@@ -46,7 +46,6 @@ neutrino2_LDADD = \
 	system/ytparser.o \
 	system/tmdbparser.o \
 	driver/libneutrino2_driver.a \
-	gui/movieinfo.o \
 	gui/pictureviewer.o \
 	gui/audioplayer.o \
 	driver/gfx/libneutrino2_driver_gfx.a \
