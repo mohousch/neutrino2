@@ -80,6 +80,7 @@ extern Writer_t WriterAudioAC3;
 extern Writer_t WriterAudioEAC3;
 extern Writer_t WriterAudioAAC;
 extern Writer_t WriterAudioDTS;
+extern Writer_t WriterAudioDTSHD;
 extern Writer_t WriterAudioWMA;
 extern Writer_t WriterAudioWMAPRO;
 extern Writer_t WriterAudioVORBIS;
@@ -117,6 +118,7 @@ static Writer_t * AvailableWriter[] =
 	&WriterAudioAC3,
 	&WriterAudioEAC3,
 	&WriterAudioAAC,
+	&WriterAudioDTS,
 	&WriterAudioDTS,
 	&WriterAudioWMA,
 	&WriterAudioWMAPRO,

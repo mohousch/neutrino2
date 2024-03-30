@@ -242,6 +242,9 @@ static char* Codec2Encoding(AVCodecContext* codec, int* version)
 		case AV_CODEC_ID_EAC3:
 			return "A_EAC3";
 			
+		case AV_CODEC_ID_TRUEHD:
+			return "A_TRUEHD";
+			
 		case AV_CODEC_ID_DTS:
 			return "A_DTS";			
 			
@@ -608,10 +611,11 @@ static void FFMPEGThread(Context_t *context)
 					extradata.uBitsPerSample = 16;
 					extradata.bLittleEndian = 1;
 					extradata.avCodecId = audioTrack->stream->codec->codec_id;
-					//extradata.bits_per_coded_sample = audioTrack->stream->bits_per_coded_sample;
-					//extradata.bit_rate = audioTrack->stream->bit_rate;
-                			//extradata.block_align = audioTrack->stream->block_align;
-                			//extradata.frame_size = audioTrack->stream->frame_size;
+					extradata.bits_per_coded_sample = &audioTrack->stream->codec->bits_per_coded_sample;
+					extradata.bit_rate = &audioTrack->stream->codec->bit_rate;
+                			extradata.block_align = &audioTrack->stream->codec->block_align;
+                			extradata.frame_size = &audioTrack->stream->codec->frame_size;
+                			extradata.bResampling  = 1;
 					
 					//
 					if(!strncmp(audioTrack->Encoding, "A_PCM", 5))
@@ -650,12 +654,12 @@ static void FFMPEGThread(Context_t *context)
 
 						while(packet.size > 0)
 						{
-							int decoded_data_size = samples_size;
+							int got_frame = 0;
 
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
-							bytesDone = avcodec_decode_audio4(audioTrack->stream->codec, samples, &decoded_data_size, &packet);
+							bytesDone = avcodec_decode_audio4(audioTrack->stream->codec, samples, &got_frame, &packet);
 #else
-							bytesDone = avcodec_send_packet(&audioTrack->stream->codec, &packet);
+							bytesDone = avcodec_send_packet(audioTrack->stream->codec, &packet);
 							
              						if (bytesDone < 0 && bytesDone != AVERROR(EAGAIN) && bytesDone != AVERROR_EOF) 
              						{
@@ -665,7 +669,7 @@ static void FFMPEGThread(Context_t *context)
              							bytesDone = avcodec_receive_frame(audioTrack->stream->codec, samples);
              						}
 #endif
-
+							/*
 							if(bytesDone < 0) // Error Happend
 							    break;
 
@@ -674,9 +678,11 @@ static void FFMPEGThread(Context_t *context)
 
 							if(decoded_data_size <= 0)
 							    continue;
+							*/
+							samples_size = av_rescale_rnd(samples->nb_samples, audioTrack->stream->codec->sample_rate, audioTrack->stream->codec->sample_rate, AV_ROUND_UP);
 
 							avOut.data       = samples;
-							avOut.len        = decoded_data_size;
+							avOut.len        = samples_size;
 
 							avOut.pts        = audioTrack->pts;
 							avOut.extradata  = (unsigned char *) &extradata;
@@ -899,7 +905,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 
 		char* encoding = Codec2Encoding(stream->codec, &version);
 
-		ffmpeg_printf(10, "%d. encoding = %s - version %d CODEC_TYPE:%d\n", n, encoding? encoding : "NULL", version, stream->codec->codec_type);
+		ffmpeg_printf(10, "%d. encoding = %s - version %d CODEC_TYPE:0x%x codec_id 0x%x\n", n, encoding? encoding : "NULL", version, stream->codec->codec_type, stream->codec->codec_id);
 
 		//
 		memset(&track, 0, sizeof(track));
@@ -912,7 +918,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 #else
 			case CODEC_TYPE_VIDEO:
 #endif        
-			ffmpeg_printf(10, "CODEC_TYPE_VIDEO %d\n", stream->codec->codec_type);
+//			ffmpeg_printf(10, "CODEC_TYPE_VIDEO %d\n", stream->codec->codec_type);
 
 			if (encoding != NULL) 
 			{
@@ -1002,7 +1008,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 #else
 			case CODEC_TYPE_AUDIO:
 #endif        
-			ffmpeg_printf(10, "CODEC_TYPE_AUDIO %d\n", stream->codec->codec_type);
+//			ffmpeg_printf(10, "CODEC_TYPE_AUDIO %d\n", stream->codec->codec_type);
 
 			if (encoding != NULL) 
 			{
@@ -1238,7 +1244,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 #else
 				AVDictionaryEntry * lang;
 #endif
-				ffmpeg_printf(10, "CODEC_TYPE_SUBTITLE %d\n", stream->codec->codec_type);
+//				ffmpeg_printf(10, "CODEC_TYPE_SUBTITLE %d\n", stream->codec->codec_type);
 
 #if LIBAVCODEC_VERSION_MAJOR < 54
 				lang = av_metadata_get(stream->metadata, "language", NULL, 0);
@@ -1296,7 +1302,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 					
 					uint8_t *data = stream->codec->extradata;
 					int size = stream->codec->extradata_size;
-					if (size > 0 && 2 * size - 1 == (int) sizeof(track.Name))
+					if (size > 0 /*&& 2 * size - 1 == (int) sizeof(track.Name)*/)
 					{
 						for (int i = 0; i < size; i += 2)
 						{

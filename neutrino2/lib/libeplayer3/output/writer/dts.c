@@ -153,7 +153,7 @@ static int writeData(void* _call)
 /* Writer  Definition            */
 /* ***************************** */
 // dts
-static WriterCaps_t caps = {
+static WriterCaps_t caps_dts = {
 	"dts",
 	eAudio,
 	"A_DTS",
@@ -164,6 +164,22 @@ struct Writer_s WriterAudioDTS = {
 	&reset,
 	&writeData,
 	NULL,
-	&caps
+	&caps_dts
 };
+
+// dtshd
+static WriterCaps_t caps_dtshd = {
+	"dtshd",
+	eAudio,
+	"A_TRUEHD",
+	AUDIO_STREAMTYPE_DTSHD
+};
+
+struct Writer_s WriterAudioDTSHD = {
+	&reset,
+	&writeData,
+	NULL,
+	&caps_dtshd
+};
+
 

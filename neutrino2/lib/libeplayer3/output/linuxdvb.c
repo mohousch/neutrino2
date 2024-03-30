@@ -1200,7 +1200,7 @@ static int Write(void* _context, void* _out)
 			int out_linesize;
 			
 			//
-			obuf_size = av_rescale_rnd(/*swr_get_delay(swr, ctx->sample_rate) +*/ aframe->nb_samples, ctx->sample_rate, ctx->sample_rate, AV_ROUND_UP);
+			obuf_size = av_rescale_rnd(aframe->nb_samples, ctx->sample_rate, ctx->sample_rate, AV_ROUND_UP);
 
 			if (obuf_size > obuf_size_max)
 			{

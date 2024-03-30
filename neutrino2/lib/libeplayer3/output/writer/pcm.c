@@ -79,6 +79,8 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 /* ***************************** */
 
 static int initialHeader = 1;
+static unsigned int SubFrameLen = 0;
+static unsigned int SubFramesPerPES = 0;
 
 //
 static uint8_t codec_data[18];
@@ -87,10 +89,6 @@ static uint64_t fixed_bufferduration;
 static uint32_t fixed_buffersize;
 static uint8_t *fixed_buffer;
 static uint32_t fixed_bufferfilled;
-
-//
-static unsigned int SubFrameLen = 0;
-static unsigned int SubFramesPerPES = 0;
 
 static const unsigned char clpcm_pes[18] = {   0x00, 0x00, 0x01, 0xBD, //start code
 					0x07, 0xF1,             //pes length
@@ -113,11 +111,12 @@ static const unsigned char clpcm_prv[14] = {   0xA0,   //sub_stream_id
 					0, 0    //resvd for copyright management
 			};
 
-static unsigned char lpcm_pes[18];
 static unsigned char lpcm_prv[14];
-
 static unsigned char breakBuffer[8192];
 static unsigned int breakBufferFillSize = 0;
+
+//
+//static unsigned char lpcm_pes[18];
 
 /* ***************************** */
 /* Prototypes                    */
@@ -140,7 +139,7 @@ static int prepareClipPlay(int uNoOfChannels, int uSampleRate, int uBitsPerSampl
 	SubFramesPerPES = 0;
 	breakBufferFillSize = 0;
 
-	memcpy(lpcm_pes, clpcm_pes, sizeof(lpcm_pes));
+//	memcpy(lpcm_pes, clpcm_pes, sizeof(lpcm_pes));
 	memcpy(lpcm_prv, clpcm_prv, sizeof(lpcm_prv));
 
 	//figure out size of subframe and set up sample rate
@@ -177,11 +176,12 @@ static int prepareClipPlay(int uNoOfChannels, int uSampleRate, int uBitsPerSampl
 	SubFrameLen *= (uBitsPerSample / 8);
 
 	//rewrite PES size to have as many complete subframes per PES as we can
-	SubFramesPerPES = ((2048-sizeof(lpcm_pes))-sizeof(lpcm_prv))/SubFrameLen;
+	//SubFramesPerPES = ((2048-sizeof(lpcm_pes)) - sizeof(lpcm_prv))/SubFrameLen;
+	SubFramesPerPES = ((2048 - 18) - sizeof(lpcm_prv)) / SubFrameLen;
 	SubFrameLen *= SubFramesPerPES;
 
-	lpcm_pes[4] = ((SubFrameLen+(sizeof(lpcm_pes)-6)+sizeof(lpcm_prv))>>8) & 0xFF;
-	lpcm_pes[5] =  (SubFrameLen+(sizeof(lpcm_pes)-6)+sizeof(lpcm_prv))     & 0xFF;
+//	lpcm_pes[4] = ((SubFrameLen+(sizeof(lpcm_pes)-6)+sizeof(lpcm_prv))>>8) & 0xFF;
+//	lpcm_pes[5] =  (SubFrameLen+(sizeof(lpcm_pes)-6)+sizeof(lpcm_prv))     & 0xFF;
 
 	//set number of channels
 	lpcm_prv[10]  = uNoOfChannels - 1;
@@ -207,7 +207,7 @@ static int reset()
 	return 0;
 }
 
-static int writeData(void* _call)
+static uint32_t writeData(void* _call)
 {
 	WriterAVCallData_t* call = (WriterAVCallData_t*) _call;
 
@@ -241,7 +241,6 @@ static int writeData(void* _call)
 
 	//
 	pcmPrivateData_t* pcmPrivateData = (pcmPrivateData_t*)call->private_data;
-	
 	uint8_t *buffer = call->data;
 	uint32_t size = call->len;
 
@@ -364,7 +363,7 @@ static int writeData(void* _call)
 	
 	free(injectBuffer);
 #else
-	if (NULL == fixed_buffer)
+	if (/*pcmPrivateData->bResampling ||*/ NULL == fixed_buffer)
 	{
 		int32_t width = 0;
 		int32_t depth = 0;
@@ -533,7 +532,7 @@ static WriterCaps_t caps_pcm = {
 	"pcm",
 	eAudio,
 	"A_PCM",
-	AUDIO_STREAMTYPE_LPCMDVD
+	AUDIO_STREAMTYPE_RAW
 };
 
 struct Writer_s WriterAudioPCM = {
@@ -548,7 +547,7 @@ static WriterCaps_t caps_ipcm = {
 	"ipcm",
 	eAudio,
 	"A_IPCM",
-	AUDIO_STREAMTYPE_LPCMDVD
+	AUDIO_STREAMTYPE_RAW
 };
 
 struct Writer_s WriterAudioIPCM = {
