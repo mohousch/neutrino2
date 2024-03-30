@@ -353,11 +353,12 @@ void CMoviePlayerGui::startSubtitles(bool show)
 	else if (currentstxtpid >= 0)
 		currentspid = currentstxtpid;
 		
+	dprintf(DEBUG_NORMAL, "startSubtitles: currentspid:%d\n", currentspid);
+		
 	if(playback)
 		playback->SetSubPid(currentspid);
 	
 #ifndef ENABLE_GSTREAMER	
-//	tuxtx_pause_subtitle(false, true);
 	if (currentstxtpid >= 0)
 	{
 		int txtpage = 0;
@@ -375,6 +376,8 @@ void CMoviePlayerGui::startSubtitles(bool show)
 
 void CMoviePlayerGui::stopSubtitles()
 {
+	dprintf(DEBUG_NORMAL, "stopSubtitles: currentspid:%d\n", currentspid);
+	
 	if(playback)
 		playback->SetSubPid(-1);
 	

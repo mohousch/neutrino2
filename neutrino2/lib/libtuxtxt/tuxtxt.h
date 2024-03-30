@@ -1287,7 +1287,7 @@ void RenderCharBB(int Char, tstPageAttr *Attribute);
 void RenderMessage(int Message);
 void RenderPage();
 void DecodePage();
-int  Init(bool);
+int  Init(bool isEplayer= false, int page = 0);
 int  GetNationalSubset(const char* cc);
 int  GetTeletextPIDs();
 int  GetRCCode();

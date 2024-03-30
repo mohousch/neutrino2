@@ -197,8 +197,6 @@ int CSubtitleChangeExec::exec(CMenuTarget *, const std::string & actionKey)
 		ptr = strchr(ptr, ':');
 		ptr++;
 		
-		dprintf(DEBUG_NORMAL, "CSubtitleChangeExec::exec: TTX, pid 0x%x page 0x%x lang %s\n", pid, page, ptr);
-		
 		dvbsub_stop();
 		
 		tuxtx_stop_subtitle();

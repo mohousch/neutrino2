@@ -1245,7 +1245,7 @@ int tuxtx_subtitle_running(int *pid, int *page, int *running)
 //// main loop
 int tuxtx_main(int pid, int page, bool isEplayer)
 {
-	dprintf(DEBUG_NORMAL, "tuxtx_main: TuxTXT 32bpp framebuffer pid:0x%x page:0x%x isEplayer:%s\n", pid, page, isEplayer? "true" : "false");
+	dprintf(DEBUG_NORMAL, "tuxtx_main: pid:0x%x page:0x%x isEplayer:%s\n", pid, page, isEplayer? "true" : "false");
 	
 	use_gui = 1;
 	boxed = 0;
@@ -1265,7 +1265,7 @@ int tuxtx_main(int pid, int page, bool isEplayer)
 		tuxtxt_cache.page = 0x100;
 	
 	// set subtitle pid / page and flag to start sub thread.
-	if(page || isEplayer) 
+	if(page /*|| isEplayer*/) 
 	{
 		sub_page = tuxtxt_cache.page = page;
 		sub_pid = pid;
@@ -1302,7 +1302,7 @@ int tuxtx_main(int pid, int page, bool isEplayer)
 	tuxtxt_cache.vtxtpid = pid;
 
 	// init
-	if (Init(isEplayer) == 0) // init all params and start getteletextpid if no pid given and decode cache thread
+	if (Init(isEplayer, page) == 0) // init all params and start getteletextpid if no pid given and decode cache thread
 		return 0;
 	
 	// create subthread
@@ -1476,9 +1476,9 @@ FT_Error MyFaceRequester(FTC_FaceID face_id, FT_Library _library, FT_Pointer /*r
 }
 
 //// Init
-int Init(bool isEplayer)
+int Init(bool isEplayer, int page)
 {
-	printf("Init: isEplayer:%s\n", isEplayer? "true" : "false");
+	printf("Init: isEplayer:%s page:%d\n", isEplayer? "true" : "false", page);
 	
 	int error, i;
 	unsigned char magazine;
@@ -1708,6 +1708,9 @@ int Init(bool isEplayer)
 	
 	if (isEplayer)
 	{
+		if (page == 0)
+			return 0;
+			
 		SDT_ready = 0;
 
 		if(auto_national && cfg_national_subset)
@@ -1723,7 +1726,7 @@ int Init(bool isEplayer)
 			// get all vtxt-pids
 			getpidsdone = -1;	 // don't kill thread
 
-			if (GetTeletextPIDs(/*isEplayer*/) == 0)
+			if (GetTeletextPIDs() == 0)
 			{
 				return 0;
 			}
@@ -1828,7 +1831,7 @@ void CleanUp()
 //// GetTeletextPIDs
 int GetTeletextPIDs()
 {
-	printf("GetTeletextPIDs\n");
+	printf("GetTeletextPIDs:\n");
 		
 	int pat_scan, pmt_scan, sdt_scan, desc_scan, pid_test, byte, diff, first_sdt_sec;
 

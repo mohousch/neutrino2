@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-03-30 15:32+0200\n"
+"POT-Creation-Date: 2024-03-30 16:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -157,6 +157,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2255 ../../src/gui/movieplayer.cpp:2274
 #: ../../src/gui/movieplayer.cpp:2288 ../../src/gui/movieplayer.cpp:2289
 #: ../../src/gui/movieplayer.cpp:2303 ../../src/gui/movieplayer.cpp:2287
+#: ../../src/gui/movieplayer.cpp:2290
 msgid "Actors"
 msgstr ""
 
@@ -177,6 +178,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2089 ../../src/gui/movieplayer.cpp:2108
 #: ../../src/gui/movieplayer.cpp:2122 ../../src/gui/movieplayer.cpp:2123
 #: ../../src/gui/movieplayer.cpp:2137 ../../src/gui/movieplayer.cpp:2121
+#: ../../src/gui/movieplayer.cpp:2124
 msgid "Add"
 msgstr ""
 
@@ -287,6 +289,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1949 ../../src/gui/movieplayer.cpp:1968
 #: ../../src/gui/movieplayer.cpp:1982 ../../src/gui/movieplayer.cpp:1983
 #: ../../src/gui/movieplayer.cpp:1997 ../../src/gui/movieplayer.cpp:1981
+#: ../../src/gui/movieplayer.cpp:1984
 msgid "Audio"
 msgstr ""
 
@@ -421,6 +424,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:790 ../../src/gui/movieplayer.cpp:1997
 #: ../../src/gui/movieplayer.cpp:804 ../../src/gui/movieplayer.cpp:2011
 #: ../../src/gui/movieplayer.cpp:791 ../../src/gui/movieplayer.cpp:1995
+#: ../../src/gui/movieplayer.cpp:794 ../../src/gui/movieplayer.cpp:1998
 msgid "Bookmarks"
 msgstr ""
 
@@ -782,6 +786,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1699 ../../src/gui/movieplayer.cpp:1718
 #: ../../src/gui/movieplayer.cpp:1732 ../../src/gui/movieplayer.cpp:1733
 #: ../../src/gui/movieplayer.cpp:1747 ../../src/gui/movieplayer.cpp:1731
+#: ../../src/gui/movieplayer.cpp:1734
 msgid "Create bookmark"
 msgstr ""
 
@@ -876,6 +881,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2088 ../../src/gui/movieplayer.cpp:2107
 #: ../../src/gui/movieplayer.cpp:2121 ../../src/gui/movieplayer.cpp:2122
 #: ../../src/gui/movieplayer.cpp:2136 ../../src/gui/movieplayer.cpp:2120
+#: ../../src/gui/movieplayer.cpp:2123
 msgid "Delete"
 msgstr ""
 
@@ -884,6 +890,7 @@ msgstr ""
 #: ../../src/neutrino2_menue.cpp:445 ../../src/system/setting_helpers.cpp:269
 #: ../../src/system/setting_helpers.cpp:264
 #: ../../src/system/setting_helpers.cpp:263
+#: ../../src/system/setting_helpers.cpp:261
 msgid "Delete WebTV channels"
 msgstr ""
 
@@ -900,6 +907,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2090 ../../src/gui/movieplayer.cpp:2109
 #: ../../src/gui/movieplayer.cpp:2123 ../../src/gui/movieplayer.cpp:2124
 #: ../../src/gui/movieplayer.cpp:2138 ../../src/gui/movieplayer.cpp:2122
+#: ../../src/gui/movieplayer.cpp:2125
 msgid "Delete all"
 msgstr ""
 
@@ -913,6 +921,7 @@ msgstr ""
 #: ../../src/neutrino2_menue.cpp:436 ../../src/system/setting_helpers.cpp:268
 #: ../../src/system/setting_helpers.cpp:263
 #: ../../src/system/setting_helpers.cpp:262
+#: ../../src/system/setting_helpers.cpp:260
 msgid "Delete channels"
 msgstr ""
 
@@ -1452,6 +1461,7 @@ msgstr ""
 #: ../../src/neutrino2_menue.cpp:453 ../../src/system/setting_helpers.cpp:270
 #: ../../src/system/setting_helpers.cpp:265
 #: ../../src/system/setting_helpers.cpp:264
+#: ../../src/system/setting_helpers.cpp:262
 msgid "Free Memory"
 msgstr ""
 
@@ -1514,6 +1524,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2247 ../../src/gui/movieplayer.cpp:2266
 #: ../../src/gui/movieplayer.cpp:2280 ../../src/gui/movieplayer.cpp:2281
 #: ../../src/gui/movieplayer.cpp:2295 ../../src/gui/movieplayer.cpp:2279
+#: ../../src/gui/movieplayer.cpp:2282
 msgid "Genre"
 msgstr ""
 
@@ -1692,6 +1703,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1732 ../../src/gui/movieplayer.cpp:1989
 #: ../../src/gui/movieplayer.cpp:1746 ../../src/gui/movieplayer.cpp:2003
 #: ../../src/gui/movieplayer.cpp:1730 ../../src/gui/movieplayer.cpp:1987
+#: ../../src/gui/movieplayer.cpp:1733 ../../src/gui/movieplayer.cpp:1990
 msgid "Help"
 msgstr ""
 
@@ -1986,7 +1998,9 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1768 ../../src/gui/movieplayer.cpp:2329
 #: ../../src/gui/movieplayer.cpp:2359 ../../src/gui/movieplayer.cpp:1617
 #: ../../src/gui/movieplayer.cpp:1752 ../../src/gui/movieplayer.cpp:2313
-#: ../../src/gui/movieplayer.cpp:2343
+#: ../../src/gui/movieplayer.cpp:2343 ../../src/gui/movieplayer.cpp:1620
+#: ../../src/gui/movieplayer.cpp:1755 ../../src/gui/movieplayer.cpp:2316
+#: ../../src/gui/movieplayer.cpp:2346
 msgid "Information"
 msgstr ""
 
@@ -2040,7 +2054,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:770 ../../src/gui/movieinfo.cpp:1474
 #: ../../src/gui/movieplayer.cpp:789 ../../src/gui/movieplayer.cpp:803
 #: ../../src/gui/movieplayer.cpp:804 ../../src/gui/movieplayer.cpp:818
-#: ../../src/gui/movieplayer.cpp:805
+#: ../../src/gui/movieplayer.cpp:805 ../../src/gui/movieplayer.cpp:808
 msgid "Jump over"
 msgstr ""
 
@@ -2132,6 +2146,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1795 ../../src/gui/movieplayer.cpp:1814
 #: ../../src/gui/movieplayer.cpp:1828 ../../src/gui/movieplayer.cpp:1829
 #: ../../src/gui/movieplayer.cpp:1843 ../../src/gui/movieplayer.cpp:1827
+#: ../../src/gui/movieplayer.cpp:1830
 msgid "Last play stop:"
 msgstr ""
 
@@ -2163,7 +2178,7 @@ msgstr ""
 #: ../../src/gui/movieinfo.cpp:992 ../../src/gui/movieplayer.cpp:2244
 #: ../../src/gui/movieplayer.cpp:2263 ../../src/gui/movieplayer.cpp:2277
 #: ../../src/gui/movieplayer.cpp:2278 ../../src/gui/movieplayer.cpp:2292
-#: ../../src/gui/movieplayer.cpp:2276
+#: ../../src/gui/movieplayer.cpp:2276 ../../src/gui/movieplayer.cpp:2279
 msgid "Length (Min)"
 msgstr ""
 
@@ -2215,6 +2230,7 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:267
 #: ../../src/system/setting_helpers.cpp:262
 #: ../../src/system/setting_helpers.cpp:261
+#: ../../src/system/setting_helpers.cpp:259
 msgid "Lock RC"
 msgstr ""
 
@@ -2435,6 +2451,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:772 ../../src/gui/movieplayer.cpp:791
 #: ../../src/gui/movieplayer.cpp:805 ../../src/gui/movieplayer.cpp:806
 #: ../../src/gui/movieplayer.cpp:820 ../../src/gui/movieplayer.cpp:807
+#: ../../src/gui/movieplayer.cpp:810
 msgid "Movie end:"
 msgstr ""
 
@@ -2451,6 +2468,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1696 ../../src/gui/movieplayer.cpp:1715
 #: ../../src/gui/movieplayer.cpp:1729 ../../src/gui/movieplayer.cpp:1730
 #: ../../src/gui/movieplayer.cpp:1744 ../../src/gui/movieplayer.cpp:1728
+#: ../../src/gui/movieplayer.cpp:1731
 msgid "Movie info"
 msgstr ""
 
@@ -2489,7 +2507,8 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1834 ../../src/gui/movieplayer.cpp:819
 #: ../../src/gui/movieplayer.cpp:1836 ../../src/gui/movieplayer.cpp:1848
 #: ../../src/gui/movieplayer.cpp:806 ../../src/gui/movieplayer.cpp:1820
-#: ../../src/gui/movieplayer.cpp:1832
+#: ../../src/gui/movieplayer.cpp:1832 ../../src/gui/movieplayer.cpp:809
+#: ../../src/gui/movieplayer.cpp:1823 ../../src/gui/movieplayer.cpp:1835
 msgid "Movie start:"
 msgstr ""
 
@@ -2506,7 +2525,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2125 ../../src/gui/movieplayer.cpp:2128
 #: ../../src/gui/movieplayer.cpp:2147 ../../src/gui/movieplayer.cpp:2161
 #: ../../src/gui/movieplayer.cpp:2162 ../../src/gui/movieplayer.cpp:2176
-#: ../../src/gui/movieplayer.cpp:2160
+#: ../../src/gui/movieplayer.cpp:2160 ../../src/gui/movieplayer.cpp:2163
 msgid "Movieplayer"
 msgstr ""
 
@@ -2524,6 +2543,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1701 ../../src/gui/movieplayer.cpp:1720
 #: ../../src/gui/movieplayer.cpp:1734 ../../src/gui/movieplayer.cpp:1735
 #: ../../src/gui/movieplayer.cpp:1749 ../../src/gui/movieplayer.cpp:1733
+#: ../../src/gui/movieplayer.cpp:1736
 msgid "Movieplayer settings"
 msgstr ""
 
@@ -2565,6 +2585,7 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:344
 #: ../../src/system/setting_helpers.cpp:339
 #: ../../src/system/setting_helpers.cpp:338
+#: ../../src/system/setting_helpers.cpp:336
 msgid "Name"
 msgstr ""
 
@@ -2624,7 +2645,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:768 ../../src/gui/movieinfo.cpp:1470
 #: ../../src/gui/movieplayer.cpp:787 ../../src/gui/movieplayer.cpp:801
 #: ../../src/gui/movieplayer.cpp:802 ../../src/gui/movieplayer.cpp:816
-#: ../../src/gui/movieplayer.cpp:803
+#: ../../src/gui/movieplayer.cpp:803 ../../src/gui/movieplayer.cpp:806
 msgid "New Bookmark"
 msgstr ""
 
@@ -2640,6 +2661,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:719 ../../src/gui/movieplayer.cpp:738
 #: ../../src/gui/movieplayer.cpp:752 ../../src/gui/movieplayer.cpp:753
 #: ../../src/gui/movieplayer.cpp:767 ../../src/gui/movieplayer.cpp:754
+#: ../../src/gui/movieplayer.cpp:757
 msgid ""
 "New jump back\n"
 " 'blue' for endposition"
@@ -2657,6 +2679,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:724 ../../src/gui/movieplayer.cpp:743
 #: ../../src/gui/movieplayer.cpp:757 ../../src/gui/movieplayer.cpp:758
 #: ../../src/gui/movieplayer.cpp:772 ../../src/gui/movieplayer.cpp:759
+#: ../../src/gui/movieplayer.cpp:762
 msgid ""
 "New jump forward\n"
 " 'blue' for endposition"
@@ -2819,7 +2842,7 @@ msgstr ""
 #: ../../src/gui/movieinfo.cpp:890 ../../src/gui/movieplayer.cpp:2249
 #: ../../src/gui/movieplayer.cpp:2268 ../../src/gui/movieplayer.cpp:2282
 #: ../../src/gui/movieplayer.cpp:2283 ../../src/gui/movieplayer.cpp:2297
-#: ../../src/gui/movieplayer.cpp:2281
+#: ../../src/gui/movieplayer.cpp:2281 ../../src/gui/movieplayer.cpp:2284
 msgid "Original Title"
 msgstr ""
 
@@ -2940,6 +2963,7 @@ msgstr ""
 #: ../../src/gui/pluginlist.cpp:228 ../../src/system/setting_helpers.cpp:265
 #: ../../src/system/setting_helpers.cpp:260
 #: ../../src/system/setting_helpers.cpp:259
+#: ../../src/system/setting_helpers.cpp:257
 msgid "Plugins"
 msgstr ""
 
@@ -2982,6 +3006,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2281 ../../src/gui/movieplayer.cpp:2300
 #: ../../src/gui/movieplayer.cpp:2314 ../../src/gui/movieplayer.cpp:2315
 #: ../../src/gui/movieplayer.cpp:2329 ../../src/gui/movieplayer.cpp:2313
+#: ../../src/gui/movieplayer.cpp:2316
 msgid "Prefer TMDB Infos"
 msgstr ""
 
@@ -3178,6 +3203,7 @@ msgstr ""
 #: ../../src/neutrino2_menue.cpp:477 ../../src/system/setting_helpers.cpp:273
 #: ../../src/system/setting_helpers.cpp:268
 #: ../../src/system/setting_helpers.cpp:267
+#: ../../src/system/setting_helpers.cpp:265
 msgid "Reload EPG"
 msgstr ""
 
@@ -3186,6 +3212,7 @@ msgstr ""
 #: ../../src/neutrino2_menue.cpp:469 ../../src/system/setting_helpers.cpp:272
 #: ../../src/system/setting_helpers.cpp:267
 #: ../../src/system/setting_helpers.cpp:266
+#: ../../src/system/setting_helpers.cpp:264
 msgid "Reload XMLTV EPG"
 msgstr ""
 
@@ -3194,6 +3221,7 @@ msgstr ""
 #: ../../src/neutrino2_menue.cpp:461 ../../src/system/setting_helpers.cpp:271
 #: ../../src/system/setting_helpers.cpp:266
 #: ../../src/system/setting_helpers.cpp:265
+#: ../../src/system/setting_helpers.cpp:263
 msgid "Reload channel lists"
 msgstr ""
 
@@ -3261,7 +3289,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:769 ../../src/gui/movieinfo.cpp:1472
 #: ../../src/gui/movieplayer.cpp:788 ../../src/gui/movieplayer.cpp:802
 #: ../../src/gui/movieplayer.cpp:803 ../../src/gui/movieplayer.cpp:817
-#: ../../src/gui/movieplayer.cpp:804
+#: ../../src/gui/movieplayer.cpp:804 ../../src/gui/movieplayer.cpp:807
 msgid "Repeat"
 msgstr ""
 
@@ -3413,6 +3441,7 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:338
 #: ../../src/system/setting_helpers.cpp:333
 #: ../../src/system/setting_helpers.cpp:332
+#: ../../src/system/setting_helpers.cpp:330
 msgid "Save settings now"
 msgstr ""
 
@@ -3574,6 +3603,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1697 ../../src/gui/movieplayer.cpp:1716
 #: ../../src/gui/movieplayer.cpp:1730 ../../src/gui/movieplayer.cpp:1731
 #: ../../src/gui/movieplayer.cpp:1745 ../../src/gui/movieplayer.cpp:1729
+#: ../../src/gui/movieplayer.cpp:1732
 msgid "Select audio track"
 msgstr ""
 
@@ -3871,6 +3901,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1769 ../../src/gui/movieplayer.cpp:1788
 #: ../../src/gui/movieplayer.cpp:1802 ../../src/gui/movieplayer.cpp:1803
 #: ../../src/gui/movieplayer.cpp:1817 ../../src/gui/movieplayer.cpp:1801
+#: ../../src/gui/movieplayer.cpp:1804
 msgid "Start movie from:"
 msgstr ""
 
@@ -4034,6 +4065,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2091 ../../src/gui/movieplayer.cpp:2110
 #: ../../src/gui/movieplayer.cpp:2124 ../../src/gui/movieplayer.cpp:2125
 #: ../../src/gui/movieplayer.cpp:2139 ../../src/gui/movieplayer.cpp:2123
+#: ../../src/gui/movieplayer.cpp:2126
 msgid "TMDB"
 msgstr ""
 
@@ -4050,6 +4082,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2311 ../../src/gui/movieplayer.cpp:2330
 #: ../../src/gui/movieplayer.cpp:2344 ../../src/gui/movieplayer.cpp:2345
 #: ../../src/gui/movieplayer.cpp:2359 ../../src/gui/movieplayer.cpp:2343
+#: ../../src/gui/movieplayer.cpp:2346
 msgid "TMDB Infos are not available"
 msgstr ""
 
@@ -4309,6 +4342,7 @@ msgstr ""
 #: ../../src/gui/epg_menu.cpp:111 ../../src/system/setting_helpers.cpp:264
 #: ../../src/system/setting_helpers.cpp:259
 #: ../../src/system/setting_helpers.cpp:258
+#: ../../src/system/setting_helpers.cpp:256
 msgid "Timerlist"
 msgstr ""
 
@@ -4458,6 +4492,7 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:342
 #: ../../src/system/setting_helpers.cpp:337
 #: ../../src/system/setting_helpers.cpp:336
+#: ../../src/system/setting_helpers.cpp:334
 msgid "User menu"
 msgstr ""
 
@@ -4541,6 +4576,7 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:266
 #: ../../src/system/setting_helpers.cpp:261
 #: ../../src/system/setting_helpers.cpp:260
+#: ../../src/system/setting_helpers.cpp:258
 msgid "Videotext"
 msgstr ""
 
@@ -4641,6 +4677,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2251 ../../src/gui/movieplayer.cpp:2270
 #: ../../src/gui/movieplayer.cpp:2284 ../../src/gui/movieplayer.cpp:2285
 #: ../../src/gui/movieplayer.cpp:2299 ../../src/gui/movieplayer.cpp:2283
+#: ../../src/gui/movieplayer.cpp:2286
 msgid "Year of production"
 msgstr ""
 
@@ -4762,6 +4799,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1706 ../../src/gui/movieplayer.cpp:1725
 #: ../../src/gui/movieplayer.cpp:1739 ../../src/gui/movieplayer.cpp:1740
 #: ../../src/gui/movieplayer.cpp:1754 ../../src/gui/movieplayer.cpp:1738
+#: ../../src/gui/movieplayer.cpp:1741
 msgid "approx. 1 minute back"
 msgstr ""
 
@@ -4778,6 +4816,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1712 ../../src/gui/movieplayer.cpp:1731
 #: ../../src/gui/movieplayer.cpp:1745 ../../src/gui/movieplayer.cpp:1746
 #: ../../src/gui/movieplayer.cpp:1760 ../../src/gui/movieplayer.cpp:1744
+#: ../../src/gui/movieplayer.cpp:1747
 msgid "approx. 10 minutes back"
 msgstr ""
 
@@ -4794,6 +4833,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1716 ../../src/gui/movieplayer.cpp:1735
 #: ../../src/gui/movieplayer.cpp:1749 ../../src/gui/movieplayer.cpp:1750
 #: ../../src/gui/movieplayer.cpp:1764 ../../src/gui/movieplayer.cpp:1748
+#: ../../src/gui/movieplayer.cpp:1751
 msgid "approx. 10 seconds back"
 msgstr ""
 
@@ -4810,6 +4850,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1709 ../../src/gui/movieplayer.cpp:1728
 #: ../../src/gui/movieplayer.cpp:1742 ../../src/gui/movieplayer.cpp:1743
 #: ../../src/gui/movieplayer.cpp:1757 ../../src/gui/movieplayer.cpp:1741
+#: ../../src/gui/movieplayer.cpp:1744
 msgid "approx. 5 minutes back"
 msgstr ""
 
@@ -4856,6 +4897,7 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:334
 #: ../../src/system/setting_helpers.cpp:329
 #: ../../src/system/setting_helpers.cpp:328
+#: ../../src/system/setting_helpers.cpp:326
 msgid "back"
 msgstr ""
 
@@ -4966,7 +5008,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1582 ../../src/gui/movieplayer.cpp:1585
 #: ../../src/gui/movieplayer.cpp:1604 ../../src/gui/movieplayer.cpp:1618
 #: ../../src/gui/movieplayer.cpp:1619 ../../src/gui/movieplayer.cpp:1633
-#: ../../src/gui/movieplayer.cpp:1617
+#: ../../src/gui/movieplayer.cpp:1617 ../../src/gui/movieplayer.cpp:1620
 msgid "create screenshot?"
 msgstr ""
 
@@ -5091,6 +5133,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1713 ../../src/gui/movieplayer.cpp:1732
 #: ../../src/gui/movieplayer.cpp:1746 ../../src/gui/movieplayer.cpp:1747
 #: ../../src/gui/movieplayer.cpp:1761 ../../src/gui/movieplayer.cpp:1745
+#: ../../src/gui/movieplayer.cpp:1748
 msgid "goto end"
 msgstr ""
 
@@ -5107,6 +5150,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1710 ../../src/gui/movieplayer.cpp:1729
 #: ../../src/gui/movieplayer.cpp:1743 ../../src/gui/movieplayer.cpp:1744
 #: ../../src/gui/movieplayer.cpp:1758 ../../src/gui/movieplayer.cpp:1742
+#: ../../src/gui/movieplayer.cpp:1745
 msgid "goto middle"
 msgstr ""
 
@@ -5123,6 +5167,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1707 ../../src/gui/movieplayer.cpp:1726
 #: ../../src/gui/movieplayer.cpp:1740 ../../src/gui/movieplayer.cpp:1741
 #: ../../src/gui/movieplayer.cpp:1755 ../../src/gui/movieplayer.cpp:1739
+#: ../../src/gui/movieplayer.cpp:1742
 msgid "goto start"
 msgstr ""
 
@@ -5500,6 +5545,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1702 ../../src/gui/movieplayer.cpp:1721
 #: ../../src/gui/movieplayer.cpp:1735 ../../src/gui/movieplayer.cpp:1736
 #: ../../src/gui/movieplayer.cpp:1750 ../../src/gui/movieplayer.cpp:1734
+#: ../../src/gui/movieplayer.cpp:1737
 msgid "show movie infoviewer"
 msgstr ""
 
@@ -5517,7 +5563,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1700 ../../src/gui/movieplayer.cpp:1703
 #: ../../src/gui/movieplayer.cpp:1722 ../../src/gui/movieplayer.cpp:1736
 #: ../../src/gui/movieplayer.cpp:1737 ../../src/gui/movieplayer.cpp:1751
-#: ../../src/gui/movieplayer.cpp:1735
+#: ../../src/gui/movieplayer.cpp:1735 ../../src/gui/movieplayer.cpp:1738
 msgid "show playlist"
 msgstr ""
 
@@ -5548,6 +5594,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1708 ../../src/gui/movieplayer.cpp:1727
 #: ../../src/gui/movieplayer.cpp:1741 ../../src/gui/movieplayer.cpp:1742
 #: ../../src/gui/movieplayer.cpp:1756 ../../src/gui/movieplayer.cpp:1740
+#: ../../src/gui/movieplayer.cpp:1743
 msgid "skip approx. 1 minute"
 msgstr ""
 
@@ -5564,6 +5611,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1714 ../../src/gui/movieplayer.cpp:1733
 #: ../../src/gui/movieplayer.cpp:1747 ../../src/gui/movieplayer.cpp:1748
 #: ../../src/gui/movieplayer.cpp:1762 ../../src/gui/movieplayer.cpp:1746
+#: ../../src/gui/movieplayer.cpp:1749
 msgid "skip approx. 10 minutes"
 msgstr ""
 
@@ -5580,6 +5628,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1715 ../../src/gui/movieplayer.cpp:1734
 #: ../../src/gui/movieplayer.cpp:1748 ../../src/gui/movieplayer.cpp:1749
 #: ../../src/gui/movieplayer.cpp:1763 ../../src/gui/movieplayer.cpp:1747
+#: ../../src/gui/movieplayer.cpp:1750
 msgid "skip approx. 10 seconds"
 msgstr ""
 
@@ -5596,6 +5645,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1711 ../../src/gui/movieplayer.cpp:1730
 #: ../../src/gui/movieplayer.cpp:1744 ../../src/gui/movieplayer.cpp:1745
 #: ../../src/gui/movieplayer.cpp:1759 ../../src/gui/movieplayer.cpp:1743
+#: ../../src/gui/movieplayer.cpp:1746
 msgid "skip approx. 5 minutes"
 msgstr ""
 
@@ -5612,6 +5662,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1705 ../../src/gui/movieplayer.cpp:1724
 #: ../../src/gui/movieplayer.cpp:1738 ../../src/gui/movieplayer.cpp:1739
 #: ../../src/gui/movieplayer.cpp:1753 ../../src/gui/movieplayer.cpp:1737
+#: ../../src/gui/movieplayer.cpp:1740
 msgid "skip bookmark"
 msgstr ""
 

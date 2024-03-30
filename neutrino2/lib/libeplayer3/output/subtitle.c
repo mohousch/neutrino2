@@ -205,183 +205,189 @@ static int Write(void* _context, void *data)
         	return cERR_SUBTITLE_ERROR;
     	}
     	
-	//
-    	AVSubtitle sub;
-    	AVCodecContext* ctx = out->stream->codec;
-    	
-    	memset(&sub, 0, sizeof(sub));
-    	
-    	out->packet->data = out->data;
-    	out->packet->size = out->len;
-    	out->packet->pts  = out->pts;
-    		
-    	int got_sub_ptr = 0;
-    	
-    	// decode 	
-#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)			   
-	if (ctx && avcodec_decode_subtitle2(ctx, &sub, &got_sub_ptr, out->packet) < 0)
-#else
-	if (ctx && avcodec_decode_subtitle(ctx, &sub, &got_sub_ptr, out->packet->data, out->packet->size ) < 0)
-#endif
-	{
-		subtitle_err("error decoding subtitle\n");
-		return cERR_SUBTITLE_ERROR;
-	} 
-	else
-	{
-		int i;
-
-		subtitle_printf(100, "format %d\n", sub.format);
-		subtitle_printf(100, "start_display_time %d\n", sub.start_display_time);
-		subtitle_printf(100, "end_display_time %d\n", sub.end_display_time);
-		subtitle_printf(100, "num_rects %d\n", sub.num_rects);
-		
-		if (got_sub_ptr && sub.num_rects > 0)
+    	if (out->stream->codec->codec_id == AV_CODEC_ID_DVB_TELETEXT)
+    	{
+    		if (out->data && out->len > 1)
+    			teletext_write(0, out->data + 1, out->len + 1);
+    	}
+    	else
+    	{
+		//
+	    	AVSubtitle sub;
+	    	AVCodecContext* ctx = out->stream->codec;
+	    	
+	    	memset(&sub, 0, sizeof(sub));
+	    		
+	    	int got_sub_ptr = 0;
+	    	
+	    	// decode 	
+	#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)			   
+		if (ctx && avcodec_decode_subtitle2(ctx, &sub, &got_sub_ptr, out->packet) < 0)
+	#else
+		if (ctx && avcodec_decode_subtitle(ctx, &sub, &got_sub_ptr, out->packet->data, out->packet->size ) < 0)
+	#endif
 		{
-			subtitle_printf(100, "type: %d\n", sub.rects[0]->type);
+			subtitle_err("error decoding subtitle\n");
+			return cERR_SUBTITLE_ERROR;
+		} 
+		else
+		{
+			int i;
+
+			subtitle_printf(100, "format %d\n", sub.format);
+			subtitle_printf(100, "start_display_time %d\n", sub.start_display_time);
+			subtitle_printf(100, "end_display_time %d\n", sub.end_display_time);
+			subtitle_printf(100, "num_rects %d\n", sub.num_rects);
 			
-			clearFrameBuffer();
-						
-			switch (sub.rects[0]->type)
+			if (got_sub_ptr && sub.num_rects > 0)
 			{
-				case SUBTITLE_TEXT: // 2
+				subtitle_printf(100, "type: %d\n", sub.rects[0]->type);
+				
+				clearFrameBuffer();
+							
+				switch (sub.rects[0]->type)
 				{
-					for (i = 0; i < sub.num_rects; i++)
+					case SUBTITLE_TEXT: // 2
 					{
-						subtitle_printf(100, "x %d\n", sub.rects[i]->x);
-						subtitle_printf(100, "y %d\n", sub.rects[i]->y);
-						subtitle_printf(100, "w %d\n", sub.rects[i]->w);
-						subtitle_printf(100, "h %d\n", sub.rects[i]->h);
-						subtitle_printf(100, "nb_colors %d\n", sub.rects[i]->nb_colors);
-						subtitle_printf(100, "type %d\n", sub.rects[i]->type);
-						subtitle_printf(100, "text %s\n", sub.rects[i]->text);
-						subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
-						
-             					writeText((uint8_t*)sub.rects[i]->text, screen_x + 40, screen_y + screen_height - 80, screen_width - 80, 60);
+						for (i = 0; i < sub.num_rects; i++)
+						{
+							subtitle_printf(100, "x %d\n", sub.rects[i]->x);
+							subtitle_printf(100, "y %d\n", sub.rects[i]->y);
+							subtitle_printf(100, "w %d\n", sub.rects[i]->w);
+							subtitle_printf(100, "h %d\n", sub.rects[i]->h);
+							subtitle_printf(100, "nb_colors %d\n", sub.rects[i]->nb_colors);
+							subtitle_printf(100, "type %d\n", sub.rects[i]->type);
+							subtitle_printf(100, "text %s\n", sub.rects[i]->text);
+							subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
+							
+		     					writeText((uint8_t*)sub.rects[i]->text, screen_x + 40, screen_y + screen_height - 80, screen_width - 80, 60);
+						}
+						break;
 					}
-					break;
-				}
-				
-				case SUBTITLE_ASS: // 3
-				{
-					for (i = 0; i < sub.num_rects; i++)
+					
+					case SUBTITLE_ASS: // 3
 					{
-						subtitle_printf(100, "x %d\n", sub.rects[i]->x);
-						subtitle_printf(100, "y %d\n", sub.rects[i]->y);
-						subtitle_printf(100, "w %d\n", sub.rects[i]->w);
-						subtitle_printf(100, "h %d\n", sub.rects[i]->h);
-						subtitle_printf(100, "nb_colors %d\n", sub.rects[i]->nb_colors);
-						subtitle_printf(100, "type %d\n", sub.rects[i]->type);
-						subtitle_printf(100, "text %s\n", sub.rects[i]->text);
-						subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
-						
-             					writeText((uint8_t*)ass_get_text(sub.rects[i]->ass), screen_x + 40, screen_y + screen_height - 80, screen_width - 80, 60);
+						for (i = 0; i < sub.num_rects; i++)
+						{
+							subtitle_printf(100, "x %d\n", sub.rects[i]->x);
+							subtitle_printf(100, "y %d\n", sub.rects[i]->y);
+							subtitle_printf(100, "w %d\n", sub.rects[i]->w);
+							subtitle_printf(100, "h %d\n", sub.rects[i]->h);
+							subtitle_printf(100, "nb_colors %d\n", sub.rects[i]->nb_colors);
+							subtitle_printf(100, "type %d\n", sub.rects[i]->type);
+							subtitle_printf(100, "text %s\n", sub.rects[i]->text);
+							subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
+							
+		     					writeText((uint8_t*)ass_get_text(sub.rects[i]->ass), screen_x + 40, screen_y + screen_height - 80, screen_width - 80, 60);
+						}
+						break;
 					}
-					break;
-				}
-				
-				case SUBTITLE_BITMAP: // 1: DVB / TELETEXT / PGS
-				{
-					for (i = 0; i < sub.num_rects; i++)
+					
+					case SUBTITLE_BITMAP: // 1: DVB / TELETEXT / PGS
 					{
-						subtitle_printf(100, "i %d\n", i);
-						subtitle_printf(100, "x %d\n", sub.rects[i]->x);
-						subtitle_printf(100, "y %d\n", sub.rects[i]->y);
-						subtitle_printf(100, "w %d\n", sub.rects[i]->w);
-						subtitle_printf(100, "h %d\n", sub.rects[i]->h);
-						subtitle_printf(100, "nb_colors %d\n", sub.rects[i]->nb_colors);
-						subtitle_printf(100, "type %d\n", sub.rects[i]->type);
-						subtitle_printf(100, "text %s\n", sub.rects[i]->text);
-						subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
-						subtitle_printf(100, "pic %p\n", sub.rects[i]->data[0]);
-						subtitle_printf(100, "colors %p\n\n", sub.rects[i]->data[1]);
-						
-						if (sub.rects[i]->nb_colors == 16) // DVB
+						for (i = 0; i < sub.num_rects; i++)
 						{
-							int width = sub.rects[i]->w;
-							int height = sub.rects[i]->h;
+							subtitle_printf(100, "i %d\n", i);
+							subtitle_printf(100, "x %d\n", sub.rects[i]->x);
+							subtitle_printf(100, "y %d\n", sub.rects[i]->y);
+							subtitle_printf(100, "w %d\n", sub.rects[i]->w);
+							subtitle_printf(100, "h %d\n", sub.rects[i]->h);
+							subtitle_printf(100, "nb_colors %d\n", sub.rects[i]->nb_colors);
+							subtitle_printf(100, "type %d\n", sub.rects[i]->type);
+							subtitle_printf(100, "text %s\n", sub.rects[i]->text);
+							subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
+							subtitle_printf(100, "pic %p\n", sub.rects[i]->data[0]);
+							subtitle_printf(100, "colors %p\n\n", sub.rects[i]->data[1]);
+							
+							if (sub.rects[i]->nb_colors == 16) // DVB
+							{
+								int width = sub.rects[i]->w;
+								int height = sub.rects[i]->h;
 
-							int h2 = screen_height;
-									
-							int xoff = sub.rects[i]->x * screen_width / width;
-							int yoff = sub.rects[i]->y * screen_height / h2;
-							int nw = width * screen_width / width;
-							int nh = height * screen_height / h2;
+								int h2 = screen_height;
+										
+								int xoff = sub.rects[i]->x * screen_width / width;
+								int yoff = sub.rects[i]->y * screen_height / h2;
+								int nw = width * screen_width / width;
+								int nh = height * screen_height / h2;
 
-							// resize color to 32 bit
-#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
-							uint32_t* newdata = simple_resize32(sub.rects[i]->pict.data[0], (uint32_t*)sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
-#else
-							uint32_t* newdata = simple_resize32(sub.rects[i]->data[0], (uint32_t*)sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
-#endif
-									
-							// writeData
-			     				fb.fd            = framebufferFD;
-			     				fb.data          = (uint8_t*)newdata;
-			     				fb.Width         = nw;
-			     				fb.Height        = nh;
-			     				fb.x             = xoff;
-			     				fb.y             = yoff;
-			     					
-			     				fb.color	  = 0;
+								// resize color to 32 bit
+	#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
+								uint32_t* newdata = simple_resize32(sub.rects[i]->pict.data[0], (uint32_t*)sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+	#else
+								uint32_t* newdata = simple_resize32(sub.rects[i]->data[0], (uint32_t*)sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+	#endif
+										
+								// writeData
+				     				fb.fd            = framebufferFD;
+				     				fb.data          = (uint8_t*)newdata;
+				     				fb.Width         = nw;
+				     				fb.Height        = nh;
+				     				fb.x             = xoff;
+				     				fb.y             = yoff;
+				     					
+				     				fb.color	  = 0;
 
-			     				fb.Screen_Width  = screen_width; 
-			     				fb.Screen_Height = screen_height; 
-			     				fb.destination   = destination;
-			     				fb.destStride    = destStride;
+				     				fb.Screen_Width  = screen_width; 
+				     				fb.Screen_Height = screen_height; 
+				     				fb.destination   = destination;
+				     				fb.destStride    = destStride;
 
-			     				writer->writeData(&fb);
+				     				writer->writeData(&fb);
 
-							free(newdata);
-						}
-						else if (sub.rects[i]->nb_colors == 40)// TELETXT
-						{
-							teletext_write(0, out->data + 1, out->len + 1);
-						}
-						else // PGS (256 nb_colors)
-						{
-							int width = sub.rects[i]->w;
-							int height = sub.rects[i]->h;
+								free(newdata);
+							}
+							/*
+							else if (sub.rects[i]->nb_colors == 40)// TELETXT
+							{
+								teletext_write(0, out->data + 1, out->len + 1);
+							}
+							*/
+							else // PGS (256 nb_colors)
+							{
+								int width = sub.rects[i]->w;
+								int height = sub.rects[i]->h;
 
-							int h2 = height;
-									
-							int xoff = screen_x; //sub.rects[i]->x * 1280 / width;
-							int yoff = screen_y + screen_height - 80; //sub.rects[i]->y * 720 / h2;
-							int nw = width * screen_width / width;
-							int nh = 60; //height * screen_height / h2;
+								int h2 = height;
+										
+								int xoff = screen_x; //sub.rects[i]->x * 1280 / width;
+								int yoff = screen_y + screen_height - 80; //sub.rects[i]->y * 720 / h2;
+								int nw = width * screen_width / width;
+								int nh = 60; //height * screen_height / h2;
 
-							// resize color to 32 bit
-#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
-							uint32_t* newdata = simple_resize32(sub.rects[i]->pict.data[0], (uint32_t*)sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
-#else
-							uint32_t* newdata = simple_resize32(sub.rects[i]->data[0], (uint32_t*)sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
-#endif
-									
-							// writeData
-			     				fb.fd            = framebufferFD;
-			     				fb.data          = (uint8_t*)newdata;
-			     				fb.Width         = nw;
-			     				fb.Height        = nh;
-			     				fb.x             = xoff;
-			     				fb.y             = yoff;
-			     					
-			     				fb.color	  = 0;
+								// resize color to 32 bit
+	#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
+								uint32_t* newdata = simple_resize32(sub.rects[i]->pict.data[0], (uint32_t*)sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+	#else
+								uint32_t* newdata = simple_resize32(sub.rects[i]->data[0], (uint32_t*)sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+	#endif
+										
+								// writeData
+				     				fb.fd            = framebufferFD;
+				     				fb.data          = (uint8_t*)newdata;
+				     				fb.Width         = nw;
+				     				fb.Height        = nh;
+				     				fb.x             = xoff;
+				     				fb.y             = yoff;
+				     					
+				     				fb.color	  = 0;
 
-			     				fb.Screen_Width  = screen_width; 
-			     				fb.Screen_Height = screen_height; 
-			     				fb.destination   = destination;
-			     				fb.destStride    = destStride;
+				     				fb.Screen_Width  = screen_width; 
+				     				fb.Screen_Height = screen_height; 
+				     				fb.destination   = destination;
+				     				fb.destStride    = destStride;
 
-			     				writer->writeData(&fb);
+				     				writer->writeData(&fb);
 
-							free(newdata);
-						}
-					} 
-					break;
+								free(newdata);
+							}
+						} 
+						break;
+					}
+					
+					default:
+						break;
 				}
-				
-				default:
-					break;
 			}
 		}
 	}
