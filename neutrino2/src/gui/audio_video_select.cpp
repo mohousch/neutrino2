@@ -178,6 +178,7 @@ int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
 		char const * pidptr = strchr(actionKey.c_str(), ':');
 		
 		currentspid = currentsdvbpid = atoi(pidptr + 1);
+		currentstxtpid = -1;
 		
 		if(playback)
 			playback->SetSubPid(currentsdvbpid);
@@ -187,6 +188,7 @@ int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
 		char const * pidptr = strchr(actionKey.c_str(), ':');
 		
 		currentspid = currentstxtpid = atoi(pidptr + 1);
+		currentsdvbpid = -1;
 		
 		if(playback)
 			playback->SetSubPid(currentstxtpid);		
