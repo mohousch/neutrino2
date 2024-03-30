@@ -1138,7 +1138,7 @@ static int Write(void* _context, void* _out)
 		int driver;
 		ao_info *ai;
 		
-		// output sample rate, channels, layout could be set here if necessary 
+		// output sample rate, channels, layout could be set here if necessary
 		o_ch = ctx->channels;     		// 2
 		o_sr = ctx->sample_rate;      		// 48000
 		o_layout = ctx->channel_layout;   	// AV_CH_LAYOUT_STEREO

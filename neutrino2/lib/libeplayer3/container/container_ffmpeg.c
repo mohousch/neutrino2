@@ -580,7 +580,7 @@ static void FFMPEGThread(Context_t *context)
 						latestPts = currentAudioPts;
 
 					ffmpeg_printf(200, "AudioTrack index = %d\n",index);
-					
+								
 #ifdef USE_OPENGL
 					avOut.data       = packet.data;
 					avOut.len        = packet.size;
@@ -604,19 +604,19 @@ static void FFMPEGThread(Context_t *context)
 						}
 					}
 #else
-					//
+					// pcm extradata
 					pcmPrivateData_t extradata;
-					extradata.uNoOfChannels = &audioTrack->stream->codec->channels;
-					extradata.uSampleRate = &audioTrack->stream->codec->sample_rate;
+					extradata.uNoOfChannels = audioTrack->stream->codec->channels;
+					extradata.uSampleRate = audioTrack->stream->codec->sample_rate;
 					extradata.uBitsPerSample = 16;
 					extradata.bLittleEndian = 1;
 					extradata.avCodecId = audioTrack->stream->codec->codec_id;
 					extradata.bits_per_coded_sample = &audioTrack->stream->codec->bits_per_coded_sample;
-					extradata.bit_rate = &audioTrack->stream->codec->bit_rate;
-                			extradata.block_align = &audioTrack->stream->codec->block_align;
-                			extradata.frame_size = &audioTrack->stream->codec->frame_size;
+					extradata.bit_rate = audioTrack->stream->codec->bit_rate;
+                			extradata.block_align = audioTrack->stream->codec->block_align;
+                			extradata.frame_size = audioTrack->stream->codec->frame_size;
                 			extradata.bResampling  = 1;
-					
+                			
 					//
 					if(!strncmp(audioTrack->Encoding, "A_PCM", 5))
 					{
@@ -669,16 +669,14 @@ static void FFMPEGThread(Context_t *context)
              							bytesDone = avcodec_receive_frame(audioTrack->stream->codec, samples);
              						}
 #endif
-							/*
+							//
 							if(bytesDone < 0) // Error Happend
 							    break;
 
 							packet.data += bytesDone;
 							packet.size -= bytesDone;
-
-							if(decoded_data_size <= 0)
-							    continue;
-							*/
+							
+							//
 							samples_size = av_rescale_rnd(samples->nb_samples, audioTrack->stream->codec->sample_rate, audioTrack->stream->codec->sample_rate, AV_ROUND_UP);
 
 							avOut.data       = samples;
@@ -1084,23 +1082,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				{
 					ffmpeg_printf(10,"Create AAC ExtraData\n");
 					ffmpeg_printf(10,"stream->codec->extradata_size %d\n", stream->codec->extradata_size);
-					//Hexdump(stream->codec->extradata, stream->codec->extradata_size);
-
-					 /* extradata
-					13 10 56 e5 9d 48 00 (anderen cops)
-						object_type: 00010 2 = LC
-						sample_rate: 011 0 6 = 24000
-						chan_config: 0010 2 = Stereo
-						000 0
-						1010110 111 = 0x2b7
-						00101 = SBR
-						1
-						0011 = 48000
-						101 01001000 = 0x548
-						ps = 0
-						0000000
-					*/
-
+					
 					unsigned int object_type = 2; // LC
 					unsigned int sample_index = aac_get_sample_rate_index(stream->codec->sample_rate);
 					unsigned int chan_config = stream->codec->channels;
@@ -1291,28 +1273,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 #else
 				avcodec_open2(stream->codec, avcodec_find_decoder(stream->codec->codec_id), NULL);
 #endif
-
-				////test
-				if (stream->codec->codec_id == AV_CODEC_ID_DVB_TELETEXT)
-				{
-					AVCodecParameters *codecpar = stream->codecpar;
-					
-					ffmpeg_printf(10, "size:%d\n", codecpar->extradata_size); 
-					Hexdump(codecpar->extradata, codecpar->extradata_size);
-					
-					uint8_t *data = stream->codec->extradata;
-					int size = stream->codec->extradata_size;
-					if (size > 0 /*&& 2 * size - 1 == (int) sizeof(track.Name)*/)
-					{
-						for (int i = 0; i < size; i += 2)
-						{
-							ffmpeg_printf(10, "type:%d\n", data[i] >> 3);
-							ffmpeg_printf(10, "mag:%d\n", data[i] & 7);
-							ffmpeg_printf(10, "page:%d\n", data[i + 1]);
-						}
-					}
-				}
-				////
 
 				if (context->manager->subtitle)
 				{

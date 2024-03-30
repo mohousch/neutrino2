@@ -139,7 +139,6 @@ static int prepareClipPlay(int uNoOfChannels, int uSampleRate, int uBitsPerSampl
 	SubFramesPerPES = 0;
 	breakBufferFillSize = 0;
 
-//	memcpy(lpcm_pes, clpcm_pes, sizeof(lpcm_pes));
 	memcpy(lpcm_prv, clpcm_prv, sizeof(lpcm_prv));
 
 	//figure out size of subframe and set up sample rate
@@ -176,12 +175,8 @@ static int prepareClipPlay(int uNoOfChannels, int uSampleRate, int uBitsPerSampl
 	SubFrameLen *= (uBitsPerSample / 8);
 
 	//rewrite PES size to have as many complete subframes per PES as we can
-	//SubFramesPerPES = ((2048-sizeof(lpcm_pes)) - sizeof(lpcm_prv))/SubFrameLen;
 	SubFramesPerPES = ((2048 - 18) - sizeof(lpcm_prv)) / SubFrameLen;
 	SubFrameLen *= SubFramesPerPES;
-
-//	lpcm_pes[4] = ((SubFrameLen+(sizeof(lpcm_pes)-6)+sizeof(lpcm_prv))>>8) & 0xFF;
-//	lpcm_pes[5] =  (SubFrameLen+(sizeof(lpcm_pes)-6)+sizeof(lpcm_prv))     & 0xFF;
 
 	//set number of channels
 	lpcm_prv[10]  = uNoOfChannels - 1;
@@ -240,6 +235,7 @@ static uint32_t writeData(void* _call)
 	}
 
 	//
+#if 0	
 	pcmPrivateData_t* pcmPrivateData = (pcmPrivateData_t*)call->private_data;
 	uint8_t *buffer = call->data;
 	uint32_t size = call->len;
@@ -363,13 +359,13 @@ static uint32_t writeData(void* _call)
 	
 	free(injectBuffer);
 #else
-	if (/*pcmPrivateData->bResampling ||*/ NULL == fixed_buffer)
+	if (pcmPrivateData->bResampling || NULL == fixed_buffer)
 	{
-		int32_t width = 0;
-		int32_t depth = 0;
-		int32_t rate = 0;
-		int32_t channels = 0;
-		int32_t codecID = 0;
+		int32_t width = 8;
+		int32_t depth = 8;
+		int32_t rate = 48000;
+		int32_t channels = 2;
+		int32_t codecID = AV_CODEC_ID_PCM_S8;
 		
 		if (pcmPrivateData)
 		{
@@ -377,6 +373,7 @@ static uint32_t writeData(void* _call)
 			channels = (uint8_t) pcmPrivateData->uNoOfChannels;
 			codecID = (uint32_t)pcmPrivateData->avCodecId;
 		}
+		
 		int32_t block_align = 0;
 		int32_t byterate = 0;
 
@@ -421,7 +418,9 @@ static uint32_t writeData(void* _call)
 
 		byterate = channels * rate * width / 8;
 		block_align = channels * width / 8;
+		
 		memset(data, 0, sizeof(codec_data));
+		
 		/* format tag */
 		*(data++) = format & 0xff;
 		*(data++) = (format >> 8) & 0xff;
@@ -453,12 +452,15 @@ static uint32_t writeData(void* _call)
 		if (fixed_buffersize != nfixed_buffersize || NULL == fixed_buffer)
 		{
 			fixed_buffersize = nfixed_buffersize;
+			
 			if (NULL != fixed_buffer)
 			{
 				free(fixed_buffer);
 			}
+			
 			fixed_buffer = malloc(fixed_buffersize);
 		}
+		
 		fixed_bufferfilled = 0;
 		/* avoid compiler warning */
 		if (LE) {}
@@ -469,6 +471,7 @@ static uint32_t writeData(void* _call)
 	while (size > 0)
 	{
 		uint32_t cpSize = (fixed_buffersize - fixed_bufferfilled);
+		
 		if (cpSize > size)
 		{
 			memcpy(fixed_buffer + fixed_bufferfilled, buffer, size);
@@ -480,24 +483,8 @@ static uint32_t writeData(void* _call)
 		fixed_bufferfilled = 0;
 		buffer += cpSize;
 		size -= cpSize;
-
-		uint32_t addHeaderSize = 0;
 		
-		//if (STB_DREAMBOX == GetSTBType())
-		//{
-		//	addHeaderSize = 4;
-		//}
-		
-		uint32_t headerSize = InsertPesHeader(PesHeader, fixed_buffersize + 4 + addHeaderSize + sizeof(codec_data), MPEG_AUDIO_PES_START_CODE, fixed_buffertimestamp, 0);
-		
-		// dreamboxes
-		//if (STB_DREAMBOX == GetSTBType())
-		//{
-		//	PesHeader[headerSize++] = 0x42; // B
-		//	PesHeader[headerSize++] = 0x43; // C
-		//	PesHeader[headerSize++] = 0x4D; // M
-		//	PesHeader[headerSize++] = 0x41; // A
-		//}
+		uint32_t headerSize = InsertPesHeader(PesHeader, fixed_buffersize + 4 + sizeof(codec_data), MPEG_AUDIO_PES_START_CODE, fixed_buffertimestamp, 0);
 
 		PesHeader[headerSize++] = (fixed_buffersize >> 24) & 0xff;
 		PesHeader[headerSize++] = (fixed_buffersize >> 16) & 0xff;
@@ -522,6 +509,21 @@ static uint32_t writeData(void* _call)
 #endif
 
 	return size;
+#endif
+
+	////
+	int HeaderLength = InsertPesHeader (PesHeader, call->len , MPEG_AUDIO_PES_START_CODE, call->Pts, 0);
+
+	unsigned char* PacketStart = malloc(call->len + HeaderLength);
+
+	memcpy (PacketStart, PesHeader, HeaderLength);
+	memcpy (PacketStart + HeaderLength, call->data, call->len);
+
+	int len = write(call->fd, PacketStart, call->len + HeaderLength);
+
+	free(PacketStart);
+	
+	return len;
 }
 
 /* ***************************** */
