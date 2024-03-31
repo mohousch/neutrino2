@@ -125,7 +125,7 @@ bool CVCRControl::Record(const CTimerd::RecordingInfo * const eventinfo)
 	return doRecord(eventinfo->channel_id, mode, eventinfo->epgID, eventinfo->epgTitle, eventinfo->apids, eventinfo->epg_starttime); 
 }
 
-void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap, APIDList & apid_list)
+void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap, APIDList& apid_list)
 {
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::getAPIDs\n");
 	
@@ -144,6 +144,7 @@ void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap
         {
                 uint32_t apid_min = UINT_MAX;
                 uint32_t apid_min_idx = 0;
+                std::string language = "Stream";
 		
                 for(unsigned int i = 0; i < allpids.APIDs.size(); i++)
                 {
@@ -151,12 +152,13 @@ void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap
                         {
                                 apid_min = allpids.APIDs[i].pid;
                                 apid_min_idx = i;
+                                language = allpids.APIDs[i].desc;
                         }
                 }
                 
                 if (apid_min != UINT_MAX)
                 {
-                        APIDDesc a = {apid_min, apid_min_idx, false};
+                        APIDDesc a = {apid_min, apid_min_idx, false, language};
                         apid_list.push_back(a);
                 }
         }
@@ -166,12 +168,15 @@ void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap
         {
                 uint32_t apid_min=UINT_MAX;
                 uint32_t apid_min_idx = 0;
+//                std::string language = "Stream";
+                
                 for(unsigned int i = 0; i < allpids.APIDs.size(); i++)
                 {
                         if (allpids.APIDs[i].pid < apid_min && !allpids.APIDs[i].is_ac3)
                         {
                                 apid_min = allpids.APIDs[i].pid;
                                 apid_min_idx = i;
+//                                language = allpids.APIDs[i].desc;
                         }
                 }
                 
@@ -179,7 +184,7 @@ void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap
                 {
                         if (allpids.APIDs[i].pid != apid_min && !allpids.APIDs[i].is_ac3)
                         {
-                                APIDDesc a = {allpids.APIDs[i].pid, i, false};
+                                APIDDesc a = {allpids.APIDs[i].pid, i, false, allpids.APIDs[i].desc};
                                 apid_list.push_back(a);
                         }
                 }
@@ -193,7 +198,7 @@ void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap
                 {
                         if (allpids.APIDs[i].is_ac3)
                         {
-                                APIDDesc a = {allpids.APIDs[i].pid, i, true};
+                                APIDDesc a = {allpids.APIDs[i].pid, i, true, allpids.APIDs[i].desc};
                                 apid_list.push_back(a);
                                 ac3_found=true;
                         }
@@ -204,6 +209,7 @@ void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap
                 {
                         uint32_t apid_min = UINT_MAX;
                         uint32_t apid_min_idx = 0;
+                        std::string language = "Stream";
 			
                         for(unsigned int i = 0; i < allpids.APIDs.size(); i++)
                         {
@@ -211,12 +217,13 @@ void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap
                                 {
                                         apid_min = allpids.APIDs[i].pid;
                                         apid_min_idx = i;
+                                        language = allpids.APIDs[i].desc;
                                 }
                         }
 
                         if (apid_min != UINT_MAX)
                         {
-                                APIDDesc a = {apid_min, apid_min_idx, false};
+                                APIDDesc a = {apid_min, apid_min_idx, false, language};
                                 apid_list.push_back(a);
                         }
                 }
@@ -227,6 +234,7 @@ void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap
         {
                 uint32_t apid_min = UINT_MAX;
                 uint32_t apid_min_idx = 0;
+                std::string language = "Stream";
 		
                 for(unsigned int i = 0; i < allpids.APIDs.size(); i++)
                 {
@@ -234,12 +242,13 @@ void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap
                         {
                                 apid_min = allpids.APIDs[i].pid;
                                 apid_min_idx = i;
+                                language = allpids.APIDs[i].desc;
                         }
                 }
                 
                 if (apid_min != UINT_MAX)
                 {
-                        APIDDesc a = {apid_min, apid_min_idx, false};
+                        APIDDesc a = {apid_min, apid_min_idx, false, language};
                         apid_list.push_back(a);
                 }
         }
@@ -445,7 +454,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	{
                 pids[numpids++] = it->apid;
 
-		psi.addPid(it->apid, EN_TYPE_AUDIO, it->ac3 ? 1 : 0);
+		psi.addPid(it->apid, EN_TYPE_AUDIO, it->ac3 ? 1 : 0, it->language.c_str());
         }
         
         // subs

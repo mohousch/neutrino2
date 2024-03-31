@@ -91,6 +91,7 @@ class CVCRControl
 			unsigned short apid;
 			unsigned int index;
 			bool ac3;
+			std::string language;
 		} APIDDesc;
 		typedef std::list<APIDDesc> APIDList;
 				

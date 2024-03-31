@@ -114,41 +114,6 @@ static void releaseMutex(int line)
     subtitle_printf(100, "%d released mutex\n", line);
 }
 
-/*
-uint32_t * resize32(uint8_t * origin, uint32_t * colors, int nb_colors, int ox, int oy, int dx, int dy)
-{
-	uint32_t  *cr, *l;
-	int i, j, k, ip;
-
-	cr = (uint32_t *) malloc(dx * dy * sizeof(uint32_t));
-
-	if(cr == NULL) 
-	{
-		printf("Error: malloc\n");
-		return NULL;
-	}
-	
-	l = cr;
-
-	for(j = 0; j < dy; j++, l += dx)
-	{
-		uint8_t * p = origin + (j*oy/dy*ox);
-		
-		for(i = 0, k = 0; i < dx; i++, k++) 
-		{
-			ip = i*ox/dx;
-			
-			int idx = p[ip];
-			
-			if(idx < nb_colors)
-				l[k] = colors[idx];
-		}
-	}
-	
-	return(cr);
-}
-*/
-
 //
 static char * ass_get_text(char *str)
 {

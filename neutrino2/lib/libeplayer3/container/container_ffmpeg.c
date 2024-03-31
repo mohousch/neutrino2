@@ -903,7 +903,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 
 		char* encoding = Codec2Encoding(stream->codec, &version);
 
-		ffmpeg_printf(10, "%d. encoding = %s - version %d CODEC_TYPE:0x%x codec_id 0x%x\n", n, encoding? encoding : "NULL", version, stream->codec->codec_type, stream->codec->codec_id);
+		ffmpeg_printf(10, "%d. encoding = %s - version %d CODEC_TYPE:%d codec_id 0x%x\n", n, encoding? encoding : "NULL", version, stream->codec->codec_type, stream->codec->codec_id);
 
 		//
 		memset(&track, 0, sizeof(track));
@@ -916,7 +916,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 #else
 			case CODEC_TYPE_VIDEO:
 #endif        
-//			ffmpeg_printf(10, "CODEC_TYPE_VIDEO %d\n", stream->codec->codec_type);
 
 			if (encoding != NULL) 
 			{
@@ -975,7 +974,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				
 				ffmpeg_printf(10, "width %d\n", track.width);
 				ffmpeg_printf(10, "height %d\n", track.height);
-				ffmpeg_printf(10, "\n", track.height);
+				ffmpeg_printf(10, "\n");
 				
 #ifdef USE_OPENGL
 				// init codec
@@ -1006,7 +1005,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 #else
 			case CODEC_TYPE_AUDIO:
 #endif        
-//			ffmpeg_printf(10, "CODEC_TYPE_AUDIO %d\n", stream->codec->codec_type);
 
 			if (encoding != NULL) 
 			{
@@ -1117,7 +1115,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				{
 					ffmpeg_printf(10,"Create WMA ExtraData\n");
 					ffmpeg_printf(10,"stream->codec->extradata_size %d\n", stream->codec->extradata_size);
-					//Hexdump(stream->codec->extradata, stream->codec->extradata_size);
 					
 					track.aacbuflen = 104 + stream->codec->extradata_size;
 					track.aacbuf = malloc(track.aacbuflen);
@@ -1226,7 +1223,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 #else
 				AVDictionaryEntry * lang;
 #endif
-//				ffmpeg_printf(10, "CODEC_TYPE_SUBTITLE %d\n", stream->codec->codec_type);
 
 #if LIBAVCODEC_VERSION_MAJOR < 54
 				lang = av_metadata_get(stream->metadata, "language", NULL, 0);

@@ -4657,7 +4657,7 @@ bool CZapit::tuneFrequency(FrontendParameters *feparams, t_satellite_position sa
 
 int CZapit::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, bool fromnit, int feindex)
 {
-	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CZapit::addToScan: freq %d pol %d tpid 0x%llx from (nit:%d) fe(%d)\n", feparams->frequency, feparams->polarization, TsidOnid, fromnit, feindex);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::addToScan: freq %d pol %d tpid 0x%llx from (nit:%d) fe(%d)\n", feparams->frequency, feparams->polarization, TsidOnid, fromnit, feindex);
 
 	freq_id_t freq;
 
@@ -4762,7 +4762,7 @@ bool CZapit::getSDTS(t_satellite_position satellitePosition, int feindex)
 	CNit nit;
 	CSdt sdt;
 
-	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CZapit::getSDTS: scanning tp from sat/service\n");
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::getSDTS: scanning tp from sat/service\n");
 
 _repeat:
 	for (tI = scantransponders.begin(); tI != scantransponders.end(); tI++) 
@@ -4833,7 +4833,7 @@ _repeat:
 			freq = tI->second.feparams.frequency/1000000;
 			
 		// parse sdt
-		dprintf(DEBUG_NORMAL, ANSI_YELLOW "CZapit::getSDTS: parsing SDT (tsid:onid %04x:%04x)\n", tI->second.transport_stream_id, tI->second.original_network_id);
+		dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::getSDTS: parsing SDT (tsid:onid %04x:%04x)\n", tI->second.transport_stream_id, tI->second.original_network_id);
 		
 		if(sdt.parseSDT(&tI->second.transport_stream_id, &tI->second.original_network_id, satellitePosition, freq, feindex) < 0)
 		{
@@ -4892,7 +4892,7 @@ _repeat:
 
 bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satellitePosition, int feindex)
 {
-	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CZapit::scanTransponder:\n");
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanTransponder:\n");
 	
 	uint8_t polarization = 0;
 	uint8_t system = 0;
@@ -5031,7 +5031,7 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
 
 bool CZapit::scanProvider(xmlNodePtr search, t_satellite_position satellitePosition, int feindex)
 {
-	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CZapit::scanProvider:\n");
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanProvider:\n");
 	
 	xmlNodePtr tps = NULL;
 	found_transponders = 0;
@@ -5106,7 +5106,7 @@ bool CZapit::scanProvider(xmlNodePtr search, t_satellite_position satellitePosit
 //
 bool CZapit::tuneTP(transponder TP, int feindex)
 {
-	dprintf(DEBUG_NORMAL, ANSI_MAGENTA "CZapit::tuneTP: fe(%d)\n", feindex);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::tuneTP: fe(%d)\n", feindex);
 	
 	bool ret = false;
 	
@@ -5139,7 +5139,7 @@ bool CZapit::tuneTP(transponder TP, int feindex)
 //
 bool CZapit::scanTP(commandScanTP &msg)
 {
-	dprintf(DEBUG_NORMAL, ANSI_MAGENTA "CZapit::scanTP fe:(%d) scanmode:%d\n", msg.feindex, msg.scanmode);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanTP fe:(%d) scanmode:%d\n", msg.feindex, msg.scanmode);
 	
 	bool ret = true;
 	CPmt pmt;
@@ -5191,7 +5191,7 @@ void CZapit::setScanBouquetMode(const bouquetMode mode)
 //
 bool CZapit::startScan(commandScanProvider &msg)
 {		
-	dprintf(DEBUG_NORMAL, ANSI_MAGENTA "CZapit::startScan: fe(%d) scanmode: %d\n", msg.feindex, msg.scanmode);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::startScan: fe(%d) scanmode: %d\n", msg.feindex, msg.scanmode);
 	
 	bool ret = true;
 	CPmt pmt;
@@ -5237,7 +5237,7 @@ bool CZapit::stopScan()
 //
 void * CZapit::scanThread(void * data)
 {
-	dprintf(DEBUG_NORMAL, ANSI_MAGENTA "CZapit::scanThread: starting... tid %ld\n", syscall(__NR_gettid));
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanThread: starting... tid %ld\n", syscall(__NR_gettid));
 	
 	CZapit::commandScanProvider params = *(CZapit::commandScanProvider*)data;
 	
@@ -5263,7 +5263,7 @@ void * CZapit::scanThread(void * data)
 	scanmode = mode & 0xFF;	// NIT (0) or fast (1)
 	scan_sat_mode = mode & 0xFF00; 	// single = 0, all = 1
 
-	dprintf(DEBUG_NORMAL, ANSI_MAGENTA "CZapit::scanThread: fe(%d) scan mode %s, satellites %s\n", feindex, scanmode ? "fast" : "NIT", scan_sat_mode ? "all" : "single");
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanThread: fe(%d) scan mode %s, satellites %s\n", feindex, scanmode ? "fast" : "NIT", scan_sat_mode ? "all" : "single");
 
 	CZapit::getInstance()->fake_tid = CZapit::getInstance()->fake_nid = 0;
 	
@@ -5430,7 +5430,7 @@ void * CZapit::scanThread(void * data)
 //
 void * CZapit::scanTransponderThread(void * data)
 {
-	dprintf(DEBUG_NORMAL, ANSI_MAGENTA "CZapit::scanTransponderThread: starting... tid %ld\n", syscall(__NR_gettid));
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanTransponderThread: starting... tid %ld\n", syscall(__NR_gettid));
 	
 	CZapit::commandScanTP params = *(CZapit::commandScanTP*)data;
 	

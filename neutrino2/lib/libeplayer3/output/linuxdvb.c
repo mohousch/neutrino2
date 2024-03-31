@@ -105,10 +105,6 @@ uint64_t sCURRENT_PTS = 0;
 Data_t data;
 static ao_device *adevice = NULL;
 static ao_sample_format sformat;
-////
-//int buf_in = 0;
-//int buf_out = 0;
-//int buf_num = 0;
 #endif
 
 //
@@ -1218,9 +1214,9 @@ static int Write(void* _context, void* _out)
 			obuf_size = swr_convert(swr, &obuf, obuf_size, (const uint8_t **)aframe->extended_data, aframe->nb_samples);
 							
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-			data.apts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(aframe);
+			data.apts = sCURRENT_PTS = out->pts; //av_frame_get_best_effort_timestamp(aframe);
 #else
-			data.apts = sCURRENT_PTS = aframe->best_effort_timestamp;
+			data.apts = sCURRENT_PTS = out->pts; //aframe->best_effort_timestamp;
 #endif
 			int o_buf_size = av_samples_get_buffer_size(&out_linesize, out->stream->codec->channels, obuf_size, AV_SAMPLE_FMT_S16, 1);
 							
@@ -1348,20 +1344,15 @@ static int Write(void* _context, void* _out)
 				
 				//
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-				data.vpts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(frame);
+				data.vpts = sCURRENT_PTS = out->pts; //av_frame_get_best_effort_timestamp(frame);
 #else
-				data.vpts = sCURRENT_PTS = frame->best_effort_timestamp;
+				data.vpts = sCURRENT_PTS = out->pts; //frame->best_effort_timestamp;
 #endif
-				// a/v delay determined experimentally :-)
-				if (ctx->codec_id == AV_CODEC_ID_MPEG2VIDEO)
-					data.vpts += 90000 * 4 / 10; // 400ms
-				else
-					data.vpts += 90000 * 3 / 10; // 300ms
 
 				//
 				data.a = ctx->time_base;
 				
-				//
+				/*
 				int framerate = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);
 				
 				switch (framerate)
@@ -1391,20 +1382,12 @@ static int Write(void* _context, void* _out)
 						data.rate = framerate;
 						break;
 				}
+				*/
+				int rate = av_q2d(out->stream->r_frame_rate);
+				data.rate = rate;
 				
 				//
 				data.size = need;
-				
-//				buf_in++;
-//				buf_in %= 64;
-//				buf_num++;
-				
-//				if (buf_num > (63))
-//				{
-//					buf_out++;
-//					buf_out %= 64;
-//					buf_num--;
-//				}
 			}
 		}
 		
