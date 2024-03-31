@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-03-31 12:09+0300\n"
+"POT-Creation-Date: 2024-03-31 18:24+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1250,7 +1250,9 @@ msgstr ""
 #: ../../src/driver/vcrcontrol.cpp:631 ../../src/driver/vcrcontrol.cpp:624
 #: ../../src/driver/vcrcontrol.cpp:618 ../../src/driver/vcrcontrol.cpp:630
 #: ../../src/driver/vcrcontrol.cpp:633 ../../src/driver/vcrcontrol.cpp:636
-#: ../../src/driver/vcrcontrol.cpp:640
+#: ../../src/driver/vcrcontrol.cpp:640 ../../src/driver/vcrcontrol.cpp:654
+#: ../../src/driver/vcrcontrol.cpp:669 ../../src/driver/vcrcontrol.cpp:665
+#: ../../src/driver/vcrcontrol.cpp:668
 msgid "Error"
 msgstr ""
 
@@ -2852,7 +2854,9 @@ msgstr ""
 #: ../../src/driver/vcrcontrol.cpp:631 ../../src/driver/vcrcontrol.cpp:624
 #: ../../src/driver/vcrcontrol.cpp:618 ../../src/driver/vcrcontrol.cpp:630
 #: ../../src/driver/vcrcontrol.cpp:633 ../../src/driver/vcrcontrol.cpp:636
-#: ../../src/driver/vcrcontrol.cpp:640
+#: ../../src/driver/vcrcontrol.cpp:640 ../../src/driver/vcrcontrol.cpp:654
+#: ../../src/driver/vcrcontrol.cpp:669 ../../src/driver/vcrcontrol.cpp:665
+#: ../../src/driver/vcrcontrol.cpp:668
 msgid ""
 "One or several recording processes are active.\n"
 "If you encounter this message and no recording is active, please restart Neutrino."
@@ -4329,7 +4333,9 @@ msgstr ""
 #: ../../src/driver/vcrcontrol.cpp:631 ../../src/driver/vcrcontrol.cpp:624
 #: ../../src/driver/vcrcontrol.cpp:618 ../../src/driver/vcrcontrol.cpp:630
 #: ../../src/driver/vcrcontrol.cpp:633 ../../src/driver/vcrcontrol.cpp:636
-#: ../../src/driver/vcrcontrol.cpp:640
+#: ../../src/driver/vcrcontrol.cpp:640 ../../src/driver/vcrcontrol.cpp:654
+#: ../../src/driver/vcrcontrol.cpp:669 ../../src/driver/vcrcontrol.cpp:665
+#: ../../src/driver/vcrcontrol.cpp:668
 msgid ""
 "The recording directory is not writable.\n"
 "Recording will not work."
@@ -4340,7 +4346,9 @@ msgstr ""
 #: ../../src/driver/vcrcontrol.cpp:631 ../../src/driver/vcrcontrol.cpp:624
 #: ../../src/driver/vcrcontrol.cpp:618 ../../src/driver/vcrcontrol.cpp:630
 #: ../../src/driver/vcrcontrol.cpp:633 ../../src/driver/vcrcontrol.cpp:636
-#: ../../src/driver/vcrcontrol.cpp:640
+#: ../../src/driver/vcrcontrol.cpp:640 ../../src/driver/vcrcontrol.cpp:654
+#: ../../src/driver/vcrcontrol.cpp:669 ../../src/driver/vcrcontrol.cpp:665
+#: ../../src/driver/vcrcontrol.cpp:668
 msgid ""
 "The recording was aborted,\n"
 "because the target file could not be opened."

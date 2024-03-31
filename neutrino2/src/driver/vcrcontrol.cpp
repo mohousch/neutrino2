@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: vcrcontrol.cpp 30.10.2023 mohousch Exp $
+	$Id: vcrcontrol.cpp 31.03.2024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -59,6 +59,8 @@
 #include <zapit/frontend_c.h>
 #include <zapit/channel.h>
 
+#include <sectionsd/abstime.h>
+
 #include <system/helpers.h>
 #include <system/debug.h>
 #include <system/tmdbparser.h>
@@ -89,12 +91,20 @@ CVCRControl * CVCRControl::getInstance()
 
 CVCRControl::CVCRControl()
 {
-	exit_flag = STREAM2FILE_STATUS_IDLE;
 	channel_id = 0;
+	
+	//
+	SwitchToScart = false;
 	
 	//
 	g_cMovieInfo = NULL;
 	g_movieInfo = NULL;
+	
+	//
+	ifcx = NULL;
+	ofcx = NULL;
+	stopped = true;
+	bsfc = NULL;
 }
 
 CVCRControl::~CVCRControl()
@@ -112,6 +122,10 @@ CVCRControl::~CVCRControl()
 		delete g_cMovieInfo;
 		g_cMovieInfo = NULL;
 	}
+	
+	//
+	Stop();
+	Close();
 }
 
 bool CVCRControl::Record(const CTimerd::RecordingInfo * const eventinfo)
@@ -317,7 +331,7 @@ void CVCRControl::CutBackNeutrino(const t_channel_id channel_id, const int mode)
 }
 
 //
-bool CVCRControl::Stop()
+void CVCRControl::Stop()
 {
 	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::Stop\n");
 	
@@ -327,7 +341,12 @@ bool CVCRControl::Stop()
 	g_movieInfo->length = (int) round((double) (end_time - start_time) / (double) 60);
 	g_cMovieInfo->encodeMovieInfoXml(&extMessage, g_movieInfo);	
 
-	bool return_value = (stopRecording() == STREAM2FILE_OK);
+//	bool return_value = false;
+	
+	if (IS_WEBTV(channel_id))
+		stopWebTVRecording();
+	else
+		stopRecording();
 
 	//
 	RestoreNeutrino();
@@ -360,7 +379,7 @@ bool CVCRControl::Stop()
 		g_cMovieInfo = NULL;
 	}
 
-	return return_value;
+//	return return_value;
 }
 
 //
@@ -428,8 +447,13 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	// cut neutrino
 	CutBackNeutrino(channel_id, mode);
 
-	// getRecordChannelInfo
-	CZapit::CServiceInfo si;
+	// genpsi / add pids
+	 APIDList apid_list;
+	 CZapit::CServiceInfo si;
+	 
+	if (!IS_WEBTV(channel_id))
+	{
+//	CZapit::CServiceInfo si;
 	si = CZapit::getInstance()->getServiceInfo(channel_id);
 	
 	CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(channel_id);
@@ -447,7 +471,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	}
 		
 	// apids
-        APIDList apid_list;
+//        APIDList apid_list;
         getAPIDs(channel_id, apids, apid_list);
 
         for(APIDList::iterator it = apid_list.begin(); it != apid_list.end(); it++) 
@@ -489,8 +513,9 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 			}
 		}
         }
+        }
 
-	//record file name format
+	// generate record file name format
 	char filename[512]; // UTF-8
 
 	// Create filename for recording
@@ -620,9 +645,12 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	start_time = time(0);
 
 	stream2file_error_msg_t error_msg = STREAM2FILE_BUSY;
-
-	// startRecording
-	if (!IS_WEBTV(channel_id))
+	
+	if (IS_WEBTV(channel_id))
+	{
+		error_msg = startWebTVRecording(filename, epgid, epgTitle, epg_time);
+	}
+	else
 	{
 		error_msg = startRecording(filename, getMovieInfoString(channel_id, epgid, epgTitle, apid_list, epg_time).c_str(), si.vpid, pids, numpids);
 	}
@@ -777,6 +805,7 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 	//
 	std::string tmpstring;
 
+	// channel name
 	tmpstring = CZapit::getInstance()->getChannelName(channel_id);
 
 	if (tmpstring.empty())
@@ -784,7 +813,9 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 	else
 		g_movieInfo->epgChannel = UTF8_to_UTF8XML(tmpstring.c_str());
 
+	// epg
 	tmpstring = "not available";
+	
 	if (epgid != 0) 
 	{
 		CEPGData epgdata;
@@ -792,6 +823,7 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 		if (CSectionsd::getInstance()->getEPGid(epgid, epg_time, &epgdata)) 
 		{
 			tmpstring = epgdata.title;
+			
 			info1 = epgdata.info1;
 			info2 = epgdata.info2;
 			
@@ -802,7 +834,7 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 				
 			g_movieInfo->length = epgdata.epg_times.duration	/ 60;
 				
-			dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::getMovieInfoString: fsk:%d, Genre:%d, Duration: %d min\r\n",g_movieInfo->parentalLockAge,g_movieInfo->genreMajor,g_movieInfo->length);	
+			dprintf(DEBUG_INFO, ANSI_YELLOW "CVCRControl::getMovieInfoString: fsk:%d, Genre:%d, Duration: %d min\r\n",g_movieInfo->parentalLockAge,g_movieInfo->genreMajor,g_movieInfo->length);	
 		}
 	} 
 	else if (!epgTitle.empty()) 
@@ -831,7 +863,8 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 	// get apids desc
 	EPG_AUDIO_PIDS audio_pids;
 	
-	processAPIDnames();
+	if (!IS_WEBTV(channel_id))
+		processAPIDnames();
 
 	APIDList::iterator it;
 	for(unsigned int i = 0; i < pids.APIDs.size(); i++) 
@@ -888,7 +921,7 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 		}
 	}
 	
-	// cover
+	// get cover
 	CTmdb * tmdb = new CTmdb();
 
 	if(tmdb->getMovieInfo(g_movieInfo->epgTitle) && (!CNeutrinoApp::getInstance()->timeshiftstatus || !autoshift))
@@ -1011,8 +1044,6 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 	}
 
 	// record
-	exit_flag = STREAM2FILE_STATUS_RUNNING;
-
 	sprintf(buf, "%s.ts", filename);
 
 	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::startRecording: file %s vpid 0x%x apid 0x%x\n", buf, vpid, pids[0]);
@@ -1052,7 +1083,6 @@ stream2file_error_msg_t CVCRControl::stopRecording()
 	
 	char buf[FILENAMEBUFFERSIZE];
 	char buf1[FILENAMEBUFFERSIZE];
-	stream2file_error_msg_t ret;
 	
 	if(record) 
 	{
@@ -1060,14 +1090,6 @@ stream2file_error_msg_t CVCRControl::stopRecording()
 		delete record;
 		record = NULL;
 	}
-
-	if (exit_flag == STREAM2FILE_STATUS_RUNNING) 
-	{
-		exit_flag = STREAM2FILE_STATUS_IDLE;
-		ret = STREAM2FILE_OK;
-	}
-	else
-		ret = STREAM2FILE_RECORDING_THREADS_FAILED;
 
 	if( autoshift || CNeutrinoApp::getInstance()->timeshiftstatus) 
 	{
@@ -1080,6 +1102,499 @@ stream2file_error_msg_t CVCRControl::stopRecording()
 
 	rec_filename[0] = 0;
 
-	return ret;
+	return STREAM2FILE_OK;
+}
+
+////
+void CVCRControl::Close()
+{
+	if (ifcx)
+	{
+		avformat_close_input(&ifcx);
+	}
+	
+	if (ofcx)
+	{
+		if (ofcx->pb)
+		{
+			avio_close(ofcx->pb);
+			ofcx->pb = NULL;
+		}
+		
+		avformat_free_context(ofcx);
+	}
+	
+	if (bsfc)
+	{
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,48,100)
+		av_bitstream_filter_close(bsfc);
+#else
+		av_bsf_free(&bsfc);
+#endif
+	}
+	
+	ifcx = NULL;
+	ofcx = NULL;
+	bsfc = NULL;
+}
+
+void CVCRControl::FillMovieInfo(CZapitChannel * channel, APIDList& apid_list)
+{
+	g_movieInfo->VideoType = 0;
+
+	for (unsigned i = 0; i < ofcx->nb_streams; i++)
+	{
+		AVStream *st = ofcx->streams[i];
+#if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(57,25,101)
+		AVCodecContext *codec = st->codec;
+#else
+		AVCodecParameters *codec = st->codecpar;
+#endif
+
+		if (codec->codec_type == AVMEDIA_TYPE_AUDIO)
+		{
+			EPG_AUDIO_PIDS audio_pids;
+			AVDictionaryEntry *lang = av_dict_get(st->metadata, "language", NULL, 0);
+			AVDictionaryEntry *title = av_dict_get(st->metadata, "title", NULL, 0);
+
+			std::string desc;
+			if (lang)
+				desc += lang->value;
+
+			if (title)
+			{
+				if (desc.length() != 0)
+					desc += " ";
+				desc += title->value;
+			}
+			
+			switch (codec->codec_id)
+			{
+				case AV_CODEC_ID_AC3:
+					audio_pids.atype = CZapitAudioChannel::AC3;
+					break;
+					
+				case AV_CODEC_ID_AAC:
+					audio_pids.atype = CZapitAudioChannel::AAC;
+					break;
+					
+				case AV_CODEC_ID_EAC3:
+					audio_pids.atype = CZapitAudioChannel::EAC3;
+					break;
+					
+				case AV_CODEC_ID_MP2:
+				default:
+					audio_pids.atype = CZapitAudioChannel::MPEG;
+					break;
+			}
+
+			audio_pids.selected = 0;
+			audio_pids.epgAudioPidName = desc;
+			audio_pids.epgAudioPid = st->id;
+			g_movieInfo->audioPids.push_back(audio_pids);
+
+		}
+		else if (codec->codec_type == AVMEDIA_TYPE_VIDEO)
+		{
+			g_movieInfo->epgVideoPid = st->id;
+			
+			if (codec->codec_id == AV_CODEC_ID_H264)
+				g_movieInfo->VideoType = 1;
+		}
+	}
+}
+
+bool CVCRControl::saveXML(const char* const filename, const char* const info)
+{
+	int fd;
+	char buf[FILENAMEBUFFERSIZE];
+	struct statfs s;
+
+	sprintf(buf, "%s.xml", filename);
+
+	char * dir = strdup(buf);
+	int ret = statfs(dirname(dir), &s);
+	free(dir);
+
+	if((ret != 0) || (s.f_type == 0x72b6) || (s.f_type == 0x24051905)) 
+	{
+		return false;
+	}
+
+	if ((fd = open(buf, O_SYNC | O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) >= 0) 
+	{
+		write(fd, info, strlen(info));
+		fdatasync(fd);
+		close(fd);
+		
+		return true;
+	} 
+	else 
+	{
+		return false;
+	}
+}
+
+bool CVCRControl::Start()
+{
+	if (!stopped)
+		return false;
+		
+	stopped = false;
+	int ret = start();
+	
+	return (ret == 0);
+}
+
+stream2file_error_msg_t CVCRControl::stopWebTVRecording()
+{
+	if (stopped)
+		return STREAM2FILE_RECORDING_THREADS_FAILED;
+
+//	av_log(NULL, AV_LOG_QUIET, "%s", "");
+
+	time_t end_time = time_monotonic();
+
+	stopped = true;
+	
+	int ret = join();
+
+	struct stat test;
+	std::string xmlfile = std::string(rec_filename) + ".xml";
+	
+	if (stat(xmlfile.c_str(), &test) == 0)
+	{
+		if(!g_movieInfo)
+			g_movieInfo = new MI_MOVIE_INFO();
+
+		g_cMovieInfo->clearMovieInfo(g_movieInfo);
+		
+		std::string tsfile = std::string(rec_filename) + ".ts";
+		g_movieInfo->file.Name = tsfile;
+		
+		g_cMovieInfo->loadMovieInfo(g_movieInfo);//restore user bookmark
+	}
+
+	g_movieInfo->length = (int) round((double)(end_time - time_started) / (double) 60);
+
+//	SaveXml();
+
+	// close
+	Close();
+
+	return STREAM2FILE_OK;
+}
+
+stream2file_error_msg_t CVCRControl::startWebTVRecording(const char* const filename, const event_id_t epgid, const std::string& epgTitle, const time_t epg_time)
+{
+	APIDList apid_list;
+
+	CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(channel_id);
+	
+	if (channel == NULL)
+	{
+		return STREAM2FILE_INVALID_PID;
+	}
+	
+	//
+	sprintf(rec_filename, "%s", filename);
+	
+	// open / start
+	if (!Open(channel, filename) || !Start())
+	{
+		Close();
+
+		return STREAM2FILE_RECORDING_THREADS_FAILED;
+	}
+	
+	// save xml
+//	FillMovieInfo(channel, apid_list); //FIXME:
+
+	saveXML(filename, getMovieInfoString(channel_id, epgid, epgTitle, apid_list, epg_time).c_str());
+
+	return STREAM2FILE_OK;
+}
+
+bool CVCRControl::Open(CZapitChannel *channel, const char * const filename)
+{
+	std::string url = channel->getUrl();
+
+	if (url.empty())
+		return false;
+
+	// fill headers
+	std::string pretty_name, headers, dumb;
+
+	// init av
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
+	av_register_all();
+	avcodec_register_all();
+#endif
+	avformat_network_init();
+
+//	av_log_set_flags(AV_LOG_SKIP_REPEATED);
+	AVDictionary *options = NULL;
+	av_dict_set(&options, "auth_type", "basic", 0);
+	
+	if (!headers.empty())//add cookies
+	{
+		headers += "\r\n";
+		av_dict_set(&options, "headers", headers.c_str(), 0);
+	}
+
+//	av_log_set_level(AV_LOG_DEBUG);
+	
+	if (avformat_open_input(&ifcx, url.c_str(), NULL, &options) != 0)
+	{
+//		printf("%s: Cannot open input [%s]!\n", __FUNCTION__, url.c_str());
+//		av_log_set_level(AV_LOG_INFO);
+		av_dict_free(&options);
+		
+		return false;
+	}
+
+//	av_log_set_level(AV_LOG_INFO);
+	av_dict_free(&options);
+
+	if (avformat_find_stream_info(ifcx, NULL) < 0)
+	{
+//		printf("%s: Cannot find stream info [%s]!\n", __FUNCTION__, channel->getUrl().c_str());
+		
+		return false;
+	}
+	
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58,27,102)
+	const char *hls = "applehttp";
+#else
+	const char *hls = "hls";
+#endif
+	if (!strstr(ifcx->iformat->name, hls) &&
+		!strstr(ifcx->iformat->name, "mpegts") &&
+		!strstr(ifcx->iformat->name, "matroska") &&
+		!strstr(ifcx->iformat->name, "avi") &&
+		!strstr(ifcx->iformat->name, "mp4"))
+	{
+//		printf("%s: not supported format [%s]!\n", __FUNCTION__, ifcx->iformat->name);
+		return false;
+	}
+
+#if (LIBAVFORMAT_VERSION_MAJOR < 58)
+	snprintf(ifcx->filename, sizeof(ifcx->filename), "%s", channel->getUrl().c_str());
+	av_dump_format(ifcx, 0, ifcx->filename, 0);
+#else
+	av_dump_format(ifcx, 0, ifcx->url, 0);
+#endif
+
+	//
+	std::string tsfile = std::string(filename) + ".ts";
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
+	AVOutputFormat *ofmt = av_guess_format(NULL, tsfile.c_str(), NULL);
+#else
+	const AVOutputFormat *ofmt = av_guess_format(NULL, tsfile.c_str(), NULL);
+#endif
+	if (ofmt == NULL)
+	{
+//		printf("%s: av_guess_format for [%s] failed!\n", __FUNCTION__, tsfile.c_str());
+		return false;
+	}
+
+	ofcx = avformat_alloc_context();
+	ofcx->oformat = ofmt;
+
+	if (avio_open2(&ofcx->pb, tsfile.c_str(), AVIO_FLAG_WRITE, NULL, NULL) < 0)
+	{
+//		printf("%s: avio_open2 for [%s] failed!\n", __FUNCTION__, tsfile.c_str());
+		return false;
+	}
+
+	av_dict_copy(&ofcx->metadata, ifcx->metadata, 0);
+	
+#if (LIBAVFORMAT_VERSION_MAJOR < 58)
+	snprintf(ofcx->filename, sizeof(ofcx->filename), "%s", tsfile.c_str());
+#else
+	ofcx->url = av_strdup(!tsfile.empty() ? tsfile.c_str() : "");
+#endif
+
+	stream_index = -1;
+	int stid = 0x200;
+	
+	for (unsigned i = 0; i < ifcx->nb_streams; i++)
+	{
+#if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(57,25,101)
+		AVCodecContext *iccx = ifcx->streams[i]->codec;
+		AVStream *ost = avformat_new_stream(ofcx, iccx->codec);
+		avcodec_copy_context(ost->codec, iccx);
+#else
+		AVCodecParameters *iccx = ifcx->streams[i]->codecpar;
+		AVStream *ost = avformat_new_stream(ofcx, NULL);
+		avcodec_parameters_copy(ost->codecpar, iccx);
+#endif
+		av_dict_copy(&ost->metadata, ifcx->streams[i]->metadata, 0);
+		ost->time_base = ifcx->streams[i]->time_base;
+		ost->id = stid++;
+		
+		if (iccx->codec_type == AVMEDIA_TYPE_VIDEO)
+		{
+			stream_index = i;
+		}
+		else if (stream_index < 0)
+			stream_index = i;
+	}
+	
+//	av_log_set_level(AV_LOG_VERBOSE);
+#if (LIBAVFORMAT_VERSION_MAJOR < 58)
+	av_dump_format(ofcx, 0, ofcx->filename, 1);
+#else
+	av_dump_format(ofcx, 0, ofcx->url, 1);
+#endif
+
+//	av_log_set_level(AV_LOG_WARNING);
+
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,48,100)
+	bsfc = av_bitstream_filter_init("h264_mp4toannexb");
+	
+//	if (!bsfc)
+//		printf("%s: av_bitstream_filter_init h264_mp4toannexb failed!\n", __FUNCTION__);
+#else
+	const AVBitStreamFilter *bsf = av_bsf_get_by_name("h264_mp4toannexb");
+	if (!bsf)
+	{
+		return false;
+	}
+	
+	if ((av_bsf_alloc(bsf, &bsfc)))
+	{
+		return false;
+	}
+#endif
+
+	return true;
+}
+
+void CVCRControl::run()
+{
+	AVPacket pkt;
+
+	time_t now = 0;
+	time_t tstart = time_monotonic();
+	time_started = tstart;
+	start_time = time(0);
+	
+	if (avformat_write_header(ofcx, NULL) < 0)
+	{
+//		printf("%s: avformat_write_header failed\n", __FUNCTION__);
+		return;
+	}
+
+	double total = 0;
+	
+	while (!stopped)
+	{
+		av_init_packet(&pkt);
+		
+		if (av_read_frame(ifcx, &pkt) < 0)
+			break;
+			
+		if (pkt.stream_index < 0)
+			continue;
+			
+#if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(57,25,101)
+		AVCodecContext *codec = ifcx->streams[pkt.stream_index]->codec;
+#else
+		AVCodecParameters *codec = ifcx->streams[pkt.stream_index]->codecpar;
+#endif
+		if (bsfc && codec->codec_id == AV_CODEC_ID_H264)
+		{
+			AVPacket newpkt = pkt;
+			
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,48,100)
+			if (av_bitstream_filter_filter(bsfc, codec, NULL, &newpkt.data, &newpkt.size, pkt.data, pkt.size, pkt.flags & AV_PKT_FLAG_KEY) >= 0)
+			{
+#if (LIBAVFORMAT_VERSION_MAJOR == 57 && LIBAVFORMAT_VERSION_MINOR == 25)
+				av_packet_unref(&pkt);
+#else
+				av_free_packet(&pkt);
+#endif
+				newpkt.buf = av_buffer_create(newpkt.data, newpkt.size, av_buffer_default_free, NULL, 0);
+				pkt = newpkt;
+			}
+#else
+			int ret = av_bsf_send_packet(bsfc, &pkt);
+			
+			if (ret < 0)
+			{
+				break;
+			}
+			
+			ret = av_bsf_receive_packet(bsfc, &newpkt);
+			
+			if (ret == AVERROR(EAGAIN))
+			{
+				break;
+			}
+			
+			if (ret != AVERROR_EOF)
+			{
+				av_packet_unref(&pkt);
+				pkt = newpkt;
+			}
+#endif
+		}
+		
+		pkt.pts = av_rescale_q(pkt.pts, ifcx->streams[pkt.stream_index]->time_base, ofcx->streams[pkt.stream_index]->time_base);
+		pkt.dts = av_rescale_q(pkt.dts, ifcx->streams[pkt.stream_index]->time_base, ofcx->streams[pkt.stream_index]->time_base);
+
+		av_write_frame(ofcx, &pkt);
+#if (LIBAVFORMAT_VERSION_MAJOR == 57 && LIBAVFORMAT_VERSION_MINOR == 25)
+		av_packet_unref(&pkt);
+#else
+		av_free_packet(&pkt);
+#endif
+
+		if (pkt.stream_index == stream_index)
+		{
+			total += (double) 1000 * pkt.duration * av_q2d(ifcx->streams[stream_index]->time_base);
+			//printf("PKT: duration %d (%f) total %f (ifcx->duration %016llx\n", pkt.duration, duration, total, ifcx->duration);
+		}
+
+		if (now == 0)
+			WriteHeader(1000);
+			
+		now = time_monotonic();
+		
+		if (now - tstart > 1)
+		{
+			tstart = now;
+			WriteHeader(total);
+		}
+	}
+
+	av_read_pause(ifcx);
+	av_write_trailer(ofcx);
+	WriteHeader(total);
+	
+	printf("%s: Stopped.\n", __FUNCTION__);
+}
+
+void CVCRControl::WriteHeader(uint32_t duration)
+{
+	std::string tsfile = std::string(rec_filename) + ".ts";
+
+	int srcfd = open(tsfile.c_str(), O_WRONLY | O_LARGEFILE);
+	
+	if (srcfd >= 0)
+	{
+		if (lseek64(srcfd, 188 - sizeof(PVR_FILE_INFO), SEEK_SET) >= 0)
+		{
+			PVR_FILE_INFO pinfo;
+			pinfo.uDuration = duration;
+			pinfo.uTSPacketSize = 188;
+			
+			write(srcfd, (uint8_t *)&pinfo, sizeof(PVR_FILE_INFO));
+		}
+		close(srcfd);
+	}
+	else
+		perror(tsfile.c_str());
 }
 
