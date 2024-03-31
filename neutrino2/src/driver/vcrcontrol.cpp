@@ -116,7 +116,7 @@ CVCRControl::~CVCRControl()
 
 bool CVCRControl::Record(const CTimerd::RecordingInfo * const eventinfo)
 {
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::Record: channel_id:%llx\n", eventinfo->channel_id);
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::Record: channel_id:%llx\n", eventinfo->channel_id);
 	
 	int mode = CNeutrinoApp::getInstance()->getMode();
 	
@@ -127,7 +127,7 @@ bool CVCRControl::Record(const CTimerd::RecordingInfo * const eventinfo)
 
 void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap, APIDList& apid_list)
 {
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::getAPIDs\n");
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::getAPIDs\n");
 	
         unsigned char apids = ap;
 
@@ -257,7 +257,7 @@ void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap
 //
 void CVCRControl::RestoreNeutrino(void)
 {
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::RestoreNeutrino\n");
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::RestoreNeutrino\n");
 	
 	CZapit::getInstance()->setRecordMode( false );
 
@@ -285,7 +285,7 @@ void CVCRControl::RestoreNeutrino(void)
 //
 void CVCRControl::CutBackNeutrino(const t_channel_id channel_id, const int mode)
 {
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::CutBackNeutrino\n");
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::CutBackNeutrino\n");
 	
 	last_mode = CNeutrinoApp::getInstance()->getMode();
 
@@ -319,7 +319,7 @@ void CVCRControl::CutBackNeutrino(const t_channel_id channel_id, const int mode)
 //
 bool CVCRControl::Stop()
 {
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::Stop\n");
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::Stop\n");
 	
 	std::string extMessage = " ";
 	time_t end_time = time(0);
@@ -366,7 +366,7 @@ bool CVCRControl::Stop()
 //
 bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_id_t epgid, const std::string& epgTitle, unsigned char apids, const time_t epg_time) 
 {
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::doRecord\n");
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::doRecord\n");
 	
 	// leave menu (if in any)
 	g_RCInput->postMsg(CRCInput::RC_timeout, 0);
@@ -437,7 +437,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	// vpid / pcrpid
 	if (si.vpid != 0)
 	{
-		psi.addPid(si.vpid, EN_TYPE_VIDEO, 0);
+		psi.addPid(si.vpid, si.vtype == CHANNEL_VIDEO_MPEG4 ? EN_TYPE_AVC : si.vtype == CHANNEL_VIDEO_HEVC ? EN_TYPE_HEVC : EN_TYPE_VIDEO, 0);
 		
 		if (si.pcrpid && (si.pcrpid != si.vpid))
 		{
@@ -645,7 +645,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 
 bool CVCRControl::Screenshot(const t_channel_id channel_id, char * fname) 
 {
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::Screenshot\n");
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::Screenshot\n");
 	
 	//FIXME:
 	char filename[512]; // UTF-8
@@ -751,7 +751,7 @@ bool CVCRControl::Screenshot(const t_channel_id channel_id, char * fname)
 //
 std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const event_id_t epgid, const std::string& epgTitle, APIDList apid_list, const time_t epg_time)
 {
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::getMovieInfoString\n");
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::getMovieInfoString\n");
 	
 	std::string extMessage;
 	std::string apids10;
@@ -802,7 +802,7 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 				
 			g_movieInfo->length = epgdata.epg_times.duration	/ 60;
 				
-			dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::getMovieInfoString: fsk:%d, Genre:%d, Duration: %d min\r\n",g_movieInfo->parentalLockAge,g_movieInfo->genreMajor,g_movieInfo->length);	
+			dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::getMovieInfoString: fsk:%d, Genre:%d, Duration: %d min\r\n",g_movieInfo->parentalLockAge,g_movieInfo->genreMajor,g_movieInfo->length);	
 		}
 	} 
 	else if (!epgTitle.empty()) 
@@ -917,14 +917,14 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 
 void CVCRControl::processAPIDnames()
 {
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::processAPIDnames\n");
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::processAPIDnames\n");
 	
 	bool has_unresolved_ctags = false;
 	int ac3_found = -1;
 
 	for(unsigned int count = 0; count < pids.APIDs.size(); count++)
 	{
-		dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::processAPIDnames: apid name= %s (%s) pid= 0x%x\n", pids.APIDs[count].desc, getISO639Description( pids.APIDs[count].desc ), pids.APIDs[count].pid);
+		dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::processAPIDnames: apid name= %s (%s) pid= 0x%x\n", pids.APIDs[count].desc, getISO639Description( pids.APIDs[count].desc ), pids.APIDs[count].pid);
 		
 		if ( pids.APIDs[count].component_tag != 0xFF )
 		{
@@ -978,7 +978,7 @@ void CVCRControl::processAPIDnames()
 //
 stream2file_error_msg_t CVCRControl::startRecording(const char * const filename, const char * const info, unsigned short vpid, unsigned short * pids, int numpids)
 {
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::startRecording: %s\n", filename);
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::startRecording: %s\n", filename);
 	
 	int fd;
 	char buf[FILENAMEBUFFERSIZE];
@@ -1015,7 +1015,7 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 
 	sprintf(buf, "%s.ts", filename);
 
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::startRecording: file %s vpid 0x%x apid 0x%x\n", buf, vpid, pids[0]);
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::startRecording: file %s vpid 0x%x apid 0x%x\n", buf, vpid, pids[0]);
 
 	fd = open(buf, O_CREAT | O_RDWR | O_LARGEFILE | O_TRUNC , S_IRWXO | S_IRWXG | S_IRWXU);
 	if(fd < 0) 
@@ -1048,7 +1048,7 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 
 stream2file_error_msg_t CVCRControl::stopRecording()
 {
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::stopRecording autoshift:%d timeshift:%d\n", autoshift, CNeutrinoApp::getInstance()->timeshiftstatus);
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::stopRecording autoshift:%d timeshift:%d\n", autoshift, CNeutrinoApp::getInstance()->timeshiftstatus);
 	
 	char buf[FILENAMEBUFFERSIZE];
 	char buf1[FILENAMEBUFFERSIZE];
