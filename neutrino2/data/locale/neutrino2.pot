@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-04-01 00:39+0300\n"
+"POT-Creation-Date: 2024-04-01 02:04+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2049,7 +2049,8 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3769 ../../src/neutrino2.cpp:3776
 #: ../../src/neutrino2.cpp:3814 ../../src/neutrino2.cpp:3857
 #: ../../src/neutrino2.cpp:3866 ../../src/neutrino2.cpp:4282
-#: ../../src/neutrino2.cpp:4911
+#: ../../src/neutrino2.cpp:4911 ../../src/neutrino2.cpp:4918
+#: ../../src/neutrino2.cpp:4264 ../../src/neutrino2.cpp:4893
 msgid "Information"
 msgstr ""
 
@@ -2833,6 +2834,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4906 ../../src/neutrino2.cpp:4901
 #: ../../src/neutrino2.cpp:4899 ../../src/neutrino2.cpp:4902
 #: ../../src/neutrino2.cpp:4909 ../../src/neutrino2.cpp:4911
+#: ../../src/neutrino2.cpp:4918 ../../src/neutrino2.cpp:4893
 msgid "No neutrino-settings found, Using defaults."
 msgstr ""
 
@@ -4369,6 +4371,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4906 ../../src/neutrino2.cpp:4901
 #: ../../src/neutrino2.cpp:4899 ../../src/neutrino2.cpp:4902
 #: ../../src/neutrino2.cpp:4909 ../../src/neutrino2.cpp:4911
+#: ../../src/neutrino2.cpp:4918 ../../src/neutrino2.cpp:4893
 msgid ""
 "The neutrino-settings have been updated.\n"
 "New Options will be set to default."
@@ -4802,7 +4805,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4270 ../../src/neutrino2.cpp:3178
 #: ../../src/neutrino2.cpp:3179 ../../src/neutrino2.cpp:4273
 #: ../../src/neutrino2.cpp:4280 ../../src/neutrino2.cpp:3181
-#: ../../src/neutrino2.cpp:4282
+#: ../../src/neutrino2.cpp:4282 ../../src/neutrino2.cpp:4264
 msgid "You really want to to stop record ?"
 msgstr ""
 

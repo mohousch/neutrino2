@@ -3095,6 +3095,8 @@ int CZapit::startPlayBack(CZapitChannel * thisChannel)
 	{
 		//
 		closeAVDecoder();
+		////test
+		playback->Close(); // not needed???
 		
 		playback->Open();
 	
@@ -3391,6 +3393,11 @@ void CZapit::continuePlayBack(void)
 	//
 	if (IS_WEBTV(live_channel->getChannelID()))
 		playback->SetSpeed(1);
+	else
+	{
+		audioDecoder->Resume();
+		videoDecoder->Resume();
+	}
 }
 
 void CZapit::closeAVDecoder(void)

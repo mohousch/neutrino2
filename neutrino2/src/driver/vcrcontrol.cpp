@@ -275,7 +275,7 @@ void CVCRControl::RestoreNeutrino(void)
 	
 	CZapit::getInstance()->setRecordMode( false );
 
-	if (!IS_WEBTV(channel_id))
+//	if (!IS_WEBTV(channel_id))
 	{
 		// start playback
 		if (!CZapit::getInstance()->isPlayBackActive() && (CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby))
@@ -303,7 +303,7 @@ void CVCRControl::CutBackNeutrino(const t_channel_id channel_id, const int mode)
 	
 	last_mode = CNeutrinoApp::getInstance()->getMode();
 
-	if (!IS_WEBTV(channel_id))
+//	if (!IS_WEBTV(channel_id))
 	{
 		if(last_mode == NeutrinoMessages::mode_standby)
 		{

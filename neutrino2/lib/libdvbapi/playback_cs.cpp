@@ -514,15 +514,10 @@ bool cPlayback::Open()
 		player->manager		= &ManagerHandler;
 	}
 
-	// registration of output devices
-	if(player && player->output) 
-	{
-		player->output->Command(player, OUTPUT_ADD, (void*)"audio");
-		player->output->Command(player, OUTPUT_ADD, (void*)"video");		
-		player->output->Command(player, OUTPUT_ADD, (void*)"subtitle");		
-	}
+	if(player && player->playback)
+		player->playback->Command(player, PLAYBACK_INIT, NULL);
 
-	// subtitle
+	// add subtitle output screen
 	SubtitleOutputDef_t out;
 
 	out.screen_x = CFrameBuffer::getInstance()->getScreenX();
@@ -534,7 +529,8 @@ bool cPlayback::Open()
 	out.destination   = CFrameBuffer::getInstance()->getFrameBufferPointer();
 	out.destStride    = CFrameBuffer::getInstance()->getStride();
     
-	player->output->subtitle->Command(player, (OutputCmd_t)OUTPUT_SET_SUBTITLE_OUTPUT, (void*) &out);
+    	if(player && player->output) 
+		player->output->subtitle->Command(player, (OutputCmd_t)OUTPUT_SET_SUBTITLE_OUTPUT, (void*) &out);
 #endif
 
 	return true;
@@ -595,15 +591,7 @@ void cPlayback::Close(void)
 		printf("GST playbin closed\n");
 	}
 #else
-	//
-	if(player && player->output) 
-	{
-		player->output->Command(player, OUTPUT_CLOSE, NULL);
-		player->output->Command(player, OUTPUT_DEL, (void*)"audio");
-		player->output->Command(player, OUTPUT_DEL, (void*)"video");		
-		player->output->Command(player, OUTPUT_DEL, (void*)"subtitle");	
-	}
-	
+	////test
 	if(player && player->playback)
 		player->playback->Command(player, PLAYBACK_CLOSE, NULL);
 
@@ -740,9 +728,7 @@ bool cPlayback::Start(char *filename, const char * const suburi)
 	{
 		// play it baby 
 		if(player && player->output && player->playback) 
-		{
-        		player->output->Command(player, OUTPUT_OPEN, NULL);
-			
+		{	
 			if (player->playback->Command(player, PLAYBACK_PLAY, NULL) == 0 ) // playback.c uses "int = 0" for "true"
 			{
 				playing = true;
@@ -778,9 +764,7 @@ bool cPlayback::Play(void)
 	}
 #else
 	if(player && player->output && player->playback) 
-	{
-        	player->output->Command(player, OUTPUT_OPEN, NULL);
-			
+	{		
 		if (player->playback->Command(player, PLAYBACK_PLAY, NULL) == 0 ) // playback.c uses "int = 0" for "true"
 		{
 			playing = true;
@@ -809,9 +793,6 @@ bool cPlayback::Stop(void)
 #else
 	if(player && player->playback && player->output) 
 		player->playback->Command(player, PLAYBACK_STOP, NULL);
-	
-	if(player && player->container && player->container->selectedContainer)
-		player->container->selectedContainer->Command(player, CONTAINER_STOP, NULL);
 #endif
 
 	playing = false;

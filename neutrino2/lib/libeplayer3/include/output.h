@@ -8,7 +8,6 @@
 
 
 typedef enum {
-	OUTPUT_INIT,
 	OUTPUT_ADD,
 	OUTPUT_DEL,
 	OUTPUT_CAPABILITIES,

@@ -200,9 +200,33 @@ static void SupervisorThread(Context_t *context)
 /* ***************************** */
 /* Functions                     */
 /* ***************************** */
+// init
+static int PlaybackInit(Context_t* context) 
+{
+	int ret = cERR_PLAYBACK_NO_ERROR;
+
+	playback_printf(10, "\n");
+	
+	// add output devices
+	context->output->Command(context, OUTPUT_ADD, (void*)"audio");
+	context->output->Command(context, OUTPUT_ADD, (void*)"video");		
+	context->output->Command(context, OUTPUT_ADD, (void*)"subtitle");
+
+	// init params
+	context->playback->isPaused     = 0;
+	context->playback->isPlaying    = 0;
+	context->playback->isForwarding = 0;
+	context->playback->BackWard     = 0;
+	context->playback->SlowMotion   = 0;
+	context->playback->Speed        = 0;
+	
+	playback_printf(10, "exiting with value %d\n", ret);
+
+	return ret;
+}
 
 // open
-static int PlaybackOpen(Context_t  *context, char * uri) 
+static int PlaybackOpen(Context_t* context, char * uri) 
 {
 	playback_printf(10, "URI=%s\n", uri);
 
@@ -341,11 +365,21 @@ static int PlaybackOpen(Context_t  *context, char * uri)
 }
 
 // close
-static int PlaybackClose(Context_t  *context) 
+static int PlaybackClose(Context_t* context) 
 {
 	int ret = cERR_PLAYBACK_NO_ERROR;
 
 	playback_printf(10, "\n");
+	
+	////test
+	// close output
+	context->output->Command(context, OUTPUT_CLOSE, NULL);
+		
+	// del output devices
+	context->output->Command(context, OUTPUT_DEL, (void*)"audio");
+	context->output->Command(context, OUTPUT_DEL, (void*)"video");		
+	context->output->Command(context, OUTPUT_DEL, (void*)"subtitle");	
+	////
 
 	if (context->container->Command(context, CONTAINER_DEL, NULL) < 0)
 	{
@@ -378,6 +412,9 @@ static int PlaybackPlay(Context_t * context)
 	int ret = cERR_PLAYBACK_NO_ERROR;
 
 	playback_printf(10, "\n");
+	
+	////test
+	context->output->Command(context, OUTPUT_OPEN, NULL);
 
 	if (!context->playback->isPlaying) 
 	{
@@ -1003,6 +1040,12 @@ static int Command(void* _context, PlaybackCmd_t command, void * argument)
 
 	switch(command) 
 	{
+		case PLAYBACK_INIT:
+		{
+			ret = PlaybackInit(context);
+			break;
+		}
+		
 		case PLAYBACK_OPEN: 
 		{
 			ret = PlaybackOpen(context, (char*)argument);

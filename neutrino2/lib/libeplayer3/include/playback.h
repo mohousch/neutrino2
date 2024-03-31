@@ -9,6 +9,7 @@ bool PlaybackDieNowRegisterCallback(PlaybackDieNowCallback callback);
 
 typedef enum 
 {
+	PLAYBACK_INIT,
 	PLAYBACK_OPEN, 
 	PLAYBACK_CLOSE, 
 	PLAYBACK_PLAY, 

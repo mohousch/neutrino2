@@ -4181,89 +4181,71 @@ void CNeutrinoApp::realRun(void)
 			}
 			else if(msg == CRCInput::RC_pause) // start timeshift recording
 			{
-//				if (IS_WEBTV(live_channel_id))
-//				{
-//					CZapit::getInstance()->pausePlayBack();
-//					timeshiftstatus = 1;
-//				}
-//				else
+				if (recDir != NULL)
 				{
-					if (recDir != NULL)
-					{
-						if(g_RemoteControl->is_video_started || IS_WEBTV(live_channel_id)) 
-						{		
-							// permanenttimeshift / already recording
-							if(recordingstatus) 
-							{
-								timeshiftstatus = recordingstatus;
-							} 
-							else
-							{
-								// timeshift
-								recordingstatus = 1;	
-								timeshiftstatus = recordingstatus;
-								doGuiRecord(timeshiftDir, true);
-							}
+					if(g_RemoteControl->is_video_started || IS_WEBTV(live_channel_id)) 
+					{		
+						// permanenttimeshift / already recording
+						if(recordingstatus) 
+						{
+							timeshiftstatus = recordingstatus;
+						} 
+						else
+						{
+							// timeshift
+							recordingstatus = 1;	
+							timeshiftstatus = recordingstatus;
+							doGuiRecord(timeshiftDir, true);
+						}
 
-							// freeze audio/video
-							if (timeshiftstatus)
-							{
-//								if (IS_WEBTV(live_channel_id))
-//								{
-									CZapit::getInstance()->pausePlayBack();
-//								}
-//								else
-//								{
-//									audioDecoder->Stop();
-//									videoDecoder->Stop(false); // dont blank
-//								}
-							}
+						// freeze audio/video
+						if (timeshiftstatus)
+						{
+							CZapit::getInstance()->pausePlayBack();
 						}
 					}
 				}
 			}
 			else if( ((msg == CRCInput::RC_play) && timeshiftstatus)) // play timeshift
-			{
-				
-//				if (IS_WEBTV(live_channel_id))
-//				{
-//					CZapit::getInstance()->continuePlayBack();
-//					timeshiftstatus = 0;
-//				}
-//				else
-				{		
-					if(g_RemoteControl->is_video_started || IS_WEBTV(live_channel_id)) 
+			{		
+				if(g_RemoteControl->is_video_started || IS_WEBTV(live_channel_id)) 
+				{
+					CMoviePlayerGui tmpMoviePlayerGui;
+					CMovieInfo cMovieInfo;
+					MI_MOVIE_INFO mfile;
+
+					//
+					char fname[1024];
+					int cnt = 10*1000000;
+
+					while (!strlen(rec_filename)) 
 					{
-						CMoviePlayerGui tmpMoviePlayerGui;
-						CMovieInfo cMovieInfo;
-						MI_MOVIE_INFO mfile;
+						usleep(1000);
+						cnt -= 1000;
 
-						//
-						char fname[1024];
-						int cnt = 10*1000000;
+						if (!cnt)
+							break;
+					}
 
-						while (!strlen(rec_filename)) 
-						{
-							usleep(1000);
-							cnt -= 1000;
+					if (!strlen(rec_filename))
+						return;
 
-							if (!cnt)
-								break;
-						}
+					sprintf(fname, "%s.ts", rec_filename);
 
-						if (!strlen(rec_filename))
-							return;
-
-						sprintf(fname, "%s.ts", rec_filename);
-
-						//						
-						if (!playback->playing)
-						{
-							CZapit::getInstance()->lockPlayBack();
-							playback->Close(); // not needed???
-							playback->Open();
-							playback->Start(fname);
-						}
+					//
+					if (IS_WEBTV(live_channel_id))						
+					{
+						CZapit::getInstance()->lockPlayBack();
+						playback->Close(); // not needed???
+						playback->Open();
+						playback->Start(fname);
+					}
+					else if (!playback->playing)
+					{
+						CZapit::getInstance()->lockPlayBack();
+						playback->Close(); // not needed???
+						playback->Open();
+						playback->Start(fname);
 					}
 				}
 			}
