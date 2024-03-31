@@ -636,7 +636,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.key_lastchannel = configfile.getInt32( "key_lastchannel", CRCInput::RC_recall );
 	
 	// pip keys
-	g_settings.key_pip = configfile.getInt32("key_pip", CRCInput::RC_pip);
+	g_settings.key_pip = configfile.getInt32("key_pip", CRCInput::RC_pip); // current TP
 
 	// media keys
 	g_settings.key_movieplayer = configfile.getInt32( "key_movieplayer", CRCInput::RC_video );
@@ -1165,7 +1165,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 
 	configfile.setInt32( "key_list_start", g_settings.key_list_start );
 	configfile.setInt32( "key_list_end", g_settings.key_list_end );
-	configfile.setInt32( "key_pip", g_settings.key_pip );
+	configfile.setInt32( "key_pip", g_settings.key_pip ); // current TP
 	
 	// media keys
 	configfile.setInt32( "key_movieplayer", g_settings.key_movieplayer );
@@ -1870,10 +1870,10 @@ int CNeutrinoApp::startAutoRecord(bool addTimer)
 // stop auto record
 void CNeutrinoApp::stopAutoRecord()
 {
+	dprintf(DEBUG_NORMAL, "stopAutoRecord: recordingstatus %d\n", CNeutrinoApp::getInstance()->recordingstatus);
+	
 	if(autoshift && recordingstatus) 
 	{
-		dprintf(DEBUG_NORMAL, "stopAutoRecord: autoshift, recordingstatus %d, stopping ...\n", CNeutrinoApp::getInstance()->recordingstatus);
-
 		CVCRControl::getInstance()->Stop();
 		autoshift = false;
 		
@@ -1965,12 +1965,15 @@ void CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 		startNextRecording();
 	}
 		
-	if (recordingstatus) CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, true);
+	if (recordingstatus) 
+		CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, true);
 }
 
 // startNextRecording
 void CNeutrinoApp::startNextRecording()
 {
+	dprintf(DEBUG_NORMAL, "startNextRecording\n");
+	
 	if ( nextRecordingInfo != NULL ) 
 	{
 		bool doRecord = true;
@@ -4178,16 +4181,16 @@ void CNeutrinoApp::realRun(void)
 			}
 			else if(msg == CRCInput::RC_pause) // start timeshift recording
 			{
-				if (IS_WEBTV(live_channel_id))
-				{
-					CZapit::getInstance()->pausePlayBack();
-					timeshiftstatus = 1;
-				}
-				else
+//				if (IS_WEBTV(live_channel_id))
+//				{
+//					CZapit::getInstance()->pausePlayBack();
+//					timeshiftstatus = 1;
+//				}
+//				else
 				{
 					if (recDir != NULL)
 					{
-						if(g_RemoteControl->is_video_started) 
+						if(g_RemoteControl->is_video_started || IS_WEBTV(live_channel_id)) 
 						{		
 							// permanenttimeshift / already recording
 							if(recordingstatus) 
@@ -4205,8 +4208,15 @@ void CNeutrinoApp::realRun(void)
 							// freeze audio/video
 							if (timeshiftstatus)
 							{
-								audioDecoder->Stop();
-								videoDecoder->Stop(false); // dont blank
+//								if (IS_WEBTV(live_channel_id))
+//								{
+									CZapit::getInstance()->pausePlayBack();
+//								}
+//								else
+//								{
+//									audioDecoder->Stop();
+//									videoDecoder->Stop(false); // dont blank
+//								}
 							}
 						}
 					}
@@ -4215,14 +4225,14 @@ void CNeutrinoApp::realRun(void)
 			else if( ((msg == CRCInput::RC_play) && timeshiftstatus)) // play timeshift
 			{
 				
-				if (IS_WEBTV(live_channel_id))
-				{
-					CZapit::getInstance()->continuePlayBack();
-					timeshiftstatus = 0;
-				}
-				else
+//				if (IS_WEBTV(live_channel_id))
+//				{
+//					CZapit::getInstance()->continuePlayBack();
+//					timeshiftstatus = 0;
+//				}
+//				else
 				{		
-					if(g_RemoteControl->is_video_started) 
+					if(g_RemoteControl->is_video_started || IS_WEBTV(live_channel_id)) 
 					{
 						CMoviePlayerGui tmpMoviePlayerGui;
 						CMovieInfo cMovieInfo;
@@ -4557,7 +4567,7 @@ void CNeutrinoApp::realRun(void)
 					showInfo(live_channel);
 				}
 			}
-			else if(msg == (neutrino_msg_t) g_settings.key_pip)
+			else if(msg == (neutrino_msg_t) g_settings.key_pip) // current TP
 			{
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();

@@ -434,8 +434,14 @@ bool CZapit::loopCanTune(CFrontend * fe, CZapitChannel * thischannel)
 
 // NOTE: this can be used only after we found our record_fe???
 bool CZapit::CanZap(CZapitChannel * thischannel)
-{	
+{
+	//
+	if (IS_WEBTV(thischannel->getChannelID()))
+		return true;
+	
+	//	
 	CFrontend * fe = getPreferredFrontend(thischannel);
+	
 	return (fe != NULL);
 }
 
@@ -1431,6 +1437,12 @@ tune_again:
 
 int CZapit::zapToRecordID(const t_channel_id channel_id)
 {
+	if (IS_WEBTV(channel_id))
+	{
+		rec_channel_id = channel_id;
+		return 0;
+	}
+	
 	bool transponder_change = false;
 	
 	// find channel
@@ -3365,6 +3377,11 @@ void CZapit::pausePlayBack(void)
 	//
 	if (IS_WEBTV(live_channel->getChannelID()))
 		playback->SetSpeed(0);
+	else
+	{
+		audioDecoder->Pause();
+		videoDecoder->Pause();
+	}
 }
 
 void CZapit::continuePlayBack(void)

@@ -1351,6 +1351,12 @@ void cVideo::run(void)
 	
 	while (thread_running)
 	{
+		if (playstate == VIDEO_FREEZED) 
+		{
+			usleep(100000);
+			continue;
+		}
+		
 		//
 		if (av_read_frame(avfc, &avpkt) < 0)
 		{

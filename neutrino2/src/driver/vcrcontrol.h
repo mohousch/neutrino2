@@ -131,7 +131,7 @@ class CVCRControl : public OpenThreads::Thread
 					unsigned short vpid,
 					unsigned short * apids,
 					int numpids);			
-		stream2file_error_msg_t stopRecording();
+		void stopRecording();
 
 	protected:
 		void RestoreNeutrino(void);
@@ -174,7 +174,7 @@ class CVCRControl : public OpenThreads::Thread
 		
 		////
 		stream2file_error_msg_t startWebTVRecording(const char* const filename, const event_id_t epgid, const std::string& epgTitle, const time_t epg_time);
-		stream2file_error_msg_t stopWebTVRecording();
+		void stopWebTVRecording();
 };
 
 #endif

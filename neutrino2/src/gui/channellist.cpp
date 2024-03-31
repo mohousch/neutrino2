@@ -988,7 +988,7 @@ int CChannelList::numericZap(int key)
 		return res;
 	}
 
-	// -- quickzap "0" (recall) to last seen channel...
+	// lastchannel key
 	if (key == g_settings.key_lastchannel) 
 	{
 		t_channel_id channel_id = lastChList.getlast(1);
@@ -1001,10 +1001,11 @@ int CChannelList::numericZap(int key)
 		return res;
 	}
 
+	// zap history key
 	if (key == g_settings.key_zaphistory) 
 	{
-		// recording status
-		if(!autoshift && CNeutrinoApp::getInstance()->recordingstatus) 
+		// current transponder bouquet
+		if(!autoshift && CNeutrinoApp::getInstance()->recordingstatus && !IS_WEBTV(rec_channel_id)) 
 		{
 			CChannelList * orgList = bouquetList->orgChannelList;
 			CChannelList * channelList = new CChannelList(_("Current transponder"), false, true);
@@ -1035,7 +1036,7 @@ int CChannelList::numericZap(int key)
 			return res;
 		}
 		
-		// -- zap history bouquet, similar to "0" quickzap, but shows a menue of last channels
+		// -- zap history bouquet
 		if (this->lastChList.size() > 1) 
 		{
 			CChannelList * channelList = new CChannelList(_("History"), true, true);
@@ -1062,10 +1063,11 @@ int CChannelList::numericZap(int key)
 			}
 			delete channelList;
 		}
+		
 		return res;
 	}
 	
-	//TEST: PiP
+	// pip key
 	if(key == g_settings.key_pip )
 	{
 		CChannelList * orgList = bouquetList->orgChannelList;
@@ -1096,6 +1098,7 @@ int CChannelList::numericZap(int key)
 		return res;
 	}
 
+	// sms numeric zap
 	int sx = 4 * g_Font[SNeutrinoSettings::FONT_TYPE_CHANNEL_NUM_ZAP]->getRenderWidth(widest_number) + 14;
 	int sy = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNEL_NUM_ZAP]->getHeight() + 6;
 
@@ -1114,7 +1117,7 @@ int CChannelList::numericZap(int key)
 		{
 			sprintf((char*) &valstr, "%d", chn);
 			
-			while(strlen(valstr)<4)
+			while(strlen(valstr) < 4)
 				strcat(valstr,"-");   //"_"
 
 			frameBuffer->paintBoxRel(ox, oy, sx, sy, COL_INFOBAR_PLUS_0);
@@ -1125,7 +1128,7 @@ int CChannelList::numericZap(int key)
 				g_Font[SNeutrinoSettings::FONT_TYPE_CHANNEL_NUM_ZAP]->RenderString(ox + 7 + i*((sx - 14)>>2), oy + sy - 3, sx, &valstr[i], COL_INFOBAR_TEXT_PLUS_0);
 			}
 			
-			frameBuffer->blit();
+//			frameBuffer->blit();
 
 			// show infobar
 			showInfo(chn - 1);
@@ -1218,11 +1221,11 @@ int CChannelList::numericZap(int key)
 	{
 		// zapto selected channel
 		zapTo( chn );
-		showInfo(chn -1, 0, false);
+		showInfo(chn - 1, 0, false);
 	} 
 	else 
 	{
-		// show infobar
+		// show last tuned channel infobar
 		showInfo(tuned, 0, false);
 
 		if ( showEPG )

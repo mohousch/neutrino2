@@ -362,36 +362,10 @@ void CMoviePlayer::onDeleteFile(MI_MOVIE_INFO& movieFile)
 	if (MessageBox(_("Delete"), msg.c_str(), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes)
 	{
 		delFile(movieFile.file);
-			
-                int i = 1;
-                char newpath[1024];
-                do {
-			sprintf(newpath, "%s.%03d", movieFile.file.Name.c_str(), i);
-			if(access(newpath, R_OK)) 
-			{
-				break;
-                        } 
-                        else 
-			{
-				unlink(newpath);
-				dprintf(DEBUG_NORMAL, "  delete file: %s\r\n", newpath);
-                        }
-                        i++;
-                } while(1);
-			
-                std::string fname = movieFile.file.Name;
                        
-		int ext_pos = 0;
-		ext_pos = fname.rfind('.');
-		if( ext_pos > 0)
-		{
-			std::string extension;
-			extension = fname.substr(ext_pos + 1, fname.length() - ext_pos);
-			extension = "." + extension;
-			strReplace(fname, extension.c_str(), ".jpg");
-		}
-			
-                unlink(fname.c_str());
+		// delete cover
+		if (movieFile.tfile != DATADIR "/icons/no_coverArt.png" && movieFile.tfile != DATADIR "/icons/nopreview.jpg") 
+                	unlink(movieFile.tfile.c_str());
 
 		CFile file_xml  = movieFile.file; 
 		if(m_movieInfo.convertTs2XmlName(&file_xml.Name) == true)  

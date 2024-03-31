@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-03-31 18:24+0300\n"
+"POT-Creation-Date: 2024-03-31 23:11+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,7 +23,8 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:3118 ../../src/neutrino2.cpp:3122
 #: ../../src/neutrino2.cpp:3112 ../../src/neutrino2.cpp:3111
-#: ../../src/neutrino2.cpp:3113
+#: ../../src/neutrino2.cpp:3113 ../../src/neutrino2.cpp:3114
+#: ../../src/neutrino2.cpp:3116
 #, c-format
 msgid "(%d%% over)"
 msgstr ""
@@ -68,7 +69,8 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:3113 ../../src/neutrino2.cpp:3117
 #: ../../src/neutrino2.cpp:3107 ../../src/neutrino2.cpp:3106
-#: ../../src/neutrino2.cpp:3108
+#: ../../src/neutrino2.cpp:3108 ../../src/neutrino2.cpp:3109
+#: ../../src/neutrino2.cpp:3111
 #, c-format
 msgid "(starting in %d min)"
 msgstr ""
@@ -186,7 +188,8 @@ msgid "Add"
 msgstr ""
 
 #: ../../src/gui/channellist.cpp:1806 ../../src/gui/channellist.cpp:1807
-#: ../../src/gui/channellist.cpp:1808
+#: ../../src/gui/channellist.cpp:1808 ../../src/gui/channellist.cpp:1812
+#: ../../src/gui/channellist.cpp:1814 ../../src/gui/channellist.cpp:1809
 msgid "Add to Bouquets"
 msgstr ""
 
@@ -473,6 +476,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3830 ../../src/neutrino2.cpp:3819
 #: ../../src/neutrino2.cpp:3813 ../../src/neutrino2.cpp:3810
 #: ../../src/neutrino2.cpp:3809 ../../src/neutrino2.cpp:3811
+#: ../../src/neutrino2.cpp:3812 ../../src/neutrino2.cpp:3814
 msgid ""
 "Box will shutdown in 1 min.\n"
 "Cancel Sutdown ?"
@@ -813,6 +817,9 @@ msgid "Current key"
 msgstr ""
 
 #: ../../src/gui/channellist.cpp:1010 ../../src/gui/channellist.cpp:1072
+#: ../../src/gui/channellist.cpp:1011 ../../src/gui/channellist.cpp:1077
+#: ../../src/gui/channellist.cpp:1013 ../../src/gui/channellist.cpp:1079
+#: ../../src/gui/channellist.cpp:1074
 msgid "Current transponder"
 msgstr ""
 
@@ -890,7 +897,8 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2121 ../../src/gui/movieplayer.cpp:2122
 #: ../../src/gui/movieplayer.cpp:2136 ../../src/gui/movieplayer.cpp:2120
 #: ../../src/gui/movieplayer.cpp:2123 ../../src/gui/movieplayer.cpp:2133
-#: ../../src/gui/movieplayer.cpp:2135
+#: ../../src/gui/movieplayer.cpp:2135 ../../src/gui/channellist.cpp:1834
+#: ../../src/gui/channellist.cpp:1836 ../../src/gui/channellist.cpp:1831
 msgid "Delete"
 msgstr ""
 
@@ -922,7 +930,8 @@ msgid "Delete all"
 msgstr ""
 
 #: ../../src/gui/channellist.cpp:1828 ../../src/gui/channellist.cpp:1829
-#: ../../src/gui/channellist.cpp:1830
+#: ../../src/gui/channellist.cpp:1830 ../../src/gui/channellist.cpp:1834
+#: ../../src/gui/channellist.cpp:1836 ../../src/gui/channellist.cpp:1831
 msgid "Delete channel from bouquet?"
 msgstr ""
 
@@ -980,7 +989,8 @@ msgstr ""
 #: ../../src/gui/infoviewer.cpp:875 ../../src/neutrino2.cpp:3144
 #: ../../src/neutrino2.cpp:3134 ../../src/gui/infoviewer.cpp:823
 #: ../../src/gui/infoviewer.cpp:876 ../../src/neutrino2.cpp:3133
-#: ../../src/neutrino2.cpp:3135
+#: ../../src/neutrino2.cpp:3135 ../../src/neutrino2.cpp:3136
+#: ../../src/neutrino2.cpp:3138
 msgid "Direct-Mode"
 msgstr ""
 
@@ -1191,6 +1201,8 @@ msgstr ""
 
 #: ../../src/gui/bouquetlist.cpp:551 ../../src/gui/channellist.cpp:1782
 #: ../../src/gui/channellist.cpp:1783 ../../src/gui/channellist.cpp:1784
+#: ../../src/gui/channellist.cpp:1788 ../../src/gui/channellist.cpp:1790
+#: ../../src/gui/channellist.cpp:1785
 msgid "Edit"
 msgstr ""
 
@@ -1252,7 +1264,9 @@ msgstr ""
 #: ../../src/driver/vcrcontrol.cpp:633 ../../src/driver/vcrcontrol.cpp:636
 #: ../../src/driver/vcrcontrol.cpp:640 ../../src/driver/vcrcontrol.cpp:654
 #: ../../src/driver/vcrcontrol.cpp:669 ../../src/driver/vcrcontrol.cpp:665
-#: ../../src/driver/vcrcontrol.cpp:668
+#: ../../src/driver/vcrcontrol.cpp:668 ../../src/neutrino2.cpp:2008
+#: ../../src/driver/vcrcontrol.cpp:667 ../../src/driver/vcrcontrol.cpp:661
+#: ../../src/neutrino2.cpp:2010
 msgid "Error"
 msgstr ""
 
@@ -1795,7 +1809,8 @@ msgstr ""
 msgid "High decode priority"
 msgstr ""
 
-#: ../../src/gui/channellist.cpp:1041
+#: ../../src/gui/channellist.cpp:1041 ../../src/gui/channellist.cpp:1045
+#: ../../src/gui/channellist.cpp:1047 ../../src/gui/channellist.cpp:1042
 msgid "History"
 msgstr ""
 
@@ -2021,7 +2036,20 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1765 ../../src/gui/movieplayer.cpp:2326
 #: ../../src/gui/movieplayer.cpp:2356 ../../src/gui/movieplayer.cpp:1632
 #: ../../src/gui/movieplayer.cpp:1767 ../../src/gui/movieplayer.cpp:2328
-#: ../../src/gui/movieplayer.cpp:2358
+#: ../../src/gui/movieplayer.cpp:2358 ../../src/neutrino2.cpp:2823
+#: ../../src/neutrino2.cpp:2841 ../../src/neutrino2.cpp:2852
+#: ../../src/neutrino2.cpp:3179 ../../src/neutrino2.cpp:3384
+#: ../../src/neutrino2.cpp:3733 ../../src/neutrino2.cpp:3767
+#: ../../src/neutrino2.cpp:3812 ../../src/neutrino2.cpp:4273
+#: ../../src/neutrino2.cpp:4902 ../../src/neutrino2.cpp:4280
+#: ../../src/neutrino2.cpp:4909 ../../src/neutrino2.cpp:2825
+#: ../../src/neutrino2.cpp:2843 ../../src/neutrino2.cpp:2848
+#: ../../src/neutrino2.cpp:2854 ../../src/neutrino2.cpp:3181
+#: ../../src/neutrino2.cpp:3386 ../../src/neutrino2.cpp:3735
+#: ../../src/neutrino2.cpp:3769 ../../src/neutrino2.cpp:3776
+#: ../../src/neutrino2.cpp:3814 ../../src/neutrino2.cpp:3857
+#: ../../src/neutrino2.cpp:3866 ../../src/neutrino2.cpp:4282
+#: ../../src/neutrino2.cpp:4911
 msgid "Information"
 msgstr ""
 
@@ -2458,6 +2486,8 @@ msgstr ""
 #: ../../src/gui/bedit/bouqueteditor_channels.cpp:91
 #: ../../src/gui/channellist.cpp:1806 ../../src/gui/channellist.cpp:1807
 #: ../../src/gui/bedit/bouqueteditor_channels.cpp:90
+#: ../../src/gui/channellist.cpp:1811 ../../src/gui/channellist.cpp:1813
+#: ../../src/gui/channellist.cpp:1808
 msgid "Move"
 msgstr ""
 
@@ -2775,6 +2805,8 @@ msgid ""
 msgstr ""
 
 #: ../../src/gui/channellist.cpp:986 ../../src/gui/channellist.cpp:1245
+#: ../../src/gui/channellist.cpp:1251 ../../src/gui/channellist.cpp:1253
+#: ../../src/gui/channellist.cpp:1248
 msgid ""
 "No channels were found!\n"
 "Please execute a scan\n"
@@ -2799,7 +2831,8 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4956 ../../src/neutrino2.cpp:4960
 #: ../../src/neutrino2.cpp:4965 ../../src/neutrino2.cpp:4964
 #: ../../src/neutrino2.cpp:4906 ../../src/neutrino2.cpp:4901
-#: ../../src/neutrino2.cpp:4899
+#: ../../src/neutrino2.cpp:4899 ../../src/neutrino2.cpp:4902
+#: ../../src/neutrino2.cpp:4909 ../../src/neutrino2.cpp:4911
 msgid "No neutrino-settings found, Using defaults."
 msgstr ""
 
@@ -2856,7 +2889,8 @@ msgstr ""
 #: ../../src/driver/vcrcontrol.cpp:633 ../../src/driver/vcrcontrol.cpp:636
 #: ../../src/driver/vcrcontrol.cpp:640 ../../src/driver/vcrcontrol.cpp:654
 #: ../../src/driver/vcrcontrol.cpp:669 ../../src/driver/vcrcontrol.cpp:665
-#: ../../src/driver/vcrcontrol.cpp:668
+#: ../../src/driver/vcrcontrol.cpp:668 ../../src/driver/vcrcontrol.cpp:667
+#: ../../src/driver/vcrcontrol.cpp:661
 msgid ""
 "One or several recording processes are active.\n"
 "If you encounter this message and no recording is active, please restart Neutrino."
@@ -3080,6 +3114,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3727 ../../src/neutrino2.cpp:3716
 #: ../../src/neutrino2.cpp:3710 ../../src/neutrino2.cpp:3707
 #: ../../src/neutrino2.cpp:3706 ../../src/neutrino2.cpp:3708
+#: ../../src/neutrino2.cpp:3709 ../../src/neutrino2.cpp:3711
 msgid "Program unknown"
 msgstr ""
 
@@ -3219,6 +3254,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3785 ../../src/neutrino2.cpp:3774
 #: ../../src/neutrino2.cpp:3768 ../../src/neutrino2.cpp:3765
 #: ../../src/neutrino2.cpp:3764 ../../src/neutrino2.cpp:3766
+#: ../../src/neutrino2.cpp:3767 ../../src/neutrino2.cpp:3769
 msgid "Recording starts in a few minutes"
 msgstr ""
 
@@ -3268,17 +3304,20 @@ msgid "Reload channel lists"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:2851 ../../src/neutrino2.cpp:2855
-#: ../../src/neutrino2.cpp:2845
+#: ../../src/neutrino2.cpp:2845 ../../src/neutrino2.cpp:2846
+#: ../../src/neutrino2.cpp:2848
 msgid "Reloading EPG, please be patient."
 msgstr ""
 
 #: ../../src/neutrino2.cpp:2857 ../../src/neutrino2.cpp:2861
-#: ../../src/neutrino2.cpp:2851
+#: ../../src/neutrino2.cpp:2851 ../../src/neutrino2.cpp:2852
+#: ../../src/neutrino2.cpp:2854
 msgid "Reloading XMLTV EPG, please be patient."
 msgstr ""
 
 #: ../../src/neutrino2.cpp:2846 ../../src/neutrino2.cpp:2850
-#: ../../src/neutrino2.cpp:2840
+#: ../../src/neutrino2.cpp:2840 ../../src/neutrino2.cpp:2841
+#: ../../src/neutrino2.cpp:2843
 msgid "Reloading channel lists, please be patient."
 msgstr ""
 
@@ -3294,6 +3333,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3898 ../../src/neutrino2.cpp:3887
 #: ../../src/neutrino2.cpp:3881 ../../src/neutrino2.cpp:3879
 #: ../../src/neutrino2.cpp:3878 ../../src/neutrino2.cpp:3880
+#: ../../src/neutrino2.cpp:3883
 msgid "Reminder"
 msgstr ""
 
@@ -3510,7 +3550,8 @@ msgid "Saving current style!"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:2828 ../../src/neutrino2.cpp:2832
-#: ../../src/neutrino2.cpp:2822
+#: ../../src/neutrino2.cpp:2822 ../../src/neutrino2.cpp:2823
+#: ../../src/neutrino2.cpp:2825
 msgid "Saving settings now, please be patient."
 msgstr ""
 
@@ -3575,6 +3616,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3387 ../../src/neutrino2.cpp:3391
 #: ../../src/neutrino2.cpp:3395 ../../src/neutrino2.cpp:3381
 #: ../../src/neutrino2.cpp:3380 ../../src/neutrino2.cpp:3382
+#: ../../src/neutrino2.cpp:3383 ../../src/neutrino2.cpp:3385
 msgid "Scrambled channel"
 msgstr ""
 
@@ -3630,7 +3672,8 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:3046 ../../src/neutrino2.cpp:3050
 #: ../../src/neutrino2.cpp:3040 ../../src/neutrino2.cpp:3039
-#: ../../src/neutrino2.cpp:3041
+#: ../../src/neutrino2.cpp:3041 ../../src/neutrino2.cpp:3042
+#: ../../src/neutrino2.cpp:3044
 msgid "Select Subservice"
 msgstr ""
 
@@ -3659,7 +3702,8 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:3046 ../../src/neutrino2.cpp:3050
 #: ../../src/neutrino2.cpp:3040 ../../src/neutrino2.cpp:3039
-#: ../../src/neutrino2.cpp:3041
+#: ../../src/neutrino2.cpp:3041 ../../src/neutrino2.cpp:3042
+#: ../../src/neutrino2.cpp:3044
 msgid "Select starting-time"
 msgstr ""
 
@@ -3842,6 +3886,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3792 ../../src/neutrino2.cpp:3781
 #: ../../src/neutrino2.cpp:3775 ../../src/neutrino2.cpp:3772
 #: ../../src/neutrino2.cpp:3771 ../../src/neutrino2.cpp:3773
+#: ../../src/neutrino2.cpp:3774 ../../src/neutrino2.cpp:3776
 msgid "Sleeptimer in 1 min"
 msgstr ""
 
@@ -4322,7 +4367,8 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4956 ../../src/neutrino2.cpp:4960
 #: ../../src/neutrino2.cpp:4965 ../../src/neutrino2.cpp:4964
 #: ../../src/neutrino2.cpp:4906 ../../src/neutrino2.cpp:4901
-#: ../../src/neutrino2.cpp:4899
+#: ../../src/neutrino2.cpp:4899 ../../src/neutrino2.cpp:4902
+#: ../../src/neutrino2.cpp:4909 ../../src/neutrino2.cpp:4911
 msgid ""
 "The neutrino-settings have been updated.\n"
 "New Options will be set to default."
@@ -4335,7 +4381,8 @@ msgstr ""
 #: ../../src/driver/vcrcontrol.cpp:633 ../../src/driver/vcrcontrol.cpp:636
 #: ../../src/driver/vcrcontrol.cpp:640 ../../src/driver/vcrcontrol.cpp:654
 #: ../../src/driver/vcrcontrol.cpp:669 ../../src/driver/vcrcontrol.cpp:665
-#: ../../src/driver/vcrcontrol.cpp:668
+#: ../../src/driver/vcrcontrol.cpp:668 ../../src/driver/vcrcontrol.cpp:667
+#: ../../src/driver/vcrcontrol.cpp:661
 msgid ""
 "The recording directory is not writable.\n"
 "Recording will not work."
@@ -4348,7 +4395,8 @@ msgstr ""
 #: ../../src/driver/vcrcontrol.cpp:633 ../../src/driver/vcrcontrol.cpp:636
 #: ../../src/driver/vcrcontrol.cpp:640 ../../src/driver/vcrcontrol.cpp:654
 #: ../../src/driver/vcrcontrol.cpp:669 ../../src/driver/vcrcontrol.cpp:665
-#: ../../src/driver/vcrcontrol.cpp:668
+#: ../../src/driver/vcrcontrol.cpp:668 ../../src/driver/vcrcontrol.cpp:667
+#: ../../src/driver/vcrcontrol.cpp:661
 msgid ""
 "The recording was aborted,\n"
 "because the target file could not be opened."
@@ -4752,6 +4800,9 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4276 ../../src/neutrino2.cpp:4279
 #: ../../src/neutrino2.cpp:3176 ../../src/neutrino2.cpp:4277
 #: ../../src/neutrino2.cpp:4270 ../../src/neutrino2.cpp:3178
+#: ../../src/neutrino2.cpp:3179 ../../src/neutrino2.cpp:4273
+#: ../../src/neutrino2.cpp:4280 ../../src/neutrino2.cpp:3181
+#: ../../src/neutrino2.cpp:4282
 msgid "You really want to to stop record ?"
 msgstr ""
 
@@ -4788,6 +4839,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3708 ../../src/neutrino2.cpp:3697
 #: ../../src/neutrino2.cpp:3691 ../../src/neutrino2.cpp:3688
 #: ../../src/neutrino2.cpp:3687 ../../src/neutrino2.cpp:3689
+#: ../../src/neutrino2.cpp:3690 ../../src/neutrino2.cpp:3692
 msgid "Zapto timer in one minute"
 msgstr ""
 
@@ -4816,7 +4868,8 @@ msgid "active"
 msgstr ""
 
 #: ../../src/gui/channellist.cpp:1807 ../../src/gui/channellist.cpp:1808
-#: ../../src/gui/channellist.cpp:1809
+#: ../../src/gui/channellist.cpp:1809 ../../src/gui/channellist.cpp:1813
+#: ../../src/gui/channellist.cpp:1815 ../../src/gui/channellist.cpp:1810
 msgid "add channel to my favorites"
 msgstr ""
 
@@ -5096,7 +5149,8 @@ msgid "default center"
 msgstr ""
 
 #: ../../src/gui/channellist.cpp:1804 ../../src/gui/channellist.cpp:1805
-#: ../../src/gui/channellist.cpp:1806
+#: ../../src/gui/channellist.cpp:1806 ../../src/gui/channellist.cpp:1810
+#: ../../src/gui/channellist.cpp:1812 ../../src/gui/channellist.cpp:1807
 msgid "delete"
 msgstr ""
 
@@ -5476,7 +5530,8 @@ msgstr ""
 #: ../../src/gui/cec_setup.cpp:72 ../../src/gui/cec_setup.cpp:80
 #: ../../src/gui/hdd_menu.cpp:73 ../../src/gui/hdd_menu.cpp:82
 #: ../../src/gui/scan_setup.cpp:92 ../../src/neutrino2.cpp:3072
-#: ../../src/neutrino2.cpp:3074
+#: ../../src/neutrino2.cpp:3074 ../../src/neutrino2.cpp:3075
+#: ../../src/neutrino2.cpp:3077
 msgid "off"
 msgstr ""
 
@@ -5492,6 +5547,7 @@ msgstr ""
 #: ../../src/gui/audio_select.cpp:54 ../../src/gui/cec_setup.cpp:73
 #: ../../src/gui/cec_setup.cpp:81 ../../src/gui/scan_setup.cpp:93
 #: ../../src/neutrino2.cpp:3073 ../../src/neutrino2.cpp:3075
+#: ../../src/neutrino2.cpp:3076 ../../src/neutrino2.cpp:3078
 msgid "on"
 msgstr ""
 

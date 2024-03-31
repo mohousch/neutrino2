@@ -340,8 +340,6 @@ void CVCRControl::Stop()
 		
 	g_movieInfo->length = (int) round((double) (end_time - start_time) / (double) 60);
 	g_cMovieInfo->encodeMovieInfoXml(&extMessage, g_movieInfo);	
-
-//	bool return_value = false;
 	
 	if (IS_WEBTV(channel_id))
 		stopWebTVRecording();
@@ -378,8 +376,6 @@ void CVCRControl::Stop()
 		delete g_cMovieInfo;
 		g_cMovieInfo = NULL;
 	}
-
-//	return return_value;
 }
 
 //
@@ -398,33 +394,32 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	}
 	
 	// zaptoRecordChannel
+	if(channel_id != 0)	// wenn ein channel angegeben ist
+	{
+		// zap for record
+		CZapit::getInstance()->zapToRecordID(channel_id);			// for recording
+	}
+
+	// set apids
 	if (!IS_WEBTV(channel_id))
 	{
-		// zapit
-		if(channel_id != 0)	// wenn ein channel angegeben ist
-		{
-			// zap for record
-			CZapit::getInstance()->zapToRecordID(channel_id);			// for recording
-		}
-
-		// apids
 		if(! (apids & TIMERD_APIDS_STD)) // nicht std apid
 		{
-		        APIDList apid_list;
-		        getAPIDs(channel_id, apids, apid_list);
+			APIDList apid_list;
+			getAPIDs(channel_id, apids, apid_list);
 
-		        if(!apid_list.empty())
-		        {
-		                if(!apid_list.begin()->ac3)
-		                        CZapit::getInstance()->setAudioChannel(apid_list.begin()->index);
-		                else
-		                        CZapit::getInstance()->setAudioChannel(0); //sonst apid 0, also auf jeden fall ac3 aus !
-		        }
-		        else
-		                CZapit::getInstance()->setAudioChannel(0); //sonst apid 0, also auf jeden fall ac3 aus !
+			if(!apid_list.empty())
+			{
+				if(!apid_list.begin()->ac3)
+					CZapit::getInstance()->setAudioChannel(apid_list.begin()->index);
+				else
+					CZapit::getInstance()->setAudioChannel(0); //sonst apid 0, also auf jeden fall ac3 aus !
+			}
+			else
+				CZapit::getInstance()->setAudioChannel(0); //sonst apid 0, also auf jeden fall ac3 aus !
 		}
 		else
-		        CZapit::getInstance()->setAudioChannel(0); //sonst apid 0, also auf jeden fall ac3 aus !
+			CZapit::getInstance()->setAudioChannel(0); //sonst apid 0, also auf jeden fall ac3 aus !
 	}
 
 	// switch to scart
@@ -453,66 +448,64 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	 
 	if (!IS_WEBTV(channel_id))
 	{
-//	CZapit::CServiceInfo si;
-	si = CZapit::getInstance()->getServiceInfo(channel_id);
-	
-	CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(channel_id);
-	
-	// vpid / pcrpid
-	if (si.vpid != 0)
-	{
-		psi.addPid(si.vpid, si.vtype == CHANNEL_VIDEO_MPEG4 ? EN_TYPE_AVC : si.vtype == CHANNEL_VIDEO_HEVC ? EN_TYPE_HEVC : EN_TYPE_VIDEO, 0);
+		si = CZapit::getInstance()->getServiceInfo(channel_id);
 		
-		if (si.pcrpid && (si.pcrpid != si.vpid))
-		{
-			psi.addPid(si.pcrpid, EN_TYPE_PCR, 0);
-			pids[numpids++] = si.pcrpid;
-		}
-	}
+		CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(channel_id);
 		
-	// apids
-//        APIDList apid_list;
-        getAPIDs(channel_id, apids, apid_list);
-
-        for(APIDList::iterator it = apid_list.begin(); it != apid_list.end(); it++) 
-	{
-                pids[numpids++] = it->apid;
-
-		psi.addPid(it->apid, EN_TYPE_AUDIO, it->ac3 ? 1 : 0, it->language.c_str());
-        }
-        
-        // subs
-        if (channel)
-        {
-        	for (int i = 0 ; i < (int)channel->getSubtitleCount() ; ++i) 
+		// vpid / pcrpid
+		if (si.vpid != 0)
 		{
-			CZapitAbsSub* s = channel->getChannelSub(i);
+			psi.addPid(si.vpid, si.vtype == CHANNEL_VIDEO_MPEG4 ? EN_TYPE_AVC : si.vtype == CHANNEL_VIDEO_HEVC ? EN_TYPE_HEVC : EN_TYPE_VIDEO, 0);
 			
-			// teletext
-			if (s->thisSubType == CZapitAbsSub::TTX) 
+			if (si.pcrpid && (si.pcrpid != si.vpid))
 			{
-				CZapitTTXSub* sd = reinterpret_cast<CZapitTTXSub*>(s);
-				
-				dprintf(DEBUG_NORMAL, "CVCRControl::doRecord: adding TTX subtitle %s pid 0x%x mag 0x%X page 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId, sd->teletext_magazine_number, sd->teletext_page_number);
-				
-				pids[numpids++] = sd->pId;
-				
-				psi.addPid(sd->pId, EN_TYPE_TELTEX, 0, sd->ISO639_language_code.c_str());
-			}
-			
-			//dvbsub
-			if (s->thisSubType == CZapitAbsSub::DVB) 
-			{
-				CZapitDVBSub* sd = reinterpret_cast<CZapitDVBSub*>(s);
-				
-				dprintf(DEBUG_NORMAL, "CVCRControl::doRecord: adding DVB subtitle %s pid 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId);
-
-				pids[numpids++] = sd->pId;
-				
-				psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0, sd->ISO639_language_code.c_str());
+				psi.addPid(si.pcrpid, EN_TYPE_PCR, 0);
+				pids[numpids++] = si.pcrpid;
 			}
 		}
-        }
+			
+		// apids
+		getAPIDs(channel_id, apids, apid_list);
+
+		for(APIDList::iterator it = apid_list.begin(); it != apid_list.end(); it++) 
+		{
+		        pids[numpids++] = it->apid;
+
+			psi.addPid(it->apid, EN_TYPE_AUDIO, it->ac3 ? 1 : 0, it->language.c_str());
+		}
+		
+		// subs
+		if (channel)
+		{
+			for (int i = 0 ; i < (int)channel->getSubtitleCount() ; ++i) 
+			{
+				CZapitAbsSub* s = channel->getChannelSub(i);
+				
+				// teletext
+				if (s->thisSubType == CZapitAbsSub::TTX) 
+				{
+					CZapitTTXSub* sd = reinterpret_cast<CZapitTTXSub*>(s);
+					
+					dprintf(DEBUG_NORMAL, "CVCRControl::doRecord: adding TTX subtitle %s pid 0x%x mag 0x%X page 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId, sd->teletext_magazine_number, sd->teletext_page_number);
+					
+					pids[numpids++] = sd->pId;
+					
+					psi.addPid(sd->pId, EN_TYPE_TELTEX, 0, sd->ISO639_language_code.c_str());
+				}
+				
+				//dvbsub
+				if (s->thisSubType == CZapitAbsSub::DVB) 
+				{
+					CZapitDVBSub* sd = reinterpret_cast<CZapitDVBSub*>(s);
+					
+					dprintf(DEBUG_NORMAL, "CVCRControl::doRecord: adding DVB subtitle %s pid 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId);
+
+					pids[numpids++] = sd->pId;
+					
+					psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0, sd->ISO639_language_code.c_str());
+				}
+			}
+		}
         }
 
 	// generate record file name format
@@ -921,7 +914,7 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 		}
 	}
 	
-	// get cover
+	// set / save cover
 	CTmdb * tmdb = new CTmdb();
 
 	if(tmdb->getMovieInfo(g_movieInfo->epgTitle) && (!CNeutrinoApp::getInstance()->timeshiftstatus || !autoshift))
@@ -1077,7 +1070,7 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 	return STREAM2FILE_OK;
 }
 
-stream2file_error_msg_t CVCRControl::stopRecording()
+void CVCRControl::stopRecording()
 {
 	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::stopRecording autoshift:%d timeshift:%d\n", autoshift, CNeutrinoApp::getInstance()->timeshiftstatus);
 	
@@ -1096,13 +1089,15 @@ stream2file_error_msg_t CVCRControl::stopRecording()
 		sprintf(buf, "rm -f %s.ts &", rec_filename);
 		sprintf(buf1, "%s.xml", rec_filename);
 
-		system(buf);
+//		system(buf);
+		unlink(buf);
 		unlink(buf1);
+		
+		if (g_movieInfo->tfile != DATADIR "/icons/no_coverArt.png" && g_movieInfo->tfile != DATADIR "/icons/nopreview.jpg") 
+			unlink(g_movieInfo->tfile.c_str());
 	}
 
 	rec_filename[0] = 0;
-
-	return STREAM2FILE_OK;
 }
 
 ////
@@ -1246,12 +1241,12 @@ bool CVCRControl::Start()
 	return (ret == 0);
 }
 
-stream2file_error_msg_t CVCRControl::stopWebTVRecording()
+void CVCRControl::stopWebTVRecording()
 {
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::stopWebTVRecording\n");
+	
 	if (stopped)
-		return STREAM2FILE_RECORDING_THREADS_FAILED;
-
-//	av_log(NULL, AV_LOG_QUIET, "%s", "");
+		return;
 
 	time_t end_time = time_monotonic();
 
@@ -1261,6 +1256,7 @@ stream2file_error_msg_t CVCRControl::stopWebTVRecording()
 
 	struct stat test;
 	std::string xmlfile = std::string(rec_filename) + ".xml";
+	std::string tsfile = std::string(rec_filename) + ".ts";
 	
 	if (stat(xmlfile.c_str(), &test) == 0)
 	{
@@ -1269,12 +1265,12 @@ stream2file_error_msg_t CVCRControl::stopWebTVRecording()
 
 		g_cMovieInfo->clearMovieInfo(g_movieInfo);
 		
-		std::string tsfile = std::string(rec_filename) + ".ts";
 		g_movieInfo->file.Name = tsfile;
 		
 		g_cMovieInfo->loadMovieInfo(g_movieInfo);//restore user bookmark
 	}
 
+	// rewrite length (recorded time not the length from epg)
 	g_movieInfo->length = (int) round((double)(end_time - time_started) / (double) 60);
 
 //	SaveXml();
@@ -1282,7 +1278,17 @@ stream2file_error_msg_t CVCRControl::stopWebTVRecording()
 	// close
 	Close();
 
-	return STREAM2FILE_OK;
+	//
+	if( autoshift || CNeutrinoApp::getInstance()->timeshiftstatus) 
+	{
+		unlink(tsfile.c_str());
+		unlink(xmlfile.c_str());
+		
+		if (g_movieInfo->tfile != DATADIR "/icons/no_coverArt.png" && g_movieInfo->tfile != DATADIR "/icons/nopreview.jpg") 
+			unlink(g_movieInfo->tfile.c_str());
+	}
+
+	rec_filename[0] = 0;
 }
 
 stream2file_error_msg_t CVCRControl::startWebTVRecording(const char* const filename, const event_id_t epgid, const std::string& epgTitle, const time_t epg_time)

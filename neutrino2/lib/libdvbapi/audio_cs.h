@@ -88,6 +88,8 @@ class cAudio
 		int m_pcm_delay;
 		int m_ac3_delay;
 		
+		audio_play_state_t playstate;
+		
 #ifdef USE_OPENGL
 		bool thread_started;
 		int64_t curr_pts;

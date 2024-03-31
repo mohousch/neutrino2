@@ -86,6 +86,8 @@ cAudio::cAudio(int num)
 	
 	m_pcm_delay = -1,
 	m_ac3_delay = -1;
+	
+	playstate = AUDIO_STOPPED;
 
 #if not defined (__sh__) // dont reset volume on start
 	setVolume(100, 100);
@@ -282,6 +284,8 @@ int cAudio::Start(void)
 		perror("AUDIO_PLAY");	
 #endif
 
+	playstate = AUDIO_PLAYING;
+
 	return ret;
 }
 
@@ -307,6 +311,8 @@ int cAudio::Stop(void)
 		perror("AUDIO_STOP");	
 #endif
 
+	playstate = AUDIO_STOPPED;
+
 	return ret;
 }
 
@@ -325,6 +331,8 @@ bool cAudio::Pause()
 	}
 #endif	
 
+	playstate = AUDIO_PAUSED;
+
 	return true;
 }
 
@@ -341,7 +349,9 @@ bool cAudio::Resume()
 		perror("AUDIO_CONTINUE");
 		return false;
 	}
-#endif	
+#endif
+
+	playstate = AUDIO_PLAYING;	
 	
 	return true;
 }
@@ -734,6 +744,12 @@ void cAudio::run()
 	
 	while (thread_started)
 	{
+		if (playstate == AUDIO_PAUSED) 
+		{
+			usleep(100000);
+			continue;
+		}
+		
 		int gotframe = 0;
 		
 		if (av_read_frame(avfc, &avpkt) < 0)
