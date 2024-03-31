@@ -60,6 +60,7 @@
 
 #include <gui/audioplayer.h>
 #include <gui/hdd_menu.h>
+#include <gui/movieinfo.h>
 
 #include <blkid/blkid.h>
 #include <mntent.h>

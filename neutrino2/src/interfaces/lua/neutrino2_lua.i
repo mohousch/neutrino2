@@ -134,6 +134,7 @@
 #include <gui/dboxinfo.h>
 #include <gui/service_menu.h>
 #include <gui/mediaplayer.h>
+#include <gui/movieinfo.h>
 
 // zapit
 #include <zapit/bouquets.h>
@@ -247,6 +248,7 @@
 %include <src/gui/hdd_menu.h>
 %include <src/gui/rc_lock.h>
 %include <src/gui/vfdcontroler.h>
+%include <src/gui/movieinfo.h>
 
 //gui/setup
 %include <src/gui/scan_setup.h>

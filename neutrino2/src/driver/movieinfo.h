@@ -47,10 +47,6 @@
 
 #include <driver/file.h>
 
-#include <gui/widget/widget.h>
-#include <gui/widget/widget_helpers.h>
-#include <gui/widget/framebox.h>
-
 
 /* XML tags for xml file*/
 #define MI_XML_TAG_NEUTRINO 		"neutrino"
@@ -198,6 +194,8 @@ class CMovieInfo
 	public:	// Functions
 		CMovieInfo(){};
 		virtual ~CMovieInfo(){};
+		
+		//
 		bool convertTs2XmlName(std::string* filename);  				// convert a ts file name in .xml file name
 		bool convertTs2XmlName(char* filename, int size);				// convert a ts file name in .xml file name
 		bool loadMovieInfo(MI_MOVIE_INFO* movie_info, CFile* file = NULL );
@@ -207,37 +205,14 @@ class CMovieInfo
 		bool saveMovieInfo(MI_MOVIE_INFO& movie_info, CFile* file = NULL ); 		// encode the movie_info structure to xml and save it to the given .xml filename. If there is no filename, the filename (ts) from movie_info is converted to xml and used instead
 		bool saveMovieInfo(const char* fileName, std::string title = "", std::string info1 = "", std::string info2 = "" ,CFile* file = NULL);
 		void showMovieInfo(MI_MOVIE_INFO& movie_info); // open a CIntbox and show the movie info
-
-		void printDebugMovieInfo(MI_MOVIE_INFO& movie_info);				// print movie info on debug channel (RS232)
 		void clearMovieInfo(MI_MOVIE_INFO* movie_info);					// Set movie info structure to initial values
 		bool addNewBookmark(MI_MOVIE_INFO* movie_info,MI_BOOKMARK &new_bookmark);	// add a new bookmark to the given movie info. If there is no space false is returned
 		void copy(MI_MOVIE_INFO* src, MI_MOVIE_INFO* dst);
 		
 	private:// Functions
-		bool parseXmlTree (char* text, MI_MOVIE_INFO* movie_info);			// this is the 'good' function, but it needs the xmllib which is not currently linked within neutrino. Might be to slow as well. If used, add bookmark parsing
 		bool parseXmlQuickFix(char* text, MI_MOVIE_INFO* movie_info);			// OK, this is very quick an dirty. It does not waist execution time nor flash (this is QUICK). But, do not play to much with the xml files (e.g. with MS Notepad) since small changes in the structure could cause the parser to fail (this it DIRTY). 
 		bool loadFile(CFile& file, char* buffer, int buffer_size);
 		bool saveFile(const CFile& file, const char* text, const int text_size);
-};
-
-// CMovieInfoWidget
-class CMovieInfoWidget : public CMenuTarget
-{
-	private:
-		MI_MOVIE_INFO movieFile;
-		CMovieInfo m_movieInfo;
-
-		void funArt();
-	public:
-		CMovieInfoWidget();
-		~CMovieInfoWidget();
-
-		void hide();
-		int exec(CMenuTarget *parent, const std::string &actionKey);
-
-		void setMovie(MI_MOVIE_INFO& file);
-		void setMovie(const CFile& file, std::string title = "", std::string info1 = "", std::string info2 = "", std::string tfile = "", std::string duration = "", std::string rating = "");
-		void setMovie(const char* fileName, std::string title = "", std::string info1 = "", std::string info2 = "", std::string tfile = "", std::string duration = "", std::string rating = "");
 };
 
 #endif /*MOVIEINFO_H_*/

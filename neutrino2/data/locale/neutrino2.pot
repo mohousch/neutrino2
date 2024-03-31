@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-03-31 23:11+0300\n"
+"POT-Creation-Date: 2024-04-01 00:39+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2105,7 +2105,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:804 ../../src/gui/movieplayer.cpp:818
 #: ../../src/gui/movieplayer.cpp:805 ../../src/gui/movieplayer.cpp:808
 #: ../../src/gui/movieplayer.cpp:820 ../../src/gui/movieplayer.cpp:821
-#: ../../src/driver/movieinfo.cpp:1472
+#: ../../src/driver/movieinfo.cpp:1472 ../../src/driver/movieinfo.cpp:1420
 msgid "Jump over"
 msgstr ""
 
@@ -2709,7 +2709,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:802 ../../src/gui/movieplayer.cpp:816
 #: ../../src/gui/movieplayer.cpp:803 ../../src/gui/movieplayer.cpp:806
 #: ../../src/gui/movieplayer.cpp:818 ../../src/gui/movieplayer.cpp:819
-#: ../../src/driver/movieinfo.cpp:1468
+#: ../../src/driver/movieinfo.cpp:1468 ../../src/driver/movieinfo.cpp:1416
 msgid "New Bookmark"
 msgstr ""
 
@@ -3373,7 +3373,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:803 ../../src/gui/movieplayer.cpp:817
 #: ../../src/gui/movieplayer.cpp:804 ../../src/gui/movieplayer.cpp:807
 #: ../../src/gui/movieplayer.cpp:819 ../../src/gui/movieplayer.cpp:820
-#: ../../src/driver/movieinfo.cpp:1470
+#: ../../src/driver/movieinfo.cpp:1470 ../../src/driver/movieinfo.cpp:1418
 msgid "Repeat"
 msgstr ""
 
