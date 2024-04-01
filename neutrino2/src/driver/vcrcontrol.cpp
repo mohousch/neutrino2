@@ -81,7 +81,7 @@ static cRecord * record = NULL;
 //
 extern bool autoshift;					// defined in neutrino2.cpp
 extern CZapitChannel * live_channel;			// defined in zapit.cpp
-extern CFrontend * record_fe;				// defined in zapit.cpp
+//extern CFrontend * record_fe;				// defined in zapit.cpp
 
 ////
 CVCRControl * CVCRControl::getInstance()
@@ -1067,7 +1067,7 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 	record->Open();
 
 	// start_recording	  
-	if(!record->Start(fd, vpid, pids, numpids, record_fe)) 	  
+	if(!record->Start(fd, vpid, pids, numpids, /*record_fe*/CZapit::getInstance()->getRecordFrontend(CZapit::getInstance()->findChannelByChannelID(channel_id)))) 	  
 	{
 		record->Stop();
 		delete record;

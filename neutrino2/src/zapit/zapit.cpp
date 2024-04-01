@@ -110,7 +110,7 @@ tallchans nvodchannels;
 static int pmt_update_fd = -1;
 // frontend
 CFrontend * live_fe = NULL;
-CFrontend * record_fe = NULL;
+//CFrontend * record_fe = NULL;
 // Audio/Video Decoder
 extern cVideo * videoDecoder;
 extern cAudio * audioDecoder;
@@ -186,6 +186,7 @@ CZapit::CZapit()
 	cam1 = NULL;
 	// femanager
 	femap.clear();
+	record_fe = NULL;
 	have_s = false;
 	have_c = false;
 	have_t = false;
@@ -570,8 +571,7 @@ CFrontend * CZapit::getRecordFrontend(CZapitChannel * thischannel)
 			rec_frontend = fe;
 			break;
 		}
-		
-		// second tuner (twin)
+		// other free tuner
 		else if (sit != satellitePositions.end()) 
 		{
 			bool twin = false;
@@ -1461,8 +1461,9 @@ int CZapit::zapToRecordID(const t_channel_id channel_id)
 		dprintf(DEBUG_NORMAL, "CZapit::zapToRecordID: can not allocate record frontend\n");
 		return -1;
 	}
-		
-	record_fe = frontend;
+	
+	if (record_fe == NULL)	
+		record_fe = frontend;
 	
 	// single/multi on the same frontend
 	if(record_fe == live_fe)

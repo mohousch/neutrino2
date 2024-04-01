@@ -121,7 +121,6 @@ class CStreamManager : public OpenThreads::Thread
 
 		OpenThreads::Mutex mutex;
 		static	CStreamManager *sm;
-//		CZapitClient zapit;
 
 		streammap_t streams;
 

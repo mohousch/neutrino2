@@ -237,6 +237,7 @@ class CZapit
 		CCam * cam1;
 		//// femanager
 		fe_map_t femap;
+		CFrontend * record_fe;
 		bool have_s;
 		bool have_c;
 		bool have_t;

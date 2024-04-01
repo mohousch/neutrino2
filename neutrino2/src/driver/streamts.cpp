@@ -78,10 +78,12 @@
 #define IN_SIZE (250*TS_SIZE)
 
 extern CFrontend* live_fe;
+extern t_channel_id rec_channel_id;
 
 CStreamInstance::CStreamInstance(int clientfd, t_channel_id chid, stream_pids_t &_pids)
 {
 	printf("CStreamInstance:: new channel %" PRIx64 " fd %d\n", chid, clientfd);
+	
 	fds.insert(clientfd);
 	pids = _pids;
 	channel_id = chid;
@@ -109,7 +111,9 @@ bool CStreamInstance::Start()
 		return false;
 	}
 	running = true;
+	
 	printf("CStreamInstance::Start: %" PRIx64 "\n", channel_id);
+	
 	return (OpenThreads::Thread::start() == 0);
 }
 
@@ -119,7 +123,9 @@ bool CStreamInstance::Stop()
 		return false;
 
 	printf("CStreamInstance::Stop: %" PRIx64 "\n", channel_id);
+	
 	running = false;
+	
 	return (OpenThreads::Thread::join() == 0);
 }
 
@@ -133,6 +139,7 @@ bool CStreamInstance::Send(ssize_t r, unsigned char *_buf)
 	int flags = 0;
 	if (cfds.size() > 1)
 		flags = MSG_DONTWAIT;
+		
 	for (stream_fds_t::iterator it = cfds.begin(); it != cfds.end(); ++it)
 	{
 		int i = 10;
@@ -148,6 +155,7 @@ bool CStreamInstance::Send(ssize_t r, unsigned char *_buf)
 			}
 		}
 		while ((count > 0) && (i-- > 0));
+		
 		if (count)
 			printf("send err, fd %d: (%zd from %zd)\n", *it, r - count, r);
 	}
@@ -182,7 +190,7 @@ bool CStreamInstance::Open()
 	if (!tmpchan)
 		return false;
 
-	dmx = new cDemux(/*tmpchan->getStreamDemux()*/2);//FIXME
+	dmx = new cDemux();
 	if(!dmx)
 		return false;
 	return dmx->Open(DMX_TP_CHANNEL, DMX_BUFFER_SIZE, live_fe);
@@ -194,7 +202,7 @@ void CStreamInstance::run()
 	printf("CStreamInstance::run: %" PRIx64 "\n", channel_id);
 	set_threadname("n:streaminstance");
 
-	/* pids here cannot be empty */
+	// pids here cannot be empty
 	stream_pids_t::iterator it = pids.begin();
 	printf("CStreamInstance::run: add pid %x\n", *it);
 	dmx->pesFilter(*it);
@@ -204,22 +212,18 @@ void CStreamInstance::run()
 		printf("CStreamInstance::run: add pid %x\n", *it);
 		dmx->addPid(*it);
 	}
-#ifdef ENABLE_MULTI_CHANNEL
-	dmx->Start();//FIXME
-#else
-	dmx->Start();//FIXME
-#endif
 
-//	CCamManager::getInstance()->Start(channel_id, CCamManager::STREAM);
+	dmx->Start();
 
-//#if HAVE_SH4_HARDWARE || HAVE_ARM_HARDWARE || HAVE_MIPS_HARDWARE
-//	CFrontend *live_fe = CZapit::getInstance()->GetLiveFrontend();
+//	CCamManager::getInstance()->Start(channel_id, CCamManager::STREAM); //FIXME:
+
+//	CFrontend *live_fe = CZapit::getInstance()->getCurrentFrontend();
 	if (live_fe)
 		CZapit::getInstance()->unlockFrontend(live_fe);
+		
 	if (frontend)
 		CZapit::getInstance()->lockFrontend(frontend);
-	//CZapit::getInstance()->SetRecordMode(true);
-//#endif
+
 	while (running)
 	{
 		ssize_t r = dmx->Read(buf, IN_SIZE, 100);
@@ -227,12 +231,11 @@ void CStreamInstance::run()
 			Send(r);
 	}
 
-//	CCamManager::getInstance()->Stop(channel_id, CCamManager::STREAM);
+//	CCamManager::getInstance()->Stop(channel_id, CCamManager::STREAM); // FIXME:
 
-//#if HAVE_SH4_HARDWARE || HAVE_ARM_HARDWARE || HAVE_MIPS_HARDWARE
+	//
 	if (frontend)
 		CZapit::getInstance()->unlockFrontend(frontend);
-//#endif
 
 	printf("CStreamInstance::run: exiting %" PRIx64 " (%d fds)\n", channel_id, (int)fds.size());
 
@@ -248,7 +251,7 @@ bool CStreamInstance::HasFd(int fd)
 	return false;
 }
 
-/************************************************************************/
+////
 CStreamManager *CStreamManager::sm = NULL;
 CStreamManager::CStreamManager()
 {
@@ -290,18 +293,22 @@ bool CStreamManager::Stop()
 		return false;
 	running = false;
 	bool ret = false;
+	
 	if (OpenThreads::Thread::CurrentThread() == this)
 	{
 		cancel();
 		ret = (OpenThreads::Thread::join() == 0);
 	}
+	
 	StopAll();
+	
 	return ret;
 }
 
 bool CStreamManager::SetPort(int newport)
 {
 	bool ret = false;
+	
 	if (port != newport)
 	{
 		port = newport;
@@ -311,6 +318,7 @@ bool CStreamManager::SetPort(int newport)
 		ret = Listen();
 		mutex.unlock();
 	}
+	
 	return ret;
 }
 
@@ -320,19 +328,21 @@ CFrontend *CStreamManager::FindFrontend(CZapitChannel *channel)
 	CFrontend *frontend = NULL;
 
 	t_channel_id chid = channel->getChannelID();
+	
+	// abort if recording //FIXME:
 //	if (CRecordManager::getInstance()->RecordingStatus(chid))
 //	{
 //		printf("CStreamManager::FindFrontend: channel %" PRIx64 " recorded, aborting..\n", chid);
 //		return frontend;
 //	}
+	if ( (chid >> 16) == (rec_channel_id >> 16) )
+		return frontend;
 
 	t_channel_id live_channel_id = CZapit::getInstance()->getCurrentChannelID();
 	CFrontend *live_fe = CZapit::getInstance()->getCurrentFrontend();
 
 	if (live_channel_id == chid)
 		return live_fe;
-
-//	CZapit::getInstance()->lockFrontend(live_fe);
 
 	bool unlock = false;
 	if (!IS_WEBTV(live_channel_id))
@@ -359,8 +369,6 @@ CFrontend *CStreamManager::FindFrontend(CZapitChannel *channel)
 		frontend = CZapit::getInstance()->getFrontend(channel);
 	}
 
-//	CFEManager::getInstance()->Unlock();
-
 	if (frontend) 
 	{
 		bool found = (live_fe != NULL && live_fe != frontend) || IS_WEBTV(live_channel_id) || SAME_TRANSPONDER(live_channel_id, chid);
@@ -376,18 +384,14 @@ CFrontend *CStreamManager::FindFrontend(CZapitChannel *channel)
 		}
 	}
 
-//	CFEManager::getInstance()->Lock();
+	//
 	for (std::set<CFrontend *>::iterator ft = frontends.begin(); ft != frontends.end(); ++ft)
 		CZapit::getInstance()->unlockFrontend(*ft);
 
-//#if HAVE_SH4_HARDWARE || HAVE_ARM_HARDWARE || HAVE_MIPS_HARDWARE
 	if (unlock && !frontend && live_fe)
-//#else
 //	if (unlock)
-//#endif
 		CZapit::getInstance()->unlockFrontend(live_fe);
 
-//	CFEManager::getInstance()->Unlock();
 	return frontend;
 }
 
@@ -468,6 +472,7 @@ bool CStreamManager::Parse(int fd, stream_pids_t &pids, t_channel_id &chid, CFro
 		return false;
 
 	printf("CStreamManager::Parse: channel_id %" PRIx64 " [%s]\n", chid, channel->getName().c_str());
+	
 	if (IS_WEBTV(chid))
 		return true;
 
@@ -488,8 +493,10 @@ void CStreamManager::AddPids(int fd, CZapitChannel *channel, stream_pids_t &pids
 	if (pids.empty())
 	{
 		printf("CStreamManager::AddPids: no pids in url, using channel %" PRIx64 " pids\n", channel->getChannelID());
+		
 		if (channel->getVideoPid())
 			pids.insert(channel->getVideoPid());
+			
 		for (int i = 0; i <  channel->getAudioChannelCount(); i++)
 			pids.insert(channel->getAudioChannel(i)->pid);
 
@@ -537,14 +544,16 @@ void CStreamManager::AddPids(int fd, CZapitChannel *channel, stream_pids_t &pids
 		pids.insert(channel->getPcrPid());
 		psi.addPid(channel->getPcrPid(), EN_TYPE_PCR, 0);
 	}
+	
 	//add teletext pid
-//	if (g_settings.recording_stream_vtxt_pid && channel->getTeletextPid() != 0)
+	if (channel->getTeletextPid() != 0)
 	{
 		pids.insert(channel->getTeletextPid());
 		psi.addPid(channel->getTeletextPid(), EN_TYPE_TELTEX, 0, channel->getTeletextLang());
 	}
+	
 	//add dvb sub pid
-//	if (g_settings.recording_stream_subtitle_pids)
+	if (channel->getSubtitleCount())
 	{
 		for (int i = 0 ; i < (int)channel->getSubtitleCount() ; ++i)
 		{
@@ -599,8 +608,10 @@ bool CStreamManager::AddClient(int connfd)
 			else
 				delete stream;
 		}
+		
 		return true;
 	}
+	
 	return false;
 }
 
@@ -643,9 +654,11 @@ void CStreamManager::run()
 		pfd[0].events = (POLLIN | POLLPRI);
 		pfd[0].revents = 0;
 		poll_cnt = 1;
+		
 		for (streammap_iterator_t it = streams.begin(); it != streams.end(); ++it)
 		{
 			stream_fds_t fds = it->second->GetFds();
+			
 			for (stream_fds_t::iterator fit = fds.begin(); fit != fds.end(); ++fit)
 			{
 				pfd[poll_cnt].fd = *fit;
@@ -654,8 +667,11 @@ void CStreamManager::run()
 				poll_cnt++;
 			}
 		}
+		
 		mutex.unlock();
-//printf("polling, count= %d\n", poll_cnt);
+		
+		//printf("polling, count= %d\n", poll_cnt);
+		
 		int pollres = poll(pfd, poll_cnt, poll_timeout);
 		if (pollres <= 0)
 		{
@@ -696,7 +712,9 @@ void CStreamManager::run()
 			}
 		}
 	}
+	
 	printf("CStreamManager::run: stopping...\n");
+	
 	close(listenfd);
 	listenfd = -1;
 	StopAll();
@@ -717,6 +735,7 @@ bool CStreamManager::StopAll()
 bool CStreamManager::StopStream(t_channel_id channel_id)
 {
 	bool ret = false;
+	
 	mutex.lock();
 	if (channel_id)
 	{
@@ -733,6 +752,7 @@ bool CStreamManager::StopStream(t_channel_id channel_id)
 		ret = StopAll();
 	}
 	mutex.unlock();
+	
 	return ret;
 }
 
@@ -752,6 +772,7 @@ bool CStreamManager::StopStream(CFrontend *fe)
 			++it;
 		}
 	}
+	
 	return ret;
 }
 
@@ -764,6 +785,7 @@ bool CStreamManager::StreamStatus(t_channel_id channel_id)
 	else
 		ret = !streams.empty();
 	mutex.unlock();
+	
 	return ret;
 }
 
@@ -1019,7 +1041,9 @@ bool CStreamStream::Start()
 
 	printf("%s: Starting...\n", __FUNCTION__);
 	stopped = false;
+	
 	int ret = start();
+	
 	return (ret == 0);
 }
 
@@ -1033,8 +1057,11 @@ bool CStreamStream::Stop()
 	printf("%s: Stopping...\n", __FUNCTION__);
 	interrupt = true;
 	stopped = true;
+	
 	int ret = join();
+	
 	interrupt = false;
+	
 	return (ret == 0);
 }
 
