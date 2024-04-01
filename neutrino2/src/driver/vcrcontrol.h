@@ -103,18 +103,7 @@ class CVCRControl : public OpenThreads::Thread
 		virtual void getAPIDs(const t_channel_id channel_id, const unsigned char apids, APIDList & apid_list);
 		
 		bool  SwitchToScart;
-		
-		//
-		unsigned short g_vpid;
-		unsigned short g_vtype;
-		unsigned short g_apids[10];
-		unsigned short g_ac3flags[10];
-		unsigned short g_numpida;
-		unsigned int g_currentapid, g_currentac3;		
-		unsigned long long            record_EPGid;
-		unsigned long long            record_next_EPGid;
-		
-		//
+		unsigned long long record_EPGid;
 		CZapit::responseGetPIDs pids;
 		
 		//

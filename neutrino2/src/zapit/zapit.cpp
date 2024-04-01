@@ -4170,12 +4170,12 @@ void CZapit::getCurrentPIDS( responseGetPIDs &pids )
 }
 
 // currentService
-CZapitChannel* CZapit::getCurrentService()
+CZapitChannel* CZapit::getCurrentChannel()
 {
 	return (live_channel != NULL) ? live_channel : NULL;
 }
 
-t_channel_id CZapit::getCurrentServiceID()
+t_channel_id CZapit::getCurrentChannelID()
 {
 	return (live_channel != 0) ? live_channel->getChannelID() : 0;
 }
@@ -4232,6 +4232,11 @@ bool CZapit::getCurrentTP(transponder *TP)
 	TP = &transponder->second;
 	
 	return true;
+}
+
+CFrontend* CZapit::getCurrentFrontend()
+{
+	return live_fe? live_fe : NULL;
 }
 
 //

@@ -92,6 +92,7 @@ CVCRControl * CVCRControl::getInstance()
 CVCRControl::CVCRControl()
 {
 	channel_id = 0;
+	record_EPGid = 0;
 	
 	//
 	SwitchToScart = false;
@@ -506,6 +507,13 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 				}
 			}
 		}
+		
+		//
+		if (si.pmtpid)
+		{
+			pids[numpids++] = si.pmtpid;
+			pids[numpids++] = 0;
+		}
         }
 
 	// generate record file name format
@@ -673,7 +681,7 @@ bool CVCRControl::Screenshot(const t_channel_id channel_id, char * fname)
 	char cmd[512];
 	std::string channel_name;
 	CEPGData epgData;
-	event_id_t epgid = 0;
+//	event_id_t epgid = 0;
 	unsigned int pos = 0;
 
 	if(!fname) // live stream
@@ -717,13 +725,13 @@ bool CVCRControl::Screenshot(const t_channel_id channel_id, char * fname)
 		pos = strlen(filename);
 
 		if(CSectionsd::getInstance()->getActualEPGServiceKey(channel_id&0xFFFFFFFFFFFFULL, &epgData));
-			epgid = epgData.eventID;
+			record_EPGid = epgData.eventID;
 
-		if(epgid != 0) 
+		if(record_EPGid != 0) 
 		{
 			CShortEPGData epgdata;
 
-			if(CSectionsd::getInstance()->getEPGidShort(epgid, &epgdata)) 
+			if(CSectionsd::getInstance()->getEPGidShort(record_EPGid, &epgdata)) 
 			{
 				if (!(epgdata.title.empty())) 
 				{
@@ -846,12 +854,12 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 	g_movieInfo->VideoType		= si.vtype;
 
 	// ???
-	g_vpid = si.vpid;
-	g_vtype = si.vtype;
-	g_currentapid = si.apid;
-	memset(g_apids, 0, sizeof(unsigned short)*10);
-	memset(g_ac3flags, 0, sizeof(unsigned short)*10);
-	g_numpida = 0;
+//	g_vpid = si.vpid;
+//	g_vtype = si.vtype;
+//	g_currentapid = si.apid;
+//	memset(g_apids, 0, sizeof(unsigned short)*10);
+//	memset(g_ac3flags, 0, sizeof(unsigned short)*10);
+//	g_numpida = 0;
 
 	// get apids desc
 	EPG_AUDIO_PIDS audio_pids;
@@ -869,17 +877,17 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 				audio_pids.epgAudioPid = pids.APIDs[i].pid;
 				audio_pids.epgAudioPidName = UTF8_to_UTF8XML(pids.APIDs[i].desc);
 				audio_pids.atype = pids.APIDs[i].is_ac3;
-				audio_pids.selected = (audio_pids.epgAudioPid == (int) g_currentapid) ? 1 : 0;
+				audio_pids.selected = (audio_pids.epgAudioPid == (int) si.apid) ? 1 : 0;
 
 				g_movieInfo->audioPids.push_back(audio_pids);
 
-				if(pids.APIDs[i].is_ac3)
-					g_ac3flags[i] = 1;
+//				if(pids.APIDs[i].is_ac3)
+//					g_ac3flags[i] = 1;
 
-				g_apids[i] = pids.APIDs[i].pid;
-				if(g_apids[i] == g_currentapid)
-					g_currentac3 = pids.APIDs[i].is_ac3;
-				g_numpida++;
+//				g_apids[i] = pids.APIDs[i].pid;
+//				if(g_apids[i] == g_currentapid)
+//					g_currentac3 = pids.APIDs[i].is_ac3;
+//				g_numpida++;
 			}
 		}
 	}

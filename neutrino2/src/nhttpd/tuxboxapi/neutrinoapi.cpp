@@ -128,7 +128,7 @@ void CNeutrinoAPI::ZapToChannelId(t_channel_id channel_id)
 	}
 	else
 	{
-		if ( channel_id == CZapit::getInstance()->getCurrentServiceID() )
+		if ( channel_id == CZapit::getInstance()->getCurrentChannelID() )
 			return;		
 
 		if (CZapit::getInstance()->zapToServiceID(channel_id) != CZapit::ZAP_INVALID_PARAM)

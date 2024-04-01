@@ -365,12 +365,12 @@ class CZapit
 		void OpenFE(void);
 		void CloseFE(void);
 		void resetFE(void);
-		bool loopCanTune(CFrontend * fe, CZapitChannel * thischannel);
-		CFrontend * getPreferredFrontend(CZapitChannel * thischannel);
-		CFrontend * getFrontend(CZapitChannel * thischannel);
-		CFrontend * getRecordFrontend(CZapitChannel * thischannel);
-		void lockFrontend(CFrontend *fe);
-		void unlockFrontend(CFrontend *fe);
+//		bool loopCanTune(CFrontend * fe, CZapitChannel * thischannel);
+//		CFrontend * getPreferredFrontend(CZapitChannel * thischannel);
+//		CFrontend * getFrontend(CZapitChannel * thischannel);
+//		CFrontend * getRecordFrontend(CZapitChannel * thischannel);
+//		void lockFrontend(CFrontend *fe);
+//		void unlockFrontend(CFrontend *fe);
 		//
 		void loadAudioMap();
 		void saveAudioMap();
@@ -464,6 +464,12 @@ class CZapit
 		void saveFrontendConfig(int feindex);
 		void loadFrontendConfig();
 		int getFrontendCount(void){return femap.size();};
+		bool loopCanTune(CFrontend * fe, CZapitChannel * thischannel);
+		CFrontend * getPreferredFrontend(CZapitChannel * thischannel);
+		CFrontend * getFrontend(CZapitChannel * thischannel);
+		CFrontend * getRecordFrontend(CZapitChannel * thischannel);
+		void lockFrontend(CFrontend *fe);
+		void unlockFrontend(CFrontend *fe);
 		//
 		void setZapitConfig(Zapit_config * Cfg);
 		void getZapitConfig(Zapit_config *Cfg);
@@ -500,12 +506,13 @@ class CZapit
 		std::string getChannelURL(const t_channel_id channel_id);
 		std::string getChannelDescription(const t_channel_id channel_id);
 		// current service
-		CZapitChannel* getCurrentService();
-		t_channel_id getCurrentServiceID();
+		CZapitChannel* getCurrentChannel();
+		t_channel_id getCurrentChannelID();
 		int32_t getCurrentSatellitePosition();
 		bool getCurrentTP(transponder *TP);
 		CZapit::CServiceInfo getCurrentServiceInfo();
 		void getCurrentPIDS(responseGetPIDs &pids);
+		CFrontend* getCurrentFrontend();
 		// novd
 		void setSubServices( subServiceList& subServices );
 		// record

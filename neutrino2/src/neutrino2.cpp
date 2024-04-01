@@ -2679,7 +2679,7 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 			videoDecoder->SetInput(STANDBY_ON);		
 		
 		// zapit standby
-		if(!recordingstatus && !timeshiftstatus)
+		if(!recordingstatus && !timeshiftstatus && !CStreamManager::getInstance()->StreamStatus())
 		{
 			CZapit::getInstance()->setStandby(true);
 		} 
@@ -3227,7 +3227,8 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		Cyhttpd::getInstance()->Stop();
 		
 		// stop streamts
-		CStreamTS::getInstance()->Stop();	
+//		CStreamTS::getInstance()->Stop();	
+		CStreamManager::getInstance()->Stop();
 
 		// stop timerd	  
 		CTimerd::getInstance()->Stop();		
@@ -3645,6 +3646,36 @@ _repeat:
 		
 		return messages_return::handled;
 	}
+	////
+	else if (msg == NeutrinoMessages::EVT_STREAM_START) 
+	{
+		int fd = (int) data;
+		printf("NeutrinoMessages::EVT_STREAM_START: fd %d\n", fd);
+//		wakeupFromStandby();
+		if (g_Radiotext)
+			g_Radiotext->setPid(0);
+
+		if (!CStreamManager::getInstance()->AddClient(fd)) 
+		{
+			close(fd);
+			g_RCInput->postMsg(NeutrinoMessages::EVT_STREAM_STOP, 0);
+		}
+		
+//#if HAVE_ARM_HARDWARE || HAVE_MIPS_HARDWARE
+//		if (!CRecordManager::getInstance()->GetRecordCount()) {
+//			CVFD::getInstance()->ShowIcon(FP_ICON_CAM1, false);
+//		}
+//#endif
+		return messages_return::handled;
+	}
+	else if (msg == NeutrinoMessages::EVT_STREAM_STOP) 
+	{
+		printf("NeutrinoMessages::EVT_STREAM_STOP\n");
+//		CEpgScan::getInstance()->Next();
+//		standbyToStandby();
+		return messages_return::handled;
+	}
+	////
 	else if( msg == NeutrinoMessages::EVT_PMT_CHANGED) 
 	{
 		res = messages_return::handled;
@@ -3815,6 +3846,10 @@ _repeat:
 	}
 	else if( msg == NeutrinoMessages::SHUTDOWN ) 
 	{
+		////test
+		if(CStreamManager::getInstance()->StreamStatus())
+			skipShutdownTimer = true;
+			
 		if(!skipShutdownTimer) 
 		{
 			exitRun(SHUTDOWN);
@@ -4738,7 +4773,8 @@ int CNeutrinoApp::run(int argc, char **argv)
 	Cyhttpd::getInstance()->Start();
 
 	// streamts
-	CStreamTS::getInstance()->Start();
+//	CStreamTS::getInstance()->Start();
+	CStreamManager::getInstance()->Start();
 	
 	// dvbsub thread
 	dvbsub_init();	
@@ -4933,7 +4969,8 @@ void sighandler(int signum)
 			Cyhttpd::getInstance()->Stop();
 			
 			// stop streamts
-			CStreamTS::getInstance()->Stop();	
+//			CStreamTS::getInstance()->Stop();	
+			CStreamManager::getInstance()->Stop();
 
 			// stop timerd	  
 			CTimerd::getInstance()->Stop();		

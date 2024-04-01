@@ -1316,7 +1316,7 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 {
 	if (hh->ParamList.empty())
 	{
-		hh->printf("%llx" "\n", CZapit::getInstance()->getCurrentServiceID()&0xFFFFFFFFFFFFULL);
+		hh->printf("%llx" "\n", CZapit::getInstance()->getCurrentChannelID()&0xFFFFFFFFFFFFULL);
 		return;
 	}
 	else
@@ -1354,7 +1354,7 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 			hh->Write((char *) (scanning ? "1" : "0"));
 		else if (hh->ParamList["1"] == "getallsubchannels")
 		{
-			t_channel_id current_channel = CZapit::getInstance()->getCurrentServiceID();
+			t_channel_id current_channel = CZapit::getInstance()->getCurrentChannelID();
 			CSectionsd::LinkageDescriptorList desc;
 			CSectionsd::CurrentNextInfo currentNextInfo;
 			CSectionsd::getInstance()->getCurrentNextServiceKey(current_channel&0xFFFFFFFFFFFFULL, currentNextInfo);
@@ -1518,7 +1518,7 @@ void CControlAPI::SendAllCurrentVAPid(CyhookHandler *hh)
 
 	hh->printf("%05u\n", pids.PIDs.vpid);
 
-	t_channel_id current_channel = CZapit::getInstance()->getCurrentServiceID();
+	t_channel_id current_channel = CZapit::getInstance()->getCurrentChannelID();
 	CSectionsd::CurrentNextInfo currentNextInfo;
 	CSectionsd::getInstance()->getCurrentNextServiceKey(current_channel&0xFFFFFFFFFFFFULL, currentNextInfo);
 	if (CSectionsd::getInstance()->getComponentTagsUniqueKey(currentNextInfo.current_uniqueKey,tags))
