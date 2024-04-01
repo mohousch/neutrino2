@@ -55,8 +55,6 @@ extern cVideo * videoDecoder;
 extern cAudio * audioDecoder;
 extern satellite_map_t satellitePositions;		// defined in getServices.cpp
 extern CRemoteControl *g_RemoteControl;			// neutrino.cpp 
-extern CFrontend * live_fe;
-extern t_channel_id live_channel_id; 			//defined in zapit.cpp
 
 ////
 CStreamInfo::CStreamInfo()
@@ -176,11 +174,11 @@ void CStreamInfo::doSignalStrengthLoop()
 	{
 		g_RCInput->getMsgAbsoluteTimeout (&msg, &data, &timeoutEnd);
 
-		if(live_fe != NULL)
+		if(CZapit::getInstance()->getCurrentFrontend() != NULL)
 		{
-			ssig = live_fe->getSignalStrength();
-			ssnr = live_fe->getSignalNoiseRatio();
-			ber = live_fe->getBitErrorRate();
+			ssig = CZapit::getInstance()->getCurrentFrontend()->getSignalStrength();
+			ssnr = CZapit::getInstance()->getCurrentFrontend()->getSignalNoiseRatio();
+			ber = CZapit::getInstance()->getCurrentFrontend()->getBitErrorRate();
 		}
 
 		signal.sig = ssig & 0xFFFF;
@@ -289,7 +287,7 @@ void CStreamInfo::doSignalStrengthLoop()
 		//FIXME picture info
 		else if (msg == CRCInput::RC_red || msg == CRCInput::RC_blue || msg == CRCInput::RC_green || msg == CRCInput::RC_yellow) 
 		{
-			if(!IS_WEBTV(live_channel_id))
+			if(!IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 			{
 				hide ();
 				if(sigscale)
@@ -350,7 +348,7 @@ void CStreamInfo::hide ()
 
 void CStreamInfo::paint_signal_fe_box(int _x, int _y, int w, int h)
 {
-	 if(!IS_WEBTV(live_channel_id))
+	 if(!IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 	 {
 		int y1, y2;
 		int xd = w/4;
@@ -408,7 +406,7 @@ void CStreamInfo::paint_signal_fe_box(int _x, int _y, int w, int h)
 
 void CStreamInfo::paint_signal_fe(struct bitrate br, struct feSignal s)
 {
-	if(!live_fe || (IS_WEBTV(live_channel_id)))
+	if(!CZapit::getInstance()->getCurrentFrontend() || (IS_WEBTV(CZapit::getInstance()->getCurrentChannelID())))
 		return;
 	
 	int   x_now = sigBox_pos;
@@ -689,7 +687,7 @@ void CStreamInfo::paint_techinfo(int xpos, int ypos)
 	t_satellite_position satellitePosition = CNeutrinoApp::getInstance ()->channelList->getActiveSatellitePosition ();
 	sat_iterator_t sit = satellitePositions.find(satellitePosition);
 
-	if(IS_WEBTV(live_channel_id))
+	if(IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 	{
 		g_Font[font_info]->RenderString (xpos + spaceoffset, ypos, width*2/3 - 10, "WebTV", COL_MENUCONTENT_TEXT_PLUS_0, 0, true);	// UTF-8
 	}
@@ -711,7 +709,7 @@ void CStreamInfo::paint_techinfo(int xpos, int ypos)
 	sprintf((char*) buf, "%s" ,channelList->getActiveChannelName().c_str());
 	g_Font[font_info]->RenderString (xpos + spaceoffset, ypos, width*2/3 - 10, buf, COL_MENUCONTENT_TEXT_PLUS_0, 0, true);	// UTF-8
  
-	  if(!IS_WEBTV(live_channel_id))
+	  if(!IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 	  {
 		//tsfrequenz
 		CZapit::CServiceInfo si = CZapit::getInstance()->getCurrentServiceInfo();
@@ -719,11 +717,11 @@ void CStreamInfo::paint_techinfo(int xpos, int ypos)
 		ypos += iheight;
 		char * f = NULL, *s = NULL, *m = NULL;
 		
-		if(live_fe != NULL)
+		if(CZapit::getInstance()->getCurrentFrontend() != NULL)
 		{
-			if( live_fe->getInfo()->type == FE_QPSK) 
+			if(CZapit::getInstance()->getCurrentFrontend()->getInfo()->type == FE_QPSK) 
 			{
-				live_fe->getDelSys((fe_code_rate_t)si.fec, dvbs_get_modulation((fe_code_rate_t)si.fec), f, s, m);
+				CZapit::getInstance()->getCurrentFrontend()->getDelSys((fe_code_rate_t)si.fec, dvbs_get_modulation((fe_code_rate_t)si.fec), f, s, m);
 				sprintf ((char *) buf,"%d.%d (%c) %d %s %s %s", si.tsfrequency / 1000, si.tsfrequency % 1000, si.polarisation ? 'V' : 'H', si.rate / 1000,f,m,s/*=="DVB-S2"?"S2":"S1"*/);
 				g_Font[font_info]->RenderString(xpos, ypos, width*2/3-10, "Tp. Freq.:" , COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 				g_Font[font_info]->RenderString(xpos + spaceoffset, ypos, width*2/3-10, buf, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8	
@@ -833,7 +831,7 @@ uint64_t b_total;
 
 int CStreamInfo::ts_setup()
 {
-	if(!IS_WEBTV(live_channel_id))
+	if(!IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 	{
 		unsigned short vpid, apid = 0;
 
@@ -850,7 +848,7 @@ int CStreamInfo::ts_setup()
 		ts_dmx = new cDemux();
 		
 		// open demux	
-		ts_dmx->Open( DMX_TP_CHANNEL, 3*3008*62, live_fe );	
+		ts_dmx->Open( DMX_TP_CHANNEL, 3*3008*62, CZapit::getInstance()->getCurrentFrontend() );	
 		
 		if(vpid > 0) 
 		{
@@ -877,7 +875,7 @@ int CStreamInfo::update_rate()
 {
 	int ret = 0;
 	
-	if(!IS_WEBTV(live_channel_id))
+	if(!IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 	{
 		unsigned char buf[TS_BUF_SIZE];
 		long b;
@@ -927,7 +925,7 @@ int CStreamInfo::update_rate()
 
 int CStreamInfo::ts_close()
 {
-	if(!IS_WEBTV(live_channel_id))
+	if(!IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 	{
 		if(ts_dmx)
 			delete ts_dmx;
@@ -940,7 +938,7 @@ int CStreamInfo::ts_close()
 
 void CStreamInfo::showSNR()
 {
-	 if(!IS_WEBTV(live_channel_id))
+	 if(!IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 	 {
 		char percent[10];
 		int barwidth = 150;

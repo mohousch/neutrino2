@@ -72,12 +72,11 @@
 bool pip_selected = false;
 //
 extern bool autoshift;
-extern CZapitChannel * live_channel;
-extern int old_b_id;				// defined in neutrino.cpp
+extern int old_b_id;					// defined in neutrino2.cpp
 //
-extern CRemoteControl * g_RemoteControl; 		// neutrino.cpp	
+extern CRemoteControl * g_RemoteControl; 		// defined in neutrino2.cpp	
 //
-extern CBouquetList * bouquetList;      		// neutrino.cpp
+extern CBouquetList * bouquetList;      		// defined in neutrino2.cpp
 extern CBouquetList   * TVbouquetList;
 extern CBouquetList   * TVsatList;
 extern CBouquetList   * TVfavList;
@@ -86,9 +85,6 @@ extern CBouquetList   * RADIObouquetList;
 extern CBouquetList   * RADIOsatList;
 extern CBouquetList   * RADIOfavList;
 extern CBouquetList   * RADIOallList;
-//
-extern t_channel_id rec_channel_id;
-extern t_channel_id live_channel_id;
 
 #define CHANNEL_SMSKEY_TIMEOUT 800
 
@@ -1005,12 +1001,12 @@ int CChannelList::numericZap(int key)
 	if (key == g_settings.key_zaphistory) 
 	{
 		// current transponder bouquet
-		if(!autoshift && CNeutrinoApp::getInstance()->recordingstatus && !IS_WEBTV(rec_channel_id)) 
+		if(!autoshift && CNeutrinoApp::getInstance()->recordingstatus && !IS_WEBTV(CZapit::getInstance()->getRecordChannelID())) 
 		{
 			CChannelList * orgList = bouquetList->orgChannelList;
 			CChannelList * channelList = new CChannelList(_("Current transponder"), false, true);
 			
-			t_channel_id recid = rec_channel_id >> 16;
+			t_channel_id recid = CZapit::getInstance()->getRecordChannelID() >> 16;
 			
 			// get channels from the same tp as recording channel
 			for ( unsigned int i = 0 ; i < orgList->chanlist.size(); i++) 
@@ -1073,7 +1069,7 @@ int CChannelList::numericZap(int key)
 		CChannelList * orgList = bouquetList->orgChannelList;
 		CChannelList * channelList = new CChannelList(_("Current transponder"), false, true);
 			
-		t_channel_id pipid = live_channel_id >> 16;
+		t_channel_id pipid = CZapit::getInstance()->getCurrentChannelID() >> 16;
 			
 		for ( unsigned int i = 0 ; i < orgList->chanlist.size(); i++) 
 		{

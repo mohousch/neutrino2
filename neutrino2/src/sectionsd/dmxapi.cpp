@@ -38,10 +38,8 @@
 #include <system/debug.h>
 
 /*zapit includes*/
-#include <zapit/frontend_c.h>
+#include <zapit/zapit.h>
 
-
-extern CFrontend * live_fe;
 
 struct SI_section_TOT_header
 {
@@ -107,7 +105,7 @@ bool getUTC(UTC_t * const UTC, const bool TDT)
 	{
 		dmxUTC = new cDemux();
 
-		dmxUTC->Open( DMX_PSI_CHANNEL, 1026, live_fe );		
+		dmxUTC->Open( DMX_PSI_CHANNEL, 1026, CZapit::getInstance()->getCurrentFrontend() );		
 	}
 
 	memset(&filter, 0, DMX_FILTER_SIZE);

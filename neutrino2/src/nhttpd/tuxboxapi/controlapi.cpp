@@ -48,8 +48,6 @@
 // globals
 extern int scanning;
 extern tallchans allchans;
-extern t_channel_id live_channel_id;
-extern CZapitChannel * live_channel;			// defined in zapit.cpp
 
 //=============================================================================
 // Initialization of static variables
@@ -356,7 +354,7 @@ void CControlAPI::SetModeCGI(CyhookHandler *hh)
 			CZapit::getInstance()->setRecordMode(false);
 			CSectionsd::getInstance()->pauseScanning(false);
 			if (!CZapit::getInstance()->isPlayBackActive())
-				CZapit::getInstance()->startPlayBack(live_channel);
+				CZapit::getInstance()->startPlayBack(CZapit::getInstance()->getCurrentChannel());
 		}
 		hh->SendOk();
 	}
@@ -927,7 +925,7 @@ void CControlAPI::GetBouquetCGI(CyhookHandler *hh)
 			int actual=0;
 			for (int i = 0; i < (int) CZapit::getInstance()->Bouquets.size(); i++) 
 			{
-				if(CZapit::getInstance()->existsChannelInBouquet(i, live_channel_id)) 
+				if(CZapit::getInstance()->existsChannelInBouquet(i, CZapit::getInstance()->getCurrentChannelID())) 
 				{
 					actual = i + 1;
 					break;
@@ -1333,7 +1331,7 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 		}
 		else if (hh->ParamList["1"] == "startplayback")
 		{
-			CZapit::getInstance()->startPlayBack(live_channel);
+			CZapit::getInstance()->startPlayBack(CZapit::getInstance()->getCurrentChannel());
 			CSectionsd::getInstance()->pauseScanning(false);
 			dprintf("start playback requested..\n");
 			hh->SendOk();

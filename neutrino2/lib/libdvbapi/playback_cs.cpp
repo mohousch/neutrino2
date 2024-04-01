@@ -520,10 +520,10 @@ bool cPlayback::Open()
 	// add subtitle output screen
 	SubtitleOutputDef_t out;
 
-	out.screen_x = CFrameBuffer::getInstance()->getScreenX();
-	out.screen_y = CFrameBuffer::getInstance()->getScreenY();
-	out.screen_width = CFrameBuffer::getInstance()->getScreenWidth();
-	out.screen_height = CFrameBuffer::getInstance()->getScreenHeight();
+	out.screen_x = CFrameBuffer::getInstance()->getScreenX(true);
+	out.screen_y = CFrameBuffer::getInstance()->getScreenY(true);
+	out.screen_width = CFrameBuffer::getInstance()->getScreenWidth(true);
+	out.screen_height = CFrameBuffer::getInstance()->getScreenHeight(true);
 	
 	out.framebufferFD = CFrameBuffer::getInstance()->getFileHandle();
 	out.destination   = CFrameBuffer::getInstance()->getFrameBufferPointer();

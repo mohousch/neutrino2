@@ -79,9 +79,7 @@ char rec_filename[FILENAMEBUFFERSIZE];
 static CVCRControl vcrControl;
 static cRecord * record = NULL;
 //
-extern bool autoshift;					// defined in neutrino2.cpp
-extern CZapitChannel * live_channel;			// defined in zapit.cpp
-//extern CFrontend * record_fe;				// defined in zapit.cpp
+extern bool autoshift;					// defined in neutrino2.cpp				
 
 ////
 CVCRControl * CVCRControl::getInstance()
@@ -280,7 +278,7 @@ void CVCRControl::RestoreNeutrino(void)
 	{
 		// start playback
 		if (!CZapit::getInstance()->isPlayBackActive() && (CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby))
-			CZapit::getInstance()->startPlayBack(live_channel);
+			CZapit::getInstance()->startPlayBack(CZapit::getInstance()->getCurrentChannel());
 
 		// alten mode wieder herstellen (ausser wen zwischenzeitlich auf oder aus sb geschalten wurde)
 		if(CNeutrinoApp::getInstance()->getMode() != last_mode && CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby && last_mode != NeutrinoMessages::mode_standby)
@@ -1067,7 +1065,7 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 	record->Open();
 
 	// start_recording	  
-	if(!record->Start(fd, vpid, pids, numpids, /*record_fe*/CZapit::getInstance()->getRecordFrontend(CZapit::getInstance()->findChannelByChannelID(channel_id)))) 	  
+	if(!record->Start(fd, vpid, pids, numpids, CZapit::getInstance()->getRecordFrontend(CZapit::getInstance()->findChannelByChannelID(channel_id)))) 	  
 	{
 		record->Stop();
 		delete record;

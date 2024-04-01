@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-04-01 13:15+0300\n"
+"POT-Creation-Date: 2024-04-01 17:55+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -190,6 +190,7 @@ msgstr ""
 #: ../../src/gui/channellist.cpp:1806 ../../src/gui/channellist.cpp:1807
 #: ../../src/gui/channellist.cpp:1808 ../../src/gui/channellist.cpp:1812
 #: ../../src/gui/channellist.cpp:1814 ../../src/gui/channellist.cpp:1809
+#: ../../src/gui/channellist.cpp:1805
 msgid "Add to Bouquets"
 msgstr ""
 
@@ -237,6 +238,7 @@ msgid "Analog Output"
 msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:1120 ../../src/gui/infoviewer.cpp:1121
+#: ../../src/gui/infoviewer.cpp:1119 ../../src/gui/infoviewer.cpp:1116
 msgid "Antenna positioning"
 msgstr ""
 
@@ -266,6 +268,7 @@ msgstr ""
 
 #: ../../src/gui/streaminfo.cpp:585 ../../src/gui/streaminfo.cpp:611
 #: ../../src/gui/streaminfo.cpp:584 ../../src/gui/streaminfo.cpp:610
+#: ../../src/gui/streaminfo.cpp:582 ../../src/gui/streaminfo.cpp:608
 msgid "Aspect Ratio"
 msgstr ""
 
@@ -297,6 +300,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1997 ../../src/gui/movieplayer.cpp:1981
 #: ../../src/gui/movieplayer.cpp:1984 ../../src/gui/movieplayer.cpp:1994
 #: ../../src/gui/movieplayer.cpp:1996 ../../src/driver/movieinfo.cpp:1002
+#: ../../src/gui/infoviewer.cpp:1741
 msgid "Audio"
 msgstr ""
 
@@ -337,6 +341,8 @@ msgstr ""
 #: ../../src/gui/streaminfo.cpp:587 ../../src/gui/streaminfo.cpp:665
 #: ../../src/gui/streaminfo.cpp:671 ../../src/gui/streaminfo.cpp:586
 #: ../../src/gui/streaminfo.cpp:664 ../../src/gui/streaminfo.cpp:670
+#: ../../src/gui/streaminfo.cpp:584 ../../src/gui/streaminfo.cpp:662
+#: ../../src/gui/streaminfo.cpp:668
 msgid "Audiotype"
 msgstr ""
 
@@ -403,6 +409,7 @@ msgstr ""
 
 #: ../../src/gui/streaminfo.cpp:157 ../../src/gui/streaminfo.cpp:218
 #: ../../src/gui/streaminfo.cpp:156 ../../src/gui/streaminfo.cpp:217
+#: ../../src/gui/streaminfo.cpp:154 ../../src/gui/streaminfo.cpp:215
 msgid "Bitrate"
 msgstr ""
 
@@ -464,7 +471,7 @@ msgstr ""
 #: ../../src/gui/bouquetlist.cpp:62 ../../src/gui/channellist.cpp:101
 #: ../../src/gui/eventlist.cpp:804
 #: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:151
-#: ../../src/gui/eventlist.cpp:805
+#: ../../src/gui/eventlist.cpp:805 ../../src/gui/channellist.cpp:97
 msgid "Bouquets"
 msgstr ""
 
@@ -477,7 +484,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3813 ../../src/neutrino2.cpp:3810
 #: ../../src/neutrino2.cpp:3809 ../../src/neutrino2.cpp:3811
 #: ../../src/neutrino2.cpp:3812 ../../src/neutrino2.cpp:3814
-#: ../../src/neutrino2.cpp:3845
+#: ../../src/neutrino2.cpp:3845 ../../src/neutrino2.cpp:3841
 msgid ""
 "Box will shutdown in 1 min.\n"
 "Cancel Sutdown ?"
@@ -665,7 +672,7 @@ msgstr ""
 #: ../../src/gui/eventlist.cpp:804 ../../src/gui/streaminfo.cpp:709
 #: ../../src/gui/movieinfo.cpp:954 ../../src/gui/movieinfo.cpp:952
 #: ../../src/gui/movieinfo.cpp:955 ../../src/gui/movieinfo.cpp:956
-#: ../../src/driver/movieinfo.cpp:954
+#: ../../src/driver/movieinfo.cpp:954 ../../src/gui/streaminfo.cpp:707
 msgid "Channel"
 msgstr ""
 
@@ -682,6 +689,7 @@ msgid "Channel down"
 msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:1109 ../../src/gui/infoviewer.cpp:1110
+#: ../../src/gui/infoviewer.cpp:1108 ../../src/gui/infoviewer.cpp:1105
 msgid "Channel not available"
 msgstr ""
 
@@ -820,7 +828,8 @@ msgstr ""
 #: ../../src/gui/channellist.cpp:1010 ../../src/gui/channellist.cpp:1072
 #: ../../src/gui/channellist.cpp:1011 ../../src/gui/channellist.cpp:1077
 #: ../../src/gui/channellist.cpp:1013 ../../src/gui/channellist.cpp:1079
-#: ../../src/gui/channellist.cpp:1074
+#: ../../src/gui/channellist.cpp:1074 ../../src/gui/channellist.cpp:1007
+#: ../../src/gui/channellist.cpp:1070
 msgid "Current transponder"
 msgstr ""
 
@@ -900,6 +909,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2123 ../../src/gui/movieplayer.cpp:2133
 #: ../../src/gui/movieplayer.cpp:2135 ../../src/gui/channellist.cpp:1834
 #: ../../src/gui/channellist.cpp:1836 ../../src/gui/channellist.cpp:1831
+#: ../../src/gui/channellist.cpp:1827
 msgid "Delete"
 msgstr ""
 
@@ -933,6 +943,7 @@ msgstr ""
 #: ../../src/gui/channellist.cpp:1828 ../../src/gui/channellist.cpp:1829
 #: ../../src/gui/channellist.cpp:1830 ../../src/gui/channellist.cpp:1834
 #: ../../src/gui/channellist.cpp:1836 ../../src/gui/channellist.cpp:1831
+#: ../../src/gui/channellist.cpp:1827
 msgid "Delete channel from bouquet?"
 msgstr ""
 
@@ -991,7 +1002,9 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3134 ../../src/gui/infoviewer.cpp:823
 #: ../../src/gui/infoviewer.cpp:876 ../../src/neutrino2.cpp:3133
 #: ../../src/neutrino2.cpp:3135 ../../src/neutrino2.cpp:3136
-#: ../../src/neutrino2.cpp:3138
+#: ../../src/neutrino2.cpp:3138 ../../src/gui/infoviewer.cpp:821
+#: ../../src/gui/infoviewer.cpp:874 ../../src/gui/infoviewer.cpp:818
+#: ../../src/gui/infoviewer.cpp:871
 msgid "Direct-Mode"
 msgstr ""
 
@@ -1135,6 +1148,7 @@ msgstr ""
 #: ../../src/gui/infoviewer.cpp:1654 ../../src/neutrino2_menue.cpp:125
 #: ../../src/neutrino2_menue.cpp:124 ../../src/neutrino2_menue.cpp:121
 #: ../../src/gui/epg_menu.cpp:84 ../../src/gui/infoviewer.cpp:1655
+#: ../../src/gui/infoviewer.cpp:1650
 msgid "EPG / Timer"
 msgstr ""
 
@@ -1168,11 +1182,14 @@ msgstr ""
 #: ../../src/gui/infoviewer.cpp:750 ../../src/gui/infoviewer.cpp:767
 #: ../../src/gui/infoviewer.cpp:1661 ../../src/gui/infoviewer.cpp:1662
 #: ../../src/gui/infoviewer.cpp:751 ../../src/gui/infoviewer.cpp:768
-#: ../../src/gui/infoviewer.cpp:1663
+#: ../../src/gui/infoviewer.cpp:1663 ../../src/gui/infoviewer.cpp:749
+#: ../../src/gui/infoviewer.cpp:766 ../../src/gui/infoviewer.cpp:746
+#: ../../src/gui/infoviewer.cpp:763 ../../src/gui/infoviewer.cpp:1658
 msgid "EPG not available"
 msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:780 ../../src/gui/infoviewer.cpp:781
+#: ../../src/gui/infoviewer.cpp:779 ../../src/gui/infoviewer.cpp:776
 msgid "EPG not loaded..."
 msgstr ""
 
@@ -1203,7 +1220,7 @@ msgstr ""
 #: ../../src/gui/bouquetlist.cpp:551 ../../src/gui/channellist.cpp:1782
 #: ../../src/gui/channellist.cpp:1783 ../../src/gui/channellist.cpp:1784
 #: ../../src/gui/channellist.cpp:1788 ../../src/gui/channellist.cpp:1790
-#: ../../src/gui/channellist.cpp:1785
+#: ../../src/gui/channellist.cpp:1785 ../../src/gui/channellist.cpp:1781
 msgid "Edit"
 msgstr ""
 
@@ -1267,7 +1284,9 @@ msgstr ""
 #: ../../src/driver/vcrcontrol.cpp:669 ../../src/driver/vcrcontrol.cpp:665
 #: ../../src/driver/vcrcontrol.cpp:668 ../../src/neutrino2.cpp:2008
 #: ../../src/driver/vcrcontrol.cpp:667 ../../src/driver/vcrcontrol.cpp:661
-#: ../../src/neutrino2.cpp:2010
+#: ../../src/neutrino2.cpp:2010 ../../src/neutrino2.cpp:2006
+#: ../../src/gui/channellist.cpp:927 ../../src/gui/channellist.cpp:982
+#: ../../src/gui/infoviewer.cpp:1108 ../../src/gui/infoviewer.cpp:1105
 msgid "Error"
 msgstr ""
 
@@ -1364,7 +1383,8 @@ msgstr ""
 #: ../../src/neutrino2_menue.cpp:151 ../../src/neutrino2_menue.cpp:344
 #: ../../src/neutrino2_menue.cpp:150 ../../src/neutrino2_menue.cpp:343
 #: ../../src/neutrino2_menue.cpp:147 ../../src/neutrino2_menue.cpp:340
-#: ../../src/gui/infoviewer.cpp:547
+#: ../../src/gui/infoviewer.cpp:547 ../../src/gui/infoviewer.cpp:545
+#: ../../src/gui/infoviewer.cpp:542
 msgid "Features"
 msgstr ""
 
@@ -1482,6 +1502,7 @@ msgstr ""
 
 #: ../../src/gui/streaminfo.cpp:586 ../../src/gui/streaminfo.cpp:639
 #: ../../src/gui/streaminfo.cpp:585 ../../src/gui/streaminfo.cpp:638
+#: ../../src/gui/streaminfo.cpp:583 ../../src/gui/streaminfo.cpp:636
 msgid "Framerate"
 msgstr ""
 
@@ -1812,6 +1833,7 @@ msgstr ""
 
 #: ../../src/gui/channellist.cpp:1041 ../../src/gui/channellist.cpp:1045
 #: ../../src/gui/channellist.cpp:1047 ../../src/gui/channellist.cpp:1042
+#: ../../src/gui/channellist.cpp:1038
 msgid "History"
 msgstr ""
 
@@ -2056,6 +2078,13 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3807 ../../src/neutrino2.cpp:3845
 #: ../../src/neutrino2.cpp:3892 ../../src/neutrino2.cpp:3901
 #: ../../src/neutrino2.cpp:4299 ../../src/neutrino2.cpp:4929
+#: ../../src/neutrino2.cpp:2821 ../../src/neutrino2.cpp:2839
+#: ../../src/neutrino2.cpp:2844 ../../src/neutrino2.cpp:3762
+#: ../../src/neutrino2.cpp:3796 ../../src/neutrino2.cpp:3803
+#: ../../src/neutrino2.cpp:3841 ../../src/neutrino2.cpp:3888
+#: ../../src/neutrino2.cpp:3897 ../../src/neutrino2.cpp:4295
+#: ../../src/neutrino2.cpp:4925 ../../src/gui/infoviewer.cpp:1124
+#: ../../src/gui/infoviewer.cpp:1121
 msgid "Information"
 msgstr ""
 
@@ -2395,7 +2424,7 @@ msgstr ""
 msgid "Menu Title"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:359
+#: ../../src/neutrino2.cpp:359 ../../src/neutrino2.cpp:355
 msgid "Menu Title large"
 msgstr ""
 
@@ -2493,7 +2522,7 @@ msgstr ""
 #: ../../src/gui/channellist.cpp:1806 ../../src/gui/channellist.cpp:1807
 #: ../../src/gui/bedit/bouqueteditor_channels.cpp:90
 #: ../../src/gui/channellist.cpp:1811 ../../src/gui/channellist.cpp:1813
-#: ../../src/gui/channellist.cpp:1808
+#: ../../src/gui/channellist.cpp:1808 ../../src/gui/channellist.cpp:1804
 msgid "Move"
 msgstr ""
 
@@ -2803,7 +2832,7 @@ msgstr ""
 msgid "No CAM in slot"
 msgstr ""
 
-#: ../../src/gui/channellist.cpp:931
+#: ../../src/gui/channellist.cpp:931 ../../src/gui/channellist.cpp:927
 msgid ""
 "No channels were found!\n"
 "Please execute a scan\n"
@@ -2812,7 +2841,8 @@ msgstr ""
 
 #: ../../src/gui/channellist.cpp:986 ../../src/gui/channellist.cpp:1245
 #: ../../src/gui/channellist.cpp:1251 ../../src/gui/channellist.cpp:1253
-#: ../../src/gui/channellist.cpp:1248
+#: ../../src/gui/channellist.cpp:1248 ../../src/gui/channellist.cpp:982
+#: ../../src/gui/channellist.cpp:1244
 msgid ""
 "No channels were found!\n"
 "Please execute a scan\n"
@@ -2824,7 +2854,7 @@ msgid "No detailed informations available"
 msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:1671 ../../src/gui/infoviewer.cpp:1672
-#: ../../src/gui/infoviewer.cpp:1673
+#: ../../src/gui/infoviewer.cpp:1673 ../../src/gui/infoviewer.cpp:1668
 msgid "No info for current program available"
 msgstr ""
 
@@ -2840,7 +2870,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4899 ../../src/neutrino2.cpp:4902
 #: ../../src/neutrino2.cpp:4909 ../../src/neutrino2.cpp:4911
 #: ../../src/neutrino2.cpp:4918 ../../src/neutrino2.cpp:4893
-#: ../../src/neutrino2.cpp:4929
+#: ../../src/neutrino2.cpp:4929 ../../src/neutrino2.cpp:4925
 msgid "No neutrino-settings found, Using defaults."
 msgstr ""
 
@@ -2944,6 +2974,7 @@ msgid "PCM Delay"
 msgstr ""
 
 #: ../../src/gui/channellist.cpp:135 ../../src/gui/widget/listbox.cpp:199
+#: ../../src/gui/channellist.cpp:131
 msgid "PIN-Code was wrong! Try again."
 msgstr ""
 
@@ -3123,7 +3154,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3710 ../../src/neutrino2.cpp:3707
 #: ../../src/neutrino2.cpp:3706 ../../src/neutrino2.cpp:3708
 #: ../../src/neutrino2.cpp:3709 ../../src/neutrino2.cpp:3711
-#: ../../src/neutrino2.cpp:3742
+#: ../../src/neutrino2.cpp:3742 ../../src/neutrino2.cpp:3738
 msgid "Program unknown"
 msgstr ""
 
@@ -3209,6 +3240,7 @@ msgid "Reboot"
 msgstr ""
 
 #: ../../src/gui/streaminfo.cpp:359 ../../src/gui/streaminfo.cpp:358
+#: ../../src/gui/streaminfo.cpp:356
 msgid "Receipt signal"
 msgstr ""
 
@@ -3216,7 +3248,7 @@ msgstr ""
 #: ../../src/gui/epgview.cpp:1070 ../../src/gui/eventlist.cpp:534
 #: ../../src/gui/timerlist.cpp:838 ../../src/gui/timerlist.cpp:928
 #: ../../src/gui/epgplus.cpp:493 ../../src/gui/epgview.cpp:1072
-#: ../../src/gui/eventlist.cpp:535
+#: ../../src/gui/eventlist.cpp:535 ../../src/gui/channellist.cpp:94
 msgid "Record"
 msgstr ""
 
@@ -3264,7 +3296,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3768 ../../src/neutrino2.cpp:3765
 #: ../../src/neutrino2.cpp:3764 ../../src/neutrino2.cpp:3766
 #: ../../src/neutrino2.cpp:3767 ../../src/neutrino2.cpp:3769
-#: ../../src/neutrino2.cpp:3800
+#: ../../src/neutrino2.cpp:3800 ../../src/neutrino2.cpp:3796
 msgid "Recording starts in a few minutes"
 msgstr ""
 
@@ -3315,19 +3347,19 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:2851 ../../src/neutrino2.cpp:2855
 #: ../../src/neutrino2.cpp:2845 ../../src/neutrino2.cpp:2846
-#: ../../src/neutrino2.cpp:2848
+#: ../../src/neutrino2.cpp:2848 ../../src/neutrino2.cpp:2844
 msgid "Reloading EPG, please be patient."
 msgstr ""
 
 #: ../../src/neutrino2.cpp:2857 ../../src/neutrino2.cpp:2861
 #: ../../src/neutrino2.cpp:2851 ../../src/neutrino2.cpp:2852
-#: ../../src/neutrino2.cpp:2854
+#: ../../src/neutrino2.cpp:2854 ../../src/neutrino2.cpp:2850
 msgid "Reloading XMLTV EPG, please be patient."
 msgstr ""
 
 #: ../../src/neutrino2.cpp:2846 ../../src/neutrino2.cpp:2850
 #: ../../src/neutrino2.cpp:2840 ../../src/neutrino2.cpp:2841
-#: ../../src/neutrino2.cpp:2843
+#: ../../src/neutrino2.cpp:2843 ../../src/neutrino2.cpp:2839
 msgid "Reloading channel lists, please be patient."
 msgstr ""
 
@@ -3344,6 +3376,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3881 ../../src/neutrino2.cpp:3879
 #: ../../src/neutrino2.cpp:3878 ../../src/neutrino2.cpp:3880
 #: ../../src/neutrino2.cpp:3883 ../../src/neutrino2.cpp:3918
+#: ../../src/neutrino2.cpp:3914
 msgid "Reminder"
 msgstr ""
 
@@ -3411,6 +3444,7 @@ msgstr ""
 
 #: ../../src/gui/streaminfo.cpp:584 ../../src/gui/streaminfo.cpp:601
 #: ../../src/gui/streaminfo.cpp:583 ../../src/gui/streaminfo.cpp:600
+#: ../../src/gui/streaminfo.cpp:581 ../../src/gui/streaminfo.cpp:598
 msgid "Resolution"
 msgstr ""
 
@@ -3455,6 +3489,7 @@ msgstr ""
 #: ../../src/gui/streaminfo.cpp:687 ../../src/gui/scan_setup.cpp:1027
 #: ../../src/gui/scan_setup.cpp:1173 ../../src/gui/scan_setup.cpp:1473
 #: ../../src/gui/scan_setup.cpp:1553 ../../src/gui/streaminfo.cpp:686
+#: ../../src/gui/streaminfo.cpp:684
 msgid "Satellite"
 msgstr ""
 
@@ -3561,7 +3596,7 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:2828 ../../src/neutrino2.cpp:2832
 #: ../../src/neutrino2.cpp:2822 ../../src/neutrino2.cpp:2823
-#: ../../src/neutrino2.cpp:2825
+#: ../../src/neutrino2.cpp:2825 ../../src/neutrino2.cpp:2821
 msgid "Saving settings now, please be patient."
 msgstr ""
 
@@ -3599,14 +3634,14 @@ msgstr ""
 #: ../../src/gui/channellist.cpp:100 ../../src/gui/epgplus.cpp:515
 #: ../../src/gui/epgview.cpp:140 ../../src/gui/eventlist.cpp:536
 #: ../../src/gui/epgplus.cpp:495 ../../src/gui/epgview.cpp:142
-#: ../../src/gui/eventlist.cpp:537
+#: ../../src/gui/eventlist.cpp:537 ../../src/gui/channellist.cpp:96
 msgid "Schedule"
 msgstr ""
 
 #: ../../src/gui/channellist.cpp:514 ../../src/gui/epgplus.cpp:1204
 #: ../../src/gui/epgview.cpp:861 ../../src/gui/eventlist.cpp:380
 #: ../../src/gui/epgplus.cpp:1184 ../../src/gui/epgview.cpp:863
-#: ../../src/gui/eventlist.cpp:381
+#: ../../src/gui/eventlist.cpp:381 ../../src/gui/channellist.cpp:510
 msgid "Schedule Event"
 msgstr ""
 
@@ -3615,7 +3650,7 @@ msgstr ""
 #: ../../src/gui/eventlist.cpp:346 ../../src/gui/eventlist.cpp:351
 #: ../../src/gui/epgplus.cpp:1212 ../../src/gui/epgview.cpp:842
 #: ../../src/gui/epgview.cpp:847 ../../src/gui/eventlist.cpp:347
-#: ../../src/gui/eventlist.cpp:352
+#: ../../src/gui/eventlist.cpp:352 ../../src/gui/channellist.cpp:488
 msgid "Schedule Record"
 msgstr ""
 
@@ -3898,7 +3933,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3775 ../../src/neutrino2.cpp:3772
 #: ../../src/neutrino2.cpp:3771 ../../src/neutrino2.cpp:3773
 #: ../../src/neutrino2.cpp:3774 ../../src/neutrino2.cpp:3776
-#: ../../src/neutrino2.cpp:3807
+#: ../../src/neutrino2.cpp:3807 ../../src/neutrino2.cpp:3803
 msgid "Sleeptimer in 1 min"
 msgstr ""
 
@@ -4083,7 +4118,8 @@ msgstr ""
 
 #: ../../src/gui/dboxinfo.cpp:579 ../../src/gui/streaminfo.cpp:534
 #: ../../src/gui/streaminfo.cpp:557 ../../src/gui/streaminfo.cpp:533
-#: ../../src/gui/streaminfo.cpp:556
+#: ../../src/gui/streaminfo.cpp:556 ../../src/gui/streaminfo.cpp:531
+#: ../../src/gui/streaminfo.cpp:554
 msgid "Stream information"
 msgstr ""
 
@@ -4100,7 +4136,7 @@ msgid "Subchannel up"
 msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:1413 ../../src/gui/infoviewer.cpp:1414
-#: ../../src/gui/infoviewer.cpp:1415
+#: ../../src/gui/infoviewer.cpp:1415 ../../src/gui/infoviewer.cpp:1410
 msgid "Subservices"
 msgstr ""
 
@@ -4170,7 +4206,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2124 ../../src/gui/movieplayer.cpp:2125
 #: ../../src/gui/movieplayer.cpp:2139 ../../src/gui/movieplayer.cpp:2123
 #: ../../src/gui/movieplayer.cpp:2126 ../../src/gui/movieplayer.cpp:2136
-#: ../../src/gui/movieplayer.cpp:2138
+#: ../../src/gui/movieplayer.cpp:2138 ../../src/gui/channellist.cpp:95
 msgid "TMDB"
 msgstr ""
 
@@ -4331,7 +4367,7 @@ msgstr ""
 #: ../../src/gui/eventlist.cpp:346 ../../src/gui/eventlist.cpp:351
 #: ../../src/gui/epgplus.cpp:1212 ../../src/gui/epgview.cpp:842
 #: ../../src/gui/epgview.cpp:847 ../../src/gui/eventlist.cpp:347
-#: ../../src/gui/eventlist.cpp:352
+#: ../../src/gui/eventlist.cpp:352 ../../src/gui/channellist.cpp:488
 msgid ""
 "The event is flagged for record.\n"
 "The box will power on and \n"
@@ -4341,7 +4377,7 @@ msgstr ""
 #: ../../src/gui/channellist.cpp:514 ../../src/gui/epgplus.cpp:1204
 #: ../../src/gui/epgview.cpp:861 ../../src/gui/eventlist.cpp:380
 #: ../../src/gui/epgplus.cpp:1184 ../../src/gui/epgview.cpp:863
-#: ../../src/gui/eventlist.cpp:381
+#: ../../src/gui/eventlist.cpp:381 ../../src/gui/channellist.cpp:510
 msgid ""
 "The event is scheduled.\n"
 "The box will power on and \n"
@@ -4382,7 +4418,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4899 ../../src/neutrino2.cpp:4902
 #: ../../src/neutrino2.cpp:4909 ../../src/neutrino2.cpp:4911
 #: ../../src/neutrino2.cpp:4918 ../../src/neutrino2.cpp:4893
-#: ../../src/neutrino2.cpp:4929
+#: ../../src/neutrino2.cpp:4929 ../../src/neutrino2.cpp:4925
 msgid ""
 "The neutrino-settings have been updated.\n"
 "New Options will be set to default."
@@ -4469,7 +4505,7 @@ msgid "Timescale"
 msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:1413 ../../src/gui/infoviewer.cpp:1414
-#: ../../src/gui/infoviewer.cpp:1415
+#: ../../src/gui/infoviewer.cpp:1415 ../../src/gui/infoviewer.cpp:1410
 msgid "Timeselection"
 msgstr ""
 
@@ -4727,7 +4763,8 @@ msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:780 ../../src/gui/infoviewer.cpp:1661
 #: ../../src/gui/infoviewer.cpp:1662 ../../src/gui/infoviewer.cpp:781
-#: ../../src/gui/infoviewer.cpp:1663
+#: ../../src/gui/infoviewer.cpp:1663 ../../src/gui/infoviewer.cpp:779
+#: ../../src/gui/infoviewer.cpp:776 ../../src/gui/infoviewer.cpp:1658
 msgid "Waiting for time..."
 msgstr ""
 
@@ -4817,7 +4854,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3179 ../../src/neutrino2.cpp:4273
 #: ../../src/neutrino2.cpp:4280 ../../src/neutrino2.cpp:3181
 #: ../../src/neutrino2.cpp:4282 ../../src/neutrino2.cpp:4264
-#: ../../src/neutrino2.cpp:4299
+#: ../../src/neutrino2.cpp:4299 ../../src/neutrino2.cpp:4295
 msgid "You really want to to stop record ?"
 msgstr ""
 
@@ -4835,6 +4872,7 @@ msgid ""
 msgstr ""
 
 #: ../../src/gui/channellist.cpp:130 ../../src/gui/widget/listbox.cpp:196
+#: ../../src/gui/channellist.cpp:126
 msgid "Youth protection"
 msgstr ""
 
@@ -4855,7 +4893,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3691 ../../src/neutrino2.cpp:3688
 #: ../../src/neutrino2.cpp:3687 ../../src/neutrino2.cpp:3689
 #: ../../src/neutrino2.cpp:3690 ../../src/neutrino2.cpp:3692
-#: ../../src/neutrino2.cpp:3723
+#: ../../src/neutrino2.cpp:3723 ../../src/neutrino2.cpp:3719
 msgid "Zapto timer in one minute"
 msgstr ""
 
@@ -4886,6 +4924,7 @@ msgstr ""
 #: ../../src/gui/channellist.cpp:1807 ../../src/gui/channellist.cpp:1808
 #: ../../src/gui/channellist.cpp:1809 ../../src/gui/channellist.cpp:1813
 #: ../../src/gui/channellist.cpp:1815 ../../src/gui/channellist.cpp:1810
+#: ../../src/gui/channellist.cpp:1806
 msgid "add channel to my favorites"
 msgstr ""
 
@@ -5167,6 +5206,7 @@ msgstr ""
 #: ../../src/gui/channellist.cpp:1804 ../../src/gui/channellist.cpp:1805
 #: ../../src/gui/channellist.cpp:1806 ../../src/gui/channellist.cpp:1810
 #: ../../src/gui/channellist.cpp:1812 ../../src/gui/channellist.cpp:1807
+#: ../../src/gui/channellist.cpp:1803
 msgid "delete"
 msgstr ""
 
@@ -5525,6 +5565,8 @@ msgstr ""
 #: ../../src/gui/streaminfo.cpp:809 ../../src/system/helpers.cpp:1311
 #: ../../src/system/helpers.cpp:1316 ../../src/gui/streaminfo.cpp:768
 #: ../../src/gui/streaminfo.cpp:779 ../../src/gui/streaminfo.cpp:808
+#: ../../src/gui/streaminfo.cpp:766 ../../src/gui/streaminfo.cpp:777
+#: ../../src/gui/streaminfo.cpp:806
 msgid "not available"
 msgstr ""
 
@@ -5888,6 +5930,7 @@ msgstr ""
 #: ../../src/gui/epgview.cpp:390 ../../src/gui/streaminfo.cpp:631
 #: ../../src/gui/streaminfo.cpp:651 ../../src/gui/epgview.cpp:392
 #: ../../src/gui/streaminfo.cpp:630 ../../src/gui/streaminfo.cpp:650
+#: ../../src/gui/streaminfo.cpp:628 ../../src/gui/streaminfo.cpp:648
 #, c-format
 msgid "unknown"
 msgstr ""
@@ -5917,6 +5960,7 @@ msgid "volume / playtime / audio"
 msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:780 ../../src/gui/infoviewer.cpp:781
+#: ../../src/gui/infoviewer.cpp:779 ../../src/gui/infoviewer.cpp:776
 msgid "waiting for EPG..."
 msgstr ""
 

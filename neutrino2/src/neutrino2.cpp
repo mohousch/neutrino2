@@ -244,10 +244,6 @@ extern int dvbsub_start(int pid, bool isEplayer);
 extern int dvbsub_pause();
 extern int dvbsub_getpid();
 extern void dvbsub_setpid(int pid);
-// zapit
-extern t_channel_id live_channel_id; 			//defined in zapit.cpp
-extern CZapitChannel * live_channel;			// defined in zapit.cpp
-extern CFrontend * live_fe;
 // timezone for wizard
 extern CMenuOptionStringChooser* tzSelect;		// defined in misc_setup.cpp
 
@@ -1823,10 +1819,10 @@ int CNeutrinoApp::startAutoRecord(bool addTimer)
 	if(CNeutrinoApp::getInstance()->recordingstatus)
 		return 0;
 
-	eventinfo.channel_id = live_channel_id;
+	eventinfo.channel_id = CZapit::getInstance()->getCurrentChannelID();
 	CEPGData epgData;
 	
-	if (CSectionsd::getInstance()->getActualEPGServiceKey(live_channel_id & 0xFFFFFFFFFFFFULL, &epgData ))
+	if (CSectionsd::getInstance()->getActualEPGServiceKey(CZapit::getInstance()->getCurrentChannelID() & 0xFFFFFFFFFFFFULL, &epgData ))
 	{
 		eventinfo.epgID = epgData.eventID;
 		eventinfo.epg_starttime = epgData.epg_times.starttime;
@@ -1914,7 +1910,7 @@ void CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 		int pre = 0, post = 0;
 
 		// get EPG info
-		eventinfo.channel_id = live_channel_id;
+		eventinfo.channel_id = CZapit::getInstance()->getCurrentChannelID();
 
 		CEPGData epgData;
 
@@ -2117,14 +2113,14 @@ void CNeutrinoApp::initZapper()
 	}
 
 	// zap / epg / autorecord / infoviewer
-	if(channelList->getSize() && live_channel_id)
+	if(channelList->getSize() && CZapit::getInstance()->getCurrentChannelID())
 	{
 		// channellist adjust to channeliD
-		channelList->adjustToChannelID(live_channel_id);
+		channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
 
 		// start epg scanning
 		CSectionsd::getInstance()->pauseScanning(false);
-		CSectionsd::getInstance()->setServiceChanged(live_channel_id, true );
+		CSectionsd::getInstance()->setServiceChanged(CZapit::getInstance()->getCurrentChannelID(), true );
 		
 		// process apids FIXME:
 		//CZapit::getInstance()->getCurrentPIDS(g_RemoteControl->current_PIDs);
@@ -2736,11 +2732,11 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 
 		// this is buggy don't respect parentallock
 		if(!recordingstatus && !timeshiftstatus)
-			CZapit::getInstance()->startPlayBack(live_channel);
+			CZapit::getInstance()->startPlayBack(CZapit::getInstance()->getCurrentChannel());
 
 
 		CSectionsd::getInstance()->pauseScanning(false);
-		CSectionsd::getInstance()->setServiceChanged(live_channel_id, true );
+		CSectionsd::getInstance()->setServiceChanged(CZapit::getInstance()->getCurrentChannelID(), true );
 
 		if( lastMode == mode_radio ) 
 		{
@@ -2902,7 +2898,7 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 // start subtitle
 void CNeutrinoApp::startSubtitles(bool show)
 {
-	if (IS_WEBTV(live_channel_id))
+	if (IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 		return;
 	
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::startSubtitles\n");
@@ -2920,7 +2916,7 @@ void CNeutrinoApp::startSubtitles(bool show)
 // stop subtitle
 void CNeutrinoApp::stopSubtitles()
 {
-	if (IS_WEBTV(live_channel_id))
+	if (IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 		return;
 	
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::stopSubtitles\n");
@@ -3324,7 +3320,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	// zap complete event
 	if(msg == NeutrinoMessages::EVT_ZAP_COMPLETE) 
 	{
-		dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: EVT_ZAP_COMPLETE current_channel_id: 0x%llx data:0x%llx\n", live_channel_id, *(t_channel_id *)data);
+		dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: EVT_ZAP_COMPLETE current_channel_id: 0x%llx data:0x%llx\n", CZapit::getInstance()->getCurrentChannelID(), *(t_channel_id *)data);
 		
 		// set audio map after channel zap
 		CZapit::getInstance()->getAudioMode(&g_settings.audio_AnalogMode);
@@ -3559,7 +3555,7 @@ _repeat:
 	{
 		channelsInit();
 
-		channelList->adjustToChannelID(live_channel_id);
+		channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
 		
 		if(old_b_id >= 0) 
 		{
@@ -3572,7 +3568,7 @@ _repeat:
 	{
 		channelsInit();
 
-		channelList->adjustToChannelID(live_channel_id);
+		channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
 
 		return messages_return::handled;
 	}
@@ -4016,7 +4012,7 @@ _repeat:
 	{
 		channelsInit();
 
-		channelList->adjustToChannelID(live_channel_id);
+		channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
 	}
 #if !defined (__sh__)
 	else if (msg == NeutrinoMessages::EVT_HDMI_CEC_VIEW_ON) 
@@ -4080,7 +4076,7 @@ void CNeutrinoApp::realRun(void)
 
 				stopSubtitles();
 
-				g_EpgData->show(live_channel_id);
+				g_EpgData->show(CZapit::getInstance()->getCurrentChannelID());
 
 				startSubtitles();
 			}
@@ -4092,13 +4088,13 @@ void CNeutrinoApp::realRun(void)
 
 				stopSubtitles();
 
-				g_EventList->exec(live_channel_id, channelList->getActiveChannelName());
+				g_EventList->exec(CZapit::getInstance()->getCurrentChannelID(), channelList->getActiveChannelName());
 
 				startSubtitles();
 			}
 			else if( msg == CRCInput::RC_text ) 
 			{
-				if (!IS_WEBTV(live_channel_id))
+				if (!IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 				{
 					//
 					if(g_InfoViewer->is_visible)
@@ -4167,7 +4163,7 @@ void CNeutrinoApp::realRun(void)
 			    	} 
 			    	else if(g_settings.virtual_zap_mode) 
 				{
-					showInfo(live_channel);	
+					showInfo(CZapit::getInstance()->getCurrentChannel());	
 				}
 				else
 				{
@@ -4184,7 +4180,7 @@ void CNeutrinoApp::realRun(void)
 			    	} 
 			    	else if(g_settings.virtual_zap_mode) 
 				{
-					showInfo(live_channel);	
+					showInfo(CZapit::getInstance()->getCurrentChannel());	
 				}
 				else
 				{
@@ -4194,7 +4190,7 @@ void CNeutrinoApp::realRun(void)
 			// in case key_subchannel_up/down redefined
 			else if((msg == CRCInput::RC_left || msg == CRCInput::RC_right)) 
 			{
-				showInfo(live_channel);
+				showInfo(CZapit::getInstance()->getCurrentChannel());
 			}
 			else if( msg == (neutrino_msg_t) g_settings.key_zaphistory) 
 			{
@@ -4218,7 +4214,7 @@ void CNeutrinoApp::realRun(void)
 			{
 				if (recDir != NULL)
 				{
-					if(g_RemoteControl->is_video_started || IS_WEBTV(live_channel_id)) 
+					if(g_RemoteControl->is_video_started || IS_WEBTV(CZapit::getInstance()->getCurrentChannelID())) 
 					{		
 						// permanenttimeshift / already recording
 						if(recordingstatus) 
@@ -4243,7 +4239,7 @@ void CNeutrinoApp::realRun(void)
 			}
 			else if( ((msg == CRCInput::RC_play) && timeshiftstatus)) // play timeshift
 			{		
-				if(g_RemoteControl->is_video_started || IS_WEBTV(live_channel_id)) 
+				if(g_RemoteControl->is_video_started || IS_WEBTV(CZapit::getInstance()->getCurrentChannelID())) 
 				{
 					CMoviePlayerGui tmpMoviePlayerGui;
 					CMovieInfo cMovieInfo;
@@ -4268,7 +4264,7 @@ void CNeutrinoApp::realRun(void)
 					sprintf(fname, "%s.ts", rec_filename);
 
 					//
-					if (IS_WEBTV(live_channel_id))						
+					if (IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))						
 					{
 						CZapit::getInstance()->lockPlayBack();
 						playback->Close(); // not needed???
@@ -4349,7 +4345,7 @@ void CNeutrinoApp::realRun(void)
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				if (IS_WEBTV(live_channel_id))
+				if (IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 				{
 					CAVPIDSelectWidget * AVSelectHandler = new CAVPIDSelectWidget();
 					AVSelectHandler->exec(NULL, "");
@@ -4380,7 +4376,7 @@ void CNeutrinoApp::realRun(void)
 				stopSubtitles();
 
 				// select NVODs
-				if (!IS_WEBTV(live_channel_id))
+				if (!IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 				{
 					selectNVOD();
 				}
@@ -4443,7 +4439,7 @@ void CNeutrinoApp::realRun(void)
 #endif			
 			else if( msg == CRCInput::RC_dvbsub )
 			{
-				if (!IS_WEBTV(live_channel_id))
+				if (!IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 				{
 					if(g_InfoViewer->is_visible)
 						g_InfoViewer->killTitle();
@@ -4451,9 +4447,9 @@ void CNeutrinoApp::realRun(void)
 					stopSubtitles();
 					
 					// show list only if we have subs
-					if(live_channel)
+					if(CZapit::getInstance()->getCurrentChannel())
 					{
-						if(live_channel->getSubtitleCount() > 0)
+						if(CZapit::getInstance()->getCurrentChannel()->getSubtitleCount() > 0)
 						{
 							CDVBSubSelectMenuHandler tmpDVBSubSelectMenuHandler;
 							tmpDVBSubSelectMenuHandler.exec(NULL, "");
@@ -4581,7 +4577,7 @@ void CNeutrinoApp::realRun(void)
 					
 				if(show_info) 
 				{
-					showInfo(live_channel);
+					showInfo(CZapit::getInstance()->getCurrentChannel());
 				}
 			}
 			else if(msg == (neutrino_msg_t) g_settings.key_pip) // current TP

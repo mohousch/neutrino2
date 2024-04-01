@@ -4237,7 +4237,7 @@ bool CZapit::getCurrentTP(transponder *TP)
 
 CFrontend* CZapit::getCurrentFrontend()
 {
-	return live_fe? live_fe : NULL;
+	return live_fe;
 }
 
 //
@@ -4346,7 +4346,7 @@ bool CZapit::isRecordModeActive()
 	return activated;
 }
 
-t_channel_id CZapit::getRecordServiceID()
+t_channel_id CZapit::getRecordChannelID()
 {
 	return (rec_channel != 0) ? rec_channel->getChannelID() : 0;
 }
@@ -4415,6 +4415,11 @@ void CZapit::getRecordPIDS(responseGetPIDs &pids)
 		pids.APIDs = apids;
 		pids.SubPIDs = subpids;
 	}
+}
+
+CFrontend* CZapit::getRecordFrontend()
+{
+	return record_fe;
 }
 
 void CZapit::reinitChannels()

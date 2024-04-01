@@ -206,7 +206,6 @@ int sectionsd_stop = 0;
 static bool slow_addevent = true;
 ////
 extern tallchans allchans;			// defined in zapit.cpp
-extern CFrontend * live_fe;
 extern cDemux * dmxUTC;				// defined in dmxapi.cpp
 
 inline void readLockServices(void)
@@ -2921,7 +2920,7 @@ int eit_set_update_filter(int *fd)
 	{
 		eitDmx = new cDemux();
 
-		eitDmx->Open( DMX_PSI_CHANNEL, MAX_SECTION_LENGTH, live_fe );		
+		eitDmx->Open( DMX_PSI_CHANNEL, MAX_SECTION_LENGTH, CZapit::getInstance()->getCurrentFrontend() );		
 	}
 
 	unsigned char filter[DMX_FILTER_SIZE];

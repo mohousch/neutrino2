@@ -70,15 +70,10 @@
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
 extern CRemoteControl * g_RemoteControl;		// neutrino.cpp
 extern cVideo * videoDecoder;				// libdvbapi
-extern CFrontend * live_fe;				// zapit.cpp
-extern fe_map_t femap;					// zapit.cpp
-extern CFrontend * getFE(int index);			// zapit.cpp
-extern int FrontendCount;				// defined in zapit.cpp
 extern bool autoshift;
 extern uint32_t shift_timer;				// defined in neutrino2.cpp
 extern std::string ext_channel_name;			// defined in vcrcontrol.cpp
 extern bool timeset;					// defined in sectionsd.cpp
-extern t_channel_id live_channel_id; 			//defined in zapit.cpp
 
 #define borderwidth 		5 			//for subchannels Box
 
@@ -150,7 +145,7 @@ void CInfoViewer::Init()
 	// init dimension
 	initFrames();
 
-	channel_id = live_channel_id;
+	channel_id = CZapit::getInstance()->getCurrentChannelID();
 	
 	// init progressbar
 	sigscale = NULL;
@@ -1489,13 +1484,13 @@ void CInfoViewer::showSNR()
 				CZapit::CServiceInfo si = CZapit::getInstance()->getCurrentServiceInfo();
 				
 				// freq
-				if(live_fe != NULL)
+				if(CZapit::getInstance()->getCurrentFrontend() != NULL)
 				{
-					if( live_fe->getInfo()->type == FE_QPSK || live_fe->getInfo()->type == FE_QAM)
+					if(CZapit::getInstance()->getCurrentFrontend()->getInfo()->type == FE_QPSK || CZapit::getInstance()->getCurrentFrontend()->getInfo()->type == FE_QAM)
 					{
 						sprintf (freq, "FREQ:%d.%d MHz", si.tsfrequency / 1000, si.tsfrequency % 1000);
 					}
-					else if( live_fe->getInfo()->type == FE_OFDM)
+					else if(CZapit::getInstance()->getCurrentFrontend()->getInfo()->type == FE_OFDM)
 					{
 						sprintf (freq, "FREQ:%d.%d MHz", si.tsfrequency / 1000000, si.tsfrequency % 1000);
 					}
@@ -1509,10 +1504,10 @@ void CInfoViewer::showSNR()
 
 				g_SignalFont->RenderString(freqStartX, BoxStartY + (SAT_INFOBOX_HEIGHT - satNameHeight)/2 + satNameHeight, freqWidth, freq, COL_INFOBAR_TEXT_PLUS_0);
 			
-				if(live_fe != NULL)
+				if(CZapit::getInstance()->getCurrentFrontend() != NULL)
 				{
-					ssig = live_fe->getSignalStrength();
-					ssnr = live_fe->getSignalNoiseRatio();
+					ssig = CZapit::getInstance()->getCurrentFrontend()->getSignalStrength();
+					ssnr = CZapit::getInstance()->getCurrentFrontend()->getSignalNoiseRatio();
 				}
 
 				//sig = (ssig & 0xFFFF) * 100 / 65535;

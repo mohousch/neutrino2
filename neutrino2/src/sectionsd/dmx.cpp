@@ -42,10 +42,8 @@
 #include <system/debug.h>
 
 /*zapit includes*/
-#include <zapit/frontend_c.h>
+#include <zapit/zapit.h>
 
-
-extern CFrontend * live_fe;			/* zapit.cpp */
 
 typedef std::map<sections_id_t, version_number_t, std::less<sections_id_t> > MyDMXOrderUniqueKey;
 static MyDMXOrderUniqueKey myDMXOrderUniqueKey;
@@ -438,12 +436,12 @@ int DMX::immediate_start(void)
 	if(dmx == NULL) 
 	{
 		dmx = new cDemux();
-		dmx->Open( DMX_PSI_CHANNEL, dmxBufferSizeInKB*1024UL, live_fe );		
+		dmx->Open( DMX_PSI_CHANNEL, dmxBufferSizeInKB*1024UL, CZapit::getInstance()->getCurrentFrontend() );		
 	}
 
 	fd = 1;
 
-	if (live_fe && (filters[filter_index].filter && filters[filter_index].mask))
+	if (CZapit::getInstance()->getCurrentFrontend() && (filters[filter_index].filter && filters[filter_index].mask))
 	{
 		unsigned char filter[DMX_FILTER_SIZE];
 		unsigned char mask[DMX_FILTER_SIZE];

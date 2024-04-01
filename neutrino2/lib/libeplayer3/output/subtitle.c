@@ -170,12 +170,13 @@ static int Write(void* _context, void *data)
         	return cERR_SUBTITLE_ERROR;
     	}
     	
+    	// teletext
     	if (out->stream->codec->codec_id == AV_CODEC_ID_DVB_TELETEXT)
     	{
     		if (out->data && out->len > 1)
     			teletext_write(0, out->data + 1, out->len + 1);
     	}
-    	else
+    	else // others
     	{
 		//
 	    	AVSubtitle sub;
@@ -186,11 +187,11 @@ static int Write(void* _context, void *data)
 	    	int got_sub_ptr = 0;
 	    	
 	    	// decode 	
-	#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)			   
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)			   
 		if (ctx && avcodec_decode_subtitle2(ctx, &sub, &got_sub_ptr, out->packet) < 0)
-	#else
+#else
 		if (ctx && avcodec_decode_subtitle(ctx, &sub, &got_sub_ptr, out->packet->data, out->packet->size ) < 0)
-	#endif
+#endif
 		{
 			subtitle_err("error decoding subtitle\n");
 			return cERR_SUBTITLE_ERROR;
@@ -248,7 +249,7 @@ static int Write(void* _context, void *data)
 						break;
 					}
 					
-					case SUBTITLE_BITMAP: // 1: DVB / TELETEXT / PGS
+					case SUBTITLE_BITMAP: // 1: DVB / PGS
 					{
 						for (i = 0; i < sub.num_rects; i++)
 						{
@@ -264,6 +265,9 @@ static int Write(void* _context, void *data)
 							subtitle_printf(100, "pic %p\n", sub.rects[i]->data[0]);
 							subtitle_printf(100, "colors %p\n\n", sub.rects[i]->data[1]);
 							
+							// 16 = DVB
+							// 40 = VTXT
+							// 256 = PGS
 							if (sub.rects[i]->nb_colors == 16) // DVB
 							{
 								int width = sub.rects[i]->w;
@@ -302,12 +306,6 @@ static int Write(void* _context, void *data)
 
 								free(newdata);
 							}
-							/*
-							else if (sub.rects[i]->nb_colors == 40)// TELETXT
-							{
-								teletext_write(0, out->data + 1, out->len + 1);
-							}
-							*/
 							else // PGS (256 nb_colors)
 							{
 								int width = sub.rects[i]->w;

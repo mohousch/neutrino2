@@ -62,7 +62,6 @@
 
 
 extern CBouquetList * bouquetList;
-extern t_channel_id live_channel_id;
 extern char recDir[255];			// defined in neutrino.cpp
 
 // sort operators
