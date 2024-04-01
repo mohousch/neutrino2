@@ -366,12 +366,6 @@ class CZapit
 		void OpenFE(void);
 		void CloseFE(void);
 		void resetFE(void);
-//		bool loopCanTune(CFrontend * fe, CZapitChannel * thischannel);
-//		CFrontend * getPreferredFrontend(CZapitChannel * thischannel);
-//		CFrontend * getFrontend(CZapitChannel * thischannel);
-//		CFrontend * getRecordFrontend(CZapitChannel * thischannel);
-//		void lockFrontend(CFrontend *fe);
-//		void unlockFrontend(CFrontend *fe);
 		//
 		void loadAudioMap();
 		void saveAudioMap();
