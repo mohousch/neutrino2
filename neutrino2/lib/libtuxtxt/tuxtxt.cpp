@@ -50,7 +50,6 @@ static bool use_gui;
 static int cfg_national_subset;
 ////
 extern cVideo * videoDecoder;
-extern CFrontend * live_fe;
 ////
 bool isTtxEplayer = false;
 extern void tuxtxt_clear_cache();
@@ -1851,7 +1850,7 @@ int GetTeletextPIDs()
 
         cDemux * dmx = new cDemux();
 	
-	dmx->Open(DMX_PSI_CHANNEL, 1024, live_fe );	
+	dmx->Open(DMX_PSI_CHANNEL, 1024, CZapit::getInstance()->getCurrentFrontend());	
 
         memset(filter, 0x00, DMX_FILTER_SIZE);
         memset(mask, 0x00, DMX_FILTER_SIZE);

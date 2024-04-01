@@ -64,10 +64,8 @@ CMenuOptionStringChooser * tzSelect;
 //
 extern cVideo *videoDecoder;
 extern cAudio *audioDecoder;
-extern CFrontend * live_fe;
 //
 extern Zapit_config zapitCfg;			//defined in neutrino.cpp
-extern t_channel_id live_channel_id;
 
 #define OPTIONS_OFF0_ON1_OPTION_COUNT 2
 const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
@@ -299,7 +297,7 @@ bool CGeneralSettings::changeNotify(const std::string& OptionName, void */*data*
 
 			if (g_Radiotext && ((CNeutrinoApp::getInstance()->getMode()) == NeutrinoMessages::mode_radio))
 			{
-				if(live_fe && !IS_WEBTV(live_channel_id))
+				if(CZapit::getInstance()->getCurrentFrontend() && !IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 					g_Radiotext->setPid(g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.PIDs.selected_apid].pid);
 			}
 		} 
@@ -622,7 +620,7 @@ bool CChannelListSettings::changeNotify(const std::string& OptionName, void */*d
 	if(OptionName == _("Create list of HD channels")) // HD bouquet
 	{
 		CNeutrinoApp::getInstance()->channelsInit();
-		CNeutrinoApp::getInstance()->channelList->adjustToChannelID(live_channel_id);
+		CNeutrinoApp::getInstance()->channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
 		
 		return true;
 	}
@@ -866,7 +864,7 @@ bool COnlineEPGNotifier::changeNotify(const std::string&, void *)
 	}
 	
 	if (g_settings.epg_enable_localtv_epg)
-		CSectionsd::getInstance()->readSIfromLocalTV(live_channel_id);
+		CSectionsd::getInstance()->readSIfromLocalTV(CZapit::getInstance()->getCurrentChannelID());
 	
         return true;
 }

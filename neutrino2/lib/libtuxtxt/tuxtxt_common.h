@@ -21,8 +21,6 @@
 #include <system/helpers.h>
 
 
-extern CFrontend * live_fe;
-
 //// defines
 tuxtxt_cache_struct tuxtxt_cache;
 static pthread_mutex_t tuxtxt_cache_lock = PTHREAD_MUTEX_INITIALIZER;
@@ -461,7 +459,7 @@ int tuxtxt_init_demuxer()
 		
 		printf("TuxTxt: tuxtxt_init_demuxer\n");
 		
-		dmx->Open(DMX_PES_CHANNEL, 2* 3008 * 62, live_fe );		
+		dmx->Open(DMX_PES_CHANNEL, 2* 3008 * 62, CZapit::getInstance()->getCurrentFrontend());		
 	}
 
 	return 1;

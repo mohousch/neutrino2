@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-04-01 17:55+0300\n"
+"POT-Creation-Date: 2024-04-01 22:13+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -135,7 +135,7 @@ msgstr ""
 msgid "Abortion of channel scan"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:1012
+#: ../../src/gui/misc_setup.cpp:1012 ../../src/gui/misc_setup.cpp:1010
 msgid "Absolute start directory"
 msgstr ""
 
@@ -234,6 +234,7 @@ msgstr ""
 #: ../../src/gui/audio_select.cpp:154 ../../src/gui/audio_setup.cpp:197
 #: ../../src/gui/audio_setup.cpp:288 ../../src/gui/video_setup.cpp:411
 #: ../../src/gui/video_setup.cpp:466 ../../src/gui/audio_select.cpp:152
+#: ../../src/gui/audio_select.cpp:151
 msgid "Analog Output"
 msgstr ""
 
@@ -246,7 +247,7 @@ msgstr ""
 msgid "Arabic"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:384
+#: ../../src/gui/misc_setup.cpp:384 ../../src/gui/misc_setup.cpp:382
 msgid "Are you sure ?"
 msgstr ""
 
@@ -395,7 +396,7 @@ msgstr ""
 msgid "Background"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:468
+#: ../../src/gui/misc_setup.cpp:468 ../../src/gui/misc_setup.cpp:466
 msgid "Backup failed"
 msgstr ""
 
@@ -718,6 +719,7 @@ msgid "Channellist Number"
 msgstr ""
 
 #: ../../src/gui/main_setup.cpp:158 ../../src/gui/misc_setup.cpp:556
+#: ../../src/gui/misc_setup.cpp:554
 msgid "Channellist settings"
 msgstr ""
 
@@ -812,6 +814,7 @@ msgid "Create bookmark"
 msgstr ""
 
 #: ../../src/gui/misc_setup.cpp:580 ../../src/gui/misc_setup.cpp:622
+#: ../../src/gui/misc_setup.cpp:578 ../../src/gui/misc_setup.cpp:620
 msgid "Create list of HD channels"
 msgstr ""
 
@@ -853,11 +856,12 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:113
+#: ../../src/gui/misc_setup.cpp:113 ../../src/gui/misc_setup.cpp:111
 msgid "Debug"
 msgstr ""
 
 #: ../../src/gui/misc_setup.cpp:244 ../../src/gui/misc_setup.cpp:314
+#: ../../src/gui/misc_setup.cpp:242 ../../src/gui/misc_setup.cpp:312
 msgid "Debug Level"
 msgstr ""
 
@@ -877,7 +881,7 @@ msgstr ""
 msgid "Default gateway"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:185
+#: ../../src/gui/misc_setup.cpp:185 ../../src/gui/misc_setup.cpp:183
 msgid "Delayed shutdown"
 msgstr ""
 
@@ -919,6 +923,7 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:264
 #: ../../src/system/setting_helpers.cpp:263
 #: ../../src/system/setting_helpers.cpp:261
+#: ../../src/system/setting_helpers.cpp:258
 msgid "Delete WebTV channels"
 msgstr ""
 
@@ -953,6 +958,7 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:263
 #: ../../src/system/setting_helpers.cpp:262
 #: ../../src/system/setting_helpers.cpp:260
+#: ../../src/system/setting_helpers.cpp:257
 msgid "Delete channels"
 msgstr ""
 
@@ -1072,7 +1078,7 @@ msgstr ""
 msgid "Do you want to overwrite this file:"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:480
+#: ../../src/gui/misc_setup.cpp:480 ../../src/gui/misc_setup.cpp:478
 msgid "Do you want to restore the previous settings?"
 msgstr ""
 
@@ -1122,7 +1128,7 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:325
 #: ../../src/gui/audio_video_select.cpp:324
 #: ../../src/gui/audio_video_select.cpp:303
-#: ../../src/gui/audio_video_select.cpp:302
+#: ../../src/gui/audio_video_select.cpp:302 ../../src/gui/audio_select.cpp:155
 msgid "Dolby Digital"
 msgstr ""
 
@@ -1167,6 +1173,7 @@ msgid "EPG Info2"
 msgstr ""
 
 #: ../../src/gui/misc_setup.cpp:771 ../../src/gui/misc_setup.cpp:772
+#: ../../src/gui/misc_setup.cpp:769 ../../src/gui/misc_setup.cpp:770
 msgid "EPG Long Description (hours)"
 msgstr ""
 
@@ -1194,18 +1201,21 @@ msgid "EPG not loaded..."
 msgstr ""
 
 #: ../../src/gui/misc_setup.cpp:775 ../../src/gui/misc_setup.cpp:776
+#: ../../src/gui/misc_setup.cpp:773 ../../src/gui/misc_setup.cpp:774
 msgid "EPG remove after (std.)"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:783
+#: ../../src/gui/misc_setup.cpp:783 ../../src/gui/misc_setup.cpp:781
 msgid "EPG save path"
 msgstr ""
 
 #: ../../src/gui/main_setup.cpp:161 ../../src/gui/misc_setup.cpp:736
+#: ../../src/gui/misc_setup.cpp:734
 msgid "EPG settings"
 msgstr ""
 
 #: ../../src/gui/misc_setup.cpp:767 ../../src/gui/misc_setup.cpp:768
+#: ../../src/gui/misc_setup.cpp:765 ../../src/gui/misc_setup.cpp:766
 msgid "EPG-Cache (Days)"
 msgstr ""
 
@@ -1228,7 +1238,7 @@ msgstr ""
 msgid "Enable (soft) Limits"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:190
+#: ../../src/gui/misc_setup.cpp:190 ../../src/gui/misc_setup.cpp:188
 msgid "Enable standby"
 msgstr ""
 
@@ -1287,6 +1297,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:2010 ../../src/neutrino2.cpp:2006
 #: ../../src/gui/channellist.cpp:927 ../../src/gui/channellist.cpp:982
 #: ../../src/gui/infoviewer.cpp:1108 ../../src/gui/infoviewer.cpp:1105
+#: ../../src/gui/misc_setup.cpp:466
 msgid "Error"
 msgstr ""
 
@@ -1397,7 +1408,7 @@ msgstr ""
 msgid "File selector"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:1006
+#: ../../src/gui/misc_setup.cpp:1006 ../../src/gui/misc_setup.cpp:1004
 msgid "File system"
 msgstr ""
 
@@ -1411,6 +1422,7 @@ msgid "Filebrowser item"
 msgstr ""
 
 #: ../../src/gui/main_setup.cpp:164 ../../src/gui/misc_setup.cpp:982
+#: ../../src/gui/misc_setup.cpp:980
 msgid "Filebrowser settings"
 msgstr ""
 
@@ -1512,6 +1524,7 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:265
 #: ../../src/system/setting_helpers.cpp:264
 #: ../../src/system/setting_helpers.cpp:262
+#: ../../src/system/setting_helpers.cpp:259
 msgid "Free Memory"
 msgstr ""
 
@@ -1609,7 +1622,7 @@ msgstr ""
 msgid "Guests"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:604
+#: ../../src/gui/misc_setup.cpp:604 ../../src/gui/misc_setup.cpp:602
 msgid "HD / Crypt Icons"
 msgstr ""
 
@@ -1858,19 +1871,19 @@ msgstr ""
 msgid "Hot Keys mapping"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:771
+#: ../../src/gui/misc_setup.cpp:771 ../../src/gui/misc_setup.cpp:769
 msgid "How long into the future will EPG extended descriptions"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:775
+#: ../../src/gui/misc_setup.cpp:775 ../../src/gui/misc_setup.cpp:773
 msgid "How long will EPG-Data be stored after they timed out?"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:767
+#: ../../src/gui/misc_setup.cpp:767 ../../src/gui/misc_setup.cpp:765
 msgid "How long will EPG-Data in the future cached?"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:779
+#: ../../src/gui/misc_setup.cpp:779 ../../src/gui/misc_setup.cpp:777
 msgid "How many events should be stored?"
 msgstr ""
 
@@ -1881,7 +1894,7 @@ msgstr ""
 msgid "IP address"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:97
+#: ../../src/gui/misc_setup.cpp:97 ../../src/gui/misc_setup.cpp:95
 msgid "ISO-8859-1"
 msgstr ""
 
@@ -1906,7 +1919,7 @@ msgstr ""
 msgid "Increase Motor Position (a)"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:112
+#: ../../src/gui/misc_setup.cpp:112 ../../src/gui/misc_setup.cpp:110
 msgid "Info"
 msgstr ""
 
@@ -2307,7 +2320,7 @@ msgstr ""
 msgid "Loading skin style "
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:828
+#: ../../src/gui/misc_setup.cpp:828 ../../src/gui/misc_setup.cpp:826
 msgid "LocalTV EPG"
 msgstr ""
 
@@ -2320,6 +2333,7 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:262
 #: ../../src/system/setting_helpers.cpp:261
 #: ../../src/system/setting_helpers.cpp:259
+#: ../../src/system/setting_helpers.cpp:256
 msgid "Lock RC"
 msgstr ""
 
@@ -2368,6 +2382,7 @@ msgid "Main Menu"
 msgstr ""
 
 #: ../../src/gui/misc_setup.cpp:592 ../../src/gui/misc_setup.cpp:629
+#: ../../src/gui/misc_setup.cpp:590 ../../src/gui/misc_setup.cpp:627
 msgid "Make Remaining Channels list"
 msgstr ""
 
@@ -2390,6 +2405,7 @@ msgid "Martial sports"
 msgstr ""
 
 #: ../../src/gui/misc_setup.cpp:779 ../../src/gui/misc_setup.cpp:780
+#: ../../src/gui/misc_setup.cpp:777 ../../src/gui/misc_setup.cpp:778
 msgid "Max. Events"
 msgstr ""
 
@@ -2451,6 +2467,7 @@ msgstr ""
 #: ../../src/gui/main_setup.cpp:181 ../../src/gui/misc_setup.cpp:161
 #: ../../src/gui/osd_setup.cpp:164 ../../src/gui/osd_setup.cpp:1032
 #: ../../src/gui/rc_setup.cpp:385 ../../src/gui/rc_setup.cpp:383
+#: ../../src/gui/misc_setup.cpp:159
 msgid "Misc settings"
 msgstr ""
 
@@ -2683,6 +2700,7 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:339
 #: ../../src/system/setting_helpers.cpp:338
 #: ../../src/system/setting_helpers.cpp:336
+#: ../../src/system/setting_helpers.cpp:333
 msgid "Name"
 msgstr ""
 
@@ -2878,7 +2896,7 @@ msgstr ""
 msgid "Noise"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:111
+#: ../../src/gui/misc_setup.cpp:111 ../../src/gui/misc_setup.cpp:109
 msgid "Normal"
 msgstr ""
 
@@ -3078,6 +3096,7 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:260
 #: ../../src/system/setting_helpers.cpp:259
 #: ../../src/system/setting_helpers.cpp:257
+#: ../../src/system/setting_helpers.cpp:254
 msgid "Plugins"
 msgstr ""
 
@@ -3126,6 +3145,7 @@ msgid "Prefer TMDB Infos"
 msgstr ""
 
 #: ../../src/gui/misc_setup.cpp:786 ../../src/gui/misc_setup.cpp:793
+#: ../../src/gui/misc_setup.cpp:784 ../../src/gui/misc_setup.cpp:791
 msgid "Preferred EPG language"
 msgstr ""
 
@@ -3215,6 +3235,7 @@ msgid "Radio Channel"
 msgstr ""
 
 #: ../../src/gui/misc_setup.cpp:239 ../../src/gui/misc_setup.cpp:290
+#: ../../src/gui/misc_setup.cpp:237 ../../src/gui/misc_setup.cpp:288
 msgid "Radio Text"
 msgstr ""
 
@@ -3324,6 +3345,7 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:268
 #: ../../src/system/setting_helpers.cpp:267
 #: ../../src/system/setting_helpers.cpp:265
+#: ../../src/system/setting_helpers.cpp:262
 msgid "Reload EPG"
 msgstr ""
 
@@ -3333,6 +3355,7 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:267
 #: ../../src/system/setting_helpers.cpp:266
 #: ../../src/system/setting_helpers.cpp:264
+#: ../../src/system/setting_helpers.cpp:261
 msgid "Reload XMLTV EPG"
 msgstr ""
 
@@ -3342,6 +3365,7 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:266
 #: ../../src/system/setting_helpers.cpp:265
 #: ../../src/system/setting_helpers.cpp:263
+#: ../../src/system/setting_helpers.cpp:260
 msgid "Reload channel lists"
 msgstr ""
 
@@ -3434,6 +3458,7 @@ msgid "Reread image (no scaling)"
 msgstr ""
 
 #: ../../src/gui/misc_setup.cpp:270 ../../src/gui/misc_setup.cpp:384
+#: ../../src/gui/misc_setup.cpp:268 ../../src/gui/misc_setup.cpp:382
 msgid "Reset settings to defaults"
 msgstr ""
 
@@ -3570,7 +3595,9 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:338
 #: ../../src/system/setting_helpers.cpp:333
 #: ../../src/system/setting_helpers.cpp:332
-#: ../../src/system/setting_helpers.cpp:330
+#: ../../src/system/setting_helpers.cpp:330 ../../src/gui/misc_setup.cpp:179
+#: ../../src/gui/misc_setup.cpp:574 ../../src/gui/misc_setup.cpp:754
+#: ../../src/gui/misc_setup.cpp:1000 ../../src/system/setting_helpers.cpp:327
 msgid "Save settings now"
 msgstr ""
 
@@ -3578,7 +3605,7 @@ msgstr ""
 msgid "Save timer"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:764
+#: ../../src/gui/misc_setup.cpp:764 ../../src/gui/misc_setup.cpp:762
 msgid "Save/Restore epg on reboot"
 msgstr ""
 
@@ -3609,6 +3636,7 @@ msgid "Scan Mode"
 msgstr ""
 
 #: ../../src/gui/misc_setup.cpp:595 ../../src/gui/misc_setup.cpp:637
+#: ../../src/gui/misc_setup.cpp:593 ../../src/gui/misc_setup.cpp:635
 msgid "Scan SDT for updates"
 msgstr ""
 
@@ -3742,7 +3770,7 @@ msgid "Select audio track"
 msgstr ""
 
 #: ../../src/gui/audio_select.cpp:123 ../../src/gui/osd_setup.cpp:709
-#: ../../src/gui/audio_select.cpp:121
+#: ../../src/gui/audio_select.cpp:121 ../../src/gui/audio_select.cpp:120
 msgid "Select language"
 msgstr ""
 
@@ -3780,15 +3808,16 @@ msgstr ""
 msgid "Serious music / Classical music"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:820
+#: ../../src/gui/misc_setup.cpp:820 ../../src/gui/misc_setup.cpp:818
 msgid "Server Box GUI"
 msgstr ""
 
 #: ../../src/gui/misc_setup.cpp:816 ../../src/gui/misc_setup.cpp:817
+#: ../../src/gui/misc_setup.cpp:814 ../../src/gui/misc_setup.cpp:815
 msgid "Server Box IP"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:823
+#: ../../src/gui/misc_setup.cpp:823 ../../src/gui/misc_setup.cpp:821
 msgid "Server Box type"
 msgstr ""
 
@@ -3808,11 +3837,11 @@ msgstr ""
 msgid "Set West (soft) Limit"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:767
+#: ../../src/gui/misc_setup.cpp:767 ../../src/gui/misc_setup.cpp:765
 msgid "Set in days."
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:775
+#: ../../src/gui/misc_setup.cpp:775 ../../src/gui/misc_setup.cpp:773
 msgid "Set in hours"
 msgstr ""
 
@@ -3822,11 +3851,12 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:271
+#: ../../src/gui/misc_setup.cpp:271 ../../src/gui/misc_setup.cpp:269
 msgid "Settings backup"
 msgstr ""
 
 #: ../../src/gui/misc_setup.cpp:272 ../../src/gui/misc_setup.cpp:480
+#: ../../src/gui/misc_setup.cpp:270 ../../src/gui/misc_setup.cpp:478
 msgid "Settings restore"
 msgstr ""
 
@@ -3876,7 +3906,7 @@ msgstr ""
 msgid "Show active network settings"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:1009
+#: ../../src/gui/misc_setup.cpp:1009 ../../src/gui/misc_setup.cpp:1007
 msgid "Show file rights"
 msgstr ""
 
@@ -3889,7 +3919,7 @@ msgstr ""
 msgid "Shutdown"
 msgstr ""
 
-#: ../../src/gui/sleeptimer.cpp:74
+#: ../../src/gui/sleeptimer.cpp:74 ../../src/gui/sleeptimer.cpp:72
 msgid "Shutdown time in min. (000=off)"
 msgstr ""
 
@@ -3925,6 +3955,7 @@ msgstr ""
 
 #: ../../src/gui/power_menu.cpp:109 ../../src/gui/sleeptimer.cpp:74
 #: ../../src/gui/timerlist.cpp:840 ../../src/gui/timerlist.cpp:929
+#: ../../src/gui/sleeptimer.cpp:72
 msgid "Sleeptimer"
 msgstr ""
 
@@ -4049,7 +4080,7 @@ msgstr ""
 msgid "Start scan"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:200
+#: ../../src/gui/misc_setup.cpp:200 ../../src/gui/misc_setup.cpp:198
 msgid "Startup to standby"
 msgstr ""
 
@@ -4103,7 +4134,7 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:367 ../../src/gui/audio_select.cpp:223
 #: ../../src/gui/audio_video_select.cpp:347
 #: ../../src/gui/audio_video_select.cpp:349
-#: ../../src/gui/audio_video_select.cpp:348
+#: ../../src/gui/audio_video_select.cpp:348 ../../src/gui/audio_select.cpp:219
 msgid "Stop subtitles"
 msgstr ""
 
@@ -4151,6 +4182,7 @@ msgstr ""
 #: ../../src/gui/audio_select.cpp:183 ../../src/gui/audio_select.cpp:202
 #: ../../src/gui/audio_select.cpp:181 ../../src/gui/audio_select.cpp:200
 #: ../../src/gui/audio_select.cpp:203 ../../src/gui/audio_select.cpp:206
+#: ../../src/gui/audio_select.cpp:180
 msgid "Subtitles"
 msgstr ""
 
@@ -4207,6 +4239,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2139 ../../src/gui/movieplayer.cpp:2123
 #: ../../src/gui/movieplayer.cpp:2126 ../../src/gui/movieplayer.cpp:2136
 #: ../../src/gui/movieplayer.cpp:2138 ../../src/gui/channellist.cpp:95
+#: ../../src/gui/misc_setup.cpp:262
 msgid "TMDB"
 msgstr ""
 
@@ -4228,15 +4261,15 @@ msgstr ""
 msgid "TMDB Infos are not available"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:257
+#: ../../src/gui/misc_setup.cpp:257 ../../src/gui/misc_setup.cpp:255
 msgid "TMDB Key:"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:261
+#: ../../src/gui/misc_setup.cpp:261 ../../src/gui/misc_setup.cpp:259
 msgid "TMDB Preview"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:258
+#: ../../src/gui/misc_setup.cpp:258 ../../src/gui/misc_setup.cpp:256
 msgid "TMDB:"
 msgstr ""
 
@@ -4358,7 +4391,7 @@ msgstr ""
 msgid "Textcolor"
 msgstr ""
 
-#: ../../src/gui/sleeptimer.cpp:74
+#: ../../src/gui/sleeptimer.cpp:74 ../../src/gui/sleeptimer.cpp:72
 msgid "The STB will shutdown after this time."
 msgstr ""
 
@@ -4460,7 +4493,7 @@ msgstr ""
 msgid "Time"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:208
+#: ../../src/gui/misc_setup.cpp:208 ../../src/gui/misc_setup.cpp:206
 msgid "Time Zone"
 msgstr ""
 
@@ -4497,10 +4530,11 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:259
 #: ../../src/system/setting_helpers.cpp:258
 #: ../../src/system/setting_helpers.cpp:256
+#: ../../src/system/setting_helpers.cpp:253
 msgid "Timerlist"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:601
+#: ../../src/gui/misc_setup.cpp:601 ../../src/gui/misc_setup.cpp:599
 msgid "Timescale"
 msgstr ""
 
@@ -4573,7 +4607,7 @@ msgstr ""
 msgid "USALS command repeat"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:98
+#: ../../src/gui/misc_setup.cpp:98 ../../src/gui/misc_setup.cpp:96
 msgid "UTF-8"
 msgstr ""
 
@@ -4632,7 +4666,7 @@ msgstr ""
 msgid "Use 0..9, or use Up/Down,"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:809
+#: ../../src/gui/misc_setup.cpp:809 ../../src/gui/misc_setup.cpp:807
 msgid "Use XMLTV EPG"
 msgstr ""
 
@@ -4647,6 +4681,7 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:337
 #: ../../src/system/setting_helpers.cpp:336
 #: ../../src/system/setting_helpers.cpp:334
+#: ../../src/system/setting_helpers.cpp:331
 msgid "User menu"
 msgstr ""
 
@@ -4732,10 +4767,11 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:261
 #: ../../src/system/setting_helpers.cpp:260
 #: ../../src/system/setting_helpers.cpp:258
+#: ../../src/system/setting_helpers.cpp:255
 msgid "Videotext"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:583
+#: ../../src/gui/misc_setup.cpp:583 ../../src/gui/misc_setup.cpp:581
 msgid "Virtual zap"
 msgstr ""
 
@@ -4745,6 +4781,7 @@ msgstr ""
 
 #: ../../src/gui/audio_select.cpp:235 ../../src/gui/audio_select.cpp:233
 #: ../../src/gui/audio_select.cpp:238 ../../src/gui/audio_select.cpp:241
+#: ../../src/gui/audio_select.cpp:237
 msgid "Volume adjustment (in %)"
 msgstr ""
 
@@ -4812,7 +4849,7 @@ msgstr ""
 msgid "Writing Flash"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:252
+#: ../../src/gui/misc_setup.cpp:252 ../../src/gui/misc_setup.cpp:250
 msgid "YT:"
 msgstr ""
 
@@ -4876,7 +4913,7 @@ msgstr ""
 msgid "Youth protection"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:586
+#: ../../src/gui/misc_setup.cpp:586 ../../src/gui/misc_setup.cpp:584
 msgid "Zap cycle"
 msgstr ""
 
@@ -5067,11 +5104,13 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:334
 #: ../../src/system/setting_helpers.cpp:329
 #: ../../src/system/setting_helpers.cpp:328
-#: ../../src/system/setting_helpers.cpp:326
+#: ../../src/system/setting_helpers.cpp:326 ../../src/gui/misc_setup.cpp:175
+#: ../../src/gui/misc_setup.cpp:570 ../../src/gui/misc_setup.cpp:750
+#: ../../src/gui/misc_setup.cpp:996 ../../src/system/setting_helpers.cpp:323
 msgid "back"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:771
+#: ../../src/gui/misc_setup.cpp:771 ../../src/gui/misc_setup.cpp:769
 msgid "be Cached? (Set in hours)"
 msgstr ""
 
@@ -5098,7 +5137,7 @@ msgid ""
 "Are you sure that you wish to install this package?"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:694
+#: ../../src/gui/misc_setup.cpp:694 ../../src/gui/misc_setup.cpp:692
 msgid "cable"
 msgstr ""
 
@@ -5230,6 +5269,7 @@ msgid "don't care"
 msgstr ""
 
 #: ../../src/gui/audio_select.cpp:73 ../../src/gui/audio_select.cpp:71
+#: ../../src/gui/audio_select.cpp:70
 msgid "downmix"
 msgstr ""
 
@@ -5474,12 +5514,12 @@ msgid "milliseconds"
 msgstr ""
 
 #: ../../src/gui/audio_select.cpp:63 ../../src/gui/audio_setup.cpp:61
-#: ../../src/gui/audio_select.cpp:61
+#: ../../src/gui/audio_select.cpp:61 ../../src/gui/audio_select.cpp:60
 msgid "mono left"
 msgstr ""
 
 #: ../../src/gui/audio_select.cpp:64 ../../src/gui/audio_setup.cpp:62
-#: ../../src/gui/audio_select.cpp:62
+#: ../../src/gui/audio_select.cpp:62 ../../src/gui/audio_select.cpp:61
 msgid "mono right"
 msgstr ""
 
@@ -5530,7 +5570,7 @@ msgstr ""
 
 #: ../../src/gui/audioplayer_setup.cpp:48 ../../src/gui/misc_setup.cpp:82
 #: ../../src/gui/nfs.cpp:253 ../../src/gui/pictureviewer_setup.cpp:53
-#: ../../src/gui/recording_setup.cpp:59
+#: ../../src/gui/recording_setup.cpp:59 ../../src/gui/misc_setup.cpp:80
 msgid "no"
 msgstr ""
 
@@ -5557,7 +5597,7 @@ msgstr ""
 msgid "normal Brightness"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:779
+#: ../../src/gui/misc_setup.cpp:779 ../../src/gui/misc_setup.cpp:777
 msgid "normaly 50000, 0 to disable limit"
 msgstr ""
 
@@ -5589,7 +5629,9 @@ msgstr ""
 #: ../../src/gui/hdd_menu.cpp:73 ../../src/gui/hdd_menu.cpp:82
 #: ../../src/gui/scan_setup.cpp:92 ../../src/neutrino2.cpp:3072
 #: ../../src/neutrino2.cpp:3074 ../../src/neutrino2.cpp:3075
-#: ../../src/neutrino2.cpp:3077
+#: ../../src/neutrino2.cpp:3077 ../../src/gui/audio_select.cpp:52
+#: ../../src/gui/misc_setup.cpp:73 ../../src/gui/misc_setup.cpp:88
+#: ../../src/gui/misc_setup.cpp:102
 msgid "off"
 msgstr ""
 
@@ -5606,6 +5648,8 @@ msgstr ""
 #: ../../src/gui/cec_setup.cpp:81 ../../src/gui/scan_setup.cpp:93
 #: ../../src/neutrino2.cpp:3073 ../../src/neutrino2.cpp:3075
 #: ../../src/neutrino2.cpp:3076 ../../src/neutrino2.cpp:3078
+#: ../../src/gui/audio_select.cpp:53 ../../src/gui/misc_setup.cpp:74
+#: ../../src/gui/misc_setup.cpp:89 ../../src/gui/misc_setup.cpp:103
 msgid "on"
 msgstr ""
 
@@ -5644,6 +5688,7 @@ msgid "package install failed"
 msgstr ""
 
 #: ../../src/gui/audio_select.cpp:72 ../../src/gui/audio_select.cpp:70
+#: ../../src/gui/audio_select.cpp:69
 msgid "passthrough"
 msgstr ""
 
@@ -5694,7 +5739,7 @@ msgstr ""
 msgid "repeats"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:695
+#: ../../src/gui/misc_setup.cpp:695 ../../src/gui/misc_setup.cpp:693
 msgid "sat"
 msgstr ""
 
@@ -5871,7 +5916,7 @@ msgid "sorting(Time)"
 msgstr ""
 
 #: ../../src/gui/audio_select.cpp:62 ../../src/gui/audio_setup.cpp:60
-#: ../../src/gui/audio_select.cpp:60
+#: ../../src/gui/audio_select.cpp:60 ../../src/gui/audio_select.cpp:59
 msgid "stereo"
 msgstr ""
 
@@ -5884,10 +5929,11 @@ msgid "stop on good signal(stopped)"
 msgstr ""
 
 #: ../../src/gui/misc_setup.cpp:196 ../../src/gui/misc_setup.cpp:197
+#: ../../src/gui/misc_setup.cpp:194 ../../src/gui/misc_setup.cpp:195
 msgid "switch off after"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:696
+#: ../../src/gui/misc_setup.cpp:696 ../../src/gui/misc_setup.cpp:694
 msgid "terrestrial"
 msgstr ""
 
@@ -5899,7 +5945,7 @@ msgstr ""
 msgid "time"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:196
+#: ../../src/gui/misc_setup.cpp:196 ../../src/gui/misc_setup.cpp:194
 msgid "time (in minutes) to switch from standby"
 msgstr ""
 
@@ -5907,7 +5953,7 @@ msgstr ""
 msgid "title"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:196
+#: ../../src/gui/misc_setup.cpp:196 ../../src/gui/misc_setup.cpp:194
 msgid "to deep standby (0 = off)."
 msgstr ""
 
@@ -5978,10 +6024,10 @@ msgstr ""
 
 #: ../../src/gui/audioplayer_setup.cpp:49 ../../src/gui/misc_setup.cpp:83
 #: ../../src/gui/nfs.cpp:254 ../../src/gui/pictureviewer_setup.cpp:54
-#: ../../src/gui/recording_setup.cpp:60
+#: ../../src/gui/recording_setup.cpp:60 ../../src/gui/misc_setup.cpp:81
 msgid "yes"
 msgstr ""
 
-#: ../../src/gui/misc_setup.cpp:251
+#: ../../src/gui/misc_setup.cpp:251 ../../src/gui/misc_setup.cpp:249
 msgid "youtube ID Key:"
 msgstr ""

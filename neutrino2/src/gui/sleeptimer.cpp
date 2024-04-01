@@ -41,8 +41,6 @@
 #include <system/debug.h>
 
 
-extern t_channel_id live_channel_id; 			//defined in zapit.cpp
-
 int CSleepTimerWidget::exec(CMenuTarget* parent, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "CSleepTimerWidget::exec\n");
@@ -58,7 +56,7 @@ int CSleepTimerWidget::exec(CMenuTarget* parent, const std::string &)
 	shutdown_min = CTimerd::getInstance()->getSleepTimerRemaining();  // remaining shutdown time?
 	sprintf(value,"%03d", shutdown_min);
 	CSectionsd::CurrentNextInfo info_CurrentNext;
-	CSectionsd::getInstance()->getCurrentNextServiceKey(live_channel_id & 0xFFFFFFFFFFFFULL, info_CurrentNext);
+	CSectionsd::getInstance()->getCurrentNextServiceKey(CZapit::getInstance()->getCurrentChannelID() & 0xFFFFFFFFFFFFULL, info_CurrentNext);
 	
   	if ( info_CurrentNext.flags & CSectionsd::epgflags::has_current) 
 	{

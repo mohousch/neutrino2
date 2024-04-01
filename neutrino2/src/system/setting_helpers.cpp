@@ -79,9 +79,6 @@ extern void tuxtx_stop_subtitle();
 extern void tuxtx_set_pid(int pid, int page, const char * cc);
 extern int tuxtx_main(int pid, int page, bool isEplayer);
 extern void tuxtx_pause_subtitle(bool pause, bool isEplayer);
-//
-extern CFrontend * live_fe;
-extern t_channel_id live_channel_id;
 
 // sectionsd config notifier
 bool CSectionsdConfigNotifier::changeNotify(const std::string&, void *)
@@ -232,7 +229,7 @@ int CTuxtxtChangeExec::exec(CMenuTarget *parent, const std::string &actionKey)
 	if(parent)
 		parent->hide();
 	
-	if (!IS_WEBTV(live_channel_id))
+	if (!IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 	{
 
 		CNeutrinoApp::getInstance()->stopSubtitles();

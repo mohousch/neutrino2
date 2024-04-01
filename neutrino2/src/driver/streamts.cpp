@@ -77,9 +77,6 @@
 #define DMX_BUFFER_SIZE (5*2048*TS_SIZE)
 #define IN_SIZE (250*TS_SIZE)
 
-//extern CFrontend* live_fe;
-//extern t_channel_id rec_channel_id;
-
 CStreamInstance::CStreamInstance(int clientfd, t_channel_id chid, stream_pids_t &_pids)
 {
 	printf("CStreamInstance:: new channel %" PRIx64 " fd %d\n", chid, clientfd);
@@ -217,9 +214,8 @@ void CStreamInstance::run()
 
 //	CCamManager::getInstance()->Start(channel_id, CCamManager::STREAM); //FIXME:
 
-//	CFrontend *live_fe = CZapit::getInstance()->getCurrentFrontend();
-//	if (live_fe)
-//		CZapit::getInstance()->unlockFrontend(live_fe);
+//	if (CZapit::getInstance()->getCurrentFrontend())
+//		CZapit::getInstance()->unlockFrontend(CZapit::getInstance()->getCurrentFrontend());
 		
 	if (frontend)
 		CZapit::getInstance()->lockFrontend(frontend);
@@ -330,23 +326,20 @@ CFrontend *CStreamManager::FindFrontend(CZapitChannel *channel)
 
 	t_channel_id chid = channel->getChannelID();
 	
-	// abort if recording //FIXME:
-	if ( CZapit::getInstance()->getRecordChannelID() && (chid >> 16) != (CZapit::getInstance()->getRecordChannelID() >> 16) && !SAME_TRANSPONDER(chid, CZapit::getInstance()->getRecordChannelID()) )
-		return NULL;
+	// abort if recording //FIXME: why dont look fro free frontend???
+//	if ( CZapit::getInstance()->getRecordChannelID() && (chid >> 16) != (CZapit::getInstance()->getRecordChannelID() >> 16) && !SAME_TRANSPONDER(chid, CZapit::getInstance()->getRecordChannelID()) )
+//		return NULL;
 
 	if (chid == CZapit::getInstance()->getCurrentChannelID())
 		return CZapit::getInstance()->getCurrentFrontend();
 		
-	// loop througth frontends
-	t_channel_id live_channel_id = CZapit::getInstance()->getCurrentChannelID();
-	CFrontend *live_fe = CZapit::getInstance()->getCurrentFrontend();
-
+	// lock live frontend why?
 	bool unlock = false;
-	if (!IS_WEBTV(live_channel_id))
+	if (!IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 	{
 		unlock = true;
-		if (live_fe)
-			CZapit::getInstance()->lockFrontend(live_fe); // for what?
+		if (CZapit::getInstance()->getCurrentFrontend())
+			CZapit::getInstance()->lockFrontend(CZapit::getInstance()->getCurrentFrontend());
 	}
 
 //	OpenThreads::ScopedLock<OpenThreads::Mutex> m_lock(mutex);
@@ -356,20 +349,20 @@ CFrontend *CStreamManager::FindFrontend(CZapitChannel *channel)
 	for (std::set<CFrontend *>::iterator ft = frontends.begin(); ft != frontends.end(); ++ft)
 		CZapit::getInstance()->lockFrontend(*ft);
 
-	frontend = CZapit::getInstance()->getPreferredFrontend(channel);
+	frontend = CZapit::getInstance()->getFreeFrontend(channel);
 
 	if (unlock && frontend == NULL)
 	{
 		unlock = false;
-		if (live_fe)
-			CZapit::getInstance()->unlockFrontend(live_fe);
+		if (CZapit::getInstance()->getCurrentFrontend())
+			CZapit::getInstance()->unlockFrontend(CZapit::getInstance()->getCurrentFrontend());
 			
-		frontend = CZapit::getInstance()->getPreferredFrontend(channel);
+		frontend = CZapit::getInstance()->getFreeFrontend(channel);
 	}
 
 	if (frontend) 
 	{
-		bool found = (live_fe != NULL && live_fe != frontend) || IS_WEBTV(live_channel_id) || SAME_TRANSPONDER(live_channel_id, chid);
+		bool found = (CZapit::getInstance()->getCurrentFrontend() != NULL && CZapit::getInstance()->getCurrentFrontend() != frontend) || IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()) || SAME_TRANSPONDER(CZapit::getInstance()->getCurrentChannelID(), chid);
 		
 		bool ret = false;
 		if (found)
@@ -388,9 +381,9 @@ CFrontend *CStreamManager::FindFrontend(CZapitChannel *channel)
 		CZapit::getInstance()->unlockFrontend(*ft);
 
 	//
-	if (unlock && !frontend && live_fe)
+	if (unlock && !frontend && CZapit::getInstance()->getCurrentFrontend())
 //	if (unlock)
-		CZapit::getInstance()->unlockFrontend(live_fe);
+		CZapit::getInstance()->unlockFrontend(CZapit::getInstance()->getCurrentFrontend());
 
 	return frontend;
 }

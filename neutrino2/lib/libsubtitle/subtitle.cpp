@@ -44,8 +44,6 @@ static void* dvbsub_thread(void* arg);
 static void clear_queue();
 extern "C" void dvbsub_write(AVSubtitle *sub, int64_t pts);
 static bool isEplayer = false;
-////
-extern CFrontend * live_fe;
 
 //
 int dvbsub_init() 
@@ -313,7 +311,7 @@ static void* reader_thread(void * /*arg*/)
 
         dmx = new cDemux();
 	
-	dmx->Open(DMX_PES_CHANNEL, 64*1024, live_fe);	
+	dmx->Open(DMX_PES_CHANNEL, 64*1024, CZapit::getInstance()->getCurrentFrontend());	
 
 	while (reader_running) 
 	{
@@ -341,7 +339,7 @@ static void* reader_thread(void * /*arg*/)
 			clear_queue();
 			dmx->Stop();
 			//			
-			dmx->Open(DMX_PES_CHANNEL, 64*1024, live_fe);				
+			dmx->Open(DMX_PES_CHANNEL, 64*1024, CZapit::getInstance()->getCurrentFrontend());				
 			//
 			dmx->pesFilter(dvbsub_pid);
 			dmx->Start();

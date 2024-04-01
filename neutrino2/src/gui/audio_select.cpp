@@ -38,8 +38,7 @@
 #include <audio_cs.h>
 
 
-// globals
-extern t_channel_id live_channel_id;
+//// globals
 // dvbsub
 extern int dvbsub_getpid();				// defined in libdvbsub
 // tuxtxt
@@ -276,7 +275,7 @@ bool CAudioSetupNotifierVolPercent::changeNotify(const std::string& OptionName _
 {
 	int percent = *(int *) data;
 	
-	CZapit::getInstance()->setVolumePercent(percent, live_channel_id, g_RemoteControl->current_PIDs.PIDs.selected_apid);
+	CZapit::getInstance()->setVolumePercent(percent, CZapit::getInstance()->getCurrentChannelID(), g_RemoteControl->current_PIDs.PIDs.selected_apid);
 	
 	return true;
 }

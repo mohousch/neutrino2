@@ -79,7 +79,6 @@
 
 
 //// globals
-extern CFrontend * live_fe;
 extern cVideo *videoDecoder;
 //
 rtp_classes rtp_content;
@@ -1295,8 +1294,7 @@ void CRadioText::setPid(uint inPid)
 			{
 				audioDemux = new cDemux();
 
-				if(live_fe)
-					audioDemux->Open(DMX_PES_CHANNEL, 128*1024, live_fe);
+				audioDemux->Open(DMX_PES_CHANNEL, 128*1024, CZapit::getInstance()->getCurrentFrontend());
 			}
 			rt.rt_object = this;
 			//rt.fd = dmxfd;
