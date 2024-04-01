@@ -2454,6 +2454,7 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 							if (epgid != NULL)
 							{ 
 								epg_id = strtoull(epgid, NULL, 16);
+								
 								chan->setEPGID(epg_id);
 								chan->setEPGIDName(epgid);
 							}
@@ -2463,7 +2464,7 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 							{
 								if (chan->getName() == it->second.getName())
 								{
-									if (epgid == NULL)
+									if (epg_id == 0)
 										chan->setEPGID(it->second.getEPGID());
 										
 									if (logo == NULL)
