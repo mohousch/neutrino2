@@ -522,7 +522,6 @@ class CZapit
 		t_channel_id getRecordChannelID();
 		CZapit::CServiceInfo getRecordServiceInfo();
 		void getRecordPIDS(responseGetPIDs &pids);
-		CFrontend* getRecordFrontend();
 		//
 		CZapit::CServiceInfo getServiceInfo(t_channel_id chid);
 		void getPIDS(t_channel_id chid, responseGetPIDs &pids);

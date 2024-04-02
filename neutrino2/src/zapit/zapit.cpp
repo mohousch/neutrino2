@@ -429,7 +429,7 @@ bool CZapit::loopCanTune(CFrontend * fe, CZapitChannel * thischannel)
 	return false;
 }
 
-// NOTE: this can be used only after we found our record_fe???
+// 
 bool CZapit::CanZap(CZapitChannel * thischannel)
 {
 	//
@@ -450,13 +450,11 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 		"NOTCONNECTED"
 	 };
 	 
-	// check for frontend
+	//
 	CFrontend * free_frontend = NULL;
 	
 	t_satellite_position satellitePosition = thischannel->getSatellitePosition();
 	sat_iterator_t sit = satellitePositions.find(satellitePosition);
-	//// FIXME:
-	//transponder_list_t::iterator transponder = transponders.find(thischannel->getTransponderId());
 	
 	// close unused frontend
 	for(fe_map_iterator_t fe_it = femap.begin(); fe_it != femap.end(); fe_it++) 
@@ -465,7 +463,6 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 			
 		// skip tuned frontend and have same tid or same type as channel to tune
 		if( (fe->tuned) && (fe->getTsidOnid() == thischannel->getTransponderId() || fe->getDeliverySystem() & sit->second.system) )
-		//if( (fe->tuned) && (fe->getTsidOnid() == thischannel->getTransponderId() || fe->getDeliverySystem() & transponder->second.feparams.delsys) )
 			continue;
 
 		// close not locked tuner
@@ -500,10 +497,8 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 		}
 		// first zap/record/other frontend type
 		else if (sit != satellitePositions.end()) 
-		//else if (transponder != transponders.end())
 		{	
 			if ( (fe->getDeliverySystem() & sit->second.system) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
-			//if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
 			{
 				free_frontend = fe;
 				break;
@@ -598,6 +593,12 @@ CFrontend * CZapit::getRecordFrontend(CZapitChannel * thischannel)
 // getFreeFrontend
 CFrontend * CZapit::getFreeFrontend(CZapitChannel * thischannel)
 {
+	const char *FEMODE[] = {
+		"SINGLE",
+		"LOOP",
+		"NOTCONNECTED"
+	 };
+	 
 	// check for frontend
 	CFrontend * pref_frontend = NULL;
 	
@@ -609,9 +610,10 @@ CFrontend * CZapit::getFreeFrontend(CZapitChannel * thischannel)
 	{
 		CFrontend * fe = fe_it->second;
 		
-		dprintf(DEBUG_NORMAL, "CZapit::getFreeFrontend: fe(%d,%d): tuned:%d (locked:%d) fe_freq: %d fe_TP: 0x%llx - chan_freq: %d chan_TP: 0x%llx sat-position: %d sat-name:%s input-type:%d\n",
+		dprintf(DEBUG_NORMAL, "CZapit::getFreeFrontend: fe(%d,%d): (%s) tuned:%d (locked:%d) fe_freq: %d fe_TP: 0x%llx - chan_freq: %d chan_TP: 0x%llx sat-position: %d sat-name:%s input-type:%d\n",
 				fe->feadapter,
 				fe->fenumber,
+				FEMODE[fe->mode],
 				fe->tuned,
 				fe->locked,
 				fe->getFrequency(), 
@@ -1016,7 +1018,10 @@ void CZapit::sendCaPmtPlayBackStart(CZapitChannel * thischannel, CFrontend * fe)
 	else 
 	{
 		cam0->setCaPmt(thischannel, thischannel->getCaPmt(), demux_index, ca_mask); //start cam0
-	}	
+	}
+	
+	// cam
+	ci->SendCaPMT(thischannel->getCaPmt(), fe? fe->fenumber : 0);	
 }
 
 void CZapit::sendcapmtPlayBackStop(bool _sendPmt)
@@ -1070,7 +1075,7 @@ void CZapit::sendCaPmtRecordStop(void)
 		if(live_channel != NULL)
 		{
 			cam0->setCaPmt(live_channel, live_channel->getCaPmt(), demux_index, ca_mask, true); // cam0 update
-			ci->SendCaPMT(NULL, live_fe? live_fe->fenumber : 0);
+			ci->SendCaPMT(NULL, live_fe? live_fe->fenumber : 0); // stop
 		}
 	} 
 	else 
@@ -1087,7 +1092,7 @@ void CZapit::sendCaPmtRecordStop(void)
 	// ci cam
 	if(live_channel != NULL)
 	{
-		ci->SendCaPMT(live_channel->getCaPmt(), live_fe? live_fe->fenumber : 0);
+		ci->SendCaPMT(live_channel->getCaPmt(), live_fe? live_fe->fenumber : 0); // restart
 	}
 }
 
@@ -1410,14 +1415,8 @@ tune_again:
 		return res;
 	else
 	{
-		// cam
+		// ci / cam
 		sendCaPmtPlayBackStart(live_channel, live_fe);
-	
-		// ci cam
-		if(live_channel != NULL)
-		{
-			ci->SendCaPMT(live_channel->getCaPmt(), live_fe? live_fe->fenumber : 0);
-		}
 
 		// send caid
 		int caid = 1;
@@ -1483,14 +1482,8 @@ int CZapit::zapToRecordID(const t_channel_id channel_id)
 	if(!parseChannelPatPmt(rec_channel, record_fe))
 		return -1;
 						
-	// cam
-	sendCaPmtPlayBackStart(rec_channel, record_fe);
-	
-	// ci cam	
-	if(rec_channel != NULL)
-	{
-		ci->SendCaPMT(rec_channel->getCaPmt(), record_fe? record_fe->fenumber : 0);
-	}		
+	// ci / cam
+	sendCaPmtPlayBackStart(rec_channel, record_fe);		
 	
 	dprintf(DEBUG_NORMAL, "CZapit::zapToRecordID: zapped to %s (0x%llx) fe(%d,%d)\n", rec_channel->getName().c_str(), rec_channel_id, record_fe->feadapter, record_fe->fenumber);
 	
@@ -3923,10 +3916,8 @@ void *CZapit::updatePMTFilter(void *)
 					} 
 					else 
 					{
+						// ci / cam
 						CZapit::getInstance()->sendCaPmtPlayBackStart(CZapit::getInstance()->getCurrentChannel(), CZapit::getInstance()->getCurrentFrontend());
-						
-						// ci cam
-						ci->SendCaPMT(CZapit::getInstance()->getCurrentChannel()->getCaPmt(), CZapit::getInstance()->getCurrentFrontend()?CZapit::getInstance()->getCurrentFrontend()->fenumber : 0);	
 
 						pmt.pmt_set_update_filter(CZapit::getInstance()->getCurrentChannel(), &pmt_update_fd, CZapit::getInstance()->getCurrentFrontend());
 					}
@@ -3997,9 +3988,6 @@ void CZapit::unlockPlayBack()
 		// cam
 		if (!IS_WEBTV(live_channel->getChannelID()))
 			sendCaPmtPlayBackStart(live_channel, live_fe);
-			
-		// ci cam	
-		ci->SendCaPMT(live_channel->getCaPmt(), live_fe? live_fe->fenumber : 0);
 	}					
 }
 
@@ -4409,11 +4397,6 @@ void CZapit::getRecordPIDS(responseGetPIDs &pids)
 		pids.APIDs = apids;
 		pids.SubPIDs = subpids;
 	}
-}
-
-CFrontend* CZapit::getRecordFrontend()
-{
-	return record_fe;
 }
 
 void CZapit::reinitChannels()

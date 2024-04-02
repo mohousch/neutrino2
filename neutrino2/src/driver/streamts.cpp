@@ -191,7 +191,7 @@ bool CStreamInstance::Open()
 	if(!dmx)
 		return false;
 		
-	return dmx->Open(DMX_TP_CHANNEL, DMX_BUFFER_SIZE, /*CZapit::getInstance()->getCurrentFrontend()*/frontend); // currentfrontend?
+	return dmx->Open(DMX_TP_CHANNEL, DMX_BUFFER_SIZE, frontend);
 }
 
 void CStreamInstance::run()
@@ -216,26 +216,12 @@ void CStreamInstance::run()
 
 	dmx->Start();
 
-//	CCamManager::getInstance()->Start(channel_id, CCamManager::STREAM); //FIXME:
-
-//	if (CZapit::getInstance()->getCurrentFrontend())
-//		CZapit::getInstance()->unlockFrontend(CZapit::getInstance()->getCurrentFrontend());
-		
-//	if (frontend)
-//		CZapit::getInstance()->lockFrontend(frontend);
-
 	while (running)
 	{
 		ssize_t r = dmx->Read(buf, IN_SIZE, 100);
 		if (r > 0)
 			Send(r);
 	}
-
-//	CCamManager::getInstance()->Stop(channel_id, CCamManager::STREAM); // FIXME:
-
-	//
-//	if (frontend)
-//		CZapit::getInstance()->unlockFrontend(frontend);
 
 	printf("CStreamInstance::run: exiting %" PRIx64 " (%d fds)\n", channel_id, (int)fds.size());
 
@@ -349,6 +335,7 @@ CFrontend *CStreamManager::FindFrontend(CZapitChannel *channel)
 	// lock live frontend
 	CZapit::getInstance()->lockFrontend(CZapit::getInstance()->getCurrentFrontend());
 
+	// lock running instance frontend
 //	OpenThreads::ScopedLock<OpenThreads::Mutex> m_lock(mutex);
 	for (streammap_iterator_t it = streams.begin(); it != streams.end(); ++it)
 		frontends.insert(it->second->frontend);
@@ -359,13 +346,13 @@ CFrontend *CStreamManager::FindFrontend(CZapitChannel *channel)
 	frontend = CZapit::getInstance()->getFreeFrontend(channel);
 
 //	if (/*unlock &&*/ frontend == NULL) // live fe is recording and channel is other TP
-	{
+//	{
 //		unlock = false;
 //		if (CZapit::getInstance()->getCurrentFrontend())
 //		CZapit::getInstance()->unlockFrontend(CZapit::getInstance()->getCurrentFrontend());
-			
+//			
 //		frontend = CZapit::getInstance()->getFreeFrontend(channel); // sure we get here live frontend
-	}
+//	}
 
 	if (frontend) 
 	{
@@ -383,7 +370,7 @@ CFrontend *CStreamManager::FindFrontend(CZapitChannel *channel)
 		}
 	}
 
-	//
+	// unlock running instance frontend
 	for (std::set<CFrontend *>::iterator ft = frontends.begin(); ft != frontends.end(); ++ft)
 		CZapit::getInstance()->unlockFrontend(*ft);
 
