@@ -2085,6 +2085,7 @@ void CNeutrinoApp::initZapper()
 	// first channel
 	firstChannel();
 
+	// getchannelsMode
 	int tvmode = CZapit::getInstance()->getMode();
 
 	if (tvmode == CZapit::MODE_TV)
@@ -2097,7 +2098,7 @@ void CNeutrinoApp::initZapper()
 	// init channel
 	channelsInit();
 
-	// set mode
+	// firstchanel mode
 	if(firstchannel.mode == 't') 
 	{
 		tvMode(false);
@@ -2105,11 +2106,11 @@ void CNeutrinoApp::initZapper()
 	else if(firstchannel.mode == 'r') 
 	{
 #if defined (ENABLE_LCD)	  
-			g_RCInput->killTimer(lcdUpdateTimer);
-			lcdUpdateTimer = g_RCInput->addTimer( LCD_UPDATE_TIME_RADIO_MODE, false );
+		g_RCInput->killTimer(lcdUpdateTimer);
+		lcdUpdateTimer = g_RCInput->addTimer( LCD_UPDATE_TIME_RADIO_MODE, false );
 #endif		
 		
-			radioMode(false);
+		radioMode(false);
 	}
 
 	// zap / epg / autorecord / infoviewer

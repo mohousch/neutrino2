@@ -65,6 +65,7 @@ bool get_mem_usage(unsigned long &total, unsigned long &free);
 unsigned long long getcurrenttime();
 void scaleImage(const std::string &tname, int *p_w, int *p_h, int dest_w = PIC_W, int dest_h = PIC_H);
 void getTMDBInfo(const char * const text);
+std::string find_executable(const char *name);
 
 ////
 std::string _getBaseName(std::string &path, std::string sep);
@@ -148,6 +149,10 @@ std::string ReadMarkerValue(std::string strLine, const char* strMarkerName);
 //
 std::string randomString(unsigned int length = 10);
 std::string randomFile(std::string suffix = "tmp", std::string directory = "/tmp", unsigned int length = 10);
+
+// utf8
+std::string iso_8859_1_to_utf8(std::string &str);
+bool utf8_check_is_valid(const std::string &str);
 
 //
 static inline void Hexdump(unsigned char *Data, int length)

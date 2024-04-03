@@ -315,17 +315,6 @@ struct transponder
 		TP_id = 0;
 		diseqc = 255;
 	}
-
-	//
-	transponder(t_transport_stream_id p_transport_stream_id, FrontendParameters p_feparams, t_original_network_id p_original_network_id)
-	{
-		transport_stream_id = p_transport_stream_id;
-		feparams = p_feparams;
-		original_network_id = p_original_network_id;
-		updated = 0;
-		TP_id = 0;
-		diseqc = 255;
-	}
 };
 
 typedef std::map<transponder_id_t, transponder> transponder_list_t;

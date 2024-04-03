@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-04-01 22:13+0300\n"
+"POT-Creation-Date: 2024-04-03 22:55+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -486,6 +486,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3809 ../../src/neutrino2.cpp:3811
 #: ../../src/neutrino2.cpp:3812 ../../src/neutrino2.cpp:3814
 #: ../../src/neutrino2.cpp:3845 ../../src/neutrino2.cpp:3841
+#: ../../src/neutrino2.cpp:3842
 msgid ""
 "Box will shutdown in 1 min.\n"
 "Cancel Sutdown ?"
@@ -1075,6 +1076,7 @@ msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1240 ../../src/system/helpers.cpp:1856
 #: ../../src/gui/audioplayer.cpp:1239 ../../src/gui/audioplayer.cpp:1238
+#: ../../src/system/helpers.cpp:1951
 msgid "Do you want to overwrite this file:"
 msgstr ""
 
@@ -2097,7 +2099,12 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3841 ../../src/neutrino2.cpp:3888
 #: ../../src/neutrino2.cpp:3897 ../../src/neutrino2.cpp:4295
 #: ../../src/neutrino2.cpp:4925 ../../src/gui/infoviewer.cpp:1124
-#: ../../src/gui/infoviewer.cpp:1121
+#: ../../src/gui/infoviewer.cpp:1121 ../../src/system/helpers.cpp:1370
+#: ../../src/system/helpers.cpp:1375 ../../src/neutrino2.cpp:3763
+#: ../../src/neutrino2.cpp:3797 ../../src/neutrino2.cpp:3804
+#: ../../src/neutrino2.cpp:3842 ../../src/neutrino2.cpp:3889
+#: ../../src/neutrino2.cpp:3898 ../../src/neutrino2.cpp:4296
+#: ../../src/neutrino2.cpp:4926
 msgid "Information"
 msgstr ""
 
@@ -2889,6 +2896,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4909 ../../src/neutrino2.cpp:4911
 #: ../../src/neutrino2.cpp:4918 ../../src/neutrino2.cpp:4893
 #: ../../src/neutrino2.cpp:4929 ../../src/neutrino2.cpp:4925
+#: ../../src/neutrino2.cpp:4926
 msgid "No neutrino-settings found, Using defaults."
 msgstr ""
 
@@ -2984,6 +2992,7 @@ msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1241 ../../src/system/helpers.cpp:1858
 #: ../../src/gui/audioplayer.cpp:1240 ../../src/gui/audioplayer.cpp:1239
+#: ../../src/system/helpers.cpp:1953
 msgid "Overwrite?"
 msgstr ""
 
@@ -3175,6 +3184,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3706 ../../src/neutrino2.cpp:3708
 #: ../../src/neutrino2.cpp:3709 ../../src/neutrino2.cpp:3711
 #: ../../src/neutrino2.cpp:3742 ../../src/neutrino2.cpp:3738
+#: ../../src/neutrino2.cpp:3739
 msgid "Program unknown"
 msgstr ""
 
@@ -3318,6 +3328,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3764 ../../src/neutrino2.cpp:3766
 #: ../../src/neutrino2.cpp:3767 ../../src/neutrino2.cpp:3769
 #: ../../src/neutrino2.cpp:3800 ../../src/neutrino2.cpp:3796
+#: ../../src/neutrino2.cpp:3797
 msgid "Recording starts in a few minutes"
 msgstr ""
 
@@ -3400,7 +3411,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3881 ../../src/neutrino2.cpp:3879
 #: ../../src/neutrino2.cpp:3878 ../../src/neutrino2.cpp:3880
 #: ../../src/neutrino2.cpp:3883 ../../src/neutrino2.cpp:3918
-#: ../../src/neutrino2.cpp:3914
+#: ../../src/neutrino2.cpp:3914 ../../src/neutrino2.cpp:3915
 msgid "Reminder"
 msgstr ""
 
@@ -3965,6 +3976,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3771 ../../src/neutrino2.cpp:3773
 #: ../../src/neutrino2.cpp:3774 ../../src/neutrino2.cpp:3776
 #: ../../src/neutrino2.cpp:3807 ../../src/neutrino2.cpp:3803
+#: ../../src/neutrino2.cpp:3804
 msgid "Sleeptimer in 1 min"
 msgstr ""
 
@@ -4452,6 +4464,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4909 ../../src/neutrino2.cpp:4911
 #: ../../src/neutrino2.cpp:4918 ../../src/neutrino2.cpp:4893
 #: ../../src/neutrino2.cpp:4929 ../../src/neutrino2.cpp:4925
+#: ../../src/neutrino2.cpp:4926
 msgid ""
 "The neutrino-settings have been updated.\n"
 "New Options will be set to default."
@@ -4892,6 +4905,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4280 ../../src/neutrino2.cpp:3181
 #: ../../src/neutrino2.cpp:4282 ../../src/neutrino2.cpp:4264
 #: ../../src/neutrino2.cpp:4299 ../../src/neutrino2.cpp:4295
+#: ../../src/neutrino2.cpp:4296
 msgid "You really want to to stop record ?"
 msgstr ""
 
@@ -4931,6 +4945,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3687 ../../src/neutrino2.cpp:3689
 #: ../../src/neutrino2.cpp:3690 ../../src/neutrino2.cpp:3692
 #: ../../src/neutrino2.cpp:3723 ../../src/neutrino2.cpp:3719
+#: ../../src/neutrino2.cpp:3720
 msgid "Zapto timer in one minute"
 msgstr ""
 
@@ -5606,7 +5621,8 @@ msgstr ""
 #: ../../src/system/helpers.cpp:1316 ../../src/gui/streaminfo.cpp:768
 #: ../../src/gui/streaminfo.cpp:779 ../../src/gui/streaminfo.cpp:808
 #: ../../src/gui/streaminfo.cpp:766 ../../src/gui/streaminfo.cpp:777
-#: ../../src/gui/streaminfo.cpp:806
+#: ../../src/gui/streaminfo.cpp:806 ../../src/system/helpers.cpp:1370
+#: ../../src/system/helpers.cpp:1375
 msgid "not available"
 msgstr ""
 

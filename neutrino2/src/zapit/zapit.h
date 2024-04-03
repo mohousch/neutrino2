@@ -69,8 +69,8 @@
 #define VOLUME_CONFIG_FILE 		CONFIGDIR "/zapit/audiovolume.conf"
 #define AUDIO_CONFIG_FILE 		CONFIGDIR "/zapit/audio.conf"
 // frontend
-#define DVBADAPTER_MAX			2	// 
-#define FRONTEND_MAX			8	// fbc
+#define DVBADAPTER_MAX			4	// 
+#define FRONTEND_MAX			8	//
 ////
 #define CHANNEL_NAME_SIZE 40
 
@@ -466,6 +466,8 @@ class CZapit
 		void loadFrontendConfig();
 		int getFrontendCount(void){return femap.size();};
 		bool loopCanTune(CFrontend * fe, CZapitChannel * thischannel);
+		bool CanZap(CZapitChannel * thischannel);
+		bool FrontendIsTwin(CFrontend* fe);
 		CFrontend * getFreeFrontend(CZapitChannel * thischannel);
 		CFrontend * getFrontend(CZapitChannel * thischannel);
 		CFrontend * getRecordFrontend(CZapitChannel * thischannel);
@@ -474,8 +476,6 @@ class CZapit
 		//
 		void setZapitConfig(Zapit_config * Cfg);
 		void getZapitConfig(Zapit_config *Cfg);
-		//
-		bool CanZap(CZapitChannel * thischannel);
 		//
 		void getLastChannel(unsigned int &channumber, char &mode);
 		int getMode(void);

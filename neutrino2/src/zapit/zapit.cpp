@@ -105,9 +105,9 @@ static int pmt_update_fd = -1;
 extern cVideo * videoDecoder;
 extern cAudio * audioDecoder;
 //// channelManager
-transponder_list_t transponders;    				// from services.xml
+transponder_list_t transponders;    				// TP map from services.xml
 satellite_map_t satellitePositions;				// satellite position as specified in satellites.xml
-std::map<transponder_id_t, transponder> select_transponders;	// TP map all tps from sats lists
+transponder_list_t select_transponders;				// TP map from sats lists
 static int newfound;
 ////scanManager
 scan_list_t scanProviders;
@@ -119,9 +119,9 @@ uint32_t processed_transponders;
 uint32_t failed_transponders;
 int scanmode = CZapit::SM_NIT;
 int scan_sat_mode = 0;
-std::map <transponder_id_t, transponder> scantransponders;		// TP list to scan
-std::map <transponder_id_t, transponder> scanedtransponders;		// global TP list for current scan
-std::map <transponder_id_t, transponder> nittransponders;
+transponder_list_t scantransponders;				// TP list to scan
+transponder_list_t scanedtransponders;				// global TP list for current scan
+transponder_list_t nittransponders;
 BouquetList scanBouquets;
 ////
 extern uint32_t failed_transponders;					// defined in descriptors.cpp
@@ -417,7 +417,6 @@ bool CZapit::loopCanTune(CFrontend * fe, CZapitChannel * thischannel)
 		return false;
 
 	bool tp_band = ((int)thischannel->getFreqId()*1000 >= fe->lnbSwitch);
-	//uint8_t tp_pol = thischannel->polarization & 1;
 	uint8_t tp_pol = transponder->second.feparams.polarization & 1;
 	uint8_t fe_pol = fe->getPolarization() & 1;
 
@@ -442,6 +441,17 @@ bool CZapit::CanZap(CZapitChannel * thischannel)
 	return (fe != NULL);
 }
 
+//
+bool CZapit::FrontendIsTwin(CFrontend* fe)
+{
+	bool twin = false;
+			
+	if( (fe->getInfo()->type == live_fe->getInfo()->type) && (fe->fenumber != live_fe->fenumber) )
+		twin = true;
+		
+	return twin;
+}
+
 CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 {
 	const char *FEMODE[] = {
@@ -453,8 +463,7 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 	//
 	CFrontend * free_frontend = NULL;
 	
-	t_satellite_position satellitePosition = thischannel->getSatellitePosition();
-	sat_iterator_t sit = satellitePositions.find(satellitePosition);
+	transponder_list_t::iterator transponder = transponders.find(thischannel->getTransponderId());
 	
 	// close unused frontend
 	for(fe_map_iterator_t fe_it = femap.begin(); fe_it != femap.end(); fe_it++) 
@@ -462,7 +471,7 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 		CFrontend * fe = fe_it->second;
 			
 		// skip tuned frontend and have same tid or same type as channel to tune
-		if( (fe->tuned) && (fe->getTsidOnid() == thischannel->getTransponderId() || fe->getDeliverySystem() & sit->second.system) )
+		if( (fe->tuned) && (fe->getTsidOnid() == thischannel->getTransponderId() || fe->getDeliverySystem() & transponder->second.feparams.delsys) )
 			continue;
 
 		// close not locked tuner
@@ -496,9 +505,9 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 			break;
 		}
 		// first zap/record/other frontend type
-		else if (sit != satellitePositions.end()) 
+		else if (transponder != transponders.end())
 		{	
-			if ( (fe->getDeliverySystem() & sit->second.system) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
+			if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
 			{
 				free_frontend = fe;
 				break;
@@ -530,27 +539,23 @@ CFrontend * CZapit::getRecordFrontend(CZapitChannel * thischannel)
 	// check for frontend
 	CFrontend * rec_frontend = NULL;
 	
-	t_satellite_position satellitePosition = thischannel->getSatellitePosition();
-	sat_iterator_t sit = satellitePositions.find(satellitePosition);
+	transponder_list_t::iterator transponder = transponders.find(thischannel->getTransponderId());
 	
 	// get record frontend
 	for(fe_map_iterator_t fe_it = femap.begin(); fe_it != femap.end(); fe_it++) 
 	{
 		CFrontend * fe = fe_it->second;
 		
-		dprintf(DEBUG_INFO, "CZapit::getRecordFrontend: fe(%d,%d): (%s) tuned:%d (locked:%d) fe_freq: %d fe_TP: 0x%llx - chan_freq: %d chan_TP: 0x%llx sat-position: %d sat-name:%s input-type:%d\n",
+		dprintf(DEBUG_INFO, "CZapit::getRecordFrontend: fe(%d,%d): (%s) tuned:%d (locked:%d) fe_freq: %d fe_TP: 0x%llx chan_TP: 0x%llx\n",
 				fe->feadapter,
 				fe->fenumber,
 				FEMODE[fe->mode],
 				fe->tuned,
 				fe->locked,
 				fe->getFrequency(), 
-				fe->getTsidOnid(), 
-				thischannel->getFreqId(), 
-				thischannel->getTransponderId(), 
-				satellitePosition,
-				sit->second.name.c_str(),
-				sit->second.system);
+				fe->getTsidOnid(),  
+				thischannel->getTransponderId() 
+				);
 				
 		// skip not connected frontend
 		if( fe->mode == (fe_mode_t)FE_NOTCONNECTED )
@@ -563,17 +568,12 @@ CFrontend * CZapit::getRecordFrontend(CZapitChannel * thischannel)
 			break;
 		}
 		// other free tuner
-		else if (sit != satellitePositions.end()) 
+		else if (transponder != transponders.end())
 		{
-			bool twin = false;
-			
-			if( (fe->getInfo()->type == live_fe->getInfo()->type) && (fe->fenumber != live_fe->fenumber) )
-				twin = true;
-			
-			if ( (fe->getDeliverySystem() & sit->second.system) && (twin? !fe->tuned : !fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
+			if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
 			{
 				rec_frontend = fe;
-				//break;
+				break;
 			}
 		}
 	}
@@ -590,7 +590,7 @@ CFrontend * CZapit::getRecordFrontend(CZapitChannel * thischannel)
 	return rec_frontend;
 }
 
-// getFreeFrontend
+// getFreeFrontend | without inittuner
 CFrontend * CZapit::getFreeFrontend(CZapitChannel * thischannel)
 {
 	const char *FEMODE[] = {
@@ -602,27 +602,23 @@ CFrontend * CZapit::getFreeFrontend(CZapitChannel * thischannel)
 	// check for frontend
 	CFrontend * pref_frontend = NULL;
 	
-	t_satellite_position satellitePosition = thischannel->getSatellitePosition();
-	sat_iterator_t sit = satellitePositions.find(satellitePosition);
+	transponder_list_t::iterator transponder = transponders.find(thischannel->getTransponderId());
 	
 	// get preferred frontend
 	for(fe_map_iterator_t fe_it = femap.begin(); fe_it != femap.end(); fe_it++) 
 	{
 		CFrontend * fe = fe_it->second;
 		
-		dprintf(DEBUG_NORMAL, "CZapit::getFreeFrontend: fe(%d,%d): (%s) tuned:%d (locked:%d) fe_freq: %d fe_TP: 0x%llx - chan_freq: %d chan_TP: 0x%llx sat-position: %d sat-name:%s input-type:%d\n",
+		dprintf(DEBUG_NORMAL, "CZapit::getFreeFrontend: fe(%d,%d): (%s) tuned:%d (locked:%d) fe_freq: %d fe_TP: 0x%llx chan_TP: 0x%llx\n",
 				fe->feadapter,
 				fe->fenumber,
 				FEMODE[fe->mode],
 				fe->tuned,
 				fe->locked,
 				fe->getFrequency(), 
-				fe->getTsidOnid(), 
-				thischannel->getFreqId(), 
-				thischannel->getTransponderId(), 
-				satellitePosition,
-				sit->second.name.c_str(),
-				sit->second.system);
+				fe->getTsidOnid(),  
+				thischannel->getTransponderId()
+				);
 				
 		// skip not connected frontend
 		if( fe->mode == (fe_mode_t)FE_NOTCONNECTED )
@@ -635,15 +631,18 @@ CFrontend * CZapit::getFreeFrontend(CZapitChannel * thischannel)
 			break;
 		}
 		// first zap/record/other frontend type
-		else if (sit != satellitePositions.end()) 
+		else if (transponder != transponders.end())
 		{
-			if( (fe->getDeliverySystem() & sit->second.system) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
+			if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
 			{
 				pref_frontend = fe;
 				break;
 			}
 		}
 	}
+	
+	if (pref_frontend)
+		dprintf(DEBUG_NORMAL, "CZapit::getFreeFrontend: Selected fe(%d,%d)\n", pref_frontend->feadapter, pref_frontend->fenumber);
 	
 	return pref_frontend;
 }
@@ -1298,7 +1297,8 @@ void CZapit::restoreChannelPids(CZapitChannel * thischannel)
 		audioDecoder->SetMute(true);
 }
 
-// return 0, -1 fails
+// 0 = success
+// -1 = fail
 int CZapit::zapit(const t_channel_id channel_id, bool in_nvod, bool forupdate)
 {
 	bool transponder_change = false;
@@ -1430,8 +1430,12 @@ tune_again:
 	return 0;
 }
 
+// 0 = success
+// -1 = fail
 int CZapit::zapToRecordID(const t_channel_id channel_id)
 {
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::zapToRecordID: channel_id (0x%llx)\n", channel_id);
+	
 	if (IS_WEBTV(channel_id))
 	{
 		rec_channel_id = channel_id;
@@ -1685,11 +1689,12 @@ void CZapit::setTVMode(void)
 	openAVDecoder();
 }
 
+// getchannelsMode
 int CZapit::getMode(void)
 {
 	dprintf(DEBUG_NORMAL, "CZapit::getMode:\n");
 	
-	int mode = 0;
+	int mode = MODE_CURRENT;
 	
 	if (currentMode & TV_MODE)
 		mode = MODE_TV;
@@ -3504,7 +3509,7 @@ unsigned int CZapit::zapToChannelID(t_channel_id channel_id, bool isSubService)
 {
 	unsigned int result = 0;
 
-	dprintf(DEBUG_NORMAL, ANSI_BLUE"CZapit::zapToChannelID: chid 0x%llx\n", channel_id);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::zapToChannelID: chid 0x%llx\n", channel_id);
 
 	if (zapit(channel_id, isSubService) < 0) 
 	{
@@ -4857,7 +4862,7 @@ _repeat:
 
 		stI = transponders.find(TsidOnid);
 		if(stI == transponders.end())
-			transponders.insert (std::pair <transponder_id_t, transponder> (TsidOnid, transponder(tI->second.transport_stream_id, tI->second.feparams, tI->second.original_network_id)));
+			transponders.insert (std::pair <transponder_id_t, transponder> (TsidOnid, transponder(tI->second.transport_stream_id, tI->second.original_network_id, tI->second.feparams)));
 		else
 			stI->second.feparams.fec_inner = tI->second.feparams.fec_inner;
 		
@@ -5618,7 +5623,7 @@ void CZapit::parseTransponders(xmlNodePtr node, t_satellite_position satellitePo
 
 		std::pair<std::map<transponder_id_t, transponder>::iterator, bool> ret;
 
-		ret = transponders.insert(std::pair<transponder_id_t, transponder> ( tid, transponder(transport_stream_id, feparams, original_network_id)));
+		ret = transponders.insert(std::pair<transponder_id_t, transponder> ( tid, transponder(transport_stream_id, original_network_id, feparams)));
 		
 		if (ret.second == false)
 			printf("CZapit::parseTransponders: duplicate transponder id 0x%llx freq %d\n", tid, feparams.frequency);
@@ -5917,7 +5922,7 @@ void CZapit::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_s
 		polarization &= 7;
 		
 		// insert TPs list
-		select_transponders.insert( std::pair<transponder_id_t, transponder> (tid, transponder(fake_tid, feparams, fake_nid)));
+		select_transponders.insert( std::pair<transponder_id_t, transponder> (tid, transponder(fake_tid, fake_nid, feparams)));
 		
 		fake_nid ++; 
 		fake_tid ++;

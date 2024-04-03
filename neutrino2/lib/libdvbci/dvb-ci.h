@@ -28,7 +28,7 @@
 
 #include <list>
 
-#include <zapit/cam.h>
+#include <zapit/zapit.h>
 
 
 #define MAX_MMI_ITEMS 20
@@ -41,7 +41,6 @@
 #define TUNER_D		3
 
 #define MAX_SLOTS	2
-#define DVBADAPTER_MAX	2
 
 typedef struct
 {

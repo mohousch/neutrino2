@@ -1121,6 +1121,65 @@ std::string randomFile(std::string suffix, std::string directory, unsigned int l
 	return directory + "/" + randomString(length) + "." + suffix;
 }
 
+// utf8
+std::string iso_8859_1_to_utf8(std::string &str)
+{
+	std::string strOut;
+	for (std::string::iterator it = str.begin(); it != str.end(); ++it)
+	{
+		uint8_t ch = *it;
+		if (ch < 0x80)
+		{
+			strOut.push_back(ch);
+		}
+		else
+		{
+			strOut.push_back(0xc0 | ch >> 6);
+			strOut.push_back(0x80 | (ch & 0x3f));
+		}
+	}
+	return strOut;
+}
+
+bool utf8_check_is_valid(const std::string &str)
+{
+	int c, i, ix, n, j;
+	for (i = 0, ix = str.length(); i < ix; i++)
+	{
+		c = (unsigned char) str[i];
+		/*
+		if (c==0x09 || c==0x0a || c==0x0d || (0x20 <= c && c <= 0x7e))
+			n = 0; // is_printable_ascii
+		*/
+		if (0x00 <= c && c <= 0x7f)
+			n = 0; // 0bbbbbbb
+		else if ((c & 0xE0) == 0xC0)
+			n = 1; // 110bbbbb
+		else if (c == 0xed && i < (ix - 1) && ((unsigned char)str[i + 1] & 0xa0) == 0xa0)
+			return false; // U+d800 to U+dfff
+		else if ((c & 0xF0) == 0xE0)
+			n = 2; // 1110bbbb
+		else if ((c & 0xF8) == 0xF0)
+			n = 3; // 11110bbb
+		/*
+		else if (($c & 0xFC) == 0xF8)
+			n=4; // 111110bb //byte 5, unnecessary in 4 byte UTF-8
+		else if (($c & 0xFE) == 0xFC)
+			n=5; // 1111110b //byte 6, unnecessary in 4 byte UTF-8
+		*/
+		else
+			return false;
+
+		for (j = 0; j < n && i < ix; j++) // n bytes matching 10bbbbbb follow?
+		{
+			if ((++i == ix) || (((unsigned char)str[i] & 0xC0) != 0x80))
+				return false;
+		}
+	}
+	return true;
+}
+
+
 //// proc utils
 int proc_put(const char *path, const char *value, const int len)
 {
@@ -1321,6 +1380,42 @@ void getTMDBInfo(const char * const text)
 
 	}
 }
+
+//
+std::string find_executable(const char *name)
+{
+	struct stat s;
+	char *tmpPath = getenv("PATH");
+	char *p, *n, *path;
+	if (tmpPath)
+		path = strdupa(tmpPath);
+	else
+		path = strdupa("/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin");
+	if (name[0] == '/')   /* full path given */
+	{
+		if (!access(name, X_OK) && !stat(name, &s) && S_ISREG(s.st_mode))
+			return std::string(name);
+		return "";
+	}
+
+	p = path;
+	while (p)
+	{
+		n = strchr(p, ':');
+		if (n)
+			*n++ = '\0';
+		if (*p != '\0')
+		{
+			std::string tmp = std::string(p) + "/" + std::string(name);
+			const char *f = tmp.c_str();
+			if (!access(f, X_OK) && !stat(f, &s) && S_ISREG(s.st_mode))
+				return tmp;
+		}
+		p = n;
+	}
+	return "";
+}
+
 
 // FielHelpers
 CFileHelpers::CFileHelpers()
