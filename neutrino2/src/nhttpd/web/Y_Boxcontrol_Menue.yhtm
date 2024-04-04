@@ -80,15 +80,27 @@ function init(){
 
 {=var-set:lcshot={=if-file-exists:/bin/lcshot~true~{=if-file-exists:/var/bin/lcshot~true~{=if-file-exists:/usr/bin/lcshot~true~false=}=}=}=}
 {=var-set:fbshot={=if-file-exists:/bin/grab~true~{=if-file-exists:/var/bin/grab~true~{=if-file-exists:/usr/bin/grab~true~false=}=}=}=}
+
 <body>
 <div class="y_menu_sec_box">
 	<div class="y_menu_sec_box_head"><h2>{=L:main.boxcontrol=}</h2></div>
 	<div class="y_menu_sec_box_body">
 		<div class="y_menu_sec">
 			<ul id="secmenu">
-				<li><a target="work" title="{=L:bc.menue.bouquets_desc=}" href="Y_Boxcontrol_Bouquets.yhtm">{=L:bc.menue.bouquets=}</a></li>
+				<li><a target="work" title="{=L:bc.menue.bouquets_desc=}" href="Y_Boxcontrol_Bouquets.yhtm">{=L:bc.menue.bouquets=}</a>
+				</li>
+				
+				<li><a target="work" title="{=L:live.epg_plus_desc=}"
+href="Y_EPG_Plus.yhtm">{=L:live.epg_plus=}</a>
+				</li>
+				
+				<li><a target="work" href="Y_Timer_List.yhtm">{=L:live.timer=}</a>
+				</li>
+				
 				<li><a target="work" title="{=L:bc.menue.control_desc=}" href="Y_Tools_Boxcontrol.yhtm">{=L:bc.menue.control=}</a></li>
+				
 				<li><a target="work" title="{=L:bc.menue.messages_desc=}" href="Y_Boxcontrol_Messages.yhtm">{=L:bc.menue.messages=}</a></li>
+				
 				<li><a target="work" title="{=L:bc.menue.remote_desc=}" href="Y_Tools_Rcsim.yhtm">{=L:bc.menue.remote=}</a></li>
 
 				{=if-equal:{=var-get:lcshot=}~true~

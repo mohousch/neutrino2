@@ -44,3 +44,4 @@ function poschannel(box, direction)
 		}
 	}
 }
+
