@@ -48,18 +48,12 @@
 
 #include <config.h>
 
-/*
-#include <src/driver/gfx/framebuffer.h>
-#include <src/driver/gfx/fontrenderer.h>
-#include <src/gui/widget/widget_helpers.h>
-#include <src/gui/widget/textbox.h>
-*/
 
 /* ***************************** */
 /* Makros/Constants              */
 /* ***************************** */
 
-#define FB_DEBUG
+//#define FB_DEBUG
 
 #ifdef FB_DEBUG
 

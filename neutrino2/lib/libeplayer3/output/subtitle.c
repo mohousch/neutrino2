@@ -45,7 +45,7 @@
 /* Makros/Constants              */
 /* ***************************** */
 
-#define SUBTITLE_DEBUG
+//#define SUBTITLE_DEBUG
 #define SUBTITLE_SILENT
 
 #ifdef SUBTITLE_DEBUG
@@ -70,12 +70,6 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 
 static const char FILENAME[] = "subtitle.c";
 
-////
-int min_x = 0;
-int min_y = 0;
-int max_x = 0;
-int max_y = 0;
-
 /* ***************************** */
 /* Types                         */
 /* ***************************** */
@@ -86,6 +80,16 @@ int max_y = 0;
 
 static pthread_mutex_t mutex;
 static int isSubtitleOpened = 0;
+
+////
+extern int            	screen_x;
+extern int            	screen_y;
+extern int            	screen_width;
+extern int            	screen_height;
+extern int            	destStride;
+extern int            	framebufferFD;
+extern uint32_t* 	destination;
+extern int	      	threeDMode;
 
 /* ***************************** */
 /* Prototypes                    */
@@ -432,20 +436,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 	    
 	    case OUTPUT_SWITCH: 
 	    {
-		break;
-	    }
-	    
-	    case OUTPUT_SET_SUBTITLE_OUTPUT: 
-	    {
-		SubtitleOutputDef_t* out = (SubtitleOutputDef_t*)argument;
-		
-		screen_x = out->screen_x;
-		screen_y = out->screen_y;
-		screen_width = out->screen_width;
-		screen_height = out->screen_height;
-		framebufferFD = out->framebufferFD;
-		destination = out->destination;
-		destStride = out->destStride;
 		break;
 	    }
 	    

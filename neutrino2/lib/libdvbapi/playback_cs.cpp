@@ -513,11 +513,7 @@ bool cPlayback::Open()
 		player->container	= &ContainerHandler;
 		player->manager		= &ManagerHandler;
 	}
-
-	if(player && player->playback)
-		player->playback->Command(player, PLAYBACK_INIT, NULL);
-
-	// add subtitle output screen
+	
 	SubtitleOutputDef_t out;
 
 	out.screen_x = CFrameBuffer::getInstance()->getScreenX(true);
@@ -528,9 +524,9 @@ bool cPlayback::Open()
 	out.framebufferFD = CFrameBuffer::getInstance()->getFileHandle();
 	out.destination   = CFrameBuffer::getInstance()->getFrameBufferPointer();
 	out.destStride    = CFrameBuffer::getInstance()->getStride();
-    
-    	if(player && player->output) 
-		player->output->subtitle->Command(player, (OutputCmd_t)OUTPUT_SET_SUBTITLE_OUTPUT, (void*) &out);
+
+	if(player && player->playback)
+		player->playback->Command(player, PLAYBACK_INIT, (void*)&out);
 #endif
 
 	return true;

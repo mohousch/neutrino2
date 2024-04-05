@@ -157,15 +157,5 @@ ssize_t WriteExt(WriteV_t _call, int fd, void *data, size_t size); // used in mp
 ssize_t write_with_retry(int fd, const void *buf, int size);
 ssize_t writev_with_retry(int fd, const struct iovec *iov, int ic);
 
-//
-static int            	screen_x     	 = 0;
-static int            	screen_y	 = 0;
-static int            	screen_width     = 0;
-static int            	screen_height    = 0;
-static int            	destStride       = 0;
-static int            	framebufferFD    = -1;
-static uint32_t* 	destination      = NULL;
-static int	      	threeDMode       = 0;
-
 #endif
 

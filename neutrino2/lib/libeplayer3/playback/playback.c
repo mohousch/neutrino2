@@ -62,6 +62,16 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 static pthread_t supervisorThread;
 static int hasThreadStarted = 0;
 
+//// subtitle screen
+int            	screen_x     	 = 0;
+int            	screen_y	 = 0;
+int            	screen_width     = 0;
+int            	screen_height    = 0;
+int            	destStride       = 0;
+int            	framebufferFD    = -1;
+uint32_t* 	destination      = NULL;
+int	      	threeDMode       = 0;
+
 /* ***************************** */
 /* Prototypes                    */
 /* ***************************** */
@@ -201,9 +211,11 @@ static void SupervisorThread(Context_t *context)
 /* Functions                     */
 /* ***************************** */
 // init
-static int PlaybackInit(Context_t* context) 
+static int PlaybackInit(Context_t* context, void* data) 
 {
 	int ret = cERR_PLAYBACK_NO_ERROR;
+	
+	SubtitleOutputDef_t* out = (SubtitleOutputDef_t*)data;
 
 	playback_printf(10, "\n");
 	
@@ -211,8 +223,17 @@ static int PlaybackInit(Context_t* context)
 	context->output->Command(context, OUTPUT_ADD, (void*)"audio");
 	context->output->Command(context, OUTPUT_ADD, (void*)"video");		
 	context->output->Command(context, OUTPUT_ADD, (void*)"subtitle");
+	
+	// set subtitle screen
+	screen_x = out->screen_x;
+	screen_y = out->screen_y;
+	screen_width = out->screen_width;
+	screen_height = out->screen_height;
+	framebufferFD = out->framebufferFD;
+	destination = out->destination;
+	destStride = out->destStride;
 
-	// init params
+	//
 	context->playback->isPaused     = 0;
 	context->playback->isPlaying    = 0;
 	context->playback->isForwarding = 0;
@@ -1042,7 +1063,7 @@ static int Command(void* _context, PlaybackCmd_t command, void * argument)
 	{
 		case PLAYBACK_INIT:
 		{
-			ret = PlaybackInit(context);
+			ret = PlaybackInit(context, argument);
 			break;
 		}
 		
