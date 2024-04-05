@@ -6,6 +6,7 @@
 function cmd_popup(){
 	window.open('Y_Tools_Cmd.yhtm','cmd','width=720,height=470,resizable=yes');
 }
+
 function init(){
 	var menu=ext.select_menu('tools');
 	menu.each(function(e){
@@ -53,12 +54,14 @@ function init(){
 				=}
 			=}
 				<li><a target="work" href="Y_Tools_Check_Install.yhtm">{=L:tools.check_install=}</a></li>
+				
 			</ul>
 		</div>
 		<div class="y_menu_sec_section">{=L:tools.expert=}</div>
 		<div class="y_menu_sec">
 			<ul id="secmenu_expert">
-				<li><a target="work" title="get box infos" href="Y_Tools_Info_Menue.yhtm">{=L:main.info=}</a></li>
+				<!--<li><a target="work" title="get box infos" href="Y_Tools_Info_Menue.yhtm">{=L:main.info=}</a></li>-->
+				
 				{=if-empty:{=var-get:management=}~
 				<li class="disabled" title="{=L:restriced_by_management_ip=}">{=L:tools.image=}</li>
 				<li class="disabled" title="{=L:restriced_by_management_ip=}">{=L:tools.command_shell=}</li>
@@ -66,7 +69,8 @@ function init(){
 				~
 		
 				<li><a target="work" href="Y_Tools_Cmd.yhtm">{=L:tools.command_shell=}</a>&nbsp;
-				<a title="command shell (popup)" href="javascript:cmd_popup()"><img src="/images/popup.png"/></a></li>
+				<!--<a title="command shell (popup)" href="javascript:cmd_popup()"><img src="/images/popup.png"/></a>-->
+				</li>
 				<li><a target="work" href="Y_Tools_Installer.yhtm">yInstaller</a></li>
 				=}
 			</ul>

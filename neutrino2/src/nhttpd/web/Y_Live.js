@@ -22,6 +22,7 @@ function do_onload(){
 	set_controls("disable");
 	window.setTimeout("do_init()",100);
 }
+
 function do_onresize(){
 	if((vlc_width+Window_delta_w != window.innerWidth) || (vlc_height+Window_delta_h != window.innerHeight)){
 		window.onresize=null;
@@ -29,11 +30,13 @@ function do_onresize(){
 		window.onresize=do_onresize;
 	}
 }
+
 function do_resize_vlc(width, height){
 	vlc_width = width;
 	vlc_height = height;
 	V2.set_resolution(width, height);
 }
+
 function do_resize(){
 	var dd = id('resolution');
 	var sel = dd.selectedIndex;
@@ -50,6 +53,7 @@ function do_resize(){
 	if(w != -1)
 		window.resizeTo(w+Window_delta_w, h+Window_delta_h);
 }
+
 function do_init(){
 	live_switchto(Mode);
 //	vlc_width = 384;
@@ -66,16 +70,20 @@ function do_init(){
 	change_channel_play();
 //	g_intervall = window.setInterval('i_interval()', 20000);
 }
+
 function i_interval(){
 	obj_update('bouquets_div', "<img src=\"/images/smallwait.gif\"/> "+Lgetting_bouquets);
 	window.setTimeout("i_interval2()",100);
 }
+
 function i_interval2(){
 	build_bouquet_list(-1);
 }
+
 function always_on_top() {	window.focus();
 	window.setTimeout("always_on_top()",100);
 }
+
 function insert_vlc_control(){
 	if(Mode == "radio") {
 		var radio_html="<div style=\"width:"+vlc_width+"px;height:"+vlc_height+"px;text-align:center;\">"
@@ -85,15 +93,18 @@ function insert_vlc_control(){
 	} else
 		V2 = new CyVLC('vlc', 'vlc_view', vlc_width, vlc_height);
 }
+
 function insert_message_control(msg){
 	var wait_html="<div style=\"width:"+vlc_width+"px;height:"+vlc_height+"px;text-align:center;\">"
 			+"<br/><br/><br/><br/><br/><br/><img src=\"/images/wait.gif\"><br/>"+msg+"</div>";
 	obj_update('vlc_view',wait_html);
 }
+
 function change_button_img(id,img){
 	var imgstr = "<img src=\"/images/"+img+".png\" width=\"16\" height=\"16\">";
 	obj_update(id, imgstr);
 }
+
 /*controls*/
 function set_controls(state){
 	var go=false;
@@ -138,6 +149,7 @@ function set_controls(state){
 		obj_enable('snapshot', play && (plugin != "moz3"));
 	}
 }
+
 /*vlc control*/
 function do_play(){
 	var options = new Array();

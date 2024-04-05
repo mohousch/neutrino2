@@ -25,10 +25,12 @@ THookList CyhookHandler::HookList;
 // Hook Dispatcher for Session Hooks
 // Execute every Hook in HookList until State change != HANDLED_NONE
 //-----------------------------------------------------------------------------
-THandleStatus CyhookHandler::Hooks_SendResponse() {
+THandleStatus CyhookHandler::Hooks_SendResponse() 
+{
 	log_level_printf(4, "Response Hook-List Start\n");
 	THandleStatus _status = HANDLED_NONE;
 	THookList::iterator i = HookList.begin();
+	
 	for (; i != HookList.end(); i++) {
 		log_level_printf(4, "Response Hook-List (%s) Start\n",
 				((*i)->getHookName()).c_str());
@@ -44,14 +46,17 @@ THandleStatus CyhookHandler::Hooks_SendResponse() {
 	status = _status;
 	return _status;
 }
+
 //-----------------------------------------------------------------------------
 // Hook Dispatcher for Session Hooks
 // Execute every Hook in HookList until State change != HANDLED_NONE
 //-----------------------------------------------------------------------------
-THandleStatus CyhookHandler::Hooks_PrepareResponse() {
+THandleStatus CyhookHandler::Hooks_PrepareResponse() 
+{
 	log_level_printf(4, "PrepareResponse Hook-List Start\n");
 	THandleStatus _status = HANDLED_NONE;
 	THookList::iterator i = HookList.begin();
+	
 	for (; i != HookList.end(); i++) {
 		log_level_printf(4, "PrepareResponse Hook-List (%s) Start\n",
 				((*i)->getHookName()).c_str());
@@ -77,11 +82,14 @@ THandleStatus CyhookHandler::Hooks_PrepareResponse() {
 // != HANDLED_CONTINUE
 //-----------------------------------------------------------------------------
 THandleStatus CyhookHandler::Hooks_ReadConfig(CConfigFile *Config,
-		CStringList &ConfigList) {
+		CStringList &ConfigList) 
+{
 	log_level_printf(4, "ReadConfig Hook-List Start\n");
 	THandleStatus _status = HANDLED_NONE;
 	THookList::iterator i = HookList.begin();
-	for (; i != HookList.end(); i++) {
+	
+	for (; i != HookList.end(); i++) 
+	{
 		//		log_level_printf(4,"ReadConfig Hook-List (%s)  Start\n", ((*i)->getHookName()).c_str());
 		// response Hook
 		_status = (*i)->Hook_ReadConfig(Config, ConfigList);
@@ -93,14 +101,18 @@ THandleStatus CyhookHandler::Hooks_ReadConfig(CConfigFile *Config,
 	log_level_printf(4, "ReadConfig Hook-List End\n");
 	return _status;
 }
+
 //-----------------------------------------------------------------------------
 // Hook Dispatcher for EndConnection
 //-----------------------------------------------------------------------------
-THandleStatus CyhookHandler::Hooks_EndConnection() {
+THandleStatus CyhookHandler::Hooks_EndConnection() 
+{
 	log_level_printf(4, "EndConnection Hook-List Start\n");
 	THandleStatus _status = HANDLED_NONE;
 	THookList::iterator i = HookList.begin();
-	for (; i != HookList.end(); i++) {
+	
+	for (; i != HookList.end(); i++) 
+	{
 		log_level_printf(4, "EndConnection Hook-List (%s) Start\n",
 				((*i)->getHookName()).c_str());
 		// response Hook
@@ -114,15 +126,19 @@ THandleStatus CyhookHandler::Hooks_EndConnection() {
 	status = _status;
 	return _status;
 }
+
 //-----------------------------------------------------------------------------
 // Hook Dispatcher for UploadSetFilename
 //-----------------------------------------------------------------------------
-THandleStatus CyhookHandler::Hooks_UploadSetFilename(std::string &Filename) {
+THandleStatus CyhookHandler::Hooks_UploadSetFilename(std::string &Filename) 
+{
 	log_level_printf(4, "UploadSetFilename Hook-List Start. Filename:(%s)\n",
 			Filename.c_str());
 	THandleStatus _status = HANDLED_NONE;
 	THookList::iterator i = HookList.begin();
-	for (; i != HookList.end(); i++) {
+	
+	for (; i != HookList.end(); i++) 
+	{
 		log_level_printf(4, "UploadSetFilename Hook-List (%s) Start\n",
 				((*i)->getHookName()).c_str());
 		// response Hook
@@ -137,15 +153,19 @@ THandleStatus CyhookHandler::Hooks_UploadSetFilename(std::string &Filename) {
 	status = _status;
 	return _status;
 }
+
 //-----------------------------------------------------------------------------
 // Hook Dispatcher for UploadSetFilename
 //-----------------------------------------------------------------------------
-THandleStatus CyhookHandler::Hooks_UploadReady(const std::string& Filename) {
+THandleStatus CyhookHandler::Hooks_UploadReady(const std::string& Filename) 
+{
 	log_level_printf(4, "UploadReady Hook-List Start. Filename:(%s)\n",
 			Filename.c_str());
 	THandleStatus _status = HANDLED_NONE;
 	THookList::iterator i = HookList.begin();
-	for (; i != HookList.end(); i++) {
+	
+	for (; i != HookList.end(); i++) 
+	{
 		log_level_printf(4, "UploadReady Hook-List (%s) Start\n",
 				((*i)->getHookName()).c_str());
 		// response Hook
@@ -165,7 +185,8 @@ THandleStatus CyhookHandler::Hooks_UploadReady(const std::string& Filename) {
 //=============================================================================
 void CyhookHandler::session_init(CStringList _ParamList, CStringList _UrlData,
 		CStringList _HeaderList, CStringList& _ConfigList,
-		THttp_Method _Method, bool _keep_alive) {
+		THttp_Method _Method, bool _keep_alive) 
+{
 	ParamList = _ParamList;
 	UrlData = _UrlData;
 	HeaderList = _HeaderList;
@@ -232,7 +253,8 @@ void CyhookHandler::session_init(CStringList _ParamList, CStringList _UrlData,
 //
 //				extension-header = message-header
 //=============================================================================
-std::string CyhookHandler::BuildHeader(bool cache) {
+std::string CyhookHandler::BuildHeader(bool cache) 
+{
 	std::string result = "";
 
 	const char *responseString = "";
@@ -241,17 +263,22 @@ std::string CyhookHandler::BuildHeader(bool cache) {
 	// get Info Index
 	for (unsigned int i = 0; i < (sizeof(httpResponseNames)
 			/ sizeof(httpResponseNames[0])); i++)
-		if (httpResponseNames[i].type == httpStatus) {
+	{
+		if (httpResponseNames[i].type == httpStatus) 
+		{
 			responseString = httpResponseNames[i].name;
 			infoString = httpResponseNames[i].info;
 			break;
 		}
+	}
+	
 	// print Status-line
 	result = string_printf(HTTP_PROTOCOL " %d %s\r\nContent-Type: %s\r\n",httpStatus, responseString, ResponseMimeType.c_str());
 	log_level_printf(2, "Respose: HTTP/1.1 %d %s\r\nContent-Type: %s\r\n",
 			httpStatus, responseString, ResponseMimeType.c_str());
 
-	switch (httpStatus) {
+	switch (httpStatus) 
+	{
 	case HTTP_UNAUTHORIZED:
 		result += "WWW-Authenticate: Basic realm=\"";
 		result += AUTH_NAME_MSG "\r\n";
@@ -312,7 +339,8 @@ std::string CyhookHandler::BuildHeader(bool cache) {
 
 	// Body
 	if (Method != M_HEAD)
-		switch (httpStatus) {
+		switch (httpStatus) 
+		{
 		case HTTP_OK:
 		case HTTP_NOT_MODIFIED:
 		case HTTP_CONTINUE:
@@ -342,19 +370,23 @@ std::string CyhookHandler::BuildHeader(bool cache) {
 // Output helpers
 //=============================================================================
 //-----------------------------------------------------------------------------
-void CyhookHandler::SendHTMLHeader(const std::string& Titel) {
+void CyhookHandler::SendHTMLHeader(const std::string& Titel) 
+{
 	WriteLn("<html>\n<head><title>" + Titel + "</title>\n");
 	WriteLn("<meta http-equiv=\"cache-control\" content=\"no-cache\" />");
 	WriteLn("<meta http-equiv=\"expires\" content=\"0\" />\n</head>\n<body>\n");
 }
+
 //-----------------------------------------------------------------------------
-void CyhookHandler::SendHTMLFooter(void) {
+void CyhookHandler::SendHTMLFooter(void) 
+{
 	WriteLn("</body>\n</html>\n\n");
 }
 
 //-----------------------------------------------------------------------------
 #define OUTBUFSIZE 4096
-void CyhookHandler::printf(const char *fmt, ...) {
+void CyhookHandler::printf(const char *fmt, ...) 
+{
 	char outbuf[OUTBUFSIZE];
 	bzero(outbuf, OUTBUFSIZE);
 	va_list arglist;
@@ -363,3 +395,4 @@ void CyhookHandler::printf(const char *fmt, ...) {
 	va_end(arglist);
 	Write(outbuf);
 }
+

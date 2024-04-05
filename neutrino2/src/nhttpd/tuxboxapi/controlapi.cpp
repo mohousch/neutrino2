@@ -2414,7 +2414,7 @@ void CControlAPI::build_live_url(CyhookHandler *hh)
 			apid = pids.APIDs[0].pid;
 
 		//xpids = string_printf("0x%04x",apid);
-		xpids = string_printf("0x%04x,0x%04x",pids.PIDs.pmtpid,apid);
+		xpids = string_printf("0x%04x,0x%04x", pids.PIDs.pmtpid,apid);
 	}
 	else
 		hh->SendError();
@@ -2422,10 +2422,10 @@ void CControlAPI::build_live_url(CyhookHandler *hh)
 	// build url
 	std::string url = "";
 	if(hh->ParamList["host"] !="")
-		url = "http://"+hh->ParamList["host"];
+		url = "http://" + hh->ParamList["host"];
 	else
-		url = "http://"+hh->HeaderList["Host"];
-	//url += (mode == CZapit::MODE_TV) ? ":31339/0," : ":31338/";
+		url = "http://" + hh->HeaderList["Host"];
+		
 	url += ":31339/0,";
 	url += xpids;
 
