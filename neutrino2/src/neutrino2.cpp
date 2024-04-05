@@ -3647,8 +3647,15 @@ _repeat:
 	else if (msg == NeutrinoMessages::EVT_STREAM_START) 
 	{
 		int fd = (int) data;
-		printf("NeutrinoMessages::EVT_STREAM_START: fd %d\n", fd);
-//		wakeupFromStandby();
+
+		//
+		bool alive = recordingstatus || CStreamManager::getInstance()->StreamStatus();
+		
+		if ((mode == mode_standby) && !alive) 
+		{
+			CZapit::getInstance()->setStandby(false);
+		}
+		
 		if (g_Radiotext)
 			g_Radiotext->setPid(0);
 
@@ -3657,19 +3664,21 @@ _repeat:
 			close(fd);
 			g_RCInput->postMsg(NeutrinoMessages::EVT_STREAM_STOP, 0);
 		}
-		
-//#if HAVE_ARM_HARDWARE || HAVE_MIPS_HARDWARE
-//		if (!CRecordManager::getInstance()->GetRecordCount()) {
-//			CVFD::getInstance()->ShowIcon(FP_ICON_CAM1, false);
-//		}
-//#endif
+
 		return messages_return::handled;
 	}
 	else if (msg == NeutrinoMessages::EVT_STREAM_STOP) 
 	{
-		printf("NeutrinoMessages::EVT_STREAM_STOP\n");
-//		CEpgScan::getInstance()->Next();
-//		standbyToStandby();
+		//
+		bool alive = recordingstatus || CStreamManager::getInstance()->StreamStatus();
+		
+		if ((mode == mode_standby) && !alive) 
+		{
+			CZapit::getInstance()->setStandby(true);
+			CSectionsd::getInstance()->pauseScanning(true);
+
+		}
+	
 		return messages_return::handled;
 	}
 	////

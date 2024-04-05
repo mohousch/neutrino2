@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-04-03 22:55+0300\n"
+"POT-Creation-Date: 2024-04-05 11:05+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -486,7 +486,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3809 ../../src/neutrino2.cpp:3811
 #: ../../src/neutrino2.cpp:3812 ../../src/neutrino2.cpp:3814
 #: ../../src/neutrino2.cpp:3845 ../../src/neutrino2.cpp:3841
-#: ../../src/neutrino2.cpp:3842
+#: ../../src/neutrino2.cpp:3842 ../../src/neutrino2.cpp:3851
 msgid ""
 "Box will shutdown in 1 min.\n"
 "Cancel Sutdown ?"
@@ -2104,7 +2104,9 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3797 ../../src/neutrino2.cpp:3804
 #: ../../src/neutrino2.cpp:3842 ../../src/neutrino2.cpp:3889
 #: ../../src/neutrino2.cpp:3898 ../../src/neutrino2.cpp:4296
-#: ../../src/neutrino2.cpp:4926
+#: ../../src/neutrino2.cpp:4926 ../../src/neutrino2.cpp:3806
+#: ../../src/neutrino2.cpp:3851 ../../src/neutrino2.cpp:3907
+#: ../../src/neutrino2.cpp:4305 ../../src/neutrino2.cpp:4935
 msgid "Information"
 msgstr ""
 
@@ -2896,7 +2898,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4909 ../../src/neutrino2.cpp:4911
 #: ../../src/neutrino2.cpp:4918 ../../src/neutrino2.cpp:4893
 #: ../../src/neutrino2.cpp:4929 ../../src/neutrino2.cpp:4925
-#: ../../src/neutrino2.cpp:4926
+#: ../../src/neutrino2.cpp:4926 ../../src/neutrino2.cpp:4935
 msgid "No neutrino-settings found, Using defaults."
 msgstr ""
 
@@ -3184,7 +3186,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3706 ../../src/neutrino2.cpp:3708
 #: ../../src/neutrino2.cpp:3709 ../../src/neutrino2.cpp:3711
 #: ../../src/neutrino2.cpp:3742 ../../src/neutrino2.cpp:3738
-#: ../../src/neutrino2.cpp:3739
+#: ../../src/neutrino2.cpp:3739 ../../src/neutrino2.cpp:3748
 msgid "Program unknown"
 msgstr ""
 
@@ -3328,7 +3330,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3764 ../../src/neutrino2.cpp:3766
 #: ../../src/neutrino2.cpp:3767 ../../src/neutrino2.cpp:3769
 #: ../../src/neutrino2.cpp:3800 ../../src/neutrino2.cpp:3796
-#: ../../src/neutrino2.cpp:3797
+#: ../../src/neutrino2.cpp:3797 ../../src/neutrino2.cpp:3806
 msgid "Recording starts in a few minutes"
 msgstr ""
 
@@ -3412,6 +3414,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3878 ../../src/neutrino2.cpp:3880
 #: ../../src/neutrino2.cpp:3883 ../../src/neutrino2.cpp:3918
 #: ../../src/neutrino2.cpp:3914 ../../src/neutrino2.cpp:3915
+#: ../../src/neutrino2.cpp:3924
 msgid "Reminder"
 msgstr ""
 
@@ -3976,7 +3979,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3771 ../../src/neutrino2.cpp:3773
 #: ../../src/neutrino2.cpp:3774 ../../src/neutrino2.cpp:3776
 #: ../../src/neutrino2.cpp:3807 ../../src/neutrino2.cpp:3803
-#: ../../src/neutrino2.cpp:3804
+#: ../../src/neutrino2.cpp:3804 ../../src/neutrino2.cpp:3813
 msgid "Sleeptimer in 1 min"
 msgstr ""
 
@@ -4464,7 +4467,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4909 ../../src/neutrino2.cpp:4911
 #: ../../src/neutrino2.cpp:4918 ../../src/neutrino2.cpp:4893
 #: ../../src/neutrino2.cpp:4929 ../../src/neutrino2.cpp:4925
-#: ../../src/neutrino2.cpp:4926
+#: ../../src/neutrino2.cpp:4926 ../../src/neutrino2.cpp:4935
 msgid ""
 "The neutrino-settings have been updated.\n"
 "New Options will be set to default."
@@ -4905,7 +4908,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4280 ../../src/neutrino2.cpp:3181
 #: ../../src/neutrino2.cpp:4282 ../../src/neutrino2.cpp:4264
 #: ../../src/neutrino2.cpp:4299 ../../src/neutrino2.cpp:4295
-#: ../../src/neutrino2.cpp:4296
+#: ../../src/neutrino2.cpp:4296 ../../src/neutrino2.cpp:4305
 msgid "You really want to to stop record ?"
 msgstr ""
 
@@ -4945,7 +4948,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3687 ../../src/neutrino2.cpp:3689
 #: ../../src/neutrino2.cpp:3690 ../../src/neutrino2.cpp:3692
 #: ../../src/neutrino2.cpp:3723 ../../src/neutrino2.cpp:3719
-#: ../../src/neutrino2.cpp:3720
+#: ../../src/neutrino2.cpp:3720 ../../src/neutrino2.cpp:3729
 msgid "Zapto timer in one minute"
 msgstr ""
 
