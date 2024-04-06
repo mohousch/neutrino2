@@ -23,6 +23,7 @@
 #define __zapit_descriptors_h__
 
 #include <zapit/zapittypes.h>
+#include <zapit/frontend_c.h>
 
 
 ////
@@ -70,15 +71,15 @@ class CDescriptors
 
 		void stuffing_descriptor(const unsigned char * const buffer);
 
-		int satellite_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, int feindex = 0);
+		int satellite_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe);
 
-		int cable_delivery_system_descriptor(const unsigned char * const buffer, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, int feindex = 0);
+		int cable_delivery_system_descriptor(const unsigned char * const buffer, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe);
 
 		void VBI_data_descriptor(const unsigned char * const buffer);
 		void VBI_teletext_descriptor(const unsigned char * const buffer);
 		void bouquet_name_descriptor(const unsigned char * const buffer);
 
-		void service_descriptor(const unsigned char * const buffer, const t_service_id service_id, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, bool free_ca, int feindex = 0);
+		void service_descriptor(const unsigned char * const buffer, const t_service_id service_id, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, bool free_ca, CFrontend* fe);
 
 		void current_service_descriptor(const unsigned char * const buffer, const t_service_id service_id, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq);
 
@@ -100,9 +101,9 @@ class CDescriptors
 		void local_time_offset_descriptor(const unsigned char * const buffer);
 		void subtitling_descriptor(const unsigned char * const buffer);
 
-		int terrestrial_delivery_system_descriptor(const unsigned char * const buffer, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, int feindex = 0);
+		int terrestrial_delivery_system_descriptor(const unsigned char * const buffer, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe);
 		
-		int terrestrial2_delivery_system_descriptor(const unsigned char * const buffer, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, int feindex = 0);
+		int terrestrial2_delivery_system_descriptor(const unsigned char * const buffer, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe);
 
 		void multilingual_network_name_descriptor(const unsigned char * const buffer);
 		void multilingual_bouquet_name_descriptor(const unsigned char * const buffer);

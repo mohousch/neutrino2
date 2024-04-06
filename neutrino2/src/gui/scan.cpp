@@ -43,8 +43,6 @@
 #include <global.h>
 #include <neutrino2.h>
 
-#include <zapit/frontend_c.h>
-
 #include <gui/pictureviewer.h>
 
 
@@ -59,7 +57,7 @@ extern satellite_map_t satellitePositions;					// defined in getServices.cpp
 extern CScanSettings * scanSettings;		// defined in scan_setup.cpp
 
 //
-CScanTs::CScanTs(int num)
+CScanTs::CScanTs(CFrontend* f, CScanSettings * sc)
 {
 	frameBuffer = CFrameBuffer::getInstance();
 	radar = 0;
@@ -83,7 +81,10 @@ CScanTs::CScanTs(int num)
 	sigscale = new CCProgressBar(x + 20 - 1, y + height - mheight - 5 + 2, BAR_WIDTH, BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR);
 	snrscale = new CCProgressBar(x + 20 + 260 - 1, y + height - mheight - 5 + 2, BAR_WIDTH, BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR);
 	
-	feindex = num;
+	fe = f;
+	scanSettings = sc;
+	
+	dprintf(DEBUG_NORMAL, "CScanTs::CScanTs: fe(%d:%d)\n", fe->feadapter, fe->fenumber);
 }
 
 int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
@@ -161,39 +162,39 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		TP.feparams.frequency = atoi(scanSettings->TP_freq);
 		
 		// delsys
-		TP.feparams.delsys = CZapit::getInstance()->getFE(feindex)->getForcedDelSys();
+		TP.feparams.delsys = fe->getForcedDelSys();
 		
 		// inversion
 		TP.feparams.inversion = INVERSION_AUTO;
 		
 #if HAVE_DVB_API_VERSION >= 5
-		if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+		if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
 #else
-		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+		if(fe->getInfo()->type == FE_QPSK)
 #endif
 		{
 			TP.feparams.symbol_rate = atoi(scanSettings->TP_rate);
 			TP.feparams.fec_inner = (fe_code_rate_t) scanSettings->TP_fec;
 			TP.feparams.polarization = scanSettings->TP_pol;
 
-			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d delsys:0x%x) freq %d rate %d fec %d pol %d\n", feindex, CZapit::getInstance()->getFE(feindex)->getForcedDelSys(), TP.feparams.frequency, TP.feparams.symbol_rate, TP.feparams.fec_inner, TP.feparams.polarization);
+			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d:%d delsys:0x%x) freq %d rate %d fec %d pol %d\n", fe->feadapter, fe->fenumber, fe->getForcedDelSys(), TP.feparams.frequency, TP.feparams.symbol_rate, TP.feparams.fec_inner, TP.feparams.polarization);
 		} 
 #if HAVE_DVB_API_VERSION >= 5 
-		else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C)
+		else if (fe->getForcedDelSys() == DVB_C)
 #else
-		else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
+		else if ( fe->getInfo()->type == FE_QAM )
 #endif
 		{
 			TP.feparams.symbol_rate	= atoi(scanSettings->TP_rate);
 			TP.feparams.fec_inner	= (fe_code_rate_t)scanSettings->TP_fec;
 			TP.feparams.modulation	= (fe_modulation_t) scanSettings->TP_mod;
 
-			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d delsys:0x%x) freq %d rate %d fec %d mod %d\n", feindex, CZapit::getInstance()->getFE(feindex)->getForcedDelSys(), TP.feparams.frequency, TP.feparams.symbol_rate, TP.feparams.fec_inner, TP.feparams.modulation);
+			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d:%d delsys:0x%x) freq %d rate %d fec %d mod %d\n", fe->feadapter, fe->fenumber, fe->getForcedDelSys(), TP.feparams.frequency, TP.feparams.symbol_rate, TP.feparams.fec_inner, TP.feparams.modulation);
 		}
 #if HAVE_DVB_API_VERSION >= 5
-		else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+		else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
 #else
-		else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
+		else if ( fe->getInfo()->type == FE_OFDM) 
 #endif
 		{
 			TP.feparams.bandwidth =  (fe_bandwidth_t)scanSettings->TP_band;
@@ -205,21 +206,21 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			TP.feparams.hierarchy_information = (fe_hierarchy_t)scanSettings->TP_hierarchy;
 			
 #if HAVE_DVB_API_VERSION >= 5
-			if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+			if (fe->getForcedDelSys() == DVB_T2)
 				TP.feparams.plp_id = (unsigned int) atoi(scanSettings->TP_plp_id);
 #endif
 
-			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d delsys:0x%x) freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", feindex, CZapit::getInstance()->getFE(feindex)->getForcedDelSys(), TP.feparams.frequency, TP.feparams.bandwidth, TP.feparams.code_rate_HP, TP.feparams.code_rate_LP, TP.feparams.modulation, TP.feparams.transmission_mode, TP.feparams.guard_interval, TP.feparams.hierarchy_information);
+			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d:%d delsys:0x%x) freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", fe->feadapter, fe->fenumber, fe->getForcedDelSys(), TP.feparams.frequency, TP.feparams.bandwidth, TP.feparams.code_rate_HP, TP.feparams.code_rate_LP, TP.feparams.modulation, TP.feparams.transmission_mode, TP.feparams.guard_interval, TP.feparams.hierarchy_information);
 		}
 #if HAVE_DVB_API_VERSION >= 5 
-		else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
+		else if (fe->getForcedDelSys() == DVB_A)
 #else
-		else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC )
+		else if (fe->getInfo()->type == FE_ATSC)
 #endif
 		{
 			TP.feparams.modulation	= (fe_modulation_t) scanSettings->TP_mod;
 
-			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d delsys:0x%x) freq:%d mod %d\n", feindex, CZapit::getInstance()->getFE(feindex)->getForcedDelSys(), TP.feparams.frequency, TP.feparams.modulation);
+			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d:%d delsys:0x%x) freq:%d mod %d\n", fe->feadapter, fe->fenumber, fe->getForcedDelSys(), TP.feparams.frequency, TP.feparams.modulation);
 		}
 	}
 	else if (!scan_all) // auto
@@ -273,32 +274,32 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		char * f, *s, *m;
 
 #if HAVE_DVB_API_VERSION >= 5
-		if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+		if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
 #else
-		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+		if(fe->getInfo()->type == FE_QPSK)
 #endif
 		{
-			CZapit::getInstance()->getFE(feindex)->getDelSys(scanSettings->TP_fec, dvbs_get_modulation((fe_code_rate_t)scanSettings->TP_fec), f, s, m);
+			fe->getDelSys(scanSettings->TP_fec, dvbs_get_modulation((fe_code_rate_t)scanSettings->TP_fec), f, s, m);
 
 			sprintf(buffer, "%u %c %d %s %s %s", atoi(scanSettings->TP_freq)/1000, scanSettings->TP_pol == 0 ? 'H' : 'V', atoi(scanSettings->TP_rate)/1000, f, s, m);
 		} 
 #if HAVE_DVB_API_VERSION >= 5 
-		else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C)
+		else if (fe->getForcedDelSys() == DVB_C)
 #else
-		else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
+		else if ( fe->getInfo()->type == FE_QAM )
 #endif
 		{
-			CZapit::getInstance()->getFE(feindex)->getDelSys(scanSettings->TP_fec, scanSettings->TP_mod, f, s, m);
+			fe->getDelSys(scanSettings->TP_fec, scanSettings->TP_mod, f, s, m);
 
 			sprintf(buffer, "%u %d %s %s %s", atoi(scanSettings->TP_freq), atoi(scanSettings->TP_rate)/1000, f, s, m);
 		}
 #if HAVE_DVB_API_VERSION >= 5
-		else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+		else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
 #else
-		else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
+		else if (fe->getInfo()->type == FE_OFDM) 
 #endif
 		{
-			CZapit::getInstance()->getFE(feindex)->getDelSys(scanSettings->TP_HP, scanSettings->TP_mod, f, s, m);
+			fe->getDelSys(scanSettings->TP_HP, scanSettings->TP_mod, f, s, m);
 
 			sprintf(buffer, "%u %s %s %s", atoi(scanSettings->TP_freq), f, s, m);
 		}
@@ -306,7 +307,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		paintLine(xpos2, ypos_cur_satellite, w - 95, scanSettings->satNameNoDiseqc);
 		paintLine(xpos2, ypos_frequency, w, buffer);
 
-		success = CZapit::getInstance()->tuneTP(TP, feindex);
+		success = CZapit::getInstance()->tuneTP(TP, fe);
 	} 
 	else if(manual) // manual
 	{
@@ -314,7 +315,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	
 		msg.TP = TP;
 		msg.scanmode = scan_mode;
-		msg.feindex = feindex;
+		msg.fe = fe;
 	
 		success = CZapit::getInstance()->scanTP(msg);
 	}
@@ -323,7 +324,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		CZapit::commandScanProvider msg;
 		
 		msg.scanmode = scan_mode;
-		msg.feindex = feindex;
+		msg.fe = fe;
 	
 		success = CZapit::getInstance()->startScan(msg);
 	}
@@ -458,7 +459,7 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 				int rate = data >> 16;
 				char * f, *s, *m;
 				
-				CZapit::getInstance()->getFE(feindex)->getDelSys(fec, (fe_modulation_t)0, f, s, m); // FIXME
+				fe->getDelSys(fec, (fe_modulation_t)0, f, s, m); // FIXME
 				
 				sprintf(buffer, " %c %d %s %s %s", pol == 0 ? 'H' : 'V', rate, f, s, m);
 				
@@ -583,36 +584,36 @@ void CScanTs::paint(bool fortest)
 	ypos_cur_satellite = ypos;
 	
 #if HAVE_DVB_API_VERSION >= 5
-	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+	if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
 #else
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+	if(fe->getInfo()->type == FE_QPSK)
 #endif
 	{	//sat
 		paintLineLocale(xpos1, &ypos, width - xpos1, _("Satellite:"));
 		xpos2 = xpos1 + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_("Satellite:"), true); // UTF-8
 	}
 #if HAVE_DVB_API_VERSION >= 5 
-	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C)
+	else if (fe->getForcedDelSys() == DVB_C)
 #else
-	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
+	else if (fe->getInfo()->type == FE_QAM)
 #endif
 	{	//cable
 		paintLineLocale(xpos1, &ypos, width - xpos1, _("Cable:"));
 		xpos2 = xpos1 + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_("Cable:"), true); // UTF-8
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
 #else
-	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
+	else if (fe->getInfo()->type == FE_OFDM) 
 #endif
 	{	//terrestrial
 		paintLineLocale(xpos1, &ypos, width - xpos1, _("Terrestrial:"));
 		xpos2 = xpos1 + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_("Terrestrial:"), true); // UTF-8
 	}
 #if HAVE_DVB_API_VERSION >= 5
-    	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
+    	else if (fe->getForcedDelSys() == DVB_A)
 #else
-	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
+	else if (fe->getInfo()->type == FE_ATSC)
 #endif
 	{	//terrestrial
 		paintLineLocale(xpos1, &ypos, width - xpos1, _("Atsc:"));
@@ -670,8 +671,8 @@ void CScanTs::showSNR()
 	int posx, posy;
 	int sw;
 
-	ssig = CZapit::getInstance()->getFE(feindex)->getSignalStrength();
-	ssnr = CZapit::getInstance()->getFE(feindex)->getSignalNoiseRatio();
+	ssig = fe->getSignalStrength();
+	ssnr = fe->getSignalNoiseRatio();
 
 	snr = (ssnr & 0xFFFF) * 100 / 65535;
 	sig = (ssig & 0xFFFF) * 100 / 65535;

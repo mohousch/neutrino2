@@ -37,15 +37,17 @@
 #include <driver/gfx/framebuffer.h>
 #include <driver/gfx/icons.h>
 
+#include <zapit/frontend_c.h>
+
 
 //
 class CScanSettings
 {
 	private:
-		int feindex;
+		CFrontend* fe;
 		
-		uint32_t	getConfigValue(int num, const char * name, uint32_t defval);
-		void		setConfigValue(int num, const char * name, uint32_t val);
+		uint32_t	getConfigValue(CFrontend* fe, const char * name, uint32_t defval);
+		void		setConfigValue(CFrontend* fe, const char * name, uint32_t val);
 		
 	public:
 		CConfigFile	configfile;
@@ -67,22 +69,24 @@ class CScanSettings
 		unsigned int		TP_hierarchy;
 		char			TP_plp_id[4];
 	
-		CScanSettings(int num = 0);
-		virtual ~CScanSettings(){};
+		CScanSettings(CFrontend* f);
+		virtual ~CScanSettings(){fe = NULL;};
 	
-		bool loadSettings(const char * const fileName, int index = 0);
-		bool saveSettings(const char * const fileName, int index = 0);
+		bool loadSettings(const char * const fileName);
+		bool saveSettings(const char * const fileName);
 };
 
 //
 class CTPSelectHandler : public CMenuTarget
 {
 	private:
-		int feindex;
+		CFrontend* fe;
+		CScanSettings * scanSettings;
 	
 	public:
-		CTPSelectHandler(int num = 0);
+		CTPSelectHandler(CFrontend* f = NULL, CScanSettings * sc = NULL);
 		virtual ~CTPSelectHandler(){};
+		
 		int exec(CMenuTarget *parent, const std::string &actionkey);
 };
 
@@ -96,10 +100,11 @@ class CSatelliteSetupNotifier : public CChangeObserver
 		std::vector<CMenuItem*> items4;
 		std::vector<CMenuItem*> items5;
 		
-		int feindex;
+		CFrontend* fe;
 	public:
-		CSatelliteSetupNotifier(int num = 0);
+		CSatelliteSetupNotifier(CFrontend* f);
 		virtual ~CSatelliteSetupNotifier(){items1.clear(); items2.clear(); items3.clear(); items4.clear(); items5.clear();};
+		
 		void addItem(int list, CMenuItem* item);
 		bool changeNotify(const std::string&, void * Data);
 };
@@ -114,9 +119,9 @@ class CScanSetupNotifier : public CChangeObserver
 		std::vector<CMenuItem*> items4;
 		std::vector<CMenuItem*> items5;
 		
-		int feindex;
+		CFrontend* fe;
 	public:
-		CScanSetupNotifier(int num = 0);
+		CScanSetupNotifier(CFrontend* f); // FIXME: ???
 		virtual ~CScanSetupNotifier(){items1.clear(); items2.clear(); items3.clear(); items4.clear(); items5.clear();};
 		void addItem(int list, CMenuItem *item);
 		bool changeNotify(const std::string&, void * Data);
@@ -126,10 +131,10 @@ class CScanSetupNotifier : public CChangeObserver
 class CScanSetupDelSysNotifier : public CChangeObserver
 {
 	private:
-		int feindex;
+		CFrontend* fe;
 		CMenuItem *item;
 	public:
-		CScanSetupDelSysNotifier(int num = 0);
+		CScanSetupDelSysNotifier(CFrontend* f);
 		void addItem(CMenuItem *m);
 		bool changeNotify(const std::string&, void *Data);
 };
@@ -138,13 +143,14 @@ class CScanSetupDelSysNotifier : public CChangeObserver
 class CScanSetup : public CMenuTarget
 {
 	private:
-		int feindex;
+		CFrontend* fe;
 		sat_iterator_t sit;
 		CScanTs *scanTs;
 		CSatelliteSetupNotifier *satNotify;
 		CScanSetupNotifier *feModeNotifier;
 		CScanSetupDelSysNotifier *feDelSysNotifier;
 		CTPSelectHandler *tpSelect;
+		CScanSettings * scanSettings;
 
 		//
 		int showScanService();
@@ -157,8 +163,9 @@ class CScanSetup : public CMenuTarget
 		int showSatOnOffSetup();
 		
 	public:
-		CScanSetup(int num = 0);
+		CScanSetup(CFrontend* f = NULL);
 		~CScanSetup();
+		
 		int exec(CMenuTarget* parent, const std::string & actionKey);
 };
 

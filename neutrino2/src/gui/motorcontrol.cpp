@@ -44,8 +44,6 @@
 #include <system/settings.h>
 #include <system/debug.h>
 
-#include <zapit/frontend_c.h>
-
 
 //// globals
 static int g_sig;
@@ -66,11 +64,12 @@ extern CScanSettings * scanSettings;
 #define BAR_HEIGHT 16 //(13 + BAR_BORDER*2)
 
 //
-CMotorControl::CMotorControl(int num)
+CMotorControl::CMotorControl(CFrontend* f, CScanSettings * sc)
 {
 	Init();
 	
-	feindex = num;
+	fe = f;
+	scanSettings = sc;
 }
 
 void CMotorControl::Init(void)
@@ -150,7 +149,7 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 	TP.feparams.polarization = scanSettings->TP_pol;
 
 	CZapit::getInstance()->stopPlayBack();
-	CZapit::getInstance()->tuneTP(TP, feindex);
+	CZapit::getInstance()->tuneTP(TP, fe);
 
 	paint();
 	paintMenu();
@@ -179,7 +178,7 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 				if(wasgrow && (last_snr > g_snr) && last_snr > 50) 
 				{
 					//printf("Must stop rotor!!!\n");
-					CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x60, 0, 0, 0);
+					fe->sendMotorCommand(0xE0, 0x31, 0x60, 0, 0, 0);
 					moving = 0;
 					paintStatus();
 					last_snr = 0;
@@ -212,7 +211,7 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 					case CRCInput::RC_red:
 					case CRCInput::RC_2:
 						dprintf(DEBUG_NORMAL, "[motorcontrol] 2 key received... halt motor\n");
-						CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x60, 0, 0, 0);
+						fe->sendMotorCommand(0xE0, 0x31, 0x60, 0, 0, 0);
 						moving = 0;
 						paintStatus();
 						break;
@@ -231,12 +230,12 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 						else 
 							lim_cmd = 0x67;
 						
-						CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE1, 0x31, lim_cmd, 0, 0, 0);
+						fe->sendMotorCommand(0xE1, 0x31, lim_cmd, 0, 0, 0);
 						break;
 						
 					case CRCInput::RC_5:
 						dprintf(DEBUG_NORMAL, "[motorcontrol] 5 key received... disable (soft) limits\n");
-						CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x63, 0, 0, 0);
+						fe->sendMotorCommand(0xE0, 0x31, 0x63, 0, 0, 0);
 						break;
 					
 					case CRCInput::RC_6:
@@ -246,24 +245,24 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 						else 
 							lim_cmd = 0x66;
 						
-						CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE1, 0x31, lim_cmd, 0, 0, 0);
+						fe->sendMotorCommand(0xE1, 0x31, lim_cmd, 0, 0, 0);
 						break;
 					
 					case CRCInput::RC_7:
 						dprintf(DEBUG_NORMAL, "[motorcontrol] 7 key received... goto reference position\n");
-						CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x6B, 1, 0, 0);
+						fe->sendMotorCommand(0xE0, 0x31, 0x6B, 1, 0, 0);
 						satellitePosition = 0;
 						paintStatus();
 						break;
 					
 					case CRCInput::RC_8:
 						dprintf(DEBUG_NORMAL, "[motorcontrol] 8 key received... enable (soft) limits\n");
-						CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x6A, 1, 0, 0);
+						fe->sendMotorCommand(0xE0, 0x31, 0x6A, 1, 0, 0);
 						break;
 					
 					case CRCInput::RC_9:
 						dprintf(DEBUG_NORMAL, "[motorcontrol] 9 key received... (re)-calculate positions\n");
-						CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x6F, 1, 0, 0);
+						fe->sendMotorCommand(0xE0, 0x31, 0x6F, 1, 0, 0);
 						break;
 					
 					case CRCInput::RC_plus:
@@ -320,7 +319,7 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 					case CRCInput::RC_red:
 					case CRCInput::RC_2:
 						dprintf(DEBUG_NORMAL, "[motorcontrol] 2 key received... halt motor\n");
-						CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x60, 0, 0, 0);
+						fe->sendMotorCommand(0xE0, 0x31, 0x60, 0, 0, 0);
 						break;
 
 					case CRCInput::RC_3:
@@ -333,7 +332,7 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 					case CRCInput::RC_green:
 					case CRCInput::RC_5:
 						dprintf(DEBUG_NORMAL, "[motorcontrol] 5 key received... store present satellite number: %d\n", motorPosition);
-						CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x6A, 1, motorPosition, 0);
+						fe->sendMotorCommand(0xE0, 0x31, 0x6A, 1, motorPosition, 0);
 						break;
 					
 					case CRCInput::RC_6:
@@ -345,7 +344,7 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 					case CRCInput::RC_yellow:
 					case CRCInput::RC_7:
 						dprintf(DEBUG_NORMAL, "[motorcontrol] 7 key received... goto satellite number: %d\n", motorPosition);
-						CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x6B, 1, motorPosition, 0);
+						fe->sendMotorCommand(0xE0, 0x31, 0x6B, 1, motorPosition, 0);
 						satellitePosition = 0;
 						paintStatus();
 						break;
@@ -423,14 +422,14 @@ void CMotorControl::motorStepWest(void)
 	switch(stepMode)
 	{
 		case STEP_MODE_ON:
-			CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, cmd, 1, (-1 * stepSize), 0);
+			fe->sendMotorCommand(0xE0, 0x31, cmd, 1, (-1 * stepSize), 0);
 			satellitePosition += stepSize;
 			break;
 			
 		case STEP_MODE_TIMED:
-			CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, cmd, 1, 40, 0);
+			fe->sendMotorCommand(0xE0, 0x31, cmd, 1, 40, 0);
 			usleep(stepSize * stepDelay * 1000);
-			CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x60, 0, 0, 0); //halt motor
+			fe->sendMotorCommand(0xE0, 0x31, 0x60, 0, 0, 0); //halt motor
 			satellitePosition += stepSize;
 			break;
 			
@@ -438,7 +437,7 @@ void CMotorControl::motorStepWest(void)
 			moving = 1;
 			paintStatus();
 		default:
-			CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, cmd, 1, 40, 0);
+			fe->sendMotorCommand(0xE0, 0x31, cmd, 1, 40, 0);
 	}
 }	
 
@@ -454,21 +453,21 @@ void CMotorControl::motorStepEast(void)
 	switch(stepMode)
 	{
 		case STEP_MODE_ON:
-			CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, cmd, 1, (-1 * stepSize), 0);
+			fe->sendMotorCommand(0xE0, 0x31, cmd, 1, (-1 * stepSize), 0);
 			satellitePosition -= stepSize;
 			break;
 			
 		case STEP_MODE_TIMED:
-			CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, cmd, 1, 40, 0);
+			fe->sendMotorCommand(0xE0, 0x31, cmd, 1, 40, 0);
 			usleep(stepSize * stepDelay * 1000);
-			CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x60, 0, 0, 0); //halt motor
+			fe->sendMotorCommand(0xE0, 0x31, 0x60, 0, 0, 0); //halt motor
 			satellitePosition -= stepSize;
 			break;
 			
 		case STEP_MODE_AUTO:
 			moving = 1;
 		default:
-			CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, cmd, 1, 40, 0);
+			fe->sendMotorCommand(0xE0, 0x31, cmd, 1, 40, 0);
 	}
 }
 
@@ -717,8 +716,8 @@ void CMotorControl::showSNR()
 
 	int sw;
 	
-	ssig = CZapit::getInstance()->getFE(feindex)->getSignalStrength();
-	ssnr = CZapit::getInstance()->getFE(feindex)->getSignalNoiseRatio();
+	ssig = fe->getSignalStrength();
+	ssnr = fe->getSignalNoiseRatio();
 
 	snr = (ssnr & 0xFFFF) * 100 / 65535;
 	sig = (ssig & 0xFFFF) * 100 / 65535;

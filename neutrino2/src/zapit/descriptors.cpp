@@ -267,7 +267,7 @@ void CDescriptors::stuffing_descriptor(const unsigned char * const)
 }
 
 /* 0x43 */
-int CDescriptors::satellite_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, int feindex)
+int CDescriptors::satellite_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe)
 {
 	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
 	
@@ -278,9 +278,9 @@ int CDescriptors::satellite_delivery_system_descriptor(const unsigned char * con
 	int modulationSystem, modulationType, rollOff, fec_inner;
 
 #if HAVE_DVB_API_VERSION >= 5
-	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+	if (fe->getForcedDelSys() != DVB_S || fe->getForcedDelSys() != DVB_S2)
 #else
-	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_QPSK)
+	if (fe->getInfo()->type != FE_QPSK)
 #endif
 		return -1;
 		
@@ -355,19 +355,23 @@ int CDescriptors::satellite_delivery_system_descriptor(const unsigned char * con
 
 	TsidOnid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
 
-	CZapit::getInstance()->addToScan(TsidOnid, &feparams, true, feindex);
+	CZapit::getInstance()->addToScan(TsidOnid, &feparams, true, fe);
 
 	return 0;
 }
 
 /* 0x44 */
-int CDescriptors::cable_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, int feindex)
+int CDescriptors::cable_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe)
 {
 	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
 	
 	transponder_id_t TsidOnid;
 
-	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_QAM)
+#if HAVE_DVB_API_VERSION >= 5
+	if (fe->getForcedDelSys() != DVB_C)
+#else
+	if (fe->getInfo()->type != FE_QAM)
+#endif
 		return -1;
 
 	FrontendParameters feparams;
@@ -416,7 +420,7 @@ int CDescriptors::cable_delivery_system_descriptor(const unsigned char * const b
 
        TsidOnid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
 
-        CZapit::getInstance()->addToScan(TsidOnid, &feparams, true, feindex);
+        CZapit::getInstance()->addToScan(TsidOnid, &feparams, true, fe);
 
 	return 0;
 }
@@ -450,7 +454,7 @@ uint8_t CDescriptors::fix_service_type(uint8_t type)
 }
 
 /* 0x48 */
-void CDescriptors::service_descriptor(const unsigned char * const buffer, const t_service_id service_id, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, bool free_ca, int feindex)
+void CDescriptors::service_descriptor(const unsigned char * const buffer, const t_service_id service_id, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, bool free_ca, CFrontend* fe)
 {
 	dprintf(DEBUG_NORMAL, "CDescriptors::service_descriptor:\n");
 	
@@ -616,7 +620,7 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 		if(tpchange) 
 		{
 			cDemux * dmx = new cDemux(); 			
-			dmx->Open(DMX_PSI_CHANNEL, 1024, CZapit::getInstance()->getFE(feindex));			
+			dmx->Open(DMX_PSI_CHANNEL, 1024, fe);			
 			
 			if (!((dmx->sectionFilter(0x10, filter, mask, 5, 10000) < 0) || (dmx->Read(buff, 1024) < 0))) 
 			{
@@ -688,7 +692,11 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 				int bouquetId;
 				char pname[100];
 				
-				if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+#if HAVE_DVB_API_VERSION >= 5
+				if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+#else
+				if (fe->getInfo()->type == FE_QPSK)
+#endif
 					snprintf(pname, 100, "[%c%03d.%d] %s", satellitePosition > 0? 'E' : 'W', abs((int)satellitePosition)/10, abs((int)satellitePosition)%10, providerName.c_str());
 				else
 					snprintf(pname, 100, "%s", providerName.c_str());
@@ -900,11 +908,15 @@ void CDescriptors::subtitling_descriptor(const unsigned char * const)
 }
 
 /* 0x5A */
-int CDescriptors::terrestrial_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, int feindex)
+int CDescriptors::terrestrial_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe)
 {
 	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
 	
-	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_OFDM)
+#if HAVE_DVB_API_VERSION >= 5
+	if (fe->getForcedDelSys() != DVB_T)
+#else
+	if (fe->getInfo()->type != FE_OFDM)
+#endif
 		return -1;
 
 	FrontendParameters feparams;
@@ -945,7 +957,7 @@ int CDescriptors::terrestrial_delivery_system_descriptor(const unsigned char * c
 
 	TsidOnid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
 
-	CZapit::getInstance()->addToScan(TsidOnid, &feparams, true, feindex);
+	CZapit::getInstance()->addToScan(TsidOnid, &feparams, true, fe);
 
 	return 0;
 }
@@ -1051,12 +1063,16 @@ void CDescriptors::announcement_support_descriptor(const unsigned char * const)
 }
 
 /* 0x7F */
-int CDescriptors::terrestrial2_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, int feindex)
+int CDescriptors::terrestrial2_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe)
 {
 // FIXME: dummy function
 	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
-	
-	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_OFDM)
+
+#if HAVE_DVB_API_VERSION >= 5
+	if (fe->getForcedDelSys() != DVB_T2)
+#else	
+	if (fe->getInfo()->type != FE_OFDM)
+#endif
 		return -1;
 		
 	FrontendParameters feparams;
@@ -1100,7 +1116,7 @@ int CDescriptors::terrestrial2_delivery_system_descriptor(const unsigned char * 
 
 	TsidOnid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
 
-	CZapit::getInstance()->addToScan(TsidOnid, &feparams, true, feindex);
+	CZapit::getInstance()->addToScan(TsidOnid, &feparams, true, fe);
 		
 	return 0;
 }

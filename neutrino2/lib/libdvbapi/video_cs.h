@@ -360,7 +360,7 @@ class cVideo
 
 		int SetSpaceColour(int space_colour);
 		
-		void SetStreamType(VIDEO_FORMAT type);
+		void SetStreamType(VIDEO_FORMAT type = VIDEO_STREAMTYPE_MPEG2);
 		VIDEO_FORMAT GetStreamType(void) { return StreamType; };
 
 		void SetSyncMode(int mode);

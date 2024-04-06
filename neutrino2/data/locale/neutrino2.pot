@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-04-05 11:05+0300\n"
+"POT-Creation-Date: 2024-04-06 17:51+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,19 +29,24 @@ msgstr ""
 msgid "(%d%% over)"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:631
+#: ../../src/gui/motorcontrol.cpp:631 ../../src/gui/motorcontrol.cpp:629
+#: ../../src/gui/motorcontrol.cpp:630
 msgid "(Re)-Calculate Positions"
 msgstr ""
 
 #: ../../src/gui/motorcontrol.cpp:512 ../../src/gui/motorcontrol.cpp:519
+#: ../../src/gui/motorcontrol.cpp:510 ../../src/gui/motorcontrol.cpp:517
+#: ../../src/gui/motorcontrol.cpp:511 ../../src/gui/motorcontrol.cpp:518
 msgid "(a) Motor Position:"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:523
+#: ../../src/gui/motorcontrol.cpp:523 ../../src/gui/motorcontrol.cpp:521
+#: ../../src/gui/motorcontrol.cpp:522
 msgid "(b) Movement:"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:546
+#: ../../src/gui/motorcontrol.cpp:546 ../../src/gui/motorcontrol.cpp:544
+#: ../../src/gui/motorcontrol.cpp:545
 msgid "(c) Step Size:"
 msgstr ""
 
@@ -88,6 +93,9 @@ msgid "0 for unlimited repeats"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:549 ../../src/gui/scan_setup.cpp:548
+#: ../../src/gui/scan_setup.cpp:546 ../../src/gui/scan_setup.cpp:535
+#: ../../src/gui/scan_setup.cpp:533 ../../src/gui/scan_setup.cpp:534
+#: ../../src/gui/scan_setup.cpp:541 ../../src/gui/scan_setup.cpp:537
 msgid "5 Volt"
 msgstr ""
 
@@ -132,6 +140,7 @@ msgid "AV Select"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:351 ../../src/gui/scan.cpp:350
+#: ../../src/gui/scan.cpp:348
 msgid "Abortion of channel scan"
 msgstr ""
 
@@ -199,6 +208,7 @@ msgid "Adult movie / Drama"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:128 ../../src/gui/scan_setup.cpp:127
+#: ../../src/gui/scan_setup.cpp:125
 msgid "Advanced"
 msgstr ""
 
@@ -228,6 +238,7 @@ msgid "All Services"
 msgstr ""
 
 #: ../../src/skin.cpp:217 ../../src/gui/alphasetup.cpp:187
+#: ../../src/skin.cpp:220
 msgid "Alpha Setup"
 msgstr ""
 
@@ -278,7 +289,8 @@ msgid "Athletics"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:619 ../../src/gui/scan.cpp:620
-#: ../../src/gui/scan.cpp:618
+#: ../../src/gui/scan.cpp:618 ../../src/gui/scan.cpp:616
+#: ../../src/gui/scan.cpp:617
 msgid "Atsc:"
 msgstr ""
 
@@ -357,11 +369,23 @@ msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:643 ../../src/gui/scan_setup.cpp:1398
 #: ../../src/gui/scan_setup.cpp:642 ../../src/gui/scan_setup.cpp:1397
+#: ../../src/gui/scan_setup.cpp:640 ../../src/gui/scan_setup.cpp:1395
+#: ../../src/gui/scan_setup.cpp:629 ../../src/gui/scan_setup.cpp:1384
+#: ../../src/gui/scan_setup.cpp:627 ../../src/gui/scan_setup.cpp:1382
+#: ../../src/gui/scan_setup.cpp:628 ../../src/gui/scan_setup.cpp:1383
+#: ../../src/gui/scan_setup.cpp:635 ../../src/gui/scan_setup.cpp:1390
+#: ../../src/gui/scan_setup.cpp:631 ../../src/gui/scan_setup.cpp:1386
 msgid "Auto-Scan"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:655 ../../src/gui/scan_setup.cpp:1533
 #: ../../src/gui/scan_setup.cpp:654 ../../src/gui/scan_setup.cpp:1532
+#: ../../src/gui/scan_setup.cpp:652 ../../src/gui/scan_setup.cpp:1530
+#: ../../src/gui/scan_setup.cpp:641 ../../src/gui/scan_setup.cpp:1519
+#: ../../src/gui/scan_setup.cpp:639 ../../src/gui/scan_setup.cpp:1517
+#: ../../src/gui/scan_setup.cpp:640 ../../src/gui/scan_setup.cpp:1518
+#: ../../src/gui/scan_setup.cpp:647 ../../src/gui/scan_setup.cpp:1525
+#: ../../src/gui/scan_setup.cpp:643 ../../src/gui/scan_setup.cpp:1521
 msgid "Auto-Scan multiple Satellites"
 msgstr ""
 
@@ -405,6 +429,9 @@ msgid "Ballet"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1315 ../../src/gui/scan_setup.cpp:1314
+#: ../../src/gui/scan_setup.cpp:1312 ../../src/gui/scan_setup.cpp:1301
+#: ../../src/gui/scan_setup.cpp:1299 ../../src/gui/scan_setup.cpp:1300
+#: ../../src/gui/scan_setup.cpp:1307 ../../src/gui/scan_setup.cpp:1303
 msgid "Bandwidth"
 msgstr ""
 
@@ -454,6 +481,9 @@ msgid "Bosnian"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:582 ../../src/gui/scan_setup.cpp:581
+#: ../../src/gui/scan_setup.cpp:579 ../../src/gui/scan_setup.cpp:568
+#: ../../src/gui/scan_setup.cpp:566 ../../src/gui/scan_setup.cpp:567
+#: ../../src/gui/scan_setup.cpp:574 ../../src/gui/scan_setup.cpp:570
 msgid "Bouquet"
 msgstr ""
 
@@ -635,11 +665,18 @@ msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1126 ../../src/gui/scan_setup.cpp:1426
 #: ../../src/gui/scan_setup.cpp:1125 ../../src/gui/scan_setup.cpp:1425
+#: ../../src/gui/scan_setup.cpp:1123 ../../src/gui/scan_setup.cpp:1423
+#: ../../src/gui/scan_setup.cpp:1112 ../../src/gui/scan_setup.cpp:1412
+#: ../../src/gui/scan_setup.cpp:1110 ../../src/gui/scan_setup.cpp:1410
+#: ../../src/gui/scan_setup.cpp:1111 ../../src/gui/scan_setup.cpp:1411
+#: ../../src/gui/scan_setup.cpp:1118 ../../src/gui/scan_setup.cpp:1418
+#: ../../src/gui/scan_setup.cpp:1114 ../../src/gui/scan_setup.cpp:1414
 msgid "Cable"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:601 ../../src/gui/scan.cpp:602
-#: ../../src/gui/scan.cpp:600
+#: ../../src/gui/scan.cpp:600 ../../src/gui/scan.cpp:598
+#: ../../src/gui/scan.cpp:599
 msgid "Cable:"
 msgstr ""
 
@@ -700,7 +737,8 @@ msgid "Channel up"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:642 ../../src/gui/scan.cpp:643
-#: ../../src/gui/scan.cpp:641
+#: ../../src/gui/scan.cpp:641 ../../src/gui/scan.cpp:639
+#: ../../src/gui/scan.cpp:640
 msgid "Channel:"
 msgstr ""
 
@@ -739,10 +777,16 @@ msgid "Classic"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1319 ../../src/gui/scan_setup.cpp:1318
+#: ../../src/gui/scan_setup.cpp:1316 ../../src/gui/scan_setup.cpp:1305
+#: ../../src/gui/scan_setup.cpp:1303 ../../src/gui/scan_setup.cpp:1304
+#: ../../src/gui/scan_setup.cpp:1311 ../../src/gui/scan_setup.cpp:1307
 msgid "Code Rate HP"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1323 ../../src/gui/scan_setup.cpp:1322
+#: ../../src/gui/scan_setup.cpp:1320 ../../src/gui/scan_setup.cpp:1309
+#: ../../src/gui/scan_setup.cpp:1307 ../../src/gui/scan_setup.cpp:1308
+#: ../../src/gui/scan_setup.cpp:1315 ../../src/gui/scan_setup.cpp:1311
 msgid "Code Rate LP"
 msgstr ""
 
@@ -764,6 +808,10 @@ msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:259 ../../src/gui/scan_setup.cpp:946
 #: ../../src/gui/scan_setup.cpp:258 ../../src/gui/scan_setup.cpp:945
+#: ../../src/gui/scan_setup.cpp:256 ../../src/gui/scan_setup.cpp:943
+#: ../../src/gui/scan_setup.cpp:932 ../../src/gui/scan_setup.cpp:930
+#: ../../src/gui/scan_setup.cpp:931 ../../src/gui/scan_setup.cpp:938
+#: ../../src/gui/scan_setup.cpp:934
 msgid "Commited/Uncommited"
 msgstr ""
 
@@ -850,6 +898,7 @@ msgid "DHCP"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:650 ../../src/gui/scan.cpp:649
+#: ../../src/gui/scan.cpp:647
 msgid "Data"
 msgstr ""
 
@@ -867,7 +916,10 @@ msgid "Debug Level"
 msgstr ""
 
 #: ../../src/gui/motorcontrol.cpp:635 ../../src/gui/motorcontrol.cpp:652
-#: ../../src/gui/motorcontrol.cpp:656
+#: ../../src/gui/motorcontrol.cpp:656 ../../src/gui/motorcontrol.cpp:633
+#: ../../src/gui/motorcontrol.cpp:650 ../../src/gui/motorcontrol.cpp:654
+#: ../../src/gui/motorcontrol.cpp:634 ../../src/gui/motorcontrol.cpp:651
+#: ../../src/gui/motorcontrol.cpp:655
 msgid "Decrease Motor Position (a)"
 msgstr ""
 
@@ -976,18 +1028,26 @@ msgid "Detective / Thriller"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:605 ../../src/gui/scan_setup.cpp:604
+#: ../../src/gui/scan_setup.cpp:602 ../../src/gui/scan_setup.cpp:591
+#: ../../src/gui/scan_setup.cpp:589 ../../src/gui/scan_setup.cpp:590
+#: ../../src/gui/scan_setup.cpp:597 ../../src/gui/scan_setup.cpp:593
 msgid "DiSEqC"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:126 ../../src/gui/scan_setup.cpp:125
+#: ../../src/gui/scan_setup.cpp:123
 msgid "DiSEqC 1.0"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:127 ../../src/gui/scan_setup.cpp:126
+#: ../../src/gui/scan_setup.cpp:124
 msgid "DiSEqC 1.1"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:609 ../../src/gui/scan_setup.cpp:608
+#: ../../src/gui/scan_setup.cpp:606 ../../src/gui/scan_setup.cpp:595
+#: ../../src/gui/scan_setup.cpp:593 ../../src/gui/scan_setup.cpp:594
+#: ../../src/gui/scan_setup.cpp:601 ../../src/gui/scan_setup.cpp:597
 msgid "DiSEqC-repeats"
 msgstr ""
 
@@ -1023,7 +1083,8 @@ msgstr ""
 msgid "Directory for updates"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:623
+#: ../../src/gui/motorcontrol.cpp:623 ../../src/gui/motorcontrol.cpp:621
+#: ../../src/gui/motorcontrol.cpp:622
 msgid "Disable (soft) Limits"
 msgstr ""
 
@@ -1046,6 +1107,9 @@ msgid "Discussion / Interview/ Debate"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:943 ../../src/gui/scan_setup.cpp:942
+#: ../../src/gui/scan_setup.cpp:940 ../../src/gui/scan_setup.cpp:929
+#: ../../src/gui/scan_setup.cpp:927 ../../src/gui/scan_setup.cpp:928
+#: ../../src/gui/scan_setup.cpp:935 ../../src/gui/scan_setup.cpp:931
 msgid "Diseqc input"
 msgstr ""
 
@@ -1134,11 +1198,13 @@ msgstr ""
 msgid "Dolby Digital"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:532
+#: ../../src/gui/motorcontrol.cpp:532 ../../src/gui/motorcontrol.cpp:530
+#: ../../src/gui/motorcontrol.cpp:531
 msgid "Drive Mode"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:536
+#: ../../src/gui/motorcontrol.cpp:536 ../../src/gui/motorcontrol.cpp:534
+#: ../../src/gui/motorcontrol.cpp:535
 msgid "Drive Mode/auto stop"
 msgstr ""
 
@@ -1222,6 +1288,7 @@ msgid "EPG-Cache (Days)"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:273 ../../src/gui/scan_setup.cpp:272
+#: ../../src/gui/scan_setup.cpp:270
 msgid "East"
 msgstr ""
 
@@ -1236,7 +1303,8 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:629
+#: ../../src/gui/motorcontrol.cpp:629 ../../src/gui/motorcontrol.cpp:627
+#: ../../src/gui/motorcontrol.cpp:628
 msgid "Enable (soft) Limits"
 msgstr ""
 
@@ -1361,10 +1429,14 @@ msgid "Extended"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1292 ../../src/gui/scan_setup.cpp:1291
+#: ../../src/gui/scan_setup.cpp:1289 ../../src/gui/scan_setup.cpp:1278
+#: ../../src/gui/scan_setup.cpp:1276 ../../src/gui/scan_setup.cpp:1277
+#: ../../src/gui/scan_setup.cpp:1284 ../../src/gui/scan_setup.cpp:1280
 msgid "FEC"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:138 ../../src/gui/scan_setup.cpp:137
+#: ../../src/gui/scan_setup.cpp:135
 msgid "FEC_NONE"
 msgstr ""
 
@@ -1378,6 +1450,7 @@ msgid "Fashion"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:102 ../../src/gui/scan_setup.cpp:101
+#: ../../src/gui/scan_setup.cpp:99
 msgid "Fast"
 msgstr ""
 
@@ -1535,12 +1608,18 @@ msgid "French"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1239 ../../src/gui/scan_setup.cpp:1240
-#: ../../src/gui/scan_setup.cpp:1238
+#: ../../src/gui/scan_setup.cpp:1238 ../../src/gui/scan_setup.cpp:1236
+#: ../../src/gui/scan_setup.cpp:1237 ../../src/gui/scan_setup.cpp:1225
+#: ../../src/gui/scan_setup.cpp:1226 ../../src/gui/scan_setup.cpp:1223
+#: ../../src/gui/scan_setup.cpp:1224 ../../src/gui/scan_setup.cpp:1231
+#: ../../src/gui/scan_setup.cpp:1232 ../../src/gui/scan_setup.cpp:1227
+#: ../../src/gui/scan_setup.cpp:1228
 msgid "Frequency"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:630 ../../src/gui/scan.cpp:631
-#: ../../src/gui/scan.cpp:629
+#: ../../src/gui/scan.cpp:629 ../../src/gui/scan.cpp:627
+#: ../../src/gui/scan.cpp:628
 msgid "Frequency:"
 msgstr ""
 
@@ -1598,11 +1677,13 @@ msgstr ""
 msgid "German"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:648
+#: ../../src/gui/motorcontrol.cpp:648 ../../src/gui/motorcontrol.cpp:646
+#: ../../src/gui/motorcontrol.cpp:647
 msgid "Goto Motor Position (a)"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:627
+#: ../../src/gui/motorcontrol.cpp:627 ../../src/gui/motorcontrol.cpp:625
+#: ../../src/gui/motorcontrol.cpp:626
 msgid "Goto Reference Position"
 msgstr ""
 
@@ -1617,6 +1698,9 @@ msgid "Gradient type"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1331 ../../src/gui/scan_setup.cpp:1330
+#: ../../src/gui/scan_setup.cpp:1328 ../../src/gui/scan_setup.cpp:1317
+#: ../../src/gui/scan_setup.cpp:1315 ../../src/gui/scan_setup.cpp:1316
+#: ../../src/gui/scan_setup.cpp:1323 ../../src/gui/scan_setup.cpp:1319
 msgid "Guard Interval"
 msgstr ""
 
@@ -1727,7 +1811,8 @@ msgstr ""
 msgid "HDMI Color Space"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:614
+#: ../../src/gui/motorcontrol.cpp:614 ../../src/gui/motorcontrol.cpp:612
+#: ../../src/gui/motorcontrol.cpp:613
 msgid "Halt Motor"
 msgstr ""
 
@@ -1839,6 +1924,9 @@ msgid "Hide"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1335 ../../src/gui/scan_setup.cpp:1334
+#: ../../src/gui/scan_setup.cpp:1332 ../../src/gui/scan_setup.cpp:1321
+#: ../../src/gui/scan_setup.cpp:1319 ../../src/gui/scan_setup.cpp:1320
+#: ../../src/gui/scan_setup.cpp:1327 ../../src/gui/scan_setup.cpp:1323
 msgid "Hierarchy"
 msgstr ""
 
@@ -1917,7 +2005,10 @@ msgid "ImageType"
 msgstr ""
 
 #: ../../src/gui/motorcontrol.cpp:633 ../../src/gui/motorcontrol.cpp:646
-#: ../../src/gui/motorcontrol.cpp:654
+#: ../../src/gui/motorcontrol.cpp:654 ../../src/gui/motorcontrol.cpp:631
+#: ../../src/gui/motorcontrol.cpp:644 ../../src/gui/motorcontrol.cpp:652
+#: ../../src/gui/motorcontrol.cpp:632 ../../src/gui/motorcontrol.cpp:645
+#: ../../src/gui/motorcontrol.cpp:653
 msgid "Increase Motor Position (a)"
 msgstr ""
 
@@ -2107,6 +2198,8 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4926 ../../src/neutrino2.cpp:3806
 #: ../../src/neutrino2.cpp:3851 ../../src/neutrino2.cpp:3907
 #: ../../src/neutrino2.cpp:4305 ../../src/neutrino2.cpp:4935
+#: ../../src/gui/scan_setup.cpp:342 ../../src/gui/scan_setup.cpp:343
+#: ../../src/gui/scan_setup.cpp:350
 msgid "Information"
 msgstr ""
 
@@ -2114,7 +2207,8 @@ msgstr ""
 msgid "Informational / educational / school programmes"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:609
+#: ../../src/gui/motorcontrol.cpp:609 ../../src/gui/motorcontrol.cpp:607
+#: ../../src/gui/motorcontrol.cpp:608
 msgid "Install menu"
 msgstr ""
 
@@ -2202,16 +2296,34 @@ msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:962 ../../src/gui/scan_setup.cpp:971
 #: ../../src/gui/scan_setup.cpp:961 ../../src/gui/scan_setup.cpp:970
+#: ../../src/gui/scan_setup.cpp:959 ../../src/gui/scan_setup.cpp:968
+#: ../../src/gui/scan_setup.cpp:948 ../../src/gui/scan_setup.cpp:957
+#: ../../src/gui/scan_setup.cpp:946 ../../src/gui/scan_setup.cpp:955
+#: ../../src/gui/scan_setup.cpp:947 ../../src/gui/scan_setup.cpp:956
+#: ../../src/gui/scan_setup.cpp:954 ../../src/gui/scan_setup.cpp:963
+#: ../../src/gui/scan_setup.cpp:950
 msgid "LNB High Offset"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:961 ../../src/gui/scan_setup.cpp:970
 #: ../../src/gui/scan_setup.cpp:960 ../../src/gui/scan_setup.cpp:969
+#: ../../src/gui/scan_setup.cpp:958 ../../src/gui/scan_setup.cpp:967
+#: ../../src/gui/scan_setup.cpp:947 ../../src/gui/scan_setup.cpp:956
+#: ../../src/gui/scan_setup.cpp:945 ../../src/gui/scan_setup.cpp:954
+#: ../../src/gui/scan_setup.cpp:946 ../../src/gui/scan_setup.cpp:955
+#: ../../src/gui/scan_setup.cpp:953 ../../src/gui/scan_setup.cpp:962
+#: ../../src/gui/scan_setup.cpp:949
 msgid "LNB Low Offset"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:963 ../../src/gui/scan_setup.cpp:972
 #: ../../src/gui/scan_setup.cpp:962 ../../src/gui/scan_setup.cpp:971
+#: ../../src/gui/scan_setup.cpp:960 ../../src/gui/scan_setup.cpp:969
+#: ../../src/gui/scan_setup.cpp:949 ../../src/gui/scan_setup.cpp:958
+#: ../../src/gui/scan_setup.cpp:947 ../../src/gui/scan_setup.cpp:956
+#: ../../src/gui/scan_setup.cpp:948 ../../src/gui/scan_setup.cpp:957
+#: ../../src/gui/scan_setup.cpp:955 ../../src/gui/scan_setup.cpp:964
+#: ../../src/gui/scan_setup.cpp:951
 msgid "LNB switch Offset"
 msgstr ""
 
@@ -2220,6 +2332,9 @@ msgid "LUFS"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:739 ../../src/gui/scan_setup.cpp:738
+#: ../../src/gui/scan_setup.cpp:736 ../../src/gui/scan_setup.cpp:725
+#: ../../src/gui/scan_setup.cpp:723 ../../src/gui/scan_setup.cpp:724
+#: ../../src/gui/scan_setup.cpp:731 ../../src/gui/scan_setup.cpp:727
 msgid "LaDirection"
 msgstr ""
 
@@ -2260,7 +2375,12 @@ msgid "Last play stop:"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:742 ../../src/gui/scan_setup.cpp:743
-#: ../../src/gui/scan_setup.cpp:741
+#: ../../src/gui/scan_setup.cpp:741 ../../src/gui/scan_setup.cpp:739
+#: ../../src/gui/scan_setup.cpp:740 ../../src/gui/scan_setup.cpp:728
+#: ../../src/gui/scan_setup.cpp:729 ../../src/gui/scan_setup.cpp:726
+#: ../../src/gui/scan_setup.cpp:727 ../../src/gui/scan_setup.cpp:734
+#: ../../src/gui/scan_setup.cpp:735 ../../src/gui/scan_setup.cpp:730
+#: ../../src/gui/scan_setup.cpp:731
 msgid "Latitude"
 msgstr ""
 
@@ -2318,6 +2438,9 @@ msgid "Literature"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:746 ../../src/gui/scan_setup.cpp:745
+#: ../../src/gui/scan_setup.cpp:743 ../../src/gui/scan_setup.cpp:732
+#: ../../src/gui/scan_setup.cpp:730 ../../src/gui/scan_setup.cpp:731
+#: ../../src/gui/scan_setup.cpp:738 ../../src/gui/scan_setup.cpp:734
 msgid "LoDirection"
 msgstr ""
 
@@ -2366,7 +2489,12 @@ msgid "Locked program (from %d years up)"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:749 ../../src/gui/scan_setup.cpp:750
-#: ../../src/gui/scan_setup.cpp:748
+#: ../../src/gui/scan_setup.cpp:748 ../../src/gui/scan_setup.cpp:746
+#: ../../src/gui/scan_setup.cpp:747 ../../src/gui/scan_setup.cpp:735
+#: ../../src/gui/scan_setup.cpp:736 ../../src/gui/scan_setup.cpp:733
+#: ../../src/gui/scan_setup.cpp:734 ../../src/gui/scan_setup.cpp:741
+#: ../../src/gui/scan_setup.cpp:742 ../../src/gui/scan_setup.cpp:737
+#: ../../src/gui/scan_setup.cpp:738
 msgid "Longitude"
 msgstr ""
 
@@ -2397,6 +2525,12 @@ msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:638 ../../src/gui/scan_setup.cpp:1098
 #: ../../src/gui/scan_setup.cpp:637 ../../src/gui/scan_setup.cpp:1097
+#: ../../src/gui/scan_setup.cpp:635 ../../src/gui/scan_setup.cpp:1095
+#: ../../src/gui/scan_setup.cpp:624 ../../src/gui/scan_setup.cpp:1084
+#: ../../src/gui/scan_setup.cpp:622 ../../src/gui/scan_setup.cpp:1082
+#: ../../src/gui/scan_setup.cpp:623 ../../src/gui/scan_setup.cpp:1083
+#: ../../src/gui/scan_setup.cpp:630 ../../src/gui/scan_setup.cpp:1090
+#: ../../src/gui/scan_setup.cpp:626 ../../src/gui/scan_setup.cpp:1086
 msgid "Manual frequency scan / Test signal"
 msgstr ""
 
@@ -2466,6 +2600,7 @@ msgid "Message"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:125 ../../src/gui/scan_setup.cpp:124
+#: ../../src/gui/scan_setup.cpp:122
 msgid "Mini-DiSEqC"
 msgstr ""
 
@@ -2499,6 +2634,13 @@ msgstr ""
 #: ../../src/gui/scan_setup.cpp:1261 ../../src/gui/scan_setup.cpp:1269
 #: ../../src/gui/scan_setup.cpp:1277 ../../src/gui/scan_setup.cpp:1260
 #: ../../src/gui/scan_setup.cpp:1268 ../../src/gui/scan_setup.cpp:1276
+#: ../../src/gui/scan_setup.cpp:1258 ../../src/gui/scan_setup.cpp:1266
+#: ../../src/gui/scan_setup.cpp:1274 ../../src/gui/scan_setup.cpp:1247
+#: ../../src/gui/scan_setup.cpp:1255 ../../src/gui/scan_setup.cpp:1263
+#: ../../src/gui/scan_setup.cpp:1245 ../../src/gui/scan_setup.cpp:1253
+#: ../../src/gui/scan_setup.cpp:1246 ../../src/gui/scan_setup.cpp:1254
+#: ../../src/gui/scan_setup.cpp:1262 ../../src/gui/scan_setup.cpp:1249
+#: ../../src/gui/scan_setup.cpp:1257 ../../src/gui/scan_setup.cpp:1265
 msgid "Modulation"
 msgstr ""
 
@@ -2510,17 +2652,29 @@ msgstr ""
 msgid "More Screenings on this Channel"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:577
+#: ../../src/gui/motorcontrol.cpp:577 ../../src/gui/motorcontrol.cpp:575
+#: ../../src/gui/motorcontrol.cpp:576
 msgid "Motor Control Settings"
 msgstr ""
 
 #: ../../src/gui/motorcontrol.cpp:517 ../../src/gui/motorcontrol.cpp:585
+#: ../../src/gui/motorcontrol.cpp:515 ../../src/gui/motorcontrol.cpp:583
+#: ../../src/gui/motorcontrol.cpp:516 ../../src/gui/motorcontrol.cpp:584
 msgid "Motor Setup"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:626 ../../src/gui/scan_setup.cpp:707
 #: ../../src/gui/scan_setup.cpp:760 ../../src/gui/scan_setup.cpp:625
 #: ../../src/gui/scan_setup.cpp:706 ../../src/gui/scan_setup.cpp:759
+#: ../../src/gui/scan_setup.cpp:623 ../../src/gui/scan_setup.cpp:704
+#: ../../src/gui/scan_setup.cpp:757 ../../src/gui/scan_setup.cpp:612
+#: ../../src/gui/scan_setup.cpp:693 ../../src/gui/scan_setup.cpp:746
+#: ../../src/gui/scan_setup.cpp:610 ../../src/gui/scan_setup.cpp:691
+#: ../../src/gui/scan_setup.cpp:744 ../../src/gui/scan_setup.cpp:611
+#: ../../src/gui/scan_setup.cpp:692 ../../src/gui/scan_setup.cpp:745
+#: ../../src/gui/scan_setup.cpp:618 ../../src/gui/scan_setup.cpp:699
+#: ../../src/gui/scan_setup.cpp:752 ../../src/gui/scan_setup.cpp:614
+#: ../../src/gui/scan_setup.cpp:695 ../../src/gui/scan_setup.cpp:748
 msgid "Motor settings"
 msgstr ""
 
@@ -2736,6 +2890,7 @@ msgid "Netmask"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:101 ../../src/gui/scan_setup.cpp:100
+#: ../../src/gui/scan_setup.cpp:98
 msgid "Network"
 msgstr ""
 
@@ -2911,10 +3066,13 @@ msgid "Normal"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:267 ../../src/gui/scan_setup.cpp:266
+#: ../../src/gui/scan_setup.cpp:264
 msgid "North"
 msgstr ""
 
 #: ../../src/gui/motorcontrol.cpp:642 ../../src/gui/motorcontrol.cpp:650
+#: ../../src/gui/motorcontrol.cpp:640 ../../src/gui/motorcontrol.cpp:648
+#: ../../src/gui/motorcontrol.cpp:641 ../../src/gui/motorcontrol.cpp:649
 msgid "Not used"
 msgstr ""
 
@@ -3008,7 +3166,12 @@ msgid "PIN-Code was wrong! Try again."
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1342 ../../src/gui/scan_setup.cpp:1343
-#: ../../src/gui/scan_setup.cpp:1341
+#: ../../src/gui/scan_setup.cpp:1341 ../../src/gui/scan_setup.cpp:1339
+#: ../../src/gui/scan_setup.cpp:1340 ../../src/gui/scan_setup.cpp:1328
+#: ../../src/gui/scan_setup.cpp:1329 ../../src/gui/scan_setup.cpp:1326
+#: ../../src/gui/scan_setup.cpp:1327 ../../src/gui/scan_setup.cpp:1334
+#: ../../src/gui/scan_setup.cpp:1335 ../../src/gui/scan_setup.cpp:1330
+#: ../../src/gui/scan_setup.cpp:1331
 msgid "PLP ID"
 msgstr ""
 
@@ -3112,6 +3275,9 @@ msgid "Plugins"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1253 ../../src/gui/scan_setup.cpp:1252
+#: ../../src/gui/scan_setup.cpp:1250 ../../src/gui/scan_setup.cpp:1239
+#: ../../src/gui/scan_setup.cpp:1237 ../../src/gui/scan_setup.cpp:1238
+#: ../../src/gui/scan_setup.cpp:1245 ../../src/gui/scan_setup.cpp:1241
 msgid "Polarization"
 msgstr ""
 
@@ -3203,11 +3369,23 @@ msgstr ""
 #: ../../src/gui/scan_setup.cpp:1458 ../../src/neutrino2.cpp:1466
 #: ../../src/gui/scan_setup.cpp:1141 ../../src/gui/scan_setup.cpp:1157
 #: ../../src/gui/scan_setup.cpp:1441 ../../src/gui/scan_setup.cpp:1457
+#: ../../src/gui/scan_setup.cpp:1139 ../../src/gui/scan_setup.cpp:1155
+#: ../../src/gui/scan_setup.cpp:1439 ../../src/gui/scan_setup.cpp:1455
+#: ../../src/gui/scan_setup.cpp:1128 ../../src/gui/scan_setup.cpp:1144
+#: ../../src/gui/scan_setup.cpp:1428 ../../src/gui/scan_setup.cpp:1444
+#: ../../src/gui/scan_setup.cpp:1126 ../../src/gui/scan_setup.cpp:1426
+#: ../../src/gui/scan_setup.cpp:1127 ../../src/gui/scan_setup.cpp:1143
+#: ../../src/gui/scan_setup.cpp:1427 ../../src/gui/scan_setup.cpp:1443
+#: ../../src/gui/scan_setup.cpp:1134 ../../src/gui/scan_setup.cpp:1150
+#: ../../src/gui/scan_setup.cpp:1434 ../../src/gui/scan_setup.cpp:1450
+#: ../../src/gui/scan_setup.cpp:1130 ../../src/gui/scan_setup.cpp:1146
+#: ../../src/gui/scan_setup.cpp:1430 ../../src/gui/scan_setup.cpp:1446
 msgid "Provider"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:637 ../../src/gui/scan.cpp:638
-#: ../../src/gui/scan.cpp:636
+#: ../../src/gui/scan.cpp:636 ../../src/gui/scan.cpp:634
+#: ../../src/gui/scan.cpp:635
 msgid "Provider:"
 msgstr ""
 
@@ -3239,6 +3417,7 @@ msgid "RIGHT"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:649 ../../src/gui/scan.cpp:648
+#: ../../src/gui/scan.cpp:646
 msgid "Radio"
 msgstr ""
 
@@ -3496,6 +3675,9 @@ msgid "Romance"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:952 ../../src/gui/scan_setup.cpp:951
+#: ../../src/gui/scan_setup.cpp:949 ../../src/gui/scan_setup.cpp:938
+#: ../../src/gui/scan_setup.cpp:936 ../../src/gui/scan_setup.cpp:937
+#: ../../src/gui/scan_setup.cpp:944 ../../src/gui/scan_setup.cpp:940
 msgid "Rotor position"
 msgstr ""
 
@@ -3508,6 +3690,7 @@ msgid "SB mode"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:131 ../../src/gui/scan_setup.cpp:130
+#: ../../src/gui/scan_setup.cpp:128
 msgid "SMATV Remote Tuning"
 msgstr ""
 
@@ -3520,6 +3703,9 @@ msgid "Same TP"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:871 ../../src/gui/scan_setup.cpp:870
+#: ../../src/gui/scan_setup.cpp:868 ../../src/gui/scan_setup.cpp:857
+#: ../../src/gui/scan_setup.cpp:855 ../../src/gui/scan_setup.cpp:856
+#: ../../src/gui/scan_setup.cpp:863 ../../src/gui/scan_setup.cpp:859
 msgid "Sat settings"
 msgstr ""
 
@@ -3528,11 +3714,24 @@ msgstr ""
 #: ../../src/gui/streaminfo.cpp:687 ../../src/gui/scan_setup.cpp:1027
 #: ../../src/gui/scan_setup.cpp:1173 ../../src/gui/scan_setup.cpp:1473
 #: ../../src/gui/scan_setup.cpp:1553 ../../src/gui/streaminfo.cpp:686
-#: ../../src/gui/streaminfo.cpp:684
+#: ../../src/gui/streaminfo.cpp:684 ../../src/gui/scan_setup.cpp:1025
+#: ../../src/gui/scan_setup.cpp:1171 ../../src/gui/scan_setup.cpp:1471
+#: ../../src/gui/scan_setup.cpp:1551 ../../src/gui/scan_setup.cpp:1014
+#: ../../src/gui/scan_setup.cpp:1160 ../../src/gui/scan_setup.cpp:1460
+#: ../../src/gui/scan_setup.cpp:1540 ../../src/gui/scan_setup.cpp:1012
+#: ../../src/gui/scan_setup.cpp:1158 ../../src/gui/scan_setup.cpp:1458
+#: ../../src/gui/scan_setup.cpp:1538 ../../src/gui/scan_setup.cpp:1013
+#: ../../src/gui/scan_setup.cpp:1159 ../../src/gui/scan_setup.cpp:1459
+#: ../../src/gui/scan_setup.cpp:1539 ../../src/gui/scan_setup.cpp:1020
+#: ../../src/gui/scan_setup.cpp:1166 ../../src/gui/scan_setup.cpp:1466
+#: ../../src/gui/scan_setup.cpp:1546 ../../src/gui/scan_setup.cpp:1016
+#: ../../src/gui/scan_setup.cpp:1162 ../../src/gui/scan_setup.cpp:1462
+#: ../../src/gui/scan_setup.cpp:1542
 msgid "Satellite"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:573
+#: ../../src/gui/motorcontrol.cpp:573 ../../src/gui/motorcontrol.cpp:571
+#: ../../src/gui/motorcontrol.cpp:572
 msgid "Satellite Position (Step Mode):"
 msgstr ""
 
@@ -3541,7 +3740,8 @@ msgid "Satellite display on infobar"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:592 ../../src/gui/scan.cpp:593
-#: ../../src/gui/scan.cpp:591
+#: ../../src/gui/scan.cpp:591 ../../src/gui/scan.cpp:589
+#: ../../src/gui/scan.cpp:590
 msgid "Satellite:"
 msgstr ""
 
@@ -3612,6 +3812,25 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:330 ../../src/gui/misc_setup.cpp:179
 #: ../../src/gui/misc_setup.cpp:574 ../../src/gui/misc_setup.cpp:754
 #: ../../src/gui/misc_setup.cpp:1000 ../../src/system/setting_helpers.cpp:327
+#: ../../src/gui/scan_setup.cpp:342 ../../src/gui/scan_setup.cpp:489
+#: ../../src/gui/scan_setup.cpp:721 ../../src/gui/scan_setup.cpp:936
+#: ../../src/gui/scan_setup.cpp:1112 ../../src/gui/scan_setup.cpp:1412
+#: ../../src/gui/scan_setup.cpp:1547 ../../src/gui/scan_setup.cpp:485
+#: ../../src/gui/scan_setup.cpp:710 ../../src/gui/scan_setup.cpp:925
+#: ../../src/gui/scan_setup.cpp:1101 ../../src/gui/scan_setup.cpp:1401
+#: ../../src/gui/scan_setup.cpp:1536 ../../src/gui/scan_setup.cpp:483
+#: ../../src/gui/scan_setup.cpp:708 ../../src/gui/scan_setup.cpp:923
+#: ../../src/gui/scan_setup.cpp:1099 ../../src/gui/scan_setup.cpp:1399
+#: ../../src/gui/scan_setup.cpp:1534 ../../src/gui/scan_setup.cpp:343
+#: ../../src/gui/scan_setup.cpp:484 ../../src/gui/scan_setup.cpp:709
+#: ../../src/gui/scan_setup.cpp:924 ../../src/gui/scan_setup.cpp:1100
+#: ../../src/gui/scan_setup.cpp:1400 ../../src/gui/scan_setup.cpp:1535
+#: ../../src/gui/scan_setup.cpp:350 ../../src/gui/scan_setup.cpp:716
+#: ../../src/gui/scan_setup.cpp:931 ../../src/gui/scan_setup.cpp:1107
+#: ../../src/gui/scan_setup.cpp:1407 ../../src/gui/scan_setup.cpp:1542
+#: ../../src/gui/scan_setup.cpp:712 ../../src/gui/scan_setup.cpp:927
+#: ../../src/gui/scan_setup.cpp:1103 ../../src/gui/scan_setup.cpp:1403
+#: ../../src/gui/scan_setup.cpp:1538
 msgid "Save settings now"
 msgstr ""
 
@@ -3646,6 +3865,9 @@ msgid "Scaling"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:587 ../../src/gui/scan_setup.cpp:586
+#: ../../src/gui/scan_setup.cpp:584 ../../src/gui/scan_setup.cpp:573
+#: ../../src/gui/scan_setup.cpp:571 ../../src/gui/scan_setup.cpp:572
+#: ../../src/gui/scan_setup.cpp:579 ../../src/gui/scan_setup.cpp:575
 msgid "Scan Mode"
 msgstr ""
 
@@ -3655,12 +3877,18 @@ msgid "Scan SDT for updates"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:577 ../../src/gui/scan_setup.cpp:576
+#: ../../src/gui/scan_setup.cpp:574 ../../src/gui/scan_setup.cpp:563
+#: ../../src/gui/scan_setup.cpp:561 ../../src/gui/scan_setup.cpp:562
+#: ../../src/gui/scan_setup.cpp:569 ../../src/gui/scan_setup.cpp:565
 msgid "Scan for services"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:566 ../../src/gui/scan_setup.cpp:473
 #: ../../src/gui/service_menu.cpp:128 ../../src/gui/scan_setup.cpp:472
 #: ../../src/gui/service_menu.cpp:129 ../../src/gui/scan.cpp:565
+#: ../../src/gui/scan.cpp:563 ../../src/gui/scan_setup.cpp:470
+#: ../../src/gui/scan_setup.cpp:466 ../../src/gui/scan_setup.cpp:464
+#: ../../src/gui/scan_setup.cpp:465
 msgid "Scan transponder"
 msgstr ""
 
@@ -3797,6 +4025,13 @@ msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1190 ../../src/gui/scan_setup.cpp:1634
 #: ../../src/gui/scan_setup.cpp:1189 ../../src/gui/scan_setup.cpp:1633
+#: ../../src/gui/scan_setup.cpp:1187 ../../src/gui/scan_setup.cpp:1631
+#: ../../src/gui/scan_setup.cpp:1176 ../../src/gui/scan_setup.cpp:1620
+#: ../../src/gui/scan_setup.cpp:1174 ../../src/gui/scan_setup.cpp:1618
+#: ../../src/gui/scan_setup.cpp:1175 ../../src/gui/scan_setup.cpp:1619
+#: ../../src/gui/scan_setup.cpp:1182 ../../src/gui/scan_setup.cpp:1627
+#: ../../src/gui/scan_setup.cpp:1621 ../../src/gui/scan_setup.cpp:1178
+#: ../../src/gui/scan_setup.cpp:1623
 msgid "Select transponder"
 msgstr ""
 
@@ -3840,14 +4075,20 @@ msgid "Server IP"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:2365 ../../src/gui/scan_setup.cpp:2364
+#: ../../src/gui/scan_setup.cpp:2362 ../../src/gui/scan_setup.cpp:2349
+#: ../../src/gui/scan_setup.cpp:2347 ../../src/gui/scan_setup.cpp:2350
+#: ../../src/gui/scan_setup.cpp:2351 ../../src/gui/scan_setup.cpp:2357
+#: ../../src/gui/scan_setup.cpp:2358 ../../src/gui/scan_setup.cpp:2360
 msgid "Servicescan"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:625
+#: ../../src/gui/motorcontrol.cpp:625 ../../src/gui/motorcontrol.cpp:623
+#: ../../src/gui/motorcontrol.cpp:624
 msgid "Set East (soft) Limit"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:621
+#: ../../src/gui/motorcontrol.cpp:621 ../../src/gui/motorcontrol.cpp:619
+#: ../../src/gui/motorcontrol.cpp:620
 msgid "Set West (soft) Limit"
 msgstr ""
 
@@ -3895,6 +4136,9 @@ msgid "Setup new key"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:621 ../../src/gui/scan_setup.cpp:620
+#: ../../src/gui/scan_setup.cpp:618 ../../src/gui/scan_setup.cpp:607
+#: ../../src/gui/scan_setup.cpp:605 ../../src/gui/scan_setup.cpp:606
+#: ../../src/gui/scan_setup.cpp:613 ../../src/gui/scan_setup.cpp:609
 msgid "Setup satellites input / LNB"
 msgstr ""
 
@@ -3904,6 +4148,7 @@ msgid "Shortest time (in ms) to recognize 2 keystrokes"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:351 ../../src/gui/scan.cpp:350
+#: ../../src/gui/scan.cpp:348
 msgid "Should the search really be aborted?"
 msgstr ""
 
@@ -4014,6 +4259,7 @@ msgid "Software update URL"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:266 ../../src/gui/scan_setup.cpp:265
+#: ../../src/gui/scan_setup.cpp:263
 msgid "South"
 msgstr ""
 
@@ -4092,6 +4338,15 @@ msgstr ""
 #: ../../src/gui/scan_setup.cpp:1355 ../../src/gui/scan_setup.cpp:1489
 #: ../../src/gui/scan_setup.cpp:1557 ../../src/gui/scan_setup.cpp:1354
 #: ../../src/gui/scan_setup.cpp:1488 ../../src/gui/scan_setup.cpp:1556
+#: ../../src/gui/scan_setup.cpp:1352 ../../src/gui/scan_setup.cpp:1486
+#: ../../src/gui/scan_setup.cpp:1554 ../../src/gui/scan_setup.cpp:1341
+#: ../../src/gui/scan_setup.cpp:1475 ../../src/gui/scan_setup.cpp:1543
+#: ../../src/gui/scan_setup.cpp:1339 ../../src/gui/scan_setup.cpp:1473
+#: ../../src/gui/scan_setup.cpp:1541 ../../src/gui/scan_setup.cpp:1340
+#: ../../src/gui/scan_setup.cpp:1474 ../../src/gui/scan_setup.cpp:1542
+#: ../../src/gui/scan_setup.cpp:1347 ../../src/gui/scan_setup.cpp:1481
+#: ../../src/gui/scan_setup.cpp:1549 ../../src/gui/scan_setup.cpp:1343
+#: ../../src/gui/scan_setup.cpp:1477 ../../src/gui/scan_setup.cpp:1545
 msgid "Start scan"
 msgstr ""
 
@@ -4099,7 +4354,8 @@ msgstr ""
 msgid "Startup to standby"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:572
+#: ../../src/gui/motorcontrol.cpp:572 ../../src/gui/motorcontrol.cpp:570
+#: ../../src/gui/motorcontrol.cpp:571
 msgid "Status"
 msgstr ""
 
@@ -4107,15 +4363,18 @@ msgstr ""
 msgid "Status line"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:528
+#: ../../src/gui/motorcontrol.cpp:528 ../../src/gui/motorcontrol.cpp:526
+#: ../../src/gui/motorcontrol.cpp:527
 msgid "Step Mode"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:616
+#: ../../src/gui/motorcontrol.cpp:616 ../../src/gui/motorcontrol.cpp:614
+#: ../../src/gui/motorcontrol.cpp:615
 msgid "Step/Drive Motor East (b,c)"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:612
+#: ../../src/gui/motorcontrol.cpp:612 ../../src/gui/motorcontrol.cpp:610
+#: ../../src/gui/motorcontrol.cpp:611
 msgid "Step/Drive Motor West (b,c)"
 msgstr ""
 
@@ -4158,7 +4417,8 @@ msgstr ""
 msgid "Stop time"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:644
+#: ../../src/gui/motorcontrol.cpp:644 ../../src/gui/motorcontrol.cpp:642
+#: ../../src/gui/motorcontrol.cpp:643
 msgid "Store Motor Position (a)"
 msgstr ""
 
@@ -4214,15 +4474,25 @@ msgid "Svenska"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:756 ../../src/gui/scan_setup.cpp:755
+#: ../../src/gui/scan_setup.cpp:753 ../../src/gui/scan_setup.cpp:742
+#: ../../src/gui/scan_setup.cpp:740 ../../src/gui/scan_setup.cpp:741
+#: ../../src/gui/scan_setup.cpp:748 ../../src/gui/scan_setup.cpp:744
 msgid "Swap rotor east/west"
 msgstr ""
 
 #: ../../src/gui/motorcontrol.cpp:637 ../../src/gui/motorcontrol.cpp:658
+#: ../../src/gui/motorcontrol.cpp:635 ../../src/gui/motorcontrol.cpp:656
+#: ../../src/gui/motorcontrol.cpp:636 ../../src/gui/motorcontrol.cpp:657
 msgid "Switch Step/Drive Mode (b)"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1283 ../../src/gui/scan_setup.cpp:1284
-#: ../../src/gui/scan_setup.cpp:1282
+#: ../../src/gui/scan_setup.cpp:1282 ../../src/gui/scan_setup.cpp:1280
+#: ../../src/gui/scan_setup.cpp:1281 ../../src/gui/scan_setup.cpp:1269
+#: ../../src/gui/scan_setup.cpp:1270 ../../src/gui/scan_setup.cpp:1267
+#: ../../src/gui/scan_setup.cpp:1268 ../../src/gui/scan_setup.cpp:1275
+#: ../../src/gui/scan_setup.cpp:1276 ../../src/gui/scan_setup.cpp:1271
+#: ../../src/gui/scan_setup.cpp:1272
 msgid "Symbol rate"
 msgstr ""
 
@@ -4301,10 +4571,12 @@ msgid "TOP RIGHT"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:648 ../../src/gui/scan.cpp:647
+#: ../../src/gui/scan.cpp:645
 msgid "TV"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:115 ../../src/gui/scan_setup.cpp:114
+#: ../../src/gui/scan_setup.cpp:112
 msgid "TV & Radio"
 msgstr ""
 
@@ -4382,7 +4654,8 @@ msgid "Tennis / Squash"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:610 ../../src/gui/scan.cpp:611
-#: ../../src/gui/scan.cpp:609
+#: ../../src/gui/scan.cpp:609 ../../src/gui/scan.cpp:607
+#: ../../src/gui/scan.cpp:608
 msgid "Terrestrial:"
 msgstr ""
 
@@ -4393,6 +4666,10 @@ msgstr ""
 
 #: ../../src/gui/scan.cpp:566 ../../src/gui/scan_setup.cpp:1352
 #: ../../src/gui/scan_setup.cpp:1351 ../../src/gui/scan.cpp:565
+#: ../../src/gui/scan.cpp:563 ../../src/gui/scan_setup.cpp:1349
+#: ../../src/gui/scan_setup.cpp:1338 ../../src/gui/scan_setup.cpp:1336
+#: ../../src/gui/scan_setup.cpp:1337 ../../src/gui/scan_setup.cpp:1344
+#: ../../src/gui/scan_setup.cpp:1340
 msgid "Test signal"
 msgstr ""
 
@@ -4517,7 +4794,8 @@ msgstr ""
 msgid "Time-Syncronisation"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:540
+#: ../../src/gui/motorcontrol.cpp:540 ../../src/gui/motorcontrol.cpp:538
+#: ../../src/gui/motorcontrol.cpp:539
 msgid "Timed Step Mode"
 msgstr ""
 
@@ -4575,6 +4853,7 @@ msgid "Tint"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:651 ../../src/gui/scan.cpp:650
+#: ../../src/gui/scan.cpp:648
 msgid "Total"
 msgstr ""
 
@@ -4583,19 +4862,25 @@ msgid "Tourism / Travel"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1327 ../../src/gui/scan_setup.cpp:1326
+#: ../../src/gui/scan_setup.cpp:1324 ../../src/gui/scan_setup.cpp:1313
+#: ../../src/gui/scan_setup.cpp:1311 ../../src/gui/scan_setup.cpp:1312
+#: ../../src/gui/scan_setup.cpp:1319 ../../src/gui/scan_setup.cpp:1315
 msgid "Transmission mode"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:625 ../../src/gui/scan.cpp:626
-#: ../../src/gui/scan.cpp:624
+#: ../../src/gui/scan.cpp:624 ../../src/gui/scan.cpp:622
+#: ../../src/gui/scan.cpp:623
 msgid "Transponders:"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:373 ../../src/gui/scan.cpp:372
+#: ../../src/gui/scan.cpp:370
 msgid "Transponderscan failed!"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:373 ../../src/gui/scan.cpp:372
+#: ../../src/gui/scan.cpp:370
 msgid "Transponderscan finished."
 msgstr ""
 
@@ -4608,10 +4893,16 @@ msgid "Tuesday"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:510 ../../src/gui/scan_setup.cpp:509
+#: ../../src/gui/scan_setup.cpp:507 ../../src/gui/scan_setup.cpp:496
+#: ../../src/gui/scan_setup.cpp:494 ../../src/gui/scan_setup.cpp:495
+#: ../../src/gui/scan_setup.cpp:502
 msgid "Tuner mode"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:516 ../../src/gui/scan_setup.cpp:515
+#: ../../src/gui/scan_setup.cpp:513 ../../src/gui/scan_setup.cpp:502
+#: ../../src/gui/scan_setup.cpp:500 ../../src/gui/scan_setup.cpp:501
+#: ../../src/gui/scan_setup.cpp:508
 msgid "Tuner type"
 msgstr ""
 
@@ -4620,6 +4911,9 @@ msgid "Type:"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:753 ../../src/gui/scan_setup.cpp:752
+#: ../../src/gui/scan_setup.cpp:750 ../../src/gui/scan_setup.cpp:739
+#: ../../src/gui/scan_setup.cpp:737 ../../src/gui/scan_setup.cpp:738
+#: ../../src/gui/scan_setup.cpp:745 ../../src/gui/scan_setup.cpp:741
 msgid "USALS command repeat"
 msgstr ""
 
@@ -4634,31 +4928,51 @@ msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:260 ../../src/gui/scan_setup.cpp:949
 #: ../../src/gui/scan_setup.cpp:259 ../../src/gui/scan_setup.cpp:948
+#: ../../src/gui/scan_setup.cpp:257 ../../src/gui/scan_setup.cpp:946
+#: ../../src/gui/scan_setup.cpp:935 ../../src/gui/scan_setup.cpp:933
+#: ../../src/gui/scan_setup.cpp:934 ../../src/gui/scan_setup.cpp:941
+#: ../../src/gui/scan_setup.cpp:937
 msgid "Uncommited/Commited"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:129 ../../src/gui/scan_setup.cpp:128
+#: ../../src/gui/scan_setup.cpp:126
 msgid "Unicable"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:820 ../../src/gui/scan_setup.cpp:819
+#: ../../src/gui/scan_setup.cpp:817 ../../src/gui/scan_setup.cpp:806
+#: ../../src/gui/scan_setup.cpp:804 ../../src/gui/scan_setup.cpp:805
+#: ../../src/gui/scan_setup.cpp:812 ../../src/gui/scan_setup.cpp:808
 msgid "Unicable SCR address"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:615 ../../src/gui/scan_setup.cpp:614
+#: ../../src/gui/scan_setup.cpp:612 ../../src/gui/scan_setup.cpp:601
+#: ../../src/gui/scan_setup.cpp:599 ../../src/gui/scan_setup.cpp:600
+#: ../../src/gui/scan_setup.cpp:607 ../../src/gui/scan_setup.cpp:603
 msgid "Unicable Setup"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:824 ../../src/gui/scan_setup.cpp:825
-#: ../../src/gui/scan_setup.cpp:823
+#: ../../src/gui/scan_setup.cpp:823 ../../src/gui/scan_setup.cpp:821
+#: ../../src/gui/scan_setup.cpp:822 ../../src/gui/scan_setup.cpp:810
+#: ../../src/gui/scan_setup.cpp:811 ../../src/gui/scan_setup.cpp:808
+#: ../../src/gui/scan_setup.cpp:809 ../../src/gui/scan_setup.cpp:816
+#: ../../src/gui/scan_setup.cpp:817 ../../src/gui/scan_setup.cpp:812
+#: ../../src/gui/scan_setup.cpp:813
 msgid "Unicable frequency"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:804 ../../src/gui/scan_setup.cpp:803
+#: ../../src/gui/scan_setup.cpp:801 ../../src/gui/scan_setup.cpp:790
+#: ../../src/gui/scan_setup.cpp:788 ../../src/gui/scan_setup.cpp:789
+#: ../../src/gui/scan_setup.cpp:796 ../../src/gui/scan_setup.cpp:792
 msgid "Unicable settings"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:130 ../../src/gui/scan_setup.cpp:129
+#: ../../src/gui/scan_setup.cpp:127
 msgid "Unicable2 (JESS)"
 msgstr ""
 
@@ -4688,6 +5002,12 @@ msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:731 ../../src/gui/scan_setup.cpp:955
 #: ../../src/gui/scan_setup.cpp:730 ../../src/gui/scan_setup.cpp:954
+#: ../../src/gui/scan_setup.cpp:728 ../../src/gui/scan_setup.cpp:952
+#: ../../src/gui/scan_setup.cpp:717 ../../src/gui/scan_setup.cpp:941
+#: ../../src/gui/scan_setup.cpp:715 ../../src/gui/scan_setup.cpp:939
+#: ../../src/gui/scan_setup.cpp:716 ../../src/gui/scan_setup.cpp:940
+#: ../../src/gui/scan_setup.cpp:723 ../../src/gui/scan_setup.cpp:947
+#: ../../src/gui/scan_setup.cpp:719 ../../src/gui/scan_setup.cpp:943
 msgid "Use gotoXX"
 msgstr ""
 
@@ -4697,7 +5017,8 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:337
 #: ../../src/system/setting_helpers.cpp:336
 #: ../../src/system/setting_helpers.cpp:334
-#: ../../src/system/setting_helpers.cpp:331
+#: ../../src/system/setting_helpers.cpp:331 ../../src/gui/motorcontrol.cpp:605
+#: ../../src/gui/motorcontrol.cpp:606
 msgid "User menu"
 msgstr ""
 
@@ -4830,6 +5151,7 @@ msgid "Wednesday"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:274 ../../src/gui/scan_setup.cpp:273
+#: ../../src/gui/scan_setup.cpp:271
 msgid "West"
 msgstr ""
 
@@ -4988,6 +5310,7 @@ msgid "advanced"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:118 ../../src/gui/scan_setup.cpp:117
+#: ../../src/gui/scan_setup.cpp:115
 msgid "all services"
 msgstr ""
 
@@ -5125,6 +5448,36 @@ msgstr ""
 #: ../../src/system/setting_helpers.cpp:326 ../../src/gui/misc_setup.cpp:175
 #: ../../src/gui/misc_setup.cpp:570 ../../src/gui/misc_setup.cpp:750
 #: ../../src/gui/misc_setup.cpp:996 ../../src/system/setting_helpers.cpp:323
+#: ../../src/gui/scan_setup.cpp:485 ../../src/gui/scan_setup.cpp:718
+#: ../../src/gui/scan_setup.cpp:813 ../../src/gui/scan_setup.cpp:880
+#: ../../src/gui/scan_setup.cpp:932 ../../src/gui/scan_setup.cpp:1038
+#: ../../src/gui/scan_setup.cpp:1108 ../../src/gui/scan_setup.cpp:1408
+#: ../../src/gui/scan_setup.cpp:1543 ../../src/gui/scan_setup.cpp:2379
+#: ../../src/gui/scan_setup.cpp:481 ../../src/gui/scan_setup.cpp:707
+#: ../../src/gui/scan_setup.cpp:802 ../../src/gui/scan_setup.cpp:869
+#: ../../src/gui/scan_setup.cpp:921 ../../src/gui/scan_setup.cpp:1027
+#: ../../src/gui/scan_setup.cpp:1097 ../../src/gui/scan_setup.cpp:1397
+#: ../../src/gui/scan_setup.cpp:1532 ../../src/gui/scan_setup.cpp:2366
+#: ../../src/gui/scan_setup.cpp:479 ../../src/gui/scan_setup.cpp:705
+#: ../../src/gui/scan_setup.cpp:800 ../../src/gui/scan_setup.cpp:867
+#: ../../src/gui/scan_setup.cpp:919 ../../src/gui/scan_setup.cpp:1025
+#: ../../src/gui/scan_setup.cpp:1095 ../../src/gui/scan_setup.cpp:1395
+#: ../../src/gui/scan_setup.cpp:1530 ../../src/gui/scan_setup.cpp:2364
+#: ../../src/gui/scan_setup.cpp:480 ../../src/gui/scan_setup.cpp:706
+#: ../../src/gui/scan_setup.cpp:801 ../../src/gui/scan_setup.cpp:868
+#: ../../src/gui/scan_setup.cpp:920 ../../src/gui/scan_setup.cpp:1026
+#: ../../src/gui/scan_setup.cpp:1096 ../../src/gui/scan_setup.cpp:1396
+#: ../../src/gui/scan_setup.cpp:1531 ../../src/gui/scan_setup.cpp:2367
+#: ../../src/gui/scan_setup.cpp:2368 ../../src/gui/scan_setup.cpp:2374
+#: ../../src/gui/scan_setup.cpp:713 ../../src/gui/scan_setup.cpp:808
+#: ../../src/gui/scan_setup.cpp:875 ../../src/gui/scan_setup.cpp:927
+#: ../../src/gui/scan_setup.cpp:1033 ../../src/gui/scan_setup.cpp:1103
+#: ../../src/gui/scan_setup.cpp:1403 ../../src/gui/scan_setup.cpp:1538
+#: ../../src/gui/scan_setup.cpp:2375 ../../src/gui/scan_setup.cpp:709
+#: ../../src/gui/scan_setup.cpp:804 ../../src/gui/scan_setup.cpp:871
+#: ../../src/gui/scan_setup.cpp:923 ../../src/gui/scan_setup.cpp:1029
+#: ../../src/gui/scan_setup.cpp:1099 ../../src/gui/scan_setup.cpp:1399
+#: ../../src/gui/scan_setup.cpp:1534 ../../src/gui/scan_setup.cpp:2377
 msgid "back"
 msgstr ""
 
@@ -5220,6 +5573,7 @@ msgid "colored"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:108 ../../src/gui/scan_setup.cpp:107
+#: ../../src/gui/scan_setup.cpp:105
 msgid "create new"
 msgstr ""
 
@@ -5268,6 +5622,7 @@ msgid "delete"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:282 ../../src/gui/scan_setup.cpp:281
+#: ../../src/gui/scan_setup.cpp:279
 msgid "direct connected"
 msgstr ""
 
@@ -5282,7 +5637,8 @@ msgstr ""
 msgid "display pics"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:562
+#: ../../src/gui/motorcontrol.cpp:562 ../../src/gui/motorcontrol.cpp:560
+#: ../../src/gui/motorcontrol.cpp:561
 msgid "don't care"
 msgstr ""
 
@@ -5513,6 +5869,7 @@ msgid "logos Dir"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:284 ../../src/gui/scan_setup.cpp:283
+#: ../../src/gui/scan_setup.cpp:281
 msgid "loop"
 msgstr ""
 
@@ -5527,7 +5884,8 @@ msgstr ""
 msgid "middle"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:567
+#: ../../src/gui/motorcontrol.cpp:567 ../../src/gui/motorcontrol.cpp:565
+#: ../../src/gui/motorcontrol.cpp:566
 msgid "milliseconds"
 msgstr ""
 
@@ -5574,6 +5932,9 @@ msgid "mount successful"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:728 ../../src/gui/scan_setup.cpp:727
+#: ../../src/gui/scan_setup.cpp:725 ../../src/gui/scan_setup.cpp:714
+#: ../../src/gui/scan_setup.cpp:712 ../../src/gui/scan_setup.cpp:713
+#: ../../src/gui/scan_setup.cpp:720 ../../src/gui/scan_setup.cpp:716
 msgid "moving speed (10 = 1deg/sec)"
 msgstr ""
 
@@ -5593,6 +5954,7 @@ msgid "no"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:124 ../../src/gui/scan_setup.cpp:123
+#: ../../src/gui/scan_setup.cpp:121
 msgid "no DiSEqC"
 msgstr ""
 
@@ -5630,6 +5992,7 @@ msgid "not available"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:283 ../../src/gui/scan_setup.cpp:282
+#: ../../src/gui/scan_setup.cpp:280
 msgid "not connected"
 msgstr ""
 
@@ -5650,7 +6013,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3074 ../../src/neutrino2.cpp:3075
 #: ../../src/neutrino2.cpp:3077 ../../src/gui/audio_select.cpp:52
 #: ../../src/gui/misc_setup.cpp:73 ../../src/gui/misc_setup.cpp:88
-#: ../../src/gui/misc_setup.cpp:102
+#: ../../src/gui/misc_setup.cpp:102 ../../src/gui/scan_setup.cpp:90
 msgid "off"
 msgstr ""
 
@@ -5669,6 +6032,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3076 ../../src/neutrino2.cpp:3078
 #: ../../src/gui/audio_select.cpp:53 ../../src/gui/misc_setup.cpp:74
 #: ../../src/gui/misc_setup.cpp:89 ../../src/gui/misc_setup.cpp:103
+#: ../../src/gui/scan_setup.cpp:91
 msgid "on"
 msgstr ""
 
@@ -5691,10 +6055,12 @@ msgid "once"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:117 ../../src/gui/scan_setup.cpp:116
+#: ../../src/gui/scan_setup.cpp:114
 msgid "only radio"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:116 ../../src/gui/scan_setup.cpp:115
+#: ../../src/gui/scan_setup.cpp:113
 msgid "only tv"
 msgstr ""
 
@@ -5939,11 +6305,13 @@ msgstr ""
 msgid "stereo"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:556
+#: ../../src/gui/motorcontrol.cpp:556 ../../src/gui/motorcontrol.cpp:554
+#: ../../src/gui/motorcontrol.cpp:555
 msgid "stop on good signal(moving)"
 msgstr ""
 
-#: ../../src/gui/motorcontrol.cpp:558
+#: ../../src/gui/motorcontrol.cpp:558 ../../src/gui/motorcontrol.cpp:556
+#: ../../src/gui/motorcontrol.cpp:557
 msgid "stop on good signal(stopped)"
 msgstr ""
 
@@ -6001,6 +6369,7 @@ msgid "unknown"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:109 ../../src/gui/scan_setup.cpp:108
+#: ../../src/gui/scan_setup.cpp:106
 msgid "update"
 msgstr ""
 

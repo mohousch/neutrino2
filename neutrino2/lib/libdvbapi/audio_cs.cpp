@@ -376,7 +376,7 @@ void cAudio::SetStreamType(AUDIO_FORMAT type)
 		"AUDIO_STREAMTYPE_RAW"
 	};
 
-	printf("cAudio::SetStreamType - type=%s\n", aAUDIOFORMAT[type]);
+//	printf("cAudio::SetStreamType - type=%s\n", aAUDIOFORMAT[type]);
 	
 #if !defined USE_OPENGL
 	if (audio_fd < 0)

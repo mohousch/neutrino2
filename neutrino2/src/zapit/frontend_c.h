@@ -174,6 +174,7 @@ class CFrontend
 		FrontendParameters curfe;
 		uint32_t getDiseqcReply(const int timeout_ms) const;
 		FrontendParameters getFrontend(void) const;
+		fe_delivery_system_t getFEDeliverySystem(uint32_t sys);
 
 		//
 		void secResetOverload(void);
@@ -240,11 +241,9 @@ class CFrontend
 		struct dvb_frontend_event getEvent(void);
 		bool getHighBand(){ return (int) getFrequency() >= lnbSwitch; };
 		//
-		uint32_t getDeliverySystem();
-		fe_delivery_system_t getFEDeliverySystem(uint32_t sys);
+		uint32_t getDeliverySystem(){return deliverySystemMask;};
 		bool isHybrid(void){ return hybrid;};
 		bool changeDelSys(uint32_t delsys);
-		uint32_t getDelSysMasked(void){return deliverySystemMask;};
 		uint32_t getForcedDelSys(void){return forcedDelSys;};
 
 		//

@@ -216,13 +216,13 @@ class CZapit
 		{
 			transponder TP;
 			int scanmode;
-			int feindex;
+			CFrontend* fe;
 		};
 		
 		struct commandScanProvider
 		{
 			int scanmode;
-			int feindex;
+			CFrontend* fe;
 		};
 		
 		// zapit mode
@@ -420,10 +420,10 @@ class CZapit
 		int loadServices(bool only_current);
 		void saveServices(bool tocopy = false);
 		//// scanManager
-		bool tuneFrequency(FrontendParameters *feparams, t_satellite_position satellitePosition, int feindex);
-		bool getSDTS(t_satellite_position satellitePosition, int feindex);
-		bool scanTransponder(xmlNodePtr transponder, t_satellite_position satellitePosition, int feindex);
-		bool scanProvider(xmlNodePtr search, t_satellite_position satellitePosition, int feindex);
+		bool tuneFrequency(FrontendParameters *feparams, t_satellite_position satellitePosition, CFrontend* fe);
+		bool getSDTS(t_satellite_position satellitePosition, CFrontend* fe);
+		bool scanTransponder(xmlNodePtr transponder, t_satellite_position satellitePosition, CFrontend* fe);
+		bool scanProvider(xmlNodePtr search, t_satellite_position satellitePosition, CFrontend* fe);
 		void saveScanBouquets(const CZapit::bouquetMode bouquetMode, const char * const providerName);
 		//
 		void closeAVDecoder(void);
@@ -462,7 +462,7 @@ class CZapit
 		void initFrontend();
 		CFrontend * getFE(int index);
 		void initTuner(CFrontend * fe);
-		void saveFrontendConfig(int feindex);
+		void saveFrontendConfig();
 		void loadFrontendConfig();
 		int getFrontendCount(void){return femap.size();};
 		bool loopCanTune(CFrontend * fe, CZapitChannel * thischannel);
@@ -550,12 +550,12 @@ class CZapit
 		int loadMotorPositions(void);
 		void saveMotorPositions();
 		//// scanManager
-		int addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, bool fromnit = false, int feindex = 0);
-		bool tuneTP(transponder TP, int feindex = 0);
+		int addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, bool fromnit = false, CFrontend* fe = NULL);
+		bool tuneTP(transponder TP, CFrontend* fe);
 		bool scanTP(commandScanTP &msg);
 		void setScanSatelliteList( ScanSatelliteList &satelliteList );
 		void setScanType(const scanType mode);
-		void setFEMode(const fe_mode_t mode, int feindex = 0);
+		void setFEMode(const fe_mode_t mode, CFrontend* fe);
 		void setScanBouquetMode(const bouquetMode mode);
 		bool startScan(commandScanProvider &msg);
 		bool stopScan();

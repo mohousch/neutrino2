@@ -105,6 +105,9 @@ uint64_t sCURRENT_PTS = 0;
 Data_t data;
 static ao_device *adevice = NULL;
 static ao_sample_format sformat;
+int buf_num = 0;
+int buf_in = 0;
+int buf_out = 0;
 #endif
 
 //
@@ -1333,7 +1336,7 @@ static int Write(void* _context, void* _out)
 			if (convert)
 			{
 				// fill					
-				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, data.buffer, AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
+				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, data.buffer[buf_in], AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 
 				// scale
 				sws_scale(convert, frame->data, frame->linesize, 0, ctx->height, rgbframe->data, rgbframe->linesize);
@@ -1388,6 +1391,18 @@ static int Write(void* _context, void* _out)
 				
 				//
 				data.size = need;
+				
+				////
+				buf_in++;
+				buf_in %= AV_NUM_DATA_POINTERS;
+				buf_num++;
+				
+				if (buf_num > (AV_NUM_DATA_POINTERS - 1))
+				{
+					buf_out++;
+					buf_out %= AV_NUM_DATA_POINTERS;
+					buf_num--;
+				}
 			}
 		}
 		

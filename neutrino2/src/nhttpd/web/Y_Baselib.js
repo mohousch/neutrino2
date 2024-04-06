@@ -1,10 +1,21 @@
 /*	yWeb Baselib by yjogol
-	$Date: 2010-03-05 07:02:32 +0100 (Fr, 05 Mär 2010) $
-	$Revision: 454 $
+	$Date$
+	$Revision$
 */
 var baselib_version="2.0.0";
-var agt=navigator.userAgent.toLowerCase();
-var is_ie     = ((agt.indexOf("msie") != -1) && (agt.indexOf("opera") == -1));
+var tmp = document.documentMode, e, isIE;
+// Try to force this property to be a string.
+try{document.documentMode = "";}
+catch(e){ };
+// If document.documentMode is a number, then it is a read-only property, and so
+// we have IE 8+.
+// Otherwise, if conditional compilation works, then we have IE < 11.
+// Otherwise, we have a non-IE browser.
+isIE = typeof document.documentMode == "number" || new Function("return/*@cc_on!@*/!1")( );
+// Switch back the value to be unobtrusive for non-IE browsers.
+try{document.documentMode = tmp;}
+catch(e){ };
+
 /*DHTML-Basics*/
 function $yN(_obj_name)
 {
@@ -373,17 +384,14 @@ function bt_set_value(_bt_name, _text)
 }
 /*dbox*/
 /*expermental*/
+function reload_neutrino_conf() {
+	loadSyncURL("/control/reloadsetup");
+}
 function dbox_rcsim(_key){
 	loadSyncURL("/control/rcem?" + _key);
 }
 function dbox_reload_neutrino(){
 	var sc=dbox_exec_tools("restart_neutrino");
-}
-function dbox_exec_command(_cmd)
-{
-	alert("Function dbox_exec_command is deactivated for security reasons");
-	var __cmd = _cmd.replace(/ /g, "&");
-//	return loadSyncURL("/control/exec?Y_Tools&exec_cmd&"+__cmd);
 }
 function dbox_exec_tools(_cmd)
 {
@@ -398,9 +406,14 @@ function dbox_popup(_msg)
 {
 	return loadSyncURL("/control/message?popup="+_msg);
 }
-function dbox_set_timer(_channel_id, _start, _stop)
+function dbox_set_timer_rec(_channel_id, _start, _stop)
 {
 	var _url = "/control/timer?action=new&type=5&alarm="+_start+"&stop="+_stop+"&announce="+_start+"&channel_id="+_channel_id+"&rs=1";
+	return loadSyncURL(_url);
+}
+function dbox_set_timer_zap(_channel_id, _start)
+{
+	var _url = "/control/timer?action=new&type=3&alarm="+_start+"&channel_id="+_channel_id;
 	return loadSyncURL(_url);
 }
 function dbox_zapto(_channel_id)
@@ -424,15 +437,8 @@ function dbox_setmode(_mode)
 {
 	return loadSyncURL("/control/setmode?" + _mode);
 }
-/*live*/
-function live_kill_streams()
-{
-	dbox_exec_command("killall streamts");
-	dbox_exec_command("killall streampes");
-}
 function live_switchto(_mode)
 {
-	//live_kill_streams();
 	var _actual_spts = dbox_spts_status();
 	if(_mode == "tv" && !_actual_spts)
 		dbox_spts_set(true);
@@ -461,4 +467,33 @@ function yhttpd_cache_clear(category)
 		loadSyncURL("/y/cache-clear");
 	else
 		loadSyncURL("/y/cache-clear?category="+category);
+}
+
+function saveTextAsFile(content, filename, filetype)
+{
+	var textFileAsBlob = new Blob([content], { type: filetype });
+	var downloadLink = document.createElement("a");
+	downloadLink.download = filename;
+	downloadLink.innerHTML = "Download File";
+	if (window.webkitURL != null)
+	{
+		// Chrome allows the link to be clicked
+		// without actually adding it to the DOM.
+		downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+	}
+	else
+	{
+		// Firefox requires the link to be added to the DOM
+		// before it can be clicked.
+		downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+		downloadLink.onclick = function() { this.parentNode.removeChild(this); };
+		downloadLink.style.display = "none";
+		document.body.appendChild(downloadLink);
+	}
+	downloadLink.click();
+}
+
+function glcdscreenshot(_filename)
+{
+	return loadSyncURL("/control/glcdscreenshot?name="+_filename);
 }

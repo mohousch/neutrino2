@@ -44,7 +44,7 @@
 
 #define NIT_SIZE 1024
 
-int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int feindex)
+int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe)
 {
 	dprintf(DEBUG_NORMAL, "CNit::parseNIT:\n");
 	
@@ -56,7 +56,7 @@ int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int f
 	
 	cDemux * dmx = new cDemux();
 		
-	dmx->Open(DMX_PSI_CHANNEL, NIT_SIZE, CZapit::getInstance()->getFE(feindex));	
+	dmx->Open(DMX_PSI_CHANNEL, NIT_SIZE, fe);	
 
 	unsigned char buffer[NIT_SIZE];
 
@@ -166,7 +166,7 @@ int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int f
 						break;
 
 					case SATELLITE_DELIVERY_SYSTEM_DESCRIPTOR:
-						if (descriptor.satellite_delivery_system_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq, feindex) < 0)
+						if (descriptor.satellite_delivery_system_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq, fe) < 0)
 						{
 							ret = -2;
 							goto _return;
@@ -174,7 +174,7 @@ int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int f
 						break;
 
 					case CABLE_DELIVERY_SYSTEM_DESCRIPTOR:
-						if (descriptor.cable_delivery_system_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq, feindex) < 0)
+						if (descriptor.cable_delivery_system_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq, fe) < 0)
 						{
 							ret = -2;
 							goto _return;
@@ -182,7 +182,7 @@ int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int f
 						break;
 
 					case TERRESTRIAL_DELIVERY_SYSTEM_DESCRIPTOR:
-						if(descriptor.terrestrial_delivery_system_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq, feindex) < 0)
+						if(descriptor.terrestrial_delivery_system_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq, fe) < 0)
 						{
 							ret = -2;
 							goto _return;
@@ -198,7 +198,7 @@ int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int f
 						break;
 						
 					case EXTENSION_DESCRIPTOR: // T2
-						if(descriptor.terrestrial2_delivery_system_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq, feindex) < 0)
+						if(descriptor.terrestrial2_delivery_system_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq, fe) < 0)
 						{
 							ret = -2;
 							goto _return;

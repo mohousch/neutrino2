@@ -2203,37 +2203,6 @@ void CFrontend::gotoXX(t_satellite_position pos)
 }
 
 //
-uint32_t CFrontend::getDeliverySystem()
-{
-	uint32_t system = DVB_S;
-	
-#if HAVE_DVB_API_VERSION >= 5
-	system = deliverySystemMask;
-#else
-	switch ( info.type ) 
-	{
-		case FE_QAM:
-			system = DVB_C;
-			break;
-
-		case FE_QPSK:
-			system = DVB_S;
-			break;
-
-		case FE_OFDM:
-			system = DVB_T;
-			break;
-			
-		case FE_ATSC:
-            		system = DVB_A;
-			break;
-	}
-#endif
-	
-	return system;
-}
-
-//
 fe_delivery_system_t CFrontend::getFEDeliverySystem(uint32_t sys)
 {
 	fe_delivery_system_t delsys;
@@ -2285,7 +2254,7 @@ bool CFrontend::changeDelSys(uint32_t delsys)
 	if ( !(deliverySystemMask & delsys) )
 		return true;
 	
-#if 0 //HAVE_DVB_API_VERSION >= 5
+#if HAVE_DVB_API_VERSION >= 5
 	struct dtv_property p[2];
 	memset(p, 0, sizeof(p));
 	struct dtv_properties cmdseq;

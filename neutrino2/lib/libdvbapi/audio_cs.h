@@ -114,7 +114,7 @@ class cAudio
 		bool Pause();
 		bool Resume();
 
-		void SetStreamType(AUDIO_FORMAT type);
+		void SetStreamType(AUDIO_FORMAT type = AUDIO_STREAMTYPE_MPEG);
 		AUDIO_FORMAT GetStreamType(void) { return StreamType; }
 		
 		void SetSyncMode(int Mode);

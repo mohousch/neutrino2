@@ -34,6 +34,7 @@ function init(){
 
 {=var-set:management={=if-equal:{=func:get_request_data client_addr=}~{=ini-get:/var/tuxbox/config/Y-Web.conf;management_ip;{=func:get_request_data client_addr=}=}~1~=}{=if-equal:{=func:get_request_data client_addr=}~{=ini-get:/var/tuxbox/config/Y-Web.conf;management_ip2=}~1~=}=}
 {=var-set:etherwake={=if-file-exists:/bin/ether-wake~/bin/ether-wake~{=if-file-exists:/var/bin/ether-wake~/var/bin/ether-wake~{=if-file-exists:/bin/etherwake~/bin/etherwake~{=if-file-exists:/var/bin/etherwake~/var/bin/etherwake~false=}=}=}=}=}
+
 <body onload="init()">
 <div class="y_menu_sec_box">
 	<div class="y_menu_sec_box_head"><h2>{=L:main.tools=}</h2></div>
@@ -72,6 +73,14 @@ function init(){
 				<!--<a title="command shell (popup)" href="javascript:cmd_popup()"><img src="/images/popup.png"/></a>-->
 				</li>
 				<li><a target="work" href="Y_Tools_Installer.yhtm">yInstaller</a></li>
+				
+				<!--<li><a traget="work" href="Y_Filemgr.yhtm">Filemanager</a></li>-->
+				<!--<li>
+					{=var-set:m_link_href=Y_Filemgr.yhtm=}
+					{=var-set:m_link_desc={=L:tools.filemgr_desc=}=}
+					{=var-set:m_link_text={=L:tools.filemgr=}=}
+					{=include-block:Y_Blocks.txt;management_link=}
+				</li>-->
 				=}
 			</ul>
 		</div>

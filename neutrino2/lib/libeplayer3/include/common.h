@@ -18,7 +18,7 @@ typedef struct Context_s
 
 typedef struct Data_s
 {
-	uint8_t* buffer;
+	uint8_t* buffer[AV_NUM_DATA_POINTERS];
 	unsigned int size;
 	uint32_t width;
 	uint32_t height;

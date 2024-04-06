@@ -91,6 +91,7 @@ typedef volume_map_t::iterator volume_map_iterator_t;
 typedef std::pair<volume_map_iterator_t, volume_map_iterator_t> volume_map_range_t;
 // the configuration file
 CConfigFile config(',', true);
+CConfigFile fe_configfile(',', false);
 //
 cDemux *videoDemux = NULL;
 cDemux *audioDemux = NULL;
@@ -267,13 +268,13 @@ void CZapit::initFrontend()
 				fe->getFEDelSysMask();
 				
 				//
-				if (fe->getDelSysMasked() & DVB_S || fe->getDelSysMasked() & DVB_S2 || fe->getDelSysMasked() & DVB_S2X)
+				if (fe->getDeliverySystem() & DVB_S || fe->getDeliverySystem() & DVB_S2 || fe->getDeliverySystem() & DVB_S2X)
 					have_s = true;
-				if (fe->getDelSysMasked() & DVB_C)
+				if (fe->getDeliverySystem() & DVB_C)
 					have_c = true;
-				if (fe->getDelSysMasked() & DVB_T || fe->getDelSysMasked() & DVB_T2)
+				if (fe->getDeliverySystem() & DVB_T || fe->getDeliverySystem() & DVB_T2)
 					have_t = true;
-				if (fe->getDelSysMasked() & DVB_A)
+				if (fe->getDeliverySystem() & DVB_A)
 					have_a = true;
 #else
 				if (fe->info.type == FE_QPSK)
@@ -349,22 +350,22 @@ CFrontend * CZapit::getFE(int index)
 	return NULL;
 }
 
-void CZapit::setFEMode(fe_mode_t newmode, int feindex)
+void CZapit::setFEMode(fe_mode_t newmode, CFrontend* fe)
 {
 	// set mode
-	getFE(feindex)->mode = newmode;
+	fe->mode = newmode;
 	
 	// set not connected frontend to standby
-	if( getFE(feindex)->mode == (fe_mode_t)FE_NOTCONNECTED )
-		getFE(feindex)->Close();
+	if(fe->mode == (fe_mode_t)FE_NOTCONNECTED )
+		fe->Close();
 
 	// set loop frontend as slave
-	bool setslave = ( getFE(feindex)->mode == FE_LOOP );
+	bool setslave = ( fe->mode == FE_LOOP );
 	
 	if(setslave)
 	{
-		dprintf(DEBUG_INFO, "CZapit::setFEMode: Frontend (%d,%d) as slave: %s\n", getFE(feindex)->feadapter, getFE(feindex)->fenumber, setslave ? "yes" : "no");
-		getFE(feindex)->setMasterSlave(setslave);
+		dprintf(DEBUG_INFO, "CZapit::setFEMode: Frontend (%d:%d) as slave: %s\n", fe->feadapter, fe->fenumber, setslave ? "yes" : "no");
+		fe->setMasterSlave(setslave);
 	}
 }
 
@@ -506,8 +507,9 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 		}
 		// first zap/record/other frontend type
 		else if (transponder != transponders.end())
-		{	
-			if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
+		{
+			////test	
+			if ( (/*fe->getDeliverySystem()*/fe->getForcedDelSys() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
 			{
 				free_frontend = fe;
 				break;
@@ -570,7 +572,7 @@ CFrontend * CZapit::getRecordFrontend(CZapitChannel * thischannel)
 		// other free tuner
 		else if (transponder != transponders.end())
 		{
-			if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
+			if ( (fe->/*getDeliverySystem()*/getForcedDelSys() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
 			{
 				rec_frontend = fe;
 				break;
@@ -633,7 +635,7 @@ CFrontend * CZapit::getFreeFrontend(CZapitChannel * thischannel)
 		// first zap/record/other frontend type
 		else if (transponder != transponders.end())
 		{
-			if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
+			if ( (fe->/*getDeliverySystem()*/getForcedDelSys() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
 			{
 				pref_frontend = fe;
 				break;
@@ -665,77 +667,79 @@ void CZapit::unlockFrontend(CFrontend *fe)
 	}
 }
 
-// borrowed from cst neutrino-hd (femanager.cpp)
-uint32_t getConfigValue(int num, const char * name, uint32_t defval)
+//
+uint32_t getConfigValue(CFrontend* fe, const char * name, uint32_t defval)
 {
 	char cfg_key[81];
-	sprintf(cfg_key, "fe%d_%s", num, name);
+	sprintf(cfg_key, "fe%d%d_%s", fe->feadapter, fe->fenumber, name);
 	
-	return config.getInt32(cfg_key, defval);
+	return fe_configfile.getInt32(cfg_key, defval);
 }
 
-// borrowed from cst neutrino-hd (femanger.cpp)
-void setConfigValue(int num, const char * name, uint32_t val)
+//
+void setConfigValue(CFrontend* fe, const char * name, uint32_t val)
 {
 	char cfg_key[81];
 	
-	sprintf(cfg_key, "fe%d_%s", num, name);
-	config.setInt32(cfg_key, val);
+	sprintf(cfg_key, "fe%d%d_%s", fe->feadapter, fe->fenumber, name);
+	fe_configfile.setInt32(cfg_key, val);
 }
 
 // save frontend config
-void CZapit::saveFrontendConfig(int feindex)
+void CZapit::saveFrontendConfig()
 {
 	dprintf(DEBUG_INFO, "CZapit::saveFrontendConfig\n");
 	
-	for(feindex = 0; feindex < getFrontendCount(); feindex++)
+	for(fe_map_iterator_t it = femap.begin(); it != femap.end(); it++)
 	{
-		// mode
-		setConfigValue(feindex, "mode", getFE(feindex)->mode);
+		CFrontend * fe = it->second;
 		
 		// mode
-		setConfigValue(feindex, "powered", getFE(feindex)->powered);
+		setConfigValue(fe, "mode", fe->mode);
+		
+		// mode
+		setConfigValue(fe, "powered", fe->powered);
 		
 		// delsys
-		setConfigValue(feindex, "delsys", getFE(feindex)->forcedDelSys);
+		setConfigValue(fe, "delsys", fe->forcedDelSys);
 			
 		// sat
-		if(getFE(feindex)->getInfo()->type == FE_QPSK)
+		if(fe->getInfo()->type == FE_QPSK)
 		{
-			setConfigValue(feindex, "lastSatellitePosition", getFE(feindex)->getCurrentSatellitePosition());
-			setConfigValue(feindex, "diseqcRepeats", getFE(feindex)->getDiseqcRepeats());
-			setConfigValue(feindex, "diseqcType", getFE(feindex)->getDiseqcType() );
+			setConfigValue(fe, "lastSatellitePosition", fe->getCurrentSatellitePosition());
+			setConfigValue(fe, "diseqcRepeats", fe->getDiseqcRepeats());
+			setConfigValue(fe, "diseqcType", fe->getDiseqcType() );
 
 			// unicable
-			setConfigValue(feindex, "uni_scr", getFE(feindex)->getUniScr() );
-			setConfigValue(feindex, "uni_qrg", getFE(feindex)->getUniQrg() );
+			setConfigValue(fe, "uni_scr", fe->getUniScr() );
+			setConfigValue(fe, "uni_qrg", fe->getUniQrg() );
 					
 			char tempd[12];
 			char cfg_key[81];
 				
-			sprintf(tempd, "%3.6f", getFE(feindex)->gotoXXLatitude);
-			sprintf(cfg_key, "fe%d_gotoXXLatitude", feindex);
-			config.setString(cfg_key, tempd );
+			sprintf(tempd, "%3.6f", fe->gotoXXLatitude);
+			sprintf(cfg_key, "fe%d%d_gotoXXLatitude", fe->feadapter, fe->fenumber);
+			fe_configfile.setString(cfg_key, tempd );
 				
-			sprintf(tempd, "%3.6f", getFE(feindex)->gotoXXLongitude);
-			sprintf(cfg_key, "fe%d_gotoXXLongitude", feindex);
-			config.setString(cfg_key, tempd );
+			sprintf(tempd, "%3.6f", fe->gotoXXLongitude);
+			sprintf(cfg_key, "fe%d%d_gotoXXLongitude", fe->feadapter, fe->fenumber);
+			fe_configfile.setString(cfg_key, tempd );
 				
-			setConfigValue(feindex, "gotoXXLaDirection", getFE(feindex)->gotoXXLaDirection);
-			setConfigValue(feindex, "gotoXXLoDirection", getFE(feindex)->gotoXXLoDirection);
-			setConfigValue(feindex, "useGotoXX", getFE(feindex)->useGotoXX);
-			setConfigValue(feindex, "repeatUsals", getFE(feindex)->repeatUsals);
+			setConfigValue(fe, "gotoXXLaDirection", fe->gotoXXLaDirection);
+			setConfigValue(fe, "gotoXXLoDirection", fe->gotoXXLoDirection);
+			setConfigValue(fe, "useGotoXX", fe->useGotoXX);
+			setConfigValue(fe, "repeatUsals", fe->repeatUsals);
 		}
 	}
 	
-	config.saveConfig(FRONTEND_CONFIGFILE);
+	fe_configfile.saveConfig(FRONTEND_CONFIGFILE);
 }
 
 void CZapit::loadFrontendConfig()
 {
 	dprintf(DEBUG_NORMAL, "CZapit::loadFrontendConfig\n");
 	
-	if (!config.loadConfig(FRONTEND_CONFIGFILE))
+	if (!fe_configfile.loadConfig(FRONTEND_CONFIGFILE))
 		printf("%s not found\n", FRONTEND_CONFIGFILE);
 	
 	for(fe_map_iterator_t fe_it = femap.begin(); fe_it != femap.end(); fe_it++) 
@@ -743,55 +747,41 @@ void CZapit::loadFrontendConfig()
 		CFrontend * fe = fe_it->second;
 		
 		// mode
-		fe->mode = (fe_mode_t)getConfigValue(fe_it->first, "mode", (fe_mode_t)FE_SINGLE);
+		fe->mode = (fe_mode_t)getConfigValue(fe, "mode", (fe_mode_t)FE_SINGLE);
 		
-		fe->powered = getConfigValue(fe_it->first, "powered", 0);
+		// powered
+		fe->powered = getConfigValue(fe, "powered", 0);
 		
 		// delsys
-		if (fe->info.type == FE_QPSK)
-		{
-			fe->forcedDelSys = getConfigValue(fe_it->first, "delsys", DVB_S);
-		}
-		else if (fe->info.type == FE_QAM)
-		{
-			fe->forcedDelSys = getConfigValue(fe_it->first, "delsys", DVB_C);
-		}
-		else if (fe->info.type == FE_OFDM)
-		{
-			fe->forcedDelSys = getConfigValue(fe_it->first, "delsys", DVB_T);
-		}
-		else if (fe->info.type == FE_ATSC)
-		{
-			fe->forcedDelSys = getConfigValue(fe_it->first, "delsys", DVB_A);
-		}
+		fe->forcedDelSys = getConfigValue(fe, "delsys", fe->getDeliverySystem());
 		
 		// sat
 		if(fe->getInfo()->type == FE_QPSK)
 		{
-			fe->useGotoXX = getConfigValue(fe_it->first, "useGotoXX", 0);
+			fe->useGotoXX = getConfigValue(fe, "useGotoXX", 0);
 			
 			char cfg_key[81];
 			
-			sprintf(cfg_key, "fe%d_gotoXXLatitude", fe_it->first );
+			sprintf(cfg_key, "fe%d%d_gotoXXLatitude", fe->feadapter, fe->fenumber);
 			fe->gotoXXLatitude = strtod(config.getString(cfg_key, "0.0").c_str(), NULL);
 			
-			sprintf(cfg_key, "fe%d_gotoXXLongitude", fe_it->first );
+			sprintf(cfg_key, "fe%d%d_gotoXXLongitude", fe->feadapter, fe->fenumber);
 			fe->gotoXXLongitude = strtod(config.getString(cfg_key, "0.0").c_str(), NULL);
 			
-			fe->gotoXXLaDirection = getConfigValue(fe_it->first, "gotoXXLaDirection", 0);
-			fe->gotoXXLoDirection = getConfigValue(fe_it->first, "gotoXXLoDirection", 0);
+			fe->gotoXXLaDirection = getConfigValue(fe, "gotoXXLaDirection", 0);
+			fe->gotoXXLoDirection = getConfigValue(fe, "gotoXXLoDirection", 0);
 			
-			fe->repeatUsals = getConfigValue(fe_it->first, "repeatUsals", 0);
-			fe->diseqcType = (diseqc_t)getConfigValue(fe_it->first, "diseqcType", (diseqc_t)NO_DISEQC);
-			fe->diseqcRepeats = getConfigValue(fe_it->first, "diseqcRepeats", 0);
+			fe->repeatUsals = getConfigValue(fe, "repeatUsals", 0);
+			fe->diseqcType = (diseqc_t)getConfigValue(fe, "diseqcType", (diseqc_t)NO_DISEQC);
+			fe->diseqcRepeats = getConfigValue(fe, "diseqcRepeats", 0);
 
 			// unicable
-			fe->uni_scr = getConfigValue(fe_it->first, "uni_scr", -1);
-			fe->uni_qrg = getConfigValue(fe_it->first, "uni_qrg", 0);
+			fe->uni_scr = getConfigValue(fe, "uni_scr", -1);
+			fe->uni_qrg = getConfigValue(fe, "uni_qrg", 0);
 
-			fe->motorRotationSpeed = getConfigValue(fe_it->first, "motorRotationSpeed", 18); // default: 1.8 degrees per second
+			fe->motorRotationSpeed = getConfigValue(fe, "motorRotationSpeed", 18); // default: 1.8 degrees per second
 			
-			fe->lastSatellitePosition = getConfigValue(fe_it->first, "lastSatellitePosition", 0);
+			fe->lastSatellitePosition = getConfigValue(fe, "lastSatellitePosition", 0);
 		}
 	}
 }
@@ -4638,20 +4628,20 @@ void CZapit::removeChannelFromBouquet(const unsigned int bouquet, const t_channe
 }
 
 //// scanManager
-bool CZapit::tuneFrequency(FrontendParameters *feparams, t_satellite_position satellitePosition, int feindex)
+bool CZapit::tuneFrequency(FrontendParameters *feparams, t_satellite_position satellitePosition, CFrontend* fe)
 {
 	dprintf(DEBUG_NORMAL, "CZapit::%s:\n", __FUNCTION__);
 	
 	// initTuner
-	CZapit::getInstance()->initTuner(CZapit::getInstance()->getFE(feindex));
+	CZapit::getInstance()->initTuner(fe);
 	
 	// setInput
-	CZapit::getInstance()->getFE(feindex)->setInput(satellitePosition, feparams->frequency, feparams->polarization);
+	fe->setInput(satellitePosition, feparams->frequency, feparams->polarization);
 
 	// driveToSatPos
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+	if(fe->getInfo()->type == FE_QPSK)
 	{
-		int ret = CZapit::getInstance()->getFE(feindex)->driveToSatellitePosition(satellitePosition, false); //true);
+		int ret = fe->driveToSatellitePosition(satellitePosition, false);
 		
 		if(ret > 0) 
 		{
@@ -4669,37 +4659,37 @@ bool CZapit::tuneFrequency(FrontendParameters *feparams, t_satellite_position sa
 		}
 	}
 
-	return CZapit::getInstance()->getFE(feindex)->tuneFrequency(feparams);
+	return fe->tuneFrequency(feparams);
 }
 
-int CZapit::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, bool fromnit, int feindex)
+int CZapit::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, bool fromnit, CFrontend* fe)
 {
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::addToScan: freq %d pol %d tpid 0x%llx from (nit:%d) fe(%d)\n", feparams->frequency, feparams->polarization, TsidOnid, fromnit, feindex);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::addToScan: freq %d pol %d tpid 0x%llx from (nit:%d) fe(%d:%d)\n", feparams->frequency, feparams->polarization, TsidOnid, fromnit, fe->feadapter, fe->fenumber);
 
 	freq_id_t freq;
 
 #if HAVE_DVB_API_VERSION >= 5 
-	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C)
+	if (fe->getForcedDelSys() == DVB_C)
 #else
-	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
+	if (fe->getInfo()->type == FE_QAM)
 #endif
 		freq = feparams->frequency / 100;
 #if HAVE_DVB_API_VERSION >= 5
-	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+	else if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
 #else
-	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+	else if (fe->getInfo()->type == FE_QPSK)
 #endif
 		freq = feparams->frequency / 1000;
 #if HAVE_DVB_API_VERSION >= 5
-	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
 #else
-	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
+	else if (fe->getInfo()->type == FE_OFDM)
 #endif
 		freq = feparams->frequency / 1000000;
 #if HAVE_DVB_API_VERSION >= 5
-    	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
+    	else if (fe->getForcedDelSys() == DVB_A)
 #else
-	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
+	else if (fe->getInfo()->type == FE_ATSC)
 #endif
 		freq = feparams->frequency / 1000000;
 
@@ -4770,7 +4760,7 @@ int CZapit::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, b
 	return 1;
 }
 
-bool CZapit::getSDTS(t_satellite_position satellitePosition, int feindex)
+bool CZapit::getSDTS(t_satellite_position satellitePosition, CFrontend* fe)
 {
 	transponder_id_t TsidOnid = 0;
 	stiterator tI;
@@ -4801,9 +4791,9 @@ _repeat:
 
 		// by sat send pol to neutrino
 #if HAVE_DVB_API_VERSION >= 5
-		if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+		if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
 #else
-		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+		if (fe->getInfo()->type == FE_QPSK)
 #endif		
 		{
 			actual_polarisation = ((tI->second.feparams.symbol_rate/1000) << 16) | (tI->second.feparams.fec_inner << 8) | (uint)tI->second.feparams.polarization;
@@ -4812,7 +4802,7 @@ _repeat:
 		}
 		
 		// tune TP
-		if (!tuneFrequency(&(tI->second.feparams), satellitePosition, feindex)) 
+		if (!tuneFrequency(&(tI->second.feparams), satellitePosition, fe)) 
 		{
 			failed_transponders++;
 			continue;
@@ -4825,34 +4815,34 @@ _repeat:
 		freq_id_t freq;
 
 #if HAVE_DVB_API_VERSION >= 5 
-		if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C)
+		if (fe->getForcedDelSys() == DVB_C)
 #else
-		if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
+		if (fe->getInfo()->type == FE_QAM)
 #endif
 			freq = tI->second.feparams.frequency/100;
 #if HAVE_DVB_API_VERSION >= 5
-		else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+		else if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
 #else
-		else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+		else if (fe->getInfo()->type == FE_QPSK)
 #endif
 			freq = tI->second.feparams.frequency/1000;
 #if HAVE_DVB_API_VERSION >= 5
-		else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+		else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
 #else
-		else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
+		else if (fe->getInfo()->type == FE_OFDM)
 #endif
 			freq = tI->second.feparams.frequency/1000000;
 #if HAVE_DVB_API_VERSION >= 5
-    		else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
+    		else if (fe->getForcedDelSys() == DVB_A)
 #else
-		else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
+		else if (fe->getInfo()->type == FE_ATSC)
 #endif
 			freq = tI->second.feparams.frequency/1000000;
 			
 		// parse sdt
 		dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::getSDTS: parsing SDT (tsid:onid %04x:%04x)\n", tI->second.transport_stream_id, tI->second.original_network_id);
 		
-		if(sdt.parseSDT(&tI->second.transport_stream_id, &tI->second.original_network_id, satellitePosition, freq, feindex) < 0)
+		if(sdt.parseSDT(&tI->second.transport_stream_id, &tI->second.original_network_id, satellitePosition, freq, fe) < 0)
 		{
 			dprintf(DEBUG_NORMAL, "CZapit::getSDTS: SDT failed !\n");
 			continue;
@@ -4871,7 +4861,7 @@ _repeat:
 		{
 			dprintf(DEBUG_INFO, "CZapit::getSDTS: parsing NIT\n");
 			
-			if( nit.parseNIT(satellitePosition, freq, feindex) < 0 )
+			if( nit.parseNIT(satellitePosition, freq, fe) < 0 )
 			{
 				dprintf(DEBUG_INFO, "CZapit::getSDTS: NIT failed !\n");
 			}
@@ -4889,7 +4879,7 @@ _repeat:
 		
 		for (tI = nittransponders.begin(); tI != nittransponders.end(); tI++) 
 		{
-			addToScan(tI->first, &tI->second.feparams, false, feindex);
+			addToScan(tI->first, &tI->second.feparams, false, fe);
 		}
 
 		nittransponders.clear();
@@ -4907,7 +4897,7 @@ _repeat:
 	return true;
 }
 
-bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satellitePosition, int feindex)
+bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satellitePosition, CFrontend* fe)
 {
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanTransponder:\n");
 	
@@ -4921,13 +4911,13 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
 
 	freq_id_t freq;
 	feparams.inversion = (fe_spectral_inversion_t)INVERSION_AUTO;
-	feparams.delsys = CZapit::getInstance()->getFE(feindex)->getForcedDelSys(); // ???
+	feparams.delsys = fe->getForcedDelSys(); // ???
 
 	//frequency
 #if HAVE_DVB_API_VERSION >= 5
-	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+	if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
 #else
-	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
+	if (fe->getInfo()->type == FE_OFDM) 
 #endif
 		feparams.frequency = xmlGetNumericAttribute(transponder, "centre_frequency", 0);
 	else
@@ -4935,35 +4925,35 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
 
 	// freq
 #if HAVE_DVB_API_VERSION >= 5 
-	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C)
+	if (fe->getForcedDelSys() == DVB_C)
 #else
-	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
+	if (fe->getInfo()->type == FE_QAM )
 #endif
 		freq = feparams.frequency/100;
 #if HAVE_DVB_API_VERSION >= 5
-	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+	else if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
 #else
-	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+	else if(fe->getInfo()->type == FE_QPSK)
 #endif
 		freq = feparams.frequency/1000;
 #if HAVE_DVB_API_VERSION >= 5
-	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
 #else
-	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
+	else if (fe->getInfo()->type == FE_OFDM) 
 #endif
 		freq = feparams.frequency/1000000;
 #if HAVE_DVB_API_VERSION >= 5
-    	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
+    	else if (fe->getForcedDelSys() == DVB_A)
 #else
-	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
+	else if (fe->getInfo()->type == FE_ATSC)
 #endif
 		freq = feparams.frequency/1000000;
 	
 	// 	
 #if HAVE_DVB_API_VERSION >= 5 
-	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C)
+	if (fe->getForcedDelSys() == DVB_C)
 #else
-	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
+	if (fe->getInfo()->type == FE_QAM)
 #endif
 	{
 		feparams.symbol_rate = xmlGetNumericAttribute(transponder, "symbol_rate", 0);
@@ -4972,9 +4962,9 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
 		feparams.delsys = DVB_C;
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
 #else
-	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
+	else if (fe->getInfo()->type == FE_OFDM) 
 #endif
 	{
 		feparams.bandwidth = (fe_bandwidth_t) xmlGetNumericAttribute(transponder, "bandwidth", 0);
@@ -5007,9 +4997,9 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
             	}
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+	else if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
 #else
-	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+	else if(fe->getInfo()->type == FE_QPSK)
 #endif
 	{
 		feparams.symbol_rate = xmlGetNumericAttribute(transponder, "symbol_rate", 0);
@@ -5031,9 +5021,9 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
             		feparams.delsys = DVB_S2;
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
+	else if (fe->getForcedDelSys() == DVB_A)
 #else
-	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
+	else if(fe->getInfo()->type == FE_ATSC)
 #endif
 	{
 	}
@@ -5041,12 +5031,12 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
 	// read network information table
 	fake_tid++; fake_nid++;
 
-	addToScan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &feparams, false, feindex);
+	addToScan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &feparams, false, fe);
 
 	return true;
 }
 
-bool CZapit::scanProvider(xmlNodePtr search, t_satellite_position satellitePosition, int feindex)
+bool CZapit::scanProvider(xmlNodePtr search, t_satellite_position satellitePosition, CFrontend* fe)
 {
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanProvider:\n");
 	
@@ -5076,7 +5066,7 @@ bool CZapit::scanProvider(xmlNodePtr search, t_satellite_position satellitePosit
 		if(abort_scan)
 			return false;
 
-		scanTransponder(tps, satellitePosition, feindex);
+		scanTransponder(tps, satellitePosition, fe);
 
 		// next transponder
 		tps = tps->xmlNextNode;
@@ -5085,7 +5075,7 @@ bool CZapit::scanProvider(xmlNodePtr search, t_satellite_position satellitePosit
 	eventServer->sendEvent( NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS, &found_transponders, sizeof(found_transponders));
 
 	// start scanning
-	getSDTS(satellitePosition, feindex);
+	getSDTS(satellitePosition, fe);
 
 	//
 	std::map <t_channel_id, uint8_t>::iterator stI;
@@ -5121,31 +5111,35 @@ bool CZapit::scanProvider(xmlNodePtr search, t_satellite_position satellitePosit
 }
 
 //
-bool CZapit::tuneTP(transponder TP, int feindex)
+bool CZapit::tuneTP(transponder TP, CFrontend* fe)
 {
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::tuneTP: fe(%d)\n", feindex);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::tuneTP: fe(%d:%d)\n", fe->feadapter, fe->fenumber);
 	
 	bool ret = false;
 	
 	//		
-	initTuner(getFE(feindex));
+	initTuner(fe);
 			
 	// satname
 	const char *name = scanProviders.size() > 0  ? scanProviders.begin()->second.c_str() : "unknown";
 			
 	t_satellite_position satellitePosition = scanProviders.begin()->first;
 	
-	dprintf(DEBUG_NORMAL, "CZapit::tuneTP: (fe:%d delsys:0x%x) satname:%s satpos:%d (TP.delsys:0x%x)\n", feindex, getFE(feindex)->getForcedDelSys(), name, satellitePosition, TP.feparams.delsys);
+	dprintf(DEBUG_NORMAL, "CZapit::tuneTP: (fe:%d:%d delsys:0x%x) satname:%s satpos:%d (TP.delsys:0x%x)\n", fe->feadapter, fe->fenumber, fe->getForcedDelSys(), name, satellitePosition, TP.feparams.delsys);
 	
 	// setinput
-	getFE(feindex)->setInput(satellitePosition, TP.feparams.frequency, TP.feparams.polarization);
+	fe->setInput(satellitePosition, TP.feparams.frequency, TP.feparams.polarization);
 	
 	// drivetosatpos
-	if (getFE(feindex)->getInfo()->type == FE_QPSK)
-		getFE(feindex)->driveToSatellitePosition(satellitePosition);
+#if HAVE_DVB_API_VERSION >= 5
+	if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+#else
+	if (fe->getInfo()->type == FE_QPSK)
+#endif
+		fe->driveToSatellitePosition(satellitePosition);
 		
 	// tuneFreq
-	ret = getFE(feindex)->tuneFrequency(&TP.feparams);
+	ret = fe->tuneFrequency(&TP.feparams);
 			
 	// set retune flag
 	retune = true;
@@ -5156,7 +5150,7 @@ bool CZapit::tuneTP(transponder TP, int feindex)
 //
 bool CZapit::scanTP(commandScanTP &msg)
 {
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanTP fe:(%d) scanmode:%d\n", msg.feindex, msg.scanmode);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanTP fe:(%d:%d) scanmode:%d\n", msg.fe->feadapter, msg.fe->fenumber, msg.scanmode);
 	
 	bool ret = true;
 	CPmt pmt;
@@ -5208,7 +5202,7 @@ void CZapit::setScanBouquetMode(const bouquetMode mode)
 //
 bool CZapit::startScan(commandScanProvider &msg)
 {		
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::startScan: fe(%d) scanmode: %d\n", msg.feindex, msg.scanmode);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::startScan: fe(%d:%d) scanmode: %d\n", msg.fe->feadapter, msg.fe->fenumber, msg.scanmode);
 	
 	bool ret = true;
 	CPmt pmt;
@@ -5259,7 +5253,7 @@ void * CZapit::scanThread(void * data)
 	CZapit::commandScanProvider params = *(CZapit::commandScanProvider*)data;
 	
 	int mode = params.scanmode;
-	int feindex = params.feindex;
+	CFrontend* fe = params.fe;
 	
 	scan_list_iterator_t spI;
 	char providerName[80] = "";
@@ -5280,7 +5274,7 @@ void * CZapit::scanThread(void * data)
 	scanmode = mode & 0xFF;	// NIT (0) or fast (1)
 	scan_sat_mode = mode & 0xFF00; 	// single = 0, all = 1
 
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanThread: fe(%d) scan mode %s, satellites %s\n", feindex, scanmode ? "fast" : "NIT", scan_sat_mode ? "all" : "single");
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanThread: fe(%d:%d) scan mode %s, satellites %s\n", fe->feadapter, fe->fenumber, scanmode ? "fast" : "NIT", scan_sat_mode ? "all" : "single");
 
 	CZapit::getInstance()->fake_tid = CZapit::getInstance()->fake_nid = 0;
 	
@@ -5288,36 +5282,36 @@ void * CZapit::scanThread(void * data)
 	xmlDocPtr scanInputParser = NULL;
 
 #if HAVE_DVB_API_VERSION >= 5 
-	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C)
+	if (fe->getForcedDelSys() == DVB_C)
 #else
-	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
+	if (fe->getInfo()->type == FE_QAM)
 #endif
 	{
 		frontendType = (char *) "cable";
 		scanInputParser = parseXmlFile(CABLES_XML);
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
 #else
-	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
+	else if (fe->getInfo()->type == FE_OFDM) 
 #endif
 	{
 		frontendType = (char *) "terrestrial";
 		scanInputParser = parseXmlFile(TERRESTRIALS_XML);
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+	else if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
 #else
-	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+	else if(fe->getInfo()->type == FE_QPSK)
 #endif
 	{
 		frontendType = (char *) "sat";
 		scanInputParser = parseXmlFile(SATELLITES_XML);
 	}
 #if HAVE_DVB_API_VERSION >= 5
-    	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
+    	else if (fe->getForcedDelSys() == DVB_A)
 #else
-	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
+	else if (fe->getInfo()->type == FE_ATSC)
 #endif
 	{
 		frontendType = (char *) "atsc";
@@ -5335,9 +5329,9 @@ void * CZapit::scanThread(void * data)
 			t_satellite_position position = xmlGetSignedNumericAttribute(search, "position", 10);
 		
 #if HAVE_DVB_API_VERSION >= 5
-    			if ( (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C) || (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T) || (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2) || (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A) )
+    			if ( (fe->getForcedDelSys() == DVB_C) || (fe->getForcedDelSys() == DVB_T) || (fe->getForcedDelSys() == DVB_T2) || (fe->getForcedDelSys() == DVB_A) )
 #else
-			if( ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM) || ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) || ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC) )
+			if( (fe->getInfo()->type == FE_QAM) || (fe->getInfo()->type == FE_OFDM) || (fe->getInfo()->type == FE_ATSC) )
 #endif
 			{
 				strcpy(providerName, xmlGetAttribute(search, const_cast<char*>("name")));
@@ -5378,7 +5372,7 @@ void * CZapit::scanThread(void * data)
 				dprintf(DEBUG_INFO, "CZapit::scanThread: scanning %s at %d bouquetMode %d\n", providerName, position, CZapit::getInstance()->_bouquetMode);
 				
 				// this invoke addToScan	
-				if ( !CZapit::getInstance()->scanProvider(search, position, feindex) )
+				if ( !CZapit::getInstance()->scanProvider(search, position, fe) )
 				{
 					found_channels = 0;
 					break;
@@ -5453,7 +5447,7 @@ void * CZapit::scanTransponderThread(void * data)
 	
 	transponder * TP = &params.TP;
 	scanmode = params.scanmode;
-	int feindex = params.feindex;
+	CFrontend* fe = params.fe;
 	
 	char providerName[32] = "";
 	t_satellite_position satellitePosition = 0;
@@ -5477,7 +5471,7 @@ void * CZapit::scanTransponderThread(void * data)
 	// satpos
 	satellitePosition = scanProviders.begin()->first;
 	
-	dprintf(DEBUG_NORMAL, "CZapit::scanTransponderThread: (fe:%d delsys:0x%x) scanning sat: %s position: %d fe(%d)\n", feindex, CZapit::getInstance()->getFE(feindex)->getForcedDelSys(), providerName, satellitePosition, feindex);
+	dprintf(DEBUG_NORMAL, "CZapit::scanTransponderThread: (fe:%d:%d delsys:0x%x) scanning sat: %s position: %d fe(%d)\n", fe->feadapter, fe->fenumber, fe->getForcedDelSys(), providerName, satellitePosition);
 	
 	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SATELLITE, providerName, strlen(providerName) + 1);
 
@@ -5485,21 +5479,21 @@ void * CZapit::scanTransponderThread(void * data)
 	freq_id_t freq;
 
 #if HAVE_DVB_API_VERSION >= 5 
-	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C)
+	if (fe->getForcedDelSys() == DVB_C)
 #else
-	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
+	if (fe->getInfo()->type == FE_QAM)
 #endif
 		freq = TP->feparams.frequency/100;
 #if HAVE_DVB_API_VERSION >= 5
-	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+	else if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
 #else
-	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+	else if(fe->getInfo()->type == FE_QPSK)
 #endif
 		freq = TP->feparams.frequency/1000;
 #if HAVE_DVB_API_VERSION >= 5
-	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
 #else
-	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
+	else if (fe->getInfo()->type == FE_OFDM) 
 #endif
 		freq = TP->feparams.frequency/1000000;
 
@@ -5507,10 +5501,10 @@ void * CZapit::scanTransponderThread(void * data)
 	CZapit::getInstance()->fake_tid++; 
 	CZapit::getInstance()->fake_nid++;
 
-	CZapit::getInstance()->addToScan(CREATE_TRANSPONDER_ID(freq, satellitePosition, CZapit::getInstance()->fake_nid, CZapit::getInstance()->fake_tid), &TP->feparams, false, feindex);
+	CZapit::getInstance()->addToScan(CREATE_TRANSPONDER_ID(freq, satellitePosition, CZapit::getInstance()->fake_nid, CZapit::getInstance()->fake_tid), &TP->feparams, false, fe);
 
 	// scanSDTS
-	if (!CZapit::getInstance()->getSDTS(satellitePosition, feindex))
+	if (!CZapit::getInstance()->getSDTS(satellitePosition, fe))
 		found_channels = 0;
 
 	if(abort_scan)

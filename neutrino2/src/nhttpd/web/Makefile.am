@@ -93,5 +93,6 @@ install_DATA =	channels.js \
 		Y_Wait.yhtm \
 		ywidget.css \
 		ywidget.js \
-		Y_yweb.js
+		Y_yweb.js \
+		Y_Filemgr.yhtm Y_Filemgr_blocks.txt Y_Filemgr_Edit.yhtm accordion.js effects.js
 

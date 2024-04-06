@@ -24,18 +24,22 @@
 #ifndef __scants__
 #define __scants__
 
+#include <string>
+
 #include <gui/widget/widget.h>
 
 #include <driver/gfx/framebuffer.h>
 
 #include <system/localize.h>
 #include <gui/widget/widget_helpers.h>
-#include <string>
 
 #include <zapit/zapittypes.h>
+#include <zapit/frontend_c.h>
 
 
 #define NEUTRINO_SCAN_SETTINGS_FILE	CONFIGDIR "/scan.conf"
+
+class CScanSettings;
 
 class CScanTs : public CMenuTarget
 {
@@ -75,10 +79,12 @@ class CScanTs : public CMenuTarget
 		bool freqready;
 		void showSNR();
 		
-		int feindex;
+		//
+		CFrontend* fe;
+		CScanSettings * scanSettings;
 
 	public:
-		CScanTs(int num = 0);
+		CScanTs(CFrontend* f, CScanSettings * sc);
 		void hide();
 		int exec(CMenuTarget* parent, const std::string & actionKey);
 };

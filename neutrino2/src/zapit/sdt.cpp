@@ -41,7 +41,7 @@
 #define SDT_SIZE 	MAX_SECTION_LENGTH
 
 // sdt scan
-int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id, t_original_network_id *p_original_network_id, t_satellite_position satellitePosition, freq_id_t freq, int feindex)
+int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id, t_original_network_id *p_original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe)
 {
 	dprintf(DEBUG_NORMAL, "CSdt::parseSDT:\n");
 	
@@ -53,7 +53,7 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id, t_original_netw
 	cDemux * dmx = new cDemux();
 	
 	//open	
-	dmx->Open( DMX_PSI_CHANNEL, SDT_SIZE, CZapit::getInstance()->getFE(feindex) );	
+	dmx->Open( DMX_PSI_CHANNEL, SDT_SIZE, fe );	
 
 	unsigned char buffer[SDT_SIZE];
 
@@ -69,8 +69,6 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id, t_original_netw
 	unsigned short descriptors_loop_length;
 	unsigned short running_status;
 
-	//bool EIT_schedule_flag;
-	//bool EIT_present_following_flag;
 	bool free_CA_mode;
 
 	unsigned char filter[DMX_FILTER_SIZE];
@@ -98,7 +96,7 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id, t_original_netw
 		}
 
 		if(buffer[0] != 0x42)
-		        printf("CSdt::parseSDT: fe(%d) Bogus section received: 0x%x\n", feindex, buffer[0]);
+		        printf("CSdt::parseSDT: fe(%d:%d) Bogus section received: 0x%x\n", fe->feadapter, fe->fenumber, buffer[0]);
 
 		section_length = ((buffer[1] & 0x0F) << 8) | buffer[2];
 		transport_stream_id = (buffer[3] << 8) | buffer[4];
@@ -119,8 +117,6 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id, t_original_netw
 		for (pos = 11; pos < section_length - 1; pos += descriptors_loop_length + 5) 
 		{
 			service_id = (buffer[pos] << 8) | buffer[pos + 1];
-			//EIT_schedule_flag = buffer[pos + 2] & 0x02;
-			//EIT_present_following_flag = buffer[pos + 2] & 0x01;
 			running_status = buffer [pos + 3] & 0xE0;
 			free_CA_mode = buffer [pos + 3] & 0x10;
 			descriptors_loop_length = ((buffer[pos + 3] & 0x0F) << 8) | buffer[pos + 4];
@@ -146,7 +142,7 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id, t_original_netw
 						break;
 	
 					case SERVICE_DESCRIPTOR:
-						descriptor.service_descriptor(buffer + pos2, service_id, transport_stream_id, original_network_id, satellitePosition, freq, free_CA_mode, feindex);
+						descriptor.service_descriptor(buffer + pos2, service_id, transport_stream_id, original_network_id, satellitePosition, freq, free_CA_mode, fe);
 						break;
 	
 					case COUNTRY_AVAILABILITY_DESCRIPTOR:

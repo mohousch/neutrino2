@@ -25,16 +25,21 @@
 #ifndef __motorcontrol__
 #define __motorcontrol__
 
+#include <string>
+
 #include <gui/widget/widget.h>
 #include <driver/gfx/framebuffer.h>
 #include <gui/widget/widget_helpers.h>
-#include <string>
+
+#include <zapit/frontend_c.h>
 
 
 #define STEP_MODE_OFF 0
 #define STEP_MODE_AUTO 1
 #define STEP_MODE_ON 2 
-#define STEP_MODE_TIMED 3       
+#define STEP_MODE_TIMED 3 
+
+class CScanSettings;      
 
 class CMotorControl : public CMenuTarget
 {
@@ -71,12 +76,13 @@ class CMotorControl : public CMenuTarget
 		//void stopSatFind(void);
 		void showSNR(void);
 		
-		//test
-		int feindex;
+		//
+		CFrontend* fe;
+		CScanSettings * scanSettings;
 
 	public:
 
-		CMotorControl(int num = 0);
+		CMotorControl(CFrontend* f, CScanSettings * sc);
 		void hide();
 		int exec(CMenuTarget* parent, const std::string & actionKey);
 };
