@@ -1424,7 +1424,7 @@ tune_again:
 // -1 = fail
 int CZapit::zapToRecordID(const t_channel_id channel_id)
 {
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::zapToRecordID: channel_id (0x%llx)\n", channel_id);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::zapToRecordID: channel_id (0x%llx) %s (%s)\n", channel_id, findChannelByChannelID(channel_id)->getName().c_str(), getSatelliteName(findChannelByChannelID(channel_id)->getSatellitePosition()).c_str());
 	
 	if (IS_WEBTV(channel_id))
 	{
@@ -1455,19 +1455,17 @@ int CZapit::zapToRecordID(const t_channel_id channel_id)
 	if (record_fe == NULL)	
 		record_fe = frontend;
 	
-	// single/multi on the same frontend
-//	if(record_fe == live_fe)
-//	{
-//		if( (rec_channel_id != live_channel_id) && !SAME_TRANSPONDER(live_channel_id, rec_channel_id) )
-//		{
-//			// zap to record channel
-//			zapToChannelID(rec_channel_id, false);
-//			return 0;
-//		}
-//	}
-	// twin/multi other frontend as live frontend
-//	else
-	if( (rec_channel_id != live_channel_id) || !SAME_TRANSPONDER(live_channel_id, rec_channel_id) )
+	//
+	if(record_fe == live_fe)
+	{
+		if( (rec_channel_id != live_channel_id) && !SAME_TRANSPONDER(live_channel_id, rec_channel_id) )
+		{
+			// zap to record channel
+			zapToChannelID(rec_channel_id, false);
+			return 0;
+		}
+	}
+	else 
 	{
 		// just tune
 		if(!tuneToChannel(record_fe, rec_channel, transponder_change))
@@ -4122,6 +4120,17 @@ std::string CZapit::getChannelDescription(const t_channel_id channel_id)
 		desc = it->second.getDescription().c_str();
 		
 	return desc;
+}
+
+//
+std::string CZapit::getSatelliteName(t_satellite_position position)
+{
+	sat_iterator_t it = satellitePositions.find(position);
+	
+	if(it != satellitePositions.end())
+		return it->second.name;
+		
+	return "";
 }
 
 void CZapit::getCurrentPIDS( responseGetPIDs &pids )
