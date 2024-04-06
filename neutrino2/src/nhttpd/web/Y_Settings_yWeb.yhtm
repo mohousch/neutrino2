@@ -91,8 +91,8 @@ function do_init(){
 				<td>{=L:set.yweb.remote=}</td>
 				<td colspan="3">	<select name="fb" title="{=L:remote=}">
 					<option value="default" selected="selected">default</option>
-					<option value="Cuberevo">Cuberevo</option>
-					<option value="Dream">Dream</option>
+					<option value="Cuberevo">remote 1</option>
+					<option value="Dream">remote 2</option>
 					</select></td>
 			</tr>
 			

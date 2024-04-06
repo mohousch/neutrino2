@@ -1429,6 +1429,7 @@ int CZapit::zapToRecordID(const t_channel_id channel_id)
 	if (IS_WEBTV(channel_id))
 	{
 		rec_channel_id = channel_id;
+		
 		return 0;
 	}
 	
@@ -1455,17 +1456,18 @@ int CZapit::zapToRecordID(const t_channel_id channel_id)
 		record_fe = frontend;
 	
 	// single/multi on the same frontend
-	if(record_fe == live_fe)
-	{
-		if( (rec_channel_id != live_channel_id) && !SAME_TRANSPONDER(live_channel_id, rec_channel_id) )
-		{
-			// zap to record channel
-			zapToChannelID(rec_channel_id, false);
-			return 0;
-		}
-	}
+//	if(record_fe == live_fe)
+//	{
+//		if( (rec_channel_id != live_channel_id) && !SAME_TRANSPONDER(live_channel_id, rec_channel_id) )
+//		{
+//			// zap to record channel
+//			zapToChannelID(rec_channel_id, false);
+//			return 0;
+//		}
+//	}
 	// twin/multi other frontend as live frontend
-	else
+//	else
+	if( (rec_channel_id != live_channel_id) || !SAME_TRANSPONDER(live_channel_id, rec_channel_id) )
 	{
 		// just tune
 		if(!tuneToChannel(record_fe, rec_channel, transponder_change))

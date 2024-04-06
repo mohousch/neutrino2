@@ -3,12 +3,14 @@
 <script type="text/javascript" src="/Y_Baselib.js"></script>
 <script type="text/javascript">
 //<![CDATA[
+
 function form_init()
 {
 	obj_set_radio_value('authenticate', "{=ini-get:/var/tuxbox/config/nhttpd.conf;mod_auth.authenticate;false=}");
 	obj_set_radio_value('threading', "{=ini-get:/var/tuxbox/config/nhttpd.conf;webserver.threading;false=}");
 	obj_set_radio_value('mod_sendfile_sendAll', "{=ini-get:/var/tuxbox/config/nhttpd.conf;mod_sendfile.sendAll;false=}");
 }
+
 function do_submit()
 {
 	if(document.f.authpassword.value.length < 2)
@@ -22,11 +24,14 @@ function do_submit()
 		document.f.submit();
 	}
 }
+
 //]]>
 </script>
 </head>
 <body onload="form_init()">
+
 {=var-set:wait_text={=L:save_values=}=}{=include-block:Y_Blocks.txt;snip_wait=}
+
 <div class="work_box">
 	<div class="work_box_head"><div class="work_box_head_h2">
 	{=var-set:help_url=Help-Settings-WebServer=}{=var-set:menu={=L:set.nhttpd.webserver=}=}{=include-block:Y_Blocks.txt;work_menu=}</div></div>
