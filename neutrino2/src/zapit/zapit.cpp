@@ -1137,6 +1137,8 @@ CZapitChannel * CZapit::findChannelToZap(const t_channel_id channel_id, bool in_
 
 bool CZapit::tuneToChannel(CFrontend * frontend, CZapitChannel * thischannel, bool &transponder_change)
 {
+	dprintf(DEBUG_NORMAL, "CZapit::tuneToChannel: %llx\n", thischannel->getChannelID());
+	
 	int waitForMotor = 0;
 
 	transponder_change = false;
@@ -3499,7 +3501,7 @@ unsigned int CZapit::zapToChannelID(t_channel_id channel_id, bool isSubService)
 {
 	unsigned int result = 0;
 
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::zapToChannelID: chid 0x%llx\n", channel_id);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::zapToChannelID: chid 0x%llx %s (%s)\n", channel_id, findChannelByChannelID(channel_id)->getName().c_str(), getSatelliteName(findChannelByChannelID(channel_id)->getSatellitePosition()).c_str());
 
 	if (zapit(channel_id, isSubService) < 0) 
 	{
