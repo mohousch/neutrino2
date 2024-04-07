@@ -435,15 +435,11 @@ void GLThreadObj::bltDisplayBuffer()
 {
 	if (!videoDecoder)
 		return;
-		
-	static bool warn = true;
 	
 	cVideo::SWFramebuffer* buf = videoDecoder->getDecBuf();
 	
 	if (!videoDecoder->getDecBuf())
-	{	
-		warn = false;
-			
+	{		
 		//
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
 		glBufferData(GL_PIXEL_UNPACK_BUFFER, mOSDBuffer.size(), &mOSDBuffer[0], GL_STREAM_DRAW_ARB);
@@ -454,7 +450,7 @@ void GLThreadObj::bltDisplayBuffer()
 		return;
 	}
 	
-	warn = true;
+	//
 	int w = buf->width(), h = buf->height();
 	
 	if (w == 0 || h == 0)
@@ -520,8 +516,6 @@ void GLThreadObj::bltPlayBuffer()
 		 
 	if (playback && !playback->playing)
 		return;
-		
-	static bool warn = true;
 	
 #ifdef ENABLE_GSTREAMER
 	sleep_us = framerate / 100;
@@ -535,9 +529,7 @@ void GLThreadObj::bltPlayBuffer()
 	
 	//
 	if (buf == NULL)
-	{	
-		warn = false;
-		
+	{		
 		//
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
 		glBufferData(GL_PIXEL_UNPACK_BUFFER, mOSDBuffer.size(), &mOSDBuffer[0], GL_STREAM_DRAW_ARB);
@@ -547,8 +539,6 @@ void GLThreadObj::bltPlayBuffer()
 		
 		return;
 	}
-	
-	warn = true;
 	
 	int w = buf->width(), h = buf->height();
 	
@@ -577,7 +567,7 @@ void GLThreadObj::bltPlayBuffer()
 	
 	// FIXME:
 	int64_t apts = buf->apts();
-	int64_t vpts = buf->vpts();
+	int64_t vpts = buf->vpts() + 18000;
 	int rate = buf->rate();
 			
 	if (apts != last_apts)

@@ -108,6 +108,7 @@ static ao_sample_format sformat;
 int buf_num = 0;
 int buf_in = 0;
 int buf_out = 0;
+bool stillpicture = false;
 #endif
 
 //
@@ -1151,8 +1152,8 @@ static int Write(void* _context, void* _out)
 			sformat.byte_format = AO_FMT_NATIVE;
 			sformat.matrix = 0;
 			
-			if (adevice)
-				ao_close(adevice);
+//			if (adevice)
+//				ao_close(adevice);
 				
 			adevice = ao_open_live(driver, &sformat, NULL);
 			ai = ao_driver_info(driver);
@@ -1329,14 +1330,14 @@ static int Write(void* _context, void* _out)
 		// setup swsscaler
 		if (got_frame)
 		{
-			unsigned int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
+			data.size = av_image_get_buffer_size(AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 							
 			convert = sws_getCachedContext(convert, ctx->width, ctx->height, ctx->pix_fmt, ctx->width, ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
 								
 			if (convert)
 			{
-				// fill					
-				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, data.buffer[buf_in], AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
+				// fill				
+				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, data.buffer, AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 
 				// scale
 				sws_scale(convert, frame->data, frame->linesize, 0, ctx->height, rgbframe->data, rgbframe->linesize);
@@ -1355,7 +1356,7 @@ static int Write(void* _context, void* _out)
 				//
 				data.a = ctx->time_base;
 				
-				/*
+				//
 				int framerate = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);
 				
 				switch (framerate)
@@ -1385,22 +1386,21 @@ static int Write(void* _context, void* _out)
 						data.rate = framerate;
 						break;
 				}
-				*/
-				int rate = av_q2d(out->stream->r_frame_rate);
-				data.rate = rate;
+//				int rate = av_q2d(out->stream->r_frame_rate);
+//				data.rate = rate;
 				
 				//
-				data.size = need;
-				
-				////
+//				data.size = need;
+
+				//
 				buf_in++;
-				buf_in %= AV_NUM_DATA_POINTERS;
+				buf_in %= 64;
 				buf_num++;
 				
-				if (buf_num > (AV_NUM_DATA_POINTERS - 1))
+				if (buf_num > (64 - 1))
 				{
 					buf_out++;
-					buf_out %= AV_NUM_DATA_POINTERS;
+					buf_out %= 64;
 					buf_num--;
 				}
 			}

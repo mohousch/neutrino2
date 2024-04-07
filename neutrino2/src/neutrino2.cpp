@@ -3643,7 +3643,6 @@ _repeat:
 		
 		return messages_return::handled;
 	}
-	////
 	else if (msg == NeutrinoMessages::EVT_STREAM_START) 
 	{
 		int fd = (int) data;

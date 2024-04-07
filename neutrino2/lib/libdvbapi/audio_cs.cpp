@@ -98,7 +98,6 @@ cAudio::cAudio(int num)
 	dmxbuf = (uint8_t *)malloc(DMX_BUF_SZ);
 	bufpos = 0;
 	curr_pts = 0;
-//	ao_initialize();
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	av_register_all();
 #endif
@@ -117,7 +116,6 @@ cAudio::~cAudio(void)
 		ao_close(adevice);
 		
 	adevice = NULL;
-//	ao_shutdown();
 #endif
 }
 
@@ -685,6 +683,7 @@ void cAudio::run()
 		goto out;
 	}
 	
+/*
 	if (p->sample_rate == 0 || p->channels == 0)
 	{
 		av_get_sample_fmt_string(tmp, sizeof(tmp), c->sample_fmt);
@@ -693,6 +692,7 @@ void cAudio::run()
 		
 		goto out2;
 	}
+*/
 	
 	frame = av_frame_alloc();
 	
@@ -716,8 +716,8 @@ void cAudio::run()
 		sformat.byte_format = AO_FMT_NATIVE;
 		sformat.matrix = 0;
 		
-		if (adevice)
-			ao_close(adevice);
+//		if (adevice)
+//			ao_close(adevice);
 			
 		adevice = ao_open_live(driver, &sformat, NULL);
 		ai = ao_driver_info(driver);
@@ -782,7 +782,7 @@ void cAudio::run()
 		if (gotframe && thread_started)
 		{
 			int out_linesize;
-			obuf_sz = av_rescale_rnd(swr_get_delay(swr, p->sample_rate) + frame->nb_samples, o_sr, p->sample_rate, AV_ROUND_UP);
+			obuf_sz = av_rescale_rnd(/*swr_get_delay(swr, p->sample_rate) +*/ frame->nb_samples, o_sr, p->sample_rate, AV_ROUND_UP);
 
 			if (obuf_sz > obuf_sz_max)
 			{

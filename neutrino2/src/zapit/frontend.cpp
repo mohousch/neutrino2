@@ -186,12 +186,6 @@ void CFrontend::getFEInfo(void)
 	
 	if(::ioctl(fd, FE_GET_INFO, &info) < 0)
 		perror("FE_GET_INFO");
-}
-
-//
-void CFrontend::getFEDelSysMask(void)
-{
-	dprintf(DEBUG_INFO, "CFrontend::getFEDelSysMask:\n");
 	
 	bool legacy = true;
 
@@ -214,7 +208,7 @@ void CFrontend::getFEDelSysMask(void)
 		{
 			if (i >= MAX_DELSYS) 
 			{
-				dprintf(DEBUG_INFO, "CFrontend::getFEDelSysMask: (fe%d:%d) ERROR: too many delivery systems\n", feadapter, fenumber);
+				dprintf(DEBUG_INFO, "CFrontend::getFEInfo: (fe%d:%d) ERROR: too many delivery systems\n", feadapter, fenumber);
 				break;
 			}
 
@@ -224,23 +218,23 @@ void CFrontend::getFEDelSysMask(void)
 				case SYS_DVBC_ANNEX_B:
 				case SYS_DVBC_ANNEX_C:
 					deliverySystemMask |= DVB_C;
-					dprintf(DEBUG_INFO, "CFrontend::getFEDelSysMask: (fe%d:%d) add delivery system DVB-C (delivery_system: %x)\n", feadapter, fenumber, DVB_C);
+					dprintf(DEBUG_INFO, "CFrontend::getFEInfo: (fe%d:%d) add delivery system DVB-C (delivery_system: %x)\n", feadapter, fenumber, DVB_C);
 					break;
 					
 				case SYS_DVBT:
 					deliverySystemMask |= DVB_T;
-					dprintf(DEBUG_INFO, "CFrontend::getFEDelSysMask: (fe%d:%d) add delivery system DVB-T (delivery_system: %x)\n", feadapter, fenumber, DVB_T);
+					dprintf(DEBUG_INFO, "CFrontend::getFEInfo: (fe%d:%d) add delivery system DVB-T (delivery_system: %x)\n", feadapter, fenumber, DVB_T);
 					break;
 					
 				case SYS_DVBT2:
 					deliverySystemMask |= DVB_T2;
 					fe_can_multistream = info.caps & FE_CAN_MULTISTREAM;
-					dprintf(DEBUG_INFO, "CFrontend::getFEDelSysMask: (fe%d:%d) add delivery system DVB-T2 (delivery_system: %x / Multistream: %s)\n", feadapter, fenumber, DVB_T2, fe_can_multistream ? "yes" :"no");
+					dprintf(DEBUG_INFO, "CFrontend::getFEInfo: (fe%d:%d) add delivery system DVB-T2 (delivery_system: %x / Multistream: %s)\n", feadapter, fenumber, DVB_T2, fe_can_multistream ? "yes" :"no");
 					break;
 					
 				case SYS_DVBS:
 					deliverySystemMask |= DVB_S;
-					dprintf(DEBUG_INFO, "CFrontend::getFEDelSysMask: (fe%d:%d) add delivery system DVB-S (delivery_system: %x)\n", feadapter, fenumber, DVB_S);
+					dprintf(DEBUG_INFO, "CFrontend::getFEInfo: (fe%d:%d) add delivery system DVB-S (delivery_system: %x)\n", feadapter, fenumber, DVB_S);
 					break;
 					
 				case SYS_DVBS2:
@@ -249,12 +243,12 @@ void CFrontend::getFEDelSysMask(void)
 #endif
 					deliverySystemMask |= DVB_S2;
 					fe_can_multistream = info.caps & FE_CAN_MULTISTREAM;
-					dprintf(DEBUG_INFO, "CFrontend::getFEDelSysMask: (fe%d:%d) add delivery system DVB-S2 (delivery_system: %x / Multistream: %s)\n", feadapter, fenumber, DVB_S2, fe_can_multistream ? "yes" :"no");
+					dprintf(DEBUG_INFO, "CFrontend::getFEInfo: (fe%d:%d) add delivery system DVB-S2 (delivery_system: %x / Multistream: %s)\n", feadapter, fenumber, DVB_S2, fe_can_multistream ? "yes" :"no");
 #if !defined (__sh__)
 					if (fe_can_multistream)
 					{
 						deliverySystemMask |= DVB_S2X;
-						dprintf(DEBUG_INFO, "CFrontend::getFEDelSysMask: (fe%d:%d) add delivery system DVB-S2X (delivery_system: %x / Multistream: %s)\n", feadapter, fenumber, DVB_S2X, fe_can_multistream ? "yes" :"no");
+						dprintf(DEBUG_INFO, "CFrontend::getFEInfo: (fe%d:%d) add delivery system DVB-S2X (delivery_system: %x / Multistream: %s)\n", feadapter, fenumber, DVB_S2X, fe_can_multistream ? "yes" :"no");
 					}
 #endif
 					break;
@@ -262,12 +256,12 @@ void CFrontend::getFEDelSysMask(void)
 #ifdef SYS_DTMB	
 				case SYS_DTMB:
 					deliverySystemMask |= DVB_DTMB;
-					dprintf(DEBUG_INFO, "CFrontend::getFEDelSysMask: (fe%d:%d) add delivery system DTMB (delivery_system: %x)\n", feadapter, fenumber, DVB_DTMB);
+					dprintf(DEBUG_INFO, "CFrontend::getFEInfo: (fe%d:%d) add delivery system DTMB (delivery_system: %x)\n", feadapter, fenumber, DVB_DTMB);
 					break;
 #endif
 				
 				default:
-					dprintf(DEBUG_INFO, "CFrontend::getFEDelSysMask: (fe%d:%d) ERROR: delivery system unknown (delivery_system: %d)\n", feadapter, fenumber, p[0].u.buffer.data[i]);
+					dprintf(DEBUG_INFO, "CFrontend::getFEInfo: (fe%d:%d) ERROR: delivery system unknown (delivery_system: %d)\n", feadapter, fenumber, p[0].u.buffer.data[i]);
 					continue;
 			}
 
@@ -277,7 +271,7 @@ void CFrontend::getFEDelSysMask(void)
 	} 
 	else 
 	{
-		dprintf(DEBUG_INFO, "CFrontend::getFEDelSysMask: can't query delivery systems on frontend (%d:%d) - falling back to legacy mode\n", feadapter, fenumber);
+		dprintf(DEBUG_INFO, "CFrontend::getFEInfo: can't query delivery systems on frontend (%d:%d) - falling back to legacy mode\n", feadapter, fenumber);
 	}
 #endif
 #endif
@@ -305,7 +299,7 @@ void CFrontend::getFEDelSysMask(void)
 				deliverySystemMask |= DVB_C;
 				break;
 			default:
-				printf("CFrontend::getFEDelSysMask: ERROR: unknown frontend type %d on frontend (%d:%d)", info.type, feadapter, fenumber);
+				printf("CFrontend::getFEInfo: ERROR: unknown frontend type %d on frontend (%d:%d)", info.type, feadapter, fenumber);
 		}
 	}
 	
@@ -313,7 +307,7 @@ void CFrontend::getFEDelSysMask(void)
 	if ( (deliverySystemMask & DVB_C && deliverySystemMask & DVB_T) || (deliverySystemMask & DVB_C && deliverySystemMask & DVB_T2) || (deliverySystemMask & DVB_C) && (deliverySystemMask & DVB_T) && (deliverySystemMask & DVB_T2) )
 	{
 		hybrid = true;
-		dprintf(DEBUG_NORMAL, "CFrontend::getFEDelSysMask: fe(%d:%d) %s (delsys:0x%x) isHybrid:%s\n", feadapter, fenumber, info.name, deliverySystemMask, hybrid? "true" : "false");
+		dprintf(DEBUG_NORMAL, "CFrontend::getFEInfo: fe(%d:%d) %s (delsys:0x%x) isHybrid:%s\n", feadapter, fenumber, info.name, deliverySystemMask, hybrid? "true" : "false");
 	}
 }
 

@@ -1405,7 +1405,7 @@ void cVideo::run(void)
 		still_m.lock();
 		if (got_frame && ! stillpicture)
 		{
-			unsigned int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, c->width, c->height, 1);
+			int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, c->width, c->height, 1);
 
 			convert = sws_getCachedContext(convert, c->width, c->height, c->pix_fmt, c->width, c->height, AV_PIX_FMT_RGB32, SWS_BICUBIC, 0, 0, 0);
 			        

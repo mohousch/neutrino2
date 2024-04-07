@@ -234,7 +234,7 @@ static uint32_t writeData(void* _call)
 	    return 0;
 	}
 
-	//
+	// FIXME: segfault
 #if 0	
 	pcmPrivateData_t* pcmPrivateData = (pcmPrivateData_t*)call->private_data;
 	uint8_t *buffer = call->data;

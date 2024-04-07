@@ -84,156 +84,164 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 /* ***************************** */
 static int reset()
 {
-    return 0;
+    	return 0;
 }
 
 static uint8_t PesHeader[256];
 static int writeData(void *_call, bool is_vp6, bool is_vp9)
 {
-    WriterAVCallData_t* call = (WriterAVCallData_t*) _call;
-    vp_printf(10, "\n");
+    	WriterAVCallData_t* call = (WriterAVCallData_t*) _call;
+    	vp_printf(10, "\n");
 
-    if (call == NULL) 
-    {
-        vp_err("call data is NULL...\n");
-        return 0;
-    }
+    	if (call == NULL) 
+    	{
+        	vp_err("call data is NULL...\n");
+        	return 0;
+    	}
 
-    if ((call->data == NULL) || (call->len <= 0)) 
-    {
-        vp_err("parsing NULL Data. ignoring...\n");
-        return 0;
-    }
+    	if ((call->data == NULL) || (call->len <= 0)) 
+    	{
+        	vp_err("parsing NULL Data. ignoring...\n");
+        	return 0;
+    	}
 
-    if (call->fd < 0) 
-    {
-        vp_err("file pointer < 0. ignoring ...\n");
-        return 0;
-    }
+    	if (call->fd < 0) 
+    	{
+        	vp_err("file pointer < 0. ignoring ...\n");
+        	return 0;
+    	}
 
-    vp_printf(10, "VideoPts %lld\n", call->Pts);
-    vp_printf(10, "Got Private Size %d\n", call->private_size);
+    	vp_printf(10, "VideoPts %lld\n", call->Pts);
+    	vp_printf(10, "Got Private Size %d\n", call->private_size);
 
-    struct iovec iov[2];
-    uint64_t pts = is_vp9 && call->Pts;
+    	struct iovec iov[2];
+    	uint64_t pts = is_vp9 && call->Pts;
     
-    iov[0].iov_base = PesHeader;
-    uint32_t pes_header_len = InsertPesHeader(PesHeader, call->len, MPEG_VIDEO_PES_START_CODE, pts, 0);
-    uint32_t len = call->len + 4 + 6;
-    memcpy(PesHeader + pes_header_len, "BCMV", 4);
-    pes_header_len += 4;
+    	iov[0].iov_base = PesHeader;
+    	uint32_t pes_header_len = InsertPesHeader(PesHeader, call->len, MPEG_VIDEO_PES_START_CODE, pts, 0);
+    	uint32_t len = call->len + 4 + 6;
+    	memcpy(PesHeader + pes_header_len, "BCMV", 4);
+    	pes_header_len += 4;
     
-    //if (is_vp9) {
-      //  uint32_t vp9_pts = (call->Pts) / 2;
-        //memcpy(&PesHeader[9], &vp9_pts, sizeof(vp9_pts));
-    //}
+   	if (is_vp9) 
+   	{
+      		uint32_t vp9_pts = (call->Pts) / 2;
+        	memcpy(&PesHeader[9], &vp9_pts, sizeof(vp9_pts));
+    	}
     
-    if (is_vp6)
-            ++len;
-    PesHeader[pes_header_len++] = (len & 0xFF000000) >> 24;
-    PesHeader[pes_header_len++] = (len & 0x00FF0000) >> 16;
-    PesHeader[pes_header_len++] = (len & 0x0000FF00) >> 8;
-    PesHeader[pes_header_len++] = (len & 0x000000FF) >> 0;
-    PesHeader[pes_header_len++] = 0;
-    PesHeader[pes_header_len++] = is_vp9 ? 1 : 0;
-    if (is_vp6)
-            PesHeader[pes_header_len++] = 0;
-    iov[0].iov_len = pes_header_len;
-    iov[1].iov_base = call->data;
-    iov[1].iov_len = call->len;
+    	if (is_vp6)
+            	++len;
+    	PesHeader[pes_header_len++] = (len & 0xFF000000) >> 24;
+    	PesHeader[pes_header_len++] = (len & 0x00FF0000) >> 16;
+    	PesHeader[pes_header_len++] = (len & 0x0000FF00) >> 8;
+    	PesHeader[pes_header_len++] = (len & 0x000000FF) >> 0;
+    	PesHeader[pes_header_len++] = 0;
+    	PesHeader[pes_header_len++] = is_vp9 ? 1 : 0;
+    	
+    	if (is_vp6)
+            	PesHeader[pes_header_len++] = 0;
+    	iov[0].iov_len = pes_header_len;
+    	iov[1].iov_base = call->data;
+    	iov[1].iov_len = call->len;
 
-    int32_t payload_len = call->len + pes_header_len - 6;
+    	int32_t payload_len = call->len + pes_header_len - 6;
 
-/*
-    if (!is_vp9 || STB_VUPLUS == GetSTBType() || STB_HISILICON == GetSTBType() || STB_DREAMBOX == GetSTBType()) {
-        UpdatePesHeaderPayloadSize(PesHeader, payload_len);
-        // it looks like for VUPLUS drivers PES header must be written separately
-        int ret = call->WriteV(call->fd, iov, 1);
-        if (iov[0].iov_len != ret)
-            return ret;
-        ret = call->WriteV(call->fd, iov + 1, 1);
-        return iov[0].iov_len + ret;
-    }
-    else
-*/ 
-    {
-        if (payload_len > 0x8008)
-            payload_len = 0x8008;
+    	if (!is_vp9) 
+    	{
+        	UpdatePesHeaderPayloadSize(PesHeader, payload_len);
+        	// it looks like for VUPLUS drivers PES header must be written separately
+        	int ret = call->WriteV(call->fd, iov, 1);
+        	if (iov[0].iov_len != ret)
+            		return ret;
+        	ret = call->WriteV(call->fd, iov + 1, 1);
+        	return iov[0].iov_len + ret;
+    	}
+    	else 
+    	{
+        	if (payload_len > 0x8008)
+            		payload_len = 0x8008;
 
-        int offs = 0;
-        int bytes = payload_len - 10 - 8;
-        UpdatePesHeaderPayloadSize(PesHeader, payload_len);
-        // pes header
-        if (pes_header_len != WriteExt(call->WriteV, call->fd, PesHeader, pes_header_len)) return -1;
-        if (bytes != WriteExt(call->WriteV, call->fd, call->data, bytes)) return -1;
+        	int offs = 0;
+        	int bytes = payload_len - 10 - 8;
+        	UpdatePesHeaderPayloadSize(PesHeader, payload_len);
+        	// pes header
+        	if (pes_header_len != WriteExt(call->WriteV, call->fd, PesHeader, pes_header_len)) 
+        		return -1;
+        		
+        	if (bytes != WriteExt(call->WriteV, call->fd, call->data, bytes)) 
+        		return -1;
         
-        offs += bytes;
+        	offs += bytes;
 
-        while (bytes < call->len)
-        {
-            int left = call->len - bytes;
-            int wr = 0x8000;
-            if (wr > left)
-                wr = left;
+        	while (bytes < call->len)
+        	{
+            		int left = call->len - bytes;
+            		int wr = 0x8000;
+            		if (wr > left)
+                		wr = left;
 
-            //PesHeader[0] = 0x00;
-            //PesHeader[1] = 0x00;
-            //PesHeader[2] = 0x01;
-            //PesHeader[3] = 0xE0;
-            PesHeader[6] = 0x81;
-            PesHeader[7] = 0x00;
-            PesHeader[8] = 0x00;
-            pes_header_len = 9;
+            		//PesHeader[0] = 0x00;
+            		//PesHeader[1] = 0x00;
+            		//PesHeader[2] = 0x01;
+            		//PesHeader[3] = 0xE0;
+            		PesHeader[6] = 0x81;
+            		PesHeader[7] = 0x00;
+            		PesHeader[8] = 0x00;
+            		pes_header_len = 9;
 
-            UpdatePesHeaderPayloadSize(PesHeader, wr + 3);
+            		UpdatePesHeaderPayloadSize(PesHeader, wr + 3);
 
-            if (pes_header_len != WriteExt(call->WriteV, call->fd, PesHeader, pes_header_len)) return -1;
-            if (wr != WriteExt(call->WriteV, call->fd, call->data + offs, wr)) return -1;
+            		if (pes_header_len != WriteExt(call->WriteV, call->fd, PesHeader, pes_header_len)) 
+            			return -1;
+            			
+            		if (wr != WriteExt(call->WriteV, call->fd, call->data + offs, wr)) 
+            			return -1;
 
-            bytes += wr;
-            offs += wr;
-        }
+            		bytes += wr;
+            		offs += wr;
+        	}
 
-        //PesHeader[0] = 0x00;
-        //PesHeader[1] = 0x00;
-        //PesHeader[2] = 0x01;
-        //PesHeader[3] = 0xE0;
-        PesHeader[4] = 0x00;
-        PesHeader[5] = 0xB2;
-        PesHeader[6] = 0x81;
-        PesHeader[7] = 0x01;
-        PesHeader[8] = 0x14;
-        PesHeader[9] = 0x80;
-        PesHeader[10] = 'B';
-        PesHeader[11] = 'R';
-        PesHeader[12] = 'C';
-        PesHeader[13] = 'M';
-        memset(PesHeader+14, 0, 170);
-        PesHeader[26] = 0xFF;
-        PesHeader[27] = 0xFF;
-        PesHeader[28] = 0xFF;
-        PesHeader[29] = 0xFF;
-        PesHeader[33] = 0x85;
+        	//PesHeader[0] = 0x00;
+        	//PesHeader[1] = 0x00;
+        	//PesHeader[2] = 0x01;
+        	//PesHeader[3] = 0xE0;
+        	PesHeader[4] = 0x00;
+        	PesHeader[5] = 0xB2;
+        	PesHeader[6] = 0x81;
+        	PesHeader[7] = 0x01;
+        	PesHeader[8] = 0x14;
+        	PesHeader[9] = 0x80;
+        	PesHeader[10] = 'B';
+        	PesHeader[11] = 'R';
+        	PesHeader[12] = 'C';
+        	PesHeader[13] = 'M';
+        	memset(PesHeader + 14, 0, 170);
+        	PesHeader[26] = 0xFF;
+        	PesHeader[27] = 0xFF;
+        	PesHeader[28] = 0xFF;
+        	PesHeader[29] = 0xFF;
+        	PesHeader[33] = 0x85;
 
-        if (pes_header_len != WriteExt(call->WriteV, call->fd, PesHeader, 184)) return -1;
+        	if (pes_header_len != WriteExt(call->WriteV, call->fd, PesHeader, 184)) 
+        		return -1;
 
-        return 1;
-    }
+        	return 1;
+    	}
 }
 
 static int writeDataVP6(void *_call)
 {
-    return writeData(_call, true, false);
+    	return writeData(_call, true, false);
 }
 
 static int writeDataVP8(void *_call)
 {
-    return writeData(_call, false, false);
+    	return writeData(_call, false, false);
 }
 
 static int writeDataVP9(void *_call)
 {
-    return writeData(_call, false, true);
+    	return writeData(_call, false, true);
 }
 
 /* ***************************** */
@@ -241,44 +249,44 @@ static int writeDataVP9(void *_call)
 /* ***************************** */
 
 static WriterCaps_t capsVP6 = {
-    "vp6",
-    eVideo,
-    "V_VP6",
-    VIDEO_STREAMTYPE_VB6
+    	"vp6",
+    	eVideo,
+    	"V_VP6",
+    	VIDEO_STREAMTYPE_VB6
 };
 
 struct Writer_s WriterVideoVP6 = {
-    &reset,
-    &writeDataVP6,
-    NULL,
-    &capsVP6
+    	&reset,
+    	&writeDataVP6,
+    	NULL,
+    	&capsVP6
 };
 
 static WriterCaps_t capsVP8 = {
-    "vp8",
-    eVideo,
-    "V_VP8",
-    VIDEO_STREAMTYPE_VB8
+    	"vp8",
+    	eVideo,
+    	"V_VP8",
+    	VIDEO_STREAMTYPE_VB8
 };
 
 struct Writer_s WriterVideoVP8 = {
-    &reset,
-    &writeDataVP8,
-    NULL,
-    &capsVP8
+    	&reset,
+    	&writeDataVP8,
+    	NULL,
+    	&capsVP8
 };
 
 static WriterCaps_t capsVP9 = {
-    "vp9",
-    eVideo,
-    "V_VP9",
-    VIDEO_STREAMTYPE_VB9
+    	"vp9",
+    	eVideo,
+    	"V_VP9",
+    	VIDEO_STREAMTYPE_VB9
 };
 
 struct Writer_s WriterVideoVP9 = {
-    &reset,
-    &writeDataVP9,
-    NULL,
-    &capsVP9
+    	&reset,
+    	&writeDataVP9,
+    	NULL,
+    	&capsVP9
 };
 

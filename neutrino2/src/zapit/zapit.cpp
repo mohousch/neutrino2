@@ -265,7 +265,7 @@ void CZapit::initFrontend()
 
 #if HAVE_DVB_API_VERSION >= 5
 				//
-				fe->getFEDelSysMask();
+				//fe->getFEDelSysMask();
 				
 				//
 				if (fe->getDeliverySystem() & DVB_S || fe->getDeliverySystem() & DVB_S2 || fe->getDeliverySystem() & DVB_S2X)
@@ -296,9 +296,9 @@ void CZapit::initFrontend()
 #endif
 				
 				// set it to standby
-				fe->Close();
+//				fe->Close();
 				
-				usleep(150000);
+//				usleep(150000);
 			}
 			else
 				delete fe;
@@ -467,6 +467,7 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 	transponder_list_t::iterator transponder = transponders.find(thischannel->getTransponderId());
 	
 	// close unused frontend
+	/*
 	for(fe_map_iterator_t fe_it = femap.begin(); fe_it != femap.end(); fe_it++) 
 	{
 		CFrontend * fe = fe_it->second;
@@ -479,6 +480,7 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 		if(!fe->locked && femap.size() > 1)
 			fe->Close();
 	}
+	*/
 	
 	// get preferred frontend and initialize it
 	for(fe_map_iterator_t fe_it = femap.begin(); fe_it != femap.end(); fe_it++) 
@@ -517,6 +519,7 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 		}
 	}
 	
+	//
 	if(free_frontend)
 	{
 		dprintf(DEBUG_NORMAL, "CZapit::getFrontend: Selected fe(%d:%d) (delsys:0x%x)\n", free_frontend->feadapter, free_frontend->fenumber,free_frontend->deliverySystemMask);
@@ -580,6 +583,7 @@ CFrontend * CZapit::getRecordFrontend(CZapitChannel * thischannel)
 		}
 	}
 	
+	//
 	if(rec_frontend)
 	{
 		dprintf(DEBUG_NORMAL, "CZapit::getRecordFrontend: Selected fe(%d,%d)\n", rec_frontend->feadapter, rec_frontend->fenumber);
@@ -783,6 +787,22 @@ void CZapit::loadFrontendConfig()
 			
 			fe->lastSatellitePosition = getConfigValue(fe, "lastSatellitePosition", 0);
 		}
+		
+		////
+		// set loop frontend as slave 
+		bool setslave = ( fe->mode == FE_LOOP );
+		
+		dprintf(DEBUG_INFO, "CZapit::loadFrontendConfig: Frontend (%d,%d) as slave: %s\n", fe->feadapter, fe->fenumber, setslave ? "yes" : "no");
+					
+		if(setslave)
+			fe->setMasterSlave(setslave);
+		else
+			fe->Init();
+
+		// fe functions at start
+		fe->setDiseqcRepeats( fe->diseqcRepeats );
+		fe->setCurrentSatellitePosition( fe->lastSatellitePosition );
+		//fe->setDiseqcType( fe->diseqcType );
 	}
 }
 
@@ -4646,7 +4666,7 @@ bool CZapit::tuneFrequency(FrontendParameters *feparams, t_satellite_position sa
 	dprintf(DEBUG_NORMAL, "CZapit::%s:\n", __FUNCTION__);
 	
 	// initTuner
-	CZapit::getInstance()->initTuner(fe);
+//	CZapit::getInstance()->initTuner(fe);
 	
 	// setInput
 	fe->setInput(satellitePosition, feparams->frequency, feparams->polarization);
@@ -5131,7 +5151,7 @@ bool CZapit::tuneTP(transponder TP, CFrontend* fe)
 	bool ret = false;
 	
 	//		
-	initTuner(fe);
+//	initTuner(fe);
 			
 	// satname
 	const char *name = scanProviders.size() > 0  ? scanProviders.begin()->second.c_str() : "unknown";

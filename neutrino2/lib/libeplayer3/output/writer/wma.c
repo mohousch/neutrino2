@@ -213,7 +213,7 @@ static int writeData(void* _call)
     	}
 */
 
-    	if (pcmPrivateData->avCodecId != AV_CODEC_ID_VORBIS || pcmPrivateData->avCodecId != AV_CODEC_ID_OPUS /*|| STB_HISILICON != GetSTBType()*/) 
+    	if (pcmPrivateData->avCodecId != AV_CODEC_ID_VORBIS || pcmPrivateData->avCodecId != AV_CODEC_ID_OPUS) 
     	{
         	uint32_t payloadSize = call->len;
         	PesHeader[headerSize++] = (payloadSize >> 24) & 0xFF;
@@ -340,51 +340,44 @@ struct Writer_s WriterAudioWMA = {
 };
 
 static WriterCaps_t capsWMAPRO = {
-    "wma/pro",
-    eAudio,
-    "A_WMA/PRO",
-    -1,
-    AUDIO_STREAMTYPE_WMA_PRO,
-    -1
+    	"wma/pro",
+    	eAudio,
+    	"A_WMA/PRO",
+   	AUDIO_STREAMTYPE_WMA_PRO
 };
 
 struct Writer_s WriterAudioWMAPRO = {
-    &reset,
-    &writeData,
-    NULL,
-    &capsWMAPRO
+    	&reset,
+    	&writeData,
+    	NULL,
+    	&capsWMAPRO
 };
 
 static WriterCaps_t capsVORBIS = {
-    "vorbis",
-    eAudio,
-    "A_VORBIS",
-    -1,
-    AUDIO_STREAMTYPE_VORBIS,
-    -1
+    	"vorbis",
+    	eAudio,
+    	"A_VORBIS",
+    	AUDIO_STREAMTYPE_VORBIS
 };
 
 struct Writer_s WriterAudioVORBIS = {
-    &reset,
-    &writeData,
-    NULL,
-    &capsVORBIS
+    	&reset,
+    	&writeData,
+    	NULL,
+    	&capsVORBIS
 };
 
 static WriterCaps_t capsOPUS = {
-    "opus",
-    eAudio,
-    "A_OPUS",
-    -1,
-    AUDIO_STREAMTYPE_OPUS,
-    -1
+    	"opus",
+    	eAudio,
+    	"A_OPUS",
+    	AUDIO_STREAMTYPE_OPUS
 };
 
 struct Writer_s WriterAudioOPUS = {
-    &reset,
-    &writeData,
-    NULL,
-    &capsOPUS
+    	&reset,
+    	&writeData,
+    	NULL,
+    	&capsOPUS
 };
-
 

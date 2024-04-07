@@ -1399,13 +1399,8 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 extern Data_t data;
 
 cPlayback::SWFramebuffer *cPlayback::getDecBuf(void)
-{
-	if (buf_num == 0)
-	{
-		return NULL;
-	}
-	
-	SWFramebuffer *p = &buffers[buf_in];
+{	
+	SWFramebuffer *p = &buffers[0];
 	
 	p->resize(data.size);
 	p->width(data.width);
@@ -1415,11 +1410,7 @@ cPlayback::SWFramebuffer *cPlayback::getDecBuf(void)
 	p->apts(data.apts);
 	p->AR(data.a);
 	
-	av_image_fill_arrays(&data.buffer[buf_in], (int*)&data.size, &(*p)[0], AV_PIX_FMT_RGB32, data.width, data.height, 1);
-	
-//	buf_out++;
-//	buf_num--;
-//	buf_out %= AV_NUM_DATA_POINTERS;
+	av_image_fill_arrays(&data.buffer, (int*)&data.size, &(*p)[0], AV_PIX_FMT_RGB32, data.width, data.height, 1);
 
 	return p;
 }
