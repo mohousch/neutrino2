@@ -1399,8 +1399,14 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 extern Data_t data[64];
 
 cPlayback::SWFramebuffer *cPlayback::getDecBuf(void)
-{	
-	SWFramebuffer *p = &buffers[0];
+{
+//	printf("cPlayback::getDecBuf: buf_num:%d\n", buf_num);
+//	if (buf_num == 0)
+//	{
+//		return NULL;
+//	}
+		
+	SWFramebuffer *p = &buffers[buf_out];
 
 	p->resize(data[buf_out].size);
 	p->width(data[buf_out].width);

@@ -466,22 +466,6 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 	
 	transponder_list_t::iterator transponder = transponders.find(thischannel->getTransponderId());
 	
-	// close unused frontend
-	/*
-	for(fe_map_iterator_t fe_it = femap.begin(); fe_it != femap.end(); fe_it++) 
-	{
-		CFrontend * fe = fe_it->second;
-			
-		// skip tuned frontend and have same tid or same type as channel to tune
-		if( (fe->tuned) && (fe->getTsidOnid() == thischannel->getTransponderId() || fe->getDeliverySystem() & transponder->second.feparams.delsys) )
-			continue;
-
-		// close not locked tuner
-		if(!fe->locked && femap.size() > 1)
-			fe->Close();
-	}
-	*/
-	
 	// get preferred frontend and initialize it
 	for(fe_map_iterator_t fe_it = femap.begin(); fe_it != femap.end(); fe_it++) 
 	{

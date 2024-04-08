@@ -1218,9 +1218,9 @@ static int Write(void* _context, void* _out)
 			obuf_size = swr_convert(swr, &obuf, obuf_size, (const uint8_t **)aframe->extended_data, aframe->nb_samples);
 							
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-			data->apts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(aframe);
+			data[buf_in].apts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(aframe);
 #else
-			data->apts = sCURRENT_PTS = aframe->best_effort_timestamp;
+			data[buf_in].apts = sCURRENT_PTS = aframe->best_effort_timestamp;
 #endif
 			int o_buf_size = av_samples_get_buffer_size(&out_linesize, out->stream->codec->channels, obuf_size, AV_SAMPLE_FMT_S16, 1);
 							
@@ -1336,34 +1336,31 @@ static int Write(void* _context, void* _out)
 								
 			if (convert)
 			{
-				////
-				Data_t* p = &data[buf_in];
-				
 				// fill				
-				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, p->buffer, AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
+				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, data[buf_in].buffer, AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 
 				// scale
 				sws_scale(convert, frame->data, frame->linesize, 0, ctx->height, rgbframe->data, rgbframe->linesize);
 				
 				// fill our struct	
-				p->width = ctx->width;
-				p->height = ctx->height;
+				data[buf_in].width = ctx->width;
+				data[buf_in].height = ctx->height;
 				
 				//
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-				p->vpts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(frame);
+				data[buf_in].vpts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(frame);
 #else
-				p->vpts = sCURRENT_PTS = frame->best_effort_timestamp;
+				data[buf_in].vpts = sCURRENT_PTS = frame->best_effort_timestamp;
 #endif
 
 				// a/v delay determined experimentally :-)
 				if (ctx->codec_id == AV_CODEC_ID_MPEG2VIDEO)
-					p->vpts += 90000 * 4 / 10; // 400ms
+					data[buf_in].vpts += 90000 * 4 / 10; // 400ms
 				else
-					p->vpts += 90000 * 3 / 10; // 300ms
+					data[buf_in].vpts += 90000 * 3 / 10; // 300ms
 
 				//
-				p->a = ctx->time_base;
+				data[buf_in].a = ctx->time_base;
 				
 				//
 				int framerate = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);
@@ -1371,35 +1368,33 @@ static int Write(void* _context, void* _out)
 				switch (framerate)
 				{
 					case 23://23.976fps
-						p->rate = 0;
+						data[buf_in].rate = 0;
 						break;
 					case 24:
-						p->rate = 1;
+						data[buf_in].rate = 1;
 						break;
 					case 25:
-						p->rate = 2;
+						data[buf_in].rate = 2;
 						break;
 					case 29://29,976fps
-						p->rate = 3;
+						data[buf_in].rate = 3;
 						break;
 					case 30:
-						p->rate = 4;
+						data[buf_in].rate = 4;
 						break;
 					case 50:
-						p->rate = 5;
+						data[buf_in].rate = 5;
 						break;
 					case 60:
-						p->rate = 6;
+						data[buf_in].rate = 6;
 						break;
 					default:
-						p->rate = framerate;
+						data[buf_in].rate = framerate;
 						break;
 				}
-//				int rate = av_q2d(out->stream->r_frame_rate);
-//				p->rate = rate;
 				
 				//
-				p->size = need;
+				data[buf_in].size = need;
 
 				//
 				buf_in++;
