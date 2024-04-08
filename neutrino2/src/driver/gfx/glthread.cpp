@@ -508,7 +508,7 @@ void GLThreadObj::bltDisplayBuffer()
 	}
 }
 
-////
+//
 void GLThreadObj::bltPlayBuffer()
 {
 	if (!playback)

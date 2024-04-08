@@ -102,13 +102,13 @@ static int audiofd 	= -1;
 uint64_t sCURRENT_PTS = 0;
 
 #ifdef USE_OPENGL
-Data_t data;
 static ao_device *adevice = NULL;
 static ao_sample_format sformat;
 int buf_num = 0;
 int buf_in = 0;
 int buf_out = 0;
 bool stillpicture = false;
+Data_t data[64];
 #endif
 
 //
@@ -1218,9 +1218,9 @@ static int Write(void* _context, void* _out)
 			obuf_size = swr_convert(swr, &obuf, obuf_size, (const uint8_t **)aframe->extended_data, aframe->nb_samples);
 							
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-			data.apts = sCURRENT_PTS = out->pts; //av_frame_get_best_effort_timestamp(aframe);
+			data->apts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(aframe);
 #else
-			data.apts = sCURRENT_PTS = out->pts; //aframe->best_effort_timestamp;
+			data->apts = sCURRENT_PTS = aframe->best_effort_timestamp;
 #endif
 			int o_buf_size = av_samples_get_buffer_size(&out_linesize, out->stream->codec->channels, obuf_size, AV_SAMPLE_FMT_S16, 1);
 							
@@ -1328,33 +1328,42 @@ static int Write(void* _context, void* _out)
 #endif
 					
 		// setup swsscaler
-		if (got_frame)
+		if (got_frame && ! stillpicture)
 		{
-			data.size = av_image_get_buffer_size(AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
+			int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 							
 			convert = sws_getCachedContext(convert, ctx->width, ctx->height, ctx->pix_fmt, ctx->width, ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
 								
 			if (convert)
 			{
+				////
+				Data_t* p = &data[buf_in];
+				
 				// fill				
-				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, data.buffer, AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
+				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, p->buffer, AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 
 				// scale
 				sws_scale(convert, frame->data, frame->linesize, 0, ctx->height, rgbframe->data, rgbframe->linesize);
 				
 				// fill our struct	
-				data.width = ctx->width;
-				data.height = ctx->height;
+				p->width = ctx->width;
+				p->height = ctx->height;
 				
 				//
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-				data.vpts = sCURRENT_PTS = out->pts; //av_frame_get_best_effort_timestamp(frame);
+				p->vpts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(frame);
 #else
-				data.vpts = sCURRENT_PTS = out->pts; //frame->best_effort_timestamp;
+				p->vpts = sCURRENT_PTS = frame->best_effort_timestamp;
 #endif
 
+				// a/v delay determined experimentally :-)
+				if (ctx->codec_id == AV_CODEC_ID_MPEG2VIDEO)
+					p->vpts += 90000 * 4 / 10; // 400ms
+				else
+					p->vpts += 90000 * 3 / 10; // 300ms
+
 				//
-				data.a = ctx->time_base;
+				p->a = ctx->time_base;
 				
 				//
 				int framerate = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);
@@ -1362,35 +1371,35 @@ static int Write(void* _context, void* _out)
 				switch (framerate)
 				{
 					case 23://23.976fps
-						data.rate = 0;
+						p->rate = 0;
 						break;
 					case 24:
-						data.rate = 1;
+						p->rate = 1;
 						break;
 					case 25:
-						data.rate = 2;
+						p->rate = 2;
 						break;
 					case 29://29,976fps
-						data.rate = 3;
+						p->rate = 3;
 						break;
 					case 30:
-						data.rate = 4;
+						p->rate = 4;
 						break;
 					case 50:
-						data.rate = 5;
+						p->rate = 5;
 						break;
 					case 60:
-						data.rate = 6;
+						p->rate = 6;
 						break;
 					default:
-						data.rate = framerate;
+						p->rate = framerate;
 						break;
 				}
 //				int rate = av_q2d(out->stream->r_frame_rate);
-//				data.rate = rate;
+//				p->rate = rate;
 				
 				//
-//				data.size = need;
+				p->size = need;
 
 				//
 				buf_in++;
@@ -1422,6 +1431,13 @@ static int Write(void* _context, void* _out)
 		{
 			sws_freeContext(convert);
 			convert = NULL;
+		}
+		
+		if (!stillpicture)
+		{
+			buf_num = 0;
+			buf_in = 0;
+			buf_out = 0;
 		}
 		
 		ret = cERR_LINUXDVB_ERROR;

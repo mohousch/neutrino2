@@ -1396,21 +1396,25 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 ////
 #ifdef USE_OPENGL
 #ifndef ENABLE_GSTREAMER
-extern Data_t data;
+extern Data_t data[64];
 
 cPlayback::SWFramebuffer *cPlayback::getDecBuf(void)
 {	
 	SWFramebuffer *p = &buffers[0];
+
+	p->resize(data[buf_out].size);
+	p->width(data[buf_out].width);
+	p->height(data[buf_out].height);
+	p->rate(data[buf_out].rate);
+	p->vpts(data[buf_out].vpts);
+	p->apts(data[buf_out].apts);
+	p->AR(data[buf_out].a);
 	
-	p->resize(data.size);
-	p->width(data.width);
-	p->height(data.height);
-	p->rate(data.rate);
-	p->vpts(data.vpts);
-	p->apts(data.apts);
-	p->AR(data.a);
+	av_image_fill_arrays(&data[buf_out].buffer, &data[buf_out].size, &(*p)[0], AV_PIX_FMT_RGB32, data[buf_out].width, data[buf_out].height, 1);
 	
-	av_image_fill_arrays(&data.buffer, (int*)&data.size, &(*p)[0], AV_PIX_FMT_RGB32, data.width, data.height, 1);
+	buf_out++;
+	buf_num--;
+	buf_out %= 64;
 
 	return p;
 }

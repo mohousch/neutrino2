@@ -511,7 +511,7 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 		else if (transponder != transponders.end())
 		{
 			////test	
-			if ( (/*fe->getDeliverySystem()*/fe->getForcedDelSys() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
+			if ( (fe->getForcedDelSys() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
 			{
 				free_frontend = fe;
 				break;
@@ -575,7 +575,7 @@ CFrontend * CZapit::getRecordFrontend(CZapitChannel * thischannel)
 		// other free tuner
 		else if (transponder != transponders.end())
 		{
-			if ( (fe->/*getDeliverySystem()*/getForcedDelSys() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
+			if ( (fe->getForcedDelSys() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
 			{
 				rec_frontend = fe;
 				break;
@@ -596,7 +596,7 @@ CFrontend * CZapit::getRecordFrontend(CZapitChannel * thischannel)
 	return rec_frontend;
 }
 
-// getFreeFrontend | without inittuner
+//
 CFrontend * CZapit::getFreeFrontend(CZapitChannel * thischannel)
 {
 	const char *FEMODE[] = {
@@ -639,7 +639,7 @@ CFrontend * CZapit::getFreeFrontend(CZapitChannel * thischannel)
 		// first zap/record/other frontend type
 		else if (transponder != transponders.end())
 		{
-			if ( (fe->/*getDeliverySystem()*/getForcedDelSys() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
+			if ( (fe->getForcedDelSys() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
 			{
 				pref_frontend = fe;
 				break;
