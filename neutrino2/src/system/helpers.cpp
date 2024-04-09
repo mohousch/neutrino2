@@ -2112,7 +2112,7 @@ void clearFrameBuffer(void)
 	CFrameBuffer::getInstance()->clearFrameBuffer();
 }
 
-void writeText(uint8_t* text, int x, int y, int w, int h)
+void writeLabel(uint8_t* text, int x, int y, int w, int h)
 {
 	CCLabel textLabel;
 	textLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
@@ -2125,5 +2125,16 @@ void writeText(uint8_t* text, int x, int y, int w, int h)
 	textLabel.paint();
 }
 
-
+void writeText(uint8_t* text, int x, int y, int w, int h)
+{
+	CCText textLabel;
+	textLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
+	textLabel.setColor(COL_WHITE_PLUS_0);
+	textLabel.paintMainFrame(false);
+	textLabel.setText((const char*)text);
+	textLabel.setHAlign(CComponent::CC_ALIGN_CENTER);
+	textLabel.setPosition(x, y, w, h);
+	
+	textLabel.paint();
+}
 

@@ -1406,7 +1406,7 @@ cPlayback::SWFramebuffer *cPlayback::getDecBuf(void)
 //		return NULL;
 //	}
 		
-	SWFramebuffer *p = &buffers[buf_out];
+	SWFramebuffer *p = &buffers;
 
 	p->resize(data[buf_out].size);
 	p->width(data[buf_out].width);

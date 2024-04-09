@@ -109,6 +109,7 @@ int buf_in = 0;
 int buf_out = 0;
 bool stillpicture = false;
 Data_t data[64];
+uint64_t sCURRENT_APTS = 0;
 #endif
 
 //
@@ -1218,9 +1219,9 @@ static int Write(void* _context, void* _out)
 			obuf_size = swr_convert(swr, &obuf, obuf_size, (const uint8_t **)aframe->extended_data, aframe->nb_samples);
 							
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-			data[buf_in].apts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(aframe);
+			/*data[buf_in].apts*/sCURRENT_APTS = sCURRENT_PTS = av_frame_get_best_effort_timestamp(aframe);
 #else
-			data[buf_in].apts = sCURRENT_PTS = aframe->best_effort_timestamp;
+			/*data[buf_in].apts*/sCURRENT_APTS = sCURRENT_PTS = aframe->best_effort_timestamp;
 #endif
 			int o_buf_size = av_samples_get_buffer_size(&out_linesize, out->stream->codec->channels, obuf_size, AV_SAMPLE_FMT_S16, 1);
 							
@@ -1358,6 +1359,9 @@ static int Write(void* _context, void* _out)
 					data[buf_in].vpts += 90000 * 4 / 10; // 400ms
 				else
 					data[buf_in].vpts += 90000 * 3 / 10; // 300ms
+					
+				//
+				data[buf_in].apts = sCURRENT_APTS;
 
 				//
 				data[buf_in].a = ctx->time_base;

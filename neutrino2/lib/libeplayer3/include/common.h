@@ -7,6 +7,8 @@
 #include "playback.h"
 #include <pthread.h>
 
+#include <config.h>
+
 
 typedef struct Context_s 
 {
@@ -16,6 +18,7 @@ typedef struct Context_s
 	ManagerHandler_t* manager;
 } Context_t;
 
+#ifdef USE_OPENGL
 typedef struct Data_s
 {
 	uint8_t* buffer;
@@ -27,6 +30,7 @@ typedef struct Data_s
 	uint64_t apts;
 	uint32_t rate;
 }Data_t;
+#endif
 
 // video stream type 
 typedef enum {

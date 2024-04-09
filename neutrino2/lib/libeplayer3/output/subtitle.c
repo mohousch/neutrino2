@@ -97,7 +97,7 @@ extern int	      	threeDMode;
 extern uint32_t * simple_resize32(uint8_t * origin, uint32_t * colors, int nb_colors, int ox, int oy, int dx, int dy);
 extern void teletext_write(int pid, uint8_t *data, int size);
 extern void clearFrameBuffer(void);
-extern void writeText(uint8_t* text, int x, int y, int w, int h);
+extern void writeLabel(uint8_t* text, int x, int y, int w, int h);
 
 /* ***************************** */
 /* MISC Functions                */
@@ -230,7 +230,7 @@ static int Write(void* _context, void *data)
 							subtitle_printf(100, "text %s\n", sub.rects[i]->text);
 							subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
 							
-		     					writeText((uint8_t*)sub.rects[i]->text, screen_x + 40, screen_y + screen_height - 80, screen_width - 80, 60);
+		     					writeLabel((uint8_t*)sub.rects[i]->text, screen_x + 40, screen_y + screen_height - 120, screen_width - 80, 120);
 						}
 						break;
 					}
@@ -248,7 +248,7 @@ static int Write(void* _context, void *data)
 							subtitle_printf(100, "text %s\n", sub.rects[i]->text);
 							subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
 							
-		     					writeText((uint8_t*)ass_get_text(sub.rects[i]->ass), screen_x + 40, screen_y + screen_height - 80, screen_width - 80, 60);
+		     					writeLabel((uint8_t*)ass_get_text(sub.rects[i]->ass), screen_x + 40, screen_y + screen_height - 120, screen_width - 80, 120);
 						}
 						break;
 					}

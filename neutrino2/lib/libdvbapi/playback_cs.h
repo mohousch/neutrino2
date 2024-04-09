@@ -117,7 +117,7 @@ class cPlayback
 				int mRate;
 		};
 		
-		SWFramebuffer buffers[0x40];
+		SWFramebuffer buffers;
 #endif
 		
 	public:
