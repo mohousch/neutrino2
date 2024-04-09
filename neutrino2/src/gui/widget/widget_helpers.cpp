@@ -992,7 +992,7 @@ void CCText::paint()
 	int textSize = Text.size();
 	int y = itemBox.iY;
 	
-	////
+	//
 	int startPosX = itemBox.iX;
 
 	for(int i = 0; i < textSize && i < medlinecount; i++, y += medlineheight)

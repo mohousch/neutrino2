@@ -197,7 +197,7 @@ class CZapitChannel
 		time_t last_unlocked_time;
 
 		// constructor, desctructor
-		CZapitChannel(const std::string& p_name, t_service_id p_sid, t_transport_stream_id p_tsid, t_original_network_id p_onid, unsigned char p_service_type, t_satellite_position p_satellite_position, freq_id_t p_freq);
+		CZapitChannel(const std::string& p_name, t_service_id p_sid, t_transport_stream_id p_tsid, t_original_network_id p_onid, unsigned char p_service_type, t_satellite_position p_satellite_position = 0, freq_id_t p_freq = 0);
 		CZapitChannel(const std::string& p_name, t_channel_id p_chid, const std::string& p_url, const std::string& p_description);
 
 		~CZapitChannel(void);

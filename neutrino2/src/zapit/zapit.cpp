@@ -1430,7 +1430,7 @@ tune_again:
 // -1 = fail
 int CZapit::zapToRecordID(const t_channel_id channel_id)
 {
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::zapToRecordID: channel_id (0x%llx) %s (%s)\n", channel_id, findChannelByChannelID(channel_id)->getName().c_str(), getSatelliteName(findChannelByChannelID(channel_id)->getSatellitePosition()).c_str());
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::zapToRecordID: channel_id (0x%llx)\n", channel_id);
 	
 	if (IS_WEBTV(channel_id))
 	{
@@ -3505,7 +3505,7 @@ unsigned int CZapit::zapToChannelID(t_channel_id channel_id, bool isSubService)
 {
 	unsigned int result = 0;
 
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::zapToChannelID: chid 0x%llx %s (%s)\n", channel_id, findChannelByChannelID(channel_id)->getName().c_str(), getSatelliteName(findChannelByChannelID(channel_id)->getSatellitePosition()).c_str());
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::zapToChannelID: chid 0x%llx\n", channel_id);
 
 	if (zapit(channel_id, isSubService) < 0) 
 	{

@@ -455,7 +455,6 @@ class CCText : public CComponent
 	private:
 		int emptyLineCount;
 		int medlineheight;
-		int medlinewidth;
 		int medlinecount;
 		//
 		void addTextToArray(const std::string &text );
