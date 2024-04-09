@@ -1142,6 +1142,7 @@ void CTestMenu::testCTextBoxWidget()
 		textBoxWidget->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h);
 		
 	textBoxWidget->setTextColor(COL_YELLOW_PLUS_0);
+	textBoxWidget->setHAlign(CComponent::CC_ALIGN_CENTER);
 		
 	testWidget = new CWidget(&box);
 	testWidget->addKey(CRCInput::RC_ok, this, "mplay");
@@ -4703,7 +4704,7 @@ void CTestMenu::testTuxTxt()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testTuxTxt\n");
 	
 	CZapit::CServiceInfo si;
-	si = CZapit::getInstance()->getServiceInfo(live_channel_id);
+	si = CZapit::getInstance()->getServiceInfo(CZapit::getInstance()->getCurrentChannelID());
 	
 	tuxtx_main(si.vtxtpid, 0, false);
 }
@@ -6236,7 +6237,7 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		dprintf(DEBUG_NORMAL, "CTestMenu::testTuxTxt\n");
 	
 		CZapit::CServiceInfo si;
-		si = CZapit::getInstance()->getServiceInfo(live_channel_id);
+		si = CZapit::getInstance()->getServiceInfo(CZapit::getInstance()->getCurrentChannelID());
 	
 		tuxtx_stop_subtitle();
 		tuxtx_main(si.vtxtpid, 0, false);
@@ -6457,7 +6458,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("Show Tuxtxt", true, NULL, this, "tuxtxt"));
 
 	unsigned int count = 0;
-	CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(live_channel_id);
+	CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(CZapit::getInstance()->getCurrentChannelID());
         
         // subs
         if (channel)
