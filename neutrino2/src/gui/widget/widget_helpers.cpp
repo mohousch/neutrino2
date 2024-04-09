@@ -991,10 +991,20 @@ void CCText::paint()
 
 	int textSize = Text.size();
 	int y = itemBox.iY;
+	
+	////
+	int startPosX = itemBox.iX;
 
 	for(int i = 0; i < textSize && i < medlinecount; i++, y += medlineheight)
 	{
-		g_Font[font]->RenderString(itemBox.iX, y + medlineheight, itemBox.iWidth, Text[i], color, 0, true, paintframe); // UTF-8
+		//
+		if (halign == CC_ALIGN_CENTER)
+			startPosX = itemBox.iX + (itemBox.iWidth - g_Font[font]->getRenderWidth(Text[i]))/2;
+		else if (halign == CC_ALIGN_RIGHT)
+			startPosX = itemBox.iX + itemBox.iWidth - g_Font[font]->getRenderWidth(Text[i]);
+		
+		//
+		g_Font[font]->RenderString(startPosX, y + medlineheight, itemBox.iWidth, Text[i], color, 0, true, paintframe); // UTF-8
 	}
 }
 

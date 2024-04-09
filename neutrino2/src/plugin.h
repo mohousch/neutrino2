@@ -214,9 +214,9 @@ extern int dvbsub_terminate();
 extern int streamts_stop;				// defined in streamts.cpp
 // zapit thread
 extern int zapit_ready;					//defined in zapit.cpp
-extern t_channel_id live_channel_id; 			//defined in zapit.cpp
-extern CZapitChannel * live_channel;			// defined in zapit.cpp
-extern CFrontend * live_fe;
+//extern t_channel_id live_channel_id; 			//defined in zapit.cpp
+//extern CZapitChannel * live_channel;			// defined in zapit.cpp
+//extern CFrontend * live_fe;
 extern CScanSettings * scanSettings;
 // sectionsd thread
 extern int sectionsd_stop;				// defined in sectionsd.cpp

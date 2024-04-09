@@ -54,11 +54,10 @@ class CTextBox : public CComponent
 			AUTO_WIDTH		= 0x01,
 			AUTO_HIGH		= 0x02,
 			SCROLL			= 0x04,
-			CENTER			= 0x40,
 			NO_AUTO_LINEBREAK 	= 0x80
 		};
 
-		// pic
+		// pic mode
 		enum 
 		{
 			PIC_RIGHT,

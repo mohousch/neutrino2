@@ -151,6 +151,10 @@ class CFrontend
 		
 		// powered
 		bool powered;
+		
+		//
+		bool isUSBTuner;
+		bool isVTuner;
 	  
 	private:
 		// slave
@@ -204,7 +208,6 @@ class CFrontend
                 void Close();
 		bool Open();
 		void getFEInfo(void);
-//		void getFEDelSysMask(void);
 		void reset(void);
 		void Init(void);
 		void setMasterSlave(bool _slave);

@@ -138,6 +138,10 @@ CFrontend::CFrontend(int num, int adap)
 	fe_can_multistream = false;
 	hybrid = false;
 	powered = false;
+	
+	//
+	isUSBTuner = false;
+	isVTuner = false;
 }
 
 CFrontend::~CFrontend(void)
@@ -162,18 +166,23 @@ bool CFrontend::Open()
 		// open frontend
 		if ( (fd = open(filename, O_RDWR | O_NONBLOCK) ) < 0)
 		{
-			dprintf(DEBUG_NORMAL, "CFrontend::Open:cannot open %s\n", filename);
-			perror("CFrontend::Open:");
 			return false;
 		}
 		
 		// get frontend info
 		getFEInfo();
-		dprintf(DEBUG_NORMAL, "CFrontend::Open %s %s (type: %d)\n", filename, info.name, info.type);
+		
+		// check if usbTuner
+		char devicename[256];
+		snprintf(devicename, sizeof(devicename), "/sys/class/dvb/dvb%d.frontend%d/device/ep_00", feadapter, fenumber);
+		if (::access(devicename, X_OK) >= 0)
+		{
+			isUSBTuner = true;
+		}
 	}
 	
+	//
 	currentTransponder.TP_id = 0;
-	
 	standby = false;
 	
 	return true;

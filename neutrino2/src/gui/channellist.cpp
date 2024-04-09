@@ -1670,6 +1670,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	CCText text(winTopBox.iX + 10, winTopBox.iY + 10 + 60 + 10 + 30, winTopBox.iWidth - 20, winTopBox.iHeight - 120);
 	text.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
 	text.setText(p_event->text.c_str());
+	text.setHAlign(CComponent::CC_ALIGN_CENTER);
 	
 	// next
 	time_t atime = time(NULL);
@@ -1727,6 +1728,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	CCText nextText(winBottomBox.iX + 10, winBottomBox.iY + 10 + 60, winBottomBox.iWidth - 20, winBottomBox.iHeight - 80);
 	nextText.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
 	nextText.setText(p_event->text.c_str());
+	nextText.setHAlign(CComponent::CC_ALIGN_CENTER);
 	
 	// current
 	epgTitle.paint();

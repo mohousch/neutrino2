@@ -313,7 +313,12 @@ void CTextBox::refreshTextLineArray(void)
 	
 	//
 	if( (!access(thumbnail.c_str(), F_OK) && m_nCurrentPage == 0) && m_tMode != PIC_CENTER)
+	{
 		lineBreakWidth = m_cFrameTextRel.iWidth - tw - 10;
+		
+		if (halign == CC_ALIGN_CENTER) // FIXME:
+			lineBreakWidth = m_cFrameTextRel.iWidth - 2*tw - 20;	
+	}
 	
 	const int TextChars = m_cText.size();
 	
@@ -345,7 +350,7 @@ void CTextBox::refreshTextLineArray(void)
 			aktWordWidth = g_Font[m_pcFontText]->getRenderWidth(aktWord, true);
 			pos_prev = pos + 1;
 			
-			// if(aktWord.find("&quot;") == )
+			//
 			if(1)
 			{
 				if( aktWidth + aktWordWidth > lineBreakWidth && !(m_nMode & NO_AUTO_LINEBREAK))
@@ -392,7 +397,7 @@ void CTextBox::refreshTextLineArray(void)
 					}
 					else
 					{
-						lineBreakWidth = m_cFrameTextRel.iWidth;
+						lineBreakWidth = m_cFrameTextRel.iWidth;	
 					}
 				}
 
@@ -500,7 +505,8 @@ void CTextBox::refreshText(void)
 	// paint text
 	int y = m_cFrameTextRel.iY + 10;
 	int i;
-	int x_start = 0;
+	int x_start = 0; // from / to pic
+	int startPosX = m_cFrameTextRel.iX + x_start;
 
 	if(m_tMode == PIC_CENTER && m_nCurrentPage == 0)
 	{
@@ -521,8 +527,13 @@ void CTextBox::refreshText(void)
 					x_start = tw + 10;
 			}
 		}
+		
+		if (halign == CC_ALIGN_CENTER)
+			startPosX = m_cFrameTextRel.iX + x_start + (m_cFrameTextRel.iWidth - g_Font[m_pcFontText]->getRenderWidth(m_cLineArray[i]))/2;
+		else if (halign == CC_ALIGN_RIGHT)
+			startPosX = m_cFrameTextRel.iX + x_start + m_cFrameTextRel.iWidth - g_Font[m_pcFontText]->getRenderWidth(m_cLineArray[i]);
 
-		g_Font[m_pcFontText]->RenderString(m_cFrameTextRel.iX + x_start, y, m_cFrameTextRel.iWidth, m_cLineArray[i].c_str(), m_textColor); // UTF-8
+		g_Font[m_pcFontText]->RenderString(startPosX, y, m_cFrameTextRel.iWidth, m_cLineArray[i].c_str(), m_textColor); // UTF-8
 	}
 }
 
@@ -583,7 +594,7 @@ void CTextBox::refreshPage(void)
 	refreshScroll();	
 }
 
-bool CTextBox::setText(const char * const newText, const char * const _thumbnail, int _tw, int _th, int _tmode, bool enable_frame/*, const bool useBackground*/)
+bool CTextBox::setText(const char * const newText, const char * const _thumbnail, int _tw, int _th, int _tmode, bool enable_frame)
 {
 	dprintf(DEBUG_DEBUG, "CTextBox::setText:\r\n");
 
