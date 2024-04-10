@@ -1365,12 +1365,12 @@ void CMovieBrowser::refreshBrowserList(void) //P1
 			m_browserListLines.lineArray[row].push_back(string_item);
 		}
 		
-		////
-//		if (m_vHandleBrowserList[handle]->file.getType() == CFile::FILE_VIDEO)
-//			m_browserListLines.icon = NEUTRINO_ICON_MOVIE;
-//		else
-//			m_browserListLines.icon = NEUTRINO_ICON_MP3;
+		if (m_vHandleBrowserList[handle]->file.getType() == CFile::FILE_AUDIO)
+			m_browserListLines.icon = NEUTRINO_ICON_MP3;
+		else
+			m_browserListLines.icon = NEUTRINO_ICON_MOVIE;
 	}
+	
 	m_pcBrowser->setLines(&m_browserListLines);
 
 	m_currentBrowserSelection = m_pcBrowser->getSelected();
