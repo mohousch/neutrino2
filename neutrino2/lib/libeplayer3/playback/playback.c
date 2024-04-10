@@ -434,9 +434,10 @@ static int PlaybackPlay(Context_t * context)
 
 	playback_printf(10, "\n");
 	
-	////test
+	//
 	context->output->Command(context, OUTPUT_OPEN, NULL);
 
+	//
 	if (!context->playback->isPlaying) 
 	{
 		context->playback->AVSync = 1;

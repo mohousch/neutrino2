@@ -2157,7 +2157,7 @@ void CTestMenu::testCListFrame()
 		snprintf(duration, 8, "(%ld:%02ld)", AudioPlaylist[i].MetaData.total_time / 60, AudioPlaylist[i].MetaData.total_time % 60);
 		
 		////
-		//listFrameLines.icon = NEUTRINO_ICON_MP3;
+		listFrameLines.icon = NEUTRINO_ICON_MP3;
 
 		listFrameLines.lineArray[0].push_back(toString(i + 1));
 		listFrameLines.lineArray[1].push_back(title);

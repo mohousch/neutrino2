@@ -36,6 +36,8 @@
 
 #include <driver/gfx/framebuffer.h>
 
+#include <system/helpers.h>
+
 #ifdef USE_OPENGL
 #include "dmx_cs.h"
 
@@ -98,6 +100,13 @@ GstElement * m_gst_playbin = NULL;
 GstElement * audioSink = NULL;
 GstElement * videoSink = NULL;
 GstElement *subsink = NULL;
+////
+gulong m_subs_to_pull_handler_id = 0;
+GstMessage* messagePointer = NULL;
+GstPad* messagePad = NULL;
+GstBuffer* messageBuffer = NULL;
+int messageType = -1;
+//
 gchar * uri = NULL;
 GstBus * bus = NULL;
 bool end_eof = false;
@@ -158,7 +167,7 @@ void playbinNotifySource(GObject *object, GParamSpec *unused, gpointer /*user_da
 	}
 }
 
-GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data*/)
+GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer)
 {
 	//source name
 	gchar * sourceName;
@@ -199,9 +208,16 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 				if ( err->code == GST_STREAM_ERROR_CODEC_NOT_FOUND )
 				{
 					if ( g_strrstr(sourceName, "videosink") )
-						printf("Gst_bus_call: - videoSink\n");	//FIXME: how shall playback handle this event???
+						printf("Gst_bus_call: - videoSink\n");
 					else if ( g_strrstr(sourceName, "audiosink") )
-						printf("Gst_bus_call: - audioSink\n"); //FIXME: how shall playback handle this event???
+						printf("Gst_bus_call: - audioSink\n");
+				}
+			}
+			else if ( err->domain == GST_RESOURCE_ERROR )
+			{
+				if ( err->code == GST_RESOURCE_ERROR_OPEN_READ || err->code == GST_RESOURCE_ERROR_READ )
+				{
+					end_eof = true;
 				}
 			}
 			g_error_free(err);
@@ -222,7 +238,7 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 			if ( inf->domain == GST_STREAM_ERROR && inf->code == GST_STREAM_ERROR_DECODE )
 			{
 				if ( g_strrstr(sourceName, "videosink") )
-					printf("Gst_bus_call: videoSink\n"); //FIXME: how shall playback handle this event???
+					printf("Gst_bus_call: videoSink\n");
 			}
 			g_error_free(inf);
 			break;
@@ -274,9 +290,7 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 			gchar *debug_warn = NULL;
 			GError *warn = NULL;
 			gst_message_parse_warning (msg, &warn, &debug_warn);
-			/* CVR this Warning occurs from time to time with external srt files
-			When a new seek is done the problem off to long wait times before subtitles appears,
-			after movie was restarted with a resume position is solved. */
+
 			if(!strncmp(warn->message , "Internal data flow problem", 26) && !strncmp(sourceName, "subtitle_sink", 13))
 			{
 				printf("Gstreamer warning : %s (%i) from %s\n" , warn->message, warn->code, sourceName);
@@ -322,7 +336,7 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 				case GST_STATE_CHANGE_READY_TO_PAUSED:
 				{
 #if GST_VERSION_MAJOR >= 1
-					GValue result = G_VALUE_INIT; //{ 0, };
+					GValue result = G_VALUE_INIT;
 #endif
 					GstIterator * children;
 
@@ -330,27 +344,8 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 					if (subsink)
 					{
 #ifdef GSTREAMER_SUBTITLE_SYNC_MODE_BUG
-						/*
-						 * HACK: disable sync mode for now, gstreamer suffers from a bug causing sparse streams to loose sync, after pause/resume / skip
-						 * see: https://bugzilla.gnome.org/show_bug.cgi?id=619434
-						 * Sideeffect of using sync=false is that we receive subtitle buffers (far) ahead of their
-						 * display time.
-						 * Not too far ahead for subtitles contained in the media container.
-						 * But for external srt files, we could receive all subtitles at once.
-						 * And not just once, but after each pause/resume / skip.
-						 * So as soon as gstreamer has been fixed to keep sync in sparse streams, sync needs to be re-enabled.
-						 */
-						g_object_set (G_OBJECT (subsink), "sync", FALSE, NULL);
+						g_object_set(G_OBJECT (subsink), "sync", FALSE, NULL);
 #endif
-#if 0
-						/* we should not use ts-offset to sync with the decoder time, we have to do our own decoder timekeeping */
-						g_object_set (G_OBJECT (subsink), "ts-offset", -2LL * GST_SECOND, NULL);
-						/* late buffers probably will not occur very often */
-						g_object_set (G_OBJECT (subsink), "max-lateness", 0LL, NULL);
-						/* avoid prerolling (it might not be a good idea to preroll a sparse stream) */
-						g_object_set (G_OBJECT (subsink), "async", TRUE, NULL);
-#endif
-						// eDebug("[eServiceMP3] subsink properties set!");
 						gst_object_unref(subsink);
 					}
 					
@@ -456,20 +451,22 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 				gst_x_overlay_set_xwindow_id(GST_X_OVERLAY(GST_MESSAGE_SRC(msg)), GLWinID);
 #else
 				//
-				//gst_video_overlay_expose(GST_VIDEO_OVERLAY(GST_MESSAGE_SRC(msg)));
-				
-				//
 				gst_video_overlay_set_window_handle(GST_VIDEO_OVERLAY(GST_MESSAGE_SRC(msg)), (guintptr)GLWinID);
 				
+				gst_video_overlay_expose(GST_VIDEO_OVERLAY(GST_MESSAGE_SRC(msg)));
+				
 				// reshape window
-				//gst_video_overlay_set_render_rectangle(GST_VIDEO_OVERLAY(GST_MESSAGE_SRC(msg)), 0, 0, GLWidth, GLHeight);
+				gst_video_overlay_set_render_rectangle(GST_VIDEO_OVERLAY(GST_MESSAGE_SRC(msg)), 0, 0, GLWidth, GLHeight);
 #endif
 			}
 #endif
 		}
 		break;
-#endif		
-			
+#endif	
+
+		case GST_MESSAGE_BUFFERING:
+		case GST_MESSAGE_TOC:
+		case GST_MESSAGE_ASYNC_DONE:	
 		default:
 			break;
 	}
@@ -478,6 +475,19 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 	
 
 	return GST_BUS_DROP;
+}
+
+////
+void gstCBsubtitleAvail(GstElement *subsink, GstBuffer *buffer, gpointer)
+{
+	Hexdump((uint8_t*)buffer, sizeof(buffer));
+	
+//	if (_this->mSubStream < 0)
+	{
+		if (buffer) 
+			gst_buffer_unref(buffer);
+		return;
+	}
 }
 #endif
 
@@ -544,7 +554,7 @@ void cPlayback::Close(void)
 	// disconnect subtitle callback
 	if (subsink)
 	{
-		//g_signal_handler_disconnect (subsink, m_subs_to_pull_handler_id);
+		g_signal_handler_disconnect (subsink, m_subs_to_pull_handler_id);
 		gst_object_unref(GST_OBJECT(subsink));
 	}
 	
@@ -587,7 +597,7 @@ void cPlayback::Close(void)
 		printf("GST playbin closed\n");
 	}
 #else
-	////test
+	//
 	if(player && player->playback)
 		player->playback->Command(player, PLAYBACK_CLOSE, NULL);
 
@@ -663,7 +673,7 @@ bool cPlayback::Start(char *filename, const char * const suburi)
 		// increase the default 2 second / 2 MB buffer limitations to 5s / 5MB
 		if(isHTTP)
 		{
-			g_signal_connect(G_OBJECT (m_gst_playbin), "notify::source", G_CALLBACK (playbinNotifySource), NULL);
+			g_signal_connect(G_OBJECT (m_gst_playbin), "notify::source", G_CALLBACK (playbinNotifySource), this);
 
 			// set buffer size
 			g_object_set(G_OBJECT(m_gst_playbin), "buffer-size", m_buffer_size, NULL);
@@ -672,16 +682,16 @@ bool cPlayback::Start(char *filename, const char * const suburi)
 		}
 		
 		// set flags
-		g_object_set(G_OBJECT (m_gst_playbin), "flags", flags, NULL);
+		g_object_set(G_OBJECT(m_gst_playbin), "flags", flags, NULL);
 
 		// set uri
-		g_object_set(G_OBJECT (m_gst_playbin), "uri", uri, NULL);
+		g_object_set(G_OBJECT(m_gst_playbin), "uri", uri, NULL);
 
 		// subsink
 		subsink = gst_element_factory_make("subsink", "subtitle_sink");
 		if (subsink)
 		{
-			//m_subs_to_pull_handler_id = g_signal_connect (subsink, "new-buffer", G_CALLBACK (gstCBsubtitleAvail), this);
+			m_subs_to_pull_handler_id = g_signal_connect (subsink, "new-buffer", G_CALLBACK (gstCBsubtitleAvail), NULL);
 #if GST_VERSION_MAJOR < 1
 			g_object_set (G_OBJECT (subsink), "caps", gst_caps_from_string("text/plain; text/x-plain; text/x-raw; text/x-pango-markup; video/x-dvd-subpicture; subpicture/x-pgs"), NULL);
 #else
@@ -691,13 +701,13 @@ bool cPlayback::Start(char *filename, const char * const suburi)
 			g_object_set (G_OBJECT (m_gst_playbin), "current-text", mSubStream, NULL);
 		}	
 		
-		//gstbus handler
+		//gst bus handler
 		bus = gst_pipeline_get_bus(GST_PIPELINE (m_gst_playbin));
 
 #if GST_VERSION_MAJOR < 1
 		gst_bus_set_sync_handler(bus, Gst_bus_call, NULL);
 #else
-		gst_bus_set_sync_handler(bus, (GstBusSyncHandler)Gst_bus_call, m_gst_playbin, NULL);
+		gst_bus_set_sync_handler(bus, (GstBusSyncHandler)Gst_bus_call, NULL, NULL);
 #endif
 		gst_object_unref(bus);
 		
@@ -725,10 +735,15 @@ bool cPlayback::Start(char *filename, const char * const suburi)
 		// play it baby 
 		if(player && player->output && player->playback) 
 		{	
-			if (player->playback->Command(player, PLAYBACK_PLAY, NULL) == 0 ) // playback.c uses "int = 0" for "true"
+			if (player->playback->Command(player, PLAYBACK_PLAY, NULL) == 0 ) 
 			{
 				playing = true;
 				mSpeed = 1;
+			}
+			else
+			{
+				printf("cPlayback::Start: failed to start playing file, sorry we can not play\n");
+				playing = false;
 			}
 		}		
 	}
