@@ -73,6 +73,9 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 	name = "";
 	//
 	CCItems.clear();
+	
+	////
+	dprintf(DEBUG_INFO, "CWidget::CWidget: x:%d y:%d w:%d h:%d\n", mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight);
 }
 
 CWidget::CWidget(CBox *position)
@@ -110,6 +113,9 @@ CWidget::CWidget(CBox *position)
 	name = "";
 	//
 	CCItems.clear();
+	
+	////
+	dprintf(DEBUG_INFO, "CWidget::CWidget: x:%d y:%d w:%d h:%d\n", mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight);
 }
 
 CWidget::~CWidget()
@@ -164,10 +170,10 @@ void CWidget::initFrames()
 	dprintf(DEBUG_INFO, "CWidget::initFrames\n");
 	
 	// sanity check
-	if(mainFrameBox.iHeight > ((int)frameBuffer->getScreenHeight(true)))
+	if(mainFrameBox.iHeight >= ((int)frameBuffer->getScreenHeight(true)))
 		mainFrameBox.iHeight = frameBuffer->getScreenHeight(true) - 4; // 4 pixel reserved for border
 
-	if(mainFrameBox.iWidth > (int)frameBuffer->getScreenWidth(true))
+	if(mainFrameBox.iWidth >= (int)frameBuffer->getScreenWidth(true))
 		mainFrameBox.iWidth = frameBuffer->getScreenWidth(true) - 4; // 4 pixel reserved for border
 		
 	// menu position (x/y)
@@ -186,6 +192,8 @@ void CWidget::initFrames()
 		mainFrameBox.iX = frameBuffer->getScreenX() + frameBuffer->getScreenWidth() - mainFrameBox.iWidth;
 		mainFrameBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - mainFrameBox.iHeight) >> 1 );
 	}
+	
+	dprintf(DEBUG_INFO, "CWidget::initFrames: x:%d y:%d w:%d h:%d\n", mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight);
 }
 
 //

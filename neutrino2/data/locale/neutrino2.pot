@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-04-10 07:09+0300\n"
+"POT-Creation-Date: 2024-04-10 23:44+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -85,6 +85,7 @@ msgid "(type)"
 msgstr ""
 
 #: ../../src/gui/osd_setup.cpp:1227 ../../src/gui/osd_setup.cpp:1415
+#: ../../src/gui/osd_setup.cpp:1413
 msgid ", please be patient..."
 msgstr ""
 
@@ -1225,7 +1226,7 @@ msgstr ""
 #: ../../src/gui/infoviewer.cpp:1654 ../../src/neutrino2_menue.cpp:125
 #: ../../src/neutrino2_menue.cpp:124 ../../src/neutrino2_menue.cpp:121
 #: ../../src/gui/epg_menu.cpp:84 ../../src/gui/infoviewer.cpp:1655
-#: ../../src/gui/infoviewer.cpp:1650
+#: ../../src/gui/infoviewer.cpp:1650 ../../src/gui/osd_setup.cpp:1524
 msgid "EPG / Timer"
 msgstr ""
 
@@ -1473,7 +1474,7 @@ msgstr ""
 #: ../../src/neutrino2_menue.cpp:150 ../../src/neutrino2_menue.cpp:343
 #: ../../src/neutrino2_menue.cpp:147 ../../src/neutrino2_menue.cpp:340
 #: ../../src/gui/infoviewer.cpp:547 ../../src/gui/infoviewer.cpp:545
-#: ../../src/gui/infoviewer.cpp:542
+#: ../../src/gui/infoviewer.cpp:542 ../../src/gui/osd_setup.cpp:1544
 msgid "Features"
 msgstr ""
 
@@ -2208,7 +2209,8 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4304 ../../src/neutrino2.cpp:4934
 #: ../../src/gui/movieplayer.cpp:2249 ../../src/gui/movieplayer.cpp:2279
 #: ../../src/gui/widget/infobox.cpp:212 ../../src/system/helpers.cpp:1369
-#: ../../src/system/helpers.cpp:1374
+#: ../../src/system/helpers.cpp:1374 ../../src/gui/osd_setup.cpp:1415
+#: ../../src/gui/osd_setup.cpp:1564
 msgid "Information"
 msgstr ""
 
@@ -2458,7 +2460,7 @@ msgstr ""
 msgid "Loading skin "
 msgstr ""
 
-#: ../../src/gui/osd_setup.cpp:1413
+#: ../../src/gui/osd_setup.cpp:1413 ../../src/gui/osd_setup.cpp:1411
 msgid "Loading skin style "
 msgstr ""
 
@@ -2569,6 +2571,7 @@ msgstr ""
 #: ../../src/neutrino2_menue.cpp:211 ../../src/gui/mediaplayer.cpp:88
 #: ../../src/gui/osd_setup.cpp:1584 ../../src/neutrino2_menue.cpp:214
 #: ../../src/neutrino2_menue.cpp:213 ../../src/neutrino2_menue.cpp:210
+#: ../../src/gui/osd_setup.cpp:1582
 msgid "Media Player"
 msgstr ""
 
@@ -3236,6 +3239,7 @@ msgid "Permanent timeshift"
 msgstr ""
 
 #: ../../src/gui/osd_setup.cpp:161 ../../src/gui/osd_setup.cpp:1495
+#: ../../src/gui/osd_setup.cpp:1493
 msgid "Personalisation"
 msgstr ""
 
@@ -3308,6 +3312,7 @@ msgstr ""
 #: ../../src/neutrino2_menue.cpp:196 ../../src/gui/osd_setup.cpp:1575
 #: ../../src/gui/power_menu.cpp:90 ../../src/neutrino2_menue.cpp:199
 #: ../../src/neutrino2_menue.cpp:198 ../../src/neutrino2_menue.cpp:195
+#: ../../src/gui/osd_setup.cpp:1573
 msgid "Power Menu"
 msgstr ""
 
@@ -3787,11 +3792,11 @@ msgstr ""
 msgid "Save Timer"
 msgstr ""
 
-#: ../../src/gui/osd_setup.cpp:1299
+#: ../../src/gui/osd_setup.cpp:1299 ../../src/gui/osd_setup.cpp:1297
 msgid "Save current skin style"
 msgstr ""
 
-#: ../../src/gui/osd_setup.cpp:1377
+#: ../../src/gui/osd_setup.cpp:1377 ../../src/gui/osd_setup.cpp:1375
 msgid "Save current style"
 msgstr ""
 
@@ -3847,7 +3852,7 @@ msgstr ""
 #: ../../src/gui/scan_setup.cpp:1407 ../../src/gui/scan_setup.cpp:1542
 #: ../../src/gui/scan_setup.cpp:712 ../../src/gui/scan_setup.cpp:927
 #: ../../src/gui/scan_setup.cpp:1103 ../../src/gui/scan_setup.cpp:1403
-#: ../../src/gui/scan_setup.cpp:1538
+#: ../../src/gui/scan_setup.cpp:1538 ../../src/gui/osd_setup.cpp:1509
 msgid "Save settings now"
 msgstr ""
 
@@ -3867,7 +3872,7 @@ msgstr ""
 msgid "Saving changes. Please be patient."
 msgstr ""
 
-#: ../../src/gui/osd_setup.cpp:1377
+#: ../../src/gui/osd_setup.cpp:1377 ../../src/gui/osd_setup.cpp:1375
 msgid "Saving current style!"
 msgstr ""
 
@@ -3909,7 +3914,7 @@ msgstr ""
 msgid "Scan transponder"
 msgstr ""
 
-#: ../../src/gui/osd_setup.cpp:1536
+#: ../../src/gui/osd_setup.cpp:1536 ../../src/gui/osd_setup.cpp:1534
 msgid "Scart"
 msgstr ""
 
@@ -4219,7 +4224,7 @@ msgstr ""
 msgid "Skin Style"
 msgstr ""
 
-#: ../../src/gui/osd_setup.cpp:1370
+#: ../../src/gui/osd_setup.cpp:1370 ../../src/gui/osd_setup.cpp:1368
 msgid "Skin Style name"
 msgstr ""
 
@@ -4523,7 +4528,7 @@ msgstr ""
 #: ../../src/neutrino2_menue.cpp:157 ../../src/gui/osd_setup.cpp:1555
 #: ../../src/gui/service_menu.cpp:110 ../../src/neutrino2_menue.cpp:160
 #: ../../src/neutrino2_menue.cpp:159 ../../src/neutrino2_menue.cpp:156
-#: ../../src/gui/service_menu.cpp:111
+#: ../../src/gui/service_menu.cpp:111 ../../src/gui/osd_setup.cpp:1553
 msgid "System"
 msgstr ""
 
@@ -4602,7 +4607,7 @@ msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:113 ../../src/gui/osd_setup.cpp:1516
 #: ../../src/neutrino2_menue.cpp:116 ../../src/neutrino2_menue.cpp:115
-#: ../../src/neutrino2_menue.cpp:112
+#: ../../src/neutrino2_menue.cpp:112 ../../src/gui/osd_setup.cpp:1514
 msgid "TV / Radio"
 msgstr ""
 
@@ -5321,6 +5326,10 @@ msgstr ""
 #: ../../src/gui/osd_setup.cpp:1538 ../../src/gui/osd_setup.cpp:1548
 #: ../../src/gui/osd_setup.cpp:1557 ../../src/gui/osd_setup.cpp:1568
 #: ../../src/gui/osd_setup.cpp:1577 ../../src/gui/osd_setup.cpp:1586
+#: ../../src/gui/osd_setup.cpp:1516 ../../src/gui/osd_setup.cpp:1526
+#: ../../src/gui/osd_setup.cpp:1536 ../../src/gui/osd_setup.cpp:1546
+#: ../../src/gui/osd_setup.cpp:1555 ../../src/gui/osd_setup.cpp:1566
+#: ../../src/gui/osd_setup.cpp:1575 ../../src/gui/osd_setup.cpp:1584
 msgid "active"
 msgstr ""
 
@@ -5504,6 +5513,7 @@ msgstr ""
 #: ../../src/gui/scan_setup.cpp:923 ../../src/gui/scan_setup.cpp:1029
 #: ../../src/gui/scan_setup.cpp:1099 ../../src/gui/scan_setup.cpp:1399
 #: ../../src/gui/scan_setup.cpp:1534 ../../src/gui/scan_setup.cpp:2377
+#: ../../src/gui/osd_setup.cpp:1293 ../../src/gui/osd_setup.cpp:1507
 msgid "back"
 msgstr ""
 
@@ -5585,7 +5595,7 @@ msgstr ""
 msgid "checking version"
 msgstr ""
 
-#: ../../src/gui/osd_setup.cpp:1333
+#: ../../src/gui/osd_setup.cpp:1333 ../../src/gui/osd_setup.cpp:1331
 msgid "choose Skin Style."
 msgstr ""
 
@@ -5796,6 +5806,10 @@ msgstr ""
 #: ../../src/gui/osd_setup.cpp:1540 ../../src/gui/osd_setup.cpp:1550
 #: ../../src/gui/osd_setup.cpp:1559 ../../src/gui/osd_setup.cpp:1570
 #: ../../src/gui/osd_setup.cpp:1579 ../../src/gui/osd_setup.cpp:1588
+#: ../../src/gui/osd_setup.cpp:1518 ../../src/gui/osd_setup.cpp:1528
+#: ../../src/gui/osd_setup.cpp:1538 ../../src/gui/osd_setup.cpp:1548
+#: ../../src/gui/osd_setup.cpp:1557 ../../src/gui/osd_setup.cpp:1568
+#: ../../src/gui/osd_setup.cpp:1577 ../../src/gui/osd_setup.cpp:1586
 msgid "hidden"
 msgstr ""
 
@@ -5811,6 +5825,10 @@ msgstr ""
 #: ../../src/gui/osd_setup.cpp:1541 ../../src/gui/osd_setup.cpp:1551
 #: ../../src/gui/osd_setup.cpp:1560 ../../src/gui/osd_setup.cpp:1571
 #: ../../src/gui/osd_setup.cpp:1580 ../../src/gui/osd_setup.cpp:1589
+#: ../../src/gui/osd_setup.cpp:1519 ../../src/gui/osd_setup.cpp:1529
+#: ../../src/gui/osd_setup.cpp:1539 ../../src/gui/osd_setup.cpp:1549
+#: ../../src/gui/osd_setup.cpp:1558 ../../src/gui/osd_setup.cpp:1569
+#: ../../src/gui/osd_setup.cpp:1578 ../../src/gui/osd_setup.cpp:1587
 msgid "inactive"
 msgstr ""
 
@@ -5887,6 +5905,10 @@ msgstr ""
 #: ../../src/gui/osd_setup.cpp:1539 ../../src/gui/osd_setup.cpp:1549
 #: ../../src/gui/osd_setup.cpp:1558 ../../src/gui/osd_setup.cpp:1569
 #: ../../src/gui/osd_setup.cpp:1578 ../../src/gui/osd_setup.cpp:1587
+#: ../../src/gui/osd_setup.cpp:1517 ../../src/gui/osd_setup.cpp:1527
+#: ../../src/gui/osd_setup.cpp:1537 ../../src/gui/osd_setup.cpp:1547
+#: ../../src/gui/osd_setup.cpp:1556 ../../src/gui/osd_setup.cpp:1567
+#: ../../src/gui/osd_setup.cpp:1576 ../../src/gui/osd_setup.cpp:1585
 msgid "locked"
 msgstr ""
 

@@ -1277,7 +1277,6 @@ int CSkinSettings::showMenu()
 		//
 		skinSettings->enablePaintHead();
 		skinSettings->setTitle(_("Skin Style"), NEUTRINO_ICON_COLORS);
-//		skinSettings->setHeadLine(true, true);
 
 		//
 		skinSettings->enablePaintFoot();
@@ -1285,7 +1284,6 @@ int CSkinSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		skinSettings->setFootButtons(&btn);
-//		skinSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(skinSettings);

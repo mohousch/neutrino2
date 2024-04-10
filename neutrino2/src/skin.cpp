@@ -2651,41 +2651,6 @@ void CNeutrinoApp::parseKey(xmlNodePtr node, CWidget* widget)
 	if (widget) widget->addKey(key, key_parent, key_actionkey);		
 }
 
-/*
-void CNeutrinoApp::parseCWidget(xmlNodePtr node)
-{
-	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCWidget:\n");
-	
-	CWidget *widget = NULL;
-	
-	//
-	char* name = NULL;
-			
-	unsigned int x = 0;
-	unsigned int y = 0;
-	unsigned int dx = 0;
-	unsigned int dy = 0;
-			
-	char* color = NULL;
-	char *gradient = NULL;
-	char *gradient_type = NULL;
-	char *gradient_direction = NULL;
-	char *gradient_intensity = NULL;
-	char * corner = NULL;
-	char * radius = NULL;
-	char * border = NULL;
-	char *bordercolor = NULL;
-			
-	unsigned int paintframe = 0;
-	unsigned int savescreen = 0;
-	unsigned int timeout = 300;
-	char *position = NULL;
-	
-	//
-	xmlNodePtr item = NULL;
-}
-*/
-
 // getWidget
 CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *const skinfilename, bool data)
 {
@@ -2788,6 +2753,11 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 					
 				//
 				widget = new CWidget(x, y, dx, dy);
+				
+				// menuposition
+				int pos = CWidget::MENU_POSITION_NONE;
+				if (position) pos = convertMenuPosition(position);
+				widget->setMenuPosition(pos);
 					
 				if (name != NULL) widget->name = name;
 				
@@ -2839,11 +2809,6 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 				
 				// timeout
 				widget->setTimeOut(timeout);
-				
-				// menuposition
-				int pos = CWidget::MENU_POSITION_NONE;
-				if (position) pos = convertMenuPosition(position);
-				widget->setMenuPosition(pos);
 				
 				//
 				item = search->xmlChildrenNode;
