@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-04-07 16:49+0300\n"
+"POT-Creation-Date: 2024-04-10 07:09+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -171,6 +171,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2303 ../../src/gui/movieplayer.cpp:2287
 #: ../../src/gui/movieplayer.cpp:2290 ../../src/gui/movieplayer.cpp:2300
 #: ../../src/gui/movieplayer.cpp:2302 ../../src/driver/movieinfo.cpp:905
+#: ../../src/gui/epgview.cpp:955
 msgid "Actors"
 msgstr ""
 
@@ -1077,6 +1078,7 @@ msgid "Direct-Mode"
 msgstr ""
 
 #: ../../src/gui/epgview.cpp:953 ../../src/gui/epgview.cpp:955
+#: ../../src/gui/epgview.cpp:954
 msgid "Director"
 msgstr ""
 
@@ -1141,7 +1143,7 @@ msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1240 ../../src/system/helpers.cpp:1856
 #: ../../src/gui/audioplayer.cpp:1239 ../../src/gui/audioplayer.cpp:1238
-#: ../../src/system/helpers.cpp:1951
+#: ../../src/system/helpers.cpp:1951 ../../src/system/helpers.cpp:1950
 msgid "Do you want to overwrite this file:"
 msgstr ""
 
@@ -1706,6 +1708,7 @@ msgid "Guard Interval"
 msgstr ""
 
 #: ../../src/gui/epgview.cpp:955 ../../src/gui/epgview.cpp:957
+#: ../../src/gui/epgview.cpp:956
 msgid "Guests"
 msgstr ""
 
@@ -2203,6 +2206,9 @@ msgstr ""
 #: ../../src/gui/scan_setup.cpp:350 ../../src/neutrino2.cpp:3805
 #: ../../src/neutrino2.cpp:3850 ../../src/neutrino2.cpp:3906
 #: ../../src/neutrino2.cpp:4304 ../../src/neutrino2.cpp:4934
+#: ../../src/gui/movieplayer.cpp:2249 ../../src/gui/movieplayer.cpp:2279
+#: ../../src/gui/widget/infobox.cpp:212 ../../src/system/helpers.cpp:1369
+#: ../../src/system/helpers.cpp:1374
 msgid "Information"
 msgstr ""
 
@@ -2260,6 +2266,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:805 ../../src/gui/movieplayer.cpp:808
 #: ../../src/gui/movieplayer.cpp:820 ../../src/gui/movieplayer.cpp:821
 #: ../../src/driver/movieinfo.cpp:1472 ../../src/driver/movieinfo.cpp:1420
+#: ../../src/driver/movieinfo.cpp:1419
 msgid "Jump over"
 msgstr ""
 
@@ -2930,6 +2937,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:803 ../../src/gui/movieplayer.cpp:806
 #: ../../src/gui/movieplayer.cpp:818 ../../src/gui/movieplayer.cpp:819
 #: ../../src/driver/movieinfo.cpp:1468 ../../src/driver/movieinfo.cpp:1416
+#: ../../src/driver/movieinfo.cpp:1415
 msgid "New Bookmark"
 msgstr ""
 
@@ -3150,13 +3158,13 @@ msgid "Original Title"
 msgstr ""
 
 #: ../../src/gui/epgview.cpp:952 ../../src/system/tmdbparser.cpp:240
-#: ../../src/gui/epgview.cpp:954
+#: ../../src/gui/epgview.cpp:954 ../../src/gui/epgview.cpp:953
 msgid "Original title"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1241 ../../src/system/helpers.cpp:1858
 #: ../../src/gui/audioplayer.cpp:1240 ../../src/gui/audioplayer.cpp:1239
-#: ../../src/system/helpers.cpp:1953
+#: ../../src/system/helpers.cpp:1953 ../../src/system/helpers.cpp:1952
 msgid "Overwrite?"
 msgstr ""
 
@@ -3321,7 +3329,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2314 ../../src/gui/movieplayer.cpp:2315
 #: ../../src/gui/movieplayer.cpp:2329 ../../src/gui/movieplayer.cpp:2313
 #: ../../src/gui/movieplayer.cpp:2316 ../../src/gui/movieplayer.cpp:2326
-#: ../../src/gui/movieplayer.cpp:2328
+#: ../../src/gui/movieplayer.cpp:2328 ../../src/gui/movieplayer.cpp:2249
 msgid "Prefer TMDB Infos"
 msgstr ""
 
@@ -3339,6 +3347,7 @@ msgid "Preferred subtitle language"
 msgstr ""
 
 #: ../../src/gui/epgview.cpp:956 ../../src/gui/epgview.cpp:958
+#: ../../src/gui/epgview.cpp:957
 msgid "Presenter"
 msgstr ""
 
@@ -3466,6 +3475,7 @@ msgstr ""
 #: ../../src/gui/timerlist.cpp:838 ../../src/gui/timerlist.cpp:928
 #: ../../src/gui/epgplus.cpp:493 ../../src/gui/epgview.cpp:1072
 #: ../../src/gui/eventlist.cpp:535 ../../src/gui/channellist.cpp:94
+#: ../../src/gui/epgview.cpp:1071
 msgid "Record"
 msgstr ""
 
@@ -3640,6 +3650,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:804 ../../src/gui/movieplayer.cpp:807
 #: ../../src/gui/movieplayer.cpp:819 ../../src/gui/movieplayer.cpp:820
 #: ../../src/driver/movieinfo.cpp:1470 ../../src/driver/movieinfo.cpp:1418
+#: ../../src/driver/movieinfo.cpp:1417
 msgid "Repeat"
 msgstr ""
 
@@ -3918,6 +3929,7 @@ msgstr ""
 #: ../../src/gui/epgview.cpp:861 ../../src/gui/eventlist.cpp:380
 #: ../../src/gui/epgplus.cpp:1184 ../../src/gui/epgview.cpp:863
 #: ../../src/gui/eventlist.cpp:381 ../../src/gui/channellist.cpp:510
+#: ../../src/gui/epgview.cpp:862
 msgid "Schedule Event"
 msgstr ""
 
@@ -3927,6 +3939,7 @@ msgstr ""
 #: ../../src/gui/epgplus.cpp:1212 ../../src/gui/epgview.cpp:842
 #: ../../src/gui/epgview.cpp:847 ../../src/gui/eventlist.cpp:347
 #: ../../src/gui/eventlist.cpp:352 ../../src/gui/channellist.cpp:488
+#: ../../src/gui/epgview.cpp:841 ../../src/gui/epgview.cpp:846
 msgid "Schedule Record"
 msgstr ""
 
@@ -4549,7 +4562,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2344 ../../src/gui/movieplayer.cpp:2345
 #: ../../src/gui/movieplayer.cpp:2359 ../../src/gui/movieplayer.cpp:2343
 #: ../../src/gui/movieplayer.cpp:2346 ../../src/gui/movieplayer.cpp:2356
-#: ../../src/gui/movieplayer.cpp:2358
+#: ../../src/gui/movieplayer.cpp:2358 ../../src/gui/movieplayer.cpp:2279
 msgid "TMDB Infos are not available"
 msgstr ""
 
@@ -4700,6 +4713,7 @@ msgstr ""
 #: ../../src/gui/epgplus.cpp:1212 ../../src/gui/epgview.cpp:842
 #: ../../src/gui/epgview.cpp:847 ../../src/gui/eventlist.cpp:347
 #: ../../src/gui/eventlist.cpp:352 ../../src/gui/channellist.cpp:488
+#: ../../src/gui/epgview.cpp:841 ../../src/gui/epgview.cpp:846
 msgid ""
 "The event is flagged for record.\n"
 "The box will power on and \n"
@@ -4710,6 +4724,7 @@ msgstr ""
 #: ../../src/gui/epgview.cpp:861 ../../src/gui/eventlist.cpp:380
 #: ../../src/gui/epgplus.cpp:1184 ../../src/gui/epgview.cpp:863
 #: ../../src/gui/eventlist.cpp:381 ../../src/gui/channellist.cpp:510
+#: ../../src/gui/epgview.cpp:862
 msgid ""
 "The event is scheduled.\n"
 "The box will power on and \n"
@@ -5218,6 +5233,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2299 ../../src/gui/movieplayer.cpp:2283
 #: ../../src/gui/movieplayer.cpp:2286 ../../src/gui/movieplayer.cpp:2296
 #: ../../src/gui/movieplayer.cpp:2298 ../../src/driver/movieinfo.cpp:931
+#: ../../src/gui/epgview.cpp:952
 msgid "Year of production"
 msgstr ""
 
@@ -5997,7 +6013,8 @@ msgstr ""
 #: ../../src/gui/streaminfo.cpp:779 ../../src/gui/streaminfo.cpp:808
 #: ../../src/gui/streaminfo.cpp:766 ../../src/gui/streaminfo.cpp:777
 #: ../../src/gui/streaminfo.cpp:806 ../../src/system/helpers.cpp:1370
-#: ../../src/system/helpers.cpp:1375
+#: ../../src/system/helpers.cpp:1375 ../../src/system/helpers.cpp:1369
+#: ../../src/system/helpers.cpp:1374
 msgid "not available"
 msgstr ""
 

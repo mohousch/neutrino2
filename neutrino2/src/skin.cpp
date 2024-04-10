@@ -1965,8 +1965,6 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 	
 	char * textColor = NULL;
 	char * font = NULL;
-	unsigned int mode = CTextBox::SCROLL;
-	//unsigned int border = CComponent::BORDER_NO;
 	
 	unsigned int tmode = CTextBox::PIC_RIGHT;
 	unsigned int tw = 0;
@@ -1992,9 +1990,6 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 		
 	textColor = xmlGetAttribute(node, (char*)"textcolor");
 	font = xmlGetAttribute(node, (char *)"font");
-		
-	mode = xmlGetSignedNumericAttribute(node, "mode", 0);
-	//border = xmlGetSignedNumericAttribute(node, "border", 0);
 		
 	tmode = xmlGetSignedNumericAttribute(node, "tmode", 0);
 	tw = xmlGetSignedNumericAttribute(node, "twidth", 0);
@@ -2045,8 +2040,6 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 	int fs = SNeutrinoSettings::FONT_TYPE_EPG_INFO1;
 	if (font) fs = convertFontSize(font);
 	textBox->setFont(fs);
-	//
-	textBox->setMode(mode);
 	
 	//FIXME:	
 	if (text) textBox->setText(text, pic? pic : NULL, tw, th, tmode, tframe);

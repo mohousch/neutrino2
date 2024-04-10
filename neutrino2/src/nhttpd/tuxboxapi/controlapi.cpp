@@ -954,7 +954,9 @@ void CControlAPI::GetBouquetCGI(CyhookHandler *hh)
 				int BouquetNr = atoi(hh->ParamList["bouquet"].c_str());
 				if(BouquetNr > 0)
 					BouquetNr--;
+					
 				channels = mode == CZapit::MODE_RADIO ? CZapit::getInstance()->Bouquets[BouquetNr]->radioChannels : CZapit::getInstance()->Bouquets[BouquetNr]->tvChannels;
+					
 				int num = 1 + (mode == CZapit::MODE_RADIO ? CZapit::getInstance()->radioChannelsBegin().getNrofFirstChannelofBouquet(BouquetNr) : CZapit::getInstance()->tvChannelsBegin().getNrofFirstChannelofBouquet(BouquetNr));
 				
 				for(int j = 0; j < (int) channels.size(); j++) 

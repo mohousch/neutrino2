@@ -1360,7 +1360,6 @@ void getTMDBInfo(const char * const text)
 				CInfoBox * infoBox = new CInfoBox(&position, text, NEUTRINO_ICON_TMDB);
 
 				infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
-				infoBox->setMode(CTextBox::SCROLL);
 				infoBox->setText(buffer.c_str(), tname.c_str(), p_w, p_h);
 				infoBox->exec();
 				delete infoBox;

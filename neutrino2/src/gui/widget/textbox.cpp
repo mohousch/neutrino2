@@ -97,7 +97,6 @@ void CTextBox::initVar(void)
 	dprintf(DEBUG_DEBUG, "CTextBox::InitVar:\r\n");
 	
 	m_cText	= "";
-	m_nMode = SCROLL;
 	m_tMode = PIC_RIGHT;
 
 	m_pcFontText = SNeutrinoSettings::FONT_TYPE_EPG_INFO1;
@@ -164,16 +163,6 @@ void CTextBox::setPosition(const CBox * position)
 	initFrames();
 }
 
-void CTextBox::setMode(const int mode)
-{
-	m_nMode = mode; 
-
-	if( !(mode & NO_AUTO_LINEBREAK))
-	{
-		m_nMode = m_nMode & ~AUTO_WIDTH;
-	}
-}
-
 void CTextBox::setBigFonts()
 {
 	bigFonts = bigFonts? false : true;
@@ -193,40 +182,6 @@ void CTextBox::setBigFonts()
 	refreshPage();
 }
 
-void CTextBox::reSizeTextFrameWidth(int textWidth)
-{
-	dprintf(DEBUG_DEBUG, "CTextBox::ReSizeTextFrameWidth: %d, current: %d\r\n", textWidth, m_cFrameTextRel.iWidth);
-
-	int iNewWindowWidth = textWidth + m_cFrameScrollRel.iWidth + BORDER_LEFT + BORDER_RIGHT;
-
-	if( iNewWindowWidth > itemBox.iWidth) 
-		iNewWindowWidth = itemBox.iWidth;
-	if( iNewWindowWidth < MIN_WINDOW_WIDTH) 
-		iNewWindowWidth = MIN_WINDOW_WIDTH;
-
-	m_cFrameTextRel.iWidth	= iNewWindowWidth;
-
-	// Re-Init the children frames due to new main window
-	initFrames();
-}
-
-void CTextBox::reSizeTextFrameHeight(int textHeight)
-{
-	dprintf(DEBUG_DEBUG, "CTextBox::ReSizeTextFrameHeight: %d, current: %d\r\n", textHeight, m_cFrameTextRel.iHeight);
-
-	int iNewWindowHeight = textHeight + BORDER_LEFT + BORDER_RIGHT;
-
-	if( iNewWindowHeight > itemBox.iHeight) 
-		iNewWindowHeight = itemBox.iHeight;
-	if( iNewWindowHeight < MIN_WINDOW_HEIGHT) 
-		iNewWindowHeight = MIN_WINDOW_HEIGHT;
-
-	m_cFrameTextRel.iHeight = iNewWindowHeight;
-
-	// reinit the children frames due to new main window
-	initFrames();
-}
-
 void CTextBox::initFrames(void)
 {
 	dprintf(DEBUG_DEBUG, "CTextBox::InitFrames:\r\n");
@@ -235,20 +190,10 @@ void CTextBox::initFrames(void)
 	m_cFrameTextRel.iY = itemBox.iY + 10;
 	m_cFrameTextRel.iHeight = itemBox.iHeight - 20;
 	
-	if(m_nMode & SCROLL)
-	{
-		m_cFrameScrollRel.iX = itemBox.iX + itemBox.iWidth - SCROLLBAR_WIDTH;
-		m_cFrameScrollRel.iY = itemBox.iY;
-		m_cFrameScrollRel.iWidth = SCROLLBAR_WIDTH;
-		m_cFrameScrollRel.iHeight = itemBox.iHeight;
-	}
-	else
-	{
-		m_cFrameScrollRel.iX = 0;
-		m_cFrameScrollRel.iY = 0;
-		m_cFrameScrollRel.iHeight = 0;
-		m_cFrameScrollRel.iWidth = 0;
-	}
+	m_cFrameScrollRel.iX = itemBox.iX + itemBox.iWidth - SCROLLBAR_WIDTH;
+	m_cFrameScrollRel.iY = itemBox.iY;
+	m_cFrameScrollRel.iWidth = SCROLLBAR_WIDTH;
+	m_cFrameScrollRel.iHeight = itemBox.iHeight;
 
 	m_cFrameTextRel.iWidth = itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - m_cFrameScrollRel.iWidth;
 
@@ -289,7 +234,6 @@ void CTextBox::refreshTextLineArray(void)
 	int aktWidth = 0;
 	int aktWordWidth = 0;
 	int lineBreakWidth = 0;
-	int maxTextWidth = 0;
 
 	m_nNrOfNewLine = 0;
 
@@ -300,16 +244,8 @@ void CTextBox::refreshTextLineArray(void)
 	m_cLineArray.clear();
 	m_nNrOfLines = 0;
 
-	if( m_nMode & AUTO_WIDTH)
-	{
-		// In case of autowidth, we calculate the max allowed width of the textbox
-		lineBreakWidth = m_cFrameTextRel.iWidth - BORDER_LEFT - BORDER_RIGHT - m_cFrameScrollRel.iWidth;
-	}
-	else
-	{
-		// If not autowidth, we just take the actuall textframe width
-		lineBreakWidth = m_cFrameTextRel.iWidth;
-	}
+	// If not autowidth, we just take the actuall textframe width
+	lineBreakWidth = m_cFrameTextRel.iWidth;
 	
 	//
 	if( (!access(thumbnail.c_str(), F_OK) && m_nCurrentPage == 0) && m_tMode != PIC_CENTER)
@@ -325,25 +261,15 @@ void CTextBox::refreshTextLineArray(void)
 	// do not parse, if text is empty 
 	if(!m_cText.empty())
 	{
-		//m_cText += "\n";
-
 		while(loop)
 		{
-			if(m_nMode & NO_AUTO_LINEBREAK)
-			{
-				pos = m_cText.find_first_of("\n", pos_prev);
-			}
-			else
-			{
-				pos = m_cText.find_first_of("\n-. ", pos_prev);
-			}
+			pos = m_cText.find_first_of("\n-. ", pos_prev);
 
-			//if(pos == -1)
+			//
 			if(pos > TextChars || pos < 0)
 			{
 				pos = TextChars + 1;
-				loop = false; // note, this is not 100% correct. if the last characters does not fit in one line, the characters after are cut
-				//break;
+				loop = false;
 			}
 
 			aktWord = m_cText.substr(pos_prev, pos - pos_prev + 1);
@@ -353,7 +279,7 @@ void CTextBox::refreshTextLineArray(void)
 			//
 			if(1)
 			{
-				if( aktWidth + aktWordWidth > lineBreakWidth && !(m_nMode & NO_AUTO_LINEBREAK))
+				if( aktWidth + aktWordWidth > lineBreakWidth)
 				{
 					// we need a new line before we can continue
 					m_cLineArray.push_back(aktLine);
@@ -368,8 +294,6 @@ void CTextBox::refreshTextLineArray(void)
 
 				aktLine  += aktWord;
 				aktWidth += aktWordWidth;
-				if (aktWidth > maxTextWidth) 
-					maxTextWidth = aktWidth;
 
 				//
 				if( m_cText[pos] == '\n' || loop == false)
@@ -391,40 +315,15 @@ void CTextBox::refreshTextLineArray(void)
 				//recalculate breaklinewidth for other pages or when pic dont exists
 				if(m_nNrOfLines > (th / m_nFontTextHeight))
 				{
-					if( m_nMode & AUTO_WIDTH)
-					{
-						lineBreakWidth = m_cFrameTextRel.iWidth - m_cFrameScrollRel.iWidth - BORDER_LEFT - BORDER_RIGHT;
-					}
-					else
-					{
-						lineBreakWidth = m_cFrameTextRel.iWidth;	
-					}
+					lineBreakWidth = m_cFrameTextRel.iWidth;	
 				}
 
 				// 2nd page and over
 				if(m_nNrOfLines > ((m_cFrameTextRel.iHeight) / m_nFontTextHeight))
 				{
-					if( m_nMode & AUTO_WIDTH)
-					{
-						lineBreakWidth = m_cFrameTextRel.iWidth - m_cFrameScrollRel.iWidth - BORDER_LEFT - BORDER_RIGHT;
-					}
-					else
-					{
-						lineBreakWidth = m_cFrameTextRel.iWidth;
-					}
+					lineBreakWidth = m_cFrameTextRel.iWidth;
 				}
 			}
-		}
-
-		// check if we have to recalculate the window frame size, due to auto width and auto height
-		if( m_nMode & AUTO_WIDTH)
-		{
-			reSizeTextFrameWidth(maxTextWidth);
-		}
-
-		if(m_nMode & AUTO_HIGH)
-		{
-			reSizeTextFrameHeight(m_nNrOfLines * m_nFontTextHeight);
 		}
 
 		// linesPerPage
@@ -454,9 +353,6 @@ void CTextBox::refreshTextLineArray(void)
 
 void CTextBox::refreshScroll(void)
 {
-	if(!(m_nMode & SCROLL)) 
-		return;
-
 	if (m_nNrOfPages > 1) 
 	{
 		scrollBar.paint(&m_cFrameScrollRel, m_nNrOfPages, m_nCurrentPage);
@@ -538,10 +434,7 @@ void CTextBox::refreshText(void)
 }
 
 void CTextBox::scrollPageDown(const int pages)
-{
-	if( !(m_nMode & SCROLL)) 
-		return;
-	
+{	
 	if( m_nNrOfLines <= 0) 
 		return;
 	
@@ -561,10 +454,7 @@ void CTextBox::scrollPageDown(const int pages)
 }
 
 void CTextBox::scrollPageUp(const int pages)
-{
-	if( !(m_nMode & SCROLL)) 
-		return;
-	
+{	
 	if( m_nNrOfLines <= 0) 
 		return;
 	

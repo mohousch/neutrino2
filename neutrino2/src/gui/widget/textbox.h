@@ -48,15 +48,6 @@
 class CTextBox : public CComponent
 {
 	public:
-		// mode
-		enum
-		{
-			AUTO_WIDTH		= 0x01,
-			AUTO_HIGH		= 0x02,
-			SCROLL			= 0x04,
-			NO_AUTO_LINEBREAK 	= 0x80
-		};
-
 		// pic mode
 		enum 
 		{
@@ -78,7 +69,6 @@ class CTextBox : public CComponent
 		std::string m_cText;
 		std::vector<std::string> m_cLineArray;
 
-		int m_nMode;
 		int m_tMode;
 
 		int m_nNrOfPages;
@@ -120,8 +110,6 @@ class CTextBox : public CComponent
 		void refreshScroll(void);
 		void refreshText(void);
 		void refreshPage(void);
-		void reSizeTextFrameWidth(int maxTextWidth);
-		void reSizeTextFrameHeight(int maxTextHeight);
 
 	public:
 		CTextBox(const int x = 0, const int y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);
@@ -137,7 +125,6 @@ class CTextBox : public CComponent
 		void setBackgroundColor(fb_pixel_t col){m_textBackgroundColor = col;};
 		void setTextColor(uint32_t col){m_textColor = col;};
 		void setFont(unsigned int font_text){m_pcFontText = font_text;};
-		void setMode(const int mode);
 		void setBorderMode(int m = CComponent::BORDER_ALL){borderMode = m;};
 		void setBigFonts();
 		
