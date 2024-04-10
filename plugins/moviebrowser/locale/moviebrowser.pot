@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-03-31 01:00+0200\n"
+"POT-Creation-Date: 2024-04-10 16:46+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,65 +17,65 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../../moviebrowser/moviebrowser.cpp:141
+#: ../../moviebrowser/moviebrowser.cpp:129
 msgid "12 years"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:142
+#: ../../moviebrowser/moviebrowser.cpp:130
 msgid "16 years"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:143
+#: ../../moviebrowser/moviebrowser.cpp:131
 msgid "18 years"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:140
+#: ../../moviebrowser/moviebrowser.cpp:128
 msgid "6 years"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3233
-#: ../../moviebrowser/moviebrowser.cpp:3901
+#: ../../moviebrowser/moviebrowser.cpp:2677
+#: ../../moviebrowser/moviebrowser.cpp:3337
 msgid "Additional paths"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:106
-#: ../../moviebrowser/moviebrowser.cpp:163
-#: ../../moviebrowser/moviebrowser.cpp:3082
+#: ../../moviebrowser/moviebrowser.cpp:94
+#: ../../moviebrowser/moviebrowser.cpp:151
+#: ../../moviebrowser/moviebrowser.cpp:2528
 msgid "Age"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:114
-#: ../../moviebrowser/moviebrowser.cpp:172
+#: ../../moviebrowser/moviebrowser.cpp:102
+#: ../../moviebrowser/moviebrowser.cpp:160
 msgid "Audio"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:165
+#: ../../moviebrowser/moviebrowser.cpp:153
 msgid "Bookmark"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2916
-#: ../../moviebrowser/moviebrowser.cpp:2917
-#: ../../moviebrowser/moviebrowser.cpp:2918
-#: ../../moviebrowser/moviebrowser.cpp:2933
-#: ../../moviebrowser/moviebrowser.cpp:2934
-#: ../../moviebrowser/moviebrowser.cpp:2935
+#: ../../moviebrowser/moviebrowser.cpp:2362
+#: ../../moviebrowser/moviebrowser.cpp:2363
+#: ../../moviebrowser/moviebrowser.cpp:2364
+#: ../../moviebrowser/moviebrowser.cpp:2379
+#: ../../moviebrowser/moviebrowser.cpp:2380
+#: ../../moviebrowser/moviebrowser.cpp:2381
 msgid "Bookmark change"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:117
-#: ../../moviebrowser/moviebrowser.cpp:2920
-#: ../../moviebrowser/moviebrowser.cpp:2937
-#: ../../moviebrowser/moviebrowser.cpp:2943
-#: ../../moviebrowser/moviebrowser.cpp:3059
+#: ../../moviebrowser/moviebrowser.cpp:105
+#: ../../moviebrowser/moviebrowser.cpp:2366
+#: ../../moviebrowser/moviebrowser.cpp:2383
+#: ../../moviebrowser/moviebrowser.cpp:2389
+#: ../../moviebrowser/moviebrowser.cpp:2505
 msgid "Bookmarks"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3296
-#: ../../moviebrowser/moviebrowser.cpp:3361
+#: ../../moviebrowser/moviebrowser.cpp:2738
+#: ../../moviebrowser/moviebrowser.cpp:2797
 msgid "Browser Options"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3308
+#: ../../moviebrowser/moviebrowser.cpp:2744
 msgid "Browser hight [Pixel]"
 msgstr ""
 
@@ -83,787 +83,763 @@ msgstr ""
 msgid "Cancel movie cut/split ?"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:107
-#: ../../moviebrowser/moviebrowser.cpp:164
-#: ../../moviebrowser/moviebrowser.cpp:3023
-#: ../../moviebrowser/moviebrowser.cpp:3094
+#: ../../moviebrowser/moviebrowser.cpp:95
+#: ../../moviebrowser/moviebrowser.cpp:152
+#: ../../moviebrowser/moviebrowser.cpp:2469
+#: ../../moviebrowser/moviebrowser.cpp:2540
 msgid "Channel"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2924
+#: ../../moviebrowser/moviebrowser.cpp:2370
 msgid "Clear all"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:975
+#: ../../moviebrowser/moviebrowser.cpp:912
 msgid "Coping, please wait"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:986
+#: ../../moviebrowser/moviebrowser.cpp:923
 msgid "Copy failed, is there jump bookmarks ? Or check free space."
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2982
+#: ../../moviebrowser/moviebrowser.cpp:2428
 msgid "Copy if destination is empty only"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3121
+#: ../../moviebrowser/moviebrowser.cpp:2567
 msgid "Copy jumps"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:973
+#: ../../moviebrowser/moviebrowser.cpp:910
 msgid "Copy jumps from movie to new file ?"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:112
-#: ../../moviebrowser/moviebrowser.cpp:170
-#: ../../moviebrowser/moviebrowser.cpp:3004
-#: ../../moviebrowser/moviebrowser.cpp:3041
-#: ../../moviebrowser/moviebrowser.cpp:3088
+#: ../../moviebrowser/moviebrowser.cpp:100
+#: ../../moviebrowser/moviebrowser.cpp:158
+#: ../../moviebrowser/moviebrowser.cpp:2450
+#: ../../moviebrowser/moviebrowser.cpp:2487
+#: ../../moviebrowser/moviebrowser.cpp:2534
 msgid "Country"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:936
+#: ../../moviebrowser/moviebrowser.cpp:873
 msgid "Cut failed, is there jump bookmarks ? Or check free space."
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3115
+#: ../../moviebrowser/moviebrowser.cpp:2561
 msgid "Cut jumps"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:923
+#: ../../moviebrowser/moviebrowser.cpp:860
 msgid "Cut jumps from movie ?"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:925
+#: ../../moviebrowser/moviebrowser.cpp:862
 msgid "Cutting, please wait"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:110
+#: ../../moviebrowser/moviebrowser.cpp:98
 msgid "Date"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2113
-#: ../../moviebrowser/moviebrowser.cpp:2127
+#: ../../moviebrowser/moviebrowser.cpp:1751
+#: ../../moviebrowser/moviebrowser.cpp:1765
 msgid "Delete"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2916
-#: ../../moviebrowser/moviebrowser.cpp:2917
-#: ../../moviebrowser/moviebrowser.cpp:2918
-#: ../../moviebrowser/moviebrowser.cpp:2933
-#: ../../moviebrowser/moviebrowser.cpp:2934
-#: ../../moviebrowser/moviebrowser.cpp:2935
+#: ../../moviebrowser/moviebrowser.cpp:2362
+#: ../../moviebrowser/moviebrowser.cpp:2363
+#: ../../moviebrowser/moviebrowser.cpp:2364
+#: ../../moviebrowser/moviebrowser.cpp:2379
+#: ../../moviebrowser/moviebrowser.cpp:2380
+#: ../../moviebrowser/moviebrowser.cpp:2381
 msgid "Enter new Position (s)"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:936
-#: ../../moviebrowser/moviebrowser.cpp:947
-#: ../../moviebrowser/moviebrowser.cpp:949
-#: ../../moviebrowser/moviebrowser.cpp:961
+#: ../../moviebrowser/moviebrowser.cpp:873
+#: ../../moviebrowser/moviebrowser.cpp:884
+#: ../../moviebrowser/moviebrowser.cpp:886
+#: ../../moviebrowser/moviebrowser.cpp:898
 msgid "Error"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3107
+#: ../../moviebrowser/moviebrowser.cpp:2553
 msgid "File size (MB)"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3047
-#: ../../moviebrowser/moviebrowser.cpp:3155
+#: ../../moviebrowser/moviebrowser.cpp:2493
+#: ../../moviebrowser/moviebrowser.cpp:2601
 msgid "Film Informationen"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:1280
+#: ../../moviebrowser/moviebrowser.cpp:1158
 msgid "Filter movies by category:"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:1707
-#: ../../moviebrowser/moviebrowser.cpp:1715
+#: ../../moviebrowser/moviebrowser.cpp:1434
+#: ../../moviebrowser/moviebrowser.cpp:1442
 msgid "Filter:"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:171
+#: ../../moviebrowser/moviebrowser.cpp:159
 msgid "Format"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:104
-#: ../../moviebrowser/moviebrowser.cpp:105
-#: ../../moviebrowser/moviebrowser.cpp:160
-#: ../../moviebrowser/moviebrowser.cpp:161
-#: ../../moviebrowser/moviebrowser.cpp:1404
-#: ../../moviebrowser/moviebrowser.cpp:3000
-#: ../../moviebrowser/moviebrowser.cpp:3075
+#: ../../moviebrowser/moviebrowser.cpp:92
+#: ../../moviebrowser/moviebrowser.cpp:93
+#: ../../moviebrowser/moviebrowser.cpp:148
+#: ../../moviebrowser/moviebrowser.cpp:149
+#: ../../moviebrowser/moviebrowser.cpp:1254
+#: ../../moviebrowser/moviebrowser.cpp:2446
+#: ../../moviebrowser/moviebrowser.cpp:2521
 msgid "Genre"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3169
+#: ../../moviebrowser/moviebrowser.cpp:2615
 msgid "Help"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3374
+#: ../../moviebrowser/moviebrowser.cpp:2810
 msgid "Hide series"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:947
+#: ../../moviebrowser/moviebrowser.cpp:884
 msgid "Impossible to truncate playing movie."
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:103
-#: ../../moviebrowser/moviebrowser.cpp:159
-#: ../../moviebrowser/moviebrowser.cpp:1406
-#: ../../moviebrowser/moviebrowser.cpp:2989
-#: ../../moviebrowser/moviebrowser.cpp:3026
-#: ../../moviebrowser/moviebrowser.cpp:3069
+#: ../../moviebrowser/moviebrowser.cpp:91
+#: ../../moviebrowser/moviebrowser.cpp:147
+#: ../../moviebrowser/moviebrowser.cpp:1256
+#: ../../moviebrowser/moviebrowser.cpp:2435
+#: ../../moviebrowser/moviebrowser.cpp:2472
+#: ../../moviebrowser/moviebrowser.cpp:2515
 msgid "Info 1"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:162
-#: ../../moviebrowser/moviebrowser.cpp:2992
-#: ../../moviebrowser/moviebrowser.cpp:3029
-#: ../../moviebrowser/moviebrowser.cpp:3072
+#: ../../moviebrowser/moviebrowser.cpp:150
+#: ../../moviebrowser/moviebrowser.cpp:2438
+#: ../../moviebrowser/moviebrowser.cpp:2475
+#: ../../moviebrowser/moviebrowser.cpp:2518
 msgid "Info 2"
 msgstr ""
 
+#: ../../moviebrowser/moviebrowser.cpp:860
+#: ../../moviebrowser/moviebrowser.cpp:889
+#: ../../moviebrowser/moviebrowser.cpp:891
+#: ../../moviebrowser/moviebrowser.cpp:910
+#: ../../moviebrowser/moviebrowser.cpp:912
 #: ../../moviebrowser/moviebrowser.cpp:923
-#: ../../moviebrowser/moviebrowser.cpp:952
-#: ../../moviebrowser/moviebrowser.cpp:954
-#: ../../moviebrowser/moviebrowser.cpp:973
-#: ../../moviebrowser/moviebrowser.cpp:975
-#: ../../moviebrowser/moviebrowser.cpp:986
-#: ../../moviebrowser/moviebrowser.cpp:1008
-#: ../../moviebrowser/moviebrowser.cpp:3699 ../../moviebrowser/tstool.cpp:278
+#: ../../moviebrowser/moviebrowser.cpp:945
+#: ../../moviebrowser/moviebrowser.cpp:3135 ../../moviebrowser/tstool.cpp:278
 msgid "Information"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2945
+#: ../../moviebrowser/moviebrowser.cpp:2391
 msgid "Jump (<0 back , >0 for):"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:109
-#: ../../moviebrowser/moviebrowser.cpp:167
-#: ../../moviebrowser/moviebrowser.cpp:3101
+#: ../../moviebrowser/moviebrowser.cpp:97
+#: ../../moviebrowser/moviebrowser.cpp:155
+#: ../../moviebrowser/moviebrowser.cpp:2547
 msgid "Last play date"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2928
+#: ../../moviebrowser/moviebrowser.cpp:2374
 msgid "Last play stop:"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:1268
-msgid "Last played:"
-msgstr ""
-
-#: ../../moviebrowser/moviebrowser.cpp:1274
-msgid "Last recorded:"
-msgstr ""
-
-#: ../../moviebrowser/moviebrowser.cpp:115
-#: ../../moviebrowser/moviebrowser.cpp:173
-#: ../../moviebrowser/moviebrowser.cpp:3006
-#: ../../moviebrowser/moviebrowser.cpp:3032
-#: ../../moviebrowser/moviebrowser.cpp:3035
-#: ../../moviebrowser/moviebrowser.cpp:3038
-#: ../../moviebrowser/moviebrowser.cpp:3091
+#: ../../moviebrowser/moviebrowser.cpp:103
+#: ../../moviebrowser/moviebrowser.cpp:161
+#: ../../moviebrowser/moviebrowser.cpp:2452
+#: ../../moviebrowser/moviebrowser.cpp:2478
+#: ../../moviebrowser/moviebrowser.cpp:2481
+#: ../../moviebrowser/moviebrowser.cpp:2484
+#: ../../moviebrowser/moviebrowser.cpp:2537
 msgid "Length (Min)"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:794
-#: ../../moviebrowser/moviebrowser.cpp:3359
+#: ../../moviebrowser/moviebrowser.cpp:735
+#: ../../moviebrowser/moviebrowser.cpp:2795
 msgid "Load default settings"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3221
+#: ../../moviebrowser/moviebrowser.cpp:2665
 msgid "Lock movies from"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:450
-#: ../../moviebrowser/moviebrowser.cpp:1081
-#: ../../moviebrowser/moviebrowser.cpp:1255
-#: ../../moviebrowser/moviebrowser.cpp:1677
+#: ../../moviebrowser/moviebrowser.cpp:447
+#: ../../moviebrowser/moviebrowser.cpp:1018
+#: ../../moviebrowser/moviebrowser.cpp:1147
+#: ../../moviebrowser/moviebrowser.cpp:1405
 msgid "Movie Browser"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2927
+#: ../../moviebrowser/moviebrowser.cpp:2373
 msgid "Movie end:"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2926
+#: ../../moviebrowser/moviebrowser.cpp:2372
 msgid "Movie start:"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:794
-#: ../../moviebrowser/moviebrowser.cpp:807
-#: ../../moviebrowser/moviebrowser.cpp:831
-#: ../../moviebrowser/moviebrowser.cpp:856
-#: ../../moviebrowser/moviebrowser.cpp:861
-#: ../../moviebrowser/moviebrowser.cpp:925
-#: ../../moviebrowser/moviebrowser.cpp:2862
+#: ../../moviebrowser/moviebrowser.cpp:735
+#: ../../moviebrowser/moviebrowser.cpp:748
+#: ../../moviebrowser/moviebrowser.cpp:772
+#: ../../moviebrowser/moviebrowser.cpp:793
+#: ../../moviebrowser/moviebrowser.cpp:798
+#: ../../moviebrowser/moviebrowser.cpp:862
+#: ../../moviebrowser/moviebrowser.cpp:2310
 msgid "Moviebrowser"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3165
+#: ../../moviebrowser/moviebrowser.cpp:2611
 msgid "NFS settings"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:99
-#: ../../moviebrowser/moviebrowser.cpp:118
-#: ../../moviebrowser/moviebrowser.cpp:155
+#: ../../moviebrowser/moviebrowser.cpp:87
+#: ../../moviebrowser/moviebrowser.cpp:106
+#: ../../moviebrowser/moviebrowser.cpp:143
 msgid "Name"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:1723
-#: ../../moviebrowser/moviebrowser.cpp:1731
+#: ../../moviebrowser/moviebrowser.cpp:1450
+#: ../../moviebrowser/moviebrowser.cpp:1458
 msgid "Next focus"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:124
-#: ../../moviebrowser/moviebrowser.cpp:132
+#: ../../moviebrowser/moviebrowser.cpp:112
+#: ../../moviebrowser/moviebrowser.cpp:120
 msgid "No"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:133
+#: ../../moviebrowser/moviebrowser.cpp:121
 msgid "No (temporary)"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:949
+#: ../../moviebrowser/moviebrowser.cpp:886
 msgid "No End bookmark defined!"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3302
-msgid "Number of lines last play"
-msgstr ""
-
-#: ../../moviebrowser/moviebrowser.cpp:3305
-msgid "Number of lines last record"
-msgstr ""
-
-#: ../../moviebrowser/moviebrowser.cpp:3159
-#: ../../moviebrowser/moviebrowser.cpp:3350
+#: ../../moviebrowser/moviebrowser.cpp:2605
+#: ../../moviebrowser/moviebrowser.cpp:2786
 msgid "Options"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2998
-#: ../../moviebrowser/moviebrowser.cpp:3214
-#: ../../moviebrowser/moviebrowser.cpp:3366
+#: ../../moviebrowser/moviebrowser.cpp:2444
+#: ../../moviebrowser/moviebrowser.cpp:2658
+#: ../../moviebrowser/moviebrowser.cpp:2802
 msgid "Parental Lock"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:100
-#: ../../moviebrowser/moviebrowser.cpp:156
-#: ../../moviebrowser/moviebrowser.cpp:1408
-#: ../../moviebrowser/moviebrowser.cpp:3098
-#: ../../moviebrowser/moviebrowser.cpp:3242
-#: ../../moviebrowser/moviebrowser.cpp:3248
-#: ../../moviebrowser/moviebrowser.cpp:3261
+#: ../../moviebrowser/moviebrowser.cpp:88
+#: ../../moviebrowser/moviebrowser.cpp:144
+#: ../../moviebrowser/moviebrowser.cpp:1258
+#: ../../moviebrowser/moviebrowser.cpp:2544
+#: ../../moviebrowser/moviebrowser.cpp:2686
+#: ../../moviebrowser/moviebrowser.cpp:2692
+#: ../../moviebrowser/moviebrowser.cpp:2705
 msgid "Path"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3162
-#: ../../moviebrowser/moviebrowser.cpp:3251
-#: ../../moviebrowser/moviebrowser.cpp:3363
+#: ../../moviebrowser/moviebrowser.cpp:2608
+#: ../../moviebrowser/moviebrowser.cpp:2695
+#: ../../moviebrowser/moviebrowser.cpp:2799
 msgid "Paths"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:113
+#: ../../moviebrowser/moviebrowser.cpp:101
 msgid "Picture"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2944
+#: ../../moviebrowser/moviebrowser.cpp:2390
 msgid "Position:"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:108
-#: ../../moviebrowser/moviebrowser.cpp:166
-#: ../../moviebrowser/moviebrowser.cpp:2996
-#: ../../moviebrowser/moviebrowser.cpp:3079
+#: ../../moviebrowser/moviebrowser.cpp:96
+#: ../../moviebrowser/moviebrowser.cpp:154
+#: ../../moviebrowser/moviebrowser.cpp:2442
+#: ../../moviebrowser/moviebrowser.cpp:2525
 msgid "Quality"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:168
-#: ../../moviebrowser/moviebrowser.cpp:3104
+#: ../../moviebrowser/moviebrowser.cpp:156
+#: ../../moviebrowser/moviebrowser.cpp:2550
 msgid "Record date"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3369
+#: ../../moviebrowser/moviebrowser.cpp:2805
 msgid "Reload movie info at start"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3371
+#: ../../moviebrowser/moviebrowser.cpp:2807
 msgid "Remount at start"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3316
+#: ../../moviebrowser/moviebrowser.cpp:2752
 msgid "Row item"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3311
-#: ../../moviebrowser/moviebrowser.cpp:3312
+#: ../../moviebrowser/moviebrowser.cpp:2747
+#: ../../moviebrowser/moviebrowser.cpp:2748
 msgid "Row settings"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3317
+#: ../../moviebrowser/moviebrowser.cpp:2753
 msgid "Row width"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3053
-#: ../../moviebrowser/moviebrowser.cpp:3356
+#: ../../moviebrowser/moviebrowser.cpp:2499
+#: ../../moviebrowser/moviebrowser.cpp:2792
 msgid "Save changes"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:861
-#: ../../moviebrowser/moviebrowser.cpp:2971
-#: ../../moviebrowser/moviebrowser.cpp:3056
+#: ../../moviebrowser/moviebrowser.cpp:798
+#: ../../moviebrowser/moviebrowser.cpp:2417
+#: ../../moviebrowser/moviebrowser.cpp:2502
 msgid "Save changes in all movie info files"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:807
-#: ../../moviebrowser/moviebrowser.cpp:856
+#: ../../moviebrowser/moviebrowser.cpp:748
+#: ../../moviebrowser/moviebrowser.cpp:793
 msgid "Save settings now"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2862
+#: ../../moviebrowser/moviebrowser.cpp:2310
 msgid "Scan for Movies ..."
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:1727
+#: ../../moviebrowser/moviebrowser.cpp:1454
 msgid "Select"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:102
-#: ../../moviebrowser/moviebrowser.cpp:158
-#: ../../moviebrowser/moviebrowser.cpp:1410
-#: ../../moviebrowser/moviebrowser.cpp:2951
-#: ../../moviebrowser/moviebrowser.cpp:2953
-#: ../../moviebrowser/moviebrowser.cpp:2958
-#: ../../moviebrowser/moviebrowser.cpp:2994
-#: ../../moviebrowser/moviebrowser.cpp:3066
+#: ../../moviebrowser/moviebrowser.cpp:90
+#: ../../moviebrowser/moviebrowser.cpp:146
+#: ../../moviebrowser/moviebrowser.cpp:1260
+#: ../../moviebrowser/moviebrowser.cpp:2397
+#: ../../moviebrowser/moviebrowser.cpp:2399
+#: ../../moviebrowser/moviebrowser.cpp:2404
+#: ../../moviebrowser/moviebrowser.cpp:2440
+#: ../../moviebrowser/moviebrowser.cpp:2512
 msgid "Serie"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3376
+#: ../../moviebrowser/moviebrowser.cpp:2812
 msgid "Serie auto create"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3149
+#: ../../moviebrowser/moviebrowser.cpp:2595
 msgid "Settings"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:464
+#: ../../moviebrowser/moviebrowser.h:387
 msgid "Show / Gameshow"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:116
-#: ../../moviebrowser/moviebrowser.cpp:174
+#: ../../moviebrowser/moviebrowser.cpp:104
+#: ../../moviebrowser/moviebrowser.cpp:162
 msgid "Size"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2977
+#: ../../moviebrowser/moviebrowser.cpp:2423
 msgid "Start update of movie info files"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:2986
-#: ../../moviebrowser/moviebrowser.cpp:3063
+#: ../../moviebrowser/moviebrowser.cpp:2432
+#: ../../moviebrowser/moviebrowser.cpp:2509
 msgid "Titel"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:101
-#: ../../moviebrowser/moviebrowser.cpp:157
-#: ../../moviebrowser/moviebrowser.cpp:3020
+#: ../../moviebrowser/moviebrowser.cpp:89
+#: ../../moviebrowser/moviebrowser.cpp:145
+#: ../../moviebrowser/moviebrowser.cpp:2466
 msgid "Title"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:961
+#: ../../moviebrowser/moviebrowser.cpp:898
 msgid "Truncate failed."
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3118
+#: ../../moviebrowser/moviebrowser.cpp:2564
 msgid "Truncate jumps"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:952
+#: ../../moviebrowser/moviebrowser.cpp:889
 msgid "Truncate movie ?"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:954
+#: ../../moviebrowser/moviebrowser.cpp:891
 msgid "Truncating, please wait"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3265
+#: ../../moviebrowser/moviebrowser.cpp:2709
 msgid "Use directory"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3245
+#: ../../moviebrowser/moviebrowser.cpp:2689
 msgid "Use movie directory"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3239
+#: ../../moviebrowser/moviebrowser.cpp:2683
 msgid "Use record directory"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:111
-#: ../../moviebrowser/moviebrowser.cpp:169
-#: ../../moviebrowser/moviebrowser.cpp:3002
-#: ../../moviebrowser/moviebrowser.cpp:3044
-#: ../../moviebrowser/moviebrowser.cpp:3085
+#: ../../moviebrowser/moviebrowser.cpp:99
+#: ../../moviebrowser/moviebrowser.cpp:157
+#: ../../moviebrowser/moviebrowser.cpp:2448
+#: ../../moviebrowser/moviebrowser.cpp:2490
+#: ../../moviebrowser/moviebrowser.cpp:2531
 msgid "Year"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:125
+#: ../../moviebrowser/moviebrowser.cpp:113
 msgid "Yes"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3219
+#: ../../moviebrowser/moviebrowser.cpp:2663
 msgid "activated"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:458
+#: ../../moviebrowser/moviebrowser.h:381
 msgid "adult movie/drama"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:452
+#: ../../moviebrowser/moviebrowser.h:375
 msgid "adventure/western/war"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:523
+#: ../../moviebrowser/moviebrowser.h:446
 msgid "advertisement/shopping"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:139
+#: ../../moviebrowser/moviebrowser.cpp:127
 msgid "always"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:493
+#: ../../moviebrowser/moviebrowser.h:416
 msgid "arts / culture"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:503
+#: ../../moviebrowser/moviebrowser.h:426
 msgid "arts/culture magazines"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:474
+#: ../../moviebrowser/moviebrowser.h:397
 msgid "athletics"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:1415
+#: ../../moviebrowser/moviebrowser.cpp:1265
 msgid "back"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:492
+#: ../../moviebrowser/moviebrowser.h:415
 msgid "ballet"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:501
+#: ../../moviebrowser/moviebrowser.h:424
 msgid "broadcasting/press"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:485
+#: ../../moviebrowser/moviebrowser.h:408
 msgid "cartoons/puppets"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:480
+#: ../../moviebrowser/moviebrowser.h:403
 msgid "children / juvenile program"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:454
+#: ../../moviebrowser/moviebrowser.h:377
 msgid "comedy"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:522
+#: ../../moviebrowser/moviebrowser.h:445
 msgid "cooking"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:451
+#: ../../moviebrowser/moviebrowser.h:374
 msgid "detective/thriller"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:463
+#: ../../moviebrowser/moviebrowser.h:386
 msgid "discussion/interview/debate"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:462
+#: ../../moviebrowser/moviebrowser.h:385
 msgid "documentary"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:509
+#: ../../moviebrowser/moviebrowser.h:432
 msgid "documentation / magazine"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:507
+#: ../../moviebrowser/moviebrowser.h:430
 msgid "economics/social advisory"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:483
+#: ../../moviebrowser/moviebrowser.h:406
 msgid "entertainment programmes for 10 to 16"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:482
+#: ../../moviebrowser/moviebrowser.h:405
 msgid "entertainment programmes for 6 to 14"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:478
+#: ../../moviebrowser/moviebrowser.h:401
 msgid "equestrian"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:500
+#: ../../moviebrowser/moviebrowser.h:423
 msgid "experimental film/video"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:504
+#: ../../moviebrowser/moviebrowser.h:427
 msgid "fashion"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:499
+#: ../../moviebrowser/moviebrowser.h:422
 msgid "film/cinema"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:495
+#: ../../moviebrowser/moviebrowser.h:418
 msgid "fine arts"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:521
+#: ../../moviebrowser/moviebrowser.h:444
 msgid "fitness & health"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:489
+#: ../../moviebrowser/moviebrowser.h:412
 msgid "folk/traditional music"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:471
+#: ../../moviebrowser/moviebrowser.h:394
 msgid "football/soccer"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:513
+#: ../../moviebrowser/moviebrowser.h:436
 msgid "foreign countries/expeditions"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3289
+#: ../../moviebrowser/moviebrowser.cpp:2731
 msgid "frame hight"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:515
+#: ../../moviebrowser/moviebrowser.h:438
 msgid "further education"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:465
+#: ../../moviebrowser/moviebrowser.h:388
 msgid "game show/quiz/contest"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:524
+#: ../../moviebrowser/moviebrowser.h:447
 msgid "gardening"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:519
+#: ../../moviebrowser/moviebrowser.h:442
 msgid "handicraft"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:484
+#: ../../moviebrowser/moviebrowser.h:407
 msgid "informational/educational/school programmes"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:490
+#: ../../moviebrowser/moviebrowser.h:413
 msgid "jazz"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:516
+#: ../../moviebrowser/moviebrowser.h:439
 msgid "languages"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3287
-msgid "last play max items"
-msgstr ""
-
-#: ../../moviebrowser/moviebrowser.h:498
+#: ../../moviebrowser/moviebrowser.h:421
 msgid "literature"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:506
+#: ../../moviebrowser/moviebrowser.h:429
 msgid "magazines/reports/documentary"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:479
+#: ../../moviebrowser/moviebrowser.h:402
 msgid "martial sports"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:512
+#: ../../moviebrowser/moviebrowser.h:435
 msgid "medicine/physiology/psychology"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:475
+#: ../../moviebrowser/moviebrowser.h:398
 msgid "motor sports"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:520
+#: ../../moviebrowser/moviebrowser.h:443
 msgid "motoring"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:450
+#: ../../moviebrowser/moviebrowser.h:373
 msgid "movie/drama"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:486
+#: ../../moviebrowser/moviebrowser.h:409
 msgid "music / ballet / dance"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:491
+#: ../../moviebrowser/moviebrowser.h:414
 msgid "musical/opera"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:510
+#: ../../moviebrowser/moviebrowser.h:433
 msgid "nature/animals/environment"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:144
+#: ../../moviebrowser/moviebrowser.cpp:132
 msgid "never"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:502
+#: ../../moviebrowser/moviebrowser.h:425
 msgid "new media"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:459
+#: ../../moviebrowser/moviebrowser.h:382
 msgid "news"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:461
+#: ../../moviebrowser/moviebrowser.h:384
 msgid "news magazine"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:460
+#: ../../moviebrowser/moviebrowser.h:383
 msgid "news/weather report"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:494
+#: ../../moviebrowser/moviebrowser.h:417
 msgid "performing arts"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:497
+#: ../../moviebrowser/moviebrowser.h:420
 msgid "popular culture/traditional arts"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:481
+#: ../../moviebrowser/moviebrowser.h:404
 msgid "pre-school children's programmes"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3288
-msgid "record max items"
-msgstr ""
-
-#: ../../moviebrowser/moviebrowser.h:496
+#: ../../moviebrowser/moviebrowser.h:419
 msgid "religion"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:508
+#: ../../moviebrowser/moviebrowser.h:431
 msgid "remarkable people"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:1008
-#: ../../moviebrowser/moviebrowser.cpp:3124
+#: ../../moviebrowser/moviebrowser.cpp:945
+#: ../../moviebrowser/moviebrowser.cpp:2570
 msgid "remove screenshot?"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:487
+#: ../../moviebrowser/moviebrowser.h:410
 msgid "rock/pop"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:456
+#: ../../moviebrowser/moviebrowser.h:379
 msgid "romance"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3290
+#: ../../moviebrowser/moviebrowser.cpp:2732
 msgid "row nr"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3294
+#: ../../moviebrowser/moviebrowser.cpp:2736
 msgid "row width"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:831
+#: ../../moviebrowser/moviebrowser.cpp:772
 msgid "save settings now"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:1694
+#: ../../moviebrowser/moviebrowser.cpp:1422
 msgid "scan for Movies ..."
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:453
+#: ../../moviebrowser/moviebrowser.h:376
 msgid "science fiction/fantasy/horror"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:488
+#: ../../moviebrowser/moviebrowser.h:411
 msgid "serious music/classical music"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:457
+#: ../../moviebrowser/moviebrowser.h:380
 msgid "serious/classical/religious/historical movie/drama"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:455
+#: ../../moviebrowser/moviebrowser.h:378
 msgid "soap/melodrama/folkloric"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:505
+#: ../../moviebrowser/moviebrowser.h:428
 msgid "social & politic events / business"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:514
+#: ../../moviebrowser/moviebrowser.h:437
 msgid "social/spiritual sciences"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:469
+#: ../../moviebrowser/moviebrowser.h:392
 msgid "special events (Olympic Games,World Cup etc.)"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:468
+#: ../../moviebrowser/moviebrowser.h:391
 msgid "sports"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:470
+#: ../../moviebrowser/moviebrowser.h:393
 msgid "sports magazines"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:467
+#: ../../moviebrowser/moviebrowser.h:390
 msgid "talk show"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:473
+#: ../../moviebrowser/moviebrowser.h:396
 msgid "team sports (excluding football)"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:511
+#: ../../moviebrowser/moviebrowser.h:434
 msgid "technology/natural sciences"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:472
+#: ../../moviebrowser/moviebrowser.h:395
 msgid "tennis/squash"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:3111
+#: ../../moviebrowser/moviebrowser.cpp:2557
 msgid "tmdb Info"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:518
+#: ../../moviebrowser/moviebrowser.h:441
 msgid "tourism/travel"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:517
+#: ../../moviebrowser/moviebrowser.h:440
 msgid "travel & recreation"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:449
+#: ../../moviebrowser/moviebrowser.h:372
 msgid "unknown"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:466
+#: ../../moviebrowser/moviebrowser.h:389
 msgid "variety show"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:476
+#: ../../moviebrowser/moviebrowser.h:399
 msgid "water sports"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.h:477
+#: ../../moviebrowser/moviebrowser.h:400
 msgid "winter sports"
 msgstr ""
 
-#: ../../moviebrowser/moviebrowser.cpp:131
+#: ../../moviebrowser/moviebrowser.cpp:119
 msgid "yes"
 msgstr ""

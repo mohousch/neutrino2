@@ -1348,7 +1348,7 @@ void CTestMenu::testCListFrameWidget()
 	//
 	listFrame = new CListFrame(&listFrameBox);
 
-	listFrame->setMode(CListFrame::TITLE | CListFrame::HEADER_LINE | CListFrame::SCROLL);
+	listFrame->setMode(CListFrame::TITLE | CListFrame::HEADER_LINE);
 	listFrame->setTitle("listFrame (AudioPlayer)", NEUTRINO_ICON_MP3);
 
 	CHintBox loadBox("ListFrame Widget", __("Scan for Movies ..."));
@@ -1374,6 +1374,10 @@ void CTestMenu::testCListFrameWidget()
 		date = AudioPlaylist[i].MetaData.date;
 
 		snprintf(duration, 8, "(%ld:%02ld)", AudioPlaylist[i].MetaData.total_time / 60, AudioPlaylist[i].MetaData.total_time % 60);
+		
+		////
+		listFrameLines.icon = NEUTRINO_ICON_MP3;
+		
 
 		listFrameLines.lineArray[0].push_back(toString(i + 1));
 		listFrameLines.lineArray[1].push_back(title);
@@ -2123,7 +2127,7 @@ void CTestMenu::testCListFrame()
 	//
 	listFrame = new CListFrame(&listFrameBox);
 
-	listFrame->setMode(CListFrame::TITLE | CListFrame::HEADER_LINE | CListFrame::SCROLL);
+	listFrame->setMode(CListFrame::TITLE | CListFrame::HEADER_LINE);
 	// title
 	listFrame->setTitle("listFrame (AudioPlayer)", NEUTRINO_ICON_MP3);
 	
@@ -2151,6 +2155,9 @@ void CTestMenu::testCListFrame()
 		date = AudioPlaylist[i].MetaData.date;
 
 		snprintf(duration, 8, "(%ld:%02ld)", AudioPlaylist[i].MetaData.total_time / 60, AudioPlaylist[i].MetaData.total_time % 60);
+		
+		////
+		//listFrameLines.icon = NEUTRINO_ICON_MP3;
 
 		listFrameLines.lineArray[0].push_back(toString(i + 1));
 		listFrameLines.lineArray[1].push_back(title);

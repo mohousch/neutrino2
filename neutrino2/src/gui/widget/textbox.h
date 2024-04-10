@@ -137,12 +137,6 @@ class CTextBox : public CComponent
 		void scrollPageDown(const int pages = 1);
 		void scrollPageUp(const int pages = 1);
 
-		//// get methods
-		inline int getMaxLineWidth(void){return(m_nMaxLineWidth);};
-		inline int getLines(void){return(m_nNrOfLines);};
-		inline int getPages(void){return(m_nNrOfPages);};
-		inline void movePosition(int x, int y){itemBox.iX = x; itemBox.iY = y;};
-
 		////
 		bool isSelectable(void){return true;}
 };

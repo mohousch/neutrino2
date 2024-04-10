@@ -1,9 +1,9 @@
-/***************************************************************************
+/*
 	Neutrino-GUI  -   DBoxII-Project
  
  	Homepage: http://dbox.cyberphoria.org/
 
-	$Id: moviebrowser.h 01.11.2023 mohousch Exp $
+	$Id: moviebrowser.h 10042024 mohousch Exp $
 
 	License: GPL
 
@@ -21,39 +21,8 @@
 	along with this program; if not, write to the Free Software
 	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-	***********************************************************
+*/
 
-	Module Name: moviebrowser.h .
-
-	Description: implementation of the CMovieBrowser class
-
-	Date:	   Nov 2005
-
-	Author: Günther@tuxbox.berlios.org
-		based on code of Steffen Hehn 'McClean'
-
-	$Log: moviebrowser.h,v $
-	Revision 1.5  2006/09/11 21:11:35  guenther
-	General menu clean up
-	Dir menu updated
-	Add options menu
-	In movie info menu  "update all" added
-	Serie option added (hide serie, auto serie)
-	Update movie info on delete movie
-	Delete Background when menu is entered
-	Timeout updated (MB does not exit after options menu is left)
-	
-	Revision 1.4  2006/02/20 01:10:34  guenther
-	- temporary parental lock updated - remove 1s debug prints in movieplayer- Delete file without rescan of movies- Crash if try to scroll in list with 2 movies only- UTF8XML to UTF8 conversion in preview- Last file selection recovered- use of standard folders adjustable in config- reload and remount option in config
-	
-	Revision 1.3  2005/12/18 09:23:53  metallica
-	fix compil warnings
-	
-	Revision 1.2  2005/12/12 07:58:02  guenther
-	- fix bug on deleting CMovieBrowser - speed up parse time (20 ms per .ts file now)- update stale function- refresh directories on reload- print scan time in debug console
-	
-
-****************************************************************************/
 #ifndef MOVIEBROWSER_H_
 #define MOVIEBROWSER_H_
 
@@ -145,8 +114,6 @@ typedef struct
 typedef enum
 {
 	MB_FOCUS_BROWSER = 0,
-	MB_FOCUS_LAST_PLAY = 1,
-	MB_FOCUS_LAST_RECORD = 2,
 	MB_FOCUS_MOVIE_INFO = 3,
 	MB_FOCUS_FILTER = 4,
 	MB_FOCUS_MAX_NUMBER = 5	// MUST be allways the last item in the list
@@ -156,8 +123,6 @@ typedef enum
 {
 	MB_GUI_BROWSER_ONLY = 0,
 	MB_GUI_MOVIE_INFO = 1,
-	MB_GUI_LAST_PLAY = 2,
-	MB_GUI_LAST_RECORD = 3,
 	MB_GUI_FILTER = 4,
 	MB_GUI_MAX_NUMBER = 5	// MUST be allways the last item in the list
 }MB_GUI;
@@ -206,43 +171,23 @@ typedef struct
 	int browserRowNr;
 	MB_INFO_ITEM browserRowItem[MB_MAX_ROWS];//MB_INFO_ITEM
 	int browserRowWidth[MB_MAX_ROWS];
-
-	// to be added to config later 
-    	int lastPlayMaxItems;
-	int lastPlayRowNr;
-	MB_INFO_ITEM lastPlayRow[MB_MAX_ROWS];
-	int lastPlayRowWidth[MB_MAX_ROWS];
-
-    	int lastRecordMaxItems;
-	int lastRecordRowNr;
-	MB_INFO_ITEM lastRecordRow[MB_MAX_ROWS];
-	int lastRecordRowWidth[MB_MAX_ROWS];
 }MB_SETTINGS;
 
 // Priorities for Developmemt: P1: critical feature, P2: important feature, P3: for next release, P4: looks nice, lets see
 class CMovieBrowser : public CMenuTarget
-{
-	//public: // Variables /////////////////////////////////////////////////
-	//	int Multi_Select;    // for FileBrowser compatibility, not used in MovieBrowser
-	//	int Dirs_Selectable; // for FileBrowser compatibility, not used in MovieBrowser
-		
+{	
 	private: // Variables
 		CFrameBuffer * frameBuffer;
 		
-		CWidget * widget;
 		uint32_t sec_timer_id;
 
 		CListFrame * m_pcBrowser;
-		CListFrame * m_pcLastPlay;
-		CListFrame * m_pcLastRecord;
 		CTextBox * m_pcInfo;
 		CListFrame * m_pcFilter;
 		CCHeaders *headers;
 		CCFooters *footers;
 	
 		CBox m_cBoxFrame;
-		CBox m_cBoxFrameLastPlayList;
-		CBox m_cBoxFrameLastRecordList;
 		CBox m_cBoxFrameBrowserList;
 		CBox m_cBoxFrameInfo;
 		CBox m_cBoxFrameBookmarkList;
@@ -251,28 +196,18 @@ class CMovieBrowser : public CMenuTarget
 		CBox m_cBoxFrameTitleRel;
 		
 		LF_LINES m_browserListLines;
-		LF_LINES m_recordListLines;
-		LF_LINES m_playListLines;
 		LF_LINES m_FilterLines;
 
 		std::vector<MI_MOVIE_INFO> m_vMovieInfo;
 		std::vector<MI_MOVIE_INFO*> m_vHandleBrowserList;
-		std::vector<MI_MOVIE_INFO*> m_vHandleRecordList;
-		std::vector<MI_MOVIE_INFO*> m_vHandlePlayList;
 		std::vector<std::string> m_dirNames;
         	std::vector<MI_MOVIE_INFO*> m_vHandleSerienames;
 
 		unsigned int m_currentBrowserSelection;
-		unsigned int m_currentRecordSelection;
-		unsigned int m_currentPlaySelection;
 		unsigned int m_currentFilterSelection;
  		unsigned int m_prevBrowserSelection;
-		unsigned int m_prevRecordSelection;
-		unsigned int m_prevPlaySelection;
 
 		bool m_showBrowserFiles;
-		bool m_showLastRecordFiles;
-		bool m_showLastPlayFiles;
 		bool m_showMovieInfo;
 		bool m_showFilter;
 
@@ -311,10 +246,8 @@ class CMovieBrowser : public CMenuTarget
 		MI_MOVIE_BOOKMARKS* getCurrentMovieBookmark(void){if(m_movieSelectionHandler == NULL) return NULL; return(&(m_movieSelectionHandler->bookmarks));};
 		
 		MI_MOVIE_INFO* getCurrentMovieInfo(void){return(m_movieSelectionHandler);}; //P1 return start position in [s]
-		void fileInfoStale(void); // call this function to force the Moviebrowser to reload all movie information from HD
-
+		void fileInfoStale(void); 
 		bool readDir(const std::string & dirname, CFileList* flist);
-
 		bool delFile(CFile& file);
 	
 	private: //Functions
@@ -323,37 +256,27 @@ class CMovieBrowser : public CMenuTarget
 		void initGlobalSettings(void); //P1
 		void initFrames(void);
 		void initDevelopment(void); //P1 for development testing only
-		void initRows(void);
 		void reinit(void); //P1
-
 		///// MovieBrowser Main Window////////// 
 		int paint(void); //P1
 		void refresh(void); //P1
         	void hide(void); //P1
-		void refreshLastPlayList(void); //P2
-		void refreshLastRecordList(void); //P2
 		void refreshBrowserList(void); //P1
 		void refreshFilterList(void); //P1
-		void refreshMovieInfo(bool refresfGUI = true); //P1
-		void refreshBookmarkList(void); // P3
+		void refreshMovieInfo(); //P1
 		void refreshFoot(void); //P2
 		void refreshTitle(void); //P2
-		void refreshInfo(bool refreshGUI = false); // P2
 		void refreshLCD(void); // P2
 	
 		///// Events ///////////////////////////
 		bool onButtonPress(neutrino_msg_t msg); // P1
 		bool onButtonPressMainFrame(neutrino_msg_t msg); // P1
 		bool onButtonPressBrowserList(neutrino_msg_t msg); // P1
-		bool onButtonPressLastPlayList(neutrino_msg_t msg); // P2
-		bool onButtonPressLastRecordList(neutrino_msg_t msg); // P2
 		bool onButtonPressFilterList(neutrino_msg_t msg); // P2
 		bool onButtonPressMovieInfoList(neutrino_msg_t msg); // P2
 		void onSetFocus(MB_FOCUS new_focus); // P2
 		void onSetFocusNext(void); // P2
 		void onSetGUIWindow(MB_GUI gui);
-		void onSetGUIWindowNext(void);
-		void onSetGUIWindowPrev(void);
 		void onDeleteFile(MI_MOVIE_INFO& movieSelectionHandler);  // P4
 		bool onSortMovieInfoHandleList(std::vector<MI_MOVIE_INFO*>& pv_handle_list, MB_INFO_ITEM sort_type, MB_DIRECTION direction);
 		

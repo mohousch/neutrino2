@@ -56,6 +56,7 @@
 typedef struct
 {
 	int rows;
+	std::string icon;
 	std::string lineHeader[LF_MAX_ROWS];
 	std::vector<std::string> lineArray[LF_MAX_ROWS];
 	int rowWidth[LF_MAX_ROWS];
@@ -66,10 +67,7 @@ class CListFrame : public CComponent
 	public:
 		typedef enum mode_
 		{
-			AUTO_WIDTH	= 0x01,
-			AUTO_HIGH	= 0x02,
-			SCROLL		= 0x04,
-			TITLE  		= 0x08,
+			TITLE  		= 0x01,
 			HEADER_LINE 	= 0x80
 		}mode;
 
@@ -82,8 +80,6 @@ class CListFrame : public CComponent
 		void refreshScroll(void);
 		void refreshList(void);
 		void refreshHeaderList(void);
-		void reSizeMainFrameWidth(int maxTextWidth);
-		void reSizeMainFrameHeight(int maxTextHeight);
 
 		// Variables 
 		LF_LINES* m_pLines;
@@ -109,6 +105,7 @@ class CListFrame : public CComponent
 		int m_nCurrentPage;
 		int m_nSelectedLine;
 		int LinesPerPage;
+		int iconOffset;
 
 		bool m_showSelection;
 		
@@ -126,20 +123,10 @@ class CListFrame : public CComponent
 		std::string m_iconTitle;
 
 	public:
-		//CListFrame();
 		CListFrame(const int x = 0, const int y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);
 		CListFrame(CBox* position);
 
 		virtual ~CListFrame();
-		
-		////
-		void setPosition(const CBox* position)
-		{
-			itemBox	= *position;
-
-			m_nMaxHeight = itemBox.iHeight;
-			m_nMaxWidth = itemBox.iWidth;
-		};
 		
 		////
 		bool isSelectable(void){return true;}
@@ -149,19 +136,18 @@ class CListFrame : public CComponent
 		void refreshPage(void);
 		void refreshLine(int line);
 		inline void showSelection(bool show = true)	{m_showSelection = show; refreshLine(m_nSelectedLine);};
-		inline void movePosition(int x, int y)	{itemBox.iX = x; itemBox.iY = y;};
 		
 		////
 		void hide(void);
 		void paint(void);
 		
-		////
+		//// events
 		void scrollPageDown(const int pages = 1);
 		void scrollPageUp(const int pages = 1);				
 		void scrollLineDown(const int lines = 1);
 		void scrollLineUp(const int lines = 1);
 		
-		////
+		//// set methods
 		void setLines(LF_LINES* lines);
 		void setTitle(const char* title, const char * const icon = NULL);
 		void setSelectedLine(int selection = 0);
@@ -170,11 +156,6 @@ class CListFrame : public CComponent
 		void setTitleFont(CFont *font_title){m_pcFontTitle = font_title;};
 
 		//// get methods
-		inline int getMaxLineWidth(void)		{return(m_nMaxLineWidth);};
-		inline int getSelectedLine(void)		{return(m_nSelectedLine);};
-		inline int getLines(void)			{return(m_nNrOfLines);};
-		inline int getPages(void)			{return(m_nNrOfPages);};
-		inline int getLinesPerPage(void)		{return(LinesPerPage);};
 		int getSelected(void){return(m_nSelectedLine);}; 
 };
 

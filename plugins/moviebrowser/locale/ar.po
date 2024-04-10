@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-02-18 07:25+0100\n"
+"POT-Creation-Date: 2024-04-10 16:46+0300\n"
 "PO-Revision-Date: 2023-10-29 18:19+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -148,12 +148,6 @@ msgstr ""
 msgid "Last play stop:"
 msgstr ""
 
-msgid "Last played:"
-msgstr ""
-
-msgid "Last recorded:"
-msgstr ""
-
 msgid "Length (Min)"
 msgstr ""
 
@@ -191,12 +185,6 @@ msgid "No (temporary)"
 msgstr ""
 
 msgid "No End bookmark defined!"
-msgstr ""
-
-msgid "Number of lines last play"
-msgstr ""
-
-msgid "Number of lines last record"
 msgstr ""
 
 msgid "Options"
@@ -421,9 +409,6 @@ msgstr ""
 msgid "languages"
 msgstr ""
 
-msgid "last play max items"
-msgstr ""
-
 msgid "literature"
 msgstr ""
 
@@ -476,9 +461,6 @@ msgid "popular culture/traditional arts"
 msgstr ""
 
 msgid "pre-school children's programmes"
-msgstr ""
-
-msgid "record max items"
 msgstr ""
 
 msgid "religion"
