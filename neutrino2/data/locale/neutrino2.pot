@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-04-10 23:44+0300\n"
+"POT-Creation-Date: 2024-04-11 17:08+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -253,6 +253,7 @@ msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:1120 ../../src/gui/infoviewer.cpp:1121
 #: ../../src/gui/infoviewer.cpp:1119 ../../src/gui/infoviewer.cpp:1116
+#: ../../src/gui/infoviewer.cpp:1118
 msgid "Antenna positioning"
 msgstr ""
 
@@ -315,7 +316,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1997 ../../src/gui/movieplayer.cpp:1981
 #: ../../src/gui/movieplayer.cpp:1984 ../../src/gui/movieplayer.cpp:1994
 #: ../../src/gui/movieplayer.cpp:1996 ../../src/driver/movieinfo.cpp:1002
-#: ../../src/gui/infoviewer.cpp:1741
+#: ../../src/gui/infoviewer.cpp:1741 ../../src/gui/infoviewer.cpp:1743
 msgid "Audio"
 msgstr ""
 
@@ -732,6 +733,7 @@ msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:1109 ../../src/gui/infoviewer.cpp:1110
 #: ../../src/gui/infoviewer.cpp:1108 ../../src/gui/infoviewer.cpp:1105
+#: ../../src/gui/infoviewer.cpp:1107
 msgid "Channel not available"
 msgstr ""
 
@@ -1074,7 +1076,8 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3135 ../../src/neutrino2.cpp:3136
 #: ../../src/neutrino2.cpp:3138 ../../src/gui/infoviewer.cpp:821
 #: ../../src/gui/infoviewer.cpp:874 ../../src/gui/infoviewer.cpp:818
-#: ../../src/gui/infoviewer.cpp:871
+#: ../../src/gui/infoviewer.cpp:871 ../../src/gui/infoviewer.cpp:820
+#: ../../src/gui/infoviewer.cpp:873
 msgid "Direct-Mode"
 msgstr ""
 
@@ -1227,6 +1230,7 @@ msgstr ""
 #: ../../src/neutrino2_menue.cpp:124 ../../src/neutrino2_menue.cpp:121
 #: ../../src/gui/epg_menu.cpp:84 ../../src/gui/infoviewer.cpp:1655
 #: ../../src/gui/infoviewer.cpp:1650 ../../src/gui/osd_setup.cpp:1524
+#: ../../src/gui/infoviewer.cpp:1652
 msgid "EPG / Timer"
 msgstr ""
 
@@ -1264,11 +1268,14 @@ msgstr ""
 #: ../../src/gui/infoviewer.cpp:1663 ../../src/gui/infoviewer.cpp:749
 #: ../../src/gui/infoviewer.cpp:766 ../../src/gui/infoviewer.cpp:746
 #: ../../src/gui/infoviewer.cpp:763 ../../src/gui/infoviewer.cpp:1658
+#: ../../src/gui/infoviewer.cpp:748 ../../src/gui/infoviewer.cpp:765
+#: ../../src/gui/infoviewer.cpp:1660
 msgid "EPG not available"
 msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:780 ../../src/gui/infoviewer.cpp:781
 #: ../../src/gui/infoviewer.cpp:779 ../../src/gui/infoviewer.cpp:776
+#: ../../src/gui/infoviewer.cpp:778
 msgid "EPG not loaded..."
 msgstr ""
 
@@ -1371,7 +1378,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:2010 ../../src/neutrino2.cpp:2006
 #: ../../src/gui/channellist.cpp:927 ../../src/gui/channellist.cpp:982
 #: ../../src/gui/infoviewer.cpp:1108 ../../src/gui/infoviewer.cpp:1105
-#: ../../src/gui/misc_setup.cpp:466
+#: ../../src/gui/misc_setup.cpp:466 ../../src/gui/infoviewer.cpp:1107
 msgid "Error"
 msgstr ""
 
@@ -1475,6 +1482,7 @@ msgstr ""
 #: ../../src/neutrino2_menue.cpp:147 ../../src/neutrino2_menue.cpp:340
 #: ../../src/gui/infoviewer.cpp:547 ../../src/gui/infoviewer.cpp:545
 #: ../../src/gui/infoviewer.cpp:542 ../../src/gui/osd_setup.cpp:1544
+#: ../../src/gui/infoviewer.cpp:544
 msgid "Features"
 msgstr ""
 
@@ -2210,7 +2218,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2249 ../../src/gui/movieplayer.cpp:2279
 #: ../../src/gui/widget/infobox.cpp:212 ../../src/system/helpers.cpp:1369
 #: ../../src/system/helpers.cpp:1374 ../../src/gui/osd_setup.cpp:1415
-#: ../../src/gui/osd_setup.cpp:1564
+#: ../../src/gui/osd_setup.cpp:1564 ../../src/gui/infoviewer.cpp:1123
 msgid "Information"
 msgstr ""
 
@@ -3051,6 +3059,7 @@ msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:1671 ../../src/gui/infoviewer.cpp:1672
 #: ../../src/gui/infoviewer.cpp:1673 ../../src/gui/infoviewer.cpp:1668
+#: ../../src/gui/infoviewer.cpp:1670
 msgid "No info for current program available"
 msgstr ""
 
@@ -4468,6 +4477,7 @@ msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:1413 ../../src/gui/infoviewer.cpp:1414
 #: ../../src/gui/infoviewer.cpp:1415 ../../src/gui/infoviewer.cpp:1410
+#: ../../src/gui/infoviewer.cpp:1412
 msgid "Subservices"
 msgstr ""
 
@@ -4862,6 +4872,7 @@ msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:1413 ../../src/gui/infoviewer.cpp:1414
 #: ../../src/gui/infoviewer.cpp:1415 ../../src/gui/infoviewer.cpp:1410
+#: ../../src/gui/infoviewer.cpp:1412
 msgid "Timeselection"
 msgstr ""
 
@@ -5167,6 +5178,7 @@ msgstr ""
 #: ../../src/gui/infoviewer.cpp:1662 ../../src/gui/infoviewer.cpp:781
 #: ../../src/gui/infoviewer.cpp:1663 ../../src/gui/infoviewer.cpp:779
 #: ../../src/gui/infoviewer.cpp:776 ../../src/gui/infoviewer.cpp:1658
+#: ../../src/gui/infoviewer.cpp:778 ../../src/gui/infoviewer.cpp:1660
 msgid "Waiting for time..."
 msgstr ""
 
@@ -6444,6 +6456,7 @@ msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:780 ../../src/gui/infoviewer.cpp:781
 #: ../../src/gui/infoviewer.cpp:779 ../../src/gui/infoviewer.cpp:776
+#: ../../src/gui/infoviewer.cpp:778
 msgid "waiting for EPG..."
 msgstr ""
 

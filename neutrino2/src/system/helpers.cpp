@@ -2127,7 +2127,7 @@ void writeLabel(uint8_t* text, int x, int y, int w, int h)
 
 void writeText(uint8_t* text, int x, int y, int w, int h)
 {
-	CTextBox textLabel;
+	CTextBox textLabel;	// FIXME: replace with CCText class
 	
 	textLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
 	textLabel.setTextColor(COL_WHITE_PLUS_0);

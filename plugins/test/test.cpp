@@ -124,6 +124,8 @@ class CTestMenu : public CMenuTarget
 		void testCWindowShadow();
 		void testCWindowCustomColor();
 		void testCIcon();
+		void testCCLabel();
+		void testCCText();
 		void testCImage();
 		void testCProgressBar();
 		void testCButtons();
@@ -1667,7 +1669,7 @@ void CTestMenu::testCIcon()
 	
 	testIcon.setPosition(150 + BORDER_LEFT, 150, testIcon.width, testIcon.height);
 	
-	testIcon.addKey(CRCInput::RC_red, this, "exit");
+	testIcon.enableRepaint();
 
 	// loop
 	testIcon.exec();
@@ -1689,11 +1691,71 @@ void CTestMenu::testCImage()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCImage: image:%s iw:%d ih:%d nbp:%d\n", testImage.imageName.c_str(), testImage.iWidth, testImage.iHeight, testImage.iNbp);
 	
 	testImage.setPosition(150 + BORDER_LEFT, 150, testImage.iWidth, testImage.iHeight);
-	
+	testImage.enableRepaint();
 	testImage.exec();
 	
 	hide();
 }
+
+void CTestMenu::testCCLabel()
+{
+	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCCLabel\n");
+	
+	// mainBox
+	CBox box;
+	box.iX = CFrameBuffer::getInstance()->getScreenX() + 40;
+	box.iY = CFrameBuffer::getInstance()->getScreenY() + 40;
+	box.iWidth = CFrameBuffer::getInstance()->getScreenWidth() - 80;
+	box.iHeight = CFrameBuffer::getInstance()->getScreenHeight() - 80;
+	
+	CCLabel CTextBox(box.iX, box.iY, box.iWidth, box.iHeight);
+	
+	CTextBox.setText("neutrinoNG² is rocking ...!");
+		
+	CTextBox.setColor(COL_RED_PLUS_0);
+	CTextBox.setHAlign(CComponent::CC_ALIGN_CENTER);
+	CTextBox.enableRepaint();
+	CTextBox.enableSaveScreen();
+		
+	CTextBox.exec();
+}
+
+void CTestMenu::testCCText()
+{
+	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCCText\n");
+	
+	// mainBox
+	CBox box;
+	box.iX = CFrameBuffer::getInstance()->getScreenX() + 40;
+	box.iY = CFrameBuffer::getInstance()->getScreenY() + 40;
+	box.iWidth = CFrameBuffer::getInstance()->getScreenWidth() - 80;
+	box.iHeight = CFrameBuffer::getInstance()->getScreenHeight() - 80;
+	
+	loadMoviePlaylist();
+	
+	//
+	std::string buffer;
+	
+	if (!m_vMovieInfo.empty())
+	{
+		buffer = m_vMovieInfo[0].epgInfo1;
+		buffer += "\n";
+		buffer += m_vMovieInfo[0].epgInfo2;
+	}
+	
+	CCText CTextBox(box.iX, box.iY, box.iWidth, box.iHeight);
+	
+	if (!m_vMovieInfo.empty())
+		CTextBox.setText(buffer.c_str());
+		
+	CTextBox.setColor(COL_YELLOW_PLUS_0);
+	CTextBox.setHAlign(CComponent::CC_ALIGN_CENTER);
+	CTextBox.enableRepaint();
+	CTextBox.enableSaveScreen();
+		
+	CTextBox.exec();
+}
+////
 
 // CProgressBar
 void CTestMenu::testCProgressBar()
@@ -1828,7 +1890,7 @@ void CTestMenu::testCSpinner()
 	
 	CCSpinner * testSpinner = new CCSpinner(10, 10, 20, 20);
 	
-	testSpinner->exec(10);
+	testSpinner->exec();
 	
 	delete testSpinner;
 	testSpinner = NULL;
@@ -4772,6 +4834,16 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}
+	else if (actionKey == "cclabel")
+	{
+		testCCLabel();
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "cctext")
+	{
+		testCCText();
+		return RETURN_REPAINT;
+	}
 	else if(actionKey == "window")
 	{
 		testCWindow();
@@ -6332,6 +6404,8 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CComponent", true));
 	mainMenu->addItem(new CMenuForwarder("CCIcon", true, NULL, this, "icon"));
 	mainMenu->addItem(new CMenuForwarder("CCImage", true, NULL, this, "image"));
+	mainMenu->addItem(new CMenuForwarder("CCLabel", true, NULL, this, "cclabel"));
+	mainMenu->addItem(new CMenuForwarder("CCText", true, NULL, this, "cctext"));
 	mainMenu->addItem(new CMenuForwarder("CCButtons (foot)", true, NULL, this, "buttons"));
 	mainMenu->addItem(new CMenuForwarder("CCButtons (head)", true, NULL, this, "hbuttons"));
 	mainMenu->addItem(new CMenuForwarder("CCSpinner", true, NULL, this, "spinner"));

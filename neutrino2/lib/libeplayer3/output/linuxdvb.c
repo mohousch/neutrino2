@@ -1292,8 +1292,8 @@ static int Write(void* _context, void* _out)
 			}
 		}
 #else
-		AVFrame *frame = NULL;
-		AVFrame *rgbframe = NULL;
+		const AVFrame *frame = NULL;
+		const AVFrame *rgbframe = NULL;
 		struct SwsContext *convert = NULL;
 		AVCodecContext* ctx = out->stream->codec;
 
@@ -1338,7 +1338,7 @@ static int Write(void* _context, void* _out)
 			if (convert)
 			{
 				// fill				
-				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, data[buf_in].buffer, AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
+				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, (const uint8_t*)data[buf_in].buffer, AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 
 				// scale
 				sws_scale(convert, frame->data, frame->linesize, 0, ctx->height, rgbframe->data, rgbframe->linesize);

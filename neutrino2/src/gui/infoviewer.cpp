@@ -632,7 +632,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 				if (recordModeActive)
 				{
 					//
-					recIcon->blink(show_dot);
+					recIcon->refresh(show_dot);
 				}
 				
 				//

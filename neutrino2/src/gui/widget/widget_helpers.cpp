@@ -86,6 +86,7 @@ int CComponent::exec(int timeout)
 	neutrino_msg_data_t data;
 	bool handled = false;
 	bool loop = true;
+	bool show = true;
 
 	//
 	paint();
@@ -186,9 +187,11 @@ int CComponent::exec(int timeout)
 			}
 			else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 			{
+				show = !show;
+				
 				if (update())
 				{
-					refresh();
+					refresh(show);
 				}
 			}
 			else if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
@@ -292,9 +295,9 @@ void CCIcon::hide()
 	restoreScreen();
 }
 
-void CCIcon::blink(bool show)
+void CCIcon::refresh(bool show)
 {
-	dprintf(DEBUG_DEBUG, "CCIcon::blinl\n");
+	dprintf(DEBUG_DEBUG, "CCIcon::refresh\n");
 	
 	if (show)
 		paint();
@@ -320,6 +323,8 @@ CCImage::CCImage(const int x, const int y, const int dx, const int dy)
 	iNbp = 0; 
 	scale = false;
 	
+	background = NULL;
+	
 	cc_type = CC_IMAGE;
 }
 
@@ -331,6 +336,30 @@ void CCImage::setImage(const char* const image)
 	if (!imageName.empty()) frameBuffer->getSize(imageName, &iWidth, &iHeight, &iNbp);
 }
 
+void CCImage::saveScreen(void)
+{
+	if(background)
+	{
+		delete[] background;
+		background = NULL;
+	}
+
+	background = new fb_pixel_t[itemBox.iWidth*itemBox.iHeight];
+			
+	if(background)
+	{
+		frameBuffer->saveScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
+	}
+}
+
+void CCImage::restoreScreen(void)
+{
+	if(background) 
+	{
+		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
+	}
+}
+
 //
 void CCImage::paint()
 {
@@ -340,6 +369,12 @@ void CCImage::paint()
 		iWidth = itemBox.iWidth;
 	if (iHeight > itemBox.iHeight && itemBox.iHeight != 0) 
 		iHeight = itemBox.iHeight;
+		
+	//
+	if (rePaint)
+	{
+		saveScreen();
+	}
 			
 	int startPosX = itemBox.iX + (itemBox.iWidth - iWidth)/2;
 			
@@ -355,6 +390,23 @@ void CCImage::paint()
 		if (!imageName.empty()) 
 			frameBuffer->displayImage(imageName.c_str(), startPosX, itemBox.iY + (itemBox.iHeight - iHeight)/2, iWidth, iHeight);
 	}
+}
+
+void CCImage::hide()
+{
+	dprintf(DEBUG_DEBUG, "CCImage::hide\n");
+	
+	restoreScreen();
+}
+
+void CCImage::refresh(bool show)
+{
+	dprintf(DEBUG_DEBUG, "CCImage::refresh\n");
+	
+	if (show)
+		paint();
+	else
+		hide();
 }
 
 //// CCButtons
@@ -800,7 +852,10 @@ void CCLabel::paint()
 	dprintf(DEBUG_DEBUG, "CCLabel::paint\n");
 	
 	//
-	restoreScreen();
+	if (rePaint)
+		saveScreen();
+	else
+		restoreScreen();
 	
 	//
 	int stringWidth = 0;
@@ -825,14 +880,29 @@ void CCLabel::paint()
 
 void CCLabel::hide()
 {
-	if (savescreen)
+	if (rePaint)
+		restoreScreen();
+	else
 	{
-		if (background)
+		if (savescreen)
 		{
-			delete [] background;
-			background = NULL;
+			if (background)
+			{
+				delete [] background;
+				background = NULL;
+			}
 		}
-	}	
+	}
+}
+
+void CCLabel::refresh(bool show)
+{
+	dprintf(DEBUG_DEBUG, "CCLabel::refresh\n");
+	
+	if (show)
+		paint();
+	else
+		hide();
 }
 
 //// CCText
@@ -983,7 +1053,10 @@ void CCText::paint()
 	dprintf(DEBUG_DEBUG, "CCText::paint\n");
 	
 	//
-	restoreScreen();
+	if (rePaint)
+		saveScreen();
+	else
+		restoreScreen();
 
 	// recalculate
 	medlineheight = g_Font[font]->getHeight();
@@ -1010,14 +1083,29 @@ void CCText::paint()
 
 void CCText::hide()
 {
-	if (savescreen)
+	if (rePaint)
+		restoreScreen();
+	else
 	{
-		if (background)
+		if (savescreen)
 		{
-			delete [] background;
-			background = NULL;
+			if (background)
+			{
+				delete [] background;
+				background = NULL;
+			}
 		}
 	}
+}
+
+void CCText::refresh(bool show)
+{
+	dprintf(DEBUG_DEBUG, "CCLabel::refresh\n");
+	
+	if (show)
+		paint();
+	else
+		hide();
 }
 
 //// CCTime
@@ -1042,18 +1130,11 @@ CCTime::CCTime(const int x, const int y, const int dx, const int dy)
 	rePaint = true;
 	
 	cc_type = CC_TIME;
-	
-	////
-	//started = false;
 }
 
 CCTime::~CCTime()
 {
 	dprintf(DEBUG_DEBUG, "CCTime::~CCTime\n");
-	
-	////
-	//join();
-	//started = false;
 	
 	//
 	if (background)
@@ -1086,9 +1167,6 @@ void CCTime::paint()
 	int startPosX = itemBox.iX + (itemBox.iWidth - timestr_len)/2;
 	
 	g_Font[font]->RenderString(startPosX, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), timestr_len, timestr.c_str(), color);
-	
-	////
-	//Start();
 }
 
 //
@@ -1110,60 +1188,15 @@ void CCTime::refresh()
 	g_Font[font]->RenderString(startPosX, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), timestr_len, timestr.c_str(), color);
 }
 
-/*
-void CCTime::run()
-{	
-	while (started)
-	{
-		dprintf(DEBUG_DEBUG, "CCTime::run: x:%d y:%d dx:%d dy:%d\n", itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
-		
-		sleep(1);
-		
-		// restorescreen
-		restoreScreen();
-		
-		// painttime
-		std::string timestr = getNowTimeStr(format.c_str());
-			
-		int timestr_len = g_Font[font]->getRenderWidth(timestr.c_str(), true); // UTF-8
-		
-		if (timestr_len > itemBox.iWidth && itemBox.iWidth != 0)
-			timestr_len = itemBox.iWidth;
-			
-		int startPosX = itemBox.iX + (itemBox.iWidth - timestr_len)/2;
-		
-		g_Font[font]->RenderString(startPosX, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), timestr_len, timestr.c_str(), color, 0, true);
-	}
-}
-
-void CCTime::Start()
-{
-	started = true;
-	start();
-}
-
-void CCTime::Stop()
-{	
-	started = false;
-	join();
-}
-*/
-
 void CCTime::hide()
 {
 	dprintf(DEBUG_DEBUG, "CCTime::hide\n");
-	
-	////
-	//Stop();
 	
 	if (background)
 	{
 		delete [] background; 
 		background = NULL;
 	}
-	
-	////
-	//CFrameBuffer::getInstance()->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
 }
 
 void CCTime::saveScreen(void)
@@ -1332,17 +1365,10 @@ CCSpinner::CCSpinner(const int x, const int y, const int dx, const int dy)
 	
 	//
 	cc_type = CC_SPINNER;
-	
-	////
-	//started = false;
 }
 
 CCSpinner::~CCSpinner()
 {
-	////
-	//OpenThreads::Thread::join();
-	//started = false;
-	
 	if(background)
 	{
 		delete[] background;
@@ -1360,18 +1386,11 @@ void CCSpinner::paint()
 	filename += toString(count);
 	
 	frameBuffer->paintIcon(filename, itemBox.iX, itemBox.iY);
-	
-	////
-	//OpenThreads::Thread::start();
 }
 
 void CCSpinner::hide()
 {
 	dprintf(DEBUG_DEBUG, "CCSpinner::hide\n");
-	
-	////
-	//started = false;
-	//OpenThreads::Thread::join();
 	
 	if(background) 
 	{
@@ -1423,31 +1442,6 @@ void CCSpinner::restoreScreen(void)
 		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
 	}
 }
-
-/*
-void CCSpinner::run()
-{
-	filename.clear();
-	
-	filename = "hourglass";
-	
-	//
-	while (started)
-	{
-		dprintf(DEBUG_DEBUG, "CCSpinner::run: x:%d y:%d dx:%d dy:%d\n", itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
-		
-		sleep(0.15);
-		
-		restoreScreen();
-			
-		count = (count + 1) % 9;
-		
-		filename += toString(count);
-		
-		frameBuffer->paintIcon(filename, itemBox.iX, itemBox.iY);
-	}
-}
-*/
 
 ////
 CCSlider::CCSlider(const int x, const int y, const int dx, const int dy)

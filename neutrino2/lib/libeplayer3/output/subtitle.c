@@ -139,8 +139,8 @@ static char * ass_get_text(char *str)
     	// http://docs.aegisub.org/3.2/ASS_Tags/
     	char *p_newline = NULL;
     	
-    	while((p_newline = strstr(p_str, "\\N")) != NULL)
-        	*(p_newline + 1) = 'n';
+    	while((p_newline = strstr(p_str, "\\\N")) != NULL)
+        	*(p_newline + 1) = "n ";
         	
     	return p_str;
 }
@@ -231,7 +231,7 @@ static int Write(void* _context, void *data)
 							subtitle_printf(100, "text %s\n", sub.rects[i]->text);
 							subtitle_printf(100, "ass %s\n", sub.rects[i]->ass);
 							
-		     					writeText((uint8_t*)sub.rects[i]->text, screen_x + 40, screen_y + screen_height - 120, screen_width - 80, 120);
+		     					writeText((uint8_t*)sub.rects[i]->text, screen_x + 40, screen_y + screen_height - 120, screen_width - 80, sub.rects[i]->h);
 						}
 						break;
 					}

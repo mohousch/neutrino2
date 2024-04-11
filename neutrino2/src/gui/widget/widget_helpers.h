@@ -31,8 +31,6 @@
 #include <string>
 #include <vector>
 
-#include <OpenThreads/Thread>
-
 #include <driver/gfx/fontrenderer.h>
 #include <driver/gfx/framebuffer.h>
 #include <driver/gfx/color.h>
@@ -165,8 +163,7 @@ class CComponent
 		virtual void hide(void){};
 		virtual void enableRepaint(){rePaint = true;};
 		virtual bool update() const {return rePaint;};
-		virtual void refresh(void){};
-		virtual void blink(bool){};
+		virtual void refresh(bool show = false){};
 		virtual void stopRefresh(){};
 		virtual inline bool isPainted(void){return painted;};
 		virtual void clear(void){};
@@ -258,7 +255,7 @@ class CCIcon : public CComponent
 		//
 		void saveScreen(void);
 		void restoreScreen(void);
-		void blink(bool show);
+		void refresh(bool show);
 };
 
 //// CCImage
@@ -275,15 +272,29 @@ class CCImage : public CComponent
 		CFrameBuffer* frameBuffer;
 		//
 		bool scale;
+		//
+		fb_pixel_t* background;
 
 	public:
 		CCImage(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
-		virtual ~CCImage(){};
+		virtual ~CCImage()
+		{
+			if (background)
+			{
+				delete [] background; 
+				background = NULL;
+			}
+		};
 		//
 		void setImage(const char* const image);
 		void setScaling(bool s){scale = s;};
 		//
 		void paint();
+		void hide();
+		//
+		void saveScreen(void);
+		void restoreScreen(void);
+		void refresh(bool show);
 };
 
 //// CCButtons
@@ -447,6 +458,8 @@ class CCLabel : public CComponent
 		//
 		void paint();
 		void hide();
+		//
+		void refresh(bool show);
 };
 
 //// CCText
@@ -485,10 +498,11 @@ class CCText : public CComponent
 		//
 		void paint();
 		void hide();
+		void refresh(bool show);
 };
 
 //// CCTime
-class CCTime : public CComponent/*, public OpenThreads::Thread*/
+class CCTime : public CComponent
 {
 	public:
 		CFrameBuffer* frameBuffer;
@@ -515,12 +529,6 @@ class CCTime : public CComponent/*, public OpenThreads::Thread*/
 		void hide();
 		//
 		void refresh();
-		
-		////
-		//bool started;
-		//void run(void);
-		//void Start();
-		//void Stop();
 };
 
 //// CCCounter
@@ -558,7 +566,7 @@ class CCCounter : public CComponent
 };
 
 //// CCSpinner
-class CCSpinner : public CComponent/*, public OpenThreads::Thread*/
+class CCSpinner : public CComponent
 {
 	public:
 		CFrameBuffer* frameBuffer;
@@ -579,10 +587,6 @@ class CCSpinner : public CComponent/*, public OpenThreads::Thread*/
 		void hide();
 		//
 		void refresh();
-		
-		////
-		//bool started;
-		//void run();
 };
 
 //// CCSlider

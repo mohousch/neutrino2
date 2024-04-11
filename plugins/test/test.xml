@@ -13,7 +13,7 @@
 			<item id="FORWARDER" localename="item 3"/>
 		</listbox>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" gradient="DARK2LIGHT"/>
-		<label name="title" posx="795" posy="80" width="425" height="60" text="Test Menu" halign="1"/>
+		<label name="title" posx="795" posy="80" width="425" height="60" text="neutrinoNG² Test Menu" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="prev.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="3"/>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="8"/>
