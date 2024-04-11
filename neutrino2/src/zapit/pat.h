@@ -33,7 +33,7 @@ class CPat
 		virtual ~CPat(){};
 		
 		//
-		int parsePAT(CZapitChannel * const channel, CFrontend * fe);
+		int parse(CZapitChannel * const channel, CFrontend * fe);
 };
 
 #endif /* __zapit_pat_h__ */

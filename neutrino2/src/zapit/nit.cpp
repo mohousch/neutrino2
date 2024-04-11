@@ -21,7 +21,6 @@
 
 #include <syscall.h>
 
-/* system c++ */
 #include <map>
 
 #include <cerrno>
@@ -30,10 +29,8 @@
 
 #include <unistd.h>
 
-/* system */
 #include <system/debug.h>
 
-/* zapit */
 #include <zapit/zapit.h>
 #include <zapit/descriptors.h>
 #include <zapit/nit.h>
@@ -44,9 +41,9 @@
 
 #define NIT_SIZE 1024
 
-int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe)
+int CNit::parse(t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe)
 {
-	dprintf(DEBUG_NORMAL, "CNit::parseNIT:\n");
+	dprintf(DEBUG_NORMAL, "CNit::parse:\n");
 	
 	int ret = 0;
 	int secdone[255];
@@ -92,21 +89,21 @@ int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, CFron
 	do {
 		if (dmx->Read(buffer, NIT_SIZE) < 0) 
 		{
-			dprintf(DEBUG_NORMAL, "CNit::parseNIT: dmx read failed\n");
+			dprintf(DEBUG_NORMAL, "CNit::parse: dmx read failed\n");
 			
 			delete dmx;
 			return -1;
 		}
 
 		if(buffer[0] != 0x40)
-			printf("CNit::parseNIT: Bogus section received: 0x%x\n", buffer[0]);
+			printf("CNit::parse: Bogus section received: 0x%x\n", buffer[0]);
 
 		section_length = ((buffer[1] & 0x0F) << 8) + buffer[2];
 		network_id = ((buffer[3] << 8)| buffer [4]);
 		network_descriptors_length = ((buffer[8] & 0x0F) << 8) | buffer[9];
 		unsigned char secnum = buffer[6];
 		
-		dprintf(DEBUG_NORMAL, "CNit::parseNIT: section 0x%x last 0x%x network_id 0x%x -> %s\n", secnum, buffer[7], network_id, secdone[secnum] ? "skip" : "use");
+		dprintf(DEBUG_NORMAL, "CNit::parse: section 0x%x last 0x%x network_id 0x%x -> %s\n", secnum, buffer[7], network_id, secdone[secnum] ? "skip" : "use");
 
 		if(secdone[secnum]) // mark sec XX done
 			continue;
@@ -135,7 +132,6 @@ int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, CFron
 					break;
 
 				default:
-					dprintf(DEBUG_DEBUG, "first_descriptor_tag: %02x\n", buffer[pos]);
 					descriptor.generic_descriptor(buffer + pos);
 					break;
 			}
@@ -206,7 +202,7 @@ int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, CFron
 						break;
 
 					default:
-						dprintf(DEBUG_DEBUG, "CNit::parseNIT: second_descriptor_tag: %02x\n", buffer[pos]);
+						dprintf(DEBUG_DEBUG, "CNit::parse: second_descriptor_tag: %02x\n", buffer[pos]);
 						descriptor.generic_descriptor(buffer + pos2);
 						break;
 				}

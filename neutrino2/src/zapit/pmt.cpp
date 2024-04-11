@@ -465,9 +465,9 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 
 int pmt_caids[11] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-int CPmt::parsePMT(CZapitChannel * const channel, CFrontend * fe)
+int CPmt::parse(CZapitChannel * const channel, CFrontend * fe)
 {
-	dprintf(DEBUG_NORMAL, "CPmt::parsePMT:\n");
+	dprintf(DEBUG_NORMAL, "CPmt::parse:\n");
 	
 	if(!channel)
 		return -1;
@@ -488,7 +488,7 @@ int CPmt::parsePMT(CZapitChannel * const channel, CFrontend * fe)
 	unsigned char filter[DMX_FILTER_SIZE];
 	unsigned char mask[DMX_FILTER_SIZE];
 
-	dprintf(DEBUG_NORMAL, "CPmt::parsePMT: pid 0x%X\n", channel->getPmtPid());
+	dprintf(DEBUG_NORMAL, "CPmt::parse: pid 0x%X\n", channel->getPmtPid());
 
 	if (channel->getPmtPid() == 0)
 	{
@@ -516,7 +516,7 @@ int CPmt::parsePMT(CZapitChannel * const channel, CFrontend * fe)
 
 	if ( (dmx->sectionFilter(channel->getPmtPid(), filter, mask, 5) < 0) || (dmx->Read(buffer, PMT_SIZE) < 0) ) 
 	{
-		dprintf(DEBUG_NORMAL, "CPmt::parsePMT: dmx read failed\n");
+		dprintf(DEBUG_NORMAL, "CPmt::parse: dmx read failed\n");
 		
 		delete dmx;
 		return -1;
@@ -612,7 +612,7 @@ int CPmt::parsePMT(CZapitChannel * const channel, CFrontend * fe)
 	caPmt->current_next_indicator = buffer[5] & 0x01;
 	caPmt->reserved2 = buffer[10] >> 4;
 
-	dprintf(DEBUG_NORMAL, "CPmt::parsePMT: pcr pid: old 0x%x new 0x%x\n", channel->getPcrPid(), ((buffer[8] & 0x1F) << 8) + buffer[9]);
+	dprintf(DEBUG_NORMAL, "CPmt::parse: pcr pid: old 0x%x new 0x%x\n", channel->getPcrPid(), ((buffer[8] & 0x1F) << 8) + buffer[9]);
 
 	// reset pids
 	if(channel->getCaPmt() != 0) 
@@ -637,7 +637,7 @@ int CPmt::parsePMT(CZapitChannel * const channel, CFrontend * fe)
 					break;
 					
 				default:
-					dprintf(DEBUG_DEBUG, "CPmt::parsePMT: decriptor_tag: %02x\n", buffer[i]);
+					dprintf(DEBUG_DEBUG, "CPmt::parse: decriptor_tag: %02x\n", buffer[i]);
 					break;
 			}
 		}

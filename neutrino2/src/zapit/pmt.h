@@ -38,7 +38,7 @@ class CPmt
 		
 		//
 		unsigned short parseESInfo(const unsigned char * const buffer, CZapitChannel * const channel, CCaPmt * const caPmt);
-		int parsePMT(CZapitChannel * const channel, CFrontend * fe);
+		int parse(CZapitChannel * const channel, CFrontend * fe);
 		//
 		int pmt_set_update_filter(CZapitChannel * const channel, int * fd, CFrontend * fe);
 		int pmt_stop_update_filter(int * fd);

@@ -19,7 +19,6 @@
  *
  */
 
-/* system */
 #include <fcntl.h>
 #include <unistd.h>
 
@@ -41,9 +40,9 @@
 #define SDT_SIZE 	MAX_SECTION_LENGTH
 
 // sdt scan
-int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id, t_original_network_id *p_original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe)
+int CSdt::parse(t_transport_stream_id *p_transport_stream_id, t_original_network_id *p_original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe)
 {
-	dprintf(DEBUG_NORMAL, "CSdt::parseSDT:\n");
+	dprintf(DEBUG_NORMAL, "CSdt::parse:\n");
 	
 	int secdone[255];
 	int sectotal = -1;
@@ -89,21 +88,21 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id, t_original_netw
 	do {
 		if (dmx->Read(buffer, SDT_SIZE) < 0) 
 		{
-			dprintf(DEBUG_NORMAL, "CSdt::parseSDT:: dmx read failed\n");
+			dprintf(DEBUG_NORMAL, "CSdt::parse:: dmx read failed\n");
 			
 			delete dmx;
 			return -1;
 		}
 
 		if(buffer[0] != 0x42)
-		        printf("CSdt::parseSDT: fe(%d:%d) Bogus section received: 0x%x\n", fe->feadapter, fe->fenumber, buffer[0]);
+		        printf("CSdt::parse: fe(%d:%d) Bogus section received: 0x%x\n", fe->feadapter, fe->fenumber, buffer[0]);
 
 		section_length = ((buffer[1] & 0x0F) << 8) | buffer[2];
 		transport_stream_id = (buffer[3] << 8) | buffer[4];
 		original_network_id = (buffer[8] << 8) | buffer[9];
 
 		unsigned char secnum = buffer[6];
-		dprintf(DEBUG_NORMAL, "CSdt::parseSDT:: section %X last %X tsid 0x%x onid 0x%x -> %s\n", buffer[6], buffer[7], transport_stream_id, original_network_id, secdone[secnum] ? "skip" : "use");
+		dprintf(DEBUG_NORMAL, "CSdt::parse:: section %X last %X tsid 0x%x onid 0x%x -> %s\n", buffer[6], buffer[7], transport_stream_id, original_network_id, secdone[secnum] ? "skip" : "use");
 
 		if(secdone[secnum])
 			continue;
@@ -178,7 +177,7 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id, t_original_netw
 						break;
 	
 					default:
-						dprintf(DEBUG_DEBUG, "CSdt::parseSDT::descriptor_tag: %02x\n", buffer[pos]);
+						dprintf(DEBUG_DEBUG, "CSdt::parse::descriptor_tag: %02x\n", buffer[pos]);
 						descriptor.generic_descriptor(buffer + pos2);
 						break;
 				}

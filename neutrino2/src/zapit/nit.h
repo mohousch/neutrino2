@@ -35,7 +35,7 @@ class CNit
 		virtual ~CNit(){};
 		
 		//
-		int parseNIT(t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe);
+		int parse(t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe);
 };
 
 #endif /* __zapit_nit_h__ */

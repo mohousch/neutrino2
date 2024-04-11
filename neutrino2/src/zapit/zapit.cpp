@@ -1198,7 +1198,7 @@ bool CZapit::parseChannelPatPmt(CZapitChannel * thischannel, CFrontend * fe)
 	{
 		dprintf(DEBUG_NORMAL, "CZapit::parseChannelPatPmt: no pmt pid, going to parse pat\n");	
 		
-		if (pat.parsePAT(thischannel, fe) < 0)
+		if (pat.parse(thischannel, fe) < 0)
 		{
 			dprintf(DEBUG_NORMAL, "CZapit::parseChannelPatPmt: pat parsing failed\n");
 			
@@ -1207,17 +1207,17 @@ bool CZapit::parseChannelPatPmt(CZapitChannel * thischannel, CFrontend * fe)
 	}
 
 	// parse program map table and store pids
-	if ( !failed && pmt.parsePMT(thischannel, fe) < 0) 
+	if ( !failed && pmt.parse(thischannel, fe) < 0) 
 	{
 		dprintf(DEBUG_NORMAL, "CZapit::parseChannelPatPmt: pmt parsing failed\n");	
 		
-		if (pat.parsePAT(thischannel, fe) < 0) 
+		if (pat.parse(thischannel, fe) < 0) 
 		{
 			dprintf(DEBUG_NORMAL, "CZapit::parseChannelPatPmt: pat parsing failed\n");
 			
 			failed = true;
 		}
-		else if (pmt.parsePMT(thischannel, fe) < 0) 
+		else if (pmt.parse(thischannel, fe) < 0) 
 		{
 			dprintf(DEBUG_NORMAL, "CZapit::parseChannelPatPmt: pmt parsing failed\n");
 			
@@ -3898,7 +3898,7 @@ void *CZapit::updatePMTFilter(void *)
 					int vpid = CZapit::getInstance()->getCurrentChannel()->getVideoPid();
 					int apid = CZapit::getInstance()->getCurrentChannel()->getAudioPid();
 					
-					pmt.parsePMT(CZapit::getInstance()->getCurrentChannel(), CZapit::getInstance()->getCurrentFrontend());
+					pmt.parse(CZapit::getInstance()->getCurrentChannel(), CZapit::getInstance()->getCurrentFrontend());
 					
 					bool apid_found = false;
 					// check if selected audio pid still present
@@ -4859,7 +4859,7 @@ _repeat:
 		// parse sdt
 		dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::getSDTS: parsing SDT (tsid:onid %04x:%04x)\n", tI->second.transport_stream_id, tI->second.original_network_id);
 		
-		if(sdt.parseSDT(&tI->second.transport_stream_id, &tI->second.original_network_id, satellitePosition, freq, fe) < 0)
+		if(sdt.parse(&tI->second.transport_stream_id, &tI->second.original_network_id, satellitePosition, freq, fe) < 0)
 		{
 			dprintf(DEBUG_NORMAL, "CZapit::getSDTS: SDT failed !\n");
 			continue;
@@ -4878,7 +4878,7 @@ _repeat:
 		{
 			dprintf(DEBUG_INFO, "CZapit::getSDTS: parsing NIT\n");
 			
-			if( nit.parseNIT(satellitePosition, freq, fe) < 0 )
+			if( nit.parse(satellitePosition, freq, fe) < 0 )
 			{
 				dprintf(DEBUG_INFO, "CZapit::getSDTS: NIT failed !\n");
 			}
