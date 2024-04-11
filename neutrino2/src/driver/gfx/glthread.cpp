@@ -65,14 +65,25 @@ extern cPlayback *playback;
 extern uint32_t framerate;
 #endif
 
-GLThreadObj::GLThreadObj(int x, int y) : mX(x), mY(y), mReInit(true), mShutDown(false), mInitDone(false)
+GLThreadObj::GLThreadObj(int x, int y) : /*mX(x), mY(y),*/ mReInit(true), mShutDown(false), mInitDone(false)
 {
-	mState.width  = mX;
-	mState.height = mY;
+	mState.width  = x;
+	mState.height = y;
 	mState.blit = true;
-	//
+	////
+	mX = &_mX[0];
+	mY = &_mY[0];
+	*mX = x;
+	*mY = y;
+	av_reduce(&mOA.num, &mOA.den, x, y, INT_MAX);
+	mVA = mOA; 
+	_mVA = mVA;
 	mVAchanged = true;
 	last_apts = 0;
+	mCrop = DISPLAY_AR_MODE_PANSCAN;
+	zoom = 1.0;
+	xscale = 1.0;
+	mFullscreen = false;
 
 	initKeys();
 }
@@ -181,14 +192,14 @@ void GLThreadObj::setupCtx()
 	char const *argv[2] = { "neutrino2", 0 };
 	dprintf(DEBUG_NORMAL, "GLThreadObj::setupCtx: GL thread starting\n");
 	glutInit(&argc, const_cast<char **>(argv));
-	glutInitWindowSize(mX, mY);
+	glutInitWindowSize(*mX, *mY);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 	glutCreateWindow("neutrino2");
 	
 	//
 	GLWinID = glXGetCurrentDrawable();
-	GLxStart = mX;
-	GLyStart = mY;
+	GLxStart = *mX;
+	GLyStart = *mY;
 	GLWidth = getOSDWidth();
 	GLHeight = getOSDHeight();
 }
@@ -247,6 +258,14 @@ void GLThreadObj::rendercb()
 
 void GLThreadObj::keyboardcb(unsigned char key, int /*x*/, int /*y*/)
 {
+	if (key == 'f')
+	{
+		gThiz->mFullscreen = !gThiz->mFullscreen;
+		gThiz->mReInit = true;
+		
+		return;
+	}
+	
 	std::map<unsigned char, neutrino_msg_t>::const_iterator i = gThiz->mKeyMap.find(key);
 	
 	if(i != gThiz->mKeyMap.end())
@@ -256,7 +275,6 @@ void GLThreadObj::keyboardcb(unsigned char key, int /*x*/, int /*y*/)
 			g_RCInput->postMsg(i->second, 0);
 		}
 	}
-
 }
 
 void GLThreadObj::specialcb(int key, int /*x*/, int /*y*/)
@@ -265,7 +283,10 @@ void GLThreadObj::specialcb(int key, int /*x*/, int /*y*/)
 	
 	if(key == GLUT_KEY_F12)
 	{
+		gThiz->mFullscreen = !gThiz->mFullscreen;
 		gThiz->mReInit = true;
+		
+		return;
 	}
 	else if(i != gThiz->mSpecialMap.end())
 	{
@@ -286,14 +307,42 @@ void GLThreadObj::render()
 
 	if(mReInit)
 	{
+		int xoff = 0;
+		int yoff = 0;
+		mVAchanged = true;
 		mReInit = false;
+		mX = &_mX[mFullscreen];
+		mY = &_mY[mFullscreen];
+		
+		//
+		if (mFullscreen)
+		{
+			int x = glutGet(GLUT_SCREEN_WIDTH);
+			int y = glutGet(GLUT_SCREEN_HEIGHT);
+			*mX = x;
+			*mY = y;
+			
+			AVRational a = { x, y };
+			
+			if (av_cmp_q(a, mOA) < 0)
+				*mY = x * mOA.den / mOA.num;
+			else if (av_cmp_q(a, mOA) > 0)
+				*mX = y * mOA.num / mOA.den;
+				
+			xoff = (x - *mX) / 2;
+			yoff = (y - *mY) / 2;
+			
+			glutFullScreen();
+		}
+		else
+			*mX = *mY * mOA.num / mOA.den;
 			
 		//
-		glViewport(0, 0, mX, mY);
+		glViewport(xoff, yoff, *mX, *mY);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		float aspect = static_cast<float>(mX)/mY;
-		float osdaspect = 1.0/(static_cast<float>(mState.width)/mState.height);
+		float aspect = static_cast<float>(*mX) / *mY;
+		float osdaspect = static_cast<float>(mOA.den) / mOA.num;
 		
 		glOrtho(aspect*-osdaspect, aspect*osdaspect, -1.0, 1.0, -1.0, 1.0 );
 		glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -308,12 +357,12 @@ void GLThreadObj::render()
 	
 	glutPostOverlayRedisplay();
 	
-	if(mX != glutGet(GLUT_WINDOW_WIDTH) && mY != glutGet(GLUT_WINDOW_HEIGHT))
-		glutReshapeWindow(mX, mY);
+	if(!mFullscreen &&  (*mX != glutGet(GLUT_WINDOW_WIDTH) && *mY != glutGet(GLUT_WINDOW_HEIGHT)) )
+		glutReshapeWindow(*mX, *mY);
 		
 	//
-	bltDisplayBuffer(); 	// decoded video stream
-	bltPlayBuffer();	//
+	bltDisplayBuffer();
+	bltPlayBuffer();
 
 	// OSD
 	if (mState.blit) 
@@ -322,26 +371,70 @@ void GLThreadObj::render()
 		bltOSDBuffer();
 	}
 	
-	// clear 
-	glBindTexture(GL_TEXTURE_2D, mState.osdtex);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	////
+//	glBindTexture(GL_TEXTURE_2D, mState.osdtex);
+//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	// Display
+	//
+	if (mVAchanged)
+	{
+		mVAchanged = false;
+		zoom = 1.0;
+		xscale = 1.0;
+		int cmp = (mCrop == DISPLAY_AR_MODE_NONE) ? 0 : av_cmp_q(mVA, mOA);
+		const AVRational a149 = { 14, 9 };
+		
+		switch (cmp)
+		{
+			default:
+			case INT_MIN:
+			case 0: 
+				break;
+			case 1:
+				xscale = av_q2d(mVA) / av_q2d(mOA);
+				switch (mCrop)
+				{
+					case DISPLAY_AR_MODE_PANSCAN:
+						break;
+						
+					case DISPLAY_AR_MODE_LETTERBOX:
+						zoom = av_q2d(mOA) / av_q2d(mVA);
+						break;
+						
+					default:
+						break;
+				}
+				break;
+			case -1:
+				xscale = av_q2d(mVA) / av_q2d(mOA);
+				switch (mCrop)
+				{
+					case DISPLAY_AR_MODE_LETTERBOX:
+						break;
+						
+					case DISPLAY_AR_MODE_PANSCAN:
+						zoom = av_q2d(mOA) / av_q2d(mVA);
+						break;
+						
+					default:
+						break;
+				}
+				break;
+		}
+	}
+	
+	//
+//	glBindTexture(GL_TEXTURE_2D, mState.osdtex);
+//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
-	drawSquare(1.0);
+	drawSquare(zoom, xscale);
 	
 	// OSD
 	glBindTexture(GL_TEXTURE_2D, mState.osdtex);
-	drawSquare(1.0);
+	drawSquare(1.0, -100);
 
 	glFlush();
 	glutSwapBuffers();
-
-	GLuint err = glGetError();
-	if(err != 0)
-	{
-//		dprintf(DEBUG_NORMAL, "GLThreadObj::render: GLError:%d 0x%04x\n", err, err);
-	}
 
 	// simply limit to 30 Hz, if anyone wants to do this properly, feel free	
 	usleep(sleep_us);
@@ -358,18 +451,29 @@ void GLThreadObj::resizecb(int w, int h)
 
 void GLThreadObj::checkReinit(int x, int y)
 {
-	x = glutGet(GLUT_WINDOW_WIDTH);
-	y = glutGet(GLUT_WINDOW_HEIGHT);
-	
-	if( x != mX || y != mY )
+	static int last_x = 0, last_y = 0;
+
+	if (!mFullscreen && !mReInit && (x != *mX || y != *mY))
 	{
-		mX = x;
-		mY = y;
+		if (x != *mX && abs(x - last_x) > 2)
+		{
+			*mX = x;
+			*mY = *mX * mOA.den / mOA.num;
+		}
+		else if (y != *mY && abs(y - last_y) > 2)
+		{
+			*mY = y;
+			*mX = *mY * mOA.num / mOA.den;
+		}
+		
 		mReInit = true;
 	}
+
+	last_x = x;
+	last_y = y;
 }
 
-void GLThreadObj::drawSquare(float size)
+void GLThreadObj::drawSquare(float size, float x_factor)
 {
 	GLfloat vertices[] = {
 		 1.0f,  1.0f,
@@ -386,6 +490,36 @@ void GLThreadObj::drawSquare(float size)
 		 0.0, 1.0,
 		 1.0, 1.0,
 	};
+	
+	//
+	if (x_factor > -99.0)   /* x_factor == -100 => OSD */
+	{
+		if (videoDecoder &&
+		    videoDecoder->pig_x > 0 && videoDecoder->pig_y > 0 &&
+		    videoDecoder->pig_w > 0 && videoDecoder->pig_h > 0)
+		{
+			/* these calculations even consider cropping and panscan mode
+			 * maybe this could be done with some clever opengl tricks? */
+			double w2 = (double)mState.width * 0.5l;
+			double h2 = (double)mState.height * 0.5l;
+			double x = (double)(videoDecoder->pig_x - w2) / w2 / x_factor / size;
+			double y = (double)(h2 - videoDecoder->pig_y) / h2 / size;
+			double w = (double)videoDecoder->pig_w / w2;
+			double h = (double)videoDecoder->pig_h / h2;
+			x += ((1.0l - x_factor * size) / 2.0l) * w / x_factor / size;
+			y += ((size - 1.0l) / 2.0l) * h / size;
+			vertices[0] = x + w;        	/* top right x */
+			vertices[1] = y;        	/* top right y */
+			vertices[2] = x;        	/* top left x */
+			vertices[3] = y;        	/* top left y */
+			vertices[4] = x;        	/* bottom left x */
+			vertices[5] = y - h;        	/* bottom left y */
+			vertices[6] = vertices[0];  	/* bottom right x */
+			vertices[7] = vertices[5];  	/* bottom right y */
+		}
+	}
+	else
+		x_factor = 1.0; /* OSD */
 
 	glPushMatrix();
 	glScalef(size, size, size);
@@ -438,7 +572,7 @@ void GLThreadObj::bltDisplayBuffer()
 	
 	cVideo::SWFramebuffer* buf = videoDecoder->getDecBuf();
 	
-	if (!videoDecoder->getDecBuf())
+	if (!buf)
 	{		
 		//
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
@@ -579,6 +713,7 @@ void GLThreadObj::bltPlayBuffer()
 		
 		last_apts = apts;
 		
+		//
 		if (rate > 0)
 			rate = 2000000 / rate;
 		else

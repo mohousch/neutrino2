@@ -36,6 +36,14 @@ extern "C" {
 #include <driver/rcinput.h>
 
 
+typedef enum
+{
+	DISPLAY_AR_MODE_PANSCAN = 0,
+	DISPLAY_AR_MODE_LETTERBOX,
+	DISPLAY_AR_MODE_NONE
+} DISPLAY_AR_MODE;
+
+
 class GLThreadObj : public OpenThreads::Thread
 {
 	public:
@@ -58,16 +66,32 @@ class GLThreadObj : public OpenThreads::Thread
 		
 		////
 		int64_t last_apts;
+		AVRational mOA;         /* output window aspect ratio */
 		AVRational mVA;         /* video aspect ratio */
 		AVRational _mVA;        /* for detecting changes in mVA */
 		bool mVAchanged;
-		float zoom;         /* for cropping */
+		float zoom;         	/* for cropping */
 		float xscale;           /* and aspect ratio */
-		int mCrop;          /* DISPLAY_AR_MODE */
+		int mCrop;          	/* DISPLAY_AR_MODE */
+		
+		bool mFullscreen;       /* fullscreen? */
 
 	private:
-		int mX;				/* window size */
-		int mY;
+//		int mX;				/* window size */
+//		int mY;
+		int *mX;
+		int *mY;
+		int _mX[2];         /* output window size */
+		int _mY[2];         /* [0] = normal, [1] = fullscreen */
+		
+		void setOutputFormat(AVRational a, int h, int c)
+		{
+			mOA = a;
+			*mY = h;
+			mCrop = c;
+			mReInit = true;
+		}
+		////
 		bool mReInit;			/* setup things for GL */
 		bool mShutDown;			/* if set main loop is left */
 		bool mInitDone;			/* condition predicate */
@@ -90,7 +114,7 @@ class GLThreadObj : public OpenThreads::Thread
 		void setupGLObjects();		/* PBOs, textures and stuff */
 		void releaseGLObjects();
 		void eventLoop();		/* enter the GL window event loop */
-		void drawSquare(float size);	/* do not be square */
+		void drawSquare(float size, float x_factor);	/* do not be square */
 		void initDone();		/* "things are now set up", called by this */
 
 		struct {

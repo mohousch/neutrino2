@@ -321,6 +321,12 @@ class cVideo
 		OpenThreads::Mutex still_m;
 		bool stillpicture;
 		bool w_h_changed;
+		////
+		int pig_x;
+		int pig_y;
+		int pig_w;
+		int pig_h;
+		bool pig_changed;
 #endif	
 
 	public:

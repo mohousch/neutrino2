@@ -95,6 +95,9 @@ cVideo::cVideo(int num)
 	dec_vpts = 0;
 	stillpicture = false;
 	w_h_changed = false;
+	////
+	pig_x = pig_y = pig_w = pig_h = 0;
+	pig_changed = false;
 #endif
 }
 
@@ -162,7 +165,7 @@ int cVideo::getAspectRatio(void)
 
 	printf("cVideo::getAspectRatio\n");	
 	 
-#if !defined (USE_OPENGL)	 
+#ifndef USE_OPENGL
 	unsigned char buffer[2];
 	int n, fd;
 
@@ -223,8 +226,8 @@ bestfit
 /* set aspect ratio */
 int cVideo::setAspectRatio(int ratio, int format) 
 { 
-	printf("cVideo::setAspectRatio\n");	
-
+	printf("cVideo::setAspectRatio\n");
+	
 #ifndef USE_OPENGL
 	const char * sRatio[] =
 	{
@@ -774,6 +777,14 @@ void cVideo::Pig(int x, int y, int w, int h, int osd_w, int osd_h, int num)
 	//ugly we just resize the video display
 	printf("cVideo::Pig: - x=%d y=%d w=%d h=%d (video_num=%d)\n", x, y, w, h, num);
 	
+#ifdef USE_OPENGL
+	pig_x = x;
+	pig_y = y;
+	pig_w = w;
+	pig_h = h;
+	pig_changed = true;
+#else
+	
 	int _x, _y, _w, _h;
 	/* the target "coordinates" seem to be in a PAL sized plane
 	 * TODO: check this in the driver sources */
@@ -793,9 +804,13 @@ void cVideo::Pig(int x, int y, int w, int h, int osd_w, int osd_h, int num)
 		_w = w * xres / osd_w;
 		_y = y * yres / osd_h;
 		_h = h * yres / osd_h;
+		
+		_x /= 1280;
+		_y /= 720;
+		_w /= 1280;
+		_h /= 720;
 	}
-	
-#if !defined (USE_OPENGL)	
+		
 	FILE* fd;
 	char vmpeg_left[100];
 	char vmpeg_top[100];
