@@ -286,11 +286,11 @@ static int Write(void* _context, void *data)
 								int nh = height * screen_height / h2;
 
 								// resize color to 32 bit
-	#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
 								uint32_t* newdata = simple_resize32(sub.rects[i]->pict.data[0], (uint32_t*)sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
-	#else
+#else
 								uint32_t* newdata = simple_resize32(sub.rects[i]->data[0], (uint32_t*)sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
-	#endif
+#endif
 										
 								// writeData
 				     				fb.fd            = framebufferFD;
@@ -318,17 +318,17 @@ static int Write(void* _context, void *data)
 
 								int h2 = height;
 										
-								int xoff = screen_x; //sub.rects[i]->x * 1280 / width;
-								int yoff = screen_y + screen_height - 80; //sub.rects[i]->y * 720 / h2;
-								int nw = width * screen_width / width;
-								int nh = 60; //height * screen_height / h2;
+								int xoff = screen_x + (screen_width - width)/2;
+								int yoff = screen_y + screen_height - 80;
+								int nw = width; 
+								int nh = 30;
 
 								// resize color to 32 bit
-	#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
 								uint32_t* newdata = simple_resize32(sub.rects[i]->pict.data[0], (uint32_t*)sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
-	#else
+#else
 								uint32_t* newdata = simple_resize32(sub.rects[i]->data[0], (uint32_t*)sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
-	#endif
+#endif
 										
 								// writeData
 				     				fb.fd            = framebufferFD;
