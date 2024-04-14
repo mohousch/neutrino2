@@ -610,10 +610,11 @@ void cPlayback::Close(void)
 }
 
 // start
-bool cPlayback::Start(char *filename, const char * const suburi)
+bool cPlayback::Start(char *filename)
 {
 	printf("cPlayback::Start: filename=%s\n", filename);
-
+	
+	// check for suburi
 	if (filename == NULL)
 	{
 		playing = false;
@@ -732,7 +733,22 @@ bool cPlayback::Start(char *filename, const char * const suburi)
 	//open file
 	if(player && player->playback && player->playback->Command(player, PLAYBACK_OPEN, (char *)file.c_str()) >= 0) 
 	{
-		// play it baby 
+		// open suburi
+		std::string suburi = filename;
+		changeFileNameExt(suburi, ".srt");
+		
+		if ( !file_exists(suburi.c_str()) )
+			changeFileNameExt(suburi, ".ass");
+		else if ( !file_exists(suburi.c_str()) )
+			changeFileNameExt(suburi, ".ssa");
+			
+		if ( file_exists(suburi.c_str()) )
+		{
+			printf("cPlayback::Open suburi:%s\n", suburi.c_str());
+			player->playback->Command(player, PLAYBACK_OPEN_SUB, (char*)suburi.c_str());
+		}
+		
+		// start playing
 		if(player && player->output && player->playback) 
 		{	
 			if (player->playback->Command(player, PLAYBACK_PLAY, NULL) == 0 ) 
@@ -1408,20 +1424,24 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 #endif
 }
 
+//
+void cPlayback::AddSubtitleFile(const char* const file)
+{
+	printf("cPlayback::AddSubtitleFile: %s\n", file? file : "null");
+	
+#ifndef ENABLE_GSTREAMER
+	player->playback->Command(player, PLAYBACK_OPEN_SUB, (char *)file);
+#endif
+}
+
 ////
 #ifdef USE_OPENGL
 #ifndef ENABLE_GSTREAMER
 extern Data_t data[64];
 
-cPlayback::SWFramebuffer *cPlayback::getDecBuf(void)
-{
-//	printf("cPlayback::getDecBuf: buf_num:%d\n", buf_num);
-//	if (buf_num == 0)
-//	{
-//		return NULL;
-//	}
-		
-	SWFramebuffer *p = &buffers;
+cPlayback::SWFramebuffer* cPlayback::getDecBuf(void)
+{			
+	SWFramebuffer *p = &buffers[0];
 
 	p->resize(data[buf_out].size);
 	p->width(data[buf_out].width);
@@ -1429,9 +1449,20 @@ cPlayback::SWFramebuffer *cPlayback::getDecBuf(void)
 	p->rate(data[buf_out].rate);
 	p->vpts(data[buf_out].vpts);
 	p->apts(data[buf_out].apts);
-	p->AR(data[buf_out].a);
+	p->AR(data[buf_out].AR);
 	
 	av_image_fill_arrays(&data[buf_out].buffer, &data[buf_out].size, &(*p)[0], AV_PIX_FMT_RGB32, data[buf_out].width, data[buf_out].height, 1);
+	
+	buf_out++;
+	buf_num--;
+	buf_out %= 64;
+
+	return p;
+}
+
+Data_t* getDecBuf(void)
+{
+	Data_t* p = &data[buf_out];
 	
 	buf_out++;
 	buf_num--;

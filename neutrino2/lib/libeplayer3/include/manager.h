@@ -17,6 +17,7 @@ typedef enum
 	MANAGER_GETENCODING,
 	MANAGER_DEL,
 	MANAGER_GET_TRACK,
+	MANAGER_GET_TRACKCOUNT
 } ManagerCmd_t;
 
 typedef enum 
@@ -74,7 +75,8 @@ typedef struct ManagerHandler_s
 	char * Name;
 	Manager_t * audio;
 	Manager_t * video;    
-	Manager_t * subtitle;   
+	Manager_t * subtitle;
+	Manager_t * extsubtitle; 
 } ManagerHandler_t;
 
 void freeTrack(Track_t* track);

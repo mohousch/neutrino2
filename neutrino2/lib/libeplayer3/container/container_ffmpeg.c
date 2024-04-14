@@ -112,6 +112,8 @@ static pthread_t PlayThread;
 static int hasPlayThreadStarted = 0;
 
 static AVFormatContext *avContext = NULL;
+////
+static AVFormatContext *subavContext = NULL;
 
 static unsigned char isContainerRunning = 0;
 
@@ -347,7 +349,7 @@ long long int calcPts(AVStream* stream, AVPacket* packet)
 	return pts;
 }
 
-/*Hellmaster1024: get the Duration of the subtitle from the SSA line*/
+//
 float getDurationFromSSALine(unsigned char* line)
 {
 	int i,h,m,s,ms;
@@ -358,6 +360,7 @@ float getDurationFromSSALine(unsigned char* line)
 
 	ptr1 = Text;
 	ptr[0]=Text;
+	
 	for (i=0; i < 3 && *ptr1 != '\0'; ptr1++) 
 	{
 		if (*ptr1 == ',') 
@@ -378,9 +381,7 @@ float getDurationFromSSALine(unsigned char* line)
 	return (float)msec/1000.0;
 }
 
-/* search for metatdata in context and stream
- * and map it to our metadata.
- */
+//
 #if LIBAVCODEC_VERSION_MAJOR < 54
 static char* searchMeta(AVMetadata *metadata, char* ourTag)
 #else
@@ -417,9 +418,9 @@ static char* searchMeta(AVDictionary * metadata, char* ourTag)
 }
 
 //// play thread
-static void FFMPEGThread(Context_t *context) 
+static void FFMPEGThread(Context_t* context) 
 {
-	AVPacket   packet; 
+	AVPacket   packet;
 	off_t lastSeek = -1;
 	long long int lastPts = -1;
 	long long int currentVideoPts = -1;
@@ -434,9 +435,6 @@ static void FFMPEGThread(Context_t *context)
 	AVFrame *samples = NULL;
 
 	ffmpeg_printf(10, "\n");
-	
-	//
-	av_init_packet(&packet);
 
 	while ( context->playback->isCreationPhase )
 	{
@@ -511,10 +509,10 @@ static void FFMPEGThread(Context_t *context)
 			audioMute = 0;
 			context->output->Command(context, OUTPUT_AUDIOMUTE, "0");
 		}
-
+		
 		getMutex(FILENAME, __FUNCTION__,__LINE__);
 
-		if (av_read_frame(avContext, &packet) == 0 )
+		if ( (av_read_frame(avContext, &packet) == 0) )
 		{
 			Track_t * videoTrack = NULL;
 			Track_t * audioTrack = NULL;	    
@@ -530,7 +528,7 @@ static void FFMPEGThread(Context_t *context)
 				ffmpeg_err("error getting audio track\n");
 			
 			if (context->manager->subtitle->Command(context, MANAGER_GET_TRACK, &subtitleTrack) < 0)
-				ffmpeg_err("error getting subtitle track\n");    
+				ffmpeg_err("error getting subtitle track\n");   
 
 			ffmpeg_printf(200, "packet.size %d - index %d\n", packet.size, index);
 
@@ -782,8 +780,6 @@ static void FFMPEGThread(Context_t *context)
 					{
 						SubtitleData_t data;
 						
-						ffmpeg_printf(100, "videoPts %lld\n", currentVideoPts);
-						
 						data.data      = packet.data;
 						data.len       = packet.size;
 						data.extradata = subtitleTrack->extraData;
@@ -864,20 +860,13 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	avcodec_register_all();
 	av_register_all();
 	avformat_network_init();
-	
-	////test
-	AVDictionary *options = NULL;
-	av_dict_set(&options, "auth_type", "basic", 0);
-	////
 
 #if LIBAVCODEC_VERSION_MAJOR < 54
 	if ((err = av_open_input_file(&avContext, filename, NULL, 0, NULL)) != 0) 
 #else
-	if ((err = avformat_open_input(&avContext, filename, NULL, &options)) != 0)
+	if ((err = avformat_open_input(&avContext, filename, NULL, NULL)) != 0)
 #endif
 	{
-		////test
-		av_dict_free(&options);
 		ffmpeg_err("avformat_open_input failed %d (%s)\n", err, filename);
 
 		releaseMutex(FILENAME, __FUNCTION__,__LINE__);
@@ -885,12 +874,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 		return cERR_CONTAINER_FFMPEG_OPEN;
 	}
 	
-	////test
-	av_dict_free(&options);
-	
 	avContext->flags |= AVFMT_FLAG_GENPTS;
-
-//	if (strstr(filename, ":31339") || strstr(filename, ".ts"))
 	avContext->max_analyze_duration = 1;
 	avContext->probesize = 131072;
 
@@ -1312,6 +1296,161 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	return cERR_CONTAINER_FFMPEG_NO_ERROR;
 }
 
+//
+int container_ffmpeg_init_sub(Context_t *context, char * filename)
+{
+	int err;
+	int n = 0;
+	
+	int AudioTrackCount = 0;
+	int VideoTrackCount = 0;
+	int SubtitleTrackCount = 0;
+	
+	context->manager->audio->Command(context, MANAGER_GET_TRACKCOUNT, (void*)&AudioTrackCount);
+	context->manager->video->Command(context, MANAGER_GET_TRACKCOUNT, (void*)&VideoTrackCount);
+	context->manager->subtitle->Command(context, MANAGER_GET_TRACKCOUNT, (void*)&SubtitleTrackCount);
+	
+	int subIndex = 0;//AudioTrackCount + VideoTrackCount + SubtitleTrackCount;
+
+	ffmpeg_printf(10, ">\n");
+
+	if (filename == NULL) 
+	{
+		ffmpeg_err("filename NULL\n");
+
+		return cERR_CONTAINER_FFMPEG_NULL;
+	}
+
+	if (context == NULL) 
+	{
+		ffmpeg_err("context NULL\n");
+
+		return cERR_CONTAINER_FFMPEG_NULL;
+	}
+
+	ffmpeg_printf(10, "filename %s\n", filename);
+
+	getMutex(FILENAME, __FUNCTION__,__LINE__);
+
+	//
+	subavContext = avformat_alloc_context();
+	
+#if LIBAVCODEC_VERSION_MAJOR < 54
+	if ( (err = av_open_input_file(&subavContext, filename, NULL, 0, NULL)) != 0 ) 
+#else
+	if ( (err = avformat_open_input(&subavContext, filename, NULL, 0)) != 0 )
+#endif
+	{
+		avformat_free_context(subavContext);
+		
+		return cERR_CONTAINER_FFMPEG_OPEN;
+	}
+	
+	//
+	subavContext->flags |= AVFMT_FLAG_GENPTS;
+	subavContext->max_analyze_duration = 1;
+	subavContext->probesize = 131072;
+
+	// find stream info
+#if LIBAVCODEC_VERSION_MAJOR < 54
+	if (av_find_stream_info(subavContext) < 0)
+#else
+	if (avformat_find_stream_info(subavContext, NULL) < 0) 
+#endif
+	{
+		ffmpeg_err("Error avformat_find_stream_info\n");
+	}
+
+	for ( n = 0; n < subavContext->nb_streams; n++) 
+	{
+		Track_t track;
+		AVStream* stream = subavContext->streams[n];
+		int version = 0;
+		
+		char* encoding = Codec2Encoding(stream->codec, &version);
+		
+		//
+		memset(&track, 0, sizeof(track));
+
+		switch (stream->codec->codec_type) 
+		{
+			case AVMEDIA_TYPE_SUBTITLE:
+			{
+				ffmpeg_printf(10, "%d. encoding = %s - version %d CODEC_TYPE:%d codec_id 0x%x\n", subIndex, encoding? encoding : "NULL", version, stream->codec->codec_type, stream->codec->codec_id);
+					
+#if LIBAVCODEC_VERSION_MAJOR < 54
+				AVMetadataTag * lang;
+#else
+				AVDictionaryEntry * lang;
+#endif
+
+#if LIBAVCODEC_VERSION_MAJOR < 54
+				lang = av_metadata_get(stream->metadata, "language", NULL, 0);
+#else
+				lang = av_dict_get(stream->metadata, "language", NULL, 0);
+#endif	     
+
+				if (lang)
+					track.Name = strdup(lang->value);
+				else
+					track.Name = strdup("Sub");
+
+				ffmpeg_printf(10, "Language %s\n", track.Name);
+
+				track.Encoding       = encoding;
+				track.Index          = subIndex;
+
+				track.stream         = stream;
+				track.duration       = (double)stream->duration * av_q2d(stream->time_base) * 1000.0;
+
+				track.aacbuf         = 0;
+				track.have_aacheader = -1;
+
+				track.width          = -1; /* will be filled online from videotrack */
+				track.height         = -1; /* will be filled online from videotrack */
+
+				track.extraData      = stream->codec->extradata;
+				track.extraSize      = stream->codec->extradata_size;
+
+				if(stream->duration == AV_NOPTS_VALUE) 
+				{
+					track.duration = (double) subavContext->duration / 1000.0;
+				}
+				else 
+				{
+					track.duration = (double) stream->duration * av_q2d(stream->time_base) * 1000.0;
+				}
+				
+				ffmpeg_printf(10, "\n", track.height);
+				
+				// init codec
+#if LIBAVCODEC_VERSION_MAJOR < 54
+				avcodec_open(stream->codec, avcodec_find_decoder(stream->codec->codec_id));
+#else
+				avcodec_open2(stream->codec, avcodec_find_decoder(stream->codec->codec_id), NULL);
+#endif
+
+				if (context->manager->subtitle)
+				{
+					if (context->manager->subtitle->Command(context, MANAGER_ADD, &track) < 0) 
+					{
+						ffmpeg_err("failed to add subtitle track %d\n", n);
+					}
+				}
+				break;
+			} 
+			
+			default:
+				break;
+		}
+	}
+	
+	releaseMutex(FILENAME, __FUNCTION__,__LINE__);
+
+	return cERR_CONTAINER_FFMPEG_NO_ERROR;
+}
+
+//
 static int container_ffmpeg_play(Context_t *context)
 {
 	int error;
@@ -1407,6 +1546,17 @@ static int container_ffmpeg_stop(Context_t *context)
  		avContext = NULL;
 #else
 		avformat_close_input(&avContext);
+#endif		
+	}
+	
+	//
+	if (subavContext != NULL)
+	{
+#if LIBAVFORMAT_VERSION_MAJOR < 54
+ 		av_close_input_file(subavContext);
+ 		avContext = NULL;
+#else
+		avformat_close_input(&subavContext);
 #endif		
 	}
 
@@ -1788,6 +1938,13 @@ static int Command(void* _context, ContainerCmd_t command, void* argument)
 			break;
 		}
 		
+		case CONTAINER_INIT_SUB:
+		{
+			char* FILENAME = (char*)argument;
+			ret = container_ffmpeg_init_sub(context, FILENAME);
+			break;
+		}
+		
 		case CONTAINER_PLAY:  
 		{
 			ret = container_ffmpeg_play(context);
@@ -1886,7 +2043,6 @@ static char *FFMPEG_Capabilities[] = {
 	"m3u8",
 	"amr", 
 	"webm",
-	// for testing
 	"srt",
 	"ass",
 	"ssa",

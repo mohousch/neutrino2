@@ -43,6 +43,8 @@
 #include <video_cs.h>
 #include <playback_cs.h>
 
+#include <common.h>
+
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
@@ -61,11 +63,12 @@ int GLHeight;
 extern cVideo *videoDecoder;
 extern cAudio *audioDecoder;
 extern cPlayback *playback;
+extern Data_t* getDecBuf();
 #ifdef ENABLE_GSTREAMER
 extern uint32_t framerate;
 #endif
 
-GLThreadObj::GLThreadObj(int x, int y) : /*mX(x), mY(y),*/ mReInit(true), mShutDown(false), mInitDone(false)
+GLThreadObj::GLThreadObj(int x, int y) : mReInit(true), mShutDown(false), mInitDone(false)
 {
 	mState.width  = x;
 	mState.height = y;
@@ -371,10 +374,6 @@ void GLThreadObj::render()
 		bltOSDBuffer();
 	}
 	
-	////
-//	glBindTexture(GL_TEXTURE_2D, mState.osdtex);
-//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
 	//
 	if (mVAchanged)
 	{
@@ -390,6 +389,7 @@ void GLThreadObj::render()
 			case INT_MIN:
 			case 0: 
 				break;
+				
 			case 1:
 				xscale = av_q2d(mVA) / av_q2d(mOA);
 				switch (mCrop)
@@ -424,8 +424,8 @@ void GLThreadObj::render()
 	}
 	
 	//
-//	glBindTexture(GL_TEXTURE_2D, mState.osdtex);
-//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glBindTexture(GL_TEXTURE_2D, mState.osdtex);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
 	drawSquare(zoom, xscale);
 	
@@ -520,7 +520,8 @@ void GLThreadObj::drawSquare(float size, float x_factor)
 	}
 	else
 		x_factor = 1.0; /* OSD */
-
+	
+	//
 	glPushMatrix();
 	glScalef(size, size, size);
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -659,7 +660,7 @@ void GLThreadObj::bltPlayBuffer()
 	else if (sleep_us < 1)
 		sleep_us = 1;
 #else
-	cPlayback::SWFramebuffer *buf = playback->getDecBuf();
+	cPlayback::SWFramebuffer* buf = playback->getDecBuf();
 	
 	//
 	if (buf == NULL)
@@ -678,17 +679,6 @@ void GLThreadObj::bltPlayBuffer()
 	
 	if (w == 0 || h == 0)
 		return;
-		
-	AVRational a = buf->AR();
-	
-	//
-	if (a.den != 0 && a.num != 0 && av_cmp_q(a, _mVA))
-	{
-		_mVA = a;
-		// _mVA is the raw buffer's aspect, mVA is the real scaled output aspect
-		av_reduce(&mVA.num, &mVA.den, w * a.num, h * a.den, INT_MAX);
-		mVAchanged = true;
-	}
 
 	// render frame
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
@@ -699,7 +689,7 @@ void GLThreadObj::bltPlayBuffer()
 
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 	
-	// FIXME:
+	/*
 	int64_t apts = buf->apts();
 	int64_t vpts = buf->vpts() + 18000;
 	int rate = buf->rate();
@@ -724,6 +714,7 @@ void GLThreadObj::bltPlayBuffer()
 		else if (sleep_us < 1)
 			sleep_us = 1;
 	}
+	*/
 #endif
 }
 

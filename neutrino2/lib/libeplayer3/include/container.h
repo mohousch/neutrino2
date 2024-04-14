@@ -6,7 +6,8 @@
 
 typedef enum 
 { 
-	CONTAINER_INIT, 
+	CONTAINER_INIT,
+	CONTAINER_INIT_SUB,
 	CONTAINER_ADD, 
 	CONTAINER_CAPABILITIES, 
 	CONTAINER_PLAY, 
@@ -33,7 +34,6 @@ typedef struct Container_s
 //
 extern Container_t FFMPEGContainer;
 
-//
 static Container_t * AvailableContainer[] = 
 {
 	&FFMPEGContainer,

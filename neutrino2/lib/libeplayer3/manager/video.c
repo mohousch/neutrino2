@@ -250,6 +250,12 @@ static int Command(void  *_context, ManagerCmd_t command, void * argument)
         		ret = ManagerDel(context);
         		break;
     		}
+    		
+    		case MANAGER_GET_TRACKCOUNT:
+    		{
+    			*((int*)argument) = (int)TrackCount;
+    			break;
+    		}
 
     		default:
         		video_mgr_err("%s::%s ContainerCmd %d not supported!\n", FILENAME, __FUNCTION__, command);

@@ -1219,9 +1219,9 @@ static int Write(void* _context, void* _out)
 			obuf_size = swr_convert(swr, &obuf, obuf_size, (const uint8_t **)aframe->extended_data, aframe->nb_samples);
 							
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-			/*data[buf_in].apts*/sCURRENT_APTS = sCURRENT_PTS = av_frame_get_best_effort_timestamp(aframe);
+			data[buf_in].apts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(aframe);
 #else
-			/*data[buf_in].apts*/sCURRENT_APTS = sCURRENT_PTS = aframe->best_effort_timestamp;
+			data[buf_in].apts = sCURRENT_PTS = aframe->best_effort_timestamp;
 #endif
 			int o_buf_size = av_samples_get_buffer_size(&out_linesize, out->stream->codec->channels, obuf_size, AV_SAMPLE_FMT_S16, 1);
 							
@@ -1292,8 +1292,8 @@ static int Write(void* _context, void* _out)
 			}
 		}
 #else
-		const AVFrame *frame = NULL;
-		const AVFrame *rgbframe = NULL;
+		AVFrame *frame = NULL;
+		AVFrame *rgbframe = NULL;
 		struct SwsContext *convert = NULL;
 		AVCodecContext* ctx = out->stream->codec;
 
@@ -1305,7 +1305,7 @@ static int Write(void* _context, void* _out)
 	
 		// decode frame
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
-		avcodec_decode_video2(ctx, frame, &got_frame, out->packet);
+		res = avcodec_decode_video2(ctx, frame, &got_frame, out->packet);
 #else
 		res = avcodec_send_packet(ctx, out->packet);
 		
@@ -1329,16 +1329,16 @@ static int Write(void* _context, void* _out)
 #endif
 					
 		// setup swsscaler
-		if (got_frame && ! stillpicture)
+		if (got_frame)
 		{
 			int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 							
-			convert = sws_getCachedContext(convert, ctx->width, ctx->height, ctx->pix_fmt, ctx->width, ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
+			convert = sws_getContext(ctx->width, ctx->height, ctx->pix_fmt, ctx->width, ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
 								
 			if (convert)
 			{
 				// fill				
-				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, (const uint8_t*)data[buf_in].buffer, AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
+				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, data[buf_in].buffer, AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 
 				// scale
 				sws_scale(convert, frame->data, frame->linesize, 0, ctx->height, rgbframe->data, rgbframe->linesize);
@@ -1359,12 +1359,9 @@ static int Write(void* _context, void* _out)
 					data[buf_in].vpts += 90000 * 4 / 10; // 400ms
 				else
 					data[buf_in].vpts += 90000 * 3 / 10; // 300ms
-					
-				//
-				data[buf_in].apts = sCURRENT_APTS;
 
 				//
-				data[buf_in].a = ctx->time_base;
+				data[buf_in].AR = ctx->time_base;
 				
 				//
 				int framerate = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);
@@ -1430,13 +1427,6 @@ static int Write(void* _context, void* _out)
 		{
 			sws_freeContext(convert);
 			convert = NULL;
-		}
-		
-		if (!stillpicture)
-		{
-			buf_num = 0;
-			buf_in = 0;
-			buf_out = 0;
 		}
 		
 		ret = cERR_LINUXDVB_ERROR;

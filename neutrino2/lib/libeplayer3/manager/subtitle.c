@@ -197,9 +197,9 @@ static int Command(void  *_context, ManagerCmd_t command, void * argument)
     		case MANAGER_GET: 
 		{
 			if (TrackCount > 0 && CurrentTrack >= 0)
-			    *((int*)argument) = (int)Tracks[CurrentTrack].Index;
+			    	*((int*)argument) = (int)Tracks[CurrentTrack].Index;
 			else
-			    *((int*)argument) = (int)-1;
+			    	*((int*)argument) = (int) - 1;
 			break;
     		}
 
@@ -258,6 +258,12 @@ static int Command(void  *_context, ManagerCmd_t command, void * argument)
 		{
 			ret = ManagerDel(context);
 			break;
+    		}
+    		
+    		case MANAGER_GET_TRACKCOUNT:
+    		{
+    			*((int*)argument) = (int)TrackCount;
+    			break;
     		}
 
     		default:

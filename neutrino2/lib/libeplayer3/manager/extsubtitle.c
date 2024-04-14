@@ -1,5 +1,5 @@
 /*
- * audio manager handling.
+ * subtitle manager handling.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,27 +32,27 @@
 /* ***************************** */
 #define TRACKWRAP 20
 
-//#define AUDIO_MGR_DEBUG
+//#define EXTSUBTITLE_MGR_DEBUG
 
-#ifdef AUDIO_MGR_DEBUG
+#ifdef EXTSUBTITLE_MGR_DEBUG
 
 static short debug_level = 10;
 
-#define audio_mgr_printf(level, x...) do { \
+#define subtitle_mgr_printf(level, x...) do { \
 if (debug_level >= level) printf(x); } while (0)
 #else
-#define audio_mgr_printf(level, x...)
+#define subtitle_mgr_printf(level, x...)
 #endif
 
-#ifndef AUDIO_MGR_SILENT
-#define audio_mgr_err(x...) do { printf(x); } while (0)
+#ifndef EXTSUBTITLE_MGR_SILENT
+#define subtitle_mgr_err(x...) do { printf(x); } while (0)
 #else
-#define audio_mgr_err(x...)
+#define subtitle_mgr_err(x...)
 #endif
 
 /* Error Constants */
-#define cERR_AUDIO_MGR_NO_ERROR        0
-#define cERR_AUDIO_MGR_ERROR          -1
+#define cERR_SUBTITLE_MGR_NO_ERROR        0
+#define cERR_SUBTITLE_MGR_ERROR          -1
 
 static const char FILENAME[] = __FILE__;
 
@@ -66,7 +66,7 @@ static const char FILENAME[] = __FILE__;
 
 static Track_t * Tracks;
 static int TrackCount = 0;
-static int CurrentTrack = 0; //TRACK[0] as default.
+static int CurrentTrack = 0; //no as default.
 
 /* ***************************** */
 /* Prototypes                    */
@@ -78,8 +78,7 @@ static int CurrentTrack = 0; //TRACK[0] as default.
 
 static int ManagerAdd(Context_t  *context, Track_t track) 
 {
-
-    	audio_mgr_printf(10, "%s::%s name=\"%s\" encoding=\"%s\" id=%d\n", FILENAME, __FUNCTION__, track.Name, 	track.Encoding, track.Index);
+    	subtitle_mgr_printf(10, "%s::%s %s %s %d\n", FILENAME, __FUNCTION__, track.Name, track.Encoding, track.Index);
 
     	if (Tracks == NULL) 
 	{
@@ -87,9 +86,9 @@ static int ManagerAdd(Context_t  *context, Track_t track)
     	}
 
     	if (Tracks == NULL)
-   	{
-        	audio_mgr_err("%s:%s malloc failed\n", FILENAME, __FUNCTION__);
-        	return cERR_AUDIO_MGR_ERROR;
+    	{
+        	subtitle_mgr_err("%s:%s malloc failed\n", FILENAME, __FUNCTION__);
+        	return cERR_SUBTITLE_MGR_ERROR;
     	}
 
     	if (TrackCount < TRACKWRAP) 
@@ -99,24 +98,24 @@ static int ManagerAdd(Context_t  *context, Track_t track)
     	} 
 	else 
 	{
-        	audio_mgr_err("%s:%s TrackCount out if range %d - %d\n", FILENAME, __FUNCTION__, TrackCount, TRACKWRAP);
-        	return cERR_AUDIO_MGR_ERROR;
+        	subtitle_mgr_err("%s:%s TrackCount out if range %d - %d\n", FILENAME, __FUNCTION__, TrackCount, TRACKWRAP);
+        	return cERR_SUBTITLE_MGR_ERROR;
     	}
 
     	if (TrackCount > 0)
-        	context->playback->isAudio = 1;
+        	context->playback->isSubtitle = 1;
 
-    	audio_mgr_printf(10, "%s::%s\n", FILENAME, __FUNCTION__);
+    	subtitle_mgr_printf(10, "%s::%s\n", FILENAME, __FUNCTION__);
 
-    	return cERR_AUDIO_MGR_NO_ERROR;
+    	return cERR_SUBTITLE_MGR_NO_ERROR;
 }
 
 static char ** ManagerList(Context_t  *context) 
 {
-    	int i = 0, j = 0;
     	char ** tracklist = NULL;
+    	int i = 0, j = 0;
 
-    	audio_mgr_printf(10, "%s::%s\n", FILENAME, __FUNCTION__);
+    	subtitle_mgr_printf(10, "%s::%s\n", FILENAME, __FUNCTION__);
 
     	if (Tracks != NULL) 
 	{
@@ -124,7 +123,7 @@ static char ** ManagerList(Context_t  *context)
 
         	if (tracklist == NULL)
         	{
-            		audio_mgr_err("%s:%s malloc failed\n", FILENAME, __FUNCTION__);
+            		subtitle_mgr_err("%s:%s malloc failed\n", FILENAME, __FUNCTION__);
             		return NULL;
         	}
 
@@ -133,10 +132,11 @@ static char ** ManagerList(Context_t  *context)
             		tracklist[j]    = strdup(Tracks[i].Name);
             		tracklist[j+1]  = strdup(Tracks[i].Encoding);
         	}
+
         	tracklist[j] = NULL;
     	}
 
-    	audio_mgr_printf(10, "%s::%s return %p (%d - %d)\n", FILENAME, __FUNCTION__, tracklist, j, TrackCount);
+    	subtitle_mgr_printf(10, "%s::%s return %p (%d - %d)\n", FILENAME, __FUNCTION__, tracklist, j, TrackCount);
 
     	return tracklist;
 }
@@ -145,7 +145,7 @@ static int ManagerDel(Context_t * context)
 {
     	int i = 0;
 
-    	audio_mgr_printf(10, "%s::%s\n", FILENAME, __FUNCTION__);
+    	subtitle_mgr_printf(10, "%s::%s\n", FILENAME, __FUNCTION__);
 
     	if(Tracks != NULL) 
 	{
@@ -153,107 +153,111 @@ static int ManagerDel(Context_t * context)
 		{
             		freeTrack(&Tracks[i]);
         	}
+
         	free(Tracks);
         	Tracks = NULL;
     	} 
 	else
     	{
-        	audio_mgr_err("%s::%s nothing to delete!\n", FILENAME, __FUNCTION__);
-        	return cERR_AUDIO_MGR_ERROR;
+        	subtitle_mgr_err("%s::%s nothing to delete!\n", FILENAME, __FUNCTION__);
+        	return cERR_SUBTITLE_MGR_ERROR;
     	}
 
     	TrackCount = 0;
     	CurrentTrack = 0;
-    	context->playback->isAudio = 0;
+    	context->playback->isSubtitle = 0;
 
-    	audio_mgr_printf(10, "%s::%s return no error\n", FILENAME, __FUNCTION__);
+    	subtitle_mgr_printf(10, "%s::%s return no error\n", FILENAME, __FUNCTION__);
 
-    	return cERR_AUDIO_MGR_NO_ERROR;
+    	return cERR_SUBTITLE_MGR_NO_ERROR;
 }
 
 static int Command(void  *_context, ManagerCmd_t command, void * argument) 
 {
     	Context_t  *context = (Context_t*) _context;
-    	int ret = cERR_AUDIO_MGR_NO_ERROR;
+    	int ret = cERR_SUBTITLE_MGR_NO_ERROR;
 
-    	audio_mgr_printf(10, "%s::%s\n", FILENAME, __FUNCTION__);
+    	subtitle_mgr_printf(50, "%s::%s %d\n", FILENAME, __FUNCTION__, command);
 
     	switch(command) 
 	{
     		case MANAGER_ADD: 
 		{
         		Track_t * track = argument;
-
         		ret = ManagerAdd(context, *track);
         		break;
     		}
 
-    		case MANAGER_LIST: 
-		{
-        		*((char***)argument) = (char **)ManagerList(context);
-        		break;
-    		}
+	    	case MANAGER_LIST: 
+	    	{
+			*((char***)argument) = (char **)ManagerList(context);
+			break;
+	    	}
 
     		case MANAGER_GET: 
 		{
-        		audio_mgr_printf(20, "%s::%s MANAGER_GET\n", FILENAME, __FUNCTION__);
-
-        		if ((TrackCount > 0) && (CurrentTrack >= 0))
-            			*((int*)argument) = (int)Tracks[CurrentTrack].Index;
-        		else
-            			*((int*)argument) = (int) - 1;
-        		break;
+			if (TrackCount > 0 && CurrentTrack >= 0)
+			    	*((int*)argument) = (int)Tracks[CurrentTrack].Index;
+			else
+			    	*((int*)argument) = (int) - 1;
+			break;
     		}
 
     		case MANAGER_GET_TRACK: 
 		{
-        		audio_mgr_printf(20, "%s::%s MANAGER_GET_TRACK\n", FILENAME, __FUNCTION__);
+			subtitle_mgr_printf(20, "%s::%s MANAGER_GET_TRACK\n", FILENAME, __FUNCTION__);
 
-        		if ((TrackCount > 0) && (CurrentTrack >= 0))
-            			*((Track_t**)argument) = (Track_t*) &Tracks[CurrentTrack];
-        		else
-            			*((Track_t**)argument) = NULL;
-        		break;
+			if ((TrackCount > 0) && (CurrentTrack >= 0))
+			{
+			     subtitle_mgr_printf(120, "return %d, %p\n", CurrentTrack, &Tracks[CurrentTrack]);
+			    *((Track_t**)argument) = (Track_t*) &Tracks[CurrentTrack];
+			}
+			else
+			{
+			     subtitle_mgr_printf(20, "return NULL\n");
+			    *((Track_t**)argument) = NULL;
+			}
+			break;
     		}
 
     		case MANAGER_GETENCODING: 
 		{
-        		if ((TrackCount > 0) && (CurrentTrack >= 0))
-            			*((char**)argument) = (char *)strdup(Tracks[CurrentTrack].Encoding);
-        		else
-            			*((char**)argument) = (char *)strdup("");
-        		break;
+			if (TrackCount > 0 && CurrentTrack >= 0)
+			    *((char**)argument) = (char *)strdup(Tracks[CurrentTrack].Encoding);
+			else
+			    *((char**)argument) = (char *)strdup("");
+			break;
     		}
 
     		case MANAGER_GETNAME: 
 		{
-        		if ((TrackCount > 0) && (CurrentTrack >= 0))
-            			*((char**)argument) = (char *)strdup(Tracks[CurrentTrack].Name);
-        		else
-            			*((char**)argument) = (char *)strdup("");
-        		break;
+			if (TrackCount > 0 && CurrentTrack >= 0)
+			    *((char**)argument) = (char *)strdup(Tracks[CurrentTrack].Name);
+			else
+			    *((char**)argument) = (char *)strdup("");
+			break;
     		}
 
     		case MANAGER_SET: 
 		{
-        		int id = *((int*)argument);
+			int id = *((int*)argument);
 
-        		audio_mgr_printf(20, "%s::%s MANAGER_SET id=%d\n", FILENAME, __FUNCTION__, id);
+			subtitle_mgr_printf(20, "%s::%s MANAGER_SET id=%d\n", FILENAME, __FUNCTION__, id);
 
-        		if (id < TrackCount)
-            			CurrentTrack = id;
-        		else
-        		{
-            			audio_mgr_err("%s::%s track id out of range (%d - %d)\n", FILENAME, __FUNCTION__, id, TrackCount);
-            			ret = cERR_AUDIO_MGR_ERROR;
-        		}
-        		break;
+			if (id < TrackCount)
+			    CurrentTrack = id;
+			else
+			{
+			    subtitle_mgr_err("%s::%s track id out of range (%d - %d)\n", FILENAME, __FUNCTION__, id, TrackCount);
+			    ret = cERR_SUBTITLE_MGR_ERROR;
+			}
+			break;
     		}
 
     		case MANAGER_DEL: 
 		{
-        		ret = ManagerDel(context);
-        		break;
+			ret = ManagerDel(context);
+			break;
     		}
     		
     		case MANAGER_GET_TRACKCOUNT:
@@ -263,20 +267,21 @@ static int Command(void  *_context, ManagerCmd_t command, void * argument)
     		}
 
     		default:
-        		audio_mgr_err("%s::%s ContainerCmd %d not supported!\n", FILENAME, __FUNCTION__, command);
-        		ret = cERR_AUDIO_MGR_ERROR;
+			subtitle_mgr_err("%s:%s: ConatinerCmd not supported!", FILENAME, __FUNCTION__);
+			ret = cERR_SUBTITLE_MGR_ERROR;
         		break;
     	}
 
-    	audio_mgr_printf(10, "%s:%s: returning %d\n", FILENAME, __FUNCTION__,ret);
+    	subtitle_mgr_printf(50, "%s:%s: returning %d\n", FILENAME, __FUNCTION__,ret);
 
     	return ret;
 }
 
 ////
-struct Manager_s AudioManager = {
-    	"Audio",
+struct Manager_s ExtSubtitleManager = {
+    	"ExtSubtitle",
     	&Command,
     	NULL
 };
+
 

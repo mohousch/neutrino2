@@ -42,19 +42,5 @@ class CAVPIDSelectWidget : public CMenuTarget
 		int exec(CMenuTarget * parent, const std::string & actionKey);
 };
 
-////
-class CAVPIDChangeExec : public CMenuTarget
-{
-	public:
-		int exec(CMenuTarget* parent, const std::string & actionKey);
-};
-
-////
-class CAVSubPIDChangeExec : public CMenuTarget
-{
-	public:
-		int exec(CMenuTarget* parent, const std::string & actionKey);
-};
-
 #endif
 

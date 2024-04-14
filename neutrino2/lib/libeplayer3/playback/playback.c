@@ -29,7 +29,7 @@
 /* Makros/Constants              */
 /* ***************************** */
 
-//#define PLAYBACK_DEBUG
+#define PLAYBACK_DEBUG
 #define PLAYBACK_SILENT
 
 static short debug_level = 10;
@@ -379,6 +379,38 @@ static int PlaybackOpen(Context_t* context, char * uri)
 	    playback_err("playback alread running\n");
 	    return cERR_PLAYBACK_ERROR;
 	}
+
+	playback_printf(10, "exiting with value 0\n");
+
+	return cERR_PLAYBACK_NO_ERROR;
+}
+
+// open sub
+static int PlaybackOpenSub(Context_t* context, char * uri) 
+{
+	playback_printf(10, "URI=%s\n", uri);
+
+	context->playback->uri = strdup(uri);
+ 
+	//
+	char * extension = NULL;
+
+	getExtension(uri + 7, &extension);
+
+	if(!extension)
+		return cERR_PLAYBACK_ERROR;
+				
+	if (context->container->selectedContainer != NULL)
+	{
+		if(context->container->selectedContainer->Command(context, CONTAINER_INIT_SUB, uri) < 0)
+			return cERR_PLAYBACK_ERROR;
+	} 
+	else 
+	{
+		return cERR_PLAYBACK_ERROR;
+	}
+
+	free(extension);
 
 	playback_printf(10, "exiting with value 0\n");
 
@@ -1071,6 +1103,12 @@ static int Command(void* _context, PlaybackCmd_t command, void * argument)
 		case PLAYBACK_OPEN: 
 		{
 			ret = PlaybackOpen(context, (char*)argument);
+			break;
+		}
+		
+		case PLAYBACK_OPEN_SUB: 
+		{
+			ret = PlaybackOpenSub(context, (char*)argument);
 			break;
 		}
 		

@@ -64,7 +64,7 @@ class GLThreadObj : public OpenThreads::Thread
 		void clear();
 		void blit() { mState.blit = true; }
 		
-		////
+		//
 		int64_t last_apts;
 		AVRational mOA;         /* output window aspect ratio */
 		AVRational mVA;         /* video aspect ratio */
@@ -77,21 +77,11 @@ class GLThreadObj : public OpenThreads::Thread
 		bool mFullscreen;       /* fullscreen? */
 
 	private:
-//		int mX;				/* window size */
-//		int mY;
 		int *mX;
 		int *mY;
-		int _mX[2];         /* output window size */
-		int _mY[2];         /* [0] = normal, [1] = fullscreen */
-		
-		void setOutputFormat(AVRational a, int h, int c)
-		{
-			mOA = a;
-			*mY = h;
-			mCrop = c;
-			mReInit = true;
-		}
-		////
+		int _mX[2];         		/* output window size */
+		int _mY[2];         		/* [0] = normal, [1] = fullscreen */
+		//
 		bool mReInit;			/* setup things for GL */
 		bool mShutDown;			/* if set main loop is left */
 		bool mInitDone;			/* condition predicate */

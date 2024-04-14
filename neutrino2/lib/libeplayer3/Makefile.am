@@ -15,7 +15,7 @@ AM_CPPFLAGS = \
 
 libeplayer3_a_SOURCES =  \
 	container/container.c container/container_ffmpeg.c \
-	manager/manager.c manager/audio.c manager/video.c manager/subtitle.c \
+	manager/manager.c manager/audio.c manager/video.c manager/subtitle.c manager/extsubtitle.c \
 	output/linuxdvb.c output/subtitle.c output/output.c \
 	output/writer/writer.c output/writer/misc.c output/writer/pes.c \
 	output/writer/aac.c output/writer/ac3.c output/writer/dts.c output/writer/wma.c output/writer/mp3.c \

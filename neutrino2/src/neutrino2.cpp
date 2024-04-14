@@ -3851,7 +3851,6 @@ _repeat:
 	}
 	else if( msg == NeutrinoMessages::SHUTDOWN ) 
 	{
-		////test
 		if(CStreamManager::getInstance()->StreamStatus())
 			skipShutdownTimer = true;
 			

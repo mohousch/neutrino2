@@ -29,6 +29,30 @@
 /* Makros/Constants              */
 /* ***************************** */
 
+//#define MANAGER_DEBUG
+
+#ifdef MANAGER_DEBUG
+
+static short debug_level = 10;
+
+#define manager_printf(level, x...) do { \
+if (debug_level >= level) printf(x); } while (0)
+#else
+#define manager_printf(level, x...)
+#endif
+
+#ifndef MANAGER_SILENT
+#define manager_err(x...) do { printf(x); } while (0)
+#else
+#define manager_err(x...)
+#endif
+
+/* Error Constants */
+#define cERR_MANAGER_NO_ERROR         0
+#define cERR_MANAGER_INTERNAL_ERROR   -1
+
+static const char* FILENAME = __FILE__;
+
 /* ***************************** */
 /* Types                         */
 /* ***************************** */
@@ -40,12 +64,14 @@
 extern Manager_t AudioManager;
 extern Manager_t VideoManager;
 extern Manager_t SubtitleManager;
+extern Manager_t ExtSubtitleManager;
 
 ManagerHandler_t ManagerHandler = {
     	"ManagerHandler",
     	&AudioManager,
     	&VideoManager,    
-    	&SubtitleManager,    
+    	&SubtitleManager,
+    	&ExtSubtitleManager,    
 };
 
 /* ***************************** */

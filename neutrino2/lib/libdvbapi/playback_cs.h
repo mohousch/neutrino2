@@ -117,7 +117,7 @@ class cPlayback
 				int mRate;
 		};
 		
-		SWFramebuffer buffers;
+		SWFramebuffer buffers[64];
 #endif
 		
 	public:
@@ -125,7 +125,7 @@ class cPlayback
 
 		bool Open();
 		void Close(void);
-		bool Start(char * filename, const char *const suburi = NULL);
+		bool Start(char * filename);
 		
 		bool Play(void);
 		bool Stop(void);
@@ -143,13 +143,14 @@ class cPlayback
 		bool SetPosition(int position);
 		void FindAllPids(uint16_t *apids, bool *ac3flags, uint16_t *numpida, std::string *language);
 		void FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *language);
+		void AddSubtitleFile(const char* const file);
 
 		cPlayback(int num = 0);
 		~cPlayback(){};	
 		
 #ifdef USE_OPENGL
 #ifndef ENABLE_GSTREAMER
-		cPlayback::SWFramebuffer *getDecBuf(void);
+		cPlayback::SWFramebuffer* getDecBuf(void);
 #endif
 #endif
 };

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-04-11 17:08+0300\n"
+"POT-Creation-Date: 2024-04-13 13:20+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -137,6 +137,10 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:274
 #: ../../src/gui/audio_video_select.cpp:280
 #: ../../src/gui/audio_video_select.cpp:255
+#: ../../src/gui/audio_video_select.cpp:282
+#: ../../src/gui/audio_video_select.cpp:350
+#: ../../src/gui/audio_video_select.cpp:360
+#: ../../src/gui/audio_video_select.cpp:364
 msgid "AV Select"
 msgstr ""
 
@@ -196,6 +200,15 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2124 ../../src/gui/movieplayer.cpp:2134
 #: ../../src/gui/movieplayer.cpp:2136
 msgid "Add"
+msgstr ""
+
+#: ../../src/gui/audio_video_select.cpp:382
+#: ../../src/gui/audio_video_select.cpp:381
+#: ../../src/gui/audio_video_select.cpp:449
+#: ../../src/gui/audio_video_select.cpp:459
+#: ../../src/gui/audio_video_select.cpp:463
+#: ../../src/gui/audio_video_select.cpp:380
+msgid "Add Subtitle File"
 msgstr ""
 
 #: ../../src/gui/channellist.cpp:1806 ../../src/gui/channellist.cpp:1807
@@ -1202,6 +1215,9 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:324
 #: ../../src/gui/audio_video_select.cpp:303
 #: ../../src/gui/audio_video_select.cpp:302 ../../src/gui/audio_select.cpp:155
+#: ../../src/gui/audio_video_select.cpp:397
+#: ../../src/gui/audio_video_select.cpp:407
+#: ../../src/gui/audio_video_select.cpp:411
 msgid "Dolby Digital"
 msgstr ""
 
@@ -2219,6 +2235,8 @@ msgstr ""
 #: ../../src/gui/widget/infobox.cpp:212 ../../src/system/helpers.cpp:1369
 #: ../../src/system/helpers.cpp:1374 ../../src/gui/osd_setup.cpp:1415
 #: ../../src/gui/osd_setup.cpp:1564 ../../src/gui/infoviewer.cpp:1123
+#: ../../src/neutrino2.cpp:3896 ../../src/neutrino2.cpp:3905
+#: ../../src/neutrino2.cpp:4303 ../../src/neutrino2.cpp:4933
 msgid "Information"
 msgstr ""
 
@@ -3077,7 +3095,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4918 ../../src/neutrino2.cpp:4893
 #: ../../src/neutrino2.cpp:4929 ../../src/neutrino2.cpp:4925
 #: ../../src/neutrino2.cpp:4926 ../../src/neutrino2.cpp:4935
-#: ../../src/neutrino2.cpp:4934
+#: ../../src/neutrino2.cpp:4934 ../../src/neutrino2.cpp:4933
 msgid "No neutrino-settings found, Using defaults."
 msgstr ""
 
@@ -3624,6 +3642,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3883 ../../src/neutrino2.cpp:3918
 #: ../../src/neutrino2.cpp:3914 ../../src/neutrino2.cpp:3915
 #: ../../src/neutrino2.cpp:3924 ../../src/neutrino2.cpp:3923
+#: ../../src/neutrino2.cpp:3922
 msgid "Reminder"
 msgstr ""
 
@@ -4443,6 +4462,10 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:347
 #: ../../src/gui/audio_video_select.cpp:349
 #: ../../src/gui/audio_video_select.cpp:348 ../../src/gui/audio_select.cpp:219
+#: ../../src/gui/audio_video_select.cpp:443
+#: ../../src/gui/audio_video_select.cpp:453
+#: ../../src/gui/audio_video_select.cpp:457
+#: ../../src/gui/audio_video_select.cpp:374
 msgid "Stop subtitles"
 msgstr ""
 
@@ -4654,6 +4677,9 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:331
 #: ../../src/gui/audio_video_select.cpp:310
 #: ../../src/gui/audio_video_select.cpp:309
+#: ../../src/gui/audio_video_select.cpp:404
+#: ../../src/gui/audio_video_select.cpp:414
+#: ../../src/gui/audio_video_select.cpp:418
 msgid "TV-System"
 msgstr ""
 
@@ -4782,7 +4808,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4918 ../../src/neutrino2.cpp:4893
 #: ../../src/neutrino2.cpp:4929 ../../src/neutrino2.cpp:4925
 #: ../../src/neutrino2.cpp:4926 ../../src/neutrino2.cpp:4935
-#: ../../src/neutrino2.cpp:4934
+#: ../../src/neutrino2.cpp:4934 ../../src/neutrino2.cpp:4933
 msgid ""
 "The neutrino-settings have been updated.\n"
 "New Options will be set to default."
@@ -5127,6 +5153,9 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:334
 #: ../../src/gui/audio_video_select.cpp:313
 #: ../../src/gui/audio_video_select.cpp:312
+#: ../../src/gui/audio_video_select.cpp:407
+#: ../../src/gui/audio_video_select.cpp:417
+#: ../../src/gui/audio_video_select.cpp:421
 msgid "Video Format"
 msgstr ""
 
@@ -5272,7 +5301,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4282 ../../src/neutrino2.cpp:4264
 #: ../../src/neutrino2.cpp:4299 ../../src/neutrino2.cpp:4295
 #: ../../src/neutrino2.cpp:4296 ../../src/neutrino2.cpp:4305
-#: ../../src/neutrino2.cpp:4304
+#: ../../src/neutrino2.cpp:4304 ../../src/neutrino2.cpp:4303
 msgid "You really want to to stop record ?"
 msgstr ""
 

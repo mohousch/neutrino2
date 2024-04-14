@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-03-25 02:48+0200\n"
+"POT-Creation-Date: 2024-04-13 13:20+0300\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -90,6 +90,9 @@ msgstr "Актер"
 
 msgid "Add"
 msgstr "Добавить"
+
+msgid "Add Subtitle File"
+msgstr "Добавить файл субтитров"
 
 msgid "Add to Bouquets"
 msgstr "Добавить в букеты"
@@ -1290,7 +1293,6 @@ msgstr "Текст меню"
 msgid "Menu Title"
 msgstr "Название меню"
 
-#, fuzzy
 msgid "Menu Title large"
 msgstr "Название меню"
 
