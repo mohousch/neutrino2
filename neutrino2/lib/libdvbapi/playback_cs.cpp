@@ -1449,20 +1449,8 @@ cPlayback::SWFramebuffer* cPlayback::getDecBuf(void)
 	p->rate(data[buf_out].rate);
 	p->vpts(data[buf_out].vpts);
 	p->apts(data[buf_out].apts);
-	p->AR(data[buf_out].AR);
 	
 	av_image_fill_arrays(&data[buf_out].buffer, &data[buf_out].size, &(*p)[0], AV_PIX_FMT_RGB32, data[buf_out].width, data[buf_out].height, 1);
-	
-	buf_out++;
-	buf_num--;
-	buf_out %= 64;
-
-	return p;
-}
-
-Data_t* getDecBuf(void)
-{
-	Data_t* p = &data[buf_out];
 	
 	buf_out++;
 	buf_num--;

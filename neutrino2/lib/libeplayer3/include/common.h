@@ -25,7 +25,6 @@ typedef struct Data_s
 	int size;
 	uint32_t width;
 	uint32_t height;
-	AVRational AR;
 	uint64_t vpts;
 	uint64_t apts;
 	uint32_t rate;

@@ -1359,9 +1359,6 @@ static int Write(void* _context, void* _out)
 					data[buf_in].vpts += 90000 * 4 / 10; // 400ms
 				else
 					data[buf_in].vpts += 90000 * 3 / 10; // 300ms
-
-				//
-				data[buf_in].AR = ctx->time_base;
 				
 				//
 				int framerate = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);
