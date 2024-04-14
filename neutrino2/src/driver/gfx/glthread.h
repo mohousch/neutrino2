@@ -92,18 +92,19 @@ class GLThreadObj : public OpenThreads::Thread
 		std::map<int, neutrino_msg_t> mSpecialMap;
 
 		static void resizecb(int w, int h);
-		void checkReinit(int x, int y);		/* e.g. in case window was resized */
+		void checkReinit(int x, int y);	/* e.g. in case window was resized */
 		static void rendercb();		/* callback for GLUT */
 		void render();			/* actual render function */
 		static void keyboardcb(unsigned char key, int x, int y);
 		static void specialcb(int key, int x, int y);
+		static void mousecb(int key, int state, int x, int y);
 
 		void initKeys();		/* setup key bindings for window */
 		void setupCtx();		/* create the window and make the context current */
 		void setupOSDBuffer();		/* create the OSD buffer */
 		void setupGLObjects();		/* PBOs, textures and stuff */
 		void releaseGLObjects();
-		void eventLoop();		/* enter the GL window event loop */
+//		void eventLoop();		/* enter the GL window event loop */
 		void drawSquare(float size, float x_factor);	/* do not be square */
 		void initDone();		/* "things are now set up", called by this */
 

@@ -375,9 +375,11 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 	}
 	
 	// add subtitle file
+#ifndef USE_OPENGL	
 	AVPIDSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	AVPIDSelector->addItem(new CMenuForwarder(_("Add Subtitle File"), true, subtitle_file.c_str(), this, "add_subtitle"));
+#endif
 
 	//	
 	widget->setTimeOut(g_settings.timing_menu);

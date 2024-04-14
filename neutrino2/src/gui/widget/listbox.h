@@ -90,6 +90,7 @@ class CMenuItem
 		bool marked;
 		bool hidden;
 		bool locked;
+		int state;
 		//
 		int menuItem_type;
 		//
@@ -121,7 +122,7 @@ class CMenuItem
 		unsigned int optionFont;
 		uint32_t optionFontColor;
 
-		bool nLinesItem; // 2 lines Item 
+		bool nLinesItem; // more lines Item 
 
 		CMenuTarget *jumpTarget;
 		std::string actionKey;
@@ -165,6 +166,8 @@ class CMenuItem
 		virtual void setActive(const bool Active);
 		virtual void setMarked(const bool Marked);
 		virtual void setHidden(const bool Hidden);
+		virtual void setLocked(/*char *validpin = NULL*/const bool Locked);
+		virtual void setState(int st);
 		//
 		virtual int getYPosition(void) const { return y; }
 		virtual int getMenuItemType(){ return menuItem_type;};
@@ -204,10 +207,8 @@ class CMenuItem
 		virtual void setChangeObserver(CChangeObserver* c){observ = c;};
 		virtual void enablePullDown(){pulldown = true;};
 		virtual void addOption(const char *opt, const int val = 0){};
-		// locked
-		virtual void setLocked(char *validpin = NULL){ locked = true; AlwaysAsk = true; validPIN = validpin? validpin : (char *)"";};
-		// state : active/locked/hidden/marked/inactive
-		virtual void setState(int state);
+		////
+		virtual int getState(void){return state;};
 };
 
 //// CMenuOptionChooser
@@ -355,7 +356,7 @@ class CMenuForwarder : public CMenuItem
 		virtual const char *getOption(void);
 
 	public:
-		CMenuForwarder(const char * const Text, const bool Active = true, const char* const Option = NULL, CMenuTarget * Target = NULL, const char* const ActionKey = NULL, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const char* const IconName = NULL, const char* const ItemIcon = NULL, const char* const Hint = NULL);
+		CMenuForwarder(const char * const Text, const bool Active = true, /*const int state = ITEM_ACTIVE,*/ const char* const Option = NULL, CMenuTarget * Target = NULL, const char* const ActionKey = NULL, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const char* const IconName = NULL, const char* const ItemIcon = NULL, const char* const Hint = NULL);
 		
 		virtual ~CMenuForwarder();
 		

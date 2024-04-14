@@ -43,8 +43,6 @@
 #include <video_cs.h>
 #include <playback_cs.h>
 
-#include <common.h>
-
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
@@ -63,11 +61,8 @@ int GLHeight;
 extern cVideo *videoDecoder;
 extern cAudio *audioDecoder;
 extern cPlayback *playback;
-extern Data_t* getDecBuf();
-#ifdef ENABLE_GSTREAMER
-extern uint32_t framerate;
-#endif
 
+////
 GLThreadObj::GLThreadObj(int x, int y) : mReInit(true), mShutDown(false), mInitDone(false)
 {
 	mState.width  = x;
@@ -86,7 +81,8 @@ GLThreadObj::GLThreadObj(int x, int y) : mReInit(true), mShutDown(false), mInitD
 	mCrop = DISPLAY_AR_MODE_PANSCAN;
 	zoom = 1.0;
 	xscale = 1.0;
-	mFullscreen = false;
+	const char *tmp = getenv("GLFB_FULLSCREEN");
+	mFullscreen = !!(tmp);
 
 	initKeys();
 }
@@ -165,6 +161,7 @@ void GLThreadObj::run()
 			glutDisplayFunc(GLThreadObj::rendercb);
 			glutKeyboardFunc(GLThreadObj::keyboardcb);
 			glutSpecialFunc(GLThreadObj::specialcb);
+			glutMouseFunc(GLThreadObj::mousecb);
 			glutReshapeFunc(GLThreadObj::resizecb);
 			setupGLObjects();
 			glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
@@ -197,12 +194,12 @@ void GLThreadObj::setupCtx()
 	glutInit(&argc, const_cast<char **>(argv));
 	glutInitWindowSize(*mX, *mY);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-	glutCreateWindow("neutrino2");
+	glutCreateWindow("neutrinoNG2");
 	
 	//
 	GLWinID = glXGetCurrentDrawable();
-	GLxStart = *mX;
-	GLyStart = *mY;
+	GLxStart = 0;
+	GLyStart = 0;
 	GLWidth = getOSDWidth();
 	GLHeight = getOSDHeight();
 }
@@ -213,6 +210,7 @@ void GLThreadObj::setupOSDBuffer()
 	{
 		int fbmem = mState.width * mState.height * 4 * 2;
 		mOSDBuffer.resize(fbmem);
+		
 		dprintf(DEBUG_NORMAL, "GLThreadObj::setupOSDBuffer: OSD buffer set to %d bytes\n", fbmem);
 	}
 }
@@ -259,7 +257,7 @@ void GLThreadObj::rendercb()
 	gThiz->render();
 }
 
-void GLThreadObj::keyboardcb(unsigned char key, int /*x*/, int /*y*/)
+void GLThreadObj::keyboardcb(unsigned char key, int, int)
 {
 	if (key == 'f')
 	{
@@ -280,7 +278,7 @@ void GLThreadObj::keyboardcb(unsigned char key, int /*x*/, int /*y*/)
 	}
 }
 
-void GLThreadObj::specialcb(int key, int /*x*/, int /*y*/)
+void GLThreadObj::specialcb(int key, int, int)
 {
 	std::map<int, neutrino_msg_t>::const_iterator i = gThiz->mSpecialMap.find(key);
 	
@@ -296,6 +294,31 @@ void GLThreadObj::specialcb(int key, int /*x*/, int /*y*/)
 		if(g_RCInput)
 		{
 			g_RCInput->postMsg(i->second, 0);
+		}
+	}
+}
+
+void GLThreadObj::mousecb(int key, int state, int, int)
+{
+	if (key == GLUT_LEFT_BUTTON && state == GLUT_ENTERED)
+	{
+		if(g_RCInput)
+		{
+			g_RCInput->postMsg(CRCInput::RC_ok, 0);
+		}
+	}
+	else if (key == GLUT_RIGHT_BUTTON && state == GLUT_ENTERED)
+	{
+		if(g_RCInput)
+		{
+			g_RCInput->postMsg(CRCInput::RC_home, 0);
+		}
+	}
+	else if (key == GLUT_MIDDLE_BUTTON && state == GLUT_ENTERED)
+	{
+		if(g_RCInput)
+		{
+			g_RCInput->postMsg(CRCInput::RC_setup, 0);
 		}
 	}
 }
@@ -338,7 +361,9 @@ void GLThreadObj::render()
 			glutFullScreen();
 		}
 		else
+		{
 			*mX = *mY * mOA.num / mOA.den;
+		}
 			
 		//
 		glViewport(xoff, yoff, *mX, *mY);
@@ -438,8 +463,6 @@ void GLThreadObj::render()
 
 	// simply limit to 30 Hz, if anyone wants to do this properly, feel free	
 	usleep(sleep_us);
-	
-//	printf("sleep_us: %d\n", sleep_us);
 	
 	glutPostRedisplay();
 }
@@ -652,14 +675,7 @@ void GLThreadObj::bltPlayBuffer()
 	if (playback && !playback->playing)
 		return;
 	
-#ifdef ENABLE_GSTREAMER
-	sleep_us = framerate / 100;
-			
-	if (sleep_us > framerate)
-		sleep_us = framerate;
-	else if (sleep_us < 1)
-		sleep_us = 1;
-#else
+#ifndef ENABLE_GSTREAMER
 	cPlayback::SWFramebuffer* buf = playback->getDecBuf();
 	
 	//

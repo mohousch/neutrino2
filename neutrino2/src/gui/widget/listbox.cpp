@@ -86,6 +86,7 @@ CMenuItem::CMenuItem()
 	marked = false;
 	hidden = false;
 	locked = false;
+	state = ITEM_ACTIVE;
 	
 	//
 	AlwaysAsk = false;
@@ -157,12 +158,23 @@ void CMenuItem::setHidden(const bool Hidden)
 	}
 }
 
-void CMenuItem::setState(int state)
+void CMenuItem::setLocked(/*char *validpin*/const bool Locked)
+{ 
+	locked = Locked; 
+	AlwaysAsk = true; 
+	//validPIN = validpin? validpin : (char *)"";
+	validPIN = g_settings.parentallock_pincode? g_settings.parentallock_pincode : (char *)"";
+}
+
+void CMenuItem::setState(int st)
 {
-	switch (state)
+	state = st;
+	
+	switch (st)
 	{
 		case ITEM_LOCKED:
-			setLocked(g_settings.parentallock_pincode);
+//			setLocked(g_settings.parentallock_pincode);
+			setLocked(true);
 			break;
 			
 		case ITEM_HIDDEN:

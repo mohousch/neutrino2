@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-04-13 13:20+0300\n"
+"POT-Creation-Date: 2024-04-14 12:50+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3203,7 +3203,7 @@ msgid "PCM Delay"
 msgstr ""
 
 #: ../../src/gui/channellist.cpp:135 ../../src/gui/widget/listbox.cpp:199
-#: ../../src/gui/channellist.cpp:131
+#: ../../src/gui/channellist.cpp:131 ../../src/gui/widget/listbox.cpp:211
 msgid "PIN-Code was wrong! Try again."
 msgstr ""
 
@@ -5319,7 +5319,7 @@ msgid ""
 msgstr ""
 
 #: ../../src/gui/channellist.cpp:130 ../../src/gui/widget/listbox.cpp:196
-#: ../../src/gui/channellist.cpp:126
+#: ../../src/gui/channellist.cpp:126 ../../src/gui/widget/listbox.cpp:208
 msgid "Youth protection"
 msgstr ""
 
