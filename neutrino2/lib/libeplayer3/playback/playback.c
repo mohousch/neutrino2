@@ -390,7 +390,11 @@ static int PlaybackOpenSub(Context_t* context, char * uri)
 {
 	playback_printf(10, "URI=%s\n", uri);
 
-	context->playback->uri = strdup(uri);
+	context->playback->suburi = strdup(uri);
+	
+	//
+	context->container->selectedContainer->Command(context, CONTAINER_STOP_SUB, NULL);
+	context->manager->extsubtitle->Command(context, MANAGER_DEL, NULL); 
  
 	//
 	char * extension = NULL;
@@ -424,7 +428,6 @@ static int PlaybackClose(Context_t* context)
 
 	playback_printf(10, "\n");
 	
-	////test
 	// close output
 	context->output->Command(context, OUTPUT_CLOSE, NULL);
 		
@@ -432,7 +435,6 @@ static int PlaybackClose(Context_t* context)
 	context->output->Command(context, OUTPUT_DEL, (void*)"audio");
 	context->output->Command(context, OUTPUT_DEL, (void*)"video");		
 	context->output->Command(context, OUTPUT_DEL, (void*)"subtitle");	
-	////
 
 	if (context->container->Command(context, CONTAINER_DEL, NULL) < 0)
 	{
@@ -519,8 +521,14 @@ static int PlaybackPlay(Context_t * context)
 
 			context->playback->isCreationPhase = 0;	// allow thread to go into next state
 
-			// start container playthread
+			// start ffmpeg container playthread
 			ret = context->container->selectedContainer->Command(context, CONTAINER_PLAY, NULL);
+			
+			// start ffmpeg container subplaythread
+			if (context->playback->suburi != NULL)
+			{
+				context->container->selectedContainer->Command(context, CONTAINER_PLAY_SUB, NULL);
+			}
 			
 			if (ret != 0) 
 			{
@@ -538,6 +546,37 @@ static int PlaybackPlay(Context_t * context)
 
 	return ret;
 }
+
+// play sub
+static int PlaybackPlaySub(Context_t * context) 
+{
+	int ret = cERR_PLAYBACK_NO_ERROR;
+
+	playback_printf(10, "\n");
+	
+	//
+	context->output->Command(context, OUTPUT_OPEN, NULL);
+
+	//
+	if (context->playback->isPlaying) 
+	{
+		// start ffmpeg container playsubthread
+		if (context->playback->suburi != NULL)
+		{
+			context->container->selectedContainer->Command(context, CONTAINER_PLAY_SUB, NULL);
+		}
+			
+		if (ret != 0) 
+		{
+			playback_err("CONTAINER_PLAY failed!\n");
+		}
+	} 
+
+	playback_printf(10, "exiting with value %d\n", ret);
+
+	return ret;
+}
+
 
 // pause
 static int PlaybackPause(Context_t  *context) 
@@ -996,12 +1035,6 @@ static int PlaybackSwitchAudio(Context_t  *context, int* track)
 			{
 				context->output->audio->Command(context, OUTPUT_SWITCH, (void*)"audio");
 			}
-
-			// dummy without effect
-			if (context->container && context->container->selectedContainer)
-			{
-				context->container->selectedContainer->Command(context, CONTAINER_SWITCH_AUDIO, &nextrackid); 
-			}
 		}
 	} 
 	else
@@ -1040,11 +1073,48 @@ static int PlaybackSwitchSubtitle(Context_t *context, int* track)
 			{
 				context->output->subtitle->Command(context, OUTPUT_SWITCH, (void*)"subtitle");
 			}
+		} 
+		else
+		{
+			ret = cERR_PLAYBACK_ERROR;
+			playback_err("no subtitle\n");
+		}
+	} 
+	else
+	{
+		playback_err("not possible\n");
+		ret = cERR_PLAYBACK_ERROR;
+	}
 
-			// dummy without effect
-			if (context->container && context->container->selectedContainer)
+	playback_printf(10, "exiting with value %d\n", ret);
+
+	return ret;
+}
+
+// switch extsubtitle
+static int PlaybackSwitchExtSubtitle(Context_t *context, int* track)
+{
+	int ret = cERR_PLAYBACK_NO_ERROR;
+
+	playback_printf(10, "Track: %d\n", *track);
+
+	if (context && context->playback && context->playback->isPlaying ) 
+	{
+		if (context->manager && context->manager->extsubtitle) 
+		{
+			int trackid;
+			
+			if (context->manager->extsubtitle->Command(context, MANAGER_SET, track) < 0)
 			{
-				context->container->selectedContainer->Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
+				playback_err("manager set track failed\n");
+			}
+
+			context->manager->extsubtitle->Command(context, MANAGER_GET, &trackid);
+		  
+		  	//
+			if (context->output && context->output->subtitle)
+			{
+				context->output->subtitle->Command(context, OUTPUT_SWITCH, (void*)"extsubtitle");
 			}
 		} 
 		else
@@ -1070,12 +1140,6 @@ static int PlaybackInfo(Context_t  *context, char** infoString)
 	int ret = cERR_PLAYBACK_NO_ERROR;
 
 	playback_printf(10, "\n");
-
-	/* konfetti comment: 
-	* removed if clause here (playback running) because its 
-	* not necessary for all container. e.g. in case of ffmpeg 
-	* container playback must not play to get the info.
-	*/
 
 	if (context->container && context->container->selectedContainer)
 		context->container->selectedContainer->Command(context, CONTAINER_INFO, infoString);
@@ -1115,6 +1179,12 @@ static int Command(void* _context, PlaybackCmd_t command, void * argument)
 		case PLAYBACK_CLOSE: 
 		{
 			ret = PlaybackClose(context);
+			break;
+		}
+		
+		case PLAYBACK_PLAY_SUB: 
+		{
+			ret = PlaybackPlaySub(context);
 			break;
 		}
 		
@@ -1182,6 +1252,12 @@ static int Command(void* _context, PlaybackCmd_t command, void * argument)
 		{
 			ret = PlaybackSwitchSubtitle(context, (int*)argument);
 			break;
+		}
+		
+		case PLAYBACK_SWITCH_EXTSUBTITLE: 
+		{
+			ret = PlaybackSwitchExtSubtitle(context, (int*)argument);
+			break;
 		} 
 		
 		case PLAYBACK_INFO: 
@@ -1239,7 +1315,8 @@ PlaybackHandler_t PlaybackHandler = {
 	0,    
 	0,   
 	&Command,
-	"",
+	NULL,
+	NULL,
 	0
 };
 

@@ -39,6 +39,7 @@ class cPlayback
 		int mSpeed;
 		int mAudioStream;
 		int mSubStream;
+		int mExtSubStream;
 		
 #ifdef USE_OPENGL
 	public:
@@ -131,6 +132,7 @@ class cPlayback
 		bool Stop(void);
 		bool SetAPid(unsigned short pid);
 		bool SetSubPid(short pid);
+		bool SetExtSubPid(short pid);
 
 #if ENABLE_GSTREAMER
 		void trickSeek(double ratio);
@@ -143,6 +145,7 @@ class cPlayback
 		bool SetPosition(int position);
 		void FindAllPids(uint16_t *apids, bool *ac3flags, uint16_t *numpida, std::string *language);
 		void FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *language);
+		void FindAllExtSubPids(uint16_t *apids, uint16_t *numpida, std::string *language);
 		void AddSubtitleFile(const char* const file);
 
 		cPlayback(int num = 0);

@@ -502,6 +502,7 @@ bool cPlayback::Open()
 	
 	mAudioStream = 0;
 	mSubStream = -1;
+	mExtSubStream = -1;
 	mSpeed = 0;
 	playing = false;
 	
@@ -876,6 +877,25 @@ bool cPlayback::SetSubPid(short pid)
 			player->playback->Command(player, PLAYBACK_SWITCH_SUBTITLE, (void*)&track);
 
 		mSubStream = pid;
+	}
+#endif	
+
+	return true;
+}
+
+bool cPlayback::SetExtSubPid(short pid)
+{
+	printf("cPlayback::SetExtSubPid: curpid:%d nextpid:%d\n", mSubStream, pid);
+	
+#ifndef ENABLE_GSTREAMER
+	int track = pid;
+
+	if(pid != mExtSubStream)
+	{
+		if(player && player->playback)
+			player->playback->Command(player, PLAYBACK_SWITCH_EXTSUBTITLE, (void*)&track);
+
+		mExtSubStream = pid;
 	}
 #endif	
 
@@ -1424,13 +1444,59 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 #endif
 }
 
+////
+// subs pids
+void cPlayback::FindAllExtSubPids(uint16_t *apids, uint16_t *numpida, std::string *language)
+{
+	printf("cPlayback::FindAllExtSubPids:\n");
+
+#ifndef ENABLE_GSTREAMER
+	char ** TrackList = NULL;
+	
+	if(player && player->manager && player->manager->extsubtitle) 
+	{
+		player->manager->extsubtitle->Command(player, MANAGER_LIST, (void*)&TrackList);
+
+		if (TrackList != NULL) 
+		{
+			int i = 0, j = 0;
+
+			for (i = 0, j = 0; TrackList[i] != NULL; i += 2, j++) 
+			{
+				printf("\t%s - %s\n", TrackList[i], TrackList[i + 1]);
+				
+				apids[j] = j;
+
+				language[j] = "Sub";
+
+				language[j] = TrackList[i];
+				
+				language[j] += " (";
+				language[j] += TrackList[i + 1];
+				language[j] += ")";
+				
+				free(TrackList[i]);
+				free(TrackList[i + 1]);
+			}
+
+			free(TrackList);
+			*numpida = j;
+		}
+	}
+#endif
+}
+
 //
 void cPlayback::AddSubtitleFile(const char* const file)
 {
 	printf("cPlayback::AddSubtitleFile: %s\n", file? file : "null");
 	
 #ifndef ENABLE_GSTREAMER
-	player->playback->Command(player, PLAYBACK_OPEN_SUB, (char *)file);
+	if (file != NULL)
+	{
+		player->playback->Command(player, PLAYBACK_OPEN_SUB, (char *)file);
+		player->playback->Command(player, PLAYBACK_PLAY_SUB, NULL);
+	}
 #endif
 }
 

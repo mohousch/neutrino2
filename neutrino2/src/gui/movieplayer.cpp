@@ -110,6 +110,8 @@ extern int currentsdvbpid;
 extern int currentstxtpid;
 extern int currentspid;
 //
+extern int currentextspid;
+//
 extern int dvbsub_stop();
 extern int dvbsub_start(int pid, bool isEplayer);
 extern int dvbsub_pause();
@@ -354,10 +356,13 @@ void CMoviePlayerGui::startSubtitles(bool show)
 	else if (currentstxtpid >= 0)
 		currentspid = currentstxtpid;
 		
-	dprintf(DEBUG_NORMAL, "startSubtitles: currentspid:%d\n", currentspid);
+	dprintf(DEBUG_NORMAL, "CMoviePlayerGui::startSubtitles: currentspid:%d currentextspid:%d\n", currentspid, currentextspid);
 		
 	if(playback)
+	{
 		playback->SetSubPid(currentspid);
+		playback->SetExtSubPid(currentextspid);
+	}
 	
 #ifndef ENABLE_GSTREAMER	
 	if (currentstxtpid >= 0)
@@ -377,13 +382,15 @@ void CMoviePlayerGui::startSubtitles(bool show)
 
 void CMoviePlayerGui::stopSubtitles()
 {
-	dprintf(DEBUG_NORMAL, "stopSubtitles: currentspid:%d\n", currentspid);
+	dprintf(DEBUG_NORMAL, "CMoviePlayerGui::stopSubtitles: currentspid:%d\n", currentspid);
 	
 	if(playback)
+	{
 		playback->SetSubPid(-1);
+		playback->SetExtSubPid(-1);
+	}
 	
 #ifndef ENABLE_GSTREAMER	
-//	tuxtx_pause_subtitle(true, true);
 	if (currentstxtpid >= 0)
 	{
 		tuxtx_stop_subtitle();

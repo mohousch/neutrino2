@@ -63,6 +63,10 @@ unsigned short numpids = 0;
 int currentsdvbpid = -1;
 int currentstxtpid = -1;
 int currentspid = -1;
+////
+unsigned short extspids[10];
+unsigned short extnumpids = 0;
+int currentextspid = -1;
 std::string subtitle_file;
 //
 extern cPlayback *playback;
@@ -131,15 +135,14 @@ const keyval AC3_OPTIONS[AC3_OPTION_COUNT] =
 //
 int CAVPIDSelectWidget::exec(CMenuTarget * parent, const std::string & actionKey)
 {
-//	dprintf(DEBUG_NORMAL, "CAVPIDSelectWidget::exec: %s\n", actionKey.c_str());
-	dprintf(DEBUG_NORMAL, "CAVPIDSelectWidget::exec: %s (currentapid:%d) (currentspid:%d)\n", actionKey.c_str(), currentapid, currentspid);
+	dprintf(DEBUG_NORMAL, "CAVPIDSelectWidget::exec: %s (currentapid:%d) (currentspid:%d) (currentextspid:%d)\n", actionKey.c_str(), currentapid, currentspid, currentextspid);
 	
 	int res = CMenuTarget::RETURN_REPAINT;
 
 	if (parent) 
 		parent->hide();
 		
-	////
+	// apids
 	unsigned int sel = atoi(actionKey.c_str());
 
 	if (currentapid != apids[sel]) 
@@ -151,8 +154,6 @@ int CAVPIDSelectWidget::exec(CMenuTarget * parent, const std::string & actionKey
 			playback->SetAPid(currentapid);
 		
 		ac3state = currentac3? CInfoViewer::AC3_ACTIVE : CInfoViewer::NO_AC3;
-		
-		dprintf(DEBUG_NORMAL, "CAPIDSelect::exec: apid changed to %d\n", currentapid);
 		
 		return RETURN_EXIT_ALL;
 	}
@@ -206,24 +207,23 @@ int CAVPIDSelectWidget::exec(CMenuTarget * parent, const std::string & actionKey
 		currentsdvbpid = -1;
 		currentstxtpid = -1;
 		currentspid = -1;
+		currentextspid = -1;
 		
 		if(playback)
+		{
 			playback->SetSubPid(-1);
+			playback->SetExtSubPid(-1);
+		}
 			
 		return CMenuTarget::RETURN_EXIT_ALL;
-	}
-#endif
-	else
-	////
-		
-	if(actionKey == "add_subtitle")
+	}	
+	else if(actionKey == "add_subtitle")
 	{
 		CFileBrowser fileBrowser;
 		CFileFilter fileFilter;
 		fileFilter.addFilter("srt");
 		fileFilter.addFilter("ass");
 		fileFilter.addFilter("ass");
-		fileFilter.addFilter("ts"); // for testing
 		fileBrowser.Filter = &fileFilter;
 		
 		if (fileBrowser.exec(g_settings.network_nfs_recordingdir) == true)
@@ -236,11 +236,17 @@ int CAVPIDSelectWidget::exec(CMenuTarget * parent, const std::string & actionKey
 				playback->AddSubtitleFile(fileBrowser.getSelectedFile()->Name.c_str());
 		}
 		
+		currentsdvbpid = -1;
+		currentstxtpid = -1;
+		currentspid = -1;
+		currentextspid = -1;
+		
 		hide();
 		showAudioDialog();
 		
 		return CMenuTarget::RETURN_EXIT_ALL;
 	}
+#endif
 
 	res = showAudioDialog();
 
@@ -291,7 +297,6 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 	}
 	
 	// audio pids
-//	CAVPIDChangeExec AVPIDChanger;
 	numpida = 0;
 	
 	if(playback)
@@ -312,7 +317,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 				apidtitle = language[count];
 			}
 			
-			item = new CMenuForwarder(apidtitle.c_str(), true, NULL, /*&AVPIDChanger*/this, apidnumber, CRCInput::convertDigitToKey(count + 1)), (count == currentapid);
+			item = new CMenuForwarder(apidtitle.c_str(), true, NULL, this, apidnumber, CRCInput::convertDigitToKey(count + 1)), (count == currentapid);
 			
 			if (currentapid == count)
 				item->setIcon1(NEUTRINO_ICON_MARK);
@@ -338,8 +343,6 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 	AVPIDSelector->addItem(new CMenuOptionChooser(_("Video Format"), &g_settings.video_Format, VIDEOMENU_VIDEOFORMAT_OPTIONS, VIDEOMENU_VIDEOFORMAT_OPTION_COUNT, true, CVideoSettings::getInstance()->videoSetupNotifier, CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW));
 	
 	// subs
-//	CAVSubPIDChangeExec AVSubPIDChanger;
-	
 	numpids = 0;
 	
 	if(playback)
@@ -367,18 +370,48 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 			sprintf(spidnumber, "%s:%d", spidtitle.c_str(), count); // dont change this
 #endif
 
-			AVPIDSelector->addItem(new CMenuForwarder(spidtitle.c_str(), currentspid == count? false : true, NULL, /*&AVSubPIDChanger*/this, spidnumber, CRCInput::convertDigitToKey(count + 1)));
+			AVPIDSelector->addItem(new CMenuForwarder(spidtitle.c_str(), currentspid == count? false : true, NULL, this, spidnumber, CRCInput::convertDigitToKey(count + 1)));
 		}
-		
-		if (numpids)
-			AVPIDSelector->addItem(new CMenuForwarder(_("Stop subtitles"), true, NULL, /*&AVSubPIDChanger*/this, "off", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE));
 	}
 	
 	// add subtitle file
-#ifndef USE_OPENGL	
+#ifndef ENABLE_GSTREAMER	
 	AVPIDSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	AVPIDSelector->addItem(new CMenuForwarder(_("Add Subtitle File"), true, subtitle_file.c_str(), this, "add_subtitle"));
+	
+	//
+	extnumpids = 0;
+	
+	if(playback)
+		playback->FindAllExtSubPids(extspids, &extnumpids, language);
+	
+	if (extnumpids > 0) 
+	{
+
+		for (int count = 0; count < extnumpids; count++) 
+		{
+			char spidnumber[64];
+			
+			std::string spidtitle = "Sub ";
+
+			// language
+			if (!language[count].empty())
+			{
+				spidtitle = language[count];
+			}
+			
+			sprintf(spidnumber, "%s:%d", spidtitle.c_str(), count); // dont change this
+
+			AVPIDSelector->addItem(new CMenuForwarder(spidtitle.c_str(), currentextspid == count? false : true, NULL, this, spidnumber, CRCInput::convertDigitToKey(count + 1)));
+		}
+	}
+	
+	if (extnumpids || numpids)
+	{
+		AVPIDSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+		AVPIDSelector->addItem(new CMenuForwarder(_("Stop subtitles"), true, NULL, this, "off", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE));
+	}
 #endif
 
 	//	

@@ -13,7 +13,8 @@ typedef enum
 	PLAYBACK_OPEN,
 	PLAYBACK_OPEN_SUB,
 	PLAYBACK_CLOSE, 
-	PLAYBACK_PLAY, 
+	PLAYBACK_PLAY,
+	PLAYBACK_PLAY_SUB,
 	PLAYBACK_STOP, 
 	PLAYBACK_PAUSE, 
 	PLAYBACK_CONTINUE, 
@@ -25,6 +26,7 @@ typedef enum
 	PLAYBACK_LENGTH, 
 	PLAYBACK_SWITCH_AUDIO, 	
 	PLAYBACK_SWITCH_SUBTITLE,
+	PLAYBACK_SWITCH_EXTSUBTITLE,
 	PLAYBACK_INFO, 
 	PLAYBACK_SLOWMOTION, 
 	PLAYBACK_FASTBACKWARD, 
@@ -58,6 +60,7 @@ typedef struct PlaybackHandler_s
 
 	int (* Command) (void  *, PlaybackCmd_t, void *);
 	char * uri;
+	char* suburi;
 	off_t size;
 } PlaybackHandler_t;
 

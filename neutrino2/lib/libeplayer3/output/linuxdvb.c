@@ -1431,12 +1431,14 @@ static int Write(void* _context, void* _out)
 			convert = NULL;
 		}
 		
+		/*
 		if (!stillpicture)
 		{
 			buf_num = 0;
 			buf_in = 0;
 			buf_out = 0;
 		}
+		*/
 		
 		ret = cERR_LINUXDVB_ERROR;
 #endif

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-04-14 12:50+0300\n"
+"POT-Creation-Date: 2024-04-15 20:34+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -141,6 +141,15 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:350
 #: ../../src/gui/audio_video_select.cpp:360
 #: ../../src/gui/audio_video_select.cpp:364
+#: ../../src/gui/audio_video_select.cpp:286
+#: ../../src/gui/audio_video_select.cpp:299
+#: ../../src/gui/audio_video_select.cpp:313
+#: ../../src/gui/audio_video_select.cpp:302
+#: ../../src/gui/audio_video_select.cpp:307
+#: ../../src/gui/audio_video_select.cpp:304
+#: ../../src/gui/audio_video_select.cpp:305
+#: ../../src/gui/audio_video_select.cpp:312
+#: ../../src/gui/audio_video_select.cpp:287
 msgid "AV Select"
 msgstr ""
 
@@ -208,6 +217,15 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:459
 #: ../../src/gui/audio_video_select.cpp:463
 #: ../../src/gui/audio_video_select.cpp:380
+#: ../../src/gui/audio_video_select.cpp:384
+#: ../../src/gui/audio_video_select.cpp:397
+#: ../../src/gui/audio_video_select.cpp:411
+#: ../../src/gui/audio_video_select.cpp:400
+#: ../../src/gui/audio_video_select.cpp:405
+#: ../../src/gui/audio_video_select.cpp:402
+#: ../../src/gui/audio_video_select.cpp:403
+#: ../../src/gui/audio_video_select.cpp:410
+#: ../../src/gui/audio_video_select.cpp:409
 msgid "Add Subtitle File"
 msgstr ""
 
@@ -1218,6 +1236,14 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:397
 #: ../../src/gui/audio_video_select.cpp:407
 #: ../../src/gui/audio_video_select.cpp:411
+#: ../../src/gui/audio_video_select.cpp:346
+#: ../../src/gui/audio_video_select.cpp:360
+#: ../../src/gui/audio_video_select.cpp:349
+#: ../../src/gui/audio_video_select.cpp:354
+#: ../../src/gui/audio_video_select.cpp:351
+#: ../../src/gui/audio_video_select.cpp:352
+#: ../../src/gui/audio_video_select.cpp:359
+#: ../../src/gui/audio_video_select.cpp:358
 msgid "Dolby Digital"
 msgstr ""
 
@@ -2237,6 +2263,8 @@ msgstr ""
 #: ../../src/gui/osd_setup.cpp:1564 ../../src/gui/infoviewer.cpp:1123
 #: ../../src/neutrino2.cpp:3896 ../../src/neutrino2.cpp:3905
 #: ../../src/neutrino2.cpp:4303 ../../src/neutrino2.cpp:4933
+#: ../../src/gui/movieplayer.cpp:2273 ../../src/gui/movieplayer.cpp:2303
+#: ../../src/gui/movieplayer.cpp:2256 ../../src/gui/movieplayer.cpp:2286
 msgid "Information"
 msgstr ""
 
@@ -3204,6 +3232,7 @@ msgstr ""
 
 #: ../../src/gui/channellist.cpp:135 ../../src/gui/widget/listbox.cpp:199
 #: ../../src/gui/channellist.cpp:131 ../../src/gui/widget/listbox.cpp:211
+#: ../../src/gui/widget/listbox.cpp:209
 msgid "PIN-Code was wrong! Try again."
 msgstr ""
 
@@ -3362,6 +3391,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2329 ../../src/gui/movieplayer.cpp:2313
 #: ../../src/gui/movieplayer.cpp:2316 ../../src/gui/movieplayer.cpp:2326
 #: ../../src/gui/movieplayer.cpp:2328 ../../src/gui/movieplayer.cpp:2249
+#: ../../src/gui/movieplayer.cpp:2273 ../../src/gui/movieplayer.cpp:2256
 msgid "Prefer TMDB Infos"
 msgstr ""
 
@@ -4466,6 +4496,21 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:453
 #: ../../src/gui/audio_video_select.cpp:457
 #: ../../src/gui/audio_video_select.cpp:374
+#: ../../src/gui/audio_video_select.cpp:390
+#: ../../src/gui/audio_video_select.cpp:428
+#: ../../src/gui/audio_video_select.cpp:404
+#: ../../src/gui/audio_video_select.cpp:442
+#: ../../src/gui/audio_video_select.cpp:393
+#: ../../src/gui/audio_video_select.cpp:431
+#: ../../src/gui/audio_video_select.cpp:398
+#: ../../src/gui/audio_video_select.cpp:436
+#: ../../src/gui/audio_video_select.cpp:395
+#: ../../src/gui/audio_video_select.cpp:433
+#: ../../src/gui/audio_video_select.cpp:396
+#: ../../src/gui/audio_video_select.cpp:434
+#: ../../src/gui/audio_video_select.cpp:403
+#: ../../src/gui/audio_video_select.cpp:441
+#: ../../src/gui/audio_video_select.cpp:413
 msgid "Stop subtitles"
 msgstr ""
 
@@ -4601,6 +4646,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:2359 ../../src/gui/movieplayer.cpp:2343
 #: ../../src/gui/movieplayer.cpp:2346 ../../src/gui/movieplayer.cpp:2356
 #: ../../src/gui/movieplayer.cpp:2358 ../../src/gui/movieplayer.cpp:2279
+#: ../../src/gui/movieplayer.cpp:2303 ../../src/gui/movieplayer.cpp:2286
 msgid "TMDB Infos are not available"
 msgstr ""
 
@@ -4680,6 +4726,14 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:404
 #: ../../src/gui/audio_video_select.cpp:414
 #: ../../src/gui/audio_video_select.cpp:418
+#: ../../src/gui/audio_video_select.cpp:353
+#: ../../src/gui/audio_video_select.cpp:367
+#: ../../src/gui/audio_video_select.cpp:356
+#: ../../src/gui/audio_video_select.cpp:361
+#: ../../src/gui/audio_video_select.cpp:358
+#: ../../src/gui/audio_video_select.cpp:359
+#: ../../src/gui/audio_video_select.cpp:366
+#: ../../src/gui/audio_video_select.cpp:365
 msgid "TV-System"
 msgstr ""
 
@@ -5156,6 +5210,14 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:407
 #: ../../src/gui/audio_video_select.cpp:417
 #: ../../src/gui/audio_video_select.cpp:421
+#: ../../src/gui/audio_video_select.cpp:356
+#: ../../src/gui/audio_video_select.cpp:370
+#: ../../src/gui/audio_video_select.cpp:359
+#: ../../src/gui/audio_video_select.cpp:364
+#: ../../src/gui/audio_video_select.cpp:361
+#: ../../src/gui/audio_video_select.cpp:362
+#: ../../src/gui/audio_video_select.cpp:369
+#: ../../src/gui/audio_video_select.cpp:368
 msgid "Video Format"
 msgstr ""
 
@@ -5320,6 +5382,7 @@ msgstr ""
 
 #: ../../src/gui/channellist.cpp:130 ../../src/gui/widget/listbox.cpp:196
 #: ../../src/gui/channellist.cpp:126 ../../src/gui/widget/listbox.cpp:208
+#: ../../src/gui/widget/listbox.cpp:206
 msgid "Youth protection"
 msgstr ""
 

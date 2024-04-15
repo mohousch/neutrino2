@@ -133,7 +133,7 @@ static int Command(void  *_context, ContainerCmd_t command, void * argument)
 //
 ContainerHandler_t ContainerHandler = 
 {
-	"Output",
+	"Container",
 	NULL,
 	Command
 };

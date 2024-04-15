@@ -66,7 +66,7 @@ static const char FILENAME[] = __FILE__;
 
 static Track_t * Tracks;
 static int TrackCount = 0;
-static int CurrentTrack = 0; //no as default.
+static int CurrentTrack = -1; //no as default.
 
 /* ***************************** */
 /* Prototypes                    */
@@ -164,7 +164,7 @@ static int ManagerDel(Context_t * context)
     	}
 
     	TrackCount = 0;
-    	CurrentTrack = 0;
+    	CurrentTrack = -1;
     	context->playback->isSubtitle = 0;
 
     	subtitle_mgr_printf(10, "%s::%s return no error\n", FILENAME, __FUNCTION__);
