@@ -1329,14 +1329,17 @@ static int Write(void* _context, void* _out)
 #endif
 					
 		// setup swsscaler
-		if (got_frame)
+		if (got_frame && !stillpicture)
 		{
 			int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 							
-			convert = sws_getContext(ctx->width, ctx->height, ctx->pix_fmt, ctx->width, ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
+			convert = sws_getCachedContext(convert, ctx->width, ctx->height, ctx->pix_fmt, ctx->width, ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
 								
 			if (convert)
 			{
+				//
+				getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
+				
 				// fill				
 				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, data[buf_in].buffer, AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 
@@ -1405,6 +1408,8 @@ static int Write(void* _context, void* _out)
 					buf_out %= 64;
 					buf_num--;
 				}
+				
+				releaseLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 			}
 		}
 		
@@ -1424,6 +1429,13 @@ static int Write(void* _context, void* _out)
 		{
 			sws_freeContext(convert);
 			convert = NULL;
+		}
+		
+		if (!stillpicture)
+		{
+			buf_num = 0;
+			buf_in = 0;
+			buf_out = 0;
 		}
 		
 		ret = cERR_LINUXDVB_ERROR;

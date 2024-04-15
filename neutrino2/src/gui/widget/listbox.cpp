@@ -158,11 +158,10 @@ void CMenuItem::setHidden(const bool Hidden)
 	}
 }
 
-void CMenuItem::setLocked(/*char *validpin*/const bool Locked)
+void CMenuItem::setLocked(const bool Locked)
 { 
 	locked = Locked; 
 	AlwaysAsk = true; 
-	//validPIN = validpin? validpin : (char *)"";
 	validPIN = g_settings.parentallock_pincode? g_settings.parentallock_pincode : (char *)"";
 }
 
@@ -173,7 +172,6 @@ void CMenuItem::setState(int st)
 	switch (st)
 	{
 		case ITEM_LOCKED:
-//			setLocked(g_settings.parentallock_pincode);
 			setLocked(true);
 			break;
 			

@@ -300,6 +300,7 @@ void GLThreadObj::specialcb(int key, int, int)
 
 void GLThreadObj::mousecb(int key, int state, int, int)
 {
+/*
 	if (key == GLUT_LEFT_BUTTON && state == GLUT_ENTERED)
 	{
 		if(g_RCInput)
@@ -321,6 +322,7 @@ void GLThreadObj::mousecb(int key, int state, int, int)
 			g_RCInput->postMsg(CRCInput::RC_setup, 0);
 		}
 	}
+*/
 }
   
 int sleep_us = 30000;

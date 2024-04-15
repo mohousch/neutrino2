@@ -166,7 +166,7 @@ class CMenuItem
 		virtual void setActive(const bool Active);
 		virtual void setMarked(const bool Marked);
 		virtual void setHidden(const bool Hidden);
-		virtual void setLocked(/*char *validpin = NULL*/const bool Locked);
+		virtual void setLocked(const bool Locked);
 		virtual void setState(int st);
 		//
 		virtual int getYPosition(void) const { return y; }
