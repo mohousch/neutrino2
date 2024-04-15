@@ -246,6 +246,8 @@ int CAVPIDSelectWidget::exec(CMenuTarget * parent, const std::string & actionKey
 				playback->AddSubtitleFile(fileBrowser.getSelectedFile()->Name.c_str());
 		}
 		
+		currentextspid = -1;
+		
 		hide();
 		showAudioDialog();
 		
