@@ -60,13 +60,11 @@ unsigned int ac3state = CInfoViewer::NO_AC3;
 //
 unsigned short spids[10];
 unsigned short numpids = 0;
-int currentsdvbpid = -1;
-int currentstxtpid = -1;
 int currentspid = -1;
 ////
 unsigned short extspids[10];
 unsigned short extnumpids = 0;
-int currentextspid = -1;
+int currentextspid = 0;
 std::string subtitle_file;
 //
 extern cPlayback *playback;
@@ -182,11 +180,10 @@ int CAVPIDSelectWidget::exec(CMenuTarget * parent, const std::string & actionKey
 	{
 		char const * pidptr = strchr(actionKey.c_str(), ':');
 		
-		currentspid = currentsdvbpid = atoi(pidptr + 1);
-		currentstxtpid = -1;
+		currentspid = atoi(pidptr + 1);
 		
 		if(playback)
-			playback->SetSubPid(currentsdvbpid);
+			playback->SetSubPid(currentspid);
 			
 		return CMenuTarget::RETURN_EXIT_ALL;
 	}
@@ -194,20 +191,16 @@ int CAVPIDSelectWidget::exec(CMenuTarget * parent, const std::string & actionKey
 	{
 		char const * pidptr = strchr(actionKey.c_str(), ':');
 		
-		currentspid = currentstxtpid = atoi(pidptr + 1);
-		currentsdvbpid = -1;
+		currentspid = atoi(pidptr + 1);
 		
 		if(playback)
-			playback->SetSubPid(currentstxtpid);
+			playback->SetSubPid(currentspid);
 			
 		return CMenuTarget::RETURN_EXIT_ALL;		
 	}
 	else if(actionKey == "off") 
 	{
-		currentsdvbpid = -1;
-		currentstxtpid = -1;
 		currentspid = -1;
-		currentextspid = -1;
 		
 		if(playback)
 		{
@@ -236,13 +229,7 @@ int CAVPIDSelectWidget::exec(CMenuTarget * parent, const std::string & actionKey
 				playback->AddSubtitleFile(fileBrowser.getSelectedFile()->Name.c_str());
 		}
 		
-		currentsdvbpid = -1;
-		currentstxtpid = -1;
 		currentspid = -1;
-		currentextspid = -1;
-		
-		hide();
-		showAudioDialog();
 		
 		return CMenuTarget::RETURN_EXIT_ALL;
 	}

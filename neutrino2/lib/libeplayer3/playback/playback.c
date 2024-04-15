@@ -524,12 +524,6 @@ static int PlaybackPlay(Context_t * context)
 			// start ffmpeg container playthread
 			ret = context->container->selectedContainer->Command(context, CONTAINER_PLAY, NULL);
 			
-			// start ffmpeg container subplaythread
-			if (context->playback->suburi != NULL)
-			{
-				context->container->selectedContainer->Command(context, CONTAINER_PLAY_SUB, NULL);
-			}
-			
 			if (ret != 0) 
 			{
 				playback_err("CONTAINER_PLAY failed!\n");
@@ -1182,15 +1176,15 @@ static int Command(void* _context, PlaybackCmd_t command, void * argument)
 			break;
 		}
 		
-		case PLAYBACK_PLAY_SUB: 
-		{
-			ret = PlaybackPlaySub(context);
-			break;
-		}
-		
 		case PLAYBACK_PLAY: 
 		{
 			ret = PlaybackPlay(context);
+			break;
+		}
+		
+		case PLAYBACK_PLAY_SUB: 
+		{
+			ret = PlaybackPlaySub(context);
 			break;
 		}
 		

@@ -106,11 +106,7 @@
 extern unsigned int ac3state;
 extern unsigned int currentapid;
 //
-extern int currentsdvbpid;
-extern int currentstxtpid;
 extern int currentspid;
-//
-extern int currentextspid;
 //
 extern int dvbsub_stop();
 extern int dvbsub_start(int pid, bool isEplayer);
@@ -350,28 +346,23 @@ void CMoviePlayerGui::killMovieInfoViewer(void)
 }
 
 void CMoviePlayerGui::startSubtitles(bool show)
-{
-	if (currentsdvbpid >= 0)
-		currentspid = currentsdvbpid;
-	else if (currentstxtpid >= 0)
-		currentspid = currentstxtpid;
-		
-	dprintf(DEBUG_NORMAL, "CMoviePlayerGui::startSubtitles: currentspid:%d currentextspid:%d\n", currentspid, currentextspid);
+{	
+	dprintf(DEBUG_NORMAL, "CMoviePlayerGui::startSubtitles: currentspid:%d\n", currentspid);
 		
 	if(playback)
 	{
 		playback->SetSubPid(currentspid);
-		playback->SetExtSubPid(currentextspid);
+		playback->SetExtSubPid(currentspid);
 	}
 	
 #ifndef ENABLE_GSTREAMER	
-	if (currentstxtpid >= 0)
+	if (currentspid >= 0)
 	{
 		int txtpage = 0;
 		
 		if(!playlist[selected].vtxtPids.empty())
 		{
-			txtpage = playlist[selected].vtxtPids[currentstxtpid].page;
+			txtpage = playlist[selected].vtxtPids[currentspid].page;
 		}
 			
 		tuxtx_main(0, txtpage, true);
@@ -391,7 +382,7 @@ void CMoviePlayerGui::stopSubtitles()
 	}
 	
 #ifndef ENABLE_GSTREAMER	
-	if (currentstxtpid >= 0)
+	if (currentspid >= 0)
 	{
 		tuxtx_stop_subtitle();
 	}
@@ -469,8 +460,6 @@ int CMoviePlayerGui::exec(CMenuTarget * parent, const std::string & actionKey)
 	restoreNeutrino();
 	
 	currentapid = 0;
-	currentsdvbpid = -1;
-	currentstxtpid = -1;
 	currentspid = -1;
 	
 	//
