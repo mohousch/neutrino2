@@ -107,6 +107,8 @@ extern unsigned int ac3state;
 extern unsigned int currentapid;
 //
 extern int currentspid;
+extern bool isEXtSub;
+extern int currentextspid;
 //
 extern int dvbsub_stop();
 extern int dvbsub_start(int pid, bool isEplayer);
@@ -351,8 +353,10 @@ void CMoviePlayerGui::startSubtitles(bool show)
 		
 	if(playback)
 	{
-		playback->SetSubPid(currentspid);
-		playback->SetExtSubPid(currentspid);
+		if (isEXtSub)
+			playback->SetExtSubPid(currentextspid);
+		else
+			playback->SetSubPid(currentspid);
 	}
 	
 #ifndef ENABLE_GSTREAMER	

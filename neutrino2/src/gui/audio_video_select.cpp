@@ -62,9 +62,10 @@ unsigned short spids[10];
 unsigned short numpids = 0;
 int currentspid = -1;
 ////
+bool isEXtSub = false;
 unsigned short extspids[10];
 unsigned short extnumpids = 0;
-int currentextspid = 0;
+int currentextspid = -1;
 std::string subtitle_file;
 //
 extern cPlayback *playback;
@@ -133,7 +134,7 @@ const keyval AC3_OPTIONS[AC3_OPTION_COUNT] =
 //
 int CAVPIDSelectWidget::exec(CMenuTarget * parent, const std::string & actionKey)
 {
-	dprintf(DEBUG_NORMAL, "CAVPIDSelectWidget::exec: %s (currentapid:%d) (currentspid:%d) (currentextspid:%d)\n", actionKey.c_str(), currentapid, currentspid, currentextspid);
+	dprintf(DEBUG_NORMAL, "CAVPIDSelectWidget::exec: %s (currentapid:%d) (currentspid:%d))\n", actionKey.c_str(), currentapid, currentspid);
 	
 	int res = CMenuTarget::RETURN_REPAINT;
 
@@ -178,12 +179,26 @@ int CAVPIDSelectWidget::exec(CMenuTarget * parent, const std::string & actionKey
 #else
 	if (strstr(actionKey.c_str(), "DVB") || strstr(actionKey.c_str(), "PGS") || strstr(actionKey.c_str(), "SUBRIP") || strstr(actionKey.c_str(), "ASS") || strstr(actionKey.c_str(), "SSA") || strstr(actionKey.c_str(), "SRT") || strstr(actionKey.c_str(), "UTF-8") || strstr(actionKey.c_str(), "XSUB"))
 	{
+		isEXtSub = (strstr(actionKey.c_str(), "(EXT)"));
+		
 		char const * pidptr = strchr(actionKey.c_str(), ':');
 		
-		currentspid = atoi(pidptr + 1);
-		
-		if(playback)
-			playback->SetSubPid(currentspid);
+		if (isEXtSub)
+		{
+			currentextspid = atoi(pidptr + 1);
+			currentspid = -1;
+			
+			if(playback)
+				playback->SetExtSubPid(currentextspid);
+		}
+		else
+		{
+			currentextspid = -1;
+			currentspid = atoi(pidptr + 1);
+			
+			if(playback)
+				playback->SetSubPid(currentspid);
+		}
 			
 		return CMenuTarget::RETURN_EXIT_ALL;
 	}
@@ -192,6 +207,7 @@ int CAVPIDSelectWidget::exec(CMenuTarget * parent, const std::string & actionKey
 		char const * pidptr = strchr(actionKey.c_str(), ':');
 		
 		currentspid = atoi(pidptr + 1);
+		currentextspid = -1;
 		
 		if(playback)
 			playback->SetSubPid(currentspid);
@@ -201,6 +217,7 @@ int CAVPIDSelectWidget::exec(CMenuTarget * parent, const std::string & actionKey
 	else if(actionKey == "off") 
 	{
 		currentspid = -1;
+		currentextspid = -1;
 		
 		if(playback)
 		{
@@ -229,7 +246,8 @@ int CAVPIDSelectWidget::exec(CMenuTarget * parent, const std::string & actionKey
 				playback->AddSubtitleFile(fileBrowser.getSelectedFile()->Name.c_str());
 		}
 		
-		currentspid = -1;
+		hide();
+		showAudioDialog();
 		
 		return CMenuTarget::RETURN_EXIT_ALL;
 	}
@@ -388,7 +406,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 				spidtitle = language[count];
 			}
 			
-			sprintf(spidnumber, "%s:%d", spidtitle.c_str(), count); // dont change this
+			sprintf(spidnumber, "%s:%d(EXT)", spidtitle.c_str(), count); // dont change this
 
 			AVPIDSelector->addItem(new CMenuForwarder(spidtitle.c_str(), currentextspid == count? false : true, NULL, this, spidnumber, CRCInput::convertDigitToKey(count + 1)));
 		}

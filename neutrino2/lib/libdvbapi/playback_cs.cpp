@@ -883,6 +883,7 @@ bool cPlayback::SetSubPid(short pid)
 			player->playback->Command(player, PLAYBACK_SWITCH_SUBTITLE, (void*)&track);
 
 		mSubStream = pid;
+		mExtSubStream = -1;
 	}
 #endif	
 
@@ -902,6 +903,7 @@ bool cPlayback::SetExtSubPid(short pid)
 			player->playback->Command(player, PLAYBACK_SWITCH_EXTSUBTITLE, (void*)&track);
 
 		mExtSubStream = pid;
+		mSubStream = -1;
 	}
 #endif	
 
@@ -1503,8 +1505,8 @@ void cPlayback::AddSubtitleFile(const char* const file)
 		player->playback->Command(player, PLAYBACK_OPEN_SUB, (char *)file);
 		player->playback->Command(player, PLAYBACK_PLAY_SUB, NULL);
 		
-		int track = 0;
-		player->playback->Command(player, PLAYBACK_SWITCH_EXTSUBTITLE, (void*)&track);
+//		mExtSubStream = 0;
+//		player->playback->Command(player, PLAYBACK_SWITCH_EXTSUBTITLE, (void*)&mExtSubStream);
 	}
 #endif
 }
