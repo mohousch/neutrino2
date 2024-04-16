@@ -1517,10 +1517,7 @@ void cPlayback::AddSubtitleFile(const char* const file)
 extern Data_t data[64];
 
 cPlayback::SWFramebuffer* cPlayback::getDecBuf(void)
-{
-//	if (buf_num == 0)
-//		return NULL;
-					
+{					
 	SWFramebuffer *p = &buffers[0];
 
 	p->resize(data[buf_out].size);

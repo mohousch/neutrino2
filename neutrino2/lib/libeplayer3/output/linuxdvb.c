@@ -1361,7 +1361,7 @@ static int Write(void* _context, void* _out)
 		{
 			int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 							
-			convert = sws_getCachedContext(convert, ctx->width, ctx->height, ctx->pix_fmt, ctx->width, ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
+			convert = sws_getContext(ctx->width, ctx->height, ctx->pix_fmt, ctx->width, ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
 								
 			if (convert)
 			{
@@ -1370,11 +1370,14 @@ static int Write(void* _context, void* _out)
 				
 				// fill				
 				av_image_fill_arrays(out->rgbframe->data, out->rgbframe->linesize, data[buf_in].buffer, AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
+				
+				//
+				data[buf_in].size = need;
 
 				// scale
 				sws_scale(convert, out->frame->data, out->frame->linesize, 0, ctx->height, out->rgbframe->data, out->rgbframe->linesize);
 				
-				// fill our struct	
+				// fill the rest of the struct	
 				data[buf_in].width = ctx->width;
 				data[buf_in].height = ctx->height;
 				
@@ -1386,10 +1389,10 @@ static int Write(void* _context, void* _out)
 #endif
 
 				// a/v delay determined experimentally :-)
-				if (ctx->codec_id == AV_CODEC_ID_MPEG2VIDEO)
-					data[buf_in].vpts += 90000 * 4 / 10; // 400ms
-				else
-					data[buf_in].vpts += 90000 * 3 / 10; // 300ms
+				//if (ctx->codec_id == AV_CODEC_ID_MPEG2VIDEO)
+				//	data[buf_in].vpts += 90000 * 4 / 10; // 400ms
+				//else
+				//	data[buf_in].vpts += 90000 * 3 / 10; // 300ms
 				
 				//
 				int framerate = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);
@@ -1421,9 +1424,6 @@ static int Write(void* _context, void* _out)
 						data[buf_in].rate = framerate;
 						break;
 				}
-				
-				//
-				data[buf_in].size = need;
 
 				//
 				buf_in++;

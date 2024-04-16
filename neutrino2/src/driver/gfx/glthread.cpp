@@ -406,7 +406,6 @@ void GLThreadObj::render()
 		zoom = 1.0;
 		xscale = 1.0;
 		int cmp = (mCrop == DISPLAY_AR_MODE_NONE) ? 0 : av_cmp_q(mVA, mOA);
-		const AVRational a149 = { 14, 9 };
 		
 		switch (cmp)
 		{
@@ -709,7 +708,7 @@ void GLThreadObj::bltPlayBuffer()
 	
 	/*
 	int64_t apts = buf->apts();
-	int64_t vpts = buf->vpts() + 18000;
+	int64_t vpts = buf->vpts(); // + 18000;
 	int rate = buf->rate();
 			
 	if (apts != last_apts)
