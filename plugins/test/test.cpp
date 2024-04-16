@@ -2233,7 +2233,7 @@ void CTestMenu::testCListFrame()
 	listFrame->setLines(&listFrameLines);
 	
 	//
-	listFrame->addKey(CRCInput::RC_ok, this, "aok");
+	listFrame->addKey(CRCInput::RC_ok, this, "aplay");
 	listFrame->addKey(CRCInput::RC_info, this, "ainfo");
 	
 	CAudioPlayer::getInstance()->init();

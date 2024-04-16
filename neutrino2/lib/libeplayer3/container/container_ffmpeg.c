@@ -457,7 +457,16 @@ static void FFMPEGThread(Context_t* context)
 	long long int bofcount = 0;
 	int err = 0;
 	int audioMute = 0;
-	AudioVideoOut_t avOut;	
+	AudioVideoOut_t avOut;
+#ifdef USE_OPENGL
+	AVFrame *frame = NULL;
+	AVFrame *rgbframe = NULL;
+	AVFrame* aframe = NULL;
+	
+	frame = av_frame_alloc();
+	rgbframe = av_frame_alloc();
+	aframe = av_frame_alloc();
+#endif	
 
 	// Softdecoding buffer
 	AVFrame *samples = NULL;
@@ -585,6 +594,9 @@ static void FFMPEGThread(Context_t* context)
 					
 #ifdef USE_OPENGL
 					avOut.stream 	 = videoTrack->stream;
+					avOut.frame 	 = frame;
+					avOut.rgbframe 	 = rgbframe;
+					avOut.aframe 	 = NULL;
 #endif
 
 					if (context->output->video->Write(context, &avOut) < 0) 
@@ -618,6 +630,9 @@ static void FFMPEGThread(Context_t* context)
 					avOut.height     = 0;
 					avOut.type       = "audio";
 					avOut.stream 	 = audioTrack->stream;
+					avOut.frame 	 = NULL;
+					avOut.rgbframe 	 = NULL;
+					avOut.aframe 	 = aframe;
 
 					if (!context->playback->BackWard)
 					{
@@ -824,8 +839,8 @@ static void FFMPEGThread(Context_t* context)
 				}
 			}            
 
-//			if (packet.data)
-//				av_free_packet(&packet);
+			if (packet.data)
+				av_free_packet(&packet);
 			av_packet_unref(&packet);
 		}
 		else  
@@ -842,6 +857,25 @@ static void FFMPEGThread(Context_t* context)
 	if (samples != NULL) 
 	{
 		av_frame_free(&samples);
+	}
+	
+	//
+	if (frame)
+	{
+		av_frame_free(&frame);
+		frame = NULL;
+	}
+		
+	if (rgbframe)
+	{
+		av_frame_free(&rgbframe);
+		rgbframe = NULL;
+	}
+	
+	if (aframe)
+	{
+		av_frame_free(&aframe);
+		aframe = NULL;
 	}
 
 	hasPlayThreadStarted = 0;
@@ -1642,8 +1676,8 @@ static void FFMPEGSubThread(Context_t* context)
 				}
 			}            
 
-//			if (subpacket.data)
-//				av_free_packet(&subpacket);
+			if (subpacket.data)
+				av_free_packet(&subpacket);
 			av_packet_unref(&subpacket);
 		}
 		else  

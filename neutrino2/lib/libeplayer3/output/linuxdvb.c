@@ -1127,7 +1127,6 @@ static int Write(void* _context, void* _out)
 		}
 #else
 		AVCodecContext* ctx = out->stream->codec;
-		AVFrame * aframe = NULL;
 		int got_frame = 0;
 		// resample
 		SwrContext *swr = NULL;
@@ -1160,9 +1159,6 @@ static int Write(void* _context, void* _out)
 			sformat.rate = ctx->sample_rate;
 			sformat.byte_format = AO_FMT_NATIVE;
 			sformat.matrix = 0;
-			
-//			if (adevice)
-//				ao_close(adevice);
 				
 			adevice = ao_open_live(driver, &sformat, NULL);
 			ai = ao_driver_info(driver);
@@ -1177,11 +1173,9 @@ static int Write(void* _context, void* _out)
 		}
 	
 		swr_init(swr);
-		
-		aframe = av_frame_alloc();
 						
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
-		res = avcodec_decode_audio4(ctx, aframe, &got_frame, &avpkt);
+		res = avcodec_decode_audio4(ctx, out->aframe, &got_frame, &avpkt);
 #else
 		res = avcodec_send_packet(ctx, &avpkt);
 		
@@ -1191,7 +1185,7 @@ static int Write(void* _context, void* _out)
 		}
 		else
 		{
-			res = avcodec_receive_frame(ctx, aframe);
+			res = avcodec_receive_frame(ctx, out->aframe);
 							
 			if (res != 0 && res != AVERROR(EAGAIN))
 			{
@@ -1209,13 +1203,13 @@ static int Write(void* _context, void* _out)
 			int out_linesize;
 			
 			//
-			obuf_size = av_rescale_rnd(aframe->nb_samples, ctx->sample_rate, ctx->sample_rate, AV_ROUND_UP);
+			obuf_size = av_rescale_rnd(out->aframe->nb_samples, ctx->sample_rate, ctx->sample_rate, AV_ROUND_UP);
 
 			if (obuf_size > obuf_size_max)
 			{
 				av_free(obuf);
 								
-				if (av_samples_alloc(&obuf, &out_linesize, ctx->channels, aframe->nb_samples, AV_SAMPLE_FMT_S16, 1) < 0)
+				if (av_samples_alloc(&obuf, &out_linesize, ctx->channels, out->aframe->nb_samples, AV_SAMPLE_FMT_S16, 1) < 0)
 				{
 					av_packet_unref(&avpkt);
 					ret = cERR_LINUXDVB_ERROR;
@@ -1224,12 +1218,12 @@ static int Write(void* _context, void* _out)
 				obuf_size_max = obuf_size;
 			}
 							
-			obuf_size = swr_convert(swr, &obuf, obuf_size, (const uint8_t **)aframe->extended_data, aframe->nb_samples);
+			obuf_size = swr_convert(swr, &obuf, obuf_size, (const uint8_t **)out->aframe->extended_data, out->aframe->nb_samples);
 							
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-			data[buf_in].apts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(aframe);
+			data[buf_in].apts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(out->aframe);
 #else
-			data[buf_in].apts = sCURRENT_PTS = aframe->best_effort_timestamp;
+			data[buf_in].apts = sCURRENT_PTS = out->aframe->best_effort_timestamp;
 #endif
 			int o_buf_size = av_samples_get_buffer_size(&out_linesize, out->stream->codec->channels, obuf_size, AV_SAMPLE_FMT_S16, 1);
 							
@@ -1242,12 +1236,11 @@ static int Write(void* _context, void* _out)
 			}
 		}
 		
-		////
+		//
 		av_packet_unref(&avpkt);
 
 		av_free(obuf);
 		swr_free(&swr);
-		av_frame_free(&aframe);
 		
 		ret = cERR_LINUXDVB_ERROR;
 #endif
@@ -1303,8 +1296,6 @@ static int Write(void* _context, void* _out)
 			}
 		}
 #else
-		AVFrame *frame = NULL;
-		AVFrame *rgbframe = NULL;
 		struct SwsContext *convert = NULL;
 		AVCodecContext* ctx = out->stream->codec;
 		
@@ -1315,26 +1306,32 @@ static int Write(void* _context, void* _out)
 		avpkt.data = out->data;
     		avpkt.size = out->len;
     		avpkt.pts  = out->pts;
-
-		frame = av_frame_alloc();
-		rgbframe = av_frame_alloc();
 		
 		//
 		int got_frame = 0;
 	
 		// decode frame
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
-		res = avcodec_decode_video2(ctx, frame, &got_frame, &avpkt);
+		res = avcodec_decode_video2(ctx, out->frame, &got_frame, &avpkt);
+		
+		if (res < 0)
+		{
+			linuxdvb_printf(200, "%s: avcodec_decode_video2 %d\n", __func__, res);
+			
+			av_packet_unref(&avpkt);
+		}
 #else
 		res = avcodec_send_packet(ctx, &avpkt);
 		
 		if (res != 0 && res != AVERROR(EAGAIN))
 		{
 			linuxdvb_printf(200, "%s: avcodec_send_packet %d\n", __func__, res);
+			
+			av_packet_unref(&avpkt);
 		}
 		else
 		{
-			res = avcodec_receive_frame(ctx, frame);
+			res = avcodec_receive_frame(ctx, out->frame);
 							
 			if (res != 0 && res != AVERROR(EAGAIN))
 			{
@@ -1360,10 +1357,10 @@ static int Write(void* _context, void* _out)
 				getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 				
 				// fill				
-				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, data[buf_in].buffer, AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
+				av_image_fill_arrays(out->rgbframe->data, out->rgbframe->linesize, data[buf_in].buffer, AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 
 				// scale
-				sws_scale(convert, frame->data, frame->linesize, 0, ctx->height, rgbframe->data, rgbframe->linesize);
+				sws_scale(convert, out->frame->data, out->frame->linesize, 0, ctx->height, out->rgbframe->data, out->rgbframe->linesize);
 				
 				// fill our struct	
 				data[buf_in].width = ctx->width;
@@ -1371,9 +1368,9 @@ static int Write(void* _context, void* _out)
 				
 				//
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-				data[buf_in].vpts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(frame);
+				data[buf_in].vpts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(out->frame);
 #else
-				data[buf_in].vpts = sCURRENT_PTS = frame->best_effort_timestamp;
+				data[buf_in].vpts = sCURRENT_PTS = out->frame->best_effort_timestamp;
 #endif
 
 				// a/v delay determined experimentally :-)
@@ -1434,18 +1431,6 @@ static int Write(void* _context, void* _out)
 		
 		////
 		av_packet_unref(&avpkt);
-		
-		if (frame)
-		{
-			av_frame_free(&frame);
-			frame = NULL;
-		}
-		
-		if (rgbframe)
-		{
-			av_frame_free(&rgbframe);
-			rgbframe = NULL;
-		}
 		
 		if (convert)
 		{
