@@ -782,7 +782,7 @@ void cAudio::run()
 		if (gotframe && thread_started)
 		{
 			int out_linesize;
-			obuf_sz = av_rescale_rnd(/*swr_get_delay(swr, p->sample_rate) +*/ frame->nb_samples, o_sr, p->sample_rate, AV_ROUND_UP);
+			obuf_sz = av_rescale_rnd(frame->nb_samples, o_sr, p->sample_rate, AV_ROUND_UP);
 
 			if (obuf_sz > obuf_sz_max)
 			{

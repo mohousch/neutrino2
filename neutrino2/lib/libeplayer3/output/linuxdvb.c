@@ -1145,9 +1145,6 @@ static int Write(void* _context, void* _out)
 		avpkt.data = out->data;
     		avpkt.size = out->len;
     		avpkt.pts  = out->pts;
-    		
-    		if (out->aframe)
-			av_frame_unref(out->aframe);
 		
 		// output sample rate, channels, layout could be set here if necessary
 		o_ch = ctx->channels;     		// 2
@@ -1224,9 +1221,9 @@ static int Write(void* _context, void* _out)
 			obuf_size = swr_convert(swr, &obuf, obuf_size, (const uint8_t **)out->aframe->extended_data, out->aframe->nb_samples);
 							
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-			data[buf_in].apts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(out->aframe);
+			sCURRENT_APTS = sCURRENT_PTS = av_frame_get_best_effort_timestamp(out->aframe);
 #else
-			data[buf_in].apts = sCURRENT_PTS = out->aframe->best_effort_timestamp;
+			sCURRENT_APTS = sCURRENT_PTS = out->aframe->best_effort_timestamp;
 #endif
 			int o_buf_size = av_samples_get_buffer_size(&out_linesize, out->stream->codec->channels, obuf_size, AV_SAMPLE_FMT_S16, 1);
 							
@@ -1241,9 +1238,6 @@ static int Write(void* _context, void* _out)
 		
 		//
 		av_packet_unref(&avpkt);
-		
-		if (out->aframe)
-			av_frame_unref(out->aframe);
 
 		av_free(obuf);
 		swr_free(&swr);
@@ -1393,6 +1387,8 @@ static int Write(void* _context, void* _out)
 				//	data[buf_in].vpts += 90000 * 4 / 10; // 400ms
 				//else
 				//	data[buf_in].vpts += 90000 * 3 / 10; // 300ms
+				
+				data[buf_in].apts = sCURRENT_APTS;
 				
 				//
 				int framerate = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);

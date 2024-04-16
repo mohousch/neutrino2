@@ -706,9 +706,9 @@ void GLThreadObj::bltPlayBuffer()
 
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 	
-	/*
+	//
 	int64_t apts = buf->apts();
-	int64_t vpts = buf->vpts(); // + 18000;
+	int64_t vpts = buf->vpts() + 18000;
 	int rate = buf->rate();
 			
 	if (apts != last_apts)
@@ -731,7 +731,6 @@ void GLThreadObj::bltPlayBuffer()
 		else if (sleep_us < 1)
 			sleep_us = 1;
 	}
-	*/
 #endif
 }
 

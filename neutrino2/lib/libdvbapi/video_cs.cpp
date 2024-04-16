@@ -1457,10 +1457,10 @@ void cVideo::run(void)
 				dec_vpts = frame->best_effort_timestamp;
 #endif
 				// a/v delay determined experimentally :-)
-				if (p->codec_id == AV_CODEC_ID_MPEG2VIDEO)
-					dec_vpts += 90000 * 4 / 10; // 400ms
-				else
-					dec_vpts += 90000 * 3 / 10; // 300ms
+				//if (p->codec_id == AV_CODEC_ID_MPEG2VIDEO)
+				//	dec_vpts += 90000 * 4 / 10; // 400ms
+				//else
+				//	dec_vpts += 90000 * 3 / 10; // 300ms
 
 				f->pts(dec_vpts);
 				
