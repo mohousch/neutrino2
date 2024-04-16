@@ -161,7 +161,7 @@ void GLThreadObj::run()
 			glutDisplayFunc(GLThreadObj::rendercb);
 			glutKeyboardFunc(GLThreadObj::keyboardcb);
 			glutSpecialFunc(GLThreadObj::specialcb);
-			glutMouseFunc(GLThreadObj::mousecb);
+//			glutMouseFunc(GLThreadObj::mousecb);
 			glutReshapeFunc(GLThreadObj::resizecb);
 			setupGLObjects();
 			glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);

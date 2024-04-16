@@ -1,5 +1,5 @@
 /*
- * subtitle manager handling.
+ * extern subtitle manager handling.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,16 +38,16 @@
 
 static short debug_level = 10;
 
-#define subtitle_mgr_printf(level, x...) do { \
+#define extsubtitle_mgr_printf(level, x...) do { \
 if (debug_level >= level) printf(x); } while (0)
 #else
-#define subtitle_mgr_printf(level, x...)
+#define extsubtitle_mgr_printf(level, x...)
 #endif
 
 #ifndef EXTSUBTITLE_MGR_SILENT
-#define subtitle_mgr_err(x...) do { printf(x); } while (0)
+#define extsubtitle_mgr_err(x...) do { printf(x); } while (0)
 #else
-#define subtitle_mgr_err(x...)
+#define extsubtitle_mgr_err(x...)
 #endif
 
 /* Error Constants */
@@ -78,7 +78,7 @@ static int CurrentTrack = -1; //no as default.
 
 static int ManagerAdd(Context_t  *context, Track_t track) 
 {
-    	subtitle_mgr_printf(10, "%s::%s %s %s %d\n", FILENAME, __FUNCTION__, track.Name, track.Encoding, track.Index);
+    	extsubtitle_mgr_printf(10, "%s::%s %s %s %d\n", FILENAME, __FUNCTION__, track.Name, track.Encoding, track.Index);
 
     	if (Tracks == NULL) 
 	{
@@ -87,7 +87,7 @@ static int ManagerAdd(Context_t  *context, Track_t track)
 
     	if (Tracks == NULL)
     	{
-        	subtitle_mgr_err("%s:%s malloc failed\n", FILENAME, __FUNCTION__);
+        	extsubtitle_mgr_err("%s:%s malloc failed\n", FILENAME, __FUNCTION__);
         	return cERR_SUBTITLE_MGR_ERROR;
     	}
 
@@ -98,14 +98,14 @@ static int ManagerAdd(Context_t  *context, Track_t track)
     	} 
 	else 
 	{
-        	subtitle_mgr_err("%s:%s TrackCount out if range %d - %d\n", FILENAME, __FUNCTION__, TrackCount, TRACKWRAP);
+        	extsubtitle_mgr_err("%s:%s TrackCount out if range %d - %d\n", FILENAME, __FUNCTION__, TrackCount, TRACKWRAP);
         	return cERR_SUBTITLE_MGR_ERROR;
     	}
 
     	if (TrackCount > 0)
         	context->playback->isSubtitle = 1;
 
-    	subtitle_mgr_printf(10, "%s::%s\n", FILENAME, __FUNCTION__);
+    	extsubtitle_mgr_printf(10, "%s::%s\n", FILENAME, __FUNCTION__);
 
     	return cERR_SUBTITLE_MGR_NO_ERROR;
 }
@@ -115,7 +115,7 @@ static char ** ManagerList(Context_t  *context)
     	char ** tracklist = NULL;
     	int i = 0, j = 0;
 
-    	subtitle_mgr_printf(10, "%s::%s\n", FILENAME, __FUNCTION__);
+    	extsubtitle_mgr_printf(10, "%s::%s\n", FILENAME, __FUNCTION__);
 
     	if (Tracks != NULL) 
 	{
@@ -123,7 +123,7 @@ static char ** ManagerList(Context_t  *context)
 
         	if (tracklist == NULL)
         	{
-            		subtitle_mgr_err("%s:%s malloc failed\n", FILENAME, __FUNCTION__);
+            		extsubtitle_mgr_err("%s:%s malloc failed\n", FILENAME, __FUNCTION__);
             		return NULL;
         	}
 
@@ -136,7 +136,7 @@ static char ** ManagerList(Context_t  *context)
         	tracklist[j] = NULL;
     	}
 
-    	subtitle_mgr_printf(10, "%s::%s return %p (%d - %d)\n", FILENAME, __FUNCTION__, tracklist, j, TrackCount);
+    	extsubtitle_mgr_printf(10, "%s::%s return %p (%d - %d)\n", FILENAME, __FUNCTION__, tracklist, j, TrackCount);
 
     	return tracklist;
 }
@@ -145,7 +145,7 @@ static int ManagerDel(Context_t * context)
 {
     	int i = 0;
 
-    	subtitle_mgr_printf(10, "%s::%s\n", FILENAME, __FUNCTION__);
+    	extsubtitle_mgr_printf(10, "%s::%s\n", FILENAME, __FUNCTION__);
 
     	if(Tracks != NULL) 
 	{
@@ -159,7 +159,7 @@ static int ManagerDel(Context_t * context)
     	} 
 	else
     	{
-        	subtitle_mgr_err("%s::%s nothing to delete!\n", FILENAME, __FUNCTION__);
+        	extsubtitle_mgr_err("%s::%s nothing to delete!\n", FILENAME, __FUNCTION__);
         	return cERR_SUBTITLE_MGR_ERROR;
     	}
 
@@ -167,7 +167,7 @@ static int ManagerDel(Context_t * context)
     	CurrentTrack = -1;
     	context->playback->isSubtitle = 0;
 
-    	subtitle_mgr_printf(10, "%s::%s return no error\n", FILENAME, __FUNCTION__);
+    	extsubtitle_mgr_printf(10, "%s::%s return no error\n", FILENAME, __FUNCTION__);
 
     	return cERR_SUBTITLE_MGR_NO_ERROR;
 }
@@ -177,7 +177,7 @@ static int Command(void  *_context, ManagerCmd_t command, void * argument)
     	Context_t  *context = (Context_t*) _context;
     	int ret = cERR_SUBTITLE_MGR_NO_ERROR;
 
-    	subtitle_mgr_printf(50, "%s::%s %d\n", FILENAME, __FUNCTION__, command);
+    	extsubtitle_mgr_printf(50, "%s::%s %d\n", FILENAME, __FUNCTION__, command);
 
     	switch(command) 
 	{
@@ -205,16 +205,16 @@ static int Command(void  *_context, ManagerCmd_t command, void * argument)
 
     		case MANAGER_GET_TRACK: 
 		{
-			subtitle_mgr_printf(20, "%s::%s MANAGER_GET_TRACK\n", FILENAME, __FUNCTION__);
+			extsubtitle_mgr_printf(20, "%s::%s MANAGER_GET_TRACK\n", FILENAME, __FUNCTION__);
 
 			if ((TrackCount > 0) && (CurrentTrack >= 0))
 			{
-			     subtitle_mgr_printf(120, "return %d, %p\n", CurrentTrack, &Tracks[CurrentTrack]);
+			     extsubtitle_mgr_printf(120, "return %d, %p\n", CurrentTrack, &Tracks[CurrentTrack]);
 			    *((Track_t**)argument) = (Track_t*) &Tracks[CurrentTrack];
 			}
 			else
 			{
-			     subtitle_mgr_printf(20, "return NULL\n");
+			     extsubtitle_mgr_printf(20, "return NULL\n");
 			    *((Track_t**)argument) = NULL;
 			}
 			break;
@@ -242,13 +242,13 @@ static int Command(void  *_context, ManagerCmd_t command, void * argument)
 		{
 			int id = *((int*)argument);
 
-			subtitle_mgr_printf(20, "%s::%s MANAGER_SET id=%d\n", FILENAME, __FUNCTION__, id);
+			extsubtitle_mgr_printf(20, "%s::%s MANAGER_SET id=%d\n", FILENAME, __FUNCTION__, id);
 
 			if (id < TrackCount)
 			    CurrentTrack = id;
 			else
 			{
-			    subtitle_mgr_err("%s::%s track id out of range (%d - %d)\n", FILENAME, __FUNCTION__, id, TrackCount);
+			    extsubtitle_mgr_err("%s::%s track id out of range (%d - %d)\n", FILENAME, __FUNCTION__, id, TrackCount);
 			    ret = cERR_SUBTITLE_MGR_ERROR;
 			}
 			break;
@@ -267,12 +267,12 @@ static int Command(void  *_context, ManagerCmd_t command, void * argument)
     		}
 
     		default:
-			subtitle_mgr_err("%s:%s: ConatinerCmd not supported!", FILENAME, __FUNCTION__);
+			extsubtitle_mgr_err("%s:%s: ConatinerCmd not supported!", FILENAME, __FUNCTION__);
 			ret = cERR_SUBTITLE_MGR_ERROR;
         		break;
     	}
 
-    	subtitle_mgr_printf(50, "%s:%s: returning %d\n", FILENAME, __FUNCTION__,ret);
+    	extsubtitle_mgr_printf(50, "%s:%s: returning %d\n", FILENAME, __FUNCTION__,ret);
 
     	return ret;
 }
@@ -283,5 +283,4 @@ struct Manager_s ExtSubtitleManager = {
     	&Command,
     	NULL
 };
-
 

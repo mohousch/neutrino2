@@ -1061,12 +1061,6 @@ static int PlaybackSwitchSubtitle(Context_t *context, int* track)
 			}
 
 			context->manager->subtitle->Command(context, MANAGER_GET, &trackid);
-		  
-		  	//
-			if (context->output && context->output->subtitle)
-			{
-				context->output->subtitle->Command(context, OUTPUT_SWITCH, (void*)"subtitle");
-			}
 		} 
 		else
 		{
@@ -1104,12 +1098,6 @@ static int PlaybackSwitchExtSubtitle(Context_t *context, int* track)
 			}
 
 			context->manager->extsubtitle->Command(context, MANAGER_GET, &trackid);
-		  
-		  	//
-			if (context->output && context->output->subtitle)
-			{
-				context->output->subtitle->Command(context, OUTPUT_SWITCH, (void*)"extsubtitle");
-			}
 		} 
 		else
 		{

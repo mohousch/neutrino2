@@ -144,11 +144,7 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 				if (context->playback->isVideo)
 					ret |= context->output->video->Command(context, OUTPUT_OPEN, "video");
 				if (context->playback->isAudio)
-					ret |= context->output->audio->Command(context, OUTPUT_OPEN, "audio");	    
-				if (context->playback->isSubtitle)
-					ret |= context->output->subtitle->Command(context, OUTPUT_OPEN, "subtitle");
-				if (context->playback->isSubtitle)
-					ret |= context->output->subtitle->Command(context, OUTPUT_OPEN, "extsubtitle");    
+					ret |= context->output->audio->Command(context, OUTPUT_OPEN, "audio");	        
 			} 
 			else
 				ret = cERR_OUTPUT_INTERNAL_ERROR;
@@ -162,11 +158,7 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 				if (context->playback->isVideo)
 					ret |= context->output->video->Command(context, OUTPUT_CLOSE, "video");
 				if (context->playback->isAudio)
-					ret |= context->output->audio->Command(context, OUTPUT_CLOSE, "audio");	    
-				if (context->playback->isSubtitle)
-					ret |= context->output->subtitle->Command(context, OUTPUT_CLOSE, "subtitle");
-				if (context->playback->isSubtitle)
-					ret |= context->output->subtitle->Command(context, OUTPUT_CLOSE, "extsubtitle");	    
+					ret |= context->output->audio->Command(context, OUTPUT_CLOSE, "audio");	        
 			} 
 			else
 				ret = cERR_OUTPUT_INTERNAL_ERROR;
@@ -205,21 +197,7 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 				{	// success or not executed, dunn care
 					if (context->playback->isAudio)
 						ret = context->output->audio->Command(context, OUTPUT_PLAY, "audio");             
-				}
-				
-				if (!ret) 
-				{	
-					// FIXME: not needed
-					if (context->playback->isSubtitle)
-						ret = context->output->subtitle->Command(context, OUTPUT_PLAY, "subtitle");
-				}
-				
-				if (!ret) 
-				{	
-					// FIXME: not needed
-					if (context->playback->isSubtitle)
-						ret = context->output->subtitle->Command(context, OUTPUT_PLAY, "extsubtitle");
-				}      
+				}			     
 			} 
 			else
 				ret = cERR_OUTPUT_INTERNAL_ERROR;
@@ -233,11 +211,7 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 				if (context->playback->isVideo)
 					ret |= context->output->video->Command(context, OUTPUT_STOP, "video");
 				if (context->playback->isAudio)
-					ret |= context->output->audio->Command(context, OUTPUT_STOP, "audio");	    
-				if (context->playback->isSubtitle)
-					ret |= context->output->subtitle->Command(context, OUTPUT_STOP, "subtitle");
-				if (context->playback->isSubtitle)
-					ret |= context->output->subtitle->Command(context, OUTPUT_STOP, "extsubtitle");     
+					ret |= context->output->audio->Command(context, OUTPUT_STOP, "audio");	       
 			} 
 			else
 				ret = cERR_OUTPUT_INTERNAL_ERROR;
@@ -252,10 +226,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 					ret |= context->output->video->Command(context, OUTPUT_FLUSH, "video");
 				if (context->playback->isAudio)
 					ret |= context->output->audio->Command(context, OUTPUT_FLUSH, "audio");
-				if (context->playback->isSubtitle)
-					ret |= context->output->subtitle->Command(context, OUTPUT_FLUSH, "subtitle");
-				if (context->playback->isSubtitle)
-					ret |= context->output->subtitle->Command(context, OUTPUT_FLUSH, "extsubtitle");
 			} 
 			else
 				ret = cERR_OUTPUT_INTERNAL_ERROR;
@@ -270,10 +240,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 					ret |= context->output->video->Command(context, OUTPUT_PAUSE, "video");
 				if (context->playback->isAudio)
 					ret |= context->output->audio->Command(context, OUTPUT_PAUSE, "audio");
-				if (context->playback->isSubtitle)
-					ret |= context->output->subtitle->Command(context, OUTPUT_PAUSE, "subtitle");
-				if (context->playback->isSubtitle)
-					ret |= context->output->subtitle->Command(context, OUTPUT_PAUSE, "extsubtitle");
 			} 
 			else
 				ret = cERR_OUTPUT_INTERNAL_ERROR;
@@ -288,10 +254,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 					ret |= context->output->video->Command(context, OUTPUT_FASTFORWARD, "video");
 				if (context->playback->isAudio)
 					ret |= context->output->audio->Command(context, OUTPUT_FASTFORWARD, "audio");
-				if (context->playback->isSubtitle)
-					ret |= context->output->subtitle->Command(context, OUTPUT_PAUSE, "subtitle");
-				if (context->playback->isSubtitle)
-					ret |= context->output->subtitle->Command(context, OUTPUT_PAUSE, "extsubtitle");
 			} 
 			else
 				ret = cERR_OUTPUT_INTERNAL_ERROR;
@@ -320,10 +282,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 					ret |= context->output->video->Command(context, OUTPUT_CONTINUE, "video");
 				if (context->playback->isAudio)
 					ret |= context->output->audio->Command(context, OUTPUT_CONTINUE, "audio");
-				if (context->playback->isSubtitle)
-					ret |= context->output->subtitle->Command(context, OUTPUT_CONTINUE, "subtitle");
-				if (context->playback->isSubtitle)
-					ret |= context->output->subtitle->Command(context, OUTPUT_CONTINUE, "extsubtitle");
 			} 
 			else
 				ret = cERR_OUTPUT_INTERNAL_ERROR;
@@ -350,10 +308,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 					ret |= context->output->video->Command(context, OUTPUT_CLEAR, "video");
 				if (context->playback->isAudio && (argument == NULL || *(char *) argument == 'a'))
 					ret |= context->output->audio->Command(context, OUTPUT_CLEAR, "audio");
-				if (context->playback->isSubtitle && (argument == NULL || *(char *) argument == 's'))
-					ret |= context->output->subtitle->Command(context, OUTPUT_CLEAR, "subtitle");
-				if (context->playback->isSubtitle && (argument == NULL || *(char *) argument == 'exts'))
-					ret |= context->output->subtitle->Command(context, OUTPUT_CLEAR, "extsubtitle");
 			} 
 			else
 				ret = cERR_OUTPUT_INTERNAL_ERROR;
@@ -368,10 +322,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 					return context->output->video->Command(context, OUTPUT_PTS, argument);
 				if (context->playback->isAudio)
 					return context->output->audio->Command(context, OUTPUT_PTS, argument);
-				if (context->playback->isSubtitle)
-					return context->output->subtitle->Command(context, OUTPUT_PTS, "subtitle");
-				if (context->playback->isSubtitle)
-					return context->output->subtitle->Command(context, OUTPUT_PTS, "extsubtitle");
 			} 
 			else
 				ret = cERR_OUTPUT_INTERNAL_ERROR;
@@ -385,11 +335,7 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 			    if (context->playback->isAudio)
 				    return context->output->audio->Command(context, OUTPUT_SWITCH, "audio");
 			    if (context->playback->isVideo)
-				    return context->output->video->Command(context, OUTPUT_SWITCH, "video");
-			    if (context->playback->isSubtitle)
-				    return context->output->subtitle->Command(context, OUTPUT_SWITCH, "subtitle");
-				if (context->playback->isSubtitle)
-				    return context->output->subtitle->Command(context, OUTPUT_SWITCH, "extsubtitle");	
+				    return context->output->video->Command(context, OUTPUT_SWITCH, "video");	
 			} 
 			else
 				ret = cERR_OUTPUT_INTERNAL_ERROR;
@@ -404,10 +350,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 					ret |= context->output->video->Command(context, OUTPUT_SLOWMOTION, "video");
 				if (context->playback->isAudio)
 					ret |= context->output->audio->Command(context, OUTPUT_SLOWMOTION, "audio");
-				if (context->playback->isSubtitle)
-					ret |= context->output->subtitle->Command(context, OUTPUT_PAUSE, "subtitle");
-				if (context->playback->isSubtitle)
-					ret |= context->output->subtitle->Command(context, OUTPUT_PAUSE, "extsubtitle");
 			} 
 			else
 				ret = cERR_OUTPUT_INTERNAL_ERROR;

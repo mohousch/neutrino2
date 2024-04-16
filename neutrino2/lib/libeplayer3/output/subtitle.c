@@ -79,7 +79,6 @@ static const char FILENAME[] = "subtitle.c";
 /* ***************************** */
 
 static pthread_mutex_t mutex;
-static int isSubtitleOpened = 0;
 
 ////
 extern int            	screen_x;
@@ -375,45 +374,6 @@ static int Write(void* _context, void *data)
     	return cERR_SUBTITLE_NO_ERROR;
 }
 
-//
-static int subtitle_Open(Context_t* context) 
-{
-    	subtitle_printf(10, "\n");
-
-    	if (isSubtitleOpened == 1)
-    	{
-        	subtitle_err("already opened! ignoring\n");
-        	return cERR_SUBTITLE_ERROR;
-    	}
-
-    	getMutex(__LINE__);
-
-    	isSubtitleOpened = 1;
-
-    	releaseMutex(__LINE__);
-
-    	subtitle_printf(10, "<\n");
-
-    	return cERR_SUBTITLE_NO_ERROR;
-}
-
-static int subtitle_Close(Context_t* context) 
-{
-    	int i;
-
-    	subtitle_printf(10, "\n");
-
-    	getMutex(__LINE__);
-
-    	isSubtitleOpened = 0;
-
-    	releaseMutex(__LINE__);
-
-    	subtitle_printf(10, "<\n");
-
-    	return cERR_SUBTITLE_NO_ERROR;
-}
-
 static int Command(void  *_context, OutputCmd_t command, void * argument) 
 {
     Context_t  *context = (Context_t*) _context;
@@ -422,65 +382,8 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
     subtitle_printf(50, "%d\n", command);
 
     switch(command) 
-    {	
-	    case OUTPUT_OPEN: 
-	    {
-		ret = subtitle_Open(context);
-		break;
-	    }
-	    
-	    case OUTPUT_CLOSE: 
-	    {
-		ret = subtitle_Close(context);
-		break;
-	    }
-	    
-	    case OUTPUT_PLAY: 
-	    {
-		break;
-	    }
-	    
-	    case OUTPUT_STOP: 
-	    {
-		break;
-	    }
-	    
-	    case OUTPUT_SWITCH: 
-	    {
-		break;
-	    }
-	    
-	    case OUTPUT_FLUSH: 
-	    {
-		subtitle_err("Subtitle Flush not implemented\n");
-		ret = cERR_SUBTITLE_ERROR;
-		break;
-	    }
-	    
-	    case OUTPUT_CLEAR: 
-	    {
-		subtitle_err("Subtitle Clear not implemented\n");
-		ret = cERR_SUBTITLE_ERROR;
-		break;
-	    }
-	    
-	    case OUTPUT_PAUSE: 
-	    {
-		subtitle_err("Subtitle Pause not implemented\n");
-		ret = cERR_SUBTITLE_ERROR;
-	    	break;
-	    }
-	    
-	    case OUTPUT_CONTINUE: 
-	    {
-		subtitle_err("Subtitle Continue not implemented\n");
-		ret = cERR_SUBTITLE_ERROR;
-	    	break;
-	    }
-
+    {
 	    default:
-		subtitle_err("OutputCmd %d not supported!\n", command);
-		ret = cERR_SUBTITLE_ERROR;
 		break;
     }
 
@@ -501,6 +404,5 @@ struct Output_s SubtitleOutput = {
     &Command,
     &Write,
     SubtitleCapabilitis,
-
 };
 
