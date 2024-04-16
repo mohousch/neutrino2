@@ -1309,6 +1309,12 @@ static int Write(void* _context, void* _out)
 		
 		//
 		int got_frame = 0;
+		
+		if (out->frame)
+			av_frame_unref(out->frame);
+			
+		if (out->rgbframe)
+			av_frame_unref(out->rgbframe);
 	
 		// decode frame
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
@@ -1437,6 +1443,12 @@ static int Write(void* _context, void* _out)
 			sws_freeContext(convert);
 			convert = NULL;
 		}
+		
+		if (out->frame)
+			av_frame_unref(out->frame);
+			
+		if (out->rgbframe)
+			av_frame_unref(out->rgbframe);
 		
 		ret = cERR_LINUXDVB_ERROR;
 #endif

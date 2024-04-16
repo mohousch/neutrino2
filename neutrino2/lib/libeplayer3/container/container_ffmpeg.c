@@ -472,6 +472,8 @@ static void FFMPEGThread(Context_t* context)
 	AVFrame *samples = NULL;
 
 	ffmpeg_printf(10, "\n");
+	
+	av_init_packet(&packet);
 
 	while ( context->playback->isCreationPhase )
 	{
@@ -877,6 +879,9 @@ static void FFMPEGThread(Context_t* context)
 		av_frame_free(&aframe);
 		aframe = NULL;
 	}
+	
+	////
+	av_packet_unref(&packet);
 
 	hasPlayThreadStarted = 0;
 
@@ -1545,6 +1550,9 @@ static void FFMPEGSubThread(Context_t* context)
 		
 		releaseMutex(FILENAME, __FUNCTION__,__LINE__);		
 	} // while
+	
+	////
+	av_packet_unref(&subpacket);
 
 	hasPlaySubThreadStarted = 0;
 
