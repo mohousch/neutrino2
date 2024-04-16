@@ -31,8 +31,20 @@
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>
 
-//#include <gui/movieinfo.h>
 
+////
+class CAVPIDChangeExec : public CMenuTarget
+{
+	public:
+		int exec(CMenuTarget* parent, const std::string & actionKey);
+};
+
+////
+class CAVSubPIDChangeExec : public CMenuTarget
+{
+	public:
+		int exec(CMenuTarget* parent, const std::string & actionKey);
+};
 
 ////
 class CAVPIDSelectWidget : public CMenuTarget

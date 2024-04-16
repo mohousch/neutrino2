@@ -585,7 +585,6 @@ static void FFMPEGThread(Context_t* context)
 					
 #ifdef USE_OPENGL
 					avOut.stream 	 = videoTrack->stream;
-					avOut.packet 	 = &packet;
 #endif
 
 					if (context->output->video->Write(context, &avOut) < 0) 
@@ -618,9 +617,7 @@ static void FFMPEGThread(Context_t* context)
 					avOut.width      = 0;
 					avOut.height     = 0;
 					avOut.type       = "audio";
-					// opengl
 					avOut.stream 	 = audioTrack->stream;
-					avOut.packet 	 = &packet;
 
 					if (!context->playback->BackWard)
 					{
@@ -818,7 +815,6 @@ static void FFMPEGThread(Context_t* context)
 		           			data.height    = subtitleTrack->height;
 		           			//
 		           			data.stream    = subtitleTrack->stream;
-		           			data.packet    = &packet;
 		           			
 						if (context->output->subtitle->Write(context, &data) < 0) 
 						{
@@ -828,8 +824,9 @@ static void FFMPEGThread(Context_t* context)
 				}
 			}            
 
-			if (packet.data)
-				av_free_packet(&packet);
+//			if (packet.data)
+//				av_free_packet(&packet);
+			av_packet_unref(&packet);
 		}
 		else  
 		{
@@ -1524,8 +1521,6 @@ static void FFMPEGSubThread(Context_t* context)
 	AVPacket   subpacket;
 	off_t lastSeek = -1;
 	long long int lastPts = -1;
-	long long int currentVideoPts = -1;
-	long long int currentAudioPts = -1;
 	long long int showtime = 0;
 	long long int bofcount = 0;
 	int err = 0;
@@ -1535,7 +1530,6 @@ static void FFMPEGSubThread(Context_t* context)
 
 	while ( context && context->playback && context->playback->isPlaying ) 
 	{
-#if 1
 		// paused
 		if (context->playback->isPaused) 
 		{
@@ -1567,14 +1561,6 @@ static void FFMPEGSubThread(Context_t* context)
 				continue;
 			}
 
-			if(lastPts == -1)
-			{
-				if(currentVideoPts != -1)
-					lastPts = currentVideoPts;
-				else
-					lastPts = currentAudioPts;
-			}
-
 			lastPts = lastPts + (context->playback->Speed * 90000);
 			showtime = av_gettime() + 300000; //jump back all 300ms
 		}
@@ -1588,7 +1574,6 @@ static void FFMPEGSubThread(Context_t* context)
 			audioMute = 0;
 			context->output->Command(context, OUTPUT_AUDIOMUTE, "0");
 		}
-#endif
 		
 		getMutex(FILENAME, __FUNCTION__,__LINE__);
 
@@ -1648,7 +1633,6 @@ static void FFMPEGSubThread(Context_t* context)
 		           			data.height    = subtitleTrack->height;
 		           			//
 		           			data.stream    = subtitleTrack->stream;
-		           			data.packet    = &subpacket;
 		           			
 						if (context->output->subtitle->Write(context, &data) < 0) 
 						{
@@ -1658,8 +1642,9 @@ static void FFMPEGSubThread(Context_t* context)
 				}
 			}            
 
-			if (subpacket.data)
-				av_free_packet(&subpacket);
+//			if (subpacket.data)
+//				av_free_packet(&subpacket);
+			av_packet_unref(&subpacket);
 		}
 		else  
 		{

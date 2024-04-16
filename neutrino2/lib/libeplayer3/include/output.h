@@ -6,6 +6,8 @@
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 
+#include <config.h>
+
 
 typedef enum {
 	OUTPUT_ADD,
@@ -51,8 +53,9 @@ typedef struct
 	char*                  	type;
 	
 	//
+#ifdef USE_OPENGL	
 	AVStream* 		stream;
-	AVPacket* 		packet;
+#endif
 } AudioVideoOut_t;
 
 // subtitle
@@ -73,7 +76,6 @@ typedef struct
     	
     	//
 	AVStream* 		stream;
-	AVPacket* 		packet;
 } SubtitleData_t;
 
 typedef struct

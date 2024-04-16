@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-04-15 22:30+0300\n"
+"POT-Creation-Date: 2024-04-16 16:13+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -156,6 +156,8 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:284
 #: ../../src/gui/audio_video_select.cpp:292
 #: ../../src/gui/audio_video_select.cpp:294
+#: ../../src/gui/audio_video_select.cpp:311
+#: ../../src/gui/audio_video_select.cpp:310
 msgid "AV Select"
 msgstr ""
 
@@ -243,6 +245,8 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:378
 #: ../../src/gui/audio_video_select.cpp:386
 #: ../../src/gui/audio_video_select.cpp:388
+#: ../../src/gui/audio_video_select.cpp:407
+#: ../../src/gui/audio_video_select.cpp:406
 msgid "Add Subtitle File"
 msgstr ""
 
@@ -1278,6 +1282,7 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:322
 #: ../../src/gui/audio_video_select.cpp:338
 #: ../../src/gui/audio_video_select.cpp:340
+#: ../../src/gui/audio_video_select.cpp:357
 msgid "Dolby Digital"
 msgstr ""
 
@@ -4601,6 +4606,8 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:410
 #: ../../src/gui/audio_video_select.cpp:418
 #: ../../src/gui/audio_video_select.cpp:420
+#: ../../src/gui/audio_video_select.cpp:439
+#: ../../src/gui/audio_video_select.cpp:438
 msgid "Stop subtitles"
 msgstr ""
 
@@ -4833,6 +4840,7 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:329
 #: ../../src/gui/audio_video_select.cpp:345
 #: ../../src/gui/audio_video_select.cpp:347
+#: ../../src/gui/audio_video_select.cpp:364
 msgid "TV-System"
 msgstr ""
 
@@ -5322,6 +5330,7 @@ msgstr ""
 #: ../../src/gui/audio_video_select.cpp:332
 #: ../../src/gui/audio_video_select.cpp:348
 #: ../../src/gui/audio_video_select.cpp:350
+#: ../../src/gui/audio_video_select.cpp:367
 msgid "Video Format"
 msgstr ""
 

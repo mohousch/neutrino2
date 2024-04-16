@@ -1139,6 +1139,14 @@ static int Write(void* _context, void* _out)
 		int driver;
 		ao_info *ai;
 		
+		//
+		AVPacket avpkt;
+		av_init_packet(&avpkt);
+		
+		avpkt.data = out->data;
+    		avpkt.size = out->len;
+    		avpkt.pts  = out->pts;
+		
 		// output sample rate, channels, layout could be set here if necessary
 		o_ch = ctx->channels;     		// 2
 		o_sr = ctx->sample_rate;      		// 48000
@@ -1173,9 +1181,9 @@ static int Write(void* _context, void* _out)
 		aframe = av_frame_alloc();
 						
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
-		res = avcodec_decode_audio4(ctx, aframe, &got_frame, out->packet);
+		res = avcodec_decode_audio4(ctx, aframe, &got_frame, &avpkt);
 #else
-		res = avcodec_send_packet(ctx, out->packet);
+		res = avcodec_send_packet(ctx, &avpkt);
 		
 		if (res != 0 && res != AVERROR(EAGAIN))
 		{
@@ -1209,7 +1217,7 @@ static int Write(void* _context, void* _out)
 								
 				if (av_samples_alloc(&obuf, &out_linesize, ctx->channels, aframe->nb_samples, AV_SAMPLE_FMT_S16, 1) < 0)
 				{
-					av_packet_unref(&out->packet);
+					av_packet_unref(&avpkt);
 					ret = cERR_LINUXDVB_ERROR;
 				}
 								
@@ -1233,6 +1241,9 @@ static int Write(void* _context, void* _out)
 				ret = cERR_LINUXDVB_ERROR;
 			}
 		}
+		
+		////
+		av_packet_unref(&avpkt);
 
 		av_free(obuf);
 		swr_free(&swr);
@@ -1296,6 +1307,14 @@ static int Write(void* _context, void* _out)
 		AVFrame *rgbframe = NULL;
 		struct SwsContext *convert = NULL;
 		AVCodecContext* ctx = out->stream->codec;
+		
+		//
+		AVPacket avpkt;
+		av_init_packet(&avpkt);
+		
+		avpkt.data = out->data;
+    		avpkt.size = out->len;
+    		avpkt.pts  = out->pts;
 
 		frame = av_frame_alloc();
 		rgbframe = av_frame_alloc();
@@ -1305,9 +1324,9 @@ static int Write(void* _context, void* _out)
 	
 		// decode frame
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
-		res = avcodec_decode_video2(ctx, frame, &got_frame, out->packet);
+		res = avcodec_decode_video2(ctx, frame, &got_frame, &avpkt);
 #else
-		res = avcodec_send_packet(ctx, out->packet);
+		res = avcodec_send_packet(ctx, &avpkt);
 		
 		if (res != 0 && res != AVERROR(EAGAIN))
 		{
@@ -1413,6 +1432,9 @@ static int Write(void* _context, void* _out)
 			}
 		}
 		
+		////
+		av_packet_unref(&avpkt);
+		
 		if (frame)
 		{
 			av_frame_free(&frame);
@@ -1430,15 +1452,6 @@ static int Write(void* _context, void* _out)
 			sws_freeContext(convert);
 			convert = NULL;
 		}
-		
-		/*
-		if (!stillpicture)
-		{
-			buf_num = 0;
-			buf_in = 0;
-			buf_out = 0;
-		}
-		*/
 		
 		ret = cERR_LINUXDVB_ERROR;
 #endif

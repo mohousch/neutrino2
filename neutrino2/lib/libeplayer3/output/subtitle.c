@@ -183,6 +183,13 @@ static int Write(void* _context, void *data)
     	}
     	else // others
     	{
+    		//
+    		AVPacket avpkt;
+		av_init_packet(&avpkt);
+		
+		avpkt.data = out->data;
+    		avpkt.size = out->len;
+    		avpkt.pts  = out->pts;
 		//
 	    	AVSubtitle sub;
 	    	AVCodecContext* ctx = out->stream->codec;
@@ -193,9 +200,9 @@ static int Write(void* _context, void *data)
 	    	
 	    	// decode 	
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)			   
-		if (ctx && avcodec_decode_subtitle2(ctx, &sub, &got_sub_ptr, out->packet) < 0)
+		if (ctx && avcodec_decode_subtitle2(ctx, &sub, &got_sub_ptr, &avpkt) < 0)
 #else
-		if (ctx && avcodec_decode_subtitle(ctx, &sub, &got_sub_ptr, out->packet->data, out->packet->size ) < 0)
+		if (ctx && avcodec_decode_subtitle(ctx, &sub, &got_sub_ptr, avpkt.data, avpkt.size ) < 0)
 #endif
 		{
 			subtitle_err("error decoding subtitle\n");
