@@ -1145,6 +1145,9 @@ static int Write(void* _context, void* _out)
 		avpkt.data = out->data;
     		avpkt.size = out->len;
     		avpkt.pts  = out->pts;
+    		
+    		if (out->aframe)
+			av_frame_unref(out->aframe);
 		
 		// output sample rate, channels, layout could be set here if necessary
 		o_ch = ctx->channels;     		// 2
@@ -1238,6 +1241,9 @@ static int Write(void* _context, void* _out)
 		
 		//
 		av_packet_unref(&avpkt);
+		
+		if (out->aframe)
+			av_frame_unref(out->aframe);
 
 		av_free(obuf);
 		swr_free(&swr);
@@ -1435,7 +1441,7 @@ static int Write(void* _context, void* _out)
 			}
 		}
 		
-		////
+		//
 		av_packet_unref(&avpkt);
 		
 		if (convert)
