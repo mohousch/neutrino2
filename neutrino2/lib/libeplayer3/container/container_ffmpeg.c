@@ -862,6 +862,7 @@ static void FFMPEGThread(Context_t* context)
 	}
 	
 	//
+#ifdef USE_OPENGL
 	if (frame)
 	{
 		av_frame_free(&frame);
@@ -879,8 +880,9 @@ static void FFMPEGThread(Context_t* context)
 		av_frame_free(&aframe);
 		aframe = NULL;
 	}
+#endif
 	
-	////
+	//
 	av_packet_unref(&packet);
 
 	hasPlayThreadStarted = 0;
