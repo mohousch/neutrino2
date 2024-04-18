@@ -1353,7 +1353,7 @@ static int Write(void* _context, void* _out)
 		// setup swsscaler
 		if (got_frame)
 		{				
-			convert = sws_getContext(ctx->width, ctx->height, ctx->pix_fmt, ctx->width, ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
+			convert = sws_getCachedContext(convert, ctx->width, ctx->height, ctx->pix_fmt, ctx->width, ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
 								
 			if (convert)
 			{
@@ -1362,7 +1362,8 @@ static int Write(void* _context, void* _out)
 				
 				int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 				
-				data[buf_in].size[0] = need;
+				if (data[buf_in].size[0] < need)
+					data[buf_in].size[0] = need;
 				
 				//				
 				av_image_fill_arrays(out->rgbframe->data, out->rgbframe->linesize, data[buf_in].buffer[0], AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);

@@ -1759,7 +1759,7 @@ void CTestMenu::testCCTime()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCCTime:\n");
 	
-	char* format = "%d.%m.%Y %H:%M";
+	char* format = "%d.%m.%Y %H:%M:%S";
 	std::string timestr = getNowTimeStr(format);
 		
 	int timestr_len = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth(timestr.c_str(), true); // UTF-8
@@ -1767,7 +1767,7 @@ void CTestMenu::testCCTime()
 	CCTime timer(g_settings.screen_StartX + 100, g_settings.screen_StartY + 100, /*timestr_len*/500, g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getHeight());
 	
 	//timer.setFont();
-	//timer.setFormat(format);
+	timer.setFormat(format);
 	//timer.enableRepaint();
 	
 	timer.exec();

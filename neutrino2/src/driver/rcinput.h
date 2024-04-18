@@ -32,6 +32,8 @@
 #include <vector>
 #include <stdint.h>
 
+#include <config.h>
+
 #include <configfile.h>
 
 
@@ -164,7 +166,11 @@ class CRCInput
 		int fd_pipe_high_priority[2];
 		int fd_pipe_low_priority[2];
 
+#ifdef USE_OPENGL
+#define NUMBER_OF_EVENT_DEVICES 10
+#else
 #define NUMBER_OF_EVENT_DEVICES 4
+#endif
 
 		int fd_rc[NUMBER_OF_EVENT_DEVICES];
 		int fd_event;
