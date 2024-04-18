@@ -1,5 +1,5 @@
 /*
-  $Id: test.cpp 26.09.2021 mohousch Exp $
+  $Id: test.cpp 18042024 mohousch Exp $
 
   License: GPL
 
@@ -127,6 +127,7 @@ class CTestMenu : public CMenuTarget
 		void testCCLabel();
 		void testCCText();
 		void testCImage();
+		void testCCTime();
 		void testCProgressBar();
 		void testCButtons();
 		void testCHButtons();
@@ -1599,9 +1600,9 @@ void CTestMenu::testMultiWidget()
 	CCLabel *testLabel = new CCLabel();
 	testLabel->setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
 	testLabel->setColor(COL_GREEN_PLUS_0);
-	testLabel->paintMainFrame(true);
-	testLabel->setText("this is a CComponent label test :-)");
+	testLabel->setText("this is a CComponent CCLabel test :-)");
 	testLabel->setPosition(Box.iX + 20, Box.iY + 50, Box.iWidth, g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight());
+	testLabel->enableRepaint();
 	
 	testWidget->addCCItem(testLabel);
 	
@@ -1609,20 +1610,17 @@ void CTestMenu::testMultiWidget()
 	CCButtons *testButton = new CCButtons(Box.iX + 10, Box.iY + Box.iHeight - 100, Box.iWidth, 40);
 	int icon_w, icon_h;
 	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
-	//testButton->setPosition(Box.iX + 10, Box.iY + Box.iHeight - 100, Box.iWidth, 40);
 	testButton->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	
 	testWidget->addCCItem(testButton);
 	
 	// Hline
 	CCHline *testHline = new CCHline(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 10, 10);
-	//testHline->setPosition(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 10, 10);
 	
 	testWidget->addCCItem(testHline);
 	
 	// Vline
 	CCVline *testVline = new CCVline(Box.iX, Box.iY + 10, 10, Box.iHeight - 20);
-	//testVline->setPosition(Box.iX, Box.iY + 10, 10, Box.iHeight - 20);
 	
 	testWidget->addCCItem(testVline);
 	
@@ -1634,6 +1632,8 @@ void CTestMenu::testMultiWidget()
 	// text
 	CCText *testText = new CCText(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 20, Box.iHeight/4);
 	testText->setText(buffer.c_str());
+	////
+	testText->enableRepaint();
 	
 	testWidget->addCCItem(testText);
 
@@ -1715,7 +1715,7 @@ void CTestMenu::testCCLabel()
 	CTextBox.setColor(COL_RED_PLUS_0);
 	CTextBox.setHAlign(CComponent::CC_ALIGN_CENTER);
 	CTextBox.enableRepaint();
-	CTextBox.enableSaveScreen();
+//	CTextBox.enableSaveScreen();
 		
 	CTextBox.exec();
 }
@@ -1751,11 +1751,27 @@ void CTestMenu::testCCText()
 	CTextBox.setColor(COL_YELLOW_PLUS_0);
 	CTextBox.setHAlign(CComponent::CC_ALIGN_CENTER);
 	CTextBox.enableRepaint();
-	CTextBox.enableSaveScreen();
 		
 	CTextBox.exec();
 }
-////
+
+void CTestMenu::testCCTime()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCCTime:\n");
+	
+	char* format = "%d.%m.%Y %H:%M";
+	std::string timestr = getNowTimeStr(format);
+		
+	int timestr_len = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth(timestr.c_str(), true); // UTF-8
+		
+	CCTime timer(g_settings.screen_StartX + 100, g_settings.screen_StartY + 100, /*timestr_len*/500, g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getHeight());
+	
+	//timer.setFont();
+	//timer.setFormat(format);
+	//timer.enableRepaint();
+	
+	timer.exec();
+}
 
 // CProgressBar
 void CTestMenu::testCProgressBar()
@@ -4844,6 +4860,12 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		testCCText();
 		return RETURN_REPAINT;
 	}
+	else if (actionKey == "cctime")
+	{
+		testCCTime();
+		
+		return RETURN_REPAINT;
+	}
 	else if(actionKey == "window")
 	{
 		testCWindow();
@@ -5213,14 +5235,6 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}
-	/*
-	else if(actionKey == "menuwidget")
-	{
-		testCMenuWidgetListBox();
-
-		return RETURN_REPAINT;
-	}
-	*/
 	else if(actionKey == "menuwidgetmenu")
 	{
 		testCMenuWidgetMenu();
@@ -6406,12 +6420,13 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CCImage", true, NULL, this, "image"));
 	mainMenu->addItem(new CMenuForwarder("CCLabel", true, NULL, this, "cclabel"));
 	mainMenu->addItem(new CMenuForwarder("CCText", true, NULL, this, "cctext"));
+	mainMenu->addItem(new CMenuForwarder("CCTime", true, NULL, this, "cctime"));
 	mainMenu->addItem(new CMenuForwarder("CCButtons (foot)", true, NULL, this, "buttons"));
 	mainMenu->addItem(new CMenuForwarder("CCButtons (head)", true, NULL, this, "hbuttons"));
 	mainMenu->addItem(new CMenuForwarder("CCSpinner", true, NULL, this, "spinner"));
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	//mainMenu->addItem(new CMenuForwarder("CCSlider", true, NULL, this, "slider"));
 	mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
-	
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("CCWindow", true, NULL, this, "panel"));
 	mainMenu->addItem(new CMenuForwarder("CCWindow(gradient)", true, NULL, this, "window"));
@@ -6444,17 +6459,13 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CWidget(ClistBox|CFrameBox|CHead|CFoot)", true, NULL, this, "widget"));
 	
 	// CMenuWidhet
-	//mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CMenuWidget"));
-	//mainMenu->addItem(new CMenuForwarder("CMenuWidget(MODE_LISTBOX)", true, NULL, this, "menuwidget"));
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("CMenuWidget(MODE_MENU)", true, NULL, this, "menuwidgetmenu"));
 	mainMenu->addItem(new CMenuForwarder("CMenuWidget(MODE_MENU|ITEMINFO)", true, NULL, this, "menuwidgetmenuiteminfo"));
 	mainMenu->addItem(new CMenuForwarder("CMenuWidget(MODE_MENU|CLASSIC)", true, NULL, this, "menuwidgetmenuclassic"));
 	mainMenu->addItem(new CMenuForwarder("CMenuWidget(MODE_MENU|EXTENDED)", true, NULL, this, "menuwidgetmenuextended"));
 	mainMenu->addItem(new CMenuForwarder("CMenuWidget(MODE_MENU|FRAME)", true, NULL, this, "menuwidgetmenuframe"));
 	mainMenu->addItem(new CMenuForwarder("CMenuWidget(MODE_SETUP)", true, NULL, this, "menuwidgetsetup"));
-
-	// other widget
-	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "other Widget"));
 	mainMenu->addItem(new CMenuForwarder("CStringInput", true, NULL, this, "stringinput"));
 	mainMenu->addItem(new CMenuForwarder("CStringInputSMS", true, NULL, this, "stringinputsms"));
 	mainMenu->addItem(new CMenuForwarder("CPINInput", true, NULL, this, "pininput"));

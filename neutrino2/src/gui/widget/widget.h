@@ -136,7 +136,7 @@ class CWidget : public CMenuTarget
 		virtual void paint();
 		virtual void hide();
 		virtual int exec(CMenuTarget *parent, const std::string &actionKey);
-		virtual void refresh();
+		virtual void refresh(bool show = false);
 		//
 		void setTimeOut(uint64_t to = 0){timeout = to;};
 		void setSecTimerInterval(uint64_t sec){sec_timer_interval = sec;};

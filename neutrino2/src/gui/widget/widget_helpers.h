@@ -255,7 +255,7 @@ class CCIcon : public CComponent
 		//
 		void saveScreen(void);
 		void restoreScreen(void);
-		void refresh(bool show);
+		void refresh(bool show = false);
 };
 
 //// CCImage
@@ -294,7 +294,7 @@ class CCImage : public CComponent
 		//
 		void saveScreen(void);
 		void restoreScreen(void);
-		void refresh(bool show);
+		void refresh(bool show = false);
 };
 
 //// CCButtons
@@ -458,8 +458,8 @@ class CCLabel : public CComponent
 		//
 		void paint();
 		void hide();
-		//
-		void refresh(bool show);
+		void enableRepaint(){rePaint = true; enableSaveScreen();};
+		void refresh(bool show = false);
 };
 
 //// CCText
@@ -498,7 +498,8 @@ class CCText : public CComponent
 		//
 		void paint();
 		void hide();
-		void refresh(bool show);
+		void enableRepaint(){rePaint = true; enableSaveScreen();};
+		void refresh(bool show = false);
 };
 
 //// CCTime
@@ -527,8 +528,7 @@ class CCTime : public CComponent
 		//
 		void paint();
 		void hide();
-		//
-		void refresh();
+		void refresh(bool show = false);
 };
 
 //// CCCounter
@@ -560,7 +560,7 @@ class CCCounter : public CComponent
 		void paint();
 		void hide();
 		//
-		void refresh();
+		void refresh(bool show = false);
 		//
 		CFont* getFont(){return g_Font[font];};
 };
@@ -586,7 +586,7 @@ class CCSpinner : public CComponent
 		void paint();
 		void hide();
 		//
-		void refresh();
+		void refresh(bool show = false);
 };
 
 //// CCSlider
@@ -769,7 +769,7 @@ class CCWindow : public CComponent
 		void paint(void);
 		void hide(void);
 		//
-		void refresh(void);
+		void refresh(bool show = false);
 };
 
 //// CCPig
@@ -838,7 +838,7 @@ class CCHeaders : public CComponent
 		//
 		void paint();
 		void hide();
-		void refresh(void){if (paintDate) timer->refresh();};
+		void refresh(bool show = false){if (paintDate) timer->refresh();};
 		bool update() const {return paintDate;};
 		void stopRefresh();
 		//

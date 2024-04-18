@@ -1170,7 +1170,7 @@ void CCTime::paint()
 }
 
 //
-void CCTime::refresh()
+void CCTime::refresh(bool show)
 {
 	//
 	restoreScreen();
@@ -1282,7 +1282,7 @@ void CCCounter::paint()
 	g_Font[font]->RenderString(itemBox.iX + itemBox.iWidth/2, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), itemBox.iWidth/2, totalTime, color, 0, true);
 }
 
-void CCCounter::refresh()
+void CCCounter::refresh(bool show)
 {
 	//
 	restoreScreen();
@@ -1401,7 +1401,7 @@ void CCSpinner::hide()
 }
 
 //
-void CCSpinner::refresh()
+void CCSpinner::refresh(bool show)
 {
 	dprintf(DEBUG_DEBUG, "CCSpinner::refresh\n");
 	
@@ -2194,7 +2194,7 @@ void CCWindow::hide()
 	CFrameBuffer::getInstance()->blit();
 }
 
-void CCWindow::refresh(void)
+void CCWindow::refresh(bool show)
 {
 	dprintf(DEBUG_INFO, "CCWindow::%s\n", __FUNCTION__);
 

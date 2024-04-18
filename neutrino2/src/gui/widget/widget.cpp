@@ -344,6 +344,7 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 	retval = RETURN_REPAINT;
 	pos = 0;
 	exit_pressed = false;
+	bool show = true;
 	
 	bool needToBlit = false;
 
@@ -432,7 +433,9 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 			if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 			{
 				needToBlit = true;
-				refresh();
+				
+				show = !show;
+				refresh(show);
 			} 
 
 			switch (msg) 
@@ -532,7 +535,7 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 	return retval;
 }
 
-void CWidget::refresh()
+void CWidget::refresh(bool show)
 {				
 	// refresh CCItems
 	if (hasCCItem())
@@ -541,7 +544,7 @@ void CWidget::refresh()
 		{
 			if (CCItems[count]->update())
 			{
-				CCItems[count]->refresh();
+				CCItems[count]->refresh(show);
 			}
 		}
 	}
