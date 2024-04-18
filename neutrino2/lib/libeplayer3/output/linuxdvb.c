@@ -1351,10 +1351,8 @@ static int Write(void* _context, void* _out)
 #endif
 					
 		// setup swsscaler
-		if (got_frame && !stillpicture)
-		{
-			int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
-							
+		if (got_frame)
+		{				
 			convert = sws_getContext(ctx->width, ctx->height, ctx->pix_fmt, ctx->width, ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
 								
 			if (convert)
@@ -1362,16 +1360,17 @@ static int Write(void* _context, void* _out)
 				//
 				getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 				
-				// fill				
-				av_image_fill_arrays(out->rgbframe->data, out->rgbframe->linesize, data[buf_in].buffer, AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
+				int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 				
-				//
-				data[buf_in].size = need;
+				data[buf_in].size[0] = need;
+				
+				//				
+				av_image_fill_arrays(out->rgbframe->data, out->rgbframe->linesize, data[buf_in].buffer[0], AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 
-				// scale
+				// scale : FIXME: segfault
 				sws_scale(convert, out->frame->data, out->frame->linesize, 0, ctx->height, out->rgbframe->data, out->rgbframe->linesize);
 				
-				// fill the rest of the struct	
+				//
 				data[buf_in].width = ctx->width;
 				data[buf_in].height = ctx->height;
 				
@@ -1381,12 +1380,6 @@ static int Write(void* _context, void* _out)
 #else
 				data[buf_in].vpts = sCURRENT_PTS = out->frame->best_effort_timestamp;
 #endif
-
-				// a/v delay determined experimentally :-)
-				//if (ctx->codec_id == AV_CODEC_ID_MPEG2VIDEO)
-				//	data[buf_in].vpts += 90000 * 4 / 10; // 400ms
-				//else
-				//	data[buf_in].vpts += 90000 * 3 / 10; // 300ms
 				
 				data[buf_in].apts = sCURRENT_APTS;
 				
