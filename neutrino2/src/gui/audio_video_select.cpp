@@ -400,35 +400,37 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 	}
 	
 	// add subtitle file
-#ifndef ENABLE_GSTREAMER	
-	AVPIDSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	
-	AVPIDSelector->addItem(new CMenuForwarder(_("Add Subtitle File"), true, subtitle_file.c_str(), this, "add_subtitle"));
-	
-	//
 	extnumpids = 0;
 	
-	if(playback)
-		playback->FindAllExtSubPids(extspids, &extnumpids, language);
-	
-	if (extnumpids > 0) 
-	{
-
-		for (int count = 0; count < extnumpids; count++) 
+#ifndef ENABLE_GSTREAMER
+	if (CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_ts)
+	{	
+		AVPIDSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+		
+		AVPIDSelector->addItem(new CMenuForwarder(_("Add Subtitle File"), true, subtitle_file.c_str(), this, "add_subtitle"));
+		
+		if(playback)
+			playback->FindAllExtSubPids(extspids, &extnumpids, language);
+		
+		if (extnumpids > 0) 
 		{
-			char spidnumber[64];
-			
-			std::string spidtitle = "Sub ";
 
-			// language
-			if (!language[count].empty())
+			for (int count = 0; count < extnumpids; count++) 
 			{
-				spidtitle = language[count];
-			}
-			
-			sprintf(spidnumber, "%s:%d(EXT)", spidtitle.c_str(), count); // dont change this
+				char spidnumber[64];
+				
+				std::string spidtitle = "Sub ";
 
-			AVPIDSelector->addItem(new CMenuForwarder(spidtitle.c_str(), currentextspid == count? false : true, NULL, &AVSubPIDChanger, spidnumber, CRCInput::convertDigitToKey(count + 1)));
+				// language
+				if (!language[count].empty())
+				{
+					spidtitle = language[count];
+				}
+				
+				sprintf(spidnumber, "%s:%d(EXT)", spidtitle.c_str(), count); // dont change this
+
+				AVPIDSelector->addItem(new CMenuForwarder(spidtitle.c_str(), currentextspid == count? false : true, NULL, &AVSubPIDChanger, spidnumber, CRCInput::convertDigitToKey(count + 1)));
+			}
 		}
 	}
 	

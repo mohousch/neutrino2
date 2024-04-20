@@ -6425,9 +6425,9 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CCButtons (head)", true, NULL, this, "hbuttons"));
 	mainMenu->addItem(new CMenuForwarder("CCSpinner", true, NULL, this, "spinner"));
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	//mainMenu->addItem(new CMenuForwarder("CCSlider", true, NULL, this, "slider"));
-	mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
-	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+//	mainMenu->addItem(new CMenuForwarder("CCSlider", true, NULL, this, "slider"));
+//	mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
+//	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("CCWindow", true, NULL, this, "panel"));
 	mainMenu->addItem(new CMenuForwarder("CCWindow(gradient)", true, NULL, this, "window"));
 	mainMenu->addItem(new CMenuForwarder("CCWindow(with border)", true, NULL, this, "windowshadow"));
