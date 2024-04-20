@@ -207,6 +207,8 @@ N2_OPTS += --enable-opengl
 endif	
 
 # MEDIAFW
+MEDIAFW ?= buildinplayer
+
 ifeq ($(MEDIAFW), gstreamer)
 N2_OPTS += --enable-gstreamer --with-gstversion=1.0
 endif
