@@ -1442,7 +1442,6 @@ void cVideo::run(void)
 				//
 				if (dec_w != c->width || dec_h != c->height)
 				{
-					printf("cVideo::run: pic changed %dx%d -> %dx%d\n", dec_w, dec_h, c->width, c->height);
 					dec_w = c->width;
 					dec_h = c->height;
 					w_h_changed = true;
@@ -1456,11 +1455,6 @@ void cVideo::run(void)
 #else
 				dec_vpts = frame->best_effort_timestamp;
 #endif
-				// a/v delay determined experimentally :-)
-				//if (p->codec_id == AV_CODEC_ID_MPEG2VIDEO)
-				//	dec_vpts += 90000 * 4 / 10; // 400ms
-				//else
-				//	dec_vpts += 90000 * 3 / 10; // 300ms
 
 				f->pts(dec_vpts);
 				

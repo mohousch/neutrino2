@@ -1365,10 +1365,11 @@ static int Write(void* _context, void* _out)
 				if (data[buf_in].size[0] < need)
 					data[buf_in].size[0] = need;
 				
-				//				
-				av_image_fill_arrays(out->rgbframe->data, out->rgbframe->linesize, data[buf_in].buffer[0], AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
+				// fill				
+				//av_image_fill_arrays(out->rgbframe->data, out->rgbframe->linesize, data[buf_in].buffer[0], AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
+				avpicture_fill((AVPicture *)out->rgbframe, data[buf_in].buffer[0], AV_PIX_FMT_RGB32, ctx->width, ctx->height);
 
-				// scale : FIXME: segfault
+				// scale
 				sws_scale(convert, out->frame->data, out->frame->linesize, 0, ctx->height, out->rgbframe->data, out->rgbframe->linesize);
 				
 				//

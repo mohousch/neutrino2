@@ -2233,3 +2233,16 @@
 /neutrino2/src/driver/gfx/glthread.cpp.old
 /neutrino2/src/driver/gfx/glthread.h.old
 /neutrino2/src/sectionsd/st0xm42C
+/neutrino2/data/locale/neutrino2.pot
+/plugins/audioplayer/locale/audioplayer.pot
+/plugins/icecast/locale/icecast.pot
+/plugins/internetradio/locale/internetradio.pot
+/plugins/moviebrowser/locale/moviebrowser.pot
+/plugins/movieplayer/locale/movieplayer.pot
+/plugins/nfilm/locale/nfilm.pot
+/plugins/ntvshows/locale/ntvshows.pot
+/plugins/opkg_manager/locale/opkg_manager.pot
+/plugins/picviewer/locale/picviewer.pot
+/plugins/systeminfo/locale/systeminfo.pot
+/plugins/test/locale/test.pot
+/plugins/upnp/locale/upnp.pot

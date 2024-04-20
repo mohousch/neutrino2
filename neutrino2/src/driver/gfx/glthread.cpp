@@ -708,10 +708,8 @@ void GLThreadObj::bltPlayBuffer()
 	
 	//
 	int64_t apts = buf->apts();
-	int64_t vpts = buf->vpts() + 18000;
+	int64_t vpts = buf->vpts();
 	int rate = buf->rate();
-	
-//	printf("vpts:%lld --> apts:%lld  --> rate:%d\n", vpts, apts, rate);
 			
 	if (apts != last_apts)
 	{		
@@ -732,8 +730,6 @@ void GLThreadObj::bltPlayBuffer()
 			sleep_us = framerate;
 		else if (sleep_us < 1)
 			sleep_us = 1;
-			
-//		printf("sleep_us:%d\n", sleep_us);
 	}
 #endif
 }
