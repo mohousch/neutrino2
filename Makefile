@@ -207,15 +207,11 @@ N2_OPTS += --enable-opengl
 endif	
 
 # MEDIAFW
-MEDIAFW ?= gstreamer
-
 ifeq ($(MEDIAFW), gstreamer)
 N2_OPTS += --enable-gstreamer --with-gstversion=1.0
 endif
 
 # OVERLAY
-OVERLAY ?= 
-
 ifeq ($(OVERLAY), overlay)
 N2_OPTS += --enable-overlay
 endif
