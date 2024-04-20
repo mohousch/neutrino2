@@ -21,7 +21,7 @@ icecast.pot: $(top_srcdir)/icecast/*.cpp
 	$(MSGFMT) -o $@ $<
 
 BUILT_SOURCES = $(LANGMO)
-CLEANFILES = $(LANGMO)
+CLEANFILES = $(LANGMO) icecast.pot
 
 dist-hook: $(LANGPO)
 

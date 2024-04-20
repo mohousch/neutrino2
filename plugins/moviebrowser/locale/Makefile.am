@@ -21,7 +21,7 @@ moviebrowser.pot: $(top_srcdir)/moviebrowser/*.cpp $(top_srcdir)/moviebrowser/*.
 	$(MSGFMT) -o $@ $<
 
 BUILT_SOURCES = $(LANGMO)
-CLEANFILES = $(LANGMO)
+CLEANFILES = $(LANGMO) moviebrowser.pot
 
 dist-hook: $(LANGPO)
 

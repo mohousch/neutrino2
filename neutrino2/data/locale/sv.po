@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-04-13 13:20+0300\n"
+"POT-Creation-Date: 2024-04-20 10:43+0300\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1292,9 +1292,6 @@ msgid "Menu Title"
 msgstr ""
 
 msgid "Menu Title large"
-msgstr ""
-
-msgid "Menu Title2"
 msgstr ""
 
 msgid "Menu mode"
@@ -2780,9 +2777,6 @@ msgstr ""
 msgid "directory/share"
 msgstr ""
 
-msgid "display pics"
-msgstr ""
-
 msgid "don't care"
 msgstr ""
 
@@ -2808,9 +2802,6 @@ msgid "error umounting volume"
 msgstr ""
 
 msgid "fast"
-msgstr ""
-
-msgid "file manager"
 msgstr ""
 
 msgid "filesystem type not supported"
@@ -3026,15 +3017,6 @@ msgid "passthrough"
 msgstr ""
 
 msgid "password"
-msgstr ""
-
-msgid "play and edit records and movies"
-msgstr ""
-
-msgid "play movie and record files"
-msgstr ""
-
-msgid "play music files"
 msgstr ""
 
 msgid "playtime"

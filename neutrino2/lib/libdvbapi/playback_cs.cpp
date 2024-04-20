@@ -1518,7 +1518,7 @@ extern Data_t data[64];
 
 cPlayback::SWFramebuffer* cPlayback::getDecBuf(void)
 {							
-	SWFramebuffer *p = &buffers[0];
+	SWFramebuffer *p = &buffers[buf_out];
 
 	p->resize(data[buf_out].size[0]);
 	p->width(data[buf_out].width);

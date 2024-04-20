@@ -21,7 +21,7 @@ movieplayer.pot: $(top_srcdir)/movieplayer/*.cpp
 	$(MSGFMT) -o $@ $<
 
 BUILT_SOURCES = $(LANGMO)
-CLEANFILES = $(LANGMO)
+CLEANFILES = $(LANGMO) movieplayer.pot
 
 dist-hook: $(LANGPO)
 

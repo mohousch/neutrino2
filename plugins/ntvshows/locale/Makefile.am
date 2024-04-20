@@ -21,7 +21,7 @@ ntvshows.pot: $(top_srcdir)/ntvshows/*.cpp
 	$(MSGFMT) -o $@ $<
 
 BUILT_SOURCES = $(LANGMO)
-CLEANFILES = $(LANGMO)
+CLEANFILES = $(LANGMO) ntvshows.pot
 
 dist-hook: $(LANGPO)
 
