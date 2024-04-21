@@ -121,6 +121,12 @@ static unsigned char isContainerRunning = 0;
 
 static long long int latestPts = 0;
 
+#ifdef USE_OPENGL
+extern int buf_in;
+extern int buf_out;
+extern int buf_num;
+#endif
+
 /* ***************************** */
 /* Prototypes                    */
 /* ***************************** */
@@ -881,6 +887,10 @@ static void FFMPEGThread(Context_t* context)
 		av_frame_free(&aframe);
 		aframe = NULL;
 	}
+	
+	buf_num = 0;
+	buf_in = 0;
+	buf_out = 0;
 #endif
 	
 	//

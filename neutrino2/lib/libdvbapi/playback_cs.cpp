@@ -47,10 +47,6 @@ extern "C" {
 #include <libavutil/imgutils.h>
 #include <libswscale/swscale.h>
 }
-////
-extern int buf_in;
-extern int buf_out;
-extern int buf_num;
 #endif
 
 
@@ -1515,24 +1511,26 @@ void cPlayback::AddSubtitleFile(const char* const file)
 #ifdef USE_OPENGL
 #ifndef ENABLE_GSTREAMER
 extern Data_t data[64];
+extern int buf_in;
+extern int buf_out;
+extern int buf_num;
 
 cPlayback::SWFramebuffer* cPlayback::getDecBuf(void)
 {
 	if (buf_num == 0)
 		return NULL;
-									
+								
 	SWFramebuffer *p = &buffers[buf_out];
-
-	if (p->size() != data[buf_out].size[0])
-		p->resize(data[buf_out].size[0]);
+	
+	if (p->size() < data[buf_out].size)
+		p->resize(data[buf_out].size);
 	p->width(data[buf_out].width);
 	p->height(data[buf_out].height);
 	p->rate(data[buf_out].rate);
 	p->vpts(data[buf_out].vpts);
 	p->apts(data[buf_out].apts);
 	
-	//av_image_fill_arrays(data[buf_out].buffer, data[buf_out].size, &(*p)[0], AV_PIX_FMT_RGB32, data[buf_out].width, data[buf_out].height, 1);
-	avpicture_fill((AVPicture *)data[buf_out].buffer, &(*p)[0], AV_PIX_FMT_RGB32, data[buf_out].width, data[buf_out].height);
+	av_image_fill_arrays(&data[buf_out].buffer, &data[buf_out].size, &(*p)[0], AV_PIX_FMT_RGB32, data[buf_out].width, data[buf_out].height, 1);
 	
 	buf_out++;
 	buf_num--;

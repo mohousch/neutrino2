@@ -94,7 +94,7 @@ cAudio::cAudio(int num)
 #endif
 
 #ifdef USE_OPENGL
-	thread_started = false;
+	thread_running = false;
 	dmxbuf = (uint8_t *)malloc(DMX_BUF_SZ);
 	bufpos = 0;
 	curr_pts = 0;
@@ -202,7 +202,7 @@ int cAudio::SetMute(int enable)
 	return ret;
 }
 
-/* volume, min = 0, max = 100 */
+// volume, min = 0, max = 100
 int cAudio::setVolume(unsigned int left, unsigned int right)
 { 
 	printf("cAudio::setVolume volume: %d\n", left);
@@ -260,7 +260,7 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 	return ret;
 }
 
-/* start audio */
+// start audio 
 int cAudio::Start(void)
 { 
 	printf("cAudio::Start\n");
@@ -268,7 +268,7 @@ int cAudio::Start(void)
 	int ret = -1;
 	
 #ifdef USE_OPENGL
-	if (!thread_started)
+	if (!thread_running)
 	{
 		ret = OpenThreads::Thread::start();
 	}
@@ -294,9 +294,9 @@ int cAudio::Stop(void)
 	int ret = -1;
 	
 #ifdef USE_OPENGL
-	if (thread_started)
+	if (thread_running)
 	{
-		thread_started = false;
+		thread_running = false;
 		ret = OpenThreads::Thread::join();
 	}
 #else
@@ -640,7 +640,7 @@ void cAudio::run()
 	avfc->iformat = inp;
 	avfc->probesize = 188 * 5;
 	
-	thread_started = true;
+	thread_running = true;
 
 	if (avformat_open_input(&avfc, NULL, inp, NULL) < 0)
 	{
@@ -731,7 +731,7 @@ void cAudio::run()
 	
 	swr_init(swr);
 	
-	while (thread_started)
+	while (thread_running)
 	{
 		if (playstate == AUDIO_PAUSED) 
 		{
@@ -768,7 +768,7 @@ void cAudio::run()
 		}
 #endif
 
-		if (gotframe && thread_started)
+		if (gotframe && thread_running)
 		{
 			int out_linesize;
 			obuf_sz = av_rescale_rnd(frame->nb_samples, o_sr, p->sample_rate, AV_ROUND_UP);
@@ -780,7 +780,7 @@ void cAudio::run()
 				if (av_samples_alloc(&obuf, &out_linesize, o_ch, frame->nb_samples, AV_SAMPLE_FMT_S16, 1) < 0)
 				{
 					av_packet_unref(&avpkt);
-					break; // while (thread_started)
+					break; // while (thread_running)
 				}
 				
 				obuf_sz_max = obuf_sz;

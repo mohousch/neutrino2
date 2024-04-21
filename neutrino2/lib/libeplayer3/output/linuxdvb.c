@@ -1352,7 +1352,7 @@ static int Write(void* _context, void* _out)
 		// setup swsscaler
 		if (got_frame)
 		{				
-			convert = sws_getCachedContext(convert, ctx->width, ctx->height, ctx->pix_fmt, ctx->width, ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
+			convert = sws_getContext(ctx->width, ctx->height, ctx->pix_fmt, ctx->width, ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
 								
 			if (convert)
 			{
@@ -1361,32 +1361,30 @@ static int Write(void* _context, void* _out)
 				
 				int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 				
-				if (data[buf_in].size[0] < need)
-					data[buf_in].size[0] = need;
-				
-				// fill				
-				//av_image_fill_arrays(out->rgbframe->data, out->rgbframe->linesize, data[buf_in].buffer[0], AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
-				avpicture_fill((AVPicture *)out->rgbframe, data[buf_in].buffer[0], AV_PIX_FMT_RGB32, ctx->width, ctx->height);
-
+				if (data[buf_in].size < need)
+					data[buf_in].size = need;
+					
 				// scale
-				sws_scale(convert, out->frame->data, out->frame->linesize, 0, ctx->height, out->rgbframe->data, out->rgbframe->linesize);
-				
+				uint8_t* dest[4] = { data[buf_in].buffer, NULL, NULL, NULL };
+	    			int dest_linesize[4] = { ctx->width * 4, 0, 0, 0 };
+				sws_scale(convert, out->frame->data, out->frame->linesize, 0, ctx->height, dest, dest_linesize);
+					
 				//
 				data[buf_in].width = ctx->width;
 				data[buf_in].height = ctx->height;
-				
+					
 				//
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
 				data[buf_in].vpts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(out->frame);
 #else
 				data[buf_in].vpts = sCURRENT_PTS = out->frame->best_effort_timestamp;
 #endif
-				
+					
 				data[buf_in].apts = sCURRENT_APTS;
-				
+					
 				//
 				int framerate = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);
-				
+					
 				switch (framerate)
 				{
 					case 23://23.976fps
@@ -1419,7 +1417,7 @@ static int Write(void* _context, void* _out)
 				buf_in++;
 				buf_in %= 64;
 				buf_num++;
-				
+					
 				if (buf_num > (64 - 1))
 				{
 					buf_out++;

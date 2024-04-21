@@ -91,7 +91,7 @@ class cAudio
 		audio_play_state_t playstate;
 		
 #ifdef USE_OPENGL
-		bool thread_started;
+		bool thread_running;
 		int64_t curr_pts;
 		void run();
 #endif		

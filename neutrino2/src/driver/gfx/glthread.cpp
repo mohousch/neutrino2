@@ -674,7 +674,7 @@ void GLThreadObj::bltPlayBuffer()
 	if (!playback)
 		return;
 		 
-	if (playback && !playback->playing)
+	if (!playback->playing)
 		return;
 	
 #ifndef ENABLE_GSTREAMER

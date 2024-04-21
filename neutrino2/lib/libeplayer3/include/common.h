@@ -21,8 +21,8 @@ typedef struct Context_s
 #ifdef USE_OPENGL
 typedef struct Data_s
 {
-	uint8_t* buffer[4];
-	int size[4];
+	uint8_t* buffer;
+	int size;
 	uint32_t width;
 	uint32_t height;
 	uint64_t vpts;
