@@ -34,6 +34,7 @@ libneutrino2_gui_widget2_a_SOURCES = \
 	helpbox.cpp \
 	stringinput.cpp \
 	stringinput_ext.cpp \
+	keyboard_input.cpp \
 	colorchooser.cpp \
 	keychooser.cpp
 	

@@ -167,6 +167,7 @@ class CTestMenu : public CMenuTarget
 		void testCMACInput();
 		void testCTimeInput();
 		void testCIntInput();
+		void testCKeyBoard();
 		void testCInfoBox();
 		void testCMessageBox();
 		void testCMessageBoxInfoMsg();
@@ -3817,6 +3818,23 @@ void CTestMenu::testCIntInput()
 	intInput = NULL;	
 }
 
+// testCKeyBoard
+void CTestMenu::testCKeyBoard()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCIntInput\n");
+	
+	std::string value;
+	CKeyboardInput * stringInput = new CKeyboardInput("CKeyboardInput", &value);
+	
+	stringInput->exec(NULL, "");
+	stringInput->hide();
+	delete stringInput;
+	
+	printf("CTestMenu::testCKeyBoard: valueString: %s\n", value.c_str());
+	value.clear();
+	printf("CTestMenu::testCKeyBoard: valueString: %s\n", value.c_str());
+}
+
 // CInfoBox
 void CTestMenu::testCInfoBox()
 {
@@ -4951,6 +4969,12 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	{
 		testCIntInput();
 
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "ckeyboard")
+	{
+		testCKeyBoard();
+		
 		return RETURN_REPAINT;
 	}
 	else if(actionKey == "infobox")
@@ -6476,6 +6500,7 @@ void CTestMenu::showMenu()
 	//mainMenu->addItem(new CMenuForwarder("CDateInput", true, NULL, this, "dateinput"));
 	//mainMenu->addItem(new CMenuForwarder("CTimeInput", true, NULL, this, "timeinput"));
 	//mainMenu->addItem(new CMenuForwarder("CIntInput", true, NULL, this, "intinput"));
+	mainMenu->addItem(new CMenuForwarder("CKeyBoard", true, NULL, this, "ckeyboard"));
 	//
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("ColorChooser", true, NULL, this, "colorchooser"));

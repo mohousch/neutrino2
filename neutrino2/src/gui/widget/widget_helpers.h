@@ -1,5 +1,5 @@
 /*
- * $Id: widget_helpers.h 20.10.2023 mohousch Exp $
+ * $Id: widget_helpers.h 21042024 mohousch Exp $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ extern CFont * g_Font[FONT_TYPE_COUNT];
 class CMenuTarget;
 class CWidget;
 
-// dimension helper
+// position helper
 class CBox
 {
 	public:
@@ -149,7 +149,7 @@ class CComponent
 		std::map<neutrino_msg_t, keyAction> keyActionMap;
 		uint32_t sec_timer_id;
 		uint64_t sec_timer_interval;
-		std::string actionKey; // lua
+		std::string actionKey; // for lua
 		
 		//
 		CComponent();
@@ -164,17 +164,16 @@ class CComponent
 		virtual void enableRepaint(){rePaint = true;};
 		virtual bool update() const {return rePaint;};
 		virtual void refresh(bool show = false){};
-		virtual void stopRefresh(){};
+//		virtual void stopRefresh(){};
 		virtual inline bool isPainted(void){return painted;};
-		virtual void clear(void){};
-		//
+		////
+		virtual void clear(void){}; // buttons objects
+		////
 		virtual int getCCType(){return cc_type;};
 		virtual std::string getCCName(){return cc_name;};
-		//
+		////
 		virtual void setPosition(const int _x, const int _y, const int _width, const int _height)
 		{
-			dprintf(DEBUG_INFO, "CComponent::setPosition: x:%d y:%d dx:%d dy:%d\n", _x, _y, _width, _height);
-			
 			itemBox.iX = _x;
 			itemBox.iY = _y;
 			itemBox.iWidth = _width;
@@ -184,13 +183,10 @@ class CComponent
 		{
 			itemBox = *position;
 		};
-		
-		//
 		virtual inline CBox getWindowsPos(void){return itemBox;};
-		//
+		////
 		virtual void paintMainFrame(bool p){paintframe = p;};
 		virtual void setHAlign(int h){halign = h;};
-		//
 		virtual void saveScreen(void){};
 		virtual void restoreScreen(void){};
 		virtual void enableSaveScreen(void){savescreen = true;};
@@ -201,23 +197,22 @@ class CComponent
 		virtual void scrollPageUp(const int pages = 1){};
 		virtual int swipLeft(){return 0;};
 		virtual int swipRight(){return 0;};
-		//
+		////
 		virtual void setOutFocus(bool focus = true){inFocus = !focus;};
 		virtual void setSelected(unsigned int _new) {};
-		//
+		////
 		virtual int oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg = CRCInput::RC_ok){return 0;};
 		virtual void homeKeyPressed(){};
 		virtual int directKeyPressed(neutrino_msg_t ){return 0;};
-		//
-		virtual std::string getActionKey(void){ return actionKey;}; // lua
-		virtual int getSelected(void){return -1;};
-		//
+		////
 		virtual void setParent(CWidget* p){parent = p;};
-		//
 		virtual void addKey(neutrino_msg_t key, CMenuTarget *menue = NULL, const std::string &action = "");
 		void setSecTimerInterval(uint64_t sec){sec_timer_interval = sec;}; // in sec
-		//
+		////
 		virtual int exec(int timeout = -1); // in sec
+		////
+		virtual std::string getActionKey(void){ return actionKey;}; // lua
+		virtual int getSelected(void){return -1;};
 };
 
 typedef std::vector<CComponent*> CCITEMLIST;
@@ -840,7 +835,7 @@ class CCHeaders : public CComponent
 		void hide();
 		void refresh(bool show = false){if (paintDate) timer->refresh();};
 		bool update() const {return paintDate;};
-		void stopRefresh();
+//		void stopRefresh();
 		//
 		void clear(){buttons.clear();};
 };

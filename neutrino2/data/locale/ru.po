@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-04-20 10:43+0300\n"
+"POT-Creation-Date: 2024-04-21 12:48+0300\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -356,6 +356,9 @@ msgstr "Кабель:"
 msgid "Cancel"
 msgstr "Отменить"
 
+msgid "Caps"
+msgstr ""
+
 msgid "Cartoons / Puppets"
 msgstr "Мультфильмы / Куклы"
 
@@ -405,6 +408,9 @@ msgid "Children / Juvenile program"
 msgstr "Детская / юношеская программа"
 
 msgid "Classic"
+msgstr ""
+
+msgid "Clear"
 msgstr ""
 
 msgid "Code Rate HP"
@@ -1096,6 +1102,9 @@ msgstr "Информация"
 
 msgid "Informational / educational / school programmes"
 msgstr "Информационные/образовательные/школьные программы"
+
+msgid "Insert"
+msgstr ""
 
 msgid "Install menu"
 msgstr "Меню установки"
@@ -1873,6 +1882,9 @@ msgstr "Насыщенность"
 msgid "Saturday"
 msgstr "Суббота"
 
+msgid "Save"
+msgstr ""
+
 msgid "Save RC configuration"
 msgstr "Сохранить конфигурацию RC"
 
@@ -2142,6 +2154,9 @@ msgstr "URL-адрес обновления программного обесп�
 
 msgid "South"
 msgstr "Юг"
+
+msgid "Space"
+msgstr ""
 
 msgid "Special events (Olympic Games,World Cup etc.)"
 msgstr "Специальные мероприятия (Олимпийские игры, чемпионат мира и т. д.)»"

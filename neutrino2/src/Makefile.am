@@ -73,6 +73,7 @@ neutrino2_LDADD = \
 	gui/widget/progresswindow.o \
 	gui/widget/stringinput.o \
 	gui/widget/stringinput_ext.o \
+	gui/widget/keyboard_input.o \
 	gui/widget/colorchooser.o \
 	gui/widget/keychooser.o \
 	gui/widget/menue.o \

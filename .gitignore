@@ -2246,3 +2246,5 @@
 /plugins/systeminfo/locale/systeminfo.pot
 /plugins/test/locale/test.pot
 /plugins/upnp/locale/upnp.pot
+/neutrino2/src/gui/widget/.deps/keyboard_input.Po
+/neutrino2/src/gui/widget/keyboard_input.o

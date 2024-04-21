@@ -298,10 +298,12 @@ void CWidget::hide()
 	//
 	if (hasCCItem())
 	{
+/*
 		for(unsigned int i = 0; i < (unsigned int)CCItems.size(); i++)
 		{
 			CCItems[i]->stopRefresh();
 		}
+*/
 		
 		//
 		for(unsigned int i = 0; i < (unsigned int)CCItems.size(); i++)
