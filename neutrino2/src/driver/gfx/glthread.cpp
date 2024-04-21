@@ -82,7 +82,8 @@ GLThreadObj::GLThreadObj(int x, int y) : mReInit(true), mShutDown(false), mInitD
 	zoom = 1.0;
 	xscale = 1.0;
 	const char *tmp = getenv("GLFB_FULLSCREEN");
-	mFullscreen = !!(tmp);
+	//mFullscreen = !!(tmp);
+	mFullscreen = true;
 
 	initKeys();
 }
@@ -708,7 +709,7 @@ void GLThreadObj::bltPlayBuffer()
 	
 	//
 	int64_t apts = buf->apts();
-	int64_t vpts = buf->vpts();
+	int64_t vpts = buf->vpts() + 18000;
 	int rate = buf->rate();
 			
 	if (apts != last_apts)

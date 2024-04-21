@@ -3694,7 +3694,7 @@ void CTestMenu::testCStringInputSMS()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCStringInputSMS\n");
 
 	std::string value;
-	CStringInputSMS * stringInputSMS = new CStringInputSMS("CStringInputSMS", value.c_str());
+	CStringInputSMS * stringInputSMS = new CStringInputSMS("CStringInputSMS", value.c_str(), MAX_INPUT_CHARS, "Hint 1", "Hint 2");
 	
 	stringInputSMS->exec(NULL, "");
 	stringInputSMS->hide();
@@ -3827,10 +3827,11 @@ void CTestMenu::testCKeyBoard()
 	CKeyboardInput * stringInput = new CKeyboardInput("CKeyboardInput", &value);
 	
 	stringInput->exec(NULL, "");
-	stringInput->hide();
+	
+	printf("CTestMenu::testCKeyBoard: valueString: %s (%s)\n", value.c_str(), stringInput->getValueString().c_str());
+	
 	delete stringInput;
 	
-	printf("CTestMenu::testCKeyBoard: valueString: %s\n", value.c_str());
 	value.clear();
 	printf("CTestMenu::testCKeyBoard: valueString: %s\n", value.c_str());
 }
