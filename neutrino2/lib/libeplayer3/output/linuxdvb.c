@@ -1128,7 +1128,6 @@ static int Write(void* _context, void* _out)
 #else
 		AVCodecContext* ctx = out->stream->codec;
 		int got_frame = 0;
-		// resample
 		SwrContext *swr = NULL;
 		uint8_t *obuf = NULL;
 		int obuf_size = 0; 	// in samples
@@ -1147,9 +1146,9 @@ static int Write(void* _context, void* _out)
     		avpkt.pts  = out->pts;
 		
 		// output sample rate, channels, layout could be set here if necessary
-		o_ch = ctx->channels;     		// 2
-		o_sr = ctx->sample_rate;      		// 48000
-		o_layout = ctx->channel_layout;   	// AV_CH_LAYOUT_STEREO
+		o_ch = ctx->channels;     			// 2
+		o_sr = ctx->sample_rate;      			// 48000
+		o_layout = ctx->channel_layout;   		// AV_CH_LAYOUT_STEREO
 	
 		if (sformat.channels != o_ch || sformat.rate != o_sr || sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16 || adevice == NULL)
 		{

@@ -859,6 +859,7 @@ static void FFMPEGThread(Context_t* context)
 	if (samples != NULL) 
 	{
 		av_frame_free(&samples);
+		samples = NULL;
 	}
 	
 	//

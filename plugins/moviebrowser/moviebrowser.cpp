@@ -2071,7 +2071,7 @@ bool CMovieBrowser::loadTsFileNamesFromDir(const std::string & dirname)
 				fileFilter.addFilter("vdr");
 				fileFilter.addFilter("mts");
 				fileFilter.addFilter("wmv");
-				fileFilter.addFilter("wav");
+//				fileFilter.addFilter("wav");
 				fileFilter.addFilter("flac");
 				fileFilter.addFilter("mp3");
 				fileFilter.addFilter("wma");
