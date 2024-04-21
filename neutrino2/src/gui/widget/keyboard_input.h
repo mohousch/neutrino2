@@ -104,6 +104,7 @@ class CKeyboardInput : public CMenuTarget
 		bool force_saveScreen;
 		fb_pixel_t *pixBuf;
 		bool exit_pressed;
+		bool docaps;
 
 		void keyDigiPressed(const neutrino_msg_t key);
 
@@ -139,7 +140,7 @@ class CKeyboardInput : public CMenuTarget
 		bool getExitPressed(){return exit_pressed;};
 		virtual std::string& getValueString(void) { return valueString; };
 
-		void forceSaveScreen(bool enable);
+		void enableSaveScreen(bool enable);
 };
 
 #endif

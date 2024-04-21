@@ -165,4 +165,3 @@ class CPINChangeWidget : public CStringInput
 
 #endif
 
-

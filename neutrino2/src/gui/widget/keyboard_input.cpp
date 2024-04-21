@@ -156,6 +156,7 @@ CKeyboardInput::CKeyboardInput(const char* const Name, std::string *Value, int S
 	force_saveScreen = false;
 	pixBuf = NULL;
 	exit_pressed = false;
+	docaps = true;
 }
 
 #define BORDER_OFFSET 20
@@ -292,6 +293,8 @@ void CKeyboardInput::switchCaps()
 {
 	caps = caps ? 0 : 1;
 	keyboard = layout->keys[caps];
+	
+	paintFooter();
 	paintKeyboard();
 }
 
@@ -457,9 +460,10 @@ void CKeyboardInput::insertChar()
 	changed = true;
 }
 
-void CKeyboardInput::forceSaveScreen(bool enable)
+void CKeyboardInput::enableSaveScreen(bool enable)
 {
 	force_saveScreen = enable;
+	
 	if (!enable && pixBuf)
 	{
 		delete[] pixBuf;
@@ -538,6 +542,7 @@ int CKeyboardInput::exec(CMenuTarget *parent, const std::string &)
 		}
 		else if (msg == CRCInput::RC_blue)
 		{
+			docaps = !docaps;
 			switchCaps();
 		}
 		else if (msg == CRCInput::RC_rewind)
@@ -612,12 +617,12 @@ void CKeyboardInput::hide()
 
 int CKeyboardInput::paintFooter()
 {
-	const struct button_label footerButtons[] =
+	struct button_label footerButtons[] =
 	{
 		{ NEUTRINO_ICON_BUTTON_RED, _("Save"), COL_RED_PLUS_0 },
 		{ NEUTRINO_ICON_BUTTON_GREEN, _("Insert"), COL_GREEN_PLUS_0 },
 		{ NEUTRINO_ICON_BUTTON_YELLOW, _("Clear"), COL_YELLOW_PLUS_0 },
-		{ NEUTRINO_ICON_BUTTON_BLUE, _("Caps"), COL_BLUE_PLUS_0 },
+		{ NEUTRINO_ICON_BUTTON_BLUE, docaps? _("Caps") : _("No Caps"), COL_BLUE_PLUS_0 },
 		{ NEUTRINO_ICON_BUTTON_REW_SMALL, _("Space"), COL_RED_PLUS_0 },
 		{ NEUTRINO_ICON_BUTTON_SETUP, _(layout->name.c_str()), COL_RED_PLUS_0 }
 	};

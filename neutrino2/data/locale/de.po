@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-04-21 12:48+0300\n"
+"POT-Creation-Date: 2024-04-21 14:27+0300\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -357,7 +357,11 @@ msgid "Cancel"
 msgstr "Abbrechen"
 
 msgid "Caps"
-msgstr ""
+msgstr "Größe Schreibung"
+
+#, fuzzy
+msgid "Caps / No Caps"
+msgstr "Kleine Schreibung"
 
 msgid "Cartoons / Puppets"
 msgstr "Cartoons / Puppen"
@@ -411,7 +415,7 @@ msgid "Classic"
 msgstr ""
 
 msgid "Clear"
-msgstr ""
+msgstr "Löschen"
 
 msgid "Code Rate HP"
 msgstr "Coderate HP"
@@ -1122,7 +1126,7 @@ msgid "Informational / educational / school programmes"
 msgstr "Informations- / Bildungs- / Schulprogramme"
 
 msgid "Insert"
-msgstr ""
+msgstr "Einfügen"
 
 msgid "Install menu"
 msgstr "Menü installieren"
@@ -1502,6 +1506,9 @@ msgstr "Nein"
 
 msgid "No CAM in slot"
 msgstr "Kein CAM im Steckplatz"
+
+msgid "No Caps"
+msgstr "Kleine Schreibung"
 
 msgid ""
 "No channels were found!\n"
@@ -1904,7 +1911,7 @@ msgid "Saturday"
 msgstr "Samstag"
 
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 msgid "Save RC configuration"
 msgstr "RC-Konfiguration speichern"
@@ -2177,7 +2184,7 @@ msgid "South"
 msgstr "Süd"
 
 msgid "Space"
-msgstr ""
+msgstr "Leer"
 
 msgid "Special events (Olympic Games,World Cup etc.)"
 msgstr "Sonderereignisse (Olympische Spiele, Weltmeisterschaft usw.)"
@@ -2786,9 +2793,6 @@ msgstr "Datei kann nicht geöffnet werden"
 msgid "can't open mtd-device"
 msgstr "mtd-device kann nicht geöffnet werden"
 
-msgid "caps / no caps"
-msgstr "Große / klein Schreibung"
-
 msgid "center"
 msgstr "Center"
 
@@ -2812,9 +2816,6 @@ msgstr "Version prüfen"
 
 msgid "choose Skin Style."
 msgstr "Skin-Theme Auswahl"
-
-msgid "clear all"
-msgstr "alles löschen"
 
 msgid "colored"
 msgstr "farbig"

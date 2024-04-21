@@ -109,12 +109,10 @@ void CBEBouquetWidget::paint()
 		
 		//
 		listBox->enablePaintHead();
-//		listBox->setHeadLine(true, true);
 		listBox->enablePaintDate();
 		
 		//
 		listBox->enablePaintFoot();
-//		listBox->setFootLine(true, true);
 	
 		//
 		widget->addCCItem(listBox);
@@ -157,7 +155,7 @@ void CBEBouquetWidget::paint()
 	Button[2] = CBEBouquetWidgetButtons[2];
 	Button[3].button = NEUTRINO_ICON_BUTTON_BLUE;
 
-	switch( blueFunction)
+	switch(blueFunction)
 	{
 		case beRename:
 			Button[3].localename = _("Rename");

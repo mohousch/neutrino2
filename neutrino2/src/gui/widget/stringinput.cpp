@@ -49,8 +49,8 @@ CStringInput::CStringInput(const char * const Head, const char * const Value, in
         frameBuffer = CFrameBuffer::getInstance();
         
         name = Head? Head : "";
-        value = (char *)Value;
-        valueString.clear();
+	value = Value? (char*)Value : (char*)"";
+        valueString = value;
         size =  Size;
         hint_1 = Hint_1? Hint_1 : "";
         hint_2 = Hint_2? Hint_2 : "";
@@ -74,18 +74,19 @@ CStringInput::~CStringInput()
 
 void CStringInput::init() 
 {
-	width = (size*20) + 40;
+	width = size*20 + BORDER_LEFT + BORDER_RIGHT;
 
+	// 
 	if (width < 420)
 		width = 420;
 
-	int neededWidth;
-	neededWidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getRenderWidth(name); // UTF-8
+//	int neededWidth;
+//	neededWidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getRenderWidth(name); // UTF-8
 
-	if (!(iconfile.empty()))
-		neededWidth += 28;
-	if (neededWidth + 20 > width)
-		width = neededWidth + 20;
+//	if (!(iconfile.empty()))
+//		neededWidth += 28;
+//	if (neededWidth + 20 > width)
+//		width = neededWidth + 20;
 
 	hheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
 	
@@ -93,6 +94,7 @@ void CStringInput::init()
 	{
 		int icol_w = 28;
 		int icol_h = 16;
+		
 		frameBuffer->getIconSize(iconfile.c_str(), &icol_w, &icol_h);
 		hheight = std::max(hheight, icol_h + 6);
 	}
@@ -100,7 +102,8 @@ void CStringInput::init()
 	mheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();
 	iheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->getHeight();
 
-	height = hheight + mheight + 50 + 2*iheight;
+//	height = hheight + mheight + 50 + 2*iheight;
+	height = hheight + 10 + mheight + 2*iheight + 10 + 20;
 
 	// coordinate
 	x = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - width) >> 1 );
@@ -179,8 +182,10 @@ void CStringInput::keyUpPressed()
 	int npos = 0;
 
 	for(int count = 0; count < (int)strlen(validchars);count++)
+	{
 		if(value[selected] == validchars[count])
 			npos = count;
+	}
 	npos++;
 	if(npos >= (int)strlen(validchars))
 		npos = 0;
@@ -194,9 +199,11 @@ void CStringInput::keyDownPressed()
 {
 	int npos = 0;
 	for(int count = 0; count < (int)strlen(validchars); count++)
+	{
 		if(value[selected] == validchars[count])
 			npos = count;
-
+	}
+	
 	npos--;
 	if(npos<0)
 		npos = strlen(validchars)-1;
@@ -400,7 +407,7 @@ int CStringInput::exec(CMenuTarget* parent, const std::string& )
 
 	for(int count = size - 1; count >= 0; count--)
 	{
-		if((value[count] == ' ') || (value[count] == 0))
+		if ((value[count] == ' ') || (value[count] == 0))
 		{
 			value[count] = 0;
 		}
@@ -482,8 +489,8 @@ void CStringInput::paintChar(int pos, const char c)
 {
 	const int xs = 20;
 	int ys = mheight;
-	int xpos = x + 20 + pos*xs;
-	int ypos = y + hheight + 25;
+	int xpos = x + /*20*/10 + pos*xs;
+	int ypos = y + hheight + 10 /*25*/;
 
 	char ch[2] = {c, 0};
 
@@ -504,9 +511,9 @@ void CStringInput::paintChar(int pos, const char c)
 	frameBuffer->paintBoxRel(xpos, ypos, xs, ys, COL_MENUCONTENT_PLUS_4);
 	frameBuffer->paintBoxRel(xpos + 1, ypos + 1, xs - 2, ys - 2, bgcolor);
 
-	int xfpos = xpos + ((xs- g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(ch))>>1);
+	int xfpos = xpos + ((xs - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(ch))>>1);
 
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(xfpos,ypos+ys, width, ch, color);
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(xfpos, ypos + ys, width, ch, color);
 }
 
 void CStringInput::paintChar(int pos)
@@ -561,7 +568,7 @@ void CStringInputSMS::initSMS(const char * const Valid_Chars)
 		arraySizes[i] = j;
 	}
 
-	height += 260;
+	height += 260;	// ?
 	y = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - height) >> 1 );
 }
 
@@ -667,10 +674,10 @@ void CStringInputSMS::keyRightPressed()
 
 const struct button_label CStringInputSMSButtons[2] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED   , _("caps / no caps")  },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("clear all") }
+	{ NEUTRINO_ICON_BUTTON_RED   , _("Caps / No Caps")  },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Clear") }
 };
-
+	
 void CStringInputSMS::paint()
 {
 	dprintf(DEBUG_NORMAL, "CStringInputSMS::paint\n");
@@ -691,6 +698,7 @@ void CStringInputSMS::paint()
 
 	// foot buttons
 	buttons.setPosition(x, y + height - ButtonHeight, width, ButtonHeight);
+	buttons.clear();
 	buttons.setButtons(CStringInputSMSButtons, 2);
 	buttons.paint();
 }

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-04-21 12:48+0300\n"
+"POT-Creation-Date: 2024-04-21 14:27+0300\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -357,6 +357,9 @@ msgid "Cancel"
 msgstr "Отменить"
 
 msgid "Caps"
+msgstr ""
+
+msgid "Caps / No Caps"
 msgstr ""
 
 msgid "Cartoons / Puppets"
@@ -1483,6 +1486,9 @@ msgstr "Нет"
 
 msgid "No CAM in slot"
 msgstr "Нет CAM в слоте"
+
+msgid "No Caps"
+msgstr ""
 
 msgid ""
 "No channels were found!\n"
@@ -2757,9 +2763,6 @@ msgstr "не могу открыть файл"
 msgid "can't open mtd-device"
 msgstr "не могу открыть mtd-устройство"
 
-msgid "caps / no caps"
-msgstr "шапки/без шапок"
-
 msgid "center"
 msgstr "центр"
 
@@ -2783,9 +2786,6 @@ msgstr "проверка версии"
 
 msgid "choose Skin Style."
 msgstr "выберите стиль скина»."
-
-msgid "clear all"
-msgstr "очистить всё "
 
 msgid "colored"
 msgstr "цветной"
