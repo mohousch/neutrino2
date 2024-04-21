@@ -1361,8 +1361,7 @@ static int Write(void* _context, void* _out)
 				
 				int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 				
-				if (data[buf_in].size < need)
-					data[buf_in].size = need;
+				data[buf_in].size = need;
 					
 				// scale
 				uint8_t* dest[4] = { data[buf_in].buffer, NULL, NULL, NULL };
