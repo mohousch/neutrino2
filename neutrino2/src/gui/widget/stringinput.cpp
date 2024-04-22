@@ -522,7 +522,7 @@ void CStringInput::paintChar(int pos)
 		paintChar(pos, value[pos]);
 }
 
-// CStringInputSMS
+//// CStringInputSMS
 CStringInputSMS::CStringInputSMS(const char * const Head, const char * const Value, int Size, const char* const Hint_1, const char* const Hint_2, const char * const Valid_Chars, CChangeObserver* Observ, const char * const Icon)
    		: CStringInput(Head, Value, Size, Hint_1, Hint_2, Valid_Chars, Observ, Icon)
 {
@@ -792,6 +792,12 @@ int CPINInput::exec( CMenuTarget* parent, const std::string&)
 	}
 
 	value[size] = 0;
+	
+	////
+	if (value != NULL)
+        {
+                valueString = value;
+        }
 
 	if ( (observ) && (msg == CRCInput::RC_ok) )
 	{

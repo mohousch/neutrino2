@@ -158,7 +158,7 @@ void CCAMMenuHandler::doMainMenu()
 		{
 			ci->GetName(i, name);
 			
-			dprintf(DEBUG_NORMAL, "CCAMMenuHandler::doMenu cam %d name %s\n", i, name);
+			dprintf(DEBUG_NORMAL, "CCAMMenuHandler::doMainMenu: cam %d name %s\n", i, name);
 			
 			char CAM[255];
 			sprintf(CAM, "cam%d", i + 1);
@@ -174,6 +174,8 @@ void CCAMMenuHandler::doMainMenu()
 		else 
 		{
 			sprintf(str, "%s %d", _("No CAM in slot"), i + 1);
+			
+			dprintf(DEBUG_NORMAL, "CCAMMenuHandler::doMainMenu: %s\n", str);
 			
 			//
 			//tempMenuWidget = CNeutrinoApp::getInstance()->getWidget("tempcam2");

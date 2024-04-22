@@ -604,8 +604,8 @@ void CMACInput::onAfterExec()
 	int _mac[6];
 	sscanf( value, "%x:%x:%x:%x:%x:%x", &_mac[0], &_mac[1], &_mac[2], &_mac[3], &_mac[4], &_mac[5] );
 	sprintf( value, "%02x:%02x:%02x:%02x:%02x:%02x", _mac[0], _mac[1], _mac[2], _mac[3], _mac[4], _mac[5]);
-	if(strcmp(value,"00:00:00:00:00:00")==0)
-		value[0] = 0; /* strcpy(value, ""); */
+	if(strcmp(value, "00:00:00:00:00:00") == 0)
+		value[0] = 0;
 }
 
 CTimeInput::CTimeInput(const char * const Name, char* Value, const char* const Hint_1, const char* const Hint_2, CChangeObserver* Observ, bool* Cancel)

@@ -60,7 +60,7 @@ class CExtendedInput : public CMenuTarget
 		std::string hint_2;
 
 		char * value;
-		std::string valueString;
+//		std::string valueString;
 
 		CChangeObserver* observ;
 		bool* cancel;

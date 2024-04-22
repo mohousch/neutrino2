@@ -64,7 +64,6 @@ class CStringInput : public CMenuTarget
 		std::string iconfile;
 		const char* validchars;
 		char* value;
-		std::string valueString;
 		int size;
 
 		int selected;

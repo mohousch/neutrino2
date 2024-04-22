@@ -3682,9 +3682,12 @@ void CTestMenu::testCStringInput()
 	CStringInput * stringInput = new CStringInput("CStringInput", value.c_str());
 	
 	stringInput->exec(NULL, "");
-	stringInput->hide();
+	
+	printf("CTestMenu::testCStringInput: value:%s (valueString: %s)\n", value.c_str(), stringInput->getValueString().c_str());
+	
 	delete stringInput;
 	stringInput = NULL;
+	
 	value.clear();
 }
 
@@ -3697,7 +3700,9 @@ void CTestMenu::testCStringInputSMS()
 	CStringInputSMS * stringInputSMS = new CStringInputSMS("CStringInputSMS", value.c_str(), MAX_INPUT_CHARS, "Hint 1", "Hint 2");
 	
 	stringInputSMS->exec(NULL, "");
-	stringInputSMS->hide();
+	
+	printf("CTestMenu::testCStringInputSMS: value: %s (valueString: %s)\n", value.c_str(), stringInputSMS->getValueString().c_str());
+
 	delete stringInputSMS;
 	value.clear();
 }
@@ -3711,7 +3716,9 @@ void CTestMenu::testCPINInput()
 	CPINInput * pinInput = new CPINInput("CPINInput", value.c_str());
 	
 	pinInput->exec(NULL, "");
-	pinInput->hide();
+	
+	printf("CTestMenu::testCPINInput: value:%s (valueString: %s)\n", value.c_str(), pinInput->getValueString().c_str());
+	
 	delete pinInput;
 	pinInput = NULL;
 	value.clear();
@@ -3726,7 +3733,9 @@ void CTestMenu::testCPLPINInput()
 	CPLPINInput * pinInput = new CPLPINInput("CPLPINInput", value.c_str());
 	
 	pinInput->exec(NULL, "");
-	pinInput->hide();
+	
+	printf("CTestMenu::testCPLPINInput: value:%s (valueString: %s)\n", value.c_str(), pinInput->getValueString().c_str());
+	
 	delete pinInput;
 	pinInput = NULL;
 	value.clear();
@@ -3741,7 +3750,9 @@ void CTestMenu::testCPINChangeWidget()
 	CPINChangeWidget * pinInput = new CPINChangeWidget("CPINChangeWidget", value.c_str());
 	
 	pinInput->exec(NULL, "");
-	pinInput->hide();
+	
+	printf("testCPINChangeWidget: value:%s (valueString: %s)\n", value.c_str(), pinInput->getValueString().c_str());
+	
 	delete pinInput;
 	pinInput = NULL;
 	value.clear();
@@ -3756,7 +3767,9 @@ void CTestMenu::testCIPInput()
 	CIPInput * ipInput = new CIPInput(__("IP:"), value);
 	
 	ipInput->exec(NULL, "");
-	ipInput->hide();
+	
+	printf("testCIPInput: value:%s (valueString: %s)\n", value.c_str(), ipInput->getValueString().c_str());
+	
 	delete ipInput;
 	value.clear();
 }
@@ -3770,7 +3783,9 @@ void CTestMenu::testCMACInput()
 	CMACInput * macInput = new CMACInput(_("MAC address:"), (char *)value.c_str());
 	
 	macInput->exec(NULL, "");
-	macInput->hide();
+	
+	printf("testCMACInput: value:%s (valueString: %s)\n", value.c_str(), macInput->getValueString().c_str());
+	
 	delete macInput;
 	macInput = NULL;
 	value.clear();
@@ -3785,7 +3800,9 @@ void CTestMenu::testCDateInput()
 	CDateInput * dateInput = new CDateInput(_("Date:"), &value);
 	
 	dateInput->exec(NULL, "");
-	dateInput->hide();
+	
+	printf("testCPINChangeWidget: (valueString: %s)\n", dateInput->getValueString().c_str());
+	
 	delete dateInput;
 }
 
@@ -3798,7 +3815,9 @@ void CTestMenu::testCTimeInput()
 	CTimeInput * timeInput = new CTimeInput(__("Time:"), (char *)value.c_str());
 	
 	timeInput->exec(NULL, "");
-	timeInput->hide();
+	
+	printf("testCTimeInput: value:%s (valueString: %s)\n", value.c_str(), timeInput->getValueString().c_str());
+	
 	delete timeInput;
 	timeInput = NULL;
 	value.clear();
@@ -3813,7 +3832,9 @@ void CTestMenu::testCIntInput()
 	CIntInput * intInput = new CIntInput(__("Test"), value);
 	
 	intInput->exec(NULL, "");
-	intInput->hide();
+	
+	printf("testCPINChangeWidget: value:%d (valueString: %s)\n", value, intInput->getValueString().c_str());
+	
 	delete intInput;
 	intInput = NULL;	
 }
@@ -3823,17 +3844,16 @@ void CTestMenu::testCKeyBoard()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCIntInput\n");
 	
-	std::string value;
-	CKeyboardInput * stringInput = new CKeyboardInput("CKeyboardInput", &value);
+//	std::string value;
+	CKeyboardInput * stringInput = new CKeyboardInput("CKeyboardInput"/*, &value*/);
 	
 	stringInput->exec(NULL, "");
 	
-	printf("CTestMenu::testCKeyBoard: valueString: %s (%s)\n", value.c_str(), stringInput->getValueString().c_str());
+	printf("CTestMenu::testCKeyBoard: (valueString: %s)\n", stringInput->getValueString().c_str());
 	
 	delete stringInput;
 	
-	value.clear();
-	printf("CTestMenu::testCKeyBoard: valueString: %s\n", value.c_str());
+//	value.clear();
 }
 
 // CInfoBox

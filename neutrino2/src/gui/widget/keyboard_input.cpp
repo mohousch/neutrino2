@@ -30,6 +30,7 @@
 #include <driver/gfx/fontrenderer.h>
 
 #include <driver/rcinput.h>
+#include <driver/encoding.h>
 
 #include <driver/gfx/color.h>
 #include <driver/gfx/icons.h>
@@ -41,34 +42,6 @@
 #include <gui/widget/keyboard_input.h>
 #include <gui/widget/keyboard_keys.h>
 
-
-////
-std::string UTF8ToString(const char*&text)
-{
-	std::string res;
-
-	res = *text;
-	if ((((unsigned char)(*text)) & 0x80) != 0)
-	{
-		int remaining_unicode_length = 0;
-		if ((((unsigned char)(*text)) & 0xf8) == 0xf0)
-			remaining_unicode_length = 3;
-		else if ((((unsigned char)(*text)) & 0xf0) == 0xe0)
-			remaining_unicode_length = 2;
-		else if ((((unsigned char)(*text)) & 0xe0) == 0xc0)
-			remaining_unicode_length = 1;
-
-		for (int i = 0; i < remaining_unicode_length; i++)
-		{
-			text++;
-			if (((*text) & 0xc0) != 0x80)
-				break;
-			res += *text;
-		}
-	}
-	
-	return res;
-}
 
 ////
 CInputString::CInputString(int Size)
@@ -136,10 +109,10 @@ const char *CInputString::c_str()
 }
 
 ////
-CKeyboardInput::CKeyboardInput(const char* const Name, std::string *Value, int Size, CChangeObserver *Observ, const char *const Icon, std::string HintText_1, std::string HintText_2)
+CKeyboardInput::CKeyboardInput(const char* const Name, int Size, CChangeObserver *Observ, const char *const Icon, std::string HintText_1, std::string HintText_2)
 {
 	title = Name;
-	valueString = *Value;
+//	valueString = "";
 	inputSize = Size;
 
 	iconfile = Icon ? Icon : NEUTRINO_ICON_EDIT;
@@ -243,6 +216,7 @@ void CKeyboardInput::setLayout()
 		{
 			layout = &keyboards[i];
 			keyboard = layout->keys[caps];
+			
 			return;
 		}
 	}
@@ -259,8 +233,10 @@ void CKeyboardInput::switchLayout()
 	i++;
 	if (i >= LAYOUT_COUNT)
 		i = 0;
+		
 	layout = &keyboards[i];
 	keyboard = layout->keys[caps];
+	
 	paintFooter();
 	paintKeyboard();
 }
@@ -486,9 +462,11 @@ int CKeyboardInput::exec(CMenuTarget *parent, const std::string &)
 
 	if (pixBuf)
 		delete[] pixBuf;
+		
 	if (!parent || force_saveScreen)
 	{
 		pixBuf = new fb_pixel_t[(width) * (height)];
+		
 		if (pixBuf)
 			frameBuffer->saveScreen(x, y, width, height, pixBuf);
 	}
@@ -502,11 +480,13 @@ int CKeyboardInput::exec(CMenuTarget *parent, const std::string &)
 	while (loop)
 	{
 		frameBuffer->blit();
+		
 		if (changed)
 		{
 			changed = false;
 			CVFD::getInstance()->showMenuText(1, inputString->c_str(), selected + 1);
 		}
+		
 		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd, true);
 
 		if (msg <= CRCInput::RC_MaxRC)

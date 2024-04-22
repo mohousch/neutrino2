@@ -191,6 +191,8 @@ eData waitData(int fd, unsigned char* buffer, int* len)
 	fds.revents = 0;
 	
 	retval = ::poll(&fds, 1, 300);
+	
+//	printf("dvb-ci::waitData: %d\n", retval);
 
 	if (retval < 0)
 	{

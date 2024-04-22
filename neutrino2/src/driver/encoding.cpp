@@ -121,3 +121,31 @@ std::string Latin1_to_UTF8(const char * s)
 	return r;
 }
 
+std::string UTF8ToString(const char*&text)
+{
+	std::string res;
+
+	res = *text;
+	if ((((unsigned char)(*text)) & 0x80) != 0)
+	{
+		int remaining_unicode_length = 0;
+		if ((((unsigned char)(*text)) & 0xf8) == 0xf0)
+			remaining_unicode_length = 3;
+		else if ((((unsigned char)(*text)) & 0xf0) == 0xe0)
+			remaining_unicode_length = 2;
+		else if ((((unsigned char)(*text)) & 0xe0) == 0xc0)
+			remaining_unicode_length = 1;
+
+		for (int i = 0; i < remaining_unicode_length; i++)
+		{
+			text++;
+			if (((*text) & 0xc0) != 0x80)
+				break;
+			res += *text;
+		}
+	}
+	
+	return res;
+}
+
+
