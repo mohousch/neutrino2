@@ -80,14 +80,6 @@ void CStringInput::init()
 	if (width < 420)
 		width = 420;
 
-//	int neededWidth;
-//	neededWidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getRenderWidth(name); // UTF-8
-
-//	if (!(iconfile.empty()))
-//		neededWidth += 28;
-//	if (neededWidth + 20 > width)
-//		width = neededWidth + 20;
-
 	hheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
 	
 	if ( !(iconfile.empty()))
@@ -102,7 +94,6 @@ void CStringInput::init()
 	mheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();
 	iheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->getHeight();
 
-//	height = hheight + mheight + 50 + 2*iheight;
 	height = hheight + 10 + mheight + 2*iheight + 10 + 20;
 
 	// coordinate
@@ -872,5 +863,4 @@ int CPLPINInput::exec( CMenuTarget* parent, const std::string & )
 
 	return ( res );
 }
-
 

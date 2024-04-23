@@ -45,12 +45,11 @@
 #include <gui/widget/messagebox.h>
 
 #include <gui/network_setup.h>
-
 #include <gui/proxyserver_setup.h>
 #include <gui/nfs.h>
+#include <gui/misc_setup.h>
 
 #include <system/debug.h>
-#include <system/setting_helpers.h>
 #include <system/helpers.h>
 
 

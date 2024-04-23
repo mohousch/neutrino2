@@ -39,7 +39,6 @@
 #include <gui/psisetup.h>
 
 #include <system/debug.h>
-#include <system/setting_helpers.h>
 #include <system/helpers.h>
 
 #include <video_cs.h>

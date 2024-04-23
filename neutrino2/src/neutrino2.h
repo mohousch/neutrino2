@@ -37,7 +37,6 @@
 
 #include <driver/gfx/framebuffer.h>
 
-#include <system/setting_helpers.h>
 #include <system/configure_network.h>
 
 #include <timerd/timerdtypes.h>
@@ -46,6 +45,7 @@
 #include <gui/channellist.h>          		/* CChannelList */
 #include <gui/rc_lock.h>
 #include <gui/scan_setup.h>
+#include <gui/osd_setup.h>
 
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>
@@ -56,6 +56,16 @@
 
 #include <zapit/zapit.h>
 
+
+//// NVOD
+class CNVODChangeExec : public CMenuTarget
+{
+	public:
+		CNVODChangeExec(){};
+		virtual ~CNVODChangeExec(){};
+		
+		int exec(CMenuTarget* parent, const std::string& actionKey);
+};
 
 //
 typedef struct neutrino_font_descr

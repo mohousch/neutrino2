@@ -2248,3 +2248,5 @@
 /plugins/upnp/locale/upnp.pot
 /neutrino2/src/gui/widget/.deps/keyboard_input.Po
 /neutrino2/src/gui/widget/keyboard_input.o
+/neutrino2/src/gui/.deps/usermenu.Po
+/neutrino2/src/gui/usermenu.o

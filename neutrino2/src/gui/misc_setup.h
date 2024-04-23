@@ -89,6 +89,12 @@ class CChannelListSettings : public CMenuTarget, CChangeObserver
 };
 
 //// epg settings
+class CSectionsdConfigNotifier : public CChangeObserver
+{
+        public:
+                bool changeNotify(const std::string&, void * );
+};
+
 // epglanguage select notifier
 class CEPGlangSelectNotifier : public CChangeObserver
 {	

@@ -31,6 +31,7 @@
 #include <driver/gfx/icons.h>
 
 #include <gui/dvbsub_select.h>
+#include <gui/audio_select.h>
 
 #include <system/debug.h>
 

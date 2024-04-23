@@ -50,7 +50,6 @@
 #include <gui/widget/progresswindow.h>
 #include <gui/widget/infobox.h>
 
-#include <system/setting_helpers.h>
 #include <system/settings.h>
 #include <system/debug.h>
 #include <system/helpers.h>

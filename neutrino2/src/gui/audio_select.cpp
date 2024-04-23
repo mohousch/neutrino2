@@ -41,8 +41,17 @@
 //// globals
 // dvbsub
 extern int dvbsub_getpid();				// defined in libdvbsub
+extern int dvbsub_stop();
+extern int dvbsub_start(int pid, bool isEplayer);
+extern int dvbsub_pause();
 // tuxtxt
+extern void tuxtx_stop_subtitle();
+extern void tuxtx_set_pid(int pid, int page, const char * cc);
+extern int tuxtx_main(int pid, int page, bool isEplayer);
+extern void tuxtx_pause_subtitle(bool pause, bool isEplayer);
 extern int tuxtx_subtitle_running(int * pid, int * page, int * running);
+//
+extern int current_muted;
 
 // -- this is a copy from neutrino.cpp!!
 /* option off0_on1 */
@@ -278,5 +287,77 @@ bool CAudioSetupNotifierVolPercent::changeNotify(const std::string& OptionName _
 	CZapit::getInstance()->setVolumePercent(percent, CZapit::getInstance()->getCurrentChannelID(), g_RemoteControl->current_PIDs.PIDs.selected_apid);
 	
 	return true;
+}
+
+// txt/dvb subtitle
+int CSubtitleChangeExec::exec(CMenuTarget *, const std::string & actionKey)
+{
+	dprintf(DEBUG_INFO, "CSubtitleChangeExec::exec: action %s\n", actionKey.c_str());
+	
+	if(actionKey == "off") 
+	{
+		// tuxtxt stop
+		tuxtx_stop_subtitle(); //this kill subthread
+		
+		// dvbsub stop
+		dvbsub_stop();
+		
+		return RETURN_EXIT;
+	}
+	
+	if(!strncmp(actionKey.c_str(), "DVB", 3)) 
+	{
+		char const * pidptr = strchr(actionKey.c_str(), ':');
+		int pid = atoi(pidptr + 1);
+		
+		// tuxtxt stop
+		tuxtx_stop_subtitle();
+		
+		dvbsub_pause();
+		dvbsub_start(pid, false);
+	} 
+	else if (!strncmp(actionKey.c_str(), "TTX", 3))
+	{
+		char const * ptr = strchr(actionKey.c_str(), ':');
+		ptr++;
+		int pid = atoi(ptr);
+		ptr = strchr(ptr, ':');
+		ptr++;
+		int page = strtol(ptr, NULL, 16);
+		ptr = strchr(ptr, ':');
+		ptr++;
+		
+		dvbsub_stop();
+		
+		tuxtx_stop_subtitle();
+		tuxtx_set_pid(pid, page, ptr);
+		tuxtx_main(pid, page, false);
+	}
+	
+        return RETURN_EXIT;
+}
+
+// tuxtxt
+int CTuxtxtChangeExec::exec(CMenuTarget *parent, const std::string &actionKey)
+{
+	dprintf(DEBUG_INFO, "CTuxtxtChangeExec exec: %s\n", actionKey.c_str());
+
+	if(parent)
+		parent->hide();
+	
+	if (!IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
+	{
+
+		CNeutrinoApp::getInstance()->stopSubtitles();
+				
+		tuxtx_stop_subtitle();
+		tuxtx_main(g_RemoteControl->current_PIDs.PIDs.vtxtpid, 0, false);
+				
+		CNeutrinoApp::getInstance()->audioMute(current_muted, true);
+
+		CNeutrinoApp::getInstance()->startSubtitles();
+	}
+
+	return RETURN_REPAINT;
 }
 

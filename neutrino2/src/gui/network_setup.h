@@ -30,7 +30,6 @@
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>
 #include <system/configure_network.h>
-#include <system/setting_helpers.h>
 
 #include <string>
 

@@ -38,9 +38,9 @@
 #include <gui/widget/stringinput.h>
 
 #include <gui/rc_setup.h>
+#include <gui/usermenu.h>
 
 #include <system/debug.h>
-#include <system/setting_helpers.h>
 #include <system/helpers.h>
 
 

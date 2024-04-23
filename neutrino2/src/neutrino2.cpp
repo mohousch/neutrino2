@@ -129,7 +129,6 @@
 #include <gui/dvbsub_select.h>
 #include <gui/epg_menu.h>
 
-#include <system/setting_helpers.h>
 #include <system/settings.h>
 #include <system/debug.h>
 #include <system/flashtool.h>
@@ -266,7 +265,7 @@ static void initGlobals(void)
 	eventServer 	= new CEventServer;
 }
 
-//
+////
 CNeutrinoApp::CNeutrinoApp()
 : configfile('\t')
 {

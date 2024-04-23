@@ -52,7 +52,6 @@
 #include <gui/cec_setup.h>
 
 #include <system/debug.h>
-#include <system/setting_helpers.h>
 #include <system/helpers.h>
 
 

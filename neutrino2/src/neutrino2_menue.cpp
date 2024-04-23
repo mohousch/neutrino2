@@ -523,3 +523,19 @@ bool CNeutrinoApp::showUserMenu(int button)
 	return 0;
 }
 
+//// nvod
+int CNVODChangeExec::exec(CMenuTarget* parent, const std::string &actionKey)
+{
+	dprintf(DEBUG_INFO, "CNVODChangeExec exec: %s\n", actionKey.c_str());
+	
+	unsigned int sel = atoi(actionKey.c_str());
+	g_RemoteControl->setSubChannel(sel);
+
+	if(parent)
+		parent->hide();
+	
+	g_InfoViewer->showSubchan();
+
+	return RETURN_EXIT;
+}
+

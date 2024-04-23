@@ -84,7 +84,8 @@ libneutrino2_gui_a_SOURCES = \
 	alphasetup.cpp \
 	psisetup.cpp \
 	vfdcontroler.cpp \
-	movieinfo.cpp
+	movieinfo.cpp \
+	usermenu.cpp
 
 if ENABLE_CI
 libneutrino2_gui_a_SOURCES += cam_menu.cpp

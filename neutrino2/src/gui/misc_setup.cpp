@@ -48,7 +48,6 @@
 #include <gui/zapit_setup.h>
 
 #include <system/debug.h>
-#include <system/setting_helpers.h>
 #include <system/helpers.h>
 
 // configfiles
@@ -732,7 +731,6 @@ void CEPGSettings::showMenu()
 		//
 		miscSettingsEPG->enablePaintHead();
 		miscSettingsEPG->setTitle(_("EPG settings"), NEUTRINO_ICON_BUTTON_EPG);
-//		miscSettingsEPG->setHeadLine(true, true);
 
 		//
 		miscSettingsEPG->enablePaintFoot();
@@ -740,7 +738,6 @@ void CEPGSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		miscSettingsEPG->setFootButtons(&btn);
-//		miscSettingsEPG->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(miscSettingsEPG);
@@ -843,6 +840,16 @@ void CEPGSettings::showMenu()
 	epg_IP = NULL;
 	delete onlineEPGNotifier;
 	onlineEPGNotifier = NULL;
+}
+
+// sectionsd config notifier
+bool CSectionsdConfigNotifier::changeNotify(const std::string&, void *)
+{
+	dprintf(DEBUG_INFO, "CSectionsdConfigNotifier::changeNotify\n");
+
+        CNeutrinoApp::getInstance()->sendSectionsdConfig();
+	
+        return true;
 }
 
 // onlineepg notifier

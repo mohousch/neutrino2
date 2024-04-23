@@ -55,5 +55,23 @@ class CAudioSetupNotifierVolPercent : public CChangeObserver
 		bool changeNotify(const std::string& OptionName, void *);
 };
 
+// subtitle
+class CSubtitleChangeExec : public CMenuTarget
+{
+	public:
+		CSubtitleChangeExec(){};
+		~CSubtitleChangeExec(){};
+		int exec(CMenuTarget* parent, const std::string& actionKey);
+};
+
+// tuxtxt
+class CTuxtxtChangeExec : public CMenuTarget
+{
+	public:
+		CTuxtxtChangeExec(){};
+		~CTuxtxtChangeExec(){};
+		int exec(CMenuTarget* parent, const std::string& actionKey);
+};
+
 #endif
 

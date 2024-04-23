@@ -149,13 +149,13 @@
 #include <gui/hdd_menu.h>
 #include <gui/vfdcontroler.h>
 #include <gui/movieinfo.h>
+#include <gui/usermenu.h>
 //
 #include <gui/mediaplayer.h>
 #include <gui/epg_menu.h>
 
 #include <system/localize.h>
 #include <system/settings.h>
-#include <system/setting_helpers.h>
 #include <system/settings.h>
 #include <system/debug.h>
 #include <system/flashtool.h>

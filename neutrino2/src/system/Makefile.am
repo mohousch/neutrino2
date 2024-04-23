@@ -28,7 +28,6 @@ noinst_LIBRARIES = libneutrino2_system.a
 libneutrino2_system_a_SOURCES = \
 	safe_system.c \
 	localize.cpp \
-	setting_helpers.cpp \
 	ping.c \
 	flashtool.cpp \
 	httptool.cpp \

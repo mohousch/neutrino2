@@ -54,10 +54,7 @@
 #include <system/settings.h>
 #include <system/debug.h>
 #include <system/localize.h>
-#include <system/setting_helpers.h>
 #include <system/helpers.h>
-//#include <system/tmdbparser.h>
-//#include <system/ytparser.h>
 #include <system/httptool.h>
 #include <system/flashtool.h>
 
@@ -76,6 +73,7 @@
 #include <gui/widget/menue.h>
 #include <gui/widget/framebox.h>
 #include <gui/widget/widget.h>
+#include <gui/widget/keyboard_input.h>
 
 // gui
 //#include <gui/movieinfo.h>
@@ -147,10 +145,7 @@
 %include <src/system/settings.h>
 %include <src/system/debug.h>
 %include <src/system/localize.h>
-%include <src/system/setting_helpers.h>
 %include <src/system/helpers.h>
-//%include <src/system/tmdbparser.h>
-//%include <src/system/ytparser.h>
 %include <src/system/httptool.h>
 %include <src/system/flashtool.h>
 
@@ -168,6 +163,7 @@
 %include <src/gui/widget/menue.h>
 //%include <src/gui/widget/framebox.h>
 %include <src/gui/widget/widget.h>
+%include <src/gui/widget/keyboard_input.h>
 
 // gui
 %include <src/gui/audioplayer.h>
