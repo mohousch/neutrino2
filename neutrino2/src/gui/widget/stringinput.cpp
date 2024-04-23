@@ -572,7 +572,7 @@ void CStringInputSMS::NormalKeyPressed(const neutrino_msg_t key)
 		if (last_digit != numericvalue)
 		{
 			// there is a last key we can shift the cursor one field to the right
-			if ((last_digit != -1) && (selected < (size- 1)))
+			if ((last_digit != -1) && (selected < (size - 1)))
 			{
 				selected++;
 				paintChar(selected - 1);

@@ -209,13 +209,13 @@ void CRemoteControlSettings::showMenu()
         remoteControlSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("User menu")));
 
 	// blue
-        remoteControlSettings->addItem(new CMenuForwarder(_("User menu blue"), true, NULL, new CUserMenuMenu(_("User menu blue"), SNeutrinoSettings::BUTTON_BLUE)));
+        remoteControlSettings->addItem(new CMenuForwarder(_("User menu blue"), true, NULL, new CUserMenu(_("User menu blue"), SNeutrinoSettings::BUTTON_BLUE)));
 
 #if defined (ENABLE_FUNCTIONKEYS)	
-	remoteControlSettings->addItem(new CMenuForwarder(_("User menu F1"), true, NULL, new CUserMenuMenu(_("User menu F1"), SNeutrinoSettings::BUTTON_F1) ));
-        remoteControlSettings->addItem(new CMenuForwarder(_("User menu F2"), true, NULL, new CUserMenuMenu(_("User menu F2"), SNeutrinoSettings::BUTTON_F2) ));
-        remoteControlSettings->addItem(new CMenuForwarder(_("User menu F3"), true, NULL, new CUserMenuMenu(_("User menu F3"), SNeutrinoSettings::BUTTON_F3) ));
-        remoteControlSettings->addItem(new CMenuForwarder(_("User menu F4"), true, NULL, new CUserMenuMenu(_("User menu F4"), SNeutrinoSettings::BUTTON_F4) ));	
+	remoteControlSettings->addItem(new CMenuForwarder(_("User menu F1"), true, NULL, new CUserMenu(_("User menu F1"), SNeutrinoSettings::BUTTON_F1) ));
+        remoteControlSettings->addItem(new CMenuForwarder(_("User menu F2"), true, NULL, new CUserMenu(_("User menu F2"), SNeutrinoSettings::BUTTON_F2) ));
+        remoteControlSettings->addItem(new CMenuForwarder(_("User menu F3"), true, NULL, new CUserMenu(_("User menu F3"), SNeutrinoSettings::BUTTON_F3) ));
+        remoteControlSettings->addItem(new CMenuForwarder(_("User menu F4"), true, NULL, new CUserMenu(_("User menu F4"), SNeutrinoSettings::BUTTON_F4) ));	
 #endif
 	
 	//

@@ -48,9 +48,9 @@ const keyval USERMENU_ITEM_OPTIONS[USERMENU_ITEM_OPTION_COUNT] =
 	{ SNeutrinoSettings::ITEM_LOAD_EPG, _("Reload EPG") }
 };
 
-int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
+int CUserMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 {
-	dprintf(DEBUG_NORMAL , "CUserMenuMenu::exec: %s\n", actionKey.c_str());
+	dprintf(DEBUG_NORMAL , "CUserMenu::exec: %s\n", actionKey.c_str());
 	
 	int res = CMenuTarget::RETURN_REPAINT;
 	

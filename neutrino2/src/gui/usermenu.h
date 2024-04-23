@@ -32,14 +32,14 @@
 #include <gui/widget/listbox.h>
 
 
-class CUserMenuMenu : public CMenuTarget
+class CUserMenu : public CMenuTarget
 {
         private:
                 int button;
                 std::string local;
         public:
-                CUserMenuMenu(const char* const _local, int _button){local = _local; button = _button;};
-                ~CUserMenuMenu(){};
+                CUserMenu(const char* const _local, int _button){local = _local; button = _button;};
+                ~CUserMenu(){};
                 int exec(CMenuTarget* parent, const std::string& actionKey);
 };
 

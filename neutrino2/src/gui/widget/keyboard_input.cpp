@@ -112,7 +112,6 @@ const char *CInputString::c_str()
 CKeyboardInput::CKeyboardInput(const char* const Name, int Size, CChangeObserver *Observ, const char *const Icon, std::string HintText_1, std::string HintText_2)
 {
 	title = Name;
-//	valueString = "";
 	inputSize = Size;
 
 	iconfile = Icon ? Icon : NEUTRINO_ICON_EDIT;
@@ -281,6 +280,7 @@ void CKeyboardInput::keyUpPressed()
 		int old_row = srow;
 		srow--;
 		paintKey(old_row, scol);
+		
 		if (srow < 0)
 		{
 			focus = FOCUS_STRING;
@@ -295,6 +295,7 @@ void CKeyboardInput::keyUpPressed()
 	{
 		srow = KEY_ROWS - 1;
 		focus = FOCUS_KEY;
+		
 		paintChar(selected);
 		paintKey(srow, scol);
 	}
@@ -307,6 +308,7 @@ void CKeyboardInput::keyDownPressed()
 		int old_row = srow;
 		srow++;
 		paintKey(old_row, scol);
+		
 		if (srow >= KEY_ROWS)
 		{
 			focus = FOCUS_STRING;
@@ -414,10 +416,12 @@ void CKeyboardInput::keyDigiPressed(const neutrino_msg_t key)
 	digi = (digi == 0) ? 10 : digi;
 	srow = 0;
 	scol = digi;
+	
 	if (focus == FOCUS_KEY)
 		paintKey(old_srow, old_col);
 
 	focus = FOCUS_KEY;
+	
 	paintKey(srow, scol);
 	NormalKeyPressed();
 }

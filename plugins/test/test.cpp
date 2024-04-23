@@ -190,7 +190,7 @@ class CTestMenu : public CMenuTarget
 		void testUmountGUI();
 		void testMountSmallMenu();
 		void testPluginsList();
-
+		void testUsermenu();
 		////
 		void testStartPlugin();
 		void testShowActuellEPG();
@@ -4621,6 +4621,15 @@ void CTestMenu::testPluginsList()
 	pluginList = NULL;
 }
 
+void CTestMenu::testUsermenu()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testUserMenu\n");
+	
+	CUserMenu usermenu("testUsermenu", SNeutrinoSettings::BUTTON_BLUE);
+	
+	usermenu.exec(NULL, "");
+}
+
 void CTestMenu::testPlayMovieDir()
 {
 	dprintf(DEBUG_NORMAL, "\nCTestMenu::testPlayMovieDi\n");
@@ -5320,6 +5329,12 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	{
 		testPluginsList();
 
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "usermenu")
+	{
+		testUsermenu();
+		
 		return RETURN_REPAINT;
 	}
 	else if(actionKey == "playmoviedir")
@@ -6541,7 +6556,8 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("MountGUI", true, NULL, this, "mountgui"));
 	//mainMenu->addItem(new CMenuForwarder("UmountGUI", true, NULL, this, "umountgui"));
 	mainMenu->addItem(new CMenuForwarder("MountSmallMenu", true, NULL, this, "mountsmallmenu"));
-	mainMenu->addItem(new CMenuForwarder("PluginsList", true, NULL, this, "pluginslist"));
+	mainMenu->addItem(new CMenuForwarder("Pluginlist", true, NULL, this, "pluginslist"));
+	mainMenu->addItem(new CMenuForwarder("CUserMenu", true, NULL, this, "usermenu"));
 	
 	//
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
