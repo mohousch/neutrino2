@@ -56,7 +56,22 @@ int CUserMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 	
         if(parent)
                 parent->hide();
-	
+                
+        if (actionKey == "savesettings")
+        {
+        	valueString = g_settings.usermenu_text[button].c_str();
+        	
+        	CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
+        	return RETURN_REPAINT;
+        }
+                
+        res = doMenu();
+        
+        return res;
+}
+
+int CUserMenu::doMenu(void)
+{
 	//
 	CWidget* widget = NULL;
 	ClistBox* menu = NULL;
@@ -110,7 +125,7 @@ int CUserMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 	menu->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
-	menu->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
+	menu->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	menu->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	//
@@ -129,7 +144,7 @@ int CUserMenu::exec(CMenuTarget* parent, const std::string& actionKey)
                 menu->addItem( new CMenuOptionChooser(text, &g_settings.usermenu[button][item], USERMENU_ITEM_OPTIONS, USERMENU_ITEM_OPTION_COUNT, true, NULL, CRCInput::RC_nokey, "", true ));
         }
 
-        res = widget->exec(NULL, "");
+	int res = widget->exec(NULL, "");
         
         if (widget)
         {
@@ -139,4 +154,5 @@ int CUserMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 
         return res;
 }
+
 

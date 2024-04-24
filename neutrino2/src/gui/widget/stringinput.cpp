@@ -480,8 +480,8 @@ void CStringInput::paintChar(int pos, const char c)
 {
 	const int xs = 20;
 	int ys = mheight;
-	int xpos = x + /*20*/10 + pos*xs;
-	int ypos = y + hheight + 10 /*25*/;
+	int xpos = x + 10 + pos*xs;
+	int ypos = y + hheight + 10;
 
 	char ch[2] = {c, 0};
 

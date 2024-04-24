@@ -331,7 +331,7 @@ void CTestMenu::loadAudioPlaylist()
 	fileFilter.addFilter("mpa");
 	fileFilter.addFilter("mp2");
 	fileFilter.addFilter("ogg");
-	fileFilter.addFilter("wav");
+//	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("aac");
 	fileFilter.addFilter("dts");
@@ -413,7 +413,7 @@ void CTestMenu::openAudioFileBrowser()
 	fileFilter.addFilter("mpa");
 	fileFilter.addFilter("mp2");
 	fileFilter.addFilter("ogg");
-	fileFilter.addFilter("wav");
+//	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("aac");
 	fileFilter.addFilter("dts");
@@ -516,7 +516,7 @@ void CTestMenu::loadMoviePlaylist()
 	fileFilter.addFilter("vdr");
 	fileFilter.addFilter("mts");
 	fileFilter.addFilter("wmv");
-	fileFilter.addFilter("wav");
+//	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("mp3");
 	fileFilter.addFilter("wma");
@@ -583,7 +583,7 @@ void CTestMenu::openMovieFileBrowser()
 	fileFilter.addFilter("vdr");
 	fileFilter.addFilter("mts");
 	fileFilter.addFilter("wmv");
-	fileFilter.addFilter("wav");
+//	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("mp3");
 	fileFilter.addFilter("wma");
@@ -4061,7 +4061,7 @@ void CTestMenu::testPlayMovieURL()
 	fileFilter.addFilter("vdr");
 	fileFilter.addFilter("mts");
 	fileFilter.addFilter("wmv");
-	fileFilter.addFilter("wav");
+//	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("mp3");
 	fileFilter.addFilter("wma");
@@ -4116,7 +4116,7 @@ void CTestMenu::testPlayAudioURL()
 	fileFilter.addFilter("mpa");
 	fileFilter.addFilter("mp2");
 	fileFilter.addFilter("ogg");
-	fileFilter.addFilter("wav");
+//	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("aac");
 	fileFilter.addFilter("dts");
@@ -4235,7 +4235,7 @@ void CTestMenu::testPlayMovieFolder()
 	fileFilter.addFilter("vdr");
 	fileFilter.addFilter("mts");
 	fileFilter.addFilter("wmv");
-	fileFilter.addFilter("wav");
+//	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("mp3");
 	fileFilter.addFilter("wma");
@@ -4291,7 +4291,7 @@ void CTestMenu::testPlayAudioFolder()
 	fileFilter.addFilter("mpa");
 	fileFilter.addFilter("mp2");
 	fileFilter.addFilter("ogg");
-	fileFilter.addFilter("wav");
+//	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("aac");
 	fileFilter.addFilter("dts");
@@ -4657,7 +4657,7 @@ void CTestMenu::testPlayMovieDir()
 	fileFilter.addFilter("vdr");
 	fileFilter.addFilter("mts");
 	fileFilter.addFilter("wmv");
-	fileFilter.addFilter("wav");
+//	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("mp3");
 	fileFilter.addFilter("wma");
@@ -4690,7 +4690,7 @@ void CTestMenu::testPlayAudioDir()
 	fileFilter.addFilter("mpa");
 	fileFilter.addFilter("mp2");
 	fileFilter.addFilter("ogg");
-	fileFilter.addFilter("wav");
+//	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("aac");
 	fileFilter.addFilter("dts");
@@ -4793,7 +4793,7 @@ void CTestMenu::testCBouquetlist()
 	webTVBouquetList->exec(true, true); // without zap
 }
 
-// skin
+//// skin
 void CTestMenu::testSkinWidget()
 {
 	dprintf(DEBUG_NORMAL, "\nCTestMenu::testSkinWidget\n");
