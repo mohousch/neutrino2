@@ -701,7 +701,6 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 	sem_init(&inject_sem, 0, 0);
 	
 	tuxtxt_cache.receiving = 1;
-	nice(3);
 	
 	while (!stop_cache)
 	{

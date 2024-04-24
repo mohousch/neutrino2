@@ -158,6 +158,8 @@ int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
 	dprintf(DEBUG_NORMAL, "CAVSubPIDSelectWidget::exec: %s (currentspid:%d)\n", actionKey.c_str(), currentspid);
 	
 #ifdef ENABLE_GSTREAMER
+	unsigned int sel = atoi(actionKey.c_str());
+	
 	if (currentspid != spids[sel]) 
 	{
 		currentspid = spids[sel];
