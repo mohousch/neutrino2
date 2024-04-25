@@ -1192,7 +1192,7 @@ void CTestMenu::testCFrameBoxWidget()
 
 	// home
 	CFrameItem *homeFrame = new CFrameItem();
-	homeFrame->setMode(FRAME_LABEL);
+	homeFrame->setMode(CFrameItem::FRAME_LABEL);
 	homeFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 	int h_w = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth("Home");
 	int h_h = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getHeight();
@@ -1205,7 +1205,7 @@ void CTestMenu::testCFrameBoxWidget()
 
 	// setup
 	CFrameItem *setupFrame = new CFrameItem();
-	setupFrame->setMode(FRAME_LABEL);
+	setupFrame->setMode(CFrameItem::FRAME_LABEL);
 	setupFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 	int s_w = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth("Setup");
 	int s_h = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getHeight();
@@ -1218,7 +1218,7 @@ void CTestMenu::testCFrameBoxWidget()
 
 	// help
 	CFrameItem *helpFrame = new CFrameItem();
-	helpFrame->setMode(FRAME_LABEL);
+	helpFrame->setMode(CFrameItem::FRAME_LABEL);
 	int i_w = 0;
 	int i_h = 0;
 	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_INFO, &i_w, &i_h);
@@ -1234,7 +1234,7 @@ void CTestMenu::testCFrameBoxWidget()
 	{
 		// title
 		CFrameItem * titleFrame = new CFrameItem();
-		titleFrame->setMode(FRAME_LABEL);
+		titleFrame->setMode(CFrameItem::FRAME_LABEL);
 		titleFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 		int t_w = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth(m_vMovieInfo[0].epgTitle);
 		int t_h = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getHeight();
@@ -1247,7 +1247,7 @@ void CTestMenu::testCFrameBoxWidget()
 
 		// text
 		CFrameItem *textFrame = new CFrameItem();
-		textFrame->setMode(FRAME_TEXT);
+		textFrame->setMode(CFrameItem::FRAME_TEXT);
 		textFrame->setPosition(box.iX + 10, box.iY + 40 + h_h + 10 + t_h + 10, box.iWidth - 20 - pic_w - 20, 250 - t_h - 10 - 10);
 		std::string buffer;
 		buffer = m_vMovieInfo[0].epgInfo1;
@@ -1261,7 +1261,7 @@ void CTestMenu::testCFrameBoxWidget()
 
 		// pic
 		CFrameItem * artFrame = new CFrameItem();
-		artFrame->setMode(FRAME_PICTURE);
+		artFrame->setMode(CFrameItem::FRAME_PICTURE);
 		artFrame->setPosition(box.iX + 10 + box.iWidth - 10 - pic_w - 20, box.iY + 40 + h_h + 10, pic_w - 20, 250);
 		artFrame->setIconName(m_vMovieInfo[0].tfile.c_str());
 		//artFrame->paintMainFrame(false);
@@ -1272,7 +1272,7 @@ void CTestMenu::testCFrameBoxWidget()
 
 		// other
 		CFrameItem *otherFrame = new CFrameItem();
-		otherFrame->setMode(FRAME_LABEL);
+		otherFrame->setMode(CFrameItem::FRAME_LABEL);
 		otherFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 		int o_w = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth("andere Filme:");
 		int o_h = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getHeight();
@@ -1288,7 +1288,7 @@ void CTestMenu::testCFrameBoxWidget()
 		for (int i = 1; i < 7; i++)
 		{
 			art1Frame = new CFrameItem();
-			art1Frame->setMode(FRAME_PICTURE);
+			art1Frame->setMode(CFrameItem::FRAME_PICTURE);
 			art1Frame->setPosition(box.iX + 10 + (i - 1)*((box.iWidth - 20)/6) + 5, box.iY + 40 + h_h + 10 + 250 + 10 + o_h + 10, (box.iWidth - 20)/6 - 10,box.iHeight - 40 - h_h - 10 - 250 - 10 - 40);
 			art1Frame->setIconName(m_vMovieInfo[i].tfile.c_str());
 			//art1Frame->paintMainFrame(false);
@@ -3030,7 +3030,7 @@ void CTestMenu::testCFrameBox()
 	
 	// pic
 	frame = new CFrameItem();
-	frame->setMode(FRAME_PICTURE);
+	frame->setMode(CFrameItem::FRAME_PICTURE);
 	frame->setPosition(topBox.iX + 10, topBox.iY + 3*(10 + 60) +50, topBox.iWidth - 20, 200);
 	frame->setIconName(DATADIR "/icons/nopreview.jpg");
 	frame->paintMainFrame(false);
@@ -3113,7 +3113,7 @@ void CTestMenu::testCFrameBox1()
 
 	// artFrame
 	CFrameItem * artFrame = new CFrameItem();
-	artFrame->setMode(FRAME_PICTURE);
+	artFrame->setMode(CFrameItem::FRAME_PICTURE);
 	artFrame->setPosition(box.iX + box.iWidth/2, box.iY + 40, box.iWidth/2, box.iHeight - 2*40);
 	if (!m_vMovieInfo.empty())
 		artFrame->setIconName(m_vMovieInfo[0].tfile.c_str());
@@ -3123,7 +3123,7 @@ void CTestMenu::testCFrameBox1()
 
 	// title
 	CFrameItem *titleFrame = new CFrameItem();
-	titleFrame->setMode(FRAME_LABEL);
+	titleFrame->setMode(CFrameItem::FRAME_LABEL);
 	titleFrame->setPosition(&titleBox);
 	titleFrame->paintMainFrame(false);
 	if (!m_vMovieInfo.empty())
@@ -3135,7 +3135,7 @@ void CTestMenu::testCFrameBox1()
 
 	// star1
 	CFrameItem *star1Frame = new CFrameItem();
-	star1Frame->setMode(FRAME_ICON);
+	star1Frame->setMode(CFrameItem::FRAME_ICON);
 	star1Frame->setPosition(&starBox);
 	star1Frame->setIconName(NEUTRINO_ICON_STAR_ON);
 	star1Frame->paintMainFrame(false);
@@ -3145,7 +3145,7 @@ void CTestMenu::testCFrameBox1()
 
 	// star2
 	CFrameItem *star2Frame = new CFrameItem();
-	star2Frame->setMode(FRAME_ICON);
+	star2Frame->setMode(CFrameItem::FRAME_ICON);
 	star2Frame->setPosition(starBox.iX + 25, starBox.iY, starBox.iWidth, starBox.iHeight);
 	star2Frame->setIconName(NEUTRINO_ICON_STAR_ON);
 	star2Frame->paintMainFrame(false);
@@ -3155,7 +3155,7 @@ void CTestMenu::testCFrameBox1()
 
 	// star3
 	CFrameItem *star3Frame = new CFrameItem();
-	star3Frame->setMode(FRAME_ICON);
+	star3Frame->setMode(CFrameItem::FRAME_ICON);
 	star3Frame->setPosition(starBox.iX + 2*25, starBox.iY, starBox.iWidth, starBox.iHeight);
 	star3Frame->setIconName(NEUTRINO_ICON_STAR_ON);
 	star3Frame->paintMainFrame(false);
@@ -3165,7 +3165,7 @@ void CTestMenu::testCFrameBox1()
 
 	// star4
 	CFrameItem *star4Frame = new CFrameItem();
-	star4Frame->setMode(FRAME_ICON);
+	star4Frame->setMode(CFrameItem::FRAME_ICON);
 	star4Frame->setPosition(starBox.iX + 3*25, starBox.iY, starBox.iWidth, starBox.iHeight);
 	star4Frame->setIconName(NEUTRINO_ICON_STAR_OFF);
 	star4Frame->paintMainFrame(false);
@@ -3175,7 +3175,7 @@ void CTestMenu::testCFrameBox1()
 
 	// text
 	CFrameItem *textFrame = new CFrameItem();
-	textFrame->setMode(FRAME_TEXT);
+	textFrame->setMode(CFrameItem::FRAME_TEXT);
 	textFrame->setPosition(&textBox);
 	std::string buffer;
 	

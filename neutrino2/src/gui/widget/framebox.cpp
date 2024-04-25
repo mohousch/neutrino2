@@ -688,7 +688,7 @@ void CFrameBox::hide()
 	{
 		for (int i = 0; i < frames.size(); i++)
 		{
-			if (frames[i]->getMode() == FRAME_PIG)
+			if (frames[i]->getMode() == CFrameItem::FRAME_PIG)
 			{
 				if(videoDecoder)  
 					videoDecoder->Pig(-1, -1, -1, -1);

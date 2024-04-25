@@ -66,15 +66,15 @@ class GLThreadObj : public OpenThreads::Thread
 		
 		//
 		int64_t last_apts;
-		AVRational mOA;         /* output window aspect ratio */
-		AVRational mVA;         /* video aspect ratio */
-		AVRational _mVA;        /* for detecting changes in mVA */
+		AVRational mOA;         	/* output window aspect ratio */
+		AVRational mVA;         	/* video aspect ratio */
+		AVRational _mVA;        	/* for detecting changes in mVA */
 		bool mVAchanged;
-		float zoom;         	/* for cropping */
-		float xscale;           /* and aspect ratio */
-		int mCrop;          	/* DISPLAY_AR_MODE */
+		float zoom;         		/* for cropping */
+		float xscale;           	/* and aspect ratio */
+		int mCrop;          		/* DISPLAY_AR_MODE */
 		
-		bool mFullscreen;       /* fullscreen? */
+		bool mFullscreen;       	/* fullscreen? */
 
 	private:
 		int *mX;
@@ -104,7 +104,6 @@ class GLThreadObj : public OpenThreads::Thread
 		void setupOSDBuffer();		/* create the OSD buffer */
 		void setupGLObjects();		/* PBOs, textures and stuff */
 		void releaseGLObjects();
-//		void eventLoop();		/* enter the GL window event loop */
 		void drawSquare(float size, float x_factor);	/* do not be square */
 		void initDone();		/* "things are now set up", called by this */
 

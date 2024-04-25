@@ -152,7 +152,7 @@ void CMovieInfoWidget::funArt()
 
 	// artFrame
 	CFrameItem * artFrame = new CFrameItem();
-	artFrame->setMode(FRAME_PICTURE);
+	artFrame->setMode(CFrameItem::FRAME_PICTURE);
 	artFrame->setPosition(&artBox);
 	artFrame->setIconName(movieFile.tfile.c_str());
 	artFrame->setActive(false);
@@ -161,7 +161,7 @@ void CMovieInfoWidget::funArt()
 
 	// title
 	CFrameItem *titleFrame = new CFrameItem();
-	titleFrame->setMode(FRAME_LABEL);
+	titleFrame->setMode(CFrameItem::FRAME_LABEL);
 	int t_w = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth(movieFile.epgTitle);
 	if (t_w > box.iWidth)
 		t_w = box.iWidth;
@@ -177,7 +177,7 @@ void CMovieInfoWidget::funArt()
 	for (int i = 0; i < 5; i++)
 	{
 		CFrameItem *starOffFrame = new CFrameItem();
-		starOffFrame->setMode(FRAME_ICON);
+		starOffFrame->setMode(CFrameItem::FRAME_ICON);
 		starOffFrame->setPosition(starBox.iX + i*25, starBox.iY, starBox.iWidth, starBox.iHeight);
 		starOffFrame->setIconName(NEUTRINO_ICON_STAR_OFF);
 		starOffFrame->paintMainFrame(false);
@@ -191,7 +191,7 @@ void CMovieInfoWidget::funArt()
 	for (int i = 0; i < average; i++)
 	{
 		CFrameItem *starOnFrame = new CFrameItem();
-		starOnFrame->setMode(FRAME_ICON);
+		starOnFrame->setMode(CFrameItem::FRAME_ICON);
 		starOnFrame->setPosition(starBox.iX + i*25, starBox.iY, starBox.iWidth, starBox.iHeight);
 		starOnFrame->setIconName(NEUTRINO_ICON_STAR_ON);
 		starOnFrame->paintMainFrame(false);
@@ -219,7 +219,7 @@ void CMovieInfoWidget::funArt()
 	}
 	
 	CFrameItem *lengthFrame = new CFrameItem();
-	lengthFrame->setMode(FRAME_LABEL);
+	lengthFrame->setMode(CFrameItem::FRAME_LABEL);
 		
 	int l_w = g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getRenderWidth(l_buffer);
 			
@@ -234,7 +234,7 @@ void CMovieInfoWidget::funArt()
 
 	// text
 	CFrameItem *textFrame = new CFrameItem();
-	textFrame->setMode(FRAME_TEXT);
+	textFrame->setMode(CFrameItem::FRAME_TEXT);
 	textFrame->setPosition(&textBox);
 	std::string buffer;
 	buffer = movieFile.epgInfo1;

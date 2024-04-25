@@ -164,7 +164,6 @@ class CComponent
 		virtual void enableRepaint(){rePaint = true;};
 		virtual bool update() const {return rePaint;};
 		virtual void refresh(bool show = false){};
-//		virtual void stopRefresh(){};
 		virtual inline bool isPainted(void){return painted;};
 		////
 		virtual void clear(void){}; // buttons objects
@@ -785,7 +784,7 @@ class CCPig : public CComponent
 		void hide();
 };
 
-//// CHeaders
+//// CCHeaders
 class CCHeaders : public CComponent
 {
 	private:
@@ -835,12 +834,11 @@ class CCHeaders : public CComponent
 		void hide();
 		void refresh(bool show = false){if (paintDate) timer->refresh();};
 		bool update() const {return paintDate;};
-//		void stopRefresh();
 		//
 		void clear(){buttons.clear();};
 };
 
-//// CFooters
+//// CCFooters
 class CCFooters : public CComponent
 {
 	private:

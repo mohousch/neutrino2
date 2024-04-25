@@ -36,21 +36,21 @@
 
 class CFrameBox;
 
-enum {
-	FRAME_BOX = 0, // caption, option and left icon | optionInfo and 2lines
-	FRAME_PICTURE,
-	FRAME_ICON,
-	FRAME_TEXT,
-	FRAME_LABEL,
-	FRAME_PLUGIN,
-	FRAME_HLINE,
-	FRAME_VLINE,
-	FRAME_PIG
-};
-
 class CFrameItem
 {
 	public:
+		enum {
+			FRAME_BOX = 0, // caption, option and left icon | optionInfo and 2lines
+			FRAME_PICTURE,
+			FRAME_ICON,
+			FRAME_TEXT,
+			FRAME_LABEL,
+			FRAME_PLUGIN,
+			FRAME_HLINE,
+			FRAME_VLINE,
+			FRAME_PIG
+		};
+
 		CCWindow window;
 		
 		int halign;

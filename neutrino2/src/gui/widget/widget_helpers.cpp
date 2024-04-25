@@ -2497,17 +2497,6 @@ void CCHeaders::paint()
 
 	g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, itemBox.iY + (itemBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - buttonWidth - (count - 1)*ICON_TO_ICON_OFFSET - timestr_len, htitle, COL_MENUHEAD_TEXT_PLUS_0);
 }
-/*
-void CCHeaders::stopRefresh()
-{
-	if (timer)
-	{
-		timer->hide();
-		delete timer;
-		timer = NULL;
-	}
-}
-*/
 
 void CCHeaders::hide()
 {
