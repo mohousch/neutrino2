@@ -82,8 +82,7 @@ GLThreadObj::GLThreadObj(int x, int y) : mReInit(true), mShutDown(false), mInitD
 	zoom = 1.0;
 	xscale = 1.0;
 	const char *tmp = getenv("GLFB_FULLSCREEN");
-	//mFullscreen = !!(tmp);
-	mFullscreen = true;
+	mFullscreen = !!(tmp);
 
 	initKeys();
 }

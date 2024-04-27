@@ -47,6 +47,10 @@ extern "C" {
 #include <libavutil/imgutils.h>
 #include <libswscale/swscale.h>
 }
+
+extern int buf_in;
+extern int buf_out;
+extern int buf_num;
 #endif
 
 
@@ -534,6 +538,12 @@ bool cPlayback::Open()
 
 	if(player && player->playback)
 		player->playback->Command(player, PLAYBACK_INIT, (void*)&out);
+		
+#ifdef USE_OPENGL
+	buf_num = 0;
+	buf_out = 0;
+	buf_in = 0;
+#endif
 #endif
 
 	return true;
@@ -603,6 +613,12 @@ void cPlayback::Close(void)
 
 	if(player != NULL)
 		player = NULL;
+		
+#ifdef USE_OPENGL
+	buf_num = 0;
+	buf_out = 0;
+	buf_in = 0;
+#endif
 #endif	
 }
 
@@ -1500,9 +1516,6 @@ void cPlayback::AddSubtitleFile(const char* const file)
 	{
 		player->playback->Command(player, PLAYBACK_OPEN_SUB, (char *)file);
 		player->playback->Command(player, PLAYBACK_PLAY_SUB, NULL);
-		
-//		mExtSubStream = 0;
-//		player->playback->Command(player, PLAYBACK_SWITCH_EXTSUBTITLE, (void*)&mExtSubStream);
 	}
 #endif
 }
@@ -1511,9 +1524,6 @@ void cPlayback::AddSubtitleFile(const char* const file)
 #ifdef USE_OPENGL
 #ifndef ENABLE_GSTREAMER
 extern Data_t data[64];
-extern int buf_in;
-extern int buf_out;
-extern int buf_num;
 
 cPlayback::SWFramebuffer* cPlayback::getDecBuf(void)
 {
@@ -1522,7 +1532,7 @@ cPlayback::SWFramebuffer* cPlayback::getDecBuf(void)
 								
 	SWFramebuffer *p = &buffers[buf_out];
 	
-	p->resize(data[buf_out].size);
+	if (data[buf_out].size) p->resize(data[buf_out].size);
 	p->width(data[buf_out].width);
 	p->height(data[buf_out].height);
 	p->rate(data[buf_out].rate);
