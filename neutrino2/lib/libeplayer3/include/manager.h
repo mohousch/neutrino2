@@ -30,7 +30,7 @@ typedef struct Track_s
 {
 	char*                 Name;
 	char*                 Encoding;
-	int                   Index;  // 
+	int                   Index;
 
 	//
 	char*                 language;

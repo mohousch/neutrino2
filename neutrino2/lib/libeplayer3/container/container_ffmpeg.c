@@ -121,12 +121,6 @@ static unsigned char isContainerRunning = 0;
 
 static long long int latestPts = 0;
 
-#ifdef USE_OPENGL
-extern int buf_in;
-extern int buf_out;
-extern int buf_num;
-#endif
-
 /* ***************************** */
 /* Prototypes                    */
 /* ***************************** */
@@ -466,11 +460,9 @@ static void FFMPEGThread(Context_t* context)
 	AudioVideoOut_t avOut;
 #ifdef USE_OPENGL
 	AVFrame *frame = NULL;
-	AVFrame *rgbframe = NULL;
 	AVFrame* aframe = NULL;
 	
 	frame = av_frame_alloc();
-	rgbframe = av_frame_alloc();
 	aframe = av_frame_alloc();
 #endif	
 
@@ -603,7 +595,6 @@ static void FFMPEGThread(Context_t* context)
 #ifdef USE_OPENGL
 					avOut.stream 	 = videoTrack->stream;
 					avOut.frame 	 = frame;
-					avOut.rgbframe 	 = rgbframe;
 					avOut.aframe 	 = NULL;
 #endif
 
@@ -639,7 +630,6 @@ static void FFMPEGThread(Context_t* context)
 					avOut.type       = "audio";
 					avOut.stream 	 = audioTrack->stream;
 					avOut.frame 	 = NULL;
-					avOut.rgbframe 	 = NULL;
 					avOut.aframe 	 = aframe;
 
 					if (!context->playback->BackWard)
@@ -875,22 +865,12 @@ static void FFMPEGThread(Context_t* context)
 		av_frame_free(&frame);
 		frame = NULL;
 	}
-		
-	if (rgbframe)
-	{
-		av_frame_free(&rgbframe);
-		rgbframe = NULL;
-	}
 	
 	if (aframe)
 	{
 		av_frame_free(&aframe);
 		aframe = NULL;
 	}
-	
-	buf_num = 0;
-	buf_in = 0;
-	buf_out = 0;
 #endif
 	
 	//

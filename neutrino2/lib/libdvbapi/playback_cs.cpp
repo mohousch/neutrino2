@@ -38,21 +38,6 @@
 
 #include <system/helpers.h>
 
-#ifdef USE_OPENGL
-#include "dmx_cs.h"
-
-extern "C" {
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
-#include <libavutil/imgutils.h>
-#include <libswscale/swscale.h>
-}
-
-extern int buf_in;
-extern int buf_out;
-extern int buf_num;
-#endif
-
 
 //// global
 #if defined ENABLE_GSTREAMER
@@ -113,7 +98,6 @@ bool end_eof = false;
 #define HTTP_TIMEOUT 30
 #else
 #include <common.h>
-#include <linux/fb.h>
 
 extern OutputHandler_t		OutputHandler;
 extern PlaybackHandler_t	PlaybackHandler;
@@ -121,6 +105,22 @@ extern ContainerHandler_t	ContainerHandler;
 extern ManagerHandler_t		ManagerHandler;
 
 static Context_t * player = NULL;
+
+#ifdef USE_OPENGL
+extern "C" {
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+#include <libavutil/imgutils.h>
+#include <libswscale/swscale.h>
+}
+
+extern Data_t data[64];
+extern int need;
+
+int buf_in = 0;
+int buf_out = 0;
+int buf_num = 0;
+#endif
 #endif
 
 #if defined ENABLE_GSTREAMER
@@ -1523,8 +1523,6 @@ void cPlayback::AddSubtitleFile(const char* const file)
 ////
 #ifdef USE_OPENGL
 #ifndef ENABLE_GSTREAMER
-extern Data_t data[64];
-
 cPlayback::SWFramebuffer* cPlayback::getDecBuf(void)
 {
 	if (buf_num == 0)
@@ -1532,10 +1530,7 @@ cPlayback::SWFramebuffer* cPlayback::getDecBuf(void)
 								
 	SWFramebuffer *p = &buffers[buf_out];
 	
-	if (p->size() < data[buf_out].size)
-	{ 
-		p->resize(data[buf_out].size, buf_out);
-	}
+	p->resize(data[buf_out].size);
 	p->width(data[buf_out].width);
 	p->height(data[buf_out].height);
 	p->rate(data[buf_out].rate);

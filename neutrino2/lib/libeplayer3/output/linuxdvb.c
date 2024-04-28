@@ -104,12 +104,13 @@ uint64_t sCURRENT_PTS = 0;
 #ifdef USE_OPENGL
 static ao_device *adevice = NULL;
 static ao_sample_format sformat;
-int buf_num = 0;
-int buf_in = 0;
-int buf_out = 0;
+extern int buf_num;
+extern int buf_in;
+extern int buf_out;
 bool stillpicture = false;
 Data_t data[64];
 uint64_t sCURRENT_APTS = 0;
+int need = 0;
 #endif
 
 //
@@ -1312,8 +1313,8 @@ static int Write(void* _context, void* _out)
 		if (out->frame)
 			av_frame_unref(out->frame);
 			
-		if (out->rgbframe)
-			av_frame_unref(out->rgbframe);
+//		if (out->rgbframe)
+//			av_frame_unref(out->rgbframe);
 	
 		// decode frame
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
@@ -1359,7 +1360,7 @@ static int Write(void* _context, void* _out)
 				//
 				getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 				
-				int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
+				need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 				
 				data[buf_in].size = need;
 					
@@ -1440,8 +1441,8 @@ static int Write(void* _context, void* _out)
 		if (out->frame)
 			av_frame_unref(out->frame);
 			
-		if (out->rgbframe)
-			av_frame_unref(out->rgbframe);
+//		if (out->rgbframe)
+//			av_frame_unref(out->rgbframe);
 		
 		ret = cERR_LINUXDVB_ERROR;
 #endif
