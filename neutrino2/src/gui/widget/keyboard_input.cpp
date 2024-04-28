@@ -197,7 +197,6 @@ void CKeyboardInput::init()
 	x = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - width) >> 1 );
 	y = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - height) >> 1 );
 	
-	*inputString = valueString;
 	changed = false;
 }
 
