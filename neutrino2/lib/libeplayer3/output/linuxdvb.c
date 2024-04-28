@@ -1300,6 +1300,9 @@ static int Write(void* _context, void* _out)
 		AVCodecContext* ctx = out->stream->codec;
 		
 		//
+		memset(&data[64], 0, sizeof(data[64]));
+		
+		//
 		AVPacket avpkt;
 		av_init_packet(&avpkt);
 		
@@ -1312,9 +1315,6 @@ static int Write(void* _context, void* _out)
 		
 		if (out->frame)
 			av_frame_unref(out->frame);
-			
-//		if (out->rgbframe)
-//			av_frame_unref(out->rgbframe);
 	
 		// decode frame
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
@@ -1440,9 +1440,6 @@ static int Write(void* _context, void* _out)
 		
 		if (out->frame)
 			av_frame_unref(out->frame);
-			
-//		if (out->rgbframe)
-//			av_frame_unref(out->rgbframe);
 		
 		ret = cERR_LINUXDVB_ERROR;
 #endif

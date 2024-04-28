@@ -113,6 +113,8 @@ extern "C" {
 #include <libavutil/imgutils.h>
 #include <libswscale/swscale.h>
 }
+#include <OpenThreads/Thread>
+#include <OpenThreads/Mutex>
 
 extern Data_t data[64];
 extern int need;
@@ -120,6 +122,8 @@ extern int need;
 int buf_in = 0;
 int buf_out = 0;
 int buf_num = 0;
+
+OpenThreads::Mutex buf_m;
 #endif
 #endif
 
@@ -1525,12 +1529,17 @@ void cPlayback::AddSubtitleFile(const char* const file)
 #ifndef ENABLE_GSTREAMER
 cPlayback::SWFramebuffer* cPlayback::getDecBuf(void)
 {
-	if (buf_num == 0)
-		return NULL;
-								
-	SWFramebuffer *p = &buffers[buf_out];
+	buf_m.lock();
 	
-	p->resize(data[buf_out].size);
+	if (buf_num == 0)
+	{
+		buf_m.unlock();
+		return NULL;
+	}
+								
+	SWFramebuffer* p = &buffers[buf_out];
+	
+	p->resize(data[buf_out].size); //FIXME:
 	p->width(data[buf_out].width);
 	p->height(data[buf_out].height);
 	p->rate(data[buf_out].rate);
@@ -1542,6 +1551,8 @@ cPlayback::SWFramebuffer* cPlayback::getDecBuf(void)
 	buf_out++;
 	buf_num--;
 	buf_out %= 64;
+	
+	buf_m.unlock();
 
 	return p;
 }
