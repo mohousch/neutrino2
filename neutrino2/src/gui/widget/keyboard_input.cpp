@@ -111,7 +111,7 @@ const char *CInputString::c_str()
 ////
 CKeyboardInput::CKeyboardInput(const char* const Name, int Size, CChangeObserver *Observ, const char *const Icon, std::string HintText_1, std::string HintText_2)
 {
-	title = Name;
+	title = Name? Name : "";
 	inputSize = Size;
 
 	iconfile = Icon ? Icon : NEUTRINO_ICON_EDIT;

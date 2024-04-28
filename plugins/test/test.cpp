@@ -3842,18 +3842,15 @@ void CTestMenu::testCIntInput()
 // testCKeyBoard
 void CTestMenu::testCKeyBoard()
 {
-	dprintf(DEBUG_NORMAL, "CTestMenu::testCIntInput\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCKeyboardInput\n");
 	
-//	std::string value;
-	CKeyboardInput * stringInput = new CKeyboardInput("CKeyboardInput"/*, &value*/);
+	CKeyboardInput * stringInput = new CKeyboardInput("CKeyboardInput");
 	
 	stringInput->exec(NULL, "");
 	
 	printf("CTestMenu::testCKeyBoard: (valueString: %s)\n", stringInput->getValueString().c_str());
 	
 	delete stringInput;
-	
-//	value.clear();
 }
 
 // CInfoBox

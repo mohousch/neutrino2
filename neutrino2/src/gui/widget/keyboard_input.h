@@ -131,7 +131,7 @@ class CKeyboardInput : public CMenuTarget
 		void setLayout();
 
 	public:
-		CKeyboardInput(const char* const Name, int Size = 0, CChangeObserver *Observ = NULL, const char *const Icon = NULL, std::string HintText_1 = "", std::string HintText_2 = "");
+		CKeyboardInput(const char* const Name, int Size = MAX_INPUT_CHARS, CChangeObserver *Observ = NULL, const char *const Icon = NULL, std::string HintText_1 = "", std::string HintText_2 = "");
 		virtual ~CKeyboardInput(){valueString.clear();};
 
 		void hide();
