@@ -1060,8 +1060,18 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 							*data = (size_t) p;
 							dont_delete_p = true;
 							break;
-
-								
+							
+						//// cec
+						case NeutrinoMessages::EVT_HDMI_CEC_VIEW_ON:
+							*msg = NeutrinoMessages::EVT_HDMI_CEC_VIEW_ON;
+							*data = 0;
+							break;
+							
+						case NeutrinoMessages::EVT_HDMI_CEC_STANDBY:
+							*msg = NeutrinoMessages::EVT_HDMI_CEC_STANDBY;
+							*data = 0;
+							break;
+		
 						//
 						default:
 							printf("CRCInput::getMsg_us: unknown eventID 0x%x\n",  emsg.eventID );
