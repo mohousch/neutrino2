@@ -265,9 +265,6 @@ void CZapit::initFrontend()
 
 #if HAVE_DVB_API_VERSION >= 5
 				//
-				//fe->getFEDelSysMask();
-				
-				//
 				if (fe->getDeliverySystem() & DVB_S || fe->getDeliverySystem() & DVB_S2 || fe->getDeliverySystem() & DVB_S2X)
 					have_s = true;
 				if (fe->getDeliverySystem() & DVB_C)
@@ -294,11 +291,6 @@ void CZapit::initFrontend()
 				    have_a = true;
 				}
 #endif
-				
-				// set it to standby
-//				fe->Close();
-				
-//				usleep(150000);
 			}
 			else
 				delete fe;
@@ -4649,9 +4641,6 @@ bool CZapit::tuneFrequency(FrontendParameters *feparams, t_satellite_position sa
 {
 	dprintf(DEBUG_NORMAL, "CZapit::%s:\n", __FUNCTION__);
 	
-	// initTuner
-//	CZapit::getInstance()->initTuner(fe);
-	
 	// setInput
 	fe->setInput(satellitePosition, feparams->frequency, feparams->polarization);
 
@@ -4918,9 +4907,7 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
 {
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanTransponder:\n");
 	
-	uint8_t polarization = 0;
 	uint8_t system = 0;
-	uint8_t modulation = 1;
 	int xml_fec;
 	FrontendParameters feparams;
 	
@@ -5020,14 +5007,14 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
 #endif
 	{
 		feparams.symbol_rate = xmlGetNumericAttribute(transponder, "symbol_rate", 0);
-		polarization = xmlGetNumericAttribute(transponder, "polarization", 0);
+		feparams.polarization = xmlGetNumericAttribute(transponder, "polarization", 0);
 		system = xmlGetNumericAttribute(transponder, "system", 0);
-		modulation = xmlGetNumericAttribute(transponder, "modulation", 0); 
+		feparams.modulation = (fe_modulation_t)xmlGetNumericAttribute(transponder, "modulation", 0); 
 		xml_fec = xmlGetNumericAttribute(transponder, "fec_inner", 0); // S_QPSK + S2_QPSK
 
 		xml_fec = CFrontend::getCodeRate(xml_fec, system);
 
-		if(modulation == 2)		// S2_8PSK
+		if(feparams.modulation == QAM_32)		// S2_8PSK
 			xml_fec += 9;
 
 		feparams.fec_inner = (fe_code_rate_t) xml_fec;
@@ -5831,9 +5818,7 @@ void CZapit::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_s
 {
 	dprintf(DEBUG_DEBUG, "CZapit::parseSatTransponders:\n");
 
-	uint8_t polarization = 0;
 	uint8_t system = 0;
-	uint8_t modulation = 1;
 	int xml_fec;
 	FrontendParameters feparams;
 	fake_tid = 0;
@@ -5897,15 +5882,15 @@ void CZapit::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_s
 		else if (frontendType == FE_QPSK) 	//DVB-S/S2/S2X
 		{
 			feparams.symbol_rate = xmlGetNumericAttribute(tps, "symbol_rate", 0);
-			polarization = xmlGetNumericAttribute(tps, "polarization", 0);
+			feparams.polarization = xmlGetNumericAttribute(tps, "polarization", 0);
 			system = xmlGetNumericAttribute(tps, "system", 0);
-			modulation = xmlGetNumericAttribute(tps, "modulation", 0);
+			feparams.modulation = (fe_modulation_t)xmlGetNumericAttribute(tps, "modulation", 0);
 			xml_fec = xmlGetNumericAttribute(tps, "fec_inner", 0);
 
 			xml_fec = CFrontend::getCodeRate(xml_fec, system);
 
 			// DVB-S2
-			if(modulation == 2)
+			if(feparams.modulation == QAM_32)
 				xml_fec += 9;
 
 			feparams.fec_inner = (fe_code_rate_t)xml_fec;
@@ -5930,7 +5915,7 @@ void CZapit::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_s
 			
 		transponder_id_t tid = CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid);
 
-		polarization &= 7;
+//		polarization &= 7;
 		
 		// insert TPs list
 		select_transponders.insert( std::pair<transponder_id_t, transponder> (tid, transponder(fake_tid, fake_nid, feparams)));
