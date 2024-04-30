@@ -57,6 +57,8 @@
 #include <driver/vcrcontrol.h>
 
 
+#define ENABLE_REPEAT_CHECK
+
 #ifdef USE_OPENGL
 const char * const RC_EVENT_DEVICE[NUMBER_OF_EVENT_DEVICES] = {
 	"/dev/input/event0", 
@@ -667,6 +669,8 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 {
 	static uint64_t last_keypress = 0ULL;
 	uint64_t getKeyBegin;
+	
+	static __u16 rc_last_repeat_key = KEY_MAX;
 
 	struct timeval tv, tvselect;
 	uint64_t InitialTimeout = Timeout;
@@ -1131,17 +1135,48 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 
 					tv = ev.time;
 					now_pressed = (uint64_t) tv.tv_usec + (uint64_t)((uint64_t) tv.tv_sec * (uint64_t) 1000000);
+					
+					//
+					if (ev.code == rc_last_key)
+					{
+						if((trkey == RC_up) || (trkey == RC_down   ) ||
+							(trkey == RC_plus   ) || (trkey == RC_minus  ) ||
+							(trkey == RC_page_down   ) || (trkey == RC_page_up  ) ||
+							((bAllowRepeatLR) && ((trkey == RC_left ) ||
+								(trkey == RC_right))))
+						{
+#ifdef ENABLE_REPEAT_CHECK
+							if (rc_last_repeat_key != ev.code) 
+							{
+								if ((now_pressed > last_keypress + repeat_block) ||
+										(now_pressed < last_keypress)) 
+									rc_last_repeat_key = ev.code;
+								else
+									keyok = false;
+							}
+#endif
+						}
+						else
+							keyok = false;						
+					}
+					else
+						rc_last_repeat_key = KEY_MAX;
 
 					rc_last_key = ev.code;
 
 					if (keyok) 
 					{
-						last_keypress = now_pressed;
+#ifdef ENABLE_REPEAT_CHECK
+						if ((now_pressed > last_keypress + repeat_block_generic) || (now_pressed < last_keypress)) 
+#endif
+						{
+							last_keypress = now_pressed;
 
-						*msg = trkey;
-						*data = 0; // <- button pressed
+							*msg = trkey;
+							*data = 0; // <- button pressed
 
-						return;
+							return;
+						}						
 					} //if keyok
 				} // if (ev.value)
 				else 
