@@ -122,7 +122,7 @@ void GLThreadObj::initKeys()
 	mKeyMap['+']  = CRCInput::RC_plus;
 	mKeyMap['-']  = CRCInput::RC_minus;
 	
-	mKeyMap['h']  = CRCInput::RC_info;
+	mKeyMap['h']  = CRCInput::RC_help;
 
 	mKeyMap['0']  = CRCInput::RC_0;
 	mKeyMap['1']  = CRCInput::RC_1;

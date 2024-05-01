@@ -240,6 +240,7 @@ class CRCInput
 			RC_recall 	= KEY_BACK,		// 0x9E
 			RC_favorites	= KEY_FAVORITES,	// 0x16c
 			RC_sat		= KEY_SAT,		// 0x17d
+			RC_help		= KEY_HELP,
 					
 			RC_record	= KEY_RECORD,		// 0xA7
 			RC_play		= KEY_PLAY,		// 0xCF
@@ -341,6 +342,7 @@ class CRCInput
 		neutrino_msg_t key_recall;		
 		neutrino_msg_t key_favorites;
 		neutrino_msg_t key_sat;
+		neutrino_msg_t key_help;
 			
 		neutrino_msg_t key_record;
 		neutrino_msg_t key_play;

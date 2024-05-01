@@ -261,6 +261,10 @@ void CPictureViewerGui::show()
 			delete pictureViewerSettingsMenu;
 			pictureViewerSettingsMenu = NULL;					
 		}
+		else if (msg == CRCInput::RC_info || msg == CRCInput::RC_help)
+		{
+			showHelp();
+		}
 		else if(msg == NeutrinoMessages::CHANGEMODE)
 		{
 			if((data & NeutrinoMessages::mode_mask) !=NeutrinoMessages::mode_pic)

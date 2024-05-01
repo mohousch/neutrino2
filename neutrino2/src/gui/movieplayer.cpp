@@ -1099,7 +1099,7 @@ void CMoviePlayerGui::PlayFile(void)
 			
 			startSubtitles();
 		} 
-		else if(msg == CRCInput::RC_yellow)
+		else if(msg == CRCInput::RC_yellow || msg == CRCInput::RC_help)
 		{
 			stopSubtitles();
 			
@@ -1117,7 +1117,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 				
 				//show help
-				showHelpTS();
+				showHelp();
 			}
 			
 			startSubtitles();
@@ -1658,7 +1658,7 @@ void CMoviePlayerGui::PlayFile(void)
 	CVFD::getInstance()->ShowIcon(VFD_ICON_PAUSE, false);
 }
 
-void CMoviePlayerGui::showHelpTS()
+void CMoviePlayerGui::showHelp()
 {
 	CHelpBox helpbox;
 

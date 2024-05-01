@@ -486,6 +486,9 @@ void CMP3Player::showTrackInfo(CAudiofile& file)
 {
 	dprintf(DEBUG_NORMAL, "CMP3Player::showTrackInfo\n");
 	
+	if (playlist.empty())
+		return;
+	
 	std::string title;
 	std::string artist;
 	std::string genre;
@@ -645,6 +648,7 @@ int CMP3Player::showMenu()
 	alist->addKey(CRCInput::RC_yellow, this, CRCInput::getSpecialKeyName(CRCInput::RC_yellow));
 	alist->addKey(CRCInput::RC_blue, this, CRCInput::getSpecialKeyName(CRCInput::RC_blue));
 	alist->addKey(CRCInput::RC_info, this, CRCInput::getSpecialKeyName(CRCInput::RC_info));
+	alist->addKey(CRCInput::RC_help, this, CRCInput::getSpecialKeyName(CRCInput::RC_help));
 
 	res = alist->exec(NULL, "");
 	delete alist;
@@ -726,6 +730,12 @@ int CMP3Player::exec(CMenuTarget* parent, const std::string& actionKey)
 		selected = alist? alist->getSelected() : 0;
 		showTrackInfo(playlist[selected]);
 
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "RC_help")
+	{
+		tmpAudioPlayerGui.showHelp();
+		
 		return RETURN_REPAINT;
 	}
 

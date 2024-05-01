@@ -96,7 +96,6 @@ class CMoviePlayerGui : public CMenuTarget
 		void cutNeutrino();
 		void restoreNeutrino();
 		void PlayFile();
-		void showHelpTS(void);
 		void updateLcd(const std::string & lcd_filename);
 		int showStartPosSelectionMenu(void);
 		
@@ -160,6 +159,8 @@ class CMoviePlayerGui : public CMenuTarget
 		void addToPlaylist(const char* fileName, std::string title = "", std::string info1 = "", std::string info2 = "", std::string tfile = "");
 		void clearPlaylist(void);
 		void removeFromPlaylist(long pos);
+		//
+		void showHelp(void);
 };
 
 #endif

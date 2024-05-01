@@ -224,6 +224,7 @@ void CPicViewer::showMenu()
 
 	//
 	widget->addKey(CRCInput::RC_info, this, CRCInput::getSpecialKeyName(CRCInput::RC_info));
+	widget->addKey(CRCInput::RC_help, this, CRCInput::getSpecialKeyName(CRCInput::RC_help));
 	widget->addKey(CRCInput::RC_setup, this, CRCInput::getSpecialKeyName(CRCInput::RC_setup));
 	widget->addKey(CRCInput::RC_red, this, CRCInput::getSpecialKeyName(CRCInput::RC_red));
 	widget->addKey(CRCInput::RC_green, this, CRCInput::getSpecialKeyName(CRCInput::RC_green));
@@ -266,7 +267,7 @@ int CPicViewer::exec(CMenuTarget* parent, const std::string& actionKey)
 
 		return RETURN_REPAINT;					
 	}
-	else if(actionKey == "RC_info")
+	else if(actionKey == "RC_info" || actionKey == "RC_help")
 	{
 		tmpPictureViewerGui.showHelp();
 

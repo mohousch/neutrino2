@@ -43,6 +43,7 @@ class CMoviePlayer : public CMenuTarget
 		CMenuItem* item;
 
 		//
+		CMoviePlayerGui tmpMoviePlayerGui;
 		CMovieInfo m_movieInfo;
 		CMoviePlayList m_vMovieInfo;
 		CFileFilter fileFilter;
@@ -440,6 +441,7 @@ void CMoviePlayer::showMenu()
 	widget->addKey(CRCInput::RC_spkr, this, CRCInput::getSpecialKeyName(CRCInput::RC_spkr));
 	widget->addKey(CRCInput::RC_yellow, this, CRCInput::getSpecialKeyName(CRCInput::RC_yellow));
 	widget->addKey(CRCInput::RC_blue, this, CRCInput::getSpecialKeyName(CRCInput::RC_blue));
+	widget->addKey(CRCInput::RC_help, this, CRCInput::getSpecialKeyName(CRCInput::RC_help));
 	
 	//
 	widget->addCCItem(mlist);
@@ -469,8 +471,6 @@ int CMoviePlayer::exec(CMenuTarget* parent, const std::string& actionKey)
 	if(actionKey == "mplay")
 	{
 		//selected = mlist? mlist->getSelected() : 0;
-		
-		CMoviePlayerGui tmpMoviePlayerGui;
 		tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[selected]);
 		
 		tmpMoviePlayerGui.exec(NULL, "");
@@ -482,6 +482,12 @@ int CMoviePlayer::exec(CMenuTarget* parent, const std::string& actionKey)
 		//selected = mlist? mlist->getSelected() : 0;
 		m_movieInfo.showMovieInfo(m_vMovieInfo[mlist->getSelected()]);
 
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "RC_help")
+	{
+		tmpMoviePlayerGui.showHelp();
+		
 		return RETURN_REPAINT;
 	}
 	else if(actionKey == "RC_red")

@@ -168,6 +168,7 @@ bool CRCInput::loadRCConfig(const char * const fileName)
 
 	key_favorites = configfile.getInt32("key_favorites", KEY_FAVORITES);
 	key_sat = configfile.getInt32("key_sat", KEY_SAT);
+	key_help = configfile.getInt32("key_help", KEY_HELP);
 			
 	key_record = configfile.getInt32("key_record", KEY_RECORD);
 #if defined (PLATFORM_GIGABLUE) || defined(PLATFORM_VUPLUS) || defined(PLATFORM_ODIN)	
@@ -296,6 +297,7 @@ bool CRCInput::saveRCConfig(const char * const fileName)
 
 	configfile.setInt32("key_favorites", key_favorites);
 	configfile.setInt32("key_sat", key_sat);
+	configfile.setInt32("key_help", key_help);
 			
 	configfile.setInt32("key_record", key_record);
 	configfile.setInt32("key_play", key_play);
@@ -1420,6 +1422,9 @@ const char * CRCInput::getSpecialKeyName(const unsigned long key)
 				
 		case RC_sat:
 			return "RC_sat";
+			
+		case RC_help:
+			return "RC_help";
 				
 		case RC_play:
 			return "RC_play";

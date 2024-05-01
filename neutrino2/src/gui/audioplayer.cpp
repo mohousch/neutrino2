@@ -399,7 +399,7 @@ void CAudioPlayerGui::playFile()
 				showPlaylist();
 			}
 		}
-		else if(msg == CRCInput::RC_info)
+		else if(msg == CRCInput::RC_info || msg == CRCInput::RC_help)
 		{
 			hide();
 
@@ -514,6 +514,12 @@ void CAudioPlayerGui::hide()
 {
 	// infos
 	m_frameBuffer->paintBackgroundBoxRel(cFrameBox.iX, cFrameBox.iY, cFrameBox.iWidth, cFrameBox.iHeight);
+	
+	//
+	if (alist && alist->isPainted())
+	{
+		alist->hide();
+	}
 
 	m_frameBuffer->blit();
 }
