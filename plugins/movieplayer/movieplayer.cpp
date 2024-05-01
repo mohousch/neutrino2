@@ -470,17 +470,21 @@ int CMoviePlayer::exec(CMenuTarget* parent, const std::string& actionKey)
 	
 	if(actionKey == "mplay")
 	{
-		//selected = mlist? mlist->getSelected() : 0;
-		tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[selected]);
+		if(m_vMovieInfo.size() > 0)
+		{
+			tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[selected]);
 		
-		tmpMoviePlayerGui.exec(NULL, "");
+			tmpMoviePlayerGui.exec(NULL, "");
+		}
 
 		return RETURN_REPAINT;
 	}
 	else if(actionKey == "RC_info")
 	{
-		//selected = mlist? mlist->getSelected() : 0;
-		m_movieInfo.showMovieInfo(m_vMovieInfo[mlist->getSelected()]);
+		if(m_vMovieInfo.size() > 0)
+		{
+			m_movieInfo.showMovieInfo(m_vMovieInfo[mlist->getSelected()]);
+		}
 
 		return RETURN_REPAINT;
 	}
@@ -492,12 +496,16 @@ int CMoviePlayer::exec(CMenuTarget* parent, const std::string& actionKey)
 	}
 	else if(actionKey == "RC_red")
 	{
-		//selected = mlist? mlist->getSelected() : 0;
-		hide();
-		doTMDB(m_vMovieInfo[mlist->getSelected()]);
-		showMenu();
+		if(m_vMovieInfo.size() > 0)
+		{
+			hide();
+			doTMDB(m_vMovieInfo[mlist->getSelected()]);
+			showMenu();
 
-		return RETURN_EXIT_ALL;
+			return RETURN_EXIT_ALL;
+		}
+		
+		return RETURN_REPAINT;
 	}
 	else if(actionKey == "RC_green")
 	{
