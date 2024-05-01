@@ -1558,8 +1558,7 @@ int CRCInput::translate(unsigned int code, int num)
 			
 	else if (code == key_mode) return RC_mode;
 	else if (code == key_net) return RC_net;
-			
-			
+					
 	else if (code == key_page_up) return RC_page_up;
 	else if (code == key_page_down) return RC_page_down;
 	else if (code == key_plus) return RC_plus;
@@ -1577,6 +1576,7 @@ int CRCInput::translate(unsigned int code, int num)
 	else if (code == key_recall) return RC_recall;
 	else if (code == key_info) return RC_info;
 	else if (code == key_bookmark) return RC_bookmark;
+	else if (code == key_help) return RC_help;
 	
 	// colored
 	else if (code == key_red) return RC_red;
