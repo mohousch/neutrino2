@@ -240,11 +240,11 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 
 #if !defined (PLATFORM_HYPERCUBE)
 	char sVolume[4];
-	
-#if defined (__sh__)
-	sprintf(sVolume, "%d", _left);
-#else
+
+#ifdef BOXMODEL_GB800SE
 	sprintf(sVolume, "%d", volume);
+#else
+	sprintf(sVolume, "%d", _left);
 #endif
 
 	int fd = ::open("/proc/stb/avs/0/volume", O_RDWR);
@@ -254,8 +254,8 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 		write(fd, sVolume, strlen(sVolume));
 		::close(fd);
 	}
-#endif
-#endif
+#endif	// PLATFORM_HYPERCUBE 
+#endif	// USE_OPENGL
 	
 	return ret;
 }

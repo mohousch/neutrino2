@@ -816,6 +816,7 @@ void cVideo::Pig(int x, int y, int w, int h, int osd_w, int osd_h, int num)
 	char vmpeg_top[100];
 	char vmpeg_width[100];
 	char vmpeg_height[100];
+	char vmpeg_apply[100];
 	
 	// left
 	sprintf(vmpeg_left, "/proc/stb/vmpeg/%d/dst_left", num);
@@ -858,6 +859,17 @@ void cVideo::Pig(int x, int y, int w, int h, int osd_w, int osd_h, int num)
 	if(fd)
 	{
 		fprintf(fd, "%x", _h);
+		fclose(fd);
+	}
+	
+	// apply
+	sprintf(vmpeg_apply, "/proc/stb/vmpeg/%d/dst_apply", num);
+	
+	fd = fopen(vmpeg_apply, "w");
+	
+	if(fd)
+	{
+		fprintf(fd, "%x", 1);
 		fclose(fd);
 	}
 #endif	
