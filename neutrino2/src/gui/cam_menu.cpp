@@ -131,7 +131,7 @@ void CCAMMenuHandler::doMainMenu()
 		
 		//
 		cammenu->enablePaintHead();
-		cammenu->setTitle(_("CI Cam settings"), NEUTRINO_ICON_CI);
+		cammenu->setTitle(_("CI Cam"), NEUTRINO_ICON_CI);
 
 		//
 		cammenu->enablePaintFoot();

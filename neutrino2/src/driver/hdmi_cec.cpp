@@ -40,12 +40,14 @@
 #include <driver/hdmi_cec_types.h>
 
 #include <system/debug.h>
+#include <system/set_threadname.h>
 
 #define EPOLL_WAIT_TIMEOUT (-1)
 #define EPOLL_MAX_EVENTS (1)
 
 #define CEC_FALLBACK_DEVICE "/dev/cec0"
 #define CEC_HDMIDEV "/dev/hdmi_cec"
+
 #if BOXMODEL_H7
 #define RC_DEVICE  "/dev/input/event2"
 #else
@@ -433,6 +435,7 @@ void hdmi_cec::SetCECState(bool state)
 long hdmi_cec::translateKey(unsigned char code)
 {
 	long key = 0;
+	
 	switch (code)
 	{
 		case CEC_USER_CONTROL_CODE_PREVIOUS_CHANNEL:
@@ -575,6 +578,8 @@ long hdmi_cec::translateKey(unsigned char code)
 
 bool hdmi_cec::Start()
 {
+	dprintf(DEBUG_NORMAL, "hdmi_cec::Start\n");
+	
 	if (running)
 		return false;
 
@@ -588,6 +593,8 @@ bool hdmi_cec::Start()
 
 bool hdmi_cec::Stop()
 {
+	dprintf(DEBUG_NORMAL, "hdmi_cec::Stop\n");
+	
 	if (!running)
 		return false;
 
@@ -606,6 +613,8 @@ bool hdmi_cec::Stop()
 
 void hdmi_cec::run()
 {
+	set_threadname(__func__);
+	
 	OpenThreads::Thread::setCancelModeAsynchronous();
 	int n;
 	int epollfd = epoll_create1(0);

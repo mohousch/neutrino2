@@ -170,11 +170,9 @@ void CMainSettingsMenu::showMenu(void)
 	//CPSISetup * chPSISetup = new CPSISetup(_(PSI settings), &g_settings.contrast, &g_settings.saturation, &g_settings.brightness, &g_settings.tint);
 	//mainSettings->addItem( new CMenuForwarder(_("PSI settings"), true, NULL, chPSISetup, NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_PSISETTINGS));
 	
-	// cec setup
-#if !defined (__sh__) 
+	// cec setup 
 	//FIXME:
 	mainSettings->addItem(new CMenuForwarder(_("CEC settings"), true, NULL, new CCECSetup(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_GENERALSETTINGS));
-#endif
 	
 	//miscSettings general
 	mainSettings->addItem(new CMenuForwarder(_("Misc settings"), true, NULL, new CGeneralSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_GENERALSETTINGS));

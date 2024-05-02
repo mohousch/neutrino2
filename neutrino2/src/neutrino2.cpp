@@ -4776,7 +4776,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 	Cyhttpd::getInstance()->Start();
 
 	// streamts
-//	CStreamTS::getInstance()->Start();
 	CStreamManager::getInstance()->Start();
 	
 	// dvbsub thread
