@@ -37,7 +37,7 @@ void CEventServer::sendEvent(const unsigned int eventID, const void* eventbody, 
 	struct sockaddr_un servaddr;
 	int clilen, sock_fd;
 
-	printf("CEventServer::sendEvent >(%s)\n", udsname);
+//	printf("CEventServer::sendEvent: 0x%x >(%s)\n", eventID, udsname);
 
 	memset(&servaddr, 0, sizeof(struct sockaddr_un));
 	

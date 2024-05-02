@@ -3393,7 +3393,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	res = res | g_InfoViewer->handleMsg(msg, data);
 	res = res | channelList->handleMsg(msg, data);
 #if defined (ENABLE_CI)	
-	res = res | g_CamHandler->handleMsg(msg, data);
+//	res = res | g_CamHandler->handleMsg(msg, data); // FIXME:
 #endif
 
 	// 

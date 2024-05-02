@@ -1142,9 +1142,6 @@ static void * reader_thread(void * /*arg*/)
 	
 	reader_running = 1;
 	
-	////test
-	transpmode = 1;
-	
 	while(reader_running) 
 	{
 		if(ttx_paused)

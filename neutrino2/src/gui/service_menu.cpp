@@ -134,7 +134,7 @@ int CServiceMenu::showMenu(void)
 	// CI Cam 	
 #if defined (ENABLE_CI) 
 	//FIXME:
-	service->addItem(new CMenuForwarder(_("CI Cam"), true, NULL, g_CamHandler, NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_CICAM));
+//	service->addItem(new CMenuForwarder(_("CI Cam"), true, NULL, g_CamHandler, NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_CICAM));
 #endif
 		
 	// software update
