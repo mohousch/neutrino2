@@ -47,11 +47,7 @@ class CCECSetup : public CMenuTarget, CChangeObserver
 	public:	
 		CCECSetup();
 		~CCECSetup(){};
-#if defined (__sh__)
 		void setCECSettings(bool);
-#else
-		void setCECSettings();
-#endif
 		int exec(CMenuTarget* parent, const std::string & actionKey);
 		virtual bool changeNotify(const std::string& OptionName, void * data);
 };

@@ -128,6 +128,7 @@
 #include <gui/vfdcontroler.h>
 #include <gui/dvbsub_select.h>
 #include <gui/epg_menu.h>
+#include <gui/cec_setup.h>
 
 #include <system/settings.h>
 #include <system/debug.h>
@@ -2706,10 +2707,18 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 		// set fan off
 #if !ENABLE_LCD		
 		CVFD::getInstance()->setFan(false);
-#endif		
+#endif
+
+		// cec
+		CCECSetup cecsetup;
+		cecsetup.setCECSettings(false);		
 	} 
 	else 
-	{	
+	{
+		// cec
+		CCECSetup cecsetup;
+		cecsetup.setCECSettings(true);
+			
 		// set fan on
 #if !ENABLE_LCD		
 		CVFD::getInstance()->setFan(true);
@@ -3222,8 +3231,7 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		// stop nhttpd		
 		Cyhttpd::getInstance()->Stop();
 		
-		// stop streamts
-//		CStreamTS::getInstance()->Stop();	
+		// stop streamts	
 		CStreamManager::getInstance()->Stop();
 
 		// stop timerd	  
@@ -3293,6 +3301,10 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 			delete g_fontRenderer;
 			g_fontRenderer = NULL;
 		}
+		
+		// cec
+		CCECSetup cecsetup;
+		cecsetup.setCECSettings(false);
 		
 #ifdef USE_OPENGL
 		ao_shutdown();
@@ -4762,6 +4774,10 @@ int CNeutrinoApp::run(int argc, char **argv)
 		// pcm delay 
 		audioDecoder->setHwPCMDelay(g_settings.pcm_delay);
 	}
+	
+	// cec
+	CCECSetup cecsetup;
+	cecsetup.setCECSettings(true);
 	
 	// zapit
 	CZapit::getInstance()->Start(zapitCfg);

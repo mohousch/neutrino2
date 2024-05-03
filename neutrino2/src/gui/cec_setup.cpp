@@ -184,11 +184,11 @@ int CCECSetup::showMenu()
 	return res;
 }
 
-#if defined (__sh__)
 void CCECSetup::setCECSettings(bool b)
 {	
 	printf("[neutrino CEC Settings] %s init CEC settings...\n", __FUNCTION__);
 	
+#if defined (__sh__)
 	if (b) 
 	{
 		// wakeup
@@ -216,18 +216,13 @@ void CCECSetup::setCECSettings(bool b)
 			}
 		}
 	}
-}
 #else
-void CCECSetup::setCECSettings()
-{
-	printf("[neutrino CEC Settings] %s init CEC settings...\n", __FUNCTION__);
-	
 	hdmi_cec::getInstance()->SetCECAutoStandby(g_settings.hdmi_cec_standby == 1);
 	hdmi_cec::getInstance()->SetCECAutoView(g_settings.hdmi_cec_view_on == 1);
 	hdmi_cec::getInstance()->GetAudioDestination();
 	hdmi_cec::getInstance()->SetCECMode((VIDEO_HDMI_CEC_MODE)g_settings.hdmi_cec_mode);
+#endif	
 }
-#endif
 
 bool CCECSetup::changeNotify(const std::string& OptionName, void * /*data*/)
 {
