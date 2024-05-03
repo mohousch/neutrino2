@@ -469,8 +469,7 @@ void Cyhttpd::ReadConfig(void)
 	CySocket::initSSL();
 #endif
 	ConfigList["server.user_name"] = Config->getString("server.user_name", "");
-	ConfigList["server.group_name"]
-			= Config->getString("server.group_name", "");
+	ConfigList["server.group_name"] = Config->getString("server.group_name", "");
 	ConfigList["server.chroot"] = Config->getString("server.chroot", "");
 
 	// language

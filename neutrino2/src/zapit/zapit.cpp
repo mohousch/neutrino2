@@ -485,9 +485,8 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 		}
 		// first zap/record/other frontend type
 		else if (transponder != transponders.end())
-		{
-			////test	
-			if ( (fe->getForcedDelSys() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
+		{	
+			if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
 			{
 				free_frontend = fe;
 				break;
@@ -498,7 +497,7 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 	//
 	if(free_frontend)
 	{
-		dprintf(DEBUG_NORMAL, "CZapit::getFrontend: Selected fe(%d:%d) (delsys:0x%x)\n", free_frontend->feadapter, free_frontend->fenumber,free_frontend->deliverySystemMask);
+		dprintf(DEBUG_NORMAL, "CZapit::getFrontend: Selected fe(%d:%d) (delsys:0x%x)\n", free_frontend->feadapter, free_frontend->fenumber, free_frontend->deliverySystemMask);
 		
 		if(free_frontend->standby)
 			initTuner(free_frontend);
@@ -551,7 +550,7 @@ CFrontend * CZapit::getRecordFrontend(CZapitChannel * thischannel)
 		// other free tuner
 		else if (transponder != transponders.end())
 		{
-			if ( (fe->getForcedDelSys() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
+			if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
 			{
 				rec_frontend = fe;
 				break;
@@ -615,7 +614,7 @@ CFrontend * CZapit::getFreeFrontend(CZapitChannel * thischannel)
 		// first zap/record/other frontend type
 		else if (transponder != transponders.end())
 		{
-			if ( (fe->getForcedDelSys() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
+			if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
 			{
 				pref_frontend = fe;
 				break;
