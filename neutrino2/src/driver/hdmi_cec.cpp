@@ -102,7 +102,6 @@ bool hdmi_cec::SetCECMode(VIDEO_HDMI_CEC_MODE _deviceType)
 	else
 		deviceType = _deviceType;
 
-#if PLATFORM_VUPLUS
 	if (hdmiFd == -1)
 	{
 		hdmiFd = ::open(CEC_HDMIDEV, O_RDWR | O_NONBLOCK | O_CLOEXEC);
@@ -111,7 +110,6 @@ bool hdmi_cec::SetCECMode(VIDEO_HDMI_CEC_MODE _deviceType)
 			::ioctl(hdmiFd, 0); /* flush old messages */
 		}
 	}
-#endif
 
 	if (hdmiFd == -1)
 	{
