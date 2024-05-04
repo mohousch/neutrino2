@@ -186,7 +186,7 @@ int CCECSetup::showMenu()
 
 void CCECSetup::setCECSettings(bool b)
 {	
-	printf("[neutrino CEC Settings] %s init CEC settings...\n", __FUNCTION__);
+	dprintf(DEBUG_NORMAL, "CCECSetup::setCECSettings\n");
 	
 #if defined (__sh__)
 	if (b) 
@@ -226,11 +226,11 @@ void CCECSetup::setCECSettings(bool b)
 
 bool CCECSetup::changeNotify(const std::string& OptionName, void * /*data*/)
 {
+	dprintf(DEBUG_NORMAL, "CCECSetup::changeNotify\n");
+	
 #if defined (__sh__)
 	if (OptionName == _("CEC mode"))
 	{
-		printf("[neutrino CEC Settings] %s set CEC settings...\n", __FUNCTION__);
-		
 		cec1->setActive(g_settings.hdmi_cec_mode != 0);
 		cec2->setActive(g_settings.hdmi_cec_mode != 0);
 	}
@@ -238,8 +238,6 @@ bool CCECSetup::changeNotify(const std::string& OptionName, void * /*data*/)
 
 	if (OptionName == _("CEC mode"))
 	{
-		printf("[neutrino CEC Settings] %s set CEC settings...\n", __FUNCTION__);
-		
 		cec1->setActive(g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF);
 		cec2->setActive(g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF);
 		cec3->setActive(g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF);
