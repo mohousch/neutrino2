@@ -90,6 +90,8 @@ hdmi_cec *hdmi_cec::getInstance()
 
 bool hdmi_cec::SetCECMode(VIDEO_HDMI_CEC_MODE _deviceType)
 {
+	dprintf(DEBUG_NORMAL, "hdmi_cec::SetCECMode: type:%d\n", _deviceType);
+	
 	physicalAddress[0] = 0x10;
 	physicalAddress[1] = 0x00;
 	logicalAddress = 1;
@@ -105,6 +107,7 @@ bool hdmi_cec::SetCECMode(VIDEO_HDMI_CEC_MODE _deviceType)
 	if (hdmiFd == -1)
 	{
 		hdmiFd = ::open(CEC_HDMIDEV, O_RDWR | O_NONBLOCK | O_CLOEXEC);
+		
 		if (hdmiFd >= 0)
 		{
 			::ioctl(hdmiFd, 0); /* flush old messages */
@@ -204,8 +207,8 @@ bool hdmi_cec::SetCECMode(VIDEO_HDMI_CEC_MODE _deviceType)
 			SetCECState(false);
 
 		Start();
+		
 		return true;
-
 	}
 	
 	return false;
@@ -213,6 +216,8 @@ bool hdmi_cec::SetCECMode(VIDEO_HDMI_CEC_MODE _deviceType)
 
 void hdmi_cec::GetCECAddressInfo()
 {
+	dprintf(DEBUG_NORMAL, "hdmi_cec::GetCECAddressInfo\n");
+	
 	if (hdmiFd >= 0)
 	{
 		bool hasdata = false;
@@ -283,6 +288,8 @@ void hdmi_cec::GetCECAddressInfo()
 
 void hdmi_cec::ReportPhysicalAddress()
 {
+	dprintf(DEBUG_NORMAL, "hdmi_cec::ReportPhysicalAddress\n");
+	
 	struct cec_message txmessage;
 	
 	txmessage.initiator = logicalAddress;
@@ -298,6 +305,8 @@ void hdmi_cec::ReportPhysicalAddress()
 
 void hdmi_cec::SendCECMessage(struct cec_message &txmessage, int sleeptime)
 {
+	dprintf(DEBUG_NORMAL, "hdmi_cec::SendCECMessage\n");
+	
 	if (hdmiFd >= 0)
 	{
 
@@ -333,16 +342,22 @@ void hdmi_cec::SendCECMessage(struct cec_message &txmessage, int sleeptime)
 
 void hdmi_cec::SetCECAutoStandby(bool state)
 {
+	dprintf(DEBUG_NORMAL, "hdmi_cec::SetCECAutoStandby: state: %s\n", state? "true" : "false");
+	
 	standby_cec_activ = state;
 }
 
 void hdmi_cec::SetCECAutoView(bool state)
 {
+	dprintf(DEBUG_NORMAL, "hdmi_cec::SetCECAutoView: state: %s\n", state? "true" : "false");
+	
 	autoview_cec_activ = state;
 }
 
 void hdmi_cec::SetCECState(bool state)
 {
+	dprintf(DEBUG_NORMAL, "hdmi_cec::SetCECState: state: %s\n", state? "true" : "false");
+	
 	struct cec_message message;
 
 	standby = state;
