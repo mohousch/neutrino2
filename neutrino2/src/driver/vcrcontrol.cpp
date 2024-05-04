@@ -108,23 +108,26 @@ CVCRControl::CVCRControl()
 
 CVCRControl::~CVCRControl()
 {
+	//
+	Stop();
+	Close();
+	
+	//
 	channel_id = 0;
 	
+	//
 	if (g_movieInfo)
 	{
 		delete g_movieInfo;
 		g_movieInfo = NULL;
 	}
 	
+	//
 	if (g_cMovieInfo)
 	{
 		delete g_cMovieInfo;
 		g_cMovieInfo = NULL;
 	}
-	
-	//
-	Stop();
-	Close();
 }
 
 bool CVCRControl::Record(const CTimerd::RecordingInfo * const eventinfo)
