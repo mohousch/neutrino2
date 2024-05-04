@@ -39,14 +39,13 @@
 class CCECSetup : public CMenuTarget, CChangeObserver
 {
 	private:
-		CMenuOptionChooser 	*cec1, *cec2, *cec3;		
-		//int width;
+		CMenuOptionChooser *cec1, *cec2, *cec3;		
 		int showMenu();
  		
 
 	public:	
 		CCECSetup();
-		~CCECSetup(){};
+		virtual ~CCECSetup(){};
 		void setCECSettings(bool);
 		int exec(CMenuTarget* parent, const std::string & actionKey);
 		virtual bool changeNotify(const std::string& OptionName, void * data);

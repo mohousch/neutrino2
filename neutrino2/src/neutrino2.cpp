@@ -2710,14 +2710,18 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 #endif
 
 		// cec
+#if !defined (__sh__)
 		CCECSetup cecsetup;
-		cecsetup.setCECSettings(false);		
+		cecsetup.setCECSettings(false);	
+#endif	
 	} 
 	else 
 	{
 		// cec
+#if !defined (__sh__)
 		CCECSetup cecsetup;
 		cecsetup.setCECSettings(true);
+#endif
 			
 		// set fan on
 #if !ENABLE_LCD		
@@ -3303,8 +3307,10 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		}
 		
 		// cec
+#if !defined (__sh__)
 		CCECSetup cecsetup;
 		cecsetup.setCECSettings(false);
+#endif
 		
 #ifdef USE_OPENGL
 		ao_shutdown();
@@ -4776,8 +4782,10 @@ int CNeutrinoApp::run(int argc, char **argv)
 	}
 	
 	// cec
+#if !defined (__sh__)
 	CCECSetup cecsetup;
 	cecsetup.setCECSettings(true);
+#endif
 	
 	// zapit
 	CZapit::getInstance()->Start(zapitCfg);

@@ -35,7 +35,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include "cec_setup.h"
+#include <gui/cec_setup.h>
 
 #include <global.h>
 #include <neutrino2.h>
@@ -264,7 +264,6 @@ bool CCECSetup::changeNotify(const std::string& OptionName, void * /*data*/)
 		}
 	}
 #endif
-
 
 	return false;
 }
