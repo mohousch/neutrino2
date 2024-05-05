@@ -108,8 +108,6 @@ void cDvbSubtitleBitmaps::Draw(int &min_x, int &min_y, int &max_x, int &max_y)
 //// cDvbSubtitleConverter
 cDvbSubtitleConverter::cDvbSubtitleConverter(void)
 {
-	printf("cDvbSubtitleConverter: new converter\n");
-
 	bitmaps = new cList<cDvbSubtitleBitmaps>;
 	pthread_mutexattr_t attr;
 	pthread_mutexattr_init(&attr);
