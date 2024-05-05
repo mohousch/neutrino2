@@ -118,6 +118,7 @@ extern "C" {
 
 extern Data_t data[64];
 extern int need;
+extern uint64_t sCURRENT_APTS;
 
 int buf_in = 0;
 int buf_out = 0;
@@ -1544,7 +1545,7 @@ cPlayback::SWFramebuffer* cPlayback::getDecBuf(void)
 	p->height(data[buf_out].height);
 	p->rate(data[buf_out].rate);
 	p->vpts(data[buf_out].vpts);
-	p->apts(data[buf_out].apts);
+	p->apts(sCURRENT_APTS);
 	
 	av_image_fill_arrays(&data[buf_out].buffer, &data[buf_out].size, &(*p)[0], AV_PIX_FMT_RGB32, data[buf_out].width, data[buf_out].height, 1);
 	

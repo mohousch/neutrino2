@@ -666,7 +666,7 @@ void GLThreadObj::bltDisplayBuffer()
 			sleep_us = 1;
 		
 		//
-		if (sleep_us > 100000)
+		if (sleep_us > 200000)
 			sleep_us = 30000;
 	}
 }
@@ -714,7 +714,8 @@ void GLThreadObj::bltPlayBuffer()
 	int64_t apts = buf->apts();
 	int64_t vpts = buf->vpts() + 18000;
 	int rate = buf->rate();
-			
+	
+	/*		
 	if (apts != last_apts)
 	{		
 		if (apts < vpts)
@@ -736,9 +737,10 @@ void GLThreadObj::bltPlayBuffer()
 			sleep_us = 1;
 		
 		//
-		if (sleep_us > 100000)
+		if (sleep_us > 200000)
 			sleep_us = 30000;
 	}
+	*/
 #endif
 }
 

@@ -26,7 +26,6 @@ typedef struct Data_s
 	uint32_t width;
 	uint32_t height;
 	uint64_t vpts;
-	uint64_t apts;
 	uint32_t rate;
 }Data_t;
 #endif

@@ -1380,8 +1380,6 @@ static int Write(void* _context, void* _out)
 				data[buf_in].vpts = sCURRENT_PTS = out->frame->best_effort_timestamp;
 #endif
 					
-				data[buf_in].apts = sCURRENT_APTS;
-					
 				//
 				int framerate = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);
 					
