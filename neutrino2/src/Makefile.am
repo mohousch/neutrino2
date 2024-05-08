@@ -9,7 +9,6 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/src/nhttpd \
 	-I$(top_srcdir)/lib \
 	-I$(top_srcdir)/lib/connection \
-	-I$(top_srcdir)/lib/libeventserver \
 	-I$(top_srcdir)/lib/libconfigfile \
 	-I$(top_srcdir)/lib/libnet \
 	-I$(top_srcdir)/lib/libxmltree \
@@ -79,7 +78,6 @@ neutrino2_LDADD = \
 	gui/widget/menue.o \
 	$(top_builddir)/lib/libconfigfile/libtuxbox-configfile.a \
 	$(top_builddir)/lib/connection/libtuxbox-connection.a \
-	$(top_builddir)/lib/libeventserver/libtuxbox-eventserver.a \
 	$(top_builddir)/lib/libxmltree/libtuxbox-xmltree.a \
 	$(top_builddir)/lib/libnet/libtuxbox-net.a \
 	$(top_builddir)/lib/libmd5sum/libtuxbox-md5sum.a \

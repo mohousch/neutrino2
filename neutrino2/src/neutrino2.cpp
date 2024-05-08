@@ -263,7 +263,6 @@ static void initGlobals(void)
 
 	g_Radiotext     = NULL;
 	g_Locale        = new CLocaleManager;
-	eventServer 	= new CEventServer;
 }
 
 ////
@@ -2196,7 +2195,6 @@ void CNeutrinoApp::saveEpg()
 			
 			if (( msg == CRCInput::RC_timeout ) || (msg == NeutrinoMessages::EVT_SI_FINISHED)) 
 			{
-				delete [] (unsigned char*) data;
 				break;
 			}
 		}
@@ -3338,7 +3336,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	// zap complete event
 	if(msg == NeutrinoMessages::EVT_ZAP_COMPLETE) 
 	{
-		dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: EVT_ZAP_COMPLETE current_channel_id: 0x%llx data:0x%llx\n", CZapit::getInstance()->getCurrentChannelID(), *(t_channel_id *)data);
+		dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: EVT_ZAP_COMPLETE current_channel_id: 0x%llx data:0x%llx\n", CZapit::getInstance()->getCurrentChannelID(), /**(t_channel_id *)*/data);
 		
 		// set audio map after channel zap
 		CZapit::getInstance()->getAudioMode(&g_settings.audio_AnalogMode);
@@ -3411,7 +3409,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	res = res | g_InfoViewer->handleMsg(msg, data);
 	res = res | channelList->handleMsg(msg, data);
 #if defined (ENABLE_CI)	
-//	res = res | g_CamHandler->handleMsg(msg, data); // FIXME:
+	res = res | g_CamHandler->handleMsg(msg, data); // FIXME:
 #endif
 
 	// 
@@ -3622,6 +3620,7 @@ _repeat:
 			delete[] (unsigned char *) nextRecordingInfo;
 
 		nextRecordingInfo = (CTimerd::RecordingInfo *) data;
+		
 		startNextRecording();
 
 		return messages_return::handled | messages_return::cancel_all;
@@ -3655,8 +3654,6 @@ _repeat:
 				nextRecordingInfo = NULL;
 			}
 		}
-		
-		delete[] (unsigned char*) data;
 		
 		return messages_return::handled;
 	}
@@ -3697,7 +3694,6 @@ _repeat:
 	
 		return messages_return::handled;
 	}
-	////
 	else if( msg == NeutrinoMessages::EVT_PMT_CHANGED) 
 	{
 		res = messages_return::handled;
@@ -3728,8 +3724,6 @@ _repeat:
 			
 			channelList->zapToChannelID(eventinfo->channel_id);
 		}
-		
-		delete[] (unsigned char*) data;
 		
 		return messages_return::handled;
 	}
@@ -3815,8 +3809,6 @@ _repeat:
 		{
 			stopAutoRecord();
 		}
-
-		delete[] (unsigned char*) data;
 		
 		if( mode != mode_scart )
 			HintBox(_("Information"), _("Recording starts in a few minutes"), HINTBOX_WIDTH, -1, NEUTRINO_ICON_INFO, CComponent::BORDER_ALL);
@@ -3912,16 +3904,12 @@ _repeat:
 		if (mode != mode_scart)
 			HintBox(_("Information"), (const char *) data); // UTF-8
 		
-		delete[] (unsigned char*) data;
-		
 		return messages_return::handled;
 	}
 	else if (msg == NeutrinoMessages::EVT_EXTMSG) 
 	{
 		if (mode != mode_scart)
 			MessageBox(_("Information"), (const char *) data, CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO); // UTF-8
-			
-		delete[] (unsigned char*) data;
 		
 		return messages_return::handled;
 	}
@@ -3937,8 +3925,6 @@ _repeat:
 		
 		if( mode != mode_scart )
 			MessageBox(_("Reminder"), text.c_str(), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO); // UTF-8
-			
-		delete[] (unsigned char*) data;
 		
 		return messages_return::handled;
 	}
@@ -4029,8 +4015,6 @@ _repeat:
 		
 		g_PluginList->startPlugin((const char *)data);
 		
-		delete[] (unsigned char*) data;
-		
 		return messages_return::handled;
 	}
 	else if (msg == NeutrinoMessages::EVT_SERVICES_UPD) // sdtthread
@@ -4059,9 +4043,6 @@ _repeat:
 	//
 	if( res != messages_return::unhandled ) 
 	{
-		if ((msg >= CRCInput::RC_WithData) && (msg < CRCInput::RC_WithData + 0x10000000))
-			delete[] (unsigned char*) data;
-			
 		return( res & ( 0xFFFFFFFF - messages_return::unhandled ) );
 	}	
 

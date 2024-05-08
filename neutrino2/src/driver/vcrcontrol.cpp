@@ -908,7 +908,7 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 	// vtxt
 	EPG_VTXT_PIDS vtxt_pids;
 	
-	for (int i = 0 ; i < (int)channel->getSubtitleCount() ; ++i) 
+	for (int i = 0 ; i < (int)channel->getSubtitleCount(); ++i) 
 	{
 		CZapitAbsSub* s = channel->getChannelSub(i);
 		CZapitTTXSub* st = reinterpret_cast<CZapitTTXSub*>(s);	

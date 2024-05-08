@@ -173,7 +173,6 @@ class CRCInput
 #endif
 
 		int fd_rc[NUMBER_OF_EVENT_DEVICES];
-		int fd_event;
 		int fd_max;
 		
 		__u16 rc_last_key;
@@ -427,7 +426,7 @@ class CRCInput
 		void getMsg_us(neutrino_msg_t* msg, neutrino_msg_data_t * data, uint64_t Timeout, bool bAllowRepeatLR = false);
 		
 		//
-		void postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data, const bool Priority = true);
+		void postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data = 0, const bool Priority = true);
 		
 		//
 		void clearRCMsg();

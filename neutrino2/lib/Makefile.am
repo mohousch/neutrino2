@@ -1,6 +1,5 @@
 SUBDIRS = \
 	connection \
-	libeventserver \
 	libconfigfile \
 	libmd5sum \
 	libnet \

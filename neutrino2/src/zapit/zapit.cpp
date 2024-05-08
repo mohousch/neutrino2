@@ -1151,7 +1151,8 @@ bool CZapit::tuneToChannel(CFrontend * frontend, CZapitChannel * thischannel, bo
 		if(waitForMotor > 0) 
 		{
 			dprintf(DEBUG_INFO, "CZapit::tuneToChannel: waiting %d seconds for motor to turn satellite dish.\n", waitForMotor);
-			eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_MOTOR, &waitForMotor, sizeof(waitForMotor));
+
+			g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_MOTOR, (const neutrino_msg_data_t)waitForMotor, false);
 				
 			for(int i = 0; i < waitForMotor; i++) 
 			{
@@ -1408,7 +1409,7 @@ tune_again:
 		// send caid
 		int caid = 1;
 
-		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_CA_ID, &caid, sizeof(int));	
+		g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_CA_ID, (const neutrino_msg_data_t)caid, false);
 
 		// start pmt update filter
 		pmt.pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);
@@ -1705,7 +1706,7 @@ void CZapit::enableRecordMode(void)
 	
 	int status = 1;
 	 
-	eventServer->sendEvent(NeutrinoMessages::EVT_RECORDMODE, &status, sizeof(int) );
+	g_RCInput->postMsg(NeutrinoMessages::EVT_RECORDMODE, (const neutrino_msg_data_t)status, false);
 }
 
 void CZapit::disableRecordMode(void)
@@ -1729,7 +1730,7 @@ void CZapit::disableRecordMode(void)
 	
 	int status = 0;
  
-	eventServer->sendEvent(NeutrinoMessages::EVT_RECORDMODE, &status, sizeof(int) );
+	g_RCInput->postMsg(NeutrinoMessages::EVT_RECORDMODE, (const neutrino_msg_data_t)status, false);
 }
 
 void CZapit::renumServices(void)
@@ -3502,7 +3503,7 @@ unsigned int CZapit::zapToChannelID(t_channel_id channel_id, bool isSubService)
 	{
 		dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: zapit failed, chid 0x%llx\n", channel_id);
 		
-		eventServer->sendEvent((isSubService ? NeutrinoMessages::EVT_ZAP_SUB_FAILED : NeutrinoMessages::EVT_ZAP_FAILED), &channel_id, sizeof(channel_id));
+		g_RCInput->postMsg((isSubService ? NeutrinoMessages::EVT_ZAP_SUB_FAILED : NeutrinoMessages::EVT_ZAP_FAILED), (const neutrino_msg_data_t)channel_id, false);
 		
 		return result;
 	}
@@ -3515,19 +3516,19 @@ unsigned int CZapit::zapToChannelID(t_channel_id channel_id, bool isSubService)
 	{
 		dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: isSubService chid 0x%llx\n", channel_id);
 		
-		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_SUB_COMPLETE, &channel_id, sizeof(channel_id));
+		g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_SUB_COMPLETE, (const neutrino_msg_data_t)channel_id, false);
 	}
 	else if (current_is_nvod) 
 	{
 		dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: NVOD chid 0x%llx\n", channel_id);
 		
-		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_ISNVOD, &channel_id, sizeof(channel_id));
+		g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_ISNVOD, (const neutrino_msg_data_t)channel_id, false);
 		
 		result |= ZAP_IS_NVOD;
 	}
 	else
 	{
-		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_COMPLETE, &channel_id, sizeof(channel_id));
+		g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_COMPLETE, (const neutrino_msg_data_t)channel_id, false);
 	}
 
 	return result;
@@ -3847,7 +3848,8 @@ void * CZapit::sdtThread(void */*arg*/)
 			if(updated && (CZapit::getInstance()->scanSDT == 1))
 			{
 				CZapit::getInstance()->loadServices(true);
-			  	eventServer->sendEvent(NeutrinoMessages::EVT_SERVICES_UPD);
+
+			  	g_RCInput->postMsg(NeutrinoMessages::EVT_SERVICES_UPD);
 			}
 
 			dprintf(DEBUG_NORMAL, "CZapit::sdtThread: %s\n", updated? "found changes": "no changes found");
@@ -3914,7 +3916,7 @@ void *CZapit::updatePMTFilter(void *)
 						pmt.pmt_set_update_filter(CZapit::getInstance()->getCurrentChannel(), &pmt_update_fd, CZapit::getInstance()->getCurrentFrontend());
 					}
 						
-					eventServer->sendEvent(NeutrinoMessages::EVT_PMT_CHANGED, &channel_id, sizeof(channel_id));
+					g_RCInput->postMsg(NeutrinoMessages::EVT_PMT_CHANGED, (const neutrino_msg_data_t)channel_id, false);
 				}
 			}
 		}
@@ -4412,12 +4414,12 @@ void CZapit::reinitChannels()
 	if (cit != allchans.end()) 
 		live_channel = &(cit->second); 
 	
-	eventServer->sendEvent(NeutrinoMessages::EVT_SERVICESCHANGED);
+	g_RCInput->postMsg(NeutrinoMessages::EVT_SERVICESCHANGED);
 }
 
 void CZapit::reloadCurrentServices()
 {
-	eventServer->sendEvent(NeutrinoMessages::EVT_BOUQUETSCHANGED);
+	g_RCInput->postMsg(NeutrinoMessages::EVT_BOUQUETSCHANGED);
 }
 
 //
@@ -4511,7 +4513,7 @@ void CZapit::saveBouquets()
 	saveZapitBouquets();
 	saveZapitUBouquets();
 			
-	eventServer->sendEvent(NeutrinoMessages::EVT_SERVICESCHANGED);
+	g_RCInput->postMsg(NeutrinoMessages::EVT_SERVICESCHANGED);
 	
 	if(g_list_changed) 
 	{
@@ -4632,7 +4634,7 @@ void CZapit::removeChannelFromBouquet(const unsigned int bouquet, const t_channe
 		g_list_changed = 1;
 	}
 	
-	eventServer->sendEvent(NeutrinoMessages::EVT_SERVICESCHANGED);
+	g_RCInput->postMsg(NeutrinoMessages::EVT_SERVICESCHANGED);
 }
 
 //// scanManager
@@ -4652,7 +4654,7 @@ bool CZapit::tuneFrequency(FrontendParameters *feparams, t_satellite_position sa
 		{
 			dprintf(DEBUG_INFO, "CZapit::tuneFrequency: waiting %d seconds for motor to turn satellite dish.\n", ret);
 			
-			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_PROVIDER, (void *) "moving rotor", 13);
+			g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_PROVIDER, (const neutrino_msg_data_t)"moving_rotor", false);
 		
 			for(int i = 0; i < ret; i++) 
 			{
@@ -4789,10 +4791,10 @@ _repeat:
 
 		processed_transponders++;
 		
-		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, &processed_transponders, sizeof(processed_transponders));
-		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_PROVIDER, (void *) " ", 2);
-		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SERVICENAME, (void *) " ", 2);
-		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCY, &actual_freq, sizeof(actual_freq));
+		g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, (const neutrino_msg_data_t)processed_transponders, false);
+		g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_PROVIDER, (const neutrino_msg_data_t)" ", false);
+		g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_SERVICENAME, (const neutrino_msg_data_t)" ", false);
+		g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCY, (const neutrino_msg_data_t)actual_freq, false);
 
 		// by sat send pol to neutrino
 #if HAVE_DVB_API_VERSION >= 5
@@ -4803,7 +4805,7 @@ _repeat:
 		{
 			actual_polarisation = ((tI->second.feparams.symbol_rate/1000) << 16) | (tI->second.feparams.fec_inner << 8) | (uint)tI->second.feparams.polarization;
 
-			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCYP, &actual_polarisation, sizeof(actual_polarisation));
+			g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCYP, (const neutrino_msg_data_t)actual_polarisation, false);
 		}
 		
 		// tune TP
@@ -4893,7 +4895,7 @@ _repeat:
 		
 		if(scantransponders.size()) 
 		{
-			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS, &found_transponders, sizeof(found_transponders));
+			g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS, (const neutrino_msg_data_t)found_transponders, false);
 
 			goto _repeat;
 		}
@@ -5058,8 +5060,8 @@ bool CZapit::scanProvider(xmlNodePtr search, t_satellite_position satellitePosit
 		return false;
 	}
 
-	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, &processed_transponders, sizeof(processed_transponders));
-	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SATELLITE, sit->second.name.c_str(), sit->second.name.size() + 1);
+	g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, (const neutrino_msg_data_t)processed_transponders, false);
+	g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_SATELLITE, (const neutrino_msg_data_t)sit->second.name.c_str(), false);
 	
 	tps = search->xmlChildrenNode;
 
@@ -5075,7 +5077,7 @@ bool CZapit::scanProvider(xmlNodePtr search, t_satellite_position satellitePosit
 		tps = tps->xmlNextNode;
 	}
 	
-	eventServer->sendEvent( NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS, &found_transponders, sizeof(found_transponders));
+	g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS, (const neutrino_msg_data_t)found_transponders, false);
 
 	// start scanning
 	getSDTS(satellitePosition, fe);
@@ -5170,7 +5172,7 @@ bool CZapit::scanTP(commandScanTP &msg)
 		dprintf(DEBUG_INFO, "CZapit::scanTP: pthread_create\n");
 		scan_runs = 0;
 		
-		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FAILED);
+		g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_FAILED);
 		
 		ret = false;
 	} 
@@ -5223,7 +5225,7 @@ bool CZapit::startScan(commandScanProvider &msg)
 		dprintf(DEBUG_INFO, "CZapit::startScan: pthread_create failed\n");
 		scan_runs = 0;
 		
-		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FAILED);
+		g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_FAILED);
 		
 		ret = false;
 	}
@@ -5419,17 +5421,19 @@ void * CZapit::scanThread(void * data)
 		
 		// notify client about end of scan
 		scan_runs = 0;
-		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_COMPLETE);
+
+		g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_COMPLETE);
 		
 		scanBouquets.clear();
 		
-		eventServer->sendEvent(NeutrinoMessages::EVT_BOUQUETSCHANGED);
+		g_RCInput->postMsg(NeutrinoMessages::EVT_BOUQUETSCHANGED);
 	} 
 	else 
 	{
 		// notify client about end of scan
 		scan_runs = 0;
-		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FAILED);
+
+		g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_FAILED);
 		
 		scanBouquets.clear();
 	}
@@ -5476,7 +5480,7 @@ void * CZapit::scanTransponderThread(void * data)
 	
 	dprintf(DEBUG_NORMAL, "CZapit::scanTransponderThread: (fe:%d:%d delsys:0x%x) scanning sat: %s position: %d fe(%d)\n", fe->feadapter, fe->fenumber, fe->getForcedDelSys(), providerName, satellitePosition);
 	
-	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SATELLITE, providerName, strlen(providerName) + 1);
+	g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_SATELLITE, (const neutrino_msg_data_t)providerName, false);
 
 	//
 	freq_id_t freq;
@@ -5525,17 +5529,19 @@ void * CZapit::scanTransponderThread(void * data)
 		
 		// notify client about end of scan
 		scan_runs = 0;
-		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_COMPLETE);
+
+		g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_COMPLETE);
 		
 		scanBouquets.clear();
 		
-		eventServer->sendEvent(NeutrinoMessages::EVT_BOUQUETSCHANGED);
+		g_RCInput->postMsg(NeutrinoMessages::EVT_BOUQUETSCHANGED);
 	} 
 	else 
 	{
 		// notify client about end of scan
 		scan_runs = 0;
-		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FAILED);
+
+		g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_FAILED);
 		
 		scanBouquets.clear();
 	}

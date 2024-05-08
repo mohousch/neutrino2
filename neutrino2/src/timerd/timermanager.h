@@ -35,7 +35,6 @@
 #include <configfile.h>
 #include <config.h>
 
-#include <eventserver.h>
 #include <timerd/timerdtypes.h>
 #include <timerd/timerd.h>
 

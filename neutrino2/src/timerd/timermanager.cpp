@@ -43,7 +43,6 @@
 #include <driver/rcinput.h>
 
 #include <neutrinoMessages.h>
-#include <libeventserver/eventserver.h>
 
 
 //// globals
@@ -1075,14 +1074,14 @@ void CTimerEvent_Shutdown::announceEvent()
 {
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Shutdown::announceEvent\n");
 	
-	eventServer->sendEvent(NeutrinoMessages::ANNOUNCE_SHUTDOWN);
+	g_RCInput->postMsg(NeutrinoMessages::ANNOUNCE_SHUTDOWN);
 }
 
 void CTimerEvent_Shutdown::fireEvent()
 {
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Shutdown::fireEvent: Shutdown Timer fired\n");
-	//event in neutrinos remoteq. schreiben
-	eventServer->sendEvent(NeutrinoMessages::SHUTDOWN);
+
+	g_RCInput->postMsg(NeutrinoMessages::SHUTDOWN);
 }
 
 // event sleeptimer
@@ -1090,14 +1089,14 @@ void CTimerEvent_Sleeptimer::announceEvent()
 {
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Sleeptimer::announceEvent\n");
 	
-	eventServer->sendEvent(NeutrinoMessages::ANNOUNCE_SLEEPTIMER);
+	g_RCInput->postMsg(NeutrinoMessages::ANNOUNCE_SLEEPTIMER);
 }
 
 void CTimerEvent_Sleeptimer::fireEvent()
 {
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Sleeptimer::fireEven: Sleeptimer Timer fired\n");
-	//event in neutrinos remoteq. schreiben
-	eventServer->sendEvent(NeutrinoMessages::SLEEPTIMER);
+
+	g_RCInput->postMsg(NeutrinoMessages::SLEEPTIMER);
 }
 
 // event standby
@@ -1125,7 +1124,7 @@ void CTimerEvent_Standby::fireEvent()
 {
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Standby::fireEvent Standby Timer fired: %s\n",standby_on?"on":"off");
 	
-	eventServer->sendEvent((standby_on)? NeutrinoMessages::STANDBY_ON : NeutrinoMessages::STANDBY_OFF);
+	g_RCInput->postMsg((standby_on)? NeutrinoMessages::STANDBY_ON : NeutrinoMessages::STANDBY_OFF);
 }
 
 void CTimerEvent_Standby::saveToConfig(CConfigFile *config)
@@ -1139,7 +1138,7 @@ void CTimerEvent_Standby::saveToConfig(CConfigFile *config)
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Standby::saveToConfig: set STANDBY_ON_%s to %d\n",id.c_str(),standby_on);
 }
 
-// event record
+//// event record
 CTimerEvent_Record::CTimerEvent_Record(time_t lannounceTime, time_t lalarmTime, time_t lstopTime, 
 				       t_channel_id channel_id,
 				       event_id_t epgID, 
@@ -1154,7 +1153,7 @@ CTimerEvent_Record::CTimerEvent_Record(time_t lannounceTime, time_t lalarmTime, 
 	eventInfo.apids = apids;
 	recordingDir = recDir;
 	
-	epgTitle="";
+	epgTitle = "";
 	CShortEPGData epgdata;
 	if (CSectionsd::getInstance()->getEPGidShort(epgID, &epgdata))
 		epgTitle = epgdata.title; 
@@ -1194,8 +1193,10 @@ void CTimerEvent_Record::fireEvent()
 	CTimerd::RecordingInfo ri = eventInfo;
 	ri.eventID = eventID;
 	strcpy(ri.recordingDir, recordingDir.substr(0, sizeof(ri.recordingDir)-1).c_str());						
-	strcpy(ri.epgTitle, epgTitle.substr(0, sizeof(ri.epgTitle)-1).c_str());						
-	eventServer->sendEvent(NeutrinoMessages::RECORD_START, &ri, sizeof(CTimerd::RecordingInfo));
+	strcpy(ri.epgTitle, epgTitle.substr(0, sizeof(ri.epgTitle)-1).c_str());	
+						
+	g_RCInput->postMsg(NeutrinoMessages::RECORD_START, (const neutrino_msg_data_t)&ri, false);
+
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Record::fireEvent: Record Timer fired\n"); 
 }
 
@@ -1207,8 +1208,10 @@ void CTimerEvent_Record::announceEvent()
 	CTimerd::RecordingInfo ri = eventInfo;
 	ri.eventID = eventID;
 	strcpy(ri.recordingDir, recordingDir.substr(0, sizeof(ri.recordingDir)-1).c_str());						
-	strcpy(ri.epgTitle, epgTitle.substr(0, sizeof(ri.epgTitle)-1).c_str());						
-	eventServer->sendEvent(NeutrinoMessages::ANNOUNCE_RECORD, &ri,sizeof(CTimerd::RecordingInfo));
+	strcpy(ri.epgTitle, epgTitle.substr(0, sizeof(ri.epgTitle)-1).c_str());	
+						
+	g_RCInput->postMsg(NeutrinoMessages::ANNOUNCE_RECORD, (const neutrino_msg_data_t)&ri, false);
+	
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Record::announceEvent: Record announcement\n"); 
 }
 
@@ -1220,7 +1223,8 @@ void CTimerEvent_Record::stopEvent()
 	
 	// Set EPG-ID if not set
 	stopinfo.eventID = eventID;
-	eventServer->sendEvent(NeutrinoMessages::RECORD_STOP, &stopinfo, sizeof(CTimerd::RecordingStopInfo));
+	
+	g_RCInput->postMsg(NeutrinoMessages::RECORD_STOP, (const neutrino_msg_data_t)&stopinfo, false);
 								  
 	// Programmiere shutdown timer, wenn in wakeup state und kein record/zapto timer in 10 min
 	CTimerManager::getInstance()->shutdownOnWakeup(eventID);
@@ -1301,12 +1305,12 @@ void CTimerEvent_Record::Refresh()
 // event zapto
 void CTimerEvent_Zapto::announceEvent()
 {
-	eventServer->sendEvent(NeutrinoMessages::ANNOUNCE_ZAPTO);
+	g_RCInput->postMsg(NeutrinoMessages::ANNOUNCE_ZAPTO);
 }
 
 void CTimerEvent_Zapto::fireEvent()
 {
-	eventServer->sendEvent(NeutrinoMessages::ZAPTO, &eventInfo, sizeof(CTimerd::EventInfo));
+	g_RCInput->postMsg(NeutrinoMessages::ZAPTO, (const neutrino_msg_data_t)&eventInfo, false);
 }
 
 void CTimerEvent_Zapto::getEpgId()
@@ -1362,12 +1366,12 @@ CTimerEvent(CTimerd::TIMER_NEXTPROGRAM, config, iId)
 
 void CTimerEvent_NextProgram::announceEvent()
 {
-	eventServer->sendEvent(NeutrinoMessages::EVT_NEXTPROGRAM, &eventInfo, sizeof(eventInfo));
+	g_RCInput->postMsg(NeutrinoMessages::EVT_NEXTPROGRAM, (const neutrino_msg_data_t)&eventInfo, false);
 }
 
 void CTimerEvent_NextProgram::fireEvent()
 {
-	eventServer->sendEvent(NeutrinoMessages::EVT_NEXTPROGRAM, &eventInfo, sizeof(eventInfo));
+	g_RCInput->postMsg(NeutrinoMessages::EVT_NEXTPROGRAM, (const neutrino_msg_data_t)&eventInfo, false);
 }
 
 void CTimerEvent_NextProgram::saveToConfig(CConfigFile *config)
@@ -1424,7 +1428,7 @@ void CTimerEvent_Remind::fireEvent()
 {
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Remind::fireEvent\n");
 	
-	eventServer->sendEvent(NeutrinoMessages::REMIND, (void *)message, REMINDER_MESSAGE_MAXLEN);
+	g_RCInput->postMsg(NeutrinoMessages::REMIND, (const neutrino_msg_data_t)message, false);
 }
 
 void CTimerEvent_Remind::saveToConfig(CConfigFile *config)
@@ -1465,7 +1469,7 @@ void CTimerEvent_ExecPlugin::fireEvent()
 {
 	dprintf(DEBUG_NORMAL, "CTimerEvent_ExecPlugin::fireEvent\n");
 	
-	eventServer->sendEvent(NeutrinoMessages::EVT_START_PLUGIN, name, EXEC_PLUGIN_NAME_MAXLEN);
+	g_RCInput->postMsg(NeutrinoMessages::EVT_START_PLUGIN, (const neutrino_msg_data_t)name, false);
 }
 
 void CTimerEvent_ExecPlugin::saveToConfig(CConfigFile *config)

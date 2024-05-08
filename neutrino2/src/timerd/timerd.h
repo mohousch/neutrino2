@@ -33,7 +33,6 @@
 #include <configfile.h>
 #include <config.h>
 
-#include <libeventserver/eventserver.h>
 #include <timerd/timerdtypes.h>
 
 
