@@ -33,6 +33,7 @@
 #define TRACKWRAP 4
 
 //#define VIDEO_MGR_DEBUG
+#define VIDEO_MGR_SILENT
 
 #ifdef VIDEO_MGR_DEBUG
 

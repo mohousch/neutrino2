@@ -34,6 +34,7 @@
 /* ***************************** */
 
 //#define WRITER_DEBUG
+#define WRITER_SILENT
 
 #ifdef WRITER_DEBUG
 

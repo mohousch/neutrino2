@@ -53,6 +53,7 @@
 /* ***************************** */
 
 //#define H265_DEBUG
+#define H265_SILENT
 
 #ifdef H265_DEBUG
 

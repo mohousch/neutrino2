@@ -50,6 +50,7 @@
 
 
 //#define MP3_DEBUG
+#define MP3_SILENT
 
 #ifdef MP3_DEBUG
 

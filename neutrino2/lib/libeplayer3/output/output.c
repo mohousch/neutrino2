@@ -32,6 +32,7 @@
 /* ***************************** */
 
 //#define OUTPUT_DEBUG
+#define OUTPUT_SILENT
 
 #ifdef OUTPUT_DEBUG
 

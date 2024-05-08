@@ -49,6 +49,7 @@
 /* ***************************** */
 
 //#define VC1_DEBUG
+#define VC1_SILENT
 
 #ifdef VC1_DEBUG
 

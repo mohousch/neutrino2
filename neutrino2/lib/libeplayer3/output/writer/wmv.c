@@ -49,6 +49,7 @@
 /* ***************************** */
 
 //#define WMV_DEBUG
+#define WMV_SILENT
 
 #ifdef WMV_DEBUG
 

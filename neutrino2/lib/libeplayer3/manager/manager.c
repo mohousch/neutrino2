@@ -30,6 +30,7 @@
 /* ***************************** */
 
 //#define MANAGER_DEBUG
+#define MANAGER_SILENT
 
 #ifdef MANAGER_DEBUG
 

@@ -50,6 +50,7 @@
 /* ***************************** */
 
 //#define MPEG2_DEBUG
+#define MPEG2_SILENT
 
 #ifdef MPEG2_DEBUG
 

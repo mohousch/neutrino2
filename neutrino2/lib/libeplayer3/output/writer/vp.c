@@ -50,6 +50,7 @@
 /* ***************************** */
 
 //#define VP_DEBUG
+#define VP_SILENT
 
 #ifdef VP_DEBUG
 

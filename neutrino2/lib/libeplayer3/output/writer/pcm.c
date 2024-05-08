@@ -53,6 +53,7 @@
 
 
 //#define PCM_DEBUG
+#define PCM_SILENT
 
 #ifdef PCM_DEBUG
 

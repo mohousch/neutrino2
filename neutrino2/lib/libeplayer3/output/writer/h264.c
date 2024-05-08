@@ -52,6 +52,7 @@
 
 
 //#define H264_DEBUG
+#define H264_SILENT
 
 #ifdef H264_DEBUG
 

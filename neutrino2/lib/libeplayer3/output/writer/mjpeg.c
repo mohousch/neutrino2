@@ -50,6 +50,7 @@
 /* ***************************** */
 
 //#define MJPEG_DEBUG
+#define MJPEG_SILENT
 
 #ifdef MJPEG_DEBUG
 

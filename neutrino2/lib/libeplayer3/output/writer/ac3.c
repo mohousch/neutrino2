@@ -50,6 +50,7 @@
 /* ***************************** */
 
 //#define AC3_DEBUG
+#define AC3_SILENT
 
 #ifdef AC3_DEBUG
 

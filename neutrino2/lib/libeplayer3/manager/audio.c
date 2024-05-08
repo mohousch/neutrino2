@@ -33,6 +33,7 @@
 #define TRACKWRAP 20
 
 //#define AUDIO_MGR_DEBUG
+#define AUDIO_MGR_SILENT
 
 #ifdef AUDIO_MGR_DEBUG
 

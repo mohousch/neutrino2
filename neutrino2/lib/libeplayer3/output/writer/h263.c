@@ -50,6 +50,7 @@
 
 
 //#define H263_DEBUG
+#define H263_SILENT
 
 #ifdef H263_DEBUG
 

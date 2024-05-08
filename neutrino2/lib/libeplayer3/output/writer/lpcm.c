@@ -55,6 +55,7 @@
 /* ***************************** */
 
 //#define LPCM_DEBUG
+#define LPCM_SILENT
 
 #ifdef LPCM_DEBUG
 

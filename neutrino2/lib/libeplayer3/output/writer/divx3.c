@@ -50,6 +50,7 @@
 /* ***************************** */
 
 //#define DIVX3_DEBUG
+#define DIVX3_SILENT
 
 #ifdef DIVX3_DEBUG
 

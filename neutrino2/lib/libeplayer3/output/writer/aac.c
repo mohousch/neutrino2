@@ -49,6 +49,7 @@
 /* Makros/Constants              */
 /* ***************************** */
 //#define AAC_DEBUG
+#define AAC_SILENT
 
 #ifdef AAC_DEBUG
 

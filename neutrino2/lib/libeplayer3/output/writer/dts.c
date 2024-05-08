@@ -49,6 +49,7 @@
 /* ***************************** */
 
 //#define DTS_DEBUG
+#define DTS_SILENT
 
 #ifdef DTS_DEBUG
 

@@ -50,6 +50,7 @@
 /* ***************************** */
 
 //#define WMA_DEBUG
+#define WMA_SILENT
 
 #ifdef WMA_DEBUG
 

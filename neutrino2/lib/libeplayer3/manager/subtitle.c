@@ -33,6 +33,7 @@
 #define TRACKWRAP 20
 
 //#define SUBTITLE_MGR_DEBUG
+#define SUBTITLE_MGR_SILENT
 
 #ifdef SUBTITLE_MGR_DEBUG
 

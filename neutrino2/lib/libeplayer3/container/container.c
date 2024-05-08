@@ -24,6 +24,7 @@
 #include "common.h"
 
 //#define CONTAINER_DEBUG
+#define CONTAINER_SILENT
 
 #ifdef CONTAINER_DEBUG
 

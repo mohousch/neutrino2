@@ -5579,17 +5579,6 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}
-	/*
-	else if(actionKey == "lsetup")
-	{
-		if (rightWidget)
-			rightWidget->changeWidgetType();
-		else if (menuWidget)
-			menuWidget->changeWidgetType();
-
-		return RETURN_NONE;
-	}
-	*/
 	else if(actionKey == "exit")
 	{
 		return RETURN_EXIT_ALL;

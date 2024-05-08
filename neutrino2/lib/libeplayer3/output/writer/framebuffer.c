@@ -54,6 +54,7 @@
 /* ***************************** */
 
 //#define FB_DEBUG
+#define FB_SILENT
 
 #ifdef FB_DEBUG
 
