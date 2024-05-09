@@ -1957,7 +1957,7 @@ void CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 	{
 		CTimerd::getInstance()->stopTimerEvent(recording_id);
 			
-//		startNextRecording();
+		startNextRecording();
 	}
 		
 	if (recordingstatus) 
@@ -1967,7 +1967,7 @@ void CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 // startNextRecording
 void CNeutrinoApp::startNextRecording()
 {
-	dprintf(DEBUG_NORMAL, "startNextRecording\n");
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::startNextRecording\n");
 	
 	if ( nextRecordingInfo != NULL ) 
 	{
@@ -3618,11 +3618,14 @@ _repeat:
 
 //		if (nextRecordingInfo != NULL)
 //			delete[] (unsigned char *) nextRecordingInfo;
+////
+		CTimerd::EventInfo * eventinfo;
+		eventinfo = (CTimerd::EventInfo *) data;
 
-		CTimerd::RecordingInfo *recordingInfo;
-		recordingInfo = (CTimerd::RecordingInfo *) data;
+
+		nextRecordingInfo = (CTimerd::RecordingInfo *) eventinfo;
 		
-		startNextRecording(recordingInfo);
+		startNextRecording();
 
 		return messages_return::handled | messages_return::cancel_all;
 	}
@@ -3640,7 +3643,7 @@ _repeat:
 				timeshiftstatus = 0;
 			}
 
-//			startNextRecording();
+			startNextRecording();
 
 			if ( recordingstatus == 0 ) 
 			{
@@ -4627,7 +4630,7 @@ void CNeutrinoApp::realRun(void)
 					{
 						CVCRControl::getInstance()->Stop();
 						recordingstatus = 0;
-//						startNextRecording();
+						startNextRecording();
 					}
 
 					// Scart-Mode verlassen

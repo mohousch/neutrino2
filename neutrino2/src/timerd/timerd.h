@@ -80,41 +80,11 @@ class CTimerd
 			t_channel_id  channel_id;
 			unsigned char apids;
 			bool          recordingSafety;
+//			int eventID;
+//			char recordingDir[RECORD_DIR_MAXLEN];
+//			char epgTitle[EPG_TITLE_MAXLEN];
 		};
 
-		/*
-		class RecordingInfo : public EventInfo
-		{
-			public:
-				RecordingInfo(){};
-				
-				RecordingInfo(EventInfo& e)
-				{
-					apids = e.apids;
-					channel_id = e.channel_id;
-					epgID = e.epgID;
-					epg_starttime = e.epg_starttime;
-					recordingSafety = e.recordingSafety;
-				};
-				
-				RecordingInfo& operator = (EventInfo& e)
-				{
-					apids = e.apids;
-					channel_id = e.channel_id;
-					epgID = e.epgID;
-					epg_starttime = e.epg_starttime;
-					recordingSafety = e.recordingSafety;
-					return *this;
-				}
-				
-				unsigned char apids;
-				int eventID;
-				char recordingDir[RECORD_DIR_MAXLEN];
-				char epgTitle[EPG_TITLE_MAXLEN];
-		};
-		*/
-
-		////
 		struct RecordingInfo
 		{
 			event_id_t    epgID;
@@ -122,6 +92,7 @@ class CTimerd
 			t_channel_id  channel_id;
 			bool          recordingSafety;
 			unsigned char apids;
+			////
 			int eventID;
 			char recordingDir[RECORD_DIR_MAXLEN];
 			char epgTitle[EPG_TITLE_MAXLEN];

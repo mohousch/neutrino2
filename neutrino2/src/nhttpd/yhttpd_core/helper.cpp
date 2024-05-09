@@ -15,26 +15,24 @@
 #include "helper.h"
 #include "ylogging.h"
 
-//=============================================================================
-// Integers
-//=============================================================================
-//-------------------------------------------------------------------------
+
+//
 // Check and set integer inside boundaries (min, max)
-//-------------------------------------------------------------------------
-int minmax(int value, int min, int max) {
+//
+int minmax(int value, int min, int max) 
+{
 	if (value < min)
 		return min;
 	if (value > max)
 		return max;
 	return value;
 }
-//=============================================================================
-// Date & Time
-//=============================================================================
-//-------------------------------------------------------------------------
+
+//
 // Check and set Date/Time (tm*) inside boundaries
-//-------------------------------------------------------------------------
-void correctTime(struct tm *zt) {
+//
+void correctTime(struct tm *zt) 
+{
 
 	zt->tm_year = minmax(zt->tm_year, 0, 129);
 	zt->tm_mon = minmax(zt->tm_mon, 0, 11);
@@ -43,25 +41,28 @@ void correctTime(struct tm *zt) {
 	zt->tm_min = minmax(zt->tm_min, 0, 59);
 	zt->tm_sec = minmax(zt->tm_sec, 0, 59);
 }
-//=============================================================================
-// Strings
-//=============================================================================
-//-------------------------------------------------------------------------
+
+//
 // Integer to Hexadecimal-String
-//-------------------------------------------------------------------------
-std::string itoh(unsigned int conv) {
+//
+std::string itoh(unsigned int conv) 
+{
 	return string_printf("0x%06x", conv);
 }
-//-------------------------------------------------------------------------
+
+//
 // Integer to String
-//-------------------------------------------------------------------------
-std::string itoa(unsigned int conv) {
+//
+std::string itoa(unsigned int conv) 
+{
 	return string_printf("%u", conv);
 }
-//-------------------------------------------------------------------------
+
+//
 // convert timer_t to "<hour>:<minutes>" String
-//-------------------------------------------------------------------------
-std::string timeString(time_t time) {
+//
+std::string timeString(time_t time) 
+{
 	char tmp[7] = { '\0' };
 	struct tm *tm = localtime(&time);
 	if (strftime(tmp, 6, "%H:%M", tm))
@@ -69,72 +70,92 @@ std::string timeString(time_t time) {
 	else
 		return std::string("??:??");
 }
-//-------------------------------------------------------------------------
+
+//
 // Printf and return formatet String. Buffer-save!
 // max length up to bufferlen -> then snip
-//-------------------------------------------------------------------------
+//
 #define bufferlen 4*1024
-std::string string_printf(const char *fmt, ...) {
+std::string string_printf(const char *fmt, ...) 
+{
 	char buffer[bufferlen];
 	va_list arglist;
 	va_start(arglist, fmt);
 	vsnprintf(buffer, bufferlen, fmt, arglist);
 	va_end(arglist);
+	
 	return std::string(buffer);
 }
-//-------------------------------------------------------------------------
+
+//
 // ySplitString: spit string "str" in two strings "left" and "right" at
 //	one of the chars in "delimiter" returns true if delimiter found
-//-------------------------------------------------------------------------
-bool ySplitString(std::string str, std::string delimiter, std::string& left,
-		std::string& right) {
+//
+bool ySplitString(std::string str, std::string delimiter, std::string& left, std::string& right) 
+{
 	std::string::size_type pos;
-	if ((pos = str.find_first_of(delimiter)) != std::string::npos) {
+	if ((pos = str.find_first_of(delimiter)) != std::string::npos) 
+	{
 		left = str.substr(0, pos);
 		right = str.substr(pos + 1, str.length() - (pos + 1));
-	} else {
+	} 
+	else 
+	{
 		left = str; //default if not found
 		right = "";
 	}
+	
 	return (pos != std::string::npos);
 }
-//-------------------------------------------------------------------------
+
+//
 // ySplitString: spit string "str" in two strings "left" and "right" at
 //	one of the chars in "delimiter" returns true if delimiter found
-//-------------------------------------------------------------------------
-bool ySplitStringExact(std::string str, std::string delimiter,
-		std::string& left, std::string& right) {
+//
+bool ySplitStringExact(std::string str, std::string delimiter, std::string& left, std::string& right) 
+{
 	std::string::size_type pos;
-	if ((pos = str.find(delimiter)) != std::string::npos) {
+	if ((pos = str.find(delimiter)) != std::string::npos) 
+	{
 		left = str.substr(0, pos);
 		right = str.substr(pos + delimiter.length(), str.length() - (pos
 				+ delimiter.length()));
-	} else {
+	} 
+	else 
+	{
 		left = str; //default if not found
 		right = "";
 	}
+	
 	return (pos != std::string::npos);
 }
-//-------------------------------------------------------------------------
+
+//
 // ySplitStringRight: spit string "str" in two strings "left" and "right" at
 //	one of the chars in "delimiter" returns true if delimiter found
-//-------------------------------------------------------------------------
-bool ySplitStringLast(std::string str, std::string delimiter,
-		std::string& left, std::string& right) {
+//
+bool ySplitStringLast(std::string str, std::string delimiter, std::string& left, std::string& right) 
+{
 	std::string::size_type pos;
-	if ((pos = str.find_last_of(delimiter)) != std::string::npos) {
+	if ((pos = str.find_last_of(delimiter)) != std::string::npos) 
+	{
 		left = str.substr(0, pos);
 		right = str.substr(pos + 1, str.length() - (pos + 1));
-	} else {
+	} 
+	else 
+	{
 		left = str; //default if not found
 		right = "";
 	}
+	
 	return (pos != std::string::npos);
 }
-//-------------------------------------------------------------------------
+
+//
 // ySplitStringVector: spit string "str" and build vector of strings
-//-------------------------------------------------------------------------
-CStringArray ySplitStringVector(std::string str, std::string delimiter) {
+//
+CStringArray ySplitStringVector(std::string str, std::string delimiter) 
+{
 	std::string left, right, rest;
 	bool found;
 	CStringArray split;
@@ -144,12 +165,15 @@ CStringArray ySplitStringVector(std::string str, std::string delimiter) {
 		split.push_back(left);
 		rest = right;
 	} while (found);
+	
 	return split;
 }
-//-------------------------------------------------------------------------
+
+//
 // trim whitespaces
-//-------------------------------------------------------------------------
-std::string trim(std::string const& source, char const* delims) {
+//
+std::string trim(std::string const& source, char const* delims) 
+{
 	std::string result(source);
 	std::string::size_type index = result.find_last_not_of(delims);
 	if (index != std::string::npos)
@@ -162,28 +186,35 @@ std::string trim(std::string const& source, char const* delims) {
 		result.erase();
 	return result;
 }
-//-------------------------------------------------------------------------
+
+//
 // replace all occurrences find_what
-//-------------------------------------------------------------------------
-void replace(std::string &str, const std::string &find_what,
-		const std::string &replace_with) {
+//
+void replace(std::string &str, const std::string &find_what, const std::string &replace_with) 
+{
 	std::string::size_type pos = 0;
-	while ((pos = str.find(find_what, pos)) != std::string::npos) {
+	
+	while ((pos = str.find(find_what, pos)) != std::string::npos) 
+	{
 		str.erase(pos, find_what.length());
 		str.insert(pos, replace_with);
 		pos += replace_with.length();
 	}
 }
-//-------------------------------------------------------------------------
+
+//
 // equal-function for case insensitive compare
-//-------------------------------------------------------------------------
-bool nocase_compare(char c1, char c2) {
+//
+bool nocase_compare(char c1, char c2) 
+{
 	return toupper(c1) == toupper(c2);
 }
-//-----------------------------------------------------------------------------
+
+//
 // Decode URLEncoded std::string
-//-----------------------------------------------------------------------------
-std::string decodeString(std::string encodedString) {
+//
+std::string decodeString(std::string encodedString) 
+{
 	const char *string = encodedString.c_str();
 	unsigned int count = 0;
 	char hex[3] = { '\0' };
@@ -193,32 +224,41 @@ std::string decodeString(std::string encodedString) {
 
 	while (count < encodedString.length()) /* use the null character as a loop terminator */
 	{
-		if (string[count] == '%' && count + 2 < encodedString.length()) {
+		if (string[count] == '%' && count + 2 < encodedString.length()) 
+		{
 			hex[0] = string[count + 1];
 			hex[1] = string[count + 2];
 			hex[2] = '\0';
 			iStr = strtoul(hex, NULL, 16); /* convert to Hex char */
 			result += (char) iStr;
 			count += 3;
-		} else if (string[count] == '+') {
+		} 
+		else if (string[count] == '+') 
+		{
 			result += ' ';
 			count++;
-		} else {
+		} 
+		else 
+		{
 			result += string[count];
 			count++;
 		}
 	} /* end of while loop */
+	
 	return result;
 }
-//-----------------------------------------------------------------------------
+
+//
 // Encode URLEncoded std::string
-//-----------------------------------------------------------------------------
-std::string encodeString(std::string decodedString) {
+//
+std::string encodeString(std::string decodedString) 
+{
 	unsigned int len = sizeof(char) * decodedString.length() * 5 + 1;
 	std::string result(len, '\0');
 	char *newString = (char *) result.c_str();
 	char *dstring = (char *) decodedString.c_str();
 	char one_char;
+	
 	if (len == result.length()) // got memory needed
 	{
 		while ((one_char = *dstring++)) /* use the null character as a loop terminator */
@@ -232,32 +272,41 @@ std::string encodeString(std::string decodedString) {
 
 		*newString = '\0'; /* when done copying the string,need to terminate w/ null char */
 		result.resize((unsigned int) (newString - result.c_str()), '\0');
+		
 		return result;
-	} else {
+	} 
+	else 
+	{
 		return "";
 	}
 }
 
-//-----------------------------------------------------------------------------
+//
 // returns string in lower case
-//-----------------------------------------------------------------------------
-std::string string_tolower(std::string str) {
+//
+std::string string_tolower(std::string str) 
+{
 	for (unsigned int i = 0; i < str.length(); i++)
 		str[i] = tolower(str[i]);
 	return str;
 }
 
-//-----------------------------------------------------------------------------
+//
 // write string to a file
-//-----------------------------------------------------------------------------
-bool write_to_file(std::string filename, std::string content) {
+//
+bool write_to_file(std::string filename, std::string content) 
+{
 	FILE *fd = NULL;
+	
 	if ((fd = fopen(filename.c_str(), "w")) != NULL) // open file
 	{
 		fwrite(content.c_str(), content.length(), 1, fd);
 		fflush(fd); // flush and close file
 		fclose(fd);
+		
 		return true;
-	} else
+	} 
+	else
 		return false;
 }
+

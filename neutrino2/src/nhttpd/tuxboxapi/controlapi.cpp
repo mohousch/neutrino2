@@ -535,6 +535,7 @@ void CControlAPI::GetChannel_IDCGI(CyhookHandler *hh)
 void CControlAPI::MessageCGI(CyhookHandler *hh)
 {
 	std::string message;
+	std::string msgText;
 	unsigned long event = 0;
 
 	if (!(hh->ParamList["popup"].empty()))
@@ -555,9 +556,9 @@ void CControlAPI::MessageCGI(CyhookHandler *hh)
 
 	if (event != 0)
 	{
-		message = decodeString(message);
+		msgText = decodeString(message);
 
-		g_RCInput->postMsg(event, (const neutrino_msg_data_t)message.c_str(), false);
+		g_RCInput->postMsg(event, (const neutrino_msg_data_t)msgText.c_str(), false);
 		
 		hh->SendOk();
 	}

@@ -395,12 +395,14 @@ int CTimerManager::modifyEvent(int leventID, time_t announceTime, time_t alarmTi
 			case CTimerd::TIMER_EXEC_PLUGIN:
 			case CTimerd::TIMER_IMMEDIATE_RECORD:
 				break;
+				
 			case CTimerd::TIMER_RECORD:
 			{
 				(static_cast<CTimerEvent_Record*>(event))->recordingDir = data.recordingDir;
 				(static_cast<CTimerEvent_Record*>(event))->getEpgId(); 
 				break;
 			}
+			
 			default:
 				break;
 		}
@@ -453,12 +455,16 @@ int CTimerManager::rescheduleEvent(int leventID, time_t announceTime, time_t ala
 	if(events.find(leventID) != events.end())
 	{
 		CTimerEvent *event = events[leventID];
+		
 		if(event->announceTime > 0)
 			event->announceTime += announceTime;
+			
 		if(event->alarmTime > 0)
 			event->alarmTime += alarmTime;
+			
 		if(event->stopTime > 0)
 			event->stopTime += stopTime;
+			
 		event->eventState = CTimerd::TIMERSTATE_SCHEDULED;
 		m_saveEvents = true;
 		res = leventID;
@@ -492,9 +498,9 @@ void CTimerManager::loadEventsFromConfig()
 		{
 			std::stringstream ostr;
 			ostr << savedIDs[i];
-			std::string id=ostr.str();
-			CTimerd::CTimerEventTypes type=(CTimerd::CTimerEventTypes)config.getInt32 ("EVENT_TYPE_"+id,0);
-			dprintf(DEBUG_INFO, "CTimerManager::loadEventsFromConfig: loading timer %d, id %s, EVENT_TYPE %d\n", i, id.c_str(), type);
+			std::string id = ostr.str();
+			CTimerd::CTimerEventTypes type = (CTimerd::CTimerEventTypes)config.getInt32 ("EVENT_TYPE_"+id,0);
+			
 			time_t now = time(NULL);
 			
 			switch(type)
@@ -519,7 +525,8 @@ void CTimerManager::loadEventsFromConfig()
 							delete event;
 						}
 						break;
-					}       
+					} 
+					      
 				case CTimerd::TIMER_NEXTPROGRAM :
 					{
 						CTimerEvent_NextProgram *event = new CTimerEvent_NextProgram(&config, savedIDs[i]);
@@ -539,10 +546,12 @@ void CTimerManager::loadEventsFromConfig()
 							delete event;
 						}
 						break;
-					}       
+					} 
+					      
 				case CTimerd::TIMER_ZAPTO :
 					{
 						CTimerEvent_Zapto *event = new CTimerEvent_Zapto(&config, savedIDs[i]);
+						
 						if((event->alarmTime >= now) || (event->stopTime > now))
 						{
 							addEvent(event, false);
@@ -559,7 +568,8 @@ void CTimerManager::loadEventsFromConfig()
 							delete event;
 						}
 						break;
-					}          
+					} 
+					         
 				case CTimerd::TIMER_STANDBY :
 					{
 						CTimerEvent_Standby *event = new CTimerEvent_Standby(&config, savedIDs[i]);
@@ -579,10 +589,12 @@ void CTimerManager::loadEventsFromConfig()
 							delete event;
 						}
 						break;
-					}           
+					}  
+					         
 				case CTimerd::TIMER_RECORD :
 					{
 						CTimerEvent_Record *event = new CTimerEvent_Record(&config, savedIDs[i]);
+						
 						if((event->alarmTime >= now) || (event->stopTime > now))
 						{
 							addEvent(event, false);
@@ -599,7 +611,8 @@ void CTimerManager::loadEventsFromConfig()
 							delete event;
 						}
 						break;
-					}          
+					} 
+					         
 				case CTimerd::TIMER_SLEEPTIMER :
 					{
 						CTimerEvent_Sleeptimer *event = new CTimerEvent_Sleeptimer(&config, savedIDs[i]);
@@ -620,9 +633,11 @@ void CTimerManager::loadEventsFromConfig()
 						}
 						break;
 					}
+					
 				case CTimerd::TIMER_REMIND :
 					{
 						CTimerEvent_Remind *event = new CTimerEvent_Remind(&config, savedIDs[i]);
+						
 						if((event->alarmTime >= now) || (event->stopTime > now))
 						{
 							addEvent(event, false);
@@ -640,6 +655,7 @@ void CTimerManager::loadEventsFromConfig()
 						}
 						break;
 					}
+					
 				case CTimerd::TIMER_EXEC_PLUGIN :
 					{
 						CTimerEvent_ExecPlugin *event = new CTimerEvent_ExecPlugin(&config, savedIDs[i]);
@@ -709,13 +725,9 @@ void CTimerManager::saveEventsToConfig()
 	}
 	
 	config.setInt32 ("EXTRA_TIME_START", m_extraTimeStart);
-	dprintf(DEBUG_INFO, "CTimerManager::saveEventsToConfig: setting EXTRA_TIME_START to %d\n", m_extraTimeStart);
 	config.setInt32 ("EXTRA_TIME_END", m_extraTimeEnd);
-	dprintf(DEBUG_INFO, "CTimerManager::saveEventsToConfig: setting EXTRA_TIME_END to %d\n", m_extraTimeEnd);
-	dprintf(DEBUG_INFO, "CTimerManager::saveEventsToConfig: now saving config to %s...\n", TIMERD_CONFIGFILE);
+
 	config.saveConfig(TIMERD_CONFIGFILE);
-	
-	dprintf(DEBUG_INFO, "CTimerManager::saveEventsToConfig: config saved!\n");
 	
 	m_saveEvents = false;			
 
@@ -729,19 +741,14 @@ bool CTimerManager::shutdown()
 	time_t nextAnnounceTime = 0;
 	bool status = false;
 	
-	dprintf(DEBUG_NORMAL, "CTimerManager::shutdown: stopping timermanager thread ...\n");
-	
 	pthread_cancel(thrTimer);
 	pthread_join(thrTimer, NULL);
-	
-	dprintf(DEBUG_NORMAL, "CTimerManager::shutdown: Timermanager thread terminated\n");
 
 	if(m_saveEvents)
 	{
 		dprintf(DEBUG_NORMAL, "CTimerManager::shutdown: shutdown: saving config\n");
 		
 		saveEventsToConfig();
-		dprintf(DEBUG_NORMAL, "CTimerManager::shutdown: shutdown: saved config\n");
 	}
 
 	if (pthread_mutex_trylock(&tm_eventsMutex) == EBUSY) 
@@ -886,9 +893,11 @@ CTimerEvent::CTimerEvent( CTimerd::CTimerEventTypes evtype, int mon, int day, in
 	struct tm *tmtime = localtime(&mtime);
 
 	if(mon > 0)
-		tmtime->tm_mon = mon -1;
+		tmtime->tm_mon = mon - 1;
+		
 	if(day > 0)
 		tmtime->tm_mday = day;
+		
 	tmtime->tm_hour = hour;
 	tmtime->tm_min = min;
 
@@ -903,22 +912,12 @@ CTimerEvent::CTimerEvent(CTimerd::CTimerEventTypes evtype, CConfigFile *config, 
 	ostr << iId;
 	std::string id = ostr.str();
 	
-	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: timer id: int %d string %s\n", iId, id.c_str());
+	time_t announcetime = config->getInt32("ANNOUNCE_TIME_" + id);
+	time_t alarmtime = config->getInt32("ALARM_TIME_" + id);
+	time_t stoptime = config->getInt32("STOP_TIME_" + id);
 	
-	time_t announcetime=config->getInt32("ANNOUNCE_TIME_" + id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read ANNOUNCE_TIME_%s %ld\n", id.c_str(), (long)announcetime);
-	
-	time_t alarmtime=config->getInt32("ALARM_TIME_" + id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read ALARM_TIME_%s %ld\n", id.c_str(), (long)alarmtime);
-	
-	time_t stoptime=config->getInt32("STOP_TIME_" + id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read STOP_TIME_%s %ld\n", id.c_str(), (long)stoptime);
-	
-	CTimerd::CTimerEventRepeat evrepeat=(CTimerd::CTimerEventRepeat)config->getInt32("EVENT_REPEAT_" + id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read EVENT_REPEAT_%s %d\n", id.c_str(), evrepeat);
-	
+	CTimerd::CTimerEventRepeat evrepeat = (CTimerd::CTimerEventRepeat)config->getInt32("EVENT_REPEAT_" + id);
 	uint32_t repeatcount = config->getInt32("REPEAT_COUNT_" + id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read REPEAT_COUNT_%s %d\n", id.c_str(), repeatcount);
 	
 	eventRepeat = evrepeat;
 	eventState = CTimerd::TIMERSTATE_SCHEDULED; 
@@ -928,11 +927,8 @@ CTimerEvent::CTimerEvent(CTimerd::CTimerEventTypes evtype, CConfigFile *config, 
 	stopTime = stoptime;
 	repeatCount = repeatcount;
 	eventState = (CTimerd::CTimerEventStates ) config->getInt32 ("EVENT_STATE_" + id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read EVENT_STATE_%s %d\n", id.c_str(), eventState);
-	
 
 	previousState = (CTimerd::CTimerEventStates) config->getInt32("PREVIOUS_STATE_" + id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read PREVIOUS_STATE_%s %d\n", id.c_str(), previousState);
 }
 
 void CTimerEvent::Reschedule()
@@ -995,10 +991,12 @@ void CTimerEvent::Reschedule()
 					else
 						printf("unknown repeat type %d\n", eventRepeat);
 			}
+			
 			diff = mktime(t) - alarmTime;
 			alarmTime += diff;
 			t = localtime(&alarmTime);
 			int isdst2 = t->tm_isdst;
+			
 			if(isdst2 > isdst1) //change from winter to summer
 			{
 				diff -= 3600;
@@ -1032,44 +1030,30 @@ void CTimerEvent::saveToConfig(CConfigFile *config)
 	if (!(config->getString("IDS").empty()))
 	{
 		// sonst bekommen wir den bloeden 0er
-		allIDs=config->getInt32Vector("IDS");
+		allIDs = config->getInt32Vector("IDS");
 	}
 
 	allIDs.push_back(eventID);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::saveToConfig: adding %d to IDS\n",eventID);
+
 	//SetInt-Vector haengt komischerweise nur an, deswegen erst loeschen
 	config->setString("IDS","");
 	config->setInt32Vector ("IDS",allIDs);
 
 	std::stringstream ostr;
 	ostr << eventID;
-	std::string id=ostr.str();
+	std::string id = ostr.str();
+	
 	config->setInt32("EVENT_TYPE_"+id, eventType);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::saveToConfig: set EVENT_TYPE_%s to %d\n",id.c_str(),eventType);
-
 	config->setInt32("EVENT_STATE_"+id, eventState);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::saveToConfig: set EVENT_STATE_%s to %d\n",id.c_str(),eventState);
-
 	config->setInt32("PREVIOUS_STATE_"+id, previousState);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::saveToConfig: set PREVIOUS_STATE_%s to %d\n",id.c_str(),previousState);
-
 	config->setInt32("EVENT_REPEAT_"+id, eventRepeat);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::saveToConfig: set EVENT_REPEAT_%s to %d\n",id.c_str(),eventRepeat);
-
 	config->setInt32("ANNOUNCE_TIME_"+id, announceTime);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::saveToConfig: set ANNOUNCE_TIME_%s to %ld\n",id.c_str(),(long)announceTime);
-
 	config->setInt32("ALARM_TIME_"+id, alarmTime);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::saveToConfig: set ALARM_TIME_%s to %ld\n",id.c_str(),(long)alarmTime);
-
 	config->setInt32("STOP_TIME_"+id, stopTime);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::saveToConfig: set STOP_TIME_%s to %ld\n",id.c_str(),(long)stopTime);
-
 	config->setInt32("REPEAT_COUNT_"+id,repeatCount);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::saveToConfig: set REPEAT_COUNT_%s to %d\n",id.c_str(),repeatCount);
 }
 
-// event shutdown
+//// event shutdown
 void CTimerEvent_Shutdown::announceEvent()
 {
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Shutdown::announceEvent\n");
@@ -1084,7 +1068,7 @@ void CTimerEvent_Shutdown::fireEvent()
 	g_RCInput->postMsg(NeutrinoMessages::SHUTDOWN);
 }
 
-// event sleeptimer
+//// event sleeptimer
 void CTimerEvent_Sleeptimer::announceEvent()
 {
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Sleeptimer::announceEvent\n");
@@ -1099,7 +1083,7 @@ void CTimerEvent_Sleeptimer::fireEvent()
 	g_RCInput->postMsg(NeutrinoMessages::SLEEPTIMER);
 }
 
-// event standby
+//// event standby
 CTimerEvent_Standby::CTimerEvent_Standby( time_t lannounceTime, time_t lalarmTime, 
 					  bool sb_on, 
 					  CTimerd::CTimerEventRepeat evrepeat,
@@ -1115,9 +1099,8 @@ CTimerEvent(CTimerd::TIMER_STANDBY, config, iId)
 	std::stringstream ostr;
 	ostr << iId;
 	std::string id = ostr.str();
-	standby_on = config->getBool("STANDBY_ON_"+id);
 	
-	dprintf(DEBUG_NORMAL, "CTimerEvent_Standby::CTimerEvent_Standby: read STANDBY_ON_%s %d\n",id.c_str(),standby_on);
+	standby_on = config->getBool("STANDBY_ON_"+id);
 }
 
 void CTimerEvent_Standby::fireEvent()
@@ -1133,9 +1116,8 @@ void CTimerEvent_Standby::saveToConfig(CConfigFile *config)
 	std::stringstream ostr;
 	ostr << eventID;
 	std::string id = ostr.str();
-	config->setBool("STANDBY_ON_"+id,standby_on);
 	
-	dprintf(DEBUG_NORMAL, "CTimerEvent_Standby::saveToConfig: set STANDBY_ON_%s to %d\n",id.c_str(),standby_on);
+	config->setBool("STANDBY_ON_"+id,standby_on);
 }
 
 //// event record
@@ -1152,11 +1134,14 @@ CTimerEvent_Record::CTimerEvent_Record(time_t lannounceTime, time_t lalarmTime, 
 	eventInfo.channel_id = channel_id;
 	eventInfo.apids = apids;
 	recordingDir = recDir;
+//	strcpy(eventInfo.recordingDir, recordingDir.c_str());
 	
 	epgTitle = "";
 	CShortEPGData epgdata;
 	if (CSectionsd::getInstance()->getEPGidShort(epgID, &epgdata))
-		epgTitle = epgdata.title; 
+		epgTitle = epgdata.title;
+		
+//	strcpy(eventInfo.epgTitle, epgTitle.c_str()); 
 }
 
 CTimerEvent_Record::CTimerEvent_Record(CConfigFile *config, int iId):
@@ -1165,31 +1150,25 @@ CTimerEvent_Record::CTimerEvent_Record(CConfigFile *config, int iId):
 	std::stringstream ostr;
 	ostr << iId;
 	std::string id = ostr.str();
+	
 	eventInfo.epgID = config->getInt64("EVENT_INFO_EPG_ID_"+id);
-	
-	dprintf(DEBUG_DEBUG, "CTimerEvent_Record::CTimerEvent_Record: read EVENT_INFO_EPG_ID_%s %ld\n",id.c_str(),(long)eventInfo.epgID);
-
 	eventInfo.epg_starttime = config->getInt64("EVENT_INFO_EPG_STARTTIME_"+id);
-	
-	dprintf(DEBUG_DEBUG, "CTimerEvent_Record::CTimerEvent_Record: read EVENT_INFO_EPG_STARTTIME_%s %ld\n",id.c_str(),(long)eventInfo.epg_starttime);
-
 	eventInfo.channel_id = config->getInt64("EVENT_INFO_CHANNEL_ID_"+id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent_Record::CTimerEvent_Record: read EVENT_INFO_CHANNEL_ID_%s %ld\n",id.c_str(),(long)eventInfo.channel_id);
-
 	eventInfo.apids = config->getInt32("EVENT_INFO_APIDS_"+id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent_Record::CTimerEvent_Record: read EVENT_INFO_APIDS_%s 0x%X (%p)\n",id.c_str(),eventInfo.apids,&eventInfo.apids);
-
 	recordingDir = config->getString("REC_DIR_"+id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent_Record::CTimerEvent_Record: read REC_DIR_%s %s (%p)\n",id.c_str(),recordingDir.c_str(),&recordingDir);
+	
+//	strcpy(eventInfo.recordingDir, recordingDir.c_str());
 
 	epgTitle = config->getString("EPG_TITLE_"+id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent_Record::CTimerEvent_Record: read EPG_TITLE_%s %s (%p)\n",id.c_str(),epgTitle.c_str(),&epgTitle);
+	
+//	strcpy(eventInfo.epgTitle, epgTitle.c_str()); 
 }
 
 void CTimerEvent_Record::fireEvent()
 {
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Record::fireEvent\n");
 	
+	//
 	CTimerd::RecordingInfo ri; // = eventInfo;
 	
 	////
@@ -1200,10 +1179,12 @@ void CTimerEvent_Record::fireEvent()
 	ri.apids = eventInfo.apids;
 	////
 	ri.eventID = eventID;
-	strcpy(ri.recordingDir, recordingDir.substr(0, sizeof(ri.recordingDir)-1).c_str());						
-	strcpy(ri.epgTitle, epgTitle.substr(0, sizeof(ri.epgTitle)-1).c_str());	
+//	strcpy(ri.recordingDir, recordingDir.substr(0, sizeof(ri.recordingDir)-1).c_str());						
+//	strcpy(ri.epgTitle, epgTitle.substr(0, sizeof(ri.epgTitle)-1).c_str());
+	strcpy(ri.recordingDir, recordingDir.c_str());
+	strcpy(ri.epgTitle, epgTitle.c_str());
 						
-	g_RCInput->postMsg(NeutrinoMessages::RECORD_START, (const neutrino_msg_data_t)&ri, false);
+	g_RCInput->postMsg(NeutrinoMessages::RECORD_START, (const neutrino_msg_data_t)&eventInfo, false);
 }
 
 void CTimerEvent_Record::announceEvent()
@@ -1212,6 +1193,7 @@ void CTimerEvent_Record::announceEvent()
 	
 	Refresh();
 	
+	//
 	CTimerd::RecordingInfo ri; // = (CTimerd::RecordingInfo)eventInfo;
 	
 	////
@@ -1223,10 +1205,12 @@ void CTimerEvent_Record::announceEvent()
 	////
 	
 	ri.eventID = eventID;
-	strcpy(ri.recordingDir, recordingDir.substr(0, sizeof(ri.recordingDir)-1).c_str());						
-	strcpy(ri.epgTitle, epgTitle.substr(0, sizeof(ri.epgTitle)-1).c_str());	
+//	strcpy(ri.recordingDir, recordingDir.substr(0, sizeof(ri.recordingDir)-1).c_str());						
+//	strcpy(ri.epgTitle, epgTitle.substr(0, sizeof(ri.epgTitle)-1).c_str());
+	strcpy(ri.recordingDir, recordingDir.c_str());
+	strcpy(ri.epgTitle, epgTitle.c_str());
 						
-	g_RCInput->postMsg(NeutrinoMessages::ANNOUNCE_RECORD, (const neutrino_msg_data_t)&ri, false);
+	g_RCInput->postMsg(NeutrinoMessages::ANNOUNCE_RECORD, (const neutrino_msg_data_t)&eventInfo, false);
 }
 
 void CTimerEvent_Record::stopEvent()
@@ -1250,23 +1234,13 @@ void CTimerEvent_Record::saveToConfig(CConfigFile *config)
 	std::stringstream ostr;
 	ostr << eventID;
 	std::string id = ostr.str();
+	
 	config->setInt64("EVENT_INFO_EPG_ID_" + id, eventInfo.epgID);
-	dprintf(DEBUG_DEBUG, "CTimerEvent_Record::saveToConfig: set EVENT_INFO_EPG_ID_%s to %ld\n",id.c_str(), (long)eventInfo.epgID);
-
-	config->setInt64("EVENT_INFO_EPG_STARTTIME_"+id, eventInfo.epg_starttime);
-	dprintf(DEBUG_DEBUG, "CTimerEvent_Record::saveToConfig: set EVENT_INFO_EPG_STARTTIME_%s to %ld\n",id.c_str(),(long)eventInfo.epg_starttime);
-
+	config->setInt64("EVENT_INFO_EPG_STARTTIME_" + id, eventInfo.epg_starttime);
 	config->setInt64("EVENT_INFO_CHANNEL_ID_" + id, eventInfo.channel_id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent_Record::saveToConfig: set EVENT_INFO_CHANNEL_ID_%s to %ld\n",id.c_str(),(long)eventInfo.channel_id);
-
 	config->setInt64("EVENT_INFO_APIDS_" + id, eventInfo.apids);
-	dprintf(DEBUG_DEBUG, "CTimerEvent_Record::saveToConfig: set EVENT_INFO_APIDS_%s to 0x%X (%p)\n",id.c_str(), eventInfo.apids, &eventInfo.apids);
-
 	config->setString("REC_DIR_" + id, recordingDir);
-	dprintf(DEBUG_DEBUG, "CTimerEvent_Record::saveToConfig: set REC_DIR_%s to %s (%p)\n",id.c_str(), recordingDir.c_str(), &recordingDir);
-
 	config->setString("EPG_TITLE_" + id, epgTitle);
-	dprintf(DEBUG_DEBUG, "CTimerEvent_Record::saveToConfig: set EPG_TITLE_%s to %s (%p)\n",id.c_str(), epgTitle.c_str(), &epgTitle);
 }
 
 void CTimerEvent_Record::Reschedule()
@@ -1303,7 +1277,7 @@ void CTimerEvent_Record::getEpgId()
 	{
 		CShortEPGData epgdata;
 		if (CSectionsd::getInstance()->getEPGidShort(eventInfo.epgID, &epgdata))
-			epgTitle=epgdata.title; 
+			epgTitle = epgdata.title; 
 	}
 }
 
@@ -1344,7 +1318,7 @@ void CTimerEvent_Zapto::getEpgId()
 	}
 }
 
-// event next program
+//// event next program
 CTimerEvent_NextProgram::CTimerEvent_NextProgram(time_t lannounceTime, time_t lalarmTime, time_t lstopTime, 
 						 t_channel_id channel_id,
 						 event_id_t epgID, 
@@ -1363,18 +1337,11 @@ CTimerEvent(CTimerd::TIMER_NEXTPROGRAM, config, iId)
 	std::stringstream ostr;
 	ostr << iId;
 	std::string id = ostr.str();
+	
 	eventInfo.epgID = config->getInt64("EVENT_INFO_EPG_ID_" + id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent_NextProgram::CTimerEvent_NextProgram: read EVENT_INFO_EPG_ID_%s %ld\n", id.c_str(), (long)eventInfo.epgID);
-
 	eventInfo.epg_starttime = config->getInt64("EVENT_INFO_EPG_STARTTIME_" + id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent_NextProgram::CTimerEvent_NextProgram: read EVENT_INFO_EPG_STARTTIME_%s %ld\n", id.c_str(), (long)eventInfo.epg_starttime);
-
 	eventInfo.channel_id = config->getInt64("EVENT_INFO_CHANNEL_ID_" + id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent_NextProgram::CTimerEvent_NextProgram: read EVENT_INFO_CHANNEL_ID_%s %ld\n", id.c_str(), (long)eventInfo.channel_id);
-
 	eventInfo.apids = config->getInt32("EVENT_INFO_APIDS_" + id);
-
-	dprintf(DEBUG_DEBUG, "CTimerEvent_NextProgram::CTimerEvent_NextProgram: read EVENT_INFO_APIDS_%s 0x%X (%p)\n", id.c_str(), eventInfo.apids, &eventInfo.apids);
 }
 
 void CTimerEvent_NextProgram::announceEvent()
@@ -1393,17 +1360,11 @@ void CTimerEvent_NextProgram::saveToConfig(CConfigFile *config)
 	std::stringstream ostr;
 	ostr << eventID;
 	std::string id = ostr.str();
+	
 	config->setInt64("EVENT_INFO_EPG_ID_" + id, eventInfo.epgID);
-	dprintf(DEBUG_DEBUG, "CTimerEvent_NextProgram::saveToConfig: set EVENT_INFO_EPG_ID_%s to %ld\n", id.c_str(), (long)eventInfo.epgID);
-
 	config->setInt64("EVENT_INFO_EPG_STARTTIME_" + id, eventInfo.epg_starttime);
-	dprintf(DEBUG_DEBUG, "CTimerEvent_NextProgram::saveToConfig: set EVENT_INFO_EPG_STARTTIME_%s to %ld\n", id.c_str(), (long)eventInfo.epg_starttime);
-
 	config->setInt64("EVENT_INFO_CHANNEL_ID_" + id, eventInfo.channel_id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent_NextProgram::saveToConfig: set EVENT_INFO_CHANNEL_ID_%s to %ld\n", id.c_str(), (long)eventInfo.channel_id);
-
 	config->setInt32("EVENT_INFO_APIDS_" + id, eventInfo.apids);
-	dprintf(DEBUG_DEBUG, "CTimerEvent_NextProgram::saveToConfig: set EVENT_INFO_APIDS_%s to 0x%X (%p)\n", id.c_str(), eventInfo.apids, &eventInfo.apids);
 }
 
 void CTimerEvent_NextProgram::Reschedule()
@@ -1414,7 +1375,7 @@ void CTimerEvent_NextProgram::Reschedule()
 	CTimerEvent::Reschedule();
 }
 
-// remind event
+//// remind event
 CTimerEvent_Remind::CTimerEvent_Remind(time_t lannounceTime,
 				       time_t lalarmTime, 
 				       const char * const msg,
@@ -1434,8 +1395,6 @@ CTimerEvent(CTimerd::TIMER_REMIND, config, iId)
 	std::string id = ostr.str();
 	
 	strcpy(message, config->getString("MESSAGE_" + id).c_str());
-	
-	dprintf(DEBUG_INFO, "CTimerEvent_Remind::CTimerEvent_Remind: read MESSAGE_%s %s (%p)\n",id.c_str(), message, message);
 }
 
 void CTimerEvent_Remind::fireEvent()
@@ -1451,13 +1410,11 @@ void CTimerEvent_Remind::saveToConfig(CConfigFile *config)
 	std::stringstream ostr;
 	ostr << eventID;
 	std::string id = ostr.str();
-	config->setString("MESSAGE_" + id, message);
 	
-	dprintf(DEBUG_INFO, "CTimerEvent_Remind::saveToConfig: set MESSAGE_%s to %s (%p)\n", id.c_str(), message,message);
-
+	config->setString("MESSAGE_" + id, message);
 }
 
-// exec plugin
+//// exec plugin
 CTimerEvent_ExecPlugin::CTimerEvent_ExecPlugin(time_t lannounceTime,
 					       time_t lalarmTime, 
 					       const char * const plugin,
@@ -1475,8 +1432,8 @@ CTimerEvent(CTimerd::TIMER_EXEC_PLUGIN, config, iId)
 	std::stringstream ostr;
 	ostr << iId;
 	std::string id = ostr.str();
+	
 	strcpy(name, config->getString("NAME_" + id).c_str());
-	dprintf(DEBUG_DEBUG, "CTimerEvent_ExecPlugin::CTimerEvent_ExecPlugin: read NAME_%s %s (%p)\n", id.c_str(), name,name);
 }
 
 void CTimerEvent_ExecPlugin::fireEvent()
@@ -1492,7 +1449,7 @@ void CTimerEvent_ExecPlugin::saveToConfig(CConfigFile *config)
 	std::stringstream ostr;
 	ostr << eventID;
 	std::string id = ostr.str();
+	
 	config->setString("NAME_" + id, name);
-	dprintf(DEBUG_DEBUG, "CTimerEvent_ExecPlugin::saveToConfig: set NAME_%s to %s (%p)\n",id.c_str(),name,name);
 }
 
