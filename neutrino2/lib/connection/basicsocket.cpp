@@ -106,11 +106,13 @@ bool receive_data(int fd, void * data, const size_t size, const timeval timeout)
 			printf("[basicsocket] receive timed out.\n");
 			return false;
 		}
+		
 		if (rc == -1)
 		{
 			perror("[basicsocket] receive_data select");
 			return false;
 		}
+		
 		buffer = (void *)((char *)data + (size - n));
 		rc = ::recv(fd, buffer, n, MSG_DONTWAIT | MSG_NOSIGNAL);
 		
@@ -126,11 +128,6 @@ bool receive_data(int fd, void * data, const size_t size, const timeval timeout)
 			}
 			else
 			{
-				/*
-				 * silently return false
-				 *
-				 * printf("[basicsocket] no more data\n");
-				 */
 				return false;
 			}
 
