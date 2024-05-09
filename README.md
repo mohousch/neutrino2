@@ -4,7 +4,6 @@
 </h1>
 
 - the GUI is completely reworked.
-- only one events socket.
 - i18n localizaton.
 - skin support.
 - plugins interfaces: legacy, lua and python (exp) neutrino2 shares all his functionality with plugins.
