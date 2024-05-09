@@ -4,7 +4,7 @@
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
 
-	$Id: timerd.h 20.09.2023 mohousch exp $
+	$Id: timerd.h 09052024 mohousch exp $
 
 	License: GPL
 
@@ -33,7 +33,6 @@
 #include <configfile.h>
 #include <config.h>
 
-#include <libeventserver/eventserver.h>
 #include <timerd/timerdtypes.h>
 
 
@@ -76,41 +75,14 @@ class CTimerd
 
 		struct EventInfo
 		{
-			event_id_t    epgID;
-			time_t        epg_starttime;
-			t_channel_id  channel_id;
-			unsigned char apids;
-			bool          recordingSafety;
-		};
-
-		class RecordingInfo : public EventInfo
-		{
-			public:
-				RecordingInfo(){};
-				
-				RecordingInfo(EventInfo& e)
-				{
-					apids = e.apids;
-					channel_id = e.channel_id;
-					epgID = e.epgID;
-					epg_starttime = e.epg_starttime;
-					recordingSafety = e.recordingSafety;
-				};
-				
-				RecordingInfo& operator = (EventInfo& e)
-				{
-					apids = e.apids;
-					channel_id = e.channel_id;
-					epgID = e.epgID;
-					epg_starttime = e.epg_starttime;
-					recordingSafety = e.recordingSafety;
-					return *this;
-				}
-				
-				unsigned char apids;
-				int eventID;
-				char recordingDir[RECORD_DIR_MAXLEN];
-				char epgTitle[EPG_TITLE_MAXLEN];
+			event_id_t    	epgID;
+			time_t        	epg_starttime;
+			t_channel_id  	channel_id;
+			unsigned char 	apids;
+			bool          	recordingSafety;
+			int 		eventID;
+			char 		recordingDir[RECORD_DIR_MAXLEN];
+			char 		epgTitle[EPG_TITLE_MAXLEN];
 		};
 
 		struct RecordingStopInfo

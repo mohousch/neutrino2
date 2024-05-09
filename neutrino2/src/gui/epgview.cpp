@@ -362,7 +362,7 @@ const char** genre_sub_classes_list[10] =
 	genre_travel_hobbies
 };
 
-bool CEpgData::hasFollowScreenings(const t_channel_id /*channel_id*/, const std::string & title) 
+bool CEpgData::hasFollowScreenings(const t_channel_id, const std::string & title) 
 {
 	time_t curtime = time(NULL);
 	
@@ -781,7 +781,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 			switch ( msg )
 			{					
 				case NeutrinoMessages::EVT_CURRENTNEXT_EPG:
-					if (((*(t_channel_id *) data) == (channel_id /*& 0xFFFFFFFFFFFFULL*/))) 
+					if (data == channel_id) 
 					{
 						show(channel_id);
 					}
@@ -1014,7 +1014,7 @@ void CEpgData::GetPrevNextEPGData(uint64_t id, time_t* starttime)
 // -- 2002-05-03 rasc
 //
 
-int CEpgData::FollowScreenings(const t_channel_id /*channel_id*/, const std::string & title)
+int CEpgData::FollowScreenings(const t_channel_id, const std::string & title)
 {
 	CChannelEventList::iterator e;
 	time_t			curtime;

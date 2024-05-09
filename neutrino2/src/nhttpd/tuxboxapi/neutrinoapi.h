@@ -5,9 +5,6 @@
 #include <map>
 #include <string>
 
-// tuxbox
-#include <eventserver.h>
-
 #include <sectionsd/sectionsd.h>
 #include <timerd/timerd.h>
 #include <zapit/zapit.h>

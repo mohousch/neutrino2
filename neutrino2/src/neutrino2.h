@@ -103,7 +103,7 @@ class CNeutrinoApp : public CMenuTarget
 		int lastMode;
 		int chmode;	// to custom channel/bouquet mode needed by channel_select widget.
 		////
-		CTimerd::RecordingInfo *nextRecordingInfo;
+		CTimerd::EventInfo *nextRecordingInfo;
 		struct timeval standby_pressed_at;
 		CZapit::responseGetLastChannel firstchannel;
 		bool skipShutdownTimer;

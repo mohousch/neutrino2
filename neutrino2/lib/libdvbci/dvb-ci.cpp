@@ -560,7 +560,7 @@ void cDvbCi::slot_pollthread(void *c)
 							sprintf(slot->name, "unknown module %d", slot->slot);
 							slot->status = eStatusNone;
 
-							if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, slot->slot);
+							if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, (const neutrino_msg_data_t)slot->slot);
 
 							slot->camIsReady = true;
 						}
@@ -586,7 +586,7 @@ void cDvbCi::slot_pollthread(void *c)
 						slot->status = eStatusWait;
 						slot->connection_id = slot->slot + 1;
 
-						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, slot->slot);
+						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, (const neutrino_msg_data_t)slot->slot);
 
 						slot->camIsReady = true;
 						
@@ -639,7 +639,7 @@ void cDvbCi::slot_pollthread(void *c)
 						sprintf(slot->name, "unknown module %d", slot->slot);
 						slot->status = eStatusNone;
 
-						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, slot->slot);
+						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, (const neutrino_msg_data_t)slot->slot);
 
 						while(slot->sendqueue.size())
 						{
@@ -754,7 +754,7 @@ void cDvbCi::slot_pollthread(void *c)
 						sprintf(slot->name, "unknown module %d", slot->slot);
 						slot->status = eStatusNone;
 
-						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, slot->slot);
+						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, (const neutrino_msg_data_t)slot->slot);
 
 						slot->camIsReady = true;
 					} 
@@ -774,7 +774,7 @@ void cDvbCi::slot_pollthread(void *c)
 						sprintf(slot->name, "unknown module %d", slot->slot);
 						slot->status = eStatusNone;
 
-						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, slot->slot);
+						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, (const neutrino_msg_data_t)slot->slot);
 
 						while(slot->sendqueue.size())
 						{
@@ -844,7 +844,7 @@ void cDvbCi::slot_pollthread(void *c)
 						sprintf(slot->name, "unknown module %d", slot->slot);
 						slot->status = eStatusNone;
 
-						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, slot->slot);
+						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, (const neutrino_msg_data_t)slot->slot);
 
 						while(slot->sendqueue.size())
 						{
@@ -871,7 +871,7 @@ void cDvbCi::slot_pollthread(void *c)
 
 			slot->init = true;
 			
-			if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INIT_OK, slot->slot);
+			if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INIT_OK, (const neutrino_msg_data_t)slot->slot);
 		    
 			//resend a capmt
 			if (slot->caPmt != NULL)

@@ -109,7 +109,6 @@ class CCaPmt : public CCaTable
 class CCam : public CBasicClient
 {
 	private:
-		virtual unsigned char getVersion(void) const;
 		virtual const char *getSocketName(void) const;
 
 	public:

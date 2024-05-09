@@ -1796,7 +1796,8 @@ void CTestMenu::testCProgressBar()
 	progressBar = new CCProgressBar(&Box);
 	
 	//
-	neutrino_msg_t msg, data;
+	neutrino_msg_t msg;
+	neutrino_msg_data_t data;
 	
 	for (unsigned int count = 0; count < 100; count += 10)
 	{
@@ -3974,7 +3975,8 @@ void CTestMenu::testCProgressWindow()
 	//
 	progressWindow->paint();
 	
-	neutrino_msg_t msg, data;
+	neutrino_msg_t msg;
+	neutrino_msg_data_t data;
 	
 	for (unsigned int count = 0; count < 100; count += 10)
 	{

@@ -35,7 +35,6 @@
 #include <configfile.h>
 #include <config.h>
 
-#include <eventserver.h>
 #include <timerd/timerdtypes.h>
 #include <timerd/timerd.h>
 
@@ -78,7 +77,7 @@ class CTimerEvent
 
 typedef std::map<int, CTimerEvent*> CTimerEventMap;
 
-// shutdown
+//// shutdown
 class CTimerEvent_Shutdown : public CTimerEvent
 {
 	public:
@@ -91,7 +90,7 @@ class CTimerEvent_Shutdown : public CTimerEvent
 		virtual void announceEvent();
 };
 
-// sleeptimer
+//// sleeptimer
 class CTimerEvent_Sleeptimer : public CTimerEvent
 {
 	public:
@@ -104,7 +103,7 @@ class CTimerEvent_Sleeptimer : public CTimerEvent
 		virtual void announceEvent();
 };
 
-// standby
+//// standby
 class CTimerEvent_Standby : public CTimerEvent
 {
 	public:
@@ -121,13 +120,14 @@ class CTimerEvent_Standby : public CTimerEvent
 		virtual void saveToConfig(CConfigFile *config);
 };
 
-// record
+//// record
 class CTimerEvent_Record : public CTimerEvent
 {
 	public:
 		CTimerd::EventInfo eventInfo;
 		std::string recordingDir;
 		std::string epgTitle;
+		
 		CTimerEvent_Record(time_t lannounceTime, time_t lalarmTime, time_t lstopTime, 
 				  t_channel_id channel_id,
 				  event_id_t epgID = 0,
@@ -148,7 +148,7 @@ class CTimerEvent_Record : public CTimerEvent
 		virtual void Refresh();
 };
 
-// zapto
+//// zapto
 class CTimerEvent_Zapto : public CTimerEvent_Record
 {
 	public:
@@ -171,7 +171,7 @@ class CTimerEvent_Zapto : public CTimerEvent_Record
 		void getEpgId();
 };
 
-// next program
+//// next program
 class CTimerEvent_NextProgram : public CTimerEvent
 {
 	public:
@@ -192,7 +192,7 @@ class CTimerEvent_NextProgram : public CTimerEvent
 		virtual void Reschedule();
 };
 
-// remind
+//// remind
 class CTimerEvent_Remind : public CTimerEvent
 {
 	public:
@@ -209,7 +209,7 @@ class CTimerEvent_Remind : public CTimerEvent
 		virtual void saveToConfig(CConfigFile *config);
 };
 
-// exec plugin
+//// exec plugin
 class CTimerEvent_ExecPlugin : public CTimerEvent
 {
 	public:
@@ -226,6 +226,7 @@ class CTimerEvent_ExecPlugin : public CTimerEvent
 		virtual void saveToConfig(CConfigFile *config);
 };
 
+//// CTimerManager
 class CTimerManager
 {
 	//singleton

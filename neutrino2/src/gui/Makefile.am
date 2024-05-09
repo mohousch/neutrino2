@@ -9,7 +9,6 @@ AM_CPPFLAGS += \
 	-I$(srcdir) \
 	-I$(top_srcdir)/src \
 	-I$(top_srcdir)/lib \
-	-I$(top_srcdir)/lib/libeventserver \
 	-I$(top_srcdir)/lib/libnet \
 	-I$(top_srcdir)/lib/libconfigfile \
 	-I$(top_srcdir)/lib/libxmltree \

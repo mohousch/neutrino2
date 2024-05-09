@@ -24,7 +24,6 @@
  */
 
 #include "basicclient.h"
-#include "basicmessage.h"
 #include "basicsocket.h"
 
 #include <inttypes.h>
@@ -103,24 +102,6 @@ bool CBasicClient::sendData(const char* data, const size_t size)
 	return true;
 }
 
-bool CBasicClient::sendString(const char* data)
-{
-	uint8_t send_length;
-	size_t length = strlen(data);
-
-	if (length > 255)
-	{
-		printf("CBasicClient::sendString: string too long - sending only first 255 characters: %s\n", data);
-		send_length = 255;
-	}
-	else
-	{
-		send_length = static_cast<uint8_t>(length);
-	}
-
-	return (sendData((char *)&send_length, sizeof(send_length)) && sendData(data, send_length));
-}
-
 bool CBasicClient::receiveData(char* data, const size_t size, bool use_max_timeout)
 {
 	timeval timeout;
@@ -148,23 +129,6 @@ bool CBasicClient::receiveData(char* data, const size_t size, bool use_max_timeo
 	}
 	
 	printf("[CBasicClient] receive_data: (%s)\n", getSocketName());
-
-	return true;
-}
-
-bool CBasicClient::send(const unsigned char command, const char* data, const unsigned int size)
-{
-	CBasicMessage::Header msgHead;
-	msgHead.version = getVersion();
-	msgHead.cmd     = command;
-
-	openConnection(); // if the return value is false, the next send_data call will return false, too
-
-	if (!sendData((char*)&msgHead, sizeof(msgHead)))
-	    return false;
-	
-	if (size != 0)
-	    return sendData(data, size);
 
 	return true;
 }

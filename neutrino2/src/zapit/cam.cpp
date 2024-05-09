@@ -189,11 +189,6 @@ unsigned int CCaPmt::getLength(bool addPrivate)
 }
 
 ////
-unsigned char CCam::getVersion(void) const
-{
-	return 0x9F;
-}
-
 const char *CCam::getSocketName(void) const
 {
 	return CAMD_UDS_NAME;

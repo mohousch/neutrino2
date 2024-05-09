@@ -608,12 +608,12 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 
 			if ((msg == CRCInput::RC_sat) || (msg == CRCInput::RC_favorites) || (msg == CRCInput::RC_setup) || (msg == CRCInput::RC_red) || (msg == CRCInput::RC_green) || (msg == CRCInput::RC_yellow) || (msg == CRCInput::RC_blue) || (msg == CRCInput::RC_ok) || (msg == CRCInput::RC_text) || (msg == CRCInput::RC_epg) || (msg == CRCInput::RC_record) || (msg == CRCInput::RC_play) || (msg == CRCInput::RC_pause) || (msg == CRCInput::RC_dvbsub) || (msg == CRCInput::RC_mode) || (msg == CRCInput::RC_audio))
 			{
-				g_RCInput->postMsg(msg, 0);
+				g_RCInput->postMsg(msg);
 				res = messages_return::cancel_info;
 			}
 			else if (msg == CRCInput::RC_info)
 			{
-				g_RCInput->postMsg(NeutrinoMessages::SHOW_EPG, 0);
+				g_RCInput->postMsg(NeutrinoMessages::SHOW_EPG);
 					
 				res = messages_return::cancel_info;
 			} 
@@ -740,7 +740,7 @@ void CInfoViewer::getCurrentNextEPG(t_channel_id ChannelID, bool newChan, int EP
 			info_CurrentNext.flags 			= CSectionsd::epgflags::has_current;
 			info_CurrentNext.current_uniqueKey      = eli->eventID;
 			info_CurrentNext.current_time.starttime = eli->startTime;
-			info_CurrentNext.current_time.duration     = eli->duration;
+			info_CurrentNext.current_time.duration  = eli->duration;
 
 			if (eli->description.empty())
 				info_CurrentNext.current_name   = _("EPG not available");
@@ -894,7 +894,7 @@ void CInfoViewer::showSubchan()
 				if (res & messages_return::unhandled) 
 				{
 		  			// raus hier und im Hauptfenster behandeln...
-		  			g_RCInput->postMsg (msg, data);
+		  			g_RCInput->postMsg(msg, data);
 		  			res = messages_return::cancel_info;
 				}
 	  		}
@@ -904,12 +904,6 @@ void CInfoViewer::showSubchan()
 		frameBuffer->blit();	
   		
 	}
-	/*
-	else 
-	{
-		g_RCInput->postMsg(NeutrinoMessages::SHOW_INFOBAR, 0);
-  	}
-  	*/
 }
 
 // radiotext
@@ -1086,16 +1080,13 @@ void CInfoViewer::showIcon_SubT() const
 	
         bool have_sub = false;
 
-	//
-	{
-		CZapitChannel * cc = CNeutrinoApp::getInstance()->channelList->getChannel(CNeutrinoApp::getInstance()->channelList->getActiveChannelNumber());
+	CZapitChannel * cc = CNeutrinoApp::getInstance()->channelList->getChannel(CNeutrinoApp::getInstance()->channelList->getActiveChannelNumber());
 
-		if(cc && cc->getSubtitleCount())
-			have_sub = true;
+	if(cc && cc->getSubtitleCount())
+		have_sub = true;
 
-		if(is_visible)
-			frameBuffer->paintIcon(have_sub ? NEUTRINO_ICON_SUBT : NEUTRINO_ICON_SUBT_GREY, BoxEndX - (BORDER_RIGHT + icon_w_subt), buttonBarStartY + (buttonBarHeight - icon_h_subt)/2 );
-	}
+	if(is_visible)
+		frameBuffer->paintIcon(have_sub ? NEUTRINO_ICON_SUBT : NEUTRINO_ICON_SUBT_GREY, BoxEndX - (BORDER_RIGHT + icon_w_subt), buttonBarStartY + (buttonBarHeight - icon_h_subt)/2 );
 }
 
 void CInfoViewer::showFailure()
@@ -1226,7 +1217,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 {
  	if ((msg == NeutrinoMessages::EVT_CURRENTNEXT_EPG) || (msg == NeutrinoMessages::EVT_NEXTPROGRAM)) 
 	{
-	  	getEPG(*(t_channel_id *)data & 0xFFFFFFFFFFFFULL, info_CurrentNext);
+	  	getEPG(data, info_CurrentNext);
 	  	
 	  	if ( is_visible )
 			showEPGData(true);
@@ -1262,7 +1253,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
   	} 
 	else if (msg == NeutrinoMessages::EVT_ZAP_GOTAPIDS) 
 	{
-		if ((*(t_channel_id *) data) == channel_id) 
+		if (data == channel_id)
 		{
 	  		if ( is_visible && showButtonBar )
 				showButton_Audio();
@@ -1272,7 +1263,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
   	} 
 	else if (msg == NeutrinoMessages::EVT_ZAP_GOTPIDS) 
 	{
-		if ((*(t_channel_id *) data) == channel_id) 
+		if (data == channel_id)
 		{
 	  		if ( is_visible && showButtonBar ) 
 			{
@@ -1288,7 +1279,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
   	} 
 	else if (msg == NeutrinoMessages::EVT_ZAP_GOT_SUBSERVICES) 
 	{
-		if ((*(t_channel_id *) data) == channel_id) 
+		if (data == channel_id)
 		{
 	  		if ( is_visible && showButtonBar )
 				showButton_SubServices();
@@ -1298,14 +1289,15 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
   	} 
   	else if ((msg == NeutrinoMessages::EVT_ZAP_COMPLETE) || (msg == NeutrinoMessages::EVT_ZAP_ISNVOD))
 	{
-		dprintf(DEBUG_NORMAL, "CInfoViewer::handleMsg: EVT_ZAP_COMPLETE: channel_id: %llx data: %llx\n", channel_id, *(t_channel_id *)data); 
+		dprintf(DEBUG_NORMAL, "CInfoViewer::handleMsg: EVT_ZAP_COMPLETE: channel_id: %llx data: %llx\n", channel_id, data);
+		
 		chanready = 1;
 		showSNR();
 		
 		if ( is_visible && showButtonBar ) 
 			showIcon_Resolution();
 		
-		channel_id = (*(t_channel_id *)data);
+		channel_id = data;
 		
 		return messages_return::handled;
 	}
@@ -1317,7 +1309,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		if ( is_visible && showButtonBar ) 
 			showIcon_Resolution();
 
-		if ((*(t_channel_id *)data) == channel_id)
+		if (data == channel_id)
 		{
 	  		if ( is_visible && showButtonBar && (!g_RemoteControl->are_subchannels))
 				showEPGData(true);
@@ -1356,7 +1348,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		if ( is_visible && showButtonBar ) 
 			showIcon_Resolution();
 
-		if ((*(t_channel_id *) data) == channel_id) 
+		if (data == channel_id)
 		{
 	  		dprintf(DEBUG_NORMAL, "CInfoViewer::handleMsg: zap failed!\n");
 	  		showFailure();
@@ -1372,6 +1364,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	{
 		chanready = 0;
 		showMotorMoving(data);
+		
 		return messages_return::handled;
   	}
 	else if (msg == NeutrinoMessages::EVT_TIMESET) 
@@ -1427,19 +1420,13 @@ void CInfoViewer::getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentN
 	// if there is no EPG, send an event so that parental lock can work
 	if (info.current_uniqueKey == 0 && info.next_uniqueKey == 0) 
 	{
-		char *p = new char[sizeof(t_channel_id)];
-		memcpy(p, &for_channel_id, sizeof(t_channel_id));
-
-		//
-		g_RCInput->postMsg(NeutrinoMessages::EVT_NOEPG_YET, (const neutrino_msg_data_t) p, false);
+		g_RCInput->postMsg(NeutrinoMessages::EVT_NOEPG_YET, (const neutrino_msg_data_t)for_channel_id, false);
 		
 		return;
 	}
 
 	if (info.current_uniqueKey != 0 || info.next_uniqueKey != 0)
 	{
-		char *p = new char[sizeof(t_channel_id)];
-		memcpy(p, &for_channel_id, sizeof(t_channel_id));
 		neutrino_msg_t msg;
 		
 		if (info.flags & (CSectionsd::epgflags::has_current | CSectionsd::epgflags::has_next))
@@ -1453,7 +1440,7 @@ void CInfoViewer::getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentN
 			msg = NeutrinoMessages::EVT_NOEPG_YET;
 
 		//
-		g_RCInput->postMsg(msg, (const neutrino_msg_data_t)p, false); // data is pointer to allocated memory
+		g_RCInput->postMsg(msg, (const neutrino_msg_data_t)for_channel_id, false); // data is pointer to allocated memory
 	}	
 }
 
@@ -1893,24 +1880,21 @@ void CInfoViewer::showIcon_CA_Status() const
 	int caids[] = { 0x0600, 0x1700, 0x0100, 0x0500, 0x1800, 0x0B00, 0x0D00, 0x0900, 0x2600, 0x4a00, 0x0E00 };
 	
 	if(is_visible)
-	{	
-		//if(!notfirst) 
-		{	
-			bool fta = true;
+	{		
+		bool fta = true;
 			
-			for(i = 0; i < (int)(sizeof(caids)/sizeof(int)); i++) 
+		for(i = 0; i < (int)(sizeof(caids)/sizeof(int)); i++) 
+		{
+			if (pmt_caids[i]) 
 			{
-				if (pmt_caids[i]) 
-				{
-					fta = false;
-					break;
-				}
+				fta = false;
+				break;
 			}
-		
-			frameBuffer->paintIcon( fta ? NEUTRINO_ICON_SCRAMBLED2_GREY : NEUTRINO_ICON_SCRAMBLED2, BoxEndX - (ICON_OFFSET + icon_w_subt + 2 + icon_w_vtxt + 2 + icon_w_dd + 2 + icon_w_aspect + 2 + icon_w_sd + 2 + icon_w_reso + 2 + icon_w_ca), buttonBarStartY + (buttonBarHeight - icon_h_ca)/2 );
-			
-			return;
 		}
+		
+		frameBuffer->paintIcon( fta ? NEUTRINO_ICON_SCRAMBLED2_GREY : NEUTRINO_ICON_SCRAMBLED2, BoxEndX - (ICON_OFFSET + icon_w_subt + 2 + icon_w_vtxt + 2 + icon_w_dd + 2 + icon_w_aspect + 2 + icon_w_sd + 2 + icon_w_reso + 2 + icon_w_ca), buttonBarStartY + (buttonBarHeight - icon_h_ca)/2 );
+			
+		return;
 	}
 }
 

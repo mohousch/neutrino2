@@ -139,7 +139,7 @@
 
 //// defines
 typedef unsigned long neutrino_msg_t;
-typedef unsigned long neutrino_msg_data_t;
+typedef unsigned long long neutrino_msg_data_t;
 
 #define NEUTRINO_RCCONFIG_FILE		CONFIGDIR "/rc.conf"
 
@@ -166,14 +166,9 @@ class CRCInput
 		int fd_pipe_high_priority[2];
 		int fd_pipe_low_priority[2];
 
-#ifdef USE_OPENGL
-#define NUMBER_OF_EVENT_DEVICES 10
-#else
 #define NUMBER_OF_EVENT_DEVICES 4
-#endif
 
 		int fd_rc[NUMBER_OF_EVENT_DEVICES];
-		int fd_event;
 		int fd_max;
 		
 		__u16 rc_last_key;
@@ -427,7 +422,7 @@ class CRCInput
 		void getMsg_us(neutrino_msg_t* msg, neutrino_msg_data_t * data, uint64_t Timeout, bool bAllowRepeatLR = false);
 		
 		//
-		void postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data, const bool Priority = true);
+		void postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data = 0, const bool Priority = true);
 		
 		//
 		void clearRCMsg();

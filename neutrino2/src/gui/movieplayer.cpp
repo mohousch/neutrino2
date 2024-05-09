@@ -219,7 +219,7 @@ void CMoviePlayerGui::restoreNeutrino()
 	CNeutrinoApp::getInstance()->handleMsg(NeutrinoMessages::CHANGEMODE, m_LastMode);
 	
 	//show infobar
-	g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
+	g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR);
 	
 	stopped = false;
 }

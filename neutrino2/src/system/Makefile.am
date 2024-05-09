@@ -7,7 +7,6 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib \
 	-I$(top_srcdir)/lib/connection \
 	-I$(top_srcdir)/lib/configfile \
-	-I$(top_srcdir)/lib/libeventserver \
 	-I$(top_srcdir)/lib/libnet \
 	-I$(top_srcdir)/lib/libconfigfile \
 	-I$(top_srcdir)/lib/libmd5sum \

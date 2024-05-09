@@ -667,7 +667,7 @@ void CStreamManager::run()
 						perror("CStreamManager::run(): accept");
 						continue;
 					}
-					g_RCInput->postMsg(NeutrinoMessages::EVT_STREAM_START, connfd);
+					g_RCInput->postMsg(NeutrinoMessages::EVT_STREAM_START, (const neutrino_msg_data_t)connfd);
 					poll_timeout = 1000;
 				}
 				else
@@ -679,7 +679,7 @@ void CStreamManager::run()
 						if (streams.empty())
 						{
 							poll_timeout = 2000;
-							g_RCInput->postMsg(NeutrinoMessages::EVT_STREAM_STOP, 0);
+							g_RCInput->postMsg(NeutrinoMessages::EVT_STREAM_STOP);
 						}
 					}
 				}
