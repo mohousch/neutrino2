@@ -463,7 +463,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 		}
 		else if (msg == CRCInput::RC_sat || msg == CRCInput::RC_favorites)
 		{
-			g_RCInput->postMsg (msg, 0);
+			g_RCInput->postMsg(msg);
 			res = CMenuTarget::RETURN_EXIT_ALL;
 			loop = false;
 		}

@@ -465,7 +465,7 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 			break;
 			
 		case NeutrinoMessages::EVT_SCAN_PROVIDER:
-			paintLine(xpos2, ypos_provider, w, (char*)data); // UTF-8
+			paintLine(xpos2, ypos_provider, w, (char *)data); // UTF-8
 			break;
 			
 		case NeutrinoMessages::EVT_SCAN_SERVICENAME:
@@ -507,8 +507,6 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 			break;
 			
 		default:
-//			if ((msg >= CRCInput::RC_WithData) && (msg < CRCInput::RC_WithData + 0x10000000)) 
-//				delete (unsigned char*) data;
 			break;
 	}
 	

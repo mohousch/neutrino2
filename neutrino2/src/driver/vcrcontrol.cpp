@@ -287,7 +287,7 @@ void CVCRControl::RestoreNeutrino(void)
 		if(CNeutrinoApp::getInstance()->getMode() != last_mode && CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby && last_mode != NeutrinoMessages::mode_standby)
 		{
 			if(!autoshift) 
-				g_RCInput->postMsg(NeutrinoMessages::CHANGEMODE, last_mode);
+				g_RCInput->postMsg(NeutrinoMessages::CHANGEMODE, (const neutrino_msg_data_t)last_mode);
 		}
 
 		if(last_mode == NeutrinoMessages::mode_standby && CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_standby )
@@ -356,8 +356,8 @@ void CVCRControl::Stop()
 	// set lastmode
 	if(last_mode != NeutrinoMessages::mode_scart)
 	{
-		g_RCInput->postMsg( NeutrinoMessages::VCR_OFF, 0 );
-		g_RCInput->postMsg( NeutrinoMessages::CHANGEMODE , last_mode);
+		g_RCInput->postMsg( NeutrinoMessages::VCR_OFF);
+		g_RCInput->postMsg( NeutrinoMessages::CHANGEMODE , (const neutrino_msg_data_t)last_mode);
 	}
 	
 	// cleanup
@@ -386,7 +386,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::doRecord\n");
 	
 	// leave menu (if in any)
-	g_RCInput->postMsg(CRCInput::RC_timeout, 0);
+	g_RCInput->postMsg(CRCInput::RC_timeout);
 	
 	last_mode = CNeutrinoApp::getInstance()->getMode();
 
@@ -431,7 +431,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 		CNeutrinoApp::getInstance()->handleMsg( NeutrinoMessages::VCR_ON, 0 );
 		// Das ganze nochmal in die queue, da obiges RC_timeout erst in der naechsten ev. loop ausgef�hrt wird
 		// und dann das menu widget das display falsch r�cksetzt
-		g_RCInput->postMsg( NeutrinoMessages::VCR_ON, 0 );
+		g_RCInput->postMsg( NeutrinoMessages::VCR_ON);
 	}
 
 	deviceState = CMD_VCR_RECORD;

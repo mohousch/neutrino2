@@ -1190,14 +1190,20 @@ void CTimerEvent_Record::fireEvent()
 {
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Record::fireEvent\n");
 	
-	CTimerd::RecordingInfo ri = eventInfo;
+	CTimerd::RecordingInfo ri; // = eventInfo;
+	
+	////
+	ri.epgID = eventInfo.epgID;
+	ri.epg_starttime = eventInfo.epg_starttime;
+	ri.channel_id = eventInfo.channel_id;
+	ri.recordingSafety = eventInfo.recordingSafety;
+	ri.apids = eventInfo.apids;
+	////
 	ri.eventID = eventID;
 	strcpy(ri.recordingDir, recordingDir.substr(0, sizeof(ri.recordingDir)-1).c_str());						
 	strcpy(ri.epgTitle, epgTitle.substr(0, sizeof(ri.epgTitle)-1).c_str());	
 						
 	g_RCInput->postMsg(NeutrinoMessages::RECORD_START, (const neutrino_msg_data_t)&ri, false);
-
-	dprintf(DEBUG_NORMAL, "CTimerEvent_Record::fireEvent: Record Timer fired\n"); 
 }
 
 void CTimerEvent_Record::announceEvent()
@@ -1205,14 +1211,22 @@ void CTimerEvent_Record::announceEvent()
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Record::announceEvent\n");
 	
 	Refresh();
-	CTimerd::RecordingInfo ri = eventInfo;
+	
+	CTimerd::RecordingInfo ri; // = (CTimerd::RecordingInfo)eventInfo;
+	
+	////
+	ri.epgID = eventInfo.epgID;
+	ri.epg_starttime = eventInfo.epg_starttime;
+	ri.channel_id = eventInfo.channel_id;
+	ri.recordingSafety = eventInfo.recordingSafety;
+	ri.apids = eventInfo.apids;
+	////
+	
 	ri.eventID = eventID;
 	strcpy(ri.recordingDir, recordingDir.substr(0, sizeof(ri.recordingDir)-1).c_str());						
 	strcpy(ri.epgTitle, epgTitle.substr(0, sizeof(ri.epgTitle)-1).c_str());	
 						
 	g_RCInput->postMsg(NeutrinoMessages::ANNOUNCE_RECORD, (const neutrino_msg_data_t)&ri, false);
-	
-	dprintf(DEBUG_NORMAL, "CTimerEvent_Record::announceEvent: Record announcement\n"); 
 }
 
 void CTimerEvent_Record::stopEvent()
@@ -1228,8 +1242,6 @@ void CTimerEvent_Record::stopEvent()
 								  
 	// Programmiere shutdown timer, wenn in wakeup state und kein record/zapto timer in 10 min
 	CTimerManager::getInstance()->shutdownOnWakeup(eventID);
-	
-	dprintf(DEBUG_NORMAL, "CTimerEvent_Record::stopEvent: Recording stopped\n"); 
 }
 
 void CTimerEvent_Record::saveToConfig(CConfigFile *config)
@@ -1286,6 +1298,7 @@ void CTimerEvent_Record::getEpgId()
 			break;
 		}
 	}
+	
 	if(eventInfo.epgID != 0)
 	{
 		CShortEPGData epgdata;
@@ -1302,7 +1315,7 @@ void CTimerEvent_Record::Refresh()
 		getEpgId();
 }
 
-// event zapto
+//// event zapto
 void CTimerEvent_Zapto::announceEvent()
 {
 	g_RCInput->postMsg(NeutrinoMessages::ANNOUNCE_ZAPTO);
@@ -1315,11 +1328,11 @@ void CTimerEvent_Zapto::fireEvent()
 
 void CTimerEvent_Zapto::getEpgId()
 {
-	//CSectionsdClient sdc;
 	CChannelEventList evtlist; 
 	CSectionsd::getInstance()->getEventsServiceKey(eventInfo.channel_id &0xFFFFFFFFFFFFULL, evtlist);
 	// we check for a time 5 min after zap
 	time_t check_time = alarmTime + 300;
+	
 	for ( CChannelEventList::iterator e = evtlist.begin(); e != evtlist.end(); ++e )
 	{
 		if ( e->startTime < check_time && (e->startTime + (int)e->duration) > check_time)
@@ -1410,7 +1423,7 @@ CTimerEvent_Remind::CTimerEvent_Remind(time_t lannounceTime,
 	CTimerEvent(CTimerd::TIMER_REMIND, lannounceTime, lalarmTime, (time_t) 0, evrepeat, repeatcount)
 {
 	memset(message, 0, sizeof(message));
-	strncpy(message, msg, sizeof(message)-1);
+	strncpy(message, msg, sizeof(message) - 1);
 }
 
 CTimerEvent_Remind::CTimerEvent_Remind(CConfigFile *config, int iId):
@@ -1419,6 +1432,7 @@ CTimerEvent(CTimerd::TIMER_REMIND, config, iId)
 	std::stringstream ostr;
 	ostr << iId;
 	std::string id = ostr.str();
+	
 	strcpy(message, config->getString("MESSAGE_" + id).c_str());
 	
 	dprintf(DEBUG_INFO, "CTimerEvent_Remind::CTimerEvent_Remind: read MESSAGE_%s %s (%p)\n",id.c_str(), message, message);

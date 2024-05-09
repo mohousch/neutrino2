@@ -608,12 +608,12 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 
 			if ((msg == CRCInput::RC_sat) || (msg == CRCInput::RC_favorites) || (msg == CRCInput::RC_setup) || (msg == CRCInput::RC_red) || (msg == CRCInput::RC_green) || (msg == CRCInput::RC_yellow) || (msg == CRCInput::RC_blue) || (msg == CRCInput::RC_ok) || (msg == CRCInput::RC_text) || (msg == CRCInput::RC_epg) || (msg == CRCInput::RC_record) || (msg == CRCInput::RC_play) || (msg == CRCInput::RC_pause) || (msg == CRCInput::RC_dvbsub) || (msg == CRCInput::RC_mode) || (msg == CRCInput::RC_audio))
 			{
-				g_RCInput->postMsg(msg, 0);
+				g_RCInput->postMsg(msg);
 				res = messages_return::cancel_info;
 			}
 			else if (msg == CRCInput::RC_info)
 			{
-				g_RCInput->postMsg(NeutrinoMessages::SHOW_EPG, 0);
+				g_RCInput->postMsg(NeutrinoMessages::SHOW_EPG);
 					
 				res = messages_return::cancel_info;
 			} 
@@ -740,7 +740,7 @@ void CInfoViewer::getCurrentNextEPG(t_channel_id ChannelID, bool newChan, int EP
 			info_CurrentNext.flags 			= CSectionsd::epgflags::has_current;
 			info_CurrentNext.current_uniqueKey      = eli->eventID;
 			info_CurrentNext.current_time.starttime = eli->startTime;
-			info_CurrentNext.current_time.duration     = eli->duration;
+			info_CurrentNext.current_time.duration  = eli->duration;
 
 			if (eli->description.empty())
 				info_CurrentNext.current_name   = _("EPG not available");
@@ -894,7 +894,7 @@ void CInfoViewer::showSubchan()
 				if (res & messages_return::unhandled) 
 				{
 		  			// raus hier und im Hauptfenster behandeln...
-		  			g_RCInput->postMsg (msg, data);
+		  			g_RCInput->postMsg(msg, data);
 		  			res = messages_return::cancel_info;
 				}
 	  		}
@@ -904,12 +904,6 @@ void CInfoViewer::showSubchan()
 		frameBuffer->blit();	
   		
 	}
-	/*
-	else 
-	{
-		g_RCInput->postMsg(NeutrinoMessages::SHOW_INFOBAR, 0);
-  	}
-  	*/
 }
 
 // radiotext
@@ -1223,7 +1217,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 {
  	if ((msg == NeutrinoMessages::EVT_CURRENTNEXT_EPG) || (msg == NeutrinoMessages::EVT_NEXTPROGRAM)) 
 	{
-	  	getEPG(/**(t_channel_id *)*/data & 0xFFFFFFFFFFFFULL, info_CurrentNext);
+	  	getEPG(data, info_CurrentNext);
 	  	
 	  	if ( is_visible )
 			showEPGData(true);
@@ -1259,7 +1253,6 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
   	} 
 	else if (msg == NeutrinoMessages::EVT_ZAP_GOTAPIDS) 
 	{
-		//if ((*(t_channel_id *) data) == channel_id) 
 		if (data == channel_id)
 		{
 	  		if ( is_visible && showButtonBar )
@@ -1270,10 +1263,6 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
   	} 
 	else if (msg == NeutrinoMessages::EVT_ZAP_GOTPIDS) 
 	{
-		////test
-		printf("handleMsg: msg: %llx (data: %llx, channel:%llx)\n", msg, data, channel_id);
-		
-		//if ((*(t_channel_id *) data) == channel_id) 
 		if (data == channel_id)
 		{
 	  		if ( is_visible && showButtonBar ) 
@@ -1290,7 +1279,6 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
   	} 
 	else if (msg == NeutrinoMessages::EVT_ZAP_GOT_SUBSERVICES) 
 	{
-		//if ((*(t_channel_id *) data) == channel_id) 
 		if (data == channel_id)
 		{
 	  		if ( is_visible && showButtonBar )
@@ -1301,7 +1289,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
   	} 
   	else if ((msg == NeutrinoMessages::EVT_ZAP_COMPLETE) || (msg == NeutrinoMessages::EVT_ZAP_ISNVOD))
 	{
-		dprintf(DEBUG_NORMAL, "CInfoViewer::handleMsg: EVT_ZAP_COMPLETE: channel_id: %llx data: %llx\n", channel_id, /**(t_channel_id *)*/data);
+		dprintf(DEBUG_NORMAL, "CInfoViewer::handleMsg: EVT_ZAP_COMPLETE: channel_id: %llx data: %llx\n", channel_id, data);
 		
 		chanready = 1;
 		showSNR();
@@ -1309,7 +1297,6 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		if ( is_visible && showButtonBar ) 
 			showIcon_Resolution();
 		
-		//channel_id = (*(t_channel_id *)data);
 		channel_id = data;
 		
 		return messages_return::handled;
@@ -1322,7 +1309,6 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		if ( is_visible && showButtonBar ) 
 			showIcon_Resolution();
 
-		//if ((*(t_channel_id *)data) == channel_id)
 		if (data == channel_id)
 		{
 	  		if ( is_visible && showButtonBar && (!g_RemoteControl->are_subchannels))
@@ -1362,7 +1348,6 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		if ( is_visible && showButtonBar ) 
 			showIcon_Resolution();
 
-		//if ((*(t_channel_id *) data) == channel_id) 
 		if (data == channel_id)
 		{
 	  		dprintf(DEBUG_NORMAL, "CInfoViewer::handleMsg: zap failed!\n");
@@ -1435,7 +1420,7 @@ void CInfoViewer::getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentN
 	// if there is no EPG, send an event so that parental lock can work
 	if (info.current_uniqueKey == 0 && info.next_uniqueKey == 0) 
 	{
-		g_RCInput->postMsg(NeutrinoMessages::EVT_NOEPG_YET, (const neutrino_msg_data_t) for_channel_id, false);
+		g_RCInput->postMsg(NeutrinoMessages::EVT_NOEPG_YET, (const neutrino_msg_data_t)for_channel_id, false);
 		
 		return;
 	}

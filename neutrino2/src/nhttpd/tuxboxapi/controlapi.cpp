@@ -225,7 +225,7 @@ void CControlAPI::Execute(CyhookHandler *hh)
 	// debugging informations
 	if(CLogging::getInstance()->getDebug())
 	{
-		dprintf("Execute CGI : %s\n",filename.c_str());
+		dprintf("CControlAPI::Execute CGI : %s\n", filename.c_str());
 		
 		for(CStringList::iterator it = hh->ParamList.begin(); it != hh->ParamList.end(); it++)
 			dprintf("  Parameter %s : %s\n",it->first.c_str(), it->second.c_str());
@@ -558,6 +558,7 @@ void CControlAPI::MessageCGI(CyhookHandler *hh)
 		message = decodeString(message);
 
 		g_RCInput->postMsg(event, (const neutrino_msg_data_t)message.c_str(), false);
+		
 		hh->SendOk();
 	}
 	else
@@ -753,7 +754,7 @@ void CControlAPI::RCEmCGI(CyhookHandler *hh)
 	}
 	
 	//
-	g_RCInput->postMsg((neutrino_msg_t)sendcode, 0);
+	g_RCInput->postMsg((neutrino_msg_t)sendcode);
 	
 	hh->SendOk();
 }
@@ -1403,6 +1404,7 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 void CControlAPI::StartPluginCGI(CyhookHandler *hh)
 {
 	std::string pluginname;
+	
 	if (!(hh->ParamList.empty()))
 	{
 		if (hh->ParamList["name"] != "")
@@ -2169,7 +2171,7 @@ void CControlAPI::doNewTimer(CyhookHandler *hh)
 		data=&standby_on;
 	}
 	else if(type==CTimerd::TIMER_NEXTPROGRAM || type==CTimerd::TIMER_ZAPTO)
-		data= &eventinfo;
+		data = &eventinfo;
 	else if (type==CTimerd::TIMER_RECORD)
 	{
 		if(_rec_dir == "")
@@ -2182,7 +2184,14 @@ void CControlAPI::doNewTimer(CyhookHandler *hh)
 		}
 		if(changeApids)
 			eventinfo.apids = apids;
-		recinfo = eventinfo;
+		//recinfo = eventinfo;
+		////
+		recinfo.epgID = eventinfo.epgID;
+		recinfo.epg_starttime = eventinfo.epg_starttime;
+		recinfo.channel_id = eventinfo.channel_id;
+		recinfo.recordingSafety = eventinfo.recordingSafety;
+		recinfo.apids = eventinfo.apids;
+		////
 		strncpy(recinfo.recordingDir, _rec_dir.c_str(), RECORD_DIR_MAXLEN-1);
 		data = &recinfo;
 	}
@@ -2200,6 +2209,7 @@ void CControlAPI::doNewTimer(CyhookHandler *hh)
 		strncpy(msg, hh->ParamList["PluginName"].c_str(),EXEC_PLUGIN_NAME_MAXLEN-1);
 		data=msg;
 	}
+	
 	// update or add timer
 	if(hh->ParamList["update"]=="1")
 	{
@@ -2232,6 +2242,7 @@ void CControlAPI::doNewTimer(CyhookHandler *hh)
 				}
 		}
 	}
+	
 	CTimerd::getInstance()->addTimerEvent(type, data, announceTimeT, alarmTimeT, stopTimeT, rep, repCount);//FIXME
 	hh->SendOk();
 }

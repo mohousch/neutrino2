@@ -187,7 +187,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			}
 			
 			//
-			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
+			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR);
 
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
 				g_RCInput->postMsg( NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false );
@@ -250,7 +250,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				}
 				
 				//	
-				g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
+				g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR);
 
 				current_EPGid = info_CN.current_uniqueKey;
 
@@ -271,7 +271,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			if ((!is_video_started) && (info_CN.current_fsk == 0 || g_settings.parentallock_prompt == PARENTALLOCK_PROMPT_CHANGETOLOCKED))
 				g_RCInput->postMsg(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false);
 			else
-				g_RCInput->postMsg(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, info_CN.current_fsk, false);
+				g_RCInput->postMsg(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, (const neutrino_msg_data_t)info_CN.current_fsk, false);
 		}
 
 		return messages_return::handled;
@@ -434,7 +434,7 @@ void CRemoteControl::getNVODs()
 
 			copySubChannelsToZapit();
 			
-			g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_GOT_SUBSERVICES, (const neutrino_msg_data_t)current_channel_id, false); // data is pointer to allocated memory
+			g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_GOT_SUBSERVICES, (const neutrino_msg_data_t)current_channel_id, false);
 
 			if ( selected_subchannel == -1 )
 			{

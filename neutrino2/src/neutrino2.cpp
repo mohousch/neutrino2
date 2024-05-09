@@ -1957,7 +1957,7 @@ void CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 	{
 		CTimerd::getInstance()->stopTimerEvent(recording_id);
 			
-		startNextRecording();
+//		startNextRecording();
 	}
 		
 	if (recordingstatus) 
@@ -2035,7 +2035,7 @@ void CNeutrinoApp::startNextRecording()
 		 * What a brilliant idea to send classes via the eventserver!
 		 * => typecast to avoid destructor call
 		 */
-		delete [](unsigned char *)nextRecordingInfo;
+		//delete [](unsigned char *)nextRecordingInfo;
 
 		nextRecordingInfo = NULL;
 	}
@@ -2815,7 +2815,7 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 	else if(actionKey == "scart") 
 	{
-		g_RCInput->postMsg( NeutrinoMessages::VCR_ON, 0 );
+		g_RCInput->postMsg( NeutrinoMessages::VCR_ON);
 		returnval = RETURN_EXIT_ALL;
 	}
 	else if (actionKey == "tvradioswitch")
@@ -3336,7 +3336,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	// zap complete event
 	if(msg == NeutrinoMessages::EVT_ZAP_COMPLETE) 
 	{
-		dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: EVT_ZAP_COMPLETE current_channel_id: 0x%llx data:0x%llx\n", CZapit::getInstance()->getCurrentChannelID(), /**(t_channel_id *)*/data);
+		dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: EVT_ZAP_COMPLETE current_channel_id: 0x%llx data:0x%llx\n", CZapit::getInstance()->getCurrentChannelID(), data);
 		
 		// set audio map after channel zap
 		CZapit::getInstance()->getAudioMode(&g_settings.audio_AnalogMode);
@@ -3541,7 +3541,7 @@ _repeat:
 				}
 			}
 			
-			g_RCInput->postMsg(new_msg, 0);
+			g_RCInput->postMsg(new_msg);
 			return messages_return::cancel_all | messages_return::handled;
 		}
 		
@@ -3577,7 +3577,7 @@ _repeat:
 		{
 			bouquetList->activateBouquet(old_b_id);
 			old_b_id = -1;
-			g_RCInput->postMsg(CRCInput::RC_ok, 0);
+			g_RCInput->postMsg(CRCInput::RC_ok);
 		}
 	}
 	else if( msg == NeutrinoMessages::EVT_BOUQUETSCHANGED ) // reloadCurrentServices / scan
@@ -3605,7 +3605,7 @@ _repeat:
 		recordingstatus = data;
 		
 		if( ( !g_InfoViewer->is_visible ) && data && !autoshift)
-			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
+			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR);
 
 		return messages_return::handled;
 	}
@@ -3616,12 +3616,13 @@ _repeat:
 			stopAutoRecord();
 		}
 
-		if (nextRecordingInfo != NULL)
-			delete[] (unsigned char *) nextRecordingInfo;
+//		if (nextRecordingInfo != NULL)
+//			delete[] (unsigned char *) nextRecordingInfo;
 
-		nextRecordingInfo = (CTimerd::RecordingInfo *) data;
+		CTimerd::RecordingInfo *recordingInfo;
+		recordingInfo = (CTimerd::RecordingInfo *) data;
 		
-		startNextRecording();
+		startNextRecording(recordingInfo);
 
 		return messages_return::handled | messages_return::cancel_all;
 	}
@@ -3639,7 +3640,7 @@ _repeat:
 				timeshiftstatus = 0;
 			}
 
-			startNextRecording();
+//			startNextRecording();
 
 			if ( recordingstatus == 0 ) 
 			{
@@ -3650,7 +3651,7 @@ _repeat:
 		{
 			if(((CTimerd::RecordingStopInfo*)data)->eventID == nextRecordingInfo->eventID) 
 			{
-				delete[] (unsigned char *) nextRecordingInfo;
+//				delete[] (unsigned char *) nextRecordingInfo;
 				nextRecordingInfo = NULL;
 			}
 		}
@@ -3675,7 +3676,7 @@ _repeat:
 		if (!CStreamManager::getInstance()->AddClient(fd)) 
 		{
 			close(fd);
-			g_RCInput->postMsg(NeutrinoMessages::EVT_STREAM_STOP, 0);
+			g_RCInput->postMsg(NeutrinoMessages::EVT_STREAM_STOP);
 		}
 
 		return messages_return::handled;
@@ -3902,14 +3903,14 @@ _repeat:
 	else if ( msg == NeutrinoMessages::EVT_POPUP ) 
 	{
 		if (mode != mode_scart)
-			HintBox(_("Information"), (const char *) data); // UTF-8
+			HintBox(_("Information"), (char *)data); // UTF-8
 		
 		return messages_return::handled;
 	}
 	else if (msg == NeutrinoMessages::EVT_EXTMSG) 
 	{
 		if (mode != mode_scart)
-			MessageBox(_("Information"), (const char *) data, CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO); // UTF-8
+			MessageBox(_("Information"), (char *)data, CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO); // UTF-8
 		
 		return messages_return::handled;
 	}
@@ -4626,7 +4627,7 @@ void CNeutrinoApp::realRun(void)
 					{
 						CVCRControl::getInstance()->Stop();
 						recordingstatus = 0;
-						startNextRecording();
+//						startNextRecording();
 					}
 
 					// Scart-Mode verlassen

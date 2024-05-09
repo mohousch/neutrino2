@@ -59,27 +59,12 @@
 
 #define ENABLE_REPEAT_CHECK
 
-#ifdef USE_OPENGL
-const char * const RC_EVENT_DEVICE[NUMBER_OF_EVENT_DEVICES] = {
-	"/dev/input/event0", 
-	"/dev/input/event1", 
-	"/dev/input/event2", 
-	"/dev/input/event3",
-	"/dev/input/event4", 
-	"/dev/input/event5", 
-	"/dev/input/event6", 
-	"/dev/input/event7",
-	"/dev/input/event8", 
-	"/dev/input/event9"
-};
-#else
 const char * const RC_EVENT_DEVICE[NUMBER_OF_EVENT_DEVICES] = {
 	"/dev/input/event0", 
 	"/dev/input/event1", 
 	"/dev/input/event2", 
 	"/dev/input/event3"
 };
-#endif
 
 typedef struct input_event t_input_event;
 
@@ -742,7 +727,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			*msg  = buf.msg;
 			*data = buf.data;
 
-			dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us:got event from high-pri pipe msg=(0x%x) data:(0x%x) <\n", *msg, *data );
+			dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us:got event from high-pri pipe msg=(0x%llx) data:(0x%llx) <\n", *msg, *data );
 
 			return;
 		}
@@ -761,7 +746,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					continue;
 				}
 								
-				dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us:got event from device type: 0x%X key: 0x%X value %d, translate: 0x%X -%s<\n", ev.type, ev.code, ev.value, translate(ev.code, i), getKeyName(translate(ev.code, i)).c_str() );
+				dprintf(DEBUG_DEBUG, ANSI_RED"\nCRCInput::getMsg_us:got event from device type: 0x%X key: 0x%X value %d, translate: 0x%X -%s<\n", ev.type, ev.code, ev.value, translate(ev.code, i), getKeyName(translate(ev.code, i)).c_str() );
 				
 				if (ev.type != EV_KEY)
 					continue;
@@ -848,7 +833,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			*msg  = buf.msg;
 			*data = buf.data;
 
-			dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us:got event from low-pri pipe msg=(0x%x) data:(0x%x) <\n", *msg, *data );
+			dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us:got event from low-pri pipe msg=(0x%llx) data:(0x%llx) <\n", *msg, *data );
 
 			return;
 		}
@@ -914,7 +899,7 @@ void CRCInput::setRepeat(unsigned int delay,unsigned int period)
 
 void CRCInput::postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data, const bool Priority)
 {
-	dprintf(DEBUG_NORMAL, ANSI_RED "CRCInput::postMsg: msg:(0x%x) data:(0x%x) prio:(%d) >\n", msg, data, Priority );
+	dprintf(DEBUG_NORMAL, ANSI_RED "CRCInput::postMsg: msg:(0x%llx) data:(0x%llx) prio:(%s) >\n", msg, data, Priority? "high" : "low" );
 
 	struct event buf;
 	
@@ -1179,6 +1164,7 @@ const char * CRCInput::getSpecialKeyName(const unsigned long key)
 std::string CRCInput::getKeyName(const unsigned long key)
 {
 	int unicode_value = getUnicodeValue(key);
+	
 	if (unicode_value == -1)
 		return getSpecialKeyName(key);
 	else
@@ -1186,6 +1172,7 @@ std::string CRCInput::getKeyName(const unsigned long key)
 		char tmp[2];
 		tmp[0] = unicode_value;
 		tmp[1] = 0;
+		
 		return std::string(tmp);
 	}
 }

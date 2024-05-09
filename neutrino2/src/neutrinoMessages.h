@@ -42,7 +42,8 @@ struct messages_return
 	};
 };
 
-struct NeutrinoMessages {
+struct NeutrinoMessages 
+{
 	enum
 	{
 		// infoviewer
@@ -142,29 +143,29 @@ struct NeutrinoMessages {
 		EVT_START_PLUGIN                         = CRCInput::RC_WithData +  5,
 
 		// sectionsd
-		EVT_CURRENTNEXT_EPG                      = CRCInput::RC_WithData +  6, /* data: (t_channel_id *) */
-		EVT_TIMESET                              = CRCInput::RC_WithData +  7, /* data: (long long *)    */
+		EVT_CURRENTNEXT_EPG                      = CRCInput::RC_WithData +  6,
+		EVT_TIMESET                              = CRCInput::RC_WithData +  7,
 
 		// infoviewer
-		EVT_NOEPG_YET                            = CRCInput::RC_WithData +  8, /* data: (t_channel_id *) */
+		EVT_NOEPG_YET                            = CRCInput::RC_WithData +  8,
 
 		// timerd
-		EVT_NEXTPROGRAM                          = CRCInput::RC_WithData +  9, /* data: (t_channel_id *) */
+		EVT_NEXTPROGRAM                          = CRCInput::RC_WithData +  9,
 
 		// zapit
 		EVT_SCAN_PROVIDER                        = CRCInput::RC_WithData + 11,
 		EVT_SCAN_SATELLITE                       = CRCInput::RC_WithData + 12,
 		EVT_SCAN_SERVICENAME                     = CRCInput::RC_WithData + 13,
-		EVT_ZAP_COMPLETE                         = CRCInput::RC_WithData + 14, /* data: (t_channel_id *) */
-		EVT_ZAP_FAILED                           = CRCInput::RC_WithData + 15, /* data: (t_channel_id *) */
-		EVT_ZAP_ISNVOD                           = CRCInput::RC_WithData + 16, /* data: (t_channel_id *) */
-		EVT_ZAP_SUB_COMPLETE                     = CRCInput::RC_WithData + 17, /* data: (t_channel_id *) */
-		EVT_ZAP_SUB_FAILED                       = CRCInput::RC_WithData + 18, /* data: (t_channel_id *) */
+		EVT_ZAP_COMPLETE                         = CRCInput::RC_WithData + 14,
+		EVT_ZAP_FAILED                           = CRCInput::RC_WithData + 15,
+		EVT_ZAP_ISNVOD                           = CRCInput::RC_WithData + 16,
+		EVT_ZAP_SUB_COMPLETE                     = CRCInput::RC_WithData + 17,
+		EVT_ZAP_SUB_FAILED                       = CRCInput::RC_WithData + 18,
 
 		// remotecontrol
-		EVT_ZAP_GOT_SUBSERVICES                  = CRCInput::RC_WithData + 19, /* data: (t_channel_id *) */
-		EVT_ZAP_GOTAPIDS                         = CRCInput::RC_WithData + 20, /* data: (t_channel_id *) */
-		EVT_ZAP_GOTPIDS                          = CRCInput::RC_WithData + 21  /* data: (t_channel_id *) */
+		EVT_ZAP_GOT_SUBSERVICES                  = CRCInput::RC_WithData + 19,
+		EVT_ZAP_GOTAPIDS                         = CRCInput::RC_WithData + 20,
+		EVT_ZAP_GOTPIDS                          = CRCInput::RC_WithData + 21
 	};
 
 	enum

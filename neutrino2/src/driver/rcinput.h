@@ -139,7 +139,7 @@
 
 //// defines
 typedef unsigned long neutrino_msg_t;
-typedef unsigned long neutrino_msg_data_t;
+typedef unsigned long long neutrino_msg_data_t;
 
 #define NEUTRINO_RCCONFIG_FILE		CONFIGDIR "/rc.conf"
 
@@ -166,11 +166,7 @@ class CRCInput
 		int fd_pipe_high_priority[2];
 		int fd_pipe_low_priority[2];
 
-#ifdef USE_OPENGL
-#define NUMBER_OF_EVENT_DEVICES 10
-#else
 #define NUMBER_OF_EVENT_DEVICES 4
-#endif
 
 		int fd_rc[NUMBER_OF_EVENT_DEVICES];
 		int fd_max;

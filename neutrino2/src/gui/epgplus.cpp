@@ -1025,7 +1025,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 			  				if ((msg != CRCInput::RC_red) && (msg != CRCInput::RC_timeout)) 
 							{
 								// RC_red schlucken
-								g_RCInput->postMsg (msg, data);
+								g_RCInput->postMsg(msg, data);
 			  				}
 
 			  				this->header->paint ();
@@ -1035,14 +1035,6 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 		  			}
 				}
 			}
-			/*
-			else if ( msg == CRCInput::RC_sat || msg == CRCInput::RC_favorites)
-			{
-				g_RCInput->postMsg (msg, 0);
-				res = CMenuTarget::RETURN_EXIT_ALL;
-				loop = false;
-	 		}
-	 		*/
 			else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 			{
 				this->header->refresh();

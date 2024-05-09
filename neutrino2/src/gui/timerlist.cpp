@@ -648,7 +648,7 @@ int CTimerList::show()
 		}
 		else if (msg == CRCInput::RC_sat || msg == CRCInput::RC_favorites)
 		{
-			g_RCInput->postMsg (msg, 0);
+			g_RCInput->postMsg(msg);
 			loop = false;
 			res = CMenuTarget::RETURN_EXIT_ALL;
 		}

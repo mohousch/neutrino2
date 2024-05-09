@@ -82,6 +82,7 @@ class CTimerd
 			bool          recordingSafety;
 		};
 
+		/*
 		class RecordingInfo : public EventInfo
 		{
 			public:
@@ -110,6 +111,20 @@ class CTimerd
 				int eventID;
 				char recordingDir[RECORD_DIR_MAXLEN];
 				char epgTitle[EPG_TITLE_MAXLEN];
+		};
+		*/
+
+		////
+		struct RecordingInfo
+		{
+			event_id_t    epgID;
+			time_t        epg_starttime;
+			t_channel_id  channel_id;
+			bool          recordingSafety;
+			unsigned char apids;
+			int eventID;
+			char recordingDir[RECORD_DIR_MAXLEN];
+			char epgTitle[EPG_TITLE_MAXLEN];
 		};
 
 		struct RecordingStopInfo
