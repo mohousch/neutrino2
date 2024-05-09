@@ -1813,7 +1813,7 @@ void CNeutrinoApp::setupFonts(const char* font_file)
 //// start autoRecord (permanent/temp timeshift)
 int CNeutrinoApp::startAutoRecord(bool addTimer)
 {
-	CTimerd::RecordingInfo eventinfo;
+	CTimerd::EventInfo eventinfo;
 
 	if(CNeutrinoApp::getInstance()->recordingstatus)
 		return 0;
@@ -1894,7 +1894,7 @@ void CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::doGuiRecord:");
 	
-	CTimerd::RecordingInfo eventinfo;
+	CTimerd::EventInfo eventinfo;
 
 	// stop autorecord
 	if(autoshift) 
@@ -2030,12 +2030,6 @@ void CNeutrinoApp::startNextRecording()
 			recordingstatus = 1;
 		else
 			recordingstatus = 0;
-
-		/* Note: CTimerd::RecordingInfo is a class!
-		 * What a brilliant idea to send classes via the eventserver!
-		 * => typecast to avoid destructor call
-		 */
-		//delete [](unsigned char *)nextRecordingInfo;
 
 		nextRecordingInfo = NULL;
 	}
@@ -3616,14 +3610,7 @@ _repeat:
 			stopAutoRecord();
 		}
 
-//		if (nextRecordingInfo != NULL)
-//			delete[] (unsigned char *) nextRecordingInfo;
-////
-		CTimerd::EventInfo * eventinfo;
-		eventinfo = (CTimerd::EventInfo *) data;
-
-
-		nextRecordingInfo = (CTimerd::RecordingInfo *) eventinfo;
+		nextRecordingInfo = (CTimerd::EventInfo *)data;
 		
 		startNextRecording();
 
@@ -3654,7 +3641,6 @@ _repeat:
 		{
 			if(((CTimerd::RecordingStopInfo*)data)->eventID == nextRecordingInfo->eventID) 
 			{
-//				delete[] (unsigned char *) nextRecordingInfo;
 				nextRecordingInfo = NULL;
 			}
 		}
@@ -3790,7 +3776,7 @@ _repeat:
 	}
 	else if( msg == NeutrinoMessages::ANNOUNCE_RECORD) 
 	{
-		char * lrecDir = ((CTimerd::RecordingInfo*)data)->recordingDir;
+		char * lrecDir = ((CTimerd::EventInfo*)data)->recordingDir;
 
 		// ether-wake
 		for(int i = 0 ; i < NETWORK_NFS_NR_OF_ENTRIES ; i++) 

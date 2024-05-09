@@ -2147,7 +2147,7 @@ void CControlAPI::doNewTimer(CyhookHandler *hh)
 			apids |= TIMERD_APIDS_AC3;
 		}
 	}
-	CTimerd::RecordingInfo recinfo;
+	CTimerd::EventInfo recinfo;
 	CTimerd::EventInfo eventinfo;
 	eventinfo.epgID = 0;
 	eventinfo.epg_starttime = 0;

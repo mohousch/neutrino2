@@ -1134,14 +1134,15 @@ CTimerEvent_Record::CTimerEvent_Record(time_t lannounceTime, time_t lalarmTime, 
 	eventInfo.channel_id = channel_id;
 	eventInfo.apids = apids;
 	recordingDir = recDir;
-//	strcpy(eventInfo.recordingDir, recordingDir.c_str());
 	
 	epgTitle = "";
 	CShortEPGData epgdata;
 	if (CSectionsd::getInstance()->getEPGidShort(epgID, &epgdata))
 		epgTitle = epgdata.title;
-		
-//	strcpy(eventInfo.epgTitle, epgTitle.c_str()); 
+	////
+	eventInfo.eventID = eventID;
+	strcpy(eventInfo.recordingDir, recordingDir.c_str());
+	strcpy(eventInfo.epgTitle, epgTitle.c_str()); 
 }
 
 CTimerEvent_Record::CTimerEvent_Record(CConfigFile *config, int iId):
@@ -1151,38 +1152,23 @@ CTimerEvent_Record::CTimerEvent_Record(CConfigFile *config, int iId):
 	ostr << iId;
 	std::string id = ostr.str();
 	
-	eventInfo.epgID = config->getInt64("EVENT_INFO_EPG_ID_"+id);
-	eventInfo.epg_starttime = config->getInt64("EVENT_INFO_EPG_STARTTIME_"+id);
-	eventInfo.channel_id = config->getInt64("EVENT_INFO_CHANNEL_ID_"+id);
-	eventInfo.apids = config->getInt32("EVENT_INFO_APIDS_"+id);
-	recordingDir = config->getString("REC_DIR_"+id);
+	eventInfo.epgID = config->getInt64("EVENT_INFO_EPG_ID_" + id);
+	eventInfo.epg_starttime = config->getInt64("EVENT_INFO_EPG_STARTTIME_" + id);
+	eventInfo.channel_id = config->getInt64("EVENT_INFO_CHANNEL_ID_" + id);
+	eventInfo.apids = config->getInt32("EVENT_INFO_APIDS_" + id);
 	
-//	strcpy(eventInfo.recordingDir, recordingDir.c_str());
-
-	epgTitle = config->getString("EPG_TITLE_"+id);
+	recordingDir = config->getString("REC_DIR_" + id);
+	epgTitle = config->getString("EPG_TITLE_" + id); 
 	
-//	strcpy(eventInfo.epgTitle, epgTitle.c_str()); 
+	////
+	eventInfo.eventID = eventID;
+	strcpy(eventInfo.recordingDir, recordingDir.c_str());
+	strcpy(eventInfo.epgTitle, epgTitle.c_str()); 
 }
 
 void CTimerEvent_Record::fireEvent()
 {
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Record::fireEvent\n");
-	
-	//
-	CTimerd::RecordingInfo ri; // = eventInfo;
-	
-	////
-	ri.epgID = eventInfo.epgID;
-	ri.epg_starttime = eventInfo.epg_starttime;
-	ri.channel_id = eventInfo.channel_id;
-	ri.recordingSafety = eventInfo.recordingSafety;
-	ri.apids = eventInfo.apids;
-	////
-	ri.eventID = eventID;
-//	strcpy(ri.recordingDir, recordingDir.substr(0, sizeof(ri.recordingDir)-1).c_str());						
-//	strcpy(ri.epgTitle, epgTitle.substr(0, sizeof(ri.epgTitle)-1).c_str());
-	strcpy(ri.recordingDir, recordingDir.c_str());
-	strcpy(ri.epgTitle, epgTitle.c_str());
 						
 	g_RCInput->postMsg(NeutrinoMessages::RECORD_START, (const neutrino_msg_data_t)&eventInfo, false);
 }
@@ -1192,23 +1178,6 @@ void CTimerEvent_Record::announceEvent()
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Record::announceEvent\n");
 	
 	Refresh();
-	
-	//
-	CTimerd::RecordingInfo ri; // = (CTimerd::RecordingInfo)eventInfo;
-	
-	////
-	ri.epgID = eventInfo.epgID;
-	ri.epg_starttime = eventInfo.epg_starttime;
-	ri.channel_id = eventInfo.channel_id;
-	ri.recordingSafety = eventInfo.recordingSafety;
-	ri.apids = eventInfo.apids;
-	////
-	
-	ri.eventID = eventID;
-//	strcpy(ri.recordingDir, recordingDir.substr(0, sizeof(ri.recordingDir)-1).c_str());						
-//	strcpy(ri.epgTitle, epgTitle.substr(0, sizeof(ri.epgTitle)-1).c_str());
-	strcpy(ri.recordingDir, recordingDir.c_str());
-	strcpy(ri.epgTitle, epgTitle.c_str());
 						
 	g_RCInput->postMsg(NeutrinoMessages::ANNOUNCE_RECORD, (const neutrino_msg_data_t)&eventInfo, false);
 }

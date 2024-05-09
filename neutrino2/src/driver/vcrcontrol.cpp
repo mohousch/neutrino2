@@ -130,7 +130,7 @@ CVCRControl::~CVCRControl()
 	}
 }
 
-bool CVCRControl::Record(const CTimerd::RecordingInfo * const eventinfo)
+bool CVCRControl::Record(const CTimerd::EventInfo * const eventinfo)
 {
 	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::Record: channel_id:%llx\n", eventinfo->channel_id);
 	

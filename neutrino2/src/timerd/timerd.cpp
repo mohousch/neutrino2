@@ -125,7 +125,7 @@ int CTimerd::addTimerEvent(CTimerEventTypes evType, void *data, time_t alarmtime
 
 		case TIMER_RECORD :
 		{		
-			RecordingInfo *ri = static_cast<RecordingInfo*>(data); 
+			EventInfo *ri = static_cast<EventInfo*>(data); 
 			
 			if(ri->recordingSafety)
 			{
@@ -338,7 +338,7 @@ int CTimerd::addRecordTimerEvent(const t_channel_id channel_id, time_t alarmtime
 {
 	dprintf(DEBUG_NORMAL, "CTimerd::addRecordTimerEvent\n");
 	
-	RecordingInfo eventInfo;
+	EventInfo eventInfo;
 	
 	eventInfo.channel_id = channel_id;
 	eventInfo.epgID = epgID;

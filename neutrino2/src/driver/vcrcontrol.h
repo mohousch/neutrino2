@@ -133,7 +133,7 @@ class CVCRControl : public OpenThreads::Thread
 		static CVCRControl * getInstance();
 
 		inline CVCRStates getDeviceState(void) const { return deviceState; };
-		bool Record(const CTimerd::RecordingInfo * const eventinfo);
+		bool Record(const CTimerd::EventInfo * const eventinfo);
 		bool Screenshot(const t_channel_id channel_id, char * fname = NULL);
 		void Stop();
 		

@@ -429,7 +429,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 	{
 		timerNew.announceTime = timerNew.alarmTime - 60;
 		CTimerd::EventInfo eventinfo;
-		CTimerd::RecordingInfo recinfo;
+		CTimerd::EventInfo recinfo;
 		
 		eventinfo.epgID = 0;
 		eventinfo.epg_starttime = 0;
@@ -468,8 +468,6 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 				eventinfo.epgID = 0;
 				eventinfo.epg_starttime = 0;
 				eventinfo.channel_id = timerNew.channel_id;
-				//eventinfo.apids = TIMERD_APIDS_CONF;
-				//eventinfo.recordingSafety = false;
 		
 				data = &eventinfo;
 			}
