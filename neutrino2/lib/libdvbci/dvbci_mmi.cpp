@@ -22,7 +22,8 @@ eDVBCIMMISession::eDVBCIMMISession(tSlot *tslot)
 
 eDVBCIMMISession::~eDVBCIMMISession()
 {
-        if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_MMI_CLOSE);
+        if (g_RCInput)
+           	g_RCInput->postMsg(NeutrinoMessages::EVT_CI_MMI_CLOSE);
 	
 	slot->hasMMIManager = false;
 	slot->mmiSession = NULL;
@@ -38,8 +39,8 @@ int eDVBCIMMISession::receivedAPDU(const unsigned char *tag, const void *data, i
                 switch (tag[2])
 		{
 			case 0x00: /* close */
-                        	if (g_RCInput)
-                          		g_RCInput->postMsg(NeutrinoMessages::EVT_CI_MMI_CLOSE);
+                        	if (g_RCInput) 
+                        		g_RCInput->postMsg(NeutrinoMessages::EVT_CI_MMI_CLOSE);
 		    	break;
 
 		    	case 0x01: /* display control */
