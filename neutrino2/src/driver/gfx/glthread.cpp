@@ -712,7 +712,7 @@ void GLThreadObj::bltPlayBuffer()
 	if (apts != last_apts)
 	{		
 		if (apts < vpts)
-			sleep_us = (sleep_us * 2 + (vpts - apts) * 10 / 9) / 3;
+			sleep_us = (sleep_us * 2 + (vpts - apts) * 10 / 9) / 2;
 		else if (sleep_us > 1000)
 			sleep_us -= 1000;
 		
