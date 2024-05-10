@@ -655,18 +655,11 @@ void GLThreadObj::bltDisplayBuffer()
 		
 		videoDecoder->getPictureInfo(dummy1, dummy2, rate);
 		
-		if (rate > 0)
-			rate = 200000 / rate;
-		else
-			rate = 50000;
+		rate = rate * 1000;
 			
-		if (sleep_us > rate)
+		if (sleep_us > 100000)
 			sleep_us = rate;
 		else if (sleep_us < 1)
-			sleep_us = 1;
-		
-		//
-		if (sleep_us > 200000)
 			sleep_us = 30000;
 	}
 }
@@ -713,9 +706,9 @@ void GLThreadObj::bltPlayBuffer()
 	//
 	int64_t apts = buf->apts();
 	int64_t vpts = buf->vpts() + 18000;
-	int rate = buf->rate();
+	int rate = buf->rate()*1000;
 	
-	/*		
+	//		
 	if (apts != last_apts)
 	{		
 		if (apts < vpts)
@@ -725,22 +718,12 @@ void GLThreadObj::bltPlayBuffer()
 		
 		last_apts = apts;
 		
-		//
-		int framerate = 50000;
-		
-		if (rate > 0)
-			framerate = 200000 / rate;
-			
-		if (sleep_us > framerate)
-			sleep_us = framerate;
+		//	
+		if (sleep_us > 100000)
+			sleep_us = rate;
 		else if (sleep_us < 1)
-			sleep_us = 1;
-		
-		//
-		if (sleep_us > 200000)
 			sleep_us = 30000;
 	}
-	*/
 #endif
 }
 

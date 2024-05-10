@@ -1381,35 +1381,7 @@ static int Write(void* _context, void* _out)
 #endif
 					
 				//
-				int framerate = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);
-					
-				switch (framerate)
-				{
-					case 23://23.976fps
-						data[buf_in].rate = 0;
-						break;
-					case 24:
-						data[buf_in].rate = 1;
-						break;
-					case 25:
-						data[buf_in].rate = 2;
-						break;
-					case 29://29,976fps
-						data[buf_in].rate = 3;
-						break;
-					case 30:
-						data[buf_in].rate = 4;
-						break;
-					case 50:
-						data[buf_in].rate = 5;
-						break;
-					case 60:
-						data[buf_in].rate = 6;
-						break;
-					default:
-						data[buf_in].rate = framerate;
-						break;
-				}
+				data[buf_in].rate = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);
 
 				//
 				buf_in++;

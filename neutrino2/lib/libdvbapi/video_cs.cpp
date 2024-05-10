@@ -38,8 +38,6 @@
 
 #include <linux/fb.h>
 
-#include <driver/gfx/framebuffer.h>
-
 
 #if defined (__sh__)
 #define VIDEO_FLUSH                     _IO('o',  82)
@@ -285,34 +283,7 @@ void cVideo::getPictureInfo(int &width, int &height, int &rate)
 #ifdef USE_OPENGL
 	width = dec_w;
 	height = dec_h;
-	
-	switch (dec_r)
-	{
-		case 23://23.976fps
-			rate = VIDEO_FRAME_RATE_23_976;
-			break;
-		case 24:
-			rate = VIDEO_FRAME_RATE_24;
-			break;
-		case 25:
-			rate = VIDEO_FRAME_RATE_25;
-			break;
-		case 29://29,976fps
-			rate = VIDEO_FRAME_RATE_29_97;
-			break;
-		case 30:
-			rate = VIDEO_FRAME_RATE_30;
-			break;
-		case 50:
-			rate = VIDEO_FRAME_RATE_50;
-			break;
-		case 60:
-			rate = VIDEO_FRAME_RATE_60;
-			break;
-		default:
-			rate = dec_r;
-			break;
-	}
+	rate = dec_r;
 #else
 	rate = 25;
 	height = 576;
