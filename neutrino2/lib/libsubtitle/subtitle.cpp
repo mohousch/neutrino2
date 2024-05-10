@@ -301,7 +301,7 @@ void dvbsub_write(AVSubtitle *sub, int64_t pts)
 
 static void* reader_thread(void * /*arg*/)
 {
-	printf("dvbsub_thread\n");
+	printf("reader_thread\n");
 	
 	uint8_t tmp[16];  /* actually 6 should be enough */
 	int count;

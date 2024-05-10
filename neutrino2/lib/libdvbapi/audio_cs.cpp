@@ -112,6 +112,7 @@ cAudio::~cAudio(void)
 	
 #ifdef USE_OPENGL
 	free(dmxbuf);
+	
 	if (adevice)
 		ao_close(adevice);
 		
@@ -704,9 +705,6 @@ void cAudio::run()
 		sformat.rate = o_sr;
 		sformat.byte_format = AO_FMT_NATIVE;
 		sformat.matrix = 0;
-		
-//		if (adevice)
-//			ao_close(adevice);
 			
 		adevice = ao_open_live(driver, &sformat, NULL);
 		ai = ao_driver_info(driver);
@@ -751,7 +749,6 @@ void cAudio::run()
 		
 		if (av_ret != 0 && av_ret != AVERROR(EAGAIN))
 		{
-			//hal_info("%s: avcodec_send_packet %d\n", __func__, av_ret);
 		}
 		else
 		{
@@ -759,7 +756,6 @@ void cAudio::run()
 			
 			if (av_ret != 0 && av_ret != AVERROR(EAGAIN))
 			{
-				//hal_info("%s: avcodec_send_packet %d\n", __func__, av_ret);
 			}
 			else
 			{
@@ -768,7 +764,7 @@ void cAudio::run()
 		}
 #endif
 
-		if (gotframe && thread_running)
+		if (gotframe)
 		{
 			int out_linesize;
 			obuf_sz = av_rescale_rnd(frame->nb_samples, o_sr, p->sample_rate, AV_ROUND_UP);
@@ -800,6 +796,7 @@ void cAudio::run()
 		
 		av_packet_unref(&avpkt);
 	}
+	
 	// ao_close(adevice); /* can take long :-(*/
 	av_free(obuf);
 	swr_free(&swr);
@@ -817,4 +814,5 @@ out:
 	printf("cAudio::run: END\n");
 }
 #endif
+
 

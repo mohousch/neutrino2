@@ -618,7 +618,7 @@ void CStreamManager::run()
 	int poll_cnt;
 	int poll_timeout = -1;
 
-	printf("Starting STREAM thread keeper, tid %ld\n", syscall(__NR_gettid));
+	printf("CStreamManager::run: Starting STREAM thread keeper, tid %ld\n", syscall(__NR_gettid));
 	set_threadname("n:streammanager");
 
 	while (running)

@@ -1132,7 +1132,7 @@ CZapitChannel * CZapit::findChannelToZap(const t_channel_id channel_id, bool in_
 
 bool CZapit::tuneToChannel(CFrontend * frontend, CZapitChannel * thischannel, bool &transponder_change)
 {
-	dprintf(DEBUG_NORMAL, "CZapit::tuneToChannel: %llx\n", thischannel->getChannelID());
+	dprintf(DEBUG_NORMAL, "CZapit::tuneToChannel: 0x%llx\n", thischannel->getChannelID());
 	
 	int waitForMotor = 0;
 
