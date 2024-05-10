@@ -130,15 +130,6 @@ CWidget::~CWidget()
 	}
 	
 	//
-	for (unsigned int count = 0; count < CCItems.size(); count++)
-	{
-		CComponent *cCItem = CCItems[count];
-		
-		delete cCItem;
-		cCItem = NULL;
-	}
-	
-	//
 	CCItems.clear();
 }
 

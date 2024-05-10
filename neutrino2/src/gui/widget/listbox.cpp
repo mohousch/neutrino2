@@ -1876,15 +1876,6 @@ ClistBox::~ClistBox()
 	fbutton_labels.clear();
 	
 	//
-	for (unsigned int count = 0; count < items.size(); count++)
-	{
-		CMenuItem *item = items[count];
-		
-		delete item;
-		item = NULL;
-	}
-	
-	//
 	items.clear();
 	page_start.clear();
 }
