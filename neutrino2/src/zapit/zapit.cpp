@@ -1661,9 +1661,6 @@ void CZapit::setRadioMode(void)
 
 	currentMode |= RADIO_MODE;
 	currentMode &= ~TV_MODE;
-
-	// FIXME: ???
-	openAVDecoder();
 }
 
 void CZapit::setTVMode(void)
@@ -1672,9 +1669,6 @@ void CZapit::setTVMode(void)
 
 	currentMode |= TV_MODE;
 	currentMode &= ~RADIO_MODE;
-
-	// FIXME: ???
-	openAVDecoder();
 }
 
 // getchannelsMode
@@ -3079,7 +3073,8 @@ int CZapit::startPlayBack(CZapitChannel * thisChannel)
 	{
 		//
 		closeAVDecoder();
-		////test
+		
+		//
 		playback->Close(); // not needed???
 		
 		playback->Open();
@@ -3091,9 +3086,6 @@ int CZapit::startPlayBack(CZapitChannel * thisChannel)
 	{
 		if (playbackStopForced)
 			return -1;
-			
-		// 
-		openAVDecoder();
 
 		bool have_pcr = false;
 		bool have_audio = false;
@@ -3300,6 +3292,9 @@ int CZapit::stopPlayBack(bool sendPmt)
 	if (IS_WEBTV(live_channel->getChannelID()))
 	{
 		playback->Close();
+		
+		//
+		openAVDecoder();
 	}
 	else
 	{

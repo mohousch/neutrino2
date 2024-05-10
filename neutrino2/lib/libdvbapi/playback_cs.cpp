@@ -1540,7 +1540,7 @@ cPlayback::SWFramebuffer* cPlayback::getDecBuf(void)
 								
 	SWFramebuffer* p = &buffers[buf_out];
 	
-	p->resize(data[buf_out].size); //FIXME:free(): invalid next size (normal)
+	if (data[buf_out].size < 8294400) p->resize(data[buf_out].size); //FIXME:free(): invalid next size (normal)
 	p->width(data[buf_out].width);
 	p->height(data[buf_out].height);
 	p->rate(data[buf_out].rate);
