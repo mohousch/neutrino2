@@ -753,7 +753,6 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	}
 	
 	// xml
-	//g_settings.xmltv.clear();
 	g_settings.epg_xmltv = configfile.getBool("epg_xmltv", true);
 	//
 	
@@ -871,7 +870,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.enable_tmdb_preview = configfile.getBool("enable_tmdb_preview", false);
 	
 #if defined (ENABLE_CI)
-	// ci settings
+	// cicam
 	g_settings.ci_standby_reset = configfile.getInt32("ci_standby_reset", 0);
 	g_settings.ci_check_live = configfile.getInt32("ci_check_live", 0);
 	g_settings.ci_tuner = configfile.getInt32("ci_tuner", -1);
@@ -1178,12 +1177,12 @@ void CNeutrinoApp::saveSetup(const char * fname)
         char txt2[81];
         for(int button = 0; button < SNeutrinoSettings::BUTTON_MAX; button++) 
 	{
-                snprintf(txt1,80,"usermenu_tv_%s_text",usermenu_button_def[button]);
+                snprintf(txt1, 80, "usermenu_tv_%s_text", usermenu_button_def[button]);
                 txt1[80] = 0; // terminate for sure
                 configfile.setString(txt1,g_settings.usermenu_text[button]);
 
                 char* txt2ptr = txt2;
-                snprintf(txt1,80,"usermenu_tv_%s",usermenu_button_def[button]);
+                snprintf(txt1, 80, "usermenu_tv_%s", usermenu_button_def[button]);
 
                 for(int pos = 0; pos < SNeutrinoSettings::ITEM_MAX; pos++) 
 		{
@@ -1191,10 +1190,10 @@ void CNeutrinoApp::saveSetup(const char * fname)
 			{
                                 if(pos != 0)
                                         *txt2ptr++ = ',';
-                                txt2ptr += snprintf(txt2ptr,80,"%d",g_settings.usermenu[button][pos]);
+                                txt2ptr += snprintf(txt2ptr, 80, "%d", g_settings.usermenu[button][pos]);
                         }
                 }
-                configfile.setString(txt1,txt2);
+                configfile.setString(txt1, txt2);
         }
 	// END KEYS
 
@@ -1242,7 +1241,6 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	}
 	
 	//
-	//g_settings.xmltv.clear();
 	configfile.setBool("epg_xmltv", g_settings.epg_xmltv);
 
 	//filebrowser
@@ -1367,7 +1365,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setInt32("epg_serverbox_type", g_settings.epg_serverbox_type);
 	configfile.setInt32("epg_serverbox_gui", g_settings.epg_serverbox_gui);
 	
-	// ci settings
+	// cicam
 #if defined (ENABLE_CI)
 	configfile.setInt32("ci_standby_reset", g_settings.ci_standby_reset);
 	configfile.setInt32("ci_check_live", g_settings.ci_check_live);
