@@ -8,7 +8,6 @@
 #  --with-driver=PATH      path for driver sources [NONE]
 #  --with-boxtype 
 #  --with-boxmodel	       
-#  --enable-keyboard-no-rc enable keyboard control, disable rc control
 #  --enable-opengl         include opengl framebuffer support for x86
 #  --enable-gstreamer      include gstreamer as player engine support
 #  --with-gstversion       use gstreamer version (major.minor)
@@ -20,16 +19,8 @@
 #  --enable-functionkeys   include RC functions keys support
 #  --enable-lua
 #  --enable-python
-#  --enable-fake_tuner     include fake tuner support for testing
 #  --enable-testing        include testing plugins support
 ####################################################################################################
-SHELL = /bin/bash
-UID := $(shell id -u)
-ifeq ($(UID), 0)
-warn:
-	@echo "You are running as root. Do not do this, it is dangerous."
-	@echo "Aborting the build. Log in as a regular user and retry."
-else
 LC_ALL:=C
 LANG:=C
 export TOPDIR LC_ALL LANG
@@ -288,8 +279,12 @@ printenv:
 help:
 	@echo "main target:"
 	@echo " make init			- setup build options"
+	@echo " make init-clean                 - reset build options"
+	@echo " make printenv			- show build options"
 	@echo " make 				- build neutrino2 / plugins"
-	@echo " make run			- start neutrino2"
+	@echo " make run			- start neutrino2 / neutrino2 plugins"
+	@echo " make run-gdb			- start neutrino2 GDB"
+	@echo " make run-valgrind		- start neutrino2 with valgrind"
 	@echo		
 
 #
@@ -356,6 +351,4 @@ distclean: neutrino2-distclean plugins-distclean
 
 PHONY = clean distclean
 .PHONY: $(PHONY)
-
-endif
 
