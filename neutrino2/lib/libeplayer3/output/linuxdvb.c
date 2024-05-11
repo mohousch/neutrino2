@@ -110,7 +110,6 @@ extern int buf_out;
 bool stillpicture = false;
 Data_t data[64];
 uint64_t sCURRENT_APTS = 0;
-int need = 0;
 #endif
 
 //
@@ -1360,13 +1359,14 @@ static int Write(void* _context, void* _out)
 				//
 				getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 				
-				need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
+				int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
 				
-				data[buf_in].size = need;
+				if (data[buf_in].size < need)
+					data[buf_in].size = need;
 					
 				// scale
-				uint8_t* dest[4] = { data[buf_in].buffer, NULL, NULL, NULL };
-	    			int dest_linesize[4] = { ctx->width * 4, 0, 0, 0 };
+				uint8_t *dest[4] = { data[buf_in].buffer, NULL, NULL, NULL };
+	    			int dest_linesize[4] = { ctx->width*4, 0, 0, 0 };
 				sws_scale(convert, (const uint8_t* const)out->frame->data, out->frame->linesize, 0, ctx->height, dest, dest_linesize);
 					
 				//

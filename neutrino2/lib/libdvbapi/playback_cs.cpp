@@ -117,7 +117,6 @@ extern "C" {
 #include <OpenThreads/Mutex>
 
 extern Data_t data[64];
-extern int need;
 extern uint64_t sCURRENT_APTS;
 
 int buf_in = 0;
@@ -1538,9 +1537,9 @@ cPlayback::SWFramebuffer* cPlayback::getDecBuf(void)
 		return NULL;
 	}
 								
-	SWFramebuffer* p = &buffers[buf_out];
+	SWFramebuffer *p = &buffers[buf_out];
 	
-	if (data[buf_out].size <= 8294400) p->resize(data[buf_out].size); //FIXME:free(): invalid next size (normal)
+	p->resize(8294400); //FIXME:free(): invalid next size (normal) 
 	p->width(data[buf_out].width);
 	p->height(data[buf_out].height);
 	p->rate(data[buf_out].rate);
