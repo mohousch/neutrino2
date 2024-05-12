@@ -45,8 +45,6 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-//#include <eventserver.h>
-
 #include <global.h>
 #include <neutrino2.h>
 
