@@ -108,7 +108,7 @@ extern int buf_num;
 extern int buf_in;
 extern int buf_out;
 bool stillpicture = false;
-Data_t data[64];
+Data_t data[64] = {0};
 uint64_t sCURRENT_APTS = 0;
 #endif
 
@@ -1132,10 +1132,11 @@ static int Write(void* _context, void* _out)
 		uint8_t *obuf = NULL;
 		int obuf_size = 0; 	// in samples
 		int obuf_size_max = 0;
-		int o_ch, o_sr; 	// output channels and sample rate
-		uint64_t o_layout; 	// output channels layout
-		int driver;
-		ao_info *ai;
+		int o_ch = 2;
+		int o_sr = 48000; 	// output channels and sample rate
+		uint64_t o_layout = AV_CH_LAYOUT_STEREO; 	// output channels layout
+		int driver = -1;
+		ao_info *ai = NULL;
 		
 		//
 		AVPacket avpkt;
@@ -1144,6 +1145,12 @@ static int Write(void* _context, void* _out)
 		avpkt.data = out->data;
     		avpkt.size = out->len;
     		avpkt.pts  = out->pts;
+    		
+    		//
+    		if (!ctx)
+    		{
+    			return cERR_LINUXDVB_ERROR;
+    		}
 		
 		// output sample rate, channels, layout could be set here if necessary
 		o_ch = ctx->channels;     			// 2

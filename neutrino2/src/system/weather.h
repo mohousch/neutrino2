@@ -29,7 +29,6 @@
 #include <time.h>
 #include <vector>
 
-//#include <system/settings.h>
 #include <system/helpers.h>
 
 

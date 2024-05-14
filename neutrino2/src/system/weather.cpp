@@ -30,10 +30,6 @@
 #include <string>
 
 #include <system/set_threadname.h>
-//#include "gui/widget/hintbox.h"
-
-//#include <driver/screen_max.h>
-//#include <driver/fontrenderer.h>
 
 #include <global.h>
 #include <jsoncpp/include/json/json.h>
