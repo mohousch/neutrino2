@@ -40,8 +40,8 @@ CFLAGS += -pipe
 CFLAGS += -fno-strict-aliasing 
 CFLAGS += -O0 
 CFLAGS += -std=c++11 
-CFLAGS += -g
-CFLAGS += -ggdb3
+#CFLAGS += -g
+#CFLAGS += -ggdb3
 CFLAGS += -D__KERNEL_STRICT_NAMES
 CFLAGS += -D__STDC_FORMAT_MACROS
 CFLAGS += -D__STDC_CONSTANT_MACROS
@@ -348,6 +348,9 @@ update:
 
 clean: neutrino2-clean plugins-clean
 distclean: neutrino2-distclean plugins-distclean
+
+package:
+	dpkg --build debian neutrinong2_`sed -n 's/\#define PACKAGE_VERSION "//p' neutrino2/config.h | sed 's/"//'`_all_$(shell date '+%d.%m.%Y-%H.%M').deb
 
 PHONY = clean distclean
 .PHONY: $(PHONY)

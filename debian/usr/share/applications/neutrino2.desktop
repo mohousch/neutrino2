@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=NeutrinoNG2
-Comment=ShowTV and play movies and music
+Comment=Show TV and play movies and music
 Exec=/usr/bin/neutrino2
 TryExec=/usr/bin/neutrino2
 Icon=/usr/share/tuxbox/neutrino2/icons/start.jpg
