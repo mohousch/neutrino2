@@ -48,11 +48,7 @@
 #include <global.h>
 #include <neutrino2.h>
 
-#include <timerd/timerd.h>
-
 #include <system/debug.h>
-
-#include <driver/vcrcontrol.h>
 
 
 #define ENABLE_REPEAT_CHECK
