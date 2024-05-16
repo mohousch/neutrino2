@@ -157,7 +157,7 @@ void GLThreadObj::run()
 		{
 			// start decode thread
 			gThiz = this;
-//			glutSetCursor(GLUT_CURSOR_NONE);
+			glutSetCursor(GLUT_CURSOR_NONE);
 			glutDisplayFunc(GLThreadObj::rendercb);
 			glutKeyboardFunc(GLThreadObj::keyboardcb);
 			glutSpecialFunc(GLThreadObj::specialcb);
