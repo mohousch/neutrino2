@@ -350,7 +350,7 @@ clean: neutrino2-clean plugins-clean
 distclean: neutrino2-distclean plugins-distclean
 
 package: neutrino plugins
-	dpkg --build debian neutrinong2_`sed -n 's/\#define PACKAGE_VERSION "//p' neutrino2/config.h | sed 's/"//'`_all_$(shell date '+%d.%m.%Y-%H.%M').deb
+	dpkg --build debian neutrinong2_`sed -n 's/\#define PACKAGE_VERSION "//p' neutrino2/config.h | sed 's/"//'`_all.deb
 
 PHONY = clean distclean
 .PHONY: $(PHONY)

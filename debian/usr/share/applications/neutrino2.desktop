@@ -1,11 +1,11 @@
 [Desktop Entry]
 Name=NeutrinoNG2
 Comment=Show TV and play movies and music
-Exec=/usr/bin/neutrino2
-TryExec=/usr/bin/neutrino2
+Exec=neutrino2
+TryExec=neutrino2
 Icon=/usr/share/tuxbox/neutrino2/icons/start.jpg
 Terminal=false
 Type=Application
 StartupNotify=true
-Categories=AudioVideo;Player;Recorder;
+Categories=AudioVideo;Player;TV;Recorder;
 
