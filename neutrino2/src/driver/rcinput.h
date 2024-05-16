@@ -169,6 +169,7 @@ class CRCInput
 #define NUMBER_OF_EVENT_DEVICES 4
 
 		int fd_rc[NUMBER_OF_EVENT_DEVICES];
+		int fd_lirc;
 		int fd_max;
 		
 		__u16 rc_last_key;

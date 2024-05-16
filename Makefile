@@ -30,7 +30,7 @@ export TOPDIR LC_ALL LANG
 #
 
 BOXTYPE = generic
-DEST = $(PWD)/$(BOXTYPE)
+DEST = $(PWD)/debian
 N2_SRC  = $(PWD)/neutrino2
 N2_OPTS = --with-boxtype=$(BOXTYPE)
 
@@ -40,8 +40,8 @@ CFLAGS += -pipe
 CFLAGS += -fno-strict-aliasing 
 CFLAGS += -O0 
 CFLAGS += -std=c++11 
-CFLAGS += -g
-CFLAGS += -ggdb3
+#CFLAGS += -g
+#CFLAGS += -ggdb3
 CFLAGS += -D__KERNEL_STRICT_NAMES
 CFLAGS += -D__STDC_FORMAT_MACROS
 CFLAGS += -D__STDC_CONSTANT_MACROS
@@ -54,13 +54,13 @@ export CFLAGS CXXFLAGS
 default: neutrino plugins
 
 run:
-	$(DEST)/bin/neutrino2		
+	neutrino2		
 	
 run-gdb:
-	gdb -ex run $(DEST)/bin/neutrino2
+	gdb -ex run neutrino2
 	
 run-valgrind:
-	valgrind --leak-check=full --track-origins=yes --error-limit=no --log-file="logfile.out" -v $(DEST)/bin/neutrino2
+	valgrind --leak-check=full --track-origins=yes --error-limit=no --log-file="logfile.out" -v neutrino2
 	
 # init	
 init:
@@ -291,13 +291,13 @@ help:
 # neutrino2
 #
 neutrino: $(N2_SRC)/config.status
-	$(MAKE) -C $(N2_SRC) install
+	$(MAKE) -C $(N2_SRC) install DESTDIR=$(DEST)
 
 $(N2_SRC)/config.status: | $(N2_SRC) $(DEST)
 	$(N2_SRC)/autogen.sh
 	set -e; cd $(N2_SRC); \
 		$(N2_SRC)/configure \
-			--prefix=$(DEST) \
+			--prefix=/usr \
 			--build=i686-pc-linux-gnu \
 			--enable-silent-rules \
 			--enable-maintainer-mode \
@@ -324,13 +324,13 @@ $(PLUGINS_SRC):
 	git pull
 
 plugins: $(PLUGINS_SRC)/config.status $(N2_SRC)/config.status
-	$(MAKE) -C $(PLUGINS_SRC) install
+	$(MAKE) -C $(PLUGINS_SRC) install DESTDIR=$(DEST)
 
 $(PLUGINS_SRC)/config.status: $(PLUGINS_SRC) $(DEST)
 	$(PLUGINS_SRC)/autogen.sh
 	set -e; cd $(PLUGINS_SRC); \
 		$(PLUGINS_SRC)/configure \
-			--prefix=$(DEST)  \
+			--prefix=/usr  \
 			--build=i686-pc-linux-gnu \
 			--enable-silent-rules \
 			--enable-maintainer-mode \
@@ -348,6 +348,9 @@ update:
 
 clean: neutrino2-clean plugins-clean
 distclean: neutrino2-distclean plugins-distclean
+
+package: neutrino plugins
+	dpkg --build debian neutrinong2_`sed -n 's/\#define PACKAGE_VERSION "//p' neutrino2/config.h | sed 's/"//'`_all_$(shell date '+%d.%m.%Y-%H.%M').deb
 
 PHONY = clean distclean
 .PHONY: $(PHONY)

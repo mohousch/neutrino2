@@ -44,6 +44,7 @@
 #include <sys/un.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <linux/lirc.h>
 
 #include <global.h>
 #include <neutrino2.h>
@@ -57,7 +58,7 @@ const char * const RC_EVENT_DEVICE[NUMBER_OF_EVENT_DEVICES] = {
 	"/dev/input/event0", 
 	"/dev/input/event1", 
 	"/dev/input/event2", 
-	"/dev/input/event3"
+	"/dev/input/event18"
 };
 
 typedef struct input_event t_input_event;
@@ -369,6 +370,26 @@ CRCInput::CRCInput() : configfile('\t')
 	//load rcconfig
 	if( !loadRCConfig(NEUTRINO_RCCONFIG_FILE) )
 		printf("CRCInput::CRCInput: Loading of rc config file failed. Using defaults.\n");
+		
+	// lirc
+	struct sockaddr_un addr;
+	unsigned mode = LIRC_MODE_SCANCODE;
+	
+	strcpy(addr.sun_path, "/dev/lirc0");
+	
+	//fd_lirc = socket(AF_UNIX, SOCK_STREAM, 0);
+	fd_lirc = ::open("/dev/lirc0", O_RDONLY, 0);
+	
+	if(fd_lirc < 0)
+	{
+		perror("CRCInput::CRCInput: could not open lircd-socket\n");
+	}
+
+	//if(::connect(fd_lirc, (struct sockaddr *)&addr, sizeof(addr)) < 0)
+	if (::ioctl(fd_lirc, LIRC_SET_REC_MODE, &mode) < 0)
+	{
+		perror("CRCInput::CRCInput: could not connect to lircd-socket\n");
+	};
 	
 	//
 	open();
@@ -443,6 +464,9 @@ CRCInput::~CRCInput()
 	
 	if(fd_pipe_low_priority[1])
 		::close(fd_pipe_low_priority[1]);
+		
+	//
+	::close(fd_lirc);
 }
 
 void CRCInput::stopInput()
@@ -669,6 +693,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 		tvselect.tv_usec = targetTimeout%1000000;
 
 		FD_ZERO(&rfds);
+		
 		for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++)
 		{
 			if (fd_rc[i] != -1)
@@ -687,6 +712,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			// in case of an error return timeout...?!
 			*msg = RC_timeout;
 			*data = 0;
+			
 			return;
 		}
 		else if ( status == 0 ) // Timeout!
@@ -698,6 +724,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 				{
 					*msg = NeutrinoMessages::EVT_TIMER;
 					*data = timer_id;
+					
 					return;
 				}
 				else
@@ -707,6 +734,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			{
 				*msg = RC_timeout;
 				*data = 0;
+				
 				return;
 			}
 		}
@@ -725,6 +753,8 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 
 			return;
 		}
+		
+		// fd_lirc
 
 		// fd_rc
 		for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++) 
