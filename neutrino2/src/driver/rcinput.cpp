@@ -58,7 +58,7 @@ const char * const RC_EVENT_DEVICE[NUMBER_OF_EVENT_DEVICES] = {
 	"/dev/input/event0", 
 	"/dev/input/event1", 
 	"/dev/input/event2", 
-	"/dev/input/event18"
+	"/dev/input/event3"
 };
 
 typedef struct input_event t_input_event;

@@ -30,8 +30,9 @@ export TOPDIR LC_ALL LANG
 #
 
 BOXTYPE = generic
-DEST = $(PWD)/debian
+DEST = $(PWD)/$(BOXTYPE)
 N2_SRC  = $(PWD)/neutrino2
+PLUGINS_SRC = $(PWD)/plugins
 N2_OPTS = --with-boxtype=$(BOXTYPE)
 
 CFLAGS = -Wall 
@@ -40,8 +41,8 @@ CFLAGS += -pipe
 CFLAGS += -fno-strict-aliasing 
 CFLAGS += -O0 
 CFLAGS += -std=c++11 
-#CFLAGS += -g
-#CFLAGS += -ggdb3
+CFLAGS += -g
+CFLAGS += -ggdb3
 CFLAGS += -D__KERNEL_STRICT_NAMES
 CFLAGS += -D__STDC_FORMAT_MACROS
 CFLAGS += -D__STDC_CONSTANT_MACROS
@@ -54,13 +55,13 @@ export CFLAGS CXXFLAGS
 default: neutrino plugins
 
 run:
-	neutrino2		
+	$(DEST)/bin/neutrino2		
 	
 run-gdb:
-	gdb -ex run neutrino2
+	gdb -ex run $(DEST)/bin/neutrino2
 	
 run-valgrind:
-	valgrind --leak-check=full --track-origins=yes --error-limit=no --log-file="logfile.out" -v neutrino2
+	valgrind --leak-check=full --track-origins=yes --error-limit=no --log-file="logfile.out" -v $(DEST)/bin/neutrino2
 	
 # init	
 init:
@@ -291,13 +292,13 @@ help:
 # neutrino2
 #
 neutrino: $(N2_SRC)/config.status
-	$(MAKE) -C $(N2_SRC) install DESTDIR=$(DEST)
+	$(MAKE) -C $(N2_SRC) install
 
 $(N2_SRC)/config.status: | $(N2_SRC) $(DEST)
 	$(N2_SRC)/autogen.sh
 	set -e; cd $(N2_SRC); \
 		$(N2_SRC)/configure \
-			--prefix=/usr \
+			--prefix=$(DEST) \
 			--build=i686-pc-linux-gnu \
 			--enable-silent-rules \
 			--enable-maintainer-mode \
@@ -305,9 +306,6 @@ $(N2_SRC)/config.status: | $(N2_SRC) $(DEST)
 			
 $(DEST):
 	mkdir $@
-
-$(N2_SRC):
-	git pull
 
 neutrino2-clean:
 	$(MAKE) -C $(N2_SRC) clean
@@ -319,18 +317,14 @@ neutrino2-distclean:
 #
 # plugins
 #
-PLUGINS_SRC = $(PWD)/plugins
-$(PLUGINS_SRC):
-	git pull
-
 plugins: $(PLUGINS_SRC)/config.status $(N2_SRC)/config.status
-	$(MAKE) -C $(PLUGINS_SRC) install DESTDIR=$(DEST)
+	$(MAKE) -C $(PLUGINS_SRC) install
 
 $(PLUGINS_SRC)/config.status: $(PLUGINS_SRC) $(DEST)
 	$(PLUGINS_SRC)/autogen.sh
 	set -e; cd $(PLUGINS_SRC); \
 		$(PLUGINS_SRC)/configure \
-			--prefix=/usr  \
+			--prefix=$(DEST)  \
 			--build=i686-pc-linux-gnu \
 			--enable-silent-rules \
 			--enable-maintainer-mode \
@@ -349,8 +343,33 @@ update:
 clean: neutrino2-clean plugins-clean
 distclean: neutrino2-distclean plugins-distclean
 
-package: neutrino plugins
-	dpkg --build debian neutrinong2_`sed -n 's/\#define PACKAGE_VERSION "//p' neutrino2/config.h | sed 's/"//'`_all.deb
+#
+# debian package
+#
+neutrino-deb: | $(N2_SRC) $(PWD)/debian
+	$(N2_SRC)/autogen.sh
+	set -e; cd $(N2_SRC); \
+		$(N2_SRC)/configure \
+			--prefix=/usr \
+			--build=i686-pc-linux-gnu \
+			--enable-silent-rules \
+			--enable-maintainer-mode \
+			$(N2_OPTS)
+	$(MAKE) -C $(N2_SRC) install DESTDIR=$(PWD)/debian
+
+plugins-deb: $(PLUGINS_SRC) $(PWD)/debian
+	$(PLUGINS_SRC)/autogen.sh
+	set -e; cd $(PLUGINS_SRC); \
+		$(PLUGINS_SRC)/configure \
+			--prefix=/usr  \
+			--build=i686-pc-linux-gnu \
+			--enable-silent-rules \
+			--enable-maintainer-mode \
+			$(N2_OPTS)
+	$(MAKE) -C $(PLUGINS_SRC) install DESTDIR=$(PWD)/debian
+
+package: neutrino-deb plugins-deb
+	dpkg --build debian neutrinong2_`sed -n 's/\#define PACKAGE_VERSION "//p' neutrino2/config.h | sed 's/"//'`_`git log | grep "^commit" | wc -l`_all.deb
 
 PHONY = clean distclean
 .PHONY: $(PHONY)
