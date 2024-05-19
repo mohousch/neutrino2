@@ -352,7 +352,8 @@ int CRadioText::PES_Receive(unsigned char *data, int len)
 							{
 								if (S_Verbose >= 1)
 									printf("RDS-Error: wrong CRC # calc = %04x <> transmit = %02x%02x\n", crc16, mtext[index-2], mtext[index-1]);
-							} else 
+							} 
+							else 
 							{
 
 								switch (mec) 
@@ -363,7 +364,8 @@ int CRadioText::PES_Receive(unsigned char *data, int len)
 										printf("(RDS-MEC '%02x') -> RadiotextDecode - %d\n", mec, index);
 									RadiotextDecode(mtext, index);		// Radiotext, RT+
 									break;
-								case 0x07:  RT_PTY = mtext[8];			// PTY
+								case 0x07:  
+									RT_PTY = mtext[8];			// PTY
 									RT_MsgShow = true;
 
 									//
@@ -995,7 +997,6 @@ void CRadioText::RassDecode(unsigned char *mtext, int len)
 							videoDecoder->finishShowSinglePic();
 							videoDecoder->showSinglePic(filepath);
 						}
-						//
 					}
 					else
 						printf("ERROR vdr-radio: writing image/data-file failed '%s'", filepath);
@@ -1107,6 +1108,8 @@ void *RadioTextThread(void *data)
 
 	printf("\nRadioTextThread: Setting PID 0x%x\n", rt->getPid());
 	
+	RTaudioDemux->Stop();
+	
 	if (RTaudioDemux->pesFilter(rt->getPid()))
 	{
 		// start demux filter
@@ -1122,17 +1125,22 @@ void *RadioTextThread(void *data)
 		pthread_exit(NULL);
 	}
 	
+#if defined (__sh__) || defined (USE_OPENGL)
 	int buflen = 0;
 	unsigned char *buf = NULL;
+#endif
 
 	rtThreadRunning = true;
 	
 	while(rtThreadRunning)
 	{
 		int n;
+		
+#if defined (__sh__) || defined (USE_OPENGL)
 		unsigned char tmp[6];
 
 		n = RTaudioDemux->Read(tmp, 6, 500);
+		
 		if (n != 6) 
 		{
 			usleep(10000); /* save CPU if nothing read */
@@ -1163,7 +1171,12 @@ void *RadioTextThread(void *data)
 			if (len < 0)
 				break;
 			n += len;
-		}		
+		}
+#else
+		unsigned char buf[0X1FFFF];
+
+		n = RTaudioDemux->Read(buf, sizeof(buf), 5000);
+#endif		
 
 		// -- error or eof?
 		if (n <= 0) 
@@ -1175,8 +1188,10 @@ void *RadioTextThread(void *data)
 		rt->PES_Receive(buf, n);
 	}
 	
+#if defined (__sh__) || defined (USE_OPENGL)
 	if (buf)
 		free(buf);
+#endif
 	
 	RTaudioDemux->Stop();
 

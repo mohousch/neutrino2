@@ -205,17 +205,16 @@ class CTestMenu : public CMenuTarget
 		void testPlayMovieDir();
 		void testPlayAudioDir();
 		void testShowPictureDir();
-
 		//// channellist / bouquetlist
 		void testCChannellist();
 		void testCBouquetlist();
-		
 		//// skin
 		void testSkinWidget();
 		void testSkinWidget3();
-		
 		//// tuxtxt
 		void testTuxTxt();
+		//// weather
+		void testWeather();
 		
 		//// paint()
 		void showMenu();
@@ -4819,6 +4818,12 @@ void CTestMenu::testTuxTxt()
 	tuxtx_main(si.vtxtpid, 0, false);
 }
 
+////
+void CTestMenu::testWeather()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testWeather\n");
+}
+
 // exec
 int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 {
@@ -6381,6 +6386,12 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		
 		return RETURN_EXIT_ALL;
 	}
+	else if (actionKey == "weather")
+	{
+		testWeather();
+		
+		return RETURN_REPAINT;
+	}
 
 	showMenu();
 	
@@ -6575,6 +6586,10 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "Tuxtxt") );
 	mainMenu->addItem(new CMenuForwarder("Show Tuxtxt (No Pid)", true, NULL, this, "tuxtxtnopid"));		
 	mainMenu->addItem(new CMenuForwarder("Show Tuxtxt", true, NULL, this, "tuxtxt"));
+	
+	// weather
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "Weather") );
+	mainMenu->addItem(new CMenuForwarder("Weather", true, NULL, this, "weather"));	
 
 	unsigned int count = 0;
 	CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(CZapit::getInstance()->getCurrentChannelID());
