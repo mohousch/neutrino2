@@ -44,7 +44,10 @@
 #include <sys/un.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+
+#ifdef USE_OPENGL
 #include <linux/lirc.h>
+#endif
 
 #include <global.h>
 #include <neutrino2.h>
@@ -372,6 +375,7 @@ CRCInput::CRCInput() : configfile('\t')
 		printf("CRCInput::CRCInput: Loading of rc config file failed. Using defaults.\n");
 		
 	// lirc
+#ifdef USE_OPENGL
 	struct sockaddr_un addr;
 	unsigned mode = LIRC_MODE_SCANCODE;
 	
@@ -390,6 +394,7 @@ CRCInput::CRCInput() : configfile('\t')
 	{
 		perror("CRCInput::CRCInput: could not connect to lircd-socket\n");
 	};
+#endif
 	
 	//
 	open();
@@ -466,7 +471,9 @@ CRCInput::~CRCInput()
 		::close(fd_pipe_low_priority[1]);
 		
 	//
+#ifdef USE_OPENGL
 	::close(fd_lirc);
+#endif
 }
 
 void CRCInput::stopInput()
