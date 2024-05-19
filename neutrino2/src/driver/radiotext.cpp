@@ -231,19 +231,22 @@ int CRadioText::PES_Receive(unsigned char *data, int len)
 	{
 		if (len < offset + 6)
 			return offset;
+			
 		int pesl = (data[offset + 4] << 8) + data[offset + 5] + 6;
 		if (pesl <= 0 || offset + pesl > len)
 			return offset;
+			
 		offset += pesl;
 
 		/* try to find subpackets in the pes stream */
 		int substart = 0;
 		int subend = 0;
+		
 		while (DividePes(&data[0], pesl, &substart, &subend))
 		{
 			int inner_offset = subend + 1;
-			if (inner_offset < 3) 
-				fprintf(stderr, "RT %s: inner_offset < 3 (%d)\n", __FUNCTION__, inner_offset);
+//			if (inner_offset < 3) 
+//				fprintf(stderr, "RT %s: inner_offset < 3 (%d)\n", __FUNCTION__, inner_offset);
 			
 			int rdsl = data[subend - 1];	// RDS DataFieldLength
 			// RDS DataSync = 0xfd @ end
@@ -253,19 +256,19 @@ int CRadioText::PES_Receive(unsigned char *data, int len)
 				if (S_Verbose >= 3) 
 				{
 					printf("\n\nPES-Data(%d/%d): ", pesl, len);
-					for (int a=inner_offset -rdsl; a<offset; a++)
+					for (int a = inner_offset -rdsl; a<offset; a++)
 						printf("%02x ", data[a]);
 					printf("(End)\n\n");
 				}
 
-				if (subend-2-rdsl < 0) 
-					fprintf(stderr, "RT %s: start: %d subend-2-rdsl < 0 (%d-2-%d)\n", __FUNCTION__, substart,subend,rdsl);
+//				if (subend-2-rdsl < 0) 
+//					fprintf(stderr, "RT %s: start: %d subend-2-rdsl < 0 (%d-2-%d)\n", __FUNCTION__, substart,subend,rdsl);
 				for (int i = subend - 2, val; i > subend - 2 - rdsl; i--) 
 				{ 
 					// <-- data reverse, from end to start
 					if (i < 0) 
 					{ 
-						fprintf(stderr, "RT %s: i < 0 (%d)\n", __FUNCTION__, i); 
+//						fprintf(stderr, "RT %s: i < 0 (%d)\n", __FUNCTION__, i); 
 						break; 
 					}
 					val = data[i];
@@ -362,8 +365,7 @@ int CRadioText::PES_Receive(unsigned char *data, int len)
 									break;
 								case 0x07:  RT_PTY = mtext[8];			// PTY
 									RT_MsgShow = true;
-									//
-									//g_InfoViewer->showRadiotext();
+
 									//
 									if (S_Verbose >= 1)
 										printf("RDS-PTY set to '%s'\n", ptynr2string(RT_PTY));
@@ -462,15 +464,13 @@ void CRadioText::RadiotextDecode(unsigned char *mtext, int len)
 				if (RT_Index >= S_RtOsdRows) 
 					RT_Index = 0;
 			}
+			
 			RTP_TToggle = 0x03;		// Bit 0/1 = Title/Artist
 			RT_MsgShow = true;
 			S_RtOsd = 1;
 			RT_Info = (RT_Info > 0) ? RT_Info : 1;
-			RadioStatusMsg();
 			
-			//
-			//g_InfoViewer->showRadiotext();
-			//
+			RadioStatusMsg();
 		}
 		else if (RTP_TToggle > 0 && mtext[5] == 0x46 && S_RtFunc >= 2) 
 		{	
@@ -689,7 +689,6 @@ void CRadioText::RadiotextDecode(unsigned char *mtext, int len)
 				rtp_itoggle = false;
 				rtp_idiffs = 0;
 				RadioStatusMsg();
-				//AudioRecorderService();
 			}
 			RTP_TToggle = 0;
 		}
@@ -731,16 +730,12 @@ void CRadioText::RDS_PsPtynDecode(bool ptyn, unsigned char *mtext, int len)
 	{
 		RDS_PSIndex += 1; if (RDS_PSIndex >= 12) RDS_PSIndex = 0;
 		RT_MsgShow = RDS_PSShow = true;
-		
-		//
-		//g_InfoViewer->showRadiotext();
-		//
 	}
 }
 
 void CRadioText::RadioStatusMsg(void)
 {
-	/* announce text/items for lcdproc & other */
+	// announce text/items for lcdproc & other
 	if (!RT_MsgShow || S_RtMsgItems <= 0)
 		return;
 	
@@ -751,18 +746,15 @@ void CRadioText::RadioStatusMsg(void)
 		strcpy(temp, RT_Text[ind]);
 		
 		printf("RadioStatusMsg = %s\n", temp);
-		//cStatus::MsgOsdTextItem(rtrim(temp), false);
 	}
 
 	if ((S_RtMsgItems == 1 || S_RtMsgItems >= 3) && ((S_RtOsdTags == 1 && RT_PlusShow) || S_RtOsdTags >= 2)) 
 	{
-		//struct tm tm_store;
-		//struct tm *ts = localtime_r(&RTP_Starttime, &tm_store);
-		//cStatus::MsgOsdProgramme(mktime(ts), RTP_Title, RTP_Artist, 0, NULL, NULL);
 		printf("RTP_Title = %s, RTP_Artist = %s\n", RTP_Title, RTP_Artist);
 	}
 	
-	g_InfoViewer->showRadiotext();
+	//
+	g_RCInput->postMsg(NeutrinoMessages::EVT_SHOW_RADIOTEXT);
 }
 
 // add <names> of DVB Radio Slides Specification 1.0, 20061228
@@ -1109,20 +1101,15 @@ static bool rtThreadRunning = false;
 void *RadioTextThread(void *data)
 {
 	CRadioText *rt = ((CRadioText::s_rt_thread*)data)->rt_object;
-	//int fd = ((CRadioText::s_rt_thread*)data)->fd;
 	cDemux *RTaudioDemux = rt->audioDemux;
-	
-	//printf("in RadioTextThread fd = %d\n", fd);
 
 	bool ret = false;
 
 	printf("\nRadioTextThread: Setting PID 0x%x\n", rt->getPid());
-
-	RTaudioDemux->Stop();
 	
 	if (RTaudioDemux->pesFilter(rt->getPid()))
 	{
-		/* start demux filter */
+		// start demux filter
 		if (RTaudioDemux->Start())
 			ret = true;
 	}
@@ -1135,14 +1122,13 @@ void *RadioTextThread(void *data)
 		pthread_exit(NULL);
 	}
 	
-#ifdef __sh__
 	int buflen = 0;
 	unsigned char *buf = NULL;
-#endif
+
 	rtThreadRunning = true;
+	
 	while(rtThreadRunning)
 	{
-#ifdef __sh__
 		int n;
 		unsigned char tmp[6];
 
@@ -1177,14 +1163,7 @@ void *RadioTextThread(void *data)
 			if (len < 0)
 				break;
 			n += len;
-		}
-#else
-	  
-		int n;
-		unsigned char buf[0x1FFFF];
-
-		n = RTaudioDemux->Read(buf, sizeof(buf), 5000);
-#endif		
+		}		
 
 		// -- error or eof?
 		if (n <= 0) 
@@ -1196,12 +1175,9 @@ void *RadioTextThread(void *data)
 		rt->PES_Receive(buf, n);
 	}
 	
-#ifdef __sh__
 	if (buf)
 		free(buf);
-#endif
 	
-
 	RTaudioDemux->Stop();
 
 	printf("\nRadioTextThread: exit\n");
@@ -1211,7 +1187,6 @@ void *RadioTextThread(void *data)
 CRadioText::CRadioText(void)
 {
 	pid 		= 0;
-	//dmxfd 	= -1;
 	S_Verbose 	= 0;
 	S_RtFunc 	= 1;
 	S_RtOsd 	= 1;
@@ -1238,7 +1213,7 @@ CRadioText::CRadioText(void)
 	RT_Replay 	= false;
 	RT_ReOpen 	= false;
 	
-	for (int i=0; i<5; i++) 
+	for (int i = 0; i < 5; i++) 
 		strcpy(RT_Text[i], "");
 		
 	strcpy(RDS_PTYN, "");
@@ -1249,6 +1224,7 @@ CRadioText::CRadioText(void)
 void CRadioText::radiotext_stop(void)
 {
 	printf("\nCRadioText::radiotext_stop: pid 0x%x\n", getPid());
+	
 	if (getPid() != 0) 
 	{
 		// this stuff takes a while sometimes - look for a better syncronisation
@@ -1267,12 +1243,8 @@ CRadioText::~CRadioText(void)
 	radiotext_stop();
 	pid = 0;
 
-	//printf("Deleting RT object\n");
-
-	//close(dmxfd);
 	delete audioDemux;
 	audioDemux = NULL;
-	//dmxfd = -1;
 }
 
 void CRadioText::setPid(uint inPid)
@@ -1296,8 +1268,8 @@ void CRadioText::setPid(uint inPid)
 
 				audioDemux->Open(DMX_PES_CHANNEL, 128*1024, CZapit::getInstance()->getCurrentFrontend());
 			}
+			
 			rt.rt_object = this;
-			//rt.fd = dmxfd;
 		}
 
 		// Setup-Params

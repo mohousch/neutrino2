@@ -2571,6 +2571,14 @@ void CNeutrinoApp::radioMode( bool rezap)
 	g_RemoteControl->radioMode();
 	setChannelMode( g_settings.channel_mode, mode);
 	
+	////
+	if (g_settings.radiotext_enable) 
+	{
+		//
+		if (g_Radiotext == NULL)
+			g_Radiotext = new CRadioText();
+	} 
+	
 	if( rezap ) 
 	{
 		firstChannel();
@@ -3370,7 +3378,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		startSubtitles(!g_InfoViewer->is_visible);
 	}
 
-	// timer event
+	// shift / scrambled timer events
 	if ((msg == NeutrinoMessages::EVT_TIMER)) 
 	{
 		if(data == shift_timer) 

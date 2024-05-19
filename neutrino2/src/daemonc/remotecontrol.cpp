@@ -167,7 +167,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 
 			//
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
-				//g_RCInput->postMsg( NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false );
 				processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
 		}
 	} 
@@ -219,7 +218,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 
 			//
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
-				//g_RCInput->postMsg( NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false );
 				processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
 		}
 		else
@@ -302,10 +300,8 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 
 			// is_video_started is only false if channel is locked
 			if ((!is_video_started) && (info_CN.current_fsk == 0 || g_settings.parentallock_prompt == PARENTALLOCK_PROMPT_CHANGETOLOCKED))
-				//g_RCInput->postMsg(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false);
 				processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
 			else
-				//g_RCInput->postMsg(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, (const neutrino_msg_data_t)info_CN.current_fsk, false);
 				processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, (const neutrino_msg_data_t)info_CN.current_fsk);
 		}
 
@@ -317,7 +313,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			return messages_return::handled;
 
 		if ( !is_video_started )
-			//g_RCInput->postMsg( NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false );
 			processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
 			
 		return messages_return::handled;
@@ -327,7 +322,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		if (data == current_channel_id)
 		{
 			if ( !is_video_started )
-				//g_RCInput->postMsg( NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false );
 				processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
 		}
 		

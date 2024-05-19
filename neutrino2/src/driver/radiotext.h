@@ -91,7 +91,6 @@ class CRadioText
 
 		uint pid;
 		pthread_t threadRT;
-		//int dmxfd;
 
 	public:
 		CRadioText(void);

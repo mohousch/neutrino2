@@ -911,7 +911,7 @@ void CInfoViewer::showIcon_RadioText(bool rt_available) const
 {
 	dprintf(DEBUG_INFO, "CInfoViewer::showIcon_RadioText:\n");
 	
-	if (showButtonBar)
+	if (showButtonBar && is_visible)
 	{
 		int mode = CNeutrinoApp::getInstance()->getMode();
 		std::string rt_icon = NEUTRINO_ICON_RADIOTEXTOFF;
@@ -1115,14 +1115,14 @@ void CInfoViewer::showMotorMoving (int duration)
 // radiotext
 void CInfoViewer::killRadiotext()
 {
-	dprintf(DEBUG_INFO, "CInfoViewer::killRadiotext:\n");
+	dprintf(DEBUG_NORMAL, "CInfoViewer::killRadiotext:\n");
 	
 	frameBuffer->paintBackgroundBoxRel(rt_x, rt_y, rt_w, rt_h);
 }
 
 void CInfoViewer::showRadiotext()
 {
-	dprintf(DEBUG_INFO, "CInfoViewer::showRadiotext:\n");
+	dprintf(DEBUG_NORMAL, "CInfoViewer::showRadiotext:\n");
 	
 	char stext[3][100];
 	int yoff = 8, ii = 0;
@@ -1140,8 +1140,8 @@ void CInfoViewer::showRadiotext()
 		rt_dy = 25; //
 		rt_x = BoxStartX;
 		rt_y = g_settings.screen_StartY + 10;
-		rt_h = /*rt_y +*/ 7 + rt_dy*(g_Radiotext->S_RtOsdRows + 1);
-		rt_w = /*rt_x +*/ rt_dx;
+		rt_h = rt_dy*(g_Radiotext->S_RtOsdRows + 1) + 7;
+		rt_w = rt_dx;
 		
 		int lines = 0;
 		for (int i = 0; i < g_Radiotext->S_RtOsdRows; i++) 
@@ -1380,6 +1380,13 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		showSNR();
 
 		return messages_return::handled;
+  	}
+  	////
+  	else if (msg == NeutrinoMessages::EVT_SHOW_RADIOTEXT)
+  	{
+  		showRadiotext();
+  		
+  		return messages_return::handled;
   	}
 
   	return messages_return::unhandled;
@@ -1780,7 +1787,7 @@ void CInfoViewer::killTitle()
 		if (g_settings.radiotext_enable && g_Radiotext) 
 		{
 			g_Radiotext->S_RtOsd = g_Radiotext->haveRadiotext() ? 1 : 0;
-			//killRadiotext();
+			killRadiotext();
 		}
 
 		frameBuffer->blit();		

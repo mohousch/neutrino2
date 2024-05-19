@@ -122,6 +122,9 @@ struct NeutrinoMessages
 		// streamts
 		EVT_STREAM_START                         = CRCInput::RC_Events + 45, /* data = fd */
 		EVT_STREAM_STOP                          = CRCInput::RC_Events + 46,
+		
+		// radiotext
+		EVT_SHOW_RADIOTEXT			 = CRCInput::RC_Events + 47,
 
 		// cicam
 		EVT_CI_INSERTED				 = CRCInput::RC_Events + 60, /* data = slot num */
