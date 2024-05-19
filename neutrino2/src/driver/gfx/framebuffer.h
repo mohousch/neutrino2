@@ -219,7 +219,7 @@ class CFrameBuffer
 		void setFrameBufferMode(unsigned int xRes, unsigned int yRes, unsigned int bpp);
 		int setMode(unsigned int x = DEFAULT_XRES, unsigned int y = DEFAULT_YRES, unsigned int _bpp = 32);
 
-		int getFileHandle() const; //only used for plugins (games) !!
+		int getFileHandle() const; 		    //only used for plugins (games) !!
 		t_fb_var_screeninfo *getScreenInfo();
 
 		fb_pixel_t * getFrameBufferPointer() const; // pointer to framebuffer
@@ -228,10 +228,10 @@ class CFrameBuffer
 		unsigned int getScreenHeight(bool real = false); 
 		unsigned int getScreenX(bool real = false);
 		unsigned int getScreenY(bool real = false);
-		unsigned int getAvailableMem() const;             	// size of a available mem occupied by the framebuffer
+		unsigned int getAvailableMem() const;	   // size of a available mem occupied by the framebuffer
 		
-		bool getActive() const;                     		// is framebuffer active?
-		void setActive(bool enable);                		// is framebuffer active?
+		bool getActive() const;                    // is framebuffer active?
+		void setActive(bool enable);               // is framebuffer active?
 
 		void setBlendMode(uint8_t mode);
 		void setBlendLevel(int blev);
@@ -327,3 +327,4 @@ class CFrameBuffer
 };
 
 #endif
+
