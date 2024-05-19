@@ -761,7 +761,8 @@ std::string readFile(std::string file)
 	{
 		tmpData.seekg(0, tmpData.end);
 		int length = tmpData.tellg();
-		if (length > 0xffff) 
+		
+		if (length > 0x1fffe) 
 		{ 
 			/* longer than 64k? better read in chunks! */
 			std::cerr << __func__ << ": file " << file << " too big (" << length << " bytes)" << std::endl;
@@ -770,6 +771,7 @@ std::string readFile(std::string file)
 		
 		tmpData.seekg(0, tmpData.beg);
 		char* buffer = new char[length + 1];
+		
 		if (! buffer) 
 		{
 			std::cerr << __func__ << ": allocating " << (length + 1) << " bytes for buffer failed" << std::endl;
@@ -780,6 +782,7 @@ std::string readFile(std::string file)
 		tmpData.close();
 		buffer[length] = '\0';
 		ret_s = (std::string)buffer;
+		
 		delete [] buffer;
 	}
 	else 

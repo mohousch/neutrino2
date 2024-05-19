@@ -500,7 +500,7 @@ void CRemoteControl::processZapProtection(const neutrino_msg_t msg, const neutri
 			else 
 			{
 				if ((data >= (neutrino_msg_data_t)g_settings.parentallock_lockage) &&
-					 ((CZapit::getInstance()->getCurrentChannel()->last_unlocked_EPGid != g_RemoteControl->current_EPGid) || (g_RemoteControl->current_EPGid == 0)) &&
+					 ((CZapit::getInstance()->findChannelByChannelID(current_channel_id)->last_unlocked_EPGid != g_RemoteControl->current_EPGid) || (g_RemoteControl->current_EPGid == 0)) &&
 					 ((g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_CHANGETOLOCKED) || (data >= 0x100)))
 				{
 					g_RemoteControl->stopvideo();
@@ -512,7 +512,7 @@ void CRemoteControl::processZapProtection(const neutrino_msg_t msg, const neutri
 						g_RemoteControl->startvideo(current_channel_id);
 						
 						// remember it for the next time
-						CZapit::getInstance()->getCurrentChannel()->last_unlocked_EPGid = g_RemoteControl->current_EPGid;
+						CZapit::getInstance()->findChannelByChannelID(current_channel_id)->last_unlocked_EPGid = g_RemoteControl->current_EPGid;
 					}
 					
 					delete zapProtection;
