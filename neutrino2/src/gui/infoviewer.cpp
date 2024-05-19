@@ -1381,7 +1381,6 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 
 		return messages_return::handled;
   	}
-  	////
   	else if (msg == NeutrinoMessages::EVT_SHOW_RADIOTEXT)
   	{
   		showRadiotext();

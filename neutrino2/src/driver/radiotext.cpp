@@ -220,8 +220,8 @@ bool CRadioText::DividePes(unsigned char *data, int length, int *substart, int *
 int CRadioText::PES_Receive(unsigned char *data, int len)
 {
 	const int mframel = 263;  // max. 255(MSG)+4(ADD/SQC/MFL)+2(CRC)+2(Start/Stop) of RDS-data
-	static unsigned char mtext[mframel+1];
-	static bool rt_start = false, rt_bstuff=false;
+	static unsigned char mtext[mframel + 1];
+	static bool rt_start = false, rt_bstuff = false;
 	static int index;
 	static int mec = 0;
 
@@ -238,7 +238,7 @@ int CRadioText::PES_Receive(unsigned char *data, int len)
 			
 		offset += pesl;
 
-		/* try to find subpackets in the pes stream */
+		// try to find subpackets in the pes stream
 		int substart = 0;
 		int subend = 0;
 		
@@ -256,7 +256,7 @@ int CRadioText::PES_Receive(unsigned char *data, int len)
 				if (S_Verbose >= 3) 
 				{
 					printf("\n\nPES-Data(%d/%d): ", pesl, len);
-					for (int a = inner_offset -rdsl; a<offset; a++)
+					for (int a = inner_offset - rdsl; a < offset; a++)
 						printf("%02x ", data[a]);
 					printf("(End)\n\n");
 				}
@@ -406,7 +406,7 @@ void CRadioText::RadiotextDecode(unsigned char *mtext, int len)
 	// byte 1+2 = ADD (10bit SiteAdress + 6bit EncoderAdress)
 	// byte 3   = SQC (Sequence Counter 0x00 = not used)
 	int leninfo = mtext[4];	// byte 4 = MFL (Message Field Length)
-	if (len >= leninfo+7) 
+	if (len >= leninfo + 7) 
 	{	
 		// check complete length
 		// byte 5 = MEC (Message Element Code, 0x0a for RT, 0x46 for RTplus)
@@ -477,7 +477,7 @@ void CRadioText::RadiotextDecode(unsigned char *mtext, int len)
 		else if (RTP_TToggle > 0 && mtext[5] == 0x46 && S_RtFunc >= 2) 
 		{	
 			// RTplus tags V2.0, only if RT
-			if (mtext[6] > leninfo-2 || mtext[6] != 8) 
+			if (mtext[6] > leninfo - 2 || mtext[6] != 8) 
 			{ 
 				// byte 6 = MEL, only 8 byte for 2 tags
 				if (S_Verbose >= 1)
@@ -499,12 +499,11 @@ void CRadioText::RadiotextDecode(unsigned char *mtext, int len)
 			rtp_start[1] = (0x38 & mtext[13]<<3) | mtext[14]>>5;
 			rtp_len[1]   = 0x1f & mtext[14];
 			if (S_Verbose >= 2)
-				printf("RTplus (tag=Typ/Start/Len):  Toggle/Run = %d/%d, tag#1 = %d/%d/%d, tag#2 = %d/%d/%d\n", 
-					(mtext[10]&0x10)>0, (mtext[10]&0x08)>0, rtp_typ[0], rtp_start[0], rtp_len[0], rtp_typ[1], rtp_start[1], rtp_len[1]);
+				printf("RTplus (tag=Typ/Start/Len):  Toggle/Run = %d/%d, tag#1 = %d/%d/%d, tag#2 = %d/%d/%d\n", (mtext[10]&0x10)>0, (mtext[10]&0x08)>0, rtp_typ[0], rtp_start[0], rtp_len[0], rtp_typ[1], rtp_start[1], rtp_len[1]);
 			// save info
 			for (int i = 0; i < 2; i++) 
 			{
-				if (rtp_start[i]+rtp_len[i]+1 >= RT_MEL) 
+				if (rtp_start[i] + rtp_len[i] + 1 >= RT_MEL) 
 				{	
 					// length-error
 					if (S_Verbose >= 1)
@@ -519,6 +518,7 @@ void CRadioText::RadiotextDecode(unsigned char *mtext, int len)
 					// +Memory
 					memset(rtp_content.temptext, 0x20, RT_MEL-1);
 					memcpy(rtp_content.temptext, temptext, RT_MEL-1);
+					
 					switch (rtp_typ[i]) 
 					{
 					case 1:		// Item-Title	
@@ -1125,18 +1125,14 @@ void *RadioTextThread(void *data)
 		pthread_exit(NULL);
 	}
 	
-#if defined (__sh__) || defined (USE_OPENGL)
 	int buflen = 0;
 	unsigned char *buf = NULL;
-#endif
 
 	rtThreadRunning = true;
 	
 	while(rtThreadRunning)
 	{
 		int n;
-		
-#if defined (__sh__) || defined (USE_OPENGL)
 		unsigned char tmp[6];
 
 		n = RTaudioDemux->Read(tmp, 6, 500);
@@ -1165,18 +1161,13 @@ void *RadioTextThread(void *data)
 		
 		memcpy(buf, tmp, 6);
 		
-		while ((n < packlen) /*&& running*/) 
+		while ((n < packlen)) 
 		{
-			int len = RTaudioDemux->Read(buf + n, packlen - n, 500);
+			int len = RTaudioDemux->Read(buf + n, packlen - n, 5000);
 			if (len < 0)
 				break;
 			n += len;
-		}
-#else
-		unsigned char buf[0X1FFFF];
-
-		n = RTaudioDemux->Read(buf, sizeof(buf), 5000);
-#endif		
+		}		
 
 		// -- error or eof?
 		if (n <= 0) 
@@ -1188,10 +1179,8 @@ void *RadioTextThread(void *data)
 		rt->PES_Receive(buf, n);
 	}
 	
-#if defined (__sh__) || defined (USE_OPENGL)
 	if (buf)
 		free(buf);
-#endif
 	
 	RTaudioDemux->Stop();
 

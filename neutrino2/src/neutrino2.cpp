@@ -3404,7 +3404,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		}
 	}
 
-	// handle msg with CRemotecontrol/CInfoviewer/CChannellist/CCAMMenuHandler
+	// handle msg with CRemotecontrol / CInfoviewer / CCAMMenuHandler
 	res = res | g_RemoteControl->handleMsg(msg, data);
 	res = res | g_InfoViewer->handleMsg(msg, data);
 #if defined (ENABLE_CI)	
@@ -4691,9 +4691,9 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// VFD clear	
 	CVFD::getInstance()->Clear();	
 	// show startup msg in vfd
-	CVFD::getInstance()->ShowText( (char *)"NG²");
+	CVFD::getInstance()->ShowText( (char *)"NG2");
 
-	// rc set repeat
+	// rcinput
 	g_RCInput = new CRCInput();
 	g_RCInput->setRepeat(atoi(g_settings.repeat_blocker), atoi(g_settings.repeat_genericblocker));
 

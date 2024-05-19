@@ -375,25 +375,21 @@ CRCInput::CRCInput() : configfile('\t')
 		printf("CRCInput::CRCInput: Loading of rc config file failed. Using defaults.\n");
 		
 	// lirc
+	fd_lirc = -1;
 #ifdef USE_OPENGL
-	struct sockaddr_un addr;
 	unsigned mode = LIRC_MODE_SCANCODE;
 	
-	strcpy(addr.sun_path, "/dev/lirc0");
-	
-	//fd_lirc = socket(AF_UNIX, SOCK_STREAM, 0);
 	fd_lirc = ::open("/dev/lirc0", O_RDONLY, 0);
 	
 	if(fd_lirc < 0)
 	{
-		perror("CRCInput::CRCInput: could not open lircd-socket\n");
+		perror("CRCInput::CRCInput: /dev/lirc0");
 	}
 
-	//if(::connect(fd_lirc, (struct sockaddr *)&addr, sizeof(addr)) < 0)
-	if (::ioctl(fd_lirc, LIRC_SET_REC_MODE, &mode) < 0)
-	{
-		perror("CRCInput::CRCInput: could not connect to lircd-socket\n");
-	};
+//	if (::ioctl(fd_lirc, LIRC_SET_REC_MODE, &mode) < 0)
+//	{
+//		perror("CRCInput::CRCInput: could not connect to lircd-socket\n");
+//	};
 #endif
 	
 	//
@@ -439,7 +435,7 @@ void CRCInput::close()
 
 void CRCInput::calculateMaxFd()
 {
-	fd_max = -1;
+	fd_max = fd_lirc;
 
 	for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++)
 		if (fd_rc[i] > fd_max)
@@ -701,6 +697,12 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 
 		FD_ZERO(&rfds);
 		
+		// lirc
+#ifdef USE_OPENGL
+		FD_SET(fd_lirc, &rfds);
+#endif
+		
+		//
 		for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++)
 		{
 			if (fd_rc[i] != -1)
@@ -762,6 +764,20 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 		}
 		
 		// fd_lirc
+#ifdef USE_OPENGL
+		if (fd_lirc != -1 && (FD_ISSET(fd_lirc, &rfds)))
+		{
+			int ret;
+			uint32_t lircdata;
+			
+			ret = read(fd_lirc, &lircdata, sizeof(lircdata));
+			
+			if (ret != sizeof(lircdata))
+			{
+				perror("read");
+			}
+		}
+#endif
 
 		// fd_rc
 		for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++) 
