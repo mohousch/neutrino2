@@ -112,31 +112,6 @@ const struct button_label HeadNewModeButtons[HEAD_BUTTONS_COUNT] =
 	{ NEUTRINO_ICON_BUTTON_SETUP, " " }
 };
 
-//// class CZapProtection
-bool CZapProtection::check()
-{
-	int res;
-	char cPIN[5];
-	std::string hint2 = " ";
-	
-	do
-	{
-		cPIN[0] = 0;
-
-		CPLPINInput* PINInput = new CPLPINInput(_("Youth protection"), cPIN, 4, hint2.c_str(), fsk);
-
-		res = PINInput->exec(NULL, "");
-		delete PINInput;
-
-		hint2 = _("PIN-Code was wrong! Try again.");
-	} while ( (strncmp(cPIN,validPIN, 4) != 0) &&
-		  (cPIN[0] != 0) &&
-		  ( res == CMenuTarget::RETURN_REPAINT ) &&
-		  ( fsk >= g_settings.parentallock_lockage ) );
-		  
-	return ( ( strncmp(cPIN, validPIN, 4) == 0 ) || ( fsk < g_settings.parentallock_lockage ) );
-}
-
 ////
 CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vlist)
 {
@@ -145,7 +120,6 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 	name = Name;
 	selected = 0;
 	tuned = 0xfffffff;
-	zapProtection = NULL;
 	this->historyMode = _historyMode;
 	vlist = _vlist;
 	
@@ -774,55 +748,6 @@ bool CChannelList::showInfo(int pos, int epgpos, bool fromNumZap)
 	g_InfoViewer->showTitle(pos + 1, chan->name, chan->getSatellitePosition(), chan->channel_id, fromNumZap, epgpos); // UTF-8
 	
 	return true;
-}
-
-int CChannelList::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
-{
-	if ( msg == NeutrinoMessages::EVT_PROGRAMLOCKSTATUS) 
-	{
-		// 0x100 als FSK-Status zeigt an, dass (noch) kein EPG zu einem Kanal der NICHT angezeigt
-		// werden sollte (vorgesperrt) da ist
-		// oder das bouquet des Kanals ist vorgesperrt
-
-		if ((g_settings.parentallock_prompt == PARENTALLOCK_PROMPT_ONSIGNAL) || (g_settings.parentallock_prompt == PARENTALLOCK_PROMPT_CHANGETOLOCKED))
-		{
-			if ( zapProtection != NULL )
-				zapProtection->fsk = data;
-			else 
-			{
-				// require password if either
-				// CHANGETOLOCK mode and channel/bouquet is pre locked (0x100)
-				// ONSIGNAL mode and fsk(data) is beyond configured value
-				// if programm has already been unlocked, dont require pin
-				if ((data >= (neutrino_msg_data_t)g_settings.parentallock_lockage) &&
-					 ((chanlist[selected]->last_unlocked_EPGid != g_RemoteControl->current_EPGid) || (g_RemoteControl->current_EPGid == 0)) &&
-					 ((g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_CHANGETOLOCKED) || (data >= 0x100)))
-				{
-					g_RemoteControl->stopvideo();
-					
-					zapProtection = new CZapProtection( g_settings.parentallock_pincode, data );
-					
-					if ( zapProtection->check() )
-					{
-						g_RemoteControl->startvideo(chanlist[selected]->channel_id);
-						
-						// remember it for the next time
-						chanlist[selected]->last_unlocked_EPGid = g_RemoteControl->current_EPGid;
-					}
-					delete zapProtection;
-					zapProtection = NULL;
-				}
-				else
-					g_RemoteControl->startvideo(chanlist[selected]->channel_id);
-			}
-		}
-		else
-			g_RemoteControl->startvideo(chanlist[selected]->channel_id);
-
-		return messages_return::handled;
-	}
-	else
-		return messages_return::unhandled;
 }
 
 // bToo default to true

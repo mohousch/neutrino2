@@ -36,6 +36,19 @@
 #include <zapit/zapit.h>
 
 
+//// CZapProtection
+class CZapProtection
+{
+	protected:
+		char * validPIN;
+	public:
+		int fsk;
+
+		CZapProtection(char * validpin, int FSK){ validPIN = validpin; fsk = FSK; };
+		~CZapProtection(){};
+		bool check();
+};
+
 ////
 class CSubService
 {
@@ -88,6 +101,7 @@ class CRemoteControl
 		int                           director_mode;
 	
 		// Video / Parental-Lock
+		CZapProtection *zapProtection;
 		bool is_video_started;
 	
 		CRemoteControl();
@@ -96,6 +110,7 @@ class CRemoteControl
 		void stopvideo();
 		void setAPID(uint32_t APID);
 		void processAPIDnames();
+		void processZapProtection(const neutrino_msg_t msg, const neutrino_msg_data_t data);
 		const std::string & setSubChannel(const int numSub, const bool force_zap = false);
 		const std::string & subChannelUp(void);
 		const std::string & subChannelDown(void);

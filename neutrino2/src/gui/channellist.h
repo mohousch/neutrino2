@@ -46,19 +46,6 @@
 #include <daemonc/remotecontrol.h>
 
 
-//// CZapProtection
-class CZapProtection
-{
-	protected:
-		char * validPIN;
-	public:
-		int fsk;
-
-		CZapProtection(char * validpin, int FSK){ validPIN = validpin; fsk = FSK; };
-		~CZapProtection(){};
-		bool check();
-};
-
 ////
 class CChannelList
 {
@@ -101,7 +88,6 @@ class CChannelList
 
 		std::string name;
 		ZapitChannelList chanlist;
-		CZapProtection *zapProtection;
 		CChannelEventList events;
 
 		bool historyMode;
@@ -142,7 +128,6 @@ class CChannelList
 		int  hasChannel(int nChannelNr);
 		int  hasChannelID(t_channel_id channel_id);
 		void setSelected( int nChannelNr); 	// for adjusting bouquet's channel list after numzap or quickzap
-		int handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data);
 		int getSize() const;
 		int getSelectedChannelIndex() const;
 		void setSize(int newsize);

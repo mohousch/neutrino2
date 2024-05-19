@@ -47,6 +47,31 @@ extern tallchans allchans;		// defined in zapit.cpp
 extern bool autoshift;			// defined in neutrino2.cpp
 extern uint32_t scrambled_timer;	// defined in neutrino2.cpp
 
+//// class CZapProtection
+bool CZapProtection::check()
+{
+	int res;
+	char cPIN[5];
+	std::string hint2 = " ";
+	
+	do
+	{
+		cPIN[0] = 0;
+
+		CPLPINInput* PINInput = new CPLPINInput(_("Youth protection"), cPIN, 4, hint2.c_str(), fsk);
+
+		res = PINInput->exec(NULL, "");
+		delete PINInput;
+
+		hint2 = _("PIN-Code was wrong! Try again.");
+	} while ( (strncmp(cPIN,validPIN, 4) != 0) &&
+		  (cPIN[0] != 0) &&
+		  ( res == CMenuTarget::RETURN_REPAINT ) &&
+		  ( fsk >= g_settings.parentallock_lockage ) );
+		  
+	return ( ( strncmp(cPIN, validPIN, 4) == 0 ) || ( fsk < g_settings.parentallock_lockage ) );
+}
+
 //// class CSubService
 CSubService::CSubService(const t_original_network_id anoriginal_network_id, const t_service_id aservice_id, const t_transport_stream_id atransport_stream_id, const std::string &asubservice_name)
 {
@@ -95,6 +120,7 @@ CRemoteControl::CRemoteControl()
 	director_mode = 0;
 	current_programm_timer = 0;
 	is_video_started = true;
+	zapProtection = NULL;
 }
 
 int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
@@ -139,8 +165,10 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			//
 			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
 
+			//
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
-				g_RCInput->postMsg( NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false );
+				//g_RCInput->postMsg( NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false );
+				processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
 		}
 	} 
 	else 
@@ -189,8 +217,10 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			//
 			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR);
 
+			//
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
-				g_RCInput->postMsg( NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false );
+				//g_RCInput->postMsg( NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false );
+				processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
 		}
 		else
 		{
@@ -254,24 +284,29 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 
 				current_EPGid = info_CN.current_uniqueKey;
 
+				//
 				if ( has_unresolved_ctags )
 					processAPIDnames();
 
+				//
 				if (selected_subchannel <= 0 && info_CN.flags & CSectionsd::epgflags::current_has_linkagedescriptors)
 				{
 					subChannels.clear();
 					getSubChannels();
 				}
 
+				//
 				if ( needs_nvods )
 					getNVODs();
 			}
 
 			// is_video_started is only false if channel is locked
 			if ((!is_video_started) && (info_CN.current_fsk == 0 || g_settings.parentallock_prompt == PARENTALLOCK_PROMPT_CHANGETOLOCKED))
-				g_RCInput->postMsg(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false);
+				//g_RCInput->postMsg(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false);
+				processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
 			else
-				g_RCInput->postMsg(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, (const neutrino_msg_data_t)info_CN.current_fsk, false);
+				//g_RCInput->postMsg(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, (const neutrino_msg_data_t)info_CN.current_fsk, false);
+				processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, (const neutrino_msg_data_t)info_CN.current_fsk);
 		}
 
 		return messages_return::handled;
@@ -282,7 +317,8 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			return messages_return::handled;
 
 		if ( !is_video_started )
-			g_RCInput->postMsg( NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false );
+			//g_RCInput->postMsg( NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false );
+			processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
 			
 		return messages_return::handled;
 	}
@@ -291,7 +327,8 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		if (data == current_channel_id)
 		{
 			if ( !is_video_started )
-				g_RCInput->postMsg( NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false );
+				//g_RCInput->postMsg( NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false );
+				processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
 		}
 		
 		return messages_return::handled;
@@ -447,6 +484,46 @@ void CRemoteControl::getNVODs()
 				selected_subchannel = -1;
 			}
 		}
+	}
+}
+
+void CRemoteControl::processZapProtection(const neutrino_msg_t msg, const neutrino_msg_data_t data)
+{
+	dprintf(DEBUG_NORMAL, "CRemoteControl::processZapProtection: msg:0x%llx data:0x%llx\n", msg, data);
+	
+	if ( msg == NeutrinoMessages::EVT_PROGRAMLOCKSTATUS) 
+	{
+		if ((g_settings.parentallock_prompt == PARENTALLOCK_PROMPT_ONSIGNAL) || (g_settings.parentallock_prompt == PARENTALLOCK_PROMPT_CHANGETOLOCKED))
+		{
+			if ( zapProtection != NULL )
+				zapProtection->fsk = data;
+			else 
+			{
+				if ((data >= (neutrino_msg_data_t)g_settings.parentallock_lockage) &&
+					 ((CZapit::getInstance()->getCurrentChannel()->last_unlocked_EPGid != g_RemoteControl->current_EPGid) || (g_RemoteControl->current_EPGid == 0)) &&
+					 ((g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_CHANGETOLOCKED) || (data >= 0x100)))
+				{
+					g_RemoteControl->stopvideo();
+					
+					zapProtection = new CZapProtection( g_settings.parentallock_pincode, data );
+					
+					if ( zapProtection->check() )
+					{
+						g_RemoteControl->startvideo(current_channel_id);
+						
+						// remember it for the next time
+						CZapit::getInstance()->getCurrentChannel()->last_unlocked_EPGid = g_RemoteControl->current_EPGid;
+					}
+					
+					delete zapProtection;
+					zapProtection = NULL;
+				}
+				else
+					g_RemoteControl->startvideo(current_channel_id);
+			}
+		}
+		else
+			g_RemoteControl->startvideo(current_channel_id);
 	}
 }
 
