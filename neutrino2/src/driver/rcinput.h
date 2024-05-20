@@ -427,6 +427,9 @@ class CRCInput
 		
 		//
 		void clearRCMsg();
+#ifdef USE_OPENGL
+		int translateLIRCScanCode(uint64_t code);
+#endif
 };
 
 //// Converts input of numeric keys to SMS style char input

@@ -66,11 +66,15 @@ const char * const RC_EVENT_DEVICE[NUMBER_OF_EVENT_DEVICES] = {
 
 typedef struct input_event t_input_event;
 
+#ifdef USE_OPENGL
+	uint64_t lastCode = 0;
+	uint64_t FirstTime = 0;
+#endif
+
 bool CRCInput::loadRCConfig(const char * const fileName)
 {
 	printf("CRCInput::loadRCConfig:\n");
 	
-	/* if rc.conf not exists load default */
 	if(!configfile.loadConfig(fileName))
 		printf("CRCInput::loadRCConfig: %s not found, using default\n", fileName);
 	
@@ -180,7 +184,7 @@ bool CRCInput::loadRCConfig(const char * const fileName)
 	key_prev = configfile.getInt32("key_prev", 0xFFFFFFF1);
 #endif			
 
-	/* added from cuberevo3000hd so fix it please */
+	//
 	key_music = configfile.getInt32("key_music", 0x3F );
 	key_picture = configfile.getInt32("key_picture", 0x169 );
 			
@@ -209,12 +213,14 @@ bool CRCInput::loadRCConfig(const char * const fileName)
 #else
 	key_multifeed = configfile.getInt32("key_multifeed", 0x165);
 #endif
-				
+	
+	//			
 	key_f1 = configfile.getInt32("key_f1", 0x3B);
 	key_f2 = configfile.getInt32("key_f2", 0x3C);
 	key_f3 = configfile.getInt32("key_f3", 0x3D);
 	key_f4 = configfile.getInt32("key_f4", 0x3E);
-			
+	
+	//		
 	key_vfdup = configfile.getInt32("key_vfdup", VFD_UP);
 	key_vfddown = configfile.getInt32("key_vfddown", VFD_DOWN);
 	key_vfdright = configfile.getInt32("key_vfdright", VFD_RIGHT);
@@ -295,7 +301,6 @@ bool CRCInput::saveRCConfig(const char * const fileName)
 	configfile.setInt32("key_next", key_next);
 	configfile.setInt32("key_prev", key_prev);
 			
-	/* added from cuberevo3000hd so fix it please */
 	configfile.setInt32("key_music", key_music);
 	configfile.setInt32("key_picture", key_picture);
 			
@@ -331,7 +336,6 @@ bool CRCInput::saveRCConfig(const char * const fileName)
 	
 	if(configfile.getModifiedFlag())
 	{
-		/* save neu configuration */
 		configfile.saveConfig(fileName);
 	}
 	
@@ -362,11 +366,14 @@ CRCInput::CRCInput() : configfile('\t')
 	fcntl(fd_pipe_low_priority[0], F_SETFL, O_NONBLOCK );
 	fcntl(fd_pipe_low_priority[1], F_SETFL, O_NONBLOCK );
 
-	// open rc
+	// event devices
 	for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++)
 	{
 		fd_rc[i] = -1;
 	}
+	
+	//
+	fd_lirc = -1;
 	
 	repeat_block = repeat_block_generic = 0;
 	
@@ -375,7 +382,6 @@ CRCInput::CRCInput() : configfile('\t')
 		printf("CRCInput::CRCInput: Loading of rc config file failed. Using defaults.\n");
 		
 	// lirc
-	fd_lirc = -1;
 #ifdef USE_OPENGL
 	unsigned mode = LIRC_MODE_SCANCODE;
 	
@@ -386,12 +392,12 @@ CRCInput::CRCInput() : configfile('\t')
 		perror("CRCInput::CRCInput: /dev/lirc0");
 	}
 
-//	if (::ioctl(fd_lirc, LIRC_SET_REC_MODE, &mode) < 0)
-//	{
-//		perror("CRCInput::CRCInput: could not connect to lircd-socket\n");
-//	};
+	if (::ioctl(fd_lirc, LIRC_SET_REC_MODE, &mode) < 0)
+	{
+		perror("CRCInput::CRCInput: /dev/lirc0");
+	};
 #endif
-	
+
 	//
 	open();
 	
@@ -400,6 +406,7 @@ CRCInput::CRCInput() : configfile('\t')
 
 void CRCInput::open()
 {
+#ifndef USE_OPENGL
 	close();
 
 	// 
@@ -414,12 +421,14 @@ void CRCInput::open()
 				
 		dprintf(DEBUG_INFO, "CRCInput::open: %s fd %d\n", RC_EVENT_DEVICE[i], fd_rc[i]);		
 	}
+#endif
 	
 	calculateMaxFd();
 }
 
 void CRCInput::close()
 {
+#ifndef USE_OPENGL
 	// fd_rc
 	for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++) 
 	{
@@ -429,6 +438,7 @@ void CRCInput::close()
 			fd_rc[i] = -1;
 		}
 	}
+#endif
 
 	calculateMaxFd();
 }
@@ -437,9 +447,11 @@ void CRCInput::calculateMaxFd()
 {
 	fd_max = fd_lirc;
 
+#ifndef USE_OPENGL
 	for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++)
 		if (fd_rc[i] > fd_max)
 			fd_max = fd_rc[i];
+#endif
 	
 	if(fd_pipe_high_priority[0] > fd_max)
 		fd_max = fd_pipe_high_priority[0];
@@ -450,6 +462,7 @@ void CRCInput::calculateMaxFd()
 
 CRCInput::~CRCInput()
 {
+	//
 	close();
 
 	//
@@ -653,7 +666,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 
 	int timer_id;
 	fd_set rfds;
-	t_input_event ev;
+	t_input_event ev;	
 
 	*data = 0;
 
@@ -700,14 +713,14 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 		// lirc
 #ifdef USE_OPENGL
 		FD_SET(fd_lirc, &rfds);
-#endif
-		
+#else	
 		//
 		for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++)
 		{
 			if (fd_rc[i] != -1)
 				FD_SET(fd_rc[i], &rfds);
 		}
+#endif
 		
 		//
 		FD_SET(fd_pipe_high_priority[0], &rfds);
@@ -767,8 +780,8 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 #ifdef USE_OPENGL
 		if (fd_lirc != -1 && (FD_ISSET(fd_lirc, &rfds)))
 		{
-			int ret;
-			uint32_t lircdata;
+			ssize_t ret;
+			lirc_scancode lircdata;
 			
 			ret = read(fd_lirc, &lircdata, sizeof(lircdata));
 			
@@ -776,9 +789,24 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			{
 				perror("read");
 			}
+			
+			dprintf(DEBUG_NORMAL, ANSI_RED"LIRC: timestamp:%lld flags:%d proto:%d keycode: 0x%x scancode:%llx\n", lircdata.timestamp, lircdata.flags, lircdata.rc_proto, lircdata.keycode, lircdata.scancode);
+			
+			// skip keys coming in too fast
+           		if ( (lircdata.scancode == lastCode) && ((lircdata.timestamp - FirstTime) / 1000000) < repeat_block/1000)
+              			continue;
+              			
+              		//dprintf(DEBUG_DEBUG, ANSI_RED"LIRC: timestamp diff: %lld (FirstTime:%lld lastCode:0x%x) (repeat_block:%d)\n", (lircdata.timestamp - FirstTime) / 1000000, FirstTime, lastCode, repeat_block);
+              		
+              		FirstTime = lircdata.timestamp;
+              		lastCode = lircdata.scancode;
+			
+			*data = 0;
+			*msg = translateLIRCScanCode(lastCode);
+			
+			return;
 		}
-#endif
-
+#else
 		// fd_rc
 		for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++) 
 		{
@@ -869,6 +897,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 				}
 			}// if FDSET
 		} // for NUMBER_OF_EVENT_DEVICES
+#endif
 
 		// pipe low prio
 		if(FD_ISSET(fd_pipe_low_priority[0], &rfds))
@@ -1317,6 +1346,44 @@ int CRCInput::translate(unsigned int code, int num)
 	else if (code == key_vfdup) return RC_up;	
 	else return RC_nokey;
 }
+
+#ifdef USE_OPENGL
+int CRCInput::translateLIRCScanCode(uint64_t code)
+{
+// FIXME: use lircd.conf
+	if (code == 0x1c20) return RC_page_up;
+	else if (code == 0x1c21) return RC_page_down;
+	else if (code == 0x1c14) return RC_up;
+	else if (code == 0x1c15) return RC_down;
+	else if (code == 0x1c25) return RC_ok;
+	else if (code == 0x1c1c) return RC_home;
+	else if (code == 0x1c0d) return RC_setup;
+	else if (code == 0x1c17) return RC_right;
+	else if (code == 0x1c16) return RC_left;
+	else if (code == 0x1c10) return RC_plus;
+	else if (code == 0x1c11) return RC_minus;
+	else if (code == 0x1c01) return RC_1;
+	else if (code == 0x1c02) return RC_2;
+	else if (code == 0x1c03) return RC_3;
+	else if (code == 0x1c04) return RC_4;
+	else if (code == 0x1c05) return RC_5;
+	else if (code == 0x1c06) return RC_6;
+	else if (code == 0x1c07) return RC_7;
+	else if (code == 0x1c08) return RC_8;
+	else if (code == 0x1c09) return RC_9;
+	else if (code == 0x1c0f) return RC_spkr;
+	else if (code == 0x1c36) return RC_audio;
+	else if (code == 0x1c24) return RC_record;
+	else if (code == 0x1c0a) return RC_text;
+	else if (code == 0x1c0e) return RC_dvbsub;
+	else if (code == 0x1c1e) return RC_stop;
+	else if (code == 0x1c35) return RC_play;
+	else if (code == 0x1c30) return RC_pause;
+	else if (code == 0x1c34) return RC_forward;
+	else if (code == 0x1c32) return RC_rewind;
+	else return RC_nokey;
+}
+#endif
 
 ////
 #define SMSKEY_TIMEOUT 2000
