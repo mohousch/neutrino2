@@ -946,7 +946,7 @@ void CRCInput::setRepeat(unsigned int delay,unsigned int period)
 
 void CRCInput::postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data, const bool Priority)
 {
-	dprintf(DEBUG_NORMAL, ANSI_RED "CRCInput::postMsg: msg:(0x%llx) data:(0x%llx) prio:(%s) >\n", msg, data, Priority? "high" : "low" );
+	dprintf(DEBUG_NORMAL, ANSI_RED "CRCInput::postMsg: msg:(0x%llx) data:(0x%llx) >\n", msg, data);
 
 	struct event buf;
 	
