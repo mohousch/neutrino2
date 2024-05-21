@@ -790,7 +790,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 				perror("read");
 			}
 			
-			dprintf(DEBUG_NORMAL, ANSI_RED"LIRC: timestamp:%lld flags:%d proto:%d keycode: 0x%x scancode:%llx\n", lircdata.timestamp, lircdata.flags, lircdata.rc_proto, lircdata.keycode, lircdata.scancode);
+			dprintf(DEBUG_NORMAL, ANSI_RED"LIRC: timestamp:%lld flags:%d proto:%d keycode: 0x%x scancode:%llx (%s)\n", lircdata.timestamp, lircdata.flags, lircdata.rc_proto, lircdata.keycode, lircdata.scancode, getKeyName(translateLIRCScanCode(lircdata.scancode)).c_str());
 			
 			// skip keys coming in too fast
            		if ( (lircdata.scancode == lastCode) && ((lircdata.timestamp - FirstTime) / 1000000) < repeat_block/1000)
@@ -803,6 +803,8 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			
 			*data = 0;
 			*msg = translateLIRCScanCode(lastCode);
+			
+			//dprintf(DEBUG_NORMAL, ANSI_RED"LIRC: %s\n", getKeyName(translateLIRCScanCode(lastCode)).c_str());
 			
 			return;
 		}
@@ -1200,7 +1202,7 @@ const char * CRCInput::getSpecialKeyName(const unsigned long key)
 		case RC_f4:
 			return "RC_f4";			
 				
-		/* VFD Tasten the generic values are from cuberevo so fix it */
+		//
 		case RC_vfdup:
 			return "RC_vfdup";
 				
@@ -1232,7 +1234,6 @@ const char * CRCInput::getSpecialKeyName(const unsigned long key)
 			return "RC_none";
 			
 		default:
-			printf("CRCInput::getSpecialKeyName: unknown key: 0x%x\n", key);
 			return "RC_unknown";
 	}
 }
@@ -1381,6 +1382,9 @@ int CRCInput::translateLIRCScanCode(uint64_t code)
 	else if (code == 0x1c30) return RC_pause;
 	else if (code == 0x1c34) return RC_forward;
 	else if (code == 0x1c32) return RC_rewind;
+	else if (code == 0x1c1f) return RC_mode;
+	else if (code == 0x1c3b) return RC_mode;
+	else if (code == 0x1c3d) return RC_standby;
 	else return RC_nokey;
 }
 #endif

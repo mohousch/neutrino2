@@ -85,7 +85,7 @@ const char * getISO639Description(const char * const iso)
 //
 void CLocaleManager::loadLocale(const char* const locale)
 {
-	dprintf(DEBUG_NORMAL, "CLocaleManager::loadLocale: %s\n", locale);
+	dprintf(DEBUG_NORMAL, "CLocaleManager::loadLocale: %s\n", locale2lang(locale).c_str());
 	
 	// set lang
 	setenv("LANG", locale, 1);
