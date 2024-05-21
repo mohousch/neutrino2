@@ -55,8 +55,6 @@
 #include <system/debug.h>
 
 
-#define ENABLE_REPEAT_CHECK
-
 const char * const RC_EVENT_DEVICE[NUMBER_OF_EVENT_DEVICES] = {
 	"/dev/input/event0", 
 	"/dev/input/event1", 
@@ -67,7 +65,7 @@ const char * const RC_EVENT_DEVICE[NUMBER_OF_EVENT_DEVICES] = {
 typedef struct input_event t_input_event;
 
 #ifdef USE_OPENGL
-	uint64_t lastCode = 0;
+	__u64 lastCode = 0;
 	uint64_t FirstTime = 0;
 #endif
 
@@ -78,6 +76,42 @@ bool CRCInput::loadRCConfig(const char * const fileName)
 	if(!configfile.loadConfig(fileName))
 		printf("CRCInput::loadRCConfig: %s not found, using default\n", fileName);
 	
+#ifdef USE_OPENGL
+	key_page_up = configfile.getInt32("key_page_up", 0x1c20);
+	key_page_down = configfile.getInt32("key_page_down", 0x1c21);
+	key_up = configfile.getInt32("key_up", 0x1c14);
+	key_down = configfile.getInt32("key_down", 0x1c15);
+	key_ok = configfile.getInt32("key_ok", 0x1c25);
+	key_home = configfile.getInt32("key_home", 0x1c1c);
+	key_setup = configfile.getInt32("key_setup", 0x1c0d);
+	key_right = configfile.getInt32("key_right", 0x1c17);
+	key_left = configfile.getInt32("key_left", 0x1c16);
+	key_plus = configfile.getInt32("key_plus", 0x1c10);
+	key_minus = configfile.getInt32("key_minus", 0x1c);
+	key_0 = configfile.getInt32("key_1", 0x1c00);
+	key_1 = configfile.getInt32("key_1", 0x1c01);
+	key_2 = configfile.getInt32("key_2", 0x1c02);
+	key_3 = configfile.getInt32("key_3", 0x1c03);
+	key_4 = configfile.getInt32("key_4", 0x1c04);
+	key_5 = configfile.getInt32("key_5", 0x1c05);
+	key_6 = configfile.getInt32("key_6", 0x1c06);
+	key_7 = configfile.getInt32("key_7", 0x1c07);
+	key_8 = configfile.getInt32("key_8", 0x1c08);
+	key_9 = configfile.getInt32("key_9", 0x1c09);
+	key_spkr = configfile.getInt32("key_spkr", 0x1c0f);
+	key_audio = configfile.getInt32("key_audio", 0x1c36);
+	key_record = configfile.getInt32("key_record", 0x1c24);
+	key_text = configfile.getInt32("key_text", 0x1c0a);
+	key_dvbsub = configfile.getInt32("key_dvbsub", 0x1c0e);
+	key_stop = configfile.getInt32("key_stop", 0x1c1e);
+	key_play = configfile.getInt32("key_play", 0x1c35);
+	key_pause = configfile.getInt32("key_pause", 0x1c30);
+	key_forward = configfile.getInt32("key_forward", 0x1c34);
+	key_rewind = configfile.getInt32("key_rewind", 0x1c32);
+	key_mode = configfile.getInt32("key_mode", 0x1c1f);
+	key_standby = configfile.getInt32("key_standby", 0x1c3d);
+	key_info = configfile.getInt32("key_info", 0x1c3b);
+#else
 	key_0 = configfile.getInt32("key_0", KEY_0);
 	key_1 = configfile.getInt32("key_1", KEY_1);
 	key_2 = configfile.getInt32("key_2", KEY_2);
@@ -229,6 +263,7 @@ bool CRCInput::loadRCConfig(const char * const fileName)
 	key_vfdmenu = configfile.getInt32("key_vfdmenu", VFD_MENU);
 	key_vfdexit = configfile.getInt32("key_vfdexit", VFD_EXIT);
 	key_vfdok = configfile.getInt32("key_vfdok", VFD_OK);
+#endif
 	
 	return true;
 }
@@ -389,12 +424,12 @@ CRCInput::CRCInput() : configfile('\t')
 	
 	if(fd_lirc < 0)
 	{
-		perror("CRCInput::CRCInput: /dev/lirc0");
+		perror("/dev/lirc0");
 	}
 
 	if (::ioctl(fd_lirc, LIRC_SET_REC_MODE, &mode) < 0)
 	{
-		perror("CRCInput::CRCInput: /dev/lirc0");
+		perror("/dev/lirc0");
 	};
 #endif
 
@@ -447,6 +482,7 @@ void CRCInput::calculateMaxFd()
 {
 	fd_max = fd_lirc;
 
+	//
 #ifndef USE_OPENGL
 	for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++)
 		if (fd_rc[i] > fd_max)
@@ -713,8 +749,8 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 		// lirc
 #ifdef USE_OPENGL
 		FD_SET(fd_lirc, &rfds);
-#else	
-		//
+#else
+		// event devices
 		for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++)
 		{
 			if (fd_rc[i] != -1)
@@ -731,6 +767,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 		if ( status == -1 )
 		{
 			perror("[neutrino - getMsg_us]: select returned ");
+			
 			// in case of an error return timeout...?!
 			*msg = RC_timeout;
 			*data = 0;
@@ -787,24 +824,22 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			
 			if (ret != sizeof(lircdata))
 			{
-				perror("read");
+				continue;
 			}
 			
-			dprintf(DEBUG_NORMAL, ANSI_RED"LIRC: timestamp:%lld flags:%d proto:%d keycode: 0x%x scancode:%llx (%s)\n", lircdata.timestamp, lircdata.flags, lircdata.rc_proto, lircdata.keycode, lircdata.scancode, getKeyName(translateLIRCScanCode(lircdata.scancode)).c_str());
+			dprintf(DEBUG_NORMAL, ANSI_RED"LIRC: timestamp:%lld flags:%d proto:%d keycode: 0x%x scancode:%llx (%s)\n", lircdata.timestamp, lircdata.flags, lircdata.rc_proto, lircdata.keycode, lircdata.scancode, getKeyName(translate(lircdata.scancode, 0)).c_str());
 			
 			// skip keys coming in too fast
            		if ( (lircdata.scancode == lastCode) && ((lircdata.timestamp - FirstTime) / 1000000) < repeat_block/1000)
               			continue;
               			
-              		//dprintf(DEBUG_DEBUG, ANSI_RED"LIRC: timestamp diff: %lld (FirstTime:%lld lastCode:0x%x) (repeat_block:%d)\n", (lircdata.timestamp - FirstTime) / 1000000, FirstTime, lastCode, repeat_block);
+              		dprintf(DEBUG_DEBUG, ANSI_RED"LIRC: timestamp diff: %lld (FirstTime:%lld lastCode:0x%x) (repeat_block:%d)\n", (lircdata.timestamp - FirstTime) / 1000000, FirstTime, lastCode, repeat_block);
               		
               		FirstTime = lircdata.timestamp;
               		lastCode = lircdata.scancode;
 			
 			*data = 0;
-			*msg = translateLIRCScanCode(lastCode);
-			
-			//dprintf(DEBUG_NORMAL, ANSI_RED"LIRC: %s\n", getKeyName(translateLIRCScanCode(lastCode)).c_str());
+			*msg = translate(lastCode, 0);
 			
 			return;
 		}
@@ -850,7 +885,6 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 							((bAllowRepeatLR) && ((trkey == RC_left ) ||
 								(trkey == RC_right))))
 						{
-#ifdef ENABLE_REPEAT_CHECK
 							if (rc_last_repeat_key != ev.code) 
 							{
 								if ((now_pressed > last_keypress + repeat_block) ||
@@ -859,7 +893,6 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 								else
 									keyok = false;
 							}
-#endif
 						}
 						else
 							keyok = false;						
@@ -871,9 +904,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 
 					if (keyok) 
 					{
-#ifdef ENABLE_REPEAT_CHECK
 						if ((now_pressed > last_keypress + repeat_block_generic) || (now_pressed < last_keypress)) 
-#endif
 						{
 							last_keypress = now_pressed;
 
@@ -1255,7 +1286,7 @@ std::string CRCInput::getKeyName(const unsigned long key)
 }
 
 // transforms the rc-key to generic - internal use only!
-int CRCInput::translate(unsigned int code, int num)
+int CRCInput::translate(uint64_t code, int num)
 {
 	// common
 	if (code == key_standby) return RC_standby;
@@ -1347,47 +1378,6 @@ int CRCInput::translate(unsigned int code, int num)
 	else if (code == key_vfdup) return RC_up;	
 	else return RC_nokey;
 }
-
-#ifdef USE_OPENGL
-int CRCInput::translateLIRCScanCode(uint64_t code)
-{
-// FIXME: use lircd.conf
-	if (code == 0x1c20) return RC_page_up;
-	else if (code == 0x1c21) return RC_page_down;
-	else if (code == 0x1c14) return RC_up;
-	else if (code == 0x1c15) return RC_down;
-	else if (code == 0x1c25) return RC_ok;
-	else if (code == 0x1c1c) return RC_home;
-	else if (code == 0x1c0d) return RC_setup;
-	else if (code == 0x1c17) return RC_right;
-	else if (code == 0x1c16) return RC_left;
-	else if (code == 0x1c10) return RC_plus;
-	else if (code == 0x1c11) return RC_minus;
-	else if (code == 0x1c01) return RC_1;
-	else if (code == 0x1c02) return RC_2;
-	else if (code == 0x1c03) return RC_3;
-	else if (code == 0x1c04) return RC_4;
-	else if (code == 0x1c05) return RC_5;
-	else if (code == 0x1c06) return RC_6;
-	else if (code == 0x1c07) return RC_7;
-	else if (code == 0x1c08) return RC_8;
-	else if (code == 0x1c09) return RC_9;
-	else if (code == 0x1c0f) return RC_spkr;
-	else if (code == 0x1c36) return RC_audio;
-	else if (code == 0x1c24) return RC_record;
-	else if (code == 0x1c0a) return RC_text;
-	else if (code == 0x1c0e) return RC_dvbsub;
-	else if (code == 0x1c1e) return RC_stop;
-	else if (code == 0x1c35) return RC_play;
-	else if (code == 0x1c30) return RC_pause;
-	else if (code == 0x1c34) return RC_forward;
-	else if (code == 0x1c32) return RC_rewind;
-	else if (code == 0x1c1f) return RC_mode;
-	else if (code == 0x1c3b) return RC_mode;
-	else if (code == 0x1c3d) return RC_standby;
-	else return RC_nokey;
-}
-#endif
 
 ////
 #define SMSKEY_TIMEOUT 2000

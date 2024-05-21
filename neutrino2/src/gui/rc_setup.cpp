@@ -128,6 +128,22 @@ int CRemoteControlSettings::exec(CMenuTarget* parent, const std::string& actionK
 		
 		return ret;
 	}
+	else if(actionKey == "savercconfig")
+	{
+		CHintBox * hintBox = new CHintBox(_("Information"), _("Saving RC configuration, please wait...")); // UTF-8
+		hintBox->paint();
+		
+		g_RCInput->configfile.setModifiedFlag(true);
+		g_RCInput->saveRCConfig(NEUTRINO_RCCONFIG_FILE);
+		
+		sleep(2);
+		
+		hintBox->hide();
+		delete hintBox;
+		hintBox = NULL;
+
+		return CMenuTarget::RETURN_REPAINT;	
+	}
 	
 	showMenu();
 	
@@ -217,6 +233,11 @@ void CRemoteControlSettings::showMenu()
         remoteControlSettings->addItem(new CMenuForwarder(_("User menu F3"), true, NULL, new CUserMenu(_("User menu F3"), SNeutrinoSettings::BUTTON_F3) ));
         remoteControlSettings->addItem(new CMenuForwarder(_("User menu F4"), true, NULL, new CUserMenu(_("User menu F4"), SNeutrinoSettings::BUTTON_F4) ));	
 #endif
+
+	// misc
+	remoteControlSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Misc settings")));
+	
+	remoteControlSettings->addItem(new CMenuForwarder(_("Save RC configuration"), true, NULL, this, "savercconfig" ) );
 	
 	//
 	widget->exec(NULL, "");
@@ -251,22 +272,6 @@ int CKeysBindingSettings::exec(CMenuTarget* parent, const std::string& actionKey
 		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 		
 		return ret;
-	}
-	else if(actionKey == "savercconfig")
-	{
-		CHintBox * hintBox = new CHintBox(_("Information"), _("Saving RC configuration, please wait...")); // UTF-8
-		hintBox->paint();
-		
-		g_RCInput->configfile.setModifiedFlag(true);
-		g_RCInput->saveRCConfig(NEUTRINO_RCCONFIG_FILE);
-		
-		sleep(2);
-		
-		hintBox->hide();
-		delete hintBox;
-		hintBox = NULL;
-
-		return CMenuTarget::RETURN_REPAINT;	
 	}
 	
 	showMenu();
@@ -336,11 +341,9 @@ void CKeysBindingSettings::showMenu()
 		//
 		bindSettings->enablePaintHead();
 		bindSettings->setTitle(_("Hot Keys mapping"), NEUTRINO_ICON_KEYBINDING);
-//		bindSettings->setHeadLine(true, true);
 
 		//
 		bindSettings->enablePaintFoot();
-//		bindSettings->setFootLine(true, true);
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
@@ -384,9 +387,6 @@ void CKeysBindingSettings::showMenu()
 	
 	// screenshot key
 	bindSettings->addItem(new CMenuForwarder(_(keydescription[KEY_EXTRAS_SCREENSHOT]), true, NULL, new CKeyChooser(keyvalue_p[KEY_EXTRAS_SCREENSHOT], _(keydescription[KEY_EXTRAS_SCREENSHOT]), NEUTRINO_ICON_SETTINGS)));
-	
-	// save rc config
-	bindSettings->addItem(new CMenuForwarder(_("Save RC configuration"), true, NULL, this, "savercconfig" ) );
 	
 	//
 	widget->exec(NULL, "");

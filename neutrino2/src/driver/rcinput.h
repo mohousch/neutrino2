@@ -138,7 +138,7 @@
 #define VFD_OK		0x058
 
 //// defines
-typedef unsigned long neutrino_msg_t;
+typedef unsigned long long neutrino_msg_t;
 typedef unsigned long long neutrino_msg_data_t;
 
 #define NEUTRINO_RCCONFIG_FILE		CONFIGDIR "/rc.conf"
@@ -176,7 +176,7 @@ class CRCInput
 
 		void open();
 		void close();
-		int translate(unsigned int code, int num);
+		int translate(uint64_t code, int num);
 		void calculateMaxFd(void);
 		int checkTimers();
 
@@ -427,9 +427,6 @@ class CRCInput
 		
 		//
 		void clearRCMsg();
-#ifdef USE_OPENGL
-		int translateLIRCScanCode(uint64_t code);
-#endif
 };
 
 //// Converts input of numeric keys to SMS style char input
