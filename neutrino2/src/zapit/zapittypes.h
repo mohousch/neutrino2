@@ -36,7 +36,7 @@
 #include <linux/dvb/version.h>
 
 
-#if DVB_API_VERSION_MINOR < 5
+//#if DVB_API_VERSION_MINOR < 5
 #ifndef SYS_DVBC_ANNEX_A
 #define SYS_DVBC_ANNEX_A	SYS_DVBC_ANNEX_AC
 #endif
@@ -44,7 +44,7 @@
 #ifndef SYS_DTMB
 #define SYS_DTMB		SYS_DMBTH
 #endif
-#endif
+//#endif
 
 typedef uint16_t t_service_id;
 typedef uint16_t t_original_network_id;

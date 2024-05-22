@@ -54,7 +54,7 @@
 
 
 #ifndef TRANSMISSION_MODE_C1
-#define TRANSMISSION_MODE_C1	7
+#define TRANSMISSION_MODE_C1		7
 #endif
 
 #ifndef TRANSMISSION_MODE_C3780
@@ -62,15 +62,15 @@
 #endif
 
 #ifndef GUARD_INTERVAL_PN420
-#define GUARD_INTERVAL_PN420	8
+#define GUARD_INTERVAL_PN420		8
 #endif
 
 #ifndef GUARD_INTERVAL_PN595 
-#define GUARD_INTERVAL_PN595	9
+#define GUARD_INTERVAL_PN595		9
 #endif
 
 #ifndef GUARD_INTERVAL_PN945
-#define GUARD_INTERVAL_PN945	10
+#define GUARD_INTERVAL_PN945		10
 #endif
 
 //// globals
