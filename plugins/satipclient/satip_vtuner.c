@@ -35,6 +35,11 @@
 #include "satip_vtuner.h"
 #include "log.h"
 
+
+#ifndef DTV_DVBT2_PLP_ID
+#define DTV_DVBT2_PLP_ID 43
+#endif
+
 /* from vtunerc_priv.h */
 #define MAX_PIDTAB_LEN 30
 #define PID_UNKNOWN 0x0FFFF
