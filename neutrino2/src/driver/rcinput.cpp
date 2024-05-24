@@ -65,7 +65,8 @@ const char * const RC_EVENT_DEVICE[NUMBER_OF_EVENT_DEVICES] = {
 typedef struct input_event t_input_event;
 
 #ifdef USE_OPENGL
-	__u64 lastCode = 0;
+	__u64 lastScanCode = 0;
+	__u32 lastKeyCode = 0;
 	uint64_t FirstTime = 0;
 #endif
 
@@ -76,7 +77,7 @@ bool CRCInput::loadRCConfig(const char * const fileName)
 	if(!configfile.loadConfig(fileName))
 		printf("CRCInput::loadRCConfig: %s not found, using default\n", fileName);
 	
-#ifdef USE_OPENGL
+#if 0//def USE_OPENGL
 	key_page_up = configfile.getInt32("key_page_up", 0x1c20);
 	key_page_down = configfile.getInt32("key_page_down", 0x1c21);
 	key_up = configfile.getInt32("key_up", 0x1c14);
@@ -122,16 +123,28 @@ bool CRCInput::loadRCConfig(const char * const fileName)
 	key_7 = configfile.getInt32("key_7", KEY_7);
 	key_8 = configfile.getInt32("key_8", KEY_8);
 	key_9 = configfile.getInt32("key_9", KEY_9);
-			
+
+#ifdef USE_OPENGL			
+	key_up = configfile.getInt32("key_up", 0x67);
+	key_left = configfile.getInt32("key_left", 0x69);
+	key_right = configfile.getInt32("key_right", 0x6a);
+	key_down = configfile.getInt32("key_down", 0x6c);
+#else
 	key_up = configfile.getInt32("key_up", KEY_UP);
 	key_left = configfile.getInt32("key_left", KEY_LEFT);
 	key_right = configfile.getInt32("key_right", KEY_RIGHT);
 	key_down = configfile.getInt32("key_down", KEY_DOWN);
+#endif
 			
 	key_spkr = configfile.getInt32("key_spkr", KEY_MUTE);
-				
+	
+#ifdef USE_OPENGL
+	key_minus = configfile.getInt32("key_minus", 0x72);
+	key_plus = configfile.getInt32("key_plus", 0x73);
+#else			
 	key_minus = configfile.getInt32("key_minus", KEY_VOLUMEDOWN);
-	key_plus = configfile.getInt32("key_plus", KEY_VOLUMEUP);	
+	key_plus = configfile.getInt32("key_plus", KEY_VOLUMEUP);
+#endif	
 
 	key_standby = configfile.getInt32("key_standby", KEY_POWER);
 			
@@ -196,7 +209,11 @@ bool CRCInput::loadRCConfig(const char * const fileName)
 	key_play = configfile.getInt32("key_play", 0xA4);
 	key_pause = configfile.getInt32("key_pause", 0x16A);
 #else
+#ifdef USE_OPENGL
+	key_play = configfile.getInt32("key_play", 0xcf);
+#else
 	key_play = configfile.getInt32("key_play", KEY_PLAY);
+#endif
 	key_pause = configfile.getInt32("key_pause", KEY_PAUSE);
 #endif	
 	key_forward = configfile.getInt32("key_forward", KEY_FASTFORWARD);
@@ -380,6 +397,8 @@ bool CRCInput::saveRCConfig(const char * const fileName)
 CRCInput::CRCInput() : configfile('\t')
 {
 	timerid = 1;
+	
+	haveLirc = false;
 
 	// pipe_high
 	if (pipe(fd_pipe_high_priority) < 0)
@@ -425,12 +444,15 @@ CRCInput::CRCInput() : configfile('\t')
 	if(fd_lirc < 0)
 	{
 		perror("/dev/lirc0");
+		haveLirc = false;
 	}
+	else
+		haveLirc = true;
 
 	if (::ioctl(fd_lirc, LIRC_SET_REC_MODE, &mode) < 0)
 	{
 		perror("/dev/lirc0");
-	};
+	}
 #endif
 
 	//
@@ -595,10 +617,10 @@ void CRCInput::killTimer(uint32_t id)
 	}
 }
 
-int CRCInput::checkTimers()
+uint32_t CRCInput::checkTimers()
 {
 	struct timeval tv;
-	int _id = 0;
+	uint32_t _id = 0;
 
 	gettimeofday( &tv, NULL );
 	uint64_t timeNow = (uint64_t) tv.tv_usec + (uint64_t)((uint64_t) tv.tv_sec * (uint64_t) 1000000);
@@ -610,6 +632,7 @@ int CRCInput::checkTimers()
 		if ( e->times_out < timeNow + 2000 )
 		{
 			_id = e->id;
+			
 			if ( e->interval != 0 )
 			{
 				timer _newtimer;
@@ -732,8 +755,9 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			else
 			{
 				targetTimeout = timers[0].times_out - t_n;
+				
 				if ( (uint64_t) targetTimeout> Timeout)
-					targetTimeout= Timeout;
+					targetTimeout = Timeout;
 				else
 					timer_id = timers[0].id;
 			}
@@ -779,6 +803,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			if ( timer_id != 0 )
 			{
 				timer_id = checkTimers();
+				
 				if ( timer_id != 0 )
 				{
 					*msg = NeutrinoMessages::EVT_TIMER;
@@ -827,19 +852,36 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 				continue;
 			}
 			
-			dprintf(DEBUG_NORMAL, ANSI_RED"LIRC: timestamp:%lld flags:%d proto:%d keycode: 0x%x scancode:%llx (%s)\n", lircdata.timestamp, lircdata.flags, lircdata.rc_proto, lircdata.keycode, lircdata.scancode, getKeyName(translate(lircdata.scancode, 0)).c_str());
-			
-			// skip keys coming in too fast
-           		if ( (lircdata.scancode == lastCode) && ((lircdata.timestamp - FirstTime) / 1000000) < repeat_block/1000)
-              			continue;
+			if (lircdata.keycode == 0)
+			{
+				// skip keys coming in too fast
+           			if ( (lircdata.scancode == lastScanCode) && ((lircdata.timestamp - FirstTime) / 1000000) < repeat_block/1000)
+              				continue;
               			
-              		dprintf(DEBUG_DEBUG, ANSI_RED"LIRC: timestamp diff: %lld (FirstTime:%lld lastCode:0x%x) (repeat_block:%d)\n", (lircdata.timestamp - FirstTime) / 1000000, FirstTime, lastCode, repeat_block);
+              			//
+              			dprintf(DEBUG_NORMAL, ANSI_RED"LIRC: timestamp:%lld flags:%d proto:%d keycode: 0x%x scancode:%llx (%s) timestampdiff:%d repeat_block:%d\n", lircdata.timestamp, lircdata.flags, lircdata.rc_proto, lircdata.keycode, lircdata.scancode, getSpecialKeyName(translate(lircdata.scancode, 0)), (lircdata.timestamp - FirstTime) / 1000000, repeat_block/1000);
               		
-              		FirstTime = lircdata.timestamp;
-              		lastCode = lircdata.scancode;
-			
-			*data = 0;
-			*msg = translate(lastCode, 0);
+              			FirstTime = lircdata.timestamp;
+              			lastScanCode = lircdata.scancode;
+              			
+              			*data = 0;
+				*msg = translate(lastScanCode, 0);
+              		}
+              		else
+              		{
+              			// skip keys coming in too fast
+           			if ( (lircdata.scancode == lastScanCode) && ((lircdata.timestamp - FirstTime) / 1000000) < repeat_block/1000)
+              				continue;
+              			
+              			dprintf(DEBUG_NORMAL, ANSI_RED"LIRC: timestamp:%lld flags:%d proto:%d keycode: 0x%x scancode:%llx (%s) timestampdiff:%d repeat_block:%d\n", lircdata.timestamp, lircdata.flags, lircdata.rc_proto, lircdata.keycode, lircdata.scancode, getSpecialKeyName(translate(lircdata.keycode, 0)), (lircdata.timestamp - FirstTime) / 1000000, repeat_block);
+              		
+              			FirstTime = lircdata.timestamp;
+              			lastKeyCode = lircdata.keycode;
+              			lastScanCode = lircdata.scancode;
+              			
+              			*data = 0;
+				*msg = translate(lastKeyCode, 0);
+              		}
 			
 			return;
 		}
@@ -978,6 +1020,7 @@ void CRCInput::setRepeat(unsigned int delay,unsigned int period)
 	repeat_block = delay * 1000ULL;
 	repeat_block_generic = period * 1000ULL;
 
+#ifndef USE_OPENGL
 	struct input_event ie;
 	
 	// delay
@@ -1004,6 +1047,7 @@ void CRCInput::setRepeat(unsigned int delay,unsigned int period)
 			write(fd_rc[i], &ie, sizeof(ie));
 		}
 	}
+#endif
 }
 
 void CRCInput::postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data, const bool Priority)
@@ -1023,6 +1067,7 @@ void CRCInput::postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data,
 
 void CRCInput::clearRCMsg()
 {
+#ifndef USE_OPENGL
 	t_input_event ev;
 
 	for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++)
@@ -1033,6 +1078,7 @@ void CRCInput::clearRCMsg()
 				;
 		}
 	}
+#endif
 	
 	rc_last_key =  KEY_MAX;
 }
@@ -1050,7 +1096,19 @@ int CRCInput::getNumericValue(const neutrino_msg_t key)
 }
 
 // convertDigitToKey - return key representing digit or RC_nokey
-static const unsigned int digit_to_key[10] = {CRCInput::RC_0, CRCInput::RC_1, CRCInput::RC_2, CRCInput::RC_3, CRCInput::RC_4, CRCInput::RC_5, CRCInput::RC_6, CRCInput::RC_7, CRCInput::RC_8, CRCInput::RC_9};
+static const unsigned int digit_to_key[10] = 
+{
+	CRCInput::RC_0, 
+	CRCInput::RC_1, 
+	CRCInput::RC_2, 
+	CRCInput::RC_3, 
+	CRCInput::RC_4, 
+	CRCInput::RC_5, 
+	CRCInput::RC_6, 
+	CRCInput::RC_7, 
+	CRCInput::RC_8, 
+	CRCInput::RC_9
+};
 
 unsigned long CRCInput::convertDigitToKey(const unsigned int digit)
 {

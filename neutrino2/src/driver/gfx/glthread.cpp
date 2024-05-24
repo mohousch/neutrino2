@@ -88,8 +88,7 @@ GLThreadObj::GLThreadObj(int x, int y) : mReInit(true), mShutDown(false), mInitD
 }
 
 void GLThreadObj::initKeys()
-{
-	mSpecialMap[GLUT_KEY_UP]    = CRCInput::RC_up;
+{	mSpecialMap[GLUT_KEY_UP]    = CRCInput::RC_up;
 	mSpecialMap[GLUT_KEY_DOWN]  = CRCInput::RC_down;
 	mSpecialMap[GLUT_KEY_LEFT]  = CRCInput::RC_left;
 	mSpecialMap[GLUT_KEY_RIGHT] = CRCInput::RC_right;
@@ -161,7 +160,6 @@ void GLThreadObj::run()
 			glutDisplayFunc(GLThreadObj::rendercb);
 			glutKeyboardFunc(GLThreadObj::keyboardcb);
 			glutSpecialFunc(GLThreadObj::specialcb);
-//			glutMouseFunc(GLThreadObj::mousecb);
 			glutReshapeFunc(GLThreadObj::resizecb);
 			setupGLObjects();
 			glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
@@ -176,7 +174,7 @@ void GLThreadObj::run()
 	
 	if(g_RCInput)
 	{
-		g_RCInput->postMsg(NeutrinoMessages::SHUTDOWN, 0);
+		g_RCInput->postMsg(NeutrinoMessages::SHUTDOWN);
 	}
 	else
 	{
@@ -273,7 +271,7 @@ void GLThreadObj::keyboardcb(unsigned char key, int, int)
 	{ 
 		if(g_RCInput)
 		{
-			g_RCInput->postMsg(i->second, 0);
+			g_RCInput->postMsg(i->second);
 		}
 	}
 }
@@ -291,34 +289,9 @@ void GLThreadObj::specialcb(int key, int, int)
 	}
 	else if(i != gThiz->mSpecialMap.end())
 	{
-		if(g_RCInput)
+		if(g_RCInput && !g_RCInput->haveLirc)
 		{
-			g_RCInput->postMsg(i->second, 0);
-		}
-	}
-}
-
-void GLThreadObj::mousecb(int key, int state, int, int)
-{
-	if (key == GLUT_LEFT_BUTTON && state == GLUT_ENTERED)
-	{
-		if(g_RCInput)
-		{
-			g_RCInput->postMsg(CRCInput::RC_ok, 0);
-		}
-	}
-	else if (key == GLUT_RIGHT_BUTTON && state == GLUT_ENTERED)
-	{
-		if(g_RCInput)
-		{
-			g_RCInput->postMsg(CRCInput::RC_home, 0);
-		}
-	}
-	else if (key == GLUT_MIDDLE_BUTTON && state == GLUT_ENTERED)
-	{
-		if(g_RCInput)
-		{
-			g_RCInput->postMsg(CRCInput::RC_setup, 0);
+			g_RCInput->postMsg(i->second);
 		}
 	}
 }

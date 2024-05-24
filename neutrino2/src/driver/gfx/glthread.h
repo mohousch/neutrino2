@@ -97,7 +97,6 @@ class GLThreadObj : public OpenThreads::Thread
 		void render();			/* actual render function */
 		static void keyboardcb(unsigned char key, int x, int y);
 		static void specialcb(int key, int x, int y);
-		static void mousecb(int key, int state, int x, int y);
 
 		void initKeys();		/* setup key bindings for window */
 		void setupCtx();		/* create the window and make the context current */

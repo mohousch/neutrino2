@@ -178,7 +178,7 @@ class CRCInput
 		void close();
 		int translate(uint64_t code, int num);
 		void calculateMaxFd(void);
-		int checkTimers();
+		uint32_t checkTimers();
 
 	public:
 		//rc-code definitions
@@ -188,6 +188,8 @@ class CRCInput
 		static const neutrino_msg_t RC_Events   = 0x80000000;
 		static const neutrino_msg_t RC_Messages = 0x90000000;
 		static const neutrino_msg_t RC_WithData = 0xA0000000;
+		
+		bool haveLirc;		
 
 		//	
 		enum
