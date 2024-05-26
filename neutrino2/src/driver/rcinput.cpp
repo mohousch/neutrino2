@@ -897,8 +897,6 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			
 			ret = ::read(fd_lirc, vBuffer, 128);
 			
-			//Hexdump((uint8_t *)vBuffer, ret);
-			
 			if (sscanf(vBuffer, "%*x %x %29s", &count, keyName) != 2)  // '29' in '%29s' is LIRC_KEY_BUF-1!
 			{
 				dprintf(DEBUG_NORMAL, "LIRC: unparseable lirc command: %s\n", vBuffer);
@@ -1479,6 +1477,7 @@ int CRCInput::translate(uint64_t code, int num)
 #ifdef USE_OPENGL
 uint32_t CRCInput::translateKey(const char *name)
 {
+// FIXME:
 	if (!strcmp(name, "KEY_OK")) return RC_ok;
 	else if (!strcmp(name, "KEY_EXIT")) return RC_home;
 	else if (!strcmp(name, "KEY_DOWN")) return RC_down;
