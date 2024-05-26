@@ -76,43 +76,7 @@ bool CRCInput::loadRCConfig(const char * const fileName)
 	
 	if(!configfile.loadConfig(fileName))
 		printf("CRCInput::loadRCConfig: %s not found, using default\n", fileName);
-	
-#if 0//def USE_OPENGL
-	key_page_up = configfile.getInt32("key_page_up", 0x1c20);
-	key_page_down = configfile.getInt32("key_page_down", 0x1c21);
-	key_up = configfile.getInt32("key_up", 0x1c14);
-	key_down = configfile.getInt32("key_down", 0x1c15);
-	key_ok = configfile.getInt32("key_ok", 0x1c25);
-	key_home = configfile.getInt32("key_home", 0x1c1c);
-	key_setup = configfile.getInt32("key_setup", 0x1c0d);
-	key_right = configfile.getInt32("key_right", 0x1c17);
-	key_left = configfile.getInt32("key_left", 0x1c16);
-	key_plus = configfile.getInt32("key_plus", 0x1c10);
-	key_minus = configfile.getInt32("key_minus", 0x1c);
-	key_0 = configfile.getInt32("key_1", 0x1c00);
-	key_1 = configfile.getInt32("key_1", 0x1c01);
-	key_2 = configfile.getInt32("key_2", 0x1c02);
-	key_3 = configfile.getInt32("key_3", 0x1c03);
-	key_4 = configfile.getInt32("key_4", 0x1c04);
-	key_5 = configfile.getInt32("key_5", 0x1c05);
-	key_6 = configfile.getInt32("key_6", 0x1c06);
-	key_7 = configfile.getInt32("key_7", 0x1c07);
-	key_8 = configfile.getInt32("key_8", 0x1c08);
-	key_9 = configfile.getInt32("key_9", 0x1c09);
-	key_spkr = configfile.getInt32("key_spkr", 0x1c0f);
-	key_audio = configfile.getInt32("key_audio", 0x1c36);
-	key_record = configfile.getInt32("key_record", 0x1c24);
-	key_text = configfile.getInt32("key_text", 0x1c0a);
-	key_dvbsub = configfile.getInt32("key_dvbsub", 0x1c0e);
-	key_stop = configfile.getInt32("key_stop", 0x1c1e);
-	key_play = configfile.getInt32("key_play", 0x1c35);
-	key_pause = configfile.getInt32("key_pause", 0x1c30);
-	key_forward = configfile.getInt32("key_forward", 0x1c34);
-	key_rewind = configfile.getInt32("key_rewind", 0x1c32);
-	key_mode = configfile.getInt32("key_mode", 0x1c1f);
-	key_standby = configfile.getInt32("key_standby", 0x1c3d);
-	key_info = configfile.getInt32("key_info", 0x1c3b);
-#else
+
 	key_0 = configfile.getInt32("key_0", KEY_0);
 	key_1 = configfile.getInt32("key_1", KEY_1);
 	key_2 = configfile.getInt32("key_2", KEY_2);
@@ -231,13 +195,15 @@ bool CRCInput::loadRCConfig(const char * const fileName)
 	key_next = configfile.getInt32("key_next", 0x197);
 	key_prev = configfile.getInt32("key_prev", 0x19C);
 #else
-	key_next = configfile.getInt32("key_next", 0xFFFFFFF0);
-	key_prev = configfile.getInt32("key_prev", 0xFFFFFFF1);
+	key_next = configfile.getInt32("key_next", KEY_NEXT /*0xFFFFFFF0*/);
+	key_prev = configfile.getInt32("key_prev", KEY_PREVIOUS /*0xFFFFFFF1*/);
 #endif			
 
 	//
 	key_music = configfile.getInt32("key_music", 0x3F );
 	key_picture = configfile.getInt32("key_picture", 0x169 );
+	key_pvr = configfile.getInt32("key_pvr", KEY_PVR);
+	key_media = configfile.getInt32("key_media", KEY_MEDIA);
 			
 	key_repeat = configfile.getInt32("key_repeat", 0x81);
 	key_slow = configfile.getInt32("key_slow", 0x199 );
@@ -355,6 +321,8 @@ bool CRCInput::saveRCConfig(const char * const fileName)
 			
 	configfile.setInt32("key_music", key_music);
 	configfile.setInt32("key_picture", key_picture);
+	configfile.setInt32("key_pvr", key_pvr);
+	configfile.setInt32("key_media", key_media);
 			
 	configfile.setInt32("key_repeat", key_repeat);
 	configfile.setInt32("key_slow", key_slow);
@@ -1199,7 +1167,13 @@ const char * CRCInput::getSpecialKeyName(const unsigned long key)
 			return "RC_picture";
 				
 		case RC_music:
-			return "RC_music";			
+			return "RC_music";
+			
+		case RC_pvr:
+			return "RC_pvr";
+			
+		case RC_media:
+			return "RC_media";			
 
 		case RC_text:
 			return "RC_text";
@@ -1393,7 +1367,9 @@ int CRCInput::translate(uint64_t code, int num)
 	// media
 	else if (code == key_video) return RC_video;
 	else if (code == key_music) return RC_music;
-	else if (code == key_picture) return RC_picture;		
+	else if (code == key_picture) return RC_picture;
+	else if (code == key_pvr) return RC_pvr;
+	else if (code == key_media) return RC_media;		
 	else if (code == key_record) return RC_record;
 	else if (code == key_rewind) return RC_rewind;
 	else if (code == key_play) return RC_play;

@@ -251,12 +251,14 @@ class CRCInput
 								
 			RC_mode		= KEY_MODE,		// 0x175
 
-			RC_next		= 0xFFFFFFF0,
-			RC_prev		= 0xFFFFFFF1,
+			RC_next		= KEY_NEXT, //0xFFFFFFF0,
+			RC_prev		= KEY_PREVIOUS, //0xFFFFFFF1,
 
 			//
 			RC_music	= KEY_MUSIC,
-			RC_picture	= KEY_PICTURE,			
+			RC_picture	= KEY_PICTURE,
+			RC_pvr 		= KEY_PVR,
+			RC_media	= KEY_MEDIA,			
 					
 			RC_loop		= KEY_REPEAT,
 			RC_slow		= KEY_SLOW,
@@ -357,7 +359,9 @@ class CRCInput
 
 		//
 		neutrino_msg_t key_music;
-		neutrino_msg_t key_picture;	
+		neutrino_msg_t key_picture;
+		neutrino_msg_t key_pvr;
+		neutrino_msg_t key_media;	
 		neutrino_msg_t key_repeat;
 		neutrino_msg_t key_slow;
 			
