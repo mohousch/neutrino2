@@ -433,6 +433,10 @@ class CRCInput
 		
 		//
 		void clearRCMsg();
+		
+#ifdef USE_OPENGL
+		uint32_t translateKey(const char *name);
+#endif		
 };
 
 //// Converts input of numeric keys to SMS style char input

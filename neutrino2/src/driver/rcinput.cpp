@@ -65,9 +65,16 @@ const char * const RC_EVENT_DEVICE[NUMBER_OF_EVENT_DEVICES] = {
 typedef struct input_event t_input_event;
 
 #ifdef USE_OPENGL
-	__u64 lastScanCode = 0;
-	__u32 lastKeyCode = 0;
-	uint64_t FirstTime = 0;
+__u64 lastScanCode = 0;
+__u32 lastKeyCode = 0;
+uint64_t FirstTime = 0;
+	
+////
+char lastKeyName[30] = "";
+char keyName[30] = "";
+int count;
+int lastKeyNameChar;	//for long detection on RCU sending different codes for short/long
+int vCurrentCode = -1;
 #endif
 
 bool CRCInput::loadRCConfig(const char * const fileName)
@@ -404,6 +411,7 @@ CRCInput::CRCInput() : configfile('\t')
 		
 	// lirc
 #ifdef USE_OPENGL
+#if HAVE_KERNEL_LIRC
 	unsigned mode = LIRC_MODE_SCANCODE;
 	
 	fd_lirc = ::open("/dev/lirc0", O_RDONLY, 0);
@@ -420,6 +428,30 @@ CRCInput::CRCInput() : configfile('\t')
 	{
 		perror("/dev/lirc0");
 	}
+#else
+	struct sockaddr_un  vAddr;
+	
+	vAddr.sun_family = AF_UNIX;
+	
+	if (access("/var/run/lirc/lircd", F_OK) == 0)
+		strcpy(vAddr.sun_path, "/var/run/lirc/lircd");
+	else
+	{
+		strcpy(vAddr.sun_path, "/dev/lircd");
+	}
+	
+	fd_lirc = socket(AF_UNIX, SOCK_STREAM, 0);
+	
+	if(fd_lirc < 0)
+	{
+		perror("lircd socket");
+	}
+	
+	if (connect(fd_lirc, (struct sockaddr *)&vAddr, sizeof(vAddr)) == -1)
+	{
+		perror("lircd connect");
+	}
+#endif
 #endif
 
 	//
@@ -739,7 +771,9 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 		
 		// lirc
 #ifdef USE_OPENGL
+//#if HAVE_KERNEL_LIRC
 		FD_SET(fd_lirc, &rfds);
+//#endif
 #else
 		// event devices
 		for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++)
@@ -807,6 +841,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 		
 		// fd_lirc
 #ifdef USE_OPENGL
+#if HAVE_KERNEL_LIRC
 		if (fd_lirc != -1 && (FD_ISSET(fd_lirc, &rfds)))
 		{
 			ssize_t ret;
@@ -852,6 +887,35 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			
 			return;
 		}
+#else
+		if (fd_lirc != -1 && (FD_ISSET(fd_lirc, &rfds)))
+		{
+			ssize_t ret;
+			char vBuffer[128];
+			
+			memset(vBuffer, 0, 128);
+			
+			ret = ::read(fd_lirc, vBuffer, 128);
+			
+			//Hexdump((uint8_t *)vBuffer, ret);
+			
+			if (sscanf(vBuffer, "%*x %x %29s", &count, keyName) != 2)  // '29' in '%29s' is LIRC_KEY_BUF-1!
+			{
+				dprintf(DEBUG_NORMAL, "LIRC: unparseable lirc command: %s\n", vBuffer);
+				continue;
+			}
+			
+			if (count == 0)
+			{
+				dprintf(DEBUG_NORMAL, ANSI_RED"LIRC:keyName:%s\n", keyName);
+				
+				// translate keyName to RC_key
+				*msg = translateKey(keyName);
+			}
+			
+			return;
+		}
+#endif
 #else
 		// fd_rc
 		for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++) 
@@ -1411,6 +1475,50 @@ int CRCInput::translate(uint64_t code, int num)
 	else if (code == key_vfdup) return RC_up;	
 	else return RC_nokey;
 }
+
+#ifdef USE_OPENGL
+uint32_t CRCInput::translateKey(const char *name)
+{
+	if (!strcmp(name, "KEY_OK")) return RC_ok;
+	else if (!strcmp(name, "KEY_EXIT")) return RC_home;
+	else if (!strcmp(name, "KEY_DOWN")) return RC_down;
+	else if (!strcmp(name, "KEY_UP")) return RC_up;
+	else if (!strcmp(name, "KEY_RIGHT")) return RC_right;
+	else if (!strcmp(name, "KEY_LEFT")) return RC_left;
+	else if (!strcmp(name, "KEY_RED")) return RC_red;
+	else if (!strcmp(name, "KEY_GREEN")) return RC_green;
+	else if (!strcmp(name, "KEY_YELLOW")) return RC_yellow;
+	else if (!strcmp(name, "KEY_BLUE")) return RC_blue;
+	else if (!strcmp(name, "KEY_INFO")) return RC_info;
+	else if (!strcmp(name, "KEY_EPG")) return RC_epg;
+	else if (!strcmp(name, "KEY_MODE")) return RC_setup; //FIXME: my rc have no menu key
+	else if (!strcmp(name, "KEY_RECORD")) return RC_record;
+	else if (!strcmp(name, "KEY_PLAY")) return RC_play;
+	else if (!strcmp(name, "KEY_STOP")) return RC_stop;
+	else if (!strcmp(name, "KEY_PAUSE")) return RC_pause;
+	else if (!strcmp(name, "KEY_CHANNELDOWN")) return RC_page_down;
+	else if (!strcmp(name, "KEY_CHANNELUP")) return RC_page_up;
+	else if (!strcmp(name, "KEY_VOLUMEUP")) return RC_plus;
+	else if (!strcmp(name, "KEY_VOLUMEDOWN")) return RC_minus;
+	else if (!strcmp(name, "KEY_TEXT")) return RC_text;
+	else if (!strcmp(name, "KEY_REWIND")) return RC_rewind;
+	else if (!strcmp(name, "KEY_FORWARD")) return RC_forward;
+	else if (!strcmp(name, "KEY_SHUFFLE")) return RC_loop;
+	else if (!strcmp(name, "KEY_NUMERIC_0")) return RC_0;
+	else if (!strcmp(name, "KEY_NUMERIC_1")) return RC_1;
+	else if (!strcmp(name, "KEY_NUMERIC_2")) return RC_2;
+	else if (!strcmp(name, "KEY_NUMERIC_3")) return RC_3;
+	else if (!strcmp(name, "KEY_NUMERIC_4")) return RC_4;
+	else if (!strcmp(name, "KEY_NUMERIC_5")) return RC_5;
+	else if (!strcmp(name, "KEY_NUMERIC_6")) return RC_6;
+	else if (!strcmp(name, "KEY_NUMERIC_7")) return RC_7;
+	else if (!strcmp(name, "KEY_NUMERIC_8")) return RC_8;
+	else if (!strcmp(name, "KEY_NUMERIC_9")) return RC_9;
+	else if (!strcmp(name, "KEY_MUTE")) return RC_spkr;
+	else if (!strcmp(name, "KEY_POWER")) return RC_standby;
+	else return RC_nokey;
+}
+#endif
 
 ////
 #define SMSKEY_TIMEOUT 2000
