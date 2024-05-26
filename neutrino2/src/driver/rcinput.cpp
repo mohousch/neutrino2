@@ -246,7 +246,6 @@ bool CRCInput::loadRCConfig(const char * const fileName)
 	key_vfdmenu = configfile.getInt32("key_vfdmenu", VFD_MENU);
 	key_vfdexit = configfile.getInt32("key_vfdexit", VFD_EXIT);
 	key_vfdok = configfile.getInt32("key_vfdok", VFD_OK);
-#endif
 	
 	return true;
 }
