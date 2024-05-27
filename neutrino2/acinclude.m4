@@ -156,9 +156,9 @@ AC_DEFUN([AC_PROG_EGREP],
 AC_DEFUN([TUXBOX_BOXTYPE],[
 
 AC_ARG_WITH(boxtype,
-	[  --with-boxtype          valid values: generic,dgs,gigablue,dreambox,xtrend,fulan,kathrein,ipbox,topfield,fortis_hdbox,octagon,atevio,adb_box,whitebox,vip,homecast,vuplus,azbox,technomate,hypercube,venton,xp1000,odin,ixuss,iqonios,ebox5000,wetek,edision,hd,gi,xpeedc,formuler,miraclebox,spycat,xsarius,zgemma,wwio,axas,abcom, maxytec, protek],
+	[  --with-boxtype          valid values: generic,dgs,gigablue,dreambox,xtrend,fulan,kathrein,ipbox,topfield,fortis_hdbox,octagon,atevio,adb_box,whitebox,vip,homecast,vuplus,azbox,technomate,hypercube,venton,xp1000,odin,ixuss,iqonios,ebox5000,wetek,edision,hd,gi,xpeedc,formuler,miraclebox,spycat,xsarius,zgemma,wwio,axas,abcom, maxytec,protek,uclan],
 	[case "${withval}" in
-		generic|dgs|gigablue|dreambox|xtrend|fulan|kathrein|ipbox|hl101|topfield|fortis_hdbox|octagon|atevio|adb_box|whitebox|vip|homecast|vuplus|azbox|technomate|hypercube|venton|xp1000|odin|ixuss|iqonios|ebox5000|wetek|edision|hd|gi|xpeedc|formuler|miraclebox|spycat|xsarius|zgemma|wwio|axas|abcom|maxytec|protek)
+		generic|dgs|gigablue|dreambox|xtrend|fulan|kathrein|ipbox|hl101|topfield|fortis_hdbox|octagon|atevio|adb_box|whitebox|vip|homecast|vuplus|azbox|technomate|hypercube|venton|xp1000|odin|ixuss|iqonios|ebox5000|wetek|edision|hd|gi|xpeedc|formuler|miraclebox|spycat|xsarius|zgemma|wwio|axas|abcom|maxytec|protek|uclan)
 			BOXTYPE="$withval"
 			;;
 		cu*)
@@ -314,6 +314,11 @@ AC_ARG_WITH(boxtype,
 			BOXMODEL="$withval"
 			;;
 			
+		usty*)
+			BOXTYPE="uclan"
+			BOXMODEL="$withval"
+			;;
+			
 		*)
 			AC_MSG_ERROR([unsupported value $withval for --with-boxtype])
 			;;
@@ -348,11 +353,12 @@ AC_ARG_WITH(boxmodel,
 				valid for spycat: spycat, spycatmini
 				valid for xsarius: fusionhd, fusionhdse, purehd
 				valid for zgemma: h3, h4, h5, h7, i55, lc, sh1
-				valid for wwio: bre2ze4k
+				valid for wwio: bre2ze4k bre2zet2c
 				valid for axas: e3hd e4hdultra
 				valid for abcom: pulse4k pulse4kmini
 				valid for maxytec: multibox multiboxse
-				valid for protek: protek4k],
+				valid for protek: protek4k
+				valid for uclan: ustym4kpro ustym4ks2ottx],
 	[case "${withval}" in
 		cuberevo|cuberevo_mini|cuberevo_mini2|cuberevo_mini_fta|cuberevo_250hd|cuberevo_2000hd|cuberevo_9500hd)
 			if test "$BOXTYPE" = "dgs"; then
@@ -606,6 +612,13 @@ AC_ARG_WITH(boxmodel,
 				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
 			fi
 			;;
+		ustym4kpro|ustym4ks2ottx)
+			if test "$BOXTYPE" = "uclan"; then
+				BOXMODEL="$withval"
+			else
+				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
+			fi
+			;;
 		qemu*)
 			if test "$BOXTYPE" = "generic"; then
 				BOXMODEL="$withval"
@@ -663,6 +676,7 @@ AM_CONDITIONAL(BOXTYPE_AXAS, test "$BOXTYPE" = "axas")
 AM_CONDITIONAL(BOXTYPE_ABCOM, test "$BOXTYPE" = "abcom")
 AM_CONDITIONAL(BOXTYPE_MAXYTEC, test "$BOXTYPE" = "maxytec")
 AM_CONDITIONAL(BOXTYPE_PROTEK, test "$BOXTYPE" = "protek")
+AM_CONDITIONAL(BOXTYPE_UCLAN, test "$BOXTYPE" = "uclan")
 
 AM_CONDITIONAL(BOXMODEL_CUBEREVO, test "$BOXMODEL" = "cuberevo")
 AM_CONDITIONAL(BOXMODEL_CUBEREVO_MINI, test "$BOXMODEL" = "cuberevo_mini")
@@ -831,6 +845,9 @@ AM_CONDITIONAL(BOXMODEL_MULTIBOXSE, test "$BOXMODEL" = "multiboxse")
 
 AM_CONDITIONAL(BOXMODE_PROTEK4K, test "$BOXMODEL" = "protek4k")
 
+AM_CONDITIONAL(BOXMODE_USTYM4KPRO, test "$BOXMODEL" = "ustym4kpro")
+AM_CONDITIONAL(BOXMODE_USTYM4KS2OTTX, test "$BOXMODEL" = "ustym4ks2ottx")
+
 if test "$BOXTYPE" = "generic"; then
 	AC_DEFINE(PLATFORM_GENERIC, 1, [building for generic])
 elif test "$BOXTYPE" = "dgs"; then
@@ -917,6 +934,8 @@ elif test "$BOXTYPE" = "maxytec"; then
 	AC_DEFINE(PLATFORM_MAXYTEC, 1, [building for maxytec])
 elif test "$BOXTYPE" = "protek"; then
 	AC_DEFINE(PLATFORM_PROTEK, 1, [building for protek])
+elif test "$BOXTYPE" = "uclan"; then
+	AC_DEFINE(PLATFORM_PROTEK, 1, [building for uclan])
 fi
 
 if test "$BOXMODEL" = "cuberevo"; then
@@ -1216,6 +1235,11 @@ elif test "$BOXMODEL" = "multiboxse"; then
 	
 elif test "$BOXMODEL" = "protek4k"; then
 	AC_DEFINE(BOXMODEL_PROTEK4K, 1, [building for protek4k])
+	
+elif test "$BOXMODEL" = "ustym4kpro"; then
+	AC_DEFINE(BOXMODEL_USTYM4KPRO, 1, [building for ustym4kpro])
+elif test "$BOXMODEL" = "ustym4s2ottx"; then
+	AC_DEFINE(BOXMODEL_USTYM4KS2OTTX, 1, [building for ustym4ks2ottx])
 fi
 ])
 

@@ -5,18 +5,9 @@ AM_MAINTAINER_MODE
 AC_GNU_SOURCE
 AC_SYS_LARGEFILE
 
-AC_ARG_WITH(debug,
-	[  --without-debug         disable debugging code],
-	[DEBUG="$withval"],[DEBUG="yes"])
-
-if test "$DEBUG" = "yes"; then
-	DEBUG_CFLAGS="-g3 -ggdb"
-	AC_DEFINE(DEBUG,1,[Enable debug messages])
-fi
-
 if test "$CFLAGS" = "" -a "$CXXFLAGS" = ""; then
-	CFLAGS="-Wall -O2 -pipe $DEBUG_CFLAGS"
-	CXXFLAGS="-Wall -O2 -pipe $DEBUG_CFLAGS"
+	CFLAGS="-Wall -O2 -pipe"
+	CXXFLAGS="-Wall -O2 -pipe"
 fi
 
 if test "$prefix" = "NONE" -o "$prefix" = "/usr" ; then
@@ -165,9 +156,9 @@ AC_DEFUN([AC_PROG_EGREP],
 AC_DEFUN([TUXBOX_BOXTYPE],[
 
 AC_ARG_WITH(boxtype,
-	[  --with-boxtype          valid values: generic,dgs,gigablue,dreambox,xtrend,fulan,kathrein,ipbox,topfield,fortis_hdbox,octagon,atevio,adb_box,whitebox,vip,homecast,vuplus,azbox,technomate,hypercube,venton,xp1000,odin,ixuss,iqonios,ebox5000,wetek,edision,hd,gi,xpeedc,formuler,miraclebox,spycat,xsarius,zgemma,wwio,axas,abcom, maxytec,protek],
+	[  --with-boxtype          valid values: generic,dgs,gigablue,dreambox,xtrend,fulan,kathrein,ipbox,topfield,fortis_hdbox,octagon,atevio,adb_box,whitebox,vip,homecast,vuplus,azbox,technomate,hypercube,venton,xp1000,odin,ixuss,iqonios,ebox5000,wetek,edision,hd,gi,xpeedc,formuler,miraclebox,spycat,xsarius,zgemma,wwio,axas,abcom, maxytec,protek,uclan],
 	[case "${withval}" in
-		generic|dgs|gigablue|dreambox|xtrend|fulan|kathrein|ipbox|hl101|topfield|fortis_hdbox|octagon|atevio|adb_box|whitebox|vip|homecast|vuplus|azbox|technomate|hypercube|venton|xp1000|odin|ixuss|iqonios|ebox5000|wetek|edision|hd|gi|xpeedc|formuler|miraclebox|spycat|xsarius|zgemma|wwio|axas|abcom|maxytec|protek)
+		generic|dgs|gigablue|dreambox|xtrend|fulan|kathrein|ipbox|hl101|topfield|fortis_hdbox|octagon|atevio|adb_box|whitebox|vip|homecast|vuplus|azbox|technomate|hypercube|venton|xp1000|odin|ixuss|iqonios|ebox5000|wetek|edision|hd|gi|xpeedc|formuler|miraclebox|spycat|xsarius|zgemma|wwio|axas|abcom|maxytec|protek|uclan)
 			BOXTYPE="$withval"
 			;;
 		cu*)
@@ -323,6 +314,11 @@ AC_ARG_WITH(boxtype,
 			BOXMODEL="$withval"
 			;;
 			
+		usty*)
+			BOXTYPE="uclan"
+			BOXMODEL="$withval"
+			;;
+			
 		*)
 			AC_MSG_ERROR([unsupported value $withval for --with-boxtype])
 			;;
@@ -357,11 +353,12 @@ AC_ARG_WITH(boxmodel,
 				valid for spycat: spycat, spycatmini
 				valid for xsarius: fusionhd, fusionhdse, purehd
 				valid for zgemma: h3, h4, h5, h7, i55, lc, sh1
-				valid for wwio: bre2ze4k
+				valid for wwio: bre2ze4k bre2zet2c
 				valid for axas: e3hd e4hdultra
 				valid for abcom: pulse4k pulse4kmini
 				valid for maxytec: multibox multiboxse
-				valid for protek: protek4k],
+				valid for protek: protek4k
+				valid for uclan: ustym4kpro ustym4ks2ottx],
 	[case "${withval}" in
 		cuberevo|cuberevo_mini|cuberevo_mini2|cuberevo_mini_fta|cuberevo_250hd|cuberevo_2000hd|cuberevo_9500hd)
 			if test "$BOXTYPE" = "dgs"; then
@@ -615,6 +612,13 @@ AC_ARG_WITH(boxmodel,
 				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
 			fi
 			;;
+		ustym4kpro|ustym4ks2ottx)
+			if test "$BOXTYPE" = "uclan"; then
+				BOXMODEL="$withval"
+			else
+				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
+			fi
+			;;
 		qemu*)
 			if test "$BOXTYPE" = "generic"; then
 				BOXMODEL="$withval"
@@ -671,7 +675,8 @@ AM_CONDITIONAL(BOXTYPE_WWIO, test "$BOXTYPE" = "wwio")
 AM_CONDITIONAL(BOXTYPE_AXAS, test "$BOXTYPE" = "axas")
 AM_CONDITIONAL(BOXTYPE_ABCOM, test "$BOXTYPE" = "abcom")
 AM_CONDITIONAL(BOXTYPE_MAXYTEC, test "$BOXTYPE" = "maxytec")
-AM_CONDITIONAL(BOXTYPE_MAXYTEC, test "$BOXTYPE" = "protek")
+AM_CONDITIONAL(BOXTYPE_PROTEK, test "$BOXTYPE" = "protek")
+AM_CONDITIONAL(BOXTYPE_UCLAN, test "$BOXTYPE" = "uclan")
 
 AM_CONDITIONAL(BOXMODEL_CUBEREVO, test "$BOXMODEL" = "cuberevo")
 AM_CONDITIONAL(BOXMODEL_CUBEREVO_MINI, test "$BOXMODEL" = "cuberevo_mini")
@@ -838,7 +843,10 @@ AM_CONDITIONAL(BOXMODEL_PULSE4KMINI, test "$BOXMODEL" = "pulse4kmini")
 AM_CONDITIONAL(BOXMODEL_MULTIBOX, test "$BOXMODEL" = "multibox")
 AM_CONDITIONAL(BOXMODEL_MULTIBOXSE, test "$BOXMODEL" = "multiboxse")
 
-AM_CONDITIONAL(BOXMODEL_PROTEK4K, test "$BOXMODEL" = "protek4k")
+AM_CONDITIONAL(BOXMODE_PROTEK4K, test "$BOXMODEL" = "protek4k")
+
+AM_CONDITIONAL(BOXMODE_USTYM4KPRO, test "$BOXMODEL" = "ustym4kpro")
+AM_CONDITIONAL(BOXMODE_USTYM4KS2OTTX, test "$BOXMODEL" = "ustym4ks2ottx")
 
 if test "$BOXTYPE" = "generic"; then
 	AC_DEFINE(PLATFORM_GENERIC, 1, [building for generic])
@@ -926,6 +934,8 @@ elif test "$BOXTYPE" = "maxytec"; then
 	AC_DEFINE(PLATFORM_MAXYTEC, 1, [building for maxytec])
 elif test "$BOXTYPE" = "protek"; then
 	AC_DEFINE(PLATFORM_PROTEK, 1, [building for protek])
+elif test "$BOXTYPE" = "uclan"; then
+	AC_DEFINE(PLATFORM_PROTEK, 1, [building for uclan])
 fi
 
 if test "$BOXMODEL" = "cuberevo"; then
@@ -1225,6 +1235,11 @@ elif test "$BOXMODEL" = "multiboxse"; then
 	
 elif test "$BOXMODEL" = "protek4k"; then
 	AC_DEFINE(BOXMODEL_PROTEK4K, 1, [building for protek4k])
+	
+elif test "$BOXMODEL" = "ustym4kpro"; then
+	AC_DEFINE(BOXMODEL_USTYM4KPRO, 1, [building for ustym4kpro])
+elif test "$BOXMODEL" = "ustym4s2ottx"; then
+	AC_DEFINE(BOXMODEL_USTYM4KS2OTTX, 1, [building for ustym4ks2ottx])
 fi
 ])
 
@@ -1992,8 +2007,9 @@ AC_DEFUN([AX_LUA_LIBS],
      LUA_LIB="-llua -ldl")
 ])
 
-
+#
 # ax_swig_python
+#
 AU_ALIAS([SWIG_PYTHON], [AX_SWIG_PYTHON])
 AC_DEFUN([AX_SWIG_PYTHON],[
         AC_REQUIRE([AX_PKG_SWIG])
@@ -2070,17 +2086,17 @@ variable to configure. See ``configure --help'' for reference.
 	#
 	# Check if you have distutils, else fail
 	#
-	AC_MSG_CHECKING([for the distutils Python package])
-	ac_distutils_result=`$PYTHON -c "import distutils" 2>&1`
-	if test -z "$ac_distutils_result"; then
-		AC_MSG_RESULT([yes])
-	else
-		AC_MSG_RESULT([no])
-		AC_MSG_ERROR([cannot import Python module "distutils".
-Please check your Python installation. The error was:
-$ac_distutils_result])
-		PYTHON_VERSION=""
-	fi
+#	AC_MSG_CHECKING([for the distutils Python package])
+#	ac_distutils_result=`$PYTHON -c "import distutils" 2>&1`
+#	if test -z "$ac_distutils_result"; then
+#		AC_MSG_RESULT([yes])
+#	else
+#		AC_MSG_RESULT([no])
+#		AC_MSG_ERROR([cannot import Python module "distutils".
+#Please check your Python installation. The error was:
+#$ac_distutils_result])
+#		PYTHON_VERSION=""
+#	fi
 
 	#
 	# Check for Python include path
@@ -2259,7 +2275,4 @@ EOD`
 	# all done!
 	#
 ])
-
-
-
 
