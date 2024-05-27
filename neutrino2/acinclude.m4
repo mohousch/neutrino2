@@ -156,9 +156,9 @@ AC_DEFUN([AC_PROG_EGREP],
 AC_DEFUN([TUXBOX_BOXTYPE],[
 
 AC_ARG_WITH(boxtype,
-	[  --with-boxtype          valid values: generic,dgs,gigablue,dreambox,xtrend,fulan,kathrein,ipbox,topfield,fortis_hdbox,octagon,atevio,adb_box,whitebox,vip,homecast,vuplus,azbox,technomate,hypercube,venton,xp1000,odin,ixuss,iqonios,ebox5000,wetek,edision,hd,gi,xpeedc,formuler,miraclebox,spycat,xsarius,zgemma,wwio,axas,abcom, maxytec],
+	[  --with-boxtype          valid values: generic,dgs,gigablue,dreambox,xtrend,fulan,kathrein,ipbox,topfield,fortis_hdbox,octagon,atevio,adb_box,whitebox,vip,homecast,vuplus,azbox,technomate,hypercube,venton,xp1000,odin,ixuss,iqonios,ebox5000,wetek,edision,hd,gi,xpeedc,formuler,miraclebox,spycat,xsarius,zgemma,wwio,axas,abcom, maxytec, protek],
 	[case "${withval}" in
-		generic|dgs|gigablue|dreambox|xtrend|fulan|kathrein|ipbox|hl101|topfield|fortis_hdbox|octagon|atevio|adb_box|whitebox|vip|homecast|vuplus|azbox|technomate|hypercube|venton|xp1000|odin|ixuss|iqonios|ebox5000|wetek|edision|hd|gi|xpeedc|formuler|miraclebox|spycat|xsarius|zgemma|wwio|axas|abcom)
+		generic|dgs|gigablue|dreambox|xtrend|fulan|kathrein|ipbox|hl101|topfield|fortis_hdbox|octagon|atevio|adb_box|whitebox|vip|homecast|vuplus|azbox|technomate|hypercube|venton|xp1000|odin|ixuss|iqonios|ebox5000|wetek|edision|hd|gi|xpeedc|formuler|miraclebox|spycat|xsarius|zgemma|wwio|axas|abcom|maxytec|protek)
 			BOXTYPE="$withval"
 			;;
 		cu*)
@@ -308,7 +308,12 @@ AC_ARG_WITH(boxtype,
 			BOXTYPE="maxytec"
 			BOXMODEL="$withval"
 			;;
-
+			
+		pro*)
+			BOXTYPE="protek"
+			BOXMODEL="$withval"
+			;;
+			
 		*)
 			AC_MSG_ERROR([unsupported value $withval for --with-boxtype])
 			;;
@@ -316,7 +321,7 @@ AC_ARG_WITH(boxtype,
 
 AC_ARG_WITH(boxmodel,
 	[  --with-boxmodel	valid for dgs: cuberevo,cuberevo_mini,cuberevo_mini2,cuberevo_mini_fta,cuberevo_250hd,cuberevo_2000hd,cuberevo_9500hd
-				valid for gigablue: gbsolo,gb800se,gb800ue,gb800seplus,gb800ueplus,gbquad
+				valid for gigablue: gbsolo,gb800se,gb800ue,gb800seplus,gb800ueplus,gbquad,gbue4k
 				valid for dreambox: dm500, dm500plus, dm600pvr, dm56x0, dm7000, dm7020, dm7025, dm500hd, dm7020hd, dm8000, dm800, dm800se, dm520, dm900, dm920
 				valid for xtrend: et4x00,et5x00,et6x00,et7x00, et8000,et8500,et9x00, et10000
 				valid for fulan: spark, spark7162
@@ -346,7 +351,8 @@ AC_ARG_WITH(boxmodel,
 				valid for wwio: bre2ze4k
 				valid for axas: e3hd e4hdultra
 				valid for abcom: pulse4k pulse4kmini
-				valid for maxytec: multibox multiboxse],
+				valid for maxytec: multibox multiboxse
+				valid for protek: protek4k],
 	[case "${withval}" in
 		cuberevo|cuberevo_mini|cuberevo_mini2|cuberevo_mini_fta|cuberevo_250hd|cuberevo_2000hd|cuberevo_9500hd)
 			if test "$BOXTYPE" = "dgs"; then
@@ -355,7 +361,7 @@ AC_ARG_WITH(boxmodel,
 				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
 			fi
 			;;
-		gb800solo|gb800se|gb800ue|gb800seplus|gb800ueplus|gbquad)
+		gb800solo|gb800se|gb800ue|gb800seplus|gb800ueplus|gbquad|gbue4k)
 			if test "$BOXTYPE" = "gigablue"; then
 				BOXMODEL="$withval"
 			else
@@ -593,6 +599,11 @@ AC_ARG_WITH(boxmodel,
 				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
 			fi
 			;;
+		protek4k)
+			if test "$BOXTYPE" = "protek"; then
+				BOXMODEL="$withval"
+			else
+				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
 		qemu*)
 			if test "$BOXTYPE" = "generic"; then
 				BOXMODEL="$withval"
@@ -649,6 +660,7 @@ AM_CONDITIONAL(BOXTYPE_WWIO, test "$BOXTYPE" = "wwio")
 AM_CONDITIONAL(BOXTYPE_AXAS, test "$BOXTYPE" = "axas")
 AM_CONDITIONAL(BOXTYPE_ABCOM, test "$BOXTYPE" = "abcom")
 AM_CONDITIONAL(BOXTYPE_MAXYTEC, test "$BOXTYPE" = "maxytec")
+AM_CONDITIONAL(BOXTYPE_PROTEK, test "$BOXTYPE" = "protek")
 
 AM_CONDITIONAL(BOXMODEL_CUBEREVO, test "$BOXMODEL" = "cuberevo")
 AM_CONDITIONAL(BOXMODEL_CUBEREVO_MINI, test "$BOXMODEL" = "cuberevo_mini")
@@ -666,6 +678,7 @@ AM_CONDITIONAL(BOXMODEL_GB800UE,test "$BOXMODEL" = "gb800ue")
 AM_CONDITIONAL(BOXMODEL_GB800SEPLUS,test "$BOXMODEL" = "gb800seplus")
 AM_CONDITIONAL(BOXMODEL_GB800UEPLUS,test "$BOXMODEL" = "gb800ueplus")
 AM_CONDITIONAL(BOXMODEL_GBQUAD,test "$BOXMODEL" = "gbquad")
+AM_CONDITIONAL(BOXMODEL_GBUE4K,test "$BOXMODEL" = "gbue4k")
 
 AM_CONDITIONAL(BOXMODEL_DM500,test "$BOXMODEL" = "dm500")
 AM_CONDITIONAL(BOXMODEL_DM500PLUS,test "$BOXMODEL" = "dm500plus")
@@ -814,6 +827,8 @@ AM_CONDITIONAL(BOXMODEL_PULSE4KMINI, test "$BOXMODEL" = "pulse4kmini")
 AM_CONDITIONAL(BOXMODEL_MULTIBOX, test "$BOXMODEL" = "multibox")
 AM_CONDITIONAL(BOXMODEL_MULTIBOXSE, test "$BOXMODEL" = "multiboxse")
 
+AM_CONDITIONAL(BOXMODE_PROTEK4K, test "$BOXMODEL" = "protek4k")
+
 if test "$BOXTYPE" = "generic"; then
 	AC_DEFINE(PLATFORM_GENERIC, 1, [building for generic])
 elif test "$BOXTYPE" = "dgs"; then
@@ -896,8 +911,10 @@ elif test "$BOXTYPE" = "axas"; then
 	AC_DEFINE(PLATFORM_AXAS, 1, [building for axas])
 elif test "$BOXTYPE" = "abcom"; then
 	AC_DEFINE(PLATFORM_ABCOM, 1, [building for abcom])
-elif test "$BOXTYPE" = "abcom"; then
+elif test "$BOXTYPE" = "maxytec"; then
 	AC_DEFINE(PLATFORM_MAXYTEC, 1, [building for maxytec])
+elif test "$BOXTYPE" = "protek"; then
+	AC_DEFINE(PLATFORM_PROTEK, 1, [building for protek])
 fi
 
 if test "$BOXMODEL" = "cuberevo"; then
@@ -927,6 +944,8 @@ elif test "$BOXMODEL" = "gb800ueplus"; then
 	AC_DEFINE(BOXMODEL_GB800UEPLUS, 1, [building for gigablue 800ueplus])
 elif test "$BOXMODEL" = "gbquad"; then
 	AC_DEFINE(BOXMODEL_GBQUAD, 1, [building for gigablue quad])
+elif test "$BOXMODEL" = "gbue4k"; then
+	AC_DEFINE(BOXMODEL_GBUE4K, 1, [building for gigablue ue 4k])
 
 elif test "$BOXMODEL" = "dm500"; then
 	AC_DEFINE(BOXMODEL_DM500, 1, [building for dreambox 500])
@@ -1192,6 +1211,9 @@ elif test "$BOXMODEL" = "multibox"; then
 	AC_DEFINE(BOXMODEL_MULTIBOX, 1, [building for multibox])
 elif test "$BOXMODEL" = "multiboxse"; then
 	AC_DEFINE(BOXMODEL_MULTIBOXSE, 1, [building for multiboxse])
+	
+elif test "$BOXMODEL" = "protek4k"; then
+	AC_DEFINE(BOXMODEL_PROTEK4K, 1, [building for protek4k])
 fi
 ])
 
