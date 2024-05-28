@@ -67,14 +67,10 @@ typedef struct input_event t_input_event;
 #ifdef USE_OPENGL
 __u64 lastScanCode = 0;
 __u32 lastKeyCode = 0;
-uint64_t FirstTime = 0;
-	
+uint64_t FirstTime = 0;	
 ////
-char lastKeyName[30] = "";
 char keyName[30] = "";
 int count;
-int lastKeyNameChar;	//for long detection on RCU sending different codes for short/long
-int vCurrentCode = -1;
 #endif
 
 bool CRCInput::loadRCConfig(const char * const fileName)
@@ -771,9 +767,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 		
 		// lirc
 #ifdef USE_OPENGL
-//#if HAVE_KERNEL_LIRC
 		FD_SET(fd_lirc, &rfds);
-//#endif
 #else
 		// event devices
 		for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++)
