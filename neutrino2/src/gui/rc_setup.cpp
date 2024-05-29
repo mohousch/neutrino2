@@ -384,8 +384,9 @@ void CKeysBindingSettings::showMenu()
 	// misc
 	bindSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Misc settings")));
 	
-	// screenshot key
-	bindSettings->addItem(new CMenuForwarder(_(keydescription[KEY_EXTRAS_SCREENSHOT]), true, NULL, new CKeyChooser(keyvalue_p[KEY_EXTRAS_SCREENSHOT], _(keydescription[KEY_EXTRAS_SCREENSHOT]), NEUTRINO_ICON_SETTINGS)));
+	for (int i = KEY_EXTRAS_TIMERLIST; i <= KEY_EXTRAS_SCREENSHOT; i++)
+	//bindSettings->addItem(new CMenuForwarder(_(keydescription[KEY_EXTRAS_SCREENSHOT]), true, NULL, new CKeyChooser(keyvalue_p[KEY_EXTRAS_SCREENSHOT], _(keydescription[KEY_EXTRAS_SCREENSHOT]), NEUTRINO_ICON_SETTINGS)));
+		bindSettings->addItem(new CMenuForwarder(_(keydescription[i]), true, NULL, new CKeyChooser(keyvalue_p[i], _(keydescription[i]), NEUTRINO_ICON_SETTINGS)));
 	
 	//
 	widget->exec(NULL, "");
