@@ -288,12 +288,11 @@ struct SNeutrinoSettings
 	int key_movieplayer;
 	int key_audioplayer;
 	int key_pictureviewer;
-	int key_timerlist;
 	int key_inetradio;
 	int key_moviebrowser;
-	int key_filebrowser;
 	
 	// divers
+	int key_timerlist;
 	int key_screenshot;
 
 	// USERMENU

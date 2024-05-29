@@ -634,13 +634,12 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.key_pip = configfile.getInt32("key_pip", CRCInput::RC_pip); // current TP
 
 	// media keys
-	g_settings.key_movieplayer = configfile.getInt32( "key_movieplayer", CRCInput::RC_video );
+	g_settings.key_movieplayer = configfile.getInt32( "key_movieplayer", CRCInput::RC_pvr );
 	g_settings.key_audioplayer = configfile.getInt32( "key_audioplayer", CRCInput::RC_music );
 	g_settings.key_pictureviewer = configfile.getInt32( "key_pictureviewer", CRCInput::RC_picture );
-	g_settings.key_timerlist = configfile.getInt32( "key_timerlist", CRCInput::RC_nokey );
-	g_settings.key_inetradio = configfile.getInt32( "key_inetradio", CRCInput::RC_nokey );
-	g_settings.key_moviebrowser = configfile.getInt32( "key_moviebrowser", CRCInput::RC_nokey );
-	g_settings.key_filebrowser = configfile.getInt32( "key_filebrowser", CRCInput::RC_nokey );
+	g_settings.key_inetradio = configfile.getInt32( "key_inetradio", CRCInput::RC_net );
+	g_settings.key_moviebrowser = configfile.getInt32( "key_moviebrowser", CRCInput::RC_media );
+	g_settings.key_timerlist = configfile.getInt32( "key_timerlist", CRCInput::RC_timer );
 	g_settings.key_screenshot = configfile.getInt32( "key_screenshot", CRCInput::RC_record );
 	
         // USERMENU -> in system/settings.h
@@ -1165,11 +1164,9 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setInt32( "key_movieplayer", g_settings.key_movieplayer );
 	configfile.setInt32( "key_audioplayer", g_settings.key_audioplayer );
 	configfile.setInt32( "key_pictureviewer", g_settings.key_pictureviewer );
-	configfile.setInt32( "key_timerlist", g_settings.key_timerlist );
 	configfile.setInt32( "key_inetradio", g_settings.key_inetradio );
 	configfile.setInt32( "key_moviebrowser", g_settings.key_moviebrowser );
-	configfile.setInt32( "key_filebrowser", g_settings.key_filebrowser );
-	
+	configfile.setInt32( "key_timerlist", g_settings.key_timerlist );
 	configfile.setInt32( "key_screenshot", g_settings.key_screenshot );
 	
         // USERMENU
@@ -4494,15 +4491,6 @@ void CNeutrinoApp::realRun(void)
 
 				stopSubtitles();
 				g_PluginList->startPlugin("moviebrowser");
-				startSubtitles();	
-			}
-			else if( msg == (neutrino_msg_t)g_settings.key_filebrowser )	// filebrowser player
-			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-				g_PluginList->startPlugin("mediaplayer");
 				startSubtitles();	
 			}
 			else if( msg == (neutrino_msg_t)g_settings.key_pictureviewer ) 	// picture viewer

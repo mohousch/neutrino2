@@ -170,6 +170,7 @@ bool CRCInput::loadRCConfig(const char * const fileName)
 	key_favorites = configfile.getInt32("key_favorites", KEY_FAVORITES);
 	key_sat = configfile.getInt32("key_sat", KEY_SAT);
 	key_help = configfile.getInt32("key_help", KEY_HELP);
+	key_timer = configfile.getInt32("key_timer", KEY_TIME);
 			
 	key_record = configfile.getInt32("key_record", KEY_RECORD);
 #if defined (PLATFORM_GIGABLUE) || defined(PLATFORM_VUPLUS) || defined(PLATFORM_ODIN)	
@@ -307,6 +308,7 @@ bool CRCInput::saveRCConfig(const char * const fileName)
 	configfile.setInt32("key_favorites", key_favorites);
 	configfile.setInt32("key_sat", key_sat);
 	configfile.setInt32("key_help", key_help);
+	configfile.setInt32("key_timer", key_timer);
 			
 	configfile.setInt32("key_record", key_record);
 	configfile.setInt32("key_play", key_play);
@@ -1400,6 +1402,7 @@ int CRCInput::translate(uint64_t code, int num)
 	else if (code == key_info) return RC_info;
 	else if (code == key_bookmark) return RC_bookmark;
 	else if (code == key_help) return RC_help;
+	else if (code == key_timer) return RC_timer;
 	
 	// colored
 	else if (code == key_red) return RC_red;

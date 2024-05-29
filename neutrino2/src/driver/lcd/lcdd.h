@@ -82,7 +82,6 @@ typedef enum
 	VFD_ICON_LOCK,
 } vfd_icon;
 
-class CLCDPainter;
 class LcdFontRenderClass;
 
 class CLCD

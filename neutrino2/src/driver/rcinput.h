@@ -239,6 +239,7 @@ class CRCInput
 			RC_favorites	= KEY_FAVORITES,	// 0x16c
 			RC_sat		= KEY_SAT,		// 0x17d
 			RC_help		= KEY_HELP,
+			RC_timer	= KEY_TIME,
 					
 			RC_record	= KEY_RECORD,		// 0xA7
 			RC_play		= KEY_PLAY,		// 0xCF
@@ -251,8 +252,8 @@ class CRCInput
 								
 			RC_mode		= KEY_MODE,		// 0x175
 
-			RC_next		= KEY_NEXT, //0xFFFFFFF0,
-			RC_prev		= KEY_PREVIOUS, //0xFFFFFFF1,
+			RC_next		= KEY_NEXT, 		//0xFFFFFFF0,
+			RC_prev		= KEY_PREVIOUS, 	//0xFFFFFFF1,
 
 			//
 			RC_music	= KEY_MUSIC,
@@ -343,6 +344,7 @@ class CRCInput
 		neutrino_msg_t key_favorites;
 		neutrino_msg_t key_sat;
 		neutrino_msg_t key_help;
+		neutrino_msg_t key_timer;
 			
 		neutrino_msg_t key_record;
 		neutrino_msg_t key_play;
