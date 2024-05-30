@@ -1343,8 +1343,14 @@ void CLCD::setMode(const MODES m, const char * const title)
 	switch (m) 
 	{
 		case MODE_TVRADIO:
-			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)	
-				ShowText(g_RemoteControl->getCurrentChannelNumber());
+			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)
+			{
+				char tmp[5];
+						
+				sprintf(tmp, "%04d", g_RemoteControl->getCurrentChannelNumber());
+					
+				ShowText(tmp);
+			}
 			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
 				showTime();
 			
