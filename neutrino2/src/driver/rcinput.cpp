@@ -895,7 +895,6 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			
 			if (sscanf(vBuffer, "%*x %x %29s", &count, keyName) != 2)  // '29' in '%29s' is LIRC_KEY_BUF-1!
 			{
-				dprintf(DEBUG_NORMAL, "LIRC: unparseable lirc command: %s\n", vBuffer);
 				continue;
 			}
 			

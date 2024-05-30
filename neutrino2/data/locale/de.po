@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-05-11 01:38+0200\n"
+"POT-Creation-Date: 2024-05-29 20:23+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -799,9 +799,6 @@ msgstr "Dateiname der Playlist"
 
 msgid "Filenames (with EPG data)"
 msgstr "Dateinamen (mit EPG-Daten)"
-
-msgid "Files Browser"
-msgstr "Dateibrowser"
 
 msgid "Film / Cinema"
 msgstr "Film / Kino"
