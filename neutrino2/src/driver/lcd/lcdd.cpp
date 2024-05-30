@@ -702,7 +702,6 @@ void CLCD::showServicename(const std::string name, const bool perform_wakeup, in
 	if (mode != MODE_TVRADIO)
 		return;
 
-	////
 #ifdef ENABLE_4DIGITS
 	{
 		if( write(fd, name.c_str(), name.length() > 5? 5 : name.length() ) < 0)
@@ -1407,7 +1406,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 		case MODE_TVRADIO:
 			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)	
-				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
+				showServicename(!g_RemoteControl->getCurrentChannelName().empty()? g_RemoteControl->getCurrentChannelName() : "", true, g_RemoteControl->getCurrentChannelNumber());
 			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
 				showTime(true);
 			
@@ -1580,6 +1579,7 @@ int CLCD::getPower()
 void CLCD::togglePower(void)
 {
 	last_toggle_state_power = 1 - last_toggle_state_power;
+	
 	setlcdparameter((mode == MODE_STANDBY) ? g_settings.lcd_standbybrightness : g_settings.lcd_brightness,
 			g_settings.lcd_contrast,
 			last_toggle_state_power,
@@ -1590,6 +1590,7 @@ void CLCD::togglePower(void)
 void CLCD::setInverse(int inverse)
 {
 	g_settings.lcd_inverse = inverse;
+	
 	setlcdparameter();
 }
 
@@ -1704,7 +1705,7 @@ void CLCD::Clear()
 #elif defined (__sh__)
 	struct vfd_ioctl_data data;
 	
-#if defined (PLATFORM_KATHREIN)		/* using this otherwise VFD of ufs910 is black and Neutrino has a segfault 		*/
+#if defined (PLATFORM_KATHREIN)	/* using this otherwise VFD of ufs910 is black and Neutrino has a segfault */
 	data.start_address = 0x01;
 	data.length = 0x0;
 	openDevice();	
