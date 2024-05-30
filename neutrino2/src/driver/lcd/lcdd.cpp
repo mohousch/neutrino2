@@ -63,7 +63,7 @@ static bool hdd_icon = false;
 
 bool blocked = false;
 
-void CVFD::openDevice()
+void CLCD::openDevice()
 { 
         if (!blocked)
 	{
@@ -80,7 +80,7 @@ void CVFD::openDevice()
 	}
 }
 
-void CVFD::closeDevice()
+void CLCD::closeDevice()
 { 
 	if (fd)
 	{
@@ -1289,7 +1289,7 @@ void CLCD::setPower(int power)
 		"VFD_PURPLE"
 	};
 	
-	dprintf(DEBUG_NORMAL, "CVFD::setPower: %s\n", VFDLED[power]);
+	dprintf(DEBUG_NORMAL, "CLCD::setPower: %s\n", VFDLED[power]);
 	  
 	FILE * f;
 	if((f = fopen("/proc/stb/fp/led0_pattern", "w")) == NULL) 
@@ -1408,7 +1408,7 @@ void CLCD::Lock()
 	creat("/tmp/vfd.locked", 0);
 }
 
-void CVFD::Unlock()
+void CLCD::Unlock()
 {
 	if(!has_lcd) return;
 	
