@@ -142,14 +142,10 @@ class CLCD
 				LcdFont *menu;
 		};
 		
-#ifdef ENABLE_4DIGITS
 		int fd;
-#else		
-
 		CLCDDisplay			display;
 		LcdFontRenderClass		*fontRenderer;
 		FontsDef			fonts;
-#endif
 
 #define LCD_NUMBER_OF_ELEMENTS 7
 		raw_lcd_element_t               element[LCD_NUMBER_OF_ELEMENTS];
