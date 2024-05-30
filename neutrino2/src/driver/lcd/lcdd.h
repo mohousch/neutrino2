@@ -143,7 +143,7 @@ class CLCD
 		};
 		
 		int fd;
-		CLCDDisplay			display;
+		CLCDDisplay			*display;
 		LcdFontRenderClass		*fontRenderer;
 		FontsDef			fonts;
 
@@ -187,8 +187,6 @@ class CLCD
 		~CLCD();
 
 		bool has_lcd;
-		bool is4digits;	
-		bool istftlcd;
 		void wake_up();
 		void setled(void) { return; };
 		void setlcdparameter(void);

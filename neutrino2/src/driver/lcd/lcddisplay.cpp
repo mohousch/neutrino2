@@ -52,55 +52,10 @@
 #endif
 
 
-void CLCDDisplay::setSize(int w, int h, int b)
-{
-	xres = w;
-	yres = h;
-	bpp = 8;
-	bypp = 1;
-	surface_bpp = b;
-	
-	real_offset = 0;
-	real_yres = yres;
-	if (yres == 32)
-		real_offset = 16;
-	if (yres < 64)
-		yres = 48;
-
-	switch (surface_bpp)
-	{
-		case 8:
-			surface_bypp = 1;
-			break;
-		case 15:
-		case 16:
-			surface_bypp = 2;
-			break;
-		case 24:		// never use 24bit mode
-		case 32:
-			surface_bypp = 4;
-			break;
-		default:
-			surface_bypp = (bpp+7)/8;
-	}
-
-	surface_stride = xres*surface_bypp;
-	surface_buffer_size = xres * yres * surface_bypp;
-	surface_data = new unsigned char[surface_buffer_size];
-	memset(surface_data, 0, surface_buffer_size);
-
-	printf("CLCDDisplay::setSize: surface buffer %p %d bytes, stride %d\n", surface_data, surface_buffer_size, surface_stride);
-
-	_stride = xres*bypp;
-	raw_buffer_size = xres * yres * bypp;
-	_buffer = new unsigned char[raw_buffer_size];
-	memset(_buffer, 0, raw_buffer_size);
-
-	printf("CLCDDisplay::setSize: lcd buffer %p %d bytes, stride %d, type %d\n", _buffer, raw_buffer_size, _stride, is_oled);
-}
-
 CLCDDisplay::CLCDDisplay()
 {
+	printf("CLCDDisplay::CLCDDisplay\n");
+	
 	paused = 0;
 	available = false;
 	
@@ -117,9 +72,6 @@ CLCDDisplay::CLCDDisplay()
 	
 	iconBasePath = "";
 	
-#if defined (ENABLE_TFTLCD)
-	is_oled = 4;
-#else
 	//open device
 	//fd = open("/dev/dbox/oled0", O_RDWR);
 	//// FIXME:
@@ -216,13 +168,59 @@ CLCDDisplay::CLCDDisplay()
 			is_oled = 3;
 		}
 	}
-#endif
 	
 	if (fd >= 0)
 	{ 
 		setSize(xres, yres, bpp);
 		available = true;
 	}
+}
+
+void CLCDDisplay::setSize(int w, int h, int b)
+{
+	xres = w;
+	yres = h;
+	bpp = 8;
+	bypp = 1;
+	surface_bpp = b;
+	
+	real_offset = 0;
+	real_yres = yres;
+	if (yres == 32)
+		real_offset = 16;
+	if (yres < 64)
+		yres = 48;
+
+	switch (surface_bpp)
+	{
+		case 8:
+			surface_bypp = 1;
+			break;
+		case 15:
+		case 16:
+			surface_bypp = 2;
+			break;
+		case 24:		// never use 24bit mode
+		case 32:
+			surface_bypp = 4;
+			break;
+		default:
+			surface_bypp = (bpp+7)/8;
+	}
+
+	surface_stride = xres*surface_bypp;
+	surface_buffer_size = xres * yres * surface_bypp;
+	surface_data = new unsigned char[surface_buffer_size];
+	memset(surface_data, 0, surface_buffer_size);
+
+	printf("CLCDDisplay::setSize: surface buffer %p %d bytes, stride %d\n", surface_data, surface_buffer_size, surface_stride);
+
+	_stride = xres*bypp;
+	raw_buffer_size = xres * yres * bypp;
+	_buffer = new unsigned char[raw_buffer_size];
+	memset(_buffer, 0, raw_buffer_size);
+
+	printf("CLCDDisplay::setSize: lcd buffer %p %d bytes, stride %d, type %d\n", _buffer, raw_buffer_size, _stride, is_oled);
 }
 
 //
