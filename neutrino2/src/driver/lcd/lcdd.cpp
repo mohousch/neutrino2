@@ -707,7 +707,7 @@ void CLCD::showServicename(const std::string name, const bool perform_wakeup, in
 #if defined (__sh__)	 
 	openDevice();
 	
-	if(write(fd , text.c_str(), len > 16? 16 : len ) < 0)
+	if(write(fd , name.c_str(), name.length() > 16? 16 : name.length() ) < 0)
 		perror("write to vfd failed");
 	
 	closeDevice();	
