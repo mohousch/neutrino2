@@ -344,6 +344,11 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	}
 	
 	if (fd >= 0) has_lcd = true;
+	
+	// set led color
+#if defined (PLATFORM_GIGABLUE)
+	setPower(g_settings.lcd_power);  //0:off, 1:blue, 2:red, 3:purple
+#endif
 #endif
 
 #if defined (__sh__)
@@ -631,14 +636,7 @@ void CLCD::showServicename(const std::string name, const bool perform_wakeup, in
 	////
 #ifdef ENABLE_4DIGITS
 	{
-		char tmp[5];
-		
-		int len = strlen(tmp);
-						
-		sprintf(tmp, "%04d", pos);
-						
-		//ShowText(tmp); // UTF-8
-		if( write(fd, tmp, len > 5? 5 : len ) < 0)
+		if( write(fd, name.c_str(), name.length() > 5? 5 : name.length() ) < 0)
 			perror("write to vfd failed");
 	}
 #else
@@ -925,9 +923,7 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 	
 	int len = strlen(tmp);
 						
-	//ShowText(tmp); // UTF-8
-	if( write(fd, tmp, len > 5? 5 : len ) < 0)
-		perror("write to vfd failed");
+	ShowText(tmp); // UTF-8
 #elif defined (ENABLE_LCD)
 	if (mode == MODE_MOVIE) 
 	{
@@ -1107,14 +1103,14 @@ void CLCD::setMode(const MODES m, const char * const title)
 {
 	if(!has_lcd) 
 		return;
+		
+	mode = m;
+	menutitle = title;
+	setlcdparameter();
 	
 #ifdef ENABLE_LCD
 	unsigned int lcd_width  = display.xres;
 	unsigned int lcd_height = display.yres;
-
-	mode = m;
-	menutitle = title;
-	setlcdparameter();
 
 	switch (m)
 	{
@@ -1223,6 +1219,57 @@ void CLCD::setMode(const MODES m, const char * const title)
 		showInfoBox();
 		break;
 	}
+#endif
+
+#ifdef ENABLE_4DIGITS
+	switch (m) 
+	{
+		case MODE_TVRADIO:
+			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)	
+				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
+			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
+				showTime();
+			
+			showclock = true;
+			break;
+
+		case MODE_AUDIO:
+			showclock = true;
+			break;
+			
+		case MODE_SCART:
+			showclock = true;
+			break;
+			
+		case MODE_MENU_UTF8:
+			showclock = true;
+			break;
+
+		case MODE_SHUTDOWN:
+			showclock = false;
+			
+			//
+			ShowText((char *) "BYE");
+			
+			break;
+
+		case MODE_STANDBY:				
+			showclock = true;
+			showTime();
+			break;
+		
+		case MODE_PIC:	  
+			showclock = true;
+			break;
+			
+		case MODE_MOVIE:  		
+			showclock = true;
+			break;
+	}
+
+#endif
+
+#ifdef __sh__
 #endif
 	
 	wake_up();
