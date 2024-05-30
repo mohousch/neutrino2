@@ -263,8 +263,6 @@ void CLCD::init(const char * fontfile, const char * fontname, const char * fontf
 		has_lcd = false;
 		return;
 	}
-	
-	// TODO: add externel lcd
 
 	// create time thread
 	if (pthread_create (&thrTime, NULL, TimeThread, NULL) != 0 )
@@ -422,7 +420,12 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 
 #if defined (__sh__)
 	has_lcd = true;
-#endif	
+#endif
+	
+	//FIXME: Add
+	//vfd
+	//tftlcd
+	//nglcd
 
 	// set mode tv/radio
 	if (has_lcd) setMode(MODE_TVRADIO);
@@ -582,6 +585,7 @@ void CLCD::showTextScreen(const std::string & big, const std::string & small, co
 	std::string cname[2];
 	std::string event[4];
 	int namelines = 0, eventlines = 0, maxnamelines = 2;
+	
 	if (showmode & 8)
 		maxnamelines = 1;
 
@@ -699,20 +703,18 @@ void CLCD::showServicename(const std::string name, const bool perform_wakeup, in
 	if (!name.empty())
 		servicename = name;
 
-	if (mode != MODE_TVRADIO)
-		return;
+//	if (mode != MODE_TVRADIO)
+//		return;
 
 #ifdef ENABLE_4DIGITS
-	{
-		if( write(fd, name.c_str(), name.length() > 5? 5 : name.length() ) < 0)
-			perror("write to vfd failed");
-	}
+	if( write(fd, name.c_str(), name.length() > 5? 5 : name.length() ) < 0)
+		perror("write to vfd failed");
 #endif
 
 #if defined (__sh__)	 
 	openDevice();
 	
-	if(write(fd , name.c_str(), name.length() > 16? 16 : name.length() ) < 0)
+	if(write(fd, name.c_str(), name.length() > 16? 16 : name.length() ) < 0)
 		perror("write to vfd failed");
 	
 	closeDevice();	
@@ -1036,14 +1038,8 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 	if(!has_lcd) 
 		return;
 	
-#ifdef ENABLE_4DIGITS
-	char tmp[5];
-						
-	sprintf(tmp, "%04d", position);
-	
-	int len = strlen(tmp);
-						
-	ShowText(tmp); // UTF-8
+#ifdef ENABLE_4DIGITS					
+	ShowText(text); // UTF-8
 #elif defined (ENABLE_LCD)
 	if (mode == MODE_MOVIE) 
 	{
@@ -1406,7 +1402,8 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 		case MODE_TVRADIO:
 			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)	
-				showServicename(!g_RemoteControl->getCurrentChannelName().empty()? g_RemoteControl->getCurrentChannelName() : "", true, g_RemoteControl->getCurrentChannelNumber());
+				//showServicename(!g_RemoteControl->getCurrentChannelName().empty()? g_RemoteControl->getCurrentChannelName() : " ", true, g_RemoteControl->getCurrentChannelNumber());
+				showServicename(g_RemoteControl->getCurrentChannelName());
 			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
 				showTime(true);
 			
