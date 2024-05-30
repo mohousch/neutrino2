@@ -23,7 +23,8 @@
 */
 
 #include <config.h>
-#include "lcddisplay.h"
+
+#include <driver/lcd/lcddisplay.h>
 
 #include <png.h>
 
@@ -118,26 +119,70 @@ CLCDDisplay::CLCDDisplay()
 	is_oled = 4;
 #else
 	//open device
-	fd = open("/dev/dbox/oled0", O_RDWR);
-	
+	//fd = open("/dev/dbox/oled0", O_RDWR);
+	////
+	fd = open("/dev/dbox/fp", O_RDWR);
+		
+	if(fd < 0)
+	{
+		// probe /dev/vfd
+		fd = open("/dev/vfd", O_RDWR);
+		
+		if(fd < 0)
+		{
+			// probe /dev/display
+			fd = open("/dev/display", O_RDWR);
+			
+			if(fd < 0)
+			{
+				fd = open("/dev/mcu", O_RDWR);
+
+				if(fd < 0)
+				{
+					// probe /proc/vfd (e.g gigablue)
+					fd = open("/proc/vfd", O_RDWR);
+				
+					if(fd < 0)
+					{
+						// probe /dev/dbox/oled0
+						fd = open("/dev/dbox/oled0", O_RDWR);
+		
+						if(fd < 0) 
+						{
+							// probe /dev/oled0
+							fd = open("/dev/oled0", O_RDWR);
+						
+							if(fd < 0)
+							{
+								fd = open("/dev/dbox/lcd0", O_RDWR);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	////
+	/*
 	if (fd < 0)
 	{
 		xres = 128;
 		if (!access("/proc/stb/lcd/oled_brightness", W_OK) || !access("/proc/stb/fp/oled_brightness", W_OK) )
 			is_oled = 2;
 			
-		fd = open(LCD_DEVICE, O_RDWR);
+//		fd = open(LCD_DEVICE, O_RDWR);
 	} 
 	else
 	{
 		printf("found OLED display!\n");
 		is_oled = 1;
 	}
+	*/
 	
 	if (fd < 0)
 	{
 		printf("CLCDDisplay::CLCDDisplay: couldn't open LCD - load lcd.ko!\n");
-		return;
+//		return;
 	}
 	else
 	{
@@ -177,7 +222,7 @@ CLCDDisplay::CLCDDisplay()
 	iconBasePath = "";
 }
 
-//e2
+//
 void CLCDDisplay::setInverted(unsigned char inv)
 {
 	inverted = inv;
@@ -192,23 +237,10 @@ void CLCDDisplay::setFlipped(bool onoff)
 
 int CLCDDisplay::setLCDContrast(int contrast)
 {
-	int fp;
-	
-	fp = open("/dev/dbox/fp0", O_RDWR);
-	
-	if (fp < 0)
-		fp = open("/dev/dbox/lcd0", O_RDWR);
-	if (fp < 0)
-	{
-		printf("[LCD] can't open /dev/dbox/fp0(%m)\n");
-		return(-1);
-	}
-
 	if(ioctl(fd, LCD_IOCTL_SRV, &contrast) < 0)
 	{
 		printf("[LCD] can't set lcd contrast(%m)\n");
 	}
-	close(fp);
 
 	return(0);
 }

@@ -132,7 +132,6 @@ class CLCD
 		////
 
 	private:
-
 		class FontsDef
 		{
 			public:
@@ -141,14 +140,15 @@ class CLCD
 				LcdFont *menutitle;
 				LcdFont *menu;
 		};
+		
+#ifdef ENABLE_4DIGITS
+		int fd;
+#else		
 
-//#ifdef ENBLE_LCD
 		CLCDDisplay			display;
 		LcdFontRenderClass		*fontRenderer;
 		FontsDef			fonts;
-//#else
-//		CVFD				display;
-//#endif
+#endif
 
 #define LCD_NUMBER_OF_ELEMENTS 7
 		raw_lcd_element_t               element[LCD_NUMBER_OF_ELEMENTS];
@@ -184,10 +184,6 @@ class CLCD
 		void displayUpdate();
 		void showTextScreen(const std::string & big, const std::string & small, int showmode, bool perform_wakeup, bool centered = false);
 		void drawBanner();
-		
-#ifdef __sh__
-		unsigned char brightness;
-#endif
 
 	public:
 		CLCD();
@@ -238,8 +234,6 @@ class CLCD
 		void setInverse(int);
 		int getInverse();
 
-		void setAutoDimm(int);
-		int getAutoDimm();
 		void setBrightnessDeepStandby(int) { return ; };
 		int getBrightnessDeepStandby() { return 0; };
 
@@ -253,7 +247,6 @@ class CLCD
 		void Clear();
 		void ShowIcon(vfd_icon icon, bool show);
 		void ShowText(const char *s) { showServicename(std::string(s)); };
-//		void LCDshowText(int /*pos*/) { return ; };
 		
 		bool ShowPng(char *filename);
 		bool DumpPng(char *filename);

@@ -29,8 +29,6 @@
 #include <stdint.h> /* uint8_t */
 
 
-#define LCD_DEVICE		"/dev/dbox/lcd0"
-
 #define LCD_PIXEL_OFF		0x00
 #define LCD_PIXEL_ON		0xff
 #define LCD_PIXEL_INV		0x1000000
@@ -52,18 +50,9 @@
 
 
 typedef unsigned char * raw_display_t;
-/*
-struct raw_lcd_element_header_t
-{
-	uint16_t width;
-	uint16_t height;
-	uint8_t bpp;
-} __attribute__ ((packed));
-*/
 
 struct raw_lcd_element_t
 {
-//	raw_lcd_element_header_t header;
 	uint16_t width;
 	uint16_t height;
 	uint8_t bpp;

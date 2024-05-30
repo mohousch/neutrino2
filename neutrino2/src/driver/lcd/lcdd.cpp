@@ -1,5 +1,5 @@
 /*
-	$Id: lcdd.cpp 2013/10/12 mohousch Exp $
+	$Id: lcdd.cpp 30052024 mohousch Exp $
 
 	LCD-Daemon  -   DBoxII-Project
 
@@ -37,7 +37,6 @@
 #include <system/settings.h>
 #include <system/debug.h>
 
-#include <driver/lcd/lcddisplay.h>
 #include <driver/gfx/icons.h>
 
 #include <fcntl.h>
@@ -62,8 +61,6 @@ static bool timer_icon = false;
 static bool hdd_icon = false;
 #endif
 
-//konfetti: let us share the device with evremote and fp_control
-//it does currently not support more than one user (see e.g. micom)
 bool blocked = false;
 
 void CVFD::openDevice()
@@ -120,10 +117,8 @@ CLCD::CLCD()
 	
 #if defined (ENABLE_4DIGITS)
 	is4digits = true;
-#endif
-
-#ifdef __sh__
-	brightness = -1;
+	
+	fd = -1;
 #endif
 }
 
@@ -134,6 +129,11 @@ CLCD::~CLCD()
 	{
 		delete [] (background[i]);
 	}
+#endif
+
+#ifdef ENABLE_4DIGITS
+	if (fd)
+		::close(fd);
 #endif
 }
 
@@ -238,6 +238,7 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 #ifdef ENABLE_LCD 
 	// init fonts
 	fontRenderer = new LcdFontRenderClass(&display);
+	
 	const char * style_name = fontRenderer->AddFont(fontfile);
 	const char * style_name2;
 	const char * style_name3;
@@ -257,16 +258,13 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 		style_name3 = style_name;
 		fontname3   = fontname;
 	}
+	
 	fontRenderer->InitFontCache();
 
 	fonts.menu        = fontRenderer->getFont(fontname,  style_name , 12);
 	fonts.time        = fontRenderer->getFont(fontname2, style_name2, 14);
 	fonts.channelname = fontRenderer->getFont(fontname3, style_name3, 15);
 	fonts.menutitle   = fonts.channelname;
-#endif
-
-	// set autodimm
-	setAutoDimm(g_settings.lcd_autodimm);
 
 	// check if we have display
 	if (!display.isAvailable())
@@ -277,8 +275,7 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	}
 	
 	has_lcd = true;
- 
-#ifdef ENABLE_LCD
+
  	// init lcd_element struct
 	for (int i = 0; i < LCD_NUMBER_OF_ELEMENTS; i++)
 	{
@@ -301,27 +298,77 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 				break;
 		}
 	}
+#endif
+
+#ifdef ENABLE_4DIGITS
+	fd = open("/dev/dbox/fp", O_RDWR);
+		
+	if(fd < 0)
+	{
+		// probe /dev/vfd
+		fd = open("/dev/vfd", O_RDWR);
+		
+		if(fd < 0)
+		{
+			// probe /dev/display
+			fd = open("/dev/display", O_RDWR);
+			
+			if(fd < 0)
+			{
+				fd = open("/dev/mcu", O_RDWR);
+
+				if(fd < 0)
+				{
+					// probe /proc/vfd (e.g gigablue)
+					fd = open("/proc/vfd", O_RDWR);
+				
+					if(fd < 0)
+					{
+						// probe /dev/dbox/oled0
+						fd = open("/dev/dbox/oled0", O_RDWR);
+		
+						if(fd < 0) 
+						{
+							// probe /dev/oled0
+							fd = open("/dev/oled0", O_RDWR);
+						
+							if(fd < 0)
+							{
+								fd = open("/dev/dbox/lcd0", O_RDWR);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	if (fd >= 0) has_lcd = true;
+#endif
+
+#if defined (__sh__)
+	has_lcd = true;
 #endif	
 
 	// set mode tv/radio
-	setMode(MODE_TVRADIO);
+	if (has_lcd) setMode(MODE_TVRADIO);
 
-	return true;
+	return has_lcd;
 }
 
 void CLCD::displayUpdate()
 {
+#ifdef ENABLE_LCD
 	struct stat buf;
 	
 	if (stat("/tmp/lcd.locked", &buf) == -1)
 	{
 		display.update();
 		
-#ifdef ENABLE_LCD
 		if (g_settings.lcd_dump_png)
 			display.dump_png("/tmp/lcdd.png");
-#endif
 	}
+#endif
 }
 
 void CLCD::setlcdparameter(int dimm, const int contrast, const int power, const int inverse, const int bias)
@@ -344,24 +391,18 @@ void CLCD::setlcdparameter(int dimm, const int contrast, const int power, const 
 		display.setInverted(CLCDDisplay::PIXEL_ON);
 	else		
 		display.setInverted(CLCDDisplay::PIXEL_OFF);
+		
 #elif defined (__sh__)
 	if(dimm < 0)
 		dimm = 0;
 	else if(dimm > 15)
 		dimm = 15;
-/*
-	if(brightness == dimm)
-		return;
-
-	brightness = dimm;
-*/
 	
         struct vfd_ioctl_data data;
 	data.start_address = dimm;
 	
 	if(dimm < 1)
 		dimm = 1;
-//	brightness = dimm;
 	
 	openDevice();
 	
@@ -400,7 +441,6 @@ void CLCD::setlcdparameter(void)
 			power,
 			g_settings.lcd_inverse,
 			0);
-//#else
 //#endif
 }
 
@@ -532,7 +572,8 @@ void CLCD::showTextScreen(const std::string & big, const std::string & small, co
 	int y = 8 + (t_h - namelines*14 - eventlines*10)/2;
 	//
 	int x = 1;
-	for (int i = 0; i < namelines; i++) {
+	for (int i = 0; i < namelines; i++) 
+	{
 		y += 14;
 		if (centered)
 		{
@@ -551,7 +592,8 @@ void CLCD::showTextScreen(const std::string & big, const std::string & small, co
 	
 	if (eventlines > 0)
 	{
-		for (int i = 0; i < eventlines; i++) {
+		for (int i = 0; i < eventlines; i++) 
+		{
 			y += 10;
 			if (centered)
 			{
@@ -587,16 +629,21 @@ void CLCD::showServicename(const std::string name, const bool perform_wakeup, in
 		return;
 
 	////
-	if (is4digits)
+#ifdef ENABLE_4DIGITS
 	{
 		char tmp[5];
+		
+		int len = strlen(tmp);
 						
 		sprintf(tmp, "%04d", pos);
 						
-		ShowText(tmp); // UTF-8
+		//ShowText(tmp); // UTF-8
+		if( write(fd, tmp, len > 5? 5 : len ) < 0)
+			perror("write to vfd failed");
 	}
-	else
-		showTextScreen(servicename, epg_title, showmode, perform_wakeup, true);
+#else
+	showTextScreen(servicename, epg_title, showmode, perform_wakeup, true);
+#endif
 	
 	return;
 }
@@ -871,16 +918,17 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 	if(!has_lcd) 
 		return;
 	
-	if (is4digits)
-	{
-		char tmp[5];
+#ifdef ENABLE_4DIGITS
+	char tmp[5];
 						
-		sprintf(tmp, "%04d", position);
-						
-		ShowText(tmp); // UTF-8
-	}
+	sprintf(tmp, "%04d", position);
 	
-#ifdef ENABLE_LCD
+	int len = strlen(tmp);
+						
+	//ShowText(tmp); // UTF-8
+	if( write(fd, tmp, len > 5? 5 : len ) < 0)
+		perror("write to vfd failed");
+#elif defined (ENABLE_LCD)
 	if (mode == MODE_MOVIE) 
 	{
 		size_t p;
@@ -1276,15 +1324,6 @@ void CLCD::setInverse(int inverse)
 int CLCD::getInverse()
 {
 	return g_settings.lcd_inverse;
-}
-
-void CLCD::setAutoDimm(int /*autodimm*/)
-{
-}
-
-int CLCD::getAutoDimm()
-{
-	return g_settings.lcd_autodimm;
 }
 
 void CLCD::setMuted(bool mu)
