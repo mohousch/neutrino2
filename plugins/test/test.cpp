@@ -4557,7 +4557,7 @@ void CTestMenu::testVFDController()
 {
 	dprintf(DEBUG_NORMAL, "\nCTestMenu::testVFDController\n");
 	
-	CVfdControler * vfdControllerHandler = new CVfdControler(_("Display settings"), NULL);
+	CLCDControler * vfdControllerHandler = new CLCDControler(_("Display settings"), NULL);
 	vfdControllerHandler->exec(NULL, "");
 	delete vfdControllerHandler;
 	vfdControllerHandler = NULL;

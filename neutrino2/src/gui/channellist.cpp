@@ -401,7 +401,7 @@ int CChannelList::show(bool customMode)
 	int res = -1;
 
 	// display channame in vfd	
-	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8);	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8);	
 	
 	// update events
 	updateEvents();
@@ -696,7 +696,7 @@ int CChannelList::show(bool customMode)
 		res = bouquetList->exec(true, customMode);
 	}
 	
-	CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
+	CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
 
 	//
 	g_RCInput->killTimer(sec_timer_id);

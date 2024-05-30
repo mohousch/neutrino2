@@ -96,7 +96,7 @@ void CRCLock::lockBox()
 		} 
 		else 
 		{
-			CVFD::getInstance()->showRCLock();
+			CLCD::getInstance()->showRCLock();
 			// Since showRCLock blocks 2secs for each key we eat all
 			// messages created during this time. Hopefully this ok...
 			g_RCInput->clearRCMsg();

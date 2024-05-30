@@ -515,7 +515,7 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 	// vfd
 	if(!parent)
 	{
-		CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
+		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
 	}
 	
 	return retval;

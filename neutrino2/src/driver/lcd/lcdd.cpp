@@ -190,13 +190,6 @@ CLCD::CLCD()
 
 CLCD::~CLCD()
 {
-#if 0
-	for (int i = 0; i < LCD_NUMBER_OF_BACKGROUNDS; i++)
-	{
-		delete [] (background[i]);
-	}
-#endif
-
 #ifdef ENABLE_4DIGITS
 	if (fd)
 		::close(fd);
@@ -206,6 +199,7 @@ CLCD::~CLCD()
 CLCD* CLCD::getInstance()
 {
 	static CLCD* lcdd = NULL;
+	
 	if(lcdd == NULL)
 	{
 		lcdd = new CLCD();
@@ -263,6 +257,7 @@ void CLCD::init(const char * fontfile, const char * fontname, const char * fontf
 	{
 		dprintf(DEBUG_NORMAL, "CLCD::init: LCD-Init failed!\n");
 		has_lcd = false;
+		return;
 	}
 	
 	// TODO: add externel lcd
@@ -275,6 +270,7 @@ void CLCD::init(const char * fontfile, const char * fontname, const char * fontf
 	}
 }
 
+// FIXME: add more e.g weather icons and so on
 enum elements {
 	ELEMENT_BANNER = 0,
 	ELEMENT_MOVIESTRIPE = 1,
@@ -863,7 +859,7 @@ void CLCD::showRCLock(int duration)
 	// every second. Restoring the screen can cause a short travel to the past ;)
 	display.dump_screen(&curr_screen);
 	display.draw_fill_rect (-1, 10, display.xres, display.yres-12-2, CLCDDisplay::PIXEL_OFF);
-	display.paintIcon(icon,44,25,false);
+	display.paintIcon(icon, 44, 25, false);
 	wake_up();
 	displayUpdate();
 	sleep(duration);
@@ -1224,6 +1220,8 @@ void CLCD::setMode(const MODES m, const char * const title)
 	if(!has_lcd) 
 		return;
 		
+	dprintf(DEBUG_NORMAL, "CLCD::setMode\n");
+		
 	mode = m;
 	menutitle = title;
 	setlcdparameter();
@@ -1346,7 +1344,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 		case MODE_TVRADIO:
 			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)	
-				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
+				ShowText(g_RemoteControl->getCurrentChannelNumber());
 			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
 				showTime();
 			

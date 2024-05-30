@@ -553,7 +553,7 @@ void CStreamInfo::paint(int /*mode*/)
 		// -- tech Infos, PIG, small signal graph
 		head_string = _("Stream information");
 
-		CVFD::getInstance ()->setMode (CVFD::MODE_MENU_UTF8, head_string);
+		CLCD::getInstance ()->setMode (CLCD::MODE_MENU_UTF8, head_string);
 
 		ypos += hheight + 20;
 

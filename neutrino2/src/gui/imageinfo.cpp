@@ -169,7 +169,7 @@ void CImageInfo::paint()
 
 	}
 	
-	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8, _("Image info"));
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Image info"));
 	
  	int  xpos = x + 10;
 	int x_offset = g_Font[font_info]->getRenderWidth(_("Home page:")) + 10;

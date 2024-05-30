@@ -673,7 +673,7 @@ int CTimerList::show()
 	g_RCInput->killTimer(sec_timer_id);
 	sec_timer_id = 0;
 	
-	CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
+	CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
 
 	return(res);
 }

@@ -19,5 +19,7 @@ install_DATA = \
 	lcdscart.png \
 	lcdtv.png \
 	lcdvol.png \
-	rclock.raw
+	rclock.raw \
+	dd.raw \
+	stereo.raw
 

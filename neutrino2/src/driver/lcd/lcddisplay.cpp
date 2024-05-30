@@ -89,14 +89,14 @@ void CLCDDisplay::setSize(int w, int h, int b)
 	surface_data = new unsigned char[surface_buffer_size];
 	memset(surface_data, 0, surface_buffer_size);
 
-	printf("[CLCDDisplay] %s surface buffer %p %d bytes, stride %d\n", __FUNCTION__, surface_data, surface_buffer_size, surface_stride);
+	printf("CLCDDisplay::setSize: surface buffer %p %d bytes, stride %d\n", surface_data, surface_buffer_size, surface_stride);
 
 	_stride = xres*bypp;
 	raw_buffer_size = xres * yres * bypp;
 	_buffer = new unsigned char[raw_buffer_size];
 	memset(_buffer, 0, raw_buffer_size);
 
-	printf("[CLCDDisplay] %s lcd buffer %p %d bytes, stride %d, type %d\n", __FUNCTION__, _buffer, raw_buffer_size, _stride, is_oled);
+	printf("CLCDDisplay::setSize: lcd buffer %p %d bytes, stride %d, type %d\n", _buffer, raw_buffer_size, _stride, is_oled);
 }
 
 CLCDDisplay::CLCDDisplay()
@@ -115,12 +115,14 @@ CLCDDisplay::CLCDDisplay()
 	is_oled = 0;
 	last_brightness = 0;
 	
+	iconBasePath = "";
+	
 #if defined (ENABLE_TFTLCD)
 	is_oled = 4;
 #else
 	//open device
 	//fd = open("/dev/dbox/oled0", O_RDWR);
-	////
+	//// FIXME:
 	fd = open("/dev/dbox/fp", O_RDWR);
 		
 	if(fd < 0)
@@ -215,11 +217,12 @@ CLCDDisplay::CLCDDisplay()
 		}
 	}
 #endif
-	  
-	setSize(xres, yres, bpp);
-
-	available = true;
-	iconBasePath = "";
+	
+	if (fd >= 0)
+	{ 
+		setSize(xres, yres, bpp);
+		available = true;
+	}
 }
 
 //
@@ -239,7 +242,7 @@ int CLCDDisplay::setLCDContrast(int contrast)
 {
 	if(ioctl(fd, LCD_IOCTL_SRV, &contrast) < 0)
 	{
-		printf("[LCD] can't set lcd contrast(%m)\n");
+		printf("CLCDDisplay::setLCDContrast: can't set lcd contrast(%m)\n");
 	}
 
 	return(0);
@@ -260,16 +263,8 @@ int CLCDDisplay::setLCDBrightness(int brightness)
 	}
 	else
 	{
-		int fp;
-		if((fp = open("/dev/dbox/fp0", O_RDWR)) < 0)
-		{
-			printf("[LCD] can't open /dev/dbox/fp0\n");
-			return(-1);
-		}
-
-		if(ioctl(fp, FP_IOCTL_LCD_DIMM, &brightness) < 0)
+		if(ioctl(fd, FP_IOCTL_LCD_DIMM, &brightness) < 0)
 			printf("[LCD] can't set lcd brightness (%m)\n");
-		close(fp);
 	}
 	
 	if (brightness == 0)
@@ -308,12 +303,12 @@ void CLCDDisplay::resume()
 {
 	//clear the display
 	if( ioctl(fd, LCD_IOCTL_CLEAR) < 0 )
-		printf("[lcddisplay] LCD_IOCTL_CLEAR failed (%m)\n");
+		printf("CLCDDisplay::resume: LCD_IOCTL_CLEAR failed (%m)\n");
 	
 	//graphic (binary) mode 
 	int i = LCD_MODE_BIN;
 	if( ioctl(fd, LCD_IOCTL_ASC_MODE, &i) < 0 )
-		printf("[lcddisplay] LCD_IOCTL_ASC_MODE failed (%m)\n");
+		printf("CLCDDisplay::resume: LCD_IOCTL_ASC_MODE failed (%m)\n");
 	//
 	
 	paused = 0;
@@ -486,48 +481,48 @@ void CLCDDisplay::update()
 
 void CLCDDisplay::surface_fill_rect(int area_left, int area_top, int area_right, int area_bottom, int color) 
 {
-		int area_width  = area_right-area_left;
-		int area_height = area_bottom-area_top;
+	int area_width  = area_right-area_left;
+	int area_height = area_bottom-area_top;
 
-		if (surface_bpp == 8)
-		{
-			for (int y = area_top; y < area_bottom; y++)
-		 		memset(((uint8_t*)surface_data)+y*surface_stride+area_left, color, area_width);
-		} 
-		else if (surface_bpp == 16)
-		{
-			uint32_t icol;
+	if (surface_bpp == 8)
+	{
+		for (int y = area_top; y < area_bottom; y++)
+		 	memset(((uint8_t*)surface_data)+y*surface_stride+area_left, color, area_width);
+	} 
+	else if (surface_bpp == 16)
+	{
+		uint32_t icol;
 
-			icol = 0x10101*color;
+		icol = 0x10101*color;
 #if BYTE_ORDER == LITTLE_ENDIAN
-			uint16_t col = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
+		uint16_t col = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
 #else
-			uint16_t col = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
+		uint16_t col = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
 #endif
-			for (int y = area_top; y < area_bottom; y++)
-			{
-				uint16_t *dst=(uint16_t*)(((uint8_t*)surface_data)+y*surface_stride+area_left*surface_bypp);
-				int x = area_width;
-				while (x--)
-					*dst++=col;
-			}
-		} 
-		else if (surface_bpp == 32)
+		for (int y = area_top; y < area_bottom; y++)
 		{
-			uint32_t col;
+			uint16_t *dst=(uint16_t*)(((uint8_t*)surface_data)+y*surface_stride+area_left*surface_bypp);
+			int x = area_width;
+			while (x--)
+				*dst++=col;
+		}
+	} 
+	else if (surface_bpp == 32)
+	{
+		uint32_t col;
 
-			col = 0x10101*color;
+		col = 0x10101*color;
 			
-			col ^= 0xFF000000;
+		col ^= 0xFF000000;
 
-			for (int y=area_top; y<area_bottom; y++)
-			{
-				uint32_t *dst=(uint32_t*)(((uint8_t*)surface_data)+y*surface_stride+area_left*surface_bypp);
-				int x=area_width;
-				while (x--)
-					*dst++=col;
-			}
-		}	
+		for (int y=area_top; y<area_bottom; y++)
+		{
+			uint32_t *dst=(uint32_t*)(((uint8_t*)surface_data)+y*surface_stride+area_left*surface_bypp);
+			int x=area_width;
+			while (x--)
+				*dst++=col;
+		}
+	}	
 }
 
 void CLCDDisplay::draw_point(const int x, const int y, const int state)
@@ -635,9 +630,10 @@ void CLCDDisplay::draw_line(const int x1, const int y1, const int x2, const int 
 	}
 }
 
-void CLCDDisplay::draw_fill_rect (int left,int top,int right,int bottom,int state) 
+void CLCDDisplay::draw_fill_rect(int left,int top,int right,int bottom,int state) 
 {
 	int x,y;
+	
 	for(x = left + 1;x < right;x++) 
 	{  
 		for(y = top + 1;y < bottom;y++) 
@@ -647,7 +643,7 @@ void CLCDDisplay::draw_fill_rect (int left,int top,int right,int bottom,int stat
 	}
 }
 
-void CLCDDisplay::draw_rectangle (int left,int top, int right, int bottom, int linestate,int fillstate)
+void CLCDDisplay::draw_rectangle(int left,int top, int right, int bottom, int linestate,int fillstate)
 {
 	// coordinate checking in draw_pixel (-> you can draw lines only
 	// partly on screen)
@@ -702,7 +698,7 @@ bool CLCDDisplay::paintIcon(std::string filename, int x, int y, bool invert)
 
 	_fd = open(filename.c_str(), O_RDONLY );
 	
-	if (_fd==-1)
+	if (_fd == -1)
 	{
 		printf("\nerror while loading icon: %s\n\n", filename.c_str() );
 		return false;
@@ -748,23 +744,20 @@ void CLCDDisplay::load_screen_element(const raw_lcd_element_t * element, int lef
 {
 	unsigned int i;
 
-	//if (element->buffer)
-	//	for (i = 0; i < element->height; i++)	
-	//		memmove(_buffer+((top+i) * xres)+left, element->buffer+(i * element->width), element->width);
-	//
 	if ((element->buffer) && (element->height <= yres-top))
 		for (i = 0; i < min(element->height, yres-top); i++)	
 			memmove(_buffer+((top+i) * xres)+left, element->buffer+(i * element->width), min(element->width, xres-left));
-	//
 }
 
 void CLCDDisplay::load_screen(const raw_display_t * const screen) 
 {
 	raw_lcd_element_t element;
+	
 	element.buffer_size = raw_buffer_size;
 	element.buffer = *screen;
 	element.width = xres;
 	element.height = yres;
+	
 	load_screen_element(&element, 0, 0);
 }
 
@@ -874,14 +867,17 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 		}
 		fclose(fh);
 	}
+	
 	return ret_value;
 }
 
 bool CLCDDisplay::load_png(const char * const filename)
 {
 	raw_lcd_element_t element;
+	
 	element.buffer_size = raw_buffer_size;
 	element.buffer = _buffer;
+	
 	return load_png_element(filename, &element);
 }
 
@@ -969,6 +965,7 @@ bool CLCDDisplay::dump_png_element(const char * const filename, raw_lcd_element_
 bool CLCDDisplay::dump_png(const char * const filename)
 {
 	raw_lcd_element_t element;
+	
 	element.buffer_size = raw_buffer_size;
 	element.buffer = _buffer;
 	element.width = xres;
@@ -977,5 +974,4 @@ bool CLCDDisplay::dump_png(const char * const filename)
 	
 	return dump_png_element(filename, &element);
 }
-
 

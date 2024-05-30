@@ -260,7 +260,7 @@ int CBouquetList::show(bool customMode)
 	neutrino_msg_data_t data;
 	int res = -1;
 	
-	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8);
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8);
 	
 	//
 	paint();
@@ -397,7 +397,7 @@ int CBouquetList::show(bool customMode)
 	
 	hide();
 	
-	CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
+	CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
 
 	//
 	g_RCInput->killTimer(sec_timer_id);

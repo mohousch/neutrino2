@@ -211,7 +211,7 @@ void CAudioPlayerGui::playFile()
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
 
-	CVFD::getInstance()->setMode(CVFD::MODE_AUDIO, m_inetmode? _("internet Radio") : _("Audio Playlist"));
+	CLCD::getInstance()->setMode(CLCD::MODE_AUDIO, m_inetmode? _("internet Radio") : _("Audio Playlist"));
 		
 	paintLCD();		
 
@@ -344,7 +344,7 @@ void CAudioPlayerGui::playFile()
 				{
 					savePlaylist();
 
-					CVFD::getInstance()->setMode(CVFD::MODE_AUDIO, m_inetmode? _("Internet Radio") : _("Audio Playlist"));
+					CLCD::getInstance()->setMode(CLCD::MODE_AUDIO, m_inetmode? _("Internet Radio") : _("Audio Playlist"));
 						
 					paintLCD();
 					
@@ -666,7 +666,7 @@ void CAudioPlayerGui::paintInfo(CAudiofile& File)
 #if ENABLE_LCD	
 		if(m_time_total != 0)
 		{
-			CVFD::getInstance()->showAudioProgress(100 * m_time_played / m_time_total, current_muted);
+			CLCD::getInstance()->showAudioProgress(100 * m_time_played / m_time_total, current_muted);
 		}
 #endif	
 	}
@@ -920,7 +920,7 @@ void CAudioPlayerGui::updateTimes(const bool force, bool paint)
 #if ENABLE_LCD	
 		if((updatePlayed || updateTotal) && m_time_total != 0)
 		{
-			CVFD::getInstance()->showAudioProgress(100 * m_time_played / m_time_total, current_muted);
+			CLCD::getInstance()->showAudioProgress(100 * m_time_played / m_time_total, current_muted);
 		}
 #endif		
 	}
@@ -931,37 +931,37 @@ void CAudioPlayerGui::paintLCD()
 	switch(m_state)
 	{
 		case CAudioPlayerGui::STOP:
-			CVFD::getInstance()->showAudioPlayMode(CVFD::AUDIO_MODE_STOP);
+			CLCD::getInstance()->showAudioPlayMode(CLCD::AUDIO_MODE_STOP);
 			
 #if ENABLE_LCD
-			CVFD::getInstance()->showAudioProgress(0, current_muted);
+			CLCD::getInstance()->showAudioProgress(0, current_muted);
 #endif
 			break;
 		case CAudioPlayerGui::PLAY:
-			CVFD::getInstance()->showAudioPlayMode(CVFD::AUDIO_MODE_PLAY);
+			CLCD::getInstance()->showAudioPlayMode(CLCD::AUDIO_MODE_PLAY);
 
 			// audio-track	
-			CVFD::getInstance()->showAudioTrack(m_playlist[m_current].MetaData.artist, m_playlist[m_current].MetaData.title, m_playlist[m_current].MetaData.album, m_current + 1);			
+			CLCD::getInstance()->showAudioTrack(m_playlist[m_current].MetaData.artist, m_playlist[m_current].MetaData.title, m_playlist[m_current].MetaData.album, m_current + 1);			
 					
 #if ENABLE_LCD
 			if(m_playlist[m_current].FileExtension != CFile::EXTENSION_URL && m_time_total != 0)
-				CVFD::getInstance()->showAudioProgress(100 * m_time_played / m_time_total, current_muted);
+				CLCD::getInstance()->showAudioProgress(100 * m_time_played / m_time_total, current_muted);
 #endif
 
 			break;
 		case CAudioPlayerGui::PAUSE:
-			CVFD::getInstance()->showAudioPlayMode(CVFD::AUDIO_MODE_PAUSE);
-			CVFD::getInstance()->showAudioTrack(m_playlist[m_current].MetaData.artist, m_playlist[m_current].MetaData.title, m_playlist[m_current].MetaData.album, m_current + 1);				
+			CLCD::getInstance()->showAudioPlayMode(CLCD::AUDIO_MODE_PAUSE);
+			CLCD::getInstance()->showAudioTrack(m_playlist[m_current].MetaData.artist, m_playlist[m_current].MetaData.title, m_playlist[m_current].MetaData.album, m_current + 1);				
 			break;
 			
 		case CAudioPlayerGui::FF:
-			CVFD::getInstance()->showAudioPlayMode(CVFD::AUDIO_MODE_FF);
-			CVFD::getInstance()->showAudioTrack(m_playlist[m_current].MetaData.artist, m_playlist[m_current].MetaData.title, m_playlist[m_current].MetaData.album, m_current + 1);				
+			CLCD::getInstance()->showAudioPlayMode(CLCD::AUDIO_MODE_FF);
+			CLCD::getInstance()->showAudioTrack(m_playlist[m_current].MetaData.artist, m_playlist[m_current].MetaData.title, m_playlist[m_current].MetaData.album, m_current + 1);				
 			break;
 			
 		case CAudioPlayerGui::REV:
-			CVFD::getInstance()->showAudioPlayMode(CVFD::AUDIO_MODE_REV);
-			CVFD::getInstance()->showAudioTrack(m_playlist[m_current].MetaData.artist, m_playlist[m_current].MetaData.title, m_playlist[m_current].MetaData.album, m_current + 1);			
+			CLCD::getInstance()->showAudioPlayMode(CLCD::AUDIO_MODE_REV);
+			CLCD::getInstance()->showAudioTrack(m_playlist[m_current].MetaData.artist, m_playlist[m_current].MetaData.title, m_playlist[m_current].MetaData.album, m_current + 1);			
 			break;
 	}
 

@@ -1015,7 +1015,7 @@ int CMovieBrowser::exec(int timeout)
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
 
-	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8, __("Movie Browser"));
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, __("Movie Browser"));
 	
 	// load settings
 	loadSettings(&m_settings);
@@ -1144,7 +1144,7 @@ int CMovieBrowser::paint(void)
 {
 	dprintf(DEBUG_NORMAL, "CMovieBrowser::Paint\r\n");
 
-	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8, __("Movie Browser"));
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, __("Movie Browser"));
 	
 	headers = new CCHeaders(&m_cBoxFrameTitleRel);
 
@@ -1218,16 +1218,9 @@ void CMovieBrowser::refreshLCD(void)
 	if(m_vMovieInfo.size() <= 0) 
 		return;
 
-	//CVFD * lcd = CVFD::getInstance();
-	if(m_movieSelectionHandler == NULL)
+	if(m_movieSelectionHandler != NULL)
 	{
-		// There is no selected element, clear LCD
-		//lcd->showMenuText(0, " ", -1, true); // UTF-8
-		//lcd->showMenuText(1, " ", -1, true); // UTF-8
-	}
-	else
-	{
-		CVFD::getInstance()->showMenuText(0, m_movieSelectionHandler->epgTitle.c_str(), -1, true); // UTF-8
+		CLCD::getInstance()->showMenuText(0, m_movieSelectionHandler->epgTitle.c_str(), -1, true); // UTF-8
 	} 	
 }
 

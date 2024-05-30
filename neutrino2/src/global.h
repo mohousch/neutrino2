@@ -41,7 +41,7 @@
 
 //#if ENABLE_LCD
 #include <driver/lcd/lcdd.h>
-#define CVFD CLCD
+//#define CVFD CLCD
 //#else
 //#if defined (PLATFORM_COOLSTREAM)
 //#include <cs_vfd.h>

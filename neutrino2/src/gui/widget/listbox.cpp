@@ -549,7 +549,7 @@ int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
 		char str[256];
 		snprintf(str, 255, "%s %s", l_name, l_option.c_str());
 
-		CVFD::getInstance()->showMenuText(0, str, -1, true);
+		CLCD::getInstance()->showMenuText(0, str, -1, true);
 	}
 
 	return y + height;
@@ -691,7 +691,7 @@ int CMenuOptionNumberChooser::paint(bool selected, bool /*AfterPulldown*/)
 		char str[256];
 		snprintf(str, 255, "%s %s", l_name, option_value);
 
-		CVFD::getInstance()->showMenuText(0, str, -1, true); 
+		CLCD::getInstance()->showMenuText(0, str, -1, true); 
 	}
 
 	return y + height;
@@ -950,7 +950,7 @@ int CMenuOptionStringChooser::paint( bool selected, bool afterPulldown)
 		char str[256];
 		snprintf(str, 255, "%s %s", l_name, optionValue);
 
-		CVFD::getInstance()->showMenuText(0, str, -1, true);
+		CLCD::getInstance()->showMenuText(0, str, -1, true);
 	}
 
 	return y + height;
@@ -1324,7 +1324,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 		// vfd
 		if (selected)
 		{
-			CVFD::getInstance()->showMenuText(0, l_text, -1, true);
+			CLCD::getInstance()->showMenuText(0, l_text, -1, true);
 		}
 
 		return 0;
@@ -1581,7 +1581,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 		// vfd
 		if (selected)
 		{
-			CVFD::getInstance()->showMenuText(0, l_text, -1, true);
+			CLCD::getInstance()->showMenuText(0, l_text, -1, true);
 		}
 		
 		return y + height;

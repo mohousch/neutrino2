@@ -125,7 +125,7 @@
 #include <gui/rc_setup.h>
 #include <gui/recording_setup.h>
 #include <gui/misc_setup.h>
-#include <gui/vfdcontroler.h>
+#include <gui/lcdcontroler.h>
 #include <gui/dvbsub_select.h>
 #include <gui/epg_menu.h>
 #include <gui/cec_setup.h>
@@ -1844,7 +1844,7 @@ int CNeutrinoApp::startAutoRecord(bool addTimer)
 		CNeutrinoApp::getInstance()->recordingstatus = 0;
 		autoshift = 0;
 		
-		CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false );	
+		CLCD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false );	
 	}
 	else if (addTimer) 
 	{
@@ -1852,7 +1852,7 @@ int CNeutrinoApp::startAutoRecord(bool addTimer)
 		CNeutrinoApp::getInstance()->recording_id = CTimerd::getInstance()->addImmediateRecordTimerEvent(eventinfo.channel_id, now, now + g_settings.record_hours*60*60, eventinfo.epgID, eventinfo.epg_starttime, eventinfo.apids);
 	}	
 
-	CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, true);
+	CLCD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, true);
 
 	return 0;
 }
@@ -1881,7 +1881,7 @@ void CNeutrinoApp::stopAutoRecord()
 	
 	recordingstatus = 0;
 	
-	CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false);
+	CLCD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false);
 }
 
 // do gui-record
@@ -1956,7 +1956,7 @@ void CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 	}
 		
 	if (recordingstatus) 
-		CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, true);
+		CLCD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, true);
 }
 
 // startNextRecording
@@ -2018,7 +2018,7 @@ void CNeutrinoApp::startNextRecording()
 			CVCRControl::getInstance()->Directory = lrecDir;
 			dprintf(DEBUG_NORMAL, "CNeutrinoApp::startNextRecording: start to dir %s\n", lrecDir);
 
-			CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, true);
+			CLCD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, true);
 		}
 			
 		if(doRecord && CVCRControl::getInstance()->Record(nextRecordingInfo))
@@ -2211,7 +2211,7 @@ void CNeutrinoApp::audioMute( int newValue, bool isEvent )
 	}
 
 #if ENABLE_LCD
-	CVFD::getInstance()->setMuted(newValue);
+	CLCD::getInstance()->setMuted(newValue);
 #endif
 
 	current_muted = newValue;
@@ -2412,7 +2412,7 @@ void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint)
 		}
 
 #if ENABLE_LCD
-		CVFD::getInstance()->showVolume(g_settings.current_volume);
+		CLCD::getInstance()->showVolume(g_settings.current_volume);
 #endif
 
 		if (msg != CRCInput::RC_timeout) 
@@ -2471,12 +2471,12 @@ void CNeutrinoApp::tvMode( bool rezap )
 		lcdUpdateTimer = g_RCInput->addTimer( LCD_UPDATE_TIME_TV_MODE, false );
 #endif		
 
-		CVFD::getInstance()->ShowIcon(VFD_ICON_RADIO, false);
+		CLCD::getInstance()->ShowIcon(VFD_ICON_RADIO, false);
 
 		startSubtitles(!rezap);
 	}
 
-	CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
+	CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
 
         if( mode == mode_tv ) 
 	{
@@ -2489,7 +2489,7 @@ void CNeutrinoApp::tvMode( bool rezap )
 	}
 	else if( mode == mode_standby ) 
 	{
-		CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
+		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
 		
 		// set video standby		
 		if(videoDecoder)
@@ -2531,7 +2531,7 @@ void CNeutrinoApp::radioMode( bool rezap)
 		stopSubtitles();
 	}
 
-	CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
+	CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
 
 	if( mode == mode_radio ) 
 	{
@@ -2544,7 +2544,7 @@ void CNeutrinoApp::radioMode( bool rezap)
 	}
 	else if( mode == mode_standby ) 
 	{	  
-		CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
+		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
 
 		// set video standby
 		if(videoDecoder)
@@ -2595,7 +2595,7 @@ void CNeutrinoApp::scartMode( bool bOnOff )
 		frameBuffer->paintBackground();
 		frameBuffer->blit();
 
-		CVFD::getInstance()->setMode(CVFD::MODE_SCART);
+		CLCD::getInstance()->setMode(CLCD::MODE_SCART);
 
 		lastMode = mode;
 		mode = mode_scart;
@@ -2665,7 +2665,7 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 		frameBuffer->blit();		
 		
 		// show time in vfd
-		CVFD::getInstance()->setMode(CVFD::MODE_STANDBY);
+		CLCD::getInstance()->setMode(CLCD::MODE_STANDBY);
 			  
 		if(videoDecoder)
 			videoDecoder->SetInput(STANDBY_ON);		
@@ -2717,7 +2717,7 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 		frameBuffer->setActive(true);
 
 		// vfd mode
-		CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
+		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
 			  
 		if(videoDecoder)
 			videoDecoder->SetInput(STANDBY_OFF);		
@@ -3187,7 +3187,7 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		if(retcode > RESTART)
 		{
 			// vfd mode shutdown
-			CVFD::getInstance()->setMode(CVFD::MODE_SHUTDOWN);
+			CLCD::getInstance()->setMode(CLCD::MODE_SHUTDOWN);
 			
 			frameBuffer->loadBackgroundPic("shutdown.jpg");
 			frameBuffer->blit();
@@ -3543,7 +3543,7 @@ _repeat:
 		if( mode == mode_standby ) 
 		{
 			//switch lcd off/on
-			CVFD::getInstance()->togglePower();
+			CLCD::getInstance()->togglePower();
 		}
 		else 
 		{
@@ -3626,7 +3626,7 @@ _repeat:
 
 			if ( recordingstatus == 0 ) 
 			{
-				CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false);
+				CLCD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false);
 			}
 		}
 		else if(nextRecordingInfo != NULL) 
@@ -3981,7 +3981,7 @@ _repeat:
 		}
 		else
 		{
-			CVFD::getInstance()->setMode(CVFD::MODE_SCART);
+			CLCD::getInstance()->setMode(CLCD::MODE_SCART);
 		}
 	}	
 	else if( msg == NeutrinoMessages::VCR_OFF ) 
@@ -4289,7 +4289,7 @@ void CNeutrinoApp::realRun(void)
 							
 						recordingstatus = 0;
 						timeshiftstatus = 0;
-						CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false );
+						CLCD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false );
 						
 						//
 						if (playback->playing)
@@ -4552,7 +4552,7 @@ void CNeutrinoApp::realRun(void)
 				bool show_info = ((msg != NeutrinoMessages::SHOW_INFOBAR) || (g_InfoViewer->is_visible || g_settings.timing_infobar != 0));
 					
 				// turn on LCD display
-				CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
+				CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
 					
 				if(show_info) 
 				{
@@ -4578,7 +4578,7 @@ void CNeutrinoApp::realRun(void)
 					if(g_InfoViewer->is_visible)
 						g_InfoViewer->killTitle();
 
-  					CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
+  					CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
 				}
 
 				//
@@ -4661,15 +4661,13 @@ int CNeutrinoApp::run(int argc, char **argv)
 	colorSetupNotifier->changeNotify("", NULL);
 
 	// init vfd/lcd display
-//#if ENABLE_LCD
-	CVFD::getInstance()->init(font.filename, font.name);
-//#else	
-//	CVFD::getInstance()->init();
-//#endif	
+	CLCD::getInstance()->init(font.filename, font.name);
+	
 	// VFD clear	
-	CVFD::getInstance()->Clear();	
+	CLCD::getInstance()->Clear();
+		
 	// show startup msg in vfd
-	CVFD::getInstance()->ShowText( (char *)"NG2");
+	CLCD::getInstance()->ShowText( (char *)"NG2");
 
 	// rcinput
 	g_RCInput = new CRCInput();
@@ -4761,8 +4759,8 @@ int CNeutrinoApp::run(int argc, char **argv)
 
 	// for boxes with lcd :-)
 #if ENABLE_LCD	
-	CVFD::getInstance()->showVolume(g_settings.current_volume);
-	CVFD::getInstance()->setMuted(current_muted);
+	CLCD::getInstance()->showVolume(g_settings.current_volume);
+	CLCD::getInstance()->setMuted(current_muted);
 #endif
 	
 	// remote control
@@ -4805,8 +4803,8 @@ int CNeutrinoApp::run(int argc, char **argv)
 	rcLock = new CRCLock();
 
 	// LCD
-	CVFD::getInstance()->setPower(g_settings.lcd_power);
-	CVFD::getInstance()->setlcdparameter();
+	CLCD::getInstance()->setPower(g_settings.lcd_power);
+	CLCD::getInstance()->setlcdparameter();
 	
 	// start assistant
 	if(loadSettingsErg) 

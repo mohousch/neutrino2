@@ -577,7 +577,7 @@ void CMenuWidget::paint()
 {
 	dprintf(DEBUG_INFO, "CMenuWidget::paint: (%s)\n", l_name.c_str());
 
-	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8 );
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8 );
 	
 	//
 	paintHead();
@@ -1872,7 +1872,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 	// vfd
 	if(!parent)
 	{
-		CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
+		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
 	}
 
 	// init items

@@ -35,7 +35,7 @@
 
 #include <gui/widget/stringinput.h>
 
-#include <gui/vfdcontroler.h>
+#include <gui/lcdcontroler.h>
 #include <gui/lcd_setup.h>
 
 #include <system/debug.h>
@@ -166,7 +166,7 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	CLcdNotifier * lcdnotifier = new CLcdNotifier();
-	CVfdControler * lcdsliders = new CVfdControler(_("Display settings"), NULL);
+	CLCDControler * lcdsliders = new CLCDControler(_("Display settings"), NULL);
 	
 	// LCD
 #if defined (ENABLE_LCD)
@@ -243,7 +243,7 @@ bool CLcdNotifier::changeNotify(const std::string&, void * Data)
 
 	dprintf(DEBUG_NORMAL, "ClcdNotifier: state: %d\n", state);
 		
-	CVFD::getInstance()->setPower(state);	
+	CLCD::getInstance()->setPower(state);	
 
 	return true;
 }

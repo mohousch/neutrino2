@@ -260,7 +260,7 @@ void CMoviePlayerGui::updateLcd(const std::string & lcd_filename)
 			break;
 	}
 	
-	CVFD::getInstance()->showMenuText(0, lcd.c_str(), -1, true);	
+	CLCD::getInstance()->showMenuText(0, lcd.c_str(), -1, true);	
 }
 
 void CMoviePlayerGui::addToPlaylist(MI_MOVIE_INFO& mfile)
@@ -467,7 +467,7 @@ int CMoviePlayerGui::exec(CMenuTarget * parent, const std::string & actionKey)
 	currentspid = -1;
 	
 	//
-	CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
+	CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
 
 	return CMenuTarget::RETURN_EXIT;
 }
@@ -504,7 +504,7 @@ void CMoviePlayerGui::play(unsigned int pos)
 		// set PlayState
 		playstate = CMoviePlayerGui::PLAY;
 
-		CVFD::getInstance()->ShowIcon(VFD_ICON_PLAY, true);
+		CLCD::getInstance()->ShowIcon(VFD_ICON_PLAY, true);
 				
 		// get position / duration
 		playback->GetPosition(position, duration);
@@ -673,7 +673,7 @@ void CMoviePlayerGui::PlayFile(void)
 			show_bookmark = false;
 	}
 						
-	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8);	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8);	
 
 	// bookmarks menu
 	timeb current_time;
@@ -918,8 +918,8 @@ void CMoviePlayerGui::PlayFile(void)
 				{
 					playstate = CMoviePlayerGui::PLAY;
 					update_lcd = true;
-					CVFD::getInstance()->ShowIcon(VFD_ICON_PLAY, true);
-					CVFD::getInstance()->ShowIcon(VFD_ICON_PAUSE, false);
+					CLCD::getInstance()->ShowIcon(VFD_ICON_PLAY, true);
+					CLCD::getInstance()->ShowIcon(VFD_ICON_PAUSE, false);
 					
 					speed = 1;
 					playback->SetSpeed(speed);
@@ -947,17 +947,17 @@ void CMoviePlayerGui::PlayFile(void)
 				if (playstate == CMoviePlayerGui::PAUSE) 
 				{
 					playstate = CMoviePlayerGui::PLAY;
-					CVFD::getInstance()->ShowIcon(VFD_ICON_PAUSE, false);
+					CLCD::getInstance()->ShowIcon(VFD_ICON_PAUSE, false);
 					// show play icon
-					CVFD::getInstance()->ShowIcon(VFD_ICON_PLAY, true);
+					CLCD::getInstance()->ShowIcon(VFD_ICON_PLAY, true);
 					speed = 1;
 					playback->SetSpeed(speed);
 				} 
 				else 
 				{
 					playstate = CMoviePlayerGui::PAUSE;
-					CVFD::getInstance()->ShowIcon(VFD_ICON_PAUSE, true);
-					CVFD::getInstance()->ShowIcon(VFD_ICON_PLAY, false);
+					CLCD::getInstance()->ShowIcon(VFD_ICON_PAUSE, true);
+					CLCD::getInstance()->ShowIcon(VFD_ICON_PLAY, false);
 					speed = 0;
 					playback->SetSpeed(speed);
 				}
@@ -1175,8 +1175,8 @@ void CMoviePlayerGui::PlayFile(void)
 					speed = -15;			
 				
 				// hide icons
-				CVFD::getInstance()->ShowIcon(VFD_ICON_PLAY, false);
-				CVFD::getInstance()->ShowIcon(VFD_ICON_PAUSE, false);
+				CLCD::getInstance()->ShowIcon(VFD_ICON_PLAY, false);
+				CLCD::getInstance()->ShowIcon(VFD_ICON_PAUSE, false);
 
 				playback->SetSpeed(speed);
 				playstate = CMoviePlayerGui::REW;
@@ -1210,8 +1210,8 @@ void CMoviePlayerGui::PlayFile(void)
 					speed = 15;			
 				
 				// icons
-				CVFD::getInstance()->ShowIcon(VFD_ICON_PLAY, false);
-				CVFD::getInstance()->ShowIcon(VFD_ICON_PAUSE, false);
+				CLCD::getInstance()->ShowIcon(VFD_ICON_PLAY, false);
+				CLCD::getInstance()->ShowIcon(VFD_ICON_PAUSE, false);
 
 				playback->SetSpeed(speed);
 
@@ -1620,7 +1620,7 @@ void CMoviePlayerGui::PlayFile(void)
 				exit = true;
 			else if ( msg <= CRCInput::RC_MaxRC ) 
 			{
-				CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8);
+				CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8);
 	
 				update_lcd = true;
 			}
@@ -1654,8 +1654,8 @@ void CMoviePlayerGui::PlayFile(void)
 	
 	playback->Close();
 
-	CVFD::getInstance()->ShowIcon(VFD_ICON_PLAY, false);
-	CVFD::getInstance()->ShowIcon(VFD_ICON_PAUSE, false);
+	CLCD::getInstance()->ShowIcon(VFD_ICON_PLAY, false);
+	CLCD::getInstance()->ShowIcon(VFD_ICON_PAUSE, false);
 }
 
 void CMoviePlayerGui::showHelp()

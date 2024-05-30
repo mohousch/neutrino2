@@ -262,7 +262,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		{
 			//CURRENT-EPG for current channel arrived!;
 #if defined (ENABLE_LCD)
-			CVFD::getInstance()->setEPGTitle(info_CN.current_name);
+			CLCD::getInstance()->setEPGTitle(info_CN.current_name);
 #endif			
 			
 			if (info_CN.current_uniqueKey != current_EPGid)
@@ -685,7 +685,7 @@ void CRemoteControl::setAPID( uint32_t APID )
 	CZapit::getInstance()->setAudioChannel( APID );
 	
 	// needed for auto audio select
-	CVFD::getInstance()->ShowIcon(VFD_ICON_DOLBY, current_PIDs.APIDs[current_PIDs.PIDs.selected_apid].is_ac3? true : false);
+	CLCD::getInstance()->ShowIcon(VFD_ICON_DOLBY, current_PIDs.APIDs[current_PIDs.PIDs.selected_apid].is_ac3? true : false);
 }
 
 static const std::string empty_string;
@@ -844,8 +844,8 @@ void CRemoteControl::radioMode()
 	
 	CZapit::getInstance()->setMode( CZapit::MODE_RADIO );
 	
-	CVFD::getInstance()->ShowIcon(VFD_ICON_RADIO, true);
-	CVFD::getInstance()->ShowIcon(VFD_ICON_TV, false);
+	CLCD::getInstance()->ShowIcon(VFD_ICON_RADIO, true);
+	CLCD::getInstance()->ShowIcon(VFD_ICON_TV, false);
 }
 
 void CRemoteControl::tvMode()
@@ -854,7 +854,7 @@ void CRemoteControl::tvMode()
 	
 	CZapit::getInstance()->setMode( CZapit::MODE_TV );
 	
-	CVFD::getInstance()->ShowIcon(VFD_ICON_RADIO, false);
-	CVFD::getInstance()->ShowIcon(VFD_ICON_TV, true);
+	CLCD::getInstance()->ShowIcon(VFD_ICON_RADIO, false);
+	CLCD::getInstance()->ShowIcon(VFD_ICON_TV, true);
 }
 

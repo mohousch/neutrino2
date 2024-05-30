@@ -138,7 +138,7 @@ void CMainSettingsMenu::showMenu(void)
 	mainSettings->addItem(new CMenuForwarder(_("Movieplayer settings"), true, NULL, new CMoviePlayerSettings(), NULL, CRCInput::RC_nokey, NULL,  NEUTRINO_ICON_MENUITEM_MOVIEPLAYERSETTINGS));
 
 	// vfd/lcd settings
-	if (CVFD::getInstance()->has_lcd)
+	if (CLCD::getInstance()->has_lcd)
 		mainSettings->addItem(new CMenuForwarder(_("Display settings"), true, NULL, new CLCDSettings(), NULL, CRCInput::RC_nokey, NULL,  NEUTRINO_ICON_MENUITEM_LCDSETTINGS));	
 
 	// remote control settings

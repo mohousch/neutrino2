@@ -104,7 +104,7 @@
 #include <gui/cam_menu.h>
 #include <gui/hdd_menu.h>
 #include <gui/rc_lock.h>
-#include <gui/vfdcontroler.h>
+#include <gui/lcdcontroler.h>
 
 //gui/setup
 #include <gui/scan_setup.h>
@@ -239,7 +239,7 @@
 //%include <src/gui/cam_menu.h>
 %include <src/gui/hdd_menu.h>
 %include <src/gui/rc_lock.h>
-%include <src/gui/vfdcontroler.h>
+%include <src/gui/lcdcontroler.h>
 %include <src/gui/movieinfo.h>
 
 //gui/setup

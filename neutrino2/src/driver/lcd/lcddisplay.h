@@ -26,7 +26,7 @@
 #define __lcddisplay__
 
 #include <string>
-#include <stdint.h> /* uint8_t */
+#include <stdint.h>
 
 
 #define LCD_PIXEL_OFF		0x00

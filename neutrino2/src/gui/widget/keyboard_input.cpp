@@ -498,7 +498,7 @@ int CKeyboardInput::exec(CMenuTarget* parent, const std::string&)
 		if (changed)
 		{
 			changed = false;
-			CVFD::getInstance()->showMenuText(1, inputString->c_str(), selected + 1);
+			CLCD::getInstance()->showMenuText(1, inputString->c_str(), selected + 1);
 		}
 		
 		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd, true);

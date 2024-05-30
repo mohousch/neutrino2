@@ -154,7 +154,7 @@ void CPictureViewerGui::show()
 	neutrino_msg_t msg;
 	neutrino_msg_data_t data;
 
-	CVFD::getInstance()->setMode(CVFD::MODE_PIC, _("Pictureviewer"));
+	CLCD::getInstance()->setMode(CLCD::MODE_PIC, _("Pictureviewer"));
 
 	int timeout;
 
@@ -302,9 +302,9 @@ void CPictureViewerGui::view(unsigned int index)
 	selected = index;
 	
 #if ENABLE_LCD
-	CVFD::getInstance()->showMenuText(0, playlist[index].Name.c_str());
+	CLCD::getInstance()->showMenuText(0, playlist[index].Name.c_str());
 #else	
-	CVFD::getInstance()->showMenuText(selected + 1, playlist[index].Name.c_str());
+	CLCD::getInstance()->showMenuText(selected + 1, playlist[index].Name.c_str());
 #endif
 	
 	g_PicViewer->showImage(playlist[index].Filename);

@@ -139,7 +139,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
         CZapit::getInstance()->stopPlayBack();
 	CSectionsd::getInstance()->pauseScanning(true);
 
-	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8);
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8);
 
 	// refill satlist and set feparams for manuel scan
 	satList.clear();
@@ -405,7 +405,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		CNeutrinoApp::getInstance()->channelList->zapToChannelID(CNeutrinoApp::getInstance()->channelList->getActiveChannel_ChannelID(), true);
 	}
 	
-	CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
+	CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
 
 	return CMenuTarget::RETURN_REPAINT;
 }
@@ -429,7 +429,7 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 			total = data;
 	
 			snprintf(str, 255, "scan: %d/%d", done, total);
-			CVFD::getInstance()->showMenuText(0, str, -1, true);		
+			CLCD::getInstance()->showMenuText(0, str, -1, true);		
 			break;
 			
 		case NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS:
@@ -439,7 +439,7 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 			paintLine(xpos2, ypos_transponder, w - 100, buffer);
 	
 			snprintf(str, 255, "scan %d/%d", done, total);
-			CVFD::getInstance()->showMenuText(0, str, -1, true);		
+			CLCD::getInstance()->showMenuText(0, str, -1, true);		
 			break;
 
 		case NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCY:
