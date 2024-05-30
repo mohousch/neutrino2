@@ -43,11 +43,11 @@
 
 #include <driver/lcd/lcddisplay.h>
 #include <driver/lcd/fontrenderer.h>
-#include <driver/lcd/vfd.h>
 
 
 #define LCDDIR_VAR CONFIGDIR "/lcdd"
 
+#if !defined (__sh__)
 typedef enum
 {
 	VFD_ICON_BAR8       = 0x00000004,
@@ -83,6 +83,9 @@ typedef enum
 	VFD_ICON_CAM2       = 0x0C000001,
 	VFD_ICON_LOCK,
 } vfd_icon;
+#else
+#include <driver/lcd/vfd.h>
+#endif
 
 class LcdFontRenderClass;
 
@@ -115,7 +118,6 @@ class CLCD
 			AUDIO_MODE_REV
 		};
 
-		////
 		enum LEDS
 		{
 			LED_OFF,
@@ -129,7 +131,6 @@ class CLCD
 			EPGMODE_CHANNELNUMBER,
 			EPGMODE_TIME
 		};
-		////
 
 	private:
 		class FontsDef
@@ -209,7 +210,7 @@ class CLCD
 		void setMovieInfo(const AUDIOMODES playmode, const std::string big, const std::string small, const bool centered = false);
 		void setMovieAudio(const bool is_ac3);
 		std::string getMenutitle() { return menutitle; };
-		void showTime();
+		void showTime(bool force = true);
 		void showRCLock(int duration = 2);
 		void showVolume(const char vol, const bool perform_update = true);
 		void showPercentOver(const unsigned char perc, const bool perform_update = true, const MODES m = MODE_TVRADIO);
@@ -254,6 +255,11 @@ class CLCD
 #if defined (__sh__)
 		void openDevice();
 		void closeDevice();
+		
+		void ClearIcons();
+#if defined(PLATFORM_SPARK7162)
+		void ShowDiskLevel();
+#endif
 #endif
 		
 	private:

@@ -211,7 +211,6 @@ enum {
 };
 
 // neutrino common
-/*
 typedef enum
 {
 	VFD_ICON_MUTE		= ICON_MUTE,
@@ -232,7 +231,6 @@ typedef enum
 	VFD_ICON_PAUSE		= ICON_PAUSE,
 	VFD_ICON_LOCK 		= ICON_SCRAMBLED
 } vfd_icon;
-*/
 #endif  //common
 
 #if defined (__sh__)
@@ -390,129 +388,5 @@ struct vfd_ioctl_data
 };
 #endif
 
-#if 0
-class CVFD
-{
-	public:
-		/*
-		enum MODES
-		{
-			MODE_TVRADIO,
-			MODE_SCART,
-			MODE_SHUTDOWN,
-			MODE_STANDBY,
-			MODE_MENU_UTF8,
-			MODE_AUDIO,
-			MODE_MOVIE,
-			MODE_PIC
-		};
-
-		enum AUDIOMODES
-		{
-			AUDIO_MODE_PLAY,
-			AUDIO_MODE_STOP,
-			AUDIO_MODE_FF,
-			AUDIO_MODE_PAUSE,
-			AUDIO_MODE_REV
-		};
-		*/
-
-		//0:off, 1:blue, 2:red, 3:purple (gigablue power button)
-		/*
-		enum LEDS
-		{
-			LED_OFF,
-			LED_BLUE,
-			LED_RED,
-			LED_PURPLE
-		};
-		
-		enum EPGMODE
-		{
-			EPGMODE_CHANNELNUMBER,
-			EPGMODE_TIME
-		};
-		*/
-
-	private:
-//		MODES			mode;
-
-//		std::string		servicename;
-//		int			serviceNum;
-//		char			volume;
-//		unsigned char		percentOver;
-//		bool			muted;
-//		bool			showclock;
-//		pthread_t		thrTime;
-//		int                     last_toggle_state_power;
-//		bool			clearClock;
-//		unsigned int            timeout_cnt;
-		int fd;
-//		int paused;
-		bool available;
-//		unsigned char brightness;
-//		char text[256];
-
-//		void wake_up();
-//		void count_down();
-
-//		CVFD();
-
-//		static void * TimeThread(void*);
-//		void setlcdparameter(int dimm, int power);
-
-	public:
-		CVFD();
-		~CVFD();
-//		bool has_lcd;	
-		bool is4digits;
-//		bool istftlcd;
-		
-//		void setlcdparameter(void);
-
-//		static CVFD * getInstance();
-//		void init();
-//		void setMode(const MODES m, const char * const title = "");
-//		void showServicename(const std::string& name, const bool perform_wakeup = true, int pos = 0); // UTF-8
-//		void showTime(bool force = false);
-//		void showRCLock(int duration = 2);		
-//		void showMenuText(const int position, const char * text, const int highlight = -1, const bool utf_encoded = false);
-//		void showAudioTrack(const std::string& artist, const std::string& title, const std::string& album, int pos);
-//		void showAudioPlayMode(AUDIOMODES m = AUDIO_MODE_PLAY);
-//		void setBrightness(int);
-//		int getBrightness();
-//		void setBrightnessStandby(int);
-//		int getBrightnessStandby();
-//		void setPower(int);
-//		int getPower();
-//		void togglePower(void);
-//		void setMuted(bool);
-
-		void resume();
-		void pause();
-		
-//		void Lock();
-//		void Unlock();
-//		void Clear();
-//		void ClearIcons();
-#if defined(PLATFORM_SPARK7162)
-//		void ShowDiskLevel();
-#endif		
-//		void ShowIcon(vfd_icon icon, bool show);		
-//		void ShowText(const char * str);
-		
-//		void setFan(bool enable);
-//		void setFPTime(void);
-		
-		// venton
-//		void vfd_symbol_network(int net);
-//		void vfd_symbol_circle(int cir);
-		
-#if defined (__sh__)
-		void openDevice();
-		void closeDevice();
-#endif
-};
-#endif
 #endif
 

@@ -41,6 +41,7 @@
 
 #include <fcntl.h>
 #include <time.h>
+#include <sys/timeb.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -90,6 +91,71 @@ void CLCD::closeDevice()
 	
 	fd = -1;
 }
+
+void CVFD::ClearIcons()				/* switcht all VFD Icons off		*/
+{
+	if(!has_lcd || is4digits) 
+		return;
+	
+#if defined(PLATFORM_SPARK7162)		/* using one command for switching off all Icons*/	 
+	openDevice();
+	aotom_data.u.icon.icon_nr = SPARK_ICON_ALL;
+	aotom_data.u.icon.on = 0;
+	if (ioctl(fd, VFDICONDISPLAYONOFF, &aotom_data) <0)
+		perror("VFDICONDISPLAYONOFF");
+	closeDevice();
+#else
+	int i;
+	struct vfd_ioctl_data data;
+	
+	openDevice();
+	
+	for(i = 0; i <= 15; i++)
+	{
+		data.data[0] = i;
+		data.data[4] = 0;
+		
+		if( ioctl(fd, VFDICONDISPLAYONOFF, &data) < 0)
+			perror("VFDICONDISPLAYONOFF");
+	}
+	
+	closeDevice();
+#endif
+}
+
+#if defined(PLATFORM_SPARK7162)			/* only for Spark7162 STB's which Display has a HDD Level indicator */	 
+void CVFD::ShowDiskLevel()
+{
+	int hdd_icons[9] = {24, 23, 21, 20, 19, 18, 17, 16, 22};
+	int percent, digits, i, j;
+	uint64_t t, u;
+	
+	if (get_fs_usage(g_settings.network_nfs_recordingdir, t, u))
+	{
+		ShowIcon(SPARK_HDD, true);
+		percent = (u * 1000ULL) / t + 60; 
+		digits = percent / 125;
+		if (percent > 1050)
+			digits = 9;
+		
+		//printf("HDD Fuell = %d Digits = %d\n", percent, digits);
+		
+		if (digits > 0)
+		{
+			for (i = 0; i < digits; i++)
+				ShowIcon((vfd_icon)hdd_icons[i], true);
+						
+			for (j = i; j < 9; j++)
+				ShowIcon((vfd_icon)hdd_icons[j], false);
+		}
+	}
+	else
+	{
+		ShowIcon(SPARK_HDD, false);
+
+	}
+}
+#endif
 #endif
 
 CLCD::CLCD()
@@ -192,12 +258,14 @@ void CLCD::init(const char * fontfile, const char * fontname, const char * fontf
 {
 	dprintf(DEBUG_NORMAL, "CLCD::init\n");
 	
-	// init
+	// init lcd 
 	if (!lcdInit(fontfile, fontname, fontfile2, fontname2, fontfile3, fontname3 ))
 	{
 		dprintf(DEBUG_NORMAL, "CLCD::init: LCD-Init failed!\n");
 		has_lcd = false;
 	}
+	
+	// TODO: add externel lcd
 
 	// create time thread
 	if (pthread_create (&thrTime, NULL, TimeThread, NULL) != 0 )
@@ -639,7 +707,18 @@ void CLCD::showServicename(const std::string name, const bool perform_wakeup, in
 		if( write(fd, name.c_str(), name.length() > 5? 5 : name.length() ) < 0)
 			perror("write to vfd failed");
 	}
-#else
+#endif
+
+#if defined (__sh__)	 
+	openDevice();
+	
+	if(write(fd , text.c_str(), len > 16? 16 : len ) < 0)
+		perror("write to vfd failed");
+	
+	closeDevice();	
+#endif
+
+#ifdef ENABLE_LCD
 	showTextScreen(servicename, epg_title, showmode, perform_wakeup, true);
 #endif
 	
@@ -685,7 +764,7 @@ void CLCD::setMovieAudio(const bool is_ac3)
 	showPercentOver(percentOver, true, MODE_MOVIE);
 }
 
-void CLCD::showTime()
+void CLCD::showTime(bool force)
 {
 	if(!has_lcd) 
 		return;
@@ -726,6 +805,47 @@ void CLCD::showTime()
 		}
 		
 		displayUpdate();
+	}
+#else
+	if (showclock) 
+	{
+		char timestr[21];
+		struct timeb tm;
+		struct tm * t;
+		static int hour = 0, minute = 0;
+
+		ftime(&tm);
+		t = localtime(&tm.time);
+
+		if(force || ((hour != t->tm_hour) || (minute != t->tm_min))) 
+		{
+			hour = t->tm_hour;
+			minute = t->tm_min;
+				
+#if defined (PLATFORM_KATHREIN)	// time and date at kathrein because 16 character vfd
+			strftime(timestr, 20, "%H:%M - %d.%m.%y", t);
+#elif !defined(PLATFORM_SPARK7162) && !defined (PLATFORM_KATHREIN) // no time at spark7162 because clock integrated
+ 			strftime(timestr, 20, "%H:%M", t);
+#endif				
+			ShowText(timestr);
+		}
+	}
+
+	if (CNeutrinoApp::getInstance()->recordingstatus) 
+	{
+		if(clearClock) 
+		{
+			clearClock = 0;
+		} 
+		else 
+		{
+			clearClock = 1;
+		}
+	} 
+	else if(clearClock) 
+	{ 
+		// in case icon ON after record stopped
+		clearClock = 0;
 	}
 #endif
 }
@@ -1270,6 +1390,101 @@ void CLCD::setMode(const MODES m, const char * const title)
 #endif
 
 #ifdef __sh__
+	if(strlen(title))
+		ShowText((char *)title);
+		
+	switch (m) 
+	{
+		case MODE_TVRADIO:
+			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)	
+				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
+			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
+				showTime(true);
+			
+#if !defined(PLATFORM_SPARK7162)			
+			ShowIcon(VFD_ICON_MP3, false);	        // NOTE: @dbo  //ICON_MP3 and ICON_DOLBY switched in infoviewer 
+#endif			
+	
+#if defined (PLATFORM_KATHREIN)
+			ShowIcon(VFD_ICON_USB, usb_icon);	
+			ShowIcon(VFD_ICON_HDD, hdd_icon);	
+#elif defined(PLATFORM_SPARK7162)
+			ShowIcon(VFD_ICON_USB, usb_icon);	
+			ShowDiskLevel();
+			ShowIcon(VFD_ICON_STANDBY, false);	
+#endif
+			showclock = true;
+			break;
+
+		case MODE_AUDIO:
+		{
+#if defined(PLATFORM_SPARK7162)
+			ShowIcon(VFD_ICON_AC3, false);			
+#endif		  
+			ShowIcon(VFD_ICON_MP3, true);			
+			ShowIcon(VFD_ICON_TV, false);			
+			showAudioPlayMode(AUDIO_MODE_STOP);			
+			showclock = true;			
+			ShowIcon(VFD_ICON_LOCK, false);			
+			ShowIcon(VFD_ICON_HD, false);
+			ShowIcon(VFD_ICON_DOLBY, false);
+			//showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
+			break;
+		}
+
+		case MODE_SCART:	  
+			ShowIcon(VFD_ICON_TV, false);	
+			showclock = true;
+			//showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
+			break;
+
+		case MODE_MENU_UTF8:
+			ShowIcon(VFD_ICON_TV, false);			
+			ShowIcon(VFD_ICON_HD, false);
+			ShowIcon(VFD_ICON_DOLBY, false);
+			showclock = true;
+			break;
+
+		case MODE_SHUTDOWN:
+			//Clear();
+			/* clear all symbols */
+			ClearIcons();
+#if defined(PLATFORM_SPARK7162)
+			ShowIcon(VFD_ICON_CLOCK, timer_icon);	
+#endif			
+			showclock = false;
+			
+			//
+			ShowText((char *) "BYE");
+			
+			break;
+
+		case MODE_STANDBY:
+			ShowIcon(VFD_ICON_TV, false);
+			ClearIcons();
+#if defined(PLATFORM_SPARK7162)
+			ShowIcon(VFD_ICON_STANDBY, true);	
+#endif
+							
+			showclock = true;
+			showTime(true);      	/* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
+						/* "showTime()" clears the whole lcd in MODE_STANDBY */
+			break;
+		
+		case MODE_PIC:	  
+			ShowIcon(VFD_ICON_TV, false);			
+			ShowIcon(VFD_ICON_HD, false);
+			ShowIcon(VFD_ICON_DOLBY, false);
+			
+			showclock = true;
+			break;
+			
+		case MODE_MOVIE:  
+			ShowIcon(VFD_ICON_TV, false);			
+			showclock = true;
+			break;
+	}
+
 #endif
 	
 	wake_up();
@@ -1401,7 +1616,7 @@ void CLCD::pause()
 
 void CLCD::ShowIcon(vfd_icon icon, bool show)
 {
-	#if defined (__sh__)
+#if defined (__sh__)
 #if defined (PLATFORM_KATHREIN) || defined(PLATFORM_SPARK7162)
 	switch (icon)
 	{
