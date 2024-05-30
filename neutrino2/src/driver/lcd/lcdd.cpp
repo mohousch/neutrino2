@@ -92,9 +92,9 @@ void CLCD::closeDevice()
 	fd = -1;
 }
 
-void CVFD::ClearIcons()				/* switcht all VFD Icons off		*/
+void CLCD::ClearIcons()				/* switcht all VFD Icons off		*/
 {
-	if(!has_lcd || is4digits) 
+	if(!has_lcd) 
 		return;
 	
 #if defined(PLATFORM_SPARK7162)		/* using one command for switching off all Icons*/	 
@@ -124,7 +124,7 @@ void CVFD::ClearIcons()				/* switcht all VFD Icons off		*/
 }
 
 #if defined(PLATFORM_SPARK7162)			/* only for Spark7162 STB's which Display has a HDD Level indicator */	 
-void CVFD::ShowDiskLevel()
+void CLCD::ShowDiskLevel()
 {
 	int hdd_icons[9] = {24, 23, 21, 20, 19, 18, 17, 16, 22};
 	int percent, digits, i, j;
@@ -180,11 +180,10 @@ CLCD::CLCD()
 	is4digits = false;
 	istftlcd = false;
 	clearClock = 0;
+	fd = -1;
 	
 #if defined (ENABLE_4DIGITS)
 	is4digits = true;
-	
-	fd = -1;
 #endif
 }
 
