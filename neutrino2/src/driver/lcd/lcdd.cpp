@@ -49,7 +49,51 @@
 #include <daemonc/remotecontrol.h>
 
 
-extern CRemoteControl * g_RemoteControl; /* neutrino.cpp */
+extern CRemoteControl * g_RemoteControl;
+
+#if defined (__sh__)
+#if defined (PLATFORM_SPARK7162)
+static struct aotom_ioctl_data aotom_data;
+#endif
+
+#if defined (PLATFORM_KATHREIN) || defined (PLATFORM_SPARK7162)
+static bool usb_icon = false;
+static bool timer_icon = false;
+static bool hdd_icon = false;
+#endif
+
+//konfetti: let us share the device with evremote and fp_control
+//it does currently not support more than one user (see e.g. micom)
+bool blocked = false;
+
+void CVFD::openDevice()
+{ 
+        if (!blocked)
+	{
+		fd = open("/dev/vfd", O_RDWR);
+		if(fd < 0)
+		{
+			printf("failed to open vfd\n");
+			fd = open("/dev/fplarge", O_RDWR);
+			if (fd < 0)
+			    printf("failed to open fplarge\n");
+		}
+		else
+			blocked = true;
+	}
+}
+
+void CVFD::closeDevice()
+{ 
+	if (fd)
+	{
+		close(fd);
+		blocked = false;
+	}
+	
+	fd = -1;
+}
+#endif
 
 CLCD::CLCD()
 	: configfile('\t')
@@ -73,6 +117,14 @@ CLCD::CLCD()
 	is4digits = false;
 	istftlcd = false;
 	clearClock = 0;
+	
+#if defined (ENABLE_4DIGITS)
+	is4digits = true;
+#endif
+
+#ifdef __sh__
+	brightness = -1;
+#endif
 }
 
 CLCD::~CLCD()
@@ -140,19 +192,19 @@ void CLCD::init(const char * fontfile, const char * fontname, const char * fontf
 {
 	dprintf(DEBUG_NORMAL, "CLCD::init\n");
 	
+	// init
 	if (!lcdInit(fontfile, fontname, fontfile2, fontname2, fontfile3, fontname3 ))
 	{
 		dprintf(DEBUG_NORMAL, "CLCD::init: LCD-Init failed!\n");
 		has_lcd = false;
 	}
 
+	// create time thread
 	if (pthread_create (&thrTime, NULL, TimeThread, NULL) != 0 )
 	{
 		perror("CLCD::init: pthread_create(TimeThread)");
 		return ;
 	}
-	
-	dprintf(DEBUG_NORMAL, "CLCD::init: timeThread created\n");
 }
 
 enum elements {
@@ -183,6 +235,8 @@ const char * const background_path[NUMBER_OF_PATHS] = {
 
 bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fontfile2, const char * fontname2, const char * fontfile3, const char * fontname3)
 {
+#ifdef ENABLE_LCD 
+	// init fonts
 	fontRenderer = new LcdFontRenderClass(&display);
 	const char * style_name = fontRenderer->AddFont(fontfile);
 	const char * style_name2;
@@ -209,9 +263,12 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	fonts.time        = fontRenderer->getFont(fontname2, style_name2, 14);
 	fonts.channelname = fontRenderer->getFont(fontname3, style_name3, 15);
 	fonts.menutitle   = fonts.channelname;
+#endif
 
+	// set autodimm
 	setAutoDimm(g_settings.lcd_autodimm);
 
+	// check if we have display
 	if (!display.isAvailable())
 	{
 		dprintf(DEBUG_NORMAL, "CLCD::lcdInit: exit...(no lcd-support)\n");
@@ -221,13 +278,14 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	
 	has_lcd = true;
  
+#ifdef ENABLE_LCD
+ 	// init lcd_element struct
 	for (int i = 0; i < LCD_NUMBER_OF_ELEMENTS; i++)
 	{
 		bool bgfound = false;
-		//(element[i]) = new unsigned char[display.element_buffer_size];
-		//memset((element[i]), 0, display.element_buffer_size);
-		element[i].header.width = 0;
-		element[i].header.height = 0;
+		
+		element[i].width = 0;
+		element[i].height = 0;
 		element[i].buffer_size = 0;
 		element[i].buffer = NULL;
 
@@ -236,14 +294,16 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 			std::string file = background_path[j];
 			file += element_name[i];
 			file += ".png";
+			
 			bgfound = display.load_png_element(file.c_str(), &(element[i]));
+			
 			if (bgfound)
 				break;
 		}
-		//if (!bgfound)
-		//	printf("[neutrino/lcd] no valid %s element.\n", element_name[i]);
-	}	
+	}
+#endif	
 
+	// set mode tv/radio
 	setMode(MODE_TVRADIO);
 
 	return true;
@@ -252,12 +312,15 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 void CLCD::displayUpdate()
 {
 	struct stat buf;
+	
 	if (stat("/tmp/lcd.locked", &buf) == -1)
 	{
 		display.update();
 		
+#ifdef ENABLE_LCD
 		if (g_settings.lcd_dump_png)
 			display.dump_png("/tmp/lcdd.png");
+#endif
 	}
 }
 
@@ -265,26 +328,48 @@ void CLCD::setlcdparameter(int dimm, const int contrast, const int power, const 
 {
 	if(!has_lcd) 
 		return;
-	
-	if (!display.isAvailable())
-		return;
-	int fd;
+		
 	if (power == 0)
 		dimm = 0;
 	
+#ifdef ENABLE_LCD	
 	// dimm
 	display.setLCDBrightness(dimm);
 	
 	// contrast
 	display.setLCDContrast(contrast);
 	
-	// power ???
-	
 	//reverse
 	if (inverse)
 		display.setInverted(CLCDDisplay::PIXEL_ON);
 	else		
 		display.setInverted(CLCDDisplay::PIXEL_OFF);
+#elif defined (__sh__)
+	if(dimm < 0)
+		dimm = 0;
+	else if(dimm > 15)
+		dimm = 15;
+/*
+	if(brightness == dimm)
+		return;
+
+	brightness = dimm;
+*/
+	
+        struct vfd_ioctl_data data;
+	data.start_address = dimm;
+	
+	if(dimm < 1)
+		dimm = 1;
+//	brightness = dimm;
+	
+	openDevice();
+	
+	if( ioctl(fd, VFDBRIGHTNESS, &data) < 0)  
+		perror("VFDBRIGHTNESS");
+	
+	closeDevice();		
+#endif
 }
 
 void CLCD::setlcdparameter(void)
@@ -292,6 +377,7 @@ void CLCD::setlcdparameter(void)
 	if(!has_lcd) 
 		return;
 	
+//#ifdef ENABLE_LCD
 	last_toggle_state_power = g_settings.lcd_power;
 	int dim_time = atoi(g_settings.lcd_setting_dim_time);
 	int dim_brightness = g_settings.lcd_setting_dim_brightness;
@@ -314,6 +400,8 @@ void CLCD::setlcdparameter(void)
 			power,
 			g_settings.lcd_inverse,
 			0);
+//#else
+//#endif
 }
 
 static std::string removeLeadingSpaces(const std::string & text)
@@ -359,6 +447,7 @@ void CLCD::showTextScreen(const std::string & big, const std::string & small, co
 	if(!has_lcd) 
 		return;
 	
+#ifdef ENABLE_LCD
 	unsigned int lcd_width  = display.xres;
 	unsigned int lcd_height = display.yres;
 
@@ -472,6 +561,7 @@ void CLCD::showTextScreen(const std::string & big, const std::string & small, co
 			fonts.menu->RenderString(x, y, lcd_width + 10, event[i].c_str(), CLCDDisplay::PIXEL_ON, 0, small_utf8);
 		}
 	}
+#endif
 
 	if (perform_wakeup)
 		wake_up();
@@ -496,7 +586,17 @@ void CLCD::showServicename(const std::string name, const bool perform_wakeup, in
 	if (mode != MODE_TVRADIO)
 		return;
 
-	showTextScreen(servicename, epg_title, showmode, perform_wakeup, true);
+	////
+	if (is4digits)
+	{
+		char tmp[5];
+						
+		sprintf(tmp, "%04d", pos);
+						
+		ShowText(tmp); // UTF-8
+	}
+	else
+		showTextScreen(servicename, epg_title, showmode, perform_wakeup, true);
 	
 	return;
 }
@@ -505,9 +605,9 @@ void CLCD::setEPGTitle(const std::string title)
 {
 	if (title == epg_title)
 	{
-		//fprintf(stderr,"CLCD::setEPGTitle: not changed\n");
 		return;
 	}
+	
 	epg_title = title;
 	showServicename("", false);
 }
@@ -545,6 +645,7 @@ void CLCD::showTime()
 	if(!has_lcd) 
 		return;
 	
+#ifdef ENABLE_LCD
 	if (showclock)
 	{
 		char timestr[21];
@@ -560,7 +661,6 @@ void CLCD::showTime()
 		if (mode == MODE_STANDBY)
 		{
 			display.clear_screen(); // clear lcd
-			//ShowNewClock(&display, t->tm_hour, t->tm_min, t->tm_sec, t->tm_wday, t->tm_mday, t->tm_mon, CNeutrinoApp::getInstance()->recordingstatus);
 		}
 		else
 		{
@@ -579,8 +679,10 @@ void CLCD::showTime()
 
 			fonts.time->RenderString(lcd_width - 4 - fonts.time->getRenderWidth(timestr), lcd_height-1, 50, timestr, CLCDDisplay::PIXEL_ON);
 		}
+		
 		displayUpdate();
 	}
+#endif
 }
 
 void CLCD::showRCLock(int duration)
@@ -588,6 +690,7 @@ void CLCD::showRCLock(int duration)
 	if(!has_lcd) 
 		return;
 	
+#ifdef ENABLE_LCD
 	std::string icon = DATADIR "/lcdd/icons/rclock.raw";
 	raw_display_t curr_screen = new unsigned char[display.raw_buffer_size];
 
@@ -603,6 +706,7 @@ void CLCD::showRCLock(int duration)
 	wake_up();
 	displayUpdate();
 	delete [] curr_screen;
+#endif
 }
 
 void CLCD::showVolume(const char vol, const bool perform_update)
@@ -611,6 +715,8 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 		return;
 	
 	volume = vol;
+	
+#ifdef ENABLE_LCD
 	if (
 	    ((mode == MODE_TVRADIO) && (g_settings.lcd_show_volume)) ||
 	    ((mode == MODE_MOVIE) && (g_settings.lcd_show_volume)) ||
@@ -626,13 +732,13 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 		unsigned int width  = lcd_width - left - 4 - 50;
 
 		if ((muted) || (volume==0))
-			display.load_screen_element(&(element[ELEMENT_MUTE]), 0, lcd_height-element[ELEMENT_MUTE].header.height);
+			display.load_screen_element(&(element[ELEMENT_MUTE]), 0, lcd_height-element[ELEMENT_MUTE].height);
 		else
 		{
 			if (icon_dolby)
-				display.load_screen_element(&(element[ELEMENT_DOLBY]), 0, lcd_height-element[ELEMENT_DOLBY].header.height);
+				display.load_screen_element(&(element[ELEMENT_DOLBY]), 0, lcd_height-element[ELEMENT_DOLBY].height);
 			else
-				display.load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].header.height);
+				display.load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height);
 		}
 
 		//strichlin
@@ -666,6 +772,8 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 		if (perform_update)
 		  displayUpdate();
 	}
+#endif
+
 	wake_up();
 }
 
@@ -677,6 +785,7 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 	if (mode != m)
 		return;
 
+#ifdef ENABLE_LCD
 	int left, top, width, height = 6;
 	bool draw = true;
 	percentOver = perc;
@@ -754,6 +863,7 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 		if (perform_update)
 			displayUpdate();
 	}
+#endif
 }
 
 void CLCD::showMenuText(const int position, const char * text, const int highlight, const bool utf_encoded)
@@ -761,7 +871,16 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 	if(!has_lcd) 
 		return;
 	
-	/* hack, to not have to patch too much in movieplayer.cpp */
+	if (is4digits)
+	{
+		char tmp[5];
+						
+		sprintf(tmp, "%04d", position);
+						
+		ShowText(tmp); // UTF-8
+	}
+	
+#ifdef ENABLE_LCD
 	if (mode == MODE_MOVIE) 
 	{
 		size_t p;
@@ -805,6 +924,7 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 	
 	display.draw_fill_rect(-1, 35+14*position, lcd_width, 35+14+14*position, CLCDDisplay::PIXEL_OFF);
 	fonts.menu->RenderString(0,35+11+14*position, lcd_width + 20, text, CLCDDisplay::PIXEL_INV, highlight, utf_encoded);
+#endif
 
 	wake_up();
 	displayUpdate();
@@ -818,6 +938,7 @@ void CLCD::showAudioTrack(const std::string & artist, const std::string & title,
 	if (mode != MODE_AUDIO) 
 		return;
 	
+#ifdef ENABLE_LCD
 	unsigned int lcd_width  = display.xres;
 	unsigned int lcd_height = display.yres;
 
@@ -828,6 +949,7 @@ void CLCD::showAudioTrack(const std::string & artist, const std::string & title,
 	fonts.menu->RenderString(0, 22, lcd_width + 5, artist.c_str(), CLCDDisplay::PIXEL_ON, 0, isUTF8(artist));
 	fonts.menu->RenderString(0, 35, lcd_width + 5, album.c_str(),  CLCDDisplay::PIXEL_ON, 0, isUTF8(album));
 	fonts.menu->RenderString(0, 48, lcd_width + 5, title.c_str(),  CLCDDisplay::PIXEL_ON, 0, isUTF8(title));
+#endif
 
 	wake_up();
 	displayUpdate();
@@ -839,7 +961,9 @@ void CLCD::showAudioPlayMode(AUDIOMODES m)
 	if(!has_lcd) 
 		return;
 	
+#ifdef ENABLE_LCD
 	display.draw_fill_rect (-1,51,10,62, CLCDDisplay::PIXEL_OFF);
+	
 	switch(m)
 	{
 		case AUDIO_MODE_PLAY:
@@ -884,6 +1008,8 @@ void CLCD::showAudioPlayMode(AUDIOMODES m)
 			}
 			break;
 	}
+#endif
+
 	wake_up();
 	displayUpdate();
 }
@@ -893,6 +1019,7 @@ void CLCD::showAudioProgress(const char perc, bool isMuted)
 	if(!has_lcd) 
 		return;
 	
+#ifdef ENABLE_LCD
 	if (mode == MODE_AUDIO)
 	{
 		display.draw_fill_rect (11,53,73,61, CLCDDisplay::PIXEL_OFF);
@@ -908,8 +1035,10 @@ void CLCD::showAudioProgress(const char perc, bool isMuted)
 			else
 				display.draw_line (12,55,72,59, CLCDDisplay::PIXEL_ON);
 		}
+		
 		displayUpdate();
 	}
+#endif
 }
 
 void CLCD::drawBanner()
@@ -917,11 +1046,13 @@ void CLCD::drawBanner()
 	if(!has_lcd) 
 		return;
 	
+#ifdef ENABLE_LCD
 	unsigned int lcd_width  = display.xres;
 	display.load_screen_element(&(element[ELEMENT_BANNER]), 0, 0);
 	
-	if (element[ELEMENT_BANNER].header.width < lcd_width)
-		display.draw_fill_rect (element[ELEMENT_BANNER].header.width-1, -1, lcd_width, element[ELEMENT_BANNER].header.height-1, CLCDDisplay::PIXEL_ON);
+	if (element[ELEMENT_BANNER].width < lcd_width)
+		display.draw_fill_rect (element[ELEMENT_BANNER].width-1, -1, lcd_width, element[ELEMENT_BANNER].height-1, CLCDDisplay::PIXEL_ON);
+#endif
 }
 
 void CLCD::setMode(const MODES m, const char * const title)
@@ -929,6 +1060,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	if(!has_lcd) 
 		return;
 	
+#ifdef ENABLE_LCD
 	unsigned int lcd_width  = display.xres;
 	unsigned int lcd_height = display.yres;
 
@@ -946,24 +1078,24 @@ void CLCD::setMode(const MODES m, const char * const title)
 		{
 		case 0:
 			drawBanner();
-			display.load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].header.width)/2, 12);
-			display.load_screen_element(&(element[ELEMENT_MOVIESTRIPE]), 0, lcd_height-element[ELEMENT_MOVIESTRIPE].header.height);
+			display.load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
+			display.load_screen_element(&(element[ELEMENT_MOVIESTRIPE]), 0, lcd_height-element[ELEMENT_MOVIESTRIPE].height);
 			showPercentOver(percentOver, false, mode);
 			break;
 		case 1:
 			drawBanner();
-			display.load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].header.width)/2, 12);
+			display.load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
 			showVolume(volume, false);
 			break;
 		case 2:
 			display.load_screen_element(&(element[ELEMENT_MOVIESTRIPE]), 0, 0);
-			display.load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].header.width)/2, 12);
+			display.load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
 			showVolume(volume, false);
 			showPercentOver(percentOver, false, mode);
 			break;
 		case 3:
 			display.load_screen_element(&(element[ELEMENT_MOVIESTRIPE]), 0, 0);
-			display.load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].header.width)/2, 12);
+			display.load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
 			showVolume(volume, false);
 			showPercentOver(percentOver, false, mode);
 			break;
@@ -984,7 +1116,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 		display.clear_screen(); // clear lcd
 		drawBanner();
-		display.load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].header.height-1);
+		display.load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height-1);
 		showAudioPlayMode(AUDIO_MODE_STOP);
 		showVolume(volume, false);
 		showclock = true;
@@ -994,8 +1126,8 @@ void CLCD::setMode(const MODES m, const char * const title)
 	case MODE_SCART:
 		display.clear_screen(); // clear lcd
 		drawBanner();
-		display.load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].header.width)/2, 12);
-		display.load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].header.height-1);
+		display.load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
+		display.load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height-1);
 
 		showVolume(volume, false);
 		showclock = true;
@@ -1012,7 +1144,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		showclock = false;
 		display.clear_screen(); // clear lcd
 		drawBanner();
-		display.load_screen_element(&(element[ELEMENT_POWER]), (lcd_width-element[ELEMENT_POWER].header.width)/2, 12);
+		display.load_screen_element(&(element[ELEMENT_POWER]), (lcd_width-element[ELEMENT_POWER].width)/2, 12);
 		displayUpdate();
 		break;
 	case MODE_STANDBY:
@@ -1043,6 +1175,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		showInfoBox();
 		break;
 	}
+#endif
 	
 	wake_up();
 }
@@ -1083,8 +1216,40 @@ int CLCD::getContrast()
 
 void CLCD::setPower(int power)
 {
+	if (!has_lcd)
+		return;
+		
 	g_settings.lcd_power = power;
+	
+#ifdef ENABLE_LCD
 	setlcdparameter();
+#elif defined (__sh__)
+	struct vfd_ioctl_data data;
+	data.start_address = power;
+	
+	openDevice();
+	
+	if( ioctl(fd, VFDPWRLED, &data) < 0)  
+		perror("VFDPWRLED");
+	
+	closeDevice();
+#elif defined (PLATFORM_GIGABLUE)
+	const char *VFDLED[] = {
+		"VFD_OFF",
+		"VFD_BLUE",
+		"VFD_RED",
+		"VFD_PURPLE"
+	};
+	
+	dprintf(DEBUG_NORMAL, "CVFD::setPower: %s\n", VFDLED[power]);
+	  
+	FILE * f;
+	if((f = fopen("/proc/stb/fp/led0_pattern", "w")) == NULL) 
+		return;
+	
+	fprintf(f, "%d", power);
+	fclose(f);
+#endif
 }
 
 int CLCD::getPower()
@@ -1133,7 +1298,9 @@ void CLCD::resume()
 	if(!has_lcd) 
 		return;
 	
+#ifdef ENABLE_LCD
 	display.resume();
+#endif
 }
 
 void CLCD::pause()
@@ -1141,83 +1308,72 @@ void CLCD::pause()
 	if(!has_lcd) 
 		return;
 	
+#ifdef ENABLE_LCD
 	display.pause();
+#endif
 }
 
 void CLCD::ShowIcon(vfd_icon icon, bool show)
 {
+	#if defined (__sh__)
+#if defined (PLATFORM_KATHREIN) || defined(PLATFORM_SPARK7162)
 	switch (icon)
 	{
-		case VFD_ICON_MUTE:
-			fprintf(stderr, "CLCD::ShowIcon(%s, %d)\n", "VFD_ICON_MUTE", show);
-			break;
-		case VFD_ICON_DOLBY:
-			fprintf(stderr, "CLCD::ShowIcon(%s, %d)\n", "VFD_ICON_DOLBY", show);
-			icon_dolby = show;
-			break;
-		case VFD_ICON_POWER:
-			fprintf(stderr, "CLCD::ShowIcon(%s, %d)\n", "VFD_ICON_POWER", show);
-			break;
-		case VFD_ICON_TIMESHIFT:
-			fprintf(stderr, "CLCD::ShowIcon(%s, %d)\n", "VFD_ICON_TIMESHIFT", show);
-			break;
-		case VFD_ICON_TV:
-			fprintf(stderr, "CLCD::ShowIcon(%s, %d)\n", "VFD_ICON_TV", show);
-			break;
-		case VFD_ICON_RADIO:
-			fprintf(stderr, "CLCD::ShowIcon(%s, %d)\n", "VFD_ICON_RADIO", show);
-			break;
-		case VFD_ICON_HD:
-			fprintf(stderr, "CLCD::ShowIcon(%s, %d)\n", "VFD_ICON_HD", show);
-			break;
-		case VFD_ICON_1080P:
-			fprintf(stderr, "CLCD::ShowIcon(%s, %d)\n", "VFD_ICON_1080P", show);
-			break;
-		case VFD_ICON_1080I:
-			fprintf(stderr, "CLCD::ShowIcon(%s, %d)\n", "VFD_ICON_1080I", show);
-			break;
-		case VFD_ICON_720P:
-			fprintf(stderr, "CLCD::ShowIcon(%s, %d)\n", "VFD_ICON_720P", show);
-			break;
-		case VFD_ICON_480P:
-			fprintf(stderr, "CLCD::ShowIcon(%s, %d)\n", "VFD_ICON_480P", show);
-			break;
-		case VFD_ICON_480I:
-			fprintf(stderr, "CLCD::ShowIcon(%s, %d)\n", "VFD_ICON_480I", show);
-			break;
 		case VFD_ICON_USB:
-			fprintf(stderr, "CLCD::ShowIcon(%s, %d)\n", "VFD_ICON_USB", show);
+			usb_icon = show;
 			break;
-		case VFD_ICON_MP3:
-			fprintf(stderr, "CLCD::ShowIcon(%s, %d)\n", "VFD_ICON_MP3", show);
+		case VFD_ICON_CLOCK:
+			timer_icon = show;
 			break;
-		case VFD_ICON_PLAY:
-			fprintf(stderr, "CLCD::ShowIcon(%s, %d)\n", "VFD_ICON_PLAY", show);
+#if defined (PLATFORM_KATHREIN)
+		case VFD_ICON_HDD:
+			hdd_icon = show;
 			break;
-		case VFD_ICON_PAUSE:
-			fprintf(stderr, "CLCD::ShowIcon(%s, %d)\n", "VFD_ICON_PAUSE", show);
+#endif
+		default:
 			break;
-		case VFD_ICON_LOCK:
-			fprintf(stderr, "CLCD::ShowIcon(%s, %d)\n", "VFD_ICON_LOCK", show);
-		default: 
-			fprintf(stderr, "CLCD::ShowIcon(%d, %d)\n", icon, show);
-	}	
+	}
+#endif
+
+	openDevice();
+#if defined(PLATFORM_SPARK7162)
+	aotom_data.u.icon.icon_nr = icon;
+	aotom_data.u.icon.on = show ? 1 : 0;
+	
+	if (ioctl(fd, VFDICONDISPLAYONOFF, &aotom_data) <0)
+		perror("VFDICONDISPLAYONOFF");	
+#else
+#if defined (PLATFORM_KATHREIN)
+	if (icon == 17)				/* returning because not existing icon at ufs910 */
+	{
+		closeDevice();	
+		return;
+	}
+#endif	
+	struct vfd_ioctl_data data;
+
+	data.data[0] = (icon - 1) & 0x1F;
+	data.data[4] = show ? 1 : 0;
+	
+	if( ioctl(fd, VFDICONDISPLAYONOFF, &data) < 0)
+		perror("VFDICONDISPLAYONOFF");
+#endif	
+	closeDevice();
+#endif
 }
 
 void CLCD::Lock()
 {
-/*
 	if(!has_lcd) return;
+	
 	creat("/tmp/vfd.locked", 0);
-*/
 }
 
 void CVFD::Unlock()
 {
-/*
 	if(!has_lcd) return;
+	
 	unlink("/tmp/vfd.locked");
-*/
 }
 
 void CLCD::Clear()
@@ -1225,11 +1381,36 @@ void CLCD::Clear()
 	if(!has_lcd) 
 		return;
 	
+#ifdef ENABLE_LCD
 	if (mode == MODE_SHUTDOWN)
 	{
 		display.clear_screen(); // clear lcd
 		displayUpdate();
 	}
+#else
+#if defined (ENABLE_4DIGITS)
+	ShowText("     "); // 5 empty digits
+#elif defined (__sh__)
+	struct vfd_ioctl_data data;
+	
+#if defined (PLATFORM_KATHREIN)		/* using this otherwise VFD of ufs910 is black and Neutrino has a segfault 		*/
+	data.start_address = 0x01;
+	data.length = 0x0;
+	openDevice();	
+	if (ioctl(fd, VFDDISPLAYCLR, &data) <0)
+		perror("VFDDISPLAYCLR");
+	closeDevice();
+#else
+	data.start_address = 0;
+	openDevice();	
+	if( ioctl(fd, VFDDISPLAYWRITEONOFF, &data) < 0)
+		perror("VFDDISPLAYCLR");
+	closeDevice();
+#endif
+#else
+	ShowText("            "); // 12 empty digits
+#endif
+#endif
 
 	return;
 }
@@ -1239,7 +1420,9 @@ bool CLCD::ShowPng(char *filename)
 	if(!has_lcd) 
 		return false;
 	
+#ifdef ENABLE_LCD
 	return display.load_png(filename);
+#endif
 }
 
 bool CLCD::DumpPng(char *filename)
@@ -1247,21 +1430,23 @@ bool CLCD::DumpPng(char *filename)
 	if(!has_lcd) 
 		return false;
 	
+#ifdef ENABLE_LCD
 	return display.dump_png(filename);
+#endif
 }
 
 // showInfoBox
-#define EPG_INFO_FONT_HEIGHT 9
-#define EPG_INFO_SHADOW_WIDTH 1
-#define EPG_INFO_LINE_WIDTH 1
-#define EPG_INFO_BORDER_WIDTH 2
+#define EPG_INFO_FONT_HEIGHT 	9
+#define EPG_INFO_SHADOW_WIDTH 	1
+#define EPG_INFO_LINE_WIDTH 	1
+#define EPG_INFO_BORDER_WIDTH 	2
 
-#define EPG_INFO_WINDOW_POS 4
+#define EPG_INFO_WINDOW_POS 	4
 #define EPG_INFO_LINE_POS 	EPG_INFO_WINDOW_POS + EPG_INFO_SHADOW_WIDTH
-#define EPG_INFO_BORDER_POS EPG_INFO_WINDOW_POS + EPG_INFO_SHADOW_WIDTH + EPG_INFO_LINE_WIDTH
+#define EPG_INFO_BORDER_POS 	EPG_INFO_WINDOW_POS + EPG_INFO_SHADOW_WIDTH + EPG_INFO_LINE_WIDTH
 #define EPG_INFO_TEXT_POS 	EPG_INFO_WINDOW_POS + EPG_INFO_SHADOW_WIDTH + EPG_INFO_LINE_WIDTH + EPG_INFO_BORDER_WIDTH
 
-#define EPG_INFO_TEXT_WIDTH lcd_width - (2*EPG_INFO_WINDOW_POS)
+#define EPG_INFO_TEXT_WIDTH 	lcd_width - (2*EPG_INFO_WINDOW_POS)
 
 // timer 0: OFF, timer>0 time to show in seconds,  timer>=999 endless
 void CLCD::showInfoBox(const char * const title, const char * const text ,int autoNewline,int timer)
@@ -1279,9 +1464,8 @@ void CLCD::showInfoBox(const char * const title, const char * const text ,int au
 	if(autoNewline != -1)
 		m_infoBoxAutoNewline = autoNewline;
 
-	//printf("[lcdd] Info: %s,%s,%d,%d\n",m_infoBoxTitle.c_str(),m_infoBoxText.c_str(),m_infoBoxAutoNewline,m_infoBoxTimer);
-	if( mode == MODE_INFOBOX &&
-	    !m_infoBoxText.empty())
+#ifdef ENABLE_LCD
+	if( mode == MODE_INFOBOX && !m_infoBoxText.empty())
 	{
 		unsigned int lcd_width  = display.xres;
 		unsigned int lcd_height = display.yres;
@@ -1309,6 +1493,7 @@ void CLCD::showInfoBox(const char * const title, const char * const text ,int au
 		int line;
 		int pos = 0;
 		int length = m_infoBoxText.size();
+		
 		for(line = 0; line < 5; line++)
 		{
 			text_line.clear();
@@ -1325,22 +1510,24 @@ void CLCD::showInfoBox(const char * const title, const char * const text ,int au
 			if ( m_infoBoxText[pos] == '\n' )
 				pos++; // remove new line
 		}
+		
 		displayUpdate();
 	}
+#endif
 }
 
 //showFilelist
 #define BAR_POS_X 		114
-#define BAR_POS_Y 		 10
-#define BAR_POS_WIDTH 	  6
-#define BAR_POS_HEIGTH 	 40
+#define BAR_POS_Y 		10
+#define BAR_POS_WIDTH 	  	6
+#define BAR_POS_HEIGTH 	 	40
 
 void CLCD::showFilelist(int flist_pos,CFileList* flist,const char * const mainDir)
 {
 	if(!has_lcd) 
 		return;
 	
-	//printf("[lcdd] FileList\n");
+#ifdef ENABLE_LCD
 	if(flist != NULL)
 		m_fileList = flist;
 	if(flist_pos != -1)
@@ -1435,18 +1622,20 @@ void CLCD::showFilelist(int flist_pos,CFileList* flist,const char * const mainDi
 	
 		displayUpdate();
 	}
+#endif
 }
 
 //showProgressBar
-#define PROG_GLOB_POS_X 10
-#define PROG_GLOB_POS_Y 30
-#define PROG_GLOB_POS_WIDTH 100
-#define PROG_GLOB_POS_HEIGTH 20
+#define PROG_GLOB_POS_X 	10
+#define PROG_GLOB_POS_Y 	30
+#define PROG_GLOB_POS_WIDTH 	100
+#define PROG_GLOB_POS_HEIGTH 	20
 void CLCD::showProgressBar(int global, const char * const text,int show_escape,int timer)
 {
 	if(!has_lcd) 
 		return;
 	
+#ifdef ENABLE_LCD
 	if(text != NULL)
 		m_progressHeaderGlobal = text;
 		
@@ -1494,25 +1683,26 @@ void CLCD::showProgressBar(int global, const char * const text,int show_escape,i
 		
 		displayUpdate();
 	}
+#endif
 }
 
 // showProgressBar2
-#define PROG2_GLOB_POS_X 10
-#define PROG2_GLOB_POS_Y 37
-#define PROG2_GLOB_POS_WIDTH 100
-#define PROG2_GLOB_POS_HEIGTH 10
+#define PROG2_GLOB_POS_X 	10
+#define PROG2_GLOB_POS_Y 	37
+#define PROG2_GLOB_POS_WIDTH 	100
+#define PROG2_GLOB_POS_HEIGTH 	10
 
-#define PROG2_LOCAL_POS_X 10
-#define PROG2_LOCAL_POS_Y 24
-#define PROG2_LOCAL_POS_WIDTH PROG2_GLOB_POS_WIDTH
-#define PROG2_LOCAL_POS_HEIGTH PROG2_GLOB_POS_HEIGTH
+#define PROG2_LOCAL_POS_X 	10
+#define PROG2_LOCAL_POS_Y 	24
+#define PROG2_LOCAL_POS_WIDTH 	PROG2_GLOB_POS_WIDTH
+#define PROG2_LOCAL_POS_HEIGTH 	PROG2_GLOB_POS_HEIGTH
 
 void CLCD::showProgressBar2(int local,const char * const text_local ,int global ,const char * const text_global ,int show_escape )
 {
 	if(!has_lcd) 
 		return;
 	
-	//printf("[lcdd] prog2\n");
+#ifdef ENABLE_LCD
 	if(text_local != NULL)
 		m_progressHeaderLocal = text_local;
 		
@@ -1581,5 +1771,6 @@ void CLCD::showProgressBar2(int local,const char * const text_local ,int global 
 		
 		displayUpdate();
 	}
+#endif
 }
 

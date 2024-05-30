@@ -1,7 +1,7 @@
 /*
 	LCD-Daemon  -   DBoxII-Project
 	
-	$Id: vfd.cpp 2013/10/12 mohousch Exp $
+	$Id: vfd.cpp 30052024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -45,7 +45,7 @@
 #include <system/helpers.h>
 
 
-extern CRemoteControl *g_RemoteControl;
+//extern CRemoteControl *g_RemoteControl;
 
 #if defined (__sh__)
 #if defined (PLATFORM_SPARK7162)
@@ -96,17 +96,20 @@ void CVFD::closeDevice()
 CVFD::CVFD()
 {
 	// vfd
-	has_lcd = true;
+//	has_lcd = true;
 
 	// 4digits
 	is4digits = false;
 	
 	// tftlcd
-	istftlcd = false;
+//	istftlcd = false;
 	
 #if defined (ENABLE_4DIGITS)
 	is4digits = true;
 #endif
+	////
+//	paused = 0;
+	available = false;
 
 #if !defined (__sh__)
 	// probe /dev/dbox/fp
@@ -154,14 +157,14 @@ CVFD::CVFD()
 	}
 #endif	
 	
-	text[0] = 0;
-	clearClock = 0;
-	timeout_cnt = 0;
+//	text[0] = 0;
+//	clearClock = 0;
+//	timeout_cnt = 0;
 }
 
 CVFD::~CVFD()
 { 
-#if !defined (__sh__)
+#if 0 //!defined (__sh__)
 	if(fd > 0)
 		close(fd);
 	
@@ -169,6 +172,7 @@ CVFD::~CVFD()
 #endif
 }
 
+/*
 CVFD * CVFD::getInstance()
 {
 	static CVFD * lcdd = NULL;
@@ -180,7 +184,9 @@ CVFD * CVFD::getInstance()
 
 	return lcdd;
 }
+*/
 
+/*
 void CVFD::count_down() 
 {
 	if (timeout_cnt > 0) 
@@ -202,7 +208,8 @@ void CVFD::count_down()
 		}
 	} 
 }
-
+*/
+/*
 void CVFD::wake_up() 
 {  
 	if (atoi(g_settings.lcd_setting_dim_time) > 0) 
@@ -213,7 +220,8 @@ void CVFD::wake_up()
 	else
 		setPower(1);	
 }
-
+*/
+/*
 void * CVFD::TimeThread(void *)
 {
 	while(1) 
@@ -232,7 +240,8 @@ void * CVFD::TimeThread(void *)
 
 	return NULL;
 }
-
+*/
+/*
 void CVFD::init()
 {
 	dprintf(DEBUG_NORMAL, "CVFD::init\n");
@@ -259,6 +268,7 @@ void CVFD::init()
 	vfd_symbol_circle(0);
 #endif
 }
+*/
 
 void CVFD::setlcdparameter(int dimm, const int power)
 {

@@ -1,7 +1,7 @@
 /*
 	LCD-Daemon  -   DBoxII-Project
 	
-	$Id: vfd.h 2013/10/12 mohousch Exp $
+	$Id: vfd.h 30052024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -211,6 +211,7 @@ enum {
 };
 
 // neutrino common
+/*
 typedef enum
 {
 	VFD_ICON_MUTE		= ICON_MUTE,
@@ -231,6 +232,7 @@ typedef enum
 	VFD_ICON_PAUSE		= ICON_PAUSE,
 	VFD_ICON_LOCK 		= ICON_SCRAMBLED
 } vfd_icon;
+*/
 #endif  //common
 
 #if defined (__sh__)
@@ -260,20 +262,24 @@ typedef enum
 
 #if defined(PLATFORM_SPARK7162)
 /* structs are needed for sending icons etc. to aotom 				*/
-struct set_mode_s {
+struct set_mode_s 
+{
 	int compat; /* 0 = compatibility mode to vfd driver; 1 = nuvoton mode */
 };
 
-struct set_brightness_s {
+struct set_brightness_s 
+{
 	int level;
 };
 
-struct set_icon_s {
+struct set_icon_s 
+{
 	int icon_nr;
 	int on;
 };
 
-struct set_led_s {
+struct set_led_s 
+{
 	int led_nr;
 	int on;
 };
@@ -284,15 +290,18 @@ struct set_led_s {
  * time[3] = min
  * time[4] = sec
  */
-struct set_standby_s {
+struct set_standby_s 
+{
 	char time[5];
 };
 
-struct set_time_s {
+struct set_time_s 
+{
 	char time[5];
 };
 
-struct aotom_ioctl_data {
+struct aotom_ioctl_data 
+{
 	union
 	{
 		struct set_icon_s icon;
@@ -312,20 +321,24 @@ struct aotom_ioctl_data {
  * to the desired mode. currently the "normal" mode
  * is the compatible vfd mode
  */
-struct set_mode_s {
+struct set_mode_s 
+{
 	int compat; /* 0 = compatibility mode to vfd driver; 1 = nuvoton mode */
 };
 
-struct set_brightness_s {
+struct set_brightness_s 
+{
 	int level;
 };
 
-struct set_icon_s {
+struct set_icon_s 
+{
 	int icon_nr;
 	int on;
 };
 
-struct set_led_s {
+struct set_led_s 
+{
 	int led_nr;
 	int on;
 };
@@ -340,11 +353,13 @@ struct set_standby_s {
 	char time[5];
 };
 
-struct set_time_s {
+struct set_time_s 
+{
 	char time[5];
 };
 
-struct aotom_ioctl_data {
+struct aotom_ioctl_data 
+{
 	union
 	{
 		struct set_icon_s icon;
@@ -367,18 +382,19 @@ struct aotom_ioctl_data {
 #endif //Spark7162
 
 
-struct vfd_ioctl_data {
+struct vfd_ioctl_data 
+{
 	unsigned char start_address;
 	unsigned char data[64];
 	unsigned char length;
 };
 #endif
 
-
+#if 0
 class CVFD
 {
 	public:
-
+		/*
 		enum MODES
 		{
 			MODE_TVRADIO,
@@ -399,8 +415,10 @@ class CVFD
 			AUDIO_MODE_PAUSE,
 			AUDIO_MODE_REV
 		};
+		*/
 
 		//0:off, 1:blue, 2:red, 3:purple (gigablue power button)
+		/*
 		enum LEDS
 		{
 			LED_OFF,
@@ -414,89 +432,87 @@ class CVFD
 			EPGMODE_CHANNELNUMBER,
 			EPGMODE_TIME
 		};
+		*/
 
 	private:
-		MODES			mode;
+//		MODES			mode;
 
-		std::string		servicename;
-		int			serviceNum;
-		char			volume;
-		unsigned char		percentOver;
-		bool			muted;
-		bool			showclock;
-		pthread_t		thrTime;
-		int                     last_toggle_state_power;
-		bool			clearClock;
-		unsigned int            timeout_cnt;
+//		std::string		servicename;
+//		int			serviceNum;
+//		char			volume;
+//		unsigned char		percentOver;
+//		bool			muted;
+//		bool			showclock;
+//		pthread_t		thrTime;
+//		int                     last_toggle_state_power;
+//		bool			clearClock;
+//		unsigned int            timeout_cnt;
 		int fd;
-		unsigned char brightness;
-		char text[256];
+//		int paused;
+		bool available;
+//		unsigned char brightness;
+//		char text[256];
 
-		void wake_up();
-		void count_down();
+//		void wake_up();
+//		void count_down();
 
-		CVFD();
+//		CVFD();
 
-		static void * TimeThread(void*);
-		void setlcdparameter(int dimm, int power);
+//		static void * TimeThread(void*);
+//		void setlcdparameter(int dimm, int power);
 
 	public:
-
+		CVFD();
 		~CVFD();
-		bool has_lcd;	
+//		bool has_lcd;	
 		bool is4digits;
-		bool istftlcd;
+//		bool istftlcd;
 		
-		void setlcdparameter(void);
+//		void setlcdparameter(void);
 
-		static CVFD * getInstance();
-		void init();
-		void setMode(const MODES m, const char * const title = "");
-		void showServicename(const std::string& name, const bool perform_wakeup = true, int pos = 0); // UTF-8
-		void showTime(bool force = false);
-		/** blocks for duration seconds */
-		void showRCLock(int duration = 2);
-		
-		void showMenuText(const int position, const char * text, const int highlight = -1, const bool utf_encoded = false);
-		void showAudioTrack(const std::string& artist, const std::string& title, const std::string& album, int pos);
-		void showAudioPlayMode(AUDIOMODES m = AUDIO_MODE_PLAY);
-	
-		void setBrightness(int);
-		int getBrightness();
-
-		void setBrightnessStandby(int);
-		int getBrightnessStandby();
-
-		void setPower(int);
-		int getPower();
-		void togglePower(void);
-
-		void setMuted(bool);
+//		static CVFD * getInstance();
+//		void init();
+//		void setMode(const MODES m, const char * const title = "");
+//		void showServicename(const std::string& name, const bool perform_wakeup = true, int pos = 0); // UTF-8
+//		void showTime(bool force = false);
+//		void showRCLock(int duration = 2);		
+//		void showMenuText(const int position, const char * text, const int highlight = -1, const bool utf_encoded = false);
+//		void showAudioTrack(const std::string& artist, const std::string& title, const std::string& album, int pos);
+//		void showAudioPlayMode(AUDIOMODES m = AUDIO_MODE_PLAY);
+//		void setBrightness(int);
+//		int getBrightness();
+//		void setBrightnessStandby(int);
+//		int getBrightnessStandby();
+//		void setPower(int);
+//		int getPower();
+//		void togglePower(void);
+//		void setMuted(bool);
 
 		void resume();
 		void pause();
-		void Lock();
-		void Unlock();
-		void Clear();
-		void ClearIcons();
-#if defined(PLATFORM_SPARK7162)
-		void ShowDiskLevel();
-#endif		
-		void ShowIcon(vfd_icon icon, bool show);		
-		void ShowText(const char * str);
 		
-		void setFan(bool enable);
-		void setFPTime(void);
+//		void Lock();
+//		void Unlock();
+//		void Clear();
+//		void ClearIcons();
+#if defined(PLATFORM_SPARK7162)
+//		void ShowDiskLevel();
+#endif		
+//		void ShowIcon(vfd_icon icon, bool show);		
+//		void ShowText(const char * str);
+		
+//		void setFan(bool enable);
+//		void setFPTime(void);
 		
 		// venton
-		void vfd_symbol_network(int net);
-		void vfd_symbol_circle(int cir);
+//		void vfd_symbol_network(int net);
+//		void vfd_symbol_circle(int cir);
 		
 #if defined (__sh__)
 		void openDevice();
 		void closeDevice();
 #endif
 };
-
+#endif
 #endif
 

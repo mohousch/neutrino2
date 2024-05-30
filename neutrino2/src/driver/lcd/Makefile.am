@@ -22,11 +22,13 @@ endif
 
 AM_CXXFLAGS = -fno-rtti -fno-exceptions
 
-noinst_LIBRARIES = libneutrino2_driver_lcd.a 
+noinst_LIBRARIES = libneutrino2_driver_lcd.a
 
-if ENABLE_LCD
-libneutrino2_driver_lcd_a_SOURCES = lcddisplay.cpp fontrenderer.cpp lcdd.cpp 	
-else
-libneutrino2_driver_lcd_a_SOURCES = vfd.cpp
-endif
+libneutrino2_driver_lcd_a_SOURCES = lcdd.cpp
+
+#if ENABLE_LCD
+libneutrino2_driver_lcd_a_SOURCES += lcddisplay.cpp fontrenderer.cpp 	
+#else
+#libneutrino2_driver_lcd_a_SOURCES += vfd.cpp
+#endif
 

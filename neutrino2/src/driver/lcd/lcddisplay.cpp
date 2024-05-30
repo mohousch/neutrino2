@@ -717,12 +717,12 @@ void CLCDDisplay::load_screen_element(const raw_lcd_element_t * element, int lef
 	unsigned int i;
 
 	//if (element->buffer)
-	//	for (i = 0; i < element->header.height; i++)	
-	//		memmove(_buffer+((top+i) * xres)+left, element->buffer+(i * element->header.width), element->header.width);
+	//	for (i = 0; i < element->height; i++)	
+	//		memmove(_buffer+((top+i) * xres)+left, element->buffer+(i * element->width), element->width);
 	//
-	if ((element->buffer) && (element->header.height <= yres-top))
-		for (i = 0; i < min(element->header.height, yres-top); i++)	
-			memmove(_buffer+((top+i) * xres)+left, element->buffer+(i * element->header.width), min(element->header.width, xres-left));
+	if ((element->buffer) && (element->height <= yres-top))
+		for (i = 0; i < min(element->height, yres-top); i++)	
+			memmove(_buffer+((top+i) * xres)+left, element->buffer+(i * element->width), min(element->width, xres-left));
 	//
 }
 
@@ -731,8 +731,8 @@ void CLCDDisplay::load_screen(const raw_display_t * const screen)
 	raw_lcd_element_t element;
 	element.buffer_size = raw_buffer_size;
 	element.buffer = *screen;
-	element.header.width = xres;
-	element.header.height = yres;
+	element.width = xres;
+	element.height = yres;
 	load_screen_element(&element, 0, 0);
 }
 
@@ -783,9 +783,9 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 						)
 					{
 						printf("[CLCDDisplay] %s %s %dx%dx%d, type %d\n", __FUNCTION__, filename, width, height, bit_depth, color_type);
-						element->header.width = width;
-						element->header.height = height;
-						element->header.bpp = bit_depth;
+						element->width = width;
+						element->height = height;
+						element->bpp = bit_depth;
 						if (!element->buffer)
 						{
 							element->buffer_size = width*height;
@@ -821,7 +821,7 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 							for (pass = 0; pass < number_passes; pass++)
 							{
 								fbptr = (png_byte *)element->buffer;
-								for (i = 0; i < element->header.height; i++)
+								for (i = 0; i < element->height; i++)
 								{
 									//fbptr = row_pointers[i];
 									//png_read_rows(png_ptr, &fbptr, NULL, 1);
@@ -894,8 +894,8 @@ bool CLCDDisplay::dump_png_element(const char * const filename, raw_lcd_element_
         				if (setjmp(png_jmpbuf(png_ptr)))
         				        printf("[CLCDDisplay] Error during writing header\n");
 
-        				png_set_IHDR(png_ptr, info_ptr, element->header.width, element->header.height,
-        				             element->header.bpp, PNG_COLOR_TYPE_GRAY, PNG_INTERLACE_NONE,
+        				png_set_IHDR(png_ptr, info_ptr, element->width, element->height,
+        				             element->bpp, PNG_COLOR_TYPE_GRAY, PNG_INTERLACE_NONE,
         				             PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
 
         				png_write_info(png_ptr, info_ptr);
@@ -911,7 +911,7 @@ bool CLCDDisplay::dump_png_element(const char * const filename, raw_lcd_element_
 					ret_value = true;
 
 					fbptr = (png_byte *)element->buffer;
-					for (i = 0; i < element->header.height; i++)
+					for (i = 0; i < element->height; i++)
 					{
 						png_write_row(png_ptr, fbptr);
 						fbptr += lcd_width;
@@ -939,9 +939,10 @@ bool CLCDDisplay::dump_png(const char * const filename)
 	raw_lcd_element_t element;
 	element.buffer_size = raw_buffer_size;
 	element.buffer = _buffer;
-	element.header.width = xres;
-	element.header.height = yres;
-	element.header.bpp = 8;
+	element.width = xres;
+	element.height = yres;
+	element.bpp = 8;
+	
 	return dump_png_element(filename, &element);
 }
 

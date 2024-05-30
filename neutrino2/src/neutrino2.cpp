@@ -2698,11 +2698,6 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 		mode = mode_standby;
 
 		frameBuffer->setActive(false);
-			
-		// set fan off
-#if !ENABLE_LCD		
-		CVFD::getInstance()->setFan(false);
-#endif
 
 		// cec
 #if !defined (__sh__)
@@ -2716,11 +2711,6 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 #if !defined (__sh__)
 		CCECSetup cecsetup;
 		cecsetup.setCECSettings(true);
-#endif
-			
-		// set fan on
-#if !ENABLE_LCD		
-		CVFD::getInstance()->setFan(true);
 #endif		
 
 		// set fb active
@@ -4671,11 +4661,11 @@ int CNeutrinoApp::run(int argc, char **argv)
 	colorSetupNotifier->changeNotify("", NULL);
 
 	// init vfd/lcd display
-#if ENABLE_LCD
+//#if ENABLE_LCD
 	CVFD::getInstance()->init(font.filename, font.name);
-#else	
-	CVFD::getInstance()->init();
-#endif	
+//#else	
+//	CVFD::getInstance()->init();
+//#endif	
 	// VFD clear	
 	CVFD::getInstance()->Clear();	
 	// show startup msg in vfd

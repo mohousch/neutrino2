@@ -41,7 +41,9 @@
 #include <configfile.h>
 #include <pthread.h>
 
+#include <driver/lcd/lcddisplay.h>
 #include <driver/lcd/fontrenderer.h>
+#include <driver/lcd/vfd.h>
 
 
 #define LCDDIR_VAR CONFIGDIR "/lcdd"
@@ -113,6 +115,21 @@ class CLCD
 			AUDIO_MODE_REV
 		};
 
+		////
+		enum LEDS
+		{
+			LED_OFF,
+			LED_BLUE,
+			LED_RED,
+			LED_PURPLE
+		};
+		
+		enum EPGMODE
+		{
+			EPGMODE_CHANNELNUMBER,
+			EPGMODE_TIME
+		};
+		////
 
 	private:
 
@@ -125,9 +142,13 @@ class CLCD
 				LcdFont *menu;
 		};
 
+//#ifdef ENBLE_LCD
 		CLCDDisplay			display;
 		LcdFontRenderClass		*fontRenderer;
 		FontsDef			fonts;
+//#else
+//		CVFD				display;
+//#endif
 
 #define LCD_NUMBER_OF_ELEMENTS 7
 		raw_lcd_element_t               element[LCD_NUMBER_OF_ELEMENTS];
@@ -163,6 +184,10 @@ class CLCD
 		void displayUpdate();
 		void showTextScreen(const std::string & big, const std::string & small, int showmode, bool perform_wakeup, bool centered = false);
 		void drawBanner();
+		
+#ifdef __sh__
+		unsigned char brightness;
+#endif
 
 	public:
 		CLCD();
@@ -189,7 +214,6 @@ class CLCD
 		void setMovieAudio(const bool is_ac3);
 		std::string getMenutitle() { return menutitle; };
 		void showTime();
-		/** blocks for duration seconds */
 		void showRCLock(int duration = 2);
 		void showVolume(const char vol, const bool perform_update = true);
 		void showPercentOver(const unsigned char perc, const bool perform_update = true, const MODES m = MODE_TVRADIO);
@@ -229,10 +253,15 @@ class CLCD
 		void Clear();
 		void ShowIcon(vfd_icon icon, bool show);
 		void ShowText(const char *s) { showServicename(std::string(s)); };
-		void LCDshowText(int /*pos*/) { return ; };
+//		void LCDshowText(int /*pos*/) { return ; };
 		
 		bool ShowPng(char *filename);
 		bool DumpPng(char *filename);
+		
+#if defined (__sh__)
+		void openDevice();
+		void closeDevice();
+#endif
 		
 	private:
 		CFileList* m_fileList;

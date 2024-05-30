@@ -28,14 +28,15 @@
 #include <string>
 #include <stdint.h> /* uint8_t */
 
-#define LCD_DEVICE	"/dev/dbox/lcd0"
 
-#define LCD_PIXEL_OFF	0x00
-#define LCD_PIXEL_ON	0xff
-#define LCD_PIXEL_INV	0x1000000
+#define LCD_DEVICE		"/dev/dbox/lcd0"
 
-#define LCD_MODE_ASC	0
-#define LCD_MODE_BIN	2
+#define LCD_PIXEL_OFF		0x00
+#define LCD_PIXEL_ON		0xff
+#define LCD_PIXEL_INV		0x1000000
+
+#define LCD_MODE_ASC		0
+#define LCD_MODE_BIN		2
 
 // ioctls
 #define LCD_IOCTL_ASC_MODE	(25)
@@ -51,17 +52,21 @@
 
 
 typedef unsigned char * raw_display_t;
- 
+/*
 struct raw_lcd_element_header_t
 {
 	uint16_t width;
 	uint16_t height;
 	uint8_t bpp;
 } __attribute__ ((packed));
+*/
 
 struct raw_lcd_element_t
 {
-	raw_lcd_element_header_t header;
+//	raw_lcd_element_header_t header;
+	uint16_t width;
+	uint16_t height;
+	uint8_t bpp;
 	int buffer_size;
 	raw_display_t buffer;
 };
@@ -69,23 +74,24 @@ struct raw_lcd_element_t
 class CLCDDisplay
 {
 	private:
-		int           fd, paused;
+		int           fd;
+		int	      paused;
 		std::string   iconBasePath;
 		bool          available;
 		
 		unsigned char inverted;
-		bool flipped;
-		int is_oled;	//1=oled, 2=lcd, 3=??? 4=tftlcd
-		int last_brightness;
-		
+		bool 	      flipped;
+		int 	      is_oled;	//1=oled, 2=lcd, 3=??? 4=tftlcd
+		int 	      last_brightness;
+		////
 		raw_display_t _buffer;
-		int _stride;
+		int 	      _stride;
 		raw_display_t surface_data;
-		int surface_stride;
-		int surface_bpp, surface_bypp;
-		int surface_buffer_size;
-		int real_offset;
-		int real_yres;
+		int 	      surface_stride;
+		int 	      surface_bpp, surface_bypp;
+		int 	      surface_buffer_size;
+		int 	      real_offset;
+		int 	      real_yres;
 	
 	public:
 		enum
