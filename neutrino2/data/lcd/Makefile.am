@@ -1,1 +1,1 @@
-SUBDIRS = clock icons
+SUBDIRS = icons

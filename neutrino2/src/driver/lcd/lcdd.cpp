@@ -187,6 +187,8 @@ CLCD::~CLCD()
 #ifdef ENABLE_4DIGITS
 	if (fd)
 		::close(fd);
+		
+	fd = -1;
 #endif
 
 #ifdef ENABLE_LCD
@@ -200,7 +202,7 @@ CLCD::~CLCD()
 
 CLCD* CLCD::getInstance()
 {
-	static CLCD* lcdd = NULL;
+	static CLCD *lcdd = NULL;
 	
 	if(lcdd == NULL)
 	{
