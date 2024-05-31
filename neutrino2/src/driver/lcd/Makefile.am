@@ -26,3 +26,7 @@ noinst_LIBRARIES = libneutrino2_driver_lcd.a
 
 libneutrino2_driver_lcd_a_SOURCES = lcdd.cpp lcddisplay.cpp fontrenderer.cpp 	
 
+if ENABLE_GRAPHLCD
+libneutrino2_driver_lcd_a_SOURCES += nglcd.cpp
+endif
+

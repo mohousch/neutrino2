@@ -72,6 +72,10 @@
 #include <driver/gfx/color.h>
 #include <driver/gfx/icons.h>
 
+#ifdef ENABLE_GRAPHLCD
+#include <driver/lcd/nglcd.h>
+#endif
+
 #include <gui/epgplus.h>
 #include <gui/streaminfo.h>
 
@@ -893,6 +897,12 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.personalize_powermenu = configfile.getInt32("personalize_powermenu", CMenuItem::ITEM_ACTIVE);
 	g_settings.personalize_mediaplayer = configfile.getInt32("personalize_mediaplayer", CMenuItem::ITEM_ACTIVE);
 	
+	////
+#ifdef ENABLE_GRAPHLCD
+	g_settings.glcd_selected_config = configfile.getInt32("glcd_selected_config", 0);
+	g_settings.glcd_color_bg = configfile.getInt32("glcd_color_bg", GLCD::cColor::Black);
+#endif
+	
 	//set OSD resolution
 #define DEFAULT_X_OFF 35
 #define DEFAULT_Y_OFF 35
@@ -1386,6 +1396,12 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setInt32("personalize_information", g_settings.personalize_information);
 	configfile.setInt32("personalize_powermenu", g_settings.personalize_powermenu);
 	configfile.setInt32("personalize_mediaplayer", g_settings.personalize_mediaplayer);
+	
+	////
+#ifdef ENABLE_GRAPHLCD
+	configfile.setInt32("glcd_selected_config", g_settings.glcd_selected_config);
+	configfile.setInt32("glcd_color_bg", g_settings.glcd_color_bg);
+#endif
 
 	if(strcmp(fname, NEUTRINO_SETTINGS_FILE))
 		configfile.saveConfig(fname);

@@ -48,6 +48,10 @@
 
 #include <daemonc/remotecontrol.h>
 
+#ifdef ENABLE_GRAPHLCD
+#include <driver/lcd/nglcd.h>
+#endif
+
 
 extern CRemoteControl * g_RemoteControl;
 
@@ -178,6 +182,9 @@ CLCD::CLCD()
 	has_lcd = false;
 	clearClock = 0;
 	fd = -1;
+#ifdef ENABLE_GRAPHLCD
+	nglcd = NULL;
+#endif
 }
 
 CLCD::~CLCD()
@@ -201,6 +208,14 @@ CLCD::~CLCD()
 	{
 		delete display;
 		display = NULL;
+	}
+#endif
+
+#ifdef ENABLE_GRAPHLCD
+	if (nglcd)
+	{
+		delete nglcd;
+		nglcd = NULL;
 	}
 #endif
 }
@@ -264,7 +279,7 @@ void CLCD::init(const char * fontfile, const char * fontname, const char * fontf
 	// init lcd 
 	if (!lcdInit(fontfile, fontname, fontfile2, fontname2, fontfile3, fontname3 ))
 	{
-		dprintf(DEBUG_NORMAL, "CLCD::init: LCD-Init failed!\n");
+		dprintf(DEBUG_NORMAL, "CLCD::init: failed!\n");
 		has_lcd = false;
 		return;
 	}
@@ -489,6 +504,12 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	//FIXME: Add
 	//tftlcd
 	//nglcd
+#ifdef ENABLE_GRAPHLCD
+	nglcd = new nGLCD();
+	
+	if (nglcd->init())
+		has_lcd = true;
+#endif
 
 	// set mode tv/radio
 	if (has_lcd) setMode(MODE_TVRADIO);

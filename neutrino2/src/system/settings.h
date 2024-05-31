@@ -514,6 +514,11 @@ struct SNeutrinoSettings
 	int  personalize_powermenu;
 	int  personalize_mediaplayer;
 	std::string personalize_pincode;
+	
+#ifdef ENABLE_GRAPHLCD
+	int glcd_selected_config;
+	uint32_t glcd_color_bg;
+#endif
 
 #define FILESYSTEM_ENCODING_TO_UTF8(a) (g_settings.filesystem_is_utf8 ? (a) : Latin1_to_UTF8(a).c_str())
 #define UTF8_TO_FILESYSTEM_ENCODING(a) (g_settings.filesystem_is_utf8 ? (a) : UTF8_to_Latin1(a).c_str())	

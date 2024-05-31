@@ -124,14 +124,14 @@ AC_DEFINE(ENABLE_GRAPHLCD,1,[include graphlcd support])
 fi
 
 # lcd4linux
-AC_ARG_ENABLE(lcd4linux,
-	AS_HELP_STRING(--enable-lcd4linux,include lcd4linux support),
-	,[enable_lcd4linux=no])
-AM_CONDITIONAL(ENABLE_LCD4LINUX,test "$enable_lcd4linux" = "yes")
-
-if test "$enable_lcd4linux" = "yes"; then
-AC_DEFINE(ENABLE_LCD4LINUX,1,[include lcd4linux support])
-fi
+#AC_ARG_ENABLE(lcd4linux,
+#	AS_HELP_STRING(--enable-lcd4linux,include lcd4linux support),
+#	,[enable_lcd4linux=no])
+#AM_CONDITIONAL(ENABLE_LCD4LINUX,test "$enable_lcd4linux" = "yes")
+#
+#if test "$enable_lcd4linux" = "yes"; then
+#AC_DEFINE(ENABLE_LCD4LINUX,1,[include lcd4linux support])
+#fi
 
 # scart output
 AC_ARG_ENABLE(scart,
@@ -212,7 +212,6 @@ LCD			: $enable_lcd
 TFTLCD			: $enable_tftlcd
 4 Digits		: $enable_4digits
 NGLCD			: $enable_graphlcd
-LCD4LINUX		: $enable_lcd4linux
 CI CAM			: $enable_ci
 F-Keys			: $enable_functionkeys
 Python			: $enable_python

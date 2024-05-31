@@ -44,6 +44,10 @@
 #include <driver/lcd/lcddisplay.h>
 #include <driver/lcd/fontrenderer.h>
 
+#ifdef ENABLE_GRAPHLCD
+#include <driver/lcd/nglcd.h>
+#endif
+
 
 #define LCDDIR_VAR CONFIGDIR "/lcdd"
 
@@ -496,6 +500,10 @@ class CLCD
 		CLCDDisplay			*display;
 		LcdFontRenderClass		*fontRenderer;
 		FontsDef			fonts;
+		
+#ifdef ENABLE_GRAPHLCD
+		nGLCD				*nglcd;
+#endif
 
 #define LCD_NUMBER_OF_ELEMENTS 13
 		raw_lcd_element_t               element[LCD_NUMBER_OF_ELEMENTS];

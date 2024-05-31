@@ -151,7 +151,19 @@ init:
 		5) echo "LCD=tftlcd" >> config.local;; \
 		*) echo "LCD=" >> config.local;; \
 	esac; \
-	echo ""	
+	echo ""
+# graphlcd
+	@echo -e "\GraphLCD spport ?:"
+	@echo -e "   \033[01;32m1)  No\033[00m"
+	@echo "   2)  2 yes"
+	@read -p "Select NGLCD support (1-2)?" NGLCD; \
+	NGLCD=$${NGLCD}; \
+	case "$$NGLCD" in \
+		1) echo "NGLCD=" >> config.local;; \
+		2) echo "NGLCD=nglcd" >> config.local;; \
+		*) echo "NGLCD=" >> config.local;; \
+	esac; \
+	echo ""
 # scart
 	@echo -e "\nScart support ?:"
 	@echo "   1)  yes"
@@ -251,6 +263,11 @@ ifeq ($(LCD), tftlcd)
 N2_OPTS += --enable-tftlcd
 endif
 
+# NGLCD
+ifeq ($(NGLCD), nglcd)
+N2_OPTS += --enable-graphlcd
+endif
+
 # FKEYS
 ifeq ($(FKEYS), fkeys)
 N2_OPTS += --enable-functionkeys
@@ -274,6 +291,7 @@ printenv:
 	@echo "CICAM			: $(CICAM)"
 	@echo "SCART			: $(SCART)"
 	@echo "LCD			: $(LCD)"
+	@echo "NGLCD			: $(NGLCD)"
 	@echo "FKEYS			: $(FKEYS)"
 	@echo "TESTING			: $(TESTING)"
 	@echo '================================================================================'
