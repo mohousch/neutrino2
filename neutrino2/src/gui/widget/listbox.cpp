@@ -334,7 +334,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 	// pulldown
 	if( (msg == CRCInput::RC_ok) && pulldown ) 
 	{
-		if (parent->parent)
+		if (parent && parent->parent)
 			parent->parent->hide();
 			
 		int select = -1;
@@ -752,7 +752,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 	{
 		int select = -1;
 		
-		if (parent->parent)
+		if (parent && parent->parent)
 			parent->parent->hide();
 		
 		//
@@ -965,7 +965,7 @@ CMenuSeparator::CMenuSeparator(const int Type, const char * const Text, const bo
 	
 	//
 	color = COL_MENUCONTENT_PLUS_5;
-	gradient = /*Gradient*/g_settings.sep_gradient;
+	gradient = g_settings.sep_gradient;
 
 	menuItem_type = MENUITEM_SEPARATOR;
 }

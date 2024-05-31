@@ -6589,7 +6589,7 @@ void CTestMenu::showMenu()
 	
 	// weather
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "Weather") );
-	mainMenu->addItem(new CMenuForwarder("Weather", true, NULL, this, "weather"));	
+	mainMenu->addItem(new CMenuForwarder("Weather", false, NULL, this, "weather"));	
 
 	unsigned int count = 0;
 	CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(CZapit::getInstance()->getCurrentChannelID());

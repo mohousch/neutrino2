@@ -78,8 +78,10 @@ CScanTs::CScanTs(CFrontend* f, CScanSettings * sc)
 	x = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - width) / 2;
 	y = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - height) / 2;
 
-	sigscale = new CCProgressBar(x + 20 - 1, y + height - mheight - 5 + 2, BAR_WIDTH, BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR);
-	snrscale = new CCProgressBar(x + 20 + 260 - 1, y + height - mheight - 5 + 2, BAR_WIDTH, BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR);
+	sigscale = new CCProgressBar(x + 20, y + height - mheight + (mheight - BAR_HEIGHT)/2, BAR_WIDTH, BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR);
+	
+	int sw = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth ("100% SNR");
+	snrscale = new CCProgressBar(x + width - 20 - sw - ICON_OFFSET - BAR_WIDTH, y + height - mheight + (mheight - BAR_HEIGHT)/2, BAR_WIDTH, BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR);
 	
 	fe = f;
 	scanSettings = sc;
@@ -657,7 +659,7 @@ void CScanTs::showSNR()
 	dprintf(DEBUG_INFO, "CScanTs::showSNR\n");
 	
 	char percent[10];
-	int barwidth = 150;
+//	int barwidth = 150;
 	uint16_t ssig, ssnr;
 	int sig, snr;
 	int posx, posy;
@@ -669,36 +671,38 @@ void CScanTs::showSNR()
 	snr = (ssnr & 0xFFFF) * 100 / 65535;
 	sig = (ssig & 0xFFFF) * 100 / 65535;
 
-	posy = y + height - mheight - 5;
+	posy = y + height - mheight;
 
 	if(sigscale->getPercent() != sig) 
 	{
-		posx = x + 20;
 		sprintf(percent, "%d%% SIG", sig);
 		sw = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth ("100% SIG");
 
 		sigscale->refresh(sig);
 
-		posx = posx + barwidth + 3;
-		sw = x + 247 - posx;
-		frameBuffer->paintBoxRel(posx, posy - 2, sw, mheight, COL_MENUCONTENT_PLUS_0);
-		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString (posx+2, posy + mheight, sw, percent, COL_MENUCONTENT_TEXT_PLUS_0);
+		posx = x + 20 + BAR_WIDTH + ICON_OFFSET;
+
+		frameBuffer->paintBoxRel(posx, posy, sw, mheight, COL_MENUCONTENT_PLUS_0);
+		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString (posx, posy + mheight + (mheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2, sw, percent, COL_MENUCONTENT_TEXT_PLUS_0);
 	}
 
+	// snr
 	if(snrscale->getPercent() != snr) 
 	{
-		posx = x + 20 + 260;
-		sprintf(percent, "%d%% SNR", snr);
 		sw = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth ("100% SNR");
+//		posx = x + 20 + 260;
+		posx = x + width - 20 - sw;
+		sprintf(percent, "%d%% SNR", snr);
+//		sw = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth ("100% SNR");
 		
 		snrscale->refresh(snr);
 
-		posx = posx + barwidth + 3;
-		sw = x + width - posx;
-		frameBuffer->paintBoxRel(posx, posy - 2, sw, mheight, COL_MENUCONTENT_PLUS_0);
-		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString (posx+2, posy + mheight, sw, percent, COL_MENUCONTENT_TEXT_PLUS_0);
+//		posx = posx + barwidth + 3;
+//		sw = x + width - posx;
+		frameBuffer->paintBoxRel(posx, posy, sw, mheight, COL_MENUCONTENT_PLUS_0);
+		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString (posx, posy + mheight + (mheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2, sw, percent, COL_MENUCONTENT_TEXT_PLUS_0);
 	}
 	
-	frameBuffer->blit();
+//	frameBuffer->blit();
 }
 

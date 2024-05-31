@@ -59,8 +59,6 @@
 
 
 //// globals
-CMenuOptionStringChooser * tzSelect;
-//
 extern cVideo *videoDecoder;
 extern cAudio *audioDecoder;
 //
@@ -156,7 +154,6 @@ void CGeneralSettings::showMenu()
 		//
 		miscSettingsGeneral->enablePaintHead();
 		miscSettingsGeneral->setTitle(_("Misc settings"), NEUTRINO_ICON_MISC);
-//		miscSettingsGeneral->setHeadLine(true, true);
 
 		//
 		miscSettingsGeneral->enablePaintFoot();
@@ -164,7 +161,6 @@ void CGeneralSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		miscSettingsGeneral->setFootButtons(&btn);
-//		miscSettingsGeneral->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(miscSettingsGeneral);
@@ -197,6 +193,7 @@ void CGeneralSettings::showMenu()
 	miscSettingsGeneral->addItem(new CMenuOptionChooser(_("Startup to standby"), &g_settings.power_standby, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 
 	// timezone
+	CMenuOptionStringChooser * tzSelect = NULL;
 	xmlDocPtr parser;
 
 	parser = parseXmlFile("/etc/timezone.xml");
@@ -213,8 +210,6 @@ void CGeneralSettings::showMenu()
 			{
 				std::string name = xmlGetAttribute(search, (char *) "name");
 				std::string zone = xmlGetAttribute(search, (char *) "zone");
-				
-				//printf("Timezone: %s -> %s\n", name.c_str(), zone.c_str());
 				
 				tzSelect->addOption(name.c_str());
 				found = true;

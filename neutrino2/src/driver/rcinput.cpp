@@ -834,82 +834,8 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 
 			return;
 		}
-		
-		// fd_lirc
-#ifdef USE_OPENGL
-#if HAVE_KERNEL_LIRC
-		if (fd_lirc != -1 && (FD_ISSET(fd_lirc, &rfds)))
-		{
-			ssize_t ret;
-			lirc_scancode lircdata;
-			
-			ret = read(fd_lirc, &lircdata, sizeof(lircdata));
-			
-			if (ret != sizeof(lircdata))
-			{
-				continue;
-			}
-			
-			if (lircdata.keycode == 0)
-			{
-				// skip keys coming in too fast
-           			if ( (lircdata.scancode == lastScanCode) && ((lircdata.timestamp - FirstTime) / 1000000) < repeat_block/1000)
-              				continue;
-              			
-              			//
-              			dprintf(DEBUG_NORMAL, ANSI_RED"LIRC: timestamp:%lld flags:%d proto:%d keycode: 0x%x scancode:%llx (%s) timestampdiff:%d repeat_block:%d\n", lircdata.timestamp, lircdata.flags, lircdata.rc_proto, lircdata.keycode, lircdata.scancode, getSpecialKeyName(translate(lircdata.scancode, 0)), (lircdata.timestamp - FirstTime) / 1000000, repeat_block/1000);
-              		
-              			FirstTime = lircdata.timestamp;
-              			lastScanCode = lircdata.scancode;
-              			
-              			*data = 0;
-				*msg = translate(lastScanCode, 0);
-              		}
-              		else
-              		{
-              			// skip keys coming in too fast
-           			if ( (lircdata.scancode == lastScanCode) && ((lircdata.timestamp - FirstTime) / 1000000) < repeat_block/1000)
-              				continue;
-              			
-              			dprintf(DEBUG_NORMAL, ANSI_RED"LIRC: timestamp:%lld flags:%d proto:%d keycode: 0x%x scancode:%llx (%s) timestampdiff:%d repeat_block:%d\n", lircdata.timestamp, lircdata.flags, lircdata.rc_proto, lircdata.keycode, lircdata.scancode, getSpecialKeyName(translate(lircdata.keycode, 0)), (lircdata.timestamp - FirstTime) / 1000000, repeat_block);
-              		
-              			FirstTime = lircdata.timestamp;
-              			lastKeyCode = lircdata.keycode;
-              			lastScanCode = lircdata.scancode;
-              			
-              			*data = 0;
-				*msg = translate(lastKeyCode, 0);
-              		}
-			
-			return;
-		}
-#else
-		if (fd_lirc != -1 && (FD_ISSET(fd_lirc, &rfds)))
-		{
-			ssize_t ret;
-			char vBuffer[128];
-			
-			memset(vBuffer, 0, 128);
-			
-			ret = ::read(fd_lirc, vBuffer, 128);
-			
-			if (sscanf(vBuffer, "%*x %x %29s", &count, keyName) != 2)  // '29' in '%29s' is LIRC_KEY_BUF-1!
-			{
-				continue;
-			}
-			
-			if (count == 0)
-			{
-				dprintf(DEBUG_NORMAL, ANSI_RED"LIRC:keyName:%s\n", keyName);
-				
-				// translate keyName to RC_key
-				*msg = translateKey(keyName);
-			}
-			
-			return;
-		}
-#endif
-#else
+
+#ifndef USE_OPENGL
 		// fd_rc
 		for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++) 
 		{
@@ -924,7 +850,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					continue;
 				}
 								
-				dprintf(DEBUG_DEBUG, ANSI_RED"\nCRCInput::getMsg_us:got event from device type: 0x%X key: 0x%X value %d, translate: 0x%X -%s<\n", ev.type, ev.code, ev.value, translate(ev.code, i), getKeyName(translate(ev.code, i)).c_str() );
+				dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us:got event from device type: 0x%X key: 0x%X value %d, translate: 0x%X -%s <\n", ev.type, ev.code, ev.value, translate(ev.code, i), getKeyName(translate(ev.code, i)).c_str() );
 				
 				if (ev.type != EV_KEY)
 					continue;
@@ -998,6 +924,82 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 		} // for NUMBER_OF_EVENT_DEVICES
 #endif
 
+		// fd_lirc
+#ifdef USE_OPENGL
+#if HAVE_KERNEL_LIRC
+		if (fd_lirc != -1 && (FD_ISSET(fd_lirc, &rfds)))
+		{
+			ssize_t ret;
+			lirc_scancode lircdata;
+			
+			ret = read(fd_lirc, &lircdata, sizeof(lircdata));
+			
+			if (ret != sizeof(lircdata))
+			{
+				continue;
+			}
+			
+			if (lircdata.keycode == 0)
+			{
+				// skip keys coming in too fast
+           			if ( (lircdata.scancode == lastScanCode) && ((lircdata.timestamp - FirstTime) / 1000000) < repeat_block/1000)
+              				continue;
+              			
+              			//
+              			dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us: got event from LIRC: timestamp:%lld flags:%d proto:%d keycode: 0x%x scancode:%llx (%s) timestampdiff:%d repeat_block:%d <\n", lircdata.timestamp, lircdata.flags, lircdata.rc_proto, lircdata.keycode, lircdata.scancode, getSpecialKeyName(translate(lircdata.scancode, 0)), (lircdata.timestamp - FirstTime) / 1000000, repeat_block/1000);
+              		
+              			FirstTime = lircdata.timestamp;
+              			lastScanCode = lircdata.scancode;
+              			
+              			*data = 0;
+				*msg = translate(lastScanCode, 0);
+              		}
+              		else
+              		{
+              			// skip keys coming in too fast
+           			if ( (lircdata.scancode == lastScanCode) && ((lircdata.timestamp - FirstTime) / 1000000) < repeat_block/1000)
+              				continue;
+              			
+              			dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us: got event from LIRC: timestamp:%lld flags:%d proto:%d keycode: 0x%x scancode:%llx (%s) timestampdiff:%d repeat_block:%d <\n", lircdata.timestamp, lircdata.flags, lircdata.rc_proto, lircdata.keycode, lircdata.scancode, getSpecialKeyName(translate(lircdata.keycode, 0)), (lircdata.timestamp - FirstTime) / 1000000, repeat_block);
+              		
+              			FirstTime = lircdata.timestamp;
+              			lastKeyCode = lircdata.keycode;
+              			lastScanCode = lircdata.scancode;
+              			
+              			*data = 0;
+				*msg = translate(lastKeyCode, 0);
+              		}
+			
+			return;
+		}
+#else
+		if (fd_lirc != -1 && (FD_ISSET(fd_lirc, &rfds)))
+		{
+			ssize_t ret;
+			char vBuffer[128];
+			
+			memset(vBuffer, 0, 128);
+			
+			ret = ::read(fd_lirc, vBuffer, 128);
+			
+			if (sscanf(vBuffer, "%*x %x %29s", &count, keyName) != 2)  // '29' in '%29s' is LIRC_KEY_BUF-1!
+			{
+				continue;
+			}
+			
+			if (count == 0)
+			{
+				dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us: got event from LIRC:keyName:%s <\n", keyName);
+				
+				// translate keyName to RC_key
+				*msg = translateKey(keyName);
+			}
+			
+			return;
+		}
+#endif
+#endif
+
 		// pipe low prio
 		if(FD_ISSET(fd_pipe_low_priority[0], &rfds))
 		{
@@ -1008,7 +1010,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			*msg  = buf.msg;
 			*data = buf.data;
 
-			dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us:got event from low-pri pipe msg=(0x%llx) data:(0x%llx) <\n", *msg, *data );
+			dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us: got event from low-pri pipe msg=(0x%llx) data:(0x%llx) <\n", *msg, *data );
 
 			return;
 		}

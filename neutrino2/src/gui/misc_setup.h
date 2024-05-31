@@ -58,7 +58,7 @@ class CTZChangeNotifier : public CChangeObserver
 		bool changeNotify(const std::string&, void * data);
 };
 
-// general settings
+//// general settings
 class CGeneralSettings : public CMenuTarget, CChangeObserver
 {
 	private:
@@ -128,7 +128,7 @@ class CXMLTVConfigNotifier : public CChangeObserver
                 bool changeNotify(const std::string&, void *);
 };
 
-// epg settings
+//// epg settings
 class CEPGSettings : public CMenuTarget, CChangeObserver
 {
 	private:
@@ -141,7 +141,7 @@ class CEPGSettings : public CMenuTarget, CChangeObserver
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
 
-// filebrowser settings
+//// filebrowser settings
 class CFileBrowserSettings : public CMenuTarget, CChangeObserver
 {
 	private:

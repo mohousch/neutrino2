@@ -248,8 +248,6 @@ extern int dvbsub_start(int pid, bool isEplayer);
 extern int dvbsub_pause();
 extern int dvbsub_getpid();
 extern void dvbsub_setpid(int pid);
-// timezone for wizard
-extern CMenuOptionStringChooser* tzSelect;		// defined in misc_setup.cpp
 
 // init globals
 static void initGlobals(void)
@@ -4676,17 +4674,16 @@ int CNeutrinoApp::run(int argc, char **argv)
 	colorSetupNotifier = new CColorSetupNotifier;
 	colorSetupNotifier->changeNotify("", NULL);
 	
-	////
-	// remote control
+	// init remote control defore CLCD otherwise CLCD crashes
 	g_RemoteControl = new CRemoteControl;
 
-	// init vfd/lcd display
+	// init CLCD display
 	CLCD::getInstance()->init(font.filename, font.name);
 	
-	// VFD clear	
+	// CLCD clear	
 	CLCD::getInstance()->Clear();
 		
-	// show startup msg in vfd
+	// show startup msg on CLCD
 	CLCD::getInstance()->ShowText( (char *)"NG2");
 
 	// rcinput
@@ -4795,7 +4792,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// event list
 	g_EventList = new EventList;
 
-	// Ci Cam handler
+	// Ci Cammenu handler
 #if defined (ENABLE_CI)	
 	g_CamHandler = new CCAMMenuHandler();
 	g_CamHandler->init();	
@@ -4807,7 +4804,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	if (CNetworkSettings::getInstance()->network_automatic_start == 1)
 		CNetworkSettings::getInstance()->setNetwork();	
 	
-	// mount shares before scanning for plugins
+	// mount shares
 	CFSMounter::automount();
 
 	// assuming that mdev/fstab has mounted devices
@@ -4836,7 +4833,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 		else if (tvmode == CZapit::MODE_RADIO)
 			mode = mode_radio;
 
-		// startup pic : FIXME
+		// startup pic
 		frameBuffer->useBackground(false);
 		frameBuffer->loadBackgroundPic("start.jpg");	
 		frameBuffer->blit();
@@ -4869,8 +4866,41 @@ int CNeutrinoApp::run(int argc, char **argv)
 		// setup timezone
 		if(ret != RETURN_EXIT_ALL)
 		{
-			if(tzSelect)
-				tzSelect->exec(NULL);
+			CMenuOptionStringChooser * tzSelect = NULL;
+			xmlDocPtr parser;
+
+			parser = parseXmlFile("/etc/timezone.xml");
+			if (parser != NULL) 
+			{	
+				tzSelect = new CMenuOptionStringChooser(_("Time Zone"), g_settings.timezone, true, new CTZChangeNotifier(), CRCInput::RC_ok, "", true);
+				
+				tzSelect->msg = CRCInput::RC_ok;
+
+				xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode;
+				bool found = false;
+
+				while (search) 
+				{
+					if (!strcmp(xmlGetName(search), "zone")) 
+					{
+						std::string name = xmlGetAttribute(search, (char *) "name");
+						std::string zone = xmlGetAttribute(search, (char *) "zone");
+						
+						tzSelect->addOption(name.c_str());
+						found = true;
+					}
+					search = search->xmlNextNode;
+				}
+
+				if(found)
+					tzSelect->exec(this);
+				else 
+				{
+					delete tzSelect;
+					tzSelect = NULL;
+				}	
+				xmlFreeDoc(parser);
+			}
 		}
 
 		// setup network
