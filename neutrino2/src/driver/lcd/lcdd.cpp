@@ -701,36 +701,6 @@ void CLCD::showTextScreen(const std::string & big, const std::string & small, co
 	displayUpdate();
 }
 
-void CLCD::showServicename(const std::string &name, const bool perform_wakeup, int pos)
-{
-	int showmode = g_settings.lcd_epgmode;
-
-	if (!name.empty())
-		servicename = name;
-
-	if (mode != MODE_TVRADIO)
-		return;
-
-#ifdef ENABLE_4DIGITS
-	char tmp[5];
-						
-	sprintf(tmp, "%04d", pos);
-						
-	ShowText(tmp); // UTF-8
-#endif
-
-#if defined (__sh__)
-	ShowText((char *)name.c_str() );
-#endif
-
-#ifdef ENABLE_LCD
-	showTextScreen(servicename, epg_title, showmode, perform_wakeup, true);
-#endif
-	
-	return;
-}
-
-////
 void CLCD::ShowText(const char *str)
 {
 #ifdef ENABLE_LCD
@@ -791,7 +761,60 @@ void CLCD::ShowText(const char *str)
 		perror("write to vfd failed");
 	
 	closeDevice();
+#else
+	int len = strlen(str);
+	
+	if(len == 0)
+		return;
+	
+	// replace
+	std::string text = str;
+
+	// replace chars
+	replace_all(text, "\x0d", "");
+    	replace_all(text, "\n\n", "\\N");
+	replace_all(text, "\n", "");
+    	replace_all(text, "\\N", "\n");
+    	replace_all(text, "ö", "oe");
+    	replace_all(text, "ä", "ae");
+    	replace_all(text, "ü", "ue");
+	replace_all(text, "Ö", "Oe");
+    	replace_all(text, "Ä", "Ae");
+    	replace_all(text, "Ü", "Ue");
+    	replace_all(text, "ß", "ss");
+    	
+	if( write(fd, text.c_str(), len > 12? 12 : len ) < 0)
+		perror("write to vfd failed");
 #endif
+}
+
+void CLCD::showServicename(const std::string &name, const bool perform_wakeup, int pos)
+{
+	int showmode = g_settings.lcd_epgmode;
+
+	if (!name.empty())
+		servicename = name;
+
+	if (mode != MODE_TVRADIO)
+		return;
+
+#ifdef ENABLE_4DIGITS
+	char tmp[5];
+						
+	sprintf(tmp, "%04d", pos);
+						
+	ShowText(tmp); // UTF-8
+#endif
+
+#if defined (__sh__)
+	ShowText((char *)name.c_str() );
+#endif
+
+#ifdef ENABLE_LCD
+	showTextScreen(servicename, epg_title, showmode, perform_wakeup, true);
+#endif
+	
+	wake_up();
 }
 
 void CLCD::setEPGTitle(const std::string title)
@@ -1108,9 +1131,14 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 	if(!has_lcd) 
 		return;
 	
-#ifdef ENABLE_4DIGITS					
+#ifdef ENABLE_4DIGITS
+	if (mode != MODE_MENU_UTF8)
+		return;
+							
 	ShowText(text); // UTF-8
-#elif defined (ENABLE_LCD)
+#endif
+
+#ifdef ENABLE_LCD
 	if (mode == MODE_MOVIE) 
 	{
 		size_t p;
@@ -1141,6 +1169,7 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 			mytext = mytext.substr(p + 4);
 			m = AUDIO_MODE_REV;
 		}
+		
 		setMovieInfo(m, "", mytext, false);
 		return;
 	}
@@ -1156,11 +1185,18 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 	fonts.menu->RenderString(0,35+11+14*position, lcd_width + 20, text, CLCDDisplay::PIXEL_INV, highlight, utf_encoded);
 #endif
 
+#ifdef __sh__	
+	if (mode != MODE_MENU_UTF8)
+		return;
+					
+	ShowText(text); // UTF-8
+#endif
+
 	wake_up();
 	displayUpdate();
 }
 
-void CLCD::showAudioTrack(const std::string & artist, const std::string & title, const std::string & album, int pos)
+void CLCD::showAudioTrack(const std::string &artist, const std::string &title, const std::string &album, int pos)
 {
 	if(!has_lcd) 
 		return;
@@ -1181,6 +1217,18 @@ void CLCD::showAudioTrack(const std::string & artist, const std::string & title,
 	fonts.menu->RenderString(0, 48, lcd_width + 5, title.c_str(),  CLCDDisplay::PIXEL_ON, 0, isUTF8(title));
 #endif
 
+#ifdef ENABLE_4DIGITS
+	char tmp[5];
+						
+	sprintf(tmp, "%04d", pos);
+						
+	ShowText(tmp); // UTF-8
+#endif
+
+#ifdef __sh__
+	ShowText((char *)title.c_str());
+#endif
+
 	wake_up();
 	displayUpdate();
 
@@ -1192,7 +1240,7 @@ void CLCD::showAudioPlayMode(AUDIOMODES m)
 		return;
 	
 #ifdef ENABLE_LCD
-	display->draw_fill_rect (-1,51,10,62, CLCDDisplay::PIXEL_OFF);
+	display->draw_fill_rect (-1, 51, 10, 62, CLCDDisplay::PIXEL_OFF);
 	
 	switch(m)
 	{
@@ -1236,6 +1284,32 @@ void CLCD::showAudioPlayMode(AUDIOMODES m)
 				display->draw_line(x+4 ,y+1 , x+4, y+3, CLCDDisplay::PIXEL_ON);
 				display->draw_line(x+5 ,y   , x+5, y+4, CLCDDisplay::PIXEL_ON);
 			}
+			break;
+	}
+#endif
+
+#ifdef __sh__
+	switch(m) 
+	{
+		case AUDIO_MODE_PLAY:
+			ShowIcon(VFD_ICON_PLAY, true);
+			ShowIcon(VFD_ICON_PAUSE, false);
+			break;
+			
+		case AUDIO_MODE_STOP:
+			ShowIcon(VFD_ICON_PLAY, false);
+			ShowIcon(VFD_ICON_PAUSE, false);
+			break;
+			
+		case AUDIO_MODE_PAUSE:
+			ShowIcon(VFD_ICON_PLAY, false);
+			ShowIcon(VFD_ICON_PAUSE, true);
+			break;
+			
+		case AUDIO_MODE_FF:
+			break;
+			
+		case AUDIO_MODE_REV:
 			break;
 	}
 #endif
@@ -1468,7 +1542,6 @@ void CLCD::setMode(const MODES m, const char * const title)
 		case MODE_TVRADIO:
 			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)	
 				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
-				//showServicename(g_RemoteControl->getCurrentChannelName());
 			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
 				showTime(true);
 			
@@ -1602,9 +1675,9 @@ void CLCD::setPower(int power)
 		
 	g_settings.lcd_power = power;
 	
-#ifdef ENABLE_LCD
 	setlcdparameter();
-#elif defined (__sh__)
+	
+#if defined (__sh__)
 	struct vfd_ioctl_data data;
 	data.start_address = power;
 	
@@ -1740,14 +1813,14 @@ void CLCD::Lock()
 {
 	if(!has_lcd) return;
 	
-	creat("/tmp/vfd.locked", 0);
+	creat("/tmp/lcd.locked", 0);
 }
 
 void CLCD::Unlock()
 {
 	if(!has_lcd) return;
 	
-	unlink("/tmp/vfd.locked");
+	unlink("/tmp/lcd.locked");
 }
 
 void CLCD::Clear()
@@ -1761,10 +1834,13 @@ void CLCD::Clear()
 		display->clear_screen(); // clear lcd
 		displayUpdate();
 	}
-#else
+#endif
+
 #if defined (ENABLE_4DIGITS)
 	ShowText("     "); // 5 empty digits
-#elif defined (__sh__)
+#endif
+
+#if defined (__sh__)
 	struct vfd_ioctl_data data;
 	
 #if defined (PLATFORM_KATHREIN)	/* using this otherwise VFD of ufs910 is black and Neutrino has a segfault */
@@ -1784,9 +1860,6 @@ void CLCD::Clear()
 #else
 	ShowText("            "); // 12 empty digits
 #endif
-#endif
-
-	return;
 }
 
 bool CLCD::ShowPng(char *filename)

@@ -3161,3 +3161,5 @@
 /debian/var/tuxbox/plugins/upnp/upnp.png
 /debian/var/tuxbox/plugins/upnp/upnp.so
 /debian/var/tuxbox/plugins/upnp/upnp_small.png
+/neutrino2/src/gui/.deps/lcdcontroler.Po
+/neutrino2/src/gui/lcdcontroler.o
