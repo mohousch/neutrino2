@@ -75,74 +75,31 @@ CLCDDisplay::CLCDDisplay()
 	iconBasePath = "";
 	
 	//open device
-	//fd = open("/dev/dbox/oled0", O_RDWR);
-	//// FIXME:
-	fd = open("/dev/dbox/fp", O_RDWR);
-		
-	if(fd < 0)
-	{
-		// probe /dev/vfd
-		fd = open("/dev/vfd", O_RDWR);
-		
-		if(fd < 0)
-		{
-			// probe /dev/display
-			fd = open("/dev/display", O_RDWR);
-			
-			if(fd < 0)
-			{
-				fd = open("/dev/mcu", O_RDWR);
-
-				if(fd < 0)
-				{
-					// probe /proc/vfd (e.g gigablue)
-					fd = open("/proc/vfd", O_RDWR);
-				
-					if(fd < 0)
-					{
-						// probe /dev/dbox/oled0
-						fd = open("/dev/dbox/oled0", O_RDWR);
-		
-						if(fd < 0) 
-						{
-							// probe /dev/oled0
-							fd = open("/dev/oled0", O_RDWR);
-						
-							if(fd < 0)
-							{
-								fd = open("/dev/dbox/lcd0", O_RDWR);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	////
-	/*
+	fd = open("/dev/dbox/oled0", O_RDWR);
+	
 	if (fd < 0)
 	{
 		xres = 128;
 		if (!access("/proc/stb/lcd/oled_brightness", W_OK) || !access("/proc/stb/fp/oled_brightness", W_OK) )
 			is_oled = 2;
 			
-//		fd = open(LCD_DEVICE, O_RDWR);
+		fd = open("/dev/dbox/lcd0", O_RDWR);
 	} 
 	else
 	{
 		printf("found OLED display!\n");
 		is_oled = 1;
 	}
-	*/
 	
 	if (fd < 0)
 	{
 		printf("CLCDDisplay::CLCDDisplay: couldn't open LCD - load lcd.ko!\n");
-//		return;
+		return;
 	}
 	else
 	{
 		int i = LCD_MODE_BIN;
+		
 		ioctl(fd, LCD_IOCTL_ASC_MODE, &i);
 		
 		FILE *f = fopen("/proc/stb/lcd/xres", "r");
@@ -153,12 +110,14 @@ CLCDDisplay::CLCDDisplay()
 			if (fscanf(f, "%x", &tmp) == 1)
 				xres = tmp;
 			fclose(f);
+			
 			f = fopen("/proc/stb/lcd/yres", "r");
 			if (f)
 			{
 				if (fscanf(f, "%x", &tmp) == 1)
 					yres = tmp;
 				fclose(f);
+				
 				f = fopen("/proc/stb/lcd/bpp", "r");
 				if (f)
 				{
@@ -167,15 +126,15 @@ CLCDDisplay::CLCDDisplay()
 					fclose(f);
 				}
 			}
+			
 			is_oled = 3;
 		}
+		
+		printf("CLCDDisplay::CLCDDisplay: xres=%d, yres=%d, bpp=%d is_oled=%d", xres, yres, bpp, is_oled);
 	}
 	
-	if (fd >= 0)
-	{ 
-		setSize(xres, yres, bpp);
-		available = true;
-	}
+	setSize(xres, yres, bpp);
+	available = true;
 }
 
 void CLCDDisplay::setSize(int w, int h, int b)
@@ -240,10 +199,24 @@ void CLCDDisplay::setFlipped(bool onoff)
 
 int CLCDDisplay::setLCDContrast(int contrast)
 {
+	int fp;
+
+	fp = open("/dev/dbox/fp0", O_RDWR);
+
+	if (fp < 0)
+		fp = open("/dev/dbox/lcd0", O_RDWR);
+	if (fp < 0)
+	{
+		printf("[LCD] can't open /dev/dbox/fp0(%m)\n");
+		return (-1);
+	}
+	
 	if(ioctl(fd, LCD_IOCTL_SRV, &contrast) < 0)
 	{
 		printf("CLCDDisplay::setLCDContrast: can't set lcd contrast(%m)\n");
 	}
+	
+	close(fp);
 
 	return(0);
 }
@@ -263,8 +236,18 @@ int CLCDDisplay::setLCDBrightness(int brightness)
 	}
 	else
 	{
+		int fp;
+		if ((fp = open("/dev/dbox/fp0", O_RDWR)) < 0)
+		{
+			printf("[LCD] can't open /dev/dbox/fp0\n");
+			return (-1);
+		}
+
+
 		if(ioctl(fd, FP_IOCTL_LCD_DIMM, &brightness) < 0)
 			printf("[LCD] can't set lcd brightness (%m)\n");
+			
+		close(fp);
 	}
 	
 	if (brightness == 0)
@@ -320,7 +303,7 @@ void CLCDDisplay::convert_data ()
 	unsigned int x, y, z;
 	char tmp;
 
-	#if 0
+#if 0
 	unsigned int height = yres;
 	unsigned int width = xres;
 
@@ -337,7 +320,7 @@ void CLCDDisplay::convert_data ()
 			lcd[y][x] = tmp;
 		}
 	}
-	#endif
+#endif
 #endif
 }
 
@@ -494,6 +477,7 @@ void CLCDDisplay::surface_fill_rect(int area_left, int area_top, int area_right,
 		uint32_t icol;
 
 		icol = 0x10101*color;
+		
 #if BYTE_ORDER == LITTLE_ENDIAN
 		uint16_t col = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
 #else
@@ -501,7 +485,7 @@ void CLCDDisplay::surface_fill_rect(int area_left, int area_top, int area_right,
 #endif
 		for (int y = area_top; y < area_bottom; y++)
 		{
-			uint16_t *dst=(uint16_t*)(((uint8_t*)surface_data)+y*surface_stride+area_left*surface_bypp);
+			uint16_t *dst = (uint16_t*)(((uint8_t*)surface_data) + y*surface_stride + area_left*surface_bypp);
 			int x = area_width;
 			while (x--)
 				*dst++=col;
@@ -515,10 +499,10 @@ void CLCDDisplay::surface_fill_rect(int area_left, int area_top, int area_right,
 			
 		col ^= 0xFF000000;
 
-		for (int y=area_top; y<area_bottom; y++)
+		for (int y = area_top; y < area_bottom; y++)
 		{
-			uint32_t *dst=(uint32_t*)(((uint8_t*)surface_data)+y*surface_stride+area_left*surface_bypp);
-			int x=area_width;
+			uint32_t *dst = (uint32_t*)(((uint8_t*)surface_data) + y*surface_stride + area_left*surface_bypp);
+			int x = area_width;
 			while (x--)
 				*dst++=col;
 		}
