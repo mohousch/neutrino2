@@ -4659,6 +4659,10 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// setup color
 	colorSetupNotifier = new CColorSetupNotifier;
 	colorSetupNotifier->changeNotify("", NULL);
+	
+	////
+	// remote control
+	g_RemoteControl = new CRemoteControl;
 
 	// init vfd/lcd display
 	CLCD::getInstance()->init(font.filename, font.name);
@@ -4764,7 +4768,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 #endif
 	
 	// remote control
-	g_RemoteControl = new CRemoteControl;
+	//g_RemoteControl = new CRemoteControl;
 	
 	// epg view
 	g_EpgData = new CEpgData;

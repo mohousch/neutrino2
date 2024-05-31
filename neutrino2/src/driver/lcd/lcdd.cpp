@@ -701,35 +701,26 @@ void CLCD::showTextScreen(const std::string & big, const std::string & small, co
 	displayUpdate();
 }
 
-void CLCD::showServicename(const std::string name, const bool perform_wakeup, int pos)
+void CLCD::showServicename(const std::string &name, const bool perform_wakeup, int pos)
 {
-	/*
-	   1 = show servicename
-	   2 = show epg title
-	   4 = draw separator line between name and EPG
-	 */
 	int showmode = g_settings.lcd_epgmode;
-
-	//printf("CLCD::showServicename '%s' epg: '%s'\n", name.c_str(), epg_title.c_str());
 
 	if (!name.empty())
 		servicename = name;
 
-//	if (mode != MODE_TVRADIO)
-//		return;
+	if (mode != MODE_TVRADIO)
+		return;
 
 #ifdef ENABLE_4DIGITS
-	if( write(fd, name.c_str(), name.length() > 5? 5 : name.length() ) < 0)
-		perror("write to vfd failed");
+	char tmp[5];
+						
+	sprintf(tmp, "%04d", pos);
+						
+	ShowText(tmp); // UTF-8
 #endif
 
-#if defined (__sh__)	 
-	openDevice();
-	
-	if(write(fd, name.c_str(), name.length() > 16? 16 : name.length() ) < 0)
-		perror("write to vfd failed");
-	
-	closeDevice();	
+#if defined (__sh__)
+	ShowText((char *)name.c_str() );
 #endif
 
 #ifdef ENABLE_LCD
@@ -737,6 +728,70 @@ void CLCD::showServicename(const std::string name, const bool perform_wakeup, in
 #endif
 	
 	return;
+}
+
+////
+void CLCD::ShowText(const char *str)
+{
+#ifdef ENABLE_LCD
+	showServicename(std::string(str)); 
+#endif
+
+#ifdef ENABLE_4DIGITS
+	int len = strlen(str);
+	
+	if(len == 0)
+		return;
+	
+	// replace
+	std::string text = str;
+
+	// replace chars
+	replace_all(text, "\x0d", "");
+    	replace_all(text, "\n\n", "\\N");
+	replace_all(text, "\n", "");
+    	replace_all(text, "\\N", "\n");
+    	replace_all(text, "ö", "oe");
+    	replace_all(text, "ä", "ae");
+    	replace_all(text, "ü", "ue");
+	replace_all(text, "Ö", "Oe");
+    	replace_all(text, "Ä", "Ae");
+    	replace_all(text, "Ü", "Ue");
+    	replace_all(text, "ß", "ss");
+    	
+    	if( write(fd, text.c_str(), len > 5? 5 : len ) < 0)
+		perror("write to vfd failed");
+#endif
+
+#ifdef __sh__
+	int len = strlen(str);
+	
+	if(len == 0)
+		return;
+	
+	// replace
+	std::string text = str;
+
+	// replace chars
+	replace_all(text, "\x0d", "");
+    	replace_all(text, "\n\n", "\\N");
+	replace_all(text, "\n", "");
+    	replace_all(text, "\\N", "\n");
+    	replace_all(text, "ö", "oe");
+    	replace_all(text, "ä", "ae");
+    	replace_all(text, "ü", "ue");
+	replace_all(text, "Ö", "Oe");
+    	replace_all(text, "Ä", "Ae");
+    	replace_all(text, "Ü", "Ue");
+    	replace_all(text, "ß", "ss");
+    	
+    	openDevice();
+	
+	if(write(fd , text.c_str(), len > 16? 16 : len ) < 0)
+		perror("write to vfd failed");
+	
+	closeDevice();
+#endif
 }
 
 void CLCD::setEPGTitle(const std::string title)
@@ -1240,6 +1295,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		
 	mode = m;
 	menutitle = title;
+	
 	setlcdparameter();
 	
 #ifdef ENABLE_LCD
@@ -1360,13 +1416,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 		case MODE_TVRADIO:
 			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)
-			{
-				char tmp[5];
-						
-				sprintf(tmp, "%04d", g_RemoteControl->getCurrentChannelNumber());
-					
-				ShowText(tmp);
-			}
+				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
 			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
 				showTime();
 			
@@ -1417,8 +1467,8 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 		case MODE_TVRADIO:
 			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)	
-				//showServicename(!g_RemoteControl->getCurrentChannelName().empty()? g_RemoteControl->getCurrentChannelName() : " ", true, g_RemoteControl->getCurrentChannelNumber());
-				showServicename(g_RemoteControl->getCurrentChannelName());
+				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
+				//showServicename(g_RemoteControl->getCurrentChannelName());
 			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
 				showTime(true);
 			

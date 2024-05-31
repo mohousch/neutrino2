@@ -1,5 +1,7 @@
 /*
 	LCD-Daemon  -   DBoxII-Project
+	
+	$Id: lcddisplay.h 31052024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 		baseroutines by Shadow_
@@ -109,7 +111,7 @@ class CLCDDisplay
 		void draw_rectangle (int left,int top, int right, int bottom, int linestate,int fillstate);
 		void draw_polygon(int num_vertices, int *vertices, int state);
 
-		bool paintIcon(std::string filename, int x, int y, bool invert);
+		bool paintIcon(std::string filename, int x, int y, bool invert); // raw
 		void clear_screen();
 		void dump_screen(raw_display_t *screen);
 		void load_screen_element(const raw_lcd_element_t * element, int left, int top);
@@ -124,7 +126,8 @@ class CLCDDisplay
 		int setLCDBrightness(int brightness);
 		void setInverted( unsigned char );
 		void setFlipped(bool);
-		bool isOled() const { return !!is_oled; }
+		bool isOled() const { return !!is_oled; };
+		////
 		int raw_buffer_size;
 		int xres, yres, bpp;
 		int bypp;

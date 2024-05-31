@@ -1,5 +1,7 @@
 /*
 	LCD-Daemon  -   DBoxII-Project
+	
+	$Id: lcddisplay.cpp 31052024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
         baseroutines by Shadow_
@@ -28,7 +30,7 @@
 
 #include <png.h>
 
-#include <stdint.h> /* uint8_t */
+#include <stdint.h>
 #include <fcntl.h>
 #include <cstdio>
 #include <cstdlib>

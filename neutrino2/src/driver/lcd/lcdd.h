@@ -549,7 +549,7 @@ class CLCD
 		void setMode(const MODES m, const char * const title = "");
 		MODES getMode() { return mode; };
 
-		void showServicename(const std::string name, const bool perform_wakeup = true, int pos = 0); // UTF-8
+		void showServicename(const std::string &name, const bool perform_wakeup = true, int pos = 0); // UTF-8
 		void setEPGTitle(const std::string title);
 		void setMovieInfo(const AUDIOMODES playmode, const std::string big, const std::string small, const bool centered = false);
 		void setMovieAudio(const bool is_ac3);
@@ -591,7 +591,7 @@ class CLCD
 		void Unlock();
 		void Clear();
 		void ShowIcon(vfd_icon icon, bool show);
-		void ShowText(const char *s) { showServicename(std::string(s)); };
+		void ShowText(const char *str) /*{ showServicename(std::string(s)); }*/;
 		
 		bool ShowPng(char *filename);
 		bool DumpPng(char *filename);
