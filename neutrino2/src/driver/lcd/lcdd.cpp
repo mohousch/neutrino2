@@ -274,13 +274,19 @@ void CLCD::init(const char * fontfile, const char * fontname, const char * fontf
 
 // FIXME: add more e.g weather icons and so on
 enum elements {
-	ELEMENT_BANNER = 0,
-	ELEMENT_MOVIESTRIPE = 1,
-	ELEMENT_SPEAKER  = 2,
-	ELEMENT_SCART  = 3,
-	ELEMENT_POWER  = 4,
-	ELEMENT_MUTE = 5,
-	ELEMENT_DOLBY = 6,
+	ELEMENT_BANNER 		= 0,
+	ELEMENT_MOVIESTRIPE 	= 1,
+	ELEMENT_SPEAKER  	= 2,
+	ELEMENT_SCART  		= 3,
+	ELEMENT_POWER  		= 4,
+	ELEMENT_MUTE 		= 5,
+	ELEMENT_DOLBY 		= 6,
+	ELEMENT_LOCK 		= 7,
+	ELEMENT_HD		= 8,
+	ELEMENT_TV		= 9,
+	ELEMENT_RADIO		= 10,
+	ELEMENT_PLAY		= 11,
+	ELEMENT_PAUSE		= 12	
 };
 
 const char * const element_name[LCD_NUMBER_OF_ELEMENTS] = {
@@ -290,7 +296,13 @@ const char * const element_name[LCD_NUMBER_OF_ELEMENTS] = {
 	"lcdscart",
 	"lcdpower",
 	"lcdmute",
-	"lcddolby"
+	"lcddolby",
+	"lcdlock",
+	"lcdhd",
+	"lcdtv",
+	"lcdradio",
+	"lcdplay",
+	"lcdpause"
 };
 
 #define NUMBER_OF_PATHS 2
@@ -858,14 +870,15 @@ void CLCD::showRCLock(int duration)
 		return;
 	
 #ifdef ENABLE_LCD
-	std::string icon = DATADIR "/lcdd/icons/rclock.raw";
+//	std::string icon = DATADIR "/lcdd/icons/rclock.raw";
 	raw_display_t curr_screen = new unsigned char[display->raw_buffer_size];
 
 	// Saving the whole screen is not really nice since the clock is updated
 	// every second. Restoring the screen can cause a short travel to the past ;)
 	display->dump_screen(&curr_screen);
 	display->draw_fill_rect (-1, 10, display->xres, display->yres-12-2, CLCDDisplay::PIXEL_OFF);
-	display->paintIcon(icon, 44, 25, false);
+//	display->paintIcon(icon, 44, 25, false);
+	display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, display->yres - element[ELEMENT_SPEAKER].height);
 	wake_up();
 	displayUpdate();
 	sleep(duration);
@@ -989,13 +1002,15 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 						is_ac3 = false;
 				}
 
-				const char * icon;
+				//const char * icon;
 				if (is_ac3)
-					icon = DATADIR "/lcdd/icons/dd.raw";
+					//icon = DATADIR "/lcdd/icons/dd.raw";
+					display->load_screen_element(&(element[ELEMENT_DOLBY]), 0, lcd_height-element[ELEMENT_SPEAKER].height);
 				else
-					icon = DATADIR "/lcdd/icons/stereo.raw";
+					//icon = DATADIR "/lcdd/icons/stereo.raw";
+					display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height);
 
-				display->paintIcon(icon, left+width+5, 1, false);
+				//display->paintIcon(icon, left+width+5, 1, false);
 			}
 		}
 		else

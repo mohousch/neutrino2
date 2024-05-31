@@ -497,7 +497,7 @@ class CLCD
 		LcdFontRenderClass		*fontRenderer;
 		FontsDef			fonts;
 
-#define LCD_NUMBER_OF_ELEMENTS 7
+#define LCD_NUMBER_OF_ELEMENTS 13
 		raw_lcd_element_t               element[LCD_NUMBER_OF_ELEMENTS];
 
 		MODES				mode;

@@ -435,8 +435,8 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 
 	// install
 #ifdef ENABLE_LCD
-	CVFD::getInstance()->showProgressBar2(0, "checking", 0, "Update Neutrino");
-	CVFD::getInstance()->setMode(CLCD::MODE_PROGRESSBAR2);
+	CLCD::getInstance()->showProgressBar2(0, "checking", 0, "Update Neutrino");
+	CLCD::getInstance()->setMode(CLCD::MODE_PROGRESSBAR2);
 #endif
 
 	progressWindow->showGlobalStatus(19);
@@ -634,8 +634,8 @@ void CFlashExpert::writemtd(const std::string & filename, int mtdNumber)
 		return;
 
 #ifdef ENABLE_LCD
-        CVFD::getInstance()->showProgressBar2(0, "checking", 0, "Update Neutrino");
-        CVFD::getInstance()->setMode(CLCD::MODE_PROGRESSBAR2);	
+        CLCD::getInstance()->showProgressBar2(0, "checking", 0, "Update Neutrino");
+        CLCD::getInstance()->setMode(CLCD::MODE_PROGRESSBAR2);	
 #endif // VFD_UPDATE
 
 	progressWindow->setTitle(_("Writing Flash"));

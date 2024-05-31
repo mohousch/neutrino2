@@ -1334,7 +1334,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		showFailure();
 
 #if ENABLE_LCD		
-		CVFD::getInstance()->showPercentOver(255);
+		CLCD::getInstance()->showPercentOver(255);
 #endif		
 
 		return messages_return::handled;
@@ -1354,7 +1354,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	  		showFailure();
 
 #if ENABLE_LCD			
-	  		CVFD::getInstance()->showPercentOver(255);
+	  		CLCD::getInstance()->showPercentOver(255);
 #endif			
 		}
 
@@ -1871,7 +1871,7 @@ void CInfoViewer::showLcdPercentOver()
 				runningPercent = MIN ((unsigned) ((float) (jetzt - info_CurrentNext.current_time.starttime) / (float) info_CurrentNext.current_time.duration * 100.), 100);
 		}
 
-		CVFD::getInstance()->showPercentOver(runningPercent);	
+		CLCD::getInstance()->showPercentOver(runningPercent);	
 	}	
 }
 #endif

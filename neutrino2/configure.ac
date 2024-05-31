@@ -103,6 +103,26 @@ if test "$enable_4digits" = "yes"; then
 AC_DEFINE(ENABLE_4DIGITS,1,[include 5 segment lcd support])
 fi
 
+# graphlcd
+AC_ARG_ENABLE(graphlcd,
+	AS_HELP_STRING(--enable-graphlcd,include graphlcd support),
+	,[enable_graphlcd=no])
+AM_CONDITIONAL(ENABLE_GRAPHLCD,test "$enable_graphlcd" = "yes")
+
+if test "$enable_graphlcd" = "yes"; then
+AC_DEFINE(ENABLE_GRAPHLCD,1,[include graphlcd support])
+fi
+
+# lcd4linux
+AC_ARG_ENABLE(lcd4linux,
+	AS_HELP_STRING(--enable-lcd4linux,include lcd4linux support),
+	,[enable_lcd4linux=no])
+AM_CONDITIONAL(ENABLE_LCD4LINUX,test "$enable_lcd4linux" = "yes")
+
+if test "$enable_lcd4linux" = "yes"; then
+AC_DEFINE(ENABLE_LCD4LINUX,1,[include lcd4linux support])
+fi
+
 # scart output
 AC_ARG_ENABLE(scart,
 	AS_HELP_STRING(--enable-scart,enable scart output),
@@ -180,11 +200,12 @@ SCART			: $enable_scart
 LCD			: $enable_lcd
 TFTLCD			: $enable_tftlcd
 4 Digits		: $enable_4digits
+NGLCD			: $enable_graphlcd
+LCD4LINUX		: $enable_lcd4linux
 CI CAM			: $enable_ci
 F-Keys			: $enable_functionkeys
 Python			: $enable_python
 Lua			: $enable_lua
-Fake Tuner		: $enable_fake_tuner
 Testing      		: $enable_testing
 ])
 

@@ -144,12 +144,12 @@ init:
 	@read -p "Select LCD support (1-5)?" LCD; \
 	LCD=$${LCD}; \
 	case "$$LCD" in \
-		1) echo "LCD=4-digits" >> config.local;; \
+		1) echo "LCD=" >> config.local;; \
 		2) echo "LCD=4-digits" >> config.local;; \
 		3) echo "LCD=vfd" >> config.local;; \
 		4) echo "LCD=lcd" >> config.local;; \
 		5) echo "LCD=tftlcd" >> config.local;; \
-		*) echo "LCD=4-digits" >> config.local;; \
+		*) echo "LCD=" >> config.local;; \
 	esac; \
 	echo ""	
 # scart
@@ -244,7 +244,7 @@ N2_OPTS += --enable-4digits
 endif
 
 ifeq ($(LCD), tftlcd)
-N2_OPTS += --enable-lcd --enable-tftlcd
+N2_OPTS += --enable-tftlcd
 endif
 
 # FKEYS

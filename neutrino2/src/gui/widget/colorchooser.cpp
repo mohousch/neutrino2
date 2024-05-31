@@ -296,7 +296,7 @@ void CColorChooser::paint()
 	
 	// box
 	m_cBoxWindow->setColor(COL_MENUCONTENT_PLUS_0);
-	m_cBoxWindow->setCorner(RADIUS_MID, CORNER_ALL);
+	m_cBoxWindow->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	m_cBoxWindow->paint();
 
 	// Head

@@ -281,7 +281,7 @@ void CLCDControler::paint()
 	
 	// main window
 	mainWindow->setColor(COL_MENUCONTENT_PLUS_0);
-	mainWindow->setCorner(RADIUS_MID, CORNER_BOTTOM);
+	mainWindow->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	mainWindow->paint();
 
 	// head
