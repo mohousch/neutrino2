@@ -138,8 +138,6 @@ void CLCD::ShowDiskLevel()
 		if (percent > 1050)
 			digits = 9;
 		
-		//printf("HDD Fuell = %d Digits = %d\n", percent, digits);
-		
 		if (digits > 0)
 		{
 			for (i = 0; i < digits; i++)
@@ -185,6 +183,13 @@ CLCD::CLCD()
 CLCD::~CLCD()
 {
 #ifdef ENABLE_4DIGITS
+	if (fd)
+		::close(fd);
+		
+	fd = -1;
+#endif
+
+#ifdef ENABLE_VFD
 	if (fd)
 		::close(fd);
 		
@@ -315,6 +320,15 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 {
 #ifdef ENABLE_LCD
 	display = new CLCDDisplay();
+	
+	// check if we have display
+	if (!display->isAvailable())
+	{
+		dprintf(DEBUG_NORMAL, "CLCD::lcdInit: exit...(no lcd-support)\n");
+		has_lcd = false;
+		return false;
+	}
+	
 	// init fonts
 	fontRenderer = new LcdFontRenderClass(display);
 	
@@ -344,14 +358,6 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	fonts.time        = fontRenderer->getFont(fontname2, style_name2, 14);
 	fonts.channelname = fontRenderer->getFont(fontname3, style_name3, 15);
 	fonts.menutitle   = fonts.channelname;
-
-	// check if we have display
-	if (!display->isAvailable())
-	{
-		dprintf(DEBUG_NORMAL, "CLCD::lcdInit: exit...(no lcd-support)\n");
-		has_lcd = false;
-		return false;
-	}
 	
 	has_lcd = true;
 
@@ -430,12 +436,57 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 #endif
 #endif
 
+#ifdef ENABLE_VFD
 #if defined (__sh__)
 	has_lcd = true;
-#endif
+#else
+	fd = open("/dev/dbox/fp", O_RDWR);
+		
+	if(fd < 0)
+	{
+		// probe /dev/vfd
+		fd = open("/dev/vfd", O_RDWR);
+		
+		if(fd < 0)
+		{
+			// probe /dev/display
+			fd = open("/dev/display", O_RDWR);
+			
+			if(fd < 0)
+			{
+				fd = open("/dev/mcu", O_RDWR);
+
+				if(fd < 0)
+				{
+					// probe /proc/vfd (e.g gigablue)
+					fd = open("/proc/vfd", O_RDWR);
+				
+					if(fd < 0)
+					{
+						// probe /dev/dbox/oled0
+						fd = open("/dev/dbox/oled0", O_RDWR);
+		
+						if(fd < 0) 
+						{
+							// probe /dev/oled0
+							fd = open("/dev/oled0", O_RDWR);
+						
+							if(fd < 0)
+							{
+								fd = open("/dev/dbox/lcd0", O_RDWR);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	if (fd >= 0) has_lcd = true;
+#endif // sh
+#endif // vfd
 	
 	//FIXME: Add
-	//vfd
 	//tftlcd
 	//nglcd
 
@@ -481,7 +532,8 @@ void CLCD::setlcdparameter(int dimm, const int contrast, const int power, const 
 	else		
 		display->setInverted(CLCDDisplay::PIXEL_OFF);
 		
-#elif defined (__sh__)
+#elif defined (ENABLE_VFD)
+#ifdef __sh__
 	if(dimm < 0)
 		dimm = 0;
 	else if(dimm > 15)
@@ -498,7 +550,8 @@ void CLCD::setlcdparameter(int dimm, const int contrast, const int power, const 
 	if( ioctl(fd, VFDBRIGHTNESS, &data) < 0)  
 		perror("VFDBRIGHTNESS");
 	
-	closeDevice();		
+	closeDevice();
+#endif	
 #endif
 }
 
@@ -506,8 +559,7 @@ void CLCD::setlcdparameter(void)
 {
 	if(!has_lcd) 
 		return;
-	
-//#ifdef ENABLE_LCD
+
 	last_toggle_state_power = g_settings.lcd_power;
 	int dim_time = atoi(g_settings.lcd_setting_dim_time);
 	int dim_brightness = g_settings.lcd_setting_dim_brightness;
@@ -530,7 +582,6 @@ void CLCD::setlcdparameter(void)
 			power,
 			g_settings.lcd_inverse,
 			0);
-//#endif
 }
 
 static std::string removeLeadingSpaces(const std::string & text)
@@ -703,11 +754,12 @@ void CLCD::showTextScreen(const std::string & big, const std::string & small, co
 
 void CLCD::ShowText(const char *str)
 {
+	if (!has_lcd)
+		return;
+		
 #ifdef ENABLE_LCD
 	showServicename(std::string(str)); 
-#endif
-
-#ifdef ENABLE_4DIGITS
+#elif defined (ENABLE_4DIGITS)
 	int len = strlen(str);
 	
 	if(len == 0)
@@ -731,8 +783,7 @@ void CLCD::ShowText(const char *str)
     	
     	if( write(fd, text.c_str(), len > 5? 5 : len ) < 0)
 		perror("write to vfd failed");
-#endif
-
+#elif defined (ENABLE_VFD)
 #ifdef __sh__
 	int len = strlen(str);
 	
@@ -786,6 +837,7 @@ void CLCD::ShowText(const char *str)
 	if( write(fd, text.c_str(), len > 12? 12 : len ) < 0)
 		perror("write to vfd failed");
 #endif
+#endif
 }
 
 void CLCD::showServicename(const std::string &name, const bool perform_wakeup, int pos)
@@ -804,13 +856,11 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 	sprintf(tmp, "%04d", pos);
 						
 	ShowText(tmp); // UTF-8
-#endif
-
-#if defined (__sh__)
+#elif defined (ENABLE_VFD)
+//#if defined (__sh__)
 	ShowText((char *)name.c_str() );
-#endif
-
-#ifdef ENABLE_LCD
+//#endif
+#elif defined (ENABLE_LCD)
 	showTextScreen(servicename, epg_title, showmode, perform_wakeup, true);
 #endif
 	
@@ -898,7 +948,7 @@ void CLCD::showTime(bool force)
 		
 		displayUpdate();
 	}
-#else
+#elif defined (ENABLE_VFD) || defined (ENABLE_4DIGITS)
 	if (showclock) 
 	{
 		char timestr[21];
@@ -1131,14 +1181,12 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 	if(!has_lcd) 
 		return;
 	
-#ifdef ENABLE_4DIGITS
+#if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 	if (mode != MODE_MENU_UTF8)
 		return;
 							
 	ShowText(text); // UTF-8
-#endif
-
-#ifdef ENABLE_LCD
+#elif defined (ENABLE_LCD)
 	if (mode == MODE_MOVIE) 
 	{
 		size_t p;
@@ -1185,13 +1233,6 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 	fonts.menu->RenderString(0,35+11+14*position, lcd_width + 20, text, CLCDDisplay::PIXEL_INV, highlight, utf_encoded);
 #endif
 
-#ifdef __sh__	
-	if (mode != MODE_MENU_UTF8)
-		return;
-					
-	ShowText(text); // UTF-8
-#endif
-
 	wake_up();
 	displayUpdate();
 }
@@ -1215,23 +1256,20 @@ void CLCD::showAudioTrack(const std::string &artist, const std::string &title, c
 	fonts.menu->RenderString(0, 22, lcd_width + 5, artist.c_str(), CLCDDisplay::PIXEL_ON, 0, isUTF8(artist));
 	fonts.menu->RenderString(0, 35, lcd_width + 5, album.c_str(),  CLCDDisplay::PIXEL_ON, 0, isUTF8(album));
 	fonts.menu->RenderString(0, 48, lcd_width + 5, title.c_str(),  CLCDDisplay::PIXEL_ON, 0, isUTF8(title));
-#endif
-
-#ifdef ENABLE_4DIGITS
+#elif defined (ENABLE_4DIGITS)
 	char tmp[5];
 						
 	sprintf(tmp, "%04d", pos);
 						
 	ShowText(tmp); // UTF-8
-#endif
-
+#elif defined (ENABLE_VFD)
 #ifdef __sh__
 	ShowText((char *)title.c_str());
+#endif
 #endif
 
 	wake_up();
 	displayUpdate();
-
 }
 
 void CLCD::showAudioPlayMode(AUDIOMODES m)
@@ -1286,8 +1324,7 @@ void CLCD::showAudioPlayMode(AUDIOMODES m)
 			}
 			break;
 	}
-#endif
-
+#elif defined (ENABLE_VFD)
 #ifdef __sh__
 	switch(m) 
 	{
@@ -1312,6 +1349,7 @@ void CLCD::showAudioPlayMode(AUDIOMODES m)
 		case AUDIO_MODE_REV:
 			break;
 	}
+#endif
 #endif
 
 	wake_up();
@@ -1483,9 +1521,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		showInfoBox();
 		break;
 	}
-#endif
-
-#ifdef ENABLE_4DIGITS
+#elif defined (ENABLE_4DIGITS)
 	switch (m) 
 	{
 		case MODE_TVRADIO:
@@ -1531,8 +1567,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 			break;
 	}
 
-#endif
-
+#elif defined (ENABLE_VFD)
 #ifdef __sh__
 	if(strlen(title))
 		ShowText((char *)title);
@@ -1629,6 +1664,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 			break;
 	}
 
+#endif //sh
 #endif
 	
 	wake_up();
@@ -1676,7 +1712,8 @@ void CLCD::setPower(int power)
 	g_settings.lcd_power = power;
 	
 	setlcdparameter();
-	
+
+#if defined (ENABLE_VFD)	
 #if defined (__sh__)
 	struct vfd_ioctl_data data;
 	data.start_address = power;
@@ -1687,7 +1724,9 @@ void CLCD::setPower(int power)
 		perror("VFDPWRLED");
 	
 	closeDevice();
-#elif defined (PLATFORM_GIGABLUE)
+#endif
+#elif defined (ENABLE_4DIGITS)
+#if defined (PLATFORM_GIGABLUE)
 	const char *VFDLED[] = {
 		"VFD_OFF",
 		"VFD_BLUE",
@@ -1702,7 +1741,9 @@ void CLCD::setPower(int power)
 		return;
 	
 	fprintf(f, "%d", power);
+	
 	fclose(f);
+#endif
 #endif
 }
 
@@ -1762,6 +1803,7 @@ void CLCD::pause()
 
 void CLCD::ShowIcon(vfd_icon icon, bool show)
 {
+#if defined (ENABLE_VFD)
 #if defined (__sh__)
 #if defined (PLATFORM_KATHREIN) || defined(PLATFORM_SPARK7162)
 	switch (icon)
@@ -1806,6 +1848,7 @@ void CLCD::ShowIcon(vfd_icon icon, bool show)
 		perror("VFDICONDISPLAYONOFF");
 #endif	
 	closeDevice();
+#endif // sh
 #endif
 }
 
@@ -1834,12 +1877,9 @@ void CLCD::Clear()
 		display->clear_screen(); // clear lcd
 		displayUpdate();
 	}
-#endif
-
-#if defined (ENABLE_4DIGITS)
+#elif defined (ENABLE_4DIGITS)
 	ShowText("     "); // 5 empty digits
-#endif
-
+#elif defined (ENABLE_VFD)
 #if defined (__sh__)
 	struct vfd_ioctl_data data;
 	
@@ -1859,7 +1899,8 @@ void CLCD::Clear()
 #endif
 #else
 	ShowText("            "); // 12 empty digits
-#endif
+#endif // sh
+#endif // vfd
 }
 
 bool CLCD::ShowPng(char *filename)

@@ -73,6 +73,16 @@ AC_DEFINE(USE_OVERLAY,1,[include overlay])
 PKG_CHECK_MODULES(GSTREAMER, gstreamer-$GST_MAJORMINOR gstreamer-pbutils-$GST_MAJORMINOR gstreamer-video-$GST_MAJORMINOR)
 fi
 
+# vfd
+AC_ARG_ENABLE(vfd,
+	AS_HELP_STRING(--enable-vfd,include vfd support),
+	,[enable_vfd=no])
+AM_CONDITIONAL(ENABLE_VFD,test "$enable_vfd" = "yes")
+
+if test "$enable_vfd" = "yes"; then
+AC_DEFINE(ENABLE_VFD,1,[include vfd support])
+fi
+
 # lcd
 AC_ARG_ENABLE(lcd,
 	AS_HELP_STRING(--enable-lcd,include lcd support),
@@ -197,6 +207,7 @@ Box Model		: $BOXMODEL
 OpenGL			: $enable_opengl
 Gstreamer		: $enable_gstreamer
 SCART			: $enable_scart
+VFD			: $enable_vfd
 LCD			: $enable_lcd
 TFTLCD			: $enable_tftlcd
 4 Digits		: $enable_4digits

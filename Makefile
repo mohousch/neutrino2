@@ -234,7 +234,11 @@ ifeq ($(SCART), scart)
 N2_OPTS += --enable-scart
 endif
 
-# LCD 
+# LCD
+ifeq ($(LCD), vfd)
+N2_OPTS += --enable-vfd
+endif
+ 
 ifeq ($(LCD), lcd)
 N2_OPTS += --enable-lcd
 endif
