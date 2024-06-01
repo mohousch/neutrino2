@@ -3409,8 +3409,14 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	res = res | g_RemoteControl->handleMsg(msg, data);
 	res = res | g_InfoViewer->handleMsg(msg, data);
 #if defined (ENABLE_CI)	
-	res = res | g_CamHandler->handleMsg(msg, data);
+	res = g_CamHandler->handleMsg(msg, data);
 #endif
+
+	//
+	if( res != messages_return::unhandled ) 
+	{
+		return( res & ( 0xFFFFFFFF - messages_return::unhandled ) );
+	}
 
 	// 
 	if( msg == CRCInput::RC_ok || msg == CRCInput::RC_sat || msg == CRCInput::RC_favorites)
@@ -3692,9 +3698,8 @@ _repeat:
 	}
 	else if( msg == NeutrinoMessages::EVT_PMT_CHANGED) 
 	{
-		res = messages_return::handled;
-
-		return res;
+		// FIXME:
+		return messages_return::handled;
 	}
 	else if( msg == NeutrinoMessages::ZAPTO ) 
 	{
@@ -3880,6 +3885,7 @@ _repeat:
 		{
 			skipShutdownTimer = false;
 		}
+		
 		return messages_return::handled;
 	}
 	else if( msg == NeutrinoMessages::RESTART ) 
@@ -4018,6 +4024,8 @@ _repeat:
 		channelsInit();
 
 		channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
+		
+		return messages_return::handled;
 	}
 #if !defined (__sh__)
 	else if (msg == NeutrinoMessages::EVT_HDMI_CEC_VIEW_ON) 
@@ -4034,13 +4042,7 @@ _repeat:
 
 		return messages_return::handled;
 	}
-#endif
-
-	//
-	if( res != messages_return::unhandled ) 
-	{
-		return( res & ( 0xFFFFFFFF - messages_return::unhandled ) );
-	}	
+#endif	
 
 	return messages_return::unhandled;
 }
