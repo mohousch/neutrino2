@@ -23,11 +23,13 @@
 	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+#include <stdio.h>
 #include <unistd.h>
 #include <sys/mman.h>
 #include <memory.h>
 #include <stdint.h>
 #include <climits>
+#include <stdlib.h>
 
 #include "libngpng.h"
 
