@@ -34,6 +34,7 @@
 
 #include <global.h>
 #include <neutrino2.h>
+
 #include <system/settings.h>
 #include <system/debug.h>
 
@@ -96,9 +97,8 @@ void CLCD::closeDevice()
 #endif
 
 CLCD::CLCD()
-	: configfile('\t')
+//	: configfile('\t')
 {
-	display = NULL;
 	m_fileList = NULL;
 	m_fileListPos = 0;
 	m_fileListHeader = "";
@@ -117,6 +117,10 @@ CLCD::CLCD()
 	has_lcd = false;
 	clearClock = 0;
 	fd = -1;
+
+#ifdef ENABLE_LCD
+	display = NULL;
+#endif
 	
 #ifdef ENABLE_TFTLCD
 	tftlcd = NULL;
@@ -197,8 +201,16 @@ void CLCD::wake_up()
 	if (atoi(g_settings.lcd_setting_dim_time) > 0) 
 	{
 		timeout_cnt = atoi(g_settings.lcd_setting_dim_time);
+#if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
+		g_settings.lcd_setting_dim_brightness > 0 ? setBrightness(g_settings.lcd_brightness) : setPower(1);
+#elif defined (ENABLE_LCD)
 		setlcdparameter();
+#endif
 	}
+#if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
+	else
+		setPower(1);
+#endif
 }
 
 void* CLCD::TimeThread(void *)
@@ -281,6 +293,110 @@ const char * const background_path[NUMBER_OF_PATHS] = {
 
 bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fontfile2, const char * fontname2, const char * fontfile3, const char * fontname3)
 {
+	// 4digits
+#ifdef ENABLE_4DIGITS
+	fd = open("/dev/dbox/fp", O_RDWR);
+		
+	if(fd < 0)
+	{
+		// probe /dev/vfd
+		fd = open("/dev/vfd", O_RDWR);
+		
+		if(fd < 0)
+		{
+			// probe /dev/display
+			fd = open("/dev/display", O_RDWR);
+			
+			if(fd < 0)
+			{
+				fd = open("/dev/mcu", O_RDWR);
+
+				if(fd < 0)
+				{
+					// probe /proc/vfd (e.g gigablue)
+					fd = open("/proc/vfd", O_RDWR);
+				
+					if(fd < 0)
+					{
+						// probe /dev/dbox/oled0
+						fd = open("/dev/dbox/oled0", O_RDWR);
+		
+						if(fd < 0) 
+						{
+							// probe /dev/oled0
+							fd = open("/dev/oled0", O_RDWR);
+						
+							if(fd < 0)
+							{
+								fd = open("/dev/dbox/lcd0", O_RDWR);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	if (fd >= 0) has_lcd = true;
+	
+	// set led color
+#if defined (PLATFORM_GIGABLUE)
+	setPower(g_settings.lcd_power);  //0:off, 1:blue, 2:red, 3:purple
+#endif
+#endif
+
+	// vfd
+#ifdef ENABLE_VFD
+#if defined (__sh__)
+	has_lcd = true;
+#else
+	fd = open("/dev/dbox/fp", O_RDWR);
+		
+	if(fd < 0)
+	{
+		// probe /dev/vfd
+		fd = open("/dev/vfd", O_RDWR);
+		
+		if(fd < 0)
+		{
+			// probe /dev/display
+			fd = open("/dev/display", O_RDWR);
+			
+			if(fd < 0)
+			{
+				fd = open("/dev/mcu", O_RDWR);
+
+				if(fd < 0)
+				{
+					// probe /proc/vfd (e.g gigablue)
+					fd = open("/proc/vfd", O_RDWR);
+				
+					if(fd < 0)
+					{
+						// probe /dev/dbox/oled0
+						fd = open("/dev/dbox/oled0", O_RDWR);
+		
+						if(fd < 0) 
+						{
+							// probe /dev/oled0
+							fd = open("/dev/oled0", O_RDWR);
+						
+							if(fd < 0)
+							{
+								fd = open("/dev/dbox/lcd0", O_RDWR);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	if (fd >= 0) has_lcd = true;
+#endif // sh
+#endif // vfd
+
+	// lcd
 #ifdef ENABLE_LCD
 	display = new CLCDDisplay();
 	
@@ -348,107 +464,6 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	}
 #endif
 
-#ifdef ENABLE_4DIGITS
-	fd = open("/dev/dbox/fp", O_RDWR);
-		
-	if(fd < 0)
-	{
-		// probe /dev/vfd
-		fd = open("/dev/vfd", O_RDWR);
-		
-		if(fd < 0)
-		{
-			// probe /dev/display
-			fd = open("/dev/display", O_RDWR);
-			
-			if(fd < 0)
-			{
-				fd = open("/dev/mcu", O_RDWR);
-
-				if(fd < 0)
-				{
-					// probe /proc/vfd (e.g gigablue)
-					fd = open("/proc/vfd", O_RDWR);
-				
-					if(fd < 0)
-					{
-						// probe /dev/dbox/oled0
-						fd = open("/dev/dbox/oled0", O_RDWR);
-		
-						if(fd < 0) 
-						{
-							// probe /dev/oled0
-							fd = open("/dev/oled0", O_RDWR);
-						
-							if(fd < 0)
-							{
-								fd = open("/dev/dbox/lcd0", O_RDWR);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	if (fd >= 0) has_lcd = true;
-	
-	// set led color
-#if defined (PLATFORM_GIGABLUE)
-	setPower(g_settings.lcd_power);  //0:off, 1:blue, 2:red, 3:purple
-#endif
-#endif
-
-#ifdef ENABLE_VFD
-#if defined (__sh__)
-	has_lcd = true;
-#else
-	fd = open("/dev/dbox/fp", O_RDWR);
-		
-	if(fd < 0)
-	{
-		// probe /dev/vfd
-		fd = open("/dev/vfd", O_RDWR);
-		
-		if(fd < 0)
-		{
-			// probe /dev/display
-			fd = open("/dev/display", O_RDWR);
-			
-			if(fd < 0)
-			{
-				fd = open("/dev/mcu", O_RDWR);
-
-				if(fd < 0)
-				{
-					// probe /proc/vfd (e.g gigablue)
-					fd = open("/proc/vfd", O_RDWR);
-				
-					if(fd < 0)
-					{
-						// probe /dev/dbox/oled0
-						fd = open("/dev/dbox/oled0", O_RDWR);
-		
-						if(fd < 0) 
-						{
-							// probe /dev/oled0
-							fd = open("/dev/oled0", O_RDWR);
-						
-							if(fd < 0)
-							{
-								fd = open("/dev/dbox/lcd0", O_RDWR);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	if (fd >= 0) has_lcd = true;
-#endif // sh
-#endif // vfd
-
 	// tftlcd	
 #ifdef ENABLE_TFTLCD
 	tftlcd = new CTFTLCD();
@@ -496,21 +511,8 @@ void CLCD::setlcdparameter(int dimm, const int contrast, const int power, const 
 		
 	if (power == 0)
 		dimm = 0;
-	
-#ifdef ENABLE_LCD	
-	// dimm
-	display->setLCDBrightness(dimm);
-	
-	// contrast
-	display->setLCDContrast(contrast);
-	
-	//reverse
-	if (inverse)
-		display->setInverted(CLCDDisplay::PIXEL_ON);
-	else		
-		display->setInverted(CLCDDisplay::PIXEL_OFF);
 		
-#elif defined (ENABLE_VFD)
+#if defined (ENABLE_VFD)
 #ifdef __sh__
 	if(dimm < 0)
 		dimm = 0;
@@ -530,6 +532,18 @@ void CLCD::setlcdparameter(int dimm, const int contrast, const int power, const 
 	
 	closeDevice();
 #endif	
+#elif defined (ENABLE_LCD)
+	// dimm
+	display->setLCDBrightness(dimm);
+	
+	// contrast
+	display->setLCDContrast(contrast);
+	
+	//reverse
+	if (inverse)
+		display->setInverted(CLCDDisplay::PIXEL_ON);
+	else		
+		display->setInverted(CLCDDisplay::PIXEL_OFF);
 #endif
 }
 
@@ -602,7 +616,7 @@ static std::string splitString(const std::string & text, const int maxwidth, Lcd
 /* display "big" and "small" text.
    TODO: right now, "big" is hardcoded as utf-8, small is not (for EPG)
  */
-void CLCD::showTextScreen(const std::string & big, const std::string & small, const int showmode, const bool perform_wakeup, const bool centered)
+void CLCD::showTextScreen(const std::string &big, const std::string &small, const int showmode, const bool perform_wakeup, const bool centered)
 {
 	if(!has_lcd) 
 		return;
@@ -736,10 +750,8 @@ void CLCD::ShowText(const char *str)
 {
 	if (!has_lcd)
 		return;
-		
-#ifdef ENABLE_LCD
-	showServicename(std::string(str)); 
-#elif defined (ENABLE_4DIGITS)
+		 
+#if defined (ENABLE_4DIGITS)
 	int len = strlen(str);
 	
 	if(len == 0)
@@ -817,6 +829,8 @@ void CLCD::ShowText(const char *str)
 	if( write(fd, text.c_str(), len > 12? 12 : len ) < 0)
 		perror("write to vfd failed");
 #endif
+#elif defined (ENABLE_LCD)
+	showServicename(std::string(str));
 #endif
 }
 
@@ -893,45 +907,8 @@ void CLCD::showTime(bool force)
 {
 	if(!has_lcd) 
 		return;
-	
-#ifdef ENABLE_LCD
-	if (showclock)
-	{
-		char timestr[21];
-		struct timeval tm;
-		struct tm * t;
 
-		gettimeofday(&tm, NULL);
-		t = localtime(&tm.tv_sec);
-		
-		unsigned int lcd_width  = display->xres;
-		unsigned int lcd_height = display->yres;
-
-		if (mode == MODE_STANDBY)
-		{
-			display->clear_screen(); // clear lcd
-		}
-		else
-		{
-			if (CNeutrinoApp::getInstance ()->recordingstatus && clearClock == 1)
-			{
-				strcpy(timestr,"  :  ");
-				clearClock = 0;
-			}
-			else
-			{
-				strftime((char*) &timestr, 20, "%H:%M", t);
-				clearClock = 1;
-			}
-
-			display->draw_fill_rect (lcd_width-50-1, lcd_height-12, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
-
-			fonts.time->RenderString(lcd_width - 4 - fonts.time->getRenderWidth(timestr), lcd_height-1, 50, timestr, CLCDDisplay::PIXEL_ON);
-		}
-		
-		displayUpdate();
-	}
-#elif defined (ENABLE_VFD) || defined (ENABLE_4DIGITS)
+#if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 	if (showclock) 
 	{
 		char timestr[21];
@@ -971,6 +948,43 @@ void CLCD::showTime(bool force)
 	{ 
 		// in case icon ON after record stopped
 		clearClock = 0;
+	}	
+#elif defined (ENABLE_LCD)
+	if (showclock)
+	{
+		char timestr[21];
+		struct timeval tm;
+		struct tm * t;
+
+		gettimeofday(&tm, NULL);
+		t = localtime(&tm.tv_sec);
+		
+		unsigned int lcd_width  = display->xres;
+		unsigned int lcd_height = display->yres;
+
+		if (mode == MODE_STANDBY)
+		{
+			display->clear_screen(); // clear lcd
+		}
+		else
+		{
+			if (CNeutrinoApp::getInstance ()->recordingstatus && clearClock == 1)
+			{
+				strcpy(timestr,"  :  ");
+				clearClock = 0;
+			}
+			else
+			{
+				strftime((char*) &timestr, 20, "%H:%M", t);
+				clearClock = 1;
+			}
+
+			display->draw_fill_rect (lcd_width-50-1, lcd_height-12, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
+
+			fonts.time->RenderString(lcd_width - 4 - fonts.time->getRenderWidth(timestr), lcd_height-1, 50, timestr, CLCDDisplay::PIXEL_ON);
+		}
+		
+		displayUpdate();
 	}
 #endif
 }
@@ -1227,8 +1241,18 @@ void CLCD::showAudioTrack(const std::string &artist, const std::string &title, c
 	
 	if (mode != MODE_AUDIO) 
 		return;
-	
-#ifdef ENABLE_LCD
+
+#if defined (ENABLE_4DIGITS)
+	char tmp[5];
+						
+	sprintf(tmp, "%04d", pos);
+						
+	ShowText(tmp); // UTF-8
+#elif defined (ENABLE_VFD)
+//#ifdef __sh__
+	ShowText((char *)title.c_str());
+//#endif	
+#elif defined (ENABLE_LCD)
 	unsigned int lcd_width  = display->xres;
 	unsigned int lcd_height = display->yres;
 
@@ -1239,16 +1263,6 @@ void CLCD::showAudioTrack(const std::string &artist, const std::string &title, c
 	fonts.menu->RenderString(0, 22, lcd_width + 5, artist.c_str(), CLCDDisplay::PIXEL_ON, 0, isUTF8(artist));
 	fonts.menu->RenderString(0, 35, lcd_width + 5, album.c_str(),  CLCDDisplay::PIXEL_ON, 0, isUTF8(album));
 	fonts.menu->RenderString(0, 48, lcd_width + 5, title.c_str(),  CLCDDisplay::PIXEL_ON, 0, isUTF8(title));
-#elif defined (ENABLE_4DIGITS)
-	char tmp[5];
-						
-	sprintf(tmp, "%04d", pos);
-						
-	ShowText(tmp); // UTF-8
-#elif defined (ENABLE_VFD)
-#ifdef __sh__
-	ShowText((char *)title.c_str());
-#endif
 #endif
 
 	wake_up();
@@ -1259,8 +1273,34 @@ void CLCD::showAudioPlayMode(AUDIOMODES m)
 {
 	if(!has_lcd) 
 		return;
-	
-#ifdef ENABLE_LCD
+
+#if defined (ENABLE_VFD)
+#ifdef __sh__
+	switch(m) 
+	{
+		case AUDIO_MODE_PLAY:
+			ShowIcon(VFD_ICON_PLAY, true);
+			ShowIcon(VFD_ICON_PAUSE, false);
+			break;
+			
+		case AUDIO_MODE_STOP:
+			ShowIcon(VFD_ICON_PLAY, false);
+			ShowIcon(VFD_ICON_PAUSE, false);
+			break;
+			
+		case AUDIO_MODE_PAUSE:
+			ShowIcon(VFD_ICON_PLAY, false);
+			ShowIcon(VFD_ICON_PAUSE, true);
+			break;
+			
+		case AUDIO_MODE_FF:
+			break;
+			
+		case AUDIO_MODE_REV:
+			break;
+	}
+#endif	
+#elif defined (ENABLE_LCD)
 	display->draw_fill_rect (-1, 51, 10, 62, CLCDDisplay::PIXEL_OFF);
 	
 	switch(m)
@@ -1307,32 +1347,6 @@ void CLCD::showAudioPlayMode(AUDIOMODES m)
 			}
 			break;
 	}
-#elif defined (ENABLE_VFD)
-#ifdef __sh__
-	switch(m) 
-	{
-		case AUDIO_MODE_PLAY:
-			ShowIcon(VFD_ICON_PLAY, true);
-			ShowIcon(VFD_ICON_PAUSE, false);
-			break;
-			
-		case AUDIO_MODE_STOP:
-			ShowIcon(VFD_ICON_PLAY, false);
-			ShowIcon(VFD_ICON_PAUSE, false);
-			break;
-			
-		case AUDIO_MODE_PAUSE:
-			ShowIcon(VFD_ICON_PLAY, false);
-			ShowIcon(VFD_ICON_PAUSE, true);
-			break;
-			
-		case AUDIO_MODE_FF:
-			break;
-			
-		case AUDIO_MODE_REV:
-			break;
-	}
-#endif
 #endif
 
 	wake_up();
@@ -1392,8 +1406,152 @@ void CLCD::setMode(const MODES m, const char * const title)
 	menutitle = title;
 	
 	setlcdparameter();
+
+#if defined (ENABLE_4DIGITS)
+	switch (m) 
+	{
+		case MODE_TVRADIO:
+			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)
+				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
+			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
+				showTime(true);
+			
+			showclock = true;
+			break;
+
+		case MODE_AUDIO:
+			showclock = true;
+			break;
+			
+		case MODE_SCART:
+			showclock = true;
+			break;
+			
+		case MODE_MENU_UTF8:
+			showclock = true;
+			break;
+
+		case MODE_SHUTDOWN:
+			showclock = false;
+			
+			//
+			ShowText((char *) "BYE");
+			
+			break;
+
+		case MODE_STANDBY:				
+			showclock = true;
+			showTime(true);
+			break;
+		
+		case MODE_PIC:	  
+			showclock = true;
+			break;
+			
+		case MODE_MOVIE:  		
+			showclock = true;
+			break;
+	}
+
+#elif defined (ENABLE_VFD)
+#ifdef __sh__
+	if(strlen(title))
+		ShowText((char *)title);
+		
+	switch (m) 
+	{
+		case MODE_TVRADIO:
+			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)	
+				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
+			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
+				showTime(true);
+			
+#if !defined(PLATFORM_SPARK7162)			
+			ShowIcon(VFD_ICON_MP3, false);	        // NOTE: @dbo  //ICON_MP3 and ICON_DOLBY switched in infoviewer 
+#endif			
 	
-#ifdef ENABLE_LCD
+#if defined (PLATFORM_KATHREIN)
+			ShowIcon(VFD_ICON_USB, usb_icon);	
+			ShowIcon(VFD_ICON_HDD, hdd_icon);	
+#elif defined(PLATFORM_SPARK7162)
+			ShowIcon(VFD_ICON_USB, usb_icon);	
+			ShowDiskLevel();
+			ShowIcon(VFD_ICON_STANDBY, false);	
+#endif
+			showclock = true;
+			break;
+
+		case MODE_AUDIO:
+		{
+#if defined(PLATFORM_SPARK7162)
+			ShowIcon(VFD_ICON_AC3, false);			
+#endif		  
+			ShowIcon(VFD_ICON_MP3, true);			
+			ShowIcon(VFD_ICON_TV, false);			
+			showAudioPlayMode(AUDIO_MODE_STOP);			
+			showclock = true;			
+			ShowIcon(VFD_ICON_LOCK, false);			
+			ShowIcon(VFD_ICON_HD, false);
+			ShowIcon(VFD_ICON_DOLBY, false);
+			//showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
+			break;
+		}
+
+		case MODE_SCART:	  
+			ShowIcon(VFD_ICON_TV, false);	
+			showclock = true;
+			//showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
+			break;
+
+		case MODE_MENU_UTF8:
+			ShowIcon(VFD_ICON_TV, false);			
+			ShowIcon(VFD_ICON_HD, false);
+			ShowIcon(VFD_ICON_DOLBY, false);
+			showclock = true;
+			break;
+
+		case MODE_SHUTDOWN:
+			//Clear();
+			/* clear all symbols */
+			ClearIcons();
+#if defined(PLATFORM_SPARK7162)
+			ShowIcon(VFD_ICON_CLOCK, timer_icon);	
+#endif			
+			showclock = false;
+			
+			//
+			ShowText((char *) "BYE");
+			
+			break;
+
+		case MODE_STANDBY:
+			ShowIcon(VFD_ICON_TV, false);
+			ClearIcons();
+#if defined(PLATFORM_SPARK7162)
+			ShowIcon(VFD_ICON_STANDBY, true);	
+#endif
+							
+			showclock = true;
+			showTime(true);      	/* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
+						/* "showTime()" clears the whole lcd in MODE_STANDBY */
+			break;
+		
+		case MODE_PIC:	  
+			ShowIcon(VFD_ICON_TV, false);			
+			ShowIcon(VFD_ICON_HD, false);
+			ShowIcon(VFD_ICON_DOLBY, false);
+			
+			showclock = true;
+			break;
+			
+		case MODE_MOVIE:  
+			ShowIcon(VFD_ICON_TV, false);			
+			showclock = true;
+			break;
+	}
+
+#endif //sh	
+#elif defined (ENABLE_LCD)
 	unsigned int lcd_width  = display->xres;
 	unsigned int lcd_height = display->yres;
 
@@ -1504,150 +1662,6 @@ void CLCD::setMode(const MODES m, const char * const title)
 		showInfoBox();
 		break;
 	}
-#elif defined (ENABLE_4DIGITS)
-	switch (m) 
-	{
-		case MODE_TVRADIO:
-			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)
-				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
-			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
-				showTime();
-			
-			showclock = true;
-			break;
-
-		case MODE_AUDIO:
-			showclock = true;
-			break;
-			
-		case MODE_SCART:
-			showclock = true;
-			break;
-			
-		case MODE_MENU_UTF8:
-			showclock = true;
-			break;
-
-		case MODE_SHUTDOWN:
-			showclock = false;
-			
-			//
-			ShowText((char *) "BYE");
-			
-			break;
-
-		case MODE_STANDBY:				
-			showclock = true;
-			showTime();
-			break;
-		
-		case MODE_PIC:	  
-			showclock = true;
-			break;
-			
-		case MODE_MOVIE:  		
-			showclock = true;
-			break;
-	}
-
-#elif defined (ENABLE_VFD)
-#ifdef __sh__
-	if(strlen(title))
-		ShowText((char *)title);
-		
-	switch (m) 
-	{
-		case MODE_TVRADIO:
-			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)	
-				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
-			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
-				showTime(true);
-			
-#if !defined(PLATFORM_SPARK7162)			
-			ShowIcon(VFD_ICON_MP3, false);	        // NOTE: @dbo  //ICON_MP3 and ICON_DOLBY switched in infoviewer 
-#endif			
-	
-#if defined (PLATFORM_KATHREIN)
-			ShowIcon(VFD_ICON_USB, usb_icon);	
-			ShowIcon(VFD_ICON_HDD, hdd_icon);	
-#elif defined(PLATFORM_SPARK7162)
-			ShowIcon(VFD_ICON_USB, usb_icon);	
-			ShowDiskLevel();
-			ShowIcon(VFD_ICON_STANDBY, false);	
-#endif
-			showclock = true;
-			break;
-
-		case MODE_AUDIO:
-		{
-#if defined(PLATFORM_SPARK7162)
-			ShowIcon(VFD_ICON_AC3, false);			
-#endif		  
-			ShowIcon(VFD_ICON_MP3, true);			
-			ShowIcon(VFD_ICON_TV, false);			
-			showAudioPlayMode(AUDIO_MODE_STOP);			
-			showclock = true;			
-			ShowIcon(VFD_ICON_LOCK, false);			
-			ShowIcon(VFD_ICON_HD, false);
-			ShowIcon(VFD_ICON_DOLBY, false);
-			//showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
-			break;
-		}
-
-		case MODE_SCART:	  
-			ShowIcon(VFD_ICON_TV, false);	
-			showclock = true;
-			//showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
-			break;
-
-		case MODE_MENU_UTF8:
-			ShowIcon(VFD_ICON_TV, false);			
-			ShowIcon(VFD_ICON_HD, false);
-			ShowIcon(VFD_ICON_DOLBY, false);
-			showclock = true;
-			break;
-
-		case MODE_SHUTDOWN:
-			//Clear();
-			/* clear all symbols */
-			ClearIcons();
-#if defined(PLATFORM_SPARK7162)
-			ShowIcon(VFD_ICON_CLOCK, timer_icon);	
-#endif			
-			showclock = false;
-			
-			//
-			ShowText((char *) "BYE");
-			
-			break;
-
-		case MODE_STANDBY:
-			ShowIcon(VFD_ICON_TV, false);
-			ClearIcons();
-#if defined(PLATFORM_SPARK7162)
-			ShowIcon(VFD_ICON_STANDBY, true);	
-#endif
-							
-			showclock = true;
-			showTime(true);      	/* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
-						/* "showTime()" clears the whole lcd in MODE_STANDBY */
-			break;
-		
-		case MODE_PIC:	  
-			ShowIcon(VFD_ICON_TV, false);			
-			ShowIcon(VFD_ICON_HD, false);
-			ShowIcon(VFD_ICON_DOLBY, false);
-			
-			showclock = true;
-			break;
-			
-		case MODE_MOVIE:  
-			ShowIcon(VFD_ICON_TV, false);			
-			showclock = true;
-			break;
-	}
-
-#endif //sh
 #endif
 	
 	wake_up();
@@ -1693,22 +1707,8 @@ void CLCD::setPower(int power)
 		return;
 		
 	g_settings.lcd_power = power;
-	
-	setlcdparameter();
 
-#if defined (ENABLE_VFD)	
-#if defined (__sh__)
-	struct vfd_ioctl_data data;
-	data.start_address = power;
-	
-	openDevice();
-	
-	if( ioctl(fd, VFDPWRLED, &data) < 0)  
-		perror("VFDPWRLED");
-	
-	closeDevice();
-#endif
-#elif defined (ENABLE_4DIGITS)
+#if defined (ENABLE_4DIGITS)
 #if defined (PLATFORM_GIGABLUE)
 	const char *VFDLED[] = {
 		"VFD_OFF",
@@ -1726,6 +1726,18 @@ void CLCD::setPower(int power)
 	fprintf(f, "%d", power);
 	
 	fclose(f);
+#endif
+#elif defined (ENABLE_VFD)	
+#if defined (__sh__)
+	struct vfd_ioctl_data data;
+	data.start_address = power;
+	
+	openDevice();
+	
+	if( ioctl(fd, VFDPWRLED, &data) < 0)  
+		perror("VFDPWRLED");
+	
+	closeDevice();
 #endif
 #endif
 }
@@ -1808,9 +1820,10 @@ void CLCD::ShowIcon(vfd_icon icon, bool show)
 		default:
 			break;
 	}
-#endif
+#endif // kathrein || spark7162
 
 	openDevice();
+	
 #if defined(PLATFORM_SPARK7162)
 	aotom_data.u.icon.icon_nr = icon;
 	aotom_data.u.icon.on = show ? 1 : 0;
@@ -1931,14 +1944,8 @@ void CLCD::Clear()
 {
 	if(!has_lcd) 
 		return;
-	
-#ifdef ENABLE_LCD
-	if (mode == MODE_SHUTDOWN)
-	{
-		display->clear_screen(); // clear lcd
-		displayUpdate();
-	}
-#elif defined (ENABLE_4DIGITS)
+
+#if defined (ENABLE_4DIGITS)
 	ShowText("     "); // 5 empty digits
 #elif defined (ENABLE_VFD)
 #if defined (__sh__)
@@ -1960,8 +1967,14 @@ void CLCD::Clear()
 #endif
 #else
 	ShowText("            "); // 12 empty digits
-#endif // sh
-#endif // vfd
+#endif // sh	
+#elif defined (ENABLE_LCD)
+	if (mode == MODE_SHUTDOWN)
+	{
+		display->clear_screen(); // clear lcd
+		displayUpdate();
+	}
+#endif
 }
 
 bool CLCD::ShowPng(char *filename)

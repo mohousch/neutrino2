@@ -38,7 +38,7 @@
 #endif
 #include <driver/file.h>
 
-#include <configfile.h>
+//#include <configfile.h>
 #include <pthread.h>
 
 #include <driver/lcd/lcddisplay.h>
@@ -527,7 +527,7 @@ class CLCD
 		bool				movie_centered;
 		bool				movie_is_ac3;
 		bool				icon_dolby;
-		CConfigFile			configfile;
+//		CConfigFile			configfile;
 		pthread_t			thrTime;
 		int                             last_toggle_state_power;
 		int				clearClock;
@@ -566,7 +566,7 @@ class CLCD
 		void setMovieInfo(const AUDIOMODES playmode, const std::string big, const std::string small, const bool centered = false);
 		void setMovieAudio(const bool is_ac3);
 		std::string getMenutitle() { return menutitle; };
-		void showTime(bool force = true);
+		void showTime(bool force = false);
 		void showRCLock(int duration = 2);
 		void showVolume(const char vol, const bool perform_update = true);
 		void showPercentOver(const unsigned char perc, const bool perform_update = true, const MODES m = MODE_TVRADIO);
