@@ -63,6 +63,13 @@ CTFTLCD::CTFTLCD()
 
 CTFTLCD::~CTFTLCD()
 {
+	if (_buffer)
+	{
+		msync(_buffer, m_available, MS_SYNC);
+		munmap(_buffer, m_available);
+		_buffer = 0;
+	}
+	
 	if (fd >= 0)
 	{
 		::close(fd);

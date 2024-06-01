@@ -57,7 +57,12 @@ nGLCD::nGLCD()
 
 nGLCD::~nGLCD()
 {
-
+	if (lcd)
+	{
+		lcd->DeInit();
+		delete lcd;
+		lcd = NULL;
+	}
 }
 
 bool nGLCD::init()

@@ -3166,3 +3166,4 @@
 /neutrino2/src/driver/lcd/.deps/nglcd.Po
 /neutrino2/src/driver/lcd/nglcd.o
 /neutrino2/src/driver/lcd/.deps/tftlcd.Po
+/neutrino2/src/driver/lcd/tftlcd.o
