@@ -196,7 +196,10 @@ init:
 		1) echo "TESTING=testing" >> config.local;; \
 		2|*) echo "TESTING=" >> config.local;; \
 	esac; \
-	echo ""			
+	echo ""
+#	
+	@echo ""
+	@make printenv		
 
 init-clean:
 	rm -f config.local

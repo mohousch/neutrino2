@@ -29,7 +29,7 @@
 #ifndef __LCDFONTRENDERER__
 #define __LCDFONTRENDERER__
 
-#include "lcddisplay.h"
+#include <driver/lcd/lcddisplay.h>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
