@@ -27,11 +27,12 @@
 #include <string>
 #include <vector>
 
-#include <driver/gfx/icons.h>
 #include <driver/gfx/framebuffer.h>
 
 #include <system/localize.h>
 #include <system/helpers.h>
+
+#include <gui/widget/icons.h>
 
 
 typedef void (*PluginExec)(void);

@@ -56,9 +56,9 @@ const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
 #define PICTUREVIEWER_SCALING_OPTION_COUNT 3
 const keyval PICTUREVIEWER_SCALING_OPTIONS[PICTUREVIEWER_SCALING_OPTION_COUNT] =
 {
-	{ CFrameBuffer::SIMPLE, _("simple") },
-	{ CFrameBuffer::COLOR , _("advanced") },
-	{ CFrameBuffer::NONE  , _("none") }
+	{ SIMPLE, _("simple") },
+	{ COLOR , _("advanced") },
+	{ NONE  , _("none") }
 };
 
 CPictureViewerSettings::CPictureViewerSettings()

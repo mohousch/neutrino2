@@ -31,10 +31,9 @@
 #ifndef __proxyserver_setup__
 #define __proxyserver_setup__
 
+#include <gui/widget/icons.h>
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>
-
-#include <driver/gfx/icons.h>
 
 #include <string>
 

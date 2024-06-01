@@ -41,7 +41,6 @@
 #include <driver/gfx/framebuffer.h>
 #include <driver/gfx/fontrenderer.h>
 #include <driver/gfx/color.h>
-#include <driver/gfx/icons.h>
 #include <driver/rcinput.h>
 #include <driver/file.h>
 #include <driver/audiofile.h>
@@ -59,6 +58,7 @@
 #include <system/flashtool.h>
 
 // widget
+#include <gui/widget/icons.h>
 #include <gui/widget/drawable.h>
 #include <gui/widget/widget_helpers.h>
 #include <gui/widget/progresswindow.h>
@@ -133,7 +133,6 @@
 %include <src/driver/gfx/fontrenderer.h>
 %include <src/driver/gfx/framebuffer.h>
 %include <src/driver/gfx/color.h>
-%include <src/driver/gfx/icons.h>
 %include <src/driver/rcinput.h>
 %include <src/driver/file.h>
 %include <src/driver/audiofile.h>
@@ -150,6 +149,7 @@
 %include <src/system/flashtool.h>
 
 // widget
+%include <src/gui/widget/icons.h>
 %include <src/gui/widget/widget_helpers.h>
 %include <src/gui/widget/progresswindow.h>
 %include <src/gui/widget/messagebox.h>

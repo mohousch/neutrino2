@@ -55,9 +55,10 @@
 #include <system/settings.h>
 
 #include <driver/vcrcontrol.h>
-#include <driver/gfx/icons.h>
 
+#include <gui/widget/icons.h>
 #include <gui/widget/infobox.h>
+
 #include <system/tmdbparser.h>
 
 

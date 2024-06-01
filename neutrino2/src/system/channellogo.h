@@ -42,7 +42,6 @@
 #include <driver/rcinput.h>
 
 #include <driver/gfx/framebuffer.h>
-#include <driver/gfx/icons.h>
 
 #include <system/settings.h>
 #include <system/helpers.h>

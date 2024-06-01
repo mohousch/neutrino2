@@ -73,13 +73,6 @@ typedef struct fb_var_screeninfo t_fb_var_screeninfo;
 // bitmap
 #define DEFAULT_BPP		32	// 32 bit
 
-#if 0
-#define FH_ERROR_OK 0
-#define FH_ERROR_FILE 1		/* read/access error */
-#define FH_ERROR_FORMAT 2	/* file format error */
-#define FH_ERROR_MALLOC 3	/* error during malloc */
-#endif
-
 // gradient mode
 enum {
 	NOGRADIENT,
@@ -109,22 +102,7 @@ enum {
 	GRADIENT_COLOR2COLOR
 };
 
-#if 0
-// png/jpg/bmp/gif/crw/svg
-struct cformathandler 
-{
-	struct cformathandler * next;
-	int (*get_size)(const char *,int *,int*, int, int);
-	int (*get_pic)(const char *,unsigned char **,int* ,int*);
-	int (*id_pic)(const char *);
-};
-	
-typedef struct cformathandler CFormathandler;
-
-// png/jpg/bmp/gif/crw
-CFormathandler* fh_getsize(const char * name, int * x, int * y, int width_wanted, int height_wanted);
-#endif
-
+////
 class CFrameBuffer
 {
 	public:
@@ -135,14 +113,6 @@ class CFrameBuffer
 			TM_NONE   = 1,
 			TM_BLACK  = 2,
 			TM_INI    = 3
-		};
-				
-		// scaling mode
-		enum ScalingMode
-		{
-			NONE = 0,
-			SIMPLE = 1,
-			COLOR = 2
 		};
 
 		// three mode
@@ -156,6 +126,7 @@ class CFrameBuffer
 	private:
 		CFrameBuffer();
 
+		// pal
 		struct rgbData
 		{
 			uint8_t r;
@@ -163,6 +134,7 @@ class CFrameBuffer
 			uint8_t b;
 		};
 
+		// raw
 		struct rawHeader
 		{
 			uint8_t width_lo;
@@ -323,8 +295,6 @@ class CFrameBuffer
 		void blit(int mode3d = THREE_NONE);
 		
 		////
-		void getSize(const std::string &name, int * width, int * height, int * nbpp);
-		unsigned char* resize(unsigned char * origin, int ox, int oy, int dx, int dy, ScalingMode type, unsigned char * dst = NULL, bool alpha = false);
 		fb_pixel_t * getImage(const std::string& name, int width, int height);
 		void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, int transp = 0xFF, int m_transparent = TM_BLACK, bool alpha = false);
 		

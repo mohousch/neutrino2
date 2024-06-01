@@ -50,7 +50,6 @@
 #include <driver/gfx/fontrenderer.h>
 #include <driver/gfx/framebuffer.h>
 #include <driver/gfx/color.h>
-#include <driver/gfx/icons.h>
 
 #include <driver/rcinput.h>
 #include <driver/radiotext.h>
@@ -64,6 +63,7 @@
 
 #include <daemonc/remotecontrol.h>
 
+#include <gui/widget/icons.h>
 #include <gui/widget/colorchooser.h>
 #include <gui/widget/menue.h>
 #include <gui/widget/messagebox.h>

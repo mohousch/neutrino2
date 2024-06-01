@@ -41,10 +41,9 @@
 #include <system/settings.h>
 #include <system/flashtool.h>
 
+#include <gui/widget/icons.h>
 #include <gui/widget/hintbox.h>
 #include <gui/widget/messagebox.h>
-
-#include <driver/gfx/icons.h>
 
 #include <gui/scan_setup.h>
 #include <gui/update.h>

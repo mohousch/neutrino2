@@ -40,7 +40,8 @@
 #include <driver/rcinput.h>
 
 #include <driver/gfx/framebuffer.h>
-#include <driver/gfx/icons.h>
+
+#include <gui/widget/icons.h>
 
 #include <system/settings.h>
 

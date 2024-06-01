@@ -24,6 +24,8 @@
 #include <global.h>
 #include <neutrino2.h>
 
+#include <lib/libngpng/libngpng.h>
+
 #include <driver/gfx/color.h>
 
 #include <system/settings.h>
@@ -333,7 +335,7 @@ void CCImage::setImage(const char* const image)
 {
 	imageName = image? image : "";
 	 
-	if (!imageName.empty()) frameBuffer->getSize(imageName, &iWidth, &iHeight, &iNbp);
+	if (!imageName.empty()) getSize(imageName, &iWidth, &iHeight, &iNbp);
 }
 
 void CCImage::saveScreen(void)
@@ -1875,7 +1877,7 @@ void CCItemInfo::paint()
 		
 		if (!icon.empty())
 		{
-			frameBuffer->getSize(icon.c_str(), &iw, &iw, &bpp);
+			getSize(icon.c_str(), &iw, &iw, &bpp);
 			
 			if (iw > 100)
 				iw = 100;

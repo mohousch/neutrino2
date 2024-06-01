@@ -29,9 +29,9 @@
 
 #include <gui/widget/listbox.h>
 #include <gui/widget/widget.h>
+#include <gui/widget/icons.h>
 
 #include <driver/gfx/framebuffer.h>
-#include <driver/gfx/icons.h>
 
 #include <system/localize.h>
 

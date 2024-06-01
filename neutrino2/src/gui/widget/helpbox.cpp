@@ -29,9 +29,8 @@
 #include <global.h>
 #include <neutrino2.h>
 
+#include <gui/widget/icons.h>
 #include <gui/widget/messagebox.h>
-
-#include <driver/gfx/icons.h>
 
 #include <system/debug.h>
 

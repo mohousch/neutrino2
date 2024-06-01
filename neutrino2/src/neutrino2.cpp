@@ -70,7 +70,6 @@
 #include <driver/gfx/framebuffer.h>
 #include <driver/gfx/fontrenderer.h>
 #include <driver/gfx/color.h>
-#include <driver/gfx/icons.h>
 
 #ifdef ENABLE_GRAPHLCD
 #include <driver/lcd/nglcd.h>
@@ -79,6 +78,7 @@
 #include <gui/epgplus.h>
 #include <gui/streaminfo.h>
 
+#include <gui/widget/icons.h>
 #include <gui/widget/colorchooser.h>
 #include <gui/widget/messagebox.h>
 #include <gui/widget/hintbox.h>
@@ -704,7 +704,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	strcpy( g_settings.network_nfs_picturedir, configfile.getString( "network_nfs_picturedir", "/media/hdd/picture" ).c_str() );
 
 	g_settings.picviewer_slide_time = configfile.getInt32("picviewer_slide_time", 10);	// in sec
-	g_settings.picviewer_scaling = configfile.getInt32("picviewer_scaling", (int)CFrameBuffer::SIMPLE);
+	g_settings.picviewer_scaling = configfile.getInt32("picviewer_scaling", (int)SIMPLE);
 	// end pictureviewer
 
 	// misc opts

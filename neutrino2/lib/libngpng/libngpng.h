@@ -36,7 +36,7 @@
 #define FH_ERROR_FORMAT 2	/* file format error */
 #define FH_ERROR_MALLOC 3	/* error during malloc */
 
-enum
+enum ScalingMode
 {
 	NONE = 0,
 	SIMPLE = 1,
@@ -55,10 +55,11 @@ typedef struct cformathandler CFormathandler;
 
 ////
 void init_handlers(void);
+void deinit_handlers(void);
 void add_format(int (*picsize)(const char *, int *, int*, int, int), int (*picread)(const char *, unsigned char **, int*, int*), int (*id)(const char*));
 CFormathandler *fh_getsize(const char * name, int * x, int * y, int width_wanted, int height_wanted);
 void getSize(const std::string &name, int * width, int * height, int * nbpp);
-unsigned char* resize(unsigned char * origin, int ox, int oy, int dx, int dy, int type, unsigned char * dst = NULL, bool alpha = false);
+unsigned char* resize(unsigned char * origin, int ox, int oy, int dx, int dy, ScalingMode type, unsigned char * dst = NULL, bool alpha = false);
 
 #endif
 

@@ -48,8 +48,6 @@
 
 #include <daemonc/remotecontrol.h>
 
-#include <driver/gfx/icons.h>
-
 #include <global.h>
 #include <neutrino2.h>
 

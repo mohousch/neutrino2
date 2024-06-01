@@ -27,13 +27,12 @@
 #ifndef __alphasetup__
 #define __alphasetup__
 
-
+#include <gui/widget/icons.h>
 #include <gui/widget/widget.h>
 #include <gui/widget/widget_helpers.h>
 #include <gui/widget/listbox.h>
 
 #include <driver/gfx/framebuffer.h>
-#include <driver/gfx/icons.h>
 
 #include <system/localize.h>
 

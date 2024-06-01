@@ -29,13 +29,13 @@
 
 #include <string>
 
+#include <gui/widget/icons.h>
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>
 
 #include <gui/scan.h>
 
 #include <driver/gfx/framebuffer.h>
-#include <driver/gfx/icons.h>
 
 #include <zapit/frontend_c.h>
 

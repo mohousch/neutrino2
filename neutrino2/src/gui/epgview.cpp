@@ -31,10 +31,9 @@
 
 #include <algorithm>
 
-#include <driver/gfx/icons.h>
-
 #include <gui/epgview.h>
 
+#include <gui/widget/icons.h>
 #include <gui/widget/hintbox.h>
 #include <gui/widget/messagebox.h>
 

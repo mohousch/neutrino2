@@ -98,6 +98,18 @@ void init_handlers(void)
 	add_format (fh_svg_getsize, fh_svg_load, fh_svg_id);
 }
 
+void deinit_handlers(void)
+{
+	CFormathandler *fh = fh_root;
+	
+	while (fh) 
+	{
+		CFormathandler *tmp = fh->next;
+		free(fh);
+		fh = tmp;
+	}
+}
+
 CFormathandler * fh_getsize(const char *name, int *x, int *y, int width_wanted, int height_wanted)
 {
 	CFormathandler * fh = NULL;
@@ -162,7 +174,7 @@ void getSize(const std::string& name, int* width, int* height, int* nbpp)
 	return;
 }
 
-unsigned char * resize(unsigned char * origin, int ox, int oy, int dx, int dy, int type, unsigned char * dst, bool alpha)
+unsigned char *resize(unsigned char * origin, int ox, int oy, int dx, int dy, ScalingMode type, unsigned char * dst, bool alpha)
 {
 	unsigned char * cr;
 	

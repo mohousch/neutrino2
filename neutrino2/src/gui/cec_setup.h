@@ -29,9 +29,8 @@
 #ifndef __CEC_SETUP__
 #define __CEC_SETUP__
 
+#include <gui/widget/icons.h>	
 #include <gui/widget/menue.h>
-
-#include <driver/gfx/icons.h>
 
 #include <string>
 

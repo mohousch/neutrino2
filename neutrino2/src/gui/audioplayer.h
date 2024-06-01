@@ -27,12 +27,13 @@
 #define __audioplayergui__
 
 #include <driver/gfx/framebuffer.h>
-#include <driver/gfx/icons.h>
 
 #include <driver/audiofile.h>
 #include <driver/audioplay.h>
 
 #include <gui/filebrowser.h>
+
+#include <gui/widget/icons.h>
 #include <gui/widget/widget.h>
 
 #include <string>

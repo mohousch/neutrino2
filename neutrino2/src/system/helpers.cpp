@@ -44,6 +44,8 @@
 
 #include <global.h>
 
+#include <lib/libngpng/libngpng.h>
+
 #include <gui/widget/messagebox.h>
 #include <gui/widget/infobox.h>
 
@@ -1279,7 +1281,7 @@ void scaleImage(const std::string &tname, int *p_w, int *p_h, int dest_w, int de
 
 	if(!access(tname.c_str(), F_OK) )
 	{
-		CFrameBuffer::getInstance()->getSize(tname, p_w, p_h, &nbpp);
+		/*CFrameBuffer::getInstance()->*/getSize(tname, p_w, p_h, &nbpp);
 
 		// scale
 		if(*p_w <= dest_w && *p_h <= dest_h)

@@ -39,8 +39,8 @@
 #include <driver/gfx/framebuffer.h>
 #include <driver/gfx/color.h>
 #include <driver/gfx/fontrenderer.h>
-#include <driver/gfx/icons.h>
 
+#include <gui/widget/icons.h>
 #include <gui/widget/widget_helpers.h>
 
 

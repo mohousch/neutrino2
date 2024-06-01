@@ -44,6 +44,8 @@
 
 #include <global.h>
 
+#include <lib/libngpng/libngpng.h>
+
 #include <system/debug.h>
 #include <system/settings.h>
 #include <system/channellogo.h>
@@ -124,7 +126,7 @@ void CChannellogo::getLogoSize(t_channel_id logo_id, int * width, int * height, 
 	if(logo_ok)
 	{
 		// get logo real size
-		CFrameBuffer::getInstance()->getSize(logo_name.c_str(), width, height, bpp);
+		getSize(logo_name.c_str(), width, height, bpp);
 		
 		dprintf(DEBUG_INFO, "CChannellogo::getLogoSize: logo: %s (%dx%d) %dbpp\n", logo_name.c_str(), *width, *height, *bpp);
 	}
@@ -162,7 +164,7 @@ bool CChannellogo::displayLogo(t_channel_id logo_id, int posx, int posy, int wid
 	if(logo_ok)
 	{
 		// get logo real size
-		CFrameBuffer::getInstance()->getSize(logo_name, &logo_w, &logo_h, &logo_bpp);
+		getSize(logo_name, &logo_w, &logo_h, &logo_bpp);
 	
 		// scale only PNG logos
 		if( logo_name.find(".png") == (logo_name.length() - 4) )

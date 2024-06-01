@@ -37,8 +37,6 @@
 #include <system/settings.h>
 #include <system/debug.h>
 
-#include <driver/gfx/icons.h>
-
 #include <fcntl.h>
 #include <time.h>
 #include <sys/timeb.h>

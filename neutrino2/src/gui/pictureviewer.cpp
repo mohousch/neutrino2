@@ -34,12 +34,12 @@
 #include <daemonc/remotecontrol.h>
 
 #include <driver/gfx/fontrenderer.h>
-#include <driver/gfx/icons.h>
 
 #include <driver/rcinput.h>
 
 #include <gui/nfs.h>
 
+#include <gui/widget/icons.h>
 #include <gui/widget/widget_helpers.h>
 #include <gui/widget/messagebox.h>
 
@@ -93,7 +93,7 @@ int CPictureViewerGui::exec(CMenuTarget* parent, const std::string &actionKey)
 	dprintf(DEBUG_NORMAL, "CPictureViewerGui::exec: actionKey:%s\n", actionKey.c_str());
 	
 	// 
-	g_PicViewer->setScaling( (CFrameBuffer::ScalingMode)g_settings.picviewer_scaling);
+	g_PicViewer->setScaling( (ScalingMode)g_settings.picviewer_scaling);
 	g_PicViewer->setVisible(g_settings.screen_StartX, g_settings.screen_EndX, g_settings.screen_StartY, g_settings.screen_EndY);
 
 	if(g_settings.video_Ratio == 1)
