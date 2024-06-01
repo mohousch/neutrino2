@@ -74,10 +74,6 @@ class nGLCD
 		~nGLCD();
 		
 		bool init();
-		
-		//// paint methods
-		void draw_fill_rect (int left,int top,int right,int bottom,int state){};
-		void draw_point(const int x, const int y, const int state){};
 };
 #endif
 

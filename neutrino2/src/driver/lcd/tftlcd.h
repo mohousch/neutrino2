@@ -52,14 +52,15 @@ class CTFTLCD
 		int m_manual_blit;
 		int locked;
 		unsigned char *_buffer;
+		int _stride;
 		
-//		void calcRamp();
-//		int setMode(int xRes, int yRes, int bpp);
-//		void getMode();
-//		void enableManualBlit();
-//		void disableManualBlit();
-				// low level gfx stuff
-//		int putCMAP();
+		void calcRamp();
+		int setMode(int xRes, int yRes, int bpp);
+		void getMode();
+		void enableManualBlit();
+		void disableManualBlit();
+		// low level gfx stuff
+		int putCMAP();
 //		void save2png(unsigned char* output, int xRes, int yRes);
 //		void save2bmp(unsigned char* output, int xRes, int yRes); 
 		
@@ -68,6 +69,12 @@ class CTFTLCD
 		~CTFTLCD();
 		
 		bool init(const char *fbdevice = "/dev/fb1");
+		void update();  // blit
+		int waitVSync();
+		int lock();
+		void unlock();
+		int islocked() { return locked; }
+		int setLCDBrightness(int brightness);
 		
 		//// paint methods
 		void draw_fill_rect (int left,int top,int right,int bottom,int state){};

@@ -113,10 +113,10 @@ bool CTFTLCD::init(const char *fbdevice)
 		goto nolfb;
 	}
 
-//	calcRamp();
-//	getMode();
-//	setMode(m_xRes, m_yRes, m_bpp);
-//	enableManualBlit();
+	calcRamp();
+	getMode();
+	setMode(m_xRes, m_yRes, m_bpp);
+	enableManualBlit();
 
 	return true;
 nolfb:
@@ -131,4 +131,185 @@ nolfb:
 	return false;
 }
 
+int CTFTLCD::setMode(int nxRes, int nyRes, int nbpp)
+{
+	m_screeninfo.xres_virtual = m_screeninfo.xres = nxRes;
+	m_screeninfo.yres_virtual = (m_screeninfo.yres = nyRes) * 2;
+	m_screeninfo.height = 0;
+	m_screeninfo.width = 0;
+	m_screeninfo.xoffset = m_screeninfo.yoffset = 0;
+	m_screeninfo.bits_per_pixel = nbpp;
+
+	switch (nbpp) 
+	{
+		case 16:
+			// ARGB 1555
+			m_screeninfo.transp.offset = 15;
+			m_screeninfo.transp.length = 1;
+			m_screeninfo.red.offset = 10;
+			m_screeninfo.red.length = 5;
+			m_screeninfo.green.offset = 5;
+			m_screeninfo.green.length = 5;
+			m_screeninfo.blue.offset = 0;
+			m_screeninfo.blue.length = 5;
+			break;
+		case 32:
+			// ARGB 8888
+			m_screeninfo.transp.offset = 24;
+			m_screeninfo.transp.length = 8;
+			m_screeninfo.red.offset = 16;
+			m_screeninfo.red.length = 8;
+			m_screeninfo.green.offset = 8;
+			m_screeninfo.green.length = 8;
+			m_screeninfo.blue.offset = 0;
+			m_screeninfo.blue.length = 8;
+			break;
+	}
+
+	if (ioctl(fd, FBIOPUT_VSCREENINFO, &m_screeninfo) < 0)
+	{
+		// try single buffering
+		m_screeninfo.yres_virtual = m_screeninfo.yres=nyRes;
+
+		if (ioctl(fd, FBIOPUT_VSCREENINFO, &m_screeninfo) < 0)
+		{
+			printf("CTFTLCD::setMode: FBIOPUT_VSCREENINFO: %m\m\n");
+			return -1;
+		}
+		printf("CTFTLCD::setMode: double buffering not available\n");
+	}
+	else
+		printf("CTFTLCD::setMode: double buffering available\n");
+
+	ioctl(fd, FBIOGET_VSCREENINFO, &m_screeninfo);
+
+	if ((m_screeninfo.xres != (unsigned int)nxRes) || (m_screeninfo.yres != (unsigned int)nyRes) ||
+		(m_screeninfo.bits_per_pixel != (unsigned int)nbpp))
+	{
+		printf("CTFTLCD::setMode: failed: wanted: %dx%dx%d, got %dx%dx%d\n",
+			nxRes, nyRes, nbpp,
+			m_screeninfo.xres, m_screeninfo.yres, m_screeninfo.bits_per_pixel);
+	}
+	m_xRes = m_screeninfo.xres;
+	m_yRes = m_screeninfo.yres;
+	m_bpp = m_screeninfo.bits_per_pixel;
+	
+	fb_fix_screeninfo fix;
+	
+	if (ioctl(fd, FBIOGET_FSCREENINFO, &fix) < 0)
+	{
+		printf("[eFbLCD] FBIOGET_FSCREENINFO: %m\n");
+	}
+	_stride = fix.line_length;
+	memset(_buffer, 0, _stride * m_yRes);
+	
+	update();
+	
+	return 0;
+}
+
+void CTFTLCD::getMode()
+{
+	m_xRes = m_screeninfo.xres;
+	m_yRes = m_screeninfo.yres;
+	m_bpp = m_screeninfo.bits_per_pixel;
+}
+
+int CTFTLCD::waitVSync()
+{
+	int c = 0;
+	return ioctl(fd, FBIO_WAITFORVSYNC, &c);
+}
+
+void CTFTLCD::update() // blit
+{
+	if (m_manual_blit == 1)
+	{
+		if (ioctl(fd, FBIO_BLIT) < 0)
+			printf("[eFbLCD] FBIO_BLIT: %m\n");
+	}
+}
+
+int CTFTLCD::putCMAP()
+{
+	return ioctl(fd, FBIOPUTCMAP, &m_cmap);
+}
+
+int CTFTLCD::lock()
+{
+	if (locked)
+		return -1;
+	if (m_manual_blit == 1)
+	{
+		locked = 2;
+		disableManualBlit();
+	}
+	else
+		locked = 1;
+		
+	return fd;
+}
+
+void CTFTLCD::unlock()
+{
+	if (!locked)
+		return;
+		
+	if (locked == 2)  // re-enable manualBlit
+		enableManualBlit();
+		
+	locked = 0;
+	setMode(m_xRes, m_yRes, m_bpp);
+//	putCMAP();
+}
+
+void CTFTLCD::calcRamp()
+{
+	for (int i = 0; i < 256; i++)
+	{
+		int d;
+		d = i;
+		d = (d-128)*(m_gamma + 64)/(128 + 64) + 128;
+		d += m_brightness - 128; // brightness correction
+		if (d < 0)
+			d = 0;
+		if (d > 255)
+			d = 255;
+		m_ramp[i] = d;
+
+		m_rampalpha[i] = i*m_alpha/256;
+	}
+
+	m_rampalpha[255] = 255; // transparent BLEIBT bitte so.
+}
+
+void CTFTLCD::enableManualBlit()
+{
+	unsigned char tmp = 1;
+	if (ioctl(fd, FBIO_SET_MANUAL_BLIT, &tmp) < 0)
+		printf("CTFTLCD::enableManualBlit: FBIO_SET_MANUAL_BLIT: %m\n");
+	else
+		m_manual_blit = 1;
+}
+
+void CTFTLCD::disableManualBlit()
+{
+	unsigned char tmp = 0;
+	if (ioctl(fd, FBIO_SET_MANUAL_BLIT, &tmp) < 0)
+		printf("CTFTLCD::disableManualBlit: FBIO_SET_MANUAL_BLIT: %m");
+	else
+		m_manual_blit = 0;
+}
+
+int CTFTLCD::setLCDBrightness(int brightness)
+{
+	FILE *f = fopen("/proc/stb/lcd/oled_brightness", "w");
+	if (f)
+	{
+		if (fprintf(f, "%d", brightness) == 0)
+			printf("CTFTLCD::setLCDBrightness: write /proc/stb/lcd/oled_brightness failed: %m\n");
+		fclose(f);
+	}
+	return 0;
+}
 
