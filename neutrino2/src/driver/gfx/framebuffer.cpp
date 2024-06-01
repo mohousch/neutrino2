@@ -1009,7 +1009,7 @@ void CFrameBuffer::getIconSize(const char * const filename, int * width, int * h
 }
 
 //
-bool CFrameBuffer::paintIcon8(const std::string & filename, const int x, const int y, const unsigned char offset)
+bool CFrameBuffer::paintIcon8(const std::string &filename, const int x, const int y, const unsigned char offset)
 {
 	if (!getActive())
 		return false;
@@ -1042,6 +1042,7 @@ bool CFrameBuffer::paintIcon8(const std::string & filename, const int x, const i
 		read(_fd, &pixbuf[0], width );
 		unsigned char *pixpos = &pixbuf[0];
 		d2 = (fb_pixel_t *) d;
+		
 		for (int count2 = 0; count2 < width; count2 ++ ) 
 		{
 			unsigned char color = *pixpos;
@@ -1096,15 +1097,18 @@ bool CFrameBuffer::paintIconRaw(const std::string & filename, const int x, const
 	
 	//	
 	unsigned char pixbuf[768];
+	
 	for (int count = 0; count < height; count ++ ) 
 	{
 		read(lfd, &pixbuf[0], width >> 1 );
 		unsigned char *pixpos = &pixbuf[0];
+		
 		for (int count2 = 0; count2 < width >> 1; count2 ++ ) 
 		{
 			unsigned char compressed = *pixpos;
 			unsigned char pix1 = (compressed & 0xf0) >> 4;
 			unsigned char pix2 = (compressed & 0x0f);
+			
 			if (pix1 != header.transp)
 				*data++ = realcolor[pix1 + offset];
 			else
@@ -1746,16 +1750,11 @@ void CFrameBuffer::blit(int mode3d)
 
 ////
 // PNG
-//extern int fh_png_getsize(const char *name, int *x, int *y, int wanted_width, int wanted_height);
-//extern int fh_png_load(const char *name, unsigned char **buffer, int* xp, int* yp);
 extern int fh_png_id(const char *name);
 extern int png_load_ext(const char * name, unsigned char ** buffer, int * xp, int * yp, int * bpp);
 
 // SVG
-//extern int fh_svg_getsize (const char *, int *, int *, int, int);
-//extern int fh_svg_load (const char *, unsigned char **, int *, int *);
 extern int svg_load_resize(const char *name, unsigned char **buffer, int* ox, int* oy, int dx, int dy);
-//extern int fh_svg_id (const char *);
 
 // getImage
 fb_pixel_t * CFrameBuffer::getImage(const std::string &name, int width, int height)

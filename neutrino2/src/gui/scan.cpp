@@ -523,7 +523,7 @@ void CScanTs::paintRadar(void)
 	
 	sprintf(filename, "radar%d.raw", radar);
 	radar = (radar + 1) % 10;
-	frameBuffer->paintIcon8(filename, xpos_radar, ypos_radar, 17);
+	frameBuffer->paintIcon8(filename, xpos_radar, ypos_radar, 17); // offset = 17
 	
 	frameBuffer->blit();
 }
@@ -570,7 +570,7 @@ void CScanTs::paint(bool fortest)
 	frameBuffer->paintBoxRel(x, ypos + hheight, width, height - hheight, COL_MENUCONTENT_PLUS_0, RADIUS_SMALL, CORNER_BOTTOM);
 	
 	// radar
-	frameBuffer->loadPal("radar.pal", 17, 37);
+	frameBuffer->loadPal("radar.pal", 17, 37);	// offset = 17
 	
 	// satellites
 	ypos = y + hheight + (mheight >> 1);

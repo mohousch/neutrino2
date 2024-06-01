@@ -33,6 +33,8 @@
 
 #include <vector>
 
+#include <lib/libngpng/libngpng.h>
+
 #include <driver/gfx/framebuffer.h>
 
 

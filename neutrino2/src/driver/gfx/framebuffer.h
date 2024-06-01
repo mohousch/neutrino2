@@ -256,13 +256,13 @@ class CFrameBuffer
 		std::string getHintBasePath(void){return hintBasePath;};
 		std::string getSpinnerBasePath(void){return spinnerBasePath;};
 
-		//
+		// icon
 		void getIconSize(const char * const filename, int* width, int *height);
-		bool paintIcon(const std::string & filename, const int x, const int y, const int h = 0, bool paint = true, int width = 0, int height = 0);
-		bool paintHintIcon(const std::string& filename, int posx, int posy, int width , int height);
-		bool paintIcon8(const std::string & filename, const int x, const int y, const unsigned char offset = 0);
-		bool paintIconRaw(const std::string & filename, const int x, const int y, const int h = 0, const unsigned char offset = 1, bool paint = true);
-		void loadPal(const std::string & filename, const unsigned char offset = 0, const unsigned char endidx = 255);
+		bool paintIcon(const std::string &filename, const int x, const int y, const int h = 0, bool paint = true, int width = 0, int height = 0);
+		bool paintHintIcon(const std::string &filename, int posx, int posy, int width , int height);
+		bool paintIcon8(const std::string &filename, const int x, const int y, const unsigned char offset = 0);
+		bool paintIconRaw(const std::string &filename, const int x, const int y, const int h = 0, const unsigned char offset = 1, bool paint = true);
+		void loadPal(const std::string &filename, const unsigned char offset = 0, const unsigned char endidx = 255);
 		
 		// background
 		int getBackgroundColor() { return backgroundColor;}
@@ -297,8 +297,6 @@ class CFrameBuffer
 		////
 		fb_pixel_t * getImage(const std::string& name, int width, int height);
 		void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, int transp = 0xFF, int m_transparent = TM_BLACK, bool alpha = false);
-		
-		//
 		void displayRGB(unsigned char * rgbbuff, int x_size, int y_size, int x_pan, int y_pan, int x_offs, int y_offs, bool clearfb = true);
 		bool displayImage(const std::string& name, int posx = 0, int posy = 0, int width = DEFAULT_XRES, int height = DEFAULT_YRES, int x_pan = 0, int y_pan = 0);
 };
