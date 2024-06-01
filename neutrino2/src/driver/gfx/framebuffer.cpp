@@ -58,12 +58,12 @@
 #define BACKGROUNDIMAGEWIDTH 	DEFAULT_XRES
 #define BACKGROUNDIMAGEHEIGHT	DEFAULT_YRES
 
-// png/jpg handling
+//// png/jpg handling
 CFormathandler * fh_root;
 void init_handlers(void);
 void add_format(int (*picsize)(const char *,int *,int*,int,int),int (*picread)(const char *,unsigned char **,int*,int*), int (*id)(const char*));
 
-//
+////
 static uint32_t * virtual_fb = NULL;
 inline uint32_t make16color(uint16_t r, uint16_t g, uint16_t b, uint16_t t,
 				  uint32_t  /*rl*/ = 0, uint32_t  /*ro*/ = 0,
@@ -1759,6 +1759,7 @@ void CFrameBuffer::blit(int mode3d)
 #endif	
 }
 
+////
 // PNG
 extern int fh_png_getsize(const char *name, int *x, int *y, int wanted_width, int wanted_height);
 extern int fh_png_load(const char *name, unsigned char **buffer, int* xp, int* yp);
@@ -1791,7 +1792,7 @@ extern int fh_svg_load (const char *, unsigned char **, int *, int *);
 extern int svg_load_resize(const char *name, unsigned char **buffer, int* ox, int* oy, int dx, int dy);
 extern int fh_svg_id (const char *);
 
-void add_format (int (*picsize) (const char *, int *, int *, int, int), int (*picread) (const char *, unsigned char **, int *, int *), int (*id) (const char *))
+void add_format(int (*picsize) (const char *, int *, int *, int, int), int (*picread) (const char *, unsigned char **, int *, int *), int (*id) (const char *))
 {
 	CFormathandler * fhn = NULL;
 	fhn = (CFormathandler *) malloc(sizeof (CFormathandler));
@@ -1802,7 +1803,7 @@ void add_format (int (*picsize) (const char *, int *, int *, int, int), int (*pi
 	fh_root = fhn;
 }
 
-void init_handlers (void)
+void init_handlers(void)
 {
 	// add png format
   	add_format(fh_png_getsize, fh_png_load, fh_png_id);

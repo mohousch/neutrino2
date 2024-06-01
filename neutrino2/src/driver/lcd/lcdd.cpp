@@ -95,69 +95,6 @@ void CLCD::closeDevice()
 	
 	fd = -1;
 }
-
-void CLCD::ClearIcons()				/* switcht all VFD Icons off		*/
-{
-	if(!has_lcd) 
-		return;
-	
-#if defined(PLATFORM_SPARK7162)		/* using one command for switching off all Icons*/	 
-	openDevice();
-	aotom_data.u.icon.icon_nr = SPARK_ICON_ALL;
-	aotom_data.u.icon.on = 0;
-	if (ioctl(fd, VFDICONDISPLAYONOFF, &aotom_data) <0)
-		perror("VFDICONDISPLAYONOFF");
-	closeDevice();
-#else
-	int i;
-	struct vfd_ioctl_data data;
-	
-	openDevice();
-	
-	for(i = 0; i <= 15; i++)
-	{
-		data.data[0] = i;
-		data.data[4] = 0;
-		
-		if( ioctl(fd, VFDICONDISPLAYONOFF, &data) < 0)
-			perror("VFDICONDISPLAYONOFF");
-	}
-	
-	closeDevice();
-#endif
-}
-
-#if defined(PLATFORM_SPARK7162)			/* only for Spark7162 STB's which Display has a HDD Level indicator */	 
-void CLCD::ShowDiskLevel()
-{
-	int hdd_icons[9] = {24, 23, 21, 20, 19, 18, 17, 16, 22};
-	int percent, digits, i, j;
-	uint64_t t, u;
-	
-	if (get_fs_usage(g_settings.network_nfs_recordingdir, t, u))
-	{
-		ShowIcon(SPARK_HDD, true);
-		percent = (u * 1000ULL) / t + 60; 
-		digits = percent / 125;
-		if (percent > 1050)
-			digits = 9;
-		
-		if (digits > 0)
-		{
-			for (i = 0; i < digits; i++)
-				ShowIcon((vfd_icon)hdd_icons[i], true);
-						
-			for (j = i; j < 9; j++)
-				ShowIcon((vfd_icon)hdd_icons[j], false);
-		}
-	}
-	else
-	{
-		ShowIcon(SPARK_HDD, false);
-
-	}
-}
-#endif
 #endif
 
 CLCD::CLCD()
@@ -287,8 +224,6 @@ void* CLCD::TimeThread(void *)
 
 void CLCD::init(const char * fontfile, const char * fontname, const char * fontfile2, const char * fontname2, const char * fontfile3, const char * fontname3)
 {
-	dprintf(DEBUG_NORMAL, "CLCD::init\n");
-	
 	// init lcd 
 	if (!lcdInit(fontfile, fontname, fontfile2, fontname2, fontfile3, fontname3 ))
 	{
@@ -296,6 +231,8 @@ void CLCD::init(const char * fontfile, const char * fontname, const char * fontf
 		has_lcd = false;
 		return;
 	}
+	
+	dprintf(DEBUG_NORMAL, "CLCD::init: succeeded\n");
 
 	// create time thread
 	if (pthread_create (&thrTime, NULL, TimeThread, NULL) != 0 )
@@ -887,6 +824,9 @@ void CLCD::ShowText(const char *str)
 
 void CLCD::showServicename(const std::string &name, const bool perform_wakeup, int pos)
 {
+	if (!has_lcd)
+		return;
+
 	int showmode = g_settings.lcd_epgmode;
 
 	if (!name.empty())
@@ -1848,6 +1788,9 @@ void CLCD::pause()
 
 void CLCD::ShowIcon(vfd_icon icon, bool show)
 {
+	if (!has_lcd)
+		return;
+
 #if defined (ENABLE_VFD)
 #if defined (__sh__)
 #if defined (PLATFORM_KATHREIN) || defined(PLATFORM_SPARK7162)
@@ -1894,19 +1837,94 @@ void CLCD::ShowIcon(vfd_icon icon, bool show)
 #endif	
 	closeDevice();
 #endif // sh
+#endif // vfd
+}
+
+////
+void CLCD::ShowDiskLevel()
+{
+#ifdef ENABLE_VFD
+#ifdef __sh__
+#if defined(PLATFORM_SPARK7162)
+	int hdd_icons[9] = {24, 23, 21, 20, 19, 18, 17, 16, 22};
+	int percent, digits, i, j;
+	uint64_t t, u;
+	
+	if (get_fs_usage(g_settings.network_nfs_recordingdir, t, u))
+	{
+		ShowIcon(SPARK_HDD, true);
+		percent = (u * 1000ULL) / t + 60; 
+		digits = percent / 125;
+		if (percent > 1050)
+			digits = 9;
+		
+		if (digits > 0)
+		{
+			for (i = 0; i < digits; i++)
+				ShowIcon((vfd_icon)hdd_icons[i], true);
+						
+			for (j = i; j < 9; j++)
+				ShowIcon((vfd_icon)hdd_icons[j], false);
+		}
+	}
+	else
+	{
+		ShowIcon(SPARK_HDD, false);
+
+	}
+#endif
+#endif
 #endif
 }
 
+void CLCD::ClearIcons()
+{
+	if(!has_lcd) 
+		return;
+
+#ifdef ENABLE_VFD
+#ifdef __sh__	
+#if defined(PLATFORM_SPARK7162)	 
+	openDevice();
+	aotom_data.u.icon.icon_nr = SPARK_ICON_ALL;
+	aotom_data.u.icon.on = 0;
+	if (ioctl(fd, VFDICONDISPLAYONOFF, &aotom_data) <0)
+		perror("VFDICONDISPLAYONOFF");
+	closeDevice();
+#else
+	int i;
+	struct vfd_ioctl_data data;
+	
+	openDevice();
+	
+	for(i = 0; i <= 15; i++)
+	{
+		data.data[0] = i;
+		data.data[4] = 0;
+		
+		if( ioctl(fd, VFDICONDISPLAYONOFF, &data) < 0)
+			perror("VFDICONDISPLAYONOFF");
+	}
+	
+	closeDevice();
+#endif
+#endif
+#endif
+}
+////
+
 void CLCD::Lock()
 {
-	if(!has_lcd) return;
+	if(!has_lcd) 
+		return;
 	
 	creat("/tmp/lcd.locked", 0);
 }
 
 void CLCD::Unlock()
 {
-	if(!has_lcd) return;
+	if(!has_lcd) 
+		return;
 	
 	unlink("/tmp/lcd.locked");
 }

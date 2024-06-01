@@ -603,7 +603,9 @@ class CLCD
 		void Unlock();
 		void Clear();
 		void ShowIcon(vfd_icon icon, bool show);
-		void ShowText(const char *str) /*{ showServicename(std::string(s)); }*/;
+		void ShowDiskLevel();
+		void ClearIcons();
+		void ShowText(const char *str);
 		
 		bool ShowPng(char *filename);
 		bool DumpPng(char *filename);
@@ -611,11 +613,6 @@ class CLCD
 #if defined (__sh__)
 		void openDevice();
 		void closeDevice();
-		
-		void ClearIcons();
-#if defined(PLATFORM_SPARK7162)
-		void ShowDiskLevel();
-#endif
 #endif
 		
 	private:
