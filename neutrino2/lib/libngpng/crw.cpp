@@ -2,7 +2,7 @@
 * crw.c handle crw format
 */
 
-#include <driver/gfx/framebuffer.h>
+#include "libngpng.h"
 
 #include <cstring>
 #include <cstdlib>

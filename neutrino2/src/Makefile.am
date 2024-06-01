@@ -87,6 +87,7 @@ neutrino2_LDADD = \
 	$(top_builddir)/lib/libiw/libiw.a \
 	$(top_builddir)/lib/libdvbapi/libdvbapi.a \
 	$(top_builddir)/lib/libdvbci/libdvbci.a \
+	$(top_builddir)/lib/libngpng/libngpng.a \
 	@CURL_LIBS@ \
 	@FREETYPE_LIBS@ \
 	@PNG_LIBS@ \

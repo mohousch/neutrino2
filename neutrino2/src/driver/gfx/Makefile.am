@@ -31,13 +31,7 @@ noinst_LIBRARIES = libneutrino2_driver_gfx.a
 libneutrino2_driver_gfx_a_SOURCES = \
 	fontrenderer.cpp \
 	framebuffer.cpp \
-	color.cpp \
-	png.cpp \
-	jpeg.cpp \
-	bmp.cpp \
-	gif.cpp \
-	crw.cpp \
-	svg.cpp
+	color.cpp
 
 if USE_OPENGL
 libneutrino2_driver_gfx_a_SOURCES += glthread.cpp

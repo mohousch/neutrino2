@@ -67,7 +67,7 @@ class CTFTLCD
 		CTFTLCD();
 		~CTFTLCD();
 		
-		bool init(const char *fbdevice);
+		bool init(const char *fbdevice = "/dev/fb1");
 		
 		//// paint methods
 		void draw_fill_rect (int left,int top,int right,int bottom,int state){};

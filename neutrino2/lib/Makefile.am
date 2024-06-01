@@ -9,7 +9,8 @@ SUBDIRS = \
 	jsoncpp \
 	libiw \
 	libdvbapi \
-	libdvbci
+	libdvbci \
+	libngpng
 
 if !ENABLE_GSTREAMER
 SUBDIRS += libeplayer3

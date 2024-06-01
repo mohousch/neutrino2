@@ -59,9 +59,11 @@
 #define BACKGROUNDIMAGEHEIGHT	DEFAULT_YRES
 
 //// png/jpg handling
+/*
 CFormathandler * fh_root;
 void init_handlers(void);
 void add_format(int (*picsize)(const char *,int *,int*,int,int),int (*picread)(const char *,unsigned char **,int*,int*), int (*id)(const char*));
+*/
 
 ////
 static uint32_t * virtual_fb = NULL;
@@ -107,7 +109,7 @@ CFrameBuffer::CFrameBuffer()
 	memset(trans, 0, 256*sizeof(__u16));
 
 	// png/jpg/bmp/crw handlers
-	fh_root = NULL;
+//	fh_root = NULL;
 	init_handlers();
 
 	//
@@ -273,6 +275,7 @@ CFrameBuffer::~CFrameBuffer()
 {
 	dprintf(DEBUG_NORMAL, "~CFrameBuffer()\n");
 	
+/*
 	CFormathandler *fh = fh_root;
 	
 	while (fh) 
@@ -281,6 +284,7 @@ CFrameBuffer::~CFrameBuffer()
 		free(fh);
 		fh = tmp;
 	}
+*/
 	
 	if (background) 
 	{
@@ -1668,8 +1672,6 @@ void CFrameBuffer::disableManualBlit()
 
 void CFrameBuffer::blit(int mode3d)
 {
-	//dprintf(DEBUG_DEBUG, "CFrameBuffer::blit:\n");
-	
 #if defined USE_OPENGL  
 	mpGLThreadObj->blit();
 #elif defined (__sh__)
@@ -1766,6 +1768,7 @@ extern int fh_png_load(const char *name, unsigned char **buffer, int* xp, int* y
 extern int fh_png_id(const char *name);
 extern int png_load_ext(const char * name, unsigned char ** buffer, int * xp, int * yp, int * bpp);
 
+#if 0
 // JPG
 extern int fh_jpeg_getsize (const char *, int *, int *, int, int);
 extern int fh_jpeg_load (const char *, unsigned char **, int *, int *);
@@ -1785,6 +1788,7 @@ extern int fh_gif_id (const char *);
 extern int fh_crw_getsize (const char *, int *, int *, int, int);
 extern int fh_crw_load (const char *, unsigned char **, int *, int *);
 extern int fh_crw_id (const char *);
+#endif
 
 // SVG
 extern int fh_svg_getsize (const char *, int *, int *, int, int);
@@ -1792,6 +1796,7 @@ extern int fh_svg_load (const char *, unsigned char **, int *, int *);
 extern int svg_load_resize(const char *name, unsigned char **buffer, int* ox, int* oy, int dx, int dy);
 extern int fh_svg_id (const char *);
 
+#if 0
 void add_format(int (*picsize) (const char *, int *, int *, int, int), int (*picread) (const char *, unsigned char **, int *, int *), int (*id) (const char *))
 {
 	CFormathandler * fhn = NULL;
@@ -1837,11 +1842,12 @@ CFormathandler * fh_getsize(const char *name, int *x, int *y, int width_wanted, 
 
 	return (NULL);
 }
-
+#endif
+#if 1
 void CFrameBuffer::getSize(const std::string& name, int* width, int* height, int* nbpp)
 {
 	dprintf(DEBUG_INFO, "CFrameBuffer::getSize: name:%s\n", name.c_str());
-
+/*
 	unsigned char* rgbbuff;
 	int x = 0;
 	int y = 0;
@@ -1886,11 +1892,16 @@ void CFrameBuffer::getSize(const std::string& name, int* width, int* height, int
 	}
 
 	return;
+*/
+	getSize(name, width, height, nbpp);
 }
+#endif
 
 // resize
+#if 1
 unsigned char * CFrameBuffer::resize(unsigned char * origin, int ox, int oy, int dx, int dy, ScalingMode type, unsigned char * dst, bool alpha)
 {
+/*
 	unsigned char * cr;
 	
 	if(dst == NULL) 
@@ -2000,8 +2011,10 @@ unsigned char * CFrameBuffer::resize(unsigned char * origin, int ox, int oy, int
 	free(origin);
 	
 	return(cr);
+*/
+	return ::resize(origin, ox, oy, dx, dy, type, dst, alpha);
 }
-
+#endif
 // getImage
 fb_pixel_t * CFrameBuffer::getImage(const std::string &name, int width, int height)
 {
@@ -2141,7 +2154,7 @@ void * CFrameBuffer::convertRGB2FB(unsigned char * rgbbuff, unsigned long x, uns
 	return (void *) fbbuff;
 }
 
-// display RGB (used in pictureviewer)
+// display RGB
 void CFrameBuffer::displayRGB(unsigned char * rgbbuff, int x_size, int y_size, int x_pan, int y_pan, int x_offs, int y_offs, bool clearfb)
 {
 	dprintf(DEBUG_INFO, "CFrameBuffer::displayRGB\n");

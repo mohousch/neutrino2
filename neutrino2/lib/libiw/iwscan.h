@@ -34,3 +34,4 @@ struct wlan_network
 
 bool get_wlan_list(std::string dev, std::vector<wlan_network> &networks);
 #endif
+

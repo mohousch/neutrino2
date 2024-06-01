@@ -132,7 +132,7 @@ bool CPictureViewer::decodeImage(const std::string & name, bool showBusySign)
 				}
 
 				// resize
-				m_Pic_Buffer = CFrameBuffer::getInstance()->resize(m_Pic_Buffer, x, y, imx, imy, m_scaling);
+				m_Pic_Buffer = /*CFrameBuffer::getInstance()->*/::resize(m_Pic_Buffer, x, y, imx, imy, m_scaling);
 
 				x = imx;
 				y = imy;
@@ -252,7 +252,7 @@ void CPictureViewer::zoom(float factor)
 	m_Pic_X = (int) (factor * m_Pic_X);
 	m_Pic_Y = (int) (factor * m_Pic_Y);
 	
-	m_Pic_Buffer = CFrameBuffer::getInstance()->resize(m_Pic_Buffer, oldx, oldy, m_Pic_X, m_Pic_Y, m_scaling);
+	m_Pic_Buffer = /*CFrameBuffer::getInstance()->*/::resize(m_Pic_Buffer, oldx, oldy, m_Pic_X, m_Pic_Y, m_scaling);
 	
 	if (m_Pic_Buffer == oldBuf) 
 	{

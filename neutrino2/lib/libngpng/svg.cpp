@@ -43,12 +43,9 @@
 #include <float.h>
 #define NANOSVG_ALL_COLOR_KEYWORDS	// Include full list of color keywords.
 #define NANOSVG_IMPLEMENTATION		// Expands implementation
-#include <nanosvg.h>
+#include "nanosvg.h"
 #define NANOSVGRAST_IMPLEMENTATION
-#include <nanosvgrast.h>
-
-#include <config.h>
-#include "system/debug.h"
+#include "nanosvgrast.h"
 
 
 int fh_svg_id(const char *name)
@@ -69,7 +66,7 @@ int fh_svg_load(const char *name, unsigned char **buffer, int* xp, int* yp)
 	NSVGrasterizer *rast = NULL;
 	int w, h;
 
-	//dprintf(DEBUG_NORMAL, "fh_svg_load: parsing load %s\n", name);
+	//printf("fh_svg_load: parsing load %s\n", name);
 	
 	image = nsvgParseFromFile(name, "px", 96.0f);
 	if (image == NULL)
@@ -85,7 +82,7 @@ int fh_svg_load(const char *name, unsigned char **buffer, int* xp, int* yp)
 	
 	if (rast == NULL)
 	{
-		dprintf(DEBUG_NORMAL, "fh_svg_load: Could not init rasterizer.\n");
+		printf("fh_svg_load: Could not init rasterizer.\n");
 		goto error;
 	}
 
@@ -100,11 +97,11 @@ int fh_svg_load(const char *name, unsigned char **buffer, int* xp, int* yp)
 
 	if (buffer == NULL)
 	{
-		dprintf(DEBUG_NORMAL, "fh_svg_load: Could not alloc image buffer.\n");
+		printf("fh_svg_load: Could not alloc image buffer.\n");
 		goto error;
 	}
 
-	dprintf(DEBUG_NORMAL, "fh_svg_load: rasterizing image %d x %d\n", w, h);
+	printf("fh_svg_load: rasterizing image %d x %d\n", w, h);
 	nsvgRasterize(rast, image, 0,0,1, *buffer, w, h, w*4);
 
 error:
@@ -122,13 +119,13 @@ int svg_load_resize(const char *name, unsigned char **buffer, int* ox, int* oy, 
 	NSVGrasterizer *rast = NULL;
 	int w, h;
 
-	//dprintf(DEBUG_NORMAL, "svg_load_resize: parsing load %s\n", name);
+	//printf("svg_load_resize: parsing load %s\n", name);
 	
 	image = nsvgParseFromFile(name, "px", 96.0f);
 	
 	if (image == NULL)
 	{
-		dprintf(DEBUG_NORMAL, "svg_load_resize: Could not open SVG image.\n");
+		printf("svg_load_resize: Could not open SVG image.\n");
 		goto error;
 	}
 	
@@ -139,7 +136,7 @@ int svg_load_resize(const char *name, unsigned char **buffer, int* ox, int* oy, 
 	
 	if (rast == NULL)
 	{
-		dprintf(DEBUG_NORMAL, "svg_load_resize: Could not init rasterizer.\n");
+		printf("svg_load_resize: Could not init rasterizer.\n");
 		goto error;
 	}
 
@@ -158,11 +155,11 @@ int svg_load_resize(const char *name, unsigned char **buffer, int* ox, int* oy, 
 
 	if (buffer == NULL)
 	{
-		dprintf(DEBUG_NORMAL, "svg_load_resize: Could not alloc image buffer.\n");
+		printf("svg_load_resize: Could not alloc image buffer.\n");
 		goto error;
 	}
 
-	//dprintf(DEBUG_NORMAL, "svg_load_resize: rasterizing image %d x %d\n", w, h);
+	//printf("svg_load_resize: rasterizing image %d x %d\n", w, h);
 	nsvgRasterizeFull(rast, image, 0, 0, scale_w, scale_h, *buffer, w, h, w*4);
 
 error:
@@ -177,13 +174,13 @@ int fh_svg_getsize(const char *name,int *x,int *y, int /*wanted_width*/, int /*w
 	NSVGimage *image = NULL;
 	int w, h;
 
-	//dprintf(DEBUG_NORMAL, "fh_svg_getsize: parsing getsize %s\n", name);
+	//printf("fh_svg_getsize: parsing getsize %s\n", name);
 	
 	image = nsvgParseFromFile(name, "px", 96.0f);
 	
 	if (image == NULL)
 	{
-		dprintf(DEBUG_NORMAL, "fh_svg_getsize: Could not open SVG image.\n");
+		printf("fh_svg_getsize: Could not open SVG image.\n");
 		goto error;
 	}
 	

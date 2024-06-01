@@ -42,6 +42,8 @@
 #include <linux/stmfb.h>
 #endif
 
+#include <lib/libngpng/libngpng.h>
+
 
 #ifdef USE_OPENGL
 class GLThreadObj;
@@ -71,10 +73,12 @@ typedef struct fb_var_screeninfo t_fb_var_screeninfo;
 // bitmap
 #define DEFAULT_BPP		32	// 32 bit
 
+#if 0
 #define FH_ERROR_OK 0
 #define FH_ERROR_FILE 1		/* read/access error */
 #define FH_ERROR_FORMAT 2	/* file format error */
 #define FH_ERROR_MALLOC 3	/* error during malloc */
+#endif
 
 // gradient mode
 enum {
@@ -105,6 +109,7 @@ enum {
 	GRADIENT_COLOR2COLOR
 };
 
+#if 0
 // png/jpg/bmp/gif/crw/svg
 struct cformathandler 
 {
@@ -118,6 +123,7 @@ typedef struct cformathandler CFormathandler;
 
 // png/jpg/bmp/gif/crw
 CFormathandler* fh_getsize(const char * name, int * x, int * y, int width_wanted, int height_wanted);
+#endif
 
 class CFrameBuffer
 {
