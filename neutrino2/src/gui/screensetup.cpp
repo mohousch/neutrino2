@@ -212,10 +212,10 @@ void CScreenSetup::paintBorder( int _selected )
 void CScreenSetup::paintIcons()
 {
 	// red
-        frameBuffer->paintIcon(NEUTRINO_ICON_BUTTON_RED, x + BORDER_LEFT/2, y + (BoxHeight/2 - icon_h)/2);
+        frameBuffer->paintIcon(NEUTRINO_ICON_BUTTON_RED, x + 30 - icon_w - ICON_OFFSET, y, 0, true, icon_w, BoxHeight/2);
 	
 	// green
-        frameBuffer->paintIcon(NEUTRINO_ICON_BUTTON_GREEN, x + BORDER_LEFT/2, y + BoxHeight/2 + (BoxHeight/2 - icon_h)/2);
+        frameBuffer->paintIcon(NEUTRINO_ICON_BUTTON_GREEN, x + 30 - icon_w - ICON_OFFSET, y + BoxHeight/2, 0, true, icon_w, BoxHeight/2);
 }
 
 void CScreenSetup::paintBorderUL()
@@ -288,10 +288,10 @@ void CScreenSetup::paint()
         frameBuffer->paintBoxRel(x, y + BoxHeight/2, BoxWidth, BoxHeight/2, COL_MENUCONTENT_PLUS_0);
 
 	// upper
-        g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + 30, y+BoxHeight/2, BoxWidth, _("Upper Left"), COL_MENUCONTENTSELECTED_TEXT_PLUS_0, 0, true); // UTF-8
+        g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + 30, y + BoxHeight/2, BoxWidth, _("Upper Left"), COL_MENUCONTENTSELECTED_TEXT_PLUS_0, 0, true); // UTF-8
         
         // lower
-        g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + 30, y+BoxHeight, BoxWidth, _("Lower Right"), COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
+        g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + 30, y + BoxHeight, BoxWidth, _("Lower Right"), COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 
 	paintIcons();
 	paintBorderUL();

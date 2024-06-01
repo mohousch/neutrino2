@@ -31,7 +31,7 @@ libneutrino2_driver_lcd_a_SOURCES += lcddisplay.pp fontrenderer.cpp
 endif
 
 if ENABLE_TFTLCD
-libneutrino2_driver_lcd_a_SOURCES += tftlcd.cpp
+libneutrino2_driver_lcd_a_SOURCES += tftlcd.cpp fontrenderer.cpp
 endif	
 
 if ENABLE_GRAPHLCD

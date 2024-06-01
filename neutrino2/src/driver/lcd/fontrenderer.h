@@ -29,7 +29,10 @@
 #ifndef __LCDFONTRENDERER__
 #define __LCDFONTRENDERER__
 
+#include <config.h>
+
 #include <driver/lcd/lcddisplay.h>
+#include <driver/lcd/tftlcd.h>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -43,7 +46,12 @@
 class LcdFontRenderClass;
 class LcdFont
 {
+#ifdef ENABLE_LCD
         CLCDDisplay             * framebuffer;
+#elif defined (ENABLE_TFTLCD)
+	CTFTLCD			* framebuffer;
+#endif
+        
 #if FREETYPE_MAJOR >= 2 && FREETYPE_MINOR >= 3
         FTC_ImageTypeRec        font;
 #else
@@ -60,13 +68,21 @@ class LcdFont
 
                 int getRenderWidth(const char *text, const bool utf8_encoded = false);
 
+#ifdef ENABLE_LCD
                 LcdFont(CLCDDisplay *fb, LcdFontRenderClass *render, FTC_FaceID faceid, int isize);
+#elif defined (ENABLE_TFTLCD)
+		LcdFont(CTFTLCD *fb, LcdFontRenderClass *render, FTC_FaceID faceid, int isize);
+#endif
                 ~LcdFont(){}
 };
 
 class LcdFontRenderClass
 { 
-	CLCDDisplay * framebuffer;
+#ifdef ENABLE_LCD
+	CLCDDisplay 	*framebuffer;
+#elif defined (ENABLE_TFTLCD)
+	CTFTLCD		*framebuffer;
+#endif
 
 	struct fontListEntry
 	{
@@ -97,7 +113,11 @@ class LcdFontRenderClass
 		static FT_Error myFTC_Face_Requester(FTC_FaceID face_id, FT_Library library, FT_Pointer request_data, FT_Face *aface);
 		//FT_Face getFace(const char *family, const char *style);
 		LcdFont *getFont(const char *family, const char *style, int size);
+#ifdef ENABLE_LCD
 		LcdFontRenderClass(CLCDDisplay *fb);
+#elif defined (ENABLE_TFTLCD)
+		LcdFontRenderClass(CTFTLCD *fb);
+#endif
 		~LcdFontRenderClass();
 
 		friend class LcdFont;

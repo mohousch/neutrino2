@@ -52,8 +52,11 @@ FT_Error LcdFontRenderClass::myFTC_Face_Requester(FTC_FaceID face_id, FT_Library
 	return ((LcdFontRenderClass*)request_data)->FTC_Face_Requester(face_id, aface);
 }
 
-
-LcdFontRenderClass::LcdFontRenderClass(CLCDDisplay * fb)
+#ifdef ENABLE_LCD
+LcdFontRenderClass::LcdFontRenderClass(CLCDDisplay *fb)
+#elif defined (ENABLE_TFTLCD)
+LcdFontRenderClass::LcdFontRenderClass(CTFTLCD *fb)
+#endif
 {
 	framebuffer = fb;
 	
@@ -191,12 +194,16 @@ LcdFont *LcdFontRenderClass::getFont(const char *family, const char *style, int 
 	return new LcdFont(framebuffer, this, id, size);
 }
 
-LcdFont::LcdFont(CLCDDisplay * fb, LcdFontRenderClass *render, FTC_FaceID faceid, int isize)
+#ifdef ENABLE_LCD
+LcdFont::LcdFont(CLCDDisplay *fb, LcdFontRenderClass *render, FTC_FaceID faceid, int isize)
+#elif defined (ENABLE_TFTLCD)
+LcdFont::LcdFont(CTFTLCD *fb, LcdFontRenderClass *render, FTC_FaceID faceid, int isize)
+#endif
 {
 	framebuffer = fb;
 	renderer=render;
 #ifdef FT_NEW_CACHE_API
-	font.face_id=faceid;
+	font.face_id = faceid;
 	font.width  = isize;
 	font.height = isize;
 	font.flags  = FT_LOAD_FORCE_AUTOHINT | FT_LOAD_MONOCHROME;
