@@ -182,6 +182,11 @@ CLCD::CLCD()
 	has_lcd = false;
 	clearClock = 0;
 	fd = -1;
+	
+#ifdef ENABLE_TFTLCD
+	tftlcd = NULL;
+#endif
+
 #ifdef ENABLE_GRAPHLCD
 	nglcd = NULL;
 #endif
@@ -208,6 +213,14 @@ CLCD::~CLCD()
 	{
 		delete display;
 		display = NULL;
+	}
+#endif
+
+#ifdef ENABLE_TFTLCD
+	if (tftlcd)
+	{
+		delete tftlcd;
+		tftlcd = NULL;
 	}
 #endif
 
@@ -500,9 +513,18 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	if (fd >= 0) has_lcd = true;
 #endif // sh
 #endif // vfd
+
+	// tftlcd	
+#ifdef ENABLE_TFTLCD
+	tftlcd = new CTFTLCD();
 	
-	//FIXME: Add
-	//tftlcd
+	if (tftlcd->init("/dev/fb1"))
+		has_lcd = true;
+		
+	// init fonts
+	// init png / bmp
+#endif
+
 	//nglcd
 #ifdef ENABLE_GRAPHLCD
 	nglcd = new nGLCD();
@@ -620,6 +642,7 @@ static std::string splitString(const std::string & text, const int maxwidth, Lcd
 	int pos;
 	std::string tmp = removeLeadingSpaces(text);
 
+#ifdef ENABLE_LCD
 	if (font->getRenderWidth(tmp.c_str(), utf8) > maxwidth)
 	{
 		do
@@ -636,6 +659,7 @@ static std::string splitString(const std::string & text, const int maxwidth, Lcd
 			}
 		} while (font->getRenderWidth(tmp.c_str(), utf8) > maxwidth);
 	}
+#endif
 
 	return tmp;
 }
