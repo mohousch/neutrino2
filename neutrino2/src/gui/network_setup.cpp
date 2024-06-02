@@ -175,7 +175,6 @@ int CNetworkSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	{
 		networkConfig->stopNetwork();
 		commitNetworkSettings();
-		
 		networkConfig->startNetwork();
 
 		HintBox(_("Information"), _("Setup network now, please wait..."));
@@ -328,9 +327,6 @@ void CNetworkSettings::showMenu()
 
 	if(!found)
 		strcpy(g_settings.ifname, "eth0");
-	
-	// read network settings
-//	readNetworkSettings(g_settings.ifname);
 	
 	//eth id
 	CMenuForwarder* mac = new CMenuForwarder("MAC address", false, mac_addr.c_str());
