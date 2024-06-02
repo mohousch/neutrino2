@@ -96,8 +96,8 @@ void CLCD::closeDevice()
 }
 #endif
 
+////
 CLCD::CLCD()
-//	: configfile('\t')
 {
 	m_fileList = NULL;
 	m_fileListPos = 0;
@@ -119,10 +119,8 @@ CLCD::CLCD()
 	fd = -1;
 
 #ifdef ENABLE_LCD
-	display = NULL;
-#endif
-	
-#ifdef ENABLE_TFTLCD
+	display = NULL;	
+#elif defined (ENABLE_TFTLCD)
 	tftlcd = NULL;
 #endif
 
@@ -133,14 +131,7 @@ CLCD::CLCD()
 
 CLCD::~CLCD()
 {
-#ifdef ENABLE_4DIGITS
-	if (fd)
-		::close(fd);
-		
-	fd = -1;
-#endif
-
-#ifdef ENABLE_VFD
+#if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 	if (fd)
 		::close(fd);
 		
@@ -191,7 +182,17 @@ void CLCD::count_down()
 		timeout_cnt--;
 		if (timeout_cnt == 0) 
 		{
+#if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
+			if (g_settings.lcd_setting_dim_brightness > 0) 
+			{
+				// save lcd brightness, setBrightness() changes global setting
+				int b = g_settings.lcd_brightness;
+				setBrightness(g_settings.lcd_setting_dim_brightness);
+				g_settings.lcd_brightness = b;
+			}
+#elif defined (ENABLE_LCD)
 			setlcdparameter();
+#endif
 		}
 	} 
 }
@@ -342,11 +343,8 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	// set led color
 #if defined (PLATFORM_GIGABLUE)
 	setPower(g_settings.lcd_power);  //0:off, 1:blue, 2:red, 3:purple
-#endif
-#endif
-
-	// vfd
-#ifdef ENABLE_VFD
+#endif	// 4digits
+#elif defined (ENABLE_VFD)
 #if defined (__sh__)
 	has_lcd = true;
 #else
@@ -393,11 +391,8 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	}
 	
 	if (fd >= 0) has_lcd = true;
-#endif // sh
 #endif // vfd
-
-	// lcd
-#ifdef ENABLE_LCD
+#elif defined (ENABLE_LCD)
 	display = new CLCDDisplay();
 	
 	// check if we have display
@@ -461,18 +456,12 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 			if (bgfound)
 				break;
 		}
-	}
-#endif
-
-	// tftlcd	
-#ifdef ENABLE_TFTLCD
+	}	
+#elif defined (ENABLE_TFTLCD)
 	tftlcd = new CTFTLCD();
 	
 	if (tftlcd->init("/dev/fb1"))
 		has_lcd = true;
-		
-	// init fonts
-	// init png / bmp
 #endif
 
 	//nglcd
@@ -484,7 +473,7 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 #endif
 
 	// set mode tv/radio
-	if (has_lcd) setMode(MODE_TVRADIO);
+	setMode(MODE_TVRADIO);
 
 	return has_lcd;
 }

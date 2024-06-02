@@ -94,3 +94,4 @@ class CNetAdapter
 };
 
 #endif /* __configure_network_h__ */
+

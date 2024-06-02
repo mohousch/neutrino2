@@ -38,7 +38,6 @@
 #endif
 #include <driver/file.h>
 
-//#include <configfile.h>
 #include <pthread.h>
 
 #include <driver/lcd/lcddisplay.h>
@@ -527,7 +526,6 @@ class CLCD
 		bool				movie_centered;
 		bool				movie_is_ac3;
 		bool				icon_dolby;
-//		CConfigFile			configfile;
 		pthread_t			thrTime;
 		int                             last_toggle_state_power;
 		int				clearClock;
