@@ -54,6 +54,8 @@
 
 
 extern "C" int pinghost( const char *hostname );
+bool has_wireless = false;
+std::vector<wlan_network> networks;
 
 #define OPTIONS_OFF0_ON1_OPTION_COUNT 2
 const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
@@ -89,6 +91,7 @@ static int my_filter(const struct dirent * dent)
 CNetworkSettings::CNetworkSettings()
 {
 	networkConfig = CNetworkConfig::getInstance();
+	networks.clear();
 }
 
 CNetworkSettings *CNetworkSettings::getInstance()
@@ -102,10 +105,6 @@ CNetworkSettings *CNetworkSettings::getInstance()
 	}
 	
 	return networkSettings;
-}
-
-CNetworkSettings::~CNetworkSettings()
-{
 }
 
 void CNetworkSettings::readNetworkSettings(std::string iname)
@@ -123,12 +122,39 @@ void CNetworkSettings::readNetworkSettings(std::string iname)
 	network_ssid = networkConfig->ssid;
 	network_key = networkConfig->key;
 	network_encryption = (networkConfig->encryption == "WPA") ? 0 : 1;
+	
+	//
+	has_wireless = networkConfig->wireless;
+}
+
+void CNetworkSettings::commitNetworkSettings()
+{
+	dprintf(DEBUG_NORMAL, "CNetworkSettings::commitNetworkSettings:\n");
+	
+	networkConfig->automatic_start = (network_automatic_start == 1);
+	networkConfig->inet_static = network_dhcp;
+	networkConfig->hostname = network_hostname;
+	networkConfig->mac_addr = mac_addr;
+
+	//
+	networkConfig->ssid = network_ssid;
+	networkConfig->key = network_key;
+	networkConfig->encryption = network_encryption;
+	
+	networkConfig->commitConfig();
 }
 
 void CNetworkSettings::setNetwork()
 {
-	networkConfig->commitConfig();
+//	networkConfig->commitConfig();
+	commitNetworkSettings();	
+	
 	networkConfig->startNetwork();
+}
+
+void CNetworkSettings::getWlanList()
+{		
+	get_wlan_list(g_settings.ifname, networks);
 }
 
 int CNetworkSettings::exec(CMenuTarget* parent, const std::string& actionKey)
@@ -142,8 +168,9 @@ int CNetworkSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	
 	if(actionKey == "savesettings")
 	{
-		networkConfig->automatic_start = (network_automatic_start == 1);
-		networkConfig->commitConfig();
+//		networkConfig->automatic_start = (network_automatic_start == 1);
+//		networkConfig->commitConfig();
+		commitNetworkSettings();
 
 		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 		
@@ -151,10 +178,12 @@ int CNetworkSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	}
 	else if(actionKey == "network") 
 	{
-		networkConfig->automatic_start = (network_automatic_start == 1);
+//		networkConfig->automatic_start = (network_automatic_start == 1);
 
 		networkConfig->stopNetwork();
-		networkConfig->commitConfig();
+//		networkConfig->commitConfig();
+		commitNetworkSettings();
+		
 		networkConfig->startNetwork();
 
 		HintBox(_("Information"), _("Setup network now, please wait..."));
@@ -212,7 +241,6 @@ void CNetworkSettings::showMenu()
 		//
 		networkSettings->enablePaintHead();
 		networkSettings->setTitle(_("Network settings"), NEUTRINO_ICON_NETWORK);
-//		networkSettings->setHeadLine(true, true);
 
 		//
 		networkSettings->enablePaintFoot();
@@ -220,7 +248,6 @@ void CNetworkSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		networkSettings->setFootButtons(&btn);
-//		networkSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(networkSettings);
@@ -228,11 +255,13 @@ void CNetworkSettings::showMenu()
 	
 	//
 	struct dirent **namelist;
+	// init IP changer
+	MyIPChanger = new CIPChangeNotifier();
 
 	//interface
 	int ifcount = scandir("/sys/class/net", &namelist, my_filter, alphasort);
 
-	CMenuOptionStringChooser * ifSelect = new CMenuOptionStringChooser(_("Interface"), g_settings.ifname, ifcount > 1, this, CRCInput::RC_nokey, "", true);
+	CMenuOptionStringChooser * ifSelect = new CMenuOptionStringChooser(_("Interface"), g_settings.ifname, ifcount > 1, MyIPChanger, CRCInput::RC_nokey, "", true);
 
 	bool found = false;
 
@@ -253,9 +282,6 @@ void CNetworkSettings::showMenu()
 	
 	// read network settings
 	readNetworkSettings(g_settings.ifname);
-
-	// init IP changer
-	MyIPChanger = new CIPChangeNotifier;
 	
 	//eth id
 	CMenuForwarder* mac = new CMenuForwarder("MAC address", false, mac_addr.c_str());
@@ -273,7 +299,7 @@ void CNetworkSettings::showMenu()
 	//hostname
 	CStringInputSMS * networkSettings_Hostname = new CStringInputSMS(_("Hostname"), network_hostname.c_str());
 
-        CSectionsdConfigNotifier * sectionsdConfigNotifier = new CSectionsdConfigNotifier;
+        CSectionsdConfigNotifier * sectionsdConfigNotifier = new CSectionsdConfigNotifier();
 	// ntp server
         CStringInputSMS * networkSettings_NtpServer = new CStringInputSMS(_("NTP-Server"), g_settings.network_ntpserver.c_str(), MAX_INPUT_CHARS, _("NTP-Server example: ntp1.ptb.de"), _("need reboot or epg-reset"), "abcdefghijklmnopqrstuvwxyz0123456789-. ", sectionsdConfigNotifier);
         CStringInput * networkSettings_NtpRefresh = new CStringInput(_("NTP/DVB-Refresh"), g_settings.network_ntprefresh.c_str(), 3, _("NTP/DVB-Time-Sync in minutes"), _("need reboot or epg-reset"), "0123456789 ", sectionsdConfigNotifier);
@@ -364,9 +390,10 @@ void CNetworkSettings::showMenu()
 		CMenuOptionStringChooser *m9 = new CMenuOptionStringChooser(_("Network Name"), (char *)network_ssid.c_str(), true, this, CRCInput::RC_nokey, "", true);
 		
 		//
-		std::vector<wlan_network> networks;
+//		std::vector<wlan_network> networks;
 		
-		get_wlan_list(g_settings.ifname, networks);
+//		get_wlan_list(g_settings.ifname, networks);
+		getWlanList();
 		
 		std::string option[networks.size()];
 		
@@ -410,7 +437,7 @@ void CNetworkSettings::showMenu()
 	// ntp refresh
         networkSettings->addItem( m7);
 	
-	//proxyserver submenu
+	//proxyserver
 	networkSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	networkSettings->addItem(new CMenuForwarder(_("Proxyserver"), true, NULL, new CProxySetup()));
 
@@ -436,8 +463,10 @@ void CNetworkSettings::showMenu()
 }
 
 // IP notifier
-bool CIPChangeNotifier::changeNotify(const std::string& locale, void * Data)
+bool CIPChangeNotifier::changeNotify(const std::string &locale, void *Data)
 {
+	dprintf(DEBUG_NORMAL, "CIPChangeNotifier::changeNotify\n");
+	
 	if(locale == _("IP address")) 
 	{
 		char ip[16];
@@ -451,19 +480,12 @@ bool CIPChangeNotifier::changeNotify(const std::string& locale, void * Data)
 	}
 	else if(locale == _("Interface")) 
 	{
-		CNetworkSettings::getInstance()->networkConfig->readConfig(g_settings.ifname);
-		//readNetworkSettings(); //???
+		CNetworkSettings::getInstance()->readNetworkSettings(g_settings.ifname);
+		
+		////
+		if (has_wireless) CNetworkSettings::getInstance()->getWlanList();
 		
 		dprintf(DEBUG_NORMAL, "CNetworkSetup::changeNotify: using %s, static %d\n", g_settings.ifname, CNetworkSettings::getInstance()->networkConfig->inet_static);
-/*
-		changeNotify(_("DHCP"), &CNetworkSettings::getInstance()->networkConfig->inet_static);
-
-		int ecnt = sizeof(CNetworkSettings::getInstance()->wlanEnable) / sizeof(CMenuItem*);
-
-		for(int i = 0; i < ecnt; i++)
-			CNetworkSettings::getInstance()->wlanEnable[i]->setActive(CNetworkSettings::getInstance()->networkConfig->wireless);
-*/
-
 	}
 
 	return true;
@@ -494,6 +516,7 @@ bool CDHCPNotifier::changeNotify(const std::string&, void * data)
 const char * mypinghost(const char * const host)
 {
 	int retvalue = pinghost(host);
+	
 	switch (retvalue)
 	{
 		case 1: return _("is reachable (ping)");
@@ -501,6 +524,7 @@ const char * mypinghost(const char * const host)
 		case -1: return _("is unreachable (host or protocol error)");
 		case -2: return _("is unreachable (socket error)");
 	}
+	
 	return "";
 }
 
@@ -515,24 +539,18 @@ void testNetworkSettings(const char* ip, const char* netmask, const char* broadc
 
 	if (ip_static) 
 	{
-		strcpy(our_ip,ip);
-		strcpy(our_mask,netmask);
-		strcpy(our_broadcast,broadcast);
-		strcpy(our_gateway,gateway);
-		strcpy(our_nameserver,nameserver);
+		strcpy(our_ip, ip);
+		strcpy(our_mask, netmask);
+		strcpy(our_broadcast, broadcast);
+		strcpy(our_gateway, gateway);
+		strcpy(our_nameserver, nameserver);
 	}
 	else 
 	{
-		netGetIP((char *) "eth0",our_ip,our_mask,our_broadcast);
+		netGetIP((char *) "eth0", our_ip, our_mask, our_broadcast);
 		netGetDefaultRoute(our_gateway);
 		netGetNameserver(our_nameserver);
 	}
-
-	dprintf(DEBUG_NORMAL, "testNw IP       : %s\n", our_ip);
-	dprintf(DEBUG_NORMAL, "testNw Netmask  : %s\n", our_mask);
-	dprintf(DEBUG_NORMAL, "testNw Broadcast: %s\n", our_broadcast);
-	dprintf(DEBUG_NORMAL, "testNw Gateway: %s\n", our_gateway);
-	dprintf(DEBUG_NORMAL, "testNw Nameserver: %s\n", our_nameserver);
 
 	text = our_ip;
 	text += ": ";
@@ -547,10 +565,10 @@ void testNetworkSettings(const char* ip, const char* netmask, const char* broadc
 	text += _("Name server");
 	text += ": ";
 	text += our_nameserver;
-	text += ' ';
-	text += mypinghost(our_nameserver);
-	text += "\nwiki.tuxbox-neutrino.org: ";
-	text += mypinghost("81.7.17.245");
+//	text += ' ';
+//	text += mypinghost(our_nameserver);
+//	text += "\nwww.google.com: ";
+//	text += mypinghost("21.58.223.9");
 
 	MessageBox(_("Test network now"), text.c_str(), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO); // UTF-8
 }
@@ -565,7 +583,7 @@ void showCurrentNetworkSettings()
 	std::string mac;
 	std::string text;
 
-	//netGetIP((char *) "eth0",ip,mask,broadcast);
+	//
 	netGetIP(g_settings.ifname, ip, mask, broadcast);
 	
 	if (ip[0] == 0) 
@@ -576,9 +594,6 @@ void showCurrentNetworkSettings()
 	{
 		netGetNameserver(nameserver);
 		netGetDefaultRoute(router);
-
-		//netGetMacAddr(g_settings.ifname, (unsigned char *)mac.c_str());
-		//text = "Box: " + mac + "\n    ";
 		
 		text  = _("IP address");
 		text += ": ";
@@ -603,6 +618,4 @@ void showCurrentNetworkSettings()
 	
 	MessageBox(_("Show active network settings"), text.c_str(), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO); // UTF-8
 }
-
-
 

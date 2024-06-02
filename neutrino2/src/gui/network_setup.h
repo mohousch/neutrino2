@@ -34,13 +34,8 @@
 #include <string>
 
 
-// IP change notifier
-class CIPChangeNotifier : public CChangeObserver
-{
-	public:
-		bool changeNotify(const std::string& locale, void * Data);
-};
-
+class CIPChangeNotifier;
+////
 class CNetworkSettings : public CMenuTarget, CChangeObserver
 {
 	private:
@@ -50,7 +45,7 @@ class CNetworkSettings : public CMenuTarget, CChangeObserver
 		
 	public:
 		CNetworkSettings();
-		~CNetworkSettings();
+		~CNetworkSettings(){};
 		
 		CNetworkConfig *networkConfig;
 		CMenuItem * wlanEnable[3];
@@ -68,9 +63,18 @@ class CNetworkSettings : public CMenuTarget, CChangeObserver
 		static CNetworkSettings* getInstance();
 
 		void readNetworkSettings(std::string iname);
+		void commitNetworkSettings();
 		void setNetwork(void);
+		void getWlanList(void);
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
+};
+
+// IP notifier
+class CIPChangeNotifier : public CChangeObserver
+{
+	public:
+		bool changeNotify(const std::string& locale, void * Data);
 };
 
 // dhcp notifier
@@ -87,3 +91,4 @@ void testNetworkSettings(const char* ip, const char* netmask, const char* broadc
 void showCurrentNetworkSettings();
 
 #endif //__network_setup__
+

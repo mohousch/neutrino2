@@ -388,3 +388,4 @@ bool setDhcpAttributes(const std::string name, const bool automatic_start, bool 
 
 	return write_interface("/etc/network/interfaces", name, automatic_start, "inet", "dhcp", attribute);
 }
+

@@ -24,9 +24,11 @@
 #include <sys/types.h>          /* u_char */
 #include <sys/stat.h>
 #include <string.h>
+
 #include "configure_network.h"
 #include "libnet.h"             /* netGetNameserver, netSetNameserver   */
 #include "network_interfaces.h" /* getInetAttributes, setInetAttributes */
+
 #include <stdlib.h>             /* system                               */
 #include <iostream>
 #include <iomanip>
@@ -114,17 +116,17 @@ void CNetworkConfig::init_vars(void)
 
 	mac_addr = mac_tmp.str().substr(0,17);
 
-	//
+	// wireless
 	key = "";
 	ssid = "";
 	encryption = "WPA2";
 
-	wireless = 0;
+	wireless = false;
 
 	std::string tmp = "/sys/class/net/" + ifname + "/wireless";
 
 	if(access(tmp.c_str(), R_OK) == 0)
-		wireless = 1;
+		wireless = true;
 		
 	if(wireless)
 		readWpaConfig();
@@ -149,11 +151,13 @@ void CNetworkConfig::copy_to_orig(void)
 
 bool CNetworkConfig::modified_from_orig(void)
 {
+/*
 	if(wireless) 
 	{
 		if( (ssid != orig_ssid) || (key != orig_key) || (encryption != orig_encryption) )
 			return 1;
 	}
+*/
 	
 	if (inet_static) 
 	{
@@ -174,7 +178,7 @@ bool CNetworkConfig::modified_from_orig(void)
 
 void CNetworkConfig::commitConfig(void)
 {
-	dprintf(DEBUG_INFO, "CNetworkConfig::commitConfig\n");
+	dprintf(DEBUG_NORMAL, "CNetworkConfig::commitConfig\n");
 
 	if (modified_from_orig())
 	{
@@ -192,7 +196,7 @@ void CNetworkConfig::commitConfig(void)
 			setDhcpAttributes(ifname, automatic_start, wireless);
 		}
 
-		if( wireless && ((key != orig_key) || (ssid != orig_ssid) || (encryption != orig_encryption)) )
+		if( wireless /*&& ((key != orig_key) || (ssid != orig_ssid) || (encryption != orig_encryption))*/ )
 			saveWpaConfig();
 
 		copy_to_orig();
@@ -233,33 +237,6 @@ void CNetworkConfig::readWpaConfig()
 {
 	dprintf(DEBUG_NORMAL, "CNetworkConfig::readWpaConfig\n");
 
-/*
-	std::ifstream F("/etc/network/if-pre-up.d/wlan");
-	ssid = "";
-	key = "";
-	encryption = "WPA2";
-	
-	if(F.is_open()) 
-	{
-		std::string line;
-		std::string authmode = "WPA2PSK";
-		
-		while (std::getline(F, line)) 
-		{
-			if (line.length() < 5)
-				continue;
-			if (!line.compare(0, 3, "E=\""))
-				ssid = line.substr(3, line.length() - 4);
-			else if (!line.compare(0, 3, "A=\""))
-				authmode = line.substr(3, line.length() - 4);
-			else if (!line.compare(0, 3, "K=\""))
-				key = line.substr(3, line.length() - 4);
-		}
-		F.close();
-		if (authmode == "WPAPSK")
-			encryption = "WPA";
-	}
-*/
 	std::string   s;
 	std::ifstream in("/etc/wpa_supplicant.conf");
 
@@ -308,64 +285,6 @@ void CNetworkConfig::saveWpaConfig()
 {
 	dprintf(DEBUG_NORMAL, "CNetworkConfig::saveWpaConfig\n");
 
-/*
-	std::ofstream F("/etc/network/if-pre-up.d/wlan");
-	
-	if(F.is_open()) 
-	{
-		chmod("/etc/network/if-pre-up.d/wlan", 0755);
-		// We don't have this information  --martii
-
-		std::string authmode = "WPA2PSK"; // WPA2
-		std::string encryptype = "AES"; // WPA2
-		std::string proto = "RSN";
-		
-		if (encryption == "WPA") 
-		{
-			proto = "WPA";
-			authmode = "WPAPSK";
-			encryptype = "TKIP";
-		}
-		
-		F << "#!/bin/sh\n"
-                  << "# AUTOMATICALLY GENERATED. DO NOT MODIFY.\n"
-		  << "grep $IFACE: /proc/net/wireless >/dev/null 2>&1 || exit 0\n"
-		  << "kill -9 $(pidof wpa_supplicant 2>/dev/null) 2>/dev/null\n"
-		  << "E=\"" << ssid << "\"\n"
-		  << "A=\"" << authmode << "\"\n"
-		  << "C=\"" << encryptype << "\"\n"
-		  << "K=\"" << key << "\"\n"
-		  << "ifconfig $IFACE down\n"
-		  << "ifconfig $IFACE up\n"
-		  << "iwconfig $IFACE mode managed\n"
-		  << "iwconfig $IFACE essid \"$E\"\n"
-		  << "iwpriv $IFACE set AuthMode=$A\n"
-		  << "iwpriv $IFACE set EncrypType=$C\n"
-		  << "if ! iwpriv $IFACE set \"WPAPSK=$K\"\n"
-		  << "then\n"
-		  << "\t/usr/sbin/wpa_supplicant -B -i$IFACE -c/etc/wpa_supplicant.conf\n"
-		  << "\tsleep 3\n"
-		  << "fi\n";
-		F.close();
-
-		F.open("/etc/wpa_supplicant.conf");
-		if(F.is_open()) 
-		{
-			F << "# AUTOMATICALLY GENERATED. DO NOT MODIFY.\n"
-			  << "ctrl_interface=/var/run/wpa_supplicant\n\n"
-			  << "network={\n"
-			  << "\tscan_ssid=1\n"
-			  << "\tssid=\"" << ssid << "\"\n"
-			  << "\tkey_mgmt=WPA-PSK\n"
-			  << "\tproto=" << proto << "\n"
-			  << "\tpairwise=CCMP TKIP\n"
-			  << "\tgroup=CCMP TKIP\n"
-			  << "\tpsk=\"" << key << "\"\n"
-			  << "}\n";
-			F.close();
-		}
-	}
-*/
 	std::ofstream out("/etc/wpa_supplicant.conf");
 	
 	if (!out.is_open())
