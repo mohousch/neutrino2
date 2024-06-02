@@ -264,15 +264,18 @@ void CNetworkSettings::showMenu()
 	}
 	
 	//
-	struct dirent **namelist;
-	// init IP changer
+	readNetworkSettings(g_settings.ifname);
 	
-	////
+	//
+	struct dirent **namelist;
+	
 	// scan for networks
 	CMenuForwarder *m12 = new CMenuForwarder(_("Scan for networks"), true, NULL, this, "scan");
+	m12->setHidden(!has_wireless);
 		
 	//ssid
 	CMenuOptionStringChooser *m9 = new CMenuOptionStringChooser(_("Network Name"), (char *)network_ssid.c_str(), true, MyIPChanger, CRCInput::RC_nokey, "", true);
+	m9->setHidden(!has_wireless);
 		
 	std::string option[networks.size()];
 		
@@ -289,10 +292,12 @@ void CNetworkSettings::showMenu()
 	//key
 	CStringInputSMS *networkSettings_key = new CStringInputSMS(_("Key"), network_key.c_str());
 	CMenuForwarder *m10 = new CMenuForwarder(_("Key"), true, network_key.c_str(), networkSettings_key );
+	m10->setHidden(!has_wireless);
 		
 	// encryption
 	CMenuOptionChooser * m11 = new CMenuOptionChooser(_("Security"), &network_encryption, OPTIONS_WLAN_SECURITY_OPTIONS, OPTIONS_WLAN_SECURITY_OPTION_COUNT, true);
-	////
+	m11->setHidden(!has_wireless);
+	
 	wlanEnable[0] = m9;
 	wlanEnable[1] = m10;
 	wlanEnable[2] = m11;
@@ -325,7 +330,7 @@ void CNetworkSettings::showMenu()
 		strcpy(g_settings.ifname, "eth0");
 	
 	// read network settings
-	readNetworkSettings(g_settings.ifname);
+//	readNetworkSettings(g_settings.ifname);
 	
 	//eth id
 	CMenuForwarder* mac = new CMenuForwarder("MAC address", false, mac_addr.c_str());
@@ -428,41 +433,8 @@ void CNetworkSettings::showMenu()
 	networkSettings->addItem(m5);
 	
 	//
-	if(ifcount > 1 && has_wireless) // if there is only one, its probably wired
+//	if(ifcount > 1 && has_wireless) // if there is only one, its probably wired
 	{
-/*
-		// scan for networks
-		CMenuForwarder *m12 = new CMenuForwarder(_("Scan for networks"), true, NULL, this, "scan");
-		
-		//ssid
-		CMenuOptionStringChooser *m9 = new CMenuOptionStringChooser(_("Network Name"), (char *)network_ssid.c_str(), true, MyIPChanger, CRCInput::RC_nokey, "", true);
-		
-		std::string option[networks.size()];
-		
-		for (unsigned i = 0; i < networks.size(); ++i) 
-		{
-			option[i] = networks[i].ssid.c_str();
-			option[i] += networks[i].qual;
-			option[i] += ", ";
-			option[i] += networks[i].channel;
-
-			m9->addOption(networks[i].ssid.c_str());
-			//m9->addOption(option[i].c_str());
-		}
-
-		//key
-		CStringInputSMS *networkSettings_key = new CStringInputSMS(_("Key"), network_key.c_str());
-		CMenuForwarder *m10 = new CMenuForwarder(_("Key"), true, network_key.c_str(), networkSettings_key );
-		
-		// encryption
-		CMenuOptionChooser * m11 = new CMenuOptionChooser(_("Security"), &network_encryption, OPTIONS_WLAN_SECURITY_OPTIONS, OPTIONS_WLAN_SECURITY_OPTION_COUNT, true);
-
-//		wlanEnable[0] = m9;
-//		wlanEnable[1] = m10;
-//		wlanEnable[2] = m11;
-//		wlanEnable[3] = m12;
-*/
-		
 		// ssid
 		networkSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		networkSettings->addItem(m12);
@@ -539,7 +511,7 @@ bool CIPChangeNotifier::changeNotify(const std::string &locale, void *Data)
 		dprintf(DEBUG_NORMAL, "CNetworkSetup::changeNotify: using %s, static %d\n", g_settings.ifname, CNetworkSettings::getInstance()->networkConfig->inet_static);
 		
 		for (int i = 0; i< 4; i++)
-			menuItem[i]->setActive(has_wireless);
+			menuItem[i]->setHidden(!has_wireless);
 	}
 
 	return true;
