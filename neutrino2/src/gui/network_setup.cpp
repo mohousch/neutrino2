@@ -129,9 +129,6 @@ void CNetworkSettings::commitNetworkSettings()
 {
 	dprintf(DEBUG_NORMAL, "CNetworkSettings::commitNetworkSettings:\n");
 	
-	////
-	printf("CNetworkSettings::commitNetworkSettings: automatic_start:%d dhcp:%d hostname:%s mac:%s ssid:%s key:%s encryption:%d\n", network_automatic_start, network_dhcp, network_hostname.c_str(), mac_addr, network_ssid.c_str(), network_key.c_str(), network_encryption);
-	
 	networkConfig->automatic_start = (network_automatic_start == 1)? true : false;
 	networkConfig->inet_static = (network_dhcp == 1)? false : true;
 	networkConfig->hostname = network_hostname.c_str();
@@ -544,7 +541,7 @@ void testNetworkSettings(const char* ip, const char* netmask, const char* broadc
 	}
 	else 
 	{
-		netGetIP((char *) "eth0", our_ip, our_mask, our_broadcast);
+		netGetIP(g_settings.ifname, our_ip, our_mask, our_broadcast);
 		netGetDefaultRoute(our_gateway);
 		netGetNameserver(our_nameserver);
 	}
