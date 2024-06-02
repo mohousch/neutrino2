@@ -356,7 +356,7 @@ class CMenuForwarder : public CMenuItem
 		virtual const char *getOption(void);
 
 	public:
-		CMenuForwarder(const char * const Text, const bool Active = true, /*const int state = ITEM_ACTIVE,*/ const char* const Option = NULL, CMenuTarget * Target = NULL, const char* const ActionKey = NULL, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const char* const IconName = NULL, const char* const ItemIcon = NULL, const char* const Hint = NULL);
+		CMenuForwarder(const char * const Text, const bool Active = true, const char* const Option = NULL, CMenuTarget * Target = NULL, const char* const ActionKey = NULL, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const char* const IconName = NULL, const char* const ItemIcon = NULL, const char* const Hint = NULL);
 		
 		virtual ~CMenuForwarder();
 		

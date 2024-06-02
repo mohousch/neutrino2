@@ -92,6 +92,9 @@ CNetworkSettings::CNetworkSettings()
 {
 	networkConfig = CNetworkConfig::getInstance();
 	networks.clear();
+	selected = -1;
+	widget = NULL;
+	networkSettings = NULL;
 }
 
 CNetworkSettings *CNetworkSettings::getInstance()
@@ -141,7 +144,6 @@ void CNetworkSettings::commitNetworkSettings()
 
 void CNetworkSettings::setNetwork()
 {
-//	networkConfig->commitConfig();
 	commitNetworkSettings();	
 	
 	networkConfig->startNetwork();
@@ -163,8 +165,6 @@ int CNetworkSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	
 	if(actionKey == "savesettings")
 	{
-//		networkConfig->automatic_start = (network_automatic_start == 1);
-//		networkConfig->commitConfig();
 		commitNetworkSettings();
 
 		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
@@ -173,10 +173,7 @@ int CNetworkSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	}
 	else if(actionKey == "network") 
 	{
-//		networkConfig->automatic_start = (network_automatic_start == 1);
-
 		networkConfig->stopNetwork();
-//		networkConfig->commitConfig();
 		commitNetworkSettings();
 		
 		networkConfig->startNetwork();
@@ -200,6 +197,27 @@ int CNetworkSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		return ret;
 	}
+	else if (actionKey == "scan")
+	{
+		if (networkSettings)
+			selected = networkSettings->getSelected();
+			
+		HintBox(_("Information"), _("Scanning for networks, please wait..."));
+			
+		getWlanList();
+		showMenu();
+		
+		return RETURN_EXIT;
+	}
+	else
+	{
+		if (networkSettings)
+			selected = networkSettings->getSelected();
+			
+		showMenu();
+		
+		return RETURN_EXIT;	
+	}
 	
 	showMenu();
 	
@@ -211,9 +229,6 @@ void CNetworkSettings::showMenu()
 	dprintf(DEBUG_NORMAL, "CNetworkSettings::showMenu:\n");
 	
 	//
-	CWidget* widget = NULL;
-	ClistBox* networkSettings = NULL;
-	
 	widget = CNeutrinoApp::getInstance()->getWidget("networksetup");
 	
 	if (widget)
@@ -251,7 +266,41 @@ void CNetworkSettings::showMenu()
 	//
 	struct dirent **namelist;
 	// init IP changer
-	MyIPChanger = new CIPChangeNotifier();
+	
+	////
+	// scan for networks
+	CMenuForwarder *m12 = new CMenuForwarder(_("Scan for networks"), true, NULL, this, "scan");
+		
+	//ssid
+	CMenuOptionStringChooser *m9 = new CMenuOptionStringChooser(_("Network Name"), (char *)network_ssid.c_str(), true, MyIPChanger, CRCInput::RC_nokey, "", true);
+		
+	std::string option[networks.size()];
+		
+	for (unsigned i = 0; i < networks.size(); ++i) 
+	{
+		option[i] = networks[i].ssid.c_str();
+			option[i] += networks[i].qual;
+		option[i] += ", ";
+		option[i] += networks[i].channel;
+
+		m9->addOption(networks[i].ssid.c_str());
+	}
+
+	//key
+	CStringInputSMS *networkSettings_key = new CStringInputSMS(_("Key"), network_key.c_str());
+	CMenuForwarder *m10 = new CMenuForwarder(_("Key"), true, network_key.c_str(), networkSettings_key );
+		
+	// encryption
+	CMenuOptionChooser * m11 = new CMenuOptionChooser(_("Security"), &network_encryption, OPTIONS_WLAN_SECURITY_OPTIONS, OPTIONS_WLAN_SECURITY_OPTION_COUNT, true);
+	////
+	wlanEnable[0] = m9;
+	wlanEnable[1] = m10;
+	wlanEnable[2] = m11;
+	wlanEnable[3] = m12;
+	
+	MyIPChanger = new CIPChangeNotifier(wlanEnable);
+	
+	networkSettings->setSelected(selected);
 
 	//interface
 	int ifcount = scandir("/sys/class/net", &namelist, my_filter, alphasort);
@@ -379,13 +428,14 @@ void CNetworkSettings::showMenu()
 	networkSettings->addItem(m5);
 	
 	//
-	if(ifcount > 1) // if there is only one, its probably wired
+	if(ifcount > 1 && has_wireless) // if there is only one, its probably wired
 	{
-		//ssid
-		CMenuOptionStringChooser *m9 = new CMenuOptionStringChooser(_("Network Name"), (char *)network_ssid.c_str(), true, this, CRCInput::RC_nokey, "", true);
+/*
+		// scan for networks
+		CMenuForwarder *m12 = new CMenuForwarder(_("Scan for networks"), true, NULL, this, "scan");
 		
-		//
-		getWlanList();
+		//ssid
+		CMenuOptionStringChooser *m9 = new CMenuOptionStringChooser(_("Network Name"), (char *)network_ssid.c_str(), true, MyIPChanger, CRCInput::RC_nokey, "", true);
 		
 		std::string option[networks.size()];
 		
@@ -403,20 +453,21 @@ void CNetworkSettings::showMenu()
 		//key
 		CStringInputSMS *networkSettings_key = new CStringInputSMS(_("Key"), network_key.c_str());
 		CMenuForwarder *m10 = new CMenuForwarder(_("Key"), true, network_key.c_str(), networkSettings_key );
+		
+		// encryption
+		CMenuOptionChooser * m11 = new CMenuOptionChooser(_("Security"), &network_encryption, OPTIONS_WLAN_SECURITY_OPTIONS, OPTIONS_WLAN_SECURITY_OPTION_COUNT, true);
 
-		wlanEnable[0] = m9;
-		wlanEnable[1] = m10;
+//		wlanEnable[0] = m9;
+//		wlanEnable[1] = m10;
+//		wlanEnable[2] = m11;
+//		wlanEnable[3] = m12;
+*/
 		
 		// ssid
 		networkSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+		networkSettings->addItem(m12);
 		networkSettings->addItem(m9);
-
-		// key
 		networkSettings->addItem(m10);
-
-		// encryption
-		CMenuOptionChooser * m11 = new CMenuOptionChooser(_("Security"), &network_encryption, OPTIONS_WLAN_SECURITY_OPTIONS, OPTIONS_WLAN_SECURITY_OPTION_COUNT, true);
-		wlanEnable[2] = m11;
 		networkSettings->addItem(m11); //encryption
 	}
 	
@@ -451,12 +502,18 @@ void CNetworkSettings::showMenu()
 		widget = NULL;
 	}
 
-	delete MyIPChanger;
+//	delete MyIPChanger;
 	delete dhcpNotifier;
 	delete sectionsdConfigNotifier;
 }
 
 // IP notifier
+CIPChangeNotifier::CIPChangeNotifier(CMenuItem *m[4])
+{
+	for (int i = 0; i < 4; i++)
+		menuItem[i] = m[i];
+}
+
 bool CIPChangeNotifier::changeNotify(const std::string &locale, void *Data)
 {
 	dprintf(DEBUG_NORMAL, "CIPChangeNotifier::changeNotify\n");
@@ -480,6 +537,9 @@ bool CIPChangeNotifier::changeNotify(const std::string &locale, void *Data)
 		if (has_wireless) CNetworkSettings::getInstance()->getWlanList();
 		
 		dprintf(DEBUG_NORMAL, "CNetworkSetup::changeNotify: using %s, static %d\n", g_settings.ifname, CNetworkSettings::getInstance()->networkConfig->inet_static);
+		
+		for (int i = 0; i< 4; i++)
+			menuItem[i]->setActive(has_wireless);
 	}
 
 	return true;

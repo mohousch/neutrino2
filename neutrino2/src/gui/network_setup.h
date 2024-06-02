@@ -39,6 +39,10 @@ class CIPChangeNotifier;
 class CNetworkSettings : public CMenuTarget, CChangeObserver
 {
 	private:
+		CWidget* widget;
+		ClistBox* networkSettings;
+		int selected;
+	
 		CIPChangeNotifier* MyIPChanger;
 		
 		void showMenu();
@@ -48,7 +52,7 @@ class CNetworkSettings : public CMenuTarget, CChangeObserver
 		~CNetworkSettings(){};
 		
 		CNetworkConfig *networkConfig;
-		CMenuItem * wlanEnable[3];
+		CMenuItem *wlanEnable[4];
 		
 		////
 		int network_dhcp;
@@ -72,7 +76,11 @@ class CNetworkSettings : public CMenuTarget, CChangeObserver
 // IP notifier
 class CIPChangeNotifier : public CChangeObserver
 {
+	private:
+		CMenuItem *menuItem[4];
+		
 	public:
+		CIPChangeNotifier(CMenuItem *m[4]);
 		bool changeNotify(const std::string& locale, void * Data);
 };
 

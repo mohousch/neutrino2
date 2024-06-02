@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-05-29 20:23+0200\n"
+"POT-Creation-Date: 2024-06-03 00:15+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1930,11 +1930,19 @@ msgstr "Режим сканирования"
 msgid "Scan SDT for updates"
 msgstr "Сканировать SDT на наличие обновлений"
 
+#, fuzzy
+msgid "Scan for networks"
+msgstr "Сканирование служб"
+
 msgid "Scan for services"
 msgstr "Сканирование служб"
 
 msgid "Scan transponder"
 msgstr "Сканирование ТП"
+
+#, fuzzy
+msgid "Scanning for networks, please wait..."
+msgstr "Настройка сети, пожалуйста, подождите..."
 
 msgid "Scart"
 msgstr "Скарт"
