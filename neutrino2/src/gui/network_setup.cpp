@@ -134,10 +134,10 @@ void CNetworkSettings::commitNetworkSettings()
 	
 	networkConfig->automatic_start = (network_automatic_start == 1)? true : false;
 	networkConfig->inet_static = (network_dhcp == 1)? false : true;
-	networkConfig->hostname = network_hostname;
-	networkConfig->mac_addr = mac_addr;
-	networkConfig->ssid = network_ssid;
-	networkConfig->key = network_key;
+	networkConfig->hostname = network_hostname.c_str();
+	networkConfig->mac_addr = mac_addr.c_str();
+	networkConfig->ssid = network_ssid.c_str();
+	networkConfig->key = network_key.c_str();
 	networkConfig->encryption = network_encryption? "WPA2" : "WPA";
 	
 	networkConfig->commitConfig();
@@ -386,7 +386,7 @@ void CNetworkSettings::showMenu()
 	if(ifcount > 1) // if there is only one, its probably wired
 	{
 		//ssid
-		CMenuOptionStringChooser *m9 = new CMenuOptionStringChooser(_("Network Name"), (char *)network_ssid.c_str(), true, NULL, CRCInput::RC_nokey, "", true);
+		CMenuOptionStringChooser *m9 = new CMenuOptionStringChooser(_("Network Name"), (char *)network_ssid.c_str(), true, this, CRCInput::RC_nokey, "", true);
 		
 		//
 		getWlanList();
