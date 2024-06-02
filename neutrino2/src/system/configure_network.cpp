@@ -150,15 +150,7 @@ void CNetworkConfig::copy_to_orig(void)
 }
 
 bool CNetworkConfig::modified_from_orig(void)
-{
-/*
-	if(wireless) 
-	{
-		if( (ssid != orig_ssid) || (key != orig_key) || (encryption != orig_encryption) )
-			return 1;
-	}
-*/
-	
+{	
 	if (inet_static) 
 	{
 		if ((orig_address         != address        ) ||
@@ -179,8 +171,10 @@ bool CNetworkConfig::modified_from_orig(void)
 void CNetworkConfig::commitConfig(void)
 {
 	dprintf(DEBUG_NORMAL, "CNetworkConfig::commitConfig\n");
+	////
+	printf("CNetworkSettings::commitNetworkSettings: automatic_start:%d inet_static:%d hostname:%s mac:%s ssid:%s key:%s encryption:%s\n", automatic_start, inet_static, hostname.c_str(), mac_addr, ssid.c_str(), key.c_str(), encryption.c_str());
 
-	if (modified_from_orig())
+//	if (modified_from_orig())
 	{
 		if(orig_hostname != hostname)
 			netSetHostname((char *) hostname.c_str());

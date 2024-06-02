@@ -50,12 +50,11 @@ class CNetworkSettings : public CMenuTarget, CChangeObserver
 		CNetworkConfig *networkConfig;
 		CMenuItem * wlanEnable[3];
 		
+		////
 		int network_dhcp;
 		int network_automatic_start;
-		
 		std::string network_hostname;
 		std::string mac_addr;
-		
 		std::string network_ssid;
 		std::string network_key;
 		int network_encryption;

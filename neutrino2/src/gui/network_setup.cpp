@@ -117,8 +117,6 @@ void CNetworkSettings::readNetworkSettings(std::string iname)
 	network_dhcp = networkConfig->inet_static ? 0 : 1;
 	network_hostname = networkConfig->hostname;
 	mac_addr = networkConfig->mac_addr;
-
-	//
 	network_ssid = networkConfig->ssid;
 	network_key = networkConfig->key;
 	network_encryption = (networkConfig->encryption == "WPA") ? 0 : 1;
@@ -131,15 +129,16 @@ void CNetworkSettings::commitNetworkSettings()
 {
 	dprintf(DEBUG_NORMAL, "CNetworkSettings::commitNetworkSettings:\n");
 	
-	networkConfig->automatic_start = (network_automatic_start == 1);
-	networkConfig->inet_static = network_dhcp;
+	////
+	printf("CNetworkSettings::commitNetworkSettings: automatic_start:%d dhcp:%d hostname:%s mac:%s ssid:%s key:%s encryption:%d\n", network_automatic_start, network_dhcp, network_hostname.c_str(), mac_addr, network_ssid.c_str(), network_key.c_str(), network_encryption);
+	
+	networkConfig->automatic_start = (network_automatic_start == 1)? true : false;
+	networkConfig->inet_static = (network_dhcp == 1)? false : true;
 	networkConfig->hostname = network_hostname;
 	networkConfig->mac_addr = mac_addr;
-
-	//
 	networkConfig->ssid = network_ssid;
 	networkConfig->key = network_key;
-	networkConfig->encryption = network_encryption;
+	networkConfig->encryption = network_encryption? "WPA2" : "WPA";
 	
 	networkConfig->commitConfig();
 }
@@ -364,46 +363,45 @@ void CNetworkSettings::showMenu()
 	networkSettings->addItem(oj);
 
 	// hostname
-	networkSettings->addItem( m8);
+	networkSettings->addItem(m8);
 
 	// ip
 	networkSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	networkSettings->addItem( m1);
+	networkSettings->addItem(m1);
 
 	// netmask
-	networkSettings->addItem( m2);
+	networkSettings->addItem(m2);
 
 	// broadcast
-	networkSettings->addItem( m3);
+	networkSettings->addItem(m3);
 
 	// default gateway
 	networkSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	networkSettings->addItem( m4);
+	networkSettings->addItem(m4);
 
 	// nameserver
-	networkSettings->addItem( m5);
+	networkSettings->addItem(m5);
 	
 	//
 	if(ifcount > 1) // if there is only one, its probably wired
 	{
 		//ssid
-		CMenuOptionStringChooser *m9 = new CMenuOptionStringChooser(_("Network Name"), (char *)network_ssid.c_str(), true, this, CRCInput::RC_nokey, "", true);
+		CMenuOptionStringChooser *m9 = new CMenuOptionStringChooser(_("Network Name"), (char *)network_ssid.c_str(), true, NULL, CRCInput::RC_nokey, "", true);
 		
 		//
-//		std::vector<wlan_network> networks;
-		
-//		get_wlan_list(g_settings.ifname, networks);
 		getWlanList();
 		
 		std::string option[networks.size()];
 		
 		for (unsigned i = 0; i < networks.size(); ++i) 
 		{
-			option[i] = networks[i].qual;
+			option[i] = networks[i].ssid.c_str();
+			option[i] += networks[i].qual;
 			option[i] += ", ";
 			option[i] += networks[i].channel;
 
 			m9->addOption(networks[i].ssid.c_str());
+			//m9->addOption(option[i].c_str());
 		}
 
 		//key
