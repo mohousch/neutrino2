@@ -170,9 +170,7 @@ bool CNetworkConfig::modified_from_orig(void)
 
 void CNetworkConfig::commitConfig(void)
 {
-	dprintf(DEBUG_NORMAL, "CNetworkConfig::commitConfig\n");
-	////
-	printf("CNetworkConfig::commitConfig: automatic_start:%d inet_static:%d hostname:%s mac:%s ssid:%s key:%s encryption:%s\n", automatic_start, inet_static, hostname.c_str(), mac_addr, ssid.c_str(), key.c_str(), encryption.c_str());
+	dprintf(DEBUG_NORMAL, "CNetworkConfig::commitConfig: automatic_start:%d inet_static:%d hostname:%s ssid:%s key:%s encryption:%s\n", automatic_start, inet_static, hostname.c_str(), ssid.c_str(), key.c_str(), encryption.c_str());
 
 	if (modified_from_orig())
 	{
@@ -190,7 +188,7 @@ void CNetworkConfig::commitConfig(void)
 			setDhcpAttributes(ifname, automatic_start, wireless);
 		}
 
-		if( wireless /*&& ((key != orig_key) || (ssid != orig_ssid) || (encryption != orig_encryption))*/ )
+		if( wireless && ((key != orig_key) || (ssid != orig_ssid) || (encryption != orig_encryption)) )
 			saveWpaConfig();
 
 		copy_to_orig();
