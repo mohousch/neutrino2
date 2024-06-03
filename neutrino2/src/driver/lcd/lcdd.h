@@ -45,7 +45,9 @@
 
 #include <driver/lcd/tftlcd.h>
 
+#ifdef ENABLE_GRAPHLCD
 #include <driver/lcd/nglcd.h>
+#endif
 
 
 #define LCDDIR_VAR CONFIGDIR "/lcdd"
