@@ -196,7 +196,7 @@ int CNetworkSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		return ret;
 	}
-	else if (actionKey == "scan")
+	else if (actionKey == "scanssid")
 	{
 		if (networkSettings)
 			selected = networkSettings->getSelected();
@@ -204,18 +204,14 @@ int CNetworkSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		HintBox(_("Information"), _("Scanning for networks, please wait..."));
 			
 		getWlanList();
+		
+		if (networkSettings) 
+			networkSettings->selectItemByName("Network Name");
+			
+		g_RCInput->postMsg(CRCInput::RC_ok);
 		showMenu();
 		
 		return RETURN_EXIT;
-	}
-	else
-	{
-		if (networkSettings)
-			selected = networkSettings->getSelected();
-			
-		showMenu();
-		
-		return RETURN_EXIT;	
 	}
 	
 	showMenu();
@@ -228,11 +224,13 @@ void CNetworkSettings::showMenu()
 	dprintf(DEBUG_NORMAL, "CNetworkSettings::showMenu:\n");
 	
 	//
-	widget = CNeutrinoApp::getInstance()->getWidget("networksetup");
+	if (widget == NULL) 
+		widget = CNeutrinoApp::getInstance()->getWidget("networksetup");
 	
 	if (widget)
 	{
-		networkSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
+		if (networkSettings == NULL)
+			networkSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -269,11 +267,11 @@ void CNetworkSettings::showMenu()
 	struct dirent **namelist;
 	
 	// scan for networks
-	CMenuForwarder *m12 = new CMenuForwarder(_("Scan for networks"), true, NULL, this, "scan");
+	CMenuForwarder *m12 = new CMenuForwarder(_("Scan for networks"), true, NULL, this, "scanssid");
 	m12->setHidden(!has_wireless);
 		
 	//ssid
-	CMenuOptionStringChooser *m9 = new CMenuOptionStringChooser(_("Network Name"), (char *)network_ssid.c_str(), true, MyIPChanger, CRCInput::RC_nokey, "", true);
+	CMenuOptionStringChooser *m9 = new CMenuOptionStringChooser(_("Network Name"), (char *)network_ssid.c_str(), true, this, CRCInput::RC_nokey, "", true);
 	m9->setHidden(!has_wireless);
 		
 	std::string option[networks.size()];
@@ -303,8 +301,6 @@ void CNetworkSettings::showMenu()
 	wlanEnable[3] = m12;
 	
 	MyIPChanger = new CIPChangeNotifier(wlanEnable);
-	
-	networkSettings->setSelected(selected);
 
 	//interface
 	int ifcount = scandir("/sys/class/net", &namelist, my_filter, alphasort);
@@ -428,16 +424,13 @@ void CNetworkSettings::showMenu()
 	// nameserver
 	networkSettings->addItem(m5);
 	
-	//
-//	if(ifcount > 1 && has_wireless) // if there is only one, its probably wired
-	{
-		// ssid
-		networkSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-		networkSettings->addItem(m12);
-		networkSettings->addItem(m9);
-		networkSettings->addItem(m10);
-		networkSettings->addItem(m11); //encryption
-	}
+	// scan / ssid / key / encryption
+	networkSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+	networkSettings->addItem(m12);
+	networkSettings->addItem(m9);
+	networkSettings->addItem(m10);
+	networkSettings->addItem(m11);
+
 	
 	// ntp
 	networkSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Time-Syncronisation")));

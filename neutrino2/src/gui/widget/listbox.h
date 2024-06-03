@@ -536,6 +536,7 @@ class ClistBox : public CComponent
 		void clear(void){hbutton_labels.clear(); fbutton_labels.clear(); current_page = 0; items.clear();};
 		void setSelected(unsigned int _new) { selected = _new; };
 		void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = CRCInput::RC_nokey, bool enabled = true, int imode = MODE_MENU, int itype = TYPE_STANDARD, bool i2lines = false, int iBorder = CComponent::BORDER_NO);
+		void selectItemByName(const char *name);
 		////
 		void initFrames(); // public
 		void paintHead();

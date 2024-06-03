@@ -3505,3 +3505,17 @@ void ClistBox::integratePlugins(CPlugins::i_type_t integration, const unsigned i
 	}
 }
 
+void ClistBox::selectItemByName(const char *name)
+{
+	dprintf(DEBUG_NORMAL, "ClistBox::selectItemByName: %s\n", (name != NULL)? name : "NULL");
+	
+	if (hasItem())
+	{
+		for (int i = 0; i < items.size(); i++)
+		{
+			if (items[i]->itemName == name)
+				setSelected(i);
+		}
+	}
+}
+
