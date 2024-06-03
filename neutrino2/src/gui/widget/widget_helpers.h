@@ -211,7 +211,7 @@ class CComponent
 		////
 		virtual int exec(int timeout = -1); // in sec
 		////
-		virtual std::string getActionKey(void){ return actionKey;}; // lua
+		virtual std::string getActionKey(void){ if (!actionKey.empty())return actionKey; else return "";}; // lua
 		virtual int getSelected(void){return -1;};
 };
 

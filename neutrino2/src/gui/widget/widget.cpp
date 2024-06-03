@@ -536,7 +536,7 @@ void CWidget::refresh(bool show)
 	}
 }
 
-// events
+//// events
 void CWidget::onOKKeyPressed()
 {
 	dprintf(DEBUG_INFO, "CWidget::onOKKeyPressed:\n");

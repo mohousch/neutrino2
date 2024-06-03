@@ -41,7 +41,6 @@ class CNetworkSettings : public CMenuTarget, CChangeObserver
 	private:
 		CWidget* widget;
 		ClistBox* networkSettings;
-		int selected;
 	
 		CIPChangeNotifier* MyIPChanger;
 		
@@ -49,7 +48,7 @@ class CNetworkSettings : public CMenuTarget, CChangeObserver
 		
 	public:
 		CNetworkSettings();
-		~CNetworkSettings(){};
+		~CNetworkSettings(){if (MyIPChanger) delete MyIPChanger; MyIPChanger = NULL;};
 		
 		CNetworkConfig *networkConfig;
 		CMenuItem *wlanEnable[4];

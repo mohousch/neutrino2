@@ -56,6 +56,7 @@
 extern "C" int pinghost( const char *hostname );
 bool has_wireless = false;
 std::vector<wlan_network> networks;
+bool scanforssid = false;
 
 #define OPTIONS_OFF0_ON1_OPTION_COUNT 2
 const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
@@ -92,9 +93,9 @@ CNetworkSettings::CNetworkSettings()
 {
 	networkConfig = CNetworkConfig::getInstance();
 	networks.clear();
-	selected = -1;
 	widget = NULL;
 	networkSettings = NULL;
+	MyIPChanger = NULL;
 }
 
 CNetworkSettings *CNetworkSettings::getInstance()
@@ -154,7 +155,7 @@ void CNetworkSettings::getWlanList()
 	get_wlan_list(g_settings.ifname, networks);
 }
 
-int CNetworkSettings::exec(CMenuTarget* parent, const std::string& actionKey)
+int CNetworkSettings::exec(CMenuTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CNetworkSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
@@ -197,21 +198,17 @@ int CNetworkSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		return ret;
 	}
 	else if (actionKey == "scanssid")
-	{
-		if (networkSettings)
-			selected = networkSettings->getSelected();
-			
+	{	
 		HintBox(_("Information"), _("Scanning for networks, please wait..."));
 			
 		getWlanList();
 		
-		if (networkSettings) 
-			networkSettings->selectItemByName("Network Name");
-			
+		scanforssid = true;
 		g_RCInput->postMsg(CRCInput::RC_ok);
+			
 		showMenu();
 		
-		return RETURN_EXIT;
+		return RETURN_EXIT_ALL;
 	}
 	
 	showMenu();
@@ -223,14 +220,12 @@ void CNetworkSettings::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CNetworkSettings::showMenu:\n");
 	
-	//
-	if (widget == NULL) 
-		widget = CNeutrinoApp::getInstance()->getWidget("networksetup");
+	// 
+	widget = CNeutrinoApp::getInstance()->getWidget("networksetup");
 	
 	if (widget)
 	{
-		if (networkSettings == NULL)
-			networkSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
+		networkSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -453,6 +448,8 @@ void CNetworkSettings::showMenu()
 	networkSettings->addItem(new CMenuForwarder(_("Mount network volume"), true, NULL, new CNFSMountGui()));
 
 	networkSettings->addItem(new CMenuForwarder(_("Umount network volume"), true, NULL, new CNFSUmountGui()));
+	
+	if (scanforssid) networkSettings->selectItemByName("Network Name");
 	
 	//
 	widget->exec(NULL, "");
