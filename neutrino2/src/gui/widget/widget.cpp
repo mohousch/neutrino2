@@ -327,7 +327,7 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "CWidget::exec: (%s)\n", name.c_str());
 
-	retval = RETURN_REPAINT;
+	retval = CMenuTarget::RETURN_REPAINT;
 	pos = 0;
 	exit_pressed = false;
 	bool show = true;
@@ -386,12 +386,12 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 					//FIXME:review this
 					switch ( rv ) 
 					{
-						case RETURN_EXIT_ALL:
-							retval = RETURN_EXIT_ALL; //fall through
-						case RETURN_EXIT:
+						case CMenuTarget::RETURN_EXIT_ALL:
+							retval = CMenuTarget::RETURN_EXIT_ALL; //fall through
+						case CMenuTarget::RETURN_EXIT:
 							msg = CRCInput::RC_timeout;
 							break;
-						case RETURN_REPAINT:
+						case CMenuTarget::RETURN_REPAINT:
 							paint();
 							break;
 					}
@@ -429,7 +429,7 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 				case (NeutrinoMessages::EVT_TIMER):
 					if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
 					{
-						retval = RETURN_EXIT_ALL;
+						retval = CMenuTarget::RETURN_EXIT_ALL;
 						msg = CRCInput::RC_timeout;
 					}
 					break;
@@ -481,7 +481,7 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 				default:
 					if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
 					{
-						retval = RETURN_EXIT_ALL;
+						retval = CMenuTarget::RETURN_EXIT_ALL;
 						msg = CRCInput::RC_timeout;
 					}
 			}
@@ -552,12 +552,12 @@ void CWidget::onOKKeyPressed()
 			//
 			switch ( rv ) 
 			{
-				case RETURN_EXIT_ALL:
-					retval = RETURN_EXIT_ALL; //fall through
-				case RETURN_EXIT:
+				case CMenuTarget::RETURN_EXIT_ALL:
+					retval = CMenuTarget::RETURN_EXIT_ALL; //fall through
+				case CMenuTarget::RETURN_EXIT:
 					msg = CRCInput::RC_timeout;
 					break;
-				case RETURN_REPAINT:
+				case CMenuTarget::RETURN_REPAINT:
 					paint();
 					break;
 			}
@@ -644,12 +644,12 @@ void CWidget::onRightKeyPressed()
 		//
 		switch ( rv ) 
 		{
-			case RETURN_EXIT_ALL:
-				retval = RETURN_EXIT_ALL; //fall through
-			case RETURN_EXIT:
+			case CMenuTarget::RETURN_EXIT_ALL:
+				retval = CMenuTarget::RETURN_EXIT_ALL; //fall through
+			case CMenuTarget::RETURN_EXIT:
 				msg = CRCInput::RC_timeout;
 				break;
-			case RETURN_REPAINT:
+			case CMenuTarget::RETURN_REPAINT:
 				paint();
 				break;
 		}
@@ -669,12 +669,12 @@ void CWidget::onLeftKeyPressed()
 		//
 		switch ( rv ) 
 		{
-			case RETURN_EXIT_ALL:
-				retval = RETURN_EXIT_ALL; //fall through
-			case RETURN_EXIT:
+			case CMenuTarget::RETURN_EXIT_ALL:
+				retval = CMenuTarget::RETURN_EXIT_ALL; //fall through
+			case CMenuTarget::RETURN_EXIT:
 				msg = CRCInput::RC_timeout;
 				break;
-			case RETURN_REPAINT:
+			case CMenuTarget::RETURN_REPAINT:
 				paint();
 				break;
 		}
@@ -715,12 +715,12 @@ void CWidget::onDirectKeyPressed(neutrino_msg_t _msg)
 		//
 		switch ( rv ) 
 		{
-			case RETURN_EXIT_ALL:
-				retval = RETURN_EXIT_ALL; //fall through
-			case RETURN_EXIT:
+			case CMenuTarget::RETURN_EXIT_ALL:
+				retval = CMenuTarget::RETURN_EXIT_ALL; //fall through
+			case CMenuTarget::RETURN_EXIT:
 				msg = CRCInput::RC_timeout;
 				break;
-			case RETURN_REPAINT:
+			case CMenuTarget::RETURN_REPAINT:
 				paint();
 				break;
 		}

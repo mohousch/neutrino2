@@ -40,19 +40,6 @@
 ////
 class ClistBox;
 
-// CChangeObserver
-class CChangeObserver
-{
-	public:
-		CChangeObserver(){}
-		virtual ~CChangeObserver(){}
-		
-		virtual bool changeNotify(const std::string&, void *)
-		{
-			return false;
-		}
-};
-
 // CMenuItem
 class CMenuItem
 {
@@ -140,7 +127,7 @@ class CMenuItem
 		fb_pixel_t* background;
 		
 		//
-		CChangeObserver* observ;
+		CChangeObserver *observ;
 		bool pulldown;
 		
 		//

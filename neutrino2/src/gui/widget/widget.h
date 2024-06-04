@@ -53,6 +53,20 @@ class CMenuTarget
 		virtual void clearValueString(void){valueString.clear();};
 };
 
+//// CChangeObserver
+class CChangeObserver
+{
+	public:
+		CChangeObserver(){};
+		virtual ~CChangeObserver(){};
+		
+		virtual bool changeNotify(const std::string&, void *)
+		{
+			return false;
+		};
+};
+
+
 ////
 class CWidget : public CMenuTarget
 {
