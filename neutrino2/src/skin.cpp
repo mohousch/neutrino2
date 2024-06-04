@@ -3134,7 +3134,7 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 		//g_settings.hints_dir = skin_configfile.getString("hints_dir", DATADIR "/hints/");
 		//g_settings.spinner_dir = skin_configfile.getString("spinner_dir", DATADIR "/spinner/");
 
-		colorSetupNotifier = new CColorSetupNotifier;
+		CColorSetupNotifier *colorSetupNotifier = new CColorSetupNotifier();
 		colorSetupNotifier->changeNotify("", NULL);
 		
 		delete colorSetupNotifier;

@@ -84,6 +84,10 @@ class CRemoteControl
 	void copySubChannelsToZapit(void);
 
 	public:
+		CRemoteControl();
+		virtual ~CRemoteControl(){};
+		
+		////
 		t_channel_id                  current_channel_id;
 		unsigned long long            current_EPGid;
 		unsigned long long            next_EPGid;
@@ -104,7 +108,7 @@ class CRemoteControl
 		CZapProtection *zapProtection;
 		bool is_video_started;
 	
-		CRemoteControl();
+		////
 		void zapToChannelID(const t_channel_id channel_id, const std::string & channame, const bool start_video = true); // UTF-8
 		void startvideo(const t_channel_id channel_id);
 		void stopvideo();

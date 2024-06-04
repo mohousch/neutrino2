@@ -16,10 +16,6 @@ AM_CPPFLAGS = \
 	@FREETYPE_CFLAGS@ \
 	@FRIBIDI_CFLAGS@
 
-if ENABLE_LCD
-AM_CPPFLAGS += -I$(top_srcdir)/lib/liblcddisplay
-endif
-
 if ENABLE_GSTREAMER
 AM_CPPFLAGS += @GSTREAMER_CFLAGS@
 else

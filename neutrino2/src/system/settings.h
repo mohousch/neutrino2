@@ -533,7 +533,7 @@ struct SNeutrinoSettings
 #define DEFAULT_TIMING_NUMERICZAP		3	
 
 // lcdd
-#if defined(ENABLE_LCD) && (defined(PLATFORM_DREAMBOX) || defined(PLATFORM_GIGABLUE) || defined(PLATFORM_VUPLUS))
+#if defined(PLATFORM_DREAMBOX) || defined(PLATFORM_GIGABLUE) || defined(PLATFORM_VUPLUS)
 #define DEFAULT_LCD_BRIGHTNESS			0xFF
 #define DEFAULT_LCD_STANDBYBRIGHTNESS		0x7F
 #else

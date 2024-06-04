@@ -165,8 +165,8 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
-	CLcdNotifier * lcdnotifier = new CLcdNotifier();
-	CLCDControler * lcdsliders = new CLCDControler(_("Display settings"), NULL);
+	CLCDNotifier * lcdnotifier = new CLCDNotifier();
+	CLCDControler * lcdsliders = new CLCDControler(_("Display settings"));
 	
 	// LCD
 #if defined (ENABLE_LCD)
@@ -195,10 +195,10 @@ void CLCDSettings::showMenu()
 	// dimm brightness
 	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, 15));
 
-	// vfd controller
+	// lcdcontroller
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
-	// lcd controller
+	// lcdcontroller
 	lcdSettings->addItem(new CMenuForwarder(_("Contrast / Brightness"), true, NULL, lcdsliders));
 #else
 	// lcd_power
@@ -219,7 +219,7 @@ void CLCDSettings::showMenu()
 	// dimm brightness
 	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, 15));
 
-	// vfd controller
+	// lcdcontroller
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	lcdSettings->addItem(new CMenuForwarder(_("Contrast / Brightness"), true, NULL, lcdsliders));	
 #endif	
@@ -237,11 +237,11 @@ void CLCDSettings::showMenu()
 }
 
 // lcd notifier
-bool CLcdNotifier::changeNotify(const std::string&, void * Data)
+bool CLCDNotifier::changeNotify(const std::string&, void * Data)
 {
 	int state = *(int *)Data;
 
-	dprintf(DEBUG_NORMAL, "ClcdNotifier: state: %d\n", state);
+	dprintf(DEBUG_NORMAL, "ClCDNotifier: state: %d\n", state);
 		
 	CLCD::getInstance()->setPower(state);	
 

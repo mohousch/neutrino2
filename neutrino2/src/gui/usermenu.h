@@ -40,10 +40,10 @@ class CUserMenu : public CMenuTarget
                 
                 int doMenu(void);
         public:
-                CUserMenu(const char* const _local, int _button){local = _local; button = _button;};
+                CUserMenu(const char *const _local, int _button){local = _local; button = _button;};
                 virtual ~CUserMenu(){};
                 
-                int exec(CMenuTarget* parent, const std::string& actionKey);
+                int exec(CMenuTarget *parent, const std::string &actionKey);
 };
 
 #endif

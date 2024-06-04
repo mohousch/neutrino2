@@ -50,7 +50,7 @@
 #endif
 
 
-CLCDControler::CLCDControler(const char* const Name, CChangeObserver* Observer)
+CLCDControler::CLCDControler(const char *const Name)
 {
 	frameBuffer = CFrameBuffer::getInstance();
 	
@@ -59,8 +59,6 @@ CLCDControler::CLCDControler(const char* const Name, CChangeObserver* Observer)
 	hheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight();
 	mheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();
 
-	observer = Observer;
-
 	name = Name? Name : "";
 
 	width = MENU_WIDTH;
@@ -68,7 +66,7 @@ CLCDControler::CLCDControler(const char* const Name, CChangeObserver* Observer)
 	x = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - width) >> 1);
 	y = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - height)>> 1);
 
-	mainWindow = new CCWindow(x, y, width, height);
+	mainWindow = new CCWindow(x, y, width, height + 10);
 
 	brightness = CLCD::getInstance()->getBrightness();
 	brightnessstandby = CLCD::getInstance()->getBrightnessStandby();
@@ -80,15 +78,17 @@ void CLCDControler::setVfd()
 	CLCD::getInstance()->setBrightnessStandby(brightnessstandby);
 }
 
-int CLCDControler::exec(CMenuTarget* parent, const std::string &)
+int CLCDControler::exec(CMenuTarget *parent, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "CLCDControler::exec\n");
 
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
 
-	int selected, res = CMenuTarget::RETURN_REPAINT;
-	unsigned int brightness_alt, brightnessstandby_alt;
+	int selected;
+	int res = CMenuTarget::RETURN_REPAINT;
+	unsigned int brightness_alt;
+	unsigned int brightnessstandby_alt;
 
 	if (parent)
 		parent->hide();
@@ -259,9 +259,6 @@ int CLCDControler::exec(CMenuTarget* parent, const std::string &)
 	}
 
 	hide();
-
-	if(observer)
-		observer->changeNotify(name, NULL);
 
 	return res;
 }

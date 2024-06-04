@@ -48,13 +48,12 @@ class CColorChooser : public CMenuTarget
 		CBox cFrameBoxItem;
 		CBox cFrameBoxColorPreview;
 
-		CCWindow* m_cBoxWindow;
+		CCWindow *m_cBoxWindow;
 
 		unsigned char * value[4]; // r, g, b, alpha
 
 		std::string name;
 
-		CChangeObserver* observer;
 		CColorSetupNotifier * notifier;
 
 		void paint();
@@ -63,11 +62,11 @@ class CColorChooser : public CMenuTarget
 
 	public:
 		//
-		CColorChooser(const char * const Name, unsigned char *R, unsigned char *G, unsigned char *B, unsigned char* Alpha, CChangeObserver* Observer = NULL); // UTF-8
+		CColorChooser(const char * const Name, unsigned char *R, unsigned char *G, unsigned char *B, unsigned char* Alpha); // UTF-8
 		virtual ~CColorChooser();
 
 		void hide();
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CMenuTarget *parent, const std::string &actionKey);
 };
 
 #endif

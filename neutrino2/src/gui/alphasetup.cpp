@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: alphasetup.cpp 2013/10/12 mohousch Exp $
+	$Id: alphasetup.cpp 04062024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -68,7 +68,6 @@ CAlphaSetup::CAlphaSetup(const char* const Name, unsigned char * Alpha, CChangeO
 	mainBox.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - mainBox.iWidth) >> 1);
 	mainBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - mainBox.iHeight) >> 1);
 
-	//mainWindow.setPosition(&mainBox);
 	mainWindow = new CCWindow(&mainBox);
 
 	observer = Observer;
@@ -79,11 +78,7 @@ CAlphaSetup::CAlphaSetup(const char* const Name, unsigned char * Alpha, CChangeO
 	frameBuffer->setBlendLevel(*alpha);
 }
 
-CAlphaSetup::~CAlphaSetup()
-{
-}
-
-int CAlphaSetup::exec(CMenuTarget * parent, const std::string &)
+int CAlphaSetup::exec(CMenuTarget *parent, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "CAlphaSetup::exec\n");
 
@@ -106,7 +101,8 @@ int CAlphaSetup::exec(CMenuTarget * parent, const std::string &)
 
 	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_menu == 0 ? 0xFFFF : g_settings.timing_menu);
 
-	bool loop=true;
+	bool loop = true;
+	
 	while (loop)
 	{
 		g_RCInput->getMsgAbsoluteTimeout( &msg, &data, &timeoutEnd, true );
@@ -233,7 +229,7 @@ void CAlphaSetup::paint()
 
 	// main window
 	mainWindow->setColor(COL_MENUCONTENT_PLUS_0);
-	mainWindow->setCorner(RADIUS_MID, CORNER_BOTTOM);
+	mainWindow->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	mainWindow->paint();
 
 	// head

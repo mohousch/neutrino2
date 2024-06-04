@@ -299,7 +299,10 @@ CNeutrinoApp::CNeutrinoApp()
 CNeutrinoApp::~CNeutrinoApp()
 {
 	if (channelList)
+	{
 		delete channelList;
+		channelList = NULL;
+	}
 }
 
 // getInstance
@@ -4673,11 +4676,13 @@ int CNeutrinoApp::run(int argc, char **argv)
 	setupFonts(g_settings.font_file);
 	
 	// setup color
-	colorSetupNotifier = new CColorSetupNotifier;
+	CColorSetupNotifier *colorSetupNotifier = new CColorSetupNotifier();
 	colorSetupNotifier->changeNotify("", NULL);
+	delete colorSetupNotifier;
+	colorSetupNotifier = NULL;
 	
 	// init remote control defore CLCD otherwise CLCD crashes
-	g_RemoteControl = new CRemoteControl;
+	g_RemoteControl = new CRemoteControl();
 
 	// init CLCD display
 	CLCD::getInstance()->init(font.filename, font.name);

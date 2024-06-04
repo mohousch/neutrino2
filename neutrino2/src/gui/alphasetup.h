@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: alphasetup.h 2013/10/12 mohousch Exp $
+	$Id: alphasetup.h 04062024 mohousch Exp $
  
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -57,11 +57,11 @@ class CAlphaSetup : public CMenuTarget
 
 		void paint();
 		void setAlpha();
-		void paintSlider(const int x, const int y, const unsigned char * const spos, const char* const text, const char * const iconname, const bool selected);
+		void paintSlider(const int x, const int y, const unsigned char *const spos, const char *const text, const char * const iconname, const bool selected);
 
 	public:
-		CAlphaSetup(const char* const Name, unsigned char * Alpha, CChangeObserver * Observer = NULL);
-		~CAlphaSetup();
+		CAlphaSetup(const char *const Name, unsigned char * Alpha, CChangeObserver *Observer = NULL);
+		virtual ~CAlphaSetup(){};
 
 		void hide();
 		int exec(CMenuTarget *parent, const std::string &actionKey);

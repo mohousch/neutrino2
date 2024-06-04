@@ -1025,10 +1025,9 @@ int CUpdateSettings::showMenu()
 		//
 		mtdexpert->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0};
 			
 		mtdexpert->setFootButtons(&btn);
-//		mtdexpert->setFootLine(true, true);
 		
 		//
 		mtdexpertWidget->addCCItem(mtdexpert);

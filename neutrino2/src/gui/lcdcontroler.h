@@ -57,17 +57,18 @@ class CLCDControler : public CMenuTarget
 
 		std::string name;
 
-		CChangeObserver* observer;
+//		CChangeObserver *observer;
 
 		void paint();
 		void setVfd();
-		void paintSlider(int x, int y, unsigned int spos, float factor, const char* const text, bool selected);
+		void paintSlider(int x, int y, unsigned int spos, float factor, const char *const text, bool selected);
 
 	public:
-		CLCDControler(const char* const Name, CChangeObserver* Observer = NULL);
+		CLCDControler(const char *const Name);
+		virtual ~CLCDControler(){};
 
 		void hide();
-		int exec(CMenuTarget* parent, const std::string & actionKey);
+		int exec(CMenuTarget *parent, const std::string &actionKey);
 
 };
 

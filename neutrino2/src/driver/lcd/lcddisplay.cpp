@@ -75,7 +75,11 @@ CLCDDisplay::CLCDDisplay()
 	iconBasePath = "";
 	
 	//open device
+#ifdef USE_OPENGL
+	fd = open("/dev/null", O_RDWR);
+#else
 	fd = open("/dev/dbox/oled0", O_RDWR);
+#endif
 	
 	if (fd < 0)
 	{
@@ -207,7 +211,7 @@ int CLCDDisplay::setLCDContrast(int contrast)
 		fp = open("/dev/dbox/lcd0", O_RDWR);
 	if (fp < 0)
 	{
-		printf("[LCD] can't open /dev/dbox/fp0(%m)\n");
+		printf("CLCDDisplay::setLCDContrast: can't open /dev/dbox/fp0(%m)\n");
 		return (-1);
 	}
 	
@@ -239,14 +243,13 @@ int CLCDDisplay::setLCDBrightness(int brightness)
 		int fp;
 		if ((fp = open("/dev/dbox/fp0", O_RDWR)) < 0)
 		{
-			printf("[LCD] can't open /dev/dbox/fp0\n");
+			printf("CLCDDisplay::setLCDContrast: can't open /dev/dbox/fp0\n");
 			return (-1);
 		}
 
 
 		if(ioctl(fd, FP_IOCTL_LCD_DIMM, &brightness) < 0)
-			printf("[LCD] can't set lcd brightness (%m)\n");
-			
+			printf("CLCDDisplay::setLCDContrast: can't set lcd brightness (%m)\n");			
 		close(fp);
 	}
 	

@@ -296,7 +296,11 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 {
 	// 4digits
 #ifdef ENABLE_4DIGITS
+#ifdef USE_OPENGL
+	fd = open("/dev/null", O_RDWR);
+#else
 	fd = open("/dev/dbox/fp", O_RDWR);
+#endif
 		
 	if(fd < 0)
 	{
@@ -348,7 +352,11 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 #if defined (__sh__)
 	has_lcd = true;
 #else
+#ifdef USE_OPENGL
+	fd = open("/dev/null", O_RDWR);
+#else
 	fd = open("/dev/dbox/fp", O_RDWR);
+#endif
 		
 	if(fd < 0)
 	{
@@ -460,7 +468,11 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 #elif defined (ENABLE_TFTLCD)
 	tftlcd = new CTFTLCD();
 	
+#ifdef USE_OPENGL
+	if (tftlcd->init("/dev/null"))
+#else
 	if (tftlcd->init("/dev/fb1"))
+#endif
 		has_lcd = true;
 #endif
 

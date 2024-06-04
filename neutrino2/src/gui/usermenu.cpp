@@ -48,7 +48,7 @@ const keyval USERMENU_ITEM_OPTIONS[USERMENU_ITEM_OPTION_COUNT] =
 	{ SNeutrinoSettings::ITEM_LOAD_EPG, _("Reload EPG") }
 };
 
-int CUserMenu::exec(CMenuTarget* parent, const std::string& actionKey)
+int CUserMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL , "CUserMenu::exec: %s\n", actionKey.c_str());
 	
@@ -59,7 +59,7 @@ int CUserMenu::exec(CMenuTarget* parent, const std::string& actionKey)
                 
         if (actionKey == "savesettings")
         {
-        	valueString = g_settings.usermenu_text[button].c_str();
+//		this->setValueString(g_settings.usermenu_text[button].c_str());
         	
         	CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
         	return RETURN_REPAINT;
@@ -103,7 +103,7 @@ int CUserMenu::doMenu(void)
 		head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
 			
 		//	
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0};		
 
 		foot = new CCFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
 		foot->setButtons(&btn);
@@ -124,7 +124,7 @@ int CUserMenu::doMenu(void)
 	menu->addItem(new CMenuForwarder(_("back")));
 	menu->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
-	// save settings
+	// savesettings
 	menu->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	menu->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
@@ -154,5 +154,4 @@ int CUserMenu::doMenu(void)
 
         return res;
 }
-
 

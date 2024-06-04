@@ -292,34 +292,34 @@ void COSDMenuColorSettings::showMenu()
 	OSDmenuColorsSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 
 	// head
-	CColorChooser* chHeadcolor = new CColorChooser(_("Background"), &g_settings.menu_Head_red, &g_settings.menu_Head_green, &g_settings.menu_Head_blue, &g_settings.menu_Head_alpha, CNeutrinoApp::getInstance()->colorSetupNotifier);
+	CColorChooser* chHeadcolor = new CColorChooser(_("Background"), &g_settings.menu_Head_red, &g_settings.menu_Head_green, &g_settings.menu_Head_blue, &g_settings.menu_Head_alpha);
 
-	CColorChooser* chHeadTextcolor = new CColorChooser(_("Textcolor"), &g_settings.menu_Head_Text_red, &g_settings.menu_Head_Text_green, &g_settings.menu_Head_Text_blue, NULL, CNeutrinoApp::getInstance()->colorSetupNotifier);
+	CColorChooser* chHeadTextcolor = new CColorChooser(_("Textcolor"), &g_settings.menu_Head_Text_red, &g_settings.menu_Head_Text_green, &g_settings.menu_Head_Text_blue, NULL);
 
 	// window content
-	CColorChooser* chContentcolor = new CColorChooser(_("Background"), &g_settings.menu_Content_red, &g_settings.menu_Content_green, &g_settings.menu_Content_blue,&g_settings.menu_Content_alpha, CNeutrinoApp::getInstance()->colorSetupNotifier);
+	CColorChooser* chContentcolor = new CColorChooser(_("Background"), &g_settings.menu_Content_red, &g_settings.menu_Content_green, &g_settings.menu_Content_blue,&g_settings.menu_Content_alpha);
 
-	CColorChooser* chContentTextcolor = new CColorChooser(_("Textcolor"), &g_settings.menu_Content_Text_red, &g_settings.menu_Content_Text_green, &g_settings.menu_Content_Text_blue, NULL, CNeutrinoApp::getInstance()->colorSetupNotifier);
+	CColorChooser* chContentTextcolor = new CColorChooser(_("Textcolor"), &g_settings.menu_Content_Text_red, &g_settings.menu_Content_Text_green, &g_settings.menu_Content_Text_blue, NULL);
 
 	// window content inactive
-	CColorChooser* chContentInactivecolor = new CColorChooser(_("Background"), &g_settings.menu_Content_inactive_red, &g_settings.menu_Content_inactive_green, &g_settings.menu_Content_inactive_blue,&g_settings.menu_Content_inactive_alpha, CNeutrinoApp::getInstance()->colorSetupNotifier);
+	CColorChooser* chContentInactivecolor = new CColorChooser(_("Background"), &g_settings.menu_Content_inactive_red, &g_settings.menu_Content_inactive_green, &g_settings.menu_Content_inactive_blue, &g_settings.menu_Content_inactive_alpha);
 
-	CColorChooser* chContentInactiveTextcolor = new CColorChooser(_("Textcolor"), &g_settings.menu_Content_inactive_Text_red, &g_settings.menu_Content_inactive_Text_green, &g_settings.menu_Content_inactive_Text_blue, NULL, CNeutrinoApp::getInstance()->colorSetupNotifier);
+	CColorChooser* chContentInactiveTextcolor = new CColorChooser(_("Textcolor"), &g_settings.menu_Content_inactive_Text_red, &g_settings.menu_Content_inactive_Text_green, &g_settings.menu_Content_inactive_Text_blue, NULL);
 	
 	// window content selected
-	CColorChooser* chContentSelectedcolor = new CColorChooser(_("Background"), &g_settings.menu_Content_Selected_red, &g_settings.menu_Content_Selected_green, &g_settings.menu_Content_Selected_blue,&g_settings.menu_Content_Selected_alpha, CNeutrinoApp::getInstance()->colorSetupNotifier);
+	CColorChooser* chContentSelectedcolor = new CColorChooser(_("Background"), &g_settings.menu_Content_Selected_red, &g_settings.menu_Content_Selected_green, &g_settings.menu_Content_Selected_blue,&g_settings.menu_Content_Selected_alpha);
 
-	CColorChooser* chContentSelectedTextcolor = new CColorChooser(_("Textcolor"), &g_settings.menu_Content_Selected_Text_red, &g_settings.menu_Content_Selected_Text_green, &g_settings.menu_Content_Selected_Text_blue, NULL, CNeutrinoApp::getInstance()->colorSetupNotifier);
+	CColorChooser* chContentSelectedTextcolor = new CColorChooser(_("Textcolor"), &g_settings.menu_Content_Selected_Text_red, &g_settings.menu_Content_Selected_Text_green, &g_settings.menu_Content_Selected_Text_blue, NULL);
 	
 	// foot
-	CColorChooser* chFootcolor = new CColorChooser(_("Background"), &g_settings.menu_Foot_red, &g_settings.menu_Foot_green, &g_settings.menu_Foot_blue, &g_settings.menu_Foot_alpha, CNeutrinoApp::getInstance()->colorSetupNotifier);
+	CColorChooser* chFootcolor = new CColorChooser(_("Background"), &g_settings.menu_Foot_red, &g_settings.menu_Foot_green, &g_settings.menu_Foot_blue, &g_settings.menu_Foot_alpha);
 
-	CColorChooser * chFootTextcolor = new CColorChooser(_("Textcolor"), &g_settings.menu_Foot_Text_red, &g_settings.menu_Foot_Text_green, &g_settings.menu_Foot_Text_blue, NULL, CNeutrinoApp::getInstance()->colorSetupNotifier);
+	CColorChooser * chFootTextcolor = new CColorChooser(_("Textcolor"), &g_settings.menu_Foot_Text_red, &g_settings.menu_Foot_Text_green, &g_settings.menu_Foot_Text_blue, NULL);
 
 	// itemInfo
-	CColorChooser* chHintColor = new CColorChooser(_("Background"), &g_settings.menu_Hint_red, &g_settings.menu_Hint_green, &g_settings.menu_Hint_blue, &g_settings.menu_Hint_alpha, CNeutrinoApp::getInstance()->colorSetupNotifier);
+	CColorChooser* chHintColor = new CColorChooser(_("Background"), &g_settings.menu_Hint_red, &g_settings.menu_Hint_green, &g_settings.menu_Hint_blue, &g_settings.menu_Hint_alpha);
 
-	CColorChooser * chHintTextColor = new CColorChooser(_("Textcolor"), &g_settings.menu_Hint_Text_red, &g_settings.menu_Hint_Text_green, &g_settings.menu_Hint_Text_blue, NULL, CNeutrinoApp::getInstance()->colorSetupNotifier);
+	CColorChooser * chHintTextColor = new CColorChooser(_("Textcolor"), &g_settings.menu_Hint_Text_red, &g_settings.menu_Hint_Text_green, &g_settings.menu_Hint_Text_blue, NULL);
 
 	// head
 	OSDmenuColorsSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Head")));
@@ -427,8 +427,7 @@ void COSDMenuColorSettings::showMenu()
 	}
 }
 
-//
-// color setup notifier
+//// color setup notifier
 bool CColorSetupNotifier::changeNotify(const std::string&, void *)
 {
 	dprintf(DEBUG_INFO, "CColorSetupNotifier::changeNotify:\n");
@@ -563,16 +562,16 @@ void COSDInfoBarColorSettings::showMenu()
 	OSDinfobarColorSettings->addItem(new CMenuForwarder(_("back")));
 
 	OSDinfobarColorSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	OSDinfobarColorSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
+	OSDinfobarColorSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));	
 
 	// bg
-	CColorChooser * chInfobarcolor = new CColorChooser(_("Background"), &g_settings.infobar_red, &g_settings.infobar_green, &g_settings.infobar_blue,&g_settings.infobar_alpha, CNeutrinoApp::getInstance()->colorSetupNotifier);
+	CColorChooser * chInfobarcolor = new CColorChooser(_("Background"), &g_settings.infobar_red, &g_settings.infobar_green, &g_settings.infobar_blue,&g_settings.infobar_alpha);
 	
 	// text
-	CColorChooser * chInfobarTextcolor = new CColorChooser(_("Textcolor"), &g_settings.infobar_Text_red, &g_settings.infobar_Text_green, &g_settings.infobar_Text_blue, NULL, CNeutrinoApp::getInstance()->colorSetupNotifier);
+	CColorChooser * chInfobarTextcolor = new CColorChooser(_("Textcolor"), &g_settings.infobar_Text_red, &g_settings.infobar_Text_green, &g_settings.infobar_Text_blue, NULL);
 	
 	// colored events
-	CColorChooser * chColored_Events = new CColorChooser(_("Events Textcolor"), &g_settings.infobar_colored_events_red, &g_settings.infobar_colored_events_green, &g_settings.infobar_colored_events_blue, NULL, CNeutrinoApp::getInstance()->colorSetupNotifier);
+	CColorChooser * chColored_Events = new CColorChooser(_("Events Textcolor"), &g_settings.infobar_colored_events_red, &g_settings.infobar_colored_events_green, &g_settings.infobar_colored_events_blue, NULL);
 
 	OSDinfobarColorSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE));
 

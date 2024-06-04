@@ -45,14 +45,14 @@ class COSDSettings : public CMenuTarget
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
 
-// 
+////
 class CColorSetupNotifier : public CChangeObserver
 {
 	public:
 		bool changeNotify(const std::string&, void *);
 };
 
-// osd menucolor settings
+//// osd menucolor settings
 class COSDMenuColorSettings : public CMenuTarget
 {
 	private:
@@ -65,7 +65,7 @@ class COSDMenuColorSettings : public CMenuTarget
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
 
-// osd infobarcolor settings
+//// osd infobarcolor settings
 class COSDInfoBarColorSettings : public CMenuTarget
 {
 	private:

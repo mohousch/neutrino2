@@ -193,8 +193,6 @@ class CNeutrinoApp : public CMenuTarget
 		////
 		void channelsInit(bool bOnly = false);
 		////
-		CColorSetupNotifier *colorSetupNotifier;
-		////
 		void readEPG();
 		void saveEpg();
 		////

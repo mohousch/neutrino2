@@ -61,9 +61,8 @@ static const char* const colorchooser_names[4] =
 	_("alpha")
 };
 
-CColorChooser::CColorChooser(const char * const Name, unsigned char *R, unsigned char *G, unsigned char *B, unsigned char* Alpha, CChangeObserver* Observer) // UTF-8
+CColorChooser::CColorChooser(const char * const Name, unsigned char *R, unsigned char *G, unsigned char *B, unsigned char* Alpha) // UTF-8
 {
-	observer = Observer;
 	notifier = NULL;
 
 	name = Name? Name : "";

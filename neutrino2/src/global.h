@@ -39,15 +39,7 @@
 #include <driver/gfx/fontrenderer.h>
 #include <driver/rcinput.h>
 
-//#if ENABLE_LCD
 #include <driver/lcd/lcdd.h>
-//#define CVFD CLCD
-//#else
-//#if defined (PLATFORM_COOLSTREAM)
-//#include <cs_vfd.h>
-//#endif
-//#include <driver/lcd/vfd.h>
-//#endif
 
 #include <system/localize.h>
 #include <system/settings.h>

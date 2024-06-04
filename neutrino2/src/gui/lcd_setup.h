@@ -42,14 +42,17 @@ class CLCDSettings : public CMenuTarget
 		CLCDSettings();
 		~CLCDSettings();
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CMenuTarget *parent, const std::string &actionKey);
 };
 
 // lcd notifier
-class CLcdNotifier : public CChangeObserver
+class CLCDNotifier : public CChangeObserver
 {
 	public:
-		bool changeNotify(const std::string&, void * Data);
+		CLCDNotifier(){};
+		virtual ~CLCDNotifier(){};
+		
+		bool changeNotify(const std::string&, void *Data);
 };
 
 #endif //__lcd_setup__
