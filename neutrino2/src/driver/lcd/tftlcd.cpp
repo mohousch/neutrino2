@@ -90,14 +90,18 @@ bool CTFTLCD::init(const char *fbdevice)
 	if (::ioctl(fd, FBIOGET_VSCREENINFO, &m_screeninfo) < 0)
 	{
 		printf("CTFTLCD::init: FBIOGET_VSCREENINFO: %m\n");
+#ifndef USE_OPENGL
 		goto nolfb;
+#endif
 	}
 
 	fb_fix_screeninfo fix;
 	if (ioctl(fd, FBIOGET_FSCREENINFO, &fix) < 0)
 	{
 		printf("CTFTLCD::init: FBIOGET_FSCREENINFO: %m\n");
+#ifndef USE_OPENGL
 		goto nolfb;
+#endif
 	}
 
 	m_available = fix.smem_len;
@@ -110,7 +114,9 @@ bool CTFTLCD::init(const char *fbdevice)
 	if (!_buffer)
 	{
 		printf("CTFTLCD::init: mmap: %m\n");
+#ifndef USE_OPENGL
 		goto nolfb;
+#endif
 	}
 
 	calcRamp();

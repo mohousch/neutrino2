@@ -50,12 +50,12 @@
 
 const struct button_label CBEBouquetWidgetButtons[BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, _("Delete")},
-	{ NEUTRINO_ICON_BUTTON_GREEN, _("Add")},
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Move")}
+	{ NEUTRINO_ICON_BUTTON_RED, _("Delete"), 0},
+	{ NEUTRINO_ICON_BUTTON_GREEN, _("Add"), 0},
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Move"), 0}
 };
 
-const struct button_label HButton = {NEUTRINO_ICON_BUTTON_SETUP, ""};
+const struct button_label HButton = {NEUTRINO_ICON_BUTTON_SETUP, "", 0};
 
 CBEBouquetWidget::CBEBouquetWidget()
 {
@@ -120,7 +120,7 @@ void CBEBouquetWidget::paint()
 
 	for (unsigned int count = 0; count < Bouquets->size(); count++)
 	{
-		if (!(*Bouquets)[count]->bWebTV)
+//		if (!(*Bouquets)[count]->bWebTV)
 		{
 			item = new CMenuForwarder(_((*Bouquets)[count]->Name.c_str()));
 
@@ -172,6 +172,8 @@ void CBEBouquetWidget::paint()
 
 	listBox->setFootButtons(Button, 4);
 	
+	listBox->setSelected(selected);
+	
 	widget->paint();
 }
 
@@ -179,6 +181,7 @@ void CBEBouquetWidget::hide()
 {
 	widget->hide();
 	
+	//
 	if (widget)
 	{
 		delete widget;
@@ -186,7 +189,7 @@ void CBEBouquetWidget::hide()
 	}
 }
 
-int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
+int CBEBouquetWidget::exec(CMenuTarget *parent, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CBEBouquetWidget::exec:\n");
 
@@ -293,6 +296,8 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 				{
 					listBox->scrollLineUp();
 				}
+				// FIXME: moving bqe up crashes
+				/*
 				else if (state == beMoving)
 				{
 					selected = listBox->getSelected();
@@ -304,6 +309,7 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 
 					internalMoveBouquet(prev_selected, next_selected);
 				}
+				*/
 			}
 		}
 		else if (msg == CRCInput::RC_down)
@@ -318,8 +324,9 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 
 				int prev_selected = selected;
 				int next_selected = selected + 1;
+				
 				if (next_selected > (int)Bouquets->size())
-					next_selected = Bouquets->size();
+					next_selected = 0;
 
 				internalMoveBouquet(prev_selected, next_selected);
 			}
@@ -352,10 +359,10 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		}
 		else if(msg == CRCInput::RC_blue)
 		{
+			selected = listBox->getSelected();
+			
 			if (selected < Bouquets->size()) // Bouquets->size() might be 0
 			{
-				selected = listBox->getSelected();
-
 				if (state == beDefault)
 				{
 					switch (blueFunction)
@@ -456,6 +463,9 @@ void CBEBouquetWidget::deleteBouquet()
 {
 	if (selected >= Bouquets->size()) /* Bouquets->size() might be 0 */
 		return;
+		
+	if ((*Bouquets)[selected]->bWebTV)
+		return;
 
 	if (MessageBox(_("Delete"), (*Bouquets)[selected]->Name.c_str(), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) != CMessageBox::mbrYes)
 	{
@@ -488,6 +498,9 @@ void CBEBouquetWidget::addBouquet()
 
 void CBEBouquetWidget::beginMoveBouquet()
 {
+	if ((*Bouquets)[selected]->bWebTV)
+		return;
+		
 	state = beMoving;
 	origPosition = selected;
 	newPosition = selected;
@@ -495,6 +508,9 @@ void CBEBouquetWidget::beginMoveBouquet()
 
 void CBEBouquetWidget::finishMoveBouquet()
 {
+	if ((*Bouquets)[selected]->bWebTV)
+		return;
+		
 	state = beDefault;
 	if (newPosition != origPosition)
 	{
@@ -514,6 +530,11 @@ void CBEBouquetWidget::cancelMoveBouquet()
 
 void CBEBouquetWidget::internalMoveBouquet( unsigned int fromPosition, unsigned int toPosition)
 {
+	dprintf(DEBUG_NORMAL, "CBEBouquetWidget::internalMoveBouquet\n");
+	
+	if ((*Bouquets)[selected]->bWebTV)
+		return;
+	
 	if ( (int) toPosition == -1 ) 
 		return;
 		
@@ -532,7 +553,12 @@ void CBEBouquetWidget::internalMoveBouquet( unsigned int fromPosition, unsigned 
 
 void CBEBouquetWidget::renameBouquet()
 {
+	dprintf(DEBUG_NORMAL, "CBEBouquetWidget::renameBouquet\n");
+	
 	if ((*Bouquets)[selected]->bFav)
+		return;
+		
+	if ((*Bouquets)[selected]->bWebTV)
 		return;
 
 	std::string newName = inputName((*Bouquets)[selected]->Name.c_str(), _("Name of bouquets"));
@@ -550,6 +576,11 @@ void CBEBouquetWidget::renameBouquet()
 
 void CBEBouquetWidget::switchHideBouquet()
 {
+	dprintf(DEBUG_NORMAL, "CBEBouquetWidget::switchHideBouquet\n");
+	
+	if ((*Bouquets)[selected]->bWebTV)
+		return;
+	
 	bouquetsChanged = true;
 	(*Bouquets)[selected]->bHidden = !(*Bouquets)[selected]->bHidden;
 
@@ -558,13 +589,18 @@ void CBEBouquetWidget::switchHideBouquet()
 
 void CBEBouquetWidget::switchLockBouquet()
 {
+	dprintf(DEBUG_NORMAL, "CBEBouquetWidget::switchLockBouquet\n");
+	
+	if ((*Bouquets)[selected]->bWebTV)
+		return;
+	
 	bouquetsChanged = true;
 	(*Bouquets)[selected]->bLocked = !(*Bouquets)[selected]->bLocked;
 
 	paint();
 }
 
-std::string CBEBouquetWidget::inputName(const char * const defaultName, const char* const caption)
+std::string CBEBouquetWidget::inputName(const char * const defaultName, const char *const caption)
 {
 	//FIXME: max input it too long than bqt window width
 	char Name[MAX_INPUT_CHARS + 1];

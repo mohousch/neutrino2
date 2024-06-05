@@ -75,7 +75,6 @@ class CBEBouquetWidget : public CMenuTarget
 		bool bouquetsChanged;
 
 		void paint();
-		void hide();
 
 		void deleteBouquet();
 		void addBouquet();
@@ -96,7 +95,8 @@ class CBEBouquetWidget : public CMenuTarget
 		CBEBouquetWidget();
 		~CBEBouquetWidget();
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CMenuTarget *parent, const std::string &actionKey);
+		void hide();
 };
 
 

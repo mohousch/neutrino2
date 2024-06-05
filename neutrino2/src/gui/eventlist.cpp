@@ -219,7 +219,7 @@ void EventList::readEvents(const t_channel_id channel_id)
 	selected = current_event;
 }
 
-int EventList::exec(const t_channel_id channel_id, const std::string& channelname) // UTF-8
+int EventList::exec(const t_channel_id channel_id, const std::string &channelname) // UTF-8
 {
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
@@ -275,8 +275,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 		{
 			listBox->scrollPageDown();
 		}
-		// sort
-		else if (msg == CRCInput::RC_blue)
+		else if (msg == CRCInput::RC_blue)	// sort
 		{
 			uint64_t selected_id = evtlist[selected].eventID;
 			
@@ -301,25 +300,27 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 			hide();
 			paint(channel_id);
 		}
-		// epg reload
-		else if (msg == CRCInput::RC_setup)
+		else if (msg == CRCInput::RC_setup) // reload epg
 		{
 			sort_mode = SORT_DESCRIPTION;
-			hide();
+//			hide();
 			paint(channel_id);			
 		}
-		// add record
-		else if ( msg == CRCInput::RC_red )
+		else if ( msg == CRCInput::RC_red ) // add record
 		{
 			selected = listBox->getSelected();
 
 			// delete if scheduled
 			int tID = -1;
 			CTimerd::CTimerEventTypes etype = isScheduled(channel_id, &evtlist[selected], &tID);
+			
 			if(etype == CTimerd::TIMER_RECORD) 
 			{
 				CTimerd::getInstance()->removeTimerEvent(tID);
 
+				usleep(1000);
+				
+//				hide();
 				paint(channel_id);
 				continue;
 			}
@@ -349,13 +350,14 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 				{
 					MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, CComponent::BORDER_ALL);
 				}
+				
+				paint(channel_id);
 			}
 				
 			//
-			paint(channel_id);					
+			//paint(channel_id);					
 		}
-		// add remind
-		else if ( msg == CRCInput::RC_yellow )		  
+		else if ( msg == CRCInput::RC_yellow )	// add remind	  
 		{
 			selected = listBox->getSelected();
 
@@ -366,7 +368,10 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 			if(etype == CTimerd::TIMER_ZAPTO) 
 			{
 				CTimerd::getInstance()->removeTimerEvent(tID);
+				
+				usleep(1000);
 
+//				hide();
 				paint(channel_id);
 				continue;
 			}
@@ -555,11 +560,11 @@ void EventList::paint(t_channel_id channel_id)
 	timerlist.clear();
 	CTimerd::getInstance()->getTimerList(timerlist);
 	
-	if (evlWidget)
-	{
-		delete evlWidget;
-		evlWidget = NULL;
-	}
+//	if (evlWidget)
+//	{
+//		delete evlWidget;
+//		evlWidget = NULL;
+//	}
 	
 	//
 	evlWidget = CNeutrinoApp::getInstance()->getWidget("eventlist");

@@ -102,8 +102,6 @@ THandleStatus CControlAPI::Hook_SendResponse(CyhookHandler *hh)
 {
 	hh->status = HANDLED_NONE;
 
-	//log_level_printfX(4,"CControlAPI hook start url:%s\n",hh->UrlData["url"].c_str());
-
 	init(hh);
 
 	if(hh->UrlData["path"] == "/control/" || hh->UrlData["path"] == "/cgi-bin/")
@@ -111,9 +109,6 @@ THandleStatus CControlAPI::Hook_SendResponse(CyhookHandler *hh)
 	
 	if(hh->UrlData["path"] == "/fb/")		// fb-compatibility for timer-calls
 		compatibility_Timer(hh);
-	
-	//log_level_printfX(4,"CControlAPI hook ende status:%d\n",(int)hh->status);
-	//log_level_printfX(5,"CControlAPI hook result:%s\n",hh->yresult.c_str());
 
 	return hh->status;
 }
@@ -186,7 +181,6 @@ const CControlAPI::TyCgiCall CControlAPI::yCgiCallList[]=
 	{"vcroutput", 		&CControlAPI::VCROutputCGI,	 "text/plain"},
 	{"scartmode", 		&CControlAPI::ScartModeCGI,	 "text/plain"},
 	{"audio", 		&CControlAPI::AudioCGI,	 	 "text/plain"},
-	//{"crypt", 		&CControlAPI::CryptCGI,	 	 "text/plain"},
 	// timer
 	{"timer", 		&CControlAPI::TimerCGI,	 	 "text/plain"},
 	// bouquet editing
@@ -846,18 +840,6 @@ void CControlAPI::VolumeCGI(CyhookHandler *hh)
 	else
 		hh->SendError();
 }
-
-/*
-void CControlAPI::CryptCGI(CyhookHandler *hh)
-{
-	if (hh->ParamList.empty() || hh->ParamList["1"] == "info") 
-	{
-		hh->printf("%s",(NeutrinoAPI->getCryptInfoAsString()).c_str());
-		return;
-	}
-	//TODO: more
-}
-*/
 
 //
 void CControlAPI::ChannellistCGI(CyhookHandler *hh)

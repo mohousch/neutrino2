@@ -191,6 +191,7 @@ void* CTimerManager::timerThread(void *data)
 					}
 				}
 
+				// reschedule event if terminated and can be repeated
 				if(event->eventState == CTimerd::TIMERSTATE_HASFINISHED)
 				{
 					if((event->eventRepeat != CTimerd::TIMERREPEAT_ONCE) && (event->repeatCount != 1))
@@ -207,9 +208,10 @@ void* CTimerManager::timerThread(void *data)
 					timerManager->m_saveEvents = true;
 				}
 				
-				if(event->eventState == CTimerd::TIMERSTATE_TERMINATED)	// event is terminated, so delete it
+				// delete terminated event
+				if(event->eventState == CTimerd::TIMERSTATE_TERMINATED)
 				{
-					dprintf(DEBUG_INFO, "CTimerManager::timerThread: deleting event\n");
+					dprintf(DEBUG_NORMAL, "CTimerManager::timerThread: deleting event\n");
 					
 					delete pos->second;			// delete event
 					timerManager->events.erase(pos++);	// remove from list
@@ -230,9 +232,9 @@ void* CTimerManager::timerThread(void *data)
 			
 			pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
 
-			wait.tv_sec = (((time(NULL) / sleeptime) * sleeptime) + sleeptime);
-			wait.tv_nsec = 0;
-			pthread_cond_timedwait(&dummy_cond, &dummy_mutex, &wait);
+//			wait.tv_sec = (((time(NULL) / sleeptime) * sleeptime) + sleeptime);
+//			wait.tv_nsec = 0;
+//			pthread_cond_timedwait(&dummy_cond, &dummy_mutex, &wait);
 		}
 	}
 	
@@ -260,7 +262,7 @@ CTimerEvent * CTimerManager::getNextEvent()
 	return erg;
 }
 
-int CTimerManager::addEvent(CTimerEvent* evt, bool save)
+int CTimerManager::addEvent(CTimerEvent *evt, bool save)
 {
 	dprintf(DEBUG_NORMAL, "CTimerManager::addEvent\n");
 	
@@ -288,8 +290,9 @@ bool CTimerManager::removeEvent(int leventID)
 	
 	if(events.find(leventID) != events.end()) // if i have a event with this id
 	{
+		// stop if running and has stoptime
 		if( (events[leventID]->eventState == CTimerd::TIMERSTATE_ISRUNNING) && (events[leventID]->stopTime > 0) )
-			events[leventID]->stopEvent();	// if event is running an has stopTime 
+			events[leventID]->stopEvent();
 
 		events[leventID]->eventState = CTimerd::TIMERSTATE_TERMINATED;	// set the state to terminated
 
@@ -297,6 +300,7 @@ bool CTimerManager::removeEvent(int leventID)
 	}
 	else
 		res = false;
+		
 	pthread_mutex_unlock(&tm_eventsMutex);
 	
 	return res;
@@ -313,6 +317,7 @@ bool CTimerManager::stopEvent(int leventID)
 	{
 		if( (events[leventID]->eventState == CTimerd::TIMERSTATE_ISRUNNING) && (events[leventID]->stopTime > 0) )
 			events[leventID]->stopEvent();	// if event is running an has stopTime 
+
 		events[leventID]->eventState = CTimerd::TIMERSTATE_HASFINISHED;		// set the state to finished
 		res = true;	// so timerthread will do the rest for us
 	}
@@ -325,7 +330,7 @@ bool CTimerManager::stopEvent(int leventID)
 
 bool CTimerManager::listEvents(CTimerEventMap &Events)
 {
-	dprintf(DEBUG_NORMAL, "CTimerManager::listEvents\n");
+	dprintf(DEBUG_DEBUG, "CTimerManager::listEvents\n");
 	
 	if(!&Events)
 		return false;
@@ -1252,7 +1257,7 @@ void CTimerEvent_Record::getEpgId()
 
 void CTimerEvent_Record::Refresh()
 {
-	dprintf(DEBUG_NORMAL, "CTimerEvent_Record::Refresh\n");
+//	dprintf(DEBUG_NORMAL, "CTimerEvent_Record::Refresh\n");
 	
 	if (eventInfo.epgID == 0)
 		getEpgId();

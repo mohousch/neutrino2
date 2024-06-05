@@ -113,6 +113,7 @@ class EventList
 	public:
 		EventList();
 		~EventList();
+		
 		int exec(const t_channel_id channel_id, const std::string& channelname); // UTF-8
 };
 

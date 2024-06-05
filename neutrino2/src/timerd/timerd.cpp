@@ -525,11 +525,12 @@ void CTimerd::getTimer(CTimerd::responseGetTimer &timer, unsigned timerID)
 
 void CTimerd::getTimerList( CTimerd::TimerList &timerlist)
 {
-	dprintf(DEBUG_NORMAL, "CTimerd::getTimerList\n");
+	dprintf(DEBUG_DEBUG, "CTimerd::getTimerList\n");
 	
 	CTimerEventMap events;
 	
 	timerlist.clear();
+	events.clear();
 	
 	if(CTimerManager::getInstance()->listEvents(events))
 	{

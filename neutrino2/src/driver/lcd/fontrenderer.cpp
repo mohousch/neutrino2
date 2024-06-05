@@ -201,7 +201,7 @@ LcdFont::LcdFont(CTFTLCD *fb, LcdFontRenderClass *render, FTC_FaceID faceid, int
 #endif
 {
 	framebuffer = fb;
-	renderer=render;
+	renderer = render;
 #ifdef FT_NEW_CACHE_API
 	font.face_id = faceid;
 	font.width  = isize;

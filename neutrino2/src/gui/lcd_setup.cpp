@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 
-	$id: lcd_setup.cpp 2016.01.02 21:24:30 mohousch $
+	$id: lcd_setup.cpp 05062024 mohousch $
 	
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	and some other guys
@@ -58,7 +58,7 @@ const keyval LCDMENU_STATUSLINE_OPTIONS[LCDMENU_STATUSLINE_OPTION_COUNT] =
 	{ 3, _("volume / playtime / audio") }
 };
 
-#if defined (ENABLE_LCD)
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 #define LCDMENU_EPG_OPTION_COUNT 6
 const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
 {
@@ -69,7 +69,7 @@ const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
 	{ 11, _("channel (short) / title") },
 	{ 15, _("channel (short) / sep.-line / title") }
 };
-#else
+#else // 4digits / vfd
 #define LCDMENU_EPG_OPTION_COUNT 2
 const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
 {
@@ -169,7 +169,7 @@ void CLCDSettings::showMenu()
 	CLCDControler * lcdsliders = new CLCDControler(_("Display settings"));
 	
 	// LCD
-#if defined (ENABLE_LCD)
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// led_power
 	lcdSettings->addItem(new CMenuOptionChooser(_("LED-Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier));
 	
@@ -184,9 +184,6 @@ void CLCDSettings::showMenu()
 
 	//align
 	lcdSettings->addItem(new CMenuOptionChooser(_("LCD EPG Align"), &g_settings.lcd_epgalign, LCDMENU_EPGALIGN_OPTIONS, LCDMENU_EPGALIGN_OPTION_COUNT, true));
-
-	//dump to png
-	//lcdSettings->addItem(new CMenuOptionChooser(_("output to PNG"), &g_settings.lcd_dump_png, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 	
 	// dimm-time
 	CStringInput * dim_time = new CStringInput(_("Dim timeout"), g_settings.lcd_setting_dim_time, 3, NULL, NULL, "0123456789 ");
@@ -200,7 +197,7 @@ void CLCDSettings::showMenu()
 	
 	// lcdcontroller
 	lcdSettings->addItem(new CMenuForwarder(_("Contrast / Brightness"), true, NULL, lcdsliders));
-#else
+#else // 4digits / vfd
 	// lcd_power
 #if defined (PLATFORM_GIGABLUE)	
 	lcdSettings->addItem(new CMenuOptionChooser(_("LED_Power"), &g_settings.lcd_power, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, lcdnotifier));
@@ -247,5 +244,4 @@ bool CLCDNotifier::changeNotify(const std::string&, void * Data)
 
 	return true;
 }
-
 

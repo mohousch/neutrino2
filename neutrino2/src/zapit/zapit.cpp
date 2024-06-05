@@ -1905,7 +1905,7 @@ void CZapit::sendRecordSubPIDs(SubPIDList &subpids)
 	}
 }
 
-////
+//
 void CZapit::sendAPIDs(t_channel_id chid, APIDList &apids)
 {
 	CZapitChannel * channel = findChannelByChannelID(chid);
@@ -2013,7 +2013,6 @@ void CZapit::sendBouquetChannels(BouquetChannelList &Bchannels, const unsigned i
 }
 
 //// bouquetsManager
-// CBouquetManager
 void CZapit::writeBouquetHeader(FILE * bouq_fd, uint32_t i, const char * bouquetName)
 {
 	fprintf(bouq_fd, "\t<Bouquet name=\"%s\" hidden=\"%d\" locked=\"%d\">\n", bouquetName, Bouquets[i]->bHidden ? 1 : 0, Bouquets[i]->bLocked ? 1 : 0);
@@ -2131,7 +2130,6 @@ void CZapit::saveZapitUBouquets(void)
 	chmod(UBOUQUETS_XML, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 }
 
-//
 void CZapit::sortBouquets(void)
 {
 	sort(Bouquets.begin(), Bouquets.end(), CmpBouquetByChName());
@@ -2266,7 +2264,6 @@ void CZapit::makeBouquetfromCurrentservices(const xmlNodePtr root)
 	}
 }
 
-//
 void CZapit::parseWebTVBouquet(std::string &filename)
 {
 	int cnt = 0;	
@@ -2548,8 +2545,6 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 						description = "stream";
 						std::string bqName = "WEBTV";
 						
-						//CZapitBouquet* gBouquet = pBouquet;
-						
 						if (!group.empty())
 						{
 							bqName = group;
@@ -2651,7 +2646,6 @@ void CZapit::loadWebTVBouquets(const std::string &dirname)
 	free(namelist);
 }
 
-//
 void CZapit::loadBouquets(bool loadCurrentBouquet)
 {
 	dprintf(DEBUG_NORMAL, "CZapit::loadBouquets:\n");
@@ -2749,7 +2743,6 @@ void CZapit::makeRemainingChannelsBouquets(void)
 	}
 }
 
-//
 CZapitBouquet * CZapit::addBouquet(const std::string& name, bool ub, bool webtvb)
 {
 	CZapitBouquet * newBouquet = new CZapitBouquet(name);
@@ -2773,7 +2766,6 @@ CZapitBouquet * CZapit::addBouquet(const std::string& name, bool ub, bool webtvb
 	return newBouquet;
 }
 
-////
 CZapitBouquet *CZapit::addBouquet(const std::string &name, BouquetList &list, bool ub, bool webtvb)
 {
 	CZapitBouquet * newBouquet = new CZapitBouquet(name);
@@ -2797,8 +2789,7 @@ CZapitBouquet *CZapit::addBouquet(const std::string &name, BouquetList &list, bo
 	return newBouquet;
 }
 
-//
-CZapitBouquet* CZapit::addBouquetIfNotExist(const std::string& name, bool ub, bool webtvb)
+CZapitBouquet* CZapit::addBouquetIfNotExist(const std::string &name, bool ub, bool webtvb)
 {
 	CZapitBouquet* bouquet = NULL;
 
@@ -2812,8 +2803,7 @@ CZapitBouquet* CZapit::addBouquetIfNotExist(const std::string& name, bool ub, bo
 	return bouquet;
 }
 
-//
-CZapitBouquet* CZapit::addBouquetIfNotExist(const std::string& name, BouquetList &list, bool ub, bool webtvb)
+CZapitBouquet* CZapit::addBouquetIfNotExist(const std::string &name, BouquetList &list, bool ub, bool webtvb)
 {
 	CZapitBouquet* bouquet = NULL;
 
@@ -2847,8 +2837,6 @@ void CZapit::deleteBouquet(const CZapitBouquet* bouquet)
 	}
 }
 
-// -- Find Bouquet-Name, if BQ exists   (2002-04-02 rasc)
-// -- Return: Bouqet-ID (found: 0..n)  or -1 (Bouquet does not exist)
 int CZapit::existsBouquet(const char * const name)
 {
 	for (unsigned int i = 0; i < Bouquets.size(); i++) 
@@ -2860,7 +2848,6 @@ int CZapit::existsBouquet(const char * const name)
 	return -1;
 }
 
-////
 int CZapit::existsBouquet(const char * const name, BouquetList &list)
 {
 	for (unsigned int i = 0; i < list.size(); i++) 
@@ -2872,7 +2859,6 @@ int CZapit::existsBouquet(const char * const name, BouquetList &list)
 	return -1;
 }
 
-//
 bool CZapit::existsChannelInBouquet( unsigned int bq_id, const t_channel_id channel_id)
 {
 	bool status = false;
@@ -2892,12 +2878,14 @@ bool CZapit::existsChannelInBouquet( unsigned int bq_id, const t_channel_id chan
 
 void CZapit::moveBouquet(const unsigned int oldId, const unsigned int newId)
 {
-	if ((oldId < Bouquets.size()) && (newId < Bouquets.size())) 
+	dprintf(DEBUG_NORMAL, "CZapit::moveBouquet\n");
+	
+	if ((oldId < Bouquets.size()) && (newId < Bouquets.size()) && (newId > oldId)) // FIXME:
 	{
 		BouquetList::iterator it = Bouquets.begin();
 
 		advance(it, oldId);
-		CZapitBouquet* tmp = *it;
+		CZapitBouquet *tmp = *it;
 		Bouquets.erase(it);
 
 		advance(it, newId - oldId);
@@ -2905,9 +2893,10 @@ void CZapit::moveBouquet(const unsigned int oldId, const unsigned int newId)
 	}
 }
 
-////
 void CZapit::renameBouquet(const unsigned int bouquet, const char * const newName)
 {
+	dprintf(DEBUG_NORMAL, "CZapit::renameBouquet\n");
+	
 	if (bouquet < Bouquets.size()) 
 	{
 		Bouquets[bouquet]->Name = newName;
@@ -2917,12 +2906,16 @@ void CZapit::renameBouquet(const unsigned int bouquet, const char * const newNam
 
 void CZapit::setBouquetLock(const unsigned int bouquet, const bool lock)
 {
+	dprintf(DEBUG_NORMAL, "CZapit::setBouquetLock\n");
+	
 	if (bouquet < Bouquets.size())
 		Bouquets[bouquet]->bLocked = lock;
 }
 
 void CZapit::setBouquetHidden(const unsigned int bouquet, const bool hidden)
 {
+	dprintf(DEBUG_NORMAL, "CZapit::setBouquetHidden\n");
+	
 	if (bouquet < Bouquets.size())
 		Bouquets[bouquet]->bHidden = hidden;
 }

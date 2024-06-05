@@ -269,7 +269,7 @@ void CMenuItem::refreshItemBox(int dy, fb_pixel_t col)
 	}
 }
 
-// CMenuOptionChooser
+//// CMenuOptionChooser
 CMenuOptionChooser::CMenuOptionChooser(const char * const Name, int* const OptionValue, const struct keyval *const Options, const unsigned Number_Of_Options, const bool Active, CChangeObserver* const Observ, const neutrino_msg_t DirectKey, const std::string & IconName, bool Pulldown)
 {
 	height = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 6;
@@ -496,6 +496,7 @@ int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
 			break;
 		}
 	}
+	
 
 	// paint icon (left)
 	int icon_w = 0;

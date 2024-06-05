@@ -59,11 +59,7 @@ function do_add_abort(){
 function do_add(){
 	if(document.add.bouquet_name.value != ""){
 		res=loadSyncURL("/control/addbouquet?name="+document.add.bouquet_name.value);
-		/*if(res != "Ok\r\n")
-			alert("Bouquet-Name existiert schon!");
-		else*/
-			gurl = "/Y_Boxcontrol_Bouquet_Editor_Main.yhtm#akt";
-//		gurl = "/Y_Boxcontrol_Bouquet_Editor_Main.yhtm?selected=" + bouquetnr+ "#akt";
+		gurl = "/Y_Boxcontrol_Bouquet_Editor_Main.yhtm#akt";
 		show_obj("add",false);
 		window.setTimeout('do_reload()',200);
 	}
@@ -84,14 +80,10 @@ function do_rename_abort(){
 function do_rename(){
 	if(document.rename.bouquet_name.value != ""){
 		res=loadSyncURL("/control/renamebouquet?selected="+document.rename.bouquetnr.value+"&nameto="+document.rename.bouquet_name.value);
-/*		if(res != "Ok\r\n")
-			alert("Bouquet-Name existiert schon!");
-		else{
-*/
-			gurl = "/Y_Boxcontrol_Bouquet_Editor_Main.yhtm?selected=" + document.rename.bouquetnr.value+ "#akt";
+
+		gurl = "/Y_Boxcontrol_Bouquet_Editor_Main.yhtm?selected=" + document.rename.bouquetnr.value+ "#akt";
 			show_obj("rename",false);
 			window.setTimeout('do_reload()',200);
-//		}
 	}
 	else
 		alert("{=L:bou.no_bouquet_name=}!");
