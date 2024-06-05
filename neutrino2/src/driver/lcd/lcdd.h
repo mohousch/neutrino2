@@ -558,7 +558,7 @@ class CLCD
 		             const char * fontfile3 = NULL, const char * fontname3 = NULL);
 		void setlcdparameter(int dimm, int contrast, int power, int inverse, int bias);
 		void displayUpdate();
-		void showTextScreen(const std::string & big, const std::string & small, int showmode, bool perform_wakeup, bool centered = false);
+		void showTextScreen(const std::string &big, const std::string &small, int showmode, bool perform_wakeup, bool centered = false);
 		void drawBanner();
 
 	public:

@@ -621,8 +621,77 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 {
 	if(!has_lcd) 
 		return;
+		
+#if defined (ENABLE_4DIGITS)
+	int len = big.length();
 	
-#ifdef ENABLE_LCD
+	if(len == 0)
+		return;
+
+	// replace chars
+	replace_all(big, "\x0d", "");
+    	replace_all(big, "\n\n", "\\N");
+	replace_all(big, "\n", "");
+    	replace_all(big, "\\N", "\n");
+    	replace_all(big, "ö", "oe");
+    	replace_all(big, "ä", "ae");
+    	replace_all(big, "ü", "ue");
+	replace_all(big, "Ö", "Oe");
+    	replace_all(big, "Ä", "Ae");
+    	replace_all(big, "Ü", "Ue");
+    	replace_all(big, "ß", "ss");
+    	
+    	if( write(fd, big.c_str(), len > 5? 5 : len ) < 0)
+		perror("write to vfd failed");
+#elif defined (ENABLE_VFD)
+#ifdef __sh__
+	int len = big.length();
+	
+	if(len == 0)
+		return;
+
+	// replace chars
+	replace_all(big, "\x0d", "");
+    	replace_all(big, "\n\n", "\\N");
+	replace_all(big, "\n", "");
+    	replace_all(big, "\\N", "\n");
+    	replace_all(big, "ö", "oe");
+    	replace_all(big, "ä", "ae");
+    	replace_all(big, "ü", "ue");
+	replace_all(big, "Ö", "Oe");
+    	replace_all(big, "Ä", "Ae");
+    	replace_all(big, "Ü", "Ue");
+    	replace_all(big, "ß", "ss");
+    	
+    	openDevice();
+	
+	if(write(fd , big.c_str(), len > 16? 16 : len ) < 0)
+		perror("write to vfd failed");
+	
+	closeDevice();
+#else
+	int len = big.length();
+	
+	if(len == 0)
+		return;
+
+	// replace chars
+	replace_all(big, "\x0d", "");
+    	replace_all(big, "\n\n", "\\N");
+	replace_all(big, "\n", "");
+    	replace_all(big, "\\N", "\n");
+    	replace_all(big, "ö", "oe");
+    	replace_all(big, "ä", "ae");
+    	replace_all(big, "ü", "ue");
+	replace_all(big, "Ö", "Oe");
+    	replace_all(big, "Ä", "Ae");
+    	replace_all(big, "Ü", "Ue");
+    	replace_all(big, "ß", "ss");
+    	
+	if( write(fd, big.c_str(), len > 12? 12 : len ) < 0)
+		perror("write to vfd failed");
+#endif	
+#elif defined (ENABLE_LCD)
 	unsigned int lcd_width  = display->xres;
 	unsigned int lcd_height = display->yres;
 
@@ -751,6 +820,8 @@ void CLCD::ShowText(const char *str)
 {
 	if (!has_lcd)
 		return;
+		
+	printf("CLCD::ShowText: %s\n", str? str : "null");
 		 
 #if defined (ENABLE_4DIGITS)
 	int len = strlen(str);
@@ -831,7 +902,7 @@ void CLCD::ShowText(const char *str)
 		perror("write to vfd failed");
 #endif
 #elif defined (ENABLE_LCD)
-	showServicename(std::string(str));
+	showTextScreen(std::string(str), "", 0, true, true);
 #endif
 }
 
