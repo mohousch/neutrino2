@@ -326,7 +326,7 @@ AC_ARG_WITH(boxtype,
 
 AC_ARG_WITH(boxmodel,
 	[  --with-boxmodel	valid for dgs: cuberevo,cuberevo_mini,cuberevo_mini2,cuberevo_mini_fta,cuberevo_250hd,cuberevo_2000hd,cuberevo_9500hd
-				valid for gigablue: gbsolo,gb800se,gb800ue,gb800seplus,gb800ueplus,gbquad,gbue4k
+				valid for gigablue: gbsolo,gb800se,gb800ue,gb800seplus,gb800ueplus,gbquad,gbue4k,gbultraue
 				valid for dreambox: dm500, dm500plus, dm600pvr, dm56x0, dm7000, dm7020, dm7025, dm500hd, dm7020hd, dm8000, dm800, dm800se, dm520, dm900, dm920
 				valid for xtrend: et4x00,et5x00,et6x00,et7x00, et8000,et8500,et9x00, et10000
 				valid for fulan: spark, spark7162
@@ -367,7 +367,7 @@ AC_ARG_WITH(boxmodel,
 				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
 			fi
 			;;
-		gb800solo|gb800se|gb800ue|gb800seplus|gb800ueplus|gbquad|gbue4k)
+		gb800solo|gb800se|gb800ue|gb800seplus|gb800ueplus|gbquad|gbue4k|gbultraue)
 			if test "$BOXTYPE" = "gigablue"; then
 				BOXMODEL="$withval"
 			else
@@ -695,6 +695,7 @@ AM_CONDITIONAL(BOXMODEL_GB800SEPLUS,test "$BOXMODEL" = "gb800seplus")
 AM_CONDITIONAL(BOXMODEL_GB800UEPLUS,test "$BOXMODEL" = "gb800ueplus")
 AM_CONDITIONAL(BOXMODEL_GBQUAD,test "$BOXMODEL" = "gbquad")
 AM_CONDITIONAL(BOXMODEL_GBUE4K,test "$BOXMODEL" = "gbue4k")
+AM_CONDITIONAL(BOXMODEL_GBULTRAUE,test "$BOXMODEL" = "gbultraue")
 
 AM_CONDITIONAL(BOXMODEL_DM500,test "$BOXMODEL" = "dm500")
 AM_CONDITIONAL(BOXMODEL_DM500PLUS,test "$BOXMODEL" = "dm500plus")
@@ -967,6 +968,8 @@ elif test "$BOXMODEL" = "gbquad"; then
 	AC_DEFINE(BOXMODEL_GBQUAD, 1, [building for gigablue quad])
 elif test "$BOXMODEL" = "gbue4k"; then
 	AC_DEFINE(BOXMODEL_GBUE4K, 1, [building for gigablue ue 4k])
+elif test "$BOXMODEL" = "gbultraue"; then
+	AC_DEFINE(BOXMODEL_GBULTRAUE, 1, [building for gigablue ultra ue])
 
 elif test "$BOXMODEL" = "dm500"; then
 	AC_DEFINE(BOXMODEL_DM500, 1, [building for dreambox 500])
