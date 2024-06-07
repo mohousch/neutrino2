@@ -210,6 +210,8 @@ void CWidget::paint()
 {
 	dprintf(DEBUG_NORMAL, "CWidget::paint (%s)\n", name.c_str());
 	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8);
+	
 	//
 	initFrames();
 

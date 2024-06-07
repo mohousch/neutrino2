@@ -107,6 +107,9 @@ void CNeutrinoApp::mainMenu(void)
 		//
 		widget->addCCItem(nMenu);
 	}
+	
+	////
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Main Menu"));
 			  
 	// tv modus
 	item = new CMenuForwarder(_("TV / Radio"), true, NULL, this, "tvradioswitch");

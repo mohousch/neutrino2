@@ -242,7 +242,7 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 #if !defined (PLATFORM_HYPERCUBE)
 	char sVolume[4];
 
-#ifdef BOXMODEL_GB800SE
+#if defined (BOXMODEL_GB800SE) || defined (BOXMODEL_GBULTRAUE)
 	sprintf(sVolume, "%d", volume);
 #else
 	sprintf(sVolume, "%d", _left);

@@ -3204,7 +3204,7 @@ int CZapit::startPlayBack(CZapitChannel * thisChannel)
 			if(audioDecoder)
 			{			
 #if !defined (__sh__)		
-				audioDecoder->Resume();
+//				audioDecoder->Resume();
 				audioDecoder->Stop();
 #endif				  
 				audioDecoder->Start();
@@ -3261,7 +3261,7 @@ int CZapit::startPlayBack(CZapitChannel * thisChannel)
 			if(videoDecoder)
 			{
 #if !defined (__sh__)
-				videoDecoder->Resume();
+//				videoDecoder->Resume();
 				videoDecoder->Stop();
 #endif				  			
 				videoDecoder->Start();	
@@ -3367,8 +3367,8 @@ void CZapit::continuePlayBack(void)
 		playback->SetSpeed(1);
 	else
 	{
-		audioDecoder->Resume();
-		videoDecoder->Resume();
+//		audioDecoder->Resume();
+//		videoDecoder->Resume();
 	}
 }
 
