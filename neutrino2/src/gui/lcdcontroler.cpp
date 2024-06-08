@@ -274,7 +274,7 @@ void CLCDControler::paint()
 {
 	dprintf(DEBUG_NORMAL, "CLCDControler::paint\n");
 
-	CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, name.c_str());
 	
 	// main window
 	mainWindow->setColor(COL_MENUCONTENT_PLUS_0);

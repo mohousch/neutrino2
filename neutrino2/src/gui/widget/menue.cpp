@@ -577,7 +577,7 @@ void CMenuWidget::paint()
 {
 	dprintf(DEBUG_INFO, "CMenuWidget::paint: (%s)\n", l_name.c_str());
 
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8);
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, l_name.c_str());
 	
 	//
 	paintHead();

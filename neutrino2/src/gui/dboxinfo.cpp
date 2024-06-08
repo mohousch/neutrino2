@@ -133,6 +133,8 @@ int CDBoxInfoWidget::exec(CMenuTarget * parent, const std::string& actionKey)
 void CDBoxInfoWidget::hide()
 {
 	dprintf(DEBUG_NORMAL, "CDBoxInfoWidget::hide:\n");
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
 }
 
 int CDBoxInfoWidget::showInfo()
@@ -164,6 +166,8 @@ int CDBoxInfoWidget::showInfo()
 		dboxInfoWidget->addCCItem(head);
 
 	}
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Box Info"));
 	
 	int yPos = Box.iY + (head? head->getWindowsPos().iHeight : 0);
 

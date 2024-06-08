@@ -166,6 +166,8 @@ void CGeneralSettings::showMenu()
 		widget->addCCItem(miscSettingsGeneral);
 	}
 	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Misc settings"));
+	
 	// intros
 	miscSettingsGeneral->addItem(new CMenuForwarder(_("back")));
 	miscSettingsGeneral->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
@@ -546,7 +548,6 @@ void CChannelListSettings::showMenu()
 		//
 		miscSettingsChannelList->enablePaintHead();
 		miscSettingsChannelList->setTitle(_("Channellist settings"), NEUTRINO_ICON_CHANNELLIST);
-//		miscSettingsChannelList->setHeadLine(true, true);
 
 		//
 		miscSettingsChannelList->enablePaintFoot();
@@ -554,11 +555,12 @@ void CChannelListSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		miscSettingsChannelList->setFootButtons(&btn);
-//		miscSettingsChannelList->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(miscSettingsChannelList);
 	}
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Channellist settings"));
 	
 	// intros
 	miscSettingsChannelList->addItem(new CMenuForwarder(_("back")));
@@ -737,6 +739,8 @@ void CEPGSettings::showMenu()
 		//
 		widget->addCCItem(miscSettingsEPG);
 	}
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("EPG settings")); 
 	
 	// intros
 	miscSettingsEPG->addItem(new CMenuForwarder(_("back")));
@@ -980,7 +984,6 @@ void CFileBrowserSettings::showMenu()
 		//
 		miscSettingsFileBrowser->enablePaintHead();
 		miscSettingsFileBrowser->setTitle(_("Filebrowser settings"), NEUTRINO_ICON_FILEBROWSER);
-//		miscSettingsFileBrowser->setHeadLine(true, true);
 
 		//
 		miscSettingsFileBrowser->enablePaintFoot();
@@ -988,11 +991,12 @@ void CFileBrowserSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		miscSettingsFileBrowser->setFootButtons(&btn);
-//		miscSettingsFileBrowser->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(miscSettingsFileBrowser);
 	}
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Filebrowser settings"));
 	
 	// intros
 	miscSettingsFileBrowser->addItem(new CMenuForwarder(_("back")));

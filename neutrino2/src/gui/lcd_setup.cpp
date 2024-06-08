@@ -157,6 +157,8 @@ void CLCDSettings::showMenu()
 		widget->addCCItem(lcdSettings);
 	}
 	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Display settings"));
+	
 	// intros
 	lcdSettings->addItem(new CMenuForwarder(_("back")));
 	lcdSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );

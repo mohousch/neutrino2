@@ -3053,10 +3053,8 @@ void CNeutrinoApp::selectNVOD()
 							
 			NVODSelector->enablePaintHead();
 			NVODSelector->setTitle(g_RemoteControl->are_subchannels ? _("Select Subservice") : _("Select starting-time"), NEUTRINO_ICON_VIDEO);
-			//NVODSelector->setHeadLine(true, true);
 
 			NVODSelector->enablePaintFoot();
-			//NVODSelector->setFootLine(true, true);
 								
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " " };
 								
@@ -3065,6 +3063,8 @@ void CNeutrinoApp::selectNVOD()
 			//
 			widget->addCCItem(NVODSelector);
 		}
+		
+		CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, g_RemoteControl->are_subchannels ? _("Select Subservice") : _("Select starting-time"));
 
 		//
                 if(getNVODMenu(NVODSelector))
@@ -4821,7 +4821,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	hdd = NULL;
 	
 	// init nvod changer
-	NVODChanger = new CNVODChangeExec;
+	NVODChanger = new CNVODChangeExec();
 	
 	// init rclock
 	rcLock = new CRCLock();

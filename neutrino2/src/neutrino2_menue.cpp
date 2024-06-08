@@ -108,7 +108,7 @@ void CNeutrinoApp::mainMenu(void)
 		widget->addCCItem(nMenu);
 	}
 	
-	////
+	//
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Main Menu"));
 			  
 	// tv modus
@@ -387,7 +387,10 @@ bool CNeutrinoApp::showUserMenu(int button)
 		
 		//
 		widget->addCCItem(menu);
-	}	
+	}
+	
+	//
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, txt.c_str());	
 
 	// go through any postition number
 	for(int pos = 0; pos < SNeutrinoSettings::ITEM_MAX ; pos++) 

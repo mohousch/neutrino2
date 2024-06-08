@@ -260,7 +260,7 @@ int CBouquetList::show(bool customMode)
 	neutrino_msg_data_t data;
 	int res = -1;
 	
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8);
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, name.c_str());
 	
 	//
 	paint();
@@ -469,11 +469,9 @@ void CBouquetList::paint()
 		
 		//
 		listBox->enablePaintHead();
-//		listBox->setHeadLine(true, true);
 		
 		//
 		listBox->enablePaintFoot();
-//		listBox->setFootLine(true, true);
 		
 		bqWidget->name = "bouquetlist";
 		bqWidget->addCCItem(listBox);

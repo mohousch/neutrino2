@@ -97,6 +97,8 @@ int CEPGMenuHandler::doMenu()
 		//
 		widget->addCCItem(redMenu);
 	}
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("EPG / Timer"));
 		
 	// eventlist
 	redMenu->addItem(new CMenuForwarder(_("Eventlist current programm"), true, NULL, new CEventListHandler(), "", CRCInput::RC_red, NULL, NEUTRINO_ICON_MENUITEM_SLEEPTIMER));

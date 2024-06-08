@@ -101,6 +101,8 @@ void CMediaPlayerMenu::showMenu()
 		//
 		widget->addCCItem(mediaPlayer);
 	}
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Media Player"));
 
 	//
 	mediaPlayer->integratePlugins(CPlugins::I_TYPE_MULTIMEDIA);

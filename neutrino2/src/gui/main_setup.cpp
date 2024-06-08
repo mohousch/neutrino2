@@ -118,6 +118,8 @@ void CMainSettingsMenu::showMenu(void)
 		//
 		widget->addCCItem(mainSettings);
 	}
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Settings"));
 
 	// video settings
 	mainSettings->addItem(new CMenuForwarder(_("Video settings"), true, NULL, new CVideoSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_VIDEOSETTINGS));
