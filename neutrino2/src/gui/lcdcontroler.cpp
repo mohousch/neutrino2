@@ -43,10 +43,14 @@
 
 #include <system/debug.h>
 
-#if defined(ENABLE_LCD) && (defined(PLATFORM_DREAMBOX) || defined(PLATFORM_GIGABLUE) || defined(PLATFORM_VUPLUS))
-#define BRIGHTNESSFACTOR 2.55 // 0 - 255
+
+#define BRIGHTNESSFACTOR 	2.55 	// 0 - 255
+#define CONTRASTFACTOR		63	// 0 - 
+
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
+#define NUM_LCD_SLIDERS		3
 #else
-#define BRIGHTNESSFACTOR 0.07 // 0 - 7
+#define NUM_LCD_SLIDERS		2
 #endif
 
 
@@ -62,20 +66,22 @@ CLCDControler::CLCDControler(const char *const Name)
 	name = Name? Name : "";
 
 	width = MENU_WIDTH;
-	height = hheight+ mheight*3 + mheight/2;
+	height = hheight+ mheight*4 + mheight/2;
 	x = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - width) >> 1);
 	y = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - height)>> 1);
 
 	mainWindow = new CCWindow(x, y, width, height + 10);
 
+	contrast = CLCD::getInstance()->getContrast();
 	brightness = CLCD::getInstance()->getBrightness();
 	brightnessstandby = CLCD::getInstance()->getBrightnessStandby();
 }
 
-void CLCDControler::setVfd()
+void CLCDControler::setLCD()
 {
 	CLCD::getInstance()->setBrightness(brightness);
 	CLCD::getInstance()->setBrightnessStandby(brightnessstandby);
+	CLCD::getInstance()->setContrast(contrast);
 }
 
 int CLCDControler::exec(CMenuTarget *parent, const std::string &)
@@ -87,17 +93,20 @@ int CLCDControler::exec(CMenuTarget *parent, const std::string &)
 
 	int selected;
 	int res = CMenuTarget::RETURN_REPAINT;
+	
+	unsigned int contrast_alt;
 	unsigned int brightness_alt;
 	unsigned int brightnessstandby_alt;
 
 	if (parent)
 		parent->hide();
 	
+	contrast_alt = CLCD::getInstance()->getContrast();
 	brightness_alt = CLCD::getInstance()->getBrightness();
 	brightnessstandby_alt = CLCD::getInstance()->getBrightnessStandby();
 	selected = 0;
 
-	setVfd();
+	setLCD();
 	paint();
 	frameBuffer->blit();
 
@@ -114,28 +123,33 @@ int CLCDControler::exec(CMenuTarget *parent, const std::string &)
 		switch ( msg )
 		{
 			case CRCInput::RC_down:
-			if(selected < 2) // max entries
+			if(selected < NUM_LCD_SLIDERS) // max entries
 			{
 				paintSlider(x + BORDER_LEFT, y + hheight, brightness, BRIGHTNESSFACTOR, _("normal Brightness"), false);
 				paintSlider(x + BORDER_LEFT, y + hheight + mheight, brightnessstandby, BRIGHTNESSFACTOR, _("Standby Brightness"), false);
+				paintSlider(x + BORDER_LEFT, y + hheight + mheight*2, contrast, CONTRASTFACTOR, _("Contrast"), false);
 				selected++;
 				
 				switch (selected) 
 				{
 					case 0:
-						paintSlider(x + BORDER_LEFT, y+ hheight, brightness, BRIGHTNESSFACTOR, _("normal Brightness"), true);
+						paintSlider(x + BORDER_LEFT, y + hheight, brightness, BRIGHTNESSFACTOR, _("normal Brightness"), true);
 						break;
 						
 					case 1:
-						paintSlider(x + BORDER_LEFT, y+ hheight+ mheight, brightnessstandby, BRIGHTNESSFACTOR, _("Standby Brightness"), true);
+						paintSlider(x + BORDER_LEFT, y + hheight + mheight, brightnessstandby, BRIGHTNESSFACTOR, _("Standby Brightness"), true);
 
 						CLCD::getInstance()->setMode(CLCD::MODE_STANDBY);
 						break;
 						
 					case 2:
-						frameBuffer->paintBoxRel(x, y + hheight + mheight*2 + mheight/2, width, mheight, COL_MENUCONTENTSELECTED_PLUS_0);
+						paintSlider(x + BORDER_LEFT, y + hheight + mheight*2, contrast, CONTRASTFACTOR, _("Contrast"), true);
+						break;
+						
+					case 3:
+						frameBuffer->paintBoxRel(x, y + hheight + mheight*3 + mheight/2, width, mheight, COL_MENUCONTENTSELECTED_PLUS_0);
 
-						g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + BORDER_LEFT, y + hheight + mheight*3 + mheight/2, width, _("Reset to defaults"), COL_MENUCONTENTSELECTED_TEXT_PLUS_0, 0, true); // UTF-8
+						g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + BORDER_LEFT, y + hheight + mheight*4 + mheight/2, width, _("Reset to defaults"), COL_MENUCONTENTSELECTED_TEXT_PLUS_0, 0, true); // UTF-8
 						break;
 				}
 			}
@@ -147,11 +161,12 @@ int CLCDControler::exec(CMenuTarget *parent, const std::string &)
 				paintSlider(x + BORDER_LEFT, y + hheight, brightness, BRIGHTNESSFACTOR, _("normal Brightness"), false);
 
 				paintSlider(x + BORDER_LEFT, y + hheight + mheight, brightnessstandby, BRIGHTNESSFACTOR, _("Standby Brightness"), false);
+				paintSlider(x + BORDER_LEFT, y + hheight + mheight*2, contrast, CONTRASTFACTOR, _("Contrast"), false);
 				selected--;
 				switch (selected) 
 				{
 					case 0:
-						paintSlider(x + BORDER_LEFT, y+ hheight, brightness, BRIGHTNESSFACTOR, _("normal Brightness"), true);
+						paintSlider(x + BORDER_LEFT, y + hheight, brightness, BRIGHTNESSFACTOR, _("normal Brightness"), true);
 
 						CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
 						break;
@@ -160,13 +175,17 @@ int CLCDControler::exec(CMenuTarget *parent, const std::string &)
 						paintSlider(x + BORDER_LEFT, y + hheight + mheight, brightnessstandby, BRIGHTNESSFACTOR, _("Standby Brightness"), true);
 
 						CLCD::getInstance()->setMode(CLCD::MODE_STANDBY);
-
-						frameBuffer->paintBoxRel(x, y + hheight + mheight*2 + mheight/2, width, mheight, COL_MENUCONTENT_PLUS_0);
-
-						g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + BORDER_LEFT, y + hheight + mheight*3 + mheight/2, width, _("Reset to defaults"), COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
-						break;
 						
 					case 2:
+						paintSlider(x + BORDER_LEFT, y + hheight + mheight*2, contrast, CONTRASTFACTOR, _("Contrast"), true);
+
+						CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
+						break;
+						
+					case 3:
+						frameBuffer->paintBoxRel(x, y + hheight + mheight*3 + mheight/2, width, mheight, COL_MENUCONTENT_PLUS_0);
+
+						g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + BORDER_LEFT, y + hheight + mheight*4 + mheight/2, width, _("Reset to defaults"), COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 						break;
 				}
 			}
@@ -181,7 +200,7 @@ int CLCDControler::exec(CMenuTarget *parent, const std::string &)
 							brightness ++;
 							
 							paintSlider(x + BORDER_LEFT, y + hheight, brightness, BRIGHTNESSFACTOR, _("normal Brightness"), true);
-							setVfd();
+							setLCD();
 						}
 						break;
 						
@@ -191,7 +210,17 @@ int CLCDControler::exec(CMenuTarget *parent, const std::string &)
 							brightnessstandby ++;
 							
 							paintSlider(x + BORDER_LEFT, y + hheight + mheight, brightnessstandby, BRIGHTNESSFACTOR, _("Standby Brightness"), true);
-							setVfd();
+							setLCD();
+						}
+						break;
+						
+					case 2:
+						if (brightnessstandby < DEFAULT_LCD_CONTRAST) 
+						{
+							contrast ++;
+							
+							paintSlider(x + BORDER_LEFT, y + hheight + mheight*2, contrast, CONTRASTFACTOR, _("Contrast"), true);
+							setLCD();
 						}
 						break;
 				}
@@ -206,7 +235,7 @@ int CLCDControler::exec(CMenuTarget *parent, const std::string &)
 							brightness--;
 							
 							paintSlider(x + BORDER_LEFT, y + hheight, brightness, BRIGHTNESSFACTOR, _("normal Brightness"), true);
-							setVfd();
+							setLCD();
 						}
 						break;
 						
@@ -216,7 +245,17 @@ int CLCDControler::exec(CMenuTarget *parent, const std::string &)
 							brightnessstandby--;
 							
 							paintSlider(x + BORDER_LEFT, y + hheight + mheight, brightnessstandby, BRIGHTNESSFACTOR, _("Standby Brightness"), true);
-							setVfd();
+							setLCD();
+						}
+						break;
+						
+					case 2:
+						if (contrast > 0) 
+						{
+							contrast--;
+							
+							paintSlider(x + BORDER_LEFT, y + hheight + mheight*2, contrast, CONTRASTFACTOR, _("Contrast"), true);
+							setLCD();
 						}
 						break;
 				}
@@ -228,17 +267,19 @@ int CLCDControler::exec(CMenuTarget *parent, const std::string &)
 
 				brightness = brightness_alt;
 				brightnessstandby = brightnessstandby_alt;
-				setVfd();
+				contrast = contrast_alt;
+				setLCD();
 				loop = false;
 				break;
 
 			case CRCInput::RC_ok:
-				if (selected == 2) 
+				if (selected == 3) 
 				{
 					brightness = DEFAULT_LCD_BRIGHTNESS;
 					brightnessstandby = DEFAULT_LCD_STANDBYBRIGHTNESS;
+					contrast = DEFAULT_LCD_CONTRAST;
 					selected = 0;
-					setVfd();
+					setLCD();
 					paint();
 					break;
 				}
@@ -290,9 +331,11 @@ void CLCDControler::paint()
 
 	paintSlider(x + BORDER_LEFT, y + hheight, brightness, BRIGHTNESSFACTOR, _("normal Brightness"), true);
 	paintSlider(x + BORDER_LEFT, y + hheight + mheight, brightnessstandby, BRIGHTNESSFACTOR, _("Standby Brightness"), false);
+	paintSlider(x + BORDER_LEFT, y + hheight + mheight*2, contrast, CONTRASTFACTOR, _("Contrast"), false);
 
-	frameBuffer->paintHLineRel(x + BORDER_LEFT, width - 20, y + hheight + mheight*2 + mheight/4, COL_MENUCONTENT_PLUS_3);
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + BORDER_LEFT, y + hheight + mheight*3 + mheight/2, width, _("Reset to defaults"), COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
+	frameBuffer->paintHLineRel(x + BORDER_LEFT, width - 20, y + hheight + mheight*3 + mheight/4, COL_MENUCONTENT_PLUS_3);
+	
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + BORDER_LEFT, y + hheight + mheight*4 + mheight/2, width, _("Reset to defaults"), COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 }
 
 void CLCDControler::paintSlider(int _x, int _y, unsigned int spos, float factor, const char* const text, bool selected)

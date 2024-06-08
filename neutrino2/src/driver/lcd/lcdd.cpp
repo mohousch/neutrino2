@@ -731,8 +731,10 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 				title = removeLeadingSpaces(title.substr(cname[namelines].length()));
 				namelines++;
 			} while (title.length() > 0 && namelines < maxnamelines);
+			
 			if (title.length() == 0)
 				break;
+				
 			dumb = !dumb;	// retry with dumb splitting;
 			if (!dumb)	// second retry -> get out;
 				break;
@@ -1050,7 +1052,7 @@ void CLCD::showTime(bool force)
 			// center ???
 			display->draw_fill_rect (lcd_width - 50 - 1, lcd_height - 12, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
 
-			fonts.time->RenderString((lcd_width - 4 - fonts.time->getRenderWidth(timestr))/2, (lcd_height - 1)/2, fonts.time->getRenderWidth(timestr), timestr, CLCDDisplay::PIXEL_ON);
+			fonts.time->RenderString((lcd_width - 4 - fonts.time->getRenderWidth(timestr))/2, (lcd_height - 1)/2, fonts.time->getRenderWidth(timestr) + 1, timestr, CLCDDisplay::PIXEL_ON);
 		}
 		else
 		{
@@ -1067,7 +1069,7 @@ void CLCD::showTime(bool force)
 
 			display->draw_fill_rect (lcd_width - 50 - 1, lcd_height - 12, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
 
-			fonts.time->RenderString(lcd_width - 4 - fonts.time->getRenderWidth(timestr), lcd_height - 1, 50, timestr, CLCDDisplay::PIXEL_ON);
+			fonts.time->RenderString(lcd_width - 4 - fonts.time->getRenderWidth(timestr) + 1, lcd_height - 1, 50, timestr, CLCDDisplay::PIXEL_ON);
 		}
 		
 		displayUpdate();
@@ -1088,7 +1090,6 @@ void CLCD::showRCLock(int duration)
 	// every second. Restoring the screen can cause a short travel to the past ;)
 	display->dump_screen(&curr_screen);
 	display->draw_fill_rect (-1, 10, display->xres, display->yres-12-2, CLCDDisplay::PIXEL_OFF);
-//	display->paintIcon(icon, 44, 25, false);
 	display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, display->yres - element[ELEMENT_SPEAKER].height);
 	wake_up();
 	displayUpdate();
@@ -1213,15 +1214,11 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 						is_ac3 = false;
 				}
 
-				//const char * icon;
+				//
 				if (is_ac3)
-					//icon = DATADIR "/lcdd/icons/dd.raw";
 					display->load_screen_element(&(element[ELEMENT_DOLBY]), 0, lcd_height-element[ELEMENT_SPEAKER].height);
 				else
-					//icon = DATADIR "/lcdd/icons/stereo.raw";
 					display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height);
-
-				//display->paintIcon(icon, left+width+5, 1, false);
 			}
 		}
 		else
@@ -1312,8 +1309,8 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 	unsigned int lcd_width  = display->xres;
 	unsigned int lcd_height = display->yres;
 	
-	display->draw_fill_rect(-1, 35+14*position, lcd_width, 35+14+14*position, CLCDDisplay::PIXEL_OFF);
-	fonts.menu->RenderString(0,35+11+14*position, lcd_width + 20, text, CLCDDisplay::PIXEL_INV, highlight, utf_encoded);
+	display->draw_fill_rect(-1, 35 + 14*position, lcd_width, 35 + 14 + 14*position, CLCDDisplay::PIXEL_OFF);
+	fonts.menu->RenderString(0, 35 + 11 + 14*position, lcd_width + 20, text, CLCDDisplay::PIXEL_INV, highlight, utf_encoded);
 #endif
 
 	wake_up();
@@ -1506,7 +1503,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
 				showTime(true);
 			
-			showclock = true;
+//			showclock = true;
 			break;
 
 		case MODE_AUDIO:
@@ -1539,14 +1536,14 @@ void CLCD::setMode(const MODES m, const char * const title)
 			break;
 			
 		case MODE_MOVIE:  		
-			showclock = true;
+//			showclock = true;
 			break;
 	}
 
 #elif defined (ENABLE_VFD)
 #ifdef __sh__
-	if(strlen(title))
-		ShowText((char *)title);
+//	if(strlen(title))
+//		ShowText((char *)title);
 		
 	switch (m) 
 	{
@@ -1568,7 +1565,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 			ShowDiskLevel();
 			ShowIcon(VFD_ICON_STANDBY, false);	
 #endif
-			showclock = true;
+//			showclock = true;
 			break;
 
 		case MODE_AUDIO:
@@ -1584,6 +1581,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 			ShowIcon(VFD_ICON_HD, false);
 			ShowIcon(VFD_ICON_DOLBY, false);
 			//showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
+			showclock = true;
 			break;
 		}
 
@@ -1622,8 +1620,8 @@ void CLCD::setMode(const MODES m, const char * const title)
 #endif
 							
 			showclock = true;
-			showTime(true);      	/* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
-						/* "showTime()" clears the whole lcd in MODE_STANDBY */
+			showTime(true);     /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
+					    /* "showTime()" clears the whole lcd in MODE_STANDBY */
 			break;
 		
 		case MODE_PIC:	  
@@ -1636,7 +1634,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 			
 		case MODE_MOVIE:  
 			ShowIcon(VFD_ICON_TV, false);			
-			showclock = true;
+//			showclock = true;
 			break;
 	}
 
@@ -1694,6 +1692,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 			setMovieAudio(movie_is_ac3);
 		}
 		
+		// time
 		showclock = true;
 		showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
 		break;
@@ -1709,6 +1708,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
 		break;
 	}
+	
 	case MODE_SCART:
 		display->clear_screen(); // clear lcd
 		drawBanner();
@@ -1719,6 +1719,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		showclock = true;
 		showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
 		break;
+		
 	case MODE_MENU_UTF8:
 		showclock = false;
 		display->clear_screen(); // clear lcd
@@ -1726,6 +1727,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		fonts.menutitle->RenderString(0, 28, display->xres + 20, title, CLCDDisplay::PIXEL_ON, 0, true); // UTF-8
 		displayUpdate();
 		break;
+		
 	case MODE_SHUTDOWN:
 		showclock = false;
 		display->clear_screen(); // clear lcd
@@ -1733,29 +1735,34 @@ void CLCD::setMode(const MODES m, const char * const title)
 		display->load_screen_element(&(element[ELEMENT_POWER]), (lcd_width-element[ELEMENT_POWER].width)/2, 12);
 		displayUpdate();
 		break;
+		
 	case MODE_STANDBY:
 		showclock = true;
 		showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
 		                 /* "showTime()" clears the whole lcd in MODE_STANDBY                         */
 		break;
 
+	////???
 	case MODE_FILEBROWSER:
 		showclock = true;
 		display->clear_screen(); // clear lcd
 		showFilelist();
 		break;
+		
 	case MODE_PROGRESSBAR:
 		showclock = false;
 		display->clear_screen(); // clear lcd
 		drawBanner();
 		showProgressBar();
 		break;
+		
 	case MODE_PROGRESSBAR2:
 		showclock = false;
 		display->clear_screen(); // clear lcd
 		drawBanner();
 		showProgressBar2();
 		break;
+		
 	case MODE_INFOBOX:
 		showclock = false;
 		showInfoBox();

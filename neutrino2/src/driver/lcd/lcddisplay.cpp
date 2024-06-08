@@ -170,7 +170,7 @@ void CLCDDisplay::setSize(int w, int h, int b)
 			surface_bypp = 4;
 			break;
 		default:
-			surface_bypp = (bpp+7)/8;
+			surface_bypp = (bpp + 7)/8;
 	}
 
 	surface_stride = xres*surface_bypp;
@@ -300,7 +300,7 @@ void CLCDDisplay::resume()
 	paused = 0;
 }
 
-void CLCDDisplay::convert_data ()
+void CLCDDisplay::convert_data()
 {
 #ifndef PLATFORM_GENERIC
 	unsigned int x, y, z;
@@ -473,7 +473,7 @@ void CLCDDisplay::surface_fill_rect(int area_left, int area_top, int area_right,
 	if (surface_bpp == 8)
 	{
 		for (int y = area_top; y < area_bottom; y++)
-		 	memset(((uint8_t*)surface_data)+y*surface_stride+area_left, color, area_width);
+		 	memset(((uint8_t*)surface_data) + y*surface_stride + area_left, color, area_width);
 	} 
 	else if (surface_bpp == 16)
 	{
@@ -617,7 +617,7 @@ void CLCDDisplay::draw_line(const int x1, const int y1, const int x2, const int 
 	}
 }
 
-void CLCDDisplay::draw_fill_rect(int left,int top,int right,int bottom,int state) 
+void CLCDDisplay::draw_fill_rect(int left, int top, int right, int bottom, int state) 
 {
 	int x,y;
 	
@@ -625,7 +625,7 @@ void CLCDDisplay::draw_fill_rect(int left,int top,int right,int bottom,int state
 	{  
 		for(y = top + 1;y < bottom;y++) 
 		{
-			draw_point(x,y,state);
+			draw_point(x, y, state);
 		}
 	}
 }
@@ -664,59 +664,6 @@ void CLCDDisplay::draw_polygon(int num_vertices, int *vertices, int state)
 		state);
 }
 
-struct rawHeader
-{
-	uint8_t width_lo;
-	uint8_t width_hi;
-	uint8_t height_lo;
-	uint8_t height_hi;
-	uint8_t transp;
-} __attribute__ ((packed));
-
-bool CLCDDisplay::paintIcon(std::string filename, int x, int y, bool invert)
-{
-	struct rawHeader header;
-	uint16_t         stride;
-	uint16_t         height;
-	unsigned char *  pixpos;
-
-	int _fd;
-	filename = iconBasePath + filename;
-
-	_fd = open(filename.c_str(), O_RDONLY );
-	
-	if (_fd == -1)
-	{
-		printf("\nerror while loading icon: %s\n\n", filename.c_str() );
-		return false;
-	}
-
-	read(_fd, &header, sizeof(struct rawHeader));
-
-	stride = ((header.width_hi << 8) | header.width_lo) >> 1;
-	height = (header.height_hi << 8) | header.height_lo;
-
-	unsigned char pixbuf[200];
-	while (height-- > 0)
-	{
-		read(fd, &pixbuf, stride);
-		pixpos = (unsigned char*) &pixbuf;
-		for (int count2 = 0; count2 < stride; count2++)
-		{
-			unsigned char compressed = *pixpos;
-
-			draw_point(x + (count2 << 1)    , y, ((((compressed & 0xf0) >> 4) != header.transp) ^ invert) ? PIXEL_ON : PIXEL_OFF);
-			draw_point(x + (count2 << 1) + 1, y, (( (compressed & 0x0f)       != header.transp) ^ invert) ? PIXEL_ON : PIXEL_OFF);
-
-			pixpos++;
-		}
-		y++;
-	}
-	
-	close(_fd);
-	return true;
-}
-
 void CLCDDisplay::clear_screen() 
 {
 	memset(_buffer, 0, raw_buffer_size);
@@ -731,9 +678,13 @@ void CLCDDisplay::load_screen_element(const raw_lcd_element_t * element, int lef
 {
 	unsigned int i;
 
-	if ((element->buffer) && (element->height <= yres-top))
-		for (i = 0; i < min(element->height, yres-top); i++)	
-			memmove(_buffer+((top+i) * xres)+left, element->buffer+(i * element->width), min(element->width, xres-left));
+	if ((element->buffer) && (element->height <= yres - top))
+	{
+		for (i = 0; i < min(element->height, yres - top); i++)
+		{
+			memmove(_buffer + ((top + i) * xres) + left, element->buffer + (i * element->width), min(element->width, xres - left));
+		}
+	}
 }
 
 void CLCDDisplay::load_screen(const raw_display_t * const screen) 
@@ -798,6 +749,7 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 						element->width = width;
 						element->height = height;
 						element->bpp = bit_depth;
+						
 						if (!element->buffer)
 						{
 							element->buffer_size = width*height;

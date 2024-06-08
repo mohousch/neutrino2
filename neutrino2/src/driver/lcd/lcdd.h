@@ -254,7 +254,7 @@ typedef enum
 
 ////
 #define VFDBRIGHTNESS         0xc0425a03
-#define VFDPWRLED             0xc0425a04 /* added by zeroone, also used in fp_control/global.h ; set PowerLed Brightness on HDBOX*/
+#define VFDPWRLED             0xc0425a04 
 #define VFDDRIVERINIT         0xc0425a08
 #define VFDICONDISPLAYONOFF   0xc0425a0a
 #define VFDDISPLAYWRITEONOFF  0xc0425a05

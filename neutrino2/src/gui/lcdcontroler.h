@@ -52,15 +52,14 @@ class CLCDControler : public CMenuTarget
 
 		CCWindow *mainWindow;
 
+		unsigned char contrast;
 		unsigned char brightness;
 		unsigned char brightnessstandby;
 
 		std::string name;
 
-//		CChangeObserver *observer;
-
 		void paint();
-		void setVfd();
+		void setLCD();
 		void paintSlider(int x, int y, unsigned int spos, float factor, const char *const text, bool selected);
 
 	public:

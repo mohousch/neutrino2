@@ -533,21 +533,16 @@ struct SNeutrinoSettings
 #define DEFAULT_TIMING_NUMERICZAP		3	
 
 // lcdd
-#if defined(PLATFORM_DREAMBOX) || defined(PLATFORM_GIGABLUE) || defined(PLATFORM_VUPLUS)
 #define DEFAULT_LCD_BRIGHTNESS			0xFF
 #define DEFAULT_LCD_STANDBYBRIGHTNESS		0xFF
-#else
-#define DEFAULT_LCD_BRIGHTNESS			0x07
-#define DEFAULT_LCD_STANDBYBRIGHTNESS		0x07
-#endif
-#define DEFAULT_LCD_CONTRAST			0x0F
+#define DEFAULT_LCD_CONTRAST			0xFF
 #define DEFAULT_LCD_POWER			0x01
 #define DEFAULT_LCD_INVERSE			0x00
 #define DEFAULT_LCD_AUTODIMM			0x00
 #define DEFAULT_LCD_SHOW_VOLUME			0x01
 #define DEFAULT_LCD_SCROLL_TEXT			0x00
 #define DEFAULT_LCD_EPGMODE			0x01	/* 0x1 = name 0x2 = epgtitle 0x4 = separator */
-#define DEFAULT_LCD_EPGALIGN			0x00
+#define DEFAULT_LCD_EPGALIGN			0x01    /* centered */
 #define DEFAULT_LCD_DUMP_PNG			0x00
 
 // corners (osd)

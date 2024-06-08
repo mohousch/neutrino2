@@ -108,18 +108,17 @@ class CLCDDisplay
 		void surface_fill_rect(int area_left, int area_top, int area_right, int area_bottom, int color);
 		void draw_point(const int x, const int y, const int state);
 		void draw_line(const int x1, const int y1, const int x2, const int y2, const int state);
-		void draw_fill_rect (int left,int top,int right,int bottom,int state);
-		void draw_rectangle (int left,int top, int right, int bottom, int linestate,int fillstate);
+		void draw_fill_rect(int left, int top, int right, int bottom, int state);
+		void draw_rectangle(int left, int top, int right, int bottom, int linestate, int fillstate);
 		void draw_polygon(int num_vertices, int *vertices, int state);
 		////
-		bool paintIcon(std::string filename, int x, int y, bool invert); // raw
-		void dump_screen(raw_display_t *screen);
 		void load_screen_element(const raw_lcd_element_t * element, int left, int top);
 		void load_screen(const raw_display_t * const screen);
-		bool dump_png_element(const char * const filename, raw_lcd_element_t * element);
-		bool dump_png(const char * const filename);
 		bool load_png_element(const char * const filename, raw_lcd_element_t * element);
 		bool load_png(const char * const filename);
+		void dump_screen(raw_display_t *screen);
+		bool dump_png_element(const char * const filename, raw_lcd_element_t * element);
+		bool dump_png(const char * const filename);
 		////
 		void setSize(int w, int h, int b);
 		int setLCDContrast(int contrast);
