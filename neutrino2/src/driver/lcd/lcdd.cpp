@@ -1043,12 +1043,14 @@ void CLCD::showTime(bool force)
 
 		if (mode == MODE_STANDBY)
 		{
+			strftime((char*) &timestr, 20, "%H:%M", t);
+			
 			display->clear_screen(); // clear lcd
 			
 			// center ???
 			display->draw_fill_rect (lcd_width - 50 - 1, lcd_height - 12, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
 
-			fonts.time->RenderString(lcd_width - 4 - fonts.time->getRenderWidth(timestr), lcd_height - 1, 50, timestr, CLCDDisplay::PIXEL_ON);
+			fonts.time->RenderString((lcd_width - 4 - fonts.time->getRenderWidth(timestr))/2, (lcd_height - 1)/2, fonts.time->getRenderWidth(timestr), timestr, CLCDDisplay::PIXEL_ON);
 		}
 		else
 		{
@@ -1391,23 +1393,26 @@ void CLCD::showAudioPlayMode(AUDIOMODES m)
 	{
 		case AUDIO_MODE_PLAY:
 			{
-				int x=3,y=53;
-				display->draw_line(x  ,y  ,x  ,y+8, CLCDDisplay::PIXEL_ON);
-				display->draw_line(x+1,y+1,x+1,y+7, CLCDDisplay::PIXEL_ON);
+				int x = 3,y = 53;
+				display->draw_line(x  ,y  ,x  ,y + 8, CLCDDisplay::PIXEL_ON);
+				display->draw_line(x + 1, y + 1, x + 1, y + 7, CLCDDisplay::PIXEL_ON);
 				display->draw_line(x+2,y+2,x+2,y+6, CLCDDisplay::PIXEL_ON);
 				display->draw_line(x+3,y+3,x+3,y+5, CLCDDisplay::PIXEL_ON);
 				display->draw_line(x+4,y+4,x+4,y+4, CLCDDisplay::PIXEL_ON);
 				break;
 			}
+			
 		case AUDIO_MODE_STOP:
 			display->draw_fill_rect (1, 53, 8 ,61, CLCDDisplay::PIXEL_ON);
 			break;
+			
 		case AUDIO_MODE_PAUSE:
 			display->draw_line(1,54,1,60, CLCDDisplay::PIXEL_ON);
 			display->draw_line(2,54,2,60, CLCDDisplay::PIXEL_ON);
 			display->draw_line(6,54,6,60, CLCDDisplay::PIXEL_ON);
 			display->draw_line(7,54,7,60, CLCDDisplay::PIXEL_ON);
 			break;
+			
 		case AUDIO_MODE_FF:
 			{
 				int x=2,y=55;
@@ -1419,6 +1424,7 @@ void CLCD::showAudioPlayMode(AUDIOMODES m)
 				display->draw_line(x+5 ,y+2 , x+5, y+2, CLCDDisplay::PIXEL_ON);
 			}
 			break;
+			
 		case AUDIO_MODE_REV:
 			{
 				int x=2,y=55;

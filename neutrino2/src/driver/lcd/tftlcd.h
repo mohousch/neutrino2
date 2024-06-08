@@ -77,8 +77,10 @@ class CTFTLCD
 		int setLCDBrightness(int brightness);
 		
 		//// paint methods
+		// surface
 		void draw_fill_rect (int left,int top,int right,int bottom,int state){};
 		void draw_point(const int x, const int y, const int state){};
+		// picture
 };
 
 #endif

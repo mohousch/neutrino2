@@ -14,7 +14,7 @@
 #include "neutrinoyparser.h"
 #include "controlapi.h"
 
-#ifdef ENABLE_LCDAPI
+#ifdef ENABLE_LCD
 #include "lcdapi.h"
 #endif
 
@@ -26,7 +26,7 @@ bool _initialize_iso639_map(void);
 //-------------------------------------------------------------------------
 class CNeutrinoAPI
 {
-#ifdef ENABLE_LCDAPI
+#ifdef ENABLE_LCD
 	CLCDAPI                 *LcdAPI;
 #endif	
 	// complete channellists

@@ -103,6 +103,7 @@ class CLCDDisplay
 		bool isAvailable();
 
 		void update();
+		void clear_screen();
 		////
 		void surface_fill_rect(int area_left, int area_top, int area_right, int area_bottom, int color);
 		void draw_point(const int x, const int y, const int state);
@@ -112,7 +113,6 @@ class CLCDDisplay
 		void draw_polygon(int num_vertices, int *vertices, int state);
 		////
 		bool paintIcon(std::string filename, int x, int y, bool invert); // raw
-		void clear_screen();
 		void dump_screen(raw_display_t *screen);
 		void load_screen_element(const raw_lcd_element_t * element, int left, int top);
 		void load_screen(const raw_display_t * const screen);

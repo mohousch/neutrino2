@@ -69,7 +69,7 @@ const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
 	{ CLCD::EPGMODE_CHANNEL_SHORT_TITLE, _("channel (short) / title") },
 	{ CLCD::EPGMODE_CHANNEL_SHORT_LINE_TITLE, _("channel (short) / sep.-line / title") }
 };
-#else // 4digits / vfd
+#elif defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 #define LCDMENU_EPG_OPTION_COUNT 2
 const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
 {
@@ -81,17 +81,17 @@ const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
 #define LCDMENU_EPGALIGN_OPTION_COUNT 2
 const keyval LCDMENU_EPGALIGN_OPTIONS[LCDMENU_EPGALIGN_OPTION_COUNT] =
 {
-	{ 0, _("left")   },
-	{ 1, _("center") }
+	{ CLCD::EPGALIGN_LEFT, _("left")   },
+	{ CLCD::EPGALIGN_CENTER, _("center") }
 };
 
 #define LCDMENU_LEDCOLOR_OPTION_COUNT 4
 const keyval LCDMENU_LEDCOLOR_OPTIONS[LCDMENU_LEDCOLOR_OPTION_COUNT] =
 {
-	{ 0, _("off") 	},
-	{ 1, _("blue") 	},
-	{ 2, _("red") 	},
-	{ 3, _("purple") },
+	{ CLCD::LEDCOLOR_OFF, _("off") 	},
+	{ CLCD::LEDCOLOR_BLUE, _("blue") 	},
+	{ CLCD::LEDCOLOR_RED, _("red") 	},
+	{ CLCD::LEDCOLOR_PURPLE, _("purple") },
 };
 
 //
@@ -172,7 +172,7 @@ void CLCDSettings::showMenu()
 	
 	// LCD
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
-	// led_power
+	// lcd_power
 	lcdSettings->addItem(new CMenuOptionChooser(_("LED-Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier));
 	
 	//option invert
@@ -199,7 +199,7 @@ void CLCDSettings::showMenu()
 	
 	// lcdcontroller
 	lcdSettings->addItem(new CMenuForwarder(_("Contrast / Brightness"), true, NULL, lcdsliders));
-#else // 4digits / vfd
+#elif defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 	// lcd_power
 #if defined (PLATFORM_GIGABLUE)	
 	lcdSettings->addItem(new CMenuOptionChooser(_("LED_Power"), &g_settings.lcd_power, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, lcdnotifier));

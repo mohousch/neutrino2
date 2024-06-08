@@ -473,12 +473,18 @@ class CLCD
 			AUDIO_MODE_REV
 		};
 
-		enum LEDS
+		enum LEDCOLOR
 		{
-			LED_OFF,
-			LED_BLUE,
-			LED_RED,
-			LED_PURPLE
+			LEDCOLOR_OFF,
+			LEDCOLOR_BLUE,
+			LEDCOLOR_RED,
+			LEDCOLOR_PURPLE
+		};
+		
+		enum EPGALIGN
+		{
+			EPGALIGN_LEFT,
+			EPGALIGN_CENTER
 		};
 		
 		enum EPGMODE
