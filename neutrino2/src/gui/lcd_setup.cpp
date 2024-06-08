@@ -52,29 +52,29 @@ const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
 #define LCDMENU_STATUSLINE_OPTION_COUNT 4
 const keyval LCDMENU_STATUSLINE_OPTIONS[LCDMENU_STATUSLINE_OPTION_COUNT] =
 {
-	{ 0, _("playtime")   },
-	{ 1, _("volume")     },
-	{ 2, _("volume / playtime")       },
-	{ 3, _("volume / playtime / audio") }
+	{ CLCD::STATUSLINE_PLAYTIME, _("playtime")   },
+	{ CLCD::STATUSLINE_VOLUME, _("volume")     },
+	{ CLCD::STATUSLINE_VOLUME_PLAYTIME, _("volume / playtime")       },
+	{ CLCD::STATUSLINE_VOLUME_PLAYTIME_AUDIO, _("volume / playtime / audio") }
 };
 
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 #define LCDMENU_EPG_OPTION_COUNT 6
 const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
 {
-	{ 1, _("channel") },
-	{ 2, _("title")	},
-	{ 3, _("channel / title") },
-	{ 7, _("channel / sep.-line / title") },
-	{ 11, _("channel (short) / title") },
-	{ 15, _("channel (short) / sep.-line / title") }
+	{ CLCD::EPGMODE_CHANNEL, _("channel") },
+	{ CLCD::EPGMODE_TITLE, _("title")	},
+	{ CLCD::EPGMODE_CHANNEL_TITLE, _("channel / title") },
+	{ CLCD::EPGMODE_CHANNEL_LINE_TITLE, _("channel / sep.-line / title") },
+	{ CLCD::EPGMODE_CHANNEL_SHORT_TITLE, _("channel (short) / title") },
+	{ CLCD::EPGMODE_CHANNEL_SHORT_LINE_TITLE, _("channel (short) / sep.-line / title") }
 };
 #else // 4digits / vfd
 #define LCDMENU_EPG_OPTION_COUNT 2
 const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
 {
-	{ 0, _("channel") },
-	{ 1, _("time") }
+	{ CLCD::EPGMODE_CHANNELNUMBER, _("channel") },
+	{ CLCD::EPGMODE_TIME, _("time") }
 };
 #endif
 

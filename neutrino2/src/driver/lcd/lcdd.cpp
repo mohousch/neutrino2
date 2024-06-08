@@ -705,7 +705,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	/* draw_fill_rect is braindead: it actually fills _inside_ the described rectangle,
 	   so that you have to give it one pixel additionally in every direction ;-(
 	   this is where the "-1 to 120" intead of "0 to 119" comes from */
-	display->draw_fill_rect(-1, 8+2, lcd_width, lcd_height-8-2-2, CLCDDisplay::PIXEL_OFF);
+	display->draw_fill_rect(-1, 8 + 2, lcd_width, lcd_height - 8 - 2 - 2, CLCDDisplay::PIXEL_OFF);
 
 	bool big_utf8 = false;
 	bool small_utf8 = false;
@@ -713,17 +713,19 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	std::string event[4];
 	int namelines = 0, eventlines = 0, maxnamelines = 2;
 	
-	if (showmode & 8)
+	if (showmode & CLCD::EPGMODE_CHANNEL_LINE_TITLE)
 		maxnamelines = 1;
 
-	if ((showmode & 1) && !big.empty())
+	if ((showmode & CLCD::EPGMODE_CHANNEL) && !big.empty())
 	{
 		bool dumb = false;
 		big_utf8 = isUTF8(big);
+		
 		while (true)
 		{
 			namelines = 0;
 			std::string title = big;
+			
 			do { // first try "intelligent" splitting
 				cname[namelines] = splitString(title, lcd_width, fonts.channelname, dumb, big_utf8);
 				title = removeLeadingSpaces(title.substr(cname[namelines].length()));
@@ -743,10 +745,11 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	if (lcd_height < 64)
 		maxeventlines = 2 - (namelines * 1 + 1) / 2;
 
-	if ((showmode & 2) && !small.empty())
+	if ((showmode & CLCD::EPGMODE_TITLE) && !small.empty())
 	{
 		bool dumb = false;
 		small_utf8 = isUTF8(small);
+		
 		while (true)
 		{
 			eventlines = 0;
@@ -777,6 +780,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	int y = 8 + (t_h - namelines*14 - eventlines*10)/2;
 	//
 	int x = 1;
+	
 	for (int i = 0; i < namelines; i++) 
 	{
 		y += 14;
@@ -785,16 +789,19 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 			int w = fonts.channelname->getRenderWidth(cname[i].c_str(), big_utf8);
 			x = (lcd_width - w) / 2;
 		}
+		
 		fonts.channelname->RenderString(x, y, lcd_width + 10, cname[i].c_str(), CLCDDisplay::PIXEL_ON, 0, big_utf8);
 	}
 	y++;
 	
-	if (eventlines > 0 && namelines > 0 && showmode & 4)
+	//
+	if (eventlines > 0 && namelines > 0 && showmode & CLCD::EPGMODE_CHANNEL_TITLE)
 	{
 		y++;
 		display->draw_line(0, y, lcd_width - 1, y, CLCDDisplay::PIXEL_ON);
 	}
 	
+	//
 	if (eventlines > 0)
 	{
 		for (int i = 0; i < eventlines; i++) 
@@ -951,7 +958,7 @@ void CLCD::setMovieInfo(const AUDIOMODES playmode, const std::string big, const 
 {
 	int showmode = g_settings.lcd_epgmode;
 	
-	showmode |= 3; // take only the separator line from the config
+	showmode |= showmode; // take only the separator line from the config
 
 	movie_playmode = playmode;
 	movie_big = big;
@@ -1037,6 +1044,11 @@ void CLCD::showTime(bool force)
 		if (mode == MODE_STANDBY)
 		{
 			display->clear_screen(); // clear lcd
+			
+			// center ???
+			display->draw_fill_rect (lcd_width - 50 - 1, lcd_height - 12, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
+
+			fonts.time->RenderString(lcd_width - 4 - fonts.time->getRenderWidth(timestr), lcd_height - 1, 50, timestr, CLCDDisplay::PIXEL_ON);
 		}
 		else
 		{
@@ -1051,9 +1063,9 @@ void CLCD::showTime(bool force)
 				clearClock = 1;
 			}
 
-			display->draw_fill_rect (lcd_width-50-1, lcd_height-12, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
+			display->draw_fill_rect (lcd_width - 50 - 1, lcd_height - 12, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
 
-			fonts.time->RenderString(lcd_width - 4 - fonts.time->getRenderWidth(timestr), lcd_height-1, 50, timestr, CLCDDisplay::PIXEL_ON);
+			fonts.time->RenderString(lcd_width - 4 - fonts.time->getRenderWidth(timestr), lcd_height - 1, 50, timestr, CLCDDisplay::PIXEL_ON);
 		}
 		
 		displayUpdate();
@@ -1631,28 +1643,33 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 	case MODE_TVRADIO:
 	case MODE_MOVIE:
+		//
 		display->clear_screen(); // clear lcd
 		
+		// statusline
 		switch (g_settings.lcd_show_volume)
 		{
-		case 0:
+		case CLCD::STATUSLINE_PLAYTIME:
 			drawBanner();
 			display->load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
 			display->load_screen_element(&(element[ELEMENT_MOVIESTRIPE]), 0, lcd_height-element[ELEMENT_MOVIESTRIPE].height);
 			showPercentOver(percentOver, false, mode);
 			break;
-		case 1:
+			
+		case CLCD::STATUSLINE_VOLUME:
 			drawBanner();
 			display->load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
 			showVolume(volume, false);
 			break;
-		case 2:
+			
+		case CLCD::STATUSLINE_VOLUME_PLAYTIME:
 			display->load_screen_element(&(element[ELEMENT_MOVIESTRIPE]), 0, 0);
 			display->load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
 			showVolume(volume, false);
 			showPercentOver(percentOver, false, mode);
 			break;
-		case 3:
+			
+		case CLCD::STATUSLINE_VOLUME_PLAYTIME_AUDIO:
 			display->load_screen_element(&(element[ELEMENT_MOVIESTRIPE]), 0, 0);
 			display->load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
 			showVolume(volume, false);
@@ -1661,16 +1678,20 @@ void CLCD::setMode(const MODES m, const char * const title)
 		default:
 			break;
 		}
+		
+		// servicename / title /
 		if (mode == MODE_TVRADIO)
 			showServicename(servicename);
-		else
+		else // MODE_MOVIE
 		{
 			setMovieInfo(movie_playmode, movie_big, movie_small, movie_centered);
 			setMovieAudio(movie_is_ac3);
 		}
+		
 		showclock = true;
 		showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
 		break;
+		
 	case MODE_AUDIO:
 	{
 		display->clear_screen(); // clear lcd
