@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-06-09 14:05+0200\n"
+"POT-Creation-Date: 2024-06-10 01:01+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -2740,15 +2740,6 @@ msgstr ""
 msgid "channel"
 msgstr ""
 
-msgid "channel (short) / sep.-line / title"
-msgstr ""
-
-msgid "channel (short) / title"
-msgstr ""
-
-msgid "channel / sep.-line / title"
-msgstr ""
-
 msgid "channel / title"
 msgstr ""
 
@@ -3170,12 +3161,6 @@ msgid "very large"
 msgstr ""
 
 msgid "volume"
-msgstr ""
-
-msgid "volume / playtime"
-msgstr ""
-
-msgid "volume / playtime / audio"
 msgstr ""
 
 msgid "waiting for EPG..."

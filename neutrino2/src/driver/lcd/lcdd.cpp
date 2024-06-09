@@ -701,7 +701,6 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 		0x01	show "big" string
 		0x02	show "small" string
 		0x04	show separator line if big and small are present / shown
-		0x08	show only one line of "big" string
 	 */
 
 	/* draw_fill_rect is braindead: it actually fills _inside_ the described rectangle,
@@ -716,7 +715,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	std::string event[4];
 	int namelines = 0, eventlines = 0, maxnamelines = 2;
 	
-	if (showmode & CLCD::EPGMODE_CHANNEL_LINE_TITLE)
+	if (showmode & CLCD::EPGMODE_CHANNEL_TITLE)
 		maxnamelines = 1;
 
 	if ((showmode & CLCD::EPGMODE_CHANNEL) && !big.empty())
@@ -724,23 +723,28 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 		bool dumb = false;
 		big_utf8 = isUTF8(big);
 		
-		while (true)
+//		while (true)
 		{
-			namelines = 0;
+			namelines = 1;
 			std::string title = big;
 			
+			/*
 			do { // first try "intelligent" splitting
 				cname[namelines] = splitString(title, lcd_width, fonts.channelname, dumb, big_utf8);
 				title = removeLeadingSpaces(title.substr(cname[namelines].length()));
 				namelines++;
 			} while (title.length() > 0 && namelines < maxnamelines);
+			*/
+			////
+			cname[namelines] = splitString(title, lcd_width, fonts.channelname, dumb, big_utf8);
+			////
 			
-			if (title.length() == 0)
-				break;
+//			if (title.length() == 0)
+//				break;
 				
-			dumb = !dumb;	// retry with dumb splitting;
-			if (!dumb)	// second retry -> get out;
-				break;
+//			dumb = !dumb;	// retry with dumb splitting;
+//			if (!dumb)	// second retry -> get out;
+//				break;
 		}
 	}
 
@@ -754,7 +758,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	{
 		bool dumb = false;
 		small_utf8 = isUTF8(small);
-		
+		#if 0
 		while (true)
 		{
 			eventlines = 0;
@@ -774,6 +778,9 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 			if (!dumb)	// second retry -> get out;
 				break;
 		}
+		#endif
+		eventlines = 1;
+		event[eventlines] = splitString(small, lcd_width, fonts.menu, dumb, small_utf8);
 	}
 
 	/* this values were determined empirically */
@@ -782,13 +789,14 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	int t_h = 41;
 	if (lcd_height < 64)
 		t_h = t_h*lcd_height/64;
-	int y = 8 + (t_h - namelines*14 - eventlines*10)/2;
+	int y = 12 + (t_h - namelines*14 - eventlines*10)/2;
 	//
 	int x = 1;
 	
+	// namelines
 	for (int i = 0; i < namelines; i++) 
 	{
-		y += 14;
+		y += 20;
 		if (centered)
 		{
 			int w = fonts.channelname->getRenderWidth(cname[i].c_str(), big_utf8);
@@ -811,7 +819,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	{
 		for (int i = 0; i < eventlines; i++) 
 		{
-			y += 10;
+			y += 20;
 			if (centered)
 			{
 				int w = fonts.menu->getRenderWidth(event[i].c_str(), small_utf8);
@@ -1493,10 +1501,7 @@ void CLCD::drawBanner()
 #ifdef ENABLE_LCD
 	unsigned int lcd_width  = display->xres;
 	
-	////test
-	printf("element_w:%d lcd_width:%d\n", element[ELEMENT_BANNER].width, lcd_width);
-	
-	display->load_screen_element(&(element[ELEMENT_BANNER]), 0, 0, display->xres, element->height*2);
+//	display->load_screen_element(&(element[ELEMENT_BANNER]), (lcd_width - element->width - 1)/2, 0, display->xres, element->height);
 	
 	// fill the rest with PIXEL_ON
 //	if (element[ELEMENT_BANNER].width < lcd_width)
@@ -1677,30 +1682,32 @@ void CLCD::setMode(const MODES m, const char * const title)
 		{
 		case CLCD::STATUSLINE_PLAYTIME:
 			drawBanner();
-			display->load_screen_element(&(element[ELEMENT_SCART]), (lcd_width - element[ELEMENT_SCART].width)/2, 12);
+//			display->load_screen_element(&(element[ELEMENT_SCART]), (lcd_width - element[ELEMENT_SCART].width)/2, 12);
 			display->load_screen_element(&(element[ELEMENT_MOVIESTRIPE]), 0, lcd_height -element[ELEMENT_MOVIESTRIPE].height);
 			showPercentOver(percentOver, false, mode);
 			break;
 			
 		case CLCD::STATUSLINE_VOLUME:
 			drawBanner();
-			display->load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
+//			display->load_screen_element(&(element[ELEMENT_SCART]), (lcd_width - element[ELEMENT_SCART].width)/2, 12);
 			showVolume(volume, false);
 			break;
-			
+		/*	
 		case CLCD::STATUSLINE_VOLUME_PLAYTIME:
 			display->load_screen_element(&(element[ELEMENT_MOVIESTRIPE]), 0, 0);
-			display->load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
+//			display->load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
 			showVolume(volume, false);
 			showPercentOver(percentOver, false, mode);
 			break;
-			
+		*/
+		/*	
 		case CLCD::STATUSLINE_VOLUME_PLAYTIME_AUDIO:
 			display->load_screen_element(&(element[ELEMENT_MOVIESTRIPE]), 0, 0);
-			display->load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
+//			display->load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
 			showVolume(volume, false);
 			showPercentOver(percentOver, false, mode);
 			break;
+		*/
 		default:
 			break;
 		}

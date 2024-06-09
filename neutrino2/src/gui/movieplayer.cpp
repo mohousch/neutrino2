@@ -536,6 +536,7 @@ void CMoviePlayerGui::playNext()
 			if(!playlist[selected].audioPids.empty()) 
 			{
 				ac3state = playlist[selected].audioPids[currentapid].atype? CInfoViewer::AC3_ACTIVE : CInfoViewer::NO_AC3;
+				CLCD::getInstance()->setMovieAudio(ac3state);
 			}
 
 			// startposition
@@ -577,6 +578,7 @@ void CMoviePlayerGui::playPrev()
 			if(!playlist[selected].audioPids.empty()) 
 			{
 				ac3state = playlist[selected].audioPids[currentapid].atype? CInfoViewer::AC3_ACTIVE : CInfoViewer::NO_AC3;
+				CLCD::getInstance()->setMovieAudio(ac3state);
 			}
 
 			// startposition
@@ -637,6 +639,7 @@ void CMoviePlayerGui::PlayFile(void)
 			if(!playlist[selected].audioPids.empty()) 
 			{
 				ac3state = playlist[selected].audioPids[currentapid].atype? CInfoViewer::AC3_ACTIVE : CInfoViewer::NO_AC3;
+				CLCD::getInstance()->setMovieAudio(ac3state);
 			}
 
 			// startposition

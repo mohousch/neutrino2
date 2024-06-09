@@ -683,6 +683,7 @@ void CRemoteControl::setAPID( uint32_t APID )
 	CZapit::getInstance()->setAudioChannel( APID );
 	
 	// needed for auto audio select
+	CLCD::getInstance()->setMovieAudio(current_PIDs.APIDs[current_PIDs.PIDs.selected_apid].is_ac3);
 	CLCD::getInstance()->ShowIcon(VFD_ICON_DOLBY, current_PIDs.APIDs[current_PIDs.PIDs.selected_apid].is_ac3? true : false);
 }
 

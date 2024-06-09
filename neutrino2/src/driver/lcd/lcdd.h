@@ -496,9 +496,9 @@ class CLCD
 			EPGMODE_CHANNEL 		= 0x01,
 			EPGMODE_TITLE			= 0x02,
 			EPGMODE_CHANNEL_TITLE		= 0x04,
-			EPGMODE_CHANNEL_LINE_TITLE	= 0x08,
-			EPGMODE_CHANNEL_SHORT_TITLE	= 0x10,
-			EPGMODE_CHANNEL_SHORT_LINE_TITLE= 0x20
+//			EPGMODE_CHANNEL_LINE_TITLE	= 0x08,
+//			EPGMODE_CHANNEL_SHORT_TITLE	= 0x10,
+//			EPGMODE_CHANNEL_SHORT_LINE_TITLE= 0x20
 #endif
 		};
 		
@@ -506,8 +506,8 @@ class CLCD
 		{
 			STATUSLINE_PLAYTIME,
 			STATUSLINE_VOLUME,
-			STATUSLINE_VOLUME_PLAYTIME,
-			STATUSLINE_VOLUME_PLAYTIME_AUDIO
+//			STATUSLINE_VOLUME_PLAYTIME,
+//			STATUSLINE_VOLUME_PLAYTIME_AUDIO
 		};
 
 	private:
@@ -578,16 +578,20 @@ class CLCD
 
 		static CLCD* getInstance();
 		void init(const char * fontfile, const char * fontname,
-		          const char * fontfile2=NULL, const char * fontname2=NULL,
-		          const char * fontfile3=NULL, const char * fontname3=NULL); 
+		          const char * fontfile2 = NULL, const char * fontname2 = NULL,
+		          const char * fontfile3 = NULL, const char * fontname3 = NULL); 
 
 		void setMode(const MODES m, const char * const title = "");
 		MODES getMode() { return mode; };
 
+		////
+		void ShowText(const char *str);
 		void showServicename(const std::string &name, const bool perform_wakeup = true, int pos = 0); // UTF-8
+		////
 		void setEPGTitle(const std::string title);
 		void setMovieInfo(const AUDIOMODES playmode, const std::string big, const std::string small, const bool centered = false);
 		void setMovieAudio(const bool is_ac3);
+		////
 		std::string getMenutitle() { return menutitle; };
 		void showTime(bool force = false);
 		void showRCLock(int duration = 2);
@@ -597,6 +601,7 @@ class CLCD
 		void showAudioTrack(const std::string & artist, const std::string & title, const std::string & album, int pos = 0);
 		void showAudioPlayMode(AUDIOMODES m=AUDIO_MODE_PLAY);
 		void showAudioProgress(const char perc, bool isMuted);
+		////
 		void setBrightness(int);
 		int getBrightness();
 
@@ -628,7 +633,6 @@ class CLCD
 		void ShowIcon(vfd_icon icon, bool show);
 		void ShowDiskLevel();
 		void ClearIcons();
-		void ShowText(const char *str);
 		
 		bool ShowPng(char *filename);
 		bool DumpPng(char *filename);
