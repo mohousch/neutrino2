@@ -708,7 +708,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	   so that you have to give it one pixel additionally in every direction ;-(
 	   this is where the "-1 to 120" intead of "0 to 119" comes from 
 	*/
-	display->draw_fill_rect(-1, 8 + 2, lcd_width, lcd_height - 8 - 2 - 2, CLCDDisplay::PIXEL_OFF);
+	display->draw_fill_rect(-1, 12 + 2, lcd_width, lcd_height - 12 - 2, CLCDDisplay::PIXEL_OFF);
 
 	bool big_utf8 = false;
 	bool small_utf8 = false;
@@ -967,7 +967,7 @@ void CLCD::setMovieInfo(const AUDIOMODES playmode, const std::string big, const 
 	
 	int showmode = g_settings.lcd_epgmode;
 	
-	showmode |= showmode; // take only the separator line from the config
+//	showmode |= showmode; // take only the separator line from the config
 
 	movie_playmode = playmode;
 	movie_big = big;
@@ -1056,10 +1056,10 @@ void CLCD::showTime(bool force)
 			
 			display->clear_screen(); // clear lcd
 			
-			// center ???
-			display->draw_fill_rect (lcd_width - 50 - 1, lcd_height - 12, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
+			// centered
+			display->draw_fill_rect( (lcd_width - 1 - fonts.time->getRenderWidth(timestr))/2, (lcd_height - 35)/2, fonts.time->getRenderWidth("00:00") + 1, lcd_height, CLCDDisplay::PIXEL_OFF);
 
-			fonts.time->RenderString((lcd_width - 4 - fonts.time->getRenderWidth(timestr))/2, (lcd_height - 1)/2, fonts.time->getRenderWidth(timestr) + 1, timestr, CLCDDisplay::PIXEL_ON);
+			fonts.time->RenderString((lcd_width - 1 - fonts.time->getRenderWidth(timestr))/2, (lcd_height - 35)/2, fonts.time->getRenderWidth("00:00") + 1, timestr, CLCDDisplay::PIXEL_ON);
 		}
 		else
 		{
@@ -1074,9 +1074,11 @@ void CLCD::showTime(bool force)
 				clearClock = 1;
 			}
 
-			display->draw_fill_rect (lcd_width - 50 - 1, lcd_height - 12, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
+//			display->draw_fill_rect (lcd_width - 50 - 1, lcd_height - 12, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
+			display->draw_fill_rect((lcd_width - 4 - fonts.time->getRenderWidth(timestr))/2, (lcd_height - 35), fonts.time->getRenderWidth("00:00") + 1, lcd_height, CLCDDisplay::PIXEL_OFF);
 
-			fonts.time->RenderString(lcd_width - 4 - fonts.time->getRenderWidth(timestr) + 1, lcd_height - 1, 50, timestr, CLCDDisplay::PIXEL_ON);
+//			fonts.time->RenderString(lcd_width - 4 - fonts.time->getRenderWidth(timestr) + 1, lcd_height - 1, 50, timestr, CLCDDisplay::PIXEL_ON);
+			fonts.time->RenderString((lcd_width - 4 - fonts.time->getRenderWidth(timestr))/2, (lcd_height - 50), fonts.time->getRenderWidth("00:00") + 1, timestr, CLCDDisplay::PIXEL_ON);
 		}
 		
 		displayUpdate();
@@ -1095,11 +1097,15 @@ void CLCD::showRCLock(int duration)
 	// Saving the whole screen is not really nice since the clock is updated
 	// every second. Restoring the screen can cause a short travel to the past ;)
 	display->dump_screen(&curr_screen);
-	display->draw_fill_rect (-1, 10, display->xres, display->yres-12-2, CLCDDisplay::PIXEL_OFF);
+	
+	//
+	display->draw_fill_rect (-1, 10, display->xres, display->yres - 12 - 2, CLCDDisplay::PIXEL_OFF);
 	display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, display->yres - element[ELEMENT_SPEAKER].height);
 	wake_up();
 	displayUpdate();
 	sleep(duration);
+	
+	//
 	display->load_screen(&curr_screen);
 	wake_up();
 	displayUpdate();
@@ -1125,9 +1131,9 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 		unsigned int lcd_width  = display->xres;
 		unsigned int lcd_height = display->yres;
 		unsigned int height =  6;
-		unsigned int left   = 12+2;
+		unsigned int left   = 12 + 2;
 		unsigned int top    = lcd_height - height - 1 - 2;
-		unsigned int width  = lcd_width - left - 4 - 50;
+		unsigned int width  = lcd_width - left - 4 - fonts.time->getRenderWidth("00:00") - 1;
 
 		if ((muted) || (volume == 0))
 			display->load_screen_element(&(element[ELEMENT_MUTE]), 0, lcd_height-element[ELEMENT_MUTE].height);
@@ -1142,12 +1148,12 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 		//strichlin
 		if ((muted) || (volume == 0))
 		{
-			display->draw_line (left, top, left+width, top+height-1, CLCDDisplay::PIXEL_ON);
+			display->draw_line (left, top, left + width, top + height - 1, CLCDDisplay::PIXEL_ON);
 		}
 		else
 		{
-			int dp = vol*(width+1)/100;
-			display->draw_fill_rect (left-1, top-1, left+dp, top+height, CLCDDisplay::PIXEL_ON);
+			int dp = vol*(width + 1)/100;
+			display->draw_fill_rect (left - 1, top - 1, left + dp, top + height, CLCDDisplay::PIXEL_ON);
 		}
 		
 		if(mode == MODE_AUDIO)
@@ -1486,10 +1492,15 @@ void CLCD::drawBanner()
 	
 #ifdef ENABLE_LCD
 	unsigned int lcd_width  = display->xres;
-	display->load_screen_element(&(element[ELEMENT_BANNER]), 0, 0);
 	
-	if (element[ELEMENT_BANNER].width < lcd_width)
-		display->draw_fill_rect(element[ELEMENT_BANNER].width - 1, -1, lcd_width, element[ELEMENT_BANNER].height - 1, CLCDDisplay::PIXEL_ON);
+	////test
+	printf("element_w:%d lcd_width:%d\n", element[ELEMENT_BANNER].width, lcd_width);
+	
+	display->load_screen_element(&(element[ELEMENT_BANNER]), 0, 0, display->xres, element->height*2);
+	
+	// fill the rest with PIXEL_ON
+//	if (element[ELEMENT_BANNER].width < lcd_width)
+//		display->draw_fill_rect(element[ELEMENT_BANNER].width - 1, -1, lcd_width, element[ELEMENT_BANNER].height - 1, CLCDDisplay::PIXEL_ON);
 #endif
 }
 
@@ -1666,8 +1677,8 @@ void CLCD::setMode(const MODES m, const char * const title)
 		{
 		case CLCD::STATUSLINE_PLAYTIME:
 			drawBanner();
-			display->load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
-			display->load_screen_element(&(element[ELEMENT_MOVIESTRIPE]), 0, lcd_height-element[ELEMENT_MOVIESTRIPE].height);
+			display->load_screen_element(&(element[ELEMENT_SCART]), (lcd_width - element[ELEMENT_SCART].width)/2, 12);
+			display->load_screen_element(&(element[ELEMENT_MOVIESTRIPE]), 0, lcd_height -element[ELEMENT_MOVIESTRIPE].height);
 			showPercentOver(percentOver, false, mode);
 			break;
 			

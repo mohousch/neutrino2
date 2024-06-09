@@ -159,14 +159,19 @@ int fh_png_getsize(const char *name,int *x,int *y, int /*wanted_width*/, int /*w
 	int bit_depth, color_type, interlace_type;
 	FILE *fh;
 
-	if(!(fh=fopen(name,"rb")))	return(FH_ERROR_FILE);
+	if(!(fh = fopen(name, "rb")))	
+		return(FH_ERROR_FILE);
 
-	png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING,NULL,NULL,NULL);
-	if(png_ptr == NULL) {
+	png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+	
+	if(png_ptr == NULL) 
+	{
 		fclose(fh);
 		return(FH_ERROR_FORMAT);
 	}
+	
 	info_ptr = png_create_info_struct(png_ptr);
+	
 	if(info_ptr == NULL)
 	{
 		png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
@@ -187,12 +192,12 @@ int fh_png_getsize(const char *name,int *x,int *y, int /*wanted_width*/, int /*w
 
 	png_init_io(png_ptr,fh);
 	png_read_info(png_ptr, info_ptr);
-	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type,&interlace_type, NULL, NULL);
+	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, NULL, NULL);
 	png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
 	*x=width;
 	*y=height;
 	fclose(fh);
+	
 	return(FH_ERROR_OK);
 }
-
 

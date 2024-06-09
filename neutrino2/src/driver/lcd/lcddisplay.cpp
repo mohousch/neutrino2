@@ -29,6 +29,7 @@
 #include <driver/lcd/lcddisplay.h>
 
 #include <png.h>
+#include <lib/libngpng/libngpng.h>
 
 #include <stdint.h>
 #include <fcntl.h>
@@ -674,10 +675,66 @@ void CLCDDisplay::dump_screen(raw_display_t *screen)
 	memmove(*screen, _buffer, raw_buffer_size);
 }
 
-void CLCDDisplay::load_screen_element(const raw_lcd_element_t * element, int left, int top) 
+////
+// PNG
+extern int fh_png_id(const char *name);
+extern int png_load_ext(const char * name, unsigned char ** buffer, int * xp, int * yp, int * bpp);
+int fh_png_getsize(const char *name,int *x,int *y, int /*wanted_width*/, int /*wanted_height*/);
+
+void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int top, int width, int height) 
 {
 	unsigned int i;
 
+	// resize	
+	if (width != 0 || height != 0)
+	{
+		int x = 0;
+		int y = 0;
+		int ret = FH_ERROR_MALLOC;
+//		uint8_t *png_buffer = NULL;
+		int png_bpp = 0;
+		
+		// getsize
+		ret = fh_png_getsize(element->name.c_str(), &x, &y, INT_MAX, INT_MAX);
+		
+		if (ret == FH_ERROR_OK)
+		{
+			//
+			element->width = x;
+			element->height = y;
+			
+//			png_buffer = (unsigned char *) malloc(x*y*4);
+			
+			// load png
+			ret = png_load_ext(element->name.c_str(), &element->buffer, &x, &y, &png_bpp);
+			
+			if (ret == FH_ERROR_OK)
+			{
+				// resize
+				if(x != width || y != height)
+				{
+					// alpha
+					if(png_bpp == 4)
+					{
+						element->buffer = resize(element->buffer, x, y, width, height, COLOR, NULL, true);
+					}
+					else
+					{
+						element->buffer = resize(element->buffer, x, y, width, height, COLOR);
+					}
+					
+					element->width = width ;
+					element->height = height;
+				}
+			}
+			else 
+			{
+		  		printf("CLCDDisplay::load_screen_element: Error decoding file %s\n", element->name.c_str ());
+			}
+		}
+	}
+	
+	// 
 	if ((element->buffer) && (element->height <= yres - top))
 	{
 		for (i = 0; i < min(element->height, yres - top); i++)
@@ -714,6 +771,8 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 	png_byte *   fbptr;
 	FILE *       fh;
 	bool         ret_value = false;
+	
+	element->name = filename;
 
 	if ((fh = fopen(filename, "rb")))
 	{
@@ -732,7 +791,7 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 					unsigned int lcd_height = yres;
 					unsigned int lcd_width = xres;
 
-					png_init_io(png_ptr,fh);
+					png_init_io(png_ptr, fh);
 					
 					png_read_info(png_ptr, info_ptr);
 					png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, NULL, NULL);
@@ -745,7 +804,8 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 						(height     <= lcd_height            )
 						)
 					{
-						printf("[CLCDDisplay] %s %s %dx%dx%d, type %d\n", __FUNCTION__, filename, width, height, bit_depth, color_type);
+						printf("CLCDDisplay::load_png_element: %s %s %dx%dx%d, type %d\n", filename, width, height, bit_depth, color_type);
+						
 						element->width = width;
 						element->height = height;
 						element->bpp = bit_depth;
@@ -758,6 +818,7 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 							lcd_height = height;
 						}
 						
+						//
 						memset(element->buffer, 0, element->buffer_size);
 
 						png_set_packing(png_ptr); /* expand to 1 byte blocks */
@@ -785,14 +846,12 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 							for (pass = 0; pass < number_passes; pass++)
 							{
 								fbptr = (png_byte *)element->buffer;
+								
 								for (i = 0; i < element->height; i++)
 								{
-									//fbptr = row_pointers[i];
-									//png_read_rows(png_ptr, &fbptr, NULL, 1);
-
 									png_read_row(png_ptr, fbptr, NULL);
 									/* if the PNG is smaller, than the display width... */
-									if (width < lcd_width)	/* clear the area right of the PNG */
+									if (width < lcd_width)
 										memset(fbptr + width, 0, lcd_width - width);
 									fbptr += lcd_width;
 								}

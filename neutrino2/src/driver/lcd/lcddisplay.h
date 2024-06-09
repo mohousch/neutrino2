@@ -55,6 +55,7 @@ typedef unsigned char * raw_display_t;
 
 struct raw_lcd_element_t
 {
+	std::string name;
 	uint16_t width;
 	uint16_t height;
 	uint8_t bpp;
@@ -112,11 +113,12 @@ class CLCDDisplay
 		void draw_rectangle(int left, int top, int right, int bottom, int linestate, int fillstate);
 		void draw_polygon(int num_vertices, int *vertices, int state);
 		////
-		void load_screen_element(const raw_lcd_element_t * element, int left, int top);
+		void load_screen_element(raw_lcd_element_t * element, int left, int top, int w = 0, int h = 0);
 		void load_screen(const raw_display_t * const screen);
+		void dump_screen(raw_display_t *screen);
+		////
 		bool load_png_element(const char * const filename, raw_lcd_element_t * element);
 		bool load_png(const char * const filename);
-		void dump_screen(raw_display_t *screen);
 		bool dump_png_element(const char * const filename, raw_lcd_element_t * element);
 		bool dump_png(const char * const filename);
 		////

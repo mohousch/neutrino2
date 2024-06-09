@@ -96,7 +96,7 @@ class CMoviePlayerGui : public CMenuTarget
 		void cutNeutrino();
 		void restoreNeutrino();
 		void PlayFile();
-		void updateLcd(const std::string & lcd_filename);
+		void updateLcd(const std::string &lcd_filename, const std::string &lcd_info);
 		int showStartPosSelectionMenu(void);
 		
 		void play(unsigned int pos);

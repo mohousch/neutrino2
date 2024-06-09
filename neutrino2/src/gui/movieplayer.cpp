@@ -224,43 +224,34 @@ void CMoviePlayerGui::restoreNeutrino()
 	stopped = false;
 }
 
-void CMoviePlayerGui::updateLcd(const std::string & lcd_filename)
+void CMoviePlayerGui::updateLcd(const std::string &lcd_filename, const std::string &lcd_info)
 {
-	char tmp[20];
-	std::string lcd;
+	CLCD::AUDIOMODES playmode;
 
 	switch (playstate) 
 	{
 		case CMoviePlayerGui::PAUSE:
-			//lcd = "|| ";
-			lcd = lcd_filename;
+			playmode = CLCD::AUDIO_MODE_PAUSE;
 			break;
 			
 		case CMoviePlayerGui::REW:
-			sprintf(tmp, "%dx<< ", speed);
-			lcd = tmp;
-			lcd += lcd_filename;
+			playmode = CLCD::AUDIO_MODE_REV;
 			break;
 			
 		case CMoviePlayerGui::FF:
-			sprintf(tmp, "%dx>> ", speed);
-			lcd = tmp;
-			lcd += lcd_filename;
+			playmode = CLCD::AUDIO_MODE_FF;
 			break;
 
 		case CMoviePlayerGui::SLOW:
-			sprintf(tmp, "%ds>> ", slow);
-			lcd = tmp;
-			lcd += lcd_filename;
 			break;
 
 		default:
-			//lcd = "> ";
-			lcd = lcd_filename;
+			playmode = CLCD::AUDIO_MODE_PLAY;
 			break;
 	}
 	
-	CLCD::getInstance()->showMenuText(0, lcd.c_str(), -1, true);	
+	CLCD::getInstance()->setMovieInfo(playmode, lcd_filename, lcd_info, true);
+	
 }
 
 void CMoviePlayerGui::addToPlaylist(MI_MOVIE_INFO& mfile)
@@ -841,7 +832,7 @@ void CMoviePlayerGui::PlayFile(void)
 		{
 			update_lcd = false;
 
-			updateLcd(playlist[selected].epgTitle.empty()? playlist[selected].file.getFileName() : playlist[selected].epgTitle);
+			updateLcd(playlist[selected].epgTitle.empty()? playlist[selected].file.getFileName() : playlist[selected].epgTitle, playlist[selected].epgInfo1.empty()? "" : playlist[selected].epgInfo1);
 		}
 
 		// timeosd
