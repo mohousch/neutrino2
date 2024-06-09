@@ -706,7 +706,8 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 
 	/* draw_fill_rect is braindead: it actually fills _inside_ the described rectangle,
 	   so that you have to give it one pixel additionally in every direction ;-(
-	   this is where the "-1 to 120" intead of "0 to 119" comes from */
+	   this is where the "-1 to 120" intead of "0 to 119" comes from 
+	*/
 	display->draw_fill_rect(-1, 8 + 2, lcd_width, lcd_height - 8 - 2 - 2, CLCDDisplay::PIXEL_OFF);
 
 	bool big_utf8 = false;

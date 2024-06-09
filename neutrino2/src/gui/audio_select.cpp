@@ -138,6 +138,8 @@ int CAudioSelectMenuHandler::doMenu()
 		widget->addCCItem(AudioSelector);
 	}
 	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Select language"));
+	
 	//
 	unsigned int count;
 	

@@ -261,9 +261,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		if ((info_CN.current_uniqueKey >> 16) == (current_channel_id & 0xFFFFFFFFFFFFULL) || (info_CN.current_uniqueKey >> 16) == (current_sub_channel_id & 0xFFFFFFFFFFFFULL))
 		{
 			//CURRENT-EPG for current channel arrived!;
-#if defined (ENABLE_LCD)
-			CLCD::getInstance()->setEPGTitle(info_CN.current_name);
-#endif			
+			CLCD::getInstance()->setEPGTitle(info_CN.current_name);			
 			
 			if (info_CN.current_uniqueKey != current_EPGid)
 			{

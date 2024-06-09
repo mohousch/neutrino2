@@ -662,13 +662,11 @@ void CAudioPlayerGui::paintInfo(CAudiofile& File)
 		timeCounter->setPlayTime(m_time_played);
 		
 		timeCounter->paint();
-
-#if ENABLE_LCD	
+	
 		if(m_time_total != 0)
 		{
 			CLCD::getInstance()->showAudioProgress(100 * m_time_played / m_time_total, current_muted);
 		}
-#endif	
 	}
 	
 	update_t = true;
@@ -916,13 +914,11 @@ void CAudioPlayerGui::updateTimes(const bool force, bool paint)
 		timeCounter->setPlayTime(m_time_played);
 		
 		timeCounter->refresh();
-		
-#if ENABLE_LCD	
+			
 		if((updatePlayed || updateTotal) && m_time_total != 0)
 		{
 			CLCD::getInstance()->showAudioProgress(100 * m_time_played / m_time_total, current_muted);
-		}
-#endif		
+		}		
 	}
 }
 
@@ -932,23 +928,20 @@ void CAudioPlayerGui::paintLCD()
 	{
 		case CAudioPlayerGui::STOP:
 			CLCD::getInstance()->showAudioPlayMode(CLCD::AUDIO_MODE_STOP);
-			
-#if ENABLE_LCD
 			CLCD::getInstance()->showAudioProgress(0, current_muted);
-#endif
 			break;
+			
 		case CAudioPlayerGui::PLAY:
 			CLCD::getInstance()->showAudioPlayMode(CLCD::AUDIO_MODE_PLAY);
 
 			// audio-track	
 			CLCD::getInstance()->showAudioTrack(m_playlist[m_current].MetaData.artist, m_playlist[m_current].MetaData.title, m_playlist[m_current].MetaData.album, m_current + 1);			
 					
-#if ENABLE_LCD
 			if(m_playlist[m_current].FileExtension != CFile::EXTENSION_URL && m_time_total != 0)
 				CLCD::getInstance()->showAudioProgress(100 * m_time_played / m_time_total, current_muted);
-#endif
 
 			break;
+			
 		case CAudioPlayerGui::PAUSE:
 			CLCD::getInstance()->showAudioPlayMode(CLCD::AUDIO_MODE_PAUSE);
 			CLCD::getInstance()->showAudioTrack(m_playlist[m_current].MetaData.artist, m_playlist[m_current].MetaData.title, m_playlist[m_current].MetaData.album, m_current + 1);				

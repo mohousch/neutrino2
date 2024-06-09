@@ -2227,9 +2227,7 @@ void CNeutrinoApp::audioMute( int newValue, bool isEvent )
 		frameBuffer->saveScreen(x, y, dx, dy, mute_pixbuf);	
 	}
 
-#if ENABLE_LCD
 	CLCD::getInstance()->setMuted(newValue);
-#endif
 
 	current_muted = newValue;
 
@@ -2428,9 +2426,7 @@ void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint)
 			}
 		}
 
-#if ENABLE_LCD
 		CLCD::getInstance()->showVolume(g_settings.current_volume);
-#endif
 
 		if (msg != CRCInput::RC_timeout) 
 		{
@@ -4781,14 +4777,9 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// dvbsub thread
 	dvbsub_init();	
 
-	// for boxes with lcd :-)
-#if ENABLE_LCD	
+	//
 	CLCD::getInstance()->showVolume(g_settings.current_volume);
 	CLCD::getInstance()->setMuted(current_muted);
-#endif
-	
-	// remote control
-	//g_RemoteControl = new CRemoteControl;
 	
 	// epg view
 	g_EpgData = new CEpgData;

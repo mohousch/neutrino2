@@ -621,9 +621,9 @@ void CLCDDisplay::draw_fill_rect(int left, int top, int right, int bottom, int s
 {
 	int x,y;
 	
-	for(x = left + 1;x < right;x++) 
+	for(x = left + 1; x < right; x++) 
 	{  
-		for(y = top + 1;y < bottom;y++) 
+		for(y = top + 1; y < bottom; y++) 
 		{
 			draw_point(x, y, state);
 		}

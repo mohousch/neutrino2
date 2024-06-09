@@ -1330,10 +1330,8 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		
 		dprintf(DEBUG_NORMAL, "CInfoViewer::handleMsg: zap failed!\n");
 		showFailure();
-
-#if ENABLE_LCD		
-		CLCD::getInstance()->showPercentOver(255);
-#endif		
+		
+		CLCD::getInstance()->showPercentOver(255);		
 
 		return messages_return::handled;
   	} 
@@ -1350,10 +1348,8 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		{
 	  		dprintf(DEBUG_NORMAL, "CInfoViewer::handleMsg: zap failed!\n");
 	  		showFailure();
-
-#if ENABLE_LCD			
-	  		CLCD::getInstance()->showPercentOver(255);
-#endif			
+		
+	  		CLCD::getInstance()->showPercentOver(255);			
 		}
 
 		return messages_return::handled;

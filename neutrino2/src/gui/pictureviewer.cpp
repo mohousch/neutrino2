@@ -301,11 +301,7 @@ void CPictureViewerGui::view(unsigned int index)
 {
 	selected = index;
 	
-#if ENABLE_LCD
-	CLCD::getInstance()->showMenuText(0, playlist[index].Name.c_str());
-#else	
 	CLCD::getInstance()->showMenuText(selected + 1, playlist[index].Name.c_str());
-#endif
 	
 	g_PicViewer->showImage(playlist[index].Filename);
 }

@@ -141,8 +141,6 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
         CZapit::getInstance()->stopPlayBack();
 	CSectionsd::getInstance()->pauseScanning(true);
 
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8);
-
 	// refill satlist and set feparams for manuel scan
 	satList.clear();
 
@@ -558,6 +556,8 @@ void CScanTs::paint(bool fortest)
 	int iw, ih;
 
 	ypos = y;
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, fortest ? _("Test signal") : _("Scan transponder"));
 	
 	//
 	CCHeaders head(x, ypos, width, hheight, fortest ? _("Test signal") : _("Scan transponder"), NEUTRINO_ICON_SCAN);
