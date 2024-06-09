@@ -57,6 +57,8 @@ class CStringInput : public CMenuTarget
 		CCHeaders headers;
 		
 		uint32_t smstimer;
+		
+		std::string valueString;
 
 		std::string name;
 		std::string hint_1;

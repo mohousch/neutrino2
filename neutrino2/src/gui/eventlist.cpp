@@ -901,7 +901,8 @@ int CEventFinderMenu::exec(CMenuTarget * parent, const std::string &actionKey)
 			}
 		}
 		
-		setValueString(m_search_channelname.c_str());
+		//setValueString(m_search_channelname.c_str());
+		if (mf1) mf1->addOption(m_search_channelname.c_str());
 	}	
 	else if(actionKey == "4")
 	{
@@ -936,7 +937,7 @@ int CEventFinderMenu::showMenu(void)
 	
 	CMenuOptionChooser * mo0 = new CMenuOptionChooser(_("Search within"), m_search_list, SEARCH_LIST_OPTIONS, SEARCH_LIST_OPTION_COUNT, true);
 	
-	CMenuForwarder * mf1 = new CMenuForwarder("", *m_search_list != EventList::SEARCH_LIST_ALL, m_search_channelname.c_str(), this, "3");
+	mf1 = new CMenuForwarder("", *m_search_list != EventList::SEARCH_LIST_ALL, m_search_channelname.c_str(), this, "3");
 	
 	CMenuOptionChooser * mo1 = new CMenuOptionChooser(_("Search in EPG"), m_search_epg_item, SEARCH_EPG_OPTIONS, SEARCH_EPG_OPTION_COUNT, true);
 	
@@ -977,6 +978,8 @@ int CEventFinderMenu::showMenu(void)
 		//
 		widget->addCCItem(searchMenu);
 	}
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Search in EPG"));
 
         searchMenu->addItem(mf2);
         searchMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));

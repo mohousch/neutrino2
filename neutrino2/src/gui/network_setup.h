@@ -48,7 +48,7 @@ class CNetworkSettings : public CMenuTarget, CChangeObserver
 		
 	public:
 		CNetworkSettings();
-		~CNetworkSettings(){if (MyIPChanger) delete MyIPChanger; MyIPChanger = NULL;};
+		~CNetworkSettings(){};
 		
 		CNetworkConfig *networkConfig;
 		CMenuItem *wlanEnable[4];

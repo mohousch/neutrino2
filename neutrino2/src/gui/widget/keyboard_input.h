@@ -93,6 +93,8 @@ class CKeyboardInput : public CMenuTarget
 		struct keyboard_layout *layout;
 		std::string(*keyboard)[KEY_COLUMNS];
 		CInputString *inputString;
+		
+		std::string valueString;
 
 		std::string  title;
 		std::string hintText_1, hintText_2;

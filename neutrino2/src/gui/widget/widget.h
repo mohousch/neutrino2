@@ -30,8 +30,6 @@
 ////
 class CMenuTarget
 {
-	protected:
-		std::string valueString;
 	public:
 		enum
 		{
@@ -42,15 +40,10 @@ class CMenuTarget
 		};
 				
 	public:
-		CMenuTarget(){valueString = "";};
-		virtual ~CMenuTarget(){valueString.clear();};
-		virtual void hide(){valueString.clear();};
-		virtual int exec(CMenuTarget* parent, const std::string& actionKey) = 0;
-		
-		//
-		virtual std::string& getValueString() {return valueString;};
-		virtual void setValueString(const char *const value){valueString = value;};
-		virtual void clearValueString(void){valueString.clear();};
+		CMenuTarget(){};
+		virtual ~CMenuTarget(){};
+		virtual void hide(){};
+		virtual int exec(CMenuTarget *parent, const std::string &actionKey) = 0;
 };
 
 //// CChangeObserver

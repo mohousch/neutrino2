@@ -436,9 +436,9 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	
 	fontRenderer->InitFontCache();
 
-	fonts.menu        = fontRenderer->getFont(fontname,  style_name , 25);
-	fonts.time        = fontRenderer->getFont(fontname2, style_name2, 30);
-	fonts.channelname = fontRenderer->getFont(fontname3, style_name3, 20);
+	fonts.menu        = fontRenderer->getFont(fontname,  style_name , 60);
+	fonts.time        = fontRenderer->getFont(fontname2, style_name2, 40);
+	fonts.channelname = fontRenderer->getFont(fontname3, style_name3, 60);
 	fonts.menutitle   = fonts.channelname;
 	
 	has_lcd = true;
@@ -1272,6 +1272,7 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 		size_t p;
 		AUDIOMODES m = movie_playmode;
 		std::string mytext = text;
+		
 		if (mytext.find("> ") == 0) 
 		{
 			mytext = mytext.substr(2);

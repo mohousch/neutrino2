@@ -267,6 +267,9 @@ CTimerList::CTimerList()
 	timerlistWidget = NULL;
 	listBox = NULL;
 	item = NULL;
+	m6 = NULL;
+	m7 = NULL;
+	m10 = NULL;
 	
 	sec_timer_id = 0;
 
@@ -356,7 +359,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		timerNew_chan_id = CSelectChannelWidgetHandler->getChannelID();
 		timerNew_channel_name = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 		
-		setValueString(CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID()).c_str());
+		m6->addOption(CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID()).c_str());
 		
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;
@@ -371,7 +374,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		timerNew_chan_id = CSelectChannelWidgetHandler->getChannelID();
 		timerNew_channel_name = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 		
-		setValueString(CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID()).c_str());
+		m6->addOption(CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID()).c_str());
 		
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;
@@ -386,7 +389,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		if (b.exec(g_settings.network_nfs_recordingdir))
 			strncpy(timerNew.recordingDir, b.getSelectedFile()->Name.c_str(), sizeof(timerNew.recordingDir) - 1);
 
-		setValueString(b.getSelectedFile()->Name.c_str());
+		m7->addOption(b.getSelectedFile()->Name.c_str());
 
 		return CMenuTarget::RETURN_REPAINT;
 	}
@@ -396,7 +399,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		plugin_chooser->exec(NULL, "");
 		
-		setValueString(timerNew.pluginName);
+		m10->addOption(timerNew.pluginName);
 		
 		return CMenuTarget::RETURN_REPAINT;
 	}
@@ -479,7 +482,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		else if (timerNew.eventType == CTimerd::TIMER_EXEC_PLUGIN)
 		{	
 			data = timerNew.pluginName;
-			plugin_chooser->setValueString(timerNew.pluginName);
+//			plugin_chooser->setValueString(timerNew.pluginName);
 		}
 		
 		if(timerNew.eventRepeat >= CTimerd::TIMERREPEAT_WEEKDAYS)
@@ -692,6 +695,8 @@ void CTimerList::hide()
 void CTimerList::paint()
 {
 	dprintf(DEBUG_NORMAL, "CTimerList::paint\n");
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Timerlist"));
 	
 	listBox->clearItems();
 
@@ -980,6 +985,8 @@ int CTimerList::modifyTimer()
 		widget->addCCItem(timerSettings);
 	}
 	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Modify timer"));
+	
 	timerSettings->clearItems();
 	
 	// intros
@@ -1020,7 +1027,7 @@ int CTimerList::modifyTimer()
 
 	// recdir
 	strncpy(timer->recordingDir, g_settings.network_nfs_recordingdir, sizeof(timer->recordingDir));
-	CMenuForwarder *m6 = new CMenuForwarder(_("Recording directory"), true, timer->recordingDir, this, "recording_dir");
+	m7 = new CMenuForwarder(_("Recording directory"), true, timer->recordingDir, this, "recording_dir");
 
 	timerSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	timerSettings->addItem(m3);
@@ -1029,7 +1036,7 @@ int CTimerList::modifyTimer()
 	timerSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	if (timer->eventType == CTimerd::TIMER_RECORD)
 	{
-		timerSettings->addItem(m6);
+		timerSettings->addItem(m7);
 	}
 	
 	//
@@ -1049,11 +1056,9 @@ int CTimerList::modifyTimer()
 	//				
 	timerSettings_apids->enablePaintHead();
 	timerSettings_apids->setTitle(_("Audio PIDs"), NEUTRINO_ICON_TIMER);
-//	timerSettings_apids->setHeadLine(true, true);
 	
 	//
 	timerSettings_apids->enablePaintFoot();
-//	timerSettings_apids->setFootLine(true, true);
 						
 	const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 						
@@ -1137,11 +1142,9 @@ int CTimerList::newTimer()
 		//
 		timerSettings->enablePaintHead();
 		timerSettings->setTitle(_("New timer"), NEUTRINO_ICON_TIMER);
-//		timerSettings->setHeadLine(true, true);
 		
 		//
 		timerSettings->enablePaintFoot();
-//		timerSettings->setFootLine(true, true);
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
@@ -1150,6 +1153,8 @@ int CTimerList::newTimer()
 		//
 		widget->addCCItem(timerSettings);
 	}
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("New timer"));
 	
 	timerSettings->clearItems();
 	
@@ -1187,10 +1192,10 @@ int CTimerList::newTimer()
 	CMenuOptionChooser* m3 = new CMenuOptionChooser(_("Repeat"), (int *)&timerNew.eventRepeat, TIMERLIST_REPEAT_OPTIONS, TIMERLIST_REPEAT_OPTION_COUNT, true, &notifier, CRCInput::RC_nokey, "", true);
 	
 	// channel
-	CMenuForwarder *m6 = new CMenuForwarder(_("Channel"), true, timerNew_channel_name.c_str(), this, CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_tv? "tv" : "radio");
+	m6 = new CMenuForwarder(_("Channel"), true, timerNew_channel_name.c_str(), this, CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_tv? "tv" : "radio");
 
 	// recording dir
-	CMenuForwarder* m7 = new CMenuForwarder(_("Recording directory"), true, timerNew.recordingDir, this, "recording_dir");
+	m7 = new CMenuForwarder(_("Recording directory"), true, timerNew.recordingDir, this, "recording_dir");
 
 	// sb mode
 	CMenuOptionChooser* m8 = new CMenuOptionChooser(_("SB mode"), &timerNew_standby_on, TIMERLIST_STANDBY_OPTIONS, TIMERLIST_STANDBY_OPTION_COUNT, /*false*/true);
@@ -1202,12 +1207,13 @@ int CTimerList::newTimer()
 	m9->setHidden(true);
 
 	// plugin
-	CMenuForwarder *m10 = new CMenuForwarder(_("Plugin"), true, timerNew.pluginName, this, "plugin_chooser");
+	m10 = new CMenuForwarder(_("Plugin"), true, timerNew.pluginName, this, "plugin_chooser");
 	m10->setHidden(true);
 
 	CTimerListNewNotifier notifier2((int *)&timerNew.eventType,
 					&timerNew.stopTime, m2, m6, m8, m9, m10, m7,
 					timerSettings_stopTime.getValue());
+					
 	CMenuOptionChooser *m0 = new CMenuOptionChooser(_("Timer typ"), (int *)&timerNew.eventType, TIMERLIST_TYPE_OPTIONS, TIMERLIST_TYPE_OPTION_COUNT, true, &notifier2);
 
 	timerSettings->addItem( m0);

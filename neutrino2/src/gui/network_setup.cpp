@@ -204,7 +204,7 @@ int CNetworkSettings::exec(CMenuTarget *parent, const std::string &actionKey)
 		getWlanList();
 		
 		scanforssid = true;
-		g_RCInput->postMsg(CRCInput::RC_ok);
+//		g_RCInput->postMsg(CRCInput::RC_ok);
 			
 		showMenu();
 		
@@ -255,6 +255,8 @@ void CNetworkSettings::showMenu()
 		widget->addCCItem(networkSettings);
 	}
 	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Network settings"));
+	
 	//
 	readNetworkSettings(g_settings.ifname);
 	
@@ -283,7 +285,7 @@ void CNetworkSettings::showMenu()
 
 	//key
 	CStringInputSMS *networkSettings_key = new CStringInputSMS(_("Key"), network_key.c_str());
-	CMenuForwarder *m10 = new CMenuForwarder(_("Key"), true, network_key.c_str(), networkSettings_key );
+	CMenuForwarder *m10 = new CMenuForwarder(_("Key"), true, network_key.c_str(), networkSettings_key);
 	m10->setHidden(!has_wireless);
 		
 	// encryption
@@ -449,7 +451,7 @@ void CNetworkSettings::showMenu()
 
 	networkSettings->addItem(new CMenuForwarder(_("Umount network volume"), true, NULL, new CNFSUmountGui()));
 	
-	if (scanforssid) networkSettings->selectItemByName("Network Name");
+//	if (scanforssid) networkSettings->selectItemByName("Network Name");
 	
 	//
 	widget->exec(NULL, "");
@@ -474,7 +476,7 @@ CIPChangeNotifier::CIPChangeNotifier(CMenuItem *m[4])
 
 bool CIPChangeNotifier::changeNotify(const std::string &locale, void *Data)
 {
-	dprintf(DEBUG_NORMAL, "CIPChangeNotifier::changeNotify\n");
+	dprintf(DEBUG_NORMAL, "CIPChangeNotifier::changeNotify: %s\n", locale.c_str());
 	
 	if(locale == _("IP address")) 
 	{
@@ -491,8 +493,25 @@ bool CIPChangeNotifier::changeNotify(const std::string &locale, void *Data)
 	{
 		CNetworkSettings::getInstance()->readNetworkSettings(g_settings.ifname);
 		
-		////
-		if (has_wireless) CNetworkSettings::getInstance()->getWlanList();
+		//
+		if (has_wireless) 
+		{
+			CNetworkSettings::getInstance()->getWlanList();
+
+			for (unsigned i = 0; i < networks.size(); ++i) 
+			{
+				menuItem[0]->addOption(networks[i].ssid.c_str());
+			}
+			
+			if (networks.size())
+			{
+				menuItem[0]->pulldown = true;
+				menuItem[0]->msg = CRCInput::RC_ok;
+				menuItem[0]->exec(/*CNetworkSettings::getInstance()*/NULL);
+			}
+			else
+				HintBox(_("Information"), _("No Networks found please scan again..."));
+		}
 		
 		dprintf(DEBUG_NORMAL, "CNetworkSetup::changeNotify: using %s, static %d\n", g_settings.ifname, CNetworkSettings::getInstance()->networkConfig->inet_static);
 		

@@ -722,14 +722,16 @@ CMenuOptionStringChooser::~CMenuOptionStringChooser()
 	options.clear();
 }
 
-void CMenuOptionStringChooser::addOption(const char * const value)
+void CMenuOptionStringChooser::addOption(const char * optionname, const int optionvalue)
 {
-	options.push_back(std::string(value));
+	dprintf(DEBUG_DEBUG, "CMenuOptionStringChooser::addOption: %s\n", optionname? optionname : "null");
+	
+	options.push_back(std::string(optionname));
 }
 
 int CMenuOptionStringChooser::exec(CMenuTarget *)
 {
-	dprintf(DEBUG_DEBUG, "CMenuOptionStringChooser::exec: (%s)\n", itemName.c_str());
+	dprintf(DEBUG_INFO, "CMenuOptionStringChooser::exec: (%s) options:%d\n", itemName.c_str(), (int)options.size());
 
 	bool wantsRepaint = false;
 	int ret = CMenuTarget::RETURN_REPAINT;
@@ -1184,10 +1186,9 @@ int CMenuForwarder::exec(CMenuTarget *target)
 	{
 		ret = jumpTarget->exec(target, actionKey);
 		
-		if(ret) 
+		if(ret && !option.empty()) 
 		{
-			setOption(jumpTarget->getValueString().c_str());
-			jumpTarget->clearValueString();
+			setOption(option.c_str());
 		}
 	}
 

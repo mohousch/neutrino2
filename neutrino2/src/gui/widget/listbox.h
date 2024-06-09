@@ -193,7 +193,7 @@ class CMenuItem
 		//
 		virtual void setChangeObserver(CChangeObserver* c){observ = c;};
 		virtual void enablePullDown(){pulldown = true;};
-		virtual void addOption(const char *opt, const int val = 0){};
+		virtual void addOption(const char *optionname, const int optionvalue = 0){};
 		////
 		virtual int getState(void){return state;};
 };
@@ -291,7 +291,7 @@ class CMenuOptionStringChooser : public CMenuItem
 		
 		virtual ~CMenuOptionStringChooser();
 
-		void addOption(const char * value);
+		void addOption(const char * optionname, const int optionvalue = 0);
 
 		int paint(bool selected, bool AfterPulldown = false);
 		int getHeight(void) const {if (hidden) return 0; else return height;}
@@ -346,6 +346,8 @@ class CMenuForwarder : public CMenuItem
 		CMenuForwarder(const char * const Text, const bool Active = true, const char* const Option = NULL, CMenuTarget * Target = NULL, const char* const ActionKey = NULL, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const char* const IconName = NULL, const char* const ItemIcon = NULL, const char* const Hint = NULL);
 		
 		virtual ~CMenuForwarder();
+		
+		void addOption(const char * optionname, const int optionvalue = 0){option = optionname? optionname : "";};
 		
 		int paint(bool selected = false, bool AfterPulldown = false);
 		int getHeight(void) const;

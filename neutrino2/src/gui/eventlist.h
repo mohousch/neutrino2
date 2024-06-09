@@ -136,6 +136,8 @@ class CEventFinderMenu : public CMenuTarget
                 std::string m_search_channelname;
                 t_channel_id * m_search_channel_id;
                 t_bouquet_id * m_search_bouquet_id;
+                CMenuForwarder * mf1;
+                
 		int showMenu(void);
 
         public:

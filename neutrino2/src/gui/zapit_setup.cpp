@@ -105,7 +105,8 @@ int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		CSelectChannelWidgetHandler = NULL;
 		
 		//
-		setValueString(g_settings.StartChannelTV.c_str());
+//		setValueString(g_settings.StartChannelTV.c_str());
+		m3->addOption(g_settings.StartChannelTV.c_str());
 		
 		return CMenuTarget::RETURN_REPAINT;
 	}
@@ -122,7 +123,8 @@ int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		CSelectChannelWidgetHandler = NULL;
 		
 		//
-		setValueString(g_settings.StartChannelRadio.c_str());
+//		setValueString(g_settings.StartChannelRadio.c_str());
+		m4->addOption(g_settings.StartChannelRadio.c_str());
 		
 		return CMenuTarget::RETURN_REPAINT;
 	}
@@ -176,7 +178,6 @@ void CZapitSetup::showMenu()
 		//
 		zapit->enablePaintHead();
 		zapit->setTitle(_("Start Channel settings"), NEUTRINO_ICON_ZAPIT);
-//		zapit->setHeadLine(true, true);
 
 		//
 		zapit->enablePaintFoot();
@@ -184,11 +185,12 @@ void CZapitSetup::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		zapit->setFootButtons(&btn);
-//		zapit->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(zapit);
 	}
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Start Channel settings"));
 	
 	// intros
 	zapit->addItem(new CMenuForwarder(_("back")));

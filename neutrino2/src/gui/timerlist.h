@@ -47,7 +47,7 @@ class CTimerList : public CMenuTarget
 		//
 		CWidget* timerlistWidget;
 		ClistBox *listBox;
-		CMenuItem *item;
+		CMenuItem *item, *m6, *m7, *m10;
 		CBox cFrameBox;
 		uint32_t sec_timer_id;
 		void paint();
