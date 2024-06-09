@@ -138,12 +138,18 @@ CLCDDisplay::CLCDDisplay()
 		printf("CLCDDisplay::CLCDDisplay: xres=%d, yres=%d, bpp=%d is_oled=%d", xres, yres, bpp, is_oled);
 	}
 	
+#ifdef USE_OPENGL
+	setSize(220, 176, 16);
+#else
 	setSize(xres, yres, bpp);
+#endif
 	available = true;
 }
 
 void CLCDDisplay::setSize(int w, int h, int b)
 {
+	printf("CLCDDisplay::setSize: xres=%d, yres=%d, bpp=%d", xres, yres, bpp);
+	
 	xres = w;
 	yres = h;
 	bpp = 8;
@@ -685,25 +691,23 @@ void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int
 {
 	unsigned int i;
 
-	// resize	
+	// resize
+	/*	
 	if (width != 0 || height != 0)
 	{
 		int x = 0;
 		int y = 0;
 		int ret = FH_ERROR_MALLOC;
-//		uint8_t *png_buffer = NULL;
 		int png_bpp = 0;
 		
 		// getsize
-		ret = fh_png_getsize(element->name.c_str(), &x, &y, INT_MAX, INT_MAX);
+//		ret = fh_png_getsize(element->name.c_str(), &x, &y, INT_MAX, INT_MAX);
 		
-		if (ret == FH_ERROR_OK)
+//		if (ret == FH_ERROR_OK)
 		{
 			//
-			element->width = x;
-			element->height = y;
-			
-//			png_buffer = (unsigned char *) malloc(x*y*4);
+//			element->width = x;
+//			element->height = y;
 			
 			// load png
 			ret = png_load_ext(element->name.c_str(), &element->buffer, &x, &y, &png_bpp);
@@ -733,6 +737,7 @@ void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int
 			}
 		}
 	}
+	*/
 	
 	// 
 	if ((element->buffer) && (element->height <= yres - top))
@@ -804,7 +809,7 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 						(height     <= lcd_height            )
 						)
 					{
-						printf("CLCDDisplay::load_png_element: %s %s %dx%dx%d, type %d\n", filename, width, height, bit_depth, color_type);
+						printf("CLCDDisplay::load_png_element: %s %dx%dx%d, type %d\n", filename, width, height, bit_depth, color_type);
 						
 						element->width = width;
 						element->height = height;
