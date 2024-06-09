@@ -97,6 +97,8 @@ class CLanguageSettings : public CMenuTarget, CChangeObserver
 class CFontSettings : public CMenuTarget
 {
 	private:
+		CMenuItem *m1;
+		
 		void showMenu();
 		
 	public:
@@ -123,6 +125,8 @@ class COSDTimingSettings : public CMenuTarget
 class COSDDiverses : public CMenuTarget
 {
 	private:
+		CMenuItem *m1;
+		
 		void showMenu();
 		
 	public:
@@ -148,6 +152,8 @@ class CSkinManager : public CMenuTarget
 class CSkinSettings : public CMenuTarget
 {
 	private:
+		ClistBox *skinSettings;
+		
 		int showMenu();
 		
 	public:

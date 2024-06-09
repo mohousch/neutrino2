@@ -48,14 +48,6 @@ const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
 	{ 1, _("yes") }
 };
 
-CAudioPlayerSettings::CAudioPlayerSettings()
-{
-}
-
-CAudioPlayerSettings::~CAudioPlayerSettings()
-{
-}
-
 int CAudioPlayerSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CAudioPlayerSettings::exec: actionKey: %s\n", actionKey.c_str());
@@ -71,10 +63,9 @@ int CAudioPlayerSettings::exec(CMenuTarget* parent, const std::string& actionKey
 		if (b.exec(g_settings.network_nfs_audioplayerdir))
 			strncpy(g_settings.network_nfs_audioplayerdir, b.getSelectedFile()->Name.c_str(), sizeof(g_settings.network_nfs_audioplayerdir) - 1);
 
-		hide();
-		showMenu();
+		m1->addOption(g_settings.network_nfs_audioplayerdir);
 		
-		return CMenuTarget::RETURN_EXIT;
+		return CMenuTarget::RETURN_REPAINT;
 	}
 	
 	showMenu();
@@ -113,7 +104,6 @@ void CAudioPlayerSettings::showMenu()
 		//
 		audioPlayerSettings->enablePaintHead();
 		audioPlayerSettings->setTitle(_("Audioplayer settings"), NEUTRINO_ICON_AUDIOPLAYER);
-//		audioPlayerSettings->setHeadLine(true, true);
 
 		//
 		audioPlayerSettings->enablePaintFoot();
@@ -121,11 +111,12 @@ void CAudioPlayerSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		audioPlayerSettings->setFootButtons(&btn);
-//		audioPlayerSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(audioPlayerSettings);
 	}
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Audioplayer settings"));
 	
 	// intros
 	audioPlayerSettings->addItem(new CMenuForwarder(_("back")));
@@ -139,7 +130,8 @@ void CAudioPlayerSettings::showMenu()
 	audioPlayerSettings->addItem(new CMenuOptionChooser(_("High decode priority"), &g_settings.audioplayer_highprio, MESSAGEBOX_NO_YES_OPTIONS, MESSAGEBOX_NO_YES_OPTION_COUNT, true ));
 
 	// start dir
-	audioPlayerSettings->addItem(new CMenuForwarder(_("Start dir."), true, g_settings.network_nfs_audioplayerdir, this, "audioplayerdir"));
+	m1 = new CMenuForwarder(_("Start dir."), true, g_settings.network_nfs_audioplayerdir, this, "audioplayerdir");
+	audioPlayerSettings->addItem(m1);
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);

@@ -61,14 +61,6 @@ const keyval PICTUREVIEWER_SCALING_OPTIONS[PICTUREVIEWER_SCALING_OPTION_COUNT] =
 	{ NONE  , _("none") }
 };
 
-CPictureViewerSettings::CPictureViewerSettings()
-{
-}
-
-CPictureViewerSettings::~CPictureViewerSettings()
-{
-}
-
 int CPictureViewerSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CPicTureViewerSettings::exec: actionKey: %s\n", actionKey.c_str());
@@ -91,11 +83,10 @@ int CPictureViewerSettings::exec(CMenuTarget* parent, const std::string& actionK
 		
 		if (b.exec(g_settings.network_nfs_picturedir))
 			strncpy(g_settings.network_nfs_picturedir, b.getSelectedFile()->Name.c_str(), sizeof(g_settings.network_nfs_picturedir)-1);
-
-		hide();
-		showMenu();
-		
-		return CMenuTarget::RETURN_EXIT;
+			
+		m1->addOption(g_settings.network_nfs_picturedir);
+			
+		return ret;
 	}
 	
 	showMenu();
@@ -133,7 +124,6 @@ void CPictureViewerSettings::showMenu()
 		//
 		PicViewerSettings->enablePaintHead();
 		PicViewerSettings->setTitle(_("Pictureviewer settings"), NEUTRINO_ICON_PICTUREVIEWER);
-//		PicViewerSettings->setHeadLine(true, true);
 
 		//
 		PicViewerSettings->enablePaintFoot();
@@ -141,11 +131,12 @@ void CPictureViewerSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		PicViewerSettings->setFootButtons(&btn);
-//		PicViewerSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(PicViewerSettings);
 	}
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Pictureviewer settings"));
 	
 	// intros
 	PicViewerSettings->addItem(new CMenuForwarder(_("back")));
@@ -162,7 +153,8 @@ void CPictureViewerSettings::showMenu()
 	PicViewerSettings->addItem(new CMenuOptionNumberChooser(_("Slideshow display time"), &g_settings.picviewer_slide_time, true, 0, 999));
 
 	// Pic Viewer Default Dir
-	PicViewerSettings->addItem(new CMenuForwarder(_("Start dir."), true, g_settings.network_nfs_picturedir, this, "picturedir"));
+	m1 = new CMenuForwarder(_("Start dir."), true, g_settings.network_nfs_picturedir, this, "picturedir");
+	PicViewerSettings->addItem(m1);
 	
 	//
 	widget->exec(NULL, "");
@@ -173,5 +165,4 @@ void CPictureViewerSettings::showMenu()
 		widget = NULL;
 	}
 }
-
 

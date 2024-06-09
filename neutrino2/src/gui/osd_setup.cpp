@@ -127,6 +127,8 @@ int COSDSettings::showMenu(void)
 		widget->addCCItem(osdSettings);
 	}
 	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("OSD"));
+	
 	// skin manager
 	osdSettings->addItem( new CMenuForwarder(_("Skin select"), true, NULL, new CSkinManager(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_THEMES));
 		
@@ -283,6 +285,8 @@ void COSDMenuColorSettings::showMenu()
 		//
 		widget->addCCItem(OSDmenuColorsSettings);
 	}
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Menu"));
 	
 	// intros
 	OSDmenuColorsSettings->addItem(new CMenuForwarder(_("back")));
@@ -558,6 +562,8 @@ void COSDInfoBarColorSettings::showMenu()
 		widget->addCCItem(OSDinfobarColorSettings);
 	}
 	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Infobar"));
+	
 	// intros
 	OSDinfobarColorSettings->addItem(new CMenuForwarder(_("back")));
 
@@ -711,6 +717,8 @@ int CLanguageSettings::showMenu()
 		widget->addCCItem(languageSettings);
 	}
 	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Language"));
+	
 	// intros
 	languageSettings->addItem(new CMenuForwarder(_("back")));
 	languageSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
@@ -820,10 +828,9 @@ int CFontSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 			CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
 		}
 		
-		hide();
-		showMenu();
+		m1->addOption(g_settings.font_file);
 		
-		return CMenuTarget::RETURN_EXIT;
+		return ret;
 	}
 		
 	showMenu();
@@ -873,6 +880,8 @@ void CFontSettings::showMenu()
 		widget->addCCItem(fontSettings);
 	}
 	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Font"));
+	
 	// intros
 	fontSettings->addItem(new CMenuForwarder(_("back")));
 	fontSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
@@ -881,7 +890,8 @@ void CFontSettings::showMenu()
 	fontSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// font name
-	fontSettings->addItem(new CMenuForwarder(_("Font name"), true, g_settings.font_file, this, "select_font"));
+	m1 = new CMenuForwarder(_("Font name"), true, g_settings.font_file, this, "select_font");
+	fontSettings->addItem(m1);
 	
 	// font scaling
 	fontSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Font")));
@@ -968,6 +978,8 @@ void COSDTimingSettings::showMenu()
 		widget->addCCItem(osdTimingSettings);
 	}
 	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Timing"));
+	
 	// intros
 	osdTimingSettings->addItem(new CMenuForwarder(_("back")));
 	osdTimingSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
@@ -1025,10 +1037,9 @@ int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 			dprintf(DEBUG_NORMAL, "COSDDiverses::exec: new logos dir %s\n", b.getSelectedFile()->Name.c_str());
 		}
 
-		hide();
-		showMenu();
+		m1->addOption(g_settings.logos_dir.c_str());
 		
-		return CMenuTarget::RETURN_EXIT;
+		return ret;
 	}
 	
 	showMenu();
@@ -1107,6 +1118,8 @@ void COSDDiverses::showMenu()
 		widget->addCCItem(osdDiverseSettings);
 	}
 	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Misc settings"));
+	
 	// intros
 	osdDiverseSettings->addItem(new CMenuForwarder(_("back")));
 	osdDiverseSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
@@ -1138,7 +1151,8 @@ void COSDDiverses::showMenu()
 	osdDiverseSettings->addItem(new CMenuOptionChooser(_("Channel Logo"), &g_settings.logos_show_logo, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
 	
 	// logos dir
-	osdDiverseSettings->addItem( new CMenuForwarder(_("logos Dir"), true, g_settings.logos_dir.c_str(), this, "logos_dir" ) );
+	m1 = new CMenuForwarder(_("logos Dir"), true, g_settings.logos_dir.c_str(), this, "logos_dir" );
+	osdDiverseSettings->addItem(m1);
 	
 	//
 	osdDiverseSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
@@ -1215,6 +1229,8 @@ int CSkinManager::showMenu()
 		//
 		widget->addCCItem(skinMenu);
 	}
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Skin Select"));
 	
 	//
 	std::string skinPath = CONFIGDIR "/skins";
@@ -1318,7 +1334,7 @@ int CSkinSettings::showMenu()
 	//
 	CMenuItem* item = NULL;
 	CWidget* widget = NULL;
-	ClistBox* skinSettings = NULL;
+//	ClistBox* skinSettings = NULL;
 	
 	widget = CNeutrinoApp::getInstance()->getWidget("skinstyleselectionsetup");
 	
@@ -1353,6 +1369,8 @@ int CSkinSettings::showMenu()
 		//
 		widget->addCCItem(skinSettings);
 	}
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Skin Style"));
 	
 	// intros
 	skinSettings->addItem(new CMenuForwarder(_("back")));
@@ -1458,15 +1476,16 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 				
 				if (overwrite) CNeutrinoApp::getInstance()->saveSkinConfig(skinConfig.c_str());
 			}
+			
+			//
+			CMenuItem *item = new CMenuForwarder(nameInput->getValueString().c_str());
+			skinSettings->addItem(item);
 
 			file_name.clear();
-
 			delete nameInput;
 			nameInput = NULL;
 
-			hide();
-			showMenu();
-			return CMenuTarget::RETURN_EXIT_ALL;
+			return RETURN_REPAINT;
 		}
 		else
 		{
@@ -1508,7 +1527,7 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	return ret;
 }
 
-// personalize
+//// personalize
 int CPersonalisation::exec(CMenuTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CPersonalisation::exec: actionKey:%s\n", actionKey.c_str());
@@ -1567,6 +1586,8 @@ int CPersonalisation::showMenu(void)
 		//
 		widget->addCCItem(personalizeSettings);
 	}
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Personalisation"));
 	
 	// intros
 	personalizeSettings->addItem(new CMenuForwarder(_("back")));

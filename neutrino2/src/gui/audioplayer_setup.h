@@ -36,11 +36,13 @@
 class CAudioPlayerSettings : public CMenuTarget
 {
 	private:
+		CMenuItem *m1;
+		
 		void showMenu();
 		
 	public:
-		CAudioPlayerSettings();
-		~CAudioPlayerSettings();
+		CAudioPlayerSettings(){};
+		~CAudioPlayerSettings(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };

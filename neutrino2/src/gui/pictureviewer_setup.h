@@ -36,11 +36,13 @@
 class CPictureViewerSettings : public CMenuTarget
 {
 	private:
+		CMenuItem *m1;
+		
 		void showMenu();
 		
 	public:
-		CPictureViewerSettings();
-		~CPictureViewerSettings();
+		CPictureViewerSettings(){};
+		virtual ~CPictureViewerSettings(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };

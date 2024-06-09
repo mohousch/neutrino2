@@ -132,6 +132,8 @@ class CXMLTVConfigNotifier : public CChangeObserver
 class CEPGSettings : public CMenuTarget, CChangeObserver
 {
 	private:
+		CMenuItem *m1;
+		
 		void showMenu();
 		
 	public:

@@ -36,12 +36,14 @@
 class CRecordingSettings : public CMenuTarget, CChangeObserver
 {
 	private:
+		CMenuItem *fRecDir;
+		
 		void showMenu();
-		bool changeNotify(const std::string& OptionName, void *);
+		bool changeNotify(const std::string &OptionName, void *);
 		
 	public:
-		CRecordingSettings();
-		~CRecordingSettings();
+		CRecordingSettings(){};
+		virtual ~CRecordingSettings(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };

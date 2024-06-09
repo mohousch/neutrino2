@@ -36,11 +36,13 @@
 class CMoviePlayerSettings : public CMenuTarget
 {
 	private:
+		CMenuItem *m1;
+		
 		void showMenu();
 		
 	public:
-		CMoviePlayerSettings();
-		~CMoviePlayerSettings();
+		CMoviePlayerSettings(){};
+		~CMoviePlayerSettings(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };

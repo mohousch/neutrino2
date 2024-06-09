@@ -40,14 +40,6 @@
 #include <system/helpers.h>
 
 
-CMoviePlayerSettings::CMoviePlayerSettings()
-{
-}
-
-CMoviePlayerSettings::~CMoviePlayerSettings()
-{
-}
-
 int CMoviePlayerSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CMoviePlayerSettings::exec: actionKey: %s\n", actionKey.c_str());
@@ -65,10 +57,9 @@ int CMoviePlayerSettings::exec(CMenuTarget* parent, const std::string& actionKey
 		if (b.exec(g_settings.network_nfs_moviedir))
 			strncpy(g_settings.network_nfs_moviedir, b.getSelectedFile()->Name.c_str(), sizeof(g_settings.network_nfs_moviedir)-1);
 
-		hide();
-		showMenu();
+		m1->addOption(g_settings.network_nfs_moviedir);
 		
-		return CMenuTarget::RETURN_EXIT;
+		return ret;
 	}
 	
 	showMenu();
@@ -106,7 +97,6 @@ void CMoviePlayerSettings::showMenu()
 		//
 		moviePlayerSettings->enablePaintHead();
 		moviePlayerSettings->setTitle(_("Movieplayer settings"), NEUTRINO_ICON_MOVIEPLAYER);
-//		moviePlayerSettings->setHeadLine(true, true);
 
 		//
 		moviePlayerSettings->enablePaintFoot();
@@ -114,11 +104,12 @@ void CMoviePlayerSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		moviePlayerSettings->setFootButtons(&btn);
-//		moviePlayerSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(moviePlayerSettings);
 	}
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Movieplayer settings"));
 	
 	// intros
 	moviePlayerSettings->addItem(new CMenuForwarder(_("back")));
@@ -129,7 +120,8 @@ void CMoviePlayerSettings::showMenu()
 	moviePlayerSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	// multiformat Dir
-	moviePlayerSettings->addItem(new CMenuForwarder(_("Start dir."), true, g_settings.network_nfs_moviedir, this, "moviedir") ); 
+	m1 = new CMenuForwarder(_("Start dir."), true, g_settings.network_nfs_moviedir, this, "moviedir");
+	moviePlayerSettings->addItem(m1); 
 	
 	//
 	widget->exec(NULL, "");

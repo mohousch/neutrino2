@@ -663,11 +663,10 @@ int CEPGSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 				CNeutrinoApp::getInstance()->sendSectionsdConfig();
 			}
 		}
-
-		hide();
-		showMenu();
 		
-		return CMenuTarget::RETURN_EXIT_ALL;
+		m1->addOption(g_settings.epg_dir.c_str());
+
+		return ret;
 	}
 	else if (actionKey == "savesettings")
 	{
@@ -774,7 +773,8 @@ void CEPGSettings::showMenu()
         miscSettingsEPG->addItem(new CMenuForwarder(_("Max. Events"), true, g_settings.epg_max_events.c_str(), miscSettings_epg_max_events));
 
 	// epg save dir
-        miscSettingsEPG->addItem(new CMenuForwarder(_("EPG save path"), true, g_settings.epg_dir.c_str(), this, "epgdir"));
+	m1 = new CMenuForwarder(_("EPG save path"), true, g_settings.epg_dir.c_str(), this, "epgdir");
+        miscSettingsEPG->addItem(m1);
 	
 	// epglang
 	miscSettingsEPG->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Preferred EPG language")));

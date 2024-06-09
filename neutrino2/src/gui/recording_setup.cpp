@@ -64,14 +64,6 @@ extern char recDir[255];			// defined in neutrino.cpp
 extern char timeshiftDir[255];			// defined in neutrino.cpp
 extern bool autoshift;				// defined in neutrino.cpp
 
-CRecordingSettings::CRecordingSettings()
-{
-}
-
-CRecordingSettings::~CRecordingSettings()
-{
-}
-
 int CRecordingSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CRecordingSettings::exec: actionKey: %s\n", actionKey.c_str());
@@ -114,11 +106,10 @@ int CRecordingSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 				dprintf(DEBUG_NORMAL, "CRecordingSettings::exec: New timeshift dir: %s\n", timeshiftDir);
 			}
 		}
-
-		hide();
-		showMenu();
 		
-		return CMenuTarget::RETURN_EXIT;
+		fRecDir->addOption(g_settings.network_nfs_recordingdir);
+		
+		return ret;
 	}
 	
 	showMenu();
@@ -191,6 +182,8 @@ void CRecordingSettings::showMenu()
 		widget->addCCItem(recordingSettings);
 	}
 	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Recording settings"));
+	
 	//
 	int rec_pre = 0;
 	int rec_post = 0;
@@ -233,7 +226,7 @@ void CRecordingSettings::showMenu()
 	CMenuOptionChooser* oj13 = new CMenuOptionChooser(_("Save in channel dir"), &g_settings.recording_save_in_channeldir, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
 
 	//RecDir
-	CMenuForwarder* fRecDir = new CMenuForwarder(_("Recording directory"), true, g_settings.network_nfs_recordingdir, this, "recordingdir");
+	fRecDir = new CMenuForwarder(_("Recording directory"), true, g_settings.network_nfs_recordingdir, this, "recordingdir");
 
 	// intros
 	recordingSettings->addItem(new CMenuForwarder(_("back")));
