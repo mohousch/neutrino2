@@ -434,7 +434,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 		}
 	}
 	
-	paint(true);
+//	paint(true);
 	
 	if(observ)
 		wantsRepaint = observ->changeNotify(itemName, optionValue);
@@ -613,7 +613,7 @@ int CMenuOptionNumberChooser::exec(CMenuTarget*)
 			(*optionValue)++;
 	}
 	
-	paint(true);
+//	paint(true);
 	
 	if(observ)
 		observ->changeNotify(itemName, optionValue);
@@ -731,7 +731,7 @@ void CMenuOptionStringChooser::addOption(const char * optionname, const int opti
 
 int CMenuOptionStringChooser::exec(CMenuTarget *)
 {
-	dprintf(DEBUG_INFO, "CMenuOptionStringChooser::exec: (%s) options:%d\n", itemName.c_str(), (int)options.size());
+	dprintf(DEBUG_DEBUG, "CMenuOptionStringChooser::exec: (%s) options:%d\n", itemName.c_str(), (int)options.size());
 
 	bool wantsRepaint = false;
 	int ret = CMenuTarget::RETURN_REPAINT;
@@ -849,7 +849,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		}
 	}
 
-	paint(true, true);
+//	paint(true, true);
 	
 	if(observ) 
 		wantsRepaint = observ->changeNotify(itemName.c_str(), optionValue);

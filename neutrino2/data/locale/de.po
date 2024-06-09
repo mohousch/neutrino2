@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-06-03 00:15+0200\n"
+"POT-Creation-Date: 2024-06-09 14:05+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1501,6 +1501,10 @@ msgstr "Kein CAM im Steckplatz"
 
 msgid "No Caps"
 msgstr "Kleine Schreibung"
+
+#, fuzzy
+msgid "No Networks found please scan again..."
+msgstr "Jetzt Netzwerk einrichten, bitte warten..."
 
 msgid ""
 "No channels were found!\n"

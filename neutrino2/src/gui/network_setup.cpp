@@ -135,9 +135,9 @@ void CNetworkSettings::commitNetworkSettings()
 	
 	networkConfig->automatic_start = (network_automatic_start == 1)? true : false;
 	networkConfig->inet_static = (network_dhcp == 1)? false : true;
-	networkConfig->hostname = network_hostname.c_str();
-	networkConfig->ssid = network_ssid.c_str();
-	networkConfig->key = network_key.c_str();
+	networkConfig->hostname = network_hostname.empty()? "" : network_hostname.c_str();
+	networkConfig->ssid = network_ssid.empty()? "" : network_ssid.c_str();
+	networkConfig->key = network_key.empty()? "" : network_key.c_str();
 	networkConfig->encryption = network_encryption? "WPA2" : "WPA";
 	
 	networkConfig->commitConfig();
