@@ -436,9 +436,9 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	
 	fontRenderer->InitFontCache();
 
-	fonts.menu        = fontRenderer->getFont(fontname,  style_name , 60);
-	fonts.time        = fontRenderer->getFont(fontname2, style_name2, 40);
-	fonts.channelname = fontRenderer->getFont(fontname3, style_name3, 60);
+	fonts.menu        = fontRenderer->getFont(fontname,  style_name , 40);
+	fonts.time        = fontRenderer->getFont(fontname2, style_name2, 35);
+	fonts.channelname = fontRenderer->getFont(fontname3, style_name3, 30);
 	fonts.menutitle   = fonts.channelname;
 	
 	has_lcd = true;

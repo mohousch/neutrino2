@@ -41,6 +41,7 @@ class CNetworkSettings : public CMenuTarget, CChangeObserver
 	private:
 		CWidget* widget;
 		ClistBox* networkSettings;
+		CMenuItem *m10;
 	
 		CIPChangeNotifier* MyIPChanger;
 		

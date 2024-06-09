@@ -204,11 +204,23 @@ int CNetworkSettings::exec(CMenuTarget *parent, const std::string &actionKey)
 		getWlanList();
 		
 		scanforssid = true;
-//		g_RCInput->postMsg(CRCInput::RC_ok);
 			
 		showMenu();
 		
 		return RETURN_EXIT_ALL;
+	}
+	else if (actionKey == "key")
+	{
+		CStringInputSMS *networkSettings_key = new CStringInputSMS(_("Key"), network_key.c_str());
+		
+		networkSettings_key->exec(this, "");
+		
+		m10->addOption(networkSettings_key->getValueString().c_str());
+		
+		delete networkSettings_key;
+		networkSettings_key = NULL;
+		
+		return ret;
 	}
 	
 	showMenu();
@@ -284,9 +296,11 @@ void CNetworkSettings::showMenu()
 	}
 
 	//key
-	CStringInputSMS *networkSettings_key = new CStringInputSMS(_("Key"), network_key.c_str());
-	CMenuForwarder *m10 = new CMenuForwarder(_("Key"), true, network_key.c_str(), networkSettings_key);
+	//CStringInputSMS *networkSettings_key = new CStringInputSMS(_("Key"), network_key.c_str());
+	//CMenuForwarder *m10 = new CMenuForwarder(_("Key"), true, network_key.c_str(), networkSettings_key);
+	m10 = new CMenuForwarder(_("Key"), true, network_key.c_str(), this, "key");
 	m10->setHidden(!has_wireless);
+	//m10->addOption(networkSettings_key->getStringValue8).c_str());
 		
 	// encryption
 	CMenuOptionChooser * m11 = new CMenuOptionChooser(_("Security"), &network_encryption, OPTIONS_WLAN_SECURITY_OPTIONS, OPTIONS_WLAN_SECURITY_OPTION_COUNT, true);
@@ -450,8 +464,6 @@ void CNetworkSettings::showMenu()
 	networkSettings->addItem(new CMenuForwarder(_("Mount network volume"), true, NULL, new CNFSMountGui()));
 
 	networkSettings->addItem(new CMenuForwarder(_("Umount network volume"), true, NULL, new CNFSUmountGui()));
-	
-//	if (scanforssid) networkSettings->selectItemByName("Network Name");
 	
 	//
 	widget->exec(NULL, "");
