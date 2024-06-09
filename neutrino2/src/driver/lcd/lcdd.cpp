@@ -622,6 +622,8 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	if(!has_lcd) 
 		return;
 		
+	printf("CLCD::showTextScreen: big:%s small:%s showmode:0x%x wakeup:%s centered:%s\n", big.empty()? "null" : big.c_str(), small.empty()? "null" : small.c_str(), showmode, perform_wakeup? "true" : "false", centered? "centered" : "not centered");
+		
 #if defined (ENABLE_4DIGITS)
 	int len = big.length();
 	
@@ -919,6 +921,8 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 {
 	if (!has_lcd)
 		return;
+		
+	printf("CLCD::showServicename: name:%s\n", name.empty()? "null" : name.c_str());
 
 	int showmode = g_settings.lcd_epgmode;
 
@@ -958,6 +962,8 @@ void CLCD::setEPGTitle(const std::string title)
 
 void CLCD::setMovieInfo(const AUDIOMODES playmode, const std::string big, const std::string small, const bool centered)
 {
+	printf("CLCD::setMovieInfo: playmode:%d big:%s small:%s centered:%s\n", playmode, big.empty()? "null" : big.c_str(), small.empty()? "null" : small.c_str(), centered? "centered" : "not centered");
+	
 	int showmode = g_settings.lcd_epgmode;
 	
 	showmode |= showmode; // take only the separator line from the config
@@ -1083,7 +1089,6 @@ void CLCD::showRCLock(int duration)
 		return;
 	
 #ifdef ENABLE_LCD
-//	std::string icon = DATADIR "/lcdd/icons/rclock.raw";
 	raw_display_t curr_screen = new unsigned char[display->raw_buffer_size];
 
 	// Saving the whole screen is not really nice since the clock is updated
@@ -1260,6 +1265,8 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 {
 	if(!has_lcd) 
 		return;
+		
+	printf("CLCD::showMenuText: position:%d text:%s highlight:%d\n", position, text? text : "null", highlight);
 	
 #if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 	if (mode != MODE_MENU_UTF8)
@@ -1322,6 +1329,8 @@ void CLCD::showAudioTrack(const std::string &artist, const std::string &title, c
 {
 	if(!has_lcd) 
 		return;
+		
+	printf("CLCD::showAudioTrack: artist:%s title:%s album:%s pos:%d\n", artist.empty()? "null" : artist.c_str(), title.empty()? "null" : title.c_str(), album.empty()? "null" : album.c_str(), pos);
 	
 	if (mode != MODE_AUDIO) 
 		return;
@@ -1479,7 +1488,7 @@ void CLCD::drawBanner()
 	display->load_screen_element(&(element[ELEMENT_BANNER]), 0, 0);
 	
 	if (element[ELEMENT_BANNER].width < lcd_width)
-		display->draw_fill_rect (element[ELEMENT_BANNER].width-1, -1, lcd_width, element[ELEMENT_BANNER].height-1, CLCDDisplay::PIXEL_ON);
+		display->draw_fill_rect(element[ELEMENT_BANNER].width - 1, -1, lcd_width, element[ELEMENT_BANNER].height - 1, CLCDDisplay::PIXEL_ON);
 #endif
 }
 
@@ -1500,7 +1509,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 		case MODE_TVRADIO:
 			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)
-				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
+				showServicename(g_RemoteControl->getCurrentChannelName().c_str(), true, g_RemoteControl->getCurrentChannelNumber().c_str());
 			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
 				showTime(true);
 			
@@ -1550,7 +1559,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 		case MODE_TVRADIO:
 			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)	
-				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
+				showServicename(g_RemoteControl->getCurrentChannelName().c_str(), true, g_RemoteControl->getCurrentChannelNumber().c_str());
 			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
 				showTime(true);
 			
@@ -1684,9 +1693,10 @@ void CLCD::setMode(const MODES m, const char * const title)
 			break;
 		}
 		
-		// servicename / title /
+		// servicename / title / epg
 		if (mode == MODE_TVRADIO)
-			showServicename(servicename);
+			//showServicename(servicename);
+			showServicename(g_RemoteControl->getCurrentChannelName().c_str());
 		else // MODE_MOVIE
 		{
 			setMovieInfo(movie_playmode, movie_big, movie_small, movie_centered);

@@ -673,7 +673,7 @@ void CMoviePlayerGui::PlayFile(void)
 			show_bookmark = false;
 	}
 						
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8);	
+	CLCD::getInstance()->setMode(CLCD::MODE_MOVIE);	
 
 	// bookmarks menu
 	timeb current_time;

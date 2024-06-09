@@ -119,6 +119,8 @@ int CPluginList::showMenu()
 		pWidget->setPosition(plist->getWindowsPos().iX, plist->getWindowsPos().iY, plist->getWindowsPos().iWidth, plist->getWindowsPos().iHeight);
 		pWidget->addCCItem(plist);
 	}
+	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Plugins"));
 
 	//
 	for(unsigned int count = 0; count < (unsigned int)g_PluginList->getNumberOfPlugins(); count++)
