@@ -1293,7 +1293,7 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 		
 	printf("CLCD::showMenuText: position:%d text:%s highlight:%d\n", position, text? text : "null", highlight);
 	
-#if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
+#if defined (ENABLE_VFD)
 	if (mode != MODE_MENU_UTF8)
 		return;
 							
