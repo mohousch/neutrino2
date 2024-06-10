@@ -1536,7 +1536,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 		case MODE_TVRADIO:
 			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)
-				showServicename(g_RemoteControl->getCurrentChannelName().c_str(), true, g_RemoteControl->getCurrentChannelNumber().c_str());
+				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
 			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
 				showTime(true);
 			
@@ -1586,7 +1586,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 		case MODE_TVRADIO:
 			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)	
-				showServicename(g_RemoteControl->getCurrentChannelName().c_str(), true, g_RemoteControl->getCurrentChannelNumber().c_str());
+				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
 			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
 				showTime(true);
 			
@@ -1725,7 +1725,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		// servicename / title / epg
 		if (mode == MODE_TVRADIO)
 			//showServicename(servicename);
-			showServicename(g_RemoteControl->getCurrentChannelName().c_str());
+			showServicename(g_RemoteControl->getCurrentChannelName());
 		else // MODE_MOVIE
 		{
 			setMovieInfo(movie_playmode, movie_big, movie_small, movie_centered);
