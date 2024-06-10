@@ -138,7 +138,7 @@ int fh_jpeg_load_local(const char *filename,unsigned char **buffer,int* x,int* y
 	return(FH_ERROR_OK);
 }
 
-int fh_jpeg_load(const char *filename,unsigned char **buffer,int* x,int* y)
+int fh_jpeg_load(const char *filename,unsigned char **buffer,int *x,int *y)
 {
 	int ret = FH_ERROR_FILE;
 	

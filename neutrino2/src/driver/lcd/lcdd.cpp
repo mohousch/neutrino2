@@ -1255,7 +1255,7 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 
 		if (draw)
 		{
-			display->draw_rectangle (left-2, top-2, left+width+2, top+height+1, CLCDDisplay::PIXEL_ON, CLCDDisplay::PIXEL_OFF);
+			display->draw_rectangle (left - 2, top - 2, left + width + 2, top + height + 1, CLCDDisplay::PIXEL_ON, CLCDDisplay::PIXEL_OFF);
 
 			if (perc == (unsigned char) -1)
 			{

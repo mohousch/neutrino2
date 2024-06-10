@@ -50,6 +50,11 @@
 #define LCD_IOCTL_REVERSE       (4 |LCDSET)
 #define LCD_IOCTL_SRV           (10|LCDSET)
 
+#define LED_IOCTL_BRIGHTNESS_NORMAL 		0X10
+#define LED_IOCTL_BRIGHTNESS_DEEPSTANDBY 	0X11
+#define LED_IOCTL_BLINKING_TIME 		0X12
+#define LED_IOCTL_SET_DEFAULT 			0x13
+
 
 typedef unsigned char * raw_display_t;
 
@@ -78,10 +83,12 @@ class CLCDDisplay
 		////
 		raw_display_t _buffer;
 		int 	      _stride;
+		////
 		raw_display_t surface_data;
 		int 	      surface_stride;
 		int 	      surface_bpp, surface_bypp;
 		int 	      surface_buffer_size;
+		////
 		int 	      real_offset;
 		int 	      real_yres;
 	
@@ -91,6 +98,13 @@ class CLCDDisplay
 			PIXEL_ON  = LCD_PIXEL_ON,
 			PIXEL_OFF = LCD_PIXEL_OFF,
 			PIXEL_INV = LCD_PIXEL_INV
+		};
+		
+		enum
+		{
+			LED_BRIGHTNESS = 0,
+			LED_DEEPSTANDBY,
+			LED_BLINKINGTIME
 		};
 	
 		CLCDDisplay();
@@ -123,8 +137,10 @@ class CLCDDisplay
 		bool dump_png(const char * const filename);
 		////
 		void setSize(int w, int h, int b);
+		////
 		int setLCDContrast(int contrast);
 		int setLCDBrightness(int brightness);
+		int setLED(int value, int option);
 		void setInverted( unsigned char );
 		void setFlipped(bool);
 		bool isOled() const { return !!is_oled; };

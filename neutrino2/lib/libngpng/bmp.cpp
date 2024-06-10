@@ -289,7 +289,7 @@ int fh_bmp_getsize(const char *name,int *x,int *y, int wanted_width, int wanted_
 	
 	read(fd, size, 4);
 	*x = size[0] + (size[1]<<8) + (size[2]<<16) + (size[3]<<24);
-//	*x-=1;
+
 	read(fd, size, 4);
 	*y = size[0] + (size[1]<<8) + (size[2]<<16) + (size[3]<<24);
 	

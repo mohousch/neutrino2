@@ -289,3 +289,141 @@ unsigned char *resize(unsigned char * origin, int ox, int oy, int dx, int dy, Sc
 	return(cr);
 }
 
+void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, int transp, int m_transparent, bool alpha)
+{
+	printf("convertRGB2FB:\n");
+	
+	unsigned long i;
+	unsigned int * fbbuff;
+	unsigned long count = x*y;
+
+	fbbuff = (unsigned int *) malloc(count * sizeof(unsigned int));
+	
+	if(fbbuff == NULL)
+	{
+		printf("convertRGB2FB: Error: malloc\n");
+		return NULL;
+	}
+	
+	if(alpha)
+	{
+		for(i = 0; i < count ; i++)
+			fbbuff[i] = ((rgbbuff[i*4 + 3] << 24) & 0xFF000000) | 
+				((rgbbuff[i*4]     << 16) & 0x00FF0000) | 
+				((rgbbuff[i*4 + 1] <<  8) & 0x0000FF00) | 
+				((rgbbuff[i*4 + 2])       & 0x000000FF);
+	}
+	else
+	{
+		switch (m_transparent) 
+		{
+			case TM_BLACK:
+				for(i = 0; i < count ; i++) 
+				{
+					transp = 0;
+					if(rgbbuff[i*3] || rgbbuff[i*3 + 1] || rgbbuff[i*3 + 2])
+						transp = 0xFF;
+					fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3+1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
+				}
+				break;
+							
+			case TM_INI:
+				for(i = 0; i < count ; i++)
+					fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
+				break;
+							
+			case TM_NONE:
+			default:
+				for(i = 0; i < count ; i++)
+					fbbuff[i] = 0xFF000000 | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
+				break;
+		}
+	}
+
+	return (void *) fbbuff;
+}
+
+uint32_t * getImage(const std::string &name, int width, int height, int transp)
+{
+	printf("getImage:\n");
+	
+	int x = 0;
+	int y = 0;
+	CFormathandler * fh = NULL;
+	unsigned char * buffer = NULL;
+	uint32_t * ret = NULL;
+	int load_ret = FH_ERROR_MALLOC;
+	int _bpp = 0;
+
+	//
+  	fh = fh_getsize(name.c_str(), &x, &y, INT_MAX, INT_MAX); // unscaled
+	
+  	if (fh) 
+	{
+		buffer = (unsigned char *) malloc(x*y*4);
+		
+		if (buffer == NULL) 
+		{
+		  	printf("getImage: Error: malloc\n");
+		  	return NULL;
+		}
+		
+		if ((name.find(".png") == (name.length() - 4)) && (fh_png_id(name.c_str())))
+			load_ret = png_load_ext(name.c_str(), &buffer, &x, &y, &_bpp);
+		else if (name.find(".svg") == (name.length() - 4))
+		{
+			load_ret = svg_load_resize(name.c_str(), &buffer, &x, &y, width, height);
+			_bpp = 4;
+		}
+		else
+			load_ret = fh->get_pic(name.c_str(), &buffer, &x, &y);
+
+		if (load_ret == FH_ERROR_OK) 
+		{
+			// resize
+			if(x != width || y != height)
+			{
+				// alpha
+				if(_bpp == 4)
+				{
+					buffer = resize(buffer, x, y, width, height, COLOR, NULL, true);
+				}
+				else
+				{
+					buffer = resize(buffer, x, y, width, height, COLOR);
+				}
+				
+				x = width ;
+				y = height;
+			} 
+			
+			// convert RGB2FB
+			if( name.find(".png") == (name.length() - 4) )
+			{
+				// alpha
+				if (_bpp == 4)
+					ret = (uint32_t *) convertRGB2FB(buffer, x, y, 0, TM_INI, true); // TM_INI
+				else
+					ret = (uint32_t *)convertRGB2FB(buffer, x, y, transp); // TM_BLACK
+			}
+			else
+				ret = (uint32_t *)convertRGB2FB(buffer, x, y, transp, TM_NONE); //TM_NONE
+			
+			free(buffer);
+		} 
+		else 
+		{
+	  		printf("Error decoding file %s\n", name.c_str ());
+	  		free (buffer);
+	  		buffer = NULL;
+		}
+  	} 
+	else
+	{
+		printf("getImage: Error open file %s\n", name.c_str ());
+	}
+
+	return ret;
+}
+
+

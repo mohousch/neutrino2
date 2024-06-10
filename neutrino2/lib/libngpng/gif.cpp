@@ -90,13 +90,12 @@ int fh_gif_load(const char *name,unsigned char **buffer,int* /*xp*/,int* /*yp*/)
 				py=gft->Image.Height;
 				lb=(unsigned char*)malloc(px*3);
 				slb=(unsigned char*) malloc(px);
-//		printf("reading...\n");
+
 				if(lb!=NULL && slb!=NULL)
 				{
 					cmap=(gft->Image.ColorMap ? gft->Image.ColorMap : gft->SColorMap);
 					cmaps=cmap->ColorCount;
 
-//					ibxs=ibxs*3;
 					fbptr=*buffer;
 					if(!(gft->Image.Interlace))
 					{

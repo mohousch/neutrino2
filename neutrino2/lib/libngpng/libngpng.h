@@ -36,6 +36,14 @@
 #define FH_ERROR_FORMAT 2	/* file format error */
 #define FH_ERROR_MALLOC 3	/* error during malloc */
 
+enum 
+{
+	TM_EMPTY  = 0,
+	TM_NONE   = 1,
+	TM_BLACK  = 2,
+	TM_INI    = 3
+};
+
 enum ScalingMode
 {
 	NONE = 0,
@@ -60,6 +68,8 @@ void add_format(int (*picsize)(const char *, int *, int*, int, int), int (*picre
 CFormathandler *fh_getsize(const char * name, int * x, int * y, int width_wanted, int height_wanted);
 void getSize(const std::string &name, int * width, int * height, int * nbpp);
 unsigned char* resize(unsigned char * origin, int ox, int oy, int dx, int dy, ScalingMode type, unsigned char * dst = NULL, bool alpha = false);
+void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, int transp = 0xFF, int m_transparent = TM_BLACK, bool alpha = false);
+uint32_t *getImage(const std::string &name, int width, int height, int transp = 0xFF);
 
 #endif
 

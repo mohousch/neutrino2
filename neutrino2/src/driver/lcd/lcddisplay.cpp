@@ -117,6 +117,7 @@ CLCDDisplay::CLCDDisplay()
 			fclose(f);
 			
 			f = fopen("/proc/stb/lcd/yres", "r");
+			
 			if (f)
 			{
 				if (fscanf(f, "%x", &tmp) == 1)
@@ -158,8 +159,10 @@ void CLCDDisplay::setSize(int w, int h, int b)
 	
 	real_offset = 0;
 	real_yres = yres;
+	
 	if (yres == 32)
 		real_offset = 16;
+		
 	if (yres < 64)
 		yres = 48;
 
@@ -168,14 +171,17 @@ void CLCDDisplay::setSize(int w, int h, int b)
 		case 8:
 			surface_bypp = 1;
 			break;
+			
 		case 15:
 		case 16:
 			surface_bypp = 2;
 			break;
+			
 		case 24:		// never use 24bit mode
 		case 32:
 			surface_bypp = 4;
 			break;
+			
 		default:
 			surface_bypp = (bpp + 7)/8;
 	}
@@ -271,6 +277,33 @@ int CLCDDisplay::setLCDBrightness(int brightness)
 	return(0);
 }
 
+int CLCDDisplay::setLED(int value, int option)
+{
+	switch (option)
+	{
+		case LED_BRIGHTNESS:
+			printf("CLCDDisplay::setLED: NormalState %d", value);
+			if (ioctl(fd, LED_IOCTL_BRIGHTNESS_NORMAL, (unsigned char)value) < 0)
+				printf("CLCDDisplay::setLED: can't set led brightness");
+			break;
+			
+		case LED_DEEPSTANDBY:
+			printf("CLCDDisplay::setLED: linkingTime %d", value);
+			if (ioctl(fd, LED_IOCTL_BRIGHTNESS_DEEPSTANDBY, (unsigned char)value) < 0)
+				printf("CLCDDisplay::setLED: can't set led deep standby");
+			break;
+			
+		case LED_BLINKINGTIME:
+			printf("CLCDDisplay::setLED: BlinkingTime %d", value);
+			if (ioctl(fd, LED_IOCTL_BLINKING_TIME, (unsigned char)value) < 0)
+				printf("CLCDDisplay::setLED: can't set led blinking time");
+			break;
+	}
+	
+	return 0;
+}
+
+
 bool CLCDDisplay::isAvailable()
 {
 	return available;
@@ -309,7 +342,6 @@ void CLCDDisplay::resume()
 
 void CLCDDisplay::convert_data()
 {
-#ifndef PLATFORM_GENERIC
 	unsigned int x, y, z;
 	char tmp;
 
@@ -331,22 +363,22 @@ void CLCDDisplay::convert_data()
 		}
 	}
 #endif
-#endif
 }
 
 void CLCDDisplay::update()
 {
-#ifndef PLATFORM_GENERIC
 	if ((fd >= 0) && (last_brightness > 0))
 	{
+		//
 		for (unsigned int y = 0; y < yres; y++)
 		{
 			for (unsigned int x = 0; x < xres; x++)
 			{
-				surface_fill_rect(x, y, x+1, y+1, _buffer[y * xres + x]);
+				surface_fill_rect(x, y, x + 1, y + 1, _buffer[y * xres + x]);
 			}
 		}
 
+		//
 		if (is_oled == 0 || is_oled == 2)
 		{
 			unsigned int height = yres;
@@ -363,15 +395,15 @@ void CLCDDisplay::update()
 			
 			memset(raw, 0x00, 132*8);
 			
-			for (y=0; y<8; y++)
+			for (y = 0; y < 8; y++)
 			{
 				// display has only 128 but buffer must be 132
-				for (x=0; x<128; x++)
+				for (x = 0; x < 128; x++)
 				{
-					int pix=0;
-					for (yy=0; yy<8; yy++)
+					int pix = 0;
+					for (yy = 0; yy < 8; yy++)
 					{
-						pix|=(surface_data[(y*8+yy)*width+x]>=108)<<yy;
+						pix |= (surface_data[(y*8 + yy)*width + x] >= 108)<<yy;
 					}
 					
 					if (flipped)
@@ -422,9 +454,7 @@ void CLCDDisplay::update()
 			}
 			else
 			{
-				//write(fd, surface_data, surface_stride * yres);
-				//
-#ifdef PLATFORM_GIGABLUE
+#ifdef PLATFORM_GIGABLUE	//RGB565
 				unsigned char gb_buffer[surface_stride * yres];
 				for (int offset = 0; offset < surface_stride * yres; offset += 2)
 				{
@@ -466,16 +496,16 @@ void CLCDDisplay::update()
 					}
 				}
 			}
+			
 			write(fd, raw, 64*64);
 		}
 	}
-#endif
 }
 
 void CLCDDisplay::surface_fill_rect(int area_left, int area_top, int area_right, int area_bottom, int color) 
 {
-	int area_width  = area_right-area_left;
-	int area_height = area_bottom-area_top;
+	int area_width  = area_right - area_left;
+	int area_height = area_bottom - area_top;
 
 	if (surface_bpp == 8)
 	{
@@ -626,7 +656,7 @@ void CLCDDisplay::draw_line(const int x1, const int y1, const int x2, const int 
 
 void CLCDDisplay::draw_fill_rect(int left, int top, int right, int bottom, int state) 
 {
-	int x,y;
+	int x, y;
 	
 	for(x = left + 1; x < right; x++) 
 	{  
@@ -642,11 +672,11 @@ void CLCDDisplay::draw_rectangle(int left,int top, int right, int bottom, int li
 	// coordinate checking in draw_pixel (-> you can draw lines only
 	// partly on screen)
 
-	draw_line(left,top,right,top,linestate);
-	draw_line(left,top,left,bottom,linestate);
-	draw_line(right,top,right,bottom,linestate);
-	draw_line(left,bottom,right,bottom,linestate);
-	draw_fill_rect(left,top,right,bottom,fillstate);  
+	draw_line(left, top, right, top, linestate);
+	draw_line(left, top, left, bottom, linestate);
+	draw_line(right, top, right, bottom, linestate);
+	draw_line(left, bottom, right, bottom, linestate);
+	draw_fill_rect(left, top, right, bottom, fillstate);  
 }  
 
 void CLCDDisplay::draw_polygon(int num_vertices, int *vertices, int state) 
@@ -655,7 +685,7 @@ void CLCDDisplay::draw_polygon(int num_vertices, int *vertices, int state)
 	// partly on screen)
 
 	int i;
-	for(i=0;i<num_vertices-1;i++) 
+	for(i = 0; i < num_vertices - 1; i++) 
 	{
 		draw_line(vertices[(i<<1)+0],
 			vertices[(i<<1)+1],

@@ -25,14 +25,14 @@ extern "C" {
  */
 unsigned short fget2 (FILE *f,int order)
 {
-  unsigned char a, b;
+  	unsigned char a, b;
 
-  a = fgetc(f);
-  b = fgetc(f);
-  if (order == 0x4949)		/* "II" means little-endian */
-    return a + (b << 8);
-  else				/* "MM" means big-endian */
-    return (a << 8) + b;
+  	a = fgetc(f);
+  	b = fgetc(f);
+  	if (order == 0x4949)		/* "II" means little-endian */
+    		return a + (b << 8);
+  	else				/* "MM" means big-endian */
+    		return (a << 8) + b;
 }
 
 /*
@@ -40,16 +40,16 @@ unsigned short fget2 (FILE *f,int order)
  */
 int fget4 (FILE *f,int order)
 {
-  unsigned char a, b, c, d;
+  	unsigned char a, b, c, d;
 
-  a = fgetc(f);
-  b = fgetc(f);
-  c = fgetc(f);
-  d = fgetc(f);
-  if (order == 0x4949)
-    return a + (b << 8) + (c << 16) + (d << 24);
-  else
-    return (a << 24) + (b << 16) + (c << 8) + d;
+  	a = fgetc(f);
+  	b = fgetc(f);
+  	c = fgetc(f);
+  	d = fgetc(f);
+  	if (order == 0x4949)
+    		return a + (b << 8) + (c << 16) + (d << 24);
+  	else
+    		return (a << 24) + (b << 16) + (c << 8) + d;
 }
 
 int fh_crw_parsedirs(FILE *fh, int pos, int length, int order)
@@ -141,15 +141,15 @@ struct r_crw_jpeg_error_mgr
 
 int fh_crw_id(const char *name)
 {
-//	dbout("fh_crw_id {\n");
 	int fd;
 	unsigned char id[14];
 	fd=open(name,O_RDONLY); if(fd==-1) return(0);
 	read(fd,id,14);
 	close(fd);
-//	 dbout("fh_crw_id }\n");
-	if(id[6]=='H' && id[7]=='E' && id[8]=='A' && id[9]=='P' &&
-		id[10]=='C' && id[11]=='C' && id[12]=='D' && id[13]=='R')	return(1);
+
+	if(id[6] == 'H' && id[7] == 'E' && id[8] == 'A' && id[9] == 'P' &&
+		id[10] == 'C' && id[11] == 'C' && id[12] == 'D' && id[13] == 'R')	
+		return(1);
 
 	return(0);
 }
@@ -157,22 +157,19 @@ int fh_crw_id(const char *name)
 
 void crw_cb_error_exit(j_common_ptr cinfo)
 {
-//	dbout("crw_cb_error_exit {\n");
 	struct r_crw_jpeg_error_mgr *mptr;
 	mptr=(struct r_crw_jpeg_error_mgr*) cinfo->err;
 	(*cinfo->err->output_message) (cinfo);
 	longjmp(mptr->envbuffer,1);
-//	 dbout("crw_cb_error_exit }\n");
 }
 
 int fh_crw_load(const char *filename,unsigned char **buffer,int* xp,int* /*yp*/)
 {
-//	dbout("fh_crw_load (%d/%d) {\n",x,y);
 	struct jpeg_decompress_struct cinfo;
 	struct jpeg_decompress_struct *ciptr;
 	struct r_crw_jpeg_error_mgr emgr;
 	unsigned char *bp;
-	int px/*,py*/,c,x=*xp;
+	int px,c,x=*xp;
 	FILE *fh;
 	JSAMPLE *lb;
 
@@ -185,7 +182,7 @@ int fh_crw_load(const char *filename,unsigned char **buffer,int* xp,int* /*yp*/)
 		// FATAL ERROR - Free the object and return...
 		jpeg_destroy_decompress(ciptr);
 		fclose(fh);
-//	dbout("fh_crw_load } - FATAL ERROR\n");
+
 		return(FH_ERROR_FORMAT);
 	}
 
@@ -226,18 +223,17 @@ int fh_crw_load(const char *filename,unsigned char **buffer,int* xp,int* /*yp*/)
 	jpeg_finish_decompress(ciptr);
 	jpeg_destroy_decompress(ciptr);
 	fclose(fh);
-//	 dbout("fh_crw_load }\n");
+
 	return(FH_ERROR_OK);
 }
 
 int fh_crw_getsize(const char *filename,int *x,int *y, int wanted_width, int wanted_height)
 {
-//	dbout("fh_crw_getsize {\n");
 	struct jpeg_decompress_struct cinfo;
 	struct jpeg_decompress_struct *ciptr;
 	struct r_crw_jpeg_error_mgr emgr;
 
-	int px,py/*,c*/;
+	int px,py;
 	FILE *fh;
 
 	ciptr=&cinfo;
@@ -250,7 +246,7 @@ int fh_crw_getsize(const char *filename,int *x,int *y, int wanted_width, int wan
 		// FATAL ERROR - Free the object and return...
 		jpeg_destroy_decompress(ciptr);
 		fclose(fh);
-//	dbout("fh_crw_getsize } - FATAL ERROR\n");
+
 		return(FH_ERROR_FORMAT);
 	}
 
@@ -279,7 +275,7 @@ int fh_crw_getsize(const char *filename,int *x,int *y, int wanted_width, int wan
 //	jpeg_finish_decompress(ciptr);
 	jpeg_destroy_decompress(ciptr);
 	fclose(fh);
-//	 dbout("fh_crw_getsize }\n");
+
 	return(FH_ERROR_OK);
 }
 

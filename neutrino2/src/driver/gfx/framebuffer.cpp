@@ -1155,7 +1155,7 @@ bool CFrameBuffer::paintIcon(const std::string& filename, const int x, const int
 	if(width == 0 || height == 0)	
 		getIconSize(newname.c_str(), &width, &height);
 
-	data = getImage(newname, width, height);
+	data = getImage(newname, width, height, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
 	
 	// check into buttonBasePath	
 	if(!data) 
@@ -1165,7 +1165,7 @@ bool CFrameBuffer::paintIcon(const std::string& filename, const int x, const int
 		if(width == 0 || height == 0)	
 			getIconSize(newname.c_str(), &width, &height);
 
-		data = getImage(newname, width, height);
+		data = getImage(newname, width, height, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
 	}
 	
 	// check into spinnerBasePath	
@@ -1176,7 +1176,7 @@ bool CFrameBuffer::paintIcon(const std::string& filename, const int x, const int
 		if(width == 0 || height == 0)	
 			getIconSize(newname.c_str(), &width, &height);
 
-		data = getImage(newname, width, height);
+		data = getImage(newname, width, height, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
 	}
 	
 	// full path
@@ -1189,7 +1189,7 @@ bool CFrameBuffer::paintIcon(const std::string& filename, const int x, const int
 		if(width == 0 || height == 0)	
 			getIconSize(newname.c_str(), &width, &height);
 
-		data = getImage(newname, width, height);
+		data = getImage(newname, width, height, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
 	}
 
 	if(data) 
@@ -1375,7 +1375,7 @@ void CFrameBuffer::setBackgroundColor(const fb_pixel_t color)
 	backgroundColor = color;
 }
 
-bool CFrameBuffer::loadBackgroundPic(const std::string & filename, bool show)
+bool CFrameBuffer::loadBackgroundPic(const std::string &filename, bool show)
 {
 	if ((backgroundFilename == filename) && (background))
 		return true;
@@ -1386,10 +1386,10 @@ bool CFrameBuffer::loadBackgroundPic(const std::string & filename, bool show)
 		free(background);
 	
 	// get bg image
-	background = getImage(iconBasePath + filename, BACKGROUNDIMAGEWIDTH, BACKGROUNDIMAGEHEIGHT);
+	background = getImage(iconBasePath + filename, BACKGROUNDIMAGEWIDTH, BACKGROUNDIMAGEHEIGHT); // transp = 0xFF
 	
 	if(!background) 
-		background = getImage(filename, BACKGROUNDIMAGEWIDTH, BACKGROUNDIMAGEHEIGHT);
+		background = getImage(filename, BACKGROUNDIMAGEWIDTH, BACKGROUNDIMAGEHEIGHT); // transp = 0xFF
 
 	// if not found
 	if (background == NULL) 
@@ -1493,8 +1493,6 @@ void CFrameBuffer::paintBackground()
 
 void CFrameBuffer::saveScreen(int x, int y, int dx, int dy, fb_pixel_t * const memp)
 {
-	//dprintf(DEBUG_DEBUG, "CFrameBuffer::saveScreen\n");
-	
 	if (!getActive())
 		return;
 
@@ -1748,154 +1746,7 @@ void CFrameBuffer::blit(int mode3d)
 #endif	
 }
 
-////
-// PNG
-extern int fh_png_id(const char *name);
-extern int png_load_ext(const char * name, unsigned char ** buffer, int * xp, int * yp, int * bpp);
-
-// SVG
-extern int svg_load_resize(const char *name, unsigned char **buffer, int* ox, int* oy, int dx, int dy);
-
-// getImage
-fb_pixel_t * CFrameBuffer::getImage(const std::string &name, int width, int height)
-{
-	dprintf(DEBUG_DEBUG, "CFrameBuffer::getImage:\n");
-	
-	int x = 0;
-	int y = 0;
-	CFormathandler * fh = NULL;
-	unsigned char * buffer = NULL;
-	fb_pixel_t * ret = NULL;
-	int load_ret = FH_ERROR_MALLOC;
-	int _bpp = 0;
-
-	//
-  	fh = fh_getsize(name.c_str(), &x, &y, INT_MAX, INT_MAX); // unscaled
-	
-  	if (fh) 
-	{
-		buffer = (unsigned char *) malloc(x*y*4);
-		
-		if (buffer == NULL) 
-		{
-		  	dprintf(DEBUG_DEBUG, "CFrameBuffer::getImage: Error: malloc\n");
-		  	return NULL;
-		}
-		
-		if ((name.find(".png") == (name.length() - 4)) && (fh_png_id(name.c_str())))
-			load_ret = png_load_ext(name.c_str(), &buffer, &x, &y, &_bpp);
-		else if (name.find(".svg") == (name.length() - 4))
-		{
-			load_ret = svg_load_resize(name.c_str(), &buffer, &x, &y, width, height);
-			_bpp = 4;
-		}
-		else
-			load_ret = fh->get_pic(name.c_str(), &buffer, &x, &y);
-
-		if (load_ret == FH_ERROR_OK) 
-		{
-			// resize
-			if(x != width || y != height)
-			{
-				// alpha
-				if(_bpp == 4)
-				{
-					buffer = resize(buffer, x, y, width, height, COLOR, NULL, true);
-				}
-				else
-				{
-					buffer = resize(buffer, x, y, width, height, COLOR);
-				}
-				
-				x = width ;
-				y = height;
-			} 
-			
-			// convert RGB2FB
-			if( name.find(".png") == (name.length() - 4) )
-			{
-				// alpha
-				if (_bpp == 4)
-					ret = (fb_pixel_t *) convertRGB2FB(buffer, x, y, 0, TM_INI, true); // TM_INI
-				else
-					ret = (fb_pixel_t *)convertRGB2FB(buffer, x, y, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha)); // TM_BLACK
-			}
-			else
-				ret = (fb_pixel_t *)convertRGB2FB(buffer, x, y, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha), TM_NONE); //TM_NONE
-			
-			free(buffer);
-		} 
-		else 
-		{
-	  		dprintf(DEBUG_DEBUG, "CFrameBuffer::getImage: Error decoding file %s\n", name.c_str ());
-	  		free (buffer);
-	  		buffer = NULL;
-		}
-  	} 
-	else
-	{
-		dprintf(DEBUG_DEBUG, "CFrameBuffer::getImage: Error open file %s\n", name.c_str ());
-	}
-
-	return ret;
-}
-
-// convertRGB2FB
-void * CFrameBuffer::convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, int transp, int m_transparent, bool alpha)
-{
-	dprintf(DEBUG_DEBUG, "CFrameBuffer::convertRGB2FB:\n");
-	
-	unsigned long i;
-	unsigned int * fbbuff;
-	unsigned long count = x*y;
-
-	fbbuff = (unsigned int *) malloc(count * sizeof(unsigned int));
-	
-	if(fbbuff == NULL)
-	{
-		dprintf(DEBUG_DEBUG, "CFrameBuffer::convertRGB2FB: Error: malloc\n");
-		return NULL;
-	}
-	
-	if(alpha)
-	{
-		for(i = 0; i < count ; i++)
-			fbbuff[i] = ((rgbbuff[i*4 + 3] << 24) & 0xFF000000) | 
-				((rgbbuff[i*4]     << 16) & 0x00FF0000) | 
-				((rgbbuff[i*4 + 1] <<  8) & 0x0000FF00) | 
-				((rgbbuff[i*4 + 2])       & 0x000000FF);
-	}
-	else
-	{
-		switch (m_transparent) 
-		{
-			case TM_BLACK:
-				for(i = 0; i < count ; i++) 
-				{
-					transp = 0;
-					if(rgbbuff[i*3] || rgbbuff[i*3 + 1] || rgbbuff[i*3 + 2])
-						transp = 0xFF;
-					fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3+1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
-				}
-				break;
-							
-			case TM_INI:
-				for(i = 0; i < count ; i++)
-					fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
-				break;
-							
-			case TM_NONE:
-			default:
-				for(i = 0; i < count ; i++)
-					fbbuff[i] = 0xFF000000 | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
-				break;
-		}
-	}
-
-	return (void *) fbbuff;
-}
-
-// display RGB
+//// display RGB
 void CFrameBuffer::displayRGB(unsigned char * rgbbuff, int x_size, int y_size, int x_pan, int y_pan, int x_offs, int y_offs, bool clearfb)
 {
 	dprintf(DEBUG_INFO, "CFrameBuffer::displayRGB\n");
@@ -1946,7 +1797,7 @@ bool CFrameBuffer::displayImage(const std::string& name, int posx, int posy, int
 	if( name.find(".png") == (name.length() - 4) )
 		isPNG = true;
 	
-	fb_pixel_t *data = getImage(name, width, height);
+	fb_pixel_t *data = getImage(name, width, height, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
 
 	if(data) 
 	{
