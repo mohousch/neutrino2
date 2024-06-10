@@ -1524,7 +1524,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	if(!has_lcd) 
 		return;
 		
-	dprintf(DEBUG_NORMAL, "CLCD::setMode\n");
+	dprintf(DEBUG_NORMAL, "CLCD::setMode: %d\n", m);
 		
 	mode = m;
 	menutitle = title;
@@ -1540,7 +1540,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
 				showTime(true);
 			
-//			showclock = true;
+			showclock = false;
 			break;
 
 		case MODE_AUDIO:
@@ -1573,7 +1573,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 			break;
 			
 		case MODE_MOVIE:  		
-//			showclock = true;
+			showclock = false;
 			break;
 	}
 
@@ -1602,7 +1602,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 			ShowDiskLevel();
 			ShowIcon(VFD_ICON_STANDBY, false);	
 #endif
-//			showclock = true;
+			showclock = false;
 			break;
 
 		case MODE_AUDIO:
@@ -1657,8 +1657,8 @@ void CLCD::setMode(const MODES m, const char * const title)
 #endif
 							
 			showclock = true;
-			showTime(true);     /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
-					    /* "showTime()" clears the whole lcd in MODE_STANDBY */
+			showTime(true);
+
 			break;
 		
 		case MODE_PIC:	  
@@ -1671,11 +1671,11 @@ void CLCD::setMode(const MODES m, const char * const title)
 			
 		case MODE_MOVIE:  
 			ShowIcon(VFD_ICON_TV, false);			
-//			showclock = true;
+			showclock = false;
 			break;
 	}
 
-#endif //sh	
+#endif // vfd	
 #elif defined (ENABLE_LCD)
 	unsigned int lcd_width  = display->xres;
 	unsigned int lcd_height = display->yres;
