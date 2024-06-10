@@ -436,9 +436,9 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	
 	fontRenderer->InitFontCache();
 
-	fonts.menu        = fontRenderer->getFont(fontname,  style_name , 40);
-	fonts.time        = fontRenderer->getFont(fontname2, style_name2, 35);
-	fonts.channelname = fontRenderer->getFont(fontname3, style_name3, 30);
+	fonts.menu        = fontRenderer->getFont(fontname,  style_name , 38);
+	fonts.time        = fontRenderer->getFont(fontname2, style_name2, 28);
+	fonts.channelname = fontRenderer->getFont(fontname3, style_name3, 35);
 	fonts.menutitle   = fonts.channelname;
 	
 	has_lcd = true;
@@ -713,39 +713,37 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	bool small_utf8 = false;
 	std::string cname[2];
 	std::string event[4];
-	int namelines = 0, eventlines = 0, maxnamelines = 2;
+	int namelines = 1, eventlines = 1, maxnamelines = 1;
 	
-	if (showmode & CLCD::EPGMODE_CHANNEL_TITLE)
+	if (showmode == CLCD::EPGMODE_CHANNEL_TITLE)
 		maxnamelines = 1;
 
 	if ((showmode & CLCD::EPGMODE_CHANNEL) && !big.empty())
 	{
+	/*
 		bool dumb = false;
 		big_utf8 = isUTF8(big);
 		
-//		while (true)
+		while (true)
 		{
 			namelines = 1;
 			std::string title = big;
 			
-			/*
 			do { // first try "intelligent" splitting
 				cname[namelines] = splitString(title, lcd_width, fonts.channelname, dumb, big_utf8);
 				title = removeLeadingSpaces(title.substr(cname[namelines].length()));
 				namelines++;
 			} while (title.length() > 0 && namelines < maxnamelines);
-			*/
-			////
-			cname[namelines] = splitString(title, lcd_width, fonts.channelname, dumb, big_utf8);
-			////
 			
-//			if (title.length() == 0)
-//				break;
+			if (title.length() == 0)
+				break;
 				
-//			dumb = !dumb;	// retry with dumb splitting;
-//			if (!dumb)	// second retry -> get out;
-//				break;
+			dumb = !dumb;	// retry with dumb splitting;
+			if (!dumb)	// second retry -> get out;
+				break;
 		}
+	*/
+		cname[namelines] = splitString(big, lcd_width, fonts.channelname, true, big_utf8);
 	}
 
 	// one nameline => 2 eventlines, 2 namelines => 1 eventline
@@ -753,6 +751,9 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	
 	if (lcd_height < 64)
 		maxeventlines = 2 - (namelines * 1 + 1) / 2;
+		
+	////
+	maxeventlines = 1;
 
 	if ((showmode & CLCD::EPGMODE_TITLE) && !small.empty())
 	{
@@ -779,7 +780,6 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 				break;
 		}
 		#endif
-		eventlines = 1;
 		event[eventlines] = splitString(small, lcd_width, fonts.menu, dumb, small_utf8);
 	}
 
@@ -796,7 +796,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	// namelines
 	for (int i = 0; i < namelines; i++) 
 	{
-		y += 20;
+		y += 10;
 		if (centered)
 		{
 			int w = fonts.channelname->getRenderWidth(cname[i].c_str(), big_utf8);
@@ -819,7 +819,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	{
 		for (int i = 0; i < eventlines; i++) 
 		{
-			y += 20;
+			y += 10;
 			if (centered)
 			{
 				int w = fonts.menu->getRenderWidth(event[i].c_str(), small_utf8);
@@ -1207,17 +1207,25 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 		unsigned int lcd_width = display->xres;
 		unsigned int lcd_height = display->yres;
 
-		if (g_settings.lcd_show_volume == 0)
+		if (g_settings.lcd_show_volume == CLCD::STATUSLINE_PLAYTIME)
 		{
-			left = 12+2; top = lcd_height - height - 1 - 2; width = lcd_width - left - 4 - 50;
+			left = 12 + 2; 
+			top = lcd_height - height - 1 - 2; 
+			width = lcd_width - left - 4 - 50;
 		}
-		else if (g_settings.lcd_show_volume == 2)
+		/*
+		else if (g_settings.lcd_show_volume == CLCD::STATUSLINE_VOLUME)
 		{
-			left = 12+2; top = 1+2; width = lcd_width - left - 4;
+			left = 12 + 2; 
+			top = 1 + 2; 
+			width = lcd_width - left - 4;
 		}
-		else if (g_settings.lcd_show_volume == 3)
+		*/
+		else if (g_settings.lcd_show_volume == CLCD::STATUSLINE_VOLUME)
 		{
-			left = 12+2; top = 1+2; width = lcd_width - left - 4 - 20;
+			left = 12 + 2; 
+			top = 1 + 2; 
+			width = lcd_width - left - 4 - 20;
 
 			if ((g_RemoteControl != NULL && mode == MODE_TVRADIO) || mode == MODE_MOVIE)
 			{
@@ -1227,6 +1235,7 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 				else
 				{
 					uint count = g_RemoteControl->current_PIDs.APIDs.size();
+					
 					if ((g_RemoteControl->current_PIDs.PIDs.selected_apid < count) &&
 					    (g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.PIDs.selected_apid].is_ac3))
 						is_ac3 = true;
@@ -1255,17 +1264,18 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 			else
 			{
 				int dp;
-				if (perc == (unsigned char) -2)
-					dp = width+1;
+				if (perc == (unsigned char) - 2)
+					dp = width + 1;
 				else
 					dp = perc * (width + 1) / 100;
-				display->draw_fill_rect (left-1, top-1, left+dp, top+height, CLCDDisplay::PIXEL_ON);
+					
+				display->draw_fill_rect (left - 1, top - 1, left + dp, top + height, CLCDDisplay::PIXEL_ON);
 
 				if (perc == (unsigned char) -2)
 				{
 					// draw a "+" to show that the event is overdue
-					display->draw_line(left+width-2, top+1, left+width-2, top+height-2, CLCDDisplay::PIXEL_OFF);
-					display->draw_line(left+width-1, top+(height/2), left+width-3, top+(height/2), CLCDDisplay::PIXEL_OFF);
+					display->draw_line(left + width - 2, top + 1, left + width - 2, top + height - 2, CLCDDisplay::PIXEL_OFF);
+					display->draw_line(left + width - 1, top + (height/2), left + width - 3, top + (height/2), CLCDDisplay::PIXEL_OFF);
 				}
 			}
 		}
