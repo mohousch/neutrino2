@@ -37,6 +37,7 @@
 
 #include <system/settings.h>
 #include <system/debug.h>
+#include <system/helpers.h>
 
 #include <fcntl.h>
 #include <time.h>
@@ -1964,38 +1965,13 @@ void CLCD::setMiniTV(int value)
 	const char *LCDMINITV[] = 
 	{
 		"NORMAL",
-		"TV",
+		"MINITV",
 		"OSD",
-		"OSD / TV"
+		"OSD / MINITV"
 	};
 	
-	int val = value;
-	
-	dprintf(DEBUG_NORMAL, "CLCD::setPower: %s\n", LCDMINITV[value]);
-	
-	if (value == MINITV_OSD_TV)
-	{
-		val = MINITV_OSD;
-		
-		FILE * f;
-		if((f = fopen("/proc/stb/lcd/live_enable", "w")) == NULL) 
-			return;
-		
-		fprintf(f, "%s", "enable");
-		
-		fclose(f);
-	}
-	else
-	{
-		FILE * f;
-		if((f = fopen("/proc/stb/lcd/live_enable", "w")) == NULL) 
-			return;
-		
-		fprintf(f, "%s", "disable");
-		
-		fclose(f);
-	}
-	  
+	dprintf(DEBUG_NORMAL, "CLCD::setMiniTV: %s\n", LCDMINITV[value]);
+/* 
 	FILE * f;
 	if((f = fopen("/proc/stb/lcd/mode", "w")) == NULL) 
 		return;
@@ -2003,6 +1979,8 @@ void CLCD::setMiniTV(int value)
 	fprintf(f, "%d", val);
 	
 	fclose(f);
+*/
+	proc_put("/proc/stb/lcd/mode", value);
 #endif
 }
 
