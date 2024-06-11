@@ -100,7 +100,7 @@ const keyval LCDMENU_MINITV_OPTIONS[LCDMENU_MINITV_OPTION_COUNT] =
 	{ CLCD::MINITV_NORMAL, _("Normal") },
 	{ CLCD::MINITV_TV, _("Mini TV") },
 	{ CLCD::MINITV_OSD, _("OSD") },
-	{ CLCD::MINITV_OSD_TV, _("OSD") },
+	{ CLCD::MINITV_OSD_TV, _("OSD / TV") },
 };
 
 int CLCDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
