@@ -182,6 +182,9 @@ void CLCDSettings::showMenu()
 	// minitv
 	lcdSettings->addItem(new CMenuOptionChooser(_("Mini TV"), &g_settings.lcd_minitv, LCDMENU_MINITV_OPTIONS, LCDMENU_MINITV_OPTION_COUNT, true, lcdnotifier));
 	
+	// minitv fps
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Mini TV FPS"), &g_settings.lcd_minitvfps, true, 0, 30, lcdnotifier));
+	
 	//option invert
 	lcdSettings->addItem(new CMenuOptionChooser(_("Invert"), &g_settings.lcd_inverse, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier));
 
@@ -260,6 +263,12 @@ bool CLCDNotifier::changeNotify(const std::string &locale, void * Data)
 	else if (locale == _("Mini TV"))
 	{
 		CLCD::getInstance()->setMiniTV(state);
+	}
+	else if (locale == _("Mini TV FPS"))
+	{
+		g_settings.lcd_minitvfps = state;
+		
+		proc_put("/proc/stb/lcd/fps", state);
 	}
 
 	return true;

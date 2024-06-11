@@ -437,6 +437,7 @@ struct SNeutrinoSettings
 	int lcd_setting_dim_brightness;
 	int lcd_led;
 	int lcd_minitv;
+	int lcd_minitvfps;
 	// END VFD
 
 	// tmdb
