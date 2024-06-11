@@ -39,8 +39,8 @@ class CLCDSettings : public CMenuTarget
 		void showMenu();
 		
 	public:
-		CLCDSettings();
-		~CLCDSettings();
+		CLCDSettings(){};
+		~CLCDSettings(){};
 		
 		int exec(CMenuTarget *parent, const std::string &actionKey);
 };
@@ -52,7 +52,7 @@ class CLCDNotifier : public CChangeObserver
 		CLCDNotifier(){};
 		virtual ~CLCDNotifier(){};
 		
-		bool changeNotify(const std::string&, void *Data);
+		bool changeNotify(const std::string &locale, void *Data);
 };
 
 #endif //__lcd_setup__

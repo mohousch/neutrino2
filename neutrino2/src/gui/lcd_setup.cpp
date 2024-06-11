@@ -94,14 +94,14 @@ const keyval LCDMENU_LEDCOLOR_OPTIONS[LCDMENU_LEDCOLOR_OPTION_COUNT] =
 	{ CLCD::LEDCOLOR_PURPLE, _("purple") },
 };
 
-//
-CLCDSettings::CLCDSettings()
+#define LCDMENU_MINITV_OPTION_COUNT 4
+const keyval LCDMENU_MINITV_OPTIONS[LCDMENU_MINITV_OPTION_COUNT] =
 {
-}
-
-CLCDSettings::~CLCDSettings()
-{
-}
+	{ CLCD::MINITV_NORMAL, _("Normal") },
+	{ CLCD::MINITV_TV, _("Mini TV") },
+	{ CLCD::MINITV_OSD, _("OSD") },
+	{ CLCD::MINITV_OSD_TV, _("OSD") },
+};
 
 int CLCDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
@@ -170,10 +170,17 @@ void CLCDSettings::showMenu()
 	CLCDNotifier * lcdnotifier = new CLCDNotifier();
 	CLCDControler * lcdsliders = new CLCDControler(_("Display settings"));
 	
-	// LCD
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// lcd_power
-	lcdSettings->addItem(new CMenuOptionChooser(_("LED-Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier));
+	lcdSettings->addItem(new CMenuOptionChooser(_("LCD Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier));
+	
+	// led
+#if defined (PLATFORM_GIGABLUE)	
+	lcdSettings->addItem(new CMenuOptionChooser(_("LED Color"), &g_settings.lcd_led, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, lcdnotifier));
+#endif
+
+	// minitv
+	lcdSettings->addItem(new CMenuOptionChooser(_("Mini TV"), &g_settings.lcd_minitv, LCDMENU_MINITV_OPTIONS, LCDMENU_MINITV_OPTION_COUNT, true, lcdnotifier));
 	
 	//option invert
 	lcdSettings->addItem(new CMenuOptionChooser(_("Invert"), &g_settings.lcd_inverse, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier));
@@ -202,9 +209,9 @@ void CLCDSettings::showMenu()
 #elif defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 	// lcd_power
 #if defined (PLATFORM_GIGABLUE)	
-	lcdSettings->addItem(new CMenuOptionChooser(_("LED_Power"), &g_settings.lcd_power, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, lcdnotifier));
+	lcdSettings->addItem(new CMenuOptionChooser(_("LED Color"), &g_settings.lcd_led, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, lcdnotifier));
 #else
-	lcdSettings->addItem(new CMenuOptionChooser(_("LED-Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier));
+	lcdSettings->addItem(new CMenuOptionChooser(_("LCD Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier));
 #endif
 	
 	// epgmode
@@ -236,13 +243,24 @@ void CLCDSettings::showMenu()
 }
 
 // lcd notifier
-bool CLCDNotifier::changeNotify(const std::string&, void * Data)
+bool CLCDNotifier::changeNotify(const std::string &locale, void * Data)
 {
 	int state = *(int *)Data;
 
-	dprintf(DEBUG_NORMAL, "ClCDNotifier: state: %d\n", state);
-		
-	CLCD::getInstance()->setPower(state);	
+	dprintf(DEBUG_NORMAL, "ClCDNotifier: %s state: %d\n", locale.c_str(), state);
+	
+	if (locale == _("LCD Power"))	
+	{
+		CLCD::getInstance()->setPower(state);	
+	}
+	else if (locale == _("LED Color"))
+	{
+		CLCD::getInstance()->setLED(state, state);
+	}
+	else if (locale == _("Mini TV"))
+	{
+		CLCD::getInstance()->setMiniTV(state);
+	}
 
 	return true;
 }

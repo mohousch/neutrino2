@@ -481,6 +481,14 @@ class CLCD
 			LEDCOLOR_PURPLE
 		};
 		
+		enum MINITV
+		{
+			MINITV_NORMAL,
+			MINITV_TV,
+			MINITV_OSD,
+			MINITV_OSD_TV
+		};
+		
 		enum EPGALIGN
 		{
 			EPGALIGN_LEFT,
@@ -573,7 +581,8 @@ class CLCD
 
 		bool has_lcd;
 		void wake_up();
-		void setled(void) { return; };
+		void setLED(int value, int option);
+		void setMiniTV(int value);
 		void setlcdparameter(void);
 
 		static CLCD* getInstance();

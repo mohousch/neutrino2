@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-06-10 01:01+0200\n"
+"POT-Creation-Date: 2024-06-11 23:08+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1142,11 +1142,12 @@ msgstr "Ключевое слово"
 msgid "LCD EPG Align"
 msgstr "ЖК-дисплей EPG"
 
-msgid "LED-Power"
+#, fuzzy
+msgid "LCD Power"
 msgstr "Светодиодная мощность"
 
-msgid "LED_Power"
-msgstr "Светодиодная мощность"
+msgid "LED Color"
+msgstr ""
 
 msgid "LEFT"
 msgstr "ЛЕВЫЙ"
@@ -1307,6 +1308,9 @@ msgstr "Режим меню"
 
 msgid "Message"
 msgstr "Сообщение"
+
+msgid "Mini TV"
+msgstr ""
 
 msgid "Mini-DiSEqC"
 msgstr ""

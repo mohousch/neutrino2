@@ -1922,6 +1922,90 @@ void CLCD::setMuted(bool mu)
 	showVolume(volume);
 }
 
+void CLCD::setLED(int value, int option)
+{
+	if (!has_lcd)
+		return;
+
+	g_settings.lcd_led = value;
+	
+#if defined (ENABLE_LCD)
+	display->setLED(value, option);
+#endif
+
+#if defined (PLATFORM_GIGABLUE)
+	const char *VFDLED[] = {
+		"VFD_OFF",
+		"VFD_BLUE",
+		"VFD_RED",
+		"VFD_PURPLE"
+	};
+	
+	dprintf(DEBUG_NORMAL, "CLCD::setLED: %s\n", VFDLED[value]);
+	  
+	FILE * f;
+	if((f = fopen("/proc/stb/fp/led0_pattern", "w")) == NULL) 
+		return;
+	
+	fprintf(f, "%d", value);
+	
+	fclose(f);
+#endif
+}
+
+void CLCD::setMiniTV(int value)
+{
+	if (!has_lcd)
+		return;
+		
+	g_settings.lcd_minitv = value;
+	
+#if defined (ENABLE_LCD)
+	const char *LCDMINITV[] = 
+	{
+		"NORMAL",
+		"TV",
+		"OSD",
+		"OSD / TV"
+	};
+	
+	int val = value;
+	
+	dprintf(DEBUG_NORMAL, "CLCD::setPower: %s\n", LCDMINITV[value]);
+	
+	if (value == MINITV_OSD_TV)
+	{
+		val = MINITV_OSD;
+		
+		FILE * f;
+		if((f = fopen("/proc/stb/lcd/live_enable", "w")) == NULL) 
+			return;
+		
+		fprintf(f, "%s", "enable");
+		
+		fclose(f);
+	}
+	else
+	{
+		FILE * f;
+		if((f = fopen("/proc/stb/lcd/live_enable", "w")) == NULL) 
+			return;
+		
+		fprintf(f, "%s", "disable");
+		
+		fclose(f);
+	}
+	  
+	FILE * f;
+	if((f = fopen("/proc/stb/lcd/mode", "w")) == NULL) 
+		return;
+	
+	fprintf(f, "%d", val);
+	
+	fclose(f);
+#endif
+}
+
 void CLCD::resume()
 {
 	if(!has_lcd) 

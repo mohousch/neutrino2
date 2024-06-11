@@ -435,6 +435,8 @@ struct SNeutrinoSettings
 	int lcd_dump_png;
 	char lcd_setting_dim_time[4];
 	int lcd_setting_dim_brightness;
+	int lcd_led;
+	int lcd_minitv;
 	// END VFD
 
 	// tmdb
