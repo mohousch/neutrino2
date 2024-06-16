@@ -44,15 +44,22 @@ class nGLCD
 {
 	private:
 		GLCD::cDriver *lcd;
+		
+		////
+		/*
 		GLCD::cFont font_channel;
 		GLCD::cFont font_epg;
 		GLCD::cFont font_time;
 		GLCD::cFont font_time_standby;
+		*/
 		////
+		/*
 		int fontsize_channel;
 		int fontsize_epg;
 		int fontsize_time;
 		int fontsize_time_standby;
+		*/
+		/*
 		int percent_channel;
 		int percent_time;
 		int percent_time_standby;
@@ -60,12 +67,15 @@ class nGLCD
 		int percent_bar;
 		int percent_logo;
 		int percent_space;
+		*/
+		/*
 		std::string Channel;
 		std::string Epg;
 		std::string stagingChannel;
 		std::string stagingEpg;
 		t_channel_id channel_id;
 		int Scale;
+		*/
 		
 	public:
 		GLCD::cBitmap *bitmap;

@@ -37,14 +37,14 @@ nGLCD::nGLCD()
 	lcd = NULL;
 	bitmap = NULL;
 	
-	Channel = "NeutrinoNG2";
+//	Channel = "NeutrinoNG2";
+/*
 	fontsize_channel = 0;
 	fontsize_epg = 0;
 	fontsize_time = 0;
 	fontsize_time_standby = 0;
-//	fonts_initialized = false;
-//	doScrollChannel = false;
-//	doScrollEpg = false;
+	*/
+	/*
 	percent_channel = 0;
 	percent_time = 0;
 	percent_time_standby = 0;
@@ -52,7 +52,8 @@ nGLCD::nGLCD()
 	percent_bar = 0;
 	percent_space = 0;
 	percent_logo = 0;
-	Scale = 0;
+	*/
+//	Scale = 0;
 }
 
 nGLCD::~nGLCD()

@@ -700,7 +700,7 @@ bool CFrameBuffer::calcCorners(int *ofs, int *ofl, int *ofr, const int& dy, cons
 	return ret;
 }
 
-void CFrameBuffer::paintHLineRelInternal2Buf(const int& x, const int& dx, const int& y, const int& box_dx, const fb_pixel_t& col, fb_pixel_t* buf)
+void CFrameBuffer::paintHLineRelInternal2Buf(const int &x, const int &dx, const int &y, const int &box_dx, const fb_pixel_t &col, fb_pixel_t *buf)
 {
 	uint8_t * pos = ((uint8_t *)buf) + x * sizeof(fb_pixel_t) + box_dx * sizeof(fb_pixel_t) * y;
 	fb_pixel_t * dest = (fb_pixel_t *)pos;
@@ -721,7 +721,7 @@ fb_pixel_t* CFrameBuffer::paintBoxRel2Buf(const int dx, const int dy, const fb_p
 
 	fb_pixel_t* pixBuf = NULL;
 	
-	pixBuf = (fb_pixel_t*)malloc(dx*dy*sizeof(fb_pixel_t));;
+	pixBuf = (fb_pixel_t*)malloc(dx*dy*sizeof(fb_pixel_t));
 	
 	if (pixBuf == NULL) 
 	{
@@ -894,6 +894,7 @@ void CFrameBuffer::paintHLineRel(int x, int dx, int y, const fb_pixel_t col)
 	uint8_t * pos = ((uint8_t *)getFrameBufferPointer()) + x * sizeof(fb_pixel_t) + stride * y;
 
 	fb_pixel_t * dest = (fb_pixel_t *)pos;
+	
 	for (int i = 0; i < dx; i++)
 		*(dest++) = col;	
 }
