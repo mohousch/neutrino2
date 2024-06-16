@@ -337,13 +337,13 @@ void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, 
 	return (void *) fbbuff;
 }
 
-uint32_t * getImage(const std::string &name, int width, int height, int transp)
+uint8_t * getImage(const std::string &name, int width, int height, int transp)
 {
 	int x = 0;
 	int y = 0;
 	CFormathandler * fh = NULL;
 	unsigned char * buffer = NULL;
-	uint32_t * ret = NULL;
+	uint8_t * ret = NULL;
 	int load_ret = FH_ERROR_MALLOC;
 	int _bpp = 0;
 
@@ -394,12 +394,12 @@ uint32_t * getImage(const std::string &name, int width, int height, int transp)
 			{
 				// alpha
 				if (_bpp == 4)
-					ret = (uint32_t *) convertRGB2FB(buffer, x, y, 0, true);
+					ret = (uint8_t *)convertRGB2FB(buffer, x, y, 0, true);
 				else
-					ret = (uint32_t *)convertRGB2FB(buffer, x, y, transp); // TM_BLACK
+					ret = (uint8_t *)convertRGB2FB(buffer, x, y, transp); // TM_BLACK
 			}
 			else
-				ret = (uint32_t *)convertRGB2FB(buffer, x, y, transp, false, TM_NONE); //TM_NONE
+				ret = (uint8_t *)convertRGB2FB(buffer, x, y, transp, false, TM_NONE); //TM_NONE
 			
 			free(buffer);
 		} 

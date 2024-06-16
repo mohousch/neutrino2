@@ -147,7 +147,7 @@ CLCDDisplay::CLCDDisplay()
 
 void CLCDDisplay::setSize(int w, int h, int b)
 {
-	printf("CLCDDisplay::setSize: xres=%d, yres=%d, bpp=%d is_oled=%d\n", xres, yres, bpp, is_oled);
+	printf("CLCDDisplay::setSize: xres=%d, yres=%d, bpp=%d type=%d\n", xres, yres, bpp, is_oled);
 	
 	xres = w;
 	yres = h;
@@ -189,14 +189,10 @@ void CLCDDisplay::setSize(int w, int h, int b)
 	surface_data = new unsigned char[surface_buffer_size];
 	memset(surface_data, 0, surface_buffer_size);
 
-	printf("CLCDDisplay::setSize: surface buffer %p %d bytes, stride %d\n", surface_data, surface_buffer_size, surface_stride);
-
 	_stride = xres*bypp;
 	raw_buffer_size = xres * yres * bypp;
 	_buffer = new unsigned char[raw_buffer_size];
 	memset(_buffer, 0, raw_buffer_size);
-
-	printf("CLCDDisplay::setSize: lcd buffer %p %d bytes, stride %d, type %d\n", _buffer, raw_buffer_size, _stride, is_oled);
 }
 
 //
