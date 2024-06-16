@@ -266,7 +266,7 @@ void CTFTLCD::unlock()
 		
 	locked = 0;
 	setMode(m_xRes, m_yRes, m_bpp);
-//	putCMAP();
+	putCMAP();
 }
 
 void CTFTLCD::calcRamp()

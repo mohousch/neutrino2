@@ -166,7 +166,7 @@ bool CPictureViewer::decodeImage(const std::string & name, bool showBusySign)
 			dprintf(DEBUG_INFO, "CPictureViewer::decodeImage: Unable to read file !\n");
 
 			free (m_Pic_Buffer);
-			m_Pic_Buffer = (unsigned char *) malloc (3);
+			m_Pic_Buffer = (unsigned char *) malloc(3);
 
 			if (m_Pic_Buffer == NULL) 
 			{
@@ -193,7 +193,7 @@ bool CPictureViewer::decodeImage(const std::string & name, bool showBusySign)
 			free (m_Pic_Buffer);
 		}
 
-		m_Pic_Buffer = (unsigned char *) malloc (3);
+		m_Pic_Buffer = (unsigned char *) malloc(3);
 		
 		if (m_Pic_Buffer == NULL) 
 		{

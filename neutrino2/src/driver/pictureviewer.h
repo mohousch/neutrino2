@@ -58,7 +58,7 @@ class CPictureViewer
 		float m_aspect;
 		
 		std::string m_Pic_Name;
-		unsigned char* m_Pic_Buffer;
+		unsigned char *m_Pic_Buffer;
 		int m_Pic_X;
 		int m_Pic_Y;
 		int m_Pic_XPos;

@@ -126,11 +126,9 @@ CFormathandler * fh_getsize(const char *name, int *x, int *y, int width_wanted, 
 	return (NULL);
 }
 
-void getSize(const std::string& name, int* width, int* height, int* nbpp)
+void getSize(const std::string &name, int *width, int *height, int *nbpp)
 {
-	printf("getSize: name:%s\n", name.c_str());
-
-	unsigned char* rgbbuff;
+	unsigned char *rgbbuff;
 	int x = 0;
 	int y = 0;
 	int bpp = 4;
@@ -147,7 +145,7 @@ void getSize(const std::string& name, int* width, int* height, int* nbpp)
 		return;
 	}
 	
-	rgbbuff = (unsigned char *) malloc (x*y*4);
+	rgbbuff = (unsigned char *) malloc(x*y*4);
 	
 	if (rgbbuff != NULL) 
 	{
@@ -176,22 +174,17 @@ void getSize(const std::string& name, int* width, int* height, int* nbpp)
 	return;
 }
 
-unsigned char *resize(unsigned char * origin, int ox, int oy, int dx, int dy, ScalingMode type, unsigned char * dst, bool alpha)
+unsigned char *resize(unsigned char * origin, int ox, int oy, int dx, int dy, ScalingMode type, bool alpha)
 {
-	unsigned char * cr;
+	unsigned char * cr = NULL;
 	
-	if(dst == NULL) 
-	{
-		cr = (unsigned char*) malloc(dx*dy*(alpha? 4 : 3));
+	cr = (unsigned char *) malloc(dx*dy*(alpha? 4 : 3));
 
-		if(cr == NULL)
-		{
-			printf("Error: malloc\n");
-			return(origin);
-		}
-	} 
-	else
-		cr = dst;
+	if(cr == NULL)
+	{
+		printf("Error: malloc\n");
+		return(origin);
+	}
 
 	if(type == SIMPLE) 
 	{
@@ -289,10 +282,8 @@ unsigned char *resize(unsigned char * origin, int ox, int oy, int dx, int dy, Sc
 	return(cr);
 }
 
-void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, int transp, int m_transparent, bool alpha)
+void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, int transp, bool alpha, int m_transparent)
 {
-	printf("convertRGB2FB:\n");
-	
 	unsigned long i;
 	unsigned int * fbbuff;
 	unsigned long count = x*y;
@@ -308,10 +299,12 @@ void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, 
 	if(alpha)
 	{
 		for(i = 0; i < count ; i++)
+		{
 			fbbuff[i] = ((rgbbuff[i*4 + 3] << 24) & 0xFF000000) | 
 				((rgbbuff[i*4]     << 16) & 0x00FF0000) | 
 				((rgbbuff[i*4 + 1] <<  8) & 0x0000FF00) | 
 				((rgbbuff[i*4 + 2])       & 0x000000FF);
+		}
 	}
 	else
 	{
@@ -326,10 +319,11 @@ void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, 
 					fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3+1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
 				}
 				break;
-							
+	
 			case TM_INI:
 				for(i = 0; i < count ; i++)
 					fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
+									
 				break;
 							
 			case TM_NONE:
@@ -345,8 +339,6 @@ void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, 
 
 uint32_t * getImage(const std::string &name, int width, int height, int transp)
 {
-	printf("getImage:\n");
-	
 	int x = 0;
 	int y = 0;
 	CFormathandler * fh = NULL;
@@ -386,7 +378,7 @@ uint32_t * getImage(const std::string &name, int width, int height, int transp)
 				// alpha
 				if(_bpp == 4)
 				{
-					buffer = resize(buffer, x, y, width, height, COLOR, NULL, true);
+					buffer = resize(buffer, x, y, width, height, COLOR, true);
 				}
 				else
 				{
@@ -402,12 +394,12 @@ uint32_t * getImage(const std::string &name, int width, int height, int transp)
 			{
 				// alpha
 				if (_bpp == 4)
-					ret = (uint32_t *) convertRGB2FB(buffer, x, y, 0, TM_INI, true); // TM_INI
+					ret = (uint32_t *) convertRGB2FB(buffer, x, y, 0, true);
 				else
 					ret = (uint32_t *)convertRGB2FB(buffer, x, y, transp); // TM_BLACK
 			}
 			else
-				ret = (uint32_t *)convertRGB2FB(buffer, x, y, transp, TM_NONE); //TM_NONE
+				ret = (uint32_t *)convertRGB2FB(buffer, x, y, transp, false, TM_NONE); //TM_NONE
 			
 			free(buffer);
 		} 
@@ -425,5 +417,4 @@ uint32_t * getImage(const std::string &name, int width, int height, int transp)
 
 	return ret;
 }
-
 

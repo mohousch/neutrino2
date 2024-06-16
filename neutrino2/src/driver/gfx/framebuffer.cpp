@@ -1571,8 +1571,8 @@ void CFrameBuffer::blit2FB(void * fbbuff, uint32_t width, uint32_t height, uint3
 	
 	fb_pixel_t* data = (fb_pixel_t*) fbbuff;
 
-	uint8_t* d = ((uint8_t*)getFrameBufferPointer()) + xoff * sizeof(fb_pixel_t) + stride * yoff;
-	fb_pixel_t* d2;
+	uint8_t *d = ((uint8_t *)getFrameBufferPointer()) + xoff * sizeof(fb_pixel_t) + stride * yoff;
+	fb_pixel_t *d2;
 
 	for (int count = 0; count < yc; count++ ) 
 	{
@@ -1667,7 +1667,7 @@ void CFrameBuffer::blit(int mode3d)
 	bltData.ulFlags |= BLT_OP_FLAGS_BLEND_SRC_ALPHA | BLT_OP_FLAGS_BLEND_DST_COLOR;
 
 	// src
-	bltData.srcOffset  = 1920 *1080 * 4;
+	bltData.srcOffset  = 1920 * 1080 * 4;
 	bltData.srcPitch   = xRes * 4; // stride
 
 	bltData.src_left   = 0; 
