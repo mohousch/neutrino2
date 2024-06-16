@@ -61,9 +61,9 @@ typedef unsigned char * raw_display_t;
 struct raw_lcd_element_t
 {
 	std::string name;
-	uint16_t width;
-	uint16_t height;
-	uint8_t bpp;
+	int width;
+	int height;
+	int bpp;
 	int buffer_size;
 	raw_display_t buffer;
 };
@@ -131,7 +131,7 @@ class CLCDDisplay
 		void load_screen(const raw_display_t * const screen);
 		void dump_screen(raw_display_t *screen);
 		////
-		bool load_png_element(const char * const filename, raw_lcd_element_t * element);
+		bool load_png_element(const char * const filename, raw_lcd_element_t * element, int width = 0, int height = 0);
 		bool load_png(const char * const filename);
 		bool dump_png_element(const char * const filename, raw_lcd_element_t * element);
 		bool dump_png(const char * const filename);

@@ -287,11 +287,13 @@ const char * const element_name[LCD_NUMBER_OF_ELEMENTS] = {
 	"lcdpause"
 };
 
+/*
 #define NUMBER_OF_PATHS 2
 const char * const background_path[NUMBER_OF_PATHS] = {
 	LCDDIR_VAR ,
 	DATADIR "/lcdd/icons/"
 };
+*/
 
 bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fontfile2, const char * fontname2, const char * fontfile3, const char * fontname3)
 {
@@ -447,24 +449,26 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
  	// init lcd_element struct
 	for (int i = 0; i < LCD_NUMBER_OF_ELEMENTS; i++)
 	{
-		bool bgfound = false;
+//		bool bgfound = false;
 		
 		element[i].width = 0;
 		element[i].height = 0;
 		element[i].buffer_size = 0;
 		element[i].buffer = NULL;
 
-		for (int j = 0; j < NUMBER_OF_PATHS; j++)
-		{
-			std::string file = background_path[j];
+		//for (int j = 0; j < NUMBER_OF_PATHS; j++)
+		//{
+//			std::string file = background_path[j];
+			std::string file = DATADIR "/lcdd/icons/";
 			file += element_name[i];
 			file += ".png";
 			
-			bgfound = display->load_png_element(file.c_str(), &(element[i]));
+//			bgfound = display->load_png_element(file.c_str(), &(element[i]));
+			display->load_png_element(file.c_str(), &(element[i]));
 			
-			if (bgfound)
-				break;
-		}
+//			if (bgfound)
+//				break;
+		//}
 	}	
 #elif defined (ENABLE_TFTLCD)
 	tftlcd = new CTFTLCD();
@@ -1512,7 +1516,7 @@ void CLCD::drawBanner()
 #ifdef ENABLE_LCD
 	unsigned int lcd_width  = display->xres;
 	
-//	display->load_screen_element(&(element[ELEMENT_BANNER]), (lcd_width - element->width - 1)/2, 0, display->xres, element->height);
+	display->load_screen_element(&(element[ELEMENT_BANNER]), (lcd_width - element->width - 1)/2, 0, display->xres, element->height);
 	
 	// fill the rest with PIXEL_ON
 //	if (element[ELEMENT_BANNER].width < lcd_width)
