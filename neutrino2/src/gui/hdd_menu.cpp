@@ -640,7 +640,7 @@ int CHDDDestExec::exec(CMenuTarget * /*parent*/, const std::string&)
 		if (removable)   // show USB icon, no need for hdparm
 		{
 #if defined(PLATFORM_KATHREIN) || defined(PLATFORM_SPARK7162)
-			CVFD::getInstance()->ShowIcon(VFD_ICON_USB, true);
+			CLCD::getInstance()->ShowIcon(VFD_ICON_USB, true);
 #endif
 			printf("CHDDDestExec: /dev/%s is not a hdd, no sleep needed\n", namelist[i]->d_name);
 
@@ -649,7 +649,7 @@ int CHDDDestExec::exec(CMenuTarget * /*parent*/, const std::string&)
 		{
 			//show HDD icon and set hdparm for all hdd's
 #if defined(PLATFORM_KATHREIN)
-			CVFD::getInstance()->ShowIcon(VFD_ICON_HDD, true);
+			CLCD::getInstance()->ShowIcon(VFD_ICON_HDD, true);
 #endif
 	                printf("CHDDDestExec: noise %d sleep %d /dev/%s\n", g_settings.hdd_noise, g_settings.hdd_sleep, namelist[i]->d_name);
 
