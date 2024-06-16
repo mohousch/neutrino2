@@ -56,7 +56,7 @@
 #define LED_IOCTL_SET_DEFAULT 			0x13
 
 
-typedef unsigned char * raw_display_t;
+//typedef unsigned char * raw_display_t;
 
 struct raw_lcd_element_t
 {
@@ -65,7 +65,7 @@ struct raw_lcd_element_t
 	int height;
 	int bpp;
 	int buffer_size;
-	raw_display_t buffer;
+	uint8_t *buffer;
 };
 
 class CLCDDisplay
@@ -81,10 +81,10 @@ class CLCDDisplay
 		int 	      is_oled;
 		int 	      last_brightness;
 		////
-		raw_display_t _buffer;
+		uint8_t * _buffer;
 		int 	      _stride;
 		////
-		raw_display_t surface_data;
+		uint8_t * surface_data;
 		int 	      surface_stride;
 		int 	      surface_bpp, surface_bypp;
 		int 	      surface_buffer_size;
@@ -128,8 +128,8 @@ class CLCDDisplay
 		void draw_polygon(int num_vertices, int *vertices, int state);
 		////
 		void load_screen_element(raw_lcd_element_t * element, int left, int top, int w = 0, int h = 0);
-		void load_screen(const raw_display_t * const screen);
-		void dump_screen(raw_display_t *screen);
+		void load_screen(uint8_t ** const screen);
+		void dump_screen(uint8_t **screen);
 		////
 		bool load_png_element(const char * const filename, raw_lcd_element_t * element, int width = 0, int height = 0);
 		bool load_png(const char * const filename);

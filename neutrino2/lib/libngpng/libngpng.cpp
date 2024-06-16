@@ -35,21 +35,124 @@
 
 
 ////
-void Hexdump(unsigned char *Data, int length)
+void c32_15(unsigned char r, unsigned char g , unsigned char b , unsigned char* d)
 {
-	if ( Data != NULL)
-	{
-		int k;
-		for (k = 0; k < length; k++)
-		{
-			printf("%02x ", Data[k]);
-			if (((k + 1) & 31) == 0)
-				printf("\n");
-		}
-		printf("\n");
-	}
+		*d     = ((r >> 1) & 0x7C) | (g >> 6);
+		*(d+1) = ((g << 2) & 0xE0) | (b >> 3);
 }
-////
+
+#define FS_CALC_ERROR_COMMON(color, index) \
+				p1 = p2 = (p_src[index] + (this_line_error_##color[ix]>>4)); \
+				if(p1>255)p1=255; if(p1<0)p1=0; \
+				color = (p1 & 0xF8) | 0x4; \
+				error = p2 - color; \
+
+#define FS_CALC_ERROR_RIGHT(color, index) \
+				FS_CALC_ERROR_COMMON(color,index) \
+				this_line_error_##color[ix+1] += (error * 7); \
+				next_line_error_##color[ix-1] += (error * 3); \
+				next_line_error_##color[ix]   += (error * 5); \
+				next_line_error_##color[ix+1] += error;
+				
+#define FS_CALC_ERROR_LEFT(color, index) \
+				FS_CALC_ERROR_COMMON(color,index) \
+				this_line_error_##color[ix-1] += (error * 7); \
+				next_line_error_##color[ix+1] += (error * 3); \
+				next_line_error_##color[ix]   += (error * 5); \
+				next_line_error_##color[ix-1] += error;
+				
+unsigned char * make15color_errdiff(unsigned char * src, int width, int height)
+{
+	int odd_line = 1;
+	int ix,iy, error, p1, p2;
+	unsigned char r,g,b;
+	unsigned char *p_src, *p_dst;
+	unsigned char *dst = (unsigned char*) malloc(width*height*2);
+	int *this_line_error_r;
+	int *this_line_error_g;
+	int *this_line_error_b;
+	int *next_line_error_r;
+	int *next_line_error_g;
+	int *next_line_error_b;
+	int *save_error;
+	int *error1_r = (int*) malloc((width+2)*sizeof(int));
+	int *error1_g = (int*) malloc((width+2)*sizeof(int));
+	int *error1_b = (int*) malloc((width+2)*sizeof(int));
+	int *error2_r = (int*) malloc((width+2)*sizeof(int));
+	int *error2_g = (int*) malloc((width+2)*sizeof(int));
+	int *error2_b = (int*) malloc((width+2)*sizeof(int));
+	
+	// start
+	this_line_error_r = error1_r;
+	this_line_error_g = error1_g;
+	this_line_error_b = error1_b;
+	next_line_error_r = error2_r;
+	next_line_error_g = error2_g;
+	next_line_error_b = error2_b;
+	memset (this_line_error_r, 0 , (width+2) * sizeof(int));
+	memset (this_line_error_g, 0 , (width+2) * sizeof(int));
+	memset (this_line_error_b, 0 , (width+2) * sizeof(int));
+	memset (next_line_error_r, 0 , (width+2) * sizeof(int));
+	memset (next_line_error_g, 0 , (width+2) * sizeof(int));
+	memset (next_line_error_b, 0 , (width+2) * sizeof(int));
+	p_src = src;
+	p_dst = dst;
+
+	for(iy=0 ; iy < height ; iy++)
+	{
+		save_error = this_line_error_r;
+		this_line_error_r = next_line_error_r;
+		next_line_error_r = save_error;
+		save_error = this_line_error_g;
+		this_line_error_g = next_line_error_g;
+		next_line_error_g = save_error;
+		save_error = this_line_error_b;
+		this_line_error_b = next_line_error_b;
+		next_line_error_b = save_error;
+		memset (next_line_error_r, 0 , (width+2) * sizeof(int));
+		memset (next_line_error_g, 0 , (width+2) * sizeof(int));
+		memset (next_line_error_b, 0 , (width+2) * sizeof(int));
+		
+		if(odd_line)
+		{
+			for(ix=1 ; ix <= width ; ix++)
+			{
+				FS_CALC_ERROR_RIGHT(r,0);
+				FS_CALC_ERROR_RIGHT(g,1);
+				FS_CALC_ERROR_RIGHT(b,2);
+				c32_15(r,g,b,p_dst);
+				p_src+=3;
+				p_dst+=2;
+			}
+			odd_line=0;
+		}
+		else
+		{
+			p_src+=(width-1)*3;
+			p_dst+=(width-1)*2;
+			for(ix=width ; ix >= 1 ; ix--)
+			{
+				FS_CALC_ERROR_LEFT(r,0);
+				FS_CALC_ERROR_LEFT(g,1);
+				FS_CALC_ERROR_LEFT(b,2);
+				c32_15(r,g,b,p_dst);
+				p_src-=3;
+				p_dst-=2;
+			}
+			p_src+=width*3;
+			p_dst+=width*2;
+			odd_line=1;
+		}
+	}
+	free(error1_r);
+	free(error1_g);
+	free(error1_b);
+	free(error2_r);
+	free(error2_g);
+	free(error2_b);
+	
+	return dst;
+}
 
 CFormathandler * fh_root = NULL;
 
@@ -246,7 +349,8 @@ unsigned char *resize(unsigned char * origin, int ox, int oy, int dx, int dy, Sc
 			for(j = 0;j < dy;j++)
 			{
 				ya = j*oy/dy;
-				yb = (j + 1)*oy/dy; 
+				yb = (j + 1)*oy/dy;
+				
 				if(yb >= oy) 
 					yb = oy - 1;
 				
@@ -258,9 +362,13 @@ unsigned char *resize(unsigned char * origin, int ox, int oy, int dx, int dy, Sc
 						
 						for(k = xa_v[i]; k <= xb_v[i]; k++, q += 4, sq++)
 						{
-							r += q[0]; g += q[1]; b += q[2]; a += q[3];
+							r += q[0]; 
+							g += q[1]; 
+							b += q[2]; 
+							a += q[3];
 						}
 					}
+					
 					p[0] = r/sq; 
 					p[1] = g/sq; 
 					p[2] = b/sq; 
@@ -273,7 +381,8 @@ unsigned char *resize(unsigned char * origin, int ox, int oy, int dx, int dy, Sc
 			for(j = 0; j < dy; j++)
 			{
 				ya = j*oy/dy;
-				yb = (j + 1)*oy/dy; 
+				yb = (j + 1)*oy/dy;
+				
 				if(yb >= oy) 
 					yb = oy - 1;
 					
@@ -285,10 +394,15 @@ unsigned char *resize(unsigned char * origin, int ox, int oy, int dx, int dy, Sc
 							
 						for(k = xa_v[i]; k <= xb_v[i]; k++, q += 3, sq++)
 						{
-							r += q[0]; g += q[1]; b += q[2];
+							r += q[0]; 
+							g += q[1]; 
+							b += q[2];
 						}
 					}
-					p[0] = r/sq; p[1] = g/sq; p[2] = b/sq;
+					
+					p[0] = r/sq; 
+					p[1] = g/sq; 
+					p[2] = b/sq;
 				}
 			}
 		}
@@ -299,67 +413,87 @@ unsigned char *resize(unsigned char * origin, int ox, int oy, int dx, int dy, Sc
 	return(cr);
 }
 
-void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, int transp, bool alpha, int m_transparent)
+void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, int transp, bool alpha, int m_transparent, int bpp)
 {
 	unsigned long i;
-	unsigned int * fbbuff;
+//	unsigned int * fbbuff;
+	void *fbbuff = NULL;
+	unsigned char *c_fbbuff;
+	unsigned short *s_fbbuff;
+	unsigned int *i_fbbuff;
 	unsigned long count = x*y;
-
-	fbbuff = (unsigned int *) malloc(count * sizeof(unsigned int));
 	
-	if(fbbuff == NULL)
+	if (bpp == 32) // 24 / 32
 	{
-		printf("convertRGB2FB: Error: malloc\n");
-		return NULL;
-	}
-	
-	if(alpha)
-	{
-		for(i = 0; i < count ; i++)
+		i_fbbuff = ( unsigned int * ) malloc ( count * sizeof ( unsigned int ) );
+		
+		if ( i_fbbuff==NULL )
 		{
-			fbbuff[i] = ((rgbbuff[i*4 + 3] << 24) & 0xFF000000) | 
-				((rgbbuff[i*4]     << 16) & 0x00FF0000) | 
-				((rgbbuff[i*4 + 1] <<  8) & 0x0000FF00) | 
-				((rgbbuff[i*4 + 2])       & 0x000000FF);
+			printf ( "convertRGB2FB: Error: malloc\n" );
+			return NULL;
+		}
+		
+		if(alpha)
+		{
+			for(i = 0; i < count ; i++)
+			{
+				i_fbbuff[i] = ((rgbbuff[i*4 + 3] << 24) & 0xFF000000) | 
+					((rgbbuff[i*4]     << 16) & 0x00FF0000) | 
+					((rgbbuff[i*4 + 1] <<  8) & 0x0000FF00) | 
+					((rgbbuff[i*4 + 2])       & 0x000000FF);
+			}
+			
+			fbbuff = ( void * ) i_fbbuff;
+		}
+		else
+		{
+			switch (m_transparent) 
+			{
+				case TM_BLACK:
+					for(i = 0; i < count ; i++) 
+					{
+						transp = 0;
+						if(rgbbuff[i*3] || rgbbuff[i*3 + 1] || rgbbuff[i*3 + 2])
+							transp = 0xFF;
+						i_fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3+1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
+					}
+					
+					fbbuff = ( void * ) i_fbbuff;
+					break;
+		
+				case TM_INI:
+					for(i = 0; i < count ; i++)
+						i_fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
+						
+					fbbuff = ( void * ) i_fbbuff;
+										
+					break;
+								
+				case TM_NONE:
+				default:
+					for(i = 0; i < count ; i++)
+						i_fbbuff[i] = 0xFF000000 | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
+						
+					fbbuff = ( void * ) i_fbbuff;
+					break;
+			}
 		}
 	}
-	else
+	else if (bpp == 16)
 	{
-		switch (m_transparent) 
-		{
-			case TM_BLACK:
-				for(i = 0; i < count ; i++) 
-				{
-					transp = 0;
-					if(rgbbuff[i*3] || rgbbuff[i*3 + 1] || rgbbuff[i*3 + 2])
-						transp = 0xFF;
-					fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3+1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
-				}
-				break;
-	
-			case TM_INI:
-				for(i = 0; i < count ; i++)
-					fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
-									
-				break;
-							
-			case TM_NONE:
-			default:
-				for(i = 0; i < count ; i++)
-					fbbuff[i] = 0xFF000000 | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
-				break;
-		}
+		s_fbbuff = ( unsigned short *) make15color_errdiff(rgbbuff, x, y );
+		fbbuff = ( void * ) s_fbbuff;
 	}
 
 	return (void *) fbbuff;
 }
 
-uint8_t * getImage(const std::string &name, int width, int height, int transp)
+uint8_t * getImage(const std::string &name, int width, int height, int transp, int bpp)
 {
 	int x = 0;
 	int y = 0;
 	CFormathandler * fh = NULL;
-	unsigned char * buffer = NULL;
+	uint8_t * buffer = NULL;
 	uint8_t * ret = NULL;
 	int load_ret = FH_ERROR_MALLOC;
 	int _bpp = 0;
@@ -404,19 +538,19 @@ uint8_t * getImage(const std::string &name, int width, int height, int transp)
 				
 				x = width ;
 				y = height;
-			} 
+			}
 			
 			// convert RGB2FB
 			if( name.find(".png") == (name.length() - 4) )
 			{
 				// alpha
 				if (_bpp == 4)
-					ret = (uint8_t *)convertRGB2FB(buffer, x, y, 0, true);
+					ret = (uint8_t *)convertRGB2FB(buffer, x, y, 0, true, bpp);
 				else
-					ret = (uint8_t *)convertRGB2FB(buffer, x, y, transp); // TM_BLACK
+					ret = (uint8_t *)convertRGB2FB(buffer, x, y, transp, false, TM_BLACK, bpp); // TM_BLACK
 			}
 			else
-				ret = (uint8_t *)convertRGB2FB(buffer, x, y, transp, false, TM_NONE); //TM_NONE
+				ret = (uint8_t *)convertRGB2FB(buffer, x, y, transp, false, TM_NONE, bpp); //TM_NONE
 			
 			free(buffer);
 		} 

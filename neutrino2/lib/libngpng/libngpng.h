@@ -68,8 +68,8 @@ void add_format(int (*picsize)(const char *, int *, int*, int, int), int (*picre
 CFormathandler *fh_getsize(const char * name, int * x, int * y, int width_wanted, int height_wanted);
 void getSize(const std::string &name, int * width, int * height, int * nbpp);
 unsigned char *resize(unsigned char * origin, int ox, int oy, int dx, int dy, ScalingMode type, bool alpha = false);
-void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, int transp = 0xFF, bool aplha = false, int m_transparent = TM_BLACK);
-uint8_t *getImage(const std::string &name, int width, int height, int transp = 0xFF);
+void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, int transp = 0xFF, bool aplha = false, int m_transparent = TM_BLACK, int bpp = 32);
+uint8_t *getImage(const std::string &name, int width, int height, int transp = 0xFF, int bpp = 32);
 
 #endif
 

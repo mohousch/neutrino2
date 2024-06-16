@@ -700,7 +700,7 @@ void CLCDDisplay::clear_screen()
 	memset(_buffer, 0, raw_buffer_size);
 }
 
-void CLCDDisplay::dump_screen(raw_display_t *screen) 
+void CLCDDisplay::dump_screen(uint8_t **screen) 
 {
 	memmove(*screen, _buffer, raw_buffer_size);
 }
@@ -717,11 +717,12 @@ void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int
 		for (i = 0; i < min(element->height, yres - top); i++)
 		{
 			memmove(_buffer + ((top + i) * xres) + left, element->buffer + (i * element->width), min(element->width, xres - left));
+			//memcpy(_buffer + ((top + i) * xres) + left, element->buffer + (i * element->width), min(element->width, xres - left));
 		}
 	}
 }
 
-void CLCDDisplay::load_screen(const raw_display_t * const screen) 
+void CLCDDisplay::load_screen(uint8_t **const screen) 
 {
 	raw_lcd_element_t element;
 	
@@ -755,7 +756,7 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 	element->bpp = bpp;
 		
 	//// getBuffer
-	element->buffer = (uint8_t *)getImage(filename, width, height);
+	element->buffer = (uint8_t *)getImage(filename, width, height, bpp);
 #if 0
 	png_structp  png_ptr;
 	png_infop    info_ptr;

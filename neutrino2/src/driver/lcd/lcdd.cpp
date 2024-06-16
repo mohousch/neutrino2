@@ -1097,7 +1097,7 @@ void CLCD::showRCLock(int duration)
 		return;
 	
 #ifdef ENABLE_LCD
-	raw_display_t curr_screen = new unsigned char[display->raw_buffer_size];
+	uint8_t * curr_screen = new unsigned char[display->raw_buffer_size];
 
 	// Saving the whole screen is not really nice since the clock is updated
 	// every second. Restoring the screen can cause a short travel to the past ;)
