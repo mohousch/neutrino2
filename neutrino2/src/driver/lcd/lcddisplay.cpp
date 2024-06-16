@@ -707,9 +707,11 @@ void CLCDDisplay::dump_screen(raw_display_t *screen)
 
 void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int top, int width, int height) 
 {
+	printf("CLCDDisplay::load_screen_element: %s %d %d %d\n", element->name.c_str(), element->width, element->height, element->bpp);
+	
+	// blit2fb
 	unsigned int i;
 	
-	// 
 	if ((element->buffer) && (element->height <= yres - top))
 	{
 		for (i = 0; i < min(element->height, yres - top); i++)
@@ -733,21 +735,24 @@ void CLCDDisplay::load_screen(const raw_display_t * const screen)
 
 bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_t * element, int width, int height)
 {
-	bool         ret_value = false;
+	bool ret_value = true;
+	int dx = 0;
+	int dy = 0;
+	int bpp = 0;
 	
 	//// getSize
-	if (width != 0 && height != 0)
-		getSize(filename, &element->width, &element->height, &element->bpp);
+	getSize(filename, &dx, &dy, &bpp);
 		
 	if (width == 0)
-		width = element->width;
-	else 
-		element->width = width;
+		width = dx;
 		
 	if (height == 0)
-		height = element->height;
-	else
-		element->height = height;
+		height = dy;
+	
+	element->name = filename;
+	element->width = dx;
+	element->height = dy;
+	element->bpp = bpp;
 		
 	//// getBuffer
 	element->buffer = (uint8_t *)getImage(filename, width, height);

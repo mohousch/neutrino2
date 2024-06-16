@@ -108,7 +108,7 @@ bool CPictureViewer::decodeImage(const std::string & name, bool showBusySign)
 			m_Pic_Buffer = NULL;
 		}
 		
-		m_Pic_Buffer = (unsigned char *) malloc (x*y*3);
+		m_Pic_Buffer = (unsigned char *) malloc(x*y*3);
 
 		if (m_Pic_Buffer == NULL) 
 		{

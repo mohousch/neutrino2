@@ -287,14 +287,6 @@ const char * const element_name[LCD_NUMBER_OF_ELEMENTS] = {
 	"lcdpause"
 };
 
-/*
-#define NUMBER_OF_PATHS 2
-const char * const background_path[NUMBER_OF_PATHS] = {
-	LCDDIR_VAR ,
-	DATADIR "/lcdd/icons/"
-};
-*/
-
 bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fontfile2, const char * fontname2, const char * fontfile3, const char * fontname3)
 {
 	// 4digits
@@ -1516,7 +1508,7 @@ void CLCD::drawBanner()
 #ifdef ENABLE_LCD
 	unsigned int lcd_width  = display->xres;
 	
-	display->load_screen_element(&(element[ELEMENT_BANNER]), (lcd_width - element->width - 1)/2, 0, display->xres, element->height);
+	display->load_screen_element(&(element[ELEMENT_BANNER]), (lcd_width - element->width - 1)/2, 0, element->width, element->height);
 	
 	// fill the rest with PIXEL_ON
 //	if (element[ELEMENT_BANNER].width < lcd_width)

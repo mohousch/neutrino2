@@ -34,6 +34,23 @@
 #include "libngpng.h"
 
 
+////
+void Hexdump(unsigned char *Data, int length)
+{
+	if ( Data != NULL)
+	{
+		int k;
+		for (k = 0; k < length; k++)
+		{
+			printf("%02x ", Data[k]);
+			if (((k + 1) & 31) == 0)
+				printf("\n");
+		}
+		printf("\n");
+	}
+}
+////
+
 CFormathandler * fh_root = NULL;
 
 // PNG
@@ -71,7 +88,7 @@ extern int fh_svg_id (const char *);
 void add_format(int (*picsize) (const char *, int *, int *, int, int), int (*picread) (const char *, unsigned char **, int *, int *), int (*id) (const char *))
 {
 	CFormathandler * fhn = NULL;
-	fhn = (CFormathandler *) malloc(sizeof (CFormathandler));
+	fhn = (CFormathandler *) malloc(sizeof(CFormathandler));
 	fhn->get_size = picsize;
 	fhn->get_pic = picread;
 	fhn->id_pic = id;
@@ -145,7 +162,7 @@ void getSize(const std::string &name, int *width, int *height, int *nbpp)
 		return;
 	}
 	
-	rgbbuff = (unsigned char *) malloc(x*y*4);
+	rgbbuff = (unsigned char *) malloc(x*y*3);
 	
 	if (rgbbuff != NULL) 
 	{
@@ -352,7 +369,7 @@ uint8_t * getImage(const std::string &name, int width, int height, int transp)
 	
   	if (fh) 
 	{
-		buffer = (unsigned char *) malloc(x*y*4);
+		buffer = (unsigned char *) malloc(x*y*(transp? 4 : 3));
 		
 		if (buffer == NULL) 
 		{
