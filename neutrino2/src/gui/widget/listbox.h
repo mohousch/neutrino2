@@ -254,7 +254,7 @@ class CMenuOptionNumberChooser : public CMenuItem
 
 	protected:
 		int height;
-		int* optionValue;
+		int *optionValue;
 
 		int getHeight(void) const
 		{

@@ -55,6 +55,7 @@ int CSleepTimerWidget::exec(CMenuTarget* parent, const std::string &)
    
 	shutdown_min = CTimerd::getInstance()->getSleepTimerRemaining();  // remaining shutdown time?
 	sprintf(value,"%03d", shutdown_min);
+	
 	CSectionsd::CurrentNextInfo info_CurrentNext;
 	CSectionsd::getInstance()->getCurrentNextServiceKey(CZapit::getInstance()->getCurrentChannelID() & 0xFFFFFFFFFFFFULL, info_CurrentNext);
 	

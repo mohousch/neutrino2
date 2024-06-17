@@ -182,7 +182,7 @@ class CInfoViewer
 
 		CCProgressBar *snrscale, *sigscale, *timescale;
 		
-		//
+		////
 		void showEPGData(bool calledFromEvent = false);
 		void paintTime(int posx, int posy, unsigned int timeFont);
 		void showButton_Audio();
@@ -201,24 +201,21 @@ class CInfoViewer
 		void showSNR();
 		void Set_CA_Status(int Status);
 		void getCurrentNextEPG(t_channel_id ChannelID, bool newChan = false, int EPGPos = 0);
+		void getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentNextInfo &info);
+		void showRadiotext();
+		void killRadiotext();
 
  	public:
 		CInfoViewer();
-		~CInfoViewer();
+		virtual ~CInfoViewer();
 
 		////
-		void showTitle(const int _ChanNum, const std::string& _ChannelName, const t_satellite_position _satellitePosition, const t_channel_id _new_channel_id = 0, const bool _calledFromNumZap = false, int _epgpos = 0);
+		void showTitle(const int _ChanNum, const std::string &_ChannelName, const t_satellite_position _satellitePosition, const t_channel_id _new_channel_id = 0, const bool _calledFromNumZap = false, int _epgpos = 0);
 		void killTitle();
 		////
 		int handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data);
 		void clearVirtualZapMode() {virtual_zap_mode = false;}	// used in channellist.cpp
-		////
-		void showRadiotext(); 	// needed in radiotext
-		void killRadiotext(); 	// needed in radiotext
-		void showSubchan(); 	// needed in CNVODChangeExec
-		////
-		void getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentNextInfo &info); // needed by CSleepTimerWidget
-		CSectionsd::CurrentNextInfo getCurrentNextInfo() { return info_CurrentNext; }
+		void showSubchan(); 					// needed in CNVODChangeExec
 };
 
 #endif

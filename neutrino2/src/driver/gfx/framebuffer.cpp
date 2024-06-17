@@ -59,7 +59,6 @@
 #define BACKGROUNDIMAGEHEIGHT	DEFAULT_YRES
 
 ////
-static uint32_t * virtual_fb = NULL;
 inline uint32_t make16color(uint16_t r, uint16_t g, uint16_t b, uint16_t t,
 				  uint32_t  /*rl*/ = 0, uint32_t  /*ro*/ = 0,
 				  uint32_t  /*gl*/ = 0, uint32_t  /*go*/ = 0,
@@ -284,12 +283,6 @@ CFrameBuffer::~CFrameBuffer()
 	if (lfb)
 		munmap(lfb, available);
 	
-	if (virtual_fb)
-	{
-		delete[] virtual_fb;
-		virtual_fb = NULL;
-	}
-	
 #if defined (USE_OPENGL)
 	active = false; /* keep people/infoclocks from accessing */
 	mpGLThreadObj->shutDown();
@@ -343,12 +336,10 @@ unsigned int CFrameBuffer::getScreenY(bool real)
 
 fb_pixel_t * CFrameBuffer::getFrameBufferPointer() const
 {	  
-	if (active || (virtual_fb == NULL))
+	if (active)
 	{
 		return lfb;		
 	}	
-	else
-		return (fb_pixel_t *) virtual_fb;
 }
 
 unsigned int CFrameBuffer::getAvailableMem() const
@@ -358,7 +349,7 @@ unsigned int CFrameBuffer::getAvailableMem() const
 
 bool CFrameBuffer::getActive() const
 {
-	return (active || (virtual_fb != NULL));
+	return (active);
 }
 
 void CFrameBuffer::setActive(bool enable)

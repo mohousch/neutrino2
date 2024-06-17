@@ -302,7 +302,7 @@ unsigned char *resize(unsigned char * origin, int ox, int oy, int dx, int dy, Sc
 
 	if(cr == NULL)
 	{
-		printf("Error: malloc\n");
+		printf("[libngpng] resize: Error: malloc\n");
 		return(origin);
 	}
 
@@ -429,7 +429,7 @@ void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, 
 		
 		if ( i_fbbuff==NULL )
 		{
-			printf ( "convertRGB2FB: Error: malloc\n" );
+			printf ( "[libngpng] convertRGB2FB: Error: malloc\n" );
 			return NULL;
 		}
 		
@@ -507,7 +507,7 @@ uint8_t * getImage(const std::string &name, int width, int height, int transp, i
 		
 		if (buffer == NULL) 
 		{
-		  	printf("getImage: Error: malloc\n");
+		  	printf("[libngpng] getImage: Error: malloc\n");
 		  	return NULL;
 		}
 		
@@ -556,14 +556,14 @@ uint8_t * getImage(const std::string &name, int width, int height, int transp, i
 		} 
 		else 
 		{
-	  		printf("Error decoding file %s\n", name.c_str ());
+	  		printf("[libngpng] getImage: Error decoding file %s\n", name.c_str ());
 	  		free (buffer);
 	  		buffer = NULL;
 		}
   	} 
 	else
 	{
-		printf("getImage: Error open file %s\n", name.c_str ());
+		printf("[libngpng] getImage: Error open file %s\n", name.c_str ());
 	}
 
 	return ret;

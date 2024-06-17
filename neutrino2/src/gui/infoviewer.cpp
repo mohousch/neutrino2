@@ -335,7 +335,7 @@ void CInfoViewer::paintRecordIcon(int posx, int posy)
 }
 
 //
-void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName, const t_satellite_position _satellitePosition, const t_channel_id _new_channel_id, const bool _calledFromNumZap, int _epgpos)
+void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName, const t_satellite_position _satellitePosition, const t_channel_id _new_channel_id, const bool _calledFromNumZap, int _epgpos)
 {
 	dprintf(DEBUG_NORMAL, "CInfoViewer::showTitle: channel: 0x%llx callFromNumZap:%s\n", _new_channel_id, _calledFromNumZap? "true" : "false");
 	
@@ -526,11 +526,6 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 	// botton line
 	if(g_settings.infobar_buttonline)
 	{
-		//CCHline hline(buttonBarStartX + BORDER_LEFT, buttonBarStartY, BoxWidth - BORDER_LEFT - BORDER_RIGHT, buttonBarHeight);
-		
-		//hline.setColor(COL_INFOBAR_SHADOW_PLUS_1);
-		//hline.setGradient(g_settings.infobar_buttonline_gradient);
-		//hline.paint();
 		frameBuffer->paintBoxRel(buttonBarStartX + BORDER_LEFT, buttonBarStartY, BoxWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_INFOBAR_SHADOW_PLUS_1, 0, CORNER_NONE, g_settings.infobar_buttonline_gradient? LIGHT2DARK2LIGHT : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 	}
 
@@ -545,9 +540,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 	// get CN epg
 	getCurrentNextEPG(channel_id, new_chan, _epgpos);
 
-#if ENABLE_LCD
 	showLcdPercentOver();
-#endif
 
 	// showSNR
 	showSNR();
@@ -572,7 +565,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 		showButton_Audio();	
 		// yellow button
 		showButton_SubServices();
-		//	
+		// ca / 16/9 / vtxt / subt /reso
 		showIcon_CA_Status();
 		showIcon_16_9();
 		showIcon_VTXT();
@@ -1219,23 +1212,19 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	  	
 	  	if ( is_visible )
 			showEPGData(true);
-			
-#if ENABLE_LCD			
-	  	showLcdPercentOver();
-#endif			
+						
+	  	showLcdPercentOver();			
 
 		return messages_return::handled;
   	} 
 	else if (msg == NeutrinoMessages::EVT_TIMER) 
-	{
-#if defined (ENABLE_LCD)	  
+	{	  
 		if (data == CNeutrinoApp::getInstance()->lcdUpdateTimer) 
 		{
 	  		showLcdPercentOver();		
 
 	  		return messages_return::handled;
-		}
-#endif	
+		}	
   	} 
 	else if (msg == NeutrinoMessages::EVT_RECORDMODE) 
 	{	  
@@ -1313,9 +1302,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 				showEPGData(true);
 		}
 
-#if ENABLE_LCD
-		showLcdPercentOver();
-#endif		
+		showLcdPercentOver();		
 
 		return messages_return::handled;
   	} 
@@ -1849,7 +1836,6 @@ void CInfoViewer::Set_CA_Status(int Status)
 		showIcon_CA_Status();
 }
 
-#if ENABLE_LCD
 void CInfoViewer::showLcdPercentOver()
 {
 	if (g_settings.lcd_show_volume != 1) 
@@ -1868,7 +1854,6 @@ void CInfoViewer::showLcdPercentOver()
 		CLCD::getInstance()->showPercentOver(runningPercent);	
 	}	
 }
-#endif
 
 extern int pmt_caids[11];
 
