@@ -1097,7 +1097,7 @@ void CLCD::showRCLock(int duration)
 		return;
 	
 #ifdef ENABLE_LCD
-	uint8_t * curr_screen = new unsigned char[display->raw_buffer_size];
+	uint32_t * curr_screen = new uint32_t[display->raw_buffer_size];
 
 	// Saving the whole screen is not really nice since the clock is updated
 	// every second. Restoring the screen can cause a short travel to the past ;)
@@ -1508,11 +1508,7 @@ void CLCD::drawBanner()
 #ifdef ENABLE_LCD
 	unsigned int lcd_width  = display->xres;
 	
-	display->load_screen_element(&(element[ELEMENT_BANNER]), (lcd_width - element->width - 1)/2, 0, element->width, element->height);
-	
-	// fill the rest with PIXEL_ON
-//	if (element[ELEMENT_BANNER].width < lcd_width)
-//		display->draw_fill_rect(element[ELEMENT_BANNER].width - 1, -1, lcd_width, element[ELEMENT_BANNER].height - 1, CLCDDisplay::PIXEL_ON);
+	display->load_screen_element(&(element[ELEMENT_BANNER]), 0, 0, element->width, element->height);
 #endif
 }
 

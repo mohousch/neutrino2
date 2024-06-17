@@ -700,7 +700,7 @@ void CLCDDisplay::clear_screen()
 	memset(_buffer, 0, raw_buffer_size);
 }
 
-void CLCDDisplay::dump_screen(uint8_t **screen) 
+void CLCDDisplay::dump_screen(uint32_t **screen) 
 {
 	memmove(*screen, _buffer, raw_buffer_size);
 }
@@ -708,6 +708,8 @@ void CLCDDisplay::dump_screen(uint8_t **screen)
 void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int top, int width, int height) 
 {
 	printf("CLCDDisplay::load_screen_element: %s %d %d %d\n", element->name.c_str(), element->width, element->height, element->bpp);
+	
+	load_png_element(element->name.c_str(), element, width, height);
 	
 	// blit2fb
 	unsigned int i;
@@ -717,12 +719,11 @@ void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int
 		for (i = 0; i < min(element->height, yres - top); i++)
 		{
 			memmove(_buffer + ((top + i) * xres) + left, element->buffer + (i * element->width), min(element->width, xres - left));
-			//memcpy(_buffer + ((top + i) * xres) + left, element->buffer + (i * element->width), min(element->width, xres - left));
 		}
 	}
 }
 
-void CLCDDisplay::load_screen(uint8_t **const screen) 
+void CLCDDisplay::load_screen(uint32_t **const screen) 
 {
 	raw_lcd_element_t element;
 	
@@ -756,7 +757,7 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 	element->bpp = bpp;
 		
 	//// getBuffer
-	element->buffer = (uint8_t *)getImage(filename, width, height, bpp);
+	element->buffer = (uint32_t *)getImage(filename, width, height, bpp);
 #if 0
 	png_structp  png_ptr;
 	png_infop    info_ptr;
@@ -874,7 +875,7 @@ bool CLCDDisplay::load_png(const char * const filename)
 	raw_lcd_element_t element;
 	
 	element.buffer_size = raw_buffer_size;
-	element.buffer = _buffer;
+	element.buffer = (uint32_t *)_buffer;
 	
 	return load_png_element(filename, &element);
 }
@@ -965,7 +966,7 @@ bool CLCDDisplay::dump_png(const char * const filename)
 	raw_lcd_element_t element;
 	
 	element.buffer_size = raw_buffer_size;
-	element.buffer = _buffer;
+	element.buffer = (uint32_t *)_buffer;
 	element.width = xres;
 	element.height = yres;
 	element.bpp = 8;
