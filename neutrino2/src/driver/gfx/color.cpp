@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: color.cpp 25.09.2023 mohousch Exp $
+	$Id: color.cpp 17062024 mohousch Exp $
  
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -36,6 +36,7 @@
 #include <driver/gfx/color.h>
 #include <system/debug.h>
 
+
 #ifndef FLT_EPSILON
 #define FLT_EPSILON 1E-5
 #endif
@@ -61,7 +62,7 @@ uint32_t convertSetupColor2Color(uint8_t r, uint8_t g, uint8_t b, uint8_t alpha)
 	int color = convertSetupColor2RGB(r, g, b);
 	int tAlpha = (alpha ? (convertSetupAlpha2Alpha(alpha)) : 0xFF);
 
-	fb_pixel_t col = ((tAlpha << 24) & 0xFF000000) | color;
+	uint32_t col = ((tAlpha << 24) & 0xFF000000) | color;
 	
 	return col;
 }
@@ -82,7 +83,7 @@ uint8_t limitChar(int c)
 }
 
 //
-fb_pixel_t Hsv2SysColor(HsvColor *hsv, uint8_t tr)
+uint32_t Hsv2SysColor(HsvColor *hsv, uint8_t tr)
 {
 	RgbColor rgb;
 	Hsv2Rgb(hsv, &rgb);
@@ -93,7 +94,7 @@ fb_pixel_t Hsv2SysColor(HsvColor *hsv, uint8_t tr)
 		((rgb.b      ) & 0x000000FF));
 }
 
-uint8_t SysColor2Hsv(fb_pixel_t color, HsvColor *hsv)
+uint8_t SysColor2Hsv(uint32_t color, HsvColor *hsv)
 {
 	uint8_t tr;
 	RgbColor rgb;
@@ -207,11 +208,11 @@ void Rgb2Hsv(RgbColor *rgb, HsvColor *hsv)
 }
 
 //
-fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, int bSize, int mode, int /*intensity*/)
+uint32_t *gradientColorToTransparent(uint32_t col, int bSize, int mode, int /*intensity*/)
 {
-	fb_pixel_t *gradientBuf = NULL;
+	uint32_t *gradientBuf = NULL;
 	
-	gradientBuf = (fb_pixel_t*) malloc(bSize * sizeof(fb_pixel_t));
+	gradientBuf = (uint32_t *) malloc(bSize * sizeof(uint32_t));
 		
 	if (gradientBuf == NULL) 
 	{
@@ -219,7 +220,7 @@ fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, int bSize, int mode, int 
 		return NULL;
 	}
 	
-	memset((void*)gradientBuf, '\0', bSize * sizeof(fb_pixel_t));
+	memset((void*)gradientBuf, '\0', bSize * sizeof(uint32_t));
 
 	int start_box = 0;
 	int end_box = bSize;
@@ -248,11 +249,11 @@ fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, int bSize, int mode, int 
 	return gradientBuf;
 }
 
-fb_pixel_t* gradientOneColor(fb_pixel_t col, int bSize, int mode, int intensity)
+uint32_t *gradientOneColor(uint32_t col, int bSize, int mode, int intensity)
 {
-	fb_pixel_t *gradientBuf = NULL;
+	uint32_t *gradientBuf = NULL;
 	
-	gradientBuf = (fb_pixel_t*) malloc(bSize * sizeof(fb_pixel_t));
+	gradientBuf = (uint32_t *) malloc(bSize * sizeof(uint32_t));
 		
 	if (gradientBuf == NULL) 
 	{
@@ -260,7 +261,7 @@ fb_pixel_t* gradientOneColor(fb_pixel_t col, int bSize, int mode, int intensity)
 		return NULL;
 	}
 	
-	memset((void*)gradientBuf, '\0', bSize * sizeof(fb_pixel_t));
+	memset((void*)gradientBuf, '\0', bSize * sizeof(uint32_t));
 
 	HsvColor hsv;
 	uint8_t min_v = 0, max_v = 0, col_s = 0;
@@ -337,11 +338,11 @@ fb_pixel_t* gradientOneColor(fb_pixel_t col, int bSize, int mode, int intensity)
 	return gradientBuf;
 }
 
-fb_pixel_t* gradientColorToColor(fb_pixel_t start_col, fb_pixel_t end_col, int bSize, int mode, int /*intensity*/)
+uint32_t *gradientColorToColor(uint32_t start_col, uint32_t end_col, int bSize, int mode, int /*intensity*/)
 {
-	fb_pixel_t *gradientBuf = NULL;
+	uint32_t *gradientBuf = NULL;
 	
-	gradientBuf = (fb_pixel_t*) malloc(bSize * sizeof(fb_pixel_t));
+	gradientBuf = (uint32_t *) malloc(bSize * sizeof(uint32_t));
 		
 	if (gradientBuf == NULL) 
 	{
@@ -349,12 +350,12 @@ fb_pixel_t* gradientColorToColor(fb_pixel_t start_col, fb_pixel_t end_col, int b
 		return NULL;
 	}
 	
-	memset((void*)gradientBuf, '\0', bSize * sizeof(fb_pixel_t));
+	memset((void*)gradientBuf, '\0', bSize * sizeof(uint32_t));
 
 	int start_box = 0;
 	int end_box = bSize;
 
-	fb_pixel_t temp_col = start_col;
+	uint32_t temp_col = start_col;
 	start_col =  end_col;
 	end_col = temp_col;
 
@@ -384,7 +385,6 @@ fb_pixel_t* gradientColorToColor(fb_pixel_t start_col, fb_pixel_t end_col, int b
 
 	for (int i = start_box; i < end_box; i++) 
 	{
-
 		uint8_t tr = limitChar((int)((float)start_tr + trStep*(float)i));
 		uint8_t r  = limitChar((int)((float)start_r + rStep*(float)i));
 		uint8_t g  = limitChar((int)((float)start_g + gStep*(float)i));

@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: framebuffer.cpp 30.10.2023 mohousch Exp $
+	$Id: framebuffer.cpp 17062024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
                       2003 thegoodguy
@@ -526,16 +526,9 @@ void CFrameBuffer::setBlendLevel(int level)
 
 void CFrameBuffer::paletteFade(int i, __u32 rgb1, __u32 rgb2, int level)
 {
-	__u16 *r = cmap.red + i;
-	__u16 *g = cmap.green + i;
-	__u16 *b = cmap.blue + i;
-	
-	*r = ((rgb2&0xFF0000)>>16)*level;
-	*g = ((rgb2&0x00FF00)>>8 )*level;
-	*b = ((rgb2&0x0000FF)    )*level;
-	*r += ((rgb1&0xFF0000)>>16)*(255 - level);
-	*g += ((rgb1&0x00FF00)>>8 )*(255 - level);
-	*b += ((rgb1&0x0000FF))*(255 - level);
+	cmap.red[i] = ((rgb2&0xFF0000)>>16)*level + ((rgb1&0xFF0000)>>16)*(255 - level);
+	cmap.green[i] = ((rgb2&0x00FF00)>>8 )*level + ((rgb1&0x00FF00)>>8 )*(255 - level);
+	cmap.blue[i] = ((rgb2&0x0000FF)    )*level + ((rgb1&0x0000FF))*(255 - level);
 }
 
 void CFrameBuffer::paletteGenFade(int in, __u32 rgb1, __u32 rgb2, int num, int tr)
@@ -564,11 +557,6 @@ void CFrameBuffer::paletteSet(struct fb_cmap *map)
 	//
 	if(map == NULL)
 		map = &cmap;
-		
-	if (bpp == 8)
-	{
-		ioctl(fd, FBIOPUTCMAP, map);
-	}
 
 	//
 	uint32_t rl, ro, gl, go, bl, bo, tl, to;
@@ -1536,15 +1524,15 @@ void CFrameBuffer::clearFrameBuffer()
 }
 
 // blitBox2FB
-void CFrameBuffer::blitBox2FB(const fb_pixel_t* boxBuf, const uint32_t& width, const uint32_t& height, const uint32_t& xoff, const uint32_t& yoff)
+void CFrameBuffer::blitBox2FB(const fb_pixel_t *boxBuf, const uint32_t &width, const uint32_t &height, const uint32_t &xoff, const uint32_t &yoff)
 { 
 	uint32_t xc = (width > xRes) ? (uint32_t)xRes : width;
 	uint32_t yc = (height > yRes) ? (uint32_t)yRes : height;
 	
-	unsigned int swidth = stride / sizeof(fb_pixel_t);
+	uint32_t swidth = stride / sizeof(fb_pixel_t);
 
 	fb_pixel_t *fbp = getFrameBufferPointer() + (swidth * yoff);
-	fb_pixel_t* data = (fb_pixel_t*)boxBuf;
+	fb_pixel_t *data = (fb_pixel_t *)boxBuf;
 
 	uint32_t line = 0;
 	while (line < yc) 
@@ -1570,7 +1558,7 @@ void CFrameBuffer::blit2FB(void * fbbuff, uint32_t width, uint32_t height, uint3
 	int xc = (width > xRes) ? xRes : width;
 	int yc = (height > yRes) ? yRes : height;
 	
-	fb_pixel_t* data = (fb_pixel_t*) fbbuff;
+	fb_pixel_t *data = (fb_pixel_t *) fbbuff;
 
 	uint8_t *d = ((uint8_t *)getFrameBufferPointer()) + xoff * sizeof(fb_pixel_t) + stride * yoff;
 	fb_pixel_t *d2;
@@ -1785,7 +1773,7 @@ void CFrameBuffer::displayRGB(unsigned char * rgbbuff, int x_size, int y_size, i
 }
 
 // display image
-bool CFrameBuffer::displayImage(const std::string& name, int posx, int posy, int width, int height, int x_pan, int y_pan)
+bool CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int width, int height, int x_pan, int y_pan)
 {
 	dprintf(DEBUG_DEBUG, "CFrameBuffer::displayImage %s\n", name.c_str());
 	

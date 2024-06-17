@@ -277,7 +277,7 @@ class CFrameBuffer
 		void clearFrameBuffer();
 
 		//
-		void blitBox2FB(const fb_pixel_t* boxBuf, const uint32_t& width, const uint32_t& height, const uint32_t& xoff, const uint32_t& yoff);
+		void blitBox2FB(const fb_pixel_t *boxBuf, const uint32_t &width, const uint32_t &height, const uint32_t &xoff, const uint32_t &yoff);
 		void blit2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp = 0, uint32_t yp = 0, bool transp = false);
 
 		// blit

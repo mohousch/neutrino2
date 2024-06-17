@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: color.h 25.09.2023 mohousch Exp $
+	$Id: color.h 17062024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -131,7 +131,7 @@ uint32_t convertSetupColor2Color(uint8_t r, uint8_t g, uint8_t b, uint8_t alpha)
 ////
 inline uint32_t rgbaToColor(unsigned int rgb, uint8_t tr = 0xFF)
 {
-	fb_pixel_t col = ((tr << 24) & 0xFF000000) | rgb;
+	uint32_t col = ((tr << 24) & 0xFF000000) | rgb;
 	
 	return col;
 }
@@ -161,13 +161,13 @@ typedef struct {
 
 //
 uint8_t limitChar(int c);
-fb_pixel_t Hsv2SysColor(HsvColor *hsv, uint8_t tr=0xFF);
-uint8_t SysColor2Hsv(fb_pixel_t color, HsvColor *hsv);
+uint32_t Hsv2SysColor(HsvColor *hsv, uint8_t tr=0xFF);
+uint8_t SysColor2Hsv(uint32_t color, HsvColor *hsv);
 void Hsv2Rgb(HsvColor *hsv, RgbColor *rgb);
 void Rgb2Hsv(RgbColor *rgb, HsvColor *hsv);
-fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, int bSize, int mode, int intensity = INT_LIGHT);
-fb_pixel_t* gradientOneColor(fb_pixel_t col, int bSize, int mode, int intensity = INT_LIGHT);
-fb_pixel_t* gradientColorToColor(fb_pixel_t start_col, fb_pixel_t end_col, int bSize, int mode, int intensity = INT_LIGHT);
+uint32_t *gradientColorToTransparent(uint32_t col, int bSize, int mode, int intensity = INT_LIGHT);
+uint32_t *gradientOneColor(uint32_t col, int bSize, int mode, int intensity = INT_LIGHT);
+uint32_t *gradientColorToColor(uint32_t start_col, uint32_t end_col, int bSize, int mode, int intensity = INT_LIGHT);
 
 #endif
 
