@@ -2115,11 +2115,9 @@ void CNeutrinoApp::initZapper()
 		tvMode(false);
 	} 
 	else if(firstchannel.mode == 'r') 
-	{
-#if defined (ENABLE_LCD)	  
+	{	  
 		g_RCInput->killTimer(lcdUpdateTimer);
-		lcdUpdateTimer = g_RCInput->addTimer( LCD_UPDATE_TIME_RADIO_MODE, false );
-#endif		
+		lcdUpdateTimer = g_RCInput->addTimer( LCD_UPDATE_TIME_RADIO_MODE, false );	
 		
 		radioMode(false);
 	}
@@ -2485,10 +2483,8 @@ void CNeutrinoApp::tvMode( bool rezap )
 			g_Radiotext = NULL;
 		}		
 
-#if defined (ENABLE_LCD)
 		g_RCInput->killTimer(lcdUpdateTimer);
-		lcdUpdateTimer = g_RCInput->addTimer( LCD_UPDATE_TIME_TV_MODE, false );
-#endif		
+		lcdUpdateTimer = g_RCInput->addTimer( LCD_UPDATE_TIME_TV_MODE, false );	
 
 		CLCD::getInstance()->ShowIcon(VFD_ICON_RADIO, false);
 
@@ -2541,11 +2537,9 @@ void CNeutrinoApp::radioMode( bool rezap)
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::radioMode: rezap %s\n", rezap ? "yes" : "no");
 
 	if(mode == mode_tv ) 
-	{
-#if defined (ENABLE_LCD)	  
+	{	  
 		g_RCInput->killTimer(lcdUpdateTimer);
-		lcdUpdateTimer = g_RCInput->addTimer( LCD_UPDATE_TIME_RADIO_MODE, false );
-#endif		
+		lcdUpdateTimer = g_RCInput->addTimer( LCD_UPDATE_TIME_RADIO_MODE, false );	
 
 		stopSubtitles();
 	}
@@ -4964,10 +4958,8 @@ int CNeutrinoApp::run(int argc, char **argv)
 
 		saveSetup(NEUTRINO_SETTINGS_FILE);
 	}
-	
-#if defined (ENABLE_LCD)	
+		
 	lcdUpdateTimer = g_RCInput->addTimer(LCD_UPDATE_TIME_TV_MODE, false, true);
-#endif
 	
 	// zapper
 	initZapper();
