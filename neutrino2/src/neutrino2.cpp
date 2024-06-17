@@ -903,8 +903,25 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	
 	////
 #ifdef ENABLE_GRAPHLCD
+	g_settings.glcd_enable = configfile.getInt32("glcd_enable", 0);
 	g_settings.glcd_selected_config = configfile.getInt32("glcd_selected_config", 0);
+	g_settings.glcd_color_fg = configfile.getInt32("glcd_color_fg", GLCD::cColor::White);
 	g_settings.glcd_color_bg = configfile.getInt32("glcd_color_bg", GLCD::cColor::Black);
+	g_settings.glcd_color_bar = configfile.getInt32("glcd_color_bar", GLCD::cColor::Blue);
+	g_settings.glcd_percent_channel = configfile.getInt32("glcd_percent_channel", 22);
+	g_settings.glcd_percent_epg = configfile.getInt32("glcd_percent_epg", 16);
+	g_settings.glcd_percent_bar = configfile.getInt32("glcd_percent_bar", 8);
+	g_settings.glcd_percent_time = configfile.getInt32("glcd_percent_time", 32);
+	g_settings.glcd_show_logo = configfile.getInt32("glcd_show_logo", 1);
+	g_settings.glcd_percent_time_standby = configfile.getInt32("glcd_percent_time_standby", 50);
+	g_settings.glcd_percent_logo = configfile.getInt32("glcd_percent_logo", 50);
+	g_settings.glcd_mirror_osd = configfile.getInt32("glcd_mirror_osd", 0);
+	g_settings.glcd_mirror_video = configfile.getInt32("glcd_mirror_video", 0);
+	g_settings.glcd_time_in_standby = configfile.getInt32("glcd_time_in_standby", 1);
+	g_settings.glcd_font = configfile.getString("glcd_font", DATADIR "/fonts/neutrino.ttf");
+	g_settings.glcd_brightness = configfile.getInt32("glcd_brightness", 75);
+	g_settings.glcd_brightness_standby = configfile.getInt32("glcd_brightness_standby", 45);
+	g_settings.glcd_scroll_speed = configfile.getInt32("glcd_scroll_speed", 2);
 #endif
 	
 	//set OSD resolution
@@ -1406,8 +1423,26 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	
 	////
 #ifdef ENABLE_GRAPHLCD
-	configfile.setInt32("glcd_selected_config", g_settings.glcd_selected_config);
+	configfile.setInt32("glcd_enable", g_settings.glcd_enable);
+	configfile.setInt32("glcd_color_fg", g_settings.glcd_color_fg);
 	configfile.setInt32("glcd_color_bg", g_settings.glcd_color_bg);
+	configfile.setInt32("glcd_color_bar", g_settings.glcd_color_bar);
+	configfile.setInt32("glcd_percent_channel", g_settings.glcd_percent_channel);
+	configfile.setInt32("glcd_percent_epg", g_settings.glcd_percent_epg);
+	configfile.setInt32("glcd_percent_bar", g_settings.glcd_percent_bar);
+	configfile.setInt32("glcd_percent_time", g_settings.glcd_percent_time);
+	configfile.setInt32("glcd_percent_time_standby", g_settings.glcd_percent_time_standby);
+	configfile.setInt32("glcd_percent_logo", g_settings.glcd_percent_logo);
+	configfile.setInt32("glcd_mirror_osd", g_settings.glcd_mirror_osd);
+	configfile.setInt32("glcd_mirror_video", g_settings.glcd_mirror_video);
+	configfile.setInt32("glcd_time_in_standby", g_settings.glcd_time_in_standby);
+	configfile.setInt32("glcd_show_logo", g_settings.glcd_show_logo);
+	configfile.setString("glcd_font", g_settings.glcd_font);
+	configfile.setInt32("glcd_brightness", g_settings.glcd_brightness);
+	configfile.setInt32("glcd_brightness_standby", g_settings.glcd_brightness_standby);
+	configfile.setInt32("glcd_scroll", g_settings.glcd_scroll);
+	configfile.setInt32("glcd_scroll_speed", g_settings.glcd_scroll_speed);
+	configfile.setInt32("glcd_selected_config", g_settings.glcd_selected_config);
 #endif
 
 	if(strcmp(fname, NEUTRINO_SETTINGS_FILE))

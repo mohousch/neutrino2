@@ -7,6 +7,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <zlib.h>
 
 #include "libngpng.h"
 
@@ -249,10 +250,13 @@ bool fh_png_save(const char *filename, int xres, int yres)
 	}
 
 	png_set_IHDR(png_ptr, info_ptr, xres, yres, 8, PNG_COLOR_TYPE_RGBA, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+	
 	//png_set_filter (png_ptr, 0, PNG_FILTER_NONE);
 	//png_set_compression_level(png_ptr, Z_BEST_SPEED);
-	png_set_filter(png_ptr, 0, PNG_FILTER_NONE|PNG_FILTER_SUB|PNG_FILTER_PAETH);
-	png_set_compression_level(png_ptr, /*Z_BEST_COMPRESSION*/PNG_Z_DEFAULT_COMPRESSION);
+	
+//	png_set_filter(png_ptr, 0, PNG_FILTER_NONE|PNG_FILTER_SUB|PNG_FILTER_PAETH);
+//	png_set_compression_level(png_ptr, /*Z_BEST_COMPRESSION*/PNG_Z_DEFAULT_COMPRESSION);
+	png_set_compression_level(png_ptr, Z_BEST_SPEED);
 
 	png_set_bgr(png_ptr);
 	png_write_info(png_ptr, info_ptr);

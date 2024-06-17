@@ -232,6 +232,10 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	lcdSettings->addItem(new CMenuForwarder(_("Contrast / Brightness"), true, NULL, lcdsliders));	
 #endif	
+#endif
+
+#ifdef ENABLE_GRAPHLCD
+	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("GraphLCD Setup"))));
 #endif	
 	
 	//
