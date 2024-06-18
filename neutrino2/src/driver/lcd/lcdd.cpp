@@ -1871,6 +1871,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		showclock = true;
 		showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
 		#endif
+		showclock = false;
 		break;
 	
 	#if 0	
