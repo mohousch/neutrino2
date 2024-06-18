@@ -500,6 +500,10 @@ void CLCD::displayUpdate()
 			display->dump_png("/tmp/lcdd.png");
 	}
 #endif
+
+#ifdef ENABLE_GRAPHLCD
+	nglcd->update();
+#endif
 }
 
 void CLCD::setlcdparameter(int dimm, const int contrast, const int power, const int inverse, const int bias)
@@ -2323,6 +2327,10 @@ void CLCD::Clear()
 		display->clear_screen(); // clear lcd
 		displayUpdate();
 	}
+#endif
+
+#ifdef ENABLE_GRAPHLCD
+	nglcd->clear();
 #endif
 }
 

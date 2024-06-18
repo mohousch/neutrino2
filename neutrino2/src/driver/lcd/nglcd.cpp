@@ -380,4 +380,12 @@ void nGLCD::LcdAnalogClock(int posx, int posy, int dia)
 	bitmap->DrawLine(posx, posy + 6, posx + mx_, posy + my_, g_settings.glcd_color_fg);
 }
 
+void nGLCD::update()
+{
+	lcd->Refresh(true);
+}
 
+void nGLCD::clear()
+{
+	lcd->Refresh(false);
+}

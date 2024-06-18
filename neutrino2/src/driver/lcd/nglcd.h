@@ -103,6 +103,9 @@ class nGLCD
 			int width, int height,
 			int &bb_x, int &bb_y, int &bb_width, int &bb_height);
 		void LcdAnalogClock(int posx, int posy, int dia);
+		
+		void update();
+		void clear();
 };
 #endif
 
