@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-06-17 18:16+0200\n"
+"POT-Creation-Date: 2024-06-18 18:23+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -678,6 +678,9 @@ msgstr "Bearbeiten"
 
 msgid "Enable (soft) Limits"
 msgstr "(Soft-)Limits aktivieren"
+
+msgid "Enable NGLCD"
+msgstr ""
 
 msgid "Enable standby"
 msgstr "Standby aktivieren"
@@ -2536,6 +2539,10 @@ msgstr "Tuner-Modus"
 
 msgid "Tuner type"
 msgstr "Tunertyp"
+
+#, fuzzy
+msgid "Type"
+msgstr "Typ:"
 
 msgid "Type:"
 msgstr "Typ:"

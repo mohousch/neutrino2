@@ -126,7 +126,7 @@ class CRemoteControl
 		//
 		inline const std::string& getCurrentChannelName(void) const { return current_channel_name; };
 		inline int getCurrentChannelNumber(void) { return current_channel_number; };
-		inline t_channel_id getCurrentChannelChannelID(void) { return current_channel_id;};
+		inline t_channel_id getCurrentChannelID(void) { return current_channel_id;};
 		inline t_satellite_position getCurrentChannelSatellitePosition(void) { return current_channel_satposition;};
 };
 

@@ -1089,6 +1089,53 @@ void CLCD::showTime(bool force)
 		displayUpdate();
 	}
 #endif
+
+#ifdef ENABLE_GRAPHLCD
+	if (showclock)
+	{
+		char timestr[21];
+		struct timeval tm;
+		struct tm * t;
+
+		gettimeofday(&tm, NULL);
+		t = localtime(&tm.tv_sec);
+		
+		unsigned int lcd_width  = display->xres;
+		unsigned int lcd_height = display->yres;
+
+		if (mode == MODE_STANDBY)
+		{
+			std::string a_clock = "";
+
+			a_clock = DATADIR "/icons/a_clock.png";
+			if (access(a_clock.c_str(), F_OK) != 0)
+				a_clock = DATADIR "/icons/a_clock.png";
+
+			int lcd_a_clock_width = 0, lcd_a_clock_height = 0, lcd_a_clock_bpp = 0;
+			getSize(a_clock.c_str(), &lcd_a_clock_width, &lcd_a_clock_height, &lcd_a_clock_bpp);
+			
+			
+			nglcd->LcdAnalogClock(lcd_a_clock_width / 2, lcd_a_clock_height / 2, 200);
+		}
+		else
+		{
+			if (CNeutrinoApp::getInstance ()->recordingstatus && clearClock == 1)
+			{
+				strcpy(timestr,"  :  ");
+				clearClock = 0;
+			}
+			else
+			{
+				strftime((char*) &timestr, 20, "%H:%M", t);
+				clearClock = 1;
+			}
+
+			//
+		}
+		
+		displayUpdate();
+	}
+#endif
 }
 
 void CLCD::showRCLock(int duration)
@@ -1802,6 +1849,105 @@ void CLCD::setMode(const MODES m, const char * const title)
 		break;
 	}
 #endif
+
+#ifdef ENABLE_GRAPHLCD
+	switch (m)
+	{
+	case MODE_TVRADIO:
+	case MODE_MOVIE:
+		// servicename / title / epg
+		if (mode == MODE_TVRADIO)
+			//showServicename(servicename);
+			//showServicename(g_RemoteControl->getCurrentChannelName());
+			nglcd->showImage(g_RemoteControl->getCurrentChannelID(), 0, 0, 220, 176);
+		#if 0
+		else // MODE_MOVIE
+		{
+			setMovieInfo(movie_playmode, movie_big, movie_small, movie_centered);
+			setMovieAudio(movie_is_ac3);
+		}
+		
+		// time
+		showclock = true;
+		showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
+		#endif
+		break;
+	
+	#if 0	
+	case MODE_AUDIO:
+	{
+		display->clear_screen(); // clear lcd
+		drawBanner();
+		display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height-1);
+		showAudioPlayMode(AUDIO_MODE_STOP);
+		showVolume(volume, false);
+		showclock = true;
+		showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
+		break;
+	}
+	
+	case MODE_SCART:
+		display->clear_screen(); // clear lcd
+		drawBanner();
+		display->load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
+		display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height-1);
+
+		showVolume(volume, false);
+		showclock = true;
+		showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
+		break;
+		
+	case MODE_MENU_UTF8:
+		showclock = false;
+		display->clear_screen(); // clear lcd
+		drawBanner();
+		fonts.menutitle->RenderString(0, 28, display->xres + 20, title, CLCDDisplay::PIXEL_ON, 0, true); // UTF-8
+		displayUpdate();
+		break;
+		
+	case MODE_SHUTDOWN:
+		showclock = false;
+		display->clear_screen(); // clear lcd
+		drawBanner();
+		display->load_screen_element(&(element[ELEMENT_POWER]), (lcd_width-element[ELEMENT_POWER].width)/2, 12);
+		displayUpdate();
+		break;
+	#endif
+		
+	case MODE_STANDBY:
+		showclock = true;
+		showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
+		                 /* "showTime()" clears the whole lcd in MODE_STANDBY                         */
+		break;
+	#if 0
+	////???
+	case MODE_FILEBROWSER:
+		showclock = true;
+		display->clear_screen(); // clear lcd
+		showFilelist();
+		break;
+		
+	case MODE_PROGRESSBAR:
+		showclock = false;
+		display->clear_screen(); // clear lcd
+		drawBanner();
+		showProgressBar();
+		break;
+		
+	case MODE_PROGRESSBAR2:
+		showclock = false;
+		display->clear_screen(); // clear lcd
+		drawBanner();
+		showProgressBar2();
+		break;
+		
+	case MODE_INFOBOX:
+		showclock = false;
+		showInfoBox();
+		break;
+	#endif
+	}
+#endif
 	
 	wake_up();
 }
@@ -1842,6 +1988,8 @@ int CLCD::getContrast()
 
 void CLCD::setPower(int power)
 {
+	dprintf(DEBUG_NORMAL, "CLCD::setPower\n");
+	
 	if (!has_lcd)
 		return;
 		

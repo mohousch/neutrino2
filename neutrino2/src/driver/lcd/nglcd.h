@@ -84,6 +84,25 @@ class nGLCD
 		~nGLCD();
 		
 		bool init();
+		int GetConfigSize();
+		std::string GetConfigName(int);
+		
+		////
+		bool showImage(uint32_t *s,
+			uint32_t sw, uint32_t sh,
+			uint32_t dx, uint32_t dy, uint32_t dw, uint32_t dh,
+			bool transp = false, bool maximize = false);
+		bool showImage(const std::string &filename,
+			uint32_t sw, uint32_t sh,
+			uint32_t dx, uint32_t dy, uint32_t dw, uint32_t dh,
+			bool transp = false, bool maximize = false);
+		bool showImage(uint64_t channel_id,
+			uint32_t dx, uint32_t dy, uint32_t dw, uint32_t dh,
+			bool transp = false, bool maximize = false);
+		bool getBoundingBox(uint32_t *buffer,
+			int width, int height,
+			int &bb_x, int &bb_y, int &bb_width, int &bb_height);
+		void LcdAnalogClock(int posx, int posy, int dia);
 };
 #endif
 

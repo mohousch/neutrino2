@@ -519,8 +519,6 @@ struct SNeutrinoSettings
 	std::string personalize_pincode;
 	
 #ifdef ENABLE_GRAPHLCD
-//	int glcd_selected_config;
-//	uint32_t glcd_color_bg;
 	int glcd_enable;
 	int glcd_selected_config;
 	uint32_t glcd_color_fg;

@@ -27,25 +27,36 @@
 #ifndef __lcd_setup__
 #define __lcd_setup__
 
+#include <string>
+
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>
 
-#include <string>
+#ifdef ENABLE_GRAPHLCD
+#include <driver/lcd/nglcd.h>
+#endif
 
 
-class CLCDSettings : public CMenuTarget
+class CLCDSettings : public CMenuTarget, CChangeObserver
 {
 	private:
+#ifdef ENABLE_GRAPHLCD
+		nGLCD * nglcd;
+		CMenuItem * item;
+#endif
+		
 		void showMenu();
 		
 	public:
-		CLCDSettings(){};
-		~CLCDSettings(){};
+		CLCDSettings();
+		~CLCDSettings();
 		
 		int exec(CMenuTarget *parent, const std::string &actionKey);
+		bool changeNotify(const std::string &locale, void *Data);
 };
 
 // lcd notifier
+/*
 class CLCDNotifier : public CChangeObserver
 {
 	public:
@@ -54,5 +65,18 @@ class CLCDNotifier : public CChangeObserver
 		
 		bool changeNotify(const std::string &locale, void *Data);
 };
+*/
+
+// nglcd notifier
+/*
+class GLCDNotifier : public CChangeObserver
+{
+	public:
+		GLCDNotifier(){};
+		virtual ~GLCDNotifier(){};
+		
+		bool changeNotify(const std::string &locale, void *Data);
+};
+*/
 
 #endif //__lcd_setup__

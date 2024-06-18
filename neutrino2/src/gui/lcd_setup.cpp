@@ -34,6 +34,7 @@
 #include <stdio.h> 
 
 #include <gui/widget/stringinput.h>
+#include <gui/widget/hintbox.h>
 
 #include <gui/lcdcontroler.h>
 #include <gui/lcd_setup.h>
@@ -42,8 +43,8 @@
 #include <system/helpers.h>
 
 
-#define OPTIONS_OFF0_ON1_OPTION_COUNT 2
-const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
+#define OPTIONS_OFF0_ON1_OPTIONS_COUNT 2
+const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTIONS_COUNT] =
 {
         { 0, _("off") },
         { 1, _("on") }
@@ -103,6 +104,27 @@ const keyval LCDMENU_MINITV_OPTIONS[LCDMENU_MINITV_OPTION_COUNT] =
 	{ CLCD::MINITV_OSD_TV, _("OSD / TV") },
 };
 
+CLCDSettings::CLCDSettings()
+{
+#ifdef ENABLE_GRAPHLCD
+//	nglcd = new nGLCD();
+	item = NULL;
+#endif
+}
+
+CLCDSettings::~CLCDSettings()
+{
+#ifdef ENABLE_GRAPHLCD
+/*
+	if (nglcd)
+	{
+		delete nglcd;
+		nglcd = NULL;
+	}
+*/
+#endif
+}
+
 int CLCDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CLCDSettings::exec: actionKey: %s\n", actionKey.c_str());
@@ -111,6 +133,84 @@ int CLCDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	
 	if(parent)
 		parent->hide();
+		
+	if (actionKey == "select_driver")
+	{
+		int select = -1;
+		
+		//
+		CWidget* widget = NULL;
+		ClistBox* menu = NULL;
+		CCHeaders *head = NULL;
+		CCFooters *foot = NULL;
+		
+		widget = CNeutrinoApp::getInstance()->getWidget("optionstringchooser");
+		
+		if (widget)
+		{
+			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
+			head = (CCHeaders *)widget->getCCItem(CComponent::CC_HEAD);
+			foot = (CCFooters *)widget->getCCItem(CComponent::CC_FOOT);
+		}
+		else
+		{
+			//
+			widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+			widget->name = "optionstringchooser";
+			widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
+			widget->enableSaveScreen();
+			
+			//
+			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY + 50, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight - 100);
+
+			menu->setWidgetMode(ClistBox::MODE_SETUP);
+			
+			//
+			head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
+			
+			//	
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
+
+			foot = new CCFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
+			foot->setButtons(&btn);
+			
+			//
+			widget->addCCItem(menu);
+			widget->addCCItem(head);
+			widget->addCCItem(foot);
+		}
+		
+		if (head)
+			head->setTitle(_("Type"));
+		
+		for (int i = 0; i < nglcd->GetConfigSize(); i++)
+		{
+			bool selected = false;
+			
+			if (g_settings.glcd_selected_config == i)
+				selected = true;
+			
+			menu->addItem(new CMenuForwarder(nglcd->GetConfigName(i).c_str(), true), selected);
+		}
+		
+		widget->exec(NULL, "");
+		ret = CMenuTarget::RETURN_REPAINT;
+
+		select = menu->getSelected();
+		
+		if(select >= 0)
+			g_settings.glcd_selected_config = select;
+			
+		if (widget)
+		{
+			delete widget;
+			widget = NULL;
+		}
+		
+		item->setOption(nglcd->GetConfigName(g_settings.glcd_selected_config).c_str());
+		
+		return ret;
+	}
 	
 	showMenu();
 	
@@ -167,26 +267,25 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
-	CLCDNotifier * lcdnotifier = new CLCDNotifier();
 	CLCDControler * lcdsliders = new CLCDControler(_("Display settings"));
 	
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// lcd_power
-	lcdSettings->addItem(new CMenuOptionChooser(_("LCD Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier));
+	lcdSettings->addItem(new CMenuOptionChooser(_("LCD Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this));
 	
 	// led
 #if defined (PLATFORM_GIGABLUE)	
-	lcdSettings->addItem(new CMenuOptionChooser(_("LED Color"), &g_settings.lcd_led, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, lcdnotifier));
+	lcdSettings->addItem(new CMenuOptionChooser(_("LED Color"), &g_settings.lcd_led, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, this));
 #endif
 
 	// minitv
-	lcdSettings->addItem(new CMenuOptionChooser(_("Mini TV"), &g_settings.lcd_minitv, LCDMENU_MINITV_OPTIONS, LCDMENU_MINITV_OPTION_COUNT, true, lcdnotifier));
+	lcdSettings->addItem(new CMenuOptionChooser(_("Mini TV"), &g_settings.lcd_minitv, LCDMENU_MINITV_OPTIONS, LCDMENU_MINITV_OPTION_COUNT, true, this));
 	
 	// minitv fps
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Mini TV FPS"), &g_settings.lcd_minitvfps, true, 0, 30, lcdnotifier));
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Mini TV FPS"), &g_settings.lcd_minitvfps, true, 0, 30, /*lcdnotifier*/this));
 	
 	//option invert
-	lcdSettings->addItem(new CMenuOptionChooser(_("Invert"), &g_settings.lcd_inverse, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier));
+	lcdSettings->addItem(new CMenuOptionChooser(_("Invert"), &g_settings.lcd_inverse, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this));
 
 	//status display
 	lcdSettings->addItem(new CMenuOptionChooser(_("Status line"), &g_settings.lcd_show_volume, LCDMENU_STATUSLINE_OPTIONS, LCDMENU_STATUSLINE_OPTION_COUNT, true));
@@ -212,9 +311,9 @@ void CLCDSettings::showMenu()
 #elif defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 	// lcd_power
 #if defined (PLATFORM_GIGABLUE)	
-	lcdSettings->addItem(new CMenuOptionChooser(_("LED Color"), &g_settings.lcd_led, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, lcdnotifier));
+	lcdSettings->addItem(new CMenuOptionChooser(_("LED Color"), &g_settings.lcd_led, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, this));
 #else
-	lcdSettings->addItem(new CMenuOptionChooser(_("LCD Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier));
+	lcdSettings->addItem(new CMenuOptionChooser(_("LCD Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this));
 #endif
 	
 	// epgmode
@@ -234,8 +333,19 @@ void CLCDSettings::showMenu()
 #endif	
 #endif
 
-#ifdef ENABLE_GRAPHLCD
+#ifdef ENABLE_GRAPHLCD	
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("GraphLCD Setup"))));
+	
+	// enable glcd
+	lcdSettings->addItem(new CMenuOptionChooser(_("Enable NGLCD"), &g_settings.glcd_enable, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this));
+	
+	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+	
+	// select driver
+	item = new CMenuForwarder(_("Type"), (nglcd->GetConfigSize() > 1), nglcd->GetConfigName(g_settings.glcd_selected_config).c_str(), this, "select_driver");
+//	item = new CMenuOptionStringChooser(_("Type"), (char *)nglcd->GetConfigName(g_settings.glcd_selected_config).c_str(), (nglcd->GetConfigSize() > 1), this, CRCInput::RC_nokey, "", true);
+	
+	lcdSettings->addItem(item);
 #endif	
 	
 	//
@@ -249,8 +359,7 @@ void CLCDSettings::showMenu()
 	}
 }
 
-// lcd notifier
-bool CLCDNotifier::changeNotify(const std::string &locale, void * Data)
+bool CLCDSettings::changeNotify(const std::string &locale, void *Data)
 {
 	int state = *(int *)Data;
 
@@ -274,7 +383,26 @@ bool CLCDNotifier::changeNotify(const std::string &locale, void * Data)
 		
 		proc_put("/proc/stb/lcd/fps", state);
 	}
-
+#ifdef ENABLE_GRAPHLCD
+	else if (locale == "Type")
+	{
+		for (int i = 0; i < nglcd->GetConfigSize(); i++)
+		{
+			item->addOption(nglcd->GetConfigName(i).c_str(), i);
+		}
+		
+		// FIXME: no idea why RC_home with CMenuOptionStringChooser is calling this ???
+/*		
+		if (nglcd->GetConfigSize())
+		{
+			item->pulldown = true;
+			item->msg = CRCInput::RC_ok;
+			item->exec(NULL);
+		}
+*/
+	}
+#endif
+	
 	return true;
 }
 

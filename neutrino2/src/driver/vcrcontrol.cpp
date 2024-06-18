@@ -109,7 +109,7 @@ CVCRControl::CVCRControl()
 CVCRControl::~CVCRControl()
 {
 	//
-	Stop();
+//	Stop();
 	Close();
 	
 	//
