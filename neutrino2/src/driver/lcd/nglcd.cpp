@@ -117,7 +117,7 @@ bool nGLCD::init()
 	fprintf(stderr, "nGLCD::init: init succeeded.\n");
 
 	//
-	lcd->SetBrightness(0);
+	lcd->SetBrightness(g_settings.glcd_brightness);
 	
 	// create bitmap
 	if (!bitmap)
