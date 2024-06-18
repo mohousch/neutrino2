@@ -46,13 +46,12 @@ nGLCD::nGLCD()
 	bitmap = NULL;
 	
 //	Channel = "NeutrinoNG2";
-/*
+
 	fontsize_channel = 0;
 	fontsize_epg = 0;
 	fontsize_time = 0;
 	fontsize_time_standby = 0;
-	*/
-	/*
+
 	percent_channel = 0;
 	percent_time = 0;
 	percent_time_standby = 0;
@@ -60,7 +59,9 @@ nGLCD::nGLCD()
 	percent_bar = 0;
 	percent_space = 0;
 	percent_logo = 0;
-	*/
+	
+	fonts_initialized = false;
+	
 //	Scale = 0;
 }
 
@@ -125,6 +126,9 @@ bool nGLCD::init()
 	
 	if (bitmap)	
 		ret = true;
+		
+	// init fonts
+	updateFonts();
 	
 	return ret;
 }
@@ -211,6 +215,85 @@ out4:
 	return true;
 }
 
+void nGLCD::updateFonts()
+{
+	int percent;
+	percent = std::max(g_settings.glcd_percent_channel, g_settings.glcd_show_logo ? g_settings.glcd_percent_logo : 0)
+		+ g_settings.glcd_percent_epg + g_settings.glcd_percent_bar + g_settings.glcd_percent_time;
+
+	int div = 0;
+
+	if (percent_channel || percent_logo)
+		div += 2;
+	if (percent_epg)
+		div += 2;
+	if (percent_bar)
+		div += 2;
+	if (percent_time)
+		div += 2;
+
+	percent += div;
+
+	if (div == 0)
+		div = 1;
+
+	if (percent < 100)
+		percent = 100;
+
+	percent_logo = g_settings.glcd_show_logo ? g_settings.glcd_percent_logo * 100 / percent : 0;
+	percent_channel = g_settings.glcd_percent_channel * 100 / percent;
+	percent_epg = g_settings.glcd_percent_epg * 100 / percent;
+	percent_bar = g_settings.glcd_percent_bar * 100 / percent;
+	percent_time = g_settings.glcd_percent_time * 100 / percent;
+	percent_time_standby = std::min(g_settings.glcd_percent_time_standby, 100);
+
+	percent_space = (100 - std::max(percent_logo, percent_channel) - percent_time - percent_epg - percent_bar) / div;
+
+	// calculate height
+	int fontsize_channel_new = percent_channel * lcd->Height() / 100;
+	int fontsize_epg_new = percent_epg * lcd->Height() / 100;
+	int fontsize_time_new = percent_time * lcd->Height() / 100;
+	int fontsize_time_standby_new = percent_time_standby * lcd->Height() / 100;
+
+	if (!fonts_initialized || (fontsize_channel_new != fontsize_channel))
+	{
+		fontsize_channel = fontsize_channel_new;
+		if (!font_channel.LoadFT2(g_settings.glcd_font, "UTF-8", fontsize_channel))
+		{
+			g_settings.glcd_font = DATADIR "/fonts/neutrino.ttf";
+			font_channel.LoadFT2(g_settings.glcd_font, "UTF-8", fontsize_channel);
+		}
+	}
+	if (!fonts_initialized || (fontsize_epg_new != fontsize_epg))
+	{
+		fontsize_epg = fontsize_epg_new;
+		if (!font_epg.LoadFT2(g_settings.glcd_font, "UTF-8", fontsize_epg))
+		{
+			g_settings.glcd_font = DATADIR "/fonts/neutrino.ttf";
+			font_epg.LoadFT2(g_settings.glcd_font, "UTF-8", fontsize_epg);
+		}
+	}
+	if (!fonts_initialized || (fontsize_time_new != fontsize_time))
+	{
+		fontsize_time = fontsize_time_new;
+		if (!font_time.LoadFT2(g_settings.glcd_font, "UTF-8", fontsize_time))
+		{
+			g_settings.glcd_font = DATADIR "/fonts/neutrino.ttf";
+			font_time.LoadFT2(g_settings.glcd_font, "UTF-8", fontsize_time);
+		}
+	}
+	if (!fonts_initialized || (fontsize_time_standby_new != fontsize_time_standby))
+	{
+		fontsize_time_standby = fontsize_time_standby_new;
+		if (!font_time_standby.LoadFT2(g_settings.glcd_font, "UTF-8", fontsize_time_standby))
+		{
+			g_settings.glcd_font = DATADIR "/fonts/neutrino.ttf";
+			font_time_standby.LoadFT2(g_settings.glcd_font, "UTF-8", fontsize_time_standby);
+		}
+	}
+
+	fonts_initialized = true;
+}
 
 bool nGLCD::showImage(uint32_t *s, uint32_t sw, uint32_t sh, uint32_t dx, uint32_t dy, uint32_t dw, uint32_t dh, bool transp, bool maximize)
 {
@@ -380,6 +463,32 @@ void nGLCD::LcdAnalogClock(int posx, int posy, int dia)
 	bitmap->DrawLine(posx, posy + 6, posx + mx_, posy + my_, g_settings.glcd_color_fg);
 }
 
+bool nGLCD::drawText(int x, int y, int xmax, int text_width, std::string & text, /*GLCD::cFont font,*/ uint32_t color1, uint32_t color2, bool proportional, int skipPixels, int align)
+{
+	int z = 0;
+	int offset = 10; // px
+
+	if (align == ALIGN_NONE)
+	{
+		z = x;
+	}
+	else if (align == ALIGN_LEFT)
+	{
+		z = offset;
+	}
+	else if (align == ALIGN_CENTER)
+	{
+		z = std::max(offset, (bitmap->Width() - text_width) / 2);
+	}
+	else if (align == ALIGN_RIGHT)
+	{
+		z = std::max(offset, (bitmap->Width() - text_width - offset));
+	}
+
+	return bitmap->DrawText(z, y, xmax, text, &font_channel, color1, color2, proportional, skipPixels);
+}
+
+
 void nGLCD::update()
 {
 	lcd->Refresh(true);
@@ -387,5 +496,12 @@ void nGLCD::update()
 
 void nGLCD::clear()
 {
-	lcd->Refresh(false);
+	lcd->Refresh(true);
+	bitmap->Clear(GLCD::cColor::Black);
 }
+
+void nGLCD::SetBrightness(unsigned int b)
+{
+	lcd->SetBrightness(b);
+}
+

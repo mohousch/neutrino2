@@ -955,6 +955,10 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 #elif defined (ENABLE_LCD)
 	showTextScreen(servicename, epg_title, showmode, perform_wakeup, true);
 #endif
+
+#ifdef ENABLE_GRAPHLCD
+	nglcd->drawText(0, 0, 220, name.length(), servicename);
+#endif
 	
 	wake_up();
 }
@@ -1862,8 +1866,8 @@ void CLCD::setMode(const MODES m, const char * const title)
 		// servicename / title / epg
 		if (mode == MODE_TVRADIO)
 			//showServicename(servicename);
-			//showServicename(g_RemoteControl->getCurrentChannelName());
-			nglcd->showImage(g_RemoteControl->getCurrentChannelID(), 0, 0, 220, 176);
+			showServicename(g_RemoteControl->getCurrentChannelName());
+			//nglcd->showImage(g_RemoteControl->getCurrentChannelID(), 0, 0, 220, 176);
 		#if 0
 		else // MODE_MOVIE
 		{

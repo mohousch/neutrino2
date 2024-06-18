@@ -46,20 +46,16 @@ class nGLCD
 		GLCD::cDriver *lcd;
 		
 		////
-		/*
 		GLCD::cFont font_channel;
 		GLCD::cFont font_epg;
 		GLCD::cFont font_time;
 		GLCD::cFont font_time_standby;
-		*/
 		////
-		/*
 		int fontsize_channel;
 		int fontsize_epg;
 		int fontsize_time;
 		int fontsize_time_standby;
-		*/
-		/*
+		////
 		int percent_channel;
 		int percent_time;
 		int percent_time_standby;
@@ -67,7 +63,8 @@ class nGLCD
 		int percent_bar;
 		int percent_logo;
 		int percent_space;
-		*/
+		
+		bool fonts_initialized;
 		/*
 		std::string Channel;
 		std::string Epg;
@@ -83,11 +80,41 @@ class nGLCD
 		nGLCD();
 		~nGLCD();
 		
+		enum {
+			ALIGN_NONE = 0,
+			ALIGN_LEFT = 1,
+			ALIGN_CENTER = 2,
+			ALIGN_RIGHT = 3,
+		};
+		
+		enum {
+			REC = 0,
+			MUTE = 1,
+			TS = 2,
+			ECM = 3,
+			TIMER = 4,
+			DD = 5,
+			TXT = 6,
+			SUB = 7,
+			CAM = 8,
+		};
+		
+		enum {
+			CLOCK_OFF = 0,
+			CLOCK_SIMPLE = 1,
+			CLOCK_LED = 2,
+			CLOCK_LCD = 3,
+			CLOCK_DIGITAL = 4,
+			CLOCK_ANALOG = 5
+		};
+		
 		bool init();
 		int GetConfigSize();
 		std::string GetConfigName(int);
 		
 		////
+		void updateFonts();
+		
 		bool showImage(uint32_t *s,
 			uint32_t sw, uint32_t sh,
 			uint32_t dx, uint32_t dy, uint32_t dw, uint32_t dh,
@@ -104,8 +131,12 @@ class nGLCD
 			int &bb_x, int &bb_y, int &bb_width, int &bb_height);
 		void LcdAnalogClock(int posx, int posy, int dia);
 		
+		bool drawText(int x, int y, int xmax, int text_width, std::string & text, /*GLCD::cFont font,*/ uint32_t color1 = GLCD::cColor::White, uint32_t color2 = GLCD::cColor::Transparent, bool proportional = true, int skipPixels = 0, int align = ALIGN_CENTER);
+		
 		void update();
 		void clear();
+		
+		void SetBrightness(unsigned int b);
 };
 #endif
 
