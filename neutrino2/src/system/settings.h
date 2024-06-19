@@ -518,6 +518,7 @@ struct SNeutrinoSettings
 	int  personalize_mediaplayer;
 	std::string personalize_pincode;
 	
+	//// graphlcd
 #ifdef ENABLE_GRAPHLCD
 	int glcd_enable;
 	int glcd_selected_config;

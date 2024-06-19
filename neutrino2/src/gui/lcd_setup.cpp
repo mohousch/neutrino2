@@ -133,7 +133,8 @@ int CLCDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	
 	if(parent)
 		parent->hide();
-		
+	
+#ifdef ENABLE_GRAPHLCD	
 	if (actionKey == "select_driver")
 	{
 		int select = -1;
@@ -211,6 +212,7 @@ int CLCDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		return ret;
 	}
+#endif
 	
 	showMenu();
 	
