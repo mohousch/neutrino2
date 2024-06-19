@@ -44,6 +44,7 @@
 #include <sys/mman.h>
 #include <memory.h>
 
+
 #ifndef BYTE_ORDER
 #error "no BYTE_ORDER defined!"
 #endif
@@ -64,7 +65,6 @@
 #ifndef FBIO_WAITFORVSYNC
 #define FBIO_WAITFORVSYNC _IOW('F', 0x20, uint32_t)
 #endif
-
 
 CLCDDisplay::CLCDDisplay()
 {
@@ -106,12 +106,10 @@ CLCDDisplay::CLCDDisplay()
 CLCDDisplay::~CLCDDisplay()
 {
 #ifdef ENABLE_LCD
-	delete [] _buffer;
-	
-	if (fd >= 0)
+	if (_buffer)
 	{
-		::close(fd);
-		fd = -1;
+		delete [] _buffer;
+		_buffer = NULL;
 	}
 #endif
 
@@ -122,13 +120,13 @@ CLCDDisplay::~CLCDDisplay()
 		munmap(_buffer, m_available);
 		_buffer = 0;
 	}
-	
+#endif
+
 	if (fd >= 0)
 	{
 		::close(fd);
 		fd = -1;
 	}
-#endif
 }
 
 bool CLCDDisplay::init(const char *fbdevice)
@@ -266,7 +264,6 @@ nolfb:
 	return false;
 #endif
 }
-
 
 void CLCDDisplay::setSize(int w, int h, int b)
 {

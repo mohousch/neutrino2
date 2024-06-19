@@ -222,6 +222,9 @@ out4:
 
 void nGLCD::updateFonts()
 {
+	if (lcd == NULL)
+		return;
+
 	int percent;
 	percent = std::max(g_settings.glcd_percent_channel, g_settings.glcd_show_logo ? g_settings.glcd_percent_logo : 0)
 		+ g_settings.glcd_percent_epg + g_settings.glcd_percent_bar + g_settings.glcd_percent_time;
@@ -305,6 +308,9 @@ void nGLCD::updateFonts()
 
 bool nGLCD::showImage(uint32_t *s, uint32_t sw, uint32_t sh, uint32_t dx, uint32_t dy, uint32_t dw, uint32_t dh, bool transp, bool maximize)
 {
+	if (lcd == NULL)
+		return false;
+		
 	int bb_x, bb_y, bb_w, bb_h;
 
 	if (getBoundingBox(s, sw, sh, bb_x, bb_y, bb_w, bb_h) && bb_w && bb_h)
@@ -346,6 +352,9 @@ bool nGLCD::showImage(const std::string &filename, uint32_t sw, uint32_t sh, uin
 {
 	printf("nGLCD::showImage: %s\n", filename.c_str());
 	
+	if (lcd == NULL)
+		return false;
+	
 	bool res = false;
 	
 	if (!dw || !dh)
@@ -363,6 +372,9 @@ bool nGLCD::showImage(const std::string &filename, uint32_t sw, uint32_t sh, uin
 bool nGLCD::showImage(uint64_t cid, uint32_t dx, uint32_t dy, uint32_t dw, uint32_t dh, bool transp, bool maximize)
 {
 	printf("nGLCD::showImage: %llx\n", cid);
+	
+	if (lcd == NULL)
+		return false;
 	
 	std::string logo;
 	int sw, sh, sbpp;
@@ -384,6 +396,9 @@ bool nGLCD::showImage(uint64_t cid, uint32_t dx, uint32_t dy, uint32_t dw, uint3
 
 void nGLCD::LcdAnalogClock(int posx, int posy, int dia)
 {
+	if (lcd == NULL)
+		return;
+		
 	int tm_, th_, mx_, my_, hx_, hy_;
 	double pi_ = 3.1415926535897932384626433832795, mAngleInRad, mAngleSave, hAngleInRad;
 	
@@ -487,6 +502,9 @@ bool nGLCD::drawText(int x, int y, int xmax, int text_width, const std::string &
 {
 	printf("nGLCD::drawText: %s\n", text.c_str());
 	
+	if (lcd == NULL)
+		return false;
+	
 	int z = 0;
 	int offset = 10; // px
 
@@ -513,16 +531,25 @@ bool nGLCD::drawText(int x, int y, int xmax, int text_width, const std::string &
 
 void nGLCD::update()
 {
+	if (lcd == NULL)
+		return;
+		
 	lcd->Refresh(true);
 }
 
 void nGLCD::clear()
 {
+	if (lcd == NULL)
+		return;
+		
 	lcd->Clear();
 }
 
 void nGLCD::SetBrightness(unsigned int b)
 {
+	if (lcd == NULL)
+		return;
+		
 	lcd->SetBrightness(b);
 }
 
