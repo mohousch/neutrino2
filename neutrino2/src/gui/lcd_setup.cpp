@@ -211,12 +211,6 @@ int CLCDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		return ret;
 	}
-	else if (actionKey == "rescan")
-	{
-		nglcd->init();
-		
-		return ret;
-	}
 	
 	showMenu();
 	
@@ -352,9 +346,6 @@ void CLCDSettings::showMenu()
 //	item = new CMenuOptionStringChooser(_("Type"), (char *)nglcd->GetConfigName(g_settings.glcd_selected_config).c_str(), (nglcd->GetConfigSize() > 1), this, CRCInput::RC_nokey, "", true);
 	
 	lcdSettings->addItem(item);
-	
-	// rescan
-	lcdSettings->addItem(new CMenuForwarder(_("Rescan"), true, NULL, this, "rescan"));
 #endif	
 	
 	//
