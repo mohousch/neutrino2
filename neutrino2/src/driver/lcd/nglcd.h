@@ -131,12 +131,13 @@ class nGLCD
 			int &bb_x, int &bb_y, int &bb_width, int &bb_height);
 		void LcdAnalogClock(int posx, int posy, int dia);
 		
-		bool drawText(int x, int y, int xmax, int text_width, std::string & text, /*GLCD::cFont font,*/ uint32_t color1 = GLCD::cColor::White, uint32_t color2 = GLCD::cColor::Transparent, bool proportional = true, int skipPixels = 0, int align = ALIGN_CENTER);
+		bool drawText(int x, int y, int xmax, int text_width, const std::string &text, uint32_t color1 = GLCD::cColor::White, uint32_t color2 = GLCD::cColor::Transparent, bool proportional = true, int skipPixels = 0, int align = ALIGN_CENTER);
 		
 		void update();
 		void clear();
 		
 		void SetBrightness(unsigned int b);
+		void Rescan();
 };
 #endif
 

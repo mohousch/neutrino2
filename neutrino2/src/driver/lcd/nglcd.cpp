@@ -44,14 +44,12 @@ nGLCD::nGLCD()
 {
 	lcd = NULL;
 	bitmap = NULL;
-	
-//	Channel = "NeutrinoNG2";
-
+	////
 	fontsize_channel = 0;
 	fontsize_epg = 0;
 	fontsize_time = 0;
 	fontsize_time_standby = 0;
-
+	////
 	percent_channel = 0;
 	percent_time = 0;
 	percent_time_standby = 0;
@@ -61,8 +59,6 @@ nGLCD::nGLCD()
 	percent_logo = 0;
 	
 	fonts_initialized = false;
-	
-//	Scale = 0;
 }
 
 nGLCD::~nGLCD()
@@ -157,23 +153,31 @@ bool nGLCD::getBoundingBox(uint32_t *buffer, int width, int height, int &bb_x, i
 	int y_min = height;
 	uint32_t *b = buffer;
 	for (int y = 0; y < height; y++)
+	{
 		for (int x = 0; x < width; x++, b++)
+		{
 			if (*b)
 			{
 				y_min = y;
 				goto out1;
 			}
+		}
+	}
 out1:
 
 	int y_max = y_min;
 	b = buffer + height * width - 1;
 	for (int y = height - 1; y_min < y; y--)
+	{
 		for (int x = 0; x < width; x++, b--)
+		{
 			if (*b)
 			{
 				y_max = y;
 				goto out2;
 			}
+		}
+	}
 out2:
 
 	int x_min = width;
@@ -181,11 +185,13 @@ out2:
 	{
 		b = buffer + x + y_min * width;
 		for (int y = y_min; y < y_max; y++, b += width)
+		{
 			if (*b)
 			{
 				x_min = x;
 				goto out3;
 			}
+		}
 	}
 out3:
 
@@ -194,11 +200,13 @@ out3:
 	{
 		b = buffer + x + y_min * width;
 		for (int y = y_min; y < y_max; y++, b += width)
+		{
 			if (*b)
 			{
 				x_max = x;
 				goto out4;
 			}
+		}
 	}
 out4:
 
@@ -264,6 +272,7 @@ void nGLCD::updateFonts()
 			font_channel.LoadFT2(g_settings.glcd_font, "UTF-8", fontsize_channel);
 		}
 	}
+	
 	if (!fonts_initialized || (fontsize_epg_new != fontsize_epg))
 	{
 		fontsize_epg = fontsize_epg_new;
@@ -273,6 +282,7 @@ void nGLCD::updateFonts()
 			font_epg.LoadFT2(g_settings.glcd_font, "UTF-8", fontsize_epg);
 		}
 	}
+	
 	if (!fonts_initialized || (fontsize_time_new != fontsize_time))
 	{
 		fontsize_time = fontsize_time_new;
@@ -282,6 +292,7 @@ void nGLCD::updateFonts()
 			font_time.LoadFT2(g_settings.glcd_font, "UTF-8", fontsize_time);
 		}
 	}
+	
 	if (!fonts_initialized || (fontsize_time_standby_new != fontsize_time_standby))
 	{
 		fontsize_time_standby = fontsize_time_standby_new;
@@ -316,26 +327,33 @@ bool nGLCD::showImage(uint32_t *s, uint32_t sw, uint32_t sh, uint32_t dx, uint32
 				dh = dh_new;
 			}
 		}
+		
 		for (u_int y = 0; y < dh; y++)
 		{
 			for (u_int x = 0; x < dw; x++)
 			{
 				uint32_t pix = *(s + (y * bb_h / dh + bb_y) * sw + x * bb_w / dw + bb_x);
+				
 				if (!transp || pix)
 					bitmap->DrawPixel(x + dx, y + dy, pix);
 			}
 		}
+		
 		return true;
 	}
+	
 	return false;
 }
 
 bool nGLCD::showImage(const std::string &filename, uint32_t sw, uint32_t sh, uint32_t dx, uint32_t dy, uint32_t dw, uint32_t dh, bool transp, bool maximize)
 {
 	bool res = false;
+	
 	if (!dw || !dh)
 		return res;
-	fb_pixel_t *s = getImage(filename, sw, sh);
+		
+	uint32_t *s = getImage(filename, sw, sh);
+	
 	if (s && sw && sh)
 		res = showImage(s, sw, sh, dx, dy, dw, dh, transp, maximize);
 	if (s)
@@ -419,6 +437,7 @@ void nGLCD::LcdAnalogClock(int posx, int posy, int dia)
 
 	int lcd_a_clock_width = 0, lcd_a_clock_height = 0, lcd_a_clock_bpp = 0;
 	getSize(a_clock.c_str(), &lcd_a_clock_width, &lcd_a_clock_height, &lcd_a_clock_bpp);
+	
 	if (lcd_a_clock_width && lcd_a_clock_height)
 	{
 		showImage(a_clock, (uint32_t) lcd_a_clock_width, (uint32_t) lcd_a_clock_height,
@@ -463,7 +482,7 @@ void nGLCD::LcdAnalogClock(int posx, int posy, int dia)
 	bitmap->DrawLine(posx, posy + 6, posx + mx_, posy + my_, g_settings.glcd_color_fg);
 }
 
-bool nGLCD::drawText(int x, int y, int xmax, int text_width, std::string & text, /*GLCD::cFont font,*/ uint32_t color1, uint32_t color2, bool proportional, int skipPixels, int align)
+bool nGLCD::drawText(int x, int y, int xmax, int text_width, const std::string &text, uint32_t color1, uint32_t color2, bool proportional, int skipPixels, int align)
 {
 	int z = 0;
 	int offset = 10; // px
@@ -496,12 +515,24 @@ void nGLCD::update()
 
 void nGLCD::clear()
 {
-	lcd->Refresh(true);
-	bitmap->Clear(GLCD::cColor::Black);
+	lcd->Clear();
 }
 
 void nGLCD::SetBrightness(unsigned int b)
 {
 	lcd->SetBrightness(b);
 }
+
+void nGLCD::Rescan()
+{
+	if (lcd)
+	{
+		lcd->DeInit();
+		delete lcd;
+		lcd = NULL;
+	}
+	
+	init();
+}
+
 

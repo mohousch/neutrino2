@@ -181,6 +181,7 @@ void CLCD::count_down()
 	if (timeout_cnt > 0) 
 	{
 		timeout_cnt--;
+		
 		if (timeout_cnt == 0) 
 		{
 #if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
@@ -192,6 +193,10 @@ void CLCD::count_down()
 				g_settings.lcd_brightness = b;
 			}
 #elif defined (ENABLE_LCD)
+			setlcdparameter();
+#endif
+
+#ifdef ENABLE_GRAPHLCD
 			setlcdparameter();
 #endif
 		}
@@ -206,6 +211,10 @@ void CLCD::wake_up()
 #if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 		g_settings.lcd_setting_dim_brightness > 0 ? setBrightness(g_settings.lcd_brightness) : setPower(1);
 #elif defined (ENABLE_LCD)
+		setlcdparameter();
+#endif
+
+#ifdef ENABLE_GRAPHLCD
 		setlcdparameter();
 #endif
 	}
@@ -502,7 +511,12 @@ void CLCD::displayUpdate()
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-	nglcd->update();
+	struct stat buf;
+	
+	if (stat("/tmp/lcd.locked", &buf) == -1)
+	{
+		nglcd->update();
+	}
 #endif
 }
 
@@ -547,6 +561,10 @@ void CLCD::setlcdparameter(int dimm, const int contrast, const int power, const 
 	else		
 		display->setInverted(CLCDDisplay::PIXEL_OFF);
 #endif
+
+#ifdef ENABLE_GRAPHLCD
+	nglcd->SetBrightness(dimm);
+#endif
 }
 
 void CLCD::setlcdparameter(void)
@@ -558,19 +576,28 @@ void CLCD::setlcdparameter(void)
 	int dim_time = atoi(g_settings.lcd_setting_dim_time);
 	int dim_brightness = g_settings.lcd_setting_dim_brightness;
 	bool timeouted = (dim_time > 0) && (timeout_cnt == 0);
-	int brightness, power = 0;
+	int brightness = 0;
+	int power = 0;
 
 	if (timeouted)
 		brightness = dim_brightness;
 	else
+#ifdef ENABLE_GRAPHLCD
+		brightness = g_settings.glcd_brightness;
+#else
 		brightness = g_settings.lcd_brightness;
+#endif
 
 	if (last_toggle_state_power && (!timeouted || dim_brightness > 0))
 		power = 1;
 
 	if (mode == MODE_STANDBY)
+#ifdef ENABLE_GRAPHLCD
+		brightness = g_settings.glcd_brightness_standby;
+#else
 		brightness = g_settings.lcd_standbybrightness;
-
+#endif
+		
 	setlcdparameter(brightness,
 			g_settings.lcd_contrast,
 			power,
@@ -831,6 +858,10 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	}
 #endif
 
+#ifdef ENABLE_GRAPHLCD
+	nglcd->drawText(0, 0, 0, big.length(), big);
+#endif
+
 	if (perform_wakeup)
 		wake_up();
 
@@ -925,6 +956,10 @@ void CLCD::ShowText(const char *str)
 #elif defined (ENABLE_LCD)
 	showTextScreen(std::string(str), "", 0, true, true);
 #endif
+
+#ifdef ENABLE_GRAPHLCD
+	nglcd->drawText(0, 0, 0, strlen(str), std::string(str));
+#endif
 }
 
 void CLCD::showServicename(const std::string &name, const bool perform_wakeup, int pos)
@@ -957,7 +992,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-	nglcd->drawText(0, 0, 220, name.length(), servicename);
+	nglcd->drawText(0, 0, 0, name.length(), servicename);
 #endif
 	
 	wake_up();
@@ -1863,12 +1898,13 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 	case MODE_TVRADIO:
 	case MODE_MOVIE:
+		nglcd->clear();
+		
 		// servicename / title / epg
 		if (mode == MODE_TVRADIO)
 			//showServicename(servicename);
 			showServicename(g_RemoteControl->getCurrentChannelName());
 			//nglcd->showImage(g_RemoteControl->getCurrentChannelID(), 0, 0, 220, 176);
-		#if 0
 		else // MODE_MOVIE
 		{
 			setMovieInfo(movie_playmode, movie_big, movie_small, movie_centered);
@@ -1876,9 +1912,9 @@ void CLCD::setMode(const MODES m, const char * const title)
 		}
 		
 		// time
-		showclock = true;
-		showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
-		#endif
+//		showclock = true;
+//		showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
+
 		showclock = false;
 		break;
 	
