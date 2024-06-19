@@ -41,6 +41,8 @@
 #include <sys/stat.h>
 #include <byteswap.h>
 #include <string.h>
+#include <sys/mman.h>
+#include <memory.h>
 
 #ifndef BYTE_ORDER
 #error "no BYTE_ORDER defined!"
@@ -54,13 +56,21 @@
 #define min(a,b)(((a)<(b)) ? (a) : (b))
 #endif
 
+#ifndef FBIO_BLIT
+#define FBIO_SET_MANUAL_BLIT _IOW('F', 0x21, __u8)
+#define FBIO_BLIT 0x22
+#endif
+
+#ifndef FBIO_WAITFORVSYNC
+#define FBIO_WAITFORVSYNC _IOW('F', 0x20, uint32_t)
+#endif
+
 
 CLCDDisplay::CLCDDisplay()
 {
 	printf("CLCDDisplay::CLCDDisplay\n");
 	
 	paused = 0;
-	available = false;
 	
 	raw_buffer_size = 0;
 	xres = 132;
@@ -70,11 +80,60 @@ CLCDDisplay::CLCDDisplay()
 	
 	flipped = false;
 	inverted = 0;
-	is_oled = 0;
+	lcd_type = 0;
 	last_brightness = 0;
 	
 	iconBasePath = "";
 	
+	locked = 0;
+	
+#ifdef ENABLE_TFTLCD
+	m_manual_blit = -1;
+	_buffer = 0;
+	m_available = 0;
+	m_cmap.start = 0;
+	m_cmap.len = 256;
+	m_cmap.red = m_red;
+	m_cmap.green = m_green;
+	m_cmap.blue = m_blue;
+	m_cmap.transp = m_trans;
+	m_alpha = 255;
+	m_gamma = 128;
+	m_brightness = 128;
+#endif
+}
+
+CLCDDisplay::~CLCDDisplay()
+{
+#ifdef ENABLE_LCD
+	delete [] _buffer;
+	
+	if (fd >= 0)
+	{
+		::close(fd);
+		fd = -1;
+	}
+#endif
+
+#ifdef ENABLE_TFTLCD
+	if (_buffer)
+	{
+		msync(_buffer, m_available, MS_SYNC);
+		munmap(_buffer, m_available);
+		_buffer = 0;
+	}
+	
+	if (fd >= 0)
+	{
+		::close(fd);
+		fd = -1;
+	}
+#endif
+}
+
+bool CLCDDisplay::init(const char *fbdevice)
+{
+#ifdef ENABLE_LCD
 	//open device
 #ifdef USE_OPENGL
 	fd = open("/dev/null", O_RDWR);
@@ -86,20 +145,20 @@ CLCDDisplay::CLCDDisplay()
 	{
 		xres = 128;
 		if (!access("/proc/stb/lcd/oled_brightness", W_OK) || !access("/proc/stb/fp/oled_brightness", W_OK) )
-			is_oled = 2;
+			lcd_type = 2;
 			
 		fd = open("/dev/dbox/lcd0", O_RDWR);
 	} 
 	else
 	{
 		printf("found OLED display!\n");
-		is_oled = 1;
+		lcd_type = 1;
 	}
 	
 	if (fd < 0)
 	{
 		printf("CLCDDisplay::CLCDDisplay: couldn't open LCD - load lcd.ko!\n");
-		return;
+		return false;
 	}
 	else
 	{
@@ -133,7 +192,7 @@ CLCDDisplay::CLCDDisplay()
 				}
 			}
 			
-			is_oled = 3;
+			lcd_type = 3;
 		}
 	}
 	
@@ -142,12 +201,76 @@ CLCDDisplay::CLCDDisplay()
 #else
 	setSize(xres, yres, bpp);
 #endif
-	available = true;
+	return true;
+#endif
+
+#ifdef ENABLE_TFTLCD
+	fd = open(fbdevice, O_RDWR);
+	
+	if (fd < 0)
+	{
+		printf("CLCDDisplay::init: %s: %m\n", fbdevice);
+		goto nolfb;
+	}
+
+	if (::ioctl(fd, FBIOGET_VSCREENINFO, &m_screeninfo) < 0)
+	{
+		printf("CLCDDisplay::init: FBIOGET_VSCREENINFO: %m\n");
+#ifndef USE_OPENGL
+		goto nolfb;
+#endif
+	}
+
+	fb_fix_screeninfo fix;
+	if (ioctl(fd, FBIOGET_FSCREENINFO, &fix) < 0)
+	{
+		printf("CLCDDisplay::init: FBIOGET_FSCREENINFO: %m\n");
+#ifndef USE_OPENGL
+		goto nolfb;
+#endif
+	}
+
+	m_available = fix.smem_len;
+	m_phys_mem = fix.smem_start;
+	
+	printf("CLCDDisplay::init: %s %dk video mem\n", fbdevice, m_available / 1024);
+	
+	_buffer = (unsigned char*)mmap(0, m_available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
+	
+	if (!_buffer)
+	{
+		printf("CLCDDisplay::init: mmap: %m\n");
+#ifndef USE_OPENGL
+		goto nolfb;
+#endif
+	}
+
+	calcRamp();
+	getMode();
+	setMode(m_xRes, m_yRes, m_bpp);
+	enableManualBlit();
+	
+	lcd_type = 4;
+
+	return true;
+	
+nolfb:
+	if (fd >= 0)
+	{
+		::close(fd);
+		fd = -1;
+	}
+	
+	printf("CTFTLCD::init: framebuffer %s not available\n", fbdevice);
+	
+	return false;
+#endif
 }
+
 
 void CLCDDisplay::setSize(int w, int h, int b)
 {
-	printf("CLCDDisplay::setSize: xres=%d, yres=%d, bpp=%d type=%d\n", xres, yres, bpp, is_oled);
+	printf("CLCDDisplay::setSize: xres=%d, yres=%d, bpp=%d type=%d\n", xres, yres, bpp, lcd_type);
 	
 	xres = w;
 	yres = h;
@@ -195,6 +318,169 @@ void CLCDDisplay::setSize(int w, int h, int b)
 	memset(_buffer, 0, raw_buffer_size);
 }
 
+#ifdef ENABLE_TFTLCD
+int CLCDDisplay::setMode(int nxRes, int nyRes, int nbpp)
+{
+	m_screeninfo.xres_virtual = m_screeninfo.xres = nxRes;
+	m_screeninfo.yres_virtual = (m_screeninfo.yres = nyRes) * 2;
+	m_screeninfo.height = 0;
+	m_screeninfo.width = 0;
+	m_screeninfo.xoffset = m_screeninfo.yoffset = 0;
+	m_screeninfo.bits_per_pixel = nbpp;
+
+	switch (nbpp) 
+	{
+		case 16:
+			// ARGB 1555
+			m_screeninfo.transp.offset = 15;
+			m_screeninfo.transp.length = 1;
+			m_screeninfo.red.offset = 10;
+			m_screeninfo.red.length = 5;
+			m_screeninfo.green.offset = 5;
+			m_screeninfo.green.length = 5;
+			m_screeninfo.blue.offset = 0;
+			m_screeninfo.blue.length = 5;
+			break;
+		case 32:
+			// ARGB 8888
+			m_screeninfo.transp.offset = 24;
+			m_screeninfo.transp.length = 8;
+			m_screeninfo.red.offset = 16;
+			m_screeninfo.red.length = 8;
+			m_screeninfo.green.offset = 8;
+			m_screeninfo.green.length = 8;
+			m_screeninfo.blue.offset = 0;
+			m_screeninfo.blue.length = 8;
+			break;
+	}
+
+	if (ioctl(fd, FBIOPUT_VSCREENINFO, &m_screeninfo) < 0)
+	{
+		// try single buffering
+		m_screeninfo.yres_virtual = m_screeninfo.yres=nyRes;
+
+		if (ioctl(fd, FBIOPUT_VSCREENINFO, &m_screeninfo) < 0)
+		{
+			printf("CLCDDisplay::setMode: FBIOPUT_VSCREENINFO: %m\m\n");
+			return -1;
+		}
+		printf("CLCDDisplay::setMode: double buffering not available\n");
+	}
+	else
+		printf("CLCDDisplay::setMode: double buffering available\n");
+
+	ioctl(fd, FBIOGET_VSCREENINFO, &m_screeninfo);
+
+	if ((m_screeninfo.xres != (unsigned int)nxRes) || (m_screeninfo.yres != (unsigned int)nyRes) ||
+		(m_screeninfo.bits_per_pixel != (unsigned int)nbpp))
+	{
+		printf("CLCDDisplay::setMode: failed: wanted: %dx%dx%d, got %dx%dx%d\n",
+			nxRes, nyRes, nbpp,
+			m_screeninfo.xres, m_screeninfo.yres, m_screeninfo.bits_per_pixel);
+	}
+	m_xRes = m_screeninfo.xres;
+	m_yRes = m_screeninfo.yres;
+	m_bpp = m_screeninfo.bits_per_pixel;
+	
+	fb_fix_screeninfo fix;
+	
+	if (ioctl(fd, FBIOGET_FSCREENINFO, &fix) < 0)
+	{
+		printf("CLCDDisplay::setMode: FBIOGET_FSCREENINFO: %m\n");
+	}
+	_stride = fix.line_length;
+	memset(_buffer, 0, _stride * m_yRes);
+	
+	update();
+	
+	return 0;
+}
+
+void CLCDDisplay::getMode()
+{
+	m_xRes = m_screeninfo.xres;
+	m_yRes = m_screeninfo.yres;
+	m_bpp = m_screeninfo.bits_per_pixel;
+}
+
+int CLCDDisplay::waitVSync()
+{
+	int c = 0;
+	return ioctl(fd, FBIO_WAITFORVSYNC, &c);
+}
+
+int CLCDDisplay::putCMAP()
+{
+	return ioctl(fd, FBIOPUTCMAP, &m_cmap);
+}
+
+int CLCDDisplay::lock()
+{
+	if (locked)
+		return -1;
+	if (m_manual_blit == 1)
+	{
+		locked = 2;
+		disableManualBlit();
+	}
+	else
+		locked = 1;
+		
+	return fd;
+}
+
+void CLCDDisplay::unlock()
+{
+	if (!locked)
+		return;
+		
+	if (locked == 2)  // re-enable manualBlit
+		enableManualBlit();
+		
+	locked = 0;
+	setMode(m_xRes, m_yRes, m_bpp);
+	putCMAP();
+}
+
+void CLCDDisplay::calcRamp()
+{
+	for (int i = 0; i < 256; i++)
+	{
+		int d;
+		d = i;
+		d = (d-128)*(m_gamma + 64)/(128 + 64) + 128;
+		d += m_brightness - 128; // brightness correction
+		if (d < 0)
+			d = 0;
+		if (d > 255)
+			d = 255;
+		m_ramp[i] = d;
+
+		m_rampalpha[i] = i*m_alpha/256;
+	}
+
+	m_rampalpha[255] = 255; // transparent BLEIBT bitte so.
+}
+
+void CLCDDisplay::enableManualBlit()
+{
+	unsigned char tmp = 1;
+	if (ioctl(fd, FBIO_SET_MANUAL_BLIT, &tmp) < 0)
+		printf("CLCDDisplay::enableManualBlit: FBIO_SET_MANUAL_BLIT: %m\n");
+	else
+		m_manual_blit = 1;
+}
+
+void CLCDDisplay::disableManualBlit()
+{
+	unsigned char tmp = 0;
+	if (ioctl(fd, FBIO_SET_MANUAL_BLIT, &tmp) < 0)
+		printf("CLCDDisplay::disableManualBlit: FBIO_SET_MANUAL_BLIT: %m");
+	else
+		m_manual_blit = 0;
+}
+#endif
+
 //
 void CLCDDisplay::setInverted(unsigned char inv)
 {
@@ -236,6 +522,7 @@ int CLCDDisplay::setLCDBrightness(int brightness)
 {
 	printf("CLCDDisplay::setLCDBrightness: %d\n", brightness);
 	
+#ifdef ENABLE_LCD
 	FILE *f = fopen("/proc/stb/lcd/oled_brightness", "w");
 	if (!f)
 		f = fopen("/proc/stb/fp/oled_brightness", "w");
@@ -267,6 +554,18 @@ int CLCDDisplay::setLCDBrightness(int brightness)
 	}
 
 	last_brightness = brightness;
+#endif
+
+#ifdef ENABLE_TFTLCD
+	FILE *f = fopen("/proc/stb/lcd/oled_brightness", "w");
+	
+	if (f)
+	{
+		if (fprintf(f, "%d", brightness) == 0)
+			printf("CLCDDisplay::setLCDBrightness: write /proc/stb/lcd/oled_brightness failed: %m\n");
+		fclose(f);
+	}
+#endif
 
 	return(0);
 }
@@ -295,23 +594,6 @@ int CLCDDisplay::setLED(int value, int option)
 	}
 	
 	return 0;
-}
-
-
-bool CLCDDisplay::isAvailable()
-{
-	return available;
-}
-
-CLCDDisplay::~CLCDDisplay()
-{
-	delete [] _buffer;
-	
-	if (fd >= 0)
-	{
-		::close(fd);
-		fd = -1;
-	}
 }
 
 void CLCDDisplay::pause()
@@ -361,6 +643,7 @@ void CLCDDisplay::convert_data()
 
 void CLCDDisplay::update()
 {
+#ifdef ENABLE_LCD
 	if ((fd >= 0) && (last_brightness > 0))
 	{
 		//
@@ -373,7 +656,7 @@ void CLCDDisplay::update()
 		}
 
 		//
-		if (is_oled == 0 || is_oled == 2)
+		if (lcd_type == 0 || lcd_type == 2)
 		{
 			unsigned int height = yres;
 			unsigned int width = xres;
@@ -420,7 +703,7 @@ void CLCDDisplay::update()
 			memmove(surface_data, surface_data+width, surface_buffer_size-width);
 			memmove(surface_data+surface_buffer_size-width, linebuffer, width);
 		}
-		else if (is_oled == 3)
+		else if (lcd_type == 3)
 		{
 			/* for now, only support flipping / inverting for 8bpp displays */
 			if ((flipped || inverted) && surface_stride == xres)
@@ -462,7 +745,7 @@ void CLCDDisplay::update()
 				//
 			}
 		}
-		else /* is_oled == 1 */
+		else /* lcd_type == 1 */
 		{
 			unsigned char raw[64*64];
 			int x, y;
@@ -494,6 +777,15 @@ void CLCDDisplay::update()
 			write(fd, raw, 64*64);
 		}
 	}
+#endif
+
+#ifdef ENABLE_TFTLCD
+	if (m_manual_blit == 1)
+	{
+		if (ioctl(fd, FBIO_BLIT) < 0)
+			printf("[eFbLCD] FBIO_BLIT: %m\n");
+	}
+#endif
 }
 
 void CLCDDisplay::surface_fill_rect(int area_left, int area_top, int area_right, int area_bottom, int color) 

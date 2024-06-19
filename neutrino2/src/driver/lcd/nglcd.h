@@ -137,7 +137,6 @@ class nGLCD
 		void clear();
 		
 		void SetBrightness(unsigned int b);
-		void Rescan();
 };
 #endif
 

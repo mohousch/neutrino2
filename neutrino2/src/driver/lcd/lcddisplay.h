@@ -30,33 +30,32 @@
 #include <string>
 #include <stdint.h>
 
+#include <linux/fb.h>
 
-#define LCD_PIXEL_OFF		0x00
-#define LCD_PIXEL_ON		0xff
-#define LCD_PIXEL_INV		0x1000000
 
-#define LCD_MODE_ASC		0
-#define LCD_MODE_BIN		2
+#define LCD_PIXEL_OFF				0x00
+#define LCD_PIXEL_ON				0xff
+#define LCD_PIXEL_INV				0x1000000
+
+#define LCD_MODE_ASC				0
+#define LCD_MODE_BIN				2
 
 // ioctls
-#define LCD_IOCTL_ASC_MODE	(25)
-#define LCD_IOCTL_CLEAR		(26)
+#define LCD_IOCTL_ASC_MODE			(25)
+#define LCD_IOCTL_CLEAR				(26)
 
-#define FP_IOCTL_LCD_DIMM       3
+#define FP_IOCTL_LCD_DIMM       		3
 
-#define LCDSET                  0x1000
+#define LCDSET                  		0x1000
 
-#define LCD_IOCTL_ON            (2 |LCDSET)
-#define LCD_IOCTL_REVERSE       (4 |LCDSET)
-#define LCD_IOCTL_SRV           (10|LCDSET)
+#define LCD_IOCTL_ON            		(2 |LCDSET)
+#define LCD_IOCTL_REVERSE       		(4 |LCDSET)
+#define LCD_IOCTL_SRV           		(10|LCDSET)
 
 #define LED_IOCTL_BRIGHTNESS_NORMAL 		0X10
 #define LED_IOCTL_BRIGHTNESS_DEEPSTANDBY 	0X11
 #define LED_IOCTL_BLINKING_TIME 		0X12
 #define LED_IOCTL_SET_DEFAULT 			0x13
-
-
-//typedef unsigned char * raw_display_t;
 
 struct raw_lcd_element_t
 {
@@ -74,11 +73,10 @@ class CLCDDisplay
 		int           fd;
 		int	      paused;
 		std::string   iconBasePath;
-		bool          available;
 		
 		unsigned char inverted;
 		bool 	      flipped;
-		int 	      is_oled;
+		int 	      lcd_type;
 		int 	      last_brightness;
 		////
 		uint8_t	     *_buffer;
@@ -91,6 +89,29 @@ class CLCDDisplay
 		////
 		int 	      real_offset;
 		int 	      real_yres;
+		////
+		int locked;
+#ifdef ENABLE_TFTLCD
+		int m_xRes, m_yRes, m_bpp;
+		int m_brightness, m_gamma, m_alpha;
+		int m_available;
+		struct fb_var_screeninfo m_screeninfo;
+		fb_cmap m_cmap;
+		unsigned char m_ramp[256], m_rampalpha[256]; // RGB ramp 0..255
+		uint16_t m_red[256], m_green[256], m_blue[256], m_trans[256];
+		int m_phys_mem;
+		int m_manual_blit;
+		void calcRamp();
+		int setMode(int xRes, int yRes, int bpp);
+		void getMode();
+		void enableManualBlit();
+		void disableManualBlit();
+		// low level gfx stuff
+		int putCMAP();
+		int waitVSync();
+		int lock();
+		void unlock();
+#endif
 	
 	public:
 		enum
@@ -109,13 +130,14 @@ class CLCDDisplay
 	
 		CLCDDisplay();
 		~CLCDDisplay();
+		
+		bool init(const char *fbdevice = "/dev/fb1");
 
 		void pause();
 		void resume();
 
 		void convert_data();
 		void setIconBasePath(std::string bp){iconBasePath = bp;};
-		bool isAvailable();
 
 		void update();
 		void clear_screen();
@@ -143,11 +165,12 @@ class CLCDDisplay
 		int setLED(int value, int option);
 		void setInverted( unsigned char );
 		void setFlipped(bool);
-		bool isOled() const { return !!is_oled; };
 		////
 		int raw_buffer_size;
 		int xres, yres, bpp;
 		int bypp;
+		////
+		int islocked() { return locked; }
 };
 
 #endif

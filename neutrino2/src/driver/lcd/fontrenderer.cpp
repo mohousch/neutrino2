@@ -52,11 +52,7 @@ FT_Error LcdFontRenderClass::myFTC_Face_Requester(FTC_FaceID face_id, FT_Library
 	return ((LcdFontRenderClass*)request_data)->FTC_Face_Requester(face_id, aface);
 }
 
-#ifdef ENABLE_LCD
 LcdFontRenderClass::LcdFontRenderClass(CLCDDisplay *fb)
-#elif defined (ENABLE_TFTLCD)
-LcdFontRenderClass::LcdFontRenderClass(CTFTLCD *fb)
-#endif
 {
 	framebuffer = fb;
 	
@@ -194,11 +190,7 @@ LcdFont *LcdFontRenderClass::getFont(const char *family, const char *style, int 
 	return new LcdFont(framebuffer, this, id, size);
 }
 
-#ifdef ENABLE_LCD
 LcdFont::LcdFont(CLCDDisplay *fb, LcdFontRenderClass *render, FTC_FaceID faceid, int isize)
-#elif defined (ENABLE_TFTLCD)
-LcdFont::LcdFont(CTFTLCD *fb, LcdFontRenderClass *render, FTC_FaceID faceid, int isize)
-#endif
 {
 	framebuffer = fb;
 	renderer = render;

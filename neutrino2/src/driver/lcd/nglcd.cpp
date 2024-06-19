@@ -347,6 +347,8 @@ bool nGLCD::showImage(uint32_t *s, uint32_t sw, uint32_t sh, uint32_t dx, uint32
 
 bool nGLCD::showImage(const std::string &filename, uint32_t sw, uint32_t sh, uint32_t dx, uint32_t dy, uint32_t dw, uint32_t dh, bool transp, bool maximize)
 {
+	printf("nGLCD::showImage: %s\n", filename.c_str());
+	
 	bool res = false;
 	
 	if (!dw || !dh)
@@ -363,6 +365,8 @@ bool nGLCD::showImage(const std::string &filename, uint32_t sw, uint32_t sh, uin
 
 bool nGLCD::showImage(uint64_t cid, uint32_t dx, uint32_t dy, uint32_t dw, uint32_t dh, bool transp, bool maximize)
 {
+	printf("nGLCD::showImage: %llx\n", cid);
+	
 	std::string logo;
 	int sw, sh, sbpp;
 	
@@ -484,6 +488,8 @@ void nGLCD::LcdAnalogClock(int posx, int posy, int dia)
 
 bool nGLCD::drawText(int x, int y, int xmax, int text_width, const std::string &text, uint32_t color1, uint32_t color2, bool proportional, int skipPixels, int align)
 {
+	printf("nGLCD::drawText: %s\n", text.c_str());
+	
 	int z = 0;
 	int offset = 10; // px
 
@@ -522,17 +528,4 @@ void nGLCD::SetBrightness(unsigned int b)
 {
 	lcd->SetBrightness(b);
 }
-
-void nGLCD::Rescan()
-{
-	if (lcd)
-	{
-		lcd->DeInit();
-		delete lcd;
-		lcd = NULL;
-	}
-	
-	init();
-}
-
 

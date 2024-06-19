@@ -119,10 +119,8 @@ CLCD::CLCD()
 	clearClock = 0;
 	fd = -1;
 
-#ifdef ENABLE_LCD
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	display = NULL;	
-#elif defined (ENABLE_TFTLCD)
-	tftlcd = NULL;
 #endif
 
 #ifdef ENABLE_GRAPHLCD
@@ -139,19 +137,11 @@ CLCD::~CLCD()
 	fd = -1;
 #endif
 
-#ifdef ENABLE_LCD
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	if (display)
 	{
 		delete display;
 		display = NULL;
-	}
-#endif
-
-#ifdef ENABLE_TFTLCD
-	if (tftlcd)
-	{
-		delete tftlcd;
-		tftlcd = NULL;
 	}
 #endif
 
@@ -404,16 +394,16 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	
 	if (fd >= 0) has_lcd = true;
 #endif // vfd
-#elif defined (ENABLE_LCD)
+#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	display = new CLCDDisplay();
 	
 	// check if we have display
-	if (!display->isAvailable())
-	{
-		dprintf(DEBUG_NORMAL, "CLCD::lcdInit: exit...(no lcd-support)\n");
-		has_lcd = false;
-		return false;
-	}
+#ifdef USE_OPENGL
+	if (display->init("/dev/null"))
+#else
+	if (display->init("/dev/fb1"))
+#endif
+		has_lcd = true;
 	
 	// init fonts
 	fontRenderer = new LcdFontRenderClass(display);
@@ -450,36 +440,17 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
  	// init lcd_element struct
 	for (int i = 0; i < LCD_NUMBER_OF_ELEMENTS; i++)
 	{
-//		bool bgfound = false;
-		
 		element[i].width = 0;
 		element[i].height = 0;
 		element[i].buffer_size = 0;
 		element[i].buffer = NULL;
 
-		//for (int j = 0; j < NUMBER_OF_PATHS; j++)
-		//{
-//			std::string file = background_path[j];
-			std::string file = DATADIR "/lcdd/icons/";
-			file += element_name[i];
-			file += ".png";
+		std::string file = DATADIR "/lcdd/icons/";
+		file += element_name[i];
+		file += ".png";
 			
-//			bgfound = display->load_png_element(file.c_str(), &(element[i]));
-			display->load_png_element(file.c_str(), &(element[i]));
-			
-//			if (bgfound)
-//				break;
-		//}
-	}	
-#elif defined (ENABLE_TFTLCD)
-	tftlcd = new CTFTLCD();
-	
-#ifdef USE_OPENGL
-	if (tftlcd->init("/dev/null"))
-#else
-	if (tftlcd->init("/dev/fb1"))
-#endif
-		has_lcd = true;
+		display->load_png_element(file.c_str(), &(element[i]));
+	}
 #endif
 
 	//nglcd
@@ -1140,23 +1111,18 @@ void CLCD::showTime(bool force)
 
 		gettimeofday(&tm, NULL);
 		t = localtime(&tm.tv_sec);
-		
-		unsigned int lcd_width  = display->xres;
-		unsigned int lcd_height = display->yres;
 
 		if (mode == MODE_STANDBY)
 		{
-			std::string a_clock = "";
-
-			a_clock = DATADIR "/icons/a_clock.png";
-			if (access(a_clock.c_str(), F_OK) != 0)
-				a_clock = DATADIR "/icons/a_clock.png";
-
-			int lcd_a_clock_width = 0, lcd_a_clock_height = 0, lcd_a_clock_bpp = 0;
-			getSize(a_clock.c_str(), &lcd_a_clock_width, &lcd_a_clock_height, &lcd_a_clock_bpp);
+			std::string a_clock = DATADIR "/icons/a_clock.png";
 			
+			if (file_exists(a_clock.c_str()))
+			{
+				int lcd_a_clock_width = 0, lcd_a_clock_height = 0, lcd_a_clock_bpp = 0;
+				getSize(a_clock.c_str(), &lcd_a_clock_width, &lcd_a_clock_height, &lcd_a_clock_bpp);
 			
-			nglcd->LcdAnalogClock(lcd_a_clock_width / 2, lcd_a_clock_height / 2, 200);
+				nglcd->LcdAnalogClock(lcd_a_clock_width / 2, lcd_a_clock_height / 2, 200);
+			}
 		}
 		else
 		{
@@ -1429,6 +1395,49 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 	
 	display->draw_fill_rect(-1, 35 + 14*position, lcd_width, 35 + 14 + 14*position, CLCDDisplay::PIXEL_OFF);
 	fonts.menu->RenderString(0, 35 + 11 + 14*position, lcd_width + 20, text, CLCDDisplay::PIXEL_INV, highlight, utf_encoded);
+#endif
+
+#ifdef ENABLE_GRAPHLCD
+	if (mode == MODE_MOVIE) 
+	{
+		size_t p;
+		AUDIOMODES m = movie_playmode;
+		std::string mytext = text;
+		
+		if (mytext.find("> ") == 0) 
+		{
+			mytext = mytext.substr(2);
+			m = AUDIO_MODE_PLAY;
+		} 
+		else if (mytext.find("|| ") == 0) 
+		{
+			mytext = mytext.substr(3);
+			m = AUDIO_MODE_PAUSE;
+		} 
+		else if ((p = mytext.find("s||> ")) < 3) 
+		{
+			mytext = mytext.substr(p + 5);
+			m = AUDIO_MODE_PLAY;
+		} 
+		else if ((p = mytext.find("x>> ")) < 3) 
+		{
+			mytext = mytext.substr(p + 4);
+			m = AUDIO_MODE_FF;
+		} 
+		else if ((p = mytext.find("x<< ")) < 3) 
+		{
+			mytext = mytext.substr(p + 4);
+			m = AUDIO_MODE_REV;
+		}
+		
+		setMovieInfo(m, "", mytext, false);
+		return;
+	}
+
+	if (mode != MODE_MENU_UTF8)
+		return;
+		
+	nglcd->drawText(0, 0, 0, strlen(text), std::string(text));
 #endif
 
 	wake_up();
