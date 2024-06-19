@@ -484,7 +484,7 @@ void CLCD::displayUpdate()
 #ifdef ENABLE_GRAPHLCD
 	if (stat("/tmp/lcd.locked", &buf) == -1)
 	{
-		nglcd->update();
+		if (g_settings.glcd_enable) nglcd->update();
 	}
 #endif
 }
@@ -532,7 +532,7 @@ void CLCD::setlcdparameter(int dimm, const int contrast, const int power, const 
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-	nglcd->SetBrightness(dimm);
+	if (g_settings.glcd_enable) nglcd->SetBrightness(dimm);
 #endif
 }
 
@@ -828,7 +828,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-	nglcd->drawText(0, 0, 0, big.length(), big);
+	if (g_settings.glcd_enable) nglcd->drawText(0, 0, 0, big.length(), big);
 #endif
 
 	if (perform_wakeup)
@@ -927,7 +927,7 @@ void CLCD::ShowText(const char *str)
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-	nglcd->drawText(0, 0, 0, strlen(str), std::string(str));
+	if (g_settings.glcd_enable) nglcd->drawText(0, 0, 0, strlen(str), std::string(str));
 #endif
 }
 
@@ -961,7 +961,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-	nglcd->drawText(0, 0, 0, name.length(), servicename);
+	if (g_settings.glcd_enable) nglcd->drawText(0, 0, 0, name.length(), servicename);
 #endif
 	
 	wake_up();
@@ -1121,7 +1121,7 @@ void CLCD::showTime(bool force)
 				int lcd_a_clock_width = 0, lcd_a_clock_height = 0, lcd_a_clock_bpp = 0;
 				getSize(a_clock.c_str(), &lcd_a_clock_width, &lcd_a_clock_height, &lcd_a_clock_bpp);
 			
-				nglcd->LcdAnalogClock(lcd_a_clock_width / 2, lcd_a_clock_height / 2, 200);
+				if (g_settings.glcd_enable) nglcd->LcdAnalogClock(lcd_a_clock_width / 2, lcd_a_clock_height / 2, 200);
 			}
 		}
 		else
@@ -1437,7 +1437,7 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 	if (mode != MODE_MENU_UTF8)
 		return;
 		
-	nglcd->drawText(0, 0, 0, strlen(text), std::string(text));
+	if (g_settings.glcd_enable) nglcd->drawText(0, 0, 0, strlen(text), std::string(text));
 #endif
 
 	wake_up();
@@ -1905,13 +1905,13 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 	case MODE_TVRADIO:
 	case MODE_MOVIE:
-		nglcd->clear();
+		if (g_settings.glcd_enable) nglcd->clear();
 		
 		// servicename / title / epg
 		if (mode == MODE_TVRADIO)
 			//showServicename(servicename);
 			showServicename(g_RemoteControl->getCurrentChannelName());
-			//nglcd->showImage(g_RemoteControl->getCurrentChannelID(), 0, 0, 220, 176);
+			//if (g_settings.glcd_enable) nglcd->showImage(g_RemoteControl->getCurrentChannelID(), 0, 0, 220, 176);
 		else // MODE_MOVIE
 		{
 			setMovieInfo(movie_playmode, movie_big, movie_small, movie_centered);
@@ -2377,7 +2377,7 @@ void CLCD::Clear()
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-	nglcd->clear();
+	if (g_settings.glcd_enable) nglcd->clear();
 #endif
 }
 
