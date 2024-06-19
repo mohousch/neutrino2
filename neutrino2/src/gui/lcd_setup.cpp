@@ -343,7 +343,7 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("GraphLCD Setup"))));
 	
 	// enable glcd
-	lcdSettings->addItem(new CMenuOptionChooser(_("Enable NGLCD"), &g_settings.glcd_enable, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this));
+//	lcdSettings->addItem(new CMenuOptionChooser(_("Enable NGLCD"), &g_settings.glcd_enable, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this));
 	
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	

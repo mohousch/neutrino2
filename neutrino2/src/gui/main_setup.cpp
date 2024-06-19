@@ -140,8 +140,9 @@ void CMainSettingsMenu::showMenu(void)
 	mainSettings->addItem(new CMenuForwarder(_("Movieplayer settings"), true, NULL, new CMoviePlayerSettings(), NULL, CRCInput::RC_nokey, NULL,  NEUTRINO_ICON_MENUITEM_MOVIEPLAYERSETTINGS));
 
 	// vfd/lcd settings
-	if (CLCD::getInstance()->has_lcd)
-		mainSettings->addItem(new CMenuForwarder(_("Display settings"), true, NULL, new CLCDSettings(), NULL, CRCInput::RC_nokey, NULL,  NEUTRINO_ICON_MENUITEM_LCDSETTINGS));	
+#if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD) || defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+	mainSettings->addItem(new CMenuForwarder(_("Display settings"), true, NULL, new CLCDSettings(), NULL, CRCInput::RC_nokey, NULL,  NEUTRINO_ICON_MENUITEM_LCDSETTINGS));
+#endif	
 
 	// remote control settings
 	mainSettings->addItem(new CMenuForwarder(_("Remote Control settings"), true, NULL, new CRemoteControlSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_REMOTECONTROLSETTINGS));

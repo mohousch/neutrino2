@@ -498,9 +498,9 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 
 void CLCD::displayUpdate()
 {
-#ifdef ENABLE_LCD
 	struct stat buf;
 	
+#ifdef ENABLE_LCD
 	if (stat("/tmp/lcd.locked", &buf) == -1)
 	{
 		display->update();
@@ -511,8 +511,6 @@ void CLCD::displayUpdate()
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-	struct stat buf;
-	
 	if (stat("/tmp/lcd.locked", &buf) == -1)
 	{
 		nglcd->update();
