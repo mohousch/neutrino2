@@ -76,8 +76,6 @@ CPictureViewerGui::~CPictureViewerGui()
 {
 	playlist.clear();
 
-	// free picviewer mem
-	g_PicViewer->cleanup();
 	delete g_PicViewer;
 	g_PicViewer = NULL;
 }
@@ -123,9 +121,6 @@ int CPictureViewerGui::exec(CMenuTarget* parent, const std::string &actionKey)
 	CNeutrinoApp::getInstance()->lockPlayBack();
 
 	show();
-
-	// free picviewer mem
-	g_PicViewer->cleanup();
 
 	// Restore previous background	
 	if (usedBackground) 

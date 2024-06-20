@@ -1,7 +1,7 @@
 /*
   pictureviewer  -   DBoxII-Project
   
-  $Id: pictureviewer.cpp 2013/10/12 mohousch Exp $
+  $Id: pictureviewer.cpp 20062024 mohousch Exp $
 
   Copyright (C) 2001 Steffen Hehn 'McClean'
   Homepage: http://dbox.cyberphoria.org/
@@ -47,7 +47,6 @@ CPictureViewer::CPictureViewer()
 	m_scaling = (ScalingMode)g_settings.picviewer_scaling;
 
 	m_Pic_Name = "";
-	m_Pic_Buffer = NULL;
 	m_Pic_X = 0;
 	m_Pic_Y = 0;
 	m_Pic_XPos = 0;
@@ -81,7 +80,7 @@ void CPictureViewer::setVisible (int startx, int endx, int starty, int endy)
 	m_endy = endy;
 }
 
-bool CPictureViewer::decodeImage(const std::string & name, bool showBusySign)
+bool CPictureViewer::decodeImage(const std::string &name, bool showBusySign)
 {
 	dprintf(DEBUG_INFO, "CPictureViewer::decodeImage: %s\n", name.c_str()); 
 	
@@ -89,153 +88,73 @@ bool CPictureViewer::decodeImage(const std::string & name, bool showBusySign)
 	int y;
 	int imx;
 	int imy;
+	int bpp;
 	
 	// Show red block for "next ready" in view state
 	if (showBusySign)
 	{
 		showBusy(COL_RED_PLUS_0);
 	}
-	
-	CFormathandler * fh;
 
-	fh = fh_getsize(name.c_str(), &x, &y, m_endx - m_startx, m_endy - m_starty);
-
-	if (fh) 
+	getSize(name.c_str(), &x, &y, &bpp);
+ 
+	if ((x > (m_endx - m_startx) || y > (m_endy - m_starty)) && m_scaling != NONE) 
 	{
-		if (m_Pic_Buffer != NULL) 
+		if ((m_aspect_ratio_correction * y * (m_endx - m_startx) / x) <= (m_endy - m_starty)) 
 		{
-			free(m_Pic_Buffer);
-			m_Pic_Buffer = NULL;
-		}
-		
-		m_Pic_Buffer = (unsigned char *) malloc(x*y*3);
-
-		if (m_Pic_Buffer == NULL) 
-		{
-			dprintf(DEBUG_INFO, "CPictureViewer::decodeImage: Error: malloc\n");
-			return false;
-		}
-
-		if (fh->get_pic(name.c_str(), &m_Pic_Buffer, &x, &y) == FH_ERROR_OK) 
-		{
-			if ((x > (m_endx - m_startx) || y > (m_endy - m_starty)) && m_scaling != NONE) 
-			{
-				if ((m_aspect_ratio_correction * y * (m_endx - m_startx) / x) <= (m_endy - m_starty)) 
-				{
-					imx = (m_endx - m_startx);
-					imy = (int) (m_aspect_ratio_correction * y * (m_endx - m_startx) / x);
-				} 
-				else 
-				{
-					imx = (int) ((1.0 / m_aspect_ratio_correction) * x * (m_endy - m_starty) / y);
-					imy = (m_endy - m_starty);
-				}
-
-				// resize
-				m_Pic_Buffer = resize(m_Pic_Buffer, x, y, imx, imy, m_scaling);
-
-				x = imx;
-				y = imy;
-			}
-			
-			m_Pic_X = x;
-			m_Pic_Y = y;
-
-			if (x < (m_endx - m_startx))
-				m_Pic_XPos = (m_endx - m_startx - x) / 2 + m_startx;
-			else
-				m_Pic_XPos = m_startx;
-
-			if (y < (m_endy - m_starty))
-				m_Pic_YPos = (m_endy - m_starty - y) / 2 + m_starty;
-			else
-				m_Pic_YPos = m_starty;
-
-			if (x > (m_endx - m_startx))
-				m_Pic_XPan = (x - (m_endx - m_startx)) / 2;
-			else
-				m_Pic_XPan = 0;
-			
-			if (y > (m_endy - m_starty))
-				m_Pic_YPan = (y - (m_endy - m_starty)) / 2;
-			else
-				m_Pic_YPan = 0;
+			imx = (m_endx - m_startx);
+			imy = (int) (m_aspect_ratio_correction * y * (m_endx - m_startx) / x);
 		} 
 		else 
 		{
-			dprintf(DEBUG_INFO, "CPictureViewer::decodeImage: Unable to read file !\n");
-
-			free (m_Pic_Buffer);
-			m_Pic_Buffer = (unsigned char *) malloc(3);
-
-			if (m_Pic_Buffer == NULL) 
-			{
-				dprintf(DEBUG_INFO, "CPictureViewer::decodeImage: Error: malloc\n");
-				return false;
-			}
-			
-			memset(m_Pic_Buffer, 0, 3);
-			
-			m_Pic_X = 1;
-			m_Pic_Y = 1;
-			m_Pic_XPos = 0;
-			m_Pic_YPos = 0;
-			m_Pic_XPan = 0;
-			m_Pic_YPan = 0;
-		}
-	} 
-	else 
-	{
-		dprintf(DEBUG_INFO, "CPictureViewer::decodeImage: Unable to read file or format not recognized!\n");
-		
-		if (m_Pic_Buffer != NULL) 
-		{
-			free (m_Pic_Buffer);
+			imx = (int) ((1.0 / m_aspect_ratio_correction) * x * (m_endy - m_starty) / y);
+			imy = (m_endy - m_starty);
 		}
 
-		m_Pic_Buffer = (unsigned char *) malloc(3);
-		
-		if (m_Pic_Buffer == NULL) 
-		{
-			dprintf(DEBUG_INFO, "CPictureViewer::decodeImage: Error: malloc\n");
-			return false;
-		}
-
-		memset(m_Pic_Buffer, 0, 3);
-		
-		m_Pic_X = 1;
-		m_Pic_Y = 1;
-		m_Pic_XPos = 0;
-		m_Pic_YPos = 0;
-		m_Pic_XPan = 0;
-		m_Pic_YPan = 0;
+		x = imx;
+		y = imy;
 	}
+			
+	m_Pic_X = x;
+	m_Pic_Y = y;
+
+	if (x < (m_endx - m_startx))
+		m_Pic_XPos = (m_endx - m_startx - x) / 2 + m_startx;
+	else
+		m_Pic_XPos = m_startx;
+
+	if (y < (m_endy - m_starty))
+		m_Pic_YPos = (m_endy - m_starty - y) / 2 + m_starty;
+	else
+		m_Pic_YPos = m_starty;
+
+	if (x > (m_endx - m_startx))
+		m_Pic_XPan = (x - (m_endx - m_startx)) / 2;
+	else
+		m_Pic_XPan = 0;
+			
+	if (y > (m_endy - m_starty))
+		m_Pic_YPan = (y - (m_endy - m_starty)) / 2;
+	else
+		m_Pic_YPan = 0;
 	
 	m_Pic_Name = name;
 	hideBusy();
 
-	return (m_Pic_Buffer != NULL);
+	return true;
 }
 
-bool CPictureViewer::displayImage()
-{
-	dprintf(DEBUG_INFO, "CPictureViewer::displayImage\n");
-
-  	if (m_Pic_Buffer != NULL)
-		CFrameBuffer::getInstance()->displayRGB(m_Pic_Buffer, m_Pic_X, m_Pic_Y, m_Pic_XPan, m_Pic_YPan, m_Pic_XPos, m_Pic_YPos);
-
-  	return true;
-}
-
-bool CPictureViewer::showImage(const std::string& filename)
+bool CPictureViewer::showImage(const std::string &filename)
 {
 	dprintf(DEBUG_INFO, "CPictureViewer::showImage: %s\n", filename.c_str());
+	
+	m_Pic_Name = filename;
 
 	// decode image
   	decodeImage(filename, true);
 	
-	// display next image
-  	displayImage();
+	// display image
+	CFrameBuffer::getInstance()->displayImage(m_Pic_Name, m_Pic_XPos, m_Pic_YPos, m_Pic_X, m_Pic_Y, m_Pic_XPan, m_Pic_YPan);
 	
   	return true;
 }
@@ -248,18 +167,9 @@ void CPictureViewer::zoom(float factor)
 	
 	int oldx = m_Pic_X;
 	int oldy = m_Pic_Y;
-	unsigned char * oldBuf = m_Pic_Buffer;
+	
 	m_Pic_X = (int) (factor * m_Pic_X);
 	m_Pic_Y = (int) (factor * m_Pic_Y);
-	
-	m_Pic_Buffer = resize(m_Pic_Buffer, oldx, oldy, m_Pic_X, m_Pic_Y, m_scaling);
-	
-	if (m_Pic_Buffer == oldBuf) 
-	{
-		// resize failed
-		hideBusy();
-		return;
-	}
 	
 	if (m_Pic_X < (m_endx - m_startx))
 		m_Pic_XPos = (m_endx - m_startx - m_Pic_X) / 2 + m_startx;
@@ -281,7 +191,7 @@ void CPictureViewer::zoom(float factor)
 	else
 		m_Pic_YPan = 0;
 
-	CFrameBuffer::getInstance()->displayRGB(m_Pic_Buffer, m_Pic_X, m_Pic_Y, m_Pic_XPan, m_Pic_YPan, m_Pic_XPos, m_Pic_YPos);
+	CFrameBuffer::getInstance()->displayImage(m_Pic_Name, m_Pic_XPos, m_Pic_YPos, m_Pic_X, m_Pic_Y, m_Pic_XPan, m_Pic_YPan);
 }
 
 void CPictureViewer::move(int dx, int dy)
@@ -321,7 +231,7 @@ void CPictureViewer::move(int dx, int dy)
 	else
 		m_Pic_YPos = m_starty;
 	
-	CFrameBuffer::getInstance()->displayRGB(m_Pic_Buffer, m_Pic_X, m_Pic_Y, m_Pic_XPan, m_Pic_YPan, m_Pic_XPos, m_Pic_YPos);
+	CFrameBuffer::getInstance()->displayImage(m_Pic_Name, m_Pic_XPos, m_Pic_YPos, m_Pic_X, m_Pic_Y, m_Pic_XPan, m_Pic_YPan);
 }
 
 void CPictureViewer::showBusy(fb_pixel_t col)
@@ -342,16 +252,5 @@ void CPictureViewer::hideBusy()
 	CFrameBuffer::getInstance()->paintBackgroundBoxRel(m_busy_x, m_busy_y, m_busy_width, m_busy_height);
 	
 	CFrameBuffer::getInstance()->blit();	
-}
-
-void CPictureViewer::cleanup()
-{
-	dprintf(DEBUG_INFO, "CPictureViewer::cleanup\n");
-
-	if (m_Pic_Buffer != NULL) 
-	{
-		free (m_Pic_Buffer);
-		m_Pic_Buffer = NULL;
-	}
 }
 

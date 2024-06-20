@@ -360,7 +360,7 @@ bool nGLCD::showImage(const std::string &filename, uint32_t sw, uint32_t sh, uin
 	if (!dw || !dh)
 		return res;
 		
-	uint32_t *s = getImage(filename, sw, sh);
+	uint32_t *s = (uint32_t *)getImage(filename, sw, sh);
 	
 	if (s && sw && sh)
 		res = showImage(s, sw, sh, dx, dy, dw, dh, transp, maximize);

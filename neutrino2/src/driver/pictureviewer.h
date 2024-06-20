@@ -1,7 +1,7 @@
 /*
   pictureviewer  -   DBoxII-Project
   
-  $Id: pictureviewer.h 2013/10/12 mohousch Exp $
+  $Id: pictureviewer.h 20062024 mohousch Exp $
 
   Copyright (C) 2001 Steffen Hehn 'McClean'
   Homepage: http://dbox.cyberphoria.org/
@@ -58,7 +58,6 @@ class CPictureViewer
 		float m_aspect;
 		
 		std::string m_Pic_Name;
-		unsigned char *m_Pic_Buffer;
 		int m_Pic_X;
 		int m_Pic_Y;
 		int m_Pic_XPos;
@@ -78,25 +77,19 @@ class CPictureViewer
 		
 	public:
 		CPictureViewer();
-		~CPictureViewer(){cleanup();};
+		~CPictureViewer(){};
 		
-		//
+		////
 		void setScaling(ScalingMode s){m_scaling = s;}
 		void setAspectRatio(float aspect_ratio) {m_aspect = aspect_ratio;}
-		void cleanup();
 		void setVisible(int startx, int endx, int starty, int endy);
 		static double m_aspect_ratio_correction;
-
-		//
+		////
 		void showBusy(fb_pixel_t col);
 		void hideBusy();
-
-		//
+		////
 		bool showImage(const std::string & filename);
 		bool decodeImage(const std::string & name, bool showBusySign = false);
-		bool displayImage();
-
-		//
 		void zoom(float factor);
 		void move(int dx, int dy);
 };

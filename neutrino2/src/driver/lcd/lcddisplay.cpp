@@ -1014,7 +1014,7 @@ void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int x, int y,
 		height = dy;
 		
 	// getBuffer
-	element->buffer = (uint32_t *)getImage(element->name, width, height, bpp);
+	element->buffer = (uint32_t *)getImage(element->name, width, height, 0xFF, bpp);
 	
 	// blit2fb
 	unsigned int i;
