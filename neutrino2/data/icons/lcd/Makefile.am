@@ -1,7 +1,7 @@
-installdir = $(DATADIR)/lcdd/icons
+installdir = $(DATADIR)/lcd
 
 install_DATA = \
-	lcdbannr.png \
+	lcdbanner.png \
 	lcddolby.png \
 	lcdhd.png \
 	lcdlock.png \

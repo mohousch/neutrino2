@@ -917,7 +917,6 @@ void CFrameBuffer::setSpinnerBasePath(const std::string & spinnerPath)
 // get icon size
 void CFrameBuffer::getIconSize(const char * const filename, int * width, int * height)
 {
-
 	if(filename == NULL)
 		return;
 	
@@ -968,21 +967,14 @@ void CFrameBuffer::getIconSize(const char * const filename, int * width, int * h
 	}
 	else
 	{
-		CFormathandler * fh = NULL;
-		int x, y;
+		int x = 0;
+		int y = 0;
+		int bpp = 0;
 		
-		fh = fh_getsize(iconfile.c_str(), &x, &y, INT_MAX, INT_MAX); //uscaled
+		getSize(iconfile.c_str(), &x, &y, &bpp);
 		
-		if (fh == NULL) 
-		{
-			*width = 0;
-			*height = 0;
-		}
-		else
-		{
-			*width = x;
-			*height = y;
-		}
+		*width = x;
+		*height = y;
 	}
 
 	close(icon_fd);

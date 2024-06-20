@@ -239,8 +239,10 @@ CFormathandler * fh_getsize(const char *name, int *x, int *y, int width_wanted, 
 	for (fh = fh_root; fh != NULL; fh = fh->next) 
 	{
 		if (fh->id_pic (name))
+		{
 			if (fh->get_size (name, x, y, width_wanted, height_wanted) == FH_ERROR_OK)
 				return (fh);
+		}
 	}
 
 	return (NULL);

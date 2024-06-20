@@ -54,8 +54,8 @@ enum ScalingMode
 struct cformathandler 
 {
 	struct cformathandler * next;
-	int (*get_size)(const char *,int *,int*, int, int);
-	int (*get_pic)(const char *,unsigned char **,int* ,int*);
+	int (*get_size)(const char *, int *, int*, int, int);
+	int (*get_pic)(const char *, unsigned char **, int* , int*);
 	int (*id_pic)(const char *);
 };
 	
@@ -64,7 +64,7 @@ typedef struct cformathandler CFormathandler;
 ////
 void init_handlers(void);
 void deinit_handlers(void);
-void add_format(int (*picsize)(const char *, int *, int*, int, int), int (*picread)(const char *, unsigned char **, int*, int*), int (*id)(const char*));
+//void add_format(int (*picsize)(const char *, int *, int*, int, int), int (*picread)(const char *, unsigned char **, int*, int*), int (*id)(const char*));
 CFormathandler *fh_getsize(const char * name, int * x, int * y, int width_wanted, int height_wanted);
 ////
 void getSize(const std::string &name, int * width, int * height, int * nbpp);

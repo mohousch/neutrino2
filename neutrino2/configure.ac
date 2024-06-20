@@ -267,10 +267,9 @@ data/icons/slider/Makefile
 data/icons/status/Makefile
 data/icons/various/Makefile
 data/icons/weather/Makefile
+data/icons/lcd/Makefile
 data/iso-codes/Makefile
 data/config/Makefile
-data/lcd/Makefile
-data/lcd/icons/Makefile
 data/zapit/Makefile
 data/webtv/Makefile
 data/scripts/Makefile

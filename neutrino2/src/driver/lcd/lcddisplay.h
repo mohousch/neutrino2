@@ -149,16 +149,13 @@ class CLCDDisplay
 		void draw_rectangle(int left, int top, int right, int bottom, int linestate, int fillstate);
 		void draw_polygon(int num_vertices, int *vertices, int state);
 		////
-		void load_screen_element(raw_lcd_element_t * element, int left, int top, int w = 0, int h = 0);
+		void load_screen_element(raw_lcd_element_t * element, int x, int y, int w = 0, int h = 0);
 		void load_screen(uint32_t ** const screen);
 		void dump_screen(uint32_t **screen);
-		////
 		bool load_png_element(const char * const filename, raw_lcd_element_t * element, int width = 0, int height = 0);
 		bool load_png(const char * const filename);
 		bool dump_png_element(const char * const filename, raw_lcd_element_t * element);
 		bool dump_png(const char * const filename);
-		////
-		void setSize(int w, int h, int b);
 		////
 		int setLCDContrast(int contrast);
 		int setLCDBrightness(int brightness);
@@ -169,6 +166,7 @@ class CLCDDisplay
 		int raw_buffer_size;
 		int xres, yres, bpp;
 		int bypp;
+		void setSize(int w, int h, int b);
 		////
 		int islocked() { return locked; }
 };

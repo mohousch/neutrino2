@@ -415,6 +415,7 @@ int CLCDDisplay::lock()
 {
 	if (locked)
 		return -1;
+		
 	if (m_manual_blit == 1)
 	{
 		locked = 2;
@@ -994,20 +995,35 @@ void CLCDDisplay::dump_screen(uint32_t **screen)
 	memmove(*screen, _buffer, raw_buffer_size);
 }
 
-void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int top, int width, int height) 
+void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int x, int y, int width, int height) 
 {
-	printf("CLCDDisplay::load_screen_element: %s %d %d %d\n", element->name.c_str(), element->width, element->height, element->bpp);
+	printf("CLCDDisplay::load_screen_element: %s\n", element->name.c_str());
 	
-	load_png_element(element->name.c_str(), element, width, height);
+//	load_png_element(element->name.c_str(), element, width, height);
+	int dx = 0;
+	int dy = 0;
+	int bpp = 0;
+	
+	//// getSize
+	getSize(element->name, &dx, &dy, &bpp);
+	
+	if (width == 0)
+		width = dx;
+		
+	if (height == 0)
+		height = dy;
+		
+	// getBuffer
+	element->buffer = (uint32_t *)getImage(element->name, width, height, bpp);
 	
 	// blit2fb
 	unsigned int i;
 	
-	if ((element->buffer) && (element->height <= yres - top))
+	if ((element->buffer) /*&& (element->height <= yres - top)*/)
 	{
-		for (i = 0; i < min(element->height, yres - top); i++)
+		for (i = 0; i < /*min(element->height, yres - top)*/height; i++)
 		{
-			memmove(_buffer + ((top + i) * xres) + left, element->buffer + (i * element->width), min(element->width, xres - left));
+			memmove(_buffer + ((x + i) * xres) + y, element->buffer + (i * width), /*min(element->width, xres - left)*/width);
 		}
 	}
 }

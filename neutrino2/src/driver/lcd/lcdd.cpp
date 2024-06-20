@@ -271,7 +271,7 @@ enum elements {
 };
 
 const char * const element_name[LCD_NUMBER_OF_ELEMENTS] = {
-	"lcdbannr",
+	"lcdbanner",
 	"lcdprog",
 	"lcdvol",
 	"lcdscart",
@@ -445,11 +445,13 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 		element[i].buffer_size = 0;
 		element[i].buffer = NULL;
 
-		std::string file = DATADIR "/lcdd/icons/";
+		std::string file = DATADIR "/lcd/";
 		file += element_name[i];
 		file += ".png";
+		
+		element[i].name = file.c_str();
 			
-		display->load_png_element(file.c_str(), &(element[i]));
+//		display->load_png_element(file.c_str(), &(element[i]));
 	}
 #endif
 
@@ -1602,10 +1604,10 @@ void CLCD::drawBanner()
 	if(!has_lcd) 
 		return;
 	
-#ifdef ENABLE_LCD
+#if defined (ENABLE_LCD)
 	unsigned int lcd_width  = display->xres;
 	
-	display->load_screen_element(&(element[ELEMENT_BANNER]), 0, 0, element->width, element->height);
+	display->load_screen_element(&(element[ELEMENT_BANNER]), 0, 0, lcd_width, element->height*2);
 #endif
 }
 
