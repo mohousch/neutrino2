@@ -152,7 +152,7 @@ class CLCDDisplay
 		void load_screen_element(raw_lcd_element_t * element, int x, int y, int w = 0, int h = 0);
 		void load_screen(uint32_t ** const screen);
 		void dump_screen(uint32_t **screen);
-		bool load_png_element(const char * const filename, raw_lcd_element_t * element, int width = 0, int height = 0);
+		bool load_png_element(const char * const filename, raw_lcd_element_t * element);
 		bool load_png(const char * const filename);
 		bool dump_png_element(const char * const filename, raw_lcd_element_t * element);
 		bool dump_png(const char * const filename);

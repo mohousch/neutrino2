@@ -138,7 +138,6 @@ bool CPictureViewer::decodeImage(const std::string &name, bool showBusySign)
 	else
 		m_Pic_YPan = 0;
 	
-	m_Pic_Name = name;
 	hideBusy();
 
 	return true;
@@ -146,12 +145,12 @@ bool CPictureViewer::decodeImage(const std::string &name, bool showBusySign)
 
 bool CPictureViewer::showImage(const std::string &filename)
 {
-	dprintf(DEBUG_INFO, "CPictureViewer::showImage: %s\n", filename.c_str());
+	dprintf(DEBUG_NORMAL, "CPictureViewer::showImage: %s\n", filename.c_str());
 	
 	m_Pic_Name = filename;
 
 	// decode image
-  	decodeImage(filename, true);
+  	decodeImage(m_Pic_Name, true);
 	
 	// display image
 	CFrameBuffer::getInstance()->displayImage(m_Pic_Name, m_Pic_XPos, m_Pic_YPos, m_Pic_X, m_Pic_Y, m_Pic_XPan, m_Pic_YPan);
@@ -161,7 +160,9 @@ bool CPictureViewer::showImage(const std::string &filename)
 
 void CPictureViewer::zoom(float factor)
 {
-	dprintf(DEBUG_INFO, "CPictureViewer::zoom %f\n",factor);
+	dprintf(DEBUG_NORMAL, "CPictureViewer::zoom %f\n",factor);
+	
+	CFrameBuffer::getInstance()->clearFrameBuffer();
 	
 	showBusy(COL_YELLOW_PLUS_0);
 	
@@ -196,7 +197,9 @@ void CPictureViewer::zoom(float factor)
 
 void CPictureViewer::move(int dx, int dy)
 {
-	dprintf(DEBUG_INFO, "CPictureViewer::move %d %d\n", dx, dy);
+	dprintf(DEBUG_NORMAL, "CPictureViewer::move %d %d (xpan:%d ypan:%d)\n", dx, dy, m_Pic_XPan, m_Pic_YPan);
+	
+	CFrameBuffer::getInstance()->clearFrameBuffer();
 	
 	showBusy(COL_GREEN_PLUS_0);
 	

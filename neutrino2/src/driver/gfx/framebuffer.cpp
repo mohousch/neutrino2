@@ -1521,6 +1521,7 @@ void CFrameBuffer::blitBox2FB(const fb_pixel_t *boxBuf, const uint32_t &width, c
 	while (line < yc) 
 	{
 		fb_pixel_t *pixpos = &data[line * xc];
+		
 		for (uint32_t pos = xoff; pos < xoff + xc; pos++) 
 		{
 			//don't paint backgroundcolor (*pixpos = 0x00000000)

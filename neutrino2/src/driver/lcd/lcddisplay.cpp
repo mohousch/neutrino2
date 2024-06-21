@@ -661,8 +661,8 @@ void CLCDDisplay::update()
 
 			// hack move last line to top
 			unsigned char linebuffer[width];
-			memmove(linebuffer, surface_data+surface_buffer_size-width, width);
-			memmove(surface_data+width, surface_data, surface_buffer_size-width);
+			memmove(linebuffer, surface_data + surface_buffer_size - width, width);
+			memmove(surface_data + width, surface_data, surface_buffer_size - width);
 			memmove(surface_data, linebuffer, width);
 
 			unsigned char raw[132*8];
@@ -698,8 +698,8 @@ void CLCDDisplay::update()
 			
 			// hack move last line back to bottom
 			memmove(linebuffer, surface_data, width);
-			memmove(surface_data, surface_data+width, surface_buffer_size-width);
-			memmove(surface_data+surface_buffer_size-width, linebuffer, width);
+			memmove(surface_data, surface_data + width, surface_buffer_size - width);
+			memmove(surface_data + surface_buffer_size - width, linebuffer, width);
 		}
 		else if (lcd_type == 3)
 		{
@@ -725,17 +725,20 @@ void CLCDDisplay::update()
 						}
 					}
 				}
+				
 				write(fd, raw, surface_stride * height);
 			}
 			else
 			{
 #ifdef PLATFORM_GIGABLUE	//RGB565
 				unsigned char gb_buffer[surface_stride * yres];
+				
 				for (int offset = 0; offset < surface_stride * yres; offset += 2)
 				{
 					gb_buffer[offset] = (surface_data[offset] & 0x1F) | ((surface_data[offset + 1] << 3) & 0xE0);
 					gb_buffer[offset + 1] = ((surface_data[offset + 1] >> 5) & 0x03) | ((surface_data[offset] >> 3) & 0x1C) | ((_buffer[offset + 1] << 5) & 0x60);
 				}
+				
 				write(fd, gb_buffer, surface_stride * yres);
 #else
 				write(fd, surface_data + surface_stride * real_offset, surface_stride * real_yres);
@@ -757,6 +760,7 @@ void CLCDDisplay::update()
 					pix = (surface_data[y*132 + x * 2 + 2] & 0xF0) |(surface_data[y*132 + x * 2 + 1 + 2] >> 4);
 					if (inverted)
 						pix = 0xFF - pix;
+						
 					if (flipped)
 					{
 						/* device seems to be 4bpp, swap nibbles */
@@ -1004,7 +1008,7 @@ void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int x, int y,
 	int dy = 0;
 	int bpp = 0;
 	
-	//// getSize
+	// getSize
 	getSize(element->name, &dx, &dy, &bpp);
 	
 	if (width == 0)
@@ -1040,30 +1044,9 @@ void CLCDDisplay::load_screen(uint32_t **const screen)
 	load_screen_element(&element, 0, 0);
 }
 
-bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_t * element, int width, int height)
+bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_t * element)
 {
-	bool ret_value = true;
-	int dx = 0;
-	int dy = 0;
-	int bpp = 0;
-	
-	//// getSize
-	getSize(filename, &dx, &dy, &bpp);
-		
-	if (width == 0)
-		width = dx;
-		
-	if (height == 0)
-		height = dy;
-	
-	element->name = filename;
-	element->width = dx;
-	element->height = dy;
-	element->bpp = bpp;
-		
-	//// getBuffer
-	element->buffer = (uint32_t *)getImage(filename, width, height, bpp);
-#if 0
+	bool ret_value = false;
 	png_structp  png_ptr;
 	png_infop    info_ptr;
 	unsigned int i;
@@ -1118,7 +1101,7 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 						if (!element->buffer)
 						{
 							element->buffer_size = width*height;
-							element->buffer = new unsigned char[element->buffer_size];
+							element->buffer = new uint32_t[element->buffer_size];
 							lcd_width = width;
 							lcd_height = height;
 						}
@@ -1170,7 +1153,6 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 		}
 		fclose(fh);
 	}
-#endif
 	
 	return ret_value;
 }

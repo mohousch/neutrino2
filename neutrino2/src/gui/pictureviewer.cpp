@@ -232,17 +232,11 @@ void CPictureViewerGui::show()
 		}
 		else if( msg == CRCInput::RC_6 )
 		{ 
-			if (playlist.empty())
-			{
-				g_PicViewer->move(10, 0);
-			}
+			g_PicViewer->move(10, 0);
 		}
 		else if( msg == CRCInput::RC_8 )
 		{ 
-			if (playlist.empty())
-			{
-				g_PicViewer->move(0, 10);
-			}
+			g_PicViewer->move(0, 10);
 		}
 		else if(msg == CRCInput::RC_0)
 		{
