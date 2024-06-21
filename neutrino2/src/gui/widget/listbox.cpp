@@ -581,7 +581,7 @@ int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
 	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposName, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_RIGHT - (stringstartposName - x), l_name, color, 0, true); // UTF-8
 	
 	// option
-	if (onofficon && number_of_options == 2 && file_exists(NEUTRINO_ICON_BUTTON_OPTION_ON_ACTIVE))
+	if (onofficon && number_of_options == 2 /*&& file_exists(DATADIR "/buttons/" NEUTRINO_ICON_BUTTON_OPTION_ON_ACTIVE)*/)
 	{
 		if ( l_option == _("on") || l_option == _("yes") )
 		{
