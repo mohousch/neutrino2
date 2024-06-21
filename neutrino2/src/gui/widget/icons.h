@@ -130,6 +130,12 @@
 #define NEUTRINO_ICON_VOLUMESLIDER2GREEN			"slider_green"
 #define NEUTRINO_ICON_VOLUMESLIDER2RED				"slider_red"
 
+//
+#define NEUTRINO_ICON_BUTTON_OPTION_ON_ACTIVE			"btn_option_on_active"
+#define NEUTRINO_ICON_BUTTON_OPTION_ON_INACTIVE			"btn_option_on_inactive"
+#define NEUTRINO_ICON_BUTTON_OPTION_OFF_ACTIVE			"btn_option_off_active"
+#define NEUTRINO_ICON_BUTTON_OPTION_OFF_INACTIVE		"btn_option_off_inactive"
+
 // infoviewer
 #define NEUTRINO_ICON_16_9					"16_9"
 #define NEUTRINO_ICON_16_9_GREY					"16_9_gray"

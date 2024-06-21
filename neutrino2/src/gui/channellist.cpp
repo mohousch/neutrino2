@@ -1486,7 +1486,8 @@ void CChannelList::paint(bool customMode)
 				item->setIconName(logo.c_str());
 			}
 			
-			// option font color
+			// option font
+			item->setOptionFont(SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER);
 			item->setOptionFontColor(COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0);
 			
 

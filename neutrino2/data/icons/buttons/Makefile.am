@@ -13,6 +13,10 @@ install_DATA = \
 	ok.png \
 	epg.png \
 	btn_timer.png \
-	power.png
+	power.png \
+	btn_option_off_active.png \
+	btn_option_off_inactive.png \
+	btn_option_on_active.png \
+	btn_option_on_inactive.png
 	
 
