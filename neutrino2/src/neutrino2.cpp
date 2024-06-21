@@ -855,7 +855,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.lcd_epgalign = configfile.getInt32("lcd_epgalign", DEFAULT_LCD_EPGALIGN);
 	g_settings.lcd_dump_png = configfile.getInt32("lcd_dump_png", DEFAULT_LCD_DUMP_PNG);
 	strcpy(g_settings.lcd_setting_dim_time, configfile.getString("lcd_dim_time", "0").c_str());
-	g_settings.lcd_setting_dim_brightness = configfile.getInt32("lcd_dim_brightness", 0);
+	g_settings.lcd_setting_dim_brightness = configfile.getInt32("lcd_dim_brightness", DEFAULT_LCD_DIM_BRIGHTNESS);
 	g_settings.lcd_led = configfile.getInt32("lcd_led", CLCD::LEDCOLOR_BLUE);
 	g_settings.lcd_minitv = configfile.getInt32("lcd_minitv", CLCD::MINITV_NORMAL);
 	g_settings.lcd_minitvfps = configfile.getInt32("lcd_minitvfps", 30);

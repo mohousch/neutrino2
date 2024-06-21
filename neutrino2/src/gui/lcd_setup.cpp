@@ -269,7 +269,7 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
-	CLCDControler * lcdsliders = new CLCDControler(_("Display settings"));
+//	CLCDControler * lcdsliders = new CLCDControler(_("Display settings"));
 	
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// lcd_power
@@ -284,8 +284,8 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuOptionChooser(_("Mini TV"), &g_settings.lcd_minitv, LCDMENU_MINITV_OPTIONS, LCDMENU_MINITV_OPTION_COUNT, true, this));
 	
 	// minitv fps
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Mini TV FPS"), &g_settings.lcd_minitvfps, true, 0, 30, /*lcdnotifier*/this));
-	
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Mini TV FPS"), &g_settings.lcd_minitvfps, true, 0, 30, this));
+
 	//option invert
 	lcdSettings->addItem(new CMenuOptionChooser(_("Invert"), &g_settings.lcd_inverse, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this));
 
@@ -303,13 +303,23 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuForwarder(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, dim_time));
 
 	// dimm brightness
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, 15));
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, DEFAULT_LCD_DIM_BRIGHTNESS, this, 0, -1, true));
 
 	// lcdcontroller
-	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+//	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// lcdcontroller
-	lcdSettings->addItem(new CMenuForwarder(_("Contrast / Brightness"), true, NULL, lcdsliders));
+//	lcdSettings->addItem(new CMenuForwarder(_("Contrast / Brightness"), true, NULL, lcdsliders));
+	// brightness
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness"), &g_settings.lcd_brightness, true, 0, DEFAULT_LCD_BRIGHTNESS, this, 0, -1, true));
+	
+	// standby brightness
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Standby Brightness"), &g_settings.lcd_standbybrightness, true, 0, DEFAULT_LCD_STANDBYBRIGHTNESS, this, 0, -1, true));
+	
+	// deepstandby brightness
+	// contrast
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Contrast"), &g_settings.lcd_contrast, true, 0, DEFAULT_LCD_CONTRAST, this, 0, -1, true));
+	
 #elif defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 	// lcd_power
 #if defined (PLATFORM_GIGABLUE)	
@@ -327,11 +337,21 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuForwarder(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, dim_time));
 
 	// dimm brightness
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, 15));
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, DEFAULT_LCD_DIM_BRIGHTNESS, this, 0, -1, true));
 
 	// lcdcontroller
-	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	lcdSettings->addItem(new CMenuForwarder(_("Contrast / Brightness"), true, NULL, lcdsliders));	
+//	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+//	lcdSettings->addItem(new CMenuForwarder(_("Contrast / Brightness"), true, NULL, lcdsliders));
+
+	// brightness
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness"), &g_settings.lcd_brightness, true, 0, DEFAULT_LCD_BRIGHTNESS, this, 0, -1, true));
+	
+	// standby brightness
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Standby Brightness"), &g_settings.lcd_standbybrightness, true, 0, DEFAULT_LCD_STANDBYBRIGHTNESS, this, 0, -1, true));
+	
+	// deepstandby brightness
+	// contrast
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Contrast"), &g_settings.lcd_contrast, true, 0, DEFAULT_LCD_CONTRAST, this, 0, -1, true));
 #endif	
 #endif
 
@@ -345,7 +365,6 @@ void CLCDSettings::showMenu()
 	
 	// select driver
 	item = new CMenuForwarder(_("Type"), (nglcd->GetConfigSize() > 1), nglcd->GetConfigName(g_settings.glcd_selected_config).c_str(), this, "select_driver");
-//	item = new CMenuOptionStringChooser(_("Type"), (char *)nglcd->GetConfigName(g_settings.glcd_selected_config).c_str(), (nglcd->GetConfigSize() > 1), this, CRCInput::RC_nokey, "", true);
 	
 	lcdSettings->addItem(item);
 #endif	
@@ -369,14 +388,17 @@ bool CLCDSettings::changeNotify(const std::string &locale, void *Data)
 	
 	if (locale == _("LCD Power"))	
 	{
+		g_settings.lcd_power = state;
 		CLCD::getInstance()->setPower(state);	
 	}
 	else if (locale == _("LED Color"))
 	{
+		g_settings.lcd_led = state;
 		CLCD::getInstance()->setLED(state, state);
 	}
 	else if (locale == _("Mini TV"))
 	{
+		g_settings.lcd_minitv = state;
 		CLCD::getInstance()->setMiniTV(state);
 	}
 	else if (locale == _("Mini TV FPS"))
@@ -385,6 +407,21 @@ bool CLCDSettings::changeNotify(const std::string &locale, void *Data)
 		
 		proc_put("/proc/stb/lcd/fps", state);
 	}
+	else if (locale == _("Brightness"))
+	{
+		g_settings.lcd_brightness = state;
+		CLCD::getInstance()->setBrightness(g_settings.lcd_brightness);
+	}
+	else if (locale == _("Standby Brightness"))
+	{
+		g_settings.lcd_standbybrightness = state;
+		CLCD::getInstance()->setBrightnessStandby(g_settings.lcd_standbybrightness);
+	}
+	else if (locale == _("Contrast"))
+	{
+		g_settings.lcd_contrast = state;
+		CLCD::getInstance()->setContrast(g_settings.lcd_contrast);
+	}
 #ifdef ENABLE_GRAPHLCD
 	else if (locale == "Type")
 	{
@@ -392,16 +429,6 @@ bool CLCDSettings::changeNotify(const std::string &locale, void *Data)
 		{
 			item->addOption(nglcd->GetConfigName(i).c_str(), i);
 		}
-		
-		// FIXME: no idea why RC_home with CMenuOptionStringChooser is calling this ???
-/*		
-		if (nglcd->GetConfigSize())
-		{
-			item->pulldown = true;
-			item->msg = CRCInput::RC_ok;
-			item->exec(NULL);
-		}
-*/
 	}
 #endif
 	

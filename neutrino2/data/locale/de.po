@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-06-19 20:31+0200\n"
+"POT-Creation-Date: 2024-06-21 23:45+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -436,9 +436,6 @@ msgstr "Festgeschrieben/Nicht festgeschrieben"
 
 msgid "Contrast"
 msgstr "Kontrast"
-
-msgid "Contrast / Brightness"
-msgstr "Kontrast / Helligkeit"
 
 msgid "Cooking"
 msgstr "Kochen"

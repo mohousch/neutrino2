@@ -269,6 +269,46 @@ void CMenuItem::refreshItemBox(int dy, fb_pixel_t col)
 	}
 }
 
+void CMenuItem::paintItemSlider(const bool select_mode, const int &item_height, const int &optionvalue, const int &factor, const char *left_text, const char *right_text)
+{
+	// bar
+	int bar_width = 120, bar_height = 12;
+	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_VOLUMEBODY, &bar_width, &bar_height);
+	
+	// get sliderbody width
+	int slider_width = 16, slider_height = 16;
+	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_VOLUMESLIDER2ALPHA, &slider_width, &slider_height);
+
+	// avoid division by zero
+	if (factor < optionvalue || factor < 1)
+		return;
+
+	int right_needed = 0;
+	
+	if (right_text != NULL)
+	{
+		right_needed = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth("U999");
+	}
+	
+	int left_needed = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(left_text);
+
+	int space = dx - right_needed - ICON_OFFSET - left_needed - ICON_OFFSET;
+	
+	if (space < bar_width)
+		return ;
+
+	int start_x = x + dx - right_needed - bar_width - 2*ICON_OFFSET;
+
+	// FIXME: negative optionvalues falsifies the slider on the right side
+	int optionV = (optionvalue < 0) ? 0 : optionvalue;
+	
+	// paint sliderbody
+	CFrameBuffer::getInstance()->paintIcon(NEUTRINO_ICON_VOLUMEBODY, start_x, y, item_height, true, bar_width + slider_width, bar_height);
+
+	// paint slider
+	CFrameBuffer::getInstance()->paintIcon(select_mode ? NEUTRINO_ICON_VOLUMESLIDER2ALPHA : NEUTRINO_ICON_VOLUMESLIDER2, start_x + (optionV * bar_width / factor), y, item_height);
+}
+
 //// CMenuOptionChooser
 CMenuOptionChooser::CMenuOptionChooser(const char * const Name, int* const OptionValue, const struct keyval *const Options, const unsigned Number_Of_Options, const bool Active, CChangeObserver* const Observ, const neutrino_msg_t DirectKey, const std::string & IconName, bool Pulldown)
 {
@@ -557,7 +597,7 @@ int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
 }
 
 //CMenuOptionNumberChooser
-CMenuOptionNumberChooser::CMenuOptionNumberChooser(const char * const Name, int * const OptionValue, const bool Active, const int min_value, const int max_value, CChangeObserver * const Observ, const int print_offset, const int special_value)
+CMenuOptionNumberChooser::CMenuOptionNumberChooser(const char * const Name, int * const OptionValue, const bool Active, const int min_value, const int max_value, CChangeObserver * const Observ, const int print_offset, const int special_value, bool paintSlider)
 {
 	height = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 6;
 
@@ -570,11 +610,12 @@ CMenuOptionNumberChooser::CMenuOptionNumberChooser(const char * const Name, int 
 	upper_bound = max_value;
 
 	display_offset = print_offset;
-
-	localized_value = special_value;
+	unwanted_value = special_value;
 	
 	can_arrow = true;
 	observ = Observ;
+	
+	paint_slider = paintSlider;
 
 	menuItem_type = MENUITEM_OPTIONNUMBERCHOOSER;
 }
@@ -600,17 +641,25 @@ int CMenuOptionNumberChooser::exec(CMenuTarget*)
 	//
 	if( msg == CRCInput::RC_left ) 
 	{
-		if (((*optionValue) > upper_bound) || ((*optionValue) <= lower_bound))
-			*optionValue = upper_bound;
-		else
-			(*optionValue)--;
+//		if (((*optionValue) > upper_bound) || ((*optionValue) <= lower_bound))
+//			*optionValue = upper_bound;
+//		else
+//			(*optionValue)--;
+		(*optionValue)--;
+		
+		if ((*optionValue) < lower_bound)
+			*optionValue = lower_bound;
 	} 
 	else 
 	{
-		if (((*optionValue) >= upper_bound) || ((*optionValue) < lower_bound))
-			*optionValue = lower_bound;
-		else
-			(*optionValue)++;
+//		if (((*optionValue) >= upper_bound) || ((*optionValue) < lower_bound))
+//			*optionValue = lower_bound;
+//		else
+//			(*optionValue)++;
+		(*optionValue)++;
+		
+		if ((*optionValue) > upper_bound)
+			*optionValue = upper_bound;
 	}
 	
 //	paint(true);
@@ -664,7 +713,7 @@ int CMenuOptionNumberChooser::paint(bool selected, bool /*AfterPulldown*/)
 	std::string l_option = " ";
 	char option_value[11];
 
-	if ( ((*optionValue) != localized_value) )
+	if ( ((*optionValue) != unwanted_value) )
 	{
 		sprintf(option_value, "%d", ((*optionValue) + display_offset));
 		l_option = option_value;
@@ -685,6 +734,10 @@ int CMenuOptionNumberChooser::paint(bool selected, bool /*AfterPulldown*/)
 	
 	// option value
 	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposOption, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_LEFT - (stringstartposOption - x), l_option.c_str(), color, 0, true); // UTF-8
+
+	// slider
+	if (paint_slider)
+		paintItemSlider(selected, height, *optionValue, (upper_bound - lower_bound), l_name, l_option.c_str());
 	
 	// vfd
 	if(selected)

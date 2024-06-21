@@ -84,6 +84,7 @@ class CMenuItem
 		neutrino_msg_t directKey;
 		neutrino_msg_t msg;
 		bool can_arrow;
+		//
 		std::string iconName;
 		std::string itemName;
 		std::string option;
@@ -138,6 +139,7 @@ class CMenuItem
 		virtual void init(const int X, const int Y, const int DX, const int DY);
 		virtual void paintItemBox(int dy, fb_pixel_t col);
 		virtual void refreshItemBox(int dy, fb_pixel_t col);
+		virtual void paintItemSlider(const bool select_mode, const int &item_height, const int &optionvalue, const int &factor, const char *left_text = NULL, const char *right_text = NULL);
 		virtual int paint(bool selected = false, bool AfterPulldown = false) = 0;
 		
 		//
@@ -250,7 +252,8 @@ class CMenuOptionNumberChooser : public CMenuItem
 	int lower_bound;
 	int upper_bound;
 	int display_offset;
-	int localized_value;
+	int unwanted_value;
+	bool paint_slider;
 
 	protected:
 		int height;
@@ -270,7 +273,7 @@ class CMenuOptionNumberChooser : public CMenuItem
 		}
 
 	public:
-		CMenuOptionNumberChooser(const char * const Name, int * const OptionValue, const bool Active, const int min_value, const int max_value, CChangeObserver * const Observ = NULL, const int print_offset = 0, const int special_value = 0);
+		CMenuOptionNumberChooser(const char * const Name, int * const OptionValue, const bool Active, const int min_value, const int max_value, CChangeObserver * const Observ = NULL, const int print_offset = 0, const int special_value = -1, bool paintSlider = false);
 
 		virtual ~CMenuOptionNumberChooser(){};
 		

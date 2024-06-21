@@ -55,28 +55,4 @@ class CLCDSettings : public CMenuTarget, CChangeObserver
 		bool changeNotify(const std::string &locale, void *Data);
 };
 
-// lcd notifier
-/*
-class CLCDNotifier : public CChangeObserver
-{
-	public:
-		CLCDNotifier(){};
-		virtual ~CLCDNotifier(){};
-		
-		bool changeNotify(const std::string &locale, void *Data);
-};
-*/
-
-// nglcd notifier
-/*
-class GLCDNotifier : public CChangeObserver
-{
-	public:
-		GLCDNotifier(){};
-		virtual ~GLCDNotifier(){};
-		
-		bool changeNotify(const std::string &locale, void *Data);
-};
-*/
-
 #endif //__lcd_setup__

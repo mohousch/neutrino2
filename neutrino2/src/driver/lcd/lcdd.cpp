@@ -174,21 +174,7 @@ void CLCD::count_down()
 		
 		if (timeout_cnt == 0) 
 		{
-#if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
-			if (g_settings.lcd_setting_dim_brightness > 0) 
-			{
-				// save lcd brightness, setBrightness() changes global setting
-				int b = g_settings.lcd_brightness;
-				setBrightness(g_settings.lcd_setting_dim_brightness);
-				g_settings.lcd_brightness = b;
-			}
-#elif defined (ENABLE_LCD)
 			setlcdparameter();
-#endif
-
-#ifdef ENABLE_GRAPHLCD
-			setlcdparameter();
-#endif
 		}
 	} 
 }
@@ -198,6 +184,7 @@ void CLCD::wake_up()
 	if (atoi(g_settings.lcd_setting_dim_time) > 0) 
 	{
 		timeout_cnt = atoi(g_settings.lcd_setting_dim_time);
+		
 #if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 		g_settings.lcd_setting_dim_brightness > 0 ? setBrightness(g_settings.lcd_brightness) : setPower(1);
 #elif defined (ENABLE_LCD)
@@ -1622,6 +1609,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	menutitle = title;
 	
 	setlcdparameter();
+	setLED(LEDCOLOR_BLUE, 0);
 
 #if defined (ENABLE_4DIGITS)
 	switch (m) 
@@ -2049,26 +2037,7 @@ void CLCD::setPower(int power)
 		
 	g_settings.lcd_power = power;
 
-#if defined (ENABLE_4DIGITS)
-#if defined (PLATFORM_GIGABLUE)
-	const char *VFDLED[] = {
-		"VFD_OFF",
-		"VFD_BLUE",
-		"VFD_RED",
-		"VFD_PURPLE"
-	};
-	
-	dprintf(DEBUG_NORMAL, "CLCD::setPower: %s\n", VFDLED[power]);
-	  
-	FILE * f;
-	if((f = fopen("/proc/stb/fp/led0_pattern", "w")) == NULL) 
-		return;
-	
-	fprintf(f, "%d", power);
-	
-	fclose(f);
-#endif
-#elif defined (ENABLE_VFD)	
+#if defined (ENABLE_VFD)	
 #if defined (__sh__)
 	struct vfd_ioctl_data data;
 	data.start_address = power;
@@ -2121,6 +2090,8 @@ void CLCD::setLED(int value, int option)
 {
 	if (!has_lcd)
 		return;
+		
+	printf("CLCD::setLED: %d\n", value);
 
 	g_settings.lcd_led = value;
 	
@@ -2129,14 +2100,15 @@ void CLCD::setLED(int value, int option)
 #endif
 
 #if defined (PLATFORM_GIGABLUE)
-	const char *VFDLED[] = {
-		"VFD_OFF",
-		"VFD_BLUE",
-		"VFD_RED",
-		"VFD_PURPLE"
+	const char *LED[] = 
+	{
+		"LEDCOLOR_OFF",
+		"LEDCOLOR_BLUE",
+		"LEDCOLOR_RED",
+		"LEDCOLOR_PURPLE"
 	};
 	
-	dprintf(DEBUG_NORMAL, "CLCD::setLED: %s\n", VFDLED[value]);
+	dprintf(DEBUG_NORMAL, "CLCD::setLED: %s\n", LED[value]);
 	  
 	FILE * f;
 	if((f = fopen("/proc/stb/fp/led0_pattern", "w")) == NULL) 
