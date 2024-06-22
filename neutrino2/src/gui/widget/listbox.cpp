@@ -354,9 +354,6 @@ void CMenuOptionChooser::addOption(const char *optionname, const int optionvalue
 int CMenuOptionChooser::exec(CMenuTarget*)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionChooser::exec: (%s)\n", itemName.c_str());
-
-	bool wantsRepaint = false;
-	int ret = CMenuTarget::RETURN_NONE;
 	
 	//
 	if (locked)
@@ -441,7 +438,6 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 		}
 		
 		widget->exec(NULL, "");
-		ret = CMenuTarget::RETURN_REPAINT;
 
 		select = menu->getSelected();
 		
@@ -476,14 +472,9 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 	}
 	
 	if(observ)
-		wantsRepaint = observ->changeNotify(itemName, optionValue);
+		observ->changeNotify(itemName, optionValue);
 
-	if ( wantsRepaint )
-		ret = CMenuTarget::RETURN_REPAINT;
-		
-	paint(true);
-
-	return ret;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
 int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
@@ -644,9 +635,6 @@ int CMenuOptionNumberChooser::exec(CMenuTarget*)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionNumberChooser::exec: (%s)\n", itemName.c_str());
 	
-	int ret = CMenuTarget::RETURN_NONE;
-	bool wantsRepaint = false;
-	
 	//
 	if (locked)
 	{
@@ -686,15 +674,9 @@ int CMenuOptionNumberChooser::exec(CMenuTarget*)
 	}
 	
 	if(observ)
-		wantsRepaint = observ->changeNotify(itemName, optionValue);
+		observ->changeNotify(itemName, optionValue);
 
-//	return CMenuTarget::RETURN_REPAINT;
-	if ( wantsRepaint )
-		ret = CMenuTarget::RETURN_REPAINT;
-		
-	paint(true);
-
-	return ret;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
 int CMenuOptionNumberChooser::paint(bool selected, bool /*AfterPulldown*/)
@@ -789,7 +771,6 @@ CMenuOptionStringChooser::CMenuOptionStringChooser(const char * const Name, char
 	observ = Observ;
 
 	directKey = DirectKey;
-//	iconName = IconName;
 	iconName = IconName ? IconName : "";
 	can_arrow = true;
 	
@@ -813,9 +794,6 @@ void CMenuOptionStringChooser::addOption(const char * optionname, const int opti
 int CMenuOptionStringChooser::exec(CMenuTarget *)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionStringChooser::exec: (%s) options:%d\n", itemName.c_str(), (int)options.size());
-
-	bool wantsRepaint = false;
-	int ret = CMenuTarget::RETURN_NONE;
 	
 	//
 	if (locked)
@@ -895,7 +873,6 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		}
 		
 		widget->exec(NULL, "");
-		ret = CMenuTarget::RETURN_REPAINT;
 
 		select = menu->getSelected();
 		
@@ -931,14 +908,9 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 	}
 	
 	if(observ) 
-		wantsRepaint = observ->changeNotify(itemName.c_str(), optionValue);
-	
-	if (wantsRepaint)
-		ret = CMenuTarget::RETURN_REPAINT;
-		
-	paint(true, true);
+		observ->changeNotify(itemName.c_str(), optionValue);
 
-	return ret;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
 int CMenuOptionStringChooser::paint( bool selected, bool afterPulldown)
@@ -3104,7 +3076,7 @@ void ClistBox::scrollLineDown(const int)
 				if ( item->isSelectable() ) 
 				{
 					if ((pos < (int)page_start[current_page + 1]) && (pos >= (int)page_start[current_page]))
-					{ 	
+					{	
 						// Item is currently on screen
 						//clear prev. selected
 						items[selected]->paint(false);
