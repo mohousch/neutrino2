@@ -40,6 +40,7 @@
 class CLCDSettings : public CMenuTarget, CChangeObserver
 {
 	private:
+		CMenuItem * m1;
 #ifdef ENABLE_GRAPHLCD
 		nGLCD * nglcd;
 		CMenuItem * item;

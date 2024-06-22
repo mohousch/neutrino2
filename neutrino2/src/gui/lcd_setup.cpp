@@ -133,9 +133,22 @@ int CLCDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	
 	if(parent)
 		parent->hide();
-	
+		
+	if (actionKey == "set_dimm_timeout")
+	{
+		CStringInput * dim_time = new CStringInput(_("Dim timeout"), g_settings.lcd_setting_dim_time, 3, NULL, NULL, "0123456789 ");
+		
+		dim_time->exec(NULL, "");
+		
+		m1->addOption(dim_time->getValueString().c_str());
+		
+		delete dim_time;
+		dim_time = NULL;
+		
+		return ret;
+	}
 #ifdef ENABLE_GRAPHLCD	
-	if (actionKey == "select_driver")
+	else if (actionKey == "select_driver")
 	{
 		int select = -1;
 		
@@ -269,8 +282,6 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
-//	CLCDControler * lcdsliders = new CLCDControler(_("Display settings"));
-	
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// lcd_power
 	lcdSettings->addItem(new CMenuOptionChooser(_("LCD Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
@@ -299,17 +310,12 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuOptionChooser(_("LCD EPG Align"), &g_settings.lcd_epgalign, LCDMENU_EPGALIGN_OPTIONS, LCDMENU_EPGALIGN_OPTION_COUNT, true));
 	
 	// dimm-time
-	CStringInput * dim_time = new CStringInput(_("Dim timeout"), g_settings.lcd_setting_dim_time, 3, NULL, NULL, "0123456789 ");
-	lcdSettings->addItem(new CMenuForwarder(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, dim_time));
+	m1 = new CMenuForwarder(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, this, "set_dimm_timeout");
+	lcdSettings->addItem(m1);
 
 	// dimm brightness
 	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, DEFAULT_LCD_DIM_BRIGHTNESS, this, 0, -1, true));
 
-	// lcdcontroller
-//	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	
-	// lcdcontroller
-//	lcdSettings->addItem(new CMenuForwarder(_("Contrast / Brightness"), true, NULL, lcdsliders));
 	// brightness
 	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness"), &g_settings.lcd_brightness, true, 0, DEFAULT_LCD_BRIGHTNESS, this, 0, -1, true));
 	
@@ -338,10 +344,6 @@ void CLCDSettings::showMenu()
 
 	// dimm brightness
 	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, DEFAULT_LCD_DIM_BRIGHTNESS, this, 0, -1, true));
-
-	// lcdcontroller
-//	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-//	lcdSettings->addItem(new CMenuForwarder(_("Contrast / Brightness"), true, NULL, lcdsliders));
 
 	// brightness
 	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness"), &g_settings.lcd_brightness, true, 0, DEFAULT_LCD_BRIGHTNESS, this, 0, -1, true));

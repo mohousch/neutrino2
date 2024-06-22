@@ -356,7 +356,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 	dprintf(DEBUG_DEBUG, "CMenuOptionChooser::exec: (%s)\n", itemName.c_str());
 
 	bool wantsRepaint = false;
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_NONE;
 	
 	//
 	if (locked)
@@ -480,6 +480,8 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 
 	if ( wantsRepaint )
 		ret = CMenuTarget::RETURN_REPAINT;
+		
+	paint(true);
 
 	return ret;
 }
@@ -642,6 +644,9 @@ int CMenuOptionNumberChooser::exec(CMenuTarget*)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionNumberChooser::exec: (%s)\n", itemName.c_str());
 	
+	int ret = CMenuTarget::RETURN_NONE;
+	bool wantsRepaint = false;
+	
 	//
 	if (locked)
 	{
@@ -680,12 +685,16 @@ int CMenuOptionNumberChooser::exec(CMenuTarget*)
 			*optionValue = upper_bound;
 	}
 	
-//	paint(true);
-	
 	if(observ)
-		observ->changeNotify(itemName, optionValue);
+		wantsRepaint = observ->changeNotify(itemName, optionValue);
 
-	return CMenuTarget::RETURN_REPAINT;
+//	return CMenuTarget::RETURN_REPAINT;
+	if ( wantsRepaint )
+		ret = CMenuTarget::RETURN_REPAINT;
+		
+	paint(true);
+
+	return ret;
 }
 
 int CMenuOptionNumberChooser::paint(bool selected, bool /*AfterPulldown*/)
@@ -806,7 +815,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 	dprintf(DEBUG_DEBUG, "CMenuOptionStringChooser::exec: (%s) options:%d\n", itemName.c_str(), (int)options.size());
 
 	bool wantsRepaint = false;
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_NONE;
 	
 	//
 	if (locked)
@@ -920,14 +929,14 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 			}
 		}
 	}
-
-//	paint(true, true);
 	
 	if(observ) 
 		wantsRepaint = observ->changeNotify(itemName.c_str(), optionValue);
 	
 	if (wantsRepaint)
 		ret = CMenuTarget::RETURN_REPAINT;
+		
+	paint(true, true);
 
 	return ret;
 }
