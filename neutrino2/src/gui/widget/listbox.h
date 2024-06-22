@@ -137,8 +137,10 @@ class CMenuItem
 
 		//
 		virtual void init(const int X, const int Y, const int DX, const int DY);
-		virtual void paintItemBox(int dy, fb_pixel_t col);
-		virtual void refreshItemBox(int dy, fb_pixel_t col);
+		virtual void saveScreen();
+		virtual void restoreScreen();
+		virtual void paintItemBox(fb_pixel_t col);
+		virtual void refreshItemBox(fb_pixel_t col);
 		virtual void paintItemSlider(const bool select_mode, const int &item_height, const int &optionvalue, const int &factor, const char *left_text = NULL, const char *right_text = NULL);
 		virtual int paint(bool selected = false, bool AfterPulldown = false) = 0;
 		

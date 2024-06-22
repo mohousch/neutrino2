@@ -40,5 +40,9 @@ install_DATA = \
 	power.png \
 	right.png \
 	btn_red.png \
-	up.png
+	up.png \
+	btn_option_off_active.png \
+	btn_option_off_inactive.png \
+	btn_option_on_active.png \
+	btn_option_on_inactive.png
 	

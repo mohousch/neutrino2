@@ -123,9 +123,9 @@ CMenuItem::~CMenuItem()
 
 void CMenuItem::init(const int X, const int Y, const int DX, const int DY)
 {
-	x    = X;
-	y    = Y;
-	dx   = DX;
+	x = X;
+	y = Y;
+	dx = DX;
 	dy = DY;
 }
 
@@ -212,26 +212,35 @@ bool CMenuItem::check()
 	return ( strncmp(cPIN, validPIN, 4) == 0);
 }
 
-//
-void CMenuItem::paintItemBox(int dy, fb_pixel_t col)
+void CMenuItem::saveScreen()
+{
+	if (background)
+	{
+			delete [] background;
+			background = NULL;
+	}
+								
+	background = new fb_pixel_t[dx*dy];
+						
+	if (background)
+	{
+		CFrameBuffer::getInstance()->saveScreen(x, y, dx, dy, background);
+	}
+}
+
+void CMenuItem::restoreScreen()
+{
+	if (background)
+	{
+		CFrameBuffer::getInstance()->restoreScreen(x, y, dx, dy, background);
+	}
+}
+
+void CMenuItem::paintItemBox(fb_pixel_t col)
 {
 	if (!paintFrame)
 	{
-//		if (background)
-//		{
-//			delete [] background;
-//			background = NULL;
-//		}
-		
-		if (background == NULL)
-		{							
-		background = new fb_pixel_t[dx*dy];
-						
-		if (background)
-		{
-			CFrameBuffer::getInstance()->saveScreen(x, y, dx, dy, background);
-		}
-		}
+		saveScreen();
 	}	
 		
 	// border
@@ -256,19 +265,13 @@ void CMenuItem::paintItemBox(int dy, fb_pixel_t col)
 	} 
 }
 
-void CMenuItem::refreshItemBox(int dy, fb_pixel_t col)
+void CMenuItem::refreshItemBox(fb_pixel_t col)
 {
 	if (paintFrame || marked)
 		CFrameBuffer::getInstance()->paintBoxRel(x, y, dx, dy, col);
 	else
 	{
-		if (background)
-		{
-			CFrameBuffer::getInstance()->restoreScreen(x, y, dx, dy, background);
-							
-//			delete [] background;
-//			background = NULL;
-		}
+		restoreScreen();
 	}
 }
 
@@ -327,6 +330,7 @@ CMenuOptionChooser::CMenuOptionChooser(const char * const Name, int* const Optio
 			options.push_back(Options[i]);
 		}
 	}
+	
 	active = Active;
 	optionValue = OptionValue;
 	number_of_options = Number_Of_Options;
@@ -357,6 +361,9 @@ void CMenuOptionChooser::addOption(const char *optionname, const int optionvalue
 int CMenuOptionChooser::exec(CMenuTarget*)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionChooser::exec: (%s)\n", itemName.c_str());
+	
+	int ret = CMenuTarget::RETURN_REPAINT; // FIXME
+	bool wantsRepaint = false;
 	
 	//
 	if (locked)
@@ -440,7 +447,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			menu->addItem(new CMenuForwarder(_(l_option)), selected);
 		}
 		
-		widget->exec(NULL, "");
+		ret = widget->exec(NULL, "");
 
 		select = menu->getSelected();
 		
@@ -475,9 +482,14 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 	}
 	
 	if(observ)
-		observ->changeNotify(itemName, optionValue);
+		wantsRepaint = observ->changeNotify(itemName, optionValue);
+		
+	if (wantsRepaint)
+		ret = CMenuTarget::RETURN_REPAINT;
+		
+	paint(true, true);
 
-	return CMenuTarget::RETURN_REPAINT;
+	return ret;
 }
 
 int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
@@ -512,11 +524,11 @@ int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
 	// paint item
 	if (selected)
 	{
-		paintItemBox(height, bgcolor);
+		paintItemBox(bgcolor);
 	}
 	else
 	{
-		refreshItemBox(height, bgcolor);
+		refreshItemBox(bgcolor);
 	}
 
 	//
@@ -638,6 +650,9 @@ int CMenuOptionNumberChooser::exec(CMenuTarget*)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionNumberChooser::exec: (%s)\n", itemName.c_str());
 	
+	int ret = CMenuTarget::RETURN_REPAINT; // FIXME
+	bool wantsRepaint = false;
+	
 	//
 	if (locked)
 	{
@@ -677,9 +692,14 @@ int CMenuOptionNumberChooser::exec(CMenuTarget*)
 	}
 	
 	if(observ)
-		observ->changeNotify(itemName, optionValue);
+		wantsRepaint = observ->changeNotify(itemName, optionValue);
+		
+	if (wantsRepaint)
+		ret = CMenuTarget::RETURN_REPAINT;
+		
+	paint(true);
 
-	return CMenuTarget::RETURN_REPAINT;
+	return ret;
 }
 
 int CMenuOptionNumberChooser::paint(bool selected, bool /*AfterPulldown*/)
@@ -714,11 +734,11 @@ int CMenuOptionNumberChooser::paint(bool selected, bool /*AfterPulldown*/)
 	// paint item
 	if (selected)
 	{
-		paintItemBox(height, bgcolor);
+		paintItemBox(bgcolor);
 	}
 	else
 	{
-		refreshItemBox(height, bgcolor);
+		refreshItemBox(bgcolor);
 	}
 
 	// option
@@ -798,6 +818,9 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionStringChooser::exec: (%s) options:%d\n", itemName.c_str(), (int)options.size());
 	
+	int ret = CMenuTarget::RETURN_REPAINT; // FIXME
+	bool wantsRepaint = false;
+	
 	//
 	if (locked)
 	{
@@ -875,7 +898,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 			menu->addItem(new CMenuForwarder(_(options[count].c_str())), selected);
 		}
 		
-		widget->exec(NULL, "");
+		ret = widget->exec(NULL, "");
 
 		select = menu->getSelected();
 		
@@ -911,9 +934,14 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 	}
 	
 	if(observ) 
-		observ->changeNotify(itemName.c_str(), optionValue);
+		wantsRepaint = observ->changeNotify(itemName.c_str(), optionValue);
+		
+	if (wantsRepaint)
+		ret = CMenuTarget::RETURN_REPAINT;
+		
+	paint(true, true);
 
-	return CMenuTarget::RETURN_REPAINT;
+	return ret;
 }
 
 int CMenuOptionStringChooser::paint( bool selected, bool afterPulldown)
@@ -948,11 +976,11 @@ int CMenuOptionStringChooser::paint( bool selected, bool afterPulldown)
 	// paint item
 	if (selected)
 	{
-		paintItemBox(height, bgcolor);
+		paintItemBox(bgcolor);
 	}
 	else
 	{
-		refreshItemBox(height, bgcolor);
+		refreshItemBox(bgcolor);
 	}
 
 	// paint icon
@@ -1392,11 +1420,11 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 		//
 		if (selected)
 		{
-			paintItemBox(height, bgcolor);
+			paintItemBox(bgcolor);
 		}
 		else
 		{
-			refreshItemBox(height, bgcolor);
+			refreshItemBox(bgcolor);
 		}
 
 		// icon1 (right)
@@ -2981,16 +3009,10 @@ void ClistBox::saveScreen()
 		background = NULL;
 	}
 
-	//if (paintframe)
-	//	background = new fb_pixel_t[wanted_width*wanted_height];
-	//else
 	background = new fb_pixel_t[items_width*items_height];
 	
 	if(background)
 	{
-		//if (paintframe)
-		//	frameBuffer->saveScreen(itemBox.iX, itemBox.iY, wanted_width, wanted_height, background);
-		//else
 		frameBuffer->saveScreen(itemBox.iX, itemBox.iY + hheight, items_width, items_height, background);
 	}
 }
@@ -3001,9 +3023,6 @@ void ClistBox::restoreScreen()
 	
 	if(background) 
 	{
-		//if (paintframe)
-		//	frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, wanted_width, wanted_height, background);
-		//else
 		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY + hheight, items_width, items_height, background);
 	}
 }
