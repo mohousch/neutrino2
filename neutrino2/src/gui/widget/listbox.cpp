@@ -217,17 +217,20 @@ void CMenuItem::paintItemBox(int dy, fb_pixel_t col)
 {
 	if (!paintFrame)
 	{
-		if (background)
-		{
-			delete [] background;
-			background = NULL;
-		}
-									
+//		if (background)
+//		{
+//			delete [] background;
+//			background = NULL;
+//		}
+		
+		if (background == NULL)
+		{							
 		background = new fb_pixel_t[dx*dy];
 						
 		if (background)
 		{
 			CFrameBuffer::getInstance()->saveScreen(x, y, dx, dy, background);
+		}
 		}
 	}	
 		
@@ -263,8 +266,8 @@ void CMenuItem::refreshItemBox(int dy, fb_pixel_t col)
 		{
 			CFrameBuffer::getInstance()->restoreScreen(x, y, dx, dy, background);
 							
-			delete [] background;
-			background = NULL;
+//			delete [] background;
+//			background = NULL;
 		}
 	}
 }
