@@ -61,7 +61,8 @@ class LcdFont
 
                 int getRenderWidth(const char *text, const bool utf8_encoded = false);
                 int getHeight(){return height;};
-
+		int setSize(int isize);
+		
                 LcdFont(CLCDDisplay *fb, LcdFontRenderClass *render, FTC_FaceID faceid, int isize);
                 virtual ~LcdFont(){}
 };

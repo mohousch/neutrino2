@@ -213,29 +213,54 @@ LcdFont::LcdFont(CLCDDisplay *fb, LcdFontRenderClass *render, FTC_FaceID faceid,
 	font.flags  = FT_LOAD_FORCE_AUTOHINT | FT_LOAD_MONOCHROME;
 //	font.flags = FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT;
 
+	setSize(isize);
+}
+
+int LcdFont::setSize(int isize)
+{
+	FT_Error err;
+	FTC_ScalerRec scaler;
+
+	int temp = font.width;
+	font.width = font.height = isize;
+	scaler.face_id = font.face_id;
+	scaler.width   = font.width;
+	scaler.height  = font.height;
+	scaler.pixel   = true;
+
+	err = FTC_Manager_LookupSize(renderer->cacheManager, &scaler, &size);
+
+	if (err != 0)
+	{
+		dprintf(DEBUG_NORMAL, "FTC_Manager_Lookup_Size failed! (0x%x)\n", err);
+		return 0;
+	}
 	// hack begin (this is a hack to get correct font metrics, didn't find any other way which gave correct values)
-	/*
 	FTC_SBit glyph;
 	int index;
 
-	index = FT_Get_Char_Index(face, 0x4D); // "M" gives us ascender
+	index = FT_Get_Char_Index(size->face, 'M');
 	getGlyphBitmap(index, &glyph);
 	int tM = glyph->top;
 	fontwidth = glyph->width;
 
-	index = FT_Get_Char_Index(face, 0x67); // "g" gives us descender
+	index = FT_Get_Char_Index(size->face, 'g');
 	getGlyphBitmap(index, &glyph);
 	int hg = glyph->height;
 	int tg = glyph->top;
 
 	ascender = tM;
 	descender = tg - hg; //this is a negative value!
-	int halflinegap = - (descender>>1); // |descender/2| - we use descender as linegap, half at top, half at bottom
-	upper = halflinegap + ascender+3;   // we add 3 at top
-	lower = -descender + halflinegap+1; // we add 1 at bottom
-	height = upper + lower; 
-	*/
-	height = isize + 3;
+	int halflinegap = -(descender>>1); // |descender/2| - we use descender as linegap, half at top, half at bottom
+	upper = halflinegap+ascender+3;   // we add 3 at top
+	lower = -descender+halflinegap+1; // we add 1 at bottom
+	height = upper + lower;               // this is total height == distance of lines
+	// hack end
+
+	//printf("glyph: hM=%d tM=%d hg=%d tg=%d ascender=%d descender=%d height=%d linegap/2=%d upper=%d lower=%d\n",
+	//       hM,tM,hg,tg,ascender,descender,height,halflinegap,upper,lower);
+	//printf("font metrics: height=%ld\n", (size->metrics.height+32) >> 6);
+	return temp;
 }
 
 FT_Error LcdFont::getGlyphBitmap(FT_ULong glyph_index, FTC_SBit *sbit)
