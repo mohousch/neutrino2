@@ -1052,7 +1052,7 @@ void CLCD::showTime(bool force)
 			
 			// date
 			strftime((char*) &datestr, 20, "%d.%m.%Y", t);
-			fonts.menu->RenderString((lcd_width - 1 - fonts.menu->getRenderWidth(datestr))/2, lcd_height - 20, fonts.menu->getRenderWidth("00:00:0000") + 1, datestr, CLCDDisplay::PIXEL_ON);
+			fonts.menu->RenderString((lcd_width - 1 - fonts.menu->getRenderWidth(datestr))/2, lcd_height - 20, fonts.menu->getRenderWidth("00:00:00:00") + 1, datestr, CLCDDisplay::PIXEL_ON);
 		}
 		else
 		{
@@ -1069,10 +1069,10 @@ void CLCD::showTime(bool force)
 
 			// refresh
 			//display->draw_fill_rect(lcd_width - 50 - 1, lcd_height - 12, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
-			display->draw_fill_rect(lcd_width - fonts.menu->getRenderWidth("00:00") - 2, lcd_height - fonts.menu->getHeight(), fonts.menu->getRenderWidth("00:00"), fonts.menu->getHeight(), CLCDDisplay::PIXEL_OFF);
+			display->draw_fill_rect(lcd_width - fonts.menu->getRenderWidth("00:00") - 10, lcd_height - fonts.menu->getHeight(), fonts.menu->getRenderWidth("00:00"), fonts.menu->getHeight(), CLCDDisplay::PIXEL_OFF);
 
 			// time
-			fonts.menu->RenderString(lcd_width - fonts.time->getRenderWidth("00:00") - 2, lcd_height - 1, fonts.menu->getRenderWidth("00:00") + 1, timestr, CLCDDisplay::PIXEL_ON);
+			fonts.menu->RenderString(lcd_width - fonts.time->getRenderWidth("00:00") - 20, lcd_height - 1, fonts.menu->getRenderWidth("00:00:00") + 1, timestr, CLCDDisplay::PIXEL_ON);
 
 			//
 			//getSize(element[ELEMENT_BANNER].name.c_str(), &i_w, &i_h, &i_bpp);
@@ -1177,7 +1177,24 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 		unsigned int height =  6;
 		unsigned int left   = 12 + 2;
 		unsigned int top    = lcd_height - height - 1 - 2;
-		unsigned int width  = lcd_width - left - 4 - fonts.menu->getRenderWidth("00:00:00") - 1;
+		unsigned int width  = lcd_width - left - 4 - fonts.menu->getRenderWidth("00:00") - 1;
+		
+		//
+		if ((g_RemoteControl != NULL && mode == MODE_TVRADIO) || mode == MODE_MOVIE)
+		{
+			if (mode == MODE_MOVIE)
+				icon_dolby = movie_is_ac3;
+			else
+			{
+				uint count = g_RemoteControl->current_PIDs.APIDs.size();
+					
+				if ((g_RemoteControl->current_PIDs.PIDs.selected_apid < count) &&
+					    (g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.PIDs.selected_apid].is_ac3))
+					icon_dolby = true;
+				else
+					icon_dolby = false;
+			}
+		}
 
 		if ((muted) || (volume == 0))
 			display->load_screen_element(&(element[ELEMENT_MUTE]), 0, lcd_height-element[ELEMENT_MUTE].height);
@@ -1247,28 +1264,7 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 		top = lcd_height - height - 1 - 2; 
 		width = lcd_width - left - 4 - fonts.menu->getRenderWidth("00:00");
 
-		if ((g_RemoteControl != NULL && mode == MODE_TVRADIO) || mode == MODE_MOVIE)
-		{
-			bool is_ac3;
-			if (mode == MODE_MOVIE)
-				is_ac3 = movie_is_ac3;
-			else
-			{
-				uint count = g_RemoteControl->current_PIDs.APIDs.size();
-					
-				if ((g_RemoteControl->current_PIDs.PIDs.selected_apid < count) &&
-					    (g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.PIDs.selected_apid].is_ac3))
-					is_ac3 = true;
-				else
-					is_ac3 = false;
-			}
-
-			//
-			if (is_ac3)
-				display->load_screen_element(&(element[ELEMENT_DOLBY]), 0, lcd_height-element[ELEMENT_SPEAKER].height);
-			else
-				display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height);
-		}
+		display->load_screen_element(&(element[ELEMENT_PROG]), 0, lcd_height-element[ELEMENT_PROG].height);
 
 		if (draw)
 		{
@@ -1365,7 +1361,7 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 	getSize(element[ELEMENT_BANNER].name.c_str(), &i_w, &i_h, &i_bpp);
 	
 	// refresh
-	display->draw_fill_rect(-1, i_h + 5 + fonts.menu->getHeight() + 2, lcd_width, i_h + 2 + fonts.menu->getHeight() + 2 + fonts.menu->getHeight(), CLCDDisplay::PIXEL_OFF);
+	display->draw_fill_rect(-1, i_h + 5 + fonts.menu->getHeight(), lcd_width, i_h + 5 + fonts.menu->getHeight() + 2 + fonts.menu->getHeight(), CLCDDisplay::PIXEL_OFF);
 	
 	// render text
 	fonts.menu->RenderString(0, i_h + 5 + fonts.menu->getHeight() + 2 + fonts.menu->getHeight()/2, lcd_width + 20, text, CLCDDisplay::PIXEL_ON, highlight, utf_encoded);
@@ -1446,6 +1442,7 @@ void CLCD::showAudioTrack(const std::string &artist, const std::string &title, c
 	display->draw_fill_rect (-1, 10, lcd_width, 24, CLCDDisplay::PIXEL_OFF);
 	display->draw_fill_rect (-1, 20, lcd_width, 37, CLCDDisplay::PIXEL_OFF);
 	display->draw_fill_rect (-1, 33, lcd_width, 50, CLCDDisplay::PIXEL_OFF);
+	
 	fonts.menu->RenderString(0, 22, lcd_width + 5, artist.c_str(), CLCDDisplay::PIXEL_ON, 0, isUTF8(artist));
 	fonts.menu->RenderString(0, 35, lcd_width + 5, album.c_str(),  CLCDDisplay::PIXEL_ON, 0, isUTF8(album));
 	fonts.menu->RenderString(0, 48, lcd_width + 5, title.c_str(),  CLCDDisplay::PIXEL_ON, 0, isUTF8(title));
