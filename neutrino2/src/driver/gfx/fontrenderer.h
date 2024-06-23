@@ -79,7 +79,7 @@ class CFont
 		void RenderString(int x, int y, const int width, const char *text, const fb_pixel_t color, const int boxheight = 0, bool utf8_encoded = true, const bool useBackground = false);
 		void RenderString(int x, int y, const int width, const std::string &text, const fb_pixel_t color, const int boxheight = 0, bool utf8_encoded = true, const bool useBackground = false);
 		//
-		int getRenderWidth(const char* text, bool utf8_encoded = true);
+		int getRenderWidth(const char *text, bool utf8_encoded = true);
 		int getRenderWidth(const std::string &text, bool utf8_encoded = true);
 		int getHeight(void);
 		int getMaxDigitWidth(void);
@@ -89,7 +89,7 @@ class CFont
 
 		//
 		CFont(FBFontRenderClass *render, FTC_FaceID faceid, const int isize, const fontmodifier _stylemodifier);
-		~CFont(){}		
+		virtual ~CFont(){}		
 };
 
 class FBFontRenderClass
@@ -101,8 +101,7 @@ class FBFontRenderClass
 		char *family;
 		fontListEntry *next;
 		~fontListEntry();
-	}
-	*font;
+	}*font;
 
 	FT_Library	library;
 	FTC_Manager	cacheManager;	/* the cache manager               */

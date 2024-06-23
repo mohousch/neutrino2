@@ -246,8 +246,6 @@ CFont::CFont(FBFontRenderClass * render, FTC_FaceID faceid, const int isize, con
 	font.face_id 	= faceid;
 	font.width  	= isize;
 	font.height 	= isize;
-	//font.image_type 	= ftc_image_grays;
-	//font.image_type 	|= ftc_image_flag_autohinted;
 	font.flags = FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT;
 
 	scaler.face_id = font.face_id;
@@ -331,6 +329,7 @@ int CFont::getMaxDigitWidth(void)
 				maxdigitwidth = w;
 		}
 	}
+	
 	return maxdigitwidth;
 }
 
