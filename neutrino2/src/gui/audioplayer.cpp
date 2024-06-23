@@ -665,7 +665,7 @@ void CAudioPlayerGui::paintInfo(CAudiofile& File)
 	
 		if(m_time_total != 0)
 		{
-			CLCD::getInstance()->showAudioProgress(100 * m_time_played / m_time_total, current_muted);
+			CLCD::getInstance()->/*showAudioProgress*/showPercentOver(100 * m_time_played / m_time_total, true, CLCD::MODE_AUDIO);
 		}
 	}
 	
@@ -917,7 +917,7 @@ void CAudioPlayerGui::updateTimes(const bool force, bool paint)
 			
 		if((updatePlayed || updateTotal) && m_time_total != 0)
 		{
-			CLCD::getInstance()->showAudioProgress(100 * m_time_played / m_time_total, current_muted);
+			CLCD::getInstance()->/*showAudioProgress*/showPercentOver(100 * m_time_played / m_time_total, true, CLCD::MODE_AUDIO);
 		}		
 	}
 }
@@ -927,33 +927,28 @@ void CAudioPlayerGui::paintLCD()
 	switch(m_state)
 	{
 		case CAudioPlayerGui::STOP:
-			CLCD::getInstance()->showAudioPlayMode(CLCD::AUDIO_MODE_STOP);
-			CLCD::getInstance()->showAudioProgress(0, current_muted);
+			CLCD::getInstance()->showPlayMode(CLCD::AUDIO_MODE_STOP);
 			break;
 			
 		case CAudioPlayerGui::PLAY:
-			CLCD::getInstance()->showAudioPlayMode(CLCD::AUDIO_MODE_PLAY);
+			CLCD::getInstance()->showPlayMode(CLCD::AUDIO_MODE_PLAY);
 
 			// audio-track	
 			CLCD::getInstance()->showAudioTrack(m_playlist[m_current].MetaData.artist, m_playlist[m_current].MetaData.title, m_playlist[m_current].MetaData.album, m_current + 1);			
-					
-			if(m_playlist[m_current].FileExtension != CFile::EXTENSION_URL && m_time_total != 0)
-				CLCD::getInstance()->showAudioProgress(100 * m_time_played / m_time_total, current_muted);
-
 			break;
 			
 		case CAudioPlayerGui::PAUSE:
-			CLCD::getInstance()->showAudioPlayMode(CLCD::AUDIO_MODE_PAUSE);
+			CLCD::getInstance()->showPlayMode(CLCD::AUDIO_MODE_PAUSE);
 			CLCD::getInstance()->showAudioTrack(m_playlist[m_current].MetaData.artist, m_playlist[m_current].MetaData.title, m_playlist[m_current].MetaData.album, m_current + 1);				
 			break;
 			
 		case CAudioPlayerGui::FF:
-			CLCD::getInstance()->showAudioPlayMode(CLCD::AUDIO_MODE_FF);
+			CLCD::getInstance()->showPlayMode(CLCD::AUDIO_MODE_FF);
 			CLCD::getInstance()->showAudioTrack(m_playlist[m_current].MetaData.artist, m_playlist[m_current].MetaData.title, m_playlist[m_current].MetaData.album, m_current + 1);				
 			break;
 			
 		case CAudioPlayerGui::REV:
-			CLCD::getInstance()->showAudioPlayMode(CLCD::AUDIO_MODE_REV);
+			CLCD::getInstance()->showPlayMode(CLCD::AUDIO_MODE_REV);
 			CLCD::getInstance()->showAudioTrack(m_playlist[m_current].MetaData.artist, m_playlist[m_current].MetaData.title, m_playlist[m_current].MetaData.album, m_current + 1);			
 			break;
 	}

@@ -496,25 +496,20 @@ class CLCD
 		enum EPGMODE
 		{
 #if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
-			EPGMODE_CHANNELNUMBER		= 0x01,
-			EPGMODE_TIME			= 0x02
+			EPGMODE_CHANNELNUMBER		= 1,
+			EPGMODE_TIME			= 2
 #else
 			EPGMODE_CHANNEL 		= 1,
 			EPGMODE_TITLE			= 2,
-			EPGMODE_CHANNEL_TITLE		= 3
-//			EPGMODE_TIME			= 0x08
-//			EPGMODE_CHANNEL_LINE_TITLE	= 0x08,
-//			EPGMODE_CHANNEL_SHORT_TITLE	= 0x10,
-//			EPGMODE_CHANNEL_SHORT_LINE_TITLE= 0x20
+			EPGMODE_CHANNEL_TITLE		= 3,
+			EPGMODE_CHANNEL_TITLE_LOGO	= 7
 #endif
 		};
 		
 		enum STATUSLINE
 		{
 			STATUSLINE_PLAYTIME,
-			STATUSLINE_VOLUME,
-//			STATUSLINE_VOLUME_PLAYTIME,
-//			STATUSLINE_VOLUME_PLAYTIME_AUDIO
+			STATUSLINE_VOLUME
 		};
 
 	private:
@@ -604,8 +599,8 @@ class CLCD
 		void showPercentOver(const unsigned char perc, const bool perform_update = true, const MODES m = MODE_TVRADIO);
 		void showMenuText(const int position, const char * text, const int highlight = -1, const bool utf_encoded = false);
 		void showAudioTrack(const std::string & artist, const std::string & title, const std::string & album, int pos = 0);
-		void showAudioPlayMode(AUDIOMODES m=AUDIO_MODE_PLAY);
-		void showAudioProgress(const char perc, bool isMuted);
+		void showPlayMode(AUDIOMODES m=AUDIO_MODE_PLAY);
+		//void showAudioProgress(const char perc, bool isMuted);
 		////
 		void setBrightness(int);
 		int getBrightness();

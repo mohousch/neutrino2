@@ -1023,16 +1023,12 @@ void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int
 		height = dy;
 		
 	// getBuffer
-	element->buffer = (uint32_t *)getImage(element->name, width, height, 0xFF, bpp);
+	element->buffer = getImage(element->name, width, height, 0xFF, bpp);
 */
 	
 	// blit2fb
 	unsigned int i;
 	
-	//if (element->buffer)
-	//	for (i = 0; i < element->height; i++)	
-	//		memmove(_buffer + ((top + i)*xres) + left, element->buffer + (i*element->width), element->width);
-	//
 	if ((element->buffer) && (element->height <= yres - top))
 		for (i = 0; i < min(element->height, yres - top); i++)	
 			memmove(_buffer + ((top + i)*xres) + left, element->buffer + (i*element->width), min(element->width, xres - left));
@@ -1054,6 +1050,13 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 {
 	bool ret_value = false;
 	
+	#if 0
+	getSize(filename, &element->width, &element->height, &element->bpp);
+	element->buffer = getImage(filename, element->width, element->height, 0xFF, bpp, NONE, true);
+	element->buffer_size = element->width*element->height;
+	#endif
+	
+	#if 1
 	png_structp  png_ptr;
 	png_infop    info_ptr;
 	unsigned int i;
@@ -1160,6 +1163,7 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 		}
 		fclose(fh);
 	}
+	#endif
 	
 	return ret_value;
 }

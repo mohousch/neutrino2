@@ -428,11 +428,10 @@ struct SNeutrinoSettings
 	int lcd_contrast;
 	int lcd_power;
 	int lcd_inverse;
-	int lcd_show_volume;
+	int lcd_statusline;
 	int lcd_autodimm;
 	int lcd_epgmode;
 	int lcd_epgalign;
-	int lcd_dump_png;
 	char lcd_setting_dim_time[4];
 	int lcd_setting_dim_brightness;
 	int lcd_led;
@@ -562,11 +561,11 @@ struct SNeutrinoSettings
 #define DEFAULT_LCD_POWER			0x01
 #define DEFAULT_LCD_INVERSE			0x00
 #define DEFAULT_LCD_AUTODIMM			0x00
-#define DEFAULT_LCD_SHOW_VOLUME			0x01
-#define DEFAULT_LCD_SCROLL_TEXT			0x00
-#define DEFAULT_LCD_EPGMODE			0x01	/* 0x1 = name 0x2 = epgtitle 0x4 = separator */
+#define DEFAULT_LCD_STATUSLINE			0x00
+//#define DEFAULT_LCD_SCROLL_TEXT			0x00
+#define DEFAULT_LCD_EPGMODE			0x03
 #define DEFAULT_LCD_EPGALIGN			0x01    /* centered */
-#define DEFAULT_LCD_DUMP_PNG			0x00
+//#define DEFAULT_LCD_DUMP_PNG			0x00
 
 // corners (osd)
 #define NO_RADIUS				0

@@ -1838,7 +1838,7 @@ void CInfoViewer::Set_CA_Status(int Status)
 
 void CInfoViewer::showLcdPercentOver()
 {
-	if (g_settings.lcd_show_volume != 1) 
+	if (g_settings.lcd_statusline == CLCD::STATUSLINE_PLAYTIME) 
 	{
 		int runningPercent = -1;
 		time_t jetzt = time (NULL);
@@ -1851,7 +1851,7 @@ void CInfoViewer::showLcdPercentOver()
 				runningPercent = MIN ((unsigned) ((float) (jetzt - info_CurrentNext.current_time.starttime) / (float) info_CurrentNext.current_time.duration * 100.), 100);
 		}
 
-		CLCD::getInstance()->showPercentOver(runningPercent);	
+		CLCD::getInstance()->showPercentOver(runningPercent, true, CLCD::MODE_TVRADIO);	
 	}	
 }
 

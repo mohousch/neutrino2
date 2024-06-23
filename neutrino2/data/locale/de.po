@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-06-21 23:45+0200\n"
+"POT-Creation-Date: 2024-06-23 23:45+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -2820,6 +2820,10 @@ msgid "channel"
 msgstr "Kanal"
 
 msgid "channel / title"
+msgstr "Kanal / Titel"
+
+#, fuzzy
+msgid "channel / title / logo"
 msgstr "Kanal / Titel"
 
 msgid "checking version"

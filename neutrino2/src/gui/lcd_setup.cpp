@@ -60,15 +60,13 @@ const keyval LCDMENU_STATUSLINE_OPTIONS[LCDMENU_STATUSLINE_OPTION_COUNT] =
 };
 
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
-#define LCDMENU_EPG_OPTION_COUNT 3
+#define LCDMENU_EPG_OPTION_COUNT 	4
 const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
 {
 	{ CLCD::EPGMODE_CHANNEL, _("channel") },
 	{ CLCD::EPGMODE_TITLE, _("title")	},
 	{ CLCD::EPGMODE_CHANNEL_TITLE, _("channel / title") },
-//	{ CLCD::EPGMODE_CHANNEL_LINE_TITLE, _("channel / sep.-line / title") },
-//	{ CLCD::EPGMODE_CHANNEL_SHORT_TITLE, _("channel (short) / title") },
-//	{ CLCD::EPGMODE_CHANNEL_SHORT_LINE_TITLE, _("channel (short) / sep.-line / title") }
+	{ CLCD::EPGMODE_CHANNEL_TITLE_LOGO, _("channel / title / logo") }
 };
 #elif defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 #define LCDMENU_EPG_OPTION_COUNT 2
@@ -301,7 +299,7 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuOptionChooser(_("Invert"), &g_settings.lcd_inverse, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
 
 	//status display
-	lcdSettings->addItem(new CMenuOptionChooser(_("Status line"), &g_settings.lcd_show_volume, LCDMENU_STATUSLINE_OPTIONS, LCDMENU_STATUSLINE_OPTION_COUNT, true));
+	lcdSettings->addItem(new CMenuOptionChooser(_("Status line"), &g_settings.lcd_statusline, LCDMENU_STATUSLINE_OPTIONS, LCDMENU_STATUSLINE_OPTION_COUNT, true));
 	
 	//lcd_epg
 	lcdSettings->addItem(new CMenuOptionChooser(_("EPG"), &g_settings.lcd_epgmode, LCDMENU_EPG_OPTIONS, LCDMENU_EPG_OPTION_COUNT, true));

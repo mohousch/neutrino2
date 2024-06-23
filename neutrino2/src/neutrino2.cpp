@@ -849,11 +849,11 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.lcd_contrast = configfile.getInt32("lcd_contrast", DEFAULT_LCD_CONTRAST);
 	g_settings.lcd_power = configfile.getInt32("lcd_power", DEFAULT_LCD_POWER);
 	g_settings.lcd_inverse = configfile.getInt32("lcd_inverse", DEFAULT_LCD_INVERSE);
-	g_settings.lcd_show_volume = configfile.getInt32("lcd_show_volume", DEFAULT_LCD_SHOW_VOLUME);
+	g_settings.lcd_statusline = configfile.getInt32("lcd_statusline", DEFAULT_LCD_STATUSLINE);
 	g_settings.lcd_autodimm = configfile.getInt32("lcd_autodimm", DEFAULT_LCD_AUTODIMM);
 	g_settings.lcd_epgmode = configfile.getInt32("lcd_epgmode", DEFAULT_LCD_EPGMODE);
 	g_settings.lcd_epgalign = configfile.getInt32("lcd_epgalign", DEFAULT_LCD_EPGALIGN);
-	g_settings.lcd_dump_png = configfile.getInt32("lcd_dump_png", DEFAULT_LCD_DUMP_PNG);
+//	g_settings.lcd_dump_png = configfile.getInt32("lcd_dump_png", DEFAULT_LCD_DUMP_PNG);
 	strcpy(g_settings.lcd_setting_dim_time, configfile.getString("lcd_dim_time", "0").c_str());
 	g_settings.lcd_setting_dim_brightness = configfile.getInt32("lcd_dim_brightness", DEFAULT_LCD_DIM_BRIGHTNESS);
 	g_settings.lcd_led = configfile.getInt32("lcd_led", CLCD::LEDCOLOR_BLUE);
@@ -1378,11 +1378,10 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setInt32("lcd_contrast", g_settings.lcd_contrast);
 	configfile.setInt32("lcd_power", g_settings.lcd_power);
 	configfile.setInt32("lcd_inverse", g_settings.lcd_inverse);
-	configfile.setInt32("lcd_show_volume", g_settings.lcd_show_volume);
+	configfile.setInt32("lcd_statusline", g_settings.lcd_statusline);
 	configfile.setInt32("lcd_autodimm", g_settings.lcd_autodimm);
 	configfile.setInt32("lcd_epgmode", g_settings.lcd_epgmode);
-	configfile.setInt32("lcd_epgalign", g_settings.lcd_epgalign);
-	configfile.setInt32("lcd_dump_png", g_settings.lcd_dump_png);	
+	configfile.setInt32("lcd_epgalign", g_settings.lcd_epgalign);	
 	configfile.setString("lcd_dim_time", g_settings.lcd_setting_dim_time);
 	configfile.setInt32("lcd_dim_brightness", g_settings.lcd_setting_dim_brightness);
 	configfile.setInt32("lcd_led", g_settings.lcd_led);

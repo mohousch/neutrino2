@@ -251,6 +251,7 @@ void CMoviePlayerGui::updateLcd(const std::string &lcd_filename, const std::stri
 	}
 	
 	CLCD::getInstance()->setMovieInfo(playmode, lcd_filename, lcd_info, true);
+	CLCD::getInstance()->showPercentOver(file_prozent, true, CLCD::MODE_MOVIE);
 	
 }
 
@@ -736,9 +737,6 @@ void CMoviePlayerGui::PlayFile(void)
 	bookStartMenu->addItem(new CMenuForwarder(_("Jump over")));
 	bookStartMenu->addItem(new CMenuForwarder(_("Movie start:")));
 	bookStartMenu->addItem(new CMenuForwarder(_("Movie end:")));
-	
-	////FIXME:
-	//showMovieInfo();
 
 	// play loop
 	do {
@@ -837,6 +835,9 @@ void CMoviePlayerGui::PlayFile(void)
 
 			updateLcd(playlist[selected].epgTitle.empty()? playlist[selected].file.getFileName() : playlist[selected].epgTitle, playlist[selected].epgInfo1.empty()? "" : playlist[selected].epgInfo1);
 		}
+		
+		// update lcd percent
+		CLCD::getInstance()->showPercentOver(file_prozent, true, CLCD::MODE_MOVIE);
 
 		// timeosd
 		if (IsVisible()) 
@@ -858,9 +859,6 @@ void CMoviePlayerGui::PlayFile(void)
 			
 			//
 			play(selected);
-			
-			// FIXME:
-			//showMovieInfo();
 		}
 
 		//get position/duration/speed
