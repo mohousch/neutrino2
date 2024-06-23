@@ -500,6 +500,7 @@ int CLCDDisplay::setLCDContrast(int contrast)
 
 	if (fp < 0)
 		fp = open("/dev/dbox/lcd0", O_RDWR);
+		
 	if (fp < 0)
 	{
 		printf("CLCDDisplay::setLCDContrast: can't open /dev/dbox/fp0(%m)\n");
@@ -532,17 +533,18 @@ int CLCDDisplay::setLCDBrightness(int brightness)
 	}
 	else
 	{
+/*
 		int fp;
 		if ((fp = open("/dev/dbox/fp0", O_RDWR)) < 0)
 		{
-			printf("CLCDDisplay::setLCDContrast: can't open /dev/dbox/fp0\n");
+			printf("CLCDDisplay::setLCDBrightness: can't open /dev/dbox/fp0\n");
 			return (-1);
 		}
-
+*/
 
 		if(ioctl(fd, FP_IOCTL_LCD_DIMM, &brightness) < 0)
-			printf("CLCDDisplay::setLCDContrast: can't set lcd brightness (%m)\n");			
-		close(fp);
+			printf("CLCDDisplay::setLCDBrightness: can't set lcd brightness (%m)\n");			
+//		close(fp);
 	}
 	
 	if (brightness == 0)
@@ -997,16 +999,16 @@ void CLCDDisplay::clear_screen()
 	memset(_buffer, 0, raw_buffer_size);
 }
 
-void CLCDDisplay::dump_screen(uint32_t **screen) 
+void CLCDDisplay::dump_screen(uint8_t **screen) 
 {
 	memmove(*screen, _buffer, raw_buffer_size);
 }
 
-void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int x, int y, int width, int height) 
+void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int top, int width, int height) 
 {
 	printf("CLCDDisplay::load_screen_element: %s\n", element->name.c_str());
 	
-//	load_png_element(element->name.c_str(), element, width, height);
+/*
 	int dx = 0;
 	int dy = 0;
 	int bpp = 0;
@@ -1022,20 +1024,21 @@ void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int x, int y,
 		
 	// getBuffer
 	element->buffer = (uint32_t *)getImage(element->name, width, height, 0xFF, bpp);
+*/
 	
 	// blit2fb
 	unsigned int i;
 	
-	if ((element->buffer) /*&& (element->height <= yres - top)*/)
-	{
-		for (i = 0; i < /*min(element->height, yres - top)*/height; i++)
-		{
-			memmove(_buffer + ((x + i) * xres) + y, element->buffer + (i * width), /*min(element->width, xres - left)*/width);
-		}
-	}
+	//if (element->buffer)
+	//	for (i = 0; i < element->height; i++)	
+	//		memmove(_buffer + ((top + i)*xres) + left, element->buffer + (i*element->width), element->width);
+	//
+	if ((element->buffer) && (element->height <= yres - top))
+		for (i = 0; i < min(element->height, yres - top); i++)	
+			memmove(_buffer + ((top + i)*xres) + left, element->buffer + (i*element->width), min(element->width, xres - left));
 }
 
-void CLCDDisplay::load_screen(uint32_t **const screen) 
+void CLCDDisplay::load_screen(uint8_t **const screen) 
 {
 	raw_lcd_element_t element;
 	
@@ -1104,7 +1107,7 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 						if (!element->buffer)
 						{
 							element->buffer_size = width*height;
-							element->buffer = new uint32_t[element->buffer_size];
+							element->buffer = new uint8_t[element->buffer_size];
 							lcd_width = width;
 							lcd_height = height;
 						}
@@ -1165,7 +1168,7 @@ bool CLCDDisplay::load_png(const char * const filename)
 	raw_lcd_element_t element;
 	
 	element.buffer_size = raw_buffer_size;
-	element.buffer = (uint32_t *)_buffer;
+	element.buffer = _buffer;
 	
 	return load_png_element(filename, &element);
 }
@@ -1256,7 +1259,7 @@ bool CLCDDisplay::dump_png(const char * const filename)
 	raw_lcd_element_t element;
 	
 	element.buffer_size = raw_buffer_size;
-	element.buffer = (uint32_t *)_buffer;
+	element.buffer = _buffer;
 	element.width = xres;
 	element.height = yres;
 	element.bpp = 8;

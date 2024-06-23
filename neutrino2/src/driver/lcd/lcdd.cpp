@@ -417,9 +417,9 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	
 	fontRenderer->InitFontCache();
 
-	fonts.menu        = fontRenderer->getFont(fontname,  style_name , 38);
-	fonts.time        = fontRenderer->getFont(fontname2, style_name2, 28);
-	fonts.channelname = fontRenderer->getFont(fontname3, style_name3, 35);
+	fonts.menu        = fontRenderer->getFont(fontname,  style_name , 12);
+	fonts.time        = fontRenderer->getFont(fontname2, style_name2, 14);
+	fonts.channelname = fontRenderer->getFont(fontname3, style_name3, 15);
 	fonts.menutitle   = fonts.channelname;
 	
 	has_lcd = true;
@@ -438,7 +438,7 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 		
 		element[i].name = file.c_str();
 			
-//		display->load_png_element(file.c_str(), &(element[i]));
+		display->load_png_element(file.c_str(), &(element[i]));
 	}
 #endif
 
@@ -683,30 +683,19 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	unsigned int lcd_width  = display->xres;
 	unsigned int lcd_height = display->yres;
 
-	/* the "showmode" variable is a bit map:
-		0x01	show "big" string
-		0x02	show "small" string
-		0x04	show separator line if big and small are present / shown
-	 */
-
-	/* draw_fill_rect is braindead: it actually fills _inside_ the described rectangle,
-	   so that you have to give it one pixel additionally in every direction ;-(
-	   this is where the "-1 to 120" intead of "0 to 119" comes from 
-	*/
 	display->draw_fill_rect(-1, 12 + 2, lcd_width, lcd_height - 12 - 2, CLCDDisplay::PIXEL_OFF);
 
 	bool big_utf8 = false;
 	bool small_utf8 = false;
 	std::string cname[2];
 	std::string event[4];
-	int namelines = 1, eventlines = 1, maxnamelines = 1;
+	int namelines = 0, eventlines = 0, maxnamelines = 2;
 	
-	if (showmode == CLCD::EPGMODE_CHANNEL_TITLE)
+	if (showmode & CLCD::EPGMODE_CHANNEL_TITLE)
 		maxnamelines = 1;
 
 	if ((showmode & CLCD::EPGMODE_CHANNEL) && !big.empty())
 	{
-	/*
 		bool dumb = false;
 		big_utf8 = isUTF8(big);
 		
@@ -715,7 +704,8 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 			namelines = 1;
 			std::string title = big;
 			
-			do { // first try "intelligent" splitting
+			do { 
+				// first try "intelligent" splitting
 				cname[namelines] = splitString(title, lcd_width, fonts.channelname, dumb, big_utf8);
 				title = removeLeadingSpaces(title.substr(cname[namelines].length()));
 				namelines++;
@@ -728,8 +718,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 			if (!dumb)	// second retry -> get out;
 				break;
 		}
-	*/
-		cname[namelines] = splitString(big, lcd_width, fonts.channelname, true, big_utf8);
+//		cname[namelines] = splitString(big, lcd_width, fonts.channelname, true, big_utf8);
 	}
 
 	// one nameline => 2 eventlines, 2 namelines => 1 eventline
@@ -737,15 +726,12 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	
 	if (lcd_height < 64)
 		maxeventlines = 2 - (namelines * 1 + 1) / 2;
-		
-	////
-	maxeventlines = 1;
 
 	if ((showmode & CLCD::EPGMODE_TITLE) && !small.empty())
 	{
 		bool dumb = false;
 		small_utf8 = isUTF8(small);
-		#if 0
+
 		while (true)
 		{
 			eventlines = 0;
@@ -758,15 +744,17 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 				if (event[eventlines].length() > 0 && event[eventlines].at(event[eventlines].length() - 1) < ' ')
 					event[eventlines].erase(event[eventlines].length() - 1);
 				eventlines++;
-			} while (title.length() >0 && eventlines < maxeventlines);
+			} while (title.length() > 0 && eventlines < maxeventlines);
+			
 			if (title.length() == 0)
 				break;
+				
 			dumb = !dumb;	// retry with dumb splitting;
 			if (!dumb)	// second retry -> get out;
 				break;
 		}
-		#endif
-		event[eventlines] = splitString(small, lcd_width, fonts.menu, dumb, small_utf8);
+
+//		event[eventlines] = splitString(small, lcd_width, fonts.menu, dumb, small_utf8);
 	}
 
 	/* this values were determined empirically */
@@ -775,14 +763,14 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	int t_h = 41;
 	if (lcd_height < 64)
 		t_h = t_h*lcd_height/64;
-	int y = 12 + (t_h - namelines*14 - eventlines*10)/2;
+	int y = 8 + (t_h - namelines*14 - eventlines*10)/2;
 	//
 	int x = 1;
 	
 	// namelines
 	for (int i = 0; i < namelines; i++) 
 	{
-		y += 10;
+		y += 14;
 		if (centered)
 		{
 			int w = fonts.channelname->getRenderWidth(cname[i].c_str(), big_utf8);
@@ -793,12 +781,13 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	}
 	y++;
 	
-	//
+	/*
 	if (eventlines > 0 && namelines > 0 && showmode & CLCD::EPGMODE_CHANNEL_TITLE)
 	{
 		y++;
 		display->draw_line(0, y, lcd_width - 1, y, CLCDDisplay::PIXEL_ON);
 	}
+	*/
 	
 	//
 	if (eventlines > 0)
@@ -972,8 +961,6 @@ void CLCD::setMovieInfo(const AUDIOMODES playmode, const std::string big, const 
 	printf("CLCD::setMovieInfo: playmode:%d big:%s small:%s centered:%s\n", playmode, big.empty()? "null" : big.c_str(), small.empty()? "null" : small.c_str(), centered? "centered" : "not centered");
 	
 	int showmode = g_settings.lcd_epgmode;
-	
-//	showmode |= showmode; // take only the separator line from the config
 
 	movie_playmode = playmode;
 	movie_big = big;
@@ -1063,9 +1050,9 @@ void CLCD::showTime(bool force)
 			display->clear_screen(); // clear lcd
 			
 			// centered
-			display->draw_fill_rect( (lcd_width - 1 - fonts.time->getRenderWidth(timestr))/2, (lcd_height - 35)/2, fonts.time->getRenderWidth("00:00") + 1, lcd_height, CLCDDisplay::PIXEL_OFF);
+			display->draw_fill_rect( (lcd_width - 1 - fonts.time->getRenderWidth(timestr))/2, (lcd_height - 35)/2, fonts.time->getRenderWidth("00:00:00") + 1, lcd_height, CLCDDisplay::PIXEL_OFF);
 
-			fonts.time->RenderString((lcd_width - 1 - fonts.time->getRenderWidth(timestr))/2, (lcd_height - 35)/2, fonts.time->getRenderWidth("00:00") + 1, timestr, CLCDDisplay::PIXEL_ON);
+			fonts.time->RenderString((lcd_width - 1 - fonts.time->getRenderWidth(timestr))/2, (lcd_height - 35)/2, fonts.time->getRenderWidth("00:00:00") + 1, timestr, CLCDDisplay::PIXEL_ON);
 		}
 		else
 		{
@@ -1080,11 +1067,11 @@ void CLCD::showTime(bool force)
 				clearClock = 1;
 			}
 
-//			display->draw_fill_rect (lcd_width - 50 - 1, lcd_height - 12, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
-			display->draw_fill_rect((lcd_width - 4 - fonts.time->getRenderWidth(timestr))/2, (lcd_height - 35), fonts.time->getRenderWidth("00:00") + 1, lcd_height, CLCDDisplay::PIXEL_OFF);
+			display->draw_fill_rect (lcd_width - 50 - 1, lcd_height - 12, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
+//			display->draw_fill_rect((lcd_width - 4 - fonts.time->getRenderWidth(timestr))/2, (lcd_height - 35), fonts.time->getRenderWidth("00:00:00") + 1, lcd_height, CLCDDisplay::PIXEL_OFF);
 
-//			fonts.time->RenderString(lcd_width - 4 - fonts.time->getRenderWidth(timestr) + 1, lcd_height - 1, 50, timestr, CLCDDisplay::PIXEL_ON);
-			fonts.time->RenderString((lcd_width - 4 - fonts.time->getRenderWidth(timestr))/2, (lcd_height - 50), fonts.time->getRenderWidth("00:00") + 1, timestr, CLCDDisplay::PIXEL_ON);
+			fonts.time->RenderString(lcd_width - 4 - fonts.time->getRenderWidth(timestr) + 1, lcd_height - 1, 50, timestr, CLCDDisplay::PIXEL_ON);
+//			fonts.time->RenderString((lcd_width - 4 - fonts.time->getRenderWidth(timestr))/2, (lcd_height - 50), fonts.time->getRenderWidth("00:00:00") + 1, timestr, CLCDDisplay::PIXEL_ON);
 		}
 		
 		displayUpdate();
@@ -1140,7 +1127,7 @@ void CLCD::showRCLock(int duration)
 		return;
 	
 #ifdef ENABLE_LCD
-	uint32_t * curr_screen = new uint32_t[display->raw_buffer_size];
+	uint8_t * curr_screen = new uint8_t[display->raw_buffer_size];
 
 	// Saving the whole screen is not really nice since the clock is updated
 	// every second. Restoring the screen can cause a short travel to the past ;)
@@ -1222,7 +1209,7 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 		}
 
 		if (perform_update)
-		  displayUpdate();
+			displayUpdate();
 	}
 #endif
 
@@ -1264,8 +1251,10 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 		else if (g_settings.lcd_show_volume == CLCD::STATUSLINE_VOLUME)
 		{
 			left = 12 + 2; 
-			top = 1 + 2; 
-			width = lcd_width - left - 4 - 20;
+			//top = 1 + 2; 
+			top = lcd_height - height - 1 - 2; 
+			//width = lcd_width - left - 4 - 20;
+			width = lcd_width - left - 4 - 50;
 
 			if ((g_RemoteControl != NULL && mode == MODE_TVRADIO) || mode == MODE_MOVIE)
 			{
@@ -1311,7 +1300,7 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 					
 				display->draw_fill_rect (left - 1, top - 1, left + dp, top + height, CLCDDisplay::PIXEL_ON);
 
-				if (perc == (unsigned char) -2)
+				if (perc == (unsigned char) - 2)
 				{
 					// draw a "+" to show that the event is overdue
 					display->draw_line(left + width - 2, top + 1, left + width - 2, top + height - 2, CLCDDisplay::PIXEL_OFF);
@@ -1382,8 +1371,8 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 	unsigned int lcd_width  = display->xres;
 	unsigned int lcd_height = display->yres;
 	
-	display->draw_fill_rect(-1, 35 + 14*position, lcd_width, 35 + 14 + 14*position, CLCDDisplay::PIXEL_OFF);
-	fonts.menu->RenderString(0, 35 + 11 + 14*position, lcd_width + 20, text, CLCDDisplay::PIXEL_INV, highlight, utf_encoded);
+	display->draw_fill_rect(-1, 35 /*+ 14*position*/, lcd_width, 35 + 14 + 14*position, CLCDDisplay::PIXEL_OFF);
+	fonts.menu->RenderString(0, 35 + 11 /*+ 14*position*/, lcd_width + 20, text, CLCDDisplay::PIXEL_INV, highlight, utf_encoded);
 #endif
 
 #ifdef ENABLE_GRAPHLCD
@@ -1594,7 +1583,10 @@ void CLCD::drawBanner()
 #if defined (ENABLE_LCD)
 	unsigned int lcd_width  = display->xres;
 	
-	display->load_screen_element(&(element[ELEMENT_BANNER]), 0, 0, lcd_width, element->height*2);
+	display->load_screen_element(&(element[ELEMENT_BANNER]), 0, 0, lcd_width, element->height);
+	
+	if (element[ELEMENT_BANNER].width < lcd_width)
+		display->draw_fill_rect(element[ELEMENT_BANNER].width - 1, -1, lcd_width, element[ELEMENT_BANNER].height - 1, CLCDDisplay::PIXEL_ON);
 #endif
 }
 
@@ -1609,7 +1601,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	menutitle = title;
 	
 	setlcdparameter();
-	setLED(LEDCOLOR_BLUE, 0);
+	setLED(g_settings.lcd_led, 0);
 
 #if defined (ENABLE_4DIGITS)
 	switch (m) 
@@ -1658,10 +1650,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	}
 
 #elif defined (ENABLE_VFD)
-#ifdef __sh__
-//	if(strlen(title))
-//		ShowText((char *)title);
-		
+#ifdef __sh__		
 	switch (m) 
 	{
 		case MODE_TVRADIO:
@@ -1821,7 +1810,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 		display->clear_screen(); // clear lcd
 		drawBanner();
-		display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height-1);
+		display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height -element[ELEMENT_SPEAKER].height - 1);
 		showAudioPlayMode(AUDIO_MODE_STOP);
 		showVolume(volume, false);
 		showclock = true;
