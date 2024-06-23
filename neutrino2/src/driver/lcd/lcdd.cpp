@@ -1448,9 +1448,14 @@ void CLCD::showAudioTrack(const std::string &artist, const std::string &title, c
 	// reload specified line
 	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 10, lcd_width, element[ELEMENT_BANNER].height + fonts.channelname->getHeight() + 5 + fonts.channelname->getHeight() + 5 + fonts.channelname->getHeight(), CLCDDisplay::PIXEL_OFF);
 	
+	// artist
 	fonts.channelname->RenderString((lcd_width - fonts.channelname->getRenderWidth(artist.c_str(), isUTF8(artist)))/2, element[ELEMENT_BANNER].height + fonts.channelname->getHeight(), lcd_width, artist.c_str(), CLCDDisplay::PIXEL_ON, 0, isUTF8(artist));
-	fonts.menu->RenderString((lcd_width - fonts.channelname->getRenderWidth(album.c_str(), isUTF8(album)))/2, element[ELEMENT_BANNER].height + 10 + 2*fonts.channelname->getHeight() + 5, lcd_width, album.c_str(),  CLCDDisplay::PIXEL_ON, 0, isUTF8(album));
-	fonts.menu->RenderString((lcd_width - fonts.channelname->getRenderWidth(album.c_str(), isUTF8(album)))/2, element[ELEMENT_BANNER].height + 10 + 2*fonts.channelname->getHeight() + 5 + fonts.channelname->getHeight() + 5, lcd_width, title.c_str(),  CLCDDisplay::PIXEL_ON, 0, isUTF8(title));
+	
+	// album
+	fonts.menu->RenderString((lcd_width - fonts.menu->getRenderWidth(album.c_str(), isUTF8(album)))/2, element[ELEMENT_BANNER].height + 10 + fonts.channelname->getHeight() + 5 + fonts.menu->getHeight(), lcd_width, album.c_str(),  CLCDDisplay::PIXEL_ON, 0, isUTF8(album));
+	
+	// title
+	fonts.menu->RenderString((lcd_width - fonts.menu->getRenderWidth(title.c_str(), isUTF8(title)))/2, element[ELEMENT_BANNER].height + 10 + fonts.channelname->getHeight() + 5 + 2*fonts.menu->getHeight() + 5, lcd_width, title.c_str(),  CLCDDisplay::PIXEL_ON, 0, isUTF8(title));
 #endif
 
 	wake_up();
@@ -1496,14 +1501,6 @@ void CLCD::showPlayMode(AUDIOMODES m)
 	{
 		case AUDIO_MODE_PLAY:
 			{
-				/*
-				int x = 3,y = 53;
-				display->draw_line(x  ,y  ,x  ,y + 8, CLCDDisplay::PIXEL_ON);
-				display->draw_line(x + 1, y + 1, x + 1, y + 7, CLCDDisplay::PIXEL_ON);
-				display->draw_line(x+2,y+2,x+2,y+6, CLCDDisplay::PIXEL_ON);
-				display->draw_line(x+3,y+3,x+3,y+5, CLCDDisplay::PIXEL_ON);
-				display->draw_line(x+4,y+4,x+4,y+4, CLCDDisplay::PIXEL_ON);
-				*/
 				display->load_screen_element(&(element[ELEMENT_PLAY]), 0, display->yres - element[ELEMENT_PROG].height);
 				break;
 			}
@@ -1513,12 +1510,6 @@ void CLCD::showPlayMode(AUDIOMODES m)
 			break;
 			
 		case AUDIO_MODE_PAUSE:
-			/*
-			display->draw_line(1,54,1,60, CLCDDisplay::PIXEL_ON);
-			display->draw_line(2,54,2,60, CLCDDisplay::PIXEL_ON);
-			display->draw_line(6,54,6,60, CLCDDisplay::PIXEL_ON);
-			display->draw_line(7,54,7,60, CLCDDisplay::PIXEL_ON);
-			*/
 			display->load_screen_element(&(element[ELEMENT_PAUSE]), 0, display->yres - element[ELEMENT_PROG].height);
 			break;
 			
@@ -1551,47 +1542,6 @@ void CLCD::showPlayMode(AUDIOMODES m)
 	wake_up();
 	displayUpdate();
 }
-
-#if 0
-void CLCD::showAudioProgress(const char perc, bool isMuted)
-{
-	if(!has_lcd) 
-		return;
-	
-#ifdef ENABLE_LCD
-	if (mode == MODE_AUDIO)
-	{
-		// refresh
-//		display->draw_fill_rect (11, 53, 73, 61, CLCDDisplay::PIXEL_OFF);
-		int height = 6;
-		int left = 12 + 2; 
-		int top = display->yres - height - 1 - 2; 
-		int width = display->xres - left - 4 - fonts.menu->getRenderWidth("00:00");
-		
-		display->draw_fill_rect (left, top, width, height, CLCDDisplay::PIXEL_OFF);
-		
-		//
-		int dp = int( perc/100.0*61.0 + 12.0);
-//		display->draw_fill_rect (11, 54, dp, 60, CLCDDisplay::PIXEL_ON);
-		display->draw_fill_rect (left, top, dp, height, CLCDDisplay::PIXEL_ON);
-		
-		if(isMuted)
-		{
-			if(dp > 12)
-			{
-//				display->draw_line(12, 56, dp-1, 56, CLCDDisplay::PIXEL_OFF);
-//				display->draw_line(12, 58, dp-1, 58, CLCDDisplay::PIXEL_OFF);
-				display->load_screen_element(&(element[ELEMENT_MUTE]), 0, display->yres - element[ELEMENT_MUTE].height);
-			}
-			//else
-			//	display->draw_line (12, 55, 72, 59, CLCDDisplay::PIXEL_ON);
-		}
-		
-		displayUpdate();
-	}
-#endif
-}
-#endif
 
 void CLCD::drawBanner()
 {
