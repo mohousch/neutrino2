@@ -102,9 +102,10 @@ void LcdFontRenderClass::InitFontCache()
 	}
 }
 
-FT_Error LcdFontRenderClass::FTC_Face_Requester(FTC_FaceID  face_id, FT_Face*    aface)
+FT_Error LcdFontRenderClass::FTC_Face_Requester(FTC_FaceID face_id, FT_Face *aface)
 {
 	fontListEntry *font=(fontListEntry *)face_id;
+	
 	if (!font)
 		return -1;
 	
@@ -116,6 +117,7 @@ FT_Error LcdFontRenderClass::FTC_Face_Requester(FTC_FaceID  face_id, FT_Face*   
 		dprintf(DEBUG_NORMAL, "LcdFontRenderClass::FTC_Face_Requester: failed: %i\n", error);
 		return error;
 	}
+	
 	return 0;
 }                                                                                                                                
 
@@ -131,6 +133,7 @@ FTC_FaceID LcdFontRenderClass::getFaceID(const char *family, const char *style)
 		if (!strcmp(f->family, family))
 			return (FTC_FaceID)f;
 	}
+	
 	return 0;
 }
 
@@ -170,7 +173,7 @@ const char * LcdFontRenderClass::AddFont(const char * const filename)
 
 	n->next=font;
 	dprintf(DEBUG_NORMAL, "LcdFontRenderClass::AddFont: OK (%s/%s)\n", n->family, n->style);
-	font=n;
+	font = n;
 	
 	return n->style;
 }
@@ -198,14 +201,36 @@ LcdFont::LcdFont(CLCDDisplay *fb, LcdFontRenderClass *render, FTC_FaceID faceid,
 	font.face_id = faceid;
 	font.width  = isize;
 	font.height = isize;
-	font.flags  = FT_LOAD_FORCE_AUTOHINT | FT_LOAD_MONOCHROME;
+//	font.flags  = FT_LOAD_FORCE_AUTOHINT | FT_LOAD_MONOCHROME;
+	font.flags = FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT;
 #else
-	font.font.face_id=faceid;
+	font.font.face_id = faceid;
 	font.font.pix_width  = isize;
 	font.font.pix_height = isize;
 	font.image_type = ftc_image_mono;
 	font.image_type |= ftc_image_flag_autohinted;
 #endif
+
+	// hack begin (this is a hack to get correct font metrics, didn't find any other way which gave correct values)
+	FTC_SBit glyph;
+	int index;
+
+	index = FT_Get_Char_Index(face, 'M'); // "M" gives us ascender
+	getGlyphBitmap(index, &glyph);
+	int tM = glyph->top;
+	fontwidth = glyph->width;
+
+	index = FT_Get_Char_Index(face, 'g'); // "g" gives us descender
+	getGlyphBitmap(index, &glyph);
+	int hg = glyph->height;
+	int tg = glyph->top;
+
+	ascender = tM;
+	descender = tg - hg; //this is a negative value!
+	int halflinegap = - (descender>>1); // |descender/2| - we use descender as linegap, half at top, half at bottom
+	upper = halflinegap + ascender+3;   // we add 3 at top
+	lower = -descender + halflinegap+1; // we add 1 at bottom
+	height = upper + lower; 
 }
 
 FT_Error LcdFont::getGlyphBitmap(FT_ULong glyph_index, FTC_SBit *sbit)
@@ -235,7 +260,7 @@ void LcdFont::RenderString(int x, int y, const int width, const char * text, con
 
 	if ((err = FTC_Manager_LookupSize(renderer->cacheManager, &scaler, &size)) != 0)
 #else
-	if ((err=FTC_Manager_Lookup_Size(renderer->cacheManager, &font.font, &face, &size))!=0)
+	if ((err = FTC_Manager_Lookup_Size(renderer->cacheManager, &font.font, &face, &size))!=0)
 #endif
 	{ 
 		dprintf(DEBUG_NORMAL, "LcdFont::RenderString: FTC_Manager_Lookup_Size failed! (%d)\n",err);

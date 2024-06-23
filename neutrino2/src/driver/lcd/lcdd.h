@@ -525,6 +525,7 @@ class CLCD
 				LcdFont *time; 
 				LcdFont *menutitle;
 				LcdFont *menu;
+				LcdFont *timestandby;
 		};
 		
 		int fd;
@@ -536,7 +537,7 @@ class CLCD
 		nGLCD				*nglcd;
 #endif
 
-#define LCD_NUMBER_OF_ELEMENTS 13
+#define LCD_NUMBER_OF_ELEMENTS 			15
 		raw_lcd_element_t               element[LCD_NUMBER_OF_ELEMENTS];
 
 		MODES				mode;

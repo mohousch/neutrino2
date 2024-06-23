@@ -575,24 +575,24 @@ int CLCDDisplay::setLED(int value, int option)
 	switch (option)
 	{
 		case LED_BRIGHTNESS:
-			printf("CLCDDisplay::setLED: NormalState %d", value);
+			printf("CLCDDisplay::setLED: NormalState %d\n", value);
 			
 			if (ioctl(fd, LED_IOCTL_BRIGHTNESS_NORMAL, (unsigned char)value) < 0)
-				printf("CLCDDisplay::setLED: can't set led brightness");
+				printf("CLCDDisplay::setLED: can't set led brightness\n");
 			break;
 			
 		case LED_DEEPSTANDBY:
-			printf("CLCDDisplay::setLED: linkingTime %d", value);
+			printf("CLCDDisplay::setLED: linkingTime %d\n", value);
 			
 			if (ioctl(fd, LED_IOCTL_BRIGHTNESS_DEEPSTANDBY, (unsigned char)value) < 0)
-				printf("CLCDDisplay::setLED: can't set led deep standby");
+				printf("CLCDDisplay::setLED: can't set led deep standby\n");
 			break;
 			
 		case LED_BLINKINGTIME:
-			printf("CLCDDisplay::setLED: BlinkingTime %d", value);
+			printf("CLCDDisplay::setLED: BlinkingTime %d\n", value);
 			
 			if (ioctl(fd, LED_IOCTL_BLINKING_TIME, (unsigned char)value) < 0)
-				printf("CLCDDisplay::setLED: can't set led blinking time");
+				printf("CLCDDisplay::setLED: can't set led blinking time\n");
 			break;
 	}
 	

@@ -13,5 +13,7 @@ install_DATA = \
 	lcdradio.png \
 	lcdscart.png \
 	lcdtv.png \
-	lcdvol.png
+	lcdvol.png \
+	a_clock.png \
+	picon_default.png
 
