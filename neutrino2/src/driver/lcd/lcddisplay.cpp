@@ -1053,6 +1053,7 @@ void CLCDDisplay::load_screen(uint8_t **const screen)
 bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_t * element)
 {
 	bool ret_value = false;
+	
 	png_structp  png_ptr;
 	png_infop    info_ptr;
 	unsigned int i;

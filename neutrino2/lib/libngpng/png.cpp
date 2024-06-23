@@ -46,6 +46,7 @@ int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int
 	if(png_ptr == NULL) 
 	{
 		fclose(fh);
+		
 		return(FH_ERROR_FORMAT);
 	}
 	
@@ -54,6 +55,7 @@ int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int
 	{
 		png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
 		fclose(fh);
+		
 		return(FH_ERROR_FORMAT);
 	}
 	
@@ -65,6 +67,7 @@ int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int
 	{
 		png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
 		fclose(fh);
+		
 		return(FH_ERROR_FORMAT);
 	}
 	
@@ -75,10 +78,12 @@ int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int
 	if (alpha)
 	{
 		*bpp = png_get_channels(png_ptr, info_ptr);
+		
 		if ((*bpp != 4) || !(color_type & PNG_COLOR_MASK_ALPHA))
 		{
 			png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
 			fclose(fh);
+			
 			return fh_png_load(name, buffer, xp, yp);
 		}
 		
@@ -119,21 +124,26 @@ int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int
 		png_set_strip_16(png_ptr);
 	
 	number_passes = png_set_interlace_handling(png_ptr);
-	png_read_update_info(png_ptr,info_ptr);
+	png_read_update_info(png_ptr, info_ptr);
 	unsigned long rowbytes = png_get_rowbytes(png_ptr, info_ptr);
+	
 	if (width * int_bpp != rowbytes)
 	{
 		printf("[png.cpp]: Error processing %s - please report (including image).\n", name);
 		printf("           width: %lu rowbytes: %lu\n", (unsigned long)width, (unsigned long)rowbytes);
 		fclose(fh);
+		
 		return(FH_ERROR_FORMAT);
 	}
-	
+		
 	for (pass = 0; pass < number_passes; pass++)
 	{
 		fbptr = (png_byte *)(*buffer);
+		
 		for (i = 0; i < height; i++, fbptr += width * int_bpp)
+		{
 			png_read_row(png_ptr, fbptr, NULL);
+		}
 	}
 	
 	png_read_end(png_ptr, info_ptr);
@@ -251,11 +261,6 @@ bool fh_png_save(const char *filename, int xres, int yres)
 
 	png_set_IHDR(png_ptr, info_ptr, xres, yres, 8, PNG_COLOR_TYPE_RGBA, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
 	
-	//png_set_filter (png_ptr, 0, PNG_FILTER_NONE);
-	//png_set_compression_level(png_ptr, Z_BEST_SPEED);
-	
-//	png_set_filter(png_ptr, 0, PNG_FILTER_NONE|PNG_FILTER_SUB|PNG_FILTER_PAETH);
-//	png_set_compression_level(png_ptr, /*Z_BEST_COMPRESSION*/PNG_Z_DEFAULT_COMPRESSION);
 	png_set_compression_level(png_ptr, Z_BEST_SPEED);
 
 	png_set_bgr(png_ptr);
