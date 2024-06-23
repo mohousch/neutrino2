@@ -1361,10 +1361,10 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 	getSize(element[ELEMENT_BANNER].name.c_str(), &i_w, &i_h, &i_bpp);
 	
 	// refresh
-	display->draw_fill_rect(-1, i_h + 5 + fonts.menu->getHeight(), lcd_width, i_h + 5 + fonts.menu->getHeight() + 2 + fonts.menu->getHeight(), CLCDDisplay::PIXEL_OFF);
+	display->draw_fill_rect(-1, i_h + 5 + fonts.menutitle->getHeight(), lcd_width, i_h + 5 + fonts.menutitle->getHeight() + 2 + fonts.menutitle->getHeight(), CLCDDisplay::PIXEL_OFF);
 	
 	// render text
-	fonts.menu->RenderString(0, i_h + 5 + fonts.menu->getHeight() + 2 + fonts.menu->getHeight()/2, lcd_width + 20, text, CLCDDisplay::PIXEL_ON, highlight, utf_encoded);
+	fonts.menu->RenderString(0, i_h + 5 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight()/2, lcd_width + 20, text, CLCDDisplay::PIXEL_ON, highlight, utf_encoded);
 #endif
 
 #ifdef ENABLE_GRAPHLCD
@@ -1814,7 +1814,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		showclock = false;
 		display->clear_screen(); // clear lcd
 		drawBanner();
-		fonts.menutitle->RenderString(0, i_h + 5 + fonts.menu->getHeight()/2, display->xres, title, CLCDDisplay::PIXEL_ON, 0, true); // UTF-8
+		fonts.menutitle->RenderString(0, i_h + 5 + fonts.menutitle->getHeight()/2, display->xres, title, CLCDDisplay::PIXEL_ON, 0, true); // UTF-8
 		displayUpdate();
 		break;
 		
