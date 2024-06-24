@@ -523,7 +523,9 @@ class CLCD
 				LcdFont *timestandby;
 		};
 		
-		int fd;
+		int 				fd;
+		int 				lcd_width;
+		int 				lcd_height;
 		CLCDDisplay			*display;
 		LcdFontRenderClass		*fontRenderer;
 		FontsDef			fonts;
@@ -547,7 +549,6 @@ class CLCD
 		unsigned char			percentOver;
 		bool				muted;
 		bool				showclock;
-		bool				movie_centered;
 		bool				movie_is_ac3;
 		bool				icon_dolby;
 		pthread_t			thrTime;
@@ -599,7 +600,7 @@ class CLCD
 		void showPercentOver(const unsigned char perc, const bool perform_update = true, const MODES m = MODE_TVRADIO);
 		void showMenuText(const int position, const char * text, const int highlight = -1, const bool utf_encoded = false);
 		void showAudioTrack(const std::string & artist, const std::string & title, const std::string & album, int pos = 0);
-		void showPlayMode(AUDIOMODES m=AUDIO_MODE_PLAY);
+		void showPlayMode(AUDIOMODES m = AUDIO_MODE_PLAY);
 		////
 		void setBrightness(int);
 		int getBrightness();

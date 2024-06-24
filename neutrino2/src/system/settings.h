@@ -562,10 +562,8 @@ struct SNeutrinoSettings
 #define DEFAULT_LCD_INVERSE			0x00
 #define DEFAULT_LCD_AUTODIMM			0x00
 #define DEFAULT_LCD_STATUSLINE			0x00
-//#define DEFAULT_LCD_SCROLL_TEXT			0x00
 #define DEFAULT_LCD_EPGMODE			0x03
 #define DEFAULT_LCD_EPGALIGN			0x01    /* centered */
-//#define DEFAULT_LCD_DUMP_PNG			0x00
 
 // corners (osd)
 #define NO_RADIUS				0
