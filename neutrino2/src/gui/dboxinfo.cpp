@@ -118,14 +118,19 @@ CDBoxInfoWidget::CDBoxInfoWidget()
 	CCLabel* tunerLabel1 = NULL;
 }
 
-int CDBoxInfoWidget::exec(CMenuTarget * parent, const std::string& actionKey)
+int CDBoxInfoWidget::exec(CMenuTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CDBoxInfoWidget::exec:\n");
 
 	if (parent)
 		parent->hide();
 	
-	showInfo();	
+	showInfo();
+	
+	if (!parent)
+	{
+		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
+	}	
 
 	return CMenuTarget::RETURN_REPAINT;
 }
@@ -133,8 +138,6 @@ int CDBoxInfoWidget::exec(CMenuTarget * parent, const std::string& actionKey)
 void CDBoxInfoWidget::hide()
 {
 	dprintf(DEBUG_NORMAL, "CDBoxInfoWidget::hide:\n");
-	
-	CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
 }
 
 int CDBoxInfoWidget::showInfo()

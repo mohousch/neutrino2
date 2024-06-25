@@ -101,6 +101,8 @@ void CSysInfoWidget::paintHead()
 	
 	if(mode == PSINFO)
 		sprintf((char *) buf, "%s", __("Process-List:"));
+		
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, buf);
 	
 	// title
 	CCHeaders headers(&cFrameBoxTitle, buf, titleIcon.iconName.c_str());
@@ -291,6 +293,11 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 	}
 	
 	hide();
+	
+	if (!parent)
+	{
+		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
+	}
 	
 	return res;
 }

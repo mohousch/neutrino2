@@ -853,7 +853,6 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.lcd_autodimm = configfile.getInt32("lcd_autodimm", DEFAULT_LCD_AUTODIMM);
 	g_settings.lcd_epgmode = configfile.getInt32("lcd_epgmode", DEFAULT_LCD_EPGMODE);
 	g_settings.lcd_epgalign = configfile.getInt32("lcd_epgalign", DEFAULT_LCD_EPGALIGN);
-//	g_settings.lcd_dump_png = configfile.getInt32("lcd_dump_png", DEFAULT_LCD_DUMP_PNG);
 	strcpy(g_settings.lcd_setting_dim_time, configfile.getString("lcd_dim_time", "0").c_str());
 	g_settings.lcd_setting_dim_brightness = configfile.getInt32("lcd_dim_brightness", DEFAULT_LCD_DIM_BRIGHTNESS);
 	g_settings.lcd_led = configfile.getInt32("lcd_led", CLCD::LEDCOLOR_BLUE);
@@ -2087,8 +2086,8 @@ void CNeutrinoApp::startNextRecording()
 	}
 }
 
-#define LCD_UPDATE_TIME_RADIO_MODE (6 * 1000 * 1000)
-#define LCD_UPDATE_TIME_TV_MODE (60 * 1000 * 1000)
+#define LCD_UPDATE_TIME_RADIO_MODE 		(6 * 1000 * 1000)
+#define LCD_UPDATE_TIME_TV_MODE			(60 * 1000 * 1000)
 
 // send sectionsd config
 void CNeutrinoApp::sendSectionsdConfig(void)
@@ -2936,6 +2935,11 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 
 		startSubtitles();
 	}
+	
+	if (!parent)
+	{
+		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
+	}
 
 	return returnval;
 }
@@ -3107,7 +3111,7 @@ void CNeutrinoApp::selectNVOD()
                         	delete widget;
                         	widget = NULL;
                         }
-                }	
+                }
         }
 }
 

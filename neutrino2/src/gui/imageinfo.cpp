@@ -109,6 +109,11 @@ int CImageInfo::exec(CMenuTarget *parent, const std::string&)
 	
 	g_RCInput->killTimer(sec_timer_id);
 	sec_timer_id = 0;
+	
+	if (!parent)
+	{
+		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
+	}
 
 	return CMenuTarget::RETURN_REPAINT;
 }

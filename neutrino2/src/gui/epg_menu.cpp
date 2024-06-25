@@ -38,7 +38,7 @@
 #include <system/debug.h>
 
 
-int CEPGMenuHandler::exec(CMenuTarget* parent, const std::string &)
+int CEPGMenuHandler::exec(CMenuTarget *parent, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "CEPGMenuHandler::exec:\n");
 	
@@ -48,6 +48,11 @@ int CEPGMenuHandler::exec(CMenuTarget* parent, const std::string &)
 		parent->hide();
 
 	res = doMenu();
+	
+	if(!parent)
+	{
+		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
+	}
 	
 	return res;
 }

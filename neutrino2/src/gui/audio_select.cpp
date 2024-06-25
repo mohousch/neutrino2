@@ -90,6 +90,11 @@ int CAudioSelectMenuHandler::exec(CMenuTarget * parent, const std::string &/*act
 		parent->hide();
 
 	res = doMenu();
+	
+	if(!parent)
+	{
+		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
+	}
 
 	return res;
 }

@@ -239,6 +239,11 @@ int CPluginList::exec(CMenuTarget * parent, const std::string& actionKey)
 	}
 
 	res = showMenu();
+	
+	if (!parent)
+	{
+		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
+	}
 
 	return res;
 }

@@ -55,18 +55,16 @@ const keyval LCDMENU_STATUSLINE_OPTIONS[LCDMENU_STATUSLINE_OPTION_COUNT] =
 {
 	{ CLCD::STATUSLINE_PLAYTIME, _("playtime")   },
 	{ CLCD::STATUSLINE_VOLUME, _("volume")     }
-//	{ CLCD::STATUSLINE_VOLUME_PLAYTIME, _("volume / playtime")       },
-//	{ CLCD::STATUSLINE_VOLUME_PLAYTIME_AUDIO, _("volume / playtime / audio") }
 };
 
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
-#define LCDMENU_EPG_OPTION_COUNT 	4
+#define LCDMENU_EPG_OPTION_COUNT 	3
 const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
 {
 	{ CLCD::EPGMODE_CHANNEL, _("channel") },
 	{ CLCD::EPGMODE_TITLE, _("title")	},
 	{ CLCD::EPGMODE_CHANNEL_TITLE, _("channel / title") },
-	{ CLCD::EPGMODE_CHANNEL_TITLE_LOGO, _("channel / title / logo") }
+//	{ CLCD::EPGMODE_CHANNEL_TITLE_LOGO, _("channel / title / logo") }
 };
 #elif defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 #define LCDMENU_EPG_OPTION_COUNT 2
@@ -105,7 +103,6 @@ const keyval LCDMENU_MINITV_OPTIONS[LCDMENU_MINITV_OPTION_COUNT] =
 CLCDSettings::CLCDSettings()
 {
 #ifdef ENABLE_GRAPHLCD
-//	nglcd = new nGLCD();
 	item = NULL;
 #endif
 }
@@ -113,13 +110,6 @@ CLCDSettings::CLCDSettings()
 CLCDSettings::~CLCDSettings()
 {
 #ifdef ENABLE_GRAPHLCD
-/*
-	if (nglcd)
-	{
-		delete nglcd;
-		nglcd = NULL;
-	}
-*/
 #endif
 }
 
@@ -226,6 +216,11 @@ int CLCDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 #endif
 	
 	showMenu();
+	
+	if(!parent)
+	{
+		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
+	}
 	
 	return ret;
 }

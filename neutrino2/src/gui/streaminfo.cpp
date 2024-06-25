@@ -129,6 +129,11 @@ int CStreamInfo::exec(CMenuTarget * parent, const std::string&)
 
 	hide();
 	
+	if (!parent)
+	{
+		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
+	}
+	
 	return CMenuTarget::RETURN_REPAINT;
 }
 

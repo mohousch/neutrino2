@@ -179,7 +179,7 @@ class CNeutrinoApp : public CMenuTarget
 		int convertBorder(const char * const border);
 		int convertFontSize(const char * const size);
 		////
-		void mainMenu(void);
+		void mainMenu();
 		bool showUserMenu(int button);
 		void selectNVOD();
                 bool getNVODMenu(ClistBox* menu);

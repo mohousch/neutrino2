@@ -511,12 +511,6 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 		g_RCInput->killTimer(sec_timer_id);
 		sec_timer_id = 0;
 	}
-
-	// vfd
-	if(!parent)
-	{
-		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
-	}
 	
 	return retval;
 }

@@ -691,17 +691,17 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 #endif	
 #elif defined (ENABLE_LCD)
 	// clear screen under banner
-	display->draw_fill_rect(-1, 12 + 2, lcd_width, lcd_height - fonts.menu->getHeight(), CLCDDisplay::PIXEL_OFF);
+	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, lcd_height - fonts.time->getHeight(), CLCDDisplay::PIXEL_OFF);
 
 	//
 	bool big_utf8 = false;
 	bool small_utf8 = false;
 	std::string cname[2];
-	std::string event[4];
+	std::string event[3];
 	int namelines = 0, eventlines = 0, maxnamelines = 2;
 	
-//	if (showmode & EPGMODE_CHANNEL_TITLE_LOGO)
-//		maxnamelines = 1;
+	if (showmode == EPGMODE_CHANNEL_TITLE_LOGO)
+		maxnamelines = 1;
 
 	if ((showmode & CLCD::EPGMODE_CHANNEL) && !big.empty())
 	{
@@ -710,7 +710,6 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 		
 		while (true)
 		{
-			namelines = 1;
 			std::string title = big;
 			
 			do { 
@@ -729,10 +728,10 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 		}
 	}
 
-	int maxeventlines = 4 - namelines;
+	int maxeventlines = 3 - namelines;
 	
-//	if (showmode & EPGMODE_CHANNEL_TITLE_LOGO)
-//		maxeventlines = 1;
+	if (showmode == EPGMODE_CHANNEL_TITLE_LOGO)
+		maxeventlines = 1;
 
 	if ((showmode & CLCD::EPGMODE_TITLE) && !small.empty())
 	{
@@ -741,7 +740,6 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 
 		while (true)
 		{
-			eventlines = 0;
 			std::string title = small;
 			do { 
 				// first try "intelligent" splitting
@@ -763,19 +761,15 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 		}
 	}
 
-	//
-	int i_w = 120;
-	int i_h = 12;
-	int i_bpp = 0;
-	
-	getSize(element[ELEMENT_BANNER].name.c_str(), &i_w, &i_h, &i_bpp);
-	
-	int y = i_h + 5;
+	//	
+	int y = element[ELEMENT_BANNER].height + 2;
 	int x = 1;
 	
 	// namelines
 	for (int i = 0; i < namelines; i++) 
 	{
+		y += fonts.channelname->getHeight();
+		
 		if (centered)
 		{
 			int w = fonts.channelname->getRenderWidth(cname[i].c_str(), big_utf8);
@@ -783,15 +777,15 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 		}
 		
 		fonts.channelname->RenderString(x, y, lcd_width + 10, cname[i].c_str(), CLCDDisplay::PIXEL_ON, 0, big_utf8);
-		
-		y += fonts.channelname->getHeight();
 	}
-	
+
 	//
 	if (eventlines > 0)
 	{
 		for (int i = 0; i < eventlines; i++) 
 		{
+			y += fonts.menu->getHeight();
+			
 			if (centered)
 			{
 				int w = fonts.menu->getRenderWidth(event[i].c_str(), small_utf8);
@@ -799,8 +793,6 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 			}
 			
 			fonts.menu->RenderString(x, y, lcd_width + 10, event[i].c_str(), CLCDDisplay::PIXEL_ON, 0, small_utf8);
-			
-			y += fonts.menu->getHeight();
 		}
 	}
 #endif
@@ -938,7 +930,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 	showTextScreen(servicename, epg_title, showmode, perform_wakeup, g_settings.lcd_epgalign);
 	
 	// logo
-	if (showmode & 7)
+	if (showmode == 7)
 		display->load_screen_element(&(element[ELEMENT_PICON]), (lcd_width - element[ELEMENT_PICON].width)/2, lcd_height - fonts.menu->getHeight() - element[ELEMENT_PICON].height);
 #endif
 
@@ -955,6 +947,8 @@ void CLCD::setEPGTitle(const std::string title)
 	{
 		return;
 	}
+	
+	epg_title.clear();
 	
 	epg_title = title;
 	showServicename("", false);
@@ -1300,105 +1294,20 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 		
 	printf("CLCD::showMenuText: position:%d text:%s highlight:%d\n", position, text? text : "null", highlight);
 	
-#if defined (ENABLE_VFD)
 	if (mode != MODE_MENU_UTF8)
 		return;
-							
+	
+#if defined (ENABLE_VFD)						
 	ShowText(text); // UTF-8
 #elif defined (ENABLE_LCD)
-	if (mode == MODE_MOVIE) 
-	{
-		size_t p;
-		AUDIOMODES m = movie_playmode;
-		std::string mytext = text;
-		
-		if (mytext.find("> ") == 0) 
-		{
-			mytext = mytext.substr(2);
-			m = AUDIO_MODE_PLAY;
-		} 
-		else if (mytext.find("|| ") == 0) 
-		{
-			mytext = mytext.substr(3);
-			m = AUDIO_MODE_PAUSE;
-		} 
-		else if ((p = mytext.find("s||> ")) < 3) 
-		{
-			mytext = mytext.substr(p + 5);
-			m = AUDIO_MODE_PLAY;
-		} 
-		else if ((p = mytext.find("x>> ")) < 3) 
-		{
-			mytext = mytext.substr(p + 4);
-			m = AUDIO_MODE_FF;
-		} 
-		else if ((p = mytext.find("x<< ")) < 3) 
-		{
-			mytext = mytext.substr(p + 4);
-			m = AUDIO_MODE_REV;
-		}
-		
-		setMovieInfo(m, "", mytext, false);
-		return;
-	}
-
-	if (mode != MODE_MENU_UTF8)
-		return;
-
-	//
-	int i_w = 120;
-	int i_h = 12;
-	int i_bpp = 0;
-	
-	getSize(element[ELEMENT_BANNER].name.c_str(), &i_w, &i_h, &i_bpp);
-	
 	// refresh
-	display->draw_fill_rect(-1, i_h + 3 + fonts.menutitle->getHeight(), lcd_width, i_h + 5 + fonts.menutitle->getHeight() + 2 + fonts.menutitle->getHeight(), CLCDDisplay::PIXEL_OFF);
+	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 - 1, lcd_width, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight() + 10, CLCDDisplay::PIXEL_OFF);
 	
 	// render text
-	fonts.menu->RenderString(0, i_h + 5 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight()/2, lcd_width + 20, text, CLCDDisplay::PIXEL_ON, highlight, utf_encoded);
+	fonts.menu->RenderString(0, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight(), lcd_width + 10, text, CLCDDisplay::PIXEL_ON, highlight, utf_encoded);
 #endif
 
-#ifdef ENABLE_GRAPHLCD
-	if (mode == MODE_MOVIE) 
-	{
-		size_t p;
-		AUDIOMODES m = movie_playmode;
-		std::string mytext = text;
-		
-		if (mytext.find("> ") == 0) 
-		{
-			mytext = mytext.substr(2);
-			m = AUDIO_MODE_PLAY;
-		} 
-		else if (mytext.find("|| ") == 0) 
-		{
-			mytext = mytext.substr(3);
-			m = AUDIO_MODE_PAUSE;
-		} 
-		else if ((p = mytext.find("s||> ")) < 3) 
-		{
-			mytext = mytext.substr(p + 5);
-			m = AUDIO_MODE_PLAY;
-		} 
-		else if ((p = mytext.find("x>> ")) < 3) 
-		{
-			mytext = mytext.substr(p + 4);
-			m = AUDIO_MODE_FF;
-		} 
-		else if ((p = mytext.find("x<< ")) < 3) 
-		{
-			mytext = mytext.substr(p + 4);
-			m = AUDIO_MODE_REV;
-		}
-		
-		setMovieInfo(m, "", mytext, false);
-		return;
-	}
-
-	if (mode != MODE_MENU_UTF8)
-		return;
-		
+#ifdef ENABLE_GRAPHLCD	
 	if (g_settings.glcd_enable) nglcd->drawText(0, 0, 0, strlen(text), std::string(text));
 #endif
 
@@ -1428,16 +1337,16 @@ void CLCD::showAudioTrack(const std::string &artist, const std::string &title, c
 //#endif	
 #elif defined (ENABLE_LCD)
 	// refresh
-	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 10, lcd_width, element[ELEMENT_BANNER].height + fonts.channelname->getHeight() + 5 + fonts.channelname->getHeight() + 5 + fonts.channelname->getHeight(), CLCDDisplay::PIXEL_OFF);
-	
-	// artist
-	fonts.channelname->RenderString((lcd_width - fonts.channelname->getRenderWidth(artist.c_str(), isUTF8(artist)))/2, element[ELEMENT_BANNER].height + fonts.channelname->getHeight(), lcd_width, artist.c_str(), CLCDDisplay::PIXEL_ON, 0, isUTF8(artist));
-	
-	// album
-	fonts.menu->RenderString((lcd_width - fonts.menu->getRenderWidth(album.c_str(), isUTF8(album)))/2, element[ELEMENT_BANNER].height + 10 + fonts.channelname->getHeight() + 5 + fonts.menu->getHeight(), lcd_width, album.c_str(),  CLCDDisplay::PIXEL_ON, 0, isUTF8(album));
+	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, element[ELEMENT_BANNER].height + 2 + fonts.channelname->getHeight() + 2 + fonts.menu->getHeight() + 2 + fonts.menu->getHeight(), CLCDDisplay::PIXEL_OFF);
 	
 	// title
-	fonts.menu->RenderString((lcd_width - fonts.menu->getRenderWidth(title.c_str(), isUTF8(title)))/2, element[ELEMENT_BANNER].height + 10 + fonts.channelname->getHeight() + 5 + 2*fonts.menu->getHeight() + 5, lcd_width, title.c_str(),  CLCDDisplay::PIXEL_ON, 0, isUTF8(title));
+	fonts.channelname->RenderString((lcd_width - fonts.channelname->getRenderWidth(title.c_str(), isUTF8(title)))/2, element[ELEMENT_BANNER].height + 2 + fonts.channelname->getHeight(), lcd_width + 10, title.c_str(), CLCDDisplay::PIXEL_ON, 0, isUTF8(title));
+	
+	// artist
+	fonts.menu->RenderString((lcd_width - fonts.menu->getRenderWidth(artist.c_str(), isUTF8(artist)))/2, element[ELEMENT_BANNER].height + 2 + fonts.channelname->getHeight() + 2 + fonts.menu->getHeight(), lcd_width + 10, artist.c_str(),  CLCDDisplay::PIXEL_ON, 0, isUTF8(artist));
+	
+	// album
+	fonts.menu->RenderString((lcd_width - fonts.menu->getRenderWidth(album.c_str(), isUTF8(album)))/2, element[ELEMENT_BANNER].height + 2 + fonts.channelname->getHeight() + 2 + 2*fonts.menu->getHeight() + 2*2, lcd_width + 10, album.c_str(),  CLCDDisplay::PIXEL_ON, 0, isUTF8(album));
 #endif
 
 	wake_up();
@@ -1708,23 +1617,23 @@ void CLCD::setMode(const MODES m, const char * const title)
 		// statusline
 		switch (g_settings.lcd_statusline)
 		{
-		case CLCD::STATUSLINE_PLAYTIME:
-			drawBanner();
-			display->load_screen_element(&(element[ELEMENT_PROG]), 0, lcd_height -element[ELEMENT_PROG].height);
-			showPercentOver(percentOver, false, mode);
-			break;
-			
-		case CLCD::STATUSLINE_VOLUME:
-			drawBanner();
-			showVolume(volume, false);
-			break;
-		default:
-			break;
+			case CLCD::STATUSLINE_PLAYTIME:
+				drawBanner();
+				display->load_screen_element(&(element[ELEMENT_PROG]), 0, lcd_height -element[ELEMENT_PROG].height);
+				showPercentOver(percentOver, false, mode);
+				break;
+				
+			case CLCD::STATUSLINE_VOLUME:
+				drawBanner();
+				showVolume(volume, false);
+				break;
+			default:
+				break;
 		}
 		
 		// servicename / title / epg
 		if (mode == MODE_TVRADIO)
-			showServicename(g_RemoteControl->getCurrentChannelName());
+			showServicename(servicename);
 		else // MODE_MOVIE
 		{
 			setMovieInfo(movie_playmode, movie_big, movie_small, g_settings.lcd_epgalign);
@@ -1760,11 +1669,10 @@ void CLCD::setMode(const MODES m, const char * const title)
 		break;
 		
 	case MODE_MENU_UTF8:
-		getSize(element[ELEMENT_BANNER].name.c_str(), &i_w, &i_h, &i_bpp);
 		showclock = false;
 		display->clear_screen(); // clear lcd
 		drawBanner();
-		fonts.menutitle->RenderString(0, i_h + 5 + fonts.menutitle->getHeight()/2, lcd_width, title, CLCDDisplay::PIXEL_ON, 0, true); // UTF-8
+		fonts.menutitle->RenderString(0, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight(), lcd_width, title, CLCDDisplay::PIXEL_ON, 0, true); // UTF-8
 		displayUpdate();
 		break;
 		
@@ -1772,7 +1680,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		showclock = false;
 		display->clear_screen(); // clear lcd
 		drawBanner();
-		display->load_screen_element(&(element[ELEMENT_POWER]), (lcd_width-element[ELEMENT_POWER].width)/2, 12);
+		display->load_screen_element(&(element[ELEMENT_POWER]), (lcd_width - element[ELEMENT_POWER].width)/2, (lcd_height - element[ELEMENT_POWER].height)/2);
 		displayUpdate();
 		break;
 		

@@ -267,16 +267,9 @@ void LcdFont::RenderString(int x, int y, const int width, const char * text, con
 	int err;
 	pthread_mutex_lock(&renderer->render_mutex);
 	
-// fribidi
+	// fribidi
 	std::string Text = fribidiShapeChar(text, utf8_encoded);
 	text = Text.c_str();		
-
-	FTC_ScalerRec scaler;
-
-	scaler.face_id = font.face_id;
-	scaler.width   = font.width;
-	scaler.height  = font.height;
-	scaler.pixel   = true;
 
 	if ((err = FTC_Manager_LookupSize(renderer->cacheManager, &scaler, &size)) != 0)
 	{ 
@@ -284,6 +277,7 @@ void LcdFont::RenderString(int x, int y, const int width, const char * text, con
 		pthread_mutex_unlock(&renderer->render_mutex);
 		return;
 	}
+	
 	int left = x, step_y = (size->metrics.height >> 6 )*3/4 + 4;
 	face = size->face;
 
