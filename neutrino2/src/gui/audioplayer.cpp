@@ -211,6 +211,9 @@ void CAudioPlayerGui::playFile()
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
 
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_AUDIO, m_inetmode? _("internet Radio") : _("Audio Playlist"));
 		
 	paintLCD();		
@@ -508,6 +511,9 @@ void CAudioPlayerGui::playFile()
 		g_RCInput->killTimer(sec_timer_id);
 		sec_timer_id = 0;
 	}
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 void CAudioPlayerGui::hide()
@@ -665,7 +671,7 @@ void CAudioPlayerGui::paintInfo(CAudiofile& File)
 	
 		if(m_time_total != 0)
 		{
-			CLCD::getInstance()->/*showAudioProgress*/showPercentOver(100 * m_time_played / m_time_total, true, CLCD::MODE_AUDIO);
+			CLCD::getInstance()->showPercentOver(100 * m_time_played / m_time_total, true, CLCD::MODE_AUDIO);
 		}
 	}
 	
@@ -917,7 +923,7 @@ void CAudioPlayerGui::updateTimes(const bool force, bool paint)
 			
 		if((updatePlayed || updateTotal) && m_time_total != 0)
 		{
-			CLCD::getInstance()->/*showAudioProgress*/showPercentOver(100 * m_time_played / m_time_total, true, CLCD::MODE_AUDIO);
+			CLCD::getInstance()->showPercentOver(100 * m_time_played / m_time_total, true, CLCD::MODE_AUDIO);
 		}		
 	}
 }

@@ -102,6 +102,9 @@ void CMediaPlayerMenu::showMenu()
 		widget->addCCItem(mediaPlayer);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Media Player"));
 
 	//
@@ -116,5 +119,8 @@ void CMediaPlayerMenu::showMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 

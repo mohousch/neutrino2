@@ -457,9 +457,6 @@ int CMoviePlayerGui::exec(CMenuTarget * parent, const std::string & actionKey)
 	
 	currentapid = 0;
 	currentspid = -1;
-	
-	//
-	CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
 
 	return CMenuTarget::RETURN_EXIT;
 }
@@ -667,7 +664,11 @@ void CMoviePlayerGui::PlayFile(void)
 		if (!playlist[selected].ytid.empty())
 			show_bookmark = false;
 	}
-						
+	
+	//
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();					
 	CLCD::getInstance()->setMode(CLCD::MODE_MOVIE);	
 
 	// bookmarks menu
@@ -1648,6 +1649,9 @@ void CMoviePlayerGui::PlayFile(void)
 
 	CLCD::getInstance()->ShowIcon(VFD_ICON_PLAY, false);
 	CLCD::getInstance()->ShowIcon(VFD_ICON_PAUSE, false);
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 void CMoviePlayerGui::showHelp()

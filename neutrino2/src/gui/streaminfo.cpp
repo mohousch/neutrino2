@@ -129,11 +129,6 @@ int CStreamInfo::exec(CMenuTarget * parent, const std::string&)
 
 	hide();
 	
-	if (!parent)
-	{
-		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
-	}
-	
 	return CMenuTarget::RETURN_REPAINT;
 }
 
@@ -350,6 +345,9 @@ void CStreamInfo::hide ()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 void CStreamInfo::paint_signal_fe_box(int _x, int _y, int w, int h)
@@ -542,6 +540,10 @@ void CStreamInfo::paint(int /*mode*/)
 			widget->addCCItem(head);
 
 	}
+	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	
 	//
 	if (paint_mode != 0) 

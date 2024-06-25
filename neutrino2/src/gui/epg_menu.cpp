@@ -49,11 +49,6 @@ int CEPGMenuHandler::exec(CMenuTarget *parent, const std::string &)
 
 	res = doMenu();
 	
-	if(!parent)
-	{
-		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
-	}
-	
 	return res;
 }
 
@@ -103,6 +98,9 @@ int CEPGMenuHandler::doMenu()
 		widget->addCCItem(redMenu);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("EPG / Timer"));
 		
 	// eventlist
@@ -126,6 +124,9 @@ int CEPGMenuHandler::doMenu()
 		delete widget;
         	widget = NULL;
         }
+        
+        //
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 	
 	return res;
 }

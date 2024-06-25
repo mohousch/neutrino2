@@ -124,6 +124,11 @@ int CServiceMenu::showMenu(void)
 		widget->addCCItem(service);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("System"));
+	
 	// tuner/scan setup
 	service->addItem(new CMenuForwarder(_("Scan transponder"), true, NULL, new CTunerSetup(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCANSETTINGS));
 		
@@ -149,6 +154,9 @@ int CServiceMenu::showMenu(void)
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 	
 	return res;
 }

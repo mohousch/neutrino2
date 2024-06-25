@@ -119,6 +119,9 @@ void CMainSettingsMenu::showMenu(void)
 		widget->addCCItem(mainSettings);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Settings"));
 
 	// video settings
@@ -190,5 +193,8 @@ void CMainSettingsMenu::showMenu(void)
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 

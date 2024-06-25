@@ -118,7 +118,7 @@ int CPictureViewerGui::exec(CMenuTarget* parent, const std::string &actionKey)
 	}
 	
 	//
-	CNeutrinoApp::getInstance()->lockPlayBack();
+//	CNeutrinoApp::getInstance()->lockPlayBack();
 
 	show();
 
@@ -130,7 +130,7 @@ int CPictureViewerGui::exec(CMenuTarget* parent, const std::string &actionKey)
 	}
 	
 	//
-	CNeutrinoApp::getInstance()->unlockPlayBack();
+//	CNeutrinoApp::getInstance()->unlockPlayBack();
 
 	// Restore last mode
 	CNeutrinoApp::getInstance()->handleMsg(NeutrinoMessages::CHANGEMODE, m_LastMode);
@@ -149,6 +149,8 @@ void CPictureViewerGui::show()
 	neutrino_msg_t msg;
 	neutrino_msg_data_t data;
 
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_PIC, _("Pictureviewer"));
 
 	int timeout;
@@ -284,6 +286,9 @@ void CPictureViewerGui::show()
 	}
 
 	hide();
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 void CPictureViewerGui::view(unsigned int index)

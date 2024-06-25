@@ -127,6 +127,9 @@ int COSDSettings::showMenu(void)
 		widget->addCCItem(osdSettings);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("OSD"));
 	
 	// skin manager
@@ -173,6 +176,9 @@ int COSDSettings::showMenu(void)
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 	
 	return res;
 }
@@ -286,6 +292,9 @@ void COSDMenuColorSettings::showMenu()
 		widget->addCCItem(OSDmenuColorsSettings);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Menu"));
 	
 	// intros
@@ -429,6 +438,9 @@ void COSDMenuColorSettings::showMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 //// color setup notifier
@@ -562,6 +574,9 @@ void COSDInfoBarColorSettings::showMenu()
 		widget->addCCItem(OSDinfobarColorSettings);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Infobar"));
 	
 	// intros
@@ -629,6 +644,9 @@ void COSDInfoBarColorSettings::showMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 // osd language settings
@@ -717,6 +735,9 @@ int CLanguageSettings::showMenu()
 		widget->addCCItem(languageSettings);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Language"));
 	
 	// intros
@@ -773,6 +794,9 @@ int CLanguageSettings::showMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 	
 	return res;
 }
@@ -880,6 +904,9 @@ void CFontSettings::showMenu()
 		widget->addCCItem(fontSettings);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Font"));
 	
 	// intros
@@ -907,6 +934,9 @@ void CFontSettings::showMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 //// osd timing settings
@@ -978,6 +1008,9 @@ void COSDTimingSettings::showMenu()
 		widget->addCCItem(osdTimingSettings);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Timing"));
 	
 	// intros
@@ -1007,6 +1040,9 @@ void COSDTimingSettings::showMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 //// diverses
@@ -1118,6 +1154,9 @@ void COSDDiverses::showMenu()
 		widget->addCCItem(osdDiverseSettings);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Misc settings"));
 	
 	// intros
@@ -1181,6 +1220,9 @@ void COSDDiverses::showMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 //// skinManager
@@ -1230,6 +1272,9 @@ int CSkinManager::showMenu()
 		widget->addCCItem(skinMenu);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Skin Select"));
 	
 	//
@@ -1284,6 +1329,9 @@ int CSkinManager::showMenu()
 		widget = NULL;
 	}
 	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+	
 	return res;
 }
 
@@ -1334,7 +1382,6 @@ int CSkinSettings::showMenu()
 	//
 	CMenuItem* item = NULL;
 	CWidget* widget = NULL;
-//	ClistBox* skinSettings = NULL;
 	
 	widget = CNeutrinoApp::getInstance()->getWidget("skinstyleselectionsetup");
 	
@@ -1370,6 +1417,9 @@ int CSkinSettings::showMenu()
 		widget->addCCItem(skinSettings);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Skin Style"));
 	
 	// intros
@@ -1430,6 +1480,9 @@ int CSkinSettings::showMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 	
 	return res;
 }
@@ -1587,6 +1640,9 @@ int CPersonalisation::showMenu(void)
 		widget->addCCItem(personalizeSettings);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Personalisation"));
 	
 	// intros
@@ -1682,6 +1738,9 @@ int CPersonalisation::showMenu(void)
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 	
 	return res;
 }

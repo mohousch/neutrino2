@@ -109,11 +109,6 @@ int CImageInfo::exec(CMenuTarget *parent, const std::string&)
 	
 	g_RCInput->killTimer(sec_timer_id);
 	sec_timer_id = 0;
-	
-	if (!parent)
-	{
-		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
-	}
 
 	return CMenuTarget::RETURN_REPAINT;
 }
@@ -127,6 +122,9 @@ void CImageInfo::hide()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 void CImageInfo::paintLine(int xpos, int font, const char* text)
@@ -174,6 +172,9 @@ void CImageInfo::paint()
 
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Image info"));
 	
  	int  xpos = x + 10;

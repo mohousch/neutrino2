@@ -109,6 +109,8 @@ void CNeutrinoApp::mainMenu(void)
 	}
 	
 	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Main Menu"));
 			  
 	// tv modus
@@ -228,6 +230,9 @@ void CNeutrinoApp::mainMenu(void)
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 // User menu
@@ -390,6 +395,8 @@ bool CNeutrinoApp::showUserMenu(int button)
 	}
 	
 	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, txt.c_str());	
 
 	// go through any postition number
@@ -526,6 +533,9 @@ bool CNeutrinoApp::showUserMenu(int button)
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 
 	return 0;
 }

@@ -120,6 +120,9 @@ int CPluginList::showMenu()
 		pWidget->addCCItem(plist);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Plugins"));
 
 	//
@@ -164,6 +167,9 @@ int CPluginList::showMenu()
 		delete pWidget;
 		pWidget = NULL;
 	}
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 	
 	return res;
 }
@@ -239,11 +245,6 @@ int CPluginList::exec(CMenuTarget * parent, const std::string& actionKey)
 	}
 
 	res = showMenu();
-	
-	if (!parent)
-	{
-		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
-	}
 
 	return res;
 }

@@ -74,7 +74,6 @@
 #endif
 
 //// globals
-//CScanSettings * scanSettings = NULL;
 static int dmode = NO_DISEQC;
 //
 char zapit_lat[20];						
@@ -405,6 +404,11 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 	
 	res = showScanService();
 	
+	if (!parent)
+	{
+		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
+	}
+	
 	return res;
 }
 
@@ -474,6 +478,7 @@ int CScanSetup::showScanService()
 		widget->addCCItem(scansetup);
 	}
 	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Scan transponder"));
 	
 	scansetup->clear();
 	
@@ -2304,10 +2309,6 @@ bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 		if (item)
 			item->setHidden(true);
 	}
-
-	//
-//	fe->changeDelSys(fe->forcedDelSys); // FIXME:
-//	fe->reset(); // FIXME:
 	
 	return true;
 }

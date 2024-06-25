@@ -101,7 +101,10 @@ void CSysInfoWidget::paintHead()
 	
 	if(mode == PSINFO)
 		sprintf((char *) buf, "%s", __("Process-List:"));
-		
+	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();	
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, buf);
 	
 	// title
@@ -150,6 +153,9 @@ void CSysInfoWidget::hide()
 		delete textBox;
 		textBox = NULL;
 	}
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 // main
@@ -293,11 +299,6 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 	}
 	
 	hide();
-	
-	if (!parent)
-	{
-		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
-	}
 	
 	return res;
 }

@@ -405,7 +405,10 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		CNeutrinoApp::getInstance()->channelList->zapToChannelID(CNeutrinoApp::getInstance()->channelList->getActiveChannel_ChannelID(), true);
 	}
 	
-	CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
+	if (parent)
+	{
+		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
+	}
 
 	return CMenuTarget::RETURN_REPAINT;
 }

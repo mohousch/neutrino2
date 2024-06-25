@@ -166,6 +166,9 @@ void CGeneralSettings::showMenu()
 		widget->addCCItem(miscSettingsGeneral);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Misc settings"));
 	
 	// intros
@@ -274,6 +277,9 @@ void CGeneralSettings::showMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 //
@@ -560,6 +566,9 @@ void CChannelListSettings::showMenu()
 		widget->addCCItem(miscSettingsChannelList);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Channellist settings"));
 	
 	// intros
@@ -606,6 +615,9 @@ void CChannelListSettings::showMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 //
@@ -739,6 +751,9 @@ void CEPGSettings::showMenu()
 		widget->addCCItem(miscSettingsEPG);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("EPG settings")); 
 	
 	// intros
@@ -839,6 +854,9 @@ void CEPGSettings::showMenu()
 	epg_IP = NULL;
 	delete onlineEPGNotifier;
 	onlineEPGNotifier = NULL;
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 // sectionsd config notifier
@@ -996,6 +1014,9 @@ void CFileBrowserSettings::showMenu()
 		widget->addCCItem(miscSettingsFileBrowser);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Filebrowser settings"));
 	
 	// intros
@@ -1024,6 +1045,9 @@ void CFileBrowserSettings::showMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 // misc notifier

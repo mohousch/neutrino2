@@ -2935,11 +2935,6 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 
 		startSubtitles();
 	}
-	
-	if (!parent)
-	{
-		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
-	}
 
 	return returnval;
 }

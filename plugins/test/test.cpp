@@ -6444,6 +6444,10 @@ void CTestMenu::showMenu()
 		mWidget->addCCItem(mainMenu);
 	}
 	
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Test Menu"));
+	
 	mainMenu->clear();
 	mainMenu->clearItems();
 	
@@ -6626,6 +6630,9 @@ void CTestMenu::showMenu()
 		delete mWidget;
 		mWidget = NULL;
 	}
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 void plugin_init(void)

@@ -1,5 +1,5 @@
 /*
-	$Id: widget.h 11.03.2020 mohousch Exp $
+	$Id: widget.h 25062024 mohousch Exp $
 
 	License: GPL
 
@@ -26,6 +26,8 @@
 
 #include <gui/widget/widget_helpers.h>
 
+#include <driver/lcd/lcdd.h>
+
 
 ////
 class CMenuTarget
@@ -38,6 +40,9 @@ class CMenuTarget
 			RETURN_EXIT 		= 2,
 			RETURN_EXIT_ALL 	= 4
 		};
+		
+		CLCD::MODES oldLcdMode;
+		std::string oldLcdMenutitle;
 				
 	public:
 		CMenuTarget(){};
