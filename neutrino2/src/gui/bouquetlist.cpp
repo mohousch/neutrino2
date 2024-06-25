@@ -260,6 +260,8 @@ int CBouquetList::show(bool customMode)
 	neutrino_msg_data_t data;
 	int res = -1;
 	
+	CLCD::MODES oldLcdMode = CLCD::getInstance()->getMode();
+	std::string oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, name.c_str());
 	
 	//
@@ -397,7 +399,8 @@ int CBouquetList::show(bool customMode)
 	
 	hide();
 	
-	CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 
 	//
 	g_RCInput->killTimer(sec_timer_id);

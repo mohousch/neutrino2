@@ -143,6 +143,9 @@ int CAudioSelectMenuHandler::doMenu()
 		widget->addCCItem(AudioSelector);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Select language"));
 	
 	//
@@ -267,6 +270,9 @@ int CAudioSelectMenuHandler::doMenu()
 		delete widget;
         	widget = NULL;
         }
+        
+        //
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 	
 	return res;
 }

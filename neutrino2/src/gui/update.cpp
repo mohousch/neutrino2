@@ -434,10 +434,8 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 	}
 
 	// install
-#ifdef ENABLE_LCD
 	CLCD::getInstance()->showProgressBar2(0, "checking", 0, "Update Neutrino");
 	CLCD::getInstance()->setMode(CLCD::MODE_PROGRESSBAR2);
-#endif
 
 	progressWindow->showGlobalStatus(19);
 	progressWindow->paint();
@@ -633,10 +631,8 @@ void CFlashExpert::writemtd(const std::string & filename, int mtdNumber)
 	if (MessageBox(_("Information"), message, CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo, NEUTRINO_ICON_UPDATE) != CMessageBox::mbrYes) // UTF-8
 		return;
 
-#ifdef ENABLE_LCD
         CLCD::getInstance()->showProgressBar2(0, "checking", 0, "Update Neutrino");
         CLCD::getInstance()->setMode(CLCD::MODE_PROGRESSBAR2);	
-#endif // VFD_UPDATE
 
 	progressWindow->setTitle(_("Writing Flash"));
 	progressWindow->paint();
@@ -980,11 +976,15 @@ int CUpdateSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		updateSettings->setFootButtons(&btn);
-//		updateSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(updateSettings);
 	}
+	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Software update"));
 		
 	// intros
 	updateSettings->addItem(new CMenuForwarder(_("back")));
@@ -1020,7 +1020,6 @@ int CUpdateSettings::showMenu()
 		//
 		mtdexpert->enablePaintHead();
 		mtdexpert->setTitle(_("Expert functions"), NEUTRINO_ICON_UPDATE);
-//		mtdexpert->setHeadLine(true, true);
 
 		//
 		mtdexpert->enablePaintFoot();
@@ -1108,6 +1107,9 @@ int CUpdateSettings::showMenu()
 	}
 	
 	delete fe;
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 	
 	return res;
 }

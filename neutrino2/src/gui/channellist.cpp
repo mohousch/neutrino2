@@ -400,7 +400,9 @@ int CChannelList::show(bool customMode)
 	neutrino_msg_data_t data;
 	int res = -1;
 
-	// display channame in vfd	
+	//
+	CLCD::MODES oldLcdMode = CLCD::getInstance()->getMode();
+	std::string oldLcdMenutitle = CLCD::getInstance()->getMenutitle();	
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, name.c_str());	
 	
 	// update events
@@ -696,7 +698,7 @@ int CChannelList::show(bool customMode)
 		res = bouquetList->exec(true, customMode);
 	}
 	
-	CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 
 	//
 	g_RCInput->killTimer(sec_timer_id);

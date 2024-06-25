@@ -405,11 +405,9 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		CNeutrinoApp::getInstance()->channelList->zapToChannelID(CNeutrinoApp::getInstance()->channelList->getActiveChannel_ChannelID(), true);
 	}
 	
-	if (parent)
-	{
-		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
-	}
-
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+	
 	return CMenuTarget::RETURN_REPAINT;
 }
 
@@ -560,6 +558,9 @@ void CScanTs::paint(bool fortest)
 
 	ypos = y;
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, fortest ? _("Test signal") : _("Scan transponder"));
 	
 	//

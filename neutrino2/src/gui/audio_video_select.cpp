@@ -321,6 +321,11 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 		widget->addCCItem(AVPIDSelector);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("AV Select"));
+	
 	// audio pids
 	CAVPIDChangeExec AVPIDChanger;
 	numpida = 0;
@@ -452,6 +457,9 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 		delete widget;
 	        widget = NULL;
 	}
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
         
         return res;
 }

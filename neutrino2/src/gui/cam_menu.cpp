@@ -143,6 +143,11 @@ void CCAMMenuHandler::doMainMenu()
 		widget->addCCItem(cammenu);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("CI Cam"));
+	
 	// intros
 	cammenu->addItem(new CMenuForwarder(_("back")));
 
@@ -230,6 +235,9 @@ void CCAMMenuHandler::doMainMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 #define CI_MSG_TIME 5

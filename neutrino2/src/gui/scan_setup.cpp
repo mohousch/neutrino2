@@ -404,11 +404,6 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 	
 	res = showScanService();
 	
-	if (!parent)
-	{
-		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
-	}
-	
 	return res;
 }
 
@@ -478,6 +473,9 @@ int CScanSetup::showScanService()
 		widget->addCCItem(scansetup);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Scan transponder"));
 	
 	scansetup->clear();
@@ -662,6 +660,9 @@ int CScanSetup::showScanService()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 	
 	return res;
 }

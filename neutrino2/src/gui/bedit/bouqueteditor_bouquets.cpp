@@ -116,11 +116,16 @@ void CBEBouquetWidget::paint()
 	
 		//
 		widget->addCCItem(listBox);
-	}	
+	}
+	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Bouquets"));	
 
 	for (unsigned int count = 0; count < Bouquets->size(); count++)
 	{
-//		if (!(*Bouquets)[count]->bWebTV)
+		if (!(*Bouquets)[count]->bWebTV)
 		{
 			item = new CMenuForwarder(_((*Bouquets)[count]->Name.c_str()));
 
@@ -187,6 +192,9 @@ void CBEBouquetWidget::hide()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 int CBEBouquetWidget::exec(CMenuTarget *parent, const std::string &/*actionKey*/)
