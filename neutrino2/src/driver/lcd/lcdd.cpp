@@ -120,6 +120,12 @@ CLCD::CLCD()
 	fd = -1;
 	lcd_width = 132;
 	lcd_height = 64;
+	servicename = "";
+	epg_title = "";
+	movie_big = "";
+	movie_small = "";
+	menutitle = "";
+	movie_playmode = AUDIO_MODE_STOP;
 
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	display = NULL;	
@@ -1047,22 +1053,19 @@ void CLCD::showTime(bool force)
 			
 			display->clear_screen(); // clear whole lcd
 			
-			// analogclock
-			//display->load_screen_element(&(element[ELEMENT_ACLOCK]), (lcd_width-element[ELEMENT_ACLOCK].width)/2, element[ELEMENT_ACLOCK].height);
-			
 			// refresh
 			display->draw_fill_rect((lcd_width - 1 - fonts.timestandby->getRenderWidth(timestr))/2, (lcd_height - fonts.timestandby->getHeight())/2, fonts.time->getRenderWidth("00:00:00") + 1, lcd_height, CLCDDisplay::PIXEL_OFF);
 
-			//
-			fonts.timestandby->RenderString((lcd_width - 1 - fonts.timestandby->getRenderWidth(timestr))/2, (lcd_height - fonts.timestandby->getHeight())/2, fonts.timestandby->getRenderWidth("00:00:00") + 1, timestr, CLCDDisplay::PIXEL_ON);
+			// time
+			fonts.timestandby->RenderString((lcd_width - 1 - fonts.timestandby->getRenderWidth(timestr))/2, lcd_height/2, fonts.timestandby->getRenderWidth("00:00:00") + 1, timestr, CLCDDisplay::PIXEL_ON);
 			
 			// date
 			strftime((char*) &datestr, 20, "%d.%m.%Y", t);
-			fonts.menu->RenderString((lcd_width - 1 - fonts.menu->getRenderWidth(datestr))/2, lcd_height - 20, fonts.menu->getRenderWidth("00:00:00:00") + 1, datestr, CLCDDisplay::PIXEL_ON);
+			fonts.menu->RenderString((lcd_width - 1 - fonts.menu->getRenderWidth(datestr))/2, lcd_height - fonts.menu->getHeight() - 1, fonts.menu->getRenderWidth("00:00:0000", true) + 2, datestr, CLCDDisplay::PIXEL_ON);
 		}
 		else
 		{
-			if (CNeutrinoApp::getInstance ()->recordingstatus && clearClock == 1)
+			if (CNeutrinoApp::getInstance()->recordingstatus && clearClock == 1)
 			{
 				strcpy(timestr,"  :  ");
 				clearClock = 0;
@@ -1074,19 +1077,10 @@ void CLCD::showTime(bool force)
 			}
 
 			// refresh
-			//display->draw_fill_rect(lcd_width - 50 - 1, lcd_height - 12, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
-			display->draw_fill_rect(lcd_width - fonts.menu->getRenderWidth("00:00") - 10, lcd_height - fonts.menu->getHeight(), fonts.menu->getRenderWidth("00:00"), fonts.menu->getHeight(), CLCDDisplay::PIXEL_OFF);
+//			display->draw_fill_rect(lcd_width - 1 - fonts.menu->getRenderWidth("00:00:00", true), lcd_height - fonts.menu->getHeight() - 1, fonts.menu->getRenderWidth("00:00:00", true), lcd_height, CLCDDisplay::PIXEL_OFF);
 
 			// time
-			fonts.menu->RenderString(lcd_width - fonts.time->getRenderWidth("00:00") - 20, lcd_height - 1, fonts.menu->getRenderWidth("00:00:00") + 1, timestr, CLCDDisplay::PIXEL_ON);
-
-			//
-			//getSize(element[ELEMENT_BANNER].name.c_str(), &i_w, &i_h, &i_bpp);
-			
-			//display->draw_fill_rect((lcd_width - fonts.menu->getRenderWidth(timestr))/2 - 4, (lcd_height - fonts.menu->getHeight()), fonts.menu->getRenderWidth("00:00:00") + 1, fonts.menu->getHeight(), CLCDDisplay::PIXEL_OFF);
-			
-			//
-			//fonts.time->RenderString((lcd_width - 4 - fonts.menu->getRenderWidth(timestr))/2, (lcd_height - fonts.menu->getHeight()), fonts.menu->getRenderWidth("00:00:00") + 1, timestr, CLCDDisplay::PIXEL_ON);
+			fonts.menu->RenderString(lcd_width - 1 - fonts.time->getRenderWidth("00:00:0", true), lcd_height - 1, fonts.menu->getRenderWidth("00:00:0", true), timestr, CLCDDisplay::PIXEL_ON);
 		}
 		
 		displayUpdate();
@@ -2221,7 +2215,6 @@ void CLCD::ClearIcons()
 #endif
 #endif
 }
-////
 
 void CLCD::Lock()
 {

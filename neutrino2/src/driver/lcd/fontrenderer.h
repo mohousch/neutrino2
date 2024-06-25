@@ -51,6 +51,7 @@ class LcdFont
         LcdFontRenderClass 	* renderer;
         FT_Size                 size;
         FT_Face			face;
+        FTC_ScalerRec 		scaler;
         
         int height, ascender, descender, upper, lower, fontwidth;
 

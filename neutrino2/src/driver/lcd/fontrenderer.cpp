@@ -106,12 +106,11 @@ void LcdFontRenderClass::InitFontCache()
 		dprintf(DEBUG_NORMAL, "LcdFontRenderClass::InitFontCache: sbit failed!\n");
 		return;
 	}
-	/*
+	
 	if (FTC_ImageCache_New(cacheManager, &imageCache))
 	{
 		dprintf(DEBUG_NORMAL, "LcdFontRenderClass::InitFontCache: imagecache failed!\n");
 	}
-	*/
 }
 
 FT_Error LcdFontRenderClass::FTC_Face_Requester(FTC_FaceID face_id, FT_Face *aface)
@@ -211,7 +210,6 @@ LcdFont::LcdFont(CLCDDisplay *fb, LcdFontRenderClass *render, FTC_FaceID faceid,
 	font.width  = isize;
 	font.height = isize;
 	font.flags  = FT_LOAD_FORCE_AUTOHINT | FT_LOAD_MONOCHROME;
-//	font.flags = FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT;
 
 	setSize(isize);
 }
@@ -219,7 +217,6 @@ LcdFont::LcdFont(CLCDDisplay *fb, LcdFontRenderClass *render, FTC_FaceID faceid,
 int LcdFont::setSize(int isize)
 {
 	FT_Error err;
-	FTC_ScalerRec scaler;
 
 	int temp = font.width;
 	font.width = font.height = isize;
@@ -257,9 +254,6 @@ int LcdFont::setSize(int isize)
 	height = upper + lower;               // this is total height == distance of lines
 	// hack end
 
-	//printf("glyph: hM=%d tM=%d hg=%d tg=%d ascender=%d descender=%d height=%d linegap/2=%d upper=%d lower=%d\n",
-	//       hM,tM,hg,tg,ascender,descender,height,halflinegap,upper,lower);
-	//printf("font metrics: height=%ld\n", (size->metrics.height+32) >> 6);
 	return temp;
 }
 
@@ -362,12 +356,13 @@ int LcdFont::getRenderWidth(const char * text, const bool utf8_encoded)
 	text = Text.c_str();	
 	
 	FT_Error err;
-
+/*
 	FTC_ScalerRec scaler;
 	scaler.face_id = font.face_id;
 	scaler.width   = font.width;
 	scaler.height  = font.height;
 	scaler.pixel   = true;
+*/
 
 	err = FTC_Manager_LookupSize(renderer->cacheManager, &scaler, &size);
 
@@ -381,6 +376,7 @@ int LcdFont::getRenderWidth(const char * text, const bool utf8_encoded)
 	face = size->face;
 	
 	int x = 0;
+	
 	for (; *text; text++)
 	{
 		FTC_SBit glyph;
