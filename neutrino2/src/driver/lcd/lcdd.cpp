@@ -697,11 +697,11 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	bool big_utf8 = false;
 	bool small_utf8 = false;
 	std::string cname[2];
-	std::string event[3];
+	std::string event[4];
 	int namelines = 0, eventlines = 0, maxnamelines = 2;
 	
-	if (showmode == EPGMODE_CHANNEL_TITLE_LOGO)
-		maxnamelines = 1;
+//	if (showmode == EPGMODE_CHANNEL_TITLE_LOGO)
+//		maxnamelines = 1;
 
 	if ((showmode & CLCD::EPGMODE_CHANNEL) && !big.empty())
 	{
@@ -710,6 +710,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 		
 		while (true)
 		{
+			namelines = 0;
 			std::string title = big;
 			
 			do { 
@@ -728,10 +729,10 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 		}
 	}
 
-	int maxeventlines = 3 - namelines;
+	int maxeventlines = 4 - namelines;
 	
-	if (showmode == EPGMODE_CHANNEL_TITLE_LOGO)
-		maxeventlines = 1;
+//	if (showmode == EPGMODE_CHANNEL_TITLE_LOGO)
+//		maxeventlines = 1;
 
 	if ((showmode & CLCD::EPGMODE_TITLE) && !small.empty())
 	{
@@ -740,6 +741,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 
 		while (true)
 		{
+			eventlines = 0;
 			std::string title = small;
 			do { 
 				// first try "intelligent" splitting
