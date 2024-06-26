@@ -1042,38 +1042,37 @@ void CLCD::showTime(bool force)
 
 		gettimeofday(&tm, NULL);
 		t = localtime(&tm.tv_sec);
+		
+		//
+		if (CNeutrinoApp::getInstance()->recordingstatus && clearClock == 1)
+		{
+			strcpy(timestr,"  :  ");
+			clearClock = 0;
+		}
+		else
+		{
+			strftime((char*) &timestr, 20, "%H:%M", t);
+			clearClock = 1;
+		}
 
 		if (mode == MODE_STANDBY)
 		{
-			strftime((char*) &timestr, 20, "%H:%M", t);
-			
 			display->clear_screen(); // clear whole lcd
 			
 			// refresh
 			display->draw_fill_rect((lcd_width - 1 - fonts.timestandby->getRenderWidth(timestr))/2, (lcd_height - fonts.timestandby->getHeight())/2, fonts.time->getRenderWidth("00:00:00") + 1, lcd_height, CLCDDisplay::PIXEL_OFF);
 
 			// time
-			fonts.timestandby->RenderString((lcd_width - 1 - fonts.timestandby->getRenderWidth(timestr))/2, lcd_height/2, fonts.timestandby->getRenderWidth("00:00:00") + 1, timestr, CLCDDisplay::PIXEL_ON);
+			fonts.timestandby->RenderString((lcd_width - 1 - fonts.timestandby->getRenderWidth(timestr))/2, lcd_height/2, fonts.timestandby->getRenderWidth("00:00:00"), timestr, CLCDDisplay::PIXEL_ON);
 			
 			// date
 			strftime((char*) &datestr, 20, "%d.%m.%Y", t);
-			fonts.menu->RenderString((lcd_width - 1 - fonts.menu->getRenderWidth(datestr))/2, lcd_height - fonts.menu->getHeight() - 1, fonts.menu->getRenderWidth("00:00:0000", true) + 2, datestr, CLCDDisplay::PIXEL_ON);
+			fonts.menu->RenderString((lcd_width - 1 - fonts.menu->getRenderWidth(datestr))/2, lcd_height - fonts.menu->getHeight() - 1, fonts.menu->getRenderWidth("00:00:0000:0", true), datestr, CLCDDisplay::PIXEL_ON);
 		}
 		else
 		{
-			if (CNeutrinoApp::getInstance()->recordingstatus && clearClock == 1)
-			{
-				strcpy(timestr,"  :  ");
-				clearClock = 0;
-			}
-			else
-			{
-				strftime((char*) &timestr, 20, "%H:%M", t);
-				clearClock = 1;
-			}
-
 			// refresh
-//			display->draw_fill_rect(lcd_width - 1 - fonts.menu->getRenderWidth("00:00:00", true), lcd_height - fonts.menu->getHeight() - 1, fonts.menu->getRenderWidth("00:00:00", true), lcd_height, CLCDDisplay::PIXEL_OFF);
+			display->draw_fill_rect(lcd_width - 1 - fonts.menu->getRenderWidth("00:00:0", true), lcd_height - fonts.menu->getHeight() - 1, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
 
 			// time
 			fonts.menu->RenderString(lcd_width - 1 - fonts.time->getRenderWidth("00:00:0", true), lcd_height - 1, fonts.menu->getRenderWidth("00:00:0", true), timestr, CLCDDisplay::PIXEL_ON);
