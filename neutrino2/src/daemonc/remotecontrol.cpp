@@ -215,6 +215,9 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			
 			//
 			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR);
+			
+			//
+			CLCD::getInstance()->showServicename(current_channel_name, true, current_channel_number); // UTF-8
 
 			//
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
@@ -338,6 +341,9 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			CZapit::getInstance()->getCurrentPIDS(current_PIDs );
 		
 			g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_GOTPIDS, (const neutrino_msg_data_t)current_channel_id, false);
+			
+			//
+			CLCD::getInstance()->showServicename(current_channel_name, true, current_channel_number); // UTF-8
 
 			// apids
 			processAPIDnames();
@@ -389,6 +395,8 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			else
 				// EVENT anfordern!
 				CSectionsd::getInstance()->setServiceChanged( current_channel_id, true );
+				
+			CLCD::getInstance()->showServicename(std::string("[") + current_channel_name + ']', true, current_channel_number); // UTF-8
 
 		}
 		

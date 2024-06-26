@@ -1628,7 +1628,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		
 		// servicename / title / epg
 		if (mode == MODE_TVRADIO)
-			showServicename(servicename);
+			showServicename(g_RemoteControl->getCurrentChannelName());
 		else // MODE_MOVIE
 		{
 			setMovieInfo(movie_playmode, movie_big, movie_small, g_settings.lcd_epgalign);
@@ -1730,7 +1730,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		
 		// servicename / title / epg
 		if (mode == MODE_TVRADIO)
-			showServicename(servicename);
+			showServicename(g_RemoteControl->getCurrentChannelName());
 		else // MODE_MOVIE
 		{
 			setMovieInfo(movie_playmode, movie_big, movie_small, g_settings.lcd_epgalign);
