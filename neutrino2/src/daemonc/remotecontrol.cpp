@@ -151,6 +151,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			
 			// get channel name/number
 			t_channel_id new_id = data;
+			/*
 			tallchans_iterator cit = allchans.find(new_id);
 				
 			if ( cit != allchans.end() )
@@ -159,6 +160,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				current_channel_number = cit->second.getNumber();
 				current_channel_satposition = cit->second.getSatellitePosition();
 			}
+			*/
 				
 			current_channel_id = new_id;
 			
@@ -185,6 +187,8 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			{
 				// get channel name/number
 				t_channel_id new_id = data;
+				
+				/*
 				tallchans_iterator cit = allchans.find(new_id);
 				
 				if ( cit != allchans.end() )
@@ -193,6 +197,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 					current_channel_number = cit->second.getNumber();
 					current_channel_satposition = cit->second.getSatellitePosition();
 				}
+				*/
 				
 				current_channel_id = new_id;
 				
@@ -264,7 +269,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		if ((info_CN.current_uniqueKey >> 16) == (current_channel_id & 0xFFFFFFFFFFFFULL) || (info_CN.current_uniqueKey >> 16) == (current_sub_channel_id & 0xFFFFFFFFFFFFULL))
 		{
 			//CURRENT-EPG for current channel arrived!;
-			CLCD::getInstance()->setEPGTitle(info_CN.current_name);			
+			CLCD::getInstance()->showEPGTitle(info_CN.current_name);			
 			
 			if (info_CN.current_uniqueKey != current_EPGid)
 			{
@@ -375,6 +380,8 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			{
 				// get channel number
 				t_channel_id new_id = data;
+				
+				/*
 				tallchans_iterator cit = allchans.find(new_id);
 					
 				if ( cit != allchans.end() )
@@ -382,7 +389,8 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 					current_channel_name = cit->second.getName();
 					current_channel_number = cit->second.getNumber();
 					current_channel_satposition = cit->second.getSatellitePosition();
-				}					
+				}
+				*/					
 			}
 				
 			if ( current_EPGid != 0)
@@ -761,10 +769,11 @@ const std::string & CRemoteControl::subChannelDown(void)
 }
 
 //
-void CRemoteControl::zapToChannelID(const t_channel_id channel_id, const std::string & channame, const bool start_video) // UTF-8
+void CRemoteControl::zapToChannelID(const t_channel_id channel_id, const std::string &channame, const int channumber, const bool start_video) // UTF-8
 {
 	current_channel_id = channel_id;
 	current_channel_name = channame;
+	current_channel_number = channumber;
 	
 	dprintf(DEBUG_NORMAL, "CRemoteControl::zapToChannelID: 0x%llx\n", channel_id);
 	

@@ -928,7 +928,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 	{
 		char tmp[5];
 							
-		sprintf(tmp, "%04d", g_RemoteControl->getCurrentChannelNumber()); // FIXME:
+		sprintf(tmp, "%04d", pos); // FIXME:
 							
 		ShowText(tmp); // UTF-8
 	}
@@ -953,7 +953,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 		wake_up();
 }
 
-void CLCD::setEPGTitle(const std::string title)
+void CLCD::showEPGTitle(const std::string title)
 {
 #if defined (ENABLE_LCD)
 	if (title == epg_title)
@@ -963,13 +963,14 @@ void CLCD::setEPGTitle(const std::string title)
 	
 	epg_title.clear();
 	epg_title = title;
-	showServicename("", false);
+	//showServicename("", false);
+	showTextScreen("", epg_title, g_settings.lcd_epgmode, false, g_settings.lcd_epgalign);
 #endif
 }
 
-void CLCD::setMovieInfo(const AUDIOMODES playmode, const std::string big, const std::string small, const bool centered)
+void CLCD::showMovieInfo(const AUDIOMODES playmode, const std::string big, const std::string small, const bool centered)
 {
-	printf("CLCD::setMovieInfo: playmode:%d big:%s small:%s centered:%s\n", playmode, big.empty()? "null" : big.c_str(), small.empty()? "null" : small.c_str(), centered? "centered" : "not centered");
+	printf("CLCD::showMovieInfo: playmode:%d big:%s small:%s centered:%s\n", playmode, big.empty()? "null" : big.c_str(), small.empty()? "null" : small.c_str(), centered? "centered" : "not centered");
 	
 	int showmode = g_settings.lcd_epgmode;
 
@@ -1640,7 +1641,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 			showServicename(g_RemoteControl->getCurrentChannelName());
 		else // MODE_MOVIE
 		{
-			setMovieInfo(movie_playmode, movie_big, movie_small, g_settings.lcd_epgalign);
+			showMovieInfo(movie_playmode, movie_big, movie_small, g_settings.lcd_epgalign);
 			setMovieAudio(movie_is_ac3);
 		}
 		
@@ -1752,7 +1753,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 			showServicename(g_RemoteControl->getCurrentChannelName());
 		else // MODE_MOVIE
 		{
-			setMovieInfo(movie_playmode, movie_big, movie_small, g_settings.lcd_epgalign);
+			showMovieInfo(movie_playmode, movie_big, movie_small, g_settings.lcd_epgalign);
 			setMovieAudio(movie_is_ac3);
 		}
 		

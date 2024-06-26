@@ -109,7 +109,7 @@ class CRemoteControl
 		bool is_video_started;
 	
 		////
-		void zapToChannelID(const t_channel_id channel_id, const std::string & channame, const bool start_video = true); // UTF-8
+		void zapToChannelID(const t_channel_id channel_id, const std::string &channame, const int channumber, const bool start_video = true); // UTF-8
 		void startvideo(const t_channel_id channel_id);
 		void stopvideo();
 		void setAPID(uint32_t APID);

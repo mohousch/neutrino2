@@ -197,6 +197,9 @@ void CScreenSetup::hide()
 	frameBuffer->paintBackgroundBox(0, 0, frameBuffer->getScreenWidth(true), frameBuffer->getScreenHeight(true));
 
 	frameBuffer->blit();
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 void CScreenSetup::paintBorder( int _selected )
@@ -260,6 +263,11 @@ void CScreenSetup::paint()
 
 	if (!frameBuffer->getActive())
 		return;
+		
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Screen Setup"));
 
 	int w = (int) frameBuffer->getScreenWidth(true);
 	int h = (int) frameBuffer->getScreenHeight(true);

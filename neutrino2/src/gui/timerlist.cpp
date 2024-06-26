@@ -676,7 +676,8 @@ int CTimerList::show()
 	g_RCInput->killTimer(sec_timer_id);
 	sec_timer_id = 0;
 	
-	CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 
 	return(res);
 }
@@ -696,6 +697,9 @@ void CTimerList::paint()
 {
 	dprintf(DEBUG_NORMAL, "CTimerList::paint\n");
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Timerlist"));
 	
 	listBox->clearItems();
@@ -985,6 +989,9 @@ int CTimerList::modifyTimer()
 		widget->addCCItem(timerSettings);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Modify timer"));
 	
 	timerSettings->clearItems();
@@ -1098,6 +1105,9 @@ int CTimerList::modifyTimer()
 		widget = NULL;
 	}
 	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+	
 	return res;
 }
 
@@ -1154,6 +1164,9 @@ int CTimerList::newTimer()
 		widget->addCCItem(timerSettings);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("New timer"));
 	
 	timerSettings->clearItems();
@@ -1238,6 +1251,9 @@ int CTimerList::newTimer()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 
 	return res;
 }

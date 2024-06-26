@@ -250,7 +250,7 @@ void CMoviePlayerGui::updateLcd(const std::string &lcd_filename, const std::stri
 			break;
 	}
 	
-	CLCD::getInstance()->setMovieInfo(playmode, lcd_filename, lcd_info, true);
+	CLCD::getInstance()->showMovieInfo(playmode, lcd_filename, lcd_info, true);
 	CLCD::getInstance()->showPercentOver(file_prozent, true, CLCD::MODE_MOVIE);
 	
 }
