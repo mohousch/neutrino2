@@ -327,7 +327,7 @@ AC_ARG_WITH(boxtype,
 AC_ARG_WITH(boxmodel,
 	[  --with-boxmodel	valid for dgs: cuberevo,cuberevo_mini,cuberevo_mini2,cuberevo_mini_fta,cuberevo_250hd,cuberevo_2000hd,cuberevo_9500hd
 				valid for gigablue: gbsolo,gb800se,gb800ue,gb800seplus,gb800ueplus,gbquad,gbue4k,gbultraue
-				valid for dreambox: dm500, dm500plus, dm600pvr, dm56x0, dm7000, dm7020, dm7025, dm500hd, dm7020hd, dm8000, dm800, dm800se, dm520, dm900, dm920
+				valid for dreambox: dm500, dm500plus, dm600pvr, dm56x0, dm7000, dm7020, dm7025, dm500hd, dm7020hd, dm8000, dm800, dm800se, dm520, dm900, dm920, dm7080, dm8000
 				valid for xtrend: et4x00,et5x00,et6x00,et7x00, et8000,et8500,et9x00, et10000
 				valid for fulan: spark, spark7162
 				valid for kathrein: ufs910, ufs922, ufs912, ufs913, ufc960
@@ -381,7 +381,7 @@ AC_ARG_WITH(boxmodel,
 				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
 			fi
 			;;
-		dm500|dm500plus|dm600pvr|dm56x0|dm7000|dm7020|dm7025|dm500hd|dm7020hd|dm8000|dm800|dm800se|dm520|dm900|dm920)
+		dm500|dm500plus|dm600pvr|dm56x0|dm7000|dm7020|dm7025|dm500hd|dm7020hd|dm800|dm800se|dm520|dm900|dm920|dm7080|dm8000)
 			if test "$BOXTYPE" = "dreambox"; then
 				BOXMODEL="$withval"
 			else
@@ -710,6 +710,7 @@ AM_CONDITIONAL(BOXMODEL_DM8000HD,test "$BOXMODEL" = "dm8000")
 AM_CONDITIONAL(BOXMODEL_DM520,test "$BOXMODEL" = "dm520")
 AM_CONDITIONAL(BOXMODEL_DM900,test "$BOXMODEL" = "dm900")
 AM_CONDITIONAL(BOXMODEL_DM920,test "$BOXMODEL" = "dm920")
+AM_CONDITIONAL(BOXMODEL_DM7080,test "$BOXMODEL" = "dm7080")
 
 AM_CONDITIONAL(BOXMODEL_ET4X00,test "$BOXMODEL" = "et4x00")
 AM_CONDITIONAL(BOXMODEL_ET5X00,test "$BOXMODEL" = "et5x00")
