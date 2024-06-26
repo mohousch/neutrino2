@@ -921,15 +921,19 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 		return;
 
 #ifdef ENABLE_4DIGITS
-	char tmp[5];
-						
-	sprintf(tmp, "%04d", pos);
-						
-	ShowText(tmp); // UTF-8
+	if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)
+	{
+		char tmp[5];
+							
+		sprintf(tmp, "%04d", pos);
+							
+		ShowText(tmp); // UTF-8
+	}
 #elif defined (ENABLE_VFD)
-//#if defined (__sh__)
-	ShowText((char *)name.c_str() );
-//#endif
+	if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)
+	{
+		ShowText((char *)name.c_str() );
+	}
 #elif defined (ENABLE_LCD)
 	showTextScreen(servicename, epg_title, showmode, perform_wakeup, g_settings.lcd_epgalign);
 	
@@ -1467,22 +1471,24 @@ void CLCD::setMode(const MODES m, const char * const title)
 				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
 			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
 			{
-				showTime(true);
-			
 				showclock = true;
+				showTime(true);
 			}
 			break;
 
 		case MODE_AUDIO:
 			showclock = true;
+			showTime(true);
 			break;
 			
 		case MODE_SCART:
 			showclock = true;
+			showTime(true);
 			break;
 			
 		case MODE_MENU_UTF8:
 			showclock = true;
+			showTime(true);
 			break;
 
 		case MODE_SHUTDOWN:
@@ -1548,12 +1554,14 @@ void CLCD::setMode(const MODES m, const char * const title)
 			ShowIcon(VFD_ICON_HD, false);
 			ShowIcon(VFD_ICON_DOLBY, false);
 			showclock = true;
+			showTime(true);
 			break;
 		}
 
 		case MODE_SCART:	  
 			ShowIcon(VFD_ICON_TV, false);	
 			showclock = true;
+			showTime(true);
 			break;
 
 		case MODE_MENU_UTF8:
@@ -1561,10 +1569,10 @@ void CLCD::setMode(const MODES m, const char * const title)
 			ShowIcon(VFD_ICON_HD, false);
 			ShowIcon(VFD_ICON_DOLBY, false);
 			showclock = true;
+			showTime(true);
 			break;
 
 		case MODE_SHUTDOWN:
-			/* clear all symbols */
 			ClearIcons();
 #if defined(PLATFORM_SPARK7162)
 			ShowIcon(VFD_ICON_CLOCK, timer_icon);	
@@ -1594,11 +1602,13 @@ void CLCD::setMode(const MODES m, const char * const title)
 			ShowIcon(VFD_ICON_DOLBY, false);
 			
 			showclock = true;
+			showTime(true);
 			break;
 			
 		case MODE_MOVIE:  
 			ShowIcon(VFD_ICON_TV, false);			
-			showclock = false;
+			showclock = true;
+			showTime(true);
 			break;
 	}
 
