@@ -988,9 +988,6 @@ void CLCD::showTime(bool force)
 {
 	if(!has_lcd) 
 		return;
-		
-	////tets
-	printf("CLCD::showTime: mode:%d showclock:%d\n", mode, showclock);
 
 #if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 	if (showclock) 
