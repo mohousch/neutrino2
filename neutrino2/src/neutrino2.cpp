@@ -4720,7 +4720,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	CLCD::getInstance()->Clear();
 		
 	// show startup msg on CLCD
-	CLCD::getInstance()->ShowText( (char *)"NG2");
+	CLCD::getInstance()->ShowText((char *)"NG2");
 
 	// rcinput
 	g_RCInput = new CRCInput();

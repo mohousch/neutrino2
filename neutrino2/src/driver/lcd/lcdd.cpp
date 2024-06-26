@@ -895,7 +895,7 @@ void CLCD::ShowText(const char *str)
 		perror("write to vfd failed");
 #endif
 #elif defined (ENABLE_LCD)
-	showTextScreen(std::string(str), "", 0, true, true); // always centered
+	showTextScreen(std::string(str), "", EPGMODE_CHANNEL, true, true); // always centered
 #endif
 
 #ifdef ENABLE_GRAPHLCD
@@ -1072,7 +1072,7 @@ void CLCD::showTime(bool force)
 		else
 		{
 			// refresh
-			display->draw_fill_rect(lcd_width - 1 - fonts.menu->getRenderWidth("00:00:0", true), lcd_height - fonts.menu->getHeight() - 1, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
+			display->draw_fill_rect(lcd_width - 1 - fonts.menu->getRenderWidth("00:00", true), lcd_height - fonts.menu->getHeight() - 1, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
 
 			// time
 			fonts.menu->RenderString(lcd_width - 1 - fonts.time->getRenderWidth("00:00:0", true), lcd_height - 1, fonts.menu->getRenderWidth("00:00:0", true), timestr, CLCDDisplay::PIXEL_ON);
@@ -1601,16 +1601,13 @@ void CLCD::setMode(const MODES m, const char * const title)
 
 #endif // vfd	
 #elif defined (ENABLE_LCD)
-	int i_w = 120;
-	int i_h = 12;
-	int i_bpp = 0;
-
 	switch (m)
 	{
 	case MODE_TVRADIO:
 	case MODE_MOVIE:
-		//
-		display->clear_screen(); // clear lcd
+	{
+		// clear lcd
+		display->clear_screen();
 		
 		// statusline
 		switch (g_settings.lcd_statusline)
@@ -1642,10 +1639,11 @@ void CLCD::setMode(const MODES m, const char * const title)
 		showclock = true;
 		showTime();
 		break;
+	}
 		
 	case MODE_AUDIO:
 	{
-		display->clear_screen(); // clear lcd
+		display->clear_screen();
 		drawBanner();
 		display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height - element[ELEMENT_SPEAKER].height - 1);
 		showPlayMode(AUDIO_MODE_STOP);
@@ -1656,7 +1654,8 @@ void CLCD::setMode(const MODES m, const char * const title)
 	}
 	
 	case MODE_SCART:
-		display->clear_screen(); // clear lcd
+	{
+		display->clear_screen();
 		drawBanner();
 		display->load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
 		display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height-1);
@@ -1665,45 +1664,52 @@ void CLCD::setMode(const MODES m, const char * const title)
 		showclock = true;
 		showTime();
 		break;
+	}
 		
 	case MODE_MENU_UTF8:
+	{
 		showclock = false;
 		display->clear_screen(); // clear lcd
 		drawBanner();
 		fonts.menutitle->RenderString(0, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight(), lcd_width, title, CLCDDisplay::PIXEL_ON, 0, true); // UTF-8
 		displayUpdate();
 		break;
+	}
 		
 	case MODE_SHUTDOWN:
+	{
 		showclock = false;
 		display->clear_screen(); // clear lcd
 		drawBanner();
 		display->load_screen_element(&(element[ELEMENT_POWER]), (lcd_width - element[ELEMENT_POWER].width)/2, (lcd_height - element[ELEMENT_POWER].height)/2);
 		displayUpdate();
 		break;
+	}
 		
 	case MODE_STANDBY:
+	{
 		showclock = true;
 		showTime();
 		break;
+	}
 
 	////???
 	case MODE_FILEBROWSER:
 		showclock = true;
-		display->clear_screen(); // clear lcd
+		display->clear_screen();
 		showFilelist();
 		break;
 		
 	case MODE_PROGRESSBAR:
 		showclock = false;
-		display->clear_screen(); // clear lcd
+		display->clear_screen();
 		drawBanner();
 		showProgressBar();
 		break;
 		
 	case MODE_PROGRESSBAR2:
 		showclock = false;
-		display->clear_screen(); // clear lcd
+		display->clear_screen();
 		drawBanner();
 		showProgressBar2();
 		break;
