@@ -126,6 +126,7 @@ CLCD::CLCD()
 	movie_small = "";
 	menutitle = "";
 	movie_playmode = AUDIO_MODE_STOP;
+	showclock = false;
 
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	display = NULL;	
@@ -133,6 +134,7 @@ CLCD::CLCD()
 
 #ifdef ENABLE_GRAPHLCD
 	nglcd = NULL;
+	nglcdshowclock= false;
 #endif
 }
 
@@ -433,7 +435,7 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	fontRenderer->InitFontCache();
 
 	fonts.menu        = fontRenderer->getFont(fontname,  style_name , 24);
-	fonts.time        = fontRenderer->getFont(fontname2, style_name2, 18);
+	fonts.time        = fontRenderer->getFont(fontname2, style_name2, 20);
 	fonts.channelname = fontRenderer->getFont(fontname3, style_name3, 30);
 	fonts.menutitle   = fonts.channelname;
 	fonts.timestandby = fontRenderer->getFont(fontname,  style_name , 50);
@@ -1068,15 +1070,16 @@ void CLCD::showTime(bool force)
 			
 			// date
 			strftime((char*) &datestr, 20, "%d.%m.%Y", t);
+			
 			fonts.menu->RenderString((lcd_width - 1 - fonts.menu->getRenderWidth(datestr))/2, lcd_height - fonts.menu->getHeight() - 1, fonts.menu->getRenderWidth("00:00:0000:0", true), datestr, CLCDDisplay::PIXEL_ON);
 		}
 		else
 		{
 			// refresh
-			display->draw_fill_rect(lcd_width - 1 - fonts.menu->getRenderWidth("00:00", true), lcd_height - fonts.menu->getHeight() - 1, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
+			display->draw_fill_rect(lcd_width - 1 - fonts.time->getRenderWidth("00:00", true), lcd_height - fonts.time->getHeight() - 1, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
 
 			// time
-			fonts.menu->RenderString(lcd_width - 1 - fonts.menu->getRenderWidth("00:00:0", true), lcd_height - 1, fonts.menu->getRenderWidth("00:00:0", true), timestr, CLCDDisplay::PIXEL_ON);
+			fonts.time->RenderString(lcd_width - fonts.time->getRenderWidth("00:00", true), lcd_height - 1, fonts.menu->getRenderWidth("00:00:0", true), timestr, CLCDDisplay::PIXEL_ON);
 		}
 		
 		displayUpdate();
@@ -1084,7 +1087,7 @@ void CLCD::showTime(bool force)
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-	if (showclock)
+	if (nglcdshowclock)
 	{
 		char timestr[21];
 		struct timeval tm;
@@ -1166,7 +1169,7 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 		unsigned int height =  6;
 		unsigned int left   = 12 + 2;
 		unsigned int top    = lcd_height - height - 1 - 2;
-		unsigned int width  = lcd_width - left - 4 - fonts.menu->getRenderWidth("00:00") - 1;
+		unsigned int width  = lcd_width - left - 4 - fonts.time->getRenderWidth("00:00") - 1;
 		
 		//
 		if ((g_RemoteControl != NULL && mode == MODE_TVRADIO) || mode == MODE_MOVIE)
@@ -1185,6 +1188,7 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 			}
 		}
 
+		// icon
 		if ((muted) || (volume == 0))
 			display->load_screen_element(&(element[ELEMENT_MUTE]), 0, lcd_height-element[ELEMENT_MUTE].height);
 		else
@@ -1195,7 +1199,7 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 				display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height);
 		}
 
-		//strichlin
+		//strichline
 		if ((muted) || (volume == 0))
 		{
 			display->draw_line(left, top, left + width, top + height - 1, CLCDDisplay::PIXEL_ON);
@@ -1203,7 +1207,7 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 		else
 		{
 			int dp = vol*(width + 1)/100;
-			display->draw_fill_rect (left - 1, top - 1, left + dp, top + height, CLCDDisplay::PIXEL_ON);
+			display->draw_fill_rect(left - 1, top - 1, left + dp, top + height, CLCDDisplay::PIXEL_ON);
 		}
 		
 		if(mode == MODE_AUDIO)
@@ -1244,11 +1248,11 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 	bool draw = true;
 	percentOver = perc;
 	
-	if (mode == MODE_TVRADIO || mode == MODE_MOVIE || mode == MODE_AUDIO)
+	if ( (mode == MODE_TVRADIO || mode == MODE_MOVIE || mode == MODE_AUDIO) && (g_settings.lcd_statusline == STATUSLINE_PLAYTIME) )
 	{
 		left = 12 + 2; 
 		top = lcd_height - height - 1 - 2; 
-		width = lcd_width - left - 4 - fonts.menu->getRenderWidth("00:00");
+		width = lcd_width - left - 4 - fonts.time->getRenderWidth("00:00");
 
 		// refresh
 		display->draw_rectangle(left - 2, top - 2, left + width + 2, top + height + 1, CLCDDisplay::PIXEL_ON, CLCDDisplay::PIXEL_OFF);
@@ -1726,9 +1730,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		
 		// servicename / title / epg
 		if (mode == MODE_TVRADIO)
-			//showServicename(servicename);
-			showServicename(g_RemoteControl->getCurrentChannelName());
-			//if (g_settings.glcd_enable) nglcd->showImage(g_RemoteControl->getCurrentChannelID(), 0, 0, 220, 176);
+			showServicename(servicename);
 		else // MODE_MOVIE
 		{
 			setMovieInfo(movie_playmode, movie_big, movie_small, g_settings.lcd_epgalign);
@@ -1736,8 +1738,8 @@ void CLCD::setMode(const MODES m, const char * const title)
 		}
 		
 		// time
-//		showclock = true;
-//		showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
+		nglcdshowclock = true;
+		showTime();
 		break;
 	
 	#if 0	
@@ -1748,7 +1750,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height-1);
 		showPlayMode(AUDIO_MODE_STOP);
 		showVolume(volume, false);
-		showclock = true;
+		nglcdshowclock = true;
 		showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
 		break;
 	}
@@ -1760,12 +1762,12 @@ void CLCD::setMode(const MODES m, const char * const title)
 		display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height-1);
 
 		showVolume(volume, false);
-		showclock = true;
+		nglcdshowclock = true;
 		showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
 		break;
 		
 	case MODE_MENU_UTF8:
-		showclock = false;
+		nglcdshowclock = false;
 		display->clear_screen(); // clear lcd
 		drawBanner();
 		fonts.menutitle->RenderString(0, 28, lcd_width + 20, title, CLCDDisplay::PIXEL_ON, 0, true); // UTF-8
@@ -1773,7 +1775,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		break;
 		
 	case MODE_SHUTDOWN:
-		showclock = false;
+		nglcdshowclock = false;
 		display->clear_screen(); // clear lcd
 		drawBanner();
 		display->load_screen_element(&(element[ELEMENT_POWER]), (lcd_width-element[ELEMENT_POWER].width)/2, 12);
@@ -1782,33 +1784,34 @@ void CLCD::setMode(const MODES m, const char * const title)
 	#endif
 		
 	case MODE_STANDBY:
+		nglcdshowclock = true;
 		showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
 		                 /* "showTime()" clears the whole lcd in MODE_STANDBY                         */
 		break;
 	#if 0
 	////???
 	case MODE_FILEBROWSER:
-		showclock = true;
+		nglcdshowclock = true;
 		display->clear_screen(); // clear lcd
 		showFilelist();
 		break;
 		
 	case MODE_PROGRESSBAR:
-		showclock = false;
+		nglcdshowclock = false;
 		display->clear_screen(); // clear lcd
 		drawBanner();
 		showProgressBar();
 		break;
 		
 	case MODE_PROGRESSBAR2:
-		showclock = false;
+		nglcdshowclock = false;
 		display->clear_screen(); // clear lcd
 		drawBanner();
 		showProgressBar2();
 		break;
 		
 	case MODE_INFOBOX:
-		showclock = false;
+		nglcdshowclock = false;
 		showInfoBox();
 		break;
 	#endif

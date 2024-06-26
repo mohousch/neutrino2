@@ -532,6 +532,7 @@ class CLCD
 		
 #ifdef ENABLE_GRAPHLCD
 		nGLCD				*nglcd;
+		bool				nglcdshowclock;
 #endif
 
 #define LCD_NUMBER_OF_ELEMENTS 			15
