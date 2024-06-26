@@ -1061,7 +1061,7 @@ void CLCD::showTime(bool force)
 		if (mode == MODE_STANDBY)
 		{
 			display->clear_screen(); // clear whole lcd
-			
+
 			// refresh
 			display->draw_fill_rect((lcd_width - 1 - fonts.timestandby->getRenderWidth(timestr))/2, (lcd_height - fonts.timestandby->getHeight())/2, fonts.time->getRenderWidth("00:00:00") + 1, lcd_height, CLCDDisplay::PIXEL_OFF);
 
@@ -1098,7 +1098,7 @@ void CLCD::showTime(bool force)
 
 		if (mode == MODE_STANDBY)
 		{
-			std::string a_clock = DATADIR "/icons/a_clock.png";
+			std::string a_clock = DATADIR "/lcd/a_clock.png";
 			
 			if (file_exists(a_clock.c_str()))
 			{
