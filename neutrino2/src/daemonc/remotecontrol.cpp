@@ -149,23 +149,11 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				g_InfoViewer->chanready = 1;
 			}
 			
-			// get channel name/number
-			t_channel_id new_id = data;
-			/*
-			tallchans_iterator cit = allchans.find(new_id);
-				
-			if ( cit != allchans.end() )
-			{
-				current_channel_name = cit->second.getName();
-				current_channel_number = cit->second.getNumber();
-				current_channel_satposition = cit->second.getSatellitePosition();
-			}
-			*/
-				
-			current_channel_id = new_id;
-			
 			//
 			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
+			
+			//
+			CLCD::getInstance()->showServicename(current_channel_name, true, current_channel_number);
 
 			//
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
@@ -185,21 +173,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			// warte auf keine Meldung vom ZAPIT -> jemand anderer hat das zappen ausgel�st...
 			if (data != current_channel_id)
 			{
-				// get channel name/number
-				t_channel_id new_id = data;
-				
-				/*
-				tallchans_iterator cit = allchans.find(new_id);
-				
-				if ( cit != allchans.end() )
-				{
-					current_channel_name = cit->second.getName();
-					current_channel_number = cit->second.getNumber();
-					current_channel_satposition = cit->second.getSatellitePosition();
-				}
-				*/
-				
-				current_channel_id = new_id;
+				current_channel_id = data;
 				
 				//
 				is_video_started= true;
@@ -247,9 +221,10 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 							break;
 						}
 					}
-					
-					// name / satposition
 				}
+				
+				//
+				CLCD::getInstance()->showServicename(current_channel_name, true, current_channel_number);
 			}
 		}
 	}
@@ -374,24 +349,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		if (data == current_channel_id)
 		{
 			needs_nvods = true;
-			
-			// don't show service name in standby mode
-			if( CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby )
-			{
-				// get channel number
-				t_channel_id new_id = data;
-				
-				/*
-				tallchans_iterator cit = allchans.find(new_id);
-					
-				if ( cit != allchans.end() )
-				{
-					current_channel_name = cit->second.getName();
-					current_channel_number = cit->second.getNumber();
-					current_channel_satposition = cit->second.getSatellitePosition();
-				}
-				*/					
-			}
 				
 			if ( current_EPGid != 0)
 			{

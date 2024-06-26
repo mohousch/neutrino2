@@ -2163,9 +2163,8 @@ void CNeutrinoApp::initZapper()
 		CSectionsd::getInstance()->pauseScanning(false);
 		CSectionsd::getInstance()->setServiceChanged(CZapit::getInstance()->getCurrentChannelID(), true );
 		
-		// process apids FIXME:
-		//CZapit::getInstance()->getCurrentPIDS(g_RemoteControl->current_PIDs);
-		//g_RemoteControl->processAPIDnames();
+		// lcd
+		CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
 				
 		// permenant timeshift
 		if(g_settings.auto_timeshift)
