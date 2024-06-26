@@ -267,6 +267,9 @@ void CNetworkSettings::showMenu()
 		widget->addCCItem(networkSettings);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Network settings"));
 	
 	//
@@ -477,6 +480,9 @@ void CNetworkSettings::showMenu()
 //	delete MyIPChanger;
 	delete dhcpNotifier;
 	delete sectionsdConfigNotifier;
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 // IP notifier

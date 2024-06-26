@@ -217,11 +217,6 @@ int CLCDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	
 	showMenu();
 	
-	if(!parent)
-	{
-		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
-	}
-	
 	return ret;
 }
 
@@ -265,6 +260,9 @@ void CLCDSettings::showMenu()
 		widget->addCCItem(lcdSettings);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Display settings"));
 	
 	// intros
@@ -373,6 +371,9 @@ void CLCDSettings::showMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 bool CLCDSettings::changeNotify(const std::string &locale, void *Data)

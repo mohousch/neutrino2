@@ -378,7 +378,6 @@ void CVideoSettings::showMenu()
 		//
 		videoSettings->enablePaintHead();
 		videoSettings->setTitle(_("Video settings"), NEUTRINO_ICON_VIDEO);
-//		videoSettings->setHeadLine(true, true);
 
 		//
 		videoSettings->enablePaintFoot();
@@ -386,11 +385,15 @@ void CVideoSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		videoSettings->setFootButtons(&btn);
-//		videoSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(videoSettings);
 	}
+	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Video settings"));
 	
 	// intros
 	videoSettings->addItem(new CMenuForwarder(_("back")));
@@ -451,6 +454,9 @@ void CVideoSettings::showMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 // video setup notifier

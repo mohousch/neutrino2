@@ -96,6 +96,11 @@ int CProxySetup::showProxySetup()
 		//
 		widget->addCCItem(mn);
 	}
+	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Proxy server"));
 
 	CStringInputSMS * softUpdate_proxy = new CStringInputSMS(_("Hostname"), g_settings.softupdate_proxyserver, MAX_INPUT_CHARS, _("enter proxyserver name or ip, use host:port"), _("a empty entry means no proxy"), "abcdefghijklmnopqrstuvwxyz0123456789-.: ");
 	mn->addItem(new CMenuForwarder(_("Hostname"), true, g_settings.softupdate_proxyserver, softUpdate_proxy));
@@ -114,6 +119,9 @@ int CProxySetup::showProxySetup()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 	
 	return res;
 }

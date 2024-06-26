@@ -110,7 +110,6 @@ void CParentalLockSettings::showMenu()
 		//
 		listBox->enablePaintHead();
 		listBox->setTitle(_("Parentallock settings"), NEUTRINO_ICON_LOCK);
-//		listBox->setHeadLine(true, true);
 
 		//
 		listBox->enablePaintFoot();
@@ -118,11 +117,15 @@ void CParentalLockSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		listBox->setFootButtons(&btn);
-//		listBox->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(listBox);
 	}
+	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Parentallock settings"));
 	
 	// intro
 	listBox->addItem(new CMenuForwarder(_("back")));
@@ -150,5 +153,8 @@ void CParentalLockSettings::showMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 

@@ -182,6 +182,9 @@ void CRecordingSettings::showMenu()
 		widget->addCCItem(recordingSettings);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Recording settings"));
 	
 	//
@@ -280,6 +283,9 @@ void CRecordingSettings::showMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 // recording safety notifier

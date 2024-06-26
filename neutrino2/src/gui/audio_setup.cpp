@@ -170,7 +170,6 @@ void CAudioSettings::showMenu()
 		//
 		audioSettings->enablePaintHead();
 		audioSettings->setTitle(_("Audio settings"), NEUTRINO_ICON_AUDIO);
-//		audioSettings->setHeadLine(true, true);
 
 		//
 		audioSettings->enablePaintFoot();
@@ -178,11 +177,15 @@ void CAudioSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		audioSettings->setFootButtons(&btn);
-//		audioSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(audioSettings);
 	}
+	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Audio settings"));
 	
 	// intros
 	audioSettings->addItem(new CMenuForwarder(_("back")));
@@ -278,6 +281,9 @@ void CAudioSettings::showMenu()
 	//
 	delete subLangSelectNotifier;
 	delete autoAudioNotifier;
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 bool CAudioSetupNotifier::changeNotify(const std::string& OptionName, void *)

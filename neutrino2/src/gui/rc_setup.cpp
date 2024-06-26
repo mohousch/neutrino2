@@ -192,6 +192,11 @@ void CRemoteControlSettings::showMenu()
 		widget->addCCItem(remoteControlSettings);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Keybinding settings"));
+	
 	// intros
 	remoteControlSettings->addItem(new CMenuForwarder(_("back")));
 	remoteControlSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
@@ -247,6 +252,9 @@ void CRemoteControlSettings::showMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 // keys binding settings
@@ -352,6 +360,11 @@ void CKeysBindingSettings::showMenu()
 		widget->addCCItem(bindSettings);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Hot Keys mapping"));
+	
 	// intros
 	bindSettings->addItem(new CMenuForwarder(_("back")));
 	bindSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
@@ -396,6 +409,9 @@ void CKeysBindingSettings::showMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 // key setup notifier
@@ -405,5 +421,4 @@ bool CKeySetupNotifier::changeNotify(const std::string&, void *)
 
 	return false;
 }
-
 

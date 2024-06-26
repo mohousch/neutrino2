@@ -216,6 +216,11 @@ int CNFSMountGui::menu()
 		widget->addCCItem(mountMenuW);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Network settings"));
+	
 	// intros
 	mountMenuW->addItem(new CMenuForwarder(_("back")));
 	mountMenuW->addItem(new CMenuSeparator(CMenuSeparator::LINE));
@@ -242,6 +247,9 @@ int CNFSMountGui::menu()
 	
 	delete widget;
 	widget = NULL;
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 
 	return ret;
 }

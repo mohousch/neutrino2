@@ -138,6 +138,11 @@ int CCECSetup::showMenu()
 		widget->addCCItem(cec);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("CEC Setup"));
+	
 	// intros
 	cec->addItem(new CMenuForwarder(_("back")));
 	cec->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
@@ -180,6 +185,9 @@ int CCECSetup::showMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 
 	return res;
 }

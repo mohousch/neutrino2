@@ -109,6 +109,9 @@ void CMoviePlayerSettings::showMenu()
 		widget->addCCItem(moviePlayerSettings);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Movieplayer settings"));
 	
 	// intros
@@ -131,5 +134,8 @@ void CMoviePlayerSettings::showMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 

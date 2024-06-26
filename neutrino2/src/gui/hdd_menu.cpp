@@ -202,6 +202,11 @@ int CHDDMenuHandler::hddMenu()
 		widget->addCCItem(hddmenu);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("HDD settings"));
+	
 	hddmenu->addItem(new CMenuForwarder(_("back")));
 	hddmenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
@@ -483,6 +488,9 @@ int CHDDMenuHandler::hddMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	 //
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 
 	return ret;
 }

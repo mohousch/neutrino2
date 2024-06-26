@@ -136,6 +136,9 @@ void CPictureViewerSettings::showMenu()
 		widget->addCCItem(PicViewerSettings);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Pictureviewer settings"));
 	
 	// intros
@@ -164,5 +167,8 @@ void CPictureViewerSettings::showMenu()
 		delete widget;
 		widget = NULL;
 	}
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
