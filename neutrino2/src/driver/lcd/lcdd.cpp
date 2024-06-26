@@ -928,7 +928,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 	{
 		char tmp[5];
 							
-		sprintf(tmp, "%04d", pos);
+		sprintf(tmp, "%04d", g_RemoteControl->getCurrentChannelNumber()); // FIXME:
 							
 		ShowText(tmp); // UTF-8
 	}
@@ -988,16 +988,10 @@ void CLCD::setMovieInfo(const AUDIOMODES playmode, const std::string big, const 
 
 void CLCD::setMovieAudio(const bool is_ac3)
 {
-	movie_is_ac3 = is_ac3;
-
 	if (mode != MODE_MOVIE)
 		return;
-
-/*		
-#if defined (ENABLE_LCD)
-	showPercentOver(percentOver, true, MODE_MOVIE);
-#endif
-*/
+		
+	movie_is_ac3 = is_ac3;
 }
 
 void CLCD::showTime(bool force)
@@ -1257,13 +1251,7 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 	if (mode != m)
 		return;
 
-#if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
-	char tmp[5];
-						
-	sprintf(tmp, "%04d", percentOver);
-						
-	ShowText(tmp); // UTF-8
-#elif defined (ENABLE_LCD)
+#if defined (ENABLE_LCD)
 	int left, top, width, height = 6;
 	bool draw = true;
 	percentOver = perc;
@@ -1343,15 +1331,7 @@ void CLCD::showAudioTrack(const std::string &artist, const std::string &title, c
 	if (mode != MODE_AUDIO) 
 		return;
 
-#if defined (ENABLE_4DIGITS)
-	char tmp[5];
-						
-	sprintf(tmp, "%04d", pos);
-						
-	ShowText(tmp); // UTF-8
-#elif defined (ENABLE_VFD)
-	ShowText((char *)title.c_str());	
-#elif defined (ENABLE_LCD)
+#if defined (ENABLE_LCD)
 	// refresh
 	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, element[ELEMENT_BANNER].height + 2 + fonts.channelname->getHeight() + 2 + fonts.menu->getHeight() + 2 + fonts.menu->getHeight(), CLCDDisplay::PIXEL_OFF);
 	

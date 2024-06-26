@@ -217,7 +217,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR);
 			
 			//
-			CLCD::getInstance()->showServicename(current_channel_name, true, current_channel_number); // UTF-8
+			CLCD::getInstance()->showServicename(current_channel_name, true, current_channel_number);
 
 			//
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
