@@ -955,15 +955,16 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 
 void CLCD::setEPGTitle(const std::string title)
 {
+#if defined (ENABLE_LCD)
 	if (title == epg_title)
 	{
 		return;
 	}
 	
 	epg_title.clear();
-	
 	epg_title = title;
-	showServicename("", false, servicenumber);
+	showServicename("", false);
+#endif
 }
 
 void CLCD::setMovieInfo(const AUDIOMODES playmode, const std::string big, const std::string small, const bool centered)
@@ -972,6 +973,7 @@ void CLCD::setMovieInfo(const AUDIOMODES playmode, const std::string big, const 
 	
 	int showmode = g_settings.lcd_epgmode;
 
+#if defined (ENABLE_LCD)
 	movie_playmode = playmode;
 	movie_big = big;
 	movie_small = small;
@@ -981,6 +983,7 @@ void CLCD::setMovieInfo(const AUDIOMODES playmode, const std::string big, const 
 
 	showPlayMode(movie_playmode);
 	showTextScreen(movie_big, movie_small, showmode, true, centered);
+#endif
 }
 
 void CLCD::setMovieAudio(const bool is_ac3)
@@ -990,7 +993,11 @@ void CLCD::setMovieAudio(const bool is_ac3)
 	if (mode != MODE_MOVIE)
 		return;
 
+/*		
+#if defined (ENABLE_LCD)
 	showPercentOver(percentOver, true, MODE_MOVIE);
+#endif
+*/
 }
 
 void CLCD::showTime(bool force)
@@ -1250,7 +1257,13 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 	if (mode != m)
 		return;
 
-#ifdef ENABLE_LCD
+#if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
+	char tmp[5];
+						
+	sprintf(tmp, "%04d", percentOver);
+						
+	ShowText(tmp); // UTF-8
+#elif defined (ENABLE_LCD)
 	int left, top, width, height = 6;
 	bool draw = true;
 	percentOver = perc;
@@ -1337,9 +1350,7 @@ void CLCD::showAudioTrack(const std::string &artist, const std::string &title, c
 						
 	ShowText(tmp); // UTF-8
 #elif defined (ENABLE_VFD)
-//#ifdef __sh__
-	ShowText((char *)title.c_str());
-//#endif	
+	ShowText((char *)title.c_str());	
 #elif defined (ENABLE_LCD)
 	// refresh
 	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, element[ELEMENT_BANNER].height + 2 + fonts.channelname->getHeight() + 2 + fonts.menu->getHeight() + 2 + fonts.menu->getHeight(), CLCDDisplay::PIXEL_OFF);
@@ -1509,10 +1520,12 @@ void CLCD::setMode(const MODES m, const char * const title)
 		
 		case MODE_PIC:	  
 			showclock = true;
+			showTime(true);
 			break;
 			
 		case MODE_MOVIE:  		
 			showclock = false;
+			showTime(true);
 			break;
 	}
 
