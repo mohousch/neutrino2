@@ -827,7 +827,11 @@ void CMoviePlayerGui::PlayFile(void)
 					}
 				}
 			}
-		}	
+		}
+		
+		// calculate file_procent
+		if(duration > 100)
+			file_prozent = (position / (duration / 100));	
 
 		// LCD 
 		if (update_lcd) 
@@ -843,9 +847,6 @@ void CMoviePlayerGui::PlayFile(void)
 		// timeosd
 		if (IsVisible()) 
 		{
-			if(duration > 100)
-				file_prozent = (position / (duration / 100));
-			
 			moviescale->reset();	
 			moviescale->refresh(file_prozent);
 			updateTime();

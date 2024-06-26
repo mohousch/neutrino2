@@ -1254,31 +1254,28 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 		top = lcd_height - height - 1 - 2; 
 		width = lcd_width - left - 4 - fonts.menu->getRenderWidth("00:00");
 
-		if (draw)
+		// refresh
+		display->draw_rectangle(left - 2, top - 2, left + width + 2, top + height + 1, CLCDDisplay::PIXEL_ON, CLCDDisplay::PIXEL_OFF);
+
+		if (perc == (unsigned char) -1)
 		{
-			// refresh
-			display->draw_rectangle(left - 2, top - 2, left + width + 2, top + height + 1, CLCDDisplay::PIXEL_ON, CLCDDisplay::PIXEL_OFF);
-
-			if (perc == (unsigned char) -1)
-			{
-				display->draw_line(left, top, left + width, top + height - 1, CLCDDisplay::PIXEL_ON);
-			}
+			display->draw_line(left, top, left + width, top + height - 1, CLCDDisplay::PIXEL_ON);
+		}
+		else
+		{
+			int dp;
+			if (perc == (unsigned char) - 2)
+				dp = width + 1;
 			else
-			{
-				int dp;
-				if (perc == (unsigned char) - 2)
-					dp = width + 1;
-				else
-					dp = perc * (width + 1) / 100;
+				dp = perc * (width + 1) / 100;
 					
-				display->draw_fill_rect(left - 1, top - 1, left + dp, top + height, CLCDDisplay::PIXEL_ON);
+			display->draw_fill_rect(left - 1, top - 1, left + dp, top + height, CLCDDisplay::PIXEL_ON);
 
-				if (perc == (unsigned char) - 2)
-				{
-					// draw a "+" to show that the event is overdue
-					display->draw_line(left + width - 2, top + 1, left + width - 2, top + height - 2, CLCDDisplay::PIXEL_OFF);
-					display->draw_line(left + width - 1, top + (height/2), left + width - 3, top + (height/2), CLCDDisplay::PIXEL_OFF);
-				}
+			if (perc == (unsigned char) - 2)
+			{
+				// draw a "+" to show that the event is overdue
+				display->draw_line(left + width - 2, top + 1, left + width - 2, top + height - 2, CLCDDisplay::PIXEL_OFF);
+				display->draw_line(left + width - 1, top + (height/2), left + width - 3, top + (height/2), CLCDDisplay::PIXEL_OFF);
 			}
 		}
 
