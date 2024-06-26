@@ -1152,6 +1152,8 @@ void CMoviePlayerGui::PlayFile(void)
 				moviePlayerSettings->exec(NULL, "");
 				delete moviePlayerSettings;
 				moviePlayerSettings = NULL;
+				
+				update_lcd = true;
 			}
 			
 			startSubtitles();

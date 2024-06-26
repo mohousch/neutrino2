@@ -1653,6 +1653,16 @@ void CLCD::setMode(const MODES m, const char * const title)
 		break;
 	}
 	
+	case MODE_PIC:
+	{
+		display->clear_screen();
+		drawBanner();
+		showclock = false;
+		fonts.menutitle->RenderString(0, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight(), lcd_width, title, CLCDDisplay::PIXEL_ON, 0, true); // UTF-8
+		displayUpdate();
+		break;
+	}
+	
 	case MODE_SCART:
 	{
 		display->clear_screen();

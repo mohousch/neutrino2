@@ -424,7 +424,9 @@ void CAudioPlayerGui::playFile()
 			audioPlayerSettingsMenu = NULL;
 
 			paintInfo(m_playlist[m_current]);
-			update_t = true;					
+			update_t = true;
+			updateLcd = true;
+			paintLCD();					
 		}
 		else if(msg == CRCInput::RC_down)
 		{

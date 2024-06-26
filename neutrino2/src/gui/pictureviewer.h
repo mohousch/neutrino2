@@ -61,7 +61,6 @@ class CPictureViewerGui : public CMenuTarget
 
 		void view(unsigned int nr);
 		void show();
-		void paintLCD();
 		void hide();
 		
 	public:
