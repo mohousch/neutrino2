@@ -121,6 +121,7 @@ CLCD::CLCD()
 	lcd_width = 132;
 	lcd_height = 64;
 	servicename = "";
+	servicenumber = 0;
 	epg_title = "";
 	movie_big = "";
 	movie_small = "";
@@ -916,6 +917,8 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 
 	if (!name.empty())
 		servicename = name;
+		
+	servicenumber = pos;
 
 	if (mode != MODE_TVRADIO)
 		return;
@@ -960,7 +963,7 @@ void CLCD::setEPGTitle(const std::string title)
 	epg_title.clear();
 	
 	epg_title = title;
-	showServicename("", false);
+	showServicename("", false, servicenumber);
 }
 
 void CLCD::setMovieInfo(const AUDIOMODES playmode, const std::string big, const std::string small, const bool centered)

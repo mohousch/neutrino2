@@ -542,6 +542,7 @@ class CLCD
 		AUDIOMODES			movie_playmode;
 
 		std::string			servicename;
+		unsigned int			servicenumber;
 		std::string			epg_title;
 		std::string			movie_big;
 		std::string			movie_small;
