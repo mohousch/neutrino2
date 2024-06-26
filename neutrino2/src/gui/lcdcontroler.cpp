@@ -44,6 +44,9 @@
 #include <system/debug.h>
 
 
+#define MAXBRIGHTNESS		255
+#define MAXCONTRAST		63
+
 #define BRIGHTNESSFACTOR 	2.55 	// 0 - 255
 #define CONTRASTFACTOR		0.63	// 0 - 63
 
@@ -207,7 +210,7 @@ int CLCDControler::exec(CMenuTarget *parent, const std::string &)
 				switch (selected) 
 				{
 					case 0:
-						if (brightness < DEFAULT_LCD_BRIGHTNESS) 
+						if (brightness < MAXBRIGHTNESS) 
 						{
 							brightness ++;
 							
@@ -217,7 +220,7 @@ int CLCDControler::exec(CMenuTarget *parent, const std::string &)
 						break;
 						
 					case 1:
-						if (brightnessstandby < DEFAULT_LCD_STANDBYBRIGHTNESS) 
+						if (brightnessstandby < MAXBRIGHTNESS) 
 						{
 							brightnessstandby ++;
 							
@@ -228,7 +231,7 @@ int CLCDControler::exec(CMenuTarget *parent, const std::string &)
 					
 #if defined (ENABLE_LCD) || defined (ENABLE_TFT_LCD)	
 					case 2:
-						if (contrast < DEFAULT_LCD_CONTRAST) 
+						if (contrast < MAXCONTRAST) 
 						{
 							contrast ++;
 							

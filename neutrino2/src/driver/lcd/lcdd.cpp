@@ -1462,12 +1462,15 @@ void CLCD::setMode(const MODES m, const char * const title)
 	switch (m) 
 	{
 		case MODE_TVRADIO:
+			showclock = false;
 			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)
 				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
 			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
+			{
 				showTime(true);
 			
-			showclock = false;
+				showclock = true;
+			}
 			break;
 
 		case MODE_AUDIO:
@@ -1509,10 +1512,14 @@ void CLCD::setMode(const MODES m, const char * const title)
 	switch (m) 
 	{
 		case MODE_TVRADIO:
+			showclock = false;
 			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)	
 				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
 			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
+			{
+				showclock = true;
 				showTime(true);
+			}
 			
 #if !defined(PLATFORM_SPARK7162)			
 			ShowIcon(VFD_ICON_MP3, false);	        // NOTE: @dbo  //ICON_MP3 and ICON_DOLBY switched in infoviewer 
@@ -1526,7 +1533,6 @@ void CLCD::setMode(const MODES m, const char * const title)
 			ShowDiskLevel();
 			ShowIcon(VFD_ICON_STANDBY, false);	
 #endif
-			showclock = false;
 			break;
 
 		case MODE_AUDIO:
@@ -1541,7 +1547,6 @@ void CLCD::setMode(const MODES m, const char * const title)
 			ShowIcon(VFD_ICON_LOCK, false);			
 			ShowIcon(VFD_ICON_HD, false);
 			ShowIcon(VFD_ICON_DOLBY, false);
-			//showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
 			showclock = true;
 			break;
 		}
@@ -1549,7 +1554,6 @@ void CLCD::setMode(const MODES m, const char * const title)
 		case MODE_SCART:	  
 			ShowIcon(VFD_ICON_TV, false);	
 			showclock = true;
-			//showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
 			break;
 
 		case MODE_MENU_UTF8:
@@ -1560,7 +1564,6 @@ void CLCD::setMode(const MODES m, const char * const title)
 			break;
 
 		case MODE_SHUTDOWN:
-			//Clear();
 			/* clear all symbols */
 			ClearIcons();
 #if defined(PLATFORM_SPARK7162)

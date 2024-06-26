@@ -850,7 +850,6 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.lcd_power = configfile.getInt32("lcd_power", DEFAULT_LCD_POWER);
 	g_settings.lcd_inverse = configfile.getInt32("lcd_inverse", DEFAULT_LCD_INVERSE);
 	g_settings.lcd_statusline = configfile.getInt32("lcd_statusline", DEFAULT_LCD_STATUSLINE);
-	g_settings.lcd_autodimm = configfile.getInt32("lcd_autodimm", DEFAULT_LCD_AUTODIMM);
 	g_settings.lcd_epgmode = configfile.getInt32("lcd_epgmode", DEFAULT_LCD_EPGMODE);
 	g_settings.lcd_epgalign = configfile.getInt32("lcd_epgalign", DEFAULT_LCD_EPGALIGN);
 	strcpy(g_settings.lcd_setting_dim_time, configfile.getString("lcd_dim_time", "0").c_str());
@@ -1378,7 +1377,6 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setInt32("lcd_power", g_settings.lcd_power);
 	configfile.setInt32("lcd_inverse", g_settings.lcd_inverse);
 	configfile.setInt32("lcd_statusline", g_settings.lcd_statusline);
-	configfile.setInt32("lcd_autodimm", g_settings.lcd_autodimm);
 	configfile.setInt32("lcd_epgmode", g_settings.lcd_epgmode);
 	configfile.setInt32("lcd_epgalign", g_settings.lcd_epgalign);	
 	configfile.setString("lcd_dim_time", g_settings.lcd_setting_dim_time);
