@@ -764,7 +764,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	}
 
 	//	
-	int y = element[ELEMENT_BANNER].height + 2;
+	int y = element[ELEMENT_BANNER].height;
 	int x = 1;
 	
 	// namelines
