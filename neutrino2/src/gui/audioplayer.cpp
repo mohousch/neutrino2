@@ -479,12 +479,6 @@ void CAudioPlayerGui::playFile()
 			loop = false;
 			g_RCInput->postMsg(msg, data);
 		}
-		/*
-		else if(msg == NeutrinoMessages::EVT_TIMER)
-		{
-			CNeutrinoApp::getInstance()->handleMsg( msg, data );
-		}
-		*/
 		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
 			if (alist && alist->isPainted())

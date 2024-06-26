@@ -1612,12 +1612,6 @@ void CMoviePlayerGui::PlayFile(void)
 		{
 			if (CNeutrinoApp::getInstance()->handleMsg(msg, data) & messages_return::cancel_all)
 				exit = true;
-			else if ( msg <= CRCInput::RC_MaxRC ) 
-			{
-//				CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8);
-	
-				update_lcd = true;
-			}
 		}
 
 		if (exit) 

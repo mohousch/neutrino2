@@ -45,7 +45,7 @@
 
 
 #define BRIGHTNESSFACTOR 	2.55 	// 0 - 255
-#define CONTRASTFACTOR		0.15	// 0 - 15
+#define CONTRASTFACTOR		0.63	// 0 - 63
 
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 #define NUM_LCD_SLIDERS		3
