@@ -693,7 +693,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 #endif	
 #elif defined (ENABLE_LCD)
 	// clear screen under banner
-	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, lcd_height - fonts.menu->getHeight(), CLCDDisplay::PIXEL_OFF);
+	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, lcd_height - fonts.time->getHeight(), CLCDDisplay::PIXEL_OFF);
 
 	//
 	bool big_utf8 = false;
