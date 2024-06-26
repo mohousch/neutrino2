@@ -1614,7 +1614,7 @@ void CMoviePlayerGui::PlayFile(void)
 				exit = true;
 			else if ( msg <= CRCInput::RC_MaxRC ) 
 			{
-				CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8);
+//				CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8);
 	
 				update_lcd = true;
 			}

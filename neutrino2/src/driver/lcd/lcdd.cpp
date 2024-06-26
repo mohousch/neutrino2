@@ -691,7 +691,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 #endif	
 #elif defined (ENABLE_LCD)
 	// clear screen under banner
-	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, lcd_height - fonts.time->getHeight(), CLCDDisplay::PIXEL_OFF);
+	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, lcd_height - fonts.menu->getHeight(), CLCDDisplay::PIXEL_OFF);
 
 	//
 	bool big_utf8 = false;
@@ -940,7 +940,8 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 	if (g_settings.glcd_enable) nglcd->drawText(0, 0, 0, name.length(), servicename);
 #endif
 	
-	wake_up();
+	if (perform_wakeup)
+		wake_up();
 }
 
 void CLCD::setEPGTitle(const std::string title)
@@ -987,6 +988,9 @@ void CLCD::showTime(bool force)
 {
 	if(!has_lcd) 
 		return;
+		
+	////tets
+	printf("CLCD::showTime: mode:%d showclock:%d\n", mode, showclock);
 
 #if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 	if (showclock) 
@@ -1075,7 +1079,7 @@ void CLCD::showTime(bool force)
 			display->draw_fill_rect(lcd_width - 1 - fonts.menu->getRenderWidth("00:00", true), lcd_height - fonts.menu->getHeight() - 1, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
 
 			// time
-			fonts.menu->RenderString(lcd_width - 1 - fonts.time->getRenderWidth("00:00:0", true), lcd_height - 1, fonts.menu->getRenderWidth("00:00:0", true), timestr, CLCDDisplay::PIXEL_ON);
+			fonts.menu->RenderString(lcd_width - 1 - fonts.menu->getRenderWidth("00:00:0", true), lcd_height - 1, fonts.menu->getRenderWidth("00:00:0", true), timestr, CLCDDisplay::PIXEL_ON);
 		}
 		
 		displayUpdate();
@@ -1160,12 +1164,7 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 	volume = vol;
 	
 #ifdef ENABLE_LCD
-	if (
-	    ((mode == MODE_TVRADIO) && (g_settings.lcd_statusline == STATUSLINE_VOLUME)) ||
-	    ((mode == MODE_MOVIE) && (g_settings.lcd_statusline == STATUSLINE_VOLUME)) ||
-	    (mode == MODE_SCART) ||
-	    (mode == MODE_AUDIO)
-	    )
+	if ( (mode == MODE_TVRADIO || mode == MODE_MOVIE || mode == MODE_SCART || mode == MODE_AUDIO) && (g_settings.lcd_statusline == STATUSLINE_VOLUME) )
 	{
 		unsigned int height =  6;
 		unsigned int left   = 12 + 2;
@@ -1742,8 +1741,6 @@ void CLCD::setMode(const MODES m, const char * const title)
 		// time
 //		showclock = true;
 //		showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
-
-		showclock = false;
 		break;
 	
 	#if 0	
@@ -1788,7 +1785,6 @@ void CLCD::setMode(const MODES m, const char * const title)
 	#endif
 		
 	case MODE_STANDBY:
-		showclock = true;
 		showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
 		                 /* "showTime()" clears the whole lcd in MODE_STANDBY                         */
 		break;
