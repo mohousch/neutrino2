@@ -588,7 +588,7 @@ class CLCD
 		MODES getMode() { return mode; };
 
 		////
-		void ShowText(const char *str);
+		void showText(const char *str);
 		void showServicename(const std::string &name, const bool perform_wakeup = true, int pos = 0); // UTF-8
 		////
 		void showEPGTitle(const std::string title);

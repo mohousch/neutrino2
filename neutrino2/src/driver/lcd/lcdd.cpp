@@ -813,12 +813,12 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	displayUpdate();
 }
 
-void CLCD::ShowText(const char *str)
+void CLCD::showText(const char *str)
 {
 	if (!has_lcd)
 		return;
 		
-	printf("CLCD::ShowText: %s\n", str? str : "null");
+	printf("CLCD::showText: %s\n", str? str : "null");
 		 
 #if defined (ENABLE_4DIGITS)
 	int len = strlen(str);
@@ -931,12 +931,12 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 							
 		sprintf(tmp, "%04d", servicenumber); // FIXME:
 							
-		ShowText(tmp); // UTF-8
+		showText(tmp); // UTF-8
 	}
 #elif defined (ENABLE_VFD)
 	if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)
 	{
-		ShowText((char *)servicename.c_str() );
+		showText((char *)servicename.c_str() );
 	}
 #elif defined (ENABLE_LCD)
 	showTextScreen(servicename, epg_title, showmode, perform_wakeup, g_settings.lcd_epgalign);
@@ -1029,7 +1029,7 @@ void CLCD::showTime(bool force)
 #elif !defined(PLATFORM_SPARK7162) && !defined (PLATFORM_KATHREIN) // no time at spark7162 because clock integrated
  			strftime(timestr, 20, "%H:%M", t);
 #endif				
-			ShowText(timestr);
+			showText(timestr);
 		}
 	}
 
@@ -1313,7 +1313,7 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 		return;
 	
 #if defined (ENABLE_VFD)						
-	ShowText(text); // UTF-8
+	showText(text); // UTF-8
 #elif defined (ENABLE_LCD)
 	// refresh
 	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 - 1, lcd_width, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight() + 10, CLCDDisplay::PIXEL_OFF);
@@ -1499,7 +1499,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 			showclock = false;
 			
 			//
-			ShowText((char *) "BYE");
+			showText((char *) "BYE");
 			
 			break;
 
@@ -1583,7 +1583,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 			showclock = false;
 			
 			//
-			ShowText((char *) "BYE");
+			showText((char *) "BYE");
 			
 			break;
 
@@ -2168,7 +2168,7 @@ void CLCD::Clear()
 		return;
 
 #if defined (ENABLE_4DIGITS)
-	ShowText("     "); // 5 empty digits
+	showText("     "); // 5 empty digits
 #elif defined (ENABLE_VFD)
 #if defined (__sh__)
 	struct vfd_ioctl_data data;
@@ -2188,7 +2188,7 @@ void CLCD::Clear()
 	closeDevice();
 #endif
 #else
-	ShowText("            "); // 12 empty digits
+	showText("            "); // 12 empty digits
 #endif // sh	
 #elif defined (ENABLE_LCD)
 	if (mode == MODE_SHUTDOWN)
