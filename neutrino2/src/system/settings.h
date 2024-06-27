@@ -429,7 +429,6 @@ struct SNeutrinoSettings
 	int lcd_power;
 	int lcd_inverse;
 	int lcd_statusline;
-	int lcd_autodimm;
 	int lcd_epgmode;
 	int lcd_epgalign;
 	char lcd_setting_dim_time[4];
@@ -567,6 +566,8 @@ struct SNeutrinoSettings
 #define DEFAULT_LCD_EPGMODE			CLCD::EPGMODE_TIME
 #endif
 #define DEFAULT_LCD_EPGALIGN			0x01    /* centered */
+#define MAXBRIGHTNESS				0xFF
+#define MAXCONTRAST				0x3F
 
 // corners (osd)
 #define NO_RADIUS				0

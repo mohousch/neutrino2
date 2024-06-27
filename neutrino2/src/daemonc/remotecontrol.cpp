@@ -103,9 +103,6 @@ CRemoteControl::CRemoteControl()
 {
 	current_channel_id = 	0;
 	current_sub_channel_id = 0;
-	current_channel_name = 	"";
-	current_channel_number = 0;
-	current_channel_satposition = 0;
 
 	zap_completion_timeout = 0;
 
@@ -150,9 +147,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			
 			//
 			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
-			
-			//
-			CLCD::getInstance()->showServicename(current_channel_name, true, current_channel_number);
 
 			//
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
@@ -193,9 +187,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			
 			//
 			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR);
-			
-			//
-			CLCD::getInstance()->showServicename(current_channel_name, true, current_channel_number);
 
 			//
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
@@ -221,9 +212,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 						}
 					}
 				}
-				
-				//
-				CLCD::getInstance()->showServicename(current_channel_name, true, current_channel_number);
 			}
 		}
 	}
@@ -320,9 +308,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			CZapit::getInstance()->getCurrentPIDS(current_PIDs );
 		
 			g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_GOTPIDS, (const neutrino_msg_data_t)current_channel_id, false);
-			
-			//
-			CLCD::getInstance()->showServicename(current_channel_name, true, current_channel_number); // UTF-8
 
 			// apids
 			processAPIDnames();
@@ -359,9 +344,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			else
 				// EVENT anfordern!
 				CSectionsd::getInstance()->setServiceChanged( current_channel_id, true );
-				
-			CLCD::getInstance()->showServicename(std::string("[") + current_channel_name + ']', true, current_channel_number); // UTF-8
-
 		}
 		
 		return messages_return::handled;
@@ -725,7 +707,7 @@ const std::string & CRemoteControl::subChannelDown(void)
 }
 
 //
-void CRemoteControl::zapToChannelID(const t_channel_id channel_id, const std::string &channame, int channumber, const bool start_video) // UTF-8
+void CRemoteControl::zapToChannelID(const t_channel_id channel_id, /*const std::string &channame, int channumber,*/ const bool start_video) // UTF-8
 {
 	dprintf(DEBUG_NORMAL, "CRemoteControl::zapToChannelID: 0x%llx\n", channel_id);
 	
@@ -772,8 +754,6 @@ void CRemoteControl::zapToChannelID(const t_channel_id channel_id, const std::st
 	}
 	
 	current_channel_id = channel_id;
-	current_channel_name = channame;
-	current_channel_number = channumber;
 }
 
 void CRemoteControl::startvideo(t_channel_id channel_id)

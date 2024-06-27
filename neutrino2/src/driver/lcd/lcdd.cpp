@@ -928,14 +928,14 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 	{
 		char tmp[5];
 							
-		sprintf(tmp, "%04d", pos); // FIXME:
+		sprintf(tmp, "%04d", servicenumber); // FIXME:
 							
 		ShowText(tmp); // UTF-8
 	}
 #elif defined (ENABLE_VFD)
 	if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)
 	{
-		ShowText((char *)name.c_str() );
+		ShowText((char *)servicename.c_str() );
 	}
 #elif defined (ENABLE_LCD)
 	showTextScreen(servicename, epg_title, showmode, perform_wakeup, g_settings.lcd_epgalign);
@@ -955,6 +955,11 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 
 void CLCD::showEPGTitle(const std::string title)
 {
+	if (!has_lcd)
+		return;
+
+	printf("CLCD::showEPGTitle: %s\n", title.c_str());
+	
 #if defined (ENABLE_LCD)
 	if (title == epg_title)
 	{
@@ -963,7 +968,7 @@ void CLCD::showEPGTitle(const std::string title)
 	
 	epg_title.clear();
 	epg_title = title;
-	//showServicename("", false);
+
 	showTextScreen("", epg_title, g_settings.lcd_epgmode, false, g_settings.lcd_epgalign);
 #endif
 }
@@ -1249,10 +1254,10 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 	if(!has_lcd) 
 		return;
 	
+#if defined (ENABLE_LCD)
 	if (mode != m)
 		return;
 
-#if defined (ENABLE_LCD)
 	int left, top, width, height = 6;
 	bool draw = true;
 	percentOver = perc;
@@ -1463,7 +1468,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		case MODE_TVRADIO:
 			showclock = false;
 			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)
-				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
+				showServicename(servicename, true, servicenumber);
 			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
 			{
 				showclock = true;
@@ -1517,7 +1522,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		case MODE_TVRADIO:
 			showclock = false;
 			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)	
-				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
+				showServicename(servicename, true, servicenumber);
 			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
 			{
 				showclock = true;
@@ -1544,12 +1549,11 @@ void CLCD::setMode(const MODES m, const char * const title)
 			ShowIcon(VFD_ICON_AC3, false);			
 #endif		  
 			ShowIcon(VFD_ICON_MP3, true);			
-			ShowIcon(VFD_ICON_TV, false);			
-			showPlayMode(AUDIO_MODE_STOP);			
-			showclock = true;			
+			ShowIcon(VFD_ICON_TV, false);								
 			ShowIcon(VFD_ICON_LOCK, false);			
 			ShowIcon(VFD_ICON_HD, false);
 			ShowIcon(VFD_ICON_DOLBY, false);
+			showPlayMode(AUDIO_MODE_STOP);
 			showclock = true;
 			showTime(true);
 			break;
@@ -1565,8 +1569,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 			ShowIcon(VFD_ICON_TV, false);			
 			ShowIcon(VFD_ICON_HD, false);
 			ShowIcon(VFD_ICON_DOLBY, false);
-			showclock = true;
-			showTime(true);
+			showclock = false;
 			break;
 
 		case MODE_SHUTDOWN:
@@ -1586,18 +1589,15 @@ void CLCD::setMode(const MODES m, const char * const title)
 			ClearIcons();
 #if defined(PLATFORM_SPARK7162)
 			ShowIcon(VFD_ICON_STANDBY, true);	
-#endif
-							
+#endif				
 			showclock = true;
 			showTime(true);
-
 			break;
 		
 		case MODE_PIC:	  
 			ShowIcon(VFD_ICON_TV, false);			
 			ShowIcon(VFD_ICON_HD, false);
 			ShowIcon(VFD_ICON_DOLBY, false);
-			
 			showclock = true;
 			showTime(true);
 			break;
@@ -1638,7 +1638,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		
 		// servicename / title / epg
 		if (mode == MODE_TVRADIO)
-			showServicename(g_RemoteControl->getCurrentChannelName());
+			showServicename(servicename, true, servicenumber);
 		else // MODE_MOVIE
 		{
 			showMovieInfo(movie_playmode, movie_big, movie_small, g_settings.lcd_epgalign);
@@ -1750,7 +1750,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		
 		// servicename / title / epg
 		if (mode == MODE_TVRADIO)
-			showServicename(g_RemoteControl->getCurrentChannelName());
+			showServicename(servicename, true, servicenumber);
 		else // MODE_MOVIE
 		{
 			showMovieInfo(movie_playmode, movie_big, movie_small, g_settings.lcd_epgalign);

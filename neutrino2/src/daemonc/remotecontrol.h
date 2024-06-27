@@ -73,10 +73,9 @@ typedef std::vector<CSubService> CSubServiceListSorted;
 class CRemoteControl
 {
 	unsigned long long      zap_completion_timeout;
-	std::string             current_channel_name;
-	unsigned int 		current_channel_number;
+//	std::string             current_channel_name;
+//	unsigned int 		current_channel_number;
 	t_channel_id            current_sub_channel_id;
-	t_satellite_position	current_channel_satposition;
 
 	void getNVODs();
 	void getSubChannels();
@@ -108,7 +107,7 @@ class CRemoteControl
 		bool is_video_started;
 	
 		////
-		void zapToChannelID(const t_channel_id channel_id, const std::string &channame, int channumber, const bool start_video = true); // UTF-8
+		void zapToChannelID(const t_channel_id channel_id, const bool start_video = true); // UTF-8
 		void startvideo(const t_channel_id channel_id);
 		void stopvideo();
 		void setAPID(uint32_t APID);
@@ -121,12 +120,6 @@ class CRemoteControl
 		void tvMode();
 	
 		int handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data);
-
-		//
-		inline const std::string& getCurrentChannelName(void) const { return current_channel_name; };
-		inline int getCurrentChannelNumber(void) { return current_channel_number; };
-		inline t_channel_id getCurrentChannelID(void) { return current_channel_id;};
-		inline t_satellite_position getCurrentChannelSatellitePosition(void) { return current_channel_satposition;};
 };
 
 #endif

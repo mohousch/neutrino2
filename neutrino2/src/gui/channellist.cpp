@@ -874,7 +874,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 		}		
 		
 		tuned = pos;
-		g_RemoteControl->zapToChannelID(chan->channel_id, chan->name, chan->number, !chan->bAlwaysLocked); // UTF-8
+		g_RemoteControl->zapToChannelID(chan->channel_id, !chan->bAlwaysLocked); // UTF-8
 		
 		// TODO check is it possible bouquetList is NULL ?
 		if (bouquetList != NULL) 

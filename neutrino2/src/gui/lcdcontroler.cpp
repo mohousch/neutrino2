@@ -44,11 +44,8 @@
 #include <system/debug.h>
 
 
-#define MAXBRIGHTNESS		255
-#define MAXCONTRAST		63
-
-#define BRIGHTNESSFACTOR 	2.55 	// 0 - 255
-#define CONTRASTFACTOR		0.63	// 0 - 63
+#define BRIGHTNESSFACTOR 	(MAXBRIGHTNESS/100)
+#define CONTRASTFACTOR		(MAXCONTRAST/100)
 
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 #define NUM_LCD_SLIDERS		3

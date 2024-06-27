@@ -15,6 +15,9 @@
 #include <unistd.h>
 #include <dirent.h>
 #include <signal.h>
+
+#include <config.h>
+
 // tuxbox
 #include <configfile.h>
 // yhttpd
@@ -530,6 +533,7 @@ std::string CyParser::YWeb_cgi_get_ini(CyhookHandler *, std::string filename, st
 		yConfig->clear();
 		yConfig->loadConfig(filename);
 	}
+	
 	result = yConfig->getString(varname, "");
 	
 	return result;
@@ -554,7 +558,9 @@ void CyParser::YWeb_cgi_set_ini(CyhookHandler *, std::string filename, std::stri
 		yConfig->clear();
 		yConfig->loadConfig(filename);
 	}
+	
 	yConfig->setString(varname, varvalue);
+	
 	if ((yaccess == "save") || (yaccess == ""))
 		yConfig->saveConfig(filename);
 }
