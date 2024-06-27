@@ -118,7 +118,7 @@ int CPictureViewerGui::exec(CMenuTarget* parent, const std::string &actionKey)
 	}
 	
 	//
-//	CNeutrinoApp::getInstance()->lockPlayBack();
+	CNeutrinoApp::getInstance()->lockPlayBack();
 
 	show();
 
@@ -130,7 +130,7 @@ int CPictureViewerGui::exec(CMenuTarget* parent, const std::string &actionKey)
 	}
 	
 	//
-//	CNeutrinoApp::getInstance()->unlockPlayBack();
+	CNeutrinoApp::getInstance()->unlockPlayBack();
 
 	// Restore last mode
 	CNeutrinoApp::getInstance()->handleMsg(NeutrinoMessages::CHANGEMODE, m_LastMode);
