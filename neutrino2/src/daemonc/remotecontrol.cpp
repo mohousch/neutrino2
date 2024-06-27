@@ -118,7 +118,6 @@ CRemoteControl::CRemoteControl()
 	selected_subchannel = -1;
 	needs_nvods = 	false;
 	director_mode = 0;
-	current_programm_timer = 0;
 	is_video_started = true;
 	zapProtection = NULL;
 }
@@ -726,12 +725,8 @@ const std::string & CRemoteControl::subChannelDown(void)
 }
 
 //
-void CRemoteControl::zapToChannelID(const t_channel_id channel_id, const std::string &channame, const int channumber, const bool start_video) // UTF-8
+void CRemoteControl::zapToChannelID(const t_channel_id channel_id, const std::string &channame, int channumber, const bool start_video) // UTF-8
 {
-	current_channel_id = channel_id;
-	current_channel_name = channame;
-	current_channel_number = channumber;
-	
 	dprintf(DEBUG_NORMAL, "CRemoteControl::zapToChannelID: 0x%llx\n", channel_id);
 	
 	if (start_video)
@@ -774,13 +769,11 @@ void CRemoteControl::zapToChannelID(const t_channel_id channel_id, const std::st
 		CZapit::getInstance()->zapToServiceIDNOWAIT(channel_id);
 
 		zap_completion_timeout = now + 2 * (long long) 1000000;
-		
-		if ( current_programm_timer != 0 )
-		{
-			g_RCInput->killTimer( current_programm_timer );
-			current_programm_timer = 0;
-		}
 	}
+	
+	current_channel_id = channel_id;
+	current_channel_name = channame;
+	current_channel_number = channumber;
 }
 
 void CRemoteControl::startvideo(t_channel_id channel_id)

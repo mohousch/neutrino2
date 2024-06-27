@@ -72,7 +72,6 @@ typedef std::vector<CSubService> CSubServiceListSorted;
 //// CRemoteControl
 class CRemoteControl
 {
-	unsigned int            current_programm_timer;
 	unsigned long long      zap_completion_timeout;
 	std::string             current_channel_name;
 	unsigned int 		current_channel_number;
@@ -109,7 +108,7 @@ class CRemoteControl
 		bool is_video_started;
 	
 		////
-		void zapToChannelID(const t_channel_id channel_id, const std::string &channame, const int channumber, const bool start_video = true); // UTF-8
+		void zapToChannelID(const t_channel_id channel_id, const std::string &channame, int channumber, const bool start_video = true); // UTF-8
 		void startvideo(const t_channel_id channel_id);
 		void stopvideo();
 		void setAPID(uint32_t APID);
