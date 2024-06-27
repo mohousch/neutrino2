@@ -471,6 +471,7 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 
 	// set mode tv/radio
 	setMode(MODE_TVRADIO);
+	setLED(g_settings.lcd_led, 0);
 
 	return has_lcd;
 }
@@ -979,7 +980,9 @@ void CLCD::showMovieInfo(const AUDIOMODES playmode, const std::string big, const
 	
 	int showmode = g_settings.lcd_epgmode;
 
-#if defined (ENABLE_LCD)
+#if defined (ENABLE_VFD)
+	showText((char *)big.c_str());
+#elif defined (ENABLE_LCD)
 	movie_playmode = playmode;
 	movie_big = big;
 	movie_small = small;
@@ -1337,7 +1340,9 @@ void CLCD::showAudioTrack(const std::string &artist, const std::string &title, c
 	if (mode != MODE_AUDIO) 
 		return;
 
-#if defined (ENABLE_LCD)
+#if defined (ENABLE_VFD)
+	showText((char *)title.c_str());
+#elif defined (ENABLE_LCD)
 	// refresh
 	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, element[ELEMENT_BANNER].height + 2 + fonts.channelname->getHeight() + 2 + fonts.menu->getHeight() + 2 + fonts.menu->getHeight(), CLCDDisplay::PIXEL_OFF);
 	
@@ -1460,7 +1465,6 @@ void CLCD::setMode(const MODES m, const char * const title)
 	menutitle = title;
 	
 	setlcdparameter();
-	setLED(g_settings.lcd_led, 0);
 
 #if defined (ENABLE_4DIGITS)
 	switch (m) 
@@ -1510,7 +1514,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 			break;
 			
 		case MODE_MOVIE:  		
-			showclock = false;
+			showclock = true;
 			showTime(true);
 			break;
 	}
@@ -1554,8 +1558,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 			ShowIcon(VFD_ICON_HD, false);
 			ShowIcon(VFD_ICON_DOLBY, false);
 			showPlayMode(AUDIO_MODE_STOP);
-			showclock = true;
-			showTime(true);
+			showclock = false;
 			break;
 		}
 
@@ -1604,8 +1607,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 			
 		case MODE_MOVIE:  
 			ShowIcon(VFD_ICON_TV, false);			
-			showclock = true;
-			showTime(true);
+			showclock = false;
 			break;
 	}
 
