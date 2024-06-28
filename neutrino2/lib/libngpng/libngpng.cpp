@@ -525,7 +525,7 @@ uint8_t * getImage(const std::string &name, int width, int height, int transp, i
 		if (load_ret == FH_ERROR_OK) 
 		{
 			// resize
-			if(x != width || y != height)
+			if( (width != 0 && height != 0) && (x != width || y != height) )
 			{
 				// alpha
 				if(_bpp == 4)
@@ -570,6 +570,60 @@ uint8_t * getImage(const std::string &name, int width, int height, int transp, i
 	else
 	{
 		printf("[libngpng] getImage: Error open file %s\n", name.c_str ());
+	}
+
+	return ret;
+}
+
+uint8_t * getBitmap(const std::string &name)
+{
+	int x = 0;
+	int y = 0;
+	int _bpp = 0;
+	CFormathandler * fh = NULL;
+	uint8_t * buffer = NULL;
+	uint8_t * ret = NULL;
+	int load_ret = FH_ERROR_MALLOC;
+
+	//
+  	fh = fh_getsize(name.c_str(), &x, &y, INT_MAX, INT_MAX); // unscaled
+	
+  	if (fh) 
+	{
+		buffer = (uint8_t *) malloc(x*y*4);
+		
+		if (buffer == NULL) 
+		{
+		  	printf("[libngpng] getBitmap: Error: malloc\n");
+		  	return NULL;
+		}
+		
+		if ((name.find(".png") == (name.length() - 4)) && (fh_png_id(name.c_str())))
+			load_ret = png_load_ext(name.c_str(), &buffer, &x, &y, &_bpp);
+		else if (name.find(".svg") == (name.length() - 4))
+		{
+			load_ret = svg_load_resize(name.c_str(), &buffer, &x, &y, INT_MAX, INT_MAX);
+			_bpp = 4;
+		}
+		else
+			load_ret = fh->get_pic(name.c_str(), &buffer, &x, &y);
+
+		if (load_ret == FH_ERROR_OK) 
+		{
+			ret = (uint8_t *) buffer;
+			
+			free(buffer);
+		} 
+		else 
+		{
+	  		printf("[libngpng] getBitmap: Error decoding file %s\n", name.c_str ());
+	  		free (buffer);
+	  		buffer = NULL;
+		}
+  	} 
+	else
+	{
+		printf("[libngpng] getBitmap: Error open file %s\n", name.c_str ());
 	}
 
 	return ret;
