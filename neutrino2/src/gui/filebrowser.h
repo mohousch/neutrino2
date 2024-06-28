@@ -48,7 +48,7 @@
 #include <vector>
 
 
-#define FILEBROWSER_NUMBER_OF_SORT_VARIANTS 5
+#define FILEBROWSER_NUMBER_OF_SORT_VARIANTS 	5
 
 class CFileBrowser
 {

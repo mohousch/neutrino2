@@ -82,7 +82,6 @@ libneutrino2_gui_a_SOURCES = \
 	motorcontrol.cpp \
 	alphasetup.cpp \
 	psisetup.cpp \
-	lcdcontroler.cpp \
 	movieinfo.cpp \
 	usermenu.cpp
 

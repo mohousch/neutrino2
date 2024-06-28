@@ -40,7 +40,10 @@
 class CLCDSettings : public CMenuTarget, CChangeObserver
 {
 	private:
+		CWidget* widget;
+		ClistBox* lcdSettings;
 		CMenuItem * m1;
+		int selected;
 #ifdef ENABLE_GRAPHLCD
 		nGLCD * nglcd;
 		CMenuItem * item;

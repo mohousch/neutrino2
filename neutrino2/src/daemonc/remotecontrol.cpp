@@ -363,7 +363,7 @@ void CRemoteControl::getSubChannels()
 			if ( linkedServices.size()> 1 )
 			{
 				are_subchannels = true;
-				for (unsigned int i=0; i< linkedServices.size(); i++)
+				for (unsigned int i = 0; i < linkedServices.size(); i++)
 				{
 					subChannels.push_back(CSubService(
 								      linkedServices[i].originalNetworkId,
@@ -393,7 +393,7 @@ void CRemoteControl::getNVODs()
 		{
 			are_subchannels = false;
 			
-			for (unsigned int i=0; i< NVODs.size(); i++)
+			for (unsigned int i = 0; i < NVODs.size(); i++)
 			{
 				if ( NVODs[i].zeit.duration> 0 )
 				{
@@ -404,8 +404,9 @@ void CRemoteControl::getNVODs()
 						NVODs[i].zeit.starttime, 
 						NVODs[i].zeit.duration);
 
-					CSubServiceListSorted::iterator e= subChannels.begin();
-					for(; e!=subChannels.end(); ++e)
+					CSubServiceListSorted::iterator e = subChannels.begin();
+					
+					for(; e != subChannels.end(); ++e)
 					{
 						if ( e->starttime > newService.starttime )
 							break;
@@ -422,7 +423,7 @@ void CRemoteControl::getNVODs()
 			if ( selected_subchannel == -1 )
 			{
 				// beim ersten Holen letzten NVOD-Kanal setzen!
-				setSubChannel( subChannels.size()- 1 );
+				setSubChannel( subChannels.size() - 1 );
 			}
 			else
 			{
@@ -476,7 +477,7 @@ void CRemoteControl::processZapProtection(const neutrino_msg_t msg, const neutri
 void CRemoteControl::processAPIDnames()
 {
 	//FIXME:
-	has_unresolved_ctags= false;
+	has_unresolved_ctags = false;
 	has_ac3 = false; //FIXME what this variable suppoused to do ?? seems unused
 	int pref_found = -1;
 	int pref_ac3_found = -1;

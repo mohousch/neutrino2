@@ -129,7 +129,6 @@
 #include <gui/rc_setup.h>
 #include <gui/recording_setup.h>
 #include <gui/misc_setup.h>
-#include <gui/lcdcontroler.h>
 #include <gui/dvbsub_select.h>
 #include <gui/epg_menu.h>
 #include <gui/cec_setup.h>
@@ -4569,31 +4568,8 @@ void CNeutrinoApp::realRun(void)
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				// convert msg to int
-				int QKey = 0;
-				if(msg == CRCInput::RC_0)
-					QKey = 0;
-				else if(msg == CRCInput::RC_1)
-					QKey = 1;
-				else if(msg == CRCInput::RC_2)
-					QKey = 2;
-				else if(msg == CRCInput::RC_3)
-					QKey = 3;
-				else if(msg == CRCInput::RC_4)
-					QKey = 4;
-				else if(msg == CRCInput::RC_5)
-					QKey = 5;
-				else if(msg == CRCInput::RC_6)
-					QKey = 6;
-				else if(msg == CRCInput::RC_7)
-					QKey = 7;
-				else if(msg == CRCInput::RC_8)
-					QKey = 8;
-				else if(msg == CRCInput::RC_9)
-					QKey = 9;
-
 				//FIXME: think about gallery i.e QKey > 9
-				g_Radiotext->RassImage(0, QKey, true);
+				g_Radiotext->RassImage(0, getNumericValue(msg), true);
 			}			
 			else if((msg == CRCInput::RC_info) || ( msg == NeutrinoMessages::SHOW_INFOBAR ))
 			{

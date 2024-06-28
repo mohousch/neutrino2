@@ -139,7 +139,6 @@
 #include <gui/recording_setup.h>
 #include <gui/misc_setup.h>
 #include <gui/hdd_menu.h>
-#include <gui/lcdcontroler.h>
 #include <gui/movieinfo.h>
 #include <gui/usermenu.h>
 //

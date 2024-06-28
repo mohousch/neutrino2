@@ -36,7 +36,6 @@
 #include <gui/widget/stringinput.h>
 #include <gui/widget/hintbox.h>
 
-#include <gui/lcdcontroler.h>
 #include <gui/lcd_setup.h>
 
 #include <system/debug.h>
@@ -102,6 +101,10 @@ const keyval LCDMENU_MINITV_OPTIONS[LCDMENU_MINITV_OPTION_COUNT] =
 
 CLCDSettings::CLCDSettings()
 {
+	widget = NULL;
+	lcdSettings = NULL;
+	selected = -1;
+	
 #ifdef ENABLE_GRAPHLCD
 	item = NULL;
 #endif
@@ -145,8 +148,12 @@ int CLCDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		CLCD::getInstance()->setBrightness(g_settings.lcd_brightness);
 		CLCD::getInstance()->setBrightnessStandby(g_settings.lcd_standbybrightness);
 		CLCD::getInstance()->setContrast(g_settings.lcd_contrast);
+		
+		selected = lcdSettings->getSelected();
+		
+		showMenu();
 	
-		return ret;
+		return RETURN_EXIT;
 	}
 #ifdef ENABLE_GRAPHLCD	
 	else if (actionKey == "select_driver")
@@ -238,9 +245,6 @@ void CLCDSettings::showMenu()
 	dprintf(DEBUG_NORMAL, "CLCDSettings::showMenu:\n");
 	
 	//
-	CWidget* widget = NULL;
-	ClistBox* lcdSettings = NULL;
-	
 	widget = CNeutrinoApp::getInstance()->getWidget("lcdsetup");
 	
 	if (widget)
@@ -319,6 +323,9 @@ void CLCDSettings::showMenu()
 
 	// dimm brightness
 	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, MAXBRIGHTNESS, this, 0, -1, true));
+	
+	// brightness / contrast
+	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("GraphLCD Setup"))));
 
 	// brightness
 	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness"), &g_settings.lcd_brightness, true, 0, MAXBRIGHTNESS, this, 0, -1, true));
@@ -377,7 +384,11 @@ void CLCDSettings::showMenu()
 	item = new CMenuForwarder(_("Type"), (nglcd->GetConfigSize() > 1), nglcd->GetConfigName(g_settings.glcd_selected_config).c_str(), this, "select_driver");
 	
 	lcdSettings->addItem(item);
-#endif	
+	
+	//
+#endif
+
+	lcdSettings->setSelected(selected);	
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);

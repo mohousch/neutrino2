@@ -197,7 +197,7 @@ void CBEBouquetWidget::hide()
         CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
-int CBEBouquetWidget::exec(CMenuTarget *parent, const std::string &/*actionKey*/)
+int CBEBouquetWidget::exec(CMenuTarget *parent, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "CBEBouquetWidget::exec:\n");
 

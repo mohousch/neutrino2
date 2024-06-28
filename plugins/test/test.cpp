@@ -175,7 +175,6 @@ class CTestMenu : public CMenuTarget
 		void testCHintBox();
 		void testCHintBoxInfo();
 		void testCHelpBox();
-		void testVFDController();
 		void testColorChooser();
 		void testKeyChooser();
 		void testChannelSelectWidget();
@@ -4549,16 +4548,6 @@ void CTestMenu::testMountSmallMenu()
 	mountSmallMenu = NULL;
 }
 
-void CTestMenu::testVFDController()
-{
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testLCDController\n");
-	
-	CLCDControler * vfdControllerHandler = new CLCDControler(_("Display settings"));
-	vfdControllerHandler->exec(NULL, "");
-	delete vfdControllerHandler;
-	vfdControllerHandler = NULL;
-}
-
 void CTestMenu::testColorChooser()
 {
 	dprintf(DEBUG_NORMAL, "\nCTestMenu::testColorChooser\n");
@@ -5246,12 +5235,6 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	else if(actionKey == "mountsmallmenu")
 	{
 		testMountSmallMenu();
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "vfdcontroller")
-	{
-		testVFDController();
 
 		return RETURN_REPAINT;
 	}
@@ -6518,7 +6501,6 @@ void CTestMenu::showMenu()
 //	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("ColorChooser", true, NULL, this, "colorchooser"));
 	mainMenu->addItem(new CMenuForwarder("KeyChooser", true, NULL, this, "keychooser"));
-	mainMenu->addItem(new CMenuForwarder("LCDController", true, NULL, this, "vfdcontroller"));
 	
 	//
 //	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));

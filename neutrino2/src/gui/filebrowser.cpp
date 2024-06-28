@@ -135,15 +135,6 @@ bool (* const sortBy[FILEBROWSER_NUMBER_OF_SORT_VARIANTS])(const CFile& a, const
 	&sortBySize
 };
 
-const char* const sortByNames[FILEBROWSER_NUMBER_OF_SORT_VARIANTS] =
-{
-	_("(filename)"),
-	_("(filename2)"),
-	_("(type)"),
-	_("(date)"),
-	_("(size)")
-};
-
 CFileBrowser::CFileBrowser()
 {
 	commonInit();
@@ -725,11 +716,9 @@ void CFileBrowser::paint()
 		//
 		listBox->enablePaintHead();
 		listBox->enablePaintDate();
-//		listBox->setHeadLine(true, true);
 		
 		//
 		listBox->enablePaintFoot();
-//		listBox->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(listBox);
@@ -880,7 +869,8 @@ void CFileBrowser::SMSInput(const neutrino_msg_t msg)
 	unsigned char key = m_SMSKeyInput.handleMsg(msg);
 
 	unsigned int i;
-	for(i = (selected + 1) % filelist.size(); i != selected ; i= (i + 1) % filelist.size())
+	
+	for(i = (selected + 1) % filelist.size(); i != selected; i = (i + 1) % filelist.size())
 	{
 		if(tolower(filelist[i].getFileName()[0]) == key)
 		{
