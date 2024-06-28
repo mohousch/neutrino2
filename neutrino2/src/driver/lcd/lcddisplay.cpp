@@ -83,8 +83,6 @@ CLCDDisplay::CLCDDisplay()
 	lcd_type = 0;
 	last_brightness = 0;
 	
-	iconBasePath = "";
-	
 	locked = 0;
 	
 #ifdef ENABLE_TFTLCD
@@ -118,7 +116,7 @@ CLCDDisplay::~CLCDDisplay()
 	{
 		msync(_buffer, m_available, MS_SYNC);
 		munmap(_buffer, m_available);
-		_buffer = 0;
+		_buffer = NULL;
 	}
 #endif
 
@@ -233,7 +231,7 @@ bool CLCDDisplay::init(const char *fbdevice)
 	
 	printf("CLCDDisplay::init: %s %dk video mem\n", fbdevice, m_available / 1024);
 	
-	_buffer = (unsigned char*)mmap(0, m_available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
+	_buffer = (lcd_pixel_t *)mmap(0, m_available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
 	
 	if (!_buffer)
 	{
@@ -267,8 +265,9 @@ nolfb:
 
 void CLCDDisplay::setSize(int w, int h, int b)
 {
-	printf("CLCDDisplay::setSize: xres=%d, yres=%d, bpp=%d type=%d\n", xres, yres, bpp, lcd_type);
+	printf("CLCDDisplay::setSize: xres=%d, yres=%d, bpp=%d type=%d\n", w, h, b, lcd_type);
 	
+	//
 	xres = w;
 	yres = h;
 	bpp = b;
@@ -308,13 +307,13 @@ void CLCDDisplay::setSize(int w, int h, int b)
 	// surface
 	surface_stride = xres*surface_bypp;
 	surface_buffer_size = xres * yres * surface_bypp;
-	surface_data = new unsigned char[surface_buffer_size];
+	surface_data = new lcd_pixel_t[surface_buffer_size];
 	memset(surface_data, 0, surface_buffer_size);
 
 	//
 	_stride = xres*surface_bypp;
 	raw_buffer_size = xres * yres * surface_bypp;
-	_buffer = new unsigned char[raw_buffer_size];
+	_buffer = new lcd_pixel_t[raw_buffer_size];
 	memset(_buffer, 0, raw_buffer_size);
 }
 
@@ -624,27 +623,6 @@ void CLCDDisplay::resume()
 
 void CLCDDisplay::convert_data()
 {
-	unsigned int x, y, z;
-	char tmp;
-
-#if 0
-	unsigned int height = yres;
-	unsigned int width = xres;
-
-	for (x = 0; x < width; x++)
-	{   
-		for (y = 0; y < (height / 8); y++)
-		{
-			tmp = 0;
-
-			for (z = 0; z < 8; z++)
-				if (_buffer[(y * 8 + z) * width + x] == LCD_PIXEL_ON)
-					tmp |= (1 << z);
-
-			lcd[y][x] = tmp;
-		}
-	}
-#endif
 }
 
 void CLCDDisplay::update()
@@ -652,28 +630,28 @@ void CLCDDisplay::update()
 #ifdef ENABLE_LCD
 	if ((fd >= 0) && (last_brightness > 0))
 	{
-		//
+		// blit2lcd
 		for (unsigned int y = 0; y < yres; y++)
 		{
 			for (unsigned int x = 0; x < xres; x++)
 			{
-				surface_fill_rect(x, y, x + 1, y + 1, _buffer[y * xres + x]);
+				blit2LCD(x, y, x + 1, y + 1, _buffer[(y * xres + x)]);
 			}
 		}
 
-		//
+		// align
 		if (lcd_type == 0 || lcd_type == 2)
 		{
 			unsigned int height = yres;
 			unsigned int width = xres;
 
 			// hack move last line to top
-			unsigned char linebuffer[width];
+			uint8_t linebuffer[width];
 			memmove(linebuffer, surface_data + surface_buffer_size - width, width);
 			memmove(surface_data + width, surface_data, surface_buffer_size - width);
 			memmove(surface_data, linebuffer, width);
 
-			unsigned char raw[132*8];
+			uint8_t raw[132*8];
 			int x, y, yy;
 			
 			memset(raw, 0x00, 132*8);
@@ -684,6 +662,7 @@ void CLCDDisplay::update()
 				for (x = 0; x < 128; x++)
 				{
 					int pix = 0;
+					
 					for (yy = 0; yy < 8; yy++)
 					{
 						pix |= (surface_data[(y*8 + yy)*width + x] >= 108)<<yy;
@@ -716,7 +695,7 @@ void CLCDDisplay::update()
 			{
 				unsigned int height = yres;
 				unsigned int width = xres;
-				unsigned char raw[surface_stride * height];
+				uint8_t raw[surface_stride * height];
 				
 				for (unsigned int y = 0; y < height; y++)
 				{
@@ -738,8 +717,8 @@ void CLCDDisplay::update()
 			}
 			else
 			{
-#ifdef PLATFORM_GIGABLUE	//RGB565
-				unsigned char gb_buffer[surface_stride * yres];
+#ifdef PLATFORM_GIGABLUE
+				lcd_pixel_t gb_buffer[surface_stride * yres];
 				
 				for (int offset = 0; offset < surface_stride * yres; offset += 2)
 				{
@@ -756,7 +735,7 @@ void CLCDDisplay::update()
 		}
 		else /* lcd_type == 1 */
 		{
-			unsigned char raw[64*64];
+			uint8_t raw[64*64];
 			int x, y;
 			memset(raw, 0, 64*64);
 			
@@ -772,7 +751,7 @@ void CLCDDisplay::update()
 					if (flipped)
 					{
 						/* device seems to be 4bpp, swap nibbles */
-						unsigned char byte;
+						uint8_t byte;
 						byte = (pix >> 4) & 0x0f;
 						byte |= (pix << 4) & 0xf0;
 						raw[(63 - y) * 64 + (63 - x)] = byte;
@@ -798,7 +777,8 @@ void CLCDDisplay::update()
 #endif
 }
 
-void CLCDDisplay::surface_fill_rect(int area_left, int area_top, int area_right, int area_bottom, int color) 
+// blit2lcd
+void CLCDDisplay::blit2LCD(int area_left, int area_top, int area_right, int area_bottom, int color) 
 {
 	int area_width  = area_right - area_left;
 	int area_height = area_bottom - area_top;
@@ -851,22 +831,11 @@ void CLCDDisplay::draw_point(const int x, const int y, const int state)
 		return;
 
 	if (state == LCD_PIXEL_INV)
-		_buffer[y * xres + x] ^= 1;
+		_buffer[(y * xres + x)] ^= 1;
 	else
-		_buffer[y * xres + x] = state;
+		_buffer[(y * xres + x)] = state;
 }
 
-/*
- * draw_line
- * 
- * args:
- * x1    StartCol
- * y1    StartRow
- * x2    EndCol
- * y1    EndRow
- * state LCD_PIXEL_OFF/LCD_PIXEL_ON/LCD_PIXEL_INV
- * 
- */
 void CLCDDisplay::draw_line(const int x1, const int y1, const int x2, const int y2, const int state)  
 {
 	int dx = abs (x1 - x2);
@@ -1011,25 +980,6 @@ void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int
 {
 	printf("CLCDDisplay::load_screen_element: %s\n", element->name.c_str());
 	
-/*
-	int dx = 0;
-	int dy = 0;
-	int bpp = 0;
-	
-	// getSize
-	getSize(element->name, &dx, &dy, &bpp);
-	
-	if (width == 0)
-		width = dx;
-		
-	if (height == 0)
-		height = dy;
-		
-	// getBuffer
-	element->buffer = getImage(element->name, width, height, 0xFF, bpp);
-*/
-	
-	// blit2fb
 	unsigned int i;
 	
 	if ((element->buffer) && (element->height <= yres - top))
@@ -1052,14 +1002,12 @@ void CLCDDisplay::load_screen(uint8_t **const screen)
 bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_t * element)
 {
 	bool ret_value = false;
-	
-	#if 0
+
+#if 0	
 	getSize(filename, &element->width, &element->height, &element->bpp);
-	element->buffer = getImage(filename, element->width, element->height, 0xFF, bpp, NONE, true);
-	element->buffer_size = element->width*element->height;
-	#endif
+	element->buffer = getBitmap(filename);
 	
-	#if 1
+#else
 	png_structp  png_ptr;
 	png_infop    info_ptr;
 	unsigned int i;
@@ -1166,7 +1114,7 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 		}
 		fclose(fh);
 	}
-	#endif
+#endif
 	
 	return ret_value;
 }
@@ -1183,12 +1131,13 @@ bool CLCDDisplay::load_png(const char * const filename)
 
 bool CLCDDisplay::dump_png_element(const char * const filename, raw_lcd_element_t * element)
 {
+	bool         ret_value = false;
+	
 	png_structp  png_ptr;
 	png_infop    info_ptr;
 	unsigned int i;
 	png_byte *   fbptr;
 	FILE *       fp;
-	bool         ret_value = false;
  
         /* create file */
         fp = fopen(filename, "wb");
@@ -1216,7 +1165,6 @@ bool CLCDDisplay::dump_png_element(const char * const filename, raw_lcd_element_
 					unsigned int lcd_width = xres;
 
         				png_init_io(png_ptr, fp);
-
 
         				/* write header */
         				if (setjmp(png_jmpbuf(png_ptr)))
@@ -1270,7 +1218,7 @@ bool CLCDDisplay::dump_png(const char * const filename)
 	element.buffer = _buffer;
 	element.width = xres;
 	element.height = yres;
-	element.bpp = 8;
+	element.bpp = 0;
 	
 	return dump_png_element(filename, &element);
 }
