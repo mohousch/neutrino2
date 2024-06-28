@@ -4568,8 +4568,7 @@ void CNeutrinoApp::realRun(void)
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				//FIXME: think about gallery i.e QKey > 9
-				g_Radiotext->RassImage(0, getNumericValue(msg), true);
+				g_Radiotext->RassImage(0, g_RCInput->getNumericValue(msg), true);
 			}			
 			else if((msg == CRCInput::RC_info) || ( msg == NeutrinoMessages::SHOW_INFOBAR ))
 			{
