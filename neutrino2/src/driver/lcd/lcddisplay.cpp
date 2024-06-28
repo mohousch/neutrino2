@@ -271,8 +271,9 @@ void CLCDDisplay::setSize(int w, int h, int b)
 	
 	xres = w;
 	yres = h;
-	bpp = 8;
-	bypp = 1;
+	bpp = b;
+	
+	//
 	surface_bpp = b;
 	
 	real_offset = 0;
@@ -304,13 +305,15 @@ void CLCDDisplay::setSize(int w, int h, int b)
 			surface_bypp = (bpp + 7)/8;
 	}
 
+	// surface
 	surface_stride = xres*surface_bypp;
 	surface_buffer_size = xres * yres * surface_bypp;
 	surface_data = new unsigned char[surface_buffer_size];
 	memset(surface_data, 0, surface_buffer_size);
 
-	_stride = xres*bypp;
-	raw_buffer_size = xres * yres * bypp;
+	//
+	_stride = xres*surface_bypp;
+	raw_buffer_size = xres * yres * surface_bypp;
 	_buffer = new unsigned char[raw_buffer_size];
 	memset(_buffer, 0, raw_buffer_size);
 }
@@ -533,18 +536,18 @@ int CLCDDisplay::setLCDBrightness(int brightness)
 	}
 	else
 	{
-/*
+
 		int fp;
 		if ((fp = open("/dev/dbox/fp0", O_RDWR)) < 0)
 		{
 			printf("CLCDDisplay::setLCDBrightness: can't open /dev/dbox/fp0\n");
 			return (-1);
 		}
-*/
+
 
 		if(ioctl(fd, FP_IOCTL_LCD_DIMM, &brightness) < 0)
 			printf("CLCDDisplay::setLCDBrightness: can't set lcd brightness (%m)\n");			
-//		close(fp);
+		close(fp);
 	}
 	
 	if (brightness == 0)

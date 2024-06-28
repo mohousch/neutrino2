@@ -165,7 +165,7 @@ class CLCDDisplay
 		////
 		int raw_buffer_size;
 		int xres, yres, bpp;
-		int bypp;
+//		int bypp;
 		void setSize(int w, int h, int b);
 		////
 		int islocked() { return locked; }
