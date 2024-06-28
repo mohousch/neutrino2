@@ -57,15 +57,12 @@
 #define LED_IOCTL_BLINKING_TIME 		0X12
 #define LED_IOCTL_SET_DEFAULT 			0x13
 
-#define lcd_pixel_t				uint8_t
-
 struct raw_lcd_element_t
 {
 	std::string name;
 	int width;
 	int height;
 	int bpp;
-	int buffer_size;
 	uint8_t *buffer;
 };
 
@@ -80,10 +77,10 @@ class CLCDDisplay
 		int 	      lcd_type;
 		int 	      last_brightness;
 		////
-		lcd_pixel_t	*_buffer;
+		uint8_t	*_buffer;
 		int 	      _stride;
 		////
-		lcd_pixel_t     * surface_data;
+		uint8_t     * surface_data;
 		int 	      surface_stride;
 		int 	      surface_bpp, surface_bypp;
 		int 	      surface_buffer_size;

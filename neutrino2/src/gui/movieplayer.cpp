@@ -226,27 +226,27 @@ void CMoviePlayerGui::restoreNeutrino()
 
 void CMoviePlayerGui::updateLcd(const std::string &lcd_filename, const std::string &lcd_info)
 {
-	CLCD::AUDIOMODES playmode;
+	CLCD::PLAYMODES playmode;
 
 	switch (playstate) 
 	{
 		case CMoviePlayerGui::PAUSE:
-			playmode = CLCD::AUDIO_MODE_PAUSE;
+			playmode = CLCD::PLAY_MODE_PAUSE;
 			break;
 			
 		case CMoviePlayerGui::REW:
-			playmode = CLCD::AUDIO_MODE_REV;
+			playmode = CLCD::PLAY_MODE_REV;
 			break;
 			
 		case CMoviePlayerGui::FF:
-			playmode = CLCD::AUDIO_MODE_FF;
+			playmode = CLCD::PLAY_MODE_FF;
 			break;
 
 		case CMoviePlayerGui::SLOW:
 			break;
 
 		default:
-			playmode = CLCD::AUDIO_MODE_PLAY;
+			playmode = CLCD::PLAY_MODE_PLAY;
 			break;
 	}
 	

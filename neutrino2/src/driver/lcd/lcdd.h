@@ -462,13 +462,13 @@ class CLCD
 			MODE_INFOBOX
 		};
 		
-		enum AUDIOMODES
+		enum PLAYMODES
 		{
-			AUDIO_MODE_PLAY,
-			AUDIO_MODE_STOP,
-			AUDIO_MODE_FF,
-			AUDIO_MODE_PAUSE,
-			AUDIO_MODE_REV
+			PLAY_MODE_PLAY,
+			PLAY_MODE_STOP,
+			PLAY_MODE_FF,
+			PLAY_MODE_PAUSE,
+			PLAY_MODE_REV
 		};
 
 		enum LEDCOLOR
@@ -533,13 +533,14 @@ class CLCD
 #ifdef ENABLE_GRAPHLCD
 		nGLCD				*nglcd;
 		bool				nglcdshowclock;
+		int				nglcdclearClock;
 #endif
 
 #define LCD_NUMBER_OF_ELEMENTS 			15
 		raw_lcd_element_t               element[LCD_NUMBER_OF_ELEMENTS];
 
 		MODES				mode;
-		AUDIOMODES			movie_playmode;
+		PLAYMODES			movie_playmode;
 
 		std::string			servicename;
 		unsigned int			servicenumber;
@@ -592,7 +593,7 @@ class CLCD
 		void showServicename(const std::string &name, const bool perform_wakeup = true, int pos = 0); // UTF-8
 		////
 		void showEPGTitle(const std::string title);
-		void showMovieInfo(const AUDIOMODES playmode, const std::string big, const std::string small, const bool centered = false);
+		void showMovieInfo(const PLAYMODES playmode, const std::string big, const std::string small, const bool centered = false);
 		void setMovieAudio(const bool is_ac3);
 		////
 		std::string getMenutitle() { return menutitle; };
@@ -602,7 +603,7 @@ class CLCD
 		void showPercentOver(const unsigned char perc, const bool perform_update = true, const MODES m = MODE_TVRADIO);
 		void showMenuText(const int position, const char * text, const int highlight = -1, const bool utf_encoded = false);
 		void showAudioTrack(const std::string & artist, const std::string & title, const std::string & album, int pos = 0);
-		void showPlayMode(AUDIOMODES m = AUDIO_MODE_PLAY);
+		void showPlayMode(PLAYMODES m = PLAY_MODE_PLAY);
 		////
 		void setBrightness(int);
 		int getBrightness();

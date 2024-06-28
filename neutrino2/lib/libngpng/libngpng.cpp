@@ -296,11 +296,11 @@ void getSize(const std::string &name, int *width, int *height, int *nbpp)
 	return;
 }
 
-unsigned char *resize(unsigned char * origin, int ox, int oy, int dx, int dy, ScalingMode type, bool alpha)
+uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode type, bool alpha)
 {
 	unsigned char * cr = NULL;
 	
-	cr = (unsigned char *) malloc(dx*dy*(alpha? 4 : 3));
+	cr = (uint8_t *) malloc(dx*dy*(alpha? 4 : 3));
 
 	if(cr == NULL)
 	{
@@ -310,7 +310,7 @@ unsigned char *resize(unsigned char * origin, int ox, int oy, int dx, int dy, Sc
 
 	if(type == SIMPLE) 
 	{
-		unsigned char *p, *l;
+		uint8_t *p, *l;
 		int i, j, k, ip;
 		l = cr;
 
@@ -321,13 +321,13 @@ unsigned char *resize(unsigned char * origin, int ox, int oy, int dx, int dy, Sc
 			for(i = 0, k = 0; i < dx; i++, k += 3)
 			{
 				ip = i*ox/dx*3;
-				memmove(l+k, p+ip, 3);
+				memmove(l+k, p + ip, 3);
 			}
 		}
 	} 
 	else 
 	{
-		unsigned char *p, *q;
+		uint8_t *p, *q;
 		int i, j, k, l, ya, yb;
 		int sq, r, g, b, a;
 
@@ -575,7 +575,7 @@ uint8_t * getImage(const std::string &name, int width, int height, int transp, i
 	return ret;
 }
 
-uint8_t * getBitmap(const std::string &name)
+uint8_t * getBitmap(const std::string &name, int width, int height, ScalingMode type)
 {
 	int x = 0;
 	int y = 0;
@@ -602,7 +602,7 @@ uint8_t * getBitmap(const std::string &name)
 			load_ret = png_load_ext(name.c_str(), &buffer, &x, &y, &_bpp);
 		else if (name.find(".svg") == (name.length() - 4))
 		{
-			load_ret = svg_load_resize(name.c_str(), &buffer, &x, &y, INT_MAX, INT_MAX);
+			load_ret = svg_load_resize(name.c_str(), &buffer, &x, &y, width, height);
 			_bpp = 4;
 		}
 		else
@@ -610,6 +610,20 @@ uint8_t * getBitmap(const std::string &name)
 
 		if (load_ret == FH_ERROR_OK) 
 		{
+			// resize
+			if( (width != 0 && height != 0) && (x != width || y != height) )
+			{
+				// alpha
+				if(_bpp == 4)
+				{
+					buffer = resize(buffer, x, y, width, height, type, true);
+				}
+				else
+				{
+					buffer = resize(buffer, x, y, width, height, type);
+				}
+			}
+			
 			ret = (uint8_t *) buffer;
 			
 			free(buffer);

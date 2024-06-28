@@ -126,7 +126,7 @@ CLCD::CLCD()
 	movie_big = "";
 	movie_small = "";
 	menutitle = "";
-	movie_playmode = AUDIO_MODE_STOP;
+	movie_playmode = PLAY_MODE_STOP;
 	showclock = false;
 
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
@@ -136,6 +136,7 @@ CLCD::CLCD()
 #ifdef ENABLE_GRAPHLCD
 	nglcd = NULL;
 	nglcdshowclock= false;
+	nglcdclearClock = 0;
 #endif
 }
 
@@ -448,7 +449,6 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	{
 		element[i].width = 0;
 		element[i].height = 0;
-		element[i].buffer_size = 0;
 		element[i].buffer = NULL;
 
 		std::string file = DATADIR "/lcd/";
@@ -974,7 +974,7 @@ void CLCD::showEPGTitle(const std::string title)
 #endif
 }
 
-void CLCD::showMovieInfo(const AUDIOMODES playmode, const std::string big, const std::string small, const bool centered)
+void CLCD::showMovieInfo(const PLAYMODES playmode, const std::string big, const std::string small, const bool centered)
 {
 	printf("CLCD::showMovieInfo: playmode:%d big:%s small:%s centered:%s\n", playmode, big.empty()? "null" : big.c_str(), small.empty()? "null" : small.c_str(), centered? "centered" : "not centered");
 	
@@ -1063,17 +1063,26 @@ void CLCD::showTime(bool force)
 		gettimeofday(&tm, NULL);
 		t = localtime(&tm.tv_sec);
 		
+		strftime((char*) &timestr, 20, "%H:%M", t);
+		
 		//
-		if (CNeutrinoApp::getInstance()->recordingstatus && clearClock == 1)
+		if (CNeutrinoApp::getInstance()->recordingstatus)
 		{
-			strcpy(timestr,"  :  ");
+			if (clearClock == 1)
+			{
+				strcpy(timestr,"  :  ");
+				clearClock = 0;
+			}
+			else
+			{
+				clearClock = 1;
+			}
+		}
+		else if(clearClock) 
+		{ 
+			// in case icon ON after record stopped
 			clearClock = 0;
-		}
-		else
-		{
-			strftime((char*) &timestr, 20, "%H:%M", t);
-			clearClock = 1;
-		}
+		}	
 
 		if (mode == MODE_STANDBY)
 		{
@@ -1101,6 +1110,9 @@ void CLCD::showTime(bool force)
 		
 		displayUpdate();
 	}
+	
+	////test
+	printf("CLCD::showTime: showclock %d clearClock %d\n", showclock, clearClock);
 #endif
 
 #ifdef ENABLE_GRAPHLCD
@@ -1112,6 +1124,27 @@ void CLCD::showTime(bool force)
 
 		gettimeofday(&tm, NULL);
 		t = localtime(&tm.tv_sec);
+		
+		strftime((char*) &timestr, 20, "%H:%M", t);
+		
+		//
+		if (CNeutrinoApp::getInstance()->recordingstatus)
+		{
+			if (nglcdclearClock == 1)
+			{
+				strcpy(timestr,"  :  ");
+				nglcdclearClock = 0;
+			}
+			else
+			{
+				nglcdclearClock = 1;
+			}
+		}
+		else if(nglcdclearClock) 
+		{ 
+			// in case icon ON after record stopped
+			nglcdclearClock = 0;
+		}	
 
 		if (mode == MODE_STANDBY)
 		{
@@ -1124,21 +1157,6 @@ void CLCD::showTime(bool force)
 			
 				if (g_settings.glcd_enable) nglcd->LcdAnalogClock(lcd_a_clock_width / 2, lcd_a_clock_height / 2, 200);
 			}
-		}
-		else
-		{
-			if (CNeutrinoApp::getInstance ()->recordingstatus && clearClock == 1)
-			{
-				strcpy(timestr,"  :  ");
-				clearClock = 0;
-			}
-			else
-			{
-				strftime((char*) &timestr, 20, "%H:%M", t);
-				clearClock = 1;
-			}
-
-			//
 		}
 		
 		displayUpdate();
@@ -1360,7 +1378,7 @@ void CLCD::showAudioTrack(const std::string &artist, const std::string &title, c
 	displayUpdate();
 }
 
-void CLCD::showPlayMode(AUDIOMODES m)
+void CLCD::showPlayMode(PLAYMODES m)
 {
 	if(!has_lcd) 
 		return;
@@ -1369,25 +1387,25 @@ void CLCD::showPlayMode(AUDIOMODES m)
 #ifdef __sh__
 	switch(m) 
 	{
-		case AUDIO_MODE_PLAY:
+		case PLAY_MODE_PLAY:
 			ShowIcon(VFD_ICON_PLAY, true);
 			ShowIcon(VFD_ICON_PAUSE, false);
 			break;
 			
-		case AUDIO_MODE_STOP:
+		case PLAY_MODE_STOP:
 			ShowIcon(VFD_ICON_PLAY, false);
 			ShowIcon(VFD_ICON_PAUSE, false);
 			break;
 			
-		case AUDIO_MODE_PAUSE:
+		case PLAY_MODE_PAUSE:
 			ShowIcon(VFD_ICON_PLAY, false);
 			ShowIcon(VFD_ICON_PAUSE, true);
 			break;
 			
-		case AUDIO_MODE_FF:
+		case PLAY_MODE_FF:
 			break;
 			
-		case AUDIO_MODE_REV:
+		case PLAY_MODE_REV:
 			break;
 	}
 #endif	
@@ -1397,21 +1415,21 @@ void CLCD::showPlayMode(AUDIOMODES m)
 	
 	switch(m)
 	{
-		case AUDIO_MODE_PLAY:
+		case PLAY_MODE_PLAY:
 			{
 				display->load_screen_element(&(element[ELEMENT_PLAY]), 0, lcd_height - element[ELEMENT_PROG].height);
 				break;
 			}
 			
-		case AUDIO_MODE_STOP:
+		case PLAY_MODE_STOP:
 			display->draw_fill_rect (-1, lcd_height - 12, 12, 12, CLCDDisplay::PIXEL_ON);
 			break;
 			
-		case AUDIO_MODE_PAUSE:
+		case PLAY_MODE_PAUSE:
 			display->load_screen_element(&(element[ELEMENT_PAUSE]), 0, lcd_height - element[ELEMENT_PROG].height);
 			break;
 			
-		case AUDIO_MODE_FF:
+		case PLAY_MODE_FF:
 			{
 				int x = 2, y = lcd_height - 12;
 				display->draw_line(x   ,y   , x  , y+4, CLCDDisplay::PIXEL_ON);
@@ -1423,7 +1441,7 @@ void CLCD::showPlayMode(AUDIOMODES m)
 			}
 			break;
 			
-		case AUDIO_MODE_REV:
+		case PLAY_MODE_REV:
 			{
 				int x = 2, y = lcd_height - 12;
 				display->draw_line(x   ,y+2 , x  , y+2, CLCDDisplay::PIXEL_ON);
@@ -1557,7 +1575,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 			ShowIcon(VFD_ICON_LOCK, false);			
 			ShowIcon(VFD_ICON_HD, false);
 			ShowIcon(VFD_ICON_DOLBY, false);
-			showPlayMode(AUDIO_MODE_STOP);
+			showPlayMode(PLAY_MODE_STOP);
 			showclock = false;
 			break;
 		}
@@ -1658,7 +1676,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		display->clear_screen();
 		drawBanner();
 		display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height - element[ELEMENT_SPEAKER].height - 1);
-		showPlayMode(AUDIO_MODE_STOP);
+		showPlayMode(PLAY_MODE_STOP);
 		showVolume(volume, false);
 		showclock = true;
 		showTime();
@@ -1770,7 +1788,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		display->clear_screen(); // clear lcd
 		drawBanner();
 		display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height-1);
-		showPlayMode(AUDIO_MODE_STOP);
+		showPlayMode(PLAY_MODE_STOP);
 		showVolume(volume, false);
 		nglcdshowclock = true;
 		showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
@@ -1839,6 +1857,9 @@ void CLCD::setMode(const MODES m, const char * const title)
 	#endif
 	}
 #endif
+	
+	////test
+	printf("CLCD::setMode: mode %d showclock %d\n", mode, showclock);
 	
 	wake_up();
 }
