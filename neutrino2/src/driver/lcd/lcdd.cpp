@@ -502,8 +502,12 @@ void CLCD::setlcdparameter(int dimm, const int contrast, const int power, const 
 	if(!has_lcd) 
 		return;
 		
+	printf("CLCD::setlcdparameter: brightness: %d contrast: %d power: %d inverse: %d\n", dimm, contrast, power, inverse);
+	
+#ifndef ENABLE_GRAPHLCD	
 	if (power == 0)
 		dimm = 0;
+#endif
 		
 #if defined (ENABLE_VFD)
 #ifdef __sh__
@@ -548,6 +552,8 @@ void CLCD::setlcdparameter(void)
 {
 	if(!has_lcd) 
 		return;
+		
+	printf("CLCD::setlcdparameter:\n");
 
 	last_toggle_state_power = g_settings.lcd_power;
 	int dim_time = atoi(g_settings.lcd_setting_dim_time);
@@ -907,7 +913,13 @@ void CLCD::showText(const char *str)
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-	if (g_settings.glcd_enable) nglcd->drawText(0, 0, nglcd_width - 1, std::string(str), &font_channel);
+	std::string text = str;
+	
+	if (g_settings.glcd_enable) 
+	{
+		nglcd->drawText(0, 0, nglcd_width - 1, text, &font_channel);
+		nglcd->update();
+	}
 #endif
 }
 
@@ -951,7 +963,13 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-	//if (g_settings.glcd_enable) nglcd->drawText(0, 0, 0, name.length(), servicename);
+	if (g_settings.glcd_enable)
+	{
+		nglcd->drawText(0, 0, nglcd_width - 1, servicename, &font_channel);
+		
+		nglcd->showImage(CZapit::getInstance()->getCurrentChannelID(),
+			(nglcd_width - element[ELEMENT_PICON].width)/2, (nglcd_height - element[ELEMENT_PICON].height)/2, element[ELEMENT_PICON].width, element[ELEMENT_PICON].height);
+	}
 #endif
 	
 	if (perform_wakeup)
@@ -1159,7 +1177,23 @@ void CLCD::showTime(bool force)
 				int lcd_a_clock_width = 0, lcd_a_clock_height = 0, lcd_a_clock_bpp = 0;
 				getSize(a_clock.c_str(), &lcd_a_clock_width, &lcd_a_clock_height, &lcd_a_clock_bpp);
 			
-				if (g_settings.glcd_enable) nglcd->LcdAnalogClock(lcd_a_clock_width / 2, lcd_a_clock_height / 2, 200);
+				if (g_settings.glcd_enable) 
+				{
+					nglcd->showAnalogClock(lcd_a_clock_width / 2, lcd_a_clock_height / 2, 200);
+				}
+			}
+			/*
+			if (g_settings.glcd_enable)
+			{
+				nglcd->drawText(0, 0, nglcd_width - 1, timestr, &font_time_standby);
+			}
+			*/
+		}
+		else
+		{
+			if (g_settings.glcd_enable)
+			{
+				nglcd->drawText(0, 0, nglcd_width - 1, timestr, &font_time);
 			}
 		}
 		

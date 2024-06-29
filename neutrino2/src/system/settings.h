@@ -557,11 +557,11 @@ struct SNeutrinoSettings
 #define DEFAULT_LCD_CONTRAST			0x3F
 #define DEFAULT_LCD_POWER			0x01
 #define DEFAULT_LCD_INVERSE			0x00
-#define DEFAULT_LCD_STATUSLINE			CLCD::STATUSLINE_PLAYTIME
+#define DEFAULT_LCD_STATUSLINE			0x00
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
-#define DEFAULT_LCD_EPGMODE			CLCD::EPGMODE_CHANNEL_TITLE	/* channel / title */
+#define DEFAULT_LCD_EPGMODE			0x03	/* channel / title */
 #else // VFD / 4DIGITS
-#define DEFAULT_LCD_EPGMODE			CLCD::EPGMODE_TIME
+#define DEFAULT_LCD_EPGMODE			0x02
 #endif
 #define DEFAULT_LCD_EPGALIGN			0x01    /* centered */
 #define MAXBRIGHTNESS				0xFF

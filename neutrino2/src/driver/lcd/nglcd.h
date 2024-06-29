@@ -106,7 +106,7 @@ class nGLCD
 		std::string GetConfigName(int);
 		
 		////
-		void updateFonts();
+		void initFonts();
 		
 		bool showImage(uint32_t *s,
 			uint32_t sw, uint32_t sh,
@@ -122,9 +122,9 @@ class nGLCD
 		bool getBoundingBox(uint32_t *buffer,
 			int width, int height,
 			int &bb_x, int &bb_y, int &bb_width, int &bb_height);
-		void LcdAnalogClock(int posx, int posy, int dia);
+		void showAnalogClock(int posx, int posy, int dia);
 		
-		bool drawText(int x, int y, int width, const std::string &text, GLCD::cFont *font, uint32_t color = GLCD::cColor::White, uint32_t bgcolor = GLCD::cColor::Black, bool proportional = true, int skipPixels = 0, int align = ALIGN_CENTER);
+		void drawText(int x, int y, int width, const std::string &text, GLCD::cFont *font, uint32_t color = GLCD::cColor::White, uint32_t bgcolor = GLCD::cColor::Black, bool proportional = true, int skipPixels = 0, int align = ALIGN_CENTER);
 		
 		void update();
 		void clear();

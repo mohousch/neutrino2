@@ -125,7 +125,9 @@ bool nGLCD::init()
 		ret = true;
 		
 	// init fonts
-	updateFonts();
+	initFonts();
+	
+	lcd->SetBrightness(255);
 	
 	return ret;
 }
@@ -246,10 +248,12 @@ out4:
 	return true;
 }
 
-void nGLCD::updateFonts()
+void nGLCD::initFonts()
 {
 	if (lcd == NULL)
 		return;
+		
+	printf("nGLCD::initFonts\n");
 	
 	// ???
 	int percent;
@@ -434,7 +438,7 @@ bool nGLCD::showImage(uint64_t cid, uint32_t dx, uint32_t dy, uint32_t dw, uint3
 	{
 		logo = CChannellogo::getInstance()->getLogoName(cid); //, cname, logo, &sw, &sh))
 
-		std::string logo_tmp = DATADIR "/neutrino/icons/picon_default.png";
+		std::string logo_tmp = DATADIR "/lcd/picon_default.png";
 		
 		if (logo != logo_tmp)
 			return showImage(logo, (uint32_t) sw, (uint32_t) sh, dx, dy, dw, dh, transp, maximize);
@@ -443,7 +447,7 @@ bool nGLCD::showImage(uint64_t cid, uint32_t dx, uint32_t dy, uint32_t dw, uint3
 	return false;
 }
 
-void nGLCD::LcdAnalogClock(int posx, int posy, int dia)
+void nGLCD::showAnalogClock(int posx, int posy, int dia)
 {
 	if (lcd == NULL)
 		return;
@@ -469,12 +473,13 @@ void nGLCD::LcdAnalogClock(int posx, int posy, int dia)
 #elif BOXMODEL_E4HDULTRA
 	mx_ = int((dia * 0.30 * cos(mAngleInRad)));
 	my_ = int((dia * 0.30 * sin(mAngleInRad)));
-#elif BOXMODEL_VUUNO4KSE || BOXMODEL_DM900 || BOXMODEL_DM920
+//#elif BOXMODEL_VUUNO4KSE || BOXMODEL_DM900 || BOXMODEL_DM920
+#else
 	mx_ = int((dia * 0.55 * cos(mAngleInRad)));
 	my_ = int((dia * 0.55 * sin(mAngleInRad)));
-#else
-	mx_ = int((dia * 0.7 * cos(mAngleInRad)));
-	my_ = int((dia * 0.7 * sin(mAngleInRad)));
+//#else
+//	mx_ = int((dia * 0.7 * cos(mAngleInRad)));
+//	my_ = int((dia * 0.7 * sin(mAngleInRad)));
 #endif
 
 	hAngleInRad = ((30 * th_) * (2 * pi_ / 360));
@@ -496,9 +501,9 @@ void nGLCD::LcdAnalogClock(int posx, int posy, int dia)
 
 	std::string a_clock = "";
 
-	a_clock = DATADIR "/icons/a_clock.png";
+	a_clock = DATADIR "/lcd/a_clock.png";
 	if (access(a_clock.c_str(), F_OK) != 0)
-		a_clock = DATADIR "/icons/a_clock.png";
+		a_clock = DATADIR "/lcd/a_clock.png";
 
 	int lcd_a_clock_width = 0, lcd_a_clock_height = 0, lcd_a_clock_bpp = 0;
 	getSize(a_clock.c_str(), &lcd_a_clock_width, &lcd_a_clock_height, &lcd_a_clock_bpp);
@@ -545,14 +550,17 @@ void nGLCD::LcdAnalogClock(int posx, int posy, int dia)
 	bitmap->DrawLine(posx, posy + 4, posx + mx_, posy + my_, g_settings.glcd_color_fg);
 	bitmap->DrawLine(posx, posy + 5, posx + mx_, posy + my_, g_settings.glcd_color_fg);
 	bitmap->DrawLine(posx, posy + 6, posx + mx_, posy + my_, g_settings.glcd_color_fg);
+	
+	lcd->SetScreen(bitmap->Data(), bitmap->Width(), bitmap->Height());
+	lcd->Refresh(true);
 }
 
-bool nGLCD::drawText(int x, int y, int width, const std::string &text, GLCD::cFont *font, uint32_t color, uint32_t bgcolor, bool proportional, int skipPixels, int align)
+void nGLCD::drawText(int x, int y, int width, const std::string &text, GLCD::cFont *font, uint32_t color, uint32_t bgcolor, bool proportional, int skipPixels, int align)
 {
 	printf("nGLCD::drawText: %s\n", text.c_str());
 	
 	if (lcd == NULL)
-		return false;
+		return;
 	
 	int startx = 0;
 	int offset = 10; // px
@@ -574,7 +582,9 @@ bool nGLCD::drawText(int x, int y, int width, const std::string &text, GLCD::cFo
 		startx = std::max(offset, (bitmap->Width() - width - offset));
 	}
 
-	return bitmap->DrawText(startx, y, width, text, font, color, bgcolor, proportional, skipPixels);
+	bitmap->DrawText(startx, y, width, text, font, color, bgcolor, proportional, skipPixels);
+	lcd->SetScreen(bitmap->Data(), bitmap->Width(), bitmap->Height());	
+	lcd->Refresh(true);
 }
 
 
