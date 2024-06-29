@@ -733,7 +733,9 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 		}
 	}
 
+	// calculate maxeventlines
 	int maxeventlines = 4 - namelines;
+	maxeventlines = ((lcd_height - element[ELEMENT_BANNER].height - fonts.time->getHeight()) / fonts.menu->getHeight()) - namelines;
 	
 //	if (showmode == EPGMODE_CHANNEL_TITLE_LOGO)
 //		maxeventlines = 1;
