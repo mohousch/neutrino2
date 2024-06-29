@@ -530,8 +530,6 @@ struct SNeutrinoSettings
 	int glcd_percent_time;
 	int glcd_percent_time_standby;
 	int glcd_percent_logo;
-	int glcd_mirror_osd;
-	int glcd_mirror_video;
 	int glcd_time_in_standby;
 	int glcd_show_logo;
 	int glcd_brightness;

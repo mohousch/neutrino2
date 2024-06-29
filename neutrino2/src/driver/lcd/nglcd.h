@@ -42,14 +42,16 @@
 
 class nGLCD
 {
+	public:
+		////
+		static GLCD::cFont font_channel;
+		static GLCD::cFont font_epg;
+		static GLCD::cFont font_time;
+		static GLCD::cFont font_time_standby;
+		
 	private:
 		GLCD::cDriver *lcd;
-		
-		////
-		GLCD::cFont font_channel;
-		GLCD::cFont font_epg;
-		GLCD::cFont font_time;
-		GLCD::cFont font_time_standby;
+	
 		////
 		int fontsize_channel;
 		int fontsize_epg;
@@ -123,7 +125,7 @@ class nGLCD
 			int &bb_x, int &bb_y, int &bb_width, int &bb_height);
 		void LcdAnalogClock(int posx, int posy, int dia);
 		
-		bool drawText(int x, int y, int xmax, int text_width, const std::string &text, uint32_t color1 = GLCD::cColor::White, uint32_t color2 = GLCD::cColor::Transparent, bool proportional = true, int skipPixels = 0, int align = ALIGN_CENTER);
+		bool drawText(int x, int y, int width, const std::string &text, const GLCD::cFont *font, uint32_t color = GLCD::cColor::White, uint32_t bgcolor = GLCD::cColor::Black, bool proportional = true, int skipPixels = 0, int align = ALIGN_CENTER);
 		
 		void update();
 		void clear();
@@ -132,6 +134,21 @@ class nGLCD
 		////
 		int getWidth();
 		int getHeight();
+		int getFontHeight(GLCD::cFont *font);
+		int getFontRenderWidth(GLCD::cFont *font, const std::string &text);
+		/*
+		void DrawPixel(int x, int y, uint32_t color);
+	    	void DrawLine(int x1, int y1, int x2, int y2, uint32_t color);
+    		void DrawHLine(int x1, int y, int x2, uint32_t color);
+    		void DrawVLine(int x, int y1, int y2, uint32_t color);
+    		void DrawRectangle(int x1, int y1, int x2, int y2, uint32_t color, bool filled);
+    		void DrawRoundRectangle(int x1, int y1, int x2, int y2, uint32_t color, bool filled, int size);
+    		void DrawEllipse(int x1, int y1, int x2, int y2, uint32_t color, bool filled, int quadrants);
+    		void DrawSlope(int x1, int y1, int x2, int y2, uint32_t color, int type);
+    		void DrawBitmap(int x, int y, const cBitmap & bitmap, uint32_t color = cColor::White, uint32_t bgcolor = cColor::Black, int opacity = 255);
+    		int DrawText(int x, int y, int xmax, const std::string &text, const GLCD::cFont *font,
+                 uint32_t color = GLCD::cColor::White, uint32_t bgcolor = GLCD::cColor::Black, bool proportional = true, int skipPixels = 0);
+		*/
 };
 #endif
 

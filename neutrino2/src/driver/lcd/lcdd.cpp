@@ -808,7 +808,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-	if (g_settings.glcd_enable) nglcd->drawText(0, 0, 0, big.length(), big);
+	//if (g_settings.glcd_enable) nglcd->drawText(0, 0, 0, big.length(), big);
 #endif
 
 	if (perform_wakeup)
@@ -907,7 +907,7 @@ void CLCD::showText(const char *str)
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-	if (g_settings.glcd_enable) nglcd->drawText(0, 0, 0, strlen(str), std::string(str));
+	if (g_settings.glcd_enable) nglcd->drawText(0, 0, nglcd_width - 1, std::string(str), &nGLCD::font_channel);
 #endif
 }
 
@@ -951,7 +951,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-	if (g_settings.glcd_enable) nglcd->drawText(0, 0, 0, name.length(), servicename);
+	//if (g_settings.glcd_enable) nglcd->drawText(0, 0, 0, name.length(), servicename);
 #endif
 	
 	if (perform_wakeup)
@@ -1345,7 +1345,7 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 #endif
 
 #ifdef ENABLE_GRAPHLCD	
-	if (g_settings.glcd_enable) nglcd->drawText(0, 0, 0, strlen(text), std::string(text));
+	//if (g_settings.glcd_enable) nglcd->drawText(0, 0, 0, strlen(text), std::string(text));
 #endif
 
 	wake_up();
