@@ -547,7 +547,7 @@ void nGLCD::LcdAnalogClock(int posx, int posy, int dia)
 	bitmap->DrawLine(posx, posy + 6, posx + mx_, posy + my_, g_settings.glcd_color_fg);
 }
 
-bool nGLCD::drawText(int x, int y, int width, const std::string &text, const GLCD::cFont *font, uint32_t color, uint32_t bgcolor, bool proportional, int skipPixels, int align)
+bool nGLCD::drawText(int x, int y, int width, const std::string &text, GLCD::cFont *font, uint32_t color, uint32_t bgcolor, bool proportional, int skipPixels, int align)
 {
 	printf("nGLCD::drawText: %s\n", text.c_str());
 	

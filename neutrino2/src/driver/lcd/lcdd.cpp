@@ -907,7 +907,7 @@ void CLCD::showText(const char *str)
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-	if (g_settings.glcd_enable) nglcd->drawText(0, 0, nglcd_width - 1, std::string(str), &nGLCD::font_channel);
+	if (g_settings.glcd_enable) nglcd->drawText(0, 0, nglcd_width - 1, std::string(str), &font_channel);
 #endif
 }
 

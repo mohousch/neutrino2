@@ -40,15 +40,14 @@
 #include <zapit/zapittypes.h>
 
 
-class nGLCD
-{
-	public:
-		////
-		static GLCD::cFont font_channel;
-		static GLCD::cFont font_epg;
-		static GLCD::cFont font_time;
-		static GLCD::cFont font_time_standby;
+////
+static GLCD::cFont font_channel;
+static GLCD::cFont font_epg;
+static GLCD::cFont font_time;
+static GLCD::cFont font_time_standby;
 		
+class nGLCD
+{	
 	private:
 		GLCD::cDriver *lcd;
 	
@@ -125,7 +124,7 @@ class nGLCD
 			int &bb_x, int &bb_y, int &bb_width, int &bb_height);
 		void LcdAnalogClock(int posx, int posy, int dia);
 		
-		bool drawText(int x, int y, int width, const std::string &text, const GLCD::cFont *font, uint32_t color = GLCD::cColor::White, uint32_t bgcolor = GLCD::cColor::Black, bool proportional = true, int skipPixels = 0, int align = ALIGN_CENTER);
+		bool drawText(int x, int y, int width, const std::string &text, GLCD::cFont *font, uint32_t color = GLCD::cColor::White, uint32_t bgcolor = GLCD::cColor::Black, bool proportional = true, int skipPixels = 0, int align = ALIGN_CENTER);
 		
 		void update();
 		void clear();
