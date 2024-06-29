@@ -65,14 +65,6 @@ class nGLCD
 		int percent_space;
 		
 		bool fonts_initialized;
-		/*
-		std::string Channel;
-		std::string Epg;
-		std::string stagingChannel;
-		std::string stagingEpg;
-		t_channel_id channel_id;
-		int Scale;
-		*/
 		
 	public:
 		GLCD::cBitmap *bitmap;
@@ -137,6 +129,9 @@ class nGLCD
 		void clear();
 		
 		void SetBrightness(unsigned int b);
+		////
+		int getWidth();
+		int getHeight();
 };
 #endif
 

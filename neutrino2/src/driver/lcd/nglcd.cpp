@@ -139,6 +139,26 @@ std::string nGLCD::GetConfigName(int driver)
 	return GLCD::Config.driverConfigs[driver].name;
 }
 
+int nGLCD::getWidth()
+{
+	int width = 132;
+	
+	if (lcd)
+		width = lcd->Width();
+		
+	return width;
+}
+
+int nGLCD::getHeight()
+{
+	int height = 64;
+	
+	if (lcd)
+		height = lcd->Height();
+	
+	return height;
+}
+
 bool nGLCD::getBoundingBox(uint32_t *buffer, int width, int height, int &bb_x, int &bb_y, int &bb_w, int &bb_h)
 {
 	if (!width || !height)

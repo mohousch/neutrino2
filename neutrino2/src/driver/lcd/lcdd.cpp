@@ -137,6 +137,8 @@ CLCD::CLCD()
 	nglcd = NULL;
 	nglcdshowclock= false;
 	nglcdclearClock = 0;
+	nglcd_width = 132;
+	nglcd_height = 64;
 #endif
 }
 

@@ -534,6 +534,8 @@ class CLCD
 		nGLCD				*nglcd;
 		bool				nglcdshowclock;
 		int				nglcdclearClock;
+		int 				nglcd_width;
+		int 				nglcd_height;
 #endif
 
 #define LCD_NUMBER_OF_ELEMENTS 			15
