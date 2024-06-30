@@ -58,9 +58,7 @@ int CUserMenu::exec(CMenuTarget *parent, const std::string &actionKey)
                 parent->hide();
                 
         if (actionKey == "savesettings")
-        {
-//		this->setValueString(g_settings.usermenu_text[button].c_str());
-        	
+        {        	
         	CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
         	return RETURN_REPAINT;
         }
@@ -120,6 +118,11 @@ int CUserMenu::doMenu(void)
 		head->setIcon(NEUTRINO_ICON_KEYBINDING);
 	}
 	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, local.c_str());
+	
 	// intros
 	menu->addItem(new CMenuForwarder(_("back")));
 	menu->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
@@ -151,6 +154,9 @@ int CUserMenu::doMenu(void)
         	delete widget;
         	widget = NULL;
         }
+        
+        //
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 
         return res;
 }
