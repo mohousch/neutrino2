@@ -638,7 +638,7 @@ void CLCDDisplay::update()
 			}
 		}
 
-		// align
+		// blit
 		if (lcd_type == 0 || lcd_type == 2)
 		{
 			unsigned int height = yres;
@@ -689,7 +689,7 @@ void CLCDDisplay::update()
 		}
 		else if (lcd_type == 3)
 		{
-			/* for now, only support flipping / inverting for 8bpp displays */
+			// for now, only support flipping / inverting for 8bpp displays
 			if ((flipped || inverted) && surface_stride == xres)
 			{
 				unsigned int height = yres;
@@ -716,7 +716,33 @@ void CLCDDisplay::update()
 			}
 			else
 			{
-#ifdef PLATFORM_GIGABLUE
+				// LCD_COLOR_BITORDER_RGB565
+#if defined (PLATFORM_DREAMBOX)		
+				// gggrrrrrbbbbbggg bit order from memory
+				// gggbbbbbrrrrrggg bit order to LCD
+				uint8_t gb_buffer[surface_stride * yres];
+				
+				if (!(0x03 & (surface_stride * yres)))
+				{ 
+					// fast
+					for (int offset = 0; offset < ((surface_stride * yres) >> 2); offset++)
+					{
+						unsigned int src = ((unsigned int *)surface_data)[offset];
+						((unsigned int *)gb_buffer)[offset] = src & 0xE007E007 | (src & 0x1F001F00) >> 5 | (src & 0x00F800F8) << 5;
+					}
+				}
+				else
+				{ 
+					// slow
+					for (int offset = 0; offset < surface_stride * yres; offset += 2)
+					{
+						gb_buffer[offset] = (surface_data[offset] & 0x07) | ((surface_data[offset + 1] << 3) & 0xE8);
+						gb_buffer[offset + 1] = (surface_data[offset + 1] & 0xE0) | ((surface_data[offset] >> 3) & 0x1F);
+					}
+				}
+				
+				write(fd, gb_buffer, surface_stride * yres);
+#elif defined (PLATFORM_GIGABLUE)
 				uint8_t gb_buffer[surface_stride * yres];
 				
 				for (int offset = 0; offset < surface_stride * yres; offset += 2)
@@ -729,7 +755,6 @@ void CLCDDisplay::update()
 #else
 				write(fd, surface_data + surface_stride * real_offset, surface_stride * real_yres);
 #endif				
-				//
 			}
 		}
 		else /* lcd_type == 1 */

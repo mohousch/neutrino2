@@ -1132,9 +1132,6 @@ void CLCD::showTime(bool force)
 		
 		displayUpdate();
 	}
-	
-	////test
-	printf("CLCD::showTime: showclock %d clearClock %d\n", showclock, clearClock);
 #endif
 
 #ifdef ENABLE_GRAPHLCD
@@ -1895,9 +1892,6 @@ void CLCD::setMode(const MODES m, const char * const title)
 	#endif
 	}
 #endif
-	
-	////test
-	printf("CLCD::setMode: mode %d showclock %d\n", mode, showclock);
 	
 	wake_up();
 }
