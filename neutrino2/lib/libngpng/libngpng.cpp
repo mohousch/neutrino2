@@ -298,7 +298,7 @@ void getSize(const std::string &name, int *width, int *height, int *nbpp)
 
 uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode type, bool alpha)
 {
-	unsigned char * cr = NULL;
+	uint8_t * cr = NULL;
 	
 	cr = (uint8_t *) malloc(dx*dy*(alpha? 4 : 3));
 
@@ -415,7 +415,7 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 	return(cr);
 }
 
-void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, int transp, bool alpha, int m_transparent, int bpp)
+void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, int bpp, bool alpha, int transp, int m_transparent)
 {
 	unsigned long i;
 	void *fbbuff = NULL;
@@ -506,11 +506,11 @@ uint8_t * getImage(const std::string &name, int width, int height, int bpp, int 
 {
 	int x = 0;
 	int y = 0;
+	int _bpp = 0;
 	CFormathandler * fh = NULL;
 	uint8_t * buffer = NULL;
 	uint8_t * ret = NULL;
 	int load_ret = FH_ERROR_MALLOC;
-	int _bpp = 0;
 
 	//
   	fh = fh_getsize(name.c_str(), &x, &y, INT_MAX, INT_MAX); // unscaled
@@ -554,17 +554,17 @@ uint8_t * getImage(const std::string &name, int width, int height, int bpp, int 
 				y = height;
 			}
 			
-			// convert RGB2FB
+			// convertRGB2FB
 			if( name.find(".png") == (name.length() - 4) )
 			{
 				// alpha
 				if (_bpp == 4)
-					ret = (uint8_t *)convertRGB2FB(buffer, x, y, 0, true, bpp);
+					ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, true);
 				else
-					ret = (uint8_t *)convertRGB2FB(buffer, x, y, transp, false, TM_BLACK, bpp); // TM_BLACK
+					ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_BLACK); // TM_BLACK
 			}
 			else
-				ret = (uint8_t *)convertRGB2FB(buffer, x, y, transp, false, TM_NONE, bpp); //TM_NONE
+				ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_NONE); //TM_NONE
 			
 			free(buffer);
 		} 

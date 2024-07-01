@@ -1358,10 +1358,10 @@ bool CFrameBuffer::loadBackgroundPic(const std::string &filename, bool show)
 		free(background);
 	
 	// get bg image
-	background = (uint32_t *)getImage(iconBasePath + filename, BACKGROUNDIMAGEWIDTH, BACKGROUNDIMAGEHEIGHT); // transp = 0xFF
+	background = (uint32_t *)getImage(iconBasePath + filename, BACKGROUNDIMAGEWIDTH, BACKGROUNDIMAGEHEIGHT);
 	
 	if(!background) 
-		background = (uint32_t *)getImage(filename, BACKGROUNDIMAGEWIDTH, BACKGROUNDIMAGEHEIGHT); // transp = 0xFF
+		background = (uint32_t *)getImage(filename, BACKGROUNDIMAGEWIDTH, BACKGROUNDIMAGEHEIGHT);
 
 	// if not found
 	if (background == NULL) 
@@ -1757,7 +1757,7 @@ void CFrameBuffer::displayRGB(unsigned char * rgbbuff, int x_size, int y_size, i
 }
 
 // display image
-bool CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int width, int height, int x_pan, int y_pan)
+bool CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int width, int height, int x_pan, int y_pan, ScalingMode type)
 {
 	dprintf(DEBUG_DEBUG, "CFrameBuffer::displayImage %s\n", name.c_str());
 	
@@ -1770,7 +1770,7 @@ bool CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int
 	if( name.find(".png") == (name.length() - 4) )
 		isPNG = true;
 	
-	fb_pixel_t *data = (uint32_t *)getImage(name, width, height, bpp,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
+	fb_pixel_t *data = (uint32_t *)getImage(name, width, height, bpp,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha), type);
 
 	if(data) 
 	{

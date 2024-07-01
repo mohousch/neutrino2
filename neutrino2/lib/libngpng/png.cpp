@@ -123,6 +123,7 @@ int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int
 	if (bit_depth == 16)
 		png_set_strip_16(png_ptr);
 	
+	//
 	number_passes = png_set_interlace_handling(png_ptr);
 	png_read_update_info(png_ptr, info_ptr);
 	unsigned long rowbytes = png_get_rowbytes(png_ptr, info_ptr);

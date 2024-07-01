@@ -153,7 +153,7 @@ bool CPictureViewer::showImage(const std::string &filename)
   	decodeImage(m_Pic_Name, true);
 	
 	// display image
-	CFrameBuffer::getInstance()->displayImage(m_Pic_Name, m_Pic_XPos, m_Pic_YPos, m_Pic_X, m_Pic_Y, m_Pic_XPan, m_Pic_YPan);
+	CFrameBuffer::getInstance()->displayImage(m_Pic_Name, m_Pic_XPos, m_Pic_YPos, m_Pic_X, m_Pic_Y, m_Pic_XPan, m_Pic_YPan, m_scaling);
 	
   	return true;
 }
@@ -192,7 +192,7 @@ void CPictureViewer::zoom(float factor)
 	else
 		m_Pic_YPan = 0;
 
-	CFrameBuffer::getInstance()->displayImage(m_Pic_Name, m_Pic_XPos, m_Pic_YPos, m_Pic_X, m_Pic_Y, m_Pic_XPan, m_Pic_YPan);
+	CFrameBuffer::getInstance()->displayImage(m_Pic_Name, m_Pic_XPos, m_Pic_YPos, m_Pic_X, m_Pic_Y, m_Pic_XPan, m_Pic_YPan, m_scaling);
 }
 
 void CPictureViewer::move(int dx, int dy)
@@ -234,7 +234,7 @@ void CPictureViewer::move(int dx, int dy)
 	else
 		m_Pic_YPos = m_starty;
 	
-	CFrameBuffer::getInstance()->displayImage(m_Pic_Name, m_Pic_XPos, m_Pic_YPos, m_Pic_X, m_Pic_Y, m_Pic_XPan, m_Pic_YPan);
+	CFrameBuffer::getInstance()->displayImage(m_Pic_Name, m_Pic_XPos, m_Pic_YPos, m_Pic_X, m_Pic_Y, m_Pic_XPan, m_Pic_YPan, m_scaling);
 }
 
 void CPictureViewer::showBusy(fb_pixel_t col)
