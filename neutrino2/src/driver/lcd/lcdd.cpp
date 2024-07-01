@@ -544,7 +544,11 @@ void CLCD::setlcdparameter(int dimm, const int contrast, const int power, const 
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-	if (g_settings.glcd_enable) nglcd->SetBrightness(dimm);
+	if (g_settings.glcd_enable) 
+	{
+		nglcd->SetBrightness(dimm);
+		nglcd->setLCDContrast(contrast);
+	}
 #endif
 }
 
@@ -703,7 +707,10 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 #endif	
 #elif defined (ENABLE_LCD)
 	// clear screen under banner
-	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, lcd_height - fonts.time->getHeight(), CLCDDisplay::PIXEL_OFF);
+	if (mode == MODE_PIC)
+		display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, lcd_height, CLCDDisplay::PIXEL_OFF);
+	else
+		display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, lcd_height - fonts.time->getHeight(), CLCDDisplay::PIXEL_OFF);
 
 	//
 	bool big_utf8 = false;
@@ -712,8 +719,8 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	std::string event[4];
 	int namelines = 0, eventlines = 0, maxnamelines = 2;
 	
-//	if (showmode == EPGMODE_CHANNEL_TITLE_LOGO)
-//		maxnamelines = 1;
+	if (showmode == EPGMODE_CHANNEL_TITLE_LOGO)
+		maxnamelines = 1;
 
 	if ((showmode & CLCD::EPGMODE_CHANNEL) && !big.empty())
 	{
@@ -745,8 +752,8 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	int maxeventlines = 4 - namelines;
 	maxeventlines = ((lcd_height - element[ELEMENT_BANNER].height - fonts.time->getHeight()) / fonts.menu->getHeight()) - namelines;
 	
-//	if (showmode == EPGMODE_CHANNEL_TITLE_LOGO)
-//		maxeventlines = 1;
+	if (showmode == EPGMODE_CHANNEL_TITLE_LOGO)
+		maxeventlines = 1;
 
 	if ((showmode & CLCD::EPGMODE_TITLE) && !small.empty())
 	{
@@ -958,7 +965,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 	showTextScreen(servicename, epg_title, showmode, perform_wakeup, g_settings.lcd_epgalign);
 	
 	// logo
-	if (showmode == 7)
+	if (showmode == EPGMODE_CHANNEL_TITLE_LOGO)
 		display->load_screen_element(&(element[ELEMENT_PICON]), (lcd_width - element[ELEMENT_PICON].width)/2, lcd_height - fonts.menu->getHeight() - element[ELEMENT_PICON].height);
 #endif
 
@@ -1169,6 +1176,7 @@ void CLCD::showTime(bool force)
 		{
 			std::string a_clock = DATADIR "/lcd/a_clock.png";
 			
+			/*
 			if (file_exists(a_clock.c_str()))
 			{
 				int lcd_a_clock_width = 0, lcd_a_clock_height = 0, lcd_a_clock_bpp = 0;
@@ -1179,12 +1187,11 @@ void CLCD::showTime(bool force)
 					nglcd->showAnalogClock(lcd_a_clock_width / 2, lcd_a_clock_height / 2, 200);
 				}
 			}
-			/*
+			*/
 			if (g_settings.glcd_enable)
 			{
 				nglcd->drawText(0, 0, nglcd_width - 1, timestr, &font_time_standby);
 			}
-			*/
 		}
 		else
 		{
@@ -1355,16 +1362,16 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 #endif
 }
 
-void CLCD::showMenuText(const int position, const char * text, const int highlight, const bool utf_encoded)
+void CLCD::showMenuText(const int position, const char * text, const int selected, const bool utf_encoded)
 {
 	if(!has_lcd) 
 		return;
 		
-	printf("CLCD::showMenuText: position:%d text:%s highlight:%d\n", position, text? text : "null", highlight);
+	printf("CLCD::showMenuText: position:%d text:%s highlight:%d\n", position, text? text : "null", selected);
 	
 	if (mode != MODE_MENU_UTF8)
 		return;
-	
+		
 #if defined (ENABLE_VFD)						
 	showText(text); // UTF-8
 #elif defined (ENABLE_LCD)
@@ -1372,7 +1379,7 @@ void CLCD::showMenuText(const int position, const char * text, const int highlig
 	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 - 1, lcd_width, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight() + 10, CLCDDisplay::PIXEL_OFF);
 	
 	// render text
-	fonts.menu->RenderString(0, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight(), lcd_width + 10, text, CLCDDisplay::PIXEL_ON, highlight, utf_encoded);
+	fonts.menu->RenderString(0, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight(), lcd_width + 10, text, CLCDDisplay::PIXEL_ON, selected, utf_encoded);
 #endif
 
 #ifdef ENABLE_GRAPHLCD	

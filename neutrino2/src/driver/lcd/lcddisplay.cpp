@@ -717,7 +717,7 @@ void CLCDDisplay::update()
 			else
 			{
 				// LCD_COLOR_BITORDER_RGB565
-#if defined (PLATFORM_DREAMBOX)		
+#if defined (PLATFORM_DREAMBOX)	|| defined (PLATFORM_GIGABLUE)
 				// gggrrrrrbbbbbggg bit order from memory
 				// gggbbbbbrrrrrggg bit order to LCD
 				uint8_t gb_buffer[surface_stride * yres];
@@ -739,16 +739,6 @@ void CLCDDisplay::update()
 						gb_buffer[offset] = (surface_data[offset] & 0x07) | ((surface_data[offset + 1] << 3) & 0xE8);
 						gb_buffer[offset + 1] = (surface_data[offset + 1] & 0xE0) | ((surface_data[offset] >> 3) & 0x1F);
 					}
-				}
-				
-				write(fd, gb_buffer, surface_stride * yres);
-#elif defined (PLATFORM_GIGABLUE)
-				uint8_t gb_buffer[surface_stride * yres];
-				
-				for (int offset = 0; offset < surface_stride * yres; offset += 2)
-				{
-					gb_buffer[offset] = (surface_data[offset] & 0x1F) | ((surface_data[offset + 1] << 3) & 0xE0);
-					gb_buffer[offset + 1] = ((surface_data[offset + 1] >> 5) & 0x03) | ((surface_data[offset] >> 3) & 0x1C) | ((_buffer[offset + 1] << 5) & 0x60);
 				}
 				
 				write(fd, gb_buffer, surface_stride * yres);

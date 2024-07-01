@@ -130,6 +130,7 @@ class nGLCD
 		void clear();
 		
 		void SetBrightness(unsigned int b);
+		void setLCDContrast(int contrast);
 		////
 		int getWidth();
 		int getHeight();

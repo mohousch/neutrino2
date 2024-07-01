@@ -613,3 +613,25 @@ void nGLCD::SetBrightness(unsigned int b)
 	lcd->SetBrightness(b);
 }
 
+void nGLCD::setLCDContrast(int contrast)
+{
+	if (lcd == NULL)
+		return;
+		
+	int fp;
+
+	fp = open("/dev/dbox/fp0", O_RDWR);
+
+	if (fp < 0)
+		fp = open("/dev/dbox/lcd0", O_RDWR);
+		
+	if (fp < 0)
+	{
+		printf("nGLCD::setLCDContrast: can't open /dev/dbox/fp0(%m)\n");
+		return;
+	}
+	
+	close(fp);
+}
+
+

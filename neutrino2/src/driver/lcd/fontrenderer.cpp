@@ -286,15 +286,18 @@ void LcdFont::RenderString(int x, int y, const int width, const char * text, con
 	{
 		pos++;
 		FTC_SBit glyph;
+		
 		//if ((x + size->metrics.x_ppem > (left+width)) || (*text=='\n'))
 		if (x + size->metrics.x_ppem > (left+width))
-		{ //width clip
+		{ 
+			//width clip
 			break;
 		}
+		
 		if (*text=='\n')
 		{
-		  x  = left;
-		  y += step_y;
+			x  = left;
+		  	y += step_y;
 		}
 
 		int unicode_value = UTF8ToUnicode(text, utf8_encoded);
@@ -313,8 +316,8 @@ void LcdFont::RenderString(int x, int y, const int width, const char * text, con
 			continue;
 		}
     
-		int rx=x+glyph->left;
-		int ry=y-glyph->top;
+		int rx = x + glyph->left;
+		int ry = y - glyph->top;
 		
 		if(pos == selected)
 		{
@@ -326,11 +329,14 @@ void LcdFont::RenderString(int x, int y, const int width, const char * text, con
 			int ax = 0;
 			int w = glyph->width;
 			int xpos = rx;
+			
 			for (; ax < w; ax++)
 			{
 				unsigned char c = glyph->buffer[ay*abs(glyph->pitch) + (ax>>3)];
-				if((c>>(7-(ax&7)))&1)
-				framebuffer->draw_point(xpos, ry, color);
+				
+				if((c>>(7 - (ax&7)))&1)
+					framebuffer->draw_point(xpos, ry, color);
+					
 				xpos++;
 			}
 			ry++;
@@ -350,13 +356,6 @@ int LcdFont::getRenderWidth(const char * text, const bool utf8_encoded)
 	text = Text.c_str();	
 	
 	FT_Error err;
-/*
-	FTC_ScalerRec scaler;
-	scaler.face_id = font.face_id;
-	scaler.width   = font.width;
-	scaler.height  = font.height;
-	scaler.pixel   = true;
-*/
 
 	err = FTC_Manager_LookupSize(renderer->cacheManager, &scaler, &size);
 
