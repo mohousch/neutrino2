@@ -69,8 +69,7 @@ CFormathandler *fh_getsize(const char * name, int * x, int * y, int width_wanted
 void getSize(const std::string &name, int * width, int * height, int * nbpp);
 uint8_t *resize(unsigned char * origin, int ox, int oy, int dx, int dy, ScalingMode type, bool alpha = false);
 void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, int transp = 0xFF, bool aplha = false, int m_transparent = TM_BLACK, int bpp = 32);
-uint8_t *getImage(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, int bpp = 32, ScalingMode type = COLOR, bool convert = true);
-uint8_t *getBitmap(const std::string &name, int width = 0, int height = 0, ScalingMode type = SIMPLE);
+uint8_t *getImage(const std::string &name, int width = 0, int height = 0, int bpp = 32, int transp = 0xFF, ScalingMode type = COLOR);
 
 #endif
 

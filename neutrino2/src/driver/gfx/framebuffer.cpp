@@ -1127,7 +1127,7 @@ bool CFrameBuffer::paintIcon(const std::string& filename, const int x, const int
 	if(width == 0 || height == 0)	
 		getIconSize(newname.c_str(), &width, &height);
 
-	data = (uint32_t *)getImage(newname, width, height, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
+	data = (uint32_t *)getImage(newname, width, height, bpp, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
 	
 	// check into buttonBasePath	
 	if(!data) 
@@ -1137,7 +1137,7 @@ bool CFrameBuffer::paintIcon(const std::string& filename, const int x, const int
 		if(width == 0 || height == 0)	
 			getIconSize(newname.c_str(), &width, &height);
 
-		data = (uint32_t *)getImage(newname, width, height, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
+		data = (uint32_t *)getImage(newname, width, height, bpp,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
 	}
 	
 	// check into spinnerBasePath	
@@ -1148,7 +1148,7 @@ bool CFrameBuffer::paintIcon(const std::string& filename, const int x, const int
 		if(width == 0 || height == 0)	
 			getIconSize(newname.c_str(), &width, &height);
 
-		data = (uint32_t *)getImage(newname, width, height, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
+		data = (uint32_t *)getImage(newname, width, height, bpp,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
 	}
 	
 	// full path
@@ -1161,7 +1161,7 @@ bool CFrameBuffer::paintIcon(const std::string& filename, const int x, const int
 		if(width == 0 || height == 0)	
 			getIconSize(newname.c_str(), &width, &height);
 
-		data = (uint32_t *)getImage(newname, width, height, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
+		data = (uint32_t *)getImage(newname, width, height, bpp,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
 	}
 
 	if(data) 
@@ -1770,7 +1770,7 @@ bool CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int
 	if( name.find(".png") == (name.length() - 4) )
 		isPNG = true;
 	
-	fb_pixel_t *data = (uint32_t *)getImage(name, width, height, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
+	fb_pixel_t *data = (uint32_t *)getImage(name, width, height, bpp,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
 
 	if(data) 
 	{

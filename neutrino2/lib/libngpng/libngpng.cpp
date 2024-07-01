@@ -436,7 +436,7 @@ void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, 
 		
 		if(alpha)
 		{
-			for(i = 0; i < count ; i++)
+			for(i = 0; i < count; i++)
 			{
 				i_fbbuff[i] = ((rgbbuff[i*4 + 3] << 24) & 0xFF000000) | 
 					((rgbbuff[i*4]     << 16) & 0x00FF0000) | 
@@ -451,7 +451,7 @@ void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, 
 			switch (m_transparent) 
 			{
 				case TM_BLACK:
-					for(i = 0; i < count ; i++) 
+					for(i = 0; i < count; i++) 
 					{
 						transp = 0;
 						if(rgbbuff[i*3] || rgbbuff[i*3 + 1] || rgbbuff[i*3 + 2])
@@ -463,7 +463,7 @@ void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, 
 					break;
 		
 				case TM_INI:
-					for(i = 0; i < count ; i++)
+					for(i = 0; i < count; i++)
 						i_fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
 						
 					fbbuff = ( void * ) i_fbbuff;
@@ -472,7 +472,7 @@ void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, 
 								
 				case TM_NONE:
 				default:
-					for(i = 0; i < count ; i++)
+					for(i = 0; i < count; i++)
 						i_fbbuff[i] = 0xFF000000 | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
 						
 					fbbuff = ( void * ) i_fbbuff;
@@ -482,14 +482,27 @@ void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, 
 	}
 	else if (bpp == 16)
 	{
-		s_fbbuff = ( unsigned short *) make15color_errdiff(rgbbuff, x, y );
-		fbbuff = ( void * ) s_fbbuff;
+		s_fbbuff = ( unsigned short * ) malloc ( count * sizeof ( unsigned short ) );
+		
+		for (i = 0; i < count; i++)
+			s_fbbuff[i] = rgbbuff[i];
+			
+		fbbuff = (void *)s_fbbuff;
 	}
-
+	else if (bpp == 8)
+	{
+		c_fbbuff = ( unsigned char * ) malloc ( count * sizeof ( unsigned char ) );
+		
+		for (i = 0; i < count; i++)
+			c_fbbuff[i] = rgbbuff[i];
+			
+		fbbuff = (void *)c_fbbuff;
+	}
+	
 	return (void *) fbbuff;
 }
 
-uint8_t * getImage(const std::string &name, int width, int height, int transp, int bpp, ScalingMode type, bool convert)
+uint8_t * getImage(const std::string &name, int width, int height, int bpp, int transp, ScalingMode type)
 {
 	int x = 0;
 	int y = 0;
@@ -542,21 +555,16 @@ uint8_t * getImage(const std::string &name, int width, int height, int transp, i
 			}
 			
 			// convert RGB2FB
-			if (convert)
+			if( name.find(".png") == (name.length() - 4) )
 			{
-				if( name.find(".png") == (name.length() - 4) )
-				{
-					// alpha
-					if (_bpp == 4)
-						ret = (uint8_t *)convertRGB2FB(buffer, x, y, 0, true, bpp);
-					else
-						ret = (uint8_t *)convertRGB2FB(buffer, x, y, transp, false, TM_BLACK, bpp); // TM_BLACK
-				}
+				// alpha
+				if (_bpp == 4)
+					ret = (uint8_t *)convertRGB2FB(buffer, x, y, 0, true, bpp);
 				else
-					ret = (uint8_t *)convertRGB2FB(buffer, x, y, transp, false, TM_NONE, bpp); //TM_NONE
+					ret = (uint8_t *)convertRGB2FB(buffer, x, y, transp, false, TM_BLACK, bpp); // TM_BLACK
 			}
 			else
-				ret = (uint8_t *) buffer;
+				ret = (uint8_t *)convertRGB2FB(buffer, x, y, transp, false, TM_NONE, bpp); //TM_NONE
 			
 			free(buffer);
 		} 
@@ -570,74 +578,6 @@ uint8_t * getImage(const std::string &name, int width, int height, int transp, i
 	else
 	{
 		printf("[libngpng] getImage: Error open file %s\n", name.c_str ());
-	}
-
-	return ret;
-}
-
-uint8_t * getBitmap(const std::string &name, int width, int height, ScalingMode type)
-{
-	int x = 0;
-	int y = 0;
-	int _bpp = 0;
-	CFormathandler * fh = NULL;
-	uint8_t * buffer = NULL;
-	uint8_t * ret = NULL;
-	int load_ret = FH_ERROR_MALLOC;
-
-	//
-  	fh = fh_getsize(name.c_str(), &x, &y, INT_MAX, INT_MAX); // unscaled
-	
-  	if (fh) 
-	{
-		buffer = (uint8_t *) malloc(x*y*4);
-		
-		if (buffer == NULL) 
-		{
-		  	printf("[libngpng] getBitmap: Error: malloc\n");
-		  	return NULL;
-		}
-		
-		if ((name.find(".png") == (name.length() - 4)) && (fh_png_id(name.c_str())))
-			load_ret = png_load_ext(name.c_str(), &buffer, &x, &y, &_bpp);
-		else if (name.find(".svg") == (name.length() - 4))
-		{
-			load_ret = svg_load_resize(name.c_str(), &buffer, &x, &y, width, height);
-			_bpp = 4;
-		}
-		else
-			load_ret = fh->get_pic(name.c_str(), &buffer, &x, &y);
-
-		if (load_ret == FH_ERROR_OK) 
-		{
-			// resize
-			if( (width != 0 && height != 0) && (x != width || y != height) )
-			{
-				// alpha
-				if(_bpp == 4)
-				{
-					buffer = resize(buffer, x, y, width, height, type, true);
-				}
-				else
-				{
-					buffer = resize(buffer, x, y, width, height, type);
-				}
-			}
-			
-			ret = (uint8_t *) buffer;
-			
-			free(buffer);
-		} 
-		else 
-		{
-	  		printf("[libngpng] getBitmap: Error decoding file %s\n", name.c_str ());
-	  		free (buffer);
-	  		buffer = NULL;
-		}
-  	} 
-	else
-	{
-		printf("[libngpng] getBitmap: Error open file %s\n", name.c_str ());
 	}
 
 	return ret;

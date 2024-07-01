@@ -34,7 +34,7 @@
 
 
 #define LCD_PIXEL_OFF				0x00
-#define LCD_PIXEL_ON				0xff
+#define LCD_PIXEL_ON				0xFF
 #define LCD_PIXEL_INV				0x1000000
 
 #define LCD_MODE_ASC				0
@@ -134,12 +134,10 @@ class CLCDDisplay
 		void pause();
 		void resume();
 
-		void convert_data();
-
 		void update();
 		void clear_screen();
+		void convert2LCD(int area_left, int area_top, int area_right, int area_bottom, int color);
 		////
-		void blit2LCD(int area_left, int area_top, int area_right, int area_bottom, int color);
 		void draw_point(const int x, const int y, const int state);
 		void draw_line(const int x1, const int y1, const int x2, const int y2, const int state);
 		void draw_fill_rect(int left, int top, int right, int bottom, int state);

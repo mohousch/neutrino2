@@ -311,8 +311,8 @@ void CLCDDisplay::setSize(int w, int h, int b)
 	memset(surface_data, 0, surface_buffer_size);
 
 	// 
-	_stride = xres*sizeof(uint8_t);
-	raw_buffer_size = xres * yres * sizeof(uint8_t);
+	_stride = xres;
+	raw_buffer_size = xres * yres;
 	_buffer = new uint8_t[raw_buffer_size];
 	memset(_buffer, 0, raw_buffer_size);
 }
@@ -620,21 +620,39 @@ void CLCDDisplay::resume()
 	paused = 0;
 }
 
-void CLCDDisplay::convert_data()
+////test
+static inline void blit_8i_to_16(__u16 *dst, const __u8 *src, const __u32 *pal, int width)
 {
+	while (width--)
+		*dst++= pal[*src++] & 0xFFFF;
 }
+
+static inline void blit_8i_to_16_at(__u16 *dst, const __u8 *src, const __u32 *pal, int width)
+{
+	while (width--)
+	{
+		if (!(pal[*src]&0x80000000))
+		{
+			src++;
+			dst++;
+		} 
+		else
+			*dst++=pal[*src++] & 0xFFFF;
+	}
+}
+////
 
 void CLCDDisplay::update()
 {
 #ifdef ENABLE_LCD
 	if ((fd >= 0) && (last_brightness > 0))
 	{
-		// blit2LCD
+		// convert2LCD
 		for (unsigned int y = 0; y < yres; y++)
 		{
 			for (unsigned int x = 0; x < xres; x++)
 			{
-				blit2LCD(x, y, x + 1, y + 1, _buffer[(y * xres + x)]);
+				convert2LCD(x, y, x + 1, y + 1, _buffer[(y * xres + x)]);
 			}
 		}
 
@@ -792,7 +810,7 @@ void CLCDDisplay::update()
 }
 
 // blit2lcd
-void CLCDDisplay::blit2LCD(int area_left, int area_top, int area_right, int area_bottom, int color) 
+void CLCDDisplay::convert2LCD(int area_left, int area_top, int area_right, int area_bottom, int color) 
 {
 	int area_width  = area_right - area_left;
 	int area_height = area_bottom - area_top;
@@ -805,7 +823,6 @@ void CLCDDisplay::blit2LCD(int area_left, int area_top, int area_right, int area
 	else if (surface_bpp == 16)
 	{
 		uint32_t icol;
-
 		icol = 0x10101*color;
 		
 #if BYTE_ORDER == LITTLE_ENDIAN
@@ -813,6 +830,7 @@ void CLCDDisplay::blit2LCD(int area_left, int area_top, int area_right, int area
 #else
 		uint16_t col = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
 #endif
+
 		for (int y = area_top; y < area_bottom; y++)
 		{
 			uint16_t *dst = (uint16_t*)(((uint8_t*)surface_data) + y*surface_stride + area_left*surface_bypp);
@@ -847,7 +865,7 @@ void CLCDDisplay::draw_point(const int x, const int y, const int state)
 	if (state == LCD_PIXEL_INV)
 		_buffer[(y * xres + x)] ^= 1;
 	else
-		_buffer[(y * xres + x)*sizeof(uint8_t)] = state;
+		_buffer[(y * xres + x)] = state;
 }
 
 void CLCDDisplay::draw_line(const int x1, const int y1, const int x2, const int y2, const int state)  
@@ -1018,6 +1036,10 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 {
 	bool ret_value = false;
 
+#if 0
+	getSize(filename, &element->width, &element->height, &element->bpp);
+	element->buffer = getImage(filename, element->width, element->height, 8);
+#else
 	png_structp  png_ptr;
 	png_infop    info_ptr;
 	unsigned int i;
@@ -1159,6 +1181,7 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 		}
 		fclose(fh);
 	}
+#endif
 	
 	return ret_value;
 }

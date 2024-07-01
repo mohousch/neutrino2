@@ -127,7 +127,7 @@ bool nGLCD::init()
 	// init fonts
 	initFonts();
 	
-	lcd->SetBrightness(255);
+	SetBrightness(255);
 	
 	return ret;
 }
@@ -610,7 +610,7 @@ void nGLCD::SetBrightness(unsigned int b)
 	if (lcd == NULL)
 		return;
 		
-	lcd->SetBrightness(b);
+	lcd->SetBrightness(b/100);
 }
 
 void nGLCD::setLCDContrast(int contrast)
