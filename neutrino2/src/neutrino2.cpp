@@ -913,7 +913,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.glcd_percent_time_standby = configfile.getInt32("glcd_percent_time_standby", 50);
 	g_settings.glcd_percent_logo = configfile.getInt32("glcd_percent_logo", 50);
 	g_settings.glcd_time_in_standby = configfile.getInt32("glcd_time_in_standby", 1);
-	g_settings.glcd_font = configfile.getString("glcd_font", DATADIR "/fonts/neutrino.ttf");
+	g_settings.glcd_font = configfile.getString("glcd_font", DATADIR "/fonts/arial.ttf");
 	g_settings.glcd_brightness = configfile.getInt32("glcd_brightness", 255);
 	g_settings.glcd_brightness_standby = configfile.getInt32("glcd_brightness_standby", 125);
 	g_settings.glcd_scroll_speed = configfile.getInt32("glcd_scroll_speed", 2);

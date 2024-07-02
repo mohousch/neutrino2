@@ -51,6 +51,10 @@
 #define COL_BLACK	 			17
 #define COL_ORANGE				18
 #define COL_SILVER				19
+// 20 to 109 can be used by radar
+#define RADAR_OFFSET				20
+//
+#define COL_BACKGROUND 				255				
 //
 #define COL_MENUCONTENTINACTIVE			254-8*1
 #define COL_MENUCONTENTSELECTED			254-8*2
@@ -70,9 +74,9 @@
 #define COL_MENUFOOT_TEXT			254-8*15
 #define COL_INFOBAR_TEXT			254-8*16
 #define COL_INFOBAR_COLORED_EVENTS_TEXT		254-8*17
-#define COL_MENUHINT_TEXT			254-8*18 
+#define COL_MENUHINT_TEXT			254-8*18
 //
-#define COL_BACKGROUND 				255
+#define COL_FREE_MAX				COL_MENUHINT_TEXT - 1
 
 ////
 #define COL_MAROON_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_MAROON]

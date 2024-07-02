@@ -2899,15 +2899,16 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 	
 	readSkinConfig(skinConfigFile.c_str());
 	
-	// read skin font/icons/buttons/hints
-	std::string fontFileName;
-		
+	// font / icons / buttons / hints / spinner
 	struct dirent **namelist;
 	int i = 0;
 		
-	// setup font
+	// fontfile
+	std::string fontFileName;
 	std::string fontPath = skinPath.c_str();
-	fontPath += "/fonts";
+	fontPath += "/fonts/";
+	
+	strcpy( g_settings.font_file, DATADIR "/fonts/arial.ttf");
 			
 	i = scandir(fontPath.c_str(), &namelist, 0, 0);
 
@@ -2918,7 +2919,6 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 			if( (strcmp(namelist[i]->d_name, ".") != 0) && (strcmp(namelist[i]->d_name, "..") != 0) )
 			{
 				std::string filename = fontPath.c_str();
-				filename += "/";
 				filename += namelist[i]->d_name;
 						
 				std::string extension = getFileExt(filename);
@@ -2933,73 +2933,60 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 		free(namelist);
 		
 		strcpy( g_settings.font_file, fontFileName.c_str() );
-			
-		CNeutrinoApp::getInstance()->setupFonts(g_settings.font_file);
 	}
+	CNeutrinoApp::getInstance()->setupFonts(g_settings.font_file);
 			
-	// setIconPath
-	std::string iconsDir = CONFIGDIR "/skins/";
-	iconsDir += skinName.c_str();
+	// iconPath
+	std::string iconsDir = skinPath.c_str();
 	iconsDir += "/icons/";
 	
 	g_settings.icons_dir = DATADIR "/icons/";
 			
-	// check if not empty
 	i = scandir(iconsDir.c_str(), &namelist, 0, 0);
 	if(i > 0)
 	{
-		//frameBuffer->setIconBasePath(iconsDir);
 		g_settings.icons_dir = iconsDir;
 		free(namelist);
 	}
 	frameBuffer->setIconBasePath(g_settings.icons_dir);
 			
-	// setButtonPath
-	std::string buttonsDir = CONFIGDIR "/skins/";
-	buttonsDir += skinName.c_str();
+	// buttonPath
+	std::string buttonsDir = skinPath.c_str();
 	buttonsDir += "/buttons/";
 	
 	g_settings.buttons_dir = DATADIR "/buttons/";
 			
-	// check if not empty
 	i = scandir(buttonsDir.c_str(), &namelist, 0, 0);
 	if(i > 0)
 	{
-		//frameBuffer->setButtonBasePath(buttonsDir);
 		g_settings.buttons_dir = buttonsDir;
 		free(namelist);
 	}
 	frameBuffer->setButtonBasePath(g_settings.buttons_dir);
 			
-	// setHintPath
-	std::string hintsDir = CONFIGDIR "/skins/";
-	hintsDir += skinName.c_str();
+	// hintPath
+	std::string hintsDir = skinPath.c_str();
 	hintsDir += "/hints/";
 	
 	g_settings.hints_dir = DATADIR "/hints/";
 			
-	// check if not empty
 	i = scandir(hintsDir.c_str(), &namelist, 0, 0);
 	if(i > 0)
 	{
-		//frameBuffer->setHintBasePath(hintsDir);
 		g_settings.hints_dir = hintsDir;
 		free(namelist);
 	}
 	frameBuffer->setHintBasePath(g_settings.hints_dir);
 			
-	// setSpinnerPath
-	std::string spinnerDir = CONFIGDIR "/skins/";
-	spinnerDir += skinName.c_str();
+	// spinnerPath
+	std::string spinnerDir = skinPath.c_str();
 	spinnerDir += "/spinner/";
 	
 	g_settings.spinner_dir = DATADIR "/spinner/";
 			
-	// check if not empty
 	i = scandir(spinnerDir.c_str(), &namelist, 0, 0);
 	if(i > 0)
 	{
-		//frameBuffer->setSpinnerBasePath(spinnerDir);
 		g_settings.spinner_dir = spinnerDir;
 		free(namelist);
 	}
@@ -3128,12 +3115,9 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 		g_settings.progressbar_color = skin_configfile.getInt32("progressbar_color", 1);
 		
 		// font
-		strcpy( g_settings.font_file, skin_configfile.getString( "font_file", DATADIR "/fonts/arial.ttf" ).c_str() );
-		//g_settings.icons_dir = skin_configfile.getString("icons_dir", DATADIR "/icons/");
-		//g_settings.buttons_dir = skin_configfile.getString("buttons_dir", DATADIR "/buttons/");
-		//g_settings.hints_dir = skin_configfile.getString("hints_dir", DATADIR "/hints/");
-		//g_settings.spinner_dir = skin_configfile.getString("spinner_dir", DATADIR "/spinner/");
+//		strcpy( g_settings.font_file, skin_configfile.getString( "font_file", DATADIR "/fonts/arial.ttf" ).c_str() );
 
+		// setup colors
 		CColorSetupNotifier *colorSetupNotifier = new CColorSetupNotifier();
 		colorSetupNotifier->changeNotify("", NULL);
 		
@@ -3256,11 +3240,7 @@ void CNeutrinoApp::saveSkinConfig(const char * const filename)
 	skin_configfile.setInt32("progressbar_color", g_settings.progressbar_color);
 
 	// font		
-	skin_configfile.setString("font_file", g_settings.font_file);
-	//skin_configfile.setString("icons_dir", g_settings.icons_dir);
-	//skin_configfile.setString("buttons_dir", g_settings.buttons_dir);
-	//skin_configfile.setString("hints_dir", g_settings.hints_dir);
-	//skin_configfile.setString("spinner_dir", g_settings.spinner_dir);
+//	skin_configfile.setString("font_file", g_settings.font_file);
 
 	if (!skin_configfile.saveConfig(filename))
 		printf("CNeutrinoApp::saveSkinConfig %s write error\n", filename);
