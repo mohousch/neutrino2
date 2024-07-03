@@ -46,9 +46,8 @@ enum
 
 enum ScalingMode
 {
-	NONE = 0,
-	SIMPLE = 1,
-	COLOR = 2
+	SCALE_SIMPLE = 1,
+	SCALE_COLOR = 2
 };
 
 struct cformathandler 
@@ -69,7 +68,7 @@ CFormathandler *fh_getsize(const char * name, int * x, int * y, int width_wanted
 void getSize(const std::string &name, int * width, int * height, int * nbpp);
 uint8_t *resize(unsigned char * origin, int ox, int oy, int dx, int dy, ScalingMode type, bool alpha = false);
 void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, int bpp = 32, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
-uint8_t *getImage(const std::string &name, int width = 0, int height = 0, int bpp = 32, int transp = 0xFF, ScalingMode type = COLOR);
+uint8_t *getImage(const std::string &name, int width = 0, int height = 0, int bpp = 32, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
 
 #endif
 

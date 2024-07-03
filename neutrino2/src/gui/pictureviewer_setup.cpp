@@ -53,12 +53,11 @@ const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
 	{ 1, _("yes") }
 };
 
-#define PICTUREVIEWER_SCALING_OPTION_COUNT 3
+#define PICTUREVIEWER_SCALING_OPTION_COUNT 	2
 const keyval PICTUREVIEWER_SCALING_OPTIONS[PICTUREVIEWER_SCALING_OPTION_COUNT] =
 {
-	{ SIMPLE, _("simple") },
-	{ COLOR , _("advanced") },
-	{ NONE  , _("none") }
+	{ SCALE_SIMPLE, _("simple") },
+	{ SCALE_COLOR , _("advanced") }
 };
 
 int CPictureViewerSettings::exec(CMenuTarget* parent, const std::string& actionKey)

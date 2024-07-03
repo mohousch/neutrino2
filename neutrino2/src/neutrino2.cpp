@@ -706,7 +706,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	strcpy( g_settings.network_nfs_picturedir, configfile.getString( "network_nfs_picturedir", "/media/hdd/picture" ).c_str() );
 
 	g_settings.picviewer_slide_time = configfile.getInt32("picviewer_slide_time", 10);	// in sec
-	g_settings.picviewer_scaling = configfile.getInt32("picviewer_scaling", (int)SIMPLE);
+	g_settings.picviewer_scaling = configfile.getInt32("picviewer_scaling", (int)SCALE_SIMPLE);
 	// end pictureviewer
 
 	// misc opts

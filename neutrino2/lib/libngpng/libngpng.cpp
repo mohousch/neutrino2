@@ -34,6 +34,24 @@
 #include "libngpng.h"
 
 
+//#define PNG_DEBUG
+#define LIBNGPNG_SILENT
+
+static short debug_level = 10;
+
+#ifdef LIBNGPNG_DEBUG
+#define libngpng_printf(level, fmt, x...) do { \
+if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
+#else
+#define libngpng_printf(level, fmt, x...)
+#endif
+
+#ifndef LIBNGPNG_SILENT
+#define libngpng_err(fmt, x...) do { printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
+#else
+#define libngpng_err(fmt, x...)
+#endif
+
 ////
 void c32_15(unsigned char r, unsigned char g , unsigned char b , unsigned char* d)
 {
@@ -304,11 +322,11 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 
 	if(cr == NULL)
 	{
-		printf("[libngpng] resize: Error: malloc\n");
+		libngpng_err("[libngpng] resize: Error: malloc\n");
 		return(origin);
 	}
 
-	if(type == SIMPLE) 
+	if(type == SCALE_SIMPLE) 
 	{
 		uint8_t *p, *l;
 		int i, j, k, ip;
@@ -325,7 +343,7 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 			}
 		}
 	} 
-	else 
+	else // average_color
 	{
 		uint8_t *p, *q;
 		int i, j, k, l, ya, yb;
@@ -430,7 +448,7 @@ void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, 
 		
 		if ( i_fbbuff==NULL )
 		{
-			printf ( "[libngpng] convertRGB2FB: Error: malloc\n" );
+			libngpng_err( "[libngpng] convertRGB2FB: Error: malloc\n" );
 			return NULL;
 		}
 		
@@ -502,7 +520,7 @@ void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, 
 	return (void *) fbbuff;
 }
 
-uint8_t * getImage(const std::string &name, int width, int height, int bpp, int transp, ScalingMode type)
+uint8_t * getImage(const std::string &name, int width, int height, int bpp, int transp, ScalingMode scaletype)
 {
 	int x = 0;
 	int y = 0;
@@ -521,7 +539,7 @@ uint8_t * getImage(const std::string &name, int width, int height, int bpp, int 
 		
 		if (buffer == NULL) 
 		{
-		  	printf("[libngpng] getImage: Error: malloc\n");
+		  	libngpng_err("[libngpng] getImage: Error: malloc\n");
 		  	return NULL;
 		}
 		
@@ -543,13 +561,13 @@ uint8_t * getImage(const std::string &name, int width, int height, int bpp, int 
 				// alpha
 				if(_bpp == 4)
 				{
-					buffer = resize(buffer, x, y, width, height, type, true);
+					buffer = resize(buffer, x, y, width, height, scaletype, true);
 				}
 				else
 				{
-					buffer = resize(buffer, x, y, width, height, type);
+					buffer = resize(buffer, x, y, width, height, scaletype);
 				}
-				
+					
 				x = width ;
 				y = height;
 			}
@@ -570,14 +588,14 @@ uint8_t * getImage(const std::string &name, int width, int height, int bpp, int 
 		} 
 		else 
 		{
-	  		printf("[libngpng] getImage: Error decoding file %s\n", name.c_str ());
+	  		libngpng_err("[libngpng] getImage: Error decoding file %s\n", name.c_str ());
 	  		free (buffer);
 	  		buffer = NULL;
 		}
   	} 
 	else
 	{
-		printf("[libngpng] getImage: Error open file %s\n", name.c_str ());
+		libngpng_err("[libngpng] getImage: Error open file %s\n", name.c_str ());
 	}
 
 	return ret;

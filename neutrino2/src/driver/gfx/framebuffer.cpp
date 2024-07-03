@@ -528,7 +528,6 @@ void CFrameBuffer::paletteGenFade(int in, __u32 rgb1, __u32 rgb2, int num, int t
 	{
 		paletteFade(in + i, rgb1, rgb2, i*(255/(num - 1)));
 		cmap.transp[in + i] = tr;
-//		tr--; // why???
 	}
 }
 
@@ -688,7 +687,7 @@ void CFrameBuffer::paintHLineRelInternal2Buf(const int &x, const int &dx, const 
 		*(dest++) = col;		
 }
 
-fb_pixel_t* CFrameBuffer::paintBoxRel2Buf(const int dx, const int dy, const fb_pixel_t col, int radius, int type)
+fb_pixel_t *CFrameBuffer::paintBoxRel2Buf(const int dx, const int dy, const fb_pixel_t col, int radius, int type)
 {
 	if (!getActive())
 		return NULL;
@@ -714,9 +713,8 @@ fb_pixel_t* CFrameBuffer::paintBoxRel2Buf(const int dx, const int dy, const fb_p
 	{
 		setCornerFlags(type);
 		radius = limitRadius(dx, dy, radius);
-
-		int line = 0;
-		while (line < dy) 
+ 
+		for (int line = 0; line < dy; line++)
 		{
 			int ofl, ofr;
 			calcCorners(NULL, &ofl, &ofr, dy, line, radius, type);
@@ -728,20 +726,17 @@ fb_pixel_t* CFrameBuffer::paintBoxRel2Buf(const int dx, const int dy, const fb_p
 			}
 
 			paintHLineRelInternal2Buf(ofl, dx - ofl - ofr, line, dx, col, pixBuf);
-			line++;
 		}
 	} 
 	else 
 	{
 		fb_pixel_t *bp = pixBuf;
-		int line = 0;
 
-		while (line < dy) 
+		for (int line = 0; line < dy; line++)
 		{
 			for (int pos = 0; pos < dx; pos++)
 				*(bp + pos) = col;
 			bp += dx;
-			line++;
 		}
 	}
 
@@ -1482,8 +1477,6 @@ void CFrameBuffer::saveScreen(int x, int y, int dx, int dy, fb_pixel_t * const m
 
 void CFrameBuffer::restoreScreen(int x, int y, int dx, int dy, fb_pixel_t * const memp)
 {
-	//dprintf(DEBUG_DEBUG, "CFrameBuffer::restoreScreen\n");
-	
 	if (!getActive())
 		return;
 
@@ -1505,7 +1498,7 @@ void CFrameBuffer::clearFrameBuffer()
 }
 
 // blitRoundedBox2FB
-void CFrameBuffer::blitRoundedBox2FB(const fb_pixel_t *boxBuf, const uint32_t &width, const uint32_t &height, const uint32_t &xoff, const uint32_t &yoff)
+void CFrameBuffer::blitRoundedBox2FB(const fb_pixel_t *boxBuf, const uint32_t &width, const uint32_t &height, const uint32_t &xoff, const uint32_t &yoff, uint32_t xp, uint32_t yp)
 { 
 	uint32_t xc = (width > xRes) ? (uint32_t)xRes : width;
 	uint32_t yc = (height > yRes) ? (uint32_t)yRes : height;
@@ -1514,22 +1507,41 @@ void CFrameBuffer::blitRoundedBox2FB(const fb_pixel_t *boxBuf, const uint32_t &w
 
 	fb_pixel_t *fbp = getFrameBufferPointer() + (swidth * yoff);
 	fb_pixel_t *data = (fb_pixel_t *)boxBuf;
-
-//	uint32_t line = 0;
-//	while (line < yc) 
+	fb_pixel_t *d2;
+ 
 	for (uint32_t line = 0; line < yc; line++)	
 	{
-		fb_pixel_t *pixpos = &data[line * xc];
+		fb_pixel_t *pixpos = &data[(line + yp) * xc];
 		
 		for (uint32_t pos = xoff; pos < xoff + xc; pos++) 
 		{
+			d2 = (fb_pixel_t *) fbp + pos;
+			
 			//don't paint backgroundcolor (*pixpos = 0x00000000)
-			if (*pixpos)
-				*(fbp + pos) = *pixpos;
+			if (*pixpos + xp)
+				*d2 = *(pixpos + xp);
+			else
+			{
+				uint8_t* in = (uint8_t *)(pixpos + xp);
+				uint8_t* out = (uint8_t *)d2;
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+				int a = in[3];
+#elif __BYTE_ORDER == __BIG_ENDIAN
+				int a = in[0];
+				out++; 
+				in++;
+#endif				
+				*out = (*out + ((*in - *out) * a) / 256);
+				in++; out++;
+				*out = (*out + ((*in - *out) * a) / 256);
+				in++; out++;
+				*out = (*out + ((*in - *out) * a) / 256);
+			}
+
+			d2++;
 			pixpos++;
 		}
 		fbp += swidth;
-//		line++;
 	}
 }
 
@@ -1555,8 +1567,7 @@ void CFrameBuffer::blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, ui
 			
 			if (!transp || (pix & 0xff000000) == 0xff000000)
 				*d2 = pix;
-			//
-			else //alpha blending
+			else
 			{
 				uint8_t* in = (uint8_t *)(pixpos + xp);
 				uint8_t* out = (uint8_t *)d2;
@@ -1754,7 +1765,7 @@ void CFrameBuffer::displayRGB(unsigned char * rgbbuff, int x_size, int y_size, i
 }
 
 // display image
-bool CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int width, int height, int x_pan, int y_pan, ScalingMode type)
+bool CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int width, int height, int x_pan, int y_pan, ScalingMode scaletype)
 {
 	dprintf(DEBUG_DEBUG, "CFrameBuffer::displayImage %s\n", name.c_str());
 	
@@ -1767,7 +1778,7 @@ bool CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int
 	if( name.find(".png") == (name.length() - 4) )
 		isPNG = true;
 	
-	fb_pixel_t *data = (uint32_t *)getImage(name, width, height, bpp,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha), type);
+	fb_pixel_t *data = (uint32_t *)getImage(name, width, height, bpp,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha), scaletype);
 
 	if(data) 
 	{

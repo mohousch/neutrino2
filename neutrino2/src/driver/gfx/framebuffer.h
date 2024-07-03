@@ -277,7 +277,7 @@ class CFrameBuffer
 		void clearFrameBuffer();
 
 		//
-		void blitRoundedBox2FB(const fb_pixel_t *boxBuf, const uint32_t &width, const uint32_t &height, const uint32_t &xoff, const uint32_t &yoff);
+		void blitRoundedBox2FB(const fb_pixel_t *boxBuf, const uint32_t &width, const uint32_t &height, const uint32_t &xoff, const uint32_t &yoff, uint32_t xp = 0, uint32_t yp = 0);
 		void blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp = 0, uint32_t yp = 0, bool transp = false);
 
 		// blit
@@ -287,7 +287,7 @@ class CFrameBuffer
 
 		////
 		void displayRGB(unsigned char * rgbbuff, int x_size, int y_size, int x_pan, int y_pan, int x_offs, int y_offs, bool clearfb = true);
-		bool displayImage(const std::string& name, int posx = 0, int posy = 0, int width = DEFAULT_XRES, int height = DEFAULT_YRES, int x_pan = 0, int y_pan = 0, ScalingMode type = COLOR);
+		bool displayImage(const std::string& name, int posx = 0, int posy = 0, int width = DEFAULT_XRES, int height = DEFAULT_YRES, int x_pan = 0, int y_pan = 0, ScalingMode scaletype = SCALE_COLOR);
 };
 
 #endif

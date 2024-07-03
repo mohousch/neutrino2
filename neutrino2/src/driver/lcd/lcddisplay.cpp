@@ -1106,36 +1106,7 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 						//
 						memset(element->buffer, 0, element->width*element->height);
 	
-						#if 0
-						if (bit_depth == 16)
-							png_set_strip_16(png_ptr);
-						if (bit_depth < 8)
-							png_set_packing (png_ptr);
-
-						if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8)
-							png_set_expand_gray_1_2_4_to_8(png_ptr);
-							
-						if (color_type == PNG_COLOR_TYPE_GRAY && trns)
-							png_set_tRNS_to_alpha(png_ptr);
-							
-						if ((color_type == PNG_COLOR_TYPE_GRAY && trns) || color_type == PNG_COLOR_TYPE_GRAY_ALPHA) 
-						{
-							png_set_gray_to_rgb(png_ptr);
-							png_set_bgr(png_ptr);
-						}
-
-						if (color_type == PNG_COLOR_TYPE_RGB) 
-						{
-							if (trns)
-								png_set_tRNS_to_alpha(png_ptr);
-							else
-								png_set_add_alpha(png_ptr, 255, PNG_FILLER_AFTER);
-						}
-
-						if (color_type == PNG_COLOR_TYPE_RGB || color_type == PNG_COLOR_TYPE_RGB_ALPHA)
-							png_set_bgr(png_ptr);
-						////
-						#else
+						//
 						png_set_packing(png_ptr); /* expand to 1 byte blocks */
 						
 						if (color_type == PNG_COLOR_TYPE_PALETTE)
@@ -1150,7 +1121,6 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 #else
 							png_set_rgb_to_gray(png_ptr, 1, NULL, NULL);
 #endif
-						#endif
 						
 						number_passes = png_set_interlace_handling(png_ptr);
 						png_read_update_info(png_ptr,info_ptr);

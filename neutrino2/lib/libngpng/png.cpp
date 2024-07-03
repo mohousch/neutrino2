@@ -12,6 +12,24 @@
 #include "libngpng.h"
 
 
+//#define PNG_DEBUG
+//#define PNG_SILENT
+
+static short debug_level = 10;
+
+#ifdef PNG_DEBUG
+#define png_printf(level, fmt, x...) do { \
+if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
+#else
+#define png_printf(level, fmt, x...)
+#endif
+
+#ifndef PNG_SILENT
+#define png_err(fmt, x...) do { printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
+#else
+#define png_err(fmt, x...)
+#endif
+
 #define PNG_BYTES_TO_CHECK 4
 #define min(x,y) ((x) < (y) ? (x) : (y))
 
@@ -34,6 +52,8 @@ int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int
 	png_structp png_ptr;
 	png_infop info_ptr;
 	png_uint_32 width, height;
+	int channels;
+	int trns;
 	unsigned int i;
 	int bit_depth, color_type, interlace_type, number_passes, pass, int_bpp = 3;
 	png_byte * fbptr;
@@ -74,7 +94,12 @@ int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int
 	png_init_io(png_ptr,fh);
 	png_read_info(png_ptr, info_ptr);
 	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, NULL, NULL);
+	channels = png_get_channels(png_ptr, info_ptr);
+	trns = png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS);
 	
+	png_printf(10, "[libngpng] [png]: %s %dx%dx%d, type %d interlace %d channel %d trans %d\n", name, width, height, bit_depth, color_type, interlace_type, channels, trns);
+	
+#if 1
 	if (alpha)
 	{
 		*bpp = png_get_channels(png_ptr, info_ptr);
@@ -99,7 +124,6 @@ int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int
 		{
 			png_set_palette_to_rgb(png_ptr);
 			png_set_background(png_ptr, (png_color_16*)&my_background, PNG_BACKGROUND_GAMMA_SCREEN, 0, 1.0);
-			/* other possibility for png_set_background: use png_get_bKGD */
 		}
 		
 		if (color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
@@ -108,9 +132,6 @@ int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int
 			png_set_background(png_ptr, (png_color_16*)&my_background, PNG_BACKGROUND_GAMMA_SCREEN, 0, 1.0);
 		}
 		
-		/* this test does not trigger for 8bit-paletted PNGs with newer libpng (1.2.36 at least),
-	   	   but the data delivered is with alpha channel anyway, so always strip alpha for now
-		 */
 #if PNG_LIBPNG_VER_MAJOR == 1 && PNG_LIBPNG_VER_MINOR <= 2 && PNG_LIBPNG_VER_RELEASE < 36
 		if (color_type & PNG_COLOR_MASK_ALPHA)
 #endif
@@ -122,16 +143,67 @@ int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int
 	
 	if (bit_depth == 16)
 		png_set_strip_16(png_ptr);
+#else
+	////test
+	if ((channels == 4) && (color_type & PNG_COLOR_MASK_ALPHA))
+		int_bpp = 4;
+	
+	if (bit_depth == 16)
+		png_set_strip_16(png_ptr);
+		
+	if (bit_depth < 8)
+		png_set_packing (png_ptr);
+
+	if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8)
+		png_set_expand_gray_1_2_4_to_8(png_ptr);
+							
+	if (color_type == PNG_COLOR_TYPE_GRAY && trns)
+	{
+		png_set_tRNS_to_alpha(png_ptr);
+	}
+							
+	if ((color_type == PNG_COLOR_TYPE_GRAY && trns) || color_type == PNG_COLOR_TYPE_GRAY_ALPHA) 
+	{
+		png_set_gray_to_rgb(png_ptr);
+		png_set_bgr(png_ptr);
+	}
+
+	if (color_type == PNG_COLOR_TYPE_RGB) 
+	{
+		if (trns)
+			png_set_tRNS_to_alpha(png_ptr);
+		else
+			png_set_add_alpha(png_ptr, 255, PNG_FILLER_AFTER);
+	}
+
+	if (color_type == PNG_COLOR_TYPE_RGB || color_type == PNG_COLOR_TYPE_RGB_ALPHA)
+		png_set_bgr(png_ptr);
+		
+	
+	if (color_type == PNG_COLOR_TYPE_PALETTE)
+	{
+		png_set_palette_to_rgb(png_ptr);
+		png_set_background(png_ptr, (png_color_16*)&my_background, PNG_BACKGROUND_GAMMA_SCREEN, 0, 1.0);
+	}
+		
+	if (color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
+	{
+		png_set_gray_to_rgb(png_ptr);
+		png_set_background(png_ptr, (png_color_16*)&my_background, PNG_BACKGROUND_GAMMA_SCREEN, 0, 1.0);
+	}
+#endif
+	////
 	
 	//
 	number_passes = png_set_interlace_handling(png_ptr);
 	png_read_update_info(png_ptr, info_ptr);
+	
 	unsigned long rowbytes = png_get_rowbytes(png_ptr, info_ptr);
 	
 	if (width * int_bpp != rowbytes)
 	{
-		printf("[png.cpp]: Error processing %s - please report (including image).\n", name);
-		printf("           width: %lu rowbytes: %lu\n", (unsigned long)width, (unsigned long)rowbytes);
+		png_err("[Error processing %s - please report (including image).\n", name);
+		png_err("           width: %lu rowbytes: %lu\n", (unsigned long)width, (unsigned long)rowbytes);
 		fclose(fh);
 		
 		return(FH_ERROR_FORMAT);

@@ -98,7 +98,7 @@ bool CPictureViewer::decodeImage(const std::string &name, bool showBusySign)
 
 	getSize(name.c_str(), &x, &y, &bpp);
  
-	if ((x > (m_endx - m_startx) || y > (m_endy - m_starty)) && m_scaling != NONE) 
+	if ((x > (m_endx - m_startx) || y > (m_endy - m_starty))) 
 	{
 		if ((m_aspect_ratio_correction * y * (m_endx - m_startx) / x) <= (m_endy - m_starty)) 
 		{
