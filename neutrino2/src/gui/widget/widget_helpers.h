@@ -679,7 +679,7 @@ class CCItemInfo : public CComponent
 		std::string icon;
 		int mode;
 		
-		// cutom mode
+		// custom mode
 		unsigned int tFont;
 		int borderMode;
 		uint32_t color;

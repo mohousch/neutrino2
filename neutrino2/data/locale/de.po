@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-06-28 07:45+0200\n"
+"POT-Creation-Date: 2024-07-04 17:07+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -3041,9 +3041,6 @@ msgstr "keine EPG gefunden"
 
 msgid "no gradient"
 msgstr "Keine"
-
-msgid "none"
-msgstr "keiner"
 
 msgid "normaly 50000, 0 to disable limit"
 msgstr "normalerweise 50000, 0 zum Deaktivieren des Grenzwerts"
