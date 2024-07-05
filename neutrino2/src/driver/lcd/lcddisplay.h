@@ -32,6 +32,8 @@
 
 #include <linux/fb.h>
 
+#include <driver/gfx/color.h>
+
 
 #define LCD_PIXEL_OFF				0x00
 #define LCD_PIXEL_ON				0xFF
@@ -168,6 +170,9 @@ class CLCDDisplay
 		void setSize(int w, int h, int b);
 		////
 		int islocked() { return locked; }
+		////
+		gUnmanagedSurface* loadPNG(const char* filename);
+		int showPNGImage(const char* filename, int posX, int posY, int width, int height, int flag = blitAlphaTest);
 };
 
 #endif

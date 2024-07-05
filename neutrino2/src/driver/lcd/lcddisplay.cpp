@@ -1258,3 +1258,215 @@ bool CLCDDisplay::dump_png(const char * const filename)
 	return dump_png_element(filename, &element);
 }
 
+////
+gUnmanagedSurface* CLCDDisplay::loadPNG(const char* filename)
+{
+    FILE *fp=fopen(filename, "rb");
+    unsigned char header[8];
+
+    
+    if (!fp)
+    {
+        printf("CLCDDisplay::loadPNG: couldn't open %s\n", filename );
+        return NULL;
+    }
+    
+    if (!fread(header, 8, 1, fp))
+    {
+        printf("CLCDDisplay::loadPNG: couldn't read\n");
+        fclose(fp);
+        return NULL;
+    }
+    
+    if (png_sig_cmp(header, 0, 8))
+    {
+        fclose(fp);
+        return NULL;
+    }
+
+    png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
+    if (!png_ptr)
+    {
+        printf("CLCDDisplay::loadPNG: failed to create read struct\n");
+        fclose(fp);
+        return NULL;
+    }
+    
+    png_infop info_ptr = png_create_info_struct(png_ptr);
+    if (!info_ptr)
+    {
+        printf("CLCDDisplay::loadPNG: failed to create info struct\n");
+        png_destroy_read_struct(&png_ptr, (png_infopp)0, (png_infopp)0);
+        fclose(fp);
+        return NULL;
+    }
+    
+    png_infop end_info = png_create_info_struct(png_ptr);
+    if (!end_info)
+    {
+        printf("CLCDDisplay::loadPNG: failed to create end info struct\n");
+        png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
+        fclose(fp);
+        return NULL;
+    }
+    
+    if (setjmp(png_jmpbuf(png_ptr)))
+    {
+        printf("CLCDDisplay::loadPNG: png setjump failed or activated\n");
+        png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
+        fclose(fp);
+        return NULL;
+    }
+    
+    png_init_io(png_ptr, fp);
+    png_set_sig_bytes(png_ptr, 8);
+    png_read_info(png_ptr, info_ptr);
+
+    png_uint_32 width, height;
+    int bit_depth;
+    int color_type;
+    int interlace_type;
+    int channels;
+    int trns;
+
+    png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, 0, 0);
+    channels = png_get_channels(png_ptr, info_ptr);
+    trns = png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS);
+    //printf("[ePNG] %s: before %dx%dx%dbpcx%dchan coltyp=%d\n", filename, (int)width, (int)height, bit_depth, channels, color_type);
+
+    /*
+     * gPixmaps use 8 bits per channel. rgb pixmaps are stored as abgr.
+     * So convert 1,2 and 4 bpc to 8bpc images that enigma can blit
+     * so add 'empty' alpha channel
+     * Expand G+tRNS to GA, RGB+tRNS to RGBA
+     */
+    if (bit_depth == 16)
+        png_set_strip_16(png_ptr);
+    if (bit_depth < 8)
+        png_set_packing (png_ptr);
+
+    if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8)
+        png_set_expand_gray_1_2_4_to_8(png_ptr);
+    if (color_type == PNG_COLOR_TYPE_GRAY && trns)
+        png_set_tRNS_to_alpha(png_ptr);
+    if ((color_type == PNG_COLOR_TYPE_GRAY && trns) || color_type == PNG_COLOR_TYPE_GRAY_ALPHA) {
+        png_set_gray_to_rgb(png_ptr);
+        png_set_bgr(png_ptr);
+    }
+
+    if (color_type == PNG_COLOR_TYPE_RGB) {
+        if (trns)
+            png_set_tRNS_to_alpha(png_ptr);
+        else
+            png_set_add_alpha(png_ptr, 255, PNG_FILLER_AFTER);
+    }
+
+    if (color_type == PNG_COLOR_TYPE_RGB || color_type == PNG_COLOR_TYPE_RGB_ALPHA)
+        png_set_bgr(png_ptr);
+
+    // Update the info structures after the transformations take effect
+    if (interlace_type != PNG_INTERLACE_NONE)
+        png_set_interlace_handling(png_ptr);  // needed before read_update_info()
+    png_read_update_info (png_ptr, info_ptr);
+    png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, 0, 0, 0);
+    channels = png_get_channels(png_ptr, info_ptr);
+
+    gUnmanagedSurface *surface = new gSurface(width, height, bit_depth * channels);
+    
+    png_bytep *rowptr = new png_bytep[height];
+    for (unsigned int i = 0; i < height; i++)
+        rowptr[i] = ((png_byte*)(surface->data)) + i * surface->stride;
+    png_read_image(png_ptr, rowptr);
+
+    delete [] rowptr;
+
+    int num_palette = -1, num_trans = -1;
+    if (color_type == PNG_COLOR_TYPE_PALETTE) 
+    {
+        if (png_get_valid(png_ptr, info_ptr, PNG_INFO_PLTE)) 
+        {
+            png_color *palette;
+            png_get_PLTE(png_ptr, info_ptr, &palette, &num_palette);
+            if (num_palette) {
+                surface->clut.data = new gRGB[num_palette];
+                surface->clut.colors = num_palette;
+
+                for (int i = 0; i < num_palette; i++) 
+                {
+                    surface->clut.data[i].a = 0;
+                    surface->clut.data[i].r = palette[i].red;
+                    surface->clut.data[i].g = palette[i].green;
+                    surface->clut.data[i].b = palette[i].blue;
+                }
+
+                if (trns) 
+                {
+                    png_byte *trans;
+                    png_get_tRNS(png_ptr, info_ptr, &trans, &num_trans, 0);
+                    for (int i = 0; i < num_trans; i++)
+                        surface->clut.data[i].a = 255 - trans[i];
+                    for (int i = num_trans; i < num_palette; i++)
+                        surface->clut.data[i].a = 0;
+                }
+
+            }
+            else 
+            {
+                surface->clut.data = 0;
+                surface->clut.colors = num_palette;
+            }
+        }
+        else 
+        {
+            surface->clut.data = 0;
+            surface->clut.colors = 0;
+        }
+        surface->clut.start = 0;
+    }
+
+
+//    printf("CLCDDisplay::loadPNG: %s: after  %dx%dx%dbpcx%dchan coltyp=%d cols=%d trans=%d\n", filename, (int)width, (int)height, bit_depth, channels, color_type, num_palette, num_trans);
+
+    png_read_end(png_ptr, end_info);
+    png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
+    fclose(fp);
+    
+    return surface;
+}
+
+int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int width, int height, int flag)
+{
+	gUnmanagedSurface *m_surface = NULL;
+	gUnmanagedSurface surface;
+	
+    	surface.x = xres;
+    	surface.y = yres;
+    	surface.stride = surface_stride;
+    	surface.bypp = surface_bypp;
+    	surface.bpp = surface_bpp;
+    	surface.data = _buffer;
+    	surface.data_phys = 0;
+    	
+    	if (lcd_type == 4)
+	{
+		surface.clut.colors = 256;
+		surface.clut.data = new gRGB[surface.clut.colors];
+		memset(static_cast<void*>(surface.clut.data), 0, sizeof(*surface.clut.data)*surface.clut.colors);
+	}
+	else
+	{
+		surface.clut.colors = 0;
+		surface.clut.data = 0;
+	}
+    
+	// loadPNG
+	m_surface = loadPNG(filename);
+	if (m_surface == NULL)
+		return -1;
+		
+	CBox eRect(0, 0, width, height);
+		
+	// render
+	return blit(m_surface, width, height, eRect, &surface, flag);
+}
+

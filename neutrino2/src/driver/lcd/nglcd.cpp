@@ -557,7 +557,7 @@ void nGLCD::showAnalogClock(int posx, int posy, int dia)
 
 void nGLCD::drawText(int x, int y, int width, const std::string &text, GLCD::cFont *font, uint32_t color, uint32_t bgcolor, bool proportional, int skipPixels, int align)
 {
-	printf("nGLCD::drawText: %s\n", text.c_str());
+	//printf("nGLCD::drawText: %s\n", text.c_str());
 	
 	if (lcd == NULL)
 		return;

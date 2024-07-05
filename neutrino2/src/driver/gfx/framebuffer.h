@@ -103,6 +103,36 @@ enum {
 };
 
 ////
+class CBox
+{
+	public:
+		// Variables
+		int iX;
+		int iY;
+		int iWidth;
+		int iHeight;
+
+		//
+		inline CBox()
+		{
+			iX = 0;
+			iY = 0;
+			iWidth = 0;
+			iHeight = 0;
+		};
+		
+		inline CBox( const int _iX, const int _iY, const int _iWidth, const int _iHeight)
+		{
+			iX =_iX; 
+			iY=_iY; 
+			iWidth =_iWidth; 
+			iHeight =_iHeight;
+		};
+		
+		inline ~CBox(){};
+};
+
+////
 class CFrameBuffer
 {
 	public:
