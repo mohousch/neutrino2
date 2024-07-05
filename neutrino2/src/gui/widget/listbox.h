@@ -40,7 +40,7 @@
 ////
 class ClistBox;
 
-// CMenuItem
+//// CMenuItem
 class CMenuItem
 {
 	public:
@@ -62,16 +62,6 @@ class CMenuItem
 			ITEM_HIDDEN,
 			ITEM_MARKED,
 			ITEM_INACTIVE
-		};
-		
-		////
-		enum 
-		{
-			ITEMINFO_INFO,
-			ITEMINFO_HINTITEM,
-			ITEMINFO_HINTICON,
-			ITEMINFO_ICON,
-			ITEMINFO_HINT
 		};
 
 	protected:
@@ -120,7 +110,7 @@ class CMenuItem
 		unsigned int optionFont;
 		uint32_t optionFontColor;
 
-		bool nLinesItem; // more lines Item 
+		bool nLinesItem;
 
 		CMenuTarget *jumpTarget;
 		std::string actionKey;
@@ -130,21 +120,6 @@ class CMenuItem
 		int borderMode;
 		fb_pixel_t borderColor;
 		int itemGradient;
-		
-		//// itemInfo
-		/*
-		CBox itemInfoBox;
-		int itemInfoMode;
-		unsigned int itemInfoFont;
-		int itemInfoBorderMode;
-		uint32_t itemInfoColor;
-		bool itemInfoScale;
-		int itemInfoRadius;
-		int itemInfoCorner;
-		int itemInfoGradient;
-		bool iteminfosavescreen;
-		fb_pixel_t *itemInfoBackground;
-		*/
 		
 		//
 		ClistBox* parent;
@@ -225,35 +200,6 @@ class CMenuItem
 		virtual void addOption(const char *optionname, const int optionvalue = 0){};
 		////
 		virtual int getState(void){return state;};
-		//// itemInfo
-		/*
-		virtual void setItemInfoFont(unsigned int f){itemInfoFont = f;};
-		virtual void setItemInfoBorderMode(int m){itemInfoBorderMode = m;};
-		virtual void setItemInfoColor(uint32_t col){itemInfoColor = col;};
-		virtual void setItemInfoScaling(bool s){itemInfoScale = s;};
-		virtual void setItemInfoCorner(int ra, int co){itemInfoRadius = ra; itemInfoCorner = co;};
-		virtual void setItemInfoGradient(int grad){itemInfoGradient = grad;};
-		//
-		virtual void itemInfoSaveScreen(void);
-		virtual void itemInfoRestoreScreen(void);
-		virtual void itemInfoEnableSaveScreen();
-		virtual void setItemInfoPosition(const int _x, const int _y, const int _width, const int _height)
-		{
-			itemInfoBox.iX = _x;
-			itemInfoBox.iY = _y;
-			itemInfoBox.iWidth = _width;
-			itemInfoBox.iHeight = _height;
-		};
-		virtual void setPosition(const CBox * position)
-		{
-			itemInfoBox = *position;
-		};
-		virtual void paintItemInfo();
-		virtual void hideItemInfo();
-		virtual void itemInfoSaveScreen(void);
-		virtual void itemInfoRestoreScreen(void);
-		virtual void itemInfoEnableSaveScreen();
-		*/
 };
 
 //// CMenuOptionChooser

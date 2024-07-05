@@ -37,16 +37,20 @@
 #define LCD_PIXEL_ON				0xFF
 #define LCD_PIXEL_INV				0x1000000
 
+/*
 #define LCD_MODE_ASC				0
 #define LCD_MODE_BIN				2
-
-// ioctls
 #define LCD_IOCTL_ASC_MODE			(25)
+*/
 #define LCD_IOCTL_CLEAR				(26)
 
-#define FP_IOCTL_LCD_DIMM       		3
+////
+#define LCDSET 					0x1000
+#define LCD_IOCTL_ASC_MODE 			(21 | LCDSET)
+#define LCD_MODE_ASC 0
+#define LCD_MODE_BIN 1
 
-#define LCDSET                  		0x1000
+#define FP_IOCTL_LCD_DIMM       		3
 
 #define LCD_IOCTL_ON            		(2 |LCDSET)
 #define LCD_IOCTL_REVERSE       		(4 |LCDSET)

@@ -41,7 +41,7 @@
 #include <system/debug.h>
 
 
-// CMenuItem
+//// CMenuItem
 CMenuItem::CMenuItem()
 {
 	x = -1;
@@ -108,27 +108,6 @@ CMenuItem::CMenuItem()
 	//
 	observ = NULL;
 	pulldown = false;
-	
-	//// itemInfo
-	/*
-	itemInfoBox.iX = 0;
-	itemInfoBox.iY = 0;
-	itemInfoBox.iWidth = 0;
-	itemInfoBox.iHeight = 0;
-	//
-	itemInfoBackground = NULL;
-	//
-	itemInfoMode = ITEMINFO_INFO; 
-	//
-	itemInfoFont = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
-	itemInfoBorderMode = g_settings.Hint_border;
-	itemInfosavescreen = false;
-	itemInfoColor = COL_MENUCONTENT_PLUS_0;
-	itemInfoScale = false;
-	itemInfoRadius = g_settings.Hint_radius;
-	itemInfoCorner = g_settings.Hint_corner;
-	itemInfoGradient = NOGRADIENT;
-	*/
 }
 
 CMenuItem::~CMenuItem()
@@ -146,18 +125,6 @@ CMenuItem::~CMenuItem()
 	option_info2.clear();
 	itemHint.clear();
 	itemIcon.clear();
-	
-	////
-	/*
-	if (iteminfosavescreen)
-	{
-		if (itemInfoBackground)
-		{
-			delete [] itemInfoBackground;
-			itemInfoBackground = NULL;
-		}
-	}
-	*/
 }
 
 void CMenuItem::init(const int X, const int Y, const int DX, const int DY)
@@ -353,186 +320,6 @@ void CMenuItem::paintItemSlider(const bool select_mode, const int &item_height, 
 	// paint slider
 	CFrameBuffer::getInstance()->paintIcon(select_mode ? NEUTRINO_ICON_VOLUMESLIDER2ALPHA : NEUTRINO_ICON_VOLUMESLIDER2, start_x + (optionV * bar_width / factor), y, item_height);
 }
-
-////
-#if 0
-void CMenuItem::paintItemInfo()
-{
-	dprintf(DEBUG_DEBUG, "CMenuItem::paintItemInfo:\n");
-	
-	// border
-	if (paintFrame)
-	{
-		if (itemInfoBorderMode) 
-			CFrameBuffer::getInstance()->paintBoxRel(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight, COL_MENUCONTENT_PLUS_6, g_settings.Hint_radius, g_settings.Hint_corner);
-				
-		// infoBox
-		CFrameBuffer::getInstance()->paintBoxRel(itemInfoBorderMode? itemInfoBox.iX + 2 : itemInfoBox.iX, itemInfoBorderMode? itemInfoBox.iY + 2 : itemInfoBox.iY, itemInfoBorderMode? itemInfoBox.iWidth - 4 : itemInfoBox.iWidth, itemInfoBorderMode? itemInfoBox.iHeight - 4 : itemInfoBox.iHeight, itemInfoColor, itemInfoRadius, itemInfoCorner, itemInfoGradient);
-	}
-	else
-		itemInfoRestoreScreen();
-	
-	//
-	if (itemInfoMode == ITEMINFO_INFO)
-	{
-		// option_info1
-		int l_ow1 = 0;
-		if(!option_info1.empty())
-		{
-			l_ow1 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getRenderWidth(option_info1.c_str());
-
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->RenderString(itemInfoBox.iX + itemInfoBox.iWidth - BORDER_RIGHT - l_ow1, itemInfoBox.iY + (itemInfoBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight(), itemInfoBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow1, option_info1.c_str(), COL_MENUHINT_TEXT_PLUS_0, 0, true);
-		}
-
-		// info1
-		if(!info1.empty())
-		{
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->RenderString(itemInfoBox.iX + BORDER_LEFT, itemInfoBox.iY + (itemInfoBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight(), itemInfoBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow1, info1.c_str(), COL_MENUHINT_TEXT_PLUS_0, 0, true);
-		}
-
-		// option_info2
-		int l_ow2 = 0;
-		if(!option_info2.empty())
-		{
-			l_ow2 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getRenderWidth(option_info2.c_str());
-
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(itemInfoBox.iX + itemInfoBox.iWidth - BORDER_RIGHT - l_ow2, itemInfoBox.iY + itemInfoBox.iHeight/2 + (itemInfoBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight(), itemInfoBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow2, option_info2.c_str(), COL_MENUHINT_TEXT_PLUS_0, 0, true);
-		}
-
-		// info2
-		if(!info2.empty())
-		{
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->RenderString (itemInfoBox.iX + BORDER_LEFT, itemInfoBox.iY + itemInfoBox.iHeight/2 + (itemInfoBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight(), itemInfoBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow2, info2.c_str(), COL_MENUHINT_TEXT_PLUS_0, 0, true); // UTF-8
-		}
-	}
-	else if (mode == ITEMINFO_HINTITEM)
-	{
-		//
-		int iw = 0;
-		int ih = 0;
-		int bpp = 0;
-		
-		if (!itemIcon.empty())
-		{
-			getSize(itemIcon.c_str(), &iw, &iw, &bpp);
-			
-			if (iw > 100)
-				iw = 100;
-				
-			if (ih > (itemInfoBox.iHeight - 4))
-				ih = itemInfoBox.iHeight - 4;
-			
-			CCImage DImage(itemInfoBox.iX + 5, itemInfoBox.iY + 2, 100, itemInfoBox.iHeight - 4);
-			DImage.setImage(itemIcon.c_str());
-			DImage.setScaling(itemInfoScale);
-			//DImage.setColor(color);
-			DImage.paint();
-		}
-		
-		//
-		CCText Dline(itemInfoBox.iX + 115, itemInfoBox.iY + 10, itemInfoBox.iWidth - iw - 20, itemInfoBox.iHeight - 20);
-		Dline.setFont(itemInfoFont);
-		Dline.setText(itemHint.c_str());		
-		Dline.paint();
-	}
-	else if (mode == ITEMINFO_HINTICON)
-	{
-		//
-		int iw = 0;
-		int ih = 0;
-		
-		if (!itemIcon.empty())
-		{
-			::scaleImage(itemIcon, &iw, &ih);
-			
-			if (iw > itemInfoBox.iWidth && itemInfoBox.iWidth != 0)
-				iw = itemInfoBox.iWidth - 4;
-				
-			if (ih > (itemInfoBox.iHeight - 4) && itemInfoBox.iHeight != 0)
-				ih = (itemInfoBox.iHeight - 4)/2;
-		
-			CCImage DImage(itemInfoBox.iX + 2, itemInfoBox.iY + 2, itemInfoBox.iWidth - 4, ih - 4);
-			DImage.setImage(itemIcon.c_str());
-			DImage.setScaling(itemInfoScale);
-			//DImage.setColor(color);
-			DImage.paint();
-		}
-		
-		//
-		CCText Dline(itemInfoBox.iX + 10, itemInfoBox.iY + ih + 10, itemInfoBox.iWidth - 20, itemInfoBox.iHeight - ih - 20);
-		Dline.setFont(itemInfoFont);
-		Dline.setText(itemHint.c_str());		
-		Dline.paint();
-		
-	}
-	else if (mode == ITEMINFO_ICON)	
-	{
-		CCImage DImage(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
-		DImage.setImage(itemIcon.c_str());
-		DImage.setScaling(itemInfoScale);
-		//DImage.setColor(color);
-		DImage.paint();
-	}
-	else if (mode == ITEMINFO_HINT)
-	{
-		CCText Dline(itemInfoBox.iX + 10, itemInfoBox.iY + 10, itemInfoBox.iWidth - 20, itemInfoBox.iHeight - 20);
-		Dline.setFont(itemInfoFont);
-		Dline.setText(itemHint.c_str());		
-		Dline.paint();
-	}
-}
-
-void CMenuItem::hideItemInfo()
-{
-	if(itemInfoBackground) 
-	{
-		CFrameBuffer::getInstance()->restoreScreen(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight, itemInfoBackground);
-	}
-	else //FIXME:
-		CFrameBuffer::getInstance()->paintBackgroundBoxRel(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
-}
-
-//
-void CMenuItem::itemInfoSaveScreen(void)
-{
-	dprintf(DEBUG_DEBUG, "CMenuItem::itemInfoSaveScreen\n");
-	
-	if (itemInfoBackground)
-	{
-		delete [] itemInfoBackground;
-		itemInfoBackground = NULL;
-	}
-		
-	itemInfoBackground = new fb_pixel_t[itemInfoBox.iWidth*itemInfoBox.iHeight];
-		
-	if (itemInfoBackground)
-	{
-		CFrameBuffer::getInstance()->saveScreen(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight, itemInfoBackground);
-	}
-}
-
-void CMenuItem::itemInfoRestoreScreen(void)
-{
-	dprintf(DEBUG_DEBUG, "CMenuItem::itemInfoRestoreScreen\n");
-	
-	//
-	if (iteminfosavescreen && itemInfoBackground)
-	{
-		CFrameBuffer::getInstance()->restoreScreen(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight, itemInfoBackground);
-	}
-}
-
-//
-void CMenuItem::itemInfoEnableSaveScreen()
-{
-	dprintf(DEBUG_DEBUG, "CMenuItem::itemInfoEnableSaveScreen\n");
-	
-	iteminfosavescreen = true;
-	
-	itemInfoSaveScreen();
-}
-#endif
-////
 
 //// CMenuOptionChooser
 CMenuOptionChooser::CMenuOptionChooser(const char * const Name, int* const OptionValue, const struct keyval *const Options, const unsigned Number_Of_Options, const bool Active, CChangeObserver* const Observ, const neutrino_msg_t DirectKey, const char *const IconName, bool Pulldown, const bool useOnOffIcon)
@@ -842,7 +629,7 @@ int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
 	return y + height;
 }
 
-//CMenuOptionNumberChooser
+//// CMenuOptionNumberChooser
 CMenuOptionNumberChooser::CMenuOptionNumberChooser(const char * const Name, int * const OptionValue, const bool Active, const int min_value, const int max_value, CChangeObserver * const Observ, const int print_offset, const int special_value, bool paintSlider)
 {
 	height = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 6;
@@ -995,7 +782,7 @@ int CMenuOptionNumberChooser::paint(bool selected, bool /*AfterPulldown*/)
 	return y + height;
 }
 
-// CMenuOptionStringChooser
+//// CMenuOptionStringChooser
 CMenuOptionStringChooser::CMenuOptionStringChooser(const char * const Name, char * OptionValue, bool Active, CChangeObserver* Observ, const neutrino_msg_t DirectKey, const char *const IconName, bool Pulldown)
 {
 	height = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 6;
@@ -1256,7 +1043,7 @@ int CMenuOptionStringChooser::paint( bool selected, bool afterPulldown)
 	return y + height;
 }
 
-// CMenuSeparator
+//// CMenuSeparator
 CMenuSeparator::CMenuSeparator(const int Type, const char * const Text, const bool Gradient)
 {
 	//
@@ -1371,7 +1158,7 @@ int CMenuSeparator::paint(bool /*selected*/, bool /*AfterPulldown*/)
 	return y + height;
 }
 
-//CMenuForwarder
+//// CMenuForwarder
 CMenuForwarder::CMenuForwarder(const char * const Text, const bool Active, const char * const Option, CMenuTarget* Target, const char * const ActionKey, const neutrino_msg_t DirectKey, const char * const IconName, const char* const ItemIcon, const char* const Hint)
 {
 	itemName = Text? Text : "";
