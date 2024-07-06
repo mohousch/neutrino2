@@ -32,18 +32,13 @@
 
 #include <linux/fb.h>
 
-#include <driver/gfx/color.h>
+#include <driver/lcd/pixmap.h>
 
 
 #define LCD_PIXEL_OFF				0x00
 #define LCD_PIXEL_ON				0xFF
 #define LCD_PIXEL_INV				0x1000000
 
-/*
-#define LCD_MODE_ASC				0
-#define LCD_MODE_BIN				2
-#define LCD_IOCTL_ASC_MODE			(25)
-*/
 #define LCD_IOCTL_CLEAR				(26)
 
 ////
@@ -141,8 +136,8 @@ class CLCDDisplay
 		void resume();
 
 		void update();
-		void clear_screen();
-		void convert2LCD(int area_left, int area_top, int area_right, int area_bottom, int color);
+		void blitBox2LCD(/*int area_left, int area_top, int area_right, int area_bottom, int color*/);
+		void blit(void);
 		////
 		void draw_point(const int x, const int y, const int state);
 		void draw_line(const int x1, const int y1, const int x2, const int y2, const int state);
@@ -156,6 +151,9 @@ class CLCDDisplay
 		bool load_png_element(const char * const filename, raw_lcd_element_t * element);
 		bool load_png(const char * const filename);
 		bool dump_png_element(const char * const filename, raw_lcd_element_t * element);
+		//
+		void clear_screen();
+		//
 		bool dump_png(const char * const filename);
 		////
 		int setLCDContrast(int contrast);
@@ -172,7 +170,7 @@ class CLCDDisplay
 		int islocked() { return locked; }
 		////
 		gUnmanagedSurface* loadPNG(const char* filename);
-		int showPNGImage(const char* filename, int posX, int posY, int width, int height, int flag = blitAlphaTest);
+		int showPNGImage(const char* filename, int posX, int posY, int width, int height, int flag = blitAlphaBlend);
 };
 
 #endif

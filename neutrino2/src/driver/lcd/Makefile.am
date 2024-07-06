@@ -27,11 +27,11 @@ noinst_LIBRARIES = libneutrino2_driver_lcd.a
 libneutrino2_driver_lcd_a_SOURCES = lcdd.cpp 
 
 if ENABLE_LCD 
-libneutrino2_driver_lcd_a_SOURCES += lcddisplay.cpp fontrenderer.cpp
+libneutrino2_driver_lcd_a_SOURCES += lcddisplay.cpp fontrenderer.cpp pixmap.cpp
 endif
 
 if ENABLE_TFTLCD 
-libneutrino2_driver_lcd_a_SOURCES += lcddisplay.cpp fontrenderer.cpp
+libneutrino2_driver_lcd_a_SOURCES += lcddisplay.cpp fontrenderer.cpp pixmap.cpp
 endif	
 
 if ENABLE_GRAPHLCD

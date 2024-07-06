@@ -3187,3 +3187,5 @@
 /neutrino2/src/gui/.deps/scan_setup.Tpo
 /neutrino2/data/icons/lcd/Makefile
 /neutrino2/data/icons/lcd/Makefile.in
+/neutrino2/src/driver/lcd/.deps/pixmap.Po
+/neutrino2/src/driver/lcd/pixmap.o

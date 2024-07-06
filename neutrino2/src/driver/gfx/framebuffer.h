@@ -130,6 +130,8 @@ class CBox
 		};
 		
 		inline ~CBox(){};
+		
+		void move(int posx, int posy){iX = posx; iY = posy;};
 };
 
 ////
