@@ -460,9 +460,7 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 		
 		element[i].name = file.c_str();
 			
-//		display->load_png_element(file.c_str(), &(element[i]));
-		////test
-		getSize(file.c_str(), &element[i].width, &element[i].height, &element[i].bpp);
+		display->load_png_element(file.c_str(), &(element[i]));
 	}
 #endif
 
