@@ -1408,9 +1408,6 @@ gUnmanagedSurface* CLCDDisplay::loadPNG(const char* filename)
         surface->clut.start = 0;
     }
 
-
-//    printf("CLCDDisplay::loadPNG: %s: after  %dx%dx%dbpcx%dchan coltyp=%d cols=%d trans=%d\n", filename, (int)width, (int)height, bit_depth, channels, color_type, num_palette, num_trans);
-
     png_read_end(png_ptr, end_info);
     png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
     fclose(fp);

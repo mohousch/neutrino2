@@ -963,25 +963,22 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 		showText((char *)servicename.c_str() );
 	}
 #elif defined (ENABLE_LCD)
-//	showTextScreen(servicename, epg_title, showmode, perform_wakeup, g_settings.lcd_epgalign);
+	showTextScreen(servicename, epg_title, showmode, perform_wakeup, g_settings.lcd_epgalign);
 	
 	// logo
-	////test
-//	if (showmode == EPGMODE_CHANNEL_TITLE_LOGO)
-	//	display->load_screen_element(&(element[ELEMENT_PICON]), (lcd_width - element[ELEMENT_PICON].width)/2, lcd_height - fonts.menu->getHeight() - element[ELEMENT_PICON].height);
-	////
-	std::string logo = DATADIR "/lcd/picon_default.png";;
-	int sw, sh, sbpp;
-	
-	t_channel_id cid = CZapit::getInstance()->getCurrentChannelID();
-	
-	//CChannellogo::getInstance()->getLogoSize(cid, &sw, &sh, &sbpp);
-	if (CChannellogo::getInstance()->checkLogo(cid))
-		logo = CChannellogo::getInstance()->getLogoName(cid);
-
-	if (cid != 1)
+	if (showmode == EPGMODE_CHANNEL_TITLE_LOGO)
 	{
-		display->showPNGImage(logo.c_str(), (lcd_width - 120)/2, (lcd_height - 80)/2, 120, 80);
+		std::string logo = DATADIR "/lcd/picon_default.png";
+		
+		t_channel_id cid = CZapit::getInstance()->getCurrentChannelID();
+	
+		if (CChannellogo::getInstance()->checkLogo(cid))
+			logo = CChannellogo::getInstance()->getLogoName(cid);
+
+		if (cid != 1)
+		{
+			display->showPNGImage(logo.c_str(), (lcd_width - 120)/2, lcd_height - fonts.time->getHeight() - 2 -60, 120, 60);
+		}
 	}
 #endif
 
@@ -1014,8 +1011,8 @@ void CLCD::showEPGTitle(const std::string title)
 	
 	epg_title.clear();
 	epg_title = title;
-////test
-//	showTextScreen("", epg_title, g_settings.lcd_epgmode, false, g_settings.lcd_epgalign);
+
+	showTextScreen("", epg_title, g_settings.lcd_epgmode, false, g_settings.lcd_epgalign);
 #endif
 }
 
@@ -1524,7 +1521,6 @@ void CLCD::drawBanner()
 	
 #if defined (ENABLE_LCD)	
 	display->load_screen_element(&(element[ELEMENT_BANNER]), 0, 0, lcd_width, element->height);
-//	display->showPNGImage(element[ELEMENT_BANNER].name.c_str(), 0, 0, lcd_width, element[ELEMENT_BANNER].height);
 	
 	if (element[ELEMENT_BANNER].width < lcd_width)
 		display->draw_fill_rect(element[ELEMENT_BANNER].width - 1, -1, lcd_width, element[ELEMENT_BANNER].height - 1, CLCDDisplay::PIXEL_ON);
