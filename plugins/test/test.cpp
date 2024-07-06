@@ -2081,8 +2081,7 @@ void CTestMenu::testCWindowCustomColor()
 	uint8_t g = 0;
 	uint8_t b = 0;
 	
-//	uint32_t col = CFrameBuffer::getInstance()->realcolor[color];
-	uint32_t col = 0xd8ffffff;
+	uint32_t col = 0xff808000;
 						
 	a = (col >> 24)&0xFF; 
 	r = (col >> 16)&0xFF;

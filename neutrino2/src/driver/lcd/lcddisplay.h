@@ -35,8 +35,8 @@
 #include <driver/lcd/pixmap.h>
 
 
-#define LCD_PIXEL_OFF				0x00
-#define LCD_PIXEL_ON				0xFF
+#define LCD_PIXEL_OFF				0x00000000
+#define LCD_PIXEL_ON				0xFFFFFFFF
 #define LCD_PIXEL_INV				0x1000000
 
 #define LCD_IOCTL_CLEAR				(26)
@@ -136,14 +136,14 @@ class CLCDDisplay
 		void resume();
 
 		void update();
-		void blitBox2LCD(int area_left, int area_top, int area_right, int area_bottom, int color);
+		void blitBox2LCD(int area_left, int area_top, int area_right, int area_bottom, uint32_t color);
 		void blit(void);
 		////
-		void draw_point(const int x, const int y, const int state);
-		void draw_line(const int x1, const int y1, const int x2, const int y2, const int state);
-		void draw_fill_rect(int left, int top, int right, int bottom, int state);
-		void draw_rectangle(int left, int top, int right, int bottom, int linestate, int fillstate);
-		void draw_polygon(int num_vertices, int *vertices, int state);
+		void draw_point(const int x, const int y, const uint32_t color);
+		void draw_line(const int x1, const int y1, const int x2, const int y2, const uint32_t color);
+		void draw_fill_rect(int left, int top, int right, int bottom, uint32_t color);
+		void draw_rectangle(int left, int top, int right, int bottom, uint32_t linecolor, uint32_t fillcolor);
+		void draw_polygon(int num_vertices, int *vertices, uint32_t color);
 		////
 		void load_screen_element(raw_lcd_element_t * element, int left, int top, int w = 0, int h = 0);
 		void load_screen(uint8_t ** const screen);

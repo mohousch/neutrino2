@@ -778,7 +778,7 @@ void CLCDDisplay::blit(void)
 }
 
 // blit2lcd
-void CLCDDisplay::blitBox2LCD(int area_left, int area_top, int area_right, int area_bottom, int color) 
+void CLCDDisplay::blitBox2LCD(int area_left, int area_top, int area_right, int area_bottom, uint32_t color) 
 {
 	int area_width  = area_right - area_left;
 	int area_height = area_bottom - area_top;
@@ -840,18 +840,18 @@ void CLCDDisplay::update()
 	blit();
 }
 
-void CLCDDisplay::draw_point(const int x, const int y, const int state)
+void CLCDDisplay::draw_point(const int x, const int y, const uint32_t color)
 {
 	if ((x < 0) || (x >= xres) || (y < 0) || (y >= yres))
 		return;
 
-	if (state == LCD_PIXEL_INV)
+	if (color == LCD_PIXEL_INV)
 		_buffer[(y * xres + x)] ^= 1;
 	else
-		_buffer[(y * xres + x)] = state;
+		_buffer[(y * xres + x)] = color;
 }
 
-void CLCDDisplay::draw_line(const int x1, const int y1, const int x2, const int y2, const int state)  
+void CLCDDisplay::draw_line(const int x1, const int y1, const int x2, const int y2, const uint32_t color)  
 {
 	int dx = abs (x1 - x2);
 	int dy = abs (y1 - y2);
@@ -881,7 +881,7 @@ void CLCDDisplay::draw_line(const int x1, const int y1, const int x2, const int 
 			step = y2 < y1 ? -1 : 1;
 		}
 
-		draw_point(x, y, state);
+		draw_point(x, y, color);
 
 		while( x < End )
 		{
@@ -893,7 +893,7 @@ void CLCDDisplay::draw_line(const int x1, const int y1, const int x2, const int 
 				y += step;
 				p += twoDyDx;
 			}
-			draw_point(x, y, state);
+			draw_point(x, y, color);
 		}
 	}
 	else
@@ -917,7 +917,7 @@ void CLCDDisplay::draw_line(const int x1, const int y1, const int x2, const int 
 			step = x2 < x1 ? -1 : 1;
 		}
 
-		draw_point(x, y, state);
+		draw_point(x, y, color);
 
 		while( y < End )
 		{
@@ -929,12 +929,12 @@ void CLCDDisplay::draw_line(const int x1, const int y1, const int x2, const int 
 				x += step;
 				p += twoDxDy;
 			}
-			draw_point(x, y, state);
+			draw_point(x, y, color);
 		}
 	}
 }
 
-void CLCDDisplay::draw_fill_rect(int left, int top, int right, int bottom, int state) 
+void CLCDDisplay::draw_fill_rect(int left, int top, int right, int bottom, uint32_t color) 
 {
 	int x, y;
 	
@@ -942,24 +942,24 @@ void CLCDDisplay::draw_fill_rect(int left, int top, int right, int bottom, int s
 	{  
 		for(y = top + 1; y < bottom; y++) 
 		{
-			draw_point(x, y, state);
+			draw_point(x, y, color);
 		}
 	}
 }
 
-void CLCDDisplay::draw_rectangle(int left,int top, int right, int bottom, int linestate,int fillstate)
+void CLCDDisplay::draw_rectangle(int left,int top, int right, int bottom, uint32_t linecolor, uint32_t fillcolor)
 {
 	// coordinate checking in draw_pixel (-> you can draw lines only
 	// partly on screen)
 
-	draw_line(left, top, right, top, linestate);
-	draw_line(left, top, left, bottom, linestate);
-	draw_line(right, top, right, bottom, linestate);
-	draw_line(left, bottom, right, bottom, linestate);
-	draw_fill_rect(left, top, right, bottom, fillstate);  
+	draw_line(left, top, right, top, linecolor);
+	draw_line(left, top, left, bottom, linecolor);
+	draw_line(right, top, right, bottom, linecolor);
+	draw_line(left, bottom, right, bottom, linecolor);
+	draw_fill_rect(left, top, right, bottom, fillcolor);  
 }  
 
-void CLCDDisplay::draw_polygon(int num_vertices, int *vertices, int state) 
+void CLCDDisplay::draw_polygon(int num_vertices, int *vertices, uint32_t color) 
 {
 	// coordinate checking in draw_pixel (-> you can draw polygons only
 	// partly on screen)
@@ -971,14 +971,14 @@ void CLCDDisplay::draw_polygon(int num_vertices, int *vertices, int state)
 			vertices[(i<<1)+1],
 			vertices[(i<<1)+2],
 			vertices[(i<<1)+3],
-			state);
+			color);
 	}
    
 	draw_line(vertices[0],
 		vertices[1],
 		vertices[(num_vertices<<1)-2],
 		vertices[(num_vertices<<1)-1],
-		state);
+		color);
 }
 
 void CLCDDisplay::clear_screen() 
