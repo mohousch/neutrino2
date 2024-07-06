@@ -777,21 +777,6 @@ void CLCDDisplay::blit(void)
 #endif
 }
 
-void CLCDDisplay::update()
-{
-	//
-	for (unsigned int y = 0; y < yres; y++)
-	{
-		for (unsigned int x = 0; x < xres; x++)
-		{
-			blitBox2LCD(x, y, x + 1, y + 1, _buffer[(y * xres + x)]);
-		}
-	}
-	
-	//
-	blit();
-}
-
 // blit2lcd
 void CLCDDisplay::blitBox2LCD(int area_left, int area_top, int area_right, int area_bottom, int color) 
 {
@@ -838,6 +823,21 @@ void CLCDDisplay::blitBox2LCD(int area_left, int area_top, int area_right, int a
 				*dst++=col;
 		}
 	}	
+}
+
+void CLCDDisplay::update()
+{
+	//
+	for (unsigned int y = 0; y < yres; y++)
+	{
+		for (unsigned int x = 0; x < xres; x++)
+		{
+			blitBox2LCD(x, y, x + 1, y + 1, _buffer[(y * xres + x)]);
+		}
+	}
+	
+	//
+	blit();
 }
 
 void CLCDDisplay::draw_point(const int x, const int y, const int state)
@@ -1020,10 +1020,6 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 {
 	bool ret_value = false;
 
-#if 0
-	getSize(filename, &element->width, &element->height, &element->bpp);
-	element->buffer = getImage(filename, element->width, element->height, 8);
-#else
 	png_structp  png_ptr;
 	png_infop    info_ptr;
 	unsigned int i;
@@ -1065,14 +1061,13 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 					channels = png_get_channels(png_ptr, info_ptr);
 					trns = png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS);
 					
-					/*if (
+					if (
 						((color_type == PNG_COLOR_TYPE_PALETTE) ||
 						 ((color_type & PNG_COLOR_MASK_COLOR) == PNG_COLOR_TYPE_GRAY)) &&
 						(bit_depth  <= 8                     ) &&
 						(width      <= lcd_width             ) &&
 						(height     <= lcd_height            )
 						)
-					*/
 					{
 						printf("CLCDDisplay::load_png_element: %s %dx%dx%d, type %d channel %d trans %d\n", filename, width, height, bit_depth, color_type, channels, trns);
 						
@@ -1135,7 +1130,6 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 		}
 		fclose(fh);
 	}
-#endif
 	
 	return ret_value;
 }
@@ -1316,6 +1310,7 @@ gUnmanagedSurface* CLCDDisplay::loadPNG(const char* filename)
     png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, 0, 0);
     channels = png_get_channels(png_ptr, info_ptr);
     trns = png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS);
+    
     //printf("[ePNG] %s: before %dx%dx%dbpcx%dchan coltyp=%d\n", filename, (int)width, (int)height, bit_depth, channels, color_type);
 
     /*
@@ -1331,14 +1326,18 @@ gUnmanagedSurface* CLCDDisplay::loadPNG(const char* filename)
 
     if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8)
         png_set_expand_gray_1_2_4_to_8(png_ptr);
+        
     if (color_type == PNG_COLOR_TYPE_GRAY && trns)
         png_set_tRNS_to_alpha(png_ptr);
-    if ((color_type == PNG_COLOR_TYPE_GRAY && trns) || color_type == PNG_COLOR_TYPE_GRAY_ALPHA) {
+        
+    if ((color_type == PNG_COLOR_TYPE_GRAY && trns) || color_type == PNG_COLOR_TYPE_GRAY_ALPHA) 
+    {
         png_set_gray_to_rgb(png_ptr);
         png_set_bgr(png_ptr);
     }
 
-    if (color_type == PNG_COLOR_TYPE_RGB) {
+    if (color_type == PNG_COLOR_TYPE_RGB) 
+    {
         if (trns)
             png_set_tRNS_to_alpha(png_ptr);
         else
