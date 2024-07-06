@@ -1525,11 +1525,11 @@ void CLCD::drawBanner()
 		return;
 	
 #if defined (ENABLE_LCD)	
-//	display->load_screen_element(&(element[ELEMENT_BANNER]), 0, 0, lcd_width, element->height);
-	display->showPNGImage(element[ELEMENT_BANNER].name.c_str(), 0, 0, lcd_width, element[ELEMENT_BANNER].height);
+	display->load_screen_element(&(element[ELEMENT_BANNER]), 0, 0, lcd_width, element->height);
+//	display->showPNGImage(element[ELEMENT_BANNER].name.c_str(), 0, 0, lcd_width, element[ELEMENT_BANNER].height);
 	
-//	if (element[ELEMENT_BANNER].width < lcd_width)
-//		display->draw_fill_rect(element[ELEMENT_BANNER].width - 1, -1, lcd_width, element[ELEMENT_BANNER].height - 1, CLCDDisplay::PIXEL_ON);
+	if (element[ELEMENT_BANNER].width < lcd_width)
+		display->draw_fill_rect(element[ELEMENT_BANNER].width - 1, -1, lcd_width, element[ELEMENT_BANNER].height - 1, CLCDDisplay::PIXEL_ON);
 #endif
 }
 
