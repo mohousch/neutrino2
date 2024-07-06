@@ -136,7 +136,7 @@ class CLCDDisplay
 		void resume();
 
 		void update();
-		void blitBox2LCD(/*int area_left, int area_top, int area_right, int area_bottom, int color*/);
+		void blitBox2LCD(int area_left, int area_top, int area_right, int area_bottom, int color);
 		void blit(void);
 		////
 		void draw_point(const int x, const int y, const int state);

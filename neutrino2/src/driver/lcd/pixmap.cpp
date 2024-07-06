@@ -207,82 +207,26 @@ int blitBox(gUnmanagedSurface *m_surface, const int src_w, const int src_h, cons
 
     	if (!(flag & blitScale))
     	{
-        	// pos' size is ignored if left or top aligning.
-        	// if its size isn't set, centre and right/bottom aligning is ignored
-        	/*
-        	if (_pos.size().isValid())
-        	{
-            		if (flag & blitHAlignCenter)
-                		pos.setLeft(_pos.left() + (_pos.width() - src_w) / 2);
-            		else if (flag & blitHAlignRight)
-                		pos.setLeft(_pos.right() - src_w);
-
-            		if (flag & blitVAlignCenter)
-                		pos.setTop(_pos.top() + (_pos.height() - src_h) / 2);
-            		else if (flag & blitVAlignBottom)
-                		pos.setTop(_pos.bottom() - src_h);
-        	}
-        	*/
-
         	pos.iWidth = src_w;
         	pos.iHeight = src_h;
     	}
     	else if (pos.iWidth == src_w && pos.iHeight == src_h) /* no scaling required */
         	flag &= ~blitScale;
-    	/*
-    	else // blitScale is set
-    	{
-        	scale_x = pos.iWidth * FIX / src_w; //NOSONAR
-        	scale_y = pos.iHeight() * FIX / src_h; //NOSONAR
-        
-        	if (flag & blitKeepAspectRatio)
-        	{
-            		if (scale_x > scale_y)
-            		{
-                		// vertical is full height, adjust horizontal to be smaller
-                		scale_x = scale_y;
-                
-                		pos.iWidth= (src_w * _pos.iHeight / src_h);
-                
-                		if (flag & blitHAlignCenter)
-                    			pos.iWidth = ((_pos.iWidth - pos.iWidth) / 2, 0);
-                		else if (flag & blitHAlignRight)
-                    			pos.iHeight = (_pos.iWidth - pos.iWidth());
-            		}
-            		else
-            		{
-                		// horizontal is full width, adjust vertical to be smaller
-                		scale_y = scale_x;
-                		pos.setHeight(src_h * _pos.width() / src_w);
-                		if (flag & blitVAlignCenter)
-                    			pos.moveBy(0, (_pos.height() - pos.height()) / 2);
-                		else if (flag & blitVAlignBottom)
-                    			pos.moveBy(0, _pos.height() - pos.height());
-            		}
-        	}
-    	}
-    	*/
-
+    	
 	pixmap_printf("SCALE %x %x\n", scale_x, scale_y);
 
     	for (unsigned int cci = 0; cci < 1; ++cci)
     	{
-        	CBox area = pos; /* pos is the virtual (pre-clipping) area on the dest, which can be larger/smaller than src if scaling is enabled */
-        
- //       	area &= eRect(ePoint(0, 0), src_size);
-
- //       	if (area.empty())
-   //         		continue;
+        	CBox area = pos;
 
         	CBox srcarea = area;
-//        	srcarea.moveBy(-pos.x(), -pos.y());
 
-//        	pixmap_printf("srcarea before scale: %d %d %d %d\n", srcarea.x(), srcarea.y(), srcarea.width(), srcarea.height());
+        	pixmap_printf("srcarea before scale: %d %d %d %d\n", srcarea.iX, srcarea.iY, srcarea.iWidth, srcarea.iHeight);
 
-//        	if (flag & blitScale)
-  //          		srcarea = eRect(srcarea.x() * FIX / scale_x, srcarea.y() * FIX / scale_y, srcarea.width() * FIX / scale_x, srcarea.height() * FIX / scale_y);
+        	if (flag & blitScale)
+            		srcarea = CBox(srcarea.iX * FIX / scale_x, srcarea.iY * FIX / scale_y, srcarea.iWidth * FIX / scale_x, srcarea.iHeight * FIX / scale_y);
 
-//        	pixmap_printf("srcarea after scale: %d %d %d %d\n", srcarea.x(), srcarea.y(), srcarea.width(), srcarea.height());
+        	pixmap_printf("srcarea after scale: %d %d %d %d\n", srcarea.iX, srcarea.iY, srcarea.iWidth, srcarea.iHeight);
 
 
         	if (flag & blitScale)
@@ -290,7 +234,7 @@ int blitBox(gUnmanagedSurface *m_surface, const int src_w, const int src_h, cons
             		if ((surface->bpp == 32) && (m_surface->bpp == 8))
             		{
                 		const uint8_t *srcptr = (uint8_t*)m_surface->data;
-                		uint8_t *dstptr = (uint8_t*)surface->data; // !!
+                		uint8_t *dstptr = (uint8_t*)surface->data;
                 		uint32_t pal[256];
                 		convert_palette(pal, m_surface->clut);
 

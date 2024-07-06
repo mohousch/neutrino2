@@ -780,72 +780,24 @@ void CLCDDisplay::blit(void)
 void CLCDDisplay::update()
 {
 	//
-	blitBox2LCD();
+	for (unsigned int y = 0; y < yres; y++)
+	{
+		for (unsigned int x = 0; x < xres; x++)
+		{
+			blitBox2LCD(x, y, x + 1, y + 1, _buffer[(y * xres + x)]);
+		}
+	}
 	
 	//
 	blit();
 }
 
 // blit2lcd
-void CLCDDisplay::blitBox2LCD(/*int area_left, int area_top, int area_right, int area_bottom, int color*/) 
+void CLCDDisplay::blitBox2LCD(int area_left, int area_top, int area_right, int area_bottom, int color) 
 {
-//	int area_width  = area_right - area_left;
-//	int area_height = area_bottom - area_top;
+	int area_width  = area_right - area_left;
+	int area_height = area_bottom - area_top;
 	
-	////
-	#if 0
-	gUnmanagedSurface *m_surface = NULL;
-	gUnmanagedSurface surface;
-	
-    	surface.x = xres;
-    	surface.y = yres;
-    	surface.stride = surface_stride;
-    	surface.bypp = surface_bypp;
-    	surface.bpp = surface_bpp;
-    	surface.data = surface_data;
-    	surface.data_phys = 0;
-    	
-    	if (lcd_type == 4)
-	{
-		surface.clut.colors = 256;
-		surface.clut.data = new gRGB[surface.clut.colors];
-		memset(static_cast<void*>(surface.clut.data), 0, sizeof(*surface.clut.data)*surface.clut.colors);
-	}
-	else
-	{
-		surface.clut.colors = 0;
-		surface.clut.data = 0;
-	}
-	
-	//
-	m_surface->x = xres;
-    	m_surface->y = yres;
-    	m_surface->stride = _stride;
-    	m_surface->bypp = 1;
-    	m_surface->bpp = 8;
-    	m_surface->data = _buffer;
-    	m_surface->data_phys = 0;
-    	
-    	if (lcd_type == 4)
-	{
-		m_surface->clut.colors = 256;
-		m_surface->clut.data = new gRGB[m_surface->clut.colors];
-		memset(static_cast<void*>(m_surface->clut.data), 0, sizeof(*m_surface->clut.data)*m_surface->clut.colors);
-	}
-	else
-	{
-		m_surface->clut.colors = 0;
-		m_surface->clut.data = 0;
-	}
-	
-	CBox eRect(0, 0, xres, yres);
-		
-	// render
-	::blitBox(m_surface, xres, yres, eRect, &surface, 2);
-	#endif
-	////
-
-#if 0
 	if (surface_bpp == 8)
 	{
 		for (int y = area_top; y < area_bottom; y++)
@@ -885,8 +837,7 @@ void CLCDDisplay::blitBox2LCD(/*int area_left, int area_top, int area_right, int
 			while (x--)
 				*dst++=col;
 		}
-	}
-#endif	
+	}	
 }
 
 void CLCDDisplay::draw_point(const int x, const int y, const int state)
@@ -1044,7 +995,7 @@ void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int
 {
 	printf("CLCDDisplay::load_screen_element: %s\n", element->name.c_str());
 	
-	/*
+	//
 	if ((element->buffer) && (element->height <= yres - top))
 	{
 		for (unsigned int i = 0; i < min(element->height, yres - top); i++)
@@ -1052,10 +1003,6 @@ void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int
 			memmove(_buffer + ((top + i)*xres) + left, element->buffer + (i*element->width), min(element->width, xres - left));
 		}
 	}
-	*/
-	
-	////test
-	showPNGImage(element->name.c_str(), left, top, element->width, element->height);
 }
 
 void CLCDDisplay::load_screen(uint8_t **const screen) 
