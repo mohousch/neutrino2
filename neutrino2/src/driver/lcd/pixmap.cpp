@@ -48,8 +48,8 @@
 #endif
 
 ////
-//#define PIXMAP_DEBUG
-#define PIXMAP_SILENT
+#define PIXMAP_DEBUG
+//#define PIXMAP_SILENT
 
 static short debug_level = 10;
 
@@ -201,175 +201,36 @@ int blitBox(gUnmanagedSurface *m_surface, const int src_w, const int src_h, cons
 {
 	CBox pos = _pos;
 
-    	pixmap_printf("source size: %d %d", pos.iWidth, pos.iHeight);
+    	pixmap_printf(10, "src size %d %d bpp: %d (dest size: %d %d bpp: %d) (flag: %d)\n", src_w, src_h, m_surface->bpp, pos.iWidth, pos.iHeight, surface->bpp, flag);
 
-    	int scale_x = FIX, scale_y = FIX;
-
-    	if (!(flag & blitScale))
-    	{
-        	pos.iWidth = src_w;
-        	pos.iHeight = src_h;
-    	}
-    	else if (pos.iWidth == src_w && pos.iHeight == src_h) /* no scaling required */
-        	flag &= ~blitScale;
-    	
-	pixmap_printf("SCALE %x %x\n", scale_x, scale_y);
+	//
+	if (src_w <= pos.iWidth)
+		pos.iWidth = src_w;
+		
+	if (src_h <= pos.iHeight)
+		pos.iHeight = src_h;
 
     	for (unsigned int cci = 0; cci < 1; ++cci)
     	{
-        	CBox area = pos;
+        	CBox area = pos; //CBox(0, 0, src_w, src_h); // our dest blit area
+        	CBox srcarea = CBox(pos.iX, pos.iY, src_w, src_h); // our src area unscaled
 
-        	CBox srcarea = area;
-
-        	pixmap_printf("srcarea before scale: %d %d %d %d\n", srcarea.iX, srcarea.iY, srcarea.iWidth, srcarea.iHeight);
-
-        	if (flag & blitScale)
-            		srcarea = CBox(srcarea.iX * FIX / scale_x, srcarea.iY * FIX / scale_y, srcarea.iWidth * FIX / scale_x, srcarea.iHeight * FIX / scale_y);
-
-        	pixmap_printf("srcarea after scale: %d %d %d %d\n", srcarea.iX, srcarea.iY, srcarea.iWidth, srcarea.iHeight);
-
-
-        	if (flag & blitScale)
-        	{
-            		if ((surface->bpp == 32) && (m_surface->bpp == 8))
-            		{
-                		const uint8_t *srcptr = (uint8_t*)m_surface->data;
-                		uint8_t *dstptr = (uint8_t*)surface->data;
-                		uint32_t pal[256];
-                		convert_palette(pal, m_surface->clut);
-
-                		const int src_stride = m_surface->stride;
-                		srcptr += srcarea.iX*m_surface->bypp + srcarea.iY*src_stride;
-                		dstptr += area.iX*surface->bypp + area.iY*surface->stride;
-                		const int width = area.iWidth;
-                		const int height = area.iHeight;
-                		const int src_height = srcarea.iHeight;
-                		const int src_width = srcarea.iWidth;
-                
-                		if (flag & blitAlphaTest)
-                		{
-                    			for (int y = 0; y < height; ++y)
-                    			{
-                        			const uint8_t *src_row_ptr = srcptr + (((y * src_height) / height) * src_stride);
-                        			uint32_t *dst = (uint32_t*)dstptr;
-                        			for (int x = 0; x < width; ++x)
-                        			{
-                            				uint32_t pixel = pal[src_row_ptr[(x *src_width) / width]];
-                            				if (pixel & 0x80000000)
-                                				*dst = pixel;
-                            				++dst;
-                        			}
-                        			dstptr += surface->stride;
-                    			}
-                		}
-                		else if (flag & blitAlphaBlend)
-                		{
-                    			for (int y = 0; y < height; ++y)
-                    			{
-                        			const uint8_t *src_row_ptr = srcptr + (((y * src_height) / height) * src_stride);
-                        			gRGB *dst = (gRGB*)dstptr;
-                        			for (int x = 0; x < width; ++x)
-                        			{
-                            				dst->alpha_blend(pal[src_row_ptr[(x * src_width) / width]]);
-                            				++dst;
-                        			}
-                        			dstptr += surface->stride;
-                    			}
-                		}
-                		else
-                		{
-                    			for (int y = 0; y < height; ++y)
-                    			{
-                        			const uint8_t *src_row_ptr = srcptr + (((y * src_height) / height) * src_stride);
-                        			uint32_t *dst = (uint32_t*)dstptr;
-                        			for (int x = 0; x < width; ++x)
-                        			{
-                            				*dst = pal[src_row_ptr[(x * src_width) / width]];
-                            				++dst;
-                        			}
-                        			dstptr += surface->stride;
-                    			}
-                		}
-            		}
-            		else if ((surface->bpp == 32) && (m_surface->bpp == 32))
-            		{
-                		const int src_stride = m_surface->stride;
-                		const uint8_t* srcptr = (const uint8_t*)m_surface->data + srcarea.iX*m_surface->bypp + srcarea.iY*src_stride;
-                		uint8_t* dstptr = (uint8_t*)surface->data + area.iX*surface->bypp + area.iY*surface->stride;
-                		const int width = area.iWidth;
-                		const int height = area.iHeight;
-                		const int src_height = srcarea.iHeight;
-                		const int src_width = srcarea.iWidth;
-                
-                		if (flag & blitAlphaTest)
-                		{
-                    			for (int y = 0; y < height; ++y)
-                    			{
-                        			const uint32_t *src_row_ptr = (uint32_t*)(srcptr + (((y * src_height) / height) * src_stride));
-                        			uint32_t *dst = (uint32_t*)dstptr;
-                        
-                        			for (int x = 0; x < width; ++x)
-                        			{
-                            				uint32_t pixel = src_row_ptr[(x *src_width) / width];
-                            				if (pixel & 0x80000000)
-                                				*dst = pixel;
-                            				++dst;
-                        			}
-                        			dstptr += surface->stride;
-                    			}
-                		}
-                		else if (flag & blitAlphaBlend)
-                		{
-                    			for (int y = 0; y < height; ++y)
-                    			{
-                        			const gRGB *src_row_ptr = (gRGB *)(srcptr + (((y * src_height) / height) * src_stride));
-                        			gRGB *dst = (gRGB*)dstptr;
-                        
-                        			for (int x = 0; x < width; ++x)
-                        			{
-                            				dst->alpha_blend(src_row_ptr[(x * src_width) / width]);
-                            				++dst;
-                        			}
-                        			dstptr += surface->stride;
-                    			}
-                		}
-                		else
-                		{
-                    			for (int y = 0; y < height; ++y)
-                    			{
-                        			const uint32_t *src_row_ptr = (uint32_t*)(srcptr + (((y * src_height) / height) * src_stride));
-                        			uint32_t *dst = (uint32_t*)dstptr;
-                        
-                        			for (int x = 0; x < width; ++x)
-                        			{
-                            				*dst = src_row_ptr[(x * src_width) / width];
-                            				++dst;
-                        			}
-                        			dstptr += surface->stride;
-                    			}
-                		}
-            		}
-            		else
-            		{
-                		pixmap_printf("unimplemented: scale on non-accel surface %d->%d bpp\n", m_surface->bpp, surface->bpp);
-            		}
-            		continue;
-        	}
+        	pixmap_printf(10, "srcarea before scale: %d %d %d %d\n", srcarea.iX, srcarea.iY, srcarea.iWidth, srcarea.iHeight);
 
         	if ((surface->bpp == 8) && (m_surface->bpp == 8))
         	{
             		uint8_t *srcptr = (uint8_t*)m_surface->data;
             		uint8_t *dstptr = (uint8_t*)surface->data;
 
-            		srcptr+=srcarea.iX*m_surface->bypp+srcarea.iY*m_surface->stride;
-            		dstptr+=area.iX*surface->bypp+area.iY*surface->stride;
+            		srcptr += srcarea.iX*m_surface->bypp + srcarea.iY*m_surface->stride;
+            		dstptr += area.iX*surface->bypp + area.iY*surface->stride;
             
             		if (flag & (blitAlphaTest|blitAlphaBlend))
             		{
                 		for (int y = area.iHeight; y != 0; --y)
                 		{
                     			// no real alphatest yet
-                    			int width=area.iWidth;
+                    			int width = area.iWidth;
                     			unsigned char *s = (unsigned char*)srcptr;
                     			unsigned char *d = (unsigned char*)dstptr;
                     			
@@ -403,11 +264,11 @@ int blitBox(gUnmanagedSurface *m_surface, const int src_w, const int src_h, cons
         	}
         	else if ((surface->bpp == 32) && (m_surface->bpp == 32))
         	{
-            		uint32_t *srcptr=(uint32_t*)m_surface->data;
-            		uint32_t *dstptr=(uint32_t*)surface->data;
+            		uint32_t *srcptr = (uint32_t*)m_surface->data;
+            		uint32_t *dstptr = (uint32_t*)surface->data;
 
-            		srcptr+=srcarea.iX+srcarea.iY*m_surface->stride/4;
-            		dstptr+=area.iX+area.iY*surface->stride/4;
+            		srcptr += srcarea.iX + srcarea.iY*m_surface->stride/4;
+            		dstptr += area.iX + area.iY*surface->stride/4;
             		
             		for (int y = area.iHeight; y != 0; --y)
             		{
@@ -450,13 +311,13 @@ int blitBox(gUnmanagedSurface *m_surface, const int src_w, const int src_h, cons
         	else if ((surface->bpp == 32) && (m_surface->bpp == 8))
         	{
             		const uint8_t *srcptr = (uint8_t*)m_surface->data;
-            		uint8_t *dstptr=(uint8_t*)surface->data; // !!
+            		uint8_t *dstptr = (uint8_t*)surface->data;
             		uint32_t pal[256];
             		convert_palette(pal, m_surface->clut);
 
-            		srcptr+=srcarea.iX*m_surface->bypp+srcarea.iY*m_surface->stride;
-            		dstptr+=area.iX*surface->bypp+area.iY*surface->stride;
-            		const int width=area.iWidth;
+            		srcptr += srcarea.iX*m_surface->bypp + srcarea.iY*m_surface->stride;
+            		dstptr += area.iX*surface->bypp + area.iY*surface->stride;
+            		const int width = area.iWidth;
             		
             		for (int y = area.iHeight; y != 0; --y)
             		{
@@ -472,8 +333,8 @@ int blitBox(gUnmanagedSurface *m_surface, const int src_w, const int src_h, cons
         	}
         	else if ((surface->bpp == 16) && (m_surface->bpp == 8))
         	{
-            		uint8_t *srcptr=(uint8_t*)m_surface->data;
-            		uint8_t *dstptr=(uint8_t*)surface->data; // !!
+            		uint8_t *srcptr = (uint8_t*)m_surface->data;
+            		uint8_t *dstptr = (uint8_t*)surface->data;
             		uint32_t pal[256];
 
             		for (int i = 0; i != 256; ++i)
@@ -482,25 +343,25 @@ int blitBox(gUnmanagedSurface *m_surface, const int src_w, const int src_h, cons
                 		if (m_surface->clut.data && (i<m_surface->clut.colors))
                     			icol = m_surface->clut.data[i].argb();
                 		else
-                    			icol=0x010101*i;
+                    			icol = 0x010101*i;
 #if BYTE_ORDER == LITTLE_ENDIAN
                 		pal[i] = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
 #else
                 		pal[i] = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
 #endif
-                		pal[i]^=0xFF000000;
+                		pal[i] ^= 0xFF000000;
             		}
 
-            		srcptr+=srcarea.iX*m_surface->bypp+srcarea.iY*m_surface->stride;
-            		dstptr+=area.iX*surface->bypp+area.iY*surface->stride;
+            		srcptr += srcarea.iX*m_surface->bypp + srcarea.iY*m_surface->stride;
+            		dstptr += area.iX*surface->bypp + area.iY*surface->stride;
 
             		if (flag & blitAlphaBlend)
-                		printf("[uPNG] ignore unsupported 8bpp -> 16bpp alphablend!\n");
+                		printf("ignore unsupported 8bpp -> 16bpp alphablend!\n");
 
-            		for (int y=0; y<area.iHeight; y++)
+            		for (int y = 0; y < area.iHeight; y++)
             		{
-                		int width=area.iWidth;
-                		unsigned char *psrc=(unsigned char*)srcptr;
+                		int width = area.iWidth;
+                		uint8_t *psrc = (uint8_t *)srcptr;
                 		uint16_t *dst=(uint16_t*)dstptr;
                 		
                 		if (flag & blitAlphaTest)
@@ -508,23 +369,24 @@ int blitBox(gUnmanagedSurface *m_surface, const int src_w, const int src_h, cons
                 		else
                     			blit_8i_to_16(dst, psrc, pal, width);
                     			
-                		srcptr+=m_surface->stride;
-                		dstptr+=surface->stride;
+                		srcptr += m_surface->stride;
+                		dstptr += surface->stride;
             		}
         	}
         	else if ((surface->bpp == 16) && (m_surface->bpp == 32))
         	{
-            		uint8_t *srcptr=(uint8_t*)m_surface->data;
-            		uint8_t *dstptr=(uint8_t*)surface->data;
+//            		uint8_t *srcptr = (uint8_t*)m_surface->data;
+			uint8_t *srcptr = (uint8_t *)::resize((uint8_t*)m_surface->data, src_w, src_h, pos.iWidth, pos.iHeight, SCALE_COLOR, true);
+            		uint8_t *dstptr = (uint8_t*)surface->data;
 
-            		srcptr+=srcarea.iX*m_surface->bypp+srcarea.iY*m_surface->stride;
-            		dstptr+=area.iX*surface->bypp+area.iY*surface->stride;
+            		srcptr += srcarea.iX*m_surface->bypp + srcarea.iY*m_surface->stride;
+            		dstptr += area.iX*surface->bypp + area.iY*surface->stride;
 
-            		for (int y=0; y<area.iHeight; y++)
+            		for (int y = 0; y < area.iHeight; y++)
             		{
-                		int width=area.iWidth;
-                		uint32_t *srcp=(uint32_t*)srcptr;
-                		uint16_t *dstp=(uint16_t*)dstptr;
+                		int width = area.iWidth;
+                		uint32_t *srcp = (uint32_t*)srcptr;
+                		uint16_t *dstp = (uint16_t*)dstptr;
 
                 		if (flag & blitAlphaBlend)
                 		{
@@ -597,13 +459,13 @@ int blitBox(gUnmanagedSurface *m_surface, const int src_w, const int src_h, cons
 #endif
                     			}
                 		}
-                		srcptr+=m_surface->stride;
-                		dstptr+=surface->stride;
+                		srcptr += m_surface->stride;
+                		dstptr += surface->stride;
             		}
         	}
         	else 
         	{
-            		pixmap_printf("cannot blit %dbpp from %dbpp\n", surface->bpp, m_surface->bpp);
+            		pixmap_printf(1, "cannot blit %dbpp -> %dbpp\n", m_surface->bpp, surface->bpp);
             		return -1;
         	}
     	}

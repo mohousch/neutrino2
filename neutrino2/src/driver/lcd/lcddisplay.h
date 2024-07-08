@@ -35,8 +35,8 @@
 #include <driver/lcd/pixmap.h>
 
 
-#define LCD_PIXEL_OFF				0x00000000
-#define LCD_PIXEL_ON				0xFFFFFFFF
+#define LCD_PIXEL_OFF				0x00
+#define LCD_PIXEL_ON				0xFF
 #define LCD_PIXEL_INV				0x1000000
 
 #define LCD_IOCTL_CLEAR				(26)
@@ -163,8 +163,7 @@ class CLCDDisplay
 		void setFlipped(bool);
 		////
 		int raw_buffer_size;
-		int xres, yres, bpp;
-//		int bypp;
+		int xres, yres, bpp, bypp;
 		void setSize(int w, int h, int b);
 		////
 		int islocked() { return locked; }

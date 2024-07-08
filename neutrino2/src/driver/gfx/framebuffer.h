@@ -36,6 +36,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 
 // stmfb
 #ifdef __sh__
@@ -100,38 +101,6 @@ enum {
 	GRADIENT_COLOR2TRANSPARENT,
 	GRADIENT_ONECOLOR,
 	GRADIENT_COLOR2COLOR
-};
-
-////
-class CBox
-{
-	public:
-		// Variables
-		int iX;
-		int iY;
-		int iWidth;
-		int iHeight;
-
-		//
-		inline CBox()
-		{
-			iX = 0;
-			iY = 0;
-			iWidth = 0;
-			iHeight = 0;
-		};
-		
-		inline CBox( const int _iX, const int _iY, const int _iWidth, const int _iHeight)
-		{
-			iX =_iX; 
-			iY=_iY; 
-			iWidth =_iWidth; 
-			iHeight =_iHeight;
-		};
-		
-		inline ~CBox(){};
-		
-		void move(int posx, int posy){iX = posx; iY = posy;};
 };
 
 ////
@@ -321,6 +290,40 @@ class CFrameBuffer
 		void displayRGB(unsigned char * rgbbuff, int x_size, int y_size, int x_pan, int y_pan, int x_offs, int y_offs, bool clearfb = true);
 		bool displayImage(const std::string& name, int posx = 0, int posy = 0, int width = DEFAULT_XRES, int height = DEFAULT_YRES, int x_pan = 0, int y_pan = 0, ScalingMode scaletype = SCALE_COLOR);
 };
+
+////
+class CBox
+{
+	public:
+		// Variables
+		int iX;
+		int iY;
+		int iWidth;
+		int iHeight;
+
+		//
+		inline CBox()
+		{
+			iX = 0;
+			iY = 0;
+			iWidth = 0;
+			iHeight = 0;
+		};
+		
+		inline CBox( const int _iX, const int _iY, const int _iWidth, const int _iHeight)
+		{
+			iX =_iX; 
+			iY=_iY; 
+			iWidth =_iWidth; 
+			iHeight =_iHeight;
+		};
+		
+		inline ~CBox(){};
+		
+		void move(int posx, int posy){iX = posx; iY = posy;};
+};
+
+typedef std::vector<CBox> nRegion;
 
 #endif
 

@@ -271,6 +271,7 @@ void CLCDDisplay::setSize(int w, int h, int b)
 	xres = w;
 	yres = h;
 	bpp = b;
+	bypp = 1;
 	
 	//
 	surface_bpp = b;
@@ -311,8 +312,8 @@ void CLCDDisplay::setSize(int w, int h, int b)
 	memset(surface_data, 0, surface_buffer_size);
 
 	// buffer
-	_stride = xres;
-	raw_buffer_size = xres * yres;
+	_stride = xres*bypp;
+	raw_buffer_size = xres * yres * bypp;
 	_buffer = new uint8_t[raw_buffer_size];
 	memset(_buffer, 0, raw_buffer_size);
 }
@@ -706,6 +707,7 @@ void CLCDDisplay::blit(void)
 #if defined (PLATFORM_DREAMBOX)	|| defined (PLATFORM_GIGABLUE)
 				// gggrrrrrbbbbbggg bit order from memory
 				// gggbbbbbrrrrrggg bit order to LCD
+				/*
 				uint8_t gb_buffer[surface_stride * yres];
 				
 				if (!(0x03 & (surface_stride * yres)))
@@ -726,6 +728,14 @@ void CLCDDisplay::blit(void)
 						gb_buffer[offset + 1] = (surface_data[offset + 1] & 0xE0) | ((surface_data[offset] >> 3) & 0x1F);
 					}
 				}
+				*/
+				////
+				uint8_t gb_buffer[surface_stride * yres];
+				for (int offset = 0; offset < surface_stride * yres; offset += 2)
+				{
+					gb_buffer[offset] = (surface_data[offset] & 0x1F) | ((surface_data[offset + 1] << 3) & 0xE0);
+					gb_buffer[offset + 1] = ((surface_data[offset + 1] >> 5) & 0x03) | ((surface_data[offset] >> 3) & 0x1C) | ((_buffer[offset + 1] << 5) & 0x60);
+				////
 				
 				write(fd, gb_buffer, surface_stride * yres);
 #else
@@ -1446,7 +1456,10 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 		
 	CBox eRect(posX, posY, width, height);
 		
+	int i_w, i_h, i_bpp;
+	getSize(filename, &i_w, &i_h, &i_bpp);
+		
 	// render
-	return ::blitBox(m_surface, width, height, eRect, &surface, flag);
+	return ::blitBox(m_surface, i_w, i_h, eRect, &surface, flag);
 }
 

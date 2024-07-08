@@ -193,8 +193,7 @@ enum
 {
         blitAlphaTest 		= 1,
         blitAlphaBlend 		= 2,
-        blitScale 		= 4,
-        blitKeepAspectRatio 	= 8
+//        blitScale 		= 4
 };
 
 int blitBox(gUnmanagedSurface *m_surface, const int src_w, const int src_h, const CBox &_pos, gUnmanagedSurface * surface, int flag);
