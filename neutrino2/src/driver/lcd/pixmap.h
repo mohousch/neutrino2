@@ -192,8 +192,7 @@ struct gSurface: gUnmanagedSurface
 enum
 {
         blitAlphaTest 		= 1,
-        blitAlphaBlend 		= 2,
-//        blitScale 		= 4
+        blitAlphaBlend 		= 2
 };
 
 int blitBox(gUnmanagedSurface *m_surface, const int src_w, const int src_h, const CBox &_pos, gUnmanagedSurface * surface, int flag);

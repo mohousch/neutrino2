@@ -51,7 +51,7 @@
 #define COL_BLACK	 			17
 #define COL_ORANGE				18
 #define COL_SILVER				19
-// 20 to 109 can be used by radar
+//
 #define RADAR_OFFSET				20
 //
 #define COL_BACKGROUND 				255				
@@ -163,7 +163,6 @@ typedef struct {
 	float v;
 } HsvColor;
 
-//
 uint8_t limitChar(int c);
 uint32_t Hsv2SysColor(HsvColor *hsv, uint8_t tr=0xFF);
 uint8_t SysColor2Hsv(uint32_t color, HsvColor *hsv);
@@ -172,5 +171,6 @@ void Rgb2Hsv(RgbColor *rgb, HsvColor *hsv);
 uint32_t *gradientColorToTransparent(uint32_t col, int bSize, int mode, int intensity = INT_LIGHT);
 uint32_t *gradientOneColor(uint32_t col, int bSize, int mode, int intensity = INT_LIGHT);
 uint32_t *gradientColorToColor(uint32_t start_col, uint32_t end_col, int bSize, int mode, int intensity = INT_LIGHT);
+
 #endif
 
