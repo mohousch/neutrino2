@@ -315,24 +315,6 @@ int CFont::getWidth(void)
 	return fontwidth;
 }
 
-int CFont::getMaxDigitWidth(void)
-{
-	if (maxdigitwidth < 1)
-	{
-		char b[2];
-		b[1] = 0;
-		for (char c = '0'; c <= '9'; c++)
-		{
-			*b = c;
-			int w = getRenderWidth(b);
-			if (w > maxdigitwidth)
-				maxdigitwidth = w;
-		}
-	}
-	
-	return maxdigitwidth;
-}
-
 int UTF8ToUnicode(const char * &text, bool utf8_encoded) // returns -1 on error
 {
 	int unicode_value;
@@ -544,9 +526,9 @@ void CFont::RenderString(int x, int y, const int width, const char *text, const 
 			y += (boxheight >> 1);		// half of border value at lower end, half at upper end
 	}
 
-	int lastindex = 0; // 0 == missing glyph (never has kerning values)
+	int lastindex = 0; 	// 0 == missing glyph (never has kerning values)
 	FT_Vector kerning;
-	int pen1 = -1; // "pen" positions for kerning, pen2 is "x"
+	int pen1 = -1; 		// "pen" positions for kerning, pen2 is "x"
 
 	fg_red     = (color & 0x00FF0000) >> 16;
 	fg_green   = (color & 0x0000FF00) >>  8;
@@ -559,7 +541,7 @@ void CFont::RenderString(int x, int y, const int width, const char *text, const 
 	//	
 	if (!useFullBG)
 	{
-		/* fetch bgcolor from framebuffer, using lower left edge of the font... */
+		// fetch bgcolor from framebuffer, using lower left edge of the font... 
 		bg_color = *(buff + x + y * stride / sizeof(fb_pixel_t));
 
 		if (bg_color == (fb_pixel_t)0)
@@ -624,7 +606,6 @@ void CFont::RenderString(int x, int y, const int width, const char *text, const 
 		if (use_kerning)
 		{
 			FT_Get_Kerning(face, lastindex, index, 0, &kerning);
-			//x+=(kerning.x+32)>>6; // kerning!
 			x += (kerning.x) >> 6; // kerning!
 		}
 
@@ -645,13 +626,13 @@ void CFont::RenderString(int x, int y, const int width, const char *text, const 
 				
 				for (ax = 0; ax < w + spread_by; ax++)
 				{
-					/* width clip */
+					// width clip
 					if (xoff  + ax >= left + width)
 						break;
 						
 					if (stylemodifier != CFont::Embolden)
 					{
-						/* do not paint the backgroundcolor (*s = 0) */
+						// do not paint the backgroundcolor (*s = 0)
 						if (*s != 0)
 							paintFontPixel(td, *s);
 					}
@@ -663,12 +644,13 @@ void CFont::RenderString(int x, int y, const int width, const char *text, const 
 						
 						for (int i = start; i < end; i++)
 						{
-							if (lcolor < * (s - i))
+							if (lcolor < *(s - i))
 							{
 								lcolor = *(s - i);
 							}
 						}
-						/* do not paint the backgroundcolor (lcolor = 0) */
+						
+						// do not paint the backgroundcolor (lcolor = 0)
 						if (lcolor != 0)
 						{
 							paintFontPixel(td, (uint8_t)lcolor);
@@ -682,6 +664,7 @@ void CFont::RenderString(int x, int y, const int width, const char *text, const 
 			}
 		}
 		x += glyph->xadvance + 1;
+		
 		if (pen1 > x)
 			x = pen1;
 		pen1 = x;

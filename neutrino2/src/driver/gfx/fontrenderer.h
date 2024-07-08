@@ -53,9 +53,8 @@ class CFont
 	FT_Error getGlyphBitmap(FT_ULong glyph_index, FTC_SBit *sbit);
 
 	// these are HACKED values, because the font metrics were unusable.
-	int height, ascender, descender, upper, lower;
-	int fontwidth;
-	int maxdigitwidth;
+	int fontwidth, height, ascender, descender, upper, lower;
+	//
 	uint8_t fg_red, fg_green, fg_blue;
 	fb_pixel_t colors[256];
 	bool useFullBG;
@@ -82,7 +81,6 @@ class CFont
 		int getRenderWidth(const char *text, bool utf8_encoded = true);
 		int getRenderWidth(const std::string &text, bool utf8_encoded = true);
 		int getHeight(void);
-		int getMaxDigitWidth(void);
 		int getWidth(void);
 		int getSize(){return font.width;}
 		int setSize(int isize);
@@ -112,8 +110,8 @@ class FBFontRenderClass
 	FT_Error getGlyphBitmap(FTC_ImageTypeRec * font, FT_ULong glyph_index, FTC_SBit *sbit);
 	FT_Error getGlyphBitmap(FTC_ScalerRec *sc, FT_ULong glyph_index, FTC_SBit *sbit);
 		
-	int xres;	/* the screen resolution in dpi */
-	int yres;	/* defaults to 72 dpi */
+	int xres;			/* the screen resolution in dpi */
+	int yres;			/* defaults to 72 dpi */
 
 	public:
 		pthread_mutex_t     render_mutex;
