@@ -76,6 +76,7 @@ CLCDDisplay::CLCDDisplay()
 	xres = 132;
 	yres = 64; 
 	bpp = 8;
+	bypp = 1;
 	fd = -1;
 	_buffer = NULL;
 	
@@ -272,8 +273,6 @@ void CLCDDisplay::setSize(int w, int h, int b)
 	//
 	xres = w;
 	yres = h;
-	bpp = 32;
-	bypp = 4;
 	
 	//
 	surface_bpp = b;
@@ -1420,6 +1419,8 @@ gUnmanagedSurface* CLCDDisplay::loadPNG(const char* filename)
 
 int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int width, int height, int flag)
 {
+	printf("CLCDDisplay::showPNGImage: %s %d %d %d %d (flag: %d)\n", filename, posX, posY, width, height, flag);
+	
 /*
 	gUnmanagedSurface *m_surface = NULL;
 	gUnmanagedSurface surface;
@@ -1464,15 +1465,13 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 	
 	::getSize(filename, &p_w, &p_h, &p_bpp);
 	
-	printf("CLCDDisplay::showPNGImage: %s %d %d bpp:%d\n", filename, p_w, p_h, p_bpp);
-	
 	if (p_w <= width)
 		width = p_w;
 		
 	if (p_h <= height)
 		height = p_h;
 	
-	element.buffer = (uint32_t *)::getImage(filename, width, height);
+	element.buffer = (uint8_t *)::getImage(filename, width, height, bpp);
 	element.width = width;
 	element.height = height;
 	element.bpp = p_bpp*bpp;
