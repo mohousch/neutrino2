@@ -64,7 +64,7 @@ struct raw_lcd_element_t
 	int width;
 	int height;
 	int bpp;
-	uint8_t *buffer;
+	void *buffer;
 };
 
 class CLCDDisplay
@@ -77,9 +77,6 @@ class CLCDDisplay
 		bool 	      flipped;
 		int 	      lcd_type;
 		int 	      last_brightness;
-		////
-		uint8_t	*_buffer;
-		int 	      _stride;
 		////
 		uint8_t     * surface_data;
 		int 	      surface_stride;
@@ -161,9 +158,13 @@ class CLCDDisplay
 		int setLED(int value, int option);
 		void setInverted( unsigned char );
 		void setFlipped(bool);
-		////
+		//// raw buffer
+		uint8_t *_buffer;
+		int _stride;
 		int raw_buffer_size;
-		int xres, yres, bpp, bypp;
+		int bpp, bypp;
+		////
+		int xres, yres;
 		void setSize(int w, int h, int b);
 		////
 		int islocked() { return locked; }
