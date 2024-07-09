@@ -524,14 +524,18 @@ void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, 
 	return (void *) fbbuff;
 }
 
-uint8_t * getImage(const std::string &name, int width, int height, int bpp, int transp, ScalingMode scaletype)
+void * getImage(const std::string &name, int width, int height, int bpp, int transp, ScalingMode scaletype)
 {
 	int x = 0;
 	int y = 0;
 	int _bpp = 0;
 	CFormathandler * fh = NULL;
 	uint8_t * buffer = NULL;
-	uint8_t * ret = NULL;
+//	uint8_t * ret = NULL;
+	void *ret = NULL;
+	uint32_t *i_ret = NULL;
+	uint16_t * s_ret = NULL;
+	uint8_t * c_ret = NULL;
 	int load_ret = FH_ERROR_MALLOC;
 
 	//
@@ -580,13 +584,69 @@ uint8_t * getImage(const std::string &name, int width, int height, int bpp, int 
 			if( name.find(".png") == (name.length() - 4) )
 			{
 				// alpha
-				if (_bpp == 4)
-					ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, true);
-				else
-					ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_BLACK); // TM_BLACK
+//				if (_bpp == 4)
+//					ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, true);
+//				else
+//					ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_BLACK); // TM_BLACK
+				switch (bpp)
+				{
+				case 32:
+				{
+					if (_bpp == 4)
+						i_ret = (uint32_t *)convertRGB2FB(buffer, x, y, bpp, true);
+					else
+						i_ret = (uint32_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_BLACK); // TM_BLACK
+						
+					ret = (void *)i_ret;
+					break;
+				}
+					
+				case 16:
+				{
+					if (_bpp == 4)
+						s_ret = (uint16_t *)convertRGB2FB(buffer, x, y, bpp, true);
+					else
+						s_ret = (uint16_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_BLACK); // TM_BLACK
+						
+					ret = (void *)s_ret;
+					break;
+				}
+					
+				case 8:
+				default:
+				{
+					if (_bpp == 4)
+						c_ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, true);
+					else
+						c_ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_BLACK); // TM_BLACK
+						
+					ret = (void *)c_ret;
+					break;
+				}
+				}
 			}
 			else
-				ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_NONE); //TM_NONE
+			{
+				//ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_NONE); //TM_NONE
+				switch (bpp)
+				{
+					case 32:
+						i_ret = (uint32_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_NONE); //TM_NONE
+						ret = (void *)i_ret;
+						break;
+						
+					case 16:
+						s_ret = (uint16_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_NONE); //TM_NONE
+						ret = (void *)s_ret;
+						break;
+						
+					case 8:
+					default:
+						c_ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_NONE); //TM_NONE
+						ret = (void *)c_ret;
+						break;
+				}
+			}
 			
 			free(buffer);
 		} 

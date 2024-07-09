@@ -1417,6 +1417,7 @@ gUnmanagedSurface* CLCDDisplay::loadPNG(const char* filename)
 
 int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int width, int height, int flag)
 {
+/*
 	gUnmanagedSurface *m_surface = NULL;
 	gUnmanagedSurface surface;
 	
@@ -1452,5 +1453,29 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 		
 	// render
 	return ::blitBox(m_surface, i_w, i_h, eRect, &surface, flag);
+*/
+	//
+	raw_lcd_element_t element;
+	
+	int p_w, p_h, p_bpp;
+	
+	::getSize(filename, &p_w, &p_h, &p_bpp);
+	
+	if (p_w <= width)
+		width = p_w;
+		
+	if (p_h <= height)
+		height = p_h;
+	
+	element.buffer = (uint8_t *)::getImage(filename, width, height, 8);
+	element.width = width;
+	element.height = height;
+	element.bpp = p_bpp;
+	
+	load_screen_element(&element, posX, posY, width, height);
+	
+	free(element.buffer);
+	
+	return 0;
 }
 

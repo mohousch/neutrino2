@@ -977,7 +977,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 
 		if (cid != 1)
 		{
-//			display->showPNGImage(logo.c_str(), (lcd_width - 120)/2, lcd_height - fonts.time->getHeight() - 2 -60, 120, 60);
+			display->showPNGImage(logo.c_str(), (lcd_width - 120)/2, lcd_height - fonts.time->getHeight() - 2 - 60, 120, 60);
 		}
 	}
 #endif
