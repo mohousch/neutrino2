@@ -172,6 +172,8 @@
 #include <ao/ao.h>
 #endif
 
+#include <lib/libngpng/libngpng.h>
+
 
 //// globals
 int debug = DEBUG_NORMAL;
@@ -3334,6 +3336,9 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		CCECSetup cecsetup;
 		cecsetup.setCECSettings(false);
 #endif
+
+		// deinit libngpng
+		deinit_handlers();
 		
 #ifdef USE_OPENGL
 		ao_shutdown();
@@ -4647,6 +4652,9 @@ int CNeutrinoApp::run(int argc, char **argv)
 	
         global_argv[argc] = NULL;
         
+        // init libngpng
+	init_handlers();
+        
         //
         setupFrameBuffer();
 	
@@ -4996,8 +5004,7 @@ void sighandler(int signum)
 			// stop nhttpd		
 			Cyhttpd::getInstance()->Stop();
 			
-			// stop streamts
-//			CStreamTS::getInstance()->Stop();	
+			// stop streamts	
 			CStreamManager::getInstance()->Stop();
 
 			// stop timerd	  

@@ -100,9 +100,6 @@ CFrameBuffer::CFrameBuffer()
 	memset(blue, 0, 256*sizeof(__u16));
 	memset(trans, 0, 256*sizeof(__u16));
 
-	// png/jpg/bmp/crw handlers
-	init_handlers();
-
 	//
 	q_circle = NULL;
 	initQCircle();
@@ -266,8 +263,6 @@ CFrameBuffer::~CFrameBuffer()
 {
 	dprintf(DEBUG_NORMAL, "~CFrameBuffer()\n");
 	
-	deinit_handlers();
-	
 	if (background) 
 	{
 		free(background);
@@ -284,7 +279,7 @@ CFrameBuffer::~CFrameBuffer()
 		munmap(lfb, available);
 	
 #if defined (USE_OPENGL)
-	active = false; /* keep people/infoclocks from accessing */
+	active = false;
 	mpGLThreadObj->shutDown();
 	mpGLThreadObj->join();
 #else	
@@ -1496,7 +1491,7 @@ void CFrameBuffer::clearFrameBuffer()
 }
 
 // blitRoundedBox2FB
-void CFrameBuffer::blitRoundedBox2FB(const fb_pixel_t *boxBuf, const uint32_t &width, const uint32_t &height, const uint32_t &xoff, const uint32_t &yoff, uint32_t xp, uint32_t yp)
+void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const uint32_t &height, const uint32_t &xoff, const uint32_t &yoff, uint32_t xp, uint32_t yp)
 { 
 	uint32_t xc = (width > xRes) ? (uint32_t)xRes : width;
 	uint32_t yc = (height > yRes) ? (uint32_t)yRes : height;
@@ -1726,7 +1721,7 @@ void CFrameBuffer::blit(int mode3d)
 }
 
 //// display RGB
-void CFrameBuffer::displayRGB(unsigned char * rgbbuff, int x_size, int y_size, int x_pan, int y_pan, int x_offs, int y_offs, bool clearfb)
+void CFrameBuffer::displayRGB(uint8_t *rgbbuff, int x_size, int y_size, int x_pan, int y_pan, int x_offs, int y_offs, bool clearfb)
 {
 	dprintf(DEBUG_INFO, "CFrameBuffer::displayRGB\n");
 	

@@ -219,6 +219,8 @@ void add_format(int (*picsize) (const char *, int *, int *, int, int), int (*pic
 
 void init_handlers(void)
 {
+	libngpng_printf(10, "init_handlers\n");
+	
 	// add png format
   	add_format(fh_png_getsize, fh_png_load, fh_png_id);
 	
@@ -240,6 +242,8 @@ void init_handlers(void)
 
 void deinit_handlers(void)
 {
+	libngpng_printf(10, "deinit_handlers\n");
+	
 	CFormathandler *fh = fh_root;
 	
 	while (fh) 
@@ -322,7 +326,7 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 
 	if(cr == NULL)
 	{
-		libngpng_err("[libngpng] resize: Error: malloc\n");
+		libngpng_err("resize: Error: malloc\n");
 		return(origin);
 	}
 
@@ -448,7 +452,7 @@ void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, 
 		
 		if ( i_fbbuff==NULL )
 		{
-			libngpng_err( "[libngpng] convertRGB2FB: Error: malloc\n" );
+			libngpng_err( "convertRGB2FB: Error: malloc\n" );
 			return NULL;
 		}
 		
@@ -539,7 +543,7 @@ uint8_t * getImage(const std::string &name, int width, int height, int bpp, int 
 		
 		if (buffer == NULL) 
 		{
-		  	libngpng_err("[libngpng] getImage: Error: malloc\n");
+		  	libngpng_err("getImage: Error: malloc\n");
 		  	return NULL;
 		}
 		
@@ -588,14 +592,14 @@ uint8_t * getImage(const std::string &name, int width, int height, int bpp, int 
 		} 
 		else 
 		{
-	  		libngpng_err("[libngpng] getImage: Error decoding file %s\n", name.c_str ());
+	  		libngpng_err("getImage: Error decoding file %s\n", name.c_str ());
 	  		free (buffer);
 	  		buffer = NULL;
 		}
   	} 
 	else
 	{
-		libngpng_err("[libngpng] getImage: Error open file %s\n", name.c_str ());
+		libngpng_err("Error open file %s\n", name.c_str ());
 	}
 
 	return ret;

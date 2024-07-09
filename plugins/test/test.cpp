@@ -2081,7 +2081,7 @@ void CTestMenu::testCWindowCustomColor()
 	uint8_t g = 0;
 	uint8_t b = 0;
 	
-	uint32_t col = 0xff808000;
+	uint32_t col = 0x80808080;
 						
 	a = (col >> 24)&0xFF; 
 	r = (col >> 16)&0xFF;
