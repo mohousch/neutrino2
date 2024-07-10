@@ -436,6 +436,8 @@ struct SNeutrinoSettings
 	int lcd_led;
 	int lcd_minitv;
 	int lcd_minitvfps;
+	bool lcd_picon;
+	bool lcd_weather;
 	// END VFD
 
 	// tmdb

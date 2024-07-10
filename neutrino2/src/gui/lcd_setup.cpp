@@ -57,13 +57,12 @@ const keyval LCDMENU_STATUSLINE_OPTIONS[LCDMENU_STATUSLINE_OPTION_COUNT] =
 };
 
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
-#define LCDMENU_EPG_OPTION_COUNT 	4
+#define LCDMENU_EPG_OPTION_COUNT 	3
 const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
 {
 	{ CLCD::EPGMODE_CHANNEL, _("channel") },
 	{ CLCD::EPGMODE_TITLE, _("title")	},
-	{ CLCD::EPGMODE_CHANNEL_TITLE, _("channel / title") },
-	{ CLCD::EPGMODE_CHANNEL_TITLE_LOGO, _("channel / title / logo") }
+	{ CLCD::EPGMODE_CHANNEL_TITLE, _("channel / title") }
 };
 #elif defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 #define LCDMENU_EPG_OPTION_COUNT 2

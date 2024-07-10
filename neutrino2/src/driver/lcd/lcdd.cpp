@@ -720,7 +720,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	std::string event[4];
 	int namelines = 0, eventlines = 0, maxnamelines = 2;
 	
-	if (showmode == EPGMODE_CHANNEL_TITLE_LOGO)
+	if (g_settings.lcd_picon || g_settings.lcd_weather)
 		maxnamelines = 1;
 
 	if ((showmode & CLCD::EPGMODE_CHANNEL) && !big.empty())
@@ -753,7 +753,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	int maxeventlines = 4 - namelines;
 	maxeventlines = ((lcd_height - element[ELEMENT_BANNER].height - fonts.time->getHeight()) / fonts.menu->getHeight()) - namelines;
 	
-	if (showmode == EPGMODE_CHANNEL_TITLE_LOGO)
+	if (g_settings.lcd_picon || g_settings.lcd_weather)
 		maxeventlines = 1;
 
 	if ((showmode & CLCD::EPGMODE_TITLE) && !small.empty())
@@ -966,7 +966,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 	showTextScreen(servicename, epg_title, showmode, perform_wakeup, g_settings.lcd_epgalign);
 	
 	// logo
-	if (showmode == EPGMODE_CHANNEL_TITLE_LOGO)
+	if (g_settings.lcd_picon)
 	{
 		std::string logo = DATADIR "/lcd/picon_default.png";
 		

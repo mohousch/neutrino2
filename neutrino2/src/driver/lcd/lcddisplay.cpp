@@ -779,64 +779,679 @@ void CLCDDisplay::blit(void)
 #endif
 }
 
-// blit2lcd
-void CLCDDisplay::blitBox2LCD(int area_left, int area_top, int area_right, int area_bottom, uint32_t color) 
+////
+static inline void blit_8i_to_16(uint16_t *dst, const uint8_t *src, const uint32_t *pal, int width)
 {
+    	while (width--)
+        	*dst++=pal[*src++] & 0xFFFF;
+}
+
+static inline void blit_8i_to_16_at(uint16_t *dst, const uint8_t *src, const uint32_t *pal, int width)
+{
+    	while (width--)
+    	{
+        	if (!(pal[*src]&0x80000000))
+        	{
+            		src++;
+            		dst++;
+        	} 
+        	else
+            		*dst++=pal[*src++] & 0xFFFF;
+    	}
+}
+
+static inline void blit_8i_to_32(uint32_t *dst, const uint8_t *src, const uint32_t *pal, int width)
+{
+    	while (width--)
+        	*dst++=pal[*src++];
+}
+
+static inline void blit_8i_to_32_at(uint32_t *dst, const uint8_t *src, const uint32_t *pal, int width)
+{
+    	while (width--)
+    	{
+        	if (!(pal[*src]&0x80000000))
+        	{
+            		src++;
+            		dst++;
+        	} 
+        	else
+            		*dst++=pal[*src++];
+   	 }
+}
+
+static void blit_8i_to_32_ab(gRGB *dst, const uint8_t *src, const gRGB *pal, int width)
+{
+    	while (width--)
+    	{
+        	dst->alpha_blend(pal[*src++]);
+        	++dst;
+    	}
+}
+
+static void convert_palette(uint32_t* pal, const gPalette& clut)
+{
+    	int i = 0;
+    	
+    	if (clut.data)
+    	{
+        	while (i < clut.colors)
+        	{
+            		pal[i] = clut.data[i].argb() ^ 0xFF000000;
+            		++i;
+        	}
+    	}
+    	
+    	for(; i != 256; ++i)
+    	{
+        	pal[i] = (0x010101*i) | 0xFF000000;
+    	}
+}
+
+// fill
+void CLCDDisplay::fillBox2LCD(raw_lcd_element_t * element, int flag) 
+{
+	int area_left = element->x;
+	int area_top = element->y;
+	int area_width  = element->width;
+	int area_height = element->height;
+	
+	if (surface_bpp == 8 && element->bpp == 8)
+	{
+		uint8_t *srcptr = (uint8_t*)element->buffer;
+            	uint8_t *dstptr = (uint8_t*)_buffer;
+
+            	srcptr += area_left*element->bypp + area_top*element->stride;
+            	dstptr += area_left*bypp + area_top*_stride;
+            
+            	if (flag & (blitAlphaTest|blitAlphaBlend))
+            	{
+                	for (int y = area_height; y != 0; --y)
+                	{
+                    		// no real alphatest yet
+                    		int width = area_width;
+                    		unsigned char *s = (unsigned char*)srcptr;
+                    		unsigned char *d = (unsigned char*)dstptr;
+                    			
+                    		// use duff's device here!
+                    		while (width--)
+                    		{
+                        		if (!*s)
+                        		{
+                            			s++;
+                            			d++;
+                        		}
+                        		else
+                        		{
+                            			*d++ = *s++;
+                        		}
+                    		}
+                    		srcptr += element->stride;
+                    		dstptr += _stride;
+                	}
+            	}
+            	else
+            	{
+                	int linesize = area_width*bypp;
+                	for (int y = area_height; y != 0; --y)
+                	{
+                    		memcpy(dstptr, srcptr, linesize);
+                    		srcptr += element->stride;
+                    		dstptr += _stride;
+                	}
+            	}
+	} 
+	else if (surface_bpp == 16 && element->bpp == 8)
+	{
+		uint8_t *srcptr = (uint8_t*)element->buffer;
+            	uint8_t *dstptr = (uint8_t*)_buffer;
+            	uint32_t pal[256];
+
+            	for (int i = 0; i != 256; ++i)
+            	{
+                	uint32_t icol;
+                	icol = 0x010101*i;
+#if BYTE_ORDER == LITTLE_ENDIAN
+                	pal[i] = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
+#else
+                	pal[i] = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
+#endif
+                	pal[i] ^= 0xFF000000;
+            	}
+
+            	srcptr += area_left*element->bypp + area_top*element->stride;
+            	dstptr += area_left*bypp + area_top*_stride;
+
+//            	if (flag & blitAlphaBlend)
+//              	printf("ignore unsupported 8bpp -> 16bpp alphablend!\n");
+
+            	for (int y = 0; y < area_height; y++)
+            	{
+                	int width = area_width;
+                	uint8_t *psrc = (uint8_t *)srcptr;
+                	uint16_t *dst=(uint16_t*)dstptr;
+                		
+                	if (flag & blitAlphaTest)
+                    		blit_8i_to_16_at(dst, psrc, pal, width);
+                	else
+                    		blit_8i_to_16(dst, psrc, pal, width);
+                    			
+                	srcptr += element->stride;
+                	dstptr += _stride;
+            	}
+        }
+	else if (surface_bpp == 16 && element->bpp == 32)
+	{
+            	uint8_t *srcptr = (uint8_t*)element->buffer;
+            	uint8_t *dstptr = (uint8_t*)_buffer;
+
+            	srcptr += area_left*element->bypp + area_top*element->stride;
+            	dstptr += area_left*bypp + area_top*_stride;
+
+            	for (int y = 0; y < area_height; y++)
+            	{
+                	int width = area_width;
+                	uint32_t *srcp = (uint32_t*)srcptr;
+                	uint16_t *dstp = (uint16_t*)dstptr;
+
+                	if (flag & blitAlphaBlend)
+                	{
+                    		while (width--)
+                    		{
+                        		if (!((*srcp)&0xFF000000))
+                        		{
+                            			srcp++;
+                            			dstp++;
+                        		} 
+                        		else
+                        		{
+                            			gRGB icol = *srcp++;
+#if BYTE_ORDER == LITTLE_ENDIAN
+                            			uint32_t jcol = bswap_16(*dstp);
+#else
+                            			uint32_t jcol = *dstp;
+#endif
+                            			int bg_b = (jcol >> 8) & 0xF8;
+                            			int bg_g = (jcol >> 3) & 0xFC;
+                            			int bg_r = (jcol << 3) & 0xF8;
+
+                            			int a = icol.a;
+                            			int r = icol.r;
+                            			int g = icol.g;
+                            			int b = icol.b;
+
+                            			r = ((r-bg_r)*a)/255 + bg_r;
+                            			g = ((g-bg_g)*a)/255 + bg_g;
+                            			b = ((b-bg_b)*a)/255 + bg_b;
+
+#if BYTE_ORDER == LITTLE_ENDIAN
+                            			*dstp++ = bswap_16( (b >> 3) << 11 | (g >> 2) << 5 | r  >> 3 );
+#else
+                            			*dstp++ = (b >> 3) << 11 | (g >> 2) << 5 | r  >> 3 ;
+#endif
+                        		}
+                    		}
+                	}
+                	else if (flag & blitAlphaTest)
+                	{
+                    		while (width--)
+                    		{
+                        		if (!((*srcp)&0xFF000000))
+                        		{
+                            			srcp++;
+                            			dstp++;
+                        		} 
+                        		else
+                        		{
+                            			uint32_t icol = *srcp++;
+#if BYTE_ORDER == LITTLE_ENDIAN
+                            			*dstp++ = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
+#else
+                            			*dstp++ = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
+#endif
+                        		}
+                    		}
+                	} 
+                	else
+                	{
+                    		while (width--)
+                    		{
+                        		uint32_t icol = *srcp++;
+                        			
+#if BYTE_ORDER == LITTLE_ENDIAN
+                        		*dstp++ = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
+#else
+                        		*dstp++ = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
+#endif
+                    		}
+                	}
+                	srcptr += element->stride;
+                	dstptr += _stride;
+            	}
+	} 
+	else if (surface_bpp == 32 && element->bpp == 8)
+	{
+		const uint8_t *srcptr = (uint8_t*)element->buffer;
+            	uint8_t *dstptr = (uint8_t*)_buffer;
+            	uint32_t pal[256];
+            	convert_palette(pal, clut);
+
+            	srcptr += area_left*element->bypp + area_top*element->stride;
+            	dstptr += area_left*bypp + area_top*_stride;
+            	const int width = area_width;
+            		
+            	for (int y = area_height; y != 0; --y)
+            	{
+                	if (flag & blitAlphaTest)
+                    		blit_8i_to_32_at((uint32_t*)dstptr, srcptr, pal, width);
+                	else if (flag & blitAlphaBlend)
+                    		blit_8i_to_32_ab((gRGB*)dstptr, srcptr, (const gRGB*)pal, width);
+                	else
+                    			blit_8i_to_32((uint32_t*)dstptr, srcptr, pal, width);
+                	srcptr += element->stride;
+                	dstptr += _stride;
+            	}
+	}
+	else if (surface_bpp == 32 && element->bpp == 32)
+	{
+		uint32_t *srcptr = (uint32_t*)element->buffer;
+            	uint32_t *dstptr = (uint32_t*)_buffer;
+
+            	srcptr += area_left + area_top*element->stride/4;
+            	dstptr += area_left + area_top*_stride/4;
+            		
+            	for (int y = area_height; y != 0; --y)
+            	{
+                	if (flag & blitAlphaTest)
+                	{
+                    		int width = area_width;
+                    		uint32_t *src = srcptr;
+                    		uint32_t *dst = dstptr;
+
+                    		while (width--)
+                    		{
+                        		if (!((*src)&0xFF000000))
+                        		{
+                            			src++;
+                            			dst++;
+                        		} 
+                        		else
+                            			*dst++=*src++;
+                    		}
+                	} 
+                	else if (flag & blitAlphaBlend)
+                	{
+                    		int width = area_width;
+                    		gRGB *src = (gRGB*)srcptr;
+                    		gRGB *dst = (gRGB*)dstptr;
+                    			
+                    		while (width--)
+                    		{
+                        		dst->alpha_blend(*src++);
+                        		++dst;
+                    		}
+                	}
+                	else
+                    		memcpy(dstptr, srcptr, area_width*bypp);
+                    
+                	srcptr = (uint32_t*)((uint8_t*)srcptr + element->stride);
+                	dstptr = (uint32_t*)((uint8_t*)dstptr + _stride);
+            	}
+	}
+}
+
+
+// blit2lcd
+void CLCDDisplay::blitBox2LCD(int flag) 
+{
+	int area_left = 0;
+	int area_top = 0;
+	int area_right = xres;
+	int area_bottom = yres;
 	int area_width  = area_right - area_left;
 	int area_height = area_bottom - area_top;
 	
-	if (surface_bpp == 8)
+	if (surface_bpp == 8 && bpp == 8)
 	{
-		for (int y = area_top; y < area_bottom; y++)
-		 	memset(((uint8_t*)surface_data) + y*surface_stride + area_left, color, area_width);
+		uint8_t *srcptr = (uint8_t*)_buffer;
+            	uint8_t *dstptr = (uint8_t*)surface_data;
+
+            	srcptr += area_left*bypp + area_top*_stride;
+            	dstptr += area_left*surface_bypp + area_top*surface_stride;
+            
+            	if (flag & (blitAlphaTest|blitAlphaBlend))
+            	{
+                	for (int y = area_height; y != 0; --y)
+                	{
+                    		// no real alphatest yet
+                    		int width = area_width;
+                    		unsigned char *s = (unsigned char*)srcptr;
+                    		unsigned char *d = (unsigned char*)dstptr;
+                    			
+                    		// use duff's device here!
+                    		while (width--)
+                    		{
+                        		if (!*s)
+                        		{
+                            			s++;
+                            			d++;
+                        		}
+                        		else
+                        		{
+                            			*d++ = *s++;
+                        		}
+                    		}
+                    		srcptr += _stride;
+                    		dstptr += surface_stride;
+                	}
+            	}
+            	else
+            	{
+                	int linesize = area_width*surface_bypp;
+                	for (int y = area_height; y != 0; --y)
+                	{
+                    		memcpy(dstptr, srcptr, linesize);
+                    		srcptr += _stride;
+                    		dstptr += surface_stride;
+                	}
+            	}
 	} 
-	else if (surface_bpp == 16)
+	else if (surface_bpp == 16 && bpp == 8)
 	{
-		uint32_t icol;
-		icol = 0x10101*color;
-		
+		uint8_t *srcptr = (uint8_t*)_buffer;
+            	uint8_t *dstptr = (uint8_t*)surface_data;
+            	uint32_t pal[256];
+
+            	for (int i = 0; i != 256; ++i)
+            	{
+                	uint32_t icol;
+                	icol = 0x010101*i;
 #if BYTE_ORDER == LITTLE_ENDIAN
-		uint16_t col = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
+                	pal[i] = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
 #else
-		uint16_t col = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
+                	pal[i] = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
 #endif
+                	pal[i] ^= 0xFF000000;
+            	}
 
-		for (int y = area_top; y < area_bottom; y++)
-		{
-			uint16_t *dst = (uint16_t*)(((uint8_t*)surface_data) + y*surface_stride + area_left*surface_bypp);
-			int x = area_width;
-			while (x--)
-				*dst++=col;
-		}
-	} 
-	else if (surface_bpp == 32)
+            	srcptr += area_left*bypp + area_top*_stride;
+            	dstptr += area_left*surface_bypp + area_top*surface_stride;
+
+//            	if (flag & blitAlphaBlend)
+//              	printf("ignore unsupported 8bpp -> 16bpp alphablend!\n");
+
+            	for (int y = 0; y < area_height; y++)
+            	{
+                	int width = area_width;
+                	uint8_t *psrc = (uint8_t *)srcptr;
+                	uint16_t *dst=(uint16_t*)dstptr;
+                		
+                	if (flag & blitAlphaTest)
+                    		blit_8i_to_16_at(dst, psrc, pal, width);
+                	else
+                    		blit_8i_to_16(dst, psrc, pal, width);
+                    			
+                	srcptr += _stride;
+                	dstptr += surface_stride;
+            	}
+        }
+	else if (surface_bpp == 16 && bpp == 32)
 	{
-		uint32_t col;
+            	uint8_t *srcptr = (uint8_t*)_buffer;
+            	uint8_t *dstptr = (uint8_t*)surface_data;
 
-		col = 0x10101*color;
-			
-		col ^= 0xFF000000;
+            	srcptr += area_left*bypp + area_top*_stride;
+            	dstptr += area_left*surface_bypp + area_top*surface_stride;
 
-		for (int y = area_top; y < area_bottom; y++)
-		{
-			uint32_t *dst = (uint32_t*)(((uint8_t*)surface_data) + y*surface_stride + area_left*surface_bypp);
-			int x = area_width;
-			while (x--)
-				*dst++=col;
-		}
-	}	
+            	for (int y = 0; y < area_height; y++)
+            	{
+                	int width = area_width;
+                	uint32_t *srcp = (uint32_t*)srcptr;
+                	uint16_t *dstp = (uint16_t*)dstptr;
+
+                	if (flag & blitAlphaBlend)
+                	{
+                    		while (width--)
+                    		{
+                        		if (!((*srcp)&0xFF000000))
+                        		{
+                            			srcp++;
+                            			dstp++;
+                        		} 
+                        		else
+                        		{
+                            			gRGB icol = *srcp++;
+#if BYTE_ORDER == LITTLE_ENDIAN
+                            			uint32_t jcol = bswap_16(*dstp);
+#else
+                            			uint32_t jcol = *dstp;
+#endif
+                            			int bg_b = (jcol >> 8) & 0xF8;
+                            			int bg_g = (jcol >> 3) & 0xFC;
+                            			int bg_r = (jcol << 3) & 0xF8;
+
+                            			int a = icol.a;
+                            			int r = icol.r;
+                            			int g = icol.g;
+                            			int b = icol.b;
+
+                            			r = ((r-bg_r)*a)/255 + bg_r;
+                            			g = ((g-bg_g)*a)/255 + bg_g;
+                            			b = ((b-bg_b)*a)/255 + bg_b;
+
+#if BYTE_ORDER == LITTLE_ENDIAN
+                            			*dstp++ = bswap_16( (b >> 3) << 11 | (g >> 2) << 5 | r  >> 3 );
+#else
+                            			*dstp++ = (b >> 3) << 11 | (g >> 2) << 5 | r  >> 3 ;
+#endif
+                        		}
+                    		}
+                	}
+                	else if (flag & blitAlphaTest)
+                	{
+                    		while (width--)
+                    		{
+                        		if (!((*srcp)&0xFF000000))
+                        		{
+                            			srcp++;
+                            			dstp++;
+                        		} 
+                        		else
+                        		{
+                            			uint32_t icol = *srcp++;
+#if BYTE_ORDER == LITTLE_ENDIAN
+                            			*dstp++ = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
+#else
+                            			*dstp++ = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
+#endif
+                        		}
+                    		}
+                	} 
+                	else
+                	{
+                    		while (width--)
+                    		{
+                        		uint32_t icol = *srcp++;
+                        			
+#if BYTE_ORDER == LITTLE_ENDIAN
+                        		*dstp++ = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
+#else
+                        		*dstp++ = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
+#endif
+                    		}
+                	}
+                	srcptr += _stride;
+                	dstptr += surface_stride;
+            	}
+	} 
+	else if (surface_bpp == 32 && bpp == 8)
+	{
+		const uint8_t *srcptr = (uint8_t*)_buffer;
+            	uint8_t *dstptr = (uint8_t*)surface_data;
+            	uint32_t pal[256];
+            	convert_palette(pal, clut);
+
+            	srcptr += area_left*bypp + area_top*_stride;
+            	dstptr += area_left*surface_bypp + area_top*surface_stride;
+            	const int width = area_width;
+            		
+            	for (int y = area_height; y != 0; --y)
+            	{
+                	if (flag & blitAlphaTest)
+                    		blit_8i_to_32_at((uint32_t*)dstptr, srcptr, pal, width);
+                	else if (flag & blitAlphaBlend)
+                    		blit_8i_to_32_ab((gRGB*)dstptr, srcptr, (const gRGB*)pal, width);
+                	else
+                    			blit_8i_to_32((uint32_t*)dstptr, srcptr, pal, width);
+                	srcptr += _stride;
+                	dstptr += surface_stride;
+            	}
+	}
+	else if (surface_bpp == 32 && bpp == 32)
+	{
+		uint32_t *srcptr = (uint32_t*)_buffer;
+            	uint32_t *dstptr = (uint32_t*)surface_data;
+
+            	srcptr += area_left + area_top*_stride/4;
+            	dstptr += area_left + area_top*surface_stride/4;
+            		
+            	for (int y = area_height; y != 0; --y)
+            	{
+                	if (flag & blitAlphaTest)
+                	{
+                    		int width = area_width;
+                    		uint32_t *src = srcptr;
+                    		uint32_t *dst = dstptr;
+
+                    		while (width--)
+                    		{
+                        		if (!((*src)&0xFF000000))
+                        		{
+                            			src++;
+                            			dst++;
+                        		} 
+                        		else
+                            			*dst++=*src++;
+                    		}
+                	} 
+                	else if (flag & blitAlphaBlend)
+                	{
+                    		int width = area_width;
+                    		gRGB *src = (gRGB*)srcptr;
+                    		gRGB *dst = (gRGB*)dstptr;
+                    			
+                    		while (width--)
+                    		{
+                        		dst->alpha_blend(*src++);
+                        		++dst;
+                    		}
+                	}
+                	else
+                    		memcpy(dstptr, srcptr, area_width*surface_bypp);
+                    
+                	srcptr = (uint32_t*)((uint8_t*)srcptr + _stride);
+                	dstptr = (uint32_t*)((uint8_t*)dstptr + surface_stride);
+            	}
+	}
+	
+	// blit picon :#revise me
+	/*
+	if (surface_bpp == 16 && picon_element.bpp == 32)
+	{
+            	uint8_t *srcptr = (uint8_t*)picon_element.buffer;
+            	uint8_t *dstptr = (uint8_t*)surface_data;
+
+            	srcptr += picon_element.x*picon_element.bypp + picon_element.y*picon_element.stride;
+            	dstptr += picon_element.x*surface_bypp + picon_element.y*surface_stride;
+
+            	for (int y = 0; y < picon_element.height; y++)
+            	{
+                	int width = picon_element.width;
+                	uint32_t *srcp = (uint32_t*)srcptr;
+                	uint16_t *dstp = (uint16_t*)dstptr;
+
+                	if (flag & blitAlphaBlend)
+                	{
+                    		while (width--)
+                    		{
+                        		if (!((*srcp)&0xFF000000))
+                        		{
+                            			srcp++;
+                            			dstp++;
+                        		} 
+                        		else
+                        		{
+                            			gRGB icol = *srcp++;
+#if BYTE_ORDER == LITTLE_ENDIAN
+                            			uint32_t jcol = bswap_16(*dstp);
+#else
+                            			uint32_t jcol = *dstp;
+#endif
+                            			int bg_b = (jcol >> 8) & 0xF8;
+                            			int bg_g = (jcol >> 3) & 0xFC;
+                            			int bg_r = (jcol << 3) & 0xF8;
+
+                            			int a = icol.a;
+                            			int r = icol.r;
+                            			int g = icol.g;
+                            			int b = icol.b;
+
+                            			r = ((r-bg_r)*a)/255 + bg_r;
+                            			g = ((g-bg_g)*a)/255 + bg_g;
+                            			b = ((b-bg_b)*a)/255 + bg_b;
+
+#if BYTE_ORDER == LITTLE_ENDIAN
+                            			*dstp++ = bswap_16( (b >> 3) << 11 | (g >> 2) << 5 | r  >> 3 );
+#else
+                            			*dstp++ = (b >> 3) << 11 | (g >> 2) << 5 | r  >> 3 ;
+#endif
+                        		}
+                    		}
+                	}
+                	else if (flag & blitAlphaTest)
+                	{
+                    		while (width--)
+                    		{
+                        		if (!((*srcp)&0xFF000000))
+                        		{
+                            			srcp++;
+                            			dstp++;
+                        		} 
+                        		else
+                        		{
+                            			uint32_t icol = *srcp++;
+#if BYTE_ORDER == LITTLE_ENDIAN
+                            			*dstp++ = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
+#else
+                            			*dstp++ = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
+#endif
+                        		}
+                    		}
+                	} 
+                	else
+                	{
+                    		while (width--)
+                    		{
+                        		uint32_t icol = *srcp++;
+                        			
+#if BYTE_ORDER == LITTLE_ENDIAN
+                        		*dstp++ = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
+#else
+                        		*dstp++ = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
+#endif
+                    		}
+                	}
+                	srcptr += picon_element.stride;
+                	dstptr += surface_stride;
+            	}
+	} 
+	*/		
 }
 
 void CLCDDisplay::update()
 {
 	//
-	for (unsigned int y = 0; y < yres; y++)
-	{
-		for (unsigned int x = 0; x < xres; x++)
-		{
-			blitBox2LCD(x, y, x + 1, y + 1, _buffer[(y * xres + x)]);
-		}
-	}
+	blitBox2LCD();
 	
 	//
 	blit();
@@ -1459,7 +2074,7 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 	return ::blitBox(m_surface, i_w, i_h, eRect, &surface, flag);
 */
 	//
-	raw_lcd_element_t element;
+//	raw_lcd_element_t element;
 	
 	int p_w, p_h, p_bpp;
 	
@@ -1471,14 +2086,19 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 	if (p_h <= height)
 		height = p_h;
 	
-	element.buffer = (uint8_t *)::getImage(filename, width, height, bpp);
-	element.width = width;
-	element.height = height;
-	element.bpp = p_bpp*bpp;
+	picon_element.buffer = (uint8_t *)::getImage(filename, width, height, bpp);
+	picon_element.x = posX;
+	picon_element.y = posY;
+	picon_element.width = width;
+	picon_element.height = height;
+	picon_element.bpp = 32;
+	picon_element.bypp = 4;
+	picon_element.stride = picon_element.width*picon_element.bypp;
 	
-	load_screen_element(&element, posX, posY, width, height);
+	load_screen_element(&picon_element, posX, posY, width, height);
+//	fillBox2LCD(&picon_element);
 	
-	free(element.buffer);
+	free(picon_element.buffer);
 	
 	return 0;
 }

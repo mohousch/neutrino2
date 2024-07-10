@@ -61,9 +61,13 @@
 struct raw_lcd_element_t
 {
 	std::string name;
+	int x;
+	int y;
 	int width;
 	int height;
 	int bpp;
+	int bypp;
+	int stride;
 	void *buffer;
 };
 
@@ -133,7 +137,8 @@ class CLCDDisplay
 		void resume();
 
 		void update();
-		void blitBox2LCD(int area_left, int area_top, int area_right, int area_bottom, uint32_t color);
+		void blitBox2LCD(int flag = 2);
+		void fillBox2LCD(raw_lcd_element_t * element, int flag = 2);
 		void blit(void);
 		////
 		void draw_point(const int x, const int y, const uint32_t color);
@@ -163,6 +168,7 @@ class CLCDDisplay
 		int _stride;
 		int raw_buffer_size;
 		int bpp, bypp;
+		gPalette clut;
 		////
 		int xres, yres;
 		void setSize(int w, int h, int b);
@@ -171,6 +177,7 @@ class CLCDDisplay
 		////
 		gUnmanagedSurface* loadPNG(const char* filename);
 		int showPNGImage(const char* filename, int posX, int posY, int width, int height, int flag = blitAlphaBlend);
+		raw_lcd_element_t picon_element;
 };
 
 #endif
