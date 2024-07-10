@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-07-10 05:23+0200\n"
+"POT-Creation-Date: 2024-07-11 00:15+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -2126,6 +2126,10 @@ msgstr "Dateirechte anzeigen"
 
 msgid "Show mode"
 msgstr "Show-Modus"
+
+#, fuzzy
+msgid "Show picon"
+msgstr "Item Infos zeigen"
 
 msgid "Shutdown"
 msgstr "Abschalten"

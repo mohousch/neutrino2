@@ -858,8 +858,8 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.lcd_led = configfile.getInt32("lcd_led", CLCD::LEDCOLOR_BLUE);
 	g_settings.lcd_minitv = configfile.getInt32("lcd_minitv", CLCD::MINITV_NORMAL);
 	g_settings.lcd_minitvfps = configfile.getInt32("lcd_minitvfps", 30);
-	g_settings.lcd_picon = configfile.getBool("lcd_picon", false);
-	g_settings.lcd_weather = configfile.getBool("lcd_weather", false);
+	g_settings.lcd_picon = configfile.getInt32("lcd_picon", 0);
+	g_settings.lcd_weather = configfile.getInt32("lcd_weather", 0);
 	// end VFD
 
 	// online epg
@@ -1385,8 +1385,8 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setInt32("lcd_led", g_settings.lcd_led);
 	configfile.setInt32("lcd_minitv", g_settings.lcd_minitv);
 	configfile.setInt32("lcd_minitvfps", g_settings.lcd_minitvfps);
-	configfile.setBool("lcd_picon", g_settings.lcd_picon);
-	configfile.setBool("lcd_weather", g_settings.lcd_weather);
+	configfile.setInt32("lcd_picon", g_settings.lcd_picon);
+	configfile.setInt32("lcd_weather", g_settings.lcd_weather);
 	// END VFD
 
 	// online epg
