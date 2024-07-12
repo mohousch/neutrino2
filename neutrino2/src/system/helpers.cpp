@@ -1278,11 +1278,11 @@ unsigned int proc_get_hex(const char *path)
 void scaleImage(const std::string &tname, int *p_w, int *p_h, int dest_w, int dest_h)
 {
 	int nbpp = 0;
-	int nchans = 0;
+	int depth = 0;
 
 	if(!access(tname.c_str(), F_OK) )
 	{
-		getSize(tname, p_w, p_h, &nbpp, &nchans);
+		getSize(tname, p_w, p_h, &nbpp, &depth);
 
 		// scale
 		if(*p_w <= dest_w && *p_h <= dest_h)

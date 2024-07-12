@@ -270,13 +270,13 @@ CFormathandler * fh_getsize(const char *name, int *x, int *y, int width_wanted, 
 	return (NULL);
 }
 
-void getSize(const std::string &name, int *width, int *height, int *nbpp, int *nchans)
+void getSize(const std::string &name, int *width, int *height, int *nbpp, int *depth)
 {
 	unsigned char *rgbbuff;
 	int x = 0;
 	int y = 0;
 	int bpp = 4;
-	int channels = 1;
+	int dep = 1;
 	int load_ret = FH_ERROR_MALLOC;
 	CFormathandler * fh = NULL;
 
@@ -295,7 +295,7 @@ void getSize(const std::string &name, int *width, int *height, int *nbpp, int *n
 	if (rgbbuff != NULL) 
 	{
 		if ((name.find(".png") == (name.length() - 4)) && (fh_png_id(name.c_str())))
-			load_ret = png_load_ext(name.c_str(), &rgbbuff, &x, &y, &bpp, &channels);
+			load_ret = png_load_ext(name.c_str(), &rgbbuff, &x, &y, &bpp, &dep);
 		else if (name.find(".svg") == (name.length() - 4))
 		{
 			load_ret = svg_load_resize(name.c_str(), &rgbbuff, &x, &y, *width, *height);
@@ -308,7 +308,7 @@ void getSize(const std::string &name, int *width, int *height, int *nbpp, int *n
 			*nbpp = bpp;
 			*width = x;
 			*height = y;
-			*nchans = channels;
+			*depth = dep;
 		}
 		else 
 		{

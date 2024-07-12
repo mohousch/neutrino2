@@ -1355,8 +1355,46 @@ void CLCDDisplay::blitBox2LCD(int flag)
 	}
 	
 	// blit picon :#revise me
-	/*
-	if (surface_bpp == 16 && picon_element.bpp == 32)
+	if (surface_bpp == 16 && picon_element.bpp == 8)
+	{
+		uint8_t *srcptr = (uint8_t*)picon_element.buffer;
+            	uint8_t *dstptr = (uint8_t*)surface_data;
+            	uint32_t pal[256];
+
+            	for (int i = 0; i != 256; ++i)
+            	{
+                	uint32_t icol;
+                	icol = 0x010101*i;
+#if BYTE_ORDER == LITTLE_ENDIAN
+                	pal[i] = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
+#else
+                	pal[i] = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
+#endif
+                	pal[i] ^= 0xFF000000;
+            	}
+
+            	srcptr += area_left*picon_element.bypp + area_top*picon_element.stride;
+            	dstptr += area_left*surface_bypp + area_top*surface_stride;
+
+//            	if (flag & blitAlphaBlend)
+//              	printf("ignore unsupported 8bpp -> 16bpp alphablend!\n");
+
+            	for (int y = 0; y < area_height; y++)
+            	{
+                	int width = area_width;
+                	uint8_t *psrc = (uint8_t *)srcptr;
+                	uint16_t *dst=(uint16_t*)dstptr;
+                		
+                	if (flag & blitAlphaTest)
+                    		blit_8i_to_16_at(dst, psrc, pal, width);
+                	else
+                    		blit_8i_to_16(dst, psrc, pal, width);
+                    			
+                	srcptr += picon_element.stride;
+                	dstptr += surface_stride;
+            	}
+        }
+	else if (surface_bpp == 16 && picon_element.bpp == 32)
 	{
             	uint8_t *srcptr = (uint8_t*)picon_element.buffer;
             	uint8_t *dstptr = (uint8_t*)surface_data;
@@ -1444,8 +1482,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
                 	srcptr += picon_element.stride;
                 	dstptr += surface_stride;
             	}
-	} 
-	*/		
+	} 		
 }
 
 void CLCDDisplay::update()
@@ -2078,9 +2115,9 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 //	raw_lcd_element_t element;
 	
 	int p_w, p_h, p_bpp;
-	int nchans = 1;
+	int depth = 1;
 	
-	::getSize(filename, &p_w, &p_h, &p_bpp, &nchans);
+	::getSize(filename, &p_w, &p_h, &p_bpp, &depth);
 	
 	if (p_w <= width)
 		width = p_w;
@@ -2093,14 +2130,13 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 	picon_element.y = posY;
 	picon_element.width = width;
 	picon_element.height = height;
-	picon_element.bpp = p_bpp*nchans;
-	picon_element.bypp = 4;
+	picon_element.bpp = p_bpp*depth;
+	picon_element.bypp = p_bpp;
 	picon_element.stride = picon_element.width*picon_element.bypp;
 	
-	load_screen_element(&picon_element, posX, posY, width, height);
-//	fillBox2LCD(&picon_element);
+//	load_screen_element(&picon_element, posX, posY, width, height);
 	
-	free(picon_element.buffer);
+//	free(picon_element.buffer);
 	
 	return 0;
 }

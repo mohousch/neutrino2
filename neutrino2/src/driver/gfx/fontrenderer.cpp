@@ -457,17 +457,17 @@ void CFont::RenderString(int x, int y, const int width, const char *text, const 
 	//
 	useFullBG = useBackground;
 	
-	/*
-	useFullBg = false
-	fetch bgcolor from framebuffer, using lower left edge of the font
-	- default render mode
-	- font rendering faster
-
-	useFullBg = true
-	fetch bgcolor from framebuffer, using the respective real fontpixel position
-	- better quality at font rendering on images or background with color gradient
-	- font rendering slower
-	*/
+	//
+	// useFullBg = false
+	// fetch bgcolor from framebuffer, using lower left edge of the font
+	// - default render mode
+	// - font rendering faster
+	//
+	// useFullBg = true
+	// fetch bgcolor from framebuffer, using the respective real fontpixel position
+	// - better quality at font rendering on images or background with color gradient
+	// - font rendering slower
+	//
 
 	pthread_mutex_lock(&renderer->render_mutex);
 

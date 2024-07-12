@@ -46,7 +46,7 @@ int fh_png_id(const char * name)
 
 int fh_png_load(const char *name, unsigned char **buffer, int* xp, int* yp);
 
-int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int* bpp, int *chans, bool alpha)
+int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int* bpp, int *depth, bool alpha)
 {
 	static const png_color_16 my_background = {0, 0, 0, 0, 0};
 	png_structp png_ptr;
@@ -96,6 +96,8 @@ int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int
 	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, NULL, NULL);
 	channels = png_get_channels(png_ptr, info_ptr);
 	trns = png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS);
+	
+	*depth = bit_depth;
 	
 	png_printf(10, "[libngpng] [png]: %s %dx%dx%d, type %d interlace %d channel %d trans %d\n", name, width, height, bit_depth, color_type, interlace_type, channels, trns);
 	
@@ -175,9 +177,9 @@ int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int
 	return(FH_ERROR_OK);
 }
 
-int png_load_ext(const char *name, unsigned char **buffer, int* xp, int* yp, int* bpp, int *chans)
+int png_load_ext(const char *name, unsigned char **buffer, int* xp, int* yp, int* bpp, int *depth)
 {
-	return int_png_load(name, buffer, xp, yp, bpp, chans, true);
+	return int_png_load(name, buffer, xp, yp, bpp, depth, true);
 }
 
 int fh_png_load(const char *name, unsigned char **buffer, int* xp, int* yp)
