@@ -437,22 +437,22 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 	return(cr);
 }
 
-void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, int bpp, bool alpha, int transp, int m_transparent)
+void * convertRGB2FB(uint8_t *rgbbuff, unsigned long x, unsigned long y, int bpp, bool alpha, int transp, int m_transparent)
 {
-	unsigned long i;
+	uint64_t i;
 	void *fbbuff = NULL;
-	unsigned char *c_fbbuff;
-	unsigned short *s_fbbuff;
-	unsigned int *i_fbbuff;
-	unsigned long count = x*y;
+	uint8_t *c_fbbuff;
+	uint16_t *s_fbbuff;
+	uint32_t *i_fbbuff;
+	uint64_t count = x*y;
 	
 	if (bpp == 32) // 24 / 32
 	{
-		i_fbbuff = ( unsigned int * ) malloc ( count * sizeof ( unsigned int ) );
+		i_fbbuff = ( uint32_t * ) malloc ( count * sizeof (uint32_t) );
 		
 		if ( i_fbbuff==NULL )
 		{
-			libngpng_err( "convertRGB2FB: Error: malloc\n" );
+			libngpng_err( "Error: malloc\n" );
 			return NULL;
 		}
 		
@@ -504,7 +504,7 @@ void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, 
 	}
 	else if (bpp == 16)
 	{
-		s_fbbuff = ( unsigned short * ) malloc ( count * sizeof ( unsigned short ) );
+		s_fbbuff = (uint16_t *) malloc ( count * sizeof (uint16_t) );
 		
 		for (i = 0; i < count; i++)
 			s_fbbuff[i] = rgbbuff[i];
@@ -513,7 +513,7 @@ void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, 
 	}
 	else if (bpp == 8)
 	{
-		c_fbbuff = ( unsigned char * ) malloc ( count * sizeof ( unsigned char ) );
+		c_fbbuff = (uint8_t *) malloc ( count * sizeof (uint8_t) );
 		
 		for (i = 0; i < count; i++)
 			c_fbbuff[i] = rgbbuff[i];
@@ -531,7 +531,6 @@ void * getImage(const std::string &name, int width, int height, int bpp, int tra
 	int _bpp = 0;
 	CFormathandler * fh = NULL;
 	uint8_t * buffer = NULL;
-//	uint8_t * ret = NULL;
 	void *ret = NULL;
 	uint32_t *i_ret = NULL;
 	uint16_t * s_ret = NULL;
@@ -547,7 +546,7 @@ void * getImage(const std::string &name, int width, int height, int bpp, int tra
 		
 		if (buffer == NULL) 
 		{
-		  	libngpng_err("getImage: Error: malloc\n");
+		  	libngpng_err("Error: malloc\n");
 		  	return NULL;
 		}
 		
@@ -584,50 +583,45 @@ void * getImage(const std::string &name, int width, int height, int bpp, int tra
 			if( name.find(".png") == (name.length() - 4) )
 			{
 				// alpha
-//				if (_bpp == 4)
-//					ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, true);
-//				else
-//					ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_BLACK); // TM_BLACK
 				switch (bpp)
 				{
-				case 32:
-				{
-					if (_bpp == 4)
-						i_ret = (uint32_t *)convertRGB2FB(buffer, x, y, bpp, true);
-					else
-						i_ret = (uint32_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_BLACK); // TM_BLACK
+					case 32:
+					{
+						if (_bpp == 4)
+							i_ret = (uint32_t *)convertRGB2FB(buffer, x, y, bpp, true);
+						else
+							i_ret = (uint32_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_BLACK); // TM_BLACK
+							
+						ret = (void *)i_ret;
+						break;
+					}
 						
-					ret = (void *)i_ret;
-					break;
-				}
-					
-				case 16:
-				{
-					if (_bpp == 4)
-						s_ret = (uint16_t *)convertRGB2FB(buffer, x, y, bpp, true);
-					else
-						s_ret = (uint16_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_BLACK); // TM_BLACK
+					case 16:
+					{
+						if (_bpp == 4)
+							s_ret = (uint16_t *)convertRGB2FB(buffer, x, y, bpp, true);
+						else
+							s_ret = (uint16_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_BLACK); // TM_BLACK
+							
+						ret = (void *)s_ret;
+						break;
+					}
 						
-					ret = (void *)s_ret;
-					break;
-				}
-					
-				case 8:
-				default:
-				{
-					if (_bpp == 4)
-						c_ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, true);
-					else
-						c_ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_BLACK); // TM_BLACK
-						
-					ret = (void *)c_ret;
-					break;
-				}
+					case 8:
+					default:
+					{
+						if (_bpp == 4)
+							c_ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, true);
+						else
+							c_ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_BLACK); // TM_BLACK
+							
+						ret = (void *)c_ret;
+						break;
+					}
 				}
 			}
 			else
 			{
-				//ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_NONE); //TM_NONE
 				switch (bpp)
 				{
 					case 32:
@@ -652,7 +646,62 @@ void * getImage(const std::string &name, int width, int height, int bpp, int tra
 		} 
 		else 
 		{
-	  		libngpng_err("getImage: Error decoding file %s\n", name.c_str ());
+	  		libngpng_err("Error decoding file %s\n", name.c_str ());
+	  		free (buffer);
+	  		buffer = NULL;
+		}
+  	} 
+	else
+	{
+		libngpng_err("Error open file %s\n", name.c_str ());
+	}
+
+	return ret;
+}
+
+void * getBitmap(const std::string &name)
+{
+	int x = 0;
+	int y = 0;
+	int _bpp = 0;
+	CFormathandler * fh = NULL;
+	uint8_t * buffer = NULL;
+	void *ret = NULL;
+	int load_ret = FH_ERROR_MALLOC;
+
+	//
+  	fh = fh_getsize(name.c_str(), &x, &y, INT_MAX, INT_MAX); // unscaled
+	
+  	if (fh) 
+	{
+		buffer = (uint8_t *) malloc(x*y*4);
+		
+		if (buffer == NULL) 
+		{
+		  	libngpng_err("Error: malloc\n");
+		  	return NULL;
+		}
+		
+		if ((name.find(".png") == (name.length() - 4)) && (fh_png_id(name.c_str())))
+			load_ret = png_load_ext(name.c_str(), &buffer, &x, &y, &_bpp);
+		else if (name.find(".svg") == (name.length() - 4))
+		{
+			load_ret = svg_load_resize(name.c_str(), &buffer, &x, &y, INT_MAX, INT_MAX);
+			_bpp = 4;
+		}
+		else
+			load_ret = fh->get_pic(name.c_str(), &buffer, &x, &y);
+
+		if (load_ret == FH_ERROR_OK) 
+		{
+			
+			ret = (void *)buffer;
+			
+			free(buffer);
+		} 
+		else 
+		{
+	  		libngpng_err("Error decoding file %s\n", name.c_str ());
 	  		free (buffer);
 	  		buffer = NULL;
 		}

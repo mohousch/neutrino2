@@ -124,7 +124,7 @@ neutrino2_LDADD += interfaces/lua/libneutrino2_interfaces_lua.a \
 endif
 
 if ENABLE_GRAPHLCD
-neutrino2_LDADD += -lglcddrivers -lglcdgraphics
+neutrino2_LDADD += -lglcddrivers -lglcdgraphics -lusb
 endif
 
 
