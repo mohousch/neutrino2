@@ -506,7 +506,8 @@ void nGLCD::showAnalogClock(int posx, int posy, int dia)
 		a_clock = DATADIR "/lcd/a_clock.png";
 
 	int lcd_a_clock_width = 0, lcd_a_clock_height = 0, lcd_a_clock_bpp = 0;
-	getSize(a_clock.c_str(), &lcd_a_clock_width, &lcd_a_clock_height, &lcd_a_clock_bpp);
+	int nchans = 0;
+	getSize(a_clock.c_str(), &lcd_a_clock_width, &lcd_a_clock_height, &lcd_a_clock_bpp, &nchans);
 	
 	if (lcd_a_clock_width && lcd_a_clock_height)
 	{

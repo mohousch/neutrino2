@@ -178,7 +178,7 @@ CFormathandler * fh_root = NULL;
 extern int fh_png_getsize(const char *name, int *x, int *y, int wanted_width, int wanted_height);
 extern int fh_png_load(const char *name, unsigned char **buffer, int* xp, int* yp);
 extern int fh_png_id(const char *name);
-extern int png_load_ext(const char * name, unsigned char ** buffer, int * xp, int * yp, int * bpp);
+extern int png_load_ext(const char * name, unsigned char ** buffer, int * xp, int * yp, int * bpp, int *chans);
 
 // JPG
 extern int fh_jpeg_getsize (const char *, int *, int *, int, int);
@@ -270,12 +270,13 @@ CFormathandler * fh_getsize(const char *name, int *x, int *y, int width_wanted, 
 	return (NULL);
 }
 
-void getSize(const std::string &name, int *width, int *height, int *nbpp)
+void getSize(const std::string &name, int *width, int *height, int *nbpp, int *nchans)
 {
 	unsigned char *rgbbuff;
 	int x = 0;
 	int y = 0;
 	int bpp = 4;
+	int channels = 1;
 	int load_ret = FH_ERROR_MALLOC;
 	CFormathandler * fh = NULL;
 
@@ -294,7 +295,7 @@ void getSize(const std::string &name, int *width, int *height, int *nbpp)
 	if (rgbbuff != NULL) 
 	{
 		if ((name.find(".png") == (name.length() - 4)) && (fh_png_id(name.c_str())))
-			load_ret = png_load_ext(name.c_str(), &rgbbuff, &x, &y, &bpp);
+			load_ret = png_load_ext(name.c_str(), &rgbbuff, &x, &y, &bpp, &channels);
 		else if (name.find(".svg") == (name.length() - 4))
 		{
 			load_ret = svg_load_resize(name.c_str(), &rgbbuff, &x, &y, *width, *height);
@@ -307,6 +308,7 @@ void getSize(const std::string &name, int *width, int *height, int *nbpp)
 			*nbpp = bpp;
 			*width = x;
 			*height = y;
+			*nchans = channels;
 		}
 		else 
 		{
@@ -529,6 +531,7 @@ void * getImage(const std::string &name, int width, int height, int bpp, int tra
 	int x = 0;
 	int y = 0;
 	int _bpp = 0;
+	int channels = 0;
 	CFormathandler * fh = NULL;
 	uint8_t * buffer = NULL;
 	void *ret = NULL;
@@ -551,7 +554,7 @@ void * getImage(const std::string &name, int width, int height, int bpp, int tra
 		}
 		
 		if ((name.find(".png") == (name.length() - 4)) && (fh_png_id(name.c_str())))
-			load_ret = png_load_ext(name.c_str(), &buffer, &x, &y, &_bpp);
+			load_ret = png_load_ext(name.c_str(), &buffer, &x, &y, &_bpp, &channels);
 		else if (name.find(".svg") == (name.length() - 4))
 		{
 			load_ret = svg_load_resize(name.c_str(), &buffer, &x, &y, width, height);
@@ -664,6 +667,7 @@ void * getBitmap(const std::string &name)
 	int x = 0;
 	int y = 0;
 	int _bpp = 0;
+	int channels = 0;
 	CFormathandler * fh = NULL;
 	uint8_t * buffer = NULL;
 	void *ret = NULL;
@@ -683,7 +687,7 @@ void * getBitmap(const std::string &name)
 		}
 		
 		if ((name.find(".png") == (name.length() - 4)) && (fh_png_id(name.c_str())))
-			load_ret = png_load_ext(name.c_str(), &buffer, &x, &y, &_bpp);
+			load_ret = png_load_ext(name.c_str(), &buffer, &x, &y, &_bpp, &channels);
 		else if (name.find(".svg") == (name.length() - 4))
 		{
 			load_ret = svg_load_resize(name.c_str(), &buffer, &x, &y, INT_MAX, INT_MAX);

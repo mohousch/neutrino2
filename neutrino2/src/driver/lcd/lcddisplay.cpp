@@ -2068,7 +2068,8 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 	CBox eRect(posX, posY, width, height);
 		
 	int i_w, i_h, i_bpp;
-	getSize(filename, &i_w, &i_h, &i_bpp);
+	int nchans = 0;
+	getSize(filename, &i_w, &i_h, &i_bpp, &nchans);
 		
 	// render
 	return ::blitBox(m_surface, i_w, i_h, eRect, &surface, flag);
@@ -2077,8 +2078,9 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 //	raw_lcd_element_t element;
 	
 	int p_w, p_h, p_bpp;
+	int nchans = 1;
 	
-	::getSize(filename, &p_w, &p_h, &p_bpp);
+	::getSize(filename, &p_w, &p_h, &p_bpp, &nchans);
 	
 	if (p_w <= width)
 		width = p_w;
@@ -2091,7 +2093,7 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 	picon_element.y = posY;
 	picon_element.width = width;
 	picon_element.height = height;
-	picon_element.bpp = 32;
+	picon_element.bpp = p_bpp*nchans;
 	picon_element.bypp = 4;
 	picon_element.stride = picon_element.width*picon_element.bypp;
 	

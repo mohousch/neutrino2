@@ -46,7 +46,7 @@ int fh_png_id(const char * name)
 
 int fh_png_load(const char *name, unsigned char **buffer, int* xp, int* yp);
 
-int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int* bpp, bool alpha)
+int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int* bpp, int *chans, bool alpha)
 {
 	static const png_color_16 my_background = {0, 0, 0, 0, 0};
 	png_structp png_ptr;
@@ -99,7 +99,6 @@ int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int
 	
 	png_printf(10, "[libngpng] [png]: %s %dx%dx%d, type %d interlace %d channel %d trans %d\n", name, width, height, bit_depth, color_type, interlace_type, channels, trns);
 	
-#if 1
 	if (alpha)
 	{
 		*bpp = png_get_channels(png_ptr, info_ptr);
@@ -143,56 +142,6 @@ int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int
 	
 	if (bit_depth == 16)
 		png_set_strip_16(png_ptr);
-#else
-	////test
-	if ((channels == 4) && (color_type & PNG_COLOR_MASK_ALPHA))
-		int_bpp = 4;
-	
-	if (bit_depth == 16)
-		png_set_strip_16(png_ptr);
-		
-	if (bit_depth < 8)
-		png_set_packing (png_ptr);
-
-	if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8)
-		png_set_expand_gray_1_2_4_to_8(png_ptr);
-							
-	if (color_type == PNG_COLOR_TYPE_GRAY && trns)
-	{
-		png_set_tRNS_to_alpha(png_ptr);
-	}
-							
-	if ((color_type == PNG_COLOR_TYPE_GRAY && trns) || color_type == PNG_COLOR_TYPE_GRAY_ALPHA) 
-	{
-		png_set_gray_to_rgb(png_ptr);
-		png_set_bgr(png_ptr);
-	}
-
-	if (color_type == PNG_COLOR_TYPE_RGB) 
-	{
-		if (trns)
-			png_set_tRNS_to_alpha(png_ptr);
-		else
-			png_set_add_alpha(png_ptr, 255, PNG_FILLER_AFTER);
-	}
-
-	if (color_type == PNG_COLOR_TYPE_RGB || color_type == PNG_COLOR_TYPE_RGB_ALPHA)
-		png_set_bgr(png_ptr);
-		
-	
-	if (color_type == PNG_COLOR_TYPE_PALETTE)
-	{
-		png_set_palette_to_rgb(png_ptr);
-		png_set_background(png_ptr, (png_color_16*)&my_background, PNG_BACKGROUND_GAMMA_SCREEN, 0, 1.0);
-	}
-		
-	if (color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
-	{
-		png_set_gray_to_rgb(png_ptr);
-		png_set_background(png_ptr, (png_color_16*)&my_background, PNG_BACKGROUND_GAMMA_SCREEN, 0, 1.0);
-	}
-#endif
-	////
 	
 	//
 	number_passes = png_set_interlace_handling(png_ptr);
@@ -226,14 +175,14 @@ int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int
 	return(FH_ERROR_OK);
 }
 
-int png_load_ext(const char *name, unsigned char **buffer, int* xp, int* yp, int* bpp)
+int png_load_ext(const char *name, unsigned char **buffer, int* xp, int* yp, int* bpp, int *chans)
 {
-	return int_png_load(name, buffer, xp, yp, bpp, true);
+	return int_png_load(name, buffer, xp, yp, bpp, chans, true);
 }
 
 int fh_png_load(const char *name, unsigned char **buffer, int* xp, int* yp)
 {
-	return int_png_load(name, buffer, xp, yp, NULL, false);
+	return int_png_load(name, buffer, xp, yp, NULL, NULL, false);
 }
 
 int fh_png_getsize(const char *name,int *x,int *y, int /*wanted_width*/, int /*wanted_height*/)

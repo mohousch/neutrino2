@@ -104,6 +104,7 @@ void CChannellogo::getLogoSize(t_channel_id logo_id, int * width, int * height, 
 {
 	std::string logo_name;
 	bool logo_ok = false;
+	int nchans = 0;
 	
 	// check for logo/convert channelid to logo
 	std::string strLogoExt[3] = { ".png", ".jpg", ".svg" };
@@ -126,7 +127,7 @@ void CChannellogo::getLogoSize(t_channel_id logo_id, int * width, int * height, 
 	if(logo_ok)
 	{
 		// get logo real size
-		getSize(logo_name.c_str(), width, height, bpp);
+		getSize(logo_name.c_str(), width, height, bpp, &nchans);
 		
 		dprintf(DEBUG_INFO, "CChannellogo::getLogoSize: logo: %s (%dx%d) %dbpp\n", logo_name.c_str(), *width, *height, *bpp);
 	}
@@ -142,6 +143,7 @@ bool CChannellogo::displayLogo(t_channel_id logo_id, int posx, int posy, int wid
 	int logo_w = width;
 	int logo_h = height;
 	int logo_bpp = 0;
+	int nchans = 0;
 	
 	
 	// check for logo
@@ -164,7 +166,7 @@ bool CChannellogo::displayLogo(t_channel_id logo_id, int posx, int posy, int wid
 	if(logo_ok)
 	{
 		// get logo real size
-		getSize(logo_name, &logo_w, &logo_h, &logo_bpp);
+		getSize(logo_name, &logo_w, &logo_h, &logo_bpp, &nchans);
 	
 		// scale only PNG logos
 		if( logo_name.find(".png") == (logo_name.length() - 4) )

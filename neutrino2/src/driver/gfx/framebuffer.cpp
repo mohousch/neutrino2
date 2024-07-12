@@ -960,8 +960,9 @@ void CFrameBuffer::getIconSize(const char * const filename, int * width, int * h
 		int x = 0;
 		int y = 0;
 		int bpp = 0;
+		int nchans = 0;
 		
-		getSize(iconfile.c_str(), &x, &y, &bpp);
+		getSize(iconfile.c_str(), &x, &y, &bpp, &nchans);
 		
 		*width = x;
 		*height = y;
