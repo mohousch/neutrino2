@@ -2115,9 +2115,9 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 //	raw_lcd_element_t element;
 	
 	int p_w, p_h, p_bpp;
-	int depth = 1;
+	int chans = 1;
 	
-	::getSize(filename, &p_w, &p_h, &p_bpp, &depth);
+	::getSize(filename, &p_w, &p_h, &p_bpp, &chans);
 	
 	if (p_w <= width)
 		width = p_w;
@@ -2130,8 +2130,8 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 	picon_element.y = posY;
 	picon_element.width = width;
 	picon_element.height = height;
-	picon_element.bpp = p_bpp*depth;
-	picon_element.bypp = p_bpp;
+	picon_element.bpp = p_bpp;
+	picon_element.bypp = chans;
 	picon_element.stride = picon_element.width*picon_element.bypp;
 	
 //	load_screen_element(&picon_element, posX, posY, width, height);

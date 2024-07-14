@@ -89,7 +89,7 @@ bool CPictureViewer::decodeImage(const std::string &name, bool showBusySign)
 	int imx;
 	int imy;
 	int bpp;
-	int depth = 0;
+	int nchans = 0;
 	
 	// Show red block for "next ready" in view state
 	if (showBusySign)
@@ -97,7 +97,7 @@ bool CPictureViewer::decodeImage(const std::string &name, bool showBusySign)
 		showBusy(COL_RED_PLUS_0);
 	}
 
-	getSize(name.c_str(), &x, &y, &bpp, &depth);
+	getSize(name.c_str(), &x, &y, &bpp, &nchans);
  
 	if ((x > (m_endx - m_startx) || y > (m_endy - m_starty))) 
 	{

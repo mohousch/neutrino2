@@ -57,9 +57,9 @@ inline void m_rend_gif_decodecolormap(unsigned char *cmb,unsigned char *rgbb,Col
 	}
 }
 
-int fh_gif_load(const char *name,unsigned char **buffer,int* /*xp*/,int* /*yp*/)
+int fh_gif_load(const char *name,unsigned char **buffer,int *, int *)
 {
-	int px,py,i/*,ibxs*/;
+	int px, py, i;
 	int j;
 	unsigned char *fbptr;
 	unsigned char *lb;
@@ -73,11 +73,12 @@ int fh_gif_load(const char *name,unsigned char **buffer,int* /*xp*/,int* /*yp*/)
 #if GIFLIB_MAJOR >= 5
 	int error;
 
-	gft=DGifOpenFileName(name, &error);
+	gft = DGifOpenFileName(name, &error);
 #else
-	gft=DGifOpenFileName(name);
+	gft = DGifOpenFileName(name);
 #endif
-	if(gft==NULL) gflush;
+	if(gft == NULL) gflush;
+	
 	do
 	{
 		if(DGifGetRecordType(gft,&rt) == GIF_ERROR) grflush;

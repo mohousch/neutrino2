@@ -432,11 +432,11 @@ bool nGLCD::showImage(uint64_t cid, uint32_t dx, uint32_t dy, uint32_t dw, uint3
 	std::string logo;
 	int sw, sh, sbpp;
 	
-	CChannellogo::getInstance()->getLogoSize(cid, &sw, &sh, &sbpp);
+	CChannellogo::getInstance()->getLogoSize(cid, &sw, &sh);
 
 	if (cid != 1)
 	{
-		logo = CChannellogo::getInstance()->getLogoName(cid); //, cname, logo, &sw, &sh))
+		logo = CChannellogo::getInstance()->getLogoName(cid);
 
 		std::string logo_tmp = DATADIR "/lcd/picon_default.png";
 		

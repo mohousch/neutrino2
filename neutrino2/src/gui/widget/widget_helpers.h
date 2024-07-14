@@ -230,7 +230,6 @@ class CCImage : public CComponent
 		//
 		int iWidth;
 		int iHeight;
-		int iNbp;
 		std::string imageName;
 		
 	private:

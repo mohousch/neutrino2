@@ -1687,7 +1687,7 @@ void CTestMenu::testCImage()
 	// paint testImage
 	testImage.setImage(DATADIR "/icons/nopreview.jpg");
 	
-	dprintf(DEBUG_NORMAL, "CTestMenu::testCImage: image:%s iw:%d ih:%d nbp:%d\n", testImage.imageName.c_str(), testImage.iWidth, testImage.iHeight, testImage.iNbp);
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCImage: image:%s iw:%d ih:%d\n", testImage.imageName.c_str(), testImage.iWidth, testImage.iHeight);
 	
 	testImage.setPosition(150 + BORDER_LEFT, 150, testImage.iWidth, testImage.iHeight);
 	testImage.enableRepaint();

@@ -44,16 +44,14 @@ int fh_png_id(const char * name)
 	return(0);
 }
 
-int fh_png_load(const char *name, unsigned char **buffer, int* xp, int* yp);
-
-int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int* bpp, int *depth, bool alpha)
+int int_png_load(const char *name, unsigned char **buffer, int *xp, int *yp, int *bpp, int *channels)
 {
 	static const png_color_16 my_background = {0, 0, 0, 0, 0};
 	png_structp png_ptr;
 	png_infop info_ptr;
 	png_uint_32 width, height;
-	int channels;
-	int trns;
+	int chans = 0;
+	int trns = 0;
 	unsigned int i;
 	int bit_depth, color_type, interlace_type, number_passes, pass, int_bpp = 3;
 	png_byte * fbptr;
@@ -91,53 +89,46 @@ int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int
 		return(FH_ERROR_FORMAT);
 	}
 	
-	png_init_io(png_ptr,fh);
+	png_init_io(png_ptr,fh);	
 	png_read_info(png_ptr, info_ptr);
 	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, NULL, NULL);
-	channels = png_get_channels(png_ptr, info_ptr);
+	chans = png_get_channels(png_ptr, info_ptr);
 	trns = png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS);
 	
-	*depth = bit_depth;
+	png_printf(10, "%s %dx%dx%d, type %d interlace %d channel %d trans %d\n", name, width, height, bit_depth, color_type, interlace_type, chans, trns);
 	
-	png_printf(10, "[libngpng] [png]: %s %dx%dx%d, type %d interlace %d channel %d trans %d\n", name, width, height, bit_depth, color_type, interlace_type, channels, trns);
-	
-	if (alpha)
+	*channels = chans;
+	*bpp = chans*bit_depth;
+		
+	if (chans == 4 && (color_type & PNG_COLOR_MASK_ALPHA))
 	{
-		*bpp = png_get_channels(png_ptr, info_ptr);
-		
-		if ((*bpp != 4) || !(color_type & PNG_COLOR_MASK_ALPHA))
-		{
-			png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
-			fclose(fh);
-			
-			return fh_png_load(name, buffer, xp, yp);
-		}
-		
 		// 24bit PNGs with alpha-channel
 		int_bpp = 4;
+		
 		//png_set_swap_alpha(png_ptr);
-		if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
+		
+		if (trns)
 			png_set_tRNS_to_alpha(png_ptr);
 	}
-	else // All other PNGs
+	else
 	{
 		if (color_type == PNG_COLOR_TYPE_PALETTE)
 		{
 			png_set_palette_to_rgb(png_ptr);
 			png_set_background(png_ptr, (png_color_16*)&my_background, PNG_BACKGROUND_GAMMA_SCREEN, 0, 1.0);
 		}
-		
+			
 		if (color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
 		{
 			png_set_gray_to_rgb(png_ptr);
 			png_set_background(png_ptr, (png_color_16*)&my_background, PNG_BACKGROUND_GAMMA_SCREEN, 0, 1.0);
 		}
-		
+			
 #if PNG_LIBPNG_VER_MAJOR == 1 && PNG_LIBPNG_VER_MINOR <= 2 && PNG_LIBPNG_VER_RELEASE < 36
 		if (color_type & PNG_COLOR_MASK_ALPHA)
 #endif
 			png_set_strip_alpha(png_ptr);
-			
+				
 		if (bit_depth < 8)
 			png_set_packing(png_ptr);
 	}
@@ -154,7 +145,7 @@ int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int
 	if (width * int_bpp != rowbytes)
 	{
 		png_err("[Error processing %s - please report (including image).\n", name);
-		png_err("           width: %lu rowbytes: %lu\n", (unsigned long)width, (unsigned long)rowbytes);
+		png_err("width: %lu int_bpp: %lu rowbytes: %lu\n", (unsigned long)width, (unsigned long)int_bpp, (unsigned long)rowbytes);
 		fclose(fh);
 		
 		return(FH_ERROR_FORMAT);
@@ -177,14 +168,9 @@ int int_png_load(const char *name, unsigned char **buffer, int* xp, int* yp, int
 	return(FH_ERROR_OK);
 }
 
-int png_load_ext(const char *name, unsigned char **buffer, int* xp, int* yp, int* bpp, int *depth)
-{
-	return int_png_load(name, buffer, xp, yp, bpp, depth, true);
-}
-
 int fh_png_load(const char *name, unsigned char **buffer, int* xp, int* yp)
 {
-	return int_png_load(name, buffer, xp, yp, NULL, NULL, false);
+	return int_png_load(name, buffer, xp, yp, NULL, NULL);
 }
 
 int fh_png_getsize(const char *name,int *x,int *y, int /*wanted_width*/, int /*wanted_height*/)
@@ -230,8 +216,8 @@ int fh_png_getsize(const char *name,int *x,int *y, int /*wanted_width*/, int /*w
 	png_read_info(png_ptr, info_ptr);
 	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, NULL, NULL);
 	png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
-	*x=width;
-	*y=height;
+	*x = width;
+	*y = height;
 	fclose(fh);
 	
 	return(FH_ERROR_OK);

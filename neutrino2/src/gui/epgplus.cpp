@@ -370,10 +370,10 @@ void EpgPlus::ChannelEntry::paint (bool isSelected, time_t selectedTime)
 	
 	if(g_settings.logos_show_logo)
 	{
-		int logo_w = this->width -2; 
-		int logo_h = this->font->getHeight() + 10 - 2;
 		int pic_w = (this->font->getHeight() - 2)*1.67;
-		int logo_bpp = 0;
+		int pic_h = this->font->getHeight() + 10 - 2;
+		int logo_w = pic_w;
+		int logo_h = pic_h;
 		
 		// check logo
 		logo_ok = CChannellogo::getInstance()->checkLogo(this->channel->getLogoID());
@@ -381,10 +381,16 @@ void EpgPlus::ChannelEntry::paint (bool isSelected, time_t selectedTime)
 		if(logo_ok)
 		{
 			// get logo size	
-			CChannellogo::getInstance()->getLogoSize(this->channel->getLogoID(), &logo_w, &logo_h, &logo_bpp);
+			CChannellogo::getInstance()->getLogoSize(this->channel->getLogoID(), &logo_w, &logo_h);
+			
+			if (logo_w > pic_w)
+				logo_w = pic_w;
+				
+			if (logo_h > pic_h)
+				logo_h = pic_h;
 		
-			// paint logo (png with alpha channel)
-			CChannellogo::getInstance()->displayLogo(this->channel->getLogoID(), this->x + 1 + ((logo_bpp == 4)? 0 : (this->width - 2 - pic_w)/2), this->y + 1, (logo_bpp == 4)? this->width -2 : pic_w, this->font->getHeight() + 10 - 2, true);
+			// paint logo
+			CChannellogo::getInstance()->displayLogo(this->channel->getLogoID(), this->x + 1 + (this->width - 2 - logo_w)/2, this->y + 1, pic_w, this->font->getHeight() + 10 - 2, true);
 		}
 	}
 	

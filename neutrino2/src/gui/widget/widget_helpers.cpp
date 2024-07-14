@@ -322,7 +322,6 @@ CCImage::CCImage(const int x, const int y, const int dx, const int dy)
 	imageName = ""; 
 	iWidth = 0; 
 	iHeight = 0; 
-	iNbp = 0; 
 	scale = false;
 	
 	background = NULL;
@@ -334,9 +333,10 @@ CCImage::CCImage(const int x, const int y, const int dx, const int dy)
 void CCImage::setImage(const char* const image)
 {
 	imageName = image? image : "";
+	int nbpp = 0;
 	int nchans = 0;
 	 
-	if (!imageName.empty()) getSize(imageName, &iWidth, &iHeight, &iNbp, &nchans);
+	if (!imageName.empty()) getSize(imageName, &iWidth, &iHeight, &nbpp, &nchans);
 }
 
 void CCImage::saveScreen(void)
@@ -1874,12 +1874,12 @@ void CCItemInfo::paint()
 		//
 		int iw = 0;
 		int ih = 0;
-		int bpp = 0;
+		int nbpp = 0;
 		int nchans = 0;
 		
 		if (!icon.empty())
 		{
-			getSize(icon.c_str(), &iw, &iw, &bpp, &nchans);
+			getSize(icon.c_str(), &iw, &iw, &nbpp, &nchans);
 			
 			if (iw > 100)
 				iw = 100;

@@ -176,9 +176,9 @@ CFormathandler * fh_root = NULL;
 
 // PNG
 extern int fh_png_getsize(const char *name, int *x, int *y, int wanted_width, int wanted_height);
-extern int fh_png_load(const char *name, unsigned char **buffer, int* xp, int* yp);
+extern int fh_png_load(const char *name, unsigned char **buffer, int *xp, int *y);
 extern int fh_png_id(const char *name);
-extern int png_load_ext(const char * name, unsigned char ** buffer, int * xp, int * yp, int * bpp, int *chans);
+extern int int_png_load(const char * name, unsigned char ** buffer, int * xp, int * yp, int * bpp, int *channels);
 
 // JPG
 extern int fh_jpeg_getsize (const char *, int *, int *, int, int);
@@ -270,13 +270,13 @@ CFormathandler * fh_getsize(const char *name, int *x, int *y, int width_wanted, 
 	return (NULL);
 }
 
-void getSize(const std::string &name, int *width, int *height, int *nbpp, int *depth)
+void getSize(const std::string &name, int *width, int *height, int *nbpp, int *channels)
 {
 	unsigned char *rgbbuff;
 	int x = 0;
 	int y = 0;
-	int bpp = 4;
-	int dep = 1;
+	int bpp = 0;
+	int chans = 0;
 	int load_ret = FH_ERROR_MALLOC;
 	CFormathandler * fh = NULL;
 
@@ -295,7 +295,7 @@ void getSize(const std::string &name, int *width, int *height, int *nbpp, int *d
 	if (rgbbuff != NULL) 
 	{
 		if ((name.find(".png") == (name.length() - 4)) && (fh_png_id(name.c_str())))
-			load_ret = png_load_ext(name.c_str(), &rgbbuff, &x, &y, &bpp, &dep);
+			load_ret = int_png_load(name.c_str(), &rgbbuff, &x, &y, &bpp, &chans);
 		else if (name.find(".svg") == (name.length() - 4))
 		{
 			load_ret = svg_load_resize(name.c_str(), &rgbbuff, &x, &y, *width, *height);
@@ -305,15 +305,17 @@ void getSize(const std::string &name, int *width, int *height, int *nbpp, int *d
 		
 		if(load_ret == FH_ERROR_OK)
 		{
-			*nbpp = bpp;
 			*width = x;
 			*height = y;
-			*depth = dep;
+			*nbpp = bpp;			
+			*channels = chans;
 		}
 		else 
 		{
 			*width = 0;
 			*height = 0;
+			*nbpp = 0;
+			channels = 0;
 		}
 	}
 
@@ -328,7 +330,7 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 
 	if(cr == NULL)
 	{
-		libngpng_err("resize: Error: malloc\n");
+		libngpng_err("Error: malloc\n");
 		return(origin);
 	}
 
@@ -345,7 +347,7 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 			for(i = 0, k = 0; i < dx; i++, k += 3)
 			{
 				ip = i*ox/dx*3;
-				memmove(l+k, p + ip, 3);
+				memmove(l + k, p + ip, 3);
 			}
 		}
 	} 
@@ -372,7 +374,7 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 		
 		if (alpha)
 		{
-			for(j = 0;j < dy;j++)
+			for(j = 0;j < dy; j++)
 			{
 				ya = j*oy/dy;
 				yb = (j + 1)*oy/dy;
@@ -526,15 +528,15 @@ void * convertRGB2FB(uint8_t *rgbbuff, unsigned long x, unsigned long y, int bpp
 	return (void *) fbbuff;
 }
 
-void * getImage(const std::string &name, int width, int height, int bpp, int transp, ScalingMode scaletype)
+uint8_t * getImage(const std::string &name, int width, int height, int bpp, int transp, ScalingMode scaletype)
 {
 	int x = 0;
 	int y = 0;
-	int _bpp = 0;
+	int nbpp = 0;
 	int channels = 0;
 	CFormathandler * fh = NULL;
 	uint8_t * buffer = NULL;
-	void *ret = NULL;
+	uint8_t *ret = NULL;
 	uint32_t *i_ret = NULL;
 	uint16_t * s_ret = NULL;
 	uint8_t * c_ret = NULL;
@@ -554,11 +556,11 @@ void * getImage(const std::string &name, int width, int height, int bpp, int tra
 		}
 		
 		if ((name.find(".png") == (name.length() - 4)) && (fh_png_id(name.c_str())))
-			load_ret = png_load_ext(name.c_str(), &buffer, &x, &y, &_bpp, &channels);
+			load_ret = int_png_load(name.c_str(), &buffer, &x, &y, &nbpp, &channels);
 		else if (name.find(".svg") == (name.length() - 4))
 		{
 			load_ret = svg_load_resize(name.c_str(), &buffer, &x, &y, width, height);
-			_bpp = 4;
+			channels = 4;
 		}
 		else
 			load_ret = fh->get_pic(name.c_str(), &buffer, &x, &y);
@@ -569,7 +571,7 @@ void * getImage(const std::string &name, int width, int height, int bpp, int tra
 			if( (width != 0 && height != 0) && (x != width || y != height) )
 			{
 				// alpha
-				if(_bpp == 4)
+				if(channels == 4)
 				{
 					buffer = resize(buffer, x, y, width, height, scaletype, true);
 				}
@@ -590,35 +592,35 @@ void * getImage(const std::string &name, int width, int height, int bpp, int tra
 				{
 					case 32:
 					{
-						if (_bpp == 4)
+						if (channels == 4)
 							i_ret = (uint32_t *)convertRGB2FB(buffer, x, y, bpp, true);
 						else
 							i_ret = (uint32_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_BLACK); // TM_BLACK
 							
-						ret = (void *)i_ret;
+						ret = (uint8_t *)i_ret;
 						break;
 					}
 						
 					case 16:
 					{
-						if (_bpp == 4)
+						if (channels == 4)
 							s_ret = (uint16_t *)convertRGB2FB(buffer, x, y, bpp, true);
 						else
 							s_ret = (uint16_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_BLACK); // TM_BLACK
 							
-						ret = (void *)s_ret;
+						ret = (uint8_t *)s_ret;
 						break;
 					}
 						
 					case 8:
 					default:
 					{
-						if (_bpp == 4)
+						if (channels == 4)
 							c_ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, true);
 						else
 							c_ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_BLACK); // TM_BLACK
 							
-						ret = (void *)c_ret;
+						ret = (uint8_t *)c_ret;
 						break;
 					}
 				}
@@ -629,18 +631,18 @@ void * getImage(const std::string &name, int width, int height, int bpp, int tra
 				{
 					case 32:
 						i_ret = (uint32_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_NONE); //TM_NONE
-						ret = (void *)i_ret;
+						ret = (uint8_t *)i_ret;
 						break;
 						
 					case 16:
 						s_ret = (uint16_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_NONE); //TM_NONE
-						ret = (void *)s_ret;
+						ret = (uint8_t *)s_ret;
 						break;
 						
 					case 8:
 					default:
 						c_ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_NONE); //TM_NONE
-						ret = (void *)c_ret;
+						ret = (uint8_t *)c_ret;
 						break;
 				}
 			}
@@ -662,7 +664,7 @@ void * getImage(const std::string &name, int width, int height, int bpp, int tra
 	return ret;
 }
 
-void * getBitmap(const std::string &name)
+uint8_t * getBitmap(const std::string &name)
 {
 	int x = 0;
 	int y = 0;
@@ -670,7 +672,7 @@ void * getBitmap(const std::string &name)
 	int channels = 0;
 	CFormathandler * fh = NULL;
 	uint8_t * buffer = NULL;
-	void *ret = NULL;
+	uint8_t *ret = NULL;
 	int load_ret = FH_ERROR_MALLOC;
 
 	//
@@ -687,11 +689,10 @@ void * getBitmap(const std::string &name)
 		}
 		
 		if ((name.find(".png") == (name.length() - 4)) && (fh_png_id(name.c_str())))
-			load_ret = png_load_ext(name.c_str(), &buffer, &x, &y, &_bpp, &channels);
+			load_ret = int_png_load(name.c_str(), &buffer, &x, &y, &_bpp, &channels);
 		else if (name.find(".svg") == (name.length() - 4))
 		{
 			load_ret = svg_load_resize(name.c_str(), &buffer, &x, &y, INT_MAX, INT_MAX);
-			_bpp = 4;
 		}
 		else
 			load_ret = fh->get_pic(name.c_str(), &buffer, &x, &y);
@@ -699,7 +700,7 @@ void * getBitmap(const std::string &name)
 		if (load_ret == FH_ERROR_OK) 
 		{
 			
-			ret = (void *)buffer;
+			ret = (uint8_t *)buffer;
 			
 			free(buffer);
 		} 

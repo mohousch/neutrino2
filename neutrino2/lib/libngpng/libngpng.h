@@ -54,7 +54,7 @@ struct cformathandler
 {
 	struct cformathandler * next;
 	int (*get_size)(const char *, int *, int*, int, int);
-	int (*get_pic)(const char *, unsigned char **, int* , int*);
+	int (*get_pic)(const char *, unsigned char **, int *, int *);
 	int (*id_pic)(const char *);
 };
 	
@@ -65,11 +65,11 @@ void init_handlers(void);
 void deinit_handlers(void);
 CFormathandler *fh_getsize(const char * name, int * x, int * y, int width_wanted, int height_wanted);
 ////
-void getSize(const std::string &name, int * width, int * height, int * nbpp, int *depth);
+void getSize(const std::string &name, int * width, int * height, int * nbpp, int *channels);
 uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode type = SCALE_COLOR, bool alpha = false);
 void * convertRGB2FB(uint8_t *rgbbuff, unsigned long x, unsigned long y, int bpp = 32, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
-void *getImage(const std::string &name, int width = 0, int height = 0, int bpp = 32, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
-void *getBitmap(const std::string &name);
+uint8_t *getImage(const std::string &name, int width = 0, int height = 0, int bpp = 32, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
+uint8_t *getBitmap(const std::string &name);
 
 #endif
 
