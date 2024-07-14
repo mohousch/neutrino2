@@ -35,7 +35,7 @@
 
 
 #define PNG_DEBUG
-//#define LIBNGPNG_SILENT
+#define LIBNGPNG_SILENT
 
 static short debug_level = 10;
 
@@ -441,94 +441,62 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 	return(cr);
 }
 
-uint8_t * convertRGB2FB(uint8_t *rgbbuff, unsigned long x, unsigned long y, int bpp, bool alpha, int transp, int m_transparent)
+uint8_t * convertRGB2FB(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
-	uint64_t i;
-	uint8_t *fbbuff = NULL;
-	uint8_t *c_fbbuff;
-	uint16_t *s_fbbuff;
-	uint32_t *i_fbbuff;
-	uint64_t count = x*y;
+	unsigned long i;
+	uint32_t *fbbuff = NULL;
+	unsigned long count = x*y;
 	
-	if (bpp == 32) // 24 / 32
+	fbbuff = (uint32_t *)malloc(count*sizeof(uint32_t));
+		
+	if ( fbbuff == NULL )
 	{
-		i_fbbuff = ( uint32_t * ) malloc ( count * sizeof (uint32_t) );
+		libngpng_err( "Error: malloc\n" );
+		return NULL;
+	}
 		
-		if ( i_fbbuff==NULL )
+	if(alpha)
+	{
+		for(i = 0; i < count; i++)
 		{
-			libngpng_err( "Error: malloc\n" );
-			return NULL;
+			fbbuff[i] = ((rgbbuff[i*4 + 3] << 24) & 0xFF000000) | 
+				((rgbbuff[i*4]     << 16) & 0x00FF0000) | 
+				((rgbbuff[i*4 + 1] <<  8) & 0x0000FF00) | 
+				((rgbbuff[i*4 + 2])       & 0x000000FF);
 		}
-		
-		if(alpha)
+	}
+	else
+	{
+		switch (m_transparent) 
 		{
-			for(i = 0; i < count; i++)
-			{
-				i_fbbuff[i] = ((rgbbuff[i*4 + 3] << 24) & 0xFF000000) | 
-					((rgbbuff[i*4]     << 16) & 0x00FF0000) | 
-					((rgbbuff[i*4 + 1] <<  8) & 0x0000FF00) | 
-					((rgbbuff[i*4 + 2])       & 0x000000FF);
-			}
-			
-			fbbuff = (uint8_t *) i_fbbuff;
-		}
-		else
-		{
-			switch (m_transparent) 
-			{
-				case TM_BLACK:
-					for(i = 0; i < count; i++) 
-					{
-						transp = 0;
-						if(rgbbuff[i*3] || rgbbuff[i*3 + 1] || rgbbuff[i*3 + 2])
-							transp = 0xFF;
-						i_fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3+1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
-					}
-					
-					fbbuff = (uint8_t *) i_fbbuff;
-					break;
+			case TM_BLACK:
+				for(i = 0; i < count; i++) 
+				{
+					transp = 0;
+					if(rgbbuff[i*3] || rgbbuff[i*3 + 1] || rgbbuff[i*3 + 2])
+						transp = 0xFF;
+							
+					fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3+1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
+				}
+				break;
 		
-				case TM_INI:
-					for(i = 0; i < count; i++)
-						i_fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
-						
-					fbbuff = (uint8_t *) i_fbbuff;
-										
-					break;
+			case TM_INI:
+				for(i = 0; i < count; i++)
+					fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);				
+				break;
 								
-				case TM_NONE:
-				default:
-					for(i = 0; i < count; i++)
-						i_fbbuff[i] = 0xFF000000 | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
-						
-					fbbuff = (uint8_t *) i_fbbuff;
-					break;
-			}
+			case TM_NONE:
+			default:
+				for(i = 0; i < count; i++)
+					fbbuff[i] = 0xFF000000 | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
+				break;
 		}
 	}
-	else if (bpp == 16)
-	{
-		s_fbbuff = (uint16_t *) malloc ( count * sizeof (uint16_t) );
-		
-		for (i = 0; i < count; i++)
-			s_fbbuff[i] = rgbbuff[i];
-			
-		fbbuff = (uint8_t *)s_fbbuff;
-	}
-	else if (bpp == 8)
-	{
-		c_fbbuff = (uint8_t *) malloc ( count * sizeof (uint8_t) );
-		
-		for (i = 0; i < count; i++)
-			c_fbbuff[i] = rgbbuff[i];
-			
-		fbbuff = (uint8_t *)c_fbbuff;
-	}
 	
-	return (uint8_t *) fbbuff;
+	return (uint8_t *)fbbuff;
 }
 
-uint8_t * getImage(const std::string &name, int width, int height, int bpp, int transp, ScalingMode scaletype)
+uint8_t * getImage(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
 {
 	int x = 0;
 	int y = 0;
@@ -537,9 +505,6 @@ uint8_t * getImage(const std::string &name, int width, int height, int bpp, int 
 	CFormathandler * fh = NULL;
 	uint8_t * buffer = NULL;
 	uint8_t *ret = NULL;
-	uint32_t *i_ret = NULL;
-	uint16_t * s_ret = NULL;
-	uint8_t * c_ret = NULL;
 	int load_ret = FH_ERROR_MALLOC;
 
 	//
@@ -588,63 +553,14 @@ uint8_t * getImage(const std::string &name, int width, int height, int bpp, int 
 			if( name.find(".png") == (name.length() - 4) )
 			{
 				// alpha
-				switch (bpp)
-				{
-					case 32:
-					{
-						if (channels == 4)
-							i_ret = (uint32_t *)convertRGB2FB(buffer, x, y, bpp, true);
-						else
-							i_ret = (uint32_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_BLACK); // TM_BLACK
-							
-						ret = (uint8_t *)i_ret;
-						break;
-					}
-						
-					case 16:
-					{
-						if (channels == 4)
-							s_ret = (uint16_t *)convertRGB2FB(buffer, x, y, bpp, true);
-						else
-							s_ret = (uint16_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_BLACK); // TM_BLACK
-							
-						ret = (uint8_t *)s_ret;
-						break;
-					}
-						
-					case 8:
-					default:
-					{
-						if (channels == 4)
-							c_ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, true);
-						else
-							c_ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_BLACK); // TM_BLACK
-							
-						ret = (uint8_t *)c_ret;
-						break;
-					}
-				}
+				if (channels == 4)
+					ret = (uint8_t *)convertRGB2FB(buffer, x, y, true);
+				else
+					ret = (uint8_t *)convertRGB2FB(buffer, x, y, false, transp, TM_BLACK); // TM_BLACK
 			}
 			else
 			{
-				switch (bpp)
-				{
-					case 32:
-						i_ret = (uint32_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_NONE); //TM_NONE
-						ret = (uint8_t *)i_ret;
-						break;
-						
-					case 16:
-						s_ret = (uint16_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_NONE); //TM_NONE
-						ret = (uint8_t *)s_ret;
-						break;
-						
-					case 8:
-					default:
-						c_ret = (uint8_t *)convertRGB2FB(buffer, x, y, bpp, false, transp, TM_NONE); //TM_NONE
-						ret = (uint8_t *)c_ret;
-						break;
-				}
+				ret = (uint8_t *)convertRGB2FB(buffer, x, y, false, transp, TM_NONE); //TM_NONE
 			}
 			
 			free(buffer);

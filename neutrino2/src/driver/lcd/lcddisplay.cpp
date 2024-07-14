@@ -2125,7 +2125,7 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 	if (p_h <= height)
 		height = p_h;
 	
-	picon_element.buffer = (uint8_t *)::getImage(filename, width, height, bpp);
+	picon_element.buffer = (uint8_t *)::getImage(filename, width, height);
 	picon_element.x = posX;
 	picon_element.y = posY;
 	picon_element.width = width;
