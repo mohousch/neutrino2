@@ -12,8 +12,8 @@
 #include "libngpng.h"
 
 
-//#define PNG_DEBUG
-//#define PNG_SILENT
+#define PNG_DEBUG
+#define PNG_SILENT
 
 static short debug_level = 10;
 
@@ -58,7 +58,7 @@ int int_png_load(const char *name, unsigned char **buffer, int *xp, int *yp, int
 	int chans = 0;
 	int trns = 0;
 	unsigned int i;
-	int bit_depth, color_type, interlace_type, number_passes, pass, int_bpp = 3;
+	int bit_depth = 0, color_type, interlace_type, number_passes, pass, int_bpp = 3;
 	png_byte * fbptr;
 	FILE     * fh;
 
@@ -102,8 +102,8 @@ int int_png_load(const char *name, unsigned char **buffer, int *xp, int *yp, int
 	
 	png_printf(10, "%s %dx%dx%d, type %d interlace %d channel %d trans %d\n", name, width, height, bit_depth, color_type, interlace_type, chans, trns);
 	
-	*channels = chans;
-	*bpp = chans*bit_depth;
+	if (channels != NULL) *channels = chans;
+	if (bpp != NULL) *bpp = chans*bit_depth;
 		
 	if (chans == 4 && (color_type & PNG_COLOR_MASK_ALPHA))
 	{
@@ -196,7 +196,7 @@ int int_png_load(const char *name, unsigned char **buffer, int *xp, int *yp, int
 
 int fh_png_load(const char *name, unsigned char **buffer, int* xp, int* yp)
 {
-	return int_png_load(name, buffer, xp, yp, NULL, NULL);
+	return int_png_load(name, buffer, xp, yp, 0, 0);
 }
 
 int fh_png_getsize(const char *name,int *x,int *y, int /*wanted_width*/, int /*wanted_height*/)
