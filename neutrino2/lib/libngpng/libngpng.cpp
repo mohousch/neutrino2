@@ -34,8 +34,8 @@
 #include "libngpng.h"
 
 
-//#define PNG_DEBUG
-#define LIBNGPNG_SILENT
+#define PNG_DEBUG
+//#define LIBNGPNG_SILENT
 
 static short debug_level = 10;
 
@@ -672,7 +672,6 @@ uint8_t * getBitmap(const std::string &name)
 	int channels = 0;
 	CFormathandler * fh = NULL;
 	uint8_t * buffer = NULL;
-	uint8_t *ret = NULL;
 	int load_ret = FH_ERROR_MALLOC;
 
 	//
@@ -697,14 +696,7 @@ uint8_t * getBitmap(const std::string &name)
 		else
 			load_ret = fh->get_pic(name.c_str(), &buffer, &x, &y);
 
-		if (load_ret == FH_ERROR_OK) 
-		{
-			
-			ret = (uint8_t *)buffer;
-			
-			free(buffer);
-		} 
-		else 
+		if (load_ret != FH_ERROR_OK) 
 		{
 	  		libngpng_err("Error decoding file %s\n", name.c_str ());
 	  		free (buffer);
@@ -716,6 +708,6 @@ uint8_t * getBitmap(const std::string &name)
 		libngpng_err("Error open file %s\n", name.c_str ());
 	}
 
-	return ret;
+	return buffer;
 }
 

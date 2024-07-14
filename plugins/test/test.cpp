@@ -4821,11 +4821,41 @@ void CTestMenu::testlibNGPNG()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testlibNGPNG\n");
 	
 	CCWindow * win = new CCWindow();
+	win->paintMainFrame(false);
 	
-	win->exec();
+	std::string filename = DATADIR "/lcd/lcdbanner.png";
+	int w, h, bpp, chans;
 	
-	delete win;
-	win = NULL;
+	::getSize(filename.c_str(), &w, &h, &bpp, &chans);
+	
+	printf("%s %d %d %d %d\n", filename.c_str(), w, h, bpp, chans);
+	
+	uint8_t *image = getBitmap(filename.c_str());
+	
+	if (image)
+	{
+		// resize
+		image = ::resize(image, w, h, 650, 120);
+		w = 650;
+		h = 120;
+		
+		// convert
+		void *fbbuff = ::convertRGB2FB(image, w, h);
+		
+		// blit2fb
+		CFrameBuffer::getInstance()->blitBox2FB(fbbuff, w, h, 50, 50);
+		
+		win->exec();
+		
+		if (win)
+		{
+			delete win;
+			win = NULL;
+		}
+	
+		delete image;
+		image = NULL;
+	}
 }
 
 // exec
