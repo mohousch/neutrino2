@@ -4813,7 +4813,7 @@ void CTestMenu::testWeather()
 	win->exec();
 	
 	delete win;
-	wind = NULL;
+	win = NULL;
 }
 
 void CTestMenu::testlibNGPNG()
@@ -4825,7 +4825,7 @@ void CTestMenu::testlibNGPNG()
 	win->exec();
 	
 	delete win;
-	wind = NULL;
+	win = NULL;
 }
 
 // exec

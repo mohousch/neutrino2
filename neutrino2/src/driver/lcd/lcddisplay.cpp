@@ -1740,8 +1740,8 @@ bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_
 						//
 						memset((uint8_t *)element->buffer, 0, element->width*element->height);
 	
-						//
-						png_set_packing(png_ptr); /* expand to 1 byte blocks */
+						// expand to 1 byte blocks
+						png_set_packing(png_ptr);
 						
 						if (color_type == PNG_COLOR_TYPE_PALETTE)
 						      png_set_expand(png_ptr);
