@@ -975,7 +975,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 		if (CChannellogo::getInstance()->checkLogo(cid))
 			logo = CChannellogo::getInstance()->getLogoName(cid);
 
-		if (cid != 1)
+		if (cid != 0)
 		{
 			display->showPNGImage(logo.c_str(), (lcd_width - 120)/2, lcd_height - fonts.time->getHeight() - 2 - 60, 120, 60);
 		}

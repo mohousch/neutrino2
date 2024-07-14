@@ -1726,7 +1726,7 @@ void CFrameBuffer::displayRGB(uint8_t *rgbbuff, int x_size, int y_size, int x_pa
 {
 	dprintf(DEBUG_INFO, "CFrameBuffer::displayRGB\n");
 	
-        void * fbbuff = NULL;
+        uint8_t * fbbuff = NULL;
 
         if(rgbbuff == NULL)
                 return;

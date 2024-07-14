@@ -441,10 +441,10 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 	return(cr);
 }
 
-void * convertRGB2FB(uint8_t *rgbbuff, unsigned long x, unsigned long y, int bpp, bool alpha, int transp, int m_transparent)
+uint8_t * convertRGB2FB(uint8_t *rgbbuff, unsigned long x, unsigned long y, int bpp, bool alpha, int transp, int m_transparent)
 {
 	uint64_t i;
-	void *fbbuff = NULL;
+	uint8_t *fbbuff = NULL;
 	uint8_t *c_fbbuff;
 	uint16_t *s_fbbuff;
 	uint32_t *i_fbbuff;
@@ -470,7 +470,7 @@ void * convertRGB2FB(uint8_t *rgbbuff, unsigned long x, unsigned long y, int bpp
 					((rgbbuff[i*4 + 2])       & 0x000000FF);
 			}
 			
-			fbbuff = ( void * ) i_fbbuff;
+			fbbuff = (uint8_t *) i_fbbuff;
 		}
 		else
 		{
@@ -485,14 +485,14 @@ void * convertRGB2FB(uint8_t *rgbbuff, unsigned long x, unsigned long y, int bpp
 						i_fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3+1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
 					}
 					
-					fbbuff = ( void * ) i_fbbuff;
+					fbbuff = (uint8_t *) i_fbbuff;
 					break;
 		
 				case TM_INI:
 					for(i = 0; i < count; i++)
 						i_fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
 						
-					fbbuff = ( void * ) i_fbbuff;
+					fbbuff = (uint8_t *) i_fbbuff;
 										
 					break;
 								
@@ -501,7 +501,7 @@ void * convertRGB2FB(uint8_t *rgbbuff, unsigned long x, unsigned long y, int bpp
 					for(i = 0; i < count; i++)
 						i_fbbuff[i] = 0xFF000000 | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
 						
-					fbbuff = ( void * ) i_fbbuff;
+					fbbuff = (uint8_t *) i_fbbuff;
 					break;
 			}
 		}
@@ -513,7 +513,7 @@ void * convertRGB2FB(uint8_t *rgbbuff, unsigned long x, unsigned long y, int bpp
 		for (i = 0; i < count; i++)
 			s_fbbuff[i] = rgbbuff[i];
 			
-		fbbuff = (void *)s_fbbuff;
+		fbbuff = (uint8_t *)s_fbbuff;
 	}
 	else if (bpp == 8)
 	{
@@ -522,10 +522,10 @@ void * convertRGB2FB(uint8_t *rgbbuff, unsigned long x, unsigned long y, int bpp
 		for (i = 0; i < count; i++)
 			c_fbbuff[i] = rgbbuff[i];
 			
-		fbbuff = (void *)c_fbbuff;
+		fbbuff = (uint8_t *)c_fbbuff;
 	}
 	
-	return (void *) fbbuff;
+	return (uint8_t *) fbbuff;
 }
 
 uint8_t * getImage(const std::string &name, int width, int height, int bpp, int transp, ScalingMode scaletype)

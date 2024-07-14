@@ -4823,7 +4823,13 @@ void CTestMenu::testlibNGPNG()
 	CCWindow * win = new CCWindow();
 	win->paintMainFrame(false);
 	
-	std::string filename = DATADIR "/lcd/lcdbanner.png";
+	std::string filename = DATADIR "/lcd/picon_default.png";
+	
+	t_channel_id cid = CZapit::getInstance()->getCurrentChannelID();
+	
+	if (CChannellogo::getInstance()->checkLogo(cid))
+		filename = CChannellogo::getInstance()->getLogoName(cid);
+			
 	int w, h, bpp, chans;
 	
 	::getSize(filename.c_str(), &w, &h, &bpp, &chans);
@@ -4834,13 +4840,15 @@ void CTestMenu::testlibNGPNG()
 	
 	if (image)
 	{
+		int wanted_width = 650;
+		int wanted_height = 650;
 		// resize
-		image = ::resize(image, w, h, 650, 120);
-		w = 650;
-		h = 120;
+		uint8_t * buf = ::resize(image, w, h, wanted_width, wanted_height, SCALE_COLOR, (chans == 4)? true : false);
+		w = wanted_width;
+		h = wanted_height;
 		
 		// convert
-		void *fbbuff = ::convertRGB2FB(image, w, h);
+		void *fbbuff = ::convertRGB2FB(buf, w, h, 32, (chans == 4)? true : false);
 		
 		// blit2fb
 		CFrameBuffer::getInstance()->blitBox2FB(fbbuff, w, h, 50, 50);
@@ -4853,8 +4861,8 @@ void CTestMenu::testlibNGPNG()
 			win = NULL;
 		}
 	
-		delete image;
-		image = NULL;
+//		delete image;
+//		image = NULL;
 	}
 }
 
