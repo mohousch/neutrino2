@@ -37,10 +37,15 @@ int fh_png_id(const char * name)
 {
 	int fd;
 	char id[4];
-	fd = open(name, O_RDONLY); if(fd == -1) return(0);
-	read(fd,id,4);
+	fd = open(name, O_RDONLY); 
+	if(fd == -1) 
+		return(0);
+	read(fd, id, 4);
 	close(fd);
-	if(id[1] == 'P' && id[2] == 'N' && id[3] == 'G') return(1);
+	
+	if(id[1] == 'P' && id[2] == 'N' && id[3] == 'G') 
+		return(1);
+		
 	return(0);
 }
 
@@ -57,7 +62,7 @@ int int_png_load(const char *name, unsigned char **buffer, int *xp, int *yp, int
 	png_byte * fbptr;
 	FILE     * fh;
 
-	if(!(fh = fopen(name,"rb")))
+	if(!(fh = fopen(name, "rb")))
 		return(FH_ERROR_FILE);
 	
 	png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
@@ -109,6 +114,27 @@ int int_png_load(const char *name, unsigned char **buffer, int *xp, int *yp, int
 		
 		if (trns)
 			png_set_tRNS_to_alpha(png_ptr);
+	}
+	else if ((chans == 2) && (color_type == PNG_COLOR_TYPE_GRAY_ALPHA)) 
+	{
+		if (bit_depth < 8) 
+		{
+			// Extract multiple pixels with bit depths of 1, 2, and 4
+			// from a single byte into separate bytes
+			// (useful for paletted and grayscale images)
+			png_set_packing(png_ptr);
+			
+			// Expand grayscale images to the full 8 bits from 1, 2, or 4 bits/pixel
+#if PNG_LIBPNG_VER_MAJOR == 1 && PNG_LIBPNG_VER_MINOR <= 2 && PNG_LIBPNG_VER_RELEASE < 9
+			png_set_gray_1_2_4_to_8(png_ptr);
+#else
+			png_set_expand_gray_1_2_4_to_8(png_ptr);
+#endif
+		}
+			
+		// Expand the grayscale to 24-bit RGB if necessary.
+		png_set_gray_to_rgb(png_ptr);
+			
 	}
 	else
 	{

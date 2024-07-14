@@ -63,7 +63,7 @@ void jpeg_cb_error_exit(j_common_ptr cinfo)
 	longjmp(mptr->envbuffer, 1);
 }
 
-int fh_jpeg_load_local(const char *filename,unsigned char **buffer,int* x,int* y)
+int fh_jpeg_load_local(const char *filename, unsigned char **buffer, int *x, int *y)
 {
 	struct jpeg_decompress_struct cinfo;
 	struct jpeg_decompress_struct *ciptr;
@@ -174,6 +174,7 @@ int fh_jpeg_getsize(const char *filename,int *x,int *y, int wanted_width, int wa
 	jpeg_stdio_src(ciptr, fh);
 	jpeg_read_header(ciptr, TRUE);
 	ciptr->out_color_space = JCS_RGB;
+	
 	// should be more flexible...
 	if((int)ciptr->image_width/8 >= wanted_width || (int)ciptr->image_height/8 >= wanted_height)
 		ciptr->scale_denom = 8;

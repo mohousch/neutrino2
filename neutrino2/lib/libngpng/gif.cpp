@@ -44,20 +44,22 @@ int fh_gif_id(const char *name)
 	return(0);
 }
 
-inline void m_rend_gif_decodecolormap(unsigned char *cmb,unsigned char *rgbb,ColorMapObject *cm,int /*s*/,int l)
+inline void m_rend_gif_decodecolormap(unsigned char *cmb, unsigned char *rgbb, ColorMapObject *cm, int /*s*/, int l)
 {
 	GifColorType *cmentry;
 	int i;
-	for(i=0;i<l;i++)
+	
+	for(i = 0; i < l; i++)
 	{
-		cmentry=&cm->Colors[cmb[i]];
-		*(rgbb++)=cmentry->Red;
-		*(rgbb++)=cmentry->Green;
-		*(rgbb++)=cmentry->Blue;
+		cmentry = &cm->Colors[cmb[i]];
+		
+		*(rgbb++) = cmentry->Red;
+		*(rgbb++) = cmentry->Green;
+		*(rgbb++) = cmentry->Blue;
 	}
 }
 
-int fh_gif_load(const char *name,unsigned char **buffer,int *, int *)
+int fh_gif_load(const char *name, unsigned char **buffer, int *, int *)
 {
 	int px, py, i;
 	int j;
@@ -81,64 +83,77 @@ int fh_gif_load(const char *name,unsigned char **buffer,int *, int *)
 	
 	do
 	{
-		if(DGifGetRecordType(gft,&rt) == GIF_ERROR) grflush;
+		if(DGifGetRecordType(gft,&rt) == GIF_ERROR) 
+			grflush;
+			
 		switch(rt)
 		{
 			case IMAGE_DESC_RECORD_TYPE:
 
-				if(DGifGetImageDesc(gft)==GIF_ERROR) grflush;
-				px=gft->Image.Width;
-				py=gft->Image.Height;
-				lb=(unsigned char*)malloc(px*3);
-				slb=(unsigned char*) malloc(px);
+				if(DGifGetImageDesc(gft)==GIF_ERROR) 
+					grflush;
+					
+				px = gft->Image.Width;
+				py = gft->Image.Height;
+				lb = (unsigned char*)malloc(px*3);
+				slb = (unsigned char*) malloc(px);
 
-				if(lb!=NULL && slb!=NULL)
+				if(lb != NULL && slb != NULL)
 				{
-					cmap=(gft->Image.ColorMap ? gft->Image.ColorMap : gft->SColorMap);
-					cmaps=cmap->ColorCount;
+					cmap = (gft->Image.ColorMap ? gft->Image.ColorMap : gft->SColorMap);
+					cmaps = cmap->ColorCount;
 
-					fbptr=*buffer;
+					fbptr = *buffer;
 					if(!(gft->Image.Interlace))
 					{
-						for(i=0;i<py;i++,fbptr+=px*3)
+						for(i = 0; i < py; i++, fbptr += px*3)
 						{
-							if(DGifGetLine(gft,slb,px)==GIF_ERROR)	mgrflush;
-							m_rend_gif_decodecolormap(slb,lb,cmap,cmaps,px);
-							memmove(fbptr,lb,px*3);
+							if(DGifGetLine(gft,slb,px)==GIF_ERROR)	
+								mgrflush;
+								
+							m_rend_gif_decodecolormap(slb, lb, cmap, cmaps, px);
+							memmove(fbptr, lb, px*3);
 						}
 					}
 					else
 					{
-						for(j=0;j<4;j++)
+						for(j = 0; j < 4; j++)
 						{
-							fbptr=*buffer;
-							for(i=0;i<py;i++,fbptr+=px*3)
+							fbptr = *buffer;
+							
+							for(i = 0; i < py; i++, fbptr += px*3)
 							{
-								if(DGifGetLine(gft,slb,px)==GIF_ERROR)	mgrflush;
-								m_rend_gif_decodecolormap(slb,lb,cmap,cmaps,px);
-								memmove(fbptr,lb,px*3);
+								if(DGifGetLine(gft,slb,px)==GIF_ERROR)	
+									mgrflush;
+									
+								m_rend_gif_decodecolormap(slb, lb, cmap, cmaps, px);
+								memmove(fbptr, lb, px*3);
 							}
 						}
 					}
 				}
-				if(lb) free(lb);
-				if(slb) free(slb);
+				if(lb) 
+					free(lb);
+				if(slb) 
+					free(slb);
 				break;
 			case EXTENSION_RECORD_TYPE:
-				if(DGifGetExtension(gft,&extcode,&extension)==GIF_ERROR)	grflush;
+				if(DGifGetExtension(gft,&extcode,&extension)==GIF_ERROR)	
+					grflush;
 				while(extension!=NULL)
-					if(DGifGetExtensionNext(gft,&extension)==GIF_ERROR) grflush;
+					if(DGifGetExtensionNext(gft,&extension)==GIF_ERROR) 
+						grflush;
 				break;
 			default:
 				break;
 		}
 	}
-	while( rt!= TERMINATE_RECORD_TYPE );
+	while( rt != TERMINATE_RECORD_TYPE );
 	DGIFCLOSEFILE(gft);
 	return(FH_ERROR_OK);
 }
 
-int fh_gif_getsize(const char *name,int *x,int *y, int /*wanted_width*/, int /*wanted_height*/)
+int fh_gif_getsize(const char *name, int *x, int *y, int /*wanted_width*/, int /*wanted_height*/)
 {
 	int px,py;
 	GifFileType *gft;
@@ -148,35 +163,42 @@ int fh_gif_getsize(const char *name,int *x,int *y, int /*wanted_width*/, int /*w
 #if GIFLIB_MAJOR >= 5
 	int error;
 
-	gft=DGifOpenFileName(name, &error);
+	gft = DGifOpenFileName(name, &error);
 #else
-	gft=DGifOpenFileName(name);
+	gft = DGifOpenFileName(name);
 #endif
-	if(gft==NULL) gflush;
+	if(gft == NULL) 
+		gflush;
+		
 	do
 	{
-		if(DGifGetRecordType(gft,&rt) == GIF_ERROR) grflush;
+		if(DGifGetRecordType(gft,&rt) == GIF_ERROR) 
+			grflush;
+			
 		switch(rt)
 		{
 			case IMAGE_DESC_RECORD_TYPE:
-
-				if(DGifGetImageDesc(gft)==GIF_ERROR) grflush;
-				px=gft->Image.Width;
-				py=gft->Image.Height;
-				*x=px; *y=py;
+				if(DGifGetImageDesc(gft)==GIF_ERROR) 
+					grflush;
+				px = gft->Image.Width;
+				py = gft->Image.Height;
+				*x = px; 
+				*y = py;
 				DGIFCLOSEFILE(gft);
 				return(FH_ERROR_OK);
 				break;
 			case EXTENSION_RECORD_TYPE:
-				if(DGifGetExtension(gft,&extcode,&extension)==GIF_ERROR)	grflush;
+				if(DGifGetExtension(gft,&extcode,&extension)==GIF_ERROR)	
+					grflush;
 				while(extension!=NULL)
-					if(DGifGetExtensionNext(gft,&extension)==GIF_ERROR) grflush;
+					if(DGifGetExtensionNext(gft,&extension)==GIF_ERROR) 
+						grflush;
 				break;
 			default:
 				break;
 		}
 	}
-	while( rt!= TERMINATE_RECORD_TYPE );
+	while( rt != TERMINATE_RECORD_TYPE );
 	DGIFCLOSEFILE(gft);
 	return(FH_ERROR_FORMAT);
 }

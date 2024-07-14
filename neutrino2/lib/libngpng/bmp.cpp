@@ -12,6 +12,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+
 #define BMP_TORASTER_OFFSET	10
 #define BMP_SIZE_OFFSET		18
 #define BMP_BPP_OFFSET		28
@@ -52,9 +53,11 @@ void fetch_pallete(int fd, struct color pallete[], int count)
 	int i;
 
 	lseek(fd, BMP_COLOR_OFFSET, SEEK_SET);
-	for (i=0; i<count; i++) 
+	
+	for (i = 0; i < count; i++) 
 	{
 		read(fd, buff, 4);
+		
 		pallete[i].red = buff[2];
 		pallete[i].green = buff[1];
 		pallete[i].blue = buff[0];
@@ -63,7 +66,7 @@ void fetch_pallete(int fd, struct color pallete[], int count)
 	return;
 }
 
-int fh_bmp_load(const char *name,unsigned char **buffer,int* xp,int* yp)
+int fh_bmp_load(const char *name, unsigned char **buffer, int *xp, int *yp)
 {
 	int fd, bpp, raster, i, j, k, skip, x=*xp, y=*yp;
 	unsigned char buff[4];
