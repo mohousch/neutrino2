@@ -68,7 +68,7 @@ struct raw_lcd_element_t
 	int bpp;
 	int bypp;
 	int stride;
-	void *buffer;
+	uint8_t *buffer;
 };
 
 class CLCDDisplay
