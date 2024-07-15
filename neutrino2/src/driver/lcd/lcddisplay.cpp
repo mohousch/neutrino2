@@ -1355,6 +1355,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
 	}
 	
 	// blit picon :#revise me
+	/*
 	if (surface_bpp == 16 && picon_element.bpp == 8)
 	{
 		uint8_t *srcptr = (uint8_t*)picon_element.buffer;
@@ -1482,7 +1483,8 @@ void CLCDDisplay::blitBox2LCD(int flag)
                 	srcptr += picon_element.stride;
                 	dstptr += surface_stride;
             	}
-	} 		
+	}
+	*/		
 }
 
 void CLCDDisplay::update()
@@ -2138,9 +2140,9 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 	picon_element.bypp = chans;
 	picon_element.stride = picon_element.width*picon_element.bypp;
 	
-//	load_screen_element(&picon_element, posX, posY, width, height);
+	load_screen_element(&picon_element, posX, posY, width, height);
 	
-//	free(picon_element.buffer);
+	free(picon_element.buffer);
 	
 	return 0;
 }

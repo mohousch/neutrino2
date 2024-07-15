@@ -1012,7 +1012,7 @@ void CLCD::showEPGTitle(const std::string title)
 	epg_title.clear();
 	epg_title = title;
 
-	showTextScreen("", epg_title, g_settings.lcd_epgmode, false, g_settings.lcd_epgalign);
+//	showTextScreen("", epg_title, g_settings.lcd_epgmode, false, g_settings.lcd_epgalign);
 #endif
 }
 
