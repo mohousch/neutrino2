@@ -147,11 +147,9 @@ class CLCDDisplay
 		void draw_rectangle(int left, int top, int right, int bottom, uint32_t linecolor, uint32_t fillcolor);
 		void draw_polygon(int num_vertices, int *vertices, uint32_t color);
 		////
-		void load_screen_element(raw_lcd_element_t * element, int left, int top, int w = 0, int h = 0);
+		void load_screen_element(raw_lcd_element_t * element, int left, int top);
 		void load_screen(uint8_t ** const screen);
 		void dump_screen(uint8_t **screen);
-		bool load_png_element(const char * const filename, raw_lcd_element_t * element);
-		bool load_png(const char * const filename);
 		bool dump_png_element(const char * const filename, raw_lcd_element_t * element);
 		//
 		void clear_screen();
@@ -175,9 +173,10 @@ class CLCDDisplay
 		////
 		int islocked() { return locked; }
 		////
-		gUnmanagedSurface* loadPNG(const char* filename);
 		int showPNGImage(const char* filename, int posX, int posY, int width, int height, int flag = blitAlphaBlend);
 		raw_lcd_element_t picon_element;
+		void load_png_element(raw_lcd_element_t * element, int posx, int posy, int width = 0, int height = 0);
+		void show_png_element(raw_lcd_element_t *element, int posx, int posy, int width = 0, int height = 0);
 };
 
 #endif

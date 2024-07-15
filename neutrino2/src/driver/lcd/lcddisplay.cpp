@@ -45,6 +45,24 @@
 #include <memory.h>
 
 
+//#define LCDDISPLAY_DEBUG
+#define LCDDISPLAY_SILENT
+
+static short debug_level = 10;
+
+#ifdef LCDDISPLAY_DEBUG
+#define lcddisplay_printf(level, fmt, x...) do { \
+if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
+#else
+#define lcddisplay_printf(level, fmt, x...)
+#endif
+
+#ifndef LCDDISPLAY_SILENT
+#define lcddisplay_err(fmt, x...) do { printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
+#else
+#define lcddisplay_err(fmt, x...)
+#endif
+
 #ifndef BYTE_ORDER
 #error "no BYTE_ORDER defined!"
 #endif
@@ -1647,9 +1665,9 @@ void CLCDDisplay::dump_screen(uint8_t **screen)
 	memmove(*screen, _buffer, raw_buffer_size);
 }
 
-void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int top, int width, int height) 
+void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int top) 
 {
-	printf("CLCDDisplay::load_screen_element: %s\n", element->name.c_str());
+	printf("CLCDDisplay::load_screen_element: %s %dx%dx%d (posx: %d posy: %d)\n", element->name.c_str(), element->width, element->height, element->bpp, left, top);
 	
 	//
 	if ((element->buffer) && (element->height <= yres - top))
@@ -1659,6 +1677,8 @@ void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int
 			memmove(_buffer + ((top + i)*xres) + left, (uint8_t *)element->buffer + (i*element->width), min(element->width, xres - left));
 		}
 	}
+	
+	free(element->buffer);
 }
 
 void CLCDDisplay::load_screen(uint8_t **const screen) 
@@ -1671,133 +1691,6 @@ void CLCDDisplay::load_screen(uint8_t **const screen)
 	element.bpp = 8;
 	
 	load_screen_element(&element, 0, 0);
-}
-
-bool CLCDDisplay::load_png_element(const char * const filename, raw_lcd_element_t * element)
-{
-	bool ret_value = false;
-	
-	png_structp  png_ptr;
-	png_infop    info_ptr;
-	unsigned int i;
-	unsigned int pass;
-	unsigned int number_passes;
-	int          bit_depth;
-	int          color_type;
-	int          interlace_type;
-	png_uint_32  width;
-	png_uint_32  height;
-	png_byte *   fbptr;
-	FILE *       fh;
-	int channels;
-	int trns;
-	
-	element->name = filename;
-
-	if ((fh = fopen(filename, "rb")))
-	{
-		if ((png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL)))
-		{
-			if (!(info_ptr = png_create_info_struct(png_ptr)))
-				png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
-			else
-			{
-#if (PNG_LIBPNG_VER < 10500)
-				if (!(setjmp(png_ptr->jmpbuf)))
-#else
-				if (!setjmp(png_jmpbuf(png_ptr)))
-#endif
-				{
-					unsigned int lcd_height = yres;
-					unsigned int lcd_width = xres;
-
-					png_init_io(png_ptr, fh);
-					
-					png_read_info(png_ptr, info_ptr);
-					png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, NULL, NULL);
-					channels = png_get_channels(png_ptr, info_ptr);
-					trns = png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS);
-					
-					if (
-						((color_type == PNG_COLOR_TYPE_PALETTE) ||
-						 ((color_type & PNG_COLOR_MASK_COLOR) == PNG_COLOR_TYPE_GRAY)) &&
-						(bit_depth  <= 8                     ) &&
-						(width      <= lcd_width             ) &&
-						(height     <= lcd_height            )
-						)
-					{
-						printf("CLCDDisplay::load_png_element: %s %dx%dx%d, type %d channel %d trans %d\n", filename, width, height, bit_depth, color_type, channels, trns);
-						
-						element->width = width;
-						element->height = height;
-						element->bpp = bit_depth;
-						
-						if (!element->buffer)
-						{
-							element->buffer = new uint8_t[element->width*element->height];
-							lcd_width = width;
-							lcd_height = height;
-						}
-						
-						//
-						memset((uint8_t *)element->buffer, 0, element->width*element->height);
-	
-						// expand to 1 byte blocks
-						png_set_packing(png_ptr);
-						
-						if (color_type == PNG_COLOR_TYPE_PALETTE)
-						      png_set_expand(png_ptr);
-
-						if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8)
-						      png_set_expand(png_ptr);
-
-						if (color_type & PNG_COLOR_MASK_COLOR)
-#if (PNG_LIBPNG_VER < 10200)
-							png_set_rgb_to_gray(png_ptr);
-#else
-							png_set_rgb_to_gray(png_ptr, 1, NULL, NULL);
-#endif
-						
-						number_passes = png_set_interlace_handling(png_ptr);
-						png_read_update_info(png_ptr,info_ptr);
-						
-						if (width == png_get_rowbytes(png_ptr, info_ptr))
-						{
-							ret_value = true;
-							
-							for (pass = 0; pass < number_passes; pass++)
-							{
-								fbptr = (png_byte *)element->buffer;
-								
-								for (i = 0; i < element->height; i++)
-								{
-									png_read_row(png_ptr, fbptr, NULL);
-									/* if the PNG is smaller, than the display width... */
-									if (width < lcd_width)
-										memset(fbptr + width, 0, lcd_width - width);
-									fbptr += lcd_width;
-								}
-							}
-							png_read_end(png_ptr, info_ptr);
-						}
-					}
-				}
-				png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
-			}
-		}
-		fclose(fh);
-	}
-	
-	return ret_value;
-}
-
-bool CLCDDisplay::load_png(const char * const filename)
-{
-	raw_lcd_element_t element;
-	
-	element.buffer = _buffer;
-	
-	return load_png_element(filename, &element);
 }
 
 bool CLCDDisplay::dump_png_element(const char * const filename, raw_lcd_element_t * element)
@@ -1893,257 +1786,85 @@ bool CLCDDisplay::dump_png(const char * const filename)
 	return dump_png_element(filename, &element);
 }
 
-////
-gUnmanagedSurface* CLCDDisplay::loadPNG(const char* filename)
-{
-    FILE *fp=fopen(filename, "rb");
-    unsigned char header[8];
-
-    
-    if (!fp)
-    {
-        printf("CLCDDisplay::loadPNG: couldn't open %s\n", filename );
-        return NULL;
-    }
-    
-    if (!fread(header, 8, 1, fp))
-    {
-        printf("CLCDDisplay::loadPNG: couldn't read\n");
-        fclose(fp);
-        return NULL;
-    }
-    
-    if (png_sig_cmp(header, 0, 8))
-    {
-        fclose(fp);
-        return NULL;
-    }
-
-    png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
-    if (!png_ptr)
-    {
-        printf("CLCDDisplay::loadPNG: failed to create read struct\n");
-        fclose(fp);
-        return NULL;
-    }
-    
-    png_infop info_ptr = png_create_info_struct(png_ptr);
-    if (!info_ptr)
-    {
-        printf("CLCDDisplay::loadPNG: failed to create info struct\n");
-        png_destroy_read_struct(&png_ptr, (png_infopp)0, (png_infopp)0);
-        fclose(fp);
-        return NULL;
-    }
-    
-    png_infop end_info = png_create_info_struct(png_ptr);
-    if (!end_info)
-    {
-        printf("CLCDDisplay::loadPNG: failed to create end info struct\n");
-        png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
-        fclose(fp);
-        return NULL;
-    }
-    
-    if (setjmp(png_jmpbuf(png_ptr)))
-    {
-        printf("CLCDDisplay::loadPNG: png setjump failed or activated\n");
-        png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
-        fclose(fp);
-        return NULL;
-    }
-    
-    png_init_io(png_ptr, fp);
-    png_set_sig_bytes(png_ptr, 8);
-    png_read_info(png_ptr, info_ptr);
-
-    png_uint_32 width, height;
-    int bit_depth;
-    int color_type;
-    int interlace_type;
-    int channels;
-    int trns;
-
-    png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, 0, 0);
-    channels = png_get_channels(png_ptr, info_ptr);
-    trns = png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS);
-    
-    //printf("[ePNG] %s: before %dx%dx%dbpcx%dchan coltyp=%d\n", filename, (int)width, (int)height, bit_depth, channels, color_type);
-
-    /*
-     * gPixmaps use 8 bits per channel. rgb pixmaps are stored as abgr.
-     * So convert 1,2 and 4 bpc to 8bpc images that enigma can blit
-     * so add 'empty' alpha channel
-     * Expand G+tRNS to GA, RGB+tRNS to RGBA
-     */
-    if (bit_depth == 16)
-        png_set_strip_16(png_ptr);
-    if (bit_depth < 8)
-        png_set_packing (png_ptr);
-
-    if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8)
-        png_set_expand_gray_1_2_4_to_8(png_ptr);
-        
-    if (color_type == PNG_COLOR_TYPE_GRAY && trns)
-        png_set_tRNS_to_alpha(png_ptr);
-        
-    if ((color_type == PNG_COLOR_TYPE_GRAY && trns) || color_type == PNG_COLOR_TYPE_GRAY_ALPHA) 
-    {
-        png_set_gray_to_rgb(png_ptr);
-        png_set_bgr(png_ptr);
-    }
-
-    if (color_type == PNG_COLOR_TYPE_RGB) 
-    {
-        if (trns)
-            png_set_tRNS_to_alpha(png_ptr);
-        else
-            png_set_add_alpha(png_ptr, 255, PNG_FILLER_AFTER);
-    }
-
-    if (color_type == PNG_COLOR_TYPE_RGB || color_type == PNG_COLOR_TYPE_RGB_ALPHA)
-        png_set_bgr(png_ptr);
-
-    // Update the info structures after the transformations take effect
-    if (interlace_type != PNG_INTERLACE_NONE)
-        png_set_interlace_handling(png_ptr);  // needed before read_update_info()
-    png_read_update_info (png_ptr, info_ptr);
-    png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, 0, 0, 0);
-    channels = png_get_channels(png_ptr, info_ptr);
-
-    gUnmanagedSurface *surface = new gSurface(width, height, bit_depth * channels);
-    
-    png_bytep *rowptr = new png_bytep[height];
-    for (unsigned int i = 0; i < height; i++)
-        rowptr[i] = ((png_byte*)(surface->data)) + i * surface->stride;
-    png_read_image(png_ptr, rowptr);
-
-    delete [] rowptr;
-
-    int num_palette = -1, num_trans = -1;
-    if (color_type == PNG_COLOR_TYPE_PALETTE) 
-    {
-        if (png_get_valid(png_ptr, info_ptr, PNG_INFO_PLTE)) 
-        {
-            png_color *palette;
-            png_get_PLTE(png_ptr, info_ptr, &palette, &num_palette);
-            if (num_palette) {
-                surface->clut.data = new gRGB[num_palette];
-                surface->clut.colors = num_palette;
-
-                for (int i = 0; i < num_palette; i++) 
-                {
-                    surface->clut.data[i].a = 0;
-                    surface->clut.data[i].r = palette[i].red;
-                    surface->clut.data[i].g = palette[i].green;
-                    surface->clut.data[i].b = palette[i].blue;
-                }
-
-                if (trns) 
-                {
-                    png_byte *trans;
-                    png_get_tRNS(png_ptr, info_ptr, &trans, &num_trans, 0);
-                    for (int i = 0; i < num_trans; i++)
-                        surface->clut.data[i].a = 255 - trans[i];
-                    for (int i = num_trans; i < num_palette; i++)
-                        surface->clut.data[i].a = 0;
-                }
-
-            }
-            else 
-            {
-                surface->clut.data = 0;
-                surface->clut.colors = num_palette;
-            }
-        }
-        else 
-        {
-            surface->clut.data = 0;
-            surface->clut.colors = 0;
-        }
-        surface->clut.start = 0;
-    }
-
-    png_read_end(png_ptr, end_info);
-    png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
-    fclose(fp);
-    
-    return surface;
-}
-
 int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int width, int height, int flag)
 {
 	printf("CLCDDisplay::showPNGImage: %s %d %d %d %d (flag: %d)\n", filename, posX, posY, width, height, flag);
 	
-/*
-	gUnmanagedSurface *m_surface = NULL;
-	gUnmanagedSurface surface;
-	
-    	surface.x = xres;
-    	surface.y = yres;
-    	surface.stride = surface_stride;
-    	surface.bypp = surface_bypp;
-    	surface.bpp = surface_bpp;
-    	surface.data = surface_data;
-    	surface.data_phys = 0;
-    	
-    	if (lcd_type == 4)
-	{
-		surface.clut.colors = 256;
-		surface.clut.data = new gRGB[surface.clut.colors];
-		memset(static_cast<void*>(surface.clut.data), 0, sizeof(*surface.clut.data)*surface.clut.colors);
-	}
-	else
-	{
-		surface.clut.colors = 0;
-		surface.clut.data = 0;
-	}
-    
-	// loadPNG
-	m_surface = loadPNG(filename);
-	if (m_surface == NULL)
-		return -1;
-		
-	CBox eRect(posX, posY, width, height);
-		
-	int i_w, i_h, i_bpp;
-	int nchans = 0;
-	getSize(filename, &i_w, &i_h, &i_bpp, &nchans);
-		
-	// render
-	return ::blitBox(m_surface, i_w, i_h, eRect, &surface, flag);
-*/
-	//
-//	raw_lcd_element_t element;
-	
+	raw_lcd_element_t element;
 	int p_w, p_h, p_bpp;
 	int chans = 1;
 	
 	::getSize(filename, &p_w, &p_h, &p_bpp, &chans);
 	
-	if (p_w <= width)
-		width = p_w;
-		
-	if (p_h <= height)
-		height = p_h;
+	printf("CLCDDisplay::showPNGImage: real: %s %d %d\n", filename, p_w, p_h);
 		
 	uint8_t *image = ::getBitmap(filename);
 	
-	image = ::resize(image, p_w, p_h, width, height, SCALE_COLOR, (chans == 4)? true : false);
+	if (width != 0 && height != 0)
+	{
+	 	image = ::resize(image, p_w, p_h, width, height, SCALE_COLOR, (chans == 4)? true : false);
+	}
+	else
+	{
+		width = p_w;
+		height = p_h;
+	}
 	
-	picon_element.buffer = (uint8_t *)::convertRGB2FB8(image, width, height, (chans == 4)? true : false);
-	picon_element.x = posX;
-	picon_element.y = posY;
-	picon_element.width = width;
-	picon_element.height = height;
-	picon_element.bpp = p_bpp;
-	picon_element.bypp = chans;
-	picon_element.stride = picon_element.width*picon_element.bypp;
+	element.buffer = (uint8_t *)::convertRGB2FB8(image, width, height, (chans == 4)? true : false);
+	element.x = posX;
+	element.y = posY;
+	element.width = width;
+	element.height = height;
+	element.bpp = p_bpp;
+	element.bypp = chans;
+	element.stride = picon_element.width*picon_element.bypp;
+	element.name = filename;
 	
-	load_screen_element(&picon_element, posX, posY, width, height);
-	
-	free(picon_element.buffer);
+	load_screen_element(&element, posX, posY);
 	
 	return 0;
 }
+
+void CLCDDisplay::load_png_element(raw_lcd_element_t *element, int posx, int posy, int width, int height)
+{
+	lcddisplay_printf(10, "CLCDDisplay::load_png_element: %s %d %d %d %d\n", element->name.c_str(), posx, posy, width, height);
+	
+	int p_w, p_h, p_bpp;
+	int chans = 1;
+	
+	::getSize(element->name.c_str(), &p_w, &p_h, &p_bpp, &chans);
+	
+	lcddisplay_printf(10, "CLCDDisplay::showPNGImage: real: %s %d %d\n", element->name.c_str(), p_w, p_h);
+		
+	uint8_t *image = ::getBitmap(element->name.c_str());
+	
+	if (width != 0 && height != 0)
+	{
+	 	image = ::resize(image, p_w, p_h, width, height, SCALE_COLOR, (chans == 4)? true : false);
+	}
+	else
+	{
+		width = p_w;
+		height = p_h;
+	}
+	
+	element->buffer = (uint8_t *)::convertRGB2FB8(image, width, height, (chans == 4)? true : false);
+	element->x = posx;
+	element->y = posy;
+	element->width = width;
+	element->height = height;
+	element->bpp = p_bpp;
+	element->bypp = chans;
+	element->stride = picon_element.width*picon_element.bypp;
+}
+
+void CLCDDisplay::show_png_element(raw_lcd_element_t *element, int posx, int posy, int width, int height)
+
+{
+	load_png_element(element, posx, posy, width, height);
+	
+	//
+	load_screen_element(element, posx, posy);
+}
+
 

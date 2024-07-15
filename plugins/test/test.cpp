@@ -6436,6 +6436,18 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		
 		return RETURN_REPAINT;
 	}
+	else if (actionKey == "dumplcd")
+	{
+		CLCD::getInstance()->DumpPng("/tmp/lcd.png");
+		
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "showlcd")
+	{
+		CLCD::getInstance()->ShowPng(DATADIR "/lcd/a_clock.png");
+		
+		return RETURN_REPAINT;
+	}
 
 	showMenu();
 	
@@ -6635,7 +6647,9 @@ void CTestMenu::showMenu()
 	// weather
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "Misc") );
 	mainMenu->addItem(new CMenuForwarder("Weather", true, NULL, this, "weather"));
-	mainMenu->addItem(new CMenuForwarder("LibNGPNG", true, NULL, this, "libngpng"));	
+	mainMenu->addItem(new CMenuForwarder("LibNGPNG", true, NULL, this, "libngpng"));
+	mainMenu->addItem(new CMenuForwarder("DumpLCD", true, NULL, this, "dumplcd"));
+	mainMenu->addItem(new CMenuForwarder("ShowLCD", true, NULL, this, "showlcd"));	
 
 	unsigned int count = 0;
 	CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(CZapit::getInstance()->getCurrentChannelID());

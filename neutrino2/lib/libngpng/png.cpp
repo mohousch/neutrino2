@@ -12,7 +12,7 @@
 #include "libngpng.h"
 
 
-#define PNG_DEBUG
+//#define PNG_DEBUG
 #define PNG_SILENT
 
 static short debug_level = 10;

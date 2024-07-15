@@ -459,8 +459,6 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 		file += ".png";
 		
 		element[i].name = file.c_str();
-			
-		display->load_png_element(file.c_str(), &(element[i]));
 	}
 #endif
 
@@ -1233,7 +1231,7 @@ void CLCD::showRCLock(int duration)
 	
 	//
 	display->draw_fill_rect (-1, 10, lcd_width, lcd_height - 12 - 2, CLCDDisplay::PIXEL_OFF);
-	display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height - element[ELEMENT_SPEAKER].height);
+	display->show_png_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height - element[ELEMENT_SPEAKER].height);
 	wake_up();
 	displayUpdate();
 	sleep(duration);
@@ -1280,13 +1278,13 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 
 		// icon
 		if ((muted) || (volume == 0))
-			display->load_screen_element(&(element[ELEMENT_MUTE]), 0, lcd_height-element[ELEMENT_MUTE].height);
+			display->show_png_element(&(element[ELEMENT_MUTE]), 0, lcd_height-element[ELEMENT_MUTE].height);
 		else
 		{
 			if (icon_dolby)
-				display->load_screen_element(&(element[ELEMENT_DOLBY]), 0, lcd_height-element[ELEMENT_DOLBY].height);
+				display->show_png_element(&(element[ELEMENT_DOLBY]), 0, lcd_height-element[ELEMENT_DOLBY].height);
 			else
-				display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height);
+				display->show_png_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height);
 		}
 
 		//strichline
@@ -1472,7 +1470,7 @@ void CLCD::showPlayMode(PLAYMODES m)
 	{
 		case PLAY_MODE_PLAY:
 			{
-				display->load_screen_element(&(element[ELEMENT_PLAY]), 0, lcd_height - element[ELEMENT_PROG].height);
+				display->show_png_element(&(element[ELEMENT_PLAY]), 0, lcd_height - element[ELEMENT_PROG].height);
 				break;
 			}
 			
@@ -1481,7 +1479,7 @@ void CLCD::showPlayMode(PLAYMODES m)
 			break;
 			
 		case PLAY_MODE_PAUSE:
-			display->load_screen_element(&(element[ELEMENT_PAUSE]), 0, lcd_height - element[ELEMENT_PROG].height);
+			display->show_png_element(&(element[ELEMENT_PAUSE]), 0, lcd_height - element[ELEMENT_PROG].height);
 			break;
 			
 		case PLAY_MODE_FF:
@@ -1520,10 +1518,10 @@ void CLCD::drawBanner()
 		return;
 	
 #if defined (ENABLE_LCD)	
-	display->load_screen_element(&(element[ELEMENT_BANNER]), 0, 0, lcd_width, element->height);
+	display->show_png_element(&(element[ELEMENT_BANNER]), 0, 0, lcd_width, element->height);
 	
-	if (element[ELEMENT_BANNER].width < lcd_width)
-		display->draw_fill_rect(element[ELEMENT_BANNER].width - 1, -1, lcd_width, element[ELEMENT_BANNER].height - 1, CLCDDisplay::PIXEL_ON);
+//	if (element[ELEMENT_BANNER].width < lcd_width)
+//		display->draw_fill_rect(element[ELEMENT_BANNER].width - 1, -1, lcd_width, element[ELEMENT_BANNER].height - 1, CLCDDisplay::PIXEL_ON);
 #endif
 }
 
@@ -1699,7 +1697,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		{
 			case CLCD::STATUSLINE_PLAYTIME:
 				drawBanner();
-				display->load_screen_element(&(element[ELEMENT_PROG]), 0, lcd_height -element[ELEMENT_PROG].height);
+				display->show_png_element(&(element[ELEMENT_PROG]), 0, lcd_height -element[ELEMENT_PROG].height);
 				showPercentOver(percentOver, false, mode);
 				break;
 				
@@ -1730,7 +1728,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 		display->clear_screen();
 		drawBanner();
-		display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height - element[ELEMENT_SPEAKER].height - 1);
+		display->show_png_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height - element[ELEMENT_SPEAKER].height - 1);
 		showPlayMode(PLAY_MODE_STOP);
 		showVolume(volume, false);
 		showclock = true;
@@ -1752,8 +1750,8 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 		display->clear_screen();
 		drawBanner();
-		display->load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
-		display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height-1);
+		display->show_png_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
+		display->show_png_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height-1);
 
 		showVolume(volume, false);
 		showclock = true;
@@ -1776,7 +1774,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		showclock = false;
 		display->clear_screen(); // clear lcd
 		drawBanner();
-		display->load_screen_element(&(element[ELEMENT_POWER]), (lcd_width - element[ELEMENT_POWER].width)/2, (lcd_height - element[ELEMENT_POWER].height)/2);
+		display->show_png_element(&(element[ELEMENT_POWER]), (lcd_width - element[ELEMENT_POWER].width)/2, (lcd_height - element[ELEMENT_POWER].height)/2);
 		displayUpdate();
 		break;
 	}
@@ -1842,7 +1840,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 		display->clear_screen(); // clear lcd
 		drawBanner();
-		display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height-1);
+		display->show_png_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height-1);
 		showPlayMode(PLAY_MODE_STOP);
 		showVolume(volume, false);
 		nglcdshowclock = true;
@@ -1853,8 +1851,8 @@ void CLCD::setMode(const MODES m, const char * const title)
 	case MODE_SCART:
 		display->clear_screen(); // clear lcd
 		drawBanner();
-		display->load_screen_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
-		display->load_screen_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height-1);
+		display->show_png_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
+		display->show_png_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height-1);
 
 		showVolume(volume, false);
 		nglcdshowclock = true;
@@ -1873,7 +1871,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		nglcdshowclock = false;
 		display->clear_screen(); // clear lcd
 		drawBanner();
-		display->load_screen_element(&(element[ELEMENT_POWER]), (lcd_width-element[ELEMENT_POWER].width)/2, 12);
+		display->show_png_element(&(element[ELEMENT_POWER]), (lcd_width-element[ELEMENT_POWER].width)/2, 12);
 		displayUpdate();
 		break;
 	#endif
@@ -2282,7 +2280,7 @@ bool CLCD::ShowPng(char *filename)
 		return false;
 	
 #ifdef ENABLE_LCD
-	return display->load_png(filename);
+	return display->showPNGImage(filename, 0, 0, lcd_width, lcd_height);
 #endif
 }
 
