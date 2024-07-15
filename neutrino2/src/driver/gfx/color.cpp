@@ -429,3 +429,64 @@ uint32_t *gradientColorToColor(uint32_t start_col, uint32_t end_col, int bSize, 
 	return gradientBuf;
 }
 
+//// for future use
+gUnmanagedSurface::gUnmanagedSurface():
+    	x(0), y(0), bpp(0), bypp(0), stride(0),
+    	data(0),
+    	data_phys(0)
+{
+}
+
+gUnmanagedSurface::gUnmanagedSurface(int width, int height, int _bpp):
+    	x(width),
+    	y(height),
+    	bpp(_bpp),
+    	data(0),
+    	data_phys(0)
+{
+    	switch (_bpp)
+    	{
+    		case 8:
+        		bypp = 1;
+        		break;
+        		
+    		case 15:
+    		case 16:
+        		bypp = 2;
+        		break;
+        		
+    		case 24:        // never use 24bit mode
+    		case 32:
+        		bypp = 4;
+        		break;
+        		
+    		default:
+        		bypp = (bpp + 7)/8;
+    	}
+    	
+    	stride = x*bypp;
+}
+
+
+gSurface::gSurface(int width, int height, int _bpp):
+    	gUnmanagedSurface(width, height, _bpp)
+{
+    	if (!data)
+    	{
+        	data = new unsigned char [y * stride];
+    	}
+}
+
+gSurface::~gSurface()
+{
+    	if (data)
+    	{
+        	delete [] (unsigned char*)data;
+    	}
+    	
+    	if (clut.data)
+    	{
+        	delete [] clut.data;
+    	}
+}
+

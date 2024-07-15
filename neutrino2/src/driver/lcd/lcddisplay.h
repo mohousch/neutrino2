@@ -32,7 +32,7 @@
 
 #include <linux/fb.h>
 
-#include <driver/lcd/pixmap.h>
+#include <driver/gfx/color.h>
 
 
 #define LCD_PIXEL_OFF				0x00
@@ -138,7 +138,6 @@ class CLCDDisplay
 
 		void update();
 		void blitBox2LCD(int flag = 2);
-		void fillBox2LCD(raw_lcd_element_t * element, int flag = 2);
 		void blit(void);
 		////
 		void draw_point(const int x, const int y, const uint32_t color);
@@ -150,11 +149,9 @@ class CLCDDisplay
 		void load_screen_element(raw_lcd_element_t * element, int left, int top);
 		void load_screen(uint8_t ** const screen);
 		void dump_screen(uint8_t **screen);
-		bool dump_png_element(const char * const filename, raw_lcd_element_t * element);
+		bool dump_png(const char * const filename);
 		//
 		void clear_screen();
-		//
-		bool dump_png(const char * const filename);
 		////
 		int setLCDContrast(int contrast);
 		int setLCDBrightness(int brightness);
@@ -174,7 +171,7 @@ class CLCDDisplay
 		int islocked() { return locked; }
 		////
 		int showPNGImage(const char* filename, int posX, int posY, int width, int height, int flag = blitAlphaBlend);
-		raw_lcd_element_t picon_element;
+//		raw_lcd_element_t picon_element;
 		void load_png_element(raw_lcd_element_t * element, int posx, int posy, int width = 0, int height = 0);
 		void show_png_element(raw_lcd_element_t *element, int posx, int posy, int width = 0, int height = 0);
 };

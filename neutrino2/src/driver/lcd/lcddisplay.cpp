@@ -45,7 +45,7 @@
 #include <memory.h>
 
 
-//#define LCDDISPLAY_DEBUG
+#define LCDDISPLAY_DEBUG
 #define LCDDISPLAY_SILENT
 
 static short debug_level = 10;
@@ -86,7 +86,7 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 
 CLCDDisplay::CLCDDisplay()
 {
-	printf("CLCDDisplay::CLCDDisplay\n");
+	lcddisplay_printf(10, "CLCDDisplay::CLCDDisplay\n");
 	
 	paused = 0;
 	
@@ -168,13 +168,13 @@ bool CLCDDisplay::init(const char *fbdevice)
 	} 
 	else
 	{
-		printf("found OLED display!\n");
+		lcddisplay_printf(10, "found OLED display!\n");
 		lcd_type = 1;
 	}
 	
 	if (fd < 0)
 	{
-		printf("CLCDDisplay::CLCDDisplay: couldn't open LCD - load lcd.ko!\n");
+		lcddisplay_err("CLCDDisplay::CLCDDisplay: couldn't open LCD - load lcd.ko!\n");
 		return false;
 	}
 	else
@@ -226,13 +226,13 @@ bool CLCDDisplay::init(const char *fbdevice)
 	
 	if (fd < 0)
 	{
-		printf("CLCDDisplay::init: %s: %m\n", fbdevice);
+		lcddisplay_err("CLCDDisplay::init: %s: %m\n", fbdevice);
 		goto nolfb;
 	}
 
 	if (::ioctl(fd, FBIOGET_VSCREENINFO, &m_screeninfo) < 0)
 	{
-		printf("CLCDDisplay::init: FBIOGET_VSCREENINFO: %m\n");
+		lcddisplay_err("CLCDDisplay::init: FBIOGET_VSCREENINFO: %m\n");
 #ifndef USE_OPENGL
 		goto nolfb;
 #endif
@@ -241,7 +241,7 @@ bool CLCDDisplay::init(const char *fbdevice)
 	fb_fix_screeninfo fix;
 	if (ioctl(fd, FBIOGET_FSCREENINFO, &fix) < 0)
 	{
-		printf("CLCDDisplay::init: FBIOGET_FSCREENINFO: %m\n");
+		lcddisplay_err("CLCDDisplay::init: FBIOGET_FSCREENINFO: %m\n");
 #ifndef USE_OPENGL
 		goto nolfb;
 #endif
@@ -250,13 +250,13 @@ bool CLCDDisplay::init(const char *fbdevice)
 	m_available = fix.smem_len;
 	m_phys_mem = fix.smem_start;
 	
-	printf("CLCDDisplay::init: %s %dk video mem\n", fbdevice, m_available / 1024);
+	lcddisplay_printf("CLCDDisplay::init: %s %dk video mem\n", fbdevice, m_available / 1024);
 	
 	_buffer = (uint8_t *)mmap(0, m_available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
 	
 	if (!_buffer)
 	{
-		printf("CLCDDisplay::init: mmap: %m\n");
+		lcddisplay_err("CLCDDisplay::init: mmap: %m\n");
 #ifndef USE_OPENGL
 		goto nolfb;
 #endif
@@ -278,7 +278,7 @@ nolfb:
 		fd = -1;
 	}
 	
-	printf("CTFTLCD::init: framebuffer %s not available\n", fbdevice);
+	lcddisplay_err("CTFTLCD::init: framebuffer %s not available\n", fbdevice);
 	
 	return false;
 #endif
@@ -286,7 +286,7 @@ nolfb:
 
 void CLCDDisplay::setSize(int w, int h, int b)
 {
-	printf("CLCDDisplay::setSize: xres=%d, yres=%d, bpp=%d type=%d\n", w, h, b, lcd_type);
+	lcddisplay_printf(10, "CLCDDisplay::setSize: xres=%d, yres=%d, bpp=%d type=%d\n", w, h, b, lcd_type);
 	
 	//
 	xres = w;
@@ -866,259 +866,6 @@ static void convert_palette(uint32_t* pal, const gPalette& clut)
     	}
 }
 
-// fill
-void CLCDDisplay::fillBox2LCD(raw_lcd_element_t * element, int flag) 
-{
-	int area_left = element->x;
-	int area_top = element->y;
-	int area_width  = element->width;
-	int area_height = element->height;
-	
-	if (surface_bpp == 8 && element->bpp == 8)
-	{
-		uint8_t *srcptr = (uint8_t*)element->buffer;
-            	uint8_t *dstptr = (uint8_t*)_buffer;
-
-            	srcptr += area_left*element->bypp + area_top*element->stride;
-            	dstptr += area_left*bypp + area_top*_stride;
-            
-            	if (flag & (blitAlphaTest|blitAlphaBlend))
-            	{
-                	for (int y = area_height; y != 0; --y)
-                	{
-                    		// no real alphatest yet
-                    		int width = area_width;
-                    		unsigned char *s = (unsigned char*)srcptr;
-                    		unsigned char *d = (unsigned char*)dstptr;
-                    			
-                    		// use duff's device here!
-                    		while (width--)
-                    		{
-                        		if (!*s)
-                        		{
-                            			s++;
-                            			d++;
-                        		}
-                        		else
-                        		{
-                            			*d++ = *s++;
-                        		}
-                    		}
-                    		srcptr += element->stride;
-                    		dstptr += _stride;
-                	}
-            	}
-            	else
-            	{
-                	int linesize = area_width*bypp;
-                	for (int y = area_height; y != 0; --y)
-                	{
-                    		memcpy(dstptr, srcptr, linesize);
-                    		srcptr += element->stride;
-                    		dstptr += _stride;
-                	}
-            	}
-	} 
-	else if (surface_bpp == 16 && element->bpp == 8)
-	{
-		uint8_t *srcptr = (uint8_t*)element->buffer;
-            	uint8_t *dstptr = (uint8_t*)_buffer;
-            	uint32_t pal[256];
-
-            	for (int i = 0; i != 256; ++i)
-            	{
-                	uint32_t icol;
-                	icol = 0x010101*i;
-#if BYTE_ORDER == LITTLE_ENDIAN
-                	pal[i] = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
-#else
-                	pal[i] = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
-#endif
-                	pal[i] ^= 0xFF000000;
-            	}
-
-            	srcptr += area_left*element->bypp + area_top*element->stride;
-            	dstptr += area_left*bypp + area_top*_stride;
-
-//            	if (flag & blitAlphaBlend)
-//              	printf("ignore unsupported 8bpp -> 16bpp alphablend!\n");
-
-            	for (int y = 0; y < area_height; y++)
-            	{
-                	int width = area_width;
-                	uint8_t *psrc = (uint8_t *)srcptr;
-                	uint16_t *dst=(uint16_t*)dstptr;
-                		
-                	if (flag & blitAlphaTest)
-                    		blit_8i_to_16_at(dst, psrc, pal, width);
-                	else
-                    		blit_8i_to_16(dst, psrc, pal, width);
-                    			
-                	srcptr += element->stride;
-                	dstptr += _stride;
-            	}
-        }
-	else if (surface_bpp == 16 && element->bpp == 32)
-	{
-            	uint8_t *srcptr = (uint8_t*)element->buffer;
-            	uint8_t *dstptr = (uint8_t*)_buffer;
-
-            	srcptr += area_left*element->bypp + area_top*element->stride;
-            	dstptr += area_left*bypp + area_top*_stride;
-
-            	for (int y = 0; y < area_height; y++)
-            	{
-                	int width = area_width;
-                	uint32_t *srcp = (uint32_t*)srcptr;
-                	uint16_t *dstp = (uint16_t*)dstptr;
-
-                	if (flag & blitAlphaBlend)
-                	{
-                    		while (width--)
-                    		{
-                        		if (!((*srcp)&0xFF000000))
-                        		{
-                            			srcp++;
-                            			dstp++;
-                        		} 
-                        		else
-                        		{
-                            			gRGB icol = *srcp++;
-#if BYTE_ORDER == LITTLE_ENDIAN
-                            			uint32_t jcol = bswap_16(*dstp);
-#else
-                            			uint32_t jcol = *dstp;
-#endif
-                            			int bg_b = (jcol >> 8) & 0xF8;
-                            			int bg_g = (jcol >> 3) & 0xFC;
-                            			int bg_r = (jcol << 3) & 0xF8;
-
-                            			int a = icol.a;
-                            			int r = icol.r;
-                            			int g = icol.g;
-                            			int b = icol.b;
-
-                            			r = ((r-bg_r)*a)/255 + bg_r;
-                            			g = ((g-bg_g)*a)/255 + bg_g;
-                            			b = ((b-bg_b)*a)/255 + bg_b;
-
-#if BYTE_ORDER == LITTLE_ENDIAN
-                            			*dstp++ = bswap_16( (b >> 3) << 11 | (g >> 2) << 5 | r  >> 3 );
-#else
-                            			*dstp++ = (b >> 3) << 11 | (g >> 2) << 5 | r  >> 3 ;
-#endif
-                        		}
-                    		}
-                	}
-                	else if (flag & blitAlphaTest)
-                	{
-                    		while (width--)
-                    		{
-                        		if (!((*srcp)&0xFF000000))
-                        		{
-                            			srcp++;
-                            			dstp++;
-                        		} 
-                        		else
-                        		{
-                            			uint32_t icol = *srcp++;
-#if BYTE_ORDER == LITTLE_ENDIAN
-                            			*dstp++ = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
-#else
-                            			*dstp++ = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
-#endif
-                        		}
-                    		}
-                	} 
-                	else
-                	{
-                    		while (width--)
-                    		{
-                        		uint32_t icol = *srcp++;
-                        			
-#if BYTE_ORDER == LITTLE_ENDIAN
-                        		*dstp++ = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
-#else
-                        		*dstp++ = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
-#endif
-                    		}
-                	}
-                	srcptr += element->stride;
-                	dstptr += _stride;
-            	}
-	} 
-	else if (surface_bpp == 32 && element->bpp == 8)
-	{
-		const uint8_t *srcptr = (uint8_t*)element->buffer;
-            	uint8_t *dstptr = (uint8_t*)_buffer;
-            	uint32_t pal[256];
-            	convert_palette(pal, clut);
-
-            	srcptr += area_left*element->bypp + area_top*element->stride;
-            	dstptr += area_left*bypp + area_top*_stride;
-            	const int width = area_width;
-            		
-            	for (int y = area_height; y != 0; --y)
-            	{
-                	if (flag & blitAlphaTest)
-                    		blit_8i_to_32_at((uint32_t*)dstptr, srcptr, pal, width);
-                	else if (flag & blitAlphaBlend)
-                    		blit_8i_to_32_ab((gRGB*)dstptr, srcptr, (const gRGB*)pal, width);
-                	else
-                    			blit_8i_to_32((uint32_t*)dstptr, srcptr, pal, width);
-                	srcptr += element->stride;
-                	dstptr += _stride;
-            	}
-	}
-	else if (surface_bpp == 32 && element->bpp == 32)
-	{
-		uint32_t *srcptr = (uint32_t*)element->buffer;
-            	uint32_t *dstptr = (uint32_t*)_buffer;
-
-            	srcptr += area_left + area_top*element->stride/4;
-            	dstptr += area_left + area_top*_stride/4;
-            		
-            	for (int y = area_height; y != 0; --y)
-            	{
-                	if (flag & blitAlphaTest)
-                	{
-                    		int width = area_width;
-                    		uint32_t *src = srcptr;
-                    		uint32_t *dst = dstptr;
-
-                    		while (width--)
-                    		{
-                        		if (!((*src)&0xFF000000))
-                        		{
-                            			src++;
-                            			dst++;
-                        		} 
-                        		else
-                            			*dst++=*src++;
-                    		}
-                	} 
-                	else if (flag & blitAlphaBlend)
-                	{
-                    		int width = area_width;
-                    		gRGB *src = (gRGB*)srcptr;
-                    		gRGB *dst = (gRGB*)dstptr;
-                    			
-                    		while (width--)
-                    		{
-                        		dst->alpha_blend(*src++);
-                        		++dst;
-                    		}
-                	}
-                	else
-                    		memcpy(dstptr, srcptr, area_width*bypp);
-                    
-                	srcptr = (uint32_t*)((uint8_t*)srcptr + element->stride);
-                	dstptr = (uint32_t*)((uint8_t*)dstptr + _stride);
-            	}
-	}
-}
-
-
 // blit2lcd
 void CLCDDisplay::blitBox2LCD(int flag) 
 {
@@ -1371,138 +1118,6 @@ void CLCDDisplay::blitBox2LCD(int flag)
                 	dstptr = (uint32_t*)((uint8_t*)dstptr + surface_stride);
             	}
 	}
-	
-	// blit picon :#revise me
-	/*
-	if (surface_bpp == 16 && picon_element.bpp == 8)
-	{
-		uint8_t *srcptr = (uint8_t*)picon_element.buffer;
-            	uint8_t *dstptr = (uint8_t*)surface_data;
-            	uint32_t pal[256];
-
-            	for (int i = 0; i != 256; ++i)
-            	{
-                	uint32_t icol;
-                	icol = 0x010101*i;
-#if BYTE_ORDER == LITTLE_ENDIAN
-                	pal[i] = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
-#else
-                	pal[i] = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
-#endif
-                	pal[i] ^= 0xFF000000;
-            	}
-
-            	srcptr += area_left*picon_element.bypp + area_top*picon_element.stride;
-            	dstptr += area_left*surface_bypp + area_top*surface_stride;
-
-//            	if (flag & blitAlphaBlend)
-//              	printf("ignore unsupported 8bpp -> 16bpp alphablend!\n");
-
-            	for (int y = 0; y < area_height; y++)
-            	{
-                	int width = area_width;
-                	uint8_t *psrc = (uint8_t *)srcptr;
-                	uint16_t *dst=(uint16_t*)dstptr;
-                		
-                	if (flag & blitAlphaTest)
-                    		blit_8i_to_16_at(dst, psrc, pal, width);
-                	else
-                    		blit_8i_to_16(dst, psrc, pal, width);
-                    			
-                	srcptr += picon_element.stride;
-                	dstptr += surface_stride;
-            	}
-        }
-	else if (surface_bpp == 16 && picon_element.bpp == 32)
-	{
-            	uint8_t *srcptr = (uint8_t*)picon_element.buffer;
-            	uint8_t *dstptr = (uint8_t*)surface_data;
-
-            	srcptr += picon_element.x*picon_element.bypp + picon_element.y*picon_element.stride;
-            	dstptr += picon_element.x*surface_bypp + picon_element.y*surface_stride;
-
-            	for (int y = 0; y < picon_element.height; y++)
-            	{
-                	int width = picon_element.width;
-                	uint32_t *srcp = (uint32_t*)srcptr;
-                	uint16_t *dstp = (uint16_t*)dstptr;
-
-                	if (flag & blitAlphaBlend)
-                	{
-                    		while (width--)
-                    		{
-                        		if (!((*srcp)&0xFF000000))
-                        		{
-                            			srcp++;
-                            			dstp++;
-                        		} 
-                        		else
-                        		{
-                            			gRGB icol = *srcp++;
-#if BYTE_ORDER == LITTLE_ENDIAN
-                            			uint32_t jcol = bswap_16(*dstp);
-#else
-                            			uint32_t jcol = *dstp;
-#endif
-                            			int bg_b = (jcol >> 8) & 0xF8;
-                            			int bg_g = (jcol >> 3) & 0xFC;
-                            			int bg_r = (jcol << 3) & 0xF8;
-
-                            			int a = icol.a;
-                            			int r = icol.r;
-                            			int g = icol.g;
-                            			int b = icol.b;
-
-                            			r = ((r-bg_r)*a)/255 + bg_r;
-                            			g = ((g-bg_g)*a)/255 + bg_g;
-                            			b = ((b-bg_b)*a)/255 + bg_b;
-
-#if BYTE_ORDER == LITTLE_ENDIAN
-                            			*dstp++ = bswap_16( (b >> 3) << 11 | (g >> 2) << 5 | r  >> 3 );
-#else
-                            			*dstp++ = (b >> 3) << 11 | (g >> 2) << 5 | r  >> 3 ;
-#endif
-                        		}
-                    		}
-                	}
-                	else if (flag & blitAlphaTest)
-                	{
-                    		while (width--)
-                    		{
-                        		if (!((*srcp)&0xFF000000))
-                        		{
-                            			srcp++;
-                            			dstp++;
-                        		} 
-                        		else
-                        		{
-                            			uint32_t icol = *srcp++;
-#if BYTE_ORDER == LITTLE_ENDIAN
-                            			*dstp++ = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
-#else
-                            			*dstp++ = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
-#endif
-                        		}
-                    		}
-                	} 
-                	else
-                	{
-                    		while (width--)
-                    		{
-                        		uint32_t icol = *srcp++;
-                        			
-#if BYTE_ORDER == LITTLE_ENDIAN
-                        		*dstp++ = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
-#else
-                        		*dstp++ = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
-#endif
-                    		}
-                	}
-                	srcptr += picon_element.stride;
-                	dstptr += surface_stride;
-            	}
-	}
-	*/		
 }
 
 void CLCDDisplay::update()
@@ -1667,7 +1282,7 @@ void CLCDDisplay::dump_screen(uint8_t **screen)
 
 void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int top) 
 {
-	printf("CLCDDisplay::load_screen_element: %s %dx%dx%d (posx: %d posy: %d)\n", element->name.c_str(), element->width, element->height, element->bpp, left, top);
+	lcddisplay_printf(10, "CLCDDisplay::load_screen_element: %s %dx%dx%d (posx: %d posy: %d)\n", element->name.c_str(), element->width, element->height, element->bpp, left, top);
 	
 	//
 	if ((element->buffer) && (element->height <= yres - top))
@@ -1693,7 +1308,7 @@ void CLCDDisplay::load_screen(uint8_t **const screen)
 	load_screen_element(&element, 0, 0);
 }
 
-bool CLCDDisplay::dump_png_element(const char * const filename, raw_lcd_element_t * element)
+bool CLCDDisplay::dump_png(const char * const filename)
 {
 	bool         ret_value = false;
 	
@@ -1734,8 +1349,8 @@ bool CLCDDisplay::dump_png_element(const char * const filename, raw_lcd_element_
         				if (setjmp(png_jmpbuf(png_ptr)))
         				        printf("[CLCDDisplay] Error during writing header\n");
 
-        				png_set_IHDR(png_ptr, info_ptr, element->width, element->height,
-        				             element->bpp, PNG_COLOR_TYPE_GRAY, PNG_INTERLACE_NONE,
+        				png_set_IHDR(png_ptr, info_ptr, lcd_width, lcd_height,
+        				             bpp, PNG_COLOR_TYPE_GRAY, PNG_INTERLACE_NONE,
         				             PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
 
         				png_write_info(png_ptr, info_ptr);
@@ -1750,8 +1365,8 @@ bool CLCDDisplay::dump_png_element(const char * const filename, raw_lcd_element_
 
 					ret_value = true;
 
-					fbptr = (png_byte *)element->buffer;
-					for (i = 0; i < element->height; i++)
+					fbptr = (png_byte *)_buffer;
+					for (i = 0; i < lcd_height; i++)
 					{
 						png_write_row(png_ptr, fbptr);
 						fbptr += lcd_width;
@@ -1774,21 +1389,9 @@ bool CLCDDisplay::dump_png_element(const char * const filename, raw_lcd_element_
 	return ret_value;
 }
 
-bool CLCDDisplay::dump_png(const char * const filename)
-{
-	raw_lcd_element_t element;
-	
-	element.buffer = _buffer;
-	element.width = xres;
-	element.height = yres;
-	element.bpp = 0;
-	
-	return dump_png_element(filename, &element);
-}
-
 int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int width, int height, int flag)
 {
-	printf("CLCDDisplay::showPNGImage: %s %d %d %d %d (flag: %d)\n", filename, posX, posY, width, height, flag);
+	lcddisplay_printf(10, "CLCDDisplay::showPNGImage: %s %d %d %d %d (flag: %d)\n", filename, posX, posY, width, height, flag);
 	
 	raw_lcd_element_t element;
 	int p_w, p_h, p_bpp;
@@ -1796,7 +1399,7 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 	
 	::getSize(filename, &p_w, &p_h, &p_bpp, &chans);
 	
-	printf("CLCDDisplay::showPNGImage: real: %s %d %d\n", filename, p_w, p_h);
+	lcddisplay_printf(10, "CLCDDisplay::showPNGImage: real: %s %d %d\n", filename, p_w, p_h);
 		
 	uint8_t *image = ::getBitmap(filename);
 	
@@ -1817,7 +1420,7 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 	element.height = height;
 	element.bpp = p_bpp;
 	element.bypp = chans;
-	element.stride = picon_element.width*picon_element.bypp;
+	element.stride = element.width*element.bypp;
 	element.name = filename;
 	
 	load_screen_element(&element, posX, posY);
@@ -1855,12 +1458,13 @@ void CLCDDisplay::load_png_element(raw_lcd_element_t *element, int posx, int pos
 	element->height = height;
 	element->bpp = p_bpp;
 	element->bypp = chans;
-	element->stride = picon_element.width*picon_element.bypp;
+	element->stride = element->width*element->bypp;
 }
 
 void CLCDDisplay::show_png_element(raw_lcd_element_t *element, int posx, int posy, int width, int height)
-
 {
+	lcddisplay_printf(10, "CLCDDisplay::show_png_element: %s %d %d %d %d\n", element->name.c_str(), posx, posy, width, height);
+	
 	load_png_element(element, posx, posy, width, height);
 	
 	//
