@@ -529,16 +529,13 @@ bool cPlayback::Open()
 		player->manager		= &ManagerHandler;
 	}
 	
+	//
 	SubtitleOutputDef_t out;
 
 	out.screen_x = CFrameBuffer::getInstance()->getScreenX(true);
 	out.screen_y = CFrameBuffer::getInstance()->getScreenY(true);
 	out.screen_width = CFrameBuffer::getInstance()->getScreenWidth(true);
 	out.screen_height = CFrameBuffer::getInstance()->getScreenHeight(true);
-	
-	out.framebufferFD = CFrameBuffer::getInstance()->getFileHandle();
-	out.destination   = CFrameBuffer::getInstance()->getFrameBufferPointer();
-	out.destStride    = CFrameBuffer::getInstance()->getStride();
 
 	if(player && player->playback)
 		player->playback->Command(player, PLAYBACK_INIT, (void*)&out);

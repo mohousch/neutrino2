@@ -238,11 +238,11 @@ void Rgb2Hsv(RgbColor *rgb, HsvColor *hsv)
 }
 
 //
-uint32_t *gradientColorToTransparent(uint32_t col, int bSize, int mode, int /*intensity*/)
+fb_pixel_t *gradientColorToTransparent(uint32_t col, int bSize, int mode, int /*intensity*/)
 {
-	uint32_t *gradientBuf = NULL;
+	fb_pixel_t *gradientBuf = NULL;
 	
-	gradientBuf = (uint32_t *) malloc(bSize * sizeof(uint32_t));
+	gradientBuf = (fb_pixel_t *) malloc(bSize * sizeof(fb_pixel_t));
 		
 	if (gradientBuf == NULL) 
 	{
@@ -250,7 +250,7 @@ uint32_t *gradientColorToTransparent(uint32_t col, int bSize, int mode, int /*in
 		return NULL;
 	}
 	
-	memset((void*)gradientBuf, '\0', bSize * sizeof(uint32_t));
+	memset((void*)gradientBuf, '\0', bSize * sizeof(fb_pixel_t));
 
 	int start_box = 0;
 	int end_box = bSize;
@@ -279,11 +279,11 @@ uint32_t *gradientColorToTransparent(uint32_t col, int bSize, int mode, int /*in
 	return gradientBuf;
 }
 
-uint32_t *gradientOneColor(uint32_t col, int bSize, int mode, int intensity)
+fb_pixel_t *gradientOneColor(uint32_t col, int bSize, int mode, int intensity)
 {
-	uint32_t *gradientBuf = NULL;
+	fb_pixel_t *gradientBuf = NULL;
 	
-	gradientBuf = (uint32_t *) malloc(bSize * sizeof(uint32_t));
+	gradientBuf = (fb_pixel_t *) malloc(bSize * sizeof(fb_pixel_t));
 		
 	if (gradientBuf == NULL) 
 	{
@@ -291,7 +291,7 @@ uint32_t *gradientOneColor(uint32_t col, int bSize, int mode, int intensity)
 		return NULL;
 	}
 	
-	memset((void*)gradientBuf, '\0', bSize * sizeof(uint32_t));
+	memset((void*)gradientBuf, '\0', bSize * sizeof(fb_pixel_t));
 
 	HsvColor hsv;
 	uint8_t min_v = 0, max_v = 0, col_s = 0;
@@ -368,11 +368,11 @@ uint32_t *gradientOneColor(uint32_t col, int bSize, int mode, int intensity)
 	return gradientBuf;
 }
 
-uint32_t *gradientColorToColor(uint32_t start_col, uint32_t end_col, int bSize, int mode, int /*intensity*/)
+fb_pixel_t *gradientColorToColor(uint32_t start_col, uint32_t end_col, int bSize, int mode, int /*intensity*/)
 {
-	uint32_t *gradientBuf = NULL;
+	fb_pixel_t *gradientBuf = NULL;
 	
-	gradientBuf = (uint32_t *) malloc(bSize * sizeof(uint32_t));
+	gradientBuf = (fb_pixel_t *) malloc(bSize * sizeof(fb_pixel_t));
 		
 	if (gradientBuf == NULL) 
 	{
@@ -380,7 +380,7 @@ uint32_t *gradientColorToColor(uint32_t start_col, uint32_t end_col, int bSize, 
 		return NULL;
 	}
 	
-	memset((void*)gradientBuf, '\0', bSize * sizeof(uint32_t));
+	memset((void*)gradientBuf, '\0', bSize * sizeof(fb_pixel_t));
 
 	int start_box = 0;
 	int end_box = bSize;
@@ -473,7 +473,7 @@ gSurface::gSurface(int width, int height, int _bpp):
 {
     	if (!data)
     	{
-        	data = new unsigned char [y * stride];
+        	data = new uint8_t [y * stride];
     	}
 }
 
@@ -481,7 +481,7 @@ gSurface::~gSurface()
 {
     	if (data)
     	{
-        	delete [] (unsigned char*)data;
+        	delete [] (uint8_t *)data;
     	}
     	
     	if (clut.data)

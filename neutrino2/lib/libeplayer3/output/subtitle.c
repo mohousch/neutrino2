@@ -85,10 +85,6 @@ extern int            	screen_x;
 extern int            	screen_y;
 extern int            	screen_width;
 extern int            	screen_height;
-extern int            	destStride;
-extern int            	framebufferFD;
-extern uint32_t* 	destination;
-extern int	      	threeDMode;
 
 /* ***************************** */
 /* Prototypes                    */
@@ -296,25 +292,17 @@ static int Write(void* _context, void *data)
 
 								// resize color to 32 bit
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
-								uint32_t* newdata = simple_resize32(sub.rects[i]->pict.data[0], (uint32_t*)sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+								uint32_t *newdata = simple_resize32(sub.rects[i]->pict.data[0], (uint32_t*)sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
 #else
-								uint32_t* newdata = simple_resize32(sub.rects[i]->data[0], (uint32_t*)sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
+								uint32_t *newdata = simple_resize32(sub.rects[i]->data[0], (uint32_t*)sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
 #endif
 										
 								// writeData
-				     				fb.fd            = framebufferFD;
-				     				fb.data          = (uint8_t*)newdata;
+				     				fb.data          = (uint8_t *)newdata;
 				     				fb.Width         = nw;
 				     				fb.Height        = nh;
 				     				fb.x             = xoff;
 				     				fb.y             = yoff;
-				     					
-				     				fb.color	  = 0;
-
-				     				fb.Screen_Width  = screen_width; 
-				     				fb.Screen_Height = screen_height; 
-				     				fb.destination   = destination;
-				     				fb.destStride    = destStride;
 
 				     				writer->writeData(&fb);
 
@@ -340,19 +328,11 @@ static int Write(void* _context, void *data)
 #endif
 										
 								// writeData
-				     				fb.fd            = framebufferFD;
 				     				fb.data          = (uint8_t*)newdata;
 				     				fb.Width         = nw;
 				     				fb.Height        = nh;
 				     				fb.x             = xoff;
 				     				fb.y             = yoff;
-				     					
-				     				fb.color	  = 0;
-
-				     				fb.Screen_Width  = screen_width; 
-				     				fb.Screen_Height = screen_height; 
-				     				fb.destination   = destination;
-				     				fb.destStride    = destStride;
 
 				     				writer->writeData(&fb);
 

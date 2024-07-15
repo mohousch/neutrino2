@@ -441,7 +441,7 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 	return(cr);
 }
 
-uint8_t * convertRGB2FB(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
+uint8_t * convertRGB2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
 	unsigned long i;
 	uint32_t *fbbuff = NULL;
@@ -659,18 +659,18 @@ uint8_t * getImage(const std::string &name, int width, int height, int transp, S
 				y = height;
 			}
 			
-			// convertRGB2FB
+			// convertRGB2FB32
 			if( name.find(".png") == (name.length() - 4) )
 			{
 				// alpha
 				if (channels == 4)
-					ret = (uint8_t *)convertRGB2FB(buffer, x, y, true);
+					ret = (uint8_t *)convertRGB2FB32(buffer, x, y, true);
 				else
-					ret = (uint8_t *)convertRGB2FB(buffer, x, y, false, transp, TM_BLACK); // TM_BLACK
+					ret = (uint8_t *)convertRGB2FB32(buffer, x, y, false, transp, TM_BLACK); // TM_BLACK
 			}
 			else
 			{
-				ret = (uint8_t *)convertRGB2FB(buffer, x, y, false, transp, TM_NONE); //TM_NONE
+				ret = (uint8_t *)convertRGB2FB32(buffer, x, y, false, transp, TM_NONE); //TM_NONE
 			}
 			
 			free(buffer);

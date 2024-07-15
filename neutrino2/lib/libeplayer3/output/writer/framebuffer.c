@@ -111,7 +111,7 @@ static int writeData(void* _call)
 		return 0;
 	}
 
-	if (call->destination == NULL)
+	if (call->data == NULL)
 	{
 		fb_err("file pointer < 0. ignoring ...\n");
 		return 0;

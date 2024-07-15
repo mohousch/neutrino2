@@ -50,8 +50,7 @@
 class GLThreadObj;
 #endif
 
-// 32 bit
-#define fb_pixel_t uint32_t		// unsigned int 32 bit data
+#define fb_pixel_t uint32_t
 
 typedef struct fb_var_screeninfo t_fb_var_screeninfo;
 
@@ -142,7 +141,7 @@ class CFrameBuffer
 		std::string	spinnerBasePath;
 
 		int             fd;
-		fb_pixel_t *    lfb;
+		fb_pixel_t 	*lfb;
 		int		available;
 		fb_pixel_t *    background;
 		fb_pixel_t *    backupBackground;

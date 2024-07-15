@@ -87,20 +87,10 @@ typedef struct
 typedef struct 
 {
 	uint8_t*         	data;
+	unsigned int           	x;
+	unsigned int           	y;
 	unsigned int           	Width;
 	unsigned int           	Height;
-	unsigned int           	Stride;
-	unsigned int           	color;
-
-	unsigned int           	x;       /* dst x ->given by ass */
-	unsigned int           	y;       /* dst y ->given by ass */
-
-	/* destination values if we use a shared framebuffer */
-	int                    	fd;
-	unsigned int           	Screen_Width;
-	unsigned int           	Screen_Height;
-	uint32_t*         	destination;
-	unsigned int           	destStride;
 } WriterFBCallData_t;
 
 typedef struct WriterCaps_s 

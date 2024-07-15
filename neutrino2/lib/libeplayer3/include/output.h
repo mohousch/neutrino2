@@ -86,10 +86,6 @@ typedef struct
 	unsigned int 	screen_y;
 	unsigned int   	screen_width;
 	unsigned int   	screen_height;
-	
-	unsigned int   	destStride;
-	uint32_t* 	destination;
-	int            	framebufferFD;
 } SubtitleOutputDef_t;
 
 typedef struct Output_s 

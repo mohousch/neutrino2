@@ -451,7 +451,7 @@ void CFont::RenderString(int x, int y, const int width, const char *text, const 
 	fb_pixel_t *buff = NULL;
 	int stride = 0;
 
-	buff = frameBuffer->getFrameBufferPointer();
+	buff = (fb_pixel_t *)frameBuffer->getFrameBufferPointer();
 	stride = frameBuffer->getStride();
 
 	//

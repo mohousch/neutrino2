@@ -67,10 +67,6 @@ int            	screen_x     	 = 0;
 int            	screen_y	 = 0;
 int            	screen_width     = 0;
 int            	screen_height    = 0;
-int            	destStride       = 0;
-int            	framebufferFD    = -1;
-uint32_t* 	destination      = NULL;
-int	      	threeDMode       = 0;
 
 /* ***************************** */
 /* Prototypes                    */
@@ -229,9 +225,6 @@ static int PlaybackInit(Context_t* context, void* data)
 	screen_y = out->screen_y;
 	screen_width = out->screen_width;
 	screen_height = out->screen_height;
-	framebufferFD = out->framebufferFD;
-	destination = out->destination;
-	destStride = out->destStride;
 
 	//
 	context->playback->isPaused     = 0;
