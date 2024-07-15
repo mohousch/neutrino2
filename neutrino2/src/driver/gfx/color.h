@@ -313,28 +313,5 @@ enum
         blitAlphaBlend 		= 2
 };
 
-//// for future use 
-struct gUnmanagedSurface
-{
-    	int x, y, bpp, bypp, stride;
-    	gPalette clut;
-    	void *data;
-    	int data_phys;
-
-    	gUnmanagedSurface();
-    	gUnmanagedSurface(int width, int height, int bpp);
-};
-
-struct gSurface: gUnmanagedSurface
-{
-    	gSurface(): gUnmanagedSurface() {}
-    	gSurface(int width, int height, int bpp);
-    	~gSurface();
-    	
-	private:
-    		gSurface(const gSurface&); /* Copying managed gSurface is not allowed */
-    		gSurface& operator =(const gSurface&);
-};
-
 #endif
 

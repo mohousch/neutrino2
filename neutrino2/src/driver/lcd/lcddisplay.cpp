@@ -90,13 +90,27 @@ CLCDDisplay::CLCDDisplay()
 	
 	paused = 0;
 	
+	// raw
 	raw_buffer_size = 0;
 	xres = 132;
 	yres = 64; 
 	bpp = 8;
 	bypp = 1;
 	fd = -1;
+	clut.colors = 0;
+	clut.data = 0;
 	_buffer = NULL;
+	_stride = 0;
+	
+	// surface
+	surface_data = NULL;
+	surface_stride = 0;
+	surface_bpp = 0;
+	surface_bypp = 0;
+	surface_buffer_size = 0;
+	real_offset = 0;
+	real_yres = 0;
+	
 	
 	flipped = false;
 	inverted = 0;

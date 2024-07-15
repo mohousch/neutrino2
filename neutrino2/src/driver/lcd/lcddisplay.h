@@ -69,6 +69,7 @@ struct raw_lcd_element_t
 	int bypp;
 	int stride;
 	uint8_t *buffer;
+	gPalette clut;
 };
 
 class CLCDDisplay
@@ -170,8 +171,7 @@ class CLCDDisplay
 		////
 		int islocked() { return locked; }
 		////
-		int showPNGImage(const char* filename, int posX, int posY, int width, int height, int flag = blitAlphaBlend);
-//		raw_lcd_element_t picon_element;
+		int showPNGImage(const char* filename, int posX, int posY, int width = 0, int height = 0, int flag = blitAlphaBlend);
 		void load_png_element(raw_lcd_element_t * element, int posx, int posy, int width = 0, int height = 0);
 		void show_png_element(raw_lcd_element_t *element, int posx, int posy, int width = 0, int height = 0);
 };
