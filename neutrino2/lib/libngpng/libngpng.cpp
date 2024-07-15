@@ -496,6 +496,116 @@ uint8_t * convertRGB2FB(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool
 	return (uint8_t *)fbbuff;
 }
 
+uint8_t * convertRGB2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
+{
+	unsigned long i;
+	uint16_t *fbbuff = NULL;
+	unsigned long count = x*y;
+	
+	fbbuff = (uint16_t *)malloc(count*sizeof(uint16_t));
+		
+	if ( fbbuff == NULL )
+	{
+		libngpng_err( "Error: malloc\n" );
+		return NULL;
+	}
+		
+	if(alpha)
+	{
+		for(i = 0; i < count; i++)
+		{
+			fbbuff[i] = ((rgbbuff[i*4 + 3] << 24) & 0xFF000000) | 
+				((rgbbuff[i*4]     << 16) & 0x00FF0000) | 
+				((rgbbuff[i*4 + 1] <<  8) & 0x0000FF00) | 
+				((rgbbuff[i*4 + 2])       & 0x000000FF);
+		}
+	}
+	else
+	{
+		switch (m_transparent) 
+		{
+			case TM_BLACK:
+				for(i = 0; i < count; i++) 
+				{
+					transp = 0;
+					if(rgbbuff[i*3] || rgbbuff[i*3 + 1] || rgbbuff[i*3 + 2])
+						transp = 0xFF;
+							
+					fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3+1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
+				}
+				break;
+		
+			case TM_INI:
+				for(i = 0; i < count; i++)
+					fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);				
+				break;
+								
+			case TM_NONE:
+			default:
+				for(i = 0; i < count; i++)
+					fbbuff[i] = 0xFF000000 | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
+				break;
+		}
+	}
+	
+	return (uint8_t *)fbbuff;
+}
+
+uint8_t * convertRGB2FB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
+{
+	unsigned long i;
+	uint8_t *fbbuff = NULL;
+	unsigned long count = x*y;
+	
+	fbbuff = (uint8_t *)malloc(count*sizeof(uint8_t));
+		
+	if ( fbbuff == NULL )
+	{
+		libngpng_err( "Error: malloc\n" );
+		return NULL;
+	}
+		
+	if(alpha)
+	{
+		for(i = 0; i < count; i++)
+		{
+			fbbuff[i] = ((rgbbuff[i*4 + 3] << 24) & 0xFF000000) | 
+				((rgbbuff[i*4]     << 16) & 0x00FF0000) | 
+				((rgbbuff[i*4 + 1] <<  8) & 0x0000FF00) | 
+				((rgbbuff[i*4 + 2])       & 0x000000FF);
+		}
+	}
+	else
+	{
+		switch (m_transparent) 
+		{
+			case TM_BLACK:
+				for(i = 0; i < count; i++) 
+				{
+					transp = 0;
+					if(rgbbuff[i*3] || rgbbuff[i*3 + 1] || rgbbuff[i*3 + 2])
+						transp = 0xFF;
+							
+					fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3+1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
+				}
+				break;
+		
+			case TM_INI:
+				for(i = 0; i < count; i++)
+					fbbuff[i] = (transp << 24) | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);				
+				break;
+								
+			case TM_NONE:
+			default:
+				for(i = 0; i < count; i++)
+					fbbuff[i] = 0xFF000000 | ((rgbbuff[i*3] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3 + 2] & 0xFF);
+				break;
+		}
+	}
+	
+	return (uint8_t *)fbbuff;
+}
+
 uint8_t * getImage(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
 {
 	int x = 0;

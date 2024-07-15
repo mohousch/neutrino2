@@ -2124,8 +2124,12 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 		
 	if (p_h <= height)
 		height = p_h;
+		
+	uint8_t *image = ::getBitmap(filename);
 	
-	picon_element.buffer = (uint8_t *)::getImage(filename, width, height);
+	image = ::resize(image, p_w, p_h, width, height, SCALE_COLOR, (chans == 4)? true : false);
+	
+	picon_element.buffer = (uint8_t *)::convertRGB2FB8(image, width, height, (chans == 4)? true : false);
 	picon_element.x = posX;
 	picon_element.y = posY;
 	picon_element.width = width;
