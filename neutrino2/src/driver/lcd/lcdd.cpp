@@ -1010,7 +1010,7 @@ void CLCD::showEPGTitle(const std::string title)
 	epg_title.clear();
 	epg_title = title;
 
-//	showTextScreen("", epg_title, g_settings.lcd_epgmode, false, g_settings.lcd_epgalign);
+	showTextScreen("", epg_title, g_settings.lcd_epgmode, false, g_settings.lcd_epgalign);
 #endif
 }
 
@@ -1357,7 +1357,7 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 			else
 				dp = perc * (width + 1) / 100;
 					
-			display->draw_fill_rect(left - 1, top - 1, left + dp, top + height, CLCDDisplay::PIXEL_ON);
+			display->draw_fill_rect(left - 1, top - 1, left + dp, top + height, LCD_PIXEL_PERCENT);
 
 			if (perc == (unsigned char) - 2)
 			{
@@ -1520,8 +1520,8 @@ void CLCD::drawBanner()
 #if defined (ENABLE_LCD)	
 	display->show_png_element(&(element[ELEMENT_BANNER]), 0, 0, lcd_width, element->height);
 	
-//	if (element[ELEMENT_BANNER].width < lcd_width)
-//		display->draw_fill_rect(element[ELEMENT_BANNER].width - 1, -1, lcd_width, element[ELEMENT_BANNER].height - 1, CLCDDisplay::PIXEL_ON);
+	if (element[ELEMENT_BANNER].width < lcd_width)
+		display->draw_fill_rect(element[ELEMENT_BANNER].width - 1, -1, lcd_width, element[ELEMENT_BANNER].height - 1, CLCDDisplay::PIXEL_ON);
 #endif
 }
 

@@ -4836,7 +4836,7 @@ void CTestMenu::testlibNGPNG()
 	
 	printf("%s %d %d %d %d\n", filename.c_str(), w, h, bpp, chans);
 	
-	uint8_t *image = ::getBitmap(filename.c_str());
+	fb_pixel_t *image = (fb_pixel_t *)::getBitmap(filename.c_str());
 	
 	if (image)
 	{
@@ -4844,12 +4844,12 @@ void CTestMenu::testlibNGPNG()
 		int wanted_width = w;
 		int wanted_height = h;
 
-		image = ::resize(image, w, h, wanted_width, wanted_height, SCALE_COLOR, (chans == 4)? true : false);
+		image = (fb_pixel_t *)::resize((uint8_t *)image, w, h, wanted_width, wanted_height, SCALE_COLOR, (chans == 4)? true : false);
 		w = wanted_width;
 		h = wanted_height;
 		
 		// convert
-		image = ::convertRGB2FB32(image, w, h, (chans == 4)? true : false);
+		image = ::convertRGB2FB32((uint8_t *)image, w, h, (chans == 4)? true : false);
 		
 		// blit2fb
 		CFrameBuffer::getInstance()->blitBox2FB(image, w, h, 50, 50);

@@ -97,7 +97,7 @@ CLCDDisplay::CLCDDisplay()
 	bpp = 32;
 	bypp = 4;
 	fd = -1;
-	clut.colors = 256;
+	clut.colors = 0;
 	clut.data = 0;
 	_buffer = NULL;
 	_stride = 0;
@@ -1296,13 +1296,11 @@ void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int
 {
 	lcddisplay_printf(10, "CLCDDisplay::load_screen_element: %s %dx%dx%d (posx: %d posy: %d)\n", element->name.c_str(), element->width, element->height, element->bpp, left, top);
 	
-	//
 	if ((element->buffer) && (element->height <= yres - top))
 	{
 		for (unsigned int i = 0; i < min(element->height, yres - top); i++)
 		{	
 			memmove(_buffer + ((top + i)*xres) + left, (uint32_t *)element->buffer + (i*element->width), min(element->width, xres - left)*bypp);
-			//memmove(_buffer + ((top + i)*_stride) + left*bypp, (uint32_t *)element->buffer + (i*element->width), min(element->width, xres - left)*bypp);
 		}
 	}
 	
@@ -1414,11 +1412,11 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 	
 	lcddisplay_printf(10, "CLCDDisplay::showPNGImage: real: %s %d %d\n", filename, p_w, p_h);
 	
-	uint8_t *image = (uint8_t *)::getBitmap(filename);
+	uint32_t *image = (uint32_t *)::getBitmap(filename);
 	
 	if (width != 0 && height != 0)
 	{
-	 	image = (uint8_t *)::resize((uint8_t *)image, p_w, p_h, width, height, SCALE_COLOR, (chans == 4)? true : false);
+	 	image = (uint32_t *)::resize((uint8_t *)image, p_w, p_h, width, height, SCALE_COLOR, (chans == 4)? true : false);
 	}
 	else
 	{
@@ -1426,7 +1424,7 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 		height = p_h;
 	}
 	
-	element.buffer = (uint32_t *)::convertRGB2FB32(image, width, height, (chans == 4)? true : false);
+	element.buffer = (uint32_t *)::convertRGB2FB32((uint8_t *)image, width, height, (chans == 4)? true : false);
 	element.x = posX;
 	element.y = posY;
 	element.width = width;

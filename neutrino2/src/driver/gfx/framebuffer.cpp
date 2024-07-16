@@ -1746,7 +1746,7 @@ void CFrameBuffer::displayRGB(uint8_t *rgbbuff, int x_size, int y_size, int x_pa
 {
 	dprintf(DEBUG_INFO, "CFrameBuffer::displayRGB\n");
 	
-        uint8_t * fbbuff = NULL;
+        fb_pixel_t * fbbuff = NULL;
 
         if(rgbbuff == NULL)
                 return;
@@ -1791,7 +1791,7 @@ bool CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int
 	if( name.find(".png") == (name.length() - 4) )
 		isPNG = true;
 	
-	uint8_t *data = (uint8_t *)getImage(name, width, height,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha), scaletype);
+	fb_pixel_t *data = (fb_pixel_t *)getImage(name, width, height,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha), scaletype);
 
 	if(data) 
 	{

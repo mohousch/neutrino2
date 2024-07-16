@@ -441,7 +441,7 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 	return(cr);
 }
 
-uint8_t * convertRGB2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
+uint32_t * convertRGB2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
 	unsigned long i;
 	uint32_t *fbbuff = NULL;
@@ -493,10 +493,10 @@ uint8_t * convertRGB2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bo
 		}
 	}
 	
-	return (uint8_t *)fbbuff;
+	return (uint32_t *)fbbuff;
 }
 
-uint8_t * convertRGB2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
+uint16_t * convertRGB2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
 	unsigned long i;
 	uint16_t *fbbuff = NULL;
@@ -548,7 +548,7 @@ uint8_t * convertRGB2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bo
 		}
 	}
 	
-	return (uint8_t *)fbbuff;
+	return (uint16_t *)fbbuff;
 }
 
 uint8_t * convertRGB2FB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
