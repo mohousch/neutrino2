@@ -34,10 +34,18 @@
 
 #include <driver/gfx/color.h>
 
-
-#define LCD_PIXEL_OFF				0x00
-#define LCD_PIXEL_ON				0xFF
+// aabbggrr
+#define LCD_PIXEL_OFF				0x00000000
+#define LCD_PIXEL_ON				0xFFFFFFFF
 #define LCD_PIXEL_INV				0x1000000
+
+#define LCD_PIXEL_BACKGROUND			0x00000000
+#define LCD_PIXEL_WHITE				0xFFFFFFFF
+#define LCD_PIXEL_RED				0xFF0000FF
+#define LCD_PIXEL_GREEN				0xFF00FF00
+#define LCD_PIXEL_BLUE				0xFFFF0000
+#define LCD_PIXEL_YELLOW			0xFF00FFFF
+#define LCD_PIXEL_MAGENTA			0xFFFF00FF
 
 #define LCD_IOCTL_CLEAR				(26)
 
@@ -68,7 +76,7 @@ struct raw_lcd_element_t
 	int bpp;
 	int bypp;
 	int stride;
-	uint8_t *buffer;
+	uint32_t *buffer;
 	gPalette clut;
 };
 
@@ -160,7 +168,7 @@ class CLCDDisplay
 		void setInverted( unsigned char );
 		void setFlipped(bool);
 		//// raw buffer
-		uint8_t *_buffer;
+		uint32_t *_buffer;
 		int _stride;
 		int raw_buffer_size;
 		int bpp, bypp;

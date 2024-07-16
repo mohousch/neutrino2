@@ -798,7 +798,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 			x = (lcd_width - w) / 2;
 		}
 		
-		fonts.channelname->RenderString(x, y, lcd_width + 10, cname[i].c_str(), CLCDDisplay::PIXEL_ON, 0, big_utf8);
+		fonts.channelname->RenderString(x, y, lcd_width + 10, cname[i].c_str(), LCD_PIXEL_YELLOW, 0, big_utf8);
 	}
 
 	//
@@ -1387,10 +1387,10 @@ void CLCD::showMenuText(const int position, const char * text, const int selecte
 	showText(text); // UTF-8
 #elif defined (ENABLE_LCD)
 	// refresh
-	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 - 1, lcd_width, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight() + 10, CLCDDisplay::PIXEL_OFF);
+	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 - 1, lcd_width, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight() + 10, LCD_PIXEL_OFF);
 	
 	// render text
-	fonts.menu->RenderString(0, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight(), lcd_width + 10, text, CLCDDisplay::PIXEL_ON, selected, utf_encoded);
+	fonts.menu->RenderString(0, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight(), lcd_width + 10, text, LCD_PIXEL_WHITE, selected, utf_encoded);
 #endif
 
 #ifdef ENABLE_GRAPHLCD	
@@ -1741,7 +1741,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		display->clear_screen();
 		drawBanner();
 		showclock = false;
-		fonts.menutitle->RenderString(0, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight(), lcd_width, title, CLCDDisplay::PIXEL_ON, 0, true); // UTF-8
+		fonts.menutitle->RenderString(0, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight(), lcd_width, title, LCD_PIXEL_YELLOW, 0, true); // UTF-8
 		displayUpdate();
 		break;
 	}
@@ -1764,7 +1764,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		showclock = false;
 		display->clear_screen(); // clear lcd
 		drawBanner();
-		fonts.menutitle->RenderString(0, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight(), lcd_width, title, CLCDDisplay::PIXEL_ON, 0, true); // UTF-8
+		fonts.menutitle->RenderString(0, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight(), lcd_width, title, LCD_PIXEL_YELLOW, 0, true); // UTF-8
 		displayUpdate();
 		break;
 	}

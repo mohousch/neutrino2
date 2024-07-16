@@ -94,10 +94,10 @@ CLCDDisplay::CLCDDisplay()
 	raw_buffer_size = 0;
 	xres = 132;
 	yres = 64; 
-	bpp = 8;
-	bypp = 1;
+	bpp = 32;
+	bypp = 4;
 	fd = -1;
-	clut.colors = 0;
+	clut.colors = 256;
 	clut.data = 0;
 	_buffer = NULL;
 	_stride = 0;
@@ -305,8 +305,6 @@ void CLCDDisplay::setSize(int w, int h, int b)
 	//
 	xres = w;
 	yres = h;
-	
-	//
 	surface_bpp = b;
 	
 	real_offset = 0;
@@ -347,7 +345,7 @@ void CLCDDisplay::setSize(int w, int h, int b)
 	// buffer
 	_stride = xres*bypp;
 	raw_buffer_size = xres * yres * bypp;
-	_buffer = new uint8_t[raw_buffer_size];
+	_buffer = new uint32_t[raw_buffer_size];
 	memset(_buffer, 0, raw_buffer_size);
 }
 
@@ -1291,7 +1289,7 @@ void CLCDDisplay::clear_screen()
 
 void CLCDDisplay::dump_screen(uint8_t **screen) 
 {
-	memmove(*screen, _buffer, raw_buffer_size);
+	memmove(*screen, (uint8_t *)_buffer, raw_buffer_size);
 }
 
 void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int top) 
@@ -1303,7 +1301,8 @@ void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int
 	{
 		for (unsigned int i = 0; i < min(element->height, yres - top); i++)
 		{	
-			memmove(_buffer + ((top + i)*xres) + left, (uint8_t *)element->buffer + (i*element->width), min(element->width, xres - left));
+			memmove(_buffer + ((top + i)*xres) + left, (uint32_t *)element->buffer + (i*element->width), min(element->width, xres - left)*bypp);
+			//memmove(_buffer + ((top + i)*_stride) + left*bypp, (uint32_t *)element->buffer + (i*element->width), min(element->width, xres - left)*bypp);
 		}
 	}
 	
@@ -1314,7 +1313,7 @@ void CLCDDisplay::load_screen(uint8_t **const screen)
 {
 	raw_lcd_element_t element;
 	
-	element.buffer = (uint8_t *)*screen;
+	element.buffer = (uint32_t *)*screen;
 	element.width = xres;
 	element.height = yres;
 	element.bpp = 8;
@@ -1332,13 +1331,13 @@ bool CLCDDisplay::dump_png(const char * const filename)
 	png_byte *   fbptr;
 	FILE *       fp;
  
-        /* create file */
+        // create file
         fp = fopen(filename, "wb");
         if (!fp)
                 printf("[CLCDDisplay] File %s could not be opened for writing\n", filename);
 	else
 	{
-	        /* initialize stuff */
+	        // initialize stuff
         	png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 
 	        if (!png_ptr)
@@ -1359,7 +1358,7 @@ bool CLCDDisplay::dump_png(const char * const filename)
 
         				png_init_io(png_ptr, fp);
 
-        				/* write header */
+        				// write header
         				if (setjmp(png_jmpbuf(png_ptr)))
         				        printf("[CLCDDisplay] Error during writing header\n");
 
@@ -1370,7 +1369,7 @@ bool CLCDDisplay::dump_png(const char * const filename)
         				png_write_info(png_ptr, info_ptr);
 
 
-        				/* write bytes */
+        				// write bytes
 					if (setjmp(png_jmpbuf(png_ptr)))
 					{
         				        printf("[CLCDDisplay] Error during writing bytes\n");
@@ -1386,7 +1385,7 @@ bool CLCDDisplay::dump_png(const char * const filename)
 						fbptr += lcd_width;
 					}
 
-        				/* end write */
+        				// end write
         				if (setjmp(png_jmpbuf(png_ptr)))
 					{
         				        printf("[CLCDDisplay] Error during end of write\n");
@@ -1414,12 +1413,12 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 	::getSize(filename, &p_w, &p_h, &p_bpp, &chans);
 	
 	lcddisplay_printf(10, "CLCDDisplay::showPNGImage: real: %s %d %d\n", filename, p_w, p_h);
-		
-	uint8_t *image = ::getBitmap(filename);
+	
+	uint8_t *image = (uint8_t *)::getBitmap(filename);
 	
 	if (width != 0 && height != 0)
 	{
-	 	image = ::resize(image, p_w, p_h, width, height, SCALE_COLOR, (chans == 4)? true : false);
+	 	image = (uint8_t *)::resize((uint8_t *)image, p_w, p_h, width, height, SCALE_COLOR, (chans == 4)? true : false);
 	}
 	else
 	{
@@ -1427,7 +1426,7 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 		height = p_h;
 	}
 	
-	element.buffer = (uint8_t *)::convertRGB2FB8(image, width, height, (chans == 4)? true : false);
+	element.buffer = (uint32_t *)::convertRGB2FB32(image, width, height, (chans == 4)? true : false);
 	element.x = posX;
 	element.y = posY;
 	element.width = width;
@@ -1465,7 +1464,7 @@ void CLCDDisplay::load_png_element(raw_lcd_element_t *element, int posx, int pos
 		height = p_h;
 	}
 	
-	element->buffer = (uint8_t *)::convertRGB2FB8(image, width, height, (chans == 4)? true : false);
+	element->buffer = (uint32_t *)::convertRGB2FB32(image, width, height, (chans == 4)? true : false);
 	element->x = posx;
 	element->y = posy;
 	element->width = width;
