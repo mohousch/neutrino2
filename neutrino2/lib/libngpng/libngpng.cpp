@@ -659,7 +659,7 @@ uint8_t * getImage(const std::string &name, int width, int height, int transp, S
 				y = height;
 			}
 			
-			// convertRGB2FB32
+			// convert
 			if( name.find(".png") == (name.length() - 4) )
 			{
 				// alpha

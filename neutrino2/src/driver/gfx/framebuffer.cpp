@@ -111,8 +111,8 @@ CFrameBuffer::CFrameBuffer()
 	//
 	xRes = 0;
 	yRes = 0; 
-	stride = xRes * 4; 
-	bpp = 32;
+	stride = xRes * sizeof(fb_pixel_t); 
+	bpp = DEFAULT_BPP;
 }
 
 CFrameBuffer* CFrameBuffer::getInstance()
@@ -141,14 +141,33 @@ void CFrameBuffer::init(const char * const fbDevice)
 		screeninfo.yres = DEFAULT_YRES;
 		screeninfo.yres_virtual = screeninfo.yres;
 		screeninfo.bits_per_pixel = DEFAULT_BPP;
-		screeninfo.blue.length = 8;
-		screeninfo.blue.offset = 0;
-		screeninfo.green.length = 8;
-		screeninfo.green.offset = 8;
-		screeninfo.red.length = 8;
-		screeninfo.red.offset = 16;
-		screeninfo.transp.length = 8;
-		screeninfo.transp.offset = 24;
+		
+		switch (bpp) 
+		{
+			case 16:
+				// ARGB 1555
+				screeninfo.transp.offset = 15;
+				screeninfo.transp.length = 1;
+				screeninfo.red.offset = 10;
+				screeninfo.red.length = 5;
+				screeninfo.green.offset = 5;
+				screeninfo.green.length = 5;
+				screeninfo.blue.offset = 0;
+				screeninfo.blue.length = 5;
+				break;
+				
+			case 32:
+				// ARGB 8888
+				screeninfo.transp.offset = 24;
+				screeninfo.transp.length = 8;
+				screeninfo.red.offset = 16;
+				screeninfo.red.length = 8;
+				screeninfo.green.offset = 8;
+				screeninfo.green.length = 8;
+				screeninfo.blue.offset = 0;
+				screeninfo.blue.length = 8;
+				break;
+		}
 		
 		mpGLThreadObj = new GLThreadObj(screeninfo.xres, screeninfo.yres);
 
@@ -160,8 +179,8 @@ void CFrameBuffer::init(const char * const fbDevice)
 		}
 	}
 	
-	lfb = reinterpret_cast<fb_pixel_t *>(mpGLThreadObj->getOSDBuffer());
-	memset(lfb, 0x7f, screeninfo.xres * screeninfo.yres * 4);
+	lfb = reinterpret_cast<uint8_t *>(mpGLThreadObj->getOSDBuffer());
+	memset(lfb, 0x7f, screeninfo.xres * screeninfo.yres * sizeof(fb_pixel_t));
 	
 	if (!lfb) 
 	{
@@ -329,7 +348,7 @@ unsigned int CFrameBuffer::getScreenY(bool real)
 		return g_settings.screen_StartY;
 }
 
-fb_pixel_t * CFrameBuffer::getFrameBufferPointer() const
+uint8_t * CFrameBuffer::getFrameBufferPointer() const
 {	  
 	if (active)
 	{
@@ -398,6 +417,7 @@ void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, un
 			screeninfo.blue.offset = 0;
 			screeninfo.blue.length = 5;
 			break;
+			
 		case 32:
 			// ARGB 8888
 			screeninfo.transp.offset = 24;
@@ -462,7 +482,7 @@ int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
 	xRes = x;
 	yRes = y;
 	bpp = _bpp;
-	stride = xRes * 4;
+	stride = xRes * sizeof(fb_pixel_t);
 #else
 	setFrameBufferMode(x, y, _bpp);
 #endif	

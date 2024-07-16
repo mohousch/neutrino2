@@ -53,10 +53,10 @@ class GLThreadObj : public OpenThreads::Thread
 		//
 		void run();
 		void Start() { OpenThreads::Thread::start(); }
-		void waitInit();			/* wait until things are set up */
-		void shutDown() { mShutDown = true; }	/* shut down event loop (causes thread to exit) */
+		void waitInit();					/* wait until things are set up */
+		void shutDown() { mShutDown = true; }			/* shut down event loop (causes thread to exit) */
 		void join() { OpenThreads::Thread::join(); }
-		unsigned char *getOSDBuffer() { return &mOSDBuffer[0]; } /* gets pointer to OSD bounce buffer */
+		unsigned char *getOSDBuffer() { return &mOSDBuffer[0]; } 	/* gets pointer to OSD bounce buffer */
 		//
 		int getOSDWidth() { return mState.width; }
 		int getOSDHeight() { return mState.height; }

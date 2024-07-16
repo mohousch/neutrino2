@@ -66,12 +66,10 @@ typedef struct fb_var_screeninfo t_fb_var_screeninfo;
 #define CORNER_ALL		0xF
 #define CORNER_BOTH 		CORNER_ALL
 
-// resolution
+//
 #define DEFAULT_XRES		1280
 #define DEFAULT_YRES		720
-
-// bitmap
-#define DEFAULT_BPP		32	// 32 bit
+#define DEFAULT_BPP		32
 
 // gradient mode
 enum {
@@ -141,7 +139,7 @@ class CFrameBuffer
 		std::string	spinnerBasePath;
 
 		int             fd;
-		fb_pixel_t 	*lfb;
+		uint8_t 	*lfb;
 		int		available;
 		fb_pixel_t *    background;
 		fb_pixel_t *    backupBackground;
@@ -186,12 +184,12 @@ class CFrameBuffer
 
 		void init(const char * const fbDevice = "/dev/fb0");		
 		void setFrameBufferMode(unsigned int xRes, unsigned int yRes, unsigned int bpp);
-		int setMode(unsigned int x = DEFAULT_XRES, unsigned int y = DEFAULT_YRES, unsigned int _bpp = 32);
+		int setMode(unsigned int x = DEFAULT_XRES, unsigned int y = DEFAULT_YRES, unsigned int _bpp = DEFAULT_BPP);
 
 		int getFileHandle() const; 		    //only used for plugins (games) !!
 		t_fb_var_screeninfo *getScreenInfo();
 
-		fb_pixel_t * getFrameBufferPointer() const; // pointer to framebuffer
+		uint8_t * getFrameBufferPointer() const;	// pointer to framebuffer
 		unsigned int getStride() const;             // size of a single line in the framebuffer (in bytes)
 		unsigned int getScreenWidth(bool real = false);
 		unsigned int getScreenHeight(bool real = false); 
