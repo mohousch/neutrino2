@@ -3368,7 +3368,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	int res = 0;
 
 	// zap complete event
-	if(msg == NeutrinoMessages::EVT_ZAP_COMPLETE) 
+	if(msg == NeutrinoMessages::EVT_ZAP_COMPLETE || msg == NeutrinoMessages::EVT_ZAP_FAILED) 
 	{
 		dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: EVT_ZAP_COMPLETE current_channel_id: 0x%llx data:0x%llx\n", CZapit::getInstance()->getCurrentChannelID(), data);
 		
@@ -3445,7 +3445,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	res = res | g_RemoteControl->handleMsg(msg, data);
 	res = res | g_InfoViewer->handleMsg(msg, data);
 #if defined (ENABLE_CI)	
-	res = g_CamHandler->handleMsg(msg, data);
+	res = res | g_CamHandler->handleMsg(msg, data);
 #endif
 
 	//

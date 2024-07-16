@@ -539,6 +539,9 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 
 	// get CN epg
 	getCurrentNextEPG(channel_id, new_chan, _epgpos);
+	
+	////
+	getEPG(channel_id, info_CurrentNext);
 
 	showLcdPercentOver();
 

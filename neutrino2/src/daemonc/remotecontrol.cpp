@@ -151,6 +151,10 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			//
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
 				processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
+				
+			////
+			// lcd
+			CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
 		}
 	} 
 	else 
@@ -191,6 +195,10 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			//
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
 				processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
+				
+			////
+			// lcd
+			CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
 		}
 		else
 		{
@@ -336,6 +344,9 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		if (data == current_channel_id)
 		{
 			needs_nvods = true;
+			
+			// lcd
+			CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
 				
 			if ( current_EPGid != 0)
 			{
