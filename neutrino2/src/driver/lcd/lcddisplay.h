@@ -147,7 +147,7 @@ class CLCDDisplay
 		void resume();
 
 		void update();
-		void blitBox2LCD(int flag = 2);
+		void blitBox2LCD(int flag = blitAlphaBlend);
 		void blit(void);
 		////
 		void draw_point(const int x, const int y, const uint32_t color);

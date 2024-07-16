@@ -896,7 +896,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
             	srcptr += area_left*bypp + area_top*_stride;
             	dstptr += area_left*surface_bypp + area_top*surface_stride;
             
-            	if (flag & (blitAlphaTest|blitAlphaBlend))
+            	if ( (flag == blitAlphaTest) || (flag == blitAlphaBlend) )
             	{
                 	for (int y = area_height; y != 0; --y)
                 	{
@@ -954,7 +954,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
             	srcptr += area_left*bypp + area_top*_stride;
             	dstptr += area_left*surface_bypp + area_top*surface_stride;
 
-//            	if (flag & blitAlphaBlend)
+//            	if (flag == blitAlphaBlend)
 //              	printf("ignore unsupported 8bpp -> 16bpp alphablend!\n");
 
             	for (int y = 0; y < area_height; y++)
@@ -963,7 +963,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
                 	uint8_t *psrc = (uint8_t *)srcptr;
                 	uint16_t *dst=(uint16_t*)dstptr;
                 		
-                	if (flag & blitAlphaTest)
+                	if (flag == blitAlphaTest)
                     		blit_8i_to_16_at(dst, psrc, pal, width);
                 	else
                     		blit_8i_to_16(dst, psrc, pal, width);
@@ -986,7 +986,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
                 	uint32_t *srcp = (uint32_t*)srcptr;
                 	uint16_t *dstp = (uint16_t*)dstptr;
 
-                	if (flag & blitAlphaBlend)
+                	if (flag == blitAlphaBlend)
                 	{
                     		while (width--)
                     		{
@@ -1024,7 +1024,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
                         		}
                     		}
                 	}
-                	else if (flag & blitAlphaTest)
+                	else if (flag == blitAlphaTest)
                 	{
                     		while (width--)
                     		{
@@ -1074,9 +1074,9 @@ void CLCDDisplay::blitBox2LCD(int flag)
             		
             	for (int y = area_height; y != 0; --y)
             	{
-                	if (flag & blitAlphaTest)
+                	if (flag == blitAlphaTest)
                     		blit_8i_to_32_at((uint32_t*)dstptr, srcptr, pal, width);
-                	else if (flag & blitAlphaBlend)
+                	else if (flag == blitAlphaBlend)
                     		blit_8i_to_32_ab((gRGB*)dstptr, srcptr, (const gRGB*)pal, width);
                 	else
                     			blit_8i_to_32((uint32_t*)dstptr, srcptr, pal, width);
@@ -1094,7 +1094,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
             		
             	for (int y = area_height; y != 0; --y)
             	{
-                	if (flag & blitAlphaTest)
+                	if (flag == blitAlphaTest)
                 	{
                     		int width = area_width;
                     		uint32_t *src = srcptr;
@@ -1111,7 +1111,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
                             			*dst++=*src++;
                     		}
                 	} 
-                	else if (flag & blitAlphaBlend)
+                	else if (flag == blitAlphaBlend)
                 	{
                     		int width = area_width;
                     		gRGB *src = (gRGB*)srcptr;
@@ -1316,7 +1316,7 @@ void CLCDDisplay::load_screen(uint8_t **const screen)
 	element.buffer = (uint32_t *)*screen;
 	element.width = xres;
 	element.height = yres;
-	element.bpp = 8;
+	element.bpp = 32;
 	
 	load_screen_element(&element, 0, 0);
 }
@@ -1426,7 +1426,10 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 		height = p_h;
 	}
 	
-	element.buffer = (uint32_t *)::convertRGB2FB32((uint8_t *)image, width, height, (chans == 4)? true : false);
+	if (p_bpp == 32)
+		element.buffer = image;
+	else
+		element.buffer = (uint32_t *)::convertRGB2FB32((uint8_t *)image, width, height, (chans == 4)? true : false);
 	element.x = posX;
 	element.y = posY;
 	element.width = width;
