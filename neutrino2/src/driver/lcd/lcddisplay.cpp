@@ -1285,6 +1285,8 @@ void CLCDDisplay::draw_polygon(int num_vertices, int *vertices, uint32_t color)
 void CLCDDisplay::clear_screen() 
 {
 	memset(_buffer, 0, raw_buffer_size);
+	memset(surface_data, 0, surface_buffer_size);
+	blit();
 }
 
 void CLCDDisplay::dump_screen(uint8_t **screen) 
