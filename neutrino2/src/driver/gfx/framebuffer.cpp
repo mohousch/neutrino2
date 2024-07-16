@@ -222,7 +222,7 @@ void CFrameBuffer::init(const char * const fbDevice)
 	
 	dprintf(DEBUG_NORMAL, "CFrameBuffer::init %dk video mem\n", available/1024);
 	
-	lfb = (fb_pixel_t *)mmap(0, available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
+	lfb = (uint8_t *)mmap(0, available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
 
 	if (!lfb) 
 	{
