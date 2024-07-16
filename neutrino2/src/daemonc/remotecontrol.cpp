@@ -230,8 +230,8 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		
 		if ((info_CN.current_uniqueKey >> 16) == (current_channel_id & 0xFFFFFFFFFFFFULL) || (info_CN.current_uniqueKey >> 16) == (current_sub_channel_id & 0xFFFFFFFFFFFFULL))
 		{
-			//CURRENT-EPG for current channel arrived!;
-			CLCD::getInstance()->showEPGTitle(info_CN.current_name);			
+			//CURRENT-EPG for current channel arrived!
+			CLCD::getInstance()->setEPGTitle(info_CN.current_name.empty()? "" : info_CN.current_name);			
 			
 			if (info_CN.current_uniqueKey != current_EPGid)
 			{
@@ -317,6 +317,9 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			{
 				g_Radiotext->setPid(current_PIDs.APIDs[current_PIDs.PIDs.selected_apid].pid);
 			}
+			
+			// lcd
+			CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
 		}
 
 	    	return messages_return::handled;

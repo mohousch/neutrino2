@@ -1412,13 +1412,13 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 	
 	::getSize(filename, &p_w, &p_h, &p_bpp, &chans);
 	
-	lcddisplay_printf(10, "CLCDDisplay::showPNGImage: real: %s %d %d\n", filename, p_w, p_h);
+	lcddisplay_printf(10, "CLCDDisplay::showPNGImage: real: %s %d %d %d %d\n", filename, p_w, p_h, p_bpp, chans);
 	
-	uint32_t *image = (uint32_t *)::getBitmap(filename);
+	uint8_t *image = ::getBitmap(filename);
 	
 	if (width != 0 && height != 0)
 	{
-	 	image = (uint32_t *)::resize((uint8_t *)image, p_w, p_h, width, height, SCALE_COLOR, (chans == 4)? true : false);
+	 	image = ::resize(image, p_w, p_h, width, height, SCALE_COLOR, (chans == 4)? true : false);
 	}
 	else
 	{
@@ -1427,9 +1427,9 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 	}
 	
 	if (p_bpp == 32)
-		element.buffer = image;
+		element.buffer = (uint32_t *)image;
 	else
-		element.buffer = (uint32_t *)::convertRGB2FB32((uint8_t *)image, width, height, (chans == 4)? true : false);
+		element.buffer = ::convertRGB2FB32((uint8_t *)image, width, height, (chans == 4)? true : false);
 	element.x = posX;
 	element.y = posY;
 	element.width = width;
@@ -1467,7 +1467,11 @@ void CLCDDisplay::load_png_element(raw_lcd_element_t *element, int posx, int pos
 		height = p_h;
 	}
 	
-	element->buffer = (uint32_t *)::convertRGB2FB32(image, width, height, (chans == 4)? true : false);
+	if (p_bpp == 32)
+		element->buffer = (uint32_t *)image;
+	else
+		element->buffer = (uint32_t *)::convertRGB2FB32(image, width, height, (chans == 4)? true : false);
+
 	element->x = posx;
 	element->y = posy;
 	element->width = width;

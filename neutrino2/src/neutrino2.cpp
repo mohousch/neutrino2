@@ -3411,8 +3411,8 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		
 		startSubtitles(!g_InfoViewer->is_visible);
 		
-		// lcd
-		CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
+		////
+		CLCD::getInstance()->setEPGTitle("");
 	}
 
 	// shift / scrambled timer events

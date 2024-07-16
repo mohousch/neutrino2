@@ -994,23 +994,17 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 		wake_up();
 }
 
-void CLCD::showEPGTitle(const std::string title)
+void CLCD::setEPGTitle(const std::string title)
 {
 	if (!has_lcd)
 		return;
 
-	printf("CLCD::showEPGTitle: %s\n", title.c_str());
+	printf("CLCD::setEPGTitle: %s\n", title.c_str());
 	
 #if defined (ENABLE_LCD)
-	if (title == epg_title)
-	{
-		return;
-	}
-	
 	epg_title.clear();
+	
 	epg_title = title;
-
-	showTextScreen("", epg_title, g_settings.lcd_epgmode, false, g_settings.lcd_epgalign);
 #endif
 }
 
