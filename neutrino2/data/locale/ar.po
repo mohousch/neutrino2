@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-07-17 14:01+0200\n"
+"POT-Creation-Date: 2024-07-17 15:37+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -2100,6 +2100,9 @@ msgstr ""
 msgid "Show picon"
 msgstr ""
 
+msgid "Show weather"
+msgstr ""
+
 msgid "Shutdown"
 msgstr ""
 
@@ -2284,9 +2287,6 @@ msgid "TMDB"
 msgstr ""
 
 msgid "TMDB Infos are not available"
-msgstr ""
-
-msgid "TMDB Key:"
 msgstr ""
 
 msgid "TMDB Preview"
@@ -2593,6 +2593,9 @@ msgid "Waiting for time..."
 msgstr ""
 
 msgid "Water sports"
+msgstr ""
+
+msgid "Weather Forcast"
 msgstr ""
 
 msgid "Wednesday"
@@ -3182,7 +3185,4 @@ msgid "will be deducted of every record timer."
 msgstr ""
 
 msgid "yes"
-msgstr ""
-
-msgid "youtube ID Key:"
 msgstr ""

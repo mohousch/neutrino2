@@ -39,6 +39,7 @@
 #include <system/debug.h>
 #include <system/helpers.h>
 #include <system/channellogo.h>
+#include <system/weather.h>
 
 #include <fcntl.h>
 #include <time.h>
@@ -977,6 +978,12 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 		{
 			display->showPNGImage(logo.c_str(), (lcd_width - 120)/2, lcd_height - fonts.time->getHeight() - 2 - 60, 120, 60);
 		}
+	}
+	
+	// weather
+	if (g_settings.lcd_weather)
+	{
+		showWeather(false);
 	}
 #endif
 
@@ -2622,5 +2629,107 @@ void CLCD::showProgressBar2(int local,const char * const text_local ,int global 
 		displayUpdate();
 	}
 #endif
+}
+
+//// weather
+static std::string st_current_wcity = "";
+static std::string st_current_wtimestamp = "";
+static std::string st_current_wtemp = "";
+static std::string st_current_wwind = "";
+static std::string st_current_wicon = "";
+
+static std::string st_next_wcity = "";
+static std::string st_next_wtimestamp = "";
+static std::string st_next_wtemp = "";
+static std::string st_next_wwind = "";
+static std::string st_next_wicon = "";
+
+void CLCD::showWeather(bool standby)
+{
+	int ctx, cix, ntx, nix, y;
+
+	
+	// left
+	ctx = 0;
+	cix = 0;
+		
+	// right
+	ntx = lcd_width - 50;
+	nix = lcd_width - 50;
+	y = lcd_height - fonts.time->getHeight() - 55;
+	
+	int forecast = 1; // 0 is current day
+
+	std::string current_wcity = "";
+	std::string current_wtimestamp = "";
+	std::string current_wtemp = "";
+	std::string current_wwind = "";
+	std::string current_wicon = "";
+
+	std::string next_wcity = "";
+	std::string next_wtimestamp = "";
+	std::string next_wtemp = "";
+	std::string next_wwind = "";
+	std::string next_wicon = "";
+
+	if (CWeather::getInstance()->checkUpdate(true))
+	{
+		current_wcity = st_current_wcity = CWeather::getInstance()->getCity();
+		current_wtimestamp = st_current_wtimestamp = CWeather::getInstance()->getCurrentTimestamp();
+		current_wtemp = st_current_wtemp = CWeather::getInstance()->getCurrentTemperature();
+		current_wwind = st_current_wwind = CWeather::getInstance()->getCurrentWindSpeed();
+		current_wicon = st_current_wicon = CWeather::getInstance()->getCurrentIcon();
+
+		next_wcity = st_next_wcity = CWeather::getInstance()->getCity();
+		next_wtimestamp = st_next_wtimestamp = toString((int)CWeather::getInstance()->getForecastWeekday(forecast));
+		//next_wtemp = st_next_wtemp = CWeather::getInstance()->getForecastTemperatureMin(forecast);
+		//next_wtemp = st_next_wtemp += "|" + CWeather::getInstance()->getForecastTemperatureMax(forecast);
+		next_wtemp = st_next_wtemp = CWeather::getInstance()->getForecastTemperatureMax(forecast);
+		next_wwind = st_next_wwind = CWeather::getInstance()->getForecastWindBearing(forecast);
+		next_wicon = st_next_wicon = CWeather::getInstance()->getForecastIcon(forecast);
+	}
+	else
+	{
+		current_wcity = st_current_wcity;
+		current_wtimestamp = st_current_wtimestamp;
+		current_wtemp = st_current_wtemp;
+		current_wwind = st_current_wwind;
+		current_wicon = st_current_wicon;
+
+		next_wcity = st_next_wcity;
+		next_wtimestamp = st_next_wtimestamp;
+		next_wtemp = st_next_wtemp;
+		next_wwind = st_next_wwind;
+		next_wicon = st_next_wicon;
+	}
+
+	if ((current_wicon != "") && cix)
+	{
+		display->showPNGImage(current_wicon.c_str(), cix, y, 50, 50);
+	}
+		
+	if ((current_wtemp != "") && ctx)
+	{
+		current_wtemp += "°";
+			
+		//cglcd->bitmap->DrawText(ctx, y, cglcd->bitmap->Width() - 1, current_wtemp, &font_temperature, cglcd->ColorConvert3to1(t.glcd_foreground_color_red, t.glcd_foreground_color_green, t.glcd_foreground_color_blue), GLCD::cColor::Transparent);
+		//fonts.menu->RenderString();
+	}
+
+	if ((next_wicon != "") && nix)
+	{
+		display->showPNGImage(next_wicon.c_str(), nix, y, 50, 50);
+	}
+		
+	if ((next_wtemp != "") && ntx)
+	{
+		next_wtemp += "°";
+		int offset;
+			
+		offset = std::max(0, fonts.menu->getRenderWidth("88") - fonts.menu->getRenderWidth(next_wtemp.c_str()));
+		//cglcd->bitmap->DrawText(ntx + offset, y, cglcd->bitmap->Width() - 1, next_wtemp,&font_temperature, cglcd->ColorConvert3to1(t.glcd_foreground_color_red, t.glcd_foreground_color_green, t.glcd_foreground_color_blue), GLCD::cColor::Transparent);
+		//fonts.menu->RenderString();
+			
+	}
 }
 

@@ -612,6 +612,8 @@ class CLCD
 		void showAudioTrack(const std::string & artist, const std::string & title, const std::string & album, int pos = 0);
 		void showPlayMode(PLAYMODES m = PLAY_MODE_PLAY);
 		////
+		void showWeather(bool standby);
+		////
 		void setBrightness(int);
 		int getBrightness();
 

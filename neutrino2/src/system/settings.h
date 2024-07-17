@@ -452,7 +452,6 @@ struct SNeutrinoSettings
 
 	// progressbar color
 	int progressbar_color;
-	//int progressbar_gradient_type;
 
 	//head
 	int Head_gradient;

@@ -81,9 +81,9 @@ class CWeather
 		static CWeather *getInstance();
 		CWeather();
 		~CWeather();
+		
 		bool checkUpdate(bool forceUpdate = false);
 		void setCoords(std::string new_coords, std::string new_city = "Unknown");
-
 		bool GetWeatherDetails();
 
 		// globals
@@ -93,15 +93,9 @@ class CWeather
 		};
 
 		// current conditions
-#if 0
 		std::string getCurrentTimestamp()
 		{
 			return std::to_string((int)(current.timestamp));
-		};
-
-		time_t getCurrentTimestamp()
-		{
-			return current.timestamp;
 		};
 
 		std::string getCurrentTemperature()
@@ -131,7 +125,7 @@ class CWeather
 
 		std::string getCurrentIcon()
 		{
-			return ICONSDIR"/weather/" + current.icon;
+			return DATADIR "/icons/" + current.icon;
 		};
 
 		// forecast conditions
@@ -144,6 +138,7 @@ class CWeather
 		{
 			if (i > (int)v_forecast.size())
 				i = (int)v_forecast.size();
+				
 			return v_forecast[i].weekday;
 		};
 
@@ -151,6 +146,7 @@ class CWeather
 		{
 			if (i > (int)v_forecast.size())
 				i = (int)v_forecast.size();
+				
 			return std::to_string((int)(v_forecast[i].temperatureMin + 0.5));
 		};
 
@@ -158,6 +154,7 @@ class CWeather
 		{
 			if (i > (int)v_forecast.size())
 				i = (int)v_forecast.size();
+				
 			return std::to_string((int)(v_forecast[i].temperatureMax + 0.5));
 		};
 
@@ -165,6 +162,7 @@ class CWeather
 		{
 			if (i > (int)v_forecast.size())
 				i = (int)v_forecast.size();
+				
 			return std::to_string(v_forecast[i].windSpeed);
 		};
 
@@ -172,6 +170,7 @@ class CWeather
 		{
 			if (i > (int)v_forecast.size())
 				i = (int)v_forecast.size();
+				
 			return std::to_string(v_forecast[i].windBearing);
 		};
 
@@ -179,9 +178,10 @@ class CWeather
 		{
 			if (i > (int)v_forecast.size())
 				i = (int)v_forecast.size();
-			return ICONSDIR"/weather/" + v_forecast[i].icon;
+
+			return DATADIR "/icons/" + v_forecast[i].icon;
 		};
-#endif
 };
 
 #endif
+

@@ -117,6 +117,19 @@ int CGeneralSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	
 	if(parent)
 		parent->hide();
+		
+	if (actionKey == "ytkey")
+	{
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "tmdbkey")
+	{
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "forecastkey")
+	{
+		return RETURN_REPAINT;
+	}
 	
 	showMenu();
 	
@@ -243,16 +256,14 @@ void CGeneralSettings::showMenu()
 	// online key
 	miscSettingsGeneral->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
-	std::string ytkey = g_settings.ytkey;
+	// YT
+	miscSettingsGeneral->addItem(new CMenuForwarder(_("YT:"), true, g_settings.ytkey.c_str(), this, "ytkey"));
 	
-	CStringInputSMS* keyInput = new CStringInputSMS(_("youtube ID Key:"), ytkey.c_str());
-	miscSettingsGeneral->addItem(new CMenuForwarder(_("YT:"), true, ytkey.c_str(), keyInput));
+	// weather
+	miscSettingsGeneral->addItem(new CMenuForwarder(_("Weather Forcast"), true, g_settings.weather_api_key.c_str(), this, "forecastkey"));
 
 	// tmdb
-	std::string tmdbkey = g_settings.tmdbkey;
-
-	CStringInputSMS* tmdbkeyInput = new CStringInputSMS(_("TMDB Key:"), tmdbkey.c_str());
-	miscSettingsGeneral->addItem(new CMenuForwarder(_("TMDB:"), true, tmdbkey.c_str(), tmdbkeyInput));
+	miscSettingsGeneral->addItem(new CMenuForwarder(_("TMDB:"), true, g_settings.tmdbkey.c_str(), this, "tmdbkey"));
 	
 	// prefer tmdb preview
 	miscSettingsGeneral->addItem(new CMenuOptionChooser(_("TMDB Preview"), &g_settings.enable_tmdb_preview, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));

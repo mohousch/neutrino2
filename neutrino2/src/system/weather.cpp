@@ -37,6 +37,7 @@
 #include <system/debug.h>
 #include <system/weather.h>
 
+
 #define UPDATE_CYCLE 15 // minutes
 
 CWeather *weather = NULL;
@@ -45,6 +46,7 @@ CWeather *CWeather::getInstance()
 {
 	if (!weather)
 		weather = new CWeather();
+		
 	return weather;
 }
 
@@ -75,6 +77,7 @@ void CWeather::setCoords(std::string new_coords, std::string new_city)
 bool CWeather::checkUpdate(bool forceUpdate)
 {
 	time_t current_time = time(NULL);
+	
 	if (forceUpdate || (difftime(current_time, last_time) > (UPDATE_CYCLE * 60)))
 		return GetWeatherDetails();
 	else
@@ -87,8 +90,8 @@ bool CWeather::GetWeatherDetails()
 
 	last_time = time(NULL);
 
-	std::string lat = coords.substr(0,coords.find_first_of(','));
-	std::string lon = coords.substr(coords.find_first_of(',')+1);
+	std::string lat = coords.substr(0, coords.find_first_of(','));
+	std::string lon = coords.substr(coords.find_first_of(',') + 1);
 
 	std::string data = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=metric&lang=de&exclude=minutely,hourly,flags,alerts&appid=" + key;
 
@@ -139,19 +142,23 @@ bool CWeather::GetWeatherDetails()
 			current.icon = "unknown.png";
 		else
 			current.icon = current.icon + ".png";
+			
 		printf("[CWeather]: temp in %s (%s): %.1f - %s\n", city.c_str(), timezone.c_str(), current.temperature, current.icon.c_str());
 
 		forecast_data daily_data;
 		Json::Value elements = DataValues["daily"];
+		
 		for (unsigned int i = 0; i < elements.size(); i++)
 		{
 			daily_data.timestamp = elements[i].get("dt", 0).asDouble();
 			daily_data.weekday = (int)(localtime(&daily_data.timestamp)->tm_wday);
 			daily_data.icon = elements[i]["weather"][0].get("icon", "").asString();
+			
 			if (daily_data.icon.empty())
 				daily_data.icon = "unknown.png";
 			else
 				daily_data.icon = daily_data.icon + ".png";
+				
 			daily_data.temperatureMin = elements[i]["temp"].get("min", "").asFloat();
 			daily_data.temperatureMax = elements[i]["temp"].get("max", "").asFloat();
 			daily_data.sunriseTime = elements[i].get("sunrise", 0).asDouble();
