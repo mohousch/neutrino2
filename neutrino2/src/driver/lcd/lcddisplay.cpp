@@ -1424,10 +1424,8 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 		height = p_h;
 	}
 	
-	if (p_bpp == 32)
-		element.buffer = (uint32_t *)image;
-	else
-		element.buffer = ::convertRGB2FB32((uint8_t *)image, width, height, (chans == 4)? true : false);
+	element.buffer = ::convertBGR2FB32((uint8_t *)image, width, height, (chans == 4)? true : false);
+
 	element.x = posX;
 	element.y = posY;
 	element.width = width;
@@ -1465,10 +1463,7 @@ void CLCDDisplay::load_png_element(raw_lcd_element_t *element, int posx, int pos
 		height = p_h;
 	}
 	
-	if (p_bpp == 32)
-		element->buffer = (uint32_t *)image;
-	else
-		element->buffer = (uint32_t *)::convertRGB2FB32(image, width, height, (chans == 4)? true : false);
+	element->buffer = (uint32_t *)::convertBGR2FB32(image, width, height, (chans == 4)? true : false);
 
 	element->x = posx;
 	element->y = posy;

@@ -496,6 +496,61 @@ uint32_t * convertRGB2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, b
 	return (uint32_t *)fbbuff;
 }
 
+uint32_t * convertBGR2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
+{
+	unsigned long i;
+	uint32_t *fbbuff = NULL;
+	unsigned long count = x*y;
+	
+	fbbuff = (uint32_t *)malloc(count*sizeof(uint32_t));
+		
+	if ( fbbuff == NULL )
+	{
+		libngpng_err( "Error: malloc\n" );
+		return NULL;
+	}
+		
+	if(alpha)
+	{
+		for(i = 0; i < count; i++)
+		{
+			fbbuff[i] = ((rgbbuff[i*4 + 3] << 24) & 0xFF000000) | 
+				((rgbbuff[i*4 + 2]     << 16) & 0x00FF0000) | 
+				((rgbbuff[i*4 + 1] <<  8) & 0x0000FF00) | 
+				((rgbbuff[i*4])       & 0x000000FF);
+		}
+	}
+	else
+	{
+		switch (m_transparent) 
+		{
+			case TM_BLACK:
+				for(i = 0; i < count; i++) 
+				{
+					transp = 0;
+					if(rgbbuff[i*3] || rgbbuff[i*3 + 1] || rgbbuff[i*3 + 2])
+						transp = 0xFF;
+							
+					fbbuff[i] = (transp << 24) | ((rgbbuff[i*3 + 2] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | ((rgbbuff[i*3]) & 0xFF);
+				}
+				break;
+		
+			case TM_INI:
+				for(i = 0; i < count; i++)
+					fbbuff[i] = (transp << 24) | ((rgbbuff[i*3 + 2] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3] & 0xFF);				
+				break;
+								
+			case TM_NONE:
+			default:
+				for(i = 0; i < count; i++)
+					fbbuff[i] = 0xFF000000 | ((rgbbuff[i*3 + 2] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3] & 0xFF);
+				break;
+		}
+	}
+	
+	return (uint32_t *)fbbuff;
+}
+
 uint16_t * convertRGB2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
 	unsigned long i;
