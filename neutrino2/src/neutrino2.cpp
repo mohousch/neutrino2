@@ -860,6 +860,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.lcd_minitvfps = configfile.getInt32("lcd_minitvfps", 30);
 	g_settings.lcd_picon = configfile.getInt32("lcd_picon", 0);
 	g_settings.lcd_weather = configfile.getInt32("lcd_weather", 0);
+	g_settings.lcd_standby_clock = configfile.getInt32("lcd_standby_clock", CLCD::STANDBYCLOCK_DIGITAL);
 	// end VFD
 
 	// online epg
@@ -1387,6 +1388,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setInt32("lcd_minitvfps", g_settings.lcd_minitvfps);
 	configfile.setInt32("lcd_picon", g_settings.lcd_picon);
 	configfile.setInt32("lcd_weather", g_settings.lcd_weather);
+	configfile.setInt32("lcd_standby_clock", g_settings.lcd_standby_clock);
 	// END VFD
 
 	// online epg

@@ -44,6 +44,7 @@
 #include <sys/mman.h>
 #include <memory.h>
 #include <zlib.h>
+#include <math.h>
 
 
 #define LCDDISPLAY_DEBUG
@@ -515,7 +516,7 @@ void CLCDDisplay::disableManualBlit()
 #endif
 
 //
-void CLCDDisplay::setInverted(unsigned char inv)
+void CLCDDisplay::setInverted(uint32_t inv)
 {
 	inverted = inv;
 	update();
@@ -1400,9 +1401,9 @@ bool CLCDDisplay::dump_png(const char * const filename)
 	return ret_value;
 }
 
-int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int width, int height, int flag)
+int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int width, int height, int flag)
 {
-	lcddisplay_printf(10, "CLCDDisplay::showPNGImage: %s %d %d %d %d (flag: %d)\n", filename, posX, posY, width, height, flag);
+	lcddisplay_printf(10, "CLCDDisplay::showPNGImage: %s %d %d %d %d (flag: %d)\n", filename, posx, posy, width, height, flag);
 	
 	raw_lcd_element_t element;
 	int p_w, p_h, p_bpp;
@@ -1411,7 +1412,7 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 	::getSize(filename, &p_w, &p_h, &p_bpp, &chans);
 	
 	lcddisplay_printf(10, "CLCDDisplay::showPNGImage: real: %s %d %d %d %d\n", filename, p_w, p_h, p_bpp, chans);
-	
+	/*
 	uint8_t *image = ::getBitmap(filename);
 	
 	if (width != 0 && height != 0)
@@ -1425,9 +1426,11 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 	}
 	
 	element.buffer = ::convertBGR2FB32((uint8_t *)image, width, height, (chans == 4)? true : false);
+	*/
+	element.buffer = ::getBGRImage(filename, width, height);
 
-	element.x = posX;
-	element.y = posY;
+	element.x = posx;
+	element.y = posy;
 	element.width = width;
 	element.height = height;
 	element.bpp = p_bpp;
@@ -1435,7 +1438,7 @@ int CLCDDisplay::showPNGImage(const char *filename, int posX, int posY, int widt
 	element.stride = element.width*element.bypp;
 	element.name = filename;
 	
-	load_screen_element(&element, posX, posY);
+	load_screen_element(&element, posx, posy);
 	
 	return 0;
 }
@@ -1450,7 +1453,7 @@ void CLCDDisplay::load_png_element(raw_lcd_element_t *element, int posx, int pos
 	::getSize(element->name.c_str(), &p_w, &p_h, &p_bpp, &chans);
 	
 	lcddisplay_printf(10, "CLCDDisplay::showPNGImage: real: %s %d %d\n", element->name.c_str(), p_w, p_h);
-		
+	
 	uint8_t *image = ::getBitmap(element->name.c_str());
 	
 	if (width != 0 && height != 0)
@@ -1484,4 +1487,44 @@ void CLCDDisplay::show_png_element(raw_lcd_element_t *element, int posx, int pos
 	load_screen_element(element, posx, posy);
 }
 
+void CLCDDisplay::show_analog_clock(int hour, int min, int sec, int posx, int posy, int hour_size, int min_size)
+{
+	int time_sec, time_min, time_hour, min_x, min_y, hour_x, hour_y, dia;
+	double pi = 3.1415926535897932384626433832795, sAngleInRad, mAngleInRad, mAngleSave, hAngleInRad;
+
+	time_sec = sec;
+	time_min = min;
+	time_hour = hour;
+
+	dia = 180;
+
+	sAngleInRad = ((6 * time_sec) * (2 * pi / 360));
+	sAngleInRad -= pi / 2;
+
+	mAngleInRad = ((6 * time_min) * (2 * pi / 360));
+	mAngleSave = mAngleInRad;
+	mAngleInRad -= pi/2;
+	min_x = int((dia * 0.7 * cos(mAngleInRad)));
+	min_y = int((dia * 0.7 * sin(mAngleInRad)));
+
+	hAngleInRad = ((30 * time_hour) * (2 * pi / 360));
+	hAngleInRad += mAngleSave/12;
+	hAngleInRad -= pi/2;
+	hour_x = int((dia * 0.5 * cos(hAngleInRad)));
+	hour_y = int((dia * 0.5 * sin(hAngleInRad)));
+
+	//hour
+	for (int i = 0; i <= hour_size; i++)
+	{
+		draw_line(posx - i, posy - i, posx + hour_x, posy + hour_y, LCD_PIXEL_WHITE);
+		draw_line(posx + i, posy + i, posx + hour_x, posy + hour_y, LCD_PIXEL_WHITE);
+	}
+
+	//min
+	for (int i = 0; i <= min_size; i++)
+	{
+		draw_line(posx - i, posy - i, posx + min_x, posy + min_y, LCD_PIXEL_WHITE);
+		draw_line(posx + i, posy + i, posx + min_x, posy + min_y, LCD_PIXEL_WHITE);
+	}
+}
 

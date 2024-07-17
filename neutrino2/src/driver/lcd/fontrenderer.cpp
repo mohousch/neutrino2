@@ -321,7 +321,7 @@ void LcdFont::RenderString(int x, int y, const int width, const char * text, con
 		
 		if(pos == selected)
 		{
-			framebuffer->draw_fill_rect(x - 2, y - glyph->height - 2, x + glyph->width + 2, y + 2, CLCDDisplay::PIXEL_INV );
+			framebuffer->draw_fill_rect(x - 2, y - glyph->height - 2, x + glyph->width + 2, y + 2, LCD_PIXEL_INV );
 		}
 		
 		for (int ay = 0; ay < glyph->height; ay++)

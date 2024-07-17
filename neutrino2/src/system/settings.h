@@ -438,6 +438,7 @@ struct SNeutrinoSettings
 	int lcd_minitvfps;
 	int lcd_picon;
 	int lcd_weather;
+	int lcd_standby_clock;
 	// END VFD
 
 	// tmdb

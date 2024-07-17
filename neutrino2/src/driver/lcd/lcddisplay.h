@@ -87,7 +87,7 @@ class CLCDDisplay
 		int           fd;
 		int	      paused;
 		
-		unsigned char inverted;
+		uint32_t inverted;
 		bool 	      flipped;
 		int 	      lcd_type;
 		int 	      last_brightness;
@@ -126,13 +126,6 @@ class CLCDDisplay
 	public:
 		enum
 		{
-			PIXEL_ON  = LCD_PIXEL_ON,
-			PIXEL_OFF = LCD_PIXEL_OFF,
-			PIXEL_INV = LCD_PIXEL_INV
-		};
-		
-		enum
-		{
 			LED_BRIGHTNESS = 0,
 			LED_DEEPSTANDBY,
 			LED_BLINKINGTIME
@@ -166,7 +159,7 @@ class CLCDDisplay
 		int setLCDContrast(int contrast);
 		int setLCDBrightness(int brightness);
 		int setLED(int value, int option);
-		void setInverted( unsigned char );
+		void setInverted(uint32_t inv);
 		void setFlipped(bool);
 		//// raw buffer
 		uint32_t *_buffer;
@@ -180,9 +173,11 @@ class CLCDDisplay
 		////
 		int islocked() { return locked; }
 		////
-		int showPNGImage(const char* filename, int posX, int posY, int width = 0, int height = 0, int flag = blitAlphaBlend);
+		int showPNGImage(const char* filename, int posx, int posy, int width = 0, int height = 0, int flag = blitAlphaBlend);
 		void load_png_element(raw_lcd_element_t * element, int posx, int posy, int width = 0, int height = 0);
 		void show_png_element(raw_lcd_element_t *element, int posx, int posy, int width = 0, int height = 0);
+		////
+		void show_analog_clock(int hour, int min, int sec, int posx, int posy, int hour_size, int min_size);
 };
 
 #endif

@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: libngpng.h 01062024 mohousch Exp $
+	$Id: libngpng.h 17072024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -70,8 +70,11 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 uint32_t * convertRGB2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
 uint32_t * convertBGR2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
 uint16_t * convertRGB2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
+uint16_t * convertBGR2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
 uint8_t * convertRGB2FB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
-uint8_t *getImage(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
+uint8_t * convertBGR2FB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
+uint32_t *getImage(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
+uint32_t *getBGRImage(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
 uint8_t *getBitmap(const std::string &name);
 
 #endif

@@ -80,7 +80,7 @@ const keyval LCDMENU_EPGALIGN_OPTIONS[LCDMENU_EPGALIGN_OPTION_COUNT] =
 	{ CLCD::EPGALIGN_CENTER, _("center") }
 };
 
-#define LCDMENU_LEDCOLOR_OPTION_COUNT 4
+#define LCDMENU_LEDCOLOR_OPTION_COUNT 	4
 const keyval LCDMENU_LEDCOLOR_OPTIONS[LCDMENU_LEDCOLOR_OPTION_COUNT] =
 {
 	{ CLCD::LEDCOLOR_OFF, _("off") 	},
@@ -89,13 +89,20 @@ const keyval LCDMENU_LEDCOLOR_OPTIONS[LCDMENU_LEDCOLOR_OPTION_COUNT] =
 	{ CLCD::LEDCOLOR_PURPLE, _("purple") },
 };
 
-#define LCDMENU_MINITV_OPTION_COUNT 4
+#define LCDMENU_MINITV_OPTION_COUNT 	4
 const keyval LCDMENU_MINITV_OPTIONS[LCDMENU_MINITV_OPTION_COUNT] =
 {
 	{ CLCD::MINITV_NORMAL, _("Normal") },
 	{ CLCD::MINITV_TV, _("Mini TV") },
 	{ CLCD::MINITV_OSD, _("OSD") },
 	{ CLCD::MINITV_OSD_TV, _("OSD / TV") },
+};
+
+#define LCDMENU_STANDBY_CLOCK_OPTION_COUNT	2
+const keyval LCDMENU_STANDBY_CLOCK_OPTIONS[LCDMENU_STANDBY_CLOCK_OPTION_COUNT] =
+{
+	{ CLCD::STANDBYCLOCK_DIGITAL, _("Digital") },
+	{ CLCD::STANDBYCLOCK_ANALOG, _("Analog") }
 };
 
 CLCDSettings::CLCDSettings()
@@ -321,6 +328,9 @@ void CLCDSettings::showMenu()
 	
 	// weather
 //	lcdSettings->addItem(new CMenuOptionChooser(_("Show weather"), &g_settings.lcd_weather, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
+
+	// standby_clock
+	lcdSettings->addItem(new CMenuOptionChooser(_("Standby Clock"), &g_settings.lcd_standby_clock, LCDMENU_STANDBY_CLOCK_OPTIONS, LCDMENU_STANDBY_CLOCK_OPTION_COUNT, true, this, CRCInput::RC_nokey, NULL, false, false));
 	
 	// dimm-time
 	m1 = new CMenuForwarder(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, this, "set_dimm_timeout");

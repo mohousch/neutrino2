@@ -510,6 +510,12 @@ class CLCD
 			STATUSLINE_PLAYTIME,
 			STATUSLINE_VOLUME
 		};
+		
+		enum STANDBYCLOCK
+		{
+			STANDBYCLOCK_DIGITAL,
+			STANDBYCLOCK_ANALOG
+		};
 
 	private:
 		class FontsDef

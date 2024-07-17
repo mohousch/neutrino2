@@ -606,6 +606,61 @@ uint16_t * convertRGB2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, b
 	return (uint16_t *)fbbuff;
 }
 
+uint16_t * convertBGR2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
+{
+	unsigned long i;
+	uint16_t *fbbuff = NULL;
+	unsigned long count = x*y;
+	
+	fbbuff = (uint16_t *)malloc(count*sizeof(uint16_t));
+		
+	if ( fbbuff == NULL )
+	{
+		libngpng_err( "Error: malloc\n" );
+		return NULL;
+	}
+		
+	if(alpha)
+	{
+		for(i = 0; i < count; i++)
+		{
+			fbbuff[i] = ((rgbbuff[i*4 + 3] << 24) & 0xFF000000) | 
+				((rgbbuff[i*4 + 2]     << 16) & 0x00FF0000) | 
+				((rgbbuff[i*4 + 1] <<  8) & 0x0000FF00) | 
+				((rgbbuff[i*4])       & 0x000000FF);
+		}
+	}
+	else
+	{
+		switch (m_transparent) 
+		{
+			case TM_BLACK:
+				for(i = 0; i < count; i++) 
+				{
+					transp = 0;
+					if(rgbbuff[i*3] || rgbbuff[i*3 + 1] || rgbbuff[i*3 + 2])
+						transp = 0xFF;
+							
+					fbbuff[i] = (transp << 24) | ((rgbbuff[i*3 + 2] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3] & 0xFF);
+				}
+				break;
+		
+			case TM_INI:
+				for(i = 0; i < count; i++)
+					fbbuff[i] = (transp << 24) | ((rgbbuff[i*3 + 2] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3] & 0xFF);				
+				break;
+								
+			case TM_NONE:
+			default:
+				for(i = 0; i < count; i++)
+					fbbuff[i] = 0xFF000000 | ((rgbbuff[i*3 + 2] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3] & 0xFF);
+				break;
+		}
+	}
+	
+	return (uint16_t *)fbbuff;
+}
+
 uint8_t * convertRGB2FB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
 	unsigned long i;
@@ -661,7 +716,62 @@ uint8_t * convertRGB2FB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, boo
 	return (uint8_t *)fbbuff;
 }
 
-uint8_t * getImage(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
+uint8_t * convertBGR2FB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
+{
+	unsigned long i;
+	uint8_t *fbbuff = NULL;
+	unsigned long count = x*y;
+	
+	fbbuff = (uint8_t *)malloc(count*sizeof(uint8_t));
+		
+	if ( fbbuff == NULL )
+	{
+		libngpng_err( "Error: malloc\n" );
+		return NULL;
+	}
+		
+	if(alpha)
+	{
+		for(i = 0; i < count; i++)
+		{
+			fbbuff[i] = ((rgbbuff[i*4 + 3] << 24) & 0xFF000000) | 
+				((rgbbuff[i*4 + 2]     << 16) & 0x00FF0000) | 
+				((rgbbuff[i*4 + 1] <<  8) & 0x0000FF00) | 
+				((rgbbuff[i*4])       & 0x000000FF);
+		}
+	}
+	else
+	{
+		switch (m_transparent) 
+		{
+			case TM_BLACK:
+				for(i = 0; i < count; i++) 
+				{
+					transp = 0;
+					if(rgbbuff[i*3] || rgbbuff[i*3 + 1] || rgbbuff[i*3 + 2])
+						transp = 0xFF;
+							
+					fbbuff[i] = (transp << 24) | ((rgbbuff[i*3 + 2] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3] & 0xFF);
+				}
+				break;
+		
+			case TM_INI:
+				for(i = 0; i < count; i++)
+					fbbuff[i] = (transp << 24) | ((rgbbuff[i*3 + 2] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3] & 0xFF);				
+				break;
+								
+			case TM_NONE:
+			default:
+				for(i = 0; i < count; i++)
+					fbbuff[i] = 0xFF000000 | ((rgbbuff[i*3 + 2] << 16) & 0xFF0000) | ((rgbbuff[i*3 + 1] << 8) & 0xFF00) | (rgbbuff[i*3] & 0xFF);
+				break;
+		}
+	}
+	
+	return (uint8_t *)fbbuff;
+}
+
+uint32_t * getImage(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
 {
 	int x = 0;
 	int y = 0;
@@ -669,7 +779,7 @@ uint8_t * getImage(const std::string &name, int width, int height, int transp, S
 	int channels = 0;
 	CFormathandler * fh = NULL;
 	uint8_t * buffer = NULL;
-	uint8_t *ret = NULL;
+	uint32_t *ret = NULL;
 	int load_ret = FH_ERROR_MALLOC;
 
 	//
@@ -677,7 +787,7 @@ uint8_t * getImage(const std::string &name, int width, int height, int transp, S
 	
   	if (fh) 
 	{
-		buffer = (uint8_t *) malloc(x*y*4);
+		buffer = (uint8_t *)malloc(x*y*4);
 		
 		if (buffer == NULL) 
 		{
@@ -719,13 +829,97 @@ uint8_t * getImage(const std::string &name, int width, int height, int transp, S
 			{
 				// alpha
 				if (channels == 4)
-					ret = (uint8_t *)convertRGB2FB32(buffer, x, y, true);
+					ret = (uint32_t *)convertRGB2FB32(buffer, x, y, true);
 				else
-					ret = (uint8_t *)convertRGB2FB32(buffer, x, y, false, transp, TM_BLACK); // TM_BLACK
+					ret = (uint32_t *)convertRGB2FB32(buffer, x, y, false, transp, TM_BLACK); // TM_BLACK
 			}
 			else
 			{
-				ret = (uint8_t *)convertRGB2FB32(buffer, x, y, false, transp, TM_NONE); //TM_NONE
+				ret = (uint32_t *)convertRGB2FB32(buffer, x, y, false, transp, TM_NONE); //TM_NONE
+			}
+			
+			free(buffer);
+		} 
+		else 
+		{
+	  		libngpng_err("Error decoding file %s\n", name.c_str ());
+	  		free (buffer);
+	  		buffer = NULL;
+		}
+  	} 
+	else
+	{
+		libngpng_err("Error open file %s\n", name.c_str ());
+	}
+
+	return ret;
+}
+
+uint32_t * getBGRImage(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
+{
+	int x = 0;
+	int y = 0;
+	int nbpp = 0;
+	int channels = 0;
+	CFormathandler * fh = NULL;
+	uint8_t * buffer = NULL;
+	uint32_t *ret = NULL;
+	int load_ret = FH_ERROR_MALLOC;
+
+	//
+  	fh = fh_getsize(name.c_str(), &x, &y, INT_MAX, INT_MAX); // unscaled
+	
+  	if (fh) 
+	{
+		buffer = (uint8_t *)malloc(x*y*4);
+		
+		if (buffer == NULL) 
+		{
+		  	libngpng_err("Error: malloc\n");
+		  	return NULL;
+		}
+		
+		if ((name.find(".png") == (name.length() - 4)) && (fh_png_id(name.c_str())))
+			load_ret = int_png_load(name.c_str(), &buffer, &x, &y, &nbpp, &channels);
+		else if (name.find(".svg") == (name.length() - 4))
+		{
+			load_ret = svg_load_resize(name.c_str(), &buffer, &x, &y, width, height);
+			channels = 4;
+		}
+		else
+			load_ret = fh->get_pic(name.c_str(), &buffer, &x, &y);
+
+		if (load_ret == FH_ERROR_OK) 
+		{
+			// resize
+			if( (width != 0 && height != 0) && (x != width || y != height) )
+			{
+				// alpha
+				if(channels == 4)
+				{
+					buffer = resize(buffer, x, y, width, height, scaletype, true);
+				}
+				else
+				{
+					buffer = resize(buffer, x, y, width, height, scaletype);
+				}
+					
+				x = width ;
+				y = height;
+			}
+			
+			// convert
+			if( name.find(".png") == (name.length() - 4) )
+			{
+				// alpha
+				if (channels == 4)
+					ret = (uint32_t *)convertBGR2FB32(buffer, x, y, true);
+				else
+					ret = (uint32_t *)convertBGR2FB32(buffer, x, y, false, transp, TM_BLACK); // TM_BLACK
+			}
+			else
+			{
+				ret = (uint32_t *)convertBGR2FB32(buffer, x, y, false, transp, TM_NONE); //TM_NONE
 			}
 			
 			free(buffer);

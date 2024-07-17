@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-07-11 00:15+0200\n"
+"POT-Creation-Date: 2024-07-17 14:01+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -102,6 +102,10 @@ msgstr "Alle Sender"
 
 msgid "Alpha Setup"
 msgstr "Alpha-Setup"
+
+#, fuzzy
+msgid "Analog"
+msgstr "Analogausgang"
 
 msgid "Analog Output"
 msgstr "Analogausgang"
@@ -520,6 +524,10 @@ msgstr "DiSEqC-Wiederholungen"
 
 msgid "Diashow mode"
 msgstr "Diashow-Modus"
+
+#, fuzzy
+msgid "Digital"
+msgstr "Dolby Digital"
 
 msgid "Dim timeout"
 msgstr "Dimm-Timeout"
@@ -2208,6 +2216,10 @@ msgstr "Standby"
 
 msgid "Standby Brightness"
 msgstr "Standby-Helligkeit"
+
+#, fuzzy
+msgid "Standby Clock"
+msgstr "Standby"
 
 msgid "Start"
 msgstr "Start"
