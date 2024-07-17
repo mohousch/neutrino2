@@ -1487,9 +1487,9 @@ void CLCDDisplay::show_png_element(raw_lcd_element_t *element, int posx, int pos
 	load_screen_element(element, posx, posy);
 }
 
-void CLCDDisplay::show_analog_clock(int hour, int min, int sec, int posx, int posy, int hour_size, int min_size)
+void CLCDDisplay::show_analog_clock(int hour, int min, int sec, int posx, int posy, int hour_size, int min_size, int sec_size)
 {
-	int time_sec, time_min, time_hour, min_x, min_y, hour_x, hour_y, dia;
+	int time_sec, time_min, time_hour, sec_x, sec_y, min_x, min_y, hour_x, hour_y, dia;
 	double pi = 3.1415926535897932384626433832795, sAngleInRad, mAngleInRad, mAngleSave, hAngleInRad;
 
 	time_sec = sec;
@@ -1498,33 +1498,45 @@ void CLCDDisplay::show_analog_clock(int hour, int min, int sec, int posx, int po
 
 	dia = 180;
 
+	// sec
 	sAngleInRad = ((6 * time_sec) * (2 * pi / 360));
 	sAngleInRad -= pi / 2;
+	sec_x = int((dia * 0.9 * cos(sAngleInRad)));
+	sec_y = int((dia * 0.9 * sin(sAngleInRad)));
 
+	// min
 	mAngleInRad = ((6 * time_min) * (2 * pi / 360));
 	mAngleSave = mAngleInRad;
 	mAngleInRad -= pi/2;
 	min_x = int((dia * 0.7 * cos(mAngleInRad)));
 	min_y = int((dia * 0.7 * sin(mAngleInRad)));
 
+	// hr
 	hAngleInRad = ((30 * time_hour) * (2 * pi / 360));
 	hAngleInRad += mAngleSave/12;
 	hAngleInRad -= pi/2;
 	hour_x = int((dia * 0.5 * cos(hAngleInRad)));
 	hour_y = int((dia * 0.5 * sin(hAngleInRad)));
 
-	//hour
+	// hour
 	for (int i = 0; i <= hour_size; i++)
 	{
 		draw_line(posx - i, posy - i, posx + hour_x, posy + hour_y, LCD_PIXEL_WHITE);
 		draw_line(posx + i, posy + i, posx + hour_x, posy + hour_y, LCD_PIXEL_WHITE);
 	}
 
-	//min
+	// min
 	for (int i = 0; i <= min_size; i++)
 	{
 		draw_line(posx - i, posy - i, posx + min_x, posy + min_y, LCD_PIXEL_WHITE);
 		draw_line(posx + i, posy + i, posx + min_x, posy + min_y, LCD_PIXEL_WHITE);
+	}
+	
+	// sec
+	for (int i = 0; i <= min_size; i++)
+	{
+		draw_line(posx - i, posy - i, posx + sec_x, posy + sec_y, LCD_PIXEL_RED);
+		draw_line(posx + i, posy + i, posx + sec_x, posy + sec_y, LCD_PIXEL_RED);
 	}
 }
 

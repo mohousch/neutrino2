@@ -140,7 +140,7 @@ class CLCDDisplay
 		void resume();
 
 		void update();
-		void blitBox2LCD(int flag = 0);
+		void blitBox2LCD(int flag = 2);
 		void blit(void);
 		////
 		void draw_point(const int x, const int y, const uint32_t color);
@@ -177,7 +177,7 @@ class CLCDDisplay
 		void load_png_element(raw_lcd_element_t * element, int posx, int posy, int width = 0, int height = 0);
 		void show_png_element(raw_lcd_element_t *element, int posx, int posy, int width = 0, int height = 0);
 		////
-		void show_analog_clock(int hour, int min, int sec, int posx, int posy, int hour_size, int min_size);
+		void show_analog_clock(int hour, int min, int sec, int posx, int posy, int hour_size, int min_size, int sec_size);
 };
 
 #endif

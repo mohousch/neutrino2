@@ -95,32 +95,32 @@ class CWeather
 		// current conditions
 		std::string getCurrentTimestamp()
 		{
-			return std::to_string((int)(current.timestamp));
+			return toString((int)(current.timestamp));
 		};
 
 		std::string getCurrentTemperature()
 		{
-			return std::to_string((int)(current.temperature + 0.5));
+			return toString((int)(current.temperature + 0.5));
 		};
 
 		std::string getCurrentHumidity()
 		{
-			return std::to_string((int)(current.humidity * 100.0));
+			return toString((int)(current.humidity * 100.0));
 		};
 
 		std::string getCurrentPressure()
 		{
-			return std::to_string(current.pressure);
+			return toString(current.pressure);
 		};
 
 		std::string getCurrentWindSpeed()
 		{
-			return std::to_string(current.windSpeed);
+			return toString(current.windSpeed);
 		};
 
 		std::string getCurrentWindBearing()
 		{
-			return std::to_string(current.windBearing);
+			return toString(current.windBearing);
 		};
 
 		std::string getCurrentIcon()
@@ -147,7 +147,7 @@ class CWeather
 			if (i > (int)v_forecast.size())
 				i = (int)v_forecast.size();
 				
-			return std::to_string((int)(v_forecast[i].temperatureMin + 0.5));
+			return toString((int)(v_forecast[i].temperatureMin + 0.5));
 		};
 
 		std::string getForecastTemperatureMax(int i = 0)
@@ -155,7 +155,7 @@ class CWeather
 			if (i > (int)v_forecast.size())
 				i = (int)v_forecast.size();
 				
-			return std::to_string((int)(v_forecast[i].temperatureMax + 0.5));
+			return toString((int)(v_forecast[i].temperatureMax + 0.5));
 		};
 
 		std::string getForecastWindSpeed(int i = 0)
@@ -163,7 +163,7 @@ class CWeather
 			if (i > (int)v_forecast.size())
 				i = (int)v_forecast.size();
 				
-			return std::to_string(v_forecast[i].windSpeed);
+			return toString(v_forecast[i].windSpeed);
 		};
 
 		std::string getForecastWindBearing(int i = 0)
@@ -171,7 +171,7 @@ class CWeather
 			if (i > (int)v_forecast.size())
 				i = (int)v_forecast.size();
 				
-			return std::to_string(v_forecast[i].windBearing);
+			return toString(v_forecast[i].windBearing);
 		};
 
 		std::string getForecastIcon(int i = 0)

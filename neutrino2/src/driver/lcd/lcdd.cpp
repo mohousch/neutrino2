@@ -1146,7 +1146,7 @@ void CLCD::showTime(bool force)
 			else if (g_settings.lcd_standby_clock == STANDBYCLOCK_ANALOG)
 			{
 				display->showPNGImage(element[ELEMENT_ACLOCK].name.c_str(), 0, 0, lcd_width, lcd_height);
-				display->show_analog_clock(t->tm_hour, t->tm_min, t->tm_sec, lcd_width/2, lcd_height/2, 5, 3);
+				display->show_analog_clock(t->tm_hour, t->tm_min, t->tm_sec, lcd_width/2, lcd_height/2, 4, 2, 1);
 			}
 		}
 		else
@@ -2636,13 +2636,13 @@ static std::string st_current_wcity = "";
 static std::string st_current_wtimestamp = "";
 static std::string st_current_wtemp = "";
 static std::string st_current_wwind = "";
-static std::string st_current_wicon = "";
+static std::string st_current_wicon = DATADIR "/icons/unknown.png";
 
 static std::string st_next_wcity = "";
 static std::string st_next_wtimestamp = "";
 static std::string st_next_wtemp = "";
 static std::string st_next_wwind = "";
-static std::string st_next_wicon = "";
+static std::string st_next_wicon = DATADIR "/icons/unknown.png";
 
 void CLCD::showWeather(bool standby)
 {

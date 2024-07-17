@@ -309,6 +309,7 @@ struct gPalette
 //
 enum
 {
+	blitAlphaNone		= 0,
         blitAlphaTest 		= 1,
         blitAlphaBlend 		= 2
 };
