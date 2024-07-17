@@ -1127,13 +1127,10 @@ void CLCD::showTime(bool force)
 
 		if (mode == MODE_STANDBY)
 		{
-//			display->clear_screen(); // clear whole lcd
-
-			////test
 			if (g_settings.lcd_standby_clock == STANDBYCLOCK_DIGITAL)
 			{
 				// refresh
-				display->draw_fill_rect((lcd_width - 1 - fonts.timestandby->getRenderWidth(timestr))/2, (lcd_height - fonts.timestandby->getHeight())/2, fonts.time->getRenderWidth("00:00:00") + 1, lcd_height, LCD_PIXEL_OFF);
+				display->draw_fill_rect(- 1, -1, lcd_width - 1, lcd_height - 1, LCD_PIXEL_BLACK);
 
 				// time
 				fonts.timestandby->RenderString((lcd_width - 1 - fonts.timestandby->getRenderWidth(timestr))/2, lcd_height/2, fonts.timestandby->getRenderWidth("00:00:00"), timestr, LCD_PIXEL_ON);
