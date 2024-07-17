@@ -43,6 +43,7 @@
 #include <string.h>
 #include <sys/mman.h>
 #include <memory.h>
+#include <zlib.h>
 
 
 #define LCDDISPLAY_DEBUG
@@ -1289,9 +1290,9 @@ void CLCDDisplay::clear_screen()
 	blit();
 }
 
-void CLCDDisplay::dump_screen(uint8_t **screen) 
+void CLCDDisplay::dump_screen(uint32_t **screen) 
 {
-	memmove(*screen, (uint8_t *)_buffer, raw_buffer_size);
+	memmove(*screen, (uint32_t *)_buffer, raw_buffer_size);
 }
 
 void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int top) 
@@ -1309,14 +1310,14 @@ void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int
 	free(element->buffer);
 }
 
-void CLCDDisplay::load_screen(uint8_t **const screen) 
+void CLCDDisplay::load_screen(uint32_t **const screen) 
 {
 	raw_lcd_element_t element;
 	
-	element.buffer = (uint32_t *)*screen;
+	element.buffer = *screen;
 	element.width = xres;
 	element.height = yres;
-	element.bpp = 32;
+	element.bpp = bpp;
 	
 	load_screen_element(&element, 0, 0);
 }
@@ -1353,21 +1354,18 @@ bool CLCDDisplay::dump_png(const char * const filename)
 			                printf("[CLCDDisplay] Error during init_io\n");
 				else
 				{
-					unsigned int lcd_height = yres;
-					unsigned int lcd_width = xres;
-
         				png_init_io(png_ptr, fp);
 
         				// write header
         				if (setjmp(png_jmpbuf(png_ptr)))
         				        printf("[CLCDDisplay] Error during writing header\n");
 
-        				png_set_IHDR(png_ptr, info_ptr, lcd_width, lcd_height,
-        				             bpp, PNG_COLOR_TYPE_GRAY, PNG_INTERLACE_NONE,
-        				             PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
-
+        				png_set_IHDR(png_ptr, info_ptr, xres, yres, bpp/bypp, PNG_COLOR_TYPE_RGB_ALPHA,
+		PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+					png_set_filter(png_ptr, 0, PNG_FILTER_NONE|PNG_FILTER_SUB|PNG_FILTER_PAETH);
+					png_set_compression_level(png_ptr, Z_BEST_COMPRESSION);
         				png_write_info(png_ptr, info_ptr);
-
+					png_set_packing(png_ptr);
 
         				// write bytes
 					if (setjmp(png_jmpbuf(png_ptr)))
@@ -1379,10 +1377,10 @@ bool CLCDDisplay::dump_png(const char * const filename)
 					ret_value = true;
 
 					fbptr = (png_byte *)_buffer;
-					for (i = 0; i < lcd_height; i++)
+					for (i = 0; i < yres; i++)
 					{
 						png_write_row(png_ptr, fbptr);
-						fbptr += lcd_width;
+						fbptr += xres;
 					}
 
         				// end write

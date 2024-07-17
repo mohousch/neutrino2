@@ -157,8 +157,8 @@ class CLCDDisplay
 		void draw_polygon(int num_vertices, int *vertices, uint32_t color);
 		////
 		void load_screen_element(raw_lcd_element_t * element, int left, int top);
-		void load_screen(uint8_t ** const screen);
-		void dump_screen(uint8_t **screen);
+		void load_screen(uint32_t ** const screen);
+		void dump_screen(uint32_t **screen);
 		bool dump_png(const char * const filename);
 		//
 		void clear_screen();

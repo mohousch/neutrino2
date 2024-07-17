@@ -718,7 +718,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	std::string event[4];
 	int namelines = 0, eventlines = 0, maxnamelines = 2;
 	
-	if (g_settings.lcd_picon || g_settings.lcd_weather)
+	if ( (g_settings.lcd_picon || g_settings.lcd_weather) && mode == MODE_TVRADIO)
 		maxnamelines = 1;
 
 	if ((showmode & CLCD::EPGMODE_CHANNEL) && !big.empty())
@@ -751,7 +751,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	int maxeventlines = 4 - namelines;
 	maxeventlines = ((lcd_height - element[ELEMENT_BANNER].height - fonts.time->getHeight()) / fonts.menu->getHeight()) - namelines;
 	
-	if (g_settings.lcd_picon || g_settings.lcd_weather)
+	if ( (g_settings.lcd_picon || g_settings.lcd_weather) && mode == MODE_TVRADIO)
 		maxeventlines = 1;
 
 	if ((showmode & CLCD::EPGMODE_TITLE) && !small.empty())
@@ -1217,7 +1217,7 @@ void CLCD::showRCLock(int duration)
 		return;
 	
 #ifdef ENABLE_LCD
-	uint8_t * curr_screen = new uint8_t[display->raw_buffer_size];
+	uint32_t * curr_screen = new uint32_t[display->raw_buffer_size];
 
 	// Saving the whole screen is not really nice since the clock is updated
 	// every second. Restoring the screen can cause a short travel to the past ;)
