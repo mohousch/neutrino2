@@ -1127,7 +1127,7 @@ void CLCD::showTime(bool force)
 
 		if (mode == MODE_STANDBY)
 		{
-			display->clear_screen(); // clear whole lcd
+//			display->clear_screen(); // clear whole lcd
 
 			////test
 			if (g_settings.lcd_standby_clock == STANDBYCLOCK_DIGITAL)
@@ -1791,6 +1791,8 @@ void CLCD::setMode(const MODES m, const char * const title)
 		
 	case MODE_STANDBY:
 	{
+		// clear lcd
+		display->clear_screen();
 		showclock = true;
 		showTime();
 		break;
