@@ -290,7 +290,7 @@ struct gRGB
     
     	void alpha_blend(const gRGB other)
     	{
-#define BLEND(x, y, a) (y + (((x-y) * a)>>8))
+#define BLEND(x, y, a) (y + (((x - y) * a)>>8))
         	b = BLEND(other.b, b, other.a);
         	g = BLEND(other.g, g, other.a);
         	r = BLEND(other.r, r, other.a);

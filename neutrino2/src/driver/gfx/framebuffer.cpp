@@ -712,9 +712,9 @@ fb_pixel_t *CFrameBuffer::paintBoxRel2Buf(const int dx, const int dy, const fb_p
 		return NULL;
 	}
 
-	fb_pixel_t* pixBuf = NULL;
+	fb_pixel_t *pixBuf = NULL;
 	
-	pixBuf = (fb_pixel_t*)malloc(dx*dy*sizeof(fb_pixel_t));
+	pixBuf = (fb_pixel_t *)malloc(dx*dy*sizeof(fb_pixel_t));
 	
 	if (pixBuf == NULL) 
 	{
@@ -823,7 +823,7 @@ void CFrameBuffer::paintBoxRel(const int x, const int y, const int dx, const int
 		free(gradientBuf);
 	}
 
-	if(mode > NOGRADIENT || (type && radius))
+	if(type && radius)
 		blitRoundedBox2FB(boxBuf, dx, dy, x, y);
 	else
 		blitBox2FB(boxBuf, dx, dy, x, y);
@@ -1122,7 +1122,7 @@ bool CFrameBuffer::paintIconRaw(const std::string & filename, const int x, const
 }
 
 //
-bool CFrameBuffer::paintIcon(const std::string& filename, const int x, const int y, const int h, bool paint, int width, int height)
+bool CFrameBuffer::paintIcon(const std::string &filename, const int x, const int y, const int h, bool paint, int width, int height)
 {
 	dprintf(DEBUG_DEBUG, "CFrameBuffer::paintIcon: %s\n", filename.c_str());
 	
@@ -1512,7 +1512,7 @@ void CFrameBuffer::clearFrameBuffer()
 }
 
 // blitRoundedBox2FB
-void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const uint32_t &height, const uint32_t &xoff, const uint32_t &yoff, uint32_t xp, uint32_t yp)
+void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const uint32_t &height, const uint32_t &xoff, const uint32_t &yoff)
 { 
 	uint32_t xc = (width > xRes) ? (uint32_t)xRes : width;
 	uint32_t yc = (height > yRes) ? (uint32_t)yRes : height;
@@ -1525,18 +1525,17 @@ void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const 
  
 	for (uint32_t line = 0; line < yc; line++)	
 	{
-		fb_pixel_t *pixpos = &data[(line + yp) * xc];
+		fb_pixel_t *pixpos = &data[(line) * xc];
 		
 		for (uint32_t pos = xoff; pos < xoff + xc; pos++) 
 		{
 			d2 = (fb_pixel_t *) fbp + pos;
 			
-			//don't paint backgroundcolor (*pixpos = 0x00000000)
-			if (*pixpos + xp)
-				*d2 = *(pixpos + xp);
+			if ( (*pixpos) )
+				*d2 = *(pixpos);
 			else
 			{
-				uint8_t* in = (uint8_t *)(pixpos + xp);
+				uint8_t* in = (uint8_t *)(pixpos);
 				uint8_t* out = (uint8_t *)d2;
 #if __BYTE_ORDER == __LITTLE_ENDIAN
 				int a = in[3];
@@ -1566,16 +1565,15 @@ void CFrameBuffer::blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, ui
 	int yc = (height > yRes) ? yRes : height;
 	
 	fb_pixel_t *data = (fb_pixel_t *) fbbuff;
-
 	uint8_t *d = ((uint8_t *)getFrameBufferPointer()) + xoff * sizeof(fb_pixel_t) + stride * yoff;
 	fb_pixel_t *d2;
 
-	for (int count = 0; count < yc; count++ ) 
+	for (int count = 0; count < yc - yp; count++ ) 
 	{
 		fb_pixel_t * pixpos = &data[(count + yp) * width];
 		d2 = (fb_pixel_t *) d;
 		
-		for (int count2 = 0; count2 < xc; count2++ ) 
+		for (int count2 = 0; count2 < xc - xp; count2++ ) 
 		{
 			fb_pixel_t pix = *(pixpos + xp);
 			
@@ -1583,8 +1581,9 @@ void CFrameBuffer::blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, ui
 				*d2 = pix;
 			else
 			{
-				uint8_t* in = (uint8_t *)(pixpos + xp);
-				uint8_t* out = (uint8_t *)d2;
+				uint8_t *in = (uint8_t *)(pixpos + xp);
+				uint8_t *out = (uint8_t *)d2;
+				
 #if __BYTE_ORDER == __LITTLE_ENDIAN
 				int a = in[3];
 #elif __BYTE_ORDER == __BIG_ENDIAN
@@ -1593,9 +1592,11 @@ void CFrameBuffer::blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, ui
 				in++;
 #endif				
 				*out = (*out + ((*in - *out) * a) / 256);
-				in++; out++;
+				in++; 
+				out++;
 				*out = (*out + ((*in - *out) * a) / 256);
-				in++; out++;
+				in++; 
+				out++;
 				*out = (*out + ((*in - *out) * a) / 256);
 			}
 			
@@ -1785,6 +1786,16 @@ bool CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int
 	
 	if(!getActive())
 		return false;
+		
+	int i_w, i_h, i_bpp, i_chans;
+	
+	::getSize(name.c_str(), &i_w, &i_h, &i_bpp, &i_chans);
+	
+	if (width == 0 && height == 0)
+	{
+		width = i_w;
+		height = i_h;
+	}
 
 	bool isPNG = false;
 	

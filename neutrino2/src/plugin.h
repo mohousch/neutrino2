@@ -156,6 +156,7 @@
 #include <system/ytparser.h>
 #include <system/httptool.h>
 #include <system/channellogo.h>
+#include <system/weather.h>
 
 //
 #include <zapit/frontend_c.h>
