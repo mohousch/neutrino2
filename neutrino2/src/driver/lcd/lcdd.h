@@ -445,7 +445,6 @@ class LcdFontRenderClass;
 class CLCD
 {
 	public:
-
 		enum MODES
 		{
 			MODE_TVRADIO,
@@ -456,10 +455,8 @@ class CLCD
 			MODE_AUDIO,
 			MODE_MOVIE,
 			MODE_PIC,
-			MODE_FILEBROWSER,
 			MODE_PROGRESSBAR,
-			MODE_PROGRESSBAR2,
-			MODE_INFOBOX
+			MODE_PROGRESSBAR2
 		};
 		
 		enum PLAYMODES
@@ -565,9 +562,14 @@ class CLCD
 		int                             last_toggle_state_power;
 		int				clearClock;
 		unsigned int                    timeout_cnt;
-
+		////
+		bool m_progressShowEscape;
+		std::string  m_progressHeaderGlobal;
+		std::string  m_progressHeaderLocal;
+		int m_progressGlobal;
+		int m_progressLocal;
+		////
 		void count_down();
-
 		static void* TimeThread(void*);
 		bool lcdInit(const char * fontfile1, const char * fontname1, 
 		             const char * fontfile2 = NULL, const char * fontname2 = NULL,
@@ -613,6 +615,8 @@ class CLCD
 		void showPlayMode(PLAYMODES m = PLAY_MODE_PLAY);
 		////
 		void showWeather(bool standby);
+		void showProgressBar(int global = -1,const char * const text = NULL,int show_escape = -1,int timer = -1);
+		void showProgressBar2(int local = -1,const char * const text_local = NULL,int global = -1,const char * const text_global = NULL,int show_escape = -1);
 		////
 		void setBrightness(int);
 		int getBrightness();
@@ -653,27 +657,6 @@ class CLCD
 		void openDevice();
 		void closeDevice();
 #endif
-		
-	private:
-		CFileList* m_fileList;
-		int m_fileListPos;
-		std::string m_fileListHeader;
-
-		std::string m_infoBoxText;
-		std::string m_infoBoxTitle;
-		int m_infoBoxTimer;   // for later use
-		bool m_infoBoxAutoNewline;
-		
-		bool m_progressShowEscape;
-		std::string  m_progressHeaderGlobal;
-		std::string  m_progressHeaderLocal;
-		int m_progressGlobal;
-		int m_progressLocal;
-	public:
-		void showFilelist(int flist_pos = -1,CFileList* flist = NULL,const char * const mainDir=NULL);
-		void showInfoBox(const char * const title = NULL,const char * const text = NULL,int autoNewline = -1,int timer = -1);
-		void showProgressBar(int global = -1,const char * const text = NULL,int show_escape = -1,int timer = -1);
-		void showProgressBar2(int local = -1,const char * const text_local = NULL,int global = -1,const char * const text_global = NULL,int show_escape = -1);
 };
 
 #endif
