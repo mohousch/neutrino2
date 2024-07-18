@@ -1537,6 +1537,7 @@ void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const 
 			{
 				uint8_t* in = (uint8_t *)(pixpos);
 				uint8_t* out = (uint8_t *)d2;
+				
 #if __BYTE_ORDER == __LITTLE_ENDIAN
 				int a = in[3];
 #elif __BYTE_ORDER == __BIG_ENDIAN
@@ -1545,9 +1546,11 @@ void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const 
 				in++;
 #endif				
 				*out = (*out + ((*in - *out) * a) / 256);
-				in++; out++;
+				in++; 
+				out++;
 				*out = (*out + ((*in - *out) * a) / 256);
-				in++; out++;
+				in++; 
+				out++;
 				*out = (*out + ((*in - *out) * a) / 256);
 			}
 
