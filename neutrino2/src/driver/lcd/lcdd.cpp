@@ -2453,7 +2453,8 @@ void CLCD::showWeather(bool standby)
 	// right
 	ntx = lcd_width - 50;
 	nix = lcd_width - 50;
-	y = lcd_height - fonts.time->getHeight() - 55;
+	//y = lcd_height - fonts.time->getHeight() - 55;
+	y = lcd_height - fonts.time->getHeight() - 2 - 60; 
 	
 	int forecast = 1; // 0 is current day
 
@@ -2498,34 +2499,30 @@ void CLCD::showWeather(bool standby)
 		next_wicon = st_next_wicon;
 	}
 
-
 	// current
-	if ((current_wicon != "") && cix)
+	if (current_wicon != "")
 	{
 		display->showPNGImage(current_wicon.c_str(), cix, y, 50, 50);
 	}
 		
-	if ((current_wtemp != "") && ctx)
+	if (current_wtemp != "")
 	{
 		current_wtemp += "°";
 			
-		fonts.menu->RenderString(ctx, y, 50, current_wtemp.c_str(), LCD_PIXEL_WHITE);
+		fonts.time->RenderString(ctx + 15, y + 50 + fonts.time->getHeight()/2, 50, current_wtemp.c_str(), LCD_PIXEL_WHITE, 0, true);
 	}
 
 	// next
-	if ((next_wicon != "") && nix)
+	if (next_wicon != "")
 	{
 		display->showPNGImage(next_wicon.c_str(), nix, y, 50, 50);
 	}
 		
-	if ((next_wtemp != "") && ntx)
+	if (next_wtemp != "")
 	{
 		next_wtemp += "°";
-		int offset;
-			
-		offset = std::max(0, fonts.menu->getRenderWidth("88") - fonts.menu->getRenderWidth(next_wtemp.c_str()));
 
-		fonts.menu->RenderString(ntx + offset, y, 50, next_wtemp.c_str(), LCD_PIXEL_WHITE);
+		fonts.time->RenderString(ntx + 15, y + 50 + fonts.time->getHeight()/2, 50, next_wtemp.c_str(), LCD_PIXEL_WHITE, 0, true);
 			
 	}
 }
