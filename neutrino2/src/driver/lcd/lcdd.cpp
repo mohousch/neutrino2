@@ -2437,9 +2437,9 @@ static std::string st_current_wicon = DATADIR "/icons/unknown.png";
 
 static std::string st_next_wcity = "";
 static std::string st_next_wtimestamp = "";
-static std::string st_next_wtemp = "?";
+static std::string st_next_wtemp = "";
 static std::string st_next_wwind = "";
-static std::string st_next_wicon = DATADIR "/icons/unknown.png";
+static std::string st_next_wicon = "";
 
 void CLCD::showWeather(bool standby)
 {
