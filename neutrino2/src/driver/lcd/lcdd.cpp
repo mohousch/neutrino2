@@ -2431,13 +2431,13 @@ void CLCD::showProgressBar2(int local,const char * const text_local, int global,
 // weather
 static std::string st_current_wcity = "";
 static std::string st_current_wtimestamp = "";
-static std::string st_current_wtemp = "";
+static std::string st_current_wtemp = "?";
 static std::string st_current_wwind = "";
 static std::string st_current_wicon = DATADIR "/icons/unknown.png";
 
 static std::string st_next_wcity = "";
 static std::string st_next_wtimestamp = "";
-static std::string st_next_wtemp = "";
+static std::string st_next_wtemp = "?";
 static std::string st_next_wwind = "";
 static std::string st_next_wicon = DATADIR "/icons/unknown.png";
 
@@ -2469,7 +2469,7 @@ void CLCD::showWeather(bool standby)
 	std::string next_wwind = "";
 	std::string next_wicon = "";
 
-	if (CWeather::getInstance()->checkUpdate(true))
+	if (CWeather::getInstance()->checkUpdate())
 	{
 		current_wcity = st_current_wcity = CWeather::getInstance()->getCity();
 		current_wtimestamp = st_current_wtimestamp = CWeather::getInstance()->getCurrentTimestamp();
@@ -2479,8 +2479,6 @@ void CLCD::showWeather(bool standby)
 
 		next_wcity = st_next_wcity = CWeather::getInstance()->getCity();
 		next_wtimestamp = st_next_wtimestamp = toString((int)CWeather::getInstance()->getForecastWeekday(forecast));
-		//next_wtemp = st_next_wtemp = CWeather::getInstance()->getForecastTemperatureMin(forecast);
-		//next_wtemp = st_next_wtemp += "|" + CWeather::getInstance()->getForecastTemperatureMax(forecast);
 		next_wtemp = st_next_wtemp = CWeather::getInstance()->getForecastTemperatureMax(forecast);
 		next_wwind = st_next_wwind = CWeather::getInstance()->getForecastWindBearing(forecast);
 		next_wicon = st_next_wicon = CWeather::getInstance()->getForecastIcon(forecast);
@@ -2500,6 +2498,8 @@ void CLCD::showWeather(bool standby)
 		next_wicon = st_next_wicon;
 	}
 
+
+	// current
 	if ((current_wicon != "") && cix)
 	{
 		display->showPNGImage(current_wicon.c_str(), cix, y, 50, 50);
@@ -2512,6 +2512,7 @@ void CLCD::showWeather(bool standby)
 		fonts.menu->RenderString(ctx, y, 50, current_wtemp.c_str(), LCD_PIXEL_WHITE);
 	}
 
+	// next
 	if ((next_wicon != "") && nix)
 	{
 		display->showPNGImage(next_wicon.c_str(), nix, y, 50, 50);

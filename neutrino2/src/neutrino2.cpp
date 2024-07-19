@@ -139,6 +139,7 @@
 #include <system/fsmounter.h>
 #include <system/helpers.h>
 #include <system/channellogo.h>
+#include <system/weather.h>
 
 #include <timerd/timerd.h>
 
@@ -872,6 +873,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	//
 	g_settings.ytkey = configfile.getString("ytkey", "");
 	g_settings.weather_api_key = configfile.getString("weather_api_key", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+	g_settings.show_weather = configfile.getInt32("show_weather", 0);
 
 	// tmdb
 	g_settings.tmdbkey = configfile.getString("tmdbkey", "507930c8d6d400c85eae3a7e7b3f6c78");
@@ -1352,6 +1354,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	//
 	configfile.setString("ytkey", g_settings.ytkey);
 	configfile.setString("weather_api_key", g_settings.weather_api_key);
+	configfile.setInt32("show_weather", g_settings.show_weather);
 	
 	// tmdb
 	configfile.setString("tmdbkey", g_settings.tmdbkey);
@@ -4987,6 +4990,14 @@ int CNeutrinoApp::run(int argc, char **argv)
 	
 	// init shutdown count
 	SHTDCNT::getInstance()->init();
+	
+	// getMyGeoLocation
+	CWeather::getInstance()->getMyGeoLocation(::getMyIP().c_str());
+	
+	if (g_settings.lcd_weather || g_settings.show_weather)
+	{
+		CWeather::getInstance()->GetWeatherDetails();
+	}
 
 	// realRun loop ;-)
 	realRun();

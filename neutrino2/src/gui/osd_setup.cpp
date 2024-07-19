@@ -1193,6 +1193,9 @@ void COSDDiverses::showMenu()
 	m1 = new CMenuForwarder(_("logos Dir"), true, g_settings.logos_dir.c_str(), this, "logos_dir" );
 	osdDiverseSettings->addItem(m1);
 	
+	// weather
+	osdDiverseSettings->addItem(new CMenuOptionChooser("Show weather", &g_settings.show_weather, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
+	
 	//
 	osdDiverseSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	

@@ -166,9 +166,11 @@
 #include <zapit/zapittypes.h>
 
 //
-#include <playback_cs.h>
-#include <video_cs.h>
-#include <audio_cs.h>
+#include <libdvbapi/playback_cs.h>
+#include <libdvbapi/video_cs.h>
+#include <libdvbapi/audio_cs.h>
+
+#include <libnet/libnet.h>
 
 
 //// globals

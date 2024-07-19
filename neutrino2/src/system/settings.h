@@ -449,6 +449,7 @@ struct SNeutrinoSettings
 	std::string ytkey;
 	//weather
 	std::string weather_api_key;
+	int show_weather;
 
 	// progressbar color
 	int progressbar_color;

@@ -65,6 +65,8 @@
 #include <string>
 #include <iostream>
 
+#include <libnet/libnet.h>
+
 
 ////
 off_t file_size(const char *filename)
@@ -1011,6 +1013,22 @@ std::string encodeUrl(std::string txt)
 	curl_free(str);
 
 	return txt;
+}
+
+//
+std::string getMyIP(void)
+{
+	std::string myIP = "";
+	
+	char ip[16];
+	char mask[16];
+	char broadcast[16];
+	
+	netGetIP(g_settings.ifname, ip, mask, broadcast);
+	
+	myIP = ip;
+
+	return myIP;	
 }
 
 //

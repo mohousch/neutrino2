@@ -4803,16 +4803,16 @@ void CTestMenu::testTuxTxt()
 	tuxtx_main(si.vtxtpid, 0, false);
 }
 
-////
+//
 static std::string st_current_wcity = "";
 static std::string st_current_wtimestamp = "";
-static std::string st_current_wtemp = "";
+static std::string st_current_wtemp = "?";
 static std::string st_current_wwind = "";
 static std::string st_current_wicon = DATADIR "/icons/unknown.png";
 
 static std::string st_next_wcity = "";
 static std::string st_next_wtimestamp = "";
-static std::string st_next_wtemp = "";
+static std::string st_next_wtemp = "?";
 static std::string st_next_wwind = "";
 static std::string st_next_wicon = DATADIR "/icons/unknown.png";
 
@@ -4850,7 +4850,7 @@ void CTestMenu::testWeather()
 	std::string next_wwind = "";
 	std::string next_wicon = "";
 
-	if (CWeather::getInstance()->checkUpdate(true))
+	if (CWeather::getInstance()->checkUpdate())
 	{
 		current_wcity = st_current_wcity = CWeather::getInstance()->getCity();
 		current_wtimestamp = st_current_wtimestamp = CWeather::getInstance()->getCurrentTimestamp();
@@ -4860,8 +4860,6 @@ void CTestMenu::testWeather()
 
 		next_wcity = st_next_wcity = CWeather::getInstance()->getCity();
 		next_wtimestamp = st_next_wtimestamp = toString((int)CWeather::getInstance()->getForecastWeekday(forecast));
-		//next_wtemp = st_next_wtemp = CWeather::getInstance()->getForecastTemperatureMin(forecast);
-		//next_wtemp = st_next_wtemp += "|" + CWeather::getInstance()->getForecastTemperatureMax(forecast);
 		next_wtemp = st_next_wtemp = CWeather::getInstance()->getForecastTemperatureMax(forecast);
 		next_wwind = st_next_wwind = CWeather::getInstance()->getForecastWindBearing(forecast);
 		next_wicon = st_next_wicon = CWeather::getInstance()->getForecastIcon(forecast);
@@ -4881,22 +4879,24 @@ void CTestMenu::testWeather()
 		next_wicon = st_next_wicon;
 	}
 
+	
+	printf("CTestMenu::testWeather: City: %s\n", CWeather::getInstance()->getCity().c_str());
+
 	if ((current_wicon != "") && cix)
 	{
-		CFrameBuffer::getInstance()->displayImage(current_wicon.c_str(), cix, y/*, 250, 250*/);
+		CFrameBuffer::getInstance()->displayImage(current_wicon.c_str(), cix, y);
 	}
 		
 	if ((current_wtemp != "") && ctx)
 	{
 		current_wtemp += "°";
 			
-		//cglcd->bitmap->DrawText(ctx, y, cglcd->bitmap->Width() - 1, current_wtemp, &font_temperature, cglcd->ColorConvert3to1(t.glcd_foreground_color_red, t.glcd_foreground_color_green, t.glcd_foreground_color_blue), GLCD::cColor::Transparent);
-		//fonts.menu->RenderString();
+		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(ctx, y, 250, current_wtemp, COL_WHITE_PLUS_0);
 	}
 
 	if ((next_wicon != "") && nix)
 	{
-		CFrameBuffer::getInstance()->displayImage(next_wicon.c_str(), nix, y/*, 250, 250*/);
+		CFrameBuffer::getInstance()->displayImage(next_wicon.c_str(), nix, y);
 	}
 		
 	if ((next_wtemp != "") && ntx)
@@ -4904,12 +4904,13 @@ void CTestMenu::testWeather()
 		next_wtemp += "°";
 		int offset;
 			
-		//offset = std::max(0, fonts.menu->getRenderWidth("88") - fonts.menu->getRenderWidth(next_wtemp.c_str()));
-		//cglcd->bitmap->DrawText(ntx + offset, y, cglcd->bitmap->Width() - 1, next_wtemp,&font_temperature, cglcd->ColorConvert3to1(t.glcd_foreground_color_red, t.glcd_foreground_color_green, t.glcd_foreground_color_blue), GLCD::cColor::Transparent);
-		//fonts.menu->RenderString();
+		offset = std::max(0, g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getRenderWidth("88") - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getRenderWidth(next_wtemp.c_str()));
+		
+		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(ntx + offset, y, 250, next_wtemp, COL_WHITE_PLUS_0);
 			
 	}
-	////
+	
+	//
 	win->exec();
 	
 	delete win;

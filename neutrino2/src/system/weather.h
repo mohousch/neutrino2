@@ -66,16 +66,23 @@ typedef struct
 	int windBearing;
 } forecast_data;
 
+typedef struct
+{
+	std::string city;
+	float lat;
+	float lon;
+} geoLocation;
+
 class CWeather
 {
 	private:
-		std::string coords;
-		std::string city;
 		std::string timezone;
 		current_data current;
 		std::vector<forecast_data> v_forecast;
 		std::string key;
 		time_t last_time;
+		////
+		geoLocation myLocation;
 
 	public:
 		static CWeather *getInstance();
@@ -85,11 +92,12 @@ class CWeather
 		bool checkUpdate(bool forceUpdate = false);
 		void setCoords(std::string new_coords, std::string new_city = "Unknown");
 		bool GetWeatherDetails();
+		bool getMyGeoLocation(const char *myIP);
 
 		// globals
 		std::string getCity()
 		{
-			return city;
+			return myLocation.city;
 		};
 
 		// current conditions

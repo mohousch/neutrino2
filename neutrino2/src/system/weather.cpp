@@ -38,7 +38,7 @@
 #include <system/weather.h>
 
 
-#define UPDATE_CYCLE 15 // minutes
+#define UPDATE_CYCLE 	60 // minutes
 
 CWeather *weather = NULL;
 
@@ -55,23 +55,11 @@ CWeather::CWeather()
 	key = g_settings.weather_api_key;
 	v_forecast.clear();
 	last_time = 0;
-	coords = "";
-	city = "";
 }
 
 CWeather::~CWeather()
 {
 	v_forecast.clear();
-}
-
-void CWeather::setCoords(std::string new_coords, std::string new_city)
-{
-	if (coords.compare(new_coords))
-	{
-		coords = new_coords;
-		city = new_city;
-		checkUpdate(true);
-	}
 }
 
 bool CWeather::checkUpdate(bool forceUpdate)
@@ -84,16 +72,65 @@ bool CWeather::checkUpdate(bool forceUpdate)
 		return false;
 }
 
+bool CWeather::getMyGeoLocation(const char *myIP)
+{
+	bool ret = false;
+	
+	std::string url = "http://ip-api.com/json/";
+	
+	url += myIP;
+	
+	printf("CWeather::getMyGeoLocation: url:%s\n", url.c_str());
+	
+	std::string answer;
+	std::string formattedErrors;
+
+	Json::CharReaderBuilder builder;
+	Json::CharReader * reader = builder.newCharReader();
+	Json::Value DataValues;
+
+	answer.clear();
+
+	if (!getUrl(url, answer))
+	{
+		delete reader;
+		return false;
+	}
+	
+	bool parsedSuccess = reader->parse(answer.c_str(), answer.c_str() + answer.size(), &DataValues, &formattedErrors);
+	delete reader;
+
+	if (!parsedSuccess)
+	{
+		printf("Failed to parse JSON\n");
+		printf("%s\n", formattedErrors.c_str());
+		
+		return false;
+	}
+	
+	std::string success = DataValues["success"].asString();
+	
+//	if (success != "success")
+//		return false;
+
+	myLocation.city = DataValues["city"].asString();
+	myLocation.lat = DataValues["lat"].asFloat();
+	myLocation.lon = DataValues["lon"].asFloat();
+	
+	printf("CWeather::getMyGeoLocation: city: %s lat: %f lon: %f\n", myLocation.city.c_str(), myLocation.lat, myLocation.lon);
+	
+	return ret;
+}
+
 bool CWeather::GetWeatherDetails()
 {
 	dprintf(DEBUG_NORMAL, "[CWeather]: %s\n", __func__);
 
 	last_time = time(NULL);
 
-	std::string lat = coords.substr(0, coords.find_first_of(','));
-	std::string lon = coords.substr(coords.find_first_of(',') + 1);
-
-	std::string data = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=metric&lang=de&exclude=minutely,hourly,flags,alerts&appid=" + key;
+	std::string data = "https://api.openweathermap.org/data/2.5/onecall?lat=" + toString(myLocation.lat) + "&lon=" + toString(myLocation.lon) + "&units=metric&lang=de&exclude=minutely,hourly,flags,alerts&appid=" + key;
+	
+	printf("CWeather::GetWeatherDetails: url:%s\n", data.c_str());
 
 	std::string answer;
 	std::string formattedErrors;
@@ -121,6 +158,7 @@ bool CWeather::GetWeatherDetails()
 	{
 		printf("Failed to parse JSON\n");
 		printf("%s\n", formattedErrors.c_str());
+		
 		return false;
 	}
 
@@ -143,7 +181,7 @@ bool CWeather::GetWeatherDetails()
 		else
 			current.icon = current.icon + ".png";
 			
-		printf("[CWeather]: temp in %s (%s): %.1f - %s\n", city.c_str(), timezone.c_str(), current.temperature, current.icon.c_str());
+		printf("[CWeather]: temp in %s (%s): %.1f - %s\n", myLocation.city.c_str(), timezone.c_str(), current.temperature, current.icon.c_str());
 
 		forecast_data daily_data;
 		Json::Value elements = DataValues["daily"];

@@ -49,9 +49,6 @@ typedef struct {
 	std::string original_language;
 
 	//
-	//std::string cover;
-
-	//
 	std::string vid;
 	std::string vkey;
 	std::string vname;
