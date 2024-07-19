@@ -4992,7 +4992,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	SHTDCNT::getInstance()->init();
 	
 	// getMyGeoLocation
-	CWeather::getInstance()->getMyGeoLocation(::getMyIP().c_str());
+	CWeather::getInstance()->getMyGeoLocation();
 	
 	if (g_settings.lcd_weather || g_settings.show_weather)
 	{

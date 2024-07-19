@@ -78,7 +78,7 @@ bool CWeather::getMyGeoLocation(const char *myIP)
 	
 	std::string url = "http://ip-api.com/json/";
 	
-	url += myIP;
+	url += myIP? myIP : "";
 	
 	printf("CWeather::getMyGeoLocation: url:%s\n", url.c_str());
 	
