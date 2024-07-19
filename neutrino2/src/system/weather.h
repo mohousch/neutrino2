@@ -92,7 +92,7 @@ class CWeather
 		bool checkUpdate(bool forceUpdate = false);
 		void setCoords(std::string new_coords, std::string new_city = "Unknown");
 		bool GetWeatherDetails();
-		bool getMyGeoLocation(const char *myIP = NULL);
+		bool getMyGeoLocation();
 
 		// globals
 		std::string getCity()

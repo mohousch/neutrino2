@@ -52,7 +52,7 @@ CWeather *CWeather::getInstance()
 
 CWeather::CWeather()
 {
-	key = g_settings.weather_api_key;
+	key = "af497fb16613cfb4f5da397fde62dfb1";//g_settings.weather_api_key;
 	v_forecast.clear();
 	last_time = 0;
 }
@@ -72,15 +72,11 @@ bool CWeather::checkUpdate(bool forceUpdate)
 		return false;
 }
 
-bool CWeather::getMyGeoLocation(const char *myIP)
+bool CWeather::getMyGeoLocation()
 {
 	bool ret = false;
 	
 	std::string url = "http://ip-api.com/json/";
-	
-	url += myIP? myIP : "";
-	
-	printf("CWeather::getMyGeoLocation: url:%s\n", url.c_str());
 	
 	std::string answer;
 	std::string formattedErrors;
@@ -108,10 +104,12 @@ bool CWeather::getMyGeoLocation(const char *myIP)
 		return false;
 	}
 	
-	std::string success = DataValues["success"].asString();
+	std::string status = DataValues["status"].asString();
 	
-//	if (success != "success")
-//		return false;
+	if (status != "success")
+		return false;
+		
+	ret = true;
 
 	myLocation.city = DataValues["city"].asString();
 	myLocation.lat = DataValues["lat"].asFloat();
