@@ -52,7 +52,7 @@ CWeather *CWeather::getInstance()
 
 CWeather::CWeather()
 {
-	key = "af497fb16613cfb4f5da397fde62dfb1";//g_settings.weather_api_key;
+	key = g_settings.weather_api_key;
 	v_forecast.clear();
 	last_time = 0;
 }

@@ -36,10 +36,10 @@ function do_lcshot2(){
 	show_waitbox(false);
 	show_obj("shot", true);
 	_shot.src = "/tmp/"+filename+".png?"+Math.random();
-	loadSyncURL("/control/lcd?shotngpng=" + "/tmp/"+"ng"+filename+".png");
-	show_waitbox(false);
-	show_obj("shotng", true);
-	_shotng.src = "/tmp/"+"ng"+filename+".png?"+Math.random();
+	//loadSyncURL("/control/lcd?shotngpng=" + "/tmp/"+"ng"+filename+".png");
+	//show_waitbox(false);
+	//show_obj("shotng", true);
+	//_shotng.src = "/tmp/"+"ng"+filename+".png?"+Math.random();
 }
 function do_clearshot(){
 	window.setTimeout("do_clearshot2()", 500);

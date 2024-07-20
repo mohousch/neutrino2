@@ -55,6 +55,24 @@
 #endif
 
 
+//#define LCDD_DEBUG
+#define LCDD_SILENT
+
+static short debug_level = 10;
+
+#ifdef LCDD_DEBUG
+#define lcdd_printf(level, fmt, x...) do { \
+if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
+#else
+#define lcdd_printf(level, fmt, x...)
+#endif
+
+#ifndef LCDD_SILENT
+#define lcdd_err(fmt, x...) do { printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
+#else
+#define lcdd_err(fmt, x...)
+#endif
+
 extern CRemoteControl * g_RemoteControl;
 
 #if defined (__sh__)
@@ -77,7 +95,7 @@ void CLCD::openDevice()
 		fd = open("/dev/vfd", O_RDWR);
 		if(fd < 0)
 		{
-			printf("failed to open vfd\n");
+			lcdd_printf("failed to open vfd\n");
 			fd = open("/dev/fplarge", O_RDWR);
 			if (fd < 0)
 			    printf("failed to open fplarge\n");
@@ -237,17 +255,17 @@ void CLCD::init(const char * fontfile, const char * fontname, const char * fontf
 	// init lcd 
 	if (!lcdInit(fontfile, fontname, fontfile2, fontname2, fontfile3, fontname3 ))
 	{
-		dprintf(DEBUG_NORMAL, "CLCD::init: failed!\n");
+		lcdd_printf(10, "CLCD::init: failed!\n");
 		has_lcd = false;
 		return;
 	}
 	
-	dprintf(DEBUG_NORMAL, "CLCD::init: succeeded\n");
+	lcdd_printf(10, "CLCD::init: succeeded\n");
 
 	// create time thread
 	if (pthread_create (&thrTime, NULL, TimeThread, NULL) != 0 )
 	{
-		perror("CLCD::init: pthread_create(TimeThread)");
+		lcdd_err("CLCD::init: pthread_create(TimeThread)");
 		return ;
 	}
 }
@@ -467,8 +485,7 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 		has_lcd = true;
 #endif
 
-	// set mode tv/radio
-	setMode(MODE_TVRADIO);
+	//
 	setLED(g_settings.lcd_led, 0);
 
 	return has_lcd;
@@ -498,7 +515,7 @@ void CLCD::setlcdparameter(int dimm, const int contrast, const int power, const 
 	if(!has_lcd) 
 		return;
 		
-	printf("CLCD::setlcdparameter: brightness: %d contrast: %d power: %d inverse: %d\n", dimm, contrast, power, inverse);
+	lcdd_printf(10, "CLCD::setlcdparameter: brightness: %d contrast: %d power: %d inverse: %d\n", dimm, contrast, power, inverse);
 	
 #ifndef ENABLE_GRAPHLCD	
 	if (power == 0)
@@ -553,7 +570,7 @@ void CLCD::setlcdparameter(void)
 	if(!has_lcd) 
 		return;
 		
-	printf("CLCD::setlcdparameter:\n");
+	lcdd_printf(10, "CLCD::setlcdparameter:\n");
 
 	last_toggle_state_power = g_settings.lcd_power;
 	int dim_time = atoi(g_settings.lcd_setting_dim_time);
@@ -630,7 +647,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	if(!has_lcd) 
 		return;
 		
-	printf("CLCD::showTextScreen: big:%s small:%s showmode:0x%x wakeup:%s centered:%s\n", big.empty()? "null" : big.c_str(), small.empty()? "null" : small.c_str(), showmode, perform_wakeup? "true" : "false", centered? "centered" : "not centered");
+	lcdd_printf(10, "CLCD::showTextScreen: big:%s small:%s showmode:0x%x wakeup:%s centered:%s\n", big.empty()? "null" : big.c_str(), small.empty()? "null" : small.c_str(), showmode, perform_wakeup? "true" : "false", centered? "centered" : "not centered");
 		
 #if defined (ENABLE_4DIGITS)
 	int len = big.length();
@@ -831,7 +848,7 @@ void CLCD::showText(const char *str)
 	if (!has_lcd)
 		return;
 		
-	printf("CLCD::showText: %s\n", str? str : "null");
+	lcdd_printf(10, "CLCD::showText: %s\n", str? str : "null");
 		 
 #if defined (ENABLE_4DIGITS)
 	int len = strlen(str);
@@ -931,7 +948,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 	if (!has_lcd)
 		return;
 		
-	printf("CLCD::showServicename: name:%s\n", name.empty()? "null" : name.c_str());
+	lcdd_printf(10, "CLCD::showServicename: name:%s\n", name.empty()? "null" : name.c_str());
 
 	int showmode = g_settings.lcd_epgmode;
 
@@ -1002,7 +1019,7 @@ void CLCD::setEPGTitle(const std::string title)
 	if (!has_lcd)
 		return;
 
-	printf("CLCD::setEPGTitle: %s\n", title.c_str());
+	lcdd_printf(10, "CLCD::setEPGTitle: %s\n", title.c_str());
 	
 #if defined (ENABLE_LCD)
 	epg_title.clear();
@@ -1013,7 +1030,7 @@ void CLCD::setEPGTitle(const std::string title)
 
 void CLCD::showMovieInfo(const PLAYMODES playmode, const std::string big, const std::string small, const bool centered)
 {
-	printf("CLCD::showMovieInfo: playmode:%d big:%s small:%s centered:%s\n", playmode, big.empty()? "null" : big.c_str(), small.empty()? "null" : small.c_str(), centered? "centered" : "not centered");
+	lcdd_printf(10, "CLCD::showMovieInfo: playmode:%d big:%s small:%s centered:%s\n", playmode, big.empty()? "null" : big.c_str(), small.empty()? "null" : small.c_str(), centered? "centered" : "not centered");
 	
 	int showmode = g_settings.lcd_epgmode;
 
@@ -1381,7 +1398,7 @@ void CLCD::showMenuText(const int position, const char * text, const int selecte
 	if(!has_lcd) 
 		return;
 		
-	printf("CLCD::showMenuText: position:%d text:%s highlight:%d\n", position, text? text : "null", selected);
+	lcdd_printf(10, "CLCD::showMenuText: position:%d text:%s highlight:%d\n", position, text? text : "null", selected);
 	
 	if (mode != MODE_MENU_UTF8)
 		return;
@@ -1394,7 +1411,7 @@ void CLCD::showMenuText(const int position, const char * text, const int selecte
 	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 - 1, lcd_width, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight() + 10, LCD_PIXEL_OFF);
 	
 	// render text
-	fonts.menu->RenderString(0, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight(), lcd_width + 10, text, LCD_PIXEL_WHITE, selected, utf_encoded);
+	fonts.menu->RenderString(0, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight(), lcd_width + 10, text, LCD_PIXEL_WHITE, 0, utf_encoded);
 #endif
 
 #ifdef ENABLE_GRAPHLCD	
@@ -1410,7 +1427,7 @@ void CLCD::showAudioTrack(const std::string &artist, const std::string &title, c
 	if(!has_lcd) 
 		return;
 		
-	printf("CLCD::showAudioTrack: artist:%s title:%s album:%s pos:%d\n", artist.empty()? "null" : artist.c_str(), title.empty()? "null" : title.c_str(), album.empty()? "null" : album.c_str(), pos);
+	lcdd_printf(10, "CLCD::showAudioTrack: artist:%s title:%s album:%s pos:%d\n", artist.empty()? "null" : artist.c_str(), title.empty()? "null" : title.c_str(), album.empty()? "null" : album.c_str(), pos);
 	
 	if (mode != MODE_AUDIO) 
 		return;
@@ -1532,7 +1549,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	if(!has_lcd) 
 		return;
 		
-	dprintf(DEBUG_NORMAL, "CLCD::setMode: %d\n", m);
+	lcdd_printf(10, "CLCD::setMode: %d\n", m);
 		
 	mode = m;
 	menutitle = title;
@@ -1930,7 +1947,7 @@ int CLCD::getContrast()
 
 void CLCD::setPower(int power)
 {
-	dprintf(DEBUG_NORMAL, "CLCD::setPower\n");
+	lcdd_printf(10, "CLCD::setPower\n");
 	
 	if (!has_lcd)
 		return;
@@ -1991,7 +2008,7 @@ void CLCD::setLED(int value, int option)
 	if (!has_lcd)
 		return;
 		
-	printf("CLCD::setLED: %d\n", value);
+	lcdd_printf(10, "CLCD::setLED: %d\n", value);
 
 	g_settings.lcd_led = value;
 	
@@ -2008,7 +2025,7 @@ void CLCD::setLED(int value, int option)
 		"LEDCOLOR_PURPLE"
 	};
 	
-	dprintf(DEBUG_NORMAL, "CLCD::setLED: %s\n", LED[value]);
+	lcdd_printf(10, "CLCD::setLED: %s\n", LED[value]);
 	  
 	FILE * f;
 	if((f = fopen("/proc/stb/fp/led0_pattern", "w")) == NULL) 
@@ -2036,7 +2053,7 @@ void CLCD::setMiniTV(int value)
 		"OSD / MINITV"
 	};
 	
-	dprintf(DEBUG_NORMAL, "CLCD::setMiniTV: %s\n", LCDMINITV[value]);
+	lcdd_printf(10, "CLCD::setMiniTV: %s\n", LCDMINITV[value]);
 /* 
 	FILE * f;
 	if((f = fopen("/proc/stb/lcd/mode", "w")) == NULL) 
@@ -2301,7 +2318,7 @@ void CLCD::showProgressBar(int global, const char * const text, int show_escape,
 
 	if (mode == MODE_PROGRESSBAR)
 	{
-		//printf("[lcdd] prog:%s,%d,%d\n",m_progressHeaderGlobal.c_str(),m_progressGlobal,m_progressShowEscape);
+		//lcdd_printf(10, "prog:%s,%d,%d\n",m_progressHeaderGlobal.c_str(),m_progressGlobal,m_progressShowEscape);
 		
 		// Clear Display
 		display->draw_fill_rect (0, 12, lcd_width, lcd_height, LCD_PIXEL_OFF);
@@ -2377,7 +2394,7 @@ void CLCD::showProgressBar2(int local,const char * const text_local, int global,
 
 	if (mode == MODE_PROGRESSBAR2)
 	{
-		//printf("[lcdd] prog2:%s,%d,%d\n",m_progressHeaderGlobal.c_str(),m_progressGlobal,m_progressShowEscape);
+		//lcdd_printf(10, "prog2:%s,%d,%d\n",m_progressHeaderGlobal.c_str(),m_progressGlobal,m_progressShowEscape);
 		
 		// Clear Display
 		display->draw_fill_rect (0, 12, lcd_width, lcd_height, LCD_PIXEL_OFF);

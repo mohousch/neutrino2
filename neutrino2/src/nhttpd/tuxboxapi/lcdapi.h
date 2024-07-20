@@ -4,7 +4,7 @@
         Copyright (C) 2001/2002 Dirk Szymanski 'Dirch'
         Copyright (C) 2005 SnowHead
 
-        $Id: lcdapi.h,v 1.2 2007/11/26 20:48:41 yjogol Exp $
+        $Id: lcdapi.h 20072024 mohousch Exp $
 
         License: GPL
 
@@ -37,7 +37,7 @@ class LcdFontRenderClass;
 //-------------------------------------------------------------------------
 class CLCDAPI
 {
-	CLCD				*vfd;
+	CLCD *vfd;
 	
 	public:
 		CLCDAPI();

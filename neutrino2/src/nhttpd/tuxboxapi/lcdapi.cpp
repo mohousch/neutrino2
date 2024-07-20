@@ -4,7 +4,7 @@
 	Copyright (C) 2001/2002 Dirk Szymanski 'Dirch'
 	Copyright (C) 2005 SnowHead
 
-	$Id: lcdapi.cpp,v 1.3 2009/05/19 18:00:27 seife Exp $
+	$Id: lcdapi.cpp 20072024 mohousch Exp $
 
 	License: GPL
 

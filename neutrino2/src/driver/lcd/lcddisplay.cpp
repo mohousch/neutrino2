@@ -47,7 +47,7 @@
 #include <math.h>
 
 
-#define LCDDISPLAY_DEBUG
+//#define LCDDISPLAY_DEBUG
 #define LCDDISPLAY_SILENT
 
 static short debug_level = 10;
@@ -1361,13 +1361,13 @@ bool CLCDDisplay::dump_png(const char * const filename)
         				if (setjmp(png_jmpbuf(png_ptr)))
         				        printf("[CLCDDisplay] Error during writing header\n");
 
-        				png_set_IHDR(png_ptr, info_ptr, xres, yres, bpp/bypp, PNG_COLOR_TYPE_RGB_ALPHA,
+        				png_set_IHDR(png_ptr, info_ptr, xres, yres, bpp/bypp, PNG_COLOR_TYPE_RGBA,
 		PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
 					png_set_filter(png_ptr, 0, PNG_FILTER_NONE|PNG_FILTER_SUB|PNG_FILTER_PAETH);
 					png_set_compression_level(png_ptr, Z_BEST_COMPRESSION);
         				png_write_info(png_ptr, info_ptr);
 					png_set_packing(png_ptr);
-
+					
         				// write bytes
 					if (setjmp(png_jmpbuf(png_ptr)))
 					{
@@ -1378,10 +1378,10 @@ bool CLCDDisplay::dump_png(const char * const filename)
 					ret_value = true;
 
 					fbptr = (png_byte *)_buffer;
-					for (i = 0; i < yres; i++)
+					for (i = 0; i < (unsigned int)yres; i++)
 					{
 						png_write_row(png_ptr, fbptr);
-						fbptr += xres;
+						fbptr += xres*bypp;
 					}
 
         				// end write

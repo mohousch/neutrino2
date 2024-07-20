@@ -4994,6 +4994,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// getMyGeoLocation
 	CWeather::getInstance()->getMyGeoLocation();
 	
+	
 	if (g_settings.lcd_weather || g_settings.show_weather)
 	{
 		CWeather::getInstance()->GetWeatherDetails();

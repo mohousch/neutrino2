@@ -78,9 +78,6 @@ function init(){
 </script>
 </head>
 
-{=var-set:lcshot={=if-file-exists:/bin/lcshot~true~{=if-file-exists:/var/bin/lcshot~true~{=if-file-exists:/usr/bin/lcshot~true~false=}=}=}=}
-{=var-set:fbshot={=if-file-exists:/bin/grab~true~{=if-file-exists:/var/bin/grab~true~{=if-file-exists:/usr/bin/grab~true~false=}=}=}=}
-
 <body>
 <div class="y_menu_sec_box">
 	<div class="y_menu_sec_box_head"><h2>{=L:main.boxcontrol=}</h2></div>
@@ -103,29 +100,14 @@ href="Y_EPG_Plus.yhtm">{=L:live.epg_plus=}</a>
 				
 				<li><a target="work" title="{=L:bc.menue.remote_desc=}" href="Y_Tools_Rcsim.yhtm">{=L:bc.menue.remote=}</a></li>
 
-				{=if-equal:{=var-get:lcshot=}~true~
 				<li><a target="work" title="{=L:bc.menue.lcd_screenshot_desc=}" href="Y_Tools_lcshot.yhtm">{=L:bc.menue.lcd_screenshot=}</a></li>
-				~
-				<li class="disabled" title="{=L:bc.menue.lcd_screenshot_desc_ni=}">{=L:bc.menue.lcd_screenshot=}</li>
-				=}
 
-				{=if-equal:{=var-get:fbshot=}~true~
 				<li><a target="work" title="{=L:bc.menue.tv_screenshot_desc=}" href="Y_Tools_tvshot.yhtm">{=L:bc.menue.tv_screenshot=}</a></li>
-				~
-				<li class="disabled" title="{=L:bc.menue.tv_screenshot_desc_ni=}">{=L:bc.menue.tv_screenshot=}</li>
-				=}
+				
 
-				{=if-equal:{=var-get:fbshot=}~true~
 				<li><a target="work" title="{=L:bc.menue.osd_screenshot_desc=}" href="Y_Tools_fbshot.yhtm">{=L:bc.menue.osd_screenshot=}</a></li>
-				~
-				<li class="disabled" title="{=L:bc.menue.osd_screenshot_desc_ni=}">{=L:bc.menue.osd_screenshot=}</li>
-				=}
-
-				{=if-equal:{=var-get:fbshot=}~true~
+				
 				<li><a target="work" title="{=L:bc.menue.remote_osd_desc=}" href="Y_Tools_remote_osd.yhtm">{=L:bc.menue.remote_osd=}</a></li>
-				~
-				<li class="disabled" title="{=L:bc.menue.remote_osd_desc_ni=}">{=L:bc.menue.remote_osd=}</li>
-				=}
 			</ul>
 		</div>
 	</div>
