@@ -1048,14 +1048,14 @@ void CTimerEvent::saveToConfig(CConfigFile *config)
 	ostr << eventID;
 	std::string id = ostr.str();
 	
-	config->setInt32("EVENT_TYPE_"+id, eventType);
-	config->setInt32("EVENT_STATE_"+id, eventState);
-	config->setInt32("PREVIOUS_STATE_"+id, previousState);
-	config->setInt32("EVENT_REPEAT_"+id, eventRepeat);
-	config->setInt32("ANNOUNCE_TIME_"+id, announceTime);
-	config->setInt32("ALARM_TIME_"+id, alarmTime);
-	config->setInt32("STOP_TIME_"+id, stopTime);
-	config->setInt32("REPEAT_COUNT_"+id,repeatCount);
+	config->setInt32("EVENT_TYPE_" + id, eventType);
+	config->setInt32("EVENT_STATE_" + id, eventState);
+	config->setInt32("PREVIOUS_STATE_" + id, previousState);
+	config->setInt32("EVENT_REPEAT_" + id, eventRepeat);
+	config->setInt32("ANNOUNCE_TIME_" + id, announceTime);
+	config->setInt32("ALARM_TIME_" + id, alarmTime);
+	config->setInt32("STOP_TIME_" + id, stopTime);
+	config->setInt32("REPEAT_COUNT_" + id, repeatCount);
 }
 
 //// event shutdown

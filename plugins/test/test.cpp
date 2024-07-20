@@ -4803,19 +4803,6 @@ void CTestMenu::testTuxTxt()
 	tuxtx_main(si.vtxtpid, 0, false);
 }
 
-//
-static std::string st_current_wcity = "";
-static std::string st_current_wtimestamp = "";
-static std::string st_current_wtemp = "?";
-static std::string st_current_wwind = "";
-static std::string st_current_wicon = DATADIR "/icons/unknown.png";
-
-static std::string st_next_wcity = "";
-static std::string st_next_wtimestamp = "";
-static std::string st_next_wtemp = "?";
-static std::string st_next_wwind = "";
-static std::string st_next_wicon = DATADIR "/icons/unknown.png";
-
 void CTestMenu::testWeather()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testWeather\n");
@@ -4824,90 +4811,41 @@ void CTestMenu::testWeather()
 	win->paintMainFrame(false);
 	
 	////
-	int ctx, cix, ntx, nix, y;
+	int ctx, cix, y;
 
 	
 	// left
 	ctx = 50;
 	cix = 50;
-		
-	// right
-	ntx = CFrameBuffer::getInstance()->getScreenWidth() - 450;
-	nix = CFrameBuffer::getInstance()->getScreenWidth() - 450;
 	y = 150;
-	
-	int forecast = 1; // 0 is current day
 
 	std::string current_wcity = "";
-	std::string current_wtimestamp = "";
 	std::string current_wtemp = "";
-	std::string current_wwind = "";
-	std::string current_wicon = "";
-
-	std::string next_wcity = "";
-	std::string next_wtimestamp = "";
-	std::string next_wtemp = "";
-	std::string next_wwind = "";
-	std::string next_wicon = "";
-
-	if (CWeather::getInstance()->checkUpdate())
-	{
-		current_wcity = st_current_wcity = CWeather::getInstance()->getCity();
-		current_wtimestamp = st_current_wtimestamp = CWeather::getInstance()->getCurrentTimestamp();
-		current_wtemp = st_current_wtemp = CWeather::getInstance()->getCurrentTemperature();
-		current_wwind = st_current_wwind = CWeather::getInstance()->getCurrentWindSpeed();
-		current_wicon = st_current_wicon = CWeather::getInstance()->getCurrentIcon();
-
-		next_wcity = st_next_wcity = CWeather::getInstance()->getCity();
-		next_wtimestamp = st_next_wtimestamp = toString((int)CWeather::getInstance()->getForecastWeekday(forecast));
-		next_wtemp = st_next_wtemp = CWeather::getInstance()->getForecastTemperatureMax(forecast);
-		next_wwind = st_next_wwind = CWeather::getInstance()->getForecastWindBearing(forecast);
-		next_wicon = st_next_wicon = CWeather::getInstance()->getForecastIcon(forecast);
-	}
-	else
-	{
-		current_wcity = st_current_wcity;
-		current_wtimestamp = st_current_wtimestamp;
-		current_wtemp = st_current_wtemp;
-		current_wwind = st_current_wwind;
-		current_wicon = st_current_wicon;
-
-		next_wcity = st_next_wcity;
-		next_wtimestamp = st_next_wtimestamp;
-		next_wtemp = st_next_wtemp;
-		next_wwind = st_next_wwind;
-		next_wicon = st_next_wicon;
-	}
-
+	std::string current_wicon = DATADIR "/icons/unknown.png";
 	
-	printf("CTestMenu::testWeather: City: %s\n", CWeather::getInstance()->getCity().c_str());
+	CWeather::getInstance()->checkUpdate();
 
-	if ((current_wicon != "") && cix)
+	current_wcity = CWeather::getInstance()->getCity();
+	current_wtemp = CWeather::getInstance()->getCurrentTemperature();
+	current_wicon = CWeather::getInstance()->getCurrentIcon();
+
+	printf("CTestMenu::testWeather: City: %s (%s) (%s)\n", CWeather::getInstance()->getCity().c_str(), current_wtemp.c_str(), current_wicon.c_str());
+
+	if (current_wicon != "")
 	{
 		CFrameBuffer::getInstance()->displayImage(current_wicon.c_str(), cix, y);
 	}
 		
-	if ((current_wtemp != "") && ctx)
+	if (current_wtemp != "")
 	{
 		current_wtemp += "°";
 			
 		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(ctx, y, 250, current_wtemp, COL_WHITE_PLUS_0);
 	}
-
-	if ((next_wicon != "") && nix)
-	{
-		CFrameBuffer::getInstance()->displayImage(next_wicon.c_str(), nix, y);
-	}
-		
-	if ((next_wtemp != "") && ntx)
-	{
-		next_wtemp += "°";
-		int offset;
-			
-		offset = std::max(0, g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getRenderWidth("88") - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getRenderWidth(next_wtemp.c_str()));
-		
-		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(ntx + offset, y, 250, next_wtemp, COL_WHITE_PLUS_0);
-			
+	
+	if (current_wcity != "")
+	{	
+		g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO2]->RenderString(ctx, y + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() / 2 + 2, 250, current_wcity, COL_WHITE_PLUS_0);
 	}
 	
 	//

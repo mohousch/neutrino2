@@ -89,12 +89,12 @@ function do_check(){
 	=}
 
 	/*programs*/
-	{=var-set:lcshot={=if-file-exists:/bin/lcshot~/bin/lcshot~{=if-file-exists:/var/bin/lcshot~/var/bin/lcshot~{=if-file-exists:/usr/bin/lcshot~/usr/bin/lcshot~false=}=}=}=}
-	{=if-equal:{=var-get:lcshot=}~false~
-		sLog_addRow(sLog_body, "red", "Programs: lcshot is not installed. LCD Screenshot is disabled. "+y_url("Help-BoxControl-LCD_Screenshot"), "failed");
-	~
-		sLog_addRow(sLog_body, "green", "Programs: lcshot is installed at: {=var-get:lcshot=}. LCD Screenshot is enabled.", "ok");
-	=}
+//	{=var-set:lcshot={=if-file-exists:/bin/lcshot~/bin/lcshot~{=if-file-exists:/var/bin/lcshot~/var/bin/lcshot~{=if-file-exists:/usr/bin/lcshot~/usr/bin/lcshot~false=}=}=}=}
+//	{=if-equal:{=var-get:lcshot=}~false~
+//		sLog_addRow(sLog_body, "red", "Programs: lcshot is not installed. LCD Screenshot is disabled. "+y_url("Help-BoxControl-LCD_Screenshot"), "failed");
+//	~
+//		sLog_addRow(sLog_body, "green", "Programs: lcshot is installed at: {=var-get:lcshot=}. LCD Screenshot is enabled.", "ok");
+//	=}
 
 	{=var-set:fbshot={=if-file-exists:/bin/grab~/bin/grab~{=if-file-exists:/var/bin/grab~/var/bin/grab~{=if-file-exists:/usr/bin/grab~/usr/bin/grab~false=}=}=}=}
 	{=if-equal:{=var-get:fbshot=}~false~
@@ -103,12 +103,12 @@ function do_check(){
 		sLog_addRow(sLog_body, "green", "Programs: fbshot is installed at: {=var-get:fbshot=}. OSD Screenshot is enabled.", "ok");
 	=}
 
-	{=var-set:fcp={=if-file-exists:/sbin/fcp~/sbin/fcp~{=if-file-exists:/var/bin/fcp~/var/bin/fcp~{=if-file-exists:/bin/fcp~/bin/fcp~false=}=}=}=}
-	{=if-equal:{=var-get:fcp=}~false~
-		sLog_addRow(sLog_body, "red", "Programs: fcp is not installed. Image flashing is disabled. "+y_url("Help-Tools-Image"), "failed");
-	~
-		sLog_addRow(sLog_body, "green", "Programs: fcp is installed at: {=var-get:fcp=}. Image flashing is enabled.", "ok");
-	=}
+//	{=var-set:fcp={=if-file-exists:/sbin/fcp~/sbin/fcp~{=if-file-exists:/var/bin/fcp~/var/bin/fcp~{=if-file-exists:/bin/fcp~/bin/fcp~false=}=}=}=}
+//	{=if-equal:{=var-get:fcp=}~false~
+//		sLog_addRow(sLog_body, "red", "Programs: fcp is not installed. Image flashing is disabled. "+y_url("Help-Tools-Image"), "failed");
+//	~
+//		sLog_addRow(sLog_body, "green", "Programs: fcp is installed at: {=var-get:fcp=}. Image flashing is enabled.", "ok");
+//	=}
 
 	{=var-set:etherwake={=if-file-exists:/bin/ether-wake~/bin/ether-wake~{=if-file-exists:/var/bin/ether-wake~/var/bin/ether-wake~{=if-file-exists:/bin/etherwake~/bin/etherwake~{=if-file-exists:/var/bin/etherwake~/var/bin/etherwake~false=}=}=}=}=}
 	{=if-equal:{=var-get:etherwake=}~false~

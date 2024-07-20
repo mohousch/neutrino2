@@ -53,13 +53,11 @@ CWeather *CWeather::getInstance()
 CWeather::CWeather()
 {
 	key = g_settings.weather_api_key;
-	v_forecast.clear();
 	last_time = 0;
 }
 
 CWeather::~CWeather()
 {
-	v_forecast.clear();
 }
 
 bool CWeather::checkUpdate(bool forceUpdate)
@@ -112,30 +110,26 @@ bool CWeather::getMyGeoLocation()
 	ret = true;
 
 	myLocation.city = DataValues["city"].asString();
-	myLocation.lat = DataValues["lat"].asFloat();
-	myLocation.lon = DataValues["lon"].asFloat();
+	myLocation.lat = DataValues["lat"].asDouble();
+	myLocation.lon = DataValues["lon"].asDouble();
 	
-	printf("CWeather::getMyGeoLocation: city: %s lat: %f lon: %f\n", myLocation.city.c_str(), myLocation.lat, myLocation.lon);
+	ng2_printf(DEBUG_NORMAL, "city: %s lat: %f lon: %f\n", myLocation.city.c_str(), myLocation.lat, myLocation.lon);
 	
 	return ret;
 }
 
 bool CWeather::GetWeatherDetails()
 {
-	dprintf(DEBUG_NORMAL, "[CWeather]: %s\n", __func__);
-
 	last_time = time(NULL);
-
-	std::string data = "https://api.openweathermap.org/data/2.5/onecall?lat=" + toString(myLocation.lat) + "&lon=" + toString(myLocation.lon) + "&units=metric&lang=de&exclude=minutely,hourly,flags,alerts&appid=" + key;
 	
-	printf("CWeather::GetWeatherDetails: url:%s\n", data.c_str());
+	std::string data = "https://api.openweathermap.org/data/2.5/weather?lat=" + toString(myLocation.lat) + "&lon=" + toString(myLocation.lon) + "&units=metric&appid=" + key;
+	
+	ng2_printf(DEBUG_NORMAL, "url:%s\n", data.c_str());
 
 	std::string answer;
 	std::string formattedErrors;
 
-	double found = 0;
-
-	v_forecast.clear();
+	int found = 0;
 
 	Json::CharReaderBuilder builder;
 	Json::CharReader * reader = builder.newCharReader();
@@ -154,61 +148,32 @@ bool CWeather::GetWeatherDetails()
 
 	if (!parsedSuccess)
 	{
-		printf("Failed to parse JSON\n");
-		printf("%s\n", formattedErrors.c_str());
+		ng2_err("Failed to parse JSON\n");
+		ng2_err("%s\n", formattedErrors.c_str());
 		
 		return false;
 	}
 
-	found = DataValues["current"].get("dt", 0).asDouble();
+	found = DataValues["dt"].asInt();
 
-	printf("[CWeather]: results found: %lf\n", found);
+	ng2_printf(DEBUG_NORMAL, "results found: %d\n", found);
 
-	if (found > 0)
+	if (found)
 	{
-		timezone = DataValues["timezone"].asString();
-		current.timestamp = DataValues["current"].get("dt", 0).asDouble();
-		current.temperature = DataValues["current"].get("temp", "").asFloat();
-		current.pressure = DataValues["current"].get("pressure", "").asFloat();
-		current.humidity = DataValues["current"].get("humidity", "").asFloat();
-		current.windSpeed = DataValues["current"].get("wind_speed", "").asFloat();
-		current.windBearing = DataValues["current"].get("wind_deg", "").asDouble();
-		current.icon = DataValues["current"]["weather"][0].get("icon", "").asString();
+		current.timestamp = DataValues["dt"].asInt();
+		current.temperature = DataValues["main"].get("temp", "").asFloat();
+		current.pressure = DataValues["main"].get("pressure", "").asFloat();
+		current.humidity = DataValues["main"].get("humidity", "").asFloat();
+		current.windSpeed = DataValues["wind"].get("speed", "").asFloat();
+		current.windBearing = DataValues["wind"].get("deg", "").asDouble();
+		current.icon = DataValues["weather"][0].get("icon", "").asString();
+		
 		if (current.icon.empty())
 			current.icon = "unknown.png";
 		else
 			current.icon = current.icon + ".png";
 			
-		printf("[CWeather]: temp in %s (%s): %.1f - %s\n", myLocation.city.c_str(), timezone.c_str(), current.temperature, current.icon.c_str());
-
-		forecast_data daily_data;
-		Json::Value elements = DataValues["daily"];
-		
-		for (unsigned int i = 0; i < elements.size(); i++)
-		{
-			daily_data.timestamp = elements[i].get("dt", 0).asDouble();
-			daily_data.weekday = (int)(localtime(&daily_data.timestamp)->tm_wday);
-			daily_data.icon = elements[i]["weather"][0].get("icon", "").asString();
-			
-			if (daily_data.icon.empty())
-				daily_data.icon = "unknown.png";
-			else
-				daily_data.icon = daily_data.icon + ".png";
-				
-			daily_data.temperatureMin = elements[i]["temp"].get("min", "").asFloat();
-			daily_data.temperatureMax = elements[i]["temp"].get("max", "").asFloat();
-			daily_data.sunriseTime = elements[i].get("sunrise", 0).asDouble();
-			daily_data.sunsetTime = elements[i].get("sunset", 0).asDouble();
-			daily_data.windSpeed = elements[i].get("wind_speed", 0).asFloat();
-			daily_data.windBearing = elements[i].get("wind_deg", 0).asDouble();
-
-			struct tm *timeinfo;
-			timeinfo = localtime(&daily_data.timestamp);
-
-			dprintf(DEBUG_NORMAL, "[CWeather]: temp %d.%d.%d: min %.1f - max %.1f -> %s\n", timeinfo->tm_mday, timeinfo->tm_mon + 1, timeinfo->tm_year + 1900, daily_data.temperatureMin, daily_data.temperatureMax, daily_data.icon.c_str());
-
-			v_forecast.push_back(daily_data);
-		}
+		ng2_printf(DEBUG_NORMAL, "temp in %s %.1f (%s) (%d)\n", myLocation.city.c_str(), current.temperature, current.icon.c_str(), current.timestamp);
 
 		return true;
 	}

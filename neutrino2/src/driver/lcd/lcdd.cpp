@@ -2446,75 +2446,25 @@ void CLCD::showProgressBar2(int local,const char * const text_local, int global,
 }
 
 // weather
-static std::string st_current_wcity = "";
-static std::string st_current_wtimestamp = "";
-static std::string st_current_wtemp = "?";
-static std::string st_current_wwind = "";
-static std::string st_current_wicon = DATADIR "/icons/unknown.png";
-
-static std::string st_next_wcity = "";
-static std::string st_next_wtimestamp = "";
-static std::string st_next_wtemp = "";
-static std::string st_next_wwind = "";
-static std::string st_next_wicon = "";
-
 void CLCD::showWeather(bool standby)
 {
-	int ctx, cix, ntx, nix, y;
+	int ctx, cix, y;
 
 	
 	// left
 	ctx = 0;
 	cix = 0;
-		
-	// right
-	ntx = lcd_width - 50;
-	nix = lcd_width - 50;
-	//y = lcd_height - fonts.time->getHeight() - 55;
 	y = lcd_height - fonts.time->getHeight() - 2 - 60; 
-	
-	int forecast = 1; // 0 is current day
 
 	std::string current_wcity = "";
-	std::string current_wtimestamp = "";
 	std::string current_wtemp = "";
-	std::string current_wwind = "";
-	std::string current_wicon = "";
+	std::string current_wicon = DATADIR "/icons/unknown.png";
+	
+	CWeather::getInstance()->checkUpdate();
 
-	std::string next_wcity = "";
-	std::string next_wtimestamp = "";
-	std::string next_wtemp = "";
-	std::string next_wwind = "";
-	std::string next_wicon = "";
-
-	if (CWeather::getInstance()->checkUpdate())
-	{
-		current_wcity = st_current_wcity = CWeather::getInstance()->getCity();
-		current_wtimestamp = st_current_wtimestamp = CWeather::getInstance()->getCurrentTimestamp();
-		current_wtemp = st_current_wtemp = CWeather::getInstance()->getCurrentTemperature();
-		current_wwind = st_current_wwind = CWeather::getInstance()->getCurrentWindSpeed();
-		current_wicon = st_current_wicon = CWeather::getInstance()->getCurrentIcon();
-
-		next_wcity = st_next_wcity = CWeather::getInstance()->getCity();
-		next_wtimestamp = st_next_wtimestamp = toString((int)CWeather::getInstance()->getForecastWeekday(forecast));
-		next_wtemp = st_next_wtemp = CWeather::getInstance()->getForecastTemperatureMax(forecast);
-		next_wwind = st_next_wwind = CWeather::getInstance()->getForecastWindBearing(forecast);
-		next_wicon = st_next_wicon = CWeather::getInstance()->getForecastIcon(forecast);
-	}
-	else
-	{
-		current_wcity = st_current_wcity;
-		current_wtimestamp = st_current_wtimestamp;
-		current_wtemp = st_current_wtemp;
-		current_wwind = st_current_wwind;
-		current_wicon = st_current_wicon;
-
-		next_wcity = st_next_wcity;
-		next_wtimestamp = st_next_wtimestamp;
-		next_wtemp = st_next_wtemp;
-		next_wwind = st_next_wwind;
-		next_wicon = st_next_wicon;
-	}
+	current_wcity = CWeather::getInstance()->getCity();
+	current_wtemp = CWeather::getInstance()->getCurrentTemperature();
+	current_wicon = CWeather::getInstance()->getCurrentIcon();
 
 	// current
 	if (current_wicon != "")
@@ -2527,20 +2477,6 @@ void CLCD::showWeather(bool standby)
 		current_wtemp += "°";
 			
 		fonts.time->RenderString(ctx + 15, y + 50 + fonts.time->getHeight()/2, 50, current_wtemp.c_str(), LCD_PIXEL_WHITE, 0, true);
-	}
-
-	// next
-	if (next_wicon != "")
-	{
-		display->showPNGImage(next_wicon.c_str(), nix, y, 50, 50);
-	}
-		
-	if (next_wtemp != "")
-	{
-		next_wtemp += "°";
-
-		fonts.time->RenderString(ntx + 15, y + 50 + fonts.time->getHeight()/2, 50, next_wtemp.c_str(), LCD_PIXEL_WHITE, 0, true);
-			
 	}
 }
 
