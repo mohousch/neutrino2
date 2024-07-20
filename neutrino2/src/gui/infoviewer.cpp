@@ -493,6 +493,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 		logo_w = pic_w; 
 		logo_h = pic_h;
 		logo_bpp = 0;
+		int logo_chans = 0;
 		
 		// check logo
 		logo_ok = CChannellogo::getInstance()->checkLogo(channel_id);
@@ -506,10 +507,10 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 			CChannellogo::getInstance()->displayLogo(channel_id, pic_x, pic_y, pic_w, pic_h, (logo_h > pic_h)? true : false, false, true);
 
 			// recalculate ChanNameWidth //FIXME: timewidth
-			ChanNameWidth = BoxWidth - (30 + CHANNUMBER_WIDTH + pic_w + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->getRenderWidth(ChannelName, true));
+			ChanNameWidth = BoxWidth - (30 + CHANNUMBER_WIDTH + logo_w + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->getRenderWidth(ChannelName, true));
 			
 			// ChannelName
-			g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->RenderString(pic_x + pic_w + 5, ChanNameY + ChanNameHeight, ChanNameWidth, ChannelName, COL_INFOBAR_TEXT_PLUS_0);	// UTF-8
+			g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->RenderString(pic_x + logo_w + 5, ChanNameY + ChanNameHeight, ChanNameWidth, ChannelName, COL_INFOBAR_TEXT_PLUS_0);	// UTF-8
 		}
 		else
 		{

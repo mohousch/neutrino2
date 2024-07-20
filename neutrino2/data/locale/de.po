@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-07-17 15:37+0200\n"
+"POT-Creation-Date: 2024-07-21 01:30+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -2808,6 +2808,10 @@ msgstr ""
 
 msgid "cable"
 msgstr "Kabel"
+
+#, fuzzy
+msgid "can't get mtd-info"
+msgstr "mtd-device kann nicht geöffnet werden"
 
 msgid "can't get update list"
 msgstr "Aktualisierungsliste kann nicht abgerufen werden"

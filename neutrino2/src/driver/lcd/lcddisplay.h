@@ -154,6 +154,7 @@ class CLCDDisplay
 		void load_screen(uint32_t ** const screen);
 		void dump_screen(uint32_t **screen);
 		bool dump_png(const char * const filename);
+		int dump_jpeg(const char * filename);
 		//
 		void clear_screen();
 		////

@@ -50,6 +50,7 @@ const char *icons[] = {
 	"02d", "partly-cloudy-day.png",
 	"02n", "partly-cloudy-night.png",
 	"10d", "rain.png",
+	"10n", "rain.png",
 	"50d", "sleet.png",
 	"13d", "snow.png",
 	"11d", "wind.png",

@@ -985,6 +985,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 	// logo
 	logo_w = 120;
 	logo_h = 60;
+	
 	int logo_x = (lcd_width - logo_w)/2;
 	int logo_y = lcd_height - fonts.time->getHeight() - logo_h - 2;
 	
@@ -999,6 +1000,23 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 	
 		if (CChannellogo::getInstance()->checkLogo(cid))
 			logo = CChannellogo::getInstance()->getLogoName(cid);
+			
+		int l_w, l_h, l_bpp, l_chans;
+		
+		::getSize(logo.c_str(), &l_w, &l_h, &l_bpp, &l_chans);
+		
+		if (l_h < logo_h)
+			logo_h = l_h;
+			
+		if (l_w < logo_w)
+			logo_w = l_w;
+			
+		// recalculate logo_x / logo_y
+		logo_x = (lcd_width - logo_w)/2;
+		logo_y = lcd_height - fonts.time->getHeight() - logo_h - 2;
+		
+		if (g_settings.lcd_weather)
+			logo_x = lcd_width - logo_w - 1;
 
 		if (cid != 0)
 		{
