@@ -2486,20 +2486,20 @@ void CLCD::showWeather()
 	
 	if (!current_wcity.empty())
 	{
-		fonts.time->RenderString(w_x, w_y + fonts.time->getHeight() / 2, w_w, current_wcity.c_str(), LCD_PIXEL_WHITE, 0, true);
+		fonts.time->RenderString(w_x, w_y + fonts.time->getHeight() / 2 + 2, w_w, current_wcity.c_str(), LCD_PIXEL_WHITE, 0, true);
 	}
 
 	// current
 	if (current_wicon != "")
 	{
-		display->showPNGImage(current_wicon.c_str(), w_x, w_y + fonts.time->getHeight(), w_icon_w, w_icon_h);
+		display->showPNGImage(current_wicon.c_str(), w_x, w_y + fonts.time->getHeight() + 2, w_icon_w, w_icon_h);
 	}
 		
 	if (current_wtemp != "")
 	{
 		current_wtemp += "°";
 			
-		fonts.time->RenderString(w_x + 2 + w_icon_w, w_y + fonts.time->getHeight() + fonts.time->getHeight() / 2, w_w - w_icon_w - 2, current_wtemp.c_str(), LCD_PIXEL_WHITE, 0, true);
+		fonts.time->RenderString(w_x + 2 + w_icon_w, w_y + fonts.time->getHeight() + fonts.time->getHeight() / 2 + 2, w_w - w_icon_w - 2, current_wtemp.c_str(), LCD_PIXEL_WHITE, 0, true);
 	}
 }
 

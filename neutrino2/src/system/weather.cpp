@@ -42,6 +42,20 @@
 
 CWeather *weather = NULL;
 
+const char *icons[] = {
+	"01d", "clear-day.png",
+	"01n", "clear-night.png",
+	"03d", "cloudy",
+	"50d", "fog",
+	"02d", "partly-cloudy-day.png",
+	"02n", "partly-cloudy-night.png",
+	"10d", "rain.png",
+	"50d", "sleet.png",
+	"13d", "snow.png",
+	"11d", "wind.png",
+	NULL
+};
+
 CWeather *CWeather::getInstance()
 {
 	if (!weather)
@@ -166,12 +180,21 @@ bool CWeather::GetWeatherDetails()
 		current.humidity = DataValues["main"].get("humidity", "").asFloat();
 		current.windSpeed = DataValues["wind"].get("speed", "").asFloat();
 		current.windBearing = DataValues["wind"].get("deg", "").asDouble();
-		current.icon = DataValues["weather"][0].get("icon", "").asString();
+		std::string icon = DataValues["weather"][0].get("icon", "").asString();
+		
+		int i = 0;
+		
+		while (icons[i] != NULL)
+		{
+			if (strcmp(icon.c_str(), icons[i]) == 0)
+			{
+				current.icon = icons[i + 1];
+			}
+			i++;
+		}
 		
 		if (current.icon.empty())
 			current.icon = "unknown.png";
-		else
-			current.icon = current.icon + ".png";
 			
 		ng2_printf(DEBUG_NORMAL, "temp in %s %.1f (%s) (%d)\n", myLocation.city.c_str(), current.temperature, current.icon.c_str(), current.timestamp);
 
