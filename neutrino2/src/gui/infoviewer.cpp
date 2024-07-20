@@ -63,6 +63,7 @@
 #include <system/debug.h>
 #include <system/helpers.h>
 #include <system/channellogo.h>
+#include <system/weather.h>
 
 
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
@@ -155,6 +156,14 @@ void CInfoViewer::Init()
 	snrscale = new CCProgressBar(BoxStartX + satNameWidth + 20 + g_SignalFont->getRenderWidth("FREQ:1000000MHZ") + 10 + g_SignalFont->getRenderWidth("SIG:100%") + 10, BoxStartY + (SAT_INFOBOX_HEIGHT - SIGSCALE_BAR_HEIGHT)/2, BAR_WIDTH, SNRSCALE_BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR, false);
 	
 	timescale = new CCProgressBar(timescale_posx, timescale_posy, BoxWidth - BORDER_LEFT - BORDER_RIGHT, TIMESCALE_BAR_HEIGHT);	//5? see in code
+	
+	// weather
+	w_icon_w = 64;
+	w_icon_h = 64;
+	w_x = CFrameBuffer::getInstance()->getScreenX() + 20;
+	w_y = CFrameBuffer::getInstance()->getScreenY() + 20;
+	w_width = CFrameBuffer::getInstance()->getScreenWidth() / 2;
+	w_height = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 2 + w_icon_h;
 	
 	timer = NULL;
 	recIcon = NULL;
@@ -574,6 +583,12 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 		showIcon_VTXT();
 		showIcon_SubT();
 		showIcon_Resolution();
+	}
+	
+	// weather
+	if (g_settings.show_weather)
+	{
+		showWeather();
 	}
 	
 	frameBuffer->blit();
@@ -1772,6 +1787,12 @@ void CInfoViewer::killTitle()
 			g_Radiotext->S_RtOsd = g_Radiotext->haveRadiotext() ? 1 : 0;
 			killRadiotext();
 		}
+		
+		// hide weather
+		if (g_settings.show_weather)
+		{
+			frameBuffer->paintBackgroundBoxRel(w_x, w_y, w_width, w_height);
+		}
 
 		frameBuffer->blit();		
   	}
@@ -1883,6 +1904,39 @@ void CInfoViewer::showIcon_CA_Status() const
 		frameBuffer->paintIcon( fta ? NEUTRINO_ICON_SCRAMBLED2_GREY : NEUTRINO_ICON_SCRAMBLED2, BoxEndX - (ICON_OFFSET + icon_w_subt + 2 + icon_w_vtxt + 2 + icon_w_dd + 2 + icon_w_aspect + 2 + icon_w_sd + 2 + icon_w_reso + 2 + icon_w_ca), buttonBarStartY + (buttonBarHeight - icon_h_ca)/2 );
 			
 		return;
+	}
+}
+
+void CInfoViewer::showWeather()
+{
+	std::string current_wcity = "";
+	std::string current_wtemp = "";
+	std::string current_wicon = DATADIR "/icons/unknown.png";
+	
+	CWeather::getInstance()->checkUpdate();
+
+	current_wcity = CWeather::getInstance()->getCity();
+	current_wtemp = CWeather::getInstance()->getCurrentTemperature();
+	current_wicon = CWeather::getInstance()->getCurrentIcon();
+	
+	if(is_visible)
+	{
+		if (current_wcity != "")
+		{	
+			g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(w_x, w_y + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 2, g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getRenderWidth(current_wcity) + 1, current_wcity, COL_WHITE_PLUS_0);
+		}
+
+		if (current_wicon != "")
+		{
+			CFrameBuffer::getInstance()->displayImage(current_wicon.c_str(), w_x, w_y + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight()/2 + 5, w_icon_w, w_icon_h);
+		}
+			
+		if (current_wtemp != "")
+		{
+			current_wtemp += "°";
+				
+			g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO2]->RenderString(w_x + w_icon_w + 5, w_y + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 5 + (w_icon_h - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO2]->getHeight())/2, g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO2]->getRenderWidth("00°") + 1, current_wtemp, COL_WHITE_PLUS_0);
+		}
 	}
 }
 

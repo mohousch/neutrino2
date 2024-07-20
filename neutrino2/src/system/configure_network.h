@@ -85,13 +85,5 @@ class CNetworkConfig
 		void setIfName(std::string name) { ifname = name;};
 };
 
-class CNetAdapter
-{
-	private:
-		long mac_addr_sys ( u_char *addr);	
-	public:
-		std::string getMacAddr(void);
-};
-
 #endif /* __configure_network_h__ */
 

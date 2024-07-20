@@ -35,7 +35,6 @@
 #include <linux/version.h>
 
 #if LINUX_VERSION_CODE > KERNEL_VERSION(2,6,7)
-//#include <linux/compiler.h>
 #include <mtd/mtd-user.h>
 #else
 #include <mtd/mtd-user.h>
@@ -248,8 +247,7 @@ bool CFlashTool::erase(int globalProgressEnd)
 
 	if( ioctl( fd, MEMGETINFO, &meminfo ) != 0 )
 	{
-//#warning TODO: localize error message
-		ErrorMessage = "can't get mtd-info";
+		ErrorMessage = _("can't get mtd-info");
 		return false;
 	}
 
@@ -531,5 +529,4 @@ std::string CMTDInfo::findMTDsystem(const std::string & filename)
 	
 	return "";
 }
-
 

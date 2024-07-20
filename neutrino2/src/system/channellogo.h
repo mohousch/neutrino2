@@ -64,8 +64,7 @@ class CChannellogo : public OpenThreads::Thread
 		bool checkLogo(t_channel_id logo_id);
 		void getLogoSize(t_channel_id logo_id, int * width, int * height);
 		std::string getLogoName(t_channel_id logo_id);
-		
-		// webtv
+		//// webtv
 		void run();
 		bool loadWebTVlogos();
 		bool logo_running;

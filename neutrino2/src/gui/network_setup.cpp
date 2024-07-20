@@ -299,11 +299,8 @@ void CNetworkSettings::showMenu()
 	}
 
 	//key
-	//CStringInputSMS *networkSettings_key = new CStringInputSMS(_("Key"), network_key.c_str());
-	//CMenuForwarder *m10 = new CMenuForwarder(_("Key"), true, network_key.c_str(), networkSettings_key);
 	m10 = new CMenuForwarder(_("Key"), true, network_key.c_str(), this, "key");
 	m10->setHidden(!has_wireless);
-	//m10->addOption(networkSettings_key->getStringValue8).c_str());
 		
 	// encryption
 	CMenuOptionChooser * m11 = new CMenuOptionChooser(_("Security"), &network_encryption, OPTIONS_WLAN_SECURITY_OPTIONS, OPTIONS_WLAN_SECURITY_OPTION_COUNT, true);

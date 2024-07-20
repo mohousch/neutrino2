@@ -160,7 +160,15 @@ class CInfoViewer
 		int             rt_x;
 		int             rt_y;
 		int             rt_h;
-		int             rt_w;	
+		int             rt_w;
+		
+		// weather
+		int w_x;
+		int w_y;
+		int w_width;
+		int w_height;
+		int w_icon_w;
+		int w_icon_h;	
 
 		int	asize;
 		bool show_dot;
@@ -204,6 +212,7 @@ class CInfoViewer
 		void getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentNextInfo &info);
 		void showRadiotext();
 		void killRadiotext();
+		void showWeather();
 
  	public:
 		CInfoViewer();
