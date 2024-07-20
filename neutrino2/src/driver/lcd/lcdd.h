@@ -569,6 +569,11 @@ class CLCD
 		int m_progressGlobal;
 		int m_progressLocal;
 		////
+		int logo_w;
+		int logo_h;
+		int w_icon_w;
+		int w_icon_h;
+		////
 		void count_down();
 		static void* TimeThread(void*);
 		bool lcdInit(const char * fontfile1, const char * fontname1, 
@@ -614,7 +619,7 @@ class CLCD
 		void showAudioTrack(const std::string & artist, const std::string & title, const std::string & album, int pos = 0);
 		void showPlayMode(PLAYMODES m = PLAY_MODE_PLAY);
 		////
-		void showWeather(bool standby);
+		void showWeather();
 		void showProgressBar(int global = -1,const char * const text = NULL,int show_escape = -1,int timer = -1);
 		void showProgressBar2(int local = -1,const char * const text_local = NULL,int global = -1,const char * const text_global = NULL,int show_escape = -1);
 		////

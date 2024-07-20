@@ -144,6 +144,11 @@ CLCD::CLCD()
 	m_progressHeaderLocal = "";
 	m_progressGlobal = 0;
 	m_progressLocal = 0;
+	//// this values are good for 220*176 better way is to calculate them proportionally to lcd_width / lcd_height
+	logo_w = 120;
+	logo_h = 60;
+	w_icon_w = 35;
+	w_icon_h = 35;
 
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	display = NULL;	
@@ -978,6 +983,14 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 	showTextScreen(servicename, epg_title, showmode, perform_wakeup, g_settings.lcd_epgalign);
 	
 	// logo
+	logo_w = 120;
+	logo_h = 60;
+	int logo_x = (lcd_width - logo_w)/2;
+	int logo_y = lcd_height - fonts.time->getHeight() - logo_h - 2;
+	
+	if (g_settings.lcd_weather)
+		logo_x = lcd_width - logo_w - 1;
+	
 	if (g_settings.lcd_picon)
 	{
 		std::string logo = DATADIR "/lcd/picon_default.png";
@@ -989,14 +1002,14 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 
 		if (cid != 0)
 		{
-			display->showPNGImage(logo.c_str(), (lcd_width - 120)/2, lcd_height - fonts.time->getHeight() - 2 - 60, 120, 60);
+			display->showPNGImage(logo.c_str(), logo_x, logo_y, logo_w, logo_h);
 		}
 	}
 	
 	// weather
 	if (g_settings.lcd_weather)
 	{
-		showWeather(false);
+		showWeather();
 	}
 #endif
 
@@ -2446,15 +2459,18 @@ void CLCD::showProgressBar2(int local,const char * const text_local, int global,
 }
 
 // weather
-void CLCD::showWeather(bool standby)
+void CLCD::showWeather()
 {
 	int ctx, cix, y;
 
 	
 	// left
-	ctx = 0;
-	cix = 0;
-	y = lcd_height - fonts.time->getHeight() - 2 - 60; 
+	int w_w = lcd_width - 2 - 60;
+	int w_h = 60;
+	int w_x = 1;
+	int w_y = lcd_height - fonts.time->getHeight() - w_h - 2;
+	w_icon_w = 35;
+	w_icon_h = 35;
 
 	std::string current_wcity = "";
 	std::string current_wtemp = "";
@@ -2465,18 +2481,25 @@ void CLCD::showWeather(bool standby)
 	current_wcity = CWeather::getInstance()->getCity();
 	current_wtemp = CWeather::getInstance()->getCurrentTemperature();
 	current_wicon = CWeather::getInstance()->getCurrentIcon();
+	
+	ng2_printf(DEBUG_NORMAL, "%s %s %s\n", current_wcity.c_str(), current_wtemp.c_str(), current_wicon.c_str());
+	
+	if (!current_wcity.empty())
+	{
+		fonts.time->RenderString(w_x, w_y + fonts.time->getHeight() / 2, w_w, current_wcity.c_str(), LCD_PIXEL_WHITE, 0, true);
+	}
 
 	// current
 	if (current_wicon != "")
 	{
-		display->showPNGImage(current_wicon.c_str(), cix, y, 50, 50);
+		display->showPNGImage(current_wicon.c_str(), w_x, w_y + fonts.time->getHeight(), w_icon_w, w_icon_h);
 	}
 		
 	if (current_wtemp != "")
 	{
 		current_wtemp += "°";
 			
-		fonts.time->RenderString(ctx + 15, y + 50 + fonts.time->getHeight()/2, 50, current_wtemp.c_str(), LCD_PIXEL_WHITE, 0, true);
+		fonts.time->RenderString(w_x + 2 + w_icon_w, w_y + fonts.time->getHeight() + fonts.time->getHeight() / 2, w_w - w_icon_w - 2, current_wtemp.c_str(), LCD_PIXEL_WHITE, 0, true);
 	}
 }
 
