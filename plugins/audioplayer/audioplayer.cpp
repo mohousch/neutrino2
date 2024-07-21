@@ -121,7 +121,6 @@ void CMP3Player::loadPlaylist()
 
 	Path = g_settings.network_nfs_audioplayerdir;
 
-	//if(CFileHelpers::getInstance()->/*readDir*/addRecursiveDir(Path, &filelist, &fileFilter))
 	CFileHelpers::getInstance()->addRecursiveDir(&filelist, Path, &fileFilter);
 
 	if(filelist.size() > 0)
@@ -312,6 +311,10 @@ void CMP3Player::openFileBrowser()
 {
 	dprintf(DEBUG_NORMAL, "CMP3Player::openFileBrowser\n");
 	
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_PROGRESSBAR);
+	
 	CFileBrowser filebrowser((g_settings.filebrowser_denydirectoryleave) ? g_settings.network_nfs_picturedir : "");
 
 	filebrowser.Multi_Select = true;
@@ -343,6 +346,8 @@ void CMP3Player::openFileBrowser()
 				int global = 100*currentProgress/maxProgress;
 				progress.showGlobalStatus(global);
 				progress.showStatusMessageUTF(files->Name);
+				
+				CLCD::getInstance()->showProgressBar(global, "Receiving list, please wait...");
 			}
 			
 			if ( (files->getExtension() == CFile::EXTENSION_CDR)
@@ -479,6 +484,8 @@ void CMP3Player::openFileBrowser()
 		usleep(1000000);
 		progress.hide();
 	}
+	
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 //
