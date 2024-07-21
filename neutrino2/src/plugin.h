@@ -157,6 +157,7 @@
 #include <system/httptool.h>
 #include <system/channellogo.h>
 #include <system/weather.h>
+#include <system/screenshot.h>
 
 //
 #include <zapit/frontend_c.h>

@@ -215,6 +215,7 @@ class CTestMenu : public CMenuTarget
 		//// weather
 		void testWeather();
 		void testlibNGPNG();
+		void testScreenshot();
 		
 		//// paint()
 		void showMenu();
@@ -4923,6 +4924,13 @@ void CTestMenu::testlibNGPNG()
 	}
 }
 
+void CTestMenu::testScreenshot()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testScreenshot\n");
+	
+	CScreenshot::getInstance()->dumpFile("/tmp/a.jpg", CScreenshot::FORMAT_JPG, true);
+}
+
 // exec
 int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 {
@@ -6503,6 +6511,12 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		
 		return RETURN_REPAINT;
 	}
+	else if (actionKey == "dumpfile")
+	{
+		testScreenshot();
+		
+		return RETURN_REPAINT;
+	}
 
 	showMenu();
 	
@@ -6699,12 +6713,13 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("Show Tuxtxt (No Pid)", true, NULL, this, "tuxtxtnopid"));		
 	mainMenu->addItem(new CMenuForwarder("Show Tuxtxt", true, NULL, this, "tuxtxt"));
 	
-	// weather
+	// misc
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "Misc") );
 	mainMenu->addItem(new CMenuForwarder("Weather", true, NULL, this, "weather"));
 	mainMenu->addItem(new CMenuForwarder("LibNGPNG", true, NULL, this, "libngpng"));
 	mainMenu->addItem(new CMenuForwarder("DumpLCD", true, NULL, this, "dumplcd"));
-	mainMenu->addItem(new CMenuForwarder("ShowLCD", true, NULL, this, "showlcd"));	
+	mainMenu->addItem(new CMenuForwarder("ShowLCD", true, NULL, this, "showlcd"));
+	mainMenu->addItem(new CMenuForwarder("Screenshot", true, NULL, this, "dumpfile"));	
 
 	unsigned int count = 0;
 	CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(CZapit::getInstance()->getCurrentChannelID());

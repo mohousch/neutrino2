@@ -280,6 +280,8 @@ int cVideo::setAspectRatio(int ratio, int format)
 
 void cVideo::getPictureInfo(int &width, int &height, int &rate) 
 {
+	printf("cVideo::getPictureInfo\n"); 
+	
 #ifdef USE_OPENGL
 	width = dec_w;
 	height = dec_h;
@@ -288,8 +290,6 @@ void cVideo::getPictureInfo(int &width, int &height, int &rate)
 	rate = 25;
 	height = 576;
 	width = 720;
-	  
-	printf("getPictureInfo\n"); 
 
   	unsigned char buffer[10];
 	int n, fd;	
@@ -340,9 +340,9 @@ void cVideo::getPictureInfo(int &width, int &height, int &rate)
 			sscanf((const char*) buffer, "%X", &height);
 		}
 	}
+#endif
 	
-	printf("getPictureInfo < w %d, h %d, r %d\n", width, height, rate);
-#endif	
+	printf("getPictureInfo < w %d, h %d, r %d\n", width, height, rate);	
 }
 
 int cVideo::Start(void)

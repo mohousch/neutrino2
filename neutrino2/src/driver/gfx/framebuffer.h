@@ -186,11 +186,11 @@ class CFrameBuffer
 		void setFrameBufferMode(unsigned int xRes, unsigned int yRes, unsigned int bpp);
 		int setMode(unsigned int x = DEFAULT_XRES, unsigned int y = DEFAULT_YRES, unsigned int _bpp = DEFAULT_BPP);
 
-		int getFileHandle() const; 		    //only used for plugins (games) !!
+		int getFileHandle() const; 		    	//only used for plugins (games) !!
 		t_fb_var_screeninfo *getScreenInfo();
 
 		uint8_t * getFrameBufferPointer() const;	// pointer to framebuffer
-		unsigned int getStride() const;             // size of a single line in the framebuffer (in bytes)
+		unsigned int getStride() const;             	// size of a single line in the framebuffer (in bytes)
 		unsigned int getScreenWidth(bool real = false);
 		unsigned int getScreenHeight(bool real = false); 
 		unsigned int getScreenX(bool real = false);

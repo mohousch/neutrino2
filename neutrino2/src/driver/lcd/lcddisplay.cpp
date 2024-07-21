@@ -103,7 +103,7 @@ CLCDDisplay::CLCDDisplay()
 	xres = 132;
 	yres = 64; 
 	bpp = 32;
-	bypp = 4;
+	bypp = sizeof(uint32_t);
 	fd = -1;
 	clut.colors = 0;
 	clut.data = 0;
@@ -1367,7 +1367,7 @@ bool CLCDDisplay::dump_png(const char * const filename)
         				if (setjmp(png_jmpbuf(png_ptr)))
         				        printf("[CLCDDisplay] Error during writing header\n");
 
-        				png_set_IHDR(png_ptr, info_ptr, xres, yres, bpp/bypp, PNG_COLOR_TYPE_RGBA,
+        				png_set_IHDR(png_ptr, info_ptr, xres, yres, 8, PNG_COLOR_TYPE_RGBA,
 		PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
 					png_set_filter(png_ptr, 0, PNG_FILTER_NONE|PNG_FILTER_SUB|PNG_FILTER_PAETH);
 					png_set_compression_level(png_ptr, Z_BEST_COMPRESSION);

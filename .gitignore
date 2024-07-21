@@ -3189,3 +3189,5 @@
 /neutrino2/data/icons/lcd/Makefile.in
 /neutrino2/src/driver/lcd/.deps/pixmap.Po
 /neutrino2/src/driver/lcd/pixmap.o
+/neutrino2/src/system/.deps/screenshot.Po
+/neutrino2/src/system/screenshot.o

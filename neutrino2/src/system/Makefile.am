@@ -37,5 +37,6 @@ libneutrino2_system_a_SOURCES = \
 	channellogo.cpp \
 	tmdbparser.cpp \
 	ytparser.cpp \
-	weather.cpp
+	weather.cpp \
+	screenshot.cpp
 
