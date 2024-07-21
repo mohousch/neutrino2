@@ -139,7 +139,6 @@ CLCD::CLCD()
 	movie_playmode = PLAY_MODE_STOP;
 	showclock = false;
 	////
-	m_progressShowEscape = 0;
 	m_progressHeaderGlobal = "";
 	m_progressHeaderLocal = "";
 	m_progressGlobal = 0;
@@ -2323,16 +2322,17 @@ bool CLCD::DumpPng(char *filename)
 }
 
 // showProgressBar
-#define PROG_GLOB_POS_X 	10
-#define PROG_GLOB_POS_Y 	30
-#define PROG_GLOB_POS_WIDTH 	100
-#define PROG_GLOB_POS_HEIGTH 	20
-void CLCD::showProgressBar(int global, const char * const text, int show_escape, int timer)
+void CLCD::showProgressBar(int global, const char * const text)
 {
 	if(!has_lcd) 
 		return;
 	
 #ifdef ENABLE_LCD
+	int prog_w = lcd_width - 10;
+	int prog_h = 20;
+	int prog_x = 5;
+	int prog_y = (lcd_height - prog_h) / 2;
+	
 	if(text != NULL)
 		m_progressHeaderGlobal = text;
 		
@@ -2343,38 +2343,27 @@ void CLCD::showProgressBar(int global, const char * const text, int show_escape,
 		else
 			m_progressGlobal = global;
 	}
-	
-	if(show_escape != -1)
-		m_progressShowEscape = show_escape;
 
 	if (mode == MODE_PROGRESSBAR)
 	{
-		//lcdd_printf(10, "prog:%s,%d,%d\n",m_progressHeaderGlobal.c_str(),m_progressGlobal,m_progressShowEscape);
-		
 		// Clear Display
 		display->draw_fill_rect (0, 12, lcd_width, lcd_height, LCD_PIXEL_OFF);
 	
 		// paint progress header 
 		int width = fonts.menu->getRenderWidth(m_progressHeaderGlobal.c_str(), true);
 		
-		if(width > 100)
-			width = 100;
+		if(width > lcd_width)
+			width = lcd_width;
 			
 		int start_pos = (lcd_width - width)/2;
-		fonts.menu->RenderString(start_pos, 12 + 12, width + 10, m_progressHeaderGlobal.c_str(), LCD_PIXEL_ON,0, true);
+		fonts.menu->RenderString(start_pos, 12 + fonts.menu->getHeight() + 2, width + 10, m_progressHeaderGlobal.c_str(), LCD_PIXEL_ON, 0, true);
 	
 		// paint global bar 
-		int marker_length = (PROG_GLOB_POS_WIDTH * m_progressGlobal)/100;
+		int marker_length = (prog_w*m_progressGlobal)/100;
 		
-		display->draw_fill_rect(PROG_GLOB_POS_X, PROG_GLOB_POS_Y, PROG_GLOB_POS_X + PROG_GLOB_POS_WIDTH,   PROG_GLOB_POS_Y + PROG_GLOB_POS_HEIGTH, LCD_PIXEL_ON);
+		display->draw_fill_rect(prog_x, prog_y, prog_x + prog_w, prog_y + prog_h, LCD_PIXEL_PERCENT);
 		
-		display->draw_fill_rect(PROG_GLOB_POS_X + 1 + marker_length, PROG_GLOB_POS_Y + 1, PROG_GLOB_POS_X + PROG_GLOB_POS_WIDTH - 1, PROG_GLOB_POS_Y + PROG_GLOB_POS_HEIGTH - 1, LCD_PIXEL_OFF);
-	
-		// paint foot 
-		if(m_progressShowEscape  == true)
-		{
-			fonts.menu->RenderString(lcd_width - 40, lcd_height, 40, "Home", LCD_PIXEL_ON);
-		}
+		display->draw_fill_rect(prog_x + 1 + marker_length, prog_y + 1, prog_x + prog_w - 1, prog_y + prog_h - 1, LCD_PIXEL_OFF);
 		
 		displayUpdate();
 	}
@@ -2382,22 +2371,19 @@ void CLCD::showProgressBar(int global, const char * const text, int show_escape,
 }
 
 // showProgressBar2
-#define PROG2_GLOB_POS_X 	10
-#define PROG2_GLOB_POS_Y 	37
-#define PROG2_GLOB_POS_WIDTH 	100
-#define PROG2_GLOB_POS_HEIGTH 	10
-
-#define PROG2_LOCAL_POS_X 	10
-#define PROG2_LOCAL_POS_Y 	24
-#define PROG2_LOCAL_POS_WIDTH 	PROG2_GLOB_POS_WIDTH
-#define PROG2_LOCAL_POS_HEIGTH 	PROG2_GLOB_POS_HEIGTH
-
-void CLCD::showProgressBar2(int local,const char * const text_local, int global, const char * const text_global, int show_escape )
+void CLCD::showProgressBar2(int local,const char * const text_local, int global, const char * const text_global)
 {
 	if(!has_lcd) 
 		return;
 	
 #ifdef ENABLE_LCD
+	int prog_w = lcd_width - 10;
+	int prog_h = 20;
+	int prog_x = 5;
+	int prog_y1 = lcd_height/2 - prog_h - 5;
+	int prog_y2 = lcd_height/2 + prog_h + 5;
+	
+	//
 	if(text_local != NULL)
 		m_progressHeaderLocal = text_local;
 		
@@ -2419,57 +2405,46 @@ void CLCD::showProgressBar2(int local,const char * const text_local, int global,
 		else
 			m_progressLocal = local;
 	}
-	
-	if(show_escape != -1)
-		m_progressShowEscape = show_escape;
 
 	if (mode == MODE_PROGRESSBAR2)
 	{
-		//lcdd_printf(10, "prog2:%s,%d,%d\n",m_progressHeaderGlobal.c_str(),m_progressGlobal,m_progressShowEscape);
-		
 		// Clear Display
 		display->draw_fill_rect (0, 12, lcd_width, lcd_height, LCD_PIXEL_OFF);
 	
 		// paint  global caption 
 		int width = fonts.menu->getRenderWidth(m_progressHeaderGlobal.c_str(), true);
 		
-		if(width > 100)
-			width = 100;
+		if(width > lcd_width)
+			width = lcd_width;
 			
 		int start_pos = (lcd_width - width) /2;
 		
-		fonts.menu->RenderString(start_pos, PROG2_GLOB_POS_Y + 20, width + 10, m_progressHeaderGlobal.c_str(), LCD_PIXEL_ON, 0, true);
+		fonts.menu->RenderString(start_pos, 12 + 20, width + 10, m_progressHeaderGlobal.c_str(), LCD_PIXEL_ON, 0, true);
 	
 		// paint global bar 
-		int marker_length = (PROG2_GLOB_POS_WIDTH * m_progressGlobal)/100;
+		int marker_length = (prog_w * m_progressGlobal)/100;
 		
-		display->draw_fill_rect(PROG2_GLOB_POS_X, PROG2_GLOB_POS_Y, PROG2_GLOB_POS_X+PROG2_GLOB_POS_WIDTH,   PROG2_GLOB_POS_Y + PROG2_GLOB_POS_HEIGTH, LCD_PIXEL_ON);
+		display->draw_fill_rect(prog_x, prog_y1, prog_x + prog_w,   prog_y1 + prog_h, LCD_PIXEL_PERCENT);
 		
-		display->draw_fill_rect(PROG2_GLOB_POS_X + 1 + marker_length, PROG2_GLOB_POS_Y + 1, PROG2_GLOB_POS_X + PROG2_GLOB_POS_WIDTH - 1, PROG2_GLOB_POS_Y + PROG2_GLOB_POS_HEIGTH - 1, LCD_PIXEL_OFF);
+		display->draw_fill_rect(prog_x + 1 + marker_length, prog_y1 + 1, prog_x + prog_w - 1, prog_y1 + prog_h - 1, LCD_PIXEL_OFF);
 	
 		
 		// paint  local caption 
 		width = fonts.menu->getRenderWidth(m_progressHeaderLocal.c_str(), true);
 		
-		if(width > 100)
-			width = 100;
+		if(width > lcd_width)
+			width = lcd_width;
 			
 		start_pos = (lcd_width - width) /2;
 		
-		fonts.menu->RenderString(start_pos, PROG2_LOCAL_POS_Y - 3, width + 10, m_progressHeaderLocal.c_str(), LCD_PIXEL_ON, 0, true);
+		fonts.menu->RenderString(start_pos, prog_y2 + prog_h + fonts.menu->getHeight()/2, width + 10, m_progressHeaderLocal.c_str(), LCD_PIXEL_ON, 0, true);
 		
 		// paint local bar 
-		marker_length = (PROG2_LOCAL_POS_WIDTH * m_progressLocal)/100;
+		marker_length = (prog_w * m_progressLocal)/100;
 		
-		display->draw_fill_rect(PROG2_LOCAL_POS_X, PROG2_LOCAL_POS_Y, PROG2_LOCAL_POS_X+PROG2_LOCAL_POS_WIDTH,   PROG2_LOCAL_POS_Y + PROG2_LOCAL_POS_HEIGTH, LCD_PIXEL_ON);
+		display->draw_fill_rect(prog_x, prog_y2, prog_x + prog_w, prog_y2 + prog_h, LCD_PIXEL_BLUE);
 		
-		display->draw_fill_rect(PROG2_LOCAL_POS_X + 1 + marker_length, PROG2_LOCAL_POS_Y + 1, PROG2_LOCAL_POS_X + PROG2_LOCAL_POS_WIDTH - 1, PROG2_LOCAL_POS_Y + PROG2_LOCAL_POS_HEIGTH - 1, LCD_PIXEL_OFF);
-		
-		// paint foot 
-		if(m_progressShowEscape  == true)
-		{
-			fonts.menu->RenderString(lcd_width - 40, lcd_height, 40, "Home", LCD_PIXEL_ON);
-		}
+		display->draw_fill_rect(prog_x + 1 + marker_length, prog_y2 + 1, prog_x + prog_w - 1, prog_y2 + prog_h - 1, LCD_PIXEL_OFF);
 		
 		displayUpdate();
 	}

@@ -1794,6 +1794,10 @@ void CTestMenu::testCProgressBar()
 	
 	progressBar = new CCProgressBar(&Box);
 	
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_PROGRESSBAR);
+	
 	//
 	neutrino_msg_t msg;
 	neutrino_msg_data_t data;
@@ -1803,6 +1807,9 @@ void CTestMenu::testCProgressBar()
 		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
 		
 		progressBar->refresh(count);
+		
+		CLCD::getInstance()->showProgressBar(count, "ProgressBar");
+		
 		usleep(1000000);
 		
 		if (msg <= CRCInput::RC_MaxRC) // any key break
@@ -1818,6 +1825,8 @@ void CTestMenu::testCProgressBar()
 	
 	delete progressBar;
 	progressBar = NULL;
+	
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 // CButtons
@@ -3967,6 +3976,11 @@ void CTestMenu::testCProgressWindow()
 	progressWindow->setTitle("CProgressWindow");
 	
 	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_PROGRESSBAR2);
+	
+	//
 	progressWindow->paint();
 	
 	neutrino_msg_t msg;
@@ -3981,6 +3995,9 @@ void CTestMenu::testCProgressWindow()
 		
 		progressWindow->showStatusMessageUTF(buffer.c_str());
 		progressWindow->showGlobalStatus(count);
+		
+		CLCD::getInstance()->showProgressBar2(count, "level", count/2, "progressBar2");
+		
 		usleep(1000000);
 		
 		if (msg <= CRCInput::RC_MaxRC) // any key break
@@ -3996,6 +4013,9 @@ void CTestMenu::testCProgressWindow()
 	//
 	delete progressWindow;
 	progressWindow = NULL;
+	
+	//
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 // play Movie Url
@@ -6556,7 +6576,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CCSpinner", true, NULL, this, "spinner"));
 //	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 //	mainMenu->addItem(new CMenuForwarder("CCSlider", true, NULL, this, "slider"));
-//	mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
+	mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
 //	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("CCWindow", true, NULL, this, "panel"));
 	mainMenu->addItem(new CMenuForwarder("CCWindow(gradient)", true, NULL, this, "window"));

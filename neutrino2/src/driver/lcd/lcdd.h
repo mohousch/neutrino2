@@ -563,7 +563,6 @@ class CLCD
 		int				clearClock;
 		unsigned int                    timeout_cnt;
 		////
-		bool m_progressShowEscape;
 		std::string  m_progressHeaderGlobal;
 		std::string  m_progressHeaderLocal;
 		int m_progressGlobal;
@@ -620,8 +619,8 @@ class CLCD
 		void showPlayMode(PLAYMODES m = PLAY_MODE_PLAY);
 		////
 		void showWeather();
-		void showProgressBar(int global = -1,const char * const text = NULL,int show_escape = -1,int timer = -1);
-		void showProgressBar2(int local = -1,const char * const text_local = NULL,int global = -1,const char * const text_global = NULL,int show_escape = -1);
+		void showProgressBar(int global = -1,const char * const text = NULL);
+		void showProgressBar2(int local = -1, const char * const text_local = NULL, int global = -1, const char * const text_global = NULL);
 		////
 		void setBrightness(int);
 		int getBrightness();

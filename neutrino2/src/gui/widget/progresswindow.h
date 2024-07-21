@@ -88,3 +88,4 @@ class CProgressWindow : public CComponent
 };
 
 #endif
+
