@@ -62,6 +62,7 @@ class CTZChangeNotifier : public CChangeObserver
 class CGeneralSettings : public CMenuTarget, CChangeObserver
 {
 	private:
+		CMenuItem * forecast_item;
 		void showMenu();
 		
 		bool changeNotify(const std::string& OptionName, void *);

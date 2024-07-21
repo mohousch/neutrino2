@@ -872,7 +872,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 
 	//
 	g_settings.ytkey = configfile.getString("ytkey", "");
-	g_settings.weather_api_key = configfile.getString("weather_api_key", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+	g_settings.weather_api_key = configfile.getString("weather_api_key", "");
 	g_settings.show_weather = configfile.getInt32("show_weather", 0);
 
 	// tmdb

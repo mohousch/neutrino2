@@ -45,8 +45,11 @@ CWeather *weather = NULL;
 const char *icons[] = {
 	"01d", "clear-day.png",
 	"01n", "clear-night.png",
-	"03d", "cloudy",
-	"50d", "fog",
+	"03d", "cloudy.png",
+	"03n", "cloudy.png",
+	"04d", "cloudy.png",
+	"04n", "cloudy.png",
+	"50d", "fog.png",
 	"02d", "partly-cloudy-day.png",
 	"02n", "partly-cloudy-night.png",
 	"10d", "rain.png",

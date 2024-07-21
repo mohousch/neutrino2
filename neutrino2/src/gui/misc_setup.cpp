@@ -128,6 +128,15 @@ int CGeneralSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	}
 	else if (actionKey == "forecastkey")
 	{
+		CStringInputSMS * forecast = new CStringInputSMS(_("Weather Forcast"), g_settings.weather_api_key.c_str());
+		
+		forecast->exec(NULL, "");
+		
+		forecast_item->addOption(forecast->getValueString().c_str());
+		
+		delete forecast;
+		forecast = NULL;
+		
 		return RETURN_REPAINT;
 	}
 	
@@ -260,7 +269,8 @@ void CGeneralSettings::showMenu()
 	miscSettingsGeneral->addItem(new CMenuForwarder(_("YT:"), true, g_settings.ytkey.c_str(), this, "ytkey"));
 	
 	// weather
-	miscSettingsGeneral->addItem(new CMenuForwarder(_("Weather Forcast"), true, g_settings.weather_api_key.c_str(), this, "forecastkey"));
+	forecast_item = new CMenuForwarder(_("Weather Forcast"), true, g_settings.weather_api_key.c_str(), this, "forecastkey");
+	miscSettingsGeneral->addItem(forecast_item);
 
 	// tmdb
 	miscSettingsGeneral->addItem(new CMenuForwarder(_("TMDB:"), true, g_settings.tmdbkey.c_str(), this, "tmdbkey"));
