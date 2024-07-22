@@ -178,19 +178,6 @@ inline void rgb24torgb32(unsigned char  *src, unsigned char *dest, int picsize)
 	}
 }
 
-void get_osd_buf(uint8_t *osd_data)
-{
-	struct fb_var_screeninfo *var = CFrameBuffer::getInstance()->getScreenInfo();
-	
-	if (var->bits_per_pixel == 32)
-	{
-		ng2_printf(0, "Grabbing 32bit Framebuffer ...\n");
-		
-		// get 32bit framebuffer
-		memcpy(osd_data, (uint8_t *)CFrameBuffer::getInstance()->getFrameBufferPointer(), CFrameBuffer::getInstance()->getStride() * var->yres);
-	}
-}
-
 bool CScreenshot::getData()
 {
 	ng2_printf(0, "osd:%d video:%d scale:%d\n", get_osd, get_video, scale_to_video);
@@ -237,8 +224,8 @@ bool CScreenshot::getData()
 	
 	ng2_printf(0, "xres:%d yres:%d\n", xres, yres);
 	
-	uint8_t *osd_data = NULL;
-	pixel_data = (uint8_t *)malloc(xres * yres * 4);
+	uint8_t *osd_data = (uint8_t *)CFrameBuffer::getInstance()->getFrameBufferPointer();
+	pixel_data = (uint8_t *)malloc(xres * yres * sizeof(uint32_t));
 	
 	if (pixel_data == NULL)
 		return false;
@@ -285,14 +272,6 @@ bool CScreenshot::getData()
 */
 #endif
 
-	if (get_osd)
-	{
-		osd_data = (uint8_t *)malloc(osd_w * osd_h * 4);
-		
-		if (osd_data)
-			get_osd_buf(osd_data);
-	}
-
 	// scale osd to video
 	/*
 	if (get_osd && (osd_w != xres || osd_h != yres))
@@ -326,7 +305,7 @@ bool CScreenshot::getData()
 	}
 	*/
 
-	// merge osd / video + alpha_blending
+	// alpha_blending osd onto video
 	/*
 	if (get_video && get_osd)
 	{
@@ -370,11 +349,8 @@ bool CScreenshot::getData()
 	else*/
 	if (get_osd) // only get_osd, pixel_data is not yet populated 
 	{
-		memcpy(pixel_data, /*osd_data*/(uint8_t *)CFrameBuffer::getInstance()->getFrameBufferPointer(), xres * yres * sizeof(uint32_t));
+		memcpy(pixel_data, osd_data, xres * yres * sizeof(uint32_t));
 	}
-
-	if (osd_data)
-		free(osd_data);
 	
 	return true;
 }
@@ -414,16 +390,15 @@ bool CScreenshot::openFile()
 
 bool CScreenshot::savePng()
 {
-//	png_bytep *row_pointers;
+	png_bytep *row_pointers;
 	png_structp png_ptr;
 	png_infop info_ptr;
-	png_byte *   fbptr;
 
 	if (!openFile())
 		return false;
 		
 	ng2_printf(0, "xres: %d yres: %d\n\n", xres, yres);
-/*
+
 	row_pointers = (png_bytep *) malloc(sizeof(png_bytep) * yres);
 	if (!row_pointers)
 	{
@@ -431,7 +406,6 @@ bool CScreenshot::savePng()
 		fclose(fd);
 		return false;
 	}
-*/
 
 	png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, (png_voidp)NULL, (png_error_ptr)NULL, (png_error_ptr)NULL);
 	info_ptr = png_create_info_struct(png_ptr);
@@ -443,25 +417,19 @@ bool CScreenshot::savePng()
 	{
 		ng2_err("%s save error\n", filename.c_str());
 		png_destroy_write_struct(&png_ptr, &info_ptr);
-//		free(row_pointers);
+		free(row_pointers);
 		fclose(fd);
 		return false;
 	}
 
 	png_init_io(png_ptr, fd);
-/*
+
 	int y;
 	for (y = 0; y < yres; y++)
 	{
 		row_pointers[y] = pixel_data + (y * xres * sizeof(uint32_t));
 	}
-*/
 
-//	png_set_IHDR(png_ptr, info_ptr, xres, yres, 8, PNG_COLOR_TYPE_RGBA, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
-	//png_set_filter (png_ptr, 0, PNG_FILTER_NONE);
-//	png_set_filter(png_ptr, 0, PNG_FILTER_NONE|PNG_FILTER_SUB|PNG_FILTER_PAETH);
-//	png_set_compression_level(png_ptr, Z_BEST_SPEED);
-//	png_set_bgr(png_ptr);
 	png_set_IHDR(png_ptr, info_ptr, xres, yres, 8, PNG_COLOR_TYPE_RGBA, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
 	png_set_filter(png_ptr, 0, PNG_FILTER_NONE|PNG_FILTER_SUB|PNG_FILTER_PAETH);
 	png_set_compression_level(png_ptr, Z_BEST_COMPRESSION);
@@ -469,21 +437,12 @@ bool CScreenshot::savePng()
         png_write_info(png_ptr, info_ptr);
 	png_set_packing(png_ptr);
 	
-	//
-//	png_write_info(png_ptr, info_ptr);
-//	png_write_image(png_ptr, row_pointers);
-
-	fbptr = (png_byte *)pixel_data;
-	for (unsigned int i = 0; i < (unsigned int)yres; i++)
-	{
-		png_write_row(png_ptr, fbptr);
-		fbptr += xres*sizeof(uint32_t);
-	}
+	png_write_image(png_ptr, row_pointers);
 
 	png_write_end(png_ptr, info_ptr);
 	png_destroy_write_struct(&png_ptr, &info_ptr);
 
-//	free(row_pointers);
+	free(row_pointers);
 	fclose(fd);
 
 	return true;
@@ -523,7 +482,7 @@ bool CScreenshot::saveJpg()
 	if (!openFile())
 		return false;
 
-	// ???
+	//
 	for (int y = 0; y < yres; y++)
 	{
 		int xres1 = y * xres * 3;

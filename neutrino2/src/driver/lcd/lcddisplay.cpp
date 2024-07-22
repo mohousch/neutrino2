@@ -1017,9 +1017,9 @@ void CLCDDisplay::blitBox2LCD(int flag)
                             			int g = icol.g;
                             			int b = icol.b;
 
-                            			r = ((r-bg_r)*a)/255 + bg_r;
-                            			g = ((g-bg_g)*a)/255 + bg_g;
-                            			b = ((b-bg_b)*a)/255 + bg_b;
+                            			r = ((r - bg_r)*a)/255 + bg_r;
+                            			g = ((g - bg_g)*a)/255 + bg_g;
+                            			b = ((b - bg_b)*a)/255 + bg_b;
 
 #if BYTE_ORDER == LITTLE_ENDIAN
                             			*dstp++ = bswap_16( (b >> 3) << 11 | (g >> 2) << 5 | r  >> 3 );
@@ -1335,7 +1335,6 @@ bool CLCDDisplay::dump_png(const char * const filename)
 	unsigned int i;
 	png_byte *   fbptr;
 	FILE *       fp;
-	static const png_color_16 my_background = {0, 0, 0, 0, 0};
  
         // create file
         fp = fopen(filename, "wb");
@@ -1366,14 +1365,10 @@ bool CLCDDisplay::dump_png(const char * const filename)
         				        printf("[CLCDDisplay] Error during writing header\n");
 
 					//
-					png_set_background(png_ptr, (png_color_16*)&my_background, PNG_BACKGROUND_GAMMA_SCREEN, 0, 1.0);
-					png_set_IHDR(png_ptr, info_ptr, xres, yres, 8, (bpp == 32)? PNG_COLOR_TYPE_RGBA : PNG_COLOR_TYPE_GRAY, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
-        				//png_set_IHDR(png_ptr, info_ptr, xres, yres, 8, PNG_COLOR_TYPE_RGBA, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
-					//png_set_filter(png_ptr, 0, PNG_FILTER_NONE|PNG_FILTER_SUB|PNG_FILTER_PAETH);
-					//png_set_compression_level(png_ptr, Z_BEST_COMPRESSION);
+					png_set_IHDR(png_ptr, info_ptr, xres, yres, 8, (bpp == 32)? PNG_COLOR_TYPE_RGBA : PNG_COLOR_TYPE_GRAY, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+					
+					//
         				png_write_info(png_ptr, info_ptr);
-					png_set_packing(png_ptr);
-					png_set_strip_alpha(png_ptr);
 					
         				// write bytes
 					if (setjmp(png_jmpbuf(png_ptr)))
@@ -1383,8 +1378,9 @@ bool CLCDDisplay::dump_png(const char * const filename)
 					}
 
 					ret_value = true;
-
+					
 					fbptr = (png_byte *)_buffer;
+					
 					for (i = 0; i < (unsigned int)yres; i++)
 					{
 						png_write_row(png_ptr, fbptr);
