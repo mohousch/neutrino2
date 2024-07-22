@@ -103,7 +103,7 @@ CLCDDisplay::CLCDDisplay()
 	xres = 132;
 	yres = 64;
 	bypp = sizeof(lcd_pixel_t);
-	bpp = 8*bypp;
+	bpp = 8*sizeof(lcd_pixel_t);
 	fd = -1;
 	clut.colors = 0;
 	clut.data = 0;
@@ -1294,9 +1294,9 @@ void CLCDDisplay::clear_screen()
 	blit();
 }
 
-void CLCDDisplay::dump_screen(uint32_t **screen) 
+void CLCDDisplay::dump_screen(lcd_pixel_t **screen) 
 {
-	memmove(*screen, (uint32_t *)_buffer, raw_buffer_size);
+	memmove(*screen, (lcd_pixel_t *)_buffer, raw_buffer_size);
 }
 
 void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int top) 
@@ -1314,7 +1314,7 @@ void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int
 	free(element->buffer);
 }
 
-void CLCDDisplay::load_screen(uint32_t **const screen) 
+void CLCDDisplay::load_screen(lcd_pixel_t **const screen) 
 {
 	raw_lcd_element_t element;
 	
