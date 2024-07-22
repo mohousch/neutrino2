@@ -855,7 +855,7 @@ uint32_t * getImage(const std::string &name, int width, int height, int transp, 
 	return ret;
 }
 
-uint32_t * getBGRImage(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
+uint32_t * getBGR32Image(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
 {
 	int x = 0;
 	int y = 0;
@@ -920,6 +920,174 @@ uint32_t * getBGRImage(const std::string &name, int width, int height, int trans
 			else
 			{
 				ret = (uint32_t *)convertBGR2FB32(buffer, x, y, false, transp, TM_NONE); //TM_NONE
+			}
+			
+			free(buffer);
+		} 
+		else 
+		{
+	  		libngpng_err("Error decoding file %s\n", name.c_str ());
+	  		free (buffer);
+	  		buffer = NULL;
+		}
+  	} 
+	else
+	{
+		libngpng_err("Error open file %s\n", name.c_str ());
+	}
+
+	return ret;
+}
+
+uint16_t * getBGR16Image(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
+{
+	int x = 0;
+	int y = 0;
+	int nbpp = 0;
+	int channels = 0;
+	CFormathandler * fh = NULL;
+	uint8_t * buffer = NULL;
+	uint16_t *ret = NULL;
+	int load_ret = FH_ERROR_MALLOC;
+
+	//
+  	fh = fh_getsize(name.c_str(), &x, &y, INT_MAX, INT_MAX); // unscaled
+	
+  	if (fh) 
+	{
+		buffer = (uint8_t *)malloc(x*y*4);
+		
+		if (buffer == NULL) 
+		{
+		  	libngpng_err("Error: malloc\n");
+		  	return NULL;
+		}
+		
+		if ((name.find(".png") == (name.length() - 4)) && (fh_png_id(name.c_str())))
+			load_ret = int_png_load(name.c_str(), &buffer, &x, &y, &nbpp, &channels);
+		else if (name.find(".svg") == (name.length() - 4))
+		{
+			load_ret = svg_load_resize(name.c_str(), &buffer, &x, &y, width, height);
+			channels = 4;
+		}
+		else
+			load_ret = fh->get_pic(name.c_str(), &buffer, &x, &y);
+
+		if (load_ret == FH_ERROR_OK) 
+		{
+			// resize
+			if( (width != 0 && height != 0) && (x != width || y != height) )
+			{
+				// alpha
+				if(channels == 4)
+				{
+					buffer = resize(buffer, x, y, width, height, scaletype, true);
+				}
+				else
+				{
+					buffer = resize(buffer, x, y, width, height, scaletype);
+				}
+					
+				x = width ;
+				y = height;
+			}
+			
+			// convert
+			if( name.find(".png") == (name.length() - 4) )
+			{
+				// alpha
+				if (channels == 4)
+					ret = (uint16_t *)convertBGR2FB16(buffer, x, y, true);
+				else
+					ret = (uint16_t *)convertBGR2FB16(buffer, x, y, false, transp, TM_BLACK); // TM_BLACK
+			}
+			else
+			{
+				ret = (uint16_t *)convertBGR2FB16(buffer, x, y, false, transp, TM_NONE); //TM_NONE
+			}
+			
+			free(buffer);
+		} 
+		else 
+		{
+	  		libngpng_err("Error decoding file %s\n", name.c_str ());
+	  		free (buffer);
+	  		buffer = NULL;
+		}
+  	} 
+	else
+	{
+		libngpng_err("Error open file %s\n", name.c_str ());
+	}
+
+	return ret;
+}
+
+uint8_t * getBGR8Image(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
+{
+	int x = 0;
+	int y = 0;
+	int nbpp = 0;
+	int channels = 0;
+	CFormathandler * fh = NULL;
+	uint8_t * buffer = NULL;
+	uint8_t *ret = NULL;
+	int load_ret = FH_ERROR_MALLOC;
+
+	//
+  	fh = fh_getsize(name.c_str(), &x, &y, INT_MAX, INT_MAX); // unscaled
+	
+  	if (fh) 
+	{
+		buffer = (uint8_t *)malloc(x*y*4);
+		
+		if (buffer == NULL) 
+		{
+		  	libngpng_err("Error: malloc\n");
+		  	return NULL;
+		}
+		
+		if ((name.find(".png") == (name.length() - 4)) && (fh_png_id(name.c_str())))
+			load_ret = int_png_load(name.c_str(), &buffer, &x, &y, &nbpp, &channels);
+		else if (name.find(".svg") == (name.length() - 4))
+		{
+			load_ret = svg_load_resize(name.c_str(), &buffer, &x, &y, width, height);
+			channels = 4;
+		}
+		else
+			load_ret = fh->get_pic(name.c_str(), &buffer, &x, &y);
+
+		if (load_ret == FH_ERROR_OK) 
+		{
+			// resize
+			if( (width != 0 && height != 0) && (x != width || y != height) )
+			{
+				// alpha
+				if(channels == 4)
+				{
+					buffer = resize(buffer, x, y, width, height, scaletype, true);
+				}
+				else
+				{
+					buffer = resize(buffer, x, y, width, height, scaletype);
+				}
+					
+				x = width ;
+				y = height;
+			}
+			
+			// convert
+			if( name.find(".png") == (name.length() - 4) )
+			{
+				// alpha
+				if (channels == 4)
+					ret = (uint8_t *)convertBGR2FB8(buffer, x, y, true);
+				else
+					ret = (uint8_t *)convertBGR2FB8(buffer, x, y, false, transp, TM_BLACK); // TM_BLACK
+			}
+			else
+			{
+				ret = (uint8_t *)convertBGR2FB8(buffer, x, y, false, transp, TM_NONE); //TM_NONE
 			}
 			
 			free(buffer);

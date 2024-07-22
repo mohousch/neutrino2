@@ -58,8 +58,8 @@
 #define BACKGROUNDIMAGEWIDTH 	DEFAULT_XRES
 #define BACKGROUNDIMAGEHEIGHT	DEFAULT_YRES
 
-////
-inline uint32_t make16color(uint16_t r, uint16_t g, uint16_t b, uint16_t t,
+//// ARGB
+inline fb_pixel_t make16color(uint16_t r, uint16_t g, uint16_t b, uint16_t t,
 				  uint32_t  /*rl*/ = 0, uint32_t  /*ro*/ = 0,
 				  uint32_t  /*gl*/ = 0, uint32_t  /*go*/ = 0,
 				  uint32_t  /*bl*/ = 0, uint32_t  /*bo*/ = 0,
@@ -94,7 +94,7 @@ CFrameBuffer::CFrameBuffer()
 	fd  = 0;
 	m_manual_blit = -1;
 	
-//FIXME: 
+	// 
 	memset(red, 0, 256*sizeof(__u16));
 	memset(green, 0, 256*sizeof(__u16));
 	memset(blue, 0, 256*sizeof(__u16));
@@ -109,8 +109,8 @@ CFrameBuffer::CFrameBuffer()
 	corner_br = false;
 	
 	//
-	xRes = 0;
-	yRes = 0; 
+	xRes = DEFAULT_XRES;
+	yRes = DEFAULT_YRES; 
 	stride = xRes * sizeof(fb_pixel_t); 
 	bpp = DEFAULT_BPP;
 }
@@ -179,7 +179,7 @@ void CFrameBuffer::init(const char * const fbDevice)
 		}
 	}
 	
-	lfb = reinterpret_cast<uint8_t *>(mpGLThreadObj->getOSDBuffer());
+	lfb = reinterpret_cast<fb_pixel_t *>(mpGLThreadObj->getOSDBuffer());
 	memset(lfb, 0x7f, screeninfo.xres * screeninfo.yres * sizeof(fb_pixel_t));
 	
 	if (!lfb) 
@@ -222,7 +222,7 @@ void CFrameBuffer::init(const char * const fbDevice)
 	
 	dprintf(DEBUG_NORMAL, "CFrameBuffer::init %dk video mem\n", available/1024);
 	
-	lfb = (uint8_t *)mmap(0, available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
+	lfb = (fb_pixel_t *)mmap(0, available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
 
 	if (!lfb) 
 	{
@@ -348,7 +348,7 @@ unsigned int CFrameBuffer::getScreenY(bool real)
 		return g_settings.screen_StartY;
 }
 
-uint8_t * CFrameBuffer::getFrameBufferPointer() const
+fb_pixel_t * CFrameBuffer::getFrameBufferPointer() const
 {	  
 	if (active)
 	{
@@ -394,7 +394,6 @@ t_fb_var_screeninfo *CFrameBuffer::getScreenInfo()
 	return &screeninfo;
 }
 
-//
 void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, unsigned int nbpp)
 {
 	screeninfo.xres_virtual = screeninfo.xres = nxRes;
@@ -1519,8 +1518,8 @@ void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const 
 	
 	uint32_t swidth = stride / sizeof(fb_pixel_t);
 
-	fb_pixel_t *fbp = (fb_pixel_t *)getFrameBufferPointer() + (swidth * yoff);
 	fb_pixel_t *data = (fb_pixel_t *)boxBuf;
+	fb_pixel_t *fbp = (fb_pixel_t *)getFrameBufferPointer() + (swidth * yoff);
 	fb_pixel_t *d2;
  
 	for (uint32_t line = 0; line < yc; line++)	
@@ -1628,7 +1627,6 @@ void CFrameBuffer::enableManualBlit()
 	if (ioctl(fd, FBIO_SET_MANUAL_BLIT, &tmp) < 0) 
 	{
 		perror("FB: FBIO_SET_MANUAL_BLIT");
-		printf("FB: failed\n");
 	}
 	else 
 	{
@@ -1645,7 +1643,6 @@ void CFrameBuffer::disableManualBlit()
 	if (ioctl(fd,FBIO_SET_MANUAL_BLIT, &tmp) < 0) 
 	{
 		perror("FB: FBIO_SET_MANUAL_BLIT");
-		printf("FB: failed\n");
 	}
 	else 
 	{

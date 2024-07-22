@@ -31,6 +31,8 @@ PKG_CHECK_MODULES(PNG,libpng)
 PKG_CHECK_MODULES(AVCODEC,libavcodec)
 PKG_CHECK_MODULES(AVUTIL,libavutil)
 PKG_CHECK_MODULES(AVFORMAT,libavformat)
+PKG_CHECK_MODULES([SWRESAMPLE], [libswresample])
+PKG_CHECK_MODULES([SWSCALE], [libswscale])
 
 # opengl framebuffer (x86)
 AC_ARG_ENABLE(opengl,
@@ -43,8 +45,6 @@ AC_DEFINE(USE_OPENGL,1,[include opengl engine])
 PKG_CHECK_MODULES(GL, gl)
 #PKG_CHECK_MODULES(GLUT, glut)
 PKG_CHECK_MODULES(GLEW, glew)
-PKG_CHECK_MODULES([SWRESAMPLE], [libswresample])
-PKG_CHECK_MODULES([SWSCALE], [libswscale])
 fi
 
 # gstreamer

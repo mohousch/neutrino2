@@ -47,7 +47,7 @@ class CScreenshot
 	private:
 		screenshot_format_t format;
 		std::string filename;
-		unsigned char *pixel_data;
+		uint8_t *pixel_data;
 		int xres;
 		int yres;
 		bool extra_osd;
@@ -69,7 +69,7 @@ class CScreenshot
 		
 		static CScreenshot *getInstance();
 		
-		void dumpFile(const std::string &fname = "", screenshot_format_t fmt = CScreenshot::FORMAT_PNG, bool osd = true, bool video = false, bool scale = false);
+		bool dumpFile(const std::string &fname = "", screenshot_format_t fmt = CScreenshot::FORMAT_PNG, bool osd = true, bool video = false, bool scale = false);
 };
 
 #endif

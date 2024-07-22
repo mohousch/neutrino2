@@ -79,6 +79,7 @@ class CControlAPI : public Cyhook
 		void VersionCGI(CyhookHandler *hh);
 		void ZaptoCGI(CyhookHandler *hh);
 		void StartPluginCGI(CyhookHandler *hh);
+		void ScreenshotCGI(CyhookHandler *hh);
 		void LCDAction(CyhookHandler *hh);
 		void YWebCGI(CyhookHandler *hh);
 		void RebootCGI(CyhookHandler *hh);

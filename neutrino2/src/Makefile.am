@@ -98,6 +98,8 @@ neutrino2_LDADD = \
 	@AVFORMAT_LIBS@ \
 	@AVUTIL_LIBS@ \
 	@AVCODEC_LIBS@ \
+	@SWRESAMPLE_LIBS@ \
+	@SWSCALE_LIBS@ \
 	-ljpeg -lrt -lblkid -ldl -lgif -lpthread -lOpenThreads -lcrypto -lssl
 
 neutrino2_LDFLAGS = -Wl,--export-dynamic
@@ -110,8 +112,6 @@ endif
 
 if USE_OPENGL
 neutrino2_LDADD += \
-	@SWRESAMPLE_LIBS@ \
-	@SWSCALE_LIBS@ \
 	-lglut -lGL -lGLU -lGLEW -lao
 endif
 

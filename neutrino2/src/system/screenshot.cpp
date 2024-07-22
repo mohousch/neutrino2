@@ -67,7 +67,7 @@ CScreenshot *CScreenshot::getInstance()
 
 CScreenshot::CScreenshot()
 {
-	format = CScreenshot::FORMAT_JPG;
+	format = CScreenshot::FORMAT_PNG;
 	filename = "";
 	pixel_data = NULL;
 	fd = NULL;
@@ -81,6 +81,8 @@ CScreenshot::CScreenshot()
 bool getvideo2(unsigned char *video, int xres, int yres)
 {
 	bool ret = false;
+	
+#ifdef USE_OPENGL
 	if (video ==  NULL)
 		return ret;
 		
@@ -99,6 +101,7 @@ bool getvideo2(unsigned char *video, int xres, int yres)
 		ret = true;
 	}
 	close(fd_video);
+#endif
 	
 	return ret;
 }
@@ -175,24 +178,22 @@ inline void rgb24torgb32(unsigned char  *src, unsigned char *dest, int picsize)
 	}
 }
 
-void get_osd_buf(unsigned char *osd_data)
+void get_osd_buf(uint8_t *osd_data)
 {
-	printf("get_osd_buf\n");
-	
 	struct fb_var_screeninfo *var = CFrameBuffer::getInstance()->getScreenInfo();
 	
 	if (var->bits_per_pixel == 32)
 	{
-		fprintf(stderr, "Grabbing 32bit Framebuffer ...\n");
+		ng2_printf(0, "Grabbing 32bit Framebuffer ...\n");
 		
 		// get 32bit framebuffer
-		memcpy(osd_data, CFrameBuffer::getInstance()->getFrameBufferPointer(), CFrameBuffer::getInstance()->getStride() * var->yres);
+		memcpy(osd_data, (uint8_t *)CFrameBuffer::getInstance()->getFrameBufferPointer(), CFrameBuffer::getInstance()->getStride() * var->yres);
 	}
 }
 
 bool CScreenshot::getData()
 {
-	bool ret = false;
+	ng2_printf(0, "osd:%d video:%d scale:%d\n", get_osd, get_video, scale_to_video);
 	
 #define VDEC_PIXFMT AV_PIX_FMT_BGR24
 	
@@ -203,11 +204,12 @@ bool CScreenshot::getData()
 	if (xres <= 0 || yres <= 0)
 		get_video = false;
 		
-	printf("xres:%d yres:%d aspect:%d\n", xres, xres, aspect);
+	ng2_printf(0, "xres:%d yres:%d aspect:%d\n", xres, xres, aspect);
 
 	if (!get_video && !get_osd)
 		return false;
 
+	// get screeninfo
 	int osd_w = 0;
 	int osd_h = 0;
 	int bits_per_pixel = 0;
@@ -221,7 +223,7 @@ bool CScreenshot::getData()
 		osd_w = var->xres;
 		osd_h = var->yres;
 		
-		printf("osd_w:%d osd_h:%d bpp:%d\n", osd_w, osd_h, bits_per_pixel);
+		ng2_printf(0, "osd_w:%d osd_h:%d bpp:%d stride:%d\n", osd_w, osd_h, bits_per_pixel, CFrameBuffer::getInstance()->getStride());
 		
 		if (osd_w <= 0 || osd_h <= 0 || bits_per_pixel != 32)
 			get_osd = false;
@@ -233,16 +235,21 @@ bool CScreenshot::getData()
 		}
 	}
 	
-	unsigned char *osd_data = NULL;
-	pixel_data = (unsigned char *)malloc(xres * yres * 4); // will be freed by caller
+	ng2_printf(0, "xres:%d yres:%d\n", xres, yres);
+	
+	uint8_t *osd_data = NULL;
+	pixel_data = (uint8_t *)malloc(xres * yres * 4);
 	
 	if (pixel_data == NULL)
 		return false;
 
+	// get videobuffer
+#ifndef USE_OPENGL
+/*
 	if (get_video)
 	{
 		const int grab_w = 1920;
-		const int grab_h = 1080; //hd51 video0 is always 1920x1080
+		const int grab_h = 1080;
 		
 		unsigned char *video_src = (unsigned char *)malloc(grab_w * grab_h * 3);
 		
@@ -269,20 +276,25 @@ bool CScreenshot::getData()
 				return false;
 			}
 		}
-		else   /* get_video and no fancy scaling needed */
+		else   // get_video and no fancy scaling needed
 		{
 			rgb24torgb32(video_src, pixel_data, grab_w * grab_h);
 		}
 		free(video_src);
 	}
+*/
+#endif
 
 	if (get_osd)
 	{
-		osd_data = (unsigned char *)malloc(osd_w * osd_h * 4);
+		osd_data = (uint8_t *)malloc(osd_w * osd_h * 4);
+		
 		if (osd_data)
 			get_osd_buf(osd_data);
 	}
 
+	// scale osd to video
+	/*
 	if (get_osd && (osd_w != xres || osd_h != yres))
 	{
 		// rescale osd
@@ -312,8 +324,10 @@ bool CScreenshot::getData()
 			return false;
 		}
 	}
+	*/
 
-	// alpha_blending
+	// merge osd / video + alpha_blending
+	/*
 	if (get_video && get_osd)
 	{
 		// alpha blend osd onto pixel_data (video). TODO: maybe libavcodec can do this?
@@ -353,13 +367,16 @@ bool CScreenshot::getData()
 			}
 		}
 	}
-	else if (get_osd) /* only get_osd, pixel_data is not yet populated */
-		memcpy(pixel_data, osd_data, xres * yres * sizeof(uint32_t));
+	else*/
+	if (get_osd) // only get_osd, pixel_data is not yet populated 
+	{
+		memcpy(pixel_data, /*osd_data*/(uint8_t *)CFrameBuffer::getInstance()->getFrameBufferPointer(), xres * yres * sizeof(uint32_t));
+	}
 
 	if (osd_data)
 		free(osd_data);
 	
-	return ret;
+	return true;
 }
 
 bool CScreenshot::saveFile()
@@ -397,20 +414,24 @@ bool CScreenshot::openFile()
 
 bool CScreenshot::savePng()
 {
-	png_bytep *row_pointers;
+//	png_bytep *row_pointers;
 	png_structp png_ptr;
 	png_infop info_ptr;
+	png_byte *   fbptr;
 
 	if (!openFile())
 		return false;
-
+		
+	ng2_printf(0, "xres: %d yres: %d\n\n", xres, yres);
+/*
 	row_pointers = (png_bytep *) malloc(sizeof(png_bytep) * yres);
 	if (!row_pointers)
 	{
-		ng2_printf(DEBUG_NORMAL, "malloc error\n");
+		ng2_err("malloc error\n");
 		fclose(fd);
 		return false;
 	}
+*/
 
 	png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, (png_voidp)NULL, (png_error_ptr)NULL, (png_error_ptr)NULL);
 	info_ptr = png_create_info_struct(png_ptr);
@@ -420,33 +441,49 @@ bool CScreenshot::savePng()
 	if (setjmp(png_jmpbuf(png_ptr)))
 #endif
 	{
-		ng2_printf(DEBUG_NORMAL, "%s save error\n", filename.c_str());
+		ng2_err("%s save error\n", filename.c_str());
 		png_destroy_write_struct(&png_ptr, &info_ptr);
-		free(row_pointers);
+//		free(row_pointers);
 		fclose(fd);
 		return false;
 	}
 
 	png_init_io(png_ptr, fd);
-
+/*
 	int y;
 	for (y = 0; y < yres; y++)
 	{
-		row_pointers[y] = pixel_data + (y * xres * 4);
+		row_pointers[y] = pixel_data + (y * xres * sizeof(uint32_t));
+	}
+*/
+
+//	png_set_IHDR(png_ptr, info_ptr, xres, yres, 8, PNG_COLOR_TYPE_RGBA, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+	//png_set_filter (png_ptr, 0, PNG_FILTER_NONE);
+//	png_set_filter(png_ptr, 0, PNG_FILTER_NONE|PNG_FILTER_SUB|PNG_FILTER_PAETH);
+//	png_set_compression_level(png_ptr, Z_BEST_SPEED);
+//	png_set_bgr(png_ptr);
+	png_set_IHDR(png_ptr, info_ptr, xres, yres, 8, PNG_COLOR_TYPE_RGBA, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+	png_set_filter(png_ptr, 0, PNG_FILTER_NONE|PNG_FILTER_SUB|PNG_FILTER_PAETH);
+	png_set_compression_level(png_ptr, Z_BEST_COMPRESSION);
+	png_set_bgr(png_ptr);
+        png_write_info(png_ptr, info_ptr);
+	png_set_packing(png_ptr);
+	
+	//
+//	png_write_info(png_ptr, info_ptr);
+//	png_write_image(png_ptr, row_pointers);
+
+	fbptr = (png_byte *)pixel_data;
+	for (unsigned int i = 0; i < (unsigned int)yres; i++)
+	{
+		png_write_row(png_ptr, fbptr);
+		fbptr += xres*sizeof(uint32_t);
 	}
 
-	png_set_IHDR(png_ptr, info_ptr, xres, yres, 8, PNG_COLOR_TYPE_RGBA, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
-	//png_set_filter (png_ptr, 0, PNG_FILTER_NONE);
-
-	png_set_compression_level(png_ptr, Z_BEST_SPEED);
-
-	png_set_bgr(png_ptr);
-	png_write_info(png_ptr, info_ptr);
-	png_write_image(png_ptr, row_pointers);
 	png_write_end(png_ptr, info_ptr);
 	png_destroy_write_struct(&png_ptr, &info_ptr);
 
-	free(row_pointers);
+//	free(row_pointers);
 	fclose(fd);
 
 	return true;
@@ -457,8 +494,11 @@ bool CScreenshot::savePng()
 /* from libjpg example.c */
 struct my_error_mgr
 {
-	struct jpeg_error_mgr pub;    /* "public" fields */
-	jmp_buf setjmp_buffer;        /* for return to caller */
+	/* "public" fields */
+	struct jpeg_error_mgr pub;
+	
+	/* for return to caller */
+	jmp_buf setjmp_buffer;
 };
 typedef struct my_error_mgr *my_error_ptr;
 
@@ -483,6 +523,7 @@ bool CScreenshot::saveJpg()
 	if (!openFile())
 		return false;
 
+	// ???
 	for (int y = 0; y < yres; y++)
 	{
 		int xres1 = y * xres * 3;
@@ -506,7 +547,7 @@ bool CScreenshot::saveJpg()
 
 	if (setjmp(jerr.setjmp_buffer))
 	{
-		ng2_printf(DEBUG_NORMAL, "%s save error\n", filename.c_str());
+		ng2_err("%s save error\n", filename.c_str());
 		jpeg_destroy_compress(&cinfo);
 		fclose(fd);
 		return false;
@@ -528,9 +569,10 @@ bool CScreenshot::saveJpg()
 
 	while (cinfo.next_scanline < cinfo.image_height)
 	{
-		row_pointer[0] = & pixel_data[cinfo.next_scanline * row_stride];
+		row_pointer[0] = (uint8_t *)&pixel_data[cinfo.next_scanline * row_stride];
 		jpeg_write_scanlines(&cinfo, row_pointer, 1);
 	}
+	
 	jpeg_finish_compress(&cinfo);
 	jpeg_destroy_compress(&cinfo);
 	fclose(fd);
@@ -538,8 +580,10 @@ bool CScreenshot::saveJpg()
 	return true;
 }
 
-void CScreenshot::dumpFile(const std::string &fname, screenshot_format_t fmt, bool osd, bool video, bool scale)
+bool CScreenshot::dumpFile(const std::string &fname, screenshot_format_t fmt, bool osd, bool video, bool scale)
 {
+	bool ret = false;
+	
 	format = fmt;
 	filename = fname;
 	get_osd = osd;
@@ -547,6 +591,8 @@ void CScreenshot::dumpFile(const std::string &fname, screenshot_format_t fmt, bo
 	scale_to_video = scale;
 	
 	getData();
-	saveFile();
+	ret = saveFile();
+	
+	return ret;
 }
 

@@ -44,6 +44,8 @@
 #include "neutrinoapi.h"
 #include "controlapi.h"
 
+#include <system/screenshot.h>
+
 
 // globals
 extern int scanning;
@@ -166,6 +168,7 @@ const CControlAPI::TyCgiCall CControlAPI::yCgiCallList[]=
 	// boxcontrol - devices
 	{"volume", 		&CControlAPI::VolumeCGI, 	 "text/plain"},
 	{"lcd", 		&CControlAPI::LCDAction, 	 "text/plain"},
+	{"screenshot",		&CControlAPI::ScreenshotCGI,		""},
 	{"system", 		&CControlAPI::SystemCGI, 	 "text/plain"},
 	{"message", 		&CControlAPI::MessageCGI,	 "text/plain"},
 	{"rc", 			&CControlAPI::RCCGI,	 	 "text/plain"},
@@ -1406,10 +1409,31 @@ void CControlAPI::StartPluginCGI(CyhookHandler *hh)
 		hh->SendError();
 }
 
+void CControlAPI::ScreenshotCGI(CyhookHandler *hh)
+{
+	bool enableOSD = true;
+	bool enableVideo = true;
+	std::string filename = "screenshot";
+
+	if (hh->ParamList["osd"] == "0")
+		enableOSD = false;
+		
+	if (hh->ParamList["video"] == "0")
+		enableVideo = false;
+		
+	if (!hh->ParamList["name"].empty())
+		filename = hh->ParamList["name"];
+
+	if (CScreenshot::getInstance()->dumpFile("/tmp/" + filename + ".png", CScreenshot::FORMAT_PNG, enableOSD, enableVideo))
+		hh->SendOk();
+	else
+		hh->SendError();
+}
+
 //
 void CControlAPI::LCDAction(CyhookHandler *hh)
 {
-	int error=0;
+	int error = 0;
 
 #ifdef ENABLE_LCD
 	if (hh->ParamList.empty())

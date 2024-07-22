@@ -32,6 +32,8 @@
 
 #include <linux/fb.h>
 
+#include <config.h>
+
 #include <driver/gfx/color.h>
 
 // aabbggrr
@@ -68,6 +70,8 @@
 #define LED_IOCTL_BLINKING_TIME 		0X12
 #define LED_IOCTL_SET_DEFAULT 			0x13
 
+#define lcd_pixel_t uint32_t
+
 struct raw_lcd_element_t
 {
 	std::string name;
@@ -78,28 +82,28 @@ struct raw_lcd_element_t
 	int bpp;
 	int bypp;
 	int stride;
-	uint32_t *buffer;
+	lcd_pixel_t *buffer;
 	gPalette clut;
 };
 
 class CLCDDisplay
 {
 	private:
-		int           fd;
-		int	      paused;
+		int           	fd;
+		int	      	paused;
 		
-		uint32_t inverted;
-		bool 	      flipped;
-		int 	      lcd_type;
-		int 	      last_brightness;
+		uint32_t	inverted;
+		bool 	      	flipped;
+		int 	      	lcd_type;
+		int 	      	last_brightness;
 		////
-		uint8_t     * surface_data;
-		int 	      surface_stride;
-		int 	      surface_bpp, surface_bypp;
-		int 	      surface_buffer_size;
+		uint8_t     	* surface_data;
+		int 	      	surface_stride;
+		int 	      	surface_bpp, surface_bypp;
+		int 	      	surface_buffer_size;
 		////
-		int 	      real_offset;
-		int 	      real_yres;
+		int 	      	real_offset;
+		int 	      	real_yres;
 		////
 		int locked;
 #ifdef ENABLE_TFTLCD
@@ -141,7 +145,7 @@ class CLCDDisplay
 		void resume();
 
 		void update();
-		void blitBox2LCD(int flag = 2);
+		void blitBox2LCD(int flag = blitAlphaBlend);
 		void blit(void);
 		////
 		void draw_point(const int x, const int y, const uint32_t color);
@@ -155,7 +159,7 @@ class CLCDDisplay
 		void dump_screen(uint32_t **screen);
 		bool dump_png(const char * const filename);
 		int dump_jpeg(const char * filename);
-		//
+		////
 		void clear_screen();
 		////
 		int setLCDContrast(int contrast);
@@ -164,7 +168,7 @@ class CLCDDisplay
 		void setInverted(uint32_t inv);
 		void setFlipped(bool);
 		//// raw buffer
-		uint32_t *_buffer;
+		lcd_pixel_t *_buffer;
 		int _stride;
 		int raw_buffer_size;
 		int bpp, bypp;

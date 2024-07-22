@@ -74,7 +74,9 @@ uint16_t * convertBGR2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, b
 uint8_t * convertRGB2FB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
 uint8_t * convertBGR2FB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
 uint32_t *getImage(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
-uint32_t *getBGRImage(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
+uint32_t *getBGR32Image(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
+uint16_t *getBGR16Image(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
+uint8_t *getBGR8Image(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
 uint8_t *getBitmap(const std::string &name);
 
 #endif
