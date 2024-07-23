@@ -529,14 +529,6 @@ class CLCD
 		CLCDDisplay			*display;
 		LcdFontRenderClass		*fontRenderer;
 		FontsDef			fonts;
-		
-#ifdef ENABLE_GRAPHLCD
-		//nGLCD				*nglcd;
-		bool				nglcdshowclock;
-		int				nglcdclearClock;
-		int 				nglcd_width;
-		int 				nglcd_height;
-#endif
 
 #define LCD_NUMBER_OF_ELEMENTS 			15
 		raw_lcd_element_t               element[LCD_NUMBER_OF_ELEMENTS];
@@ -566,6 +558,8 @@ class CLCD
 		int m_progressGlobal;
 		int m_progressLocal;
 		////
+		int logo_x;
+		int logo_y;
 		int logo_w;
 		int logo_h;
 		int w_icon_w;
@@ -585,6 +579,7 @@ class CLCD
 		~CLCD();
 
 		bool has_lcd;
+		bool has_nglcd;
 		void wake_up();
 		void setLED(int value, int option);
 		void setMiniTV(int value);
@@ -661,6 +656,11 @@ class CLCD
 #endif
 
 #ifdef ENABLE_GRAPHLCD
+		bool nglcdshowclock;
+		int nglcdclearClock;
+		int nglcd_width;
+		int nglcd_height;
+
 		int GetConfigSize();
 		std::string GetConfigName(int);
 #endif

@@ -49,13 +49,11 @@
 #include <zlib.h>
 #include <math.h>
 
-////
 extern "C" {
 #include <jpeglib.h>
 }
 
 #include <system/settings.h>
-
 
 
 #define LCDDISPLAY_DEBUG
@@ -101,8 +99,8 @@ CLCDDisplay::CLCDDisplay()
 	fd = -1;
 	
 	//
-	xres = 320;
-	yres = 240;
+	xres = 220;
+	yres = 176;
 	
 	paused = 0;
 	flipped = false;
@@ -112,7 +110,6 @@ CLCDDisplay::CLCDDisplay()
 	locked = 0;
 	
 	//
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	raw_buffer_size = 0;
 	raw_bypp = sizeof(lcd_pixel_t);
 	raw_bpp = 8*sizeof(lcd_pixel_t);
@@ -120,6 +117,15 @@ CLCDDisplay::CLCDDisplay()
 	raw_stride = 0;
 	raw_clut.colors = 0;
 	raw_clut.data = 0;
+	
+	// init raw_buffer
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+	raw_stride = xres*raw_bypp;
+	raw_buffer_size = xres * yres * raw_bypp;
+	raw_buffer = new lcd_pixel_t[raw_buffer_size];
+	memset(raw_buffer, 0, raw_buffer_size);
+	
+	lcddisplay_printf(10, "raw_buffer: %dk video mem\n", raw_buffer_size);
 #endif
 	
 	// surface
@@ -162,6 +168,8 @@ CLCDDisplay::CLCDDisplay()
 	ngbpp = 32;
 	ngbypp = 4;
 	ng_buffer_size = 0;
+	ngxres = 320;
+	ngyres = 240;
 #endif
 }
 
@@ -219,26 +227,15 @@ CLCDDisplay::~CLCDDisplay()
 }
 
 bool CLCDDisplay::init(const char *fbdevice)
-{
-
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
-	raw_stride = xres*raw_bypp;
-	raw_buffer_size = xres * yres * raw_bypp;
-	raw_buffer = new lcd_pixel_t[raw_buffer_size];
-	memset(raw_buffer, 0, raw_buffer_size);
-	
-	lcddisplay_printf(0, "raw_buffer: %s %dk video mem\n", fbdevice, raw_buffer_size);
-#endif
-	
+{	
 #ifdef ENABLE_LCD
+	int _bpp = 16; 
+	
 	//open device
 #ifdef USE_OPENGL
 	fd = open("/dev/null", O_RDWR);
 #else
 	fd = open("/dev/dbox/oled0", O_RDWR);
-#endif
-
-	int _bpp;
 	
 	if (fd < 0)
 	{
@@ -294,13 +291,12 @@ bool CLCDDisplay::init(const char *fbdevice)
 			lcd_type = 3;
 		}
 	}
+#endif
 	
 	setSize(xres, yres, _bpp);
 
 	return true;
-#endif
-
-#ifdef ENABLE_TFTLCD
+#elif defined (ENABLE_TFTLCD)
 	fd = open(fbdevice, O_RDWR);
 	
 	if (fd < 0)
@@ -360,7 +356,10 @@ nolfb:
 	
 	return false;
 #endif
+}
 
+bool CLCDDisplay::initGLCD()
+{
 #ifdef ENABLE_GRAPHLCD
 	// configfile
 	if (GLCD::Config.Load(kDefaultConfigFile) == false)
@@ -400,19 +399,15 @@ nolfb:
 
 	lcddisplay_printf(10, "init succeeded.\n");
 	
-	ngstride = xres * ngbypp;
-	ng_buffer_size = xres * yres * ngbypp;
+	ngxres = lcd->Width();
+	ngyres = lcd->Height();
+	ngstride = ngxres * ngbypp;
+	ng_buffer_size = ngxres * ngyres * ngbypp;
 	ngbuffer = new uint32_t[ng_buffer_size];
 	memset(ngbuffer, 0, ng_buffer_size);
 	
-	// create bitmap
-	if (!bitmap)
-		bitmap = new GLCD::cBitmap(lcd->Width(), lcd->Height(), g_settings.glcd_color_bg);
-		
-	if (bitmap)
-		return true;
-		
-	//
+	lcddisplay_printf(10, "%d %d\n", ngxres, ngyres);
+	return true;
 #endif
 }
 
@@ -944,7 +939,7 @@ void CLCDDisplay::blit(void)
 #ifdef ENABLE_GRAPHLCD
 	if (lcd)
 	{
-		lcd->SetScreen(ngbuffer, xres, yres);	
+		lcd->SetScreen(ngbuffer, ngxres, ngyres);	
 		lcd->Refresh(true);
 	}
 #endif
@@ -1276,7 +1271,9 @@ void CLCDDisplay::blitBox2LCD(int flag)
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-	memcpy(ngbuffer, raw_buffer, ngstride * yres);
+//	raw_buffer = ::convertRGB2FB32((uint8_t *)raw_buffer, ngxres, ngyres, true);
+	//
+	memcpy(ngbuffer, raw_buffer, ngstride * ngyres);
 #endif
 }
 
@@ -1594,7 +1591,7 @@ int CLCDDisplay::dump_jpeg(const char * filename)
 
 int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int width, int height, int flag)
 {
-	lcddisplay_printf(10, "CLCDDisplay::showPNGImage: %s %d %d %d %d (flag: %d)\n", filename, posx, posy, width, height, flag);
+	lcddisplay_printf(10, "%s %d %d %d %d (flag: %d)\n", filename, posx, posy, width, height, flag);
 	
 	raw_lcd_element_t element;
 	int p_w, p_h, p_bpp;
@@ -1602,7 +1599,7 @@ int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int widt
 	
 	::getSize(filename, &p_w, &p_h, &p_bpp, &chans);
 	
-	lcddisplay_printf(10, "CLCDDisplay::showPNGImage: real: %s %d %d %d %d\n", filename, p_w, p_h, p_bpp, chans);
+	lcddisplay_printf(10, "real: %s %d %d %d %d\n", filename, p_w, p_h, p_bpp, chans);
 
 	if (raw_bpp == 32)
 		element.buffer = (lcd_pixel_t *)::getBGR32Image(filename, width, height);
@@ -1625,14 +1622,14 @@ int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int widt
 
 void CLCDDisplay::load_png_element(raw_lcd_element_t *element, int posx, int posy, int width, int height)
 {
-	lcddisplay_printf(10, "CLCDDisplay::load_png_element: %s %d %d %d %d\n", element->name.c_str(), posx, posy, width, height);
+	lcddisplay_printf(10, "%s %d %d %d %d\n", element->name.c_str(), posx, posy, width, height);
 	
 	int p_w, p_h, p_bpp;
 	int chans = 1;
 	
 	::getSize(element->name.c_str(), &p_w, &p_h, &p_bpp, &chans);
 	
-	lcddisplay_printf(10, "CLCDDisplay::showPNGImage: real: %s %d %d\n", element->name.c_str(), p_w, p_h);
+	lcddisplay_printf(10, "real: %s %d %d\n", element->name.c_str(), p_w, p_h);
 	
 	uint8_t *image = ::getBitmap(element->name.c_str());
 	
@@ -1662,7 +1659,7 @@ void CLCDDisplay::load_png_element(raw_lcd_element_t *element, int posx, int pos
 
 void CLCDDisplay::show_png_element(raw_lcd_element_t *element, int posx, int posy, int width, int height)
 {
-	lcddisplay_printf(10, "CLCDDisplay::show_png_element: %s %d %d %d %d\n", element->name.c_str(), posx, posy, width, height);
+	lcddisplay_printf(10, "%s %d %d %d %d\n", element->name.c_str(), posx, posy, width, height);
 	
 	load_png_element(element, posx, posy, width, height);
 	

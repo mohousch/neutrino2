@@ -80,7 +80,7 @@
 #define LED_IOCTL_BLINKING_TIME 		0X12
 #define LED_IOCTL_SET_DEFAULT 			0x13
 
-#define lcd_pixel_t uint32_t
+#define lcd_pixel_t 				uint32_t
 
 struct raw_lcd_element_t
 {
@@ -143,16 +143,6 @@ class CLCDDisplay
 		void unlock();
 #endif
 
-#ifdef ENABLE_GRAPHLCD
-		GLCD::cDriver *lcd;
-		GLCD::cBitmap *bitmap;
-		uint32_t * ngbuffer;
-		int ngstride;
-		int ngbpp;
-		int ngbypp;
-		int ng_buffer_size;
-#endif
-	
 	public:
 		enum
 		{
@@ -165,6 +155,7 @@ class CLCDDisplay
 		~CLCDDisplay();
 		
 		bool init(const char *fbdevice = "/dev/fb1");
+		bool initGLCD();
 
 		void pause();
 		void resume();
@@ -211,6 +202,15 @@ class CLCDDisplay
 		void show_analog_clock(int hour, int min, int sec, int posx, int posy, int hour_size, int min_size, int sec_size);
 		
 #ifdef ENABLE_GRAPHLCD
+		GLCD::cDriver *lcd;
+		GLCD::cBitmap *bitmap;
+		uint32_t * ngbuffer;
+		int ngstride;
+		int ngbpp;
+		int ngbypp;
+		int ng_buffer_size;
+		int ngxres, ngyres;
+
 		int GetConfigSize();
 		std::string GetConfigName(int);
 #endif

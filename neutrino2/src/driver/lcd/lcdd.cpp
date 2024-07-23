@@ -111,7 +111,10 @@ void CLCD::closeDevice()
 #ifdef ENABLE_GRAPHLCD
 int CLCD::GetConfigSize()
 {
-	return (int) GLCD::Config.driverConfigs.size();
+//	if (display->lcd)
+		return (int) GLCD::Config.driverConfigs.size();
+//	else 
+//		return -1;
 }
 
 std::string CLCD::GetConfigName(int driver)
@@ -119,7 +122,10 @@ std::string CLCD::GetConfigName(int driver)
 	if ((driver < 0) || (driver > GetConfigSize() - 1))
 		driver = 0;
 		
-	return GLCD::Config.driverConfigs[driver].name;
+//	if (display->lcd)
+		return GLCD::Config.driverConfigs[driver].name;
+//	else
+//		return std::string("");
 }
 #endif
 
@@ -132,10 +138,11 @@ CLCD::CLCD()
 	timeout_cnt = 0;
 	icon_dolby = false;	
 	has_lcd = false;
+	has_nglcd = false;
 	clearClock = 0;
 	fd = -1;
-	lcd_width = 132;
-	lcd_height = 64;
+	lcd_width = 220;
+	lcd_height = 176;
 	servicename = "";
 	servicenumber = 0;
 	epg_title = "";
@@ -152,6 +159,8 @@ CLCD::CLCD()
 	//// this values are good for 220*176 better way is to calculate them proportionally to lcd_width / lcd_height
 	logo_w = 120;
 	logo_h = 60;
+	logo_x = 0;
+	logo_y = 12;
 	w_icon_w = 35;
 	w_icon_h = 35;
 
@@ -162,8 +171,8 @@ CLCD::CLCD()
 #ifdef ENABLE_GRAPHLCD
 	nglcdshowclock= false;
 	nglcdclearClock = 0;
-	nglcd_width = 132;
-	nglcd_height = 64;
+	nglcd_width = 320;
+	nglcd_height = 240;
 #endif
 }
 
@@ -252,17 +261,17 @@ void CLCD::init(const char * fontfile, const char * fontname, const char * fontf
 	// init lcd 
 	if (!lcdInit(fontfile, fontname, fontfile2, fontname2, fontfile3, fontname3 ))
 	{
-		lcdd_printf(10, "CLCD::init: failed!\n");
+		lcdd_err("failed!\n");
 		has_lcd = false;
 		return;
 	}
 	
-	lcdd_printf(10, "CLCD::init: succeeded\n");
+	lcdd_printf(10, "succeeded\n");
 
 	// create time thread
 	if (pthread_create (&thrTime, NULL, TimeThread, NULL) != 0 )
 	{
-		lcdd_err("CLCD::init: pthread_create(TimeThread)");
+		lcdd_err("pthread_create(TimeThread)");
 		return ;
 	}
 }
@@ -412,8 +421,9 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	
 	if (fd >= 0) has_lcd = true;
 #endif // vfd
-#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
-	display = new CLCDDisplay();
+#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
+	if (!display)
+		display = new CLCDDisplay();
 	
 	// check if we have display
 #ifdef USE_OPENGL
@@ -426,7 +436,27 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	lcd_width = display->xres;
 	lcd_height = display->yres;
 	
+	lcdd_printf(10, "%d %d\n", lcd_width, lcd_height);
+#endif
+
+#ifdef ENABLE_GRAPHLCD
+	if (!display)
+		display = new CLCDDisplay();
+		
+	if (display->initGLCD())
+		has_lcd = true;
+		
+	nglcd_width = display->ngxres;
+	nglcd_height = display->ngyres;
+	
+	lcdd_printf(10, "%d %d\n", nglcd_width, nglcd_height);
+#endif
+	
 	// init fonts
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+	if (!has_lcd)
+		return false;
+		
 	fontRenderer = new LcdFontRenderClass(display);
 	
 	const char * style_name = fontRenderer->AddFont(fontfile);
@@ -456,8 +486,6 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	fonts.channelname = fontRenderer->getFont(fontname3, style_name3, 30);
 	fonts.menutitle   = fonts.channelname;
 	fonts.timestandby = fontRenderer->getFont(fontname,  style_name , 50);
-	
-	has_lcd = true;
 
  	// init lcd_element struct
 	for (int i = 0; i < LCD_NUMBER_OF_ELEMENTS; i++)
@@ -594,7 +622,7 @@ static std::string splitString(const std::string & text, const int maxwidth, Lcd
 	int pos;
 	std::string tmp = removeLeadingSpaces(text);
 
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	if (font->getRenderWidth(tmp.c_str(), utf8) > maxwidth)
 	{
 		do
@@ -622,6 +650,18 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 		return;
 		
 	lcdd_printf(10, "CLCD::showTextScreen: big:%s small:%s showmode:0x%x wakeup:%s centered:%s\n", big.empty()? "null" : big.c_str(), small.empty()? "null" : small.c_str(), showmode, perform_wakeup? "true" : "false", centered? "centered" : "not centered");
+	
+	////
+	bool big_utf8 = false;
+	bool small_utf8 = false;
+	std::string cname[2];
+	std::string event[4];
+	int namelines = 0, eventlines = 0, maxnamelines = 2;
+	
+	int maxeventlines = 4 - namelines;
+	int y = 0;
+	int x = 0;
+	////
 		
 #if defined (ENABLE_4DIGITS)
 	int len = big.length();
@@ -699,13 +739,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	else
 		display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, lcd_height - fonts.time->getHeight(), LCD_PIXEL_OFF);
 
-	//
-	bool big_utf8 = false;
-	bool small_utf8 = false;
-	std::string cname[2];
-	std::string event[4];
-	int namelines = 0, eventlines = 0, maxnamelines = 2;
-	
+	//	
 	if ( (g_settings.lcd_picon || g_settings.lcd_weather) && mode == MODE_TVRADIO)
 		maxnamelines = 1;
 
@@ -736,7 +770,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	}
 
 	// calculate maxeventlines
-	int maxeventlines = 4 - namelines;
+	maxeventlines = 4 - namelines;
 	maxeventlines = ((lcd_height - element[ELEMENT_BANNER].height - fonts.time->getHeight()) / fonts.menu->getHeight()) - namelines;
 	
 	if ( (g_settings.lcd_picon || g_settings.lcd_weather) && mode == MODE_TVRADIO)
@@ -772,8 +806,8 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	}
 
 	//	
-	int y = element[ELEMENT_BANNER].height;
-	int x = 1;
+	y = element[ELEMENT_BANNER].height;
+	x = 1;
 	
 	// namelines
 	for (int i = 0; i < namelines; i++) 
@@ -783,6 +817,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 		if (centered)
 		{
 			int w = fonts.channelname->getRenderWidth(cname[i].c_str(), big_utf8);
+
 			x = (lcd_width - w) / 2;
 		}
 		
@@ -803,6 +838,116 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 			}
 			
 			fonts.menu->RenderString(x, y, lcd_width + 10, event[i].c_str(), LCD_PIXEL_ON, 0, small_utf8);
+		}
+	}
+#endif
+
+#if 0 //def ENABLE_GRAPHLCD
+	// clear screen under banner
+	if (mode == MODE_PIC)
+		display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, lcd_height, LCD_PIXEL_OFF);
+	else
+		display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, lcd_height - fonts.time->getHeight(), LCD_PIXEL_OFF);
+
+	//	
+	if ( (g_settings.lcd_picon || g_settings.lcd_weather) && mode == MODE_TVRADIO)
+		maxnamelines = 1;
+
+	if ((showmode & CLCD::EPGMODE_CHANNEL) && !big.empty())
+	{
+		bool dumb = false;
+		big_utf8 = isUTF8(big);
+		
+		while (true)
+		{
+			namelines = 0;
+			std::string title = big;
+			
+			do { 
+				// first try "intelligent" splitting
+				cname[namelines] = splitString(title, nglcd_width, fonts.channelname, dumb, big_utf8);
+				title = removeLeadingSpaces(title.substr(cname[namelines].length()));
+				namelines++;
+			} while (title.length() > 0 && namelines < maxnamelines);
+			
+			if (title.length() == 0)
+				break;
+				
+			dumb = !dumb;	// retry with dumb splitting;
+			if (!dumb)	// second retry -> get out;
+				break;
+		}
+	}
+
+	// calculate maxeventlines
+	maxeventlines = 4 - namelines;
+	maxeventlines = ((nglcd_height - element[ELEMENT_BANNER].height - fonts.time->getHeight()) / fonts.menu->getHeight()) - namelines;
+	
+	if ( (g_settings.lcd_picon || g_settings.lcd_weather) && mode == MODE_TVRADIO)
+		maxeventlines = 1;
+
+	if ((showmode & CLCD::EPGMODE_TITLE) && !small.empty())
+	{
+		bool dumb = false;
+		small_utf8 = isUTF8(small);
+
+		while (true)
+		{
+			eventlines = 0;
+			std::string title = small;
+			do { 
+				// first try "intelligent" splitting
+				event[eventlines] = splitString(title, nglcd_width, fonts.menu, dumb, small_utf8);
+				title = removeLeadingSpaces(title.substr(event[eventlines].length()));
+				// DrDish TV appends a 0x0a to the EPG title. We could strip it in sectionsd...
+				//   ...instead, strip all control characters at the end of the text for now
+				if (event[eventlines].length() > 0 && event[eventlines].at(event[eventlines].length() - 1) < ' ')
+					event[eventlines].erase(event[eventlines].length() - 1);
+				eventlines++;
+			} while (title.length() > 0 && eventlines < maxeventlines);
+			
+			if (title.length() == 0)
+				break;
+				
+			dumb = !dumb;	// retry with dumb splitting;
+			if (!dumb)	// second retry -> get out;
+				break;
+		}
+	}
+
+	//	
+	y = element[ELEMENT_BANNER].height;
+	x = 1;
+	
+	// namelines
+	for (int i = 0; i < namelines; i++) 
+	{
+		y += fonts.channelname->getHeight();
+		
+		if (centered)
+		{
+			int w = fonts.channelname->getRenderWidth(cname[i].c_str(), big_utf8);
+
+			x = (nglcd_width - w) / 2;
+		}
+		
+		fonts.channelname->RenderString(x, y, nglcd_width + 10, cname[i].c_str(), LCD_PIXEL_YELLOW, 0, big_utf8);
+	}
+
+	//
+	if (eventlines > 0)
+	{
+		for (int i = 0; i < eventlines; i++) 
+		{
+			y += fonts.menu->getHeight();
+			
+			if (centered)
+			{
+				int w = fonts.menu->getRenderWidth(event[i].c_str(), small_utf8);
+				x = (nglcd_width - w) / 2;
+			}
+			
+			fonts.menu->RenderString(x, y, nglcd_width + 10, event[i].c_str(), LCD_PIXEL_ON, 0, small_utf8);
 		}
 	}
 #endif
@@ -901,6 +1046,10 @@ void CLCD::showText(const char *str)
 #elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	showTextScreen(std::string(str), "", EPGMODE_CHANNEL, true, true); // always centered
 #endif
+
+#if 0 //def ENABLE_GRAPHLCD
+	showTextScreen(std::string(str), "", EPGMODE_CHANNEL, true, true); // always centered
+#endif
 }
 
 void CLCD::showServicename(const std::string &name, const bool perform_wakeup, int pos)
@@ -941,11 +1090,13 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 	logo_w = 120;
 	logo_h = 60;
 	
-	int logo_x = (lcd_width - logo_w)/2;
-	int logo_y = lcd_height - fonts.time->getHeight() - logo_h - 2;
+	logo_x = (lcd_width - logo_w)/2; if (logo_x < 0) logo_x = 0; // FIXME:
+	logo_y = lcd_height - fonts.time->getHeight() - logo_h - 2; if (logo_y < 0) logo_y = 0; // FIXME:
 	
 	if (g_settings.lcd_weather)
 		logo_x = lcd_width - logo_w - 1;
+		
+	if (logo_x < 0) logo_x = 0; // FIXME:
 	
 	if (g_settings.lcd_picon)
 	{
@@ -967,11 +1118,65 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 			logo_w = l_w;
 			
 		// recalculate logo_x / logo_y
-		logo_x = (lcd_width - logo_w)/2;
-		logo_y = lcd_height - fonts.time->getHeight() - logo_h - 2;
+		logo_x = (lcd_width - logo_w)/2; if (logo_x < 0) logo_x = 0; // FIXME:
+		logo_y = lcd_height - fonts.time->getHeight() - logo_h - 2; if (logo_y < 0) logo_y = 0; // FIXME:
 		
 		if (g_settings.lcd_weather)
-			logo_x = lcd_width - logo_w - 1;
+			logo_x = lcd_width - logo_w - 1; if (logo_x < 0) logo_x = 0; // FIXME:
+
+		if (cid != 0)
+		{
+			display->showPNGImage(logo.c_str(), logo_x, logo_y, logo_w, logo_h);
+		}
+	}
+	
+	// weather
+	if (g_settings.lcd_weather)
+	{
+		showWeather();
+	}
+#endif
+
+#if 0 //def ENABLE_GRAPHLCD
+	showTextScreen(servicename, epg_title, showmode, perform_wakeup, g_settings.lcd_epgalign);
+	
+	// logo
+	logo_w = 120;
+	logo_h = 60;
+	
+	logo_x = (nglcd_width - logo_w)/2; if (logo_x < 0) logo_x = 0; // FIXME:
+	logo_y = nglcd_height - fonts.time->getHeight() - logo_h - 2; if (logo_y < 0) logo_y = 0; // FIXME:
+	
+	if (g_settings.lcd_weather)
+		logo_x = nglcd_width - logo_w - 1; 
+		
+	if (logo_x < 0) logo_x = 0; // FIXME:
+	
+	if (g_settings.lcd_picon)
+	{
+		std::string logo = DATADIR "/lcd/picon_default.png";
+		
+		t_channel_id cid = CZapit::getInstance()->getCurrentChannelID();
+	
+		if (CChannellogo::getInstance()->checkLogo(cid))
+			logo = CChannellogo::getInstance()->getLogoName(cid);
+			
+		int l_w, l_h, l_bpp, l_chans;
+		
+		::getSize(logo.c_str(), &l_w, &l_h, &l_bpp, &l_chans);
+		
+		if (l_h < logo_h)
+			logo_h = l_h;
+			
+		if (l_w < logo_w)
+			logo_w = l_w;
+			
+		// recalculate logo_x / logo_y
+		logo_x = (nglcd_width - logo_w)/2; if (logo_x < 0) logo_x = 0; // FIXME:
+		logo_y = nglcd_height - fonts.time->getHeight() - logo_h - 2;
+		
+		if (g_settings.lcd_weather)
+			logo_x = nglcd_width - logo_w - 1;
 
 		if (cid != 0)
 		{
@@ -1181,31 +1386,9 @@ void CLCD::showTime(bool force)
 
 		if (mode == MODE_STANDBY)
 		{
-			std::string a_clock = DATADIR "/lcd/a_clock.png";
-			
-			/*
-			if (file_exists(a_clock.c_str()))
-			{
-				int lcd_a_clock_width = 0, lcd_a_clock_height = 0, lcd_a_clock_bpp = 0;
-				getSize(a_clock.c_str(), &lcd_a_clock_width, &lcd_a_clock_height, &lcd_a_clock_bpp);
-			
-				if (g_settings.glcd_enable) 
-				{
-					nglcd->showAnalogClock(lcd_a_clock_width / 2, lcd_a_clock_height / 2, 200);
-				}
-			}
-			*/
-			if (g_settings.glcd_enable)
-			{
-//				nglcd->drawText(0, 0, nglcd_width - 1, timestr, &font_time_standby);
-			}
 		}
 		else
 		{
-			if (g_settings.glcd_enable)
-			{
-//				nglcd->drawText(0, 0, nglcd_width - 1, timestr, &font_time);
-			}
 		}
 		
 		displayUpdate();
@@ -1247,7 +1430,7 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 	
 	volume = vol;
 	
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	if ( (mode == MODE_TVRADIO || mode == MODE_MOVIE || mode == MODE_SCART || mode == MODE_AUDIO) && (g_settings.lcd_statusline == STATUSLINE_VOLUME) )
 	{
 		unsigned int height =  6;
@@ -1323,13 +1506,14 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 {
 	if(!has_lcd) 
 		return;
-	
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+		
 	if (mode != m)
 		return;
-
+		
 	int left, top, width, height = 6;
 	bool draw = true;
+	
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	percentOver = perc;
 	
 	if ( (mode == MODE_TVRADIO || mode == MODE_MOVIE || mode == MODE_AUDIO) && (g_settings.lcd_statusline == STATUSLINE_PLAYTIME) )
@@ -1337,6 +1521,45 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 		left = 12 + 2; 
 		top = lcd_height - height - 1 - 2; 
 		width = lcd_width - left - 4 - fonts.time->getRenderWidth("00:00");
+
+		// refresh
+		display->draw_rectangle(left - 2, top - 2, left + width + 2, top + height + 1, LCD_PIXEL_ON, LCD_PIXEL_OFF);
+
+		if (perc == (unsigned char) -1)
+		{
+			display->draw_line(left, top, left + width, top + height - 1, LCD_PIXEL_ON);
+		}
+		else
+		{
+			int dp;
+			if (perc == (unsigned char) - 2)
+				dp = width + 1;
+			else
+				dp = perc * (width + 1) / 100;
+					
+			display->draw_fill_rect(left - 1, top - 1, left + dp, top + height, LCD_PIXEL_PERCENT);
+
+			if (perc == (unsigned char) - 2)
+			{
+				// draw a "+" to show that the event is overdue
+				display->draw_line(left + width - 2, top + 1, left + width - 2, top + height - 2, LCD_PIXEL_OFF);
+				display->draw_line(left + width - 1, top + (height/2), left + width - 3, top + (height/2), LCD_PIXEL_OFF);
+			}
+		}
+
+		if (perform_update)
+			displayUpdate();
+	}
+#endif
+
+#if 0 //def ENABLE_GRAPHLCD
+	percentOver = perc;
+	
+	if ( (mode == MODE_TVRADIO || mode == MODE_MOVIE || mode == MODE_AUDIO) && (g_settings.lcd_statusline == STATUSLINE_PLAYTIME) )
+	{
+		left = 12 + 2; 
+		top = nglcd_height - height - 1 - 2; 
+		width = nglcd_width - left - 4 - fonts.time->getRenderWidth("00:00");
 
 		// refresh
 		display->draw_rectangle(left - 2, top - 2, left + width + 2, top + height + 1, LCD_PIXEL_ON, LCD_PIXEL_OFF);
@@ -1381,7 +1604,7 @@ void CLCD::showMenuText(const int position, const char * text, const int selecte
 		
 #if defined (ENABLE_VFD)						
 	showText(text); // UTF-8
-#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// second line
 	// refresh
 	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 - 1, lcd_width, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight() + 10, LCD_PIXEL_OFF);
@@ -1406,7 +1629,7 @@ void CLCD::showAudioTrack(const std::string &artist, const std::string &title, c
 
 #if defined (ENABLE_VFD)
 	showText((char *)title.c_str());
-#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// refresh
 	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, element[ELEMENT_BANNER].height + 2 + fonts.channelname->getHeight() + 2 + fonts.menu->getHeight() + 2 + fonts.menu->getHeight(), LCD_PIXEL_OFF);
 	
@@ -1455,7 +1678,7 @@ void CLCD::showPlayMode(PLAYMODES m)
 			break;
 	}
 #endif	
-#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// refresh
 	display->draw_fill_rect (-1, lcd_width - 12, 12, 12, LCD_PIXEL_OFF);
 	
@@ -1509,10 +1732,17 @@ void CLCD::drawBanner()
 		return;
 	
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
-	display->show_png_element(&(element[ELEMENT_BANNER]), 0, 0, lcd_width, element->height);
+	display->show_png_element(&(element[ELEMENT_BANNER]), 0, 0, lcd_width, 12);
 	
 	if (element[ELEMENT_BANNER].width < lcd_width)
 		display->draw_fill_rect(element[ELEMENT_BANNER].width - 1, -1, lcd_width, element[ELEMENT_BANNER].height - 1, LCD_PIXEL_ON);
+#endif
+
+#if 0 //defined (ENABLE_GRAPHLCD)
+	display->show_png_element(&(element[ELEMENT_BANNER]), 0, 0, nglcd_width, element->height);
+	
+	if (element[ELEMENT_BANNER].width < nglcd_width)
+		display->draw_fill_rect(element[ELEMENT_BANNER].width - 1, -1, nglcd_width, element[ELEMENT_BANNER].height - 1, LCD_PIXEL_ON);
 #endif
 }
 
@@ -1766,6 +1996,127 @@ void CLCD::setMode(const MODES m, const char * const title)
 		display->clear_screen(); // clear lcd
 		drawBanner();
 		display->show_png_element(&(element[ELEMENT_POWER]), (lcd_width - element[ELEMENT_POWER].width)/2, (lcd_height - element[ELEMENT_POWER].height)/2);
+		displayUpdate();
+		break;
+	}
+		
+	case MODE_STANDBY:
+	{
+		// clear lcd
+		display->clear_screen();
+		showclock = true;
+		showTime();
+		break;
+	}
+		
+	case MODE_PROGRESSBAR:
+		showclock = false;
+		display->clear_screen();
+		drawBanner();
+		showProgressBar();
+		break;
+		
+	case MODE_PROGRESSBAR2:
+		showclock = false;
+		display->clear_screen();
+		drawBanner();
+		showProgressBar2();
+		break;
+	}
+#endif
+
+#if 0 //defined (ENABLE_GRAPHLCD)
+	switch (m)
+	{
+	case MODE_TVRADIO:
+	case MODE_MOVIE:
+	{
+		// clear lcd
+		display->clear_screen();
+		
+		// statusline
+		switch (g_settings.lcd_statusline)
+		{
+			case CLCD::STATUSLINE_PLAYTIME:
+				drawBanner();
+				display->show_png_element(&(element[ELEMENT_PROG]), 0, nglcd_height -element[ELEMENT_PROG].height);
+				showPercentOver(percentOver, false, mode);
+				break;
+				
+			case CLCD::STATUSLINE_VOLUME:
+				drawBanner();
+				showVolume(volume, false);
+				break;
+			default:
+				break;
+		}
+		
+		// servicename / title / epg
+		if (mode == MODE_TVRADIO)
+			showServicename(servicename, true, servicenumber);
+		else // MODE_MOVIE
+		{
+			showMovieInfo(movie_playmode, movie_big, movie_small, g_settings.lcd_epgalign);
+			setMovieAudio(movie_is_ac3);
+		}
+		
+		// time
+		showclock = true;
+		showTime();
+		break;
+	}
+		
+	case MODE_AUDIO:
+	{
+		display->clear_screen();
+		drawBanner();
+		display->show_png_element(&(element[ELEMENT_SPEAKER]), 0, nglcd_height - element[ELEMENT_SPEAKER].height - 1);
+		showPlayMode(PLAY_MODE_STOP);
+		showVolume(volume, false);
+		showclock = true;
+		showTime();
+		break;
+	}
+	
+	case MODE_PIC:
+	{
+		display->clear_screen();
+		drawBanner();
+		showclock = false;
+		fonts.menutitle->RenderString(0, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight(), nglcd_width, title, LCD_PIXEL_YELLOW, 0, true); // UTF-8
+		displayUpdate(); // ???
+		break;
+	}
+	
+	case MODE_SCART:
+	{
+		display->clear_screen();
+		drawBanner();
+		display->show_png_element(&(element[ELEMENT_SCART]), (nglcd_width-element[ELEMENT_SCART].width)/2, 12);
+		display->show_png_element(&(element[ELEMENT_SPEAKER]), 0, nglcd_height-element[ELEMENT_SPEAKER].height-1);
+
+		showVolume(volume, false);
+		showclock = true;
+		showTime();
+		break;
+	}
+		
+	case MODE_MENU_UTF8:
+	{
+		showclock = false;
+		display->clear_screen(); // clear lcd
+		drawBanner();
+		fonts.menutitle->RenderString(0, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight(), nglcd_width, title, LCD_PIXEL_YELLOW, 0, true); // UTF-8
+		displayUpdate(); // ???
+		break;
+	}
+		
+	case MODE_SHUTDOWN:
+	{
+		showclock = false;
+		display->clear_screen(); // clear lcd
+		drawBanner();
+		display->show_png_element(&(element[ELEMENT_POWER]), (nglcd_width - element[ELEMENT_POWER].width)/2, (lcd_height - element[ELEMENT_POWER].height)/2);
 		displayUpdate();
 		break;
 	}
@@ -2182,7 +2533,7 @@ void CLCD::showProgressBar(int global, const char * const text)
 	if(!has_lcd) 
 		return;
 	
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	int prog_w = lcd_width - 10;
 	int prog_h = 20;
 	int prog_x = 5;
@@ -2231,7 +2582,7 @@ void CLCD::showProgressBar2(int local,const char * const text_local, int global,
 	if(!has_lcd) 
 		return;
 	
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	int prog_w = lcd_width - 10;
 	int prog_h = 20;
 	int prog_x = 5;
@@ -2311,12 +2662,19 @@ void CLCD::showWeather()
 {
 	int ctx, cix, y;
 
-	
 	// left
+#if 0 //def ENABLE_GRAPHLCD
+	int w_w = nglcd_width - 2 - 60;
+#else
 	int w_w = lcd_width - 2 - 60;
+#endif
 	int w_h = 60;
 	int w_x = 1;
+#if 0 //def ENABLE_GRAPHLCD
+	int w_y = nglcd_height - fonts.time->getHeight() - w_h - 2;
+#else
 	int w_y = lcd_height - fonts.time->getHeight() - w_h - 2;
+#endif
 	w_icon_w = 35;
 	w_icon_h = 35;
 

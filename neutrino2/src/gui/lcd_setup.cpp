@@ -341,7 +341,7 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, MAXBRIGHTNESS, this, 0, -1, true));
 	
 	// brightness / contrast
-	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("GraphLCD Setup"))));
+	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Brightness / Contrast"))));
 
 	// brightness
 	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness"), &g_settings.lcd_brightness, true, 0, MAXBRIGHTNESS, this, 0, -1, true));
