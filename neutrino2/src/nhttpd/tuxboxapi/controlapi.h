@@ -8,8 +8,7 @@
 #include <string>
 // yhttpd
 
-/*zapit includes*/
-#include <zapit/channel.h>
+#include <zapit/zapit.h>
 #include "yhook.h"
 
 // forward declaration
@@ -119,7 +118,7 @@ class CControlAPI : public Cyhook
 
 		// virtual functions for HookHandler/Hook
 		virtual std::string getHookName(void) {return std::string("mod_ControlAPI");}
-		virtual std::string 	getHookVersion(void) {return std::string("$Revision: 599 $");}
+		virtual std::string getHookVersion(void) {return std::string("$Revision: 599 $");}
 		virtual THandleStatus Hook_SendResponse(CyhookHandler *hh);
 		virtual THandleStatus Hook_PrepareResponse(CyhookHandler *hh);
 };

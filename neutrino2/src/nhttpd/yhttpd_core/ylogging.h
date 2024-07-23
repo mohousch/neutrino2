@@ -84,3 +84,4 @@ class CLogging
 	do { perror("[yhttpd] " str); } while (0)
 
 #endif /* __yttpd_logging_h__ */
+

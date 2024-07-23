@@ -51,20 +51,20 @@
 extern int scanning;
 extern tallchans allchans;
 
-//=============================================================================
+//
 // Initialization of static variables
-//=============================================================================
+//
 std::string CControlAPI::PLUGIN_DIRS[PLUGIN_DIR_COUNT];
 
-//=============================================================================
+//
 // constructor und destructor
-//=============================================================================
+//
 CControlAPI::CControlAPI(CNeutrinoAPI *_NeutrinoAPI)
 {
 	NeutrinoAPI = _NeutrinoAPI;
 }
 
-//-----------------------------------------------------------------------------
+//
 void CControlAPI::init(CyhookHandler *hh)
 {
 	if(PLUGIN_DIRS[0] == "")
@@ -79,10 +79,9 @@ void CControlAPI::init(CyhookHandler *hh)
 	}
 }
 
-//=============================================================================
+//
 // Hooks!
-//=============================================================================
-//-----------------------------------------------------------------------------
+//
 THandleStatus CControlAPI::Hook_PrepareResponse(CyhookHandler *hh)
 {
 	init(hh);
@@ -96,10 +95,10 @@ THandleStatus CControlAPI::Hook_PrepareResponse(CyhookHandler *hh)
 		return HANDLED_NONE;
 }
 
-//-----------------------------------------------------------------------------
+//
 // HOOK: response_hook Handler
 // This is the main dispatcher for this module
-//-----------------------------------------------------------------------------
+//
 THandleStatus CControlAPI::Hook_SendResponse(CyhookHandler *hh)
 {
 	hh->status = HANDLED_NONE;
@@ -115,11 +114,11 @@ THandleStatus CControlAPI::Hook_SendResponse(CyhookHandler *hh)
 	return hh->status;
 }
 
-//=============================================================================
+//
 //-------------------------------------------------------------------------
 // timer compatibility
 // do add/modify/remove and Return (redirect) Timerlist
-//-------------------------------------------------------------------------
+//
 void CControlAPI::compatibility_Timer(CyhookHandler *hh)
 {
 	log_level_printf(4,"CControlAPI Compatibility Timer Start url:%s\n",hh->UrlData["url"].c_str());
@@ -140,9 +139,9 @@ void CControlAPI::compatibility_Timer(CyhookHandler *hh)
 	hh->SendRedirect("/Y_Timer_List.yhtm");
 }
 
-//=============================================================================
+//
 // Main Dispatcher / Call definitions
-//=============================================================================
+//
 const CControlAPI::TyCgiCall CControlAPI::yCgiCallList[]=
 {
 	// channel & bouquet & epg & zapping handling
@@ -204,9 +203,9 @@ const CControlAPI::TyCgiCall CControlAPI::yCgiCallList[]=
 	{"file",		&CControlAPI::FileCGI,	 	 "+xml"},
 };
 
-//-----------------------------------------------------------------------------
+//
 // Main Dispatcher
-//-----------------------------------------------------------------------------
+//
 void CControlAPI::Execute(CyhookHandler *hh)
 {
 	int index = -1;
@@ -267,10 +266,10 @@ void CControlAPI::Execute(CyhookHandler *hh)
 	}
 }
 
-//=============================================================================
+//
 // CGI Functions
 // CyhookHandler contains input/output abstractions
-//=============================================================================
+//
 void CControlAPI::TimerCGI(CyhookHandler *hh)
 {
 	if (CTimerd::getInstance()->isTimerdAvailable())

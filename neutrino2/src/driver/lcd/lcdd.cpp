@@ -1438,7 +1438,7 @@ void CLCD::showMenuText(const int position, const char * text, const int selecte
 #elif defined (ENABLE_LCD)
 	// second line
 	// refresh
-	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 - 1, lcd_width, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight() + 10, LCD_PIXEL_BACKGROUND);
+	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 - 1, lcd_width, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight() + 10, LCD_PIXEL_OFF);
 	
 	// render text
 	fonts.menu->RenderString(0, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight(), lcd_width + 10, text, LCD_PIXEL_WHITE, 0, utf_encoded);

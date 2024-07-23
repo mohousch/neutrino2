@@ -37,7 +37,7 @@
 #include <driver/gfx/color.h>
 
 // aabbggrr
-#define LCD_PIXEL_OFF				0x00000000  // bg
+#define LCD_PIXEL_OFF				0xFF000000  // bg
 #define LCD_PIXEL_ON				0xFFFFFFFF
 #define LCD_PIXEL_INV				0x1000000
 
