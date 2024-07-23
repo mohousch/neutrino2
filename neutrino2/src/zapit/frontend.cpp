@@ -152,8 +152,6 @@ CFrontend::~CFrontend(void)
 
 bool CFrontend::Open()
 {
-	dprintf(DEBUG_INFO, "CFrontend::Open:\n");
-	
 	if(!standby)
 		return false;
 
@@ -191,8 +189,6 @@ bool CFrontend::Open()
 //
 void CFrontend::getFEInfo(void)
 {
-	dprintf(DEBUG_INFO, "CFrontend::getFEInfo:\n");
-	
 	if(::ioctl(fd, FE_GET_INFO, &info) < 0)
 		perror("FE_GET_INFO");
 	
@@ -217,7 +213,7 @@ void CFrontend::getFEInfo(void)
 		{
 			if (i >= MAX_DELSYS) 
 			{
-				dprintf(DEBUG_INFO, "CFrontend::getFEInfo: (fe%d:%d) ERROR: too many delivery systems\n", feadapter, fenumber);
+				dprintf(DEBUG_INFO, "(fe%d:%d) ERROR: too many delivery systems\n", feadapter, fenumber);
 				break;
 			}
 
@@ -227,23 +223,23 @@ void CFrontend::getFEInfo(void)
 				case SYS_DVBC_ANNEX_B:
 				case SYS_DVBC_ANNEX_C:
 					deliverySystemMask |= DVB_C;
-					dprintf(DEBUG_INFO, "CFrontend::getFEInfo: (fe%d:%d) add delivery system DVB-C (delivery_system: %x)\n", feadapter, fenumber, DVB_C);
+					dprintf(DEBUG_INFO, "(fe%d:%d) add delivery system DVB-C (delivery_system: %x)\n", feadapter, fenumber, DVB_C);
 					break;
 					
 				case SYS_DVBT:
 					deliverySystemMask |= DVB_T;
-					dprintf(DEBUG_INFO, "CFrontend::getFEInfo: (fe%d:%d) add delivery system DVB-T (delivery_system: %x)\n", feadapter, fenumber, DVB_T);
+					dprintf(DEBUG_INFO, "(fe%d:%d) add delivery system DVB-T (delivery_system: %x)\n", feadapter, fenumber, DVB_T);
 					break;
 					
 				case SYS_DVBT2:
 					deliverySystemMask |= DVB_T2;
 					fe_can_multistream = info.caps & FE_CAN_MULTISTREAM;
-					dprintf(DEBUG_INFO, "CFrontend::getFEInfo: (fe%d:%d) add delivery system DVB-T2 (delivery_system: %x / Multistream: %s)\n", feadapter, fenumber, DVB_T2, fe_can_multistream ? "yes" :"no");
+					dprintf(DEBUG_INFO, "(fe%d:%d) add delivery system DVB-T2 (delivery_system: %x / Multistream: %s)\n", feadapter, fenumber, DVB_T2, fe_can_multistream ? "yes" :"no");
 					break;
 					
 				case SYS_DVBS:
 					deliverySystemMask |= DVB_S;
-					dprintf(DEBUG_INFO, "CFrontend::getFEInfo: (fe%d:%d) add delivery system DVB-S (delivery_system: %x)\n", feadapter, fenumber, DVB_S);
+					dprintf(DEBUG_INFO, "(fe%d:%d) add delivery system DVB-S (delivery_system: %x)\n", feadapter, fenumber, DVB_S);
 					break;
 					
 				case SYS_DVBS2:
@@ -252,12 +248,12 @@ void CFrontend::getFEInfo(void)
 #endif
 					deliverySystemMask |= DVB_S2;
 					fe_can_multistream = info.caps & FE_CAN_MULTISTREAM;
-					dprintf(DEBUG_INFO, "CFrontend::getFEInfo: (fe%d:%d) add delivery system DVB-S2 (delivery_system: %x / Multistream: %s)\n", feadapter, fenumber, DVB_S2, fe_can_multistream ? "yes" :"no");
+					dprintf(DEBUG_INFO, "(fe%d:%d) add delivery system DVB-S2 (delivery_system: %x / Multistream: %s)\n", feadapter, fenumber, DVB_S2, fe_can_multistream ? "yes" :"no");
 #if !defined (__sh__)
 					if (fe_can_multistream)
 					{
 						deliverySystemMask |= DVB_S2X;
-						dprintf(DEBUG_INFO, "CFrontend::getFEInfo: (fe%d:%d) add delivery system DVB-S2X (delivery_system: %x / Multistream: %s)\n", feadapter, fenumber, DVB_S2X, fe_can_multistream ? "yes" :"no");
+						dprintf(DEBUG_INFO, "(fe%d:%d) add delivery system DVB-S2X (delivery_system: %x / Multistream: %s)\n", feadapter, fenumber, DVB_S2X, fe_can_multistream ? "yes" :"no");
 					}
 #endif
 					break;
@@ -265,12 +261,12 @@ void CFrontend::getFEInfo(void)
 #ifdef SYS_DTMB	
 				case SYS_DTMB:
 					deliverySystemMask |= DVB_DTMB;
-					dprintf(DEBUG_INFO, "CFrontend::getFEInfo: (fe%d:%d) add delivery system DTMB (delivery_system: %x)\n", feadapter, fenumber, DVB_DTMB);
+					dprintf(DEBUG_INFO, "(fe%d:%d) add delivery system DTMB (delivery_system: %x)\n", feadapter, fenumber, DVB_DTMB);
 					break;
 #endif
 				
 				default:
-					dprintf(DEBUG_INFO, "CFrontend::getFEInfo: (fe%d:%d) ERROR: delivery system unknown (delivery_system: %d)\n", feadapter, fenumber, p[0].u.buffer.data[i]);
+					dprintf(DEBUG_INFO, "(fe%d:%d) ERROR: delivery system unknown (delivery_system: %d)\n", feadapter, fenumber, p[0].u.buffer.data[i]);
 					continue;
 			}
 
@@ -280,7 +276,7 @@ void CFrontend::getFEInfo(void)
 	} 
 	else 
 	{
-		dprintf(DEBUG_INFO, "CFrontend::getFEInfo: can't query delivery systems on frontend (%d:%d) - falling back to legacy mode\n", feadapter, fenumber);
+		dprintf(DEBUG_INFO, "can't query delivery systems on frontend (%d:%d) - falling back to legacy mode\n", feadapter, fenumber);
 	}
 #endif
 #endif
@@ -316,15 +312,13 @@ void CFrontend::getFEInfo(void)
 	if ( (deliverySystemMask & DVB_C && deliverySystemMask & DVB_T) || (deliverySystemMask & DVB_C && deliverySystemMask & DVB_T2) || (deliverySystemMask & DVB_C) && (deliverySystemMask & DVB_T) && (deliverySystemMask & DVB_T2) )
 	{
 		hybrid = true;
-		dprintf(DEBUG_NORMAL, "CFrontend::getFEInfo: fe(%d:%d) %s (delsys:0x%x) isHybrid:%s\n", feadapter, fenumber, info.name, deliverySystemMask, hybrid? "true" : "false");
+		dprintf(DEBUG_NORMAL, "fe(%d:%d) %s (delsys:0x%x) isHybrid:%s\n", feadapter, fenumber, info.name, deliverySystemMask, hybrid? "true" : "false");
 	}
 }
 
 //
 void CFrontend::Init(void)
-{
-	dprintf(DEBUG_INFO, "CFrontend::Init:\n");
-		
+{	
 	secSetVoltage(SEC_VOLTAGE_13, 15);
 	secSetTone(SEC_TONE_OFF, 15);
 	setDiseqcType(diseqcType);
@@ -332,8 +326,6 @@ void CFrontend::Init(void)
 
 void CFrontend::setMasterSlave(bool _slave)
 {
-	dprintf(DEBUG_INFO, "CFrontend::setMasterSlave:\n");
-	
 	if(slave == _slave)
 		return;
 
@@ -348,8 +340,6 @@ void CFrontend::setMasterSlave(bool _slave)
 
 void CFrontend::Close()
 {
-	dprintf(DEBUG_INFO, "CFrontend::Close:\n");
-	
 	if(standby)
 		return;
 	
@@ -368,13 +358,11 @@ void CFrontend::Close()
 		fd = -1;
 	}
 	
-	dprintf(DEBUG_NORMAL, "CFrontend::Close fe(%d:%d) %s\n", feadapter, fenumber, info.name);
+	dprintf(DEBUG_NORMAL, "fe(%d:%d) %s\n", feadapter, fenumber, info.name);
 }
 
 void CFrontend::reset(void)
 {
-	dprintf(DEBUG_INFO, "CFrontend::reset:\n");
-	
 	if (fd >= 0)
 	{
 		::close(fd);
@@ -397,8 +385,6 @@ void CFrontend::reset(void)
 
 void CFrontend::setMasterSlave()
 {
-	dprintf(DEBUG_INFO, "CFrontend::setMasterSlave:\n");
-	
 	secSetVoltage(SEC_VOLTAGE_OFF, 0);
 	secSetTone(SEC_TONE_OFF, 15);
 }
@@ -471,7 +457,7 @@ fe_code_rate_t CFrontend::getCodeRate(const uint8_t fec_inner, int system)
 				fec = FEC_7_8;
                 break;
 			default:
-				dprintf(DEBUG_INFO, "CFrontend::getCodeRate: no valid fec for DVB-S set FEC_AUTO\n");
+				dprintf(DEBUG_INFO, "no valid fec for DVB-S set FEC_AUTO\n");
 			case fAuto:
 				fec = FEC_AUTO;
                 break;
@@ -509,7 +495,7 @@ fe_code_rate_t CFrontend::getCodeRate(const uint8_t fec_inner, int system)
 				fec = FEC_S2_QPSK_9_10; //9+9
                 break;
 			default:
-				dprintf(DEBUG_INFO, "CFrontend::getCodeRate: no valid fec for DVB-S2 set...\n");
+				dprintf(DEBUG_INFO, "no valid fec for DVB-S2 set...\n");
 			case fAuto:
 				fec = FEC_AUTO;
                 break;
@@ -743,7 +729,7 @@ void CFrontend::getDelSys(int f, int m, char *&fec, char *&sys, char *&mod)
 			break;			
 			
 		default:
-			dprintf(DEBUG_INFO, "CFrontend::getDelSys: fe(%d:%d) getDelSys: unknown FEC: %d !!!\n", feadapter, fenumber, f);
+			dprintf(DEBUG_INFO, "fe(%d:%d) getDelSys: unknown FEC: %d !!!\n", feadapter, fenumber, f);
 		
 		case FEC_AUTO:
 			fec = (char *)"AUTO";
@@ -810,7 +796,7 @@ struct dvb_frontend_event CFrontend::getEvent(void)
 	
 	memset(&event, 0, sizeof(struct dvb_frontend_event));
 	
-	dprintf(DEBUG_INFO, "cFrontend::getEvent: fe(%d:%d) max timeout: %d\n", feadapter, fenumber, TIMEOUT_MAX_MS);
+	dprintf(DEBUG_INFO, "fe(%d:%d) max timeout: %d\n", feadapter, fenumber, TIMEOUT_MAX_MS);
 	
 	TIMER_START();
 
@@ -846,7 +832,7 @@ struct dvb_frontend_event CFrontend::getEvent(void)
 
 			if (event.status & FE_HAS_LOCK) 
 			{
-				dprintf(DEBUG_NORMAL, "cFrontend::getEvent fe(%d:%d) FE_HAS_LOCK: freq %lu\n", feadapter, fenumber, (long unsigned int)event.parameters.frequency);
+				dprintf(DEBUG_NORMAL, "fe(%d:%d) FE_HAS_LOCK: freq %lu\n", feadapter, fenumber, (long unsigned int)event.parameters.frequency);
 				tuned = true;
 				break;
 			} 
@@ -855,25 +841,25 @@ struct dvb_frontend_event CFrontend::getEvent(void)
 				if(timedout < timer_msec)
 					timedout = timer_msec;
 				
-				dprintf(DEBUG_INFO, "cFrontend::getEvent fe(%d:%d) FE_TIMEDOUT\n", feadapter, fenumber);
+				dprintf(DEBUG_INFO, "fe(%d:%d) FE_TIMEDOUT\n", feadapter, fenumber);
 			} 
 			else 
 			{
 				if (event.status & FE_HAS_SIGNAL)
-					printf("cFrontend::getEvent fe(%d:%d) FE_HAS_SIGNAL\n", feadapter, fenumber);
+					printf("fe(%d:%d) FE_HAS_SIGNAL\n", feadapter, fenumber);
 				if (event.status & FE_HAS_CARRIER)
-					printf("cFrontend::getEvent fe(%d:%d) FE_HAS_CARRIER\n", feadapter, fenumber);
+					printf("fe(%d:%d) FE_HAS_CARRIER\n", feadapter, fenumber);
 				if (event.status & FE_HAS_VITERBI)
-					printf("cFrontend::getEvent fe(%d:%d) FE_HAS_VITERBI\n", feadapter, fenumber);
+					printf("fe(%d:%d) FE_HAS_VITERBI\n", feadapter, fenumber);
 				if (event.status & FE_HAS_SYNC)
-					printf("cFrontend::getEvent fe(%d:%d) FE_HAS_SYNC\n", feadapter, fenumber);
+					printf("fe(%d:%d) FE_HAS_SYNC\n", feadapter, fenumber);
 				if (event.status & FE_REINIT)
-					printf("cFrontend::getEvent fe(%d:%d) FE_REINIT\n", feadapter, fenumber);
+					printf("fe(%d:%d) FE_REINIT\n", feadapter, fenumber);
 			}
 		} 
 		else if (pfd.revents & POLLHUP) 
 		{
-			TIMER_STOP("CFrontend::getEvent: poll hup after");
+			TIMER_STOP("poll hup after");
 			reset();
 		}
 	}
@@ -886,7 +872,7 @@ struct dvb_frontend_event CFrontend::getEvent(void)
 #if HAVE_DVB_API_VERSION >= 5
 void CFrontend::setFrontend(const FrontendParameters *feparams)
 {
-	dprintf(DEBUG_NORMAL, "CFontend::setFrontend: fe(%d:%d) delsys:0x%x (feparams.delsys:0x%x)\n", feadapter, fenumber, deliverySystemMask, feparams->delsys);
+	dprintf(DEBUG_NORMAL, "fe(%d:%d) delsys:0x%x (feparams.delsys:0x%x)\n", feadapter, fenumber, deliverySystemMask, feparams->delsys);
 	
 	//
 	fe_modulation_t modulation = QPSK;
@@ -974,7 +960,7 @@ void CFrontend::setFrontend(const FrontendParameters *feparams)
 				break;
 				
 			default:
-				dprintf(DEBUG_NORMAL, "CFrontend::setFrontend: fe(%d:%d) DEMOD: unknown FEC: %d\n", feadapter, fenumber, fec_inner);
+				dprintf(DEBUG_NORMAL, "fe(%d:%d) DEMOD: unknown FEC: %d\n", feadapter, fenumber, fec_inner);
 			
 			case FEC_AUTO:			  
 			case FEC_S2_AUTO:			  
@@ -1063,7 +1049,7 @@ void CFrontend::setFrontend(const FrontendParameters *feparams)
 	}
 	else
 	{
-		dprintf(DEBUG_INFO, "CFrontend::setFrontend: Unknow Frontend Type\n");
+		dprintf(DEBUG_INFO, "Unknow Frontend Type\n");
 	}
 
 	//
@@ -1078,7 +1064,7 @@ void CFrontend::setFrontend(const FrontendParameters *feparams)
 #else //api3
 void CFrontend::setFrontend(const FrontendParameters * feparams)
 {
-	dprintf(DEBUG_NORMAL, "CFontend::setFrontend: fe(%d:%d)\n", feadapter, fenumber);
+	dprintf(DEBUG_NORMAL, "fe(%d:%d)\n", feadapter, fenumber);
 		
 	fe_modulation_t modulation = QAM_16;
 	fe_code_rate_t fec_inner = FEC_3_4;
@@ -1102,7 +1088,7 @@ void CFrontend::setFrontend(const FrontendParameters * feparams)
 			
 		case FE_ATSC:
 		default:
-			dprintf(DEBUG_NORMAL, "CFrontend::setFrontend: unknown frontend type, exiting\n");
+			dprintf(DEBUG_NORMAL, "unknown frontend type, exiting\n");
 			break;
 	}
 
@@ -1122,7 +1108,7 @@ void CFrontend::setFrontend(const FrontendParameters * feparams)
 		if(::ioctl(fd, FE_GET_EVENT, &event) < 0)
 			perror("FE_GET_EVENT");
 		
-		dprintf(DEBUG_NORMAL, "CFrontend::setFrontend: fe(%d:%d) CLEAR DEMOD: event status %d\n", feadapter, fenumber, event.status);
+		dprintf(DEBUG_NORMAL, "fe(%d:%d) CLEAR DEMOD: event status %d\n", feadapter, fenumber, event.status);
 	}
 
 	// set frontend
@@ -1151,7 +1137,7 @@ void CFrontend::secSetTone(const fe_sec_tone_mode_t toneMode, const uint32_t ms)
 		return;
 	}
 
-	dprintf(DEBUG_INFO, "CFrontend::secSetTone: fe(%d:%d) tone %s\n", feadapter, fenumber, toneMode == SEC_TONE_ON ? "on" : "off");
+	dprintf(DEBUG_INFO, "fe(%d:%d) tone %s\n", feadapter, fenumber, toneMode == SEC_TONE_ON ? "on" : "off");
 
 	if (::ioctl(fd, FE_SET_TONE, toneMode) == 0) 
 	{
@@ -1162,7 +1148,7 @@ void CFrontend::secSetTone(const fe_sec_tone_mode_t toneMode, const uint32_t ms)
 
 void CFrontend::secSetVoltage(const fe_sec_voltage_t voltage, const uint32_t ms)
 {
-	dprintf(DEBUG_NORMAL, "CFrontend::secSetVoltage: fe(%d:%d) voltage %s\n", feadapter, fenumber, voltage == SEC_VOLTAGE_OFF ? "OFF" : voltage == SEC_VOLTAGE_13 ? "13" : "18");
+	dprintf(DEBUG_NORMAL, "fe(%d:%d) voltage %s\n", feadapter, fenumber, voltage == SEC_VOLTAGE_OFF ? "OFF" : voltage == SEC_VOLTAGE_13 ? "13" : "18");
 	
 	if ( slave || info.type != FE_QPSK)
 		return;

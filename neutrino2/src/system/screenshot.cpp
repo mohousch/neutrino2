@@ -116,7 +116,7 @@ static bool swscale(unsigned char *src, unsigned char *dst, int sw, int sh, int 
 	
 	if (!scale)
 	{
-		ng2_printf(DEBUG_NORMAL, "ERROR setting up SWS context\n");
+		ng2_err("ERROR setting up SWS context\n");
 		return ret;
 	}
 	
@@ -140,7 +140,7 @@ static bool swscale(unsigned char *src, unsigned char *dst, int sw, int sh, int 
 	}
 	else
 	{
-		ng2_printf(DEBUG_NORMAL, "could not alloc sframe (%p) or dframe (%p)\n", sframe, dframe);
+		ng2_err("could not alloc sframe (%p) or dframe (%p)\n", sframe, dframe);
 		ret = false;
 	}
 
@@ -162,7 +162,7 @@ static bool swscale(unsigned char *src, unsigned char *dst, int sw, int sh, int 
 		scale = NULL;
 	}
 	
-	ng2_printf(DEBUG_NORMAL, "Error scale %ix%i to %ix%i ,len %i\n", sw, sh, dw, dh, len);
+	ng2_err("Error scale %ix%i to %ix%i ,len %i\n", sw, sh, dw, dh, len);
 
 	return ret;
 }
@@ -180,7 +180,7 @@ inline void rgb24torgb32(unsigned char  *src, unsigned char *dest, int picsize)
 
 bool CScreenshot::getData()
 {
-	ng2_printf(0, "osd:%d video:%d scale:%d\n", get_osd, get_video, scale_to_video);
+	dprintf(0, "osd:%d video:%d scale:%d\n", get_osd, get_video, scale_to_video);
 	
 #define VDEC_PIXFMT AV_PIX_FMT_BGR24
 	
@@ -191,7 +191,7 @@ bool CScreenshot::getData()
 	if (xres <= 0 || yres <= 0)
 		get_video = false;
 		
-	ng2_printf(0, "xres:%d yres:%d aspect:%d\n", xres, xres, aspect);
+	dprintf(0, "xres:%d yres:%d aspect:%d\n", xres, xres, aspect);
 
 	if (!get_video && !get_osd)
 		return false;
@@ -210,7 +210,7 @@ bool CScreenshot::getData()
 		osd_w = var->xres;
 		osd_h = var->yres;
 		
-		ng2_printf(0, "osd_w:%d osd_h:%d bpp:%d stride:%d\n", osd_w, osd_h, bits_per_pixel, CFrameBuffer::getInstance()->getStride());
+		dprintf(0, "osd_w:%d osd_h:%d bpp:%d stride:%d\n", osd_w, osd_h, bits_per_pixel, CFrameBuffer::getInstance()->getStride());
 		
 		if (osd_w <= 0 || osd_h <= 0 || bits_per_pixel != 32)
 			get_osd = false;
@@ -222,7 +222,7 @@ bool CScreenshot::getData()
 		}
 	}
 	
-	ng2_printf(0, "xres:%d yres:%d\n", xres, yres);
+	dprintf(0, "xres:%d yres:%d\n", xres, yres);
 	
 	uint8_t *osd_data = (uint8_t *)CFrameBuffer::getInstance()->getFrameBufferPointer();
 	pixel_data = (uint8_t *)malloc(xres * yres * sizeof(uint32_t));
@@ -381,7 +381,7 @@ bool CScreenshot::openFile()
 	
 	if (!fd)
 	{
-		ng2_printf(DEBUG_NORMAL, "failed to open %s\n", filename.c_str());
+		dprintf(DEBUG_NORMAL, "failed to open %s\n", filename.c_str());
 		return false;
 	}
 	
@@ -397,7 +397,7 @@ bool CScreenshot::savePng()
 	if (!openFile())
 		return false;
 		
-	ng2_printf(0, "xres: %d yres: %d\n\n", xres, yres);
+	dprintf(0, "xres: %d yres: %d\n\n", xres, yres);
 
 	row_pointers = (png_bytep *) malloc(sizeof(png_bytep) * yres);
 	if (!row_pointers)

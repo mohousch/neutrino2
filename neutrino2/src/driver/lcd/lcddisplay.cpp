@@ -53,7 +53,7 @@ extern "C" {
 
 
 
-#define LCDDISPLAY_DEBUG
+//#define LCDDISPLAY_DEBUG
 
 static short debug_level = 10;
 

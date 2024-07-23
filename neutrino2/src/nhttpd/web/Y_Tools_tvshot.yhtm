@@ -4,6 +4,23 @@
 <script type="text/javascript">
 //<![CDATA[
 
+var enableOSD;
+var enableVideo;
+
+function checkEnable() 
+{
+	enableOSD = (document.getElementById('checkOSD').checked == true)? 1 : 0;
+	enableVideo = (document.getElementById('checkVideo').checked == true)? 1 : 0;
+
+	if (enableOSD == 0 && enableVideo == 0) 
+	{
+		alert("{=L:bc.screenshot.checkenable=}");
+		return false;
+	}
+	
+	return true;
+}
+
 function do_snapshot(){
 	show_waitbox(true);
 	window.setTimeout("do_snapshot2()", 500);
@@ -15,6 +32,7 @@ function do_snapshot2(){
 	var res = dbox_exec_tools("fbshot -sw /tmp/"+filename+".png");
 	if (res != "")
 		dbox_exec_tools("fbshot /tmp/"+filename+".png");
+	loadSyncURL("/control/screenshot?name="+filename+"&osd="+enableOSD+"&video="+enableVideo);
 	show_waitbox(false);
 	show_obj("shot", true);
 	_shot.src = "/tmp/"+filename+".png?"+Math.random();

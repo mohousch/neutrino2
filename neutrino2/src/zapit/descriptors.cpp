@@ -237,14 +237,12 @@ void CDescriptors::network_name_descriptor(const unsigned char * const buffer)
 		name[i] = buffer[2+i];
 	name[i] = 0;
 	
-	dprintf(DEBUG_INFO, "CDescriptors::network_name_descriptor: network name: %s\n", name);
+	dprintf(DEBUG_INFO, "network name: %s\n", name);
 }
 
 /* 0x41 */
 void CDescriptors::service_list_descriptor(const unsigned char * const buffer, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq)
 {
-	dprintf(DEBUG_NORMAL, "CDescriptors::service_list_descriptor:\n");
-	
 	for (int i = 0; i < buffer[1]; i += 3) 
 	{
 		t_service_id service_id = buffer[i + 2] << 8 | buffer[i + 3];
@@ -269,8 +267,6 @@ void CDescriptors::stuffing_descriptor(const unsigned char * const)
 /* 0x43 */
 int CDescriptors::satellite_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe)
 {
-	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
-	
 	FrontendParameters feparams;
 	uint8_t polarization;
 	stiterator tI;
@@ -363,8 +359,6 @@ int CDescriptors::satellite_delivery_system_descriptor(const unsigned char * con
 /* 0x44 */
 int CDescriptors::cable_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe)
 {
-	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
-	
 	transponder_id_t TsidOnid;
 
 #if HAVE_DVB_API_VERSION >= 5
@@ -442,7 +436,7 @@ void CDescriptors::bouquet_name_descriptor(const unsigned char * const)
 
 uint8_t CDescriptors::fix_service_type(uint8_t type)
 {
-	dprintf(DEBUG_INFO, "CDescriptors::fix_service_type: type: 0x%x\n", type);
+	dprintf(DEBUG_INFO, "type: 0x%x\n", type);
 	
 	if( (type == 0x9A) || (type == 0x86) || (type == 0xc3) || (type == 0xc5) || (type == 0xc6) || (type == 0x1f) 
 	|| (type == 0x11) || (type == 0x16) || (type == 0x19) || (type == 0x82) || (type == 0x87) || (type == 0xd3) )
@@ -455,9 +449,7 @@ uint8_t CDescriptors::fix_service_type(uint8_t type)
 
 /* 0x48 */
 void CDescriptors::service_descriptor(const unsigned char * const buffer, const t_service_id service_id, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, bool free_ca, CFrontend* fe)
-{
-	dprintf(DEBUG_NORMAL, "CDescriptors::service_descriptor:\n");
-	
+{	
 	bool service_wr = false;
 	uint8_t service_type = buffer[2];
 	CZapitChannel *channel = NULL;
@@ -731,8 +723,6 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 //
 void CDescriptors::current_service_descriptor(const unsigned char * const buffer, const t_service_id service_id, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq)
 {
-	dprintf(DEBUG_INFO, "[descriptor] %s:\n", __FUNCTION__);
-	
 	bool service_wr = false;
 	uint8_t service_type = buffer[2];
 
@@ -831,8 +821,6 @@ int CDescriptors::NVOD_reference_descriptor(
 	t_original_network_id * const onid,
 	t_service_id * const sid)
 {
-	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
-	
 	if ((unsigned int)(buffer[1] / 6) + 1 >= num) {
 		*tsid = (buffer[2 + (6 * num)] << 16) | buffer[3 + (6 * num)];
 		*onid = (buffer[4 + (6 * num)] << 16) | buffer[5 + (6 * num)];
@@ -916,8 +904,6 @@ void CDescriptors::subtitling_descriptor(const unsigned char * const)
 /* 0x5A */
 int CDescriptors::terrestrial_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe)
 {
-	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
-	
 #if HAVE_DVB_API_VERSION >= 5
 	if (fe->getForcedDelSys() != DVB_T)
 #else
@@ -1072,8 +1058,6 @@ void CDescriptors::announcement_support_descriptor(const unsigned char * const)
 int CDescriptors::terrestrial2_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe)
 {
 // FIXME: dummy function
-	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
-
 #if HAVE_DVB_API_VERSION >= 5
 	if (fe->getForcedDelSys() != DVB_T2)
 #else	

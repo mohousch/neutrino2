@@ -2472,7 +2472,7 @@ void CLCD::showWeather()
 	current_wtemp = CWeather::getInstance()->getCurrentTemperature();
 	current_wicon = CWeather::getInstance()->getCurrentIcon();
 	
-	ng2_printf(DEBUG_NORMAL, "%s %s %s\n", current_wcity.c_str(), current_wtemp.c_str(), current_wicon.c_str());
+	lcdd_printf(DEBUG_NORMAL, "%s %s %s\n", current_wcity.c_str(), current_wtemp.c_str(), current_wicon.c_str());
 	
 	if (!current_wcity.empty())
 	{
