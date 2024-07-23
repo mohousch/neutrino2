@@ -1205,7 +1205,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
 		const uint8_t *srcptr = (uint8_t*)raw_buffer;
             	uint8_t *dstptr = (uint8_t*)surface_data;
             	uint32_t pal[256];
-            	convert_palette(pal, clut);
+            	convert_palette(pal, raw_clut);
 
             	srcptr += area_left*raw_bypp + area_top*raw_stride;
             	dstptr += area_left*surface_bypp + area_top*surface_stride;
