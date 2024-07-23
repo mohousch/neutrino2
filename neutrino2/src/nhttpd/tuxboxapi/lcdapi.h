@@ -34,7 +34,7 @@
 class CLCDDisplay;
 class LcdFontRenderClass;
 
-//-------------------------------------------------------------------------
+//
 class CLCDAPI
 {
 	CLCD *vfd;

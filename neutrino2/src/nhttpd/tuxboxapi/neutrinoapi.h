@@ -14,20 +14,20 @@
 #include "neutrinoyparser.h"
 #include "controlapi.h"
 
-#ifdef ENABLE_LCD
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 #include "lcdapi.h"
 #endif
 
-//-------------------------------------------------------------------------
+//
 // No Class Helpers
 const char * _getISO639Description(const char * const iso);
 bool _initialize_iso639_map(void);
 
-//-------------------------------------------------------------------------
+//
 class CNeutrinoAPI
 {
-#ifdef ENABLE_LCD
-	CLCDAPI                 *LcdAPI;
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
+	CLCDAPI	*LcdAPI;
 #endif	
 	// complete channellists
 	CZapit::BouquetChannelList RadioChannelList,TVChannelList;

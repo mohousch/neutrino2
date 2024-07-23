@@ -115,7 +115,6 @@ THandleStatus CControlAPI::Hook_SendResponse(CyhookHandler *hh)
 }
 
 //
-//-------------------------------------------------------------------------
 // timer compatibility
 // do add/modify/remove and Return (redirect) Timerlist
 //
@@ -1436,7 +1435,7 @@ void CControlAPI::LCDAction(CyhookHandler *hh)
 {
 	int error = 0;
 
-#ifdef ENABLE_LCD
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	if (hh->ParamList.empty())
 	{
 		hh->SendError();

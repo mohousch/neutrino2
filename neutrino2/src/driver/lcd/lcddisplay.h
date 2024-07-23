@@ -107,7 +107,6 @@ class CLCDDisplay
 		////
 		int locked;
 #ifdef ENABLE_TFTLCD
-		int m_xRes, m_yRes, m_bpp;
 		int m_brightness, m_gamma, m_alpha;
 		int m_available;
 		struct fb_var_screeninfo m_screeninfo;
@@ -117,7 +116,7 @@ class CLCDDisplay
 		int m_phys_mem;
 		int m_manual_blit;
 		void calcRamp();
-		int setMode(int xRes, int yRes, int bpp);
+		int setMode(int nxRes, int nyRes, int nbpp);
 		void getMode();
 		void enableManualBlit();
 		void disableManualBlit();

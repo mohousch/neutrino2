@@ -53,8 +53,7 @@ extern "C" {
 
 
 
-//#define LCDDISPLAY_DEBUG
-#define LCDDISPLAY_SILENT
+#define LCDDISPLAY_DEBUG
 
 static short debug_level = 10;
 
@@ -65,11 +64,7 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 #define lcddisplay_printf(level, fmt, x...)
 #endif
 
-#ifndef LCDDISPLAY_SILENT
 #define lcddisplay_err(fmt, x...) do { printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
-#else
-#define lcddisplay_err(fmt, x...)
-#endif
 
 #ifndef BYTE_ORDER
 #error "no BYTE_ORDER defined!"
@@ -100,8 +95,8 @@ CLCDDisplay::CLCDDisplay()
 	
 	// raw
 	raw_buffer_size = 0;
-	xres = 132;
-	yres = 64;
+	xres = 220;
+	yres = 176;
 	bypp = sizeof(lcd_pixel_t);
 	bpp = 8*sizeof(lcd_pixel_t);
 	fd = -1;
@@ -124,7 +119,6 @@ CLCDDisplay::CLCDDisplay()
 	inverted = 0;
 	lcd_type = 0;
 	last_brightness = 0;
-	
 	locked = 0;
 	
 #ifdef ENABLE_TFTLCD
@@ -155,8 +149,12 @@ CLCDDisplay::~CLCDDisplay()
 #ifdef ENABLE_TFTLCD
 	if (_buffer)
 	{
+#ifdef USE_OPENGL
+		delete [] _buffer;
+#else
 		msync(_buffer, m_available, MS_SYNC);
 		munmap(_buffer, m_available);
+#endif
 		_buffer = NULL;
 	}
 #endif
@@ -252,42 +250,48 @@ bool CLCDDisplay::init(const char *fbdevice)
 		goto nolfb;
 	}
 
+#ifndef USE_OPENGL
 	if (::ioctl(fd, FBIOGET_VSCREENINFO, &m_screeninfo) < 0)
 	{
 		lcddisplay_err("CLCDDisplay::init: FBIOGET_VSCREENINFO: %m\n");
-#ifndef USE_OPENGL
+
 		goto nolfb;
-#endif
 	}
 
 	fb_fix_screeninfo fix;
 	if (ioctl(fd, FBIOGET_FSCREENINFO, &fix) < 0)
 	{
 		lcddisplay_err("CLCDDisplay::init: FBIOGET_FSCREENINFO: %m\n");
-#ifndef USE_OPENGL
+
 		goto nolfb;
-#endif
 	}
 
 	m_available = fix.smem_len;
 	m_phys_mem = fix.smem_start;
 	
-	lcddisplay_printf("CLCDDisplay::init: %s %dk video mem\n", fbdevice, m_available / 1024);
+	lcddisplay_printf(0, "CLCDDisplay::init: %s %dk video mem\n", fbdevice, m_available / 1024);
 	
-	_buffer = (uint8_t *)mmap(0, m_available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
+	_buffer = (lcd_pixel_t *)mmap(0, m_available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
 	
 	if (!_buffer)
 	{
 		lcddisplay_err("CLCDDisplay::init: mmap: %m\n");
-#ifndef USE_OPENGL
+
 		goto nolfb;
-#endif
 	}
 
 	calcRamp();
 	getMode();
-	setMode(m_xRes, m_yRes, m_bpp);
+	setMode(xres, yres, bpp);
 	enableManualBlit();
+#else
+	_stride = xres*bypp;
+	raw_buffer_size = xres * yres * bypp;
+	_buffer = new lcd_pixel_t[raw_buffer_size];
+	memset(_buffer, 0, raw_buffer_size);
+	
+	lcddisplay_printf(0, "%s %dk video mem\n", fbdevice, raw_buffer_size);
+#endif
 	
 	lcd_type = 4;
 
@@ -417,9 +421,10 @@ int CLCDDisplay::setMode(int nxRes, int nyRes, int nbpp)
 			nxRes, nyRes, nbpp,
 			m_screeninfo.xres, m_screeninfo.yres, m_screeninfo.bits_per_pixel);
 	}
-	m_xRes = m_screeninfo.xres;
-	m_yRes = m_screeninfo.yres;
-	m_bpp = m_screeninfo.bits_per_pixel;
+	
+	xres = m_screeninfo.xres;
+	yres = m_screeninfo.yres;
+	bpp = m_screeninfo.bits_per_pixel;
 	
 	fb_fix_screeninfo fix;
 	
@@ -427,8 +432,9 @@ int CLCDDisplay::setMode(int nxRes, int nyRes, int nbpp)
 	{
 		printf("CLCDDisplay::setMode: FBIOGET_FSCREENINFO: %m\n");
 	}
+	
 	_stride = fix.line_length;
-	memset(_buffer, 0, _stride * m_yRes);
+	memset(_buffer, 0, _stride * yres);
 	
 	update();
 	
@@ -437,9 +443,9 @@ int CLCDDisplay::setMode(int nxRes, int nyRes, int nbpp)
 
 void CLCDDisplay::getMode()
 {
-	m_xRes = m_screeninfo.xres;
-	m_yRes = m_screeninfo.yres;
-	m_bpp = m_screeninfo.bits_per_pixel;
+	xres = m_screeninfo.xres;
+	yres = m_screeninfo.yres;
+	bpp = m_screeninfo.bits_per_pixel;
 }
 
 int CLCDDisplay::waitVSync()
@@ -478,7 +484,7 @@ void CLCDDisplay::unlock()
 		enableManualBlit();
 		
 	locked = 0;
-	setMode(m_xRes, m_yRes, m_bpp);
+	setMode(xres, yres, bpp);
 	putCMAP();
 }
 
@@ -889,6 +895,7 @@ static void convert_palette(uint32_t* pal, const gPalette& clut)
 // blit2lcd
 void CLCDDisplay::blitBox2LCD(int flag) 
 {
+#ifdef ENABLE_LCD
 	int area_left = 0;
 	int area_top = 0;
 	int area_right = xres;
@@ -1135,6 +1142,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
                 	dstptr = (uint32_t*)((uint8_t*)dstptr + surface_stride);
             	}
 	}
+#endif
 }
 
 void CLCDDisplay::update()
@@ -1255,9 +1263,6 @@ void CLCDDisplay::draw_fill_rect(int left, int top, int right, int bottom, uint3
 
 void CLCDDisplay::draw_rectangle(int left,int top, int right, int bottom, uint32_t linecolor, uint32_t fillcolor)
 {
-	// coordinate checking in draw_pixel (-> you can draw lines only
-	// partly on screen)
-
 	draw_line(left, top, right, top, linecolor);
 	draw_line(left, top, left, bottom, linecolor);
 	draw_line(right, top, right, bottom, linecolor);
@@ -1267,9 +1272,6 @@ void CLCDDisplay::draw_rectangle(int left,int top, int right, int bottom, uint32
 
 void CLCDDisplay::draw_polygon(int num_vertices, int *vertices, uint32_t color) 
 {
-	// coordinate checking in draw_pixel (-> you can draw polygons only
-	// partly on screen)
-
 	int i;
 	for(i = 0; i < num_vertices - 1; i++) 
 	{
@@ -1290,7 +1292,9 @@ void CLCDDisplay::draw_polygon(int num_vertices, int *vertices, uint32_t color)
 void CLCDDisplay::clear_screen() 
 {
 	memset(_buffer, 0, raw_buffer_size);
+#ifdef ENABLE_LCD
 	memset(surface_data, 0, surface_buffer_size);
+#endif
 	blit();
 }
 

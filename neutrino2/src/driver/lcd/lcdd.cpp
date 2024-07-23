@@ -56,7 +56,6 @@
 
 
 //#define LCDD_DEBUG
-#define LCDD_SILENT
 
 static short debug_level = 10;
 
@@ -67,11 +66,7 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 #define lcdd_printf(level, fmt, x...)
 #endif
 
-#ifndef LCDD_SILENT
 #define lcdd_err(fmt, x...) do { printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
-#else
-#define lcdd_err(fmt, x...)
-#endif
 
 extern CRemoteControl * g_RemoteControl;
 
@@ -221,7 +216,7 @@ void CLCD::wake_up()
 		
 #if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 		g_settings.lcd_setting_dim_brightness > 0 ? setBrightness(g_settings.lcd_brightness) : setPower(1);
-#elif defined (ENABLE_LCD)
+#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 		setlcdparameter();
 #endif
 
@@ -499,7 +494,7 @@ void CLCD::displayUpdate()
 {
 	struct stat buf;
 	
-#ifdef ENABLE_LCD
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	if (stat("/tmp/lcd.locked", &buf) == -1)
 	{
 		display->update();
@@ -546,7 +541,7 @@ void CLCD::setlcdparameter(int dimm, const int contrast, const int power, const 
 	
 	closeDevice();
 #endif	
-#elif defined (ENABLE_LCD)
+#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// dimm
 	display->setLCDBrightness(dimm);
 	
@@ -624,7 +619,7 @@ static std::string splitString(const std::string & text, const int maxwidth, Lcd
 	int pos;
 	std::string tmp = removeLeadingSpaces(text);
 
-#ifdef ENABLE_LCD
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	if (font->getRenderWidth(tmp.c_str(), utf8) > maxwidth)
 	{
 		do
@@ -722,7 +717,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	if( write(fd, big.c_str(), len > 12? 12 : len ) < 0)
 		perror("write to vfd failed");
 #endif	
-#elif defined (ENABLE_LCD)
+#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// clear screen under banner
 	if (mode == MODE_PIC)
 		display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, lcd_height, LCD_PIXEL_OFF);
@@ -932,7 +927,7 @@ void CLCD::showText(const char *str)
 	if( write(fd, text.c_str(), len > 12? 12 : len ) < 0)
 		perror("write to vfd failed");
 #endif
-#elif defined (ENABLE_LCD)
+#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	showTextScreen(std::string(str), "", EPGMODE_CHANNEL, true, true); // always centered
 #endif
 
@@ -978,7 +973,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 	{
 		showText((char *)servicename.c_str() );
 	}
-#elif defined (ENABLE_LCD)
+#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	showTextScreen(servicename, epg_title, showmode, perform_wakeup, g_settings.lcd_epgalign);
 	
 	// logo
@@ -1051,7 +1046,7 @@ void CLCD::setEPGTitle(const std::string title)
 
 	lcdd_printf(10, "CLCD::setEPGTitle: %s\n", title.c_str());
 	
-#if defined (ENABLE_LCD)
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	epg_title.clear();
 	
 	epg_title = title;
@@ -1066,7 +1061,7 @@ void CLCD::showMovieInfo(const PLAYMODES playmode, const std::string big, const 
 
 #if defined (ENABLE_VFD)
 	showText((char *)big.c_str());
-#elif defined (ENABLE_LCD)
+#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	movie_playmode = playmode;
 	movie_big = big;
 	movie_small = small;
@@ -1133,7 +1128,7 @@ void CLCD::showTime(bool force)
 		// in case icon ON after record stopped
 		clearClock = 0;
 	}	
-#elif defined (ENABLE_LCD)
+#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	if (showclock)
 	{
 		char timestr[21];
@@ -1272,7 +1267,7 @@ void CLCD::showRCLock(int duration)
 	if(!has_lcd) 
 		return;
 	
-#ifdef ENABLE_LCD
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	lcd_pixel_t * curr_screen = new lcd_pixel_t[display->raw_buffer_size];
 
 	// Saving the whole screen is not really nice since the clock is updated
@@ -1301,7 +1296,7 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 	
 	volume = vol;
 	
-#ifdef ENABLE_LCD
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	if ( (mode == MODE_TVRADIO || mode == MODE_MOVIE || mode == MODE_SCART || mode == MODE_AUDIO) && (g_settings.lcd_statusline == STATUSLINE_VOLUME) )
 	{
 		unsigned int height =  6;
@@ -1378,7 +1373,7 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 	if(!has_lcd) 
 		return;
 	
-#if defined (ENABLE_LCD)
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	if (mode != m)
 		return;
 
@@ -1435,7 +1430,7 @@ void CLCD::showMenuText(const int position, const char * text, const int selecte
 		
 #if defined (ENABLE_VFD)						
 	showText(text); // UTF-8
-#elif defined (ENABLE_LCD)
+#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// second line
 	// refresh
 	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 - 1, lcd_width, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight() + 10, LCD_PIXEL_OFF);
@@ -1464,7 +1459,7 @@ void CLCD::showAudioTrack(const std::string &artist, const std::string &title, c
 
 #if defined (ENABLE_VFD)
 	showText((char *)title.c_str());
-#elif defined (ENABLE_LCD)
+#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// refresh
 	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, element[ELEMENT_BANNER].height + 2 + fonts.channelname->getHeight() + 2 + fonts.menu->getHeight() + 2 + fonts.menu->getHeight(), LCD_PIXEL_OFF);
 	
@@ -1513,7 +1508,7 @@ void CLCD::showPlayMode(PLAYMODES m)
 			break;
 	}
 #endif	
-#elif defined (ENABLE_LCD)
+#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// refresh
 	display->draw_fill_rect (-1, lcd_width - 12, 12, 12, LCD_PIXEL_OFF);
 	
@@ -1566,7 +1561,7 @@ void CLCD::drawBanner()
 	if(!has_lcd) 
 		return;
 	
-#if defined (ENABLE_LCD)	
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)	
 	display->show_png_element(&(element[ELEMENT_BANNER]), 0, 0, lcd_width, element->height);
 	
 	if (element[ELEMENT_BANNER].width < lcd_width)
@@ -1732,7 +1727,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	}
 
 #endif // vfd	
-#elif defined (ENABLE_LCD)
+#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	switch (m)
 	{
 	case MODE_TVRADIO:
@@ -2042,7 +2037,7 @@ void CLCD::setLED(int value, int option)
 
 	g_settings.lcd_led = value;
 	
-#if defined (ENABLE_LCD)
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	display->setLED(value, option);
 #endif
 
@@ -2074,7 +2069,7 @@ void CLCD::setMiniTV(int value)
 		
 	g_settings.lcd_minitv = value;
 	
-#if defined (ENABLE_LCD)
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	const char *LCDMINITV[] = 
 	{
 		"NORMAL",
@@ -2102,7 +2097,7 @@ void CLCD::resume()
 	if(!has_lcd) 
 		return;
 	
-#ifdef ENABLE_LCD
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	display->resume();
 #endif
 }
@@ -2112,7 +2107,7 @@ void CLCD::pause()
 	if(!has_lcd) 
 		return;
 	
-#ifdef ENABLE_LCD
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	display->pause();
 #endif
 }
@@ -2288,7 +2283,7 @@ void CLCD::Clear()
 #else
 	showText("            "); // 12 empty digits
 #endif // sh	
-#elif defined (ENABLE_LCD)
+#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	if (mode == MODE_SHUTDOWN)
 	{
 		display->clear_screen(); // clear lcd
@@ -2306,7 +2301,7 @@ bool CLCD::ShowPng(char *filename)
 	if(!has_lcd) 
 		return false;
 	
-#ifdef ENABLE_LCD
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	return display->showPNGImage(filename, 0, 0, lcd_width, lcd_height);
 #endif
 }
@@ -2315,8 +2310,10 @@ bool CLCD::DumpPng(char *filename)
 {
 	if(!has_lcd) 
 		return false;
+		
+	printf("CLCD::DumpPng\n");
 	
-#ifdef ENABLE_LCD
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	return display->dump_png(filename);
 #endif
 }
@@ -2327,7 +2324,7 @@ void CLCD::showProgressBar(int global, const char * const text)
 	if(!has_lcd) 
 		return;
 	
-#ifdef ENABLE_LCD
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	int prog_w = lcd_width - 10;
 	int prog_h = 20;
 	int prog_x = 5;
@@ -2376,7 +2373,7 @@ void CLCD::showProgressBar2(int local,const char * const text_local, int global,
 	if(!has_lcd) 
 		return;
 	
-#ifdef ENABLE_LCD
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	int prog_w = lcd_width - 10;
 	int prog_h = 20;
 	int prog_x = 5;

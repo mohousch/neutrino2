@@ -27,4 +27,10 @@ if ENABLE_LCD
 libnhttpd_tuxboxapi_a_SOURCES += \
 	lcdapi.cpp
 endif
+
+if ENABLE_TFTLCD
+libnhttpd_tuxboxapi_a_SOURCES += \
+	lcdapi.cpp
+endif
+
 	

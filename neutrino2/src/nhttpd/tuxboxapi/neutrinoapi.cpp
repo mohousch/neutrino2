@@ -53,7 +53,7 @@ extern cAudio * audioDecoder;
 // nhttpd
 #include "neutrinoapi.h"
 
-#ifdef ENABLE_LCD
+#if defined (ENABLE_LCD ) || defined (ENABLETFTLCD)
 #include "lcdapi.h"
 #endif
 
@@ -80,14 +80,14 @@ CNeutrinoAPI::CNeutrinoAPI()
 	NeutrinoYParser = new CNeutrinoYParser(this);
 	ControlAPI = new CControlAPI(this);
 	
-#ifdef ENABLE_LCD
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	LcdAPI = new CLCDAPI();
 #endif	
 }
 
 CNeutrinoAPI::~CNeutrinoAPI(void)
 {
-#ifdef ENABLE_LCD
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	if (LcdAPI)
 		delete LcdAPI;
 #endif
