@@ -210,9 +210,9 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 	
 	int ret = -1;
 	
-#if !defined USE_OPENGL
 	volume = (left + right)/2;
 	
+#if !defined USE_OPENGL
 	// map volume
 	if (volume < 0)
 		volume = 0;

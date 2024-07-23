@@ -14,6 +14,7 @@ function do_init()
 {
 	var val = "";
 	obj_set_radio_value('lcd_power', "{=ini-get:/var/tuxbox/config/neutrino2.conf;lcd_power;1~open=}");
+	obj_set_radio_value('lcd_led', "{=ini-get:/var/tuxbox/config/neutrino2.conf;lcd_led;1~open=}");
 	obj_set_radio_value('lcd_inverse', "{=ini-get:/var/tuxbox/config/neutrino2.conf;lcd_inverse;0~cache=}");
 
 	val = "{=ini-get:/var/tuxbox/config/neutrino2.conf;lcd_dim_time;0~cache=}";
@@ -28,16 +29,21 @@ function do_init()
 		document.f.lcd_standbybrightness.value = val;
 
 	val = "{=ini-get:/var/tuxbox/config/neutrino2.conf;lcd_epgmode;1~cache=}";
-	var sel = 0;
-	if(val=="2") sel=1;
-	if(val=="3") sel=2;
-	if(val=="7") sel=3;
-	if(val=="11") sel=4;
-	if(val=="15") sel=5;
-		document.f.lcd_epgmode.selectedIndex = sel;
+	//var sel = 1;
+	//if(val=="1") sel=1;
+	//if(val=="2") sel=2;
+	//if(val=="3") sel=3;
+	//if(val=="11") sel=4;
+	//if(val=="15") sel=5;
+		document.f.lcd_epgmode.value = val;
 
 	val = "{=ini-get:/var/tuxbox/config/neutrino2.conf;lcd_show_volume;0~cache=}"
 		document.f.lcd_show_volume.value = val;
+		
+	val = "{=ini-get:/var/tuxbox/config/neutrino2.conf;lcd_minitv;0~cache=}"
+		document.f.lcd_minitv.value = val;
+	val = "{=ini-get:/var/tuxbox/config/neutrino2.conf;lcd_minitvfps;0~cache=}"
+		document.f.lcd_minitvfps.value = val;
 }
 
 function setDefault()
@@ -85,6 +91,15 @@ function do_submit()
 					<input type="radio" name="lcd_power" value="1" />EIN
 				</td>
 			</tr>
+			
+			<tr>
+				<td title="led: off/on" width="35%">LED</td>
+				<td>
+					<input type="radio" name="lcd_led" value="0" />AUS&nbsp;
+					<input type="radio" name="lcd_led" value="1" />EIN
+				</td>
+			</tr>
+			
 			<tr>
 				<td title="inverse lcd: off/on">Invertieren</td>
 				<td>
@@ -92,6 +107,7 @@ function do_submit()
 					<input type="radio" name="lcd_inverse" value="1" />EIN
 				</td>
 			</tr>
+			
 			<tr>
 				<td  title="dimm-timeout">Dimm-Timeout</td>
 				<td>
@@ -104,6 +120,28 @@ function do_submit()
 					<input type="text" name="lcd_dim_brightness" size="3" maxlength="3" />
 				</td>
 			</tr>
+			
+			<tr>
+				<td colspan="2" class="y_form_header">Mini TV</td>
+			</tr>
+			<tr><td>Mini TV-Anzeige</td>
+				<td>
+					<select name="lcd_minitv" title="select visualisation of LCD">
+					<option value="0" selected="selected">Normal</option>
+					<option value="1">TV</option>
+					<option value="2">OSD</option>
+					<option value="3">OSD / TV</option>
+					</select>
+				</td>			
+			</tr>
+			
+			<tr>
+				<td title="fps 0-30">FPS</td>
+				<td>
+					<input type="text" name="lcd_minitvfps" size="3" maxlength="3" />
+				</td>
+			</tr>
+			
 			<tr>
 				<td colspan="2" class="y_form_header">Kontrast / Helligkeit</td>
 			</tr>
@@ -135,12 +173,9 @@ function do_submit()
 			<tr><td>EPG-Anzeige</td>
 				<td>
 					<select name="lcd_epgmode" title="select visualisation of LCD">
-					<option value="1" selected="selected">Standard (Kanal)</option>
+					<option value="1" selected="selected">Kanal</option>
 					<option value="2">Sendung</option>
 					<option value="3">Kanal / Sendung</option>
-					<option value="7">Kanal / Trennl. / Sendung</option>
-					<option value="11">Kanal (kurz) / Sendung</option>
-					<option value="15">Kanal (kurz) / Trennl. / Sendung</option>
 					</select>
 				</td>			
 			</tr>
@@ -149,8 +184,6 @@ function do_submit()
 					<select name="lcd_show_volume" title="select visualisation of LCD">
 					<option value="0" selected="selected">Sendungsfortschritt</option>
 					<option value="1">Lautst&auml;rke</option>
-					<option value="2">Lautst&auml;rke / Fortschritt</option>
-					<option value="3">Laut. / Fort. / Audio</option>
 					</select>
 				</td>			
 			</tr>

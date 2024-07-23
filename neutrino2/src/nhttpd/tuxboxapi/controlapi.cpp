@@ -244,7 +244,7 @@ void CControlAPI::Execute(CyhookHandler *hh)
 	}
 
 	// send header
-	else if(std::string(yCgiCallList[index].mime_type) == "")	// decide in function
+	else if(std::string(yCgiCallList[index].mime_type) == "")		// decide in function
 		;
 	else if(std::string(yCgiCallList[index].mime_type) == "+xml")		// Parameter xml?
 	{
@@ -255,8 +255,10 @@ void CControlAPI::Execute(CyhookHandler *hh)
 	}
 	else
 		hh->SetHeader(HTTP_OK, yCgiCallList[index].mime_type);
+		
 	// response
 	hh->status = HANDLED_READY;
+	
 	if (hh->Method == M_HEAD)	// HEAD or function call
 		return;
 	else

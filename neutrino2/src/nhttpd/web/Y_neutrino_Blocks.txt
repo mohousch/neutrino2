@@ -910,8 +910,7 @@ start-block~neutrino_form-data_pictureviewer
 				<td width="35%">{=L:set.pv.scale=}</td>
 				<td>
 					<select name="picviewer_scaling" title="{=L:set.pv.scale=}">
-					<option value="0" selected="selected">{=L:set.pv.scale.none=}</option>
-					<option value="1">{=L:set.pv.scale.simple=}</option>
+					<option value="1" selected="selected">{=L:set.pv.scale.simple=}</option>
 					<option value="2">{=L:set.pv.scale.complex=}</option>
 					</select>
 				</td>
@@ -941,8 +940,8 @@ start-block~neutrino_form-data_pictureviewer
 function form_init()
 {
 	var val = "";
-	val = "{=ini-get:/var/tuxbox/config/neutrino2.conf;picviewer_scaling;0=}";
-	document.f.picviewer_scaling.selectedIndex = val;
+	val = "{=ini-get:/var/tuxbox/config/neutrino2.conf;picviewer_scaling;1=}";
+	document.f.picviewer_scaling.value = val;
 }
 
 function do_submit()
@@ -977,6 +976,7 @@ start-block~neutrino_form-data_audioplayer
 					<input type="radio" name="audioplayer_highprio" value="1"/>{=L:on=}
 				</td>
 			</tr>
+			
 			<tr>
 				<td>{=L:set.ap.start_dir=}</td>
 				<td><input type="text" name="audioplayer_audioplayerdir" size="60" value="{=ini-get:/var/tuxbox/config/neutrino2.conf;network_nfs_audioplayerdir~cache=}" /></td>

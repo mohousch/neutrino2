@@ -12,7 +12,9 @@ function do_snapshot(){
 function do_snapshot2(){
 	var _shot = document.getElementById("shot");
 	var filename = id("file").value;
-	dbox_exec_tools("fbshot /tmp/"+filename+".png");
+	var res = dbox_exec_tools("fbshot -sw /tmp/"+filename+".png");
+	if (res != "")
+		dbox_exec_tools("fbshot /tmp/"+filename+".png");
 	show_waitbox(false);
 	show_obj("shot", true);
 	_shot.src = "/tmp/"+filename+".png?"+Math.random();
@@ -26,7 +28,9 @@ function do_tv_snapshot(){
 function do_tv_snapshot2(){
 	var _shot = document.getElementById("shot");
 	var filename = id("file").value;
-	dbox_exec_tools("fbshot tv /tmp/"+filename+".png");
+	var res = dbox_exec_tools("fbshot -sw /tmp/"+filename+".png");
+	if (res != "")
+		dbox_exec_tools("fbshot tv /tmp/"+filename+".png");
 	show_waitbox(false);
 	show_obj("shot", true);
 	_shot.src = "/tmp/"+filename+".png?"+Math.random();
@@ -40,7 +44,9 @@ function do_fb_snapshot(){
 function do_fb_snapshot2(){
 	var _shot = document.getElementById("shot");
 	var filename = id("file").value;
-	dbox_exec_tools("fbshot fb /tmp/"+filename+".png");
+	var res = dbox_exec_tools("fbshot -sw /tmp/"+filename+".png");
+	if (res != "")
+	 	dbox_exec_tools("fbshot fb /tmp/"+filename+".png");
 	show_waitbox(false);
 	show_obj("shot", true);
 	_shot.src = "/tmp/"+filename+".png?"+Math.random();
@@ -54,7 +60,9 @@ function do_dboxshot(){
 function do_dboxshot2(){
 	var _shot = document.getElementById("shot");
 	var filename = id("file").value;
-	var res = dbox_exec_tools("fbshot fb /tmp/"+filename+".png");
+	var res = dbox_exec_tools("fbshot -sw /tmp/"+filename+".png");
+	if (res != "")
+	 	res = dbox_exec_tools("fbshot fb /tmp/"+filename+".png");
 	if(res != "")
 		dbox_exec_tools("fbshot -o /tmp/"+filename+".png");
 	show_waitbox(false);
@@ -72,6 +80,7 @@ function do_clearshot2(){
 //]]>
 </script>
 </head>
+
 <body>
 {=var-set:wait_text={=L:bc.osd.shap_wait_text=}=}{=include-block:Y_Blocks.txt;snip_wait=}
 <div class="work_box">
