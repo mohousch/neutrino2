@@ -43,12 +43,10 @@
 #include <driver/lcd/lcddisplay.h>
 #include <driver/lcd/fontrenderer.h>
 
-#ifdef ENABLE_GRAPHLCD
-#include <driver/lcd/nglcd.h>
-#endif
+//#ifdef ENABLE_GRAPHLCD
+//#include <driver/lcd/nglcd.h>
+//#endif
 
-
-#define LCDDIR_VAR CONFIGDIR "/lcdd"
 
 #if defined (__sh__)
 #if defined(PLATFORM_SPARK7162)
@@ -533,7 +531,7 @@ class CLCD
 		FontsDef			fonts;
 		
 #ifdef ENABLE_GRAPHLCD
-		nGLCD				*nglcd;
+		//nGLCD				*nglcd;
 		bool				nglcdshowclock;
 		int				nglcdclearClock;
 		int 				nglcd_width;
@@ -660,6 +658,11 @@ class CLCD
 #if defined (__sh__)
 		void openDevice();
 		void closeDevice();
+#endif
+
+#ifdef ENABLE_GRAPHLCD
+		int GetConfigSize();
+		std::string GetConfigName(int);
 #endif
 };
 

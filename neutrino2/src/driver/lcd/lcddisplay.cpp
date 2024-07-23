@@ -26,6 +26,9 @@
 
 #include <config.h>
 
+#include <global.h>
+#include <neutrino2.h>
+
 #include <driver/lcd/lcddisplay.h>
 
 #include <png.h>
@@ -51,9 +54,11 @@ extern "C" {
 #include <jpeglib.h>
 }
 
+#include <system/settings.h>
 
 
-//#define LCDDISPLAY_DEBUG
+
+#define LCDDISPLAY_DEBUG
 
 static short debug_level = 10;
 
@@ -87,41 +92,55 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 #define FBIO_WAITFORVSYNC _IOW('F', 0x20, uint32_t)
 #endif
 
+static const char *kDefaultConfigFile = "/etc/graphlcd.conf";
+
 CLCDDisplay::CLCDDisplay()
 {
 	lcddisplay_printf(10, "CLCDDisplay::CLCDDisplay\n");
 	
-	paused = 0;
-	
-	// raw
-	raw_buffer_size = 0;
-	xres = 220;
-	yres = 176;
-	bypp = sizeof(lcd_pixel_t);
-	bpp = 8*sizeof(lcd_pixel_t);
 	fd = -1;
-	clut.colors = 0;
-	clut.data = 0;
-	_buffer = NULL;
-	_stride = 0;
 	
-	// surface
-	surface_data = NULL;
-	surface_stride = 0;
-	surface_bpp = 0;
-	surface_bypp = 0;
-	surface_buffer_size = 0;
-	real_offset = 0;
-	real_yres = 0;
+	//
+	xres = 320;
+	yres = 240;
 	
-	
+	paused = 0;
 	flipped = false;
 	inverted = 0;
 	lcd_type = 0;
 	last_brightness = 0;
 	locked = 0;
 	
+	//
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+	raw_buffer_size = 0;
+	raw_bypp = sizeof(lcd_pixel_t);
+	raw_bpp = 8*sizeof(lcd_pixel_t);
+	raw_buffer = NULL;
+	raw_stride = 0;
+	raw_clut.colors = 0;
+	raw_clut.data = 0;
+#endif
+	
+	// surface
+#ifdef ENABLE_LCD
+	surface_data = NULL;
+	surface_stride = 0;
+	surface_bpp = 0;
+	surface_bypp = 0;
+	surface_buffer_size = 0;
+	////
+	real_offset = 0;
+	real_yres = 0;
+#endif
+	
 #ifdef ENABLE_TFTLCD
+	tftbuffer = NULL;
+	tftstride = 0;
+	tftbpp = 32;
+	tftbypp = 4;
+	tft_buffer_size = 0;
+	
 	m_manual_blit = -1;
 	m_available = 0;
 	m_cmap.start = 0;
@@ -134,28 +153,61 @@ CLCDDisplay::CLCDDisplay()
 	m_gamma = 128;
 	m_brightness = 128;
 #endif
+
+#ifdef ENABLE_GRAPHLCD
+	lcd = NULL;
+	bitmap = NULL;
+	ngbuffer = NULL;
+	ngstride = 0;
+	ngbpp = 32;
+	ngbypp = 4;
+	ng_buffer_size = 0;
+#endif
 }
 
 CLCDDisplay::~CLCDDisplay()
 {
 #ifdef ENABLE_LCD
-	if (_buffer)
+	if (surface_data)
 	{
-		delete [] _buffer;
-		_buffer = NULL;
+		delete [] surface_data;
+		surface_data = NULL;
 	}
 #endif
 
 #ifdef ENABLE_TFTLCD
-	if (_buffer)
+	if (tftbuffer)
 	{
-#ifdef USE_OPENGL
-		delete [] _buffer;
-#else
-		msync(_buffer, m_available, MS_SYNC);
-		munmap(_buffer, m_available);
+		msync(tftbuffer, m_available, MS_SYNC);
+		munmap(tftbuffer, m_available);
+		tftbuffer = NULL;
+	}
 #endif
-		_buffer = NULL;
+	
+#ifdef ENABLE_GRAPHLCD
+	if (lcd)
+	{
+		lcd->DeInit();
+		
+		delete lcd;
+		lcd = NULL;
+		
+		delete bitmap;
+		bitmap = NULL;
+	}
+	
+	if (ngbuffer)
+	{
+		delete [] ngbuffer;
+		ngbuffer = NULL;
+	}
+#endif
+
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+	if (raw_buffer)
+	{
+		delete [] raw_buffer;
+		raw_buffer = NULL;
 	}
 #endif
 
@@ -168,6 +220,16 @@ CLCDDisplay::~CLCDDisplay()
 
 bool CLCDDisplay::init(const char *fbdevice)
 {
+
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+	raw_stride = xres*raw_bypp;
+	raw_buffer_size = xres * yres * raw_bypp;
+	raw_buffer = new lcd_pixel_t[raw_buffer_size];
+	memset(raw_buffer, 0, raw_buffer_size);
+	
+	lcddisplay_printf(0, "raw_buffer: %s %dk video mem\n", fbdevice, raw_buffer_size);
+#endif
+	
 #ifdef ENABLE_LCD
 	//open device
 #ifdef USE_OPENGL
@@ -233,11 +295,8 @@ bool CLCDDisplay::init(const char *fbdevice)
 		}
 	}
 	
-#ifdef USE_OPENGL
-	setSize(220, 176, 16);
-#else
 	setSize(xres, yres, _bpp);
-#endif
+
 	return true;
 #endif
 
@@ -271,9 +330,9 @@ bool CLCDDisplay::init(const char *fbdevice)
 	
 	lcddisplay_printf(0, "CLCDDisplay::init: %s %dk video mem\n", fbdevice, m_available / 1024);
 	
-	_buffer = (lcd_pixel_t *)mmap(0, m_available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
+	tftbuffer = (uint32_t *)mmap(0, m_available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
 	
-	if (!_buffer)
+	if (!tftbuffer)
 	{
 		lcddisplay_err("CLCDDisplay::init: mmap: %m\n");
 
@@ -282,15 +341,8 @@ bool CLCDDisplay::init(const char *fbdevice)
 
 	calcRamp();
 	getMode();
-	setMode(xres, yres, bpp);
+	setMode(xres, yres, tftbpp);
 	enableManualBlit();
-#else
-	_stride = xres*bypp;
-	raw_buffer_size = xres * yres * bypp;
-	_buffer = new lcd_pixel_t[raw_buffer_size];
-	memset(_buffer, 0, raw_buffer_size);
-	
-	lcddisplay_printf(0, "%s %dk video mem\n", fbdevice, raw_buffer_size);
 #endif
 	
 	lcd_type = 4;
@@ -308,8 +360,63 @@ nolfb:
 	
 	return false;
 #endif
+
+#ifdef ENABLE_GRAPHLCD
+	// configfile
+	if (GLCD::Config.Load(kDefaultConfigFile) == false)
+	{
+		lcddisplay_err("Error loading config file!\n");
+		return false;
+	}
+	
+	// driver config
+	if ((GLCD::Config.driverConfigs.size() < 1))
+	{
+		lcddisplay_err("No driver config found!\n");
+		return false;
+	}
+	
+	// create driver
+	lcd = GLCD::CreateDriver(GLCD::Config.driverConfigs[g_settings.glcd_selected_config].id, &GLCD::Config.driverConfigs[g_settings.glcd_selected_config]);
+	
+	if (!lcd)
+	{
+		lcddisplay_err("CreateDriver failed.\n");
+		return false;
+	}
+	
+	lcddisplay_printf(10, "CreateDriver succeeded.\n");
+	
+	//
+	if (lcd->Init())
+	{
+		delete lcd;
+		lcd = NULL;
+
+		lcddisplay_err("init failed.\n");
+		
+		return false;
+	}
+
+	lcddisplay_printf(10, "init succeeded.\n");
+	
+	ngstride = xres * ngbypp;
+	ng_buffer_size = xres * yres * ngbypp;
+	ngbuffer = new uint32_t[ng_buffer_size];
+	memset(ngbuffer, 0, ng_buffer_size);
+	
+	// create bitmap
+	if (!bitmap)
+		bitmap = new GLCD::cBitmap(lcd->Width(), lcd->Height(), g_settings.glcd_color_bg);
+		
+	if (bitmap)
+		return true;
+		
+	//
+#endif
 }
 
+#ifdef ENABLE_LCD
 void CLCDDisplay::setSize(int w, int h, int b)
 {
 	lcddisplay_printf(10, "CLCDDisplay::setSize: xres=%d, yres=%d, bpp=%d type=%d\n", w, h, b, lcd_type);
@@ -345,7 +452,7 @@ void CLCDDisplay::setSize(int w, int h, int b)
 			break;
 			
 		default:
-			surface_bypp = (bpp + 7)/8;
+			surface_bypp = (surface_bpp + 7)/8;
 	}
 
 	// surface
@@ -353,13 +460,8 @@ void CLCDDisplay::setSize(int w, int h, int b)
 	surface_buffer_size = xres * yres * surface_bypp;
 	surface_data = new uint8_t[surface_buffer_size];
 	memset(surface_data, 0, surface_buffer_size);
-
-	// buffer
-	_stride = xres*bypp;
-	raw_buffer_size = xres * yres * bypp;
-	_buffer = new lcd_pixel_t[raw_buffer_size];
-	memset(_buffer, 0, raw_buffer_size);
 }
+#endif
 
 #ifdef ENABLE_TFTLCD
 int CLCDDisplay::setMode(int nxRes, int nyRes, int nbpp)
@@ -424,7 +526,7 @@ int CLCDDisplay::setMode(int nxRes, int nyRes, int nbpp)
 	
 	xres = m_screeninfo.xres;
 	yres = m_screeninfo.yres;
-	bpp = m_screeninfo.bits_per_pixel;
+	tftbpp = m_screeninfo.bits_per_pixel;
 	
 	fb_fix_screeninfo fix;
 	
@@ -433,8 +535,10 @@ int CLCDDisplay::setMode(int nxRes, int nyRes, int nbpp)
 		printf("CLCDDisplay::setMode: FBIOGET_FSCREENINFO: %m\n");
 	}
 	
-	_stride = fix.line_length;
-	memset(_buffer, 0, _stride * yres);
+	tftstride = fix.line_length;
+	tft_buffer_size = tftstride * yres;
+	
+	memset(tftbuffer, 0, tftstride * yres);
 	
 	update();
 	
@@ -445,7 +549,7 @@ void CLCDDisplay::getMode()
 {
 	xres = m_screeninfo.xres;
 	yres = m_screeninfo.yres;
-	bpp = m_screeninfo.bits_per_pixel;
+	tftbpp = m_screeninfo.bits_per_pixel;
 }
 
 int CLCDDisplay::waitVSync()
@@ -484,7 +588,7 @@ void CLCDDisplay::unlock()
 		enableManualBlit();
 		
 	locked = 0;
-	setMode(xres, yres, bpp);
+	setMode(xres, yres, tftbpp);
 	putCMAP();
 }
 
@@ -524,6 +628,21 @@ void CLCDDisplay::disableManualBlit()
 		printf("CLCDDisplay::disableManualBlit: FBIO_SET_MANUAL_BLIT: %m");
 	else
 		m_manual_blit = 0;
+}
+#endif
+
+#ifdef ENABLE_GRAPHLCD
+int CLCDDisplay::GetConfigSize()
+{
+	return (int) GLCD::Config.driverConfigs.size();
+}
+
+std::string CLCDDisplay::GetConfigName(int driver)
+{
+	if ((driver < 0) || (driver > GetConfigSize() - 1))
+		driver = 0;
+		
+	return GLCD::Config.driverConfigs[driver].name;
 }
 #endif
 
@@ -597,7 +716,7 @@ int CLCDDisplay::setLCDBrightness(int brightness)
 	
 	if (brightness == 0)
 	{
-		memset(_buffer, inverted, raw_buffer_size);
+		memset(raw_buffer, inverted, raw_buffer_size);
 		update();
 	}
 
@@ -821,6 +940,14 @@ void CLCDDisplay::blit(void)
 			printf("[eFbLCD] FBIO_BLIT: %m\n");
 	}
 #endif
+
+#ifdef ENABLE_GRAPHLCD
+	if (lcd)
+	{
+		lcd->SetScreen(ngbuffer, xres, yres);	
+		lcd->Refresh(true);
+	}
+#endif
 }
 
 ////
@@ -903,12 +1030,12 @@ void CLCDDisplay::blitBox2LCD(int flag)
 	int area_width  = area_right - area_left;
 	int area_height = area_bottom - area_top;
 	
-	if (surface_bpp == 8 && bpp == 8)
+	if (surface_bpp == 8 && raw_bpp == 8)
 	{
-		uint8_t *srcptr = (uint8_t*)_buffer;
+		uint8_t *srcptr = (uint8_t*)raw_buffer;
             	uint8_t *dstptr = (uint8_t*)surface_data;
 
-            	srcptr += area_left*bypp + area_top*_stride;
+            	srcptr += area_left*raw_bypp + area_top*raw_stride;
             	dstptr += area_left*surface_bypp + area_top*surface_stride;
             
             	if ( (flag & blitAlphaTest) || (flag & blitAlphaBlend) )
@@ -933,7 +1060,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
                             			*d++ = *s++;
                         		}
                     		}
-                    		srcptr += _stride;
+                    		srcptr += raw_stride;
                     		dstptr += surface_stride;
                 	}
             	}
@@ -943,14 +1070,14 @@ void CLCDDisplay::blitBox2LCD(int flag)
                 	for (int y = area_height; y != 0; --y)
                 	{
                     		memcpy(dstptr, srcptr, linesize);
-                    		srcptr += _stride;
+                    		srcptr += raw_stride;
                     		dstptr += surface_stride;
                 	}
             	}
 	} 
-	else if (surface_bpp == 16 && bpp == 8)
+	else if (surface_bpp == 16 && raw_bpp == 8)
 	{
-		uint8_t *srcptr = (uint8_t*)_buffer;
+		uint8_t *srcptr = (uint8_t*)raw_buffer;
             	uint8_t *dstptr = (uint8_t*)surface_data;
             	uint32_t pal[256];
 
@@ -966,7 +1093,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
                 	pal[i] ^= 0xFF000000;
             	}
 
-            	srcptr += area_left*bypp + area_top*_stride;
+            	srcptr += area_left*raw_bypp + area_top*raw_stride;
             	dstptr += area_left*surface_bypp + area_top*surface_stride;
 
             	for (int y = 0; y < area_height; y++)
@@ -980,16 +1107,16 @@ void CLCDDisplay::blitBox2LCD(int flag)
                 	else
                     		blit_8i_to_16(dst, psrc, pal, width);
                     			
-                	srcptr += _stride;
+                	srcptr += raw_stride;
                 	dstptr += surface_stride;
             	}
         }
-	else if (surface_bpp == 16 && bpp == 32)
+	else if (surface_bpp == 16 && raw_bpp == 32)
 	{
-            	uint8_t *srcptr = (uint8_t*)_buffer;
+            	uint8_t *srcptr = (uint8_t*)raw_buffer;
             	uint8_t *dstptr = (uint8_t*)surface_data;
 
-            	srcptr += area_left*bypp + area_top*_stride;
+            	srcptr += area_left*raw_bypp + area_top*raw_stride;
             	dstptr += area_left*surface_bypp + area_top*surface_stride;
 
             	for (int y = 0; y < area_height; y++)
@@ -1069,18 +1196,18 @@ void CLCDDisplay::blitBox2LCD(int flag)
 #endif
                     		}
                 	}
-                	srcptr += _stride;
+                	srcptr += raw_stride;
                 	dstptr += surface_stride;
             	}
 	} 
-	else if (surface_bpp == 32 && bpp == 8)
+	else if (surface_bpp == 32 && raw_bpp == 8)
 	{
-		const uint8_t *srcptr = (uint8_t*)_buffer;
+		const uint8_t *srcptr = (uint8_t*)raw_buffer;
             	uint8_t *dstptr = (uint8_t*)surface_data;
             	uint32_t pal[256];
             	convert_palette(pal, clut);
 
-            	srcptr += area_left*bypp + area_top*_stride;
+            	srcptr += area_left*raw_bypp + area_top*raw_stride;
             	dstptr += area_left*surface_bypp + area_top*surface_stride;
             	const int width = area_width;
             		
@@ -1092,16 +1219,16 @@ void CLCDDisplay::blitBox2LCD(int flag)
                     		blit_8i_to_32_ab((gRGB*)dstptr, srcptr, (const gRGB*)pal, width);
                 	else
                     			blit_8i_to_32((uint32_t*)dstptr, srcptr, pal, width);
-                	srcptr += _stride;
+                	srcptr += raw_stride;
                 	dstptr += surface_stride;
             	}
 	}
-	else if (surface_bpp == 32 && bpp == 32)
+	else if (surface_bpp == 32 && raw_bpp == 32)
 	{
-		uint32_t *srcptr = (uint32_t*)_buffer;
+		uint32_t *srcptr = (uint32_t*)raw_buffer;
             	uint32_t *dstptr = (uint32_t*)surface_data;
 
-            	srcptr += area_left + area_top*_stride/4;
+            	srcptr += area_left + area_top*raw_stride/4;
             	dstptr += area_left + area_top*surface_stride/4;
             		
             	for (int y = area_height; y != 0; --y)
@@ -1138,10 +1265,18 @@ void CLCDDisplay::blitBox2LCD(int flag)
                 	else
                     		memcpy(dstptr, srcptr, area_width*surface_bypp);
                     
-                	srcptr = (uint32_t*)((uint8_t*)srcptr + _stride);
+                	srcptr = (uint32_t*)((uint8_t*)srcptr + raw_stride);
                 	dstptr = (uint32_t*)((uint8_t*)dstptr + surface_stride);
             	}
 	}
+#endif
+
+#ifdef ENABLE_TFTLCD
+	memcpy(tftbuffer, raw_buffer, tftstride * yres);
+#endif
+
+#ifdef ENABLE_GRAPHLCD
+	memcpy(ngbuffer, raw_buffer, ngstride * yres);
 #endif
 }
 
@@ -1160,9 +1295,9 @@ void CLCDDisplay::draw_point(const int x, const int y, const uint32_t color)
 		return;
 
 	if (color == LCD_PIXEL_INV)
-		_buffer[(y * xres + x)] ^= 1;
+		raw_buffer[(y * xres + x)] ^= 1;
 	else
-		_buffer[(y * xres + x)] = color;
+		raw_buffer[(y * xres + x)] = color;
 }
 
 void CLCDDisplay::draw_line(const int x1, const int y1, const int x2, const int y2, const uint32_t color)  
@@ -1291,16 +1426,24 @@ void CLCDDisplay::draw_polygon(int num_vertices, int *vertices, uint32_t color)
 
 void CLCDDisplay::clear_screen() 
 {
-	memset(_buffer, 0, raw_buffer_size);
+	memset(raw_buffer, 0, raw_buffer_size);
 #ifdef ENABLE_LCD
 	memset(surface_data, 0, surface_buffer_size);
+#endif
+#ifdef ENABLE_TFTLCD
+	memset(tftbuffer, 0, tft_buffer_size);
+#endif
+#ifdef ENABLE_GRAPHLCD
+	memset(ngbuffer, 0, ng_buffer_size);
+	if (lcd)
+		lcd->Clear();
 #endif
 	blit();
 }
 
 void CLCDDisplay::dump_screen(lcd_pixel_t **screen) 
 {
-	memmove(*screen, (lcd_pixel_t *)_buffer, raw_buffer_size);
+	memmove(*screen, (lcd_pixel_t *)raw_buffer, raw_buffer_size);
 }
 
 void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int top) 
@@ -1311,7 +1454,7 @@ void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int
 	{
 		for (unsigned int i = 0; i < min(element->height, yres - top); i++)
 		{	
-			memmove(_buffer + ((top + i)*xres) + left, (lcd_pixel_t *)element->buffer + (i*element->width), min(element->width, xres - left)*bypp);
+			memmove(raw_buffer + ((top + i)*xres) + left, (lcd_pixel_t *)element->buffer + (i*element->width), min(element->width, xres - left)*raw_bypp);
 		}
 	}
 	
@@ -1325,7 +1468,7 @@ void CLCDDisplay::load_screen(lcd_pixel_t **const screen)
 	element.buffer = (lcd_pixel_t *)*screen;
 	element.width = xres;
 	element.height = yres;
-	element.bpp = bpp;
+	element.bpp = raw_bpp;
 	
 	load_screen_element(&element, 0, 0);
 }
@@ -1369,7 +1512,7 @@ bool CLCDDisplay::dump_png(const char * const filename)
         				        printf("[CLCDDisplay] Error during writing header\n");
 
 					//
-					png_set_IHDR(png_ptr, info_ptr, xres, yres, 8, (bpp == 32)? PNG_COLOR_TYPE_RGBA : PNG_COLOR_TYPE_GRAY, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+					png_set_IHDR(png_ptr, info_ptr, xres, yres, 8, (raw_bpp == 32)? PNG_COLOR_TYPE_RGBA : PNG_COLOR_TYPE_GRAY, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
 					
 					//
         				png_write_info(png_ptr, info_ptr);
@@ -1383,12 +1526,12 @@ bool CLCDDisplay::dump_png(const char * const filename)
 
 					ret_value = true;
 					
-					fbptr = (png_byte *)_buffer;
+					fbptr = (png_byte *)raw_buffer;
 					
 					for (i = 0; i < (unsigned int)yres; i++)
 					{
 						png_write_row(png_ptr, fbptr);
-						fbptr += _stride;
+						fbptr += raw_stride;
 					}
 
         				// end write
@@ -1439,7 +1582,7 @@ int CLCDDisplay::dump_jpeg(const char * filename)
 	
 	while (cinfo.next_scanline < cinfo.image_height)
 	{
-		row_pointer[0] = (uint8_t *)&_buffer[cinfo.next_scanline * row_stride];
+		row_pointer[0] = (uint8_t *)&raw_buffer[cinfo.next_scanline * row_stride];
 		(void) jpeg_write_scanlines(&cinfo, row_pointer, 1);
 	}
 	jpeg_finish_compress(&cinfo);
@@ -1461,7 +1604,7 @@ int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int widt
 	
 	lcddisplay_printf(10, "CLCDDisplay::showPNGImage: real: %s %d %d %d %d\n", filename, p_w, p_h, p_bpp, chans);
 
-	if (bpp == 32)
+	if (raw_bpp == 32)
 		element.buffer = (lcd_pixel_t *)::getBGR32Image(filename, width, height);
 	else
 		element.buffer = (lcd_pixel_t *)::getBGR8Image(filename, width, height);
@@ -1503,7 +1646,7 @@ void CLCDDisplay::load_png_element(raw_lcd_element_t *element, int posx, int pos
 		height = p_h;
 	}
 	
-	if (bpp == 32)
+	if (raw_bpp == 32)
 		element->buffer = (lcd_pixel_t *)::convertBGR2FB32(image, width, height, (chans == 4)? true : false);
 	else
 		element->buffer = (lcd_pixel_t *)::convertBGR2FB8(image, width, height, (chans == 4)? true : false);

@@ -32,9 +32,9 @@
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>
 
-#ifdef ENABLE_GRAPHLCD
-#include <driver/lcd/nglcd.h>
-#endif
+//#ifdef ENABLE_GRAPHLCD
+//#include <driver/lcd/nglcd.h>
+//#endif
 
 
 class CLCDSettings : public CMenuTarget, CChangeObserver
@@ -45,7 +45,7 @@ class CLCDSettings : public CMenuTarget, CChangeObserver
 		CMenuItem * m1;
 		int selected;
 #ifdef ENABLE_GRAPHLCD
-		nGLCD * nglcd;
+//		nGLCD * nglcd;
 		CMenuItem * item;
 #endif
 		

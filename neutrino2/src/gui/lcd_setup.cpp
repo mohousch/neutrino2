@@ -211,14 +211,14 @@ int CLCDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		if (head)
 			head->setTitle(_("Type"));
 		
-		for (int i = 0; i < nglcd->GetConfigSize(); i++)
+		for (int i = 0; i < CLCD::getInstance()->GetConfigSize(); i++)
 		{
 			bool selected = false;
 			
 			if (g_settings.glcd_selected_config == i)
 				selected = true;
 			
-			menu->addItem(new CMenuForwarder(nglcd->GetConfigName(i).c_str(), true), selected);
+			menu->addItem(new CMenuForwarder(CLCD::getInstance()->GetConfigName(i).c_str(), true), selected);
 		}
 		
 		widget->exec(NULL, "");
@@ -235,7 +235,7 @@ int CLCDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 			widget = NULL;
 		}
 		
-		item->setOption(nglcd->GetConfigName(g_settings.glcd_selected_config).c_str());
+		item->setOption(CLCD::getInstance()->GetConfigName(g_settings.glcd_selected_config).c_str());
 		
 		return ret;
 	}
@@ -294,9 +294,10 @@ void CLCDSettings::showMenu()
 	
 	// save settings
 	lcdSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
-	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
+	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+	
 	// lcd_power
 	lcdSettings->addItem(new CMenuOptionChooser(_("LCD Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
 	
@@ -352,7 +353,11 @@ void CLCDSettings::showMenu()
 	// contrast
 	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Contrast"), &g_settings.lcd_contrast, true, 0, MAXCONTRAST, this, 0, -1, true));
 	
+	// reset brightness / contrast to default
+	lcdSettings->addItem(new CMenuForwarder(_("Reset to defaults"), true, NULL, this, "reset"));
 #elif defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
+	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+	
 	// lcd_power
 #if defined (PLATFORM_GIGABLUE)	
 	lcdSettings->addItem(new CMenuOptionChooser(_("LED Color"), &g_settings.lcd_led, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, this));
@@ -381,11 +386,11 @@ void CLCDSettings::showMenu()
 	
 	// contrast
 	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Contrast"), &g_settings.lcd_contrast, true, 0, 63, this, 0, -1, true));
-#endif	
 #endif
 
 	// reset brightness / contrast to default
 	lcdSettings->addItem(new CMenuForwarder(_("Reset to defaults"), true, NULL, this, "reset"));
+#endif
 
 #ifdef ENABLE_GRAPHLCD	
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("GraphLCD Setup"))));
@@ -396,11 +401,9 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// select driver
-	item = new CMenuForwarder(_("Type"), (nglcd->GetConfigSize() > 1), nglcd->GetConfigName(g_settings.glcd_selected_config).c_str(), this, "select_driver");
+	item = new CMenuForwarder(_("Type"), (CLCD::getInstance()->GetConfigSize() > 1), CLCD::getInstance()->GetConfigName(g_settings.glcd_selected_config).c_str(), this, "select_driver");
 	
 	lcdSettings->addItem(item);
-	
-	//
 #endif
 
 	lcdSettings->setSelected(selected);	
@@ -464,9 +467,9 @@ bool CLCDSettings::changeNotify(const std::string &locale, void *Data)
 #ifdef ENABLE_GRAPHLCD
 	else if (locale == "Type")
 	{
-		for (int i = 0; i < nglcd->GetConfigSize(); i++)
+		for (int i = 0; i < CLCD::getInstance()->GetConfigSize(); i++)
 		{
-			item->addOption(nglcd->GetConfigName(i).c_str(), i);
+			item->addOption(CLCD::getInstance()->GetConfigName(i).c_str(), i);
 		}
 	}
 #endif

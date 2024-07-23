@@ -71,10 +71,6 @@
 #include <driver/gfx/fontrenderer.h>
 #include <driver/gfx/color.h>
 
-#ifdef ENABLE_GRAPHLCD
-#include <driver/lcd/nglcd.h>
-#endif
-
 #include <gui/epgplus.h>
 #include <gui/streaminfo.h>
 

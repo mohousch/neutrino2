@@ -33,4 +33,8 @@ libnhttpd_tuxboxapi_a_SOURCES += \
 	lcdapi.cpp
 endif
 
+if ENABLE_GRAPHLCD
+libnhttpd_tuxboxapi_a_SOURCES += \
+	lcdapi.cpp
+endif
 	

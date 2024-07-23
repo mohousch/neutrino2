@@ -36,6 +36,16 @@
 
 #include <driver/gfx/color.h>
 
+#ifdef ENABLE_GRAPHLCD
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#include <glcdgraphics/bitmap.h>
+#include <glcdgraphics/font.h>
+#include <glcddrivers/config.h>
+#include <glcddrivers/driver.h>
+#include <glcddrivers/drivers.h>
+#pragma GCC diagnostic warning "-Wunused-parameter"
+#endif
+
 // aabbggrr
 #define LCD_PIXEL_OFF				0xFF000000  // bg
 #define LCD_PIXEL_ON				0xFFFFFFFF
@@ -91,12 +101,13 @@ class CLCDDisplay
 	private:
 		int           	fd;
 		int	      	paused;
-		
+		int 		locked;
 		uint32_t	inverted;
 		bool 	      	flipped;
 		int 	      	lcd_type;
 		int 	      	last_brightness;
-		////
+		
+#ifdef ENABLE_LCD
 		uint8_t     	* surface_data;
 		int 	      	surface_stride;
 		int 	      	surface_bpp, surface_bypp;
@@ -104,9 +115,14 @@ class CLCDDisplay
 		////
 		int 	      	real_offset;
 		int 	      	real_yres;
-		////
-		int locked;
+#endif
+	
 #ifdef ENABLE_TFTLCD
+		uint32_t * tftbuffer;
+		int tftstride;
+		int tftbpp;
+		int tftbypp;
+		int tft_buffer_size;
 		int m_brightness, m_gamma, m_alpha;
 		int m_available;
 		struct fb_var_screeninfo m_screeninfo;
@@ -125,6 +141,16 @@ class CLCDDisplay
 		int waitVSync();
 		int lock();
 		void unlock();
+#endif
+
+#ifdef ENABLE_GRAPHLCD
+		GLCD::cDriver *lcd;
+		GLCD::cBitmap *bitmap;
+		uint32_t * ngbuffer;
+		int ngstride;
+		int ngbpp;
+		int ngbypp;
+		int ng_buffer_size;
 #endif
 	
 	public:
@@ -167,11 +193,11 @@ class CLCDDisplay
 		void setInverted(uint32_t inv);
 		void setFlipped(bool);
 		//// raw buffer
-		lcd_pixel_t *_buffer;
-		int _stride;
+		lcd_pixel_t *raw_buffer;
+		int raw_stride;
 		int raw_buffer_size;
-		int bpp, bypp;
-		gPalette clut;
+		int raw_bpp, raw_bypp;
+		gPalette raw_clut;
 		////
 		int xres, yres;
 		void setSize(int w, int h, int b);
@@ -183,6 +209,11 @@ class CLCDDisplay
 		void show_png_element(raw_lcd_element_t *element, int posx, int posy, int width = 0, int height = 0);
 		////
 		void show_analog_clock(int hour, int min, int sec, int posx, int posy, int hour_size, int min_size, int sec_size);
+		
+#ifdef ENABLE_GRAPHLCD
+		int GetConfigSize();
+		std::string GetConfigName(int);
+#endif
 };
 
 #endif

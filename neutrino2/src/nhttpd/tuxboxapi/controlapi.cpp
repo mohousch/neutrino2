@@ -1435,7 +1435,7 @@ void CControlAPI::LCDAction(CyhookHandler *hh)
 {
 	int error = 0;
 
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	if (hh->ParamList.empty())
 	{
 		hh->SendError();

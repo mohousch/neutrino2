@@ -14,7 +14,7 @@
 #include "neutrinoyparser.h"
 #include "controlapi.h"
 
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 #include "lcdapi.h"
 #endif
 
@@ -26,7 +26,7 @@ bool _initialize_iso639_map(void);
 //
 class CNeutrinoAPI
 {
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	CLCDAPI	*LcdAPI;
 #endif	
 	// complete channellists
