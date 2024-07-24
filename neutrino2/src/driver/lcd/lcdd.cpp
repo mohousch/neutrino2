@@ -164,7 +164,7 @@ CLCD::CLCD()
 	w_icon_w = 35;
 	w_icon_h = 35;
 
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	display = NULL;	
 #endif
 
@@ -185,7 +185,7 @@ CLCD::~CLCD()
 	fd = -1;
 #endif
 
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	if (display)
 	{
 		delete display;
@@ -499,6 +499,9 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 		file += ".png";
 		
 		element[i].name = file.c_str();
+		
+		int nbpp, nchans;
+		::getSize(element[i].name.c_str(), &element[i].width, &element[i].height, &nbpp, &nchans);
 	}
 #endif
 

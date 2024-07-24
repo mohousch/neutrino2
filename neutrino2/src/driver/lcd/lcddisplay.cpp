@@ -108,8 +108,8 @@ CLCDDisplay::CLCDDisplay()
 	fd = -1;
 	
 	//
-	xres = 220;
-	yres = 176;
+	xres = 480;
+	yres = 320;
 	
 	paused = 0;
 	flipped = false;
@@ -174,11 +174,11 @@ CLCDDisplay::CLCDDisplay()
 	bitmap = NULL;
 	ngbuffer = NULL;
 	ngstride = 0;
-	ngbpp = 32;
-	ngbypp = 4;
+	ngbpp = 16;
+	ngbypp = 2;
 	ng_buffer_size = 0;
-	ngxres = 320;
-	ngyres = 240;
+	ngxres = 480;
+	ngyres = 320;
 #endif
 }
 
@@ -949,7 +949,7 @@ void CLCDDisplay::blit(void)
 	if (lcd)
 	{
 		lcd->SetScreen(ngbuffer, ngxres, ngyres);	
-		lcd->Refresh(true);
+		lcd->Refresh(false);
 	}
 #endif
 }
@@ -1088,13 +1088,20 @@ static bool swscale(unsigned char *src, unsigned char *dst, int sw, int sh, int 
 // blit2lcd
 void CLCDDisplay::blitBox2LCD(int flag) 
 {
-#ifdef ENABLE_LCD
 	int area_left = 0;
 	int area_top = 0;
 	int area_right = xres;
 	int area_bottom = yres;
 	int area_width  = area_right - area_left;
 	int area_height = area_bottom - area_top;
+	
+#ifdef ENABLE_LCD
+	area_left = 0;
+	area_top = 0;
+	area_right = xres;
+	area_bottom = yres;
+	area_width  = area_right - area_left;
+	area_height = area_bottom - area_top;
 	
 	if (surface_bpp == 8 && raw_bpp == 8)
 	{
@@ -1342,9 +1349,105 @@ void CLCDDisplay::blitBox2LCD(int flag)
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-	swscale((uint8_t *)raw_buffer, (uint8_t *)ngbuffer, xres, yres, ngxres, ngyres, AV_PIX_FMT_BGR24);
+//	swscale((uint8_t *)raw_buffer, (uint8_t *)ngbuffer, xres, yres, ngxres, ngyres, AV_PIX_FMT_BGR24);	
+//	memcpy(ngbuffer, raw_buffer, ngstride * ngyres);
+
+	area_left = 0;
+	area_top = 0;
+	area_right = ngxres;
+	area_bottom = ngyres;
+	area_width  = area_right - area_left;
+	area_height = area_bottom - area_top;
 	
-	memcpy(ngbuffer, raw_buffer, ngstride * ngyres);
+	if (ngbpp == 16 && raw_bpp == 32)
+	{
+		uint8_t *srcptr = (uint8_t*)raw_buffer;
+		uint8_t *dstptr = (uint8_t*)ngbuffer;
+
+		srcptr += area_left*raw_bypp + area_top*raw_stride;
+		dstptr += area_left*ngbypp + area_top*ngstride;
+
+		for (int y = 0; y < area_height; y++)
+		{
+		        int width = area_width;
+		        uint32_t *srcp = (uint32_t*)srcptr;
+		        uint16_t *dstp = (uint16_t*)dstptr;
+
+		        if (flag & blitAlphaBlend)
+		        {
+		            	while (width--)
+		            	{
+		                	if (!((*srcp)&0xFF000000))
+		                	{
+		                    		srcp++;
+		                    		dstp++;
+		                	} 
+		                	else
+		                	{
+		                    		gRGB icol = *srcp++;
+#if BYTE_ORDER == LITTLE_ENDIAN
+		                    		uint32_t jcol = bswap_16(*dstp);
+#else
+		                    		uint32_t jcol = *dstp;
+#endif
+		                    		int bg_b = (jcol >> 8) & 0xF8;
+		                    		int bg_g = (jcol >> 3) & 0xFC;
+		                    		int bg_r = (jcol << 3) & 0xF8;
+
+		                    		int a = icol.a;
+		                    		int r = icol.r;
+		                    		int g = icol.g;
+		                    		int b = icol.b;
+
+		                    		r = ((r - bg_r)*a)/255 + bg_r;
+		                    		g = ((g - bg_g)*a)/255 + bg_g;
+		                    		b = ((b - bg_b)*a)/255 + bg_b;
+
+#if BYTE_ORDER == LITTLE_ENDIAN
+		                    		*dstp++ = bswap_16( (b >> 3) << 11 | (g >> 2) << 5 | r  >> 3 );
+#else
+		                    		*dstp++ = (b >> 3) << 11 | (g >> 2) << 5 | r  >> 3 ;
+#endif
+		                	}
+		            	}
+		        }
+		        else if (flag & blitAlphaTest)
+		        {
+		            	while (width--)
+		            	{
+		                	if (!((*srcp)&0xFF000000))
+		                	{
+		                    		srcp++;
+		                    		dstp++;
+		                	} 
+		                	else
+		                	{
+		                    		uint32_t icol = *srcp++;
+#if BYTE_ORDER == LITTLE_ENDIAN
+		                    		*dstp++ = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
+#else
+		                    		*dstp++ = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
+#endif
+		                	}
+		            	}
+		        } 
+		        else
+		        {
+		            	while (width--)
+		            	{
+		                	uint32_t icol = *srcp++;
+		                			
+#if BYTE_ORDER == LITTLE_ENDIAN
+		                	*dstp++ = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
+#else
+		                	*dstp++ = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
+#endif
+		            	}
+		        }
+		        srcptr += raw_stride;
+		        dstptr += ngstride;
+		}
+	}
 #endif
 }
 
