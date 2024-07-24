@@ -1359,8 +1359,12 @@ void CLCD::showTime(bool force)
 	if (nglcdshowclock)
 	{
 		char timestr[21];
+		char datestr[21];
 		struct timeval tm;
 		struct tm * t;
+		int i_w = 120;
+		int i_h = 12;
+		int i_bpp = 0;
 
 		gettimeofday(&tm, NULL);
 		t = localtime(&tm.tv_sec);
@@ -1370,27 +1374,50 @@ void CLCD::showTime(bool force)
 		//
 		if (CNeutrinoApp::getInstance()->recordingstatus)
 		{
-			if (nglcdclearClock == 1)
+			if (clearClock == 1)
 			{
 				strcpy(timestr,"  :  ");
-				nglcdclearClock = 0;
+				clearClock = 0;
 			}
 			else
 			{
-				nglcdclearClock = 1;
+				clearClock = 1;
 			}
 		}
-		else if(nglcdclearClock) 
+		else if(clearClock) 
 		{ 
 			// in case icon ON after record stopped
-			nglcdclearClock = 0;
+			clearClock = 0;
 		}	
 
 		if (mode == MODE_STANDBY)
 		{
+			if (g_settings.lcd_standby_clock == STANDBYCLOCK_DIGITAL)
+			{
+				// refresh
+				display->draw_fill_rect(- 1, -1, lcd_width - 1, lcd_height - 1, LCD_PIXEL_BLACK);
+
+				// time
+				fonts.timestandby->RenderString((lcd_width - 1 - fonts.timestandby->getRenderWidth(timestr))/2, lcd_height/2, fonts.timestandby->getRenderWidth("00:00:00"), timestr, LCD_PIXEL_ON);
+				
+				// date
+				strftime((char*) &datestr, 20, "%d.%m.%Y", t);
+				
+				fonts.menu->RenderString((lcd_width - 1 - fonts.menu->getRenderWidth(datestr))/2, lcd_height - fonts.menu->getHeight() - 1, fonts.menu->getRenderWidth("00:00:0000:0", true), datestr, LCD_PIXEL_ON);
+			}
+			else if (g_settings.lcd_standby_clock == STANDBYCLOCK_ANALOG)
+			{
+				display->showPNGImage(element[ELEMENT_ACLOCK].name.c_str(), 0, 0, lcd_width, lcd_height);
+				display->show_analog_clock(t->tm_hour, t->tm_min, t->tm_sec, lcd_width/2, lcd_height/2, 4, 2, 1);
+			}
 		}
 		else
 		{
+			// refresh
+			display->draw_fill_rect(lcd_width - 1 - fonts.time->getRenderWidth("00:00", true), lcd_height - fonts.time->getHeight() - 1, lcd_width, lcd_height, LCD_PIXEL_OFF);
+
+			// time
+			fonts.time->RenderString(lcd_width - fonts.time->getRenderWidth("00:00", true), lcd_height - 1, fonts.menu->getRenderWidth("00:00:0", true), timestr, LCD_PIXEL_ON);
 		}
 		
 		displayUpdate();
