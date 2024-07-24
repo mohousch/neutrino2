@@ -490,14 +490,11 @@ class CLCD
 		
 		enum EPGMODE
 		{
-#if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 			EPGMODE_CHANNELNUMBER		= 1,
-			EPGMODE_TIME			= 2
-#else
-			EPGMODE_CHANNEL 		= 1,
-			EPGMODE_TITLE			= 2,
-			EPGMODE_CHANNEL_TITLE		= 3
-#endif
+			EPGMODE_TIME			= 2,
+			EPGMODE_CHANNEL 		= 3,
+			EPGMODE_TITLE			= 4,
+			EPGMODE_CHANNEL_TITLE		= 5
 		};
 		
 		enum STATUSLINE
