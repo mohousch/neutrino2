@@ -103,13 +103,11 @@ static const char *kDefaultConfigFile = "/etc/graphlcd.conf";
 
 CLCDDisplay::CLCDDisplay()
 {
-	lcddisplay_printf(10, "CLCDDisplay::CLCDDisplay\n");
-	
 	fd = -1;
 	
 	//
-	xres = 480;
-	yres = 320;
+	xres = 320;
+	yres = 240;
 	
 	paused = 0;
 	flipped = false;
@@ -126,16 +124,6 @@ CLCDDisplay::CLCDDisplay()
 	raw_stride = 0;
 	raw_clut.colors = 0;
 	raw_clut.data = 0;
-	
-	// init raw_buffer
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
-	raw_stride = xres*raw_bypp;
-	raw_buffer_size = xres * yres * raw_bypp;
-	raw_buffer = new lcd_pixel_t[raw_buffer_size];
-	memset(raw_buffer, 0, raw_buffer_size);
-	
-	lcddisplay_printf(10, "raw_buffer: %dk video mem\n", raw_buffer_size);
-#endif
 	
 	// surface
 #ifdef ENABLE_LCD
@@ -177,8 +165,8 @@ CLCDDisplay::CLCDDisplay()
 	ngbpp = 16;
 	ngbypp = 2;
 	ng_buffer_size = 0;
-	ngxres = 480;
-	ngyres = 320;
+	ngxres = 320;
+	ngyres = 240;
 #endif
 }
 
@@ -262,7 +250,7 @@ bool CLCDDisplay::init(const char *fbdevice)
 	
 	if (fd < 0)
 	{
-		lcddisplay_err("CLCDDisplay::CLCDDisplay: couldn't open LCD - load lcd.ko!\n");
+		lcddisplay_err("couldn't open LCD - load lcd.ko!\n");
 		return false;
 	}
 	else
@@ -310,14 +298,14 @@ bool CLCDDisplay::init(const char *fbdevice)
 	
 	if (fd < 0)
 	{
-		lcddisplay_err("CLCDDisplay::init: %s: %m\n", fbdevice);
+		lcddisplay_err("%s: %m\n", fbdevice);
 		goto nolfb;
 	}
 
 #ifndef USE_OPENGL
 	if (::ioctl(fd, FBIOGET_VSCREENINFO, &m_screeninfo) < 0)
 	{
-		lcddisplay_err("CLCDDisplay::init: FBIOGET_VSCREENINFO: %m\n");
+		lcddisplay_err("FBIOGET_VSCREENINFO: %m\n");
 
 		goto nolfb;
 	}
@@ -325,7 +313,7 @@ bool CLCDDisplay::init(const char *fbdevice)
 	fb_fix_screeninfo fix;
 	if (ioctl(fd, FBIOGET_FSCREENINFO, &fix) < 0)
 	{
-		lcddisplay_err("CLCDDisplay::init: FBIOGET_FSCREENINFO: %m\n");
+		lcddisplay_err("FBIOGET_FSCREENINFO: %m\n");
 
 		goto nolfb;
 	}
@@ -333,13 +321,13 @@ bool CLCDDisplay::init(const char *fbdevice)
 	m_available = fix.smem_len;
 	m_phys_mem = fix.smem_start;
 	
-	lcddisplay_printf(0, "CLCDDisplay::init: %s %dk video mem\n", fbdevice, m_available / 1024);
+	lcddisplay_printf(0, "%s %dk video mem\n", fbdevice, m_available / 1024);
 	
 	tftbuffer = (uint32_t *)mmap(0, m_available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
 	
 	if (!tftbuffer)
 	{
-		lcddisplay_err("CLCDDisplay::init: mmap: %m\n");
+		lcddisplay_err("mmap: %m\n");
 
 		goto nolfb;
 	}
@@ -361,7 +349,7 @@ nolfb:
 		fd = -1;
 	}
 	
-	lcddisplay_err("CTFTLCD::init: framebuffer %s not available\n", fbdevice);
+	lcddisplay_err("framebuffer %s not available\n", fbdevice);
 	
 	return false;
 #endif
@@ -417,6 +405,18 @@ bool CLCDDisplay::initGLCD()
 	
 	lcddisplay_printf(10, "%d %d\n", ngxres, ngyres);
 	return true;
+#endif
+}
+
+void CLCDDisplay::initBuffer()
+{
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+	raw_stride = xres*raw_bypp;
+	raw_buffer_size = xres * yres * raw_bypp;
+	raw_buffer = new lcd_pixel_t[raw_buffer_size];
+	memset(raw_buffer, 0, raw_buffer_size);
+	
+	lcddisplay_printf(10, "%d %d %d %dk video mem\n", xres, yres, raw_bypp, raw_buffer_size);
 #endif
 }
 
@@ -1033,7 +1033,7 @@ static bool swscale(unsigned char *src, unsigned char *dst, int sw, int sh, int 
 	
 	if (!scale)
 	{
-		ng2_err("ERROR setting up SWS context\n");
+		lcddisplay_err("ERROR setting up SWS context\n");
 		return ret;
 	}
 	
@@ -1057,7 +1057,7 @@ static bool swscale(unsigned char *src, unsigned char *dst, int sw, int sh, int 
 	}
 	else
 	{
-		ng2_err("could not alloc sframe (%p) or dframe (%p)\n", sframe, dframe);
+		lcddisplay_err("could not alloc sframe (%p) or dframe (%p)\n", sframe, dframe);
 		ret = false;
 	}
 
@@ -1079,7 +1079,7 @@ static bool swscale(unsigned char *src, unsigned char *dst, int sw, int sh, int 
 		scale = NULL;
 	}
 	
-	ng2_err("Error scale %ix%i to %ix%i ,len %i\n", sw, sh, dw, dh, len);
+	lcddisplay_err("Error scale %ix%i to %ix%i ,len %i\n", sw, sh, dw, dh, len);
 
 	return ret;
 }

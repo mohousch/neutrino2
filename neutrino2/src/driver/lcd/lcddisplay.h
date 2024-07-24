@@ -156,6 +156,7 @@ class CLCDDisplay
 		
 		bool init(const char *fbdevice = "/dev/fb1");
 		bool initGLCD();
+		void initBuffer();
 
 		void pause();
 		void resume();

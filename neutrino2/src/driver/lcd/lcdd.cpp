@@ -111,10 +111,7 @@ void CLCD::closeDevice()
 #ifdef ENABLE_GRAPHLCD
 int CLCD::GetConfigSize()
 {
-//	if (display->lcd)
-		return (int) GLCD::Config.driverConfigs.size();
-//	else 
-//		return -1;
+	return (int) GLCD::Config.driverConfigs.size();
 }
 
 std::string CLCD::GetConfigName(int driver)
@@ -122,10 +119,7 @@ std::string CLCD::GetConfigName(int driver)
 	if ((driver < 0) || (driver > GetConfigSize() - 1))
 		driver = 0;
 		
-//	if (display->lcd)
-		return GLCD::Config.driverConfigs[driver].name;
-//	else
-//		return std::string("");
+	return GLCD::Config.driverConfigs[driver].name;
 }
 #endif
 
@@ -141,8 +135,8 @@ CLCD::CLCD()
 	has_nglcd = false;
 	clearClock = 0;
 	fd = -1;
-	lcd_width = 220;
-	lcd_height = 176;
+	lcd_width = 320;
+	lcd_height = 240;
 	servicename = "";
 	servicenumber = 0;
 	epg_title = "";
@@ -156,7 +150,7 @@ CLCD::CLCD()
 	m_progressHeaderLocal = "";
 	m_progressGlobal = 0;
 	m_progressLocal = 0;
-	//// this values are good for 220*176 better way is to calculate them proportionally to lcd_width / lcd_height
+	////
 	logo_w = 120;
 	logo_h = 60;
 	logo_x = 0;
@@ -431,12 +425,14 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 #else
 	if (display->init("/dev/fb1"))
 #endif
+	{
 		has_lcd = true;
 		
-	lcd_width = display->xres;
-	lcd_height = display->yres;
+		lcd_width = display->xres;
+		lcd_height = display->yres;
 	
-	lcdd_printf(10, "%d %d\n", lcd_width, lcd_height);
+		lcdd_printf(10, "%d %d\n", lcd_width, lcd_height);
+	}
 #endif
 
 #ifdef ENABLE_GRAPHLCD
@@ -444,19 +440,24 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 		display = new CLCDDisplay();
 		
 	if (display->initGLCD())
+	{
 		has_lcd = true;
 		
-	nglcd_width = display->ngxres;
-	nglcd_height = display->ngyres;
+		nglcd_width = display->ngxres;
+		nglcd_height = display->ngyres;
 	
-	lcdd_printf(10, "%d %d\n", nglcd_width, nglcd_height);
+		lcdd_printf(10, "%d %d\n", nglcd_width, nglcd_height);
+	}
 #endif
 	
-	// init fonts
+	// init buffer / fonts
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	if (!has_lcd)
 		return false;
 		
+	display->initBuffer();
+		
+	//
 	fontRenderer = new LcdFontRenderClass(display);
 	
 	const char * style_name = fontRenderer->AddFont(fontfile);
