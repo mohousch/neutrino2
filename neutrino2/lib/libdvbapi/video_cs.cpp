@@ -38,6 +38,8 @@
 
 #include <linux/fb.h>
 
+#include <system/debug.h>
+
 
 #if defined (__sh__)
 #define VIDEO_FLUSH                     _IO('o',  82)
@@ -160,9 +162,7 @@ bool cVideo::Close()
 int cVideo::getAspectRatio(void) 
 {  
 	int ratio = ASPECTRATIO_43; // 0 = 4:3, 1 = 16:9
-
-	printf("cVideo::getAspectRatio\n");	
-	 
+ 
 #ifndef USE_OPENGL
 	unsigned char buffer[2];
 	int n, fd;
@@ -208,9 +208,9 @@ int cVideo::getAspectRatio(void)
 				break;
 		}
 	}
-	
-	printf("cVideo::getAspectRatio (ratio=%d)\n", ratio);
 #endif	
+	
+	dprintf(0, "cVideo::getAspectRatio (ratio=%d)\n", ratio);
 	
 	return ratio;
 }
@@ -280,8 +280,6 @@ int cVideo::setAspectRatio(int ratio, int format)
 
 void cVideo::getPictureInfo(int &width, int &height, int &rate) 
 {
-	printf("cVideo::getPictureInfo\n"); 
-	
 #ifdef USE_OPENGL
 	width = dec_w;
 	height = dec_h;
@@ -342,7 +340,7 @@ void cVideo::getPictureInfo(int &width, int &height, int &rate)
 	}
 #endif
 	
-	printf("getPictureInfo < w %d, h %d, r %d\n", width, height, rate);	
+	dprintf(DEBUG_NORMAL, "getPictureInfo < w %d, h %d, r %d\n", width, height, rate);	
 }
 
 int cVideo::Start(void)

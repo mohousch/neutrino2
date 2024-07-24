@@ -304,7 +304,7 @@ void CFrontend::getFEInfo(void)
 				deliverySystemMask |= DVB_C;
 				break;
 			default:
-				printf("CFrontend::getFEInfo: ERROR: unknown frontend type %d on frontend (%d:%d)", info.type, feadapter, fenumber);
+				ng2_err("ERROR: unknown frontend type %d on frontend (%d:%d)\n", info.type, feadapter, fenumber);
 		}
 	}
 	

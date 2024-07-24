@@ -830,7 +830,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			*msg  = buf.msg;
 			*data = buf.data;
 
-			dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us:got event from high-pri pipe msg=(0x%llx) data:(0x%llx) <\n", *msg, *data );
+			dprintf(DEBUG_NORMAL, ANSI_RED"CRCInput::getMsg_us:got event from high-pri pipe msg=(0x%llx) data:(0x%llx) <\n", *msg, *data );
 
 			return;
 		}
@@ -850,7 +850,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					continue;
 				}
 								
-				dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us:got event from device type: 0x%X key: 0x%X value %d, translate: 0x%X -%s <\n", ev.type, ev.code, ev.value, translate(ev.code, i), getKeyName(translate(ev.code, i)).c_str() );
+				dprintf(DEBUG_NORMAL, ANSI_RED"CRCInput::getMsg_us:got event from device type: 0x%X key: 0x%X value %d, translate: 0x%X -%s <\n", ev.type, ev.code, ev.value, translate(ev.code, i), getKeyName(translate(ev.code, i)).c_str() );
 				
 				if (ev.type != EV_KEY)
 					continue;
@@ -946,7 +946,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
               				continue;
               			
               			//
-              			dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us: got event from LIRC: timestamp:%lld flags:%d proto:%d keycode: 0x%x scancode:%llx (%s) timestampdiff:%d repeat_block:%d <\n", lircdata.timestamp, lircdata.flags, lircdata.rc_proto, lircdata.keycode, lircdata.scancode, getSpecialKeyName(translate(lircdata.scancode, 0)), (lircdata.timestamp - FirstTime) / 1000000, repeat_block/1000);
+              			dprintf(DEBUG_NORMAL, ANSI_RED"CRCInput::getMsg_us: got event from LIRC: timestamp:%lld flags:%d proto:%d keycode: 0x%x scancode:%llx (%s) timestampdiff:%d repeat_block:%d <\n", lircdata.timestamp, lircdata.flags, lircdata.rc_proto, lircdata.keycode, lircdata.scancode, getSpecialKeyName(translate(lircdata.scancode, 0)), (lircdata.timestamp - FirstTime) / 1000000, repeat_block/1000);
               		
               			FirstTime = lircdata.timestamp;
               			lastScanCode = lircdata.scancode;
@@ -960,7 +960,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
            			if ( (lircdata.scancode == lastScanCode) && ((lircdata.timestamp - FirstTime) / 1000000) < repeat_block/1000)
               				continue;
               			
-              			dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us: got event from LIRC: timestamp:%lld flags:%d proto:%d keycode: 0x%x scancode:%llx (%s) timestampdiff:%d repeat_block:%d <\n", lircdata.timestamp, lircdata.flags, lircdata.rc_proto, lircdata.keycode, lircdata.scancode, getSpecialKeyName(translate(lircdata.keycode, 0)), (lircdata.timestamp - FirstTime) / 1000000, repeat_block);
+              			dprintf(DEBUG_NORMAL, ANSI_RED"CRCInput::getMsg_us: got event from LIRC: timestamp:%lld flags:%d proto:%d keycode: 0x%x scancode:%llx (%s) timestampdiff:%d repeat_block:%d <\n", lircdata.timestamp, lircdata.flags, lircdata.rc_proto, lircdata.keycode, lircdata.scancode, getSpecialKeyName(translate(lircdata.keycode, 0)), (lircdata.timestamp - FirstTime) / 1000000, repeat_block);
               		
               			FirstTime = lircdata.timestamp;
               			lastKeyCode = lircdata.keycode;
@@ -989,7 +989,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			
 			if (count == 0)
 			{
-				dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us: got event from LIRC:keyName:%s <\n", keyName);
+				dprintf(DEBUG_NORMAL, ANSI_RED"CRCInput::getMsg_us: got event from LIRC:keyName:%s <\n", keyName);
 				
 				// translate keyName to RC_key
 				*msg = translateKey(keyName);
@@ -1010,7 +1010,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			*msg  = buf.msg;
 			*data = buf.data;
 
-			dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us: got event from low-pri pipe msg=(0x%llx) data:(0x%llx) <\n", *msg, *data );
+			dprintf(DEBUG_NORMAL, ANSI_RED"CRCInput::getMsg_us: got event from low-pri pipe msg=(0x%llx) data:(0x%llx) <\n", *msg, *data );
 
 			return;
 		}
