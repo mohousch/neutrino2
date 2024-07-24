@@ -658,8 +658,6 @@ class CLCD
 #ifdef ENABLE_GRAPHLCD
 		bool nglcdshowclock;
 		int nglcdclearClock;
-		int nglcd_width;
-		int nglcd_height;
 
 		int GetConfigSize();
 		std::string GetConfigName(int);

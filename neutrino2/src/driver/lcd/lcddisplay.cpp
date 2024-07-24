@@ -357,10 +357,7 @@ nolfb:
 
 bool CLCDDisplay::initGLCD()
 {
-#ifdef ENABLE_GRAPHLCD
-	if (!g_settings.glcd_enable)
-		return false;
-		
+#ifdef ENABLE_GRAPHLCD	
 	// configfile
 	if (GLCD::Config.Load(kDefaultConfigFile) == false)
 	{
@@ -950,13 +947,10 @@ void CLCDDisplay::blit(void)
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-	if (g_settings.glcd_enable)
+	if (lcd)
 	{
-		if (lcd)
-		{
-			lcd->SetScreen(ngbuffer, ngxres, ngyres);	
-			lcd->Refresh(false);
-		}
+		lcd->SetScreen(ngbuffer, ngxres, ngyres);	
+		lcd->Refresh(false);
 	}
 #endif
 }
@@ -1355,8 +1349,6 @@ void CLCDDisplay::blitBox2LCD(int flag)
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-	if (g_settings.glcd_enable)
-	{
 		//
 		swscale((uint8_t *)raw_buffer, (uint8_t *)ngbuffer, xres, yres, ngxres, ngyres, AV_PIX_FMT_BGR32, AV_PIX_FMT_RGB32);	
 
@@ -1457,7 +1449,6 @@ void CLCDDisplay::blitBox2LCD(int flag)
 				dstptr += ngstride;
 			}
 		}
-	}
 #endif
 }
 
