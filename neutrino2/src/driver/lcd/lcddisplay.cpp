@@ -950,7 +950,7 @@ void CLCDDisplay::blit(void)
 	if (lcd)
 	{
 		lcd->SetScreen(ngbuffer, ngxres, ngyres);	
-		lcd->Refresh(false);
+		lcd->Refresh(true);
 	}
 #endif
 }
@@ -1029,7 +1029,7 @@ static bool swscale(unsigned char *src, unsigned char *dst, int sw, int sh, int 
 	int len = 0;
 	struct SwsContext *scale = NULL;
 	
-	scale = sws_getCachedContext(scale, sw, sh, sfmt, dw, dh, dfmt, SWS_BICUBIC, 0, 0, 0); //nglcd need rgb32
+	scale = sws_getCachedContext(scale, sw, sh, sfmt, dw, dh, dfmt, SWS_BICUBIC, 0, 0, 0);
 	
 	if (!scale)
 	{
@@ -1349,7 +1349,8 @@ void CLCDDisplay::blitBox2LCD(int flag)
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-		//
+		// blend alpha
+		// scale
 		swscale((uint8_t *)raw_buffer, (uint8_t *)ngbuffer, xres, yres, ngxres, ngyres, AV_PIX_FMT_BGR32, AV_PIX_FMT_RGB32);	
 #endif
 }
