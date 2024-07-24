@@ -523,22 +523,8 @@ struct SNeutrinoSettings
 #ifdef ENABLE_GRAPHLCD
 	int glcd_enable;
 	int glcd_selected_config;
-	uint32_t glcd_color_fg;
-	uint32_t glcd_color_bg;
-	uint32_t glcd_color_bar;
-	std::string glcd_font;
-	int glcd_percent_channel;
-	int glcd_percent_epg;
-	int glcd_percent_bar;
-	int glcd_percent_time;
-	int glcd_percent_time_standby;
-	int glcd_percent_logo;
-	int glcd_time_in_standby;
-	int glcd_show_logo;
 	int glcd_brightness;
 	int glcd_brightness_standby;
-	int glcd_scroll;
-	int glcd_scroll_speed;
 #endif
 
 #define FILESYSTEM_ENCODING_TO_UTF8(a) (g_settings.filesystem_is_utf8 ? (a) : Latin1_to_UTF8(a).c_str())

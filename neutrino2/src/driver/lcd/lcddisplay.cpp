@@ -159,7 +159,6 @@ CLCDDisplay::CLCDDisplay()
 
 #ifdef ENABLE_GRAPHLCD
 	lcd = NULL;
-	bitmap = NULL;
 	ngbuffer = NULL;
 	ngstride = 0;
 	ngbpp = 16;
@@ -196,9 +195,6 @@ CLCDDisplay::~CLCDDisplay()
 		
 		delete lcd;
 		lcd = NULL;
-		
-		delete bitmap;
-		bitmap = NULL;
 	}
 	
 	if (ngbuffer)
@@ -665,6 +661,7 @@ void CLCDDisplay::setFlipped(bool onoff)
 
 int CLCDDisplay::setLCDContrast(int contrast)
 {
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	int fp;
 
 	fp = open("/dev/dbox/fp0", O_RDWR);
@@ -684,6 +681,7 @@ int CLCDDisplay::setLCDContrast(int contrast)
 	}
 	
 	close(fp);
+#endif
 
 	return(0);
 }
@@ -736,6 +734,12 @@ int CLCDDisplay::setLCDBrightness(int brightness)
 			printf("CLCDDisplay::setLCDBrightness: write /proc/stb/lcd/oled_brightness failed: %m\n");
 		fclose(f);
 	}
+#endif
+
+#ifdef ENABLE_GRAPHLCD
+	// ax206 0..7 FIXME:
+	if (lcd)
+		lcd->SetBrightness(brightness);
 #endif
 
 	return(0);

@@ -396,14 +396,20 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("GraphLCD Setup"))));
 	
 	// enable glcd
-	lcdSettings->addItem(new CMenuOptionChooser(_("Enable NGLCD"), &g_settings.glcd_enable, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
+//	lcdSettings->addItem(new CMenuOptionChooser(_("Enable NGLCD"), &g_settings.glcd_enable, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
 	
-	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+//	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// select driver
 	item = new CMenuForwarder(_("Type"), (CLCD::getInstance()->GetConfigSize() > 1), CLCD::getInstance()->GetConfigName(g_settings.glcd_selected_config).c_str(), this, "select_driver");
 	
 	lcdSettings->addItem(item);
+	
+	// glcd_brightness
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("GLCD Brightness"), &g_settings.glcd_brightness, true, 0, 255, this, 0, -1, true));
+	
+	// glcd_standby brightness
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("GLCD Standby Brightness"), &g_settings.glcd_brightness_standby, true, 0, 255, this, 0, -1, true));
 #endif
 
 	lcdSettings->setSelected(selected);	
@@ -471,6 +477,16 @@ bool CLCDSettings::changeNotify(const std::string &locale, void *Data)
 		{
 			item->addOption(CLCD::getInstance()->GetConfigName(i).c_str(), i);
 		}
+	}
+	else if (locale == _("GLCD Brightness"))
+	{
+		g_settings.glcd_brightness = state;
+		CLCD::getInstance()->setBrightness(g_settings.glcd_brightness);
+	}
+	else if (locale == _("GLCD Standby Brightness"))
+	{
+		g_settings.glcd_brightness_standby = state;
+		CLCD::getInstance()->setBrightnessStandby(g_settings.glcd_brightness_standby);
 	}
 #endif
 	

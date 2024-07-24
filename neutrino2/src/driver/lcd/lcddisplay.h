@@ -38,8 +38,6 @@
 
 #ifdef ENABLE_GRAPHLCD
 #pragma GCC diagnostic ignored "-Wunused-parameter"
-#include <glcdgraphics/bitmap.h>
-#include <glcdgraphics/font.h>
 #include <glcddrivers/config.h>
 #include <glcddrivers/driver.h>
 #include <glcddrivers/drivers.h>
@@ -204,7 +202,6 @@ class CLCDDisplay
 		
 #ifdef ENABLE_GRAPHLCD
 		GLCD::cDriver *lcd;
-		GLCD::cBitmap *bitmap;
 		uint32_t * ngbuffer;
 		int ngstride;
 		int ngbpp;

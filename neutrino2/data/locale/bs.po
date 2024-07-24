@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-07-24 02:18+0200\n"
+"POT-Creation-Date: 2024-07-24 20:56+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -661,9 +661,6 @@ msgstr ""
 msgid "Enable (soft) Limits"
 msgstr ""
 
-msgid "Enable NGLCD"
-msgstr ""
-
 msgid "Enable standby"
 msgstr ""
 
@@ -864,6 +861,12 @@ msgid "Frontend:"
 msgstr ""
 
 msgid "Further education"
+msgstr ""
+
+msgid "GLCD Brightness"
+msgstr ""
+
+msgid "GLCD Standby Brightness"
 msgstr ""
 
 msgid "GUI restart"
