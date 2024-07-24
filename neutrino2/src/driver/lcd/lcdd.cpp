@@ -648,7 +648,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 		
 	lcdd_printf(10, "CLCD::showTextScreen: big:%s small:%s showmode:0x%x wakeup:%s centered:%s\n", big.empty()? "null" : big.c_str(), small.empty()? "null" : small.c_str(), showmode, perform_wakeup? "true" : "false", centered? "centered" : "not centered");
 	
-	////
+	//
 	bool big_utf8 = false;
 	bool small_utf8 = false;
 	std::string cname[2];
@@ -658,7 +658,6 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	int maxeventlines = 4 - namelines;
 	int y = 0;
 	int x = 0;
-	////
 		
 #if defined (ENABLE_4DIGITS)
 	int len = big.length();

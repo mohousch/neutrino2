@@ -56,7 +56,7 @@ const keyval LCDMENU_STATUSLINE_OPTIONS[LCDMENU_STATUSLINE_OPTION_COUNT] =
 	{ CLCD::STATUSLINE_VOLUME, _("volume")     }
 };
 
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 #define LCDMENU_EPG_OPTION_COUNT 	3
 const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
 {
@@ -295,7 +295,7 @@ void CLCDSettings::showMenu()
 	// save settings
 	lcdSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// lcd_power
