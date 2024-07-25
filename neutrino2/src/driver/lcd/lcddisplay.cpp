@@ -368,6 +368,13 @@ bool CLCDDisplay::initGLCD()
 		return false;
 	}
 	
+	if (lcd)
+	{
+		lcd->DeInit();
+		delete lcd;
+		lcd = NULL;
+	}
+	
 	// create driver
 	lcd = GLCD::CreateDriver(GLCD::Config.driverConfigs[g_settings.glcd_selected_config].id, &GLCD::Config.driverConfigs[g_settings.glcd_selected_config]);
 	
@@ -1353,8 +1360,9 @@ void CLCDDisplay::blitBox2LCD(int flag)
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-		// blend alpha
-		// scale
+		// alpha blending
+		
+		// scale / copy to ng_buffer
 		swscale((uint8_t *)raw_buffer, (uint8_t *)ngbuffer, xres, yres, ngxres, ngyres, AV_PIX_FMT_BGR32, AV_PIX_FMT_RGB32);	
 #endif
 }
@@ -1558,14 +1566,13 @@ bool CLCDDisplay::dump_png(const char * const filename)
 	
 	png_structp  png_ptr;
 	png_infop    info_ptr;
-	unsigned int i;
 	png_byte *   fbptr;
 	FILE *       fp;
  
         // create file
         fp = fopen(filename, "wb");
         if (!fp)
-                printf("[CLCDDisplay] File %s could not be opened for writing\n", filename);
+                lcddisplay_err("[CLCDDisplay] File %s could not be opened for writing\n", filename);
 	else
 	{
 	        // initialize stuff
@@ -1607,7 +1614,7 @@ bool CLCDDisplay::dump_png(const char * const filename)
 					
 					fbptr = (png_byte *)raw_buffer;
 					
-					for (i = 0; i < (unsigned int)yres; i++)
+					for (int i = 0; i < yres; i++)
 					{
 						png_write_row(png_ptr, fbptr);
 						fbptr += raw_stride;

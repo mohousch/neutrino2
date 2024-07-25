@@ -4928,7 +4928,7 @@ void CTestMenu::testScreenshot()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testScreenshot\n");
 	
-	CScreenshot::getInstance()->dumpFile("/tmp/screenshot.jpg", CScreenshot::FORMAT_JPG);
+	CFrameBuffer::getInstance()->savePNG("/tmp/screenshot.png");
 }
 
 // exec

@@ -35,6 +35,7 @@
 
 #include <gui/widget/stringinput.h>
 #include <gui/widget/hintbox.h>
+#include <gui/widget/messagebox.h>
 
 #include <gui/lcd_setup.h>
 
@@ -64,9 +65,11 @@ const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
 	{ CLCD::EPGMODE_TITLE, _("title")	},
 	{ CLCD::EPGMODE_CHANNEL_TITLE, _("channel / title") }
 };
-#elif defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
-#define LCDMENU_EPG_OPTION_COUNT 2
-const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
+#endif
+
+#if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
+#define LCDMENU_VFDEPG_OPTION_COUNT 	2
+const keyval LCDMENU_VFDEPG_OPTIONS[LCDMENU_VFDEPG_OPTION_COUNT] =
 {
 	{ CLCD::EPGMODE_CHANNELNUMBER, _("channel") },
 	{ CLCD::EPGMODE_TIME, _("time") }
@@ -164,6 +167,7 @@ int CLCDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 #ifdef ENABLE_GRAPHLCD	
 	else if (actionKey == "select_driver")
 	{
+		int old_glcd_selected = g_settings.glcd_selected_config;
 		int select = -1;
 		
 		//
@@ -235,6 +239,18 @@ int CLCDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 			widget = NULL;
 		}
 		
+		if (old_glcd_selected != g_settings.glcd_selected_config)
+		{
+			if (MessageBox(_("Information"), _("this need GUI restart\ndo you really want to restart?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == CMessageBox::mbrYes) 
+			{
+				CNeutrinoApp::getInstance()->exec(NULL, "restart");
+			}
+			else
+			{
+				g_settings.glcd_selected_config = old_glcd_selected;
+			}
+		}
+		
 		item->setOption(CLCD::getInstance()->GetConfigName(g_settings.glcd_selected_config).c_str());
 		
 		return ret;
@@ -298,22 +314,28 @@ void CLCDSettings::showMenu()
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// lcd_power
 	lcdSettings->addItem(new CMenuOptionChooser(_("LCD Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
+#endif
 	
 	// led
 #if defined (PLATFORM_GIGABLUE)	
 	lcdSettings->addItem(new CMenuOptionChooser(_("LED Color"), &g_settings.lcd_led, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, this));
 #endif
 
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// minitv
 	lcdSettings->addItem(new CMenuOptionChooser(_("Mini TV"), &g_settings.lcd_minitv, LCDMENU_MINITV_OPTIONS, LCDMENU_MINITV_OPTION_COUNT, true, this, CRCInput::RC_nokey, NULL, true));
 	
 	// minitv fps
 	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Mini TV FPS"), &g_settings.lcd_minitvfps, true, 0, 30, this));
+#endif
 
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// invert
 	lcdSettings->addItem(new CMenuOptionChooser(_("Invert"), &g_settings.lcd_inverse, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
+#endif
 
 	// statusline
 	lcdSettings->addItem(new CMenuOptionChooser(_("Status line"), &g_settings.lcd_statusline, LCDMENU_STATUSLINE_OPTIONS, LCDMENU_STATUSLINE_OPTION_COUNT, true));
@@ -333,6 +355,7 @@ void CLCDSettings::showMenu()
 	// standby_clock
 	lcdSettings->addItem(new CMenuOptionChooser(_("Standby Clock"), &g_settings.lcd_standby_clock, LCDMENU_STANDBY_CLOCK_OPTIONS, LCDMENU_STANDBY_CLOCK_OPTION_COUNT, true, this, CRCInput::RC_nokey, NULL, false, false));
 	
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// dimm-time
 	m1 = new CMenuForwarder(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, this, "set_dimm_timeout");
 	lcdSettings->addItem(m1);
@@ -355,7 +378,9 @@ void CLCDSettings::showMenu()
 	
 	// reset brightness / contrast to default
 	lcdSettings->addItem(new CMenuForwarder(_("Reset to defaults"), true, NULL, this, "reset"));
-#elif defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
+#endif
+#endif
+#if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// lcd_power
@@ -366,7 +391,7 @@ void CLCDSettings::showMenu()
 #endif
 	
 	// epgmode
-	lcdSettings->addItem(new CMenuOptionChooser(_("EPG"), &g_settings.lcd_epgmode, LCDMENU_EPG_OPTIONS, LCDMENU_EPG_OPTION_COUNT, true));	
+	lcdSettings->addItem(new CMenuOptionChooser(_("EPG"), &g_settings.lcd_vfdepgmode, LCDMENU_VFDEPG_OPTIONS, LCDMENU_VFDEPG_OPTION_COUNT, true));	
 
 #if !defined (PLATFORM_CUBEREVO_250HD) && !defined (PLATFORM_SPARK) && !defined (PLATFORM_GIGABLUE)	
 	// dimm-time

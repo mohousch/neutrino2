@@ -42,6 +42,8 @@
 #include <linux/kd.h>
 
 #include <stdint.h>
+#include <png.h>
+#include <zlib.h>	
 
 #include <global.h>
 #include <system/debug.h>
@@ -835,7 +837,7 @@ void CFrameBuffer::paintVLine(int x, int ya, int yb, const fb_pixel_t col)
 	if (!getActive())
 		return;
 
-	uint8_t * pos = ((uint8_t *)getFrameBufferPointer()) + x * sizeof(fb_pixel_t) + stride * ya;
+	uint8_t * pos = ((uint8_t *)lfb) + x * sizeof(fb_pixel_t) + stride * ya;
 
 	int dy = yb - ya;
 	
@@ -851,7 +853,7 @@ void CFrameBuffer::paintVLineRel(int x, int y, int dy, const fb_pixel_t col)
 	if (!getActive())
 		return;
 
-	uint8_t * pos = ((uint8_t *)getFrameBufferPointer()) + x * sizeof(fb_pixel_t) + stride * y;
+	uint8_t * pos = ((uint8_t *)lfb) + x * sizeof(fb_pixel_t) + stride * y;
 
 	for(int count = 0; count < dy; count++) 
 	{
@@ -865,7 +867,7 @@ void CFrameBuffer::paintHLine(int xa, int xb, int y, const fb_pixel_t col)
 	if (!getActive())
 		return;
 
-	uint8_t * pos = ((uint8_t *)getFrameBufferPointer()) + xa * sizeof(fb_pixel_t) + stride * y;
+	uint8_t * pos = ((uint8_t *)lfb) + xa * sizeof(fb_pixel_t) + stride * y;
 
 	int dx = xb - xa;
 	fb_pixel_t * dest = (fb_pixel_t *)pos;
@@ -879,7 +881,7 @@ void CFrameBuffer::paintHLineRel(int x, int dx, int y, const fb_pixel_t col)
 	if (!getActive())
 		return;
 
-	uint8_t * pos = ((uint8_t *)getFrameBufferPointer()) + x * sizeof(fb_pixel_t) + stride * y;
+	uint8_t * pos = ((uint8_t *)lfb) + x * sizeof(fb_pixel_t) + stride * y;
 
 	fb_pixel_t * dest = (fb_pixel_t *)pos;
 	
@@ -1015,7 +1017,7 @@ bool CFrameBuffer::paintIcon8(const std::string &filename, const int x, const in
 
 	unsigned char pixbuf[768];
 
-	uint8_t * d = ((uint8_t *)getFrameBufferPointer()) + x * sizeof(fb_pixel_t) + stride * y;
+	uint8_t * d = ((uint8_t *)lfb) + x * sizeof(fb_pixel_t) + stride * y;
 	
 	fb_pixel_t * d2;
 
@@ -1440,7 +1442,7 @@ void CFrameBuffer::paintBackgroundBoxRel(int x, int y, int dx, int dy)
 	}
 	else
 	{
-		uint8_t * fbpos = ((uint8_t *)getFrameBufferPointer()) + x * sizeof(fb_pixel_t) + stride * y;
+		uint8_t * fbpos = ((uint8_t *)lfb) + x * sizeof(fb_pixel_t) + stride * y;
 
 		fb_pixel_t * bkpos = background + x + BACKGROUNDIMAGEWIDTH * y;
 
@@ -1461,7 +1463,7 @@ void CFrameBuffer::paintBackground()
 	if (useBackgroundPaint && (background != NULL))
 	{
 		for (int i = 0; i < BACKGROUNDIMAGEHEIGHT; i++)
-			memcpy(((uint8_t *)getFrameBufferPointer()) + i * stride, (background + i * BACKGROUNDIMAGEWIDTH), BACKGROUNDIMAGEWIDTH * sizeof(fb_pixel_t));
+			memcpy(((uint8_t *)lfb) + i * stride, (background + i * BACKGROUNDIMAGEWIDTH), BACKGROUNDIMAGEWIDTH * sizeof(fb_pixel_t));
 	}
 	else
 	{
@@ -1474,7 +1476,7 @@ void CFrameBuffer::saveScreen(int x, int y, int dx, int dy, fb_pixel_t * const m
 	if (!getActive())
 		return;
 
-	uint8_t * pos = ((uint8_t *)getFrameBufferPointer()) + x * sizeof(fb_pixel_t) + stride * y;
+	uint8_t * pos = ((uint8_t *)lfb) + x * sizeof(fb_pixel_t) + stride * y;
 
 	fb_pixel_t * bkpos = memp;
 
@@ -1493,7 +1495,7 @@ void CFrameBuffer::restoreScreen(int x, int y, int dx, int dy, fb_pixel_t * cons
 	if (!getActive())
 		return;
 
-	uint8_t * fbpos = ((uint8_t *)getFrameBufferPointer()) + x * sizeof(fb_pixel_t) + stride * y;
+	uint8_t * fbpos = ((uint8_t *)lfb) + x * sizeof(fb_pixel_t) + stride * y;
 	
 	fb_pixel_t * bkpos = memp;
 
@@ -1519,7 +1521,7 @@ void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const 
 	uint32_t swidth = stride / sizeof(fb_pixel_t);
 
 	fb_pixel_t *data = (fb_pixel_t *)boxBuf;
-	fb_pixel_t *fbp = (fb_pixel_t *)getFrameBufferPointer() + (swidth * yoff);
+	fb_pixel_t *fbp = (fb_pixel_t *)lfb + (swidth * yoff);
 	fb_pixel_t *d2;
  
 	for (uint32_t line = 0; line < yc; line++)	
@@ -1567,7 +1569,7 @@ void CFrameBuffer::blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, ui
 	int yc = (height > yRes) ? yRes : height;
 	
 	fb_pixel_t *data = (fb_pixel_t *) fbbuff;
-	uint8_t *d = ((uint8_t *)getFrameBufferPointer()) + xoff * sizeof(fb_pixel_t) + stride * yoff;
+	uint8_t *d = ((uint8_t *)lfb) + xoff * sizeof(fb_pixel_t) + stride * yoff;
 	fb_pixel_t *d2;
 
 	for (int count = 0; count < yc - yp; count++ ) 
@@ -1813,4 +1815,86 @@ bool CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int
 	
 	return false;
 }
+
+bool CFrameBuffer::savePNG(const char *const filename)
+{
+	dprintf(DEBUG_NORMAL, "%s\n", filename);
+	
+	bool         ret_value = false;
+	
+	png_structp  png_ptr;
+	png_infop    info_ptr;
+	png_byte *   fbptr;
+	FILE *       fp;
+ 
+        // create file
+        fp = fopen(filename, "wb");
+        
+        if (!fp)
+                ng2_err("File %s could not be opened for writing\n", filename);
+	else
+	{
+	        // initialize stuff
+        	png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+
+	        if (!png_ptr)
+        	        ng2_err("png_create_write_struct failed\n");
+		else
+		{
+		        info_ptr = png_create_info_struct(png_ptr);
+		        if (!info_ptr)
+                		ng2_err("png_create_info_struct failed\n");
+			else
+			{
+			        if (setjmp(png_jmpbuf(png_ptr)))
+			                ng2_err("Error during init_io\n");
+				else
+				{
+        				png_init_io(png_ptr, fp);
+
+        				// write header
+        				if (setjmp(png_jmpbuf(png_ptr)))
+        				        ng2_err("Error during writing header\n");
+
+					//
+					png_set_IHDR(png_ptr, info_ptr, xRes, yRes, 8, PNG_COLOR_TYPE_RGBA, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+					png_set_bgr(png_ptr);
+					
+					//
+        				png_write_info(png_ptr, info_ptr);
+					
+        				// write bytes
+					if (setjmp(png_jmpbuf(png_ptr)))
+					{
+        				        ng2_err("Error during writing bytes\n");
+						return ret_value;
+					}
+
+					ret_value = true;
+					
+					fbptr = (png_byte *)lfb;
+					
+					for (int i = 0; i < yRes; i++)
+					{
+						png_write_row(png_ptr, fbptr);
+						fbptr += stride;
+					}
+
+        				// end write
+        				if (setjmp(png_jmpbuf(png_ptr)))
+					{
+        				        ng2_err("Error during end of write\n");
+						return ret_value;
+					}
+
+        				png_write_end(png_ptr, NULL);
+				}
+			}
+		}
+        	fclose(fp);
+	}
+
+	return ret_value;
+}
+
 

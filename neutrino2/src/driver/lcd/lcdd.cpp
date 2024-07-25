@@ -121,6 +121,17 @@ std::string CLCD::GetConfigName(int driver)
 		
 	return GLCD::Config.driverConfigs[driver].name;
 }
+
+void CLCD::reinitGLCD()
+{
+	if (display)
+		display->initGLCD();
+		
+	if (!has_lcd)
+	{
+		
+	}
+}
 #endif
 
 ////
@@ -160,11 +171,6 @@ CLCD::CLCD()
 
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	display = NULL;	
-#endif
-
-#ifdef ENABLE_GRAPHLCD
-	nglcdshowclock= false;
-	nglcdclearClock = 0;
 #endif
 }
 
@@ -929,9 +935,11 @@ void CLCD::showText(const char *str)
 	if( write(fd, text.c_str(), len > 12? 12 : len ) < 0)
 		perror("write to vfd failed");
 #endif
-#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
-	showTextScreen(std::string(str), "", EPGMODE_CHANNEL, true, true); // always centered
 #endif
+
+//#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+//	showTextScreen(std::string(str), "", EPGMODE_CHANNEL, true, true); // always centered
+//#endif
 }
 
 void CLCD::showServicename(const std::string &name, const bool perform_wakeup, int pos)
@@ -952,7 +960,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 		return;
 
 #ifdef ENABLE_4DIGITS
-	if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)
+	if (g_settings.lcd_vfdepgmode == EPGMODE_CHANNELNUMBER)
 	{
 		char tmp[5];
 							
@@ -961,7 +969,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 		showText(tmp); // UTF-8
 	}
 #elif defined (ENABLE_VFD)
-	if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)
+	if (g_settings.lcd_vfdepgmode == EPGMODE_CHANNELNUMBER)
 	{
 		showText((char *)servicename.c_str() );
 	}
@@ -1503,9 +1511,9 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 		case MODE_TVRADIO:
 			showclock = false;
-			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)
+			if (g_settings.lcd_vfdepgmode == EPGMODE_CHANNELNUMBER)
 				showServicename(servicename, true, servicenumber);
-			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
+			else if (g_settings.lcd_vfdepgmode == EPGMODE_TIME)
 			{
 				showclock = true;
 				showTime(true);
@@ -1557,9 +1565,9 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 		case MODE_TVRADIO:
 			showclock = false;
-			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)	
+			if (g_settings.lcd_vfdepgmode == EPGMODE_CHANNELNUMBER)	
 				showServicename(servicename, true, servicenumber);
-			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
+			else if (g_settings.lcd_vfdepgmode == EPGMODE_TIME)
 			{
 				showclock = true;
 				showTime(true);

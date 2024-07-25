@@ -430,6 +430,7 @@ struct SNeutrinoSettings
 	int lcd_inverse;
 	int lcd_statusline;
 	int lcd_epgmode;
+	int lcd_vfdepgmode;
 	int lcd_epgalign;
 	char lcd_setting_dim_time[4];
 	int lcd_setting_dim_brightness;
@@ -547,11 +548,8 @@ struct SNeutrinoSettings
 #define DEFAULT_LCD_POWER			0x01
 #define DEFAULT_LCD_INVERSE			0x00
 #define DEFAULT_LCD_STATUSLINE			0x00
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 #define DEFAULT_LCD_EPGMODE			0x03	/* channel / title */
-#else // VFD / 4DIGITS
-#define DEFAULT_LCD_EPGMODE			0x02
-#endif
+#define DEFAULT_LCD_VFDEPGMODE			0x02
 #define DEFAULT_LCD_EPGALIGN			0x01    /* centered */
 #define MAXBRIGHTNESS				0xFF
 #define MAXCONTRAST				0x3F

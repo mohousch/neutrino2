@@ -60,8 +60,8 @@ class CScreenshot
 		bool openFile();
 		bool saveFile();
 
-		bool savePng();
-		bool saveJpg();
+		bool savePNG();
+		bool saveJPG();
 		
 	public:
 		CScreenshot();

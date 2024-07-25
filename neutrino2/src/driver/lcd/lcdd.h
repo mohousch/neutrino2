@@ -488,13 +488,17 @@ class CLCD
 			EPGALIGN_CENTER
 		};
 		
-		enum EPGMODE
+		enum VFDEPGMODE
 		{
 			EPGMODE_CHANNELNUMBER		= 1,
 			EPGMODE_TIME			= 2,
-			EPGMODE_CHANNEL 		= 3,
-			EPGMODE_TITLE			= 4,
-			EPGMODE_CHANNEL_TITLE		= 5
+		};
+		
+		enum EPGMODE
+		{
+			EPGMODE_CHANNEL 		= 1,
+			EPGMODE_TITLE			= 2,
+			EPGMODE_CHANNEL_TITLE		= 3
 		};
 		
 		enum STATUSLINE
@@ -653,11 +657,10 @@ class CLCD
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-		bool nglcdshowclock;
-		int nglcdclearClock;
-
 		int GetConfigSize();
 		std::string GetConfigName(int);
+		
+		void reinitGLCD();
 #endif
 };
 
