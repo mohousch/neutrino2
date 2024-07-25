@@ -225,7 +225,9 @@ void CLCD::wake_up()
 		
 #if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 		g_settings.lcd_setting_dim_brightness > 0 ? setBrightness(g_settings.lcd_brightness) : setPower(1);
-#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+#endif
+
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 		setlcdparameter();
 #endif
 	}
@@ -554,8 +556,10 @@ void CLCD::setlcdparameter(int dimm, const int contrast, const int power, const 
 		perror("VFDBRIGHTNESS");
 	
 	closeDevice();
-#endif	
-#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+#endif
+#endif
+
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	// dimm
 	display->setLCDBrightness(dimm);
 	
@@ -733,8 +737,10 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
     	
 	if( write(fd, big.c_str(), len > 12? 12 : len ) < 0)
 		perror("write to vfd failed");
-#endif	
-#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+#endif
+#endif
+	
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	// clear screen under banner
 	if (mode == MODE_PIC)
 		display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, lcd_height, LCD_PIXEL_OFF);
@@ -936,10 +942,6 @@ void CLCD::showText(const char *str)
 		perror("write to vfd failed");
 #endif
 #endif
-
-//#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
-//	showTextScreen(std::string(str), "", EPGMODE_CHANNEL, true, true); // always centered
-//#endif
 }
 
 void CLCD::showServicename(const std::string &name, const bool perform_wakeup, int pos)
@@ -973,7 +975,9 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 	{
 		showText((char *)servicename.c_str() );
 	}
-#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+#endif
+
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	showTextScreen(servicename, epg_title, showmode, perform_wakeup, g_settings.lcd_epgalign);
 	
 	// logo
@@ -1053,7 +1057,9 @@ void CLCD::showMovieInfo(const PLAYMODES playmode, const std::string big, const 
 
 #if defined (ENABLE_VFD)
 	showText((char *)big.c_str());
-#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+#endif
+
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	movie_playmode = playmode;
 	movie_big = big;
 	movie_small = small;
@@ -1119,8 +1125,10 @@ void CLCD::showTime(bool force)
 	{ 
 		// in case icon ON after record stopped
 		clearClock = 0;
-	}	
-#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+	}
+#endif
+	
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	if (showclock)
 	{
 		char timestr[21];
@@ -1359,7 +1367,9 @@ void CLCD::showMenuText(const int position, const char * text, const int selecte
 		
 #if defined (ENABLE_VFD)						
 	showText(text); // UTF-8
-#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+#endif
+
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	// second line
 	// refresh
 	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 - 1, lcd_width, element[ELEMENT_BANNER].height + 2 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight() + 10, LCD_PIXEL_OFF);
@@ -1384,7 +1394,9 @@ void CLCD::showAudioTrack(const std::string &artist, const std::string &title, c
 
 #if defined (ENABLE_VFD)
 	showText((char *)title.c_str());
-#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+#endif
+
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	// refresh
 	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, element[ELEMENT_BANNER].height + 2 + fonts.channelname->getHeight() + 2 + fonts.menu->getHeight() + 2 + fonts.menu->getHeight(), LCD_PIXEL_OFF);
 	
@@ -1432,8 +1444,10 @@ void CLCD::showPlayMode(PLAYMODES m)
 		case PLAY_MODE_REV:
 			break;
 	}
-#endif	
-#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+#endif
+#endif
+
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	// refresh
 	display->draw_fill_rect (-1, lcd_width - 12, 12, 12, LCD_PIXEL_OFF);
 	
@@ -1651,8 +1665,10 @@ void CLCD::setMode(const MODES m, const char * const title)
 			break;
 	}
 
-#endif // vfd	
-#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+#endif // vfd
+#endif
+	
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	switch (m)
 	{
 	case MODE_TVRADIO:
@@ -2122,8 +2138,10 @@ void CLCD::Clear()
 #endif
 #else
 	showText("            "); // 12 empty digits
-#endif // sh	
-#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+#endif // sh
+#endif
+	
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	if (mode == MODE_SHUTDOWN)
 	{
 		display->clear_screen(); // clear lcd
