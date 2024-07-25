@@ -1194,7 +1194,7 @@ bool cVideo::getvideo2(unsigned char *video, int xres, int yres)
 	if (video ==  NULL)
 		return ret;
 	
-	ssize_t r = read(fd_video, video, xres * yres * 3);
+	ssize_t r = read(video_fd, video, xres * yres * 3);
 	if (r)
 	{
 		ret = true;
