@@ -105,10 +105,6 @@ CLCDDisplay::CLCDDisplay()
 {
 	fd = -1;
 	
-	//
-	xres = 320;
-	yres = 240;
-	
 	paused = 0;
 	flipped = false;
 	inverted = 0;
@@ -116,6 +112,9 @@ CLCDDisplay::CLCDDisplay()
 	last_brightness = 0;
 	locked = 0;
 	
+	//
+	xres = DEFAULT_LCD_XRES;
+	yres = DEFAULT_LCD_YRES;	
 	//
 	raw_buffer_size = 0;
 	raw_bypp = sizeof(lcd_pixel_t);
@@ -1089,12 +1088,9 @@ static bool swscale(unsigned char *src, unsigned char *dst, int sw, int sh, int 
 		sws_freeContext(scale);
 		scale = NULL;
 	}
-	
-	lcddisplay_err("Error scale %ix%i to %ix%i ,len %i\n", sw, sh, dw, dh, len);
 
 	return ret;
 }
-
 
 // blit2lcd
 void CLCDDisplay::blitBox2LCD(int flag) 
@@ -1691,9 +1687,9 @@ int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int widt
 	lcddisplay_printf(10, "real: %s %d %d %d %d\n", filename, p_w, p_h, p_bpp, chans);
 
 	if (raw_bpp == 32)
-		element.buffer = (lcd_pixel_t *)::getBGR32Image(filename, width, height);
+		element.buffer = (lcd_pixel_t *)::getBGR32Image(filename, width, height, 0xFF, SCALE_COLOR);
 	else
-		element.buffer = (lcd_pixel_t *)::getBGR8Image(filename, width, height);
+		element.buffer = (lcd_pixel_t *)::getBGR8Image(filename, width, height, 0xFF, SCALE_COLOR);
 
 	element.x = posx;
 	element.y = posy;
@@ -1733,9 +1729,9 @@ void CLCDDisplay::load_png_element(raw_lcd_element_t *element, int posx, int pos
 	}
 	
 	if (raw_bpp == 32)
-		element->buffer = (lcd_pixel_t *)::convertBGR2FB32(image, width, height, (chans == 4)? true : false);
+		element->buffer = (lcd_pixel_t *)::convertBGR2FB32(image, width, height, (chans == 4)? true : false, 0xFF, TM_INI);
 	else
-		element->buffer = (lcd_pixel_t *)::convertBGR2FB8(image, width, height, (chans == 4)? true : false);
+		element->buffer = (lcd_pixel_t *)::convertBGR2FB8(image, width, height, (chans == 4)? true : false, 0xFF, TM_INI);
 
 	element->x = posx;
 	element->y = posy;

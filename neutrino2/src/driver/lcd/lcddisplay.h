@@ -80,6 +80,9 @@
 
 #define lcd_pixel_t 				uint32_t
 
+#define DEFAULT_LCD_XRES			220
+#define DEFAULT_LCD_YRES			176
+
 struct raw_lcd_element_t
 {
 	std::string name;

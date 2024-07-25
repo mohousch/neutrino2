@@ -509,7 +509,7 @@ uint32_t * convertBGR2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, b
 		libngpng_err( "Error: malloc\n" );
 		return NULL;
 	}
-		
+	
 	if(alpha)
 	{
 		for(i = 0; i < count; i++)
@@ -909,18 +909,21 @@ uint32_t * getBGR32Image(const std::string &name, int width, int height, int tra
 			}
 			
 			// convert
+			/*
 			if( name.find(".png") == (name.length() - 4) )
 			{
 				// alpha
 				if (channels == 4)
 					ret = (uint32_t *)convertBGR2FB32(buffer, x, y, true);
 				else
-					ret = (uint32_t *)convertBGR2FB32(buffer, x, y, false, transp, TM_BLACK); // TM_BLACK
+					ret = (uint32_t *)convertBGR2FB32(buffer, x, y, false, transp, TM_INI); // TM_BLACK
 			}
 			else
 			{
 				ret = (uint32_t *)convertBGR2FB32(buffer, x, y, false, transp, TM_NONE); //TM_NONE
 			}
+			*/
+			ret = (uint32_t *)convertBGR2FB32(buffer, x, y, (channels == 4)? true : false, transp, TM_NONE); //TM_NONE
 			
 			free(buffer);
 		} 
@@ -1077,6 +1080,7 @@ uint8_t * getBGR8Image(const std::string &name, int width, int height, int trans
 			}
 			
 			// convert
+			/*
 			if( name.find(".png") == (name.length() - 4) )
 			{
 				// alpha
@@ -1089,6 +1093,9 @@ uint8_t * getBGR8Image(const std::string &name, int width, int height, int trans
 			{
 				ret = (uint8_t *)convertBGR2FB8(buffer, x, y, false, transp, TM_NONE); //TM_NONE
 			}
+			*/
+			ret = (uint8_t *)convertBGR2FB8(buffer, x, y, (channels == 4)? true : false, transp, TM_NONE);
+			
 			
 			free(buffer);
 		} 

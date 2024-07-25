@@ -146,8 +146,8 @@ CLCD::CLCD()
 	has_nglcd = false;
 	clearClock = 0;
 	fd = -1;
-	lcd_width = 320;
-	lcd_height = 240;
+	lcd_width = DEFAULT_LCD_XRES;
+	lcd_height = DEFAULT_LCD_YRES;
 	servicename = "";
 	servicenumber = 0;
 	epg_title = "";
@@ -448,6 +448,11 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	if (display->initGLCD())
 	{
 		has_lcd = true;
+		
+		lcd_width = display->xres;
+		lcd_height = display->yres;
+	
+		lcdd_printf(10, "%d %d\n", lcd_width, lcd_height);
 	}
 #endif
 	
