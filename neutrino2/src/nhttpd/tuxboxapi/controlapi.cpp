@@ -2393,46 +2393,7 @@ void CControlAPI::updateBouquetCGI(CyhookHandler *hh)
 // audio_no : (optional) audio channel
 // host : (optional) ip of dbox
 void CControlAPI::build_live_url(CyhookHandler *hh)
-{
-	std::string xpids,port,yresult;
-	int mode = CZapit::getInstance()->getMode();
-
-	if ( mode == CZapit::MODE_TV)
-	{
-		CZapit::responseGetPIDs pids;
-		int apid = 0, apid_no = 0, apid_idx = 0;
-		pids.PIDs.vpid = 0;
-
-		if(hh->ParamList["audio_no"] !="")
-			apid_no = atoi(hh->ParamList["audio_no"].c_str());
-		CZapit::getInstance()->getCurrentPIDS(pids);
-
-		if( apid_no < (int)pids.APIDs.size())
-			apid_idx=apid_no;
-		if(!pids.APIDs.empty())
-			apid = pids.APIDs[apid_idx].pid;
-		
-		// pcrpid/vpid
-		if(pids.PIDs.pcrpid != pids.PIDs.vpid)
-			xpids = string_printf("0x%04x,0x%04x,0x%04x,0x%04x",pids.PIDs.pmtpid,pids.PIDs.vpid,apid,pids.PIDs.pcrpid);
-		else
-			xpids = string_printf("0x%04x,0x%04x,0x%04x",pids.PIDs.pmtpid, pids.PIDs.vpid, apid);
-	}
-	else if ( mode == CZapit::MODE_RADIO)
-	{
-		CZapit::responseGetPIDs pids;
-		int apid=0;
-
-		CZapit::getInstance()->getCurrentPIDS(pids);
-		if(!pids.APIDs.empty())
-			apid = pids.APIDs[0].pid;
-
-		//xpids = string_printf("0x%04x",apid);
-		xpids = string_printf("0x%04x,0x%04x", pids.PIDs.pmtpid,apid);
-	}
-	else
-		hh->SendError();
-		
+{	
 	// build url
 	std::string url = "";
 	if(hh->ParamList["host"] !="")
@@ -2440,8 +2401,13 @@ void CControlAPI::build_live_url(CyhookHandler *hh)
 	else
 		url = "http://" + hh->HeaderList["Host"];
 		
-	url += ":31339/0,";
-	url += xpids;
+	// strip off optional custom port
+	if (url.rfind(":") != 4)
+		url = url.substr(0, url.rfind(":"));
+
+	url += ":31339/id=";
+	
+//	url += toString(CZapit::getInstance()->getCurrentChannelID());
 
 	// response url
 	if(hh->ParamList["vlc_link"] !="")
