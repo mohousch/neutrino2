@@ -31,6 +31,15 @@
 
 #include <driver/gfx/framebuffer.h>
 
+extern "C"
+{
+#include <libavformat/avformat.h>
+#include <libavcodec/version.h>
+#include <libavcodec/avcodec.h>
+#include <libswscale/swscale.h>
+#include <libavutil/imgutils.h>
+}
+
 
 //
 #define COL_MAROON	 			2
@@ -313,6 +322,145 @@ enum
         blitAlphaTest 		= 1,
         blitAlphaBlend 		= 2
 };
+
+////
+static inline void blit_8i_to_16(uint16_t *dst, const uint8_t *src, const uint32_t *pal, int width)
+{
+    	while (width--)
+        	*dst++=pal[*src++] & 0xFFFF;
+}
+
+static inline void blit_8i_to_16_at(uint16_t *dst, const uint8_t *src, const uint32_t *pal, int width)
+{
+    	while (width--)
+    	{
+        	if (!(pal[*src]&0x80000000))
+        	{
+            		src++;
+            		dst++;
+        	} 
+        	else
+            		*dst++=pal[*src++] & 0xFFFF;
+    	}
+}
+
+static inline void blit_8i_to_32(uint32_t *dst, const uint8_t *src, const uint32_t *pal, int width)
+{
+    	while (width--)
+        	*dst++=pal[*src++];
+}
+
+static inline void blit_8i_to_32_at(uint32_t *dst, const uint8_t *src, const uint32_t *pal, int width)
+{
+    	while (width--)
+    	{
+        	if (!(pal[*src]&0x80000000))
+        	{
+            		src++;
+            		dst++;
+        	} 
+        	else
+            		*dst++=pal[*src++];
+   	 }
+}
+
+static void blit_8i_to_32_ab(gRGB *dst, const uint8_t *src, const gRGB *pal, int width)
+{
+    	while (width--)
+    	{
+        	dst->alpha_blend(pal[*src++]);
+        	++dst;
+    	}
+}
+
+static void convert_palette(uint32_t* pal, const gPalette& clut)
+{
+    	int i = 0;
+    	
+    	if (clut.data)
+    	{
+        	while (i < clut.colors)
+        	{
+            		pal[i] = clut.data[i].argb() ^ 0xFF000000;
+            		++i;
+        	}
+    	}
+    	
+    	for(; i != 256; ++i)
+    	{
+        	pal[i] = (0x010101*i) | 0xFF000000;
+    	}
+}
+
+static bool swscale(unsigned char *src, unsigned char *dst, int sw, int sh, int dw, int dh, AVPixelFormat sfmt, AVPixelFormat dfmt)
+{
+	bool ret = false;
+	int len = 0;
+	struct SwsContext *scale = NULL;
+	
+	scale = sws_getCachedContext(scale, sw, sh, sfmt, dw, dh, dfmt, SWS_BICUBIC, 0, 0, 0);
+	
+	if (!scale)
+	{
+		printf("ERROR setting up SWS context\n");
+		return ret;
+	}
+	
+	AVFrame *sframe = av_frame_alloc();
+	AVFrame *dframe = av_frame_alloc();
+	
+	if (sframe && dframe)
+	{
+		len = av_image_fill_arrays(sframe->data, sframe->linesize, &(src)[0], sfmt, sw, sh, 1);
+		
+		if (len > -1)
+			ret = true;
+
+		if (ret && (len = av_image_fill_arrays(dframe->data, dframe->linesize, &(dst)[0], sfmt, dw, dh, 1) < 0))
+			ret = false;
+
+		if (ret && (len = sws_scale(scale, sframe->data, sframe->linesize, 0, sh, dframe->data, dframe->linesize) < 0))
+			ret = false;
+		else
+			ret = true;
+	}
+	else
+	{
+		printf("could not alloc sframe (%p) or dframe (%p)\n", sframe, dframe);
+		ret = false;
+	}
+
+	if (sframe)
+	{
+		av_frame_free(&sframe);
+		sframe = NULL;
+	}
+	
+	if (dframe)
+	{
+		av_frame_free(&dframe);
+		dframe = NULL;
+	}
+	
+	if (scale)
+	{
+		sws_freeContext(scale);
+		scale = NULL;
+	}
+
+	return ret;
+}
+
+inline void rgb24torgb32(unsigned char  *src, unsigned char *dest, int picsize)
+{
+	for (int i = 0; i < picsize; i++)
+	{
+		*dest++ = *src++;
+		*dest++ = *src++;
+		*dest++ = *src++;
+		*dest++ = 255;
+	}
+}
 
 #endif
 

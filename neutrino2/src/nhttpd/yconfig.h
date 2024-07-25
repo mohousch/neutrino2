@@ -8,6 +8,7 @@
 #define __yconfig_h__
 
 #include <config.h>
+
 // c++
 #include <string>
 #include <map>

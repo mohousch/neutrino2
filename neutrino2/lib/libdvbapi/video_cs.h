@@ -379,6 +379,9 @@ class cVideo
 		void setBrightness(int brightness);
 		void setTint(int tint);
 		
+		//
+		bool getvideo2(unsigned char *video, int xres, int yres);
+		
 #ifdef USE_OPENGL
 		SWFramebuffer *getDecBuf(void);
 #endif

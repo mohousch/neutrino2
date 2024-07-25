@@ -44,15 +44,6 @@ extern "C" {
 #include <jpeglib.h>
 }
 
-extern "C"
-{
-#include <libavformat/avformat.h>
-#include <libavcodec/version.h>
-#include <libavcodec/avcodec.h>
-#include <libswscale/swscale.h>
-#include <libavutil/imgutils.h>
-}
-
 
 extern cVideo *videoDecoder;
 
@@ -76,106 +67,6 @@ CScreenshot::CScreenshot()
 	get_osd = true;
 	get_video = false;
 	scale_to_video = false;
-}
-
-bool getvideo2(unsigned char *video, int xres, int yres)
-{
-	bool ret = false;
-	
-#ifdef USE_OPENGL
-	if (video ==  NULL)
-		return ret;
-		
-	char videosnapshot[] = "/dev/dvb/adapter0/video0";
-	int fd_video = open(videosnapshot, O_RDONLY);
-	
-	if (fd_video < 0)
-	{
-		perror(videosnapshot);
-		return ret;
-	}
-	
-	ssize_t r = read(fd_video, video, xres * yres * 3);
-	if (r)
-	{
-		ret = true;
-	}
-	close(fd_video);
-#endif
-	
-	return ret;
-}
-
-static bool swscale(unsigned char *src, unsigned char *dst, int sw, int sh, int dw, int dh, AVPixelFormat sfmt)
-{
-	bool ret = false;
-	int len = 0;
-	struct SwsContext *scale = NULL;
-	
-	scale = sws_getCachedContext(scale, sw, sh, sfmt, dw, dh, AV_PIX_FMT_RGB32, SWS_BICUBIC, 0, 0, 0);
-	
-	if (!scale)
-	{
-		ng2_err("ERROR setting up SWS context\n");
-		return ret;
-	}
-	
-	AVFrame *sframe = av_frame_alloc();
-	AVFrame *dframe = av_frame_alloc();
-	
-	if (sframe && dframe)
-	{
-		len = av_image_fill_arrays(sframe->data, sframe->linesize, &(src)[0], sfmt, sw, sh, 1);
-		
-		if (len > -1)
-			ret = true;
-
-		if (ret && (len = av_image_fill_arrays(dframe->data, dframe->linesize, &(dst)[0], AV_PIX_FMT_RGB32, dw, dh, 1) < 0))
-			ret = false;
-
-		if (ret && (len = sws_scale(scale, sframe->data, sframe->linesize, 0, sh, dframe->data, dframe->linesize) < 0))
-			ret = false;
-		else
-			ret = true;
-	}
-	else
-	{
-		ng2_err("could not alloc sframe (%p) or dframe (%p)\n", sframe, dframe);
-		ret = false;
-	}
-
-	if (sframe)
-	{
-		av_frame_free(&sframe);
-		sframe = NULL;
-	}
-	
-	if (dframe)
-	{
-		av_frame_free(&dframe);
-		dframe = NULL;
-	}
-	
-	if (scale)
-	{
-		sws_freeContext(scale);
-		scale = NULL;
-	}
-	
-	ng2_err("Error scale %ix%i to %ix%i ,len %i\n", sw, sh, dw, dh, len);
-
-	return ret;
-}
-
-inline void rgb24torgb32(unsigned char  *src, unsigned char *dest, int picsize)
-{
-	for (int i = 0; i < picsize; i++)
-	{
-		*dest++ = *src++;
-		*dest++ = *src++;
-		*dest++ = *src++;
-		*dest++ = 255;
-	}
 }
 
 bool CScreenshot::getData()

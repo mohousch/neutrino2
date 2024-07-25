@@ -1186,6 +1186,24 @@ void cVideo::setTint(int Tint)
 #endif
 }
 
+bool cVideo::getvideo2(unsigned char *video, int xres, int yres)
+{
+	bool ret = false;
+	
+#ifndef USE_OPENGL
+	if (video ==  NULL)
+		return ret;
+	
+	ssize_t r = read(fd_video, video, xres * yres * 3);
+	if (r)
+	{
+		ret = true;
+	}
+#endif
+	
+	return ret;
+}
+
 #ifdef USE_OPENGL
 cVideo::SWFramebuffer *cVideo::getDecBuf(void)
 {

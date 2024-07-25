@@ -53,15 +53,6 @@ extern "C" {
 #include <jpeglib.h>
 }
 
-extern "C"
-{
-#include <libavformat/avformat.h>
-#include <libavcodec/version.h>
-#include <libavcodec/avcodec.h>
-#include <libswscale/swscale.h>
-#include <libavutil/imgutils.h>
-}
-
 #include <system/settings.h>
 
 
@@ -121,8 +112,14 @@ CLCDDisplay::CLCDDisplay()
 	raw_bpp = 8*sizeof(lcd_pixel_t);
 	raw_buffer = NULL;
 	raw_stride = 0;
+#ifdef ENABLE_LCD
 	raw_clut.colors = 0;
 	raw_clut.data = 0;
+#elif defined (ENABLE_TFTLCD)
+	raw_clut.colors = 256;
+        raw_clut.data = new gRGB[raw_clut.colors];
+        memset(static_cast<void*>(raw_clut.data), 0, sizeof(*raw_clut.data)*raw_clut.colors);
+#endif
 	
 	// surface
 #ifdef ENABLE_LCD
@@ -965,133 +962,6 @@ void CLCDDisplay::blit(void)
 #endif
 }
 
-static inline void blit_8i_to_16(uint16_t *dst, const uint8_t *src, const uint32_t *pal, int width)
-{
-    	while (width--)
-        	*dst++=pal[*src++] & 0xFFFF;
-}
-
-static inline void blit_8i_to_16_at(uint16_t *dst, const uint8_t *src, const uint32_t *pal, int width)
-{
-    	while (width--)
-    	{
-        	if (!(pal[*src]&0x80000000))
-        	{
-            		src++;
-            		dst++;
-        	} 
-        	else
-            		*dst++=pal[*src++] & 0xFFFF;
-    	}
-}
-
-static inline void blit_8i_to_32(uint32_t *dst, const uint8_t *src, const uint32_t *pal, int width)
-{
-    	while (width--)
-        	*dst++=pal[*src++];
-}
-
-static inline void blit_8i_to_32_at(uint32_t *dst, const uint8_t *src, const uint32_t *pal, int width)
-{
-    	while (width--)
-    	{
-        	if (!(pal[*src]&0x80000000))
-        	{
-            		src++;
-            		dst++;
-        	} 
-        	else
-            		*dst++=pal[*src++];
-   	 }
-}
-
-static void blit_8i_to_32_ab(gRGB *dst, const uint8_t *src, const gRGB *pal, int width)
-{
-    	while (width--)
-    	{
-        	dst->alpha_blend(pal[*src++]);
-        	++dst;
-    	}
-}
-
-static void convert_palette(uint32_t* pal, const gPalette& clut)
-{
-    	int i = 0;
-    	
-    	if (clut.data)
-    	{
-        	while (i < clut.colors)
-        	{
-            		pal[i] = clut.data[i].argb() ^ 0xFF000000;
-            		++i;
-        	}
-    	}
-    	
-    	for(; i != 256; ++i)
-    	{
-        	pal[i] = (0x010101*i) | 0xFF000000;
-    	}
-}
-
-static bool swscale(unsigned char *src, unsigned char *dst, int sw, int sh, int dw, int dh, AVPixelFormat sfmt, AVPixelFormat dfmt)
-{
-	bool ret = false;
-	int len = 0;
-	struct SwsContext *scale = NULL;
-	
-	scale = sws_getCachedContext(scale, sw, sh, sfmt, dw, dh, dfmt, SWS_BICUBIC, 0, 0, 0);
-	
-	if (!scale)
-	{
-		lcddisplay_err("ERROR setting up SWS context\n");
-		return ret;
-	}
-	
-	AVFrame *sframe = av_frame_alloc();
-	AVFrame *dframe = av_frame_alloc();
-	
-	if (sframe && dframe)
-	{
-		len = av_image_fill_arrays(sframe->data, sframe->linesize, &(src)[0], sfmt, sw, sh, 1);
-		
-		if (len > -1)
-			ret = true;
-
-		if (ret && (len = av_image_fill_arrays(dframe->data, dframe->linesize, &(dst)[0], sfmt, dw, dh, 1) < 0))
-			ret = false;
-
-		if (ret && (len = sws_scale(scale, sframe->data, sframe->linesize, 0, sh, dframe->data, dframe->linesize) < 0))
-			ret = false;
-		else
-			ret = true;
-	}
-	else
-	{
-		lcddisplay_err("could not alloc sframe (%p) or dframe (%p)\n", sframe, dframe);
-		ret = false;
-	}
-
-	if (sframe)
-	{
-		av_frame_free(&sframe);
-		sframe = NULL;
-	}
-	
-	if (dframe)
-	{
-		av_frame_free(&dframe);
-		dframe = NULL;
-	}
-	
-	if (scale)
-	{
-		sws_freeContext(scale);
-		scale = NULL;
-	}
-
-	return ret;
-}
-
 // blit2lcd
 void CLCDDisplay::blitBox2LCD(int flag) 
 {
@@ -1352,7 +1222,101 @@ void CLCDDisplay::blitBox2LCD(int flag)
 #endif
 
 #ifdef ENABLE_TFTLCD
-	memcpy(tftbuffer, raw_buffer, tftstride * yres);
+	//memcpy(tftbuffer, raw_buffer, tftstride * yres);
+	/*
+	if (tftbpp == 32 && raw_bpp == 32)
+	{
+		uint32_t *srcptr = (uint32_t*)raw_buffer;
+            	uint32_t *dstptr = (uint32_t*)tftbuffer;
+
+            	srcptr += area_left + area_top*raw_stride/4;
+            	dstptr += area_left + area_top*tftstride/4;
+            		
+            	for (int y = area_height; y != 0; --y)
+            	{
+                	if (flag & blitAlphaTest)
+                	{
+                    		int width = area_width;
+                    		uint32_t *src = srcptr;
+                    		uint32_t *dst = dstptr;
+
+                    		while (width--)
+                    		{
+                        		if (!((*src)&0xFF000000))
+                        		{
+                            			src++;
+                            			dst++;
+                        		} 
+                        		else
+                            			*dst++=*src++;
+                    		}
+                	}
+                	else if (flag & blitAlphaBlend)
+                	{
+                    		int width = area_width;
+                    		gRGB *src = (gRGB*)srcptr;
+                    		gRGB *dst = (gRGB*)dstptr;
+                    			
+                    		while (width--)
+                    		{
+                        		dst->alpha_blend(*src++);
+                        		++dst;
+                    		}
+                	}
+                	else
+                    		memcpy(dstptr, srcptr, area_width*tftbypp);
+                    
+                	srcptr = (uint32_t*)((uint8_t*)srcptr + raw_stride);
+                	dstptr = (uint32_t*)((uint8_t*)dstptr + tftstride);
+            	}
+	}
+	*/
+	/*
+	int xc = area_width;
+	int yc = area_height;
+	
+	uint32_t *data = (uint32_t *) tftbuffer;
+	uint8_t *d = ((uint8_t *)raw_buffer) + area_left * sizeof(uint32_t) + tftstride * area_top;
+	uint32_t *d2;
+
+	for (int count = 0; count < yc; count++ ) 
+	{
+		uint32_t * pixpos = &data[(count) * area_width];
+		d2 = (uint32_t *) d;
+		
+		for (int count2 = 0; count2 < xc; count2++ ) 
+		{
+			fb_pixel_t pix = *(pixpos);
+			
+			if ((pix & 0xff000000) == 0xff000000)
+				*d2 = pix;
+			else
+			{
+				uint8_t *in = (uint8_t *)(pixpos);
+				uint8_t *out = (uint8_t *)d2;
+				
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+				int a = in[3];
+#elif __BYTE_ORDER == __BIG_ENDIAN
+				int a = in[0];
+				out++; 
+				in++;
+#endif				
+				*out = (*out + ((*in - *out) * a) / 256);
+				in++; 
+				out++;
+				*out = (*out + ((*in - *out) * a) / 256);
+				in++; 
+				out++;
+				*out = (*out + ((*in - *out) * a) / 256);
+			}
+			
+			d2++;
+			pixpos++;
+		}
+		d += tftstride;
+	}	
+	*/
 #endif
 
 #ifdef ENABLE_GRAPHLCD
