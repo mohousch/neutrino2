@@ -116,6 +116,8 @@ CLCDSettings::CLCDSettings()
 	
 #ifdef ENABLE_GRAPHLCD
 	item = NULL;
+	item1 = NULL;
+	item2 = NULL;
 #endif
 }
 
@@ -426,13 +428,40 @@ void CLCDSettings::showMenu()
 	// select driver
 	item = new CMenuForwarder(_("Type"), (CLCD::getInstance()->GetConfigSize() > 1), CLCD::getInstance()->GetConfigName(g_settings.glcd_selected_config).c_str(), this, "select_driver");
 	
+	if (g_settings.glcd_enable)
+	{
+		item->setState(CMenuItem::ITEM_ACTIVE);
+	}
+	else
+	{
+		item->setState(CMenuItem::ITEM_INACTIVE);
+	}
+	
 	lcdSettings->addItem(item);
 	
 	// glcd_brightness
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("GLCD Brightness"), &g_settings.glcd_brightness, true, 0, 255, this, 0, -1, true));
+	item1 = new CMenuOptionNumberChooser(_("GLCD Brightness"), &g_settings.glcd_brightness, true, 0, 255, this, 0, -1, true);
+	if (g_settings.glcd_enable)
+	{
+		item1->setState(CMenuItem::ITEM_ACTIVE);
+	}
+	else
+	{
+		item1->setState(CMenuItem::ITEM_INACTIVE);
+	}
+	lcdSettings->addItem(item1);
 	
 	// glcd_standby brightness
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("GLCD Standby Brightness"), &g_settings.glcd_brightness_standby, true, 0, 255, this, 0, -1, true));
+	item2 = new CMenuOptionNumberChooser(_("GLCD Standby Brightness"), &g_settings.glcd_brightness_standby, true, 0, 255, this, 0, -1, true);
+	if (g_settings.glcd_enable)
+	{
+		item2->setState(CMenuItem::ITEM_ACTIVE);
+	}
+	else
+	{
+		item2->setState(CMenuItem::ITEM_INACTIVE);
+	}
+	lcdSettings->addItem(item2);
 #endif
 
 	lcdSettings->setSelected(selected);	
@@ -513,9 +542,24 @@ bool CLCDSettings::changeNotify(const std::string &locale, void *Data)
 	}
 	else if (locale == _("Enable NGLCD"))
 	{
+		g_settings.glcd_enable = state;
+		
 		if (MessageBox(_("Information"), _("changes are activ after restart\ndo you want to restart?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == CMessageBox::mbrYes) 
 		{
 			CNeutrinoApp::getInstance()->exec(NULL, "restart");
+		}
+		
+		if (g_settings.glcd_enable)
+		{
+			item->setState(CMenuItem::ITEM_ACTIVE);
+			item1->setState(CMenuItem::ITEM_ACTIVE);
+			item2->setState(CMenuItem::ITEM_ACTIVE);
+		}
+		else
+		{
+			item->setState(CMenuItem::ITEM_INACTIVE);
+			item1->setState(CMenuItem::ITEM_INACTIVE);
+			item2->setState(CMenuItem::ITEM_INACTIVE);
 		}
 	}
 #endif

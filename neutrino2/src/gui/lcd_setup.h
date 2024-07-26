@@ -41,7 +41,9 @@ class CLCDSettings : public CMenuTarget, CChangeObserver
 		CMenuItem * m1;
 		int selected;
 #ifdef ENABLE_GRAPHLCD
-		CMenuItem * item;
+		CMenuItem *item;
+		CMenuItem *item1;
+		CMenuItem *item2;
 #endif
 		
 		void showMenu();
