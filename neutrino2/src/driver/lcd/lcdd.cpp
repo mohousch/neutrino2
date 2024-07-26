@@ -109,8 +109,24 @@ void CLCD::closeDevice()
 #endif
 
 #ifdef ENABLE_GRAPHLCD
+static const char *kDefaultConfigFile = "/etc/graphlcd.conf";
+
 int CLCD::GetConfigSize()
 {
+	//
+	if (GLCD::Config.Load(kDefaultConfigFile) == false)
+	{
+		lcdd_err("Error loading config file!\n");
+		return 0;
+	}
+	
+	// driver config
+	if ((GLCD::Config.driverConfigs.size() < 1))
+	{
+		lcdd_err("No driver config found!\n");
+		return 0;
+	}
+	
 	return (int) GLCD::Config.driverConfigs.size();
 }
 
@@ -118,6 +134,20 @@ std::string CLCD::GetConfigName(int driver)
 {
 	if ((driver < 0) || (driver > GetConfigSize() - 1))
 		driver = 0;
+		
+	//
+	if (GLCD::Config.Load(kDefaultConfigFile) == false)
+	{
+		lcdd_err("Error loading config file!\n");
+		return " ";
+	}
+	
+	// driver config
+	if ((GLCD::Config.driverConfigs.size() < 1))
+	{
+		lcdd_err("No driver config found!\n");
+		return " ";
+	}
 		
 	return GLCD::Config.driverConfigs[driver].name;
 }
