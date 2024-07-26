@@ -1472,7 +1472,7 @@ void CChannelList::paint(bool customMode)
 			// hd / ca / webtv icon
 			if (g_settings.channellist_ca)
 			{
-				item->setIcon1(chanlist[i]->isWEBTV()? NEUTRINO_ICON_WEBTV_SMALL : chanlist[i]->isHD() ? NEUTRINO_ICON_HD : chanlist[i]->isUHD()? NEUTRINO_ICON_UHD : "");
+				item->setIcon1(chanlist[i]->isWEBTV()? NEUTRINO_ICON_WEBTV : chanlist[i]->isHD() ? NEUTRINO_ICON_HD : chanlist[i]->isUHD()? NEUTRINO_ICON_UHD : "");
 				
 				//
 				item->setIcon2(chanlist[i]->scrambled? NEUTRINO_ICON_SCRAMBLED : "");

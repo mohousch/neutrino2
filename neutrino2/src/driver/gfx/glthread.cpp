@@ -206,7 +206,7 @@ void GLThreadObj::setupOSDBuffer()
 {	
 	if(mState.width && mState.height)
 	{
-		int fbmem = mState.width * mState.height * sizeof(fb_pixel_t);
+		int fbmem = mState.width * mState.height * sizeof(fb_pixel_t) * 2;
 		mOSDBuffer.resize(fbmem);
 		
 		dprintf(DEBUG_NORMAL, "GLThreadObj::setupOSDBuffer: OSD buffer set to %d bytes\n", fbmem);

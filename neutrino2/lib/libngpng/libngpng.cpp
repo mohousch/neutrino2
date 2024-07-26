@@ -441,6 +441,7 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 	return(cr);
 }
 
+// convert rgba to argb
 uint32_t * convertRGB2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
 	unsigned long i;
@@ -496,6 +497,7 @@ uint32_t * convertRGB2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, b
 	return (uint32_t *)fbbuff;
 }
 
+// convert rgba to abgr
 uint32_t * convertBGR2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
 	unsigned long i;
@@ -551,6 +553,7 @@ uint32_t * convertBGR2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, b
 	return (uint32_t *)fbbuff;
 }
 
+// convert rgba to argb
 uint16_t * convertRGB2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
 	unsigned long i;
@@ -606,6 +609,7 @@ uint16_t * convertRGB2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, b
 	return (uint16_t *)fbbuff;
 }
 
+// convert rgba to abgr
 uint16_t * convertBGR2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
 	unsigned long i;
@@ -661,6 +665,7 @@ uint16_t * convertBGR2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, b
 	return (uint16_t *)fbbuff;
 }
 
+// convert rgba to argb
 uint8_t * convertRGB2FB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
 	unsigned long i;
@@ -716,6 +721,7 @@ uint8_t * convertRGB2FB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, boo
 	return (uint8_t *)fbbuff;
 }
 
+// convert rgba to abgr
 uint8_t * convertBGR2FB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
 	unsigned long i;
@@ -909,20 +915,6 @@ uint32_t * getBGR32Image(const std::string &name, int width, int height, int tra
 			}
 			
 			// convert
-			/*
-			if( name.find(".png") == (name.length() - 4) )
-			{
-				// alpha
-				if (channels == 4)
-					ret = (uint32_t *)convertBGR2FB32(buffer, x, y, true);
-				else
-					ret = (uint32_t *)convertBGR2FB32(buffer, x, y, false, transp, TM_INI); // TM_BLACK
-			}
-			else
-			{
-				ret = (uint32_t *)convertBGR2FB32(buffer, x, y, false, transp, TM_NONE); //TM_NONE
-			}
-			*/
 			ret = (uint32_t *)convertBGR2FB32(buffer, x, y, (channels == 4)? true : false, transp, TM_NONE); //TM_NONE
 			
 			free(buffer);
@@ -996,18 +988,7 @@ uint16_t * getBGR16Image(const std::string &name, int width, int height, int tra
 			}
 			
 			// convert
-			if( name.find(".png") == (name.length() - 4) )
-			{
-				// alpha
-				if (channels == 4)
-					ret = (uint16_t *)convertBGR2FB16(buffer, x, y, true);
-				else
-					ret = (uint16_t *)convertBGR2FB16(buffer, x, y, false, transp, TM_BLACK); // TM_BLACK
-			}
-			else
-			{
-				ret = (uint16_t *)convertBGR2FB16(buffer, x, y, false, transp, TM_NONE); //TM_NONE
-			}
+			ret = (uint16_t *)convertBGR2FB16(buffer, x, y, (channels == 4)? true : false, transp, TM_NONE); //TM_NONE
 			
 			free(buffer);
 		} 
@@ -1080,20 +1061,6 @@ uint8_t * getBGR8Image(const std::string &name, int width, int height, int trans
 			}
 			
 			// convert
-			/*
-			if( name.find(".png") == (name.length() - 4) )
-			{
-				// alpha
-				if (channels == 4)
-					ret = (uint8_t *)convertBGR2FB8(buffer, x, y, true);
-				else
-					ret = (uint8_t *)convertBGR2FB8(buffer, x, y, false, transp, TM_BLACK); // TM_BLACK
-			}
-			else
-			{
-				ret = (uint8_t *)convertBGR2FB8(buffer, x, y, false, transp, TM_NONE); //TM_NONE
-			}
-			*/
 			ret = (uint8_t *)convertBGR2FB8(buffer, x, y, (channels == 4)? true : false, transp, TM_NONE);
 			
 			

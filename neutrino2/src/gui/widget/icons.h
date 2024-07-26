@@ -181,6 +181,7 @@
 #define NEUTRINO_ICON_UHD					"marker_uhd"
 #define NEUTRINO_ICON_MARK					"marker_dialog_ok"
 #define NEUTRINO_ICON_HIDDEN					"marker_hidden"
+#define NEUTRINO_ICON_WEBTV					"webtv"
 
 
 // filetypes
@@ -189,10 +190,6 @@
 #define NEUTRINO_ICON_PICTURE					"picture"
 #define NEUTRINO_ICON_FILE					"file"
 #define NEUTRINO_ICON_FOLDER					"folder"
-
-// webtv
-#define NEUTRINO_ICON_WEBTV					"webtv"
-#define NEUTRINO_ICON_WEBTV_SMALL				"webtv_small"
 
 // mp
 #define NEUTRINO_ICON_PAUSE					"mp_pause"
@@ -212,7 +209,6 @@
 // mainmenu
 #define NEUTRINO_ICON_MENUITEM_TV				"hint_tvmode"
 #define NEUTRINO_ICON_MENUITEM_RADIO			 	"hint_radiomode"
-#define NEUTRINO_ICON_MENUITEM_WEBTV			 	"hint_webtv"
 #define NEUTRINO_ICON_MENUITEM_SCART			 	"hint_avinputmode"
 #define NEUTRINO_ICON_MENUITEM_MEDIAPLAYER		 	"hint_media"
 #define NEUTRINO_ICON_MENUITEM_SETTINGS				"hint_settings"

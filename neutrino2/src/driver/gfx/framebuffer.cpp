@@ -181,8 +181,8 @@ void CFrameBuffer::init(const char * const fbDevice)
 		}
 	}
 	
-	lfb = reinterpret_cast<fb_pixel_t *>(mpGLThreadObj->getOSDBuffer());
-	memset(lfb, 0x7f, screeninfo.xres * screeninfo.yres * sizeof(fb_pixel_t));
+	lfb = reinterpret_cast<uint8_t *>(mpGLThreadObj->getOSDBuffer());
+//	memset(lfb, 0x7f, screeninfo.xres * screeninfo.yres * sizeof(fb_pixel_t));
 	
 	if (!lfb) 
 	{
@@ -224,7 +224,7 @@ void CFrameBuffer::init(const char * const fbDevice)
 	
 	dprintf(DEBUG_NORMAL, "CFrameBuffer::init %dk video mem\n", available/1024);
 	
-	lfb = (fb_pixel_t *)mmap(0, available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
+	lfb = (uint8_t *)mmap(0, available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
 
 	if (!lfb) 
 	{
@@ -350,7 +350,7 @@ unsigned int CFrameBuffer::getScreenY(bool real)
 		return g_settings.screen_StartY;
 }
 
-fb_pixel_t * CFrameBuffer::getFrameBufferPointer() const
+uint8_t * CFrameBuffer::getFrameBufferPointer() const
 {	  
 	if (active)
 	{
@@ -1824,7 +1824,8 @@ bool CFrameBuffer::savePNG(const char *const filename)
 	
 	png_structp  png_ptr;
 	png_infop    info_ptr;
-	png_byte *   fbptr;
+//	png_byte *   fbptr;
+	png_bytep *row_pointers;
 	FILE *       fp;
  
         // create file
@@ -1834,6 +1835,8 @@ bool CFrameBuffer::savePNG(const char *const filename)
                 ng2_err("File %s could not be opened for writing\n", filename);
 	else
 	{
+		row_pointers = (png_bytep *) malloc(sizeof(png_bytep) * yRes);
+		
 	        // initialize stuff
         	png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 
@@ -1851,10 +1854,19 @@ bool CFrameBuffer::savePNG(const char *const filename)
 				else
 				{
         				png_init_io(png_ptr, fp);
+        				
+        				//
+        				int y;
+					for (y = 0; y < yRes; y++)
+					{
+						row_pointers[y] = lfb + (y * xRes * sizeof(fb_pixel_t));
+					}
 
         				// write header
         				if (setjmp(png_jmpbuf(png_ptr)))
         				        ng2_err("Error during writing header\n");
+        				        
+        				png_set_bgr(png_ptr);
 
 					//
 					png_set_IHDR(png_ptr, info_ptr, xRes, yRes, 8, PNG_COLOR_TYPE_RGBA, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
@@ -1872,13 +1884,7 @@ bool CFrameBuffer::savePNG(const char *const filename)
 
 					ret_value = true;
 					
-					fbptr = (png_byte *)lfb;
-					
-					for (int i = 0; i < yRes; i++)
-					{
-						png_write_row(png_ptr, fbptr);
-						fbptr += stride;
-					}
+					png_write_image(png_ptr, row_pointers);
 
         				// end write
         				if (setjmp(png_jmpbuf(png_ptr)))
@@ -1891,6 +1897,8 @@ bool CFrameBuffer::savePNG(const char *const filename)
 				}
 			}
 		}
+		
+		free(row_pointers);
         	fclose(fp);
 	}
 

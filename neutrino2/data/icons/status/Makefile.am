@@ -14,4 +14,4 @@ install_DATA = \
 	
 # channellist
 install_DATA += \
-	marker_scrambled.png marker_hd.png marker_uhd.png marker_dialog_ok.png marker_hidden.png
+	marker_scrambled.png marker_hd.png marker_uhd.png marker_dialog_ok.png marker_hidden.png webtv.png

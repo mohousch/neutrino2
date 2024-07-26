@@ -1691,7 +1691,7 @@ void CLCDDisplay::load_png_element(raw_lcd_element_t *element, int posx, int pos
 		width = p_w;
 		height = p_h;
 	}
-	
+
 	if (raw_bpp == 32)
 		element->buffer = (lcd_pixel_t *)::convertBGR2FB32(image, width, height, (chans == 4)? true : false, 0xFF, TM_INI);
 	else
