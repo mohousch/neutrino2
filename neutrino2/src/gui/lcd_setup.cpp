@@ -421,9 +421,7 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("GraphLCD Setup"))));
 	
 	// enable glcd
-//	lcdSettings->addItem(new CMenuOptionChooser(_("Enable NGLCD"), &g_settings.glcd_enable, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
-	
-//	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+	lcdSettings->addItem(new CMenuOptionChooser(_("Enable NGLCD"), &g_settings.glcd_enable, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
 	
 	// select driver
 	item = new CMenuForwarder(_("Type"), (CLCD::getInstance()->GetConfigSize() > 1), CLCD::getInstance()->GetConfigName(g_settings.glcd_selected_config).c_str(), this, "select_driver");
@@ -512,6 +510,13 @@ bool CLCDSettings::changeNotify(const std::string &locale, void *Data)
 	{
 		g_settings.glcd_brightness_standby = state;
 		CLCD::getInstance()->setBrightnessStandby(g_settings.glcd_brightness_standby);
+	}
+	else if (locale == _("Enable NGLCD"))
+	{
+		if (MessageBox(_("Information"), _("changes are activ after restart\ndo you want to restart?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == CMessageBox::mbrYes) 
+		{
+			CNeutrinoApp::getInstance()->exec(NULL, "restart");
+		}
 	}
 #endif
 	

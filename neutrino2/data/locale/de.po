@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-07-25 04:05+0200\n"
+"POT-Creation-Date: 2024-07-27 00:45+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -103,9 +103,8 @@ msgstr "Alle Sender"
 msgid "Alpha Setup"
 msgstr "Alpha-Setup"
 
-#, fuzzy
 msgid "Analog"
-msgstr "Analogausgang"
+msgstr "Analog"
 
 msgid "Analog Output"
 msgstr "Analogausgang"
@@ -243,9 +242,8 @@ msgstr ""
 msgid "Brightness"
 msgstr "Helligkeit"
 
-#, fuzzy
 msgid "Brightness / Contrast"
-msgstr "Helligkeit"
+msgstr "Helligkeit / Kontrast"
 
 msgid "Brightness after dim timeout"
 msgstr "Helligkeit nach Dimm-Timeout"
@@ -529,9 +527,8 @@ msgstr "DiSEqC-Wiederholungen"
 msgid "Diashow mode"
 msgstr "Diashow-Modus"
 
-#, fuzzy
 msgid "Digital"
-msgstr "Dolby Digital"
+msgstr "Digital Uhr"
 
 msgid "Dim timeout"
 msgstr "Dimm-Timeout"
@@ -672,6 +669,9 @@ msgstr "Bearbeiten"
 
 msgid "Enable (soft) Limits"
 msgstr "(Soft-)Limits aktivieren"
+
+msgid "Enable NGLCD"
+msgstr "Aktiviere Graphlcd"
 
 msgid "Enable standby"
 msgstr "Standby aktivieren"
@@ -887,13 +887,11 @@ msgstr "Frontend:"
 msgid "Further education"
 msgstr "Weiterbildung"
 
-#, fuzzy
 msgid "GLCD Brightness"
-msgstr "Helligkeit"
+msgstr "GLCD Helligkeit"
 
-#, fuzzy
 msgid "GLCD Standby Brightness"
-msgstr "Standby-Helligkeit"
+msgstr "GLCD Standby-Helligkeit"
 
 msgid "GUI restart"
 msgstr "GUI-Neustart"
@@ -925,9 +923,8 @@ msgstr "Farbverlauf"
 msgid "Gradient type"
 msgstr "Farbverlauftyp"
 
-#, fuzzy
 msgid "GraphLCD Setup"
-msgstr "Alpha-Setup"
+msgstr "GraphLCD Setup"
 
 msgid "Guard Interval"
 msgstr "Schutzintervall"
@@ -1166,12 +1163,11 @@ msgstr "Stichwort"
 msgid "LCD EPG Align"
 msgstr "LCD-EPG-Ausrichtung"
 
-#, fuzzy
 msgid "LCD Power"
-msgstr "LED-Power"
+msgstr "LCD-Power"
 
 msgid "LED Color"
-msgstr ""
+msgstr "LED Farbe"
 
 msgid "LEFT"
 msgstr "LINKS"
@@ -1515,9 +1511,8 @@ msgstr "Kein CAM im Steckplatz"
 msgid "No Caps"
 msgstr "Kleine Schreibung"
 
-#, fuzzy
 msgid "No Networks found please scan again..."
-msgstr "Jetzt Netzwerk einrichten, bitte warten..."
+msgstr "Keine Wlan gefunden, bitte scannen Sie erneut..."
 
 msgid ""
 "No channels were found!\n"
@@ -2144,12 +2139,11 @@ msgstr "Dateirechte anzeigen"
 msgid "Show mode"
 msgstr "Show-Modus"
 
-#, fuzzy
 msgid "Show picon"
-msgstr "Item Infos zeigen"
+msgstr "Sender logos anzeigen"
 
 msgid "Show weather"
-msgstr ""
+msgstr "Wetter anzeigen"
 
 msgid "Shutdown"
 msgstr "Abschalten"
@@ -2229,9 +2223,8 @@ msgstr "Standby"
 msgid "Standby Brightness"
 msgstr "Standby-Helligkeit"
 
-#, fuzzy
 msgid "Standby Clock"
-msgstr "Standby"
+msgstr "Standby Uhr"
 
 msgid "Start"
 msgstr "Start"
@@ -2547,9 +2540,8 @@ msgstr "Tuner-Modus"
 msgid "Tuner type"
 msgstr "Tunertyp"
 
-#, fuzzy
 msgid "Type"
-msgstr "Typ:"
+msgstr "Typ"
 
 msgid "Type:"
 msgstr "Typ:"
@@ -2665,9 +2657,8 @@ msgstr "Warten auf die Zeit..."
 msgid "Water sports"
 msgstr "Wassersport"
 
-#, fuzzy
 msgid "Weather Forcast"
-msgstr "Nachrichten / Wetterbericht"
+msgstr "Wetter Dienst"
 
 msgid "Wednesday"
 msgstr "Mittwoch"
@@ -2818,7 +2809,6 @@ msgstr ""
 msgid "cable"
 msgstr "Kabel"
 
-#, fuzzy
 msgid "can't get mtd-info"
 msgstr "mtd-device kann nicht geöffnet werden"
 
@@ -2833,6 +2823,12 @@ msgstr "mtd-device kann nicht geöffnet werden"
 
 msgid "center"
 msgstr "Center"
+
+msgid ""
+"changes are activ after restart\n"
+"do you want to restart?"
+msgstr "Änderungen sind nach neu Start aktiv\n"
+"möchten Sie jetzt neu starten?"
 
 msgid "channel"
 msgstr "Kanal"

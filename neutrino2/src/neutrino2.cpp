@@ -906,8 +906,8 @@ int CNeutrinoApp::loadSetup(const char * fname)
 #ifdef ENABLE_GRAPHLCD
 	g_settings.glcd_enable = configfile.getInt32("glcd_enable", 0);
 	g_settings.glcd_selected_config = configfile.getInt32("glcd_selected_config", 0);
-	g_settings.glcd_brightness = configfile.getInt32("glcd_brightness", 7);
-	g_settings.glcd_brightness_standby = configfile.getInt32("glcd_brightness_standby", 3);
+	g_settings.glcd_brightness = configfile.getInt32("glcd_brightness", 255);
+	g_settings.glcd_brightness_standby = configfile.getInt32("glcd_brightness_standby", 255);
 #endif
 	
 	//set OSD resolution

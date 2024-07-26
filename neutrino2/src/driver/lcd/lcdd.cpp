@@ -444,7 +444,9 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 #ifdef ENABLE_GRAPHLCD
 	if (!display)
 		display = new CLCDDisplay();
-		
+	
+	if (g_settings.glcd_enable)
+	{	
 	if (display->initGLCD())
 	{
 		has_lcd = true;
@@ -453,6 +455,7 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 		lcd_height = display->yres;
 	
 		lcdd_printf(10, "%d %d\n", lcd_width, lcd_height);
+	}
 	}
 #endif
 	

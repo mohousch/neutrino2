@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-07-25 04:05+0200\n"
+"POT-Creation-Date: 2024-07-27 00:45+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -660,6 +660,9 @@ msgid "Edit"
 msgstr ""
 
 msgid "Enable (soft) Limits"
+msgstr ""
+
+msgid "Enable NGLCD"
 msgstr ""
 
 msgid "Enable standby"
@@ -2760,6 +2763,11 @@ msgid "can't open mtd-device"
 msgstr ""
 
 msgid "center"
+msgstr ""
+
+msgid ""
+"changes are activ after restart\n"
+"do you want to restart?"
 msgstr ""
 
 msgid "channel"
