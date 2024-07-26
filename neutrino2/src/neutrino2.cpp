@@ -1541,14 +1541,14 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 	TVallList = new CBouquetList(_("All Services"));
 	tmp = TVallList->addBouquet(_("All Services"));
 	*(tmp->channelList) = *TVchannelList;
-	//tmp->channelList->SortAlpha();
+	tmp->channelList->SortAlpha();
 	TVallList->orgChannelList = TVchannelList;
 
 	// radio all list
 	RADIOallList = new CBouquetList(_("All Services"));
 	tmp = RADIOallList->addBouquet(_("All Services"));
 	*(tmp->channelList) = *RADIOchannelList;
-	//tmp->channelList->SortAlpha();
+	tmp->channelList->SortAlpha();
 	RADIOallList->orgChannelList = RADIOchannelList;
 
 	// sat

@@ -383,7 +383,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 		{
 			menu->enablePaintFoot();	
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " " };
-			//if (g_settings.widget_type == ClistBox::TYPE_STANDARD || !g_settings.item_info)	
+	
 			menu->setFootButtons(&btn);
 		}
 		
