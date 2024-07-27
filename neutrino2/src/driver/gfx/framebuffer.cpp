@@ -132,7 +132,6 @@ void CFrameBuffer::init(const char * const fbDevice)
 		screeninfo.xres_virtual = screeninfo.xres;
 		screeninfo.yres = DEFAULT_YRES;
 		screeninfo.yres_virtual = screeninfo.yres;
-		screeninfo.bits_per_pixel = DEFAULT_BPP;
 		
 		mpGLThreadObj = new GLThreadObj(screeninfo.xres, screeninfo.yres);
 
@@ -144,7 +143,7 @@ void CFrameBuffer::init(const char * const fbDevice)
 		}
 	}
 	
-	lfb = reinterpret_cast<uint8_t *>(mpGLThreadObj->getOSDBuffer());
+	lfb = reinterpret_cast<fb_pixel_t *>(mpGLThreadObj->getOSDBuffer());
 	
 	if (!lfb) 
 	{
@@ -184,7 +183,7 @@ void CFrameBuffer::init(const char * const fbDevice)
 	
 	dprintf(DEBUG_NORMAL, "CFrameBuffer::init %dk video mem\n", available/1024);
 	
-	lfb = (uint8_t *)mmap(0, available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
+	lfb = (fb_pixel_t *)mmap(0, available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
 
 	if (!lfb) 
 	{
@@ -310,7 +309,7 @@ unsigned int CFrameBuffer::getScreenY(bool real)
 		return g_settings.screen_StartY;
 }
 
-uint8_t * CFrameBuffer::getFrameBufferPointer() const
+fb_pixel_t * CFrameBuffer::getFrameBufferPointer() const
 {	  
 	if (active)
 	{
@@ -1805,7 +1804,7 @@ bool CFrameBuffer::savePNG(const char *const filename)
         				int y;
 					for (y = 0; y < yRes; y++)
 					{
-						row_pointers[y] = lfb + (y * xRes * sizeof(fb_pixel_t));
+						row_pointers[y] = (uint8_t *)lfb + (y * xRes * sizeof(fb_pixel_t));
 					}
 
         				// write header

@@ -134,7 +134,7 @@ int int_png_load(const char *name, unsigned char **buffer, int *xp, int *yp, int
 		png_set_gray_to_rgb(png_ptr);
 			
 	}
-//	else
+	else
 	{
 		if (color_type == PNG_COLOR_TYPE_PALETTE)
 		{
@@ -146,19 +146,6 @@ int int_png_load(const char *name, unsigned char **buffer, int *xp, int *yp, int
 		{
 			png_set_gray_to_rgb(png_ptr);
 			png_set_background(png_ptr, (png_color_16*)&my_background, PNG_BACKGROUND_GAMMA_SCREEN, 0, 1.0);
-		}
-		
-		////	
-		//if (color_type & PNG_COLOR_MASK_ALPHA)
-		//	png_set_strip_alpha(png_ptr);
-		
-		////
-		if (color_type == PNG_COLOR_TYPE_RGB) 
-		{
-			if (trns)
-				png_set_tRNS_to_alpha(png_ptr);
-			else
-				png_set_add_alpha(png_ptr, 255, PNG_FILLER_AFTER);
 		}
 				
 		if (bit_depth < 8)

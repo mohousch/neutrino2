@@ -139,7 +139,7 @@ class CFrameBuffer
 		std::string	spinnerBasePath;
 
 		int             fd;
-		uint8_t 	*lfb;
+		fb_pixel_t 	*lfb;
 		int		available;
 		fb_pixel_t *    background;
 		fb_pixel_t *    backupBackground;
@@ -189,7 +189,7 @@ class CFrameBuffer
 		int getFileHandle() const; 		    	//only used for plugins (games) !!
 		t_fb_var_screeninfo *getScreenInfo();
 
-		uint8_t * getFrameBufferPointer() const;	// pointer to framebuffer
+		fb_pixel_t * getFrameBufferPointer() const;	// pointer to framebuffer
 		unsigned int getStride() const;             	// size of a single line in the framebuffer (in bytes)
 		unsigned int getScreenWidth(bool real = false);
 		unsigned int getScreenHeight(bool real = false); 
