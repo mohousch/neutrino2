@@ -659,8 +659,8 @@ class CLCD
 #ifdef ENABLE_GRAPHLCD
 		int GetConfigSize();
 		std::string GetConfigName(int);
-		
 		void reinitGLCD();
+		void setGLCDBrightness(int brightness);
 #endif
 };
 

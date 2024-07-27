@@ -160,6 +160,11 @@ void CLCD::reinitGLCD()
 		
 	}
 }
+
+void CLCD::setGLCDBrightness(int brightness)
+{
+	if (display) display->setGLCDBrightness(brightness);
+}
 #endif
 
 ////
@@ -475,15 +480,15 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	
 	if (g_settings.glcd_enable)
 	{	
-	if (display->initGLCD())
-	{
-		has_lcd = true;
+		if (display->initGLCD())
+		{
+			has_lcd = true;
+			
+			lcd_width = display->xres;
+			lcd_height = display->yres;
 		
-		lcd_width = display->xres;
-		lcd_height = display->yres;
-	
-		lcdd_printf(10, "%d %d\n", lcd_width, lcd_height);
-	}
+			lcdd_printf(10, "%d %d\n", lcd_width, lcd_height);
+		}
 	}
 #endif
 	
@@ -595,7 +600,7 @@ void CLCD::setlcdparameter(int dimm, const int contrast, const int power, const 
 #endif
 #endif
 
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// dimm
 	display->setLCDBrightness(dimm);
 	
@@ -607,6 +612,13 @@ void CLCD::setlcdparameter(int dimm, const int contrast, const int power, const 
 		display->setInverted(LCD_PIXEL_ON);
 	else		
 		display->setInverted(LCD_PIXEL_OFF);
+#endif
+
+#ifdef ENABLE_GRAPHLCD
+	if (mode == MODE_STANDBY)
+		display->setGLCDBrightness(g_settings.glcd_brightness_standby);
+	else
+		display->setGLCDBrightness(g_settings.glcd_brightness);
 #endif
 }
 
@@ -627,21 +639,13 @@ void CLCD::setlcdparameter(void)
 	if (timeouted)
 		brightness = dim_brightness;
 	else
-#ifdef ENABLE_GRAPHLCD
-		brightness = g_settings.glcd_brightness;
-#else
 		brightness = g_settings.lcd_brightness;
-#endif
 
 	if (last_toggle_state_power && (!timeouted || dim_brightness > 0))
 		power = 1;
 
 	if (mode == MODE_STANDBY)
-#ifdef ENABLE_GRAPHLCD
-		brightness = g_settings.glcd_brightness_standby;
-#else
 		brightness = g_settings.lcd_standbybrightness;
-#endif
 		
 	setlcdparameter(brightness,
 			g_settings.lcd_contrast,

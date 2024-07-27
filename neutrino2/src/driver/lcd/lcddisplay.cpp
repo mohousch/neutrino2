@@ -737,14 +737,19 @@ int CLCDDisplay::setLCDBrightness(int brightness)
 	}
 #endif
 
+	return(0);
+}
+
 #ifdef ENABLE_GRAPHLCD
+int CLCDDisplay::setGLCDBrightness(int brightness)
+{
 	// ax206 0..7 FIXME:
 	if (lcd)
 		lcd->SetBrightness(brightness);
-#endif
 
-	return(0);
+	return (0);
 }
+#endif
 
 int CLCDDisplay::setLED(int value, int option)
 {

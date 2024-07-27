@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-07-27 00:45+0200\n"
+"POT-Creation-Date: 2024-07-27 23:30+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -237,9 +237,6 @@ msgid ""
 msgstr ""
 
 msgid "Brightness"
-msgstr ""
-
-msgid "Brightness / Contrast"
 msgstr ""
 
 msgid "Brightness after dim timeout"
@@ -902,9 +899,6 @@ msgstr ""
 msgid "Gradient type"
 msgstr ""
 
-msgid "GraphLCD Setup"
-msgstr ""
-
 msgid "Guard Interval"
 msgstr ""
 
@@ -1110,9 +1104,6 @@ msgid "Interface"
 msgstr ""
 
 msgid "Internet Radio"
-msgstr ""
-
-msgid "Invert"
 msgstr ""
 
 msgid "Is this video mode working ok ?"
@@ -2557,6 +2548,9 @@ msgid "User menu blue"
 msgstr ""
 
 msgid "Username"
+msgstr ""
+
+msgid "VFD"
 msgstr ""
 
 msgid "Variety show"

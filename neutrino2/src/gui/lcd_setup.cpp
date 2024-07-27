@@ -123,8 +123,6 @@ CLCDSettings::CLCDSettings()
 
 CLCDSettings::~CLCDSettings()
 {
-#ifdef ENABLE_GRAPHLCD
-#endif
 }
 
 int CLCDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
@@ -313,15 +311,14 @@ void CLCDSettings::showMenu()
 	// save settings
 	lcdSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// lcd_power
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 	lcdSettings->addItem(new CMenuOptionChooser(_("LCD Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
 #endif
 	
-	// led
+	// led_color
 #if defined (PLATFORM_GIGABLUE)	
 	lcdSettings->addItem(new CMenuOptionChooser(_("LED Color"), &g_settings.lcd_led, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, this));
 #endif
@@ -336,9 +333,10 @@ void CLCDSettings::showMenu()
 
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// invert
-	lcdSettings->addItem(new CMenuOptionChooser(_("Invert"), &g_settings.lcd_inverse, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
+//	lcdSettings->addItem(new CMenuOptionChooser(_("Invert"), &g_settings.lcd_inverse, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
 #endif
 
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	// statusline
 	lcdSettings->addItem(new CMenuOptionChooser(_("Status line"), &g_settings.lcd_statusline, LCDMENU_STATUSLINE_OPTIONS, LCDMENU_STATUSLINE_OPTION_COUNT, true));
 	
@@ -356,71 +354,41 @@ void CLCDSettings::showMenu()
 
 	// standby_clock
 	lcdSettings->addItem(new CMenuOptionChooser(_("Standby Clock"), &g_settings.lcd_standby_clock, LCDMENU_STANDBY_CLOCK_OPTIONS, LCDMENU_STANDBY_CLOCK_OPTION_COUNT, true, this, CRCInput::RC_nokey, NULL, false, false));
+#endif
 	
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 	// dimm-time
 	m1 = new CMenuForwarder(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, this, "set_dimm_timeout");
 	lcdSettings->addItem(m1);
 
 	// dimm brightness
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, MAXBRIGHTNESS, this, 0, -1, true));
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, MAXBRIGHTNESS, this));
 	
 	// brightness / contrast
-	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Brightness / Contrast"))));
+//	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator(CMenuSeparator::LINE /*| CMenuSeparator::STRING, _("Brightness / Contrast")*/)));
 
 	// brightness
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness"), &g_settings.lcd_brightness, true, 0, MAXBRIGHTNESS, this, 0, -1, true));
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness"), &g_settings.lcd_brightness, true, 0, MAXBRIGHTNESS, this));
 	
 	// standby brightness
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Standby Brightness"), &g_settings.lcd_standbybrightness, true, 0, MAXBRIGHTNESS, this, 0, -1, true));
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Standby Brightness"), &g_settings.lcd_standbybrightness, true, 0, MAXBRIGHTNESS, this));
 	
-	// deepstandby brightness
 	// contrast
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Contrast"), &g_settings.lcd_contrast, true, 0, MAXCONTRAST, this, 0, -1, true));
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Contrast"), &g_settings.lcd_contrast, true, 0, MAXCONTRAST, this));
 	
 	// reset brightness / contrast to default
 	lcdSettings->addItem(new CMenuForwarder(_("Reset to defaults"), true, NULL, this, "reset"));
 #endif
-#endif
+
+//#endif
 #if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
-	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	
-	// lcd_power
-#if defined (PLATFORM_GIGABLUE)	
-	lcdSettings->addItem(new CMenuOptionChooser(_("LED Color"), &g_settings.lcd_led, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, this));
-#else
-	lcdSettings->addItem(new CMenuOptionChooser(_("LCD Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
-#endif
-	
 	// epgmode
-	lcdSettings->addItem(new CMenuOptionChooser(_("EPG"), &g_settings.lcd_vfdepgmode, LCDMENU_VFDEPG_OPTIONS, LCDMENU_VFDEPG_OPTION_COUNT, true));	
-
-#if !defined (PLATFORM_CUBEREVO_250HD) && !defined (PLATFORM_SPARK) && !defined (PLATFORM_GIGABLUE)	
-	// dimm-time
-	CStringInput * dim_time = new CStringInput(_("Dim timeout"), g_settings.lcd_setting_dim_time, 3, NULL, NULL, "0123456789 ");
-	lcdSettings->addItem(new CMenuForwarder(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, dim_time));
-
-	// dimm brightness
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, 255, this, 0, -1, true));
-
-	// brightness
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness"), &g_settings.lcd_brightness, true, 0, 255, this, 0, -1, true));
-	
-	// standby brightness
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Standby Brightness"), &g_settings.lcd_standbybrightness, true, 0, 255, this, 0, -1, true));
-	
-	// deepstandby brightness
-	
-	// contrast
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Contrast"), &g_settings.lcd_contrast, true, 0, 63, this, 0, -1, true));
-#endif
-
-	// reset brightness / contrast to default
-	lcdSettings->addItem(new CMenuForwarder(_("Reset to defaults"), true, NULL, this, "reset"));
+	lcdSettings->addItem(new CMenuOptionChooser(_("VFD"), &g_settings.lcd_vfdepgmode, LCDMENU_VFDEPG_OPTIONS, LCDMENU_VFDEPG_OPTION_COUNT, true));	
 #endif
 
 #ifdef ENABLE_GRAPHLCD	
-	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("GraphLCD Setup"))));
+	//lcdSettings->addItem(new CMenuSeparator(CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("GraphLCD Setup"))));
+	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// enable glcd
 	lcdSettings->addItem(new CMenuOptionChooser(_("Enable NGLCD"), &g_settings.glcd_enable, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
@@ -440,7 +408,7 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(item);
 	
 	// glcd_brightness
-	item1 = new CMenuOptionNumberChooser(_("GLCD Brightness"), &g_settings.glcd_brightness, true, 0, 255, this, 0, -1, true);
+	item1 = new CMenuOptionNumberChooser(_("GLCD Brightness"), &g_settings.glcd_brightness, true, 0, 255, this);
 	if (g_settings.glcd_enable)
 	{
 		item1->setState(CMenuItem::ITEM_ACTIVE);
@@ -452,7 +420,7 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(item1);
 	
 	// glcd_standby brightness
-	item2 = new CMenuOptionNumberChooser(_("GLCD Standby Brightness"), &g_settings.glcd_brightness_standby, true, 0, 255, this, 0, -1, true);
+	item2 = new CMenuOptionNumberChooser(_("GLCD Standby Brightness"), &g_settings.glcd_brightness_standby, true, 0, 255, this);
 	if (g_settings.glcd_enable)
 	{
 		item2->setState(CMenuItem::ITEM_ACTIVE);
@@ -533,12 +501,12 @@ bool CLCDSettings::changeNotify(const std::string &locale, void *Data)
 	else if (locale == _("GLCD Brightness"))
 	{
 		g_settings.glcd_brightness = state;
-		CLCD::getInstance()->setBrightness(g_settings.glcd_brightness);
+		CLCD::getInstance()->setGLCDBrightness(g_settings.glcd_brightness);
 	}
 	else if (locale == _("GLCD Standby Brightness"))
 	{
 		g_settings.glcd_brightness_standby = state;
-		CLCD::getInstance()->setBrightnessStandby(g_settings.glcd_brightness_standby);
+		CLCD::getInstance()->setGLCDBrightness(g_settings.glcd_brightness_standby);
 	}
 	else if (locale == _("Enable NGLCD"))
 	{

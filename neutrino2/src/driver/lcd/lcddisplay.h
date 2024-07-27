@@ -214,6 +214,7 @@ class CLCDDisplay
 
 		int GetConfigSize();
 		std::string GetConfigName(int);
+		int setGLCDBrightness(int brightness);
 #endif
 };
 
