@@ -2086,20 +2086,7 @@ void CTestMenu::testCWindowCustomColor()
 	Box.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 400);
 	Box.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 400);
 	
-	//lookup color from col index
-	uint8_t a = 0;
-	uint8_t r = 0;
-	uint8_t g = 0;
-	uint8_t b = 0;
-	
-	uint32_t col = 0x80808080;
-						
-	a = (col >> 24)&0xFF; 
-	r = (col >> 16)&0xFF;
-	g = (col >> 8)&0xFF;
-	b = (col)&0xFF;
-	
-	dprintf(DEBUG_NORMAL, "testCWindowCustomColor: lookupColor: -> col:0x%08x (a:0x%02x r:0x%02x g:0x%02x b:0x%02x)\n", col, a, r, g, b);
+	uint32_t col = 0xffffff00;
 
 	//
 	CCWindow* window = new CCWindow(&Box);

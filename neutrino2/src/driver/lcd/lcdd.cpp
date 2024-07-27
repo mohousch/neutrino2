@@ -109,8 +109,6 @@ void CLCD::closeDevice()
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-static const char *kDefaultConfigFile = "/etc/graphlcd.conf";
-
 int CLCD::GetConfigSize()
 {
 	//

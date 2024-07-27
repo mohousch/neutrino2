@@ -37,11 +37,11 @@
 #include <driver/gfx/color.h>
 
 #ifdef ENABLE_GRAPHLCD
-#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include <glcddrivers/config.h>
 #include <glcddrivers/driver.h>
 #include <glcddrivers/drivers.h>
-#pragma GCC diagnostic warning "-Wunused-parameter"
+
+#define kDefaultConfigFile 			"/etc/graphlcd.conf"
 #endif
 
 // aabbggrr

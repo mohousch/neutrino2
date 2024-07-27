@@ -60,16 +60,6 @@
 #define BACKGROUNDIMAGEWIDTH 	DEFAULT_XRES
 #define BACKGROUNDIMAGEHEIGHT	DEFAULT_YRES
 
-//// ARGB
-inline fb_pixel_t make16color(uint16_t r, uint16_t g, uint16_t b, uint16_t t,
-				  uint32_t  /*rl*/ = 0, uint32_t  /*ro*/ = 0,
-				  uint32_t  /*gl*/ = 0, uint32_t  /*go*/ = 0,
-				  uint32_t  /*bl*/ = 0, uint32_t  /*bo*/ = 0,
-				  uint32_t  /*tl*/ = 0, uint32_t  /*to*/ = 0)
-{
-	return ((t << 24) & 0xFF000000) | ((r << 8) & 0xFF0000) | ((g << 0) & 0xFF00) | (b >> 8 & 0xFF);
-}
-
 CFrameBuffer::CFrameBuffer()
 : active ( true )
 {
@@ -144,33 +134,6 @@ void CFrameBuffer::init(const char * const fbDevice)
 		screeninfo.yres_virtual = screeninfo.yres;
 		screeninfo.bits_per_pixel = DEFAULT_BPP;
 		
-		switch (bpp) 
-		{
-			case 16:
-				// ARGB 1555
-				screeninfo.transp.offset = 15;
-				screeninfo.transp.length = 1;
-				screeninfo.red.offset = 10;
-				screeninfo.red.length = 5;
-				screeninfo.green.offset = 5;
-				screeninfo.green.length = 5;
-				screeninfo.blue.offset = 0;
-				screeninfo.blue.length = 5;
-				break;
-				
-			case 32:
-				// ARGB 8888
-				screeninfo.transp.offset = 24;
-				screeninfo.transp.length = 8;
-				screeninfo.red.offset = 16;
-				screeninfo.red.length = 8;
-				screeninfo.green.offset = 8;
-				screeninfo.green.length = 8;
-				screeninfo.blue.offset = 0;
-				screeninfo.blue.length = 8;
-				break;
-		}
-		
 		mpGLThreadObj = new GLThreadObj(screeninfo.xres, screeninfo.yres);
 
 		if(mpGLThreadObj)
@@ -182,7 +145,6 @@ void CFrameBuffer::init(const char * const fbDevice)
 	}
 	
 	lfb = reinterpret_cast<uint8_t *>(mpGLThreadObj->getOSDBuffer());
-//	memset(lfb, 0x7f, screeninfo.xres * screeninfo.yres * sizeof(fb_pixel_t));
 	
 	if (!lfb) 
 	{
@@ -208,8 +170,6 @@ void CFrameBuffer::init(const char * const fbDevice)
 		perror("FBIOGET_VSCREENINFO");
 		goto nolfb;
 	}
-
-	memcpy(&oldscreen, &screeninfo, sizeof(screeninfo));
 
 	// get fix screen info
 	fb_fix_screeninfo fix;
@@ -489,9 +449,7 @@ int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
 #endif	
 
 	// clear frameBuffer
-	paintBackground();
-	
-	blit();
+	memset(lfb, 0, screeninfo.xres * screeninfo.yres * sizeof(fb_pixel_t));
 
 	return 0;
 }
@@ -564,21 +522,9 @@ void CFrameBuffer::paletteSet(struct fb_cmap *map)
 	if(map == NULL)
 		map = &cmap;
 
-	//
-	uint32_t rl, ro, gl, go, bl, bo, tl, to;
-	
-	rl = screeninfo.red.length;
-	ro = screeninfo.red.offset;
-	gl = screeninfo.green.length;
-	go = screeninfo.green.offset;
-	bl = screeninfo.blue.length;
-	bo = screeninfo.blue.offset;
-	tl = screeninfo.transp.length;
-	to = screeninfo.transp.offset;
-
 	for (int i = 0; i < 256; i++)
 	{
-		realcolor[i] = ::make16color(cmap.red[i], cmap.green[i], cmap.blue[i], cmap.transp[i], rl, ro, gl, go, bl, bo, tl, to);
+		realcolor[i] = ::make16color(cmap.red[i], cmap.green[i], cmap.blue[i], cmap.transp[i]);
 	}
 }
 

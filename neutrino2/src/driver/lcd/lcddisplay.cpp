@@ -90,8 +90,6 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 #define FBIO_WAITFORVSYNC _IOW('F', 0x20, uint32_t)
 #endif
 
-static const char *kDefaultConfigFile = "/etc/graphlcd.conf";
-
 CLCDDisplay::CLCDDisplay()
 {
 	fd = -1;

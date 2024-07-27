@@ -149,14 +149,15 @@ inline uint32_t rgbaToColor(unsigned int rgb, uint8_t tr = 0xFF)
 	return col;
 }
 
+// colorstring used in skin.cpp
 inline uint32_t rgbaToColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	return (a << 24) | (r << 16) | (g << 8) | b;
 }
 
-inline uint32_t rgbToColor(uint8_t r, uint8_t g, uint8_t b)
+inline uint32_t make16color(uint16_t r, uint16_t g, uint16_t b, uint16_t t)
 {
-	return (r << 16) | (g << 8) | b;
+	return ((t << 24) & 0xFF000000) | ((r << 8) & 0xFF0000) | ((g << 0) & 0xFF00) | (b >> 8 & 0xFF);
 }
 
 ////
@@ -187,11 +188,11 @@ struct gRGB
     	union {
 #if BYTE_ORDER == LITTLE_ENDIAN
         	struct {
-            		unsigned char b, g, r, a;
+            		uint8_t b, g, r, a;
         	};
 #else
         	struct {
-            		unsigned char a, r, g, b;
+            		uint8_t a, r, g, b;
         	};
 #endif
         	uint32_t value;
