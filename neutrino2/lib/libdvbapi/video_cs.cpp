@@ -338,9 +338,7 @@ void cVideo::getPictureInfo(int &width, int &height, int &rate)
 			sscanf((const char*) buffer, "%X", &height);
 		}
 	}
-#endif
-	
-	dprintf(DEBUG_NORMAL, "getPictureInfo < w %d, h %d, r %d\n", width, height, rate);	
+#endif	
 }
 
 int cVideo::Start(void)

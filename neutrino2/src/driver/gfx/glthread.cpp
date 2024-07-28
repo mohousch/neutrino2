@@ -81,8 +81,7 @@ GLThreadObj::GLThreadObj(int x, int y) : mReInit(true), mShutDown(false), mInitD
 	mCrop = DISPLAY_AR_MODE_PANSCAN;
 	zoom = 1.0;
 	xscale = 1.0;
-	const char *tmp = getenv("GLFB_FULLSCREEN");
-	mFullscreen = !!(tmp);
+	mFullscreen = false;
 
 	initKeys();
 }
