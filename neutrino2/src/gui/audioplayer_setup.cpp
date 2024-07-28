@@ -108,7 +108,7 @@ void CAudioPlayerSettings::showMenu()
 		//
 		audioPlayerSettings->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		audioPlayerSettings->setFootButtons(&btn);
 		

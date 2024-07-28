@@ -180,7 +180,7 @@ void CGeneralSettings::showMenu()
 		//
 		miscSettingsGeneral->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		miscSettingsGeneral->setFootButtons(&btn);
 		
@@ -579,7 +579,7 @@ void CChannelListSettings::showMenu()
 		//
 		miscSettingsChannelList->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		miscSettingsChannelList->setFootButtons(&btn);
 		
@@ -764,7 +764,7 @@ void CEPGSettings::showMenu()
 		//
 		miscSettingsEPG->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		miscSettingsEPG->setFootButtons(&btn);
 		
@@ -1027,7 +1027,7 @@ void CFileBrowserSettings::showMenu()
 		//
 		miscSettingsFileBrowser->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		miscSettingsFileBrowser->setFootButtons(&btn);
 		

@@ -676,16 +676,16 @@ void CFileBrowser::hide()
 
 const struct button_label FileBrowserButtons[4] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, _("Next Page") },
-	{ NEUTRINO_ICON_BUTTON_GREEN, _("Prev Page") },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Mark") },
-	{ NEUTRINO_ICON_BUTTON_BLUE, _("Filter off") },
+	{ NEUTRINO_ICON_BUTTON_RED, _("Next Page"), 0 },
+	{ NEUTRINO_ICON_BUTTON_GREEN, _("Prev Page"), 0 },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Mark"), 0 },
+	{ NEUTRINO_ICON_BUTTON_BLUE, _("Filter off"), 0 },
 };
 
 const struct button_label HButtons[2] =
 {
-	{ NEUTRINO_ICON_BUTTON_MUTE_SMALL, "" },
-	{ NEUTRINO_ICON_BUTTON_HELP, "" },
+	{ NEUTRINO_ICON_BUTTON_MUTE_SMALL, " ", 0 },
+	{ NEUTRINO_ICON_BUTTON_HELP, " ", 0 },
 };
 
 void CFileBrowser::paint()

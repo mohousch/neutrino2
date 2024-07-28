@@ -244,13 +244,13 @@ class CTimerListApidNotifier : public CChangeObserver
 
 const struct button_label TimerListButtons[4] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED   , _("Delete") },
-	{ NEUTRINO_ICON_BUTTON_GREEN , _("New timer")    },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Reload") },
-	{ NEUTRINO_ICON_BUTTON_OKAY, _("Modify") }
+	{ NEUTRINO_ICON_BUTTON_RED   , _("Delete"), 0 },
+	{ NEUTRINO_ICON_BUTTON_GREEN , _("New timer"), 0 },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Reload"), 0 },
+	{ NEUTRINO_ICON_BUTTON_OKAY, _("Modify"), 0 }
 };
 
-struct button_label CTimerListHeadButtons = {NEUTRINO_ICON_BUTTON_HELP_SMALL, "" };
+struct button_label CTimerListHeadButtons = {NEUTRINO_ICON_BUTTON_HELP_SMALL, " ", 0 };
 
 //
 CTimerList::CTimerList()
@@ -981,7 +981,7 @@ int CTimerList::modifyTimer()
 		//
 		timerSettings->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		timerSettings->setFootButtons(&btn);
 		
@@ -1067,7 +1067,7 @@ int CTimerList::modifyTimer()
 	//
 	timerSettings_apids->enablePaintFoot();
 						
-	const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+	const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 						
 	timerSettings_apids->setFootButtons(&btn);
 					
@@ -1156,7 +1156,7 @@ int CTimerList::newTimer()
 		//
 		timerSettings->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		timerSettings->setFootButtons(&btn);
 		

@@ -173,7 +173,7 @@ void CProgressWindow::paint()
 	// title
 	if(paintHead)
 	{
-		const struct button_label cancelBtn = { NEUTRINO_ICON_BUTTON_HOME, "" };
+		const struct button_label cancelBtn = { NEUTRINO_ICON_BUTTON_HOME, " ", 0 };
 		const char * l_caption;
 		l_caption = captionString.c_str();
 

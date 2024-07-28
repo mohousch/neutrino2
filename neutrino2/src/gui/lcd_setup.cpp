@@ -201,7 +201,7 @@ int CLCDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 			head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
 			
 			//	
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };		
 
 			foot = new CCFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
 			foot->setButtons(&btn);
@@ -291,7 +291,7 @@ void CLCDSettings::showMenu()
 
 		lcdSettings->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		lcdSettings->setFootButtons(&btn);
 		
@@ -452,7 +452,7 @@ bool CLCDSettings::changeNotify(const std::string &locale, void *Data)
 {
 	int state = *(int *)Data;
 
-	dprintf(DEBUG_NORMAL, "ClCDNotifier: %s state: %d\n", locale.c_str(), state);
+	dprintf(DEBUG_NORMAL, "%s state: %d\n", locale.c_str(), state);
 	
 	if (locale == _("LCD Power"))	
 	{

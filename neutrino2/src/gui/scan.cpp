@@ -373,7 +373,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		const char * text = success ? _("Transponderscan finished.") : _("Transponderscan failed!");
 		
 		CCHeaders head(x, y, width, hheight, text, NEUTRINO_ICON_SCAN);
-		const struct button_label btn = { NEUTRINO_ICON_BUTTON_HOME, " "};
+		const struct button_label btn = { NEUTRINO_ICON_BUTTON_HOME, " ", 0 };
 			
 		head.setButtons(&btn);
 		head.paint();
@@ -565,7 +565,7 @@ void CScanTs::paint(bool fortest)
 	
 	//
 	CCHeaders head(x, ypos, width, hheight, fortest ? _("Test signal") : _("Scan transponder"), NEUTRINO_ICON_SCAN);
-	const struct button_label btn = { NEUTRINO_ICON_BUTTON_HOME, " "};
+	const struct button_label btn = { NEUTRINO_ICON_BUTTON_HOME, " ", 0 };
 			
 	head.setButtons(&btn);
 	head.paint();

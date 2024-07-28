@@ -105,8 +105,8 @@ bool CBEChannelSelectWidget::hasChanged()
 #define BUTTONS_COUNT 2
 const struct button_label Buttons[BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_OKAY, _("TV/Radio") },
-	{ NEUTRINO_ICON_BUTTON_HOME, _("ready") }	
+	{ NEUTRINO_ICON_BUTTON_OKAY, _("TV/Radio"), 0 },
+	{ NEUTRINO_ICON_BUTTON_HOME, _("ready"), 0 }	
 };
 
 void CBEChannelSelectWidget::paint()

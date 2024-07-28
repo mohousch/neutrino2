@@ -466,7 +466,7 @@ int CScanSetup::showScanService()
 
 		// foot
 		scansetup->enablePaintFoot();	
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };	
 		scansetup->setFootButtons(&btn);
 		
 		//
@@ -702,7 +702,7 @@ int CScanSetup::showMotorSetup()
 
 		motorMenu->enablePaintFoot();
 				
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 				
 		motorMenu->setFootButtons(&btn);
 			
@@ -799,7 +799,7 @@ int CScanSetup::showUnicableSetup()
 
 		uni_setup->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		uni_setup->setFootButtons(&btn);
 		
@@ -866,7 +866,7 @@ int CScanSetup::showLNBSetup()
 
 		satSetup->enablePaintFoot();
 				
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 				
 		satSetup->setFootButtons(&btn);
 			
@@ -906,7 +906,7 @@ int CScanSetup::showLNBSetup()
 					
 		//
 		tempsatlistBox->enablePaintFoot();		
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };		
 		tempsatlistBox->setFootButtons(&btn);
 					
 		//
@@ -1023,7 +1023,7 @@ int CScanSetup::showSatOnOffSetup()
 
 		satOnOfflistBox->enablePaintFoot();
 				
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 				
 		satOnOfflistBox->setFootButtons(&btn);
 			
@@ -1093,7 +1093,7 @@ int CScanSetup::showManualScanSetup()
 
 		manualScanlistBox->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		manualScanlistBox->setFootButtons(&btn);
 		
@@ -1393,7 +1393,7 @@ int CScanSetup::showAutoScanSetup()
 
 		autoScanlistBox->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		autoScanlistBox->setFootButtons(&btn);
 		
@@ -1528,7 +1528,7 @@ int CScanSetup::showAllAutoScanSetup()
 
 		autoScanAlllistBox->enablePaintFoot();
 				
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 				
 		autoScanAlllistBox->setFootButtons(&btn);
 			
@@ -1631,7 +1631,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		//
 		menu->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		menu->setFootButtons(&btn);
 		
@@ -2365,7 +2365,7 @@ int CTunerSetup::showMenu()
 		//
 		TunerSetup->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		TunerSetup->setFootButtons(&btn);
 		

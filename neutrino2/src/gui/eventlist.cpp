@@ -535,18 +535,18 @@ CTimerd::CTimerEventTypes EventList::isScheduled(t_channel_id channel_id, CChann
 #define NUM_LIST_BUTTONS 5
 struct button_label FootButtons[NUM_LIST_BUTTONS] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, _("Record") },
-	{ NEUTRINO_ICON_BUTTON_GREEN, _("Search") },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Schedule") },
-	{ NEUTRINO_ICON_BUTTON_BLUE, _("sorting(Time)") },
-	{ NEUTRINO_ICON_BUTTON_SETUP_SMALL, _("Refresh EPG") }
+	{ NEUTRINO_ICON_BUTTON_RED, _("Record"), 0 },
+	{ NEUTRINO_ICON_BUTTON_GREEN, _("Search"), 0 },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Schedule"), 0 },
+	{ NEUTRINO_ICON_BUTTON_BLUE, _("sorting(Time)"), 0 },
+	{ NEUTRINO_ICON_BUTTON_SETUP_SMALL, _("Refresh EPG"), 0 }
 };
 
 struct button_label HeadButtons[3] = 
 {
-	{ NEUTRINO_ICON_BUTTON_HELP, "" },
-	{ NEUTRINO_ICON_BUTTON_EPG, "" },
-	{ NEUTRINO_ICON_BUTTON_0, "" }
+	{ NEUTRINO_ICON_BUTTON_HELP, " ", 0 },
+	{ NEUTRINO_ICON_BUTTON_EPG, " ", 0 },
+	{ NEUTRINO_ICON_BUTTON_0, " ", 0 }
 };
 
 void EventList::paint(t_channel_id channel_id)
@@ -972,7 +972,7 @@ int CEventFinderMenu::showMenu(void)
 
 		//
 		searchMenu->enablePaintFoot();	
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };	
 		searchMenu->setFootButtons(&btn);
 		
 		//

@@ -127,7 +127,7 @@ void CPictureViewerSettings::showMenu()
 		//
 		PicViewerSettings->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		PicViewerSettings->setFootButtons(&btn);
 		

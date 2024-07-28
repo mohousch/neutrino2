@@ -3059,7 +3059,7 @@ void CNeutrinoApp::selectNVOD()
 
 			NVODSelector->enablePaintFoot();
 								
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " " };
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 								
 			NVODSelector->setFootButtons(&btn);
 			

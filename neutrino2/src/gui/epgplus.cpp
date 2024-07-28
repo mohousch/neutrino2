@@ -496,10 +496,10 @@ void EpgPlus::Footer::paintEventDetails (const std::string & description, const 
 }
 
 struct button_label buttonLabels[] = {
-	{NEUTRINO_ICON_BUTTON_RED, _("Record") },
-	{NEUTRINO_ICON_BUTTON_GREEN, _("Refresh EPG") },
-	{NEUTRINO_ICON_BUTTON_YELLOW, _("Schedule") },
-	{NEUTRINO_ICON_BUTTON_BLUE, _("TMDB") }
+	{ NEUTRINO_ICON_BUTTON_RED, _("Record"), 0 },
+	{ NEUTRINO_ICON_BUTTON_GREEN, _("Refresh EPG"), 0 },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Schedule"), 0 },
+	{ NEUTRINO_ICON_BUTTON_BLUE, _("TMDB"), 0 }
 };
 
 void EpgPlus::Footer::paintButtons(button_label * _buttonLabels, int numberOfButtons)

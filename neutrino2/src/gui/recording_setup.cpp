@@ -175,7 +175,7 @@ void CRecordingSettings::showMenu()
 
 		//
 		recordingSettings->enablePaintFoot();	
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };	
 		recordingSettings->setFootButtons(&btn);
 		
 		//

@@ -91,7 +91,7 @@ void CMediaPlayerMenu::showMenu()
 		if (mediaPlayer->getWidgetType() != ClistBox::TYPE_STANDARD)
 		{
 			mediaPlayer->enablePaintFoot();	
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };	
 			if (!g_settings.item_info) mediaPlayer->setFootButtons(&btn);
 		}
 		

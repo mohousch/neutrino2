@@ -182,7 +182,7 @@ void CZapitSetup::showMenu()
 		//
 		zapit->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		zapit->setFootButtons(&btn);
 		

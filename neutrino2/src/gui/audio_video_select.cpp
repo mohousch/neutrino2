@@ -313,7 +313,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 
 		AVPIDSelector->enablePaintFoot();
 							
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 							
 		AVPIDSelector->setFootButtons(&btn);
 						

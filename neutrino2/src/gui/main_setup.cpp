@@ -108,7 +108,7 @@ void CMainSettingsMenu::showMenu(void)
 		if (mainSettings->getWidgetType() != ClistBox::TYPE_STANDARD)
 		{
 			mainSettings->enablePaintFoot();	
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };	
 			if (!g_settings.item_info) mainSettings->setFootButtons(&btn);
 		}
 		

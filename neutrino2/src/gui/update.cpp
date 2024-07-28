@@ -169,15 +169,13 @@ bool CFlashUpdate::selectHttpImage(void)
 		//
 		SelectionWidget->enablePaintHead();
 		SelectionWidget->setTitle(_("Available Images/Packages"), NEUTRINO_ICON_UPDATE);
-//		SelectionWidget->setHeadLine(true, true);
 
 		//
 		SelectionWidget->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		SelectionWidget->setFootButtons(&btn);
-//		SelectionWidget->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(SelectionWidget);
@@ -685,15 +683,13 @@ void CFlashExpert::showMTDSelector(const std::string & actionkey)
 		//
 		mtdselector->enablePaintHead();
 		mtdselector->setTitle(_("Partition selector"), NEUTRINO_ICON_UPDATE);
-//		mtdselector->setHeadLine(true, true);
 
 		//
 		mtdselector->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		mtdselector->setFootButtons(&btn);
-//		mtdselector->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(mtdselector);
@@ -785,15 +781,13 @@ void CFlashExpert::showFileSelector(const std::string & actionkey)
 		//
 		fileselector->enablePaintHead();
 		fileselector->setTitle(_("File selector"), NEUTRINO_ICON_UPDATE);
-//		fileselector->setHeadLine(true, true);
 
 		//
 		fileselector->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		fileselector->setFootButtons(&btn);
-//		fileselector->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(fileselector);
@@ -968,12 +962,11 @@ int CUpdateSettings::showMenu()
 		//
 		updateSettings->enablePaintHead();
 		updateSettings->setTitle(_("Software update"), NEUTRINO_ICON_UPDATE);
-//		updateSettings->setHeadLine(true, true);
 
 		//
 		updateSettings->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		updateSettings->setFootButtons(&btn);
 		

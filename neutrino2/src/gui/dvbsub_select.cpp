@@ -90,7 +90,7 @@ int CDVBSubSelectMenuHandler::doMenu()
 
 		//
 		DVBSubSelector->enablePaintFoot();					
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};					
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };					
 		DVBSubSelector->setFootButtons(&btn);
 						
 		//

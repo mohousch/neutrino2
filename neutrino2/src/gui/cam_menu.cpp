@@ -135,7 +135,7 @@ void CCAMMenuHandler::doMainMenu()
 		//
 		cammenu->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		cammenu->setFootButtons(&btn);
 		
@@ -211,7 +211,7 @@ void CCAMMenuHandler::doMainMenu()
 				
 				//
 				tempMenu->enablePaintFoot();		
-				const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
+				const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };		
 				tempMenu->setFootButtons(&btn);
 				
 				//
@@ -405,7 +405,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 				
 				//
 				menu->enablePaintFoot();		
-				const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
+				const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };		
 				menu->setFootButtons(&btn);
 				
 				//

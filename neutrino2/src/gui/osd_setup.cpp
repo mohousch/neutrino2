@@ -116,7 +116,7 @@ int COSDSettings::showMenu(void)
 		if (osdSettings->getWidgetType() != ClistBox::TYPE_STANDARD)
 		{
 			osdSettings->enablePaintFoot();	
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };	
 			if (!g_settings.item_info) osdSettings->setFootButtons(&btn);
 		}
 		
@@ -284,7 +284,7 @@ void COSDMenuColorSettings::showMenu()
 		//
 		OSDmenuColorsSettings->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		OSDmenuColorsSettings->setFootButtons(&btn);
 		
@@ -566,7 +566,7 @@ void COSDInfoBarColorSettings::showMenu()
 		//
 		OSDinfobarColorSettings->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		OSDinfobarColorSettings->setFootButtons(&btn);
 		
@@ -727,7 +727,7 @@ int CLanguageSettings::showMenu()
 		//
 		languageSettings->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		languageSettings->setFootButtons(&btn);
 		
@@ -896,7 +896,7 @@ void CFontSettings::showMenu()
 		//
 		fontSettings->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		fontSettings->setFootButtons(&btn);
 		
@@ -1000,7 +1000,7 @@ void COSDTimingSettings::showMenu()
 		//
 		osdTimingSettings->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		osdTimingSettings->setFootButtons(&btn);
 		
@@ -1146,7 +1146,7 @@ void COSDDiverses::showMenu()
 		//
 		osdDiverseSettings->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		osdDiverseSettings->setFootButtons(&btn);
 		
@@ -1267,7 +1267,7 @@ int CSkinManager::showMenu()
 		//
 		skinMenu->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		skinMenu->setFootButtons(&btn);
 		
@@ -1412,7 +1412,7 @@ int CSkinSettings::showMenu()
 		//
 		skinSettings->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		skinSettings->setFootButtons(&btn);
 		
@@ -1635,7 +1635,7 @@ int CPersonalisation::showMenu(void)
 		//
 		personalizeSettings->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		personalizeSettings->setFootButtons(&btn);
 		

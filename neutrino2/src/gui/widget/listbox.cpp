@@ -384,6 +384,10 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 		
 		locked = false;
 	}
+	
+	// check if value is out of range (not working)
+	//if (*optionValue < options.begin()->key || *optionValue > options.end()->key)
+	//	*optionValue = options.begin()->key;
 
 	// pulldown
 	if( (msg == CRCInput::RC_ok) && pulldown ) 
@@ -424,7 +428,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
 			
 			//	
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0};		
 
 			foot = new CCFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
 			foot->setButtons(&btn);
@@ -598,7 +602,7 @@ int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
 	// option
 	if (onofficon && number_of_options == 2)
 	{
-		if ( l_option == _("on") || l_option == _("yes") )
+		if ( l_option == "on" || l_option == "yes" )
 		{
 			setIcon1(NEUTRINO_ICON_BUTTON_OPTION_ON_ACTIVE);
 		}
@@ -873,7 +877,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 			head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
 			
 			//	
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0};		
 
 			foot = new CCFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
 			foot->setButtons(&btn);

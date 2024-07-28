@@ -46,8 +46,8 @@
 // Return:		
 // Notes:		
 ///////////////////
-const struct button_label HButton = { NEUTRINO_ICON_BUTTON_HELP, " "};
-const struct button_label FButton = { NEUTRINO_ICON_INFO, " " };
+const struct button_label HButton = { NEUTRINO_ICON_BUTTON_HELP, " ", 0 };
+const struct button_label FButton = { NEUTRINO_ICON_INFO, " ", 0 };
 
 CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 {
@@ -273,8 +273,6 @@ void CInfoBox::initFrames(void)
 // Return:		
 // Notes:		
 //////////////////////////////////////////////////////////////////////
-//const struct button_label HButton = { NEUTRINO_ICON_BUTTON_HELP, " "};
-
 void CInfoBox::refreshTitle(void)
 {
 	if (headers)

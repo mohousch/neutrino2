@@ -208,7 +208,7 @@ int CNFSMountGui::menu()
 
 		mountMenuW->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		mountMenuW->setFootButtons(&btn);
 		
@@ -338,7 +338,7 @@ int CNFSMountGui::menuEntry(int nr)
 
 		mountMenuEntryW->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		mountMenuEntryW->setFootButtons(&btn);
 		
@@ -457,7 +457,7 @@ int CNFSUmountGui::menu()
 
 		umountMenu->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		umountMenu->setFootButtons(&btn);
 		
@@ -535,7 +535,7 @@ int CNFSSmallMenu::exec( CMenuTarget* parent, const std::string & actionKey )
 
 			menu->enablePaintFoot();
 				
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 				
 			menu->setFootButtons(&btn);
 			

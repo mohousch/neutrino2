@@ -85,10 +85,10 @@ CBEChannelWidget::~CBEChannelWidget()
 #define BUTTONS_COUNT 4
 const struct button_label CBEChannelWidgetButtons[BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED   , _("Delete") },
-	{ NEUTRINO_ICON_BUTTON_GREEN , _("Add") },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Move")},
-	{ NEUTRINO_ICON_BUTTON_BLUE  , _("TV/Radio")}
+	{ NEUTRINO_ICON_BUTTON_RED   , _("Delete"), 0 },
+	{ NEUTRINO_ICON_BUTTON_GREEN , _("Add"), 0 },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Move"), 0 },
+	{ NEUTRINO_ICON_BUTTON_BLUE  , _("TV/Radio"), 0 }
 };
 
 void CBEChannelWidget::paint()

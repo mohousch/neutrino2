@@ -437,14 +437,14 @@ void CBouquetList::hide()
 	}
 }
 
-const struct button_label HButton = {NEUTRINO_ICON_BUTTON_SETUP, " " };
+const struct button_label HButton = { NEUTRINO_ICON_BUTTON_SETUP, " ", 0 };
 
 const struct button_label CBouquetListButtons[4] =
 {
-        { NEUTRINO_ICON_BUTTON_RED, _("Favorites") },
-        { NEUTRINO_ICON_BUTTON_GREEN, _("Providers")},
-        { NEUTRINO_ICON_BUTTON_YELLOW, _("Satellites")},
-        { NEUTRINO_ICON_BUTTON_BLUE, _("All Services")}
+        { NEUTRINO_ICON_BUTTON_RED, _("Favorites"), 0 },
+        { NEUTRINO_ICON_BUTTON_GREEN, _("Providers"), 0},
+        { NEUTRINO_ICON_BUTTON_YELLOW, _("Satellites"), 0},
+        { NEUTRINO_ICON_BUTTON_BLUE, _("All Services"), 0}
 };
 
 void CBouquetList::paint()
@@ -555,7 +555,7 @@ int CBouquetList::doMenu()
 		//
 		menu->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		menu->setFootButtons(&btn);
 //		menu->setFootLine(true, true);

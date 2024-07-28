@@ -87,7 +87,7 @@ int CEPGMenuHandler::doMenu()
 		if (redMenu->getWidgetType() != ClistBox::TYPE_STANDARD)
 		{
 			redMenu->enablePaintFoot();	
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			if (!g_settings.item_info) redMenu->setFootButtons(&btn);
 		}
 		

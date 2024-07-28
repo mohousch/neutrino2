@@ -71,13 +71,13 @@ void CPluginList::hide()
 #define NUM_LIST_BUTTONS 4
 struct button_label CPluginListButtons[NUM_LIST_BUTTONS] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, _("Delete") },
-	{ NEUTRINO_ICON_BUTTON_GREEN, _("Start") },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, " " },
-	{ NEUTRINO_ICON_BUTTON_BLUE, _("Reload")}
+	{ NEUTRINO_ICON_BUTTON_RED, _("Delete"), 0 },
+	{ NEUTRINO_ICON_BUTTON_GREEN, _("Start"), 0 },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, " ", 0 },
+	{ NEUTRINO_ICON_BUTTON_BLUE, _("Reload"), 0}
 };
 
-struct button_label CPluginListHeadButtons = {NEUTRINO_ICON_BUTTON_HELP_SMALL, "" };
+struct button_label CPluginListHeadButtons = {NEUTRINO_ICON_BUTTON_HELP_SMALL, " ", 0 };
 
 int CPluginList::showMenu()
 {

@@ -94,7 +94,7 @@ int CPowerMenu::showMenu(void)
 		if (powerMenu->getWidgetType() != ClistBox::TYPE_STANDARD)
 		{
 			powerMenu->enablePaintFoot();	
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };	
 			if (!g_settings.item_info) powerMenu->setFootButtons(&btn);
 		}
 		

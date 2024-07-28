@@ -194,7 +194,7 @@ int CHDDMenuHandler::hddMenu()
 
 		hddmenu->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		hddmenu->setFootButtons(&btn);
 		
@@ -350,7 +350,7 @@ int CHDDMenuHandler::hddMenu()
 			
 			//
 			tempMenu[i]->enablePaintFoot();		
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };		
 			tempMenu[i]->setFootButtons(&btn);
 			
 			//
@@ -431,7 +431,7 @@ int CHDDMenuHandler::hddMenu()
 				
 				//
 				PartMenu[j]->enablePaintFoot();		
-				const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
+				const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };		
 				PartMenu[j]->setFootButtons(&btn);
 				
 				//

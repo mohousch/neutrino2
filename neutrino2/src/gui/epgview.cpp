@@ -136,10 +136,10 @@ void reformatExtendedEvents(std::string strItem, std::string strLabel, bool bUse
 // foot
 struct button_label FButtons[4] =
 {
-	{ DUMMY_ICON, " " },
-	{ DUMMY_ICON,  " "},
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Schedule") },
-	{ DUMMY_ICON, " " }
+	{ DUMMY_ICON, " ", 0 },
+	{ DUMMY_ICON,  " ", 0},
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Schedule"), 0 },
+	{ DUMMY_ICON, " ", 0 }
 };
 
 CEpgData::CEpgData()

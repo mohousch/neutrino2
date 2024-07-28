@@ -725,7 +725,7 @@ void CMoviePlayerGui::PlayFile(void)
 
 		bookStartMenu->enablePaintFoot();
 				
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 				
 		bookStartMenu->setFootButtons(&btn);
 			
@@ -1729,12 +1729,10 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 		//	
 		startPosSelectionMenu->enablePaintHead();
 		startPosSelectionMenu->setTitle(_("Start movie from:"), NEUTRINO_ICON_MOVIE);
-//		startPosSelectionMenu->setHeadLine(true, true);
 		//
 		startPosSelectionMenu->enablePaintFoot();
-//		startPosSelectionMenu->setFootLine(true, true);
 				
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 				
 		startPosSelectionMenu->setFootButtons(&btn);
 			
@@ -2042,15 +2040,15 @@ void CMoviePlayerGui::updateTime()
 }
 
 //
-const struct button_label HeadButtons = { NEUTRINO_ICON_BUTTON_HELP, ""} ;
+const struct button_label HeadButtons = { NEUTRINO_ICON_BUTTON_HELP, " ", 0 } ;
 
 #define FOOT_BUTTONS_COUNT	4
 const struct button_label FootButtons[FOOT_BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, _("Delete") },
-	{ NEUTRINO_ICON_BUTTON_GREEN, _("Add") },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Delete all") },
-	{ NEUTRINO_ICON_BUTTON_BLUE, _("TMDB") },
+	{ NEUTRINO_ICON_BUTTON_RED, _("Delete"), 0 },
+	{ NEUTRINO_ICON_BUTTON_GREEN, _("Add"), 0 },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Delete all"), 0 },
+	{ NEUTRINO_ICON_BUTTON_BLUE, _("TMDB"), 0 },
 };
 
 void CMoviePlayerGui::showPlaylist()

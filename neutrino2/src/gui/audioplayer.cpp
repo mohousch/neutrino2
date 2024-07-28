@@ -1327,10 +1327,10 @@ void CAudioPlayerGui::showHelp()
 #define FOOT_BUTTONS_COUNT 4
 const struct button_label AudioPlayerButtons[FOOT_BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, _("save play list") },
-	{ NEUTRINO_ICON_BUTTON_GREEN, _("jump backwards") },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("jump forwards") },
-	{ NEUTRINO_ICON_BUTTON_BLUE, _("shuffle") }
+	{ NEUTRINO_ICON_BUTTON_RED, _("save play list"), 0 },
+	{ NEUTRINO_ICON_BUTTON_GREEN, _("jump backwards"), 0 },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("jump forwards"), 0 },
+	{ NEUTRINO_ICON_BUTTON_BLUE, _("shuffle"), 0 }
 };
 
 void CAudioPlayerGui::showPlaylist()
