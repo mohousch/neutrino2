@@ -29,10 +29,10 @@ function do_snapshot(){
 function do_snapshot2(){
 	var _shot = document.getElementById("shot");
 	var filename = id("file").value;
-	var res = dbox_exec_tools("fbshot -sw /tmp/"+filename+".png");
+	res = dbox_exec_tools("fbshot /tmp/"+filename+".png");
+	
 	if (res != "")
-		dbox_exec_tools("fbshot /tmp/"+filename+".png");
-	loadSyncURL("/control/screenshot?name="+filename+"&osd="+enableOSD+"&video="+enableVideo);
+		loadSyncURL("/control/screenshot?name="+filename);
 	show_waitbox(false);
 	show_obj("shot", true);
 	_shot.src = "/tmp/"+filename+".png?"+Math.random();
@@ -46,9 +46,9 @@ function do_tv_snapshot(){
 function do_tv_snapshot2(){
 	var _shot = document.getElementById("shot");
 	var filename = id("file").value;
-	var res = dbox_exec_tools("fbshot -sw /tmp/"+filename+".png");
+	res = dbox_exec_tools("fbshot tv /tmp/"+filename+".png");
 	if (res != "")
-		dbox_exec_tools("fbshot tv /tmp/"+filename+".png");
+		loadSyncURL("/control/screenshot?name="+filename);
 	show_waitbox(false);
 	show_obj("shot", true);
 	_shot.src = "/tmp/"+filename+".png?"+Math.random();
@@ -62,9 +62,9 @@ function do_fb_snapshot(){
 function do_fb_snapshot2(){
 	var _shot = document.getElementById("shot");
 	var filename = id("file").value;
-	var res = dbox_exec_tools("fbshot -sw /tmp/"+filename+".png");
+	res = dbox_exec_tools("fbshot fb /tmp/"+filename+".png");
 	if (res != "")
-	 	dbox_exec_tools("fbshot fb /tmp/"+filename+".png");
+		loadSyncURL("/control/screenshot?name="+filename);
 	show_waitbox(false);
 	show_obj("shot", true);
 	_shot.src = "/tmp/"+filename+".png?"+Math.random();
@@ -78,11 +78,11 @@ function do_dboxshot(){
 function do_dboxshot2(){
 	var _shot = document.getElementById("shot");
 	var filename = id("file").value;
-	var res = dbox_exec_tools("fbshot -sw /tmp/"+filename+".png");
-	if (res != "")
-	 	res = dbox_exec_tools("fbshot fb /tmp/"+filename+".png");
+	 res = dbox_exec_tools("fbshot fb /tmp/"+filename+".png");
 	if(res != "")
 		dbox_exec_tools("fbshot -o /tmp/"+filename+".png");
+	if (res != "")
+		loadSyncURL("/control/screenshot?name="+filename);
 	show_waitbox(false);
 	show_obj("shot", true);
 	_shot.src = "/tmp/"+filename+".bmp?"+Math.random();
@@ -105,8 +105,8 @@ function do_clearshot2(){
 	<div class="work_box_head"><div class="work_box_head_h2">
 	{=var-set:help_url=Help-BoxControl-TV_Screenshot=}{=var-set:menu={=L:bc.menue.tv_screenshot=}=}{=include-block:Y_Blocks.txt;work_menu=}</div></div>
 	<div class="work_box_body">
-		<button name="tvsnapshot" ytype="shot" onclick="do_tv_snapshot()">{=L:bc.tv.shot=}</button>&nbsp;
 		<button name="fbsnapshot" ytype="shot" onclick="do_fb_snapshot()">{=L:bc.osd.shot=}</button>&nbsp;
+		<button name="tvsnapshot" ytype="shot" onclick="do_tv_snapshot()">{=L:bc.tv.shot=}</button>&nbsp;
 		<button name="snapshot" ytype="shot" onclick="do_snapshot()">{=L:bc.all.shot=}</button>
 		{=var-set:dboxshot={=if-file-exists:/bin/dboxshot~true~{=if-file-exists:/var/bin/dboxshot~true~false=}=}=}
 		<button name="clearshot" ytype="clearshot" onclick="do_clearshot()">{=L:bc.osd.delete_shots=}</button>

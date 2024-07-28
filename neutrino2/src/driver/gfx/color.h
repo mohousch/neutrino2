@@ -149,15 +149,16 @@ inline uint32_t rgbaToColor(unsigned int rgb, uint8_t tr = 0xFF)
 	return col;
 }
 
+inline uint32_t make16color(uint16_t r, uint16_t g, uint16_t b, uint16_t t)
+{
+	return ((t << 24) & 0xFF000000) | ((r << 8) & 0xFF0000) | ((g << 0) & 0xFF00) | (b >> 8 & 0xFF);
+}
+
+
 // colorstring used in skin.cpp
 inline uint32_t rgbaToColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	return (a << 24) | (r << 16) | (g << 8) | b;
-}
-
-inline uint32_t make16color(uint16_t r, uint16_t g, uint16_t b, uint16_t t)
-{
-	return ((t << 24) & 0xFF000000) | ((r << 8) & 0xFF0000) | ((g << 0) & 0xFF00) | (b >> 8 & 0xFF);
 }
 
 ////
@@ -324,7 +325,7 @@ enum
         blitAlphaBlend 		= 2
 };
 
-////
+//
 static inline void blit_8i_to_16(uint16_t *dst, const uint8_t *src, const uint32_t *pal, int width)
 {
     	while (width--)
@@ -374,7 +375,7 @@ static void blit_8i_to_32_ab(gRGB *dst, const uint8_t *src, const gRGB *pal, int
     	}
 }
 
-static void convert_palette(uint32_t* pal, const gPalette& clut)
+static void convert_palette(uint32_t *pal, const gPalette& clut)
 {
     	int i = 0;
     	

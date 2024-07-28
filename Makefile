@@ -311,6 +311,7 @@ help:
 	@echo " make run			- start neutrino2 / neutrino2 plugins"
 	@echo " make run-gdb			- start neutrino2 GDB"
 	@echo " make run-valgrind		- start neutrino2 with valgrind"
+	@echo " make package			- build debian package"
 	@echo		
 
 #

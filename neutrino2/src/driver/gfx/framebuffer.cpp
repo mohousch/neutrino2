@@ -1761,9 +1761,9 @@ bool CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int
 	return false;
 }
 
-bool CFrameBuffer::savePNG(const char *const filename)
+bool CFrameBuffer::savePNG(const std::string &filename)
 {
-	dprintf(DEBUG_NORMAL, "%s\n", filename);
+	dprintf(DEBUG_NORMAL, "%s\n", filename.c_str());
 	
 	bool         ret_value = false;
 	
@@ -1774,10 +1774,10 @@ bool CFrameBuffer::savePNG(const char *const filename)
 	FILE *       fp;
  
         // create file
-        fp = fopen(filename, "wb");
+        fp = fopen(filename.c_str(), "wb");
         
         if (!fp)
-                ng2_err("File %s could not be opened for writing\n", filename);
+                ng2_err("File %s could not be opened for writing\n", filename.c_str());
 	else
 	{
 		row_pointers = (png_bytep *) malloc(sizeof(png_bytep) * yRes);

@@ -494,8 +494,6 @@ do_fbshot()
 		grab=/var/bin/grab
 	elif [ -e "/usr/bin/grab" ]; then
 		grab=/usr/bin/grab
-	elif [ -e "/usr/bin/xfce4-screenshooter" ]; then
-		grab=/usr/bin/xfce4-screenshooter
 	fi
 
 	if [ "$1" = "fb" ]; then
@@ -679,6 +677,4 @@ case "$1" in
 	*)
 		echo "[Y_Tools.sh] Parameter wrong: $*" ;;
 esac
-
-
 
