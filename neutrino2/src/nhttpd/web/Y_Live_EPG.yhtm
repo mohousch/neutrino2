@@ -7,13 +7,11 @@ var sLog_body;
 var sLog_line_number;
 var epg_data;
 var epg_data_index=0;
-
 function sLog_init()
 {
 	sLog_line_number = 0;
 	sLog_body=document.getElementById("slog_list");
 }
-
 function sLog_clear()
 {
 	while(sLog_body.childNodes.length > 0){
@@ -22,51 +20,42 @@ function sLog_clear()
 	}
 	sLog_line_number =  0;
 }
-
-function sLog_addRow(_body, _date, _rec, _zapit, _start, _end, _title)
+function sLog_addRow(_body, _date, _rec, _zap, _start, _end, _title)
 {
 	sLog_line_number++;
 	var mycurrent_row = y_add_row_to_table(_body, ((sLog_line_number % 2) ==0)?"a":"b" );
 
 	y_add_html_cell_to_row(mycurrent_row, "rec", _rec);
-	y_add_html_cell_to_row(mycurrent_row, "zap", _zapit);
+	y_add_html_cell_to_row(mycurrent_row, "zap", _zap);
 	y_add_html_cell_to_row(mycurrent_row, "date", _date);
 	y_add_html_cell_to_row(mycurrent_row, "starttime", _start);
 	y_add_html_cell_to_row(mycurrent_row, "endtime", _end);
 	y_add_html_cell_to_row(mycurrent_row, "epgtitle", _title);
 }
-
-function set_timer(_channel_id, _start, _stop)
+function set_timer_rec(_channel_id, _start, _stop)
 {
-	var rec = "/control/timer?action=new&type=5&alarm="+_start+"&stop="+_stop+"&announce="+_start+"&channel_id="+_channel_id+"&rs=1";
-	var res = loadSyncURL(rec);
-	alert("{=L:epg.set_timer=}");
+	var res = dbox_set_timer_rec(_channel_id, _start, _stop);
+	alert("{=L:epg.set_timer_rec=}");
 }
-
-function set_zapit(_channel_id, _start)
+function set_timer_zap(_channel_id, _start)
 {
-	var rec = "/control/timer?action=new&type=3&alarm="+_start+"&channel_id="+_channel_id;
-	var res = loadSyncURL(rec);
-	alert("{=L:epg.zap_to=}");
+	var res = dbox_set_timer_zap(_channel_id, _start);
+	alert("{=L:epg.set_timer_zap=}");
 }
-
 function show_info(_index)
 {
 	parent.epg_info.show_info(epg_data[_index][0], epg_data[_index][1], epg_data[_index][2]);
 }
-
 function check_logo()
 {
 	{=if-empty:{=logoid=}~~
 		show_obj("logo",true);
 	=}
 }
-
 function show_epg() {
 	show_waitbox(true);
 	window.setTimeout("_show_epg()",100);
 }
-
 function _show_epg()
 {
 	check_logo();
@@ -76,7 +65,17 @@ function _show_epg()
 	epg_data = new Array();
 	epg_data_index=0;
 
+	var weekday = new Array(7);
+	weekday[0]=  "{=L:date.su=}";
+	weekday[1] = "{=L:date.mo=}";
+	weekday[2] = "{=L:date.tu=}";
+	weekday[3] = "{=L:date.we=}";
+	weekday[4] = "{=L:date.th=}";
+	weekday[5] = "{=L:date.fr=}";
+	weekday[6] = "{=L:date.sa=}";
+
 	var now = new Date();
+	var __d = new Date();
 	var _starttime = Math.round(now/1000);
 	var epg_xml = loadSyncURLxml("/control/epg?xml=true&channelid={=channel=}&details=true");
 	if(epg_xml){
@@ -94,13 +93,17 @@ function _show_epg()
 				var _info1	= epg_de_qout(getXMLNodeItemValue(prog, "info1"));
 				var _info2	= epg_de_qout(getXMLNodeItemValue(prog, "info2"));
 
+				__d.setTime(_start*1000);
+				var _dow	= weekday[__d.getDay()];
+				_date		= _dow + ", " + _date;
+
 				var epg_obj= new Array(_desc, _info1, _info2, _start, _start_t, _stop.toString(), "{=channel=}");
 				epg_data.push(epg_obj);
 
-				var _rec 	= "<a title=\"record\" href=\"javascript:set_timer('{=channel=}',"+_start+","+_stop+");\"><img src=\"images/record.png\"/></a>";
-				var _zapit 	= "<a title=\"zapping\" href=\"javascript:set_zapit('{=channel=}',"+_start+");\"><img src=\"images/zap.png\"/></a>";
-				var _tit 	= "<span onmouseover=\"show_info('"+epg_data_index+"')\">"+_desc+"</span>";
-				sLog_addRow(sLog_body, _date, _rec, _zapit, _start_t, _stop_t, _tit);
+				var _rec = "<a title=\"record\" href=\"javascript:set_timer_rec('{=channel=}',"+_start+","+_stop+");\"><img src=\"images/record.png\"/></a>";
+				var _zap = "<a title=\"zapping\" href=\"javascript:set_timer_zap('{=channel=}',"+_start+");\"><img src=\"images/zap.png\"/></a>";
+				var _title = "<span onmouseover=\"show_info('"+epg_data_index+"')\">"+_desc+"</span>";
+				sLog_addRow(sLog_body, _date, _rec, _zap, _start_t, _stop_t, _title);
 				epg_data_index++;
 			}
 		}
@@ -110,12 +113,12 @@ function _show_epg()
 //]]>
 </script>
 </head>
-<body onload="show_epg()">
-{=var-set:wait_text={=L:get_epg=}=}{=include-block:Y_Blocks.txt;snip_show_wait=}
+<body onload="show_epg()" class="iframe">
+{=var-set:wait_text={=L:epg.get_epg=}=}{=include-block:Y_Blocks.txt;snip_show_wait=}
 	<table id="epglist" class="y_invisible_table" cellpadding="4" cellspacing="0" width="100%">
 	<thead align="left">
 	<tr>
-		<th colspan="2"><img id="logo" src="{=ini-get:/var/tuxbox/config/nhttpd.conf;Tuxbox.LogosURL=}/{=logoid=}.jpg" style="visibility:hidden; max-width: 50px;"/>&nbsp;</th>
+		<th colspan="2"><img id="logo" src="{=func:get_logo_name {=channel=}=}" style="visibility:hidden; max-width: 50px;"/></th>
 		<th>{=L:date=}</th><th>{=L:from=}</th><th>{=L:to=}</th><th>{=L:program=}</th>
 	</tr>
 	</thead>

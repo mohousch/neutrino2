@@ -458,7 +458,7 @@ int CScanSetup::showScanService()
 		scansetup = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		scansetup->setWidgetMode(ClistBox::MODE_SETUP);
-		scansetup->enableShrinkMenu();
+//		scansetup->enableShrinkMenu();
 		
 		// head
 		scansetup->enablePaintHead();
@@ -695,7 +695,7 @@ int CScanSetup::showMotorSetup()
 		motorMenu = new ClistBox(motorMenuWidget->getWindowsPos().iX, motorMenuWidget->getWindowsPos().iY, motorMenuWidget->getWindowsPos().iWidth, motorMenuWidget->getWindowsPos().iHeight);
 
 		motorMenu->setWidgetMode(ClistBox::MODE_SETUP);
-		motorMenu->enableShrinkMenu();
+//		motorMenu->enableShrinkMenu();
 			
 		motorMenu->enablePaintHead();
 		motorMenu->setTitle(_("Motor settings"), NEUTRINO_ICON_SCAN);
@@ -792,7 +792,7 @@ int CScanSetup::showUnicableSetup()
 		uni_setup = new ClistBox(uniWidget->getWindowsPos().iX, uniWidget->getWindowsPos().iY, uniWidget->getWindowsPos().iWidth, uniWidget->getWindowsPos().iHeight);
 
 		uni_setup->setWidgetMode(ClistBox::MODE_SETUP);
-		uni_setup->enableShrinkMenu();
+//		uni_setup->enableShrinkMenu();
 		
 		uni_setup->enablePaintHead();
 		uni_setup->setTitle(_("Unicable settings"), NEUTRINO_ICON_SCAN);
@@ -859,7 +859,7 @@ int CScanSetup::showLNBSetup()
 		satSetup = new ClistBox(satSetupWidget->getWindowsPos().iX, satSetupWidget->getWindowsPos().iY, satSetupWidget->getWindowsPos().iWidth, satSetupWidget->getWindowsPos().iHeight);
 
 		satSetup->setWidgetMode(ClistBox::MODE_SETUP);
-		satSetup->enableShrinkMenu();
+//		satSetup->enableShrinkMenu();
 			
 		satSetup->enablePaintHead();
 		satSetup->setTitle(_("Sat settings"), NEUTRINO_ICON_SCAN);
@@ -899,7 +899,7 @@ int CScanSetup::showLNBSetup()
 		tempsatlistBox = new ClistBox(tempsatWidget->getWindowsPos().iX, tempsatWidget->getWindowsPos().iY, tempsatWidget->getWindowsPos().iWidth, tempsatWidget->getWindowsPos().iHeight);
 
 		tempsatlistBox->setWidgetMode(ClistBox::MODE_SETUP);
-		tempsatlistBox->enableShrinkMenu();
+//		tempsatlistBox->enableShrinkMenu();
 					
 		//
 		tempsatlistBox->enablePaintHead();
@@ -1016,7 +1016,7 @@ int CScanSetup::showSatOnOffSetup()
 		satOnOfflistBox = new ClistBox(satOnOffWidget->getWindowsPos().iX, satOnOffWidget->getWindowsPos().iY, satOnOffWidget->getWindowsPos().iWidth, satOnOffWidget->getWindowsPos().iHeight);
 
 		satOnOfflistBox->setWidgetMode(ClistBox::MODE_SETUP);
-		satOnOfflistBox->enableShrinkMenu();
+//		satOnOfflistBox->enableShrinkMenu();
 			
 		satOnOfflistBox->enablePaintHead();
 		satOnOfflistBox->setTitle(_("Satellite"), NEUTRINO_ICON_SCAN);
@@ -1086,7 +1086,7 @@ int CScanSetup::showManualScanSetup()
 		manualScanlistBox = new ClistBox(manualScanWidget->getWindowsPos().iX, manualScanWidget->getWindowsPos().iY, manualScanWidget->getWindowsPos().iWidth, manualScanWidget->getWindowsPos().iHeight);
 
 		manualScanlistBox->setWidgetMode(ClistBox::MODE_SETUP);
-		manualScanlistBox->enableShrinkMenu();
+//		manualScanlistBox->enableShrinkMenu();
 		
 		manualScanlistBox->enablePaintHead();
 		manualScanlistBox->setTitle(_("Manual frequency scan / Test signal"), NEUTRINO_ICON_SCAN);
@@ -1343,10 +1343,10 @@ int CScanSetup::showManualScanSetup()
 	manualScanlistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		
 	// testsignal
-	manualScanlistBox->addItem(new CMenuForwarder(_("Test signal"), true, NULL, scanTs, "test") );
+	manualScanlistBox->addItem(new CMenuForwarder(_("Test signal"), true, NULL, scanTs, "test", CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW) );
 		
 	// scan
-	manualScanlistBox->addItem(new CMenuForwarder(_("Start scan"), true, NULL, scanTs, "manual") );
+	manualScanlistBox->addItem(new CMenuForwarder(_("Start scan"), true, NULL, scanTs, "manual", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE) );
 	
 	ret = manualScanWidget->exec(NULL, "");
 	
@@ -1386,7 +1386,7 @@ int CScanSetup::showAutoScanSetup()
 		autoScanlistBox = new ClistBox(autoScanWidget->getWindowsPos().iX, autoScanWidget->getWindowsPos().iY, autoScanWidget->getWindowsPos().iWidth, autoScanWidget->getWindowsPos().iHeight);
 
 		autoScanlistBox->setWidgetMode(ClistBox::MODE_SETUP);
-		autoScanlistBox->enableShrinkMenu();
+//		autoScanlistBox->enableShrinkMenu();
 		
 		autoScanlistBox->enablePaintHead();
 		autoScanlistBox->setTitle(_("Auto-Scan"), NEUTRINO_ICON_SCAN);
@@ -1480,7 +1480,7 @@ int CScanSetup::showAutoScanSetup()
 	autoScanlistBox->addItem(satSelect);
 		
 	// scan
-	autoScanlistBox->addItem(new CMenuForwarder(_("Start scan"), true, NULL, scanTs, "auto") );
+	autoScanlistBox->addItem(new CMenuForwarder(_("Start scan"), true, NULL, scanTs, "auto", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE) );
 	
 	ret = autoScanWidget->exec(NULL, "");
 	
@@ -1521,7 +1521,7 @@ int CScanSetup::showAllAutoScanSetup()
 		autoScanAlllistBox = new ClistBox(autoScanAllWidget->getWindowsPos().iX, autoScanAllWidget->getWindowsPos().iY, autoScanAllWidget->getWindowsPos().iWidth, autoScanAllWidget->getWindowsPos().iHeight);
 
 		autoScanAlllistBox->setWidgetMode(ClistBox::MODE_SETUP);
-		autoScanAlllistBox->enableShrinkMenu();
+//		autoScanAlllistBox->enableShrinkMenu();
 			
 		autoScanAlllistBox->enablePaintHead();
 		autoScanAlllistBox->setTitle(_("Auto-Scan multiple Satellites"), NEUTRINO_ICON_SCAN);
@@ -1548,7 +1548,7 @@ int CScanSetup::showAllAutoScanSetup()
 	autoScanAlllistBox->addItem(new CMenuForwarder(_("Satellite"), true, NULL, this, "satonoffsetup"));
 			
 	// scants
-	autoScanAlllistBox->addItem(new CMenuForwarder(_("Start scan"), true, NULL, scanTs, "all") );
+	autoScanAlllistBox->addItem(new CMenuForwarder(_("Start scan"), true, NULL, scanTs, "all", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE) );
 	
 	ret = autoScanAllWidget->exec(NULL, "");
 
@@ -2355,7 +2355,7 @@ int CTunerSetup::showMenu()
 		TunerSetup = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		TunerSetup->setWidgetMode(ClistBox::MODE_MENU);
-		TunerSetup->enableShrinkMenu();
+//		TunerSetup->enableShrinkMenu();
 		
 		//
 		TunerSetup->enablePaintHead();

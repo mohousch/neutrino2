@@ -114,7 +114,6 @@ int CPluginList::showMenu()
 		plist->enablePaintFoot();
 		plist->setFootButtons(CPluginListButtons, NUM_LIST_BUTTONS);
 		
-		//
 		// recalc widget  pos
 		pWidget->setPosition(plist->getWindowsPos().iX, plist->getWindowsPos().iY, plist->getWindowsPos().iWidth, plist->getWindowsPos().iHeight);
 		pWidget->addCCItem(plist);
