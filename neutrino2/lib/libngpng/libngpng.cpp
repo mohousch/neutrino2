@@ -967,7 +967,7 @@ uint8_t * getBGR8Image(const std::string &name, int width, int height, int trans
 			}
 			
 			// convert
-			ret = (uint8_t *)convertBGR2FB8(buffer, x, y, (channels == 4)? true : false, transp, TM_NONE);
+			ret = (uint8_t *)convertBGR2FB8(buffer, x, y, (channels == 4)? true : false, transp, TM_NONE); // TM_NONE
 			
 			
 			free(buffer);
