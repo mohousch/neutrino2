@@ -514,12 +514,38 @@ uint32_t * convertBGR2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, b
 	
 	if(alpha)
 	{
-		for(i = 0; i < count; i++)
+		switch (m_transparent) 
 		{
-			fbbuff[i] = ((rgbbuff[i*4 + 3] << 24) & 0xFF000000) | 
-				((rgbbuff[i*4 + 2]     << 16) & 0x00FF0000) | 
-				((rgbbuff[i*4 + 1] <<  8) & 0x0000FF00) | 
-				((rgbbuff[i*4])       & 0x000000FF);
+			case TM_BLACK:
+				for(i = 0; i < count; i++)
+				{
+					fbbuff[i] = (0xFF000000) | 
+						((rgbbuff[i*4 + 2]     << 16) & 0x00FF0000) | 
+						((rgbbuff[i*4 + 1]     <<  8) & 0x0000FF00) | 
+						((rgbbuff[i*4])               & 0x000000FF);
+				}
+				break;
+				
+			case TM_INI:
+				for(i = 0; i < count; i++)
+				{
+					fbbuff[i] = ((transp << 24) & 0xFF000000) | 
+						((rgbbuff[i*4 + 2] << 16) & 0x00FF0000) | 
+						((rgbbuff[i*4 + 1] <<  8) & 0x0000FF00) | 
+						((rgbbuff[i*4])           & 0x000000FF);
+				}
+				break;
+				
+			case TM_NONE:
+			default:
+				for(i = 0; i < count; i++)
+				{
+					fbbuff[i] = ((rgbbuff[i*4 + 3] << 24) & 0xFF000000) | 
+						((rgbbuff[i*4 + 2]     << 16) & 0x00FF0000) | 
+						((rgbbuff[i*4 + 1]     <<  8) & 0x0000FF00) | 
+						((rgbbuff[i*4])               & 0x000000FF);
+				}
+				break;
 		}
 	}
 	else
@@ -915,7 +941,7 @@ uint32_t * getBGR32Image(const std::string &name, int width, int height, int tra
 			}
 			
 			// convert
-			ret = (uint32_t *)convertBGR2FB32(buffer, x, y, (channels == 4)? true : false, transp, TM_NONE); //TM_NONE
+			ret = (uint32_t *)convertBGR2FB32(buffer, x, y, (channels == 4)? true : false, transp, TM_BLACK); //TM_NONE
 			
 			free(buffer);
 		} 

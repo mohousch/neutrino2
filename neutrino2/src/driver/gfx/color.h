@@ -28,6 +28,8 @@
 #define __color__
 
 #include <stdint.h>
+#include <memory.h>
+#include <byteswap.h>
 
 #include <driver/gfx/framebuffer.h>
 
@@ -136,6 +138,9 @@ extern "C"
 //
 #define COL_BACKGROUND_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_BACKGROUND]
 
+//
+#define BLEND(x, y, a) 				(y + (((x - y)*a) >> 8))
+
 ////
 int convertSetupColor2RGB(uint8_t r, uint8_t g, uint8_t b);
 int convertSetupAlpha2Alpha(uint8_t alpha);
@@ -149,14 +154,18 @@ inline uint32_t rgbaToColor(unsigned int rgb, uint8_t tr = 0xFF)
 	return col;
 }
 
-inline uint32_t make16color(uint16_t r, uint16_t g, uint16_t b, uint16_t t)
+inline uint32_t rgbaToColor(uint8_t r, uint8_t g, uint8_t b, uint8_t t)
 {
-	return ((t << 24) & 0xFF000000) | ((r << 8) & 0xFF0000) | ((g << 0) & 0xFF00) | (b >> 8 & 0xFF);
+#if BYTE_ORDER == LITTLE_ENDIAN
+	return ((t << 24) & 0xFF000000) | ((b << 16) & 0x00FF0000) | ((g << 8) & 0x0000FF00) | (r & 0x000000FF);
+#else
+	return ((t << 24) & 0xFF000000) | ((r << 16) & 0x00FF0000) | ((g << 8) & 0x0000FF00) | (b & 0x000000FF); 
+#endif
 }
 
 
 // colorstring used in skin.cpp
-inline uint32_t rgbaToColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+inline uint32_t rgba2Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	return (a << 24) | (r << 16) | (g << 8) | b;
 }
@@ -301,12 +310,12 @@ struct gRGB
     
     	void alpha_blend(const gRGB other)
     	{
-#define BLEND(x, y, a) (y + (((x - y) * a)>>8))
+//#define BLEND(x, y, a) (y + (((x - y) * a)>>8))
         	b = BLEND(other.b, b, other.a);
         	g = BLEND(other.g, g, other.a);
         	r = BLEND(other.r, r, other.a);
         	a = BLEND(0xFF, a, other.a);
-#undef BLEND
+//#undef BLEND
     	}
 };
 

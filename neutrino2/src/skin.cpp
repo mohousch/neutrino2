@@ -514,7 +514,7 @@ uint32_t CNeutrinoApp::convertColor(const char* const color)
 		}
 	}
 				
-	rgba = ::rgbaToColor(r, g, b, a);
+	rgba = ::rgba2Color(r, g, b, a);
 	
 	return rgba;
 }
@@ -654,7 +654,7 @@ uint32_t CNeutrinoApp::convertFontColor(const char* const color)
 		}
 	}
 				
-	rgb = ::rgbaToColor(r, g, b, a);
+	rgb = ::rgba2Color(r, g, b, a);
 	
 	return rgb;
 }

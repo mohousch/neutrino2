@@ -44,20 +44,20 @@
 #define kDefaultConfigFile 			"/etc/graphlcd.conf"
 #endif
 
-// aabbggrr
+// argb
 #define LCD_PIXEL_OFF				0xFF000000  // bg
 #define LCD_PIXEL_ON				0xFFFFFFFF
 #define LCD_PIXEL_INV				0x1000000
 
-#define LCD_PIXEL_BACKGROUND			0xFF000000
-#define LCD_PIXEL_WHITE				0xFFFFFFFF
-#define LCD_PIXEL_RED				0xFF0000FF
-#define LCD_PIXEL_GREEN				0xFF00FF00
-#define LCD_PIXEL_BLUE				0xFFFF0000
-#define LCD_PIXEL_YELLOW			0xFF00FFFF
-#define LCD_PIXEL_MAGENTA			0xFFFF00FF
-#define LCD_PIXEL_PERCENT			0xFF02C6FF
-#define LCD_PIXEL_BLACK				0xFF000000
+#define LCD_PIXEL_BACKGROUND			COL_BACKGROUND_PLUS_0 	//0xFF000000
+#define LCD_PIXEL_WHITE				COL_WHITE_PLUS_0
+#define LCD_PIXEL_RED				COL_RED_PLUS_0
+#define LCD_PIXEL_GREEN				COL_GREEN_PLUS_0
+#define LCD_PIXEL_BLUE				COL_BLUE_PLUS_0
+#define LCD_PIXEL_YELLOW			COL_YELLOW_PLUS_0	//0xFF00FFFF
+#define LCD_PIXEL_MAGENTA			COL_MAGENTA_PLUS_0
+#define LCD_PIXEL_PERCENT			0xFFFFC602 		// COL_AQUA_PLUS_0
+#define LCD_PIXEL_BLACK				COL_BLACK_PLUS_0
 
 #define LCD_IOCTL_CLEAR				(26)
 
@@ -165,8 +165,9 @@ class CLCDDisplay
 		void update();
 		void blitBox2LCD(int flag = blitAlphaBlend);
 		void blit(void);
+		void clear_screen();
 		////
-		void draw_point(const int x, const int y, const uint32_t color);
+		void draw_point(const int x, const int y, uint32_t color);
 		void draw_line(const int x1, const int y1, const int x2, const int y2, const uint32_t color);
 		void draw_fill_rect(int left, int top, int right, int bottom, uint32_t color);
 		void draw_rectangle(int left, int top, int right, int bottom, uint32_t linecolor, uint32_t fillcolor);
@@ -176,9 +177,6 @@ class CLCDDisplay
 		void load_screen(lcd_pixel_t ** const screen);
 		void dump_screen(lcd_pixel_t **screen);
 		bool dump_png(const char * const filename);
-		int dump_jpeg(const char * filename);
-		////
-		void clear_screen();
 		////
 		int setLCDContrast(int contrast);
 		int setLCDBrightness(int brightness);

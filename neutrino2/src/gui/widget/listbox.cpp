@@ -239,6 +239,10 @@ void CMenuItem::restoreScreen()
 	if (background)
 	{
 		CFrameBuffer::getInstance()->restoreScreen(x, y, dx, dy, background);
+		
+		// 
+		delete [] background;
+		background = NULL;
 	}
 }
 

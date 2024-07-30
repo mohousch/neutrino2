@@ -2086,7 +2086,7 @@ void CTestMenu::testCWindowCustomColor()
 	Box.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 400);
 	Box.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 400);
 	
-	uint32_t col = 0xffffff00;
+	uint32_t col = 0x80808080;
 
 	//
 	CCWindow* window = new CCWindow(&Box);

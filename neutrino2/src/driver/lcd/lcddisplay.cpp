@@ -1339,15 +1339,24 @@ void CLCDDisplay::update()
 	blit();
 }
 
-void CLCDDisplay::draw_point(const int x, const int y, const uint32_t color)
+void CLCDDisplay::draw_point(const int x, const int y, uint32_t color)
 {
 	if ((x < 0) || (x >= xres) || (y < 0) || (y >= yres))
 		return;
+		
+	uint32_t tmpcol = color;
+	
+	uint8_t a = (color & 0xFF000000) >> 24;
+	uint8_t r = (color & 0x00FF0000) >> 16;
+	uint8_t g = (color & 0x0000FF00) >> 8;
+	uint8_t b = (color & 0x000000FF);
+
+	tmpcol = ::rgbaToColor(r, g, b, a);
 
 	if (color == LCD_PIXEL_INV)
 		raw_buffer[(y * xres + x)] ^= 1;
 	else
-		raw_buffer[(y * xres + x)] = color;
+		raw_buffer[(y * xres + x)] = tmpcol;
 }
 
 void CLCDDisplay::draw_line(const int x1, const int y1, const int x2, const int y2, const uint32_t color)  
@@ -1575,7 +1584,8 @@ bool CLCDDisplay::dump_png(const char * const filename)
 
 					ret_value = true;
 					
-					fbptr = (png_byte *)raw_buffer;
+					//fbptr = (png_byte *)raw_buffer;
+					fbptr = (png_byte *)::convertBGR2FB32((png_byte *)raw_buffer, xres, yres, true, 0XFF, TM_BLACK);
 					
 					for (int i = 0; i < yres; i++)
 					{
@@ -1600,47 +1610,6 @@ bool CLCDDisplay::dump_png(const char * const filename)
 	return ret_value;
 }
 
-int CLCDDisplay::dump_jpeg(const char * filename)
-{
-	struct jpeg_compress_struct cinfo;
-	struct jpeg_error_mgr jerr;
-	FILE * outfile;
-	JSAMPROW row_pointer[1];
-	int row_stride;
-
-	cinfo.err = jpeg_std_error(&jerr);
-	jpeg_create_compress(&cinfo);
-
-	if ((outfile = fopen(filename, "wb")) == NULL)
-	{
-		lcddisplay_printf(10, "jpeg can't open %s\n", filename);
-		return 1;
-	}
-	lcddisplay_printf(10, "save Thumbnail... %s\n",filename);
-
-	jpeg_stdio_dest(&cinfo, outfile);
-
-	cinfo.image_width = xres;
-	cinfo.image_height = yres;
-	cinfo.input_components = 3;
-	cinfo.in_color_space = JCS_RGB;
-	jpeg_set_defaults(&cinfo);
-	jpeg_set_quality(&cinfo, 70, TRUE);
-	jpeg_start_compress(&cinfo, TRUE);
-	row_stride = (xres*3);
-	
-	while (cinfo.next_scanline < cinfo.image_height)
-	{
-		row_pointer[0] = (uint8_t *)&raw_buffer[cinfo.next_scanline * row_stride];
-		(void) jpeg_write_scanlines(&cinfo, row_pointer, 1);
-	}
-	jpeg_finish_compress(&cinfo);
-	fclose(outfile);
-	jpeg_destroy_compress(&cinfo);
-	
-	return 0;
-}
-
 int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int width, int height, int flag)
 {
 	lcddisplay_printf(10, "%s %d %d %d %d (flag: %d)\n", filename, posx, posy, width, height, flag);
@@ -1653,10 +1622,17 @@ int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int widt
 	
 	lcddisplay_printf(10, "real: %s %d %d %d %d\n", filename, p_w, p_h, p_bpp, chans);
 
+#if BYTE_ORDER == LITTLE_ENDIAN
 	if (raw_bpp == 32)
 		element.buffer = (lcd_pixel_t *)::getBGR32Image(filename, width, height, 0xFF, SCALE_COLOR);
 	else
 		element.buffer = (lcd_pixel_t *)::getBGR8Image(filename, width, height, 0xFF, SCALE_COLOR);
+#else
+	if (raw_bpp == 32)
+		element.buffer = (lcd_pixel_t *)::getRGB32Image(filename, width, height, 0xFF, SCALE_COLOR);
+	else
+		element.buffer = (lcd_pixel_t *)::getRGB8Image(filename, width, height, 0xFF, SCALE_COLOR);
+#endif
 
 	element.x = posx;
 	element.y = posy;
@@ -1695,10 +1671,17 @@ void CLCDDisplay::load_png_element(raw_lcd_element_t *element, int posx, int pos
 		height = p_h;
 	}
 
+#if BYTE_ORDER == LITTLE_ENDIAN
 	if (raw_bpp == 32)
-		element->buffer = (lcd_pixel_t *)::convertBGR2FB32(image, width, height, (chans == 4)? true : false, 0xFF, TM_INI);
+		element->buffer = (lcd_pixel_t *)::convertBGR2FB32(image, width, height, (chans == 4)? true : false, 0xFF, TM_BLACK);
 	else
-		element->buffer = (lcd_pixel_t *)::convertBGR2FB8(image, width, height, (chans == 4)? true : false, 0xFF, TM_INI);
+		element->buffer = (lcd_pixel_t *)::convertBGR2FB8(image, width, height, (chans == 4)? true : false, 0xFF, TM_BLACK);
+#else
+	if (raw_bpp == 32)
+		element->buffer = (lcd_pixel_t *)::convertRGB2FB32(image, width, height, (chans == 4)? true : false, 0xFF, TM_BLACK);
+	else
+		element->buffer = (lcd_pixel_t *)::convertRGB2FB8(image, width, height, (chans == 4)? true : false, 0xFF, TM_BLACK);
+#endif
 
 	element->x = posx;
 	element->y = posy;
