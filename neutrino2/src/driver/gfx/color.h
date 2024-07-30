@@ -138,9 +138,6 @@ extern "C"
 //
 #define COL_BACKGROUND_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_BACKGROUND]
 
-//
-#define BLEND(x, y, a) 				(y + (((x - y)*a) >> 8))
-
 ////
 int convertSetupColor2RGB(uint8_t r, uint8_t g, uint8_t b);
 int convertSetupAlpha2Alpha(uint8_t alpha);
@@ -310,12 +307,12 @@ struct gRGB
     
     	void alpha_blend(const gRGB other)
     	{
-//#define BLEND(x, y, a) (y + (((x - y) * a)>>8))
+#define BLEND(x, y, a) (y + (((x - y) * a)>>8))
         	b = BLEND(other.b, b, other.a);
         	g = BLEND(other.g, g, other.a);
         	r = BLEND(other.r, r, other.a);
         	a = BLEND(0xFF, a, other.a);
-//#undef BLEND
+#undef BLEND
     	}
 };
 

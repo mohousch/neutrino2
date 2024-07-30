@@ -941,7 +941,7 @@ uint32_t * getBGR32Image(const std::string &name, int width, int height, int tra
 			}
 			
 			// convert
-			ret = (uint32_t *)convertBGR2FB32(buffer, x, y, (channels == 4)? true : false, transp, TM_BLACK); //TM_NONE
+			ret = (uint32_t *)convertBGR2FB32(buffer, x, y, (channels == 4)? true : false, transp, TM_NONE); //TM_NONE
 			
 			free(buffer);
 		} 
