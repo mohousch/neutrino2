@@ -82,12 +82,12 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 #endif
 
 #ifndef FBIO_BLIT
-#define FBIO_SET_MANUAL_BLIT _IOW('F', 0x21, __u8)
-#define FBIO_BLIT 0x22
+#define FBIO_SET_MANUAL_BLIT 	_IOW('F', 0x21, __u8)
+#define FBIO_BLIT 		0x22
 #endif
 
 #ifndef FBIO_WAITFORVSYNC
-#define FBIO_WAITFORVSYNC _IOW('F', 0x20, uint32_t)
+#define FBIO_WAITFORVSYNC 	_IOW('F', 0x20, uint32_t)
 #endif
 
 CLCDDisplay::CLCDDisplay()

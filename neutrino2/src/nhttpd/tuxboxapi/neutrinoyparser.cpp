@@ -25,9 +25,7 @@
 #include <neutrino2.h>
 #include <system/settings.h>
 
-/*zapit includes*/
-#include <zapit/channel.h>
-#include <zapit/bouquets.h>
+#include <zapit/zapit.h>
 
 
 ////
@@ -802,6 +800,7 @@ std::string  CNeutrinoYParser::func_get_boxtype(CyhookHandler *, std::string)
 	return "generic";
 #endif
 }
+
 //
 // y-func : get stream info
 //

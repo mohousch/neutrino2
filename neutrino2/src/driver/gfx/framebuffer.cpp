@@ -1580,12 +1580,12 @@ void CFrameBuffer::blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, ui
 
 //
 #ifndef FBIO_WAITFORVSYNC
-#define FBIO_WAITFORVSYNC _IOW('F', 0x20, __u32)
+#define FBIO_WAITFORVSYNC 	_IOW('F', 0x20, __u32)
 #endif
 
 #ifndef FBIO_BLIT
-#define FBIO_SET_MANUAL_BLIT _IOW('F', 0x21, __u8)
-#define FBIO_BLIT 0x22
+#define FBIO_SET_MANUAL_BLIT 	_IOW('F', 0x21, __u8)
+#define FBIO_BLIT 		0x22
 #endif
 
 void CFrameBuffer::enableManualBlit()

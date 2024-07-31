@@ -29,9 +29,9 @@ function do_snapshot(){
 function do_snapshot2(){
 	var _shot = document.getElementById("shot");
 	var filename = id("file").value;
-	res = dbox_exec_tools("fbshot /tmp/"+filename+".png");
+	//res = dbox_exec_tools("fbshot /tmp/"+filename+".png");
 	
-	if (res != "")
+	//if (res != "")
 		loadSyncURL("/control/screenshot?name="+filename);
 	show_waitbox(false);
 	show_obj("shot", true);
@@ -46,8 +46,8 @@ function do_tv_snapshot(){
 function do_tv_snapshot2(){
 	var _shot = document.getElementById("shot");
 	var filename = id("file").value;
-	res = dbox_exec_tools("fbshot tv /tmp/"+filename+".png");
-	if (res != "")
+	//res = dbox_exec_tools("fbshot tv /tmp/"+filename+".png");
+	//if (res != "")
 		loadSyncURL("/control/screenshot?name="+filename);
 	show_waitbox(false);
 	show_obj("shot", true);
@@ -62,8 +62,8 @@ function do_fb_snapshot(){
 function do_fb_snapshot2(){
 	var _shot = document.getElementById("shot");
 	var filename = id("file").value;
-	res = dbox_exec_tools("fbshot fb /tmp/"+filename+".png");
-	if (res != "")
+	//res = dbox_exec_tools("fbshot fb /tmp/"+filename+".png");
+	//if (res != "")
 		loadSyncURL("/control/screenshot?name="+filename);
 	show_waitbox(false);
 	show_obj("shot", true);
@@ -78,10 +78,10 @@ function do_dboxshot(){
 function do_dboxshot2(){
 	var _shot = document.getElementById("shot");
 	var filename = id("file").value;
-	 res = dbox_exec_tools("fbshot fb /tmp/"+filename+".png");
-	if(res != "")
-		dbox_exec_tools("fbshot -o /tmp/"+filename+".png");
-	if (res != "")
+	//res = dbox_exec_tools("fbshot fb /tmp/"+filename+".png");
+	//if(res != "")
+	//	dbox_exec_tools("fbshot -o /tmp/"+filename+".png");
+	//if (res != "")
 		loadSyncURL("/control/screenshot?name="+filename);
 	show_waitbox(false);
 	show_obj("shot", true);
