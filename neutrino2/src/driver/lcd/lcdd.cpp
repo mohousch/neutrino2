@@ -2048,6 +2048,8 @@ void CLCD::setMiniTV(int value)
 	g_settings.lcd_minitv = value;
 	
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
+	display->clear_screen();
+	
 	const char *LCDMINITV[] = 
 	{
 		"NORMAL",
@@ -2057,15 +2059,7 @@ void CLCD::setMiniTV(int value)
 	};
 	
 	lcdd_printf(10, "CLCD::setMiniTV: %s\n", LCDMINITV[value]);
-/* 
-	FILE * f;
-	if((f = fopen("/proc/stb/lcd/mode", "w")) == NULL) 
-		return;
-	
-	fprintf(f, "%d", val);
-	
-	fclose(f);
-*/
+
 	proc_put("/proc/stb/lcd/mode", value);
 #endif
 }
