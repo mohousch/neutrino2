@@ -488,10 +488,10 @@ class CLCD
 			EPGALIGN_CENTER
 		};
 		
-		enum VFDEPGMODE
+		enum MODE
 		{
-			EPGMODE_CHANNELNUMBER		= 1,
-			EPGMODE_TIME			= 2,
+			MODE_CHANNEL_INFO		= 1,
+			MODE_TIME			= 2,
 		};
 		
 		enum EPGMODE

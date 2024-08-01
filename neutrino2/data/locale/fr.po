@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-07-27 23:30+0200\n"
+"POT-Creation-Date: 2024-08-01 21:11+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1318,6 +1318,9 @@ msgstr ""
 msgid "Mo Tu We Th Fr Sa Su"
 msgstr ""
 
+msgid "Mode"
+msgstr ""
+
 msgid "Modechange"
 msgstr ""
 
@@ -2549,9 +2552,6 @@ msgid "User menu blue"
 msgstr ""
 
 msgid "Username"
-msgstr ""
-
-msgid "VFD"
 msgstr ""
 
 msgid "Variety show"

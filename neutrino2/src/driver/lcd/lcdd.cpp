@@ -780,6 +780,9 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 #endif
 	
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+	if (g_settings.lcd_mode != MODE_CHANNEL_INFO)
+		return;
+	
 	// clear screen under banner
 	if (mode == MODE_PIC)
 		display->draw_fill_rect(-1, element[ELEMENT_BANNER].height - 1, lcd_width, lcd_height, LCD_PIXEL_OFF);
@@ -1007,7 +1010,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 		return;
 
 #ifdef ENABLE_4DIGITS
-	if (g_settings.lcd_vfdepgmode == EPGMODE_CHANNELNUMBER)
+	if (g_settings.lcd_mode == MODE_CHANNEL_INFO)
 	{
 		char tmp[5];
 							
@@ -1016,13 +1019,15 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 		showText(tmp); // UTF-8
 	}
 #elif defined (ENABLE_VFD)
-	if (g_settings.lcd_vfdepgmode == EPGMODE_CHANNELNUMBER)
+	if (g_settings.lcd_mode == MODE_CHANNEL_INFO)
 	{
 		showText((char *)servicename.c_str() );
 	}
 #endif
 
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+	if (g_settings.lcd_mode == MODE_CHANNEL_INFO)
+	{
 	showTextScreen(servicename, epg_title, showmode, perform_wakeup, g_settings.lcd_epgalign);
 	
 	// logo
@@ -1074,6 +1079,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 	{
 		showWeather();
 	}
+	}
 #endif
 	
 	if (perform_wakeup)
@@ -1105,6 +1111,9 @@ void CLCD::showMovieInfo(const PLAYMODES playmode, const std::string big, const 
 #endif
 
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+	if (g_settings.lcd_mode != MODE_CHANNEL_INFO)
+		return;
+		
 	movie_playmode = playmode;
 	movie_big = big;
 	movie_small = small;
@@ -1231,11 +1240,35 @@ void CLCD::showTime(bool force)
 		}
 		else
 		{
-			// refresh
-			display->draw_fill_rect(lcd_width - 1 - fonts.time->getRenderWidth("00:00", true), lcd_height - fonts.time->getHeight()/2, lcd_width, lcd_height, LCD_PIXEL_OFF);
+			if (g_settings.lcd_mode == CLCD::MODE_CHANNEL_INFO)
+			{
+				// refresh
+				display->draw_fill_rect(lcd_width - 1 - fonts.time->getRenderWidth("00:00", true), lcd_height - fonts.time->getHeight()/2, lcd_width, lcd_height, LCD_PIXEL_OFF);
 
-			// time
-			fonts.time->RenderString(lcd_width - fonts.time->getRenderWidth("00:00", true), lcd_height - 1, fonts.menu->getRenderWidth("00:00:0", true), timestr, LCD_PIXEL_ON);
+				// time
+				fonts.time->RenderString(lcd_width - fonts.time->getRenderWidth("00:00", true), lcd_height - 1, fonts.menu->getRenderWidth("00:00:0", true), timestr, LCD_PIXEL_ON);
+			}
+			else if (g_settings.lcd_mode == CLCD::MODE_TIME)
+			{
+				if (g_settings.lcd_standby_clock == STANDBYCLOCK_DIGITAL)
+				{
+					// refresh
+					display->draw_fill_rect(- 1, -1, lcd_width - 1, lcd_height - 1, LCD_PIXEL_BLACK);
+
+					// time
+					fonts.timestandby->RenderString((lcd_width - 1 - fonts.timestandby->getRenderWidth(timestr))/2, lcd_height/2, fonts.timestandby->getRenderWidth("00:00:00"), timestr, LCD_PIXEL_ON);
+					
+					// date
+					strftime((char*) &datestr, 20, "%d.%m.%Y", t);
+					
+					fonts.menu->RenderString((lcd_width - 1 - fonts.menu->getRenderWidth(datestr))/2, lcd_height - fonts.menu->getHeight() - 1, fonts.menu->getRenderWidth("00:00:0000:0", true), datestr, LCD_PIXEL_ON);
+				}
+				else if (g_settings.lcd_standby_clock == STANDBYCLOCK_ANALOG)
+				{
+					display->showPNGImage(element[ELEMENT_ACLOCK].name.c_str(), 0, 0, lcd_width, lcd_height);
+					display->show_analog_clock(t->tm_hour, t->tm_min, t->tm_sec, lcd_width/2, lcd_height/2, 3, 2, 1);
+				}
+			}
 		}
 		
 		displayUpdate();
@@ -1278,6 +1311,9 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 	volume = vol;
 	
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+	if (g_settings.lcd_mode != MODE_CHANNEL_INFO)
+		return;
+		
 	if ( (mode == MODE_TVRADIO || mode == MODE_MOVIE || mode == MODE_SCART || mode == MODE_AUDIO) && (g_settings.lcd_statusline == STATUSLINE_VOLUME) )
 	{
 		unsigned int height =  6;
@@ -1361,6 +1397,9 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 	bool draw = true;
 	
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+	if (g_settings.lcd_mode != MODE_CHANNEL_INFO)
+		return;
+	
 	percentOver = perc;
 	
 	if ( (mode == MODE_TVRADIO || mode == MODE_MOVIE || mode == MODE_AUDIO) && (g_settings.lcd_statusline == STATUSLINE_PLAYTIME) )
@@ -1415,6 +1454,9 @@ void CLCD::showMenuText(const int position, const char * text, const int selecte
 #endif
 
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+	if (g_settings.lcd_mode != MODE_CHANNEL_INFO)
+		return;
+		
 	// second line
 	// refresh
 	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height/2 + fonts.menutitle->getHeight() + 2 - 1, lcd_width, element[ELEMENT_BANNER].height/2 + fonts.menutitle->getHeight() + 2 + fonts.menu->getHeight() + 10, LCD_PIXEL_OFF);
@@ -1442,6 +1484,9 @@ void CLCD::showAudioTrack(const std::string &artist, const std::string &title, c
 #endif
 
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+	if (g_settings.lcd_mode != MODE_CHANNEL_INFO)
+		return;
+		
 	// refresh
 	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height, lcd_width, element[ELEMENT_BANNER].height - 12, LCD_PIXEL_OFF);
 	
@@ -1494,6 +1539,9 @@ void CLCD::showPlayMode(PLAYMODES m)
 #endif
 
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+	if (g_settings.lcd_mode != MODE_CHANNEL_INFO)
+		return;
+		
 	// refresh
 	display->draw_fill_rect (-1, lcd_width - 12, 12, 12, LCD_PIXEL_OFF);
 	
@@ -1571,9 +1619,9 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 		case MODE_TVRADIO:
 			showclock = false;
-			if (g_settings.lcd_vfdepgmode == EPGMODE_CHANNELNUMBER)
+			if (g_settings.lcd_mode == MODE_CHANNEL_INFO)
 				showServicename(servicename, true, servicenumber);
-			else if (g_settings.lcd_vfdepgmode == EPGMODE_TIME)
+			else if (g_settings.lcd_mode == MODE_TIME)
 			{
 				showclock = true;
 				showTime(true);
@@ -1625,9 +1673,9 @@ void CLCD::setMode(const MODES m, const char * const title)
 	{
 		case MODE_TVRADIO:
 			showclock = false;
-			if (g_settings.lcd_vfdepgmode == EPGMODE_CHANNELNUMBER)	
+			if (g_settings.lcd_mode == MODE_CHANNEL_INFO)	
 				showServicename(servicename, true, servicenumber);
-			else if (g_settings.lcd_vfdepgmode == EPGMODE_TIME)
+			else if (g_settings.lcd_mode == MODE_TIME)
 			{
 				showclock = true;
 				showTime(true);
@@ -1720,12 +1768,13 @@ void CLCD::setMode(const MODES m, const char * const title)
 	case MODE_TVRADIO:
 	case MODE_MOVIE:
 	{
+		if (g_settings.lcd_mode == MODE_CHANNEL_INFO)
+		{
 		// clear lcd
 		display->clear_screen();
 		
 		// banner
 		drawBanner();
-		
 		// statusline
 		switch (g_settings.lcd_statusline)
 		{
@@ -1749,6 +1798,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 			showMovieInfo(movie_playmode, movie_big, movie_small, g_settings.lcd_epgalign);
 			setMovieAudio(movie_is_ac3);
 		}
+		}
 		
 		// time
 		showclock = true;
@@ -1758,11 +1808,15 @@ void CLCD::setMode(const MODES m, const char * const title)
 		
 	case MODE_AUDIO:
 	{
+		if (g_settings.lcd_mode == MODE_CHANNEL_INFO)
+		{
 		display->clear_screen();
 		drawBanner();
 		display->show_png_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height - element[ELEMENT_SPEAKER].height - 1);
 		showPlayMode(PLAY_MODE_STOP);
 		showVolume(volume, false);
+		}
+		
 		showclock = true;
 		showTime();
 		break;
@@ -1770,22 +1824,30 @@ void CLCD::setMode(const MODES m, const char * const title)
 	
 	case MODE_PIC:
 	{
+		if (g_settings.lcd_mode == MODE_CHANNEL_INFO)
+		{
 		display->clear_screen();
 		drawBanner();
 		showclock = false;
 		fonts.menutitle->RenderString(0, element[ELEMENT_BANNER].height/2 + fonts.menutitle->getHeight(), lcd_width, title, LCD_PIXEL_YELLOW, 0, true); // UTF-8
-		displayUpdate(); // ???
+		}
+		
+		displayUpdate();
 		break;
 	}
 	
 	case MODE_SCART:
 	{
+		if (g_settings.lcd_mode == MODE_CHANNEL_INFO)
+		{
 		display->clear_screen();
 		drawBanner();
 		display->show_png_element(&(element[ELEMENT_SCART]), (lcd_width-element[ELEMENT_SCART].width)/2, 12);
 		display->show_png_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height-1);
 
 		showVolume(volume, false);
+		}
+		
 		showclock = true;
 		showTime();
 		break;
@@ -1793,21 +1855,28 @@ void CLCD::setMode(const MODES m, const char * const title)
 		
 	case MODE_MENU_UTF8:
 	{
+		if (g_settings.lcd_mode == MODE_CHANNEL_INFO)
+		{
 		showclock = false;
 		display->clear_screen(); // clear lcd
 		drawBanner();
 		fonts.menutitle->RenderString(0, element[ELEMENT_BANNER].height/2 + fonts.menutitle->getHeight(), lcd_width, title, LCD_PIXEL_YELLOW, 0, true); // UTF-8
-		displayUpdate(); // ???
+		displayUpdate();
+		}
 		break;
 	}
 		
 	case MODE_SHUTDOWN:
 	{
 		showclock = false;
-		display->clear_screen(); // clear lcd
+		
+		if (g_settings.lcd_mode == MODE_CHANNEL_INFO)
+		{
+		display->clear_screen();
 		drawBanner();
 		display->show_png_element(&(element[ELEMENT_POWER]), (lcd_width - element[ELEMENT_POWER].width)/2, (lcd_height - element[ELEMENT_POWER].height)/2);
 		displayUpdate();
+		}
 		break;
 	}
 		
@@ -1821,17 +1890,23 @@ void CLCD::setMode(const MODES m, const char * const title)
 	}
 		
 	case MODE_PROGRESSBAR:
+		if (g_settings.lcd_mode == MODE_CHANNEL_INFO)
+		{
 		showclock = false;
 		display->clear_screen();
 		drawBanner();
 		showProgressBar();
+		}
 		break;
 		
 	case MODE_PROGRESSBAR2:
+		if (g_settings.lcd_mode == MODE_CHANNEL_INFO)
+		{
 		showclock = false;
 		display->clear_screen();
 		drawBanner();
 		showProgressBar2();
+		}
 		break;
 	}
 #endif
@@ -2189,7 +2264,7 @@ void CLCD::Clear()
 #endif
 	
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
-	if (mode == MODE_SHUTDOWN)
+//	if (mode == MODE_SHUTDOWN)
 	{
 		display->clear_screen(); // clear lcd
 		displayUpdate();
@@ -2226,6 +2301,9 @@ void CLCD::showProgressBar(int global, const char * const text)
 		return;
 	
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+	if (g_settings.lcd_mode != MODE_CHANNEL_INFO)
+		return;
+		
 	int prog_w = lcd_width - 10;
 	int prog_h = 12; //20;
 	int prog_x = 5;
@@ -2278,6 +2356,9 @@ void CLCD::showProgressBar2(int local,const char * const text_local, int global,
 		return;
 	
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+	if (g_settings.lcd_mode != MODE_CHANNEL_INFO)
+		return;
+		
 	int prog_w = lcd_width - 10;
 	int prog_h = 12; //20;
 	int prog_x = 5;
@@ -2363,6 +2444,9 @@ void CLCD::showWeather()
 		return;
 		
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+	if (g_settings.lcd_mode != MODE_CHANNEL_INFO)
+		return;
+		
 	int ctx, cix, y;
 
 	// left

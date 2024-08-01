@@ -67,14 +67,14 @@ const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
 };
 #endif
 
-#if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
-#define LCDMENU_VFDEPG_OPTION_COUNT 	2
-const keyval LCDMENU_VFDEPG_OPTIONS[LCDMENU_VFDEPG_OPTION_COUNT] =
+//#if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
+#define LCDMENU_MODE_OPTION_COUNT 	2
+const keyval LCDMENU_MODE_OPTIONS[LCDMENU_MODE_OPTION_COUNT] =
 {
-	{ CLCD::EPGMODE_CHANNELNUMBER, _("channel") },
-	{ CLCD::EPGMODE_TIME, _("time") }
+	{ CLCD::MODE_CHANNEL_INFO, _("channel") },
+	{ CLCD::MODE_TIME, _("time") }
 };
-#endif
+//#endif
 
 #define LCDMENU_EPGALIGN_OPTION_COUNT 2
 const keyval LCDMENU_EPGALIGN_OPTIONS[LCDMENU_EPGALIGN_OPTION_COUNT] =
@@ -317,6 +317,9 @@ void CLCDSettings::showMenu()
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
 	lcdSettings->addItem(new CMenuOptionChooser(_("LCD Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
 #endif
+
+	// mode
+	lcdSettings->addItem(new CMenuOptionChooser(_("Mode"), &g_settings.lcd_mode, LCDMENU_MODE_OPTIONS, LCDMENU_MODE_OPTION_COUNT, true));
 	
 	// led_color
 #if defined (PLATFORM_GIGABLUE)	
@@ -363,9 +366,6 @@ void CLCDSettings::showMenu()
 
 	// dimm brightness
 	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, MAXBRIGHTNESS, this));
-	
-	// brightness / contrast
-//	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator(CMenuSeparator::LINE /*| CMenuSeparator::STRING, _("Brightness / Contrast")*/)));
 
 	// brightness
 	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness"), &g_settings.lcd_brightness, true, 0, MAXBRIGHTNESS, this));
@@ -378,16 +378,9 @@ void CLCDSettings::showMenu()
 	
 	// reset brightness / contrast to default
 	lcdSettings->addItem(new CMenuForwarder(_("Reset to defaults"), true, NULL, this, "reset"));
-#endif
-
-//#endif
-#if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
-	// epgmode
-	lcdSettings->addItem(new CMenuOptionChooser(_("VFD"), &g_settings.lcd_vfdepgmode, LCDMENU_VFDEPG_OPTIONS, LCDMENU_VFDEPG_OPTION_COUNT, true));	
-#endif
+#endif	
 
 #ifdef ENABLE_GRAPHLCD	
-	//lcdSettings->addItem(new CMenuSeparator(CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("GraphLCD Setup"))));
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// enable glcd
@@ -458,6 +451,11 @@ bool CLCDSettings::changeNotify(const std::string &locale, void *Data)
 	{
 		g_settings.lcd_power = state;
 		CLCD::getInstance()->setPower(state);	
+	}
+	else if (locale == _("Mode"))
+	{
+		g_settings.lcd_mode = state;
+		CLCD::getInstance()->Clear();
 	}
 	else if (locale == _("LED Color"))
 	{

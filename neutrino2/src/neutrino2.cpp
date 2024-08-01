@@ -849,7 +849,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.lcd_inverse = configfile.getInt32("lcd_inverse", DEFAULT_LCD_INVERSE);
 	g_settings.lcd_statusline = configfile.getInt32("lcd_statusline", DEFAULT_LCD_STATUSLINE);
 	g_settings.lcd_epgmode = configfile.getInt32("lcd_epgmode", DEFAULT_LCD_EPGMODE);
-	g_settings.lcd_vfdepgmode = configfile.getInt32("lcd_vfdepgmode", DEFAULT_LCD_VFDEPGMODE);
+	g_settings.lcd_mode = configfile.getInt32("lcd_mode", DEFAULT_LCD_MODE);
 	g_settings.lcd_epgalign = configfile.getInt32("lcd_epgalign", DEFAULT_LCD_EPGALIGN);
 	strcpy(g_settings.lcd_setting_dim_time, configfile.getString("lcd_dim_time", "0").c_str());
 	g_settings.lcd_setting_dim_brightness = configfile.getInt32("lcd_dim_brightness", DEFAULT_LCD_DIM_BRIGHTNESS);
@@ -1367,7 +1367,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setInt32("lcd_inverse", g_settings.lcd_inverse);
 	configfile.setInt32("lcd_statusline", g_settings.lcd_statusline);
 	configfile.setInt32("lcd_epgmode", g_settings.lcd_epgmode);
-	configfile.setInt32("lcd_vfdepgmode", g_settings.lcd_vfdepgmode);
+	configfile.setInt32("lcd_mode", g_settings.lcd_mode);
 	configfile.setInt32("lcd_epgalign", g_settings.lcd_epgalign);	
 	configfile.setString("lcd_dim_time", g_settings.lcd_setting_dim_time);
 	configfile.setInt32("lcd_dim_brightness", g_settings.lcd_setting_dim_brightness);

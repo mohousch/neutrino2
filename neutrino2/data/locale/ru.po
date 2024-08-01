@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-07-27 23:30+0200\n"
+"POT-Creation-Date: 2024-08-01 21:11+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1325,6 +1325,10 @@ msgstr "Разные настройки"
 msgid "Mo Tu We Th Fr Sa Su"
 msgstr "Пн Вт Ср Чт Пт Сб Вс"
 
+#, fuzzy
+msgid "Mode"
+msgstr "Режим сканирования"
+
 msgid "Modechange"
 msgstr "Изменение режима"
 
@@ -2592,9 +2596,6 @@ msgstr "Меню пользователя синее"
 
 msgid "Username"
 msgstr "Имя пользователя"
-
-msgid "VFD"
-msgstr ""
 
 msgid "Variety show"
 msgstr "Варьете"
