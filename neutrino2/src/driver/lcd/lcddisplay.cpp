@@ -1714,20 +1714,20 @@ void CLCDDisplay::show_analog_clock(int hour, int min, int sec, int posx, int po
 	dia = 180;
 
 	// sec
-	sAngleInRad = ((6 * time_sec) * (pi / 360));
+	sAngleInRad = ((6 * time_sec) * (2 * pi / 360));
 	sAngleInRad -= pi / 2;
 	sec_x = int((dia * 0.9 * cos(sAngleInRad))); // 0.9
 	sec_y = int((dia * 0.9 * sin(sAngleInRad)));
 
 	// min
-	mAngleInRad = ((6 * time_min) * (pi / 360));
+	mAngleInRad = ((6 * time_min) * (2 * pi / 360));
 	mAngleSave = mAngleInRad;
 	mAngleInRad -= pi/2;
 	min_x = int((dia * 0.7 * cos(mAngleInRad))); //0.7
 	min_y = int((dia * 0.7 * sin(mAngleInRad)));
 
 	// hr
-	hAngleInRad = ((30 * time_hour) * (pi / 360));
+	hAngleInRad = ((30 * time_hour) * (2 * pi / 360));
 	hAngleInRad += mAngleSave/12;
 	hAngleInRad -= pi/2;
 	hour_x = int((dia * 0.5 * cos(hAngleInRad)));	// 0.5
@@ -1741,14 +1741,14 @@ void CLCDDisplay::show_analog_clock(int hour, int min, int sec, int posx, int po
 	}
 
 	// min
-	for (int i = 0; i < min_size; i++)
+	for (int i = 0; i <= min_size; i++)
 	{
 //		draw_line(posx - i, posy - i, posx + min_x, posy + min_y, LCD_PIXEL_WHITE);
 		draw_line(posx + i, posy + i, posx + min_x, posy + min_y, LCD_PIXEL_WHITE);
 	}
 	
 	// sec
-	for (int i = 0; i < min_size; i++)
+	for (int i = 0; i <= min_size; i++)
 	{
 //		draw_line(posx - i, posy - i, posx + sec_x, posy + sec_y, LCD_PIXEL_RED);
 		draw_line(posx + i, posy + i, posx + sec_x, posy + sec_y, LCD_PIXEL_RED);
