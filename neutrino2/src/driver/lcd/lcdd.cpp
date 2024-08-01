@@ -782,9 +782,9 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	// clear screen under banner
 	if (mode == MODE_PIC)
-		display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, lcd_height, LCD_PIXEL_OFF);
+		display->draw_fill_rect(-1, element[ELEMENT_BANNER].height - 1, lcd_width, lcd_height, LCD_PIXEL_OFF);
 	else
-		display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, lcd_height - fonts.time->getHeight(), LCD_PIXEL_OFF);
+		display->draw_fill_rect(-1, element[ELEMENT_BANNER].height - 1, lcd_width, lcd_height - fonts.time->getHeight(), LCD_PIXEL_OFF);
 
 	//	
 	if ( (g_settings.lcd_picon || g_settings.lcd_weather) && mode == MODE_TVRADIO )
@@ -1443,8 +1443,6 @@ void CLCD::showAudioTrack(const std::string &artist, const std::string &title, c
 
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	// refresh
-	//display->draw_fill_rect(-1, element[ELEMENT_BANNER].height + 2 - 1, lcd_width, element[ELEMENT_BANNER].height + 2 + fonts.channelname->getHeight() + 2 + fonts.menu->getHeight() + 2 + fonts.menu->getHeight(), LCD_PIXEL_OFF);
-	////
 	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height, lcd_width, element[ELEMENT_BANNER].height - 12, LCD_PIXEL_OFF);
 	
 	// title
