@@ -78,10 +78,17 @@
 #define LED_IOCTL_BLINKING_TIME 		0X12
 #define LED_IOCTL_SET_DEFAULT 			0x13
 
+#if defined BOXMODEL_DM8000 || defined BOXMODEL_DM7080
+#define lcd_pixel_t 				uint8_t
+
+#define DEFAULT_LCD_XRES			132
+#define DEFAULT_LCD_YRES			64
+#else
 #define lcd_pixel_t 				uint32_t
 
 #define DEFAULT_LCD_XRES			220
 #define DEFAULT_LCD_YRES			176
+#endif
 
 struct raw_lcd_element_t
 {

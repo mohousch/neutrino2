@@ -735,7 +735,7 @@ uint32_t * getImage(const std::string &name, int width, int height, int transp, 
 				x = width ;
 				y = height;
 			}
-			
+
 			// convert
 			if( name.find(".png") == (name.length() - 4) )
 			{

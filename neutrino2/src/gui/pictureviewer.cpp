@@ -295,7 +295,6 @@ void CPictureViewerGui::view(unsigned int index)
 {
 	selected = index;
 	
-//	CLCD::getInstance()->showMenuText(0, playlist[index].Name.c_str(), -1, true);
 	CLCD::getInstance()->showTextScreen(_("Pictureviewer"), playlist[index].Name, CLCD::EPGMODE_CHANNEL_TITLE, true, true);
 	
 	g_PicViewer->showImage(playlist[index].Filename);

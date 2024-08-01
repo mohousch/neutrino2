@@ -1481,7 +1481,7 @@ void CFrameBuffer::clearFrameBuffer()
 
 // blitRoundedBox2FB
 void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const uint32_t &height, const uint32_t &xoff, const uint32_t &yoff)
-{ 
+{
 	uint32_t xc = (width > xRes) ? (uint32_t)xRes : width;
 	uint32_t yc = (height > yRes) ? (uint32_t)yRes : height;
 	
