@@ -11,9 +11,9 @@ function rcsim(_key) {
 }
 
 function do_dboxshot(){
-	var res = dbox_exec_tools("fbshot fb /tmp/a.png");
-	if (res != "")
-		loadSyncURL("/control/screenshot?name="+filename);
+	//var res = dbox_exec_tools("fbshot fb /tmp/a.png");
+	//if (res != "")
+		loadSyncURL("/control/screenshot?name=a");
 	var _shot = document.getElementById("shot");
 	_shot.src = "/tmp/a.png?"+Math.random();
 	$('statusline').hide();

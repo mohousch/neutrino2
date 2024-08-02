@@ -385,16 +385,6 @@ class ClistBox : public CComponent
 			TYPE_EXTENDED,
 			TYPE_FRAME
 		};
-		
-		/*
-		enum 
-		{
-			FLAG_NONE,
-			FLAG_PAINTICON,
-			FLAG_ADJUSTLOCALE,
-			FLAG_ADJUSTOPTION,
-		};
-		*/
 
 		//
 		std::vector<CMenuItem*> items;
@@ -533,7 +523,7 @@ class ClistBox : public CComponent
 		void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = CRCInput::RC_nokey, bool enabled = true, int imode = MODE_MENU, int itype = TYPE_STANDARD, bool i2lines = false, int iBorder = CComponent::BORDER_NO);
 		void selectItemByName(const char *name);
 		////
-		void initFrames(); // public
+		void initFrames();
 		void paintHead();
 		void paintFoot();
 		void paintItemInfo(int pos);

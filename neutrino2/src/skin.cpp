@@ -2719,7 +2719,7 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 	{
 		xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode;
 			
-		while ( (search = xmlGetNextOccurence(search, "screen")) != NULL ) 
+		while ( (search = xmlGetNextOccurence(search, "widget")) != NULL ) 
 		{
 			//
 			name = xmlGetAttribute(search, (char*)"name");

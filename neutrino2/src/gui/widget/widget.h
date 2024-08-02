@@ -120,8 +120,6 @@ class CWidget : public CMenuTarget
 		//
 		unsigned int current_page;
 		unsigned int total_pages;
-		//
-		void initFrames();
 
 	public:
 		CWidget(const int x = 0, const int y = 0, const int dx = DEFAULT_XRES, const int dy = DEFAULT_YRES);
@@ -145,6 +143,7 @@ class CWidget : public CMenuTarget
 		virtual void paintCCItems();
 		virtual void removeCCItem(long pos);
 		//
+		void initFrames();
 		virtual void paint();
 		virtual void hide();
 		virtual int exec(CMenuTarget *parent, const std::string &actionKey);

@@ -4,7 +4,7 @@
 <!-- AUTHOR: mohousch -->
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
 
-	<screen name="testmenu" posx="0" posy="0" width="1280" height="720">
+	<widget name="testmenu" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode ="MODE_MENU" scrollbar="1">
 			<item id="FORWARDER" localename="item 1" optioninfo="test 1" actionkey="do not thing" target="0" itemicon="hint_tvmode" hint="any hint or comments" iconname="red" directkey="red" lines="0" border="BORDER_ALL" gradient="DARK2LIGHT2DARK" type="TYPE_CLASSIC"/>
@@ -17,5 +17,5 @@
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="prev.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="3"/>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="8"/>
-	</screen>
+	</widget>
 </skin>

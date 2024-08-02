@@ -1412,7 +1412,7 @@ void CControlAPI::StartPluginCGI(CyhookHandler *hh)
 void CControlAPI::ScreenshotCGI(CyhookHandler *hh)
 {
 	bool enableOSD = true;
-	bool enableVideo = true;
+	bool enableVideo = false;
 	std::string filename = "screenshot";
 
 	if (hh->ParamList["osd"] == "0")
@@ -1424,8 +1424,8 @@ void CControlAPI::ScreenshotCGI(CyhookHandler *hh)
 	if (!hh->ParamList["name"].empty())
 		filename = hh->ParamList["name"];
 
-//	if (CScreenshot::getInstance()->dumpFile("/tmp/" + filename + ".png", CScreenshot::FORMAT_PNG, enableOSD, enableVideo))
-	if (CFrameBuffer::getInstance()->savePNG("/tmp/" + filename + ".png"))
+	if (CScreenshot::getInstance()->dumpFile("/tmp/" + filename + ".png", CScreenshot::FORMAT_PNG, enableOSD, enableVideo))
+//	if (CFrameBuffer::getInstance()->savePNG("/tmp/" + filename + ".png"))
 		hh->SendOk();
 	else
 		hh->SendError();

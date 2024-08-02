@@ -1791,7 +1791,6 @@ bool CFrameBuffer::savePNG(const std::string &filename)
 	
 	png_structp  png_ptr;
 	png_infop    info_ptr;
-//	png_byte *   fbptr;
 	png_bytep *row_pointers;
 	FILE *       fp;
  
@@ -1837,7 +1836,6 @@ bool CFrameBuffer::savePNG(const std::string &filename)
 
 					//
 					png_set_IHDR(png_ptr, info_ptr, xRes, yRes, 8, PNG_COLOR_TYPE_RGBA, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
-					png_set_bgr(png_ptr);
 					
 					//
         				png_write_info(png_ptr, info_ptr);

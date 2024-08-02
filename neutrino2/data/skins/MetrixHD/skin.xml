@@ -4,16 +4,16 @@
 <!-- AUTHOR: mohousch -->
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
 	
-	<screen name="mainmenu" posx="0" posy="0" width="1280" height="720">
+	<widget name="mainmenu" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
 		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1" disableitemicon="1" paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="300" iteminfoposy="50" iteminfowidth="300" iteminfoheight="300" iteminfocolor="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label posx="650" posy="600" width="520" height="60" text="Main Menu" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
 		<window posx="280" posy="400" width="340" height="100" paintframe="1"/>
 		<time posx="280" posy="410" width="340" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time posx="280" posy="440" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="settings" posx="0" posy="0" width="1280" height="720">
+	<widget name="settings" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
 		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
 		<label posx="650" posy="600" width="520" height="60" text="Settings" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
@@ -22,9 +22,9 @@
 		<window posx="280" posy="400" width="340" height="100" paintframe="1"/>
 		<time posx="280" posy="410" width="340" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time posx="280" posy="440" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="epgtimer" posx="0" posy="0" width="1280" height="720">
+	<widget name="epgtimer" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
 		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
 		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="EPG / timer" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
@@ -33,9 +33,9 @@
 		<window posx="280" posy="400" width="340" height="100" paintframe="1"/>
 		<time name="time" posx="280" posy="410" width="340" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="280" posy="440" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="features" posx="0" posy="0" width="1280" height="720">
+	<widget name="features" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
 		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1" disableitemicon="1"/>
 		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="Features" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
@@ -45,9 +45,9 @@
 		<time name="time" posx="280" posy="410" width="340" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="280" posy="440" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
 		<KEY name="RC_blue" target="neutrino" actionkey="plugins"/>
-	</screen>
+	</widget>
 	
-	<screen name="system" posx="0" posy="0" width="1280" height="720">
+	<widget name="system" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
 		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
 		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="System" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
@@ -56,9 +56,9 @@
 		<window posx="280" posy="400" width="340" height="100" paintframe="1"/>
 		<time name="time" posx="280" posy="410" width="340" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="280" posy="440" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="powermenu" posx="0" posy="0" width="1280" height="720">
+	<widget name="powermenu" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
 		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
 		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="Power Menu" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
@@ -67,9 +67,9 @@
 		<window posx="280" posy="400" width="340" height="100" paintframe="1"/>
 		<time name="time" posx="280" posy="410" width="340" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="280" posy="440" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="information" posx="0" posy="0" width="1280" height="720">
+	<widget name="information" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
 		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
 		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="Information" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
@@ -78,9 +78,9 @@
 		<window posx="280" posy="400" width="340" height="100" paintframe="1"/>
 		<time name="time" posx="280" posy="410" width="340" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="280" posy="440" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="mediaplayer" posx="0" posy="0" width="1280" height="720">
+	<widget name="mediaplayer" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
 		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
 		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="Media Player" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
@@ -89,9 +89,9 @@
 		<window posx="280" posy="400" width="340" height="100" paintframe="1"/>
 		<time name="time" posx="280" posy="410" width="340" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="280" posy="440" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="osd" posx="0" posy="0" width="1280" height="720">
+	<widget name="osd" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1" >
 		</window>
 		
@@ -111,9 +111,9 @@
 		</time>
 		<time name="time" posx="280" posy="440" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE">
 		</time>
-	</screen>
+	</widget>
 	
-	<screen name="plugins" posx="0" posy="0" width="1280" height="720">
+	<widget name="plugins" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="540" type="TYPE_CLASSIC" mode="MODE_MENU" scrollbar="1"/>
 		<hline posx="70" posy="628" width="715" height="2" gradient="DARK2LIGHT2DARK"/>
@@ -131,9 +131,9 @@
 		<button posx="785" posy="600" width="445" height="40" mode="MODE_MENU" head="1">
 			<button_label name="btn_info" localename="Info" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		</button>
-	</screen>
+	</widget>
 	
-	<screen name="timerlist" posx="0" posy="0" width="1280" height="720">
+	<widget name="timerlist" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="540" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<hline posx="70" posy="628" width="715" height="2" gradient="DARK2LIGHT2DARK"/>
@@ -148,9 +148,9 @@
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="newtimer" posx="0" posy="0" width="1280" height="720">
+	<widget name="newtimer" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="540" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
@@ -158,9 +158,9 @@
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="modfytimer" posx="0" posy="0" width="1280" height="720">
+	<widget name="modfytimer" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="540" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
@@ -168,9 +168,9 @@
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="tunersetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="tunersetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="1"/>
 		
@@ -183,9 +183,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="scansetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="scansetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -198,9 +198,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="transponder" posx="0" posy="0" width="1280" height="720">
+	<widget name="transponder" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -213,9 +213,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="unicablesetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="unicablesetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -228,9 +228,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="manualscan" posx="0" posy="0" width="1280" height="720">
+	<widget name="manualscan" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -243,9 +243,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="autoscan" posx="0" posy="0" width="1280" height="720">
+	<widget name="autoscan" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -258,9 +258,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="autoscanall" posx="0" posy="0" width="1280" height="720">
+	<widget name="autoscanall" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -273,9 +273,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="satsetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="satsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -288,9 +288,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="motorsetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="motorsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -303,9 +303,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="satfindMenu" posx="0" posy="0" width="1280" height="720">
+	<widget name="satfindMenu" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -318,9 +318,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="satOnOff" posx="0" posy="0" width="1280" height="720">
+	<widget name="satOnOff" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -333,9 +333,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="tempsat" posx="0" posy="0" width="1280" height="720">
+	<widget name="tempsat" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
 		
@@ -346,9 +346,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="updatesetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="updatesetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -361,9 +361,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="flashexpert" posx="0" posy="0" width="1280" height="720">
+	<widget name="flashexpert" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -376,9 +376,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="fileselector" posx="0" posy="0" width="1280" height="720">
+	<widget name="fileselector" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -391,9 +391,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="mtdselector" posx="0" posy="0" width="1280" height="720">
+	<widget name="mtdselector" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -406,9 +406,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="cammenu" posx="0" posy="0" width="1280" height="720">
+	<widget name="cammenu" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -421,9 +421,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="tempcam" posx="0" posy="0" width="1280" height="720">
+	<widget name="tempcam" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
 		
@@ -434,9 +434,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="tempcam2" posx="0" posy="0" width="1280" height="720">
+	<widget name="tempcam2" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
 		
@@ -447,9 +447,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="videosetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="videosetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
@@ -457,9 +457,9 @@
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="audiosetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="audiosetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
@@ -467,9 +467,9 @@
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="parentallocksetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="parentallocksetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -482,9 +482,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="networksetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="networksetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -497,9 +497,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="proxysetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="proxysetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -512,9 +512,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="nfs" posx="0" posy="0" width="1280" height="720">
+	<widget name="nfs" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -527,9 +527,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="mountvolume" posx="0" posy="0" width="1280" height="720">
+	<widget name="mountvolume" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -542,9 +542,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="umountvolume" posx="0" posy="0" width="1280" height="720">
+	<widget name="umountvolume" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -557,9 +557,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="nfssmall" posx="0" posy="0" width="1280" height="720">
+	<widget name="nfssmall" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
@@ -567,9 +567,9 @@
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="recordingsetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="recordingsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -582,9 +582,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="movieplayersetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="movieplayersetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -597,9 +597,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="audioplayersetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="audioplayersetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -612,9 +612,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="pictureviewersetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="pictureviewersetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -627,9 +627,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="lcdsetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="lcdsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -642,9 +642,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="hddsetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="hddsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -657,9 +657,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="temphdd" posx="0" posy="0" width="1280" height="720">
+	<widget name="temphdd" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
 		
@@ -670,9 +670,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="temphdd2" posx="0" posy="0" width="1280" height="720">
+	<widget name="temphdd2" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
 		
@@ -683,9 +683,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="zapitsetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="zapitsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -698,9 +698,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="miscsetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="miscsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -713,9 +713,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="filebrowsersetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="filebrowsersetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -728,9 +728,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="epgsetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="epgsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -743,9 +743,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="channelssetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="channelssetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -758,18 +758,18 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="skinsetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="skinsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Skin Select" halign="1"></label>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoframe="0" iteminfocolor="COL_MENUCONTENTSELECTED_PLUS_0" iteminfoposx="795" iteminfoposy="150" iteminfowidth="425" iteminfoheight="275"/>
-	</screen>
+	</widget>
 	
-	<screen name="menusetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="menusetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -782,9 +782,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="skinstyleselectionsetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="skinstyleselectionsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -797,9 +797,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="themesetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="themesetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -812,9 +812,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="infobarsetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="infobarsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -827,9 +827,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="languagesetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="languagesetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -842,9 +842,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="fontsetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="fontsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -857,9 +857,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="osdtimingsetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="osdtimingsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -872,9 +872,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="osdmiscsetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="osdmiscsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -887,9 +887,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="rcsetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="rcsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -902,9 +902,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="rcbinding" posx="0" posy="0" width="1280" height="720">
+	<widget name="rcbinding" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
@@ -917,9 +917,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="optionstringchooser" posx="0" posy="0" width="1280" height="720">
+	<widget name="optionstringchooser" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
 		
@@ -930,9 +930,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="optionchooser" posx="0" posy="0" width="1280" height="720">
+	<widget name="optionchooser" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
 		
@@ -943,9 +943,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="keychooser" posx="0" posy="0" width="1280" height="720">
+	<widget name="keychooser" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
 		
@@ -956,9 +956,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="mountchooser" posx="0" posy="0" width="1280" height="720">
+	<widget name="mountchooser" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
 		
@@ -969,9 +969,9 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="usermenu" posx="0" posy="0" width="1280" height="720">
+	<widget name="usermenu" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="1" painthead="1"/>
 		
@@ -982,27 +982,27 @@
 		
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
-	</screen>
+	</widget>
 	
-	<screen name="bouquetlist" posx="0" posy="0" width="1280" height="720">
+	<widget name="bouquetlist" posx="0" posy="0" width="1280" height="720">
 		<window name="bg" posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" headline="1" headlinegradient="DARK2LIGHT2DARK" paintfoot="1" footline="1" footlinegradient="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="channellist" posx="0" posy="0" width="1280" height="720">
+	<widget name="channellist" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="120" width="715" height="480" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1"/>
 		<head posx="60" posy="60" width="715" height="50" paintdate="1" line="1" linegradient="DARK2LIGHT"/>
 		<foot posx="60" posy="620" width="715" height="50" line="1" linegradient="DARK2LIGHT"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<hline posx="795" posy="360" width="425" height="3" gradient="DARK2LIGHT2DARK"/>
-	</screen>
+	</widget>
 	
-	<screen name="bqeditbq" posx="0" posy="0" width="1280" height="720">
+	<widget name="bqeditbq" posx="0" posy="0" width="1280" height="720">
 		<window name="bg" posx="50" posy="50" width="775" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="755" height="600" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" headline="1" paintfoot="1" footline="1"/>
 		
@@ -1010,9 +1010,9 @@
 		<image name="hint" posx="835" posy="150" width="385" height="275" image="picon_default.png"/>
 		<time name="date" posx="835" posy="460" width="385" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="835" posy="510" width="385" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="bqeditch" posx="0" posy="0" width="1280" height="720">
+	<widget name="bqeditch" posx="0" posy="0" width="1280" height="720">
 		<window name="bg" posx="50" posy="50" width="775" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="755" height="600" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" headline="1" paintfoot="1" footline="1"/>
 		
@@ -1020,52 +1020,52 @@
 		<image name="hint" posx="835" posy="150" width="385" height="275" image="picon_default.png"/>
 		<time name="date" posx="835" posy="460" width="385" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="835" posy="510" width="385" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="bqeditchselect" posx="0" posy="0" width="1280" height="720">
+	<widget name="bqeditchselect" posx="0" posy="0" width="1280" height="720">
 		<window name="bg" posx="50" posy="50" width="775" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="755" height="600" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" headline="1" paintfoot="1" footline="1"/>
 		<window posx="825" posy="70" width="405" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="hint" posx="835" posy="150" width="385" height="275" image="picon_default.png"/>
 		<time name="date" posx="835" posy="460" width="385" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="835" posy="510" width="385" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="eventlist" posx="0" posy="0" width="1280" height="720">
+	<widget name="eventlist" posx="0" posy="0" width="1280" height="720">
 		<window name="bg" posx="50" posy="50" width="775" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="755" height="600" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" headline="1" headlinegradient="DARK2LIGHT2DARK" paintfoot="1" footline="1" footlinegradient="DARK2LIGHT2DARK"/>
 		<window posx="825" posy="70" width="405" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="hint" posx="835" posy="150" width="385" height="275" image="picon_default.png"/>
 		<time name="date" posx="835" posy="460" width="385" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="835" posy="510" width="385" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="epgview" posx="0" posy="0" width="1280" height="720">
+	<widget name="epgview" posx="0" posy="0" width="1280" height="720">
 		<window name="bg" posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<head posx="60" posy="60" width="715" height="60" line="1" linegradient="DARK2LIGHT2DARK"/>
 		<foot posx="60" posy="600" width="715" height="60" line="1" linegradient="DARK2LIGHT2DARK"/>
 		<textbox posx="60" posy="120" width="715" height="430" paintframe="1" fontbg="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
-		<window name="screening" posx="785" posy="90" width="445" height="30" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
+		<window name="widgeting" posx="785" posy="90" width="445" height="30" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="filebrowser" posx="0" posy="0" width="1280" height="720">
+	<widget name="filebrowser" posx="0" posy="0" width="1280" height="720">
 		<window name="bg" posx="50" posy="50" width="775" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="755" height="600" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="1" painthead="1" paintdate="1" headline="1" paintfoot="1" footline="1"/>
 		<window posx="825" posy="70" width="405" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="hint" posx="835" posy="150" width="385" height="275" image="picon_default.png"/>
 		<time name="date" posx="835" posy="460" width="385" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="835" posy="510" width="385" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="boxinfo" posx="0" posy="0" width="1280" height="720" paintframe="1">
+	<widget name="boxinfo" posx="0" posy="0" width="1280" height="720" paintframe="1">
 		<head posx="0" posy="0" width="1280" height="60" title="Box Info" icon="information" paintdate="1" format="%d.%m.%Y %H:%M:%S" line="1"/>
-	</screen>
+	</widget>
 	
-	<screen name="personalisation" posx="0" posy="0" width="1280" height="720">
+	<widget name="personalisation" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
@@ -1073,9 +1073,9 @@
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 	
-	<screen name="cecsetup" posx="0" posy="0" width="1280" height="720">
+	<widget name="cecsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
@@ -1083,7 +1083,7 @@
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
-	</screen>
+	</widget>
 </skin>
 
 

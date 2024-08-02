@@ -25,8 +25,6 @@ String.prototype.parseColor = function() {
   return(color.length==7 ? color : (arguments[0] || this));  
 }
 
-/*--------------------------------------------------------------------------*/
-
 Element.collectTextNodes = function(element) {  
   return $A($(element).childNodes).collect( function(node) {
     return (node.nodeType==3 ? node.nodeValue : 
@@ -70,14 +68,10 @@ Element.forceRerendering = function(element) {
   } catch(e) { }
 };
 
-/*--------------------------------------------------------------------------*/
-
 Array.prototype.call = function() {
   var args = arguments;
   this.each(function(f){ f.apply(this, args) });
 }
-
-/*--------------------------------------------------------------------------*/
 
 var Effect = {
   _elementDoesNotExistError: {
@@ -141,8 +135,6 @@ var Effect = {
 
 var Effect2 = Effect; // deprecated
 
-/* ------------- transitions ------------- */
-
 Effect.Transitions = {
   linear: Prototype.K,
   sinoidal: function(pos) {
@@ -172,8 +164,6 @@ Effect.Transitions = {
     return 1;
   }
 };
-
-/* ------------- core effects ------------- */
 
 Effect.ScopedQueue = Class.create();
 Object.extend(Object.extend(Effect.ScopedQueue.prototype, Enumerable), {
@@ -546,8 +536,6 @@ Object.extend(Object.extend(Effect.ScrollTo.prototype, Effect.Base.prototype), {
       this.scrollStart + (position*this.delta));
   }
 });
-
-/* ------------- combination effects ------------- */
 
 Effect.Fade = function(element) {
   element = $(element);
