@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: screenshot.cpp 21072024 mohousch Exp $
+	$Id: screenshot.cpp 02082024 mohousch Exp $
 
 	Copyright (C) 2011 CoolStream International Ltd
 	Copyright (C) 2017 M. Liebmann (micha-bbg)
@@ -38,6 +38,8 @@
 #include <system/screenshot.h>
 #include <system/debug.h>
 
+#include <driver/gfx/color.h>
+
 #include <libdvbapi/video_cs.h>
 
 extern "C" {
@@ -73,7 +75,7 @@ bool CScreenshot::getData()
 {
 	dprintf(0, "osd:%d video:%d scale:%d\n", get_osd, get_video, scale_to_video);
 	
-#define VDEC_PIXFMT AV_PIX_FMT_BGR24
+//#define VDEC_PIXFMT AV_PIX_FMT_BGR24
 	
 	int aspect = 0;
 	videoDecoder->getPictureInfo(xres, yres, aspect); // aspect is dummy here
@@ -123,7 +125,6 @@ bool CScreenshot::getData()
 
 	// get videobuffer
 #ifndef USE_OPENGL
-/*
 	if (get_video)
 	{
 		const int grab_w = 1920;
@@ -134,7 +135,7 @@ bool CScreenshot::getData()
 		if (video_src == NULL)
 			return false;
 			
-		if (getvideo2(video_src, grab_w, grab_h) == false)
+		if (videoDecoder->getvideo2(video_src, grab_w, grab_h) == false)
 		{
 			free(pixel_data);
 			free(video_src);
@@ -145,7 +146,7 @@ bool CScreenshot::getData()
 		// scale
 		if (grab_w != xres || grab_h != yres)  // scale video into data...
 		{
-			bool ret = swscale(video_src, pixel_data, grab_w, grab_h, xres, yres, VDEC_PIXFMT);
+			bool ret = ::swscale(video_src, pixel_data, grab_w, grab_h, xres, yres, AV_PIX_FMT_BGR32, AV_PIX_FMT_RGB32);
 			
 			if (!ret)
 			{
@@ -156,15 +157,13 @@ bool CScreenshot::getData()
 		}
 		else   // get_video and no fancy scaling needed
 		{
-			rgb24torgb32(video_src, pixel_data, grab_w * grab_h);
+			::rgb24torgb32(video_src, pixel_data, grab_w * grab_h);
 		}
 		free(video_src);
 	}
-*/
 #endif
 
 	// scale osd to video
-	/*
 	if (get_osd && (osd_w != xres || osd_h != yres))
 	{
 		// rescale osd
@@ -172,7 +171,7 @@ bool CScreenshot::getData()
 		
 		if (osd_src)
 		{
-			bool ret = swscale(osd_data, osd_src, osd_w, osd_h, xres, yres, AV_PIX_FMT_RGB32);
+			bool ret = ::swscale(osd_data, osd_src, osd_w, osd_h, xres, yres, AV_PIX_FMT_BGR32, AV_PIX_FMT_RGB32);
 			
 			if (!ret)
 			{
@@ -194,10 +193,8 @@ bool CScreenshot::getData()
 			return false;
 		}
 	}
-	*/
 
 	// alpha_blending osd onto video
-	/*
 	if (get_video && get_osd)
 	{
 		// alpha blend osd onto pixel_data (video). TODO: maybe libavcodec can do this?
@@ -237,7 +234,7 @@ bool CScreenshot::getData()
 			}
 		}
 	}
-	else*/
+	else
 	if (get_osd) // only get_osd, pixel_data is not yet populated 
 	{
 		memcpy(pixel_data, osd_data, xres * yres * sizeof(uint32_t));
