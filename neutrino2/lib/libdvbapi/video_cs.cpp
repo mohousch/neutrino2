@@ -1197,6 +1197,14 @@ bool cVideo::getvideo2(unsigned char *video, int xres, int yres)
 	{
 		ret = true;
 	}
+#else
+	SWFramebuffer vid;
+	
+	buf_m.lock();
+	vid = buffers[buf_out];
+	
+	video = &video[0];
+	buf_m.unlock();
 #endif
 	
 	return ret;

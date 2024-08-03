@@ -470,5 +470,44 @@ inline void rgb24torgb32(unsigned char  *src, unsigned char *dest, int picsize)
 	}
 }
 
+inline void blendAlpha(uint8_t *fg, uint8_t *bg, int xres, int yres)
+{
+	uint32_t *d = (uint32_t *)bg;
+	uint32_t *pixpos = (uint32_t *)fg;
+		
+	for (int count = 0; count < yres; count++)
+	{
+		for (int count2 = 0; count2 < xres; count2++)
+		{
+			uint32_t pix = *pixpos;
+			if ((pix & 0xff000000) == 0xff000000)
+				*d = pix;
+			else
+			{
+				uint8_t *in = (uint8_t *)(pixpos);
+				uint8_t *out = (uint8_t *)d;
+					
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+				int a = in[3];
+#elif __BYTE_ORDER == __BIG_ENDIAN
+				int a = in[0];
+				out++; 
+				in++;
+#endif
+					
+				*out = (*out + ((*in - *out) * a) / 256);
+				in++;
+				out++;
+				*out = (*out + ((*in - *out) * a) / 256);
+				in++;
+				out++;
+				*out = (*out + ((*in - *out) * a) / 256);
+			}
+			d++;
+			pixpos++;
+		}
+	}
+}
+
 #endif
 

@@ -75,8 +75,6 @@ bool CScreenshot::getData()
 {
 	dprintf(0, "osd:%d video:%d scale:%d\n", get_osd, get_video, scale_to_video);
 	
-//#define VDEC_PIXFMT AV_PIX_FMT_BGR24
-	
 	int aspect = 0;
 	videoDecoder->getPictureInfo(xres, yres, aspect); // aspect is dummy here
 	
@@ -115,8 +113,6 @@ bool CScreenshot::getData()
 		}
 	}
 	
-	dprintf(0, "xres:%d yres:%d\n", xres, yres);
-	
 	uint8_t *osd_data = (uint8_t *)CFrameBuffer::getInstance()->getFrameBufferPointer();
 	pixel_data = (uint8_t *)malloc(xres * yres * sizeof(uint32_t));
 	
@@ -124,13 +120,13 @@ bool CScreenshot::getData()
 		return false;
 
 	// get videobuffer
-#ifndef USE_OPENGL
+#if 0
 	if (get_video)
 	{
 		const int grab_w = 1920;
 		const int grab_h = 1080;
 		
-		unsigned char *video_src = (unsigned char *)malloc(grab_w * grab_h * 3);
+		uint8_t *video_src = (uint8_t *)malloc(grab_w * grab_h * 3);
 		
 		if (video_src == NULL)
 			return false;
@@ -161,13 +157,12 @@ bool CScreenshot::getData()
 		}
 		free(video_src);
 	}
-#endif
 
-	// scale osd to video
+	// scale osd onto video
 	if (get_osd && (osd_w != xres || osd_h != yres))
 	{
 		// rescale osd
-		unsigned char *osd_src = (unsigned char *)malloc(xres * yres * 4);
+		uint8_t *osd_src = (uint8_t *)malloc(xres * yres * 4);
 		
 		if (osd_src)
 		{
@@ -198,43 +193,10 @@ bool CScreenshot::getData()
 	if (get_video && get_osd)
 	{
 		// alpha blend osd onto pixel_data (video). TODO: maybe libavcodec can do this?
-		uint32_t *d = (uint32_t *)pixel_data;
-		uint32_t *pixpos = (uint32_t *) osd_data;
-		
-		for (int count = 0; count < yres; count++)
-		{
-			for (int count2 = 0; count2 < xres; count2++)
-			{
-				uint32_t pix = *pixpos;
-				if ((pix & 0xff000000) == 0xff000000)
-					*d = pix;
-				else
-				{
-					uint8_t *in = (uint8_t *)(pixpos);
-					uint8_t *out = (uint8_t *)d;
-					
-#if __BYTE_ORDER == __LITTLE_ENDIAN
-					int a = in[3];
-#elif __BYTE_ORDER == __BIG_ENDIAN
-					int a = in[0];
-					out++; 
-					in++;
-#endif
-					
-					*out = (*out + ((*in - *out) * a) / 256);
-					in++;
-					out++;
-					*out = (*out + ((*in - *out) * a) / 256);
-					in++;
-					out++;
-					*out = (*out + ((*in - *out) * a) / 256);
-				}
-				d++;
-				pixpos++;
-			}
-		}
+		::blendAlpha((uint8_t *)osd_data, (uint8_t *)pixel_data, xres, yres);
 	}
 	else
+#endif
 	if (get_osd) // only get_osd, pixel_data is not yet populated 
 	{
 		memcpy(pixel_data, osd_data, xres * yres * sizeof(uint32_t));
@@ -259,7 +221,7 @@ bool CScreenshot::saveFile()
 			break;
 	}
 
-	free((void *) pixel_data);
+	free((void *) pixel_data); //FIXME:
 	return ret;
 }
 
@@ -438,7 +400,7 @@ bool CScreenshot::dumpFile(const std::string &fname, screenshot_format_t fmt, bo
 	format = fmt;
 	filename = fname;
 	get_osd = osd;
-	get_video = video;
+	get_video = true; //video;
 	scale_to_video = scale;
 	
 	getData();
