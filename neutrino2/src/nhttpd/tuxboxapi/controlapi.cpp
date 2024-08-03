@@ -2411,7 +2411,7 @@ void CControlAPI::build_live_url(CyhookHandler *hh)
 //	url += toString(CZapit::getInstance()->getCurrentChannelID());
 
 	// response url
-	if(hh->ParamList["vlc_link"] !="")
+	if(hh->ParamList["vlc_link"] != "")
 	{
 		write_to_file("/tmp/vlc.m3u", url);
 		hh->SendRedirect("/tmp/vlc.m3u");
