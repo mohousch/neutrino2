@@ -22,9 +22,6 @@
 
 --dependencies:  feedparser http://feedparser.luaforge.net/ ,libexpat,  lua-expat
 rssReaderVersion="Lua RSS READER v0.77"
---local n = neutrino()
---local FontMenu = FONT.MENU
---local FontTitle = FONT.MENU_TITLE
 local hasgumbo,gumbo = pcall(require,"gumbo")
 local glob = {}
 local conf = {}
@@ -37,7 +34,6 @@ local epgtitle = nil
 local LinksBrowser = "/links.so"
 local picdir = "/tmp/rssPics"
 
---
 feedentries = {
 
     --{ name = "Film Angebot",			exec = "SEPARATORLINE" },
@@ -69,8 +65,6 @@ feedentries = {
     --{ name = "Musik",			exec = "SEPARATORLINE" },
     { name = "Rockpalast",                              exec = "https://mediathekviewweb.de/feed?query=%23rockpalast&everywhere=true"},		
 }
-
---
 
 locale = {}
 locale["english"] = {
@@ -114,7 +108,6 @@ function get_confFile()
 end
 
 function __LINE__() return debug.getinfo(2, 'l').currentline end
-
 
 function getprocvalue(procpath)
 	local file = io.open(procpath, "r")
@@ -166,45 +159,12 @@ function getFeedDataFromUrl(url)
 		print("DEBUG ".. __LINE__())
 		print(data) --  DEBUG
 		print ("ERROR >> ".. error .. "\n###")
-		--[[
-		local window,x,y,w,h = showWindow("DEBUG Output", data)
-		window:hide()
-		window = nil
-		]]
 		local window = neutrino2.CHintBox("DEBUG Output", data)
 		window:exec()
 	end
 	data = nil
 	return fp
 end
-
---[[
-function godirectkey(d)
-	if d  == nil then 
-		return d 
-	end
-
-	local  _dkey = ""
-
-	if d == 1 then
-		_dkey = RC.red
-	elseif d == 2 then
-		_dkey = RC.green
-	elseif d == 3 then
-		_dkey = RC.yellow
-	elseif d == 4 then
-		_dkey = RC.blue
-	elseif d < 14 then
-		_dkey = RC[""..d - 4 ..""]
-	elseif d == 14 then
-		_dkey = RC["0"]
-	else
-		-- rest
-		_dkey = ""
-	end
-	return _dkey
-end
-]]
 
 function check_if_double(tab,name)
 	for index,value in ipairs(tab) do
@@ -219,57 +179,9 @@ function info(infotxt,cap)
 	if cap == nil then
 		cap = "Information"
 	end
-	--[[
-	local h = hintbox.new{caption=cap, text=infotxt}
-	if h then
-		h:paint()
-		get_input()
-		h:hide()
-	end
-	h = nil
-	]]
 	local h = neutrino2.CHintBox(cap, infotxt)
 	h:exec()
 end
-
---[[
-function get_input(ct,bRed,bGreen,bYellow,bBlue,bPlay,bPlayPause,bOk)
-	local stop = false
-	local ret = nil
-	local msg, data = nil,nil
-	repeat
-		msg, data = n:GetInput(500)
-
-		if ct and (msg == RC.up or msg == RC.page_up) then
-			ct:scroll{dir="up"}
-		elseif ct and (msg == RC.down or msg == RC.page_down) then
-			ct:scroll{dir="down"}
-		elseif bRed and msg == RC.red then
-			stop = true
-		elseif bGreen and msg == RC.green then
-			stop = true
-		elseif bYellow and msg == RC.yellow then
-			stop = true
-		elseif bBlue and msg == RC.blue then
-			stop = true
-		elseif bPlay and msg == RC.play then
-			stop = true
-		elseif bPlayPause and msg == RC.playpause then
-			stop = true
-		elseif bOk and msg == RC.ok then
-			stop = true
-		elseif msg == RC.left then
-			stop = true
-		elseif msg == RC.right then
-			stop = true
-		end
-	until msg == RC.home or msg == RC.setup or stop
-	if stop then
-		ret = msg
-	end
-	return ret
-end
-]]
 
 function tounicode(c)
 	if c > 383 then
@@ -297,7 +209,6 @@ function convHTMLentities(summary)
 	return summary
 end
 
---------------------------- new
 function removeElemetsbyTagName(document,ename)
 	local t = document:getElementsByTagName(ename)
 
@@ -348,7 +259,7 @@ function gum(data)
  	for i, element in ipairs(document.links) do
 		local elink = element:getAttribute("href")
 		if elink:sub(1, 4) == 'http' or elink:sub(1, 1) == '/' or elink:sub(#elink-3, #elink) ~= 'php' then
--- 				print("elonk:",elink)
+-- 			print("elonk:",elink)
 		else
  			element:remove()
 		end
@@ -444,18 +355,19 @@ function prepare_text(text)
 	return text
 end
 
+--[[
 function getMaxScreenWidth()
-	--local max_w = SCREEN.END_X - SCREEN.OFF_X
 	local max_w = neutrino2.CSwigHelpers():getScreenWidth()
 	return max_w
 end
 
 function getMaxScreenHeight()
-	--local max_h = SCREEN.END_Y - SCREEN.OFF_Y
 	local max_h = neutrino2.CSwigHelpers():getScreenHeight()
 	return max_h
 end
+]]
 
+--[[
 function getSafeScreenSize(x,y,w,h)
 	local maxW = getMaxScreenWidth()
 	local maxH = getMaxScreenHeight()
@@ -476,158 +388,26 @@ function getSafeScreenSize(x,y,w,h)
 	end
 	return x,y,w,h
 end
+]]
 
+--[[
 function paintPic(window,fpic,x,y,w,h)
-	--[[
-	local cp = cpicture.new{parent=window, x=x, y=y, dx=w, dy=h, image=fpic}
-	if window == nil then
-		cp:paint()
-	end
-	]]
 end
 
 function paintText(x,y,w,h,picW,picH,CPos,text,window) --ALIGN_AUTO_WIDTH
-	--[[
-	if x == 0 then
-		x = 20
-	end
-	local pW,pH = 0,0
-	local ct = ctext.new{parent=window,x=x, y=y, dx=w, dy=h, text=text, mode = "ALIGN_SCROLL | DECODE_HTML", font_text=Font}
-	if window == nil then
-		ct:paint()
-	else
-		local ctLines = ct:getLines()
-		h = ctLines * n:FontHeight(FontMenu)
-		h = h + window:headerHeight() + window:footerHeight()  + window:headerHeight()/2
-		h = math.floor(h)
-		if ctLines < 6 then
-			text = text:gsub("\n"," ")
-			ct:setText{text=text}
-			pW = 0
-			pH = picH
-			h = h + picH
-		else
-			w = w + picW + 4
-			pH = 0
-			pW = picW + 4
-			h = h + window:footerHeight()
-		end
-		x,y,w,h = getSafeScreenSize(x,y,w,h)
-		ct:setDimensionsAll(x+pW,y+pH,w,h)
-		window:setDimensionsAll(x,y,w,h)
-		if CPos and CPos > 0 and CPos < 4 then
-			window:setCenterPos{CPos}
-		end
-		if ctLines > 5 and picH < h - window:headerHeight() - window:footerHeight()  then
-			y = y + (h - window:headerHeight() - window:footerHeight()- picH)/2
-			y = math.floor(y)
-		end
-	end
-	return ct,x,y,w,h
-	]]
 end
 
 function paintWindow(x,y,w,h,CPos,Title,Icon,RedBtn,GreBtn,YelBtn,BluBtn,PlayBtn,PlayPauseBtn,OkBtn)
-	--[[
-	local defaultW = math.floor(getMaxScreenWidth()- getMaxScreenWidth()/3)
-	local defaultH = n:FontHeight(FontMenu)
-	if w < 1 then
-		w = defaultW
-	end
-	if h < 1 then
-		h = defaultH
-	end
-	local window = cwindow.new{x=x, y=y, dx=w, dy=h, title=Title, icon=Icon,
-		btnRed=RedBtn, btnGreen=GreBtn,btnYellow=YelBtn,btnBlue=BluBtn,btnPlay=PlayBtn,btnPlayPause=PlayPauseBtn,btnOk=OkBtn}
-	h = h + window:footerHeight() + window:headerHeight()
-	if Title and #Title > 1 then
-		w = n:getRenderWidth(FontTitle,Title .. "wW")
-		w = w + window:headerHeight() + 10 --icon
-		if w < defaultW then
-			w = defaultW
-		end
-		if w > getMaxScreenWidth()  then
-			w = getMaxScreenWidth()
-		end
-	end
-	x,y,w,h = getSafeScreenSize(x,y,w,h)
-	window:setDimensionsAll(x,y,w,h)
-	if CPos and CPos > 0 and CPos < 4 then
-		window:setCenterPos{CPos}
-	end
--- 		window:setCaption{title=Title, alignment=TEXT_ALIGNMENT.CENTER}
-
- 	return window,x,y,w,h
-	]]
 end
 
 function showWindow(title,text,fpic,icon,bRed,bGreen,bYellow,bBlue,bPlay,bPlayPause,bOk)
-	--[[
-	local x,y,w,h = 240,0,0,0
-	local picW,picH = 0,0
-	local maxW = getMaxScreenWidth()
-	local maxH = getMaxScreenHeight()
-	text = prepare_text(text)
-	if fpic then
-		picW,picH = n:GetSize(fpic)
-		if picW and picW > 0 and picH and picH > 0 then
-			local maxPicSizeW,maxPicSizeH = math.floor(maxW/4),math.floor(maxH/2)
-			if #text < 100 then
-				if #text < 10 then
-					maxPicSizeH = maxH
-				else
-					maxPicSizeH = maxH-(5*n:FontHeight(FontMenu))
-				end
-				maxPicSizeW = maxW
-			end
-			if picH > maxPicSizeH or picW > maxW then
-				picW,picH = rescalePic(picW,picH,maxPicSizeW,maxPicSizeH)
-			end
-			if picH < 150 and picW < 150 then
-				picW,picH = rescalePic(picW,picH,picH*2,picW*2)
-			end
-
-			h = picH
-		end
-	end
-
-	local wPosition = 3
-	local cw,x,y,w,h = paintWindow(x,y,w,h,-1,title,icon,bRed,bGreen,bYellow,bBlue,bPlay,bPlayPause,bOk)
-
- 	local ct,x,y,w,h = paintText(x,y,w,h,picW,picH,wPosition,text,cw)
-	if fpic and picW > 1 and picH > 1 then
-		if x > 15 then
-			x = x-10
-		end
-		local cp = paintPic(cw,fpic,x,y,picW,picH)
-	end
-
-	cw:paint()
-	local selected =  get_input(ct,bRed,bGreen,bYellow,bBlue,bPlay,bPlayPause,bOk)
-	return cw , selected
-	]]
 end
 
 function show_textWindow(tit_txt, txt)
-	--[[
-	glob.m:hide()
-	if txt == nil then return end
-	if txt and #txt < 1 then
-		return
-	end
-	txt = prepare_text(txt)
-	local window,x,y,w,h = showWindow(tit_txt, txt)
-	window:hide()
-	window = nil
-	]]
 end
+]]
 
 function epgInfo(xres, yres, aspectRatio, framerate)
-	--[[
-	local window,x,y,w,h = showWindow(epgtitle, epgtext)
-	window:hide()
-	window = nil
-	]]
 	local window = neutrino2.CInfoBox()
 	window:setTitle(epgtitle)
 	window:setText(epgtext)
@@ -803,44 +583,17 @@ function showWithHtmlViewer(data)
 	return txt
 end
 
------------------------------------------------
 function showMenuItem(id)
 	print("showMenuItem:")
 
-	--local nr = tonumber(id)
 	local nr = id
 	local stop = false
 	local selected = paintMenuItem(nr)
-
---[[
-	repeat
-		if selected == RC.left then
-			if nr > 1 then
-				nr=nr-1
-			else
-				nr = #glob.feedpersed.entries
-			end
-			selected = paintMenuItem(nr)
-		elseif selected == RC.right then
-			if nr < #glob.feedpersed.entries then
-				nr=nr+1
-			else
-				nr = 1
-			end
-			selected = paintMenuItem(nr)
-		elseif selected == RC.red or selected == RC.green or selected == RC.yellow or selected == RC.blue or selected then
- 			selected = paintMenuItem(nr)
-		else
-			stop = true
-		end
-	until stop
-]]
 end
 
 function paintMenuItem(idNr)
 	print("paintMenuItem:")
 
-	--glob.m:hide()
 	glob.urlPicUrls  = {}
 	local title    = fp.entries[idNr].title
 	if title then
@@ -895,11 +648,9 @@ function paintMenuItem(idNr)
 	end
 
 	if  not vPlay  and (UrlVideo or UrlAudio) then
-		--vPlay  =  video.new()
 		vPlay = neutrino2.CMoviePlayerGui()
 	end
 	if  vPlay and text and #text > 1 then
-		--vPlay:setInfoFunc("epgInfo")
 		epgtext = text
 		epgtitle = title
 	end
@@ -930,46 +681,15 @@ function paintMenuItem(idNr)
 
 	if text == nil then
 		if vPlay and UrlVideo then
-			--vPlay:PlayFile(title,UrlVideo,UrlVideo)
 			vPlay:addToPlaylist(UrlVideo, title, text)
 		elseif vPlay and UrlAudio then
-			--vPlay:PlayFile(title,UrlAudio,UrlAudio)
 			vPlay:addToPlaylist(UrlAudio, title, text)
 		end
 		vPlay:exec(null, "")
 		collectgarbage()
-		--return
 	end
 
-	--local bRed,bGreen,bYellow,bBlue,bPlay,bPlayPause,bOk =  nil,nil,nil,nil,nil,nil
-
---[[
-	local model = getprocvalue("/proc/stb/info/model")
---	if UrlVideo then bRed = "Play Video" end
-	if (model == "hd51" or model == "bre2ze4k" or model == "h7" or model == "ufs913") then
-		if UrlVideo then bOk = "Play Video" end
-	else
-		if UrlVideo then bPlay = "Play Video" end
-	end
-]]
-
-
-	--[[if UrlLink and checkHaveViewer() then bGreen = "Read Seite" end
-	if #glob.urlPicUrls > 0 then
-		bYellow = "Show Pic"
-		if #glob.urlPicUrls > 1 then
-			bYellow = bYellow .. "s"
-		end
-	end
-]]
-	--if UrlAudio then bBlue = "Play Audio" end
-	--local cw,selected =  showWindow(title,text,fpic,"hint_info",bRed,bGreen,bYellow,bBlue,bPlay,bPlayPause,bOk)
-	--cw:hide()
-	--cw = nil
-
-	--if (selected == RC.red or selected == RC.play or selected == RC.playpause or selected == RC.ok) and vPlay and UrlVideo then
 	if vPlay and UrlVideo then
-		--vPlay:PlayFile(title,UrlVideo,UrlVideo)
 		vPlay:addToPlaylist(UrlVideo, title, text)
 		vPlay:exec(null, "")
 
@@ -987,11 +707,7 @@ function paintMenuItem(idNr)
 			end
 		end
 
---[[
-	elseif selected == RC.yellow and  bYellow then
-		picviewer(idNr,1)
-]]
-	elseif --[[selected == RC.blue and]] UrlAudio and vPlay then
+	elseif UrlAudio and vPlay then
 		vPlay:addToPlaylis(UrlAudio, title, text)
 		vPlay:exec(null, "")
 	end
@@ -999,13 +715,9 @@ function paintMenuItem(idNr)
 	epgtext = nil
 	epgtitle = nil
 	if #glob.urlPicUrls > 0 and conf.picdir == picdir then
-		--local fh = filehelpers.new()
-		--if fh then
 		neutrino2.CFileHelpers():removeDir(picdir)
 		neutrino2.CFileHelpers():createDir(picdir)
-		--end
 		glob.urlPicUrls = nil
-		--fh = nil
 	end
 	collectgarbage()
 	return selected
@@ -1032,25 +744,23 @@ function downloadPic(idNr,nr)
 			id2 = idNr
 		end
 		fpic = conf.picdir .. "/" .. id2 .. picname
-		--local fh = filehelpers.new()
-		--if fh:exist(fpic, "f") == false then
 		if neutrino2.file_exists(fpic) == false then
 			if nr > 1 then
-				--n:PaintIcon("icon_red", 20, 30, 30,30)
+
 			end
 			local UrlPic = glob.urlPicUrls[nr]
-			--local ok = getdata(UrlPic,fpic)
+			
 			local ok = neutrino2.downloadUrl(UrlPic, fpic)
 			if not ok then
 				fpic = nil
 			end
 		end
-		--fh = nil
 	end
 	print(fpic)
 	return fpic
 end
 
+--[[
 function rescalePic(picW,picH,maxW,maxH)
 	if picW and picW > 0 and picH and picH > 0 then
 		local aspect = picW / picH
@@ -1072,69 +782,17 @@ function rescalePic(picW,picH,maxW,maxH)
 	end
 	return picW,picH
 end
+]]
 
-function picviewer(id,nr)
-	--[[
-	if #glob.urlPicUrls > 0 and nr > 0 then
-		local V = nil
-		local msg, data = nil,nil
-		local lastnr = 0
-		repeat
-			msg, data = n:GetInput(500)
-
-			if msg == RC.left then
-				if nr > 1 then
-					nr=nr-1
-				else
-					nr = #glob.urlPicUrls
-				end
-			elseif msg == RC.right then
-				if nr < #glob.urlPicUrls then
-					nr=nr+1
-				else
-					nr = 1
-				end
-			end
-			if lastnr ~= nr then
-				lastnr = nr
-				local image = downloadPic(id,nr)
-				if image then
-					local picW,picH = n:GetSize(image)
-					if picW and picW > 0 and picH and picH > 0 then
-						if picH < 250 and picW < 250 then
-							picW,picH = rescalePic(picW,picH,picH*2,picW*2)
-						else
-							picW,picH = rescalePic(picW,picH)
-						end
-						local y,x=0,0
-						if getMaxScreenHeight() > picH then
-							y = (getMaxScreenHeight()-picH)/2
-							y = math.floor(y)
-						end
-						if getMaxScreenWidth() > picW then
-							x = (getMaxScreenWidth()-picW)/2
-							x = math.floor(x)
-						end
-						n:PaintBox(0,0,-1,-1,COL.BLACK )
-						n:DisplayImage(image,x,y,picW,picH)
-					end
-					if #glob.urlPicUrls > 1 then
-						local str = nr .. "/" .. #glob.urlPicUrls
-						n:RenderString(FontMenu, str, 20, 30, COL.WHITE)
-					end
-				end
-			end
-		until msg == RC.home or msg == RC.setup or stop
-		n:PaintBox(-1,-1,-1,-1,COL.BACKGROUND)
-	end
-	]]
+--[[
+function picviewer(id,nr)	
 end
------------------------------------------------------------------------------
+
 function home()
-	--return MENU_RETURN.EXIT
 end
+]]
+
 function saveConfig()
-	--if conf.changed then
 		local config	= neutrino2.CConfigFile('\t')
 		if config then
 			config:setString("picdir", conf.picdir)
@@ -1146,21 +804,9 @@ function saveConfig()
 			config = nil
 		end
 		conf.changed = false
-	--end
 end
 
 function checkhtmlviewer()
-	--[[local fh = filehelpers.new()
-	if fh:exist(conf.linksbrowserdir .. LinksBrowser, "f") == true then
-		hva="links browser"
-		hve="links viewer"
-	end
-	if fh:exist(conf.bindir .. "/" .. "html2text", "f") == true then
-		hvb="html2text"
-	end
-	if fh:exist(conf.bindir .. "/" .. "w3m" , "f") == true then
-		hvc="w3m"
-	end]]
 	if hasgumbo == true then
 		hvd="gumbo"
 	end
@@ -1187,7 +833,6 @@ function loadConfig()
 	end
 	conf.changed = false
 	checkhtmlviewer()
-
 end
 
 function set_action(id,value)
@@ -1239,25 +884,19 @@ function settings()
 ]]
 end
 
+selected = 0
 function rssurlmenu(url)
 	print("rssurlmenu:")
 	glob.feedpersed = getFeedDataFromUrl(url)
 	if glob.feedpersed == nil then 
 		return 
 	end
-	local d = 0 -- directkey
-	--local m = menu.new{name=glob.feedpersed.feed.title, icon="icon_blue"}
+	--local d = 0 -- directkey
 	local m = neutrino2.CMenuWidget(glob.feedpersed.feed.title, neutrino2.NEUTRINO_ICON_MOVIE, 2*neutrino2.MENU_WIDTH)
 	glob.m = m
-	--m:addKey{directkey=RC.home, id="home", action="home"}
-	--m:addKey{directkey=RC.info, id="FEED Version: " .. fp.version, action="info"}
-	--m:addItem{type="back"}
-	--m:addItem{type="separator"}
 
 	local item = nil
 	for i = 1, #glob.feedpersed.entries do
-		--d = d + 1
-		--local dkey = godirectkey(d)
 		local title = ""
 		if fp.entries[i].updated_parsed then
 		      title = os.date("%d.%m %H:%M",fp.entries[i].updated_parsed)
@@ -1270,12 +909,16 @@ function rssurlmenu(url)
 		else
 			title = title .. " "
 		end
-		--m:addItem{type="forwarder", name=title, action="showMenuItem", id=i, directkey=dkey }
 		item = neutrino2.CMenuForwarder(title)
-		--item:setHint(glob.feedpersed.entries[i].content)
 
 		m:addItem(item)
 	end
+	
+	if selected < 0 then
+		selected = 0
+	end
+	
+	m:setSelected(selected)
 
 	m:exec(null, "")
 
@@ -1294,89 +937,35 @@ function rssurlmenu(url)
 end
 
 function exec_url(id)
-	--glob.sm:hide()
 	execUrl(id)
 end
 
 function exec_url2(id)
-	--glob.grupm:hide()
 	execUrl(id)
 end
 
 function exec_urlsub(id)
-	--glob.subm:hide()
 	execUrl(id)
 end
 
 function execUrl(id)
-	--local nr = tonumber(id)
 	nr = id
 	addon = feedentries[nr].addon
 	rssurlmenu(feedentries[nr].exec)
 end
 
+--[[
 function exec_submenu_grup(id)
---[[
-	glob.grupm:hide()
-	local d = 0 -- directkey
-	local subm = menu.new{name=id, icon="icon_yellow"}
-	glob.subm=subm
-	for v, w in ipairs(feedentries) do
-		if w.grup and w.submenu == id  then
-			if w.exec == "SEPARATOR" then
-				subm:addItem{type="separator"}
-			elseif w.exec == "SEPARATORLINE" then
-				subm:addItem{type="separatorline", name=w.name}
-			else
-				d = d + 1
-				local dkey = godirectkey(d)
-				subm:addItem{type="forwarder", name=w.name, action="exec_urlsub", id=v, directkey=dkey }
-			end
-		end
-	end
-	subm:exec()
-]]
 end
-
-function exec_submenu(id, title)
---[[
-	glob.sm:hide()
-	local d = 0 -- directkey
-	local subm = menu.new{name=id, icon="icon_yellow"}
-	glob.subm=subm
-	for v, w in ipairs(feedentries) do
-		if w.submenu == id and w.grup == nil then
-			if w.exec == "SEPARATOR" then
-				subm:addItem{type="separator"}
-			elseif w.exec == "SEPARATORLINE" then
-				subm:addItem{type="separatorline", name=w.name}
-			else
-				d = d + 1
-				local dkey = godirectkey(d)
-				subm:addItem{type="forwarder", name=w.name, action="exec_urlsub", id=v, directkey=dkey }
-			end
-		end
-	end
-	subm:exec()
 ]]
 
+--[[
+function exec_submenu(id, title)
 	local subm = neutrino2.CMenuWidget(title, neutrino2.NEUTRINO_ICON_MOVIE)
 	glob.subm = subm
 
 	for v, w in ipairs(feedentries) do
-		--if w.submenu == id and w.grup == nil then
-			--[[
-			if w.exec == "SEPARATOR" then
-				subm:addItem{type="separator"}
-			elseif w.exec == "SEPARATORLINE" then
-				subm:addItem{type="separatorline", name=w.name}
-			else]]
-				--d = d + 1
-				--local dkey = godirectkey(d)
-				--subm:addItem{type="forwarder", name=w.name, action="exec_urlsub", id=v, directkey=dkey }
-			subm:addItem(neutrino2.CMenuForwarder(w.name))
-			--end
-		--end
+		subm:addItem(neutrino2.CMenuForwarder(w.name))
 	end
 
 	repeat
@@ -1385,121 +974,20 @@ function exec_submenu(id, title)
 end
 
 function exec_grup(id)
---[[
-	glob.sm:hide()
-	local submenus = {}
-	local d = 0 -- directkey
-	local grupm = menu.new{name=id, icon="icon_yellow"}
-	glob.grupm=grupm
-	for v, w in ipairs(feedentries) do
-		if w.grup == id then
-			if w and w.submenu and check_if_double(submenus,w.submenu) then
-				submenus[#submenus+1]=w.submenu
-				d = d + 1
-				local dkey = godirectkey(d)
-				grupm:addItem{type="forwarder", name=w.submenu, action="exec_submenu_grup", id=w.submenu, directkey=dkey }
-			end
-		end
-	end
-	if #submenus then
-		grupm:addItem{type="separatorline"}
-	end
-	for v, w in ipairs(feedentries) do
-		if w and w.grup == id and not w.submenu then
-			if w.exec == "SEPARATOR" then
-				grupm:addItem{type="separator"}
-			elseif w.exec == "SEPARATORLINE" then
-				grupm:addItem{type="separatorline", name=w.name}
-			else
-				d = d + 1
-				local dkey = godirectkey(d)
-				grupm:addItem{type="forwarder", name=w.name, action="exec_url2", id=v, directkey=dkey }
-			end
-		end
-	end
-	grupm:exec()
-]]
 end
+]]
 
+s_selected = 0
 function start()
 	local submenus = {}
 	local grupmenus = {}
 
-	local d = 0 -- directkey
-
---[[
-	local sm = menu.new{name="Media One", icon="icon_blue"}
-	glob.sm=sm
-	sm:addKey{directkey=RC.favorites, id="settings", action="settings"}
-	sm:addKey{directkey=RC.home, id="home", action="home"}
-	sm:addKey{directkey=RC.info, id=rssReaderVersion, action="info"}
------------------
-	for v, w in ipairs(feedentries) do
-		if w and w.grup and w.submenu and check_if_double(grupmenus,w.grup) then
-			grupmenus[#grupmenus+1]=w.grup
-			d = d + 1
-			local dkey = godirectkey(d)
-			sm:addItem{type="forwarder", name=w.grup, action="exec_grup", id=w.grup, directkey=dkey }
-		end
-	end
-	if #grupmenus then
-		sm:addItem{type="separatorline"}
-	end
-------------------
-	for v, w in ipairs(feedentries) do
-		if w and w.submenu and w.grup == nil and check_if_double(submenus,w.submenu) then
-			submenus[#submenus+1]=w.submenu
-			d = d + 1
-			local dkey = godirectkey(d)
-			sm:addItem{type="forwarder", name=w.submenu, action="exec_submenu", id=w.submenu, directkey=dkey }
-		end
-	end
-	if #submenus then
-		sm:addItem{type="separatorline"}
-	end
-	for v, w in ipairs(feedentries) do
-		if not w.submenu and not w.grup then
-			if w.exec == "SEPARATOR" then
-				sm:addItem{type="separator"}
-			elseif w.exec == "SEPARATORLINE" then
-				sm:addItem{type="separatorline", name=w.name}
-			else
-				d = d + 1
-				local dkey = godirectkey(d)
-				sm:addItem{type="forwarder", name=w.name, action="exec_url", id=v, directkey=dkey }
-			end
-		end
-	end
-	sm:exec()
-]]
+	--local d = 0 -- directkey
 
 	local sm = neutrino2.CMenuWidget("Media One", neutrino2.NEUTRINO_ICON_MOVIE)
 	glob.sm = sm
 	sm:enableShrinkMenu()
 
---[[
-	for v, w in ipairs(feedentries) do
-		if w and w.grup and w.submenu and check_if_double(grupmenus,w.grup) then
-			grupmenus[#grupmenus+1] = w.grup
-			sm:addItem(neutrino2.CMenuForwarder(w.grup))
-		end
-	end
-
-	if #grupmenus then
-		sm:addItem(neutrino2.CMenuSeparator(neutrino2.LINE))
-	end
-
-	for v, w in ipairs(feedentries) do
-		if w and w.submenu and w.grup == nil and check_if_double(submenus,w.submenu) then
-			submenus[#submenus+1]=w.submenu
-			sm:addItem(CMenuForwarder(w.submenu))
-		end
-	end
-
-	if #submenus then
-		sm:addItem(neutrino2.CMenuSeparator(neutrino2.LINE))
-	end
-]]
 	for v, w in ipairs(feedentries) do
 		if not w.submenu and not w.grup then
 			if w.exec == "SEPARATOR" then
@@ -1512,12 +1000,18 @@ function start()
 		end
 	end
 
+	if s_selected < 0 then
+		s_selected = 0
+	end
+	
+	sm:setSelected(s_selected)
+	
 	sm:exec(null, "")
 
-	d = sm:getSelected()
+	s_selected = sm:getSelected()
 
-	if d >= 0 then
-		exec_url(d + 1)	
+	if s_selected >= 0 then
+		exec_url(s_selected + 1)	
 	end
 
 	if sm:getExitPressed() ~= true then
@@ -1528,33 +1022,6 @@ end
 function main()
 	local config = neutrino2.PLUGINDIR .. "/media_one/media_one.conf"
 
---[[
-	local fh = filehelpers.new()
-	if fh:exist(config, "f") == false and fh:exist(config, "l") == false then
-		feedentries = {
-			
-
-		}
-	else
-		dofile(config)
-	end
-
-	fh:mkdir(picdir)
-
-	loadConfig()
-
-	if conf.picdir == nil or fh:exist(conf.picdir , "d") == false then
-		conf.picdir = picdir
-	end
-
-	package.path = package.path .. ';' .. conf.addonsdir .. '/?.lua'
-
-	if next(feedentries) == nil then
-		print("DEBUG ".. __LINE__())
-		print("failed while loading " .. config)
-		return
-	end
-]]
 	loadConfig()
 
 	if next(feedentries) == nil then
