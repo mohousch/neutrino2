@@ -215,7 +215,6 @@ class CTestMenu : public CMenuTarget
 		//// weather
 		void testWeather();
 		void testlibNGPNG();
-		void testScreenshot();
 		
 		//// paint()
 		void showMenu();
@@ -4911,13 +4910,6 @@ void CTestMenu::testlibNGPNG()
 	}
 }
 
-void CTestMenu::testScreenshot()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testScreenshot\n");
-	
-	CFrameBuffer::getInstance()->savePNG("/tmp/screenshot.png");
-}
-
 // exec
 int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 {
@@ -6498,12 +6490,6 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		
 		return RETURN_REPAINT;
 	}
-	else if (actionKey == "dumpfile")
-	{
-		testScreenshot();
-		
-		return RETURN_REPAINT;
-	}
 
 	showMenu();
 	
@@ -6705,8 +6691,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("Weather", true, NULL, this, "weather"));
 	mainMenu->addItem(new CMenuForwarder("LibNGPNG", true, NULL, this, "libngpng"));
 	mainMenu->addItem(new CMenuForwarder("DumpLCD", true, NULL, this, "dumplcd"));
-	mainMenu->addItem(new CMenuForwarder("ShowLCD", true, NULL, this, "showlcd"));
-	mainMenu->addItem(new CMenuForwarder("Screenshot", true, NULL, this, "dumpfile"));	
+	mainMenu->addItem(new CMenuForwarder("ShowLCD", true, NULL, this, "showlcd"));	
 
 	unsigned int count = 0;
 	CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(CZapit::getInstance()->getCurrentChannelID());
