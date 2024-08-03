@@ -98,7 +98,7 @@ href="Y_EPG_Plus.yhtm">{=L:live.epg_plus=}</a>
 				
 				<li><a target="work" title="{=L:bc.menue.messages_desc=}" href="Y_Boxcontrol_Messages.yhtm">{=L:bc.menue.messages=}</a></li>
 				
-				<li><a target="work" title="{=L:bc.menue.remote_desc=}" href="Y_Tools_Rcsim.yhtm">{=L:bc.menue.remote=}</a></li>
+				<!--<li><a target="work" title="{=L:bc.menue.remote_desc=}" href="Y_Tools_Rcsim.yhtm">{=L:bc.menue.remote=}</a></li>-->
 
 				<li><a target="work" title="{=L:bc.menue.lcd_screenshot_desc=}" href="Y_Tools_lcshot.yhtm">{=L:bc.menue.lcd_screenshot=}</a></li>
 

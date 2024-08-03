@@ -56,6 +56,14 @@ function init(){
 			=}
 				<li><a target="work" href="Y_Tools_Check_Install.yhtm">{=L:tools.check_install=}</a></li>
 				
+				<!--<li><a traget="work" href="Y_Filemgr.yhtm">{=L:tools.filemgr=}</a></li>-->
+				<li>
+					{=var-set:m_link_href=Y_Filemgr.yhtm=}
+					{=var-set:m_link_desc={=L:tools.filemgr_desc=}=}
+					{=var-set:m_link_text={=L:tools.filemgr=}=}
+					{=include-block:Y_Blocks.txt;management_link=}
+				</li>
+				
 			</ul>
 		</div>
 		<div class="y_menu_sec_section">{=L:tools.expert=}</div>
