@@ -35,34 +35,28 @@ local LinksBrowser = "/links.so"
 local picdir = "/tmp/rssPics"
 
 feedentries = {
-
-    --{ name = "Film Angebot",			exec = "SEPARATORLINE" },
     { name = "Krimi",                                   exec = "https://mediathekviewweb.de/feed?query=%23Krimi&everywhere=true"},
     { name = "Spielfilm",                                exec = "https://mediathekviewweb.de/feed?query=%23spielfilm&everywhere=true"},
     { name = "Arte Film",                                exec = "https://mediathekviewweb.de/feed?query=!Arte.de%20Film&everywhere=true&page=2"},
     { name = "Tatort",                                  exec = "https://mediathekviewweb.de/feed?query=%23tatort&everywhere=true"},
     { name = "Polizeiruf",                               exec = "https://mediathekviewweb.de/feed?query=%23polizeiruf&everywhere=true"},
-    --{ name = "Reise",			exec = "SEPARATORLINE" },
     { name = "Wunderschön",                             exec = "https://mediathekviewweb.de/feed?query=%23wundersch%C3%B6n&everywhere=true"},
     { name = "Traumreisen",                             exec = "https://mediathekviewweb.de/feed?query=Traumorte&everywhere=true"},
     { name = "Städtetripp",                             exec = "https://mediathekviewweb.de/feed?query=st%C3%A4dtetrip&everywhere=true"}, 
     { name = "Sagenhaft",                                exec = "https://mediathekviewweb.de/feed?query=%23Sagenhaft"},
     { name = "Eisenbahn Romantik",                                exec = "https://mediathekviewweb.de/feed?query=%23Eisenbahn-&everywhere=true"},
-    --{ name = "Wissen",			exec = "SEPARATORLINE" }, 
     { name = "Handwerkskunst",                          exec = "https://mediathekviewweb.de/feed?query=%23Handwerkskunst!&everywhere=true"},
     { name = "Geschichte Jahrhundert",                  exec = "https://mediathekviewweb.de/feed?query=%23geschichte"},
     { name = "MDR Zeitreise",                           exec = "https://mediathekviewweb.de/feed?query=%23Zeitreise&everywhere=true"},
     { name = "Zwischen Spessart und Karwendel",         exec = "https://mediathekviewweb.de/feed?query=%23spessart&everywhere=true"},
     { name = "Planet Wissen",                           exec = "http://podcast.wdr.de/planetwissen.xml"},
-    { name = "Quarks & Co",                             exec = "http://podcast.wdr.de/quarks.xml"},
-    --{ name = "Unterhaltung",			exec = "SEPARATORLINE" },    	
+    { name = "Quarks & Co",                             exec = "http://podcast.wdr.de/quarks.xml"},  	
     { name = "Wer weiß denn sowas",                     exec= "https://mediathekviewweb.de/feed?query=wer%20wei%C3%9F%20den%20sowas&everywhere=true"},
     { name = "Gefragt – Gejagt",                        exec= "https://mediathekviewweb.de/feed?query=gefragt%20gejagt&everywhere=true"},      
     { name = "Monitor",                                 exec = "http://podcast.wdr.de/monitor.xml"},
     { name = "Hart aber Fair",                          exec = "https://mediathekviewweb.de/feed?query=%23Hart%20aber%20fair&everywhere=true"},
     { name = "Tierisch tierisch",                       exec = "https://mediathekviewweb.de/feed?query=%23Tierisch&everywhere=true"},				
     { name = "Wetter Mitteldeutschland",                exec = "https://mediathekviewweb.de/feed?query=%23wetter%20MDR&everywhere=true"},	
-    --{ name = "Musik",			exec = "SEPARATORLINE" },
     { name = "Rockpalast",                              exec = "https://mediathekviewweb.de/feed?query=%23rockpalast&everywhere=true"},		
 }
 
@@ -341,6 +335,7 @@ function xml_entities(s)
 	return s
 end
 
+--[[
 function prepare_text(text)
 	if text == nil then return nil end
 	if #text < 1 then
@@ -354,6 +349,7 @@ function prepare_text(text)
 	text = xml_entities(text)
 	return text
 end
+]]
 
 --[[
 function getMaxScreenWidth()
@@ -406,13 +402,14 @@ end
 function show_textWindow(tit_txt, txt)
 end
 ]]
-
+--[[
 function epgInfo(xres, yres, aspectRatio, framerate)
 	local window = neutrino2.CInfoBox()
 	window:setTitle(epgtitle)
 	window:setText(epgtext)
 	window:exec()
 end
+]]
 
 function checkdomain(feed,url)
 	if not url then return url end
@@ -436,13 +433,14 @@ function getMediUrls(idNr)
 	print("getMediUrls:")
 
 	local UrlVideo,UrlAudio, UrlExtra = nil,nil,nil
-	local picUrl =  {}
+	local picUrl = nil -- {}
 	local feed = fp.entries[idNr]
 	for i, link in ipairs(feed.enclosures) do
 		local urlType =link.type
 		local mediaUrlFound = false
 		if link.url and urlType == "image/jpeg" then
-			picUrl[#picUrl+1] =  link.url
+			--picUrl[#picUrl+1] =  link.url
+			picUrl = link.url
 			mediaUrlFound = true
 		end
 		if urlType == 'video/mp4' or  urlType == 'video/mpeg' or
@@ -468,7 +466,7 @@ function getMediUrls(idNr)
 	if not UrlVideo and feed.summary then
 		UrlVideo = feed.summary:match('<source%s+src%s?=%s?"(.-)"%s+type="video/mp4">')
 	end
-	if #picUrl == 0 then
+	--[[if #picUrl == 0 then
 		local urls = {feed.summary, feed.content}
 		for i,v in ipairs(urls) do
 			if type(v) == "string" then
@@ -515,6 +513,7 @@ function getMediUrls(idNr)
 			end
 		end
 	end
+	]]
 	if not UrlVideo and not UrlAudio and not UrlExtra and fp.entries[idNr].link:find("www.youtube.com")then
 		UrlExtra = fp.entries[idNr].link
 	end
@@ -594,7 +593,7 @@ end
 function paintMenuItem(idNr)
 	print("paintMenuItem:")
 
-	glob.urlPicUrls  = {}
+	glob.urlPicUrls  = nil --{}
 	local title    = fp.entries[idNr].title
 	if title then
 		title = title:gsub("\n", " ")
@@ -616,7 +615,7 @@ function paintMenuItem(idNr)
 				UrlAudio = a.AudioUrl
 				a.AudioUrl = nil
 			end
-			if a.PicUrl then
+			--[[if a.PicUrl then
 				if type(a.PicUrl) == 'table' then
 					for i=1,#a.PicUrl do
 						if check_if_double(glob.urlPicUrls,a.PicUrl[i]) then
@@ -629,7 +628,7 @@ function paintMenuItem(idNr)
 					end
 				end
 				a.PicUrl = nil
-			end
+			end]]
 			if a.addText then
 				if text == nil then
 					text=""
@@ -665,9 +664,9 @@ function paintMenuItem(idNr)
 		UrlLink = nil
 	end
 
-	if #glob.urlPicUrls > 0 then
+	--if #glob.urlPicUrls > 0 then
 		fpic = downloadPic(idNr,1)
-	end
+	--end
 
 	if text == nil and fp.entries[idNr].content then
 		text = fp.entries[idNr].content
@@ -693,7 +692,7 @@ function paintMenuItem(idNr)
 		vPlay:addToPlaylist(UrlVideo, title, text)
 		vPlay:exec(null, "")
 
-	elseif checkHaveViewer() --[[and selected == RC.green]] and UrlLink then
+	elseif checkHaveViewer() and UrlLink then
 		if hva == conf.htmlviewer and UrlLink then
 			os.execute(conf.linksbrowserdir .. LinksBrowser .. " -g " .. UrlLink)
 		else
@@ -714,11 +713,12 @@ function paintMenuItem(idNr)
 
 	epgtext = nil
 	epgtitle = nil
-	if #glob.urlPicUrls > 0 and conf.picdir == picdir then
+	
+	--[[if #glob.urlPicUrls > 0 and conf.picdir == picdir then
 		neutrino2.CFileHelpers():removeDir(picdir)
 		neutrino2.CFileHelpers():createDir(picdir)
 		glob.urlPicUrls = nil
-	end
+	end]]
 	collectgarbage()
 	return selected
 end
@@ -727,12 +727,12 @@ function downloadPic(idNr,nr)
 	print("downloadPic:")
 
 	local fpic = nil
-	if not glob.urlPicUrls[nr] then 
+	if not glob.urlPicUrls then 
 		return nil 
 	end
-	local picname = string.find(glob.urlPicUrls[nr], "/[^/]*$")
+	local picname = string.find(glob.urlPicUrls, "/[^/]*$")
 	if picname then
-		picname = string.sub(glob.urlPicUrls[nr],picname+1,#glob.urlPicUrls[nr])
+		picname = string.sub(glob.urlPicUrls,picname+1,#glob.urlPicUrls)
 		local t = nil
 		if fp.entries[idNr].updated_parsed then
 		      t = os.date("%d%m%H%M%S_",fp.entries[idNr].updated_parsed)
@@ -748,7 +748,7 @@ function downloadPic(idNr,nr)
 			if nr > 1 then
 
 			end
-			local UrlPic = glob.urlPicUrls[nr]
+			local UrlPic = glob.urlPicUrls
 			
 			local ok = neutrino2.downloadUrl(UrlPic, fpic)
 			if not ok then
@@ -756,41 +756,10 @@ function downloadPic(idNr,nr)
 			end
 		end
 	end
+	
 	print(fpic)
 	return fpic
 end
-
---[[
-function rescalePic(picW,picH,maxW,maxH)
-	if picW and picW > 0 and picH and picH > 0 then
-		local aspect = picW / picH
-		if not maxH then
-			maxH = getMaxScreenHeight()
-		end
-		if not maxW then
-			maxW = getMaxScreenWidth()
-		end
-		if picW / maxW > picH / maxH then
-			picW = maxW
-			picH = maxW/aspect
-		else
-			picH = maxH
-			picW = maxH * aspect
-		end
-		picH = math.floor(picH)
-		picW = math.floor(picW)
-	end
-	return picW,picH
-end
-]]
-
---[[
-function picviewer(id,nr)	
-end
-
-function home()
-end
-]]
 
 function saveConfig()
 		local config	= neutrino2.CConfigFile('\t')
@@ -891,7 +860,7 @@ function rssurlmenu(url)
 	if glob.feedpersed == nil then 
 		return 
 	end
-	--local d = 0 -- directkey
+
 	local m = neutrino2.CMenuWidget(glob.feedpersed.feed.title, neutrino2.NEUTRINO_ICON_MOVIE, 2*neutrino2.MENU_WIDTH)
 	glob.m = m
 
@@ -954,35 +923,10 @@ function execUrl(id)
 	rssurlmenu(feedentries[nr].exec)
 end
 
---[[
-function exec_submenu_grup(id)
-end
-]]
-
---[[
-function exec_submenu(id, title)
-	local subm = neutrino2.CMenuWidget(title, neutrino2.NEUTRINO_ICON_MOVIE)
-	glob.subm = subm
-
-	for v, w in ipairs(feedentries) do
-		subm:addItem(neutrino2.CMenuForwarder(w.name))
-	end
-
-	repeat
-		subm:exec(null, "")
-	until subm:getExitPressed() == true
-end
-
-function exec_grup(id)
-end
-]]
-
 s_selected = 0
 function start()
 	local submenus = {}
 	local grupmenus = {}
-
-	--local d = 0 -- directkey
 
 	local sm = neutrino2.CMenuWidget("Media One", neutrino2.NEUTRINO_ICON_MOVIE)
 	glob.sm = sm
@@ -1023,6 +967,8 @@ function main()
 	local config = neutrino2.PLUGINDIR .. "/media_one/media_one.conf"
 
 	loadConfig()
+	
+	neutrino2.CFileHelpers():createDir(picdir)
 
 	if next(feedentries) == nil then
 		print("DEBUG ".. __LINE__())
@@ -1038,5 +984,4 @@ function main()
 end
 
 main()
-
 
