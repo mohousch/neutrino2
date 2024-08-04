@@ -414,6 +414,9 @@ static bool swscale(unsigned char *src, unsigned char *dst, int sw, int sh, int 
 		return ret;
 	}
 	
+	if (!src)
+		return false;
+	
 	AVFrame *sframe = av_frame_alloc();
 	AVFrame *dframe = av_frame_alloc();
 	

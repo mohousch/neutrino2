@@ -1490,6 +1490,9 @@ void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const 
 	fb_pixel_t *data = (fb_pixel_t *)boxBuf;
 	fb_pixel_t *fbp = (fb_pixel_t *)lfb + (swidth * yoff);
 	fb_pixel_t *d2;
+	
+	if (!data)
+		return;
  
 	for (uint32_t line = 0; line < yc; line++)	
 	{
@@ -1531,13 +1534,16 @@ void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const 
 
 // blitBox2FB
 void CFrameBuffer::blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp, uint32_t yp, bool transp )
-{ 
+{
 	int xc = (width > xRes) ? xRes : width;
 	int yc = (height > yRes) ? yRes : height;
 	
 	fb_pixel_t *data = (fb_pixel_t *) fbbuff;
 	uint8_t *d = ((uint8_t *)lfb) + xoff * sizeof(fb_pixel_t) + stride * yoff;
 	fb_pixel_t *d2;
+	
+	if (!data)
+		return;
 
 	for (int count = 0; count < yc - yp; count++ ) 
 	{

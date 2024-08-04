@@ -326,6 +326,16 @@ bool CLCDDisplay::init(const char *fbdevice)
 	getMode();
 	setMode(xres, yres, tftbpp);
 	enableManualBlit();
+#else
+	xres = DEFAULT_LCD_XRES;
+	yres = DEFAULT_LCD_YRES;
+	tftbpp = 32;
+	tftstride = xres* sizeof(uint32_t);
+	tft_buffer_size = xres*yres*sizeof(uint32_t);
+	
+	tftbuffer = (uint32_t *)malloc(tft_buffer_size);
+	
+	memset(tftbuffer, 0, tftstride * yres);
 #endif
 	
 	lcd_type = 4;
@@ -1225,8 +1235,6 @@ void CLCDDisplay::blitBox2LCD(int flag)
 #endif
 
 #ifdef ENABLE_TFTLCD
-	//memcpy(tftbuffer, raw_buffer, tftstride * yres);
-	/*
 	if (tftbpp == 32 && raw_bpp == 32)
 	{
 		uint32_t *srcptr = (uint32_t*)raw_buffer;
@@ -1273,58 +1281,9 @@ void CLCDDisplay::blitBox2LCD(int flag)
                 	dstptr = (uint32_t*)((uint8_t*)dstptr + tftstride);
             	}
 	}
-	*/
-	/*
-	int xc = area_width;
-	int yc = area_height;
-	
-	uint32_t *data = (uint32_t *) tftbuffer;
-	uint8_t *d = ((uint8_t *)raw_buffer) + area_left * sizeof(uint32_t) + tftstride * area_top;
-	uint32_t *d2;
-
-	for (int count = 0; count < yc; count++ ) 
-	{
-		uint32_t * pixpos = &data[(count) * area_width];
-		d2 = (uint32_t *) d;
-		
-		for (int count2 = 0; count2 < xc; count2++ ) 
-		{
-			fb_pixel_t pix = *(pixpos);
-			
-			if ((pix & 0xff000000) == 0xff000000)
-				*d2 = pix;
-			else
-			{
-				uint8_t *in = (uint8_t *)(pixpos);
-				uint8_t *out = (uint8_t *)d2;
-				
-#if __BYTE_ORDER == __LITTLE_ENDIAN
-				int a = in[3];
-#elif __BYTE_ORDER == __BIG_ENDIAN
-				int a = in[0];
-				out++; 
-				in++;
-#endif				
-				*out = (*out + ((*in - *out) * a) / 256);
-				in++; 
-				out++;
-				*out = (*out + ((*in - *out) * a) / 256);
-				in++; 
-				out++;
-				*out = (*out + ((*in - *out) * a) / 256);
-			}
-			
-			d2++;
-			pixpos++;
-		}
-		d += tftstride;
-	}	
-	*/
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-		// alpha blending
-		
 		// scale / copy to ng_buffer
 		swscale((uint8_t *)raw_buffer, (uint8_t *)ngbuffer, xres, yres, ngxres, ngyres, AV_PIX_FMT_BGR32, AV_PIX_FMT_RGB32);	
 #endif
@@ -1346,12 +1305,15 @@ void CLCDDisplay::draw_point(const int x, const int y, uint32_t color)
 		
 	uint32_t tmpcol = color;
 	
+#if BYTE_ORDER == LITTLE_ENDIAN
 	uint8_t a = (color & 0xFF000000) >> 24;
 	uint8_t r = (color & 0x00FF0000) >> 16;
 	uint8_t g = (color & 0x0000FF00) >> 8;
 	uint8_t b = (color & 0x000000FF);
 
 	tmpcol = ::rgbaToColor(r, g, b, a);
+#endif
+	
 
 	if (color == LCD_PIXEL_INV)
 		raw_buffer[(y * xres + x)] ^= 1;
@@ -1629,9 +1591,9 @@ int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int widt
 		element.buffer = (lcd_pixel_t *)::getBGR8Image(filename, width, height, 0xFF, SCALE_COLOR);
 #else
 	if (raw_bpp == 32)
-		element.buffer = (lcd_pixel_t *)::getRGB32Image(filename, width, height, 0xFF, SCALE_COLOR);
+		element.buffer = (lcd_pixel_t *)::getImage(filename, width, height, 0xFF, SCALE_COLOR);
 	else
-		element.buffer = (lcd_pixel_t *)::getRGB8Image(filename, width, height, 0xFF, SCALE_COLOR);
+		element.buffer = (lcd_pixel_t *)::getImage(filename, width, height, 0xFF, SCALE_COLOR);
 #endif
 
 	element.x = posx;
