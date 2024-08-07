@@ -970,7 +970,7 @@ void CLCDDisplay::blit(void)
 	if (lcd)
 	{
 		lcd->SetScreen(ngbuffer, ngxres, ngyres);	
-		lcd->Refresh(true);
+		lcd->Refresh(false);
 	}
 #endif
 }

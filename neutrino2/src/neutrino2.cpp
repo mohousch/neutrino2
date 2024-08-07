@@ -3183,7 +3183,7 @@ void CNeutrinoApp::unlockPlayBack(void)
 // exitRun
 void CNeutrinoApp::exitRun(int retcode, bool save)
 {
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::exitRun: (retcode:%d) (save:%s)\n", retcode, save? "true" :"false");
+	dprintf(DEBUG_NORMAL, "(retcode:%d) (save:%s)\n", retcode, save? "true" :"false");
 	
 	// break silently autotimeshift
 	if(autoshift) 
@@ -3261,14 +3261,12 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		proc_put("/proc/stb/fp/rtc", t + lt->tm_gmtoff);
 #endif		
 			
-		//
 		if(playback)
 		{
 			delete playback;
 			playback = NULL;
 		}
 			
-		//
 		if(audioDecoder)
 		{
 			delete audioDecoder;
@@ -3346,7 +3344,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	// zap complete event
 	if(msg == NeutrinoMessages::EVT_ZAP_COMPLETE || msg == NeutrinoMessages::EVT_ZAP_FAILED) 
 	{
-		dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: EVT_ZAP_COMPLETE current_channel_id: 0x%llx data:0x%llx\n", CZapit::getInstance()->getCurrentChannelID(), data);
+		dprintf(DEBUG_NORMAL, "EVT_ZAP_COMPLETE current_channel_id: 0x%llx data:0x%llx\n", CZapit::getInstance()->getCurrentChannelID(), data);
 		
 		// set audio map after channel zap
 		CZapit::getInstance()->getAudioMode(&g_settings.audio_AnalogMode);
@@ -3387,7 +3385,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		
 		startSubtitles(!g_InfoViewer->is_visible);
 		
-		////
+		//
 		CLCD::getInstance()->setEPGTitle("");
 	}
 
