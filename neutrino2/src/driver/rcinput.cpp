@@ -443,6 +443,7 @@ CRCInput::CRCInput() : configfile('\t')
 	if(fd_lirc < 0)
 	{
 		ng2_err("lircd socket failed\n");
+		fd_lirc = -1;
 	}
 	
 	if (connect(fd_lirc, (struct sockaddr *)&vAddr, sizeof(vAddr)) == -1)
@@ -451,6 +452,8 @@ CRCInput::CRCInput() : configfile('\t')
 		::close(fd_lirc);
 		fd_lirc = 1;
 	}
+	else
+		haveLirc = true;
 #endif
 #endif
 
