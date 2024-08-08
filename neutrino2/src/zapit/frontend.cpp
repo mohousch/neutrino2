@@ -1362,7 +1362,7 @@ void CFrontend::setInput(t_satellite_position satellitePosition, uint32_t freque
 
 	if (info.type == FE_QPSK)
 	{
-		dprintf(DEBUG_NORMAL, "CFrontend::setInput: fe(%d:%d) (delsys:0x&x) SatellitePosition %d -> %d\n", feadapter, fenumber, deliverySystemMask, currentSatellitePosition, satellitePosition);
+		dprintf(DEBUG_NORMAL, "CFrontend::setInput: fe(%d:%d) (delsys:0x%x) SatellitePosition %d -> %d\n", feadapter, fenumber, deliverySystemMask, currentSatellitePosition, satellitePosition);
 	}
 	else
 		dprintf(DEBUG_NORMAL, "CFrontend::setInput: fe(%d:%d)(delsys:0x%x)\n", feadapter, fenumber, deliverySystemMask);
