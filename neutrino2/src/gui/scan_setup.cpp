@@ -1,5 +1,5 @@
 /*
-	$Id: scan_setup.cpp 20.03.2022 mohousch Exp $
+	$Id: scan_setup.cpp 08082024 mohousch Exp $
 
 	Neutrino-GUI  -   DBoxII-Project
 
@@ -409,14 +409,14 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 
 int CScanSetup::showScanService()
 {
-	dprintf(DEBUG_NORMAL, "CScanSetup::showScanService: Tuner: %d:%d\n", fe->feadapter, fe->fenumber);
+	dprintf(DEBUG_NORMAL, "Tuner: %d:%d\n", fe->feadapter, fe->fenumber);
 	
 	int res = CMenuTarget::RETURN_REPAINT;
 	
 	if(!fe)
 		return res;
 	
-	//load scansettings 
+	// load scansettings 
 	if( !scanSettings->loadSettings(NEUTRINO_SCAN_SETTINGS_FILE) )
 		dprintf(DEBUG_NORMAL, "CScanSetup::CScanSetup: Loading of scan settings failed. Using defaults.\n");
 		
@@ -428,7 +428,7 @@ int CScanSetup::showScanService()
 	
 	// load motorposition
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2)
 #else
 	if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -510,6 +510,8 @@ int CScanSetup::showScanService()
 			tunerType->addOption("DVBS", DVB_S);
 		if (fe->getDeliverySystem() & DVB_S2)
 			tunerType->addOption("DVBS2", DVB_S2);
+		if (fe->getDeliverySystem() & DVB_S2X)
+			tunerType->addOption("DVBS2X", DVB_S2X);
 		if (fe->getDeliverySystem() & DVB_C)
 			tunerType->addOption("DVBC", DVB_C);
 		if (fe->getDeliverySystem() & DVB_T)
@@ -529,7 +531,7 @@ int CScanSetup::showScanService()
 	bool hidden = true;
 	
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
+	if (fe->getForcedDelSys() & DVB_T || fe->getForcedDelSys() & DVB_T2)
 #else
 	if(fe->getInfo()->type == FE_OFDM)
 #endif
@@ -543,7 +545,7 @@ int CScanSetup::showScanService()
 	
 	/*
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
+	if (fe->getForcedDelSys() & DVB_T || fe->getForcedDelSys() & DVB_T2)
 #else
 	if(fe->getInfo()->type == FE_OFDM)
 #endif
@@ -585,9 +587,9 @@ int CScanSetup::showScanService()
 	feModeNotifier->addItem(0, item);
 	scansetup->addItem(item);
 	
-	// DVB_S/ DVB_S2
+	// DVB_S / DVB_S2
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2)
 #else
 	if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -636,9 +638,9 @@ int CScanSetup::showScanService()
 	
 	scansetup->addItem(auScan);
 
-	// allautoscan	
+	// allautoscan ( DVB_S / DVB_S2)
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2)
 #else
 	if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -1586,7 +1588,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 	if (parent)
 		parent->hide();
 
-	//get satposition (loop throught satpos)
+	// get satposition (loop throught satpos)
 	for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 	{
 		if(!strcmp(sit->second.name.c_str(), scanSettings->satNameNoDiseqc)) 
@@ -1874,7 +1876,7 @@ void CScanSettings::setConfigValue(CFrontend* fe, const char * name, uint32_t va
 
 bool CScanSettings::loadSettings(const char * const fileName)
 {
-	dprintf(DEBUG_NORMAL, "CScanSettings::loadSettings: fe(%d:%d)\n", fe->feadapter, fe->fenumber);
+	dprintf(DEBUG_NORMAL, "fe(%d:%d)\n", fe->feadapter, fe->fenumber);
 	
 	// if scan.conf not exists load default
 	if(!configfile.loadConfig(fileName))

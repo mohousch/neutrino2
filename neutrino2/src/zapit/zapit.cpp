@@ -1,5 +1,5 @@
 /*
- * $Id: zapit.cpp 02.03.2024 mohousch Exp $
+ * $Id: zapit.cpp 08082024 mohousch Exp $
  *
  * zapit - d-box2 linux project
  *
@@ -296,6 +296,24 @@ void CZapit::initFrontend()
 				delete fe;
 		}
 	}
+	
+	//
+	// add virtual dvbs/s2 frontend
+	// FIXME: please remove after testing
+	//
+#ifdef ENABLE_TESTING
+	fe = new CFrontend(0, 1); // adapter_num = 1
+	
+	fe->info.type = FE_QPSK;
+	strcpy(fe->info.name, "Sat Fake Tuner");
+	fe->forcedDelSys = DVB_S | DVB_S2 | DVB_S2X;
+	fe->deliverySystemMask = DVB_S | DVB_S2 | DVB_S2X;
+	fe->hybrid = true;
+	have_s = true;
+	
+	index++;
+	femap.insert(std::pair <unsigned short, CFrontend*> (index, fe));
+#endif
 	
 	dprintf(DEBUG_NORMAL, "CZapit::initFrontend: found %d frontends\n", femap.size());
 }
@@ -5125,7 +5143,7 @@ bool CZapit::tuneTP(transponder TP, CFrontend* fe)
 	
 	// drivetosatpos
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2)
 #else
 	if (fe->getInfo()->type == FE_QPSK)
 #endif
@@ -5922,7 +5940,7 @@ void CZapit::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_s
 
 int CZapit::loadMotorPositions(void)
 {
-	dprintf(DEBUG_INFO, "CZapit::loadMotorPositions:\n");
+	dprintf(DEBUG_NORMAL, "CZapit::loadMotorPositions:\n");
 
 	FILE *fd = NULL;
 	char buffer[256] = "";
