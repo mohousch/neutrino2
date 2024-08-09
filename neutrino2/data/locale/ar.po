@@ -16,120 +16,120 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "'X'=timer '-' no timer"
+msgid "'X'=مؤقت '-' لا يوجد مؤقت"
 msgstr ""
 
 #, c-format
 msgid "(%d%% over)"
 msgstr ""
 
-msgid "(Re)-Calculate Positions"
+msgid "(اعادة)-حساب المواضع"
 msgstr ""
 
-msgid "(a) Motor Position:"
+msgid "(a) موضع المحرك:"
 msgstr ""
 
-msgid "(b) Movement:"
+msgid "(b) تحريك:"
 msgstr ""
 
-msgid "(c) Step Size:"
+msgid "(c) حجم الخطوة:"
 msgstr ""
 
-msgid "(relative, in seconds)"
+msgid "(نسبي، بالثواني)"
 msgstr ""
 
 #, c-format
-msgid "(starting in %d min)"
+msgid "(البدء في %d دقيقة)"
 msgstr ""
 
-msgid ", please be patient..."
+msgid ", من فضلك كن صبورا..."
 msgstr ""
 
-msgid "0 for unlimited repeats"
+msgid "0 لتكرارات غير محدودة"
 msgstr ""
 
-msgid "5 Volt"
+msgid "5 فولت"
 msgstr ""
 
-msgid "A/V sync"
+msgid "A/V مزامنة"
 msgstr ""
 
-msgid "AC3 Delay"
+msgid "AC3 تأخير"
 msgstr ""
 
-msgid "AV Select"
+msgid "AV اختار"
 msgstr ""
 
-msgid "Abortion of channel scan"
+msgid "الغاء البحث عن القناة"
 msgstr ""
 
-msgid "Absolute start directory"
+msgid "دليل البداية المطلق"
 msgstr ""
 
-msgid "Activate settings"
+msgid "تفعيل الإعدادات"
 msgstr ""
 
-msgid "Actors"
+msgid "ممثلين"
 msgstr ""
 
-msgid "Add"
+msgid "اضافة"
 msgstr ""
 
-msgid "Add Subtitle File"
+msgid "إضافة ملف الترجمة"
 msgstr "إضافة ملف الترجمة"
 
-msgid "Add to Bouquets"
+msgid "أضف إلى الباقات"
 msgstr ""
 
-msgid "Adult movie / Drama"
+msgid "فيلم للكبار / دراما"
 msgstr ""
 
-msgid "Advanced"
+msgid "متقدم"
 msgstr ""
 
-msgid "Adventure / Western/War"
+msgid "مغامرات / غربي / حرب"
 msgstr ""
 
-msgid "Age"
+msgid "العمر"
 msgstr ""
 
-msgid "Alarm time"
+msgid "وقت التنبيه"
 msgstr ""
 
-msgid "All Services"
+msgid "جميع الخدمات"
 msgstr ""
 
-msgid "Alpha Setup"
+msgid "اعدادات الفا"
 msgstr ""
 
-msgid "Analog"
+msgid "تناظري"
 msgstr ""
 
-msgid "Analog Output"
+msgid "المخرج التناظري"
 msgstr ""
 
-msgid "Antenna positioning"
+msgid "تحديد موقع الهوائي"
 msgstr ""
 
-msgid "Arabic"
+msgid "عربي"
 msgstr ""
 
-msgid "Are you sure ?"
+msgid "هل أنت متأكد ?"
 msgstr ""
 
-msgid "Are you sure to format ? You will lost all data "
+msgid "هل أنت متأكد من التنسيق؟ سوف تفقد جميع البيانات "
 msgstr ""
 
-msgid "Are you sure to init ?"
+msgid "هل أنت متأكد من التهيئة؟"
 msgstr ""
 
-msgid "Arts / Culture"
+msgid "الفنون / الثقافة"
 msgstr ""
 
-msgid "Arts / Culture magazines"
+msgid "مجلات الفنون والثقافة"
 msgstr ""
 
-msgid "Aspect Ratio"
+msgid "نسبة العرض إلى الارتفاع"
 msgstr ""
 
 msgid "Athletics"
@@ -138,46 +138,46 @@ msgstr ""
 msgid "Atsc:"
 msgstr ""
 
-msgid "Audio"
+msgid "الصوت"
 msgstr ""
 
-msgid "Audio PIDs"
+msgid "معرفات الصوت"
 msgstr ""
 
-msgid "Audio Playlist"
+msgid "قوائم تشغيل الصوت"
 msgstr ""
 
-msgid "Audio language preferences"
+msgid "لغة الصوت المفضلة"
 msgstr ""
 
-msgid "Audio master"
+msgid "الصوت الرئيسي"
 msgstr ""
 
-msgid "Audio settings"
+msgid "اعدادات الصوت"
 msgstr ""
 
-msgid "Audioplayer"
+msgid "مشغل الصوت"
 msgstr ""
 
-msgid "Audioplayer settings"
+msgid "اعدادت مشغل الصوت"
 msgstr ""
 
-msgid "Audiotype"
+msgid "نمط الصوت"
 msgstr ""
 
-msgid "Auto select audio"
+msgid "تحديد الصوت تلقائيًا"
 msgstr ""
 
-msgid "Auto select subtitles"
+msgid "تحديد الترجمة تلقائيًا"
 msgstr ""
 
-msgid "Auto-Scan"
+msgid "المسح التلقائي"
 msgstr ""
 
-msgid "Auto-Scan multiple Satellites"
+msgid "المسح التلقائي للأقمار الصناعية المتعددة"
 msgstr ""
 
-msgid "Available Images/Packages"
+msgid "الصور/الحزم المتوفرة"
 msgstr ""
 
 msgid "BOTTOM"
@@ -189,19 +189,19 @@ msgstr ""
 msgid "BOTTOM RIGHT"
 msgstr ""
 
-msgid "Back"
+msgid "للخلف"
 msgstr ""
 
-msgid "Background"
+msgid "خلفية"
 msgstr ""
 
-msgid "Backup failed"
+msgid "فشل النسخ الاحتياطي"
 msgstr ""
 
 msgid "Ballet"
 msgstr ""
 
-msgid "Bandwidth"
+msgid "النطاق الترددي"
 msgstr ""
 
 msgid "Bitrate"
