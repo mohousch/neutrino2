@@ -204,138 +204,138 @@ msgstr ""
 msgid "النطاق الترددي"
 msgstr ""
 
-msgid "Bitrate"
+msgid "معدل البت"
 msgstr ""
 
-msgid "Bookmarks"
+msgid "العلامات المرجعية"
 msgstr ""
 
-msgid "Border"
+msgid "حدود"
 msgstr ""
 
-msgid "Bosnian"
+msgid "البوسنية"
 msgstr ""
 
-msgid "Bouquet"
+msgid "باقة"
 msgstr ""
 
-msgid "Bouquet Editor"
+msgid "محرر الباقة"
 msgstr ""
 
-msgid "Bouquet back"
+msgid "ارجاع الباقة"
 msgstr ""
 
-msgid "Bouquets"
+msgid "الباقات"
 msgstr ""
 
-msgid "Box Info"
+msgid "معلومات الصندوق"
 msgstr ""
 
 msgid ""
-"Box will shutdown in 1 min.\n"
-"Cancel Sutdown ?"
+"سيتم إغلاق الصندوق في دقيقة واحدة."
+"إلغاء الاغلاق؟"
 msgstr ""
 
-msgid "Brightness"
+msgid "سطوع"
 msgstr ""
 
-msgid "Brightness after dim timeout"
+msgid "السطوع بعد انتهاء مهلة التعتيم"
 msgstr ""
 
-msgid "Broadcast"
+msgid "محطة الاذاعة"
 msgstr ""
 
-msgid "Broadcasting / Press"
+msgid "البث / الصحافة"
 msgstr ""
 
-msgid "Built date: "
+msgid "تاريخ البناء: "
 msgstr ""
 
-msgid "Buttons Bar"
+msgid "شريط الأزرار"
 msgstr ""
 
-msgid "Buttons Line"
+msgid "خط الأزرار"
 msgstr ""
 
-msgid "Buttons Line Gradient"
+msgid "أزرار خط التدرج"
 msgstr ""
 
-msgid "CAM init complete"
+msgid "تم إكمال عملية تهيئة CAM"
 msgstr ""
 
-msgid "CAM inserted in slot"
+msgid "تم إدخال CAM في الفتحة"
 msgstr ""
 
-msgid "CAM removed from slot"
+msgid "تم إزالة CAM من الفتحة"
 msgstr ""
 
-msgid "CEC Setup"
+msgid "إعداد CEC"
 msgstr ""
 
 msgid "CEC broadcast"
 msgstr ""
 
-msgid "CEC mode"
+msgid "وضع CEC"
 msgstr ""
 
-msgid "CEC mode off"
+msgid "إيقاف تشغيل وضع CEC"
 msgstr ""
 
-msgid "CEC mode recorder"
+msgid "مسجل وضع CEC"
 msgstr ""
 
-msgid "CEC mode tuner"
+msgid "موالف وضع CEC"
 msgstr ""
 
-msgid "CEC settings"
+msgid "إعدادات CEC"
 msgstr ""
 
-msgid "CEC standby"
+msgid "CEC وضع الاستعداد"
 msgstr ""
 
-msgid "CEC standby no timer"
+msgid "CEC وضع الاستعداد بدون مؤقت"
 msgstr ""
 
-msgid "CEC view on"
+msgid "CEC عرض على"
 msgstr ""
 
-msgid "CEC volume"
+msgid "CEC مقدار الصوت"
 msgstr ""
 
-msgid "CEC volume TV"
+msgid "CEC مقدار الصوت TV"
 msgstr ""
 
-msgid "CEC volume audiosystem"
+msgid "CEC حجم نظام الصوت"
 msgstr ""
 
-msgid "CEC volume off"
+msgid "CEC اغلاق الصوت"
 msgstr ""
 
 msgid "CI Cam"
 msgstr ""
 
-msgid "CI cam reset"
+msgid "CI cam إعادة ضبط"
 msgstr ""
 
 msgid "CIFS"
 msgstr ""
 
-msgid "CORNER ALL"
+msgid "كل الزواية"
 msgstr ""
 
-msgid "CORNER NONE"
+msgid "لا يوجد زاوية"
 msgstr ""
 
 msgid "CPU:"
 msgstr ""
 
-msgid "Cable"
+msgid "كابل"
 msgstr ""
 
-msgid "Cable:"
+msgid "كابل:"
 msgstr ""
 
-msgid "Cancel"
+msgid "الغاء"
 msgstr ""
 
 msgid "Caps"
@@ -344,163 +344,163 @@ msgstr ""
 msgid "Caps / No Caps"
 msgstr ""
 
-msgid "Cartoons / Puppets"
+msgid "الرسوم المتحركة / الدمى"
 msgstr ""
 
-msgid "Change PIN code"
+msgid "تغيير رمز PIN"
 msgstr ""
 
-msgid "Change sort order"
+msgid "تغيير ترتيب الفرز"
 msgstr ""
 
-msgid "Channel"
+msgid "القناة"
 msgstr ""
 
-msgid "Channel Logo"
+msgid "شعار القناة"
 msgstr ""
 
-msgid "Channel direct selection"
+msgid "اختيار القناة مباشرة"
 msgstr ""
 
-msgid "Channel down"
+msgid "القناة للأسفل"
 msgstr ""
 
-msgid "Channel not available"
+msgid "القناة غير متاحة"
 msgstr ""
 
-msgid "Channel up"
+msgid "القناة للأعلي"
 msgstr ""
 
-msgid "Channel:"
+msgid "القناة:"
 msgstr ""
 
-msgid "Channellist"
+msgid "قائمة القنوات"
 msgstr ""
 
-msgid "Channellist Description"
+msgid "وصف قائمة القنوات"
 msgstr ""
 
-msgid "Channellist Number"
+msgid "ارقام قائمة القنوات"
 msgstr ""
 
-msgid "Channellist settings"
+msgid "اعدادات فائمة القنوات"
 msgstr ""
 
-msgid "Check filesystem"
+msgid "التحقق من نظام الملفات"
 msgstr ""
 
-msgid "Children / Juvenile program"
+msgid "برنامج الأطفال / الشباب"
 msgstr ""
 
-msgid "Classic"
+msgid "كلاسيكي"
 msgstr ""
 
-msgid "Clear"
+msgid "واضح"
 msgstr ""
 
-msgid "Code Rate HP"
+msgid "معدل الكود HP"
 msgstr ""
 
-msgid "Code Rate LP"
+msgid "معدل الكود LP"
 msgstr ""
 
-msgid "Color to color"
+msgid "لون إلى لون"
 msgstr ""
 
-msgid "Color to transparent"
+msgid "اللون شفاف"
 msgstr ""
 
-msgid "Colour Range"
+msgid "مجموعة الألوان"
 msgstr ""
 
-msgid "Comedy"
+msgid "كوميديا"
 msgstr ""
 
-msgid "Commited/Uncommited"
+msgid "ملتزم/غير ملتزم"
 msgstr ""
 
-msgid "Contrast"
+msgid "جلسة"
 msgstr ""
 
-msgid "Cooking"
+msgid "طبخ"
 msgstr ""
 
-msgid "Copy bouquet to Favorites"
+msgid "نسخ الباقة إلى المفضلة"
 msgstr ""
 
-msgid "Correction time in min. (00=off). This time"
+msgid "وقت التصحيح بالدقيقة (00=إيقاف). هذه المرة"
 msgstr ""
 
-msgid "Country"
+msgid "منطقة"
 msgstr ""
 
-msgid "Create bookmark"
+msgid "إنشاء إشارة مرجعية"
 msgstr ""
 
-msgid "Create list of HD channels"
+msgid "إنشاء قائمة بالقنوات عالية الدقة"
 msgstr ""
 
-msgid "Current Track"
+msgid "المسار الحالي"
 msgstr ""
 
-msgid "Current key"
+msgid "المفتاح الحالي"
 msgstr ""
 
-msgid "Current transponder"
+msgid "جهاز الإرسال والإستقبال الحالي"
 msgstr ""
 
-msgid "Current version"
+msgid "النسخة الحالية"
 msgstr ""
 
-msgid "Czech"
+msgid "التشيكية"
 msgstr ""
 
 msgid "DHCP"
 msgstr ""
 
-msgid "Data"
+msgid "بيانات"
 msgstr ""
 
-msgid "Date"
+msgid "تاريخ"
 msgstr ""
 
-msgid "Debug"
+msgid "التصحيح"
 msgstr ""
 
-msgid "Debug Level"
+msgid "مستوى التصحيح"
 msgstr ""
 
-msgid "Decrease Motor Position (a)"
+msgid "تقليل موضع المحرك (أ)"
 msgstr ""
 
-msgid "Default"
+msgid "افتراضي"
 msgstr ""
 
-msgid "Default gateway"
+msgid "البوابة الافتراضية"
 msgstr ""
 
-msgid "Delayed shutdown"
+msgid "تأخير الإغلاق"
 msgstr ""
 
-msgid "Delete"
+msgid "حذف"
 msgstr ""
 
-msgid "Delete WebTV channels"
+msgid "حذف قنوات WebTV"
 msgstr ""
 
-msgid "Delete all"
+msgid "حذف الكل"
 msgstr ""
 
-msgid "Delete channel from bouquet?"
+msgid "حذف القناة من الباقة؟"
 msgstr ""
 
-msgid "Delete channels"
+msgid "حذف القنوات"
 msgstr ""
 
-msgid "Description: "
+msgid "وصف: "
 msgstr ""
 
-msgid "Details current program"
+msgid "تفاصيل البرنامج الحالي"
 msgstr ""
 
 msgid "Detective / Thriller"
@@ -518,13 +518,13 @@ msgstr ""
 msgid "DiSEqC-repeats"
 msgstr ""
 
-msgid "Diashow mode"
+msgid "وضع عرض الشرائح"
 msgstr ""
 
 msgid "Digital"
 msgstr ""
 
-msgid "Dim timeout"
+msgid "مهلة التعتيم"
 msgstr ""
 
 msgid "Dir"
