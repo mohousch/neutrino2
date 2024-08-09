@@ -428,7 +428,7 @@ int CScanSetup::showScanService()
 	
 	// load motorposition
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2)
+	if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
 #else
 	if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -531,7 +531,7 @@ int CScanSetup::showScanService()
 	bool hidden = true;
 	
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() & DVB_T || fe->getForcedDelSys() & DVB_T2)
+	if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
 #else
 	if(fe->getInfo()->type == FE_OFDM)
 #endif
@@ -545,7 +545,7 @@ int CScanSetup::showScanService()
 	
 	/*
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() & DVB_T || fe->getForcedDelSys() & DVB_T2)
+	if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
 #else
 	if(fe->getInfo()->type == FE_OFDM)
 #endif
@@ -589,7 +589,7 @@ int CScanSetup::showScanService()
 	
 	// DVB_S / DVB_S2
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2)
+	if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
 #else
 	if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -640,7 +640,7 @@ int CScanSetup::showScanService()
 
 	// allautoscan ( DVB_S / DVB_S2)
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2)
+	if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
 #else
 	if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -1113,6 +1113,7 @@ int CScanSetup::showManualScanSetup()
 
 	// sat select
 	CMenuOptionStringChooser * satSelect = NULL;
+	
 #if HAVE_DVB_API_VERSION >= 5 
 	if (fe->getForcedDelSys() == DVB_C)
 #else

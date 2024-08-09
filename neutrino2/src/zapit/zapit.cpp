@@ -297,6 +297,20 @@ void CZapit::initFrontend()
 		}
 	}
 	
+#ifdef ENABLE_TESTING
+	fe = new CFrontend(0, 1); // adapter_num = 1
+
+	fe->info.type = FE_QPSK;
+	strcpy(fe->info.name, "Sat Fake Tuner");
+	fe->forcedDelSys = DVB_S | DVB_S2 | DVB_S2X;
+	fe->deliverySystemMask = DVB_S | DVB_S2 | DVB_S2X;
+	fe->hybrid = true;
+	have_s = true;
+
+	index++;
+	femap.insert(std::pair <unsigned short, CFrontend*> (index, fe));
+#endif
+	
 	dprintf(DEBUG_NORMAL, "CZapit::initFrontend: found %d frontends\n", femap.size());
 }
 
