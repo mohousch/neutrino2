@@ -197,10 +197,13 @@ fi
 
 # testing
 AC_ARG_ENABLE(testing,
-	AS_HELP_STRING(--enable-testing,include testing plugins support),
+	AS_HELP_STRING(--enable-testing,include testing stuff support),
 	,[enable_testing=no])
 AM_CONDITIONAL(ENABLE_TESTING,test "$enable_testing" = "yes")
-AC_DEFINE(ENABLE_TESTING,1, [include testing stuff])
+
+if test "$enable_testing" = "yes"; then
+AC_DEFINE(ENABLE_TESTING,1,[include testing stuff support])
+fi
 
 AC_MSG_RESULT([
 Boxtype          	: $BOXTYPE
