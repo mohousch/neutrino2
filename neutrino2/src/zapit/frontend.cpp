@@ -309,7 +309,11 @@ void CFrontend::getFEInfo(void)
 	}
 	
 	//
-	if ( (deliverySystemMask & DVB_C && deliverySystemMask & DVB_T) || (deliverySystemMask & DVB_C && deliverySystemMask & DVB_T2) || (deliverySystemMask & DVB_C) && (deliverySystemMask & DVB_T) && (deliverySystemMask & DVB_T2) )
+	if ( (deliverySystemMask & DVB_C && deliverySystemMask & DVB_T)
+		|| (deliverySystemMask & DVB_C && deliverySystemMask & DVB_T2)
+		|| (deliverySystemMask & DVB_C) && (deliverySystemMask & DVB_T) && (deliverySystemMask & DVB_T2)
+		|| (deliverySystemMask & DVB_S && deliverySystemMask & DVB_S2)
+		|| (deliverySystemMask & DVB_S) && (deliverySystemMask & DVB_S2) && (deliverySystemMask & DVB_S2X) )
 	{
 		hybrid = true;
 		dprintf(DEBUG_NORMAL, "fe(%d:%d) %s (delsys:0x%x) isHybrid:%s\n", feadapter, fenumber, info.name, deliverySystemMask, hybrid? "true" : "false");
