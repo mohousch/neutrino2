@@ -349,7 +349,7 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		
 		// send directly diseqc
 #if HAVE_DVB_API_VERSION >= 5
-		if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+		if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 #else
 		if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -428,7 +428,7 @@ int CScanSetup::showScanService()
 	
 	// load motorposition
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 #else
 	if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -458,7 +458,6 @@ int CScanSetup::showScanService()
 		scansetup = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		scansetup->setWidgetMode(ClistBox::MODE_SETUP);
-//		scansetup->enableShrinkMenu();
 		
 		// head
 		scansetup->enablePaintHead();
@@ -506,12 +505,14 @@ int CScanSetup::showScanService()
 		
 		tunerType->addOption("Hybrid", fe->getDeliverySystem());
 		
+		/*
 		if (fe->getDeliverySystem() & DVB_S)
 			tunerType->addOption("DVBS", DVB_S);
 		if (fe->getDeliverySystem() & DVB_S2)
 			tunerType->addOption("DVBS2", DVB_S2);
 		if (fe->getDeliverySystem() & DVB_S2X)
 			tunerType->addOption("DVBS2X", DVB_S2X);
+		*/
 		if (fe->getDeliverySystem() & DVB_C)
 			tunerType->addOption("DVBC", DVB_C);
 		if (fe->getDeliverySystem() & DVB_T)
@@ -589,7 +590,7 @@ int CScanSetup::showScanService()
 	
 	// DVB_S / DVB_S2
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 #else
 	if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -640,7 +641,7 @@ int CScanSetup::showScanService()
 
 	// allautoscan ( DVB_S / DVB_S2)
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 #else
 	if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -653,10 +654,8 @@ int CScanSetup::showScanService()
 		scansetup->addItem(fautoScanAll);
 	}
 
-	//
 	res = widget->exec(NULL, "");
 	
-	//
 	if (widget)
 	{
 		delete widget;
@@ -669,7 +668,7 @@ int CScanSetup::showScanService()
 	return res;
 }
 
-//
+// showMotorSetup
 int CScanSetup::showMotorSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showMotorSetup\n");
@@ -697,7 +696,6 @@ int CScanSetup::showMotorSetup()
 		motorMenu = new ClistBox(motorMenuWidget->getWindowsPos().iX, motorMenuWidget->getWindowsPos().iY, motorMenuWidget->getWindowsPos().iWidth, motorMenuWidget->getWindowsPos().iHeight);
 
 		motorMenu->setWidgetMode(ClistBox::MODE_SETUP);
-//		motorMenu->enableShrinkMenu();
 			
 		motorMenu->enablePaintHead();
 		motorMenu->setTitle(_("Motor settings"), NEUTRINO_ICON_SCAN);
@@ -766,7 +764,7 @@ int CScanSetup::showMotorSetup()
 	return ret;
 }
 
-//
+// showUnicableSetup
 int CScanSetup::showUnicableSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showUnicableSetup\n");
@@ -794,7 +792,6 @@ int CScanSetup::showUnicableSetup()
 		uni_setup = new ClistBox(uniWidget->getWindowsPos().iX, uniWidget->getWindowsPos().iY, uniWidget->getWindowsPos().iWidth, uniWidget->getWindowsPos().iHeight);
 
 		uni_setup->setWidgetMode(ClistBox::MODE_SETUP);
-//		uni_setup->enableShrinkMenu();
 		
 		uni_setup->enablePaintHead();
 		uni_setup->setTitle(_("Unicable settings"), NEUTRINO_ICON_SCAN);
@@ -833,7 +830,7 @@ int CScanSetup::showUnicableSetup()
 	return ret;
 }
 
-//
+// showLNBSetup
 int CScanSetup::showLNBSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showLNBSetup\n");
@@ -861,7 +858,6 @@ int CScanSetup::showLNBSetup()
 		satSetup = new ClistBox(satSetupWidget->getWindowsPos().iX, satSetupWidget->getWindowsPos().iY, satSetupWidget->getWindowsPos().iWidth, satSetupWidget->getWindowsPos().iHeight);
 
 		satSetup->setWidgetMode(ClistBox::MODE_SETUP);
-//		satSetup->enableShrinkMenu();
 			
 		satSetup->enablePaintHead();
 		satSetup->setTitle(_("Sat settings"), NEUTRINO_ICON_SCAN);
@@ -901,7 +897,6 @@ int CScanSetup::showLNBSetup()
 		tempsatlistBox = new ClistBox(tempsatWidget->getWindowsPos().iX, tempsatWidget->getWindowsPos().iY, tempsatWidget->getWindowsPos().iWidth, tempsatWidget->getWindowsPos().iHeight);
 
 		tempsatlistBox->setWidgetMode(ClistBox::MODE_SETUP);
-//		tempsatlistBox->enableShrinkMenu();
 					
 		//
 		tempsatlistBox->enablePaintHead();
@@ -989,7 +984,7 @@ int CScanSetup::showLNBSetup()
 	return ret;
 }
 
-//
+// showSatOnOffSetup
 int CScanSetup::showSatOnOffSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showSatOnOffSetup\n");
@@ -1018,7 +1013,6 @@ int CScanSetup::showSatOnOffSetup()
 		satOnOfflistBox = new ClistBox(satOnOffWidget->getWindowsPos().iX, satOnOffWidget->getWindowsPos().iY, satOnOffWidget->getWindowsPos().iWidth, satOnOffWidget->getWindowsPos().iHeight);
 
 		satOnOfflistBox->setWidgetMode(ClistBox::MODE_SETUP);
-//		satOnOfflistBox->enableShrinkMenu();
 			
 		satOnOfflistBox->enablePaintHead();
 		satOnOfflistBox->setTitle(_("Satellite"), NEUTRINO_ICON_SCAN);
@@ -1061,7 +1055,7 @@ int CScanSetup::showSatOnOffSetup()
 	return ret;
 }
 
-//
+// showManualScanSetup
 int CScanSetup::showManualScanSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showManualScanSetup\n");
@@ -1088,7 +1082,6 @@ int CScanSetup::showManualScanSetup()
 		manualScanlistBox = new ClistBox(manualScanWidget->getWindowsPos().iX, manualScanWidget->getWindowsPos().iY, manualScanWidget->getWindowsPos().iWidth, manualScanWidget->getWindowsPos().iHeight);
 
 		manualScanlistBox->setWidgetMode(ClistBox::MODE_SETUP);
-//		manualScanlistBox->enableShrinkMenu();
 		
 		manualScanlistBox->enablePaintHead();
 		manualScanlistBox->setTitle(_("Manual frequency scan / Test signal"), NEUTRINO_ICON_SCAN);
@@ -1163,7 +1156,7 @@ int CScanSetup::showManualScanSetup()
 		}
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+	else if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 #else
 	else if(fe->getInfo()->type == FE_QPSK)
 #endif 
@@ -1190,6 +1183,7 @@ int CScanSetup::showManualScanSetup()
 	int freq_length = 8;
 
 #if HAVE_DVB_API_VERSION >= 5
+/*
 	switch (fe->getForcedDelSys())
 	{
 		case DVB_S:
@@ -1211,6 +1205,13 @@ int CScanSetup::showManualScanSetup()
 			freq_length = 8;
 			break;
 	}
+*/
+	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+		freq_length = 8;
+	else if (fe->getForcedDelSys() == DVB_C)
+		freq_length = 6;
+	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2 || fe->getForcedDelSys() == DVB_A)
+		freq_length = 9;
 #else
 	switch (fe->getInfo()->type)
 	{
@@ -1242,7 +1243,7 @@ int CScanSetup::showManualScanSetup()
 	CMenuOptionChooser * mod_pol = NULL;
 
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 #else
 	if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -1282,7 +1283,7 @@ int CScanSetup::showManualScanSetup()
 
 	// fec
 #if HAVE_DVB_API_VERSION >= 5
-	int fec_count = (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2) ? SATSETUP_SCANTP_FEC_COUNT : CABLESETUP_SCANTP_FEC_COUNT;
+	int fec_count = (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X) ? SATSETUP_SCANTP_FEC_COUNT : CABLESETUP_SCANTP_FEC_COUNT;
 #else
 	int fec_count = (fe->getInfo()->type == FE_QPSK) ? SATSETUP_SCANTP_FEC_COUNT : CABLESETUP_SCANTP_FEC_COUNT;
 #endif
@@ -1362,7 +1363,7 @@ int CScanSetup::showManualScanSetup()
 	return ret;
 }
 
-//
+// showAutoScanSetup
 int CScanSetup::showAutoScanSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showAutoScanSetup\n");
@@ -1389,7 +1390,6 @@ int CScanSetup::showAutoScanSetup()
 		autoScanlistBox = new ClistBox(autoScanWidget->getWindowsPos().iX, autoScanWidget->getWindowsPos().iY, autoScanWidget->getWindowsPos().iWidth, autoScanWidget->getWindowsPos().iHeight);
 
 		autoScanlistBox->setWidgetMode(ClistBox::MODE_SETUP);
-//		autoScanlistBox->enableShrinkMenu();
 		
 		autoScanlistBox->enablePaintHead();
 		autoScanlistBox->setTitle(_("Auto-Scan"), NEUTRINO_ICON_SCAN);
@@ -1463,7 +1463,7 @@ int CScanSetup::showAutoScanSetup()
 		}
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+	else if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 #else
 	else if(fe->getInfo()->type == FE_QPSK)
 #endif 
@@ -1496,7 +1496,7 @@ int CScanSetup::showAutoScanSetup()
 	return ret;
 }
 
-//
+// showAllAutoScanSetup
 int CScanSetup::showAllAutoScanSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showAllAutoScanSetup\n");
@@ -1524,7 +1524,6 @@ int CScanSetup::showAllAutoScanSetup()
 		autoScanAlllistBox = new ClistBox(autoScanAllWidget->getWindowsPos().iX, autoScanAllWidget->getWindowsPos().iY, autoScanAllWidget->getWindowsPos().iWidth, autoScanAllWidget->getWindowsPos().iHeight);
 
 		autoScanAlllistBox->setWidgetMode(ClistBox::MODE_SETUP);
-//		autoScanAlllistBox->enableShrinkMenu();
 			
 		autoScanAlllistBox->enablePaintHead();
 		autoScanAlllistBox->setTitle(_("Auto-Scan multiple Satellites"), NEUTRINO_ICON_SCAN);
@@ -1564,14 +1563,13 @@ int CScanSetup::showAllAutoScanSetup()
 	return ret;
 }
 
-// TPSelectHandler
+//// CTPSelectHandler
 CTPSelectHandler::CTPSelectHandler(CFrontend* f, CScanSettings * sc)
 {
 	fe = f;
 	scanSettings = sc;
 }
 
-//
 int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CTPSelectHandler::exec\n");
@@ -1658,6 +1656,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		char * f, *s, *m;
 		
 #if HAVE_DVB_API_VERSION >= 5
+/*
 		switch(fe->getForcedDelSys()) 
 		{
 			case DVB_S:
@@ -1695,6 +1694,31 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 			}
 			break;
 		}
+*/
+	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+	{
+		fe->getDelSys(tI->second.feparams.fec_inner, dvbs_get_modulation(tI->second.feparams.fec_inner),  f, s, m);
+
+		snprintf(buf, sizeof(buf), "%d %c %d %s %s %s ", tI->second.feparams.frequency/1000, tI->second.feparams.polarization ? 'V' : 'H', tI->second.feparams.symbol_rate/1000, f, s, m);
+	}
+	else if (fe->getForcedDelSys() == DVB_C)
+	{
+		fe->getDelSys(tI->second.feparams.fec_inner, tI->second.feparams.modulation, f, s, m);
+
+		snprintf(buf, sizeof(buf), "%d %d %s %s %s ", tI->second.feparams.frequency/1000, tI->second.feparams.symbol_rate/1000, f, s, m);
+	}
+	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2 || fe->getForcedDelSys() == DVB_DTMB)
+	{
+		fe->getDelSys(tI->second.feparams.code_rate_HP, tI->second.feparams.modulation, f, s, m);
+
+		snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency/100000, f, s, m);
+	}
+	else if (fe->getForcedDelSys() == DVB_A)
+	{
+		fe->getDelSys(FEC_NONE, tI->second.feparams.modulation, f, s, m);
+
+		snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency/100000, f, s, m);
+	}
 #else
 		switch(fe->getInfo()->type) 
 		{
@@ -1757,6 +1781,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		sprintf(scanSettings->TP_freq, "%d", tmpI->second.feparams.frequency);
 		
 #if HAVE_DVB_API_VERSION >= 5
+/*
 		switch(fe->getForcedDelSys()) 
 		{
 			case DVB_S:
@@ -1797,6 +1822,38 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 			}
 			break;
 		}
+*/
+	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+	{
+		sprintf(scanSettings->TP_rate, "%d", tmpI->second.feparams.symbol_rate);
+		scanSettings->TP_fec = tmpI->second.feparams.fec_inner;
+		scanSettings->TP_pol = tmpI->second.feparams.polarization;
+	}
+	else if (fe->getForcedDelSys() == DVB_C)
+	{
+		sprintf( scanSettings->TP_rate, "%d", tmpI->second.feparams.symbol_rate);
+		scanSettings->TP_fec = tmpI->second.feparams.fec_inner;
+		scanSettings->TP_mod = tmpI->second.feparams.modulation;
+	}
+	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2 || fe->getForcedDelSys() == DVB_DTMB)
+	{
+		scanSettings->TP_band = tmpI->second.feparams.bandwidth;
+		scanSettings->TP_HP = tmpI->second.feparams.code_rate_HP;
+		scanSettings->TP_LP = tmpI->second.feparams.code_rate_LP;
+		scanSettings->TP_mod = tmpI->second.feparams.modulation;
+		scanSettings->TP_trans = tmpI->second.feparams.transmission_mode;
+		scanSettings->TP_guard = tmpI->second.feparams.guard_interval;
+		scanSettings->TP_hierarchy = tmpI->second.feparams.hierarchy_information;
+				
+		if (fe->getForcedDelSys() == DVB_T2)
+			sprintf( scanSettings->TP_plp_id, "%d", tmpI->second.feparams.plp_id);
+	}
+	else if (fe->getForcedDelSys() == DVB_A)
+	{
+		//sprintf( scanSettings->TP_rate, "%d", tmpI->second.feparams.symbol_rate);
+		//scanSettings->TP_fec = tmpI->second.feparams.fec_inner;
+		scanSettings->TP_mod = tmpI->second.feparams.modulation;
+	}
 #else
 		switch(fe->getInfo()->type) 
 		{
@@ -1841,7 +1898,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 	return CMenuTarget::RETURN_REPAINT;
 }
 
-// scan settings
+//// CScanSettings
 CScanSettings::CScanSettings(CFrontend* f)
 	: configfile('\t')
 {
@@ -2007,8 +2064,8 @@ bool CScanSettings::saveSettings(const char * const fileName)
 	return true;
 }
 
-// SatelliteSetupNotifier
-CSatelliteSetupNotifier::CSatelliteSetupNotifier(CFrontend* f)
+//// CSatelliteSetupNotifier
+CSatelliteSetupNotifier::CSatelliteSetupNotifier(CFrontend *f)
 {
 	fe = f;
 	
@@ -2168,7 +2225,7 @@ void CSatelliteSetupNotifier::addItem(int list, CMenuItem* item)
 	}
 }
 
-// scansetup notifier
+//// CScanSetupNotifier
 CScanSetupNotifier::CScanSetupNotifier(CFrontend* f)
 {
 	fe = f;
@@ -2284,8 +2341,8 @@ void CScanSetupNotifier::addItem(int list, CMenuItem *item)
 	}
 }
 
-// CScanSetupDelSysNotifier
-CScanSetupDelSysNotifier::CScanSetupDelSysNotifier(CFrontend* f)
+//// CScanSetupDelSysNotifier
+CScanSetupDelSysNotifier::CScanSetupDelSysNotifier(CFrontend *f)
 {
 	fe = f;
 	item = NULL;
@@ -2300,7 +2357,7 @@ void CScanSetupDelSysNotifier::addItem(CMenuItem *m)
 
 bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 {
-	std::vector<CMenuItem*>::iterator it;
+//	std::vector<CMenuItem*>::iterator it;
 	uint32_t delsys = *((uint32_t*) Data);
 	
 	if (delsys == DVB_T || delsys == DVB_T2)
@@ -2317,7 +2374,7 @@ bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 	return true;
 }
 
-// TunerSetup
+//// TunerSetup
 int CTunerSetup::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CTunerSetup::exec: actionKey:%s\n", actionKey.c_str());
@@ -2358,7 +2415,6 @@ int CTunerSetup::showMenu()
 		TunerSetup = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		TunerSetup->setWidgetMode(ClistBox::MODE_MENU);
-//		TunerSetup->enableShrinkMenu();
 		
 		//
 		TunerSetup->enablePaintHead();

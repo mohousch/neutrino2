@@ -304,7 +304,7 @@ void CZapit::initFrontend()
 	strcpy(fe->info.name, "Sat Fake Tuner");
 	fe->forcedDelSys = DVB_S | DVB_S2 | DVB_S2X;
 	fe->deliverySystemMask = DVB_S | DVB_S2 | DVB_S2X;
-	fe->hybrid = true;
+//	fe->hybrid = true;
 	have_s = true;
 
 	index++;
@@ -4684,7 +4684,7 @@ int CZapit::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, b
 #endif
 		freq = feparams->frequency / 100;
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+	else if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 #else
 	else if (fe->getInfo()->type == FE_QPSK)
 #endif
@@ -4800,7 +4800,7 @@ _repeat:
 
 		// by sat send pol to neutrino
 #if HAVE_DVB_API_VERSION >= 5
-		if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+		if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 #else
 		if (fe->getInfo()->type == FE_QPSK)
 #endif		
@@ -4830,7 +4830,7 @@ _repeat:
 #endif
 			freq = tI->second.feparams.frequency/100;
 #if HAVE_DVB_API_VERSION >= 5
-		else if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+		else if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 #else
 		else if (fe->getInfo()->type == FE_QPSK)
 #endif
@@ -4938,7 +4938,7 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
 #endif
 		freq = feparams.frequency/100;
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+	else if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 #else
 	else if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -5004,7 +5004,7 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
             	}
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+	else if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 #else
 	else if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -5139,7 +5139,7 @@ bool CZapit::tuneTP(transponder TP, CFrontend* fe)
 	
 	// drivetosatpos
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2)
+	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 #else
 	if (fe->getInfo()->type == FE_QPSK)
 #endif
@@ -5307,7 +5307,7 @@ void * CZapit::scanThread(void * data)
 		scanInputParser = parseXmlFile(TERRESTRIALS_XML);
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+	else if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 #else
 	else if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -5494,7 +5494,7 @@ void * CZapit::scanTransponderThread(void * data)
 #endif
 		freq = TP->feparams.frequency/100;
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+	else if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 #else
 	else if(fe->getInfo()->type == FE_QPSK)
 #endif
