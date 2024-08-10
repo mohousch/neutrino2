@@ -1,5 +1,5 @@
 /*
-	$Id: scan_setup.cpp 08082024 mohousch Exp $
+	$Id: scan_setup.cpp 10082024 mohousch Exp $
 
 	Neutrino-GUI  -   DBoxII-Project
 
