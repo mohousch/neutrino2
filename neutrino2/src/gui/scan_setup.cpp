@@ -293,6 +293,9 @@ CScanSetup::CScanSetup(CFrontend* f)
 	satNotify = new CSatelliteSetupNotifier(fe);
 	feModeNotifier = new CScanSetupNotifier(fe);
 	feDelSysNotifier = new CScanSetupDelSysNotifier(fe);
+	item_freq = NULL;
+	item_sr = NULL;
+	freq_length = 8;
 }
 
 CScanSetup::~CScanSetup()
@@ -400,6 +403,29 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 	else if (actionKey == "satonoffsetup")
 	{
 		return showSatOnOffSetup();
+	}
+	//
+	else if (actionKey == "freq")
+	{
+		CStringInput * freq = new CStringInput(_("Frequency"), (char *) scanSettings->TP_freq, freq_length, NULL, NULL, "0123456789");
+		freq->exec(NULL, "");
+		item_freq->addOption((char *) scanSettings->TP_freq);
+		
+		delete freq;
+		freq = NULL;
+		
+		return CMenuTarget::RETURN_REPAINT;
+	}
+	else if (actionKey == "srate")
+	{
+		CStringInput * rate = new CStringInput(_("Symbol rate"), (char *) scanSettings->TP_rate, 8, NULL, NULL, "0123456789");
+		rate->exec(NULL, "");
+		item_sr->addOption((char *) scanSettings->TP_rate);
+		
+		delete rate;
+		rate = NULL;
+		
+		return CMenuTarget::RETURN_REPAINT;
 	}
 	
 	res = showScanService();
@@ -1180,32 +1206,9 @@ int CScanSetup::showManualScanSetup()
 	manualScanlistBox->addItem(new CMenuForwarder(_("Select transponder"), true, NULL, tpSelect));
 		
 	// frequency
-	int freq_length = 8;
+//	int freq_length = 8;
 
 #if HAVE_DVB_API_VERSION >= 5
-/*
-	switch (fe->getForcedDelSys())
-	{
-		case DVB_S:
-		case DVB_S2:
-			freq_length = 8;
-			break;
-		
-		case DVB_C:
-			freq_length = 6;
-			break;
-		
-		case DVB_T:
-		case DVB_T2:
-		case DVB_A:
-			freq_length = 9;
-			break;
-		
-		default:
-			freq_length = 8;
-			break;
-	}
-*/
 	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 		freq_length = 8;
 	else if (fe->getForcedDelSys() == DVB_C)
@@ -1233,11 +1236,10 @@ int CScanSetup::showManualScanSetup()
 			break;
 	}
 #endif
-	
-	CStringInput * freq = new CStringInput(_("Frequency"), (char *) scanSettings->TP_freq, freq_length, NULL, NULL, "0123456789");
-	CMenuForwarder * Freq = new CMenuForwarder(_("Frequency"), true, scanSettings->TP_freq, freq);
+
+	item_freq = new CMenuForwarder(_("Frequency"), true, scanSettings->TP_freq, this, "freq");
 		
-	manualScanlistBox->addItem(Freq);
+	manualScanlistBox->addItem(item_freq);
 		
 	// modulation(t/c)/polarisation(sat)
 	CMenuOptionChooser * mod_pol = NULL;
@@ -1278,8 +1280,7 @@ int CScanSetup::showManualScanSetup()
 	manualScanlistBox->addItem(mod_pol);
 
 	// symbol rate
-	CStringInput * rate = new CStringInput(_("Symbol rate"), (char *) scanSettings->TP_rate, 8, NULL, NULL, "0123456789");
-	CMenuForwarder * Rate = new CMenuForwarder(_("Symbol rate"), true, scanSettings->TP_rate, rate);
+	item_sr = new CMenuForwarder(_("Symbol rate"), true, scanSettings->TP_rate, this, "srate");
 
 	// fec
 #if HAVE_DVB_API_VERSION >= 5
@@ -1296,7 +1297,7 @@ int CScanSetup::showManualScanSetup()
 #endif
 	{
 		// Rate
-		manualScanlistBox->addItem(Rate);
+		manualScanlistBox->addItem(item_sr);
 			
 		// fec
 		manualScanlistBox->addItem(fec);
@@ -1564,13 +1565,13 @@ int CScanSetup::showAllAutoScanSetup()
 }
 
 //// CTPSelectHandler
-CTPSelectHandler::CTPSelectHandler(CFrontend* f, CScanSettings * sc)
+CTPSelectHandler::CTPSelectHandler(CFrontend *f, CScanSettings * sc)
 {
 	fe = f;
 	scanSettings = sc;
 }
 
-int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
+int CTPSelectHandler::exec(CMenuTarget *parent, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CTPSelectHandler::exec\n");
 	
@@ -1656,45 +1657,6 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		char * f, *s, *m;
 		
 #if HAVE_DVB_API_VERSION >= 5
-/*
-		switch(fe->getForcedDelSys()) 
-		{
-			case DVB_S:
-			case DVB_S2:
-			{
-				fe->getDelSys(tI->second.feparams.fec_inner, dvbs_get_modulation(tI->second.feparams.fec_inner),  f, s, m);
-
-				snprintf(buf, sizeof(buf), "%d %c %d %s %s %s ", tI->second.feparams.frequency/1000, tI->second.feparams.polarization ? 'V' : 'H', tI->second.feparams.symbol_rate/1000, f, s, m);
-			}
-			break;
-
-			case DVB_C:
-			{
-				fe->getDelSys(tI->second.feparams.fec_inner, tI->second.feparams.modulation, f, s, m);
-
-				snprintf(buf, sizeof(buf), "%d %d %s %s %s ", tI->second.feparams.frequency/1000, tI->second.feparams.symbol_rate/1000, f, s, m);
-			}
-			break;
-
-			case DVB_T:
-			case DVB_T2:
-			case DVB_DTMB:
-			{
-				fe->getDelSys(tI->second.feparams.code_rate_HP, tI->second.feparams.modulation, f, s, m);
-
-				snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency/100000, f, s, m);
-			}
-			break;
-				
-			case DVB_A:
-            		{
-				fe->getDelSys(FEC_NONE, tI->second.feparams.modulation, f, s, m);
-
-				snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency/100000, f, s, m);
-			}
-			break;
-		}
-*/
 	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 	{
 		fe->getDelSys(tI->second.feparams.fec_inner, dvbs_get_modulation(tI->second.feparams.fec_inner),  f, s, m);
@@ -1781,48 +1743,6 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		sprintf(scanSettings->TP_freq, "%d", tmpI->second.feparams.frequency);
 		
 #if HAVE_DVB_API_VERSION >= 5
-/*
-		switch(fe->getForcedDelSys()) 
-		{
-			case DVB_S:
-			case DVB_S2:	
-				sprintf(scanSettings->TP_rate, "%d", tmpI->second.feparams.symbol_rate);
-				scanSettings->TP_fec = tmpI->second.feparams.fec_inner;
-				scanSettings->TP_pol = tmpI->second.feparams.polarization;
-				break;
-
-			case DVB_C:	
-				sprintf( scanSettings->TP_rate, "%d", tmpI->second.feparams.symbol_rate);
-				scanSettings->TP_fec = tmpI->second.feparams.fec_inner;
-				scanSettings->TP_mod = tmpI->second.feparams.modulation;
-				break;
-
-			case DVB_T:
-			case DVB_T2:
-			case DVB_DTMB:
-			{	
-				scanSettings->TP_band = tmpI->second.feparams.bandwidth;
-				scanSettings->TP_HP = tmpI->second.feparams.code_rate_HP;
-				scanSettings->TP_LP = tmpI->second.feparams.code_rate_LP;
-				scanSettings->TP_mod = tmpI->second.feparams.modulation;
-				scanSettings->TP_trans = tmpI->second.feparams.transmission_mode;
-				scanSettings->TP_guard = tmpI->second.feparams.guard_interval;
-				scanSettings->TP_hierarchy = tmpI->second.feparams.hierarchy_information;
-				
-				if (fe->getForcedDelSys() == DVB_T2)
-					sprintf( scanSettings->TP_plp_id, "%d", tmpI->second.feparams.plp_id);
-			}
-			break;
-
-			case DVB_A:
-            		{	
-				//sprintf( scanSettings->TP_rate, "%d", tmpI->second.feparams.symbol_rate);
-				//scanSettings->TP_fec = tmpI->second.feparams.fec_inner;
-				scanSettings->TP_mod = tmpI->second.feparams.modulation;
-			}
-			break;
-		}
-*/
 	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 	{
 		sprintf(scanSettings->TP_rate, "%d", tmpI->second.feparams.symbol_rate);
