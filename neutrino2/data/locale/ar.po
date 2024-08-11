@@ -1400,7 +1400,7 @@ msgid "Movieplayer"
 msgstr "مشغل الافلام"
 
 msgid "Movieplayer settings"
-msgstr إعدادات مشغل الأفلام
+msgstr "إعدادات مشغل الأفلام"
 
 msgid "Movies Browser"
 msgstr "متصفح الأفلام"
@@ -1460,15 +1460,11 @@ msgid ""
 "New jump back\n"
 " 'blue' for endposition"
 msgstr ""
-"قفزة جديدة للخلف_n"
-"اللون الأزرق" لوضع النهاية"
 
 msgid ""
 "New jump forward\n"
 " 'blue' for endposition"
 msgstr ""
-"قفزة جديدة للأمام\n"
-"اللون الأزرق" لوضع النهاية"
 
 msgid "New media"
 msgstr "وسيطة جديدة"
