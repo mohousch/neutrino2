@@ -16,121 +16,121 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "'X'=مؤقت '-' لا يوجد مؤقت"
-msgstr ""
+msgid "'X'=timer '-' no timer"
+msgstr "'X'=مؤقت '-' لا يوجد مؤقت"
 
 #, c-format
 msgid "(%d%% over)"
 msgstr ""
 
-msgid "(اعادة)-حساب المواضع"
-msgstr ""
+msgid "(Re)-Calculate Positions"
+msgstr "(اعادة)-حساب المواضع"
 
-msgid "(a) موضع المحرك:"
-msgstr ""
+msgid "(a) Motor Position:"
+msgstr "(a) موضع المحرك:"
 
-msgid "(b) تحريك:"
-msgstr ""
+msgid "(b) Movement:"
+msgstr "(b) تحريك:"
 
-msgid "(c) حجم الخطوة:"
-msgstr ""
+msgid "(c) Step Size:"
+msgstr "(c) حجم الخطوة:"
 
-msgid "(نسبي، بالثواني)"
-msgstr ""
+msgid "(relative, in seconds)"
+msgstr "(النسبا، بالثواني)"
 
 #, c-format
-msgid "(البدء في %d دقيقة)"
-msgstr ""
+msgid "(starting in %d min)"
+msgstr "(البدء في %d دقيقة)"
 
-msgid ", من فضلك كن صبورا..."
-msgstr ""
+msgid ", please be patient..."
+msgstr ", من فضلك كن صبورا..."
 
-msgid "0 لتكرارات غير محدودة"
-msgstr ""
+msgid "0 for unlimited repeats"
+msgstr "0 لتكرارات غير محدودة"
 
-msgid "5 فولت"
-msgstr ""
+msgid "5 Volt"
+msgstr "5 فولت"
 
-msgid "A/V مزامنة"
-msgstr ""
+msgid "A/V sync"
+msgstr "A/V مزامنة"
 
-msgid "AC3 تأخير"
-msgstr ""
+msgid "AC3 Delay"
+msgstr "AC3 تأخير"
 
-msgid "AV اختار"
-msgstr ""
+msgid "AV Select"
+msgstr "AV اختار"
 
-msgid "الغاء البحث عن القناة"
-msgstr ""
+msgid "Abortion of channel scan"
+msgstr "الغاء البحث عن القناة"
 
-msgid "دليل البداية المطلق"
-msgstr ""
+msgid "Absolute start directory"
+msgstr "دليل البداية المطلق"
 
-msgid "تفعيل الإعدادات"
-msgstr ""
+msgid "Activate settings"
+msgstr "تفعيل الإعدادات"
 
-msgid "ممثلين"
-msgstr ""
+msgid "Actors"
+msgstr "ممثلين"
 
-msgid "اضافة"
-msgstr ""
+msgid "Add"
+msgstr "اضافة"
 
-msgid "إضافة ملف الترجمة"
+msgid "Add Subtitle File"
 msgstr "إضافة ملف الترجمة"
 
-msgid "أضف إلى الباقات"
-msgstr ""
+msgid "Add to Bouquets"
+msgstr "أضف إلى الباقات"
 
-msgid "فيلم للكبار / دراما"
-msgstr ""
+msgid msgid "Adult movie / Drama"
+msgstr "فيلم للكبار / دراما"
 
-msgid "متقدم"
-msgstr ""
+msgid "Advanced"
+msgstr "متقدم"
 
-msgid "مغامرات / غربي / حرب"
-msgstr ""
+msgid "Adventure / Western/War"
+msgstr "مغامرات / غربي / حرب"
 
-msgid "العمر"
-msgstr ""
+msgid "Age"
+msgstr "العمر"
 
-msgid "وقت التنبيه"
-msgstr ""
+msgid "Alarm time"
+msgstr "وقت التنبيه"
 
-msgid "جميع الخدمات"
-msgstr ""
+msgid "All Services"
+msgstr "جميع الخدمات"
 
-msgid "اعدادات الفا"
-msgstr ""
+msgid "Alpha Setup"
+msgstr "اعدادات الفا"
 
-msgid "تناظري"
-msgstr ""
+msgid "Analog"
+msgstr "تناظري"
 
-msgid "المخرج التناظري"
-msgstr ""
+msgid "Analog Output"
+msgstr "المخرج التناظري"
 
-msgid "تحديد موقع الهوائي"
-msgstr ""
+msgid "Antenna positioning"
+msgstr "تحديد موقع الهوائي"
 
-msgid "عربي"
-msgstr ""
+msgid "Arabic"
+msgstr "عربي"
 
-msgid "هل أنت متأكد ?"
-msgstr ""
+msgid "Are you sure ?"
+msgstr "هل أنت متأكد ?"
 
-msgid "هل أنت متأكد من التنسيق؟ سوف تفقد جميع البيانات "
-msgstr ""
+msgid "Are you sure to format ? You will lost all data "
+msgstr "هل أنت متأكد من التنسيق؟ سوف تفقد جميع البيانات "
 
-msgid "هل أنت متأكد من التهيئة؟"
-msgstr ""
+msgid "Are you sure to init ?"
+msgstr "هل أنت متأكد من التهيئة؟"
 
-msgid "الفنون / الثقافة"
-msgstr ""
+msgid "Arts / Culture"
+msgstr "الفنون / الثقافة"
 
-msgid "مجلات الفنون والثقافة"
-msgstr ""
+msgid "Arts / Culture magazines"
+msgstr "مجلات الفنون والثقافة"
 
-msgid "نسبة العرض إلى الارتفاع"
-msgstr ""
+msgid "Aspect Ratio"
+msgstr "نسبة العرض إلى الارتفاع"
 
 msgid "Athletics"
 msgstr ""
@@ -138,47 +138,47 @@ msgstr ""
 msgid "Atsc:"
 msgstr ""
 
-msgid "الصوت"
-msgstr ""
+msgid "Audio"
+msgstr "الصوت"
 
-msgid "معرفات الصوت"
-msgstr ""
+msgid "Audio PIDs"
+msgstr "معرفات الصوت"
 
-msgid "قوائم تشغيل الصوت"
-msgstr ""
+msgid "Audio Playlist"
+msgstr "قوائم تشغيل الصوت"
 
-msgid "لغة الصوت المفضلة"
-msgstr ""
+msgid "Audio language preferences"
+msgstr "لغة الصوت المفضلة"
 
-msgid "الصوت الرئيسي"
-msgstr ""
+msgid "Audio master"
+msgstr "الصوت الرئيسي"
 
-msgid "اعدادات الصوت"
-msgstr ""
+msgid "Audio settings"
+msgstr "اعدادات الصوت"
 
-msgid "مشغل الصوت"
-msgstr ""
+msgid "Audioplayer"
+msgstr "مشغل الصوت"
 
-msgid "اعدادت مشغل الصوت"
-msgstr ""
+msgid "Audioplayer settings"
+msgstr "اعدادت مشغل الصوت"
 
-msgid "نمط الصوت"
-msgstr ""
+msgid "Audiotype"
+msgstr "نمط الصوت"
 
-msgid "تحديد الصوت تلقائيًا"
-msgstr ""
+msgid "Auto select audio"
+msgstr "تحديد الصوت تلقائيًا"
 
-msgid "تحديد الترجمة تلقائيًا"
-msgstr ""
+msgid "Auto select subtitles"
+msgstr "تحديد الترجمة تلقائيًا"
 
-msgid "المسح التلقائي"
-msgstr ""
+msgid "Auto-Scan"
+msgstr "المسح التلقائي"
 
-msgid "المسح التلقائي للأقمار الصناعية المتعددة"
-msgstr ""
+msgid "Auto-Scan multiple Satellites"
+msgstr "المسح التلقائي للأقمار الصناعية المتعددة"
 
-msgid "الصور/الحزم المتوفرة"
-msgstr ""
+msgid "Available Images/Packages"
+msgstr "الصور/الحزم المتوفرة"
 
 msgid "BOTTOM"
 msgstr ""
@@ -189,154 +189,156 @@ msgstr ""
 msgid "BOTTOM RIGHT"
 msgstr ""
 
-msgid "للخلف"
-msgstr ""
+msgid "Back"
+msgstr "للخلف"
 
-msgid "خلفية"
-msgstr ""
+msgid "Background"
+msgstr "خلفية"
 
-msgid "فشل النسخ الاحتياطي"
-msgstr ""
+msgid "Backup failed"
+msgstr "فشل النسخ الاحتياطي"
 
 msgid "Ballet"
 msgstr ""
 
-msgid "النطاق الترددي"
-msgstr ""
+msgid "Bandwidth"
+msgstr "النطاق الترددي"
 
-msgid "معدل البت"
-msgstr ""
+msgid "Bitrate"
+msgstr "معدل البت"
 
-msgid "العلامات المرجعية"
-msgstr ""
+msgid "Bookmarks"
+msgstr "العلامات المرجعية"
 
-msgid "حدود"
-msgstr ""
+msgid "Border"
+msgstr "الحدود"
 
-msgid "البوسنية"
-msgstr ""
+msgid "Bosnian"
+msgstr "البوسنية"
 
-msgid "باقة"
-msgstr ""
+msgid "Bouquet"
+msgstr "باقة"
 
-msgid "محرر الباقة"
-msgstr ""
+msgid "Bouquet Editor"
+msgstr "محرر الباقة"
 
-msgid "ارجاع الباقة"
-msgstr ""
+msgid "Bouquet back"
+msgstr "الرجوع الي الباقة"
 
-msgid "الباقات"
-msgstr ""
+msgid "Bouquets"
+msgstr "الباقات"
 
-msgid "معلومات الصندوق"
-msgstr ""
+msgid "Box Info"
+msgstr "معلومات الصندوق"
 
-msgid ""
+ msgid ""
+"Box will shutdown in 1 min.\n"
+"Cancel Sutdown ?"
+msgstr ""
 "سيتم إغلاق الصندوق في دقيقة واحدة."
 "إلغاء الاغلاق؟"
-msgstr ""
 
-msgid "سطوع"
-msgstr ""
+msgid "Brightness"
+msgstr "سطوع"
 
-msgid "السطوع بعد انتهاء مهلة التعتيم"
-msgstr ""
+msgid "Brightness after dim timeout"
+msgstr "السطوع بعد انتهاء مهلة التعتيم"
 
-msgid "محطة الاذاعة"
-msgstr ""
+msgid "Broadcast"
+msgstr "محطة الاذاعة"
 
-msgid "البث / الصحافة"
-msgstr ""
+msgid "Broadcasting / Press"
+msgstr "البث / الصحافة"
 
-msgid "تاريخ البناء: "
-msgstr ""
+msgid "Built date: "
+msgstr "تاريخ البناء: "
 
-msgid "شريط الأزرار"
-msgstr ""
+msgid "Buttons Bar"
+msgstr "شريط الأزرار"
 
-msgid "خط الأزرار"
-msgstr ""
+msgid "Buttons Line"
+msgstr "خط الأزرار"
 
-msgid "أزرار خط التدرج"
-msgstr ""
+msgid "Buttons Line Gradient"
+msgstr "أزرار خط التدرج"
 
-msgid "تم إكمال عملية تهيئة CAM"
-msgstr ""
+msgid "CAM init complete"
+msgstr "تم إكمال عملية تهيئة CAM"
 
-msgid "تم إدخال CAM في الفتحة"
-msgstr ""
+msgid "CAM inserted in slot"
+msgstr "تم إدخال CAM في الفتحة"
 
-msgid "تم إزالة CAM من الفتحة"
-msgstr ""
+msgid "CAM removed from slot"
+msgstr "تم إزالة CAM من الفتحة"
 
-msgid "إعداد CEC"
-msgstr ""
+msgid "CEC Setup"
+msgstr "إعداد CEC"
 
 msgid "CEC broadcast"
 msgstr ""
 
-msgid "وضع CEC"
-msgstr ""
+msgid "CEC mode"
+msgstr "وضع CEC"
 
-msgid "إيقاف تشغيل وضع CEC"
-msgstr ""
+msgid "CEC mode off"
+msgstr "إيقاف تشغيل وضع CEC"
 
-msgid "مسجل وضع CEC"
-msgstr ""
+msgid "CEC mode recorder"
+msgstr "التسجيل في وضع CEC"
 
-msgid "موالف وضع CEC"
-msgstr ""
+msgid "CEC mode tuner"
+msgstr "موالف وضع CEC"
 
-msgid "إعدادات CEC"
-msgstr ""
+msgid "CEC settings"
+msgstr "إعدادات CEC"
 
-msgid "CEC وضع الاستعداد"
-msgstr ""
+msgid "CEC standby"
+msgstr "CEC في وضع الاستعداد"
 
-msgid "CEC وضع الاستعداد بدون مؤقت"
-msgstr ""
+msgid "CEC standby no timer"
+msgstr "CEC وضع الاستعداد بدون مؤقت"
 
-msgid "CEC عرض على"
-msgstr ""
+msgid "CEC view on"
+msgstr "CEC عرض على"
 
-msgid "CEC مقدار الصوت"
-msgstr ""
+msgid "CEC volume"
+msgstr "CEC مقدار الصوت"
 
-msgid "CEC مقدار الصوت TV"
-msgstr ""
+msgid "CEC volume TV"
+msgstr "CEC مقدار الصوت TV"
 
-msgid "CEC حجم نظام الصوت"
-msgstr ""
+msgid "CEC volume audiosystem"
+msgstr "CEC حجم نظام الصوت"
 
-msgid "CEC اغلاق الصوت"
-msgstr ""
+msgid "CEC volume off"
+msgstr "CEC اغلاق الصوت"
 
 msgid "CI Cam"
 msgstr ""
 
-msgid "CI cam إعادة ضبط"
-msgstr ""
+msgid "CI cam reset"
+msgstr "CI cam إعادة ضبط"
 
 msgid "CIFS"
 msgstr ""
 
-msgid "كل الزواية"
-msgstr ""
+msgid "CORNER ALL"
+msgstr "كل الزواية"
 
-msgid "لا يوجد زاوية"
-msgstr ""
+msgid "CORNER NONE"
+msgstr "لا يوجد زاوية"
 
 msgid "CPU:"
 msgstr ""
 
-msgid "كابل"
-msgstr ""
+msgid "Cable"
+msgstr "كابل"
 
-msgid "كابل:"
-msgstr ""
+msgid "Cable:"
+msgstr "كابل:"
 
-msgid "الغاء"
-msgstr ""
+msgid "Cancel"
+msgstr "الغاء"
 
 msgid "Caps"
 msgstr ""
@@ -344,164 +346,164 @@ msgstr ""
 msgid "Caps / No Caps"
 msgstr ""
 
-msgid "الرسوم المتحركة / الدمى"
-msgstr ""
+msgid "Cartoons / Puppets"
+msgstr "الرسوم المتحركة / الدمى"
 
-msgid "تغيير رمز PIN"
-msgstr ""
+msgid "Change PIN code"
+msgstr "تغيير رمز PIN"
 
-msgid "تغيير ترتيب الفرز"
-msgstr ""
+msgid "Change sort order"
+msgstr "تغيير ترتيب الفرز"
 
-msgid "القناة"
-msgstr ""
+msgid "Channel"
+msgstr "القناة"
 
-msgid "شعار القناة"
-msgstr ""
+msgid "Channel Logo"
+msgstr "شعار القناة"
 
-msgid "اختيار القناة مباشرة"
-msgstr ""
+msgid "Channel direct selection"
+msgstr "اختيار القناة مباشرة"
 
-msgid "القناة للأسفل"
-msgstr ""
+msgid "Channel down"
+msgstr "القناة للأسفل"
 
-msgid "القناة غير متاحة"
-msgstr ""
+msgid "Channel not available"
+msgstr "القناة غير متاحة"
 
-msgid "القناة للأعلي"
-msgstr ""
+msgid "Channel up"
+msgstr "القناة للأعلي"
 
-msgid "القناة:"
-msgstr ""
+msgid "Channel:"
+msgstr "القناة:"
 
-msgid "قائمة القنوات"
-msgstr ""
+msgid "Channellist"
+msgstr "قائمة القنوات"
 
-msgid "وصف قائمة القنوات"
-msgstr ""
+msgid "Channellist Description"
+msgstr "وصف قائمة القنوات"
 
-msgid "ارقام قائمة القنوات"
-msgstr ""
+msgid "Channellist Number"
+msgstr "ارقام قائمة القنوات"
 
-msgid "اعدادات فائمة القنوات"
-msgstr ""
+msgid "Channellist settings"
+msgstr "اعدادات فائمة القنوات"
 
-msgid "التحقق من نظام الملفات"
-msgstr ""
+msgid "Check filesystem"
+msgstr "التحقق من نظام الملفات"
 
-msgid "برنامج الأطفال / الشباب"
-msgstr ""
+msgid "Children / Juvenile program"
+msgstr "برنامج الأطفال / الشباب"
 
-msgid "كلاسيكي"
-msgstr ""
+msgid "Classic"
+msgstr "كلاسيكي"
 
-msgid "واضح"
-msgstr ""
+msgid "Clear"
+msgstr "واضح"
 
-msgid "معدل الكود HP"
-msgstr ""
+msgid msgid "Code Rate HP"
+msgstr "معدل الكود HP"
 
-msgid "معدل الكود LP"
-msgstr ""
+msgid "Code Rate LP"
+msgstr "معدل الكود LP"
 
-msgid "لون إلى لون"
-msgstr ""
+msgid "Color to color"
+msgstr "لون إلى لون"
 
-msgid "اللون شفاف"
-msgstr ""
+msgid "Color to transparent"
+msgstr "شفافية اللون"
 
-msgid "مجموعة الألوان"
-msgstr ""
+msgid "Colour Range"
+msgstr "مجموعة الألوان"
 
-msgid "كوميديا"
-msgstr ""
+msgid "Comedy"
+msgstr "كوميديا"
 
-msgid "ملتزم/غير ملتزم"
-msgstr ""
+msgid "Commited/Uncommited"
+msgstr "ملتزم/غير ملتزم"
 
-msgid "جلسة"
-msgstr ""
+msgid "Contrast"
+msgstr "جلسة"
 
-msgid "طبخ"
-msgstr ""
+msgid "Cooking"
+msgstr "طبخ"
 
-msgid "نسخ الباقة إلى المفضلة"
-msgstr ""
+msgid "Copy bouquet to Favorites"
+msgstr "نسخ الباقة إلى المفضلة"
 
-msgid "وقت التصحيح بالدقيقة (00=إيقاف). هذه المرة"
-msgstr ""
+msgid "Correction time in min. (00=off). This time"
+msgstr "وقت التصحيح بالدقيقة (00=إيقاف). هذه المرة"
 
-msgid "منطقة"
-msgstr ""
+msgid "Country"
+msgstr "دولة"
 
-msgid "إنشاء إشارة مرجعية"
-msgstr ""
+msgid "Create bookmark"
+msgstr "إنشاء إشارة مرجعية"
 
-msgid "إنشاء قائمة بالقنوات عالية الدقة"
-msgstr ""
+msgid "Create list of HD channels"
+msgstr "إنشاء قائمة بالقنوات عالية الدقة"
 
-msgid "المسار الحالي"
-msgstr ""
+msgid "Current Track"
+msgstr "المسار الحالي"
 
-msgid "المفتاح الحالي"
-msgstr ""
+msgid msgid "Current key"
+msgstr "المفتاح الحالي"
 
-msgid "جهاز الإرسال والإستقبال الحالي"
-msgstr ""
+msgid "Current transponder"
+msgstr "جهاز الإرسال والإستقبال الحالي"
 
-msgid "النسخة الحالية"
-msgstr ""
+msgid msgid "Current version"
+msgstr "النسخة الحالية"
 
-msgid "التشيكية"
-msgstr ""
+msgid "Czech"
+msgstr "التشيكية"
 
 msgid "DHCP"
 msgstr ""
 
-msgid "بيانات"
-msgstr ""
+msgid "Data"
+msgstr "بيانات"
 
-msgid "تاريخ"
-msgstr ""
+msgid "Date"
+msgstr "تاريخ"
 
-msgid "التصحيح"
-msgstr ""
+msgid "Debug"
+msgstr "التصحيح"
 
-msgid "مستوى التصحيح"
-msgstr ""
+msgid "Debug Level"
+msgstr "مستوى التصحيح"
 
-msgid "تقليل موضع المحرك (أ)"
-msgstr ""
+msgid "Decrease Motor Position (a)"
+msgstr "تقليل موضع المحرك (أ)"
 
-msgid "افتراضي"
-msgstr ""
+msgid "Default"
+msgstr "افتراضي"
 
-msgid "البوابة الافتراضية"
-msgstr ""
+msgid "Default gateway"
+msgstr "البوابة الافتراضية"
 
-msgid "تأخير الإغلاق"
-msgstr ""
+msgid "Delayed shutdown"
+msgstr "تأخير الإغلاق"
 
-msgid "حذف"
-msgstr ""
+msgid "Delete"
+msgstr "حذف"
 
-msgid "حذف قنوات WebTV"
-msgstr ""
+msgid "Delete WebTV channels"
+msgstr "حذف قنوات WebTV"
 
-msgid "حذف الكل"
-msgstr ""
+msgid "Delete all"
+msgstr "حذف الكل"
 
-msgid "حذف القناة من الباقة؟"
-msgstr ""
+msgid "Delete channel from bouquet?"
+msgstr "حذف القناة من الباقة؟"
 
-msgid "حذف القنوات"
-msgstr ""
+msgid "Delete channels"
+msgstr "حذف القنوات"
 
-msgid "وصف: "
-msgstr ""
+msgid "Description: "
+msgstr "وصف: "
 
-msgid "تفاصيل البرنامج الحالي"
-msgstr ""
+msgid "Details current program"
+msgstr "تفاصيل البرنامج الحالي"
 
 msgid "Detective / Thriller"
 msgstr ""
@@ -518,50 +520,50 @@ msgstr ""
 msgid "DiSEqC-repeats"
 msgstr ""
 
-msgid "وضع عرض الشرائح"
-msgstr ""
+msgid "Diashow mode"
+msgstr "وضع عرض الشرائح"
 
 msgid "Digital"
 msgstr ""
 
-msgid "مهلة التعتيم"
-msgstr ""
+msgid "Dim timeout"
+msgstr "مهلة التعتيم"
 
 msgid "Dir"
 msgstr ""
 
 msgid "Direct-Mode"
-msgstr ""
+msgstr "الوضع المباشر"
 
 msgid "Director"
-msgstr ""
+msgstr "مخرج"
 
 msgid "Directory for updates"
-msgstr ""
+msgstr "دليل التحديثات"
 
 msgid "Disable (soft) Limits"
-msgstr ""
+msgstr "تعطيل الحدود (الناعمة)"
 
 msgid "Discard changes?"
-msgstr ""
+msgstr "تجاهل التغييرات؟"
 
 msgid "Discarding changes. Please be patient."
-msgstr ""
+msgstr "استبعاد التغييرات. يرجى التحلي بالصبر."
 
 msgid "Discussion / Interview/ Debate"
-msgstr ""
+msgstr "مناقشة / مقابلة / مناظرة"
 
 msgid "Diseqc input"
-msgstr ""
+msgstr "مداخل الديزك"
 
 msgid "Display image"
-msgstr ""
+msgstr "عرض الصورة"
 
 msgid "Display settings"
-msgstr ""
+msgstr "إعدادات شاشة العرض"
 
 msgid "Do not scale picture"
-msgstr ""
+msgstr "لا تقم بتغيير حجم الصورة"
 
 #, c-format
 msgid ""
