@@ -575,165 +575,172 @@ msgid ""
 "Imagename: %s\n"
 "Target: %s"
 msgstr ""
+"هل تريد حقًا الوميض؟\n"
+"\n"
+"إذا حدث خطأ أو لم تكن الصورة\n"
+"صالحة، فلن يتم تشغيل الجهاز بعد الوميض.\n"
+"\n"
+"اسم الصورة: %s\n"
+"الهدف: %s"
 
 msgid "Do you want to overwrite this file:"
-msgstr ""
+msgstr "هل تريد استبدال هذا الملف:"
 
 msgid "Do you want to restore the previous settings?"
-msgstr ""
+msgstr "هل تريد استعادة الإعدادات السابقة؟"
 
 msgid "Do you want to save the changes?"
-msgstr ""
+msgstr "هل تريد حفظ التغييرات؟"
 
 msgid "Docs:"
-msgstr ""
+msgstr "المستندات:"
 
 msgid "Documentary"
-msgstr ""
+msgstr "وثائقي"
 
 msgid "Documentation / Magazine"
-msgstr ""
+msgstr "وثائقي / مجلة"
 
 msgid "Dolby Digital"
-msgstr ""
+msgstr "دولبي ديجيتال"
 
 msgid "Drive Mode"
-msgstr ""
+msgstr "وضع القيادة"
 
 msgid "Drive Mode/auto stop"
-msgstr ""
+msgstr "وضع القيادة/التوقف التلقائي"
 
 msgid "Dutch"
-msgstr ""
+msgstr "هولندي"
 
 msgid "EPG"
-msgstr ""
+msgstr "دليل البرامج الإلكتروني"
 
 msgid "EPG / Timer"
-msgstr ""
+msgstr "EPG / المؤقت"
 
 msgid "EPG Date"
-msgstr ""
+msgstr "تاريخ دليل البرامج الإلكتروني"
 
 msgid "EPG Info1"
-msgstr ""
+msgstr "معلومات دليل البرامج الإلكتروني 1"
 
 msgid "EPG Info2"
-msgstr ""
+msgstr "معلومات دليل البرامج الإلكتروني 2"
 
 msgid "EPG Long Description (hours)"
-msgstr ""
+msgstr "وصف EPG الطويل (بالساعات)"
 
 msgid "EPG Title"
-msgstr ""
+msgstr "عنوان دليل البرامج الإلكتروني"
 
 msgid "EPG is not available"
-msgstr ""
+msgstr "EPG غير متوفر"
 
 msgid "EPG not available"
-msgstr ""
+msgstr "EPG غير متوفر"
 
 msgid "EPG not loaded..."
-msgstr ""
+msgstr "لم يتم تحميل EPG..."
 
 msgid "EPG remove after (std.)"
-msgstr ""
+msgstr "إزالة EPG بعد (std.)"
 
 msgid "EPG save path"
-msgstr ""
+msgstr "مسار حفظ EPG"
 
 msgid "EPG settings"
-msgstr ""
+msgstr "إعدادات دليل البرامج الإلكتروني"
 
 msgid "EPG-Cache (Days)"
 msgstr ""
 
 msgid "East"
-msgstr ""
+msgstr "شرق"
 
 msgid "Economics / Social advisory"
 msgstr ""
 
 msgid "Edit"
-msgstr ""
+msgstr "يحرر"
 
 msgid "Enable (soft) Limits"
-msgstr ""
+msgstr "تمكين الحدود (الناعمة)"
 
 msgid "Enable NGLCD"
-msgstr ""
+msgstr "تمكين NGLCD"
 
 msgid "Enable standby"
-msgstr ""
+msgstr "تمكين وضع الاستعداد"
 
 msgid "English"
-msgstr ""
+msgstr "إنجليزي"
 
 msgid "Enter 0 to switch of the blocker (red is space)"
-msgstr ""
+msgstr "أدخل 0 لإيقاف تشغيل المانع (اللون الأحمر هو المسافة)"
 
 msgid "Enter jump target"
-msgstr ""
+msgstr "أدخل هدف القفز"
 
 msgid "Enter standby"
-msgstr ""
+msgstr "الدخول إلى وضع الاستعداد"
 
 msgid "Enter your new youth protection pin code here!"
-msgstr ""
+msgstr "أدخل رمز الحماية الشبابي الجديد الخاص بك هنا!"
 
 msgid "Entertainment programmes for 10 to 16"
-msgstr ""
+msgstr "برامج ترفيهية للأطفال من سن 10 إلى 16 عامًا"
 
 msgid "Entertainment programmes for 6 to 14"
-msgstr ""
+msgstr "برامج ترفيهية للأطفال من سن 6 إلى 14 عامًا"
 
 msgid "Equestrian"
-msgstr ""
+msgstr "الفروسية"
 
 msgid "Error"
-msgstr ""
+msgstr "خطأ"
 
 msgid "Event list"
-msgstr ""
+msgstr "قائمة الأحداث"
 
 msgid "Eventlist Title"
-msgstr ""
+msgstr "عنوان قائمة الأحداث"
 
 msgid "Eventlist current programm"
-msgstr ""
+msgstr "قائمة الأحداث البرنامج الحالي"
 
 msgid "Eventlist date / time"
-msgstr ""
+msgstr "تاريخ / وقت قائمة الأحداث"
 
 msgid "Eventlist large"
-msgstr ""
+msgstr "قائمة الأحداث كبيرة"
 
 msgid "Eventlist overview"
-msgstr ""
+msgstr "نظرة عامة على قائمة الأحداث"
 
 msgid "Eventlist small"
-msgstr ""
+msgstr "قائمة الأحداث صغيرة"
 
 msgid "Events Textcolor"
-msgstr ""
+msgstr "لون نص الأحداث"
 
 msgid "Execute plugin"
-msgstr ""
+msgstr "تنفيذ البرنامج المساعد"
 
 msgid "Exit"
-msgstr ""
+msgstr "مخرج"
 
 msgid "Experimental film / Video"
-msgstr ""
+msgstr "فيلم / فيديو تجريبي"
 
 msgid "Expert functions"
-msgstr ""
+msgstr "وظائف الخبراء"
 
 msgid "Expert-functions"
-msgstr ""
+msgstr "وظائف الخبراء"
 
 msgid "Extended"
-msgstr ""
+msgstr "ممتد"
 
 msgid "FEC"
 msgstr ""
@@ -746,79 +753,79 @@ msgid "FSK: ab %d"
 msgstr ""
 
 msgid "Fashion"
-msgstr ""
+msgstr "موضة"
 
 msgid "Fast"
-msgstr ""
+msgstr "سريع"
 
 msgid "Fast/timeshift record time(hours)"
-msgstr ""
+msgstr "تسجيل وقت سريع/زمن التحول (ساعات)"
 
 msgid "Favorites"
-msgstr ""
+msgstr "المفضلة"
 
 msgid "Features"
-msgstr ""
+msgstr "سمات"
 
 msgid "File could not be created:"
-msgstr ""
+msgstr "لم يتم إنشاء الملف:"
 
 msgid "File selector"
-msgstr ""
+msgstr "اختار الملف"
 
 msgid "File system"
-msgstr ""
+msgstr "نظام الملف"
 
 msgid "Filebrowser"
-msgstr ""
+msgstr "متصفح الملفات"
 
 msgid "Filebrowser item"
-msgstr ""
+msgstr "عنصر متصفح الملفات"
 
 msgid "Filebrowser settings"
-msgstr ""
+msgstr "إعدادات متصفح الملفات"
 
 msgid "Filename of the play list"
-msgstr ""
+msgstr "اسم ملف قائمة التشغيل"
 
 msgid "Filenames (with EPG data)"
-msgstr ""
+msgstr "أسماء الملفات (مع بيانات EPG)"
 
 msgid "Film / Cinema"
-msgstr ""
+msgstr "فيلم / سينما"
 
 msgid "Filter off"
-msgstr ""
+msgstr "إيقاف التصفية"
 
 msgid "Filter on"
-msgstr ""
+msgstr "تشغيل التصفية"
 
 msgid "Fine arts"
-msgstr ""
+msgstr "الفنون الجميلة"
 
 msgid "Fitness & health"
-msgstr ""
+msgstr "اللياقة البدنية والصحة"
 
 msgid "Folk / Traditional music"
-msgstr ""
+msgstr "الموسيقى الشعبية / التقليدية"
 
 msgid "Font"
-msgstr ""
+msgstr "الخط"
 
 msgid "Font name"
-msgstr ""
+msgstr "اسم الخط"
 
 msgid "Foot"
-msgstr ""
+msgstr "قدم"
 
 msgid "Football / Soccer"
-msgstr ""
+msgstr "كرة القدم"
 
 msgid "Foreign countries / Expeditions"
-msgstr ""
+msgstr "الدول الأجنبية / البعثات"
 
 msgid "Forum:"
-msgstr ""
+msgstr "المنتدى:"
 
 #, c-format
 msgid ""
@@ -829,6 +836,12 @@ msgid ""
 "\n"
 "Do you want to install this version now?"
 msgstr ""
+"تم العثور على الصورة الجديدة التالية:\n"
+"التاريخ: %s، %s\n"
+"الصورة الأساسية: %s\n"
+"نوع الصورة: %s\n"
+"\n"
+"هل تريد تثبيت هذا الإصدار الآن؟"
 
 #, c-format
 msgid ""
@@ -840,318 +853,325 @@ msgid ""
 "\n"
 "Do you want to download and install this version now?"
 msgstr ""
+"تم العثور على الحزمة الجديدة التالية:\n"
+"الحزمة: %s\n"
+"التاريخ: %s، %s\n"
+"الصورة الأساسية: %s\n"
+"النوع: %s\n"
+"\n"
+"هل تريد تنزيل هذا الإصدار وتثبيته الآن؟"
 
 msgid "Framerate"
-msgstr ""
+msgstr "معدل الإطارات"
 
 msgid "Free Memory"
-msgstr ""
+msgstr "الذاكرة الحرة"
 
 msgid "French"
-msgstr ""
+msgstr "فرنسي"
 
 msgid "Frequency"
-msgstr ""
+msgstr "التردد"
 
 msgid "Frequency:"
-msgstr ""
+msgstr "التردد:"
 
 msgid "Friday"
-msgstr ""
+msgstr "يوم الجمعة"
 
 msgid "Frontend:"
-msgstr ""
+msgstr "الواجهة الأمامية:"
 
 msgid "Further education"
-msgstr ""
+msgstr "التعليم الإضافي"
 
 msgid "GLCD Brightness"
-msgstr ""
+msgstr "سطوع GLCD"
 
 msgid "GLCD Standby Brightness"
-msgstr ""
+msgstr "سطوع وضع الاستعداد GLCD"
 
 msgid "GUI restart"
-msgstr ""
+msgstr "إعادة تشغيل واجهة المستخدم الرسومية"
 
 msgid "Game show / Quiz / Contest"
-msgstr ""
+msgstr "برنامج ألعاب / اختبار / مسابقة"
 
 msgid "Gardening"
-msgstr ""
+msgstr "البستنة"
 
 msgid "Generic delay"
-msgstr ""
+msgstr "تأخير عام"
 
 msgid "Genre"
-msgstr ""
+msgstr "النوع"
 
 msgid "German"
-msgstr ""
+msgstr "الالمانية"
 
 msgid "Goto Motor Position (a)"
-msgstr ""
+msgstr "الانتقال إلى موضع المحرك (أ)"
 
 msgid "Goto Reference Position"
-msgstr ""
+msgstr "الانتقال إلى موضع المرجع"
 
 msgid "Gradient"
-msgstr ""
+msgstr "التدرج"
 
 msgid "Gradient type"
-msgstr ""
+msgstr "نوع التدرج"
 
 msgid "Guard Interval"
-msgstr ""
+msgstr "فترة الحراسة"
 
 msgid "Guests"
-msgstr ""
+msgstr "الضيوف"
 
 msgid "HD / Crypt Icons"
-msgstr ""
+msgstr "أيقونات HD / تشفير"
 
 msgid "HDD Devices:"
-msgstr ""
+msgstr "أجهزة HDD:"
 
 msgid "HDD Filexplorer"
-msgstr ""
+msgstr "مستكشف ملفات القرص الصلب"
 
 msgid "HDD Format"
-msgstr ""
+msgstr "تنسيق القرص الصلب"
 
 msgid "HDD Init"
-msgstr ""
+msgstr "تهيئة القرص الصلب"
 
 msgid "HDD Mount"
-msgstr ""
+msgstr "تثبيت القرص الصلب"
 
 msgid "HDD Mount Failed"
-msgstr ""
+msgstr "فشل تثبيت القرص الصلب"
 
 msgid "HDD Mount failed !"
-msgstr ""
+msgstr "فشل تثبيت القرص الصلب!"
 
 msgid "HDD Mounted"
-msgstr ""
+msgstr "تم تثبيت القرص الصلب"
 
 msgid "HDD Umount"
-msgstr ""
+msgstr "إلغاء تثبيت القرص الصلب"
 
 msgid "HDD check failed !"
-msgstr ""
+msgstr "فشل فحص القرص الصلب!"
 
 msgid "HDD format failed !"
-msgstr ""
+msgstr "فشل تهيئة القرص الصلب!"
 
 msgid "HDD init failed !"
-msgstr ""
+msgstr "فشلت عملية تهيئة القرص الصلب!"
 
 msgid "HDD mounted"
-msgstr ""
+msgstr "تم تثبيت القرص الصلب"
 
 msgid "HDD settings"
-msgstr ""
+msgstr "إعدادات القرص الصلب"
 
 msgid "HDD umount"
-msgstr ""
+msgstr "إلغاء تثبيت القرص الصلب"
 
 msgid "HDD umounted"
-msgstr ""
+msgstr "القرص الصلب غير مثبت"
 
 msgid "HDD unmount failed !"
-msgstr ""
+msgstr "فشل إلغاء تثبيت القرص الصلب!"
 
 msgid "HDMI Color Space"
-msgstr ""
+msgstr "مساحة ألوان HDMI"
 
 msgid "Halt Motor"
-msgstr ""
+msgstr "أوقف المحرك"
 
 msgid "Handicraft"
-msgstr ""
+msgstr "الصناعة اليدوية"
 
 msgid "Hdd Format"
-msgstr ""
+msgstr "تنسيق القرص الصلب"
 
 msgid "Head"
-msgstr ""
+msgstr "رأس"
 
 msgid "Help"
-msgstr ""
+msgstr "مساعدة"
 
 msgid "Here you can choose plugins"
-msgstr ""
+msgstr "هنا يمكنك اختيار المكونات الإضافية"
 
 msgid "Here you can get device Info"
-msgstr ""
+msgstr "يمكنك هنا الحصول على معلومات الجهاز"
 
 msgid "Here you can play / show  music / movies / pics"
-msgstr ""
+msgstr "هنا يمكنك تشغيل / عرض الموسيقى / الأفلام / الصور"
 
 msgid "Here you can power off or standby your device"
-msgstr ""
+msgstr "يمكنك هنا إيقاف تشغيل جهازك أو وضعه في وضع الاستعداد"
 
 msgid "Here you can select a skin from the following list."
-msgstr ""
+msgstr "يمكنك هنا اختيار مظهر من القائمة التالية."
 
 msgid "Here you can set Timers and show EPG"
-msgstr ""
+msgstr "يمكنك هنا ضبط المؤقتات وإظهار دليل البرامج الإلكتروني"
 
 msgid "Here you can set channel scan and more"
-msgstr ""
+msgstr "يمكنك هنا ضبط مسح القنوات والمزيد"
 
 msgid "Here you can set timers"
-msgstr ""
+msgstr "هنا يمكنك ضبط المؤقتات"
 
 msgid "Here you can setup OSD"
-msgstr ""
+msgstr "هنا يمكنك إعداد OSD"
 
 msgid "Here you can setup your box"
-msgstr ""
+msgstr "يمكنك هنا إعداد صندوقك"
 
 msgid "Here you can switch between TV / Radio"
-msgstr ""
+msgstr "هنا يمكنك التبديل بين التلفزيون / الراديو"
 
 msgid "Here you can switch to scart modus"
-msgstr ""
+msgstr "يمكنك هنا التبديل إلى وضع scart"
 
 msgid "Hide"
-msgstr ""
+msgstr "يخفي"
 
 msgid "Hierarchy"
-msgstr ""
+msgstr "تَسَلسُل"
 
 msgid "High decode priority"
-msgstr ""
+msgstr "أولوية فك التشفير العالية"
 
 msgid "History"
-msgstr ""
+msgstr "تاريخ"
 
 msgid "Home page:"
-msgstr ""
+msgstr "الصفحة الرئيسية:"
 
 msgid "Horizontal (in %)"
-msgstr ""
+msgstr "أفقي (بالنسبة المئوية)"
 
 msgid "Hostname"
-msgstr ""
+msgstr "اسم المضيف"
 
 msgid "Hot Keys mapping"
-msgstr ""
+msgstr "تعيين المفاتيح الساخنة"
 
 msgid "How long into the future will EPG extended descriptions"
-msgstr ""
+msgstr "إلى متى ستستمر أوصاف EPG الموسعة في المستقبل؟"
 
 msgid "How long will EPG-Data be stored after they timed out?"
-msgstr ""
+msgstr "ما هي المدة التي سيتم تخزين بيانات EPG فيها بعد انتهاء صلاحيتها؟"
 
 msgid "How long will EPG-Data in the future cached?"
-msgstr ""
+msgstr "ما هي المدة التي سيتم فيها تخزين بيانات EPG في المستقبل؟"
 
 msgid "How many events should be stored?"
-msgstr ""
+msgstr "كم عدد الأحداث التي يجب تخزينها؟"
 
 msgid "IP address"
-msgstr ""
+msgstr "عنوان IP"
 
 msgid "ISO-8859-1"
 msgstr ""
 
 msgid "Image Info"
-msgstr ""
+msgstr "معلومات الصورة"
 
 msgid "Image info"
-msgstr ""
+msgstr "معلومات الصورة"
 
 msgid "Image:"
-msgstr ""
+msgstr "الصورة"
 
 msgid "ImageType"
-msgstr ""
+msgstr "نوع الصورة"
 
 msgid "Increase Motor Position (a)"
-msgstr ""
+msgstr "زيادة موضع المحرك (أ)"
 
 msgid "Info"
-msgstr ""
+msgstr "معلومات"
 
 msgid "Infobar"
-msgstr ""
+msgstr "شريط المعلومات"
 
 msgid "Infobar Channel name"
-msgstr ""
+msgstr "اسم قناة شريط المعلومات"
 
 msgid "Infobar Number"
-msgstr ""
+msgstr "رقم شريط المعلومات"
 
 msgid "Infobar info"
-msgstr ""
+msgstr "معلومات شريط المعلومات"
 
 msgid "Infobar small"
-msgstr ""
+msgstr "شريط المعلومات صغير"
 
 msgid "Information"
-msgstr ""
+msgstr "معلومة"
 
 msgid "Informational / educational / school programmes"
-msgstr ""
+msgstr "برامج إعلامية / تعليمية / مدرسية"
 
 msgid "Insert"
-msgstr ""
+msgstr "إدراج"
 
 msgid "Install menu"
-msgstr ""
+msgstr "قائمة التثبيت"
 
 msgid "Interface"
-msgstr ""
+msgstr "الواجهة"
 
 msgid "Internet Radio"
-msgstr ""
+msgstr "راديو الانترنت"
 
 msgid "Is this video mode working ok ?"
-msgstr ""
+msgstr "هل يعمل وضع الفيديو هذا بشكل جيد؟"
 
 msgid "Item Info"
-msgstr ""
+msgstr "معلومات عن العنصر"
 
 msgid "Jazz"
-msgstr ""
+msgstr "موسيقى الجاز"
 
 msgid "Jump over"
-msgstr ""
+msgstr "اقفز فوق"
 
 msgid "Key"
-msgstr ""
+msgstr "مفتاح"
 
 msgid "Key Repeat-blocker"
-msgstr ""
+msgstr "مانع تكرار المفاتيح"
 
 msgid "Keybinding settings"
-msgstr ""
+msgstr "إعدادات ربط المفاتيح"
 
 msgid "Keyword"
-msgstr ""
+msgstr "الكلمة الرئيسية"
 
 msgid "LCD EPG Align"
-msgstr ""
+msgstr "محاذاة دليل البرامج الإلكتروني لشاشة LCD"
 
 msgid "LCD Power"
-msgstr ""
+msgstr "قوة شاشة LCD"
 
 msgid "LED Color"
-msgstr ""
+msgstr "لون LED"
 
 msgid "LEFT"
-msgstr ""
+msgstr "يسار"
 
 msgid "LNB High Offset"
-msgstr ""
+msgstr "LNB إزاحة عالية"
 
 msgid "LNB Low Offset"
-msgstr ""
+msgstr "LNB إزاحة منخفضة"
 
 msgid "LNB switch Offset"
-msgstr ""
+msgstr "إزاحة مفتاح LNB"
 
 msgid "LUFS"
 msgstr ""
@@ -1160,375 +1180,385 @@ msgid "LaDirection"
 msgstr ""
 
 msgid "Language"
-msgstr ""
+msgstr "لغة"
 
 msgid "Languages"
-msgstr ""
+msgstr "اللغات"
 
 msgid "Last Channel"
-msgstr ""
+msgstr "القناة الاخيرة"
 
 msgid "Last play date"
-msgstr ""
+msgstr "اخر موعد للتشغيل"
 
 msgid "Last play stop:"
-msgstr ""
+msgstr "اخر موعد للايقاف"
 
 msgid "Latitude"
-msgstr ""
+msgstr "خط العرض"
 
 msgid "Leave standby"
-msgstr ""
+msgstr "ترك وضع الاستعداد"
 
 msgid "Length"
-msgstr ""
+msgstr "خط الطول"
 
 msgid "Length (Min)"
-msgstr ""
+msgstr "الطول (الحد الأدنى)"
 
 msgid "License:"
-msgstr ""
+msgstr "رخصة:"
 
 msgid "Line"
-msgstr ""
+msgstr "خط"
 
 msgid "Line Gradient"
-msgstr ""
+msgstr "تدرج الخط"
 
 msgid "List End"
-msgstr ""
+msgstr "نهاية القائمة"
 
 msgid "List Start"
-msgstr ""
+msgstr "قائمة البداية"
 
 msgid "Literature"
-msgstr ""
+msgstr "الأدب"
 
 msgid "LoDirection"
-msgstr ""
+msgstr "الاتجاه المنخفض"
 
 msgid "Loading skin "
-msgstr ""
+msgstr "جاري تحميل الجلد"
 
 msgid "Loading skin style "
-msgstr ""
+msgstr "جاري تحميل نمط الجلد"
 
 msgid "LocalTV EPG"
-msgstr ""
+msgstr "دليل البرامج الإلكتروني للتلفزيون المحلي"
 
 msgid "Lock"
-msgstr ""
+msgstr "قفل"
 
 msgid "Lock RC"
-msgstr ""
+msgstr "قفل RC"
 
 msgid "Lock Remote Control"
-msgstr ""
+msgstr "قفل جهاز التحكم عن بعد"
 
 msgid "Lock program"
-msgstr ""
+msgstr "قفل البرنامج"
 
 msgid "Locked Channel"
-msgstr ""
+msgstr "القناة مقفلة"
 
 #, c-format
 msgid "Locked program (from %d years up)"
-msgstr ""
+msgstr "تم قفل البرنامج (من %d سنة فصاعدًا)"
 
 msgid "Longitude"
-msgstr ""
+msgstr "خط الطول"
 
 msgid "Lower Right"
-msgstr ""
+msgstr "أسفل اليمين"
 
 msgid "MAC address"
-msgstr ""
+msgstr "عنوان MAC"
 
 msgid "MD5 checking"
-msgstr ""
+msgstr "فحص MD5"
 
 msgid "Magazines / Reports / Documentary"
-msgstr ""
+msgstr "المجلات / التقارير / الأفلام الوثائقية"
 
 msgid "Main Menu"
-msgstr ""
+msgstr "القائمة الرئيسية"
 
 msgid "Make Remaining Channels list"
-msgstr ""
+msgstr "إنشاء قائمة بالقنوات المتبقية"
 
 msgid "Manual frequency scan / Test signal"
-msgstr ""
+msgstr "المسح اليدوي للتردد / إشارة الاختبار"
 
 msgid "Manuell(ftp) Software Manager"
-msgstr ""
+msgstr "يدوي(ftp) مدير البرمجيات"
 
 msgid "Mark"
-msgstr ""
+msgstr "علامة"
 
 msgid "Martial sports"
-msgstr ""
+msgstr "الرياضات القتالية"
 
 msgid "Max. Events"
-msgstr ""
+msgstr "الأحداث القصوى"
 
 msgid "Media"
-msgstr ""
+msgstr "وسائط"
 
 msgid "Media Player"
-msgstr ""
+msgstr "مشغل الوسائط"
 
 msgid "Medicine / Physiology / Psychology"
-msgstr ""
+msgstr "الطب / علم وظائف الأعضاء / علم النفس"
 
 msgid "Menu"
-msgstr ""
+msgstr "القائمة"
 
 msgid "Menu Info"
-msgstr ""
+msgstr "معلومات القائمة"
 
 msgid "Menu Text"
-msgstr ""
+msgstr "نص القائمة"
 
 msgid "Menu Title"
-msgstr ""
+msgstr "عنوان القائمة"
 
 msgid "Menu Title large"
-msgstr ""
+msgstr "عنوان القائمة كبير"
 
 msgid "Menu mode"
-msgstr ""
+msgstr "وضع القائمة"
 
 msgid "Message"
-msgstr ""
+msgstr "رسالة"
 
 msgid "Mini TV"
-msgstr ""
+msgstr "تلفزيون صغير"
 
 msgid "Mini TV FPS"
-msgstr ""
+msgstr "تلفزيون صغير FPS"
 
 msgid "Mini-DiSEqC"
-msgstr ""
+msgstr "ميني ديسك"
 
 msgid "Minutes"
-msgstr ""
+msgstr "دقائق"
 
 msgid "Misc settings"
-msgstr ""
+msgstr "إعدادات متنوعة"
 
 msgid "Mo Tu We Th Fr Sa Su"
 msgstr ""
 
 msgid "Mode"
-msgstr ""
+msgstr "وضع"
 
 msgid "Modechange"
-msgstr ""
+msgstr "تغيير الوضع"
 
 msgid "Modify"
-msgstr ""
+msgstr "يُعدِّل"
 
 msgid "Modify timer"
-msgstr ""
+msgstr "تعديل المؤقت"
 
 msgid "Modulation"
 msgstr ""
 
 msgid "Monday"
-msgstr ""
+msgstr "الاثنين"
 
 msgid "More Screenings on this Channel"
-msgstr ""
+msgstr "عروض أخرى على هذه القناة"
 
 msgid "Motor Control Settings"
-msgstr ""
+msgstr "إعدادات التحكم في المحرك"
 
 msgid "Motor Setup"
-msgstr ""
+msgstr "إعداد المحرك"
 
 msgid "Motor settings"
-msgstr ""
+msgstr "إعدادات المحرك"
 
 msgid "Motor sports"
-msgstr ""
+msgstr "دعم المحرك"
 
 msgid "Motoring"
-msgstr ""
+msgstr "المحركات"
 
 msgid "Mount network volume"
-msgstr ""
+msgstr "تثبيت وحدة تخزين الشبكة"
 
 msgid "Mount options"
-msgstr ""
+msgstr "خيارات التثبيت"
 
 msgid "Move"
-msgstr ""
+msgstr "يتحرك"
 
 msgid "Movie / Drama"
-msgstr ""
+msgstr "فيلم / دراما"
 
 msgid "Movie end:"
-msgstr ""
+msgstr "نهاية الفيلم:"
 
 msgid "Movie info"
-msgstr ""
+msgstr "معلومات عن الفيلم"
 
 msgid "Movie start:"
-msgstr ""
+msgstr "بداية الفيلم:"
 
 msgid "Movieplayer"
-msgstr ""
+msgstr "مشغل الافلام"
 
 msgid "Movieplayer settings"
-msgstr ""
+msgstr إعدادات مشغل الأفلام
 
 msgid "Movies Browser"
-msgstr ""
+msgstr "متصفح الأفلام"
 
 msgid "Music / Ballet / Dance"
-msgstr ""
+msgstr "موسيقى / باليه / رقص"
 
 msgid "Musical / Opera"
-msgstr ""
+msgstr "موسيقي / أوبرا"
 
 msgid "NFS"
 msgstr ""
 
 msgid "NTP-Server"
-msgstr ""
+msgstr "خادم NTP"
 
 msgid "NTP-Server example: ntp1.ptb.de"
-msgstr ""
+msgstr "مثال على خادم NTP: ntp1.ptb.de"
 
 msgid "NTP/DVB-Refresh"
-msgstr ""
+msgstr "تحديث NTP/DVB"
 
 msgid "NTP/DVB-Time-Sync in minutes"
-msgstr ""
+msgstr "NTP/DVB-Time-Sync في دقائق"
 
 msgid "Name"
-msgstr ""
+msgstr "اسم"
 
 msgid "Name of bouquets"
-msgstr ""
+msgstr "اسم الباقات"
 
 msgid "Name server"
-msgstr ""
+msgstr "اسم الخادم"
 
 msgid "Nature / Animals / Environment"
-msgstr ""
+msgstr "الطبيعة / الحيوانات / البيئة"
 
 msgid "Netmask"
-msgstr ""
+msgstr "قناع الشبكة"
 
 msgid "Network"
-msgstr ""
+msgstr "الشبكة"
 
 msgid "Network Mount Manager"
-msgstr ""
+msgstr "مدير تثبيت الشبكة"
 
 msgid "Network Name"
-msgstr ""
+msgstr "اسم الشبكة"
 
 msgid "Network settings"
-msgstr ""
+msgstr "اعدادات الشبكة"
 
 msgid "New Bookmark"
-msgstr ""
+msgstr "إشارة مرجعية جديدة"
 
 msgid ""
 "New jump back\n"
 " 'blue' for endposition"
 msgstr ""
+"قفزة جديدة للخلف_n"
+"اللون الأزرق" لوضع النهاية"
 
 msgid ""
 "New jump forward\n"
 " 'blue' for endposition"
 msgstr ""
+"قفزة جديدة للأمام\n"
+"اللون الأزرق" لوضع النهاية"
 
 msgid "New media"
-msgstr ""
+msgstr "وسيطة جديدة"
 
 msgid "New timer"
-msgstr ""
+msgstr "مؤقت جديد"
 
 msgid "News"
-msgstr ""
+msgstr "اخبار"
 
 msgid "News / Weather report"
-msgstr ""
+msgstr "الأخبار / تقرير الطقس"
 
 msgid "News magazine"
-msgstr ""
+msgstr "مجلة اخبارية"
 
 msgid "Next Page"
-msgstr ""
+msgstr "الصفحة التالية"
 
 msgid "Next bouquet"
-msgstr ""
+msgstr "الباقة التالية"
 
 msgid "Next image"
-msgstr ""
+msgstr "الصورة التالية"
 
 msgid "Next program"
-msgstr ""
+msgstr "البرنامج التالي"
 
 msgid "No"
-msgstr ""
+msgstr "لا"
 
 msgid "No CAM in slot"
-msgstr ""
+msgstr "لا يوجد CAM في الفتحة"
 
 msgid "No Caps"
-msgstr ""
+msgstr "لا أحرف كبيرة"
 
 msgid "No Networks found please scan again..."
-msgstr ""
+msgstr "لم يتم العثور على شبكات، يرجى إجراء المسح مرة أخرى..."
 
 msgid ""
 "No channels were found!\n"
 "Please execute a scan\n"
 "(MENU-key -> System)"
 msgstr ""
+"لم يتم العثور على أي قنوات!\n"
+"الرجاء تنفيذ عملية مسح\n"
+"(مفتاح القائمة -> النظام)"
 
 msgid ""
 "No channels were found!\n"
 "Please execute a scan\n"
 "(MENU-key -> service)"
 msgstr ""
+"لم يتم العثور على أي قنوات!\n"
+"الرجاء تنفيذ عملية مسح\n"
+"(مفتاح القائمة -> الخدمة)"
 
 msgid "No detailed informations available"
-msgstr ""
+msgstr "لا توجد معلومات مفصلة متاحة"
 
 msgid "No info for current program available"
-msgstr ""
+msgstr "لا توجد معلومات متاحة عن البرنامج الحالي"
 
 msgid "No key"
-msgstr ""
+msgstr "لا يوجد مفتاح"
 
 msgid "No neutrino-settings found, Using defaults."
-msgstr ""
+msgstr "لم يتم العثور على إعدادات النيوترينو، استخدم الإعدادات الافتراضية."
 
 msgid "Noise"
-msgstr ""
+msgstr "ضوضاء"
 
 msgid "Normal"
-msgstr ""
+msgstr "طبيعي"
 
 msgid "North"
-msgstr ""
+msgstr "شمال"
 
 msgid "Not used"
-msgstr ""
+msgstr "لم يتم استخدامه"
 
 msgid "Numericzap"
-msgstr ""
+msgstr "رقم رقمي"
 
 msgid "OK"
-msgstr ""
+msgstr "نعم"
 
 msgid "OK saves, HOME! aborts"
-msgstr ""
+msgstr "تم الحفظ بشكل صحيح، وتم إلغاء الصفحة الرئيسية"
 
 msgid "OSD"
 msgstr ""
@@ -1537,30 +1567,32 @@ msgid "OSD / TV"
 msgstr ""
 
 msgid "One color"
-msgstr ""
+msgstr "لون واحد"
 
 msgid ""
 "One or several recording processes are active.\n"
 "If you encounter this message and no recording is active, please restart Neutrino."
 msgstr ""
+"هناك عملية تسجيل واحدة أو أكثر نشطة.\n"
+"إذا واجهت هذه الرسالة ولم يكن هناك تسجيل نشط، فيرجى إعادة تشغيل Neutrino."
 
 msgid "Online Software Manager"
-msgstr ""
+msgstr "مدير البرامج عبر الإنترنت"
 
 msgid "Original Title"
-msgstr ""
+msgstr "العنوان الأصلي"
 
 msgid "Original title"
-msgstr ""
+msgstr "العنوان الأصلي"
 
 msgid "Overwrite?"
-msgstr ""
+msgstr "الكتابة فوق؟"
 
 msgid "PCM Delay"
 msgstr ""
 
 msgid "PIN-Code was wrong! Try again."
-msgstr ""
+msgstr "رمز PIN خاطئ! حاول مرة أخرى."
 
 msgid "PLP ID"
 msgstr ""
@@ -1572,277 +1604,277 @@ msgid "PSI settings"
 msgstr ""
 
 msgid "Package successfully installed"
-msgstr ""
+msgstr "تم تثبيت الحزمة بنجاح"
 
 msgid "Page Down"
-msgstr ""
+msgstr "صفحة لأسفل"
 
 msgid "Page Up"
-msgstr ""
+msgstr "صفحة لأعلى"
 
 msgid "Parentallock settings"
-msgstr ""
+msgstr "إعدادات القفل الأبوي"
 
 msgid "Partition selector"
-msgstr ""
+msgstr "محدد القسم"
 
 msgid "Password"
-msgstr ""
+msgstr "كلمة المرور"
 
 msgid "Path"
-msgstr ""
+msgstr "المسار"
 
 msgid "Performing arts"
-msgstr ""
+msgstr "الفنون الأدائية"
 
 msgid "Permanent timeshift"
-msgstr ""
+msgstr "القفز الزمني الدائم"
 
 msgid "Personalisation"
-msgstr ""
+msgstr "التخصيص"
 
 msgid "Pictureviewer"
-msgstr ""
+msgstr "عارض الصور"
 
 msgid "Pictureviewer settings"
-msgstr ""
+msgstr "إعدادات برنامج عرض الصور"
 
 msgid "Please enter jump target"
-msgstr ""
+msgstr "الرجاء إدخال هدف القفز"
 
 msgid "Please enter the filename of the playlist"
-msgstr ""
+msgstr "الرجاء إدخال اسم ملف قائمة التشغيل"
 
 msgid "Please press the new key"
-msgstr ""
+msgstr "الرجاء الضغط على المفتاح الجديد"
 
 msgid "Plugin"
-msgstr ""
+msgstr "المكون الإضافي"
 
 msgid "Pluginlist large"
-msgstr ""
+msgstr "قائمة المكونات الإضافية كبيرة"
 
 msgid "Pluginlist small"
-msgstr ""
+msgstr "قائمة المكونات الإضافية صغيرة"
 
 msgid "Plugins"
-msgstr ""
+msgstr "المكونات الإضافية"
 
 msgid "Polarization"
-msgstr ""
+msgstr "الاستقطاب"
 
 msgid "Polish"
-msgstr ""
+msgstr "بولندي"
 
 msgid "Popular culture / Traditional arts"
-msgstr ""
+msgstr "الثقافة الشعبية / الفنون التقليدية"
 
 msgid "Portugues"
-msgstr ""
+msgstr "البرتغالية"
 
 msgid "Power Menu"
-msgstr ""
+msgstr "قائمة الطاقة"
 
 msgid "Pre-school children's programmes"
-msgstr ""
+msgstr "برامج الأطفال في مرحلة ما قبل المدرسة"
 
 msgid "Prefer TMDB Infos"
-msgstr ""
+msgstr "تفضيل معلومات TMDB"
 
 msgid "Preferred EPG language"
-msgstr ""
+msgstr "لغة دليل البرامج الإلكتروني المفضلة"
 
 msgid "Preferred language"
-msgstr ""
+msgstr "اللغة المفضلة"
 
 msgid "Preferred subtitle language"
-msgstr ""
+msgstr "لغة الترجمة المفضلة"
 
 msgid "Presenter"
-msgstr ""
+msgstr "مقدم"
 
 msgid "Prev Page"
-msgstr ""
+msgstr "الصفحة السابقة"
 
 msgid "Previous image"
-msgstr ""
+msgstr "الصورة السابقة"
 
 msgid "Program unknown"
-msgstr ""
+msgstr "البرنامج غير معروف"
 
 msgid "Progressbar Color"
-msgstr ""
+msgstr "لون شريط التقدم"
 
 msgid "Prompt for PIN"
-msgstr ""
+msgstr "المطالبة برقم التعريف الشخصي"
 
 msgid "Provider"
-msgstr ""
+msgstr "مزود"
 
 msgid "Provider:"
-msgstr ""
+msgstr "مزود:"
 
 msgid "Providers"
-msgstr ""
+msgstr "المزودون"
 
 msgid "Proxy server"
-msgstr ""
+msgstr "خادم الوكيل"
 
 msgid "Proxyserver"
-msgstr ""
+msgstr "الخادم الوكيل"
 
 msgid "Quality"
-msgstr ""
+msgstr "جودة"
 
 msgid "Quickzap"
 msgstr ""
 
 msgid "RIGHT"
-msgstr ""
+msgstr "يمين"
 
 msgid "Radio"
-msgstr ""
+msgstr "راديو"
 
 msgid "Radio Channel"
-msgstr ""
+msgstr "قناة الراديو"
 
 msgid "Radio Text"
-msgstr ""
+msgstr "نص الراديو"
 
 msgid "Radius"
-msgstr ""
+msgstr "نصف القطر"
 
 msgid "Read one partition"
-msgstr ""
+msgstr "قراءة قسم واحد"
 
 msgid "Read whole image"
-msgstr ""
+msgstr "اقرأ الصورة كاملة"
 
 msgid "Reading Flash"
-msgstr ""
+msgstr "قراءة الفلاش"
 
 msgid "Reboot"
-msgstr ""
+msgstr "إعادة التشغيل"
 
 msgid "Receipt signal"
-msgstr ""
+msgstr "استلام الاشارة"
 
 msgid "Record"
-msgstr ""
+msgstr "تسجيل"
 
 msgid "Record AC3 streams"
-msgstr ""
+msgstr "تسجيل تدفقات AC3"
 
 msgid "Record alternative streams"
-msgstr ""
+msgstr "تسجيل تيارات بديلة"
 
 msgid "Record date"
-msgstr ""
+msgstr "تاريخ التسجيل"
 
 msgid "Record default audio streams"
-msgstr ""
+msgstr "تسجيل تدفقات الصوت الافتراضية"
 
 msgid "Record standard stream"
-msgstr ""
+msgstr "تسجيل البث القياسي"
 
 msgid "Record start time correction"
-msgstr ""
+msgstr "تصحيح وقت بدء التسجيل"
 
 msgid "Record stop time correction"
-msgstr ""
+msgstr "تصحيح وقت توقف التسجيل"
 
 msgid "Recording directory"
-msgstr ""
+msgstr "دليل التسجيل"
 
 msgid "Recording settings"
-msgstr ""
+msgstr "إعدادات التسجيل"
 
 msgid "Recording starts in a few minutes"
-msgstr ""
+msgstr "سيبدأ التسجيل خلال بضع دقائق"
 
 msgid "Refresh EPG"
-msgstr ""
+msgstr "تحديث دليل البرامج الإلكتروني"
 
 msgid "Release cycle"
-msgstr ""
+msgstr "دورة الإصدار"
 
 msgid "Religion"
-msgstr ""
+msgstr "الدين"
 
 msgid "Reload"
-msgstr ""
+msgstr "إعادة التحميل"
 
 msgid "Reload EPG"
-msgstr ""
+msgstr "إعادة تحميل EPG"
 
 msgid "Reload XMLTV EPG"
-msgstr ""
+msgstr "إعادة تحميل EPG الخاص بـ XMLTV"
 
 msgid "Reload channel lists"
-msgstr ""
+msgstr "إعادة تحميل قوائم القنوات"
 
 msgid "Reloading EPG, please be patient."
-msgstr ""
+msgstr "جاري إعادة تحميل EPG، يرجى التحلي بالصبر."
 
 msgid "Reloading XMLTV EPG, please be patient."
-msgstr ""
+msgstr "جاري إعادة تحميل XMLTV EPG، يرجى التحلي بالصبر."
 
 msgid "Reloading channel lists, please be patient."
-msgstr ""
+msgstr "جاري إعادة تحميل قوائم القنوات، يرجى التحلي بالصبر."
 
 msgid "Remarkable people"
-msgstr ""
+msgstr "أشخاص رائعين"
 
 msgid "Remind"
-msgstr ""
+msgstr "تذكير"
 
 msgid "Reminder"
-msgstr ""
+msgstr "تذكير"
 
 msgid "Remote Control lock"
-msgstr ""
+msgstr "قفل التحكم عن بعد"
 
 msgid "Remote Control settings"
-msgstr ""
+msgstr "إعدادات التحكم عن بعد"
 
 msgid "Remote control reactivated."
-msgstr ""
+msgstr "تم إعادة تفعيل جهاز التحكم عن بعد."
 
 msgid "Rename"
-msgstr ""
+msgstr "إعادة تسمية"
 
 msgid "Repeat"
-msgstr ""
+msgstr "تكرار"
 
 msgid "Repeat delay"
-msgstr ""
+msgstr "تأخير متكرر"
 
 msgid "Reread image"
-msgstr ""
+msgstr "إعادة قراءة الصورة"
 
 msgid "Reread image (no scaling)"
-msgstr ""
+msgstr "إعادة قراءة الصورة (بدون تغيير الحجم)"
 
 msgid "Reset settings to defaults"
-msgstr ""
+msgstr "إعادة تعيين الإعدادات إلى الإعدادات الافتراضية"
 
 msgid "Reset to defaults"
-msgstr ""
+msgstr "إعادة التعيين إلى الإعدادات الافتراضية"
 
 msgid "Resolution"
-msgstr ""
+msgstr "الدقة"
 
 msgid "Rock / Pop"
-msgstr ""
+msgstr "روك / بوب"
 
 msgid "Romance"
-msgstr ""
+msgstr "رومانسية"
 
 msgid "Rotor position"
-msgstr ""
+msgstr "وضع الدوار"
 
 msgid "Russian"
-msgstr ""
+msgstr "الروسية"
 
 msgid "SB mode"
 msgstr ""
