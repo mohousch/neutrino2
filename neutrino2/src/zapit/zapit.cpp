@@ -304,7 +304,6 @@ void CZapit::initFrontend()
 	strcpy(fe->info.name, "Sat Fake Tuner");
 	fe->forcedDelSys = DVB_S | DVB_S2 | DVB_S2X;
 	fe->deliverySystemMask = DVB_S | DVB_S2 | DVB_S2X;
-//	fe->hybrid = true;
 	have_s = true;
 
 	index++;
