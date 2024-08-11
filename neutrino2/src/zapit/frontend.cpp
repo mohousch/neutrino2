@@ -312,8 +312,8 @@ void CFrontend::getFEInfo(void)
 	if ( (deliverySystemMask & DVB_C && deliverySystemMask & DVB_T)
 		|| (deliverySystemMask & DVB_C && deliverySystemMask & DVB_T2)
 		|| (deliverySystemMask & DVB_C) && (deliverySystemMask & DVB_T) && (deliverySystemMask & DVB_T2)
-		|| (deliverySystemMask & DVB_S && deliverySystemMask & DVB_S2)
-		|| (deliverySystemMask & DVB_S) && (deliverySystemMask & DVB_S2) && (deliverySystemMask & DVB_S2X) )
+		/*|| (deliverySystemMask & DVB_S && deliverySystemMask & DVB_S2)
+		|| (deliverySystemMask & DVB_S) && (deliverySystemMask & DVB_S2) && (deliverySystemMask & DVB_S2X)*/ )
 	{
 		hybrid = true;
 		dprintf(DEBUG_NORMAL, "fe(%d:%d) %s (delsys:0x%x) isHybrid:%s\n", feadapter, fenumber, info.name, deliverySystemMask, hybrid? "true" : "false");
@@ -1513,7 +1513,7 @@ int CFrontend::setParameters(transponder * TP)
 	dprintf(DEBUG_NORMAL, "CFrontend::setParameters: fe(%d:%d) %s\n", feadapter, fenumber, tuned? "tuned" : "tune failed");
 
 #if HAVE_DVB_API_VERSION >= 5
-	if (forcedDelSys == DVB_S || forcedDelSys == DVB_S2)
+	if (deliverySystemMask & DVB_S || deliverySystemMask & DVB_S2)
 #else
 	if (info.type == FE_QPSK)
 #endif
@@ -1522,9 +1522,11 @@ int CFrontend::setParameters(transponder * TP)
 	return tuned;
 }
 
-/* frequency is the IF-frequency (950-2100), what a stupid spec...
-   high_band, horizontal, bank are actually bool (0/1)
-   bank specifies the "switch bank" (as in Mini-DiSEqC A/B) */
+//
+// frequency is the IF-frequency (950-2100), what a stupid spec...
+// high_band, horizontal, bank are actually bool (0/1)
+// bank specifies the "switch bank" (as in Mini-DiSEqC A/B) */
+//
 uint32_t CFrontend::sendEN50494TuningCommand(const uint32_t frequency, const int high_band, const int horizontal, const int bank)
 {
 	uint32_t bpf = uni_qrg;

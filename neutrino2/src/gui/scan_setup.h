@@ -40,7 +40,7 @@
 #include <zapit/frontend_c.h>
 
 
-//
+////
 class CScanSettings
 {
 	private:
@@ -76,7 +76,7 @@ class CScanSettings
 		bool saveSettings(const char * const fileName);
 };
 
-//
+////
 class CTPSelectHandler : public CMenuTarget
 {
 	private:
@@ -90,7 +90,7 @@ class CTPSelectHandler : public CMenuTarget
 		int exec(CMenuTarget *parent, const std::string &actionkey);
 };
 
-// sat setup notifuer
+//// sat setup notifuer
 class CSatelliteSetupNotifier : public CChangeObserver
 {
 	private:
@@ -109,7 +109,7 @@ class CSatelliteSetupNotifier : public CChangeObserver
 		bool changeNotify(const std::string&, void * Data);
 };
 
-// scan setup notifier
+//// scan setup notifier
 class CScanSetupNotifier : public CChangeObserver
 {
 	private:
@@ -127,7 +127,7 @@ class CScanSetupNotifier : public CChangeObserver
 		bool changeNotify(const std::string&, void * Data);
 };
 
-//
+////
 class CScanSetupDelSysNotifier : public CChangeObserver
 {
 	private:
@@ -139,7 +139,7 @@ class CScanSetupDelSysNotifier : public CChangeObserver
 		bool changeNotify(const std::string&, void *Data);
 };
 
-// scansetup
+//// scansetup
 class CScanSetup : public CMenuTarget
 {
 	private:
@@ -151,6 +151,8 @@ class CScanSetup : public CMenuTarget
 		CScanSetupDelSysNotifier *feDelSysNotifier;
 		CTPSelectHandler *tpSelect;
 		CScanSettings * scanSettings;
+		CMenuItem *item_freq;
+		CMenuItem *item_sr;
 
 		//
 		int showScanService();
@@ -161,6 +163,7 @@ class CScanSetup : public CMenuTarget
 		int showMotorSetup();
 		int showLNBSetup();
 		int showSatOnOffSetup();
+		int freq_length;
 		
 	public:
 		CScanSetup(CFrontend* f = NULL);
@@ -169,7 +172,7 @@ class CScanSetup : public CMenuTarget
 		int exec(CMenuTarget* parent, const std::string & actionKey);
 };
 
-//
+////
 class CTunerSetup : public CMenuTarget
 {
 	private:
