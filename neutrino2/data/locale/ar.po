@@ -81,7 +81,7 @@ msgstr "إضافة ملف الترجمة"
 msgid "Add to Bouquets"
 msgstr "أضف إلى الباقات"
 
-msgid msgid "Adult movie / Drama"
+msgid "Adult movie / Drama"
 msgstr "فيلم للكبار / دراما"
 
 msgid "Advanced"
@@ -400,7 +400,7 @@ msgstr "كلاسيكي"
 msgid "Clear"
 msgstr "واضح"
 
-msgid msgid "Code Rate HP"
+msgid "Code Rate HP"
 msgstr "معدل الكود HP"
 
 msgid "Code Rate LP"
@@ -445,13 +445,13 @@ msgstr "إنشاء قائمة بالقنوات عالية الدقة"
 msgid "Current Track"
 msgstr "المسار الحالي"
 
-msgid msgid "Current key"
+msgid "Current key"
 msgstr "المفتاح الحالي"
 
 msgid "Current transponder"
 msgstr "جهاز الإرسال والإستقبال الحالي"
 
-msgid msgid "Current version"
+msgid "Current version"
 msgstr "النسخة الحالية"
 
 msgid "Czech"
