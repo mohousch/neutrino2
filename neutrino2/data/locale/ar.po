@@ -1880,537 +1880,547 @@ msgid "SMBFS"
 msgstr ""
 
 msgid "Same TP"
-msgstr ""
+msgstr "نفس TP"
 
 msgid "Sat settings"
-msgstr ""
+msgstr "إعدادات القمر الصناعي"
 
 msgid "Satellite"
-msgstr ""
+msgstr "القمر الصناعي"
 
 msgid "Satellite Position (Step Mode):"
-msgstr ""
+msgstr "موضع القمر الصناعي (وضع الخطوة):"
 
 msgid "Satellite display on infobar"
-msgstr ""
+msgstr "عرض القمر الصناعي على شريط المعلومات"
 
 msgid "Satellite:"
-msgstr ""
+msgstr "القمر الصناعي:"
 
 msgid "Satellites"
-msgstr ""
+msgstr "الأقمار الصناعية"
 
 msgid "Saturation"
-msgstr ""
+msgstr "التشبع"
 
 msgid "Saturday"
-msgstr ""
+msgstr "السبت"
 
 msgid "Save"
-msgstr ""
+msgstr "حفظ"
 
 msgid "Save RC configuration"
-msgstr ""
+msgstr "حفظ تكوين RC"
 
 msgid "Save Timer"
-msgstr ""
+msgstr "حفظ المؤقت"
 
 msgid "Save current skin style"
-msgstr ""
+msgstr "حفظ نمط الجلد الحالي"
 
 msgid "Save current style"
-msgstr ""
+msgstr "حفظ النمط الحالي"
 
 msgid "Save in channel dir"
-msgstr ""
+msgstr "حفظ في دليل القناة"
 
 msgid "Save settings now"
-msgstr ""
+msgstr "حفظ الإعدادات الآن"
 
 msgid "Save timer"
-msgstr ""
+msgstr "حفظ المؤقت"
 
 msgid "Save/Restore epg on reboot"
-msgstr ""
+msgstr "حفظ/استعادة EPG عند إعادة التشغيل"
 
 msgid "Saving RC configuration, please wait..."
-msgstr ""
+msgstr "جاري حفظ تكوين RC، يرجى الانتظار..."
 
 msgid "Saving changes. Please be patient."
-msgstr ""
+msgstr "جاري حفظ التغييرات. يرجى التحلي بالصبر."
 
 msgid "Saving current style!"
-msgstr ""
+msgstr "حفظ النمط الحالي!"
 
 msgid "Saving settings now, please be patient."
-msgstr ""
+msgstr "جاري حفظ الإعدادات الآن، يرجى التحلي بالصبر."
 
 msgid "Scaling"
-msgstr ""
+msgstr "التوسع"
 
 msgid "Scan Mode"
-msgstr ""
+msgstr "وضع المسح"
 
 msgid "Scan SDT for updates"
-msgstr ""
+msgstr "فحص SDT بحثًا عن التحديثات"
 
 msgid "Scan for networks"
-msgstr ""
+msgstr "البحث عن الشبكات"
 
 msgid "Scan for services"
-msgstr ""
+msgstr "البحث عن الخدمات"
 
 msgid "Scan transponder"
-msgstr ""
+msgstr "مسح جهاز الإرسال والاستقبال"
 
 msgid "Scanning for networks, please wait..."
-msgstr ""
+msgstr "جاري البحث عن الشبكات، يرجى الانتظار..."
 
 msgid "Scart"
-msgstr ""
+msgstr "سكارت"
 
 msgid "Scart Mode"
-msgstr ""
+msgstr "وضع سكارت"
 
 msgid "Schedule"
-msgstr ""
+msgstr "الجدول الزمني"
 
 msgid "Schedule Event"
-msgstr ""
+msgstr "جدولة الحدث"
 
 msgid "Schedule Record"
-msgstr ""
+msgstr "جدول التسجيل"
 
 msgid "Science fiction / Fantasy / Horror"
-msgstr ""
+msgstr "الخيال العلمي / الخيال / الرعب"
 
 msgid "Scrambled channel"
-msgstr ""
+msgstr "قناة مشفرة"
 
 msgid "Screen"
-msgstr ""
+msgstr "شاشة"
 
 msgid "Screen Setup"
-msgstr ""
+msgstr "إعداد الشاشة"
 
 msgid "Screenshot"
-msgstr ""
+msgstr "لقطة شاشة"
 
 msgid "Scroll down"
-msgstr ""
+msgstr "تمرير لأسفل"
 
 msgid "Scroll left"
-msgstr ""
+msgstr "تمرير إلى اليسار"
 
 msgid "Scroll right"
-msgstr ""
+msgstr "تمرير إلى اليمين"
 
 msgid "Scroll up"
-msgstr ""
+msgstr "تمرير لأعلى"
 
 msgid "Search"
-msgstr ""
+msgstr "بحث"
 
 msgid "Search for keyword in EPG..."
-msgstr ""
+msgstr "البحث عن الكلمة الرئيسية في EPG..."
 
 msgid "Search in EPG"
-msgstr ""
+msgstr "البحث في دليل البرامج الإلكتروني"
 
 msgid "Search within"
-msgstr ""
+msgstr "البحث ضمن"
 
 msgid "Security"
-msgstr ""
+msgstr "حماية"
 
 msgid "Select Subservice"
-msgstr ""
+msgstr "تحديد الخدمة الفرعية"
 
 msgid "Select audio track"
-msgstr ""
+msgstr "اختر المسار الصوتي"
 
 msgid "Select language"
-msgstr ""
+msgstr "اختر اللغة"
 
 msgid "Select starting-time"
-msgstr ""
+msgstr "حدد وقت البدء"
 
 msgid "Select transponder"
-msgstr ""
+msgstr "اختر المرسل"
 
 msgid "Separator"
-msgstr ""
+msgstr "فاصل"
 
 msgid "Separator Gradient"
-msgstr ""
+msgstr "تدرج الفاصل"
 
 msgid "Serie"
-msgstr ""
+msgstr "سلسلة"
 
 msgid "Serious / Classical / Religious / Historical movie / Drama"
-msgstr ""
+msgstr "فيلم جاد / كلاسيكي / ديني / تاريخي / دراما"
 
 msgid "Serious music / Classical music"
-msgstr ""
+msgstr "موسيقى جادة / موسيقى كلاسيكية"
 
 msgid "Server Box GUI"
-msgstr ""
+msgstr "واجهة المستخدم الرسومية لـ Server Box"
 
 msgid "Server Box IP"
-msgstr ""
+msgstr "عنوان IP لصندوق الخادم"
 
 msgid "Server Box type"
-msgstr ""
+msgstr "نوع صندوق الخادم"
 
 msgid "Server IP"
-msgstr ""
+msgstr "عنوان IP للخادم"
 
 msgid "Servicescan"
-msgstr ""
+msgstr "البحث عن الخدمات"
 
 msgid "Set East (soft) Limit"
-msgstr ""
+msgstr "ضبط الحد الشرقي (الناعم)"
 
 msgid "Set West (soft) Limit"
-msgstr ""
+msgstr "ضبط الحد الغربي (الناعم)"
 
 msgid "Set in days."
-msgstr ""
+msgstr "تم ضبطه بالايام."
 
 msgid "Set in hours"
-msgstr ""
+msgstr "تم ضبطه بالساعات"
 
 msgid "Settings"
-msgstr ""
+msgstr "الاعدادات"
 
 msgid "Settings backup"
-msgstr ""
+msgstr "اعدادات النسخ الاحنيطي"
 
 msgid "Settings restore"
-msgstr ""
+msgstr "اعدادات الاستعادة"
 
 msgid "Setup New Key"
-msgstr ""
+msgstr "إعداد مفتاح جديد"
 
 msgid "Setup network now"
-msgstr ""
+msgstr "إعداد الشبكة الآن"
 
 msgid "Setup network now, please wait..."
-msgstr ""
+msgstr "قم بإعداد الشبكة الآن، يرجى الانتظار..."
 
 msgid "Setup network on startup"
-msgstr ""
+msgstr "إعداد الشبكة عند بدء التشغيل"
 
 msgid "Setup new key"
-msgstr ""
+msgstr "إعداد مفتاح جديد"
 
 msgid "Setup satellites input / LNB"
-msgstr ""
+msgstr "إعداد مدخل الأقمار الصناعية / LNB"
 
 msgid "Shortest time (in ms) to recognize 2 keystrokes"
-msgstr ""
+msgstr "أقصر وقت (بالمللي ثانية) للتعرف على ضغطتي مفتاح"
 
 msgid "Should the search really be aborted?"
-msgstr ""
+msgstr "هل ينبغي حقا إلغاء البحث؟"
 
 msgid "Show / Gameshow"
-msgstr ""
+msgstr "عرض / عرض لعبة"
 
 msgid "Show Hints"
-msgstr ""
+msgstr "إظهار التلميحات"
 
 msgid "Show active network settings"
-msgstr ""
+msgstr "إظهار إعدادات الشبكة النشطة"
 
 msgid "Show file rights"
-msgstr ""
+msgstr "إظهار حقوق الملف"
 
 msgid "Show mode"
-msgstr ""
+msgstr "إظهار الوضع"
 
 msgid "Show picon"
-msgstr ""
+msgstr "إظهار الصورة الرمزية"
 
 msgid "Show weather"
-msgstr ""
+msgstr "إظهار الطقس"
 
 msgid "Shutdown"
-msgstr ""
+msgstr "اغلاق"
 
 msgid "Shutdown time in min. (000=off)"
-msgstr ""
+msgstr "وقت الإغلاق بالدقيقة. (000=إيقاف)"
 
 msgid "Signal small"
-msgstr ""
+msgstr "الإشارة صغيرة"
 
 msgid "Size"
-msgstr ""
+msgstr "مقاس"
 
 msgid "Skin Select"
-msgstr ""
+msgstr "اختيار الجلد"
 
 msgid "Skin Style"
-msgstr ""
+msgstr "نمط الجلد"
 
 msgid "Skin Style name"
-msgstr ""
+msgstr "اسم نمط الجلد"
 
 msgid "Skin select"
-msgstr ""
+msgstr "اختيار الجلد"
 
 msgid "Sleep time"
-msgstr ""
+msgstr "وقت النوم"
 
 msgid "Sleeptimer"
-msgstr ""
+msgstr "مؤقت النوم"
 
 msgid "Sleeptimer in 1 min"
-msgstr ""
+msgstr "مؤقت النوم خلال دقيقة واحدة"
 
 msgid "Slideshow display time"
-msgstr ""
+msgstr "وقت عرض الشرائح"
 
 msgid "Slovak"
-msgstr ""
+msgstr "السلوفاكية"
 
 msgid "Soap / Melodrama / Folkloric"
-msgstr ""
+msgstr "المسلسلات / الميلودراما / الفولكلورية"
 
 msgid "Social & politic events / Business"
-msgstr ""
+msgstr "الأحداث الاجتماعية والسياسية / الأعمال"
 
 msgid "Social / Spiritual sciences"
-msgstr ""
+msgstr "العلوم الاجتماعية / الروحية"
 
 msgid "Software update"
-msgstr ""
+msgstr "تحديث البرنامج"
 
 msgid "Software update URL"
-msgstr ""
+msgstr "رابط تحديث البرنامج"
 
 msgid "South"
-msgstr ""
+msgstr "جنوب"
 
 msgid "Space"
-msgstr ""
+msgstr "فضاء"
 
 msgid "Special events (Olympic Games,World Cup etc.)"
-msgstr ""
+msgstr "الأحداث الخاصة (الألعاب الأولمبية، كأس العالم، الخ)"
 
 msgid "Sports"
-msgstr ""
+msgstr "الرياضة"
 
 msgid "Sports magazines"
-msgstr ""
+msgstr "المجلات الرياضية"
 
 msgid "Standard"
-msgstr ""
+msgstr "قياسي"
 
 msgid "Standby"
-msgstr ""
+msgstr "وضع الاستعداد"
 
 msgid "Standby Brightness"
-msgstr ""
+msgstr "سطوع وضع الاستعداد"
 
 msgid "Standby Clock"
-msgstr ""
+msgstr "الساعة في وضع الاستعداد"
 
 msgid "Start"
-msgstr ""
+msgstr "بدء"
 
 msgid "Start Channel"
-msgstr ""
+msgstr "بدء القناة"
 
 msgid "Start Channel settings"
-msgstr ""
+msgstr "بدء إعدادات القناة"
 
 msgid "Start Mode"
-msgstr ""
+msgstr "وضع البدء"
 
 msgid "Start Search"
-msgstr ""
+msgstr "ابدأ البحث"
 
 msgid "Start dir."
-msgstr ""
+msgstr "ابدأ."
 
 msgid "Start movie from:"
-msgstr ""
+msgstr "ابدأ الفيلم من:"
 
 msgid "Start scan"
-msgstr ""
+msgstr "بدء المسح"
 
 msgid "Startup to standby"
-msgstr ""
+msgstr "بدء التشغيل إلى وضع الاستعداد"
 
 msgid "Status"
-msgstr ""
+msgstr "الحالة"
 
 msgid "Status line"
-msgstr ""
+msgstr "سطر الحالة"
 
 msgid "Step Mode"
-msgstr ""
+msgstr "وضع الخطوة"
 
 msgid "Step/Drive Motor East (b,c)"
-msgstr ""
+msgstr "محرك الخطوة/الدفع الشرقي (ب، ج)"
 
 msgid "Step/Drive Motor West (b,c)"
-msgstr ""
+msgstr "محرك الخطوة/الدفع الغربي (ب، ج)"
 
 msgid "Stop subtitles"
-msgstr ""
+msgstr "إيقاف الترجمة"
 
 msgid "Stop time"
-msgstr ""
+msgstr "أوقف الوقت"
 
 msgid "Store Motor Position (a)"
-msgstr ""
+msgstr "تخزين موضع المحرك (أ)"
 
 msgid "Stream information"
-msgstr ""
+msgstr "معلومات التدفق"
 
 msgid "Subchannel display"
-msgstr ""
+msgstr "عرص ترجمة القناة"
 
 msgid "Subchannel down"
-msgstr ""
+msgstr "ترجمة القناة معطلة"
 
 msgid "Subchannel up"
-msgstr ""
+msgstr "ترجمة القناة للاعلي"
 
 msgid "Subservices"
-msgstr ""
+msgstr "خدمات الترجمة"
 
 msgid "Subtitle Select"
-msgstr ""
+msgstr "اختيار الترجمة"
 
 msgid "Subtitle language preferences"
-msgstr ""
+msgstr "لغة الترجمة المفضلة"
 
 msgid "Subtitles"
-msgstr ""
+msgstr "الترجمة"
 
 msgid "Subtitles not found"
-msgstr ""
+msgstr "لم يتم العثور على الترجمة"
 
 msgid "Sunday"
-msgstr ""
+msgstr "الأحد"
 
 msgid "Svenska"
-msgstr ""
+msgstr "السويدية"
 
 msgid "Swap rotor east/west"
-msgstr ""
+msgstr "تبديل الدوار شرقًا/غربًا"
 
 msgid "Switch Step/Drive Mode (b)"
-msgstr ""
+msgstr "تبديل وضع الخطوة/القيادة (ب)"
 
 msgid "Symbol rate"
-msgstr ""
+msgstr "معدل الترميز"
 
 msgid "Syncronisation via"
-msgstr ""
+msgstr "المزامنة عبر"
 
 msgid "System"
-msgstr ""
+msgstr "النظام"
 
 msgid "TMDB"
 msgstr ""
 
 msgid "TMDB Infos are not available"
-msgstr ""
+msgstr "معلومات TMDB غير متوفرة"
 
 msgid "TMDB Preview"
-msgstr ""
+msgstr "معاينة TMDB"
 
 msgid "TMDB:"
 msgstr ""
 
 msgid "TOP"
-msgstr ""
+msgstr "اعلي"
 
 msgid "TOP LEFT"
-msgstr ""
+msgstr "أعلى اليسار"
 
 msgid "TOP RIGHT"
-msgstr ""
+msgstr "أعلى اليمين"
 
 msgid "TV"
-msgstr ""
+msgstr "تلفزيون"
 
 msgid "TV & Radio"
-msgstr ""
+msgstr "التلفزيون والراديو"
 
 msgid "TV / Radio"
-msgstr ""
+msgstr "تلفزيون/راديو"
 
 msgid "TV Channel"
-msgstr ""
+msgstr "قناة تلفزيونية"
 
 msgid "TV-System"
-msgstr ""
+msgstr "نظام تلفزيوني"
 
 msgid "TV/Radio"
-msgstr ""
+msgstr "تلفزيون/راديو"
 
 msgid "TV/Radio-mode"
-msgstr ""
+msgstr "وضع التلفزيون/الراديو"
 
 msgid "Talk show"
-msgstr ""
+msgstr "برنامج حواري"
 
 msgid "Team sports (excluding football)"
-msgstr ""
+msgstr "الرياضات الجماعية (باستثناء كرة القدم)"
 
 msgid "Technology / Natural sciences"
-msgstr ""
+msgstr "التكنولوجيا / العلوم الطبيعية"
 
 msgid "Teletext"
-msgstr ""
+msgstr "النصوص التليفزيونية"
 
 msgid "Tennis / Squash"
-msgstr ""
+msgstr "التنس / الاسكواش"
 
 msgid "Terrestrial:"
-msgstr ""
+msgstr "أرضي:"
 
 msgid "Test network now"
-msgstr ""
+msgstr "اختبار الشبكة الآن"
 
 msgid "Test signal"
-msgstr ""
+msgstr "إشارة الاختبار"
 
 msgid "Textcolor"
-msgstr ""
+msgstr "لون النص"
 
 msgid "The STB will shutdown after this time."
-msgstr ""
+msgstr "سيتم إغلاق الجهاز بعد هذا الوقت."
 
 msgid ""
 "The event is flagged for record.\n"
 "The box will power on and \n"
 "switch to this channel at the given time."
 msgstr ""
+"تم وضع علامة على الحدث للتسجيل.\n"
+"سيتم تشغيل الصندوق و\n"
+"التبديل إلى هذه القناة في الوقت المحدد."
 
 msgid ""
 "The event is scheduled.\n"
 "The box will power on and \n"
 "switch to this channel at the given time."
 msgstr ""
+"تم جدولة الحدث.\n"
+"سيتم تشغيل الصندوق و\n"
+"التبديل إلى هذه القناة في الوقت المحدد."
 
 msgid "The extension .m3u will be added automatically"
-msgstr ""
+msgstr "سيتم إضافة الامتداد .m3u تلقائيًا"
 
 msgid ""
 "The image was successfully flashed.\n"
 "The box will be rebooted now."
 msgstr ""
+"تم تحميل الصورة بنجاح.\n"
+"سيتم إعادة تشغيل الجهاز الآن."
 
 #, c-format
 msgid ""
 "The image was successfully saved \n"
 "under %s."
 msgstr ""
+"تم حفظ الصورة بنجاح \n"
+"تحت %s."
 
 msgid ""
 "The image you have selected is an untested version, this means\n"
@@ -2418,192 +2428,201 @@ msgid ""
 "\n"
 "Do you really want to update to this version?"
 msgstr ""
+"الصورة التي حددتها هي إصدار غير مُختبر، وهذا يعني أن الجهاز الخاص بك قد يفشل في التشغيل بعد التحديث.\n"
+"\n"
+"هل تريد حقًا التحديث إلى هذا الإصدار؟"
 
 msgid ""
 "The neutrino-settings have been updated.\n"
 "New Options will be set to default."
 msgstr ""
+"تم تحديث إعدادات النيوترينو.\n"
+"سيتم تعيين الخيارات الجديدة على الوضع الافتراضي."
 
 msgid ""
 "The recording directory is not writable.\n"
 "Recording will not work."
 msgstr ""
+"دليل التسجيل غير قابل للكتابة.\n"
+"لن يعمل التسجيل."
 
 msgid ""
 "The recording was aborted,\n"
 "because the target file could not be opened."
 msgstr ""
+"تم إلغاء التسجيل،\n"
+"لأنه لم يتم فتح الملف المستهدف."
 
 msgid "Thursday"
-msgstr ""
+msgstr "الخميس"
 
 msgid "Time"
-msgstr ""
+msgstr "وقت"
 
 msgid "Time Zone"
-msgstr ""
+msgstr "المنطقة الزمنية"
 
 msgid "Time-Syncronisation"
-msgstr ""
+msgstr "مزامنة الوقت"
 
 msgid "Timed Step Mode"
-msgstr ""
+msgstr "وضع الخطوة الموقوتة"
 
 msgid "Timeout waiting CI menu ready"
-msgstr ""
+msgstr "انتهاء مهلة الانتظار لقائمة CI جاهزة"
 
 msgid "Timer conflict. Create the timer anyway?"
-msgstr ""
+msgstr "تعارض في المؤقت. هل تريد إنشاء المؤقت على أي حال؟"
 
 msgid "Timer settings"
-msgstr ""
+msgstr "إعدادات المؤقت"
 
 msgid "Timer typ"
-msgstr ""
+msgstr "نوع الموقت"
 
 msgid "Timerlist"
-msgstr ""
+msgstr "قائمة المؤقتة"
 
 msgid "Timescale"
-msgstr ""
+msgstr "الجدول الزمني"
 
 msgid "Timeselection"
-msgstr ""
+msgstr "اختيار الوقت"
 
 msgid "Timeshift"
-msgstr ""
+msgstr "التحول الزمني"
 
 msgid "Timing"
-msgstr ""
+msgstr "توقيت"
 
 msgid "Tint"
-msgstr ""
+msgstr "صبغة"
 
 msgid "Total"
-msgstr ""
+msgstr "المجموع"
 
 msgid "Tourism / Travel"
-msgstr ""
+msgstr "السياحة / السفر"
 
 msgid "Transmission mode"
-msgstr ""
+msgstr "وضع النقل"
 
 msgid "Transponders:"
-msgstr ""
+msgstr "المستجيبات:"
 
 msgid "Transponderscan failed!"
-msgstr ""
+msgstr "فشل مسح المستجيب"
 
 msgid "Transponderscan finished."
-msgstr ""
+msgstr "انتهاء مسح المستجيب"
 
 msgid "Travel & recreation"
-msgstr ""
+msgstr "السفر والترفيه"
 
 msgid "Tuesday"
-msgstr ""
+msgstr "الثلاثاء"
 
 msgid "Tuner mode"
-msgstr ""
+msgstr "وضع الموالف"
 
 msgid "Tuner type"
-msgstr ""
+msgstr "نوع الموالف"
 
 msgid "Type"
-msgstr ""
+msgstr "النوع"
 
 msgid "Type:"
-msgstr ""
+msgstr "النوع:"
 
 msgid "USALS command repeat"
-msgstr ""
+msgstr "تكرار أمر USALS"
 
 msgid "UTF-8"
 msgstr ""
 
 msgid "Umount network volume"
-msgstr ""
+msgstr "إلغاء تثبيت وحدة تخزين الشبكة"
 
 msgid "Uncommited/Commited"
-msgstr ""
+msgstr "غير ملتزم/ملتزم"
 
 msgid "Unicable"
-msgstr ""
+msgstr "كابل أحادي"
 
 msgid "Unicable SCR address"
-msgstr ""
+msgstr "عنوان SCR للكابل الاحادي"
 
 msgid "Unicable Setup"
-msgstr ""
+msgstr "إعداد الكابل الأحادي"
 
 msgid "Unicable frequency"
-msgstr ""
+msgstr "تردد الكابل الاحادي"
 
 msgid "Unicable settings"
-msgstr ""
+msgstr "إعدادات الكابل الأحادي"
 
 msgid "Unicable2 (JESS)"
 msgstr ""
 
 msgid "Unknown"
-msgstr ""
+msgstr "مجهول"
 
 msgid "Upper Left"
-msgstr ""
+msgstr "أعلى اليسار"
 
 msgid "Use 0..9, or use Up/Down,"
-msgstr ""
+msgstr "استخدم 0..9، أو استخدم أعلى/أسفل،"
 
 msgid "Use XMLTV EPG"
-msgstr ""
+msgstr "استخدم XMLTV EPG"
 
 msgid "Use gotoXX"
 msgstr ""
 
 msgid "User menu"
-msgstr ""
+msgstr "قائمة المستخدم"
 
 msgid "User menu F1"
-msgstr ""
+msgstr "قائمة المستخدم F1"
 
 msgid "User menu F2"
-msgstr ""
+msgstr "قائمة المستخدم F2"
 
 msgid "User menu F3"
-msgstr ""
+msgstr "قائمة المستخدم F3"
 
 msgid "User menu F4"
-msgstr ""
+msgstr "قائمة المستخدم F4"
 
 msgid "User menu blue"
-msgstr ""
+msgstr "قائمة المستخدم باللون الأزرق"
 
 msgid "Username"
-msgstr ""
+msgstr "اسم المستخدم"
 
 msgid "Variety show"
-msgstr ""
+msgstr "عرض منوعات"
 
 msgid "Version:"
-msgstr ""
+msgstr "إصدار:"
 
 msgid "Vertikal (in %)"
-msgstr ""
+msgstr "عمودي (في %)"
 
 msgid "Video Format"
-msgstr ""
+msgstr "تنسيق الفيديو"
 
 msgid "Video Resolution"
-msgstr ""
+msgstr "دقة الفيديو"
 
 msgid "Video settings"
-msgstr ""
+msgstr "إعدادات الفيديو"
 
 msgid "Videotext"
-msgstr ""
+msgstr "نص الفيديو"
 
 msgid "Virtual zap"
-msgstr ""
+msgstr "الزاب الافتراضي"
 
 msgid "Volume Step Size"
 msgstr ""
