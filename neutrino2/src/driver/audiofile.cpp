@@ -36,8 +36,6 @@ extern "C" {
 
 #include <OpenThreads/ScopedLock>
 
-#include <driver/netfile.h>
-
 #include <system/helpers.h>
 #include <system/debug.h>
 

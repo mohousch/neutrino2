@@ -358,8 +358,24 @@ void CLCDSettings::showMenu()
 	// standby_clock
 	lcdSettings->addItem(new CMenuOptionChooser(_("Standby Clock"), &g_settings.lcd_standby_clock, LCDMENU_STANDBY_CLOCK_OPTIONS, LCDMENU_STANDBY_CLOCK_OPTION_COUNT, true, this, CRCInput::RC_nokey, NULL, false, false));
 #endif
+
+#ifdef ENABLE_4DIGITS
+	// dimm-time
+	m1 = new CMenuForwarder(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, this, "set_dimm_timeout");
+	lcdSettings->addItem(m1);
+
+	// dimm brightness
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, MAXBRIGHTNESS, this));
+
+	// brightness
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness"), &g_settings.lcd_brightness, true, 0, MAXBRIGHTNESS, this));
 	
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
+	// standby brightness
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Standby Brightness"), &g_settings.lcd_standbybrightness, true, 0, MAXBRIGHTNESS, this));
+	
+	// reset brightness / contrast to default
+	lcdSettings->addItem(new CMenuForwarder(_("Reset to defaults"), true, NULL, this, "reset"));
+#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)|| defined (ENABLE_VFD)
 	// dimm-time
 	m1 = new CMenuForwarder(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, this, "set_dimm_timeout");
 	lcdSettings->addItem(m1);

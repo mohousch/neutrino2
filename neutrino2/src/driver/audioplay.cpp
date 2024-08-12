@@ -32,7 +32,7 @@
 #include <config.h>
 #endif
 
-#include "global.h"
+#include <global.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include <sched.h>
@@ -42,12 +42,11 @@
 #include <driver/audioplay.h>
 #include <system/debug.h>
 #include <sectionsd/edvbstring.h> // UTF8
-#include <driver/netfile.h>
 
 #include <playback_cs.h>
-#ifdef USE_OPENGL
-#include <audio_cs.h>
-#endif
+//#ifdef USE_OPENGL
+//#include <audio_cs.h>
+//#endif
 
 
 void ShoutcastCallback(void *arg)
@@ -152,7 +151,7 @@ void * CAudioPlayer::PlayThread( void * /*arg*/)
 	
 	if(getInstance()->m_Audiofile.FileExtension == CFile::EXTENSION_URL)
 	{
-		fp = ::f_open( getInstance()->m_Audiofile.Filename.c_str(), "rc" );
+		fp = ::fopen( getInstance()->m_Audiofile.Filename.c_str(), "rc" );
 
 		if ( fp == NULL )
 		{
@@ -162,11 +161,11 @@ void * CAudioPlayer::PlayThread( void * /*arg*/)
 		}
 		else
 		{
-			if ( ::fstatus(fp, ShoutcastCallback) < 0 )
-				fprintf( stderr, "CAudioPlayer::PlayThread: Error adding shoutcast callback: %s\n", err_txt );
+//			if ( ::fstatus(fp, ShoutcastCallback) < 0 )
+//				fprintf( stderr, "CAudioPlayer::PlayThread: Error adding shoutcast callback: %s\n", err_txt );
 		}
 
-		if ( ::f_close( fp ) == EOF )
+		if ( ::fclose( fp ) == EOF )
 		{
 			fprintf( stderr, "CAudioPlayer::PlayThread: Could not close file %s.\n", getInstance()->m_Audiofile.Filename.c_str() );
 		}

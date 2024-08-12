@@ -37,7 +37,6 @@ libneutrino2_driver_a_SOURCES = \
 	streamts.cpp \
 	radiotext.cpp \
 	radiotools.cpp \
-	netfile.cpp \
 	audiofile.cpp \
 	audioplay.cpp \
 	movieinfo.cpp

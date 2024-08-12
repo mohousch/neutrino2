@@ -541,9 +541,15 @@ struct SNeutrinoSettings
 #define DEFAULT_TIMING_NUMERICZAP		3	
 
 // lcdd
+#ifdef ENABLE_4DIGITS
+#define DEFAULT_LCD_BRIGHTNESS			0xF
+#define DEFAULT_LCD_STANDBYBRIGHTNESS		0x7
+#define DEFAULT_LCD_DIM_BRIGHTNESS		0xA
+#else
 #define DEFAULT_LCD_BRIGHTNESS			0xFF
 #define DEFAULT_LCD_STANDBYBRIGHTNESS		0xAA
 #define DEFAULT_LCD_DIM_BRIGHTNESS		0x7D
+#endif
 #define DEFAULT_LCD_CONTRAST			0x3F
 #define DEFAULT_LCD_POWER			0x01
 #define DEFAULT_LCD_INVERSE			0x00
@@ -551,7 +557,11 @@ struct SNeutrinoSettings
 #define DEFAULT_LCD_EPGMODE			0x03	/* channel / title */
 #define DEFAULT_LCD_MODE			0x01	/* channel */
 #define DEFAULT_LCD_EPGALIGN			0x01    /* centered */
+#ifdef ENABLE_4DIGITS
+#define MAXBRIGHTNESS				0xF
+#else
 #define MAXBRIGHTNESS				0xFF
+#endif
 #define MAXCONTRAST				0x3F
 
 // corners (osd)

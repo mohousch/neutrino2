@@ -577,8 +577,15 @@ void CLCD::setlcdparameter(int dimm, const int contrast, const int power, const 
 	if (power == 0)
 		dimm = 0;
 #endif
-		
-#if defined (ENABLE_VFD)
+
+#ifdef ENABLE_4DIGITS
+	std::string value = toString(255 / 15 * dimm);
+	
+	if (access("/proc/stb/lcd/oled_brightness", F_OK) == 0)
+		proc_put("/proc/stb/lcd/oled_brightness", value.c_str(), value.length());
+	else if (access("/proc/stb/fp/oled_brightness", F_OK) == 0)
+		proc_put("/proc/stb/fp/oled_brightness", value.c_str(), value.length());	
+#elif defined (ENABLE_VFD)
 #ifdef __sh__
 	if(dimm < 0)
 		dimm = 0;
