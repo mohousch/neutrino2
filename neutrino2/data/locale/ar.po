@@ -2625,84 +2625,89 @@ msgid "Virtual zap"
 msgstr "الزاب الافتراضي"
 
 msgid "Volume Step Size"
-msgstr ""
+msgstr "حجم خطوة مستوى الصوت"
 
 msgid "Volume adjustment (in %)"
-msgstr ""
+msgstr "ضبط مستوى الصوت (بالنسبة المئوية)"
 
 msgid "Volumebar"
-msgstr ""
+msgstr "شريط مستوى الصوت"
 
 msgid "Wait a few seconds for abort"
-msgstr ""
+msgstr "انتظر بضع ثوان للإلغاء"
 
 msgid "Waiting for CI answer"
-msgstr ""
+msgstr "في انتظار إجابة CI"
 
 msgid "Waiting for time..."
-msgstr ""
+msgstr "في انتظار الوقت..."
 
 msgid "Water sports"
-msgstr ""
+msgstr "الرياضات المائية"
 
 msgid "Weather Forcast"
-msgstr ""
+msgstr "توقعات الطقس"
 
 msgid "Wednesday"
-msgstr ""
+msgstr "الأربعاء"
 
 msgid "West"
-msgstr ""
+msgstr "الغرب"
 
 msgid "Wide Screen Auto"
-msgstr ""
+msgstr "شاشة عريضة تلقائية"
 
 msgid "Widget Type"
-msgstr ""
+msgstr "نوع الأداة"
 
 msgid "Window-Content"
-msgstr ""
+msgstr "محتوى النافذة"
 
 msgid "Window-Content inactive"
-msgstr ""
+msgstr "محتوى النافذة غير نشط"
 
 msgid "Window-Content selected"
-msgstr ""
+msgstr "تم تحديد محتوى النافذة"
 
 msgid "Winter sports"
-msgstr ""
+msgstr "الرياضات الشتوية"
 
 msgid "Write one partition"
-msgstr ""
+msgstr "اكتب قسمًا واحدًا"
 
 msgid "Writing Flash"
-msgstr ""
+msgstr "كتابة فلاش"
 
 msgid "YT:"
 msgstr ""
 
 msgid "Year of production"
-msgstr ""
+msgstr "سنة الإنتاج"
 
 msgid "Yes"
-msgstr ""
+msgstr "نعم"
 
 msgid "You really want to to stop record ?"
-msgstr ""
+msgstr "هل تريد حقًا إيقاف التسجيل؟"
 
 msgid ""
 "Your Release cycle differs.\n"
 "To continue?"
 msgstr ""
+"تختلف دورة الإصدار الخاصة بك.\n"
+"هل تريد الاستمرار؟"
 
 msgid ""
 "Your box remote control will be locked.\n"
 " To unlock it, press <RED> \n"
 " and <MENU> on your remote control."
 msgstr ""
+"سيتم قفل جهاز التحكم عن بعد الخاص بصندوقك.\n"
+"لإلغاء قفله، اضغط على <RED> \n"
+" و<MENU> بجهاز التحكم عن بعد الخاص بك."
 
 msgid "Youth protection"
-msgstr ""
+msgstr "حماية الشباب"
 
 msgid "Zap cycle"
 msgstr ""
@@ -2723,292 +2728,298 @@ msgid "Zoom out"
 msgstr ""
 
 msgid "a empty entry means no proxy"
-msgstr ""
+msgstr "إدخال فارغ يعني عدم وجود وكيل"
 
 msgid "a empty entry means no proxy-auth"
-msgstr ""
+msgstr "إدخال فارغ يعني عدم وجود مصادقة وكيل"
 
 msgid "active"
-msgstr ""
+msgstr "نشيط"
 
 msgid "add channel to my favorites"
-msgstr ""
+msgstr "أضف القناة إلى المفضلة"
 
 msgid "advanced"
-msgstr ""
+msgstr "متقدم"
 
 msgid "all services"
-msgstr ""
+msgstr "جميع الخدمات"
 
 msgid "alpha"
-msgstr ""
+msgstr "ألفا"
 
 msgid "amount of timer repeats"
-msgstr ""
+msgstr "عدد مرات تكرار المؤقت"
 
 msgid "angular"
-msgstr ""
+msgstr "زاوية"
 
 msgid "approx. 1 minute back"
-msgstr ""
+msgstr "حوالي دقيقة واحدة إلى الوراء"
 
 msgid "approx. 10 minutes back"
-msgstr ""
+msgstr "حوالي 10 دقائق إلى الوراء"
 
 msgid "approx. 10 seconds back"
-msgstr ""
+msgstr "حوالي 10 ثواني إلى الوراء"
 
 msgid "approx. 5 minutes back"
-msgstr ""
+msgstr "حوالي 5 دقائق إلى الوراء"
 
 msgid "audio master"
-msgstr ""
+msgstr "الصوت الرئيسي"
 
 msgid "back"
-msgstr ""
+msgstr "للخلف"
 
 msgid "be Cached? (Set in hours)"
-msgstr ""
+msgstr "سيتم تخزينها مؤقتًا؟ (يتم تحديدها بالساعات)"
 
 msgid "biweekly"
-msgstr ""
+msgstr "كل اسبوعين"
 
 msgid "blue"
-msgstr ""
+msgstr "أزرق"
 
 msgid "bottom left"
-msgstr ""
+msgstr "أسفل اليسار"
 
 msgid "bottom right"
-msgstr ""
+msgstr "أسفل اليمين"
 
 msgid ""
 "by manual package update version checks are currently not supported.\n"
 "Are you sure that you wish to install this package?"
 msgstr ""
+"لا يتم حاليًا دعم عمليات التحقق من إصدار تحديث الحزمة يدويًا.\n"
+"هل أنت متأكد من رغبتك في تثبيت هذه الحزمة؟"
 
 msgid "cable"
-msgstr ""
+msgstr "كابل"
 
 msgid "can't get mtd-info"
-msgstr ""
+msgstr "لا يمكن الحصول على معلومات mtd"
 
 msgid "can't get update list"
-msgstr ""
+msgstr "لا يمكن الحصول على قائمة التحديث"
 
 msgid "can't open file"
-msgstr ""
+msgstr "لا يمكن فتح الملف"
 
 msgid "can't open mtd-device"
-msgstr ""
+msgstr "لا يمكن فتح جهاز mtd"
 
 msgid "center"
-msgstr ""
+msgstr "مركز"
 
 msgid ""
 "changes are activ after restart\n"
 "do you want to restart?"
 msgstr ""
+"يتم تفعيل التغييرات بعد إعادة التشغيل\n"
+"هل تريد إعادة التشغيل؟"
 
 msgid "channel"
-msgstr ""
+msgstr "قناة"
 
 msgid "channel / title"
-msgstr ""
+msgstr "القناة / العنوان"
 
 msgid "checking version"
-msgstr ""
+msgstr "التحقق من الإصدار"
 
 msgid "choose Skin Style."
-msgstr ""
+msgstr "اختر نمط البشرة."
 
 msgid "colored"
-msgstr ""
+msgstr "ملون"
 
 msgid "create new"
-msgstr ""
+msgstr "إنشاء جديد"
 
 msgid "create screenshot?"
-msgstr ""
+msgstr "إنشاء لقطة شاشة؟"
 
 msgid "daily"
-msgstr ""
+msgstr "يوميًا"
 
 msgid "dark to light"
-msgstr ""
+msgstr "من الظلام إلى النور"
 
 msgid "dark to light to dark"
-msgstr ""
+msgstr "من الظلام إلى النور إلى الظلام"
 
 msgid "default audio streams"
-msgstr ""
+msgstr "تدفقات الصوت الافتراضية"
 
 msgid "default center"
-msgstr ""
+msgstr "المركز الافتراضي"
 
 msgid "delete"
-msgstr ""
+msgstr "حذف"
 
 msgid "direct connected"
-msgstr ""
+msgstr "متصل بشكل مباشر"
 
 msgid "directory already mounted"
-msgstr ""
+msgstr "تم تحميل الدليل بالفعل"
 
 msgid "directory/share"
-msgstr ""
+msgstr "الدليل/المشاركة"
 
 msgid "don't care"
-msgstr ""
+msgstr "لا أهتم"
 
 msgid "downmix"
-msgstr ""
+msgstr "داون ميكس"
 
 msgid "enter proxyserver name or ip, use host:port"
-msgstr ""
+msgstr "أدخل اسم خادم الوكيل أو عنوان IP، واستخدم host:port"
 
 msgid "enter the proxyserver password"
-msgstr ""
+msgstr "أدخل كلمة مرور الخادم الوكيل"
 
 msgid "enter the proxyserver username"
-msgstr ""
+msgstr "أدخل اسم مستخدم الخادم الوكيل"
 
 msgid "erasing flash"
-msgstr ""
+msgstr "محو الفلاش"
 
 msgid "erasure of flash failed"
-msgstr ""
+msgstr "فشل مسح الفلاش"
 
 msgid "error umounting volume"
-msgstr ""
+msgstr "خطأ في تحميل المجلد"
 
 msgid "fast"
-msgstr ""
+msgstr "سريع"
 
 msgid "filesystem type not supported"
-msgstr ""
+msgstr "نوع نظام الملفات غير مدعوم"
 
 msgid "fourweekly"
-msgstr ""
+msgstr "أربعة أسابيع"
 
 msgid "from 12 years up"
-msgstr ""
+msgstr "من 12 سنة فما فوق"
 
 msgid "from 16 years up"
-msgstr ""
+msgstr "من 16 سنة فما فوق"
 
 msgid "from 18 years up"
-msgstr ""
+msgstr "من 18 سنة فما فوق"
 
 msgid "fullscreen"
-msgstr ""
+msgstr "ملء الشاشة"
 
 msgid "getting update list"
-msgstr ""
+msgstr "الحصول على قائمة التحديث"
 
 msgid "goto end"
-msgstr ""
+msgstr "اذهب إلى النهاية"
 
 msgid "goto middle"
-msgstr ""
+msgstr "اذهب إلى الوسط"
 
 msgid "goto start"
-msgstr ""
+msgstr "اذهب إلى البداية"
 
 msgid "green"
-msgstr ""
+msgstr "أخضر"
 
 msgid "hidden"
-msgstr ""
+msgstr "اخفاء"
 
 msgid "higher center"
-msgstr ""
+msgstr "المركز الأعلى"
 
 msgid "image has errors"
-msgstr ""
+msgstr "الصورة بها أخطاء"
 
 msgid "inactive"
-msgstr ""
+msgstr "غير نشط"
 
 msgid "internet Radio"
-msgstr ""
+msgstr "راديو الانترنت"
 
 msgid "is not installed please install again."
-msgstr ""
+msgstr "لم يتم التثبيت، يرجى التثبيت مرة أخرى."
 
 msgid "is reachable (ping)"
-msgstr ""
+msgstr "يمكن الوصول إليه (ping)"
 
 msgid "is unreachable"
-msgstr ""
+msgstr "غير قابل للوصول"
 
 msgid "is unreachable (host or protocol error)"
-msgstr ""
+msgstr "غير قابل للوصول (خطأ في المضيف أو البروتوكول)"
 
 msgid "is unreachable (socket error)"
-msgstr ""
+msgstr "غير قابل للوصول (خطأ في المقبس)"
 
 msgid "italian"
-msgstr ""
+msgstr "ايطالية"
 
 msgid "jump backwards"
-msgstr ""
+msgstr "القفز للخلف"
 
 msgid "jump ff"
-msgstr ""
+msgstr "القفز ff"
 
 msgid "jump forwards"
-msgstr ""
+msgstr "القفز للأمام"
 
 msgid "jump prev"
-msgstr ""
+msgstr "اقفز إلى السابق"
 
 msgid "large"
-msgstr ""
+msgstr "كبير"
 
 msgid "left"
-msgstr ""
+msgstr "غادر"
 
 msgid "light to dark"
-msgstr ""
+msgstr "من الضوء إلى الظلام"
 
 msgid "light to dark to light"
-msgstr ""
+msgstr "من الضوء إلى الظلام إلى الضوء"
 
 msgid "local dir"
-msgstr ""
+msgstr "الدليل المحلي"
 
 msgid "locked"
-msgstr ""
+msgstr "مغلق"
 
 msgid "logos Dir"
-msgstr ""
+msgstr "معاينة الشعارات"
 
 msgid "loop"
-msgstr ""
+msgstr "حلقة"
 
 msgid ""
 "manual flash update version checks are currently not supported.\n"
 "Are you sure that you wish to install this image?"
 msgstr ""
+"لا يتم حاليًا دعم عمليات التحقق من إصدار تحديث الفلاش اليدوي.\n"
+"هل أنت متأكد من رغبتك في تثبيت هذه الصورة؟"
 
 msgid "middle"
-msgstr ""
+msgstr "وسط"
 
 msgid "milliseconds"
-msgstr ""
+msgstr "مللي ثانية"
 
 msgid "mono left"
-msgstr ""
+msgstr "أحادي اليسار"
 
 msgid "mono right"
-msgstr ""
+msgstr "أحادي اليمين"
 
 msgid "monochrom"
-msgstr ""
+msgstr "أحادية اللون"
 
 msgid "monthly"
-msgstr ""
+msgstr "شهريا"
 
 msgid "mount"
 msgstr ""
