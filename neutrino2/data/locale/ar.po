@@ -21,7 +21,7 @@ msgstr "'X'=مؤقت '-' لا يوجد مؤقت"
 
 #, c-format
 msgid "(%d%% over)"
-msgstr ""
+msgstr "(%d%% انتهى)"
 
 msgid "(Re)-Calculate Positions"
 msgstr "(اعادة)-حساب المواضع"
@@ -133,7 +133,7 @@ msgid "Aspect Ratio"
 msgstr "نسبة العرض إلى الارتفاع"
 
 msgid "Athletics"
-msgstr ""
+msgstr "ألعاب القوى"
 
 msgid "Atsc:"
 msgstr ""
@@ -181,13 +181,13 @@ msgid "Available Images/Packages"
 msgstr "الصور/الحزم المتوفرة"
 
 msgid "BOTTOM"
-msgstr ""
+msgstr "قاع"
 
 msgid "BOTTOM LEFT"
-msgstr ""
+msgstr "أسفل اليسار"
 
 msgid "BOTTOM RIGHT"
-msgstr ""
+msgstr "أسفل اليمين"
 
 msgid "Back"
 msgstr "للخلف"
@@ -199,7 +199,7 @@ msgid "Backup failed"
 msgstr "فشل النسخ الاحتياطي"
 
 msgid "Ballet"
-msgstr ""
+msgstr "باليه"
 
 msgid "Bandwidth"
 msgstr "النطاق الترددي"
@@ -327,7 +327,7 @@ msgid "CORNER NONE"
 msgstr "لا يوجد زاوية"
 
 msgid "CPU:"
-msgstr ""
+msgstr "وحدة المعالجة المركزية:"
 
 msgid "Cable"
 msgstr "كابل"
@@ -504,25 +504,25 @@ msgid "Details current program"
 msgstr "تفاصيل البرنامج الحالي"
 
 msgid "Detective / Thriller"
-msgstr ""
+msgstr "محقق / مثير"
 
 msgid "DiSEqC"
-msgstr ""
+msgstr "دايسك"
 
 msgid "DiSEqC 1.0"
-msgstr ""
+msgstr "دايسك 1.0"
 
 msgid "DiSEqC 1.1"
-msgstr ""
+msgstr "دايسك 1.1"
 
 msgid "DiSEqC-repeats"
-msgstr ""
+msgstr "تكرار-دايسك"
 
 msgid "Diashow mode"
 msgstr "وضع عرض الشرائح"
 
 msgid "Digital"
-msgstr ""
+msgstr "رقمي"
 
 msgid "Dim timeout"
 msgstr "مهلة التعتيم"
@@ -941,19 +941,19 @@ msgid "HDD Init"
 msgstr "تهيئة القرص الصلب"
 
 msgid "HDD Mount"
-msgstr "تثبيت القرص الصلب"
+msgstr "ربط القرص الصلب"
 
 msgid "HDD Mount Failed"
-msgstr "فشل تثبيت القرص الصلب"
+msgstr "فشل ربط القرص الصلب"
 
 msgid "HDD Mount failed !"
-msgstr "فشل تثبيت القرص الصلب!"
+msgstr "فشل ربط القرص الصلب!"
 
 msgid "HDD Mounted"
-msgstr "تم تثبيت القرص الصلب"
+msgstr "تم ربط القرص الصلب"
 
 msgid "HDD Umount"
-msgstr "إلغاء تثبيت القرص الصلب"
+msgstr "إلغاء ربط القرص الصلب"
 
 msgid "HDD check failed !"
 msgstr "فشل فحص القرص الصلب!"
@@ -965,19 +965,19 @@ msgid "HDD init failed !"
 msgstr "فشلت عملية تهيئة القرص الصلب!"
 
 msgid "HDD mounted"
-msgstr "تم تثبيت القرص الصلب"
+msgstr "تم ربط القرص الصلب"
 
 msgid "HDD settings"
 msgstr "إعدادات القرص الصلب"
 
 msgid "HDD umount"
-msgstr "إلغاء تثبيت القرص الصلب"
+msgstr "إلغاء ربط القرص الصلب"
 
 msgid "HDD umounted"
-msgstr "القرص الصلب غير مثبت"
+msgstr "الغاء ربط القرص الصلب"
 
 msgid "HDD unmount failed !"
-msgstr "فشل إلغاء تثبيت القرص الصلب!"
+msgstr "فشل إلغاء ربط القرص الصلب!"
 
 msgid "HDMI Color Space"
 msgstr "مساحة ألوان HDMI"
@@ -1175,7 +1175,7 @@ msgid "LUFS"
 msgstr ""
 
 msgid "LaDirection"
-msgstr ""
+msgstr "الإدارة"
 
 msgid "Language"
 msgstr "لغة"
@@ -1374,10 +1374,10 @@ msgid "Motoring"
 msgstr "المحركات"
 
 msgid "Mount network volume"
-msgstr "تثبيت وحدة تخزين الشبكة"
+msgstr "ربط وحدة تخزين الشبكة"
 
 msgid "Mount options"
-msgstr "خيارات التثبيت"
+msgstr "خيارات الربط"
 
 msgid "Move"
 msgstr "يتحرك"
@@ -1458,11 +1458,15 @@ msgid ""
 "New jump back\n"
 " 'blue' for endposition"
 msgstr ""
+"قفزة جديدة للخلف_n"
+"اللون الأزرق" لوضع النهاية"
 
 msgid ""
 "New jump forward\n"
 " 'blue' for endposition"
 msgstr ""
+"قفزة جديدة للأمام\n"
+"اللون الأزرق" لوضع النهاية"
 
 msgid "New media"
 msgstr "وسيطة جديدة"
@@ -3022,241 +3026,243 @@ msgid "monthly"
 msgstr "شهريا"
 
 msgid "mount"
-msgstr ""
+msgstr "ربط وحدة التخزين"
 
 msgid "mount error"
-msgstr ""
+msgstr "خطأ في الربط"
 
 msgid "mount error: timeout"
-msgstr ""
+msgstr "خطأ في الربط: انتهاء المهلة"
 
 msgid "mount now"
-msgstr ""
+msgstr "ربط الان"
 
 msgid "mount on startup"
-msgstr ""
+msgstr "الربط عند بدء التشغيل"
 
 msgid "mount successful"
-msgstr ""
+msgstr "تم الربط بنجاح"
 
 msgid "moving speed (10 = 1deg/sec)"
-msgstr ""
+msgstr "سرعة الحركة (10 = 1 درجة/ثانية)"
 
 msgid "need reboot or epg-reset"
-msgstr ""
+msgstr "تحتاج إلى إعادة التشغيل أو إعادة تعيين EPG"
 
 msgid "never"
-msgstr ""
+msgstr "أبدًا"
 
 msgid "no"
-msgstr ""
+msgstr "لا"
 
 msgid "no DiSEqC"
-msgstr ""
+msgstr "لا ديسك"
 
 msgid "no epg found"
-msgstr ""
+msgstr "لم يتم العثور على EPG"
 
 msgid "no gradient"
-msgstr ""
+msgstr "لا يوجد تدرج"
 
 msgid "normaly 50000, 0 to disable limit"
-msgstr ""
+msgstr "عادةً 50000، 0 لتعطيل الحد"
 
 msgid "not available"
-msgstr ""
+msgstr "غير متاح"
 
 msgid "not connected"
-msgstr ""
+msgstr "غير متصل"
 
 msgid "off"
-msgstr ""
+msgstr "إيقاف"
 
 msgid "on"
-msgstr ""
+msgstr "تشغيل"
 
 msgid "on broadcasted lock"
-msgstr ""
+msgstr "تشغيل قفل البث"
 
 msgid "on locked bouquets"
-msgstr ""
+msgstr "تشغيل قفل البافات"
 
 msgid "on weekdays"
-msgstr ""
+msgstr "في أيام الأسبوع"
 
 msgid "once"
-msgstr ""
+msgstr "مرة واحدة"
 
 msgid "only radio"
-msgstr ""
+msgstr "راديو فقط"
 
 msgid "only tv"
-msgstr ""
+msgstr "تلفزيون فقط"
 
 msgid "package has errors"
-msgstr ""
+msgstr "الحزمة بها أخطاء"
 
 msgid "package install failed"
-msgstr ""
+msgstr "فشل تثبيت الحزمة"
 
 msgid "passthrough"
-msgstr ""
+msgstr "عبور"
 
 msgid "password"
-msgstr ""
+msgstr "كلمة المرور"
 
 msgid "playtime"
-msgstr ""
+msgstr "وقت التشغيل"
 
 msgid "programming flash"
-msgstr ""
+msgstr "برمجة فلاش"
 
 msgid "purple"
-msgstr ""
+msgstr "أرجواني"
 
 msgid "ready"
-msgstr ""
+msgstr "مستعد"
 
 msgid "record default audio streams"
-msgstr ""
+msgstr "تسجيل تدفقات الصوت الافتراضية"
 
 msgid "red"
-msgstr ""
+msgstr "أحمر"
 
 msgid "remount"
-msgstr ""
+msgstr "اعادة الربط"
 
 msgid "repeats"
-msgstr ""
+msgstr "يكرر"
 
 msgid "sat"
 msgstr ""
 
 msgid "save play list"
-msgstr ""
+msgstr "حفظ قائمة التشغيل"
 
 msgid "save playlist"
-msgstr ""
+msgstr "حفظ قائمة التشغيل"
 
 msgid "see timer"
-msgstr ""
+msgstr "انظر المؤقت"
 
 msgid "show movie infoviewer"
-msgstr ""
+msgstr "عرض معلومات الفيلم"
 
 msgid "show playlist"
-msgstr ""
+msgstr "إظهار قائمة التشغيل"
 
 msgid "shuffle"
-msgstr ""
+msgstr "خلط"
 
 msgid "shuffle playlist"
-msgstr ""
+msgstr "قائمة تشغيل عشوائية"
 
 msgid "simple"
-msgstr ""
+msgstr "بسيط"
 
 msgid "skip approx. 1 minute"
-msgstr ""
+msgstr "تخطي حوالي دقيقة واحدة"
 
 msgid "skip approx. 10 minutes"
-msgstr ""
+msgstr "تخطي حوالي 10 دقائق"
 
 msgid "skip approx. 10 seconds"
-msgstr ""
+msgstr "تخطي حوالي 10 ثواني"
 
 msgid "skip approx. 5 minutes"
-msgstr ""
+msgstr "تخطي حوالي 5 دقائق"
 
 msgid "skip bookmark"
-msgstr ""
+msgstr "تخطي الإشارة المرجعية"
 
 msgid "slow"
-msgstr ""
+msgstr "بطيئ"
 
 msgid "small"
-msgstr ""
+msgstr "صغير"
 
 msgid "sorting(A..Z)"
-msgstr ""
+msgstr "الفرز(أ..ي)"
 
 msgid "sorting(Time)"
-msgstr ""
+msgstr "الفرز(الوقت)"
 
 msgid "stereo"
-msgstr ""
+msgstr ستيريو"
 
 msgid "stop on good signal(moving)"
-msgstr ""
+msgstr "توقف عند الإشارة الجيدة (التحرك)"
 
 msgid "stop on good signal(stopped)"
-msgstr ""
+msgstr "توقف عند الإشارة الجيدة(توقف)"
 
 msgid "switch off after"
-msgstr ""
+msgstr "أطفئ بعد"
 
 msgid "terrestrial"
-msgstr ""
+msgstr "أرضي"
 
 msgid "the filesize is 0 Bytes"
-msgstr ""
+msgstr "حجم الملف هو 0 بايت"
 
 msgid ""
 "this need GUI restart\n"
 "do you really want to restart?"
 msgstr ""
+"هذا يتطلب إعادة تشغيل واجهة المستخدم الرسومية\n"
+"هل تريد حقًا إعادة التشغيل؟"
 
 msgid "time"
-msgstr ""
+msgstr "وقت"
 
 msgid "time (in minutes) to switch from standby"
-msgstr ""
+msgstr "الوقت (بالدقائق) للتحول من وضع الاستعداد"
 
 msgid "title"
-msgstr ""
+msgstr "عنوان"
 
 msgid "to deep standby (0 = off)."
-msgstr ""
+msgstr "إلى وضع الاستعداد العميق (0 = إيقاف التشغيل)."
 
 msgid "top left"
-msgstr ""
+msgstr "أعلى اليسار"
 
 msgid "top right"
-msgstr ""
+msgstr "أعلى اليمين"
 
 msgid "type"
-msgstr ""
+msgstr "نوع"
 
 msgid "umount"
-msgstr ""
+msgstr "رفع"
 
 #, c-format
 msgid "unknown"
-msgstr ""
+msgstr "مجهول"
 
 msgid "update"
-msgstr ""
+msgstr "تحديث"
 
 msgid "username"
-msgstr ""
+msgstr "اسم المستخدم"
 
 msgid "very large"
-msgstr ""
+msgstr "كبيرة جداً"
 
 msgid "volume"
-msgstr ""
+msgstr "حجم الصوت"
 
 msgid "waiting for EPG..."
-msgstr ""
+msgstr "في انتظار EPG..."
 
 msgid "weekly"
-msgstr ""
+msgstr "اسبوعي"
 
 msgid "will added to stop time of every record timer."
-msgstr ""
+msgstr "سيتم إضافة وقت التوقف لكل مؤقت تسجيل."
 
 msgid "will be deducted of every record timer."
-msgstr ""
+msgstr "سيتم خصمها من كل مؤقت قياسي."
 
 msgid "yes"
-msgstr ""
+msgstr "نعم"
