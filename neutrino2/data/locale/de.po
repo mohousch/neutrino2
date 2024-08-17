@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-08-01 21:11+0200\n"
+"POT-Creation-Date: 2024-08-17 20:46+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1485,6 +1485,10 @@ msgstr "Nachrichten / Wetterbericht"
 msgid "News magazine"
 msgstr "Nachrichtenmagazin"
 
+#, fuzzy
+msgid "Next"
+msgstr "Nächste Seite"
+
 msgid "Next Page"
 msgstr "Nächste Seite"
 
@@ -1550,6 +1554,10 @@ msgstr "Norden"
 
 msgid "Not used"
 msgstr "Nicht benutzt"
+
+#, fuzzy
+msgid "Now"
+msgstr "Nein"
 
 msgid "Numericzap"
 msgstr "Numericzap"

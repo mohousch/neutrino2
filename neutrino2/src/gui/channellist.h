@@ -92,6 +92,7 @@ class CChannelList
 
 		bool historyMode;
 		bool vlist; 		// "virtual" list, not bouquet
+		bool displayNext;
 
 		SMSKeyInput c_SMSKeyInput;
 

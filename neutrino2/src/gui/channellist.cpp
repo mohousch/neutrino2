@@ -92,7 +92,8 @@ extern CBouquetList   * RADIOallList;
 struct button_label CChannelListButtons[NUM_LIST_BUTTONS] =
 {
 	{ NEUTRINO_ICON_BUTTON_RED, _("Record"), COL_RED_PLUS_0 },
-	{ NEUTRINO_ICON_BUTTON_GREEN, _("TMDB"), COL_GREEN_PLUS_0 },
+//	{ NEUTRINO_ICON_BUTTON_GREEN, _("TMDB"), COL_GREEN_PLUS_0 },
+	{ NEUTRINO_ICON_BUTTON_GREEN, _("Next"), COL_GREEN_PLUS_0 },
 	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Schedule"), COL_YELLOW_PLUS_0 },
 	{ NEUTRINO_ICON_BUTTON_BLUE, _("Bouquets"), COL_BLUE_PLUS_0 }
 };
@@ -122,6 +123,7 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 	tuned = 0xfffffff;
 	this->historyMode = _historyMode;
 	vlist = _vlist;
+	displayNext = false;
 	
 	events.clear();
 
@@ -182,6 +184,36 @@ void CChannelList::updateEvents(void)
 	dprintf(DEBUG_NORMAL, "CChannelList::updateEvents\n");
 	
 	events.clear();
+	
+	////
+	if (displayNext) 
+	{
+		if (chanlist.size()) 
+		{
+			time_t atime = time(NULL);
+			unsigned int count;
+			
+			for (count = 0; count < chanlist.size(); count++)
+			{		
+				events.clear();
+
+				CSectionsd::getInstance()->getEventsServiceKey(chanlist[count]->channel_id & 0xFFFFFFFFFFFFULL, events);
+				chanlist[count]->nextEvent.startTime = (long)0x7fffffff;
+				
+				for ( CChannelEventList::iterator e = events.begin(); e != events.end(); ++e ) 
+				{
+					if (((long)(e->startTime) > atime) && ((e->startTime) < (long)(chanlist[count]->nextEvent.startTime)))
+					{
+						chanlist[count]->nextEvent= *e;
+					
+						break;
+					}
+				}
+			}
+		}
+	} 
+	else
+	{ 
 
 	//
 	t_channel_id *p_requested_channels = NULL;
@@ -218,6 +250,7 @@ void CChannelList::updateEvents(void)
 
 		if (p_requested_channels != NULL) 
 			free(p_requested_channels);
+	}
 	}
 }
 
@@ -372,6 +405,8 @@ int CChannelList::exec(bool customMode)
 {
 	dprintf(DEBUG_NORMAL, "CChannelList::exec: zap:%s\n", customMode? "no" : "yes");
 	
+	displayNext = false; // always start with current events
+	
 	// show list
 	int nNewChannel = show(customMode);
 
@@ -403,7 +438,9 @@ int CChannelList::show(bool customMode)
 	//
 	CLCD::MODES oldLcdMode = CLCD::getInstance()->getMode();
 	std::string oldLcdMenutitle = CLCD::getInstance()->getMenutitle();	
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, name.c_str());	
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, name.c_str());
+	
+	displayNext = false;	
 	
 	// update events
 	updateEvents();
@@ -655,6 +692,7 @@ int CChannelList::show(bool customMode)
 		{
 			selected = listBox? listBox->getSelected() : 0;
 			
+			/*
 			hide();
 			
 			//
@@ -662,6 +700,13 @@ int CChannelList::show(bool customMode)
 				::getTMDBInfo(chanlist[selected]->currentEvent.description.c_str());
 
 			paint();
+			*/
+			////
+			displayNext = !displayNext;
+
+			updateEvents();
+
+			paint(); 
 		} 
 		else if ( (msg == CRCInput::RC_info) )
 		{
@@ -1431,7 +1476,16 @@ void CChannelList::paint(bool customMode)
 			// desc
 			std::string desc = chanlist[i]->description;
 
-			p_event = &chanlist[i]->currentEvent;
+			//p_event = &chanlist[i]->currentEvent;
+			////
+			if (displayNext) 
+			{
+				p_event = &chanlist[i]->nextEvent;
+			} 
+			else 
+			{
+				p_event = &chanlist[i]->currentEvent;
+			}
 
 			// runningPercent	
 			if (((jetzt - p_event->startTime + 30) / 60) < 0 )
@@ -1490,9 +1544,10 @@ void CChannelList::paint(bool customMode)
 			
 			// option font
 			item->setOptionFont(SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER);
-			item->setOptionFontColor(COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0);
+			////
+			// option font color
+			if (!displayNext) item->setOptionFontColor(COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0);
 			
-
 			if (listBox) listBox->addItem(item);
 		}
 	}
@@ -1507,6 +1562,16 @@ void CChannelList::paint(bool customMode)
 	// foot
 	if (foot) 
 	{
+		////
+		if (displayNext) 
+		{
+			CChannelListButtons[1].localename = _("Now");
+		} 
+		else 
+		{
+			CChannelListButtons[1].localename = _("Next");
+		}
+		
 		foot->setButtons(CChannelListButtons, NUM_LIST_BUTTONS);
 	}
 
