@@ -98,9 +98,10 @@ struct button_label CChannelListButtons[NUM_LIST_BUTTONS] =
 	{ NEUTRINO_ICON_BUTTON_BLUE, _("Bouquets"), COL_BLUE_PLUS_0 }
 };
 
-#define HEAD_BUTTONS_COUNT	3
+#define HEAD_BUTTONS_COUNT	4
 const struct button_label HeadButtons[HEAD_BUTTONS_COUNT] =
 {
+	{ NEUTRINO_ICON_BUTTON_INFO, " ", 0 },
 	{ NEUTRINO_ICON_BUTTON_HELP, " ", 0 },
 	{ NEUTRINO_ICON_BUTTON_EPG, " ", 0 },
 	{ NEUTRINO_ICON_BUTTON_SETUP, " ", 0 }
@@ -185,7 +186,6 @@ void CChannelList::updateEvents(void)
 	
 	events.clear();
 	
-	////
 	if (displayNext) 
 	{
 		if (chanlist.size()) 
@@ -214,43 +214,41 @@ void CChannelList::updateEvents(void)
 	} 
 	else
 	{ 
+		t_channel_id *p_requested_channels = NULL;
+		int size_requested_channels = 0;
 
-	//
-	t_channel_id *p_requested_channels = NULL;
-	int size_requested_channels = 0;
-
-	if (chanlist.size()) 
-	{
-		size_requested_channels = chanlist.size()*sizeof(t_channel_id);
-		p_requested_channels = (t_channel_id*)malloc(size_requested_channels);
-			
-		for (uint32_t count = 0; count < chanlist.size(); count++)
+		if (chanlist.size()) 
 		{
-			p_requested_channels[count] = chanlist[count]->channel_id & 0xFFFFFFFFFFFFULL;
-		}
-
-		CChannelEventList pevents;
-
-		pevents.clear();
-			
-		CSectionsd::getInstance()->getChannelEvents(pevents, (CNeutrinoApp::getInstance()->getMode()) != NeutrinoMessages::mode_radio, p_requested_channels, size_requested_channels);
-			
-		for (uint32_t count = 0; count < chanlist.size(); count++) 
-		{
-			for ( CChannelEventList::iterator e = pevents.begin(); e != pevents.end(); ++e )
+			size_requested_channels = chanlist.size()*sizeof(t_channel_id);
+			p_requested_channels = (t_channel_id*)malloc(size_requested_channels);
+				
+			for (uint32_t count = 0; count < chanlist.size(); count++)
 			{
-				if ((chanlist[count]->channel_id & 0xFFFFFFFFFFFFULL) == (e->channelID & 0xFFFFFFFFFFFFULL))//FIXME: get_channel_id()
-				{
-					chanlist[count]->currentEvent = *e;
+				p_requested_channels[count] = chanlist[count]->channel_id & 0xFFFFFFFFFFFFULL;
+			}
 
-					break;
+			CChannelEventList pevents;
+
+			pevents.clear();
+				
+			CSectionsd::getInstance()->getChannelEvents(pevents, (CNeutrinoApp::getInstance()->getMode()) != NeutrinoMessages::mode_radio, p_requested_channels, size_requested_channels);
+				
+			for (uint32_t count = 0; count < chanlist.size(); count++) 
+			{
+				for ( CChannelEventList::iterator e = pevents.begin(); e != pevents.end(); ++e )
+				{
+					if ((chanlist[count]->channel_id & 0xFFFFFFFFFFFFULL) == (e->channelID & 0xFFFFFFFFFFFFULL))//FIXME: get_channel_id()
+					{
+						chanlist[count]->currentEvent = *e;
+
+						break;
+					}
 				}
 			}
-		}
 
-		if (p_requested_channels != NULL) 
-			free(p_requested_channels);
-	}
+			if (p_requested_channels != NULL) 
+				free(p_requested_channels);
+		}
 	}
 }
 
@@ -692,7 +690,16 @@ int CChannelList::show(bool customMode)
 		{
 			selected = listBox? listBox->getSelected() : 0;
 			
-			/*
+			displayNext = !displayNext;
+
+			updateEvents();
+
+			paint(); 
+		}
+		else if ( msg ==  CRCInput::RC_help ) // tmdb
+		{
+			selected = listBox? listBox->getSelected() : 0;
+			
 			hide();
 			
 			//
@@ -700,15 +707,8 @@ int CChannelList::show(bool customMode)
 				::getTMDBInfo(chanlist[selected]->currentEvent.description.c_str());
 
 			paint();
-			*/
-			////
-			displayNext = !displayNext;
-
-			updateEvents();
-
-			paint(); 
-		} 
-		else if ( (msg == CRCInput::RC_info) )
+		}
+		else if ( msg == CRCInput::RC_info ) // epgview
 		{
 			selected = listBox? listBox->getSelected() : 0;
 
@@ -1476,8 +1476,6 @@ void CChannelList::paint(bool customMode)
 			// desc
 			std::string desc = chanlist[i]->description;
 
-			//p_event = &chanlist[i]->currentEvent;
-			////
 			if (displayNext) 
 			{
 				p_event = &chanlist[i]->nextEvent;
@@ -1544,7 +1542,7 @@ void CChannelList::paint(bool customMode)
 			
 			// option font
 			item->setOptionFont(SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER);
-			////
+
 			// option font color
 			if (!displayNext) item->setOptionFontColor(COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0);
 			
@@ -1562,7 +1560,6 @@ void CChannelList::paint(bool customMode)
 	// foot
 	if (foot) 
 	{
-		////
 		if (displayNext) 
 		{
 			CChannelListButtons[1].localename = _("Now");
