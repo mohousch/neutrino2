@@ -89,6 +89,7 @@ const keyval VIDEOMENU_HDMI_CEC_MODE_OPTIONS[VIDEOMENU_HDMI_CEC_MODE_OPTION_COUN
 	{ VIDEO_HDMI_CEC_MODE_TUNER	, _("CEC mode tuner")   },
 	{ VIDEO_HDMI_CEC_MODE_RECORDER	, _("CEC mode recorder") }
 };
+
 #define VIDEOMENU_HDMI_CEC_VOL_OPTION_COUNT 3
 const keyval VIDEOMENU_HDMI_CEC_VOL_OPTIONS[VIDEOMENU_HDMI_CEC_VOL_OPTION_COUNT] =
 {
@@ -114,7 +115,7 @@ int CCECSetup::showMenu()
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "audioplayersetup";
+		widget->name = "cecsetup";
 		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//

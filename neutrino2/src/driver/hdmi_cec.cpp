@@ -125,14 +125,14 @@ bool hdmi_cec::SetCECMode(VIDEO_HDMI_CEC_MODE _deviceType)
 			__u32 monitor = CEC_MODE_INITIATOR | CEC_MODE_FOLLOWER;
 			struct cec_caps caps = {};
 
-			if (ioctl(hdmiFd, CEC_ADAP_G_CAPS, &caps) < 0)
+			if (::ioctl(hdmiFd, CEC_ADAP_G_CAPS, &caps) < 0)
 				printf("[CEC] %s: get caps failed\n", __func__);
 
 			if (caps.capabilities & CEC_CAP_LOG_ADDRS)
 			{
 				struct cec_log_addrs laddrs = {};
 
-				if (ioctl(hdmiFd, CEC_ADAP_S_LOG_ADDRS, &laddrs) < 0)
+				if (::ioctl(hdmiFd, CEC_ADAP_S_LOG_ADDRS, &laddrs) < 0)
 					printf("[CEC] %s: reset log addr failed\n", __func__);
 
 				memset(&laddrs, 0, sizeof(laddrs));
@@ -189,11 +189,11 @@ bool hdmi_cec::SetCECMode(VIDEO_HDMI_CEC_MODE _deviceType)
 				}
 				laddrs.num_log_addrs++;
 
-				if (ioctl(hdmiFd, CEC_ADAP_S_LOG_ADDRS, &laddrs) < 0)
+				if (::ioctl(hdmiFd, CEC_ADAP_S_LOG_ADDRS, &laddrs) < 0)
 					printf("[CEC] %s: et log addr failed\n", __func__);
 			}
 
-			if (ioctl(hdmiFd, CEC_S_MODE, &monitor) < 0)
+			if (::ioctl(hdmiFd, CEC_S_MODE, &monitor) < 0)
 				printf("[CEC] %s: monitor failed\n", __func__);
 
 		}
@@ -317,7 +317,7 @@ void hdmi_cec::SendCECMessage(struct cec_message &txmessage, int sleeptime)
 			memcpy(&msg.msg[1], txmessage.data, txmessage.length);
 			msg.len = txmessage.length + 1;
 			
-			ioctl(hdmiFd, CEC_TRANSMIT, &msg);
+			::ioctl(hdmiFd, CEC_TRANSMIT, &msg);
 		}
 		else
 		{
@@ -806,7 +806,7 @@ int hdmi_cec::rc_send(int fd, unsigned int code, unsigned int value)
 	ev.code = code;
 	ev.value = value;
 	
-	return write(fd, &ev, sizeof(ev));
+	return ::write(fd, &ev, sizeof(ev));
 }
 
 void hdmi_cec::rc_sync(int fd)
@@ -818,7 +818,7 @@ void hdmi_cec::rc_sync(int fd)
 	ev.code = SYN_REPORT;
 	ev.value = 0;
 	
-	write(fd, &ev, sizeof(ev));
+	::write(fd, &ev, sizeof(ev));
 }
 
 void hdmi_cec::send_key(unsigned char key, unsigned char destination)
