@@ -145,7 +145,7 @@ bool hdmi_cec::SetCECMode(VIDEO_HDMI_CEC_MODE _deviceType)
 				 */
 				laddrs.cec_version = CEC_OP_CEC_VERSION_2_0;
 
-				strcpy(laddrs.osd_name, "unknown");//FIXME
+				strcpy(laddrs.osd_name, "NeutrinoNG");
 				laddrs.vendor_id = CEC_VENDOR_ID_NONE;
 
 				switch (deviceType)
@@ -309,26 +309,20 @@ void hdmi_cec::SendCECMessage(struct cec_message &txmessage, int sleeptime)
 	
 	if (hdmiFd >= 0)
 	{
-
-		char str[txmessage.length * 6];
-		for (int i = 0; i < txmessage.length; i++)
-		{
-			sprintf(str + (i * 6), "[0x%02X]", txmessage.data[i]);
-		}
-		
-		dprintf(DEBUG_NORMAL, "[CEC] send message %s to %s (0x%02X>>0x%02X) '%s' (%s)\n", ToString((cec_logical_address)txmessage.initiator), txmessage.destination == 0xf ? "all" : ToString((cec_logical_address)txmessage.destination), txmessage.initiator, txmessage.destination, ToString((cec_opcode)txmessage.data[0]), str);
-
 		if (fallback)
 		{
 			struct cec_msg msg;
+			
 			cec_msg_init(&msg, txmessage.initiator, txmessage.destination);
 			memcpy(&msg.msg[1], txmessage.data, txmessage.length);
 			msg.len = txmessage.length + 1;
+			
 			ioctl(hdmiFd, CEC_TRANSMIT, &msg);
 		}
 		else
 		{
 			struct cec_message_fb message;
+			
 			message.address = txmessage.destination;
 			message.length = txmessage.length;
 			memcpy(&message.data, txmessage.data, txmessage.length);
@@ -368,12 +362,14 @@ void hdmi_cec::SetCECState(bool state)
 		message.destination = CEC_OP_PRIM_DEVTYPE_TV;
 		message.data[0] = CEC_MSG_STANDBY;
 		message.length = 1;
+		
 		SendCECMessage(message);
 
 		message.initiator = logicalAddress;
 		message.destination = CEC_OP_PRIM_DEVTYPE_TV;
 		message.data[0] = CEC_MSG_GIVE_DEVICE_POWER_STATUS;
 		message.length = 1;
+		
 		SendCECMessage(message);
 	}
 
@@ -383,37 +379,29 @@ void hdmi_cec::SetCECState(bool state)
 		message.destination = CEC_OP_PRIM_DEVTYPE_TV;
 		message.data[0] = CEC_MSG_GET_CEC_VERSION;
 		message.length = 1;
+		
 		SendCECMessage(message);
 
 		message.initiator = logicalAddress;
 		message.destination = CEC_OP_PRIM_DEVTYPE_TV;
 		message.data[0] = CEC_MSG_GIVE_DEVICE_POWER_STATUS;
 		message.length = 1;
+		
 		SendCECMessage(message);
 
-#if BOXMODEL_VUPLUS_ALL
-		int cnt = 0;
+		message.initiator = logicalAddress;
+		message.destination = CEC_OP_PRIM_DEVTYPE_TV;
+		message.data[0] = CEC_MSG_IMAGE_VIEW_ON;
+		message.length = 1;
+			
+		SendCECMessage(message);
 
-		while (tv_off && (cnt < 5))
-		{
-#endif
-
-			message.initiator = logicalAddress;
-			message.destination = CEC_OP_PRIM_DEVTYPE_TV;
-			message.data[0] = CEC_MSG_IMAGE_VIEW_ON;
-			message.length = 1;
-			SendCECMessage(message);
-
-			message.initiator = logicalAddress;
-			message.destination = CEC_OP_PRIM_DEVTYPE_TV;
-			message.data[0] = CEC_MSG_GIVE_DEVICE_POWER_STATUS;
-			message.length = 1;
-			SendCECMessage(message);
-
-#if BOXMODEL_VUPLUS_ALL
-			cnt++;
-		}
-#endif
+		message.initiator = logicalAddress;
+		message.destination = CEC_OP_PRIM_DEVTYPE_TV;
+		message.data[0] = CEC_MSG_GIVE_DEVICE_POWER_STATUS;
+		message.length = 1;
+			
+		SendCECMessage(message);
 
 		GetCECAddressInfo();
 
@@ -437,12 +425,14 @@ void hdmi_cec::SetCECState(bool state)
 		message.data[6] = 0x69; //i
 		message.data[7] = 0x6e; //n
 		message.data[8] = 0x6f; //o
-		message.length = 9;
+		message.data[9] = 0x6e; //n
+		message.data[10] = 0x67;//g
+		
+		message.length = 11;
 		SendCECMessage(message);
 
 		request_audio_status();
 	}
-
 }
 
 long hdmi_cec::translateKey(unsigned char code)
@@ -676,6 +666,7 @@ void hdmi_cec::Receive(int what)
 		else
 		{
 			struct cec_message_fb rx_message;
+			
 			if (::read(hdmiFd, &rx_message, 2) == 2)
 			{
 				if (::read(hdmiFd, &rx_message.data, rx_message.length) == rx_message.length)
@@ -695,21 +686,13 @@ void hdmi_cec::Receive(int what)
 			bool keypressed = false;
 			static unsigned char pressedkey = 0;
 
-			char str[rxmessage.length * 6];
-			for (int i = 0; i < rxmessage.length; i++)
-			{
-				sprintf(str + (i * 6), "[0x%02X]", rxmessage.data[i]);
-			}
-			
-			dprintf(DEBUG_INFO, "[CEC] received message %s to %s (0x%02X>>0x%02X) '%s' (%s)\n", ToString((cec_logical_address)rxmessage.initiator), rxmessage.destination == 0xf ? "all" : ToString((cec_logical_address)rxmessage.destination), rxmessage.initiator, rxmessage.destination, ToString((cec_opcode)rxmessage.opcode), str);
-
 			switch (rxmessage.opcode)
 			{
 				//case CEC_OPCODE_ACTIVE_SOURCE:
 				case CEC_OPCODE_REQUEST_ACTIVE_SOURCE:
 				{
 					txmessage.destination = CEC_LOG_ADDR_BROADCAST; //rxmessage.initiator;
-					txmessage.initiator = logicalAddress; //rxmessage.destination;
+					txmessage.initiator = logicalAddress; 		//rxmessage.destination;
 					txmessage.data[0] = CEC_MSG_ACTIVE_SOURCE;
 					txmessage.data[1] = physicalAddress[0];
 					txmessage.data[2] = physicalAddress[1];
@@ -722,6 +705,7 @@ void hdmi_cec::Receive(int what)
 				{
 					muted = ((rxmessage.data[1] & 0x80) == 0x80);
 					volume = ((rxmessage.data[1] & 0x7F) / 127.0) * 100.0;
+					
 					if (muted)
 						printf("[CEC] %s volume muted\n", ToString((cec_logical_address)rxmessage.initiator));
 					else
@@ -734,6 +718,7 @@ void hdmi_cec::Receive(int what)
 					uint64_t iVendorId = ((uint64_t)rxmessage.data[1] << 16) +
 					    ((uint64_t)rxmessage.data[2] << 8) +
 					    (uint64_t)rxmessage.data[3];
+					    
 					dprintf(DEBUG_NORMAL, "[CEC] decoded message '%s' (%s)\n", ToString((cec_opcode)rxmessage.opcode), ToString((cec_vendor_id)iVendorId));
 					break;
 				}

@@ -711,3 +711,4 @@ static cec_opcode GetResponseOpcode(cec_opcode opcode)
 }
 
 #endif // __HDMI_CEC_TYPES_H__
+

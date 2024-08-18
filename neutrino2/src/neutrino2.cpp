@@ -4036,23 +4036,7 @@ _repeat:
 		channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
 		
 		return messages_return::handled;
-	}
-#if !defined (__sh__)
-	else if (msg == NeutrinoMessages::EVT_HDMI_CEC_VIEW_ON) 
-	{
-		if(g_settings.hdmi_cec_view_on)
-			hdmi_cec::getInstance()->SetCECAutoView(g_settings.hdmi_cec_view_on);
-
-		return messages_return::handled;
-	}
-	else if (msg == NeutrinoMessages::EVT_HDMI_CEC_STANDBY) 
-	{
-		if(g_settings.hdmi_cec_standby)
-			  hdmi_cec::getInstance()->SetCECAutoStandby(g_settings.hdmi_cec_standby);
-
-		return messages_return::handled;
-	}
-#endif	
+	}	
 
 	return messages_return::unhandled;
 }

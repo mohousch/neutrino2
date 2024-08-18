@@ -115,10 +115,6 @@ struct NeutrinoMessages
 		// zapit
 		EVT_PMT_CHANGED				 = CRCInput::RC_Events + 40,
 		
-		// hdmi cec
-		EVT_HDMI_CEC_VIEW_ON                     = CRCInput::RC_Events + 41,
-		EVT_HDMI_CEC_STANDBY                     = CRCInput::RC_Events + 42,
-		
 		// streamts
 		EVT_STREAM_START                         = CRCInput::RC_Events + 45, /* data = fd */
 		EVT_STREAM_STOP                          = CRCInput::RC_Events + 46,
