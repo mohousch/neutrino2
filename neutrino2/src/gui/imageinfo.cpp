@@ -188,7 +188,7 @@ void CImageInfo::paint()
 	//
 	ypos += (iheight >>1);
 
-	const char * imagename = "NeutrinoNG2";
+	const char * imagename = "NeutrinoNG";
 	const char * homepage = "https://github.com/mohousch/neutrino2";
 	const char * docs = "https://github.com/mohousch/neutrino2";
 	const char * forum = "https://forum.mbremer.de/viewforum.php?f=86";

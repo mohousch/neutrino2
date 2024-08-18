@@ -417,7 +417,7 @@ void hdmi_cec::SetCECState(bool state)
 		message.initiator = logicalAddress;
 		message.destination = CEC_LOG_ADDR_BROADCAST;
 		message.data[0] = CEC_OPCODE_SET_OSD_NAME;
-		message.data[1] = 0x6e; //n
+		message.data[1] = 0x4e; //N
 		message.data[2] = 0x65; //e
 		message.data[3] = 0x75; //u
 		message.data[4] = 0x74; //t
@@ -425,8 +425,8 @@ void hdmi_cec::SetCECState(bool state)
 		message.data[6] = 0x69; //i
 		message.data[7] = 0x6e; //n
 		message.data[8] = 0x6f; //o
-		message.data[9] = 0x6e; //n
-		message.data[10] = 0x67;//g
+		message.data[9] = 0x4e; //N
+		message.data[10] = 0x47;//G
 		
 		message.length = 11;
 		SendCECMessage(message);

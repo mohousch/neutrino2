@@ -360,6 +360,7 @@ bool CFlashUpdate::checkVersion4Update()
 		UpdatesFilter.addFilter("tar");
 		UpdatesFilter.addFilter("gz");
 		UpdatesFilter.addFilter("txt");
+		UpdatesFilter.addFilter("ipk");
 
 		UpdatesBrowser.Filter = &UpdatesFilter;
 
@@ -396,7 +397,7 @@ bool CFlashUpdate::checkVersion4Update()
 		{
 			ptr++;
 
-			if( (!strcmp(ptr, "bin")) || (!strcmp(ptr, "tar")) || (!strcmp(ptr, "gz"))) 
+			if( (!strcmp(ptr, "bin")) || (!strcmp(ptr, "tar")) || (!strcmp(ptr, "gz")) || (!strcmp(ptr, "ipk")) ) 
 				fileType = 'A';
 			else if(!strcmp(ptr, "txt")) 
 				fileType = 'T';
