@@ -1516,10 +1516,10 @@ void CChannelList::paint(bool customMode)
 			item = new CMenuForwarder(chanlist[i]->name.c_str(), true, option.c_str());
 
 			// channel number
-			item->setNumber(/*chanlist[i]->number*/i + 1);
+			item->setNumber(i + 1);
 			
 			// timescale
-			if (g_settings.channellist_timescale) item->setPercent(runningPercent);
+			if (g_settings.channellist_timescale && !displayNext) item->setPercent(runningPercent);
 			
 			// hd / ca / webtv icon
 			if (g_settings.channellist_ca)
@@ -1545,6 +1545,35 @@ void CChannelList::paint(bool customMode)
 
 			// option font color
 			if (!displayNext) item->setOptionFontColor(COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0);
+			
+			////
+			if (displayNext)
+			{
+				char cSeit[11] = " ";
+				char cNoch[11] = " ";
+				
+				if (p_event != NULL && !(p_event->description.empty())) 
+				{
+					// start
+					struct tm * pStartZeit = localtime(&p_event->startTime);
+					sprintf(cSeit, "%02d:%02d", pStartZeit->tm_hour, pStartZeit->tm_min);
+					
+					// end
+					long int uiEndTime(p_event->startTime + p_event->duration);
+					struct tm *pEndeZeit = localtime((time_t*)&uiEndTime);
+
+					sprintf(cNoch, "%02d:%02d", pEndeZeit->tm_hour, pEndeZeit->tm_min);
+				}
+				
+				std::string optionInfo = "[";
+				optionInfo += cSeit;
+				optionInfo += "-";
+				optionInfo += cNoch;
+				optionInfo += "]";
+				
+				item->setOptionInfo(optionInfo.c_str());
+			}
+			////
 			
 			if (listBox) listBox->addItem(item);
 		}
