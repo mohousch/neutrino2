@@ -4662,10 +4662,10 @@ int CNeutrinoApp::run(int argc, char **argv)
 		
 	// show startup msg on CLCD
 #if defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
-	CLCD::getInstance()->showText((char *)"NG2");
+	CLCD::getInstance()->showText((char *)"NG");
 #endif
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
-	CLCD::getInstance()->showTextScreen("NeutrinoNG2", "", CLCD::EPGMODE_CHANNEL, true, true); // always centered
+	CLCD::getInstance()->showTextScreen("NeutrinoNG", "", CLCD::EPGMODE_CHANNEL, true, true); // always centered
 #endif
 
 	// rcinput

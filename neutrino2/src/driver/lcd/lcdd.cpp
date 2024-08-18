@@ -51,7 +51,7 @@
 #include <daemonc/remotecontrol.h>
 
 
-#define LCDD_DEBUG
+//#define LCDD_DEBUG
 
 static short debug_level = 10;
 
