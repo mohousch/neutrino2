@@ -400,7 +400,7 @@ static void convert_palette(uint32_t *pal, const gPalette& clut)
     	}
 }
 
-static bool swscale(unsigned char *src, unsigned char *dst, int sw, int sh, int dw, int dh, AVPixelFormat sfmt, AVPixelFormat dfmt)
+static bool swscale(uint8_t *src, uint8_t *dst, int sw, int sh, int dw, int dh, AVPixelFormat sfmt, AVPixelFormat dfmt)
 {
 	bool ret = false;
 	int len = 0;

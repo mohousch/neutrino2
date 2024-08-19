@@ -247,14 +247,15 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 		
 		for(i = 0; i < dx; i++)
 		{
-			xb_v[i] = (i+1)*ox/dx;
+			xb_v[i] = (i + 1)*ox/dx;
+			
 			if(xb_v[i] >= ox)
 				xb_v[i] = ox - 1;
 		}
 		
 		if (alpha)
 		{
-			for(j = 0;j < dy; j++)
+			for(j = 0; j < dy; j++)
 			{
 				ya = j*oy/dy;
 				yb = (j + 1)*oy/dy;

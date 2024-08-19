@@ -1546,7 +1546,7 @@ void CChannelList::paint(bool customMode)
 			// option font color
 			if (!displayNext) item->setOptionFontColor(COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0);
 			
-			////
+			// from / to (next)
 			if (displayNext)
 			{
 				char cSeit[11] = " ";
@@ -1573,7 +1573,6 @@ void CChannelList::paint(bool customMode)
 				
 				item->setOptionInfo(optionInfo.c_str());
 			}
-			////
 			
 			if (listBox) listBox->addItem(item);
 		}
@@ -1798,7 +1797,6 @@ int CChannelList::doChannelMenu(void)
 		//
 		menu->enablePaintHead();
 		menu->setTitle(_("Edit"), NEUTRINO_ICON_SETTINGS);
-//		menu->setHeadLine(true, true);
 
 		//
 		menu->enablePaintFoot();
@@ -1806,7 +1804,6 @@ int CChannelList::doChannelMenu(void)
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		menu->setFootButtons(&btn);
-//		menu->setFootLine(true, true);
 		
 		//
 		mWidget->addCCItem(menu);
