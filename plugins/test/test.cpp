@@ -6561,10 +6561,8 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CCButtons (foot)", true, NULL, this, "buttons"));
 	mainMenu->addItem(new CMenuForwarder("CCButtons (head)", true, NULL, this, "hbuttons"));
 	mainMenu->addItem(new CMenuForwarder("CCSpinner", true, NULL, this, "spinner"));
-//	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 //	mainMenu->addItem(new CMenuForwarder("CCSlider", true, NULL, this, "slider"));
 	mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
-//	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("CCWindow", true, NULL, this, "panel"));
 	mainMenu->addItem(new CMenuForwarder("CCWindow(gradient)", true, NULL, this, "window"));
 	mainMenu->addItem(new CMenuForwarder("CCWindow(with border)", true, NULL, this, "windowshadow"));
@@ -6579,7 +6577,6 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("ClistBox(Frame)", true, NULL, this, "listbox4"));
 	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "framebox"));
 	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "singleWidget"));
-//	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(INFO)", true, NULL, this, "listbox5"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(HINTITEM)", true, NULL, this, "listbox6"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(HINTICON)", true, NULL, this, "listbox7"));
@@ -6614,13 +6611,8 @@ void CTestMenu::showMenu()
 	//mainMenu->addItem(new CMenuForwarder("CTimeInput", true, NULL, this, "timeinput"));
 	//mainMenu->addItem(new CMenuForwarder("CIntInput", true, NULL, this, "intinput"));
 	mainMenu->addItem(new CMenuForwarder("CKeyBoard", true, NULL, this, "ckeyboard"));
-	//
-//	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("ColorChooser", true, NULL, this, "colorchooser"));
 	mainMenu->addItem(new CMenuForwarder("KeyChooser", true, NULL, this, "keychooser"));
-	
-	//
-//	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("ChannelSelectWidget", true, NULL, this, "channelselect"));
 	mainMenu->addItem(new CMenuForwarder("BEWidget", true, NULL, this, "bewidget"));
 	mainMenu->addItem(new CMenuForwarder("AudioVideoSelectWidget", true, NULL, this, "avselect"));
