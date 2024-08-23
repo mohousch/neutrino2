@@ -2220,7 +2220,7 @@
 /neutrino2/lib/libsubtitle/tools.o
 /neutrino2/lib/libsubtitle/.deps/dvbsub.Po
 /neutrino2/lib/libsubtitle/.deps/libsubtitle.Po
-/pull-stash-ng.patch
+/pull-stash-*
 /neutrino2/lib/libeplayer3/output/.deps/subtitle.Po
 /neutrino2/lib/libeplayer3/output/subtitle.o
 /neutrino2/src/driver/lcd/stObGJvo
