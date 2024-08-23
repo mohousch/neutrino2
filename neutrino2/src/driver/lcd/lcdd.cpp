@@ -86,7 +86,8 @@ void CLCD::openDevice()
 		fd = open("/dev/vfd", O_RDWR);
 		if(fd < 0)
 		{
-			lcdd_printf("failed to open vfd\n");
+			lcdd_printf(10, "failed to open vfd\n");
+			
 			fd = open("/dev/fplarge", O_RDWR);
 			if (fd < 0)
 			    printf("failed to open fplarge\n");
@@ -2468,7 +2469,7 @@ void CLCD::showWeather()
 	current_wtemp = CWeather::getInstance()->getCurrentTemperature();
 	current_wicon = CWeather::getInstance()->getCurrentIcon();
 	
-	lcdd_printf(DEBUG_NORMAL, "%s %s %s\n", current_wcity.c_str(), current_wtemp.c_str(), current_wicon.c_str());
+	lcdd_printf(10, "%s %s %s\n", current_wcity.c_str(), current_wtemp.c_str(), current_wicon.c_str());
 	
 	if (!current_wcity.empty())
 	{
