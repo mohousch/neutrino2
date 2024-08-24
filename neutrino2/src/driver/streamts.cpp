@@ -128,7 +128,6 @@ bool CStreamInstance::Stop()
 
 bool CStreamInstance::Send(ssize_t r, unsigned char *_buf)
 {
-	//OpenThreads::ScopedLock<OpenThreads::Mutex> m_lock(mutex);
 	stream_fds_t cfds;
 	mutex.lock();
 	cfds = fds;
@@ -156,6 +155,7 @@ bool CStreamInstance::Send(ssize_t r, unsigned char *_buf)
 		if (count)
 			printf("send err, fd %d: (%zd from %zd)\n", *it, r - count, r);
 	}
+	
 	return true;
 }
 
@@ -168,14 +168,12 @@ void CStreamInstance::Close()
 
 void CStreamInstance::AddClient(int clientfd)
 {
-//	OpenThreads::ScopedLock<OpenThreads::Mutex> m_lock(mutex);
 	fds.insert(clientfd);
 	printf("CStreamInstance::AddClient: %d (count %d)\n", clientfd, (int)fds.size());
 }
 
 void CStreamInstance::RemoveClient(int clientfd)
 {
-//	OpenThreads::ScopedLock<OpenThreads::Mutex> m_lock(mutex);
 	fds.erase(clientfd);
 	close(clientfd);
 	printf("CStreamInstance::RemoveClient: %d (count %d)\n", clientfd, (int)fds.size());
@@ -326,7 +324,6 @@ CFrontend *CStreamManager::FindFrontend(CZapitChannel *channel)
 	CZapit::getInstance()->lockFrontend(CZapit::getInstance()->getCurrentFrontend());
 
 	// lock running instance frontend
-//	OpenThreads::ScopedLock<OpenThreads::Mutex> m_lock(mutex);
 	for (streammap_iterator_t it = streams.begin(); it != streams.end(); ++it)
 		frontends.insert(it->second->frontend);
 
@@ -372,7 +369,7 @@ bool CStreamManager::Parse(int fd, stream_pids_t &pids, t_channel_id &chid, CFro
 	cbuf[0] = 0;
 	bp = &cbuf[0];
 
-	/* read one line */
+	// read one line
 	while (bp - &cbuf[0] < (int) sizeof(cbuf) - 1)
 	{
 		unsigned char c;
@@ -392,10 +389,10 @@ bool CStreamManager::Parse(int fd, stream_pids_t &pids, t_channel_id &chid, CFro
 	printf("CStreamManager::Parse: got %d bytes '%s'", (int)(bp - &cbuf[0]), cbuf);
 	bp = &cbuf[0];
 
-	/* send response to http client */
+	// send response to http client
 	if (!strncmp(cbuf, "GET /", 5))
 	{
-		fprintf(fp, "HTTP/1.1 200 OK\r\nServer: streamts (%s)\r\n\r\n", "ts" /*&argv[1][1]*/);
+		fprintf(fp, "HTTP/1.1 200 OK\r\nServer: streamts (%s)\r\n\r\n", "ts");
 		fflush(fp);
 		bp += 5;
 	}
@@ -409,7 +406,7 @@ bool CStreamManager::Parse(int fd, stream_pids_t &pids, t_channel_id &chid, CFro
 	CZapitChannel *channel = CZapit::getInstance()->getCurrentChannel();
 
 #ifndef ENABLE_MULTI_CHANNEL
-	/* parse stdin / url path, start dmx filters */
+	// parse stdin / url path, start dmx filters
 	do
 	{
 		int pid;
@@ -432,6 +429,7 @@ bool CStreamManager::Parse(int fd, stream_pids_t &pids, t_channel_id &chid, CFro
 		pids.clear(); // to catch and stream all pids later !
 	}
 #endif
+
 	if (!channel)
 	{
 		printf("CStreamManager::Parse: no channel\n");
@@ -510,6 +508,7 @@ void CStreamManager::AddPids(int fd, CZapitChannel *channel, stream_pids_t &pids
 			}
 		}
 	}
+	
 	//add pcr pid
 	if (channel->getPcrPid() && (channel->getPcrPid() != channel->getVideoPid()))
 	{
@@ -591,7 +590,6 @@ bool CStreamManager::AddClient(int connfd)
 
 void CStreamManager::RemoveClient(int fd)
 {
-//	OpenThreads::ScopedLock<OpenThreads::Mutex> m_lock(mutex);
 	for (streammap_iterator_t it = streams.begin(); it != streams.end(); ++it)
 	{
 		if (it->second->HasFd(fd))
@@ -643,8 +641,6 @@ void CStreamManager::run()
 		}
 		
 		mutex.unlock();
-		
-		//printf("polling, count= %d\n", poll_cnt);
 		
 		int pollres = poll(pfd, poll_cnt, poll_timeout);
 		if (pollres <= 0)
@@ -872,6 +868,7 @@ void CStreamStream::Close()
 bool CStreamStream::Open()
 {
 	CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(channel_id);
+	
 	if (!channel)
 		return false;
 
@@ -881,45 +878,37 @@ bool CStreamStream::Open()
 		return false;
 
 	std::string pretty_name, livestreamInfo1, livestreamInfo2, headers, dumb;
-//	if (!CMoviePlayerGui::getInstance(true).getLiveUrl(channel->getUrl(), channel->getScriptName(), url, pretty_name, livestreamInfo1, livestreamInfo2, headers, dumb))
-//	{
-//		printf("%s: getLiveUrl() [%s] failed!\n", __FUNCTION__, url.c_str());
-//		return false;
-//	}
 
-	//av_log_set_level(AV_LOG_VERBOSE);
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	av_register_all();
 	avcodec_register_all();
 #endif
 	avformat_network_init();
 
-	printf("%s: Open input [%s]....\n", __FUNCTION__, url.c_str());
+	dprintf(DEBUG_INFO, "Open input [%s]....\n", url.c_str());
 
-	av_log_set_flags(AV_LOG_SKIP_REPEATED);
 	AVDictionary *options = NULL;
 	av_dict_set(&options, "auth_type", "basic", 0);
+	
 	if (!headers.empty())
 	{
 		headers += "\r\n";
 		av_dict_set(&options, "headers", headers.c_str(), 0);
 	}
 
-	av_log_set_level(AV_LOG_DEBUG);
 	if (avformat_open_input(&ifcx, url.c_str(), NULL, &options) != 0)
 	{
-		printf("%s: Cannot open input [%s]!\n", __FUNCTION__, channel->getUrl().c_str());
-		av_log_set_level(AV_LOG_INFO);
+		dprintf(DEBUG_INFO, "Cannot open input [%s]!\n", channel->getUrl().c_str());
 		av_dict_free(&options);
+		
 		return false;
 	}
 
-	av_log_set_level(AV_LOG_INFO);
 	av_dict_free(&options);
 
 	if (avformat_find_stream_info(ifcx, NULL) < 0)
 	{
-		printf("%s: Cannot find stream info [%s]!\n", __FUNCTION__, channel->getUrl().c_str());
+		dprintf(DEBUG_INFO, "Cannot find stream info [%s]!\n", channel->getUrl().c_str());
 		return false;
 	}
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58,27,102)
@@ -933,7 +922,7 @@ bool CStreamStream::Open()
 		!strstr(ifcx->iformat->name, "avi") &&
 		!strstr(ifcx->iformat->name, "mp4"))
 	{
-		printf("%s: not supported format [%s]!\n", __FUNCTION__, ifcx->iformat->name);
+		dprintf(DEBUG_INFO, "not supported format [%s]!\n", ifcx->iformat->name);
 		return false;
 	}
 
@@ -953,6 +942,7 @@ bool CStreamStream::Open()
 		perror("CStreamStream::Open: buf");
 		return false;
 	}
+	
 	avio_ctx = avio_alloc_context(buf, IN_SIZE, 1, this, NULL, &write_packet, NULL);
 	if (!avio_ctx)
 	{
@@ -984,23 +974,24 @@ bool CStreamStream::Open()
 		ost->time_base = ifcx->streams[i]->time_base;
 		ost->id = stid++;
 	}
-	av_log_set_level(AV_LOG_VERBOSE);
+
 #if (LIBAVFORMAT_VERSION_MAJOR < 58)
 	av_dump_format(ofcx, 0, ofcx->filename, 1);
 #else
 	av_dump_format(ofcx, 0, ofcx->url, 1);
 #endif
-	av_log_set_level(AV_LOG_WARNING);
+
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,48,100)
 	bsfc = av_bitstream_filter_init("h264_mp4toannexb");
 	if (!bsfc)
-		printf("%s: av_bitstream_filter_init h264_mp4toannexb failed!\n", __FUNCTION__);
+		ng_err("av_bitstream_filter_init h264_mp4toannexb failed!\n");
 #else
 	const AVBitStreamFilter *bsf = av_bsf_get_by_name("h264_mp4toannexb");
 	if (!bsf)
 	{
 		return false;
 	}
+	
 	if ((av_bsf_alloc(bsf, &bsfc)))
 	{
 		return false;
@@ -1027,8 +1018,6 @@ bool CStreamStream::Stop()
 	if (stopped)
 		return false;
 
-	av_log(NULL, AV_LOG_QUIET, "%s", "");
-
 	printf("%s: Stopping...\n", __FUNCTION__);
 	interrupt = true;
 	stopped = true;
@@ -1045,17 +1034,20 @@ void CStreamStream::run()
 	AVPacket pkt;
 
 	printf("%s: Started.\n", __FUNCTION__);
+	
 	if (avformat_write_header(ofcx, NULL) < 0)
 	{
-		printf("%s: avformat_write_header failed\n", __FUNCTION__);
+		dprintf(DEBUG_INFO, "avformat_write_header failed\n");
 		return;
 	}
 
 	while (!stopped)
 	{
 		av_init_packet(&pkt);
+		
 		if (av_read_frame(ifcx, &pkt) < 0)
 			break;
+			
 		if (pkt.stream_index < 0)
 			continue;
 
@@ -1084,11 +1076,14 @@ void CStreamStream::run()
 			{
 				break;
 			}
+			
 			ret = av_bsf_receive_packet(bsfc, &newpkt);
+			
 			if (ret == AVERROR(EAGAIN))
 			{
 				break;
 			}
+			
 			if (ret != AVERROR_EOF)
 			{
 				av_packet_unref(&pkt);
@@ -1109,6 +1104,7 @@ void CStreamStream::run()
 
 	av_read_pause(ifcx);
 	av_write_trailer(ofcx);
+	
 	printf("%s: Stopped.\n", __FUNCTION__);
 }
 

@@ -134,7 +134,6 @@ class CVCRControl : public OpenThreads::Thread
 
 		inline CVCRStates getDeviceState(void) const { return deviceState; };
 		bool Record(const CTimerd::EventInfo * const eventinfo);
-		bool Screenshot(const t_channel_id channel_id, char * fname = NULL);
 		void Stop();
 		
 	//
@@ -152,18 +151,20 @@ class CVCRControl : public OpenThreads::Thread
 		int  stream_index;
 
 		//
-		bool saveXML(const char* const filename, const char* const info);
-		void FillMovieInfo(CZapitChannel* channel, APIDList& apid_list);
-		bool Start();
-
-		void Close();
-		bool Open(CZapitChannel* channel, const char* const filename);
-		void run();
+		bool saveXML(const char *const filename, const char *const info);
+		void FillMovieInfo(CZapitChannel *channel, APIDList &apid_list);
 		void WriteHeader(uint32_t duration);
 		
-		////
-		stream2file_error_msg_t startWebTVRecording(const char* const filename, const event_id_t epgid, const std::string& epgTitle, const time_t epg_time);
+		//
+		bool Start();
+		void Close();
+		bool Open(CZapitChannel *channel, const char *const filename);
+		void run();
+		
+		//
+		stream2file_error_msg_t startWebTVRecording(const char *const filename, const event_id_t epgid, const std::string  &epgTitle, const time_t epg_time);
 		void stopWebTVRecording();
 };
 
 #endif
+

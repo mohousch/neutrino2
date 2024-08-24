@@ -3498,11 +3498,11 @@ unsigned int CZapit::zapToChannelID(t_channel_id channel_id, bool isSubService)
 {
 	unsigned int result = 0;
 
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::zapToChannelID: chid 0x%llx\n", channel_id);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE"CZapit::zapToChannelID: chid 0x%llx\n", channel_id);
 
 	if (zapit(channel_id, isSubService) < 0) 
 	{
-		dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: zapit failed, chid 0x%llx\n", channel_id);
+		dprintf(DEBUG_NORMAL, ANSI_BLUE"CZapit::zapToChannelID: zapit failed, chid 0x%llx\n", channel_id);
 		
 		g_RCInput->postMsg((isSubService ? NeutrinoMessages::EVT_ZAP_SUB_FAILED : NeutrinoMessages::EVT_ZAP_FAILED), (const neutrino_msg_data_t)channel_id, false);
 		
@@ -3511,17 +3511,17 @@ unsigned int CZapit::zapToChannelID(t_channel_id channel_id, bool isSubService)
 
 	result |= ZAP_OK;
 
-	dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: zapit OK, chid 0x%llx\n", channel_id);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE"CZapit::zapToChannelID: zapit OK, chid 0x%llx\n", channel_id);
 	
 	if (isSubService) 
 	{
-		dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: isSubService chid 0x%llx\n", channel_id);
+		dprintf(DEBUG_NORMAL, ANSI_BLUE"CZapit::zapToChannelID: isSubService chid 0x%llx\n", channel_id);
 		
 		g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_SUB_COMPLETE, (const neutrino_msg_data_t)channel_id, false);
 	}
 	else if (current_is_nvod) 
 	{
-		dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: NVOD chid 0x%llx\n", channel_id);
+		dprintf(DEBUG_NORMAL, ANSI_BLUE"CZapit::zapToChannelID: NVOD chid 0x%llx\n", channel_id);
 		
 		g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_ISNVOD, (const neutrino_msg_data_t)channel_id, false);
 		

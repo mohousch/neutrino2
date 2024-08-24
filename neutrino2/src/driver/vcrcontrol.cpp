@@ -70,6 +70,7 @@
 
 #include <record_cs.h>
 
+
 //// defines
 #define FILENAMEBUFFERSIZE 	1024
 #define MAXPIDS			64
@@ -141,7 +142,7 @@ bool CVCRControl::Record(const CTimerd::EventInfo * const eventinfo)
 	return doRecord(eventinfo->channel_id, mode, eventinfo->epgID, eventinfo->epgTitle, eventinfo->apids, eventinfo->epg_starttime); 
 }
 
-void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap, APIDList& apid_list)
+void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap, APIDList &apid_list)
 {
 	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::getAPIDs\n");
 	
@@ -277,24 +278,21 @@ void CVCRControl::RestoreNeutrino(void)
 	
 	CZapit::getInstance()->setRecordMode( false );
 
-//	if (!IS_WEBTV(channel_id))
+	// start playback
+	if (!CZapit::getInstance()->isPlayBackActive() && (CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby))
+		CZapit::getInstance()->startPlayBack(CZapit::getInstance()->getCurrentChannel());
+
+	// alten mode wieder herstellen (ausser wen zwischenzeitlich auf oder aus sb geschalten wurde)
+	if(CNeutrinoApp::getInstance()->getMode() != last_mode && CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby && last_mode != NeutrinoMessages::mode_standby)
 	{
-		// start playback
-		if (!CZapit::getInstance()->isPlayBackActive() && (CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby))
-			CZapit::getInstance()->startPlayBack(CZapit::getInstance()->getCurrentChannel());
+		if(!autoshift) 
+			g_RCInput->postMsg(NeutrinoMessages::CHANGEMODE, (const neutrino_msg_data_t)last_mode);
+	}
 
-		// alten mode wieder herstellen (ausser wen zwischenzeitlich auf oder aus sb geschalten wurde)
-		if(CNeutrinoApp::getInstance()->getMode() != last_mode && CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby && last_mode != NeutrinoMessages::mode_standby)
-		{
-			if(!autoshift) 
-				g_RCInput->postMsg(NeutrinoMessages::CHANGEMODE, (const neutrino_msg_data_t)last_mode);
-		}
-
-		if(last_mode == NeutrinoMessages::mode_standby && CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_standby )
-		{
-			//Wenn vorher und jetzt standby, dann die zapit wieder auf sb schalten
-			CZapit::getInstance()->setStandby(true);
-		}
+	if(last_mode == NeutrinoMessages::mode_standby && CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_standby )
+	{
+		//Wenn vorher und jetzt standby, dann die zapit wieder auf sb schalten
+		CZapit::getInstance()->setStandby(true);
 	}	
 }
 
@@ -305,28 +303,26 @@ void CVCRControl::CutBackNeutrino(const t_channel_id channel_id, const int mode)
 	
 	last_mode = CNeutrinoApp::getInstance()->getMode();
 
-//	if (!IS_WEBTV(channel_id))
+	if(last_mode == NeutrinoMessages::mode_standby)
 	{
-		if(last_mode == NeutrinoMessages::mode_standby)
-		{
-			CZapit::getInstance()->setStandby(false);
-		}
-	
-		if (channel_id != 0) 
-		{
-			if (mode != last_mode && (last_mode != NeutrinoMessages::mode_standby || mode != CNeutrinoApp::getInstance()->getLastMode())) 
-			{
-				CNeutrinoApp::getInstance()->handleMsg( NeutrinoMessages::CHANGEMODE , mode | NeutrinoMessages::norezap );
-				// Wenn wir im Standby waren, dann brauchen wir f�rs streamen nicht aufwachen...
-				if(last_mode == NeutrinoMessages::mode_standby)
-					CNeutrinoApp::getInstance()->handleMsg( NeutrinoMessages::CHANGEMODE , NeutrinoMessages::mode_standby);
-			}
-		}
-
-		// stop playback im standby
-		if( last_mode == NeutrinoMessages::mode_standby )
-			CZapit::getInstance()->stopPlayBack();
+		CZapit::getInstance()->setStandby(false);
 	}
+	
+	if (channel_id != 0) 
+	{
+		if (mode != last_mode && (last_mode != NeutrinoMessages::mode_standby || mode != CNeutrinoApp::getInstance()->getLastMode())) 
+		{
+			CNeutrinoApp::getInstance()->handleMsg( NeutrinoMessages::CHANGEMODE , mode | NeutrinoMessages::norezap );
+			
+			// Wenn wir im Standby waren, dann brauchen wir f�rs streamen nicht aufwachen...
+			if(last_mode == NeutrinoMessages::mode_standby)
+				CNeutrinoApp::getInstance()->handleMsg( NeutrinoMessages::CHANGEMODE , NeutrinoMessages::mode_standby);
+		}
+	}
+
+	// stop playback im standby
+	if( last_mode == NeutrinoMessages::mode_standby )
+		CZapit::getInstance()->stopPlayBack();
 	
 	// after this zapit send EVT_RECORDMODE_ACTIVATED, so neutrino getting NeutrinoMessages::EVT_RECORDMODE
 	CZapit::getInstance()->setRecordMode( true );
@@ -673,111 +669,6 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	}
 }
 
-bool CVCRControl::Screenshot(const t_channel_id channel_id, char * fname) 
-{
-	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CVCRControl::Screenshot\n");
-	
-	//FIXME:
-	char filename[512]; // UTF-8
-	char cmd[512];
-	std::string channel_name;
-	CEPGData epgData;
-//	event_id_t epgid = 0;
-	unsigned int pos = 0;
-
-	if(!fname) // live stream
-	{
-		std::string str = "sda1";
-		
-		struct statfs s;
-		
-		if (::statfs(g_settings.network_nfs_recordingdir, &s) == 0) 
-		{
-			//std::string str1 = g_settings.network_nfs_recordingdir;
-			//str = str1.substr(7, 4);
-			//str = str1.substr(str1.length() - 4, str1.length());
-		}
-		char str2[100];	
-		sprintf(str2, "/media/%s/screenshots/", str.c_str() );
-		
-		if(safe_mkdir(str2))
-			return false;
-
-		strcpy(filename, str2);
-	
-		pos = strlen(filename);
-
-		channel_name = CZapit::getInstance()->getChannelName(channel_id);
-
-		if (!(channel_name.empty())) 
-		{
-			strcpy(&(filename[pos]), UTF8_TO_FILESYSTEM_ENCODING(channel_name.c_str()));
-			char * p_act = &(filename[pos]);
-
-			do {
-				p_act += strcspn(p_act, "/ \"%&-\t`'�!,:;");
-				if (*p_act) {
-					*p_act++ = '_';
-				}
-			} while (*p_act);
-			strcat(filename, "_");
-		}
-
-		pos = strlen(filename);
-
-		if(CSectionsd::getInstance()->getActualEPGServiceKey(channel_id&0xFFFFFFFFFFFFULL, &epgData));
-			record_EPGid = epgData.eventID;
-
-		if(record_EPGid != 0) 
-		{
-			CShortEPGData epgdata;
-
-			if(CSectionsd::getInstance()->getEPGidShort(record_EPGid, &epgdata)) 
-			{
-				if (!(epgdata.title.empty())) 
-				{
-					strcpy(&(filename[pos]), epgdata.title.c_str());
-					char * p_act = &(filename[pos]);
-					do {
-						p_act +=  strcspn(p_act, "/ \"%&-\t`'~<>!,:;?^�$\\=*#@�|");
-						if (*p_act) {
-							*p_act++ = '_';
-						}
-					} while (*p_act);
-				}
-			}
-		}
-		
-		pos = strlen(filename);
-		time_t t = time(NULL);
-		strftime(&(filename[pos]), sizeof(filename) - pos - 1, "%Y%m%d_%H%M%S", localtime(&t));
-		
-		strcat(filename, ".jpg");
-		
-		sprintf(cmd, "grab -v -r320 %s", filename);
-	} 
-	else
-	{
-		//from tsbrowser
-		strcpy(filename, fname);
-
-		std::string file_name = fname; // UTF-8
-		
-		changeFileNameExt(file_name, ".jpg");
-		
-		sprintf(cmd, "grab -v -r320 %s", (char *)file_name.c_str());
-	}
-	
-	printf("Executing %s\n", cmd);
-	
-	if(system(cmd))
-	{
-		return false;
-	}
-	
-	return true;
-}
-
 //
 std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const event_id_t epgid, const std::string& epgTitle, APIDList apid_list, const time_t epg_time)
 {
@@ -1109,7 +1000,6 @@ void CVCRControl::stopRecording()
 	rec_filename[0] = 0;
 }
 
-////
 void CVCRControl::Close()
 {
 	if (ifcx)
@@ -1142,7 +1032,7 @@ void CVCRControl::Close()
 	bsfc = NULL;
 }
 
-void CVCRControl::FillMovieInfo(CZapitChannel * channel, APIDList& apid_list)
+void CVCRControl::FillMovieInfo(CZapitChannel *channel, APIDList &apid_list)
 {
 	g_movieInfo->VideoType = 0;
 
@@ -1208,7 +1098,7 @@ void CVCRControl::FillMovieInfo(CZapitChannel * channel, APIDList& apid_list)
 	}
 }
 
-bool CVCRControl::saveXML(const char* const filename, const char* const info)
+bool CVCRControl::saveXML(const char *const filename, const char *const info)
 {
 	int fd;
 	char buf[FILENAMEBUFFERSIZE];
@@ -1300,7 +1190,7 @@ void CVCRControl::stopWebTVRecording()
 	rec_filename[0] = 0;
 }
 
-stream2file_error_msg_t CVCRControl::startWebTVRecording(const char* const filename, const event_id_t epgid, const std::string& epgTitle, const time_t epg_time)
+stream2file_error_msg_t CVCRControl::startWebTVRecording(const char *const filename, const event_id_t epgid, const std::string &epgTitle, const time_t epg_time)
 {
 	APIDList apid_list;
 
@@ -1330,7 +1220,7 @@ stream2file_error_msg_t CVCRControl::startWebTVRecording(const char* const filen
 	return STREAM2FILE_OK;
 }
 
-bool CVCRControl::Open(CZapitChannel *channel, const char * const filename)
+bool CVCRControl::Open(CZapitChannel *channel, const char *const filename)
 {
 	std::string url = channel->getUrl();
 
@@ -1347,33 +1237,30 @@ bool CVCRControl::Open(CZapitChannel *channel, const char * const filename)
 #endif
 	avformat_network_init();
 
-//	av_log_set_flags(AV_LOG_SKIP_REPEATED);
+	// add cookies
 	AVDictionary *options = NULL;
 	av_dict_set(&options, "auth_type", "basic", 0);
 	
-	if (!headers.empty())//add cookies
+	if (!headers.empty())
 	{
 		headers += "\r\n";
 		av_dict_set(&options, "headers", headers.c_str(), 0);
 	}
-
-//	av_log_set_level(AV_LOG_DEBUG);
 	
 	if (avformat_open_input(&ifcx, url.c_str(), NULL, &options) != 0)
 	{
-//		printf("%s: Cannot open input [%s]!\n", __FUNCTION__, url.c_str());
-//		av_log_set_level(AV_LOG_INFO);
+		dprintf(DEBUG_INFO, "Cannot open input [%s]!\n", url.c_str());
+
 		av_dict_free(&options);
 		
 		return false;
 	}
 
-//	av_log_set_level(AV_LOG_INFO);
 	av_dict_free(&options);
 
 	if (avformat_find_stream_info(ifcx, NULL) < 0)
 	{
-//		printf("%s: Cannot find stream info [%s]!\n", __FUNCTION__, channel->getUrl().c_str());
+		dprintf(DEBUG_INFO, "Cannot find stream info [%s]!\n", channel->getUrl().c_str());
 		
 		return false;
 	}
@@ -1389,7 +1276,7 @@ bool CVCRControl::Open(CZapitChannel *channel, const char * const filename)
 		!strstr(ifcx->iformat->name, "avi") &&
 		!strstr(ifcx->iformat->name, "mp4"))
 	{
-//		printf("%s: not supported format [%s]!\n", __FUNCTION__, ifcx->iformat->name);
+		dprintf(DEBUG_INFO, "not supported format [%s]!\n", ifcx->iformat->name);
 		return false;
 	}
 
@@ -1409,7 +1296,7 @@ bool CVCRControl::Open(CZapitChannel *channel, const char * const filename)
 #endif
 	if (ofmt == NULL)
 	{
-//		printf("%s: av_guess_format for [%s] failed!\n", __FUNCTION__, tsfile.c_str());
+		dprintf(DEBUG_INFO, "av_guess_format for [%s] failed!\n", tsfile.c_str());
 		return false;
 	}
 
@@ -1418,7 +1305,7 @@ bool CVCRControl::Open(CZapitChannel *channel, const char * const filename)
 
 	if (avio_open2(&ofcx->pb, tsfile.c_str(), AVIO_FLAG_WRITE, NULL, NULL) < 0)
 	{
-//		printf("%s: avio_open2 for [%s] failed!\n", __FUNCTION__, tsfile.c_str());
+		dprintf(DEBUG_INFO, "%s: avio_open2 for [%s] failed!\n", tsfile.c_str());
 		return false;
 	}
 
@@ -1456,22 +1343,20 @@ bool CVCRControl::Open(CZapitChannel *channel, const char * const filename)
 			stream_index = i;
 	}
 	
-//	av_log_set_level(AV_LOG_VERBOSE);
 #if (LIBAVFORMAT_VERSION_MAJOR < 58)
 	av_dump_format(ofcx, 0, ofcx->filename, 1);
 #else
 	av_dump_format(ofcx, 0, ofcx->url, 1);
 #endif
 
-//	av_log_set_level(AV_LOG_WARNING);
-
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,48,100)
 	bsfc = av_bitstream_filter_init("h264_mp4toannexb");
 	
-//	if (!bsfc)
-//		printf("%s: av_bitstream_filter_init h264_mp4toannexb failed!\n", __FUNCTION__);
+	if (!bsfc)
+		ng_err("av_bitstream_filter_init h264_mp4toannexb failed!\n");
 #else
 	const AVBitStreamFilter *bsf = av_bsf_get_by_name("h264_mp4toannexb");
+	
 	if (!bsf)
 	{
 		return false;
@@ -1497,7 +1382,6 @@ void CVCRControl::run()
 	
 	if (avformat_write_header(ofcx, NULL) < 0)
 	{
-//		printf("%s: avformat_write_header failed\n", __FUNCTION__);
 		return;
 	}
 
@@ -1569,7 +1453,6 @@ void CVCRControl::run()
 		if (pkt.stream_index == stream_index)
 		{
 			total += (double) 1000 * pkt.duration * av_q2d(ifcx->streams[stream_index]->time_base);
-			//printf("PKT: duration %d (%f) total %f (ifcx->duration %016llx\n", pkt.duration, duration, total, ifcx->duration);
 		}
 
 		if (now == 0)

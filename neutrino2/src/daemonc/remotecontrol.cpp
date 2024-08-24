@@ -43,7 +43,6 @@
 
 
 //// globals
-extern tallchans allchans;		// defined in zapit.cpp
 extern bool autoshift;			// defined in neutrino2.cpp
 extern uint32_t scrambled_timer;	// defined in neutrino2.cpp
 
@@ -151,8 +150,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			//
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
 				processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
-				
-			////
+
 			// lcd
 			CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
 		}
@@ -195,8 +193,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			//
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
 				processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
-				
-			////
+
 			// lcd
 			CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
 		}
@@ -238,7 +235,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		
 		if ((info_CN.current_uniqueKey >> 16) == (current_channel_id & 0xFFFFFFFFFFFFULL) || (info_CN.current_uniqueKey >> 16) == (current_sub_channel_id & 0xFFFFFFFFFFFFULL))
 		{
-			//CURRENT-EPG for current channel arrived!
+			// CURRENT-EPG for current channel arrived!
 			CLCD::getInstance()->setEPGTitle(info_CN.current_name.empty()? "" : info_CN.current_name);			
 			
 			if (info_CN.current_uniqueKey != current_EPGid)
@@ -722,7 +719,7 @@ const std::string & CRemoteControl::subChannelDown(void)
 }
 
 //
-void CRemoteControl::zapToChannelID(const t_channel_id channel_id, /*const std::string &channame, int channumber,*/ const bool start_video) // UTF-8
+void CRemoteControl::zapToChannelID(const t_channel_id channel_id, const bool start_video) // UTF-8
 {
 	dprintf(DEBUG_NORMAL, "CRemoteControl::zapToChannelID: 0x%llx\n", channel_id);
 	
@@ -773,15 +770,7 @@ void CRemoteControl::zapToChannelID(const t_channel_id channel_id, /*const std::
 
 void CRemoteControl::startvideo(t_channel_id channel_id)
 {
-	CZapitChannel *chan = NULL;
-	
-	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
-	{
-		if(it->second.getChannelID() == channel_id)
-		{
-			chan = &it->second;
-		}
-	}
+	CZapitChannel *chan = CZapit::getInstance()->findChannelByChannelID(channel_id);
 	
 	if ( !is_video_started )
 	{

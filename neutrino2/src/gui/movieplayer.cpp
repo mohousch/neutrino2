@@ -1541,20 +1541,6 @@ void CMoviePlayerGui::PlayFile(void)
 			
 			startSubtitles();
 		}
-		else if (msg == (neutrino_msg_t)g_settings.key_screenshot)
-		{
-			stopSubtitles();
-			
-			if (mplist && !mplist->isPainted())
-			{
-		 		if(MessageBox(_("Information"), _("create screenshot?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
-				{
-					CVCRControl::getInstance()->Screenshot(0, (char *)playlist[selected].file.Name.c_str());
-				}
-			}
-			
-			startSubtitles();
-		}
 		else if(msg == CRCInput::RC_ok)
 		{
 			stopSubtitles();

@@ -917,19 +917,40 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	avcodec_register_all();
 	av_register_all();
 	avformat_network_init();
+	
+	//
+	AVDictionary *options = NULL;
+	av_dict_set(&options, "auth_type", "basic", 0);
+	
+	if (strncmp(filename, "http://", 7) == 0 || strncmp(filename, "https://", 8) == 0)
+	{
+		av_dict_set(&options, "timeout", "20000000", 0); //20sec
+		av_dict_set(&options, "reconnect", "1", 0);
+		av_dict_set(&options, "reconnect_delay_max", "7", 0);
+		
+		av_dict_set(&options, "seekable", "0", 0);
+//		av_dict_set(&options, "reconnect_at_eof", "1", 0);
+		av_dict_set(&options, "reconnect_streamed", "1", 0);
+	}
 
 #if LIBAVCODEC_VERSION_MAJOR < 54
 	if ((err = av_open_input_file(&avContext, filename, NULL, 0, NULL)) != 0) 
 #else
-	if ((err = avformat_open_input(&avContext, filename, NULL, NULL)) != 0)
+	if ((err = avformat_open_input(&avContext, filename, NULL, &options)) != 0)
 #endif
 	{
 		ffmpeg_err("avformat_open_input failed %d (%s)\n", err, filename);
+		
+		//
+		av_dict_free(&options);
 
 		releaseMutex(FILENAME, __FUNCTION__,__LINE__);
 		
 		return cERR_CONTAINER_FFMPEG_OPEN;
 	}
+	
+	//
+	av_dict_free(&options);
 	
 	avContext->flags |= AVFMT_FLAG_GENPTS;
 	avContext->max_analyze_duration = 1;

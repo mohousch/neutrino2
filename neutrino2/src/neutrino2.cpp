@@ -3344,7 +3344,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	// zap complete event
 	if(msg == NeutrinoMessages::EVT_ZAP_COMPLETE || msg == NeutrinoMessages::EVT_ZAP_FAILED) 
 	{
-		dprintf(DEBUG_NORMAL, "EVT_ZAP_COMPLETE current_channel_id: 0x%llx data:0x%llx\n", CZapit::getInstance()->getCurrentChannelID(), data);
+		dprintf(DEBUG_NORMAL, "%s current_channel_id: 0x%llx data:0x%llx\n", (msg == NeutrinoMessages::EVT_ZAP_FAILED)? "EVT_ZAP_FAILED" : "EVT_ZAP_COMPLETE", CZapit::getInstance()->getCurrentChannelID(), data);
 		
 		// set audio map after channel zap
 		CZapit::getInstance()->getAudioMode(&g_settings.audio_AnalogMode);
