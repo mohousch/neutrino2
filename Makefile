@@ -395,10 +395,10 @@ plugins-deb: $(PLUGINS_SRC) $(PWD)/debian
 	$(MAKE) -C $(PLUGINS_SRC) install DESTDIR=$(PWD)/debian
 
 package: neutrino-deb plugins-deb
-	dpkg --build debian neutrinong2_`sed -n 's/\#define PACKAGE_VERSION "//p' neutrino2/config.h | sed 's/"//'`_`git log | grep "^commit" | wc -l`_all.deb
+	dpkg --build debian neutrinong_`sed -n 's/\#define PACKAGE_VERSION "//p' neutrino2/config.h | sed 's/"//'`_`git log | grep "^commit" | wc -l`_all.deb
 	
 package-clean:
-	rm -rf neutrinong2_*
+	rm -rf neutrinong_*
 
 PHONY = clean distclean
 .PHONY: $(PHONY)
