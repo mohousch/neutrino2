@@ -162,7 +162,7 @@ static bool messaging_zap_detected = false;
 //
 std::string dvbtime_filter_dir = CONFIGDIR "/zapit/dvbtimefilter.xml";
 static bool dvb_time_update = false;
-//NTP-Config
+// NTP-Config
 #define CONF_FILE CONFIGDIR "/neutrino2.conf"
 std::string ntp_system_cmd_prefix = "ntpdate ";
 std::string ntp_system_cmd;
@@ -173,12 +173,12 @@ int ntpenable;
 //
 static int eit_update_fd = -1;
 static bool update_eit = true;
-/* messaging_current_servicekey does probably not need locking, since it is
-   changed from one place */
+// messaging_current_servicekey does probably not need locking, since it is
+// changed from one place
 static t_channel_id    messaging_current_servicekey = 0;
 static bool channel_is_blacklisted = false;
 // EVENTS...
-/* messaging_eit_is_busy does not need locking, it is only written to from CN-Thread */
+// messaging_eit_is_busy does not need locking, it is only written to from CN-Thread
 static bool messaging_eit_is_busy = false;
 static bool messaging_need_eit_version = false;
 std::string epg_dir("");
@@ -293,7 +293,6 @@ pthread_mutex_t timeIsSetMutex = PTHREAD_MUTEX_INITIALIZER;
 static int	messaging_have_CN = 0x00;	// 0x01 = CURRENT, 0x02 = NEXT
 static int	messaging_got_CN = 0x00;	// 0x01 = CURRENT, 0x02 = NEXT
 static time_t	messaging_last_requested = time_monotonic();
-//static bool	messaging_neutrino_sets_time = false;
 
 inline bool waitForTimeset(void)
 {
@@ -4911,8 +4910,6 @@ void CSectionsd::Start(void)
 	readEPGFilter();
 	readDVBTimeFilter();
 	readEncodingFile();
-	
-//	messaging_neutrino_sets_time = true;
 
 	// time-Thread starten
 	rc = pthread_create(&threadTOT, 0, timeThread, 0);
