@@ -462,14 +462,14 @@ static bool swscale(uint8_t *src, uint8_t *dst, int sw, int sh, int dw, int dh, 
 	return ret;
 }
 
-inline void rgb24torgb32(unsigned char  *src, unsigned char *dest, int picsize)
+inline void rgb24torgb32(uint8_t *src, uint8_t *dest, int picsize)
 {
 	for (int i = 0; i < picsize; i++)
 	{
 		*dest++ = *src++;
 		*dest++ = *src++;
 		*dest++ = *src++;
-		*dest++ = 255;
+		*dest++ = 0xFF;
 	}
 }
 
@@ -525,6 +525,15 @@ inline static uint16_t make15color(uint8_t r, uint8_t g, uint8_t b)
 inline static uint16_t make16color(uint8_t r, uint8_t g, uint8_t b)
 {
 	return ((((r >> 3) & 31) << 11) | (((g >> 2) & 63) << 5)  | ((b >> 3) & 31));
+}
+
+inline static uint32_t make16color(uint16_t r, uint16_t g, uint16_t b, uint16_t t,
+				  uint32_t  /*rl*/ = 0, uint32_t  /*ro*/ = 0,
+				  uint32_t  /*gl*/ = 0, uint32_t  /*go*/ = 0,
+				  uint32_t  /*bl*/ = 0, uint32_t  /*bo*/ = 0,
+				  uint32_t  /*tl*/ = 0, uint32_t  /*to*/ = 0)
+{
+	return ((t << 24) & 0xFF000000) | ((r << 8) & 0xFF0000) | ((g << 0) & 0xFF00) | (b >> 8 & 0xFF);
 }
 
 #endif
