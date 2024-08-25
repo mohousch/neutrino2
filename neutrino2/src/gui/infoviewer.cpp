@@ -722,7 +722,7 @@ void CInfoViewer::getCurrentNextEPG(t_channel_id ChannelID, bool newChan, int EP
 	{
 		if (newChan) 
 		{
-			for ( eli = evtlist.begin(); eli!=evtlist.end(); ++eli ) 
+			for ( eli = evtlist.begin(); eli != evtlist.end(); ++eli ) 
 			{
 				if ((uint)eli->startTime >= info_CurrentNext.current_time.starttime + info_CurrentNext.current_time.duration)
 					break;
@@ -1238,9 +1238,16 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
   	} 
 	else if (msg == NeutrinoMessages::EVT_TIMER) 
 	{	  
-		if (data == CNeutrinoApp::getInstance()->lcdUpdateTimer) 
+		if (data == CNeutrinoApp::getInstance()->epgUpdateTimer) 
 		{
-	  		showLcdPercentOver();		
+	  		
+	  		// update epg on change
+	  		time_t jetzt = time(NULL);
+	  		
+	  		if ( (info_CurrentNext.current_time.starttime + info_CurrentNext.current_time.duration) < jetzt )
+	  			showEPGInfo();
+	  			
+	  		showLcdPercentOver();
 
 	  		return messages_return::handled;
 		}	
@@ -1414,6 +1421,8 @@ void CInfoViewer::showButton_SubServices()
 void CInfoViewer::getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentNextInfo &info)
 {
 	dprintf(DEBUG_NORMAL, "CInfoViewer::getEPG: channel_id: 0x%llx\n", for_channel_id);
+	
+	static CSectionsd::CurrentNextInfo oldinfo;
 
 	// to clear the oldinfo for channels without epg, call getEPG() with for_channel_id = 0
 	if (for_channel_id == 0)
@@ -1426,12 +1435,14 @@ void CInfoViewer::getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentN
 	// if there is no EPG, send an event so that parental lock can work
 	if (info.current_uniqueKey == 0 && info.next_uniqueKey == 0) 
 	{
+		memcpy(&oldinfo, &info, sizeof(CSectionsd::CurrentNextInfo));
+		
 		g_RCInput->postMsg(NeutrinoMessages::EVT_NOEPG_YET, (const neutrino_msg_data_t)for_channel_id, false);
 		
 		return;
 	}
 
-	if (info.current_uniqueKey != 0 || info.next_uniqueKey != 0)
+	if (info.current_uniqueKey != oldinfo.current_uniqueKey || info.next_uniqueKey != oldinfo.next_uniqueKey)
 	{
 		neutrino_msg_t msg;
 		
@@ -1446,7 +1457,9 @@ void CInfoViewer::getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentN
 			msg = NeutrinoMessages::EVT_NOEPG_YET;
 
 		//
-		g_RCInput->postMsg(msg, (const neutrino_msg_data_t)for_channel_id, false); // data is pointer to allocated memory
+		g_RCInput->postMsg(msg, (const neutrino_msg_data_t)for_channel_id, false);
+		
+		memcpy(&oldinfo, &info, sizeof(CSectionsd::CurrentNextInfo));
 	}	
 }
 
@@ -1940,4 +1953,20 @@ void CInfoViewer::showWeather()
 		}
 	}
 }
+
+void CInfoViewer::showEPGInfo()   //message on event change
+{
+	dprintf(DEBUG_NORMAL, "CInfoViewer::showEPGInfo\n");
+	
+	int mode = CNeutrinoApp::getInstance()->getMode();
+	
+	// show epg info only if we in TV- or Radio mode and current event is not the same like before
+	if ((eventname != info_CurrentNext.current_name) && (mode == NeutrinoMessages::mode_tv || mode == NeutrinoMessages::mode_radio))
+	{
+		eventname = info_CurrentNext.current_name;
+		
+		g_RCInput->postMsg(NeutrinoMessages::SHOW_INFOBAR , 0);
+	}
+}
+
 

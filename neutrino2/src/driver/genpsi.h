@@ -24,6 +24,7 @@
 
 #include <inttypes.h>
 
+
 #define EN_TYPE_VIDEO		0x00
 #define EN_TYPE_AUDIO		0x01
 #define EN_TYPE_TELTEX		0x02

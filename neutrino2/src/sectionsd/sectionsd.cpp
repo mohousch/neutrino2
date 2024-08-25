@@ -293,7 +293,7 @@ pthread_mutex_t timeIsSetMutex = PTHREAD_MUTEX_INITIALIZER;
 static int	messaging_have_CN = 0x00;	// 0x01 = CURRENT, 0x02 = NEXT
 static int	messaging_got_CN = 0x00;	// 0x01 = CURRENT, 0x02 = NEXT
 static time_t	messaging_last_requested = time_monotonic();
-static bool	messaging_neutrino_sets_time = false;
+//static bool	messaging_neutrino_sets_time = false;
 
 inline bool waitForTimeset(void)
 {
@@ -1621,6 +1621,7 @@ void CSectionsd::setConfig(const epg_config config)
 		// check for rdate
 		if( !access("/bin/rdate", F_OK) || !access("/sbin/rdate", F_OK) || !access("/usr/bin/rdate", F_OK) || !access("/usr/sbin/rdate", F_OK)) 
 			ntp_system_cmd_prefix = "rdate -s ";
+			
 		ntp_system_cmd = ntp_system_cmd_prefix + ntpserver;
 	}
 
@@ -2502,6 +2503,8 @@ void *CSectionsd::insertEventsfromLocalTV(void *data)
 }
 
 //
+// fromXML
+//
 void CSectionsd::readSIfromXML(const char *epgxmlname)
 {
 	dprintf(DEBUG_NORMAL, "CSectionsd::readSIfromXML: %s\n", epgxmlname);
@@ -2526,6 +2529,7 @@ void CSectionsd::readSIfromXML(const char *epgxmlname)
 	return ;
 }
 
+//
 // fromXMLTV
 //
 void CSectionsd::readSIfromXMLTV(const char *url)
@@ -2555,6 +2559,8 @@ void CSectionsd::readSIfromXMLTV(const char *url)
 	return ;
 }
 
+//
+// fromlocalTV
 //
 void CSectionsd::readSIfromLocalTV(const t_channel_id chid)
 {
@@ -2723,10 +2729,10 @@ _ret:
 	return ;
 }
 
-//---------------------------------------------------------------------
+//
 // Time-thread
 // updates system time according TOT every 30 minutes
-//---------------------------------------------------------------------
+//
 void *CSectionsd::timeThread(void *)
 {
 	UTC_t UTC;
@@ -2797,17 +2803,14 @@ void *CSectionsd::timeThread(void *)
 
 					if (tim) 
 					{
-						//if ((!messaging_neutrino_sets_time) && (geteuid() == 0)) 
-						{
-							struct timeval tv;
-							tv.tv_sec = tim;
-							tv.tv_usec = 0;
+						struct timeval tv;
+						tv.tv_sec = tim;
+						tv.tv_usec = 0;
 							
-							if (settimeofday(&tv, NULL) < 0) 
-							{
-								perror("CSectionsd::timeThread: settimeofday");
-								pthread_exit(NULL);
-							}
+						if (settimeofday(&tv, NULL) < 0) 
+						{
+							perror("CSectionsd::timeThread: settimeofday");
+							pthread_exit(NULL);
 						}
 					}
 
@@ -2928,7 +2931,7 @@ int eit_set_update_filter(int *fd)
 	memset(&mask, 0, DMX_FILTER_SIZE);
 	memset(&mode, 0, DMX_FILTER_SIZE);
 
-	filter[0] = 0x4e;   /* table_id */
+	filter[0] = 0x4e;   // table_id
 	filter[1] = (unsigned char)(messaging_current_servicekey >> 8);
 	filter[2] = (unsigned char)messaging_current_servicekey;
 
@@ -2961,7 +2964,6 @@ int eit_stop_update_filter(int *fd)
 	return 0;
 }
 
-
 //
 // Freesat EIT-thread
 // reads Freesat EPG-data
@@ -2969,9 +2971,6 @@ int eit_stop_update_filter(int *fd)
 void *CSectionsd::fseitThread(void *)
 {
 	struct SI_section_header *header;
-	
-	/* we are holding the start_stop lock during this timeout, so don't make it too long... */
-	
 	unsigned timeoutInMSeconds = EIT_READ_TIMEOUT;
 	bool sendToSleepNow = false;
 	pthread_setcanceltype (PTHREAD_CANCEL_ASYNCHRONOUS, 0);
@@ -3223,10 +3222,6 @@ void *CSectionsd::fseitThread(void *)
 void *CSectionsd::viasateitThread(void *)
 {
 	struct SI_section_header *header;
-	/* 
-	 * we are holding the start_stop lock during this timeout, so don't
-	   make it too long... 
-	*/
 	unsigned timeoutInMSeconds = EIT_READ_TIMEOUT;
 	bool sendToSleepNow = false;
 	pthread_setcanceltype (PTHREAD_CANCEL_ASYNCHRONOUS, 0);
@@ -3501,12 +3496,8 @@ void *CSectionsd::eitThread(void *)
 	dmxEIT.addfilter(0x00, 0x00); //0 dummy filter
 	dmxEIT.addfilter(0x50, 0xf0); //1  current TS, scheduled
 	dmxEIT.addfilter(0x4f, 0xff); //2  other TS, current/next
-#if 1
 	dmxEIT.addfilter(0x60, 0xf1); //3a other TS, scheduled, even
 	dmxEIT.addfilter(0x61, 0xf1); //3b other TS, scheduled, odd
-#else
-	dmxEIT.addfilter(0x60, 0xf0); //3  other TS, scheduled
-#endif
 
 	// debug
 	int policy = 0;
@@ -3790,8 +3781,6 @@ void *CSectionsd::eitThread(void *)
 void *CSectionsd::cnThread(void *)
 {
 	struct SI_section_header *header;
-	/* we are holding the start_stop lock during this timeout, so don't
-	   make it too long... */
 	unsigned timeoutInMSeconds = EIT_READ_TIMEOUT;
 	bool sendToSleepNow = false;
 	pthread_setcanceltype (PTHREAD_CANCEL_ASYNCHRONOUS, 0);
@@ -3859,10 +3848,10 @@ void *CSectionsd::cnThread(void *)
 				{
 					unlockMessaging();
 					dprintf(DEBUG_DEBUG, "CSectionsd::cnThread: waiting for eit_version...\n");
-					zeit = time_monotonic();  /* reset so that we don't get negative */
-					eit_waiting_since = zeit; /* and still compensate for getSection */
-					dmxCN.lastChanged = zeit; /* this is ugly - needs somehting better */
-					sendToSleepNow = false;   /* reset after channel change */
+					zeit = time_monotonic();  // reset so that we don't get negative
+					eit_waiting_since = zeit; // and still compensate for getSection
+					dmxCN.lastChanged = zeit; // this is ugly - needs somehting better
+					sendToSleepNow = false;   // reset after channel change
 					writeLockMessaging();
 					messaging_need_eit_version = true;
 				}
@@ -3873,7 +3862,7 @@ void *CSectionsd::cnThread(void *)
 				{
 					dprintf(DEBUG_DEBUG, "CSectionsd::cnThread: waiting for more than %d seconds - bail out...\n", TIME_EIT_VERSION_WAIT);
 					
-					/* send event anyway, so that we know there is no EPG */
+					// send event anyway, so that we know there is no EPG
 					g_RCInput->postMsg(NeutrinoMessages::EVT_CURRENTNEXT_EPG, (const neutrino_msg_data_t)messaging_current_servicekey, false);
 					
 					writeLockMessaging();
@@ -3897,9 +3886,9 @@ void *CSectionsd::cnThread(void *)
 			
 			g_RCInput->postMsg(NeutrinoMessages::EVT_CURRENTNEXT_EPG, (const neutrino_msg_data_t)messaging_current_servicekey, false);
 			
-			/* we received an event => reset timeout timer... */
+			// we received an event => reset timeout timer...
 			eit_waiting_since = zeit;
-			dmxCN.lastChanged = zeit; /* this is ugly - needs somehting better */
+			dmxCN.lastChanged = zeit; // this is ugly - needs somehting better
 			readLockMessaging();
 		}
 		
@@ -3926,15 +3915,15 @@ void *CSectionsd::cnThread(void *)
 			messaging_eit_is_busy = false;
 			unlockMessaging();
 
-			/* 
-			re-fetch time if transponder changed
-			Why I'm doing this here and not from commandserviceChanged?
-			commandserviceChanged is called on zap *start*, not after zap finished
-			this would lead to often actually fetching the time on the transponder
-			you are switching away from, not the one you are switching onto.
-			Doing it here at least gives us a good chance to have actually tuned
-			to the channel we want to get the time from...
-			*/
+			// 
+			// re-fetch time if transponder changed
+			// Why I'm doing this here and not from commandserviceChanged?
+			// commandserviceChanged is called on zap *start*, not after zap finished
+			// this would lead to often actually fetching the time on the transponder
+			// you are switching away from, not the one you are switching onto.
+			// Doing it here at least gives us a good chance to have actually tuned
+			//to the channel we want to get the time from...
+			//
 			if (time_trigger_last != (messaging_current_servicekey & 0xFFFFFFFF0000ULL))
 			{
 				time_trigger_last = messaging_current_servicekey & 0xFFFFFFFF0000ULL;
@@ -3962,11 +3951,7 @@ void *CSectionsd::cnThread(void *)
 			{
 				dprintf(DEBUG_DEBUG, "CSectionsd::cnThread: dmxCN: waking up again - requested from .change()\n");
 				
-				// fix EPG problems on IPBox
-				// http://tuxbox-forum.dreambox-fan.de/forum/viewtopic.php?p=367937#p367937
-#if 1 //FIXME
 				dmxCN.change(0);
-#endif
 			}
 			else
 			{
@@ -3979,8 +3964,10 @@ void *CSectionsd::cnThread(void *)
 		{
 			dprintf(DEBUG_DEBUG, "CSectionsd::cnThread: zeit > dmxCN.lastChanged + TIME_EIT_VERSION_WAIT\n");
 			sendToSleepNow = true;
-			/* we can get here if we got the EIT version but no events */
-			/* send a "no epg" event anyway before going to sleep */
+			//
+			// we can get here if we got the EIT version but no events
+			// send a "no epg" event anyway before going to sleep
+			//
 			if (messaging_have_CN == 0x00)
 			{
 				g_RCInput->postMsg(NeutrinoMessages::EVT_CURRENTNEXT_EPG, (const neutrino_msg_data_t)messaging_current_servicekey, false);
@@ -4033,7 +4020,9 @@ void *CSectionsd::cnThread(void *)
 	pthread_exit(NULL);
 }
 
-/* helper function for the housekeeping-thread */
+//
+// print_meminfo
+//
 void CSectionsd::print_meminfo(void)
 {
 	struct mallinfo meminfo = mallinfo();
@@ -4923,7 +4912,7 @@ void CSectionsd::Start(void)
 	readDVBTimeFilter();
 	readEncodingFile();
 	
-	messaging_neutrino_sets_time = true;
+//	messaging_neutrino_sets_time = true;
 
 	// time-Thread starten
 	rc = pthread_create(&threadTOT, 0, timeThread, 0);

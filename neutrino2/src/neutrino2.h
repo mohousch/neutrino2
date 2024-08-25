@@ -213,7 +213,7 @@ class CNeutrinoApp : public CMenuTarget
 		int recordingstatus;
 		int timeshiftstatus;
 		int recording_id;
-		uint32_t lcdUpdateTimer;		
+		uint32_t epgUpdateTimer;		
 		////
 		void sendSectionsdConfig(void);
 		////

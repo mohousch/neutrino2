@@ -2061,9 +2061,6 @@ void CNeutrinoApp::startNextRecording()
 	}
 }
 
-#define LCD_UPDATE_TIME_RADIO_MODE 		(6 * 1000 * 1000)
-#define LCD_UPDATE_TIME_TV_MODE			(60 * 1000 * 1000)
-
 // send sectionsd config
 void CNeutrinoApp::sendSectionsdConfig(void)
 {
@@ -2124,8 +2121,8 @@ void CNeutrinoApp::initZapper()
 	} 
 	else if(firstchannel.mode == 'r') 
 	{	  
-		g_RCInput->killTimer(lcdUpdateTimer);
-		lcdUpdateTimer = g_RCInput->addTimer( LCD_UPDATE_TIME_RADIO_MODE, false );	
+		g_RCInput->killTimer(epgUpdateTimer);
+		epgUpdateTimer = g_RCInput->addTimer( 60 * 1000 * 1000, false );	
 		
 		radioMode(false);
 	}
@@ -2490,8 +2487,8 @@ void CNeutrinoApp::tvMode( bool rezap )
 			g_Radiotext = NULL;
 		}		
 
-		g_RCInput->killTimer(lcdUpdateTimer);
-		lcdUpdateTimer = g_RCInput->addTimer( LCD_UPDATE_TIME_TV_MODE, false );	
+		g_RCInput->killTimer(epgUpdateTimer);
+		epgUpdateTimer = g_RCInput->addTimer( 60 * 1000 * 1000, false );	
 
 		CLCD::getInstance()->ShowIcon(VFD_ICON_RADIO, false);
 
@@ -2545,8 +2542,8 @@ void CNeutrinoApp::radioMode( bool rezap)
 
 	if(mode == mode_tv ) 
 	{	  
-		g_RCInput->killTimer(lcdUpdateTimer);
-		lcdUpdateTimer = g_RCInput->addTimer( LCD_UPDATE_TIME_RADIO_MODE, false );	
+		g_RCInput->killTimer(epgUpdateTimer);
+		epgUpdateTimer = g_RCInput->addTimer( 60 * 1000 * 1000, false );	
 
 		stopSubtitles();
 	}
@@ -3259,7 +3256,12 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		struct tm *lt = localtime(&t);
 		
 		proc_put("/proc/stb/fp/rtc", t + lt->tm_gmtoff);
-#endif		
+#endif
+		if (epgUpdateTimer)
+		{
+			g_RCInput->killTimer(epgUpdateTimer);
+			epgUpdateTimer = 0;
+		}	
 			
 		if(playback)
 		{
@@ -4938,7 +4940,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 		saveSetup(NEUTRINO_SETTINGS_FILE);
 	}
 		
-	lcdUpdateTimer = g_RCInput->addTimer(LCD_UPDATE_TIME_TV_MODE, false, true);
+	epgUpdateTimer = g_RCInput->addTimer(60 * 1000 * 1000, false, true);
 	
 	// zapper
 	initZapper();
