@@ -96,12 +96,12 @@ function do_check(){
 //		sLog_addRow(sLog_body, "green", "Programs: lcshot is installed at: {=var-get:lcshot=}. LCD Screenshot is enabled.", "ok");
 //	=}
 
-	{=var-set:fbshot={=if-file-exists:/bin/grab~/bin/grab~{=if-file-exists:/var/bin/grab~/var/bin/grab~{=if-file-exists:/usr/bin/grab~/usr/bin/grab~false=}=}=}=}
-	{=if-equal:{=var-get:fbshot=}~false~
-		sLog_addRow(sLog_body, "red", "Programs: fbshot is not installed. OSD Screenshot is disabled. "+y_url("Help-BoxControl-OSD_Screenshot"), "failed");
-	~
-		sLog_addRow(sLog_body, "green", "Programs: fbshot is installed at: {=var-get:fbshot=}. OSD Screenshot is enabled.", "ok");
-	=}
+//	{=var-set:fbshot={=if-file-exists:/bin/grab~/bin/grab~{=if-file-exists:/var/bin/grab~/var/bin/grab~{=if-file-exists:/usr/bin/grab~/usr/bin/grab~false=}=}=}=}
+//	{=if-equal:{=var-get:fbshot=}~false~
+//		sLog_addRow(sLog_body, "red", "Programs: fbshot is not installed. OSD Screenshot is disabled. "+y_url("Help-BoxControl-OSD_Screenshot"), "failed");
+//	~
+//		sLog_addRow(sLog_body, "green", "Programs: fbshot is installed at: {=var-get:fbshot=}. OSD Screenshot is enabled.", "ok");
+//	=}
 
 //	{=var-set:fcp={=if-file-exists:/sbin/fcp~/sbin/fcp~{=if-file-exists:/var/bin/fcp~/var/bin/fcp~{=if-file-exists:/bin/fcp~/bin/fcp~false=}=}=}=}
 //	{=if-equal:{=var-get:fcp=}~false~
@@ -110,7 +110,7 @@ function do_check(){
 //		sLog_addRow(sLog_body, "green", "Programs: fcp is installed at: {=var-get:fcp=}. Image flashing is enabled.", "ok");
 //	=}
 
-	{=var-set:etherwake={=if-file-exists:/bin/ether-wake~/bin/ether-wake~{=if-file-exists:/var/bin/ether-wake~/var/bin/ether-wake~{=if-file-exists:/bin/etherwake~/bin/etherwake~{=if-file-exists:/var/bin/etherwake~/var/bin/etherwake~false=}=}=}=}=}
+	{=var-set:etherwake={=if-file-exists:/bin/ether-wake~/bin/ether-wake~{=if-file-exists:/usr/bin/ether-wake~/usr/bin/ether-wake~{=if-file-exists:/bin/etherwake~/bin/etherwake~{=if-file-exists:/usr/bin/etherwake~/usr/bin/etherwake~false=}=}=}=}=}
 	{=if-equal:{=var-get:etherwake=}~false~
 		sLog_addRow(sLog_body, "red", "Programs: etherwake is not installed. Wake on LAN is disabled. "+y_url("Help-Tools-Wake_on_LAN"), "failed");
 	~
