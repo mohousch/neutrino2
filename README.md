@@ -1,17 +1,17 @@
 
 <h1 align="center">
-  Welcome to neutrino2 software
+  Welcome to NeutrinoNG software
 </h1>
 
 - the GUI is completely reworked.
 - i18n localizaton.
 - skin support.
-- plugins interfaces: legacy, lua and python (exp) neutrino2 shares all his functionality with plugins.
+- plugins interfaces: legacy, lua and python (exp) NeutrinoNG shares all his functionality with plugins.
   and more...
   
   happy zapping
 
-## How to build neutrino2 for PC (x86) ##
+## How to build NeutrinoNG for PC (x86) ##
 
 ```bash
 $:~ git clone https://github.com/mohousch/neutrino2.git
@@ -34,7 +34,7 @@ $:~ make
 $:~ make run
 ```
 
-* to update neutrino2 source code:
+* to update NeutrinoNG source code:
 ```bash
 $:~ make update
 ```
