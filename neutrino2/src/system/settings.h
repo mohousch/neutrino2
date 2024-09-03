@@ -555,7 +555,11 @@ struct SNeutrinoSettings
 #define DEFAULT_LCD_INVERSE			0x00
 #define DEFAULT_LCD_STATUSLINE			0x00	/* playtime */
 #define DEFAULT_LCD_EPGMODE			0x03	/* channel / title */
+#ifdef ENABLE_4DIGITS
+#define DEFAULT_LCD_MODE			0x2	/* time */
+#else
 #define DEFAULT_LCD_MODE			0x01	/* channel */
+#endif
 #define DEFAULT_LCD_EPGALIGN			0x01    /* centered */
 #ifdef ENABLE_4DIGITS
 #define MAXBRIGHTNESS				0xF
