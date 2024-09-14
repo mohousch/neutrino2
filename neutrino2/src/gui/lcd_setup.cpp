@@ -328,13 +328,11 @@ void CLCDSettings::showMenu()
 
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// minitv
-	lcdSettings->addItem(new CMenuOptionChooser(_("Mini TV"), &g_settings.lcd_minitv, LCDMENU_MINITV_OPTIONS, LCDMENU_MINITV_OPTION_COUNT, true, this, CRCInput::RC_nokey, NULL, true));
+//	lcdSettings->addItem(new CMenuOptionChooser(_("Mini TV"), &g_settings.lcd_minitv, LCDMENU_MINITV_OPTIONS, LCDMENU_MINITV_OPTION_COUNT, true, this, CRCInput::RC_nokey, NULL, true));
 	
 	// minitv fps
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Mini TV FPS"), &g_settings.lcd_minitvfps, true, 0, 30, this));
-#endif
+//	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Mini TV FPS"), &g_settings.lcd_minitvfps, true, 0, 30, this));
 
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// invert
 //	lcdSettings->addItem(new CMenuOptionChooser(_("Invert"), &g_settings.lcd_inverse, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
 #endif
@@ -375,7 +373,7 @@ void CLCDSettings::showMenu()
 	
 	// reset brightness / contrast to default
 	lcdSettings->addItem(new CMenuForwarder(_("Reset to defaults"), true, NULL, this, "reset"));
-#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)|| defined (ENABLE_VFD)
+#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_VFD)
 	// dimm-time
 	m1 = new CMenuForwarder(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, this, "set_dimm_timeout");
 	lcdSettings->addItem(m1);
