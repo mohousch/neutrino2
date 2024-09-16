@@ -291,6 +291,9 @@ CNeutrinoApp::CNeutrinoApp()
 
 	mute_pixbuf = NULL;
 	vol_pixbuf = NULL;
+	
+	//
+	epgUpdateTimer = 0;
 }
 
 // CNeutrinoApp - Destructor
@@ -2113,6 +2116,13 @@ void CNeutrinoApp::initZapper()
 	
 	// init channel
 	channelsInit();
+	
+	//
+	if (epgUpdateTimer)
+	{
+		g_RCInput->killTimer(epgUpdateTimer);
+		epgUpdateTimer = g_RCInput->addTimer( 60 * 1000 * 1000, false );
+	}
 
 	// firstchanel mode
 	if(firstchannel.mode == 't') 
@@ -2121,9 +2131,6 @@ void CNeutrinoApp::initZapper()
 	} 
 	else if(firstchannel.mode == 'r') 
 	{	  
-		g_RCInput->killTimer(epgUpdateTimer);
-		epgUpdateTimer = g_RCInput->addTimer( 60 * 1000 * 1000, false );	
-		
 		radioMode(false);
 	}
 
@@ -2487,8 +2494,8 @@ void CNeutrinoApp::tvMode( bool rezap )
 			g_Radiotext = NULL;
 		}		
 
-		g_RCInput->killTimer(epgUpdateTimer);
-		epgUpdateTimer = g_RCInput->addTimer( 60 * 1000 * 1000, false );	
+//		g_RCInput->killTimer(epgUpdateTimer);
+//		epgUpdateTimer = g_RCInput->addTimer( 60 * 1000 * 1000, false );	
 
 		CLCD::getInstance()->ShowIcon(VFD_ICON_RADIO, false);
 
@@ -2542,8 +2549,8 @@ void CNeutrinoApp::radioMode( bool rezap)
 
 	if(mode == mode_tv ) 
 	{	  
-		g_RCInput->killTimer(epgUpdateTimer);
-		epgUpdateTimer = g_RCInput->addTimer( 60 * 1000 * 1000, false );	
+//		g_RCInput->killTimer(epgUpdateTimer);
+//		epgUpdateTimer = g_RCInput->addTimer( 60 * 1000 * 1000, false );	
 
 		stopSubtitles();
 	}
@@ -4939,8 +4946,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 
 		saveSetup(NEUTRINO_SETTINGS_FILE);
 	}
-		
-	epgUpdateTimer = g_RCInput->addTimer(60 * 1000 * 1000, false, true);
 	
 	// zapper
 	initZapper();

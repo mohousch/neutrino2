@@ -550,7 +550,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 	// get CN epg
 	getCurrentNextEPG(channel_id, new_chan, _epgpos);
 	
-	////
+	//// just if epg came later
 	getEPG(channel_id, info_CurrentNext);
 
 	showLcdPercentOver();
@@ -767,7 +767,7 @@ void CInfoViewer::getCurrentNextEPG(t_channel_id ChannelID, bool newChan, int EP
 					info_CurrentNext.flags                  = CSectionsd::epgflags::has_current | CSectionsd::epgflags::has_next;
 					info_CurrentNext.next_uniqueKey         = eli->eventID;
 					info_CurrentNext.next_time.starttime    = eli->startTime;
-					info_CurrentNext.next_time.duration        = eli->duration;
+					info_CurrentNext.next_time.duration     = eli->duration;
 
 					if (eli->description.empty())
 						info_CurrentNext.next_name      = _("EPG not available");
@@ -1244,8 +1244,11 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	  		// update epg on change
 	  		time_t jetzt = time(NULL);
 	  		
-	  		if ( (info_CurrentNext.current_time.starttime + info_CurrentNext.current_time.duration) < jetzt )
-	  			showEPGInfo();
+	  		if (info_CurrentNext.flags & CSectionsd::epgflags::has_current) 
+	  		{
+	  			if ( (info_CurrentNext.current_time.starttime + info_CurrentNext.current_time.duration) < jetzt )
+	  				showEPGInfo();
+	  		}
 	  			
 	  		showLcdPercentOver();
 
