@@ -560,12 +560,6 @@ void EventList::paint(t_channel_id channel_id)
 	timerlist.clear();
 	CTimerd::getInstance()->getTimerList(timerlist);
 	
-//	if (evlWidget)
-//	{
-//		delete evlWidget;
-//		evlWidget = NULL;
-//	}
-	
 	//
 	evlWidget = CNeutrinoApp::getInstance()->getWidget("eventlist");
 	
@@ -736,7 +730,7 @@ int EventList::findEvents(void)
 		}
 		
 		sort(evtlist.begin(), evtlist.end(), sortByDateTime);
-		current_event = (unsigned int) -1;
+		current_event = (unsigned int) - 1;
 		time_t azeit = time(NULL);
 		
 		CChannelEventList::iterator e;

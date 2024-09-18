@@ -1,5 +1,5 @@
 /*
-  $Id: test.cpp 18042024 mohousch Exp $
+  $Id: test.cpp 18092024 mohousch Exp $
 
   License: GPL
 
@@ -62,6 +62,8 @@ class CTestMenu : public CMenuTarget
 		//// channellist
 		CChannelList* webTVchannelList;
 		CBouquetList* webTVBouquetList;
+		//// eventlist
+		CChannelEventList evtlist;
 		
 		////
 		int selected;
@@ -207,6 +209,7 @@ class CTestMenu : public CMenuTarget
 		//// channellist / bouquetlist
 		void testCChannellist();
 		void testCBouquetlist();
+		void testCEventlist();
 		//// skin
 		void testSkinWidget();
 		void testSkinWidget3();
@@ -263,7 +266,7 @@ CTestMenu::CTestMenu()
 	webTVBouquetList = NULL;
 
 	//
-	//menuWidget = NULL;
+	evtlist.clear();
 	
 	//
 	item = NULL;
@@ -293,6 +296,8 @@ CTestMenu::~CTestMenu()
 	filelist.clear();
 	fileFilter.clear();
 	m_vMovieInfo.clear();
+	
+	evtlist.clear();
 
 	if(webTVchannelList)
 	{
@@ -4761,6 +4766,92 @@ void CTestMenu::testCBouquetlist()
 	webTVBouquetList->exec(true, true); // without zap
 }
 
+////
+void CTestMenu::testCEventlist()
+{
+	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCEventlist\n");
+	
+	leftWidget = new ClistBox();
+	
+	CSectionsd::getInstance()->getEventsServiceKey(CZapit::getInstance()->getCurrentChannelID() & 0xFFFFFFFFFFFFULL, evtlist);
+
+	if ( evtlist.empty() )
+	{
+		CChannelEvent evt;
+		evt.description = _("EPG is not available");
+		evt.eventID = 0;
+		evt.startTime = 0;
+		evtlist.push_back(evt);
+	}
+//	else
+//		sort(evtlist.begin(),evtlist.end(),sortByDateTime);
+		
+	for (unsigned int count = 0; count < evtlist.size() && count < 5; count++)
+	{
+//		item = new CMenuForwarder(evtlist[count].description.c_str());
+
+		//
+		std::string datetime1_str, datetime2_str, duration_str;
+//		std::string icontype;
+//		icontype.clear();
+
+		// option
+		if ( evtlist[count].eventID != 0 )
+		{
+			char tmpstr[256];
+			struct tm *tmStartZeit = localtime(&evtlist[count].startTime);
+
+//			strftime(tmpstr, sizeof(tmpstr), "%A", tmStartZeit );
+//			datetime1_str = _(tmpstr);
+
+			strftime(tmpstr, sizeof(tmpstr), " %H:%M ", tmStartZeit );
+			datetime1_str = tmpstr;
+			
+			////
+			item = new CMenuForwarder(datetime1_str.c_str(), true, evtlist[count].description.c_str());
+
+//			strftime(tmpstr, sizeof(tmpstr), " %d.%m.%Y ", tmStartZeit );
+//			datetime1_str += tmpstr;
+
+			sprintf(tmpstr, "[%d min]", evtlist[count].duration / 60 );
+			duration_str = tmpstr;
+
+			//item->setOption(datetime1_str.c_str());
+
+			int seit = ( evtlist[count].startTime - time(NULL) ) / 60;
+			if ( (seit> 0) && (seit<100) && (duration_str.length()!=0) )
+			{
+				char beginnt[100];
+				sprintf((char*) &beginnt, "in %d min ", seit);
+
+				datetime2_str = beginnt;
+			}
+
+			datetime2_str += duration_str;
+
+			item->setOptionInfo(datetime2_str.c_str());
+			
+			// icon
+	//		CTimerd::CTimerEventTypes etype = isScheduled(channel_id, &evtlist[count]);
+	//		icontype = etype == CTimerd::TIMER_ZAPTO ? NEUTRINO_ICON_BUTTON_YELLOW : etype == CTimerd::TIMER_RECORD ? NEUTRINO_ICON_BUTTON_RED : "";
+
+	//		item->setIconName(icontype.c_str());
+
+	//		if(count == current_event)
+	//			item->setMarked(true);
+				
+	//		item->set2lines(true);
+
+			item->setNameFont(SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER);
+			item->setOptionFont(SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER);
+
+			leftWidget->addItem(item);
+		}
+	}
+
+	leftWidget->exec();
+}
+
 //// skin
 void CTestMenu::testSkinWidget()
 {
@@ -5459,6 +5550,12 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	{
 		testCBouquetlist();
 
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "eventlist")
+	{
+		testCEventlist();
+		
 		return RETURN_REPAINT;
 	}
 	else if(actionKey == "winfo")
@@ -6662,6 +6759,7 @@ void CTestMenu::showMenu()
 
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "EPG") );
 	mainMenu->addItem(new CMenuForwarder("ShowActuellEPG", true, NULL, this, "showepg"));
+	mainMenu->addItem(new CMenuForwarder("CEventList:", true, NULL, this, "eventlist"));
 
 	//
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "Channellist") );
@@ -6685,6 +6783,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("DumpLCD", true, NULL, this, "dumplcd"));
 	mainMenu->addItem(new CMenuForwarder("ShowLCD", true, NULL, this, "showlcd"));	
 
+	//// subs
 	unsigned int count = 0;
 	CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(CZapit::getInstance()->getCurrentChannelID());
         

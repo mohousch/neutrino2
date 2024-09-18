@@ -1609,6 +1609,12 @@ void CChannelList::paint(bool customMode)
 	paintCurrentNextEvent(selected);
 }
 
+////
+static bool sortByDateTime(const CChannelEvent& a, const CChannelEvent& b)
+{
+	return a.startTime < b.startTime;
+}
+
 void CChannelList::paintCurrentNextEvent(int _selected)
 {
 	if (_selected < 0 || chanlist.size() == 0)
@@ -1688,12 +1694,14 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	text.setText(p_event->text.c_str());
 	text.setHAlign(CComponent::CC_ALIGN_CENTER);
 	
-	// next
+	//// next
 	time_t atime = time(NULL);
 					
 	events.clear();
 
 	CSectionsd::getInstance()->getEventsServiceKey(chanlist[_selected]->channel_id & 0xFFFFFFFFFFFFULL, events);
+	
+	#if 0
 	chanlist[_selected]->nextEvent.startTime = (long)0x7fffffff;
 				
 	for ( CChannelEventList::iterator e = events.begin(); e != events.end(); ++e ) 
@@ -1708,7 +1716,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	
 	p_event = &chanlist[_selected]->nextEvent;
 	
-	//
+	// title
 	CCLabel nextTitle(winBottomBox.iX + 10, winBottomBox.iY + 10, winBottomBox.iWidth - 20, 20);
 	nextTitle.setText(p_event->description.c_str());
 	nextTitle.setHAlign(CComponent::CC_ALIGN_CENTER);
@@ -1745,6 +1753,69 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	nextText.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
 	nextText.setText(p_event->text.c_str());
 	nextText.setHAlign(CComponent::CC_ALIGN_CENTER);
+#endif
+	////
+	if ( events.empty() )
+	{
+		CChannelEvent evt;
+		evt.description = _("EPG is not available");
+		evt.eventID = 0;
+		evt.startTime = 0;
+		events.push_back(evt);
+	}
+	
+	sort(events.begin(), events.end(), sortByDateTime);
+	
+	ClistBox nextEventsBox(&winBottomBox);
+	nextEventsBox.paintMainFrame(false);
+	nextEventsBox.setOutFocus(true);
+	nextEventsBox.paintScrollBar(false);
+	
+	CMenuItem * evtItem = NULL;
+	
+	for (unsigned int count = 0; count < events.size(); count++)
+	{
+		std::string datetime1_str, datetime2_str, duration_str;
+		
+		if ( events[count].eventID != 0 && events[count].startTime > atime)
+		{	
+			char tmpstr[256];
+			struct tm *tmStartZeit = localtime(&events[count].startTime);
+
+			strftime(tmpstr, sizeof(tmpstr), " %H:%M ", tmStartZeit );
+			datetime1_str = tmpstr;
+			
+			////
+			evtItem = new CMenuForwarder(datetime1_str.c_str(), true, events[count].description.c_str());
+
+/*
+			strftime(tmpstr, sizeof(tmpstr), " %d.%m.%Y ", tmStartZeit );
+			datetime1_str += tmpstr;
+
+			sprintf(tmpstr, "[%d min]", events[count].duration / 60 );
+			duration_str = tmpstr;
+
+			int seit = ( events[count].startTime - time(NULL) ) / 60;
+			if ( (seit> 0) && (seit<100) && (duration_str.length()!=0) )
+			{
+				char beginnt[100];
+				sprintf((char*) &beginnt, "in %d min ", seit);
+
+				datetime2_str = beginnt;
+			}
+
+			datetime2_str += duration_str;
+
+			evtItem->setOptionInfo(datetime2_str.c_str());
+*/
+
+			evtItem->setNameFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
+			evtItem->setOptionFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
+
+			nextEventsBox.addItem(evtItem);
+		}
+	}
+	////
 	
 	// current
 	epgTitle.paint();
@@ -1753,10 +1824,13 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	startTime.paint();
 	restTime.paint();
 	text.paint();
+	
 	// next
-	nextTitle.paint();
-	nextTime.paint();
-	nextText.paint();
+//	nextTitle.paint();
+//	nextTime.paint();
+//	nextText.paint();
+	////
+	nextEventsBox.paint();
 }
 
 //
