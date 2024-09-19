@@ -1637,7 +1637,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	char cSeit[11] = " ";
 	char cNoch[11] = " ";
 	
-	// now
+	//// now
 	p_event = &chanlist[_selected]->currentEvent;
 	
 	// title

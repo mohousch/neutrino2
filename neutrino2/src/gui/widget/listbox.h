@@ -122,7 +122,7 @@ class CMenuItem
 		int itemGradient;
 		
 		//
-		ClistBox* parent;
+		ClistBox *parent;
 		
 		//
 		fb_pixel_t* background;

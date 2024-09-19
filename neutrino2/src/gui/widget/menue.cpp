@@ -142,6 +142,9 @@ void CMenuWidget::Init(const std::string &Icon, const int mwidth, const int mhei
 	
 	items_width = 0;
 	items_height = 0;
+	
+	////
+	listBox = new ClistBox();
 }
 
 void CMenuWidget::move(int xoff, int yoff)
@@ -157,6 +160,13 @@ CMenuWidget::~CMenuWidget()
 	//
 	items.clear();
 	page_start.clear();
+	
+	////
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
 }
 
 void CMenuWidget::addItem(CMenuItem *menuItem, const bool defaultselected)
@@ -167,6 +177,7 @@ void CMenuWidget::addItem(CMenuItem *menuItem, const bool defaultselected)
 			selected = items.size();
 		
 		items.push_back(menuItem);
+		menuItem->setParent(listBox);
 	}
 }
 

@@ -146,6 +146,9 @@ class CMenuWidget : public CMenuTarget
 
 		// for lua
 		std::string actionKey;
+		
+		//// dirty Hack: FIXME
+		ClistBox *listBox;
 			
 	public:
 		CMenuWidget();
