@@ -194,7 +194,8 @@ class CTestMenu : public CMenuTarget
 		void testUsermenu();
 		////
 		void testStartPlugin();
-		void testShowActuellEPG();
+		void testCEPGView();
+		void testCEventlist();
 		
 		//// players
 		void testPlayMovieURL();
@@ -209,7 +210,6 @@ class CTestMenu : public CMenuTarget
 		//// channellist / bouquetlist
 		void testCChannellist();
 		void testCBouquetlist();
-		void testCEventlist();
 		//// skin
 		void testSkinWidget();
 		void testSkinWidget3();
@@ -4382,11 +4382,11 @@ void CTestMenu::testStartPlugin()
 }
 
 // show actuell epg
-void CTestMenu::testShowActuellEPG()
+void CTestMenu::testCEPGView()
 {
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testShowActuelEPG\n");
+	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCEPGView\n");
 	
-	std::string title = "testShowActuellEPG:";
+	std::string title = "testCEPGView:";
 	std::string buffer;
 
 	// get EPG
@@ -4398,18 +4398,14 @@ void CTestMenu::testShowActuellEPG()
 
 	if(epgid != 0) 
 	{
-		CShortEPGData epgdata;
-				
-		if(CSectionsd::getInstance()->getEPGidShort(epgid, &epgdata)) 
-		{
-			title += CNeutrinoApp::getInstance()->channelList->getActiveChannelName();
-			title += ":";
-			title += epgdata.title;
+		
+		title += CNeutrinoApp::getInstance()->channelList->getActiveChannelName();
+		title += ":";
+		title += epgData.title;
 
-			buffer = epgdata.info1;
-			buffer += "\n";
-			buffer += epgdata.info2;	
-		}
+		buffer = epgData.info1;
+		buffer += "\n";
+		buffer += epgData.info2;	
 	}
 
 	title += getNowTimeStr("%d.%m.%Y %H:%M");
@@ -5360,7 +5356,7 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	}
 	else if(actionKey == "showepg")
 	{
-		testShowActuellEPG();
+		testCEPGView();
 
 		return RETURN_REPAINT;
 	}

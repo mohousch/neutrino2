@@ -1630,19 +1630,35 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	if (vline) 
 		vline->paint();
 	
+	//// now
 	CChannelEvent * p_event = NULL;
 	time_t jetzt = time(NULL);
 	unsigned int runningPercent = 0;
+	CEPGData epgData;
+	event_id_t epgid = 0;
+	std::string title = "";
+	std::string description = "";
+	
+	if(CSectionsd::getInstance()->getActualEPGServiceKey(chanlist[_selected]->getChannelID() & 0xFFFFFFFFFFFFULL, &epgData))
+		epgid = epgData.eventID;
+
+	if(epgid != 0) 
+	{		
+		title = epgData.title;
+
+		description = epgData.info1;
+		description += "\n";
+		description += epgData.info2;	
+	}
 
 	char cSeit[11] = " ";
 	char cNoch[11] = " ";
-	
-	//// now
+
 	p_event = &chanlist[_selected]->currentEvent;
 	
 	// title
 	CCLabel epgTitle(winTopBox.iX + 10, winTopBox.iY + 10, winTopBox.iWidth - 20, 60);
-	epgTitle.setText(p_event->description.c_str());
+	epgTitle.setText(title.c_str());
 	epgTitle.setHAlign(CComponent::CC_ALIGN_CENTER);
 	epgTitle.setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 	
@@ -1664,7 +1680,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	
 	CCProgressBar pb(winTopBox.iX + 100, winTopBox.iY + 10 + 60 + 20, winTopBox.iWidth - 200, 5);
 	
-	//
+	// start / end
 	if (p_event != NULL && !(p_event->description.empty())) 
 	{
 		// start
@@ -1691,11 +1707,11 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	// text
 	CCText text(winTopBox.iX + 10, winTopBox.iY + 10 + 60 + 10 + 30, winTopBox.iWidth - 20, winTopBox.iHeight - 120);
 	text.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
-	text.setText(p_event->text.c_str());
+	text.setText(description.c_str());
 	text.setHAlign(CComponent::CC_ALIGN_CENTER);
 	
 	//// next
-	time_t atime = time(NULL);
+//	time_t atime = time(NULL);
 					
 	events.clear();
 
@@ -1723,7 +1739,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	{
 		std::string datetime1_str, datetime2_str, duration_str;
 		
-		if ( events[count].eventID != 0 && events[count].startTime > atime)
+		if ( events[count].eventID != 0 && events[count].startTime > jetzt)
 		{	
 			char tmpstr[256];
 			struct tm *tmStartZeit = localtime(&events[count].startTime);
