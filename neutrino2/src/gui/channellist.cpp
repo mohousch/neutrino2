@@ -1404,7 +1404,7 @@ void CChannelList::paint(bool customMode)
 		
 		// listBox
 		listBox = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY + 50, (widget->getWindowsPos().iWidth/3)*2, widget->getWindowsPos().iHeight - 100);
-		listBox->paintMainFrame(false);
+		listBox->paintMainFrame(true); //test
 		
 		//
 		head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
@@ -1701,60 +1701,6 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 
 	CSectionsd::getInstance()->getEventsServiceKey(chanlist[_selected]->channel_id & 0xFFFFFFFFFFFFULL, events);
 	
-	#if 0
-	chanlist[_selected]->nextEvent.startTime = (long)0x7fffffff;
-				
-	for ( CChannelEventList::iterator e = events.begin(); e != events.end(); ++e ) 
-	{
-		if (((long)(e->startTime) > atime) && ((e->startTime) < (long)(chanlist[_selected]->nextEvent.startTime)))
-		{
-			chanlist[_selected]->nextEvent= *e;
-					
-			break;
-		}
-	}
-	
-	p_event = &chanlist[_selected]->nextEvent;
-	
-	// title
-	CCLabel nextTitle(winBottomBox.iX + 10, winBottomBox.iY + 10, winBottomBox.iWidth - 20, 20);
-	nextTitle.setText(p_event->description.c_str());
-	nextTitle.setHAlign(CComponent::CC_ALIGN_CENTER);
-	nextTitle.setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
-	
-	// vom/bis
-	std::string fromto = "";
-	CCLabel nextTime(winBottomBox.iX + 10, winBottomBox.iY + 10 + 30, winBottomBox.iWidth - 20, 20);
-	nextTime.setHAlign(CComponent::CC_ALIGN_CENTER);
-	nextTime.setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
-	
-	//
-	if (p_event != NULL && !(p_event->description.empty())) 
-	{
-		// start
-		struct tm * pStartZeit = localtime(&p_event->startTime);
-		sprintf(cSeit, "%02d:%02d", pStartZeit->tm_hour, pStartZeit->tm_min);
-		
-		// end
-		long int uiEndTime(p_event->startTime + p_event->duration);
-		struct tm *pEndeZeit = localtime((time_t*)&uiEndTime);
-
-		sprintf(cNoch, "%02d:%02d", pEndeZeit->tm_hour, pEndeZeit->tm_min);
-	}
-	
-	fromto = cSeit;
-	fromto += "   -   ";
-	fromto += cNoch;
-	
-	nextTime.setText(fromto.c_str());
-	
-	// nextText
-	CCText nextText(winBottomBox.iX + 10, winBottomBox.iY + 10 + 60, winBottomBox.iWidth - 20, winBottomBox.iHeight - 80);
-	nextText.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
-	nextText.setText(p_event->text.c_str());
-	nextText.setHAlign(CComponent::CC_ALIGN_CENTER);
-#endif
-	////
 	if ( events.empty() )
 	{
 		CChannelEvent evt;
@@ -1771,7 +1717,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	nextEventsBox.setOutFocus(true);
 	nextEventsBox.paintScrollBar(false);
 	
-	CMenuItem * evtItem = NULL;
+	CMenuItem *evtItem = NULL;
 	
 	for (unsigned int count = 0; count < events.size(); count++)
 	{
@@ -1785,29 +1731,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 			strftime(tmpstr, sizeof(tmpstr), " %H:%M ", tmStartZeit );
 			datetime1_str = tmpstr;
 			
-			////
 			evtItem = new CMenuForwarder(datetime1_str.c_str(), true, events[count].description.c_str());
-
-/*
-			strftime(tmpstr, sizeof(tmpstr), " %d.%m.%Y ", tmStartZeit );
-			datetime1_str += tmpstr;
-
-			sprintf(tmpstr, "[%d min]", events[count].duration / 60 );
-			duration_str = tmpstr;
-
-			int seit = ( events[count].startTime - time(NULL) ) / 60;
-			if ( (seit> 0) && (seit<100) && (duration_str.length()!=0) )
-			{
-				char beginnt[100];
-				sprintf((char*) &beginnt, "in %d min ", seit);
-
-				datetime2_str = beginnt;
-			}
-
-			datetime2_str += duration_str;
-
-			evtItem->setOptionInfo(datetime2_str.c_str());
-*/
 
 			evtItem->setNameFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
 			evtItem->setOptionFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
@@ -1815,7 +1739,6 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 			nextEventsBox.addItem(evtItem);
 		}
 	}
-	////
 	
 	// current
 	epgTitle.paint();
@@ -1826,10 +1749,6 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	text.paint();
 	
 	// next
-//	nextTitle.paint();
-//	nextTime.paint();
-//	nextText.paint();
-	////
 	nextEventsBox.paint();
 }
 

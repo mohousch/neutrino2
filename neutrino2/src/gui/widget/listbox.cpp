@@ -252,27 +252,30 @@ void CMenuItem::paintItemBox(fb_pixel_t col)
 	{
 		saveScreen();
 	}	
-		
-	// border
-	CFrameBuffer::getInstance()->paintBoxRel(x, y, dx, dy, borderColor);
-				
-	// itemBox
-	if (borderMode == CComponent::BORDER_NO)
-	{
-		CFrameBuffer::getInstance()->paintBoxRel(x, y, dx, dy, col, NO_RADIUS, CORNER_NONE, itemGradient); 
+	
+	if (parent && parent->inFocus)
+	{	
+		// border
+		CFrameBuffer::getInstance()->paintBoxRel(x, y, dx, dy, borderColor);
+					
+		// itemBox
+		if (borderMode == CComponent::BORDER_NO)
+		{
+			CFrameBuffer::getInstance()->paintBoxRel(x, y, dx, dy, col, NO_RADIUS, CORNER_NONE, itemGradient); 
+		}
+		else if (borderMode == CComponent::BORDER_ALL)
+		{
+			CFrameBuffer::getInstance()->paintBoxRel(x + 2, y + 2, dx - 4, dy - 4, col, NO_RADIUS, CORNER_NONE, itemGradient);
+		}
+		else if (borderMode == CComponent::BORDER_LEFTRIGHT)
+		{
+			CFrameBuffer::getInstance()->paintBoxRel(x + 2, y, dx - 4, dy, col, NO_RADIUS, CORNER_NONE, itemGradient);
+		}
+		else if (borderMode == CComponent::BORDER_TOPBOTTOM)
+		{
+			CFrameBuffer::getInstance()->paintBoxRel(x, y + 2, dx, dy - 4, col, NO_RADIUS, CORNER_NONE, itemGradient);
+		}
 	}
-	else if (borderMode == CComponent::BORDER_ALL)
-	{
-		CFrameBuffer::getInstance()->paintBoxRel(x + 2, y + 2, dx - 4, dy - 4, col, NO_RADIUS, CORNER_NONE, itemGradient);
-	}
-	else if (borderMode == CComponent::BORDER_LEFTRIGHT)
-	{
-		CFrameBuffer::getInstance()->paintBoxRel(x + 2, y, dx - 4, dy, col, NO_RADIUS, CORNER_NONE, itemGradient);
-	}
-	else if (borderMode == CComponent::BORDER_TOPBOTTOM)
-	{
-		CFrameBuffer::getInstance()->paintBoxRel(x, y + 2, dx, dy - 4, col, NO_RADIUS, CORNER_NONE, itemGradient);
-	} 
 }
 
 void CMenuItem::refreshItemBox(fb_pixel_t col)
