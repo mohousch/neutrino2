@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-08-24 10:35+0200\n"
+"POT-Creation-Date: 2024-09-21 00:40+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -702,6 +702,10 @@ msgstr "Fehler"
 
 msgid "Event list"
 msgstr "Ereignissliste"
+
+#, fuzzy
+msgid "Event to right"
+msgstr "oben rechts"
 
 msgid "Eventlist Title"
 msgstr "Vorschau Titel"

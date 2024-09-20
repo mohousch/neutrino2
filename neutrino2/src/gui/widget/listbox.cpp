@@ -73,6 +73,7 @@ CMenuItem::CMenuItem()
 	nameFont = SNeutrinoSettings::FONT_TYPE_MENU;
 	optionFont = SNeutrinoSettings::FONT_TYPE_MENU; //SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER;
 	optionFontColor = COL_MENUCONTENT_TEXT_PLUS_0;
+	optionHAlign = CComponent::CC_ALIGN_LEFT;
 			
 	//
 	nLinesItem = false;
@@ -1450,9 +1451,9 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 			//get icon size
 			frameBuffer->getIconSize(icon1.c_str(), &icon1_w, &icon1_h);
 			
-			if (icon1_h >= g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 6)
+			if (icon1_h >= g_Font[nameFont]->getHeight() + 6)
 			{
-				icon1_h = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 4;
+				icon1_h = g_Font[nameFont]->getHeight() + 4;
 				icon1_w = 1.63*icon1_h;
 			}
 		
@@ -1472,23 +1473,27 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 			//get icon size
 			frameBuffer->getIconSize(icon2.c_str(), &icon2_w, &icon2_h);
 			
-			if (icon2_h >= g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 6)
+			if (icon2_h >= g_Font[nameFont]->getHeight() + 6)
 			{
-				icon2_h = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 4;
+				icon2_h = g_Font[nameFont]->getHeight() + 4;
 				icon2_w = 1.63*icon2_h;
 			}
 		
-			frameBuffer->paintIcon(icon2, x + dx - BORDER_LEFT - (icon1_w? icon1_w + ICON_OFFSET : 0) - icon2_w, y + (height - icon2_h)/2 );
+			frameBuffer->paintIcon(icon2, x + dx - BORDER_LEFT - icon1_w -icon1_offset - icon2_w, y , height, true, icon2_w, icon2_h);
 		}
 
 		// optionInfo (right)
 		int optionInfo_width = 0;
+		int option_info_max = (dx - BORDER_LEFT - BORDER_RIGHT)/3;
 	
 		if(!optionInfo.empty())
 		{
 			optionInfo_width = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getRenderWidth(optionInfo.c_str());
+			
+			if (optionInfo_width > option_info_max)
+				optionInfo_width = option_info_max;
 
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(x + dx - BORDER_RIGHT - (icon1_w? icon1_w + ICON_OFFSET : 0) - (icon2_w? icon2_w + ICON_OFFSET : 0) - optionInfo_width, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight(), optionInfo_width, optionInfo.c_str(), color, 0, true); // UTF-8
+			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(x + dx - BORDER_RIGHT - icon1_w - icon1_offset - icon2_w -icon2_offset - optionInfo_width, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight(), optionInfo_width, optionInfo.c_str(), color, 0, true); // UTF-8
 		}
 
 		// number
@@ -1507,7 +1512,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 
 			int numPosX = x + BORDER_LEFT + number_width - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getRenderWidth(tmp);
 
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(numPosX, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight(), number_width + 5, tmp, color, 0, true); // UTF-8
+			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(numPosX, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight(), number_width + 1, tmp, color, 0, true); // UTF-8
 		}
 		
 		// hintIcon / iconName
@@ -1574,13 +1579,15 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 			timescale.refresh(runningPercent);
 		}
 	
-		// locale / option
-		int l_text_width = g_Font[nameFont]->getRenderWidth(l_text, true);
-		int l_startPosX = x + BORDER_LEFT + number_width + number_offset + icon_w + icon_offset + pb_width + pb_offset + ICON_OFFSET;
+		// locale / option / option_info
+		int l_text_width = l_text != NULL? g_Font[nameFont]->getRenderWidth(l_text, true) : 0;
+		int l_startPosX = x + BORDER_LEFT + number_width + number_offset + icon_w + icon_offset + pb_width + pb_offset;
+		int option_width = option_text != NULL? g_Font[optionFont]->getRenderWidth(option_text, true) : 0;
+		int option_startPosX = l_startPosX;
 
 		// local
-		if(l_text_width >= dx - BORDER_LEFT - BORDER_RIGHT)
-			l_text_width = dx - BORDER_LEFT - BORDER_RIGHT;
+		if(l_text_width > dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width)
+			l_text_width = dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width;
 			
 		if (widgetType == ClistBox::TYPE_CLASSIC)
 		{
@@ -1589,25 +1596,27 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 				// local
 				if(l_text != NULL)
 				{
-						g_Font[nameFont]->RenderString(l_startPosX, y + 3 + g_Font[nameFont]->getHeight(), dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width, l_text, color, 0, true); // UTF-8
+					g_Font[nameFont]->RenderString(l_startPosX, y + 3 + g_Font[nameFont]->getHeight(), l_text_width, l_text, color, 0, true); // UTF-8
 				}
 				
 				// option
 				if(option_text != NULL)
 				{
-					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(l_startPosX, y + height, dx - BORDER_LEFT - BORDER_RIGHT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width, option_text, (selected || !active)? color : optionFontColor, 0, true);
+					option_width = l_text_width;
+					
+					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + height, option_width, option_text, (selected || !active)? color : optionFontColor, 0, true);
 				}
 				
 				// info1
 				if (!info1.empty())
 				{
-					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(l_startPosX, y + height/2, dx - BORDER_LEFT - BORDER_RIGHT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset, info1.c_str(), (selected || !active)? color : optionFontColor, 0, true);
+					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + height/2, l_text_width, info1.c_str(), (selected || !active)? color : optionFontColor, 0, true);
 				}
 				
 				// info 2
 				if (!info2.empty())
 				{
-					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(l_startPosX, y + height/2 + height/4, dx - BORDER_LEFT - BORDER_RIGHT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset, info2.c_str(), (selected || !active)? color : optionFontColor, 0, true);
+					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + height/2 + height/4, l_text_width, info2.c_str(), (selected || !active)? color : optionFontColor, 0, true);
 				}
 			}
 			else
@@ -1615,13 +1624,21 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 				// local
 				if(l_text != NULL)
 				{
-					g_Font[nameFont]->RenderString(l_startPosX, y + g_Font[nameFont]->getHeight() + (height - g_Font[nameFont]->getHeight())/2, dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset, l_text, color, 0, true); // UTF-8
+					g_Font[nameFont]->RenderString(l_startPosX, y + g_Font[nameFont]->getHeight() + (height - g_Font[nameFont]->getHeight())/2, l_text_width, l_text, color, 0, true); // UTF-8
 				}
 
 				// option
 				if(option_text != NULL)
 				{
-					g_Font[optionFont]->RenderString(l_startPosX + l_text_width + ICON_OFFSET, y + g_Font[optionFont]->getHeight() + (height - g_Font[optionFont]->getHeight())/2, dx - BORDER_LEFT - BORDER_RIGHT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset, option_text, (selected || !active)? color : optionFontColor, 0, true);
+					if (option_width > dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width - l_text_width)
+						option_width = dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width - l_text_width;
+						
+					if (optionHAlign == CComponent::CC_ALIGN_LEFT)
+						option_startPosX = l_startPosX + l_text_width + ICON_OFFSET;
+					else
+						option_startPosX = dx - BORDER_RIGHT - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width - option_width;
+						
+					g_Font[optionFont]->RenderString(option_startPosX, y + g_Font[optionFont]->getHeight() + (height - g_Font[optionFont]->getHeight())/2, option_width, option_text, (selected || !active)? color : optionFontColor, 0, true);
 				}
 			}
 		}
@@ -1632,35 +1649,42 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 				// local
 				if(l_text != NULL)
 				{
-					g_Font[nameFont]->RenderString(l_startPosX, y + 3 + g_Font[nameFont]->getHeight(), dx - BORDER_RIGHT - BORDER_LEFT - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width, l_text, color, 0, true); // UTF-8
+					g_Font[nameFont]->RenderString(l_startPosX, y + 3 + g_Font[nameFont]->getHeight(), l_text_width, l_text, color, 0, true); // UTF-8
 				}
 
 				// option
 				if(option_text != NULL)
 				{
-					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(l_startPosX, y + height, dx - BORDER_LEFT - BORDER_RIGHT - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width, option_text, (selected || !active)? color : optionFontColor, 0, true);
+					if(option_width > dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width)
+						option_width = dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width;
+			
+					option_startPosX = l_startPosX;
+						
+					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + height, option_width, option_text, (selected || !active)? color : optionFontColor, 0, true);
 				}
 			}
 			else
 			{
-				int l_text_width = g_Font[nameFont]->getRenderWidth(l_text, true);
-				
 				// local
 				if(l_text != NULL)
 				{
-					g_Font[nameFont]->RenderString(l_startPosX, y + g_Font[nameFont]->getHeight() + (height - g_Font[nameFont]->getHeight())/2, dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset, l_text, color, 0, true); // UTF-8
+					g_Font[nameFont]->RenderString(l_startPosX, y + g_Font[nameFont]->getHeight() + (height - g_Font[nameFont]->getHeight())/2, l_text_width, l_text, color, 0, true); // UTF-8
 				}
 
 				// option
 				if(option_text != NULL)
 				{
+					if (option_width > dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width - l_text_width)
+						option_width = dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width - l_text_width;
+						
+					if (optionHAlign == CComponent::CC_ALIGN_LEFT)
+						option_startPosX = l_startPosX + l_text_width + ICON_OFFSET;
+					else
+						option_startPosX = dx - BORDER_RIGHT - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width - option_width;
+						
 					if (widgetMode != ClistBox::MODE_SETUP)
 					{
-						int iw, ih;
-						//get icon size
-						frameBuffer->getIconSize(NEUTRINO_ICON_HD, &iw, &ih);
-
-						g_Font[optionFont]->RenderString(l_startPosX + ICON_OFFSET + l_text_width + ICON_OFFSET, y + g_Font[optionFont]->getHeight() + (height - g_Font[optionFont]->getHeight())/2, dx - BORDER_LEFT - BORDER_RIGHT - number_width - ICON_OFFSET - pb_width - ICON_OFFSET - l_text_width - icon_w - icon1_w - ICON_OFFSET - optionInfo_width - icon2_w - ICON_OFFSET - 2*iw, option_text, (selected || !active)? color : optionFontColor, 0, true);
+						g_Font[optionFont]->RenderString(option_startPosX, y + g_Font[optionFont]->getHeight() + (height - g_Font[optionFont]->getHeight())/2, option_width, option_text, (selected || !active)? color : optionFontColor, 0, true);
 					}
 					else
 					{

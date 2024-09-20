@@ -766,6 +766,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.make_hd_list = configfile.getInt32("make_hd_list", 0);
 	g_settings.channellist_ca = configfile.getInt32("channellist_ca", 1);
 	g_settings.channellist_timescale = configfile.getInt32("channellist_timescale", 1);
+	g_settings.channellist_alt = configfile.getInt32("channellist_alt", 0);
 	
 	// record screenshot
 	g_settings.recording_screenshot = configfile.getInt32("recording_screenshot", 1);
@@ -1232,10 +1233,11 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setBool("infobar_sat_display", g_settings.infobar_sat_display  );
 	configfile.setInt32("infobar_subchan_disp_pos", g_settings.infobar_subchan_disp_pos  );
 	
-	//crypticon channellist
+	// channellist
 	configfile.setInt32("channellist_ca", g_settings.channellist_ca);
 	configfile.setInt32("make_hd_list", g_settings.make_hd_list);
 	configfile.setInt32("channellist_timescale", g_settings.channellist_timescale);
+	configfile.setInt32("channellist_alt", g_settings.channellist_alt);
 
 	//
 	configfile.setString("timezone", g_settings.timezone);

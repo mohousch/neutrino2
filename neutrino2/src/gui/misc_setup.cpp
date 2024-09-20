@@ -535,6 +535,7 @@ int CChannelListSettings::exec(CMenuTarget* parent, const std::string& actionKey
 	if (actionKey == "savesettings")
 	{		
 		CZapit::getInstance()->setZapitConfig(&zapitCfg);
+		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 		
 		return RETURN_REPAINT;
 	}
@@ -626,6 +627,9 @@ void CChannelListSettings::showMenu()
 	
 	// channellist ca
 	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("HD / Crypt Icons"), &g_settings.channellist_ca, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
+	
+	// alt
+	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("Event to right"), &g_settings.channellist_alt, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);

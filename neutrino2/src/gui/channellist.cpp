@@ -1513,7 +1513,19 @@ void CChannelList::paint(bool customMode)
 				option += p_event->description.c_str();
 			}
 
-			item = new CMenuForwarder(chanlist[i]->name.c_str(), true, option.c_str());
+			item = new CMenuForwarder(chanlist[i]->name.c_str());
+			
+			//
+			if (g_settings.channellist_alt)
+			{
+				item->setOption(desc.c_str());
+				item->setOptionHAlign(CComponent::CC_ALIGN_RIGHT);
+			}
+			else
+			{
+				item->setOption(option.c_str());
+				item->setOptionHAlign(CComponent::CC_ALIGN_LEFT);
+			}
 
 			// channel number
 			item->setNumber(i + 1);
@@ -1545,34 +1557,6 @@ void CChannelList::paint(bool customMode)
 
 			// option font color
 			if (!displayNext) item->setOptionFontColor(COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0);
-			
-			// from / to (next)
-			if (displayNext)
-			{
-				char cSeit[11] = " ";
-				char cNoch[11] = " ";
-				
-				if (p_event != NULL && !(p_event->description.empty())) 
-				{
-					// start
-					struct tm * pStartZeit = localtime(&p_event->startTime);
-					sprintf(cSeit, "%02d:%02d", pStartZeit->tm_hour, pStartZeit->tm_min);
-					
-					// end
-					long int uiEndTime(p_event->startTime + p_event->duration);
-					struct tm *pEndeZeit = localtime((time_t*)&uiEndTime);
-
-					sprintf(cNoch, "%02d:%02d", pEndeZeit->tm_hour, pEndeZeit->tm_min);
-				}
-				
-				std::string optionInfo = "[";
-				optionInfo += cSeit;
-				optionInfo += "-";
-				optionInfo += cNoch;
-				optionInfo += "]";
-				
-				item->setOptionInfo(optionInfo.c_str());
-			}
 			
 			if (listBox) listBox->addItem(item);
 		}

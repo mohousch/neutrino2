@@ -362,6 +362,7 @@ struct SNeutrinoSettings
 	int channellist_ca;
 	int make_hd_list;
 	int channellist_timescale;
+	int channellist_alt;
 
 	// epg
 	int epg_save;
@@ -579,7 +580,7 @@ struct SNeutrinoSettings
 #define BORDER_LEFT				10
 #define BORDER_RIGHT				10
 #define SCROLLBAR_WIDTH				10 // 15
-#define ICON_OFFSET				5 // offset from left border
+#define ICON_OFFSET				2 // offset from left border
 #define ICON_TO_ICON_OFFSET			2
 
 // CMenuWidget
