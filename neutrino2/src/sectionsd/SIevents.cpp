@@ -88,7 +88,6 @@ SIevent::SIevent(const t_original_network_id _original_network_id, const t_trans
 	*/
 }
 
-// Std-Copy
 SIevent::SIevent(const SIevent &e)
 {
 	eventID = e.eventID;
@@ -121,7 +120,9 @@ int SIevent::saveXML(FILE *file, const char *serviceName) const
 	{
 		if(fprintf(file, "    <service_name>")<0)
 			return 2;
+			
 		saveStringToXMLfile(file, serviceName);
+		
 		if(fprintf(file, "</service_name>\n")<0)
 			return 3;
 	}
@@ -243,7 +244,7 @@ void SIevent::setName(const std::string &lang, const std::string &name)
 {
 	std::string tmp = name;
 	std::replace(tmp.begin(), tmp.end(), '\n', ' ');
-	//printf("setName: lang %s text %s\n", lang.c_str(), name.c_str());
+	
 	if (CSectionsd::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
 	{
 		langName[languangeOFF] = tmp; //name;
@@ -274,8 +275,6 @@ std::string SIevent::getText() const
 
 void SIevent::setText(const std::string &lang, const std::string &text)
 {
-	//printf("setText: lang %s text %s\n", lang.c_str(), text.c_str());
-	
 	if (CSectionsd::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
 	{
 		langText[languangeOFF] = text;
@@ -318,8 +317,6 @@ void SIevent::appendExtendedText(const std::string &lang, const std::string &tex
 
 void SIevent::setExtendedText(const std::string &lang, const std::string &text)
 {
-	//printf("setExtendedText: lang %s text %s\n", lang.c_str(), text.c_str());
-	
 	if (CSectionsd::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
 	{
 		langExtendedText[languangeOFF] = text;

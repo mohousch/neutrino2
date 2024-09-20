@@ -99,6 +99,7 @@ struct descr_pdc_header {
 	unsigned pil2				: 8;
 } __attribute__ ((packed)) ;
 
+////
 class SIlinkage 
 {
 	public:
@@ -109,7 +110,6 @@ class SIlinkage
 			originalNetworkId = (link->original_network_id_hi << 8) | link->original_network_id_lo;
 			serviceId = (link->service_id_hi << 8) | link->service_id_lo;
 			if (link->descriptor_length > sizeof(struct descr_linkage_header) - 2)
-				//name = std::string(((const char *)link) + sizeof(struct descr_linkage_header), link->descriptor_length - (sizeof(struct descr_linkage_header) - 2));
 				name = convertDVBUTF8(((const char *)link)+sizeof(struct descr_linkage_header), link->descriptor_length-(sizeof(struct descr_linkage_header)-2), 0, 0);
 		}
 
@@ -164,13 +164,11 @@ class SIlinkage
 		t_service_id          serviceId;         // Linkage Descriptor
 };
 
-// Fuer for_each
 struct printSIlinkage : public std::unary_function<class SIlinkage, void>
 {
 	void operator() (const SIlinkage &l) { l.dump();}
 };
 
-// Fuer for_each
 struct saveSIlinkageXML : public std::unary_function<class SIlinkage, void>
 {
 	FILE *f;
@@ -181,6 +179,7 @@ struct saveSIlinkageXML : public std::unary_function<class SIlinkage, void>
 //typedef std::multiset <SIlinkage, std::less<SIlinkage> > SIlinkage_descs;
 typedef std::vector<class SIlinkage> SIlinkage_descs;
 
+////
 class SIcomponent 
 {
 	public:
@@ -189,9 +188,8 @@ class SIcomponent
 			streamContent = comp->stream_content;
 			componentType = comp->component_type;
 			componentTag = comp->component_tag;
-			if(comp->descriptor_length>sizeof(struct descr_component_header)-2)
-			//component=std::string(((const char *)comp)+sizeof(struct descr_component_header), comp->descriptor_length-(sizeof(struct descr_component_header)-2));
-			component = convertDVBUTF8(((const char *)comp)+sizeof(struct descr_component_header), comp->descriptor_length-(sizeof(struct descr_component_header)-2), 0, 0);
+			if(comp->descriptor_length>sizeof(struct descr_component_header) - 2)
+			 component = convertDVBUTF8(((const char *)comp)+sizeof(struct descr_component_header), comp->descriptor_length-(sizeof(struct descr_component_header) - 2), 0, 0);
 		}
 		
 		// Std-copy
@@ -239,13 +237,11 @@ class SIcomponent
 		unsigned char streamContent; // Component Descriptor
 };
 
-// Fuer for_each
 struct printSIcomponent : public std::unary_function<class SIcomponent, void>
 {
 	void operator() (const SIcomponent &c) { c.dump();}
 };
 
-// Fuer for_each
 struct saveSIcomponentXML : public std::unary_function<class SIcomponent, void>
 {
 	FILE *f;
@@ -255,6 +251,7 @@ struct saveSIcomponentXML : public std::unary_function<class SIcomponent, void>
 
 typedef std::multiset <SIcomponent, std::less<SIcomponent> > SIcomponents;
 
+////
 class SIparentalRating 
 {
 	public:
@@ -293,13 +290,11 @@ class SIparentalRating
 		unsigned char rating; // Bei 1-16 -> Minumim Alter = rating +3
 };
 
-// Fuer for_each
 struct printSIparentalRating : public std::unary_function<SIparentalRating, void>
 {
 	void operator() (const SIparentalRating &r) { r.dump();}
 };
 
-// Fuer for_each
 struct saveSIparentalRatingXML : public std::unary_function<SIparentalRating, void>
 {
 	FILE *f;
@@ -309,6 +304,7 @@ struct saveSIparentalRatingXML : public std::unary_function<SIparentalRating, vo
 
 typedef std::set <SIparentalRating, std::less<SIparentalRating> > SIparentalRatings;
 
+////
 class SItime 
 {
 	public:
@@ -338,7 +334,8 @@ class SItime
 		}
 		
 		int saveXML(FILE *file) const 
-		{ // saves the time
+		{ 
+			// saves the time
 			// Ist so noch nicht in Ordnung, das sollte untergliedert werden,
 			// da sonst evtl. time,date,duration,time,date,... auftritt
 			// und eine rein sequentielle Ordnung finde ich nicht ok.
@@ -351,13 +348,11 @@ class SItime
 
 typedef std::set <SItime, std::less<SItime> > SItimes;
 
-// Fuer for_each
 struct printSItime : public std::unary_function<SItime, void>
 {
 	void operator() (const SItime &t) { t.dump();}
 };
 
-// Fuer for_each
 struct saveSItimeXML : public std::unary_function<SItime, void>
 {
 	FILE *f;
@@ -365,6 +360,7 @@ struct saveSItimeXML : public std::unary_function<SItime, void>
 	void operator() (const SItime &t) { t.saveXML(f);}
 };
 
+////
 class SIevent 
 {
 	public:
@@ -452,13 +448,11 @@ class SIevent
 		int running;
 };
 
-// Fuer for_each
 struct printSIevent : public std::unary_function<SIevent, void>
 {
 	void operator() (const SIevent &e) { e.dump();}
 };
 
-// Fuer for_each
 struct saveSIeventXML : public std::unary_function<SIevent, void>
 {
 	FILE *f;
@@ -466,7 +460,6 @@ struct saveSIeventXML : public std::unary_function<SIevent, void>
 	void operator() (const SIevent &e) { e.saveXML(f);}
 };
 
-// Fuer for_each
 struct saveSIeventXMLwithServiceName : public std::unary_function<SIevent, void>
 {
 	FILE *f;
@@ -485,7 +478,6 @@ struct saveSIeventXMLwithServiceName : public std::unary_function<SIevent, void>
 	}
 };
 
-// Fuer for_each
 struct printSIeventWithService : public std::unary_function<SIevent, void>
 {
 	printSIeventWithService(const SIservices &svs) { s=&svs;}

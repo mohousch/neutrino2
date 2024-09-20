@@ -48,18 +48,7 @@
 //
 class EventList
 {
-	// Eventfinder start
         public:
-                typedef enum
-                {
-                        SEARCH_EPG_NONE,
-                        SEARCH_EPG_TITLE,
-                        SEARCH_EPG_INFO1,
-                        SEARCH_EPG_INFO2,
-                        SEARCH_EPG_GENRE,
-                        SEARCH_EPG_ALL
-                }SEARCH_EPG;
-		
                 typedef enum
                 {
                         SEARCH_LIST_NONE,
@@ -101,12 +90,12 @@ class EventList
 		//
         	CChannelEventList evtlist;
 		CTimerd::TimerList timerlist;
-		void readEvents(const t_channel_id channel_id);
-
 		unsigned int current_event;
 		int key;
 		std::string name;
 		int sort_mode;
+		
+		void readEvents(const t_channel_id channel_id);
 
 		CTimerd::CTimerEventTypes isScheduled(t_channel_id channel_id, CChannelEvent * event, int * tID = NULL);
 

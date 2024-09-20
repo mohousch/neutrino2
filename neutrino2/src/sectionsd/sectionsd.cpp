@@ -94,7 +94,6 @@
 
 
 //// globals / defines
-int op_increase(int i) { return ++i; }
 // 60 Minuten Zyklus...
 #define TIME_EIT_SCHEDULED_PAUSE 60 * 60
 // -- 5 Minutes max. pause should improve behavior  (rasc, 2005-05-02)
@@ -4232,7 +4231,7 @@ void CSectionsd::getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEven
 		int serviceIDfound = 0;
 
 		if (search_text.length()) 
-			std::transform(search_text.begin(), search_text.end(), search_text.begin(), op_increase);
+			std::transform(search_text.begin(), search_text.end(), search_text.begin(), tolower);
 
 		for (MySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey::iterator e = mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.begin(); e != mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.end(); ++e)
 		{
@@ -4241,25 +4240,25 @@ void CSectionsd::getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEven
 				serviceIDfound = 1;
 
 				bool copy = true;
-				if(search == 0); // nothing to do here
-				else if(search == 1) 
+				if(search == SEARCH_EPG_NONE); // nothing to do here
+				else if(search == SEARCH_EPG_TITLE) 
 				{
 					std::string eName = (*e)->getName();
-					std::transform(eName.begin(), eName.end(), eName.begin(), op_increase);
+					std::transform(eName.begin(), eName.end(), eName.begin(), tolower);
 					if(eName.find(search_text) == std::string::npos)
 						copy = false;
 				}
-				else if(search == 2) 
+				else if(search == SEARCH_EPG_INFO1) 
 				{
 					std::string eText = (*e)->getText();
-					std::transform(eText.begin(), eText.end(), eText.begin(), op_increase);
+					std::transform(eText.begin(), eText.end(), eText.begin(), tolower);
 					if(eText.find(search_text) == std::string::npos)
 						copy = false;
 				}
-				else if(search == 3) 
+				else if(search == SEARCH_EPG_INFO2) 
 				{
 					std::string eExtendedText = (*e)->getExtendedText();
-					std::transform(eExtendedText.begin(), eExtendedText.end(), eExtendedText.begin(), op_increase);
+					std::transform(eExtendedText.begin(), eExtendedText.end(), eExtendedText.begin(), tolower);
 					if(eExtendedText.find(search_text) == std::string::npos)
 						copy = false;
 				}
@@ -4525,14 +4524,17 @@ bool CSectionsd::getEPGidShort(event_id_t epgID, CShortEPGData * epgdata)
 
 	readLockEvents();
 
-	const SIevent& e = findSIeventForEventUniqueKey(epgID);
+	const SIevent &e = findSIeventForEventUniqueKey(epgID);
 
 	if (e.service_id != 0)
-	{	// Event found
+	{	
+		// Event found
 		dprintf(DEBUG_DEBUG, "CSectionsd::getEPGidShort:: EPG found.\n");
+		
 		epgdata->title = e.getName();
 		epgdata->info1 = e.getText();
 		epgdata->info2 = e.getExtendedText();
+		
 		ret = true;
 	} 
 	else
@@ -4555,7 +4557,8 @@ bool CSectionsd::getEPGid(const event_id_t epgID, const time_t starttime, CEPGDa
 
 	readLockEvents();
 	if (evt.service_id != 0) 
-	{ // Event found
+	{ 
+		// Event found
 		SItimes::iterator t = evt.times.begin();
 
 		for (; t != evt.times.end(); ++t)
@@ -4574,12 +4577,10 @@ bool CSectionsd::getEPGid(const event_id_t epgID, const time_t starttime, CEPGDa
 			epgdata->title = evt.getName();
 			epgdata->info1 = evt.getText();
 			epgdata->info2 = evt.getExtendedText();
-			/* FIXME printf("itemDescription: %s\n", evt.itemDescription.c_str()); */
 			epgdata->contentClassification = std::string(evt.contentClassification.data(), evt.contentClassification.length());
 			epgdata->userClassification = std::string(evt.userClassification.data(), evt.userClassification.length());
 			epgdata->fsk = evt.getFSK();
 			epgdata->table_id = evt.table_id;
-
 			epgdata->epg_times.starttime = t->starttime;
 			epgdata->epg_times.duration = t->duration;
 
@@ -4637,16 +4638,15 @@ bool CSectionsd::getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEP
 	if (evt.service_id != 0)
 	{
 		dprintf(DEBUG_DEBUG, "CSectionsd::getActualEPGServiceKey EPG found.\n");
+		
 		epgdata->eventID = evt.uniqueKey();
 		epgdata->title = evt.getName();
 		epgdata->info1 = evt.getText();
 		epgdata->info2 = evt.getExtendedText();
-		/* FIXME printf("itemDescription: %s\n", evt.itemDescription.c_str());*/
 		epgdata->contentClassification = std::string(evt.contentClassification.data(), evt.contentClassification.length());
 		epgdata->userClassification = std::string(evt.userClassification.data(), evt.userClassification.length());
 		epgdata->fsk = evt.getFSK();
 		epgdata->table_id = evt.table_id;
-
 		epgdata->epg_times.starttime = zeit.starttime;
 		epgdata->epg_times.duration = zeit.duration;
 

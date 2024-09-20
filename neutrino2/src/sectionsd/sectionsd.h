@@ -43,6 +43,14 @@ class CSectionsd
 			ALL_ALL,
 			LANGUAGE_MODE_OFF
 		};
+		
+		typedef enum
+                {
+                        SEARCH_EPG_NONE,
+                        SEARCH_EPG_TITLE,
+                        SEARCH_EPG_INFO1,
+                        SEARCH_EPG_INFO2
+                };
 
 		struct epgflags 
 		{

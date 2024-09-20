@@ -91,7 +91,7 @@ EventList::EventList()
 
 	m_search_list = SEARCH_LIST_NONE;
 	m_search_epg_item = SEARCH_LIST_NONE;
-	m_search_epg_item = SEARCH_EPG_TITLE;
+	m_search_epg_item = CSectionsd::SEARCH_EPG_TITLE;
 	m_search_channel_id = 1;
 	m_search_bouquet_id= 1;
 	
@@ -229,7 +229,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string &channelnam
 	
 	if(m_search_list == SEARCH_LIST_NONE) // init globals once only
 	{
-		m_search_epg_item = SEARCH_EPG_TITLE;
+		m_search_epg_item = CSectionsd::SEARCH_EPG_TITLE;
 		m_search_list = SEARCH_LIST_CHANNEL;
 		m_search_bouquet_id = bouquetList->getActiveBouquetNumber();
 	}
@@ -690,8 +690,8 @@ int EventList::findEvents(void)
 		res = 1;
 		m_showChannel = true;   // force the event list to paint the channel name
 		
-		if (evtlist.size())
-			evtlist.clear();
+//		if (evtlist.size())
+//			evtlist.clear();
 		
 		if(m_search_list == SEARCH_LIST_CHANNEL)
 		{
@@ -806,9 +806,9 @@ const keyval SEARCH_LIST_OPTIONS[SEARCH_LIST_OPTION_COUNT] =
 #define SEARCH_EPG_OPTION_COUNT 3
 const keyval SEARCH_EPG_OPTIONS[SEARCH_EPG_OPTION_COUNT] =
 {
-	{ EventList::SEARCH_EPG_TITLE, _("EPG Title") },
-	{ EventList::SEARCH_EPG_INFO1, _("EPG Info1") },
-	{ EventList::SEARCH_EPG_INFO2, _("EPG Info2") }
+	{ CSectionsd::SEARCH_EPG_TITLE, _("EPG Title") },
+	{ CSectionsd::SEARCH_EPG_INFO1, _("EPG Info1") },
+	{ CSectionsd::SEARCH_EPG_INFO2, _("EPG Info2") }
 };
 
 CEventFinderMenu::CEventFinderMenu(int * event, int * search_epg_item, std::string * search_keyword, int * search_list, t_channel_id * search_channel_id, t_bouquet_id * search_bouquet_id)
