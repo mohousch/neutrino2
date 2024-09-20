@@ -1710,9 +1710,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	text.setText(description.c_str());
 	text.setHAlign(CComponent::CC_ALIGN_CENTER);
 	
-	//// next
-//	time_t atime = time(NULL);
-					
+	//// next					
 	events.clear();
 
 	CSectionsd::getInstance()->getEventsServiceKey(chanlist[_selected]->channel_id & 0xFFFFFFFFFFFFULL, events);
@@ -1728,10 +1726,11 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	
 	sort(events.begin(), events.end(), sortByDateTime);
 	
-	ClistBox nextEventsBox(&winBottomBox);
-	nextEventsBox.paintMainFrame(false);
-	nextEventsBox.setOutFocus(true);
-	nextEventsBox.paintScrollBar(false);
+	ClistBox nextEventslistBox(&winBottomBox);
+	nextEventslistBox.paintMainFrame(false);
+	nextEventslistBox.setOutFocus(true);
+	nextEventslistBox.paintScrollBar(false);
+	nextEventslistBox.disablePaintIconName();
 	
 	CMenuItem *evtItem = NULL;
 	
@@ -1752,7 +1751,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 			evtItem->setNameFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
 			evtItem->setOptionFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
 
-			nextEventsBox.addItem(evtItem);
+			nextEventslistBox.addItem(evtItem);
 		}
 	}
 	
@@ -1765,7 +1764,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	text.paint();
 	
 	// next
-	nextEventsBox.paint();
+	nextEventslistBox.paint();
 }
 
 //

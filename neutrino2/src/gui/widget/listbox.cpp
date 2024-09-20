@@ -1223,9 +1223,9 @@ int CMenuForwarder::getHeight(void) const
 	}
 	else // standard|extended
 	{
-		ih = ITEM_ICON_H_MINI/2;
+		ih = paintIconName? ITEM_ICON_H_MINI/2 : 0;
 		
-		if (!iconName.empty())
+		if (paintIconName && !iconName.empty())
 		{
 			CFrameBuffer::getInstance()->getIconSize(iconName.c_str(), &iw, &ih);
 		
@@ -1239,7 +1239,7 @@ int CMenuForwarder::getHeight(void) const
 		}
 	}
 
-	return std::max(ih, g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight()) + 6;
+	return std::max(ih, g_Font[nameFont]->getHeight()) + 6;
 }
 
 int CMenuForwarder::getWidth(void) const
@@ -1250,7 +1250,7 @@ int CMenuForwarder::getWidth(void) const
 	}
 	else
 	{
-		int tw = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(itemName.c_str()); //FIXME:
+		int tw = g_Font[nameFont]->getRenderWidth(itemName.c_str()); //FIXME:
 
 		return tw;
 	}
@@ -1538,7 +1538,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 			if (paintIconName && !iconName.empty())
 			{
 				icon_offset = ICON_OFFSET;
-				icon_h = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 4;
+				icon_h = g_Font[nameFont]->getHeight() + 4;
 				icon_w = 1.63*icon_h;
 				
 				//get icon size
@@ -1547,7 +1547,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 				// scale iconName
 				if (icon_h >= getHeight())
 				{
-					icon_h = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 4;
+					icon_h = g_Font[nameFont]->getHeight() + 4;
 					if (icon_w > 1.63*icon_h)
 						icon_w = 1.63*icon_h;
 				}
@@ -1575,7 +1575,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 		}
 	
 		// locale / option
-		int l_text_width = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(l_text, true);
+		int l_text_width = g_Font[nameFont]->getRenderWidth(l_text, true);
 		int l_startPosX = x + BORDER_LEFT + number_width + number_offset + icon_w + icon_offset + pb_width + pb_offset + ICON_OFFSET;
 
 		// local
