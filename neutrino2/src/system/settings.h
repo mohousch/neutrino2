@@ -363,6 +363,7 @@ struct SNeutrinoSettings
 	int make_hd_list;
 	int channellist_timescale;
 	int channellist_alt;
+	int channellist_number;
 
 	// epg
 	int epg_save;

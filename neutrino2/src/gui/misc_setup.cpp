@@ -631,6 +631,9 @@ void CChannelListSettings::showMenu()
 	// alt
 	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("Event to right"), &g_settings.channellist_alt, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 	
+	// number
+	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("Channel number"), &g_settings.channellist_number, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
+	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");

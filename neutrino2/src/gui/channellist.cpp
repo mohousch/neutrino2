@@ -1528,7 +1528,7 @@ void CChannelList::paint(bool customMode)
 			}
 
 			// channel number
-			item->setNumber(i + 1);
+			if (g_settings.channellist_number) item->setNumber(i + 1);
 			
 			// timescale
 			if (g_settings.channellist_timescale && !displayNext) item->setPercent(runningPercent);
