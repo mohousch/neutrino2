@@ -170,7 +170,7 @@ bool CRCInput::loadRCConfig(const char * const fileName)
 	key_favorites = configfile.getInt32("key_favorites", KEY_FAVORITES);
 	key_sat = configfile.getInt32("key_sat", KEY_SAT);
 	key_help = configfile.getInt32("key_help", KEY_HELP);
-	key_timer = configfile.getInt32("key_timer", KEY_TIME);
+	key_timer = configfile.getInt32("key_timer", 0x16A);
 			
 	key_record = configfile.getInt32("key_record", KEY_RECORD);
 #if defined (PLATFORM_GIGABLUE) || defined(PLATFORM_VUPLUS) || defined(PLATFORM_ODIN)	
