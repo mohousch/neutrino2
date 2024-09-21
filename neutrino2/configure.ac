@@ -123,15 +123,15 @@ if test "$enable_graphlcd" = "yes"; then
 AC_DEFINE(ENABLE_GRAPHLCD,1,[include graphlcd support])
 fi
 
-# lcd4linux
-#AC_ARG_ENABLE(lcd4linux,
-#	AS_HELP_STRING(--enable-lcd4linux,include lcd4linux support),
-#	,[enable_lcd4linux=no])
-#AM_CONDITIONAL(ENABLE_LCD4LINUX,test "$enable_lcd4linux" = "yes")
-#
-#if test "$enable_lcd4linux" = "yes"; then
-#AC_DEFINE(ENABLE_LCD4LINUX,1,[include lcd4linux support])
-#fi
+# lirc
+AC_ARG_ENABLE(lirc,
+	AS_HELP_STRING(--enable-lirc,include lirc support),
+	,[enable_lirc=no])
+AM_CONDITIONAL(ENABLE_LIRC,test "$enable_lirc" = "yes")
+
+if test "$enable_lirc" = "yes"; then
+AC_DEFINE(ENABLE_LIRC,1,[include lirc support])
+fi
 
 # scart output
 AC_ARG_ENABLE(scart,
