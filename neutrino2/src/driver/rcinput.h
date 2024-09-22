@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: rcinput.h 02.03.2024 mohousch Exp $
+	$Id: rcinput.h 22092024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -436,9 +436,9 @@ class CRCInput
 		//
 		void clearRCMsg();
 		
-#ifdef ENABLE_LIRC
+//#ifdef ENABLE_LIRC
 		uint32_t translateKey(const char *name);
-#endif		
+//#endif		
 };
 
 //// Converts input of numeric keys to SMS style char input

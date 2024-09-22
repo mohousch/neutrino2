@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: rcinput.cpp 02.03.2024 mohousch Exp $
+	$Id: rcinput.cpp 22092024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
                       2003 thegoodguy
@@ -45,9 +45,9 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#ifdef ENABLE_LIRC
+//#ifdef ENABLE_LIRC
 #include <linux/lirc.h>
-#endif
+//#endif
 
 #include <global.h>
 #include <neutrino2.h>
@@ -64,14 +64,13 @@ const char * const RC_EVENT_DEVICE[NUMBER_OF_EVENT_DEVICES] = {
 
 typedef struct input_event t_input_event;
 
-#ifdef ENABLE_LIRC
+//#ifdef ENABLE_LIRC
 __u64 lastScanCode = 0;
 __u32 lastKeyCode = 0;
 uint64_t FirstTime = 0;	
-////
 char keyName[30] = "";
 int count;
-#endif
+//#endif
 
 bool CRCInput::loadRCConfig(const char * const fileName)
 {
@@ -408,7 +407,7 @@ CRCInput::CRCInput() : configfile('\t')
 		printf("CRCInput::CRCInput: Loading of rc config file failed. Using defaults.\n");
 		
 	// lirc
-#ifdef ENABLE_LIRC
+//#ifdef ENABLE_LIRC
 #if HAVE_KERNEL_LIRC
 	unsigned mode = LIRC_MODE_SCANCODE;
 	
@@ -455,7 +454,7 @@ CRCInput::CRCInput() : configfile('\t')
 	else
 		haveLirc = true;
 #endif
-#endif
+//#endif
 
 	//
 	open();
@@ -465,7 +464,7 @@ CRCInput::CRCInput() : configfile('\t')
 
 void CRCInput::open()
 {
-#ifndef ENABLE_LIRC
+//#ifndef ENABLE_LIRC
 	close();
 
 	// 
@@ -480,14 +479,14 @@ void CRCInput::open()
 				
 		dprintf(DEBUG_INFO, "CRCInput::open: %s fd %d\n", RC_EVENT_DEVICE[i], fd_rc[i]);		
 	}
-#endif
+//#endif
 	
 	calculateMaxFd();
 }
 
 void CRCInput::close()
 {
-#ifndef ENABLE_LIRC
+//#ifndef ENABLE_LIRC
 	// fd_rc
 	for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++) 
 	{
@@ -497,7 +496,7 @@ void CRCInput::close()
 			fd_rc[i] = -1;
 		}
 	}
-#endif
+//#endif
 
 	calculateMaxFd();
 }
@@ -507,11 +506,11 @@ void CRCInput::calculateMaxFd()
 	fd_max = fd_lirc;
 
 	//
-#ifndef ENABLE_LIRC
+//#ifndef ENABLE_LIRC
 	for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++)
 		if (fd_rc[i] > fd_max)
 			fd_max = fd_rc[i];
-#endif
+//#endif
 	
 	if(fd_pipe_high_priority[0] > fd_max)
 		fd_max = fd_pipe_high_priority[0];
@@ -540,9 +539,9 @@ CRCInput::~CRCInput()
 		::close(fd_pipe_low_priority[1]);
 		
 	//
-#ifdef ENABLE_LIRC
+//#ifdef ENABLE_LIRC
 	::close(fd_lirc);
-#endif
+//#endif
 }
 
 void CRCInput::stopInput()
@@ -773,17 +772,17 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 		FD_ZERO(&rfds);
 		
 		// lirc
-#ifdef ENABLE_LIRC
+//#ifdef ENABLE_LIRC
 		if (fd_lirc)
 			FD_SET(fd_lirc, &rfds);
-#else
+//#else
 		// event devices
 		for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++)
 		{
 			if (fd_rc[i] != -1)
 				FD_SET(fd_rc[i], &rfds);
 		}
-#endif
+//#endif
 		
 		//
 		FD_SET(fd_pipe_high_priority[0], &rfds);
@@ -841,7 +840,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			return;
 		}
 
-#ifndef ENABLE_LIRC
+//#ifndef ENABLE_LIRC
 		// fd_rc
 		for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++) 
 		{
@@ -928,10 +927,10 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 				}
 			}// if FDSET
 		} // for NUMBER_OF_EVENT_DEVICES
-#endif
+//#endif
 
 		// fd_lirc
-#ifdef ENABLE_LIRC
+//#ifdef ENABLE_LIRC
 #if HAVE_KERNEL_LIRC
 		if (fd_lirc != -1 && (FD_ISSET(fd_lirc, &rfds)))
 		{
@@ -1004,7 +1003,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			return;
 		}
 #endif
-#endif
+//#endif
 
 		// pipe low prio
 		if(FD_ISSET(fd_pipe_low_priority[0], &rfds))
@@ -1052,7 +1051,7 @@ void CRCInput::setRepeat(unsigned int delay,unsigned int period)
 	repeat_block = delay * 1000ULL;
 	repeat_block_generic = period * 1000ULL;
 
-#ifndef ENABLE_LIRC
+//#ifndef ENABLE_LIRC
 	struct input_event ie;
 	
 	// delay
@@ -1079,7 +1078,7 @@ void CRCInput::setRepeat(unsigned int delay,unsigned int period)
 			write(fd_rc[i], &ie, sizeof(ie));
 		}
 	}
-#endif
+//#endif
 }
 
 void CRCInput::postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data, const bool Priority)
@@ -1099,7 +1098,7 @@ void CRCInput::postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data,
 
 void CRCInput::clearRCMsg()
 {
-#ifndef ENABLE_LIRC
+//#ifndef ENABLE_LIRC
 	t_input_event ev;
 
 	for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++)
@@ -1110,7 +1109,7 @@ void CRCInput::clearRCMsg()
 				;
 		}
 	}
-#endif
+//#endif
 	
 	rc_last_key =  KEY_MAX;
 }
@@ -1478,7 +1477,7 @@ int CRCInput::translate(uint64_t code, int num)
 	else return RC_nokey;
 }
 
-#ifdef ENABLE_LIRC
+//#ifdef ENABLE_LIRC
 uint32_t CRCInput::translateKey(const char *name)
 {
 // FIXME:
@@ -1521,7 +1520,7 @@ uint32_t CRCInput::translateKey(const char *name)
 	else if (!strcmp(name, "KEY_POWER")) return RC_standby;
 	else return RC_nokey;
 }
-#endif
+//#endif
 
 ////
 #define SMSKEY_TIMEOUT 2000
