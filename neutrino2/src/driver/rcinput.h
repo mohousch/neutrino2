@@ -436,9 +436,9 @@ class CRCInput
 		//
 		void clearRCMsg();
 		
-//#ifdef ENABLE_LIRC
+#ifdef ENABLE_LIRC
 		uint32_t translateKey(const char *name);
-//#endif		
+#endif		
 };
 
 //// Converts input of numeric keys to SMS style char input

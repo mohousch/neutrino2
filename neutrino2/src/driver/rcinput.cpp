@@ -45,9 +45,9 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-//#ifdef ENABLE_LIRC
+#ifdef ENABLE_LIRC
 #include <linux/lirc.h>
-//#endif
+#endif
 
 #include <global.h>
 #include <neutrino2.h>
@@ -64,13 +64,13 @@ const char * const RC_EVENT_DEVICE[NUMBER_OF_EVENT_DEVICES] = {
 
 typedef struct input_event t_input_event;
 
-//#ifdef ENABLE_LIRC
+#ifdef ENABLE_LIRC
 __u64 lastScanCode = 0;
 __u32 lastKeyCode = 0;
 uint64_t FirstTime = 0;	
 char keyName[30] = "";
 int count;
-//#endif
+#endif
 
 bool CRCInput::loadRCConfig(const char * const fileName)
 {
@@ -407,7 +407,7 @@ CRCInput::CRCInput() : configfile('\t')
 		printf("CRCInput::CRCInput: Loading of rc config file failed. Using defaults.\n");
 		
 	// lirc
-//#ifdef ENABLE_LIRC
+#ifdef ENABLE_LIRC
 #if HAVE_KERNEL_LIRC
 	unsigned mode = LIRC_MODE_SCANCODE;
 	
@@ -454,7 +454,7 @@ CRCInput::CRCInput() : configfile('\t')
 	else
 		haveLirc = true;
 #endif
-//#endif
+#endif
 
 	//
 	open();
@@ -539,9 +539,9 @@ CRCInput::~CRCInput()
 		::close(fd_pipe_low_priority[1]);
 		
 	//
-//#ifdef ENABLE_LIRC
+#ifdef ENABLE_LIRC
 	::close(fd_lirc);
-//#endif
+#endif
 }
 
 void CRCInput::stopInput()
@@ -772,17 +772,16 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 		FD_ZERO(&rfds);
 		
 		// lirc
-//#ifdef ENABLE_LIRC
+#ifdef ENABLE_LIRC
 		if (fd_lirc)
 			FD_SET(fd_lirc, &rfds);
-//#else
+#endif
 		// event devices
 		for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++)
 		{
 			if (fd_rc[i] != -1)
 				FD_SET(fd_rc[i], &rfds);
 		}
-//#endif
 		
 		//
 		FD_SET(fd_pipe_high_priority[0], &rfds);
@@ -840,7 +839,6 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			return;
 		}
 
-//#ifndef ENABLE_LIRC
 		// fd_rc
 		for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++) 
 		{
@@ -927,10 +925,9 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 				}
 			}// if FDSET
 		} // for NUMBER_OF_EVENT_DEVICES
-//#endif
 
 		// fd_lirc
-//#ifdef ENABLE_LIRC
+#ifdef ENABLE_LIRC
 #if HAVE_KERNEL_LIRC
 		if (fd_lirc != -1 && (FD_ISSET(fd_lirc, &rfds)))
 		{
@@ -1003,7 +1000,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			return;
 		}
 #endif
-//#endif
+#endif
 
 		// pipe low prio
 		if(FD_ISSET(fd_pipe_low_priority[0], &rfds))
@@ -1477,7 +1474,7 @@ int CRCInput::translate(uint64_t code, int num)
 	else return RC_nokey;
 }
 
-//#ifdef ENABLE_LIRC
+#ifdef ENABLE_LIRC
 uint32_t CRCInput::translateKey(const char *name)
 {
 // FIXME:
@@ -1520,7 +1517,7 @@ uint32_t CRCInput::translateKey(const char *name)
 	else if (!strcmp(name, "KEY_POWER")) return RC_standby;
 	else return RC_nokey;
 }
-//#endif
+#endif
 
 ////
 #define SMSKEY_TIMEOUT 2000
