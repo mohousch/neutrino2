@@ -39,8 +39,8 @@
 //
 void initialize_iso639_map(void);
 const char * getISO639Description(const char * const iso);
-extern std::map<std::string, std::string> iso639;		// ???
-extern std::map<std::string, std::string> iso639rev;		// ???
+extern std::map<std::string, std::string> iso639;
+extern std::map<std::string, std::string> iso639rev;
 
 class CLocaleManager
 {	

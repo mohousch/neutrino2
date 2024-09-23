@@ -1745,6 +1745,8 @@ void CNeutrinoApp::setDebugLevel( int level )
 // setup the framebuffer
 void CNeutrinoApp::setupFrameBuffer()
 {
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::setupFrameBuffer\n");
+	
 	frameBuffer = CFrameBuffer::getInstance();
 	
 	frameBuffer->init();
@@ -2122,11 +2124,7 @@ void CNeutrinoApp::initZapper()
 	channelsInit();
 	
 	//
-	if (epgUpdateTimer)
-	{
-		g_RCInput->killTimer(epgUpdateTimer);
-		epgUpdateTimer = g_RCInput->addTimer( 60 * 1000 * 1000, false );
-	}
+	epgUpdateTimer = g_RCInput->addTimer( 60 * 1000 * 1000, false );
 
 	// firstchanel mode
 	if(firstchannel.mode == 't') 
@@ -2496,10 +2494,7 @@ void CNeutrinoApp::tvMode( bool rezap )
 			
 			delete g_Radiotext;
 			g_Radiotext = NULL;
-		}		
-
-//		g_RCInput->killTimer(epgUpdateTimer);
-//		epgUpdateTimer = g_RCInput->addTimer( 60 * 1000 * 1000, false );	
+		}			
 
 		CLCD::getInstance()->ShowIcon(VFD_ICON_RADIO, false);
 
@@ -2553,9 +2548,6 @@ void CNeutrinoApp::radioMode( bool rezap)
 
 	if(mode == mode_tv ) 
 	{	  
-//		g_RCInput->killTimer(epgUpdateTimer);
-//		epgUpdateTimer = g_RCInput->addTimer( 60 * 1000 * 1000, false );	
-
 		stopSubtitles();
 	}
 
@@ -4617,7 +4609,7 @@ void CNeutrinoApp::realRun(void)
 //
 int CNeutrinoApp::run(int argc, char **argv)
 {
-	dprintf( DEBUG_NORMAL, "CNeutrinoApp::run:\n");
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::run:\n");
 	
 	//	
 	global_argv = new char *[argc + 1];

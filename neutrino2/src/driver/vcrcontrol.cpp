@@ -279,17 +279,17 @@ void CVCRControl::RestoreNeutrino(void)
 	CZapit::getInstance()->setRecordMode( false );
 
 	// start playback
-	if (!CZapit::getInstance()->isPlayBackActive() && (CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby))
+	if (!CZapit::getInstance()->isPlayBackActive() && (CNeutrinoApp::getInstance()->getMode() != CNeutrinoApp::mode_standby))
 		CZapit::getInstance()->startPlayBack(CZapit::getInstance()->getCurrentChannel());
 
 	// alten mode wieder herstellen (ausser wen zwischenzeitlich auf oder aus sb geschalten wurde)
-	if(CNeutrinoApp::getInstance()->getMode() != last_mode && CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby && last_mode != NeutrinoMessages::mode_standby)
+	if(CNeutrinoApp::getInstance()->getMode() != last_mode && CNeutrinoApp::getInstance()->getMode() != CNeutrinoApp::mode_standby && last_mode != CNeutrinoApp::mode_standby)
 	{
 		if(!autoshift) 
 			g_RCInput->postMsg(NeutrinoMessages::CHANGEMODE, (const neutrino_msg_data_t)last_mode);
 	}
 
-	if(last_mode == NeutrinoMessages::mode_standby && CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_standby )
+	if(last_mode == CNeutrinoApp::mode_standby && CNeutrinoApp::getInstance()->getMode() == CNeutrinoApp::mode_standby )
 	{
 		//Wenn vorher und jetzt standby, dann die zapit wieder auf sb schalten
 		CZapit::getInstance()->setStandby(true);
@@ -303,25 +303,25 @@ void CVCRControl::CutBackNeutrino(const t_channel_id channel_id, const int mode)
 	
 	last_mode = CNeutrinoApp::getInstance()->getMode();
 
-	if(last_mode == NeutrinoMessages::mode_standby)
+	if(last_mode == CNeutrinoApp::mode_standby)
 	{
 		CZapit::getInstance()->setStandby(false);
 	}
 	
 	if (channel_id != 0) 
 	{
-		if (mode != last_mode && (last_mode != NeutrinoMessages::mode_standby || mode != CNeutrinoApp::getInstance()->getLastMode())) 
+		if (mode != last_mode && (last_mode != CNeutrinoApp::mode_standby || mode != CNeutrinoApp::getInstance()->getLastMode())) 
 		{
-			CNeutrinoApp::getInstance()->handleMsg( NeutrinoMessages::CHANGEMODE , mode | NeutrinoMessages::norezap );
+			CNeutrinoApp::getInstance()->handleMsg( NeutrinoMessages::CHANGEMODE , mode | CNeutrinoApp::norezap );
 			
 			// Wenn wir im Standby waren, dann brauchen wir f�rs streamen nicht aufwachen...
-			if(last_mode == NeutrinoMessages::mode_standby)
-				CNeutrinoApp::getInstance()->handleMsg( NeutrinoMessages::CHANGEMODE , NeutrinoMessages::mode_standby);
+			if(last_mode == CNeutrinoApp::mode_standby)
+				CNeutrinoApp::getInstance()->handleMsg( NeutrinoMessages::CHANGEMODE , CNeutrinoApp::mode_standby);
 		}
 	}
 
 	// stop playback im standby
-	if( last_mode == NeutrinoMessages::mode_standby )
+	if( last_mode == CNeutrinoApp::mode_standby )
 		CZapit::getInstance()->stopPlayBack();
 	
 	// after this zapit send EVT_RECORDMODE_ACTIVATED, so neutrino getting NeutrinoMessages::EVT_RECORDMODE
@@ -350,7 +350,7 @@ void CVCRControl::Stop()
 	deviceState = CMD_VCR_STOP;
 	
 	// set lastmode
-	if(last_mode != NeutrinoMessages::mode_scart)
+	if(last_mode != CNeutrinoApp::mode_scart)
 	{
 		g_RCInput->postMsg( NeutrinoMessages::VCR_OFF);
 		g_RCInput->postMsg( NeutrinoMessages::CHANGEMODE , (const neutrino_msg_data_t)last_mode);
@@ -388,7 +388,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 
 	if(mode != last_mode) 
 	{
-		CNeutrinoApp::getInstance()->handleMsg( NeutrinoMessages::CHANGEMODE , mode | NeutrinoMessages::norezap );
+		CNeutrinoApp::getInstance()->handleMsg( NeutrinoMessages::CHANGEMODE , mode | CNeutrinoApp::norezap );
 	}
 	
 	// zaptoRecordChannel

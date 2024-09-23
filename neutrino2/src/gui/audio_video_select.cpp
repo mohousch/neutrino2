@@ -410,7 +410,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 	extnumpids = 0;
 	
 #ifndef ENABLE_GSTREAMER
-	if (CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_ts)
+	if (CNeutrinoApp::getInstance()->getMode() == CNeutrinoApp::mode_ts)
 	{	
 		AVPIDSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		

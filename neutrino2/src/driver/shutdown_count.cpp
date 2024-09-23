@@ -77,7 +77,7 @@ void SHTDCNT::shutdown_counter()
 {
 	if (atoi(g_settings.shutdown_count) > 0)
 	{
-		if ((CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_standby) && (!CNeutrinoApp::getInstance ()->recordingstatus))
+		if ((CNeutrinoApp::getInstance()->getMode() == CNeutrinoApp::mode_standby) && (!CNeutrinoApp::getInstance ()->recordingstatus))
 		{
 			if (shutdown_cnt > 0 )
 			{

@@ -77,9 +77,7 @@ typedef struct neutrino_font_descr
 
 class CNeutrinoApp : public CMenuTarget
 {
- 	private:
-		CFrameBuffer * frameBuffer;
-
+	public:
 		enum
 		{
 			mode_unknown = -1,
@@ -93,6 +91,9 @@ class CNeutrinoApp : public CMenuTarget
 			mode_mask = 0xFF,	//
 			norezap = 0x100		//
 		};
+		
+ 	private:
+		CFrameBuffer * frameBuffer;
 
 		//// configfile
 		CConfigFile configfile;
@@ -137,7 +138,6 @@ class CNeutrinoApp : public CMenuTarget
 		int loadSetup(const char * fname);
 		void setupFonts(const char* font_file);
 		//// skin
-		//CConfigFile skin_configfile;
 		void loadSkin(std::string skinName);
 		void readSkinConfig(const char* const filename);
 		void saveSkinConfig(const char* const filename);

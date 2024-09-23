@@ -881,7 +881,7 @@ int CMovieBrowser::exec(CMenuTarget * parent, const std::string &actionKey)
 	{
 		if(m_movieSelectionHandler != NULL) 
 		{
-			if((m_movieSelectionHandler == playing_info) && (NeutrinoMessages::mode_ts == CNeutrinoApp::getInstance()->getMode()))
+			if((m_movieSelectionHandler == playing_info) && (CNeutrinoApp::mode_ts == CNeutrinoApp::getInstance()->getMode()))
 				MessageBox(__("Error"), __("Impossible to truncate playing movie."), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 			else if(m_movieSelectionHandler->bookmarks.end == 0)
 				MessageBox(__("Error"), __("No End bookmark defined!"), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);

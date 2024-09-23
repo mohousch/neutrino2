@@ -27,6 +27,7 @@
 // tuxbox
 #include <global.h>
 #include <neutrinoMessages.h>
+#include <neutrino2.h>
 
 #include <timerd/timerd.h>
 
@@ -327,14 +328,14 @@ void CControlAPI::SetModeCGI(CyhookHandler *hh)
 
 		if (hh->ParamList["1"] == "radio")	// switch to radio mode
 		{
-			int mode = NeutrinoMessages::mode_radio;
+			int mode = CNeutrinoApp::mode_radio;
 
 			g_RCInput->postMsg(NeutrinoMessages::CHANGEMODE, (const neutrino_msg_data_t)mode, false);
 			sleep(1);
 		}
 		else if (hh->ParamList["1"] == "tv")	// switch to tv mode
 		{
-			int mode = NeutrinoMessages::mode_tv;
+			int mode = CNeutrinoApp::mode_tv;
 			
 			g_RCInput->postMsg(NeutrinoMessages::CHANGEMODE, (const neutrino_msg_data_t)mode, false);
 			sleep(1);

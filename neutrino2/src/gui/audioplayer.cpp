@@ -166,10 +166,10 @@ int CAudioPlayerGui::exec(CMenuTarget * parent, const std::string &actionKey)
 	m_frameBuffer->blit();	
 	
 	// tell neutrino we're in audio mode
-	CNeutrinoApp::getInstance()->handleMsg(NeutrinoMessages::CHANGEMODE, NeutrinoMessages::mode_audio );
+	CNeutrinoApp::getInstance()->handleMsg(NeutrinoMessages::CHANGEMODE, CNeutrinoApp::mode_audio );
 	
 	// remember last mode
-	m_LastMode = (CNeutrinoApp::getInstance()->getLastMode() | NeutrinoMessages::norezap);
+	m_LastMode = (CNeutrinoApp::getInstance()->getLastMode() | CNeutrinoApp::norezap);
 	
 	// stop playback
 	CNeutrinoApp::getInstance()->lockPlayBack();
@@ -231,7 +231,7 @@ void CAudioPlayerGui::playFile()
 	// control loop
 	while(loop)
 	{
-		if(CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_audio)
+		if(CNeutrinoApp::getInstance()->getMode() != CNeutrinoApp::mode_audio)
 		{
 			// stop if mode was changed in another thread
 			loop = false;
@@ -465,7 +465,7 @@ void CAudioPlayerGui::playFile()
 		}
 		else if(msg == NeutrinoMessages::CHANGEMODE)
 		{
-			if((data & NeutrinoMessages::mode_mask) != NeutrinoMessages::mode_audio)
+			if((data & CNeutrinoApp::mode_mask) != CNeutrinoApp::mode_audio)
 			{
 				loop = false;
 				m_LastMode = data;

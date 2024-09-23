@@ -58,8 +58,8 @@ const keyval OPTIONS_OFF1_ON0_OPTIONS[OPTIONS_OFF1_ON0_OPTION_COUNT] =
 #define OPTIONS_LASTMODE_OPTION_COUNT 2
 const keyval OPTIONS_LASTMODE_OPTIONS[OPTIONS_LASTMODE_OPTION_COUNT] =
 {
-	{ NeutrinoMessages::mode_tv, "TV" },
-        { NeutrinoMessages::mode_radio, "Radio" },
+	{ CNeutrinoApp::mode_tv, "TV" },
+        { CNeutrinoApp::mode_radio, "Radio" },
 };
 
 CZapitSetup::CZapitSetup()
@@ -206,10 +206,10 @@ void CZapitSetup::showMenu()
 	bool activTV = false;
 	bool activRadio = false;
 
-	if( (g_settings.uselastchannel) && (g_settings.lastChannelMode == NeutrinoMessages::mode_tv) )
+	if( (g_settings.uselastchannel) && (g_settings.lastChannelMode == CNeutrinoApp::mode_tv) )
 		activTV = true;
 
-	if( (g_settings.uselastchannel) && (g_settings.lastChannelMode == NeutrinoMessages::mode_radio) )
+	if( (g_settings.uselastchannel) && (g_settings.lastChannelMode == CNeutrinoApp::mode_radio) )
 		activRadio = true;
 
 	// last TV channel
@@ -264,10 +264,10 @@ bool CZapitSetupNotifier::changeNotify(const std::string& OptionName, void *)
 		bool activTV = false;
 		bool activRadio = false;
 
-		if( (g_settings.uselastchannel) && (g_settings.lastChannelMode == NeutrinoMessages::mode_tv) )
+		if( (g_settings.uselastchannel) && (g_settings.lastChannelMode == CNeutrinoApp::mode_tv) )
 			activTV = true;
 
-		if( (g_settings.uselastchannel) && (g_settings.lastChannelMode == NeutrinoMessages::mode_radio) )
+		if( (g_settings.uselastchannel) && (g_settings.lastChannelMode == CNeutrinoApp::mode_radio) )
 			activRadio = true;
 
 		zapit1->setActive(g_settings.uselastchannel);
@@ -290,12 +290,12 @@ bool CZapitSetupModeNotifier::changeNotify(const std::string&, void *)
 {
 	int nmode = *mode;
 	
-	if(nmode == NeutrinoMessages::mode_radio)
+	if(nmode == CNeutrinoApp::mode_radio)
 	{
 		item1->setActive(false);
 		item2->setActive(true);
 	}
-	else if(nmode == NeutrinoMessages::mode_tv)
+	else if(nmode == CNeutrinoApp::mode_tv)
 	{
 		item1->setActive(true);
 		item2->setActive(false);

@@ -86,11 +86,11 @@ void CSelectChannelWidget::InitZapitChannelHelper(CZapit::channelsMode mode)
 	// set mode
 	if(mode == CZapit::MODE_TV)
 	{
-		CNeutrinoApp::getInstance()->setChannelMode(g_settings.channel_mode, NeutrinoMessages::mode_tv);
+		CNeutrinoApp::getInstance()->setChannelMode(g_settings.channel_mode, CNeutrinoApp::mode_tv);
 	}
 	else if(mode == CZapit::MODE_RADIO)
 	{
-		CNeutrinoApp::getInstance()->setChannelMode(g_settings.channel_mode, NeutrinoMessages::mode_radio);
+		CNeutrinoApp::getInstance()->setChannelMode(g_settings.channel_mode, CNeutrinoApp::mode_radio);
 	}
 	
 _repeat:	

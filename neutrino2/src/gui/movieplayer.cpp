@@ -194,10 +194,10 @@ void CMoviePlayerGui::cutNeutrino()
 		return;
 	
 	// tell neutrino we are in ts mode
-	CNeutrinoApp::getInstance()->handleMsg(NeutrinoMessages::CHANGEMODE, NeutrinoMessages::mode_ts);
+	CNeutrinoApp::getInstance()->handleMsg(NeutrinoMessages::CHANGEMODE, CNeutrinoApp::mode_ts);
 	
 	// save (remeber) last mode
-	m_LastMode = (CNeutrinoApp::getInstance()->getLastMode() | NeutrinoMessages::norezap);
+	m_LastMode = (CNeutrinoApp::getInstance()->getLastMode() | CNeutrinoApp::norezap);
 	
 	//
 	CNeutrinoApp::getInstance()->lockPlayBack();

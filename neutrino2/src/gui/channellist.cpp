@@ -231,7 +231,7 @@ void CChannelList::updateEvents(void)
 
 			pevents.clear();
 				
-			CSectionsd::getInstance()->getChannelEvents(pevents, (CNeutrinoApp::getInstance()->getMode()) != NeutrinoMessages::mode_radio, p_requested_channels, size_requested_channels);
+			CSectionsd::getInstance()->getChannelEvents(pevents, (CNeutrinoApp::getInstance()->getMode()) != CNeutrinoApp::mode_radio, p_requested_channels, size_requested_channels);
 				
 			for (uint32_t count = 0; count < chanlist.size(); count++) 
 			{
@@ -749,7 +749,7 @@ int CChannelList::show(bool customMode)
 	g_RCInput->killTimer(sec_timer_id);
 	sec_timer_id = 0;
 
-	if(NeutrinoMessages::mode_ts == CNeutrinoApp::getInstance()->getMode())
+	if (CNeutrinoApp::mode_ts == CNeutrinoApp::getInstance()->getMode())
 		return -1;
 
 	if(zapOnExit)
@@ -818,14 +818,14 @@ bool CChannelList::adjustToChannelID(const t_channel_id channel_id, bool bToo)
 				if (bToo && (bouquetList != NULL)) 
 				{
 					//FIXME
-					if(CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_tv) 
+					if(CNeutrinoApp::getInstance()->getMode() == CNeutrinoApp::mode_tv) 
 					{
 						TVbouquetList->adjustToChannelID(channel_id);
 						TVsatList->adjustToChannelID(channel_id);
 						TVfavList->adjustToChannelID(channel_id);
 						TVallList->adjustToChannelID(channel_id);
 					} 
-					else if(CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_radio) 
+					else if(CNeutrinoApp::getInstance()->getMode() == CNeutrinoApp::mode_radio) 
 					{
 						RADIObouquetList->adjustToChannelID(channel_id);
 						RADIOsatList->adjustToChannelID(channel_id);
@@ -912,7 +912,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 	
 	if ( (pos != (int)tuned) || rezap ) //FIXME: allow after scan to tun
 	{  
-		if ((g_settings.radiotext_enable) && ((CNeutrinoApp::getInstance()->getMode()) == NeutrinoMessages::mode_radio) && (g_Radiotext))
+		if ((g_settings.radiotext_enable) && ((CNeutrinoApp::getInstance()->getMode()) == CNeutrinoApp::mode_radio) && (g_Radiotext))
 		{
 			// stop radiotext PES decoding before zapping
 			g_Radiotext->radiotext_stop();

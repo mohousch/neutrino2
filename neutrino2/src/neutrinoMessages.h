@@ -166,20 +166,6 @@ struct NeutrinoMessages
 		EVT_ZAP_GOTAPIDS                         = CRCInput::RC_WithData + 20,
 		EVT_ZAP_GOTPIDS                          = CRCInput::RC_WithData + 21
 	};
-
-	enum
-	{
-		mode_unknown = -1,
-		mode_tv = 	1,
-		mode_radio = 2,
-		mode_scart = 3,
-		mode_standby = 4,
-		mode_audio = 5,
-		mode_pic = 6,
-		mode_ts = 7,
-		mode_mask = 0xFF,
-		norezap = 0x100
-	};
 };
 
 #endif

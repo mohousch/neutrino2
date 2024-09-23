@@ -607,7 +607,7 @@ int CHDDInit::exec(CMenuTarget * /*parent*/, const std::string& actionKey)
 	return CMenuTarget::RETURN_REPAINT;
 }
 
-int CHDDDestExec::exec(CMenuTarget * /*parent*/, const std::string&)
+int CHDDDestExec::exec(CMenuTarget *, const std::string&)
 {
 	dprintf(DEBUG_NORMAL, "CHDDDestExec::exec:\n");
 

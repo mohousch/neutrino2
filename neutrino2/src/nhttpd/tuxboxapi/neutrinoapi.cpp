@@ -112,7 +112,7 @@ void CNeutrinoAPI::ZapTo(const char * const target)
 void CNeutrinoAPI::ZapToChannelId(t_channel_id channel_id)
 {
 	// standby modus
-	if(CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_standby)
+	if(CNeutrinoApp::getInstance()->getMode() == CNeutrinoApp::mode_standby)
 	{
 		CZapit::getInstance()->setStandby(false);		
 	
@@ -156,10 +156,11 @@ t_channel_id CNeutrinoAPI::ChannelNameToChannelId(std::string search_channel_nam
 	//int mode = CZapit::getInstance()->getMode();
 	t_channel_id channel_id = (t_channel_id)-1;
 	CStringArray channel_names = ySplitStringVector(search_channel_name, ",");
+	
 	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++) 
 	{
 		std::string channel_name = it->second.getName();
-		for(unsigned int j=0;j<channel_names.size();j++)
+		for(unsigned int j = 0; j<channel_names.size(); j++)
 		{
 			if(channel_names[j].length() == channel_name.length() &&
 				equal(channel_names[j].begin(), channel_names[j].end(),

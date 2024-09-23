@@ -103,10 +103,10 @@ int CPictureViewerGui::exec(CMenuTarget* parent, const std::string &actionKey)
 		parent->hide();
 
 	// tell neutrino we're in pic_mode
-	CNeutrinoApp::getInstance()->handleMsg( NeutrinoMessages::CHANGEMODE , NeutrinoMessages::mode_pic );
+	CNeutrinoApp::getInstance()->handleMsg( NeutrinoMessages::CHANGEMODE , CNeutrinoApp::mode_pic );
 	
 	// remember last mode
-	m_LastMode = (CNeutrinoApp::getInstance()->getLastMode() | NeutrinoMessages::norezap);
+	m_LastMode = (CNeutrinoApp::getInstance()->getLastMode() | CNeutrinoApp::norezap);
 	
 	// Save and Clear background
 	bool usedBackground = frameBuffer->getuseBackground();
@@ -258,7 +258,7 @@ void CPictureViewerGui::show()
 		}
 		else if(msg == NeutrinoMessages::CHANGEMODE)
 		{
-			if((data & NeutrinoMessages::mode_mask) !=NeutrinoMessages::mode_pic)
+			if((data & CNeutrinoApp::mode_mask) != CNeutrinoApp::mode_pic)
 			{
 				loop = false;
 				m_LastMode = data;

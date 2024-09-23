@@ -563,7 +563,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 	showSNR();
 
 	// radiotext	
-	if (CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_radio)
+	if (CNeutrinoApp::getInstance()->getMode() == CNeutrinoApp::mode_radio)
 	{
 		if ((g_settings.radiotext_enable) && (!recordModeActive))
 			showRadiotext();
@@ -656,7 +656,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 				showEPGData(_calledFromNumZap);
 					
 				// radiotext		
-				if ((g_settings.radiotext_enable) && (CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_radio))
+				if ((g_settings.radiotext_enable) && (CNeutrinoApp::getInstance()->getMode() == CNeutrinoApp::mode_radio))
 					showRadiotext();		
 			} 
 			else if ( g_settings.virtual_zap_mode && ((msg == CRCInput::RC_right) || msg == CRCInput::RC_left)) 
@@ -671,7 +671,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 				{
 					hideIt = false;
 					// radiotext					
-					if ((g_settings.radiotext_enable) && (CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_radio))
+					if ((g_settings.radiotext_enable) && (CNeutrinoApp::getInstance()->getMode() == CNeutrinoApp::mode_radio))
 						hideIt =  true;
 					else				  
 						hideIt = false;
@@ -930,7 +930,7 @@ void CInfoViewer::showIcon_RadioText(bool rt_available) const
 		int mode = CNeutrinoApp::getInstance()->getMode();
 		std::string rt_icon = NEUTRINO_ICON_RADIOTEXTOFF;
 		
-		if ((!virtual_zap_mode) && (!recordModeActive) && (mode == NeutrinoMessages::mode_radio))
+		if ((!virtual_zap_mode) && (!recordModeActive) && (mode == CNeutrinoApp::mode_radio))
 		{
 			if (g_settings.radiotext_enable)
 			{
@@ -1963,12 +1963,12 @@ void CInfoViewer::showWeather()
 
 void CInfoViewer::showEPGInfo()
 {
-	dprintf(DEBUG_DEBUG, "CInfoViewer::showEPGInfo\n");
+	dprintf(DEBUG_NORMAL, "CInfoViewer::showEPGInfo\n");
 	
 	int mode = CNeutrinoApp::getInstance()->getMode();
 	
 	// show epg info only if we in TV- or Radio mode and current event is not the same like before
-	if ((eventname != info_CurrentNext.current_name) && (mode == NeutrinoMessages::mode_tv || mode == NeutrinoMessages::mode_radio))
+	if ((eventname != info_CurrentNext.current_name) && (mode == CNeutrinoApp::mode_tv || mode == CNeutrinoApp::mode_radio))
 	{
 		eventname = info_CurrentNext.current_name;
 		
