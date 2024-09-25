@@ -526,7 +526,7 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	fontRenderer->InitFontCache();
 
 	fonts.menu        = fontRenderer->getFont(fontname,  style_name , (lcd_height > 64)? 24 : 12);
-	fonts.time        = fontRenderer->getFont(fontname2, style_name2, (lcd_height > 64)? 20 : 14);
+	fonts.time        = fontRenderer->getFont(fontname2, style_name2, (lcd_height > 64)? 22 : 14);
 	fonts.channelname = fontRenderer->getFont(fontname3, style_name3, (lcd_height > 64)? 30 : 15);
 	fonts.menutitle   = fonts.channelname;
 	fonts.timestandby = fontRenderer->getFont(fontname,  style_name , (lcd_height > 64)? 50 : 20);
@@ -1324,7 +1324,7 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 		
 	if ( (mode == MODE_TVRADIO || mode == MODE_MOVIE || mode == MODE_SCART || mode == MODE_AUDIO) && (g_settings.lcd_statusline == STATUSLINE_VOLUME) )
 	{
-		unsigned int height =  6;
+		unsigned int height =  12;
 		unsigned int left   = 12 + 2;
 		unsigned int top    = lcd_height - height - 1 - 2;
 		unsigned int width  = lcd_width - left - 4 - fonts.time->getRenderWidth("00:00") - 1;
@@ -1348,13 +1348,13 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 
 		// icon
 		if ((muted) || (volume == 0))
-			display->show_png_element(&(element[ELEMENT_MUTE]), 0, lcd_height-element[ELEMENT_MUTE].height);
+			display->show_png_element(&(element[ELEMENT_MUTE]), 0, lcd_height - element[ELEMENT_MUTE].height);
 		else
 		{
 			if (icon_dolby)
-				display->show_png_element(&(element[ELEMENT_DOLBY]), 0, lcd_height-element[ELEMENT_DOLBY].height);
+				display->show_png_element(&(element[ELEMENT_DOLBY]), 0, lcd_height - element[ELEMENT_DOLBY].height);
 			else
-				display->show_png_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height-element[ELEMENT_SPEAKER].height);
+				display->show_png_element(&(element[ELEMENT_SPEAKER]), 0, lcd_height -element[ELEMENT_SPEAKER].height);
 		}
 
 		//strichline
@@ -1401,7 +1401,7 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 	if (mode != m)
 		return;
 		
-	int left, top, width, height = 6;
+	int left, top, width, height = 12;
 	bool draw = true;
 	
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
@@ -1787,7 +1787,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		switch (g_settings.lcd_statusline)
 		{
 			case CLCD::STATUSLINE_PLAYTIME:
-				display->show_png_element(&(element[ELEMENT_PROG]), 0, lcd_height -element[ELEMENT_PROG].height);
+				display->show_png_element(&(element[ELEMENT_PROG]), 0, lcd_height - element[ELEMENT_PROG].height);
 				showPercentOver(percentOver, false, mode);
 				break;
 				

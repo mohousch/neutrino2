@@ -239,7 +239,7 @@ class CRCInput
 			RC_favorites	= KEY_FAVORITES,	// 0x16c
 			RC_sat		= KEY_SAT,		// 0x17d
 			RC_help		= KEY_HELP,
-			RC_timer	= 0x16A, //KEY_TIME,
+			RC_timer	= 0x16A,
 					
 			RC_record	= KEY_RECORD,		// 0xA7
 			RC_play		= KEY_PLAY,		// 0xCF
