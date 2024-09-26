@@ -1324,7 +1324,7 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 		
 	if ( (mode == MODE_TVRADIO || mode == MODE_MOVIE || mode == MODE_SCART || mode == MODE_AUDIO) && (g_settings.lcd_statusline == STATUSLINE_VOLUME) )
 	{
-		unsigned int height =  12;
+		unsigned int height =  6;
 		unsigned int left   = 12 + 2;
 		unsigned int top    = lcd_height - height - 1 - 2;
 		unsigned int width  = lcd_width - left - 4 - fonts.time->getRenderWidth("00:00") - 1;
@@ -1372,7 +1372,6 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 		{
 			// 51 = top-1-2
 			// 52 = top-1-1
-
 			// 54 = top-1+1
 			// 55 = top-1+2
 			// 58 = lcd_height-3-3
@@ -1401,7 +1400,7 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 	if (mode != m)
 		return;
 		
-	int left, top, width, height = 12;
+	int left, top, width, height = 6;
 	bool draw = true;
 	
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)

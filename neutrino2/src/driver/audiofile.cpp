@@ -202,7 +202,6 @@ void CFfmpegDec::deInit(void)
 	if (avc)
 	{
 		avformat_close_input(&avc);
-		//avformat_free_context(avc);
 		avc = NULL;
 	}
 }

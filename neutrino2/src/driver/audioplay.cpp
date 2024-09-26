@@ -44,9 +44,6 @@
 #include <sectionsd/edvbstring.h> // UTF8
 
 #include <playback_cs.h>
-//#ifdef USE_OPENGL
-//#include <audio_cs.h>
-//#endif
 
 
 void ShoutcastCallback(void *arg)
@@ -147,6 +144,7 @@ CAudioPlayer * CAudioPlayer::getInstance()
 void * CAudioPlayer::PlayThread( void * /*arg*/)
 {
 	// shoutcast
+/*
 	FILE* fp = NULL;
 	
 	if(getInstance()->m_Audiofile.FileExtension == CFile::EXTENSION_URL)
@@ -161,8 +159,8 @@ void * CAudioPlayer::PlayThread( void * /*arg*/)
 		}
 		else
 		{
-//			if ( ::fstatus(fp, ShoutcastCallback) < 0 )
-//				fprintf( stderr, "CAudioPlayer::PlayThread: Error adding shoutcast callback: %s\n", err_txt );
+			if ( ::fstatus(fp, ShoutcastCallback) < 0 )
+				fprintf( stderr, "CAudioPlayer::PlayThread: Error adding shoutcast callback: %s\n", err_txt );
 		}
 
 		if ( ::fclose( fp ) == EOF )
@@ -170,15 +168,16 @@ void * CAudioPlayer::PlayThread( void * /*arg*/)
 			fprintf( stderr, "CAudioPlayer::PlayThread: Could not close file %s.\n", getInstance()->m_Audiofile.Filename.c_str() );
 		}
 	}
+*/
 
 	//stop playing if already playing (multiselect)
-	if(playback->playing)
+	if (playback->playing)
 		playback->Close();
 		
-	if(! playback->Open())	  
+	if (!playback->Open())	  
 		return NULL;
 			
-	if(!playback->Start( (char*)getInstance()->m_Audiofile.Filename.c_str() ))
+	if (!playback->Start( (char*)getInstance()->m_Audiofile.Filename.c_str() ))
 	{
 		playback->Close();
 		return NULL;
@@ -218,7 +217,7 @@ void * CAudioPlayer::PlayThread( void * /*arg*/)
 
 bool CAudioPlayer::play(const CAudiofile *file, const bool highPrio)
 {
-	dprintf(DEBUG_NORMAL, "CAudioPlayer::%s\n", __FUNCTION__);
+	dprintf(DEBUG_NORMAL, "CAudioPlayer::play:\n");
 	
 	if (state != STOP)
 		stop();
