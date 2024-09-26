@@ -29,13 +29,10 @@ function do_init()
 		document.f.lcd_standbybrightness.value = val;
 
 	val = "{=ini-get:/var/tuxbox/config/neutrino2.conf;lcd_epgmode;1~cache=}";
-	//var sel = 1;
-	//if(val=="1") sel=1;
-	//if(val=="2") sel=2;
-	//if(val=="3") sel=3;
-	//if(val=="11") sel=4;
-	//if(val=="15") sel=5;
 		document.f.lcd_epgmode.value = val;
+		
+	val = "{=ini-get:/var/tuxbox/config/neutrino2.conf;lcd_mode;1~cache=}";
+		document.f.lcd_mode.value = val;
 
 	val = "{=ini-get:/var/tuxbox/config/neutrino2.conf;lcd_show_volume;0~cache=}"
 		document.f.lcd_show_volume.value = val;
@@ -92,6 +89,16 @@ function do_submit()
 				</td>
 			</tr>
 			
+			
+			<tr><td>Mode</td>
+				<td>
+					<select name="lcd_mode" title="select mode of LCD">
+					<option value="1" selected="selected">Kanal</option>
+					<option value="2">Zeit</option>
+					</select>
+				</td>			
+			</tr>
+			
 			<tr>
 				<td title="led: off/on" width="35%">LED</td>
 				<td>
@@ -120,7 +127,7 @@ function do_submit()
 					<input type="text" name="lcd_dim_brightness" size="3" maxlength="3" />
 				</td>
 			</tr>
-			
+			<!--
 			<tr>
 				<td colspan="2" class="y_form_header">Mini TV</td>
 			</tr>
@@ -141,6 +148,7 @@ function do_submit()
 					<input type="text" name="lcd_minitvfps" size="3" maxlength="3" />
 				</td>
 			</tr>
+			-->
 			
 			<tr>
 				<td colspan="2" class="y_form_header">Kontrast / Helligkeit</td>

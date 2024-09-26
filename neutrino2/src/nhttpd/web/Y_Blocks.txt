@@ -85,6 +85,7 @@ start-block~lcd_save_settings
 {=ini-set:/var/tuxbox/config/neutrino2.conf;lcd_dim_time;{=lcd_dim_time=}~cache=}
 {=ini-set:/var/tuxbox/config/neutrino2.conf;lcd_dim_brightness;{=lcd_dim_brightness=}~cache=}
 {=ini-set:/var/tuxbox/config/neutrino2.conf;lcd_epgmode;{=lcd_epgmode=}~cache=}
+{=ini-set:/var/tuxbox/config/neutrino2.conf;lcd_mode;{=lcd_mode=}~cache=}
 {=ini-set:/var/tuxbox/config/neutrino2.conf;lcd_show_volume;{=lcd_show_volume=}~cache=}
 {=ini-set:/var/tuxbox/config/neutrino2.conf;lcd_contrast;{=lcd_contrast=}~cache=}
 {=ini-set:/var/tuxbox/config/neutrino2.conf;lcd_brightness;{=lcd_brightness=}~cache=}
