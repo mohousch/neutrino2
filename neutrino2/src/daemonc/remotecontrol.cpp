@@ -233,7 +233,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		
 		dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg got  EVT_CURRENTEPG, uniqueKey: 0x%llx chid: 0x%llx flags: %x\n", info_CN.current_uniqueKey, current_channel_id, info_CN.flags);
 		
-		if ((info_CN.current_uniqueKey >> 16) == (current_channel_id & 0xFFFFFFFFFFFFULL) || (info_CN.current_uniqueKey >> 16) == (current_sub_channel_id & 0xFFFFFFFFFFFFULL))
+		if ((info_CN.current_uniqueKey >> 16) == (CZapit::getInstance()->getChannelEPGID(current_channel_id) & 0xFFFFFFFFFFFFULL) || (info_CN.current_uniqueKey >> 16) == (CZapit::getInstance()->getChannelEPGID(current_sub_channel_id) & 0xFFFFFFFFFFFFULL))
 		{
 			// CURRENT-EPG for current channel arrived!
 			CLCD::getInstance()->setEPGTitle(info_CN.current_name.empty()? "" : info_CN.current_name);			
