@@ -1611,13 +1611,23 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 				// info1
 				if (!info1.empty())
 				{
-					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + height/2, l_text_width, info1.c_str(), (selected || !active)? color : optionFontColor, 0, true);
+					int info1_width = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getRenderWidth(info1.c_str(), true);
+					
+					if(info1_width > dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width)
+						info1_width = dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width;
+					
+					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + height/2, info1_width, info1.c_str(), (selected || !active)? color : optionFontColor, 0, true);
 				}
 				
 				// info 2
 				if (!info2.empty())
 				{
-					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + height/2 + height/4, l_text_width, info2.c_str(), (selected || !active)? color : optionFontColor, 0, true);
+					int info2_width = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getRenderWidth(info2.c_str(), true);
+					
+					if(info2_width > dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width)
+						info2_width = dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width;
+						
+					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + height/2 + height/4, info2_width, info2.c_str(), (selected || !active)? color : optionFontColor, 0, true);
 				}
 			}
 			else
