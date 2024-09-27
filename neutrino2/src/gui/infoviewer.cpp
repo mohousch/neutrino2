@@ -378,7 +378,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 		if ((channel_id != _new_channel_id) || (evtlist.empty())) 
 		{
 			evtlist.clear();
-			CSectionsd::getInstance()->getEventsServiceKey(_new_channel_id & 0xFFFFFFFFFFFFULL, evtlist);
+			CSectionsd::getInstance()->getEventsServiceKey(CZapit::getInstance()->getChannelEPGID(_new_channel_id) & 0xFFFFFFFFFFFFULL, evtlist);
 			
 			if (!evtlist.empty())
 				sort(evtlist.begin(),evtlist.end(), sortByDateTime);
@@ -721,7 +721,7 @@ void CInfoViewer::getCurrentNextEPG(t_channel_id ChannelID, bool newChan, int EP
 {
 	dprintf(DEBUG_NORMAL, "CInfoViewer::getCurrentNextEPG: 0x%llx\n", ChannelID);
 	
-	CSectionsd::getInstance()->getCurrentNextServiceKey(ChannelID & 0xFFFFFFFFFFFFULL, info_CurrentNext);
+	CSectionsd::getInstance()->getCurrentNextServiceKey(CZapit::getInstance()->getChannelEPGID(ChannelID) & 0xFFFFFFFFFFFFULL, info_CurrentNext);
 	
 	if (!evtlist.empty()) 
 	{
@@ -1438,7 +1438,7 @@ void CInfoViewer::getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentN
 		return;
 	}
 
-	CSectionsd::getInstance()->getCurrentNextServiceKey(for_channel_id & 0xFFFFFFFFFFFFULL, info);
+	CSectionsd::getInstance()->getCurrentNextServiceKey(CZapit::getInstance()->getChannelEPGID(for_channel_id) & 0xFFFFFFFFFFFFULL, info);
 
 	// if there is no EPG, send an event so that parental lock can work
 	if (info.current_uniqueKey == 0 && info.next_uniqueKey == 0) 

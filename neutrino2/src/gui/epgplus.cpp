@@ -562,7 +562,7 @@ void EpgPlus::createChannelEntries (int selectedChannelEntryIndex)
 			ChannelEntry * channelEntry = new ChannelEntry (channel, i, this->frameBuffer, this->footer, this->bouquetList, this->channelsTableX + 2, yPosChannelEntry, this->channelsTableWidth);
 			
 			CChannelEventList channelEventList;
-			CSectionsd::getInstance()->getEventsServiceKey(channel->channel_id & 0xFFFFFFFFFFFFULL, channelEventList);
+			CSectionsd::getInstance()->getEventsServiceKey(channel->epgid & 0xFFFFFFFFFFFFULL, channelEventList);
 	
 			int xPosEventEntry = this->eventsTableX;
 			int widthEventEntry = 0;

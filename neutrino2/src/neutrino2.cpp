@@ -1856,7 +1856,7 @@ int CNeutrinoApp::startAutoRecord(bool addTimer)
 	eventinfo.channel_id = CZapit::getInstance()->getCurrentChannelID();
 	CEPGData epgData;
 	
-	if (CSectionsd::getInstance()->getActualEPGServiceKey(CZapit::getInstance()->getCurrentChannelID() & 0xFFFFFFFFFFFFULL, &epgData ))
+	if (CSectionsd::getInstance()->getActualEPGServiceKey(CZapit::getInstance()->getChannelEPGID(CZapit::getInstance()->getCurrentChannelID()) & 0xFFFFFFFFFFFFULL, &epgData ))
 	{
 		eventinfo.epgID = epgData.eventID;
 		eventinfo.epg_starttime = epgData.epg_times.starttime;

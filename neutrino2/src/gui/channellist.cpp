@@ -189,7 +189,7 @@ void CChannelList::updateEvents(void)
 			{		
 				events.clear();
 
-				CSectionsd::getInstance()->getEventsServiceKey(chanlist[count]->channel_id & 0xFFFFFFFFFFFFULL, events);
+				CSectionsd::getInstance()->getEventsServiceKey(chanlist[count]->epgid & 0xFFFFFFFFFFFFULL, events);
 				chanlist[count]->nextEvent.startTime = (long)0x7fffffff;
 				
 				for ( CChannelEventList::iterator e = events.begin(); e != events.end(); ++e ) 
@@ -216,7 +216,7 @@ void CChannelList::updateEvents(void)
 				
 			for (uint32_t count = 0; count < chanlist.size(); count++)
 			{
-				p_requested_channels[count] = chanlist[count]->channel_id & 0xFFFFFFFFFFFFULL;
+				p_requested_channels[count] = chanlist[count]->epgid & 0xFFFFFFFFFFFFULL;
 			}
 
 			CChannelEventList pevents;
@@ -229,7 +229,7 @@ void CChannelList::updateEvents(void)
 			{
 				for ( CChannelEventList::iterator e = pevents.begin(); e != pevents.end(); ++e )
 				{
-					if ((chanlist[count]->channel_id & 0xFFFFFFFFFFFFULL) == (e->channelID & 0xFFFFFFFFFFFFULL))
+					if ((chanlist[count]->epgid & 0xFFFFFFFFFFFFULL) == (e->channelID & 0xFFFFFFFFFFFFULL))
 					{
 						chanlist[count]->currentEvent = *e;
 
@@ -1615,7 +1615,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	std::string title = "";
 	std::string description = "";
 	
-	if(CSectionsd::getInstance()->getActualEPGServiceKey(chanlist[_selected]->getChannelID() & 0xFFFFFFFFFFFFULL, &epgData))
+	if(CSectionsd::getInstance()->getActualEPGServiceKey(chanlist[_selected]->getEPGID() & 0xFFFFFFFFFFFFULL, &epgData))
 		epgid = epgData.eventID;
 
 	if(epgid != 0) 
@@ -1689,7 +1689,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	//// next					
 	events.clear();
 
-	CSectionsd::getInstance()->getEventsServiceKey(chanlist[_selected]->channel_id & 0xFFFFFFFFFFFFULL, events);
+	CSectionsd::getInstance()->getEventsServiceKey(chanlist[_selected]->epgid & 0xFFFFFFFFFFFFULL, events);
 	
 	if ( events.empty() )
 	{

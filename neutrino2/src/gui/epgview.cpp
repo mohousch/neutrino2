@@ -448,7 +448,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	{
 		evtlist.clear();
 		
-		CSectionsd::getInstance()->getEventsServiceKey(channel_id & 0xFFFFFFFFFFFFULL, evtlist);
+		CSectionsd::getInstance()->getEventsServiceKey(CZapit::getInstance()->getChannelEPGID(channel_id) & 0xFFFFFFFFFFFFULL, evtlist);
 		
 		// Houdini added for Private Premiere EPG start sorted by start date/time 2005-08-15
   		sort(evtlist.begin(), evtlist.end(), sortByDateTime);
@@ -942,7 +942,7 @@ void CEpgData::GetEPGData(const t_channel_id channel_id, uint64_t id, time_t* st
 	if ( id != 0 )
 		res = CSectionsd::getInstance()->getEPGid(id, *starttime, &epgData);
 	else
-		res = CSectionsd::getInstance()->getActualEPGServiceKey(channel_id & 0xFFFFFFFFFFFFULL, &epgData);
+		res = CSectionsd::getInstance()->getActualEPGServiceKey(CZapit::getInstance()->getChannelEPGID(channel_id) & 0xFFFFFFFFFFFFULL, &epgData);
 
 	if ( res )
 	{

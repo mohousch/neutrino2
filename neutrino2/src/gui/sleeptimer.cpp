@@ -57,7 +57,7 @@ int CSleepTimerWidget::exec(CMenuTarget* parent, const std::string &)
 	sprintf(value,"%03d", shutdown_min);
 	
 	CSectionsd::CurrentNextInfo info_CurrentNext;
-	CSectionsd::getInstance()->getCurrentNextServiceKey(CZapit::getInstance()->getCurrentChannelID() & 0xFFFFFFFFFFFFULL, info_CurrentNext);
+	CSectionsd::getInstance()->getCurrentNextServiceKey(CZapit::getInstance()->getChannelEPGID(CZapit::getInstance()->getCurrentChannelID()) & 0xFFFFFFFFFFFFULL, info_CurrentNext);
 	
   	if ( info_CurrentNext.flags & CSectionsd::epgflags::has_current) 
 	{

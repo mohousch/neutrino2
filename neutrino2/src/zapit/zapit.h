@@ -52,6 +52,7 @@
 #define BOUQUETS_XML    		CONFIGDIR "/zapit/bouquets.xml"
 #define UBOUQUETS_XML    		CONFIGDIR "/zapit/ubouquets.xml"
 #define MYSERVICES_XML			CONFIGDIR "/zapit/myservices.xml"
+#define EPG_MAPPING_XML			CONFIGDIR "/zapit/epgmap.xml"
 // services
 #define SERVICES_TMP    		"/tmp/services.tmp"
 // sdt update
@@ -398,6 +399,7 @@ class CZapit
 		void setTVMode(void);
 		int prepareChannels();
 		void renumServices(void);
+		void readEPGMapping();
 		//
 		unsigned int zapToChannelID(const t_channel_id channel_id, const bool isSubService);
 		//

@@ -128,7 +128,7 @@ void EventList::readEvents(const t_channel_id channel_id)
 {
 	evtlist.clear();
 	
-	CSectionsd::getInstance()->getEventsServiceKey(channel_id & 0xFFFFFFFFFFFFULL, evtlist);
+	CSectionsd::getInstance()->getEventsServiceKey(CZapit::getInstance()->getChannelEPGID(channel_id) & 0xFFFFFFFFFFFFULL, evtlist);
 	time_t azeit = time(NULL);
 
 	CChannelEventList::iterator e;
@@ -138,7 +138,7 @@ void EventList::readEvents(const t_channel_id channel_id)
 		CEPGData epgData;
 		
 		// todo: what if there are more than one events in the Portal
-		if (CSectionsd::getInstance()->getActualEPGServiceKey(channel_id & 0xFFFFFFFFFFFFULL, &epgData))
+		if (CSectionsd::getInstance()->getActualEPGServiceKey(CZapit::getInstance()->getChannelEPGID(channel_id) & 0xFFFFFFFFFFFFULL, &epgData))
 		{
 			CSectionsd::LinkageDescriptorList linkedServices;
 
@@ -160,7 +160,7 @@ void EventList::readEvents(const t_channel_id channel_id)
 						if (channel_id != channel_id2) 
 						{
 							evtlist2.clear();
-							CSectionsd::getInstance()->getEventsServiceKey(channel_id2 & 0xFFFFFFFFFFFFULL, evtlist2);
+							CSectionsd::getInstance()->getEventsServiceKey(CZapit::getInstance()->getChannelEPGID(channel_id2) & 0xFFFFFFFFFFFFULL, evtlist2);
 
 							for (unsigned int loop = 0 ; loop < evtlist2.size(); loop++ )
 							{
@@ -696,7 +696,7 @@ int EventList::findEvents(void)
 		
 		if(m_search_list == SEARCH_LIST_CHANNEL)
 		{
-			CSectionsd::getInstance()->getEventsServiceKey(m_search_channel_id & 0xFFFFFFFFFFFFULL, evtlist, m_search_epg_item, m_search_keyword);
+			CSectionsd::getInstance()->getEventsServiceKey(CZapit::getInstance()->getChannelEPGID(m_search_channel_id) & 0xFFFFFFFFFFFFULL, evtlist, m_search_epg_item, m_search_keyword);
 		}
 		else if(m_search_list == SEARCH_LIST_BOUQUET)
 		{
@@ -706,7 +706,7 @@ int EventList::findEvents(void)
 			{
 				channel_id = bouquetList->Bouquets[m_search_bouquet_id]->channelList->getChannelFromIndex(channel)->channel_id;
 				
-				CSectionsd::getInstance()->getEventsServiceKey(channel_id & 0xFFFFFFFFFFFFULL, evtlist, m_search_epg_item, m_search_keyword);
+				CSectionsd::getInstance()->getEventsServiceKey(CZapit::getInstance()->getChannelEPGID(channel_id) & 0xFFFFFFFFFFFFULL, evtlist, m_search_epg_item, m_search_keyword);
 			}
 		}
 		else if(m_search_list == SEARCH_LIST_ALL)
@@ -723,7 +723,7 @@ int EventList::findEvents(void)
 				{
 					channel_id = bouquetList->Bouquets[bouquet]->channelList->getChannelFromIndex(channel)->channel_id;
 					
-					CSectionsd::getInstance()->getEventsServiceKey(channel_id & 0xFFFFFFFFFFFFULL, evtlist, m_search_epg_item, m_search_keyword);
+					CSectionsd::getInstance()->getEventsServiceKey(CZapit::getInstance()->getChannelEPGID(channel_id) & 0xFFFFFFFFFFFFULL, evtlist, m_search_epg_item, m_search_keyword);
 				}
 			}
 			

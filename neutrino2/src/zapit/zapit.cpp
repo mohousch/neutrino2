@@ -1760,6 +1760,48 @@ void CZapit::renumServices(void)
 	}
 }
 
+////test
+void CZapit::readEPGMapping()
+{
+	xmlDocPtr epgmap_parser = parseXmlFile(EPG_MAPPING_XML);
+
+	if (epgmap_parser != NULL)
+	{
+		xmlNodePtr epgmap = xmlDocGetRootElement(epgmap_parser)->xmlChildrenNode;
+
+		while ( (epgmap = xmlGetNextOccurence(epgmap, "filter")) != NULL ) 
+		{
+			const char *channelid = xmlGetAttribute(epgmap, "channel_id");
+			const char *epgid = xmlGetAttribute(epgmap, "new_epg_id");
+			
+			CZapitChannel *chan = NULL;
+			t_channel_id epg_id = 0;
+			t_channel_id channel_id = 0;
+			
+			if (epgid)
+				epg_id = strtoull(epgid, NULL, 16);
+				
+			if (channelid)
+				channel_id = strtoull(channelid, NULL, 16);
+				
+			if(channel_id && epg_id)
+			{
+				chan = findChannelByChannelID(channel_id);
+
+				if (chan)
+				{
+					chan->setEPGID(epg_id);
+				}
+			}
+			
+			epgmap = epgmap->xmlNextNode;
+		}
+	}
+	
+	xmlFreeDoc(epgmap_parser);
+	epgmap_parser = NULL;
+}
+
 int CZapit::prepareChannels()
 {
 	dprintf(DEBUG_NORMAL, "CZapit::prepareChannels:\n");
@@ -1785,6 +1827,9 @@ int CZapit::prepareChannels()
 	
 	// renum services
 	renumServices();
+	
+	// remap epg
+	readEPGMapping();
 
 	return 0;
 }
@@ -2443,7 +2488,6 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 							if (epgid != NULL)
 							{ 
 								chan->setEPGID(strtoull(epgid, NULL, 16));
-								chan->setEPGIDName(epgid);
 							}
 							
 							// grab from list
@@ -2585,7 +2629,6 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 							
 							if (!epgid.empty()) 
 							{
-								chan->setEPGID(strtoull(epgid.c_str(), NULL, 16));
 								chan->setEPGIDName(epgid);
 							}
 							
@@ -5437,6 +5480,7 @@ void * CZapit::scanThread(void * data)
 	        CZapit::getInstance()->clearAll();
 		CZapit::getInstance()->loadBouquets();
 		CZapit::getInstance()->renumServices();
+		CZapit::getInstance()->readEPGMapping();
 		
 		dprintf(DEBUG_INFO, "CZapit::scanThread: save bouquets done\n");
 		
@@ -5547,6 +5591,7 @@ void * CZapit::scanTransponderThread(void * data)
 	        CZapit::getInstance()->clearAll();
 		CZapit::getInstance()->loadBouquets();
 		CZapit::getInstance()->renumServices();
+		CZapit::getInstance()->readEPGMapping();
 		
 		// notify client about end of scan
 		scan_runs = 0;
