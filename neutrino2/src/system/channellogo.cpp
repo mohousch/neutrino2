@@ -246,7 +246,7 @@ void CChannellogo::run()
 	
 	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
 	{
-		if (IS_WEBTV(it->second.getChannelID()))
+//		if (IS_WEBTV(it->second.getChannelID()))
 		{
 			// download logos
 			std::string logo_name;
@@ -255,7 +255,7 @@ void CChannellogo::run()
 			logo_name += toHexString(it->second.getLogoID() & 0xFFFFFFFFFFFFULL);
 			logo_name += ".png";
 								
-			if(access(logo_name.c_str(), F_OK))
+			if (access(logo_name.c_str(), F_OK) && !it->second.getLogoUrl().empty())
 			{
 				downloadUrl(it->second.getLogoUrl(), logo_name, "", 30);
 			}
