@@ -1589,6 +1589,9 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 		if(l_text_width > dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width)
 			l_text_width = dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width;
 			
+		if(option_width > dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width)
+			option_width = dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width;
+			
 		if (widgetType == ClistBox::TYPE_CLASSIC)
 		{
 			if (nLinesItem)
@@ -1602,8 +1605,6 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 				// option
 				if(option_text != NULL)
 				{
-					option_width = l_text_width;
-					
 					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + height, option_width, option_text, (selected || !active)? color : optionFontColor, 0, true);
 				}
 				
