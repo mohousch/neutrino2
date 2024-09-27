@@ -2629,7 +2629,7 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 							
 							if (!epgid.empty()) 
 							{
-								chan->setEPGIDName(epgid);
+								chan->setEPGIDXMLTV(epgid);
 							}
 							
 							if (!xmltv.empty()) chan->setEPGUrl(xmltv);

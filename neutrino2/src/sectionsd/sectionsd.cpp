@@ -1905,7 +1905,7 @@ void *CSectionsd::insertEventsfromXMLTV(void* data)
 					if ( IS_WEBTV(it->second.getChannelID()) )
 					{
 						// check epgidname // channel
-						if ( (strcmp(chan, it->second.getEPGIDName().c_str()) == 0) && (!it->second.getEPGUrl().empty()) )
+						if ( (strcmp(chan, it->second.getEPGIDXMLTV().c_str()) == 0) && (!it->second.getEPGUrl().empty()) )
 						{
 							struct tm starttime, stoptime;
 							strptime(start, "%Y%m%d%H%M%S %z", &starttime);

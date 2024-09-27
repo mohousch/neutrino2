@@ -190,7 +190,7 @@ class CZapitChannel
 		bool isWebTV;
 		std::string logourl;
 		std::string epgurl;
-		std::string epgidname; // stupid HACK
+		std::string epgidXMLTV; // XMLTV epgid
 		
 		//
 		uint64_t last_unlocked_EPGid;
@@ -239,7 +239,7 @@ class CZapitChannel
 		std::string		getEPGUrl(void)			{ return epgurl;};
 		t_channel_id		getEPGID(void)	 		const { return epgid;};
 		t_channel_id		getLogoID(void)			const {return logoid;};
-		std::string		getEPGIDName(void)		{return epgidname;};
+		std::string		getEPGIDXMLTV(void)		{return epgidXMLTV;};
 		//
 		CZapitAudioChannel * 	getAudioChannel(unsigned char index = 0xFF);
 		unsigned short 		getAudioPid(unsigned char index = 0xFF);
@@ -267,7 +267,7 @@ class CZapitChannel
 		void setEPGUrl(const std::string url)			{ epgurl = url; };
 		void setEPGID(const t_channel_id id)			{ epgid = id; };
 		void setLogoID(const t_channel_id id)			{ logoid = id; };
-		void setEPGIDName(const std::string name)		{ epgidname = name; };
+		void setEPGIDXMLTV(const std::string name)		{ epgidXMLTV = name; };
 		// cleanup methods
 		void resetPids(void);
 		
