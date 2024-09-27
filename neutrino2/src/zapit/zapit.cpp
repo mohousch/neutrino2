@@ -1760,9 +1760,10 @@ void CZapit::renumServices(void)
 	}
 }
 
-////test
 void CZapit::readEPGMapping()
 {
+	dprintf(DEBUG_NORMAL, "CZapit::readEPGMapping:\n");
+	
 	xmlDocPtr epgmap_parser = parseXmlFile(EPG_MAPPING_XML);
 
 	if (epgmap_parser != NULL)
