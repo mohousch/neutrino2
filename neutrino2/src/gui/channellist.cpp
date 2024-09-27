@@ -92,7 +92,6 @@ extern CBouquetList   * RADIOallList;
 struct button_label CChannelListButtons[NUM_LIST_BUTTONS] =
 {
 	{ NEUTRINO_ICON_BUTTON_RED, _("Record"), COL_RED_PLUS_0 },
-//	{ NEUTRINO_ICON_BUTTON_GREEN, _("TMDB"), COL_GREEN_PLUS_0 },
 	{ NEUTRINO_ICON_BUTTON_GREEN, _("Next"), COL_GREEN_PLUS_0 },
 	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Schedule"), COL_YELLOW_PLUS_0 },
 	{ NEUTRINO_ICON_BUTTON_BLUE, _("Bouquets"), COL_BLUE_PLUS_0 }

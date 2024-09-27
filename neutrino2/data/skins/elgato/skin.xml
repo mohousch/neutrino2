@@ -527,7 +527,7 @@
 		<head posx="50" posy="50" width="1080" height="50" paintframe="0" paintdate="1" line="1"/>
 		<listbox posx="50" posy="100" width="700" height="420" paintframe="0" type="TYPE_STANDARD" mode="MODE_listbox" itemborder="1" scrollbar="1"/>
 		<window posx="750" posy="100" width="380" height="420" paintframe="0"/>
-		<foot posx="50" posy="520" width="1080" height="50" paintframe="0" line="1"/>
+		<foot posx="50" posy="520" width="1080" height="50" paintframe="0" line="1" buttonmode="BUTTON_COLOREDLINE"/>
 		<hline posx="790" posy="310" width="360" height="360" gradient="DARK2LIGHT2DARK"/>
 		<vline posx="750" posy="110" width="3" height="400" gradient="DARK2LIGHT2DARK"/>
 	</widget>

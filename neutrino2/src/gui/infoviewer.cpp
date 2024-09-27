@@ -1963,7 +1963,7 @@ void CInfoViewer::showWeather()
 
 void CInfoViewer::showEPGInfo()
 {
-	dprintf(DEBUG_NORMAL, "CInfoViewer::showEPGInfo\n");
+	dprintf(DEBUG_DEBUG, "CInfoViewer::showEPGInfo\n");
 	
 	int mode = CNeutrinoApp::getInstance()->getMode();
 	
