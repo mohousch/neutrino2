@@ -494,14 +494,15 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 		logo_h = pic_h;
 		logo_bpp = 0;
 		int logo_chans = 0;
+		t_channel_id logoid = CZapit::getInstance()->getChannelLogoID(channel_id);
 		
 		// check logo
-		logo_ok = CChannellogo::getInstance()->checkLogo(channel_id);
+		logo_ok = CChannellogo::getInstance()->checkLogo(logoid);
 		
 		if(logo_ok && g_settings.logos_show_logo)
 		{
 			// get logo size	
-			CChannellogo::getInstance()->getLogoSize(channel_id, &logo_w, &logo_h);
+			CChannellogo::getInstance()->getLogoSize(logoid, &logo_w, &logo_h);
 			
 			if (logo_h > pic_h)
 				logo_h = pic_h;
@@ -510,7 +511,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 				logo_w = pic_w;
 		
 			// display logo
-			CChannellogo::getInstance()->displayLogo(channel_id, pic_x, pic_y, pic_w, pic_h, true, true, true);
+			CChannellogo::getInstance()->displayLogo(logoid, pic_x, pic_y, pic_w, pic_h, true, true, true);
 
 			// recalculate ChanNameWidth //FIXME: timewidth
 			ChanNameWidth = BoxWidth - (30 + CHANNUMBER_WIDTH + logo_w + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->getRenderWidth(ChannelName, true));

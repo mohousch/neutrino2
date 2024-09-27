@@ -109,13 +109,14 @@ class CChannelList
 		int getKey(int);
 
 		const char* getName(void) const { return name.c_str(); };
+		////
 		const std::string&  getActiveChannelName      (void) const; // UTF-8
 		t_satellite_position getActiveSatellitePosition(void) const;
 		int                  getActiveChannelNumber    (void) const;
 		t_channel_id         getActiveChannel_ChannelID(void) const;
 		t_channel_id         getActiveChannel_EPGID(void) const;
 		t_channel_id         getActiveChannel_LogoID(void) const;
-
+		////
 		void zapTo(int pos, bool rezap = false);
 		void virtual_zap_mode(bool up);
 		bool zapToChannelID(const t_channel_id channel_id, bool rezap = false);
@@ -126,8 +127,8 @@ class CChannelList
 		int show(bool customMode = false);
 		int exec(bool customMode = false);
 		void quickZap(int key, bool cycle = false);
-		int  hasChannel(int nChannelNr);
-		int  hasChannelID(t_channel_id channel_id);
+		int hasChannel(int nChannelNr);
+		int hasChannelID(t_channel_id channel_id);
 		void setSelected( int nChannelNr); 	// for adjusting bouquet's channel list after numzap or quickzap
 		int getSize() const;
 		int getSelectedChannelIndex() const;

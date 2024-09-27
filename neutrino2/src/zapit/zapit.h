@@ -506,6 +506,9 @@ class CZapit
 		int getChannelNumber(const t_channel_id channel_id);
 		std::string getChannelURL(const t_channel_id channel_id);
 		std::string getChannelDescription(const t_channel_id channel_id);
+		t_channel_id getChannelEPGID(const t_channel_id channel_id);
+		t_channel_id getChannelLogoID(const t_channel_id channel_id);
+		//
 		std::string getSatelliteName(t_satellite_position position);
 		// current service
 		CZapitChannel* getCurrentChannel();

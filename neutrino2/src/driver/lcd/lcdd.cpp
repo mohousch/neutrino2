@@ -1054,10 +1054,10 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 	{
 		std::string logo = DATADIR "/lcd/picon_default.png";
 		
-		t_channel_id cid = CZapit::getInstance()->getCurrentChannelID();
+		t_channel_id logoid = CZapit::getInstance()->getChannelLogoID(CZapit::getInstance()->getCurrentChannelID());
 	
-		if (CChannellogo::getInstance()->checkLogo(cid))
-			logo = CChannellogo::getInstance()->getLogoName(cid);
+		if (CChannellogo::getInstance()->checkLogo(logoid))
+			logo = CChannellogo::getInstance()->getLogoName(logoid);
 			
 		int l_w, l_h, l_bpp, l_chans;
 		
@@ -1076,7 +1076,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 		if (g_settings.lcd_weather)
 			logo_x = lcd_width - logo_w - 1; if (logo_x < 0) logo_x = 0; // FIXME:
 
-		if (cid != 0)
+		if (logoid != 0)
 		{
 			display->showPNGImage(logo.c_str(), logo_x, logo_y, logo_w, logo_h);
 		}

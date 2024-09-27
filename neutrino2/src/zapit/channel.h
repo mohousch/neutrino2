@@ -189,8 +189,8 @@ class CZapitChannel
 		std::string description;
 		bool isWebTV;
 		std::string logourl;
-		std::string epgidname;
 		std::string epgurl;
+		std::string epgidname; // stupid HACK
 		
 		//
 		uint64_t last_unlocked_EPGid;

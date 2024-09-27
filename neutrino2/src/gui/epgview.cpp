@@ -406,8 +406,9 @@ void CEpgData::showHead(const t_channel_id channel_id)
 	std::string text1 = epgData.title;
 
 	std::string logo;
+	t_channel_id logoid = CZapit::getInstance()->getChannelLogoID(channel_id);
 
-	logo = CChannellogo::getInstance()->getLogoName(channel_id);
+	logo = CChannellogo::getInstance()->getLogoName(logoid);
 
 	//
 	if (headers)

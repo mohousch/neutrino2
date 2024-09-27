@@ -106,13 +106,6 @@ const struct button_label HeadButtons[HEAD_BUTTONS_COUNT] =
 	{ NEUTRINO_ICON_BUTTON_SETUP, " ", 0 }
 };
 
-const struct button_label HeadNewModeButtons[HEAD_BUTTONS_COUNT] =
-{
-	{ NEUTRINO_ICON_BUTTON_HELP, " ", 0 },
-	{ NEUTRINO_ICON_BUTTON_EPG, " ", 0 },
-	{ NEUTRINO_ICON_BUTTON_SETUP, " ", 0 }
-};
-
 ////
 CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vlist)
 {
@@ -236,7 +229,7 @@ void CChannelList::updateEvents(void)
 			{
 				for ( CChannelEventList::iterator e = pevents.begin(); e != pevents.end(); ++e )
 				{
-					if ((chanlist[count]->channel_id & 0xFFFFFFFFFFFFULL) == (e->channelID & 0xFFFFFFFFFFFFULL))//FIXME: get_channel_id()
+					if ((chanlist[count]->channel_id & 0xFFFFFFFFFFFFULL) == (e->channelID & 0xFFFFFFFFFFFFULL))
 					{
 						chanlist[count]->currentEvent = *e;
 

@@ -651,8 +651,9 @@ void EventList::paint(t_channel_id channel_id)
 
 	// head
 	std::string logo;
+	t_channel_id logoid = CZapit::getInstance()->getChannelLogoID(channel_id);
 
-	logo = CChannellogo::getInstance()->getLogoName(channel_id);
+	logo = CChannellogo::getInstance()->getLogoName(logoid);
 
 	listBox->setTitle(name.c_str(), g_settings.logos_show_logo? logo.c_str() : NULL);
 	listBox->setHeadButtons(HeadButtons, 3);

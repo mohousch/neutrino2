@@ -2396,14 +2396,13 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 				while ( ((xmlGetNextOccurence(l1, "webtv")) || (xmlGetNextOccurence(l1, "station")))) 
 				{
 					t_channel_id id = 0;
-					t_channel_id epg_id = 0;
 					
 					const char * title;
 					const char * url;
 					const char * description;
-					const char* xmltv;
-					const char* logo;
-					const char* epgid;
+					const char * xmltv;
+					const char * logo;
+					const char * epgid;
 					
 					// 
 					if(xmlGetNextOccurence(l1, "webtv"))
@@ -2443,9 +2442,7 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 							
 							if (epgid != NULL)
 							{ 
-								epg_id = strtoull(epgid, NULL, 16);
-								
-								chan->setEPGID(epg_id);
+								chan->setEPGID(strtoull(epgid, NULL, 16));
 								chan->setEPGIDName(epgid);
 							}
 							
@@ -2454,7 +2451,7 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 							{
 								if (chan->getName() == it->second.getName())
 								{
-									if (epg_id == 0)
+									if (epgid == NULL)
 										chan->setEPGID(it->second.getEPGID());
 										
 									if (logo == NULL)
@@ -2588,6 +2585,7 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 							
 							if (!epgid.empty()) 
 							{
+								chan->setEPGID(strtoull(epgid.c_str(), NULL, 16));
 								chan->setEPGIDName(epgid);
 							}
 							
@@ -4120,6 +4118,28 @@ std::string CZapit::getChannelDescription(const t_channel_id channel_id)
 		desc = it->second.getDescription().c_str();
 		
 	return desc;
+}
+
+t_channel_id CZapit::getChannelEPGID(const t_channel_id channel_id)
+{
+	t_channel_id id = 0;
+	
+	tallchans_iterator it = allchans.find(channel_id);
+	if (it != allchans.end())
+		id = it->second.getEPGID();
+		
+	return id;
+}
+
+t_channel_id CZapit::getChannelLogoID(const t_channel_id channel_id)
+{
+	t_channel_id id = 0;
+	
+	tallchans_iterator it = allchans.find(channel_id);
+	if (it != allchans.end())
+		id = it->second.getLogoID();
+		
+	return id;
 }
 
 //
