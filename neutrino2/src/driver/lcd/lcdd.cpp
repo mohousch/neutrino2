@@ -2469,18 +2469,14 @@ void CLCD::showWeather()
 	current_wicon = CWeather::getInstance()->getCurrentIcon();
 	
 	lcdd_printf(10, "%s %s %s\n", current_wcity.c_str(), current_wtemp.c_str(), current_wicon.c_str());
-	
-	if (!current_wcity.empty())
-	{
-		fonts.time->RenderString(w_x, w_y + fonts.time->getHeight() / 2 + 2, w_w, current_wcity.c_str(), LCD_PIXEL_WHITE, 0, true);
-	}
 
-	// current
+	// current icon
 	if (current_wicon != "")
 	{
 		display->showPNGImage(current_wicon.c_str(), w_x, w_y + fonts.time->getHeight() + 2, w_icon_w, w_icon_h);
 	}
-		
+	
+	// current temp
 	if (current_wtemp != "")
 	{
 		current_wtemp += "°";
