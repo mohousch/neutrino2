@@ -193,7 +193,6 @@ void CImageInfo::paint()
 	const char * docs = "https://github.com/mohousch/neutrino2";
 	const char * forum = "https://forum.mbremer.de/viewforum.php?f=86";
 	const char * releaseCycle = PACKAGE_VERSION;
-	const char * imageType = "Snapshot"; //FIXME:
 
 	// image name
 	ypos += iheight;
@@ -210,11 +209,6 @@ void CImageInfo::paint()
 	paintLine(xpos, font_info, _("Built date: "));
 	paintLine(xpos + x_offset, font_info, _(__DATE__));
 	paintLine(xpos + x_offset + x_offset + 12, font_info, " " __TIME__);
-	
-	// image type
-	ypos += iheight;
-	paintLine(xpos, font_info, _("Type:"));
-	paintLine(xpos + x_offset, font_info, imageType);
 
 	// 
 	ypos += iheight;

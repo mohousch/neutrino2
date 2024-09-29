@@ -70,8 +70,6 @@ picviewer/Makefile
 picviewer/locale/Makefile
 audioplayer/Makefile
 audioplayer/locale/Makefile
-opkg_manager/Makefile
-opkg_manager/locale/Makefile
 nfilm/Makefile
 nfilm/locale/Makefile
 ntvshows/Makefile

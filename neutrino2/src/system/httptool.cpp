@@ -31,7 +31,7 @@ CHTTPTool::CHTTPTool()
 {
 	statusViewer = new CProgressWindow();
 	
-	userAgent = "neutrinoNG2/httpdownloader";
+	userAgent = "NeutrinoNG/httpdownloader";
 }
 
 void CHTTPTool::setTitle(const char * const title)
@@ -67,14 +67,14 @@ bool CHTTPTool::downloadFile(const std::string &URL, const char * const download
 	CURLcode res;
 	FILE *headerfile;
 
-	dprintf(DEBUG_INFO, "neutrinoNG2/httpdownloader: open file %s\n", downloadTarget);
+	dprintf(DEBUG_INFO, "open file %s\n", downloadTarget);
 
 	headerfile = fopen(downloadTarget, "w");
 	if (!headerfile)
 		return false;
 
-	dprintf(DEBUG_INFO, "neutrinoNG2/httpdownloader: open file ok\n");
-	dprintf(DEBUG_INFO, "neutrinoNG2/httpdownloader: url is %s\n", URL.c_str());
+	dprintf(DEBUG_INFO, "open file ok\n");
+	dprintf(DEBUG_INFO, "url: %s\n", URL.c_str());
 
 	res = (CURLcode) 1;
 	curl = curl_easy_init();
@@ -107,7 +107,7 @@ bool CHTTPTool::downloadFile(const std::string &URL, const char * const download
 		if(strcmp(g_settings.softupdate_proxyserver, "") != 0)
 		{
 			//use proxyserver
-			dprintf(DEBUG_INFO, "neutrinoNG2/httpdownloader: use proxyserver : %s\n", g_settings.softupdate_proxyserver);
+			dprintf(DEBUG_INFO, "%s\n", g_settings.softupdate_proxyserver);
 
 			curl_easy_setopt(curl, CURLOPT_PROXY, g_settings.softupdate_proxyserver);
 
@@ -121,13 +121,13 @@ bool CHTTPTool::downloadFile(const std::string &URL, const char * const download
 			}
 		}
 
-		dprintf(DEBUG_INFO, "neutrinoNG2/httpdownloader: going to download\n");
+		dprintf(DEBUG_INFO, "going to download\n");
 
 		res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
 	}
 
-	dprintf(DEBUG_DEBUG, "neutrinoNG2/httpdownloader: download code %d\n", res);
+	dprintf(DEBUG_DEBUG, "download code %d\n", res);
 
 	if (headerfile)
 	{

@@ -72,7 +72,7 @@ class CScanTs : public CMenuTarget
 
 		void paint(bool fortest = false);
 		void paintLineLocale(int _x, int * _y, int _width, const char* const l);
-		void paintLine(int _x, int _y, int w, const char * const txt);
+		void paintLine(int _x, int _y, int width, const char * const txt);
 		void paintRadar(void);
 		neutrino_msg_t handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data);
 		int greater_xpos(int xpos, const char* const txt);
@@ -80,13 +80,14 @@ class CScanTs : public CMenuTarget
 		void showSNR();
 		
 		//
-		CFrontend* fe;
+		CFrontend *fe;
 		CScanSettings * scanSettings;
 
 	public:
-		CScanTs(CFrontend* f, CScanSettings * sc);
+		CScanTs(CFrontend *f, CScanSettings * sc);
 		void hide();
 		int exec(CMenuTarget* parent, const std::string & actionKey);
 };
 
 #endif
+

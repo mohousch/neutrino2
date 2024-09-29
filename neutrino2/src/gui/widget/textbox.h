@@ -106,7 +106,6 @@ class CTextBox : public CComponent
 		// Functions
 		void refreshTextLineArray(void);
 		void initVar(void);
-		void initFrames(void);
 		void refreshScroll(void);
 		void refreshText(void);
 		void refreshPage(void);
@@ -129,6 +128,7 @@ class CTextBox : public CComponent
 		void setBigFonts();
 		
 		////
+		void initFrames(void);
 		void paint(void);
 		void hide(void);
 		inline bool isPainted(void){return painted;};

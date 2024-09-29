@@ -5220,7 +5220,7 @@ bool CZapit::tuneTP(transponder TP, CFrontend* fe)
 //
 bool CZapit::scanTP(commandScanTP &msg)
 {
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanTP fe:(%d:%d) scanmode:%d\n", msg.fe->feadapter, msg.fe->fenumber, msg.scanmode);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanTP fe:(%d:%d) forceddelsys:0x%x scanmode:%d\n", msg.fe->feadapter, msg.fe->fenumber, msg.fe->getForcedDelSys(), msg.scanmode);
 	
 	bool ret = true;
 	CPmt pmt;
@@ -5518,9 +5518,9 @@ void * CZapit::scanTransponderThread(void * data)
 	
 	CZapit::commandScanTP params = *(CZapit::commandScanTP*)data;
 	
-	transponder * TP = &params.TP;
+	transponder *TP = &params.TP;
 	scanmode = params.scanmode;
-	CFrontend* fe = params.fe;
+	CFrontend *fe = params.fe;
 	
 	char providerName[32] = "";
 	t_satellite_position satellitePosition = 0;
@@ -5548,7 +5548,7 @@ void * CZapit::scanTransponderThread(void * data)
 	
 	g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_SATELLITE, (const neutrino_msg_data_t)providerName, false);
 
-	//
+	// freq
 	freq_id_t freq;
 
 #if HAVE_DVB_API_VERSION >= 5 

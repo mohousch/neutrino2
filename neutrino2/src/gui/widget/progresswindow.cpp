@@ -96,9 +96,7 @@ void CProgressWindow::setTitle(const char * const title)
 
 	captionString = title;
 
-#ifdef LCD_UPDATE
-	CVFD::getInstance()->showProgressBar2(-1, NULL, -1, captionString.c_str()); // set global text in VFD
-#endif // VFD_UPDATE
+	CLCD::getInstance()->showProgressBar2(-1, NULL, -1, captionString.c_str()); // set global text in VFD
 }
 
 void CProgressWindow::showGlobalStatus(const unsigned int prog)
@@ -131,9 +129,7 @@ void CProgressWindow::showGlobalStatus(const unsigned int prog)
 	
 	CFrameBuffer::getInstance()->blit();
 
-#ifdef LCD_UPDATE
-	CVFD::getInstance()->showProgressBar2(-1, NULL, global_progress);
-#endif // VFD_UPDATE
+	CLCD::getInstance()->showProgressBar2(-1, NULL, global_progress);
 }
 
 void CProgressWindow::showStatusMessageUTF(const std::string &text)
@@ -144,19 +140,14 @@ void CProgressWindow::showStatusMessageUTF(const std::string &text)
 	
 	CFrameBuffer::getInstance()->blit();
 
-#ifdef LCD_UPDATE
-	CVFD::getInstance()->showProgressBar2(-1, text.c_str()); // set local text in VFD
-#endif // VFD_UPDATE
+	CLCD::getInstance()->showProgressBar2(-1, text.c_str()); // set local text in VFD
 }
 
 void CProgressWindow::hide()
 {
 	m_cBoxWindow.hide();
 	
-	CFrameBuffer::getInstance()->blit();
-
-	delete progressBar;
-	progressBar = NULL;	
+	CFrameBuffer::getInstance()->blit();	
 }
 
 void CProgressWindow::paint()

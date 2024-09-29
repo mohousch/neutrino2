@@ -286,4 +286,3 @@ std::string CFile::getName(void) const
 	return Name;
 }
 
-

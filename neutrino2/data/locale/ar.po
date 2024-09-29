@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-09-21 10:54+0200\n"
+"POT-Creation-Date: 2024-09-29 14:13+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -15,6 +15,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#, fuzzy
+msgid " install failed"
+msgstr "فشل تثبيت الحزمة"
+
+#, fuzzy
+msgid " successfull installed"
+msgstr "تم تثبيت الحزمة بنجاح"
 
 msgid "'X'=timer '-' no timer"
 msgstr "'X'=مؤقت '-' لا يوجد مؤقت"
@@ -1092,9 +1100,6 @@ msgstr "معلومات الصورة"
 msgid "Image:"
 msgstr "الصورة"
 
-msgid "ImageType"
-msgstr "نوع الصورة"
-
 msgid "Increase Motor Position (a)"
 msgstr "زيادة موضع المحرك (أ)"
 
@@ -1269,9 +1274,6 @@ msgstr "أسفل اليمين"
 
 msgid "MAC address"
 msgstr "عنوان MAC"
-
-msgid "MD5 checking"
-msgstr "فحص MD5"
 
 msgid "Magazines / Reports / Documentary"
 msgstr "المجلات / التقارير / الأفلام الوثائقية"
@@ -2545,9 +2547,6 @@ msgstr "نوع الموالف"
 msgid "Type"
 msgstr "النوع"
 
-msgid "Type:"
-msgstr "النوع:"
-
 msgid "USALS command repeat"
 msgstr "تكرار أمر USALS"
 
@@ -2944,6 +2943,9 @@ msgstr "اخفاء"
 msgid "higher center"
 msgstr "المركز الأعلى"
 
+msgid "image can't be flashed."
+msgstr ""
+
 msgid "image has errors"
 msgstr "الصورة بها أخطاء"
 
@@ -3106,9 +3108,6 @@ msgstr "تلفزيون فقط"
 
 msgid "package has errors"
 msgstr "الحزمة بها أخطاء"
-
-msgid "package install failed"
-msgstr "فشل تثبيت الحزمة"
 
 msgid "passthrough"
 msgstr "عبور"

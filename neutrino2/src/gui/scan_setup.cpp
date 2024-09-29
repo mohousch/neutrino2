@@ -281,11 +281,11 @@ const keyval FRONTEND_MODE_OPTIONS[FRONTEND_MODE_TWIN_OPTION_COUNT] =
 };
 
 //
-CScanSetup::CScanSetup(CFrontend* f)
+CScanSetup::CScanSetup(CFrontend *f)
 {
 	fe = f;
 	
-	dprintf(DEBUG_NORMAL, "CScanSetup::CScanSetup: fe(%d:%d)\n", fe->feadapter, fe->fenumber);
+	dprintf(DEBUG_NORMAL, "CScanSetup::CScanSetup: fe(%d:%d) delsys:0x%x\n", fe->feadapter, fe->fenumber, fe->forcedDelSys);
 	
 	scanSettings = new CScanSettings(fe);
 	scanTs = new CScanTs(fe, scanSettings);
@@ -404,7 +404,6 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 	{
 		return showSatOnOffSetup();
 	}
-	//
 	else if (actionKey == "freq")
 	{
 		CStringInput * freq = new CStringInput(_("Frequency"), (char *) scanSettings->TP_freq, freq_length, NULL, NULL, "0123456789");
@@ -449,8 +448,8 @@ int CScanSetup::showScanService()
 	// 
 	dmode = fe->diseqcType;
 	
-	// load frontendconfig
-	CZapit::getInstance()->loadFrontendConfig();
+	// load frontendconfig ???
+//	CZapit::getInstance()->loadFrontendConfig();
 	
 	// load motorposition
 #if HAVE_DVB_API_VERSION >= 5
@@ -531,14 +530,6 @@ int CScanSetup::showScanService()
 		
 		tunerType->addOption("Hybrid", fe->getDeliverySystem());
 		
-		/*
-		if (fe->getDeliverySystem() & DVB_S)
-			tunerType->addOption("DVBS", DVB_S);
-		if (fe->getDeliverySystem() & DVB_S2)
-			tunerType->addOption("DVBS2", DVB_S2);
-		if (fe->getDeliverySystem() & DVB_S2X)
-			tunerType->addOption("DVBS2X", DVB_S2X);
-		*/
 		if (fe->getDeliverySystem() & DVB_C)
 			tunerType->addOption("DVBC", DVB_C);
 		if (fe->getDeliverySystem() & DVB_T)
@@ -570,6 +561,7 @@ int CScanSetup::showScanService()
 	ojVoltage->setHidden(hidden);
 	feDelSysNotifier->addItem(ojVoltage);
 	
+	// FIXME:
 	/*
 #if HAVE_DVB_API_VERSION >= 5
 	if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
@@ -1741,6 +1733,7 @@ int CTPSelectHandler::exec(CMenuTarget *parent, const std::string &/*actionKey*/
 
 		// freq
 		sprintf(scanSettings->TP_freq, "%d", tmpI->second.feparams.frequency);
+		scanSettings->TP_delsys = tmpI->second.feparams.delsys;
 		
 #if HAVE_DVB_API_VERSION >= 5
 	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
@@ -1819,12 +1812,12 @@ int CTPSelectHandler::exec(CMenuTarget *parent, const std::string &/*actionKey*/
 }
 
 //// CScanSettings
-CScanSettings::CScanSettings(CFrontend* f)
+CScanSettings::CScanSettings(CFrontend * f)
 	: configfile('\t')
 {
 	fe = f;
 	
-	dprintf(DEBUG_NORMAL, "CScanSettings::CScanSettings: fe(%d:%d)\n", fe->feadapter, fe->fenumber);
+	dprintf(DEBUG_NORMAL, "CScanSettings::CScanSettings: fe(%d:%d) delsys:0x%x\n", fe->feadapter, fe->fenumber, fe->forcedDelSys);
 	
 	//
 	//satNameNoDiseqc[0] = 0;
@@ -1835,7 +1828,7 @@ CScanSettings::CScanSettings(CFrontend* f)
 }
 
 //
-uint32_t CScanSettings::getConfigValue(CFrontend* fe, const char * name, uint32_t defval)
+uint32_t CScanSettings::getConfigValue(CFrontend *fe, const char * name, uint32_t defval)
 {
 	char cfg_key[81];
 	sprintf(cfg_key, "fe%d%d_%s", fe->feadapter, fe->fenumber, name);
@@ -1917,6 +1910,9 @@ bool CScanSettings::loadSettings(const char * const fileName)
 	// plp_id
 	sprintf(cfg_key, "fe%d%d_TP_plp_id", fe->feadapter, fe->fenumber);
 	strcpy(TP_plp_id, configfile.getString(cfg_key, "000").c_str());
+	
+	// delsys
+	TP_delsys = (uint32_t)getConfigValue(fe, "TP_delsys", UNDEFINED);
 
 	return true;
 }
@@ -1974,6 +1970,9 @@ bool CScanSettings::saveSettings(const char * const fileName)
 	// plp
 	sprintf(cfg_key, "fe%d%d_TP_plp_id", fe->feadapter, fe->fenumber);
 	configfile.setString(cfg_key, TP_plp_id);
+	
+	// delsys
+	setConfigValue(fe, "TP_delsys", TP_delsys);
 
 	//if(configfile.getModifiedFlag())
 	{
@@ -2277,8 +2276,10 @@ void CScanSetupDelSysNotifier::addItem(CMenuItem *m)
 
 bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 {
-//	std::vector<CMenuItem*>::iterator it;
 	uint32_t delsys = *((uint32_t*) Data);
+	
+	//// test this do CMenuOptionChooser
+	fe->forcedDelSys = delsys;
 	
 	if (delsys == DVB_T || delsys == DVB_T2)
 	{

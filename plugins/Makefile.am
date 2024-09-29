@@ -14,7 +14,6 @@ SUBDIRS = \
 	nfilm \
 	ntvshows \
 	satipclient \
-	opkg_manager \
 	upnp \
 	tuxcom
 

@@ -38,6 +38,7 @@
 #include <vector>
 
 
+////
 class CFileFilter
 {
 		std::vector<std::string> Filter;
@@ -68,6 +69,7 @@ class CFileFilter
 				void clear(void) { Filter.clear();};
 };
 
+////
 class CFile
 {
 	public:

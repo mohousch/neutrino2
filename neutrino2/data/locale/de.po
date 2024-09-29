@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-09-21 10:54+0200\n"
+"POT-Creation-Date: 2024-09-29 14:13+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -16,6 +16,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#, fuzzy
+msgid " install failed"
+msgstr "Die Paketinstallation ist fehlgeschlagen"
+
+#, fuzzy
+msgid " successfull installed"
+msgstr "Paket erfolgreich installiert"
 
 msgid "'X'=timer '-' no timer"
 msgstr "'X'=Timer '-' kein Timer"
@@ -1093,9 +1101,6 @@ msgstr "Image Info"
 msgid "Image:"
 msgstr "Image:"
 
-msgid "ImageType"
-msgstr "ImageTyp"
-
 msgid "Increase Motor Position (a)"
 msgstr "Motorposition erhöhen (a)"
 
@@ -1270,9 +1275,6 @@ msgstr "Rechts unten"
 
 msgid "MAC address"
 msgstr "MAC-Adresse"
-
-msgid "MD5 checking"
-msgstr "MD5-Überprüfung"
 
 msgid "Magazines / Reports / Documentary"
 msgstr "Zeitschriften / Reportagen / Dokumentationen"
@@ -2554,9 +2556,6 @@ msgstr "Tunertyp"
 msgid "Type"
 msgstr "Typ"
 
-msgid "Type:"
-msgstr "Typ:"
-
 msgid "USALS command repeat"
 msgstr "Wiederholung des USALS-Befehls"
 
@@ -2953,6 +2952,9 @@ msgstr "versteckt"
 msgid "higher center"
 msgstr "höhere Mitte"
 
+msgid "image can't be flashed."
+msgstr ""
+
 msgid "image has errors"
 msgstr "Image hat Fehler"
 
@@ -3115,9 +3117,6 @@ msgstr "nur Fernseher"
 
 msgid "package has errors"
 msgstr "Paket enthält Fehler"
-
-msgid "package install failed"
-msgstr "Die Paketinstallation ist fehlgeschlagen"
 
 msgid "passthrough"
 msgstr "Passthrough"

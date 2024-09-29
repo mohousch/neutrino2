@@ -978,7 +978,6 @@ void CFrontend::setFrontend(const FrontendParameters *feparams)
   	memset(&CmdSeq, 0, sizeof(CmdSeq));
 
   	CmdSeq.props = Frontend;
-  	////
   	CmdSeq.num = 0;
 
 	// common
@@ -1053,7 +1052,7 @@ void CFrontend::setFrontend(const FrontendParameters *feparams)
 	}
 	else
 	{
-		dprintf(DEBUG_INFO, "Unknow Frontend Type\n");
+		dprintf(DEBUG_INFO, "Unknown Frontend Type\n");
 	}
 
 	//
@@ -1445,7 +1444,7 @@ int CFrontend::setParameters(transponder * TP)
 	int freq_offset = 0;
 	
 #if HAVE_DVB_API_VERSION >= 5
-	if (TP->feparams.delsys == DVB_S || TP->feparams.delsys == DVB_S2)
+	if (TP->feparams.delsys & DVB_S || TP->feparams.delsys & DVB_S2)
 #else
 	if (info.type == FE_QPSK)
 #endif

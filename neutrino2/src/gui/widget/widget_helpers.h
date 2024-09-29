@@ -142,16 +142,21 @@ class CComponent
 		virtual int getCCType(){return cc_type;};
 		virtual std::string getCCName(){return cc_name;};
 		////
+		virtual void initFrames(){};
 		virtual void setPosition(const int _x, const int _y, const int _width, const int _height)
 		{
 			itemBox.iX = _x;
 			itemBox.iY = _y;
 			itemBox.iWidth = _width;
 			itemBox.iHeight = _height;
+			
+			initFrames();
 		};
 		virtual void setPosition(const CBox * position)
 		{
 			itemBox = *position;
+			
+			initFrames();
 		};
 		virtual inline CBox getWindowsPos(void){return itemBox;};
 		////
@@ -711,7 +716,6 @@ class CCWindow : public CComponent
 		unsigned int total_pages;
 		//
 		void initVars(void);
-		void initFrames();
 		void saveScreen();
 		void restoreScreen();
 		void paintPage(void);
@@ -721,6 +725,7 @@ class CCWindow : public CComponent
 		CCWindow(CBox* position);
 		virtual ~CCWindow();
 		//
+		void initFrames();
 		void setPosition(const int x, const int y, const int dx, const int dy);
 		void setPosition(CBox* position);
 		//

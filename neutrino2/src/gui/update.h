@@ -36,13 +36,14 @@
 #include <driver/gfx/framebuffer.h>
 
 
-// CFlashUpdate
+//// CFlashUpdate
 class CFlashUpdate : public CMenuTarget
 {
 	public:
-		enum {
+		enum 
+		{
 			UPDATEMODE_MANUAL,
-			UPDATEMODE_INTERNET,
+			UPDATEMODE_INTERNET
 		};
 	
 		int updateMode;
@@ -60,15 +61,15 @@ class CFlashUpdate : public CMenuTarget
 		std::string newVersion;
 		
 		bool selectHttpImage(void);
-		bool getUpdateImage(const std::string & version);
+		bool getUpdateImage(const std::string &version);
 		bool checkVersion4Update();
 		
 	public:
 		CFlashUpdate(int uMode);
-		int exec( CMenuTarget * parent, const std::string & actionKey );
+		int exec( CMenuTarget *parent, const std::string &actionKey );
 };
 
-// CFlashExppert
+//// CFlashExppert
 class CFlashExpert : public CMenuTarget
 {
 	private:
@@ -80,24 +81,25 @@ class CFlashExpert : public CMenuTarget
 		void showFileSelector(const std::string & actionkey);
 
 		void readmtd(int readmtd);
-		void writemtd(const std::string & filename, int mtdNumber);
+		void writemtd(const std::string &filename, int mtdNumber);
 
 	public:
 		CFlashExpert();
-		int exec(CMenuTarget* parent, const std::string & actionKey);
+		int exec(CMenuTarget *parent, const std::string &actionKey);
 };
 
-// update setup
+//// update setup
 class CUpdateSettings : public CMenuTarget
 {
 	private:
 		int showMenu();
+		int showMTDExpert();
 	
 	public:
 		CUpdateSettings(){};
 		~CUpdateSettings(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CMenuTarget *parent, const std::string &actionKey);
 };
 
 #endif

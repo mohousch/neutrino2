@@ -54,10 +54,10 @@
 #define BAR_HEIGHT 	8
 
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
-extern CScanSettings * scanSettings;		// defined in scan_setup.cpp
+extern CScanSettings * scanSettings;						// defined in scan_setup.cpp
 
 //
-CScanTs::CScanTs(CFrontend* f, CScanSettings * sc)
+CScanTs::CScanTs(CFrontend *f, CScanSettings *sc)
 {
 	frameBuffer = CFrameBuffer::getInstance();
 	radar = 0;
@@ -86,7 +86,11 @@ CScanTs::CScanTs(CFrontend* f, CScanSettings * sc)
 	fe = f;
 	scanSettings = sc;
 	
-	dprintf(DEBUG_NORMAL, "CScanTs::CScanTs: fe(%d:%d)\n", fe->feadapter, fe->fenumber);
+	//
+	ypos_cur_satellite = y + hheight + (mheight >> 1);
+	xpos1 = x + BORDER_LEFT;
+	
+	dprintf(DEBUG_NORMAL, "CScanTs::CScanTs: fe(%d:%d) forcedDelsys:0x%x\n", fe->feadapter, fe->fenumber, fe->forcedDelSys);
 }
 
 int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
@@ -162,13 +166,13 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		TP.feparams.frequency = atoi(scanSettings->TP_freq);
 		
 		// delsys
-		TP.feparams.delsys = fe->getForcedDelSys();
+		TP.feparams.delsys = scanSettings->TP_delsys; //fe->getForcedDelSys(); // FIXME: is this correct ???
 		
 		// inversion
 		TP.feparams.inversion = INVERSION_AUTO;
 		
 #if HAVE_DVB_API_VERSION >= 5
-		if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+		if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2)
 #else
 		if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -274,7 +278,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		char * f, *s, *m;
 
 #if HAVE_DVB_API_VERSION >= 5
-		if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+		if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2)
 #else
 		if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -282,6 +286,8 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			fe->getDelSys(scanSettings->TP_fec, dvbs_get_modulation((fe_code_rate_t)scanSettings->TP_fec), f, s, m);
 
 			sprintf(buffer, "%u %c %d %s %s %s", atoi(scanSettings->TP_freq)/1000, scanSettings->TP_pol == 0 ? 'H' : 'V', atoi(scanSettings->TP_rate)/1000, f, s, m);
+			
+			xpos2 = xpos1 + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_("Satellite:"), true); // UTF-8
 		} 
 #if HAVE_DVB_API_VERSION >= 5 
 		else if (fe->getForcedDelSys() == DVB_C)
@@ -292,6 +298,9 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			fe->getDelSys(scanSettings->TP_fec, scanSettings->TP_mod, f, s, m);
 
 			sprintf(buffer, "%u %d %s %s %s", atoi(scanSettings->TP_freq), atoi(scanSettings->TP_rate)/1000, f, s, m);
+			
+			//
+			xpos2 = xpos1 + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_("Cable:"), true); // UTF-8
 		}
 #if HAVE_DVB_API_VERSION >= 5
 		else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
@@ -302,10 +311,13 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			fe->getDelSys(scanSettings->TP_HP, scanSettings->TP_mod, f, s, m);
 
 			sprintf(buffer, "%u %s %s %s", atoi(scanSettings->TP_freq), f, s, m);
+			
+			//
+			xpos2 = xpos1 + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_("Terrestrial:"), true); // UTF-8
 		}
 
-		paintLine(xpos2, ypos_cur_satellite, w - 95, scanSettings->satNameNoDiseqc);
-		paintLine(xpos2, ypos_frequency, w, buffer);
+////test		paintLine(xpos2, ypos_cur_satellite, w - 95, scanSettings->satNameNoDiseqc);
+////test		paintLine(xpos2, ypos_frequency, w, buffer);
 
 		success = CZapit::getInstance()->tuneTP(TP, fe);
 	} 
@@ -418,6 +430,7 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 	char buffer[128];
 	char str[256];
 
+/*
 	switch (msg) 
 	{
 		case NeutrinoMessages::EVT_SCAN_SATELLITE:
@@ -510,6 +523,7 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 		default:
 			break;
 	}
+*/
 	
 	return msg;
 }
@@ -543,10 +557,10 @@ void CScanTs::paintLineLocale(int _x, int * _y, int _width, const char* const l)
 	*_y += mheight;
 }
 
-void CScanTs::paintLine(int _x, int _y, int w, const char * const txt)
+void CScanTs::paintLine(int _x, int _y, int width, const char * const txt)
 {
-	frameBuffer->paintBoxRel(_x, _y, w, mheight, COL_MENUCONTENT_PLUS_0);
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(_x, _y + mheight, w, txt, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
+	frameBuffer->paintBoxRel(_x, _y, width, mheight, COL_MENUCONTENT_PLUS_0);
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(_x, _y + mheight, width, txt, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 }
 
 void CScanTs::paint(bool fortest)
@@ -649,7 +663,7 @@ void CScanTs::paint(bool fortest)
 	ypos = ypos_service_numbers; paintLineLocale(xpos1 + 3 * 72, &ypos, width - 3 * 72 - 10, _("Total"));
 }
 
-int CScanTs::greater_xpos(int xpos, const char* const txt)
+int CScanTs::greater_xpos(int xpos, const char *const txt)
 {
 	int txt_xpos = xpos1 + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(txt, true); // UTF-8
 	if (txt_xpos > xpos)
@@ -663,7 +677,6 @@ void CScanTs::showSNR()
 	dprintf(DEBUG_INFO, "CScanTs::showSNR\n");
 	
 	char percent[10];
-//	int barwidth = 150;
 	uint16_t ssig, ssnr;
 	int sig, snr;
 	int posx, posy;
@@ -694,19 +707,13 @@ void CScanTs::showSNR()
 	if(snrscale->getPercent() != snr) 
 	{
 		sw = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth ("100% SNR");
-//		posx = x + 20 + 260;
 		posx = x + width - 20 - sw;
 		sprintf(percent, "%d%% SNR", snr);
-//		sw = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth ("100% SNR");
 		
 		snrscale->refresh(snr);
 
-//		posx = posx + barwidth + 3;
-//		sw = x + width - posx;
 		frameBuffer->paintBoxRel(posx, posy, sw, mheight, COL_MENUCONTENT_PLUS_0);
 		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString (posx, posy + mheight + (mheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2, sw, percent, COL_MENUCONTENT_TEXT_PLUS_0);
 	}
-	
-//	frameBuffer->blit();
 }
 

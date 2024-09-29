@@ -202,7 +202,7 @@ class CFileHelpers
 
 		//
 		bool copyFile(const char *Src, const char *Dst, mode_t mode = 00664);
-		std::string loadFile(CFile & file, int buffer_size = 6000);
+		std::string loadFile(CFile &file);
 		std::string loadFile(const char * filename);
 		bool saveFile(const CFile& file, const char *text, const int text_size);
 		bool askToOverwriteFile(const std::string& filename);

@@ -217,13 +217,13 @@ class CZapit
 		{
 			transponder TP;
 			int scanmode;
-			CFrontend* fe;
+			CFrontend *fe;
 		};
 		
 		struct commandScanProvider
 		{
 			int scanmode;
-			CFrontend* fe;
+			CFrontend *fe;
 		};
 		
 		// zapit mode

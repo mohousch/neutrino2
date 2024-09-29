@@ -75,7 +75,6 @@ class CListFrame : public CComponent
 		// Functions 
 		void onNewLineArray(void);
 		void initVar(void);
-		void initFrames(void);
 		void refreshTitle(void);
 		void refreshScroll(void);
 		void refreshList(void);
@@ -138,6 +137,7 @@ class CListFrame : public CComponent
 		inline void showSelection(bool show = true)	{m_showSelection = show; refreshLine(m_nSelectedLine);};
 		
 		////
+		void initFrames(void);
 		void hide(void);
 		void paint(void);
 		

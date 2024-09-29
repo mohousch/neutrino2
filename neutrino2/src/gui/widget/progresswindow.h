@@ -62,7 +62,7 @@ class CProgressWindow : public CComponent
 		int statusTextY;
 		std::string statusText;
 		
-		CCProgressBar* progressBar;
+		CCProgressBar *progressBar;
 
 		bool paintHead;
 		bool paintCancelIcon;
@@ -72,6 +72,7 @@ class CProgressWindow : public CComponent
 	public:
 
 		CProgressWindow(int _x = 0, int _y = 0, int _width = 0, int _height = 0);
+		virtual ~CProgressWindow(){ delete progressBar; progressBar = NULL;};
 
 		void paint();
 		void hide();

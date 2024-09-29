@@ -121,7 +121,7 @@ class CInfoBox
 };
 
 //
-void InfoBox(const char * const text, const char * const title, const char * const icon = NEUTRINO_ICON_INFO, const char * const thumbnail = NULL, int tw = 0, int th = 0, int tmode = CTextBox::PIC_RIGHT);
+void InfoBox(const char * const title, const char * const text, const char * const icon = NEUTRINO_ICON_INFO, const char * const thumbnail = NULL, int tw = 0, int th = 0, int tmode = CTextBox::PIC_RIGHT);
 
 #endif
 

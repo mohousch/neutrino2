@@ -31,6 +31,7 @@
 #include <gui/widget/progresswindow.h>
 
 
+////
 class CFlashTool
 {
 	private:
@@ -43,7 +44,7 @@ class CFlashTool
 
 	public:
 		CFlashTool();
-		~CFlashTool();
+		virtual ~CFlashTool();
 
 		const std::string &getErrorMessage(void) const;
 
@@ -51,11 +52,12 @@ class CFlashTool
 		void setStatusViewer(CProgressWindow *statusview );
 		bool program( const std::string & filename, int globalProgressEndErase = -1, int globalProgressEndFlash = -1 );
 		bool readFromMTD( const std::string & filename, int globalProgressEnd=-1 );
-		bool check_md5( const std::string & filename, const std::string & smd5);
+		bool check_md5( const std::string &filename, const std::string &smd5);
 
 		void reboot();
 };
 
+////
 class CFlashVersionInfo
 {
 	private:
@@ -66,7 +68,7 @@ class CFlashVersionInfo
 	public:
 		char snapshot;
 		
-		CFlashVersionInfo(const std::string & versionString);
+		CFlashVersionInfo(const std::string &versionString);
 		
 		const char * getDate(void) const;
 		const char * getTime(void) const;
@@ -74,6 +76,7 @@ class CFlashVersionInfo
 		const char * getType(void) const;
 };
 
+////
 class CMTDInfo
 {
 	private:
@@ -90,7 +93,7 @@ class CMTDInfo
 		void getPartitionInfo();
 
 		CMTDInfo();
-		~CMTDInfo();
+		virtual ~CMTDInfo();
 
 	public: 
 		static CMTDInfo * getInstance();
@@ -110,6 +113,45 @@ class CMTDInfo
 
 		int findMTDNumber(const std::string & filename);
 		std::string findMTDsystem(const std::string & filename);
+};
+
+//// COPKG
+typedef enum 
+{
+	OM_LIST,
+	OM_LIST_INSTALLED,
+	OM_LIST_UPGRADEABLE,
+	OM_UPDATE,
+	OM_UPGRADE,
+	
+	OM_MAX
+} pkg_info_t;
+
+typedef struct opkg_cmd_t
+{
+	pkg_info_t info;
+	const char * cmdstr;
+
+} opkg_cmd_struct_t;
+
+class COPKGManager
+{
+	private:		
+		std::vector<std::string> v_pkg_list;
+		std::vector<std::string> v_pkg_installed;
+		std::vector<std::string> v_pkg_upgradable;
+
+	public:	
+
+		COPKGManager();
+		virtual ~COPKGManager(){};
+		
+		static bool hasOpkgSupport();
+		bool execCmd(const char* cmdstr);
+		bool getPkgData(const int pkg_content_id, std::vector<std::string>* vp_pkg_menu);
+		std::string getBlankPkgName(const std::string &line);
+		bool installPackage(const char *filename);
+		bool removePackage(const char *filename);
 };
 
 #endif

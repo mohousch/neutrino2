@@ -499,7 +499,7 @@ int CInfoBox::exec(int timeout)
 }
 
 //
-void InfoBox(const char * const text, const char * const title, const char * const icon, const char * const thumbnail, int tw, int th, int tmode)
+void InfoBox(const char * const title, const char * const text, const char * const icon, const char * const thumbnail, int tw, int th, int tmode)
 {
 	CBox position(g_settings.screen_StartX + 50, g_settings.screen_StartY + 50, g_settings.screen_EndX - g_settings.screen_StartX - 100, g_settings.screen_EndY - g_settings.screen_StartY - 100); 
 	

@@ -44,7 +44,7 @@ class CSectionsd
 			LANGUAGE_MODE_OFF
 		};
 		
-		typedef enum
+		enum
                 {
                         SEARCH_EPG_NONE,
                         SEARCH_EPG_TITLE,

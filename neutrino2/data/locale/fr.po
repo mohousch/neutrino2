@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-09-21 10:54+0200\n"
+"POT-Creation-Date: 2024-09-29 14:13+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -16,6 +16,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid " install failed"
+msgstr ""
+
+msgid " successfull installed"
+msgstr ""
 
 msgid "'X'=timer '-' no timer"
 msgstr ""
@@ -1071,9 +1077,6 @@ msgstr ""
 msgid "Image:"
 msgstr ""
 
-msgid "ImageType"
-msgstr ""
-
 msgid "Increase Motor Position (a)"
 msgstr ""
 
@@ -1247,9 +1250,6 @@ msgid "Lower Right"
 msgstr ""
 
 msgid "MAC address"
-msgstr ""
-
-msgid "MD5 checking"
 msgstr ""
 
 msgid "Magazines / Reports / Documentary"
@@ -2497,9 +2497,6 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-msgid "Type:"
-msgstr ""
-
 msgid "USALS command repeat"
 msgstr ""
 
@@ -2887,6 +2884,9 @@ msgstr ""
 msgid "higher center"
 msgstr ""
 
+msgid "image can't be flashed."
+msgstr ""
+
 msgid "image has errors"
 msgstr ""
 
@@ -3046,9 +3046,6 @@ msgid "only tv"
 msgstr ""
 
 msgid "package has errors"
-msgstr ""
-
-msgid "package install failed"
 msgstr ""
 
 msgid "passthrough"

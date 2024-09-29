@@ -46,3 +46,4 @@ mkswap $HDD1
 # Create the files system (often incorrectly called "formatting").
 echo "Now creating the file system. This may take a few minutes."
 mkfs.ext3 -T largefile -m0 $HDD2
+

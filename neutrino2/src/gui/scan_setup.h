@@ -44,13 +44,13 @@
 class CScanSettings
 {
 	private:
-		CFrontend* fe;
+		CFrontend *fe;
 		
-		uint32_t	getConfigValue(CFrontend* fe, const char * name, uint32_t defval);
-		void		setConfigValue(CFrontend* fe, const char * name, uint32_t val);
+		uint32_t getConfigValue(CFrontend* fe, const char * name, uint32_t defval);
+		void setConfigValue(CFrontend* fe, const char * name, uint32_t val);
 		
 	public:
-		CConfigFile	configfile;
+		CConfigFile		configfile;
 		
 		unsigned int		bouquetMode;
 		unsigned int		scanType;
@@ -68,8 +68,9 @@ class CScanSettings
 		unsigned int		TP_guard;
 		unsigned int		TP_hierarchy;
 		char			TP_plp_id[4];
+		uint32_t		TP_delsys;
 	
-		CScanSettings(CFrontend* f);
+		CScanSettings(CFrontend *f);
 		virtual ~CScanSettings(){fe = NULL;};
 	
 		bool loadSettings(const char * const fileName);

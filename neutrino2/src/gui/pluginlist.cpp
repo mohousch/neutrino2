@@ -232,7 +232,7 @@ int CPluginList::exec(CMenuTarget * parent, const std::string& actionKey)
 			buffer += "\n";
 		}
 		
-		InfoBox(buffer.c_str(), _("Plugins"), NEUTRINO_ICON_SHELL);
+		InfoBox(_("Plugins"), buffer.c_str(), NEUTRINO_ICON_SHELL);
 		return CMenuTarget::RETURN_REPAINT;
 	}
 	else if(actionKey == "RC_ok")
