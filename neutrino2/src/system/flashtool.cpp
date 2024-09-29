@@ -753,7 +753,7 @@ bool COPKGManager::installPackage(const char *filename)
 {
 	bool ret = false;
 	
-	std::string action_name = "opkg -V 1 install " + getBlankPkgName(filename);
+	std::string action_name = "opkg install " + getBlankPkgName(filename);
 		
 	if(system(action_name.c_str()))
 	{
@@ -767,7 +767,7 @@ bool COPKGManager::removePackage(const char *filename)
 {
 	bool ret = false;
 	
-	std::string action_name = "opkg -V remove " + getBlankPkgName(filename);
+	std::string action_name = "opkg remove " + getBlankPkgName(filename);
 		
 	if( system(action_name.c_str()))
 	{
