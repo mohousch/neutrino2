@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-09-29 14:13+0200\n"
+"POT-Creation-Date: 2024-09-29 14:43+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -255,7 +255,10 @@ msgstr ""
 msgid "Broadcasting / Press"
 msgstr ""
 
-msgid "Built date: "
+msgid "Built date:"
+msgstr ""
+
+msgid "Built time: "
 msgstr ""
 
 msgid "Buttons Bar"
@@ -460,6 +463,9 @@ msgid "Current transponder"
 msgstr ""
 
 msgid "Current version"
+msgstr ""
+
+msgid "Cycle:"
 msgstr ""
 
 msgid "Czech"
@@ -1074,9 +1080,6 @@ msgstr ""
 msgid "Image info"
 msgstr ""
 
-msgid "Image:"
-msgstr ""
-
 msgid "Increase Motor Position (a)"
 msgstr ""
 
@@ -1438,6 +1441,9 @@ msgstr ""
 msgid "Network settings"
 msgstr ""
 
+msgid "NeutrinoNG:"
+msgstr ""
+
 msgid "New Bookmark"
 msgstr ""
 
@@ -1775,6 +1781,9 @@ msgid "Refresh EPG"
 msgstr ""
 
 msgid "Release cycle"
+msgstr ""
+
+msgid "Release:"
 msgstr ""
 
 msgid "Religion"
@@ -2564,9 +2573,6 @@ msgid "Username"
 msgstr ""
 
 msgid "Variety show"
-msgstr ""
-
-msgid "Version:"
 msgstr ""
 
 msgid "Vertikal (in %)"

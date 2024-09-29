@@ -188,27 +188,42 @@ void CImageInfo::paint()
 	//
 	ypos += (iheight >>1);
 
-	const char * imagename = "NeutrinoNG";
 	const char * homepage = "https://github.com/mohousch/neutrino2";
 	const char * docs = "https://github.com/mohousch/neutrino2";
 	const char * forum = "https://forum.mbremer.de/viewforum.php?f=86";
-	const char * releaseCycle = PACKAGE_VERSION;
+	
+	CConfigFile lconfigfile('\t');
+	
+	lconfigfile.loadConfig("/etc/imageversion");
+	
+	std::string releaseCycle = lconfigfile.getString("RELEASE_CYCLE", "10");
+	std::string date = lconfigfile.getString("RELEASE_DATE", "29 09 2024");
+	std::string time = lconfigfile.getString("RELEASE_TIME", "13:02:15");
 
 	// image name
 	ypos += iheight;
-	paintLine(xpos, font_info, _("Image:"));
-	paintLine(xpos + x_offset, font_info, imagename);
+	paintLine(xpos, font_info, _("Release:"));
+	paintLine(xpos + x_offset, font_info, "NeutrinoNG");
 
 	// release cycle
 	ypos += iheight;
-	paintLine(xpos, font_info, _("Version:"));
-	paintLine(xpos + x_offset, font_info, releaseCycle);
+	paintLine(xpos, font_info, _("Cycle:"));
+	paintLine(xpos + x_offset, font_info, releaseCycle.c_str());
+	
+	// NG version
+	ypos += iheight;
+	paintLine(xpos, font_info, _("NeutrinoNG:"));
+	paintLine(xpos + x_offset, font_info, PACKAGE_VERSION);
 	
 	// git built date
 	ypos += iheight;
-	paintLine(xpos, font_info, _("Built date: "));
-	paintLine(xpos + x_offset, font_info, _(__DATE__));
-	paintLine(xpos + x_offset + x_offset + 12, font_info, " " __TIME__);
+	paintLine(xpos, font_info, _("Built date:"));
+	paintLine(xpos + x_offset, font_info, date.c_str());
+	
+	//
+	ypos += iheight;
+	paintLine(xpos, font_info, _("Built time: "));
+	paintLine(xpos + x_offset, font_info, time.c_str());
 
 	// 
 	ypos += iheight;

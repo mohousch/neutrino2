@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-09-29 14:13+0200\n"
+"POT-Creation-Date: 2024-09-29 14:43+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -260,7 +260,12 @@ msgstr "Трансляция"
 msgid "Broadcasting / Press"
 msgstr "Трансляция / Пресса"
 
-msgid "Built date: "
+#, fuzzy
+msgid "Built date:"
+msgstr "Дата сборки:"
+
+#, fuzzy
+msgid "Built time: "
 msgstr "Дата сборки:"
 
 msgid "Buttons Bar"
@@ -467,6 +472,9 @@ msgstr "Текущий транспондер"
 
 msgid "Current version"
 msgstr "Текущая версия"
+
+msgid "Cycle:"
+msgstr ""
 
 msgid "Czech"
 msgstr "Чешский"
@@ -1084,9 +1092,6 @@ msgstr "Информация об изображении"
 msgid "Image info"
 msgstr "Информация об изображении"
 
-msgid "Image:"
-msgstr "Изображение:"
-
 msgid "Increase Motor Position (a)"
 msgstr "Увеличьте положение двигателя (a)"
 
@@ -1450,6 +1455,9 @@ msgstr "Имя сети"
 msgid "Network settings"
 msgstr "Настройки сети"
 
+msgid "NeutrinoNG:"
+msgstr ""
+
 msgid "New Bookmark"
 msgstr "Новая закладка"
 
@@ -1800,6 +1808,10 @@ msgid "Refresh EPG"
 msgstr "Обновить EPG"
 
 msgid "Release cycle"
+msgstr "Цикл выпуска"
+
+#, fuzzy
+msgid "Release:"
 msgstr "Цикл выпуска"
 
 msgid "Religion"
@@ -2614,9 +2626,6 @@ msgstr "Имя пользователя"
 
 msgid "Variety show"
 msgstr "Варьете"
-
-msgid "Version:"
-msgstr "Version:"
 
 msgid "Vertikal (in %)"
 msgstr "Вертикаль (в %)"

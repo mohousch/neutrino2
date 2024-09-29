@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-09-29 14:13+0200\n"
+"POT-Creation-Date: 2024-09-29 14:43+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -256,7 +256,12 @@ msgstr "محطة الاذاعة"
 msgid "Broadcasting / Press"
 msgstr "البث / الصحافة"
 
-msgid "Built date: "
+#, fuzzy
+msgid "Built date:"
+msgstr "تاريخ البناء: "
+
+#, fuzzy
+msgid "Built time: "
 msgstr "تاريخ البناء: "
 
 msgid "Buttons Bar"
@@ -463,6 +468,9 @@ msgstr "جهاز الإرسال والإستقبال الحالي"
 
 msgid "Current version"
 msgstr "النسخة الحالية"
+
+msgid "Cycle:"
+msgstr ""
 
 msgid "Czech"
 msgstr "التشيكية"
@@ -1097,9 +1105,6 @@ msgstr "معلومات الصورة"
 msgid "Image info"
 msgstr "معلومات الصورة"
 
-msgid "Image:"
-msgstr "الصورة"
-
 msgid "Increase Motor Position (a)"
 msgstr "زيادة موضع المحرك (أ)"
 
@@ -1461,6 +1466,9 @@ msgstr "اسم الشبكة"
 msgid "Network settings"
 msgstr "اعدادات الشبكة"
 
+msgid "NeutrinoNG:"
+msgstr ""
+
 msgid "New Bookmark"
 msgstr "إشارة مرجعية جديدة"
 
@@ -1806,6 +1814,10 @@ msgid "Refresh EPG"
 msgstr "تحديث دليل البرامج الإلكتروني"
 
 msgid "Release cycle"
+msgstr "دورة الإصدار"
+
+#, fuzzy
+msgid "Release:"
 msgstr "دورة الإصدار"
 
 msgid "Religion"
@@ -2615,9 +2627,6 @@ msgstr "اسم المستخدم"
 
 msgid "Variety show"
 msgstr "عرض منوعات"
-
-msgid "Version:"
-msgstr "إصدار:"
 
 msgid "Vertikal (in %)"
 msgstr "عمودي (في %)"
