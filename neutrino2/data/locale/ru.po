@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-09-29 14:43+0200\n"
+"POT-Creation-Date: 2024-09-29 18:40+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1811,6 +1811,10 @@ msgid "Release cycle"
 msgstr "Цикл выпуска"
 
 #, fuzzy
+msgid "Release type"
+msgstr "Цикл выпуска"
+
+#, fuzzy
 msgid "Release:"
 msgstr "Цикл выпуска"
 
@@ -2558,6 +2562,10 @@ msgstr "Тип тюнера"
 msgid "Type"
 msgstr "Тип:"
 
+#, fuzzy
+msgid "Type:"
+msgstr "Тип:"
+
 msgid "USALS command repeat"
 msgstr "Повторение команды USALS"
 
@@ -2839,9 +2847,6 @@ msgstr "канал"
 msgid "channel / title"
 msgstr "kanal/nazvaniye"
 
-msgid "checking version"
-msgstr "проверка версии"
-
 msgid "choose Skin Style."
 msgstr "выберите стиль скина»."
 
@@ -2922,9 +2927,6 @@ msgstr "от 18 лет и старше»"
 
 msgid "fullscreen"
 msgstr "полный экран"
-
-msgid "getting update list"
-msgstr "получение списка обновлений"
 
 msgid "goto end"
 msgstr "иди к концу"

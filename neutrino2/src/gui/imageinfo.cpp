@@ -196,9 +196,10 @@ void CImageInfo::paint()
 	
 	lconfigfile.loadConfig("/etc/imageversion");
 	
-	std::string releaseCycle = lconfigfile.getString("RELEASE_CYCLE", "10");
-	std::string date = lconfigfile.getString("RELEASE_DATE", "29 09 2024");
-	std::string time = lconfigfile.getString("RELEASE_TIME", "13:02:15");
+	std::string releaseCycle = lconfigfile.getString("RELEASE_CYCLE", PACKAGE_VERSION);
+	std::string releaseType = lconfigfile.getString("RELEASE_TYPE", "Snapshot");
+	std::string date = lconfigfile.getString("RELEASE_DATE", __DATE__);
+	std::string time = lconfigfile.getString("RELEASE_TIME", __TIME__);
 
 	// image name
 	ypos += iheight;
@@ -209,6 +210,11 @@ void CImageInfo::paint()
 	ypos += iheight;
 	paintLine(xpos, font_info, _("Cycle:"));
 	paintLine(xpos + x_offset, font_info, releaseCycle.c_str());
+	
+	// release type
+	ypos += iheight;
+	paintLine(xpos, font_info, _("Type:"));
+	paintLine(xpos + x_offset, font_info, releaseType.c_str());
 	
 	// NG version
 	ypos += iheight;

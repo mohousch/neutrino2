@@ -290,7 +290,7 @@ bool CFlashUpdate::getUpdateImage(const std::string &version)
 		return false;
 
 	sprintf(dest_name, "%s/%s", g_settings.update_dir, fname);
-	progressWindow->showStatusMessageUTF(std::string(_("getting update list")) + ' ' + version); // UTF-8
+//	progressWindow->showStatusMessageUTF(std::string(_("getting update list")) + ' ' + version); // UTF-8
 
 	dprintf(DEBUG_NORMAL, "get update (url): %s - %s\n", filename.c_str(), dest_name);
 	
@@ -311,13 +311,13 @@ bool CFlashUpdate::checkVersion4Update()
 		if(!selectHttpImage())
 			return false;
 
-		progressWindow->showGlobalStatus(20);
-		progressWindow->showStatusMessageUTF(_("checking version")); // UTF-8
+//		progressWindow->showGlobalStatus(20);
+//		progressWindow->showStatusMessageUTF(_("checking version")); // UTF-8
 
 		dprintf(DEBUG_NORMAL, "internet version: %s\n", newVersion.c_str());
 
-		progressWindow->showGlobalStatus(20);
-		progressWindow->hide();
+//		progressWindow->showGlobalStatus(20);
+//		progressWindow->hide();
 		
 		msg_body = (fileType < '3')? _("Found the following new image:\nDate: %s, %s\nBaseImage: %s\nImageType: %s\n\nDo you want to install this version now?") : _("Found the following new package:\nPackage: %s\nDate: %s, %s\nBaseImage: %s\nType: %s\n\nDo you want to download and install this version now?");
 		
@@ -382,7 +382,7 @@ bool CFlashUpdate::checkVersion4Update()
 			return false;
 		}
 		
-		progressWindow->hide();
+//		progressWindow->hide();
 		
 		// just only for correct msg
 		char * ptr = rindex(const_cast<char *>(filename.c_str()), '.');
@@ -430,12 +430,11 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 	// install
 //	CLCD::getInstance()->showProgressBar2(0, "checking", 0, "Update NeutrinoNG");
 //	CLCD::getInstance()->setMode(CLCD::MODE_PROGRESSBAR2);
-
 //	progressWindow->showGlobalStatus(19);
 //	progressWindow->paint();
 //	progressWindow->showGlobalStatus(20);
 
-	// get package / image
+	// get package / image / md5
 	if(updateMode == UPDATEMODE_INTERNET) //internet-update
 	{
 		char * fname = rindex(const_cast<char *>(filename.c_str()), '/') +1;
@@ -473,6 +472,9 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 	// flashimage
 	if( fileType < '3') 
 	{
+		// ofgwrite
+		
+		// mtd flashing
 		if (allow_flash)
 		{
 			ft.setMTDDevice(MTD_DEVICE_OF_UPDATE_PART);
@@ -496,7 +498,6 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 			//status anzeigen
 	//		progressWindow->showGlobalStatus(100);
 	//		progressWindow->showStatusMessageUTF(_("Package successfully installed")); // UTF-8
-
 	//		progressWindow->hide();
 
 			// Unmount all NFS & CIFS volumes
@@ -1017,12 +1018,16 @@ int CUpdateSettings::showMenu()
 	
 	lconfigfile.loadConfig("/etc/imageversion");
 	
-	std::string releaseCycle = lconfigfile.getString("RELEASE_CYCLE", "10");
-	std::string date = lconfigfile.getString("RELEASE_DATE", "29 09 2024");
-	std::string time = lconfigfile.getString("RELEASE_TIME", "13:02:15");
+	std::string releaseCycle = lconfigfile.getString("RELEASE_CYCLE", PACKAGE_VERSION);
+	std::string releaseType = lconfigfile.getString("RELEASE_TYPE", "Snapshot");
+	std::string date = lconfigfile.getString("RELEASE_DATE", __DATE__);
+	std::string time = lconfigfile.getString("RELEASE_TIME", __TIME__);
 
 	// release cycle
 	updateSettings->addItem(new CMenuForwarder(_("Release cycle"), false, releaseCycle.c_str()));
+	
+	// release type
+	updateSettings->addItem(new CMenuForwarder(_("Release type"), false, releaseType.c_str()));
 		
 	// date
 	updateSettings->addItem(new CMenuForwarder(_("Date"), false, date.c_str()));

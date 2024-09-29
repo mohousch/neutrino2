@@ -1198,8 +1198,6 @@ int CScanSetup::showManualScanSetup()
 	manualScanlistBox->addItem(new CMenuForwarder(_("Select transponder"), true, NULL, tpSelect));
 		
 	// frequency
-//	int freq_length = 8;
-
 #if HAVE_DVB_API_VERSION >= 5
 	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 		freq_length = 8;

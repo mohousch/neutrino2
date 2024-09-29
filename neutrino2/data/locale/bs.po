@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-09-29 14:43+0200\n"
+"POT-Creation-Date: 2024-09-29 18:40+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1782,6 +1782,9 @@ msgstr ""
 msgid "Release cycle"
 msgstr ""
 
+msgid "Release type"
+msgstr ""
+
 msgid "Release:"
 msgstr ""
 
@@ -2505,6 +2508,9 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
+msgid "Type:"
+msgstr ""
+
 msgid "USALS command repeat"
 msgstr ""
 
@@ -2784,9 +2790,6 @@ msgstr ""
 msgid "channel / title"
 msgstr ""
 
-msgid "checking version"
-msgstr ""
-
 msgid "choose Skin Style."
 msgstr ""
 
@@ -2866,9 +2869,6 @@ msgid "from 18 years up"
 msgstr ""
 
 msgid "fullscreen"
-msgstr ""
-
-msgid "getting update list"
 msgstr ""
 
 msgid "goto end"

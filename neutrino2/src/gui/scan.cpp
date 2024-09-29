@@ -172,7 +172,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		TP.feparams.inversion = INVERSION_AUTO;
 		
 #if HAVE_DVB_API_VERSION >= 5
-		if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2)
+		if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 #else
 		if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -278,7 +278,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		char * f, *s, *m;
 
 #if HAVE_DVB_API_VERSION >= 5
-		if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2)
+		if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 #else
 		if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -286,8 +286,6 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			fe->getDelSys(scanSettings->TP_fec, dvbs_get_modulation((fe_code_rate_t)scanSettings->TP_fec), f, s, m);
 
 			sprintf(buffer, "%u %c %d %s %s %s", atoi(scanSettings->TP_freq)/1000, scanSettings->TP_pol == 0 ? 'H' : 'V', atoi(scanSettings->TP_rate)/1000, f, s, m);
-			
-			xpos2 = xpos1 + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_("Satellite:"), true); // UTF-8
 		} 
 #if HAVE_DVB_API_VERSION >= 5 
 		else if (fe->getForcedDelSys() == DVB_C)
@@ -298,9 +296,6 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			fe->getDelSys(scanSettings->TP_fec, scanSettings->TP_mod, f, s, m);
 
 			sprintf(buffer, "%u %d %s %s %s", atoi(scanSettings->TP_freq), atoi(scanSettings->TP_rate)/1000, f, s, m);
-			
-			//
-			xpos2 = xpos1 + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_("Cable:"), true); // UTF-8
 		}
 #if HAVE_DVB_API_VERSION >= 5
 		else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
@@ -311,13 +306,10 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			fe->getDelSys(scanSettings->TP_HP, scanSettings->TP_mod, f, s, m);
 
 			sprintf(buffer, "%u %s %s %s", atoi(scanSettings->TP_freq), f, s, m);
-			
-			//
-			xpos2 = xpos1 + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_("Terrestrial:"), true); // UTF-8
 		}
 
-////test		paintLine(xpos2, ypos_cur_satellite, w - 95, scanSettings->satNameNoDiseqc);
-////test		paintLine(xpos2, ypos_frequency, w, buffer);
+		paintLine(xpos2, ypos_cur_satellite, w - 95, scanSettings->satNameNoDiseqc);
+		paintLine(xpos2, ypos_frequency, w, buffer);
 
 		success = CZapit::getInstance()->tuneTP(TP, fe);
 	} 
@@ -430,7 +422,6 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 	char buffer[128];
 	char str[256];
 
-/*
 	switch (msg) 
 	{
 		case NeutrinoMessages::EVT_SCAN_SATELLITE:
@@ -523,7 +514,6 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 		default:
 			break;
 	}
-*/
 	
 	return msg;
 }
@@ -596,7 +586,7 @@ void CScanTs::paint(bool fortest)
 	ypos_cur_satellite = ypos;
 	
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
 #else
 	if(fe->getInfo()->type == FE_QPSK)
 #endif
