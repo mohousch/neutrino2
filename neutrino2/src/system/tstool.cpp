@@ -42,16 +42,15 @@
 
 #include <system/settings.h>
 
-#include "moviebrowser.h"
 
-
+////
 #define my_scandir scandir64
 #define my_alphasort alphasort64
 typedef struct stat64 stat_struct;
 typedef struct dirent64 dirent_struct;
 #define my_stat stat64
 
-// tstool
+//
 off64_t get_full_len(char * startname)
 {
         off64_t fulllength = 0;
@@ -141,6 +140,7 @@ off64_t truncate_movie(MI_MOVIE_INFO * minfo)
 		reset_atime(spart, minfo->file.Time);
 		return newsize;
 	}
+	
 	return 0;
 }
 
@@ -157,7 +157,7 @@ static int check_pes_start (unsigned char *packet)
 	if (packet[0] == 0x47 &&                    // sync byte 0x47
 	    (packet[1] & 0x40))                     // pusi == 1
 	{
-		/* good, now we have to check if it is video stream */
+		// good, now we have to check if it is video stream
 		unsigned char *pes = packet + 4;
 		if (packet[3] & 0x20)                   // adaptation field is present
 			pes += packet[4] + 1;
@@ -206,7 +206,7 @@ static int read_psi(char * spart, unsigned char * buf)
 	int srcfd = open (spart, O_RDONLY | O_LARGEFILE);
 	if(srcfd >= 0) 
 	{
-		/* read psi */
+		// read psi
 		int r = read (srcfd, buf, PSI_SIZE);
 		close(srcfd);
 		if(r != PSI_SIZE) 
@@ -230,8 +230,10 @@ static void save_info(CMovieInfo * cmovie, MI_MOVIE_INFO * minfo, char * dpart, 
 	ninfo.bookmarks.end = 0;
 	ninfo.bookmarks.start = 0;
 	ninfo.bookmarks.lastPlayStop = 0;
-	for(int book_nr = 0; book_nr < MI_MOVIE_BOOK_USER_MAX; book_nr++) {
-		if( ninfo.bookmarks.user[book_nr].pos != 0 && ninfo.bookmarks.user[book_nr].length > 0 ) {
+	for(int book_nr = 0; book_nr < MI_MOVIE_BOOK_USER_MAX; book_nr++) 
+	{
+		if( ninfo.bookmarks.user[book_nr].pos != 0 && ninfo.bookmarks.user[book_nr].length > 0 ) 
+		{
 			ninfo.bookmarks.user[book_nr].pos = 0;
 			ninfo.bookmarks.user[book_nr].length = 0;
 		}
@@ -246,7 +248,9 @@ static void find_new_part(char * npart, char * dpart)
 	struct stat64 s;
 	int dp = 0;
 	sprintf(dpart, "%s_%d.ts", npart, dp);
-	while (!stat64(dpart, &s)) {
+	
+	while (!stat64(dpart, &s)) 
+	{
 		sprintf(dpart, "%s_%d.ts", npart, ++dp);
 	}
 }
@@ -275,7 +279,7 @@ static int get_input(bool * stop)
 	
 	if(msg == CRCInput::RC_home) 
 	{
-		if(MessageBox(__("Information"), __("Cancel movie cut/split ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
+		if(MessageBox(_("Information"), _("Cancel movie cut/split ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
 		{
 			* stop = true;
 		}
@@ -319,7 +323,8 @@ off64_t cut_movie(MI_MOVIE_INFO * minfo, CMovieInfo * cmovie)
 	off64_t bpos, bskip;
 
 	buf = (unsigned char *) malloc(BUF_SIZE);
-	if(buf == 0) {
+	if(buf == 0) 
+	{
 		perror("malloc");
 		return 0;
 	}
@@ -330,7 +335,7 @@ off64_t cut_movie(MI_MOVIE_INFO * minfo, CMovieInfo * cmovie)
         int x = (((g_settings.screen_EndX- g_settings.screen_StartX)- dx) / 2) + g_settings.screen_StartX;
         int y = g_settings.screen_EndY - 50;
 	
-	frameBuffer->paintBoxRel (x + 40, y+12, 200, 15, COL_INFOBAR_PLUS_0);
+	frameBuffer->paintBoxRel (x + 40, y + 12, 200, 15, COL_INFOBAR_PLUS_0);
 	
 	int len = minfo->length;
 	off64_t size = minfo->file.Size;
@@ -439,7 +444,8 @@ off64_t cut_movie(MI_MOVIE_INFO * minfo, CMovieInfo * cmovie)
 	{
 		printf("cut: open part %d file %s size %lld offset %lld book pos %lld\n", part, spart, s.st_size, offset, bpos);
 		srcfd = open (spart, O_RDONLY | O_LARGEFILE);
-		if(srcfd < 0) {
+		if(srcfd < 0) 
+		{
 			perror(spart);
 			goto ret_err;
 		}

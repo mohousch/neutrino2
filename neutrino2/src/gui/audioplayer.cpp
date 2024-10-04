@@ -1310,17 +1310,20 @@ bool CAudioPlayerGui::shufflePlaylist(void)
 
 void CAudioPlayerGui::showHelp()
 {
-	CHelpBox helpbox;
+	CHelpBox *helpbox = new CHelpBox(_("Information"), HELPBOX_WIDTH, NEUTRINO_ICON_INFO);
 
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_RED, _("save playlist"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_GREEN, _("jump prev"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_YELLOW, _("jump ff"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_BLUE, _("shuffle playlist"));
-	helpbox.addSeparator();
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_SETUP, _("Audioplayer settings"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_OKAY, _("show playlist"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_RED, _("save playlist"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_GREEN, _("jump prev"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_YELLOW, _("jump ff"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_BLUE, _("shuffle playlist"));
+	helpbox->addSeparator();
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_SETUP, _("Audioplayer settings"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_OKAY, _("show playlist"));
 
-	helpbox.show(_("Information"));
+	helpbox->exec();
+	
+	delete helpbox;
+	helpbox = NULL;
 }
 
 //

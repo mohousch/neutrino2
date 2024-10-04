@@ -194,12 +194,18 @@ void CImageInfo::paint()
 	
 	CConfigFile lconfigfile('\t');
 	
+	std::string versionString = "1201201205091849";
+	
 	lconfigfile.loadConfig("/etc/imageversion");
 	
-	std::string releaseCycle = lconfigfile.getString("RELEASE_CYCLE", PACKAGE_VERSION);
-	std::string releaseType = lconfigfile.getString("RELEASE_TYPE", "Snapshot");
-	std::string date = lconfigfile.getString("RELEASE_DATE", __DATE__);
-	std::string time = lconfigfile.getString("RELEASE_TIME", __TIME__);
+	versionString = lconfigfile.getString( "version", "1201201205091849").c_str();
+	
+	static CFlashVersionInfo versionInfo(versionString);
+	
+	std::string releaseCycle = versionInfo.getReleaseCycle(); 	//lconfigfile.getString("RELEASE_CYCLE", PACKAGE_VERSION);
+	std::string releaseType = versionInfo.getType(); 		//lconfigfile.getString("RELEASE_TYPE", "Snapshot");
+	std::string date = versionInfo.getDate(); 			//lconfigfile.getString("RELEASE_DATE", __DATE__);
+	std::string time = versionInfo.getTime();			//lconfigfile.getString("RELEASE_TIME", __TIME__);
 
 	// image name
 	ypos += iheight;

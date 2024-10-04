@@ -459,7 +459,7 @@ class CCText : public CComponent
 		//
 		void setFont(unsigned int f){font = f;};
 		void setColor(uint32_t col){color = col;};
-		void setText(const char* const text){processTextToArray(text);};
+		void setText(const char *const text){processTextToArray(text);};
 		//
 		void enableSaveScreen();
 		void saveScreen(void);

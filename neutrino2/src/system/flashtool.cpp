@@ -56,8 +56,9 @@ CFlashTool::CFlashTool()
 	ErrorMessage = 	"";
 }
 
-CFlashTool::~CFlashTool()
+void CFlashTool::setStatusViewer( CProgressWindow *statusview )
 {
+	statusViewer = statusview;
 }
 
 const std::string & CFlashTool::getErrorMessage(void) const
@@ -69,11 +70,6 @@ void CFlashTool::setMTDDevice( const std::string & mtddevice )
 {
 	mtdDevice = mtddevice;
 	dprintf(DEBUG_NORMAL, "flashtool.cpp: set mtd device to %s\n", mtddevice.c_str());
-}
-
-void CFlashTool::setStatusViewer( CProgressWindow *statusview )
-{
-	statusViewer = statusview;
 }
 
 bool CFlashTool::readFromMTD( const std::string &filename, int globalProgressEnd )
@@ -140,8 +136,9 @@ bool CFlashTool::readFromMTD( const std::string &filename, int globalProgressEnd
 	return true;
 }
 
-bool CFlashTool::program( const std::string & filename, int globalProgressEndErase, int globalProgressEndFlash )
+bool CFlashTool::program( const std::string &filename, int globalProgressEndErase, int globalProgressEndFlash )
 {
+#ifdef __sh__
 	int fd1, fd2;
 	long filesize;
 	int globalProgressBegin = 0;
@@ -161,12 +158,13 @@ bool CFlashTool::program( const std::string & filename, int globalProgressEndEra
 	filesize = lseek( fd1, 0, SEEK_END);
 	lseek( fd1, 0, SEEK_SET);
 
-	if(filesize==0)
+	if(filesize == 0)
 	{
 		ErrorMessage = _("the filesize is 0 Bytes");
 		return false;
 	}
 
+	// erase
 	if(statusViewer)
 	{
 		statusViewer->showStatusMessageUTF(_("erasing flash")); // UTF-8
@@ -187,6 +185,7 @@ bool CFlashTool::program( const std::string & filename, int globalProgressEndEra
 		statusViewer->showStatusMessageUTF(_("programming flash")); // UTF-8
 	}
 
+	// write
 	if( (fd2 = open( mtdDevice.c_str(), O_WRONLY )) < 0 )
 	{
 		ErrorMessage = _("can't open mtd-device");
@@ -228,6 +227,28 @@ bool CFlashTool::program( const std::string & filename, int globalProgressEndEra
 
 	close(fd1);
 	close(fd2);
+#else
+	int fd;
+	long filesize;
+	int globalProgressBegin = 0;
+	
+	if( (fd = open( filename.c_str(), O_RDONLY )) < 0 )
+	{
+		ErrorMessage = _("can't open file");
+		return false;
+	}
+
+	filesize = lseek( fd, 0, SEEK_END);
+	lseek(fd, 0, SEEK_SET);
+
+	if(filesize == 0)
+	{
+		ErrorMessage = _("the filesize is 0 Bytes");
+		return false;
+	}
+	
+	close(fd);
+#endif
 
 	return true;
 }
@@ -318,7 +339,7 @@ void CFlashTool::reboot()
 }
 
 ////
-CFlashVersionInfo::CFlashVersionInfo(const std::string & versionString)
+CFlashVersionInfo::CFlashVersionInfo(const std::string &versionString)
 {
 
 	for(int i = 0; i < 20; i++)

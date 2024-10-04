@@ -1639,33 +1639,36 @@ void CMoviePlayerGui::PlayFile(void)
 
 void CMoviePlayerGui::showHelp()
 {
-	CHelpBox helpbox;
+	CHelpBox *helpbox = new CHelpBox(_("Information"), HELPBOX_WIDTH, NEUTRINO_ICON_INFO);
 
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_RED, _("Movie info"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_GREEN, _("Select audio track"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_YELLOW, _("Help"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_BLUE, _("Create bookmark"));
-	helpbox.addSeparator();
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_SETUP, _("Movieplayer settings"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_HELP, _("show movie infoviewer"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_OKAY, _("show playlist"));
-	helpbox.addSeparator();
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_0, _("skip bookmark"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_1, _("approx. 1 minute back"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_2, _("goto start") );
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_3, _("skip approx. 1 minute"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_4, _("approx. 5 minutes back"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_5, _("goto middle"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_6, _("skip approx. 5 minutes"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_7, _("approx. 10 minutes back"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_8, _("goto end"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_9, _("skip approx. 10 minutes"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_TOP, _("skip approx. 10 seconds"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_DOWN, _("approx. 10 seconds back"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_RED, _("Movie info"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_GREEN, _("Select audio track"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_YELLOW, _("Help"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_BLUE, _("Create bookmark"));
+	helpbox->addSeparator();
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_SETUP, _("Movieplayer settings"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_HELP, _("show movie infoviewer"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_OKAY, _("show playlist"));
+	helpbox->addSeparator();
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_0, _("skip bookmark"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_1, _("approx. 1 minute back"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_2, _("goto start") );
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_3, _("skip approx. 1 minute"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_4, _("approx. 5 minutes back"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_5, _("goto middle"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_6, _("skip approx. 5 minutes"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_7, _("approx. 10 minutes back"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_8, _("goto end"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_9, _("skip approx. 10 minutes"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_TOP, _("skip approx. 10 seconds"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_DOWN, _("approx. 10 seconds back"));
 
 	hide();
 
-	helpbox.show(_("Information"));
+	helpbox->exec();
+	
+	delete helpbox;
+	helpbox = NULL;
 }
 
 int CMoviePlayerGui::showStartPosSelectionMenu(void)

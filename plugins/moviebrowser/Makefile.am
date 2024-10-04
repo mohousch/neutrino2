@@ -16,7 +16,7 @@ AM_CPPFLAGS =  \
 
 noinst_LTLIBRARIES = moviebrowser.la
 
-moviebrowser_la_SOURCES = moviebrowser.cpp tstool.cpp
+moviebrowser_la_SOURCES = moviebrowser.cpp
 	 
 moviebrowser_la_LDFLAGS = -rpath $(PLUGINDIR) -module
 
@@ -33,8 +33,4 @@ uninstall-local:
 	-rm $(DESTDIR)$(PLUGINDIR)/moviebrowser/moviebrowser.cfg
 	-rm $(DESTDIR)$(PLUGINDIR)/moviebrowser/moviebrowser.png
 	-rmdir $(DESTDIR)$(PLUGINDIR)/moviebrowser
-	
-
-
-
 

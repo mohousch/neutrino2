@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: messagebox.h 2013/10/12 mohousch Exp $
+	$Id: messagebox.h 03112024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -36,7 +36,6 @@
 #include <system/settings.h>
 
 #include <gui/widget/icons.h>
-#include <gui/widget/drawable.h>
 #include <gui/widget/widget_helpers.h>
 
 
@@ -70,37 +69,32 @@ class CMessageBox
 		CCHeaders *headers;
 		CCScrollBar scrollBar;
 
-		unsigned int m_currentPage;
-		std::vector<int>m_startEntryOfPage;
-		int m_maxEntriesPerPage;
-		int m_pages;
-
 		int m_width;
 		int m_height;
 		int m_iheight;
 		int m_fheight;
 		int m_theight;
 
-		std::string m_caption;
-		char * m_message;
-		ContentLines m_lines;
 		std::string  m_iconfile;
-		
+		std::string m_caption;
+		////
+		char * m_message;
+		std::vector<char *> m_lines;
+		unsigned int entries_per_page;
+		unsigned int current_page;
+		unsigned int pages;
+		////
+		int borderMode;
+		fb_pixel_t borderColor;
+		////
 		void refreshPage();
-
-		void init(const char* const Caption, const int Width, const char * const Icon);
+		void init(const char *const Caption, const int Width, const char * const Icon);
 		void initFrames(void);
-
 		bool has_scrollbar(void);
 		void scroll_up(void);
 		void scroll_down(void);
-
 		void paint(void);
 		void hide(void);
-		
-		//
-		int borderMode;
-		fb_pixel_t borderColor;
 
 	private:
 		uint32_t showbuttons;
@@ -109,10 +103,6 @@ class CMessageBox
 		void paintButtons();
 
 	public:
-		//
-		CMessageBox(const char * const Caption, ContentLines& Lines, const int Width = MESSAGEBOX_WIDTH, const char * const Icon = NULL, const result_ Default = mbrYes, const uint32_t ShowButtons = mbAll);
-	
-		// Text & Caption are always UTF-8 encoded
 		CMessageBox(const char * const Caption, const char * const Text, const int Width = MESSAGEBOX_WIDTH, const char * const Icon = NULL, const result_ Default = mbrYes, const uint32_t ShowButtons = mbAll);
 
 		virtual ~CMessageBox(void);

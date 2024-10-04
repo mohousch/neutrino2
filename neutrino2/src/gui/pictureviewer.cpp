@@ -368,39 +368,42 @@ void CPictureViewerGui::removeFromPlaylist(long pos)
 
 void CPictureViewerGui::showHelp()
 {
-	CHelpBox helpbox;
+	CHelpBox *helpbox = new CHelpBox(_("Information"), HELPBOX_WIDTH, NEUTRINO_ICON_INFO);
 
-	helpbox.addLine(_("Menu mode"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_OKAY, _("Display image"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_0, _("Do not scale picture"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_5, _("Change sort order"));
-	helpbox.addPagebreak();
-	helpbox.addLine(_("Diashow mode"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_LEFT, _("Previous image"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_RIGHT, _("Next image"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_5, _("Change sort order"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_HOME, _("Exit"));
-	helpbox.addPagebreak();
-	helpbox.addLine(_("Show mode"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_OKAY, _("Reread image"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_LEFT, _("Previous image"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_RIGHT, _("Next image"));
-	helpbox.addPagebreak();
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_0, _("Reread image (no scaling)"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_1, _("Zoom out"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_2, _("Scroll up"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_3, _("Zoom in"));
-	//helpbox.addPagebreak();
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_4, _("Scroll left"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_5, _("Change sort order"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_6, _("Scroll right"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_8, _("Scroll down"));
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_HOME, _("Exit"));
-	//helpbox.addPagebreak();
-	//helpbox.addLine("Version: $Revision: 2.0 $");
+	helpbox->addLine(_("Menu mode"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_OKAY, _("Display image"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_0, _("Do not scale picture"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_5, _("Change sort order"));
+	helpbox->addPagebreak();
+	helpbox->addLine(_("Diashow mode"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_LEFT, _("Previous image"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_RIGHT, _("Next image"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_5, _("Change sort order"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_HOME, _("Exit"));
+	helpbox->addPagebreak();
+	helpbox->addLine(_("Show mode"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_OKAY, _("Reread image"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_LEFT, _("Previous image"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_RIGHT, _("Next image"));
+	helpbox->addPagebreak();
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_0, _("Reread image (no scaling)"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_1, _("Zoom out"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_2, _("Scroll up"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_3, _("Zoom in"));
+	//helpbox->addPagebreak();
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_4, _("Scroll left"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_5, _("Change sort order"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_6, _("Scroll right"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_8, _("Scroll down"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_HOME, _("Exit"));
+	//helpbox->addPagebreak();
+	//helpbox->addLine("Version: $Revision: 2.0 $");
 
 	hide();
-	helpbox.show(_("Information"));
+	helpbox->exec();
+	
+	delete helpbox;
+	helpbox = NULL;
 }
 
 

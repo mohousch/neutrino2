@@ -47,14 +47,10 @@ class CInfoBox
 
 		// body
 		CBox m_cBoxFrame;
-		CBox m_cBoxFrameTitleRel;
-		CBox m_cBoxFrameText;
-		CBox m_cBoxFrameFootRel;
-		
-		//
 		CWidget * widget;
 		
-		//
+		// head
+		CBox m_cBoxFrameTitleRel;
 		CCHeaders *headers;
 		std::string m_cIcon;
 		std::string m_cTitle;
@@ -64,12 +60,14 @@ class CInfoBox
 		int headGradient;
 		
 		// text
+		CBox m_cBoxFrameText;
 		CTextBox *m_pcTextBox;
 		unsigned int m_pcFontText;
 		int m_nMode;
 		int borderMode;
 		
 		// foot
+		CBox m_cBoxFrameFootRel;
 		CCFooters *footers;
 		fb_pixel_t footColor;
 		int footRadius;
@@ -78,6 +76,7 @@ class CInfoBox
 
 	public:
 		CInfoBox();
+		CInfoBox(const int x, const int y, const int dx, const int dy, const char * title = NULL, const char * icon = NEUTRINO_ICON_INFO);
 		CInfoBox(const CBox* position, const char * title = NULL, const char * icon = NEUTRINO_ICON_INFO);
 		virtual ~CInfoBox();
 		

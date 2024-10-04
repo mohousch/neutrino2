@@ -66,6 +66,7 @@ class CFlashUpdate : public CMenuTarget
 		
 	public:
 		CFlashUpdate(int uMode);
+		virtual ~CFlashUpdate();
 		int exec( CMenuTarget *parent, const std::string &actionKey );
 };
 

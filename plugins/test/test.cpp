@@ -3832,33 +3832,16 @@ void CTestMenu::testCInfoBox()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCInfoBox\n");
 
-	loadMoviePlaylist();
-	
-	std::string buffer;
-	
-	if (!m_vMovieInfo.empty())
-	{
-		buffer = m_vMovieInfo[0].epgInfo1;
-		buffer += "\n";
-		buffer += m_vMovieInfo[0].epgInfo2;
-	}
-	
-	// scale pic
-	int p_w = 0;
-	int p_h = 0;
-
-	if (!m_vMovieInfo.empty())
-		scaleImage(m_vMovieInfo[0].tfile, &p_w, &p_h);
+	std::string Text = "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.";
 	
 	CBox position(g_settings.screen_StartX + 50, g_settings.screen_StartY + 50, g_settings.screen_EndX - g_settings.screen_StartX - 100, g_settings.screen_EndY - g_settings.screen_StartY - 100); 
 	
 	CInfoBox * infoBox = new CInfoBox(&position, "CInfoBox", NEUTRINO_ICON_INFO);	
 	
 	infoBox->setBorderMode(CComponent::BORDER_ALL);
-	infoBox->setTextColor(COL_RED_PLUS_0);
+	infoBox->setTextColor(COL_YELLOW_PLUS_0);
 	
-	if (!m_vMovieInfo.empty())
-		infoBox->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h, CTextBox::PIC_RIGHT, true);
+	infoBox->setText(Text.c_str(), DATADIR "/icons/nopreview.jpg", 320, 240, CTextBox::PIC_RIGHT, true);
 	
 	infoBox->exec();
 	
@@ -3885,8 +3868,13 @@ void CTestMenu::testCMessageBox()
 void CTestMenu::testCMessageBoxInfoMsg()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCMessageBox\n");
+	/*
+	std::string Text = "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.";
+	*/
+	
+	std::string Text = ::readFile("/home/mohousch/Downloads/e4hd_log1.log.txt");
 
-	MessageBox(__("Information"), "testing CMessageBoxInfoMsg", CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
+	MessageBox(__("Information"), Text.c_str(), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
 }
 
 // MessageBox
@@ -3914,8 +3902,12 @@ void CTestMenu::testCHintBox()
 void CTestMenu::testCHintBoxInfo()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCHintBox\n");
+	
+//	std::string Text = "This program is free software;\n you can redistribute it and/or modify it under the terms of the GNU General Public License\n as published by the Free Software Foundation;\n either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful,\n but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License\n along with this program; if not, write to the Free Software Foundation,\n Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n";
 
-	HintBox(_("Information"), "testCHintBoxInfo", HINTBOX_WIDTH, 10, NEUTRINO_ICON_INFO);
+	std::string Text = ::readFile("/home/mohousch/Downloads/e4hd_log1.log.txt");
+
+	HintBox(_("Information"), Text.c_str(), HINTBOX_WIDTH, 10, NEUTRINO_ICON_INFO);
 }
 
 // CHelpBox
@@ -3923,7 +3915,7 @@ void CTestMenu::testCHelpBox()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCHelpBox\n");
 
-	CHelpBox * helpBox = new CHelpBox();
+	CHelpBox * helpBox = new CHelpBox("CTestMenu::testCHelpBox", HELPBOX_WIDTH, NEUTRINO_ICON_INFO);
 	
 	// text
 	helpBox->addLine("helpBox");
@@ -3937,7 +3929,7 @@ void CTestMenu::testCHelpBox()
 	helpBox->addSeparator();
 
 	//
-	helpBox->addLine("neutrino2 is rocking ...");
+	helpBox->addLine("NeutrinoNG is rocking ...");
 	
 
 	//
@@ -3953,7 +3945,7 @@ void CTestMenu::testCHelpBox()
 
 	helpBox->addSeparator();
 
-	helpBox->show(_("Information"), HELPBOX_WIDTH, -1, CMessageBox::mbrBack, CMessageBox::mbNone);
+	helpBox->exec(-1);
 	
 	delete helpBox;
 	helpBox = NULL;

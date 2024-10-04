@@ -688,15 +688,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 						g_RCInput->killTimer(sec_timer_id);
 					}
 						
-					res = CNeutrinoApp::getInstance()->handleMsg(msg, data);
-						
-					if (res & messages_return::unhandled) 
-					{
-						dprintf(DEBUG_DEBUG, "CInfoViewer::show: message unhandled\n");
-
-						//res = messages_return::cancel_info; //FIXME:
-						//g_RCInput->postMsg(msg, data);
-					}
+					CNeutrinoApp::getInstance()->handleMsg(msg, data);
 				}
 			}
 					

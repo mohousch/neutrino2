@@ -38,5 +38,6 @@ libneutrino2_system_a_SOURCES = \
 	tmdbparser.cpp \
 	ytparser.cpp \
 	weather.cpp \
-	screenshot.cpp
+	screenshot.cpp \
+	tstool.cpp
 

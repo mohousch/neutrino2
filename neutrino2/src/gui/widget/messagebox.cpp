@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: messagebox.cpp 2013/10/12 mohousch Exp $
+	$Id: messagebox.cpp 03112024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -42,31 +42,20 @@ CMessageBox::CMessageBox(const char* const Caption, const char * const Text, con
 	
 	widget = NULL;
 	headers = NULL;
+	m_lines.clear();
+	
+	pages = 1;
 	
 	m_message = strdup(Text);
-
-	char *begin   = m_message;
-
-	begin = strtok(m_message, "\n");
-	
-	while (begin != NULL)
-	{
-		std::vector<Drawable*> oneLine;
-		std::string s(begin);
-		DText *d = new DText(s);
-		oneLine.push_back(d);
-		m_lines.push_back(oneLine);
-		begin = strtok(NULL, "\n");
-	}
 	
 	//
 	showbuttons = ShowButtons;
 	
+	//
 	init(Caption, Width, Icon);
 
+	//
 	returnDefaultOnTimeout = false;
-
-	m_height += (m_iheight << 1);
 
 	result = Default;
 
@@ -105,61 +94,6 @@ CMessageBox::CMessageBox(const char* const Caption, const char * const Text, con
 	initFrames();
 }
 
-CMessageBox::CMessageBox(const char* const Caption, ContentLines& Lines, const int Width, const char * const Icon, const result_ Default, const uint32_t ShowButtons)
-{
-	dprintf(DEBUG_INFO, "CMessageBox::CMessageBox\n");
-	
-	widget = NULL;
-	headers = NULL;
-	
-	m_message = NULL;
-	m_lines = Lines;
-	
-	//
-	showbuttons = ShowButtons;
-	
-	init(Caption, Width, Icon);
-
-	returnDefaultOnTimeout = false;
-
-	m_height += (m_iheight << 1);
-
-	result = Default;
-
-	int MaxButtonTextWidth = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(_("Cancel"), true) + 5; // UTF-8
-	
-	int ih = 0;
-	int iw = 0;
-	
-	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_HOME, &iw, &ih);
-	
-	int ButtonWidth = BORDER_LEFT + BORDER_RIGHT + iw + MaxButtonTextWidth + ICON_OFFSET;
-	
-	int num = 0;
-
-	if (showbuttons & mbNone)
-		num = 0;
-	
-	if (showbuttons & mbYes)
-		num++;
-	
-	if (showbuttons & mbNo)
-		num++;
-	
-	if (showbuttons & (mbCancel | mbBack | mbOk))
-		num++;
-	
-	int new_width = 15 + num*ButtonWidth;
-	if(new_width > m_width)
-		m_width = new_width;
-		
-	//
-	borderMode = CComponent::BORDER_NO;
-		
-	// initFrames
-	initFrames();
-}
-
 CMessageBox::~CMessageBox(void)
 {
 	dprintf(DEBUG_INFO, "CMessageBox::del:\n");
@@ -167,16 +101,9 @@ CMessageBox::~CMessageBox(void)
 	if (m_message != NULL) 
 	{
 		free(m_message);
-
-		// content has been set using "m_message" so we are responsible to delete it
-		for (ContentLines::iterator it = m_lines.begin(); it != m_lines.end(); it++)
-		{
-			for (std::vector<Drawable*>::iterator it2 = it->begin(); it2 != it->end(); it2++)
-			{
-				delete *it2;
-			}
-		}
 	}
+	
+	m_lines.clear();
 	
 	hide();
 	
@@ -192,102 +119,52 @@ void CMessageBox::init(const char * const Caption, const int Width, const char *
 	dprintf(DEBUG_INFO, "CMessageBox::init\n");
 	
 	m_width = Width;
-	int nw = 0;
-	m_theight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
-	m_fheight = /*(showbuttons & mbNone)? 0 :*/ g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
-	m_iheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();
-	m_height  = m_theight + m_fheight;
-	m_maxEntriesPerPage = 0;
+	int nw = m_width;
+	m_theight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6; 	// title
+	m_fheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6; 	// foot
+	m_iheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();		// item
+	m_height  = m_theight + m_fheight + m_iheight;
 
 	m_caption = Caption? Caption : "";
 
-	int page = 0;
-	int line = 0;
-	int maxWidth = MESSAGEBOX_MAX_WIDTH;
-	int maxOverallHeight = 0;
-	m_startEntryOfPage.push_back(0);
+	char * begin;
+	char * pos;
 	
-	for (ContentLines::iterator it = m_lines.begin(); it!= m_lines.end(); it++)
+	begin = m_message;
+	
+	// recalculate height
+	while (true)
 	{
-		bool pagebreak = false;
-		int maxHeight = 0;
-		int lineWidth = 0;
-		int count = 0;
+		m_height += m_iheight;
 		
-		for (std::vector<Drawable*>::iterator item = it->begin(); item != it->end(); item++) 
+		if (m_height > MESSAGEBOX_MAX_HEIGHT)
 		{
-			//
-			if ((*item)->getType() == Drawable::DTYPE_TEXT)
-				m_iheight = (*item)->getHeight();
-			//m_height += m_iheight;
-			
-			//
-			if ((*item)->getHeight() > maxHeight)
-				maxHeight = (*item)->getHeight();
-
-			lineWidth += (*item)->getWidth();
-
-			if ((*item)->getType() == Drawable::DTYPE_PAGEBREAK)
-				pagebreak = true;
-			
-			count++;
+			m_height -= m_iheight;
 		}
 		
-		// 10 pixels left and right of every item. determined empirically :-(
-		lineWidth += count * (BORDER_LEFT + BORDER_RIGHT);
+		m_lines.push_back(begin);
 		
-		if (lineWidth > m_width)
-			maxWidth = lineWidth;
-		else if (lineWidth > (MESSAGEBOX_MAX_WIDTH - 20))
-			maxWidth = MESSAGEBOX_MAX_WIDTH - 20;
-		else if (lineWidth < m_width)
-			maxWidth = m_width;
-
-		m_height += maxHeight;
+		pos = strchr(begin, '\n');
 		
-		if (m_height > MESSAGEBOX_MAX_HEIGHT || pagebreak) 
+		if (pos != NULL)
 		{
-			if (m_height - maxHeight > maxOverallHeight)
-				maxOverallHeight = m_height - maxHeight;
-			
-			m_height = m_theight + m_iheight + m_fheight /*+ maxHeight*/;
-			
-			if (pagebreak)
-				m_startEntryOfPage.push_back(line + 1);
-			else 
-				m_startEntryOfPage.push_back(line);
-			
-			page++;
-			
-			if (m_maxEntriesPerPage < (m_startEntryOfPage[page] - m_startEntryOfPage[page -1]))
-			{
-				m_maxEntriesPerPage = m_startEntryOfPage[page] - m_startEntryOfPage[page -1];
-			}
+			*pos = 0;
+			begin = pos + 1;
 		}
-		
-		line++;
+		else
+			break;
 	}
+			
+	//		
+	pages = 1;
+	entries_per_page = ((m_height - m_theight - m_fheight ) / m_iheight);
+	current_page = 0;
+	pages = (m_lines.size() + entries_per_page - 1) / entries_per_page;
+	
+	//
+	unsigned int additional_width = 0;
 
-	m_width = maxWidth; 
-	// if there is only one page m_height is already correct 
-	//but m_maxEntries has not been set
-	if (m_startEntryOfPage.size() > 1)
-	{
-		m_height = maxOverallHeight;
-		m_width += SCROLLBAR_WIDTH; // scroll bar
-	} 
-	else 
-	{
-		m_maxEntriesPerPage = line;
-	}
-
-	m_startEntryOfPage.push_back(line + 1); // needed to calculate amount of items on last page
-
-	m_currentPage = 0;
-	m_pages = page + 1;
-	unsigned int additional_width;
-
-	if (m_startEntryOfPage.size() > 1)
+	if (entries_per_page < m_lines.size())
 		additional_width = BORDER_LEFT + BORDER_RIGHT + SCROLLBAR_WIDTH;
 	else
 		additional_width = BORDER_LEFT + BORDER_RIGHT;
@@ -298,7 +175,7 @@ void CMessageBox::init(const char * const Caption, const int Width, const char *
 
 		int iw, ih;
 		CFrameBuffer::getInstance()->getIconSize(m_iconfile.c_str(), &iw, &ih);
-		additional_width += BORDER_LEFT + iw + ICON_OFFSET; 
+		additional_width += iw + ICON_OFFSET; 
 	}
 	else
 		m_iconfile = "";
@@ -307,6 +184,20 @@ void CMessageBox::init(const char * const Caption, const int Width, const char *
 
 	if (nw > m_width)
 		m_width = nw;
+		
+	//
+	for (std::vector<char *>::const_iterator it = m_lines.begin(); it != m_lines.end(); it++)
+	{
+		nw = additional_width + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(*it, true); // UTF-8
+		
+		if (nw > m_width)
+		{
+			m_width = nw;
+
+			if(m_width > HINTBOX_MAX_WIDTH)
+				m_width = HINTBOX_MAX_WIDTH;		
+		}
+	}
 }
 
 void CMessageBox::initFrames(void)
@@ -315,8 +206,8 @@ void CMessageBox::initFrames(void)
 	
 	cFrameBox.iWidth = m_width;
 	cFrameBox.iHeight = m_height;
-	cFrameBox.iX = CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - m_width ) >> 1);
-	cFrameBox.iY = CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2);
+	cFrameBox.iX = CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - cFrameBox.iWidth ) >> 1);
+	cFrameBox.iY = CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - cFrameBox.iHeight) >> 2);
 	
 	//
 	widget = CNeutrinoApp::getInstance()->getWidget("messagebox");
@@ -369,55 +260,42 @@ void CMessageBox::refreshPage()
 	//
 	widget->paint();
 
-	//TextBody
-	int yPos  = CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2) + m_theight /*+ (m_fheight >> 1)*/;
-
-	for (ContentLines::iterator it = m_lines.begin() + m_startEntryOfPage[m_currentPage]; it != m_lines.begin() + m_startEntryOfPage[m_currentPage + 1] && it != m_lines.end(); it++)
+	//
+	int count = entries_per_page;
+	int ypos  = cFrameBox.iY + m_theight;
+	
+	for (std::vector<char *>::const_iterator it = m_lines.begin() + (entries_per_page * current_page); ((it != m_lines.end()) && (count > 0)); it++, count--)
 	{
-		int xPos = CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - m_width ) >> 1) + BORDER_LEFT;
-		int maxHeight = 0;
-		
-		for (std::vector<Drawable*>::iterator d = it->begin(); d != it->end(); d++)
-		{
-  			(*d)->draw(xPos, yPos, m_width - BORDER_LEFT - BORDER_RIGHT);
-
-			xPos += (*d)->getWidth() + BORDER_LEFT + BORDER_RIGHT;
-			
-			if ((*d)->getHeight() > maxHeight)
-				maxHeight = (*d)->getHeight();
-		}
-		
-		yPos += maxHeight;
+		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(cFrameBox.iX + BORDER_LEFT, (ypos += g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight()), m_width - 20, *it, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); 
 	}
 
-	// paint scrollbar #TODO
-	if (has_scrollbar()) 
+	// scrollBar #TODO
+	if (entries_per_page < m_lines.size())
 	{
-		yPos = CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2) + m_theight;
-
-		scrollBar.paint(CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - m_width ) >> 1) + m_width - 1 - SCROLLBAR_WIDTH, yPos, m_height - m_theight - m_fheight, m_pages, m_currentPage);
+		int ypos  = cFrameBox.iY + m_theight;
+		scrollBar.paint(cFrameBox.iX + cFrameBox.iWidth - SCROLLBAR_WIDTH, ypos, m_height - m_theight - m_fheight, pages, current_page);
 	}
 }
 
 bool CMessageBox::has_scrollbar(void)
 {
-	return (m_startEntryOfPage.size() > 2);
+	return (entries_per_page < m_lines.size());
 }
 
 void CMessageBox::scroll_up(void)
 {
-	if (m_currentPage > 0)
+	if (current_page > 0)
 	{
-		m_currentPage--;
+		current_page--;
 		refreshPage();
 	}
 }
 
 void CMessageBox::scroll_down(void)
 {
-	if (m_currentPage + 1 < m_startEntryOfPage.size() - 1)
+	if ((entries_per_page * (current_page + 1)) <= m_lines.size())
 	{
-		m_currentPage++;
+		current_page++;
 		refreshPage();
 	}
 }
@@ -448,7 +326,7 @@ void CMessageBox::paintButtons()
 	// horizontal line separator	
 	CFrameBuffer::getInstance()->paintHLineRel(CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - m_width ) >> 1) + BORDER_LEFT, m_width - BORDER_LEFT - BORDER_RIGHT, CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2) + m_height - m_fheight, COL_MENUCONTENT_PLUS_5);
 		
-	//irgendwann alle vergleichen - aber cancel ist sicher der l�ngste
+	//
 	int MaxButtonTextWidth = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(_("Cancel"), true) + 5; // UTF-8
 
 	int iw, ih;
@@ -641,7 +519,7 @@ int CMessageBox::exec(int timeout)
 	return result;
 }
 
-// helpers
+////
 int MessageBox(const char * const Caption, const char * const Text, const CMessageBox::result_ Default, const uint32_t ShowButtons, const char * const Icon, const int Width, const int timeout, bool returnDefaultOnTimeout, const int border)
 {
    	CMessageBox * messageBox = new CMessageBox(Caption, Text, Width, Icon, Default, ShowButtons);

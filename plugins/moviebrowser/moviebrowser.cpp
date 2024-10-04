@@ -62,19 +62,19 @@
 #include <system/tmdbparser.h>
 
 
-//
+////
 extern "C" void plugin_exec(void);
 extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
 
-//
+////
 #define my_scandir scandir64
 #define my_alphasort alphasort64
 typedef struct stat64 stat_struct;
 typedef struct dirent64 dirent_struct;
 #define my_stat stat64
 
-// tstool
+//// tstool
 extern off64_t get_full_len(char * startname);
 extern off64_t truncate_movie(MI_MOVIE_INFO * minfo);
 extern off64_t cut_movie(MI_MOVIE_INFO * minfo, CMovieInfo * cmovie);
@@ -3114,16 +3114,19 @@ int CMovieHelp::exec(CMenuTarget* /*parent*/, const std::string&/*actionKey*/)
 	CFrameBuffer::getInstance()->paintBackground();
 	CFrameBuffer::getInstance()->blit();
 
-	CHelpBox helpbox;
+	CHelpBox *helpbox = new CHelpBox(_("Information"));
 
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_RED, "Sortierung ändern");
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_GREEN, "Filterfenster einblenden");
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_YELLOW, "Aktives Fenster wechseln");
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_BLUE, "Filminfos neu laden");
-	helpbox.addLine(NEUTRINO_ICON_BUTTON_SETUP, "Hauptmenü");
-	helpbox.addLine("'+/-'  Ansicht wechseln");
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_RED, __("Change order"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_GREEN, "Show Filter");
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_YELLOW, "Change focus");
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_BLUE, "Reload Movies");
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_SETUP, "Main Menu");
+	helpbox->addLine("'+/-'  Change GUI");
 
-	helpbox.show(__("Information"));
+	helpbox->exec();
+	
+	delete helpbox;
+	helpbox = NULL;
 
 	return RETURN_REPAINT;
 }

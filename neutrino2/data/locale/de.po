@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-09-29 18:40+0200\n"
+"POT-Creation-Date: 2024-10-04 08:37+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -353,6 +353,9 @@ msgstr "Kabel:"
 
 msgid "Cancel"
 msgstr "Abbrechen"
+
+msgid "Cancel movie cut/split ?"
+msgstr ""
 
 msgid "Caps"
 msgstr "Größe Schreibung"

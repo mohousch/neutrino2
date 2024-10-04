@@ -601,7 +601,10 @@ struct SNeutrinoSettings
 #define MESSAGEBOX_WIDTH			650
 
 // helpBox
+#define HELPBOX_MAX_HEIGHT 			0.4*DEFAULT_XRES
+#define HELPBOX_MAX_WIDTH  			(g_settings.screen_EndX - g_settings.screen_StartX )
 #define HELPBOX_WIDTH				650
+#define HELPBOX_HEIGHT				450
 
 // 
 #define PIC_W 					0.25*DEFAULT_XRES  //320

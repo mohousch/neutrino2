@@ -64,7 +64,6 @@
 
 // widget
 #include <gui/widget/icons.h>
-#include <gui/widget/drawable.h>
 #include <gui/widget/widget_helpers.h>
 #include <gui/widget/progresswindow.h>
 #include <gui/widget/messagebox.h>

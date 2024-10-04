@@ -3219,3 +3219,5 @@
 /debian/var/tuxbox/config/skins/neutrino/buttons/btn_option_on_active.png
 /debian/var/tuxbox/config/skins/neutrino/buttons/btn_option_on_inactive.png
 /neutrinong2_5.1_1685_all.deb
+/neutrino2/src/system/.deps/tstool.Po
+/neutrino2/src/system/tstool.o

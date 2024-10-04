@@ -66,12 +66,11 @@
 
 
 #define gTmpPath 					"/var/tmp/"
-#define gUserAgent 					"neutrino/softupdater 1.0"
+#define gUserAgent 					"NeutrinoNG/softupdater 1.0"
 
 #define LIST_OF_UPDATES_LOCAL_FILENAME 			"update.list"
 #define RELEASE_CYCLE                  			PACKAGE_VERSION
 #define RELEASE_TYPE					"Snapshot" // FIXME:
-#define FILEBROWSER_UPDATE_FILTER      			"img"
 
 //FIXME: add the right mtd part (meaned is roofs, on some boxes this contains also kernel) for your boxtype bevor u use this
 //NOTE: be carefull with this
@@ -127,6 +126,15 @@ CFlashUpdate::CFlashUpdate(int uMode)
 		allow_flash = false;
 }
 
+CFlashUpdate::~CFlashUpdate()
+{
+	if (progressWindow)
+	{
+		delete progressWindow;
+		progressWindow = NULL;
+	}
+}
+
 bool CFlashUpdate::selectHttpImage(void)
 {
 	CHTTPTool httpTool;
@@ -140,6 +148,8 @@ bool CFlashUpdate::selectHttpImage(void)
 
 	//
 	httpTool.setTitle(_("Software update"));
+	
+//	httpTool.setStatusViewer(progressWindow);
 //	progressWindow->showStatusMessageUTF(_("getting update list")); // UTF-8
 
 	// NOTE: remember me : i dont like this menu GUI
@@ -155,7 +165,7 @@ bool CFlashUpdate::selectHttpImage(void)
 	else
 	{
 		//
-		widget = new CWidget(0, 0, 600, MENU_HEIGHT);
+		widget = new CWidget(0, 0, 800, MENU_HEIGHT);
 		widget->name = "selecthttpimage";
 		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
@@ -239,7 +249,7 @@ bool CFlashUpdate::selectHttpImage(void)
 				
 				descriptions.push_back(description);
 				
-				if(!allow_flash && (versionInfo.snapshot < '3'))
+				if (!allow_flash && (versionInfo.snapshot < '3')) // image
 					enabled = false;
 
 				SelectionWidget->addItem(new CMenuForwarder(names[i].c_str(), enabled, descriptions[i].c_str(), new CUpdateMenuTarget(i, &selected), NULL, CRCInput::RC_nokey, NEUTRINO_ICON_UPDATE_SMALL ));
@@ -351,7 +361,7 @@ bool CFlashUpdate::checkVersion4Update()
 		CFileBrowser UpdatesBrowser;
 		CFileFilter UpdatesFilter; 
 		 
-		UpdatesFilter.addFilter(FILEBROWSER_UPDATE_FILTER);
+		UpdatesFilter.addFilter("img");
 		UpdatesFilter.addFilter("txt");
 		UpdatesFilter.addFilter("ipk");
 
@@ -434,7 +444,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 //	progressWindow->paint();
 //	progressWindow->showGlobalStatus(20);
 
-	// get package / image / md5
+	// get package / image and  md5_check
 	if(updateMode == UPDATEMODE_INTERNET) //internet-update
 	{
 		char * fname = rindex(const_cast<char *>(filename.c_str()), '/') +1;
@@ -455,7 +465,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 		{
 			// remove flash/package
 			remove(filename.c_str());
-	//		progressWindow->hide();
+//			progressWindow->hide();
 			HintBox(_("Error"), (fileType < '3')? _("image has errors") : _("package has errors"), 600, 5, NEUTRINO_ICON_ERROR); // UTF-8
 
 			return CMenuTarget::RETURN_REPAINT;
@@ -466,8 +476,8 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 //	progressWindow->showStatusMessageUTF(_("MD5 checking")); // UTF-8
 //	progressWindow->showGlobalStatus(60);
 
-	// flash/install
-	dprintf(DEBUG_NORMAL, "filename %s type %c\n", filename.c_str(), fileType);
+	// install
+	dprintf(DEBUG_NORMAL, "install filename %s type %c\n", filename.c_str(), fileType);
 
 	// flashimage
 	if( fileType < '3') 
@@ -478,27 +488,28 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 		if (allow_flash)
 		{
 			ft.setMTDDevice(MTD_DEVICE_OF_UPDATE_PART);
-			ft.setStatusViewer(progressWindow);
+//			ft.setStatusViewer(progressWindow);
 			
-			//
+			// save settings
 			CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 			sleep(2);
 			
 			// flash it...
 			if(!ft.program(filename, 80, 100))
 			{
-				// remove flash if flashing failed
+				// remove filee if flashing failed
 				remove(filename.c_str());
-	//			progressWindow->hide();
+//				progressWindow->hide();
+	
 				HintBox(_("Error"), _(ft.getErrorMessage().c_str()), 600, 5, NEUTRINO_ICON_ERROR); // UTF-8
 
 				return CMenuTarget::RETURN_REPAINT;
 			}
 
 			//status anzeigen
-	//		progressWindow->showGlobalStatus(100);
-	//		progressWindow->showStatusMessageUTF(_("Package successfully installed")); // UTF-8
-	//		progressWindow->hide();
+//			progressWindow->showGlobalStatus(100);
+//			progressWindow->showStatusMessageUTF(_("Image successfully installed")); // UTF-8
+//			progressWindow->hide();
 
 			// Unmount all NFS & CIFS volumes
 			nfs_mounted_once = false;
@@ -1016,12 +1027,18 @@ int CUpdateSettings::showMenu()
 
 	CConfigFile lconfigfile('\t');
 	
+	std::string versionString = "1201201205091849";
+	
 	lconfigfile.loadConfig("/etc/imageversion");
 	
-	std::string releaseCycle = lconfigfile.getString("RELEASE_CYCLE", PACKAGE_VERSION);
-	std::string releaseType = lconfigfile.getString("RELEASE_TYPE", "Snapshot");
-	std::string date = lconfigfile.getString("RELEASE_DATE", __DATE__);
-	std::string time = lconfigfile.getString("RELEASE_TIME", __TIME__);
+	versionString = lconfigfile.getString( "version", "1201201205091849").c_str();
+	
+	static CFlashVersionInfo versionInfo(versionString);
+	
+	std::string releaseCycle = versionInfo.getReleaseCycle(); 	//lconfigfile.getString("RELEASE_CYCLE", PACKAGE_VERSION);
+	std::string releaseType = versionInfo.getType(); 		//lconfigfile.getString("RELEASE_TYPE", "Snapshot");
+	std::string date = versionInfo.getDate(); 			//lconfigfile.getString("RELEASE_DATE", __DATE__);
+	std::string time = versionInfo.getTime();			//lconfigfile.getString("RELEASE_TIME", __TIME__);
 
 	// release cycle
 	updateSettings->addItem(new CMenuForwarder(_("Release cycle"), false, releaseCycle.c_str()));

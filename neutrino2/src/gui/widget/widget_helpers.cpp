@@ -1002,7 +1002,7 @@ void CCText::processTextToArray(std::string text) // UTF-8
 	std::string aktWord = "";
 	int aktWidth = 0;
 	text += ' ';
-	char* text_ = (char*) text.c_str();
+	char *text_ = (char *)text.c_str();
 
 	while(*text_ != 0)
 	{

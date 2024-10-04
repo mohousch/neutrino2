@@ -25,7 +25,6 @@ libneutrino2_gui_widget_a_SOURCES = \
 	menue.cpp
 
 libneutrino2_gui_widget2_a_SOURCES = \
-	drawable.cpp \
 	progresswindow.cpp \
 	infobox.cpp \
 	messagebox.cpp \

@@ -29,9 +29,14 @@
 
 CHTTPTool::CHTTPTool()
 {
-	statusViewer = new CProgressWindow();
+	statusViewer = NULL;
 	
 	userAgent = "NeutrinoNG/httpdownloader";
+}
+
+void CHTTPTool::setStatusViewer( CProgressWindow *statusview )
+{
+	statusViewer = statusview;
 }
 
 void CHTTPTool::setTitle(const char * const title)
@@ -52,7 +57,7 @@ int CHTTPTool::show_progress(void * clientp, double dltotal, double dlnow, doubl
 		
 		if(hTool->iGlobalProgressEnd != -1)
 		{
-			int globalProg = hTool->iGlobalProgressBegin + int((hTool->iGlobalProgressEnd-hTool->iGlobalProgressBegin) * progress/100. );
+			int globalProg = hTool->iGlobalProgressBegin + int((hTool->iGlobalProgressEnd - hTool->iGlobalProgressBegin) * progress/100. );
 
 			hTool->statusViewer->showGlobalStatus(globalProg);
 		}
@@ -97,12 +102,10 @@ bool CHTTPTool::downloadFile(const std::string &URL, const char * const download
 		curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, this);
 		curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0);
 		curl_easy_setopt(curl, CURLOPT_USERAGENT, userAgent.c_str());
-		//curl_easy_setopt(curl, CURLOPT_FAILONERROR, 1);
 		
 		curl_easy_setopt(curl, CURLOPT_NOSIGNAL, (long)1);
 		curl_easy_setopt(curl, CURLOPT_TIMEOUT, 1800);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
-		//curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
 
 		if(strcmp(g_settings.softupdate_proxyserver, "") != 0)
 		{

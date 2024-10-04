@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: hintbox.cpp 2013/10/12 mohousch Exp $
+	$Id: hintbox.cpp 03112024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -42,33 +42,38 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 	//
 	widget = NULL;
 	headers = NULL;
-		
+	line.clear();
+
+	caption = Caption;
+	message = strdup(Text);
+
+	// initFrames
+	cFrameBox.iWidth = Width;
+
+	cFrameBoxTitle.iHeight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight();
+	cFrameBoxItem.iHeight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();			// min 1 line
+	cFrameBox.iHeight = cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight + cFrameBoxTitle.iHeight;	// 
+
 	//
 	char * begin;
 	char * pos;
-	int    nw;
-
-	message = strdup(Text);
-
-	cFrameBox.iWidth   = Width;
-
-	cFrameBoxTitle.iHeight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight();
-	cFrameBoxItem.iHeight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();
-	cFrameBox.iHeight = cFrameBoxTitle.iHeight + 2*cFrameBoxItem.iHeight;
-
-	caption = Caption;
-
+	int    nw = cFrameBox.iWidth;
+	unsigned int additional_width = 0;
+	
 	begin = message;
 
 	// recalculate height
 	while (true)
 	{
 		cFrameBox.iHeight += cFrameBoxItem.iHeight;
+		
 		if (cFrameBox.iHeight > HINTBOX_MAX_HEIGHT)
 			cFrameBox.iHeight -= cFrameBoxItem.iHeight;
 
 		line.push_back(begin);
+		
 		pos = strchr(begin, '\n');
+		
 		if (pos != NULL)
 		{
 			*pos = 0;
@@ -78,24 +83,27 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 			break;
 	}
 	
-	entries_per_page = ((cFrameBox.iHeight - cFrameBoxTitle.iHeight) / cFrameBoxItem.iHeight) - 1;
+	entries_per_page = ((cFrameBox.iHeight - 2*cFrameBoxTitle.iHeight ) / cFrameBoxItem.iHeight);
 	current_page = 0;
-
-	unsigned int additional_width;
+	pages = (line.size() + entries_per_page - 1) / entries_per_page;
 
 	if (entries_per_page < line.size())
 		additional_width = BORDER_LEFT + BORDER_RIGHT + SCROLLBAR_WIDTH;
 	else
 		additional_width = BORDER_LEFT + BORDER_RIGHT;
-
+	
 	if (Icon != NULL)
 	{
 		iconfile = Icon;
-		additional_width += BORDER_LEFT + BORDER_RIGHT + 2*ICON_OFFSET;
+		
+		int iw, ih;
+		CFrameBuffer::getInstance()->getIconSize(iconfile.c_str(), &iw, &ih);
+		additional_width += iw + ICON_OFFSET; 
 	}
 	else
 		iconfile = "";
 
+	// check if title is bigger than our box
 	nw = additional_width + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getRenderWidth(caption); // UTF-8
 
 	if (nw > cFrameBox.iWidth)
@@ -104,6 +112,7 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 	for (std::vector<char *>::const_iterator it = line.begin(); it != line.end(); it++)
 	{
 		nw = additional_width + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(*it, true); // UTF-8
+		
 		if (nw > cFrameBox.iWidth)
 		{
 			cFrameBox.iWidth = nw;
@@ -155,6 +164,7 @@ CHintBox::~CHintBox(void)
 	dprintf(DEBUG_INFO, "CHintBox::del: (%s)\n", caption.c_str());
 
 	free(message);
+	line.clear();
 	
 	if (widget)
 	{
@@ -201,13 +211,13 @@ void CHintBox::refreshPage(void)
 
 	for (std::vector<char *>::const_iterator it = line.begin() + (entries_per_page * current_page); ((it != line.end()) && (count > 0)); it++, count--)
 	{
-		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(cFrameBox.iX + BORDER_LEFT, (ypos += cFrameBoxItem.iHeight), cFrameBox.iWidth, *it, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); 
+		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(cFrameBox.iX + BORDER_LEFT, (ypos += cFrameBoxItem.iHeight), cFrameBox.iWidth - 20, *it, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); 
 	}
 
 	// scrollBar #TODO
 	if (entries_per_page < line.size())
 	{
-		ypos = cFrameBox.iY + cFrameBoxTitle.iHeight;
+		int ypos = cFrameBox.iY + cFrameBoxTitle.iHeight;
 
 		scrollBar.paint(cFrameBox.iX + cFrameBox.iWidth - SCROLLBAR_WIDTH, ypos, entries_per_page*cFrameBoxItem.iHeight, (line.size() + entries_per_page - 1) / entries_per_page, current_page);
 	}	
@@ -281,9 +291,9 @@ int CHintBox::exec(int timeout)
 		{
 			res = messages_return::cancel_info;
 		}
-		else if ((has_scrollbar()) && ((msg == CRCInput::RC_up) || (msg == CRCInput::RC_down)))
+		else if (has_scrollbar() && ((msg == CRCInput::RC_up) || (msg == CRCInput::RC_down) || (msg == CRCInput::RC_page_up) || (msg == CRCInput::RC_page_down)))
 		{
-			if (msg == CRCInput::RC_up)
+			if ( (msg == CRCInput::RC_up) || (msg == CRCInput::RC_page_up))
 				scrollPageUp();
 			else
 				scrollPageDown();
@@ -300,16 +310,7 @@ int CHintBox::exec(int timeout)
 		}
 		else
 		{
-			res = CNeutrinoApp::getInstance()->handleMsg(msg, data);
-			
-			//FIXME:
-			if (res & messages_return::unhandled)
-			{
-				dprintf(DEBUG_DEBUG, "CHintBox::exec: message unhandled\n");
-
-				//res = messages_return::cancel_info;
-				//g_RCInput->postMsg(msg, data);
-			}
+			CNeutrinoApp::getInstance()->handleMsg(msg, data);
 		}
 
 		CFrameBuffer::getInstance()->blit();	
@@ -333,6 +334,7 @@ int CHintBox::exec(int timeout)
 	return res;
 }
 
+////
 int HintBox(const char * const Caption, const char * const Text, const int Width, int timeout, const char * const Icon, const int border)
 {
 	int res = messages_return::none;

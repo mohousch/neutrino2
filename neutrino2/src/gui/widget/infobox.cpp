@@ -49,6 +49,74 @@
 const struct button_label HButton = { NEUTRINO_ICON_BUTTON_HELP, " ", 0 };
 const struct button_label FButton = { NEUTRINO_ICON_INFO, " ", 0 };
 
+CInfoBox::CInfoBox(const int x, const int y, const int dx, const int dy, const char * title, const char * icon)
+{
+	//
+	widget = NULL;
+	m_pcTextBox = NULL;
+	headers = NULL;
+	footers = NULL;
+	
+	//
+	initVar();
+
+	if(title != NULL)		
+		m_cTitle = title;
+	
+	if(icon != NULL)		
+		m_cIcon = icon;
+	
+//	if(position != NULL)	
+//		m_cBoxFrame = *position;
+
+	CBox position(x, y, dx, dy); 
+
+	m_cBoxFrame = position;
+
+	// initialise the window frames first
+	initFrames();
+
+	//
+	m_cBoxFrame.iX = g_settings.screen_StartX + ((g_settings.screen_EndX - g_settings.screen_StartX - m_cBoxFrame.iWidth) >>1);
+	m_cBoxFrame.iY = g_settings.screen_StartY + ((g_settings.screen_EndY - g_settings.screen_StartY - m_cBoxFrame.iHeight) >>1);
+	//
+	widget = CNeutrinoApp::getInstance()->getWidget("infobox");
+	
+	if (widget)
+	{
+		headers = (CCHeaders*)widget->getCCItem(CComponent::CC_HEAD);
+		footers = (CCFooters*)widget->getCCItem(CComponent::CC_FOOT);
+		m_pcTextBox = (CTextBox*)widget->getCCItem(CComponent::CC_TEXTBOX);
+	}
+	else
+	{
+		//
+		widget = new CWidget(&m_cBoxFrame);
+		headers = new CCHeaders();
+		footers = new CCFooters();
+		m_pcTextBox = new CTextBox(&m_cBoxFrameText);
+		
+		widget->addCCItem(m_pcTextBox);
+		widget->addCCItem(headers);
+		widget->addCCItem(footers);
+	}
+	
+	if (m_pcTextBox)
+	{
+		m_pcTextBox->setPosition(&m_cBoxFrameText);
+	}
+	
+	if (headers)
+	{
+		headers->setButtons(&HButton, 1);
+	}
+	
+	if (footers)
+	{
+		footers->setButtons(&FButton, 1);
+	}
+}
+
 CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 {
 	//
