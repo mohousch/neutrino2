@@ -448,9 +448,6 @@ int CScanSetup::showScanService()
 	// 
 	dmode = fe->diseqcType;
 	
-	// load frontendconfig ???
-//	CZapit::getInstance()->loadFrontendConfig();
-	
 	// load motorposition
 #if HAVE_DVB_API_VERSION >= 5
 	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
@@ -501,8 +498,6 @@ int CScanSetup::showScanService()
 	oldLcdMode = CLCD::getInstance()->getMode();
 	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Scan transponder"));
-	
-	scansetup->clear();
 	
 	// intros
 	scansetup->addItem(new CMenuForwarder(_("back")));
