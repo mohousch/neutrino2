@@ -38,41 +38,167 @@
 #include <gui/widget/helpbox.h>
 
 
+////
+Drawable::Drawable()
+{	
+}
+
+Drawable::~Drawable()
+{
+}
+
+int Drawable::getWidth(void)
+{
+	return m_width;
+}
+
+int Drawable::getHeight(void)
+{
+	return m_height;
+}
+
+Drawable::DType Drawable::getType(void)
+{
+	return Drawable::DTYPE_DRAWABLE;
+}
+
+// DText
+DText::DText(std::string& text) 
+{
+	m_text = text;
+	m_font = g_Font[SNeutrinoSettings::FONT_TYPE_MENU];
+	m_color = COL_MENUCONTENT_TEXT_PLUS_0;
+	m_background = false;
+
+	init();
+}
+
+DText::DText(const char *text)
+{
+	m_text = std::string(text);
+	m_font = g_Font[SNeutrinoSettings::FONT_TYPE_MENU];
+	m_color = COL_MENUCONTENT_TEXT_PLUS_0;
+	m_background = false;
+
+	init();
+}
+
+void DText::init()
+{
+	m_width = m_font->getRenderWidth(m_text, true); // UTF-8
+	m_height = m_font->getHeight() + 4;	
+}
+
+void DText::draw(int x, int y, int width)
+{
+	m_font->RenderString(x, y + m_font->getHeight() + 2, width, m_text.c_str(), m_color, 0, true, m_background); // UTF-8	
+}
+
+Drawable::DType DText::getType(void)
+{
+	return Drawable::DTYPE_TEXT;
+}
+
+// DIcon
+DIcon::DIcon(std::string& icon)
+{
+	m_icon = icon;
+	init();
+}
+
+DIcon::DIcon(const char *icon)
+{
+	m_icon = std::string(icon);
+	init();
+}
+
+void DIcon::init()
+{
+	CFrameBuffer::getInstance()->getIconSize(m_icon.c_str(), &m_width, &m_height);
+
+	m_height = m_height + 4;
+}
+
+void DIcon::draw(int x, int y, int)
+{
+	CFrameBuffer::getInstance()->paintIcon(m_icon.c_str(), x, y + 2);	
+}
+
+Drawable::DType DIcon::getType(void)
+{
+	return Drawable::DTYPE_ICON;
+}
+
+// DSeparator
+DSeparator::DSeparator()
+{
+	m_height = 10;
+	m_width = 0;
+}
+
+void DSeparator::draw(int x, int y, int width)
+{
+	int height = 10;
+
+	// line
+	CFrameBuffer::getInstance()->paintHLineRel(x + BORDER_LEFT, width - BORDER_LEFT - BORDER_RIGHT, y + (height >> 1), COL_MENUCONTENTDARK_PLUS_0 );
+
+	CFrameBuffer::getInstance()->paintHLineRel(x + BORDER_LEFT, width - BORDER_LEFT - BORDER_RIGHT, y + (height >> 1) + 1, COL_MENUCONTENTDARK_PLUS_0 );	
+}
+
+Drawable::DType DSeparator::getType(void)
+{
+	return Drawable::DTYPE_SEPARATOR;
+}
+
+// DPageBreak
+DPagebreak::DPagebreak()
+{
+	m_height = 0;
+	m_width = 0;
+}
+
+void DPagebreak::draw(int, int, int)
+{
+}
+
+Drawable::DType DPagebreak::getType(void)
+{
+	return Drawable::DTYPE_PAGEBREAK;
+}
+
+////
 CHelpBox::CHelpBox(const char* const Caption, const int Width, const char * const Icon)
 {
-	dprintf(DEBUG_INFO, "Helpbox::\n");
-	
-	m_width = Width;
-	m_theight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6; 	// title
-	m_fheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6; 	// foot
-	m_iheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();		// item
-	m_height = HELPBOX_HEIGHT;
-
-	m_caption = Caption? Caption : "";
-	m_iconfile = Icon? Icon : "";
+	dprintf(DEBUG_INFO, "CHelpBox::CMessageBox\n");
 	
 	widget = NULL;
 	headers = NULL;
+	
 	m_lines.clear();
 	
-	pages = 1;
+	m_width = Width;
 	
-	//
-	init();
+	m_iconfile = Icon? Icon : "";
+	m_caption = Caption? Caption : "";
 		
 	//
 	borderMode = CComponent::BORDER_NO;
 	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
-		
-	// initFrames
-	initFrames();
 }
 
-CHelpBox::~CHelpBox()
+CHelpBox::~CHelpBox(void)
 {
-	dprintf(DEBUG_INFO, "~Helpbox::\n");
+	dprintf(DEBUG_INFO, "CHelpBox::del:\n");
 
-	m_lines.clear();
+	//
+	for (ContentLines::iterator it = m_lines.begin(); it != m_lines.end(); it++)
+	{
+		for (std::vector<Drawable*>::iterator it2 = it->begin(); it2 != it->end(); it2++)
+		{
+			delete *it2;
+		}
+	}
 	
 	hide();
 	
@@ -86,18 +212,105 @@ CHelpBox::~CHelpBox()
 void CHelpBox::init()
 {
 	dprintf(DEBUG_INFO, "CHelpBox::init\n");
-			
-	//		
-	pages = 1;
-	entries_per_page = ((m_height - m_theight - m_fheight ) / m_iheight);
-	current_page = 0;
-	pages = (m_lines.size() + entries_per_page - 1) / entries_per_page;
 	
-	//
-	int nw = m_width;
-	unsigned int additional_width = 0;
+	int nw = 0;
+	m_theight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
+	m_fheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
+	m_iheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();
+	m_height  = HELPBOX_HEIGHT;
+	m_maxEntriesPerPage = 0;
 
-	if (entries_per_page < m_lines.size())
+	int page = 0;
+	int line = 0;
+	int maxWidth = HELPBOX_MAX_WIDTH;
+	int maxOverallHeight = 0;
+	m_startEntryOfPage.push_back(0);
+	
+	for (ContentLines::iterator it = m_lines.begin(); it!= m_lines.end(); it++)
+	{
+		bool pagebreak = false;
+		int maxHeight = 0;
+		int lineWidth = 0;
+		int count = 0;
+		
+		for (std::vector<Drawable*>::iterator item = it->begin(); item != it->end(); item++) 
+		{
+			//
+			if ((*item)->getType() == Drawable::DTYPE_TEXT)
+				m_iheight = (*item)->getHeight();
+			
+			//
+			if ((*item)->getHeight() > maxHeight)
+				maxHeight += (*item)->getHeight();
+
+			lineWidth += (*item)->getWidth();
+
+			if ((*item)->getType() == Drawable::DTYPE_PAGEBREAK)
+				pagebreak = true;
+			
+			count++;
+		}
+		
+		// 10 pixels left and right of every item. determined empirically :-(
+		lineWidth += count * (BORDER_LEFT + BORDER_RIGHT);
+		
+		if (lineWidth > m_width)
+			maxWidth = lineWidth;
+		else if (lineWidth > (HELPBOX_MAX_WIDTH - 20))
+			maxWidth = HELPBOX_MAX_WIDTH - 20;
+		else if (lineWidth < m_width)
+			maxWidth = m_width;
+
+//		m_height += maxHeight;
+//		m_height += m_iheight;
+		
+		if (maxHeight > HELPBOX_MAX_HEIGHT || pagebreak) 
+		{
+			if (maxHeight > maxOverallHeight)
+				maxOverallHeight = maxHeight;
+//			if (m_height - m_iheight > maxOverallHeight)
+//				maxOverallHeight = m_height - m_iheight;
+			
+//			m_theight + m_iheight + m_fheight;
+//			m_height = HELPBOX_HEIGHT; 
+			
+			if (pagebreak)
+				m_startEntryOfPage.push_back(line + 1);
+			else 
+				m_startEntryOfPage.push_back(line);
+			
+			page++;
+			
+			if (m_maxEntriesPerPage < (m_startEntryOfPage[page] - m_startEntryOfPage[page -1]))
+			{
+				m_maxEntriesPerPage = m_startEntryOfPage[page] - m_startEntryOfPage[page -1];
+			}
+		}
+		
+		line++;
+	}
+
+	m_width = maxWidth;
+	
+	// if there is only one page m_height is already correct 
+	//but m_maxEntries has not been set
+	if (m_startEntryOfPage.size() > 1)
+	{
+		m_height = maxOverallHeight;
+		m_width += SCROLLBAR_WIDTH; // scroll bar
+	} 
+	else 
+	{
+		m_maxEntriesPerPage = line;
+	}
+
+	m_startEntryOfPage.push_back(line + 1); // needed to calculate amount of items on last page
+
+	m_currentPage = 0;
+	m_pages = page + 1;
+	unsigned int additional_width;
+
+	if (m_startEntryOfPage.size() > 1)
 		additional_width = BORDER_LEFT + BORDER_RIGHT + SCROLLBAR_WIDTH;
 	else
 		additional_width = BORDER_LEFT + BORDER_RIGHT;
@@ -106,7 +319,7 @@ void CHelpBox::init()
 	{
 		int iw, ih;
 		CFrameBuffer::getInstance()->getIconSize(m_iconfile.c_str(), &iw, &ih);
-		additional_width += iw + ICON_OFFSET; 
+		additional_width += BORDER_LEFT + iw + ICON_OFFSET; 
 	}
 	else
 		m_iconfile = "";
@@ -115,29 +328,15 @@ void CHelpBox::init()
 
 	if (nw > m_width)
 		m_width = nw;
-		
-	//
-	for (std::vector<char *>::const_iterator it = m_lines.begin(); it != m_lines.end(); it++)
-	{
-		nw = additional_width + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(*it, true); // UTF-8
-		
-		if (nw > m_width)
-		{
-			m_width = nw;
-
-			if(m_width > HINTBOX_MAX_WIDTH)
-				m_width = HINTBOX_MAX_WIDTH;		
-		}
-	}
 }
 
 void CHelpBox::initFrames(void)
 {
-	dprintf(DEBUG_INFO, "CMessageBox::initFrames\n");
+	dprintf(DEBUG_INFO, "CHelpBox::initFrames\n");
 	
 	cFrameBox.iWidth = m_width;
 	cFrameBox.iHeight = m_height;
-	cFrameBox.iX = CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - cFrameBox.iWidth ) >> 1);
+	cFrameBox.iX = CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - cFrameBox.iWidth) >> 1);
 	cFrameBox.iY = CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - cFrameBox.iHeight) >> 2);
 	
 	//
@@ -166,10 +365,6 @@ void CHelpBox::paint(void)
 {
 	dprintf(DEBUG_INFO, "CHelpBox::paint\n");
 	
-	//
-	init();
-	initFrames();
-	
 	// 
 	widget->setPosition(&cFrameBox);
 	widget->setBorderMode(borderMode);
@@ -179,7 +374,7 @@ void CHelpBox::paint(void)
 	// title
 	if (headers)
 	{
-		headers->setPosition(borderMode? CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - m_width ) >> 1) + 2 : CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - m_width ) >> 1), borderMode? CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2) + 2 : CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2), borderMode? m_width - 4 : m_width, m_theight);
+		headers->setPosition(borderMode? cFrameBox.iX + 2 : cFrameBox.iX, borderMode? cFrameBox.iY + 2 : cFrameBox.iY, borderMode? m_width - 4 : m_width, m_theight);
 	
 		headers->setTitle(m_caption.c_str());
 		headers->setIcon(m_iconfile.c_str());
@@ -195,42 +390,55 @@ void CHelpBox::refreshPage()
 	//
 	widget->paint();
 
-	//
-	int count = entries_per_page;
-	int ypos  = cFrameBox.iY + m_theight;
-	
-	for (std::vector<char *>::const_iterator it = m_lines.begin() + (entries_per_page * current_page); ((it != m_lines.end()) && (count > 0)); it++, count--)
+	//TextBody
+	int yPos  = cFrameBox.iY + m_theight;
+
+	for (ContentLines::iterator it = m_lines.begin() + m_startEntryOfPage[m_currentPage]; it != m_lines.begin() + m_startEntryOfPage[m_currentPage + 1] && it != m_lines.end(); it++)
 	{
-		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(cFrameBox.iX + BORDER_LEFT, (ypos += g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight()), m_width - 20, *it, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); 
+		int xPos = cFrameBox.iX + BORDER_LEFT;
+		int maxHeight = 0;
+		
+		for (std::vector<Drawable*>::iterator d = it->begin(); d != it->end(); d++)
+		{
+  			(*d)->draw(xPos, yPos, m_width - BORDER_LEFT - BORDER_RIGHT);
+
+			xPos += (*d)->getWidth() + BORDER_LEFT + BORDER_RIGHT;
+			
+			if ((*d)->getHeight() > maxHeight)
+				maxHeight = (*d)->getHeight();
+		}
+		
+		yPos += maxHeight;
 	}
 
-	// scrollBar #TODO
-	if (entries_per_page < m_lines.size())
+	// paint scrollbar #TODO
+	if (has_scrollbar()) 
 	{
-		int ypos  = cFrameBox.iY + m_theight;
-		scrollBar.paint(cFrameBox.iX + cFrameBox.iWidth - SCROLLBAR_WIDTH, ypos, m_height - m_theight - m_fheight, pages, current_page);
+		yPos = cFrameBox.iY + m_theight;
+
+		scrollBar.paint(cFrameBox.iX + m_width - 1 - SCROLLBAR_WIDTH, yPos, m_height - m_theight - m_fheight, m_pages, m_currentPage);
 	}
 }
 
 bool CHelpBox::has_scrollbar(void)
 {
-	return (entries_per_page < m_lines.size());
+	return (m_startEntryOfPage.size() > 2);
 }
 
 void CHelpBox::scroll_up(void)
 {
-	if (current_page > 0)
+	if (m_currentPage > 0)
 	{
-		current_page--;
+		m_currentPage--;
 		refreshPage();
 	}
 }
 
 void CHelpBox::scroll_down(void)
 {
-	if ((entries_per_page * (current_page + 1)) <= m_lines.size())
+	if (m_currentPage + 1 < m_startEntryOfPage.size() - 1)
 	{
-		current_page++;
+		m_currentPage++;
 		refreshPage();
 	}
 }
@@ -242,25 +450,38 @@ void CHelpBox::hide(void)
 	widget->hide();
 }
 
-
-void CHelpBox::addLine(const char *text)
+void CHelpBox::addLine(const char* const text)
 {
-	char *begin = strdup(text);
-	m_lines.push_back(begin);
+	std::vector<Drawable*> v;
+	Drawable *d = new DText(text);
+	v.push_back(d);
+	m_lines.push_back(v);
 }
 
-void CHelpBox::addLine(const char *icon, const char *text)
+void CHelpBox::addLine(const char* const icon, const char* const text)
 {
-	char *begin = strdup(text);
-	m_lines.push_back(begin);
+	std::vector<Drawable*> v;
+	Drawable *di = new DIcon(icon);
+	Drawable *dt = new DText(text);
+	v.push_back(di);
+	v.push_back(dt);
+	m_lines.push_back(v);
 }
 
 void CHelpBox::addSeparator(void)
 {
+	std::vector<Drawable*> v;
+	Drawable *p = new DSeparator();
+	v.push_back(p);
+	m_lines.push_back(v);
 }
 
 void CHelpBox::addPagebreak(void)
 {
+	std::vector<Drawable*> v;
+	Drawable *p = new DPagebreak();
+	v.push_back(p);
+	m_lines.push_back(v);
 }
 
 int CHelpBox::exec(int timeout)
@@ -271,6 +492,10 @@ int CHelpBox::exec(int timeout)
 	neutrino_msg_data_t data;
 	
 	int result = messages_return::none;
+	
+	//
+	init();
+	initFrames();
 
 	// paint
 	paint();

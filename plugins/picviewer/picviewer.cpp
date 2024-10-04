@@ -160,11 +160,10 @@ void CPicViewer::openFileBrowser()
 	}
 }
 
-#define HEAD_BUTTONS_COUNT	2
+#define HEAD_BUTTONS_COUNT	1
 const struct button_label HeadButtons[HEAD_BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_SETUP, " " },
-	{ NEUTRINO_ICON_BUTTON_HELP, " " }
+	{ NEUTRINO_ICON_BUTTON_SETUP, " " }
 };
 
 #define FOOT_BUTTONS_COUNT 4
@@ -223,8 +222,6 @@ void CPicViewer::showMenu()
 	plist->enablePaintItemInfo();
 
 	//
-	widget->addKey(CRCInput::RC_info, this, CRCInput::getSpecialKeyName(CRCInput::RC_info));
-	widget->addKey(CRCInput::RC_help, this, CRCInput::getSpecialKeyName(CRCInput::RC_help));
 	widget->addKey(CRCInput::RC_setup, this, CRCInput::getSpecialKeyName(CRCInput::RC_setup));
 	widget->addKey(CRCInput::RC_red, this, CRCInput::getSpecialKeyName(CRCInput::RC_red));
 	widget->addKey(CRCInput::RC_green, this, CRCInput::getSpecialKeyName(CRCInput::RC_green));
@@ -266,12 +263,6 @@ int CPicViewer::exec(CMenuTarget* parent, const std::string& actionKey)
 		pictureViewerSettingsMenu = NULL;
 
 		return RETURN_REPAINT;					
-	}
-	else if(actionKey == "RC_info" || actionKey == "RC_help")
-	{
-		tmpPictureViewerGui.showHelp();
-
-		return RETURN_REPAINT;
 	}
 	else if(actionKey == "RC_red")
 	{

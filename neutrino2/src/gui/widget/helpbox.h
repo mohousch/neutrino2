@@ -33,33 +33,138 @@
 #include <system/localize.h>
 #include <system/settings.h>
 
-#include <gui/widget/messagebox.h>
 
+////
+class Drawable
+{
+	public:
 
+		enum DType 
+		{
+			DTYPE_DRAWABLE,
+			DTYPE_TEXT,
+			DTYPE_ICON,
+			DTYPE_SEPARATOR,
+			DTYPE_PAGEBREAK
+		};
+
+		virtual ~Drawable();
+		
+		/**
+		* Overwrite this method in subclasses to draw on the window
+		*
+		* @param window the window to draw on
+		* @param x x component of the top left corner
+		* @param y y component of the top left corner
+		*/
+		virtual void draw(int x, int y, int width) = 0;
+		virtual int getWidth(void);
+		virtual int getHeight(void);
+
+		/**
+		* Returns the type of this drawable. Used to distinguish between
+		* drawing objects and control objects like pagebreaks.
+		* @return the type of this drawable.
+		*/
+		virtual DType getType();
+
+	protected:
+
+		Drawable();
+
+		int m_height;
+		int m_width;		
+};
+
+typedef std::vector<std::vector<Drawable*> > ContentLines;
+
+/**
+ * This class draws a given string.
+ */
+class DText : public Drawable
+{
+	public:
+		DText(std::string& text);
+		DText(const char *text);
+		void init();
+		void draw(int x, int y, int width);
+		DType getType();
+
+	protected:
+		std::string m_text;
+		CFont* m_font;
+		uint32_t m_color;
+		bool m_background;
+};
+
+/**
+ * This class draws a given icon.
+ */
+class DIcon : public Drawable
+{
+	public:
+		DIcon(std::string& icon);
+		DIcon(const char  *icon);
+		void init();
+		void draw(int x, int y, int width);
+		DType getType();
+
+	protected:
+		std::string m_icon;
+};
+
+/**
+ * This class draws separator line.
+ */
+class DSeparator : public Drawable
+{
+	public:
+		DSeparator();
+
+		void draw(int x, int y, int width);
+		DType getType();
+};
+
+/**
+ * This class is used as a control object and forces a new page
+ * in scrollable windows.
+ */
+class DPagebreak : public Drawable
+{
+	public:
+		DPagebreak();
+
+		void draw(int x, int y, int width);
+		DType getType();	
+};
+
+////
 class CHelpBox
-{	
+{
 	protected:
 		CBox cFrameBox;
 		CWidget *widget;
 		CCHeaders *headers;
 		CCScrollBar scrollBar;
-
+		////
+		unsigned int m_currentPage;
+		std::vector<int>m_startEntryOfPage;
+		int m_maxEntriesPerPage;
+		int m_pages;
+		////
 		int m_width;
 		int m_height;
 		int m_iheight;
 		int m_fheight;
 		int m_theight;
-
-		std::string  m_iconfile;
-		std::string m_caption;
 		////
-		std::vector<char *> m_lines;
-		unsigned int entries_per_page;
-		unsigned int current_page;
-		unsigned int pages;
+		std::string m_caption;
+		std::string  m_iconfile;
 		////
 		int borderMode;
 		fb_pixel_t borderColor;
+		////
+		ContentLines m_lines;
 		////
 		void refreshPage();
 		void init();
@@ -70,19 +175,19 @@ class CHelpBox
 		void paint(void);
 		void hide(void);
 
-		
 	public:
-		CHelpBox(const char* const Caption = NULL, const int Width = HELPBOX_WIDTH, const char * const Icon = NULL);
-		virtual ~CHelpBox();
-
-		////
+		//
+		CHelpBox(const char * const Caption, const int Width = HELPBOX_WIDTH, const char * const Icon = NULL);
+		virtual ~CHelpBox(void);
+		
+		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
+		void setBorderColor(fb_pixel_t col){borderColor = col;};
+		
 		void addLine(const char *text);
 		void addLine(const char *icon, const char *text);
 		void addSeparator();
 		void addPagebreak();
-		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
-		void setBorderColor(fb_pixel_t col){borderColor = col;};
-		////
+
 		int exec(int timeout = -1);
 };
 

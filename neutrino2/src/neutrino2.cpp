@@ -2855,6 +2855,7 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	else if(actionKey == "reloadchannels")
 	{
 		HintBox(_("Information"), _("Reloading channel lists, please be patient."));
+		
 		CZapit::getInstance()->reinitChannels();
 	}
 	else if (actionKey == "reloadepg")

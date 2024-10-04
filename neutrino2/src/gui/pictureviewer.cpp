@@ -385,25 +385,21 @@ void CPictureViewerGui::showHelp()
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_OKAY, _("Reread image"));
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_LEFT, _("Previous image"));
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_RIGHT, _("Next image"));
-	helpbox->addPagebreak();
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_0, _("Reread image (no scaling)"));
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_1, _("Zoom out"));
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_2, _("Scroll up"));
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_3, _("Zoom in"));
-	//helpbox->addPagebreak();
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_4, _("Scroll left"));
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_5, _("Change sort order"));
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_6, _("Scroll right"));
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_8, _("Scroll down"));
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_HOME, _("Exit"));
-	//helpbox->addPagebreak();
-	//helpbox->addLine("Version: $Revision: 2.0 $");
 
 	hide();
+	
 	helpbox->exec();
 	
 	delete helpbox;
 	helpbox = NULL;
 }
-
 

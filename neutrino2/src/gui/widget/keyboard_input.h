@@ -40,7 +40,6 @@ struct keyboard_layout
 	std::string(*keys)[KEY_ROWS][KEY_COLUMNS];
 };
 
-class CFrameBuffer;
 class CInputString
 {
 	private:
@@ -59,6 +58,7 @@ class CInputString
 		std::string &getValue();
 };
 
+////
 class CKeyboardInput : public CMenuTarget
 {
 	protected:
@@ -139,7 +139,7 @@ class CKeyboardInput : public CMenuTarget
 		int exec(CMenuTarget *parent, const std::string &actionKey);
 		//
 		bool getExitPressed(){return exit_pressed;};
-		virtual std::string& getValueString(void) { return valueString; };
+		virtual std::string &getValueString(void) { return valueString; };
 
 		void enableSaveScreen(bool enable);
 };

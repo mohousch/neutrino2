@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-29 02:49+0200\n"
+"POT-Creation-Date: 2024-10-04 11:45+0200\n"
 "PO-Revision-Date: 2023-10-29 02:49+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,22 +17,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: ../../picviewer/picviewer.cpp:174
 msgid "Add"
 msgstr ""
 
-#: ../../picviewer/picviewer.cpp:173
 msgid "Delete"
 msgstr ""
 
-#: ../../picviewer/picviewer.cpp:175
 msgid "Delete all"
 msgstr ""
 
-#: ../../picviewer/picviewer.cpp:212
 msgid "Pictureviewer"
 msgstr ""
 
-#: ../../picviewer/picviewer.cpp:176
 msgid "Slideshow"
 msgstr ""
