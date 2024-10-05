@@ -591,7 +591,7 @@ uint16_t CFrontend::getSignalStrength(void) const
 {
 	uint16_t strength = 0;
 	
-#if HAVE_DVB_API_VERSION >= 5
+#if 0 //HAVE_DVB_API_VERSION >= 5
 	dtv_property prop[1];
 	memset(prop, 0, sizeof(prop));
 	prop[0].cmd = DTV_STAT_SIGNAL_STRENGTH;
@@ -623,7 +623,7 @@ uint16_t CFrontend::getSignalNoiseRatio(void) const
 {
 	uint16_t snr = 0;
 	
-#if HAVE_DVB_API_VERSION >= 5
+#if 0 //HAVE_DVB_API_VERSION >= 5
 	dtv_property prop[1];
 	prop[0].cmd = DTV_STAT_CNR;
 	dtv_properties props;
