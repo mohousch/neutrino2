@@ -291,7 +291,7 @@ CScanSetup::CScanSetup(CFrontend *f)
 	scanTs = new CScanTs(fe, scanSettings);
 	tpSelect = NULL;
 	satNotify = new CSatelliteSetupNotifier(fe);
-	feModeNotifier = new CScanSetupNotifier(fe);
+	feModeNotifier = new CScanSetupFEModeNotifier(fe);
 	feDelSysNotifier = new CScanSetupDelSysNotifier(fe);
 	item_freq = NULL;
 	item_sr = NULL;
@@ -520,10 +520,15 @@ int CScanSetup::showScanService()
 	// tunertype (forceddelsys)
 	if (fe->isHybrid())
 	{
+		// 
+		if (fe->getDeliverySystem() & DVB_C)
+			fe->forcedDelSys = DVB_C;
+		else if (fe->getDeliverySystem() & DVB_T)
+			fe->forcedDelSys = DVB_T;
+		else if (fe->getDeliverySystem() & DVB_T2)
+			fe->forcedDelSys = DVB_T2;
 		//
 		CMenuOptionChooser *tunerType = new CMenuOptionChooser(_("Tuner type"),  (int *)&fe->forcedDelSys);
-		
-		tunerType->addOption("Hybrid", fe->getDeliverySystem());
 		
 		if (fe->getDeliverySystem() & DVB_C)
 			tunerType->addOption("DVBC", DVB_C);
@@ -555,18 +560,6 @@ int CScanSetup::showScanService()
 	CMenuOptionChooser *ojVoltage = new CMenuOptionChooser(_("5 Volt"), (int *)&fe->powered, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
 	ojVoltage->setHidden(hidden);
 	feDelSysNotifier->addItem(ojVoltage);
-	
-	// FIXME:
-	/*
-#if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
-#else
-	if(fe->getInfo()->type == FE_OFDM)
-#endif
-	{
-		feModeNotifier->addItem(0, ojVoltage);
-	}
-	*/
 	scansetup->addItem(ojVoltage);
 	
 	// separartor
@@ -642,12 +635,13 @@ int CScanSetup::showScanService()
 	}
 	
 	// manual scan	
-	CMenuForwarder * manScan = new CMenuForwarder(_("Manual frequency scan / Test signal"), (fe->mode != (fe_mode_t)FE_NOTCONNECTED) && (fe->mode != (fe_mode_t)FE_LOOP), NULL, this, "manualscan");
+	CMenuForwarder * manScan = new CMenuForwarder(_("Manual frequency scan / Test signal"), (fe->mode != (fe_mode_t)FE_NOTCONNECTED) && (fe->mode != (fe_mode_t)FE_LOOP), NULL, this, "manualscan", CRCInput::RC_green, NEUTRINO_ICON_BUTTON_GREEN);
 	feModeNotifier->addItem(0, manScan);
+	
 	scansetup->addItem(manScan);
 		
 	// autoscan
-	CMenuForwarder * auScan = new CMenuForwarder(_("Auto-Scan"), (fe->mode != (fe_mode_t)FE_NOTCONNECTED) && (fe->mode != (fe_mode_t)FE_LOOP), NULL, this, "autoscan");
+	CMenuForwarder * auScan = new CMenuForwarder(_("Auto-Scan"), (fe->mode != (fe_mode_t)FE_NOTCONNECTED) && (fe->mode != (fe_mode_t)FE_LOOP), NULL, this, "autoscan", CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW);
 	feModeNotifier->addItem(0, auScan);
 	
 	scansetup->addItem(auScan);
@@ -659,7 +653,7 @@ int CScanSetup::showScanService()
 	if(fe->getInfo()->type == FE_QPSK)
 #endif
 	{
-		CMenuForwarder *fautoScanAll = new CMenuForwarder(_("Auto-Scan multiple Satellites"), true, NULL, this, "allautoscansetup" );
+		CMenuForwarder *fautoScanAll = new CMenuForwarder(_("Auto-Scan multiple Satellites"), true, NULL, this, "allautoscansetup", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE);
 		fautoScanAll->setHidden(( (dmode == NO_DISEQC) || (fe->mode == (fe_mode_t)FE_NOTCONNECTED) || (fe->mode == (fe_mode_t)FE_LOOP)));
 		satNotify->addItem(2, fautoScanAll);
 		feModeNotifier->addItem(2, fautoScanAll);
@@ -1556,7 +1550,7 @@ CTPSelectHandler::CTPSelectHandler(CFrontend *f, CScanSettings * sc)
 	scanSettings = sc;
 }
 
-int CTPSelectHandler::exec(CMenuTarget *parent, const std::string &/*actionKey*/)
+int CTPSelectHandler::exec(CMenuTarget *parent, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "CTPSelectHandler::exec\n");
 	
@@ -1646,25 +1640,25 @@ int CTPSelectHandler::exec(CMenuTarget *parent, const std::string &/*actionKey*/
 	{
 		fe->getDelSys(tI->second.feparams.fec_inner, dvbs_get_modulation(tI->second.feparams.fec_inner),  f, s, m);
 
-		snprintf(buf, sizeof(buf), "%d %c %d %s %s %s ", tI->second.feparams.frequency/1000, tI->second.feparams.polarization ? 'V' : 'H', tI->second.feparams.symbol_rate/1000, f, s, m);
+		snprintf(buf, sizeof(buf), "%d %c %d %s %s %s ", tI->second.feparams.frequency, tI->second.feparams.polarization ? 'V' : 'H', tI->second.feparams.symbol_rate, f, s, m);
 	}
 	else if (fe->getForcedDelSys() == DVB_C)
 	{
 		fe->getDelSys(tI->second.feparams.fec_inner, tI->second.feparams.modulation, f, s, m);
 
-		snprintf(buf, sizeof(buf), "%d %d %s %s %s ", tI->second.feparams.frequency/1000, tI->second.feparams.symbol_rate/1000, f, s, m);
+		snprintf(buf, sizeof(buf), "%d %d %s %s %s ", tI->second.feparams.frequency, tI->second.feparams.symbol_rate, f, s, m);
 	}
 	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2 || fe->getForcedDelSys() == DVB_DTMB)
 	{
 		fe->getDelSys(tI->second.feparams.code_rate_HP, tI->second.feparams.modulation, f, s, m);
 
-		snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency/100000, f, s, m);
+		snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency, f, s, m);
 	}
 	else if (fe->getForcedDelSys() == DVB_A)
 	{
 		fe->getDelSys(FEC_NONE, tI->second.feparams.modulation, f, s, m);
 
-		snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency/100000, f, s, m);
+		snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency, f, s, m);
 	}
 #else
 		switch(fe->getInfo()->type) 
@@ -1673,7 +1667,7 @@ int CTPSelectHandler::exec(CMenuTarget *parent, const std::string &/*actionKey*/
 			{
 				fe->getDelSys(tI->second.feparams.fec_inner, dvbs_get_modulation(tI->second.feparams.fec_inner),  f, s, m);
 
-				snprintf(buf, sizeof(buf), "%d %c %d %s %s %s ", tI->second.feparams.frequency/1000, tI->second.polarization ? 'V' : 'H', tI->second.feparams.symbol_rate/1000, f, s, m);
+				snprintf(buf, sizeof(buf), "%d %c %d %s %s %s ", tI->second.feparams.frequency, tI->second.polarization ? 'V' : 'H', tI->second.feparams.symbol_rate, f, s, m);
 			}
 			break;
 
@@ -1681,7 +1675,7 @@ int CTPSelectHandler::exec(CMenuTarget *parent, const std::string &/*actionKey*/
 			{
 				fe->getDelSys(tI->second.feparams.fec_inner, tI->second.feparams.modulation, f, s, m);
 
-				snprintf(buf, sizeof(buf), "%d %d %s %s %s ", tI->second.feparams.frequency/1000, tI->second.feparams.symbol_rate/1000, f, s, m);
+				snprintf(buf, sizeof(buf), "%d %d %s %s %s ", tI->second.feparams.frequency, tI->second.feparams.symbol_rate, f, s, m);
 			}
 			break;
 
@@ -1689,7 +1683,7 @@ int CTPSelectHandler::exec(CMenuTarget *parent, const std::string &/*actionKey*/
 			{
 				fe->getDelSys(tI->second.feparams.code_rate_HP, tI->second.feparams.modulation, f, s, m);
 
-				snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency/100000, f, s, m);
+				snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency, f, s, m);
 			}
 			break;
 				
@@ -1697,7 +1691,7 @@ int CTPSelectHandler::exec(CMenuTarget *parent, const std::string &/*actionKey*/
             		{
 				fe->getDelSys(FEC_NONE, tI->second.feparams.modulation, f, s, m);
 
-				snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency/100000, f, s, m);
+				snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency, f, s, m);
 			}
 			break;
 		}
@@ -1724,7 +1718,7 @@ int CTPSelectHandler::exec(CMenuTarget *parent, const std::string &/*actionKey*/
 
 		tmpI = tmplist.find(select);
 
-		// freq
+		//
 		sprintf(scanSettings->TP_freq, "%d", tmpI->second.feparams.frequency);
 		scanSettings->TP_delsys = tmpI->second.feparams.delsys;
 		
@@ -1820,7 +1814,6 @@ CScanSettings::CScanSettings(CFrontend * f)
 	scan_mode = CZapit::SM_FAST;
 }
 
-//
 uint32_t CScanSettings::getConfigValue(CFrontend *fe, const char * name, uint32_t defval)
 {
 	char cfg_key[81];
@@ -1829,7 +1822,6 @@ uint32_t CScanSettings::getConfigValue(CFrontend *fe, const char * name, uint32_
 	return configfile.getInt32(cfg_key, defval);
 }
 
-//
 void CScanSettings::setConfigValue(CFrontend* fe, const char * name, uint32_t val)
 {
 	char cfg_key[81];
@@ -1984,6 +1976,35 @@ CSatelliteSetupNotifier::CSatelliteSetupNotifier(CFrontend *f)
 	dprintf(DEBUG_NORMAL, "CSatelliteSetupNotifier: fe(%d:%d)\n", fe->feadapter, fe->fenumber);
 }
 
+// list 0 =
+// list 1 =
+// list 2 =
+// list 3 =
+// list 4 =
+void CSatelliteSetupNotifier::addItem(int list, CMenuItem* item)
+{
+	switch(list) 
+	{
+		case 0:
+			items1.push_back(item);
+			break;
+		case 1:
+			items2.push_back(item);
+			break;
+		case 2:
+			items3.push_back(item);
+			break;
+		case 3:
+			items4.push_back(item);
+			break;
+		case 4:
+			items5.push_back(item);
+			break;
+		default:
+			break;
+	}
+}
+
 // item1: comm uncomm
 // item2: lnb diseqc input
 // item3: auto scan all
@@ -2108,18 +2129,26 @@ bool CSatelliteSetupNotifier::changeNotify(const std::string&, void * Data)
 	return true;
 }
 
-// list 0 =
-// list 1 =
-// list 2 =
-// list 3 =
-// list 4 =
-void CSatelliteSetupNotifier::addItem(int list, CMenuItem* item)
+//// CScanSetupFEModeNotifier
+CScanSetupFEModeNotifier::CScanSetupFEModeNotifier(CFrontend* f)
+{
+	fe = f;
+	
+	dprintf(DEBUG_NORMAL, "fe(%d:%d)\n", fe->feadapter, fe->fenumber);
+}
+
+// list 0: main
+// list 1: diseqc
+// list 2: unisetup
+// list 3: diseqc rep
+// list 4: ?
+void CScanSetupFEModeNotifier::addItem(int list, CMenuItem *item)
 {
 	switch(list) 
 	{
 		case 0:
 			items1.push_back(item);
-			break;
+			break;	
 		case 1:
 			items2.push_back(item);
 			break;
@@ -2137,25 +2166,17 @@ void CSatelliteSetupNotifier::addItem(int list, CMenuItem* item)
 	}
 }
 
-//// CScanSetupNotifier
-CScanSetupNotifier::CScanSetupNotifier(CFrontend* f)
-{
-	fe = f;
-	
-	dprintf(DEBUG_NORMAL, "CScanSetupNotifier::CScanSetupNotifier: fe(%d:%d)\n", fe->feadapter, fe->fenumber);
-}
-
 // items1: enabled for advanced diseqc settings
 // items2: for diseqc != NO_DISEQC
 // items3: disabled for NO_DISEQC
 // items4:
 // items5:
-bool CScanSetupNotifier::changeNotify(const std::string&, void * Data)
+bool CScanSetupFEModeNotifier::changeNotify(const std::string&, void * Data)
 {
 	std::vector<CMenuItem*>::iterator it;
 	int FeMode = *((int*) Data);
 	
-	dprintf(DEBUG_NORMAL, "CScanSetupNotifier::changeNotify: Femode:%d\n", FeMode);
+	dprintf(DEBUG_NORMAL, "Femode:%d\n", FeMode);
 
 	if ( (FeMode == FE_NOTCONNECTED) || (FeMode == FE_LOOP) ) 
 	{
@@ -2224,35 +2245,6 @@ bool CScanSetupNotifier::changeNotify(const std::string&, void * Data)
 	return true;
 }
 
-// list 0: main
-// list 1: diseqc
-// list 2: unisetup
-// list 3: diseqc rep
-// list 4: ?
-void CScanSetupNotifier::addItem(int list, CMenuItem *item)
-{
-	switch(list) 
-	{
-		case 0:
-			items1.push_back(item);
-			break;	
-		case 1:
-			items2.push_back(item);
-			break;
-		case 2:
-			items3.push_back(item);
-			break;
-		case 3:
-			items4.push_back(item);
-			break;
-		case 4:
-			items5.push_back(item);
-			break;
-		default:
-			break;
-	}
-}
-
 //// CScanSetupDelSysNotifier
 CScanSetupDelSysNotifier::CScanSetupDelSysNotifier(CFrontend *f)
 {
@@ -2271,9 +2263,6 @@ bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 {
 	uint32_t delsys = *((uint32_t*) Data);
 	
-	//// test this do CMenuOptionChooser
-	fe->forcedDelSys = delsys;
-	
 	if (delsys == DVB_T || delsys == DVB_T2)
 	{
 		if (item)
@@ -2289,7 +2278,7 @@ bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 }
 
 //// TunerSetup
-int CTunerSetup::exec(CMenuTarget* parent, const std::string& actionKey)
+int CTunerSetup::exec(CMenuTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CTunerSetup::exec: actionKey:%s\n", actionKey.c_str());
 	
@@ -2351,7 +2340,8 @@ int CTunerSetup::showMenu()
 	// intros
 	TunerSetup->addItem(new CMenuForwarder(_("back")));
 	TunerSetup->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
-				
+	
+	//			
 	for(int i = 0; i < CZapit::getInstance()->getFrontendCount(); i++)
 	{
 		CFrontend * fe = CZapit::getInstance()->getFE(i);

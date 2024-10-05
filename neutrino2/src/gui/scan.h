@@ -1,5 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
+	
+	$Id: scan.h 05102024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -50,15 +52,14 @@ class CScanTs : public CMenuTarget
 		int width;
 		int height;
 		int hheight, mheight; 	// head/menu font height
-		int xpos1; 		//x position for first column
-		int xpos2; 		//x position for second column
+		int xpos1; 		// x position for first column
+		int xpos2; 		// x position for second column
 		int radar; 
 		int xpos_radar;
 		int ypos_radar;
 		int ypos_cur_satellite;
 		int ypos_transponder;
 		int ypos_frequency;
-		int xpos_frequency;
 		int ypos_provider;
 		int ypos_channel;
 		int ypos_service_numbers;

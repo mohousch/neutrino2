@@ -1,5 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
+	
+	$Id: scan.cpp 05102024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -203,7 +205,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d:%d delsys:0x%x) freq %d rate %d fec %d mod %d\n", fe->feadapter, fe->fenumber, fe->getForcedDelSys(), TP.feparams.frequency, TP.feparams.symbol_rate, TP.feparams.fec_inner, TP.feparams.modulation);
 		}
 #if HAVE_DVB_API_VERSION >= 5
-		else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
+		else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2 || fe->getForcedDelSys() == DVB_DTMB)
 #else
 		else if ( fe->getInfo()->type == FE_OFDM) 
 #endif
@@ -282,7 +284,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	{
 		int w = x + width - xpos2;
 		char buffer[128];
-		char * f, *s, *m;
+		char *f, *s, *m;
 
 #if HAVE_DVB_API_VERSION >= 5
 		if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
@@ -292,7 +294,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		{
 			fe->getDelSys(scanSettings->TP_fec, dvbs_get_modulation((fe_code_rate_t)scanSettings->TP_fec), f, s, m);
 
-			sprintf(buffer, "%u %c %d %s %s %s", atoi(scanSettings->TP_freq)/1000, scanSettings->TP_pol == 0 ? 'H' : 'V', atoi(scanSettings->TP_rate)/1000, f, s, m);
+			sprintf(buffer, "%u %c %d %s %s %s", atoi(scanSettings->TP_freq), scanSettings->TP_pol == 0 ? 'H' : 'V', atoi(scanSettings->TP_rate), f, s, m);
 		} 
 #if HAVE_DVB_API_VERSION >= 5 
 		else if (fe->getForcedDelSys() == DVB_C)
@@ -302,15 +304,25 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		{
 			fe->getDelSys(scanSettings->TP_fec, scanSettings->TP_mod, f, s, m);
 
-			sprintf(buffer, "%u %d %s %s %s", atoi(scanSettings->TP_freq), atoi(scanSettings->TP_rate)/1000, f, s, m);
+			sprintf(buffer, "%u %d %s %s %s", atoi(scanSettings->TP_freq), atoi(scanSettings->TP_rate), f, s, m);
 		}
 #if HAVE_DVB_API_VERSION >= 5
-		else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
+		else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2 || fe->getForcedDelSys() == DVB_DTMB)
 #else
 		else if (fe->getInfo()->type == FE_OFDM) 
 #endif
 		{
 			fe->getDelSys(scanSettings->TP_HP, scanSettings->TP_mod, f, s, m);
+
+			sprintf(buffer, "%u %s %s %s", atoi(scanSettings->TP_freq), f, s, m);
+		}
+#if HAVE_DVB_API_VERSION >= 5
+		else if (fe->getForcedDelSys() == DVB_A)
+#else
+		else if(fe->getInfo()->type == FE_ATSC)
+#endif
+		{
+			fe->getDelSys(FEC_NONE, scanSettings->TP_mod, f, s, m);
 
 			sprintf(buffer, "%u %s %s %s", atoi(scanSettings->TP_freq), f, s, m);
 		}
@@ -453,26 +465,54 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 			snprintf(str, 255, "scan %d/%d", done, total);
 			CLCD::getInstance()->showMenuText(0, str, -1, true);		
 			break;
-
-		case NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCY:
-			freqready = 1;
-			sprintf(buffer, "%u", data);
-			xpos_frequency = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(buffer, true);
-			paintLine(xpos2, ypos_frequency, xpos_frequency, buffer);
-			break;
 			
 		case NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCYP: 
 			{
-				int pol = data & 0xFF;
-				int fec = (data >> 8) & 0xFF;
-				int rate = data >> 16;
-				char * f, *s, *m;
+				FrontendParameters *feparams = (FrontendParameters*) data;
+				char *f, *s, *m;
 				
-				fe->getDelSys(fec, (fe_modulation_t)0, f, s, m); // FIXME
+#if HAVE_DVB_API_VERSION >= 5
+				if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+#else
+				if(fe->getInfo()->type == FE_QPSK)
+#endif
+				{
+					fe->getDelSys(feparams->fec_inner, dvbs_get_modulation(feparams->fec_inner),  f, s, m);
+
+					snprintf(buffer, sizeof(buffer), "%d %c %d %s %s %s ", feparams->frequency, feparams->polarization ? 'V' : 'H', feparams->symbol_rate, f, s, m);
+				} 
+#if HAVE_DVB_API_VERSION >= 5 
+				else if (fe->getForcedDelSys() == DVB_C)
+#else
+				else if ( fe->getInfo()->type == FE_QAM )
+#endif
+				{
+					fe->getDelSys(feparams->fec_inner, feparams->modulation, f, s, m);
+
+					snprintf(buffer, sizeof(buffer), "%d %d %s %s %s ", feparams->frequency, feparams->symbol_rate, f, s, m);
+				}
+#if HAVE_DVB_API_VERSION >= 5
+				else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2 || fe->getForcedDelSys() == DVB_DTMB)
+#else
+				else if (fe->getInfo()->type == FE_OFDM) 
+#endif
+				{
+					fe->getDelSys(feparams->code_rate_HP, feparams->modulation, f, s, m);
+
+					snprintf(buffer, sizeof(buffer), "%d %s %s %s ", feparams->frequency, f, s, m);
+				}
+#if HAVE_DVB_API_VERSION >= 5
+				else if (fe->getForcedDelSys() == DVB_A)
+#else
+				else if(fe->getInfo()->type == FE_ATSC)
+#endif
+				{
+					fe->getDelSys(FEC_NONE, feparams->modulation, f, s, m);
+
+					snprintf(buffer, sizeof(buffer), "%d %s %s %s ", feparams->frequency, f, s, m);
+				}
 				
-				sprintf(buffer, " %c %d %s %s %s", pol == 0 ? 'H' : 'V', rate, f, s, m);
-				
-				paintLine(xpos2 + xpos_frequency, ypos_frequency, w - xpos_frequency - 80, buffer);
+				paintLine(xpos2, ypos_frequency, w - 80, buffer);
 			}
 			break;
 			

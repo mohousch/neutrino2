@@ -1,5 +1,5 @@
 /*
- * $Id: frontend.cpp 23.09.2023 mohousch Exp $
+ * $Id: frontend.cpp 05102024 mohousch Exp $
  *
  * (C) 2002-2003 Andreas Oberritter <obi@tuxbox.org>
  *
@@ -580,6 +580,9 @@ uint32_t CFrontend::getBitErrorRate(void) const
 
 	if(::ioctl(fd, FE_READ_BER, &ber) < 0)
 	      perror("FE_READ_BER");
+	      
+	if (ber > 100000000)
+		ber = 0;
 
 	return ber;
 }
@@ -587,9 +590,31 @@ uint32_t CFrontend::getBitErrorRate(void) const
 uint16_t CFrontend::getSignalStrength(void) const
 {
 	uint16_t strength = 0;
+	
+#if HAVE_DVB_API_VERSION >= 5
+	dtv_property prop[1];
+	memset(prop, 0, sizeof(prop));
+	prop[0].cmd = DTV_STAT_SIGNAL_STRENGTH;
+	dtv_properties props;
+	props.props = prop;
+	props.num = 1;
 
+	if (::ioctl(fd, FE_GET_PROPERTY, &props) < 0 && errno != ERANGE)
+	{
+		perror("DTV_STAT_SIGNAL_STRENGTH failed");
+	}
+	else
+	{
+		for(unsigned int i = 0; i < prop[0].u.st.len; i++)
+		{
+			if (prop[0].u.st.stat[i].scale == FE_SCALE_RELATIVE)
+				strength = prop[0].u.st.stat[i].uvalue;
+		}
+	}
+#else
 	if(::ioctl(fd, FE_READ_SIGNAL_STRENGTH, &strength) < 0)
 	      perror("FE_READ_SIGNAL_STRENGHT");
+#endif
 
 	return strength;
 }
@@ -597,9 +622,36 @@ uint16_t CFrontend::getSignalStrength(void) const
 uint16_t CFrontend::getSignalNoiseRatio(void) const
 {
 	uint16_t snr = 0;
+	
+#if HAVE_DVB_API_VERSION >= 5
+	dtv_property prop[1];
+	prop[0].cmd = DTV_STAT_CNR;
+	dtv_properties props;
+	props.props = prop;
+	props.num = 1;
 
+	if (::ioctl(fd, FE_GET_PROPERTY, &props) < 0 && errno != ERANGE)
+	{
+		perror("DTV_STAT_CNR failed");
+	}
+	else
+	{
+		for(unsigned int i = 0; i < prop[0].u.st.len; i++)
+		{
+			if (prop[0].u.st.stat[i].scale == FE_SCALE_DECIBEL)
+			{
+				snr = prop[0].u.st.stat[i].svalue / 10;
+			}
+			else if (prop[0].u.st.stat[i].scale == FE_SCALE_RELATIVE)
+			{
+				snr = prop[0].u.st.stat[i].svalue;
+			}
+		}
+	}
+#else
 	if(::ioctl(fd, FE_READ_SNR, &snr) < 0)
 		perror("FE_READ_SNR");
+#endif
 
 	return snr;
 }
@@ -637,12 +689,37 @@ void CFrontend::getDelSys(int f, int m, char *&fec, char *&sys, char *&mod)
 	} 
 	else if (info.type == FE_QAM || info.type == FE_OFDM || info.type == FE_ATSC) 
 	{
+#if HAVE_DVB_API_VERSION >= 5
+		switch (forcedDelSys)
+		{	
+			case DVB_C:
+				sys = (char *)"DVB-C";
+				break;
+				
+			case DVB_T:
+				sys = (char *)"DVB-T";
+				break;
+				
+			case DVB_T2:
+				sys = (char *)"DVB-T2";
+				break;
+				
+			case DVB_DTMB:
+				sys = (char *)"DVB-DTMB";
+				break;
+			
+			case DVB_A:
+				sys = (char *)"DVB-A";
+				break;	
+		}
+#else
 		if ( info.type == FE_QAM )
 			sys = (char *)"DVB-C";
 		else if (info.type == FE_OFDM ) 
 			sys = (char *)"DVB-T";
 		else if (info.type == FE_ATSC)
         		sys = (char *)"DVB_A";
+#endif
 
 		switch (m) 
 		{
@@ -1512,7 +1589,7 @@ int CFrontend::setParameters(transponder * TP)
 	dprintf(DEBUG_NORMAL, "CFrontend::setParameters: fe(%d:%d) %s\n", feadapter, fenumber, tuned? "tuned" : "tune failed");
 
 #if HAVE_DVB_API_VERSION >= 5
-	if (deliverySystemMask & DVB_S || deliverySystemMask & DVB_S2)
+	if (deliverySystemMask & DVB_S || deliverySystemMask & DVB_S2 || deliverySystemMask & DVB_S2X)
 #else
 	if (info.type == FE_QPSK)
 #endif

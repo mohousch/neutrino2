@@ -1,5 +1,5 @@
 /*
-  $Id: zapit.h 20.09.2023 mohousch Exp $
+  $Id: zapit.h 05102024 mohousch Exp $
 
   License: GPL
 
@@ -290,8 +290,6 @@ class CZapit
 		//// scanManager
 		bouquetMode _bouquetMode;
 		scanType _scanType;
-		uint32_t  actual_freq;
-		uint32_t actual_polarisation;
 		////bouquetManager
 		BouquetList Bouquets;
 		

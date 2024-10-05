@@ -1,5 +1,5 @@
 /*
- * $Id: zapit.cpp 08082024 mohousch Exp $
+ * $Id: zapit.cpp 05102024 mohousch Exp $
  *
  * zapit - d-box2 linux project
  *
@@ -223,8 +223,6 @@ CZapit::CZapit()
 	tcnt = 0; 
 	scnt = 0;
 	// scanmanager
-	actual_freq = 0; 
-	actual_polarisation = 0;
 	_bouquetMode = CZapit::BM_UPDATEBOUQUETS;
 	_scanType = CZapit::ST_TVRADIO;
 	scan_runs = 0;
@@ -4874,26 +4872,12 @@ _repeat:
 		dprintf(DEBUG_NORMAL, "CZapit::getSDTS: scanning: 0x%llx\n", tI->first);
 
 		//
-		actual_freq = tI->second.feparams.frequency;
-
 		processed_transponders++;
 		
 		g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, (const neutrino_msg_data_t)processed_transponders, false);
 		g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_PROVIDER, (const neutrino_msg_data_t)" ", false);
 		g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_SERVICENAME, (const neutrino_msg_data_t)" ", false);
-		g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCY, (const neutrino_msg_data_t)actual_freq, false);
-
-		// by sat send pol to neutrino
-#if HAVE_DVB_API_VERSION >= 5
-		if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
-#else
-		if (fe->getInfo()->type == FE_QPSK)
-#endif		
-		{
-			actual_polarisation = ((tI->second.feparams.symbol_rate/1000) << 16) | (tI->second.feparams.fec_inner << 8) | (uint)tI->second.feparams.polarization;
-
-			g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCYP, (const neutrino_msg_data_t)actual_polarisation, false);
-		}
+		g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCYP, (const neutrino_msg_data_t)&tI->second.feparams, false);
 		
 		// tune TP
 		if (!tuneFrequency(&(tI->second.feparams), satellitePosition, fe)) 
@@ -5590,7 +5574,7 @@ void * CZapit::scanTransponderThread(void * data)
 		CZapit::getInstance()->renumServices();
 		CZapit::getInstance()->readEPGMapping();
 		
-		// notify client about end of scan
+		// notify about end of scan
 		scan_runs = 0;
 
 		g_RCInput->postMsg(NeutrinoMessages::EVT_SCAN_COMPLETE);

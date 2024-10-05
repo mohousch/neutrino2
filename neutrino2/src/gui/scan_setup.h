@@ -1,5 +1,5 @@
 /*
-	$Id: scan_setup.h 2015/12/22 11:40:28 mohousch Exp $
+	$Id: scan_setup.h 05102024 mohousch Exp $
 
 	Copyright (C) 2009 Thilo Graf (dbt)
 	http://www.dbox2-tuning.de
@@ -81,7 +81,7 @@ class CScanSettings
 class CTPSelectHandler : public CMenuTarget
 {
 	private:
-		CFrontend* fe;
+		CFrontend * fe;
 		CScanSettings * scanSettings;
 	
 	public:
@@ -91,7 +91,7 @@ class CTPSelectHandler : public CMenuTarget
 		int exec(CMenuTarget *parent, const std::string &actionkey);
 };
 
-//// sat setup notifuer
+//// satsetupnotifuer
 class CSatelliteSetupNotifier : public CChangeObserver
 {
 	private:
@@ -101,17 +101,17 @@ class CSatelliteSetupNotifier : public CChangeObserver
 		std::vector<CMenuItem*> items4;
 		std::vector<CMenuItem*> items5;
 		
-		CFrontend* fe;
+		CFrontend * fe;
 	public:
-		CSatelliteSetupNotifier(CFrontend* f);
+		CSatelliteSetupNotifier(CFrontend *f);
 		virtual ~CSatelliteSetupNotifier(){items1.clear(); items2.clear(); items3.clear(); items4.clear(); items5.clear();};
 		
-		void addItem(int list, CMenuItem* item);
+		void addItem(int list, CMenuItem *item);
 		bool changeNotify(const std::string&, void * Data);
 };
 
-//// scan setup notifier
-class CScanSetupNotifier : public CChangeObserver
+//// scansetupfemodenotifier
+class CScanSetupFEModeNotifier : public CChangeObserver
 {
 	private:
 		std::vector<CMenuItem*> items1;
@@ -120,22 +120,25 @@ class CScanSetupNotifier : public CChangeObserver
 		std::vector<CMenuItem*> items4;
 		std::vector<CMenuItem*> items5;
 		
-		CFrontend* fe;
+		CFrontend *fe;
 	public:
-		CScanSetupNotifier(CFrontend* f); // FIXME: ???
-		virtual ~CScanSetupNotifier(){items1.clear(); items2.clear(); items3.clear(); items4.clear(); items5.clear();};
+		CScanSetupFEModeNotifier(CFrontend *f);
+		virtual ~CScanSetupFEModeNotifier(){items1.clear(); items2.clear(); items3.clear(); items4.clear(); items5.clear();};
+		
 		void addItem(int list, CMenuItem *item);
 		bool changeNotify(const std::string&, void * Data);
 };
 
-////
+//// scanSetupDelSysNotifier
 class CScanSetupDelSysNotifier : public CChangeObserver
 {
 	private:
-		CFrontend* fe;
+		CFrontend * fe;
 		CMenuItem *item;
 	public:
 		CScanSetupDelSysNotifier(CFrontend* f);
+		virtual ~CScanSetupDelSysNotifier(){};
+		
 		void addItem(CMenuItem *m);
 		bool changeNotify(const std::string&, void *Data);
 };
@@ -144,18 +147,19 @@ class CScanSetupDelSysNotifier : public CChangeObserver
 class CScanSetup : public CMenuTarget
 {
 	private:
-		CFrontend* fe;
+		CFrontend * fe;
 		sat_iterator_t sit;
 		CScanTs *scanTs;
 		CSatelliteSetupNotifier *satNotify;
-		CScanSetupNotifier *feModeNotifier;
+		CScanSetupFEModeNotifier *feModeNotifier;
 		CScanSetupDelSysNotifier *feDelSysNotifier;
 		CTPSelectHandler *tpSelect;
 		CScanSettings * scanSettings;
 		CMenuItem *item_freq;
 		CMenuItem *item_sr;
+		int freq_length;
 
-		//
+		////
 		int showScanService();
 		int showUnicableSetup();
 		int showManualScanSetup();
@@ -164,13 +168,12 @@ class CScanSetup : public CMenuTarget
 		int showMotorSetup();
 		int showLNBSetup();
 		int showSatOnOffSetup();
-		int freq_length;
 		
 	public:
 		CScanSetup(CFrontend* f = NULL);
-		~CScanSetup();
+		virtual ~CScanSetup();
 		
-		int exec(CMenuTarget* parent, const std::string & actionKey);
+		int exec(CMenuTarget *parent, const std::string &actionKey);
 };
 
 ////
@@ -181,7 +184,7 @@ class CTunerSetup : public CMenuTarget
 		
 	public:
 		CTunerSetup(){};
-		~CTunerSetup(){};
+		virtual ~CTunerSetup(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
