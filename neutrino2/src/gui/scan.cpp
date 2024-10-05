@@ -89,6 +89,7 @@ CScanTs::CScanTs(CFrontend *f, CScanSettings *sc)
 	//
 	ypos_cur_satellite = y + hheight + (mheight >> 1);
 	xpos1 = x + BORDER_LEFT;
+	xpos2 = xpos1 + 10;
 	
 	dprintf(DEBUG_NORMAL, "CScanTs::CScanTs: fe(%d:%d) forcedDelsys:0x%x\n", fe->feadapter, fe->fenumber, fe->forcedDelSys);
 }
@@ -134,7 +135,9 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	
 	xpos_radar = x + width - 90;
 	ypos_radar = y + hheight + (mheight >> 1);
+	////
 	xpos1 = x + BORDER_LEFT;
+	xpos2 = xpos1 + 10;
 
 	if(scan_all)
 		scan_mode |= 0xFF00;
@@ -170,7 +173,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		TP.feparams.frequency = atoi(scanSettings->TP_freq);
 		
 		// delsys
-		TP.feparams.delsys = scanSettings->TP_delsys; //fe->getForcedDelSys(); // FIXME: is this correct ???
+		TP.feparams.delsys = scanSettings->TP_delsys;
 		
 		// inversion
 		TP.feparams.inversion = INVERSION_AUTO;
