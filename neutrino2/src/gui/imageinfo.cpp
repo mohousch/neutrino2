@@ -207,10 +207,10 @@ void CImageInfo::paint()
 	std::string date = versionInfo.getDate(); 			//lconfigfile.getString("RELEASE_DATE", __DATE__);
 	std::string time = versionInfo.getTime();			//lconfigfile.getString("RELEASE_TIME", __TIME__);
 
-	// image name
+	// release name
 	ypos += iheight;
 	paintLine(xpos, font_info, _("Release:"));
-	paintLine(xpos + x_offset, font_info, "NeutrinoNG");
+	paintLine(xpos + x_offset, font_info, "Buildsystem-NG");
 
 	// release cycle
 	ypos += iheight;
@@ -222,7 +222,7 @@ void CImageInfo::paint()
 	paintLine(xpos, font_info, _("Type:"));
 	paintLine(xpos + x_offset, font_info, releaseType.c_str());
 	
-	// NG version
+	// NeutrinoNG version
 	ypos += iheight;
 	paintLine(xpos, font_info, _("NeutrinoNG:"));
 	paintLine(xpos + x_offset, font_info, PACKAGE_VERSION);
