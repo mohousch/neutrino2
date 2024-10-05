@@ -4703,6 +4703,28 @@ void CZapit::removeChannelFromBouquet(const unsigned int bouquet, const t_channe
 }
 
 //// scanManager
+void CZapit::setScanSatelliteList( ScanSatelliteList &satelliteList )
+{
+	scanProviders.clear();
+	
+	for (uint32_t i = 0; i < satelliteList.size(); i++)
+	{
+		commandSetScanSatelliteList sat = satelliteList[i];
+		
+		scanProviders[sat.position] = sat.satName;
+	}
+}
+
+void CZapit::setScanType(const scanType mode)
+{
+	_scanType = mode;
+}
+
+void CZapit::setScanBouquetMode(const bouquetMode mode)
+{
+	_bouquetMode = mode;
+}
+
 bool CZapit::tuneFrequency(FrontendParameters *feparams, t_satellite_position satellitePosition, CFrontend* fe)
 {
 	dprintf(DEBUG_NORMAL, "CZapit::%s:\n", __FUNCTION__);
@@ -5181,7 +5203,7 @@ bool CZapit::scanProvider(xmlNodePtr search, t_satellite_position satellitePosit
 }
 
 //
-bool CZapit::tuneTP(transponder TP, CFrontend* fe)
+bool CZapit::tuneTP(transponder TP, CFrontend *fe)
 {
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::tuneTP: fe(%d:%d)\n", fe->feadapter, fe->fenumber);
 	
@@ -5209,7 +5231,8 @@ bool CZapit::tuneTP(transponder TP, CFrontend* fe)
 		fe->driveToSatellitePosition(satellitePosition);
 		
 	// tuneFreq
-	ret = fe->tuneFrequency(&TP.feparams);
+//	ret = fe->tuneFrequency(&TP.feparams);
+	ret = tuneFrequency(&TP.feparams, satellitePosition, fe);
 			
 	// set retune flag
 	retune = true;
@@ -5224,8 +5247,6 @@ bool CZapit::scanTP(commandScanTP &msg)
 	
 	bool ret = true;
 	CPmt pmt;
-	
-	CZapit::stopPlayBack();
 				
 	// stop update pmt filter
 	pmt.pmt_stop_update_filter(&pmt_update_fd);
@@ -5247,28 +5268,6 @@ bool CZapit::scanTP(commandScanTP &msg)
 	return ret;
 }
 
-void CZapit::setScanSatelliteList( ScanSatelliteList &satelliteList )
-{
-	scanProviders.clear();
-	
-	for (uint32_t i = 0; i < satelliteList.size(); i++)
-	{
-		commandSetScanSatelliteList sat = satelliteList[i];
-		
-		scanProviders[sat.position] = sat.satName;
-	}
-}
-
-void CZapit::setScanType(const scanType mode)
-{
-	_scanType = mode;
-}
-
-void CZapit::setScanBouquetMode(const bouquetMode mode)
-{
-	_bouquetMode = mode;
-}
-
 //
 bool CZapit::startScan(commandScanProvider &msg)
 {		
@@ -5278,9 +5277,6 @@ bool CZapit::startScan(commandScanProvider &msg)
 	CPmt pmt;
 	
 	scan_runs = 1;
-	
-	//stop playback
-	stopPlayBack();
 	
 	// stop pmt update filter
     	pmt.pmt_stop_update_filter(&pmt_update_fd);	

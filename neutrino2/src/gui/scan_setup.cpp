@@ -346,7 +346,7 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		CHintBox * hintBox = new CHintBox(_("Information"), _("Save settings now")); // UTF-8
 		hintBox->paint();
 		
-		// save scan.conf
+		// save scanSettings (scan.conf)
 		if(!scanSettings->saveSettings(NEUTRINO_SCAN_SETTINGS_FILE))
 			dprintf(DEBUG_NORMAL, "CNeutrinoApp::exec: error while saving scan-settings!\n");
 		

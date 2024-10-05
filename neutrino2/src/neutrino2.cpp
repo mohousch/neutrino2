@@ -1745,7 +1745,7 @@ void CNeutrinoApp::setDebugLevel( int level )
 // setup the framebuffer
 void CNeutrinoApp::setupFrameBuffer()
 {
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::setupFrameBuffer\n");
+	dprintf(DEBUG_NORMAL, "\n");
 	
 	frameBuffer = CFrameBuffer::getInstance();
 	
@@ -4610,7 +4610,7 @@ void CNeutrinoApp::realRun(void)
 //
 int CNeutrinoApp::run(int argc, char **argv)
 {
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::run:\n");
+	dprintf(DEBUG_NORMAL, "\n");
 	
 	//	
 	global_argv = new char *[argc + 1];

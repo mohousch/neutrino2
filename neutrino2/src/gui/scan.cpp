@@ -99,6 +99,10 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 
 	if(parent)
 		parent->hide();
+		
+	////
+	scanSettings->saveSettings(NEUTRINO_SCAN_SETTINGS_FILE);
+	CZapit::getInstance()->saveFrontendConfig();
 	
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
