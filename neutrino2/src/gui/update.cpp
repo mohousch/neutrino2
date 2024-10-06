@@ -643,8 +643,9 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 				HintBox(_("Error"), _("image can't be flashed."), 600, 5, NEUTRINO_ICON_ERROR); // UTF-8
 			else
 			{
-				HintBox(_("Error"), _("flashing please be patient..."), 600, 5, NEUTRINO_ICON_INFO); // UTF-8
-				return RETURN_EXIT_ALL;
+				hide();
+
+				return CMenuTarget::RETURN_EXIT_ALL;
 			}
 		}
 		else
