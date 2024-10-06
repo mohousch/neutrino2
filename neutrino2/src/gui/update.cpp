@@ -638,14 +638,15 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 				sprintf(cmd, "%s%s", "/usr/bin/ofgwrite -r ", g_settings.update_dir);
 //			else
 //				sprintf(cmd, "%s%s", "/usr/bin/ofgwrite ", g_settings.update_dir);
+
+			hide();
+			
+			CFrameBuffer::getInstance()->setActive(false);
 			
 			if (system(cmd))
-				HintBox(_("Error"), _("image can't be flashed."), 600, 5, NEUTRINO_ICON_ERROR); // UTF-8
-			else
 			{
-				hide();
-
-				return CMenuTarget::RETURN_EXIT_ALL;
+				CFrameBuffer::getInstance()->setActive(true);
+				HintBox(_("Error"), _("image can't be flashed."), 600, 5, NEUTRINO_ICON_ERROR); // UTF-8
 			}
 		}
 		else
