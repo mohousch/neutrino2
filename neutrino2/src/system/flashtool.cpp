@@ -138,7 +138,6 @@ bool CFlashTool::readFromMTD( const std::string &filename, int globalProgressEnd
 
 bool CFlashTool::program( const std::string &filename, int globalProgressEndErase, int globalProgressEndFlash )
 {
-#ifdef __sh__
 	int fd1, fd2;
 	long filesize;
 	int globalProgressBegin = 0;
@@ -227,28 +226,6 @@ bool CFlashTool::program( const std::string &filename, int globalProgressEndEras
 
 	close(fd1);
 	close(fd2);
-#else
-	int fd;
-	long filesize;
-	int globalProgressBegin = 0;
-	
-	if( (fd = open( filename.c_str(), O_RDONLY )) < 0 )
-	{
-		ErrorMessage = _("can't open file");
-		return false;
-	}
-
-	filesize = lseek( fd, 0, SEEK_END);
-	lseek(fd, 0, SEEK_SET);
-
-	if(filesize == 0)
-	{
-		ErrorMessage = _("the filesize is 0 Bytes");
-		return false;
-	}
-	
-	close(fd);
-#endif
 
 	return true;
 }

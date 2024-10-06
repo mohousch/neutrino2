@@ -364,6 +364,10 @@ bool CFlashUpdate::checkVersion4Update()
 		UpdatesFilter.addFilter("img");
 		UpdatesFilter.addFilter("txt");
 		UpdatesFilter.addFilter("ipk");
+		////
+		UpdatesFilter.addFilter("bin");
+		UpdatesFilter.addFilter("bz2");
+		UpdatesFilter.addFilter("nfi");
 
 		UpdatesBrowser.Filter = &UpdatesFilter;
 
@@ -406,6 +410,8 @@ bool CFlashUpdate::checkVersion4Update()
 				fileType = 'T';
 			else if(!strcmp(ptr, "img")) 
 				fileType = '0';
+			else if(!strcmp(ptr, "bin") || !strcmp(ptr, "bz2") || !strcmp(ptr, "nfi"))
+				fileType = 'Z';
 
 			dprintf(DEBUG_NORMAL, "manual file type: %s %c\n", ptr, fileType);
 		}
@@ -415,6 +421,62 @@ bool CFlashUpdate::checkVersion4Update()
 	}
 	
 	return ( (fileType == 'T')? true : MessageBox(_("Information"), msg, CMessageBox::mbrYes, CMessageBox::mbYes | CMessageBox::mbNo, NEUTRINO_ICON_UPDATE, 800) == CMessageBox::mbrYes); // UTF-8
+}
+
+int CFlashUpdate::showOfgWriteMenu()
+{
+	dprintf(DEBUG_NORMAL, "CFlashUpdate::showOfgWriteMenu\n");
+	
+	int ret = RETURN_REPAINT;
+	
+	CWidget * mWidget = NULL;
+	ClistBox *mlistBox = NULL;
+	
+	mWidget = CNeutrinoApp::getInstance()->getWidget("ofgwrite");
+	
+	if (mWidget)
+	{
+		mlistBox = (ClistBox *)mWidget->getCCItem(CComponent::CC_LISTBOX);
+	}
+	else
+	{
+		//
+		mWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		mWidget->name = "ofgwrite";
+		mWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
+		
+		//
+		mlistBox = new ClistBox(mWidget->getWindowsPos().iX, mWidget->getWindowsPos().iY, mWidget->getWindowsPos().iWidth, mWidget->getWindowsPos().iHeight);
+
+		mlistBox->setWidgetMode(ClistBox::MODE_SETUP);
+		
+		mlistBox->enablePaintHead();
+		mlistBox->setTitle(_("Software update"), NEUTRINO_ICON_SCAN);
+
+		mlistBox->enablePaintFoot();
+			
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
+			
+		mlistBox->setFootButtons(&btn);
+		
+		//
+		mWidget->addCCItem(mlistBox);
+	}
+	
+	// intros
+	mlistBox->addItem(new CMenuForwarder(_("back")));
+	mlistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+	
+	//
+	ret = mWidget->exec(NULL, "");
+	
+	if (mWidget)
+	{
+		delete mWidget;
+		mWidget = NULL;
+	}
+
+	return ret;
 }
 
 int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
@@ -479,11 +541,9 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 	// install
 	dprintf(DEBUG_NORMAL, "install filename %s type %c\n", filename.c_str(), fileType);
 
-	// flashimage
+	// mtd / flashimage
 	if( fileType < '3') 
 	{
-		// ofgwrite
-		
 		// mtd flashing
 		if (allow_flash)
 		{
@@ -565,6 +625,23 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 		// remove filename.ipk ???
 //		if(updateMode == UPDATEMODE_MANUAL)
 //			remove(pkgManager.getBlankPkgName(filename).c_str());
+	}
+	else if (fileType == 'Z')
+	{
+		if ( allow_flash)
+		{
+			char cmd[255];
+			
+			sprintf(cmd, "%s%s", "/usr/bin/ofgwrite ", g_settings.update_dir);
+			
+			dprintf(0, "%s\n", cmd);
+		}
+		else
+		{
+			HintBox(_("Error"), _("image can't be flashed."), 600, 5, NEUTRINO_ICON_ERROR); // UTF-8
+			
+			return CMenuTarget::RETURN_REPAINT;
+		}
 	}
 	
 //	progressWindow->hide();
