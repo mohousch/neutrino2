@@ -632,9 +632,9 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 		{
 			char cmd[255];
 			
-			if(!strcmp(filename.c_str(), "kernel")) 
+			if(filename == "kernel.bin") 
 				sprintf(cmd, "%s%s", "/usr/bin/ofgwrite -k ", g_settings.update_dir);
-			else if(!strcmp(filename.c_str(), "rootfs"))
+			else if(filename == "rootfs.bin")
 				sprintf(cmd, "%s%s", "/usr/bin/ofgwrite -r ", g_settings.update_dir);
 			else
 				sprintf(cmd, "%s%s", "/usr/bin/ofgwrite ", g_settings.update_dir);
