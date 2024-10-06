@@ -1125,10 +1125,10 @@ int CUpdateSettings::showMenu()
 	
 	static CFlashVersionInfo versionInfo(versionString);
 	
-	std::string releaseCycle = versionInfo.getReleaseCycle(); 	//lconfigfile.getString("RELEASE_CYCLE", PACKAGE_VERSION);
-	std::string releaseType = versionInfo.getType(); 		//lconfigfile.getString("RELEASE_TYPE", "Snapshot");
-	std::string date = versionInfo.getDate(); 			//lconfigfile.getString("RELEASE_DATE", __DATE__);
-	std::string time = versionInfo.getTime();			//lconfigfile.getString("RELEASE_TIME", __TIME__);
+	std::string releaseCycle = versionInfo.getReleaseCycle();
+	std::string releaseType = versionInfo.getType();
+	std::string date = versionInfo.getDate();
+	std::string time = versionInfo.getTime();
 	
 	// release name
 	updateSettings->addItem(new CMenuForwarder(_("Release"), false, "NG Buildsystem"));
@@ -1154,6 +1154,20 @@ int CUpdateSettings::showMenu()
 
 	// online
 	updateSettings->addItem(new CMenuForwarder(_("Online Software Manager"), true, NULL, new CFlashUpdate(CFlashUpdate::UPDATEMODE_INTERNET)));
+	
+	// installed packages
+	COPKGManager opkgManager;
+	std::vector<std::string> instpackages;
+	
+	if (opkgManager.getPkgData(OM_LIST_INSTALLED, &instpackages))
+	{
+		updateSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Installed packages")));
+		
+		for (int count = 0; count < instpackages.size(); count++)
+		{
+			updateSettings->addItem(new CMenuForwarder(instpackages[count].c_str()));
+		}
+	}
 	
 	//
 	res = widget->exec(NULL, "");

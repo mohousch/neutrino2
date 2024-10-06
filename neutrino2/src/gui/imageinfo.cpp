@@ -202,10 +202,10 @@ void CImageInfo::paint()
 	
 	static CFlashVersionInfo versionInfo(versionString);
 	
-	std::string releaseCycle = versionInfo.getReleaseCycle(); 	//lconfigfile.getString("RELEASE_CYCLE", PACKAGE_VERSION);
-	std::string releaseType = versionInfo.getType(); 		//lconfigfile.getString("RELEASE_TYPE", "Snapshot");
-	std::string date = versionInfo.getDate(); 			//lconfigfile.getString("RELEASE_DATE", __DATE__);
-	std::string time = versionInfo.getTime();			//lconfigfile.getString("RELEASE_TIME", __TIME__);
+	std::string releaseCycle = versionInfo.getReleaseCycle();
+	std::string releaseType = versionInfo.getType();
+	std::string date = versionInfo.getDate();
+	std::string time = versionInfo.getTime();
 
 	// release name
 	ypos += iheight;
