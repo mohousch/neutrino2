@@ -1039,6 +1039,9 @@ int CUpdateSettings::showMenu()
 	std::string releaseType = versionInfo.getType(); 		//lconfigfile.getString("RELEASE_TYPE", "Snapshot");
 	std::string date = versionInfo.getDate(); 			//lconfigfile.getString("RELEASE_DATE", __DATE__);
 	std::string time = versionInfo.getTime();			//lconfigfile.getString("RELEASE_TIME", __TIME__);
+	
+	// release name
+	updateSettings->addItem(new CMenuForwarder(_("Release"), false, "NG Buildsystem"));
 
 	// release cycle
 	updateSettings->addItem(new CMenuForwarder(_("Release cycle"), false, releaseCycle.c_str()));
