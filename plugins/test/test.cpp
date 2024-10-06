@@ -1127,30 +1127,14 @@ void CTestMenu::testCTextBoxWidget()
 	box.iWidth = CFrameBuffer::getInstance()->getScreenWidth() - 80;
 	box.iHeight = CFrameBuffer::getInstance()->getScreenHeight() - 80;
 	
-	loadMoviePlaylist();
-	
-	//
-	int p_w = 0;
-	int p_h = 0;
-	std::string buffer;
-	
-	if (!m_vMovieInfo.empty())
-	{
-		buffer = m_vMovieInfo[0].epgInfo1;
-		buffer += "\n";
-		buffer += m_vMovieInfo[0].epgInfo2;
-		
-		// scale pic
-		scaleImage(m_vMovieInfo[0].tfile, &p_w, &p_h);
-	}
-	
 	textBoxWidget = new CTextBox(&box);
 	
-	if (!m_vMovieInfo.empty())
-		textBoxWidget->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h);
+	std::string buffer = "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.";
+	
+	textBoxWidget->setText(buffer.c_str(), DATADIR "/icons/start.jpg", 320, 240);
 		
 	textBoxWidget->setTextColor(COL_YELLOW_PLUS_0);
-	textBoxWidget->setHAlign(CComponent::CC_ALIGN_CENTER);
+//	textBoxWidget->setHAlign(CComponent::CC_ALIGN_CENTER); // conflicts with pic position
 		
 	testWidget = new CWidget(&box);
 	testWidget->addKey(CRCInput::RC_ok, this, "mplay");
@@ -1739,19 +1723,11 @@ void CTestMenu::testCCText()
 	loadMoviePlaylist();
 	
 	//
-	std::string buffer;
-	
-	if (!m_vMovieInfo.empty())
-	{
-		buffer = m_vMovieInfo[0].epgInfo1;
-		buffer += "\n";
-		buffer += m_vMovieInfo[0].epgInfo2;
-	}
+	std::string buffer = "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.";
 	
 	CCText CTextBox(box.iX, box.iY, box.iWidth, box.iHeight);
 	
-	if (!m_vMovieInfo.empty())
-		CTextBox.setText(buffer.c_str());
+	CTextBox.setText(buffer.c_str());
 		
 	CTextBox.setColor(COL_YELLOW_PLUS_0);
 	CTextBox.setHAlign(CComponent::CC_ALIGN_CENTER);
@@ -2126,23 +2102,9 @@ void CTestMenu::testCTextBox()
 
 	textBoxWidget->setPosition(&Box);
 	
-	loadMoviePlaylist();
-	
-	std::string buffer;
-	int p_w = 0;
-	int p_h = 0;
-	
-	if (!m_vMovieInfo.empty())
-	{
-		buffer = m_vMovieInfo[0].epgInfo1;
-		buffer += "\n";
-		buffer += m_vMovieInfo[0].epgInfo2;
+	std::string buffer = "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.";
 		
-		// scale pic
-		scaleImage(m_vMovieInfo[0].tfile, &p_w, &p_h);
-		
-		textBoxWidget->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h);
-	}
+	textBoxWidget->setText(buffer.c_str(), DATADIR "/icons/start.jpg", 320, 240);
 	
 	textBoxWidget->setTextColor(COL_YELLOW_PLUS_0);
 	
@@ -3868,11 +3830,8 @@ void CTestMenu::testCMessageBox()
 void CTestMenu::testCMessageBoxInfoMsg()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCMessageBox\n");
-	/*
+
 	std::string Text = "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.";
-	*/
-	
-	std::string Text = ::readFile("/home/mohousch/Downloads/e4hd_log1.log.txt");
 
 	MessageBox(__("Information"), Text.c_str(), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
 }
@@ -3903,9 +3862,7 @@ void CTestMenu::testCHintBoxInfo()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCHintBox\n");
 	
-//	std::string Text = "This program is free software;\n you can redistribute it and/or modify it under the terms of the GNU General Public License\n as published by the Free Software Foundation;\n either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful,\n but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License\n along with this program; if not, write to the Free Software Foundation,\n Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n";
-
-	std::string Text = ::readFile("/home/mohousch/Downloads/e4hd_log1.log.txt");
+	std::string Text = "This program is free software;\n you can redistribute it and/or modify it under the terms of the GNU General Public License\n as published by the Free Software Foundation;\n either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful,\n but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License\n along with this program; if not, write to the Free Software Foundation,\n Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n";
 
 	HintBox(_("Information"), Text.c_str(), HINTBOX_WIDTH, 10, NEUTRINO_ICON_INFO);
 }
@@ -3924,7 +3881,7 @@ void CTestMenu::testCHelpBox()
 	helpBox->addLine(NEUTRINO_ICON_BUTTON_RED, "Huhu :-P");
 
 	//
-//	helpBox->addLine(NEUTRINO_ICON_BUTTON_GREEN, "Huhu :-)");
+	helpBox->addLine(NEUTRINO_ICON_BUTTON_GREEN, "Huhu :-)");
 
 	helpBox->addSeparator();
 
