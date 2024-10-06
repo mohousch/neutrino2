@@ -636,13 +636,16 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 				sprintf(cmd, "%s%s", "/usr/bin/ofgwrite -k ", g_settings.update_dir);
 			else if (strstr(filename.c_str(), "rootfs")) 
 				sprintf(cmd, "%s%s", "/usr/bin/ofgwrite -r ", g_settings.update_dir);
-			else
-				sprintf(cmd, "%s%s", "/usr/bin/ofgwrite ", g_settings.update_dir);
+//			else
+//				sprintf(cmd, "%s%s", "/usr/bin/ofgwrite ", g_settings.update_dir);
 			
 			if (system(cmd))
 				HintBox(_("Error"), _("image can't be flashed."), 600, 5, NEUTRINO_ICON_ERROR); // UTF-8
 			else
-				HintBox(_("Error"), _("flashing please be patient..."), 600, 5, NEUTRINO_ICON_ERROR); // UTF-8
+			{
+				HintBox(_("Error"), _("flashing please be patient..."), 600, 5, NEUTRINO_ICON_INFO); // UTF-8
+				return RETURN_EXIT_ALL;
+			}
 		}
 		else
 		{
