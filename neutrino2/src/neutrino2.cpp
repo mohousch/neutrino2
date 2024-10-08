@@ -717,7 +717,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	//misc
 	g_settings.power_standby = configfile.getInt32( "power_standby", 0);
 
-	g_settings.shutdown_real = configfile.getBool("shutdown_real", true);
+	g_settings.shutdown_real = configfile.getBool("shutdown_real", false);
 	g_settings.shutdown_real_rcdelay = configfile.getBool("shutdown_real_rcdelay", false);
         strcpy(g_settings.shutdown_count, configfile.getString("shutdown_count", "0").c_str());
 

@@ -76,6 +76,17 @@ init:
 		2|*) echo "OPENGL=opengl" > config.local;; \
 	esac; \
 	echo ""
+# lirc
+	@echo -e "\nlirc:"
+	@echo "   1) no"
+	@echo -e "   \033[01;32m2) yes\033[00m"
+	@read -p "lirc (1-2)?" LIRC; \
+	LIRC=$${LIRC}; \
+	case "$$LIRC" in \
+		1) cho "LIRC=" > config.local;; \
+		2|*) echo "LIRC=lirc" > config.local;; \
+	esac; \
+	echo ""
 # Media framework
 	@echo -e "\nMedia Framework:"
 	@echo -e "   \033[01;32m1) buildinplayer\033[00m"
@@ -211,7 +222,12 @@ OPENGL ?= opengl
 
 ifeq ($(OPENGL), opengl)
 N2_OPTS += --enable-opengl
-endif	
+endif
+
+# lirc
+ifeq ($(LIRC), lirc)
+N2_OPTS += --eenable-lirc
+endif
 
 # MEDIAFW
 MEDIAFW ?= buildinplayer
@@ -288,6 +304,7 @@ printenv:
 	@echo
 	@echo '================================================================================'
 	@echo "OPENGL			: $(OPENGL)"
+	@echo "LIRC			: $(LIRC)"
 	@echo "MEDIAFW			: $(MEDIAFW)"
 	@echo "PYTHON			: $(PYTHON)"
 	@echo "LUA			: $(LUA)"
