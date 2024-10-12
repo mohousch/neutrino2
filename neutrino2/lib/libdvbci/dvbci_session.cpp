@@ -16,8 +16,6 @@
 #include <driver/rcinput.h>
 
 
-extern CRCInput *g_RCInput;
-
 eDVBCISession* eDVBCISession::sessions[SLMS];
 
 int eDVBCISession::buildLengthField(unsigned char *pkt, int len)

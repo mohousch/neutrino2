@@ -226,7 +226,7 @@ endif
 
 # lirc
 ifeq ($(LIRC), lirc)
-N2_OPTS += --eenable-lirc
+N2_OPTS += --enable-lirc
 endif
 
 # MEDIAFW
