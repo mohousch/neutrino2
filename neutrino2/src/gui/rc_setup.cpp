@@ -69,11 +69,14 @@ enum keynames {
 	KEY_EXTRAS_PICTUREVIEWER,
 	KEY_EXTRAS_INETRADIO,
 	KEY_EXTRAS_MOVIEBROWSER,
+	KEY_EXTRAS_PVR,
+	
+	// misc
 	KEY_EXTRAS_TIMERLIST,
 	KEY_EXTRAS_SCREENSHOT
 };
 
-#define KEYBINDS_COUNT 22
+#define KEYBINDS_COUNT 23
 const char* const  keydescription[KEYBINDS_COUNT] =
 {
 	// zap
@@ -99,6 +102,7 @@ const char* const  keydescription[KEYBINDS_COUNT] =
 	_("Pictureviewer"),
 	_("Internet Radio"),
 	_("Movies Browser"),
+	_("Media Portal"),
 	
 	// misc
 	_("Timerlist"),
@@ -316,6 +320,7 @@ void CKeysBindingSettings::showMenu()
 		&g_settings.key_pictureviewer,
 		&g_settings.key_inetradio,
 		&g_settings.key_moviebrowser,
+		&g_settings.key_pvr,
 		
 		// misc
 		&g_settings.key_timerlist,
@@ -391,14 +396,13 @@ void CKeysBindingSettings::showMenu()
 	
 	// media
 	bindSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Media")));
-	for (int i = KEY_EXTRAS_MOVIEPLAYER; i <= KEY_EXTRAS_MOVIEBROWSER; i++)
+	for (int i = KEY_EXTRAS_MOVIEPLAYER; i <= KEY_EXTRAS_PVR; i++)
 		bindSettings->addItem(new CMenuForwarder(_(keydescription[i]), true, NULL, new CKeyChooser(keyvalue_p[i], _(keydescription[i]), NEUTRINO_ICON_SETTINGS)));
 
 	// misc
 	bindSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Misc settings")));
 	
 	for (int i = KEY_EXTRAS_TIMERLIST; i <= KEY_EXTRAS_SCREENSHOT; i++)
-	//bindSettings->addItem(new CMenuForwarder(_(keydescription[KEY_EXTRAS_SCREENSHOT]), true, NULL, new CKeyChooser(keyvalue_p[KEY_EXTRAS_SCREENSHOT], _(keydescription[KEY_EXTRAS_SCREENSHOT]), NEUTRINO_ICON_SETTINGS)));
 		bindSettings->addItem(new CMenuForwarder(_(keydescription[i]), true, NULL, new CKeyChooser(keyvalue_p[i], _(keydescription[i]), NEUTRINO_ICON_SETTINGS)));
 	
 	//

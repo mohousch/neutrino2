@@ -290,6 +290,7 @@ struct SNeutrinoSettings
 	int key_pictureviewer;
 	int key_inetradio;
 	int key_moviebrowser;
+	int key_pvr;
 	
 	// divers
 	int key_timerlist;

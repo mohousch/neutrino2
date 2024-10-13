@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-10-06 16:49+0200\n"
+"POT-Creation-Date: 2024-10-13 21:24+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1316,6 +1316,10 @@ msgid "Media"
 msgstr "Medien"
 
 msgid "Media Player"
+msgstr "Media Player"
+
+#, fuzzy
+msgid "Media Portal"
 msgstr "Media Player"
 
 msgid "Medicine / Physiology / Psychology"
