@@ -131,7 +131,7 @@ AM_CONDITIONAL(ENABLE_LIRC,test "$enable_lirc" = "yes")
 
 if test "$enable_lirc" = "yes"; then
 AC_DEFINE(ENABLE_LIRC,1,[include lirc support])
-AC_DEFINE(HAVE_KERNEL_LIRC,1,[include lirc kernel api support])
+#AC_DEFINE(HAVE_KERNEL_LIRC,1,[include lirc kernel api support])
 fi
 
 # scart output

@@ -3679,7 +3679,7 @@ _repeat:
 	{
 		int fd = (int) data;
 
-		//
+		//// FIXME: do we need really this ?
 		bool alive = recordingstatus || CStreamManager::getInstance()->StreamStatus();
 		
 		if ((mode == mode_standby) && !alive) 
