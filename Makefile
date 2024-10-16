@@ -68,24 +68,25 @@ run-valgrind:
 init:
 # opengl
 	@echo -e "\nopengl:"
-	@echo "   1) no"
-	@echo -e "   \033[01;32m2) yes\033[00m"
+	@echo -e "   \033[01;32m1) yes\033[00m"
+	@echo "   2) no"
 	@read -p "opengl (1-2)?" OPENGL; \
 	OPENGL=$${OPENGL}; \
 	case "$$OPENGL" in \
-		1) echo "OPENGL=" > config.local;; \
-		2|*) echo "OPENGL=opengl" > config.local;; \
+		1) echo "OPENGL=opengl" > config.local;; \
+		2) echo "OPENGL=" > config.local;; \
+		*) echo "OPENGL=opengl" > config.local;; \
 	esac; \
 	echo ""
 # lirc
 	@echo -e "\nlirc:"
-	@echo "   1) no"
-	@echo -e "   \033[01;32m2) yes\033[00m"
+	@echo "   1) yes"
+	@echo -e "   \033[01;32m2) no\033[00m"
 	@read -p "lirc (1-2)?" LIRC; \
 	LIRC=$${LIRC}; \
 	case "$$LIRC" in \
-		1) cho "LIRC=" > config.local;; \
-		2|*) echo "LIRC=lirc" > config.local;; \
+		1) echo "LIRC=lirc" > config.local;; \
+		2|*) echo "LIRC=" > config.local;; \
 	esac; \
 	echo ""
 # Media framework
@@ -166,14 +167,13 @@ init:
 	echo ""
 # graphlcd
 	@echo -e "\GraphLCD spport ?:"
-	@echo -e "   \033[01;32m1)  No\033[00m"
-	@echo "   2)  2 yes"
+	@echo "   1)  yes"
+	@echo -e "   \033[01;32m2)  No\033[00m"
 	@read -p "Select NGLCD support (1-2)?" NGLCD; \
 	NGLCD=$${NGLCD}; \
 	case "$$NGLCD" in \
-		1) echo "NGLCD=" >> config.local;; \
-		2) echo "NGLCD=nglcd" >> config.local;; \
-		*) echo "NGLCD=" >> config.local;; \
+		1) echo "NGLCD=nglcd" >> config.local;; \
+		2|*) echo "NGLCD=" >> config.local;; \
 	esac; \
 	echo ""
 # scart
