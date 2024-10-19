@@ -31,9 +31,6 @@ static CyParser yParser;
 
 //
 CStringList Cyhttpd::ConfigList;
-//
-// HOOKS: Definition & Instance for Hooks, attach/detach Hooks
-//
 
 #ifdef Y_CONFIG_USE_AUTHHOOK
 #include "mod_auth.h"
@@ -55,7 +52,6 @@ static CmodSendfile *mod_sendfile = NULL;
 static CmodCache mod_cache; // static instance
 #endif
 
-//-----------------------------------------------------------------------------
 #if defined(CONFIG_SYSTEM_TUXBOX)
 #include "neutrinoapi.h"
 static CNeutrinoAPI *NeutrinoAPI;
@@ -170,7 +166,6 @@ Cyhttpd::~Cyhttpd()
 //
 bool Cyhttpd::Configure() 
 {
-
 	if (!getuid()) // you must be root to do that!
 	{
 		// Get user and group data
