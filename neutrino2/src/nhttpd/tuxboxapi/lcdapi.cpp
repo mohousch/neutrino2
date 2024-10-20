@@ -46,32 +46,27 @@
 //
 void CLCDAPI::clear(void)
 {
-	vfd->Clear(); // clear lcd
+	lcdd->Clear();
 }
 
 void CLCDAPI::lockDisplay(int plock)
 {
-	vfd->Lock();
+	lcdd->Lock();
 }
 
 bool CLCDAPI::showPng(char *filename)
 {
-	return vfd->ShowPng(filename);
+	return lcdd->ShowPng(filename);
 }
 
 bool CLCDAPI::shotPng(char *filename)
 {
-	return vfd->DumpPng(filename);
+	return lcdd->DumpPng(filename);
 }
 
 ////
 CLCDAPI::CLCDAPI()
 {
-	vfd = CLCD::getInstance();
-}
-
-CLCDAPI::~CLCDAPI(void)
-{
-
+	lcdd = CLCD::getInstance();
 }
 

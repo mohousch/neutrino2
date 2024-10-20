@@ -26,22 +26,18 @@
 #ifndef __nhttpd_lcdapi_h__
 #define __nhttpd_lcdapi_h__
 
-// tuxbox
+//
 #include <driver/lcd/lcdd.h>
-#include <driver/lcd/lcddisplay.h>
-#include <driver/lcd/fontrenderer.h>
 
-class CLCDDisplay;
-class LcdFontRenderClass;
 
 //
 class CLCDAPI
 {
-	CLCD *vfd;
+	CLCD *lcdd;
 	
 	public:
 		CLCDAPI();
-		~CLCDAPI(void);
+		~CLCDAPI(void){};
 		
 		void lockDisplay(int lock);
 		bool showPng(char *filename);

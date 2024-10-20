@@ -107,7 +107,7 @@ class CControlAPI : public Cyhook
 	protected:
 		static const unsigned int PLUGIN_DIR_COUNT = 7;
 		static std::string PLUGIN_DIRS[PLUGIN_DIR_COUNT];
-		CNeutrinoAPI* NeutrinoAPI;
+		CNeutrinoAPI *NeutrinoAPI;
 
 		void init(CyhookHandler *hh);
 		void Execute(CyhookHandler *hh);

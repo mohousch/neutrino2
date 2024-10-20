@@ -18,10 +18,6 @@
 #include "lcdapi.h"
 #endif
 
-//
-// No Class Helpers
-const char * _getISO639Description(const char * const iso);
-bool _initialize_iso639_map(void);
 
 //
 class CNeutrinoAPI
