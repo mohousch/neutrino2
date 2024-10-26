@@ -663,16 +663,10 @@ void CUpnpBrowserGui::showMenuDevice()
 	listBox->setTitle(__("UPnP Browser"), UPNP_ICON_SMALL);
 	listBox->enablePaintHead();
 	listBox->enablePaintDate();
-	listBox->setHeadCorner(RADIUS_SMALL);
-	listBox->setHeadGradient(LIGHT2DARK);
-	listBox->setHeadLine(false);
 
 	// foot
 	listBox->enablePaintFoot();
 	listBox->setFootButtons(RescanButton, 4);
-	listBox->setFootCorner(RADIUS_SMALL);
-	listBox->setFootGradient(DARK2LIGHT);
-	listBox->setFootLine(false);
 
 	// foot info
 	listBox->enablePaintItemInfo(70);
