@@ -44,8 +44,7 @@
 #include <driver/rcinput.h>
 
 
-extern CFont * g_Font[FONT_TYPE_COUNT];
-//
+////
 class CMenuTarget;
 class CWidget;
 
@@ -114,7 +113,7 @@ class CComponent
 		bool inFocus;
 		bool painted;
 		////
-		CWidget* parent;
+		CWidget *parent;
 		//
 		struct keyAction { std::string action; CMenuTarget *menue; };
 		std::map<neutrino_msg_t, keyAction> keyActionMap;
@@ -530,8 +529,6 @@ class CCCounter : public CComponent
 		void hide();
 		//
 		void refresh(bool show = false);
-		//
-		CFont* getFont(){return g_Font[font];};
 };
 
 //// CCSpinner
