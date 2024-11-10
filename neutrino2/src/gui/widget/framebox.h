@@ -145,7 +145,7 @@ class CFrameBox : public CComponent
 
 		virtual void paintFrames();
 
-		std::string actionKey;
+		std::string actionKey;	// lua
 		
 		//
 		fb_pixel_t bgcolor;

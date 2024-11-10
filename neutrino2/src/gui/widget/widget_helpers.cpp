@@ -31,10 +31,8 @@
 #include <system/settings.h>
 #include <system/debug.h>
 #include <system/helpers.h>
-#include <system/set_threadname.h>
 
 #include <gui/widget/widget_helpers.h>
-#include <gui/widget/textbox.h>
 #include <gui/widget/framebox.h>
 
 #include <video_cs.h>
