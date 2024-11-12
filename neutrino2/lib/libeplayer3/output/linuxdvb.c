@@ -1345,6 +1345,7 @@ static int Write(void* _context, void* _out)
 			avcodec_free_context(&ctx);
 			return cERR_LINUXDVB_ERROR;
 		}
+		
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 		av_codec_set_pkt_timebase(ctx, out->stream->time_base);
 #else
@@ -1424,7 +1425,7 @@ static int Write(void* _context, void* _out)
 				uint8_t *dest[4] = { data[buf_in].buffer, NULL, NULL, NULL };
 	    			int dest_linesize[4] = { ctx->width*4, 0, 0, 0 }; // sufficient ?
 	    			
-				sws_scale(convert, /*(const uint8_t* const)*/out->frame->data, out->frame->linesize, 0, ctx->height, dest, dest_linesize);
+				sws_scale(convert, out->frame->data, out->frame->linesize, 0, ctx->height, dest, dest_linesize);
 					
 				//
 				data[buf_in].width = ctx->width;

@@ -375,8 +375,6 @@ uint64_t calcSubPts(AVStream* stream, AVPacket* packet)
 	return pts;
 }
 
-////
-
 //
 float getDurationFromSSALine(unsigned char* line)
 {
@@ -797,7 +795,7 @@ static void FFMPEGThread(Context_t* context)
 					if ((subtitleTrack->pts > latestPts) && (!videoTrack) && (!audioTrack))
 						latestPts = subtitleTrack->pts;
 
-#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+#if LIBAVFORMAT_VERSION_MAJOR > 56
 					ffmpeg_printf(20, "Packet duration %d\n", packet.duration);
 #else
 					ffmpeg_printf(20, "Packet convergence_duration %lld\n", packet.convergence_duration);
@@ -807,12 +805,9 @@ static void FFMPEGThread(Context_t* context)
 						duration = ((float)packet.duration)/1000.0;
 #if LIBAVFORMAT_VERSION_MAJOR > 56
 					else if(packet.duration != 0 && packet.duration != AV_NOPTS_VALUE )
+						duration = ((float)packet.duration)/1000.0;
 #else
 					else if(packet.convergence_duration != 0 && packet.convergence_duration != AV_NOPTS_VALUE )
-#endif
-#if LIBAVFORMAT_VERSION_MAJOR > 56
-						duration = ((float)packet.duration)/1000.0;	
-#else
 						duration = ((float)packet.convergence_duration)/1000.0;	
 #endif
 #if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
@@ -1775,7 +1770,7 @@ int container_ffmpeg_init_sub(Context_t *context, char * filename)
 		Track_t track;
 		AVStream* stream = subavContext->streams[n];
 		int version = 0;
-		char*encoding = NULL;
+		char *encoding = NULL;
 		
 #if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
 		encoding = Codec2Encoding(stream->codecpar->codec_id, &version);
@@ -1795,6 +1790,7 @@ int container_ffmpeg_init_sub(Context_t *context, char * filename)
 			case AVMEDIA_TYPE_SUBTITLE:
 			{
 #if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+				ffmpeg_printf(10, "%d. encoding = %s - version %d CODEC_TYPE:%d codec_id 0x%x\n", n, encoding? encoding : "NULL", version, stream->codecpar->codec_type, stream->codecpar->codec_id);
 #else
 				ffmpeg_printf(10, "%d. encoding = %s - version %d CODEC_TYPE:%d codec_id 0x%x\n", n, encoding? encoding : "NULL", version, stream->codec->codec_type, stream->codec->codec_id);
 #endif
