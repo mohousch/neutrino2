@@ -70,7 +70,7 @@
 #endif
 #endif
 
-//#define LINUXDVB_DEBUG
+#define LINUXDVB_DEBUG
 #define LINUXDVB_SILENT
 
 static short debug_level = 10;
@@ -1126,7 +1126,29 @@ static int Write(void* _context, void* _out)
 			}
 		}
 #else
-		AVCodecContext* ctx = out->stream->codec;
+		AVCodecContext *ctx = NULL;
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+		//// FIXME:
+		ctx = avcodec_alloc_context3(NULL);
+		
+		if (!ctx)
+		{
+			return cERR_LINUXDVB_ERROR;
+		}
+		
+		if (avcodec_parameters_to_context(ctx, out->stream->codecpar) < 0)
+		{
+			avcodec_free_context(&ctx);
+			return cERR_LINUXDVB_ERROR;
+		}
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
+		av_codec_set_pkt_timebase(ctx, out->stream->time_base);
+#else
+		ctx->pkt_timebase = out->stream->time_base;
+#endif
+#else
+		ctx = out->stream->codec;
+#endif
 		int got_frame = 0;
 		SwrContext *swr = NULL;
 		uint8_t *obuf = NULL;
@@ -1231,7 +1253,11 @@ static int Write(void* _context, void* _out)
 #else
 			sCURRENT_APTS = sCURRENT_PTS = out->aframe->best_effort_timestamp;
 #endif
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+			int o_buf_size = av_samples_get_buffer_size(&out_linesize, out->stream->codecpar->channels, obuf_size, AV_SAMPLE_FMT_S16, 1);
+#else
 			int o_buf_size = av_samples_get_buffer_size(&out_linesize, out->stream->codec->channels, obuf_size, AV_SAMPLE_FMT_S16, 1);
+#endif
 							
 			if (o_buf_size > 0)
 				res = ao_play(adevice, (char *)obuf, o_buf_size);
@@ -1303,7 +1329,30 @@ static int Write(void* _context, void* _out)
 		}
 #else
 		struct SwsContext *convert = NULL;
-		AVCodecContext* ctx = out->stream->codec;
+		AVCodecContext* ctx = NULL;
+		
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+		//// FIXME:
+		ctx = avcodec_alloc_context3(NULL);
+		
+		if (!ctx)
+		{
+			return cERR_LINUXDVB_ERROR;
+		}
+		
+		if (avcodec_parameters_to_context(ctx, out->stream->codecpar) < 0)
+		{
+			avcodec_free_context(&ctx);
+			return cERR_LINUXDVB_ERROR;
+		}
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
+		av_codec_set_pkt_timebase(ctx, out->stream->time_base);
+#else
+		ctx->pkt_timebase = out->stream->time_base;
+#endif
+#else
+		ctx = out->stream->codec;
+#endif
 		
 		//
 		memset(&data[64], 0, sizeof(data[64]));

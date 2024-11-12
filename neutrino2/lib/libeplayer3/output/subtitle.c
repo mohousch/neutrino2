@@ -45,7 +45,7 @@
 /* Makros/Constants              */
 /* ***************************** */
 
-//#define SUBTITLE_DEBUG
+#define SUBTITLE_DEBUG
 #define SUBTITLE_SILENT
 
 #ifdef SUBTITLE_DEBUG
@@ -171,7 +171,11 @@ static int Write(void* _context, void *data)
     	}
     	
     	// teletext
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+	if (out->stream->codecpar->codec_id == AV_CODEC_ID_DVB_TELETEXT)
+#else
     	if (out->stream->codec->codec_id == AV_CODEC_ID_DVB_TELETEXT)
+#endif
     	{
     		if (out->data && out->len > 1)
     			teletext_write(0, out->data + 1, out->len + 1);
@@ -187,7 +191,29 @@ static int Write(void* _context, void *data)
     		avpkt.pts  = out->pts;
 		//
 	    	AVSubtitle sub;
-	    	AVCodecContext* ctx = out->stream->codec;
+	    	AVCodecContext* ctx = NULL;
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+		//// FIXME:
+		ctx = avcodec_alloc_context3(NULL);
+		
+		if (!ctx)
+		{
+			return cERR_SUBTITLE_ERROR;
+		}
+		
+		if (avcodec_parameters_to_context(ctx, out->stream->codecpar) < 0)
+		{
+			avcodec_free_context(&ctx);
+			return cERR_SUBTITLE_ERROR;
+		}
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
+		av_codec_set_pkt_timebase(ctx, out->stream->time_base);
+#else
+		ctx->pkt_timebase = out->stream->time_base;
+#endif
+#else
+	    	ctx = out->stream->codec;
+#endif
 	    	
 	    	memset(&sub, 0, sizeof(sub));
 	    		

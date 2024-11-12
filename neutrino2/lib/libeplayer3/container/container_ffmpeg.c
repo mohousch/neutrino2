@@ -64,7 +64,7 @@
 /* Makros/Constants              */
 /* ***************************** */
 
-//#define FFMPEG_DEBUG
+#define FFMPEG_DEBUG
 #define FFMPEG_SILENT
 
 #ifdef FFMPEG_DEBUG
@@ -145,9 +145,9 @@ void releaseMutex(const char *filename, const char *function, int line)
 	ffmpeg_printf(100, "::%d released mutex\n", line);
 }
 
-static char* Codec2Encoding(AVCodecContext* codec, int* version)
+static char* Codec2Encoding(int32_t codec_id, int* version)
 {
-	switch (codec->codec_id)
+	switch (codec_id)
 	{
 		case AV_CODEC_ID_MPEG1VIDEO:
 			return "V_MPEG1";
@@ -317,12 +317,12 @@ static char* Codec2Encoding(AVCodecContext* codec, int* version)
         		return "S_GRAPHIC/XSUB";
 
 		default:
-			ffmpeg_printf(10, "CODEC FOUND -> %d\n", codec->codec_id);
+			ffmpeg_printf(10, "CODEC FOUND -> %d\n", codec_id);
 			
-			if (codec->codec_type == AVMEDIA_TYPE_AUDIO)
-				return "A_IPCM";
-			else
-				ffmpeg_err("ERROR! CODEC NOT FOUND -> %d\n",codec->codec_id);
+//			if (codec->codec_type == AVMEDIA_TYPE_AUDIO)
+//				return "A_IPCM";
+//			else
+//				ffmpeg_err("ERROR! CODEC NOT FOUND -> %d\n",codec->codec_id);
 	}
 	
 	return NULL;
@@ -797,14 +797,29 @@ static void FFMPEGThread(Context_t* context)
 					if ((subtitleTrack->pts > latestPts) && (!videoTrack) && (!audioTrack))
 						latestPts = subtitleTrack->pts;
 
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
 					ffmpeg_printf(20, "Packet duration %d\n", packet.duration);
+#else
 					ffmpeg_printf(20, "Packet convergence_duration %lld\n", packet.convergence_duration);
+#endif
 
 					if(packet.duration != 0 && packet.duration != AV_NOPTS_VALUE )
 						duration = ((float)packet.duration)/1000.0;
+#if LIBAVFORMAT_VERSION_MAJOR > 56
+					else if(packet.duration != 0 && packet.duration != AV_NOPTS_VALUE )
+#else
 					else if(packet.convergence_duration != 0 && packet.convergence_duration != AV_NOPTS_VALUE )
-						duration = ((float)packet.convergence_duration)/1000.0;		    
+#endif
+#if LIBAVFORMAT_VERSION_MAJOR > 56
+						duration = ((float)packet.duration)/1000.0;	
+#else
+						duration = ((float)packet.convergence_duration)/1000.0;	
+#endif
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+					else if(subtitleTrack->stream->codecpar->codec_id == AV_CODEC_ID_SSA)
+#else
 					else if(subtitleTrack->stream->codec->codec_id == AV_CODEC_ID_SSA)
+#endif
 					{
 						duration = getDurationFromSSALine(packet.data);
 					} 
@@ -838,8 +853,12 @@ static void FFMPEGThread(Context_t* context)
 			}            
 
 			if (packet.data)
+#if (LIBAVCODEC_VERSION_MAJOR > 55)
+				av_packet_unref(&packet);
+#else
 				av_free_packet(&packet);
 			av_packet_unref(&packet);
+#endif
 		}
 		else  
 		{
@@ -914,8 +933,10 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	}
 
 	// initialize ffmpeg 
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	avcodec_register_all();
 	av_register_all();
+#endif
 	avformat_network_init();
 	
 	//
@@ -953,7 +974,11 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	av_dict_free(&options);
 	
 	avContext->flags |= AVFMT_FLAG_GENPTS;
+#if (LIBAVFORMAT_VERSION_MAJOR > 55) && (LIBAVFORMAT_VERSION_MAJOR < 56)
+	subavContext->max_analyze_duration2 = 1;
+#else
 	avContext->max_analyze_duration = 1;
+#endif
 	avContext->probesize = 131072;
 
 	// find stream info
@@ -973,15 +998,26 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 		Track_t track;
 		AVStream* stream = avContext->streams[n];
 		int version = 0;
+		char *encoding = NULL;
 
-		char* encoding = Codec2Encoding(stream->codec, &version);
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+		encoding = Codec2Encoding(stream->codecpar->codec_id, &version);
+
+		ffmpeg_printf(10, "%d. encoding = %s - version %d CODEC_TYPE:%d codec_id 0x%x\n", n, encoding? encoding : "NULL", version, stream->codecpar->codec_type, stream->codecpar->codec_id);
+#else
+		encoding = Codec2Encoding(stream->codec->codec_id, &version);
 
 		ffmpeg_printf(10, "%d. encoding = %s - version %d CODEC_TYPE:%d codec_id 0x%x\n", n, encoding? encoding : "NULL", version, stream->codec->codec_type, stream->codec->codec_id);
+#endif
 
 		//
 		memset(&track, 0, sizeof(track));
 
-		switch (stream->codec->codec_type) 
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+		switch (stream->codecpar->codec_type)
+#else
+		switch (stream->codec->codec_type)
+#endif
 		{
 			// video
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)	  
@@ -995,11 +1031,17 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				track.type           = eTypeES;
 				track.version        = version;
 
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+				track.width          = stream->codecpar->width;
+				track.height         = stream->codecpar->height;
+				track.extraData      = stream->codecpar->extradata;
+				track.extraSize      = stream->codecpar->extradata_size;
+#else
 				track.width          = stream->codec->width;
 				track.height         = stream->codec->height;
-
 				track.extraData      = stream->codec->extradata;
 				track.extraSize      = stream->codec->extradata_size;
+#endif
 
 				track.frame_rate     = stream->r_frame_rate.num;
 
@@ -1034,9 +1076,13 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				}
 				
 				//
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+				ffmpeg_printf(10, "bit_rate = %d\n",stream->codecpar->bit_rate);
+#else
 				ffmpeg_printf(10, "bit_rate = %d\n",stream->codec->bit_rate);
 				ffmpeg_printf(10, "flags = %d\n",stream->codec->flags);
 				ffmpeg_printf(10, "frame_bits = %d\n",stream->codec->frame_bits);
+#endif
 				ffmpeg_printf(10, "time_base.den %d\n",stream->time_base.den);
 				ffmpeg_printf(10, "time_base.num %d\n",stream->time_base.num);
 				ffmpeg_printf(10, "frame_rate %d\n",stream->r_frame_rate.num);
@@ -1054,7 +1100,30 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 #if LIBAVCODEC_VERSION_MAJOR < 54
 				avcodec_open(stream->codec, avcodec_find_decoder(stream->codec->codec_id));
 #else
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+				//// FIXME:
+				AVCodecContext* ctx = NULL;
+				ctx = avcodec_alloc_context3(NULL);
+		
+				if (!ctx)
+				{
+//					return cERR_CONTAINER_FFMPEG_OPEN;
+				}
+				
+				if (avcodec_parameters_to_context(ctx, stream->codecpar) < 0)
+				{
+					avcodec_free_context(&ctx);
+//					return cERR_CONTAINER_FFMPEG_OPEN;
+				}
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
+				av_codec_set_pkt_timebase(ctx, stream->time_base);
+#else
+				ctx->pkt_timebase = stream->time_base;
+#endif
+				avcodec_open2(ctx, avcodec_find_decoder(stream->codecpar->codec_id), NULL);
+#else
 				avcodec_open2(stream->codec, avcodec_find_decoder(stream->codec->codec_id), NULL);
+#endif
 #endif
 #endif
 
@@ -1126,7 +1195,31 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 #if LIBAVCODEC_VERSION_MAJOR < 54
 				avcodec_open(stream->codec, avcodec_find_decoder(stream->codec->codec_id));
 #else
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+				//// FIXME:
+				AVCodecContext* ctx = NULL;
+				ctx = avcodec_alloc_context3(NULL);
+		
+				if (!ctx)
+				{
+//					return cERR_CONTAINER_FFMPEG_OPEN;
+				}
+				
+				if (avcodec_parameters_to_context(ctx, stream->codecpar) < 0)
+				{
+					avcodec_free_context(&ctx);
+//					return cERR_CONTAINER_FFMPEG_OPEN;
+				}
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
+				av_codec_set_pkt_timebase(ctx, stream->time_base);
+#else
+				ctx->pkt_timebase = stream->time_base;
+#endif
+
+				avcodec_open2(ctx, avcodec_find_decoder(stream->codecpar->codec_id), NULL);
+#else
 				avcodec_open2(stream->codec, avcodec_find_decoder(stream->codec->codec_id), NULL);
+#endif
 #endif
 #else
 				// ipcm
@@ -1322,8 +1415,13 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				track.width          = -1; /* will be filled online from videotrack */
 				track.height         = -1; /* will be filled online from videotrack */
 
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+				track.extraData      = stream->codecpar->extradata;
+				track.extraSize      = stream->codecpar->extradata_size;
+#else
 				track.extraData      = stream->codec->extradata;
 				track.extraSize      = stream->codec->extradata_size;
+#endif
 
 				if(stream->duration == AV_NOPTS_VALUE) 
 				{
@@ -1340,7 +1438,31 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 #if LIBAVCODEC_VERSION_MAJOR < 54
 				avcodec_open(stream->codec, avcodec_find_decoder(stream->codec->codec_id));
 #else
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+				//// FIXME:
+				AVCodecContext* ctx = NULL;
+				ctx = avcodec_alloc_context3(NULL);
+		
+				if (!ctx)
+				{
+//					return cERR_CONTAINER_FFMPEG_OPEN;
+				}
+				
+				if (avcodec_parameters_to_context(ctx, stream->codecpar) < 0)
+				{
+					avcodec_free_context(&ctx);
+//					return cERR_CONTAINER_FFMPEG_OPEN;
+				}
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
+				av_codec_set_pkt_timebase(ctx, stream->time_base);
+#else
+				ctx->pkt_timebase = stream->time_base;
+#endif
+
+				avcodec_open2(ctx, avcodec_find_decoder(stream->codecpar->codec_id), NULL);
+#else
 				avcodec_open2(stream->codec, avcodec_find_decoder(stream->codec->codec_id), NULL);
+#endif
 #endif
 
 				if (context->manager->subtitle)
@@ -1511,14 +1633,26 @@ static void FFMPEGSubThread(Context_t* context)
 					if (subtitleTrack->pts > latestPts)
 						latestPts = subtitleTrack->pts;
 
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
 					ffmpeg_printf(20, "Packet duration %d\n", subpacket.duration);
+#else
 					ffmpeg_printf(20, "Packet convergence_duration %lld\n", subpacket.convergence_duration);
+#endif
 
 					if(subpacket.duration != 0 && subpacket.duration != AV_NOPTS_VALUE )
 						duration = ((float)subpacket.duration)/1000.0;
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+					else if(subpacket.duration != 0 && subpacket.duration != AV_NOPTS_VALUE )
+						duration = ((float)subpacket.duration)/1000.0;
+#else
 					else if(subpacket.convergence_duration != 0 && subpacket.convergence_duration != AV_NOPTS_VALUE )
-						duration = ((float)subpacket.convergence_duration)/1000.0;		    
+						duration = ((float)subpacket.convergence_duration)/1000.0;	
+#endif	
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+					else if(subtitleTrack->stream->codecpar->codec_id == AV_CODEC_ID_SSA)
+#else    
 					else if(subtitleTrack->stream->codec->codec_id == AV_CODEC_ID_SSA)
+#endif
 					{
 						duration = getDurationFromSSALine(subpacket.data);
 					} 
@@ -1552,8 +1686,12 @@ static void FFMPEGSubThread(Context_t* context)
 			}            
 
 			if (subpacket.data)
+#if (LIBAVCODEC_VERSION_MAJOR > 55)
+				av_packet_unref(&subpacket);
+#else
 				av_free_packet(&subpacket);
 			av_packet_unref(&subpacket);
+#endif
 		}
 		else  
 		{
@@ -1615,7 +1753,11 @@ int container_ffmpeg_init_sub(Context_t *context, char * filename)
 	
 	//
 	subavContext->flags |= AVFMT_FLAG_GENPTS;
+#if (LIBAVFORMAT_VERSION_MAJOR > 55) && (LIBAVFORMAT_VERSION_MAJOR < 56)
+	subavContext->max_analyze_duration2 = 1;
+#else
 	subavContext->max_analyze_duration = 1;
+#endif
 	subavContext->probesize = 131072;
 
 	// find stream info
@@ -1633,17 +1775,29 @@ int container_ffmpeg_init_sub(Context_t *context, char * filename)
 		Track_t track;
 		AVStream* stream = subavContext->streams[n];
 		int version = 0;
+		char*encoding = NULL;
 		
-		char* encoding = Codec2Encoding(stream->codec, &version);
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+		encoding = Codec2Encoding(stream->codecpar->codec_id, &version);
+#else
+		encoding = Codec2Encoding(stream->codec->codec_id, &version);
+#endif
 		
 		//
 		memset(&track, 0, sizeof(track));
 
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+		switch (stream->codecpar->codec_type) 
+#else
 		switch (stream->codec->codec_type) 
+#endif
 		{
 			case AVMEDIA_TYPE_SUBTITLE:
 			{
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+#else
 				ffmpeg_printf(10, "%d. encoding = %s - version %d CODEC_TYPE:%d codec_id 0x%x\n", n, encoding? encoding : "NULL", version, stream->codec->codec_type, stream->codec->codec_id);
+#endif
 					
 #if LIBAVCODEC_VERSION_MAJOR < 54
 				AVMetadataTag * lang;
@@ -1676,8 +1830,13 @@ int container_ffmpeg_init_sub(Context_t *context, char * filename)
 				track.width          = -1; /* will be filled online from videotrack */
 				track.height         = -1; /* will be filled online from videotrack */
 
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+				track.extraData      = stream->codecpar->extradata;
+				track.extraSize      = stream->codecpar->extradata_size;
+#else
 				track.extraData      = stream->codec->extradata;
 				track.extraSize      = stream->codec->extradata_size;
+#endif
 
 				if(stream->duration == AV_NOPTS_VALUE) 
 				{
@@ -1694,7 +1853,31 @@ int container_ffmpeg_init_sub(Context_t *context, char * filename)
 #if LIBAVCODEC_VERSION_MAJOR < 54
 				avcodec_open(stream->codec, avcodec_find_decoder(stream->codec->codec_id));
 #else
+#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
+				//// FIXME:
+				AVCodecContext* ctx = NULL;
+				ctx = avcodec_alloc_context3(NULL);
+		
+				if (!ctx)
+				{
+//					return cERR_CONTAINER_FFMPEG_OPEN;
+				}
+				
+				if (avcodec_parameters_to_context(ctx, stream->codecpar) < 0)
+				{
+					avcodec_free_context(&ctx);
+//					return cERR_CONTAINER_FFMPEG_OPEN;
+				}
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
+				av_codec_set_pkt_timebase(ctx, stream->time_base);
+#else
+				ctx->pkt_timebase = stream->time_base;
+#endif
+
+				avcodec_open2(ctx, avcodec_find_decoder(stream->codecpar->codec_id), NULL);
+#else
 				avcodec_open2(stream->codec, avcodec_find_decoder(stream->codec->codec_id), NULL);
+#endif
 #endif
 
 				if (context->manager->subtitle)

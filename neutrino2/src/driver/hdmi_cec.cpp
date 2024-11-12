@@ -110,7 +110,8 @@ bool hdmi_cec::SetCECMode(VIDEO_HDMI_CEC_MODE _deviceType)
 		
 		if (hdmiFd >= 0)
 		{
-			::ioctl(hdmiFd, 0); /* flush old messages */
+			// flush old messages
+			::ioctl(hdmiFd, 0);
 		}
 	}
 
@@ -201,11 +202,14 @@ bool hdmi_cec::SetCECMode(VIDEO_HDMI_CEC_MODE _deviceType)
 
 	if (hdmiFd >= 0)
 	{
+		//
 		GetCECAddressInfo();
 
+		//
 		if (autoview_cec_activ)
 			SetCECState(false);
 
+		//
 		Start();
 		
 		return true;
