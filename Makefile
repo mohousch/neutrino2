@@ -85,8 +85,8 @@ init:
 	@read -p "lirc (1-2)?" LIRC; \
 	LIRC=$${LIRC}; \
 	case "$$LIRC" in \
-		1) echo "LIRC=lirc" > config.local;; \
-		2|*) echo "LIRC=" > config.local;; \
+		1) echo "LIRC=lirc" >> config.local;; \
+		2|*) echo "LIRC=" >> config.local;; \
 	esac; \
 	echo ""
 # Media framework
