@@ -1312,13 +1312,29 @@ void cVideo::run(void)
 	avfc = avformat_alloc_context();
 	avfc->pb = pIOCtx;
 	avfc->iformat = inp;
-	avfc->probesize = 188 * 5;
+	avfc->probesize = 131072;
+#if (LIBAVFORMAT_VERSION_MAJOR > 55) && (LIBAVFORMAT_VERSION_MAJOR < 56)
+	avfc->max_analyze_duration2 = 1;
+#else
+	avfc->max_analyze_duration = 1;
+#endif
 	
 	thread_running = true;
 	
 	if (avformat_open_input(&avfc, NULL, inp, NULL) < 0)
 	{
 		printf("cVideo::run: Could not open input\n");
+		goto out;
+	}
+	
+	// find stream info
+#if LIBAVCODEC_VERSION_MAJOR < 54
+	if (av_find_stream_info(avfc) < 0)
+#else
+	if (avformat_find_stream_info(avfc, NULL) < 0) 
+#endif
+	{
+		printf("Error avformat_find_stream_info\n");
 		goto out;
 	}
 	

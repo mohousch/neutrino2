@@ -38,9 +38,7 @@
 #include <pthread.h>
 
 #include <libavutil/avutil.h>
-//#if LIBAVCODEC_VERSION_MAJOR > 54
 #include <libavutil/time.h>
-//#endif
 #include <libavformat/avformat.h>
 #if LIBAVCODEC_VERSION_MAJOR > 54
 #include <libavutil/opt.h>
@@ -112,7 +110,8 @@ static pthread_t PlayThread;
 static int hasPlayThreadStarted = 0;
 
 static AVFormatContext *avContext = NULL;
-static AVCodecContext* ctx = NULL;
+static AVCodecContext *actx = NULL;
+static AVCodecContext *vctx = NULL;
 ////
 static pthread_t PlaySubThread;
 static int hasPlaySubThreadStarted = 0;
@@ -147,7 +146,7 @@ void releaseMutex(const char *filename, const char *function, int line)
 	ffmpeg_printf(100, "::%d released mutex\n", line);
 }
 
-static char* Codec2Encoding(int32_t codec_id, int* version)
+static char* Codec2Encoding(uint32_t codec_id, int* version)
 {
 	switch (codec_id)
 	{
@@ -320,21 +319,16 @@ static char* Codec2Encoding(int32_t codec_id, int* version)
 
 		default:
 			ffmpeg_printf(10, "CODEC FOUND -> %d\n", codec_id);
-			
-//			if (codec->codec_type == AVMEDIA_TYPE_AUDIO)
-//				return "A_IPCM";
-//			else
-//				ffmpeg_err("ERROR! CODEC NOT FOUND -> %d\n",codec->codec_id);
 	}
 	
 	return NULL;
 }
 
-long long int calcPts(AVStream *stream, AVPacket *packet)
+long long int calcPts(AVStream *stream, AVPacket *packet, AVFormatContext *_avContext)
 {
 	long long int pts;
 
-	if ((stream == NULL) || (packet == NULL))
+	if ((stream == NULL) || (packet == NULL) || (_avContext == NULL))
 	{
 		ffmpeg_err("stream / packet null\n");
 		return INVALID_PTS_VALUE;
@@ -342,34 +336,10 @@ long long int calcPts(AVStream *stream, AVPacket *packet)
 
 	if(packet->pts == AV_NOPTS_VALUE)
 		pts = INVALID_PTS_VALUE;
-	else if (avContext->start_time == AV_NOPTS_VALUE)
+	else if (_avContext->start_time == AV_NOPTS_VALUE)
 		pts = 90000.0 * (double)packet->pts * av_q2d(stream->time_base);
 	else
-		pts = 90000.0 * (((double)(packet->pts) * av_q2d(stream->time_base)) - (avContext->start_time / AV_TIME_BASE));
-
-	if (pts & 0x8000000000000000ull)
-		pts = INVALID_PTS_VALUE;
-
-	return pts;
-}
-
-////
-uint64_t calcSubPts(AVStream *stream, AVPacket *packet)
-{
-	uint64_t pts;
-
-	if ((stream == NULL) || (packet == NULL))
-	{
-		ffmpeg_err("stream / packet null\n");
-		return INVALID_PTS_VALUE;
-	}
-
-	if(packet->pts == AV_NOPTS_VALUE)
-		pts = INVALID_PTS_VALUE;
-	else if (subavContext->start_time == AV_NOPTS_VALUE)
-		pts = 90000.0 * (double)packet->pts * av_q2d(stream->time_base);
-	else
-		pts = 90000.0 * (((double)(packet->pts) * av_q2d(stream->time_base)) - (subavContext->start_time / AV_TIME_BASE));
+		pts = 90000.0 * (((double)(packet->pts) * av_q2d(stream->time_base)) - (_avContext->start_time / AV_TIME_BASE));
 
 	if (pts & 0x8000000000000000ull)
 		pts = INVALID_PTS_VALUE;
@@ -378,7 +348,7 @@ uint64_t calcSubPts(AVStream *stream, AVPacket *packet)
 }
 
 //
-float getDurationFromSSALine(unsigned char* line)
+float getDurationFromSSALine(unsigned char *line)
 {
 	int i,h,m,s,ms;
 	char* Text = strdup((char*) line);
@@ -574,7 +544,7 @@ static void FFMPEGThread(Context_t* context)
 			{
 				if (videoTrack->Index == index) 
 				{
-					currentVideoPts = videoTrack->pts = calcPts(videoTrack->stream, &packet);
+					currentVideoPts = videoTrack->pts = calcPts(videoTrack->stream, &packet, avContext);
 
 					if ((currentVideoPts > latestPts) && (currentVideoPts != INVALID_PTS_VALUE))
 						latestPts = currentVideoPts;
@@ -611,7 +581,7 @@ static void FFMPEGThread(Context_t* context)
 			{
 				if (audioTrack->Index == index) 
 				{
-					currentAudioPts = audioTrack->pts = calcPts(audioTrack->stream, &packet);
+					currentAudioPts = audioTrack->pts = calcPts(audioTrack->stream, &packet, avContext);
 
 					if ((currentAudioPts > latestPts) && (!videoTrack))
 						latestPts = currentAudioPts;
@@ -794,7 +764,7 @@ static void FFMPEGThread(Context_t* context)
 					float duration = 3.0;
 					ffmpeg_printf(100, "subtitleTrack->stream %p \n", subtitleTrack->stream);
 
-					subtitleTrack->pts = calcPts(subtitleTrack->stream, &packet);
+					subtitleTrack->pts = calcPts(subtitleTrack->stream, &packet, avContext);
 
 					if ((subtitleTrack->pts > latestPts) && (!videoTrack) && (!audioTrack))
 						latestPts = subtitleTrack->pts;
@@ -814,11 +784,7 @@ static void FFMPEGThread(Context_t* context)
 					else if(packet.convergence_duration != 0 && packet.convergence_duration != AV_NOPTS_VALUE )
 						duration = ((float)packet.convergence_duration)/1000.0;	
 #endif
-#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
 					else if(subtitleTrack->stream->codecpar->codec_id == AV_CODEC_ID_SSA)
-#else
-					else if(subtitleTrack->stream->codec->codec_id == AV_CODEC_ID_SSA)
-#endif
 					{
 						duration = getDurationFromSSALine(packet.data);
 					} 
@@ -892,11 +858,17 @@ static void FFMPEGThread(Context_t* context)
 	}
 #endif
 
-	////
-	if (ctx)
+	//
+	if (actx)
 	{
-		avcodec_close(ctx);
-		av_free(ctx);
+		avcodec_close(actx);
+		av_free(actx);
+	}
+	
+	if (vctx)
+	{
+		avcodec_close(vctx);
+		av_free(vctx);
 	}
 	
 	//
@@ -957,7 +929,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 		av_dict_set(&options, "reconnect_delay_max", "7", 0);
 		
 		av_dict_set(&options, "seekable", "0", 0);
-//		av_dict_set(&options, "reconnect_at_eof", "1", 0);
 		av_dict_set(&options, "reconnect_streamed", "1", 0);
 	}
 
@@ -1067,30 +1038,22 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				
 				//
 				ffmpeg_printf(10, "bit_rate = %d\n",stream->codecpar->bit_rate);
-
 				ffmpeg_printf(10, "time_base.den %d\n",stream->time_base.den);
 				ffmpeg_printf(10, "time_base.num %d\n",stream->time_base.num);
 				ffmpeg_printf(10, "frame_rate %d\n",stream->r_frame_rate.num);
 				ffmpeg_printf(10, "TimeScale %d\n",stream->r_frame_rate.den);
-
 				ffmpeg_printf(10, "frame_rate %d\n", track.frame_rate);
 				ffmpeg_printf(10, "TimeScale %d\n", track.TimeScale);
-				
 				ffmpeg_printf(10, "width %d\n", track.width);
 				ffmpeg_printf(10, "height %d\n", track.height);
 				ffmpeg_printf(10, "\n");
 				
 #ifdef USE_OPENGL
 				// init codec
-				ctx = avcodec_alloc_context3(avcodec_find_decoder(stream->codecpar->codec_id));
-		
-				if (!ctx)
-				{
-//					return cERR_CONTAINER_FFMPEG_OPEN;
-				}
+				vctx = avcodec_alloc_context3(avcodec_find_decoder(stream->codecpar->codec_id));
 				
-				avcodec_open2(ctx, avcodec_find_decoder(stream->codecpar->codec_id), NULL);
-				track.ctx = ctx;
+				avcodec_open2(vctx, avcodec_find_decoder(stream->codecpar->codec_id), NULL);
+				track.ctx = vctx;
 #endif
 
 				if (context->manager->video)
@@ -1158,16 +1121,11 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 
 #ifdef USE_OPENGL
 				// init codec
-				ctx = avcodec_alloc_context3(avcodec_find_decoder(stream->codecpar->codec_id));
-		
-				if (!ctx)
-				{
-//					return cERR_CONTAINER_FFMPEG_OPEN;
-				}
+				actx = avcodec_alloc_context3(avcodec_find_decoder(stream->codecpar->codec_id));
 
-				avcodec_open2(ctx, avcodec_find_decoder(stream->codecpar->codec_id), NULL);
+				avcodec_open2(actx, avcodec_find_decoder(stream->codecpar->codec_id), NULL);
 				
-				track.ctx = ctx;
+				track.ctx = actx;
 #else
 				// ipcm
 				if(!strncmp(encoding, "A_IPCM", 6))
@@ -1377,16 +1335,10 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				ffmpeg_printf(10, "\n", track.height);
 				
 				// init codec
-				ctx = avcodec_alloc_context3(avcodec_find_decoder(stream->codecpar->codec_id));
-		
-				if (!ctx)
-				{
-//					return cERR_CONTAINER_FFMPEG_OPEN;
-				}
-				
+				subctx = avcodec_alloc_context3(avcodec_find_decoder(stream->codecpar->codec_id));
 
-				avcodec_open2(ctx, avcodec_find_decoder(stream->codecpar->codec_id), NULL);
-				track.ctx = ctx;
+				avcodec_open2(subctx, avcodec_find_decoder(stream->codecpar->codec_id), NULL);
+				track.ctx = subctx;
 
 				if (context->manager->subtitle)
 				{
@@ -1551,7 +1503,7 @@ static void FFMPEGSubThread(Context_t* context)
 					float duration = 3.0;
 					ffmpeg_printf(100, "subtitleTrack->stream %p \n", subtitleTrack->stream);
 
-					subtitleTrack->pts = calcSubPts(subtitleTrack->stream, &subpacket);
+					subtitleTrack->pts = calcPts(subtitleTrack->stream, &subpacket, subavContext);
 
 					if (subtitleTrack->pts > latestPts)
 						latestPts = subtitleTrack->pts;
@@ -1571,11 +1523,7 @@ static void FFMPEGSubThread(Context_t* context)
 					else if(subpacket.convergence_duration != 0 && subpacket.convergence_duration != AV_NOPTS_VALUE )
 						duration = ((float)subpacket.convergence_duration)/1000.0;	
 #endif	
-#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
 					else if(subtitleTrack->stream->codecpar->codec_id == AV_CODEC_ID_SSA)
-#else    
-					else if(subtitleTrack->stream->codec->codec_id == AV_CODEC_ID_SSA)
-#endif
 					{
 						duration = getDurationFromSSALine(subpacket.data);
 					} 
@@ -1759,11 +1707,6 @@ int container_ffmpeg_init_sub(Context_t *context, char * filename)
 				
 				// init codec
 				subctx = avcodec_alloc_context3(avcodec_find_decoder(stream->codecpar->codec_id));
-		
-				if (!subctx)
-				{
-//					return cERR_CONTAINER_FFMPEG_OPEN;
-				}
 
 				avcodec_open2(subctx, avcodec_find_decoder(stream->codecpar->codec_id), NULL);
 				track.ctx = subctx;

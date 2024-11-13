@@ -70,7 +70,7 @@
 #endif
 #endif
 
-#define LINUXDVB_DEBUG
+//#define LINUXDVB_DEBUG
 #define LINUXDVB_SILENT
 
 static short debug_level = 10;
@@ -1129,10 +1129,10 @@ static int Write(void* _context, void* _out)
 		int got_frame = 0;
 		SwrContext *swr = NULL;
 		uint8_t *obuf = NULL;
-		int obuf_size = 0; 	// in samples
+		int obuf_size = 0; 				// in samples
 		int obuf_size_max = 0;
 		int o_ch = 2;
-		int o_sr = 48000; 	// output channels and sample rate
+		int o_sr = 48000; 				// output channels and sample rate
 		uint64_t o_layout = AV_CH_LAYOUT_STEREO; 	// output channels layout
 		int driver = -1;
 		ao_info *ai = NULL;
@@ -1147,7 +1147,7 @@ static int Write(void* _context, void* _out)
 		
 		// output sample rate, channels, layout could be set here if necessary
 		o_ch = out->ctx->channels;     			// 2
-		o_sr = out->ctx->sample_rate;      			// 48000
+		o_sr = out->ctx->sample_rate;      		// 48000
 		o_layout = out->ctx->channel_layout;   		// AV_CH_LAYOUT_STEREO
 	
 		if (sformat.channels != o_ch || sformat.rate != o_sr || sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16 || adevice == NULL)
@@ -1225,11 +1225,7 @@ static int Write(void* _context, void* _out)
 			sCURRENT_APTS = sCURRENT_PTS = out->aframe->best_effort_timestamp;
 #endif
 
-#if (LIBAVFORMAT_VERSION_MAJOR > 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR > 32))
 			int o_buf_size = av_samples_get_buffer_size(&out_linesize, out->stream->codecpar->channels, obuf_size, AV_SAMPLE_FMT_S16, 1);
-#else
-			int o_buf_size = av_samples_get_buffer_size(&out_linesize, out->stream->codec->channels, obuf_size, AV_SAMPLE_FMT_S16, 1);
-#endif
 							
 			if (o_buf_size > 0)
 				res = ao_play(adevice, (char *)obuf, o_buf_size);
@@ -1245,6 +1241,9 @@ static int Write(void* _context, void* _out)
 
 		av_free(obuf);
 		swr_free(&swr);
+		////
+		if (out->aframe)
+			av_frame_unref(out->aframe);
 		
 		ret = cERR_LINUXDVB_ERROR;
 #endif
