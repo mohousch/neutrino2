@@ -52,9 +52,7 @@ typedef struct Track_s
 
 	// stream from ffmpeg
 	AVStream* 	      stream;
-#ifdef USE_OPENGL
 	AVCodecContext 		*ctx;
-#endif
 
 	// codec extra data (header or some other stuff)
 	void* 		      extraData;
