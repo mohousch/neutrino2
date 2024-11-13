@@ -618,7 +618,6 @@ void cAudio::run()
 	int obuf_sz_max = 0;
 	int o_ch, o_sr; 	// output channels and sample rate
 	uint64_t o_layout; 	// output channels layout
-	char tmp[64] = "unknown";
 
 	curr_pts = 0;
 	
@@ -711,10 +710,8 @@ void cAudio::run()
 		
 		printf("cAudio::run: changed params ch %d srate %d bits %d adevice %p\n", o_ch, o_sr, 16, adevice);
 	}
-
-	av_get_sample_fmt_string(tmp, sizeof(tmp), c->sample_fmt);
 	
-	printf("cAudio::run: decoding %s, sample_fmt %d (%s) sample_rate %d channels %d\n", avcodec_get_name(p->codec_id), c->sample_fmt, tmp, p->sample_rate, p->channels);
+	printf("cAudio::run: decoding %s (sample_fmt %d sample_rate %d channels %d)\n", avcodec_get_name(p->codec_id), c->sample_fmt, p->sample_rate, p->channels);
 	
 	swr = swr_alloc_set_opts(swr,
 	        o_layout, AV_SAMPLE_FMT_S16, o_sr,         		// output

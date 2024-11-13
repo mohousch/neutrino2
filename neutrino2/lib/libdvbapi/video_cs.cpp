@@ -1289,6 +1289,7 @@ void cVideo::run(void)
 	time_t warn_r = 0; // last read error
 	time_t warn_d = 0; // last decode error
 	int av_ret = 0;
+	int ret = -1;
 
 	bufpos = 0;
 	buf_num = 0;
@@ -1327,16 +1328,8 @@ void cVideo::run(void)
 		goto out;
 	}
 	
-	// find stream info
-#if LIBAVCODEC_VERSION_MAJOR < 54
-	if (av_find_stream_info(avfc) < 0)
-#else
-	if (avformat_find_stream_info(avfc, NULL) < 0) 
-#endif
-	{
-		printf("Error avformat_find_stream_info\n");
-		goto out;
-	}
+	ret = avformat_find_stream_info(avfc, NULL);
+	printf("cVideo::run: avformat_find_stream_info: %d\n", ret);
 	
 	while (avfc->nb_streams < 1)
 	{
