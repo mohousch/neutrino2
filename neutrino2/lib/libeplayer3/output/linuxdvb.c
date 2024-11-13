@@ -1385,7 +1385,8 @@ static int Write(void* _context, void* _out)
 #endif
 					
 				//
-				data[buf_in].rate = out->ctx->time_base.den / (out->ctx->time_base.num * out->ctx->ticks_per_frame);
+				if (out->ctx->time_base.num && out->ctx->ticks_per_frame)
+					data[buf_in].rate = out->ctx->time_base.den / (out->ctx->time_base.num * out->ctx->ticks_per_frame);
 
 				//
 				buf_in++;
