@@ -614,15 +614,15 @@ static void FFMPEGThread(Context_t* context)
 #else
 					// pcm extradata
 					pcmPrivateData_t extradata;
-					extradata.uNoOfChannels = audioTrack->stream->codec->channels;
-					extradata.uSampleRate = audioTrack->stream->codec->sample_rate;
+					extradata.uNoOfChannels = audioTrack->stream->codecpar->channels;
+					extradata.uSampleRate = audioTrack->stream->codecpar->sample_rate;
 					extradata.uBitsPerSample = 16;
 					extradata.bLittleEndian = 1;
-					extradata.avCodecId = audioTrack->stream->codec->codec_id;
-					extradata.bits_per_coded_sample = &audioTrack->stream->codec->bits_per_coded_sample;
-					extradata.bit_rate = audioTrack->stream->codec->bit_rate;
-                			extradata.block_align = audioTrack->stream->codec->block_align;
-                			extradata.frame_size = audioTrack->stream->codec->frame_size;
+					extradata.avCodecId = audioTrack->stream->codecpar->codec_id;
+					extradata.bits_per_coded_sample = &audioTrack->stream->codecpar->bits_per_coded_sample;
+					extradata.bit_rate = audioTrack->stream->codecpar->bit_rate;
+                			extradata.block_align = audioTrack->stream->codecpar->block_align;
+                			extradata.frame_size = audioTrack->stream->codecpar->frame_size;
                 			extradata.bResampling  = 1;
                 			
 					//
@@ -667,14 +667,14 @@ static void FFMPEGThread(Context_t* context)
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
 							bytesDone = avcodec_decode_audio4(audioTrack->stream->codec, samples, &got_frame, &packet);
 #else
-							bytesDone = avcodec_send_packet(audioTrack->stream->codec, &packet);
+							bytesDone = avcodec_send_packet(actx, &packet);
 							
              						if (bytesDone < 0 && bytesDone != AVERROR(EAGAIN) && bytesDone != AVERROR_EOF) 
              						{
             						} 
             						else 
             						{
-             							bytesDone = avcodec_receive_frame(audioTrack->stream->codec, samples);
+             							bytesDone = avcodec_receive_frame(actx, samples);
              						}
 #endif
 							//
@@ -685,7 +685,7 @@ static void FFMPEGThread(Context_t* context)
 							packet.size -= bytesDone;
 							
 							//
-							samples_size = av_rescale_rnd(samples->nb_samples, audioTrack->stream->codec->sample_rate, audioTrack->stream->codec->sample_rate, AV_ROUND_UP);
+							samples_size = av_rescale_rnd(samples->nb_samples, audioTrack->stream->codecpar->sample_rate, audioTrack->stream->codecpar->sample_rate, AV_ROUND_UP);
 
 							avOut.data       = samples;
 							avOut.len        = samples_size;
@@ -857,19 +857,6 @@ static void FFMPEGThread(Context_t* context)
 		aframe = NULL;
 	}
 #endif
-
-	//
-	if (actx)
-	{
-		avcodec_close(actx);
-		av_free(actx);
-	}
-	
-	if (vctx)
-	{
-		avcodec_close(vctx);
-		av_free(vctx);
-	}
 	
 	//
 	av_packet_unref(&packet);
@@ -1048,11 +1035,12 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				ffmpeg_printf(10, "height %d\n", track.height);
 				ffmpeg_printf(10, "\n");
 				
-#ifdef USE_OPENGL
 				// init codec
 				vctx = avcodec_alloc_context3(avcodec_find_decoder(stream->codecpar->codec_id));
 				
 				avcodec_open2(vctx, avcodec_find_decoder(stream->codecpar->codec_id), NULL);
+				
+#ifdef USE_OPENGL
 				track.ctx = vctx;
 #endif
 
@@ -1119,12 +1107,12 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 					track.duration = (double) stream->duration * av_q2d(stream->time_base) * 1000.0;
 				}
 
-#ifdef USE_OPENGL
 				// init codec
 				actx = avcodec_alloc_context3(avcodec_find_decoder(stream->codecpar->codec_id));
 
 				avcodec_open2(actx, avcodec_find_decoder(stream->codecpar->codec_id), NULL);
 				
+#ifdef USE_OPENGL
 				track.ctx = actx;
 #else
 				// ipcm
@@ -1135,32 +1123,32 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 					ffmpeg_printf(10, " Handle inject_as_pcm = %d\n", track.inject_as_pcm);
 
 					// init codec
-					AVCodec* codec = avcodec_find_decoder(stream->codec->codec_id);
+					AVCodec* codec = avcodec_find_decoder(stream->codecpar->codec_id);
 
 #if LIBAVCODEC_VERSION_MAJOR < 54
 					if(codec != NULL && !avcodec_open(stream->codec, codec))
 #else
-					if(codec != NULL && !avcodec_open2(stream->codec, codec, NULL))
+					if(codec != NULL && !avcodec_open2(actx, codec, NULL))
 #endif					  
 						printf("AVCODEC__INIT__SUCCESS\n");
 					else
 						printf("AVCODEC__INIT__FAILED\n");
 				}
 				// aac
-				else if(stream->codec->codec_id == AV_CODEC_ID_AAC) 
+				else if(stream->codecpar->codec_id == AV_CODEC_ID_AAC) 
 				{
 					ffmpeg_printf(10,"Create AAC ExtraData\n");
-					ffmpeg_printf(10,"stream->codec->extradata_size %d\n", stream->codec->extradata_size);
+					ffmpeg_printf(10,"stream->codec->extradata_size %d\n", stream->codecpar->extradata_size);
 					
 					unsigned int object_type = 2; // LC
-					unsigned int sample_index = aac_get_sample_rate_index(stream->codec->sample_rate);
-					unsigned int chan_config = stream->codec->channels;
+					unsigned int sample_index = aac_get_sample_rate_index(stream->codecpar->sample_rate);
+					unsigned int chan_config = stream->codecpar->channels;
 					
-					if(stream->codec->extradata_size >= 2) 
+					if(stream->codecpar->extradata_size >= 2) 
 					{
-						object_type = stream->codec->extradata[0] >> 3;
-						sample_index = ((stream->codec->extradata[0] & 0x7) << 1) + (stream->codec->extradata[1] >> 7);
-						chan_config = (stream->codec->extradata[1] >> 3) && 0xf;
+						object_type = stream->codecpar->extradata[0] >> 3;
+						sample_index = ((stream->codecpar->extradata[0] & 0x7) << 1) + (stream->codecpar->extradata[1] >> 7);
+						chan_config = (stream->codecpar->extradata[1] >> 3) && 0xf;
 					}
 
 					ffmpeg_printf(10,"aac object_type %d\n", object_type);
@@ -1182,12 +1170,12 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 					track.have_aacheader = 1;
 				} 
 				// wma
-				else if(stream->codec->codec_id == AV_CODEC_ID_WMAV1 || stream->codec->codec_id == AV_CODEC_ID_WMAV2 || stream->codec->codec_id == AV_CODEC_ID_WMAPRO ) //if (stream->codec->extradata_size > 0)
+				else if(stream->codecpar->codec_id == AV_CODEC_ID_WMAV1 || stream->codecpar->codec_id == AV_CODEC_ID_WMAV2 || stream->codecpar->codec_id == AV_CODEC_ID_WMAPRO ) //if (stream->codecpar->extradata_size > 0)
 				{
 					ffmpeg_printf(10,"Create WMA ExtraData\n");
-					ffmpeg_printf(10,"stream->codec->extradata_size %d\n", stream->codec->extradata_size);
+					ffmpeg_printf(10,"stream->codec->extradata_size %d\n", stream->codecpar->extradata_size);
 					
-					track.aacbuflen = 104 + stream->codec->extradata_size;
+					track.aacbuflen = 104 + stream->codecpar->extradata_size;
 					track.aacbuf = malloc(track.aacbuflen);
 					memset (track.aacbuf, 0, track.aacbuflen);
 					unsigned char ASF_Stream_Properties_Object[16] = {0x91,0x07,0xDC,0xB7,0xB7,0xA9,0xCF,0x11,0x8E,0xE6,0x00,0xC0,0x0C,0x20,0x53,0x65};
@@ -1206,7 +1194,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 					memset(track.aacbuf + 56, 0, 4); // time_offset (not used)
 					memset(track.aacbuf + 60, 0, 4); // time_offset_hi (not used)
 
-					unsigned int type_specific_data_length = 18 + stream->codec->extradata_size;
+					unsigned int type_specific_data_length = 18 + stream->codecpar->extradata_size;
 					memcpy(track.aacbuf + 64, &type_specific_data_length, 4); //type_specific_data_length
 
 					unsigned int error_correction_data_length = 8;
@@ -1224,7 +1212,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 #define WMA_VERSION_9_PRO       0x162
 #define WMA_LOSSLESS            0x163
 					unsigned short codec_id = 0;
-					switch(stream->codec->codec_id) 
+					switch(stream->codecpar->codec_id) 
 					{
 						//TODO: What code for lossless ?
 						case AV_CODEC_ID_WMAPRO:
@@ -1241,28 +1229,28 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 					
 					memcpy(track.aacbuf + 78, &codec_id, 2); //codec_id
 
-					unsigned short number_of_channels = stream->codec->channels;
+					unsigned short number_of_channels = stream->codecpar->channels;
 					memcpy(track.aacbuf + 80, &number_of_channels, 2); //number_of_channels
 
-					unsigned int samples_per_second = stream->codec->sample_rate;
+					unsigned int samples_per_second = stream->codecpar->sample_rate;
 					ffmpeg_printf(10, "samples_per_second = %d\n", samples_per_second);
 					memcpy(track.aacbuf + 82, &samples_per_second, 4); //samples_per_second
 
-					unsigned int average_number_of_bytes_per_second = stream->codec->bit_rate / 8;
+					unsigned int average_number_of_bytes_per_second = stream->codecpar->bit_rate / 8;
 					ffmpeg_printf(10, "average_number_of_bytes_per_second = %d\n", average_number_of_bytes_per_second);
 					memcpy(track.aacbuf + 86, &average_number_of_bytes_per_second, 4); //average_number_of_bytes_per_second
 
-					unsigned short block_alignment = stream->codec->block_align;
+					unsigned short block_alignment = stream->codecpar->block_align;
 					ffmpeg_printf(10, "block_alignment = %d\n", block_alignment);
 					memcpy(track.aacbuf + 90, &block_alignment, 2); //block_alignment
 
-					unsigned short bits_per_sample = stream->codec->sample_fmt>=0?(stream->codec->sample_fmt+1)*8:8;
-					ffmpeg_printf(10, "bits_per_sample = %d (%d)\n", bits_per_sample, stream->codec->sample_fmt);
+					unsigned short bits_per_sample = stream->codecpar->sample_rate>=0?(stream->codecpar->sample_rate+1)*8:8;
+					ffmpeg_printf(10, "bits_per_sample = %d (%d)\n", bits_per_sample, stream->codecpar->sample_rate);
 					memcpy(track.aacbuf + 92, &bits_per_sample, 2); //bits_per_sample
 
-					memcpy(track.aacbuf + 94, &stream->codec->extradata_size, 2); //bits_per_sample
+					memcpy(track.aacbuf + 94, &stream->codecpar->extradata_size, 2); //bits_per_sample
 
-					memcpy(track.aacbuf + 96, stream->codec->extradata, stream->codec->extradata_size);
+					memcpy(track.aacbuf + 96, stream->codecpar->extradata, stream->codecpar->extradata_size);
 		    
 					ffmpeg_printf(10, "aacbuf:\n");
 
@@ -1282,7 +1270,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 			}
 			else 
 			{
-				ffmpeg_err("codec type audio but codec unknown %d\n", stream->codec->codec_id);
+				ffmpeg_err("codec type audio but codec unknown %d\n", stream->codecpar->codec_id);
 			}
 			break;
 	    
@@ -1356,9 +1344,9 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 			case AVMEDIA_TYPE_ATTACHMENT:
 			case AVMEDIA_TYPE_NB:
 			default:
-				ffmpeg_err("not handled or unknown codec_type %d\n", stream->codec->codec_type);
+				ffmpeg_err("not handled or unknown codec_type %d\n", stream->codecpar->codec_type);
 				break;	 	 
-		} // switch (stream->codec->codec_type)
+		} // switch (stream->codecpar->codec_type)
 
 	} // for
 

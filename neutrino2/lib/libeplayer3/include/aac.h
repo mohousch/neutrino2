@@ -20,6 +20,7 @@
 #ifndef acc_123
 #define acc_123
 
+
 #define AAC_HEADER_LENGTH       7
 
 static inline int aac_get_sample_rate_index (uint32_t sample_rate)

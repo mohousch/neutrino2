@@ -219,8 +219,6 @@ init-clean:
 -include config.local
 
 # opengl
-OPENGL ?= opengl
-
 ifeq ($(OPENGL), opengl)
 N2_OPTS += --enable-opengl
 endif
