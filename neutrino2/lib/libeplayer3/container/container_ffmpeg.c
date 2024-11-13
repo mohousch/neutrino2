@@ -117,6 +117,7 @@ static AVCodecContext* ctx = NULL;
 static pthread_t PlaySubThread;
 static int hasPlaySubThreadStarted = 0;
 static AVFormatContext *subavContext = NULL;
+static AVCodecContext* subctx = NULL;
 
 static unsigned char isContainerRunning = 0;
 
@@ -1598,6 +1599,7 @@ static void FFMPEGSubThread(Context_t* context)
 		           			data.height    = subtitleTrack->height;
 		           			//
 		           			data.stream    = subtitleTrack->stream;
+		           			data.ctx	= subtitleTrack->ctx;
 		           			
 						if (context->output->subtitle->Write(context, &data) < 0) 
 						{
@@ -1756,14 +1758,15 @@ int container_ffmpeg_init_sub(Context_t *context, char * filename)
 				ffmpeg_printf(10, "\n", track.height);
 				
 				// init codec
-				ctx = avcodec_alloc_context3(avcodec_find_decoder(stream->codecpar->codec_id));
+				subctx = avcodec_alloc_context3(avcodec_find_decoder(stream->codecpar->codec_id));
 		
-				if (!ctx)
+				if (!subctx)
 				{
 //					return cERR_CONTAINER_FFMPEG_OPEN;
 				}
 
-				avcodec_open2(ctx, avcodec_find_decoder(stream->codecpar->codec_id), NULL);
+				avcodec_open2(subctx, avcodec_find_decoder(stream->codecpar->codec_id), NULL);
+				track.ctx = subctx;
 
 				if (context->manager->subtitle)
 				{
