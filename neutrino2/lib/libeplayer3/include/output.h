@@ -55,6 +55,7 @@ typedef struct
 	//
 #ifdef USE_OPENGL	
 	AVStream* 		stream;
+	AVCodecContext 		*ctx;
 	AVFrame*		frame;
 	AVFrame* 		aframe;
 #endif
@@ -78,6 +79,7 @@ typedef struct
     	
     	//
 	AVStream* 		stream;
+	AVCodecContext 		*ctx;
 } SubtitleData_t;
 
 typedef struct
