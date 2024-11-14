@@ -27,6 +27,10 @@ $:~ sudo bash prepare-for-neutrino.sh
 ```
 
 ```bash
+$:~ make init
+```
+
+```bash
 $:~ make
 ```
 
