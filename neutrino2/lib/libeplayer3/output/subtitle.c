@@ -135,7 +135,7 @@ static char * ass_get_text(char *str)
     	char *p_newline = NULL;
     	
     	while((p_newline = strstr(p_str, "\\N")) != NULL)
-        	*(p_newline + 1) = "n ";
+        	*(p_newline + 1) = (char)"n ";
         	
     	return p_str;
 }

@@ -614,12 +614,16 @@ static void FFMPEGThread(Context_t* context)
 #else
 					// pcm extradata
 					pcmPrivateData_t extradata;
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 37, 100)
+					extradata.uNoOfChannels = audioTrack->stream->codecpar->ch_layout.nb_channels;
+#else
 					extradata.uNoOfChannels = audioTrack->stream->codecpar->channels;
+#endif
 					extradata.uSampleRate = audioTrack->stream->codecpar->sample_rate;
 					extradata.uBitsPerSample = 16;
 					extradata.bLittleEndian = 1;
 					extradata.avCodecId = audioTrack->stream->codecpar->codec_id;
-					extradata.bits_per_coded_sample = &audioTrack->stream->codecpar->bits_per_coded_sample;
+					extradata.bits_per_coded_sample = (int)&audioTrack->stream->codecpar->bits_per_coded_sample;
 					extradata.bit_rate = audioTrack->stream->codecpar->bit_rate;
                 			extradata.block_align = audioTrack->stream->codecpar->block_align;
                 			extradata.frame_size = audioTrack->stream->codecpar->frame_size;
@@ -687,7 +691,7 @@ static void FFMPEGThread(Context_t* context)
 							//
 							samples_size = av_rescale_rnd(samples->nb_samples, audioTrack->stream->codecpar->sample_rate, audioTrack->stream->codecpar->sample_rate, AV_ROUND_UP);
 
-							avOut.data       = samples;
+							avOut.data       = (uint8_t *)samples;
 							avOut.len        = samples_size;
 
 							avOut.pts        = audioTrack->pts;
@@ -1142,7 +1146,11 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 					
 					unsigned int object_type = 2; // LC
 					unsigned int sample_index = aac_get_sample_rate_index(stream->codecpar->sample_rate);
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 37, 100)
+					unsigned int chan_config = stream->codecpar->ch_layout.nb_channels;
+#else
 					unsigned int chan_config = stream->codecpar->channels;
+#endif
 					
 					if(stream->codecpar->extradata_size >= 2) 
 					{
@@ -1229,7 +1237,11 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 					
 					memcpy(track.aacbuf + 78, &codec_id, 2); //codec_id
 
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 37, 100)
+					unsigned short number_of_channels = stream->codecpar->ch_layout.nb_channels;
+#else
 					unsigned short number_of_channels = stream->codecpar->channels;
+#endif
 					memcpy(track.aacbuf + 80, &number_of_channels, 2); //number_of_channels
 
 					unsigned int samples_per_second = stream->codecpar->sample_rate;
