@@ -23,8 +23,6 @@
 #ifndef __keyboard_input__
 #define __keyboard_input__
 
-#include <gui/widget/menue.h>
-
 #include <system/localize.h>
 
 #include <string>

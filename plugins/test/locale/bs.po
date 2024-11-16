@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 4.8\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-06-18 19:11+0200\n"
+"POT-Creation-Date: 2024-11-16 23:29+0100\n"
 "PO-Revision-Date: 2023-09-21 23:10+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -16,55 +16,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "CMenuWidget(Menu Mode)"
-msgstr ""
-
-msgid "CMenuWidget(Menu|ItemInfo)"
-msgstr ""
-
-msgid "CMenuWidget(Menu|classic)"
-msgstr ""
-
-msgid "CMenuWidget(Menu|extended)"
-msgstr ""
-
-msgid "CMenuWidget(Menu|frame)"
-msgstr ""
-
 msgid "CWidget(CFrameBox/ClistBox)"
 msgstr ""
 
 msgid "Error"
-msgstr ""
-
-msgid "Features"
-msgstr ""
-
-msgid "Here you can choose plugins"
-msgstr ""
-
-msgid "Here you can get device Info"
-msgstr ""
-
-msgid "Here you can play music / movies"
-msgstr ""
-
-msgid "Here you can power off or standby your device"
-msgstr ""
-
-msgid "Here you can set Timers and show EPG"
-msgstr ""
-
-msgid "Here you can set channel scan and more"
-msgstr ""
-
-msgid "Here you can setup OSD"
-msgstr ""
-
-msgid "Here you can setup your box"
-msgstr ""
-
-msgid "Here you can switch between TV / Radio"
 msgstr ""
 
 msgid "IP:"
@@ -73,32 +28,11 @@ msgstr ""
 msgid "Information"
 msgstr ""
 
-msgid "Media Player"
-msgstr ""
-
-msgid "OSD"
-msgstr ""
-
-msgid "Power Menu"
-msgstr ""
-
 msgid "Scan for Movies ..."
-msgstr ""
-
-msgid "Service"
-msgstr ""
-
-msgid "Settings"
-msgstr ""
-
-msgid "TV / Radio"
 msgstr ""
 
 msgid "Test"
 msgstr ""
 
 msgid "Time:"
-msgstr ""
-
-msgid "Timer / EPG"
 msgstr ""

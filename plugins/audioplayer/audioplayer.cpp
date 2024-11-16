@@ -42,8 +42,9 @@ class CMP3Player : public CMenuTarget
 	private:
 		CFrameBuffer* frameBuffer;
 
-		CMenuWidget* alist;
-		CMenuItem* item;
+		CWidget *widget;
+		ClistBox *alist;
+		CMenuItem *item;
 
 		CAudioPlayerGui tmpAudioPlayerGui;
 		CFileFilter fileFilter;
@@ -74,6 +75,7 @@ CMP3Player::CMP3Player()
 {
 	frameBuffer = CFrameBuffer::getInstance();
 
+	widget = NULL;
 	alist = NULL;
 	item = NULL;
 
@@ -105,6 +107,9 @@ CMP3Player::~CMP3Player()
 
 	if(CAudioPlayer::getInstance()->getState() != CAudioPlayer::STOP)
 		CAudioPlayer::getInstance()->stop();
+		
+	delete widget;
+	widget = NULL;
 }
 
 void CMP3Player::hide()
@@ -590,7 +595,8 @@ int CMP3Player::showMenu()
 {
 	int res = RETURN_REPAINT;
 		
-	alist = new CMenuWidget(__("Audio Player"), NEUTRINO_ICON_MP3, frameBuffer->getScreenWidth() - 40, frameBuffer->getScreenHeight() - 40);
+	widget = new CWidget(frameBuffer->getScreenX() + 20, frameBuffer->getScreenY() + 20, frameBuffer->getScreenWidth() - 40, frameBuffer->getScreenHeight() - 40);
+	alist = new ClistBox(frameBuffer->getScreenX() + 20, frameBuffer->getScreenY() + 20, frameBuffer->getScreenWidth() - 40, frameBuffer->getScreenHeight() - 40);
 
 	for(unsigned int i = 0; i < (unsigned int)playlist.size(); i++)
 	{
@@ -642,24 +648,27 @@ int CMP3Player::showMenu()
 	alist->setWidgetMode(ClistBox::MODE_LISTBOX);
 
 	//
+	alist->enablePaintHead();
+	alist->setTitle(__("Audio Player"), NEUTRINO_ICON_MP3);
 	alist->enablePaintDate();
 	alist->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	
 	//
+	alist->enablePaintFoot();
 	alist->setFootButtons(AudioPlayerButtons, FOOT_BUTTONS_COUNT);
 
 	//
-	alist->addKey(CRCInput::RC_setup, this, CRCInput::getSpecialKeyName(CRCInput::RC_setup));
-	alist->addKey(CRCInput::RC_red, this, CRCInput::getSpecialKeyName(CRCInput::RC_red));
-	alist->addKey(CRCInput::RC_green, this, CRCInput::getSpecialKeyName(CRCInput::RC_green));
-	alist->addKey(CRCInput::RC_yellow, this, CRCInput::getSpecialKeyName(CRCInput::RC_yellow));
-	alist->addKey(CRCInput::RC_blue, this, CRCInput::getSpecialKeyName(CRCInput::RC_blue));
-	alist->addKey(CRCInput::RC_info, this, CRCInput::getSpecialKeyName(CRCInput::RC_info));
-	alist->addKey(CRCInput::RC_help, this, CRCInput::getSpecialKeyName(CRCInput::RC_help));
+	widget->addKey(CRCInput::RC_setup, this, CRCInput::getSpecialKeyName(CRCInput::RC_setup));
+	widget->addKey(CRCInput::RC_red, this, CRCInput::getSpecialKeyName(CRCInput::RC_red));
+	widget->addKey(CRCInput::RC_green, this, CRCInput::getSpecialKeyName(CRCInput::RC_green));
+	widget->addKey(CRCInput::RC_yellow, this, CRCInput::getSpecialKeyName(CRCInput::RC_yellow));
+	widget->addKey(CRCInput::RC_blue, this, CRCInput::getSpecialKeyName(CRCInput::RC_blue));
+	widget->addKey(CRCInput::RC_info, this, CRCInput::getSpecialKeyName(CRCInput::RC_info));
+	widget->addKey(CRCInput::RC_help, this, CRCInput::getSpecialKeyName(CRCInput::RC_help));
 
-	res = alist->exec(NULL, "");
-	delete alist;
-	alist = NULL;
+	widget->addCCItem(alist);
+	
+	res = widget->exec(NULL, "");
 	
 	return res;
 }

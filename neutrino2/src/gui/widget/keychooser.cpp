@@ -59,7 +59,7 @@ class CKeyValue : public CMenuSeparator
 };
 
 CKeyChooser::CKeyChooser(int * const Key, const char* const Title, const std::string& Icon)
-: CMenuWidget(Title, Icon)
+//: CMenuWidget(Title, Icon)
 {
 	frameBuffer = CFrameBuffer::getInstance();
 	
@@ -69,11 +69,12 @@ CKeyChooser::CKeyChooser(int * const Key, const char* const Title, const std::st
 	keyChooser = new CKeyChooserItem(_("Setup New Key"), key);
 	keyDeleter = new CKeyChooserItemNoKey(key);
 	
-	/*
-	if (CNeutrinoApp::getInstance()->widget_exists("keychooser"))
+	//
+	widget = CNeutrinoApp::getInstance()->getWidget("keychooser");	
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("keychooser");	
-		menu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		menu = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 		
 		//
 		if (menu->hasHead())
@@ -103,7 +104,7 @@ CKeyChooser::CKeyChooser(int * const Key, const char* const Title, const std::st
 		menu->setFootButtons(&btn);
 			
 		//
-		widget->addWidgetItem(menu);
+		widget->addCCItem(menu);
 	}
 
 	//
@@ -113,25 +114,6 @@ CKeyChooser::CKeyChooser(int * const Key, const char* const Title, const std::st
 	menu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	menu->addItem(new CMenuForwarder(_("Setup new key"), true, NULL, keyChooser));
 	menu->addItem(new CMenuForwarder(_("No key"), true, NULL, keyDeleter));
-	
-	//
-	menu->enableShrinkMenu();
-	*/
-	
-	enableShrinkMenu();
-	//setHeadCorner(RADIUS_SMALL);
-	//setHeadGradient(LIGHT2DARK);
-	//setHeadLine(false);
-	//setFootCorner(RADIUS_SMALL);
-	//setFootGradient(DARK2LIGHT);
-	//setFootLine(false);
-	
-	addItem(new CKeyValue());
-	addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	addItem(new CMenuForwarder(_("back")));
-	addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	addItem(new CMenuForwarder(_("Setup new key"), true, NULL, keyChooser));
-	addItem(new CMenuForwarder(_("No key"), true, NULL, keyDeleter));
 }
 
 CKeyChooser::~CKeyChooser()
@@ -139,24 +121,21 @@ CKeyChooser::~CKeyChooser()
 	delete keyChooser;
 	delete keyDeleter;
 	
-	//delete widget;
+	delete widget;
 }
 
 void CKeyChooser::paint()
 {
-	//(((CKeyValue *)(menu->items[0]))->keyvalue) = *key;
-	(((CKeyValue *)(items[0]))->keyvalue) = *key;
+	(((CKeyValue *)(menu->items[0]))->keyvalue) = *key;
+//	(((CKeyValue *)(items[0]))->keyvalue) = *key;
 
-	//widget->paint();
-	CMenuWidget::paint();
+	widget->paint();
 }
 
-/*
 int CKeyChooser::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	return widget->exec(parent, actionKey);
 }
-*/
 
 //
 CKeyChooserItem::CKeyChooserItem(const char * const Name, int * Key)
@@ -241,7 +220,6 @@ void CKeyChooserItem::paint()
 	CCHeaders headers(&m_cTitle, name.c_str(), NEUTRINO_ICON_KEYBINDING);
 	headers.setCorner(RADIUS_SMALL);
 	headers.setGradient(LIGHT2DARK);
-//	headers.setLine(false);
 	headers.paint();
 
 	//paint msg...

@@ -326,104 +326,6 @@ function testCWidget()
 	return ret
 end
 
--- CMenuWidget
-function testCMenuWidget()
-	local ret = neutrino2.CMenuTarget_RETURN_REPAINT
-
-	local listBoxWidget = neutrino2.CMenuWidget("lua: CMenuWidget")
-	listBoxWidget:setWidgetType(neutrino2.ClistBox_TYPE_STANDARD)
-	listBoxWidget:setWidgetMode(neutrino2.ClistBox_MODE_MENU)
-	listBoxWidget:enablePaintItemInfo(70)
-	listBoxWidget:enableShrinkMenu()
-	listBoxWidget:setMenuPosition(neutrino2.CWidget_MENU_POSITION_RIGHT)
-	--listBoxWidget:setHeadCorner(neutrino2.RADIUS_SMALL)
-	--listBoxWidget:setHeadGradient(neutrino2.DARK2LIGHT2DARK)
-	--listBoxWidget:setHeadLine(false)
-	--listBoxWidget:setFootCorner(neutrino2.RADIUS_SMALL)
-	--listBoxWidget:setFootGradient(neutrino2.DARK2LIGHT2DARK)
-	--listBoxWidget:setFootLine(false)
-
-	-- CMessageBox
-	item1 = neutrino2.CMenuForwarder("CMessageBox", true, "", self, "msgBox")
-	item1:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
-	item1:setHint("testing CMessageBox")
-	item1:setInfo1("testing CMessageBox")
-
-	-- CHelpBox
-	item2 = neutrino2.CMenuForwarder("CHelpBox")
-	item2:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
-	item2:setHint("testing CHelpBox")
-	item2:setInfo1("testing CHelpBox")
-
-	-- CHintBox
-	item3 = neutrino2.CMenuForwarder("CHintBox")
-	item3:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
-	item3:setHint("testing CHintBox")
-	item3:setInfo1("testing CHintBox")
-
-	-- CInfoBox
-	item4 = neutrino2.CMenuForwarder("CInfoBox")
-	item4:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
-	item4:setHint("testing CInfoBox")
-	item4:setInfo1("testing CInfoBox")
-
-	-- CStringInput
-	item5 = neutrino2.CMenuForwarder("CStringInput", false)
-	item5:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
-	item5:setHint("testing CStringInput")
-	item5:setInfo1("testing CStringInput")
-
-	-- CAudioPlayerGui
-	item6 = neutrino2.CMenuForwarder("CAudioPlayerGui")
-	item6:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
-	item6:setHint("testing CAudioPlayerGui")
-	item6:setInfo1("testing CAudioPlayerGui")
-
-	-- CPictureViewerGui
-	item7 = neutrino2.CMenuForwarder("CPictureViewerGui")
-	item7:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
-	item7:setHint("testing CPictureViewerGui")
-	item7:setInfo1("testing CPictureViewerGui")
-
-	-- CMoviePlayerGui
-	item8 = neutrino2.CMenuForwarder("CMoviePlayerGui")
-	item8:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
-	item8:setHint("testing CMoviePlayerGui")
-	item8:setInfo1("testing CMoviePlayerGui")
-
-	listBoxWidget:addItem(item1)
-	listBoxWidget:addItem(item2)
-	listBoxWidget:addItem(item3)
-	listBoxWidget:addItem(item4)
-	listBoxWidget:addItem(item5)
-	listBoxWidget:addItem(item6)
-	listBoxWidget:addItem(item7)
-	listBoxWidget:addItem(item8)
-
-	if selected < 0 then
-		selected = 0
-	end
-
-	listBoxWidget:setSelected(selected)
-
-	listBoxWidget:addKey(neutrino2.CRCInput_RC_info)
-
-	ret = listBoxWidget:exec(null, "")
-
-	selected = listBoxWidget:getSelected()
-	local key = listBoxWidget:getKey()
-	local actionKey = listBoxWidget:getActionKey()
-	
-
-	exec(selected, key, actionKey)
-		
-	if listBoxWidget:getExitPressed() ~= true and ret == neutrino2.RETURN_REPAINT then
-		testCMenuWidget()
-	end
-
-	return ret
-end
-
 -- ClistBox
 function testClistBox()
 	local ret = neutrino2.CMenuTarget_RETURN_REPAINT
@@ -669,6 +571,8 @@ end
 -- main
 function main()
 	local ret = neutrino2.CMenuTarget_RETURN_REPAINT
+	
+	--[[
 	local m = neutrino2.CMenuWidget("lua sample")
 
 	m:setWidgetMode(neutrino2.ClistBox_MODE_MENU)
@@ -736,6 +640,9 @@ function main()
 	end
 
 	return ret
+	]]
+	
+	testCWidget()
 end
 
 main()

@@ -65,7 +65,6 @@
 
 #include <gui/widget/icons.h>
 #include <gui/widget/colorchooser.h>
-#include <gui/widget/menue.h>
 #include <gui/widget/messagebox.h>
 #include <gui/widget/hintbox.h>
 #include <gui/widget/keychooser.h>

@@ -3522,7 +3522,7 @@ int ClistBox::swipRight()
 }
 
 //
-int ClistBox::oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg)
+int ClistBox::oKKeyPressed(CMenuTarget *target, neutrino_msg_t _msg)
 {
 	dprintf(DEBUG_INFO, "ClistBox::okKeyPressed: msg:0x%x\n", _msg);
 	

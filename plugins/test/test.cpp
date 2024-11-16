@@ -94,8 +94,7 @@ class CTestMenu : public CMenuTarget
 		CCWindow *windowWidget;
 		//// CTextBox
 		CTextBox* textBoxWidget;
-		//// CMenuwidget
-		CMenuWidget* menuWidget;
+		////
 		CMenuItem* item;
 		////
 		CComponent* cCItem;
@@ -152,11 +151,6 @@ class CTestMenu : public CMenuTarget
 		void testCFrameBox();
 		void testCFrameBox1();
 		//// CMenuWidget
-		void testCMenuWidgetMenu();
-		void testCMenuWidgetMenuItemInfo();
-		void testCMenuWidgetMenuClassic();
-		void testCMenuWidgetMenuExtended();
-		void testCMenuWidgetMenuFrame();
 		void testCMenuWidgetSetup();
 		//// misc widgets
 		void testCStringInput();
@@ -1453,10 +1447,11 @@ void CTestMenu::testClistBoxWidget()
 		item->setHint(tmp.c_str());
 		
 		item->setBorderMode();
-		//item->setWidgetMode(ClistBox::MODE_MENU);
 
 		rightWidget->addItem(item);
 	}
+	
+	rightWidget->setItemsPerPage(6,2);
 	
 	testWidget = new CWidget(&rightBox);
 	testWidget->addCCItem(rightWidget);
@@ -2284,9 +2279,7 @@ void CTestMenu::testClistBox()
 
 	// footer
 	rightWidget->enablePaintFoot();
-	
-	rightWidget->setHeadGradient(LIGHT2DARK);
-	rightWidget->setFootGradient(DARK2LIGHT);
+	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	
 	//
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
@@ -2439,9 +2432,6 @@ void CTestMenu::testClistBox3()
 	// footer
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-
-	rightWidget->setHeadGradient(LIGHT2DARK);
-	rightWidget->setFootGradient(DARK2LIGHT);
 	
 	// footinfo
 	rightWidget->enablePaintItemInfo();
@@ -3186,437 +3176,6 @@ void CTestMenu::testCFrameBox1()
 		delete frameBoxWidget;
 		frameBoxWidget = NULL;
 	}
-}
-
-// CMenuWidget (menu mode)
-void CTestMenu::testCMenuWidgetMenu()
-{
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCMenuWidget (menu mode)\n");
-	
-	//
-	menuWidget = new CMenuWidget(__("CMenuWidget(Menu Mode)"), NEUTRINO_ICON_MAINMENU);
-	
-	item = new CMenuForwarder(__("TV / Radio"), true, NULL, CNeutrinoApp::getInstance(), "tvradioswitch");
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TV);
-	item->setHint(__("Here you can switch between TV / Radio"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_RED);
-	item->setDirectKey(CRCInput::RC_red);
-	//item->setHidden(true);
-	menuWidget->addItem(item);
-
-	item = new CMenuForwarder(__("Timer / EPG"), true, NULL, new CEPGMenuHandler());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SLEEPTIMER);
-	item->setHint(__("Here you can set Timers and show EPG"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_GREEN);
-	item->setDirectKey(CRCInput::RC_green);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Features"), true, NULL, CNeutrinoApp::getInstance(), "features");
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_FEATURES);
-	item->setHint(__("Here you can choose plugins"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
-	item->setDirectKey(CRCInput::RC_yellow);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Service"), true, NULL, new CServiceMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SERVICE);
-	item->setHint(__("Here you can set channel scan and more"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_BLUE);
-	item->setDirectKey(CRCInput::RC_blue);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Settings"), true, NULL, new CMainSettingsMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_OSDSETTINGS);
-	item->setHint(__("Here you can setup your box"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
-	item->setDirectKey(CRCInput::RC_setup);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("OSD"), true, NULL, new COSDSettings());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SETTINGS);
-	item->setHint(__("Here you can setup OSD"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Information"), true, NULL, new CInfoMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_BOXINFO);
-	item->setHint(__("Here you can get device Info"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_INFO_SMALL);
-	item->setDirectKey(CRCInput::RC_info);
-	menuWidget->addItem(item);
-
-	item = new CMenuForwarder(__("Power Menu"), true, NULL, new CPowerMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_POWERMENU);
-	item->setHint(__("Here you can power off or standby your device"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_POWER);
-	item->setDirectKey(CRCInput::RC_standby);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Media Player"), true, NULL, new CMediaPlayerMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
-	item->setHint(__("Here you can play music / movies"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_PLAY_SMALL);
-	item->setDirectKey(CRCInput::RC_video);
-	menuWidget->addItem(item);
-	
-	menuWidget->setWidgetMode(ClistBox::MODE_MENU);
-	menuWidget->setWidgetType(ClistBox::TYPE_STANDARD);
-	menuWidget->enableShrinkMenu();
-	menuWidget->enablePaintDate();
-	//menuWidget->setFormat("%d.%m.%Y %H:%M:%S");
-	menuWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	menuWidget->setTimeOut(g_settings.timing_menu);
-
-	menuWidget->exec(NULL, "");
-
-	delete menuWidget;
-	menuWidget = NULL;
-}
-
-// CMenuWidget (menu|iteminfo)
-void CTestMenu::testCMenuWidgetMenuItemInfo()
-{
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCMenuWidget (menu|iteminfo)\n");
-	
-	//
-	menuWidget = new CMenuWidget(__("CMenuWidget(Menu|ItemInfo)"), NEUTRINO_ICON_MAINMENU);
-	
-	item = new CMenuForwarder(__("TV / Radio"), true, NULL, CNeutrinoApp::getInstance(), "tvradioswitch");
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TV);
-	item->setHint(__("Here you can switch between TV / Radio"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_RED);
-	item->setDirectKey(CRCInput::RC_red);
-	//item->setHidden(true);
-	menuWidget->addItem(item);
-
-	item = new CMenuForwarder(__("Timer / EPG"), true, NULL, new CEPGMenuHandler());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SLEEPTIMER);
-	item->setHint(__("Here you can set Timers and show EPG"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_GREEN);
-	item->setDirectKey(CRCInput::RC_green);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Features"), true, NULL, CNeutrinoApp::getInstance(), "features");
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_FEATURES);
-	item->setHint(__("Here you can choose plugins"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
-	item->setDirectKey(CRCInput::RC_yellow);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Service"), true, NULL, new CServiceMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SERVICE);
-	item->setHint(__("Here you can set channel scan and more"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_BLUE);
-	item->setDirectKey(CRCInput::RC_blue);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Settings"), true, NULL, new CMainSettingsMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_OSDSETTINGS);
-	item->setHint(__("Here you can setup your box"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
-	item->setDirectKey(CRCInput::RC_setup);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("OSD"), true, NULL, new COSDSettings());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SETTINGS);
-	item->setHint(__("Here you can setup OSD"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Information"), true, NULL, new CInfoMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_BOXINFO);
-	item->setHint(__("Here you can get device Info"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_INFO_SMALL);
-	item->setDirectKey(CRCInput::RC_info);
-	menuWidget->addItem(item);
-
-	item = new CMenuForwarder(__("Power Menu"), true, NULL, new CPowerMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_POWERMENU);
-	item->setHint(__("Here you can power off or standby your device"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_POWER);
-	item->setDirectKey(CRCInput::RC_standby);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Media Player"), true, NULL, new CMediaPlayerMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
-	item->setHint(__("Here you can play music / movies"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_PLAY_SMALL);
-	item->setDirectKey(CRCInput::RC_video);
-	menuWidget->addItem(item);
-	
-	menuWidget->setWidgetMode(ClistBox::MODE_MENU);
-	menuWidget->setWidgetType(ClistBox::TYPE_STANDARD);
-	menuWidget->enableShrinkMenu();
-	menuWidget->enablePaintDate();
-	//menuWidget->setFormat("%d.%m.%Y %H:%M:%S");
-	menuWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	menuWidget->enablePaintItemInfo();
-	menuWidget->setTimeOut(g_settings.timing_menu);
-
-	menuWidget->exec(NULL, "");
-
-	delete menuWidget;
-	menuWidget = NULL;
-}
-
-
-// CMenuWidget (menu classic)
-void CTestMenu::testCMenuWidgetMenuClassic()
-{
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCMenuWidget (menu|classic)\n");
-	
-	//
-	menuWidget = new CMenuWidget(__("CMenuWidget(Menu|classic)"), NEUTRINO_ICON_MAINMENU);
-	
-	item = new CMenuForwarder(__("TV / Radio"), true, NULL, CNeutrinoApp::getInstance(), "tvradioswitch");
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TV);
-	item->setHint(__("Here you can switch between TV / Radio"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_RED);
-	item->setDirectKey(CRCInput::RC_red);
-	//item->setHidden(true);
-	menuWidget->addItem(item);
-
-	item = new CMenuForwarder(__("Timer / EPG"), true, NULL, new CEPGMenuHandler());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SLEEPTIMER);
-	item->setHint(__("Here you can set Timers and show EPG"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_GREEN);
-	item->setDirectKey(CRCInput::RC_green);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Features"), true, NULL, CNeutrinoApp::getInstance(), "features");
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_FEATURES);
-	item->setHint(__("Here you can choose plugins"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
-	item->setDirectKey(CRCInput::RC_yellow);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Service"), true, NULL, new CServiceMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SERVICE);
-	item->setHint(__("Here you can set channel scan and more"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_BLUE);
-	item->setDirectKey(CRCInput::RC_blue);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Settings"), true, NULL, new CMainSettingsMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_OSDSETTINGS);
-	item->setHint(__("Here you can setup your box"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
-	item->setDirectKey(CRCInput::RC_setup);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("OSD"), true, NULL, new COSDSettings());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SETTINGS);
-	item->setHint(__("Here you can setup OSD"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Information"), true, NULL, new CInfoMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_BOXINFO);
-	item->setHint(__("Here you can get device Info"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_INFO_SMALL);
-	item->setDirectKey(CRCInput::RC_info);
-	menuWidget->addItem(item);
-
-	item = new CMenuForwarder(__("Power Menu"), true, NULL, new CPowerMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_POWERMENU);
-	item->setHint(__("Here you can power off or standby your device"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_POWER);
-	item->setDirectKey(CRCInput::RC_standby);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Media Player"), true, NULL, new CMediaPlayerMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
-	item->setHint(__("Here you can play music / movies"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_PLAY_SMALL);
-	item->setDirectKey(CRCInput::RC_video);
-	menuWidget->addItem(item);
-	
-	menuWidget->setWidgetMode(ClistBox::MODE_MENU);
-	menuWidget->setWidgetType(ClistBox::TYPE_CLASSIC);
-	menuWidget->enableShrinkMenu();
-	menuWidget->enablePaintDate();
-	//menuWidget->setFormat("%d.%m.%Y %H:%M:%S");
-	menuWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	menuWidget->enablePaintItemInfo();
-	menuWidget->setTimeOut(g_settings.timing_menu);
-
-	menuWidget->exec(NULL, "");
-
-	delete menuWidget;
-	menuWidget = NULL;
-}
-
-// CMenuWidget (menu extended)
-void CTestMenu::testCMenuWidgetMenuExtended()
-{
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCMenuWidget (menu|extended)\n");
-	
-	//
-	menuWidget = new CMenuWidget(__("CMenuWidget(Menu|extended)"), NEUTRINO_ICON_MAINMENU);
-	
-	item = new CMenuForwarder(__("TV / Radio"), true, NULL, CNeutrinoApp::getInstance(), "tvradioswitch");
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TV);
-	item->setHint(__("Here you can switch between TV / Radio"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_RED);
-	item->setDirectKey(CRCInput::RC_red);
-	//item->setHidden(true);
-	menuWidget->addItem(item);
-
-	item = new CMenuForwarder(__("Timer / EPG"), true, NULL, new CEPGMenuHandler());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SLEEPTIMER);
-	item->setHint(__("Here you can set Timers and show EPG"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_GREEN);
-	item->setDirectKey(CRCInput::RC_green);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Features"), true, NULL, CNeutrinoApp::getInstance(), "features");
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_FEATURES);
-	item->setHint(__("Here you can choose plugins"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
-	item->setDirectKey(CRCInput::RC_yellow);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Service"), true, NULL, new CServiceMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SERVICE);
-	item->setHint(__("Here you can set channel scan and more"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_BLUE);
-	item->setDirectKey(CRCInput::RC_blue);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Settings"), true, NULL, new CMainSettingsMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_OSDSETTINGS);
-	item->setHint(__("Here you can setup your box"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
-	item->setDirectKey(CRCInput::RC_setup);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("OSD"), true, NULL, new COSDSettings());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SETTINGS);
-	item->setHint(__("Here you can setup OSD"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Information"), true, NULL, new CInfoMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_BOXINFO);
-	item->setHint(__("Here you can get device Info"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_INFO_SMALL);
-	item->setDirectKey(CRCInput::RC_info);
-	menuWidget->addItem(item);
-
-	item = new CMenuForwarder(__("Power Menu"), true, NULL, new CPowerMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_POWERMENU);
-	item->setHint(__("Here you can power off or standby your device"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_POWER);
-	item->setDirectKey(CRCInput::RC_standby);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Media Player"), true, NULL, new CMediaPlayerMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
-	item->setHint(__("Here you can play music / movies"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_PLAY_SMALL);
-	item->setDirectKey(CRCInput::RC_video);
-	menuWidget->addItem(item);
-	
-	menuWidget->setWidgetMode(ClistBox::MODE_MENU);
-	menuWidget->setWidgetType(ClistBox::TYPE_EXTENDED);
-	menuWidget->enableShrinkMenu();
-	menuWidget->enablePaintDate();
-	//menuWidget->setFormat("%d.%m.%Y %H:%M:%S");
-	menuWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	menuWidget->enablePaintItemInfo();
-	menuWidget->setTimeOut(g_settings.timing_menu);
-
-	menuWidget->exec(NULL, "");
-
-	delete menuWidget;
-	menuWidget = NULL;
-}
-
-// CMenuWidget (menu frame)
-void CTestMenu::testCMenuWidgetMenuFrame()
-{
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCMenuWidget (menu|frame)\n");
-	
-	//
-	menuWidget = new CMenuWidget(__("CMenuWidget(Menu|frame)"), NEUTRINO_ICON_MAINMENU);
-	
-	item = new CMenuForwarder(__("TV / Radio"), true, NULL, CNeutrinoApp::getInstance(), "tvradioswitch");
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TV);
-	item->setHint(__("Here you can switch between TV / Radio"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_RED);
-	item->setDirectKey(CRCInput::RC_red);
-	//item->setHidden(true);
-	menuWidget->addItem(item);
-
-	item = new CMenuForwarder(__("Timer / EPG"), true, NULL, new CEPGMenuHandler());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SLEEPTIMER);
-	item->setHint(__("Here you can set Timers and show EPG"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_GREEN);
-	item->setDirectKey(CRCInput::RC_green);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Features"), true, NULL, CNeutrinoApp::getInstance(), "features");
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_FEATURES);
-	item->setHint(__("Here you can choose plugins"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
-	item->setDirectKey(CRCInput::RC_yellow);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Service"), true, NULL, new CServiceMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SERVICE);
-	item->setHint(__("Here you can set channel scan and more"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_BLUE);
-	item->setDirectKey(CRCInput::RC_blue);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Settings"), true, NULL, new CMainSettingsMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_OSDSETTINGS);
-	item->setHint(__("Here you can setup your box"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
-	item->setDirectKey(CRCInput::RC_setup);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("OSD"), true, NULL, new COSDSettings());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SETTINGS);
-	item->setHint(__("Here you can setup OSD"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Information"), true, NULL, new CInfoMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_BOXINFO);
-	item->setHint(__("Here you can get device Info"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_INFO_SMALL);
-	item->setDirectKey(CRCInput::RC_info);
-	menuWidget->addItem(item);
-
-	item = new CMenuForwarder(__("Power Menu"), true, NULL, new CPowerMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_POWERMENU);
-	item->setHint(__("Here you can power off or standby your device"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_POWER);
-	item->setDirectKey(CRCInput::RC_standby);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(__("Media Player"), true, NULL, new CMediaPlayerMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
-	item->setHint(__("Here you can play music / movies"));
-	item->setIconName(NEUTRINO_ICON_BUTTON_PLAY_SMALL);
-	item->setDirectKey(CRCInput::RC_video);
-	menuWidget->addItem(item);
-	
-	menuWidget->setWidgetMode(ClistBox::MODE_MENU);
-	menuWidget->setWidgetType(ClistBox::TYPE_FRAME);
-	menuWidget->setItemsPerPage(6, 2);
-	menuWidget->enableShrinkMenu();
-	menuWidget->enablePaintDate();
-	//menuWidget->setFormat("%d.%m.%Y %H:%M:%S");
-	menuWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	menuWidget->enablePaintItemInfo();
-	menuWidget->setTimeOut(g_settings.timing_menu);
-
-	menuWidget->exec(NULL, "");
-
-	delete menuWidget;
-	menuWidget = NULL;
 }
 
 // CMenuWidget (setup mode)
@@ -5385,36 +4944,6 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}
-	else if(actionKey == "menuwidgetmenu")
-	{
-		testCMenuWidgetMenu();
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "menuwidgetmenuiteminfo")
-	{
-		testCMenuWidgetMenuItemInfo();
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "menuwidgetmenuclassic")
-	{
-		testCMenuWidgetMenuClassic();
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "menuwidgetmenuextended")
-	{
-		testCMenuWidgetMenuExtended();
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "menuwidgetmenuframe")
-	{
-		testCMenuWidgetMenuFrame();
-
-		return RETURN_REPAINT;
-	}
 	else if(actionKey == "menuwidgetsetup")
 	{
 		testCMenuWidgetSetup();
@@ -5468,18 +4997,6 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 				movieInfoWidget.exec(NULL, "");
 			}
 		}
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "minfo")
-	{
-		if (menuWidget)
-			selected = menuWidget->getSelected();
-		else
-			selected = 0;
-
-		if (!m_vMovieInfo.empty())
-			m_movieInfo.showMovieInfo(m_vMovieInfo[selected]);
 
 		return RETURN_REPAINT;
 	}
@@ -6615,13 +6132,13 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("ClistBox(classic)", true, NULL, this, "listbox2"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(extended)", true, NULL, this, "listbox3"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(Frame)", true, NULL, this, "listbox4"));
-	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "framebox"));
-	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "singleWidget"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(INFO)", true, NULL, this, "listbox5"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(HINTITEM)", true, NULL, this, "listbox6"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(HINTICON)", true, NULL, this, "listbox7"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(ICON)", true, NULL, this, "listbox8"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(HINT)", true, NULL, this, "listbox9"));
+	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "framebox"));
+	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "singleWidget"));
 	
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CWidget"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(CTextBox)", true, NULL, this, "textboxwidget"));
@@ -6634,11 +6151,6 @@ void CTestMenu::showMenu()
 	
 	// CMenuWidhet
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	mainMenu->addItem(new CMenuForwarder("CMenuWidget(MODE_MENU)", true, NULL, this, "menuwidgetmenu"));
-	mainMenu->addItem(new CMenuForwarder("CMenuWidget(MODE_MENU|ITEMINFO)", true, NULL, this, "menuwidgetmenuiteminfo"));
-	mainMenu->addItem(new CMenuForwarder("CMenuWidget(MODE_MENU|CLASSIC)", true, NULL, this, "menuwidgetmenuclassic"));
-	mainMenu->addItem(new CMenuForwarder("CMenuWidget(MODE_MENU|EXTENDED)", true, NULL, this, "menuwidgetmenuextended"));
-	mainMenu->addItem(new CMenuForwarder("CMenuWidget(MODE_MENU|FRAME)", true, NULL, this, "menuwidgetmenuframe"));
 	mainMenu->addItem(new CMenuForwarder("CMenuWidget(MODE_SETUP)", true, NULL, this, "menuwidgetsetup"));
 	mainMenu->addItem(new CMenuForwarder("CStringInput", true, NULL, this, "stringinput"));
 	mainMenu->addItem(new CMenuForwarder("CStringInputSMS", true, NULL, this, "stringinputsms"));

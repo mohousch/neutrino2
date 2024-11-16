@@ -120,6 +120,7 @@ class CComponent
 		uint32_t sec_timer_id;
 		uint64_t sec_timer_interval;
 		std::string actionKey; // for lua
+		bool exit_pressed;
 		
 		//
 		CComponent();
@@ -187,6 +188,7 @@ class CComponent
 		////
 		virtual std::string getActionKey(void){ if (!actionKey.empty())return actionKey; else return "";}; // lua
 		virtual int getSelected(void){return -1;};
+		virtual bool getExitPressed(){return exit_pressed;};
 };
 
 typedef std::vector<CComponent*> CCITEMLIST;

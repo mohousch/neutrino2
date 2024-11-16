@@ -8,12 +8,9 @@ SUBDIRS = \
 	icecast \
 	internetradio \
 	movieplayer \
-	moviebrowser \
 	picviewer \
 	audioplayer \
 	nfilm \
-	ntvshows \
-	satipclient \
 	upnp \
 	tuxcom
 

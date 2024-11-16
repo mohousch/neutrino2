@@ -38,8 +38,8 @@
 
 #include <plugin.h>
 
+#include <gui/widget/widget.h>
 #include <gui/widget/listframe.h>
-#include <gui/widget/menue.h>
 #include <gui/widget/textbox.h>
 
 #include <driver/movieinfo.h>

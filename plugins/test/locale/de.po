@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 4.8\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-06-18 19:11+0200\n"
+"POT-Creation-Date: 2024-11-16 23:29+0100\n"
 "PO-Revision-Date: 2023-09-21 23:10+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,58 +17,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-msgid "CMenuWidget(Menu Mode)"
-msgstr "Hauptmenü"
-
-msgid "CMenuWidget(Menu|ItemInfo)"
-msgstr "Hauptmenü"
-
-msgid "CMenuWidget(Menu|classic)"
-msgstr "Hauptmenü"
-
-#, fuzzy
-msgid "CMenuWidget(Menu|extended)"
-msgstr "Hauptmenü"
-
-#, fuzzy
-msgid "CMenuWidget(Menu|frame)"
-msgstr "Hauptmenü"
-
 msgid "CWidget(CFrameBox/ClistBox)"
 msgstr "Hauptmenü"
 
 msgid "Error"
 msgstr "Fehler"
-
-msgid "Features"
-msgstr "Erweiterungen"
-
-msgid "Here you can choose plugins"
-msgstr "Hier können Sie die Features benutzen"
-
-msgid "Here you can get device Info"
-msgstr "Hier erhalten Sie Infos über ihren Device"
-
-msgid "Here you can play music / movies"
-msgstr "Hier können Sie Musik / Filme abspielen"
-
-msgid "Here you can power off or standby your device"
-msgstr "Hier können Sie ihren Box ausschalten"
-
-msgid "Here you can set Timers and show EPG"
-msgstr "Hier erhalten Sie Details zum laufenden Sender"
-
-msgid "Here you can set channel scan and more"
-msgstr "Hier können Sie Sender suchlauf führen"
-
-msgid "Here you can setup OSD"
-msgstr "Hier können Sie Farbschema wechseln"
-
-msgid "Here you can setup your box"
-msgstr "Hier können Sie ihre Box einstellen"
-
-msgid "Here you can switch between TV / Radio"
-msgstr "Hier können Sie in den TV Modus wechseln"
 
 msgid "IP:"
 msgstr ""
@@ -76,32 +29,11 @@ msgstr ""
 msgid "Information"
 msgstr "Informationen"
 
-msgid "Media Player"
-msgstr ""
-
-msgid "OSD"
-msgstr ""
-
-msgid "Power Menu"
-msgstr "Auschaltmenü"
-
 msgid "Scan for Movies ..."
-msgstr ""
-
-msgid "Service"
-msgstr ""
-
-msgid "Settings"
-msgstr "Einstellungen"
-
-msgid "TV / Radio"
 msgstr ""
 
 msgid "Test"
 msgstr ""
 
 msgid "Time:"
-msgstr ""
-
-msgid "Timer / EPG"
 msgstr ""

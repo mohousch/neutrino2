@@ -87,6 +87,7 @@ int CComponent::exec(int timeout)
 	bool handled = false;
 	bool loop = true;
 	bool show = true;
+	exit_pressed = false;
 
 	//
 	paint();
@@ -131,7 +132,13 @@ int CComponent::exec(int timeout)
 					}
 				}
 				else
+				{
 					handled = true;
+					break;
+				}
+				
+				CFrameBuffer::getInstance()->blit();
+				continue;
 			}
 			
 			//
@@ -183,6 +190,7 @@ int CComponent::exec(int timeout)
 			}
 			else if (msg == CRCInput::RC_home || msg == CRCInput::RC_timeout) 
 			{
+				exit_pressed = true;
 				loop = false;
 			}
 			else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
@@ -196,6 +204,7 @@ int CComponent::exec(int timeout)
 			}
 			else if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
 			{
+				exit_pressed = true;
 				loop = false;
 			}
 		}

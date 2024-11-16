@@ -50,8 +50,9 @@ class CInternetRadio : public CMenuTarget
 	private:
 		CFrameBuffer* frameBuffer;
 
-		CMenuWidget* ilist;
-		CMenuItem* item;
+		CWidget *widget;
+		ClistBox *ilist;
+		CMenuItem *item;
 
 		CAudioPlayerGui tmpAudioPlayerGui;
 		CFileFilter fileFilter;
@@ -89,6 +90,7 @@ CInternetRadio::CInternetRadio()
 {
 	frameBuffer = CFrameBuffer::getInstance();
 
+	widget = NULL;
 	ilist = NULL;
 	item = NULL;
 
@@ -107,6 +109,9 @@ CInternetRadio::CInternetRadio()
 CInternetRadio::~CInternetRadio()
 {
 	playlist.clear();
+	
+	delete widget;
+	widget = NULL;
 }
 
 void CInternetRadio::hide()
@@ -661,7 +666,8 @@ const struct button_label AudioPlayerButtons[FOOT_BUTTONS_COUNT] =
 
 void CInternetRadio::showMenu()
 {
-	ilist = new CMenuWidget(__("Internet Radio"), NEUTRINO_ICON_MP3, frameBuffer->getScreenWidth() - 40, frameBuffer->getScreenHeight() - 40);
+	widget = new CWidget(frameBuffer->getScreenX() + 20, frameBuffer->getScreenY() + 20, frameBuffer->getScreenWidth() - 40, frameBuffer->getScreenHeight() - 40);
+	ilist = new ClistBox(frameBuffer->getScreenX() + 20, frameBuffer->getScreenY() + 20, frameBuffer->getScreenWidth() - 40, frameBuffer->getScreenHeight() - 40);
 
 	for(unsigned int i = 0; i < (unsigned int)playlist.size(); i++)
 	{
@@ -698,30 +704,25 @@ void CInternetRadio::showMenu()
 	
 	ilist->setWidgetMode(ClistBox::MODE_LISTBOX);
 
-	//ilist->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_CHANLIST]);
 	ilist->setSelected(selected);
 
-	//ilist->setHeadCorner(RADIUS_SMALL, CORNER_TOP);
-	//ilist->setHeadGradient(LIGHT2DARK);
-	//ilist->setHeadLine(false);
+	ilist->enablePaintHead();
+	ilist->setTitle(__("ICE Cast"), NEUTRINO_ICON_MP3);
 	ilist->setHeadButtons(&HeadButtons);
-	//ilist->setFootCorner(RADIUS_SMALL, CORNER_BOTTOM);
-	//ilist->setFootGradient(DARK2LIGHT);
-	//ilist->setFootLine(false);
-	ilist->setFootButtons(AudioPlayerButtons, FOOT_BUTTONS_COUNT);
-	
 	ilist->enablePaintDate();
-
-	ilist->addKey(CRCInput::RC_setup, this, CRCInput::getSpecialKeyName(CRCInput::RC_setup));
-	ilist->addKey(CRCInput::RC_red, this, CRCInput::getSpecialKeyName(CRCInput::RC_red));
-	ilist->addKey(CRCInput::RC_green, this, CRCInput::getSpecialKeyName(CRCInput::RC_green));
-	ilist->addKey(CRCInput::RC_yellow, this, CRCInput::getSpecialKeyName(CRCInput::RC_yellow));
-	ilist->addKey(CRCInput::RC_blue, this, CRCInput::getSpecialKeyName(CRCInput::RC_blue));
-
-	ilist->exec(NULL, "");
 	
-	delete ilist;
-	ilist = NULL;
+	ilist->enablePaintFoot();
+	ilist->setFootButtons(AudioPlayerButtons, FOOT_BUTTONS_COUNT);
+
+	widget->addKey(CRCInput::RC_setup, this, CRCInput::getSpecialKeyName(CRCInput::RC_setup));
+	widget->addKey(CRCInput::RC_red, this, CRCInput::getSpecialKeyName(CRCInput::RC_red));
+	widget->addKey(CRCInput::RC_green, this, CRCInput::getSpecialKeyName(CRCInput::RC_green));
+	widget->addKey(CRCInput::RC_yellow, this, CRCInput::getSpecialKeyName(CRCInput::RC_yellow));
+	widget->addKey(CRCInput::RC_blue, this, CRCInput::getSpecialKeyName(CRCInput::RC_blue));
+
+	widget->addCCItem(ilist);
+	
+	widget->exec(NULL, "");
 }
 
 int CInternetRadio::exec(CMenuTarget* parent, const std::string& actionKey)
