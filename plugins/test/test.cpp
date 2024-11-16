@@ -150,8 +150,6 @@ class CTestMenu : public CMenuTarget
 		void testClistBox9();
 		void testCFrameBox();
 		void testCFrameBox1();
-		//// CMenuWidget
-		void testCMenuWidgetSetup();
 		//// misc widgets
 		void testCStringInput();
 		void testCStringInputSMS();
@@ -3178,18 +3176,6 @@ void CTestMenu::testCFrameBox1()
 	}
 }
 
-// CMenuWidget (setup mode)
-void CTestMenu::testCMenuWidgetSetup()
-{
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCMenuWidget (setup mode)\n");
-	
-	CAudioPlayerSettings * audioPlayerSettingsMenu = new CAudioPlayerSettings();
-
-	audioPlayerSettingsMenu->exec(this, "");
-	delete audioPlayerSettingsMenu;
-	audioPlayerSettingsMenu = NULL;	
-}
-
 // CStringInput
 void CTestMenu::testCStringInput()
 {
@@ -4944,12 +4930,6 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}
-	else if(actionKey == "menuwidgetsetup")
-	{
-		testCMenuWidgetSetup();
-
-		return RETURN_REPAINT;
-	}
 	else if(actionKey == "pluginslist")
 	{
 		testPluginsList();
@@ -6151,7 +6131,6 @@ void CTestMenu::showMenu()
 	
 	// CMenuWidhet
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	mainMenu->addItem(new CMenuForwarder("CMenuWidget(MODE_SETUP)", true, NULL, this, "menuwidgetsetup"));
 	mainMenu->addItem(new CMenuForwarder("CStringInput", true, NULL, this, "stringinput"));
 	mainMenu->addItem(new CMenuForwarder("CStringInputSMS", true, NULL, this, "stringinputsms"));
 	mainMenu->addItem(new CMenuForwarder("CPINInput", true, NULL, this, "pininput"));
