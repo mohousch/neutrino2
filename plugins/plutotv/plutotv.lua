@@ -164,10 +164,12 @@ cm_selected = 0
 function cat_menu(_id)
 	neutrino2.CFileHelpers():createDir("/tmp/plutotv")
 
-	local cm = neutrino2.CMenuWidget(catlist[tonumber(_id)], neutrino2.PLUGINDIR .. "/plutotv/plutotv.png", 1100)
+	local cm = neutrino2.ClistBox(10, 10, 1260, 700)
 	--cm:setWidgetType(neutrino2.ClistBox_TYPE_FRAME)
 	--cm:enablePaintItemInfo(70)
 	--cm:setItemsPerPage(6, 2)
+	cm:enablePaintHead()
+	cm:setTitle(catlist[tonumber(_id)], neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	cm:enablePaintDate()
 	cm:clear()
 	
@@ -239,9 +241,13 @@ function cat_menu(_id)
 		cm_selected = 0
 	end
 	
+	--
+	
+	--
+	
 	cm:setSelected(cm_selected)
 	
-	cm:exec(null, "")
+	cm:exec()
 	
 	cm_selected = cm:getSelected()
 	
@@ -274,8 +280,11 @@ function season_menu(_id)
 	if c_data then
 		local jd = json:decode(c_data)
 		if jd then
-			sm = neutrino2.CMenuWidget(jd.name, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
+--			sm = neutrino2.CMenuWidget(jd.name, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
+			sm = neutrino2.ClistBox(10, 10, 1260, 700)
 			sm:clear()
+			sm:enablePaintHead()
+			em:setTilte(jd.name, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 			
 			episodelist = {}
 			local count = 1
@@ -334,7 +343,10 @@ em_selected = 0
 function episode_menu(s)
 	neutrino2.CFileHelpers():createDir("/tmp/plutotv")
 	
-	local em = neutrino2.CMenuWidget(episodelist[tonumber(s)][1].title .. " - Season "..s, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png", 1100)
+	--local em = neutrino2.CMenuWidget(episodelist[tonumber(s)][1].title .. " - Season "..s, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png", 1100)
+	local em = neutrino2.ClistBox(10, 10, 1260, 700)
+	em:enableOaintHead()
+	em:setTitle(episodelist[tonumber(s)][1].title .. " - Season "..s, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	--em:setWidgetType(neutrino2.ClistBox_TYPE_FRAME)
 	--em:enablePaintItemInfo(70)
 	--em:setItemsPerPage(6, 2)
@@ -409,7 +421,7 @@ function episode_menu(s)
 	
 	em:setSelected(em_selected)
 	
-	em:exec(null, "")
+	em:exec()
 	
 	em_selected = em:getSelected()
 	local actionKey = em:getActionKey()
@@ -477,11 +489,13 @@ end
 m_selected = 0
 
 function categories_menu()
-	local m = neutrino2.CMenuWidget(plugin_title, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
+	local m = neutrino2.ClistBox(10, 10, 1260, 700)
+	m:enablePaintHead()
+	m:setTitle(plugin_title, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	m:enableShrinkMenu()
 	m:enablePaintDate()
 	m:setTitleHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
-	m:clear()
+	m:enablePaintFoot()
 	
 	local red = neutrino2.button_label_struct()
 	red.button = neutrino2.NEUTRINO_ICON_BUTTON_RED
@@ -504,7 +518,7 @@ function categories_menu()
 	
 	m:setSelected(m_selected)
 	
-	m:exec(null, "")
+	m:exec()
 	
 	m_selected = m:getSelected()
 	local actionKey = m:getActionKey()
@@ -512,7 +526,7 @@ function categories_menu()
 	if actionKey == "cat_menu" then
 		cat_menu(m_selected + 1)
 	end
-	
+
 	if actionKey == "update" then
 		get_channels()
 	end
@@ -530,5 +544,6 @@ function main()
 end
 
 main()
+
 
 

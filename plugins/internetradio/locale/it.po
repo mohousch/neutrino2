@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-29 02:15+0200\n"
+"POT-Creation-Date: 2024-11-16 22:33+0100\n"
 "PO-Revision-Date: 2023-10-29 02:15+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,27 +17,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../../internetradio/internetradio.cpp:657
 msgid "Add"
 msgstr ""
 
-#: ../../internetradio/internetradio.cpp:656
 msgid "Delete"
 msgstr ""
 
-#: ../../internetradio/internetradio.cpp:658
 msgid "Delete all"
 msgstr ""
 
-#: ../../internetradio/internetradio.cpp:664
-msgid "Internet Radio"
+msgid "ICE Cast"
 msgstr ""
 
-#: ../../internetradio/internetradio.cpp:307
-#: ../../internetradio/internetradio.cpp:415
 msgid "Receiving list, please wait"
 msgstr ""
 
-#: ../../internetradio/internetradio.cpp:659
 msgid "Reload"
 msgstr ""
