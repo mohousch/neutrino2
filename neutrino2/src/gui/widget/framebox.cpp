@@ -1080,6 +1080,7 @@ int CFrameBox::exec(int timeout)
 			}
 			else if (msg == CRCInput::RC_home || msg == CRCInput::RC_timeout) 
 			{
+				homeKeyPressed();
 				exit_pressed = true;
 				loop = false;
 			}
