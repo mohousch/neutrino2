@@ -26,44 +26,6 @@
 
 #include <gui/widget/widget_helpers.h>
 
-#include <driver/lcd/lcdd.h>
-
-
-////
-class CMenuTarget
-{
-	public:
-		enum
-		{
-			RETURN_NONE		= 0,
-			RETURN_REPAINT 		= 1,
-			RETURN_EXIT 		= 2,
-			RETURN_EXIT_ALL 	= 4
-		};
-		
-		CLCD::MODES oldLcdMode;
-		std::string oldLcdMenutitle;
-				
-	public:
-		CMenuTarget(){};
-		virtual ~CMenuTarget(){};
-		virtual void hide(){};
-		virtual int exec(CMenuTarget *parent, const std::string &actionKey) = 0;
-};
-
-//// CChangeObserver
-class CChangeObserver
-{
-	public:
-		CChangeObserver(){};
-		virtual ~CChangeObserver(){};
-		
-		virtual bool changeNotify(const std::string&, void *)
-		{
-			return false;
-		};
-};
-
 
 ////
 class CWidget : public CMenuTarget
@@ -117,7 +79,7 @@ class CWidget : public CMenuTarget
 		int corner;
 		int borderMode;
 		fb_pixel_t borderColor;
-		//
+		//// for future use
 		unsigned int current_page;
 		unsigned int total_pages;
 

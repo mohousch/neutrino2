@@ -79,11 +79,9 @@ void CComponent::addKey(neutrino_msg_t key, CMenuTarget *menue, const std::strin
 //
 int CComponent::exec(int timeout)
 {
-	dprintf(DEBUG_INFO, "CComponent::exec: timeout:%d\n", timeout);
+	dprintf(DEBUG_NORMAL, "CComponent::exec: timeout:%d\n", timeout);
 	
 	// loop
-	neutrino_msg_t msg;
-	neutrino_msg_data_t data;
 	bool handled = false;
 	bool loop = true;
 	bool show = true;
@@ -111,7 +109,9 @@ int CComponent::exec(int timeout)
 						
 			if (it != keyActionMap.end()) 
 			{
-				actionKey = it->second.action;
+				actionKey = it->second.action; // FIXME:
+				
+				printf("CComponent::exec: actionKey:%s\n", actionKey.c_str());
 
 				if (it->second.menue != NULL)
 				{

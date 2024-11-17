@@ -1821,8 +1821,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	widgetMode = MODE_LISTBOX;
 
 	background = NULL;
-
-	actionKey = "";
+//	actionKey = "";
 	
 	bgcolor = COL_MENUCONTENT_PLUS_0;
 	radius = NO_RADIUS;
@@ -1946,7 +1945,7 @@ ClistBox::ClistBox(CBox* position)
 
 	background = NULL;
 
-	actionKey = "";
+//	actionKey = "";
 	
 	bgcolor = COL_MENUCONTENT_PLUS_0;
 	radius = NO_RADIUS;
@@ -3639,5 +3638,153 @@ void ClistBox::selectItemByName(const char *name)
 				setSelected(i);
 		}
 	}
+}
+
+////
+int ClistBox::exec(int timeout)
+{
+	dprintf(DEBUG_NORMAL, "ClistBox::exec: timeout:%d\n", timeout);
+	
+	// loop
+	bool handled = false;
+	bool loop = true;
+	bool show = true;
+	exit_pressed = false;
+
+	//
+	paint();
+	CFrameBuffer::getInstance()->blit();
+	
+	if ( timeout == -1 )
+		timeout = 0xFFFF;
+		
+	// add sec timer
+	sec_timer_id = g_RCInput->addTimer(sec_timer_interval*1000*1000, false);
+		
+	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(timeout);
+
+	while(loop)
+	{
+		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);		
+		
+		if ( msg <= CRCInput::RC_MaxRC ) 
+		{
+			std::map<neutrino_msg_t, keyAction>::iterator it = keyActionMap.find(msg);
+						
+			if (it != keyActionMap.end()) 
+			{
+				actionKey = it->second.action; // FIXME:
+				
+				printf("CComponent::exec: actionKey:%s\n", actionKey.c_str());
+
+				if (it->second.menue != NULL)
+				{
+					int rv = it->second.menue->exec(parent, it->second.action);
+
+					//
+					switch ( rv ) 
+					{
+						case CMenuTarget::RETURN_EXIT_ALL:
+							loop = false; //fall through
+						case CMenuTarget::RETURN_EXIT:
+							loop = false;
+							break;
+						case CMenuTarget::RETURN_REPAINT:
+							loop = true;
+							paint();
+							break;
+					}
+				}
+				else
+				{
+					handled = true;
+					break;
+				}
+				
+				CFrameBuffer::getInstance()->blit();
+				continue;
+			}
+			
+			//
+			directKeyPressed(msg);
+		}
+		
+		if (!handled) 
+		{
+			if (msg == CRCInput::RC_up)
+			{
+				scrollLineUp();
+			}
+			else if (msg == CRCInput::RC_down)
+			{
+				scrollLineDown();
+			}
+			else if (msg == CRCInput::RC_left)
+			{
+				swipLeft();
+			}
+			else if (msg == CRCInput::RC_right)
+			{
+				swipRight();
+			}
+			else if (msg == CRCInput::RC_page_up)
+			{
+				scrollPageUp();
+			}
+			else if (msg == CRCInput::RC_page_down)
+			{
+				scrollPageDown();
+			}
+			else if (msg == CRCInput::RC_ok)
+			{
+				int rv = oKKeyPressed(parent);
+					
+				switch ( rv ) 
+				{
+					case CMenuTarget::RETURN_EXIT_ALL:
+						loop = false;
+					case CMenuTarget::RETURN_EXIT:
+						loop = false;
+						break;
+					case CMenuTarget::RETURN_REPAINT:
+						loop = true;
+						paint();
+						break;
+				}
+			}
+			else if (msg == CRCInput::RC_home || msg == CRCInput::RC_timeout) 
+			{
+				exit_pressed = true;
+				loop = false;
+			}
+			else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
+			{
+				show = !show;
+				
+				if (update())
+				{
+					refresh(show);
+				}
+			}
+			else if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
+			{
+				exit_pressed = true;
+				loop = false;
+			}
+		}
+
+		CFrameBuffer::getInstance()->blit();
+	}
+
+	hide();	
+	
+	//
+	if (sec_timer_id)
+	{
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}
+	
+	return 0;	
 }
 

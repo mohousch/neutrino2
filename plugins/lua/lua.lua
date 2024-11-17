@@ -14,9 +14,10 @@ end
 
 -- CHelpBox
 function helpBox()
-	hbox = neutrino2.CHelpBox()
+	title = "lua: CHelpBox"
+	hbox = neutrino2.CHelpBox(title)
 	hbox:addLine("neutrino: lua")
-	hbox:addSeparator()
+--	hbox:addSeparator()
 	hbox:addLine("first test")
 	hbox:addLine("testing CHelpBox ;-)\n")
 	hbox:show("lua: CHelpBox")
@@ -178,9 +179,85 @@ function moviePlayer()
 	until fileBrowser:getExitPressed() == true
 end
 
--- exec_actionKey
-function exec(id, msg, actionKey)
-	print("lua sample: exec: actionKey: (" .. actionKey ..")")
+-- ClistBox
+function testClistBox()
+	local listBox = neutrino2.ClistBox(340, 60, 600,600)
+	listBox:enablePaintHead()
+	listBox:setTitle("lua: ClistBox", neutrino2.NEUTRINO_ICON_MOVIE)
+	listBox:enablePaintDate()
+	listBox:enablePaintFoot()
+	listBox:enableShrinkMenu()
+
+	-- CMessageBox
+	item1 = neutrino2.CMenuForwarder("CMessageBox", true, "", self, "msgBox")
+	item1:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
+	item1:setHint("testing CMessageBox")
+	item1:setInfo1("testing CMessageBox")
+
+	-- CHelpBox
+	item2 = neutrino2.CMenuForwarder("CHelpBox", false)
+	item2:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
+	item2:setHint("testing CHelpBox")
+	item2:setInfo1("testing CHelpBox")
+	item2:setActionKey(null, "helpBox")
+
+	-- CHintBox
+	item3 = neutrino2.CMenuForwarder("CHintBox")
+	item3:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
+	item3:setHint("testing CHintBox")
+	item3:setInfo1("testing CHintBox")
+	item3:setActionKey(null, "hintBox")
+
+	-- CInfoBox
+	item4 = neutrino2.CMenuForwarder("CInfoBox")
+	item4:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
+	item4:setHint("testing CInfoBox")
+	item4:setInfo1("testing CInfoBox")
+	item4:setActionKey(null, "infoBox")
+
+	-- CStringInput
+	item5 = neutrino2.CMenuForwarder("CStringInput", false)
+	item5:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
+	item5:setHint("testing CStringInput")
+	item5:setInfo1("testing CStringInput")
+
+	-- CAudioPlayerGui
+	item6 = neutrino2.CMenuForwarder("CAudioPlayerGui")
+	item6:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
+	item6:setHint("testing CAudioPlayerGui")
+	item6:setInfo1("testing CAudioPlayerGui")
+	item6:setActionKey(null, "audioPlayer")
+
+	-- CPictureViewerGui
+	item7 = neutrino2.CMenuForwarder("CPictureViewerGui")
+	item7:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
+	item7:setHint("testing CPictureViewerGui")
+	item7:setInfo1("testing CPictureViewerGui")
+	item7:setActionKey(null, "pictureViewer")
+
+	-- CMoviePlayerGui
+	item8 = neutrino2.CMenuForwarder("CMoviePlayerGui")
+	item8:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
+	item8:setHint("testing CMoviePlayerGui")
+	item8:setInfo1("testing CMoviePlayerGui")
+	item8:setActionKey(null, "moviePlayer")
+
+	listBox:addItem(item1)
+	listBox:addItem(item2)
+	listBox:addItem(item3)
+	listBox:addItem(item4)
+	listBox:addItem(item5)
+	listBox:addItem(item6)
+	listBox:addItem(item7)
+	listBox:addItem(item8)
+	
+	listBox:addKey(neutrino2.CRCInput_RC_info, self, "infoBox")
+	
+	listBox:exec()
+	
+	local actionKey = listBox:getActionKey()
+	
+	print("actionKey: " .. actionKey)
 	
 	if actionKey == "msgBox" then
 		messageBox()
@@ -198,37 +275,156 @@ function exec(id, msg, actionKey)
 		moviePlayer()
 	elseif actionKey == "infoBox" then
 		infoBox()
-	elseif msg == neutrino2.CRCInput_RC_info then
-		infoBox()
-	elseif id == 0 then
-		messageBox()
-	elseif id == 1 then
-		helpBox()
-	elseif id == 2 then
-		hintBox()
-	elseif id == 3 then
-		infoBox()
-	elseif id == 4 then
-		stringInput()
-	elseif id == 5 then
-		audioPlayer()
-	elseif id == 6 then
-		pictureViewer()
-	elseif id == 7 then
+	end
+	
+	if listBox:getExitPressed() ~= true then
+		testClistBox()
+	end
+end
+
+-- CFrameBox
+function testCFrameBox()
+	local box = neutrino2.CBox()
+	local fb = neutrino2.CFrameBuffer_getInstance()
+
+	box.iX = fb:getScreenX() + 40
+	box.iY = fb:getScreenY() + 40
+	box.iWidth = fb:getScreenWidth() - 80
+	box.iHeight = 60
+
+	local frameBox = neutrino2.CFrameBox(box)
+
+	frame1 = neutrino2.CFrameItem()
+	frame1:setPosition(box.iX, box.iY, box.iWidth/4, box.iHeight)
+	frame1:setTitle("MP3")
+	frame1:setHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
+	frame1:setActionKey(null, "audioPlayer")
+	frame1:setBorderMode()
+	frameBox:addFrame(frame1)
+
+	frame2 = neutrino2.CFrameItem()
+	frame2:setPosition(box.iX + box.iWidth/4, box.iY, box.iWidth/4, box.iHeight)
+	frame2:setTitle("PicViewer")
+	frame2:setHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
+	frame2:setActionKey(null, "pictureViewer")
+	frame2:setBorderMode()
+	frameBox:addFrame(frame2)
+
+	frame3 = neutrino2.CFrameItem()
+	frame3:setPosition(box.iX + 2*box.iWidth/4, box.iY, box.iWidth/4, box.iHeight)
+	frame3:setTitle("MoviePlayer")
+	frame3:setHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
+	frame3:setIconName(neutrino2.NEUTRINO_ICON_MOVIE)
+	frame3:setOption("spielt Movie Dateien")
+	frame3:setActionKey(null, "moviePlayer")
+	frame3:setBorderMode()
+	frameBox:addFrame(frame3)
+
+	frame4 = neutrino2.CFrameItem()
+	frame4:setPosition(box.iX + 3*box.iWidth/4, box.iY, box.iWidth/4, box.iHeight)
+	frame4:setTitle("Beenden")
+	frame4:setHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
+	frame4:setActionKey(null, "exit")
+	frame4:setBorderMode()
+	frameBox:addFrame(frame4)
+
+	frameBox:exec()
+
+	local actionKey = frameBox:getActionKey()
+	
+	print("actionKey: " .. actionKey)
+
+	if actionKey == "moviePlayer" then
+		print("testCFrameBox: actionKey: moviePlayer")
 		moviePlayer()
+	elseif actionKey == "audioPlayer" then
+		audioPlayer()
+	elseif actionKey == "pictureViewer" then
+		pictureViewer()
+	elseif actionKey == "exit" then
+		return neutrino2.CMenuTarget_RETURN_EXIT
+	end
+
+	if frameBox:getExitPressed() ~= true then
+		testCFrameBox()
+	end
+end
+
+-- CFrameBox
+function testCFrameBoxRandom()
+	local fb = neutrino2.CFrameBuffer_getInstance()
+	local box = neutrino2.CBox()
+
+	box.iX = fb:getScreenX() + 40
+	box.iY = fb:getScreenY() + 40
+	box.iWidth = fb:getScreenWidth() - 80
+	box.iHeight = fb:getScreenHeight() - 80
+
+	local frameBox = neutrino2.CFrameBox(box)
+
+	frame1 = neutrino2.CFrameItem()
+	frame1:setPosition(box.iX, box.iY + 2, 350, 60)
+	frame1:setTitle("MP3")
+	frame1:setHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
+	frame1:setActionKey(null, "audioPlayer")
+	frame1:setBorderMode()
+	frameBox:addFrame(frame1)
+
+	frame2 = neutrino2.CFrameItem()
+	frame2:setPosition(box.iX, box.iY + 2 + 60, 350, 60)
+	frame2:setTitle("PicViewer")
+	frame2:setHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
+	frame2:setActionKey(null, "pictureViewer")
+	frame2:setBorderMode()
+	frameBox:addFrame(frame2)
+
+	frame3 = neutrino2.CFrameItem()
+	frame3:setPosition(box.iX, box.iY + 2 + 60 + 2 + 60, 350, 60)
+	frame3:setTitle("MoviePlayer")
+	frame3:setHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
+	frame3:setIconName(neutrino2.NEUTRINO_ICON_MOVIE)
+	frame3:setOption("spielt Movie Dateien")
+	frame3:setActionKey(null, "moviePlayer")
+	frame3:setBorderMode()
+	frameBox:addFrame(frame3)
+
+	frame10 = neutrino2.CFrameItem()
+	frame10:setPosition(box.iX, fb:getScreenHeight() - 80 - 60, 350, 60)
+	frame10:setTitle("Beenden")
+	frame10:setHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
+	frame10:setActionKey(null, "exit")
+	frame10:setBorderMode()
+	frameBox:addFrame(frame10)
+
+	frameBox:exec()
+
+	local actionKey = frameBox:getActionKey()
+	
+	print("actionKey: " .. actionKey)
+
+	if actionKey == "moviePlayer" then
+		moviePlayer()
+	elseif actionKey == "audioPlayer" then
+		audioPlayer()
+	elseif actionKey == "pictureViewer" then
+		pictureViewer()
+	elseif actionKey == "exit" then
+		return neutrino2.CMenuTarget_RETURN_EXIT
+	end
+
+	if frameBox:getExitPressed() ~= true then
+		testCFrameBoxRandom()
 	end
 end
 
 -- CWidget
 function testCWidget()
-	local ret = neutrino2.CMenuTarget_RETURN_REPAINT
-
 	local testWidget = neutrino2.CWidget()
 	testWidget:setMenuPosition(neutrino2.CWidget_MENU_POSITION_LEFT)
 	
-	local listBox = neutrino2.ClistBox()
+	local listBox = neutrino2.ClistBox(340, 60, 600,600)
 
-	listBox:setTitle("lua: CWidget|ClistBox")
+	listBox:setTitle("lua: CWidget")
 	listBox:enablePaintHead()
 	listBox:enablePaintDate()
 	listBox:enablePaintFoot()
@@ -244,7 +440,7 @@ function testCWidget()
 	item1:setInfo1("testing CMessageBox")
 
 	-- CHelpBox
-	item2 = neutrino2.CMenuForwarder("CHelpBox")
+	item2 = neutrino2.CMenuForwarder("CHelpBox", false)
 	item2:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item2:setHint("testing CHelpBox")
 	item2:setInfo1("testing CHelpBox")
@@ -292,6 +488,27 @@ function testCWidget()
 	item8:setHint("testing CMoviePlayerGui")
 	item8:setInfo1("testing CMoviePlayerGui")
 	item8:setActionKey(null, "moviePlayer")
+	
+	-- testClistBox
+	item9 = neutrino2.CMenuForwarder("ClistBox")
+	item9:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
+	item9:setHint("testing ClistBox")
+	item9:setInfo1("testing ClistBox")
+	item9:setActionKey(null, "listbox")
+	
+	-- testCFrameBox
+	item10 = neutrino2.CMenuForwarder("CFrameBox")
+	item10:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
+	item10:setHint("testing CFrameBox")
+	item10:setInfo1("testing CFrameBox")
+	item10:setActionKey(null, "framebox")
+	
+	-- testCFrameBoxRandom
+	item11 = neutrino2.CMenuForwarder("CFrameBox2")
+	item11:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
+	item11:setHint("testing CFrameBox")
+	item11:setInfo1("testing CFrameBox")
+	item11:setActionKey(null, "frameboxrandom")
 
 	listBox:addItem(item1)
 	listBox:addItem(item2)
@@ -301,6 +518,9 @@ function testCWidget()
 	listBox:addItem(item6)
 	listBox:addItem(item7)
 	listBox:addItem(item8)
+	listBox:addItem(item9)
+	listBox:addItem(item10)
+	listBox:addItem(item11)
 
 	if selected < 0 then
 		selected = 0
@@ -311,337 +531,75 @@ function testCWidget()
 	testWidget:addCCItem(listBox)
 	testWidget:addKey(neutrino2.CRCInput_RC_info, null, "info")
 
-	ret = testWidget:exec(null, "")
+	testWidget:exec(null, "")
 
 	selected = listBox:getSelected()
 	local key = testWidget:getKey()
 	local actionKey = testWidget:getActionKey()
+	
+	print("selected: " .. selected)
+	print("key: " .. key)
+	print("actionKey: " .. actionKey)
+	
+	if actionKey == "msgBox" then
+		messageBox()
+	elseif actionKey == "helpBox" then
+		helpBox()
+	elseif actionKey == "hintBox" then
+		hintBox()
+	elseif actionKey == "cStringInput" then
+		stringInput()
+	elseif actionKey == "audioPlayer" then
+		audioPlayer()
+	elseif actionKey == "pictureViewer" then
+		pictureViewer()
+	elseif actionKey == "moviePlayer" then
+		moviePlayer()
+	elseif actionKey == "infoBox" then
+		infoBox()
+	elseif actionKey == "listbox" then
+		testClistBox()
+	elseif actionKey == "framebox" then
+		testCFrameBox()
+	elseif actionKey == "frameboxrandom" then
+		testCFrameBoxRandom()
+	--elseif key == neutrino2.CRCInput_RC_info then
+	--	infoBox()
+	elseif actionKey == "info" then
+		infoBox()
+	--[[
+	elseif selected == 0 then
+		messageBox()
+	elseif selected == 1 then
+		helpBox()
+	elseif selected == 2 then
+		hintBox()
+	elseif selected == 3 then
+		infoBox()
+	elseif selected == 4 then
+		stringInput()
+	elseif selected == 5 then
+		audioPlayer()
+	elseif selected == 6 then
+		pictureViewer()
+	elseif selected == 7 then
+		moviePlayer()
+	elseif selected == 8 then
+		testClistBox()
+	elseif selected == 9 then
+		testCFrameBox()
+	elseif selected == 10 then
+		testCFrameBoxRandom()
+	]]
+	end
 
-	exec(selected, key, actionKey)
-
-	if testWidget:getExitPressed() ~= true and ret == neutrino2.RETURN_REPAINT then
+	if testWidget:getExitPressed() ~= true then
 		testCWidget()
 	end
-
-	return ret
 end
-
--- ClistBox
-function testClistBox()
-	local ret = neutrino2.CMenuTarget_RETURN_REPAINT
-
-	local listBox = neutrino2.ClistBox()
-	listBox:enablePaintHead()
-	listBox:setTitle("lua: ClistBox", neutrino2.NEUTRINO_ICON_MOVIE)
-	listBox:enablePaintDate()
-	listBox:enablePaintFoot()
-	listBox:enableShrinkMenu()
-
-	-- CMessageBox
-	item1 = neutrino2.CMenuForwarder("CMessageBox", true, "", self, "msgBox")
-	item1:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
-	item1:setHint("testing CMessageBox")
-	item1:setInfo1("testing CMessageBox")
-
-	-- CHelpBox
-	item2 = neutrino2.CMenuForwarder("CHelpBox")
-	item2:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
-	item2:setHint("testing CHelpBox")
-	item2:setInfo1("testing CHelpBox")
-
-	-- CHintBox
-	item3 = neutrino2.CMenuForwarder("CHintBox")
-	item3:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
-	item3:setHint("testing CHintBox")
-	item3:setInfo1("testing CHintBox")
-
-	-- CInfoBox
-	item4 = neutrino2.CMenuForwarder("CInfoBox")
-	item4:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
-	item4:setHint("testing CInfoBox")
-	item4:setInfo1("testing CInfoBox")
-
-	-- CStringInput
-	item5 = neutrino2.CMenuForwarder("CStringInput", false)
-	item5:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
-	item5:setHint("testing CStringInput")
-	item5:setInfo1("testing CStringInput")
-
-	-- CAudioPlayerGui
-	item6 = neutrino2.CMenuForwarder("CAudioPlayerGui")
-	item6:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
-	item6:setHint("testing CAudioPlayerGui")
-	item6:setInfo1("testing CAudioPlayerGui")
-
-	-- CPictureViewerGui
-	item7 = neutrino2.CMenuForwarder("CPictureViewerGui")
-	item7:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
-	item7:setHint("testing CPictureViewerGui")
-	item7:setInfo1("testing CPictureViewerGui")
-
-	-- CMoviePlayerGui
-	item8 = neutrino2.CMenuForwarder("CMoviePlayerGui")
-	item8:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
-	item8:setHint("testing CMoviePlayerGui")
-	item8:setInfo1("testing CMoviePlayerGui")
-
-	listBox:addItem(item1)
-	listBox:addItem(item2)
-	listBox:addItem(item3)
-	listBox:addItem(item4)
-	listBox:addItem(item5)
-	listBox:addItem(item6)
-	listBox:addItem(item7)
-	listBox:addItem(item8)
-	
-	local m = neutrino2.CWidget()
-	m:setMenuPosition(neutrino2.CWidget_MENU_POSITION_CENTER)
-
-	m:addWidgetItem(listBox)
-	m:addKey(neutrino2.CRCInput_RC_info)
-	
-	if selected < 0 then
-		selected = 0
-	end
-
-	listBox:setSelected(selected)
-
-	ret = m:exec(null, "")
-	
-	local selected = listBox:getSelected()
-	local actionKey = listBox:getActionKey()
-		
-	exec(selected, key, actionKey)
-	
-	if m:getExitPressed() ~= true then
-		testClistBox()
-	end
-
-	return ret
-end
-
--- CFrameBox
-function testCFrameBox()
-	local ret = neutrino2.CMenuTarget_RETURN_REPAINT
-
-	local box = neutrino2.CBox()
-	local fb = neutrino2.CFrameBuffer_getInstance()
-
-	box.iX = fb:getScreenX() + 40
-	box.iY = fb:getScreenY() + 40
-	box.iWidth = fb:getScreenWidth() - 80
-	box.iHeight = 60
-
-	local frameBox = neutrino2.CFrameBox(box)
-
-	frame1 = neutrino2.CFrameItem()
-	frame1:setPosition(box.iX, box.iY, box.iWidth/4, box.iHeight)
-	frame1:setTitle("MP3")
-	frame1:setHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
-	frame1:setActionKey(null, "audioPlayer")
-	frame1:setBorderMode()
-	frameBox:addFrame(frame1)
-
-	frame2 = neutrino2.CFrameItem()
-	frame2:setPosition(box.iX + box.iWidth/4, box.iY, box.iWidth/4, box.iHeight)
-	frame2:setTitle("PicViewer")
-	frame2:setHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
-	frame2:setActionKey(null, "pictureViewer")
-	frame2:setBorderMode()
-	frameBox:addFrame(frame2)
-
-	frame3 = neutrino2.CFrameItem()
-	frame3:setPosition(box.iX + 2*box.iWidth/4, box.iY, box.iWidth/4, box.iHeight)
-	frame3:setTitle("MoviePlayer")
-	frame3:setHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
-	frame3:setIconName(neutrino2.NEUTRINO_ICON_MOVIE)
-	frame3:setOption("spielt Movie Dateien")
-	frame3:setActionKey(null, "moviePlayer")
-	frame3:setBorderMode()
-	frameBox:addFrame(frame3)
-
-	frame4 = neutrino2.CFrameItem()
-	frame4:setPosition(box.iX + 3*box.iWidth/4, box.iY, box.iWidth/4, box.iHeight)
-	frame4:setTitle("Beenden")
-	frame4:setHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
-	frame4:setActionKey(null, "exit")
-	frame4:setBorderMode()
-	frameBox:addFrame(frame4)
-
-	local m = neutrino2.CWidget()
-	m:addCCItem(frameBox)
-
-	ret = m:exec(null, "")
-
-	local actionKey = m:getActionKey()
-
-	if actionKey == "moviePlayer" then
-		print("testCFrameBox: actionKey: moviePlayer")
-		moviePlayer()
-	elseif actionKey == "audioPlayer" then
-		audioPlayer()
-	elseif actionKey == "pictureViewer" then
-		pictureViewer()
-	elseif actionKey == "exit" then
-		print("testCFrameBox: actionKey: exit")
-		return neutrino2.CMenuTarget_RETURN_EXIT
-	end
-
-	if m:getExitPressed() ~= true then
-		testCFrameBox()
-	end
-
-	return ret
-end
-
--- CFrameBox
-function testCFrameBoxRandom()
-	local ret = neutrino2.CMenuTarget_RETURN_REPAINT
-
-	local fb = neutrino2.CFrameBuffer_getInstance()
-	local box = neutrino2.CBox()
-
-	box.iX = fb:getScreenX() + 40
-	box.iY = fb:getScreenY() + 40
-	box.iWidth = fb:getScreenWidth() - 80
-	box.iHeight = fb:getScreenHeight() - 80
-
-	local frameBox = neutrino2.CFrameBox(box)
-
-	frame1 = neutrino2.CFrameItem()
-	frame1:setPosition(box.iX, box.iY + 2, 350, 60)
-	frame1:setTitle("MP3")
-	frame1:setHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
-	frame1:setActionKey(null, "audioPlayer")
-	frame1:setBorderMode()
-	frameBox:addFrame(frame1)
-
-	frame2 = neutrino2.CFrameItem()
-	frame2:setPosition(box.iX, box.iY + 2 + 60, 350, 60)
-	frame2:setTitle("PicViewer")
-	frame2:setHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
-	frame2:setActionKey(null, "pictureViewer")
-	frame2:setBorderMode()
-	frameBox:addFrame(frame2)
-
-	frame3 = neutrino2.CFrameItem()
-	frame3:setPosition(box.iX, box.iY + 2 + 60 + 2 + 60, 350, 60)
-	frame3:setTitle("MoviePlayer")
-	frame3:setHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
-	frame3:setIconName(neutrino2.NEUTRINO_ICON_MOVIE)
-	frame3:setOption("spielt Movie Dateien")
-	frame3:setActionKey(null, "moviePlayer")
-	frame3:setBorderMode()
-	frameBox:addFrame(frame3)
-
-	frame10 = neutrino2.CFrameItem()
-	frame10:setPosition(box.iX, fb:getScreenHeight() - 80 - 60, 350, 60)
-	frame10:setTitle("Beenden")
-	frame10:setHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
-	frame10:setActionKey(null, "exit")
-	frame10:setBorderMode()
-	frameBox:addFrame(frame10)
-
-	local m = neutrino2.CWidget(box)
-
-	m:addCCItem(frameBox)
-
-	ret = m:exec(null, "")
-
-	local actionKey = m:getActionKey()
-
-	if actionKey == "moviePlayer" then
-		moviePlayer()
-	elseif actionKey == "audioPlayer" then
-		audioPlayer()
-	elseif actionKey == "pictureViewer" then
-		pictureViewer()
-	elseif actionKey == "exit" then
-		return neutrino2.CMenuTarget_RETURN_EXIT
-	end
-
-	if m:getExitPressed() ~= true then
-		testCFrameBoxRandom()
-	end
-
-	return ret
-end
-
 
 -- main
 function main()
-	local ret = neutrino2.CMenuTarget_RETURN_REPAINT
-	
-	--[[
-	local m = neutrino2.CMenuWidget("lua sample")
-
-	m:setWidgetMode(neutrino2.ClistBox_MODE_MENU)
-	m:enableShrinkMenu()
-	m:enablePaintItemInfo(60)
-	m:setItemInfoMode(neutrino2.CCItemInfo_ITEMINFO_HINTITEM)
-
-	item1 = neutrino2.CMenuForwarder("testCWidget", true, "", null, "listWidget")
-	item1:setHint("lua: testing CWidget")
-
-	item2 = neutrino2.CMenuForwarder("testCMenuWidget")
-	item2:setActionKey(null, "listBoxWidget")
-	item2:setHint("lua: testing CMenuWidget")
-
-	item5 = neutrino2.CMenuForwarder("testCFrameBox")
-	item5:setHint("lua: testing CFrameBox")
-	item5:setActionKey(null, "frameBox")
-
-	item6 = neutrino2.CMenuForwarder("testActionKey/jumpTarget")
-	item6:setActionKey(neutrino2.CAudioPlayerSettings(), "jumpTarget")
-	item6:setHint("lua: testing testActionKey/jumpTarget")
-
-	item8 = neutrino2.CMenuForwarder("testCFrameBox(2)")
-	item8:setHint("lua: testing CFrameBoxRandom")
-	item8:setActionKey(null, "frameBoxRandom")
-
-	m:addItem(item1)
-	m:addItem(item2)
-	--m:addItem(item3)
-	--m:addItem(item4)
-	m:addItem(item5)
-	m:addItem(item6)
-	--m:addItem(item7)
-	m:addItem(item8)
-
-	if selected < 0 then
-		selected = 0
-	end
-
-	m:setSelected(selected)
-
-	ret = m:exec(None, "")
-
-	selected = m:getSelected() 
-	actionKey = m:getActionKey()
-
-	if actionKey == "listWidget" then
-		ret = testCWidget()
-	elseif actionKey == "frameBox" then
-		ret = testCFrameBox()
-	elseif actionKey == "jumpTarget" then
-
-	elseif actionKey == "frameBoxRandom" then
-		ret = testCFrameBoxRandom()
-	end
-
-	if selected >= 0 then
-		if selected == 1 then
-			ret = testCMenuWidget()
-		end
-	end
-	
-	if m:getExitPressed() ~= true and ret == neutrino2.CMenuTarget_RETURN_REPAINT then
-		main()
-	end
-
-	return ret
-	]]
-	
 	testCWidget()
 end
 

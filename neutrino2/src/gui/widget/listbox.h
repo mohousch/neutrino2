@@ -532,7 +532,7 @@ class ClistBox : public CComponent
 		void hideItemInfo();
 		void paint();
 		void hide();
-		void refresh(){if (paintDate && paintTitle) timer->refresh();};
+		void refresh(bool show = false){if (paintDate && paintTitle) timer->refresh();};
 		bool update() const {return paintDate;};
 		inline bool isPainted(void){return painted;};
 		bool hasHead(){return paintTitle;};
@@ -609,6 +609,7 @@ class ClistBox : public CComponent
 		int oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg = CRCInput::RC_ok);
 		void homeKeyPressed(){selected = -1;};
 		int directKeyPressed(neutrino_msg_t _msg);
+		int exec(int timeout = -1);
 
 		//// get methods
 		int getItemsCount()const{return items.size();};
@@ -631,6 +632,8 @@ class ClistBox : public CComponent
 		int getMaxItemsPerPage()const{return maxItemsPerPage;};
 		// widget type/mode/pos
 		int getWidgetType(){return widgetType;};
+		//
+		std::string getActionKey(void){ return actionKey; }; // lua
 };
 
 #endif // LISTBOX_H_

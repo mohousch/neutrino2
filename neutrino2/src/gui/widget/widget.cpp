@@ -372,7 +372,7 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 			
 			needToBlit = true;
 
-			// keymap
+			// handle keymap
 			std::map<neutrino_msg_t, keyAction>::iterator it = keyActionMap.find(msg);
 			
 			if (it != keyActionMap.end()) 
@@ -398,10 +398,10 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 				}
 				else
 				{
-					selected = -1;
+					selected = -1; // ???
 					handled = true;
 					//FIXME: TEST
-					exit_pressed = true;
+					//exit_pressed = true;
 
 					break;
 				}

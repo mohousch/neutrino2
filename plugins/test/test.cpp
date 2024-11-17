@@ -1110,7 +1110,7 @@ void CTestMenu::testCComponentWidget()
 
 void CTestMenu::testCTextBoxWidget()
 {
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCTextBoxWidget\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCTextBoxWidget\n");
 	
 	// mainBox
 	CBox box;
@@ -1126,12 +1126,12 @@ void CTestMenu::testCTextBoxWidget()
 	textBoxWidget->setText(buffer.c_str(), DATADIR "/icons/start.jpg", 320, 240);
 		
 	textBoxWidget->setTextColor(COL_YELLOW_PLUS_0);
-//	textBoxWidget->setHAlign(CComponent::CC_ALIGN_CENTER); // conflicts with pic position
+	textBoxWidget->setHAlign(CComponent::CC_ALIGN_CENTER); // conflicts with pic position
 		
 	testWidget = new CWidget(&box);
-	testWidget->addKey(CRCInput::RC_ok, this, "mplay");
 	testWidget->addKey(CRCInput::RC_info, this, "tinfo");
 	testWidget->addCCItem(textBoxWidget);
+	
 	testWidget->exec(this, "");
 	
 	delete testWidget;
@@ -1140,7 +1140,7 @@ void CTestMenu::testCTextBoxWidget()
 
 void CTestMenu::testCFrameBoxWidget()
 {
-	dprintf(DEBUG_NORMAL, "\nCTestMenu:testCFrameBoxWidget:\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu:testCFrameBoxWidget:\n");
 	
 	// mainBox
 	CBox box;
@@ -1674,6 +1674,7 @@ void CTestMenu::testCImage()
 	
 	testImage.setPosition(150 + BORDER_LEFT, 150, testImage.iWidth, testImage.iHeight);
 	testImage.enableRepaint();
+	
 	testImage.exec();
 	
 	hide();
@@ -2003,7 +2004,7 @@ void CTestMenu::testCWindow()
 	Box.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 400);
 
 	//
-	CCWindow* window = new CCWindow(&Box);
+	CCWindow *window = new CCWindow(&Box);
 
 	window->setColor(COL_MENUCONTENT_PLUS_0);
 	window->setCorner(RADIUS_MID, CORNER_ALL);
@@ -2098,11 +2099,9 @@ void CTestMenu::testCTextBox()
 	std::string buffer = "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.";
 		
 	textBoxWidget->setText(buffer.c_str(), DATADIR "/icons/start.jpg", 320, 240);
-	
 	textBoxWidget->setTextColor(COL_YELLOW_PLUS_0);
 	
 	textBoxWidget->addKey(CRCInput::RC_info, this, "tinfo");
-	textBoxWidget->addKey(CRCInput::RC_ok, this, "mplay");
 	
 	// loop
 	textBoxWidget->exec();

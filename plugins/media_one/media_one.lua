@@ -861,8 +861,13 @@ function rssurlmenu(url)
 		return 
 	end
 
-	local m = neutrino2.CMenuWidget(glob.feedpersed.feed.title, neutrino2.NEUTRINO_ICON_MOVIE, 2*neutrino2.MENU_WIDTH)
-	glob.m = m
+	local m = neutrino2.ClistBox(10, 10, 1260, 700)
+	m:enablePaintHead()
+	m:enablePaintDate()
+	m:setTitle(glob.feedpersed.feed.title, neutrino2.NEUTRINO_ICON_MOVIE)
+	m:enablePaintFoot()
+	
+--	glob.m = m
 
 	local item = nil
 	for i = 1, #glob.feedpersed.entries do
@@ -887,9 +892,9 @@ function rssurlmenu(url)
 		selected = 0
 	end
 	
-	m:setSelected(selected)
+--	m:setSelected(selected)
 
-	m:exec(null, "")
+	m:exec()
 
 	selected = m:getSelected()
 
@@ -928,9 +933,14 @@ function start()
 	local submenus = {}
 	local grupmenus = {}
 
-	local sm = neutrino2.CMenuWidget("Media One", neutrino2.NEUTRINO_ICON_MOVIE)
-	glob.sm = sm
+	local sm = neutrino2.ClistBox(10, 10, 1260, 700)
+	sm:enablePaintHead()
+	sm:enablePaintDate()
+	sm:setTitle("Media One", neutrino2.NEUTRINO_ICON_MOVIE)
+	sm:enablePaintFoot()
 	sm:enableShrinkMenu()
+	
+--	glob.sm = sm
 
 	for v, w in ipairs(feedentries) do
 		if not w.submenu and not w.grup then
@@ -948,9 +958,9 @@ function start()
 		s_selected = 0
 	end
 	
-	sm:setSelected(s_selected)
+--	sm:setSelected(s_selected)
 	
-	sm:exec(null, "")
+	sm:exec()
 
 	s_selected = sm:getSelected()
 

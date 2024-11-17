@@ -42,11 +42,47 @@
 #include <system/debug.h>
 
 #include <driver/rcinput.h>
+#include <driver/lcd/lcdd.h>
 
 
 ////
-class CMenuTarget;
+//class CMenuTarget;
 class CWidget;
+
+////
+class CMenuTarget
+{
+	public:
+		enum
+		{
+			RETURN_NONE		= 0,
+			RETURN_REPAINT 		= 1,
+			RETURN_EXIT 		= 2,
+			RETURN_EXIT_ALL 	= 4
+		};
+		
+		CLCD::MODES oldLcdMode;
+		std::string oldLcdMenutitle;
+				
+	public:
+		CMenuTarget(){};
+		virtual ~CMenuTarget(){};
+		virtual void hide(){};
+		virtual int exec(CMenuTarget *parent, const std::string &actionKey) = 0;
+};
+
+//// CChangeObserver
+class CChangeObserver
+{
+	public:
+		CChangeObserver(){};
+		virtual ~CChangeObserver(){};
+		
+		virtual bool changeNotify(const std::string&, void *)
+		{
+			return false;
+		};
+};
 
 //// CComponent
 class CComponent
@@ -121,6 +157,8 @@ class CComponent
 		uint64_t sec_timer_interval;
 		std::string actionKey; // for lua
 		bool exit_pressed;
+		neutrino_msg_t      msg;
+		neutrino_msg_data_t data;
 		
 		//
 		CComponent();
@@ -176,9 +214,9 @@ class CComponent
 		virtual void setOutFocus(bool focus = true){inFocus = !focus;};
 		virtual void setSelected(unsigned int _new) {};
 		////
-		virtual int oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg = CRCInput::RC_ok){return 0;};
+		virtual int oKKeyPressed(CMenuTarget *target, neutrino_msg_t _msg = CRCInput::RC_ok){return CMenuTarget::RETURN_EXIT;};
 		virtual void homeKeyPressed(){};
-		virtual int directKeyPressed(neutrino_msg_t ){return 0;};
+		virtual int directKeyPressed(neutrino_msg_t ){return CMenuTarget::RETURN_NONE;};
 		////
 		virtual void setParent(CWidget* p){parent = p;};
 		virtual void addKey(neutrino_msg_t key, CMenuTarget *menue = NULL, const std::string &action = "");
@@ -186,9 +224,10 @@ class CComponent
 		////
 		virtual int exec(int timeout = -1); // in sec
 		////
-		virtual std::string getActionKey(void){ if (!actionKey.empty())return actionKey; else return "";}; // lua
+		virtual std::string getActionKey(void){ return actionKey; }; // lua
 		virtual int getSelected(void){return -1;};
 		virtual bool getExitPressed(){return exit_pressed;};
+		virtual neutrino_msg_t getKey(){return msg;};
 };
 
 typedef std::vector<CComponent*> CCITEMLIST;

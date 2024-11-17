@@ -217,7 +217,7 @@ class CFrameBox : public CComponent
 		void initFrames();
 		void paint();
 		void hide();
-		void refresh(){if (paintDate && paintTitle) timer->refresh();};
+		void refresh(bool show = false){if (paintDate && paintTitle) timer->refresh();};
 		bool update() const {return paintDate;};
 
 		//// main properties
@@ -229,8 +229,9 @@ class CFrameBox : public CComponent
 		int swipLeft();
 		void scrollLineDown(const int lines = 1);
 		void scrollLineUp(const int lines = 1);
-		int oKKeyPressed(CMenuTarget* _parent, neutrino_msg_t _msg = CRCInput::RC_ok);
+		int oKKeyPressed(CMenuTarget *target, neutrino_msg_t _msg = CRCInput::RC_ok);
 		void homeKeyPressed(){selected = -1;};
+		int exec(int timeout = -1);
 
 		//// head properties
 		void enablePaintHead(){paintTitle = true;};
@@ -253,6 +254,7 @@ class CFrameBox : public CComponent
 		
 		//// get methods
 		int getSelected(){return selected;};
+		std::string getActionKey(void){ return actionKey; }; // lua
 };
 
 #endif
