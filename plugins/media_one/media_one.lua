@@ -760,8 +760,6 @@ function main()
 
 	start()
 
-	saveConfig()
-
  	neutrino2.CFileHelpers():removeDir(picdir)
 end
 
