@@ -60,55 +60,7 @@ feedentries = {
     { name = "Rockpalast",                              exec = "https://mediathekviewweb.de/feed?query=%23rockpalast&everywhere=true"},		
 }
 
-locale = {}
-locale["english"] = {
-	picdir = "Picture directory: ",
-	picdirhint = "In which directory should the images be saved ?",
-	bindirhint = "In which directory are HTML viewer ?",
-	addonsdir = "Addons directory: ",
-	addonsdirhint = "In which directory are rss addons ?",
-	linksbrowserdir = "Links Browser directory: ",
-	linksbrowserdirhint = "In which directory are links browser ?",
-	htmlviewer = "Browser selection",
-	htmlviewerhint = "Browser or HTML viewer selection"
-}
-
-locale["deutsch"] = {
-	picdir = "Bildverzeichnis: ",
-	picdirhint = "In welchem Verzeichnis soll das Bilder gespeichert werden ?",
-	bindirhint = "In welchem Verzeichnis befinden sich HTML viewer ?",
-	addonsdir = "Addons Verzeichnis: ",
-	addonsdirhint = "In welchem Verzeichnis befinden sich rss addons ?",
-	linksbrowserdir = "Links Browser Verzeichnis: ",
-	linksbrowserdirhint = "In welchem Verzeichnis befinden sich Links Browser ?",
-	htmlviewer = "Browser Auswahl",
-	htmlviewerhint = "Browser oder HTML viewer Auswahl"
-}
-
-locale["polski"] = {
-	picdir = "katalog zdjęć: ",
-	picdirhint = "W którym folderze obrazy mają być zapisane ?",
-	bindirhint = "W którym folderze znajduje się przeglądarkę HTML?",
-	addonsdir = "Addons folder: ",
-	addonsdirhint = "W którym folderze znajduje się rss addons ?",
-	linksbrowserdir = "Links Browser folder: ",
-	linksbrowserdirhint = "W którym folderze znajduje się Links Browser ?",
-	htmlviewer = "Browser wybór",
-	htmlviewerhint = "Browser albo HTML viewer wybór"
-}
-
-function get_confFile()
-	return neutrino2.PLUGINDIR .. "/media_one/media_one.conf"
-end
-
 function __LINE__() return debug.getinfo(2, 'l').currentline end
-
-function getprocvalue(procpath)
-	local file = io.open(procpath, "r")
-	local val = file:read()
-	file:close()
-	return val
-end
 
 function pop(cmd)
        local f = assert(io.popen(cmd, 'r'))
@@ -334,82 +286,6 @@ function xml_entities(s)
 	s = s:gsub('&amp;' , '&' )
 	return s
 end
-
---[[
-function prepare_text(text)
-	if text == nil then return nil end
-	if #text < 1 then
-		return text
-	end
-	text = text:gsub('<.->', "") -- remove  "<" alles zwischen ">"
-	text = text:gsub("\240[\144-\191][\128-\191][\128-\191]","")
-	text = convHTMLentities(text)
-	text = text:gsub("%s+\n", " \n")
- 	text = all_trim(text)
-	text = xml_entities(text)
-	return text
-end
-]]
-
---[[
-function getMaxScreenWidth()
-	local max_w = neutrino2.CSwigHelpers():getScreenWidth()
-	return max_w
-end
-
-function getMaxScreenHeight()
-	local max_h = neutrino2.CSwigHelpers():getScreenHeight()
-	return max_h
-end
-]]
-
---[[
-function getSafeScreenSize(x,y,w,h)
-	local maxW = getMaxScreenWidth()
-	local maxH = getMaxScreenHeight()
-	if w > maxW or w < 1 then
-		w = maxW
-	end
-	if h > maxH or h < 1 then
-		if h > maxH then
-			w = maxW
-		end
-		h = maxH
-	end
-	if x < 0 or x+w > maxW then
-		x = 0
-	end
-	if y < 0 or y+h > maxH then
-		y = 0
-	end
-	return x,y,w,h
-end
-]]
-
---[[
-function paintPic(window,fpic,x,y,w,h)
-end
-
-function paintText(x,y,w,h,picW,picH,CPos,text,window) --ALIGN_AUTO_WIDTH
-end
-
-function paintWindow(x,y,w,h,CPos,Title,Icon,RedBtn,GreBtn,YelBtn,BluBtn,PlayBtn,PlayPauseBtn,OkBtn)
-end
-
-function showWindow(title,text,fpic,icon,bRed,bGreen,bYellow,bBlue,bPlay,bPlayPause,bOk)
-end
-
-function show_textWindow(tit_txt, txt)
-end
-]]
---[[
-function epgInfo(xres, yres, aspectRatio, framerate)
-	local window = neutrino2.CInfoBox()
-	window:setTitle(epgtitle)
-	window:setText(epgtext)
-	window:exec()
-end
-]]
 
 function checkdomain(feed,url)
 	if not url then return url end
@@ -761,99 +637,7 @@ function downloadPic(idNr,nr)
 	return fpic
 end
 
-function saveConfig()
-		local config	= neutrino2.CConfigFile('\t')
-		if config then
-			config:setString("picdir", conf.picdir)
-			config:setString("bindir", conf.bindir)
-			config:setString("addonsdir", conf.addonsdir)
-			config:setString("htmlviewer", conf.htmlviewer)
-			config:setString("linksbrowserdir", conf.linksbrowserdir)
-			config:saveConfig(get_confFile())
-			config = nil
-		end
-		conf.changed = false
-end
-
-function checkhtmlviewer()
-	if hasgumbo == true then
-		hvd="gumbo"
-	end
-
-end
-
-function loadConfig()
-	local config	= neutrino2.CConfigFile('\t')
-	if config then
-		config:loadConfig(get_confFile())
-		conf.picdir = config:getString("picdir", "/tmp/rssPics")
-		conf.bindir = config:getString("bindir", "/bin")
-		conf.addonsdir = config:getString("addonsdir", "/var/tuxbox/plugins/rss_addon/")
-		conf.linksbrowserdir = config:getString("linksbrowserdir", "/var/tuxbox/plugins/")
-		conf.htmlviewer = config:getString("htmlviewer", "nichts")
-		config = nil
-	end
-
-	local Nconfig	= neutrino2.CConfigFile('\t')
-	Nconfig:loadConfig(neutrino2.CONFIGDIR .. "/neutrino2.conf")
-	conf.lang = Nconfig:getString("language", "english")
-	if locale[conf.lang] == nil then
-		conf.lang = "english"
-	end
-	conf.changed = false
-	checkhtmlviewer()
-end
-
-function set_action(id,value)
-	conf[id]=value
-	conf.changed = true
-	if id == 'addonsdir' then
- 		package.path = package.path .. ';' .. conf.addonsdir .. '/?.lua'
-	end
-	if id == 'linksbrowserdir' or id == 'bindir' then
-		checkhtmlviewer()
-	end
-end
-
-function settings()
---[[
-	glob.sm:hide()
-
-	local d =  1
-	local menu =  menu.new{name="Einstellungen", icon="icon_blue"}
-	glob.settings_menu = menu
-	menu:addItem{type="back"}
-	menu:addItem{type="separatorline"}
-	menu:addItem{ type="filebrowser", dir_mode="1", id="picdir", name= locale[conf.lang].picdir, action="set_action",
-		   enabled=true,value=conf.picdir,directkey=godirectkey(d),
-		   hint_icon="hint_service",hint= locale[conf.lang].picdirhint
-		 }
-	d=d+1
-	menu:addItem{ type="filebrowser", dir_mode="1", id="bindir", name="HtmlViewer: ", action="set_action",
-		   enabled=true,value=conf.bindir,directkey=godirectkey(d),
-		   hint_icon="hint_service",hint=locale[conf.lang].bindirhint .. "(html2text,w3m,links)"
-		 }
-	d=d+1
-	menu:addItem{ type="filebrowser", dir_mode="1", id="addonsdir", name=locale[conf.lang].addonsdir, action="set_action",
-		   enabled=true,value=conf.addonsdir,directkey=godirectkey(d),
-		   hint_icon="hint_service",hint=locale[conf.lang].addonsdirhint
-		 }
-	d=d+1
-	menu:addItem{ type="filebrowser", dir_mode="1", id="linksbrowserdir", name=locale[conf.lang].linksbrowserdir, action="set_action",
-		   enabled=true,value=conf.linksbrowserdir,directkey=godirectkey(d),
-		   hint_icon="hint_service",hint=locale[conf.lang].linksbrowserdirhint
-		}
-	d=d+1
-	menu:addItem{type="chooser", action="set_action", options={ nothing,hva,hvb,hvc,hvd,hve }, id="htmlviewer", value=conf.htmlviewer, name=locale[conf.lang].htmlviewer ,directkey=godirectkey(d),hint_icon="hint_service",hint=locale[conf.lang].htmlviewerhint}
-
-	menu:exec()
-	menu:hide()
-	menu = nil
-	return MENU_RETURN.EXIT_REPAINT
-]]
-end
-
-selected = 0
+local selected = 0
 function rssurlmenu(url)
 	print("rssurlmenu:")
 	glob.feedpersed = getFeedDataFromUrl(url)
@@ -866,8 +650,6 @@ function rssurlmenu(url)
 	m:enablePaintDate()
 	m:setTitle(glob.feedpersed.feed.title, neutrino2.NEUTRINO_ICON_MOVIE)
 	m:enablePaintFoot()
-	
---	glob.m = m
 
 	local item = nil
 	for i = 1, #glob.feedpersed.entries do
@@ -892,7 +674,7 @@ function rssurlmenu(url)
 		selected = 0
 	end
 	
---	m:setSelected(selected)
+	m:setSelected(selected)
 
 	m:exec()
 
@@ -928,29 +710,21 @@ function execUrl(id)
 	rssurlmenu(feedentries[nr].exec)
 end
 
-s_selected = 0
+local s_selected = 0
 function start()
 	local submenus = {}
 	local grupmenus = {}
 
-	local sm = neutrino2.ClistBox(10, 10, 1260, 700)
+	local sm = neutrino2.ClistBox(340, 60, 600,600)
 	sm:enablePaintHead()
 	sm:enablePaintDate()
 	sm:setTitle("Media One", neutrino2.NEUTRINO_ICON_MOVIE)
 	sm:enablePaintFoot()
 	sm:enableShrinkMenu()
-	
---	glob.sm = sm
 
 	for v, w in ipairs(feedentries) do
 		if not w.submenu and not w.grup then
-			if w.exec == "SEPARATOR" then
-				sm:addItem(neutrino2.CMenuSeparator())
-			elseif w.exec == "SEPARATORLINE" then
-				sm:addItem(neutrino2.CMenuSeparator(neutrino2.LINE))
-			else
-				sm:addItem(neutrino2.CMenuForwarder(w.name))
-			end
+			sm:addItem(neutrino2.CMenuForwarder(w.name))
 		end
 	end
 
@@ -958,7 +732,7 @@ function start()
 		s_selected = 0
 	end
 	
---	sm:setSelected(s_selected)
+	sm:setSelected(s_selected)
 	
 	sm:exec()
 
@@ -975,8 +749,6 @@ end
 
 function main()
 	local config = neutrino2.PLUGINDIR .. "/media_one/media_one.conf"
-
-	loadConfig()
 	
 	neutrino2.CFileHelpers():createDir(picdir)
 
