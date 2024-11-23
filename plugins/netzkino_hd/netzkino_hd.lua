@@ -152,7 +152,12 @@ function get_categories_menu()
 	local m_categories = nil
 	local item = nil
 
-	m_categories = neutrino2.CMenuWidget("" .. caption.." Kategorien", netzkino_png)
+--	m_categories = neutrino2.CMenuWidget("" .. caption.." Kategorien", netzkino_png)
+	m_categories = neutrino2.ClistBox(340, 60, 600, 600)
+	m_categories:enablePaintHead()
+	m_categories:setTitle("" .. caption.." Kategorien", netzkino_png)
+	m_categories:enablePaintDate()
+	m_categories:enablePaintFoot()
 	m_categories:enableShrinkMenu()
 
 	for index, category_detail in pairs(categories) do
@@ -170,7 +175,7 @@ function get_categories_menu()
 
 	m_categories:setSelected(selected_category)
 
-	m_categories:exec(null, "")
+	m_categories:exec()
 
 	selected_category = m_categories:getSelected()
 		
@@ -288,12 +293,10 @@ function get_movies_menu(_id)
 	local rec = neutrino2.button_label_struct()
 	rec.button = neutrino2.NEUTRINO_ICON_REC
 	
-	m_movies = neutrino2.CMenuWidget(menu_title, netzkino_png, 1100)
-	
-	--m_movies:clear()
-
-	--m_movies:setWidgetType(neutrino2.ClistBox_TYPE_FRAME)
-	--m_movies:setItemsPerPage(6, 2)
+	m_movies = neutrino2.ClistBox(90, 60, 1100, 600)
+	m_movies:enablePaintHead()
+	m_movies:setTitle(menu_title, netzkino_png)
+	m_movies:enablePaintFoot()
 
 	m_movies:setFootButtons(yellow)
 	m_movies:setFootButtons(blue)
@@ -323,7 +326,7 @@ function get_movies_menu(_id)
 
 	m_movies:setSelected(selected_movie)
 	
-	m_movies:exec(null, "")
+	m_movies:exec()
 	
 	selected_movie = m_movies:getSelected()
 	local key = m_movies:getKey()
