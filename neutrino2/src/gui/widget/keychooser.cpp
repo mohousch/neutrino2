@@ -59,7 +59,6 @@ class CKeyValue : public CMenuSeparator
 };
 
 CKeyChooser::CKeyChooser(int * const Key, const char* const Title, const std::string& Icon)
-//: CMenuWidget(Title, Icon)
 {
 	frameBuffer = CFrameBuffer::getInstance();
 	
@@ -127,7 +126,6 @@ CKeyChooser::~CKeyChooser()
 void CKeyChooser::paint()
 {
 	(((CKeyValue *)(menu->items[0]))->keyvalue) = *key;
-//	(((CKeyValue *)(items[0]))->keyvalue) = *key;
 
 	widget->paint();
 }
@@ -144,7 +142,7 @@ CKeyChooserItem::CKeyChooserItem(const char * const Name, int * Key)
 	key = Key;
 }
 
-int CKeyChooserItem::exec(CMenuTarget* parent, const std::string &)
+int CKeyChooserItem::exec(CMenuTarget *parent, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "CKeyChooserItem::exec\n");
 
@@ -201,7 +199,7 @@ void CKeyChooserItem::paint()
 	CFrameBuffer * frameBuffer = CFrameBuffer::getInstance();
 
 	m_cBox.iWidth = 600;
-	m_cBox.iHeight = hheight +  2*mheight;
+	m_cBox.iHeight = hheight + 2*mheight;
 	m_cBox.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - m_cBox.iWidth) >> 1);
 	m_cBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - m_cBox.iHeight) >> 1);
 
