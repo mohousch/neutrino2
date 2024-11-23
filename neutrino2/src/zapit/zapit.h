@@ -326,7 +326,7 @@ class CZapit
 				};
 				
 			public:
-				ChannelIterator(CZapit *owner, const CZapit::channelsMode Mode = CZapit::MODE_TV);
+				ChannelIterator(CZapit *owner = NULL, const CZapit::channelsMode Mode = CZapit::MODE_TV);
 				ChannelIterator operator ++(int);
 				CZapitChannel* operator *();
 				ChannelIterator FindChannelNr(const unsigned int channel);

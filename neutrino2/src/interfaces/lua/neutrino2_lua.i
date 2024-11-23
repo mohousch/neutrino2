@@ -263,10 +263,10 @@
 %include <src/gui/service_menu.h>
 
 // zapit
-//%include <src/zapit/bouquets.h>
+%include <src/zapit/bouquets.h>
 %include <src/zapit/channel.h>
 %include <src/zapit/zapittypes.h>
-//%include <src/zapit/zapit.h>
+%include <src/zapit/zapit.h>
 
 // sectionsd
 %include <src/sectionsd/sectionsdtypes.h>
