@@ -645,7 +645,7 @@ function rssurlmenu(url)
 		return 
 	end
 
-	local m = neutrino2.ClistBox(10, 10, 1260, 700)
+	local m = neutrino2.ClistBox(40, 40, 1200, 640)
 	m:enablePaintHead()
 	m:enablePaintDate()
 	m:setTitle(glob.feedpersed.feed.title, neutrino2.NEUTRINO_ICON_MOVIE)

@@ -121,7 +121,14 @@ function get_cat()
 	local c_data = neutrino2.getUrlAnswer("http://api.pluto.tv/v3/vod/categories?includeItems=true&deviceType=web", "Mozilla/5.0")
 	
 	if c_data then
-		local jd = json:decode(c_data)
+		local jd
+		
+		if neutrino2.USE_OPENGL == 1 then
+			jd = json.decode(c_data)
+		else
+			jd = json:decode(c_data)
+		end
+		
 		if jd then
 			for i = 1, jd.totalCategories do
 				if jd.categories[i] then
@@ -272,7 +279,14 @@ function season_menu(_id)
 	local c_data = neutrino2.getUrlAnswer("http://api.pluto.tv/v3/vod/series/".. _id .."/seasons?includeItems=true&deviceType=web", "Mozilla/5.0")
 	
 	if c_data then
-		local jd = json:decode(c_data)
+		local jd
+		
+		if neutrino2.USE_OPENGL == 1 then
+			jd = json.decode(c_data)
+		else
+			jd = json:decode(c_data)
+		end
+		
 		if jd then
 			sm = neutrino2.ClistBox(340, 60, 600, 600)
 			sm:enablePaintHead()

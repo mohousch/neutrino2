@@ -336,7 +336,14 @@ function select_playitem()
 		if page then --- https://api.arte.tv/api/player/v1/config/de/088439-000-A?lifeCycle=1
 			local js_page = getdata('https://api.arte.tv/api/player/v1/config/'.. language .. '/'.. page .. '?lifeCycle=1',nil) -- apicall
 		        if js_page ~= nil then
-				local jnTab = json:decode(js_page)
+		        	local jnTab
+		        	
+		        	if neutrino2.USE_OPENGL == 1 then
+		        		jbTab = json.decode(js_page)
+		        	else
+					jnTab = json:decode(js_page)
+				end
+				
 				local video_url = nil
 
 				if jnTab.videoJsonPlayer.VSR and jnTab.videoJsonPlayer.VSR.HTTPS_SQ_1 then

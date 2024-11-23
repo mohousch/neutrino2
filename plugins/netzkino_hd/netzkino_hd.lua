@@ -107,7 +107,13 @@ function get_categories()
 	else
 		local s = fp
 
-		local j_table = json:decode(s)
+		local j_table
+		
+		if neutrino2.USE_OPENGL == 1 then
+			j_table = json.decode(s)
+		else
+			j_table = json:decode(s)
+		end
 	
 		if j_table == nil  then 
 			return nil 
@@ -152,7 +158,6 @@ function get_categories_menu()
 	local m_categories = nil
 	local item = nil
 
---	m_categories = neutrino2.CMenuWidget("" .. caption.." Kategorien", netzkino_png)
 	m_categories = neutrino2.ClistBox(340, 60, 600, 600)
 	m_categories:enablePaintHead()
 	m_categories:setTitle("" .. caption.." Kategorien", netzkino_png)
@@ -206,8 +211,13 @@ function get_movies(_id)
 		h:hide();
 	else
 		local s = fp
+		local j_table
 
-		local j_table = json:decode(s)
+		if neutrino2.USE_OPENGL == 1 then
+			j_table = json.decode(s)
+		else
+			j_table = json:decode(s)
+		end
 		
 		max_page = tonumber(j_table.pages);
 		local posts = j_table.posts
