@@ -56,16 +56,18 @@ class CNFSUmountGui : public CMenuTarget
 
 	public:
 		CNFSUmountGui(){};
-		~CNFSUmountGui(){};
+		virtual ~CNFSUmountGui(){};
 		int exec(CMenuTarget* parent, const std::string & actionKey);
 };
 
 class CNFSSmallMenu : public CMenuTarget
 {
 	public:
-		CNFSSmallMenu();
-		~CNFSSmallMenu();
+		CNFSSmallMenu(){};
+		virtual ~CNFSSmallMenu(){};
+		
 		int exec( CMenuTarget* parent, const std::string & actionKey );
+		void hide();
 };
 
 const char * mntRes2Str(CFSMounter::MountRes res);

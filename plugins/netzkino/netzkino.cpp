@@ -128,13 +128,6 @@ const struct button_label FootButtons[FOOT_BUTTONS_COUNT] =
 void CNKMovies::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CNKMovies::showMenu: mode:%d id:%d title:%s\n", catMode, catID, caption.c_str());
-	
-	/*
-	if(m_vMovieInfo.empty())
-	{
-		return;
-	}
-	*/
 
 	//
 	std::string title;
@@ -216,8 +209,6 @@ void CNKMovies::showMenu()
 	rightWidget->setWidgetType(ClistBox::TYPE_FRAME);
 	rightWidget->setItemsPerPage(5,2);
 	rightWidget->setSelected(right_selected);
-	//rightWidget->enablePaintFootInfo();
-	//rightWidget->setInFocus(true);
 
 	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{

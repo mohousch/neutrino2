@@ -140,7 +140,7 @@ void CYTBrowser::showMenu()
 	title += getFeedLocale();
 
 	//
-	moviesMenu = new CMenuWidget();
+	moviesMenu = new ClistBox(CFrameBuffer::getInstance()->getScreenX() + 20, CFrameBuffer::getInstance()->getScreenY() + 20, CFrameBuffer::getInstance()->getScreenWidth() - 40, CFrameBuffer::getInstance()->getScreenHeight() - 40);
 	
 	std::string itemTitle;
 
@@ -161,11 +161,13 @@ void CYTBrowser::showMenu()
 	moviesMenu->setItemsPerPage(3, 2);
 
 	//
+	moviesMenu->enablePaintHead();
 	moviesMenu->setTitle(title.c_str(), NEUTRINO_ICON_YT_SMALL);
 	moviesMenu->enablePaintDate();
 	moviesMenu->setHeadButtons(YTHeadButtons, YT_HEAD_BUTTONS_COUNT);
 	
 	//
+	moviesMenu->enablePaintFoot();
 	moviesMenu->setFootButtons(YTFootButtons, YT_FOOT_BUTTONS_COUNT);
 	
 	//
@@ -178,7 +180,7 @@ void CYTBrowser::showMenu()
 	moviesMenu->addKey(CRCInput::RC_blue, this, CRCInput::getSpecialKeyName(CRCInput::RC_blue));
 	moviesMenu->addKey(CRCInput::RC_record, this, CRCInput::getSpecialKeyName(CRCInput::RC_record));
 
-	moviesMenu->exec(NULL, "");
+	moviesMenu->exec();
 	
 	delete moviesMenu;
 	moviesMenu = NULL;
@@ -215,7 +217,7 @@ void CYTBrowser::playMovie(void)
 	}
 }
 
-void CYTBrowser::showMovieInfo(MI_MOVIE_INFO& movie)
+void CYTBrowser::showMovieInfo(MI_MOVIE_INFO &movie)
 {	
 	m_movieInfo.showMovieInfo(movie);
 }
@@ -224,8 +226,6 @@ void CYTBrowser::recordMovie(MI_MOVIE_INFO& movie)
 {
 	if (m_vMovieInfo.empty())
 		return;
-		
-	//::start_file_recording(m_vMovieInfo[moviesMenu->getSelected()].epgTitle.c_str(), m_vMovieInfo[moviesMenu->getSelected()].epgInfo2.c_str(), m_vMovieInfo[moviesMenu->getSelected()].file.Name.c_str());
 	
 	CHTTPTool httpTool;
 	httpTool.setTitle("Youtube: downloading...");
@@ -361,8 +361,13 @@ int CYTBrowser::showCategoriesMenu(void)
 
 	int res = -1;
 
-	CMenuWidget mainMenu(_("Youtube Player"), NEUTRINO_ICON_YT_SMALL);
-
+	ClistBox mainMenu;
+	
+	mainMenu.setPosition(CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - 600)/2, CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - 600)/2, 600, 600);
+	mainMenu.enablePaintHead();
+	mainMenu.setTitle(_("Youtube Player"), NEUTRINO_ICON_YT_SMALL);
+	mainMenu.enablePaintDate();
+	mainMenu.enablePaintFoot();
 	mainMenu.enableSaveScreen();
 	mainMenu.setWidgetMode(ClistBox::MODE_MENU);
 	mainMenu.enableShrinkMenu();
@@ -398,7 +403,7 @@ int CYTBrowser::showCategoriesMenu(void)
 	// autoplay
 	mainMenu.addItem(new CMenuOptionChooser(_("Auto Play"), &m_settings.ytautoplay, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 
-	mainMenu.exec(NULL, "");
+	mainMenu.exec();
 	
 	if(rstr != m_settings.ytregion) 
 	{
@@ -431,7 +436,7 @@ int CYTBrowser::exec(CMenuTarget* parent, const std::string& actionKey)
 	}
 	else if(actionKey == "RC_info")
 	{
-		showMovieInfo(m_vMovieInfo[moviesMenu->getSelected()]);
+		if (!m_vMovieInfo.empty()) showMovieInfo(m_vMovieInfo[moviesMenu->getSelected()]);
 
 		return RETURN_REPAINT;
 	}
@@ -452,37 +457,52 @@ int CYTBrowser::exec(CMenuTarget* parent, const std::string& actionKey)
 	}
 	else if(actionKey == "RC_blue")
 	{
-		ytvid = m_vMovieInfo[moviesMenu->getSelected()].ytid;
-		ytmode = cYTFeedParser::RELATED;
+		if (!m_vMovieInfo.empty())
+		{
+			ytvid = m_vMovieInfo[moviesMenu->getSelected()].ytid;
+			ytmode = cYTFeedParser::RELATED;
 
-		loadYTTitles(ytmode, ytsearch, ytvid);
-		showMenu();
+			loadYTTitles(ytmode, ytsearch, ytvid);
+			showMenu();
 
-		return RETURN_EXIT_ALL;
+			return RETURN_EXIT_ALL;
+		}
+		else
+			return RETURN_REPAINT;
 	}
 	else if(actionKey == "RC_red")
 	{
-		ytvid = m_vMovieInfo[moviesMenu->getSelected()].ytid;
-		ytmode = cYTFeedParser::NEXT;
+		if (!m_vMovieInfo.empty())
+		{
+			ytvid = m_vMovieInfo[moviesMenu->getSelected()].ytid;
+			ytmode = cYTFeedParser::NEXT;
 
-		loadYTTitles(ytmode, ytsearch, ytvid);
-		showMenu();
+			loadYTTitles(ytmode, ytsearch, ytvid);
+			showMenu();
 
-		return RETURN_EXIT_ALL;
+			return RETURN_EXIT_ALL;
+		}
+		else
+			return RETURN_REPAINT;
 	}
 	else if(actionKey == "RC_green")
 	{
-		ytvid = m_vMovieInfo[moviesMenu->getSelected()].ytid;
-		ytmode = cYTFeedParser::PREV;
+		if (!m_vMovieInfo.empty())
+		{
+			ytvid = m_vMovieInfo[moviesMenu->getSelected()].ytid;
+			ytmode = cYTFeedParser::PREV;
 
-		loadYTTitles(ytmode, ytsearch, ytvid);
-		showMenu();
+			loadYTTitles(ytmode, ytsearch, ytvid);
+			showMenu();
 
-		return RETURN_EXIT_ALL;
+			return RETURN_EXIT_ALL;
+		}
+		else
+			return RETURN_REPAINT;
 	}
 	else if(actionKey == "RC_record")
 	{
-		recordMovie(m_vMovieInfo[moviesMenu->getSelected()]);
+		if (!m_vMovieInfo.empty()) recordMovie(m_vMovieInfo[moviesMenu->getSelected()]);
 		return RETURN_REPAINT;
 	}
 	else if(actionKey == "search")

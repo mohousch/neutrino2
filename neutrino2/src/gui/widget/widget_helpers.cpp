@@ -86,6 +86,9 @@ int CComponent::exec(int timeout)
 	bool loop = true;
 	bool show = true;
 	exit_pressed = false;
+	
+	if (parent)
+		hide();
 
 	//
 	paint();

@@ -1744,10 +1744,10 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	full_width = itemBox.iWidth;
 	full_height = itemBox.iHeight;
 
-	wanted_height = dy;
-	wanted_width = dx;
-	start_x = x;
-	start_y = y;
+//	wanted_height = dy;
+//	wanted_width = dx;
+//	start_x = x;
+//	start_y = y;
 	
 	//
 	listmaxshow = 0;
@@ -1867,10 +1867,10 @@ ClistBox::ClistBox(CBox* position)
 	full_width = itemBox.iWidth;
 	full_height = itemBox.iHeight;
 
-	wanted_height = position->iHeight;
-	wanted_width = position->iWidth;
-	start_x = position->iX;
-	start_y = position->iY;
+//	wanted_height = position->iHeight;
+//	wanted_width = position->iWidth;
+//	start_x = position->iX;
+//	start_y = position->iY;
 	
 	//
 	listmaxshow = 0;
@@ -2032,10 +2032,10 @@ void ClistBox::initFrames()
 	dprintf(DEBUG_INFO, "ClistBox::initFrames:\n");
 	
 	// reinit position
-	itemBox.iHeight = wanted_height;
-	itemBox.iWidth = wanted_width;
-	itemBox.iX = start_x;
-	itemBox.iY = start_y;
+//	itemBox.iHeight = wanted_height;
+//	itemBox.iWidth = wanted_width;
+//	itemBox.iX = start_x;
+//	itemBox.iY = start_y;
 	cFrameFootInfoHeight = 0;
 	
 	// sanity check
@@ -3076,7 +3076,7 @@ void ClistBox::hide()
 	dprintf(DEBUG_INFO, "ClistBox::hide: (%s)\n", l_name.c_str());
 
 	if (paintframe)
-		frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, wanted_width, wanted_height);
+		frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
 	else
 		restoreScreen();
 		

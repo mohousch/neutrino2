@@ -306,7 +306,7 @@ class CMovieBrowser : public CMenuTarget
 		void saveMovieInfo(std::string* filename, MI_MOVIE_INFO* movie_info); // P2
 	
 		//// misc
-		void showHelp(void);
+//		void showHelp(void);
 		bool isFiltered(MI_MOVIE_INFO& movie_info);
 		bool isParentalLock(MI_MOVIE_INFO& movie_info);
 		bool getMovieInfoItem(MI_MOVIE_INFO& movie_info, MB_INFO_ITEM item, std::string* item_string);
@@ -326,7 +326,7 @@ class CMovieHelp : public CMenuTarget
 };
 
 //
-class CFileChooser : public CMenuWidget
+class CFileChooser : public CMenuTarget
 {
 	private:
 		std::string *dirPath;
@@ -346,7 +346,7 @@ typedef enum
 }DIR_STATE;
 
 #define MAX_DIR 10
-class CDirMenu : public CMenuWidget
+class CDirMenu : public CMenuTarget
 {
 	private:
 		std::vector<MB_DIR>* dirList;
@@ -354,6 +354,7 @@ class CDirMenu : public CMenuWidget
 		std::string dirOptionText[MAX_DIR];
 		int dirNfsMountNr[MAX_DIR];
 		bool changed;
+		ClistBox *listBox;
 
 		void updateDirState(void);
 
@@ -362,8 +363,7 @@ class CDirMenu : public CMenuWidget
 		int exec(CMenuTarget* parent, const std::string & actionKey);
 		void show(void);
 		bool isChanged(){return changed;};
- };
-
+};
 
 // EPG Genre , taken from epgview, TODO: migth be splitted in major/minor to increase handling, might be moved to CMovieInfo
 #define GENRE_ALL_COUNT 76

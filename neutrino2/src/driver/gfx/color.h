@@ -203,7 +203,7 @@ struct gRGB
         	};
 #endif
         	uint32_t value;
-    };
+    	};
     
     	gRGB(int r, int g, int b, int a = 0): b(b), g(g), r(r), a(a)
     	{
@@ -381,7 +381,7 @@ static void blit_8i_to_32_ab(gRGB *dst, const uint8_t *src, const gRGB *pal, int
     	}
 }
 
-static void convert_palette(uint32_t *pal, const gPalette& clut)
+static void convert_palette(uint32_t *pal, const gPalette &clut)
 {
     	int i = 0;
     	

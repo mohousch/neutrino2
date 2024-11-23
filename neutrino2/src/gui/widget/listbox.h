@@ -395,10 +395,10 @@ class ClistBox : public CComponent
 		CFrameBuffer* frameBuffer;
 
 		//		
-		int wanted_height;
-		int wanted_width;
-		int start_x;
-		int start_y;
+//		int wanted_height;
+//		int wanted_width;
+//		int start_x;
+//		int start_y;
 
 		int selected;
 
@@ -512,6 +512,17 @@ class ClistBox : public CComponent
 		ClistBox(const int x = 0, int const y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);
 		ClistBox(CBox* position);
 		virtual ~ClistBox();
+		
+		void setPosition(const int x, const int y, const int dx, const int dy)
+		{
+			itemBox.iX = x;
+			itemBox.iY = y;
+			itemBox.iWidth = dx;
+			itemBox.iHeight = dy;
+
+			initFrames();
+		};
+		void setPosition(CBox* position){itemBox = *position; initFrames();};
 		
 		//
 		bool isSelectable(void){return true;};

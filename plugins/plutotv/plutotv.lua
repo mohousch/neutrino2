@@ -171,7 +171,7 @@ cm_selected = 0
 function cat_menu(_id)
 	neutrino2.CFileHelpers():createDir("/tmp/plutotv")
 
-	local cm = neutrino2.ClistBox(10, 10, 1260, 700)
+	local cm = neutrino2.ClistBox(40, 40, 1200, 640)
 	cm:enablePaintHead()
 	cm:setTitle(catlist[tonumber(_id)], neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	cm:enablePaintDate()

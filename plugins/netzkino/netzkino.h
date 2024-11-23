@@ -28,7 +28,8 @@
 class CNKMovies : public CMenuTarget
 {
 	public:
-		enum{
+		enum
+		{
 			WIDGET_LEFT = 1,
 			WIDGET_RIGHT
 		};
@@ -42,8 +43,8 @@ class CNKMovies : public CMenuTarget
 		CBox leftBox;
 		CBox rightBox;
 
-		CCHeaders *headersWidget;
 		CWidget *mainWidget;
+		CCHeaders *headersWidget;
 		ClistBox *leftWidget;
 		ClistBox *rightWidget;
 		CCFooters *footersWidget;

@@ -41,7 +41,7 @@ class CYTBrowser : public CMenuTarget
 		CFrameBuffer* frameBuffer;
 		
 		//
-		CMenuWidget* moviesMenu;
+		ClistBox *moviesMenu;
 		CMenuItem* item;
 		
 		CConfigFile configfile;

@@ -493,18 +493,19 @@ int CNFSUmountGui::menu()
 		return CMenuTarget::RETURN_REPAINT;
 }
 
-// CNFSSmallMenu
-CNFSSmallMenu::CNFSSmallMenu()
+//// CNFSSmallMenu
+void CNFSSmallMenu::hide()
 {
+	CFrameBuffer::getInstance()->clearFrameBuffer();
+	CFrameBuffer::getInstance()->blit();
 }
 
-CNFSSmallMenu::~CNFSSmallMenu()
-{
-}
-
-int CNFSSmallMenu::exec( CMenuTarget* parent, const std::string & actionKey )
+int CNFSSmallMenu::exec( CMenuTarget *parent, const std::string &actionKey )
 {
 	dprintf(DEBUG_NORMAL, "CNFSSmallMenu::exec: actionKey:%s\n", actionKey.c_str());
+	
+	if (parent)
+		hide();
 
 	if (actionKey.empty())
 	{
@@ -572,6 +573,7 @@ int CNFSSmallMenu::exec( CMenuTarget* parent, const std::string & actionKey )
 	return CMenuTarget::RETURN_REPAINT;
 }
 
+////
 const char * mntRes2Str(CFSMounter::MountRes res)
 {
 	switch(res)

@@ -19,7 +19,8 @@ if ENABLE_TESTING
 SUBDIRS += \
 	netzkino \
 	tuxcal \
-	youtube
+	youtube \
+	moviebrowser
 endif
 
 if ENABLE_PYTHON
