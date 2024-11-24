@@ -111,8 +111,8 @@ class CNeutrinoApp : public CMenuTarget
 		CNVODChangeExec *NVODChanger;
 		CRCLock *rcLock;
 		////
-		fb_pixel_t * mute_pixbuf;
 		fb_pixel_t * vol_pixbuf;
+		CCIcon *muteIcon;
 
 		////
 		void firstChannel();

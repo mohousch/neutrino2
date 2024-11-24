@@ -289,8 +289,8 @@ CNeutrinoApp::CNeutrinoApp()
 	recordingstatus = 0;
 	timeshiftstatus = 0;
 
-	mute_pixbuf = NULL;
 	vol_pixbuf = NULL;
+	muteIcon = NULL;
 	
 	//
 	epgUpdateTimer = 0;
@@ -2231,20 +2231,7 @@ void CNeutrinoApp::saveEpg()
 // mute
 void CNeutrinoApp::audioMute( int newValue, bool isEvent )
 {
-	int dx = 32;
-	int dy = 32;
-	frameBuffer->getIconSize(NEUTRINO_ICON_BUTTON_MUTE, &dx, &dy);
-
-	int x = g_settings.screen_EndX - 10 - dx;
-	int y = g_settings.screen_StartY + 10;
-
-	//FIXME:
-	if (mute_pixbuf == NULL)
-	{
-		mute_pixbuf = new fb_pixel_t[dx*dy];
-		
-		frameBuffer->saveScreen(x, y, dx, dy, mute_pixbuf);	
-	}
+	muteIcon->enableRepaint();
 
 	CLCD::getInstance()->setMuted(newValue);
 
@@ -2259,29 +2246,16 @@ void CNeutrinoApp::audioMute( int newValue, bool isEvent )
 	{
 		if( current_muted ) 
 		{
-			frameBuffer->paintIcon(NEUTRINO_ICON_BUTTON_MUTE, x, y);
+			printf("muteIcon:paint()\n");
+			muteIcon->paint();
 		}
 		else
 		{
-			if( mute_pixbuf) 
-			{
-				frameBuffer->restoreScreen(x, y, dx, dy, mute_pixbuf);
-	
-				delete [] mute_pixbuf;
-				mute_pixbuf = NULL;
-			}
-			else
-				frameBuffer->paintBackgroundBoxRel(x, y, dx, dy);
+			printf("muteIcon:hide()\n");	
+			muteIcon->hide();
 		}
 		
 		frameBuffer->blit();	
-	}
-	
-	////
-	if( mute_pixbuf) 
-	{
-		delete [] mute_pixbuf;
-		mute_pixbuf = NULL;
 	}
 }
 
@@ -2333,7 +2307,7 @@ void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint)
 			break;
 	}
 	
-	g_volscale = new CCProgressBar(x + dy+ (dy/4), y +(dy/4), 200, 15);
+	g_volscale = new CCProgressBar(x + dy+ (dy/4), y + (dy/4), 200, 15);
 
 	if(bDoPaint) 
 	{
@@ -2357,7 +2331,7 @@ void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint)
 		frameBuffer->paintBoxRel(x + dy + dy/4, y + dy/4, dy*25/4, dy/2,   COL_MENUCONTENT_PLUS_1);
 		
 		//icon
-		frameBuffer->paintIcon(NEUTRINO_ICON_VOLUME, x+dy/2,y + (dy/4), 0, COL_MENUCONTENT_PLUS_0);
+		frameBuffer->paintIcon(NEUTRINO_ICON_VOLUME, x + dy/2, y + (dy/4), 0, COL_MENUCONTENT_PLUS_0);
 
 		g_volscale->reset();
 
@@ -3325,6 +3299,13 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 
 		// deinit libngpng
 		deinit_handlers();
+		
+		//
+		if (muteIcon)
+		{
+			delete muteIcon;
+			muteIcon = NULL;
+		}
 		
 #ifdef USE_OPENGL
 		ao_shutdown();
@@ -4957,6 +4938,18 @@ int CNeutrinoApp::run(int argc, char **argv)
 	
 	// zapper
 	initZapper();
+	
+	// init muteIcon
+	int dx = 32;
+	int dy = 32;
+	frameBuffer->getIconSize(NEUTRINO_ICON_BUTTON_MUTE, &dx, &dy);
+
+	int x = g_settings.screen_EndX - 10 - dx;
+	int y = g_settings.screen_StartY + 10;
+
+	muteIcon = new CCIcon(x, y, dx, dy);
+	
+	muteIcon->setIcon(NEUTRINO_ICON_BUTTON_MUTE);
 	
 	// audio mute
 	audioMute(current_muted, true);		

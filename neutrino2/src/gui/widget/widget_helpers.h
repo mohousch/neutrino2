@@ -258,7 +258,7 @@ class CCIcon : public CComponent
 		};
 		
 		//
-		void setIcon(const char* const icon);
+		void setIcon(const char *const icon);
 		//
 		void paint();
 		void hide();
