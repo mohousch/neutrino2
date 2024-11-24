@@ -1,5 +1,5 @@
 /*
-  $Id: nseasons.cpp 2018/08/03 mohousch Exp $
+  $Id: nseasons.cpp 24112024 mohousch Exp $
 
   License: GPL
 
@@ -76,7 +76,7 @@ void CNSeasons::loadSeasonsTitle()
 	removeThumbnailDir();
 	createThumbnailDir();
 
-	CHintBox loadBox(__("Serien Trailer"), __("Scan for Movies ..."));
+	CHintBox loadBox(__("Series Trailer"), __("Scan for Movies ..."));
 	loadBox.paint();
 
 	tmdb = new CTmdb();
@@ -136,7 +136,7 @@ void CNSeasons::showMovieInfo(MI_MOVIE_INFO& movie)
 	buffer += movie.epgInfo2;
 
 	// thumbnail
-	int pich = 246;	//FIXME
+	int pich = 246;		//FIXME
 	int picw = 162; 	//FIXME
 
 	std::string thumbnail = movie.tfile;
@@ -162,8 +162,12 @@ void CNSeasons::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CNSeasons::showMenu:\n");
 
-	listBox = new CMenuWidget("Staffeln", NEUTRINO_ICON_MOVIE, CFrameBuffer::getInstance()->getScreenWidth(), CFrameBuffer::getInstance()->getScreenHeight());
+	listBox = new ClistBox(CFrameBuffer::getInstance()->getScreenX() + 20, CFrameBuffer::getInstance()->getScreenY() + 20, CFrameBuffer::getInstance()->getScreenWidth() - 40, CFrameBuffer::getInstance()->getScreenHeight() - 40);
 	
+	listBox->enablePaintHead();
+	listBox->setTitle(__("Seasons"), NEUTRINO_ICON_MOVIE);
+	listBox->enablePaintDate();
+	listBox->enablePaintItemInfo();
 	
 	// load playlist
 	 loadSeasonsTitle();
@@ -187,19 +191,20 @@ void CNSeasons::showMenu()
 	listBox->setWidgetMode(ClistBox::MODE_LISTBOX);
 	listBox->setWidgetType(ClistBox::TYPE_FRAME);
 	listBox->setItemsPerPage(6, 2);
-	//listBox->setItemBoxColor(COL_YELLOW);
+	
 	listBox->setSelected(selected);
-	listBox->enablePaintDate();
-	//listBox->enablePaintFootInfo();
 
 	listBox->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 
 	listBox->addKey(CRCInput::RC_info, this, CRCInput::getSpecialKeyName(CRCInput::RC_info));
 
-	listBox->exec(NULL, "");
-	//listBox->hide();
-	delete listBox;
-	listBox = NULL;
+	listBox->exec();
+	
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
 }
 
 int CNSeasons::exec(CMenuTarget* parent, const std::string& actionKey)
@@ -222,5 +227,4 @@ int CNSeasons::exec(CMenuTarget* parent, const std::string& actionKey)
 
 	return RETURN_REPAINT;
 }
-
 

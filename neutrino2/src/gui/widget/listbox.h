@@ -395,11 +395,6 @@ class ClistBox : public CComponent
 		CFrameBuffer* frameBuffer;
 
 		//		
-//		int wanted_height;
-//		int wanted_width;
-//		int start_x;
-//		int start_y;
-
 		int selected;
 
 		//

@@ -2455,7 +2455,6 @@ void CTestMenu::testClistBox4()
 	
 	Box.iWidth = g_settings.screen_EndX - g_settings.screen_StartX - 20;
 	Box.iHeight = g_settings.screen_EndY - g_settings.screen_StartY - 20;
-
 	Box.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
 	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
 	
@@ -2493,7 +2492,6 @@ void CTestMenu::testClistBox4()
 	// widgettype
 	rightWidget->setWidgetType(ClistBox::TYPE_FRAME);
 	rightWidget->setItemsPerPage(6,2);
-	rightWidget->enableShrinkMenu();
 	
 	rightWidget->paintMainFrame(true);
 	

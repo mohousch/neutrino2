@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-06-18 19:11+0200\n"
+"POT-Creation-Date: 2024-11-24 14:50+0100\n"
 "PO-Revision-Date: 2023-10-29 02:22+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -19,6 +19,9 @@ msgstr ""
 
 msgid "Airing today"
 msgstr "Heute auf Sendung"
+
+msgid "Episodes"
+msgstr "Folgen"
 
 msgid "Next Page"
 msgstr "Nächste Seite"
@@ -35,8 +38,11 @@ msgstr "Vorherige Seite"
 msgid "Scan for Movies ..."
 msgstr "Nach Filmen suchen ..."
 
-msgid "Serien Trailer"
-msgstr "Serien-Trailer"
+msgid "Seasons"
+msgstr "Staffeln"
+
+msgid "Series Trailer"
+msgstr "Serien Trailer"
 
 msgid "Top rated"
 msgstr "Am besten bewertet"

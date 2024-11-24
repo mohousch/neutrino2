@@ -1743,11 +1743,6 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	
 	full_width = itemBox.iWidth;
 	full_height = itemBox.iHeight;
-
-//	wanted_height = dy;
-//	wanted_width = dx;
-//	start_x = x;
-//	start_y = y;
 	
 	//
 	listmaxshow = 0;
@@ -1821,7 +1816,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	widgetMode = MODE_LISTBOX;
 
 	background = NULL;
-//	actionKey = "";
+	actionKey = "";
 	
 	bgcolor = COL_MENUCONTENT_PLUS_0;
 	radius = NO_RADIUS;
@@ -1866,11 +1861,6 @@ ClistBox::ClistBox(CBox* position)
 	
 	full_width = itemBox.iWidth;
 	full_height = itemBox.iHeight;
-
-//	wanted_height = position->iHeight;
-//	wanted_width = position->iWidth;
-//	start_x = position->iX;
-//	start_y = position->iY;
 	
 	//
 	listmaxshow = 0;
@@ -1945,7 +1935,7 @@ ClistBox::ClistBox(CBox* position)
 
 	background = NULL;
 
-//	actionKey = "";
+	actionKey = "";
 	
 	bgcolor = COL_MENUCONTENT_PLUS_0;
 	radius = NO_RADIUS;
@@ -2032,10 +2022,6 @@ void ClistBox::initFrames()
 	dprintf(DEBUG_INFO, "ClistBox::initFrames:\n");
 	
 	// reinit position
-//	itemBox.iHeight = wanted_height;
-//	itemBox.iWidth = wanted_width;
-//	itemBox.iX = start_x;
-//	itemBox.iY = start_y;
 	cFrameFootInfoHeight = 0;
 	
 	// sanity check
@@ -2079,7 +2065,7 @@ void ClistBox::initFrames()
 	if(widgetType == TYPE_FRAME)
 	{
 		//
-		if (paintframe)
+		if (paintFootInfo)
 		{
 			cFrameFootInfoHeight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
 		}
@@ -2110,7 +2096,7 @@ void ClistBox::initFrames()
 		item_width = itemBox.iWidth/itemsPerX;
 		item_height = (itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight - 20)/itemsPerY; //
 		
-		////
+		//
 		items_height = itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight - 20;
 		items_width = itemBox.iWidth;	
 	}

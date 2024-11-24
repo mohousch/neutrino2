@@ -11,6 +11,7 @@ SUBDIRS = \
 	picviewer \
 	audioplayer \
 	nfilm \
+	ntvshows \
 	upnp \
 	tuxcom
 

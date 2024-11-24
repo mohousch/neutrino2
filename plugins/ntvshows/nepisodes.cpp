@@ -1,5 +1,5 @@
 /*
-  $Id: nepisodes.cpp 2018/08/04 mohousch Exp $
+  $Id: nepisodes.cpp 24112024 mohousch Exp $
 
   License: GPL
 
@@ -74,7 +74,7 @@ void CNEpisodes::loadEpisodesTitle()
 	removeThumbnailDir();
 	createThumbnailDir();
 
-	CHintBox loadBox(__("Serien Trailer"), __("Scan for Movies ..."));
+	CHintBox loadBox(__("Series Trailer"), __("Scan for Movies ..."));
 	loadBox.paint();
 
 	tmdb = new CTmdb();
@@ -140,7 +140,7 @@ void CNEpisodes::showMovieInfo(MI_MOVIE_INFO& movie)
 
 	// thumbnail
 	int pich = 246;	//FIXME
-	int picw = 162; 	//FIXME
+	int picw = 162; //FIXME
 
 	std::string thumbnail = movie.tfile;
 	if(access(thumbnail.c_str(), F_OK))
@@ -188,8 +188,12 @@ void CNEpisodes::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CNEpisodes::showMenu:\n");
 
-	listBox = new CMenuWidget("Folgen", NEUTRINO_ICON_MOVIE, CFrameBuffer::getInstance()->getScreenWidth(), CFrameBuffer::getInstance()->getScreenHeight());
+	listBox = new ClistBox(CFrameBuffer::getInstance()->getScreenX() + 20, CFrameBuffer::getInstance()->getScreenY() + 20, CFrameBuffer::getInstance()->getScreenWidth() - 40, CFrameBuffer::getInstance()->getScreenHeight() - 40);
 	
+	listBox->enablePaintHead();
+	listBox->setTitle(__("Episodes"), NEUTRINO_ICON_MOVIE);
+	listBox->enablePaintDate();
+	listBox->enablePaintItemInfo();
 	
 	// load playlist
 	loadEpisodesTitle();
@@ -210,22 +214,22 @@ void CNEpisodes::showMenu()
 	listBox->setWidgetMode(ClistBox::MODE_LISTBOX);
 	listBox->setWidgetType(ClistBox::TYPE_FRAME);
 	listBox->setItemsPerPage(3, 2);
-	//listBox->setItemBoxColor(COL_YELLOW);
 	listBox->setSelected(selected);
-	listBox->enablePaintDate();
-	//listBox->enablePaintFootInfo();
 
 	listBox->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 
 	listBox->addKey(CRCInput::RC_info, this, CRCInput::getSpecialKeyName(CRCInput::RC_info));
 
-	listBox->exec(NULL, "");
-	//listBox->hide();
-	delete listBox;
-	listBox = NULL;
+	listBox->exec();
+
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
 }
 
-int CNEpisodes::exec(CMenuTarget* parent, const std::string& actionKey)
+int CNEpisodes::exec(CMenuTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CNEpisodes::exec: %s\n", actionKey.c_str());
 
@@ -260,5 +264,4 @@ int CNEpisodes::exec(CMenuTarget* parent, const std::string& actionKey)
 
 	return RETURN_REPAINT;
 }
-
 

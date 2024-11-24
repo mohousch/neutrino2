@@ -1,5 +1,5 @@
 /*
-  $Id: nseasons.h 2018/08/03 mohousch Exp $
+  $Id: nseasons.h 24112024 mohousch Exp $
 
   License: GPL
 
@@ -25,8 +25,8 @@ class CNSeasons : public CMenuTarget
 {
 	private:
 		CFrameBuffer* frameBuffer;
-		CMenuWidget* listBox;
-		CMenuItem* item;
+		ClistBox *listBox;
+		CMenuItem *item;
 		int selected;
 
 		CMovieInfo m_movieInfo;

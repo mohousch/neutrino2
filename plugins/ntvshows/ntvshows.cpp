@@ -1,5 +1,5 @@
 /*
-  $Id: ntvshows.cpp 2018/08/02 mohousch Exp $
+  $Id: ntvshows.cpp 24112024 mohousch Exp $
 
   License: GPL
 
@@ -43,8 +43,8 @@ class CTVShows : public CMenuTarget
 		int selected;
 
 		//
-		CMenuWidget* mlist;
-		CMenuItem* item;
+		ClistBox *mlist;
+		CMenuItem *item;
 
 		std::string caption;
 
@@ -135,7 +135,7 @@ void CTVShows::loadMoviesTitle(void)
 	removeThumbnailDir();
 	createThumbnailDir();
 
-	CHintBox loadBox(__("Serien Trailer"), __("Scan for Movies ..."));
+	CHintBox loadBox(__("Series Trailer"), __("Scan for Movies ..."));
 	loadBox.paint();
 
 	//
@@ -239,6 +239,10 @@ void CTVShows::loadPlaylist()
 
 void CTVShows::showMovieInfo(MI_MOVIE_INFO& movie)
 {
+	//// FIXME:
+	hide();
+	
+	//
 	std::string buffer;
 	
 	// prepare print buffer 
@@ -249,7 +253,7 @@ void CTVShows::showMovieInfo(MI_MOVIE_INFO& movie)
 	buffer += movie.epgInfo2;
 
 	// thumbnail
-	int pich = 246;	//FIXME
+	int pich = 246;		//FIXME
 	int picw = 162; 	//FIXME
 
 	std::string thumbnail = movie.tfile;
@@ -294,10 +298,13 @@ void CTVShows::showMenu()
 	else if(plist == "top_rated")
 		caption = __("Top rated");
 
-	mlist = new CMenuWidget(caption.c_str(), NEUTRINO_ICON_TMDB, CFrameBuffer::getInstance()->getScreenWidth(), CFrameBuffer::getInstance()->getScreenHeight());
+	mlist = new ClistBox(CFrameBuffer::getInstance()->getScreenX() + 20, CFrameBuffer::getInstance()->getScreenY() + 20, CFrameBuffer::getInstance()->getScreenWidth() - 40, CFrameBuffer::getInstance()->getScreenHeight() - 40);
 	
-	//mlist->clearItems();
-	//mlist->clear();
+	mlist->enablePaintHead();
+	mlist->setTitle(caption.c_str(), NEUTRINO_ICON_TMDB);
+	mlist->enablePaintDate();
+	mlist->enablePaintFoot();
+	mlist->enablePaintItemInfo();
 
 	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{
@@ -320,10 +327,8 @@ void CTVShows::showMenu()
 	mlist->setWidgetMode(ClistBox::MODE_LISTBOX);
 	mlist->setWidgetType(ClistBox::TYPE_FRAME);
 	mlist->setItemsPerPage(6, 2);
-	//mlist->setItemBoxColor(COL_YELLOW);
+
 	mlist->setSelected(selected);
-	mlist->enablePaintDate();
-	//mlist->enablePaintFootInfo();
 
 	mlist->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	mlist->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
@@ -333,9 +338,13 @@ void CTVShows::showMenu()
 	mlist->addKey(CRCInput::RC_red, this, CRCInput::getSpecialKeyName(CRCInput::RC_red));
 	mlist->addKey(CRCInput::RC_green, this, CRCInput::getSpecialKeyName(CRCInput::RC_green));
 
-	mlist->exec(NULL, "");
-	delete mlist;
-	mlist = NULL;
+	mlist->exec();
+	
+	if (mlist)
+	{
+		delete mlist;
+		mlist = NULL;
+	}
 }
 
 int CTVShows::showCategoriesMenu()
@@ -343,9 +352,17 @@ int CTVShows::showCategoriesMenu()
 	dprintf(DEBUG_NORMAL, "showCategoriesMenu:\n");
 
 	int res = -1;
+	
+	//// FIXME:
+	hide();
 
-	CMenuWidget * menu = new CMenuWidget("Serien Trailer");
-
+	ClistBox * menu = new ClistBox(CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - 600)/2, CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - 600)/2, 600, 600);
+	
+	menu->enablePaintHead();
+	menu->setTitle(__("Series Trailer"));
+	menu->enablePaintDate();
+	menu->enablePaintFoot();
+	
 	menu->setWidgetMode(ClistBox::MODE_MENU);
 	menu->enableShrinkMenu();
 
@@ -354,11 +371,15 @@ int CTVShows::showCategoriesMenu()
 	menu->addItem(new CMenuForwarder(__("Popular"), true, NULL, new CTVShows("popular"), "popular"));
 	menu->addItem(new CMenuForwarder(__("Top rated"), true, NULL, new CTVShows("top_rated"), "top_rated"));
 
-	menu->exec(NULL, "");
-	menu->hide();
+	menu->exec();
+
 	res = menu->getSelected();
-	delete menu;
-	menu = NULL;
+	
+	if (menu)
+	{
+		delete menu;
+		menu = NULL;
+	}
 
 	return res;
 }
@@ -443,5 +464,4 @@ void plugin_exec(void)
 	delete nTVShowsHandler;
 	nTVShowsHandler = NULL;
 }
-
 

@@ -1,5 +1,5 @@
 /*
-  $Id: nepisodes.h 2018/08/04 mohousch Exp $
+  $Id: nepisodes.h 24112024 mohousch Exp $
 
   License: GPL
 
@@ -26,8 +26,8 @@ class CNEpisodes : public CMenuTarget
 {
 	private:
 		CFrameBuffer* frameBuffer;
-		CMenuWidget* listBox;
-		CMenuItem* item;
+		ClistBox *listBox;
+		CMenuItem *item;
 		int selected;
 
 		CMoviePlayerGui tmpMoviePlayerGui;
@@ -55,7 +55,7 @@ class CNEpisodes : public CMenuTarget
 	public:
 		CNEpisodes(int id, int nr = 0);
 		~CNEpisodes();
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CMenuTarget *parent, const std::string &actionKey);
 		void hide();
 };
 
