@@ -1,5 +1,5 @@
 /*
-  $Id: systeminfo.cpp 2014/01/22 mohousch Exp $
+  $Id: systeminfo.cpp 24112024 mohousch Exp $
 
   License: GPL
 
@@ -60,12 +60,8 @@ CSysInfoWidget::CSysInfoWidget(int m)
 	cFrameBoxText.iHeight = cFrameBox.iHeight - cFrameBoxTitle.iHeight - cFrameBoxFoot.iHeight;
 
 	textBox = new CTextBox(&cFrameBoxText);
-	//textBox->setBorderMode(BORDER_LEFTRIGHT);
-	textBox->setBackgroundColor(COL_BLACK_PLUS_0);
-}
 
-CSysInfoWidget::~CSysInfoWidget()
-{
+	textBox->setBackgroundColor(COL_BLACK_PLUS_0);
 }
 
 // paintlistbox
@@ -110,9 +106,7 @@ void CSysInfoWidget::paintHead()
 	// title
 	CCHeaders headers(&cFrameBoxTitle, buf, titleIcon.iconName.c_str());
 	headers.enablePaintDate();
-	headers.setCorner(g_settings.Head_radius);
-	headers.setGradient(g_settings.Head_gradient);
-	headers.setLine(g_settings.Head_line, g_settings.Head_line_gradient);
+
 	headers.paint();
 }
 
@@ -134,10 +128,9 @@ void CSysInfoWidget::paintFoot()
 	cFrameBoxFoot.iWidth = cFrameBox.iWidth;
 
 	CCFooters footers(&cFrameBoxFoot);
-	footers.setCorner(g_settings.Foot_radius);
-	footers.setGradient(g_settings.Foot_gradient);
-	footers.setLine(g_settings.Foot_line, g_settings.Foot_line_gradient);
+
 	footers.setButtons(Buttons, 4);
+	
 	footers.paint();
 }
 
@@ -324,7 +317,8 @@ void CSysInfoWidget::sysinfo()
 
 	// Create tmpfile with date /tmp/sysinfo
 	system("echo 'DATUM:' > /tmp/sysinfo");
-	f = fopen("/tmp/sysinfo","a");
+	
+	f = fopen("/tmp/sysinfo", "a");
 	if(f)
 		fprintf(f,"%s\n", line);
 	fclose(f);
@@ -447,6 +441,7 @@ void CSysInfoWidget::cpuinfo()
 	
 	// Get file-info from /proc/cpuinfo
 	system("df > /tmp/systmp");
+	
 	f = fopen("/tmp/systmp", "r");
 	if(f)
 	{
@@ -481,7 +476,11 @@ void CSysInfoWidget::dmesg()
 
 void CSysInfoWidget::ps()
 {
+#ifdef USE_OPENGL
 	system("ps -A > /tmp/sysinfo");
+#else
+	system("ps > /tmp/sysinfo");
+#endif
 
 	readList("/tmp/sysinfo");
 }
@@ -490,7 +489,11 @@ void CSysInfoWidget::ps()
 void CSysInfoWidget::readList(const char * const filename)
 {
 	buffer.clear();
-	buffer = readFile(filename).c_str();
+	buffer = "";
+	
+	buffer = ::readFile(filename).c_str();
+	
+	system("rm -rf /tmp/sysinfo");
 }
 
 //

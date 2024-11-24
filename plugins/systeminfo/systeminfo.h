@@ -1,5 +1,5 @@
 /*
-  $Id: systeminfo.h 2014/01/22 mohousch Exp $
+  $Id: systeminfo.h 24112024 mohousch Exp $
 
   License: GPL
 
@@ -42,7 +42,7 @@ class CSysInfoWidget : public CMenuTarget
 		CBox cFrameBoxFoot;
 
 		CCIcon titleIcon;
-		CTextBox* textBox;
+		CTextBox *textBox;
 
 		std::string buffer;
 
@@ -62,7 +62,7 @@ class CSysInfoWidget : public CMenuTarget
 		void readList(const char * const filename);
 	public:
 		CSysInfoWidget(int m = SYSINFO);
-		~CSysInfoWidget();
+		~CSysInfoWidget(){};
 		int exec(CMenuTarget *parent, const std::string &actionKey);
 		void hide();
 };
