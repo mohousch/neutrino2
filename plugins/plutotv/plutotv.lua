@@ -175,7 +175,7 @@ function cat_menu(_id)
 	cm:enablePaintHead()
 	cm:setTitle(catlist[tonumber(_id)], neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	cm:enablePaintDate()
-	cm:clear()
+	cm:enablePaintFoot()
 	
 	local red = neutrino2.button_label_struct()
 	red.button = neutrino2.NEUTRINO_ICON_BUTTON_RED
@@ -189,7 +189,8 @@ function cat_menu(_id)
 	cm:setFootButtons(green)
 	
 	cm:addKey(neutrino2.CRCInput_RC_red, null, "rec")
-	cm:addKey(neutrino2.CRCInput_RC_green, null, "info")
+	cm:addKey(neutrino2.CRCInput_RC_green, null, "play")
+	cm:addKey(neutrino2.CRCInput_RC_info, null, "info")
 	
 	local hint = neutrino2.CHintBox(plugin_title, "loading...", neutrino2.HINTBOX_WIDTH, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	hint:paint()
@@ -229,7 +230,7 @@ function cat_menu(_id)
 				item:set2lines(true)
 				
 				if item_detail.type == "movie" then
-					item:setActionKey(null, "info");
+					item:setActionKey(null, "play");
 				else
 					item:setActionKey(null, "season_menu");
 				end
@@ -253,7 +254,7 @@ function cat_menu(_id)
 	
 	local actionKey = cm:getActionKey()
 	
-	if actionKey == "info" then
+	if actionKey == "play" then
 		playStream(cm_selected + 1)
 	end
 	if actionKey == "season_menu" then
@@ -261,6 +262,9 @@ function cat_menu(_id)
 	end
 	if actionKey == "rec" then
 		recStream(cm_selected + 1)
+	end
+	if actionKey == "info" then
+		infoStream(cm_selected + 1)
 	end
 	
 	if cm:getExitPressed() ~= true then
@@ -361,13 +365,14 @@ function episode_menu(s)
 
 	local green = neutrino2.button_label_struct()
 	green.button = neutrino2.NEUTRINO_ICON_BUTTON_GREEN
-	green.localename = "Info"
+	green.localename = "Play"
 	
 	em:setFootButtons(red)
 	em:setFootButtons(green)
 	
 	em:addKey(neutrino2.CRCInput_RC_red, null, "rec")
-	em:addKey(neutrino2.CRCInput_RC_green, null, "info")
+	em:addKey(neutrino2.CRCInput_RC_green, null, "play")
+	em:addKey(neutrino2.CRCInput_RC_info, null, "info")
 	
 	local hint = neutrino2.CHintBox(plugin_title, "loading...", neutrino2.HINTBOX_WIDTH, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	hint:paint()
@@ -407,7 +412,7 @@ function episode_menu(s)
 				item = neutrino2.CMenuForwarder(episode_detail.name)
 				--item:setHintIcon(tfile)
 				item:setOption(episode_detail.desc)
-				item:setActionKey(null, "info")
+				item:setActionKey(null, "play")
 				item:set2lines(true)
 				
 				em:addItem(item)
@@ -428,11 +433,14 @@ function episode_menu(s)
 	em_selected = em:getSelected()
 	local actionKey = em:getActionKey()
 	
-	if actionKey == "info" then
+	if actionKey == "play" then
 		playStream(em_selected + 1)
 	end
 	if actionKey == "rec" then
 		recStream(em_selected + 1)
+	end
+	if actionKey == "info" then
+		infoStream(em_selected + 1)
 	end
 	
 	if em:getExitPressed() ~= true then
@@ -464,6 +472,31 @@ function playStream(id)
 	movieWidget:setMovie(file, title, info1, "", tfile, duration)
 
 	movieWidget:exec(null, "")
+end
+
+function infoStream(id)
+	file = getVideoData(playback_details[id].uuid)
+	title = playback_details[id].name
+	info1 = playback_details[id].desc
+	cover = playback_details[id].cover	
+	duration = playback_details[id].duration
+	rating = playback_details[id].rating
+	
+	tfile = neutrino2.DATADIR .. "/icons/nopreview.jpg"
+					
+	if cover ~= nil then
+		tfile = "/tmp/plutotv/" .. conv_utf8(title) .. ".jpg"
+					
+		if neutrino2.file_exists(tfile) ~= true then
+			neutrino2.downloadUrl(conv_utf8(cover) .. "?h=640&w=480", tfile, "Mozilla/5.0")
+		end
+	end
+		
+	movieWidget = neutrino2.CInfoBox()
+	movieWidget:setTitle(title)
+	movieWidget:setText(info1, tfile)
+
+	movieWidget:exec()
 end
 
 function recStream(id)

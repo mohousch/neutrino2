@@ -1693,12 +1693,11 @@ void CTestMenu::testCCLabel()
 	
 	CCLabel CTextBox(box.iX, box.iY, box.iWidth, box.iHeight);
 	
-	CTextBox.setText("neutrinoNG² is rocking ...!");
+	CTextBox.setText("neutrinoNG is rocking ...!");
 		
 	CTextBox.setColor(COL_RED_PLUS_0);
 	CTextBox.setHAlign(CComponent::CC_ALIGN_CENTER);
-	CTextBox.enableRepaint();
-//	CTextBox.enableSaveScreen();
+	CTextBox.enableRepaint(); // refresh
 		
 	CTextBox.exec();
 }

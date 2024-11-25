@@ -145,6 +145,7 @@ class CComponent
 		bool rePaint;
 		bool savescreen;
 		bool paintframe;
+		////
 		bool inFocus;
 		bool painted;
 		////
@@ -471,8 +472,9 @@ class CCLabel : public CComponent
 		//
 		void paint();
 		void hide();
-		void enableRepaint(){rePaint = true; enableSaveScreen();};
 		void refresh(bool show = false);
+		//
+		void enableRepaint(){rePaint = true; enableSaveScreen();};
 };
 
 //// CCText
@@ -511,8 +513,9 @@ class CCText : public CComponent
 		//
 		void paint();
 		void hide();
-		void enableRepaint(){rePaint = true; enableSaveScreen();};
 		void refresh(bool show = false);
+		//
+		void enableRepaint(){rePaint = true; enableSaveScreen();};
 };
 
 //// CCTime
@@ -529,6 +532,8 @@ class CCTime : public CComponent
 		fb_pixel_t* background;
 		void saveScreen(void);
 		void restoreScreen(void);
+		//
+		void paintDigits(void);
 		
 		//
 		CCTime(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
@@ -559,6 +564,8 @@ class CCCounter : public CComponent
 		fb_pixel_t* background;
 		void saveScreen(void);
 		void restoreScreen(void);
+		//
+		void paintDigits(void);
 		
 		//
 		CCCounter(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
@@ -572,7 +579,6 @@ class CCCounter : public CComponent
 		//
 		void paint();
 		void hide();
-		//
 		void refresh(bool show = false);
 };
 

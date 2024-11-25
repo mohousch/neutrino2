@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: epgview.h 26.09.2021 mohousch Exp $
+	$Id: epgview.h 25112024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -56,13 +56,15 @@ class CEpgData
 		CBox cFootBox;
 		CBox cTextBox;
 
-		//
-		CCHeaders* headers;
-		CCFooters* footers;
+		CCHeaders *headers;
+		CCFooters *footers;
 		CTextBox *textBox;
 		CCWindow *cFollowScreeningWindow;
 		CWidget *widget;
+		
+		uint32_t sec_timer_id;
 
+		//
 		CChannelEventList evtlist;
 		CEPGData epgData;
 
@@ -77,17 +79,16 @@ class CEpgData
 
 		std::string epgBuffer;
 		
+		////
 		void initFrames();
-
-		void GetEPGData(const t_channel_id channel_id, uint64_t id, time_t* starttime, bool clear = true);
-		void GetPrevNextEPGData( uint64_t id, time_t* starttime );
-		bool hasFollowScreenings(const t_channel_id channel_id, const std::string & title);
-		int FollowScreenings(const t_channel_id channel_id, const std::string & title);
+		////
+		void GetEPGData(const t_channel_id channel_id, uint64_t id, time_t *starttime, bool clear = true);
+		void GetPrevNextEPGData( uint64_t id, time_t *starttime );
+		bool hasFollowScreenings(const t_channel_id channel_id, const std::string &title);
+		int FollowScreenings(const t_channel_id channel_id, const std::string &title);
 		void showTimerEventBar(bool show);
 		void showHead(const t_channel_id channel_id);
 
-		//
-		uint32_t sec_timer_id;
 	public:
 
 		CEpgData();
@@ -100,7 +101,7 @@ class CEpgData
 class CEPGDataHandler : public CMenuTarget
 {
 	public:
-		int exec(CMenuTarget* parent,  const std::string& actionKey);
+		int exec(CMenuTarget *parent,  const std::string &actionKey);
 };
 
 #endif

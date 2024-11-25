@@ -891,7 +891,7 @@ void CCLabel::paint()
 		startPosX = itemBox.iX + (itemBox.iWidth - stringWidth)/2;
 	else if (halign == CC_ALIGN_RIGHT)
 		startPosX = itemBox.iX + itemBox.iWidth - stringWidth;
-	
+		
 	g_Font[font]->RenderString(startPosX, itemBox.iY + height + (itemBox.iHeight - height)/2, itemBox.iWidth, label.c_str(), color, 0, true, paintframe);
 }
 
@@ -1166,14 +1166,8 @@ void CCTime::setFormat(const char* const f)
 	format = f? _(f) : "";
 }
 
-void CCTime::paint()
+void CCTime::paintDigits(void)
 {
-	dprintf(DEBUG_DEBUG, "CCTime::paint: x:%d y:%d dx:%d dy:%d\n", itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
-	
-	//
-	saveScreen();
-	
-	//
 	std::string timestr = getNowTimeStr(format.c_str());
 		
 	int timestr_len = g_Font[font]->getRenderWidth(timestr.c_str(), true); // UTF-8
@@ -1186,13 +1180,15 @@ void CCTime::paint()
 	g_Font[font]->RenderString(startPosX, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), timestr_len, timestr.c_str(), color);
 }
 
-//
-void CCTime::refresh(bool show)
+void CCTime::paint()
 {
-	//
-	restoreScreen();
+	dprintf(DEBUG_DEBUG, "CCTime::paint: x:%d y:%d dx:%d dy:%d\n", itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
 	
 	//
+	saveScreen();
+	
+	//
+	/*
 	std::string timestr = getNowTimeStr(format.c_str());
 		
 	int timestr_len = g_Font[font]->getRenderWidth(timestr.c_str(), true); // UTF-8
@@ -1203,6 +1199,30 @@ void CCTime::refresh(bool show)
 	int startPosX = itemBox.iX + (itemBox.iWidth - timestr_len)/2;
 	
 	g_Font[font]->RenderString(startPosX, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), timestr_len, timestr.c_str(), color);
+	*/
+	paintDigits();
+}
+
+//
+void CCTime::refresh(bool show)
+{
+	//
+	restoreScreen();
+	
+	//
+	/*
+	std::string timestr = getNowTimeStr(format.c_str());
+		
+	int timestr_len = g_Font[font]->getRenderWidth(timestr.c_str(), true); // UTF-8
+	
+	if (timestr_len > itemBox.iWidth && itemBox.iWidth != 0)
+		timestr_len = itemBox.iWidth;
+		
+	int startPosX = itemBox.iX + (itemBox.iWidth - timestr_len)/2;
+	
+	g_Font[font]->RenderString(startPosX, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), timestr_len, timestr.c_str(), color);
+	*/
+	paintDigits();
 }
 
 void CCTime::hide()
@@ -1280,13 +1300,8 @@ CCCounter::~CCCounter()
 	}
 }
 
-void CCCounter::paint()
+void CCCounter::paintDigits(void)
 {
-	dprintf(DEBUG_DEBUG, "CCCounter::paint\n");
-	
-	//
-	saveScreen();
-	
 	// play_time
 	char playTime[11];
 	strftime(playTime, 11, "%T/", gmtime(&play_time));//FIXME
@@ -1299,11 +1314,36 @@ void CCCounter::paint()
 	g_Font[font]->RenderString(itemBox.iX + itemBox.iWidth/2, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), itemBox.iWidth/2, totalTime, color, 0, true);
 }
 
+void CCCounter::paint()
+{
+	dprintf(DEBUG_DEBUG, "CCCounter::paint\n");
+	
+	//
+	saveScreen();
+	
+	//
+	/*
+	// play_time
+	char playTime[11];
+	strftime(playTime, 11, "%T/", gmtime(&play_time));//FIXME
+	
+	g_Font[font]->RenderString(itemBox.iX, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), itemBox.iWidth/2, playTime, color, 0, true);
+	
+	// total_time
+	char totalTime[10];
+	strftime(totalTime, 10, "%T", gmtime(&total_time));//FIXME
+	g_Font[font]->RenderString(itemBox.iX + itemBox.iWidth/2, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), itemBox.iWidth/2, totalTime, color, 0, true);
+	*/
+	paintDigits();
+}
+
 void CCCounter::refresh(bool show)
 {
 	//
 	restoreScreen();
 	
+	//
+	/*
 	// play_time
 	char playTime[11];
 	strftime(playTime, 11, "%T/", gmtime(&play_time));//FIXME
@@ -1313,6 +1353,8 @@ void CCCounter::refresh(bool show)
 	char totalTime[10];
 	strftime(totalTime, 10, "%T", gmtime(&total_time));//FIXME
 	g_Font[font]->RenderString(itemBox.iX + itemBox.iWidth/2, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), itemBox.iWidth/2, totalTime, color, 0, true);
+	*/
+	paintDigits();
 }
 
 void CCCounter::hide()

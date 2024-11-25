@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: epgview.cpp 15.01.2019 mohousch Exp $
+	$Id: epgview.cpp 25112024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -28,24 +28,17 @@
 #endif
 
 #include <unistd.h>
-
 #include <algorithm>
 
 #include <gui/epgview.h>
 
 #include <gui/widget/icons.h>
-#include <gui/widget/hintbox.h>
 #include <gui/widget/messagebox.h>
 
 #include <gui/timerlist.h>
 
 #include <global.h>
 #include <neutrino2.h>
-
-#include <driver/encoding.h>
-
-#include <gui/filebrowser.h>
-#include <gui/pictureviewer.h>
 
 #include <system/debug.h>
 #include <system/channellogo.h>
@@ -56,7 +49,8 @@
 #define TIMESCALE_H	6
 
 //// globals
-static CCProgressBar * timescale;
+static CCProgressBar *timescale;
+extern char recDir[255];// defined in neutrino.cpp
 
 //
 int findItem(std::string strItem, std::vector<std::string> & vecItems) 
@@ -69,6 +63,7 @@ int findItem(std::string strItem, std::vector<std::string> & vecItems)
 			return nCnt;
 		}
 	}
+	
 	return -1;
 }
 
@@ -89,17 +84,20 @@ void reformatExtendedEvents(std::string strItem, std::string strLabel, bool bUse
 	{
 		bool bHasItems = false;
 		char index[3];
+		
 		// Maximum of 10 items should suffice
 		for (int nItem = 1; nItem < 11; nItem++) 
 		{
 			sprintf(index, "%d", nItem);
 			// Look for matching items
 			int nPos = findItem(std::string(strItem) + std::string(index), vecDescriptions);
+			
 			if (-1 != nPos) 
 			{
 				std::string item = std::string(vecItems[nPos]);
 				vecDescriptions.erase(vecDescriptions.begin() + nPos);
 				vecItems.erase(vecItems.begin() + nPos);
+				
 				if (false == bHasItems) 
 				{
 					// First item added, so create new label item
@@ -142,6 +140,7 @@ struct button_label FButtons[4] =
 	{ DUMMY_ICON, " ", 0 }
 };
 
+////
 CEpgData::CEpgData()
 {
 	frameBuffer = CFrameBuffer::getInstance();
@@ -190,13 +189,13 @@ void CEpgData::initFrames()
 	cHeadBox.iX = cFrameBox.iX;
 	cHeadBox.iY = cFrameBox.iY;
 
-	// foot
+	// footBox
 	cFootBox.iHeight = g_Font[SNeutrinoSettings::FONT_TYPE_EPG_TITLE]->getHeight() + 10;
 	cFootBox.iWidth = cFrameBox.iWidth;
 	cFootBox.iX = cFrameBox.iX;
 	cFootBox.iY = cFrameBox.iY + cFrameBox.iHeight - cFootBox.iHeight;
 
-	// followScreeningBar
+	// followScreeningBarBox
 	cFollowScreeningBox.iHeight = g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight() + 6;
 	cFollowScreeningBox.iWidth = cFrameBox.iWidth;
 	cFollowScreeningBox.iX = cFrameBox.iX;
@@ -210,7 +209,7 @@ void CEpgData::initFrames()
 }
 
 #define GENRE_MOVIE_COUNT 9
-const char* genre_movie[GENRE_MOVIE_COUNT] =
+const char *genre_movie[GENRE_MOVIE_COUNT] =
 {
 	_("Movie / Drama"),
 	_("Detective / Thriller"),
@@ -224,7 +223,7 @@ const char* genre_movie[GENRE_MOVIE_COUNT] =
 };
 
 #define GENRE_NEWS_COUNT 5
-const char* genre_news[GENRE_NEWS_COUNT] =
+const char *genre_news[GENRE_NEWS_COUNT] =
 {
 	_("News"),
 	_("News / Weather report"),
@@ -234,7 +233,7 @@ const char* genre_news[GENRE_NEWS_COUNT] =
 };
 
 #define GENRE_SHOW_COUNT 4
-const char* genre_show[GENRE_SHOW_COUNT] =
+const char *genre_show[GENRE_SHOW_COUNT] =
 {
 	_("Show / Gameshow"),
 	_("Game show / Quiz / Contest"),
@@ -243,7 +242,7 @@ const char* genre_show[GENRE_SHOW_COUNT] =
 };
 
 #define GENRE_SPORTS_COUNT 12
-const char* genre_sports[GENRE_SPORTS_COUNT] =
+const char *genre_sports[GENRE_SPORTS_COUNT] =
 {
 	_("Sports"),
 	_("Special events (Olympic Games,World Cup etc.)"),
@@ -260,7 +259,7 @@ const char* genre_sports[GENRE_SPORTS_COUNT] =
 };
 
 #define GENRE_CHILDRENS_PROGRAMMES_COUNT 6
-const char* genre_childrens_programmes[GENRE_CHILDRENS_PROGRAMMES_COUNT] =
+const char *genre_childrens_programmes[GENRE_CHILDRENS_PROGRAMMES_COUNT] =
 {
 	_("Children / Juvenile program"),
 	_("Pre-school children's programmes"),
@@ -271,7 +270,7 @@ const char* genre_childrens_programmes[GENRE_CHILDRENS_PROGRAMMES_COUNT] =
 };
 
 #define GENRE_MUSIC_DANCE_COUNT 7
-const char* genre_music_dance[GENRE_MUSIC_DANCE_COUNT] =
+const char *genre_music_dance[GENRE_MUSIC_DANCE_COUNT] =
 {
 	_("Music / Ballet / Dance"),
 	_("Rock / Pop"),
@@ -283,7 +282,7 @@ const char* genre_music_dance[GENRE_MUSIC_DANCE_COUNT] =
 };
 
 #define GENRE_ARTS_COUNT 12
-const char* genre_arts_dance[GENRE_ARTS_COUNT] =
+const char *genre_arts_dance[GENRE_ARTS_COUNT] =
 {
 	_("Arts / Culture"),
 	_("Performing arts"),
@@ -300,7 +299,7 @@ const char* genre_arts_dance[GENRE_ARTS_COUNT] =
 };
 
 #define GENRE_SOCIAL_POLITICAL_COUNT 4
-const char* genre_social_political[GENRE_SOCIAL_POLITICAL_COUNT] =
+const char *genre_social_political[GENRE_SOCIAL_POLITICAL_COUNT] =
 {
 	_("Social & politic events / Business"),
 	_("Magazines / Reports / Documentary"),
@@ -309,7 +308,7 @@ const char* genre_social_political[GENRE_SOCIAL_POLITICAL_COUNT] =
 };
 
 #define GENRE_DOCUS_MAGAZINES_COUNT 8
-const char* genre_docus_magazines[GENRE_DOCUS_MAGAZINES_COUNT] =
+const char *genre_docus_magazines[GENRE_DOCUS_MAGAZINES_COUNT] =
 {
 	_("Documentation / Magazine"),
 	_("Nature / Animals / Environment"),
@@ -322,7 +321,7 @@ const char* genre_docus_magazines[GENRE_DOCUS_MAGAZINES_COUNT] =
 };
 
 #define GENRE_TRAVEL_HOBBIES_COUNT 7
-const char* genre_travel_hobbies[GENRE_TRAVEL_HOBBIES_COUNT] =
+const char *genre_travel_hobbies[GENRE_TRAVEL_HOBBIES_COUNT] =
 {
 	_("Travel & recreation"),
 	_("Tourism / Travel"),
@@ -347,7 +346,7 @@ const char genre_sub_classes[10] =
 	GENRE_TRAVEL_HOBBIES_COUNT
 };
 
-const char** genre_sub_classes_list[10] =
+const char **genre_sub_classes_list[10] =
 {
 	genre_movie,
 	genre_news,
@@ -361,7 +360,7 @@ const char** genre_sub_classes_list[10] =
 	genre_travel_hobbies
 };
 
-bool CEpgData::hasFollowScreenings(const t_channel_id, const std::string & title) 
+bool CEpgData::hasFollowScreenings(const t_channel_id, const std::string &title) 
 {
 	time_t curtime = time(NULL);
 	
@@ -374,9 +373,9 @@ bool CEpgData::hasFollowScreenings(const t_channel_id, const std::string & title
 	return false;	
 }
 
-const char * GetGenre(const unsigned char contentClassification) // UTF-8
+const char *GetGenre(const unsigned char contentClassification) // UTF-8
 {
-	const char* res = NULL;
+	const char *res = NULL;
 
 	int i = (contentClassification & 0xF0);
 	
@@ -398,8 +397,6 @@ static bool sortByDateTime (const CChannelEvent& a, const CChannelEvent& b)
 	return a.startTime < b.startTime;
 }
 
-extern char recDir[255];// defined in neutrino.cpp
-
 //
 void CEpgData::showHead(const t_channel_id channel_id)
 {
@@ -416,12 +413,13 @@ void CEpgData::showHead(const t_channel_id channel_id)
 		headers->clear();
 		
 		headers->setTitle(text1.c_str());
+		
 		if (g_settings.logos_show_logo)
 			headers->setIcon(logo.c_str());
 	}
 }
 
-int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_starttime, bool doLoop )
+int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t *a_starttime, bool doLoop )
 {
 	dprintf(DEBUG_NORMAL, "CEpgData::show: 0x%llx\n", channel_id);
 
@@ -429,7 +427,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	static uint64_t id;
 	static time_t starttime;
 	 
-	if(a_starttime)
+	if (a_starttime)
 		starttime = *a_starttime;
 		
 	//
@@ -457,6 +455,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	// 21.07.2005 - rainerk
 	// Only show info1 if it's not included in info2!
 	std::string strEpisode = " ";	// Episode title in case info1 gets stripped
+	
 	if (!epgData.info1.empty()) 
 	{
 		bool bHide = false;
@@ -922,9 +921,9 @@ void CEpgData::hide()
 	}
 }
 
-void CEpgData::GetEPGData(const t_channel_id channel_id, uint64_t id, time_t* starttime, bool clear)
+void CEpgData::GetEPGData(const t_channel_id channel_id, uint64_t id, time_t *starttime, bool clear)
 {
-	if(clear)
+	if (clear)
 	{
 		epgBuffer.clear();
 		epgData.title.clear();
@@ -980,7 +979,7 @@ void CEpgData::GetEPGData(const t_channel_id channel_id, uint64_t id, time_t* st
 	}
 }
 
-void CEpgData::GetPrevNextEPGData(uint64_t id, time_t* starttime)
+void CEpgData::GetPrevNextEPGData(uint64_t id, time_t *starttime)
 {
         prev_id = 0;
         next_id = 0;
@@ -1014,7 +1013,7 @@ void CEpgData::GetPrevNextEPGData(uint64_t id, time_t* starttime)
 // -- 2002-05-03 rasc
 //
 
-int CEpgData::FollowScreenings(const t_channel_id, const std::string & title)
+int CEpgData::FollowScreenings(const t_channel_id, const std::string &title)
 {
 	CChannelEventList::iterator e;
 	time_t			curtime;
@@ -1080,13 +1079,13 @@ void CEpgData::showTimerEventBar(bool _show)
 }
 
 ////
-int CEPGDataHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
+int CEPGDataHandler::exec(CMenuTarget *parent, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CEPGDataHandler::exec:\n");
 
 	int res = CMenuTarget::RETURN_REPAINT;
-	CChannelList* channelList;
-	CEpgData* e;
+	CChannelList *channelList;
+	CEpgData *e;
 
 	if (parent) 
 		parent->hide();
