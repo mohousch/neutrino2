@@ -1,5 +1,22 @@
 --[[
-neutrinoHD2 lua sample plugin
+	neutrinoNG lua sample plugin
+	mohousch 25112024
+
+	License: GPL
+
+	This program is free software; you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation; either version 2 of the License, or
+	(at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ]]
 
 local selected = 0
@@ -17,7 +34,6 @@ function helpBox()
 	title = "lua: CHelpBox"
 	hbox = neutrino2.CHelpBox(title)
 	hbox:addLine("neutrino: lua")
---	hbox:addSeparator()
 	hbox:addLine("first test")
 	hbox:addLine("testing CHelpBox ;-)\n")
 	hbox:show("lua: CHelpBox")
@@ -563,34 +579,10 @@ function testCWidget()
 		testCFrameBox()
 	elseif actionKey == "frameboxrandom" then
 		testCFrameBoxRandom()
-	--elseif key == neutrino2.CRCInput_RC_info then
-	--	infoBox()
+	elseif key == neutrino2.CRCInput_RC_info then
+		infoBox()
 	elseif actionKey == "info" then
 		infoBox()
-	--[[
-	elseif selected == 0 then
-		messageBox()
-	elseif selected == 1 then
-		helpBox()
-	elseif selected == 2 then
-		hintBox()
-	elseif selected == 3 then
-		infoBox()
-	elseif selected == 4 then
-		stringInput()
-	elseif selected == 5 then
-		audioPlayer()
-	elseif selected == 6 then
-		pictureViewer()
-	elseif selected == 7 then
-		moviePlayer()
-	elseif selected == 8 then
-		testClistBox()
-	elseif selected == 9 then
-		testCFrameBox()
-	elseif selected == 10 then
-		testCFrameBoxRandom()
-	]]
 	end
 
 	if testWidget:getExitPressed() ~= true then

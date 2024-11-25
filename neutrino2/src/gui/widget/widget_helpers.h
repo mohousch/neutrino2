@@ -46,7 +46,6 @@
 
 
 ////
-//class CMenuTarget;
 class CWidget;
 
 ////
@@ -151,7 +150,11 @@ class CComponent
 		////
 		CWidget *parent;
 		//
-		struct keyAction { std::string action; CMenuTarget *menue; };
+		struct keyAction 
+		{ 
+			std::string action; 
+			CMenuTarget *target; 
+		};
 		std::map<neutrino_msg_t, keyAction> keyActionMap;
 		uint32_t sec_timer_id;
 		uint64_t sec_timer_interval;
@@ -167,12 +170,13 @@ class CComponent
 		//
 		virtual bool isSelectable(void){return false;};
 		virtual bool hasItem(){return false;};
-		//
+		////
 		virtual void paint(void){};
 		virtual void hide(void){};
+		virtual void refresh(bool show = false){};
+		////
 		virtual void enableRepaint(){rePaint = true;};
 		virtual bool update() const {return rePaint;};
-		virtual void refresh(bool show = false){};
 		virtual inline bool isPainted(void){return painted;};
 		////
 		virtual void clear(void){}; // buttons objects
@@ -218,8 +222,8 @@ class CComponent
 		virtual void homeKeyPressed(){};
 		virtual int directKeyPressed(neutrino_msg_t ){return CMenuTarget::RETURN_NONE;};
 		////
-		virtual void setParent(CWidget* p){parent = p;};
-		virtual void addKey(neutrino_msg_t key, CMenuTarget *menue = NULL, const std::string &action = "");
+		virtual void setParent(CWidget *p){parent = p;};
+		virtual void addKey(neutrino_msg_t key, CMenuTarget *target = NULL, const std::string &action = "");
 		void setSecTimerInterval(uint64_t sec){sec_timer_interval = sec;}; // in sec
 		////
 		virtual int exec(int timeout = -1); // in sec
@@ -262,10 +266,10 @@ class CCIcon : public CComponent
 		//
 		void paint();
 		void hide();
+		void refresh(bool show = false);
 		//
 		void saveScreen(void);
 		void restoreScreen(void);
-		void refresh(bool show = false);
 };
 
 //// CCImage
@@ -300,10 +304,10 @@ class CCImage : public CComponent
 		//
 		void paint();
 		void hide();
+		void refresh(bool show = false);
 		//
 		void saveScreen(void);
 		void restoreScreen(void);
-		void refresh(bool show = false);
 };
 
 //// CCButtons

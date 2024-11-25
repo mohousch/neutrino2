@@ -54,7 +54,11 @@ class CWidget : public CMenuTarget
 		bool exit_pressed;
 		int retval;
 		int pos;
-		struct keyAction { std::string action; CMenuTarget *menue; };
+		struct keyAction 
+		{ 
+			std::string action; 
+			CMenuTarget *target; 
+		};
 		std::map<neutrino_msg_t, keyAction> keyActionMap;
 		uint64_t timeout;
 		uint32_t sec_timer_id;
@@ -114,7 +118,7 @@ class CWidget : public CMenuTarget
 		void setTimeOut(uint64_t to = 0){timeout = to;};
 		void setSecTimerInterval(uint64_t sec){sec_timer_interval = sec;};
 		//
-		void addKey(neutrino_msg_t key, CMenuTarget *menue = NULL, const std::string &action = "");
+		void addKey(neutrino_msg_t key, CMenuTarget *target = NULL, const std::string &action = "");
 		//
 		void paintMainFrame(bool p){paintframe = p;};
 		void setColor(fb_pixel_t col) {backgroundColor = col;};

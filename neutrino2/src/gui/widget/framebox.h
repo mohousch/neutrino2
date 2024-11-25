@@ -63,7 +63,7 @@ class CFrameItem
 		unsigned int captionFont;
 		unsigned int optionFont;
 
-		CMenuTarget* jumpTarget;
+		CMenuTarget *jumpTarget;
 		std::string actionKey;
 		neutrino_msg_t directKey;
 		neutrino_msg_t msg;
@@ -144,8 +144,6 @@ class CFrameBox : public CComponent
 		std::vector<CFrameItem*> frames;
 
 		virtual void paintFrames();
-
-		std::string actionKey;	// lua
 		
 		//
 		fb_pixel_t bgcolor;
@@ -231,7 +229,6 @@ class CFrameBox : public CComponent
 		void scrollLineUp(const int lines = 1);
 		int oKKeyPressed(CMenuTarget *target, neutrino_msg_t _msg = CRCInput::RC_ok);
 		void homeKeyPressed(){selected = -1;};
-		int exec(int timeout = -1);
 
 		//// head properties
 		void enablePaintHead(){paintTitle = true;};
@@ -254,7 +251,6 @@ class CFrameBox : public CComponent
 		
 		//// get methods
 		int getSelected(){return selected;};
-		std::string getActionKey(void){ return actionKey; }; // lua
 };
 
 #endif

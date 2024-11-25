@@ -68,11 +68,11 @@ CComponent::CComponent()
 }
 
 //
-void CComponent::addKey(neutrino_msg_t key, CMenuTarget *menue, const std::string & action)
+void CComponent::addKey(neutrino_msg_t key, CMenuTarget *target, const std::string & action)
 {
 	dprintf(DEBUG_DEBUG, "CComponent::addKey: %s\n", action.c_str());
 	
-	keyActionMap[key].menue = menue;
+	keyActionMap[key].target = target;
 	keyActionMap[key].action = action;
 }
 
@@ -116,9 +116,9 @@ int CComponent::exec(int timeout)
 				
 				printf("CComponent::exec: actionKey:%s\n", actionKey.c_str());
 
-				if (it->second.menue != NULL)
+				if (it->second.target != NULL)
 				{
-					int rv = it->second.menue->exec(parent, it->second.action);
+					int rv = it->second.target->exec(parent, it->second.action);
 
 					//
 					switch ( rv ) 
@@ -287,13 +287,13 @@ void CCIcon::restoreScreen(void)
 	}
 }
 
-//
+//// FIXME:
 void CCIcon::paint()
 {
 	dprintf(DEBUG_DEBUG, "CCIcon::paint\n");
 	
 	//
-	if (rePaint)
+	if (savescreen || rePaint)
 	{
 		saveScreen();
 	}
@@ -305,7 +305,10 @@ void CCIcon::hide()
 {
 	dprintf(DEBUG_DEBUG, "CCIcon::hide\n");
 	
-	restoreScreen();
+	if (savescreen || rePaint)
+	{
+		restoreScreen();
+	}
 }
 
 void CCIcon::refresh(bool show)
@@ -1114,7 +1117,7 @@ void CCText::hide()
 
 void CCText::refresh(bool show)
 {
-	dprintf(DEBUG_DEBUG, "CCLabel::refresh\n");
+	dprintf(DEBUG_DEBUG, "CCText::refresh\n");
 	
 	if (show)
 		paint();

@@ -315,11 +315,11 @@ void CWidget::hide()
 	frameBuffer->blit();
 }
 
-void CWidget::addKey(neutrino_msg_t key, CMenuTarget *menue, const std::string & action)
+void CWidget::addKey(neutrino_msg_t key, CMenuTarget *target, const std::string &action)
 {
 	dprintf(DEBUG_INFO, "CWidget::addKey: %s\n", action.c_str());
 	
-	keyActionMap[key].menue = menue;
+	keyActionMap[key].target = target;
 	keyActionMap[key].action = action;
 }
 
@@ -379,9 +379,9 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 			{
 				actionKey = it->second.action;
 
-				if (it->second.menue != NULL)
+				if (it->second.target != NULL)
 				{
-					int rv = it->second.menue->exec(this, it->second.action);
+					int rv = it->second.target->exec(this, it->second.action);
 
 					//FIXME:review this
 					switch ( rv ) 

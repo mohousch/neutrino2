@@ -2231,7 +2231,7 @@ void CNeutrinoApp::saveEpg()
 // mute
 void CNeutrinoApp::audioMute( int newValue, bool isEvent )
 {
-	muteIcon->enableRepaint();
+	muteIcon->enableSaveScreen();
 
 	CLCD::getInstance()->setMuted(newValue);
 
@@ -2246,12 +2246,10 @@ void CNeutrinoApp::audioMute( int newValue, bool isEvent )
 	{
 		if( current_muted ) 
 		{
-			printf("muteIcon:paint()\n");
 			muteIcon->paint();
 		}
 		else
 		{
-			printf("muteIcon:hide()\n");	
 			muteIcon->hide();
 		}
 		
@@ -2266,7 +2264,7 @@ void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint)
 	
 	neutrino_msg_t msg = key;
 
-	int dx = 296;	//256 (16*16) for vulme bar + 40 for volume digits
+	int dx = 296;
 	int dy = 32;
 
 	int x = frameBuffer->getScreenX() + 10;
@@ -2274,40 +2272,37 @@ void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint)
 
 	current_volume = g_settings.current_volume;
 	
-	int sw = frameBuffer->getScreenWidth();
-	int sh = frameBuffer->getScreenHeight();
-	
 	int a_step = atoi(g_settings.audio_step);
 	
 	switch( g_settings.volume_pos )
 	{
 		case 0:// upper right
-			x = sw - dx - 6;
+			x = frameBuffer->getScreenWidth() - dx - 6;
 			break;
 			
 		case 1:// upper left
 			break;
 			
 		case 2:// bottom left
-			y = sh - dy;
+			y = frameBuffer->getScreenHeight() - dy;
 			break;
 			
 		case 3:// bottom right
-			x = sw - dx;
-			y = sh - dy;
+			x = frameBuffer->getScreenWidth() - dx;
+			y = frameBuffer->getScreenHeight() - dy;
 			break;
 			
 		case 4:// center default
-			x = ((sw - dx) / 2) + x;
+			x = ((frameBuffer->getScreenWidth() - dx) / 2) + x;
 			break;
 			
 		case 5:// center higher
-			x = ((sw - dx) / 2) + x;
-			y = sh - sh/15;
+			x = ((frameBuffer->getScreenWidth() - dx) / 2) + x;
+			y = frameBuffer->getScreenHeight() - frameBuffer->getScreenHeight()/15;
 			break;
 	}
 	
-	g_volscale = new CCProgressBar(x + dy+ (dy/4), y + (dy/4), 200, 15);
+	g_volscale = new CCProgressBar(x + dy + dy/4, y + dy/4, 200, 15);
 
 	if(bDoPaint) 
 	{
@@ -2322,16 +2317,16 @@ void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint)
 		}
 		
 		// background box
-		frameBuffer->paintBoxRel(x, y , dx, dy, COL_MENUCONTENT_PLUS_0, g_settings.Head_radius | g_settings.Foot_radius, CORNER_ALL);
+		frameBuffer->paintBoxRel(x, y, dx, dy, COL_MENUCONTENT_PLUS_0, g_settings.Head_radius | g_settings.Foot_radius, CORNER_ALL);
 		
 		// vol box aussen
 		frameBuffer->paintBoxRel(x + dy + dy/4 - 2, y + dy/4 - 2, dy*25/4 + 4, dy/2 + 4, COL_MENUCONTENT_PLUS_3);
 		
 		// vol box innen
-		frameBuffer->paintBoxRel(x + dy + dy/4, y + dy/4, dy*25/4, dy/2,   COL_MENUCONTENT_PLUS_1);
+		frameBuffer->paintBoxRel(x + dy + dy/4, y + dy/4, dy*25/4, dy/2, COL_MENUCONTENT_PLUS_1);
 		
 		//icon
-		frameBuffer->paintIcon(NEUTRINO_ICON_VOLUME, x + dy/2, y + (dy/4), 0, COL_MENUCONTENT_PLUS_0);
+		frameBuffer->paintIcon(NEUTRINO_ICON_VOLUME, x + dy/2, y + dy/4, 0, dy);
 
 		g_volscale->reset();
 
@@ -2407,7 +2402,7 @@ void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint)
 				sprintf(p, "%3d", current_volume);
 
 				// erase the numbers
-				frameBuffer->paintBoxRel(x + dx - 50, y , 40, dy, COL_MENUCONTENT_PLUS_0);
+				frameBuffer->paintBoxRel(x + dx - 50, y, 40, dy, COL_MENUCONTENT_PLUS_0);
 
 				g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(x + dx - 45, y + dy/2 + 14, 36, p, COL_MENUCONTENT_TEXT_PLUS_0);
 				

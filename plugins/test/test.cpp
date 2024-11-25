@@ -1656,7 +1656,7 @@ void CTestMenu::testCIcon()
 	// loop
 	testIcon.exec();
 	
-	hide();  // CCIcon dont hide()
+//	hide();  // CCIcon dont hide()
 }
 
 // CImage
