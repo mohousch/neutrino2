@@ -2258,6 +2258,9 @@ void CTestMenu::testClistBox()
 
 		item->setHint(tmp.c_str());
 		
+		////
+		item->setActionKey(this, "wplay");
+		
 		rightWidget->addItem(item);
 	}
 
@@ -2278,7 +2281,7 @@ void CTestMenu::testClistBox()
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	
 	//
-	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
+//	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
 	
 	rightWidget->exec();

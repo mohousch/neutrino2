@@ -1967,18 +1967,6 @@ ClistBox::~ClistBox()
 		delete [] background;
 		background = NULL;
 	}
-
-	//
-	for(unsigned int count = 0; count <items.size(); count++) 
-	{
-		CMenuItem * item = items[count];
-
-		if (item->background)
-		{
-			delete [] item->background;
-			item->background = NULL;
-		}
-	}
 	
 	//
 	if (timer)
