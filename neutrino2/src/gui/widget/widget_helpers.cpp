@@ -81,9 +81,6 @@ int CComponent::exec(int timeout)
 {
 	dprintf(DEBUG_NORMAL, "CComponent::exec: timeout:%d\n", timeout);
 	
-	// loop
-//	bool handled = false;
-	bool loop = true;
 	bool show = true;
 	exit_pressed = false;
 	int retval = CMenuTarget::RETURN_REPAINT;

@@ -176,8 +176,8 @@ CUPnPDevice::CUPnPDevice(std::string url)
 	parser.Parse(body.c_str(), body.size(), 1);
 	root = parser.RootNode();
 	if (!root)
-		//throw std::runtime_error(std::string("XML: no root node"));
-		dprintf(DEBUG_NORMAL, "CUPnPDevice::CUPnPDevice: no root node\n");
+		throw std::runtime_error(std::string("XML: no root node"));
+		//dprintf(DEBUG_NORMAL, "CUPnPDevice::CUPnPDevice: no root node\n");
 
 	if (strcmp(root->GetType(),"root"))
 		//throw std::runtime_error(std::string("XML: no root"));
