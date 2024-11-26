@@ -82,13 +82,11 @@ int CComponent::exec(int timeout)
 	dprintf(DEBUG_NORMAL, "CComponent::exec: timeout:%d\n", timeout);
 	
 	// loop
-	bool handled = false;
+//	bool handled = false;
 	bool loop = true;
 	bool show = true;
 	exit_pressed = false;
-	
-	if (parent)
-		hide();
+	int retval = CMenuTarget::RETURN_REPAINT;
 
 	//
 	paint();
@@ -102,19 +100,20 @@ int CComponent::exec(int timeout)
 		
 	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(timeout);
 
-	while(loop)
-	{
-		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);		
+	do {
+		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
+		
+		int handled = false;
 		
 		if ( msg <= CRCInput::RC_MaxRC ) 
 		{
+			timeoutEnd = CRCInput::calcTimeoutEnd(timeout == 0 ? 0xFFFF : timeout);
+			
 			std::map<neutrino_msg_t, keyAction>::iterator it = keyActionMap.find(msg);
 						
 			if (it != keyActionMap.end()) 
 			{
 				actionKey = it->second.action; // FIXME:
-				
-				printf("CComponent::exec: actionKey:%s\n", actionKey.c_str());
 
 				if (it->second.target != NULL)
 				{
@@ -124,12 +123,11 @@ int CComponent::exec(int timeout)
 					switch ( rv ) 
 					{
 						case CMenuTarget::RETURN_EXIT_ALL:
-							loop = false; //fall through
+							retval = CMenuTarget::RETURN_EXIT_ALL;
 						case CMenuTarget::RETURN_EXIT:
-							loop = false;
+							msg = CRCInput::RC_timeout;
 							break;
 						case CMenuTarget::RETURN_REPAINT:
-							loop = true;
 							paint();
 							break;
 					}
@@ -145,59 +143,24 @@ int CComponent::exec(int timeout)
 			}
 			
 			//
-			directKeyPressed(msg);
+			int rv = directKeyPressed(msg);
+
+			switch ( rv ) 
+			{
+				case CMenuTarget::RETURN_EXIT_ALL:
+					retval = CMenuTarget::RETURN_EXIT_ALL; //fall through
+				case CMenuTarget::RETURN_EXIT:
+					msg = CRCInput::RC_timeout;
+					break;
+				case CMenuTarget::RETURN_REPAINT:
+					paint();
+					break;
+			}
 		}
 		
-		if (!handled) 
+		if (!handled)
 		{
-			if (msg == CRCInput::RC_up)
-			{
-				scrollLineUp();
-			}
-			else if (msg == CRCInput::RC_down)
-			{
-				scrollLineDown();
-			}
-			else if (msg == CRCInput::RC_left)
-			{
-				swipLeft();
-			}
-			else if (msg == CRCInput::RC_right)
-			{
-				swipRight();
-			}
-			else if (msg == CRCInput::RC_page_up)
-			{
-				scrollPageUp();
-			}
-			else if (msg == CRCInput::RC_page_down)
-			{
-				scrollPageDown();
-			}
-			else if (msg == CRCInput::RC_ok)
-			{
-				int rv = oKKeyPressed(parent);
-					
-				switch ( rv ) 
-				{
-					case CMenuTarget::RETURN_EXIT_ALL:
-						loop = false;
-					case CMenuTarget::RETURN_EXIT:
-						loop = false;
-						break;
-					case CMenuTarget::RETURN_REPAINT:
-						loop = true;
-						paint();
-						break;
-				}
-			}
-			else if (msg == CRCInput::RC_home || msg == CRCInput::RC_timeout) 
-			{
-				homeKeyPressed();
-				exit_pressed = true;
-				loop = false;
-			}
-			else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
+			if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 			{
 				show = !show;
 				
@@ -206,15 +169,100 @@ int CComponent::exec(int timeout)
 					refresh(show);
 				}
 			}
-			else if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
+			
+			switch (msg)
 			{
-				exit_pressed = true;
-				loop = false;
+				case (NeutrinoMessages::EVT_TIMER):
+					if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
+					{
+						retval = CMenuTarget::RETURN_EXIT_ALL;
+						msg = CRCInput::RC_timeout;
+					}
+					break;
+					
+				case CRCInput::RC_up:
+					{
+						scrollLineUp();
+					}
+					break;
+					
+				case CRCInput::RC_down:
+					{
+						scrollLineDown();
+					}
+					break;
+					
+				case CRCInput::RC_left:
+					{
+						swipLeft();
+					}
+					break;
+					
+				case CRCInput::RC_right:
+					{
+						swipRight();
+					}
+					break;
+					
+				case CRCInput::RC_page_up:
+					{
+						scrollPageUp();
+					}
+					break;
+					
+				case CRCInput::RC_page_down:
+					{
+						scrollPageDown();
+					}
+					break;
+				
+				case CRCInput::RC_ok:
+					{
+						int rv = oKKeyPressed(parent);
+					
+						switch ( rv ) 
+						{
+							case CMenuTarget::RETURN_EXIT_ALL:
+								retval = CMenuTarget::RETURN_EXIT_ALL;
+							case CMenuTarget::RETURN_EXIT:
+								msg = CRCInput::RC_timeout;
+								break;
+							case CMenuTarget::RETURN_REPAINT:
+								paint();
+								break;
+						}
+					}
+					break;
+				
+				case CRCInput::RC_home:
+					{
+						homeKeyPressed();
+						exit_pressed = true;
+						msg = CRCInput::RC_timeout;
+					}
+					break;
+				case (CRCInput::RC_timeout):
+					exit_pressed = true;
+					break;
+
+				default:
+					if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
+					{
+						retval = CMenuTarget::RETURN_EXIT_ALL;
+						msg = CRCInput::RC_timeout;
+					}
+			}
+			
+			if ( msg <= CRCInput::RC_MaxRC )
+			{
+				// recalculate timeout for RC-Tasten
+				timeoutEnd = CRCInput::calcTimeoutEnd(timeout == 0 ? 0xFFFF : timeout);
 			}
 		}
-
+		
 		CFrameBuffer::getInstance()->blit();
-	}
+		
+	} while ( msg != CRCInput::RC_timeout );
 
 	hide();	
 	
@@ -225,7 +273,7 @@ int CComponent::exec(int timeout)
 		sec_timer_id = 0;
 	}
 	
-	return 0;	
+	return retval;	
 }
 
 //// CCIcon

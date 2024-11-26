@@ -531,34 +531,6 @@ void CWidget::refresh(bool show)
 }
 
 //// events
-void CWidget::onOKKeyPressed()
-{
-	dprintf(DEBUG_INFO, "CWidget::onOKKeyPressed:\n");
-	
-	if(hasCCItem() && selected >= 0)
-	{
-		if (CCItems[selected]->hasItem() && CCItems[selected]->isSelectable())
-		{
-			int rv = CCItems[selected]->oKKeyPressed(this);
-
-			actionKey = CCItems[selected]->getActionKey();	// for lua
-
-			//
-			switch ( rv ) 
-			{
-				case CMenuTarget::RETURN_EXIT_ALL:
-					retval = CMenuTarget::RETURN_EXIT_ALL; //fall through
-				case CMenuTarget::RETURN_EXIT:
-					msg = CRCInput::RC_timeout;
-					break;
-				case CMenuTarget::RETURN_REPAINT:
-					paint();
-					break;
-			}
-		}
-	}
-}
-
 void CWidget::onHomeKeyPressed()
 {
 	dprintf(DEBUG_INFO, "CWidget::onHomeKeyPressed\n");
@@ -625,9 +597,57 @@ void CWidget::onDownKeyPressed()
 	}
 }
 
+void CWidget::onPageUpKeyPressed()
+{
+	dprintf(DEBUG_INFO, "CWidget::onPageUpKeyPressed\n");
+	
+	if(hasCCItem() && selected >= 0)
+	{
+		CCItems[selected]->scrollPageUp();
+	}
+}
+
+void CWidget::onPageDownKeyPressed()
+{
+	dprintf(DEBUG_INFO, "CWidget::onPageDownKeyPressed\n");
+	
+	if(hasCCItem() && selected >= 0)
+	{
+		CCItems[selected]->scrollPageDown();
+	}
+}
+
+void CWidget::onOKKeyPressed()
+{
+	dprintf(DEBUG_NORMAL, "CWidget::onOKKeyPressed:\n");
+	
+	if(hasCCItem() && selected >= 0)
+	{
+		if (CCItems[selected]->hasItem() && CCItems[selected]->isSelectable())
+		{
+			int rv = CCItems[selected]->oKKeyPressed(this);
+
+			actionKey = CCItems[selected]->getActionKey();	// for lua
+
+			//
+			switch ( rv ) 
+			{
+				case CMenuTarget::RETURN_EXIT_ALL:
+					retval = CMenuTarget::RETURN_EXIT_ALL; //fall through
+				case CMenuTarget::RETURN_EXIT:
+					msg = CRCInput::RC_timeout;
+					break;
+				case CMenuTarget::RETURN_REPAINT:
+					paint();
+					break;
+			}
+		}
+	}
+}
+
 void CWidget::onRightKeyPressed()
 {
-	dprintf(DEBUG_INFO, "CWidget::onRightKeyPressed\n");
+	dprintf(DEBUG_NORMAL, "CWidget::onRightKeyPressed\n");
 	
 	if(hasCCItem() && selected >= 0)
 	{
@@ -652,7 +672,7 @@ void CWidget::onRightKeyPressed()
 
 void CWidget::onLeftKeyPressed()
 {
-	dprintf(DEBUG_INFO, "CWidget::onLeftKeyPressed\n");
+	dprintf(DEBUG_NORMAL, "CWidget::onLeftKeyPressed\n");
 	
 	if(hasCCItem() && selected >= 0)
 	{
@@ -675,36 +695,16 @@ void CWidget::onLeftKeyPressed()
 	}
 }
 
-void CWidget::onPageUpKeyPressed()
-{
-	dprintf(DEBUG_INFO, "CWidget::onPageUpKeyPressed\n");
-	
-	if(hasCCItem() && selected >= 0)
-	{
-		CCItems[selected]->scrollPageUp();
-	}
-}
-
-void CWidget::onPageDownKeyPressed()
-{
-	dprintf(DEBUG_INFO, "CWidget::onPageDownKeyPressed\n");
-	
-	if(hasCCItem() && selected >= 0)
-	{
-		CCItems[selected]->scrollPageDown();
-	}
-}
-
 //
 void CWidget::onDirectKeyPressed(neutrino_msg_t _msg)
 {
-	dprintf(DEBUG_INFO, "CWidget::onDirectKeyPressed: msg:0x%x\n", _msg);
+	dprintf(DEBUG_NORMAL, "CWidget::onDirectKeyPressed: msg:0x%x\n", _msg);
 	
 	if(hasCCItem() && selected >= 0)
 	{
 		int rv = CCItems[selected]->directKeyPressed(_msg);
 
-		actionKey = CCItems[selected]->getActionKey();	// lua
+//		actionKey = CCItems[selected]->getActionKey();	// lua
 
 		//
 		switch ( rv ) 

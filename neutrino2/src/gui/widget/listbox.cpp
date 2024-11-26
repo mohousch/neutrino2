@@ -3374,7 +3374,7 @@ void ClistBox::scrollPageUp(const int)
 //
 int ClistBox::swipLeft()
 {
-	dprintf(DEBUG_INFO, "ClistBox::swipLeft:\n");
+	dprintf(DEBUG_NORMAL, "ClistBox::swipLeft:\n");
 	
 	int ret = CMenuTarget::RETURN_NONE;
 
@@ -3441,7 +3441,7 @@ int ClistBox::swipLeft()
 //
 int ClistBox::swipRight()
 {
-	dprintf(DEBUG_INFO, "ClistBox::swipRight:\n");
+	dprintf(DEBUG_NORMAL, "ClistBox::swipRight:\n");
 	
 	int ret = CMenuTarget::RETURN_NONE;
 
@@ -3506,7 +3506,7 @@ int ClistBox::swipRight()
 //
 int ClistBox::oKKeyPressed(CMenuTarget *target, neutrino_msg_t _msg)
 {
-	dprintf(DEBUG_INFO, "ClistBox::okKeyPressed: msg:0x%x\n", _msg);
+	dprintf(DEBUG_NORMAL, "ClistBox::okKeyPressed: msg:0x%x\n", _msg);
 	
 	int ret = CMenuTarget::RETURN_EXIT;
 
@@ -3525,7 +3525,7 @@ int ClistBox::oKKeyPressed(CMenuTarget *target, neutrino_msg_t _msg)
 //
 int ClistBox::directKeyPressed(neutrino_msg_t _msg)
 {
-	dprintf(DEBUG_INFO, "ClistBox::directKeyPressed: msg:0x%x\n", _msg);
+	dprintf(DEBUG_NORMAL, "ClistBox::directKeyPressed: msg:0x%x\n", _msg);
 	
 	int ret = CMenuTarget::RETURN_NONE;
 	
