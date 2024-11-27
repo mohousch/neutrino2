@@ -698,7 +698,7 @@ void CWidget::onLeftKeyPressed()
 //
 void CWidget::onDirectKeyPressed(neutrino_msg_t _msg)
 {
-	dprintf(DEBUG_NORMAL, "CWidget::onDirectKeyPressed: msg:0x%x\n", _msg);
+	dprintf(DEBUG_DEBUG, "CWidget::onDirectKeyPressed: msg:0x%x\n", _msg);
 	
 	if(hasCCItem() && selected >= 0)
 	{

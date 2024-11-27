@@ -3513,7 +3513,7 @@ int ClistBox::oKKeyPressed(CMenuTarget *target, neutrino_msg_t _msg)
 //
 int ClistBox::directKeyPressed(neutrino_msg_t _msg)
 {
-	dprintf(DEBUG_NORMAL, "ClistBox::directKeyPressed: msg:0x%x\n", _msg);
+	dprintf(DEBUG_DEBUG, "ClistBox::directKeyPressed: msg:0x%x\n", _msg);
 	
 	int ret = CMenuTarget::RETURN_NONE;
 	
