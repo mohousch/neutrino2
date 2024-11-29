@@ -1099,7 +1099,7 @@ bool CFrameBuffer::paintIcon(const std::string &filename, const int x, const int
 
 	data = (fb_pixel_t *)getImage(newname, width, height, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
 	
-	// check into buttonBasePath	
+	// check into buttonBasePath
 	if(!data) 
 	{
 		newname = buttonBasePath +filename.c_str() + ".png";
