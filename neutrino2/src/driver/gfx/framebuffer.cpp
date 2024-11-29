@@ -232,6 +232,9 @@ void CFrameBuffer::init(const char * const fbDevice)
         paletteSet(&cmap);
 
         useBackground(false);
+        
+        // init libngpng
+	init_handlers();
 
 	return;
 
@@ -259,6 +262,9 @@ CFrameBuffer::~CFrameBuffer()
 
 	if (lfb)
 		munmap(lfb, available);
+		
+	// deinit libngpng
+	deinit_handlers();
 	
 #if defined (USE_OPENGL)
 	active = false;

@@ -3291,9 +3291,6 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		CCECSetup cecsetup;
 		cecsetup.setCECSettings(false);
 #endif
-
-		// deinit libngpng
-		deinit_handlers();
 		
 		//
 		if (muteIcon)
@@ -4607,9 +4604,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 	
         global_argv[argc] = NULL;
         
-        // init libngpng
-	init_handlers();
-        
         //
         setupFrameBuffer();
 	
@@ -5006,7 +5000,7 @@ void sighandler(int signum)
 int main(int argc, char *argv[])
 {
 	// build date
-	printf(">>> %s v %s (compiled %s %s) <<<\n", PACKAGE_NAME, PACKAGE_VERSION, __DATE__, __TIME__);	
+	printf(">>> neutrinoNG v %s (compiled %s %s) <<<\n", PACKAGE_VERSION, __DATE__, __TIME__);	
 
 	// sighandler
         signal(SIGTERM, sighandler);
