@@ -139,12 +139,14 @@ CKeyboardInput::CKeyboardInput(const char* const Name, int Size, CChangeObserver
 
 void CKeyboardInput::init()
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::init\n");
+	
 	frameBuffer = CFrameBuffer::getInstance();
 	setLayout();
 
 	hheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight();
 	iheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->getHeight();
-	input_h = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 2;		// font height + border
+	input_h = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 2;			// font height + border
 	input_w = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth("M") + INPUT_BORDER;// hack font width + border
 	offset  = BORDER_OFFSET;
 	fheight = hheight;
@@ -204,6 +206,8 @@ void CKeyboardInput::init()
 
 void CKeyboardInput::setLayout()
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::setLayout\n");
+	
 	if (layout != NULL)
 		return;
 
@@ -224,6 +228,8 @@ void CKeyboardInput::setLayout()
 
 void CKeyboardInput::switchLayout()
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::switchLayout\n");
+	
 	unsigned i;
 	for (i = 0; i < LAYOUT_COUNT; i++)
 	{
@@ -243,6 +249,8 @@ void CKeyboardInput::switchLayout()
 
 void CKeyboardInput::NormalKeyPressed()
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::NormalKeyPressed\n");
+	
 	if (keyboard[srow][scol].empty())
 		return;
 
@@ -260,6 +268,8 @@ void CKeyboardInput::NormalKeyPressed()
 
 void CKeyboardInput::clearString()
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::clearString\n");
+	
 	selected = 0;
 	inputString->assign(inputString->length(), ' ');
 	
@@ -271,6 +281,8 @@ void CKeyboardInput::clearString()
 
 void CKeyboardInput::switchCaps()
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::switchCaps\n");
+	
 	caps = caps ? 0 : 1;
 	keyboard = layout->keys[caps];
 	
@@ -280,6 +292,8 @@ void CKeyboardInput::switchCaps()
 
 void CKeyboardInput::keyUpPressed()
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::keyUpPressed\n");
+	
 	if (focus == FOCUS_KEY)
 	{
 		int old_row = srow;
@@ -308,6 +322,8 @@ void CKeyboardInput::keyUpPressed()
 
 void CKeyboardInput::keyDownPressed()
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::keyDownPressed\n");
+	
 	if (focus == FOCUS_KEY)
 	{
 		int old_row = srow;
@@ -335,6 +351,8 @@ void CKeyboardInput::keyDownPressed()
 
 void CKeyboardInput::keyLeftPressed()
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::keyLeftPressed\n");
+	
 	if (focus == FOCUS_KEY)
 	{
 		int old_col = scol;;
@@ -359,6 +377,8 @@ void CKeyboardInput::keyLeftPressed()
 
 void CKeyboardInput::keyRightPressed()
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::keyRightPressed\n");
+	
 	if (focus == FOCUS_KEY)
 	{
 		int old_col = scol;;
@@ -385,6 +405,8 @@ void CKeyboardInput::keyRightPressed()
 
 void CKeyboardInput::deleteChar()
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::deleteChar\n");
+	
 	int item = selected;
 	
 	while (item < (inputSize - 1))
@@ -401,6 +423,8 @@ void CKeyboardInput::deleteChar()
 
 void CKeyboardInput::keyBackspacePressed(void)
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::keyBackspacePressed\n");
+	
 	if (selected > 0)
 	{
 		selected--;
@@ -418,6 +442,8 @@ void CKeyboardInput::keyBackspacePressed(void)
 
 void CKeyboardInput::keyDigiPressed(const neutrino_msg_t key)
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::keyDigiPressed: key:%llx\n", key);
+	
 	int old_col = scol;
 	int old_srow = srow;
 	int digi = CRCInput::getNumericValue(key);
@@ -436,6 +462,8 @@ void CKeyboardInput::keyDigiPressed(const neutrino_msg_t key)
 
 void CKeyboardInput::insertChar()
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::insertChar\n");
+	
 	int item = inputSize - 1;
 	
 	while (item > selected)
@@ -452,6 +480,8 @@ void CKeyboardInput::insertChar()
 
 void CKeyboardInput::enableSaveScreen(bool enable)
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::enableSaveScreen:%s\n", enable? "true" : "false");
+	
 	force_saveScreen = enable;
 	
 	if (!enable && pixBuf)
@@ -463,6 +493,8 @@ void CKeyboardInput::enableSaveScreen(bool enable)
 
 int CKeyboardInput::exec(CMenuTarget* parent, const std::string&)
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::exec\n");
+	
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
 	int res = RETURN_REPAINT;
@@ -473,7 +505,7 @@ int CKeyboardInput::exec(CMenuTarget* parent, const std::string&)
 	init();
 
 	std::string oldval = valueString;
-
+	
 	if (pixBuf)
 		delete[] pixBuf;
 		
@@ -498,7 +530,7 @@ int CKeyboardInput::exec(CMenuTarget* parent, const std::string&)
 		if (changed)
 		{
 			changed = false;
-			CLCD::getInstance()->showMenuText(1, inputString->c_str(), selected + 1);
+			CLCD::getInstance()->showMenuText(0, inputString->c_str(), selected + 1);
 		}
 		
 		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd, true);
@@ -613,6 +645,8 @@ void CKeyboardInput::hide()
 
 int CKeyboardInput::paintFooter()
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::paintFooter\n");
+	
 	struct button_label footerButtons[] =
 	{
 		{ NEUTRINO_ICON_BUTTON_RED, _("Save"), COL_RED_PLUS_0 },
@@ -633,8 +667,12 @@ int CKeyboardInput::paintFooter()
 
 void CKeyboardInput::paint()
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::paint\n");
+	
+	//
 	frameBuffer->paintBoxRel(x, y + hheight, width, bheight, COL_MENUCONTENT_PLUS_0);
 
+	//
 	CCHeaders header(x, y, width, hheight, title.c_str(), iconfile.c_str());
 	header.paint();
 
@@ -658,17 +696,22 @@ void CKeyboardInput::paint()
 	for (int count = 0; count < inputSize; count++)
 		paintChar(count);
 
+	//
 	paintFooter();
 }
 
 void CKeyboardInput::paintChar(int pos)
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::paintChar: pos:%d\n", pos);
+	
 	if (pos < (int) inputString->length())
 		paintChar(pos, inputString->at(pos));
 }
 
 void CKeyboardInput::paintChar(int pos, std::string &c)
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::paintChar: pos:%d char:%s\n", pos, c.c_str());
+	
 	int xpos = x + offset + (width - iwidth) / 2 + pos * input_w;
 	int ypos = y + hheight + offset;
 
@@ -692,6 +735,8 @@ void CKeyboardInput::paintChar(int pos, std::string &c)
 
 void CKeyboardInput::paintKeyboard()
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::paintKeyboard\n");
+	
 	for (int i = 0; i < KEY_ROWS; i++)
 	{
 		for (int j = 0; j < KEY_COLUMNS; j++)
@@ -701,6 +746,8 @@ void CKeyboardInput::paintKeyboard()
 
 void CKeyboardInput::paintKey(int row, int column)
 {
+	dprintf(DEBUG_NORMAL, "CKeyboardInput::paintKey: row:%d column:%d\n", row, column);
+	
 	int xpos = x + offset + (width - kwidth) / 2 + (key_w + KEY_BORDER) * column;
 	int ypos = key_y + (key_h + KEY_BORDER) * row;
 

@@ -607,10 +607,9 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	//
 	g_settings.preferred_skin = configfile.getString("preferred_skin", "neutrino2");
 	////
-	g_settings.widget_type = configfile.getInt32("widget_type", ClistBox::TYPE_CLASSIC);
+//	g_settings.widget_type = configfile.getInt32("widget_type", ClistBox::TYPE_CLASSIC);
 	g_settings.item_info = configfile.getBool("item_info", false);
 	g_settings.theme = configfile.getString("theme", "default.config");
-	////
 
 	// keysbinding
 	strcpy(g_settings.repeat_blocker, configfile.getString("repeat_blocker", "250").c_str());
@@ -903,7 +902,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.personalize_epgtimer = configfile.getInt32("personalize_epgtimer", CMenuItem::ITEM_ACTIVE);
 	g_settings.personalize_scart = configfile.getInt32("personalize_scart", CMenuItem::ITEM_ACTIVE);
 	g_settings.personalize_features = configfile.getInt32("personalize_features", CMenuItem::ITEM_ACTIVE);
-	g_settings.personalize_system = configfile.getInt32("personalize_system", CMenuItem::ITEM_ACTIVE);
+	g_settings.personalize_service = configfile.getInt32("personalize_service", CMenuItem::ITEM_ACTIVE);
 	g_settings.personalize_information = configfile.getInt32("personalize_information", CMenuItem::ITEM_ACTIVE);
 	g_settings.personalize_powermenu = configfile.getInt32("personalize_powermenu", CMenuItem::ITEM_ACTIVE);
 	g_settings.personalize_mediaplayer = configfile.getInt32("personalize_mediaplayer", CMenuItem::ITEM_ACTIVE);
@@ -1153,7 +1152,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	
 	//
 	configfile.setString("preferred_skin", g_settings.preferred_skin);
-	configfile.setInt32("widget_type", g_settings.widget_type);
+//	configfile.setInt32("widget_type", g_settings.widget_type);
 	configfile.setBool("item_info", g_settings.item_info);
 	configfile.setString("theme", g_settings.theme);
 	// END OSD
@@ -1414,7 +1413,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setInt32("personalize_epgtimer", g_settings.personalize_epgtimer);
 	configfile.setInt32("personalize_scart", g_settings.personalize_scart);
 	configfile.setInt32("personalize_features", g_settings.personalize_features);
-	configfile.setInt32("personalize_system", g_settings.personalize_system);
+	configfile.setInt32("personalize_service", g_settings.personalize_service);
 	configfile.setInt32("personalize_information", g_settings.personalize_information);
 	configfile.setInt32("personalize_powermenu", g_settings.personalize_powermenu);
 	configfile.setInt32("personalize_mediaplayer", g_settings.personalize_mediaplayer);
@@ -2996,136 +2995,6 @@ void CNeutrinoApp::selectSubtitles()
 			}
 		}
 	}
-}
-
-// select NVOD
-void CNeutrinoApp::selectNVOD()
-{
-	dprintf(DEBUG_NORMAL, "selectNVOD\n");
-	
-        if (!(g_RemoteControl->subChannels.empty()))
-        {
-                //
-                CWidget* widget = NULL;
-                ClistBox* NVODSelector = NULL;
-                
-                widget = CNeutrinoApp::getInstance()->getWidget("nvodselect");
-                
-                if (widget)
-                {
-			NVODSelector = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
-		}
-		else
-                {
-                	//
-                	widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			widget->name = "nvodselect";
-			widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
-                	
-			NVODSelector = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
-			NVODSelector->setWidgetMode(ClistBox::MODE_SETUP);
-			NVODSelector->enableShrinkMenu();
-							
-			NVODSelector->enablePaintHead();
-			NVODSelector->setTitle(g_RemoteControl->are_subchannels ? _("Select Subservice") : _("Select starting-time"), NEUTRINO_ICON_VIDEO);
-
-			NVODSelector->enablePaintFoot();
-								
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
-								
-			NVODSelector->setFootButtons(&btn);
-			
-			//
-			widget->addCCItem(NVODSelector);
-		}
-		
-		CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, g_RemoteControl->are_subchannels ? _("Select Subservice") : _("Select starting-time"));
-
-		//
-                if(getNVODMenu(NVODSelector))
-                {
-                	widget->setTimeOut(g_settings.timing_menu);
-                        widget->exec(NULL, "");
-                        
-                        if (widget)
-                        {
-                        	delete widget;
-                        	widget = NULL;
-                        }
-                }
-        }
-}
-
-// option off0_on1
-#define OPTIONS_OFF0_ON1_OPTION_COUNT 2
-const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
-{
-        { 0, _("off") },
-        { 1, _("on") }
-};
-
-bool CNeutrinoApp::getNVODMenu(ClistBox *menu)
-{	
-	//
-        if (g_RemoteControl->subChannels.empty())
-                return false;
-
-        int count = 0;
-        char nvod_id[5];
-
-        for( CSubServiceListSorted::iterator e = g_RemoteControl->subChannels.begin(); e != g_RemoteControl->subChannels.end(); ++e)
-        {
-		sprintf(nvod_id, "%d", count);
-
-		if( !g_RemoteControl->are_subchannels ) 
-		{
-			char nvod_time_a[50], nvod_time_e[50], nvod_time_x[50];
-			char nvod_s[255];
-			struct  tm *tmZeit;
-
-			tmZeit = localtime(&e->starttime);
-			sprintf(nvod_time_a, "%02d:%02d", tmZeit->tm_hour, tmZeit->tm_min);
-
-			time_t endtime = e->starttime + e->duration;
-			tmZeit = localtime(&endtime);
-			sprintf(nvod_time_e, "%02d:%02d", tmZeit->tm_hour, tmZeit->tm_min);
-
-			time_t jetzt = time(NULL);
-			if(e->starttime > jetzt) 
-			{
-				int mins = (e->starttime - jetzt)/ 60;
-				sprintf(nvod_time_x, _("(starting in %d min)"), mins);
-			}
-			else if( (e->starttime <= jetzt) && (jetzt < endtime) ) 
-			{
-				int proz = (jetzt - e->starttime)*100/ e->duration;
-				sprintf(nvod_time_x, _("(%d%% over)"), proz);
-			}
-			else
-				nvod_time_x[0] = 0;
-
-			sprintf(nvod_s, "%s - %s %s", nvod_time_a, nvod_time_e, nvod_time_x);
-			menu->addItem(new CMenuForwarder(nvod_s, true, NULL, NVODChanger, nvod_id), (count == g_RemoteControl->selected_subchannel));
-		} 
-		else 
-		{
-			if (count == 0)
-				menu->addItem(new CMenuForwarder(::Latin1_to_UTF8(e->subservice_name.c_str()).c_str(), true, NULL, NVODChanger, nvod_id, CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE));
-			else
-				menu->addItem(new CMenuForwarder(::Latin1_to_UTF8(e->subservice_name.c_str()).c_str(), true, NULL, NVODChanger, nvod_id, CRCInput::convertDigitToKey(count)), (count == g_RemoteControl->selected_subchannel));
-		}
-
-		count++;
-	}
-
-	if( g_RemoteControl->are_subchannels ) 
-	{
-		menu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-		CMenuOptionChooser* oj = new CMenuOptionChooser(_("Direct-Mode"), &g_RemoteControl->director_mode, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, NULL, CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW);
-		menu->addItem(oj);
-	}
-
-	return true;
 }
 
 void CNeutrinoApp::lockPlayBack(void)
@@ -4776,9 +4645,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 	hdd->exec(NULL, "");
 	delete hdd;
 	hdd = NULL;
-	
-	// init nvod changer
-	NVODChanger = new CNVODChangeExec();
 	
 	// init rclock
 	rcLock = new CRCLock();

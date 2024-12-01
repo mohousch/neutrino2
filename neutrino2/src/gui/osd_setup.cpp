@@ -85,6 +85,11 @@ int COSDSettings::showMenu(void)
 	int res = CMenuTarget::RETURN_REPAINT;
 	
 	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("OSD"));
+	
+	//
 	CWidget* widget = NULL;
 	ClistBox* osdSettings = NULL;
 	
@@ -106,66 +111,63 @@ int COSDSettings::showMenu(void)
 		osdSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		osdSettings->setWidgetMode(ClistBox::MODE_MENU);
-		osdSettings->setWidgetType(g_settings.widget_type);
+		osdSettings->setWidgetType(ClistBox::TYPE_CLASSIC);
 		osdSettings->enableShrinkMenu();
 		//
 		osdSettings->enablePaintHead();
 		osdSettings->setTitle(_("OSD"), NEUTRINO_ICON_COLORS);
 		osdSettings->enablePaintDate();
 		//
-		if (osdSettings->getWidgetType() != ClistBox::TYPE_STANDARD)
-		{
-			osdSettings->enablePaintFoot();	
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };	
-			if (!g_settings.item_info) osdSettings->setFootButtons(&btn);
-		}
+		osdSettings->enablePaintFoot();	
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };	
+		osdSettings->setFootButtons(&btn);
 		
 		// iteminfo
-		if (g_settings.item_info) osdSettings->enablePaintItemInfo(60);
+		if (g_settings.item_info) osdSettings->enablePaintItemInfo();
 		
 		//
 		widget->addCCItem(osdSettings);
+	
+		// skin manager
+		osdSettings->addItem( new CMenuForwarder(_("Skin select"), true, NULL, new CSkinManager(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_THEMES));
+			
+		// skin themes
+		osdSettings->addItem(new CMenuForwarder(_("Skin Style"), true, NULL, new CSkinSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
+
+		// menu colors
+		osdSettings->addItem( new CMenuForwarder(_("Menu"), true, NULL, new COSDMenuColorSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_MENUCOLORS));
+
+		// infobar
+		osdSettings->addItem( new CMenuForwarder(_("Infobar"), true, NULL, new COSDInfoBarColorSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_INFOBARCOLORS));
+
+		// language
+		osdSettings->addItem(new CMenuForwarder(_("Language"), true, NULL, new CLanguageSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_LANGUAGE));
+			
+		// font
+		osdSettings->addItem(new CMenuForwarder(_("Font"), true, NULL, new CFontSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_FONT));
+			
+		// osd timing
+		osdSettings->addItem(new CMenuForwarder(_("Timing"), true, NULL, new COSDTimingSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDTIMING));
+
+		// sceensetup
+		osdSettings->addItem(new CMenuForwarder(_("Screen"), true, NULL, new CScreenSetup(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCREENSETUP));
+		
+		// alpha setup
+		//FIXME:
+		//CAlphaSetup * chAlphaSetup = new CAlphaSetup(_("Alpha"), &g_settings.gtx_alpha);
+		//osdSettings->addItem( new CMenuForwarder(_("Alpha Setup"), true, NULL, chAlphaSetup, NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_ALPHASETUP));
+		
+		// personalize
+		if (g_settings.preferred_skin == "standard")
+		{
+			osdSettings->addItem(new CMenuForwarder(_("Personalisation"), true, NULL, new CPersonalisation(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
+		}
+		
+		// diverses
+		osdSettings->addItem(new CMenuForwarder(_("Misc settings"), true, NULL, new COSDDiverses(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
 	}
 	
-	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("OSD"));
-	
-	// skin manager
-	osdSettings->addItem( new CMenuForwarder(_("Skin select"), true, NULL, new CSkinManager(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_THEMES));
-		
-	// skin themes
-	osdSettings->addItem(new CMenuForwarder(_("Skin Style"), true, NULL, new CSkinSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
-
-	// menu colors
-	osdSettings->addItem( new CMenuForwarder(_("Menu"), true, NULL, new COSDMenuColorSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_MENUCOLORS));
-
-	// infobar
-	osdSettings->addItem( new CMenuForwarder(_("Infobar"), true, NULL, new COSDInfoBarColorSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_INFOBARCOLORS));
-
-	// language
-	osdSettings->addItem(new CMenuForwarder(_("Language"), true, NULL, new CLanguageSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_LANGUAGE));
-		
-	// font
-	osdSettings->addItem(new CMenuForwarder(_("Font"), true, NULL, new CFontSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_FONT));
-		
-	// osd timing
-	osdSettings->addItem(new CMenuForwarder(_("Timing"), true, NULL, new COSDTimingSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDTIMING));
-
-	// sceensetup
-	osdSettings->addItem(new CMenuForwarder(_("Screen"), true, NULL, new CScreenSetup(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCREENSETUP));
-		
-	// alpha setup
-	//FIXME:
-	//CAlphaSetup * chAlphaSetup = new CAlphaSetup(_("Alpha"), &g_settings.gtx_alpha);
-	//osdSettings->addItem( new CMenuForwarder(_("Alpha Setup"), true, NULL, chAlphaSetup, NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_ALPHASETUP));
-	
-	// personalize
-	osdSettings->addItem(new CMenuForwarder(_("Personalisation"), true, NULL, new CPersonalisation(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
-		
-	// diverses
-	osdSettings->addItem(new CMenuForwarder(_("Misc settings"), true, NULL, new COSDDiverses(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
+	osdSettings->integratePlugins(CPlugins::I_TYPE_OSD);
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
@@ -1196,23 +1198,14 @@ void COSDDiverses::showMenu()
 	// weather
 	osdDiverseSettings->addItem(new CMenuOptionChooser("Show weather", &g_settings.show_weather, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
 	
-	//
-	osdDiverseSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	
-	// widget_type
-	if (g_settings.preferred_skin == "neutrino")
-	{
-		CMenuItem *item = new CMenuOptionChooser(_("Widget Type"), &g_settings.widget_type);
-		item->setActive(true);
-		item->addOption(_("Standard"), ClistBox::TYPE_STANDARD);
-		item->addOption(_("Classic"), ClistBox::TYPE_CLASSIC);
-		item->addOption(_("Extended"), ClistBox::TYPE_EXTENDED);
-		
-		osdDiverseSettings->addItem(item);
-	}
-	
 	// item info
-	osdDiverseSettings->addItem(new CMenuOptionChooser(_("Show Hints"), &g_settings.item_info, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
+	if (g_settings.preferred_skin == "standard")
+	{
+		//
+		osdDiverseSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+	
+		osdDiverseSettings->addItem(new CMenuOptionChooser(_("Show Hints"), &g_settings.item_info, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
+	}
 
 	//
 	widget->setTimeOut(g_settings.timing_menu);
@@ -1694,8 +1687,8 @@ int CPersonalisation::showMenu(void)
 	item->addOption(_("inactive"), CMenuItem::ITEM_INACTIVE);
 	personalizeSettings->addItem(item);
 	
-	// system
-	item = new CMenuOptionChooser(_("System"), &g_settings.personalize_system);
+	// service
+	item = new CMenuOptionChooser(_("Service"), &g_settings.personalize_service);
 	item->setActive(true);
 	item->addOption(_("active"), CMenuItem::ITEM_ACTIVE);
 	item->addOption(_("locked"), CMenuItem::ITEM_LOCKED);

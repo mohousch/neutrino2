@@ -2,7 +2,7 @@ installdir = $(CONFIGDIR)/skins/MetrixHD/hints
 
 install_DATA = \
 	hint_dboxinfo.png \
-	hint_plugin.png \
+	hint_features.png \
 	hint_settings.png \
 	hint_media.png \
 	hint_service.png \

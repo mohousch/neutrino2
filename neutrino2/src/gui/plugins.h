@@ -57,7 +57,9 @@ typedef enum integration_type
 	INTEGRATION_TYPE_SETTING	= 3,
 	INTEGRATION_TYPE_SERVICE	= 4,
 	INTEGRATION_TYPE_POWER		= 5,
-	INTEGRATION_TYPE_USER		= 6
+	INTEGRATION_TYPE_USER		= 6,
+	INTEGRATION_TYPE_INFORMATION	= 7,
+	INTEGRATION_TYPE_OSD		= 8
 }
 integration_type_t;
 
@@ -77,13 +79,15 @@ class CPlugins
 		//
 		typedef enum i_type
 		{
-			I_TYPE_DISABLED	= 0x1,
+			I_TYPE_DISABLED		= 0x1,
 			I_TYPE_MAIN		= 0x2,
 			I_TYPE_MULTIMEDIA	= 0x4,
 			I_TYPE_SETTING		= 0x8,
 			I_TYPE_SERVICE		= 0x10,
 			I_TYPE_POWER		= 0x20,
-			I_TYPE_USER		= 0x40
+			I_TYPE_USER		= 0x40,
+			I_TYPE_INFORMATION	= 0x80,
+			I_TYPE_OSD		= 0x100
 		}
 		i_type_t;
 		

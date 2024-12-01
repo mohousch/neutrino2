@@ -539,6 +539,11 @@ int CInfoMenu::showMenu()
 	int res = CMenuTarget::RETURN_REPAINT;
 	
 	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Information"));
+	
+	//
 	widget = NULL; 
 	infoMenu = NULL;
 	
@@ -559,7 +564,7 @@ int CInfoMenu::showMenu()
 		infoMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		infoMenu->setWidgetMode(ClistBox::MODE_MENU);
-		infoMenu->setWidgetType(g_settings.widget_type);
+		infoMenu->setWidgetType(ClistBox::TYPE_CLASSIC);
 		infoMenu->enableShrinkMenu();
 		
 		//
@@ -568,36 +573,28 @@ int CInfoMenu::showMenu()
 		infoMenu->enablePaintDate();
 		
 		//
-		if (infoMenu->getWidgetType() != ClistBox::TYPE_STANDARD)
-		{
-			infoMenu->enablePaintFoot();	
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };	
-			if (!g_settings.item_info) infoMenu->setFootButtons(&btn);
-		}
+		infoMenu->enablePaintFoot();	
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };	
+		infoMenu->setFootButtons(&btn);
 		
 		// iteminfo
 		if (g_settings.item_info) infoMenu->enablePaintItemInfo(60);
 		
 		//
 		widget->addCCItem(infoMenu);
+	
+		//
+		infoMenu->addItem( new CMenuForwarder(_("Information"), true, NULL, new CDBoxInfoWidget(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO));
+			
+		//
+		infoMenu->addItem(new CMenuForwarder(_("Image info"),  true, NULL, new CImageInfo(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_IMAGEINFO), false);
+			
+		//
+		infoMenu->addItem(new CMenuForwarder(_("Stream information"), true, NULL, new CStreamInfo(), "", CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO));
 	}
-	
-	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Information"));
-	
-	//
-	infoMenu->addItem( new CMenuForwarder(_("Information"), true, NULL, new CDBoxInfoWidget(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO));
 		
 	//
-	infoMenu->addItem(new CMenuForwarder(_("Image info"),  true, NULL, new CImageInfo(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_IMAGEINFO), false);
-		
-	//
-	infoMenu->addItem(new CMenuForwarder(_("Stream information"), true, NULL, new CStreamInfo(), "", CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO));
-		
-	//
-	infoMenu->integratePlugins(CPlugins::I_TYPE_MAIN);
+	infoMenu->integratePlugins(CPlugins::I_TYPE_INFORMATION);
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);

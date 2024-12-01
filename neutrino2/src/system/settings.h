@@ -40,7 +40,7 @@
 #include <list>
 
 
-#define MAX_INPUT_CHARS		40
+#define MAX_INPUT_CHARS		34
 
 struct SNeutrinoSettings
 {
@@ -252,7 +252,6 @@ struct SNeutrinoSettings
 	
 	int volume_pos;
 	std::string preferred_skin;
-	int widget_type;
 	int item_info;
 	std::string theme;
 	// END OSD
@@ -517,7 +516,7 @@ struct SNeutrinoSettings
 	int  personalize_epgtimer;
 	int  personalize_scart;
 	int  personalize_features;
-	int  personalize_system;
+	int  personalize_service;
 	int  personalize_information;
 	int  personalize_powermenu;
 	int  personalize_mediaplayer;

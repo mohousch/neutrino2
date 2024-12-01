@@ -67,7 +67,7 @@ class CNVODChangeExec : public CMenuTarget
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
 
-//
+////
 typedef struct neutrino_font_descr
 {
 	const char * name;
@@ -108,7 +108,6 @@ class CNeutrinoApp : public CMenuTarget
 		struct timeval standby_pressed_at;
 		CZapit::responseGetLastChannel firstchannel;
 		bool skipShutdownTimer;
-		CNVODChangeExec *NVODChanger;
 		CRCLock *rcLock;
 		////
 		fb_pixel_t * vol_pixbuf;
@@ -141,7 +140,6 @@ class CNeutrinoApp : public CMenuTarget
 		void loadSkin(std::string skinName);
 		void readSkinConfig(const char* const filename);
 		void saveSkinConfig(const char* const filename);
-		//
 		CWidget *getWidget(const char *const widgetname, const char *const skinfilename = NULL, const bool data = false);
 		void parseClistBox(xmlNodePtr node, CWidget* widget);
 		void parseCHead(xmlNodePtr node, CWidget* widget);
@@ -149,7 +147,6 @@ class CNeutrinoApp : public CMenuTarget
 		void parseCTextBox(xmlNodePtr node, CWidget* widget);
 		//void parseCListFrame(xmlNodePtr node, CWidget* widget);
 		//void parseCFrameBox(xmlNodePtr node, CWidget* widget);
-		//
 		void parseCCWindow(xmlNodePtr node, CWidget* widget);
 		void parseCCLabel(xmlNodePtr node, CWidget* widget);
 		void parseCCImage(xmlNodePtr node, CWidget* widget);
@@ -159,7 +156,6 @@ class CNeutrinoApp : public CMenuTarget
 		void parseCCVline(xmlNodePtr node, CWidget* widget);
 		void parseCCPig(xmlNodePtr node, CWidget* widget);
 		void parseKey(xmlNodePtr node, CWidget* widget);
-		//
 		CMenuTarget* convertTarget(const std::string& name);
 		uint32_t convertColor(const char* const color);
 		uint32_t convertFontColor(const char* const color);
@@ -182,7 +178,6 @@ class CNeutrinoApp : public CMenuTarget
 		void mainMenu();
 		bool showUserMenu(int button);
 		void selectNVOD();
-                bool getNVODMenu(ClistBox* menu);
 		////
 		void audioMute( int newValue, bool isEvent= false );
 		void setVolume(const neutrino_msg_t key, const bool bDoPaint = true);

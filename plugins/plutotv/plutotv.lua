@@ -529,7 +529,6 @@ function categories_menu()
 	m:setTitle(plugin_title, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	m:enableShrinkMenu()
 	m:enablePaintDate()
-	m:setTitleHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
 	m:enablePaintFoot()
 	
 	local red = neutrino2.button_label_struct()

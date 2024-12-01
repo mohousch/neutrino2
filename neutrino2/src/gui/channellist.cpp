@@ -888,7 +888,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 	if (chanlist.empty()) 
 	{
 		if (CZapit::getInstance()->getFrontendCount() >= 1) 
-			MessageBox(_("Error"), _("No channels were found!\nPlease execute a scan\n(MENU-key -> System)"), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
+			MessageBox(_("Error"), _("No channels were found!\nPlease execute a scan\n(MENU-key -> Service)"), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 			
 		return;
 	}

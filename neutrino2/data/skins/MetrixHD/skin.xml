@@ -1,12 +1,23 @@
-<skin>
+<?xml version="1.0" encoding="iso-8859-1"?>
 
 <!-- SKIN: MetrixHD -->
 <!-- AUTHOR: mohousch -->
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
-	
+
+<skin>
 	<widget name="mainmenu" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
-		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1" disableitemicon="1" paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="300" iteminfoposy="50" iteminfowidth="300" iteminfoheight="300" iteminfocolor="COL_MENUCONTENTSELECTED_PLUS_0"/>
+		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1" paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="300" iteminfoposy="50" iteminfowidth="300" iteminfoheight="300" iteminfocolor="COL_MENUCONTENTSELECTED_PLUS_0">
+			<item id="FORWARDER" localename="TV / Radio" itemicon="hint_tvmode" target="neutrino" actionkey="tvradioswitch"/>
+			<item id="FORWARDER" localename="EPG / Timer" itemicon="hint_timers" target="epgtimer"/>
+			<item id="FORWARDER" localename="Features" itemicon="hint_plugin" target="neutrino" actionkey="features"/>
+			<item id="FORWARDER" localename="Service" itemicon="hint_service" target="service"/>
+			<item id="FORWARDER" localename="Settings" itemicon="hint_settings" target="settings"/>
+			<item id="FORWARDER" localename="OSD" itemicon="hint_osd" target="osd"/>
+			<item id="FORWARDER" localename="Information" itemicon="hint_dboxinfo" target="information"/>
+			<item id="FORWARDER" localename="Power Menu" itemicon="hint_shutdown" target="powermenu"/>
+			<item id="FORWARDER" localename="Media Player" itemicon="hint_media" target="mediaplayer"/>
+		</listbox>
 		<label posx="650" posy="600" width="520" height="60" text="Main Menu" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
 		<window posx="280" posy="400" width="340" height="100" paintframe="1"/>
 		<time posx="280" posy="410" width="340" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
@@ -15,7 +26,26 @@
 	
 	<widget name="settings" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
-		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
+		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1">
+			<item id="FORWARDER" localename="Video settings" itemicon="hint_video" target="videosetup"/>
+			<item id="FORWARDER" localename="Audio settings" itemicon="hint_audio" target="audiosetup"/>
+			<item id="FORWARDER" localename="Parentallock settings" itemicon="hint_protection" target="parentallocksetup"/>
+			<item id="FORWARDER" localename="Network settings" itemicon="hint_network" target="networksetup"/>
+			<item id="FORWARDER" localename="Recording settings" itemicon="hint_recording" target="recordingsetup"/>
+			<item id="FORWARDER" localename="Movieplayer settings" itemicon="hint_mb" target="movieplayersetup"/>
+			<item id="FORWARDER" localename="Display settings" itemicon="hint_vfd" target="lcdsetup"/>
+			<item id="FORWARDER" localename="Remote Control settings" itemicon="hint_keys" target="rcsetup"/>
+			<item id="FORWARDER" localename="Audioplayer settings" itemicon="hint_aplay" target="audioplayersetup"/>
+			<item id="FORWARDER" localename="Pictureviewer settings" itemicon="hint_picview" target="pictureviewersetup"/>
+			<item id="FORWARDER" localename="HDD settings" itemicon="hint_hdd" target="hddsetup"/>
+			<item id="FORWARDER" localename="Misc settings" itemicon="hint_settings" target="miscsetup"/>
+			<item id="FORWARDER" localename="Channellist settings" itemicon="hint_bedit" target="channellistsetup" />
+			<item id="FORWARDER" localename="EPG settings" itemicon="hint_streaminfo" target="epgsetup"/>
+			<item id="FORWARDER" localename="Filebrowser settings" itemicon="hint_fileplay" target="filebrowsersetup"/>
+			<item id="FORWARDER" localename="Start Channel settings" itemicon="hint_personalize" target="zapitsetup"/>
+			<item id="FORWARDER" localename="CEC settings" itemicon="hint_personalize" target="cecsetup"/>
+			<item id="FORWARDER" localename="Misc settings" itemicon="hint_personalize" target="miscsetup"/>
+		</listbox>
 		<label posx="650" posy="600" width="520" height="60" text="Settings" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
 		<window posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="image" posx="300" posy="50" width="300" height="300" image="hints/hint_settings.png"/>
@@ -26,7 +56,12 @@
 	
 	<widget name="epgtimer" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
-		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
+		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1">
+			<item id="FORWARDER" localename="Eventlist current programm" itemicon="hint_sleeptimer" target="eventlist" directkey="RC_red"/>
+			<item id="FORWARDER" localename="Details current program" itemicon="hint_restart" target="epgview" directkey="RC_green"/>
+			<item id="FORWARDER" localename="Eventlist overview" itemicon="hint_standby" target="epgplus" directkey="RC_yellow"/>
+			<item id="FORWARDER" localename="Timerlist" itemicon="hint_timers" target="timerlist"/>
+		</listbox>
 		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="EPG / timer" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
 		<window posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="image" id="1" posx="300" posy="50" width="300" height="300" image="hints/hint_timers.png"/>
@@ -40,17 +75,22 @@
 		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1" disableitemicon="1"/>
 		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="Features" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
 		<window posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
-		<image name="image" posx="300" posy="50" width="300" height="300" image="hints/hint_plugin.png"/>
+		<image name="image" posx="300" posy="50" width="300" height="300" image="hints/hint_features.png"/>
 		<window posx="280" posy="400" width="340" height="100" paintframe="1"/>
 		<time name="time" posx="280" posy="410" width="340" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
 		<time name="time" posx="280" posy="440" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
 		<KEY name="RC_blue" target="neutrino" actionkey="plugins"/>
 	</widget>
 	
-	<widget name="system" posx="0" posy="0" width="1280" height="720">
+	<widget name="service" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
-		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
-		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="System" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
+		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1">
+			<item id="FORWARDER" localename="Scan transponder" itemicon="hint_scan" target="scansetup"/>
+			<item id="FORWARDER" localename="Bouquet Editor" itemicon="hint_bedit" target="bouqueteditor"/>
+			<item id="FORWARDER" localename="CI Cam" itemicon="hint_ci" target="cicamsetup"/>
+			<item id="FORWARDER" localename="Software update" itemicon="hint_swupdate" target="updatesetup"/>
+		</listbox>
+		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="Service" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
 		<window posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="image" id="1" posx="300" posy="50" width="300" height="300" image="hints/hint_service.png"/>
 		<window posx="280" posy="400" width="340" height="100" paintframe="1"/>
@@ -60,7 +100,13 @@
 	
 	<widget name="powermenu" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
-		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
+		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1">
+			<item id="FORWARDER" localename="Sleeptimer" itemicon="hint_sleeptimer" target="sleeptimer"/>
+			<item id="FORWARDER" localename="GUI restart" itemicon="hint_restart" target="neutrino" actionkey="restart"/>
+			<item id="FORWARDER" localename="Standby" itemicon="hint_standby" target="neutrino" actionkey="standby"/>
+			<item id="FORWARDER" localename="Reboot" itemicon="hint_reboot" target="neutrino" actionkey="reboot"/>
+			<item id="FORWARDER" localename="Shutdown" itemicon="hint_shutdown" target="neutrino" actionkey="shutdown"/>
+		</listbox>
 		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="Power Menu" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
 		<window posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="image" posx="300" posy="50" width="300" height="300" image="hints/hint_shutdown.png"/>
@@ -71,7 +117,11 @@
 	
 	<widget name="information" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
-		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
+		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1">
+			<item id="FORWARDER" localename="Information" itemicon="hint_dboxinfo" target="boxinfo"/>
+			<item id="FORWARDER" localename="Image info" itemicon="hint_imageinfo" target="imageinfo"/>
+			<item id="FORWARDER" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo"/>
+		</listbox>
 		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="Information" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
 		<window posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="image" posx="300" posy="50" width="300" height="300" image="hints/hint_dboxinfo.png"/>
@@ -92,25 +142,24 @@
 	</widget>
 	
 	<widget name="osd" posx="0" posy="0" width="1280" height="720">
-		<window posx="650" posy="50" width="520" height="520" paintframe="1" >
-		</window>
-		
-		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
-		
-		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="OSD" halign="1" font="FONT_TYPE_MENU_TITLELARGE">
-		</label>
-		
-		<window posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"></window>
-		
-		<image name="image" id="1" posx="300" posy="20" width="300" height="300" image="picon_default.png"></image>
-		
-		<window posx="280" posy="400" width="340" height="100" paintframe="1" >
-		</window>
-		
-		<time name="time" posx="280" posy="410" width="340" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE">
-		</time>
-		<time name="time" posx="280" posy="440" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE">
-		</time>
+		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
+		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1">
+			<item id="FORWARDER" localename="Skin select" itemicon="hint_themes" target="skinsetup"/>
+			<item id="FORWARDER" localename="Skin Style" itemicon="hint_osd" target="skinstyleselectionsetup"/>
+			<item id="FORWARDER" localename="Menu" itemicon="hint_menucolors" target="menusetup"/>
+			<item id="FORWARDER" localename="Infobar" itemicon="hint_infobarcolors" target="infobarsetup"/>
+			<item id="FORWARDER" localename="Language" itemicon="hint_language" target="languagesetup"/>
+			<item id="FORWARDER" localename="Font" itemicon="hint_font" target="fontsetup"/>
+			<item id="FORWARDER" localename="Timing" itemicon="hint_osdtiming" target="osdtimingsetup"/>
+			<item id="FORWARDER" localename="Screen" itemicon="hint_lcd4linux" target="screensetup"/>
+			<item id="FORWARDER" localename="Misc settings" itemicon="hint_osd" target="osdmiscsetup"/>
+		</listbox>
+		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="OSD" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
+		<window posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
+		<image name="image" id="1" posx="300" posy="20" width="300" height="300" image="picon_default.png"/>
+		<window posx="280" posy="400" width="340" height="100" paintframe="1"/>
+		<time name="time" posx="280" posy="410" width="340" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
+		<time name="time" posx="280" posy="440" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
 	</widget>
 	
 	<widget name="plugins" posx="0" posy="0" width="1280" height="720">
@@ -766,7 +815,7 @@
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoframe="0" iteminfocolor="COL_MENUCONTENTSELECTED_PLUS_0" iteminfoposx="795" iteminfoposy="150" iteminfowidth="425" iteminfoheight="275"/>
+		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"  iteminfomode="ITEMINFO_ICON" iteminfoframe="0" iteminfocolor="COL_MENUCONTENTSELECTED_PLUS_0" iteminfoposx="795" iteminfoposy="150" iteminfowidth="425" iteminfoheight="275"/>
 	</widget>
 	
 	<widget name="menusetup" posx="0" posy="0" width="1280" height="720">

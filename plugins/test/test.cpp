@@ -6036,13 +6036,17 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 void CTestMenu::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::showMenu:\n");
+	
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Test Menu"));
 
 	CWidget* mWidget = NULL;
 	ClistBox* mainMenu = NULL;
 	
-	std::string skin = PLUGINDIR "/test/test.xml";
+//	std::string skin = PLUGINDIR "/test/test.xml";
 	
-	mWidget = CNeutrinoApp::getInstance()->getWidget("testmenu", skin.c_str());
+	mWidget = CNeutrinoApp::getInstance()->getWidget("testmenu", PLUGINDIR "/test/test.xml");
 	
 	if (mWidget)
 	{
@@ -6080,12 +6084,7 @@ void CTestMenu::showMenu()
 		mWidget->addCCItem(mainMenu);
 	}
 	
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Test Menu"));
-	
-	mainMenu->clear();
-	mainMenu->clearItems();
+	mainMenu->clear();  // clear example items for test.xml
 	
 	//
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CComponent", true));
@@ -6168,7 +6167,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CHelpBox", true, NULL, this, "helpbox"));
 	mainMenu->addItem(new CMenuForwarder("CProgressWindow", true, NULL, this, "progresswindow"));
 
-	//
+	// players
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "Players"));
 	mainMenu->addItem(new CMenuForwarder("PlayMovieURL", true, NULL, this, "playmovieurl"));
 	mainMenu->addItem(new CMenuForwarder("PlayAudioURL", true, NULL, this, "playaudiourl"));
@@ -6186,37 +6185,38 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("PlayAudioDir(without Browser)", true, NULL, this, "playaudiodir"));
 	mainMenu->addItem(new CMenuForwarder("ShowPictureDir(without Browser)", true, NULL, this, "showpicturedir"));
 
-	//
+	// plugins
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "Plugins") );
 	mainMenu->addItem(new CMenuForwarder("StartPlugin(e.g: youtube)", true, NULL, this, "startplugin"));
 
+	// EPG
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "EPG") );
 	mainMenu->addItem(new CMenuForwarder("ShowActuellEPG", true, NULL, this, "showepg"));
 	mainMenu->addItem(new CMenuForwarder("CEventList:", true, NULL, this, "eventlist"));
 
-	//
+	// channellist / bouquets
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "Channellist") );
 	mainMenu->addItem(new CMenuForwarder("CChannelList:", true, NULL, this, "channellist"));
 	mainMenu->addItem(new CMenuForwarder("CBouquetList:", true, NULL, this, "bouquetlist"));
 	
-	//
+	// skins
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "SKIN") );		
 	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET", true, NULL, this, "skin"));
 	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET3", true, NULL, this, "skin3"));
 	
-	//
+	// tuxtxt
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "Tuxtxt") );
 	mainMenu->addItem(new CMenuForwarder("Show Tuxtxt (No Pid)", true, NULL, this, "tuxtxtnopid"));		
 	mainMenu->addItem(new CMenuForwarder("Show Tuxtxt", true, NULL, this, "tuxtxt"));
 	
-	// misc
+	// lcd / weather
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "Misc") );
 	mainMenu->addItem(new CMenuForwarder("Weather", true, NULL, this, "weather"));
 	mainMenu->addItem(new CMenuForwarder("LibNGPNG", true, NULL, this, "libngpng"));
 	mainMenu->addItem(new CMenuForwarder("DumpLCD", true, NULL, this, "dumplcd"));
 	mainMenu->addItem(new CMenuForwarder("ShowLCD", true, NULL, this, "showlcd"));	
 
-	//// subs
+	// subs
 	unsigned int count = 0;
 	CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(CZapit::getInstance()->getCurrentChannelID());
         
@@ -6278,5 +6278,4 @@ void plugin_exec(void)
 	delete testMenu;
 	testMenu = NULL;
 }
-
 

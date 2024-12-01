@@ -1985,7 +1985,7 @@ ClistBox::~ClistBox()
 	page_start.clear();
 }
 
-void ClistBox::addItem(CMenuItem * menuItem, const bool defaultselected)
+void ClistBox::addItem(CMenuItem *menuItem, const bool defaultselected)
 {
 	if (menuItem != NULL)
 	{

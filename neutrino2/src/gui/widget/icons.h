@@ -213,7 +213,7 @@
 #define NEUTRINO_ICON_MENUITEM_MEDIAPLAYER		 	"hint_media"
 #define NEUTRINO_ICON_MENUITEM_SETTINGS				"hint_settings"
 #define NEUTRINO_ICON_MENUITEM_SERVICE				"hint_service"
-#define NEUTRINO_ICON_MENUITEM_FEATURES				"hint_plugin"
+#define NEUTRINO_ICON_MENUITEM_FEATURES				"hint_features"
 #define NEUTRINO_ICON_MENUITEM_TIMERLIST		 	"hint_timers"
 #define NEUTRINO_ICON_MENUITEM_POWERMENU		 	"hint_shutdown"
 #define NEUTRINO_ICON_MENUITEM_BOXINFO				"hint_dboxinfo"
@@ -267,7 +267,7 @@
 #define NEUTRINO_ICON_MENUITEM_SHUTDOWN		 		"hint_shutdown"
 
 // usermenu
-#define NEUTRINO_ICON_MENUITEM_PLUGIN				"hint_plugin"
+#define NEUTRINO_ICON_MENUITEM_PLUGIN				"hint_plugins"
 #define NEUTRINO_ICON_MENUITEM_NOPREVIEW			"hint_default"
 #define NEUTRINO_ICON_MENUITEM_VTXT				"hint_xmltv"
 

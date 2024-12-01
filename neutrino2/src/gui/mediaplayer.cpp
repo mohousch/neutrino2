@@ -59,6 +59,11 @@ int CMediaPlayerMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 void CMediaPlayerMenu::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CMediaPlayerMenu::showMenu:\n");
+	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Media Player"));
 
 	//
 	CWidget* widget = NULL;
@@ -81,31 +86,24 @@ void CMediaPlayerMenu::showMenu()
 		//
 		mediaPlayer = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		mediaPlayer->setWidgetMode(ClistBox::MODE_MENU);
-		mediaPlayer->setWidgetType(g_settings.widget_type);
+		mediaPlayer->setWidgetType(ClistBox::TYPE_CLASSIC);
 		mediaPlayer->enableShrinkMenu();
 		//
 		mediaPlayer->enablePaintHead();
 		mediaPlayer->setTitle(_("Media Player"), NEUTRINO_ICON_MULTIMEDIA);
 		mediaPlayer->enablePaintDate();
+		
 		//
-		if (mediaPlayer->getWidgetType() != ClistBox::TYPE_STANDARD)
-		{
-			mediaPlayer->enablePaintFoot();	
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };	
-			if (!g_settings.item_info) mediaPlayer->setFootButtons(&btn);
-		}
+		mediaPlayer->enablePaintFoot();	
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };	
+		mediaPlayer->setFootButtons(&btn);
 		
 		// iteminfo
-		if (g_settings.item_info) mediaPlayer->enablePaintItemInfo(60);
+		if (g_settings.item_info) mediaPlayer->enablePaintItemInfo();
 		
 		//
 		widget->addCCItem(mediaPlayer);
 	}
-	
-	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Media Player"));
 
 	//
 	mediaPlayer->integratePlugins(CPlugins::I_TYPE_MULTIMEDIA);

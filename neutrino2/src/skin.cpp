@@ -76,6 +76,7 @@
 #include <gui/update.h>
 #include <gui/imageinfo.h>
 #include <gui/sleeptimer.h>
+#include <gui/cec_setup.h>
 
 #include <system/helpers.h>
 #include <system/debug.h>
@@ -119,7 +120,7 @@ CMenuTarget* CNeutrinoApp::convertTarget(const std::string& name)
 	{
 		parent = new CEPGMenuHandler();
 	}
-	else if (name == "system")
+	else if (name == "service")
 	{
 		parent = new CServiceMenu();
 	}
@@ -332,6 +333,10 @@ CMenuTarget* CNeutrinoApp::convertTarget(const std::string& name)
 	else if (name == "unicablesetup")
 	{
 		parent = new CScanSetup();
+	}
+	else if (name == "cecsetup")
+	{
+		parent = new CCECSetup();
 	}
 	
 	return parent;

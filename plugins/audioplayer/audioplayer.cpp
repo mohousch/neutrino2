@@ -27,10 +27,10 @@ extern "C" void plugin_exec(void);
 extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
 
-
 //// defines
 //FIXME: make this global
 #define __(string) dgettext("audioplayer", string)
+
 //
 #define SHOW_FILE_LOAD_LIMIT 50
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-10-13 21:24+0200\n"
+"POT-Creation-Date: 2024-12-01 18:29+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -407,9 +407,6 @@ msgstr ""
 msgid "Children / Juvenile program"
 msgstr ""
 
-msgid "Classic"
-msgstr ""
-
 msgid "Clear"
 msgstr ""
 
@@ -749,9 +746,6 @@ msgid "Expert functions"
 msgstr ""
 
 msgid "Expert-functions"
-msgstr ""
-
-msgid "Extended"
 msgstr ""
 
 msgid "FEC"
@@ -1510,7 +1504,7 @@ msgstr ""
 msgid ""
 "No channels were found!\n"
 "Please execute a scan\n"
-"(MENU-key -> System)"
+"(MENU-key -> Service)"
 msgstr ""
 
 msgid ""
@@ -2073,6 +2067,9 @@ msgstr ""
 msgid "Server IP"
 msgstr ""
 
+msgid "Service"
+msgstr ""
+
 msgid "Servicescan"
 msgstr ""
 
@@ -2211,9 +2208,6 @@ msgstr ""
 msgid "Sports magazines"
 msgstr ""
 
-msgid "Standard"
-msgstr ""
-
 msgid "Standby"
 msgstr ""
 
@@ -2317,9 +2311,6 @@ msgid "Symbol rate"
 msgstr ""
 
 msgid "Syncronisation via"
-msgstr ""
-
-msgid "System"
 msgstr ""
 
 msgid "TMDB"
@@ -2641,9 +2632,6 @@ msgid "West"
 msgstr ""
 
 msgid "Wide Screen Auto"
-msgstr ""
-
-msgid "Widget Type"
 msgstr ""
 
 msgid "Window-Content"

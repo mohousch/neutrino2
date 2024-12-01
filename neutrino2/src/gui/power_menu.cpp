@@ -60,6 +60,11 @@ int CPowerMenu::showMenu(void)
 	dprintf(DEBUG_NORMAL, "CPowerMenu::showMenu:\n");
 	
 	int res = CMenuTarget::RETURN_REPAINT;
+	
+	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Power Menu"));
 
 	//
 	CWidget* widget = NULL;
@@ -82,7 +87,7 @@ int CPowerMenu::showMenu(void)
 		powerMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		powerMenu->setWidgetMode(ClistBox::MODE_MENU);
-		powerMenu->setWidgetType(g_settings.widget_type);
+		powerMenu->setWidgetType(ClistBox::TYPE_CLASSIC);
 		powerMenu->enableShrinkMenu();
 		
 		//
@@ -91,39 +96,31 @@ int CPowerMenu::showMenu(void)
 		powerMenu->enablePaintDate();
 		
 		//
-		if (powerMenu->getWidgetType() != ClistBox::TYPE_STANDARD)
-		{
-			powerMenu->enablePaintFoot();	
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };	
-			if (!g_settings.item_info) powerMenu->setFootButtons(&btn);
-		}
+		powerMenu->enablePaintFoot();	
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };	
+		powerMenu->setFootButtons(&btn);
 		
 		// iteminfo
 		if (g_settings.item_info) powerMenu->enablePaintItemInfo(60);
 		
 		//
 		widget->addCCItem(powerMenu);
+	
+		// sleep timer
+		powerMenu->addItem(new CMenuForwarder(_("Sleeptimer"), true, NULL, new CSleepTimerWidget(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SLEEPTIMER));
+
+		// restart neutrino
+		powerMenu->addItem(new CMenuForwarder(_("GUI restart"), true, NULL, CNeutrinoApp::getInstance(), "restart", CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_RESTART));
+
+		// standby
+		powerMenu->addItem(new CMenuForwarder(_("Standby"), true, NULL, CNeutrinoApp::getInstance(), "standby", CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_STANDBY));
+
+		// reboot
+		powerMenu->addItem(new CMenuForwarder(_("Reboot"), true, NULL, CNeutrinoApp::getInstance(), "reboot", CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_REBOOT));
+
+		// shutdown
+		powerMenu->addItem(new CMenuForwarder(_("Shutdown"), true, NULL, CNeutrinoApp::getInstance(), "shutdown", CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SHUTDOWN));
 	}
-	
-	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Power Menu"));
-	
-	// sleep timer
-	powerMenu->addItem(new CMenuForwarder(_("Sleeptimer"), true, NULL, new CSleepTimerWidget(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SLEEPTIMER));
-
-	// restart neutrino
-	powerMenu->addItem(new CMenuForwarder(_("GUI restart"), true, NULL, CNeutrinoApp::getInstance(), "restart", CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_RESTART));
-
-	// standby
-	powerMenu->addItem(new CMenuForwarder(_("Standby"), true, NULL, CNeutrinoApp::getInstance(), "standby", CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_STANDBY));
-
-	// reboot
-	powerMenu->addItem(new CMenuForwarder(_("Reboot"), true, NULL, CNeutrinoApp::getInstance(), "reboot", CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_REBOOT));
-
-	// shutdown
-	powerMenu->addItem(new CMenuForwarder(_("Shutdown"), true, NULL, CNeutrinoApp::getInstance(), "shutdown", CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SHUTDOWN));
 
 	//
 	powerMenu->integratePlugins(CPlugins::I_TYPE_POWER);

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-10-13 21:24+0200\n"
+"POT-Creation-Date: 2024-12-01 18:29+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -416,9 +416,6 @@ msgstr "Проверьте файловую систему"
 msgid "Children / Juvenile program"
 msgstr "Детская / юношеская программа"
 
-msgid "Classic"
-msgstr ""
-
 msgid "Clear"
 msgstr ""
 
@@ -761,9 +758,6 @@ msgstr "Функции эксперта"
 
 msgid "Expert-functions"
 msgstr "Функции эксперта"
-
-msgid "Extended"
-msgstr ""
 
 msgid "FEC"
 msgstr ""
@@ -1530,14 +1524,15 @@ msgstr ""
 msgid "No Networks found please scan again..."
 msgstr "Настройка сети, пожалуйста, подождите..."
 
+#, fuzzy
 msgid ""
 "No channels were found!\n"
 "Please execute a scan\n"
-"(MENU-key -> System)"
+"(MENU-key -> Service)"
 msgstr ""
 "Каналы не найдены!\n"
-"Пожалуйста, выполните сканирование\n"
-"(Кнопка МЕНЮ -> Система)"
+"«Пожалуйста, выполните сканирование\n"
+"»(Кнопка МЕНЮ -> сервис)"
 
 msgid ""
 "No channels were found!\n"
@@ -2108,6 +2103,10 @@ msgstr "Тип серверного устройства"
 msgid "Server IP"
 msgstr "IP сервера"
 
+#, fuzzy
+msgid "Service"
+msgstr "Сервисное сканирование"
+
 msgid "Servicescan"
 msgstr "Сервисное сканирование"
 
@@ -2247,9 +2246,6 @@ msgstr "Спорт"
 msgid "Sports magazines"
 msgstr "Спортивные журналы"
 
-msgid "Standard"
-msgstr "Режим ожидания"
-
 msgid "Standby"
 msgstr "Режим ожидания"
 
@@ -2355,9 +2351,6 @@ msgstr "Скорость передачи символов"
 
 msgid "Syncronisation via"
 msgstr "Синхронизация через"
-
-msgid "System"
-msgstr "Система"
 
 msgid "TMDB"
 msgstr "ТМДБ"
@@ -2701,9 +2694,6 @@ msgstr "Запад"
 
 msgid "Wide Screen Auto"
 msgstr "Широкоэкранный авто"
-
-msgid "Widget Type"
-msgstr "Тип изображения"
 
 msgid "Window-Content"
 msgstr "Окно-Содержимое"

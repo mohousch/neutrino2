@@ -1,12 +1,23 @@
-<skin>
+<?xml version="1.0" encoding="iso-8859-1"?>
 
 <!-- SKIN: titan -->
 <!-- AUTHOR: mohousch -->
-<!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->	
+<!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
 
+<skin>
 	<widget name="mainmenu" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Main Menu" icon="mainmenu" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" mode="MODE_MENU"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" mode="MODE_MENU">
+			<item id="FORWARDER" localename="TV / Radio" itemicon="hint_tvmode" target="neutrino" actionkey="tvradioswitch"/>
+			<item id="FORWARDER" localename="EPG / Timer" itemicon="hint_timers" target="epgtimer"/>
+			<item id="FORWARDER" localename="Features" itemicon="hint_plugin" target="neutrino" actionkey="features"/>
+			<item id="FORWARDER" localename="Service" itemicon="hint_service" target="service"/>
+			<item id="FORWARDER" localename="Settings" itemicon="hint_settings" target="settings"/>
+			<item id="FORWARDER" localename="OSD" itemicon="hint_osd" target="osd"/>
+			<item id="FORWARDER" localename="Information" itemicon="hint_dboxinfo" target="information"/>
+			<item id="FORWARDER" localename="Power Menu" itemicon="hint_shutdown" target="powermenu"/>
+			<item id="FORWARDER" localename="Media Player" itemicon="hint_media" target="mediaplayer"/>
+		</listbox>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
 		</foot>
@@ -16,13 +27,41 @@
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Settings" icon="menu" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
 		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1" mode="MODE_MENU"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
+			<item id="FORWARDER" localename="Video settings" itemicon="hint_video" target="videosetup"/>
+			<item id="FORWARDER" localename="Audio settings" itemicon="hint_audio" target="audiosetup"/>
+			<item id="FORWARDER" localename="Parentallock settings" itemicon="hint_protection" target="parentallocksetup"/>
+			<item id="FORWARDER" localename="Network settings" itemicon="hint_network" target="networksetup"/>
+			<item id="FORWARDER" localename="Recording settings" itemicon="hint_recording" target="recordingsetup"/>
+			<item id="FORWARDER" localename="Movieplayer settings" itemicon="hint_mb" target="movieplayersetup"/>
+			<item id="FORWARDER" localename="Display settings" itemicon="hint_vfd" target="lcdsetup"/>
+			<item id="FORWARDER" localename="Remote Control settings" itemicon="hint_keys" target="rcsetup"/>
+			<item id="FORWARDER" localename="Audioplayer settings" itemicon="hint_aplay" target="audioplayersetup"/>
+			<item id="FORWARDER" localename="Pictureviewer settings" itemicon="hint_picview" target="pictureviewersetup"/>
+			<item id="FORWARDER" localename="HDD settings" itemicon="hint_hdd" target="hddsetup"/>
+			<item id="FORWARDER" localename="Misc settings" itemicon="hint_settings" target="miscsetup"/>
+			<item id="FORWARDER" localename="Channellist settings" itemicon="hint_bedit" target="channellistsetup" />
+			<item id="FORWARDER" localename="EPG settings" itemicon="hint_streaminfo" target="epgsetup"/>
+			<item id="FORWARDER" localename="Filebrowser settings" itemicon="hint_fileplay" target="filebrowsersetup"/>
+			<item id="FORWARDER" localename="Start Channel settings" itemicon="hint_personalize" target="zapitsetup"/>
+			<item id="FORWARDER" localename="CEC settings" itemicon="hint_personalize" target="cecsetup"/>
+			<item id="FORWARDER" localename="Misc settings" itemicon="hint_personalize" target="miscsetup"/>
 			<button_label name="information"/>
 		</foot>
 	</widget>
 	
 	<widget name="osd" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="OSD" icon="colors" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1"  mode="MODE_MENU"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1"  mode="MODE_MENU">
+			<item id="FORWARDER" localename="Skin select" itemicon="hint_themes" target="skinsetup"/>
+			<item id="FORWARDER" localename="Skin Style" itemicon="hint_osd" target="skinstyleselectionsetup"/>
+			<item id="FORWARDER" localename="Menu" itemicon="hint_menucolors" target="menusetup"/>
+			<item id="FORWARDER" localename="Infobar" itemicon="hint_infobarcolors" target="infobarsetup"/>
+			<item id="FORWARDER" localename="Language" itemicon="hint_language" target="languagesetup"/>
+			<item id="FORWARDER" localename="Font" itemicon="hint_font" target="fontsetup"/>
+			<item id="FORWARDER" localename="Timing" itemicon="hint_osdtiming" target="osdtimingsetup"/>
+			<item id="FORWARDER" localename="Screen" itemicon="hint_lcd4linux" target="screensetup"/>
+			<item id="FORWARDER" localename="Misc settings" itemicon="hint_osd" target="osdmiscsetup"/>
+		</listbox>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
 		</foot>
@@ -30,7 +69,12 @@
 	
 	<widget name="epgtimer" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="EPG / Timer" icon="epg" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1" mode="MODE_MENU"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1" mode="MODE_MENU">
+			<item id="FORWARDER" localename="Eventlist current programm" itemicon="hint_sleeptimer" target="eventlist" directkey="RC_red"/>
+			<item id="FORWARDER" localename="Details current program" itemicon="hint_restart" target="epgview" directkey="RC_green"/>
+			<item id="FORWARDER" localename="Eventlist overview" itemicon="hint_standby" target="epgplus" directkey="RC_yellow"/>
+			<item id="FORWARDER" localename="Timerlist" itemicon="hint_timers" target="timerlist"/>
+		</listbox>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
 		</foot>
@@ -45,9 +89,14 @@
 		<KEY name="RC_blue" target="neutrino" actionkey="plugins"/> 
 	</widget>
 	
-	<widget name="system" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="System" icon="softupdate" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1" mode="MODE_MENU"/>
+	<widget name="service" posx="0" posy="0" width="700" height="720" paintframe="1">
+		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Service" icon="softupdate" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1" mode="MODE_MENU">
+			<item id="FORWARDER" localename="Scan transponder" itemicon="hint_scan" target="scansetup"/>
+			<item id="FORWARDER" localename="Bouquet Editor" itemicon="hint_bedit" target="bouqueteditor"/>
+			<item id="FORWARDER" localename="CI Cam" itemicon="hint_ci" target="cicamsetup"/>
+			<item id="FORWARDER" localename="Software update" itemicon="hint_swupdate" target="updatesetup"/>
+		</listbox>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
 		</foot>
@@ -55,7 +104,13 @@
 	
 	<widget name="powermenu" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Power Menu" icon="power" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1" mode="MODE_MENU"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1" mode="MODE_MENU">
+			<item id="FORWARDER" localename="Sleeptimer" itemicon="hint_sleeptimer" target="sleeptimer"/>
+			<item id="FORWARDER" localename="GUI restart" itemicon="hint_restart" target="neutrino" actionkey="restart"/>
+			<item id="FORWARDER" localename="Standby" itemicon="hint_standby" target="neutrino" actionkey="standby"/>
+			<item id="FORWARDER" localename="Reboot" itemicon="hint_reboot" target="neutrino" actionkey="reboot"/>
+			<item id="FORWARDER" localename="Shutdown" itemicon="hint_shutdown" target="neutrino" actionkey="shutdown"/>
+		</listbox>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
 		</foot>
@@ -63,7 +118,11 @@
 	
 	<widget name="information" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Information" icon="information" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1" mode="MODE_MENU"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1" mode="MODE_MENU">
+			<item id="FORWARDER" localename="Information" itemicon="hint_dboxinfo" target="boxinfo"/>
+			<item id="FORWARDER" localename="Image info" itemicon="hint_imageinfo" target="imageinfo"/>
+			<item id="FORWARDER" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo"/>
+		</listbox>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
 		</foot>

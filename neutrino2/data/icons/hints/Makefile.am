@@ -10,7 +10,8 @@ install_DATA = \
 	hint_settings.png \
 	hint_service.png \
 	hint_timers.png \
-	hint_plugin.png \
+	hint_plugins.png \
+	hint_features.png \
 	hint_shutdown.png \
 	hint_dboxinfo.png
 

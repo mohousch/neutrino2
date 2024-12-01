@@ -61,12 +61,12 @@
 
 extern CPlugins * g_PluginList;    /* neutrino.cpp */
 
-bool CPlugins::plugin_exists(const std::string & filename)
+bool CPlugins::plugin_exists(const std::string &filename)
 {
 	return (find_plugin(filename) >= 0);
 }
 
-int CPlugins::find_plugin(const std::string & filename)
+int CPlugins::find_plugin(const std::string &filename)
 {
 	for (int i = 0; i <  (int) plugin_list.size(); i++)
 	{
@@ -77,7 +77,7 @@ int CPlugins::find_plugin(const std::string & filename)
 	return -1;
 }
 
-bool CPlugins::pluginfile_exists(const std::string & filename)
+bool CPlugins::pluginfile_exists(const std::string &filename)
 {
 	FILE *file = fopen(filename.c_str(), "r");
 	if (file != NULL)
@@ -290,7 +290,7 @@ bool CPlugins::parseCfg(plugin *plugin_data)
 	return !reject;
 }
 
-void CPlugins::start_plugin_by_name(const std::string & filename)
+void CPlugins::start_plugin_by_name(const std::string &filename)
 {
 	for (int i = 0; i <  (int) plugin_list.size(); i++)
 	{
@@ -530,27 +530,41 @@ CPlugins::i_type_t CPlugins::getPluginIntegration(int integration)
 		case INTEGRATION_TYPE_DISABLED:
 			return I_TYPE_DISABLED;
 			break;
+			
 		case INTEGRATION_TYPE_MAIN:
 			return I_TYPE_MAIN;
 			break;
+			
 		case INTEGRATION_TYPE_MULTIMEDIA:
 			return I_TYPE_MULTIMEDIA;
 			break;
+			
 		case INTEGRATION_TYPE_SETTING:
 			return I_TYPE_SETTING;
 			break;
+			
 		case INTEGRATION_TYPE_SERVICE:
 			return I_TYPE_SERVICE;
 			break;
+			
 		case INTEGRATION_TYPE_POWER:
 			return I_TYPE_POWER;
 			break;
+			
 		case INTEGRATION_TYPE_USER:
 			return I_TYPE_USER;
 			break;
+			
+		case INTEGRATION_TYPE_INFORMATION:
+			return I_TYPE_INFORMATION;
+			break;
+			
+		case INTEGRATION_TYPE_OSD:
+			return I_TYPE_OSD;
+			break;
+			
 		default:
 			return I_TYPE_DISABLED;
 	}
 }
-
 

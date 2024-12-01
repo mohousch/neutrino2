@@ -57,6 +57,11 @@ int CEPGMenuHandler::doMenu()
 	int res = RETURN_REPAINT;
 	
 	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("EPG / Timer"));
+	
+	//
 	CWidget* widget = NULL;
 	ClistBox* redMenu = NULL;
 	
@@ -77,43 +82,35 @@ int CEPGMenuHandler::doMenu()
 		//
 		redMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		redMenu->setWidgetMode(ClistBox::MODE_MENU);
-		redMenu->setWidgetType(g_settings.widget_type);
+		redMenu->setWidgetType(ClistBox::TYPE_CLASSIC);
 		redMenu->enableShrinkMenu();
 		// head
 		redMenu->enablePaintHead();
 		redMenu->setTitle(_("EPG / Timer"), NEUTRINO_ICON_BUTTON_EPG);
 		redMenu->enablePaintDate();
 		// foot
-		if (redMenu->getWidgetType() != ClistBox::TYPE_STANDARD)
-		{
-			redMenu->enablePaintFoot();	
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
-			if (!g_settings.item_info) redMenu->setFootButtons(&btn);
-		}
+		redMenu->enablePaintFoot();	
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
+		redMenu->setFootButtons(&btn);
 		
 		// iteminfo
-		if (g_settings.item_info) redMenu->enablePaintItemInfo(60);
+		if (g_settings.item_info) redMenu->enablePaintItemInfo();
 		
 		//
 		widget->addCCItem(redMenu);
-	}
-	
-	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("EPG / Timer"));
 		
-	// eventlist
-	redMenu->addItem(new CMenuForwarder(_("Eventlist current programm"), true, NULL, new CEventListHandler(), "", CRCInput::RC_red, NULL, NEUTRINO_ICON_MENUITEM_SLEEPTIMER));
+		// eventlist
+		redMenu->addItem(new CMenuForwarder(_("Eventlist current programm"), true, NULL, new CEventListHandler(), "", CRCInput::RC_red, NULL, NEUTRINO_ICON_MENUITEM_SLEEPTIMER));
 
-	// epg view
-	redMenu->addItem(new CMenuForwarder(_("Details current program"), true, NULL, new CEPGDataHandler(), "", CRCInput::RC_green, NULL, NEUTRINO_ICON_MENUITEM_RESTART));
-				
-	// epgplus
-	redMenu->addItem(new CMenuForwarder(_("Eventlist overview"), true, NULL, new CEPGplusHandler(), "", CRCInput::RC_yellow, NULL, NEUTRINO_ICON_MENUITEM_STANDBY));
-		
-	// timerlist
-	redMenu->addItem(new CMenuForwarder(_("Timerlist"), true, NULL, new CTimerList(), "", CRCInput::RC_blue, NULL, NEUTRINO_ICON_MENUITEM_TIMERLIST));
+		// epg view
+		redMenu->addItem(new CMenuForwarder(_("Details current program"), true, NULL, new CEPGDataHandler(), "", CRCInput::RC_green, NULL, NEUTRINO_ICON_MENUITEM_RESTART));
+					
+		// epgplus
+		redMenu->addItem(new CMenuForwarder(_("Eventlist overview"), true, NULL, new CEPGplusHandler(), "", CRCInput::RC_yellow, NULL, NEUTRINO_ICON_MENUITEM_STANDBY));
+			
+		// timerlist
+		redMenu->addItem(new CMenuForwarder(_("Timerlist"), true, NULL, new CTimerList(), "", CRCInput::RC_blue, NULL, NEUTRINO_ICON_MENUITEM_TIMERLIST));
+	}
 		
 	//
 	widget->setTimeOut(g_settings.timing_menu);				

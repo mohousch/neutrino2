@@ -84,10 +84,15 @@ int CServiceMenu::showMenu(void)
 	int res = CMenuTarget::RETURN_REPAINT;
 	
 	//
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Service"));
+	
+	//
 	CWidget* widget = NULL;
 	ClistBox* service = NULL;
 	
-	widget = CNeutrinoApp::getInstance()->getWidget("system");
+	widget = CNeutrinoApp::getInstance()->getWidget("service");
 	
 	if (widget)
 	{
@@ -97,51 +102,43 @@ int CServiceMenu::showMenu(void)
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "system";
+		widget->name = "service";
 		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		service = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		service->setWidgetMode(ClistBox::MODE_MENU);
-		service->setWidgetType(g_settings.widget_type);
+		service->setWidgetType(ClistBox::TYPE_CLASSIC);
 		service->enableShrinkMenu();
 		// head
 		service->enablePaintHead();
-		service->setTitle(_("System"), NEUTRINO_ICON_SERVICE);
+		service->setTitle(_("Service"), NEUTRINO_ICON_SERVICE);
 		service->enablePaintDate();
 		// foot
-		if (service->getWidgetType() != ClistBox::TYPE_STANDARD)
-		{
-			service->enablePaintFoot();	
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };	
-			if (!g_settings.item_info) service->setFootButtons(&btn);
-		}
+		service->enablePaintFoot();	
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };	
+		if (!g_settings.item_info) service->setFootButtons(&btn);
 		
 		// iteminfo
 		if (g_settings.item_info) service->enablePaintItemInfo(60);
 		
 		//
 		widget->addCCItem(service);
-	}
 	
-	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("System"));
-	
-	// tuner/scan setup
-	service->addItem(new CMenuForwarder(_("Scan transponder"), true, NULL, new CTunerSetup(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCANSETTINGS));
-		
-	// Bouquets Editor
-	service->addItem(new CMenuForwarder(_("Bouquet Editor"), true, NULL, new CBEBouquetWidget(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOUQUETSEDITOR));
-		
-	// CI Cam 	
+		// tuner/scan setup
+		service->addItem(new CMenuForwarder(_("Scan transponder"), true, NULL, new CTunerSetup(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCANSETTINGS));
+			
+		// Bouquets Editor
+		service->addItem(new CMenuForwarder(_("Bouquet Editor"), true, NULL, new CBEBouquetWidget(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOUQUETSEDITOR));
+			
+		// CI Cam 	
 #if defined (ENABLE_CI) 
-	service->addItem(new CMenuForwarder(_("CI Cam"), true, NULL, g_CamHandler, NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_CICAM));
+		service->addItem(new CMenuForwarder(_("CI Cam"), true, NULL, g_CamHandler, NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_CICAM));
 #endif
-		
-	// software update
-	service->addItem(new CMenuForwarder(_("Software update"), true, NULL, new CUpdateSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SOFTUPDATE));
+			
+		// software update
+		service->addItem(new CMenuForwarder(_("Software update"), true, NULL, new CUpdateSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SOFTUPDATE));
+	}
 
 	service->integratePlugins(CPlugins::I_TYPE_SERVICE);
 	

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-10-13 21:24+0200\n"
+"POT-Creation-Date: 2024-12-01 18:29+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -412,9 +412,6 @@ msgstr "التحقق من نظام الملفات"
 msgid "Children / Juvenile program"
 msgstr "برنامج الأطفال / الشباب"
 
-msgid "Classic"
-msgstr "كلاسيكي"
-
 msgid "Clear"
 msgstr "واضح"
 
@@ -763,9 +760,6 @@ msgstr "وظائف الخبراء"
 
 msgid "Expert-functions"
 msgstr "وظائف الخبراء"
-
-msgid "Extended"
-msgstr "ممتد"
 
 msgid "FEC"
 msgstr ""
@@ -1535,14 +1529,15 @@ msgstr "لا أحرف كبيرة"
 msgid "No Networks found please scan again..."
 msgstr "لم يتم العثور على شبكات، يرجى إجراء المسح مرة أخرى..."
 
+#, fuzzy
 msgid ""
 "No channels were found!\n"
 "Please execute a scan\n"
-"(MENU-key -> System)"
+"(MENU-key -> Service)"
 msgstr ""
 "لم يتم العثور على أي قنوات!\n"
 "الرجاء تنفيذ عملية مسح\n"
-"(مفتاح القائمة -> النظام)"
+"(مفتاح القائمة -> الخدمة)"
 
 msgid ""
 "No channels were found!\n"
@@ -2112,6 +2107,10 @@ msgstr "نوع صندوق الخادم"
 msgid "Server IP"
 msgstr "عنوان IP للخادم"
 
+#, fuzzy
+msgid "Service"
+msgstr "البحث عن الخدمات"
+
 msgid "Servicescan"
 msgstr "البحث عن الخدمات"
 
@@ -2250,9 +2249,6 @@ msgstr "الرياضة"
 msgid "Sports magazines"
 msgstr "المجلات الرياضية"
 
-msgid "Standard"
-msgstr "قياسي"
-
 msgid "Standby"
 msgstr "وضع الاستعداد"
 
@@ -2357,9 +2353,6 @@ msgstr "معدل الترميز"
 
 msgid "Syncronisation via"
 msgstr "المزامنة عبر"
-
-msgid "System"
-msgstr "النظام"
 
 msgid "TMDB"
 msgstr ""
@@ -2701,9 +2694,6 @@ msgstr "الغرب"
 
 msgid "Wide Screen Auto"
 msgstr "شاشة عريضة تلقائية"
-
-msgid "Widget Type"
-msgstr "نوع الأداة"
 
 msgid "Window-Content"
 msgstr "محتوى النافذة"

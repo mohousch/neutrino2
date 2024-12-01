@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-10-13 21:24+0200\n"
+"POT-Creation-Date: 2024-12-01 18:29+0100\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,11 +17,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#, fuzzy
 msgid " install failed"
 msgstr "Die Paketinstallation ist fehlgeschlagen"
 
-#, fuzzy
 msgid " successfull installed"
 msgstr "Paket erfolgreich installiert"
 
@@ -259,11 +257,9 @@ msgstr "Broadcast"
 msgid "Broadcasting / Press"
 msgstr "Rundfunk / Presse"
 
-#, fuzzy
 msgid "Built date:"
 msgstr "Baudatum: "
 
-#, fuzzy
 msgid "Built time: "
 msgstr "Baudatum: "
 
@@ -387,7 +383,6 @@ msgstr "Kanal runter"
 msgid "Channel not available"
 msgstr "Kanal nicht verfügbar"
 
-#, fuzzy
 msgid "Channel number"
 msgstr "Kanallistennummer"
 
@@ -414,9 +409,6 @@ msgstr "Dateisystem prüfen"
 
 msgid "Children / Juvenile program"
 msgstr "Kinder- / Jugendprogramm"
-
-msgid "Classic"
-msgstr ""
 
 msgid "Clear"
 msgstr "Löschen"
@@ -726,7 +718,6 @@ msgstr "Fehler"
 msgid "Event list"
 msgstr "Ereignissliste"
 
-#, fuzzy
 msgid "Event to right"
 msgstr "oben rechts"
 
@@ -765,9 +756,6 @@ msgstr "Expertenfunktionen"
 
 msgid "Expert-functions"
 msgstr "Expertenfunktionen"
-
-msgid "Extended"
-msgstr ""
 
 msgid "FEC"
 msgstr "FEC"
@@ -1142,7 +1130,6 @@ msgstr "Einfügen"
 msgid "Install menu"
 msgstr "Menü installieren"
 
-#, fuzzy
 msgid "Installed packages"
 msgstr "Menü installieren"
 
@@ -1318,7 +1305,6 @@ msgstr "Medien"
 msgid "Media Player"
 msgstr "Media Player"
 
-#, fuzzy
 msgid "Media Portal"
 msgstr "Media Player"
 
@@ -1364,7 +1350,6 @@ msgstr "Verschiedene Einstellungen"
 msgid "Mo Tu We Th Fr Sa Su"
 msgstr "Mo Di We Do Fr Sa Su"
 
-#, fuzzy
 msgid "Mode"
 msgstr "Scan-Modus"
 
@@ -1514,7 +1499,6 @@ msgstr "Nachrichten / Wetterbericht"
 msgid "News magazine"
 msgstr "Nachrichtenmagazin"
 
-#, fuzzy
 msgid "Next"
 msgstr "Nächste Seite"
 
@@ -1545,12 +1529,13 @@ msgstr "Keine Wlan gefunden, bitte scannen Sie erneut..."
 msgid ""
 "No channels were found!\n"
 "Please execute a scan\n"
-"(MENU-key -> System)"
+"(MENU-key -> Service)"
 msgstr ""
 "Es wurden keine Kanäle gefunden!\n"
 "Bitte führen Sie einen Scan durch\n"
-"(MENU-Taste -> System)"
+"(MENÜ-Taste -> Service)"
 
+#, fuzzy
 msgid ""
 "No channels were found!\n"
 "Please execute a scan\n"
@@ -1558,7 +1543,7 @@ msgid ""
 msgstr ""
 "Es wurden keine Kanäle gefunden!\n"
 "Bitte führen Sie einen Scan durch\n"
-"(MENU-Taste -> System)"
+"(MENÜ-Taste -> Service)"
 
 msgid "No detailed informations available"
 msgstr "Keine Informationen verfügbar"
@@ -1584,9 +1569,8 @@ msgstr "Norden"
 msgid "Not used"
 msgstr "Nicht benutzt"
 
-#, fuzzy
 msgid "Now"
-msgstr "Nein"
+msgstr "Jetzt"
 
 msgid "Numericzap"
 msgstr "Numericzap"
@@ -1832,18 +1816,15 @@ msgstr "Die Aufnahme beginnt in wenigen Minuten"
 msgid "Refresh EPG"
 msgstr "EPG aktualisieren"
 
-#, fuzzy
 msgid "Release"
 msgstr "Release-Zyklus"
 
 msgid "Release cycle"
 msgstr "Release-Zyklus"
 
-#, fuzzy
 msgid "Release type"
 msgstr "Release-Zyklus"
 
-#, fuzzy
 msgid "Release:"
 msgstr "Release-Zyklus"
 
@@ -2120,6 +2101,10 @@ msgstr "Server-Box-Typ"
 msgid "Server IP"
 msgstr "Server-IP"
 
+#, fuzzy
+msgid "Service"
+msgstr "Sender Suche"
+
 msgid "Servicescan"
 msgstr "Sender Suche"
 
@@ -2258,9 +2243,6 @@ msgstr "Sport"
 msgid "Sports magazines"
 msgstr "Sportzeitschriften"
 
-msgid "Standard"
-msgstr "Standard"
-
 msgid "Standby"
 msgstr "Standby"
 
@@ -2365,9 +2347,6 @@ msgstr "Symbolrate"
 
 msgid "Syncronisation via"
 msgstr "Synchronisation über"
-
-msgid "System"
-msgstr "System"
 
 msgid "TMDB"
 msgstr "TMDB"
@@ -2587,7 +2566,6 @@ msgstr "Tunertyp"
 msgid "Type"
 msgstr "Typ"
 
-#, fuzzy
 msgid "Type:"
 msgstr "Typ"
 
@@ -2710,9 +2688,6 @@ msgstr "Westen"
 
 msgid "Wide Screen Auto"
 msgstr "Breitbild-Automatik"
-
-msgid "Widget Type"
-msgstr "Widget Typ"
 
 msgid "Window-Content"
 msgstr "Fensterinhalt"

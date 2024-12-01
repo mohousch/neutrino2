@@ -280,9 +280,7 @@ data/zapit/Makefile
 data/webtv/Makefile
 data/scripts/Makefile
 data/skins/Makefile
-data/skins/neutrino/Makefile
-data/skins/neutrino/buttons/Makefile
-data/skins/neutrino/hints/Makefile
+data/skins/standard/Makefile
 data/skins/KravenHD/Makefile
 data/skins/KravenHD/background/Makefile
 data/skins/MetrixHD/Makefile
@@ -291,6 +289,7 @@ data/skins/MetrixHD/hints/Makefile
 data/skins/titan/Makefile
 data/skins/neutrino2/Makefile
 data/skins/elgato/Makefile
+data/skins/elgato/images/Makefile
 data/locale/Makefile
 src/sectionsd/Makefile
 src/timerd/Makefile

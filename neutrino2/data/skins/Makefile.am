@@ -1,4 +1,4 @@
-SUBDIRS = neutrino KravenHD MetrixHD titan neutrino2 elgato
+SUBDIRS = standard neutrino2 KravenHD MetrixHD titan elgato
 
 
 
