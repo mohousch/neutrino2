@@ -25,8 +25,7 @@
 	
 	<widget name="settings" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Settings" icon="menu" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1" mode="MODE_MENU"/>
-		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1" mode="MODE_MENU">
 			<item id="FORWARDER" localename="Video settings" itemicon="hint_video" target="videosetup"/>
 			<item id="FORWARDER" localename="Audio settings" itemicon="hint_audio" target="audiosetup"/>
 			<item id="FORWARDER" localename="Parentallock settings" itemicon="hint_protection" target="parentallocksetup"/>
@@ -45,6 +44,8 @@
 			<item id="FORWARDER" localename="Start Channel settings" itemicon="hint_personalize" target="zapitsetup"/>
 			<item id="FORWARDER" localename="CEC settings" itemicon="hint_personalize" target="cecsetup"/>
 			<item id="FORWARDER" localename="Misc settings" itemicon="hint_personalize" target="miscsetup"/>
+		</listbox>
+		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
 		</foot>
 	</widget>
