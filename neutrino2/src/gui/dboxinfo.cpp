@@ -96,7 +96,7 @@ CDBoxInfoWidget::CDBoxInfoWidget()
 	Box.iX = g_settings.screen_StartX + 20;
 	Box.iY = g_settings.screen_StartY + 20;
 	Box.iWidth = g_settings.screen_EndX - g_settings.screen_StartX - 40;
-	Box.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 40);
+	Box.iHeight = g_settings.screen_EndY - g_settings.screen_StartY - 40;
 	
 	//
 	dboxInfoWidget = NULL;
