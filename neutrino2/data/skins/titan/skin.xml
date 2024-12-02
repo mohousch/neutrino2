@@ -10,7 +10,7 @@
 		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" mode="MODE_MENU">
 			<item id="FORWARDER" localename="TV / Radio" itemicon="hint_tvmode" target="neutrino" actionkey="tvradioswitch"/>
 			<item id="FORWARDER" localename="EPG / Timer" itemicon="hint_timers" target="epgtimer"/>
-			<item id="FORWARDER" localename="Features" itemicon="hint_plugin" target="neutrino" actionkey="features"/>
+			<item id="FORWARDER" localename="Features" itemicon="hint_features" target="neutrino" actionkey="features"/>
 			<item id="FORWARDER" localename="Service" itemicon="hint_service" target="service"/>
 			<item id="FORWARDER" localename="Settings" itemicon="hint_settings" target="settings"/>
 			<item id="FORWARDER" localename="OSD" itemicon="hint_osd" target="osd"/>
@@ -91,7 +91,7 @@
 	</widget>
 	
 	<widget name="service" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Service" icon="softupdate" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
+		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Service" icon="service" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
 		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1" mode="MODE_MENU">
 			<item id="FORWARDER" localename="Scan transponder" itemicon="hint_scan" target="scansetup"/>
 			<item id="FORWARDER" localename="Bouquet Editor" itemicon="hint_bedit" target="bouqueteditor"/>

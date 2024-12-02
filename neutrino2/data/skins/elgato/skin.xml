@@ -10,7 +10,7 @@
 		<listbox posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_CLASSIC" mode="MODE_MENU" itemborder="1" painthead="1" title="Main Menu" icon="mainmenu" paintdate="1" headline="1" headlinegradient="1" paintfoot="1" footline="1" footlinegradient="1">
 			<item id="FORWARDER" localename="TV / Radio" itemicon="hint_tvmode" target="neutrino" actionkey="tvradioswitch"/>
 			<item id="FORWARDER" localename="EPG / Timer" itemicon="hint_timers" target="epgtimer"/>
-			<item id="FORWARDER" localename="Features" itemicon="hint_plugin" target="neutrino" actionkey="features"/>
+			<item id="FORWARDER" localename="Features" itemicon="hint_features" target="neutrino" actionkey="features"/>
 			<item id="FORWARDER" localename="Service" itemicon="hint_service" target="service"/>
 			<item id="FORWARDER" localename="Settings" itemicon="hint_settings" target="settings"/>
 			<item id="FORWARDER" localename="OSD" itemicon="hint_osd" target="osd"/>
@@ -85,7 +85,7 @@
 	
 	<widget name="service" width="600" height="600" paintframe="0" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<image width="600" height="600" image="images/menu_bg2.png"/>
-		<listbox posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_CLASSIC" mode="MODE_MENU" itemborder="1" painthead="1" title="Service" icon="softupdate" paintdate="1" headline="1" paintfoot="1" footline="1" scrollbar="1">
+		<listbox posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_CLASSIC" mode="MODE_MENU" itemborder="1" painthead="1" title="Service" icon="service" paintdate="1" headline="1" paintfoot="1" footline="1" scrollbar="1">
 			<item id="FORWARDER" localename="Scan transponder" itemicon="hint_scan" target="scansetup"/>
 			<item id="FORWARDER" localename="Bouquet Editor" itemicon="hint_bedit" target="bouqueteditor"/>
 			<item id="FORWARDER" localename="CI Cam" itemicon="hint_ci" target="cicamsetup"/>

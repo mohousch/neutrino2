@@ -22,11 +22,11 @@ install_DATA += \
 	hint_protection.png \
 	hint_network.png \
 	hint_recording.png \
-	hint_mb.png \
+	hint_movieplayer.png \
 	hint_osd.png \
-	hint_vfd.png \
+	hint_lcd.png \
 	hint_keys.png \
-	hint_aplay.png \
+	hint_audioplayer.png \
 	hint_picview.png \
 	hint_extended.png \
 	hint_hdd.png

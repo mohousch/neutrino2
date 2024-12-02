@@ -2206,10 +2206,10 @@ void ClistBox::paint()
 		{
 			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, itemBox.iWidth, items_height, bgcolor, radius, corner, gradient);
 			
-			//
+			////test
 			if(widgetType == TYPE_EXTENDED && widgetMode == MODE_MENU)
 			{
-				frameBuffer->paintBoxRel(itemBox.iX + items_width, itemBox.iY + hheight, itemBox.iWidth - items_width, items_height, COL_MENUCONTENTDARK_PLUS_0);
+				frameBuffer->paintBoxRel(itemBox.iX + items_width, itemBox.iY + hheight, itemBox.iWidth - items_width, items_height, /*COL_MENUCONTENTDARK_PLUS_0*/bgcolor);
 
 			}
 		}		
@@ -2359,7 +2359,7 @@ void ClistBox::paintItems()
 			//
 			if(widgetType == TYPE_EXTENDED && widgetMode == MODE_MENU)
 			{
-				frameBuffer->paintBoxRel(itemBox.iX + items_width, item_start_y, itemBox.iWidth - items_width, items_height, COL_MENUCONTENTDARK_PLUS_0);
+				frameBuffer->paintBoxRel(itemBox.iX + items_width, item_start_y, itemBox.iWidth - items_width, items_height, /*COL_MENUCONTENTDARK_PLUS_0*/bgcolor);
 
 			}
 		}

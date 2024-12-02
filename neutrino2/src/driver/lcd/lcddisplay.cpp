@@ -1305,13 +1305,14 @@ void CLCDDisplay::draw_point(const int x, const int y, uint32_t color)
 		
 	uint32_t tmpcol = color;
 	
+	// argb to abgr
 #if BYTE_ORDER == LITTLE_ENDIAN
 	uint8_t a = (color & 0xFF000000) >> 24;
 	uint8_t r = (color & 0x00FF0000) >> 16;
 	uint8_t g = (color & 0x0000FF00) >> 8;
 	uint8_t b = (color & 0x000000FF);
 
-	tmpcol = ::rgbaToColor(r, g, b, a);
+	tmpcol = ((a << 24) & 0xFF000000) | ((b << 16) & 0x00FF0000) | ((g << 8) & 0x0000FF00) | (r & 0x000000FF);
 #endif
 	
 

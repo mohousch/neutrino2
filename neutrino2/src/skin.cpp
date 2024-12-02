@@ -348,6 +348,8 @@ uint32_t CNeutrinoApp::convertColor(const char* const color)
 {
 	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertColor: color: %s\n", color);
 	
+	// colorstring is aarrggbb
+	
 	uint32_t rgba = COL_MENUCONTENT_PLUS_0;
 	
 	uint8_t a = 0;
@@ -357,17 +359,16 @@ uint32_t CNeutrinoApp::convertColor(const char* const color)
 				
 	if (color != NULL)
 	{
-		/*rrggbbaa*/
 		if (color[0] == '#')
 		{
 			uint32_t col = 0;
 						
 			if (sscanf(color + 1, "%lx", &col) == 1)
 			{
-				r = (col >> 24)&0xFF; 
-				g = (col >> 16)&0xFF;
-				b = (col >> 8)&0xFF;
-				a = (col)&0xFF;
+				a = (col & 0xFF000000) >> 24;
+				r = (col & 0x00FF0000) >> 16;
+				g = (col & 0x0000FF00) >> 8;
+				b = (col & 0x000000FF);
 			}
 		}
 		else
@@ -518,8 +519,8 @@ uint32_t CNeutrinoApp::convertColor(const char* const color)
 			}
 		}
 	}
-				
-	rgba = ::rgba2Color(r, g, b, a);
+	
+	rgba = ::rgbaToColor(r, g, b, a);
 	
 	return rgba;
 }
@@ -544,10 +545,10 @@ uint32_t CNeutrinoApp::convertFontColor(const char* const color)
 						
 			if (sscanf(color + 1, "%lx", &col) == 1)
 			{
-				r = (col >> 24)&0xFF; 
-				g = (col >> 16)&0xFF;
-				b = (col >> 8)&0xFF;
-				a = (col)&0xFF;
+				a = (col >> 24)&0xFF; 
+				r = (col >> 16)&0xFF;
+				g = (col >> 8)&0xFF;
+				b = (col)&0xFF;
 			}
 		}
 		else
@@ -659,7 +660,7 @@ uint32_t CNeutrinoApp::convertFontColor(const char* const color)
 		}
 	}
 				
-	rgb = ::rgba2Color(r, g, b, a);
+	rgb = ::rgbaToColor(r, g, b, a);
 	
 	return rgb;
 }
@@ -1458,7 +1459,20 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	if (painthead)
 	{
 		listBox->enablePaintHead();
-		listBox->setTitle(_(title), icon);
+
+		std::string filename = "";
+		if (icon != NULL)
+		{
+			filename = CONFIGDIR "/skins/";
+			filename += g_settings.preferred_skin;
+			filename += "/";
+			filename += icon;
+						
+			if (!file_exists(filename.c_str()))
+				filename = icon;
+		}
+		listBox->setTitle(_(title), filename.c_str());
+		
 		if (paintdate) listBox->enablePaintDate();
 		//if (format) listBox->setFormat(format); //FIXME:
 		listBox->setTitleHAlign(halign);
@@ -1476,7 +1490,17 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	// iteminfo
 	if (paintiteminfo)
 	{
-		listBox->enablePaintItemInfo(/*(m == ClistBox::MODE_LISTBOX)? 70 : 0*/iteminfo_height);
+		////
+		iteminfo_posx = widget->getWindowsPos().iX + iteminfo_posx;
+		iteminfo_posy = widget->getWindowsPos().iY + iteminfo_posy;
+				
+		if (iteminfo_width > widget->getWindowsPos().iWidth)
+			iteminfo_width = widget->getWindowsPos().iWidth;
+				
+		if (iteminfo_height > widget->getWindowsPos().iHeight)
+			iteminfo_height = widget->getWindowsPos().iHeight;
+			
+		listBox->enablePaintItemInfo(iteminfo_height);
 		int iimode = CCItemInfo::ITEMINFO_INFO;
 		if (iteminfomode) iimode = convertItemInfoMode(iteminfomode);
 		listBox->setItemInfoMode(iimode);		
@@ -1505,7 +1529,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	// itemiconname
 	if (itemiconname) listBox->disablePaintIconName();
 				
-	// ITEM	
+	//// ITEM	
 	listboxitem_node = node->xmlChildrenNode;
 		
 	//
@@ -1584,7 +1608,18 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 			menuItem->setDirectKey(key);
 		}
 		
-		if (item_icon) menuItem->setIconName(item_icon);	
+		if (item_icon)// menuItem->setIconName(item_icon);	
+		{
+			std::string filename = CONFIGDIR "/skins/";
+			filename += g_settings.preferred_skin;
+			filename += "/";
+			filename += item_icon;
+						
+			if (!file_exists(filename.c_str()))
+				filename = item_icon;
+				
+			menuItem->setIconName(filename.c_str());
+		}
 		if (item_hint) menuItem->setHint(item_hint);
 		if (item_lines) menuItem->set2lines(item_lines);
 		if (item_option) menuItem->setOption(item_option);
@@ -1774,7 +1809,18 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 	if (title != NULL) head->setTitle(_(title));
 	head->setHAlign(halign);
 	// icon
-	if (icon != NULL) head->setIcon(icon);
+	if (icon != NULL)
+	{
+		std::string filename = CONFIGDIR "/skins/";
+		filename += g_settings.preferred_skin;
+		filename += "/";
+		filename += icon;
+					
+		if (file_exists(filename.c_str()))
+			head->setIcon(filename.c_str());
+		else
+			head->setIcon(icon);
+	}
 	// color
 	if(color != NULL) head->setColor(finalColor);
 	// gradient
@@ -1880,7 +1926,7 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 	if (widget)
 	{			
 		x = widget->getWindowsPos().iX + posx;
-		y = widget->getWindowsPos().iY + posy;
+		y = widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - height + posy;
 				
 		if (width > widget->getWindowsPos().iWidth)
 			width = widget->getWindowsPos().iWidth;
@@ -2046,8 +2092,21 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 	if (font) fs = convertFontSize(font);
 	textBox->setFont(fs);
 	
+	std::string filename = "";
+	
+	if (pic != NULL)
+	{
+		filename = CONFIGDIR "/skins/";
+		filename += g_settings.preferred_skin;
+		filename += "/";
+		filename += pic;
+					
+		if (!file_exists(filename.c_str()))
+			filename = pic;
+	}
+	
 	//FIXME:	
-	if (text) textBox->setText(text, pic? pic : NULL, tw, th, tmode, tframe);
+	if (text) textBox->setText(text, !filename.empty()? filename.c_str() : NULL, tw, th, tmode, tframe);
 	
 	//				
 	if (widget) widget->addCCItem(textBox);

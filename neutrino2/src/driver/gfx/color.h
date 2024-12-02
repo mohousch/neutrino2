@@ -144,27 +144,16 @@ int convertSetupAlpha2Alpha(uint8_t alpha);
 uint32_t convertSetupColor2Color(uint8_t r, uint8_t g, uint8_t b, uint8_t alpha);
 
 ////
-inline uint32_t rgbaToColor(unsigned int rgb, uint8_t tr = 0xFF)
+static inline uint32_t rgbaToColor(unsigned int rgb, uint8_t tr = 0xFF)
 {
 	uint32_t col = ((tr << 24) & 0xFF000000) | rgb;
 	
 	return col;
 }
 
-inline uint32_t rgbaToColor(uint8_t r, uint8_t g, uint8_t b, uint8_t t)
+static inline uint32_t rgbaToColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
-#if BYTE_ORDER == LITTLE_ENDIAN
-	return ((t << 24) & 0xFF000000) | ((b << 16) & 0x00FF0000) | ((g << 8) & 0x0000FF00) | (r & 0x000000FF);
-#else
-	return ((t << 24) & 0xFF000000) | ((r << 16) & 0x00FF0000) | ((g << 8) & 0x0000FF00) | (b & 0x000000FF); 
-#endif
-}
-
-
-// colorstring used in skin.cpp
-inline uint32_t rgba2Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
-{
-	return (a << 24) | (r << 16) | (g << 8) | b;
+	return ((a << 24) & 0xFF000000) | ((r << 16) & 0x00FF0000) | ((g << 8) & 0x0000FF00) | (b & 0x000000FF); 
 }
 
 ////

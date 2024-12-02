@@ -13,7 +13,7 @@
 		<listbox posx="50" posy="50" width="540" height="620" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" itemlines="1" disableitemicon="1">
 			<item id="FORWARDER" localename="TV / Radio" itemicon="hint_tvmode" target="neutrino" actionkey="tvradioswitch"/>
 			<item id="FORWARDER" localename="EPG / Timer" itemicon="hint_timers" target="epgtimer"/>
-			<item id="FORWARDER" localename="Features" itemicon="hint_plugin" target="neutrino" actionkey="features"/>
+			<item id="FORWARDER" localename="Features" itemicon="hint_features" target="neutrino" actionkey="features"/>
 			<item id="FORWARDER" localename="Service" itemicon="hint_service" target="service"/>
 			<item id="FORWARDER" localename="Settings" itemicon="hint_settings" target="settings"/>
 			<item id="FORWARDER" localename="OSD" itemicon="hint_osd" target="osd"/>
