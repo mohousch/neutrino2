@@ -2546,6 +2546,7 @@ void CNeutrinoApp::parseCCHline(xmlNodePtr node, CWidget* widget)
 	int cc_dy = 0;
 	
 	//
+	char *color = NULL;
 	char * gradient = NULL;
 	
 	//
@@ -2556,7 +2557,8 @@ void CNeutrinoApp::parseCCHline(xmlNodePtr node, CWidget* widget)
 	cc_y = xmlGetSignedNumericAttribute(node, "posy", 0);
 	cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
 	cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
-		
+	
+	color = xmlGetAttribute(node, (char *)"color");
 	gradient = xmlGetAttribute(node, (char *)"gradient");
 		
 	// recalculate posx / posy
@@ -2579,6 +2581,13 @@ void CNeutrinoApp::parseCCHline(xmlNodePtr node, CWidget* widget)
 		
 	hline->cc_type = CComponent::CC_HLINE;
 	if (name) hline->cc_name = name;
+	
+	uint32_t col = COL_MENUCONTENT_PLUS_5;
+	if (color != NULL)
+	{
+		col = convertColor(color);
+	}
+	hline->setColor(col);
 		
 	int gr = NOGRADIENT;
 	if (gradient) gr = convertGradient(gradient);
@@ -2602,6 +2611,7 @@ void CNeutrinoApp::parseCCVline(xmlNodePtr node, CWidget* widget)
 	int cc_dx = 0;
 	int cc_dy = 0;
 	
+	char *color = NULL;
 	char *gradient = NULL;
 	
 	//
@@ -2612,7 +2622,8 @@ void CNeutrinoApp::parseCCVline(xmlNodePtr node, CWidget* widget)
 	cc_y = xmlGetSignedNumericAttribute(node, "posy", 0);
 	cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
 	cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
-		
+	
+	color = xmlGetAttribute(node, (char *)"color");	
 	gradient = xmlGetAttribute(node, (char *)"gradient");
 				
 	// recalculate posx / posy
@@ -2635,6 +2646,13 @@ void CNeutrinoApp::parseCCVline(xmlNodePtr node, CWidget* widget)
 		
 	vline->cc_type = CComponent::CC_VLINE;
 	if (name) vline->cc_name = name;
+	
+	uint32_t col = COL_MENUCONTENT_PLUS_5;
+	if (color != NULL)
+	{
+		col = convertColor(color);
+	}
+	vline->setColor(col);
 		
 	int gr = NOGRADIENT;
 	if (gradient) gr = convertGradient(gradient);
