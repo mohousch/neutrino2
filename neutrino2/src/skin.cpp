@@ -1347,6 +1347,10 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	unsigned int iteminfo_width = 0;
 	unsigned int iteminfo_height = 0;
 	const char* iteminfo_color = NULL;
+	unsigned int iteminfo2_posx = 0;
+	unsigned int iteminfo2_posy = 0;
+	unsigned int iteminfo2_width = 0;
+	unsigned int iteminfo2_height = 0;
 	
 	// item
 	unsigned int itemborder = 0;
@@ -1406,6 +1410,10 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	iteminfo_posy = xmlGetSignedNumericAttribute(node, "iteminfoposy", 0);
 	iteminfo_width = xmlGetSignedNumericAttribute(node, "iteminfowidth", 0);
 	iteminfo_height = xmlGetSignedNumericAttribute(node, "iteminfoheight", 0);
+	iteminfo2_posx = xmlGetSignedNumericAttribute(node, "iteminfo2posx", 0);
+	iteminfo2_posy = xmlGetSignedNumericAttribute(node, "iteminfo2posy", 0);
+	iteminfo2_width = xmlGetSignedNumericAttribute(node, "iteminfo2width", 0);
+	iteminfo2_height = xmlGetSignedNumericAttribute(node, "iteminfo2height", 0);
 
 	iteminfo_color = xmlGetAttribute(node, (char*)"iteminfocolor");
 	uint32_t hintColor = COL_MENUCONTENT_PLUS_0;
@@ -1507,6 +1515,18 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		listBox->setItemInfoPos(iteminfo_posx, iteminfo_posy, iteminfo_width, iteminfo_height);
 		listBox->paintItemInfoFrame(iteminfoframe);
 		if (iteminfo_color) listBox->setItemInfoColor(hintColor);
+		
+		////
+		iteminfo2_posx = widget->getWindowsPos().iX + iteminfo2_posx;
+		iteminfo2_posy = widget->getWindowsPos().iY + iteminfo2_posy;
+				
+		if (iteminfo2_width > widget->getWindowsPos().iWidth)
+			iteminfo2_width = widget->getWindowsPos().iWidth;
+				
+		if (iteminfo2_height > widget->getWindowsPos().iHeight)
+			iteminfo2_height = widget->getWindowsPos().iHeight;
+			
+		listBox->setItemInfoPos2(iteminfo2_posx, iteminfo2_posy, iteminfo2_width, iteminfo2_height);
 	}
 		
 	// item

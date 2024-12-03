@@ -1784,7 +1784,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	foot_line = g_settings.Foot_line;
 	foot_line_gradient = g_settings.Foot_line_gradient;
 	
-	// foot info
+	// iteminfo
 	paintFootInfo = false;
 	footInfoHeight = 0;
 	cFrameFootInfoHeight = 0;
@@ -1800,6 +1800,10 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	iteminfofont = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
 	iteminfocolor = COL_MENUCONTENT_PLUS_0;
 	iteminfoscale = false;
+	itemInfoBox2.iX = 0;
+	itemInfoBox2.iY = 0;
+	itemInfoBox2.iWidth = 0;
+	itemInfoBox2.iHeight = 0;
 	
 	//
 	inFocus = true;
@@ -1901,7 +1905,7 @@ ClistBox::ClistBox(CBox* position)
 	foot_line = g_settings.Foot_line;
 	foot_line_gradient = g_settings.Foot_line_gradient;
 	
-	// footInfo
+	// itemInfo
 	paintFootInfo = false;
 	footInfoHeight = 0;
 	cFrameFootInfoHeight = 0;
@@ -1917,6 +1921,10 @@ ClistBox::ClistBox(CBox* position)
 	iteminfofont = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
 	iteminfocolor = COL_MENUCONTENT_PLUS_0;
 	iteminfoscale = false;
+	itemInfoBox2.iX = 0;
+	itemInfoBox2.iY = 0;
+	itemInfoBox2.iWidth = 0;
+	itemInfoBox2.iHeight = 0;
 
 	//
 	widgetType = TYPE_STANDARD;
@@ -2201,8 +2209,8 @@ void ClistBox::paint()
 			items_width = 2*(itemBox.iWidth/3) - sb_width;			
 		}
 		
-		////
-		if (paintframe) //FIXME:
+		//// FIXME:
+		if (paintframe)
 		{
 			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, itemBox.iWidth, items_height, bgcolor, radius, corner, gradient);
 			
@@ -2237,6 +2245,13 @@ void ClistBox::paint()
 	{
 		itemsLine.setPosition(itemBox.iX + items_width + (itemBox.iWidth - items_width - ITEM_ICON_W)/2, itemBox.iY + (itemBox.iHeight - ITEM_ICON_H)/2, ITEM_ICON_W, ITEM_ICON_H);
 		itemsLine.enableSaveScreen();
+	}
+	
+	//// FIXME:
+	if (paintFootInfo && widgetMode == MODE_MENU && itemInfoBox2.iWidth != 0)
+	{
+		label.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
+		label.enableSaveScreen();
 	}
 
 	//
@@ -2852,6 +2867,17 @@ void ClistBox::paintItemInfo(int pos)
 				itemsLine.paintMainFrame(true);
 						
 				itemsLine.paint();
+				
+				//// test:FIXME:
+				if (widgetMode == MODE_MENU && itemInfoBox2.iWidth != 0)
+				{
+					//label.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
+					//label.enableSaveScreen();
+					label.setText(item->itemHint.c_str());
+					label.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
+					label.setColor(COL_MENUFOOT_TEXT_PLUS_0);
+					label.paint();
+				}
 			}
 			else if (footInfoMode == CCItemInfo::ITEMINFO_HINT)
 			{

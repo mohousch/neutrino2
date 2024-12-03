@@ -475,6 +475,7 @@ class ClistBox : public CComponent
 		uint32_t iteminfocolor;
 		bool iteminfoscale;
 		CCLabel label;
+		CBox itemInfoBox2;
 
 		// methods
 		virtual void paintItems();
@@ -581,6 +582,13 @@ class ClistBox : public CComponent
 		void setItemInfoFont(unsigned int f){iteminfofont = f;};
 		void setItemInfoColor(uint32_t col){iteminfocolor = col;};
 		void setItemInfoScaling(bool s){iteminfoscale = s;};
+		void setItemInfoPos2(int x, int y, int dx, int dy)
+		{
+			itemInfoBox2.iX = x;
+			itemInfoBox2.iY = y;
+			itemInfoBox2.iWidth = dx;
+			itemInfoBox2.iHeight = dy;
+		}
 		
 		//// head properties
 		void enablePaintHead(){paintTitle = true;};

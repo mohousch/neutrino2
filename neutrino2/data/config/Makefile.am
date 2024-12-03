@@ -7,8 +7,4 @@ install_DATA = \
     	atsc.xml \
 	encoding.conf
 
-install-exec-local:
-	install -d $(DESTDIR)$(CONFIGDIR)/zapit
-	install -d $(DESTDIR)$(CONFIGDIR)/themes
-
 
