@@ -1233,18 +1233,6 @@ void CCTime::paint()
 	saveScreen();
 	
 	//
-	/*
-	std::string timestr = getNowTimeStr(format.c_str());
-		
-	int timestr_len = g_Font[font]->getRenderWidth(timestr.c_str(), true); // UTF-8
-	
-	if (timestr_len > itemBox.iWidth && itemBox.iWidth != 0)
-		timestr_len = itemBox.iWidth;
-		
-	int startPosX = itemBox.iX + (itemBox.iWidth - timestr_len)/2;
-	
-	g_Font[font]->RenderString(startPosX, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), timestr_len, timestr.c_str(), color);
-	*/
 	paintDigits();
 }
 
@@ -1255,18 +1243,6 @@ void CCTime::refresh(bool show)
 	restoreScreen();
 	
 	//
-	/*
-	std::string timestr = getNowTimeStr(format.c_str());
-		
-	int timestr_len = g_Font[font]->getRenderWidth(timestr.c_str(), true); // UTF-8
-	
-	if (timestr_len > itemBox.iWidth && itemBox.iWidth != 0)
-		timestr_len = itemBox.iWidth;
-		
-	int startPosX = itemBox.iX + (itemBox.iWidth - timestr_len)/2;
-	
-	g_Font[font]->RenderString(startPosX, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), timestr_len, timestr.c_str(), color);
-	*/
 	paintDigits();
 }
 

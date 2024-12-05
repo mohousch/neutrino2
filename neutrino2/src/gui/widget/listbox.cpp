@@ -2786,7 +2786,7 @@ void ClistBox::paintItemInfo(int pos)
 			else if (footInfoMode == CCItemInfo::ITEMINFO_INFO)
 			{
 				// detailslines
-				//itemsLine.setPosition(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight + 2, itemBox.iWidth, cFrameFootInfoHeight);
+				itemsLine.setPosition(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight + 2, itemBox.iWidth, cFrameFootInfoHeight);
 				itemsLine.setMode(CCItemInfo::ITEMINFO_INFO);
 				itemsLine.setInfo1(item->info1.c_str());
 				itemsLine.setOptionInfo1(item->option_info1.c_str());
@@ -2799,7 +2799,7 @@ void ClistBox::paintItemInfo(int pos)
 			else if (footInfoMode == CCItemInfo::ITEMINFO_HINTITEM)
 			{
 				// detailslines box
-				//itemsLine.setPosition(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight + 2, itemBox.iWidth, cFrameFootInfoHeight);
+				itemsLine.setPosition(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight + 2, itemBox.iWidth, cFrameFootInfoHeight);
 				itemsLine.setMode(CCItemInfo::ITEMINFO_HINTITEM);
 				itemsLine.setHint(item->itemHint.c_str());
 					
@@ -2824,7 +2824,7 @@ void ClistBox::paintItemInfo(int pos)
 			else if (footInfoMode == CCItemInfo::ITEMINFO_HINTICON)
 			{
 				// detailslines box
-				//itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
+				itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
 				itemsLine.setMode(CCItemInfo::ITEMINFO_HINTICON);
 				itemsLine.setBorderMode(iteminfobordermode);
 				//if (iteminfosavescreen) itemsLine.enableSaveScreen();
@@ -2851,7 +2851,7 @@ void ClistBox::paintItemInfo(int pos)
 			else if (footInfoMode == CCItemInfo::ITEMINFO_ICON)
 			{
 				// detailslines box
-				//itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
+				itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
 				itemsLine.setMode(CCItemInfo::ITEMINFO_ICON);
 				itemsLine.setBorderMode(iteminfobordermode);
 				//if (iteminfosavescreen) itemsLine.enableSaveScreen();
@@ -2887,7 +2887,7 @@ void ClistBox::paintItemInfo(int pos)
 			else if (footInfoMode == CCItemInfo::ITEMINFO_HINT)
 			{
 				// detailslines box
-				//itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
+				itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
 				itemsLine.setMode(CCItemInfo::ITEMINFO_HINT);
 				itemsLine.setBorderMode(iteminfobordermode);
 				//if (iteminfosavescreen) itemsLine.enableSaveScreen();

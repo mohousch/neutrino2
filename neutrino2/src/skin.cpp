@@ -2427,7 +2427,7 @@ void CNeutrinoApp::parseCCTime(xmlNodePtr node, CWidget* widget)
 		
 	//
 	font_size = xmlGetAttribute(node, (char *)"font");
-	font_color = xmlGetAttribute(node, (char*)"fontcolor");
+	font_color = xmlGetAttribute(node, (char*)"color");
 		
 	uint32_t color = COL_MENUCONTENT_TEXT_PLUS_0;
 		
