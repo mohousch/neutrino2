@@ -1919,7 +1919,7 @@ void CCItemInfo::paint()
 {
 	dprintf(DEBUG_DEBUG, "CCItemInfo::paint:\n");
 	
-	// border
+	// frame
 	if (paintframe)
 	{
 		if (borderMode) 
@@ -1972,7 +1972,7 @@ void CCItemInfo::paint()
 	}
 	else if (mode == ITEMINFO_HINTITEM)
 	{
-		//
+		// icon
 		int iw = 0;
 		int ih = 0;
 		int nbpp = 0;
@@ -1995,8 +1995,8 @@ void CCItemInfo::paint()
 			DImage.paint();
 		}
 		
-		//
-		CCText Dline(itemBox.iX + 115, itemBox.iY + 10, itemBox.iWidth - iw - 20, itemBox.iHeight - 20);
+		// hint
+		CCText Dline(itemBox.iX + 5 + 100 + 10, itemBox.iY + 10, itemBox.iWidth - 5 - 100 - 10 - 10, itemBox.iHeight - 20);
 		Dline.setFont(tFont);
 		Dline.setText(hint.c_str());		
 		Dline.paint();

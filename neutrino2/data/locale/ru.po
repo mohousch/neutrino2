@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-12-01 18:29+0100\n"
+"POT-Creation-Date: 2024-12-05 15:38+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -289,9 +289,6 @@ msgstr "CAM удален из слота"
 msgid "CEC Setup"
 msgstr "Настройки CEC"
 
-msgid "CEC broadcast"
-msgstr "Трансляция CEC"
-
 msgid "CEC mode"
 msgstr "Режим CEC"
 
@@ -309,9 +306,6 @@ msgstr "CEC настройки"
 
 msgid "CEC standby"
 msgstr "Режим ожидания CEC"
-
-msgid "CEC standby no timer"
-msgstr "Ожидание CEC без таймера"
 
 msgid "CEC view on"
 msgstr ""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-12-01 18:29+0100\n"
+"POT-Creation-Date: 2024-12-05 15:38+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -282,9 +282,6 @@ msgstr ""
 msgid "CEC Setup"
 msgstr ""
 
-msgid "CEC broadcast"
-msgstr ""
-
 msgid "CEC mode"
 msgstr ""
 
@@ -301,9 +298,6 @@ msgid "CEC settings"
 msgstr ""
 
 msgid "CEC standby"
-msgstr ""
-
-msgid "CEC standby no timer"
 msgstr ""
 
 msgid "CEC view on"

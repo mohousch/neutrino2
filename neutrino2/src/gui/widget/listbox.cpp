@@ -1785,7 +1785,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	foot_line_gradient = g_settings.Foot_line_gradient;
 	
 	// iteminfo
-	paintFootInfo = false;
+	paint_ItemInfo = false;
 	footInfoHeight = 0;
 	cFrameFootInfoHeight = 0;
 	footInfoMode = CCItemInfo::ITEMINFO_HINTITEM;
@@ -1906,7 +1906,7 @@ ClistBox::ClistBox(CBox* position)
 	foot_line_gradient = g_settings.Foot_line_gradient;
 	
 	// itemInfo
-	paintFootInfo = false;
+	paint_ItemInfo = false;
 	footInfoHeight = 0;
 	cFrameFootInfoHeight = 0;
 	footInfoMode = CCItemInfo::ITEMINFO_HINTITEM;
@@ -2058,7 +2058,7 @@ void ClistBox::initFrames()
 	if(widgetType == TYPE_FRAME)
 	{
 		//
-		if (paintFootInfo)
+		if (paint_ItemInfo)
 		{
 			cFrameFootInfoHeight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
 		}
@@ -2096,7 +2096,7 @@ void ClistBox::initFrames()
 	else 
 	{
 		// footInfoBox
-		if(paintFootInfo)
+		if(paint_ItemInfo)
 		{
 			if(widgetType == TYPE_STANDARD)
 			{
@@ -2232,7 +2232,7 @@ void ClistBox::paint()
 		int iw, ih;
 		frameBuffer->getIconSize(NEUTRINO_ICON_INFO, &iw, &ih);
 						
-		if (paintFootInfo && paint_Foot)
+		if (paint_ItemInfo && paint_Foot)
 		{	
 			label.setPosition(itemBox.iX + BORDER_LEFT + iw + ICON_OFFSET, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight + 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - iw, fheight - 2);
 			
@@ -2246,12 +2246,17 @@ void ClistBox::paint()
 		itemsLine.setPosition(itemBox.iX + items_width + (itemBox.iWidth - items_width - ITEM_ICON_W)/2, itemBox.iY + (itemBox.iHeight - ITEM_ICON_H)/2, ITEM_ICON_W, ITEM_ICON_H);
 		itemsLine.enableSaveScreen();
 	}
+	else
+	{
+		itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
+		if (iteminfosavescreen) itemsLine.enableSaveScreen();
+	}
 	
 	//// FIXME:
-	if (paintFootInfo && widgetMode == MODE_MENU && itemInfoBox2.iWidth != 0)
+	if (paint_ItemInfo && itemInfoBox2.iWidth != 0)
 	{
 		label.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
-		label.enableSaveScreen();
+		if (iteminfosavescreen) label.enableSaveScreen();
 	}
 
 	//
@@ -2736,7 +2741,7 @@ void ClistBox::paintItemInfo(int pos)
 	
 	if( (widgetType == TYPE_STANDARD) || (widgetType == TYPE_CLASSIC) )
 	{
-		if(paintFootInfo)
+		if(paint_ItemInfo)
 		{
 			CMenuItem* item = items[pos];
 			
@@ -2781,7 +2786,7 @@ void ClistBox::paintItemInfo(int pos)
 			else if (footInfoMode == CCItemInfo::ITEMINFO_INFO)
 			{
 				// detailslines
-				itemsLine.setPosition(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight + 2, itemBox.iWidth, cFrameFootInfoHeight);
+				//itemsLine.setPosition(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight + 2, itemBox.iWidth, cFrameFootInfoHeight);
 				itemsLine.setMode(CCItemInfo::ITEMINFO_INFO);
 				itemsLine.setInfo1(item->info1.c_str());
 				itemsLine.setOptionInfo1(item->option_info1.c_str());
@@ -2794,7 +2799,7 @@ void ClistBox::paintItemInfo(int pos)
 			else if (footInfoMode == CCItemInfo::ITEMINFO_HINTITEM)
 			{
 				// detailslines box
-				itemsLine.setPosition(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight + 2, itemBox.iWidth, cFrameFootInfoHeight);
+				//itemsLine.setPosition(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight + 2, itemBox.iWidth, cFrameFootInfoHeight);
 				itemsLine.setMode(CCItemInfo::ITEMINFO_HINTITEM);
 				itemsLine.setHint(item->itemHint.c_str());
 					
@@ -2819,10 +2824,10 @@ void ClistBox::paintItemInfo(int pos)
 			else if (footInfoMode == CCItemInfo::ITEMINFO_HINTICON)
 			{
 				// detailslines box
-				itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
+				//itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
 				itemsLine.setMode(CCItemInfo::ITEMINFO_HINTICON);
 				itemsLine.setBorderMode(iteminfobordermode);
-				if (iteminfosavescreen) itemsLine.enableSaveScreen();
+				//if (iteminfosavescreen) itemsLine.enableSaveScreen();
 				itemsLine.setColor(iteminfocolor);
 				itemsLine.setFont(iteminfofont);
 				itemsLine.setScaling(iteminfoscale);
@@ -2846,10 +2851,10 @@ void ClistBox::paintItemInfo(int pos)
 			else if (footInfoMode == CCItemInfo::ITEMINFO_ICON)
 			{
 				// detailslines box
-				itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
+				//itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
 				itemsLine.setMode(CCItemInfo::ITEMINFO_ICON);
 				itemsLine.setBorderMode(iteminfobordermode);
-				if (iteminfosavescreen) itemsLine.enableSaveScreen();
+				//if (iteminfosavescreen) itemsLine.enableSaveScreen();
 				itemsLine.setColor(iteminfocolor);
 				itemsLine.setScaling(iteminfoscale);
 				//
@@ -2864,7 +2869,7 @@ void ClistBox::paintItemInfo(int pos)
 				}
 				
 				itemsLine.setIcon(fname.c_str());
-				itemsLine.paintMainFrame(true);
+				itemsLine.paintMainFrame(true); // FIXME
 						
 				itemsLine.paint();
 				
@@ -2882,15 +2887,15 @@ void ClistBox::paintItemInfo(int pos)
 			else if (footInfoMode == CCItemInfo::ITEMINFO_HINT)
 			{
 				// detailslines box
-				itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
+				//itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
 				itemsLine.setMode(CCItemInfo::ITEMINFO_HINT);
 				itemsLine.setBorderMode(iteminfobordermode);
-				if (iteminfosavescreen) itemsLine.enableSaveScreen();
+				//if (iteminfosavescreen) itemsLine.enableSaveScreen();
 				itemsLine.setColor(iteminfocolor);
 				itemsLine.setFont(iteminfofont);
 				itemsLine.setScaling(iteminfoscale);
 				itemsLine.setHint(item->itemHint.c_str());
-				itemsLine.paintMainFrame(true);
+				itemsLine.paintMainFrame(true); //FIXME:
 						
 				itemsLine.paint();
 			}
@@ -2954,7 +2959,7 @@ void ClistBox::paintItemInfo(int pos)
 			}
 		}
 			
-		if (paintFootInfo) // MODE_LISTBOX | MODE_MENU
+		if (paint_ItemInfo) // MODE_LISTBOX | MODE_MENU
 		{
 			if ( paint_Foot && fbutton_count == 0)
 			{
@@ -2996,7 +3001,7 @@ void ClistBox::paintItemInfo(int pos)
 	}
 	else if(widgetType == TYPE_FRAME)
 	{
-		if (paintFootInfo)
+		if (paint_ItemInfo)
 		{	
 			if (paintframe) //FIXME:
 			{
@@ -3031,7 +3036,7 @@ void ClistBox::hideItemInfo()
 {
 	dprintf(DEBUG_INFO, "ClistBox::hideItemInfo:\n");
 	
-	if (paintFootInfo)
+	if (paint_ItemInfo)
 	{
 	    	if(widgetType == TYPE_STANDARD || widgetType == TYPE_CLASSIC)
 		{

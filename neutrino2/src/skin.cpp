@@ -334,10 +334,12 @@ CMenuTarget* CNeutrinoApp::convertTarget(const std::string& name)
 	{
 		parent = new CScanSetup();
 	}
+#ifndef __sh__
 	else if (name == "cecsetup")
 	{
 		parent = new CCECSetup();
 	}
+#endif
 	
 	return parent;
 }
@@ -1351,6 +1353,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	unsigned int iteminfo2_posy = 0;
 	unsigned int iteminfo2_width = 0;
 	unsigned int iteminfo2_height = 0;
+	unsigned int iteminfosavescreen = 0;
 	
 	// item
 	unsigned int itemborder = 0;
@@ -1405,7 +1408,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	// iteminfo
 	paintiteminfo = xmlGetSignedNumericAttribute(node, "paintiteminfo", 0);
 	iteminfomode = xmlGetAttribute(node, (char *)"iteminfomode");
-	iteminfoframe = xmlGetSignedNumericAttribute(node, "iteminfoframe", 0);
+	iteminfoframe = xmlGetSignedNumericAttribute(node, "iteminfopaintframe", 0);
 	iteminfo_posx = xmlGetSignedNumericAttribute(node, "iteminfoposx", 0);
 	iteminfo_posy = xmlGetSignedNumericAttribute(node, "iteminfoposy", 0);
 	iteminfo_width = xmlGetSignedNumericAttribute(node, "iteminfowidth", 0);
@@ -1414,6 +1417,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	iteminfo2_posy = xmlGetSignedNumericAttribute(node, "iteminfo2posy", 0);
 	iteminfo2_width = xmlGetSignedNumericAttribute(node, "iteminfo2width", 0);
 	iteminfo2_height = xmlGetSignedNumericAttribute(node, "iteminfo2height", 0);
+	iteminfosavescreen = xmlGetSignedNumericAttribute(node, "iteminfosavescreen", 0);
 
 	iteminfo_color = xmlGetAttribute(node, (char*)"iteminfocolor");
 	uint32_t hintColor = COL_MENUCONTENT_PLUS_0;
@@ -1527,6 +1531,8 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 			iteminfo2_height = widget->getWindowsPos().iHeight;
 			
 		listBox->setItemInfoPos2(iteminfo2_posx, iteminfo2_posy, iteminfo2_width, iteminfo2_height);
+		
+		if (iteminfosavescreen) listBox->enableItemInfoSaveScreen();
 	}
 		
 	// item

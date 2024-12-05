@@ -389,13 +389,13 @@ static void convert_palette(uint32_t *pal, const gPalette &clut)
     	}
 }
 
-static bool swscale(uint8_t *src, uint8_t *dst, int sw, int sh, int dw, int dh, AVPixelFormat sfmt, AVPixelFormat dfmt)
+static bool swscale(uint8_t *src, uint8_t *dst, int sw, int sh, int dw, int dh, AVPixelFormat srcfmt, AVPixelFormat dstfmt)
 {
 	bool ret = false;
 	int len = 0;
 	struct SwsContext *scale = NULL;
 	
-	scale = sws_getCachedContext(scale, sw, sh, sfmt, dw, dh, dfmt, SWS_BICUBIC, 0, 0, 0);
+	scale = sws_getCachedContext(scale, sw, sh, srcfmt, dw, dh, dstfmt, SWS_BICUBIC, 0, 0, 0);
 	
 	if (!scale)
 	{
@@ -411,12 +411,12 @@ static bool swscale(uint8_t *src, uint8_t *dst, int sw, int sh, int dw, int dh, 
 	
 	if (sframe && dframe)
 	{
-		len = av_image_fill_arrays(sframe->data, sframe->linesize, &(src)[0], sfmt, sw, sh, 1);
+		len = av_image_fill_arrays(sframe->data, sframe->linesize, &(src)[0], srcfmt, sw, sh, 1);
 		
 		if (len > -1)
 			ret = true;
 
-		if (ret && (len = av_image_fill_arrays(dframe->data, dframe->linesize, &(dst)[0], sfmt, dw, dh, 1) < 0))
+		if (ret && (len = av_image_fill_arrays(dframe->data, dframe->linesize, &(dst)[0], srcfmt, dw, dh, 1) < 0))
 			ret = false;
 
 		if (ret && (len = sws_scale(scale, sframe->data, sframe->linesize, 0, sh, dframe->data, dframe->linesize) < 0))

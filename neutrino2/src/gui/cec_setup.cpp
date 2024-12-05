@@ -73,15 +73,6 @@ const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
         { 1, _("on") }
 };
 
-#if defined (__sh__)
-#define VIDEOMENU_HDMI_CEC_STANDBY_OPTION_COUNT 3
-const keyval VIDEOMENU_HDMI_CEC_STANDBY_OPTIONS[VIDEOMENU_HDMI_CEC_STANDBY_OPTION_COUNT] =
-{
-	{ 0	, _("off")				},
-	{ 1	, _("on")				},
-	{ 2	, _("CEC standby no timer")	}
-};
-#else
 #define VIDEOMENU_HDMI_CEC_MODE_OPTION_COUNT 3
 const keyval VIDEOMENU_HDMI_CEC_MODE_OPTIONS[VIDEOMENU_HDMI_CEC_MODE_OPTION_COUNT] =
 {
@@ -97,7 +88,6 @@ const keyval VIDEOMENU_HDMI_CEC_VOL_OPTIONS[VIDEOMENU_HDMI_CEC_VOL_OPTION_COUNT]
 	{ VIDEO_HDMI_CEC_VOL_AUDIOSYSTEM, _("CEC volume audiosystem") },
 	{ VIDEO_HDMI_CEC_VOL_TV			, _("CEC volume TV") }
 };
-#endif
 
 int CCECSetup::showMenu()
 {
@@ -153,14 +143,6 @@ int CCECSetup::showMenu()
 	cec->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	//cec
-#if defined (__sh__)
-	g_settings.hdmi_cec_mode = true;
-	CMenuOptionChooser *cec_ch = new CMenuOptionChooser(_("CEC mode"), &g_settings.hdmi_cec_mode, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, this);
-	
-	cec1 = new CMenuOptionChooser(_("CEC standby"), &g_settings.hdmi_cec_standby, VIDEOMENU_HDMI_CEC_STANDBY_OPTIONS, VIDEOMENU_HDMI_CEC_STANDBY_OPTION_COUNT, g_settings.hdmi_cec_mode != 0, this);
-	
-	cec2 = new CMenuOptionChooser(_("CEC broadcast"), &g_settings.hdmi_cec_broadcast, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF, this);
-#else
 	CMenuOptionChooser *cec_ch = new CMenuOptionChooser(_("CEC mode"), &g_settings.hdmi_cec_mode, VIDEOMENU_HDMI_CEC_MODE_OPTIONS, VIDEOMENU_HDMI_CEC_MODE_OPTION_COUNT, true, this);
 	
 	cec1 = new CMenuOptionChooser(_("CEC view on"), &g_settings.hdmi_cec_view_on, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF, this);
@@ -168,14 +150,11 @@ int CCECSetup::showMenu()
 	cec2 = new CMenuOptionChooser(_("CEC standby"), &g_settings.hdmi_cec_standby, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF, this);
 	
 	cec3 = new CMenuOptionChooser(_("CEC volume"), &g_settings.hdmi_cec_volume, VIDEOMENU_HDMI_CEC_VOL_OPTIONS, VIDEOMENU_HDMI_CEC_VOL_OPTION_COUNT, g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF, this);
-#endif
 
 	cec->addItem(cec_ch);
 	cec->addItem(cec1);
 	cec->addItem(cec2);
-#if !defined (__sh__)
 	cec->addItem(cec3);
-#endif
 
 	widget->setTimeOut(g_settings.timing_menu);
 	
@@ -197,53 +176,15 @@ void CCECSetup::setCECSettings(bool b)
 {	
 	dprintf(DEBUG_NORMAL, "CCECSetup::setCECSettings\n");
 	
-#if defined (__sh__)
-	if (b) 
-	{
-		// wakeup
-		if (g_settings.hdmi_cec_mode &&
-			 ((g_settings.hdmi_cec_standby == 1) ||
-			 (g_settings.hdmi_cec_standby == 2 && !CNeutrinoApp::getInstance()->timer_wakeup))) 
-		{
-			int otp = ::open("/proc/stb/cec/onetouchplay", O_WRONLY);
-			if (otp > -1) 
-			{
-				write(otp, g_settings.hdmi_cec_broadcast ? "f\n" : "0\n", 2);
-				close(otp);
-			}
-		}
-	} 
-	else 
-	{
-		if (g_settings.hdmi_cec_mode && g_settings.hdmi_cec_standby) 
-		{
-			int otp = ::open("/proc/stb/cec/systemstandby", O_WRONLY);
-			if (otp > -1) 
-			{
-				write(otp, g_settings.hdmi_cec_broadcast ? "f\n" : "0\n", 2);
-				close(otp);
-			}
-		}
-	}
-#else
 	hdmi_cec::getInstance()->SetCECAutoStandby(g_settings.hdmi_cec_standby == 1);
 	hdmi_cec::getInstance()->SetCECAutoView(g_settings.hdmi_cec_view_on == 1);
 	hdmi_cec::getInstance()->GetAudioDestination();
-	hdmi_cec::getInstance()->SetCECMode((VIDEO_HDMI_CEC_MODE)g_settings.hdmi_cec_mode);
-#endif	
+	hdmi_cec::getInstance()->SetCECMode((VIDEO_HDMI_CEC_MODE)g_settings.hdmi_cec_mode);	
 }
 
 bool CCECSetup::changeNotify(const std::string& OptionName, void * /*data*/)
 {
 	dprintf(DEBUG_NORMAL, "CCECSetup::changeNotify\n");
-	
-#if defined (__sh__)
-	if (OptionName == _("CEC mode"))
-	{
-		cec1->setActive(g_settings.hdmi_cec_mode != 0);
-		cec2->setActive(g_settings.hdmi_cec_mode != 0);
-	}
-#else
 
 	if (OptionName == _("CEC mode"))
 	{
@@ -270,7 +211,6 @@ bool CCECSetup::changeNotify(const std::string& OptionName, void * /*data*/)
 			hdmi_cec::getInstance()->GetAudioDestination();
 		}
 	}
-#endif
 
 	return false;
 }

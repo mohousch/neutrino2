@@ -461,10 +461,10 @@ class ClistBox : public CComponent
 		bool foot_line_gradient;
 
 		// itemInfo
+		bool paint_ItemInfo;
 		int cFrameFootInfoHeight;
 		int footInfoHeight;
 		CCItemInfo itemsLine;
-		bool paintFootInfo;
 		int footInfoMode;
 		CBox itemInfoBox;
 		bool iteminfoborder;
@@ -563,7 +563,7 @@ class ClistBox : public CComponent
 		void disablePaintIconName(void) { paintIconName = false;};
 		
 		//// itemInfo properties
-		void enablePaintItemInfo(int fh = 0){paintFootInfo = true; footInfoHeight = fh;};
+		void enablePaintItemInfo(int fh = 0){paint_ItemInfo = true; footInfoHeight = fh;};
 		void setItemInfoMode(int mode){footInfoMode = mode;};
 		void setItemInfoPos(int x, int y, int dx, int dy)
 		{

@@ -134,6 +134,7 @@ class CTestMenu : public CMenuTarget
 		void testCHButtons();
 		void testCSpinner();
 		void testCCSlider();
+		void testCCItemInfo();
 		void testCHeaders();
 		void testCFooters();
 		void testCProgressWindow();
@@ -1908,6 +1909,27 @@ void CTestMenu::testCCSlider()
 	
 	delete testSlider;
 	testSlider = NULL;
+}
+
+void CTestMenu::testCCItemInfo()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCCItemInfo:\n");
+	
+	CCItemInfo *itemInfo = new CCItemInfo();
+	
+	itemInfo->setPosition(40, 40, 1200, 400);
+	itemInfo->paintMainFrame(false);
+	itemInfo->enableSaveScreen();
+	itemInfo->setMode(CCItemInfo::ITEMINFO_ICON);
+	itemInfo->setInfo1("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
+	itemInfo->setInfo2("");
+	itemInfo->setHint("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
+	itemInfo->setIcon(DATADIR "/icons/nopreview.jpg");
+	
+	itemInfo->exec();
+	
+	delete itemInfo;
+	itemInfo = NULL;
 }
 
 //
@@ -4743,6 +4765,12 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		
 		return RETURN_REPAINT;
 	}
+	else if (actionKey == "iteminfo")
+	{
+		testCCItemInfo();
+		
+		return RETURN_REPAINT;
+	}
 	else if(actionKey == "listbox")
 	{
 		testClistBox();
@@ -6096,7 +6124,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CCButtons (foot)", true, NULL, this, "buttons"));
 	mainMenu->addItem(new CMenuForwarder("CCButtons (head)", true, NULL, this, "hbuttons"));
 	mainMenu->addItem(new CMenuForwarder("CCSpinner", true, NULL, this, "spinner"));
-//	mainMenu->addItem(new CMenuForwarder("CCSlider", true, NULL, this, "slider"));
+	mainMenu->addItem(new CMenuForwarder("CCItemInfo", true, NULL, this, "iteminfo"));
 	mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
 	mainMenu->addItem(new CMenuForwarder("CCWindow", true, NULL, this, "panel"));
 	mainMenu->addItem(new CMenuForwarder("CCWindow(gradient)", true, NULL, this, "window"));
