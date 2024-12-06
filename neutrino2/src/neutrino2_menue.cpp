@@ -111,8 +111,11 @@ void CNeutrinoApp::mainMenu(void)
 		
 		//
 		widget->addCCItem(nMenu);
+		
+		char *hint_tv = _("Here you can switch into TV mode");
+		char *hint_radio = _("Here you can switch into Radio mode");
 			  
-		// tv modus
+		// tv / radio
 		item = new CMenuForwarder(_("TV / Radio"), true, NULL, this, "tvradioswitch");
 		item->setHintIcon(NEUTRINO_ICON_MENUITEM_TV);
 		item->setHint(_("Here you can switch between TV / Radio"));

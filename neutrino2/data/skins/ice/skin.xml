@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- SKIN: ice -->
+<!-- AUTHOR: mohousch -->
+<!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
+
+<skin>
+	<widget name="mainmenu" width="600" height="450" position="MENU_POSITION_CENTER" paintframe="1" corner="CORNER_TOP" radius="RADIUS_MID" color="#ffeeeeee">
+		<head width="600" height="40" gradient="DARK2LIGHT" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_TOP" radius="RADIUS_MID" title="Main Menu" icon="icons/title.png" paintdate="1" format="%d.%m.%Y" paintframe="1" color="#ffe0e0e0"/>
+		<hline posx="0" posy="41" width="600" height="2" color="#ff000000"/>
+		<foot width="600" height="40" color="#ff4c4c4c" paintframe="1">
+			<button_label name="information"/>
+		</foot>
+		<window posx="8" posy="63" width="304" height="324" color="#ff000000" paintframe="1"/>
+		<listbox posx="10" posy="65" width="300" height="320" paintframe="1" type="TYPE_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfosavescreen="1" iteminfo2posx="50" iteminfo2posy="410" iteminfo2width="530" iteminfo2height="40" iteminfocolor="#ffeeeeee">
+			<item id="FORWARDER" localename="TV Mode" iconname="buttons/btn_red.png" itemicon="hint_tvmode" target="neutrino" actionkey="tv" hint="Here you can switch into TV mode"/>
+			<item id="FORWARDER" localename="Radio Mode" iconname="buttons/btn_green.png" itemicon="hint_radiomode" target="neutrino" actionkey="radio" hint="Here you can switch into Radio mode"/>
+			<item id="FORWARDER" localename="EPG / Timer" iconname="buttons/btn_yellow.png" itemicon="hint_timers" target="epgtimer" hint="Here you can set Timers and show EPG"/>
+			<item id="FORWARDER" localename="Features" iconname="buttons/btn_blue.png" itemicon="hint_features" target="neutrino" actionkey="features" hint="Here you can choose plugins"/>
+			<item id="FORWARDER" localename="Service" itemicon="hint_service" target="service" hint="Here you can set channel scan and more"/>
+			<item id="FORWARDER" localename="Settings" itemicon="hint_settings" target="settings" hint="Here you can setup your box"/>
+			<item id="FORWARDER" localename="OSD" itemicon="hint_osd" target="osd" hint="Here you can setup OSD"/>
+			<item id="FORWARDER" localename="Information" itemicon="hint_dboxinfo" target="information" hint="Here you can get device Info"/>
+			<item id="FORWARDER" localename="Power Menu" iconname="buttons/power.png" itemicon="hint_shutdown" target="powermenu" hint="Here you can power off or standby your device"/>
+			<item id="FORWARDER" localename="Media Player" itemicon="hint_media" target="mediaplayer" hint="Here you can play / show  music / movies / pics"/>
+		</listbox>
+		<time posx="350" posy="320" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
+	</widget>
+	
+	<widget name="epgtimer" width="600" height="450" position="MENU_POSITION_CENTER" paintframe="1" corner="CORNER_TOP" radius="RADIUS_LARGE" color="#ffeeeeee">
+		<head width="600" height="40" gradient="DARK2LIGHT" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_TOP" radius="RADIUS_LARGE" title="EPG / Timer" icon="icons/title.png" paintdate="1" format="%d.%m.%Y" paintframe="1" color="#ffe0e0e0"/>
+		<hline posx="0" posy="41" width="600" height="2" color="#ff000000"/>
+		<window posx="8" posy="63" width="304" height="324" color="#ff000000" paintframe="1"/>
+		<listbox posx="10" posy="65" width="300" height="320" paintframe="1" type="TYPE_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee">
+			<item id="FORWARDER" localename="Eventlist current programm" itemicon="hint_timers" target="eventlist" directkey="RC_red"/>
+			<item id="FORWARDER" localename="Details current program" itemicon="hint_timers" target="epgview" directkey="RC_green"/>
+			<item id="FORWARDER" localename="Eventlist overview" itemicon="hint_timers" target="epgplus" directkey="RC_yellow"/>
+			<item id="FORWARDER" localename="Timerlist" itemicon="hint_timers" target="timerlist"/>
+		</listbox>
+		<time posx="350" posy="320" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
+		<foot width="600" height="40" color="#ff4c4c4c" paintframe="1">
+			<button_label name="information"/>
+		</foot>
+	</widget>
+	
+	<widget name="features" width="600" height="450" position="MENU_POSITION_CENTER" paintframe="1" corner="CORNER_TOP" radius="RADIUS_LARGE" color="#ffeeeeee">
+		<head width="600" height="40" gradient="DARK2LIGHT" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_TOP" radius="RADIUS_LARGE" title="Features" icon="icons/title.png" paintdate="1" format="%d.%m.%Y" paintframe="1" color="#ffe0e0e0"/>
+		<hline posx="0" posy="41" width="600" height="2" color="#ff000000"/>
+		<window posx="8" posy="63" width="304" height="324" color="#ff000000" paintframe="1"/>
+		<listbox posx="10" posy="65" width="300" height="320" paintframe="1" type="TYPE_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee"/>
+		<time posx="350" posy="320" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
+		<foot width="600" height="40" color="#ff4c4c4c" paintframe="1">
+			<button_label name="information"/>
+		</foot>
+	</widget>
+	
+	<widget name="service" width="600" height="450" position="MENU_POSITION_CENTER" paintframe="1" corner="CORNER_TOP" radius="RADIUS_LARGE" color="#ffeeeeee">
+		<head width="600" height="40" gradient="DARK2LIGHT" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_TOP" radius="RADIUS_LARGE" title="Service" icon="icons/title.png" paintdate="1" format="%d.%m.%Y" paintframe="1" color="#ffe0e0e0"/>
+		<hline posx="0" posy="41" width="600" height="2" color="#ff000000"/>
+		<window posx="8" posy="63" width="304" height="324" color="#ff000000" paintframe="1"/>
+		<listbox posx="10" posy="65" width="300" height="320" paintframe="1" type="TYPE_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee">
+			<item id="FORWARDER" localename="Scan transponder" itemicon="hint_scan" target="scansetup"/>
+			<item id="FORWARDER" localename="Bouquet Editor" itemicon="hint_bedit" target="bouqueteditor"/>
+			<item id="FORWARDER" localename="CI Cam" itemicon="hint_ci" target="cicamsetup"/>
+			<item id="FORWARDER" localename="Software update" itemicon="hint_swupdate" target="updatesetup"/>
+		</listbox>
+		<time posx="350" posy="320" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
+		<foot width="600" height="40" color="#ff4c4c4c" paintframe="1">
+			<button_label name="information"/>
+		</foot>
+	</widget>
+	
+	<widget name="settings" width="600" height="450" position="MENU_POSITION_CENTER" paintframe="1" corner="CORNER_TOP" radius="RADIUS_LARGE" color="#ffeeeeee">
+		<head width="600" height="40" gradient="DARK2LIGHT" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_TOP" radius="RADIUS_LARGE" title="Settings" icon="icons/title.png" paintdate="1" format="%d.%m.%Y" paintframe="1" color="#ffe0e0e0"/>
+		<hline posx="0" posy="41" width="600" height="2" color="#ff000000"/>
+		<window posx="8" posy="63" width="304" height="324" color="#ff000000" paintframe="1"/>
+		<listbox posx="10" posy="65" width="300" height="320" paintframe="1" type="TYPE_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee">
+			<item id="FORWARDER" localename="Video settings" itemicon="hint_video" target="videosetup"/>
+			<item id="FORWARDER" localename="Audio settings" itemicon="hint_audio" target="audiosetup"/>
+			<item id="FORWARDER" localename="Parentallock settings" itemicon="hint_protection" target="parentallocksetup"/>
+			<item id="FORWARDER" localename="Network settings" itemicon="hint_network" target="networksetup"/>
+			<item id="FORWARDER" localename="Recording settings" itemicon="hint_recording" target="recordingsetup"/>
+			<item id="FORWARDER" localename="Movieplayer settings" itemicon="hint_mb" target="movieplayersetup"/>
+			<item id="FORWARDER" localename="Display settings" itemicon="hint_vfd" target="lcdsetup"/>
+			<item id="FORWARDER" localename="Remote Control settings" itemicon="hint_keys" target="rcsetup"/>
+			<item id="FORWARDER" localename="Audioplayer settings" itemicon="hint_aplay" target="audioplayersetup"/>
+			<item id="FORWARDER" localename="Pictureviewer settings" itemicon="hint_picview" target="pictureviewersetup"/>
+			<item id="FORWARDER" localename="HDD settings" itemicon="hint_hdd" target="hddsetup"/>
+			<item id="FORWARDER" localename="Misc settings" itemicon="hint_settings" target="miscsetup"/>
+			<item id="FORWARDER" localename="Channellist settings" itemicon="hint_bedit" target="channellistsetup" />
+			<item id="FORWARDER" localename="EPG settings" itemicon="hint_streaminfo" target="epgsetup"/>
+			<item id="FORWARDER" localename="Filebrowser settings" itemicon="hint_fileplay" target="filebrowsersetup"/>
+			<item id="FORWARDER" localename="Start Channel settings" itemicon="hint_personalize" target="zapitsetup"/>
+			<item id="FORWARDER" localename="CEC settings" itemicon="hint_personalize" target="cecsetup"/>
+			<item id="FORWARDER" localename="Misc settings" itemicon="hint_personalize" target="miscsetup"/>
+		</listbox>
+		<time posx="350" posy="320" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
+		<foot width="600" height="40" color="#ff4c4c4c" paintframe="1">
+			<button_label name="information"/>
+		</foot>
+	</widget>
+	
+	<widget name="osd" width="600" height="450" position="MENU_POSITION_CENTER" paintframe="1" corner="CORNER_TOP" radius="RADIUS_LARGE" color="#ffeeeeee">
+		<head width="600" height="40" gradient="DARK2LIGHT" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_TOP" radius="RADIUS_LARGE" title="OSD" icon="icons/title.png" paintdate="1" format="%d.%m.%Y" paintframe="1" color="#ffe0e0e0"/>
+		<hline posx="0" posy="41" width="600" height="2" color="#ff000000"/>
+		<window posx="8" posy="63" width="304" height="324" color="#ff000000" paintframe="1"/>
+		<listbox posx="10" posy="65" width="300" height="320" paintframe="1" type="TYPE_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee">
+			<item id="FORWARDER" localename="Skin select" itemicon="hint_themes" target="skinsetup"/>
+			<item id="FORWARDER" localename="Skin Style" itemicon="hint_osd" target="skinstyleselectionsetup"/>
+			<item id="FORWARDER" localename="Menu" itemicon="hint_menucolors" target="menusetup"/>
+			<item id="FORWARDER" localename="Infobar" itemicon="hint_infobarcolors" target="infobarsetup"/>
+			<item id="FORWARDER" localename="Language" itemicon="hint_language" target="languagesetup"/>
+			<item id="FORWARDER" localename="Font" itemicon="hint_font" target="fontsetup"/>
+			<item id="FORWARDER" localename="Timing" itemicon="hint_osdtiming" target="osdtimingsetup"/>
+			<item id="FORWARDER" localename="Screen" itemicon="hint_lcd4linux" target="screensetup"/>
+			<item id="FORWARDER" localename="Misc settings" itemicon="hint_osd" target="osdmiscsetup"/>
+		</listbox>
+		<time posx="350" posy="320" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
+		<foot width="600" height="40" color="#ff4c4c4c" paintframe="1">
+			<button_label name="information"/>
+		</foot>
+	</widget>
+	
+	<widget name="information" width="600" height="450" position="MENU_POSITION_CENTER" paintframe="1" corner="CORNER_TOP" radius="RADIUS_LARGE" color="#ffeeeeee">
+		<head width="600" height="40" gradient="DARK2LIGHT" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_TOP" radius="RADIUS_LARGE" title="Information" icon="icons/title.png" paintdate="1" format="%d.%m.%Y" paintframe="1" color="#ffe0e0e0"/>
+		<hline posx="0" posy="41" width="600" height="2" color="#ff000000"/>
+		<window posx="8" posy="63" width="304" height="324" color="#ff000000" paintframe="1"/>
+		<listbox posx="10" posy="65" width="300" height="320" paintframe="1" type="TYPE_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee">
+			<item id="FORWARDER" localename="Information" itemicon="hint_dboxinfo" target="boxinfo"/>
+			<item id="FORWARDER" localename="Image info" itemicon="hint_imageinfo" target="imageinfo"/>
+			<item id="FORWARDER" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo"/>
+		</listbox>
+		<time posx="350" posy="320" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
+		<foot width="600" height="40" color="#ff4c4c4c" paintframe="1">
+			<button_label name="information"/>
+		</foot>
+	</widget>
+	
+	<widget name="powermenu" width="600" height="450" position="MENU_POSITION_CENTER" paintframe="1" corner="CORNER_TOP" radius="RADIUS_LARGE" color="#ffeeeeee">
+		<head width="600" height="40" gradient="DARK2LIGHT" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_TOP" radius="RADIUS_LARGE" title="Power Menu" icon="icons/title.png" paintdate="1" format="%d.%m.%Y" paintframe="1" color="#ffe0e0e0"/>
+		<hline posx="0" posy="41" width="600" height="2" color="#ff000000"/>
+		<window posx="8" posy="63" width="304" height="324" color="#ff000000" paintframe="1"/>
+		<listbox posx="10" posy="65" width="300" height="320" paintframe="1" type="TYPE_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee">
+			<item id="FORWARDER" localename="Sleeptimer" itemicon="hint_timers" target="sleeptimer"/>
+			<item id="FORWARDER" localename="GUI restart" itemicon="hint_restart" target="neutrino" actionkey="restart"/>
+			<item id="FORWARDER" localename="Standby" itemicon="hint_standby" target="neutrino" actionkey="standby"/>
+			<item id="FORWARDER" localename="Reboot" itemicon="hint_reboot" target="neutrino" actionkey="reboot"/>
+			<item id="FORWARDER" localename="Shutdown" itemicon="hint_shutdown" target="neutrino" actionkey="shutdown"/>
+		</listbox>
+		<time posx="350" posy="320" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
+		<foot width="600" height="40" color="#ff4c4c4c" paintframe="1">
+			<button_label name="information"/>
+		</foot>
+	</widget>
+	
+	<widget name="mediaplayer" width="600" height="450" position="MENU_POSITION_CENTER" paintframe="1" corner="CORNER_TOP" radius="RADIUS_LARGE" color="#ffeeeeee">
+		<head width="600" height="40" gradient="DARK2LIGHT" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_TOP" radius="RADIUS_LARGE" title="Media Player" icon="icons/title.png" paintdate="1" format="%d.%m.%Y" paintframe="1" color="#ffe0e0e0"/>
+		<hline posx="0" posy="41" width="600" height="2" color="#ff000000"/>
+		<window posx="8" posy="63" width="304" height="324" color="#ff000000" paintframe="1"/>
+		<listbox posx="10" posy="65" width="300" height="320" paintframe="1" type="TYPE_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee"/>
+		<time posx="350" posy="320" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
+		<foot width="600" height="40" color="#ff4c4c4c" paintframe="1">
+			<button_label name="information"/>
+		</foot>
+	</widget>
+</skin>
+
+

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-12-05 15:38+0100\n"
+"POT-Creation-Date: 2024-12-06 00:09+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1018,6 +1018,12 @@ msgid "Here you can setup your box"
 msgstr ""
 
 msgid "Here you can switch between TV / Radio"
+msgstr ""
+
+msgid "Here you can switch into Radio mode"
+msgstr ""
+
+msgid "Here you can switch into TV mode"
 msgstr ""
 
 msgid "Here you can switch to scart modus"

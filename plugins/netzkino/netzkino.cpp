@@ -175,7 +175,7 @@ void CNKMovies::showMenu()
 
 	leftWidget->setSelected(left_selected);
 	//leftWidget->enableShrinkMenu();
-	leftWidget->setOutFocus();
+	leftWidget->setFocus();
 
 	leftWidget->addItem(new CMenuForwarder("Suche", true, nksearch.c_str(), this, "search"));
 	leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));

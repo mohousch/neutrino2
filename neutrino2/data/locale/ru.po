@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-12-05 15:38+0100\n"
+"POT-Creation-Date: 2024-12-06 00:09+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,11 +17,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#, fuzzy
 msgid " install failed"
 msgstr "установка пакета не удалась"
 
-#, fuzzy
 msgid " successfull installed"
 msgstr "Пакет успешно установлен"
 
@@ -111,7 +109,6 @@ msgstr "Все сервисы"
 msgid "Alpha Setup"
 msgstr "Альфа настройка"
 
-#, fuzzy
 msgid "Analog"
 msgstr "Аналоговый выход"
 
@@ -260,11 +257,9 @@ msgstr "Трансляция"
 msgid "Broadcasting / Press"
 msgstr "Трансляция / Пресса"
 
-#, fuzzy
 msgid "Built date:"
 msgstr "Дата сборки:"
 
-#, fuzzy
 msgid "Built time: "
 msgstr "Дата сборки:"
 
@@ -382,7 +377,6 @@ msgstr "Канал вниз"
 msgid "Channel not available"
 msgstr "Канал недоступен"
 
-#, fuzzy
 msgid "Channel number"
 msgstr "Номер каналов"
 
@@ -539,7 +533,6 @@ msgstr "DiSEqC-повторы"
 msgid "Diashow mode"
 msgstr ""
 
-#, fuzzy
 msgid "Digital"
 msgstr "Dolby Digital"
 
@@ -713,7 +706,6 @@ msgstr "Ошибка"
 msgid "Event list"
 msgstr "Список событий"
 
-#, fuzzy
 msgid "Event to right"
 msgstr "в правом верхнем углу"
 
@@ -883,11 +875,9 @@ msgstr "Внешний интерфейс:"
 msgid "Further education"
 msgstr "Дальнейшее образование"
 
-#, fuzzy
 msgid "GLCD Brightness"
 msgstr "Яркость"
 
-#, fuzzy
 msgid "GLCD Standby Brightness"
 msgstr "Яркость в режиме ожидания"
 
@@ -1032,6 +1022,12 @@ msgstr ""
 msgid "Here you can switch between TV / Radio"
 msgstr ""
 
+msgid "Here you can switch into Radio mode"
+msgstr ""
+
+msgid "Here you can switch into TV mode"
+msgstr ""
+
 msgid "Here you can switch to scart modus"
 msgstr ""
 
@@ -1116,7 +1112,6 @@ msgstr ""
 msgid "Install menu"
 msgstr "Меню установки"
 
-#, fuzzy
 msgid "Installed packages"
 msgstr "Меню установки"
 
@@ -1153,7 +1148,6 @@ msgstr "Ключевое слово"
 msgid "LCD EPG Align"
 msgstr "ЖК-дисплей EPG"
 
-#, fuzzy
 msgid "LCD Power"
 msgstr "Светодиодная мощность"
 
@@ -1293,7 +1287,6 @@ msgstr "СМИ"
 msgid "Media Player"
 msgstr "Медиаплеер"
 
-#, fuzzy
 msgid "Media Portal"
 msgstr "Медиаплеер"
 
@@ -1339,7 +1332,6 @@ msgstr "Разные настройки"
 msgid "Mo Tu We Th Fr Sa Su"
 msgstr "Пн Вт Ср Чт Пт Сб Вс"
 
-#, fuzzy
 msgid "Mode"
 msgstr "Режим сканирования"
 
@@ -1489,7 +1481,6 @@ msgstr "Новости / Сводка погоды"
 msgid "News magazine"
 msgstr "Журнал новостей"
 
-#, fuzzy
 msgid "Next"
 msgstr "Следующая страница"
 
@@ -1514,11 +1505,9 @@ msgstr "Нет CAM в слоте"
 msgid "No Caps"
 msgstr ""
 
-#, fuzzy
 msgid "No Networks found please scan again..."
 msgstr "Настройка сети, пожалуйста, подождите..."
 
-#, fuzzy
 msgid ""
 "No channels were found!\n"
 "Please execute a scan\n"
@@ -1561,7 +1550,6 @@ msgstr "Север"
 msgid "Not used"
 msgstr "Не используется"
 
-#, fuzzy
 msgid "Now"
 msgstr "Нет"
 
@@ -1807,18 +1795,15 @@ msgstr "Запись начнется через несколько минут»
 msgid "Refresh EPG"
 msgstr "Обновить EPG"
 
-#, fuzzy
 msgid "Release"
 msgstr "Цикл выпуска"
 
 msgid "Release cycle"
 msgstr "Цикл выпуска"
 
-#, fuzzy
 msgid "Release type"
 msgstr "Цикл выпуска"
 
-#, fuzzy
 msgid "Release:"
 msgstr "Цикл выпуска"
 
@@ -1984,7 +1969,6 @@ msgstr "Режим сканирования"
 msgid "Scan SDT for updates"
 msgstr "Сканировать SDT на наличие обновлений"
 
-#, fuzzy
 msgid "Scan for networks"
 msgstr "Сканирование служб"
 
@@ -1994,7 +1978,6 @@ msgstr "Сканирование служб"
 msgid "Scan transponder"
 msgstr "Сканирование ТП"
 
-#, fuzzy
 msgid "Scanning for networks, please wait..."
 msgstr "Настройка сети, пожалуйста, подождите..."
 
@@ -2097,7 +2080,6 @@ msgstr "Тип серверного устройства"
 msgid "Server IP"
 msgstr "IP сервера"
 
-#, fuzzy
 msgid "Service"
 msgstr "Сервисное сканирование"
 
@@ -2164,7 +2146,6 @@ msgstr "Показать права файла"
 msgid "Show mode"
 msgstr "Режим показа"
 
-#, fuzzy
 msgid "Show picon"
 msgstr "Показать права файла"
 
@@ -2246,7 +2227,6 @@ msgstr "Режим ожидания"
 msgid "Standby Brightness"
 msgstr "Яркость в режиме ожидания"
 
-#, fuzzy
 msgid "Standby Clock"
 msgstr "Режим ожидания"
 
@@ -2560,11 +2540,9 @@ msgstr "Режим тюнера"
 msgid "Tuner type"
 msgstr "Тип тюнера"
 
-#, fuzzy
 msgid "Type"
 msgstr "Тип:"
 
-#, fuzzy
 msgid "Type:"
 msgstr "Тип:"
 
@@ -2676,7 +2654,6 @@ msgstr "Подождите немного..."
 msgid "Water sports"
 msgstr "Водные виды спорта"
 
-#, fuzzy
 msgid "Weather Forcast"
 msgstr "Новости / Сводка погоды"
 
@@ -2819,7 +2796,6 @@ msgstr ""
 msgid "cable"
 msgstr "кабель"
 
-#, fuzzy
 msgid "can't get mtd-info"
 msgstr "не могу открыть mtd-устройство"
 

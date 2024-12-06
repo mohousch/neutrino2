@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-12-05 15:38+0100\n"
+"POT-Creation-Date: 2024-12-06 00:09+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -16,11 +16,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#, fuzzy
 msgid " install failed"
 msgstr "فشل تثبيت الحزمة"
 
-#, fuzzy
 msgid " successfull installed"
 msgstr "تم تثبيت الحزمة بنجاح"
 
@@ -256,11 +254,9 @@ msgstr "محطة الاذاعة"
 msgid "Broadcasting / Press"
 msgstr "البث / الصحافة"
 
-#, fuzzy
 msgid "Built date:"
 msgstr "تاريخ البناء: "
 
-#, fuzzy
 msgid "Built time: "
 msgstr "تاريخ البناء: "
 
@@ -378,7 +374,6 @@ msgstr "القناة للأسفل"
 msgid "Channel not available"
 msgstr "القناة غير متاحة"
 
-#, fuzzy
 msgid "Channel number"
 msgstr "ارقام قائمة القنوات"
 
@@ -715,7 +710,6 @@ msgstr "خطأ"
 msgid "Event list"
 msgstr "قائمة الأحداث"
 
-#, fuzzy
 msgid "Event to right"
 msgstr "أعلى اليمين"
 
@@ -1045,6 +1039,12 @@ msgstr "يمكنك هنا إعداد صندوقك"
 msgid "Here you can switch between TV / Radio"
 msgstr "هنا يمكنك التبديل بين التلفزيون / الراديو"
 
+msgid "Here you can switch into Radio mode"
+msgstr "يمكنك هنا التبديل إلى وضع scart"
+
+msgid "Here you can switch into TV mode"
+msgstr "يمكنك هنا التبديل إلى وضع scart"
+
 msgid "Here you can switch to scart modus"
 msgstr "يمكنك هنا التبديل إلى وضع scart"
 
@@ -1129,7 +1129,6 @@ msgstr "إدراج"
 msgid "Install menu"
 msgstr "قائمة التثبيت"
 
-#, fuzzy
 msgid "Installed packages"
 msgstr "قائمة التثبيت"
 
@@ -1305,7 +1304,6 @@ msgstr "وسائط"
 msgid "Media Player"
 msgstr "مشغل الوسائط"
 
-#, fuzzy
 msgid "Media Portal"
 msgstr "مشغل الوسائط"
 
@@ -1523,7 +1521,6 @@ msgstr "لا أحرف كبيرة"
 msgid "No Networks found please scan again..."
 msgstr "لم يتم العثور على شبكات، يرجى إجراء المسح مرة أخرى..."
 
-#, fuzzy
 msgid ""
 "No channels were found!\n"
 "Please execute a scan\n"
@@ -1813,18 +1810,15 @@ msgstr "سيبدأ التسجيل خلال بضع دقائق"
 msgid "Refresh EPG"
 msgstr "تحديث دليل البرامج الإلكتروني"
 
-#, fuzzy
 msgid "Release"
 msgstr "دورة الإصدار"
 
 msgid "Release cycle"
 msgstr "دورة الإصدار"
 
-#, fuzzy
 msgid "Release type"
 msgstr "دورة الإصدار"
 
-#, fuzzy
 msgid "Release:"
 msgstr "دورة الإصدار"
 
@@ -2101,7 +2095,6 @@ msgstr "نوع صندوق الخادم"
 msgid "Server IP"
 msgstr "عنوان IP للخادم"
 
-#, fuzzy
 msgid "Service"
 msgstr "البحث عن الخدمات"
 
@@ -2565,7 +2558,6 @@ msgstr "نوع الموالف"
 msgid "Type"
 msgstr "النوع"
 
-#, fuzzy
 msgid "Type:"
 msgstr "النوع"
 

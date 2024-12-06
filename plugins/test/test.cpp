@@ -135,6 +135,10 @@ class CTestMenu : public CMenuTarget
 		void testCSpinner();
 		void testCCSlider();
 		void testCCItemInfo();
+		void testCCItemInfo2();
+		void testCCItemInfo3();
+		void testCCItemInfo4();
+		void testCCItemInfo5();
 		void testCHeaders();
 		void testCFooters();
 		void testCProgressWindow();
@@ -839,7 +843,7 @@ void CTestMenu::testCWidget()
 	top_selected = 0;
 
 	frameBoxWidget = new CFrameBox(&topBox);
-	frameBoxWidget->setOutFocus();
+	frameBoxWidget->setFocus();
 
 	CFrameItem * frame = NULL;
 
@@ -881,7 +885,7 @@ void CTestMenu::testCWidget()
 	leftWidget = new ClistBox(&leftBox);
 
 	leftWidget->setSelected(left_selected);
-	leftWidget->setOutFocus();
+	leftWidget->setFocus();
 
 	CMenuForwarder *item1 = new CMenuForwarder("In den Kinos", true, NULL, this, "movie_in_cinema");
 	//item1->setHidden(true);
@@ -1918,9 +1922,91 @@ void CTestMenu::testCCItemInfo()
 	CCItemInfo *itemInfo = new CCItemInfo();
 	
 	itemInfo->setPosition(40, 40, 1200, 400);
-	itemInfo->paintMainFrame(false);
+	itemInfo->paintMainFrame(true);
+	itemInfo->enableSaveScreen();
+	itemInfo->setMode(CCItemInfo::ITEMINFO_INFO);
+	itemInfo->setInfo1("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
+	itemInfo->setInfo2("");
+	itemInfo->setHint("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
+	itemInfo->setIcon(DATADIR "/icons/nopreview.jpg");
+	
+	itemInfo->exec();
+	
+	delete itemInfo;
+	itemInfo = NULL;
+}
+
+void CTestMenu::testCCItemInfo2()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCCItemInfo:\n");
+	
+	CCItemInfo *itemInfo = new CCItemInfo();
+	
+	itemInfo->setPosition(40, 40, 1200, 400);
+	itemInfo->paintMainFrame(true);
+	itemInfo->enableSaveScreen();
+	itemInfo->setMode(CCItemInfo::ITEMINFO_HINTITEM);
+	itemInfo->setInfo1("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
+	itemInfo->setInfo2("");
+	itemInfo->setHint("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
+	itemInfo->setIcon(DATADIR "/icons/nopreview.jpg");
+	
+	itemInfo->exec();
+	
+	delete itemInfo;
+	itemInfo = NULL;
+}
+
+void CTestMenu::testCCItemInfo3()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCCItemInfo:\n");
+	
+	CCItemInfo *itemInfo = new CCItemInfo();
+	
+	itemInfo->setPosition(40, 40, 1200, 400);
+	itemInfo->paintMainFrame(true);
+	itemInfo->enableSaveScreen();
+	itemInfo->setMode(CCItemInfo::ITEMINFO_HINTICON);
+	itemInfo->setInfo1("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
+	itemInfo->setInfo2("");
+	itemInfo->setHint("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
+	itemInfo->setIcon(DATADIR "/icons/nopreview.jpg");
+	
+	itemInfo->exec();
+	
+	delete itemInfo;
+	itemInfo = NULL;
+}
+void CTestMenu::testCCItemInfo4()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCCItemInfo:\n");
+	
+	CCItemInfo *itemInfo = new CCItemInfo();
+	
+	itemInfo->setPosition(40, 40, 1200, 400);
+	itemInfo->paintMainFrame(true);
 	itemInfo->enableSaveScreen();
 	itemInfo->setMode(CCItemInfo::ITEMINFO_ICON);
+	itemInfo->setInfo1("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
+	itemInfo->setInfo2("");
+	itemInfo->setHint("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
+	itemInfo->setIcon(DATADIR "/icons/nopreview.jpg");
+	
+	itemInfo->exec();
+	
+	delete itemInfo;
+	itemInfo = NULL;
+}
+void CTestMenu::testCCItemInfo5()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCCItemInfo:\n");
+	
+	CCItemInfo *itemInfo = new CCItemInfo();
+	
+	itemInfo->setPosition(40, 40, 1200, 400);
+	itemInfo->paintMainFrame(true);
+	itemInfo->enableSaveScreen();
+	itemInfo->setMode(CCItemInfo::ITEMINFO_HINT);
 	itemInfo->setInfo1("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
 	itemInfo->setInfo2("");
 	itemInfo->setHint("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
@@ -2081,7 +2167,7 @@ void CTestMenu::testCWindowCustomColor()
 	Box.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 400);
 	Box.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 400);
 	
-	uint32_t col = 0xffc4c4c4; //0x80808080;
+	uint32_t col = 0xffe77919; //0x80808080;
 
 	//
 	CCWindow* window = new CCWindow(&Box);
@@ -4771,6 +4857,30 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		
 		return RETURN_REPAINT;
 	}
+	else if (actionKey == "iteminfo2")
+	{
+		testCCItemInfo2();
+		
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "iteminfo3")
+	{
+		testCCItemInfo3();
+		
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "iteminfo4")
+	{
+		testCCItemInfo4();
+		
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "iteminfo5")
+	{
+		testCCItemInfo5();
+		
+		return RETURN_REPAINT;
+	}
 	else if(actionKey == "listbox")
 	{
 		testClistBox();
@@ -6125,6 +6235,10 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CCButtons (head)", true, NULL, this, "hbuttons"));
 	mainMenu->addItem(new CMenuForwarder("CCSpinner", true, NULL, this, "spinner"));
 	mainMenu->addItem(new CMenuForwarder("CCItemInfo", true, NULL, this, "iteminfo"));
+	mainMenu->addItem(new CMenuForwarder("CCItemInfo2", true, NULL, this, "iteminfo2"));
+	mainMenu->addItem(new CMenuForwarder("CCItemInfo3", true, NULL, this, "iteminfo3"));
+	mainMenu->addItem(new CMenuForwarder("CCItemInfo4", true, NULL, this, "iteminfo4"));
+	mainMenu->addItem(new CMenuForwarder("CCItemInfo5", true, NULL, this, "iteminfo5"));
 	mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
 	mainMenu->addItem(new CMenuForwarder("CCWindow", true, NULL, this, "panel"));
 	mainMenu->addItem(new CMenuForwarder("CCWindow(gradient)", true, NULL, this, "window"));

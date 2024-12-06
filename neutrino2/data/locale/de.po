@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-12-05 15:38+0100\n"
+"POT-Creation-Date: 2024-12-06 00:09+0100\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1040,6 +1040,12 @@ msgstr "Hier können Sie ihre Box einstellen"
 msgid "Here you can switch between TV / Radio"
 msgstr "Hier können Sie in den TV Modus wechseln"
 
+msgid "Here you can switch into Radio mode"
+msgstr "Hier können Sie in den Radio Modus wechseln"
+
+msgid "Here you can switch into TV mode"
+msgstr "Hier können Sie in den TV Modus wechseln"
+
 msgid "Here you can switch to scart modus"
 msgstr "Hier können Sie in den Scart Modus wechseln"
 
@@ -1529,7 +1535,6 @@ msgstr ""
 "Bitte führen Sie einen Scan durch\n"
 "(MENÜ-Taste -> Service)"
 
-#, fuzzy
 msgid ""
 "No channels were found!\n"
 "Please execute a scan\n"
@@ -2095,9 +2100,8 @@ msgstr "Server-Box-Typ"
 msgid "Server IP"
 msgstr "Server-IP"
 
-#, fuzzy
 msgid "Service"
-msgstr "Sender Suche"
+msgstr "Service"
 
 msgid "Servicescan"
 msgstr "Sender Suche"

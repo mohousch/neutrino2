@@ -180,7 +180,7 @@ class CComponent
 		virtual bool update() const {return rePaint;};
 		virtual inline bool isPainted(void){return painted;};
 		////
-		virtual void clear(void){}; // buttons objects
+		virtual void clear(void){}; //
 		////
 		virtual int getCCType(){return cc_type;};
 		virtual std::string getCCName(){return cc_name;};
@@ -216,7 +216,7 @@ class CComponent
 		virtual int swipLeft(){return 0;};
 		virtual int swipRight(){return 0;};
 		////
-		virtual void setOutFocus(bool focus = true){inFocus = !focus;};
+		virtual void setFocus(bool focus = true){inFocus = !focus;};
 		virtual void setSelected(unsigned int _new) {};
 		////
 		virtual int oKKeyPressed(CMenuTarget *target, neutrino_msg_t _msg = CRCInput::RC_ok){return CMenuTarget::RETURN_EXIT;};

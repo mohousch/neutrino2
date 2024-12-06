@@ -1704,7 +1704,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	
 	ClistBox nextEventslistBox(&winBottomBox);
 	nextEventslistBox.paintMainFrame(false);
-	nextEventslistBox.setOutFocus(true);
+	nextEventslistBox.setFocus(true);
 	nextEventslistBox.paintScrollBar(false);
 	nextEventslistBox.disablePaintIconName();
 	

@@ -920,7 +920,7 @@ void CCLabel::paint()
 		restoreScreen();
 	
 	//
-	int stringWidth = 0;
+	int stringWidth = itemBox.iWidth;
 	int height = 0;
 	
 	height = g_Font[font]->getHeight();
@@ -928,7 +928,9 @@ void CCLabel::paint()
 	if (!label.empty()) stringWidth = g_Font[font]->getRenderWidth(label.c_str());
 	
 	if (stringWidth > itemBox.iWidth && itemBox.iWidth != 0)
+	{
 		stringWidth = itemBox.iWidth;
+	}
 		
 	int startPosX = itemBox.iX;
 	
@@ -937,7 +939,7 @@ void CCLabel::paint()
 	else if (halign == CC_ALIGN_RIGHT)
 		startPosX = itemBox.iX + itemBox.iWidth - stringWidth;
 		
-	g_Font[font]->RenderString(startPosX, itemBox.iY + height + (itemBox.iHeight - height)/2, itemBox.iWidth, label.c_str(), color, 0, true, paintframe);
+	g_Font[font]->RenderString(startPosX, itemBox.iY + height + (itemBox.iHeight - height)/2, stringWidth, label.c_str(), color, 0, true, paintframe);
 }
 
 void CCLabel::hide()

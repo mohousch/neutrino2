@@ -290,6 +290,11 @@ data/skins/titan/Makefile
 data/skins/neutrino2/Makefile
 data/skins/elgato/Makefile
 data/skins/elgato/images/Makefile
+data/skins/ice/Makefile
+data/skins/ice/buttons/Makefile
+data/skins/ice/icons/Makefile
+data/skins/ice/hints/Makefile
+data/skins/ice/fonts/Makefile
 data/locale/Makefile
 src/sectionsd/Makefile
 src/timerd/Makefile
