@@ -2773,8 +2773,6 @@ void ClistBox::paintItemInfo(int pos)
 					ih = fheight;
 						
 				infoIcon.setPosition(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight + (fheight - ih)/2, iw, ih);
-				//infoIcon.enableRepaint();
-				//infoIcon.saveScreen();
 				infoIcon.paint();
 
 				// Hint
@@ -2783,7 +2781,9 @@ void ClistBox::paintItemInfo(int pos)
 				label.setColor(COL_MENUFOOT_TEXT_PLUS_0);
 				label.paint();
 			}
-			else if (footInfoMode == CCItemInfo::ITEMINFO_INFO)
+			
+			//
+			if (footInfoMode == CCItemInfo::ITEMINFO_INFO)
 			{
 				// detailslines
 				itemsLine.setPosition(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight + 2, itemBox.iWidth, cFrameFootInfoHeight);

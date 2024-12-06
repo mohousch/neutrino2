@@ -162,6 +162,7 @@ void CImageInfo::paint()
 		
 		widget->name = "imageinfo";
 		widget->paintMainFrame(true);
+		widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 		
 		// head
 		head = new CCHeaders(x, y, width, 40, _("Image Info"), NEUTRINO_ICON_INFO);

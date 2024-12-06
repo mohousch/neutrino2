@@ -103,7 +103,7 @@ class CWidget : public CMenuTarget
 		virtual void setPosition(CBox* position){mainFrameBox = *position;};
 
 		// CCITEMS
-		virtual void addCCItem(CComponent* CCItem, const bool defaultselected = false);
+		virtual void addCCItem(CComponent *CCItem, const bool defaultselected = false);
 		bool hasCCItem(){return !CCItems.empty();};
 		virtual void clearCCItems(){CCItems.clear();};
 		virtual void paintCCItems();
@@ -114,6 +114,7 @@ class CWidget : public CMenuTarget
 		virtual void hide();
 		virtual int exec(CMenuTarget *parent, const std::string &actionKey);
 		virtual void refresh(bool show = false);
+		virtual void paintItemInfo(CComponent *CCItem){};
 		//
 		void setTimeOut(uint64_t to = 0){timeout = to;};
 		void setSecTimerInterval(uint64_t sec){sec_timer_interval = sec;};
@@ -148,7 +149,7 @@ class CWidget : public CMenuTarget
 		////
 		std::string getWidgetName(){return name;};
 		//
-		CComponent* getCCItem(const int type, const std::string& name = "");
+		CComponent *getCCItem(const int type, const std::string& name = "");
 		//
 		inline CBox getWindowsPos(void){return mainFrameBox;};
 		int getMenuPosition(){return menu_position;};
@@ -161,6 +162,7 @@ class CWidget : public CMenuTarget
 		int getCCItemsCount(){return CCItems.size();};
 		//
 		int getSelected(){return exit_pressed ? -1 : selected;};
+		CComponent *getSelectedCCItem(){};
 };
 
 #endif // WIDGET_H_

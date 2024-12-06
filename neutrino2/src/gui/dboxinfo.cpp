@@ -159,6 +159,7 @@ int CDBoxInfoWidget::showInfo()
 		
 		dboxInfoWidget->name = "boxinfo";
 		dboxInfoWidget->paintMainFrame(true);
+		dboxInfoWidget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 		
 		// head
 		head = new CCHeaders(Box.iX, Box.iY, Box.iWidth, 40, _("Box Info"), NEUTRINO_ICON_INFO);

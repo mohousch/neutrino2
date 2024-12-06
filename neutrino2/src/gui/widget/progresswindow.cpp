@@ -158,7 +158,7 @@ void CProgressWindow::paint()
 	int ypos = y;
 
 	// box
-	m_cBoxWindow.setCorner(RADIUS_SMALL, CORNER_ALL);
+	m_cBoxWindow.setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	m_cBoxWindow.paint();
 	
 	// title
@@ -169,7 +169,6 @@ void CProgressWindow::paint()
 		l_caption = captionString.c_str();
 
 		CCHeaders headers(x, y, width, hheight, l_caption, NEUTRINO_ICON_INFO);
-		headers.setCorner(RADIUS_SMALL, CORNER_TOP);
 		headers.setGradient(LIGHT2DARK);
 		
 		if (paintCancelIcon)

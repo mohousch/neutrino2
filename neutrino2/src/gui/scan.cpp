@@ -622,7 +622,7 @@ void CScanTs::paint(bool fortest)
 	head.paint();
 	
 	// main box
-	frameBuffer->paintBoxRel(x, ypos + hheight, width, height - hheight, COL_MENUCONTENT_PLUS_0, RADIUS_SMALL, CORNER_BOTTOM);
+	frameBuffer->paintBoxRel(x, ypos + hheight, width, height - hheight, COL_MENUCONTENT_PLUS_0, g_settings.Foot_radius, g_settings.Foot_corner);
 	
 	// radar
 	frameBuffer->loadPal("radar.pal", RADAR_OFFSET, RADAR_OFFSET + 20);	// 17/37
