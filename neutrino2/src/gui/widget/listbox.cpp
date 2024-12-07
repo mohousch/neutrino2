@@ -2210,17 +2210,19 @@ void ClistBox::paint()
 		}
 		
 		//// FIXME:
+		#if 0
 		if (paintframe)
 		{
 			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, itemBox.iWidth, items_height, bgcolor, radius, corner, gradient);
 			
-			////test
+			//// FIXME
 			if(widgetType == TYPE_EXTENDED && widgetMode == MODE_MENU)
 			{
 				frameBuffer->paintBoxRel(itemBox.iX + items_width, itemBox.iY + hheight, itemBox.iWidth - items_width, items_height, /*COL_MENUCONTENTDARK_PLUS_0*/bgcolor);
 
 			}
-		}		
+		}
+		#endif		
 	}
 	
 	//
@@ -2246,7 +2248,7 @@ void ClistBox::paint()
 		itemsLine.setPosition(itemBox.iX + items_width + (itemBox.iWidth - items_width - ITEM_ICON_W)/2, itemBox.iY + (itemBox.iHeight - ITEM_ICON_H)/2, ITEM_ICON_W, ITEM_ICON_H);
 		itemsLine.enableSaveScreen();
 	}
-	else
+	else if(itemInfoBox.iWidth != 0)
 	{
 		itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
 		if (iteminfosavescreen) itemsLine.enableSaveScreen();
@@ -2256,7 +2258,7 @@ void ClistBox::paint()
 	if (paint_ItemInfo && itemInfoBox2.iWidth != 0)
 	{
 		label.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
-		if (iteminfosavescreen) label.enableSaveScreen();
+		label.enableSaveScreen();
 	}
 
 	//
@@ -2343,7 +2345,7 @@ void ClistBox::paintItems()
 			}
 		}
 	}
-	else
+	else //
 	{
 		item_start_y = itemBox.iY + hheight;
 		items_height = itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight; 
@@ -2827,7 +2829,6 @@ void ClistBox::paintItemInfo(int pos)
 				itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
 				itemsLine.setMode(CCItemInfo::ITEMINFO_HINTICON);
 				itemsLine.setBorderMode(iteminfobordermode);
-				//if (iteminfosavescreen) itemsLine.enableSaveScreen();
 				itemsLine.setColor(iteminfocolor);
 				itemsLine.setFont(iteminfofont);
 				itemsLine.setScaling(iteminfoscale);
@@ -2854,7 +2855,6 @@ void ClistBox::paintItemInfo(int pos)
 				itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
 				itemsLine.setMode(CCItemInfo::ITEMINFO_ICON);
 				itemsLine.setBorderMode(iteminfobordermode);
-				//if (iteminfosavescreen) itemsLine.enableSaveScreen();
 				itemsLine.setColor(iteminfocolor);
 				itemsLine.setScaling(iteminfoscale);
 				//
@@ -2873,11 +2873,9 @@ void ClistBox::paintItemInfo(int pos)
 						
 				itemsLine.paint();
 				
-				//// test:FIXME:
+				//// FIXME
 				if (widgetMode == MODE_MENU && itemInfoBox2.iWidth != 0)
 				{
-					//label.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
-					//label.enableSaveScreen();
 					label.setText(item->itemHint.c_str());
 					label.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
 					label.setColor(COL_MENUFOOT_TEXT_PLUS_0);
@@ -2890,7 +2888,6 @@ void ClistBox::paintItemInfo(int pos)
 				itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
 				itemsLine.setMode(CCItemInfo::ITEMINFO_HINT);
 				itemsLine.setBorderMode(iteminfobordermode);
-				//if (iteminfosavescreen) itemsLine.enableSaveScreen();
 				itemsLine.setColor(iteminfocolor);
 				itemsLine.setFont(iteminfofont);
 				itemsLine.setScaling(iteminfoscale);
