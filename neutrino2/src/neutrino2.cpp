@@ -1746,8 +1746,6 @@ void CNeutrinoApp::setDebugLevel( int level )
 // setup the framebuffer
 void CNeutrinoApp::setupFrameBuffer()
 {
-	dprintf(DEBUG_NORMAL, "\n");
-	
 	frameBuffer = CFrameBuffer::getInstance();
 	
 	frameBuffer->init();
@@ -3194,7 +3192,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	// zap complete event
 	if(msg == NeutrinoMessages::EVT_ZAP_COMPLETE || msg == NeutrinoMessages::EVT_ZAP_FAILED) 
 	{
-		dprintf(DEBUG_NORMAL, "%s current_channel_id: 0x%llx data:0x%llx\n", (msg == NeutrinoMessages::EVT_ZAP_FAILED)? "EVT_ZAP_FAILED" : "EVT_ZAP_COMPLETE", CZapit::getInstance()->getCurrentChannelID(), data);
+		dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: %s current_channel_id: 0x%llx data:0x%llx\n", (msg == NeutrinoMessages::EVT_ZAP_FAILED)? "EVT_ZAP_FAILED" : "EVT_ZAP_COMPLETE", CZapit::getInstance()->getCurrentChannelID(), data);
 		
 		// set audio map after channel zap
 		CZapit::getInstance()->getAudioMode(&g_settings.audio_AnalogMode);
@@ -4463,8 +4461,6 @@ void CNeutrinoApp::realRun(void)
 //
 int CNeutrinoApp::run(int argc, char **argv)
 {
-	dprintf(DEBUG_NORMAL, "\n");
-	
 	//	
 	global_argv = new char *[argc + 1];
 	
