@@ -8,7 +8,7 @@
 	<widget name="mainmenu" width="600" height="450" position="MENU_POSITION_CENTER" paintframe="1" corner="CORNER_TOP" radius="RADIUS_MID" color="#ffeeeeee">
 		<head width="600" height="40" gradient="DARK2LIGHT" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_TOP" radius="RADIUS_MID" title="Main Menu" icon="icons/title.png" paintdate="1" format="%d.%m.%Y" paintframe="1" color="#ffe0e0e0"/>
 		<hline posx="0" posy="41" width="600" height="2" color="#ff000000"/>
-		<foot width="600" height="40" color="#ff4c4c4c" paintframe="1">
+		<foot posy="410" width="600" height="40" color="#ff4c4c4c" paintframe="1">
 			<button_label name="information"/>
 		</foot>
 		<window posx="8" posy="63" width="304" height="324" color="#ff000000" paintframe="1"/>
@@ -38,7 +38,7 @@
 			<item id="FORWARDER" localename="Timerlist" itemicon="hint_timers" target="timerlist"/>
 		</listbox>
 		<time posx="350" posy="320" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
-		<foot width="600" height="40" color="#ff4c4c4c" paintframe="1">
+		<foot posy="410" width="600" height="40" color="#ff4c4c4c" paintframe="1">
 			<button_label name="information"/>
 		</foot>
 	</widget>
@@ -49,7 +49,7 @@
 		<window posx="8" posy="63" width="304" height="324" color="#ff000000" paintframe="1"/>
 		<listbox posx="10" posy="65" width="300" height="320" paintframe="1" type="TYPE_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee"/>
 		<time posx="350" posy="320" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
-		<foot width="600" height="40" color="#ff4c4c4c" paintframe="1">
+		<foot posy="410" width="600" height="40" color="#ff4c4c4c" paintframe="1">
 			<button_label name="information"/>
 		</foot>
 	</widget>
@@ -65,7 +65,7 @@
 			<item id="FORWARDER" localename="Software update" itemicon="hint_swupdate" target="updatesetup"/>
 		</listbox>
 		<time posx="350" posy="320" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
-		<foot width="600" height="40" color="#ff4c4c4c" paintframe="1">
+		<foot posy="410" width="600" height="40" color="#ff4c4c4c" paintframe="1">
 			<button_label name="information"/>
 		</foot>
 	</widget>
@@ -95,7 +95,7 @@
 			<item id="FORWARDER" localename="Misc settings" itemicon="hint_personalize" target="miscsetup"/>
 		</listbox>
 		<time posx="350" posy="320" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
-		<foot width="600" height="40" color="#ff4c4c4c" paintframe="1">
+		<foot posy="410" width="600" height="40" color="#ff4c4c4c" paintframe="1">
 			<button_label name="information"/>
 		</foot>
 	</widget>
@@ -116,7 +116,7 @@
 			<item id="FORWARDER" localename="Misc settings" itemicon="hint_osd" target="osdmiscsetup"/>
 		</listbox>
 		<time posx="350" posy="320" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
-		<foot width="600" height="40" color="#ff4c4c4c" paintframe="1">
+		<foot posy="410" width="600" height="40" color="#ff4c4c4c" paintframe="1">
 			<button_label name="information"/>
 		</foot>
 	</widget>
@@ -131,7 +131,7 @@
 			<item id="FORWARDER" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo"/>
 		</listbox>
 		<time posx="350" posy="320" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
-		<foot width="600" height="40" color="#ff4c4c4c" paintframe="1">
+		<foot posy="410" width="600" height="40" color="#ff4c4c4c" paintframe="1">
 			<button_label name="information"/>
 		</foot>
 	</widget>
@@ -148,7 +148,7 @@
 			<item id="FORWARDER" localename="Shutdown" itemicon="hint_shutdown" target="neutrino" actionkey="shutdown"/>
 		</listbox>
 		<time posx="350" posy="320" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
-		<foot width="600" height="40" color="#ff4c4c4c" paintframe="1">
+		<foot posy="410" width="600" height="40" color="#ff4c4c4c" paintframe="1">
 			<button_label name="information"/>
 		</foot>
 	</widget>
@@ -159,7 +159,7 @@
 		<window posx="8" posy="63" width="304" height="324" color="#ff000000" paintframe="1"/>
 		<listbox posx="10" posy="65" width="300" height="320" paintframe="1" type="TYPE_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee"/>
 		<time posx="350" posy="320" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
-		<foot width="600" height="40" color="#ff4c4c4c" paintframe="1">
+		<foot posy="410" width="600" height="40" color="#ff4c4c4c" paintframe="1">
 			<button_label name="information"/>
 		</foot>
 	</widget>

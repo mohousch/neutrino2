@@ -1952,7 +1952,7 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 	if (widget)
 	{			
 		x = widget->getWindowsPos().iX + posx;
-		y = widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - height + posy;
+		y = widget->getWindowsPos().iY + posy;
 				
 		if (width > widget->getWindowsPos().iWidth)
 			width = widget->getWindowsPos().iWidth;

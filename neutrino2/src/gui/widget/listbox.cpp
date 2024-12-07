@@ -2208,21 +2208,6 @@ void ClistBox::paint()
 		{
 			items_width = 2*(itemBox.iWidth/3) - sb_width;			
 		}
-		
-		//// FIXME:
-		#if 0
-		if (paintframe)
-		{
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, itemBox.iWidth, items_height, bgcolor, radius, corner, gradient);
-			
-			//// FIXME
-			if(widgetType == TYPE_EXTENDED && widgetMode == MODE_MENU)
-			{
-				frameBuffer->paintBoxRel(itemBox.iX + items_width, itemBox.iY + hheight, itemBox.iWidth - items_width, items_height, /*COL_MENUCONTENTDARK_PLUS_0*/bgcolor);
-
-			}
-		}
-		#endif		
 	}
 	
 	//
@@ -2747,7 +2732,7 @@ void ClistBox::paintItemInfo(int pos)
 		{
 			CMenuItem* item = items[pos];
 			
-			//
+			////
 			if (paint_Foot && fbutton_count == 0)
 			{	
 				// info icon
