@@ -162,7 +162,6 @@ class CWidget : public CMenuTarget
 		int getCCItemsCount(){return CCItems.size();};
 		//
 		int getSelected(){return exit_pressed ? -1 : selected;};
-		CComponent *getSelectedCCItem(){};
 };
 
 #endif // WIDGET_H_

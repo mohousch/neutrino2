@@ -175,6 +175,7 @@ class CComponent
 		virtual void paint(void){};
 		virtual void hide(void){};
 		virtual void refresh(bool show = false){};
+		virtual void paintItemInfo(int){};
 		////
 		virtual void enableRepaint(){rePaint = true;};
 		virtual bool update() const {return rePaint;};

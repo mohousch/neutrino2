@@ -206,8 +206,8 @@ bool hdmi_cec::SetCECMode(VIDEO_HDMI_CEC_MODE _deviceType)
 		GetCECAddressInfo();
 
 		//
-		if (autoview_cec_activ)
-			SetCECState(false);
+//		if (autoview_cec_activ)
+//			SetCECState(false);
 
 		//
 		Start();
@@ -343,23 +343,9 @@ void hdmi_cec::SetCECAutoStandby(bool state)
 	dprintf(DEBUG_NORMAL, "hdmi_cec::SetCECAutoStandby: state: %s\n", state? "true" : "false");
 	
 	standby_cec_activ = state;
-}
-
-void hdmi_cec::SetCECAutoView(bool state)
-{
-	dprintf(DEBUG_NORMAL, "hdmi_cec::SetCECAutoView: state: %s\n", state? "true" : "false");
-	
-	autoview_cec_activ = state;
-}
-
-void hdmi_cec::SetCECState(bool state)
-{
-	dprintf(DEBUG_NORMAL, "hdmi_cec::SetCECState: state: %s\n", state? "true" : "false");
 	
 	struct cec_message message;
-
-	standby = state;
-
+	
 	if ((standby_cec_activ) && state)
 	{
 		message.initiator = logicalAddress;
@@ -376,8 +362,17 @@ void hdmi_cec::SetCECState(bool state)
 		
 		SendCECMessage(message);
 	}
+}
 
-	if ((autoview_cec_activ) && !state)
+void hdmi_cec::SetCECAutoView(bool state)
+{
+	dprintf(DEBUG_NORMAL, "hdmi_cec::SetCECAutoView: state: %s\n", state? "true" : "false");
+	
+	autoview_cec_activ = state;
+	
+	struct cec_message message;
+	
+	if (autoview_cec_activ)
 	{
 		message.initiator = logicalAddress;
 		message.destination = CEC_OP_PRIM_DEVTYPE_TV;
@@ -437,6 +432,13 @@ void hdmi_cec::SetCECState(bool state)
 
 		request_audio_status();
 	}
+}
+
+void hdmi_cec::SetCECState(bool state)
+{
+	dprintf(DEBUG_NORMAL, "hdmi_cec::SetCECState: state: %s\n", state? "true" : "false");
+
+	standby = state;
 }
 
 long hdmi_cec::translateKey(unsigned char code)
