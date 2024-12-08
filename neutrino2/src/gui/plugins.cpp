@@ -1,5 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
+	
+	$Id: plugins.cpp 08122024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -59,7 +61,10 @@
 #endif
 
 
-extern CPlugins * g_PluginList;    /* neutrino.cpp */
+CPlugins::~CPlugins()
+{
+	plugin_list.clear();
+}
 
 bool CPlugins::plugin_exists(const std::string &filename)
 {
@@ -118,7 +123,7 @@ void CPlugins::addPlugin(const char * dir)
 			new_plugin.cfgfile = fname.append(new_plugin.filename);
 			new_plugin.cfgfile.append(".cfg");
 			
-			//parseCfg(&new_plugin);
+			//
 			bool plugin_ok = parseCfg(&new_plugin);
 
 			if (plugin_ok) 
@@ -226,11 +231,6 @@ void CPlugins::loadPlugins()
 	sort(plugin_list.begin(), plugin_list.end());
 }
 
-CPlugins::~CPlugins()
-{
-	plugin_list.clear();
-}
-
 bool CPlugins::parseCfg(plugin *plugin_data)
 {
 	std::ifstream inFile;
@@ -288,18 +288,6 @@ bool CPlugins::parseCfg(plugin *plugin_data)
 
 	inFile.close();
 	return !reject;
-}
-
-void CPlugins::start_plugin_by_name(const std::string &filename)
-{
-	for (int i = 0; i <  (int) plugin_list.size(); i++)
-	{
-		if (filename.compare(g_PluginList->getName(i))==0)
-		{
-			startPlugin(i);
-			return;
-		}
-	}
 }
 
 void CPlugins::startPlugin(const char * const name)

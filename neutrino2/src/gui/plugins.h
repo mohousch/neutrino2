@@ -1,5 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
+	
+	$id: plugins.h 08122024 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -121,7 +123,6 @@ class CPlugins
 		bool parseCfg(plugin *plugin_data);
 	
 	public:
-
 		~CPlugins();
 		
 		//
@@ -153,7 +154,6 @@ class CPlugins
 
 		//
 		void startPlugin(int number);
-		void start_plugin_by_name(const std::string & filename);
 		void startScriptPlugin(int number);
 		void startPlugin(const char * const filename);
 		bool hasPlugin(CPlugins::p_type_t type);
