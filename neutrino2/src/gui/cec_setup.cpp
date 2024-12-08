@@ -49,7 +49,6 @@ CCECSetup::CCECSetup()
 {
 	cec2 = NULL;
 	cec3 = NULL;
-	cec4 = NULL;
 }
 
 int CCECSetup::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
@@ -146,14 +145,14 @@ int CCECSetup::showMenu()
 	CMenuOptionChooser *cec1 = new CMenuOptionChooser(_("CEC mode"), &g_settings.hdmi_cec_mode, VIDEOMENU_HDMI_CEC_MODE_OPTIONS, VIDEOMENU_HDMI_CEC_MODE_OPTION_COUNT, true, this);
 	
 	// cec standby
-	cec3 = new CMenuOptionChooser(_("CEC standby"), &g_settings.hdmi_cec_standby, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF, this);
+	cec2 = new CMenuOptionChooser(_("CEC standby"), &g_settings.hdmi_cec_standby, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF, this);
 	
 	// cec volume
-	cec4 = new CMenuOptionChooser(_("CEC volume"), &g_settings.hdmi_cec_volume, VIDEOMENU_HDMI_CEC_VOL_OPTIONS, VIDEOMENU_HDMI_CEC_VOL_OPTION_COUNT, g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF, this);
+	cec3 = new CMenuOptionChooser(_("CEC volume"), &g_settings.hdmi_cec_volume, VIDEOMENU_HDMI_CEC_VOL_OPTIONS, VIDEOMENU_HDMI_CEC_VOL_OPTION_COUNT, g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF, this);
 
 	cec->addItem(cec1);
+	cec->addItem(cec2);
 	cec->addItem(cec3);
-	cec->addItem(cec4);
 
 	widget->setTimeOut(g_settings.timing_menu);
 	
@@ -171,7 +170,7 @@ int CCECSetup::showMenu()
 	return res;
 }
 
-bool CCECSetup::changeNotify(const std::string& OptionName, void * /*data*/)
+bool CCECSetup::changeNotify(const std::string& OptionName, void *)
 {
 	dprintf(DEBUG_NORMAL, "CCECSetup::changeNotify\n");
 
@@ -179,7 +178,6 @@ bool CCECSetup::changeNotify(const std::string& OptionName, void * /*data*/)
 	{
 		cec2->setActive(g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF);
 		cec3->setActive(g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF);
-		cec4->setActive(g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF);
 		
 		hdmi_cec::getInstance()->setCECMode((VIDEO_HDMI_CEC_MODE)g_settings.hdmi_cec_mode);
 	}

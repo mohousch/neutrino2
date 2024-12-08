@@ -38,7 +38,7 @@
 class CCECSetup : public CMenuTarget, CChangeObserver
 {
 	private:
-		CMenuOptionChooser *cec2, *cec3, *cec4;		
+		CMenuOptionChooser *cec2, *cec3;		
 		int showMenu();
  		
 

@@ -263,11 +263,11 @@ class CZapitChannel
 		void setaitPid(unsigned short aitPID)			{ aitPid = aitPID; };
 		void setNumber(unsigned int num)			{ number = num; };
 		//
-		void setLogoUrl(const std::string url)			{ logourl = url; };
-		void setEPGUrl(const std::string url)			{ epgurl = url; };
+		void setLogoUrl(const std::string l)			{ logourl = l; };
+		void setEPGUrl(const std::string l)			{ epgurl = l; };
 		void setEPGID(const t_channel_id id)			{ epgid = id; };
 		void setLogoID(const t_channel_id id)			{ logoid = id; };
-		void setEPGIDXMLTV(const std::string name)		{ epgidXMLTV = name; };
+		void setEPGIDXMLTV(const std::string n)			{ epgidXMLTV = n; };
 		// cleanup methods
 		void resetPids(void);
 		
