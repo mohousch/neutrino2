@@ -131,7 +131,7 @@ bool CWeather::getMyGeoLocation()
 	myLocation.lat = DataValues["lat"].asDouble();
 	myLocation.lon = DataValues["lon"].asDouble();
 	
-	dprintf(DEBUG_NORMAL, "city: %s lat: %f lon: %f\n", myLocation.city.c_str(), myLocation.lat, myLocation.lon);
+	dprintf(DEBUG_NORMAL, "CWeather::getMyGeoLocation: city: %s lat: %f lon: %f\n", myLocation.city.c_str(), myLocation.lat, myLocation.lon);
 	
 	return ret;
 }
@@ -142,7 +142,7 @@ bool CWeather::GetWeatherDetails()
 	
 	std::string data = "https://api.openweathermap.org/data/2.5/weather?lat=" + toString(myLocation.lat) + "&lon=" + toString(myLocation.lon) + "&units=metric&appid=" + key;
 	
-	dprintf(DEBUG_NORMAL, "url:%s\n", data.c_str());
+	dprintf(DEBUG_NORMAL, "CWeather::GetWeatherDetails: url:%s\n", data.c_str());
 
 	std::string answer;
 	std::string formattedErrors;
@@ -174,7 +174,7 @@ bool CWeather::GetWeatherDetails()
 
 	found = DataValues["dt"].asInt();
 
-	dprintf(DEBUG_NORMAL, "results found: %d\n", found);
+	dprintf(DEBUG_NORMAL, "CWeather::GetWeatherDetails: results found: %d\n", found);
 
 	if (found)
 	{
@@ -200,7 +200,7 @@ bool CWeather::GetWeatherDetails()
 		if (current.icon.empty())
 			current.icon = "unknown.png";
 			
-		dprintf(DEBUG_NORMAL, "temp in %s %.1f (%s) (%d)\n", myLocation.city.c_str(), current.temperature, current.icon.c_str(), current.timestamp);
+		dprintf(DEBUG_NORMAL, "CWeather::GetWeatherDetails: temp in %s %.1f (%s) (%d)\n", myLocation.city.c_str(), current.temperature, current.icon.c_str(), current.timestamp);
 
 		return true;
 	}
