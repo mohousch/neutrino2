@@ -545,7 +545,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 	}
 
 	// blue button
-	frameBuffer->paintIcon(NEUTRINO_ICON_BUTTON_BLUE, BoxStartX + BORDER_LEFT + icon_red_w + ICON_TO_ICON_OFFSET + asize + icon_green_w + ICON_TO_ICON_OFFSET + asize + icon_yellow_w + ICON_TO_ICON_OFFSET + asize, buttonBarStartY + 1, 0, true, icon_blue_w, buttonBarHeight - 2);
+	frameBuffer->paintIcon(NEUTRINO_ICON_BUTTON_BLUE, BoxStartX + BORDER_LEFT + icon_red_w + ICON_TO_ICON_OFFSET + asize + icon_green_w + ICON_TO_ICON_OFFSET + asize + icon_yellow_w + ICON_TO_ICON_OFFSET + asize, buttonBarStartY + 1, buttonBarHeight, true, icon_blue_w, icon_blue_h >= buttonBarHeight? buttonBarHeight - 2 : icon_blue_h);
 
 	g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(BoxStartX + BORDER_LEFT + icon_red_w + ICON_TO_ICON_OFFSET + asize + icon_green_w + ICON_TO_ICON_OFFSET + asize + icon_yellow_w + ICON_TO_ICON_OFFSET + asize + icon_blue_w + ICON_TO_ICON_OFFSET, buttonBarStartY + (buttonBarHeight - g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight(), asize - ICON_TO_ICON_OFFSET - icon_blue_w, _("Features"), COL_INFOBAR_TEXT_PLUS_0, 0, true); // UTF-8
 	
@@ -1411,7 +1411,7 @@ void CInfoViewer::showButton_SubServices()
 	
 		if(is_visible)
 		{
-			frameBuffer->paintIcon(NEUTRINO_ICON_BUTTON_YELLOW, BoxStartX + BORDER_LEFT + icon_w + ICON_TO_ICON_OFFSET + asize + icon_w + ICON_TO_ICON_OFFSET + asize, buttonBarStartY + 1, 0, true, icon_w, buttonBarHeight - 2);
+			frameBuffer->paintIcon(NEUTRINO_ICON_BUTTON_YELLOW, BoxStartX + BORDER_LEFT + icon_w + ICON_TO_ICON_OFFSET + asize + icon_w + ICON_TO_ICON_OFFSET + asize, buttonBarStartY + 1, buttonBarHeight, true, icon_w, icon_yellow_h >= buttonBarHeight? buttonBarHeight - 2 : icon_yellow_h);
 
 			g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(BoxStartX + BORDER_LEFT + icon_w + ICON_TO_ICON_OFFSET + asize + icon_w + ICON_TO_ICON_OFFSET + asize + icon_w + ICON_TO_ICON_OFFSET, buttonBarStartY + (buttonBarHeight - g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight(), asize, (g_RemoteControl->are_subchannels) ? _("Subservices") : _("Timeselection"), COL_INFOBAR_TEXT_PLUS_0, 0, true); // UTF-8
 		}
@@ -1651,7 +1651,7 @@ void CInfoViewer::showEPGData(bool calledFromEvent)
 	  		if (info_CurrentNext.flags & CSectionsd::epgflags::has_anything) 
 			{
 				// red button
-				frameBuffer->paintIcon(NEUTRINO_ICON_BUTTON_RED, BoxStartX + BORDER_LEFT, buttonBarStartY + 1, 0, true, icon_red_w, buttonBarHeight - 2);
+				frameBuffer->paintIcon(NEUTRINO_ICON_BUTTON_RED, BoxStartX + BORDER_LEFT, buttonBarStartY + 1, buttonBarHeight, true, icon_red_w, icon_red_h >= buttonBarHeight? buttonBarHeight - 2 : icon_red_h);
 
 				g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(BoxStartX + BORDER_LEFT + icon_red_w + ICON_OFFSET, buttonBarStartY + (buttonBarHeight - g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight(), asize - 5, _("EPG / Timer"), COL_INFOBAR_TEXT_PLUS_0, 0, true); // UTF-8
 	  		}
@@ -1738,7 +1738,7 @@ void CInfoViewer::showButton_Audio()
 
 	if(is_visible)
 	{
-		frameBuffer->paintIcon(NEUTRINO_ICON_BUTTON_GREEN, BoxStartX + BORDER_LEFT + icon_w + ICON_TO_ICON_OFFSET + asize, buttonBarStartY + 1, 0, true, icon_w, buttonBarHeight - 2);
+		frameBuffer->paintIcon(NEUTRINO_ICON_BUTTON_GREEN, BoxStartX + BORDER_LEFT + icon_w + ICON_TO_ICON_OFFSET + asize, buttonBarStartY + 1, buttonBarHeight, true, icon_w, icon_green_h >= buttonBarHeight? buttonBarHeight - 2 : icon_green_h);
 
 	  	if (count > 0 || (IS_WEBTV(channel_id))) 
 		{
