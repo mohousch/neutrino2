@@ -293,7 +293,6 @@ void CColorChooser::paint()
 	dprintf(DEBUG_NORMAL, "CColorChooser::paint:\n");
 	
 	// box
-	m_cBoxWindow->setColor(COL_MENUCONTENT_PLUS_0);
 	m_cBoxWindow->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	m_cBoxWindow->paint();
 
@@ -304,8 +303,6 @@ void CColorChooser::paint()
 
 	CCHeaders headers(&cFrameBoxTitle, name.c_str(), NEUTRINO_ICON_COLORS);
 
-	headers.setCorner(RADIUS_SMALL);
-	headers.setGradient(LIGHT2DARK);	
 	headers.paint();
 
 	// slider

@@ -458,9 +458,6 @@ void CStringInput::paint()
 	headers.setPosition(x, y, width, hheight);
 	headers.setTitle(name.c_str());
 	headers.setIcon(iconfile.c_str());
-	headers.setCorner(g_settings.Head_radius);
-	headers.setGradient(g_settings.Head_gradient, GRADIENT_VERTICAL, INT_NORMAL, g_settings.Head_gradient_type);
-	headers.setLine(g_settings.Head_line, g_settings.Head_line_gradient);
 	headers.paint();
 
 	if (!hint_1.empty())

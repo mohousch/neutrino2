@@ -169,7 +169,6 @@ void CProgressWindow::paint()
 		l_caption = captionString.c_str();
 
 		CCHeaders headers(x, y, width, hheight, l_caption, NEUTRINO_ICON_INFO);
-		headers.setGradient(LIGHT2DARK);
 		
 		if (paintCancelIcon)
 			headers.setButtons(&cancelBtn, 1);
