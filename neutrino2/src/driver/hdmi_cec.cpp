@@ -61,7 +61,7 @@ hdmi_cec *CEC = hdmi_cec::getInstance();
 
 hdmi_cec::hdmi_cec()
 {
-	standby_cec_activ = autoview_cec_activ = standby = muted = running = false;
+	standby = muted = running = false;
 	hdmiFd = -1;
 	volume = 0;
 	fallback = false;
@@ -88,9 +88,9 @@ hdmi_cec *hdmi_cec::getInstance()
 	return hdmi_cec_instance;
 }
 
-bool hdmi_cec::SetCECMode(VIDEO_HDMI_CEC_MODE _deviceType)
+bool hdmi_cec::setCECMode(VIDEO_HDMI_CEC_MODE _deviceType)
 {
-	dprintf(DEBUG_NORMAL, "hdmi_cec::SetCECMode: type:%d\n", _deviceType);
+	dprintf(DEBUG_NORMAL, "hdmi_cec::setCECMode: type:%d\n", _deviceType);
 	
 	physicalAddress[0] = 0x10;
 	physicalAddress[1] = 0x00;
@@ -203,12 +203,11 @@ bool hdmi_cec::SetCECMode(VIDEO_HDMI_CEC_MODE _deviceType)
 	if (hdmiFd >= 0)
 	{
 		//
-		GetCECAddressInfo();
+		getCECAddressInfo();
 
 		//
-//		if (autoview_cec_activ)
-//			SetCECState(false);
-
+		setCECAutoView();
+		
 		//
 		Start();
 		
@@ -218,9 +217,9 @@ bool hdmi_cec::SetCECMode(VIDEO_HDMI_CEC_MODE _deviceType)
 	return false;
 }
 
-void hdmi_cec::GetCECAddressInfo()
+void hdmi_cec::getCECAddressInfo()
 {
-	dprintf(DEBUG_NORMAL, "hdmi_cec::GetCECAddressInfo\n");
+	dprintf(DEBUG_NORMAL, "hdmi_cec::getCECAddressInfo\n");
 	
 	if (hdmiFd >= 0)
 	{
@@ -284,15 +283,15 @@ void hdmi_cec::GetCECAddressInfo()
 			if (memcmp(physicalAddress, addressinfo.physical, sizeof(physicalAddress)))
 			{
 				memcpy(physicalAddress, addressinfo.physical, sizeof(physicalAddress));
-				ReportPhysicalAddress();
+				reportPhysicalAddress();
 			}
 		}
 	}
 }
 
-void hdmi_cec::ReportPhysicalAddress()
+void hdmi_cec::reportPhysicalAddress()
 {
-	dprintf(DEBUG_NORMAL, "hdmi_cec::ReportPhysicalAddress\n");
+	dprintf(DEBUG_NORMAL, "hdmi_cec::reportPhysicalAddress\n");
 	
 	struct cec_message txmessage;
 	
@@ -304,12 +303,12 @@ void hdmi_cec::ReportPhysicalAddress()
 	txmessage.data[3] = deviceType;
 	txmessage.length = 4;
 	
-	SendCECMessage(txmessage);
+	sendCECMessage(txmessage);
 }
 
-void hdmi_cec::SendCECMessage(struct cec_message &txmessage, int sleeptime)
+void hdmi_cec::sendCECMessage(struct cec_message &txmessage, int sleeptime)
 {
-	dprintf(DEBUG_NORMAL, "hdmi_cec::SendCECMessage\n");
+	dprintf(DEBUG_NORMAL, "hdmi_cec::sendCECMessage\n");
 	
 	if (hdmiFd >= 0)
 	{
@@ -338,105 +337,98 @@ void hdmi_cec::SendCECMessage(struct cec_message &txmessage, int sleeptime)
 	}
 }
 
-void hdmi_cec::SetCECAutoStandby(bool state)
+void hdmi_cec::setCECAutoStandby(bool state)
 {
-	dprintf(DEBUG_NORMAL, "hdmi_cec::SetCECAutoStandby: state: %s\n", state? "true" : "false");
-	
-	standby_cec_activ = state;
+	dprintf(DEBUG_NORMAL, "hdmi_cec::setCECAutoStandby: state: %s\n", state? "true" : "false");
 	
 	struct cec_message message;
 	
-	if ((standby_cec_activ) && state)
+	if (state)
 	{
 		message.initiator = logicalAddress;
 		message.destination = CEC_OP_PRIM_DEVTYPE_TV;
 		message.data[0] = CEC_MSG_STANDBY;
 		message.length = 1;
 		
-		SendCECMessage(message);
+		sendCECMessage(message);
 
 		message.initiator = logicalAddress;
 		message.destination = CEC_OP_PRIM_DEVTYPE_TV;
 		message.data[0] = CEC_MSG_GIVE_DEVICE_POWER_STATUS;
 		message.length = 1;
 		
-		SendCECMessage(message);
+		sendCECMessage(message);
 	}
 }
 
-void hdmi_cec::SetCECAutoView(bool state)
+void hdmi_cec::setCECAutoView()
 {
-	dprintf(DEBUG_NORMAL, "hdmi_cec::SetCECAutoView: state: %s\n", state? "true" : "false");
-	
-	autoview_cec_activ = state;
+	dprintf(DEBUG_NORMAL, "hdmi_cec::setCECAutoView:\n");
 	
 	struct cec_message message;
 	
-	if (autoview_cec_activ)
-	{
-		message.initiator = logicalAddress;
-		message.destination = CEC_OP_PRIM_DEVTYPE_TV;
-		message.data[0] = CEC_MSG_GET_CEC_VERSION;
-		message.length = 1;
+	message.initiator = logicalAddress;
+	message.destination = CEC_OP_PRIM_DEVTYPE_TV;
+	message.data[0] = CEC_MSG_GET_CEC_VERSION;
+	message.length = 1;
 		
-		SendCECMessage(message);
+	sendCECMessage(message);
 
-		message.initiator = logicalAddress;
-		message.destination = CEC_OP_PRIM_DEVTYPE_TV;
-		message.data[0] = CEC_MSG_GIVE_DEVICE_POWER_STATUS;
-		message.length = 1;
+	message.initiator = logicalAddress;
+	message.destination = CEC_OP_PRIM_DEVTYPE_TV;
+	message.data[0] = CEC_MSG_GIVE_DEVICE_POWER_STATUS;
+	message.length = 1;
 		
-		SendCECMessage(message);
+	sendCECMessage(message);
 
-		message.initiator = logicalAddress;
-		message.destination = CEC_OP_PRIM_DEVTYPE_TV;
-		message.data[0] = CEC_MSG_IMAGE_VIEW_ON;
-		message.length = 1;
+	message.initiator = logicalAddress;
+	message.destination = CEC_OP_PRIM_DEVTYPE_TV;
+	message.data[0] = CEC_MSG_IMAGE_VIEW_ON;
+	message.length = 1;
 			
-		SendCECMessage(message);
+	sendCECMessage(message);
 
-		message.initiator = logicalAddress;
-		message.destination = CEC_OP_PRIM_DEVTYPE_TV;
-		message.data[0] = CEC_MSG_GIVE_DEVICE_POWER_STATUS;
-		message.length = 1;
+	message.initiator = logicalAddress;
+	message.destination = CEC_OP_PRIM_DEVTYPE_TV;
+	message.data[0] = CEC_MSG_GIVE_DEVICE_POWER_STATUS;
+	message.length = 1;
 			
-		SendCECMessage(message);
+	sendCECMessage(message);
 
-		GetCECAddressInfo();
+	getCECAddressInfo();
 
-		message.initiator = logicalAddress;
-		message.destination = CEC_LOG_ADDR_BROADCAST;
-		message.data[0] = CEC_MSG_ACTIVE_SOURCE;
-		message.data[1] = physicalAddress[0];
-		message.data[2] = physicalAddress[1];
-		message.length = 3;
+	message.initiator = logicalAddress;
+	message.destination = CEC_LOG_ADDR_BROADCAST;
+	message.data[0] = CEC_MSG_ACTIVE_SOURCE;
+	message.data[1] = physicalAddress[0];
+	message.data[2] = physicalAddress[1];
+	message.length = 3;
 		
-		SendCECMessage(message);
+	sendCECMessage(message);
 
-		message.initiator = logicalAddress;
-		message.destination = CEC_LOG_ADDR_BROADCAST;
-		message.data[0] = CEC_OPCODE_SET_OSD_NAME;
-		message.data[1] = 0x4e; //N
-		message.data[2] = 0x65; //e
-		message.data[3] = 0x75; //u
-		message.data[4] = 0x74; //t
-		message.data[5] = 0x72; //r
-		message.data[6] = 0x69; //i
-		message.data[7] = 0x6e; //n
-		message.data[8] = 0x6f; //o
-		message.data[9] = 0x4e; //N
-		message.data[10] = 0x47;//G
+	message.initiator = logicalAddress;
+	message.destination = CEC_LOG_ADDR_BROADCAST;
+	message.data[0] = CEC_OPCODE_SET_OSD_NAME;
+	message.data[1] = 0x4e; //N
+	message.data[2] = 0x65; //e
+	message.data[3] = 0x75; //u
+	message.data[4] = 0x74; //t
+	message.data[5] = 0x72; //r
+	message.data[6] = 0x69; //i
+	message.data[7] = 0x6e; //n
+	message.data[8] = 0x6f; //o
+	message.data[9] = 0x4e; //N
+	message.data[10] = 0x47;//G
 		
-		message.length = 11;
-		SendCECMessage(message);
+	message.length = 11;
+	sendCECMessage(message);
 
-		request_audio_status();
-	}
+	request_audio_status();
 }
 
-void hdmi_cec::SetCECState(bool state)
+void hdmi_cec::setCECState(bool state)
 {
-	dprintf(DEBUG_NORMAL, "hdmi_cec::SetCECState: state: %s\n", state? "true" : "false");
+	dprintf(DEBUG_NORMAL, "hdmi_cec::setCECState: state: %s\n", state? "true" : "false");
 
 	standby = state;
 }
@@ -703,8 +695,9 @@ void hdmi_cec::Receive(int what)
 					txmessage.data[1] = physicalAddress[0];
 					txmessage.data[2] = physicalAddress[1];
 					txmessage.length = 3;
+					
 					if (!standby)
-						SendCECMessage(txmessage);
+						sendCECMessage(txmessage);
 					break;
 				}
 				case CEC_OPCODE_REPORT_AUDIO_STATUS:
@@ -735,7 +728,7 @@ void hdmi_cec::Receive(int what)
 					txmessage.data[0] = GetResponseOpcode((cec_opcode)rxmessage.opcode);
 					txmessage.data[1] = standby ? CEC_POWER_STATUS_STANDBY : CEC_POWER_STATUS_ON;
 					txmessage.length = 2;
-					SendCECMessage(txmessage);
+					sendCECMessage(txmessage);
 					break;
 				}
 				case CEC_OPCODE_REPORT_POWER_STATUS:
@@ -836,14 +829,14 @@ void hdmi_cec::send_key(unsigned char key, unsigned char destination)
 	txmessage.data[1] = key;
 	txmessage.length = 2;
 	
-	SendCECMessage(txmessage, 1);
+	sendCECMessage(txmessage, 1);
 
 	txmessage.destination = destination;
 	txmessage.initiator = logicalAddress;
 	txmessage.data[0] = CEC_OPCODE_USER_CONTROL_RELEASE;
 	txmessage.length = 1;
 	
-	SendCECMessage(txmessage, 0);
+	sendCECMessage(txmessage, 0);
 }
 
 void hdmi_cec::request_audio_status()
@@ -854,7 +847,7 @@ void hdmi_cec::request_audio_status()
 	txmessage.data[0] = CEC_OPCODE_GIVE_AUDIO_STATUS;
 	txmessage.length = 1;
 	
-	SendCECMessage(txmessage, 0);
+	sendCECMessage(txmessage, 0);
 }
 
 void hdmi_cec::vol_up()
@@ -873,7 +866,7 @@ void hdmi_cec::toggle_mute()
 	request_audio_status();
 }
 
-void hdmi_cec::SetAudioDestination(int audio_dest)
+void hdmi_cec::setAudioDestination(int audio_dest)
 {
 	switch (audio_dest)
 	{

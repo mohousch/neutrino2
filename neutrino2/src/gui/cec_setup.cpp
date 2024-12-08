@@ -47,9 +47,9 @@
 
 CCECSetup::CCECSetup()
 {
-	cec1 = NULL;
 	cec2 = NULL;
 	cec3 = NULL;
+	cec4 = NULL;
 }
 
 int CCECSetup::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
@@ -142,19 +142,18 @@ int CCECSetup::showMenu()
 	cec->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	cec->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
-	//cec
-	CMenuOptionChooser *cec_ch = new CMenuOptionChooser(_("CEC mode"), &g_settings.hdmi_cec_mode, VIDEOMENU_HDMI_CEC_MODE_OPTIONS, VIDEOMENU_HDMI_CEC_MODE_OPTION_COUNT, true, this);
+	// cec mode
+	CMenuOptionChooser *cec1 = new CMenuOptionChooser(_("CEC mode"), &g_settings.hdmi_cec_mode, VIDEOMENU_HDMI_CEC_MODE_OPTIONS, VIDEOMENU_HDMI_CEC_MODE_OPTION_COUNT, true, this);
 	
-	cec1 = new CMenuOptionChooser(_("CEC view on"), &g_settings.hdmi_cec_view_on, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF, this);
+	// cec standby
+	cec3 = new CMenuOptionChooser(_("CEC standby"), &g_settings.hdmi_cec_standby, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF, this);
 	
-	cec2 = new CMenuOptionChooser(_("CEC standby"), &g_settings.hdmi_cec_standby, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF, this);
-	
-	cec3 = new CMenuOptionChooser(_("CEC volume"), &g_settings.hdmi_cec_volume, VIDEOMENU_HDMI_CEC_VOL_OPTIONS, VIDEOMENU_HDMI_CEC_VOL_OPTION_COUNT, g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF, this);
+	// cec volume
+	cec4 = new CMenuOptionChooser(_("CEC volume"), &g_settings.hdmi_cec_volume, VIDEOMENU_HDMI_CEC_VOL_OPTIONS, VIDEOMENU_HDMI_CEC_VOL_OPTION_COUNT, g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF, this);
 
-	cec->addItem(cec_ch);
 	cec->addItem(cec1);
-	cec->addItem(cec2);
 	cec->addItem(cec3);
+	cec->addItem(cec4);
 
 	widget->setTimeOut(g_settings.timing_menu);
 	
@@ -172,35 +171,21 @@ int CCECSetup::showMenu()
 	return res;
 }
 
-void CCECSetup::setCECSettings(bool b)
-{	
-	dprintf(DEBUG_NORMAL, "CCECSetup::setCECSettings\n");
-	
-	hdmi_cec::getInstance()->SetCECAutoStandby(g_settings.hdmi_cec_standby == 1);
-	hdmi_cec::getInstance()->SetCECAutoView(g_settings.hdmi_cec_view_on == 1);
-	hdmi_cec::getInstance()->GetAudioDestination();
-	hdmi_cec::getInstance()->SetCECMode((VIDEO_HDMI_CEC_MODE)g_settings.hdmi_cec_mode);	
-}
-
 bool CCECSetup::changeNotify(const std::string& OptionName, void * /*data*/)
 {
 	dprintf(DEBUG_NORMAL, "CCECSetup::changeNotify\n");
 
 	if (OptionName == _("CEC mode"))
 	{
-		cec1->setActive(g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF);
 		cec2->setActive(g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF);
 		cec3->setActive(g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF);
+		cec4->setActive(g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF);
 		
-		hdmi_cec::getInstance()->SetCECMode((VIDEO_HDMI_CEC_MODE)g_settings.hdmi_cec_mode);
+		hdmi_cec::getInstance()->setCECMode((VIDEO_HDMI_CEC_MODE)g_settings.hdmi_cec_mode);
 	}
 	else if (OptionName == _("CEC standby"))
 	{
-		hdmi_cec::getInstance()->SetCECAutoStandby(g_settings.hdmi_cec_standby == 1);
-	}
-	else if (OptionName == _("CEC view on"))
-	{
-		hdmi_cec::getInstance()->SetCECAutoView(g_settings.hdmi_cec_view_on == 1);
+		hdmi_cec::getInstance()->setCECAutoStandby(g_settings.hdmi_cec_standby == 1);
 	}
 	else if (OptionName == _("CEC volume"))
 	{
@@ -208,7 +193,7 @@ bool CCECSetup::changeNotify(const std::string& OptionName, void * /*data*/)
 		{
 			g_settings.current_volume = 100;
 			
-			hdmi_cec::getInstance()->GetAudioDestination();
+			hdmi_cec::getInstance()->getAudioDestination();
 		}
 	}
 

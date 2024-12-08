@@ -80,7 +80,6 @@ class hdmi_cec : public OpenThreads::Thread
 		bool Stop();
 		void Receive(int what);
 		unsigned char physicalAddress[2];
-		bool autoview_cec_activ;
 		unsigned char deviceType, logicalAddress;
 		int hdmiFd;
 		long translateKey(unsigned char code);
@@ -95,35 +94,30 @@ class hdmi_cec : public OpenThreads::Thread
 		bool fallback;
 		bool tv_off;
 		unsigned char audio_destination;
+		
 	protected:
 		bool running;
+		
 	public:
 		~hdmi_cec();
 		static hdmi_cec *getInstance();
-		bool SetCECMode(VIDEO_HDMI_CEC_MODE);
-		void SetCECAutoView(bool);
-		void SetCECAutoStandby(bool);
-		void GetCECAddressInfo();
-		void SendCECMessage(struct cec_message &message, int sleeptime = 250);
-		void SetCECState(bool state);
-		void ReportPhysicalAddress();
-		bool standby_cec_activ;
+		
+		////
+		bool setCECMode(VIDEO_HDMI_CEC_MODE);
+		void setCECAutoView();
+		void setCECAutoStandby(bool);
+		void getCECAddressInfo();
+		void sendCECMessage(struct cec_message &message, int sleeptime = 250);
+		void setCECState(bool state);
+		void reportPhysicalAddress();
 		void vol_up();
 		void vol_down();
 		void toggle_mute();
-		int GetVolume()
-		{
-			return volume;
-		};
-		bool isMuted()
-		{
-			return muted;
-		};
-		int GetAudioDestination()
-		{
-			return (int)audio_destination;
-		}
-		void SetAudioDestination(int audio_dest);
+		void setAudioDestination(int audio_dest);
+		
+		int getVolume() {return volume;};
+		bool isMuted(){return muted;};
+		int getAudioDestination() {return (int)audio_destination;}
 };
 
 #endif // __HDMI_CEC_H__

@@ -506,10 +506,8 @@ struct SNeutrinoSettings
 	
 	// cec
 	int hdmi_cec_mode;
-	int hdmi_cec_view_on;
 	int hdmi_cec_standby;
 	int hdmi_cec_volume;
-	int hdmi_cec_broadcast;
 	
 	// personalisation
 	int  personalize_tvradio;

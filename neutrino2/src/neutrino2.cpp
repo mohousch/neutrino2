@@ -892,10 +892,8 @@ int CNeutrinoApp::loadSetup(const char * fname)
 
 	// cec
 	g_settings.hdmi_cec_mode = configfile.getInt32("hdmi_cec_mode", 0); 		// default off
-	g_settings.hdmi_cec_view_on = configfile.getInt32("hdmi_cec_view_on", 0); 	// default off
 	g_settings.hdmi_cec_standby = configfile.getInt32("hdmi_cec_standby", 0); 	// default off
 	g_settings.hdmi_cec_volume = configfile.getInt32("hdmi_cec_volume", 0);
-	g_settings.hdmi_cec_broadcast = configfile.getInt32("hdmi_cec_broadcast", 0); 	// default off
 	
 	// personalize
 	g_settings.personalize_tvradio = configfile.getInt32("personalize_tvradio", CMenuItem::ITEM_ACTIVE);
@@ -1403,10 +1401,8 @@ void CNeutrinoApp::saveSetup(const char * fname)
 
 	// cec
 	configfile.setInt32( "hdmi_cec_mode", g_settings.hdmi_cec_mode );
-	configfile.setInt32( "hdmi_cec_view_on", g_settings.hdmi_cec_view_on );
 	configfile.setInt32( "hdmi_cec_standby", g_settings.hdmi_cec_standby );
 	configfile.setInt32( "hdmi_cec_volume", g_settings.hdmi_cec_volume );
-	configfile.setInt32( "hdmi_cec_broadcast", g_settings.hdmi_cec_broadcast );
 	
 	// personalize
 	configfile.setInt32("personalize_tvradio", g_settings.personalize_tvradio);
@@ -2688,17 +2684,19 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 		frameBuffer->setActive(false);
 
 		// cec
-#if !defined (__sh__)
-		CCECSetup cecsetup;
-		cecsetup.setCECSettings(false);	
+#if !defined (__sh__)	
+		hdmi_cec::getInstance()->setCECAutoStandby(g_settings.hdmi_cec_standby == 1);
+		hdmi_cec::getInstance()->getAudioDestination();
+		hdmi_cec::getInstance()->setCECMode((VIDEO_HDMI_CEC_MODE)g_settings.hdmi_cec_mode);
 #endif	
 	} 
 	else 
 	{
 		// cec
 #if !defined (__sh__)
-		CCECSetup cecsetup;
-		cecsetup.setCECSettings(true);
+		hdmi_cec::getInstance()->setCECAutoStandby(g_settings.hdmi_cec_standby == 1);
+		hdmi_cec::getInstance()->getAudioDestination();
+		hdmi_cec::getInstance()->setCECMode((VIDEO_HDMI_CEC_MODE)g_settings.hdmi_cec_mode);
 #endif		
 
 		// set fb active
@@ -3155,8 +3153,9 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		
 		// cec
 #if !defined (__sh__)
-		CCECSetup cecsetup;
-		cecsetup.setCECSettings(false);
+		hdmi_cec::getInstance()->setCECAutoStandby(g_settings.hdmi_cec_standby == 1);
+		hdmi_cec::getInstance()->getAudioDestination();
+		hdmi_cec::getInstance()->setCECMode((VIDEO_HDMI_CEC_MODE)g_settings.hdmi_cec_mode);
 #endif
 		
 		//
@@ -4586,8 +4585,9 @@ int CNeutrinoApp::run(int argc, char **argv)
 	
 	// cec
 #if !defined (__sh__)
-	CCECSetup cecsetup;
-	cecsetup.setCECSettings(true);
+	hdmi_cec::getInstance()->setCECAutoStandby(g_settings.hdmi_cec_standby == 1);
+	hdmi_cec::getInstance()->getAudioDestination();
+	hdmi_cec::getInstance()->setCECMode((VIDEO_HDMI_CEC_MODE)g_settings.hdmi_cec_mode);
 #endif
 	
 	// zapit
