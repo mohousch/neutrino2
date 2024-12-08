@@ -592,10 +592,10 @@ int CInfoMenu::showMenu()
 			
 		//
 		infoMenu->addItem(new CMenuForwarder(_("Stream information"), true, NULL, new CStreamInfo(), "", CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO));
-	}
 		
-	//
-	infoMenu->integratePlugins(CPlugins::I_TYPE_INFORMATION);
+		//
+		infoMenu->integratePlugins(CPlugins::I_TYPE_INFORMATION);
+	}
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);

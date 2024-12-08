@@ -129,6 +129,7 @@
 			<item id="FORWARDER" localename="Information" itemicon="hint_dboxinfo" target="boxinfo"/>
 			<item id="FORWARDER" localename="Image info" itemicon="hint_imageinfo" target="imageinfo"/>
 			<item id="FORWARDER" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo"/>
+			<integration id="0x80"/>
 		</listbox>
 		<time posx="350" posy="320" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
 		<foot posy="410" width="600" height="40" color="#ff4c4c4c" paintframe="1">

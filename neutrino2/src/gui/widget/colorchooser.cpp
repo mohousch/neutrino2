@@ -201,12 +201,12 @@ int CColorChooser::exec(CMenuTarget* parent, const std::string&)
 				
 			case CRCInput::RC_right:
 			{
-				if ((*value[selected]) < 100)
+				if ((*value[selected]) < 255)
 				{
-					if ((*value[selected]) < 98)
-						(*value[selected]) += 2;
+					if ((*value[selected]) < 250)
+						(*value[selected]) += 5;
 					else
-						(*value[selected]) = 100;
+						(*value[selected]) = 255;
 
 					paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], true);
 					
@@ -219,8 +219,8 @@ int CColorChooser::exec(CMenuTarget* parent, const std::string&)
 			{
 				if ((*value[selected]) > 0)
 				{
-					if ((*value[selected]) > 2)
-						(*value[selected]) -= 2;
+					if ((*value[selected]) > 5)
+						(*value[selected]) -= 5;
 					else
 						(*value[selected]) = 0;
 
@@ -341,7 +341,7 @@ void CColorChooser::paintSlider(int _x, int _y, unsigned char *spos, const char*
 	frameBuffer->paintIcon(NEUTRINO_ICON_VOLUMEBODY, _x + a_w + 2*ICON_OFFSET, _y + 2 + cFrameBoxItem.iHeight/ITEMS_COUNT);
 
 	// slider icon
-	frameBuffer->paintIcon(selected ? iconname : NEUTRINO_ICON_VOLUMESLIDER2, _x + a_w + 2*ICON_OFFSET + 3 + (*spos), _y + cFrameBoxItem.iHeight/ITEMS_COUNT);
+	frameBuffer->paintIcon(selected ? iconname : NEUTRINO_ICON_VOLUMESLIDER2, _x + a_w + 2*ICON_OFFSET + 3 + (*spos*100)/255, _y + cFrameBoxItem.iHeight/ITEMS_COUNT);
 
 	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(_x, _y + cFrameBoxItem.iHeight, cFrameBox.iWidth - BORDER_LEFT - BORDER_RIGHT - ICON_OFFSET - 150 - cFrameBoxColorPreview.iWidth, text, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 }

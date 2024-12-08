@@ -203,9 +203,10 @@ void CNeutrinoApp::mainMenu(void)
 		item->setDirectKey(CRCInput::RC_video);
 		item->setState(g_settings.personalize_mediaplayer);
 		if (nMenu) nMenu->addItem(item);
+		
+		//
+		if (nMenu) nMenu->integratePlugins(CPlugins::I_TYPE_MAIN);
 	}
-	
-	if (nMenu) nMenu->integratePlugins(CPlugins::I_TYPE_MAIN);
 
 	//
 	widget->setTimeOut(g_settings.timing_menu);

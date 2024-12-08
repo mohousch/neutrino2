@@ -2733,7 +2733,7 @@ void ClistBox::paintItemInfo(int pos)
 			CMenuItem* item = items[pos];
 			
 			////
-			if (paint_Foot && fbutton_count == 0)
+			if (paint_Foot && (widgetMode == MODE_MENU || (widgetMode == MODE_LISTBOX && fbutton_count == 0)))
 			{	
 				// info icon
 				CCIcon infoIcon;
@@ -2763,6 +2763,15 @@ void ClistBox::paintItemInfo(int pos)
 				infoIcon.paint();
 
 				// Hint
+				label.setText(item->itemHint.c_str());
+				label.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
+				label.setColor(COL_MENUFOOT_TEXT_PLUS_0);
+				label.paint();
+			}
+			
+			//// FIXME
+			if (widgetMode == MODE_MENU && itemInfoBox2.iWidth != 0)
+			{
 				label.setText(item->itemHint.c_str());
 				label.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
 				label.setColor(COL_MENUFOOT_TEXT_PLUS_0);
@@ -2857,15 +2866,6 @@ void ClistBox::paintItemInfo(int pos)
 				itemsLine.paintMainFrame(true); // FIXME
 						
 				itemsLine.paint();
-				
-				//// FIXME
-				if (widgetMode == MODE_MENU && itemInfoBox2.iWidth != 0)
-				{
-					label.setText(item->itemHint.c_str());
-					label.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
-					label.setColor(COL_MENUFOOT_TEXT_PLUS_0);
-					label.paint();
-				}
 			}
 			else if (footInfoMode == CCItemInfo::ITEMINFO_HINT)
 			{

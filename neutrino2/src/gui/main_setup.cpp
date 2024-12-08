@@ -179,9 +179,10 @@ void CMainSettingsMenu::showMenu(void)
 	
 		//miscSettings general
 		mainSettings->addItem(new CMenuForwarder(_("Misc settings"), true, NULL, new CGeneralSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_GENERALSETTINGS));
-	}
 	
-	mainSettings->integratePlugins(CPlugins::I_TYPE_SETTING);
+		//
+		mainSettings->integratePlugins(CPlugins::I_TYPE_SETTING);
+	}
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);

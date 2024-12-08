@@ -165,9 +165,10 @@ int COSDSettings::showMenu(void)
 		
 		// diverses
 		osdSettings->addItem(new CMenuForwarder(_("Misc settings"), true, NULL, new COSDDiverses(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
+
+		//
+		osdSettings->integratePlugins(CPlugins::I_TYPE_OSD);
 	}
-	
-	osdSettings->integratePlugins(CPlugins::I_TYPE_OSD);
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);

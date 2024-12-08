@@ -120,10 +120,10 @@ int CPowerMenu::showMenu(void)
 
 		// shutdown
 		powerMenu->addItem(new CMenuForwarder(_("Shutdown"), true, NULL, CNeutrinoApp::getInstance(), "shutdown", CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SHUTDOWN));
-	}
 
-	//
-	powerMenu->integratePlugins(CPlugins::I_TYPE_POWER);
+		//
+		powerMenu->integratePlugins(CPlugins::I_TYPE_POWER);
+	}
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);

@@ -73,18 +73,12 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 
 int convertSetupColor2RGB(uint8_t r, uint8_t g, uint8_t b)
 {
-	uint8_t red =	(int)r * 255 / 100;
-	uint8_t green =	(int)g * 255 / 100;
-	uint8_t blue =	(int)b * 255 / 100;
-
-	return (red << 16) | (green << 8) | blue;
+	return (r << 16) | (g << 8) | b;
 }
 
 int convertSetupAlpha2Alpha(uint8_t alpha)
-{
-	uint8_t ret = (int)alpha * 255 / 100;
-	
-	return ret;
+{	
+	return alpha;
 }
 
 uint32_t convertSetupColor2Color(uint8_t r, uint8_t g, uint8_t b, uint8_t alpha)
