@@ -605,7 +605,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.screen_yres = configfile.getInt32("screen_yres", 100);
 	
 	//
-	g_settings.preferred_skin = configfile.getString("preferred_skin", "standard");
+	g_settings.preferred_skin = configfile.getString("preferred_skin", "ice");
 	g_settings.item_info = configfile.getBool("item_info", false);
 	g_settings.theme = configfile.getString("theme", "default.config");
 
