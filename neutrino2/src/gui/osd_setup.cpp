@@ -477,9 +477,6 @@ bool CColorSetupNotifier::changeNotify(const std::string&, void *)
 	// infobar shadow
 	frameBuffer->paletteGenFade(COL_INFOBAR_SHADOW, convertSetupColor2RGB(int(g_settings.infobar_red*0.4), int(g_settings.infobar_green*0.4), int(g_settings.infobar_blue*0.4)), convertSetupColor2RGB(g_settings.infobar_Text_red, g_settings.infobar_Text_green, g_settings.infobar_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
 
-	// infobar colored events
-	frameBuffer->paletteGenFade(COL_INFOBAR_COLORED_EVENTS, convertSetupColor2RGB(g_settings.infobar_red, g_settings.infobar_green, g_settings.infobar_blue), convertSetupColor2RGB(g_settings.infobar_colored_events_red, g_settings.infobar_colored_events_green, g_settings.infobar_colored_events_blue), 8, convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
-
 	// hint
 	frameBuffer->paletteGenFade(COL_MENUHINT, convertSetupColor2RGB(g_settings.menu_Hint_red, g_settings.menu_Hint_green, g_settings.menu_Hint_blue), convertSetupColor2RGB(g_settings.menu_Hint_Text_red, g_settings.menu_Hint_Text_green, g_settings.menu_Hint_Text_blue), 8, convertSetupAlpha2Alpha( g_settings.menu_Hint_alpha ) );
 	
