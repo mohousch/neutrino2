@@ -2778,7 +2778,7 @@ void ClistBox::paintItemInfo(int pos)
 				label.paint();
 			}
 			
-			//
+			////
 			if (footInfoMode == CCItemInfo::ITEMINFO_INFO)
 			{
 				// detailslines
@@ -2921,8 +2921,7 @@ void ClistBox::paintItemInfo(int pos)
 				itemsLine.setPosition(itemBox.iX + items_width + (itemBox.iWidth - items_width - ITEM_ICON_W)/2, itemBox.iY + (itemBox.iHeight - ITEM_ICON_H)/2, ITEM_ICON_W, ITEM_ICON_H);
 			}
 			
-			// item icon (right)
-			// check for minimum hight
+			// item icon (right) check for minimum hight
 			if(itemBox.iHeight - hheight - fheight >= ITEM_ICON_H)
 			{ 
 				itemsLine.setMode(CCItemInfo::ITEMINFO_ICON);
@@ -2940,7 +2939,8 @@ void ClistBox::paintItemInfo(int pos)
 				//
 			}
 		}
-			
+		
+		////	
 		if (paint_ItemInfo) // MODE_LISTBOX | MODE_MENU
 		{
 			if ( paint_Foot && fbutton_count == 0)
@@ -2985,7 +2985,7 @@ void ClistBox::paintItemInfo(int pos)
 	{
 		if (paint_ItemInfo)
 		{	
-			if (paintframe) //FIXME:
+			if (paintframe)
 			{
 				// refresh
 				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - fheight - cFrameFootInfoHeight, itemBox.iWidth, cFrameFootInfoHeight, COL_MENUCONTENT_PLUS_0);
@@ -2993,6 +2993,7 @@ void ClistBox::paintItemInfo(int pos)
 				// refresh horizontal line buttom
 				frameBuffer->paintHLineRel(itemBox.iX + BORDER_LEFT, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, itemBox.iY + itemBox.iHeight - fheight - cFrameFootInfoHeight + 2, COL_MENUCONTENT_PLUS_5);
 
+				//
 				if(items.size() > 0)
 				{
 					CMenuItem* item = items[pos];

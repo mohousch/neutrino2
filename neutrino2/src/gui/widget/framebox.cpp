@@ -531,9 +531,9 @@ CFrameBox::CFrameBox(CBox* position)
 	iconfile = "";
 	logo = false;
 	headColor = COL_MENUHEAD_PLUS_0;
-	headRadius = RADIUS_MID;
-	headCorner = CORNER_TOP;
-	headGradient = LIGHT2DARK;
+	headRadius = g_settings.Head_radius;
+	headCorner = g_settings.Head_corner;
+	headGradient = g_settings.Head_gradient;
 	hbutton_count	= 0;
 	hbutton_labels.clear();
 	hheight = 0;
@@ -543,9 +543,9 @@ CFrameBox::CFrameBox(CBox* position)
 	// foot
 	paint_Foot = false;
 	footColor = COL_MENUFOOT_PLUS_0;
-	footRadius = RADIUS_MID;
-	footCorner = CORNER_BOTTOM;
-	footGradient = DARK2LIGHT;
+	footRadius = g_settings.Foot_radius;
+	footCorner = g_settings.Foot_corner;
+	footGradient = g_settings.Foot_gradient;
 	fheight = 0;
 	
 	//

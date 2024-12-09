@@ -2538,7 +2538,7 @@ void CTestMenu::testClistBox3()
 
 	// footer
 	rightWidget->enablePaintFoot();
-	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
+//	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	
 	// footinfo
 	rightWidget->enablePaintItemInfo();
@@ -3121,7 +3121,7 @@ void CTestMenu::testCFrameBox1()
 	box.iHeight = CFrameBuffer::getInstance()->getScreenHeight() - 80;
 
 	frameBoxWidget = new CFrameBox(&box);
-	frameBoxWidget->setCorner(g_settings.Head_radius > g_settings.Foot_radius? g_settings.Head_radius : g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
+	frameBoxWidget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 
 	CHintBox loadBox("CFrameBox", __("Scan for Movies ..."));
 	loadBox.paint();
@@ -3257,7 +3257,7 @@ void CTestMenu::testCFrameBox1()
 
 	frameBoxWidget->addFrame(infoFrame);
 
-	// play
+	// playframe
 	CFrameItem *playFrame = new CFrameItem();
 	playFrame->setPosition(&playBox);
 	playFrame->setCorner(10, CORNER_ALL);

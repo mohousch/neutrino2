@@ -35,7 +35,6 @@
 			<item id="FORWARDER" localename="Audioplayer settings" itemicon="hint_aplay" target="audioplayersetup"/>
 			<item id="FORWARDER" localename="Pictureviewer settings" itemicon="hint_picview" target="pictureviewersetup"/>
 			<item id="FORWARDER" localename="HDD settings" itemicon="hint_hdd" target="hddsetup"/>
-			<item id="FORWARDER" localename="Misc settings" itemicon="hint_settings" target="miscsetup"/>
 			<item id="FORWARDER" localename="Channellist settings" itemicon="hint_bedit" target="channellistsetup" />
 			<item id="FORWARDER" localename="EPG settings" itemicon="hint_streaminfo" target="epgsetup"/>
 			<item id="FORWARDER" localename="Filebrowser settings" itemicon="hint_fileplay" target="filebrowsersetup"/>

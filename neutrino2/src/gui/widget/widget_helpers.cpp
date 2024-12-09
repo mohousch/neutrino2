@@ -1345,18 +1345,6 @@ void CCCounter::paint()
 	saveScreen();
 	
 	//
-	/*
-	// play_time
-	char playTime[11];
-	strftime(playTime, 11, "%T/", gmtime(&play_time));//FIXME
-	
-	g_Font[font]->RenderString(itemBox.iX, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), itemBox.iWidth/2, playTime, color, 0, true);
-	
-	// total_time
-	char totalTime[10];
-	strftime(totalTime, 10, "%T", gmtime(&total_time));//FIXME
-	g_Font[font]->RenderString(itemBox.iX + itemBox.iWidth/2, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), itemBox.iWidth/2, totalTime, color, 0, true);
-	*/
 	paintDigits();
 }
 
@@ -1366,17 +1354,6 @@ void CCCounter::refresh(bool show)
 	restoreScreen();
 	
 	//
-	/*
-	// play_time
-	char playTime[11];
-	strftime(playTime, 11, "%T/", gmtime(&play_time));//FIXME
-	g_Font[font]->RenderString(itemBox.iX, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), itemBox.iWidth/2, playTime, color, 0, true);
-	
-	// total_time
-	char totalTime[10];
-	strftime(totalTime, 10, "%T", gmtime(&total_time));//FIXME
-	g_Font[font]->RenderString(itemBox.iX + itemBox.iWidth/2, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), itemBox.iWidth/2, totalTime, color, 0, true);
-	*/
 	paintDigits();
 }
 
