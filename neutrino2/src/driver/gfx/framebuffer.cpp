@@ -1010,7 +1010,7 @@ bool CFrameBuffer::paintIcon8(const std::string &filename, const int x, const in
 }
 
 // paint icon raw
-bool CFrameBuffer::paintIconRaw(const std::string & filename, const int x, const int y, const int h, const unsigned char offset, bool paint)
+bool CFrameBuffer::paintIconRaw(const std::string & filename, const int x, const int y, const int h, const unsigned char offset)
 {
 	if (!getActive())
 		return false;
@@ -1072,9 +1072,6 @@ bool CFrameBuffer::paintIconRaw(const std::string & filename, const int x, const
 		
 	close(lfd);
 	data = tmp_data;
-	
-	if(!paint)
-		return true;
 
 	if (h != 0)
 		yy += (h - height) / 2;	
@@ -1087,7 +1084,7 @@ bool CFrameBuffer::paintIconRaw(const std::string & filename, const int x, const
 }
 
 //
-bool CFrameBuffer::paintIcon(const std::string &filename, const int x, const int y, const int h, bool paint, int width, int height)
+bool CFrameBuffer::paintIcon(const std::string &filename, const int x, const int y, const int h, int width, int height)
 {
 	dprintf(DEBUG_DEBUG, "CFrameBuffer::paintIcon: %s\n", filename.c_str());
 	
@@ -1152,9 +1149,6 @@ bool CFrameBuffer::paintIcon(const std::string &filename, const int x, const int
 	}
 	
 _display:
-	if(!paint)
-		return true;
-
 	if (h != 0)
 		yy += (h - height) / 2;	
 

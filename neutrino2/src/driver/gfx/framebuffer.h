@@ -247,10 +247,10 @@ class CFrameBuffer
 
 		// icon
 		void getIconSize(const char * const filename, int* width, int *height);
-		bool paintIcon(const std::string &filename, const int x, const int y, const int h = 0, bool paint = true, int width = 0, int height = 0);
+		bool paintIcon(const std::string &filename, const int x, const int y, const int h = 0, int width = 0, int height = 0);
 		bool paintHintIcon(const std::string &filename, int posx, int posy, int width , int height);
 		bool paintIcon8(const std::string &filename, const int x, const int y, const unsigned char offset = 0);
-		bool paintIconRaw(const std::string &filename, const int x, const int y, const int h = 0, const unsigned char offset = 1, bool paint = true);
+		bool paintIconRaw(const std::string &filename, const int x, const int y, const int h = 0, const unsigned char offset = 1);
 		void loadPal(const std::string &filename, const unsigned char offset = 0, const unsigned char endidx = 255);
 		
 		// background

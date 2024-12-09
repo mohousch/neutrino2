@@ -365,7 +365,7 @@ void CMessageBox::paintButtons()
 		if (ih >= m_fheight - 10)
 			ih = m_fheight - 12;
 		
-		CFrameBuffer::getInstance()->paintIcon(NEUTRINO_ICON_BUTTON_RED, xpos + BORDER_LEFT + ICON_OFFSET, CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2) + m_height - m_fheight + 5, m_fheight - 10, true, iw, ih);
+		CFrameBuffer::getInstance()->paintIcon(NEUTRINO_ICON_BUTTON_RED, xpos + BORDER_LEFT + ICON_OFFSET, CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2) + m_height - m_fheight + 5, m_fheight - 10, iw, ih);
 
 		g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(xpos + BORDER_LEFT + ICON_OFFSET + iw + ICON_OFFSET, CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2) + (m_height) - (m_fheight - fh)/2, ButtonWidth - (BORDER_LEFT + ICON_OFFSET + iw + ICON_OFFSET + BORDER_LEFT), _("Yes"), color, 0, true); // UTF-8
 		
@@ -392,7 +392,7 @@ void CMessageBox::paintButtons()
 		if (ih >= m_fheight - 10)
 			ih = m_fheight - 12;
 			
-		CFrameBuffer::getInstance()->paintIcon(NEUTRINO_ICON_BUTTON_GREEN, xpos + BORDER_LEFT + ICON_OFFSET, CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2) + m_height - m_fheight + 5, m_fheight - 10, true, iw, ih);
+		CFrameBuffer::getInstance()->paintIcon(NEUTRINO_ICON_BUTTON_GREEN, xpos + BORDER_LEFT + ICON_OFFSET, CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2) + m_height - m_fheight + 5, m_fheight - 10, iw, ih);
 
 		g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(xpos + BORDER_LEFT + ICON_OFFSET + iw + ICON_OFFSET, CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2) + (m_height) - (m_fheight - fh)/2, ButtonWidth - (BORDER_LEFT + ICON_OFFSET + iw + ICON_OFFSET + BORDER_LEFT), _("No"), color, 0, true); // UTF-8		
 	
@@ -419,7 +419,7 @@ void CMessageBox::paintButtons()
 		if (ih >= m_fheight - 10)
 			ih = m_fheight - 12;
 			
-		CFrameBuffer::getInstance()->paintIcon(NEUTRINO_ICON_BUTTON_HOME, xpos + BORDER_LEFT + ICON_OFFSET, CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2) + m_height - m_fheight + 5, m_fheight - 10, true, iw, ih);
+		CFrameBuffer::getInstance()->paintIcon(NEUTRINO_ICON_BUTTON_HOME, xpos + BORDER_LEFT + ICON_OFFSET, CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2) + m_height - m_fheight + 5, m_fheight - 10, iw, ih);
 
 		g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(xpos + BORDER_LEFT + ICON_OFFSET + iw + ICON_OFFSET, CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2) + (m_height) - (m_fheight - fh)/2, ButtonWidth - (BORDER_LEFT + ICON_OFFSET + iw + ICON_OFFSET + BORDER_LEFT), (showbuttons & mbCancel) ? _("Cancel") : (showbuttons & mbOk) ? _("OK") : _("Back"), color, 0, true); // UTF-8	
 	}	

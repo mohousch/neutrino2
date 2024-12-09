@@ -215,10 +215,10 @@ void CScreenSetup::paintBorder( int _selected )
 void CScreenSetup::paintIcons()
 {
 	// red
-        frameBuffer->paintIcon(NEUTRINO_ICON_BUTTON_RED, x + 30 - icon_w - ICON_OFFSET, y, 0, true, icon_w, BoxHeight/2);
+        frameBuffer->paintIcon(NEUTRINO_ICON_BUTTON_RED, x + 30 - icon_w - ICON_OFFSET, y, 0, icon_w, BoxHeight/2);
 	
 	// green
-        frameBuffer->paintIcon(NEUTRINO_ICON_BUTTON_GREEN, x + 30 - icon_w - ICON_OFFSET, y + BoxHeight/2, 0, true, icon_w, BoxHeight/2);
+        frameBuffer->paintIcon(NEUTRINO_ICON_BUTTON_GREEN, x + 30 - icon_w - ICON_OFFSET, y + BoxHeight/2, 0, icon_w, BoxHeight/2);
 }
 
 void CScreenSetup::paintBorderUL()

@@ -314,7 +314,7 @@ void CListFrame::refreshList(void)
 			iconOffset = iw + ICON_OFFSET;
 			
 			//
-			frameBuffer->paintIcon(m_pLines->icon, m_cFrameListRel.iX + itemBox.iX + ICON_OFFSET, y + itemBox.iY, m_nFontListHeight, true, iw, ih);
+			frameBuffer->paintIcon(m_pLines->icon, m_cFrameListRel.iX + itemBox.iX + ICON_OFFSET, y + itemBox.iY, m_nFontListHeight, iw, ih);
 		}
 		
 		// lines
@@ -387,7 +387,7 @@ void CListFrame::refreshLine(int line)
 		iconOffset = iw + 2*ICON_OFFSET;
 			
 		//
-		frameBuffer->paintIcon(m_pLines->icon, m_cFrameListRel.iX + itemBox.iX + ICON_OFFSET, y + itemBox.iY, m_nFontListHeight, true, iw, ih);
+		frameBuffer->paintIcon(m_pLines->icon, m_cFrameListRel.iX + itemBox.iX + ICON_OFFSET, y + itemBox.iY, m_nFontListHeight, iw, ih);
 	}
 	
 	// lines

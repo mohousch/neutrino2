@@ -569,7 +569,7 @@ void CCButtons::paint()
 					
 						startx -= (iw[i] + ICON_TO_ICON_OFFSET);
 
-						frameBuffer->paintIcon(buttons[i].button, startx, itemBox.iY + (itemBox.iHeight - ih[i])/2, 0, true, iw[i], ih[i]);
+						frameBuffer->paintIcon(buttons[i].button, startx, itemBox.iY + (itemBox.iHeight - ih[i])/2, 0, iw[i], ih[i]);
 					}
 				}
 				else if (mode == BUTTON_FRAME)
@@ -638,7 +638,7 @@ void CCButtons::paint()
 							
 						int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
 					
-						CFrameBuffer::getInstance()->paintIcon(buttons[i].button, itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + (itemBox.iHeight - ih[i])/2, 0, true, iw[i], ih[i]);
+						CFrameBuffer::getInstance()->paintIcon(buttons[i].button, itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + (itemBox.iHeight - ih[i])/2, 0, iw[i], ih[i]);
 
 						// FIXME: i18n
 						g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, itemBox.iY + f_h + (itemBox.iHeight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(buttons[i].localename.c_str()), COL_MENUFOOT_TEXT_PLUS_0, 0, true); // UTF-8
@@ -2458,7 +2458,7 @@ void CCHeaders::paint()
 			i_w = i_h*1.67;
 		}
 
-		CFrameBuffer::getInstance()->paintIcon(hicon.c_str(), itemBox.iX + BORDER_LEFT, itemBox.iY + (itemBox.iHeight - i_h)/2, 0, true, i_w, i_h);
+		CFrameBuffer::getInstance()->paintIcon(hicon.c_str(), itemBox.iX + BORDER_LEFT, itemBox.iY + (itemBox.iHeight - i_h)/2, 0, i_w, i_h);
 	}
 
 	// right buttons
@@ -2501,7 +2501,7 @@ void CCHeaders::paint()
 					
 					startx -= (iw[i] + ICON_TO_ICON_OFFSET);
 
-					frameBuffer->paintIcon(buttons[i].button, startx, itemBox.iY + (itemBox.iHeight - ih[i])/2, 0, true, iw[i], ih[i]);
+					frameBuffer->paintIcon(buttons[i].button, startx, itemBox.iY + (itemBox.iHeight - ih[i])/2, 0, iw[i], ih[i]);
 				}
 			}
 			else if (mode == CCButtons::BUTTON_FRAME)
@@ -2733,7 +2733,7 @@ void CCFooters::paint()
 							
 					int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
 					
-					CFrameBuffer::getInstance()->paintIcon(buttons[i].button, itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + (itemBox.iHeight - ih[i])/2, 0, true, iw[i], ih[i]);
+					CFrameBuffer::getInstance()->paintIcon(buttons[i].button, itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + (itemBox.iHeight - ih[i])/2, 0, iw[i], ih[i]);
 
 					// FIXME: i18n
 					g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, itemBox.iY + f_h + (itemBox.iHeight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(buttons[i].localename.c_str()), COL_MENUFOOT_TEXT_PLUS_0, 0, true); // UTF-8
