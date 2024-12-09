@@ -222,7 +222,7 @@ void CAudioPlayerGui::playFile()
 	exit_pressed = false;
 	
 	//
-	sec_timer_id = g_RCInput->addTimer(g_settings.timing_infobar*1000*1000);
+	sec_timer_id = g_RCInput->addTimer(1*1000*1000);
 	
 	//
 	if(!m_playlist.empty())

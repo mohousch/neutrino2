@@ -738,6 +738,9 @@ void CMoviePlayerGui::PlayFile(void)
 	bookStartMenu->addItem(new CMenuForwarder(_("Jump over")));
 	bookStartMenu->addItem(new CMenuForwarder(_("Movie start:")));
 	bookStartMenu->addItem(new CMenuForwarder(_("Movie end:")));
+	
+	//
+	uint32_t timer_id = g_RCInput->addTimer(1*1000*1000, false);
 
 	// play loop
 	do {
@@ -1586,7 +1589,7 @@ void CMoviePlayerGui::PlayFile(void)
 			exit = true;
 			g_RCInput->postMsg(msg, data);
 		}
-		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
+		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == timer_id) )
 		{
 			if (IsVisible())
 			{ 
@@ -1629,6 +1632,12 @@ void CMoviePlayerGui::PlayFile(void)
 	}
 	
 	playback->Close();
+	
+	if (timer_id)
+	{
+		g_RCInput->killTimer(timer_id);
+		timer_id = 0;
+	}	
 
 	CLCD::getInstance()->ShowIcon(VFD_ICON_PLAY, false);
 	CLCD::getInstance()->ShowIcon(VFD_ICON_PAUSE, false);
@@ -1795,7 +1804,7 @@ void CMoviePlayerGui::showMovieInfo()
 
 	show(playlist[selected].epgTitle, (playlist[selected].epgInfo1.empty())? playlist[selected].epgInfo2 : playlist[selected].epgInfo1, file_prozent, ac3state, speed, playstate, (playlist[selected].ytid.empty())? true : false, m_loop); //FIXME:
 
-	// start Timer
+	// startMovieInfoViewer Timer
 	startMovieInfoViewer();
 }
 
