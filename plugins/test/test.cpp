@@ -4602,6 +4602,7 @@ void CTestMenu::testCMenuItem()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCMenuItem:\n");
 	
+	#if 0
 	CMenuOptionStringChooser * tzSelect = NULL;
 	xmlDocPtr parser;
 
@@ -4636,6 +4637,24 @@ void CTestMenu::testCMenuItem()
 		}	
 		xmlFreeDoc(parser);
 	}
+	#endif
+	
+	int optionValue = 0;
+	CMenuItem *item = new CMenuOptionChooser("CMenuOptionChooser", &optionValue);
+	
+	item->addOption("Option 1", 1);
+	item->addOption("Option 2", 2);
+	item->addOption("Option 3", 3);
+	item->addOption("Option 4", 4);
+	
+	item->enablePullDown();
+	
+	item->msg = CRCInput::RC_ok;
+	
+	item->exec(this);
+	
+	printf("CTestMenu::testCMenuItem: %d\n", optionValue);
+	
 }
 
 // exec
