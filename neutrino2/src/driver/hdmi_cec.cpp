@@ -48,11 +48,7 @@
 #define CEC_FALLBACK_DEVICE "/dev/cec0"
 #define CEC_HDMIDEV "/dev/hdmi_cec"
 
-#if BOXMODEL_H7
-#define RC_DEVICE  "/dev/input/event2"
-#else
-#define RC_DEVICE  "/dev/input/event1"
-#endif
+#define RC_DEVICE  "/dev/input/event0"
 
 hdmi_cec *hdmi_cec::hdmi_cec_instance = NULL;
 

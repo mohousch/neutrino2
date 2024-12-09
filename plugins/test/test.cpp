@@ -6422,7 +6422,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("LibNGPNG", true, NULL, this, "libngpng"));
 	mainMenu->addItem(new CMenuForwarder("DumpLCD", true, NULL, this, "dumplcd"));
 	mainMenu->addItem(new CMenuForwarder("ShowLCD", true, NULL, this, "showlcd"));
-	mainMenu->addItem(new CMenuForwarder("CMenuItem", true, g_settings.timezone, this, "menuitem"));	
+	mainMenu->addItem(new CMenuForwarder("CMenuItem", true, NULL, this, "menuitem"));	
 
 	// subs
 	unsigned int count = 0;
