@@ -215,6 +215,8 @@ class CTestMenu : public CMenuTarget
 		//// weather
 		void testWeather();
 		void testlibNGPNG();
+		////
+		void testCMenuItem();
 		
 		//// paint()
 		void showMenu();
@@ -4596,6 +4598,46 @@ void CTestMenu::testlibNGPNG()
 	}
 }
 
+void CTestMenu::testCMenuItem()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCMenuItem:\n");
+	
+	CMenuOptionStringChooser * tzSelect = NULL;
+	xmlDocPtr parser;
+
+	parser = parseXmlFile("/etc/timezone.xml");
+	if (parser != NULL) 
+	{	
+		tzSelect = new CMenuOptionStringChooser(_("Time Zone"), g_settings.timezone, true, /*new CTZChangeNotifier()*/NULL, CRCInput::RC_nokey, "", true);
+				
+		tzSelect->msg = CRCInput::RC_ok;
+
+		xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode;
+		bool found = false;
+
+		while (search) 
+		{
+			if (!strcmp(xmlGetName(search), "zone")) 
+			{
+				std::string name = xmlGetAttribute(search, (char *) "name");
+						
+				tzSelect->addOption(name.c_str());
+				found = true;
+			}
+			search = search->xmlNextNode;
+		}
+
+		if(found)
+			tzSelect->exec(this);
+		else 
+		{
+			delete tzSelect;
+			tzSelect = NULL;
+		}	
+		xmlFreeDoc(parser);
+	}
+}
+
 // exec
 int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 {
@@ -6164,6 +6206,12 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		
 		return RETURN_REPAINT;
 	}
+	else if(actionKey == "menuitem")
+	{
+		testCMenuItem();
+		
+		return RETURN_REPAINT;
+	}
 
 	showMenu();
 	
@@ -6181,8 +6229,6 @@ void CTestMenu::showMenu()
 
 	CWidget* mWidget = NULL;
 	ClistBox* mainMenu = NULL;
-	
-//	std::string skin = PLUGINDIR "/test/test.xml";
 	
 	mWidget = CNeutrinoApp::getInstance()->getWidget("testmenu", PLUGINDIR "/test/test.xml");
 	
@@ -6356,7 +6402,8 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("Weather", true, NULL, this, "weather"));
 	mainMenu->addItem(new CMenuForwarder("LibNGPNG", true, NULL, this, "libngpng"));
 	mainMenu->addItem(new CMenuForwarder("DumpLCD", true, NULL, this, "dumplcd"));
-	mainMenu->addItem(new CMenuForwarder("ShowLCD", true, NULL, this, "showlcd"));	
+	mainMenu->addItem(new CMenuForwarder("ShowLCD", true, NULL, this, "showlcd"));
+	mainMenu->addItem(new CMenuForwarder("CMenuItem", true, g_settings.timezone, this, "menuitem"));	
 
 	// subs
 	unsigned int count = 0;

@@ -236,7 +236,6 @@ void CGeneralSettings::showMenu()
 			if (!strcmp(xmlGetName(search), "zone")) 
 			{
 				std::string name = xmlGetAttribute(search, (char *) "name");
-				std::string zone = xmlGetAttribute(search, (char *) "zone");
 				
 				tzSelect->addOption(name.c_str());
 				found = true;

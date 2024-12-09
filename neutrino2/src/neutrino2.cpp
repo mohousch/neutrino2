@@ -4481,10 +4481,10 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// init iso639
 	initialize_iso639_map();
 
-	// check / load locale language
+	// load locale
 	g_Locale->loadLocale(Lang2I18N(g_settings.language).c_str());
 
-	// icons/buttons/hints path
+	// set icons/buttons/hints path
 	frameBuffer->setIconBasePath(g_settings.icons_dir);
 	frameBuffer->setButtonBasePath(g_settings.buttons_dir);
 	frameBuffer->setHintBasePath(g_settings.hints_dir);
@@ -4547,29 +4547,34 @@ int CNeutrinoApp::run(int argc, char **argv)
 		
 	// set video system
 	if(videoDecoder)
+	{
 		videoDecoder->SetVideoSystem(g_settings.video_Mode);	
 
 	// audio volume (default)
-	if(audioDecoder)
-		audioDecoder->setVolume(g_settings.current_volume, g_settings.current_volume);
+//	if(audioDecoder)
+//		audioDecoder->setVolume(g_settings.current_volume, g_settings.current_volume);
 
 	// video format
-	if(videoDecoder)
+	//if(videoDecoder)
 		videoDecoder->setAspectRatio(g_settings.video_Ratio, g_settings.video_Format);
 	
 	// wss
-	if(videoDecoder)
+	//if(videoDecoder)
 		videoDecoder->SetWideScreen(g_settings.wss_mode);
 	
 	// avsync
-	if(videoDecoder)
-		videoDecoder->SetSyncMode(g_settings.avsync);			
+	//if(videoDecoder)
+		videoDecoder->SetSyncMode(g_settings.avsync);
+	}		
 		
 	if(audioDecoder)
+	{
+		// audio volume (default)
+		audioDecoder->setVolume(g_settings.current_volume, g_settings.current_volume);
+		
+		// sync mode
 		audioDecoder->SetSyncMode(g_settings.avsync);
 
-	if(audioDecoder)
-	{
 		// hdmi_dd
 		audioDecoder->SetHdmiDD(g_settings.hdmi_dd );
 
@@ -4695,7 +4700,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 			parser = parseXmlFile("/etc/timezone.xml");
 			if (parser != NULL) 
 			{	
-				tzSelect = new CMenuOptionStringChooser(_("Time Zone"), g_settings.timezone, true, new CTZChangeNotifier(), CRCInput::RC_ok, "", true);
+				tzSelect = new CMenuOptionStringChooser(_("Time Zone"), g_settings.timezone, true, new CTZChangeNotifier(), CRCInput::RC_nokey, "", true);
 				
 				tzSelect->msg = CRCInput::RC_ok;
 
@@ -4707,7 +4712,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 					if (!strcmp(xmlGetName(search), "zone")) 
 					{
 						std::string name = xmlGetAttribute(search, (char *) "name");
-						std::string zone = xmlGetAttribute(search, (char *) "zone");
 						
 						tzSelect->addOption(name.c_str());
 						found = true;
@@ -4805,7 +4809,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// init shutdown count
 	SHTDCNT::getInstance()->init();
 	
-	// getMyGeoLocation
+	// getMyGeoLocation / weather
 	CWeather::getInstance()->getMyGeoLocation();
 	
 	
