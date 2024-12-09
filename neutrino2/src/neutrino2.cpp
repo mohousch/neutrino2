@@ -4545,25 +4545,18 @@ int CNeutrinoApp::run(int argc, char **argv)
 	videoDecoder = new cVideo();
 	audioDecoder = new cAudio();
 		
-	// set video system
 	if(videoDecoder)
 	{
+		// set video system
 		videoDecoder->SetVideoSystem(g_settings.video_Mode);	
 
-	// audio volume (default)
-//	if(audioDecoder)
-//		audioDecoder->setVolume(g_settings.current_volume, g_settings.current_volume);
-
-	// video format
-	//if(videoDecoder)
+		// aspect ratio
 		videoDecoder->setAspectRatio(g_settings.video_Ratio, g_settings.video_Format);
 	
-	// wss
-	//if(videoDecoder)
+		// wss
 		videoDecoder->SetWideScreen(g_settings.wss_mode);
 	
-	// avsync
-	//if(videoDecoder)
+		// avsync
 		videoDecoder->SetSyncMode(g_settings.avsync);
 	}		
 		
@@ -4576,7 +4569,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 		audioDecoder->SetSyncMode(g_settings.avsync);
 
 		// hdmi_dd
-		audioDecoder->SetHdmiDD(g_settings.hdmi_dd );
+		audioDecoder->SetHdmiDD(g_settings.hdmi_dd);
 
 		// ac3 delay
 		audioDecoder->setHwAC3Delay(g_settings.ac3_delay);
