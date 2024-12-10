@@ -485,8 +485,6 @@ void CAudioPlayerGui::playFile()
 		{
 			if (alist && alist->isPainted())
 				alist->refresh();
-			else
-				CNeutrinoApp::getInstance()->handleMsg( msg, data );
 		}
 		else
 		{

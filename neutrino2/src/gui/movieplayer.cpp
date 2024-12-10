@@ -1591,13 +1591,10 @@ void CMoviePlayerGui::PlayFile(void)
 		}
 		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == timer_id) )
 		{
-			if (IsVisible())
-			{ 
-				hide();
-			}
-			
 			if (mplist && mplist->isPainted())
+			{
 				mplist->refresh();
+			}
 		}
 		else 
 		{
