@@ -131,6 +131,9 @@ class CMenuItem
 		//
 		CChangeObserver *observ;
 		bool pulldown;
+		//
+		int * optionValue;
+		char *optionStringValue;
 		
 		//
 		CMenuItem();
@@ -198,7 +201,7 @@ class CMenuItem
 		virtual void setParent(ClistBox* p){parent = p;};
 		//
 		virtual void setChangeObserver(CChangeObserver* c){observ = c;};
-		virtual void enablePullDown(){pulldown = true;};
+		virtual void enablePullDown(){pulldown = true; msg = CRCInput::RC_ok;};
 		virtual void addOption(const char *optionname, const int optionvalue = 0){};
 		////
 		virtual int getState(void){return state;};
@@ -218,7 +221,6 @@ class CMenuOptionChooser : public CMenuItem
 {
 	protected:
 		int height;
-		int * optionValue;
 
 		int getHeight(void) const
 		{
@@ -262,7 +264,6 @@ class CMenuOptionNumberChooser : public CMenuItem
 
 	protected:
 		int height;
-		int *optionValue;
 
 		int getHeight(void) const
 		{
@@ -291,7 +292,6 @@ class CMenuOptionNumberChooser : public CMenuItem
 class CMenuOptionStringChooser : public CMenuItem
 {
 	int height;
-	char * optionValue;
 	std::vector<std::string> options;
 
 	public:

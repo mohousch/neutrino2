@@ -502,7 +502,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 	if(observ)
 		wantsRepaint = observ->changeNotify(itemName, optionValue);
 		
-	//if (wantsRepaint)
+	//
 	if (wantsRepaint || !paintFrame)
 		ret = CMenuTarget::RETURN_REPAINT;
 		
@@ -667,7 +667,7 @@ CMenuOptionNumberChooser::CMenuOptionNumberChooser(const char * const Name, int 
 
 int CMenuOptionNumberChooser::exec(CMenuTarget*)
 {
-	dprintf(DEBUG_DEBUG, "CMenuOptionNumberChooser::exec: (%s)\n", itemName.c_str());
+	dprintf(DEBUG_NORMAL, "CMenuOptionNumberChooser::exec: (%s)\n", itemName.c_str());
 	
 	int ret = CMenuTarget::RETURN_NONE; // FIXME
 	bool wantsRepaint = false;
@@ -715,7 +715,7 @@ int CMenuOptionNumberChooser::exec(CMenuTarget*)
 
 int CMenuOptionNumberChooser::paint(bool selected, bool /*AfterPulldown*/)
 {
-	dprintf(DEBUG_DEBUG, "CMenuOptionNumberChooser::paint\n");
+	dprintf(DEBUG_NORMAL, "CMenuOptionNumberChooser::paint\n");
 	
 	if (hidden)
 		return y;
@@ -801,7 +801,7 @@ CMenuOptionStringChooser::CMenuOptionStringChooser(const char * const Name, char
 
 	itemName = Name? Name : "";
 	active = Active;
-	optionValue = OptionValue;
+	optionStringValue = OptionValue;
 	observ = Observ;
 
 	directKey = DirectKey;
@@ -903,7 +903,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		for(unsigned int count = 0; count < options.size(); count++) 
 		{
 			bool selected = false;
-			if (strcmp(options[count].c_str(), optionValue) == 0)
+			if (strcmp(options[count].c_str(), optionStringValue) == 0)
 				selected = true;
 
 			menu->addItem(new CMenuForwarder(_(options[count].c_str())), selected);
@@ -914,7 +914,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		select = menu->getSelected();
 		
 		if(select >= 0)
-			strcpy(optionValue, options[select].c_str());
+			strcpy(optionStringValue, options[select].c_str());
 			
 		if (widget)
 		{
@@ -927,17 +927,17 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		//select next value
 		for(unsigned int count = 0; count < options.size(); count++) 
 		{
-			if (strcmp(options[count].c_str(), optionValue) == 0) //FIXME
+			if (strcmp(options[count].c_str(), optionStringValue) == 0) //FIXME
 			{
 				if( msg == CRCInput::RC_left ) 
 				{
 					if(count > 0)
-						strcpy(optionValue, options[(count - 1) % options.size()].c_str());
+						strcpy(optionStringValue, options[(count - 1) % options.size()].c_str());
 					else
-						strcpy(optionValue, options[options.size() - 1].c_str());
+						strcpy(optionStringValue, options[options.size() - 1].c_str());
 				} 
 				else
-					strcpy(optionValue, options[(count + 1) % options.size()].c_str());
+					strcpy(optionStringValue, options[(count + 1) % options.size()].c_str());
 				
 				break;
 			}
@@ -945,7 +945,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 	}
 	
 	if(observ) 
-		wantsRepaint = observ->changeNotify(itemName.c_str(), optionValue);
+		wantsRepaint = observ->changeNotify(itemName.c_str(), optionStringValue);
 		
 	//if (wantsRepaint)
 	if (wantsRepaint || !paintFrame)
@@ -1039,15 +1039,15 @@ int CMenuOptionStringChooser::paint( bool selected, bool afterPulldown)
 	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposName, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_RIGHT - (stringstartposName - x), l_name, color, 0, true); // UTF-8
 	
 	// option value
-	int stringwidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(optionValue, true);
+	int stringwidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(optionStringValue, true);
 	int stringstartposOption = std::max(stringstartposName + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(l_name, true) + ICON_OFFSET, x + dx - stringwidth - BORDER_RIGHT); //
 	
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposOption, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_RIGHT - (stringstartposOption - x),  optionValue, color, 0, true);
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposOption, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_RIGHT - (stringstartposOption - x),  optionStringValue, color, 0, true);
 	
 	if (selected && !afterPulldown)
 	{
 		char str[256];
-		snprintf(str, 255, "%s %s", l_name, optionValue);
+		snprintf(str, 255, "%s %s", l_name, optionStringValue);
 
 		CLCD::getInstance()->showMenuText(0, str, -1, true);
 	}

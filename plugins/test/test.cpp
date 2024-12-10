@@ -216,7 +216,9 @@ class CTestMenu : public CMenuTarget
 		void testWeather();
 		void testlibNGPNG();
 		////
-		void testCMenuItem();
+		void testCMenuOptionChooser();
+		void testCMenuOptionNumberChooser();
+		void testCMenuOptionStringChooser();
 		
 		//// paint()
 		void showMenu();
@@ -4598,47 +4600,11 @@ void CTestMenu::testlibNGPNG()
 	}
 }
 
-void CTestMenu::testCMenuItem()
+void CTestMenu::testCMenuOptionChooser()
 {
-	dprintf(DEBUG_NORMAL, "CTestMenu::testCMenuItem:\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCMenuOptionChooser:\n");
 	
-	#if 0
-	CMenuOptionStringChooser * tzSelect = NULL;
-	xmlDocPtr parser;
-
-	parser = parseXmlFile("/etc/timezone.xml");
-	if (parser != NULL) 
-	{	
-		tzSelect = new CMenuOptionStringChooser(_("Time Zone"), g_settings.timezone, true, /*new CTZChangeNotifier()*/NULL, CRCInput::RC_nokey, "", true);
-				
-		tzSelect->msg = CRCInput::RC_ok;
-
-		xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode;
-		bool found = false;
-
-		while (search) 
-		{
-			if (!strcmp(xmlGetName(search), "zone")) 
-			{
-				std::string name = xmlGetAttribute(search, (char *) "name");
-						
-				tzSelect->addOption(name.c_str());
-				found = true;
-			}
-			search = search->xmlNextNode;
-		}
-
-		if(found)
-			tzSelect->exec(this);
-		else 
-		{
-			delete tzSelect;
-			tzSelect = NULL;
-		}	
-		xmlFreeDoc(parser);
-	}
-	#endif
-	
+	std::string optionStringValue = "";
 	int optionValue = 0;
 	CMenuItem *item = new CMenuOptionChooser("CMenuOptionChooser", &optionValue);
 	
@@ -4649,12 +4615,45 @@ void CTestMenu::testCMenuItem()
 	
 	item->enablePullDown();
 	
-	item->msg = CRCInput::RC_ok;
+	item->exec(this);
+	
+	printf("CTestMenu::testCMenuOptionChooser: optionName:%s optionValue:%d\n", optionStringValue.c_str(), optionValue);
+	
+}
+
+void CTestMenu::testCMenuOptionNumberChooser()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCMenuOptionNumberChooser:\n");
+	
+	std::string optionStringValue = "";
+	int optionValue = 0;
+	CMenuItem *item = new CMenuOptionNumberChooser("CMenuOptionNumberChooser", &optionValue, true, 0, 100);
+	
+	item->init(20, 20, 250, 60);
 	
 	item->exec(this);
 	
-	printf("CTestMenu::testCMenuItem: %d\n", optionValue);
+	printf("CTestMenu::testCMenuOptionNumberChooser: optionName:%s optionValue:%d\n", optionStringValue.c_str(), optionValue);
+}
+
+void CTestMenu::testCMenuOptionStringChooser()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCMenuOptionStringChooser:\n");
 	
+	std::string optionStringValue = "";
+	int optionValue = 0;
+	CMenuItem *item = new CMenuOptionStringChooser("CMenuOptionStringChooser", (char *)optionStringValue.c_str());
+	
+	item->addOption("Option 1", 1);
+	item->addOption("Option 2", 2);
+	item->addOption("Option 3", 3);
+	item->addOption("Option 4", 4);
+	
+	item->enablePullDown();
+	
+	item->exec(this);
+	
+	printf("CTestMenu::testCMenuOptionStringChooser: optionName:%s optionValue:%d\n", optionStringValue.c_str(), optionValue);
 }
 
 // exec
@@ -6225,9 +6224,21 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		
 		return RETURN_REPAINT;
 	}
-	else if(actionKey == "menuitem")
+	else if(actionKey == "menuoptionchooser")
 	{
-		testCMenuItem();
+		testCMenuOptionChooser();
+		
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "menuoptionstringchooser")
+	{
+		testCMenuOptionStringChooser();
+		
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "menuoptionnumberchooser")
+	{
+		testCMenuOptionNumberChooser();
 		
 		return RETURN_REPAINT;
 	}
@@ -6422,7 +6433,12 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("LibNGPNG", true, NULL, this, "libngpng"));
 	mainMenu->addItem(new CMenuForwarder("DumpLCD", true, NULL, this, "dumplcd"));
 	mainMenu->addItem(new CMenuForwarder("ShowLCD", true, NULL, this, "showlcd"));
-	mainMenu->addItem(new CMenuForwarder("CMenuItem", true, NULL, this, "menuitem"));	
+	
+	// CMenuItem
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CMenuItem") );
+	mainMenu->addItem(new CMenuForwarder("CMenuOptionChooser", true, NULL, this, "menuoptionchooser"));
+	mainMenu->addItem(new CMenuForwarder("CMenuOptionStringChooser", true, NULL, this, "menuoptionstringchooser"));
+	//mainMenu->addItem(new CMenuForwarder("CMenuOptionNumberChooser", true, NULL, this, "menuoptionnumberchooser"));
 
 	// subs
 	unsigned int count = 0;
