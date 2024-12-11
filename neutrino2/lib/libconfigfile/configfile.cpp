@@ -79,7 +79,7 @@ bool CConfigFile::loadConfig(const char * const filename)
 	}
 	else
 	{
-		std::cerr << "[ConfigFile] Unable to open file " << filename << " for reading." << std::endl;
+//		std::cerr << "[ConfigFile] Unable to open file " << filename << " for reading." << std::endl;
 		return false;
 	}
 }
@@ -109,7 +109,7 @@ bool CConfigFile::saveConfig(const char * const filename)
 	}
 	else
 	{
-		std::cerr << "[ConfigFile] Unable to open file " << filename << " for writing." << std::endl;
+//		std::cerr << "[ConfigFile] Unable to open file " << filename << " for writing." << std::endl;
 		return false;
 	}
 }
@@ -415,3 +415,4 @@ void CConfigFile::setStringVector(const std::string & key, const std::vector<std
 		configData[key] += delimiter;
 	}
 }
+

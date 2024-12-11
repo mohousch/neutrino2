@@ -1502,7 +1502,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 		
 		if(number)
 		{
-			number_offset = ICON_OFFSET;
+			number_offset = 5;
 			
 			char tmp[10];
 

@@ -877,7 +877,7 @@ struct dvb_frontend_event CFrontend::getEvent(void)
 	
 	memset(&event, 0, sizeof(struct dvb_frontend_event));
 	
-	dprintf(DEBUG_INFO, "fe(%d:%d) max timeout: %d\n", feadapter, fenumber, TIMEOUT_MAX_MS);
+	dprintf(DEBUG_INFO, "CFrontend::getEvent fe(%d:%d) max timeout: %d\n", feadapter, fenumber, TIMEOUT_MAX_MS);
 	
 	TIMER_START();
 
@@ -907,13 +907,13 @@ struct dvb_frontend_event CFrontend::getEvent(void)
 			if( ::ioctl(fd, FE_GET_EVENT, &event) < 0 )
 			{
 				perror("CFrontend::getEvent ioctl");
-				dprintf(DEBUG_INFO, "FD=%d RET=%d errno=%d\n", fd, ret, errno);
+				dprintf(DEBUG_INFO, "CFrontend::getEvent FD=%d RET=%d errno=%d\n", fd, ret, errno);
 				continue;
 			}
 
 			if (event.status & FE_HAS_LOCK) 
 			{
-				dprintf(DEBUG_NORMAL, "fe(%d:%d) FE_HAS_LOCK: freq %lu\n", feadapter, fenumber, (long unsigned int)event.parameters.frequency);
+				dprintf(DEBUG_NORMAL, "CFrontend::getEvent fe(%d:%d) FE_HAS_LOCK: freq %lu\n", feadapter, fenumber, (long unsigned int)event.parameters.frequency);
 				tuned = true;
 				break;
 			} 
@@ -922,20 +922,20 @@ struct dvb_frontend_event CFrontend::getEvent(void)
 				if(timedout < timer_msec)
 					timedout = timer_msec;
 				
-				dprintf(DEBUG_INFO, "fe(%d:%d) FE_TIMEDOUT\n", feadapter, fenumber);
+				dprintf(DEBUG_INFO, "CFrontend::getEvent fe(%d:%d) FE_TIMEDOUT\n", feadapter, fenumber);
 			} 
 			else 
 			{
 				if (event.status & FE_HAS_SIGNAL)
-					printf("fe(%d:%d) FE_HAS_SIGNAL\n", feadapter, fenumber);
+					printf("CFrontend::getEvent fe(%d:%d) FE_HAS_SIGNAL\n", feadapter, fenumber);
 				if (event.status & FE_HAS_CARRIER)
-					printf("fe(%d:%d) FE_HAS_CARRIER\n", feadapter, fenumber);
+					printf("CFrontend::getEvent fe(%d:%d) FE_HAS_CARRIER\n", feadapter, fenumber);
 				if (event.status & FE_HAS_VITERBI)
-					printf("fe(%d:%d) FE_HAS_VITERBI\n", feadapter, fenumber);
+					printf("CFrontend::getEvent fe(%d:%d) FE_HAS_VITERBI\n", feadapter, fenumber);
 				if (event.status & FE_HAS_SYNC)
-					printf("fe(%d:%d) FE_HAS_SYNC\n", feadapter, fenumber);
+					printf("CFrontend::getEvent fe(%d:%d) FE_HAS_SYNC\n", feadapter, fenumber);
 				if (event.status & FE_REINIT)
-					printf("fe(%d:%d) FE_REINIT\n", feadapter, fenumber);
+					printf("CFrontend::getEvent fe(%d:%d) FE_REINIT\n", feadapter, fenumber);
 			}
 		} 
 		else if (pfd.revents & POLLHUP) 
@@ -953,7 +953,7 @@ struct dvb_frontend_event CFrontend::getEvent(void)
 #if HAVE_DVB_API_VERSION >= 5
 void CFrontend::setFrontend(const FrontendParameters *feparams)
 {
-	dprintf(DEBUG_NORMAL, "fe(%d:%d) delsys:0x%x (feparams.delsys:0x%x)\n", feadapter, fenumber, deliverySystemMask, feparams->delsys);
+	dprintf(DEBUG_NORMAL, "CFrontend::getEvent fe(%d:%d) delsys:0x%x (feparams.delsys:0x%x)\n", feadapter, fenumber, deliverySystemMask, feparams->delsys);
 	
 	//
 	fe_modulation_t modulation = QPSK;
@@ -1041,7 +1041,7 @@ void CFrontend::setFrontend(const FrontendParameters *feparams)
 				break;
 				
 			default:
-				dprintf(DEBUG_NORMAL, "fe(%d:%d) DEMOD: unknown FEC: %d\n", feadapter, fenumber, fec_inner);
+				dprintf(DEBUG_NORMAL, "CFrontend::setFrontend fe(%d:%d) DEMOD: unknown FEC: %d\n", feadapter, fenumber, fec_inner);
 			
 			case FEC_AUTO:			  
 			case FEC_S2_AUTO:			  
@@ -1129,7 +1129,7 @@ void CFrontend::setFrontend(const FrontendParameters *feparams)
 	}
 	else
 	{
-		dprintf(DEBUG_INFO, "Unknown Frontend Type\n");
+		dprintf(DEBUG_INFO, "CFrontend::setFrontend Unknown Frontend Type\n");
 	}
 
 	//
@@ -1144,7 +1144,7 @@ void CFrontend::setFrontend(const FrontendParameters *feparams)
 #else //api3
 void CFrontend::setFrontend(const FrontendParameters * feparams)
 {
-	dprintf(DEBUG_NORMAL, "fe(%d:%d)\n", feadapter, fenumber);
+	dprintf(DEBUG_NORMAL, "CFrontend::setFrontend fe(%d:%d)\n", feadapter, fenumber);
 		
 	fe_modulation_t modulation = QAM_16;
 	fe_code_rate_t fec_inner = FEC_3_4;
@@ -1168,7 +1168,7 @@ void CFrontend::setFrontend(const FrontendParameters * feparams)
 			
 		case FE_ATSC:
 		default:
-			dprintf(DEBUG_NORMAL, "unknown frontend type, exiting\n");
+			dprintf(DEBUG_NORMAL, "CFrontend::setFrontend unknown frontend type, exiting\n");
 			break;
 	}
 
@@ -1188,7 +1188,7 @@ void CFrontend::setFrontend(const FrontendParameters * feparams)
 		if(::ioctl(fd, FE_GET_EVENT, &event) < 0)
 			perror("FE_GET_EVENT");
 		
-		dprintf(DEBUG_NORMAL, "fe(%d:%d) CLEAR DEMOD: event status %d\n", feadapter, fenumber, event.status);
+		dprintf(DEBUG_NORMAL, "CFrontend::setFrontend fe(%d:%d) CLEAR DEMOD: event status %d\n", feadapter, fenumber, event.status);
 	}
 
 	// set frontend
@@ -1217,7 +1217,7 @@ void CFrontend::secSetTone(const fe_sec_tone_mode_t toneMode, const uint32_t ms)
 		return;
 	}
 
-	dprintf(DEBUG_INFO, "fe(%d:%d) tone %s\n", feadapter, fenumber, toneMode == SEC_TONE_ON ? "on" : "off");
+	dprintf(DEBUG_INFO, "CFrontend::secSetTone fe(%d:%d) tone %s\n", feadapter, fenumber, toneMode == SEC_TONE_ON ? "on" : "off");
 
 	if (::ioctl(fd, FE_SET_TONE, toneMode) == 0) 
 	{
@@ -1228,7 +1228,7 @@ void CFrontend::secSetTone(const fe_sec_tone_mode_t toneMode, const uint32_t ms)
 
 void CFrontend::secSetVoltage(const fe_sec_voltage_t voltage, const uint32_t ms)
 {
-	dprintf(DEBUG_NORMAL, "fe(%d:%d) voltage %s\n", feadapter, fenumber, voltage == SEC_VOLTAGE_OFF ? "OFF" : voltage == SEC_VOLTAGE_13 ? "13" : "18");
+	dprintf(DEBUG_INFO, "CFrontend::secSetVoltage fe(%d:%d) voltage %s\n", feadapter, fenumber, voltage == SEC_VOLTAGE_OFF ? "OFF" : voltage == SEC_VOLTAGE_13 ? "13" : "18");
 	
 	if ( slave || info.type != FE_QPSK)
 		return;
@@ -1239,13 +1239,11 @@ void CFrontend::secSetVoltage(const fe_sec_voltage_t voltage, const uint32_t ms)
 	// unicable
 	if (diseqcType > DISEQC_ADVANCED)
 	{
-		/* see my comment in secSetTone... */
-		currentVoltage = voltage; /* need to know polarization for unicable */
-		::ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_13); /* voltage must not be 18V */
+		// see my comment in secSetTone
+		currentVoltage = voltage; // need to know polarization for unicable
+		::ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_13); // voltage must not be 18V
 		return;
 	}
-
-	//dprintf(DEBUG_INFO, "CFrontend::secSetVoltage: fe(%d:%d) voltage %s\n", feadapter, fenumber, voltage == SEC_VOLTAGE_OFF ? "OFF" : voltage == SEC_VOLTAGE_13 ? "13" : "18");
 
 	if (::ioctl(fd, FE_SET_VOLTAGE, voltage) == 0) 
 	{
@@ -1263,7 +1261,8 @@ void CFrontend::sendDiseqcCommand(const struct dvb_diseqc_master_cmd *cmd, const
 	if ( slave || info.type != FE_QPSK) 
 		return;
 
-	printf("[fe%d] Diseqc cmd: ", fenumber);
+	dprintf(DEBUG_NORMAL, "CFrontend::sendDiseqcCommand [fe%d] Diseqc cmd: ", fenumber);
+	
 	for (int i = 0; i < cmd->msg_len; i++)
 		printf("0x%X ", cmd->msg[i]);
 	printf("\n");
@@ -1614,7 +1613,7 @@ uint32_t CFrontend::sendEN50494TuningCommand(const uint32_t frequency, const int
 	if (t < 1024 && uni_scr >= 0 && uni_scr < 8)
 	{
 		uint32_t ret = (t + 350) * 4000 - frequency;
-		dprintf(DEBUG_NORMAL, "[unicable] 18V=%d TONE=%d, freq=%d qrg=%d scr=%d bank=%d ret=%d\n", currentVoltage == SEC_VOLTAGE_18, currentToneMode == SEC_TONE_ON, frequency, bpf, uni_scr, bank, ret);
+		dprintf(DEBUG_NORMAL, "CFrontend::sendEN50494TuningCommand 18V=%d TONE=%d, freq=%d qrg=%d scr=%d bank=%d ret=%d\n", currentVoltage == SEC_VOLTAGE_18, currentToneMode == SEC_TONE_ON, frequency, bpf, uni_scr, bank, ret);
 		
 		if ( !slave && info.type == FE_QPSK) 
 		{
@@ -1633,7 +1632,7 @@ uint32_t CFrontend::sendEN50494TuningCommand(const uint32_t frequency, const int
 		
 		return (t + 350) * 4000 - frequency;
 	}
-	dprintf(DEBUG_NORMAL, "ooops. t > 1024? (%d) or uni_scr out of range? (%d)", t, uni_scr);
+	dprintf(DEBUG_NORMAL, "CFrontend::sendEN50494TuningCommand ooops. t > 1024? (%d) or uni_scr out of range? (%d)", t, uni_scr);
 	
 	return 0;
 }
@@ -1647,7 +1646,7 @@ uint32_t CFrontend::sendEN50607TuningCommand(const uint32_t frequency, const int
 	if (t < 0x800 && uni_scr >= 0 && uni_scr < 32)
 	{
 		uint32_t ret = bpf * 1000;
-		dprintf(DEBUG_NORMAL, "[unicable-JESS] 18V=%d TONE=%d, freq=%d qrg=%d scr=%d bank=%d ret=%d\n", currentVoltage == SEC_VOLTAGE_18, currentToneMode == SEC_TONE_ON, frequency, bpf, uni_scr, bank, ret);
+		dprintf(DEBUG_NORMAL, "CFrontend::sendEN50607TuningCommand 18V=%d TONE=%d, freq=%d qrg=%d scr=%d bank=%d ret=%d\n", currentVoltage == SEC_VOLTAGE_18, currentToneMode == SEC_TONE_ON, frequency, bpf, uni_scr, bank, ret);
 		if (!slave && info.type == FE_QPSK)
 		{
 			cmd.msg[1] = ((uni_scr & 0x1F) << 3)		|	/* user band adress ( 0 to 31) */
@@ -1667,7 +1666,7 @@ uint32_t CFrontend::sendEN50607TuningCommand(const uint32_t frequency, const int
 		}
 		return ret;
 	}
-	dprintf(DEBUG_NORMAL, "ooops. t > 2047? (%d) or uni_scr out of range? (%d)", t, uni_scr);
+	dprintf(DEBUG_NORMAL, "CFrontend::sendEN50607TuningCommand ooops. t > 2047? (%d) or uni_scr out of range? (%d)", t, uni_scr);
 	
 	return 0;
 }

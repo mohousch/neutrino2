@@ -57,12 +57,12 @@ static short debug_level = 10;
 
 #ifdef LCDD_DEBUG
 #define lcdd_printf(level, fmt, x...) do { \
-if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
+if (debug_level >= level) printf(fmt, ## x); } while (0)
 #else
 #define lcdd_printf(level, fmt, x...)
 #endif
 
-#define lcdd_err(fmt, x...) do { printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
+#define lcdd_err(fmt, x...) do { printf(fmt, ## x); } while (0)
 
 extern CRemoteControl * g_RemoteControl;
 
@@ -86,7 +86,7 @@ void CLCD::openDevice()
 		fd = open("/dev/vfd", O_RDWR);
 		if(fd < 0)
 		{
-			lcdd_printf(10, "failed to open vfd\n");
+			lcdd_printf(10, "CLCD::openDevice: failed to open vfd\n");
 			
 			fd = open("/dev/fplarge", O_RDWR);
 			if (fd < 0)
@@ -115,14 +115,14 @@ int CLCD::GetConfigSize()
 	//
 	if (GLCD::Config.Load(kDefaultConfigFile) == false)
 	{
-		lcdd_err("Error loading config file!\n");
+		lcdd_err("CLCD::GetConfigSize Error loading config file!\n");
 		return 0;
 	}
 	
 	// driver config
 	if ((GLCD::Config.driverConfigs.size() < 1))
 	{
-		lcdd_err("No driver config found!\n");
+		lcdd_err("CLCD::GetConfigSize No driver config found!\n");
 		return 0;
 	}
 	
@@ -137,14 +137,14 @@ std::string CLCD::GetConfigName(int driver)
 	//
 	if (GLCD::Config.Load(kDefaultConfigFile) == false)
 	{
-		lcdd_err("Error loading config file!\n");
+		lcdd_err("CLCD::GetConfigName Error loading config file!\n");
 		return " ";
 	}
 	
 	// driver config
 	if ((GLCD::Config.driverConfigs.size() < 1))
 	{
-		lcdd_err("No driver config found!\n");
+		lcdd_err("CLCD::GetConfigName No driver config found!\n");
 		return " ";
 	}
 		
@@ -295,17 +295,17 @@ void CLCD::init(const char * fontfile, const char * fontname, const char * fontf
 	// init lcd 
 	if (!lcdInit(fontfile, fontname, fontfile2, fontname2, fontfile3, fontname3 ))
 	{
-		lcdd_err("failed!\n");
+		lcdd_err("CLCD::init failed!\n");
 		has_lcd = false;
 		return;
 	}
 	
-	lcdd_printf(10, "succeeded\n");
+	lcdd_printf(10, "CLCD::init: succeeded\n");
 
 	// create time thread
 	if (pthread_create (&thrTime, NULL, TimeThread, NULL) != 0 )
 	{
-		lcdd_err("pthread_create(TimeThread)");
+		lcdd_err("CLCD::init pthread_create(TimeThread)");
 		return ;
 	}
 }
@@ -471,7 +471,7 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 		lcd_width = display->xres;
 		lcd_height = display->yres;
 	
-		lcdd_printf(10, "%d %d\n", lcd_width, lcd_height);
+		lcdd_printf(10, "CLCD::lcdInit: %d %d\n", lcd_width, lcd_height);
 	}
 #endif
 
@@ -488,7 +488,7 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 			lcd_width = display->xres;
 			lcd_height = display->yres;
 		
-			lcdd_printf(10, "%d %d\n", lcd_width, lcd_height);
+			lcdd_printf(10, "CLCD::lcdInit %d %d\n", lcd_width, lcd_height);
 		}
 	}
 #endif
@@ -2468,7 +2468,7 @@ void CLCD::showWeather()
 	current_wtemp = CWeather::getInstance()->getCurrentTemperature();
 	current_wicon = CWeather::getInstance()->getCurrentIcon();
 	
-	lcdd_printf(10, "%s %s %s\n", current_wcity.c_str(), current_wtemp.c_str(), current_wicon.c_str());
+	lcdd_printf(10, "CLCD::showWeather %s %s %s\n", current_wcity.c_str(), current_wtemp.c_str(), current_wicon.c_str());
 
 	// current icon
 	if (current_wicon != "")
