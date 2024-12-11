@@ -873,7 +873,7 @@ void cDvbCi::slot_pollthread(void *c)
 			
 			if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INIT_OK, (const neutrino_msg_data_t)slot->slot);
 		    
-			//resend a capmt
+			//resend capmt
 			if (slot->caPmt != NULL)
 			{
 				SendCaPMT(slot->caPmt, slot->source);

@@ -667,7 +667,7 @@ CMenuOptionNumberChooser::CMenuOptionNumberChooser(const char * const Name, int 
 
 int CMenuOptionNumberChooser::exec(CMenuTarget*)
 {
-	dprintf(DEBUG_NORMAL, "CMenuOptionNumberChooser::exec: (%s)\n", itemName.c_str());
+	dprintf(DEBUG_DEBUG, "CMenuOptionNumberChooser::exec: (%s)\n", itemName.c_str());
 	
 	int ret = CMenuTarget::RETURN_NONE; // FIXME
 	bool wantsRepaint = false;
@@ -715,7 +715,7 @@ int CMenuOptionNumberChooser::exec(CMenuTarget*)
 
 int CMenuOptionNumberChooser::paint(bool selected, bool /*AfterPulldown*/)
 {
-	dprintf(DEBUG_NORMAL, "CMenuOptionNumberChooser::paint\n");
+	dprintf(DEBUG_DEBUG, "CMenuOptionNumberChooser::paint\n");
 	
 	if (hidden)
 		return y;
