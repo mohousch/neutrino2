@@ -34,24 +34,6 @@
 #include "libngpng.h"
 
 
-#define PNG_DEBUG
-#define LIBNGPNG_SILENT
-
-static short debug_level = 10;
-
-#ifdef LIBNGPNG_DEBUG
-#define libngpng_printf(level, fmt, x...) do { \
-if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
-#else
-#define libngpng_printf(level, fmt, x...)
-#endif
-
-#ifndef LIBNGPNG_SILENT
-#define libngpng_err(fmt, x...) do { printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
-#else
-#define libngpng_err(fmt, x...)
-#endif
-
 CFormathandler * fh_root = NULL;
 
 // PNG
@@ -99,7 +81,7 @@ void add_format(int (*picsize) (const char *, int *, int *, int, int), int (*pic
 
 void init_handlers(void)
 {
-	libngpng_printf(10, "init_handlers\n");
+	printf("init_handlers\n");
 	
 	// add png format
   	add_format(fh_png_getsize, fh_png_load, fh_png_id);
@@ -122,7 +104,7 @@ void init_handlers(void)
 
 void deinit_handlers(void)
 {
-	libngpng_printf(10, "deinit_handlers\n");
+	printf("deinit_handlers\n");
 	
 	CFormathandler *fh = fh_root;
 	
@@ -210,7 +192,7 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 
 	if(cr == NULL)
 	{
-		libngpng_err("Error: malloc\n");
+		perror("Error: malloc");
 		return(origin);
 	}
 
@@ -333,7 +315,7 @@ uint32_t * convertRGB2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, b
 		
 	if ( fbbuff == NULL )
 	{
-		libngpng_err( "Error: malloc\n" );
+		perror( "Error: malloc" );
 		return NULL;
 	}
 		
@@ -389,7 +371,7 @@ uint32_t * convertBGR2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, b
 		
 	if ( fbbuff == NULL )
 	{
-		libngpng_err( "Error: malloc\n" );
+		perror( "Error: malloc" );
 		return NULL;
 	}
 	
@@ -471,7 +453,7 @@ uint16_t * convertRGB2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, b
 		
 	if ( fbbuff == NULL )
 	{
-		libngpng_err( "Error: malloc\n" );
+		perror( "Error: malloc" );
 		return NULL;
 	}
 		
@@ -527,7 +509,7 @@ uint16_t * convertBGR2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, b
 		
 	if ( fbbuff == NULL )
 	{
-		libngpng_err( "Error: malloc\n" );
+		perror( "Error: malloc" );
 		return NULL;
 	}
 		
@@ -583,7 +565,7 @@ uint8_t * convertRGB2FB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, boo
 		
 	if ( fbbuff == NULL )
 	{
-		libngpng_err( "Error: malloc\n" );
+		perror( "Error: malloc" );
 		return NULL;
 	}
 		
@@ -639,7 +621,7 @@ uint8_t * convertBGR2FB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, boo
 		
 	if ( fbbuff == NULL )
 	{
-		libngpng_err( "Error: malloc\n" );
+		perror( "Error: malloc" );
 		return NULL;
 	}
 		
@@ -704,7 +686,7 @@ uint32_t * getImage(const std::string &name, int width, int height, int transp, 
 		
 		if (buffer == NULL) 
 		{
-		  	libngpng_err("Error: malloc\n");
+		  	perror("Error: malloc");
 		  	return NULL;
 		}
 		
@@ -755,14 +737,14 @@ uint32_t * getImage(const std::string &name, int width, int height, int transp, 
 		} 
 		else 
 		{
-	  		libngpng_err("Error decoding file %s\n", name.c_str ());
+	  		printf("Error decoding file %s\n", name.c_str ());
 	  		free (buffer);
 	  		buffer = NULL;
 		}
   	} 
 	else
 	{
-		libngpng_err("Error open file %s\n", name.c_str ());
+		//printf("Error open file %s\n", name.c_str ());
 	}
 
 	return ret;
@@ -788,7 +770,7 @@ uint32_t * getBGR32Image(const std::string &name, int width, int height, int tra
 		
 		if (buffer == NULL) 
 		{
-		  	libngpng_err("Error: malloc\n");
+		  	perror("Error: malloc");
 		  	return NULL;
 		}
 		
@@ -828,14 +810,14 @@ uint32_t * getBGR32Image(const std::string &name, int width, int height, int tra
 		} 
 		else 
 		{
-	  		libngpng_err("Error decoding file %s\n", name.c_str ());
+	  		printf("Error decoding file %s\n", name.c_str ());
 	  		free (buffer);
 	  		buffer = NULL;
 		}
   	} 
 	else
 	{
-		libngpng_err("Error open file %s\n", name.c_str ());
+		//printf("Error open file %s\n", name.c_str ());
 	}
 
 	return ret;
@@ -861,7 +843,7 @@ uint16_t * getBGR16Image(const std::string &name, int width, int height, int tra
 		
 		if (buffer == NULL) 
 		{
-		  	libngpng_err("Error: malloc\n");
+		  	perror("Error: malloc");
 		  	return NULL;
 		}
 		
@@ -901,14 +883,14 @@ uint16_t * getBGR16Image(const std::string &name, int width, int height, int tra
 		} 
 		else 
 		{
-	  		libngpng_err("Error decoding file %s\n", name.c_str ());
+	  		printf("Error decoding file %s\n", name.c_str ());
 	  		free (buffer);
 	  		buffer = NULL;
 		}
   	} 
 	else
 	{
-		libngpng_err("Error open file %s\n", name.c_str ());
+		//printf("Error open file %s\n", name.c_str ());
 	}
 
 	return ret;
@@ -934,7 +916,7 @@ uint8_t * getBGR8Image(const std::string &name, int width, int height, int trans
 		
 		if (buffer == NULL) 
 		{
-		  	libngpng_err("Error: malloc\n");
+		  	perror("Error: malloc");
 		  	return NULL;
 		}
 		
@@ -975,14 +957,14 @@ uint8_t * getBGR8Image(const std::string &name, int width, int height, int trans
 		} 
 		else 
 		{
-	  		libngpng_err("Error decoding file %s\n", name.c_str ());
+	  		printf("Error decoding file %s\n", name.c_str ());
 	  		free (buffer);
 	  		buffer = NULL;
 		}
   	} 
 	else
 	{
-		libngpng_err("Error open file %s\n", name.c_str ());
+		//printf("Error open file %s\n", name.c_str ());
 	}
 
 	return ret;
@@ -1007,7 +989,7 @@ uint8_t * getBitmap(const std::string &name)
 		
 		if (buffer == NULL) 
 		{
-		  	libngpng_err("Error: malloc\n");
+		  	perror("Error: malloc");
 		  	return NULL;
 		}
 		
@@ -1022,14 +1004,14 @@ uint8_t * getBitmap(const std::string &name)
 
 		if (load_ret != FH_ERROR_OK) 
 		{
-	  		libngpng_err("Error decoding file %s\n", name.c_str ());
+	  		printf("Error decoding file %s\n", name.c_str ());
 	  		free (buffer);
 	  		buffer = NULL;
 		}
   	} 
 	else
 	{
-		libngpng_err("Error open file %s\n", name.c_str ());
+		//printf("Error open file %s\n", name.c_str ());
 	}
 
 	return buffer;

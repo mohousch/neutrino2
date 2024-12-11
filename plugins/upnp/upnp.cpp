@@ -648,12 +648,17 @@ void CUpnpBrowserGui::showMenuDevice()
 
 		item->setOptionInfo(m_devices[i].friendlyname.c_str());
 		item->setNumber(i + 1);
-
-		// details Box
-		item->setInfo1(m_devices[i].manufacturer.c_str());
-		item->setOptionInfo1(m_devices[i].manufacturerurl.c_str());
-		item->setInfo2(m_devices[i].modeldescription.c_str());
-		item->setOptionInfo2(m_devices[i].modelnumber.c_str());
+		
+		std::string tmp = m_devices[i].manufacturer.c_str();
+		tmp += " (";
+		tmp += m_devices[i].manufacturerurl.c_str();
+		tmp += ")";
+		tmp += m_devices[i].modeldescription.c_str();
+		tmp += " (";
+		tmp += m_devices[i].modelnumber.c_str();
+		tmp += ")";
+		
+		item->setHint(tmp.c_str());
 
 		listBox->addItem(item);
 	}
@@ -744,7 +749,7 @@ void CUpnpBrowserGui::showMenuEntry()
 		else
 			tmp = tmp + "No resource for Item";
 
-		item->setInfo1(tmp.c_str());
+//		item->setInfo1(tmp.c_str());
 
 		if ((*entries)[i].isdir)
 			tmp = "Directory";
@@ -760,7 +765,7 @@ void CUpnpBrowserGui::showMenuEntry()
 
 		}
 
-		item->setInfo2(tmp.c_str());
+		item->setHint(tmp.c_str());
 
 		listBox->addItem(item);
 	}

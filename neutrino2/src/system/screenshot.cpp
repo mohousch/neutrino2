@@ -252,7 +252,7 @@ bool CScreenshot::savePNG()
 	row_pointers = (png_bytep *) malloc(sizeof(png_bytep) * yres);
 	if (!row_pointers)
 	{
-		ng2_err("malloc error\n");
+		ng_err("malloc error\n");
 		fclose(fd);
 		return false;
 	}
@@ -265,7 +265,7 @@ bool CScreenshot::savePNG()
 	if (setjmp(png_jmpbuf(png_ptr)))
 #endif
 	{
-		ng2_err("%s save error\n", filename.c_str());
+		ng_err("%s save error\n", filename.c_str());
 		png_destroy_write_struct(&png_ptr, &info_ptr);
 		free(row_pointers);
 		fclose(fd);
@@ -360,7 +360,7 @@ bool CScreenshot::saveJPG()
 
 	if (setjmp(jerr.setjmp_buffer))
 	{
-		ng2_err("%s save error\n", filename.c_str());
+		ng_err("%s save error\n", filename.c_str());
 		jpeg_destroy_compress(&cinfo);
 		fclose(fd);
 		return false;

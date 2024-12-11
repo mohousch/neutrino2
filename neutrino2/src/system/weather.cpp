@@ -166,8 +166,8 @@ bool CWeather::GetWeatherDetails()
 
 	if (!parsedSuccess)
 	{
-		ng2_err("Failed to parse JSON\n");
-		ng2_err("%s\n", formattedErrors.c_str());
+		ng_err("Failed to parse JSON\n");
+		ng_err("%s\n", formattedErrors.c_str());
 		
 		return false;
 	}

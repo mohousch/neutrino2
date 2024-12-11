@@ -58,11 +58,6 @@ CMenuItem::CMenuItem()
 	option = "";
 	optionInfo = "";
 	itemHint = "";
-	info1 = "";
-	option_info1 = "";
-	info2 = "";
-	option_info2 = "";
-
 	icon1 = "";
 	icon2 = "";
 
@@ -120,10 +115,6 @@ CMenuItem::~CMenuItem()
 	}
 			
 	option.clear();
-	info1.clear();
-	option_info1.clear();
-	info2.clear();
-	option_info2.clear();
 	itemHint.clear();
 	itemIcon.clear();
 }
@@ -1608,26 +1599,15 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + height, option_width, option_text, (selected || !active)? color : optionFontColor, 0, true);
 				}
 				
-				// info1
-				if (!info1.empty())
+				// hint
+				if (!itemHint.empty())
 				{
-					int info1_width = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getRenderWidth(info1.c_str(), true);
+					int hint_width = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getRenderWidth(itemHint.c_str(), true);
 					
-					if(info1_width > dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width)
-						info1_width = dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width;
+					if(hint_width > dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width)
+						hint_width = dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width;
 					
-					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + height/2, info1_width, info1.c_str(), (selected || !active)? color : optionFontColor, 0, true);
-				}
-				
-				// info 2
-				if (!info2.empty())
-				{
-					int info2_width = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getRenderWidth(info2.c_str(), true);
-					
-					if(info2_width > dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width)
-						info2_width = dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width;
-						
-					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + height/2 + height/4, info2_width, info2.c_str(), (selected || !active)? color : optionFontColor, 0, true);
+					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + height/2, hint_width, itemHint.c_str(), (selected || !active)? color : optionFontColor, 0, true);
 				}
 			}
 			else
@@ -2779,20 +2759,7 @@ void ClistBox::paintItemInfo(int pos)
 			}
 			
 			////
-			if (footInfoMode == CCItemInfo::ITEMINFO_INFO)
-			{
-				// detailslines
-				itemsLine.setPosition(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight + 2, itemBox.iWidth, cFrameFootInfoHeight);
-				itemsLine.setMode(CCItemInfo::ITEMINFO_INFO);
-				itemsLine.setInfo1(item->info1.c_str());
-				itemsLine.setOptionInfo1(item->option_info1.c_str());
-				itemsLine.setInfo2(item->info2.c_str());
-				itemsLine.setOptionInfo2(item->option_info2.c_str());
-				itemsLine.paintMainFrame(true);
-						
-				itemsLine.paint();
-			}
-			else if (footInfoMode == CCItemInfo::ITEMINFO_HINTITEM)
+			if (footInfoMode == CCItemInfo::ITEMINFO_HINTITEM)
 			{
 				// detailslines box
 				itemsLine.setPosition(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight + 2, itemBox.iWidth, cFrameFootInfoHeight);

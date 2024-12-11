@@ -91,8 +91,8 @@ class CMenuItem
 		std::string optionInfo;
 		std::string itemHint;
 		std::string itemIcon;
-		std::string info1, option_info1;
-		std::string info2, option_info2;
+		//std::string info1, option_info1;
+		//std::string info2, option_info2;
 		std::string icon1;
 		std::string icon2;
 		int number;
@@ -169,16 +169,9 @@ class CMenuItem
 		//
 		virtual void setOption(const char* text){if (text) option = text;};
 		virtual void setOptionInfo(const char* text){if (text) optionInfo = text;};
-		virtual void setInfo1(const char* const text){if (text) info1 = text;};
-		virtual void setInfo2(const char* const text){if (text) info2 = text;};
-		virtual void setOptionInfo1(const char* const text){if (text) option_info1 = text;};
-		virtual void setOptionInfo2(const char* const text){if (text) option_info2 = text;};
-		//
 		virtual void setHint(const char* const Text){if (Text) itemHint =  Text;};
 		virtual void setHintIcon(const char* const icon){if (icon) itemIcon = icon;};
-		//
 		virtual void setIconName(const char* const icon){if (icon) iconName = icon;};
-		//
 		virtual void setIcon1(const char* const icon){if (icon)icon1 = icon;};
 		virtual void setIcon2(const char* const icon){if (icon)icon2 = icon;};
 		virtual void setNumber(int nr){number = nr;};

@@ -374,7 +374,7 @@ CRCInput::CRCInput() : configfile('\t')
 	// pipe_high
 	if (pipe(fd_pipe_high_priority) < 0)
 	{
-		ng2_err("fd_pipe_high_priority failed\n");
+		ng_err("fd_pipe_high_priority failed\n");
 		exit(-1);
 	}
 
@@ -384,7 +384,7 @@ CRCInput::CRCInput() : configfile('\t')
 	// pipe_low
 	if (pipe(fd_pipe_low_priority) < 0)
 	{
-		ng2_err("fd_pipe_low_priority failed\n");
+		ng_err("fd_pipe_low_priority failed\n");
 		exit(-1);
 	}
 
@@ -415,7 +415,7 @@ CRCInput::CRCInput() : configfile('\t')
 	
 	if(fd_lirc < 0)
 	{
-		ng2_err("/dev/lirc0 failed\n");
+		ng_err("/dev/lirc0 failed\n");
 		haveLirc = false;
 	}
 	else
@@ -423,7 +423,7 @@ CRCInput::CRCInput() : configfile('\t')
 
 	if (::ioctl(fd_lirc, LIRC_SET_REC_MODE, &mode) < 0)
 	{
-		ng2_err("/dev/lirc0 failed\n");
+		ng_err("/dev/lirc0 failed\n");
 	}
 #else
 	struct sockaddr_un  vAddr;
@@ -441,13 +441,13 @@ CRCInput::CRCInput() : configfile('\t')
 	
 	if(fd_lirc < 0)
 	{
-		ng2_err("lircd socket failed\n");
+		ng_err("lircd socket failed\n");
 		fd_lirc = -1;
 	}
 	
 	if (connect(fd_lirc, (struct sockaddr *)&vAddr, sizeof(vAddr)) == -1)
 	{
-		ng2_err("lircd connect failed\n");
+		ng_err("lircd connect failed\n");
 		::close(fd_lirc);
 		fd_lirc = 1;
 	}
@@ -791,7 +791,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 
 		if ( status == -1 )
 		{
-			ng2_err("select failed\n");
+			ng_err("select failed\n");
 			
 			// in case of an error return timeout...?!
 			*msg = RC_timeout;

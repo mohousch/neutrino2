@@ -148,7 +148,7 @@ class CTestMenu : public CMenuTarget
 		void testClistBox2();
 		void testClistBox3();
 		void testClistBox4();
-		void testClistBox5();
+//		void testClistBox5();
 		void testClistBox6();
 		void testClistBox7();
 		void testClistBox8();
@@ -951,11 +951,6 @@ void CTestMenu::testCWidget()
 		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "yplay");
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
 		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 		item->set2lines(true);
@@ -1438,11 +1433,6 @@ void CTestMenu::testClistBoxWidget()
 		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "wplay");
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
 		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 		item->set2lines(true);
@@ -2355,11 +2345,6 @@ void CTestMenu::testClistBox()
 		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str());
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
 		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 		item->set2lines(true);
@@ -2431,13 +2416,6 @@ void CTestMenu::testClistBox2()
 		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str());
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-		//item->setOptionInfo("OptionInfo");
-
-		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-		//item->setOptionInfo1("OptionInfo1");
-
-		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-		//item->setOptionInfo2("OptionInfo2");
 
 		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
@@ -2509,14 +2487,6 @@ void CTestMenu::testClistBox3()
 		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "wplay");
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-		//item->setOptionInfo("OptionInfo");
-
-		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-		//item->setOptionInfo1("OptionInfo1");
-
-		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-		//item->setOptionInfo2("OptionInfo2");
-
 		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 		//item->set2lines(true);
@@ -2585,11 +2555,6 @@ void CTestMenu::testClistBox4()
 		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "wplay");
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
 		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 		item->set2lines(true);
@@ -2636,84 +2601,6 @@ void CTestMenu::testClistBox4()
 	}
 }
 
-// ClistBox(itemInfo_info)
-void CTestMenu::testClistBox5()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(INFO)\n");
-
-	CBox Box;
-	
-	Box.iWidth = g_settings.screen_EndX - g_settings.screen_StartX - 20;
-	Box.iHeight = g_settings.screen_EndY - g_settings.screen_StartY - 20;
-
-	Box.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
-	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
-
-	rightWidget = new ClistBox(&Box);
-
-	CHintBox loadBox("ClistBox(INFO)", __("Scan for Movies ..."));
-	loadBox.paint();
-	loadMoviePlaylist();
-	loadBox.hide();
-
-	// load items
-	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-	{
-		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "wplay");
-
-		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-		//item->setOptionInfo("OptionInfo");
-
-		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-		//item->setOptionInfo1("OptionInfo1");
-
-		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-		//item->setOptionInfo2("OptionInfo2");
-
-		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-		item->set2lines(true);
-
-		std::string tmp = m_vMovieInfo[i].epgInfo1;
-		tmp += "\n";
-		tmp += m_vMovieInfo[i].epgInfo2;
-
-		item->setHint(tmp.c_str());
-		
-		rightWidget->addItem(item);
-	}
-
-	// mode
-	rightWidget->setWidgetType(ClistBox::TYPE_STANDARD);
-	rightWidget->enableShrinkMenu();
-
-	// head
-	rightWidget->setTitle("ClistBox(INFO)", NEUTRINO_ICON_MOVIE);
-	rightWidget->enablePaintHead();
-	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	rightWidget->enablePaintDate();
-
-	// footer
-	rightWidget->enablePaintFoot();
-	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-
-	// footinfo
-	rightWidget->enablePaintItemInfo(80);
-	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_INFO);
-
-	//
-	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
-	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
-	
-	rightWidget->exec();		
-	
-	if (rightWidget)
-	{
-		delete rightWidget;
-		rightWidget = NULL;
-	}
-}
-
 // ClistBox(itemInfo_hintItem)
 void CTestMenu::testClistBox6()
 {
@@ -2740,14 +2627,6 @@ void CTestMenu::testClistBox6()
 		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "wplay");
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-		//item->setOptionInfo("OptionInfo");
-
-		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-		//item->setOptionInfo1("OptionInfo1");
-
-		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-		//item->setOptionInfo2("OptionInfo2");
-
 		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 		item->set2lines(true);
@@ -2820,14 +2699,6 @@ void CTestMenu::testClistBox7()
 		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "wplay");
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-		//item->setOptionInfo("OptionInfo");
-
-		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-		//item->setOptionInfo1("OptionInfo1");
-
-		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-		//item->setOptionInfo2("OptionInfo2");
-
 		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 		item->set2lines(true);
@@ -2901,14 +2772,6 @@ void CTestMenu::testClistBox8()
 		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "wplay");
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-		//item->setOptionInfo("OptionInfo");
-
-		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-		//item->setOptionInfo1("OptionInfo1");
-
-		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-		//item->setOptionInfo2("OptionInfo2");
-
 		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 		item->set2lines(true);
@@ -2982,11 +2845,6 @@ void CTestMenu::testClistBox9()
 		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str());
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
 		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 		std::string tmp = m_vMovieInfo[i].epgInfo1;
@@ -4965,12 +4823,6 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}
-	else if(actionKey == "listbox5")
-	{
-		testClistBox5();
-
-		return RETURN_REPAINT;
-	}
 	else if(actionKey == "listbox6")
 	{
 		testClistBox6();
@@ -5424,17 +5276,10 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 			item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "yplay");
 
 			item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-			item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-			item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
 			item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 			item->set2lines(true);
 
-			//std::string tmp = m_vMovieInfo[i].epgTitle;
-			//tmp += "\n";
 			std::string tmp = m_vMovieInfo[i].epgInfo1;
 			tmp += "\n";
 			tmp += m_vMovieInfo[i].epgInfo2;
@@ -5466,17 +5311,10 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 			item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "yplay");
 
 			item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-			item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-			item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
 			item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 			item->set2lines(true);
 
-			//std::string tmp = m_vMovieInfo[i].epgTitle;
-			//tmp += "\n";
 			std::string tmp = m_vMovieInfo[i].epgInfo1;
 			tmp += "\n";
 			tmp += m_vMovieInfo[i].epgInfo2;
@@ -5508,17 +5346,10 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 			item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "yplay");
 
 			item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-			item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-			item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
 			item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 			item->set2lines(true);
 
-			//std::string tmp = m_vMovieInfo[i].epgTitle;
-			//tmp += "\n";
 			std::string tmp = m_vMovieInfo[i].epgInfo1;
 			tmp += "\n";
 			tmp += m_vMovieInfo[i].epgInfo2;
@@ -5550,17 +5381,10 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 			item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "yplay");
 
 			item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-			item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-			item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
 			item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 			item->set2lines(true);
 
-			//std::string tmp = m_vMovieInfo[i].epgTitle;
-			//tmp += "\n";
 			std::string tmp = m_vMovieInfo[i].epgInfo1;
 			tmp += "\n";
 			tmp += m_vMovieInfo[i].epgInfo2;
@@ -5592,17 +5416,10 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 			item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "yplay");
 
 			item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-			item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-			item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
 			item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 			item->set2lines(true);
 
-			//std::string tmp = m_vMovieInfo[i].epgTitle;
-			//tmp += "\n";
 			std::string tmp = m_vMovieInfo[i].epgInfo1;
 			tmp += "\n";
 			tmp += m_vMovieInfo[i].epgInfo2;
@@ -5634,17 +5451,10 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 			item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "yplay");
 
 			item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-			item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-			item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
 			item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 			item->set2lines(true);
 
-			//std::string tmp = m_vMovieInfo[i].epgTitle;
-			//tmp += "\n";
 			std::string tmp = m_vMovieInfo[i].epgInfo1;
 			tmp += "\n";
 			tmp += m_vMovieInfo[i].epgInfo2;
@@ -5676,17 +5486,10 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 			item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "yplay");
 
 			item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-			item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-			item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
 			item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 			item->set2lines(true);
 
-			//std::string tmp = m_vMovieInfo[i].epgTitle;
-			//tmp += "\n";
 			std::string tmp = m_vMovieInfo[i].epgInfo1;
 			tmp += "\n";
 			tmp += m_vMovieInfo[i].epgInfo2;
@@ -5718,17 +5521,10 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 			item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "yplay");
 
 			item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-			item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-			item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
 			item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 			item->set2lines(true);
 
-			//std::string tmp = m_vMovieInfo[i].epgTitle;
-			//tmp += "\n";
 			std::string tmp = m_vMovieInfo[i].epgInfo1;
 			tmp += "\n";
 			tmp += m_vMovieInfo[i].epgInfo2;
@@ -5829,17 +5625,10 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 			item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "yplay");
 
 			item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-			item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-			item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
 			item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 			item->set2lines(true);
 
-			//std::string tmp = m_vMovieInfo[i].epgTitle;
-			//tmp += "\n";
 			std::string tmp = m_vMovieInfo[i].epgInfo1;
 			tmp += "\n";
 			tmp += m_vMovieInfo[i].epgInfo2;
@@ -5911,17 +5700,10 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 			item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "yplay");
 
 			item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-			item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-			item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
 			item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 			item->set2lines(true);
 
-			//std::string tmp = m_vMovieInfo[i].epgTitle;
-			//tmp += "\n";
 			std::string tmp = m_vMovieInfo[i].epgInfo1;
 			tmp += "\n";
 			tmp += m_vMovieInfo[i].epgInfo2;
@@ -5960,17 +5742,10 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 			item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "yplay");
 
 			item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-			item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-			item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
 			item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 			item->set2lines(true);
 
-			//std::string tmp = m_vMovieInfo[i].epgTitle;
-			//tmp += "\n";
 			std::string tmp = m_vMovieInfo[i].epgInfo1;
 			tmp += "\n";
 			tmp += m_vMovieInfo[i].epgInfo2;
@@ -6012,17 +5787,10 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 			item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "yplay");
 
 			item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-			item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-			item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
 			item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 			item->set2lines(true);
 
-			//std::string tmp = m_vMovieInfo[i].epgTitle;
-			//tmp += "\n";
 			std::string tmp = m_vMovieInfo[i].epgInfo1;
 			tmp += "\n";
 			tmp += m_vMovieInfo[i].epgInfo2;
@@ -6060,17 +5828,10 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 				item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "yplay");
 
 				item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-				item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-				item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
 				item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 				item->set2lines(true);
 
-				//std::string tmp = m_vMovieInfo[i].epgTitle;
-				//tmp += "\n";
 				std::string tmp = m_vMovieInfo[i].epgInfo1;
 				tmp += "\n";
 				tmp += m_vMovieInfo[i].epgInfo2;
@@ -6328,7 +6089,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("ClistBox(classic)", true, NULL, this, "listbox2"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(extended)", true, NULL, this, "listbox3"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(Frame)", true, NULL, this, "listbox4"));
-	mainMenu->addItem(new CMenuForwarder("ClistBox(INFO)", true, NULL, this, "listbox5"));
+	//mainMenu->addItem(new CMenuForwarder("ClistBox(INFO)", true, NULL, this, "listbox5"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(HINTITEM)", true, NULL, this, "listbox6"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(HINTICON)", true, NULL, this, "listbox7"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(ICON)", true, NULL, this, "listbox8"));

@@ -50,7 +50,7 @@
 
 #include <daemonc/remotecontrol.h>
 
-
+#if 0
 //#define LCDD_DEBUG
 
 static short debug_level = 10;
@@ -63,6 +63,7 @@ if (debug_level >= level) printf(fmt, ## x); } while (0)
 #endif
 
 #define lcdd_err(fmt, x...) do { printf(fmt, ## x); } while (0)
+#endif
 
 extern CRemoteControl * g_RemoteControl;
 
@@ -86,7 +87,7 @@ void CLCD::openDevice()
 		fd = open("/dev/vfd", O_RDWR);
 		if(fd < 0)
 		{
-			lcdd_printf(10, "CLCD::openDevice: failed to open vfd\n");
+			printf(DEBUG_NORMAL, "CLCD::openDevice: failed to open vfd\n");
 			
 			fd = open("/dev/fplarge", O_RDWR);
 			if (fd < 0)
@@ -115,14 +116,14 @@ int CLCD::GetConfigSize()
 	//
 	if (GLCD::Config.Load(kDefaultConfigFile) == false)
 	{
-		lcdd_err("CLCD::GetConfigSize Error loading config file!\n");
+		ng_err("CLCD::GetConfigSize Error loading config file!\n");
 		return 0;
 	}
 	
 	// driver config
 	if ((GLCD::Config.driverConfigs.size() < 1))
 	{
-		lcdd_err("CLCD::GetConfigSize No driver config found!\n");
+		ng_err("CLCD::GetConfigSize No driver config found!\n");
 		return 0;
 	}
 	
@@ -137,14 +138,14 @@ std::string CLCD::GetConfigName(int driver)
 	//
 	if (GLCD::Config.Load(kDefaultConfigFile) == false)
 	{
-		lcdd_err("CLCD::GetConfigName Error loading config file!\n");
+		ng_err("CLCD::GetConfigName Error loading config file!\n");
 		return " ";
 	}
 	
 	// driver config
 	if ((GLCD::Config.driverConfigs.size() < 1))
 	{
-		lcdd_err("CLCD::GetConfigName No driver config found!\n");
+		ng_err("CLCD::GetConfigName No driver config found!\n");
 		return " ";
 	}
 		
@@ -295,17 +296,17 @@ void CLCD::init(const char * fontfile, const char * fontname, const char * fontf
 	// init lcd 
 	if (!lcdInit(fontfile, fontname, fontfile2, fontname2, fontfile3, fontname3 ))
 	{
-		lcdd_err("CLCD::init failed!\n");
+		ng_err("CLCD::init failed!\n");
 		has_lcd = false;
 		return;
 	}
 	
-	lcdd_printf(10, "CLCD::init: succeeded\n");
+	dprintf(DEBUG_NORMAL, "CLCD::init: succeeded\n");
 
 	// create time thread
 	if (pthread_create (&thrTime, NULL, TimeThread, NULL) != 0 )
 	{
-		lcdd_err("CLCD::init pthread_create(TimeThread)");
+		ng_err("CLCD::init pthread_create(TimeThread)");
 		return ;
 	}
 }
@@ -471,7 +472,7 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 		lcd_width = display->xres;
 		lcd_height = display->yres;
 	
-		lcdd_printf(10, "CLCD::lcdInit: %d %d\n", lcd_width, lcd_height);
+		dprintf(DEBUG_NORMAL, "CLCD::lcdInit: %d %d\n", lcd_width, lcd_height);
 	}
 #endif
 
@@ -488,7 +489,7 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 			lcd_width = display->xres;
 			lcd_height = display->yres;
 		
-			lcdd_printf(10, "CLCD::lcdInit %d %d\n", lcd_width, lcd_height);
+			dprintf(DEBUG_NORMAL, "CLCD::lcdInit %d %d\n", lcd_width, lcd_height);
 		}
 	}
 #endif
@@ -572,7 +573,7 @@ void CLCD::setlcdparameter(int dimm, const int contrast, const int power, const 
 	if(!has_lcd) 
 		return;
 		
-	lcdd_printf(10, "CLCD::setlcdparameter: brightness: %d contrast: %d power: %d inverse: %d\n", dimm, contrast, power, inverse);
+	dprintf(DEBUG_NORMAL, "CLCD::setlcdparameter: brightness: %d contrast: %d power: %d inverse: %d\n", dimm, contrast, power, inverse);
 	
 #ifndef ENABLE_GRAPHLCD	
 	if (power == 0)
@@ -635,7 +636,7 @@ void CLCD::setlcdparameter(void)
 	if(!has_lcd) 
 		return;
 		
-	lcdd_printf(10, "CLCD::setlcdparameter:\n");
+	dprintf(DEBUG_NORMAL, "CLCD::setlcdparameter:\n");
 
 	last_toggle_state_power = g_settings.lcd_power;
 	int dim_time = atoi(g_settings.lcd_setting_dim_time);
@@ -704,7 +705,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	if(!has_lcd) 
 		return;
 		
-	lcdd_printf(10, "CLCD::showTextScreen: big:%s small:%s showmode:0x%x wakeup:%s centered:%s\n", big.empty()? "null" : big.c_str(), small.empty()? "null" : small.c_str(), showmode, perform_wakeup? "true" : "false", centered? "centered" : "not centered");
+	dprintf(DEBUG_NORMAL, "CLCD::showTextScreen: big:%s small:%s showmode:0x%x wakeup:%s centered:%s\n", big.empty()? "null" : big.c_str(), small.empty()? "null" : small.c_str(), showmode, perform_wakeup? "true" : "false", centered? "centered" : "not centered");
 	
 	//
 	bool big_utf8 = false;
@@ -917,7 +918,7 @@ void CLCD::showText(const char *str)
 	if (!has_lcd)
 		return;
 		
-	lcdd_printf(10, "CLCD::showText: %s\n", str? str : "null");
+	dprintf(DEBUG_NORMAL, "CLCD::showText: %s\n", str? str : "null");
 		 
 #if defined (ENABLE_4DIGITS)
 	int len = strlen(str);
@@ -1005,7 +1006,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 	if (!has_lcd)
 		return;
 		
-	lcdd_printf(10, "CLCD::showServicename: name:%s\n", name.empty()? "null" : name.c_str());
+	dprintf(DEBUG_NORMAL, "CLCD::showServicename: name:%s\n", name.empty()? "null" : name.c_str());
 
 	int showmode = g_settings.lcd_epgmode;
 
@@ -1099,7 +1100,7 @@ void CLCD::setEPGTitle(const std::string title)
 	if (!has_lcd)
 		return;
 
-	lcdd_printf(10, "CLCD::setEPGTitle: %s\n", title.c_str());
+	dprintf(DEBUG_NORMAL, "CLCD::setEPGTitle: %s\n", title.c_str());
 	
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	epg_title.clear();
@@ -1110,7 +1111,7 @@ void CLCD::setEPGTitle(const std::string title)
 
 void CLCD::showMovieInfo(const PLAYMODES playmode, const std::string big, const std::string small, const bool centered)
 {
-	lcdd_printf(10, "CLCD::showMovieInfo: playmode:%d big:%s small:%s centered:%s\n", playmode, big.empty()? "null" : big.c_str(), small.empty()? "null" : small.c_str(), centered? "centered" : "not centered");
+	dprintf(DEBUG_NORMAL, "CLCD::showMovieInfo: playmode:%d big:%s small:%s centered:%s\n", playmode, big.empty()? "null" : big.c_str(), small.empty()? "null" : small.c_str(), centered? "centered" : "not centered");
 	
 	int showmode = g_settings.lcd_epgmode;
 
@@ -1451,7 +1452,7 @@ void CLCD::showMenuText(const int position, const char * text, const int selecte
 	if(!has_lcd) 
 		return;
 		
-	lcdd_printf(10, "CLCD::showMenuText: position:%d text:%s highlight:%d\n", position, text? text : "null", selected);
+	dprintf(DEBUG_NORMAL, "CLCD::showMenuText: position:%d text:%s highlight:%d\n", position, text? text : "null", selected);
 	
 	if (mode != MODE_MENU_UTF8)
 		return;
@@ -1481,7 +1482,7 @@ void CLCD::showAudioTrack(const std::string &artist, const std::string &title, c
 	if(!has_lcd) 
 		return;
 		
-	lcdd_printf(10, "CLCD::showAudioTrack: artist:%s title:%s album:%s pos:%d\n", artist.empty()? "null" : artist.c_str(), title.empty()? "null" : title.c_str(), album.empty()? "null" : album.c_str(), pos);
+	dprintf(DEBUG_NORMAL, "CLCD::showAudioTrack: artist:%s title:%s album:%s pos:%d\n", artist.empty()? "null" : artist.c_str(), title.empty()? "null" : title.c_str(), album.empty()? "null" : album.c_str(), pos);
 	
 	if (mode != MODE_AUDIO) 
 		return;
@@ -1614,7 +1615,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	if(!has_lcd) 
 		return;
 		
-	lcdd_printf(10, "CLCD::setMode: %d\n", m);
+	dprintf(DEBUG_NORMAL, "CLCD::setMode: %d\n", m);
 		
 	mode = m;
 	menutitle = title;
@@ -1957,7 +1958,7 @@ int CLCD::getContrast()
 
 void CLCD::setPower(int power)
 {
-	lcdd_printf(10, "CLCD::setPower\n");
+	dprintf(DEBUG_NORMAL, "CLCD::setPower\n");
 	
 	if (!has_lcd)
 		return;
@@ -2018,7 +2019,7 @@ void CLCD::setLED(int value, int option)
 	if (!has_lcd)
 		return;
 		
-	lcdd_printf(10, "CLCD::setLED: %d\n", value);
+	dprintf(DEBUG_NORMAL, "CLCD::setLED: %d\n", value);
 
 	g_settings.lcd_led = value;
 	
@@ -2035,7 +2036,7 @@ void CLCD::setLED(int value, int option)
 		"LEDCOLOR_PURPLE"
 	};
 	
-	lcdd_printf(10, "CLCD::setLED: %s\n", LED[value]);
+	dprintf(DEBUG_NORMAL, "CLCD::setLED: %s\n", LED[value]);
 	  
 	FILE * f;
 	if((f = fopen("/proc/stb/fp/led0_pattern", "w")) == NULL) 
@@ -2065,7 +2066,7 @@ void CLCD::setMiniTV(int value)
 		"OSD / MINITV"
 	};
 	
-	lcdd_printf(10, "CLCD::setMiniTV: %s\n", LCDMINITV[value]);
+	dprintf(DEBUG_NORMAL, "CLCD::setMiniTV: %s\n", LCDMINITV[value]);
 
 	proc_put("/proc/stb/lcd/mode", value);
 #endif
@@ -2468,7 +2469,7 @@ void CLCD::showWeather()
 	current_wtemp = CWeather::getInstance()->getCurrentTemperature();
 	current_wicon = CWeather::getInstance()->getCurrentIcon();
 	
-	lcdd_printf(10, "CLCD::showWeather %s %s %s\n", current_wcity.c_str(), current_wtemp.c_str(), current_wicon.c_str());
+	dprintf(DEBUG_NORMAL, "CLCD::showWeather %s %s %s\n", current_wcity.c_str(), current_wtemp.c_str(), current_wicon.c_str());
 
 	// current icon
 	if (current_wicon != "")

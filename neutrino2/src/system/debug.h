@@ -68,7 +68,7 @@ extern int debug;			// defined in neutrino2.cpp
 #define dprintf(level, fmt, x...) do { \
 if (debug >= level) printf(fmt ANSI_RESET, ## x); } while (0)
 
-#define ng2_err(fmt, x...) do { printf(fmt ANSI_RESET, ## x); } while (0)
+#define ng_err(fmt, x...) do { printf(fmt ANSI_RESET, ## x); } while (0)
 	
 #endif
 

@@ -693,9 +693,6 @@ void CInternetRadio::showMenu()
 		item->setOptionInfo(duration);
 		item->setNumber(i + 1);
 
-		// details Box
-		item->setInfo1(tmp.c_str());
-
 		item->setHint(tmp.c_str());
 		item->setHintIcon(cover.c_str());
 

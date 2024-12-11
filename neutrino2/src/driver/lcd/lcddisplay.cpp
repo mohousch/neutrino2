@@ -54,20 +54,8 @@ extern "C" {
 }
 
 #include <system/settings.h>
+#include <system/debug.h>
 
-
-//#define LCDDISPLAY_DEBUG
-
-static short debug_level = 10;
-
-#ifdef LCDDISPLAY_DEBUG
-#define lcddisplay_printf(level, fmt, x...) do { \
-if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
-#else
-#define lcddisplay_printf(level, fmt, x...)
-#endif
-
-#define lcddisplay_err(fmt, x...) do { printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
 
 #ifndef BYTE_ORDER
 #error "no BYTE_ORDER defined!"
@@ -234,13 +222,13 @@ bool CLCDDisplay::init(const char *fbdevice)
 	} 
 	else
 	{
-		lcddisplay_printf(10, "found OLED display!\n");
+		dprintf(DEBUG_NORMAL, "CLCDDisplay::init found OLED display!\n");
 		lcd_type = 1;
 	}
 	
 	if (fd < 0)
 	{
-		lcddisplay_err("couldn't open LCD - load lcd.ko!\n");
+		ng_err("couldn't open LCD - load lcd.ko!\n");
 		return false;
 	}
 	else
@@ -288,14 +276,14 @@ bool CLCDDisplay::init(const char *fbdevice)
 	
 	if (fd < 0)
 	{
-		lcddisplay_err("%s: %m\n", fbdevice);
+		ng_err("%s: %m\n", fbdevice);
 		goto nolfb;
 	}
 
 #ifndef USE_OPENGL
 	if (::ioctl(fd, FBIOGET_VSCREENINFO, &m_screeninfo) < 0)
 	{
-		lcddisplay_err("FBIOGET_VSCREENINFO: %m\n");
+		ng_err("FBIOGET_VSCREENINFO: %m\n");
 
 		goto nolfb;
 	}
@@ -303,7 +291,7 @@ bool CLCDDisplay::init(const char *fbdevice)
 	fb_fix_screeninfo fix;
 	if (ioctl(fd, FBIOGET_FSCREENINFO, &fix) < 0)
 	{
-		lcddisplay_err("FBIOGET_FSCREENINFO: %m\n");
+		ng_err("FBIOGET_FSCREENINFO: %m\n");
 
 		goto nolfb;
 	}
@@ -311,13 +299,13 @@ bool CLCDDisplay::init(const char *fbdevice)
 	m_available = fix.smem_len;
 	m_phys_mem = fix.smem_start;
 	
-	lcddisplay_printf(0, "%s %dk video mem\n", fbdevice, m_available / 1024);
+	dprintf(DEBUG_NORMAL, "CLCDDisplay::init %s %dk video mem\n", fbdevice, m_available / 1024);
 	
 	tftbuffer = (uint32_t *)mmap(0, m_available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
 	
 	if (!tftbuffer)
 	{
-		lcddisplay_err("mmap: %m\n");
+		ng_err("mmap: %m\n");
 
 		goto nolfb;
 	}
@@ -349,7 +337,7 @@ nolfb:
 		fd = -1;
 	}
 	
-	lcddisplay_err("framebuffer %s not available\n", fbdevice);
+	ng_err("framebuffer %s not available\n", fbdevice);
 	
 	return false;
 #endif
@@ -361,14 +349,14 @@ bool CLCDDisplay::initGLCD()
 	// configfile
 	if (GLCD::Config.Load(kDefaultConfigFile) == false)
 	{
-		lcddisplay_err("Error loading config file!\n");
+		ng_err("Error loading config file!\n");
 		return false;
 	}
 	
 	// driver config
 	if ((GLCD::Config.driverConfigs.size() < 1))
 	{
-		lcddisplay_err("No driver config found!\n");
+		ng_err("No driver config found!\n");
 		return false;
 	}
 	
@@ -384,11 +372,11 @@ bool CLCDDisplay::initGLCD()
 	
 	if (!lcd)
 	{
-		lcddisplay_err("CreateDriver failed.\n");
+		ng_err("CreateDriver failed.\n");
 		return false;
 	}
 	
-	lcddisplay_printf(10, "CreateDriver succeeded.\n");
+	dprintf(DEBUG_NORMAL, "CLCDDisplay::initGLCD CreateDriver succeeded.\n");
 	
 	//
 	if (lcd->Init())
@@ -396,12 +384,12 @@ bool CLCDDisplay::initGLCD()
 		delete lcd;
 		lcd = NULL;
 
-		lcddisplay_err("init failed.\n");
+		ng_err("init failed.\n");
 		
 		return false;
 	}
 
-	lcddisplay_printf(10, "init succeeded.\n");
+	dprintf(DEBUG_NORMAL, "CLCDDisplay::initGLCD init succeeded.\n");
 	
 	ngxres = lcd->Width();
 	ngyres = lcd->Height();
@@ -410,7 +398,7 @@ bool CLCDDisplay::initGLCD()
 	ngbuffer = new uint32_t[ng_buffer_size];
 	memset(ngbuffer, 0, ng_buffer_size);
 	
-	lcddisplay_printf(10, "%d %d\n", ngxres, ngyres);
+	dprintf(DEBUG_NORMAL, "CLCDDisplay::initGLCD %d %d\n", ngxres, ngyres);
 	return true;
 #endif
 }
@@ -423,14 +411,14 @@ void CLCDDisplay::initBuffer()
 	raw_buffer = new lcd_pixel_t[raw_buffer_size];
 	memset(raw_buffer, 0, raw_buffer_size);
 	
-	lcddisplay_printf(10, "%d %d %d %dk video mem\n", xres, yres, raw_bypp, raw_buffer_size);
+	dprintf(DEBUG_NORMAL, "CLCDDisplay::initBuffer %d %d %d %dk video mem\n", xres, yres, raw_bypp, raw_buffer_size);
 #endif
 }
 
 #ifdef ENABLE_LCD
 void CLCDDisplay::setSize(int w, int h, int b)
 {
-	lcddisplay_printf(10, "xres=%d, yres=%d, bpp=%d type=%d\n", w, h, b, lcd_type);
+	dprintf(DEBUG_NORMAL, "CLCDDisplay::setSize xres=%d, yres=%d, bpp=%d type=%d\n", w, h, b, lcd_type);
 	
 	//
 	xres = w;
@@ -517,20 +505,20 @@ int CLCDDisplay::setMode(int nxRes, int nyRes, int nbpp)
 
 		if (ioctl(fd, FBIOPUT_VSCREENINFO, &m_screeninfo) < 0)
 		{
-			lcddisplay_printf(0, "FBIOPUT_VSCREENINFO: %m\m\n");
+			dprintf(DEBUG_NORMAL, "CLCDDisplay::setMode FBIOPUT_VSCREENINFO: %m\m\n");
 			return -1;
 		}
-		lcddisplay_printf(0, "double buffering not available\n");
+		dprintf(DEBUG_NORMAL, "CLCDDisplay::setMode double buffering not available\n");
 	}
 	else
-		lcddisplay_err("double buffering available\n");
+		ng_err("double buffering available\n");
 
 	ioctl(fd, FBIOGET_VSCREENINFO, &m_screeninfo);
 
 	if ((m_screeninfo.xres != (unsigned int)nxRes) || (m_screeninfo.yres != (unsigned int)nyRes) ||
 		(m_screeninfo.bits_per_pixel != (unsigned int)nbpp))
 	{
-		lcddisplay_err("failed: wanted: %dx%dx%d, got %dx%dx%d\n",
+		ng_err("failed: wanted: %dx%dx%d, got %dx%dx%d\n",
 			nxRes, nyRes, nbpp,
 			m_screeninfo.xres, m_screeninfo.yres, m_screeninfo.bits_per_pixel);
 	}
@@ -543,7 +531,7 @@ int CLCDDisplay::setMode(int nxRes, int nyRes, int nbpp)
 	
 	if (ioctl(fd, FBIOGET_FSCREENINFO, &fix) < 0)
 	{
-		lcddisplay_err("FBIOGET_FSCREENINFO: %m\n");
+		ng_err("FBIOGET_FSCREENINFO: %m\n");
 	}
 	
 	tftstride = fix.line_length;
@@ -682,13 +670,13 @@ int CLCDDisplay::setLCDContrast(int contrast)
 		
 	if (fp < 0)
 	{
-		lcddisplay_err("can't open /dev/dbox/fp0(%m)\n");
+		ng_err("can't open /dev/dbox/fp0(%m)\n");
 		return (-1);
 	}
 	
 	if(ioctl(fd, LCD_IOCTL_SRV, &contrast) < 0)
 	{
-		lcddisplay_err("can't set lcd contrast(%m)\n");
+		ng_err("can't set lcd contrast(%m)\n");
 	}
 	
 	close(fp);
@@ -699,7 +687,7 @@ int CLCDDisplay::setLCDContrast(int contrast)
 
 int CLCDDisplay::setLCDBrightness(int brightness)
 {
-	lcddisplay_printf(10, "%d\n", brightness);
+	dprintf(DEBUG_NORMAL, "CLCDDisplay::setLCDBrightness %d\n", brightness);
 	
 #ifdef ENABLE_LCD
 	FILE *f = fopen("/proc/stb/lcd/oled_brightness", "w");
@@ -962,7 +950,7 @@ void CLCDDisplay::blit(void)
 	if (m_manual_blit == 1)
 	{
 		if (ioctl(fd, FBIO_BLIT) < 0)
-			lcddisplay_err("FBIO_BLIT: %m\n");
+			ng_err("FBIO_BLIT: %m\n");
 	}
 #endif
 
@@ -1470,7 +1458,7 @@ void CLCDDisplay::dump_screen(lcd_pixel_t **screen)
 
 void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int top) 
 {
-	lcddisplay_printf(10, "CLCDDisplay::load_screen_element: %s %dx%dx%d (posx: %d posy: %d)\n", element->name.c_str(), element->width, element->height, element->bpp, left, top);
+	dprintf(DEBUG_NORMAL, "CLCDDisplay::load_screen_element: %s %dx%dx%d (posx: %d posy: %d)\n", element->name.c_str(), element->width, element->height, element->bpp, left, top);
 	
 	if ((element->buffer) && (element->height <= yres - top))
 	{
@@ -1507,7 +1495,7 @@ bool CLCDDisplay::dump_png(const char * const filename)
         // create file
         fp = fopen(filename, "wb");
         if (!fp)
-                lcddisplay_err("[CLCDDisplay] File %s could not be opened for writing\n", filename);
+                ng_err("[CLCDDisplay] File %s could not be opened for writing\n", filename);
 	else
 	{
 	        // initialize stuff
@@ -1575,7 +1563,7 @@ bool CLCDDisplay::dump_png(const char * const filename)
 
 int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int width, int height, int flag)
 {
-	lcddisplay_printf(10, "%s %d %d %d %d (flag: %d)\n", filename, posx, posy, width, height, flag);
+	dprintf(DEBUG_NORMAL, "CLCDDisplay::showPNGImage %s %d %d %d %d (flag: %d)\n", filename, posx, posy, width, height, flag);
 	
 	raw_lcd_element_t element;
 	int p_w, p_h, p_bpp;
@@ -1583,7 +1571,7 @@ int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int widt
 	
 	::getSize(filename, &p_w, &p_h, &p_bpp, &chans);
 	
-	lcddisplay_printf(10, "real: %s %d %d %d %d\n", filename, p_w, p_h, p_bpp, chans);
+	dprintf(DEBUG_NORMAL, "CLCDDisplay::showPNGImage real: %s %d %d %d %d\n", filename, p_w, p_h, p_bpp, chans);
 
 #if BYTE_ORDER == LITTLE_ENDIAN
 	if (raw_bpp == 32)
@@ -1613,14 +1601,14 @@ int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int widt
 
 void CLCDDisplay::load_png_element(raw_lcd_element_t *element, int posx, int posy, int width, int height)
 {
-	lcddisplay_printf(10, "%s %d %d %d %d\n", element->name.c_str(), posx, posy, width, height);
+	dprintf(DEBUG_NORMAL, "CLCDDisplay::load_png_element %s %d %d %d %d\n", element->name.c_str(), posx, posy, width, height);
 	
 	int p_w, p_h, p_bpp;
 	int chans = 1;
 	
 	::getSize(element->name.c_str(), &p_w, &p_h, &p_bpp, &chans);
 	
-	lcddisplay_printf(10, "real: %s %d %d\n", element->name.c_str(), p_w, p_h);
+	dprintf(DEBUG_NORMAL, "CLCDDisplay::load_png_element real: %s %d %d\n", element->name.c_str(), p_w, p_h);
 	
 	uint8_t *image = ::getBitmap(element->name.c_str());
 	
@@ -1657,7 +1645,7 @@ void CLCDDisplay::load_png_element(raw_lcd_element_t *element, int posx, int pos
 
 void CLCDDisplay::show_png_element(raw_lcd_element_t *element, int posx, int posy, int width, int height)
 {
-	lcddisplay_printf(10, "%s %d %d %d %d\n", element->name.c_str(), posx, posy, width, height);
+	dprintf(DEBUG_NORMAL, "CLCDDisplay::show_png_element %s %d %d %d %d\n", element->name.c_str(), posx, posy, width, height);
 	
 	load_png_element(element, posx, posy, width, height);
 	
