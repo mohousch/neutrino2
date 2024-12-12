@@ -1607,7 +1607,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 					if(hint_width > dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width)
 						hint_width = dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width;
 					
-					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + height/2, hint_width, itemHint.c_str(), (selected || !active)? color : optionFontColor, 0, true);
+					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + height/2, hint_width, _(itemHint.c_str()), (selected || !active)? color : optionFontColor, 0, true);
 				}
 			}
 			else

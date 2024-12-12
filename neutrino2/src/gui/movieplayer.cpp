@@ -1651,11 +1651,11 @@ void CMoviePlayerGui::showHelp()
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_GREEN, _("Select audio track"));
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_YELLOW, _("Help"));
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_BLUE, _("Create bookmark"));
-	helpbox->addSeparator();
+	helpbox->addPagebreak();
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_SETUP, _("Movieplayer settings"));
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_HELP, _("show movie infoviewer"));
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_OKAY, _("show playlist"));
-	helpbox->addSeparator();
+	helpbox->addPagebreak();
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_0, _("skip bookmark"));
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_1, _("approx. 1 minute back"));
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_2, _("goto start") );

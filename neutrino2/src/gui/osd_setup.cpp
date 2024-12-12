@@ -1294,7 +1294,6 @@ int CSkinManager::showMenu()
 				hint += namelist[i]->d_name;
 				hint += "/prev.png";
 				item->setHintIcon(hint.c_str());
-				item->setHint(_("Here you can select a skin from the following list."));
 				
 				bool select = false;
 				

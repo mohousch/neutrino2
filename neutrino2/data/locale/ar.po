@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-12-08 03:15+0100\n"
+"POT-Creation-Date: 2024-12-12 10:00+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1014,9 +1014,6 @@ msgstr "هنا يمكنك تشغيل / عرض الموسيقى / الأفلام 
 
 msgid "Here you can power off or standby your device"
 msgstr "يمكنك هنا إيقاف تشغيل جهازك أو وضعه في وضع الاستعداد"
-
-msgid "Here you can select a skin from the following list."
-msgstr "يمكنك هنا اختيار مظهر من القائمة التالية."
 
 msgid "Here you can set Timers and show EPG"
 msgstr "يمكنك هنا ضبط المؤقتات وإظهار دليل البرامج الإلكتروني"

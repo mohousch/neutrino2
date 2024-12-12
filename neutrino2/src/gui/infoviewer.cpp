@@ -1672,16 +1672,16 @@ void CInfoViewer::showEPGData(bool calledFromEvent)
 			{
 				// current infos
 				currentLabel->setText(_("No info for current program available"));
-				currentLabel->setColor(COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0);
+				currentLabel->setColor(/*COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0*/COL_INFOBAR_TEXT_PLUS_0);
 				currentLabel->paint();
 
-				// next
+				// next time
 				nextStartTime->setText(nextStart);
 				nextStartTime->paint();
 
-				//
+				// nex label
 				nextLabel->setText(info_CurrentNext.next_name.c_str());
-				nextLabel->setColor(COL_INFOBAR_TEXT_PLUS_0);
+				nextLabel->setColor(/*COL_INFOBAR_TEXT_PLUS_0*/COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0);
 				nextLabel->paint();
 				
 				//
@@ -1690,20 +1690,20 @@ void CInfoViewer::showEPGData(bool calledFromEvent)
 	  		} 
 			else 
 			{
-				// current
+				// current time
 			  	currentStartTime->setText(runningStart);
 				currentStartTime->paint();	
 
-				//
+				// current label
 				currentLabel->setText(info_CurrentNext.current_name.c_str());
-				currentLabel->setColor(COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0);
+				currentLabel->setColor(/*COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0*/COL_INFOBAR_TEXT_PLUS_0);
 				currentLabel->paint();
 			  	
-				//
+				// next time
 				currentPlayTime->setText(runningRest);
 				currentPlayTime->paint();
 
-				// next 
+				// next label
 				if ((!is_nvod) && (info_CurrentNext.flags & CSectionsd::epgflags::has_next)) 
 				{
 					//
@@ -1712,7 +1712,7 @@ void CInfoViewer::showEPGData(bool calledFromEvent)
 
 					//
 					nextLabel->setText(info_CurrentNext.next_name.c_str());
-					nextLabel->setColor(COL_INFOBAR_TEXT_PLUS_0);
+					nextLabel->setColor(/*COL_INFOBAR_TEXT_PLUS_0*/COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0);
 					nextLabel->paint();
 
 					//
