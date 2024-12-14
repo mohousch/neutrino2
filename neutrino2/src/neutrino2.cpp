@@ -1495,8 +1495,7 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 	RADIOfavList->orgChannelList = RADIOchannelList;
 
 	//
-	uint32_t i;
-	i = 1;
+	uint32_t i = 1;
 
 	int tvi = 1, ri = 1, hi = 0, webtvi = 0;
 	
@@ -1533,7 +1532,7 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 	if(g_settings.make_hd_list)
 		hdBouquet->channelList->SortSat();
 
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::channelsInit: got %d TV (%d is HD) and %d RADIO and %d WEBTV channels\n", tvi - 1, hi, ri - 1, webtvi);
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::channelsInit: got %d TV and %d RADIO and %d WEBTV channels\n", tvi - 1, ri - 1, webtvi);
 
 	// tv all list
 	CBouquet * tmp;
@@ -1542,14 +1541,14 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 	TVallList = new CBouquetList(_("All Services"));
 	tmp = TVallList->addBouquet(_("All Services"));
 	*(tmp->channelList) = *TVchannelList;
-	tmp->channelList->SortAlpha();
+	//tmp->channelList->SortAlpha();
 	TVallList->orgChannelList = TVchannelList;
 
 	// radio all list
 	RADIOallList = new CBouquetList(_("All Services"));
 	tmp = RADIOallList->addBouquet(_("All Services"));
 	*(tmp->channelList) = *RADIOchannelList;
-	tmp->channelList->SortAlpha();
+	//tmp->channelList->SortAlpha();
 	RADIOallList->orgChannelList = RADIOchannelList;
 
 	// sat
@@ -1621,6 +1620,7 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 
 	// radio fav / provider list
 	bnum = 0;
+
 	for (i = 0; i < CZapit::getInstance()->Bouquets.size(); i++) 
 	{	
 		if (!CZapit::getInstance()->Bouquets[i]->bHidden && !CZapit::getInstance()->Bouquets[i]->bWebTV && !CZapit::getInstance()->Bouquets[i]->radioChannels.empty())
@@ -1633,6 +1633,9 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 
 			ZapitChannelList *channels = &(CZapit::getInstance()->Bouquets[i]->radioChannels);
 			ltmp->channelList->setSize(channels->size());
+			
+			tvi = 1;
+			
 			for(int j = 0; j < (int) channels->size(); j++) 
 			{
 				ltmp->channelList->addChannel((*channels)[j]);
@@ -3222,7 +3225,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 			scrambled_timer = 0;
 		}
 
-		scrambled_timer = g_RCInput->addTimer(10*1000*1000, true);
+		scrambled_timer = g_RCInput->addTimer(10*1000*1000, true); // 10 sec
 		
 		// select subtitle
 		selectSubtitles();
@@ -3250,8 +3253,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 #ifdef USE_SCRAMBLED_TIMER
 			if(true && (videoDecoder->getBlank() && videoDecoder->getPlayState())) 
 			{
-				const char * text = _("Scrambled channel");
-				HintBox(_("Information"), _(text), g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth (text, true) + 10, 5);
+				HintBox(_("Information"), _("Scrambled channel"), g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth (_("Scrambled channel"), true) + 10, 5);
 			}
 #endif
 
@@ -3288,14 +3290,12 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 			int old_b = bouquetList->getActiveBouquetNumber();
 			int old_mode = g_settings.channel_mode;
 
-			dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: ZAP START: bouquet: %d\n", old_b);
-
 			if(bouquetList->Bouquets.size()) 
 			{
 				old_num = bouquetList->Bouquets[old_b]->channelList->getActiveChannelNumber();
 			}
 			
-			dprintf(DEBUG_DEBUG, "CNeutrinoApp::handleMsg: ZAP START: bouquet: %d channel: %d\n", old_b, old_num);
+			dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: ZAP START: bouquet: %d channel: %d\n", old_b, old_num);
 
 			if( msg == CRCInput::RC_ok ) 
 			{

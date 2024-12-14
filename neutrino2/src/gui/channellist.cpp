@@ -167,8 +167,11 @@ void CChannelList::setSize(int newsize)
 	chanlist.reserve(newsize);
 }
 
-void CChannelList::addChannel(CZapitChannel * channel)
+void CChannelList::addChannel(CZapitChannel * channel, int num)
 {
+//	if (num != 0)
+//		channel->setNumber(num);
+		
 	chanlist.push_back(channel);
 }
 
@@ -391,6 +394,7 @@ int CChannelList::getSelectedChannelIndex() const
 // -3 on list mode change
 // -4 list edited
 // -2 zap but no restore old list/chan
+// customMode true == without zap / false == with zap
 int CChannelList::exec(bool customMode)
 {
 	dprintf(DEBUG_NORMAL, "CChannelList::exec: zap:%s\n", customMode? "no" : "yes");
@@ -464,41 +468,30 @@ int CChannelList::show(bool customMode)
 			loop = false;
 			res = -1;
 		}
-		else if (msg == CRCInput::RC_epg) // epg
-		{
-			selected = listBox? listBox->getSelected() : 0;
-
-			hide();
-
-			if ( chanlist.size() && g_EventList->exec(chanlist[selected]->epgid, chanlist[selected]->name) == CMenuTarget::RETURN_EXIT_ALL) 
-			{
-				res = -2;
-				loop = false;
-			}
-			
-			paint();
-		}
 		else if (msg == CRCInput::RC_red) // record
 		{
 			selected = listBox? listBox->getSelected() : 0;
 
 			hide();
 			
-			if (chanlist.size() && CTimerd::getInstance()->isTimerdAvailable()) 
+			if (chanlist.size() && CTimerd::getInstance()->isTimerdAvailable() && !customMode) 
 			{
 				CTimerd::getInstance()->addRecordTimerEvent(chanlist[selected]->channel_id, chanlist[selected]->currentEvent.startTime, chanlist[selected]->currentEvent.startTime + chanlist[selected]->currentEvent.duration, chanlist[selected]->currentEvent.eventID, chanlist[selected]->currentEvent.startTime, chanlist[selected]->currentEvent.startTime - (ANNOUNCETIME + 120) , TIMERD_APIDS_CONF, true);
 
 				MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);	// UTF-8
 			} 
 			
-			paint();
+			paint(customMode); ////
 		}
 		else if ( msg == CRCInput::RC_blue && ( bouquetList != NULL ) )
 		{
 			//FIXME: show bqt list
-			bShowBouquetList = true;
+			if (!customMode) 
+			{
+				bShowBouquetList = true;
 
-			loop = false;
+				loop = false;
+			}
 		}
 		else if( msg == CRCInput::RC_yellow )
 		{
@@ -506,14 +499,14 @@ int CChannelList::show(bool customMode)
 
 			hide();
 			
-			if (chanlist.size() && CTimerd::getInstance()->isTimerdAvailable ()) 
+			if (chanlist.size() && CTimerd::getInstance()->isTimerdAvailable () && !customMode) 
 			{
 				CTimerd::getInstance()->addZaptoTimerEvent (chanlist[selected]->channel_id, chanlist[selected]->currentEvent.startTime, chanlist[selected]->currentEvent.startTime - ANNOUNCETIME, 0, chanlist[selected]->currentEvent.eventID, chanlist[selected]->currentEvent.startTime, 0);
 		
 				MessageBox(_("Schedule Event"), _("The event is scheduled.\nThe box will power on and \nswitch to this channel at the given time."), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);	// UTF-8
 			} 
 
-			paint();
+			paint(customMode);
 		}
 		else if ( msg == CRCInput::RC_sat || msg == CRCInput::RC_favorites)
 		{
@@ -525,7 +518,7 @@ int CChannelList::show(bool customMode)
 		{
 			selected = listBox? listBox->getSelected() : 0;
 			
-			if (chanlist.size() && !IS_WEBTV(chanlist[selected]->channel_id))
+			if (chanlist.size() && !IS_WEBTV(chanlist[selected]->channel_id) && !customMode)
 			{
 				// channellist setup (add/move)
 				old_b_id = bouquetList->getActiveBouquetNumber();
@@ -540,7 +533,7 @@ int CChannelList::show(bool customMode)
 				{
 					old_b_id = -1;
 
-					paint();
+					paint(customMode);
 				}
 			}
 		}
@@ -548,13 +541,13 @@ int CChannelList::show(bool customMode)
 		{
 			selected = 0;
 
-			paint();
+			paint(customMode);
 		}
 		else if (msg == (neutrino_msg_t) g_settings.key_list_end) 
 		{
 			selected = chanlist.size() - 1;
 
-			paint();
+			paint(customMode);
 		}
                 else if (msg == CRCInput::RC_up)
                 {
@@ -686,7 +679,7 @@ int CChannelList::show(bool customMode)
 
 			updateEvents();
 
-			paint(); 
+			paint(customMode); 
 		}
 		else if ( msg ==  CRCInput::RC_help ) // tmdb
 		{
@@ -698,7 +691,7 @@ int CChannelList::show(bool customMode)
 			if (chanlist.size())
 				::getTMDBInfo(chanlist[selected]->currentEvent.description.c_str());
 
-			paint();
+			paint(customMode);
 		}
 		else if ( msg == CRCInput::RC_info ) // epgview
 		{
@@ -709,7 +702,21 @@ int CChannelList::show(bool customMode)
 			if (chanlist.size())
 				g_EpgData->show(chanlist[selected]->epgid); 
 
-			paint();
+			paint(customMode);
+		}
+		else if (msg == CRCInput::RC_epg) // epg
+		{
+			selected = listBox? listBox->getSelected() : 0;
+
+			hide();
+
+			if ( chanlist.size() && g_EventList->exec(chanlist[selected]->epgid, chanlist[selected]->name) == CMenuTarget::RETURN_EXIT_ALL) 
+			{
+				res = -2;
+				loop = false;
+			}
+			
+			paint(customMode);
 		}
 		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
@@ -780,11 +787,9 @@ bool CChannelList::showInfo(int pos, int epgpos, bool fromNumZap)
 	
 	if((pos >= (signed int) chanlist.size()) || (pos < 0))
 		return false;
-
-	CZapitChannel * chan = chanlist[pos];
 	
 	// channel infobar
-	g_InfoViewer->showTitle(pos + 1, chan->name, chan->getSatellitePosition(), chan->channel_id, fromNumZap, epgpos); // UTF-8
+	g_InfoViewer->showTitle(chanlist[pos]->getNumber(), chanlist[pos]->name, chanlist[pos]->getSatellitePosition(), chanlist[pos]->channel_id, fromNumZap, epgpos); // UTF-8
 	
 	return true;
 }
@@ -887,8 +892,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 	// show emty channellist error msg
 	if (chanlist.empty()) 
 	{
-		if (CZapit::getInstance()->getFrontendCount() >= 1) 
-			MessageBox(_("Error"), _("No channels were found!\nPlease execute a scan\n(MENU-key -> Service)"), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
+		MessageBox(_("Error"), _("No channels were found!\nPlease execute a scan\n(MENU-key -> Service)"), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 			
 		return;
 	}
@@ -897,26 +901,26 @@ void CChannelList::zapTo(int pos, bool rezap)
 	{
 		pos = 0;
 	}
-
-	CZapitChannel * chan = chanlist[pos];
 	
-	dprintf(DEBUG_NORMAL, "CChannelList::zapTo me %s tuned %d new %d %s id: 0x%llx\n", name.c_str(), tuned, pos, chan->name.c_str(), chan->channel_id);
+	dprintf(DEBUG_NORMAL, "CChannelList::zapTo tuned %d new %d %s id: 0x%llx\n", tuned, pos, chanlist[pos]->name.c_str(), chanlist[pos]->channel_id);
 	
 	if ( (pos != (int)tuned) || rezap ) //FIXME: allow after scan to tun
-	{  
+	{ 
+		// stop radiotext
 		if ((g_settings.radiotext_enable) && ((CNeutrinoApp::getInstance()->getMode()) == CNeutrinoApp::mode_radio) && (g_Radiotext))
 		{
 			// stop radiotext PES decoding before zapping
 			g_Radiotext->radiotext_stop();
 		}		
 		
+		// zap
 		tuned = pos;
-		g_RemoteControl->zapToChannelID(chan->channel_id, !chan->bAlwaysLocked); // UTF-8
+		g_RemoteControl->zapToChannelID(chanlist[pos]->channel_id, !chanlist[pos]->bAlwaysLocked); // UTF-8
 		
-		// TODO check is it possible bouquetList is NULL ?
+		// adjust to ID
 		if (bouquetList != NULL) 
 		{
-			CNeutrinoApp::getInstance()->channelList->adjustToChannelID(chan->channel_id);
+			CNeutrinoApp::getInstance()->channelList->adjustToChannelID(chanlist[pos]->channel_id);
 		}
 	}
 
@@ -933,7 +937,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 // -1: channellist not found
 int CChannelList::numericZap(int key)
 {
-	dprintf(DEBUG_NORMAL, "CChannelList::numericZap\n");
+	dprintf(DEBUG_NORMAL, "CChannelList::numericZap: tuned:%d\n", tuned);
 	
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
@@ -942,8 +946,7 @@ int CChannelList::numericZap(int key)
 
 	if (chanlist.empty()) 
 	{
-		if (CZapit::getInstance()->getFrontendCount() >= 1) 
-			MessageBox(_("Error"), _("No channels were found!\nPlease execute a scan\n(MENU-key -> service)"), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
+		MessageBox(_("Error"), _("No channels were found!\nPlease execute a scan\n(MENU-key -> service)"), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 			
 		return res;
 	}
@@ -1087,11 +1090,9 @@ int CChannelList::numericZap(int key)
 				valstr[i + 1] = 0;
 				g_Font[SNeutrinoSettings::FONT_TYPE_CHANNEL_NUM_ZAP]->RenderString(ox + 7 + i*((sx - 14)>>2), oy + sy - 3, sx, &valstr[i], COL_INFOBAR_TEXT_PLUS_0);
 			}
-			
-//			frameBuffer->blit();
 
 			// show infobar
-			showInfo(chn - 1);
+			showInfo(chn - 1); ////
 			
 			lastchan = chn;
 		}
@@ -1123,7 +1124,7 @@ int CChannelList::numericZap(int key)
 		{
 			if ( ( chn > (signed int) chanlist.size() ) || ( chn == 0 ) ) 
 			{
-				chn = tuned + 1;
+				chn = tuned + 1; ////
 			}
 			break;
 		}
@@ -1180,8 +1181,8 @@ int CChannelList::numericZap(int key)
 	if ( doZap ) 
 	{
 		// zapto selected channel
-		zapTo( chn );
-		showInfo(chn - 1, 0, false);
+		zapTo(chn);
+		showInfo(chn, 0, false); ////
 	} 
 	else 
 	{
@@ -1204,8 +1205,7 @@ void CChannelList::virtual_zap_mode(bool up)
 
         if (chanlist.empty()) 
 	{
-		if (CZapit::getInstance()->getFrontendCount() >= 1) 
-			MessageBox(_("No channels were found!\nPlease execute a scan\n(MENU-key -> service)"), _("No channels were found!\nPlease execute a scan\n(MENU-key -> service)"), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
+		MessageBox(_("No channels were found!\nPlease execute a scan\n(MENU-key -> service)"), _("No channels were found!\nPlease execute a scan\n(MENU-key -> service)"), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 			
                 return;
         }
@@ -1507,7 +1507,7 @@ void CChannelList::paint(bool customMode)
 
 			item = new CMenuForwarder(chanlist[i]->name.c_str());
 			
-			//
+			// align right / left
 			if (g_settings.channellist_alt)
 			{
 				item->setOption(desc.c_str());
@@ -1520,7 +1520,7 @@ void CChannelList::paint(bool customMode)
 			}
 
 			// channel number
-			if (g_settings.channellist_number) item->setNumber(i + 1);
+			if (g_settings.channellist_number) item->setNumber(chanlist[i]->getNumber());
 			
 			// timescale
 			if (g_settings.channellist_timescale && !displayNext) item->setPercent(runningPercent);
@@ -1548,7 +1548,7 @@ void CChannelList::paint(bool customMode)
 			item->setOptionFont(SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER);
 
 			// option font color
-			if (displayNext) item->setOptionFontColor(COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0);
+			item->setOptionFontColor(displayNext? COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0 : COL_MENUCONTENT_TEXT_PLUS_0 + 1);
 			
 			if (listBox) listBox->addItem(item);
 		}
@@ -1573,7 +1573,7 @@ void CChannelList::paint(bool customMode)
 			CChannelListButtons[1].localename = _("Next");
 		}
 		
-		foot->setButtons(CChannelListButtons, NUM_LIST_BUTTONS);
+		if (!customMode) foot->setButtons(CChannelListButtons, NUM_LIST_BUTTONS);
 	}
 
 	//

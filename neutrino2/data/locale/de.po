@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-12-12 10:00+0100\n"
+"POT-Creation-Date: 2024-12-14 15:53+0100\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1494,7 +1494,7 @@ msgid "News magazine"
 msgstr "Nachrichtenmagazin"
 
 msgid "Next"
-msgstr "Nächste Seite"
+msgstr "Nächste"
 
 msgid "Next Page"
 msgstr "Nächste Seite"
@@ -1810,16 +1810,16 @@ msgid "Refresh EPG"
 msgstr "EPG aktualisieren"
 
 msgid "Release"
-msgstr "Release-Zyklus"
+msgstr "Release"
 
 msgid "Release cycle"
 msgstr "Release-Zyklus"
 
 msgid "Release type"
-msgstr "Release-Zyklus"
+msgstr "Release type"
 
 msgid "Release:"
-msgstr "Release-Zyklus"
+msgstr "Release:"
 
 msgid "Religion"
 msgstr "Religion"
@@ -2057,6 +2057,10 @@ msgstr "Subkanal Auswahl"
 
 msgid "Select audio track"
 msgstr "Audiospur Auswahl"
+
+#, fuzzy
+msgid "Select channel"
+msgstr "Senderlisten löschen"
 
 msgid "Select language"
 msgstr "Sprache Auswahl"

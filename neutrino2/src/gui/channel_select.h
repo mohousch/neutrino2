@@ -22,17 +22,19 @@
 #ifndef __CHANNEL_SELECT__
 #define __CHANNEL_SELECT__
 
-#include <gui/widget/widget.h>
-
 #include <string>
 
 // zapit includes
 #include <zapit/zapit.h>
 
+#include <gui/widget/widget_helpers.h>
+#include <gui/channellist.h>
+
 		
 class CSelectChannelWidget : public CMenuTarget
 {	
 	private:
+		CChannelList *tmpChannelList;
 		t_channel_id ChannelID;
 
 		void InitZapitChannelHelper(CZapit::channelsMode mode);

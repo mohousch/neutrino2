@@ -100,7 +100,7 @@ class CChannelList
 		CChannelList(const char * const Name, bool _historyMode = false, bool _vlist = false );
 		~CChannelList();
 		
-		void addChannel(CZapitChannel* chan);
+		void addChannel(CZapitChannel* chan, int num = 0);
 		
 		CZapitChannel * getChannel(int number);
 		CZapitChannel * getChannel(t_channel_id channel_id);
@@ -124,8 +124,6 @@ class CChannelList
 		bool showInfo(int pos, int epgpos = 0, bool fromNumZap = true);
 		void updateEvents(void);
 		int numericZap(int key);
-		int show(bool customMode = false);
-		int exec(bool customMode = false);
 		void quickZap(int key, bool cycle = false);
 		int hasChannel(int nChannelNr);
 		int hasChannelID(t_channel_id channel_id);
@@ -139,6 +137,8 @@ class CChannelList
 		void SortSat(void);
 		void ClearList(void);
 		bool canZap(CZapitChannel* channel = NULL);
+		int show(bool customMode = false);
+		int exec(bool customMode = false);
 };
 
 #endif

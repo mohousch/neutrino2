@@ -1745,6 +1745,7 @@ void CZapit::renumServices(void)
 	int tvi = 1;
 	int ri = 1;
 	
+#if 1
 	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++) 
 	{
 		if ((it->second.getServiceType() == ST_DIGITAL_TELEVISION_SERVICE)) 
@@ -1756,6 +1757,7 @@ void CZapit::renumServices(void)
 			it->second.setNumber(ri++);
 		}
 	}
+#endif	
 }
 
 void CZapit::readEPGMapping()
