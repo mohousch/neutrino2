@@ -3900,9 +3900,6 @@ void CTestMenu::testChannelSelectWidget()
 		mode = "radio";
 
 	CSelectChannelWidgetHandler->exec(NULL, mode);
-		
-	//CSelectChannelWidget_TVChanID;
-	//CSelectChannelWidget_TVChanName.c_str();
 
 	printf("testChannelSelectWidget: chan_id:%llx chan_name:%s\n", CSelectChannelWidgetHandler->getChannelID(), CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID()).c_str());
 		
@@ -4182,11 +4179,12 @@ void CTestMenu::testCChannellist()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCChannellist\n");
 	
-	webTVchannelList = new CChannelList("CTestMenu::testWebTVChannellist:");
+	webTVchannelList = new CChannelList("CTestMenu::testChannellist:");
 
 	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++) 
 	{
-		if (it->second.isWebTV) 
+		if (it->second.isWebTV)
+		//if ((it->second.getServiceType() == ST_DIGITAL_TELEVISION_SERVICE)) 
 		{
 			webTVchannelList->addChannel(&(it->second));
 		}

@@ -397,7 +397,7 @@ int CChannelList::getSelectedChannelIndex() const
 // customMode true == without zap / false == with zap
 int CChannelList::exec(bool customMode)
 {
-	dprintf(DEBUG_NORMAL, "CChannelList::exec: zap:%s\n", customMode? "no" : "yes");
+	dprintf(DEBUG_NORMAL, "CChannelList::exec: (%s) zap:%s\n", name.c_str(), customMode? "no" : "yes");
 	
 	displayNext = false; // always start with current events
 	
@@ -410,7 +410,7 @@ int CChannelList::exec(bool customMode)
 	if(!customMode)
 	{
 		if ( nNewChannel > -1 && nNewChannel < (int) chanlist.size()) 
-			CNeutrinoApp::getInstance()->channelList->zapTo(getKey(nNewChannel) - 1);
+			this->zapTo(/*getKey(nNewChannel) - 1*/nNewChannel); ////
 	}
 
 	return nNewChannel;
@@ -423,7 +423,7 @@ int CChannelList::exec(bool customMode)
 // -2 zap but no restore old list/chan
 int CChannelList::show(bool customMode)
 {
-	dprintf(DEBUG_NORMAL, "CChannelList::show: zap:%s\n", customMode? "no" : "yes");
+	dprintf(DEBUG_NORMAL, "CChannelList::show: (%s) zap:%s\n", name.c_str(), customMode? "no" : "yes");
 
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
@@ -789,7 +789,7 @@ bool CChannelList::showInfo(int pos, int epgpos, bool fromNumZap)
 		return false;
 	
 	// channel infobar
-	g_InfoViewer->showTitle(chanlist[pos]->getNumber(), chanlist[pos]->name, chanlist[pos]->getSatellitePosition(), chanlist[pos]->channel_id, fromNumZap, epgpos); // UTF-8
+	g_InfoViewer->showTitle(/*chanlist[pos]->getNumber()*/pos + 1, chanlist[pos]->name, chanlist[pos]->getSatellitePosition(), chanlist[pos]->channel_id, fromNumZap, epgpos); // UTF-8
 	
 	return true;
 }
@@ -887,8 +887,6 @@ bool CChannelList::zapToChannelID(const t_channel_id channel_id, bool rezap)
 // 
 void CChannelList::zapTo(int pos, bool rezap)
 {
-	dprintf(DEBUG_NORMAL, "CChannelList::zapTo: %d\n", pos);
-	
 	// show emty channellist error msg
 	if (chanlist.empty()) 
 	{
@@ -902,7 +900,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 		pos = 0;
 	}
 	
-	dprintf(DEBUG_NORMAL, "CChannelList::zapTo tuned %d new %d %s id: 0x%llx\n", tuned, pos, chanlist[pos]->name.c_str(), chanlist[pos]->channel_id);
+	dprintf(DEBUG_NORMAL, "CChannelList::zapTo (%s) tuned %d new %d %s id: 0x%llx\n", name.c_str(), tuned, pos, chanlist[pos]->name.c_str(), chanlist[pos]->channel_id);
 	
 	if ( (pos != (int)tuned) || rezap ) //FIXME: allow after scan to tun
 	{ 
@@ -917,10 +915,13 @@ void CChannelList::zapTo(int pos, bool rezap)
 		tuned = pos;
 		g_RemoteControl->zapToChannelID(chanlist[pos]->channel_id, !chanlist[pos]->bAlwaysLocked); // UTF-8
 		
+		//// test
+		chanlist[pos]->setNumber(tuned + 1);
+		
 		// adjust to ID
 		if (bouquetList != NULL) 
 		{
-			CNeutrinoApp::getInstance()->channelList->adjustToChannelID(chanlist[pos]->channel_id);
+			this->adjustToChannelID(chanlist[pos]->channel_id);
 		}
 	}
 
@@ -937,7 +938,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 // -1: channellist not found
 int CChannelList::numericZap(int key)
 {
-	dprintf(DEBUG_NORMAL, "CChannelList::numericZap: tuned:%d\n", tuned);
+	dprintf(DEBUG_NORMAL, "CChannelList::numericZap: (%s) tuned:%d\n", name.c_str(), tuned);
 	
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
@@ -1092,7 +1093,7 @@ int CChannelList::numericZap(int key)
 			}
 
 			// show infobar
-			showInfo(chn - 1); ////
+			this->showInfo(chn - 1); ////
 			
 			lastchan = chn;
 		}
@@ -1181,7 +1182,7 @@ int CChannelList::numericZap(int key)
 	if ( doZap ) 
 	{
 		// zapto selected channel
-		zapTo(chn);
+		this->zapTo(chn);
 		showInfo(chn, 0, false); ////
 	} 
 	else 
@@ -1520,7 +1521,7 @@ void CChannelList::paint(bool customMode)
 			}
 
 			// channel number
-			if (g_settings.channellist_number) item->setNumber(chanlist[i]->getNumber());
+			if (g_settings.channellist_number) item->setNumber(/*chanlist[i]->getNumber()*/i + 1);
 			
 			// timescale
 			if (g_settings.channellist_timescale && !displayNext) item->setPercent(runningPercent);

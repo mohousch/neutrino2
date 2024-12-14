@@ -2132,10 +2132,24 @@ void CNeutrinoApp::initZapper()
 	}
 
 	// zap / epg / autorecord / infoviewer
+	int activBouquet = 0;
+	int activChannel = 0;
+	
+	if(bouquetList->Bouquets.size())
+	{ 
+		activBouquet = bouquetList->getActiveBouquetNumber();
+		activChannel = bouquetList->Bouquets[activBouquet]->channelList->getActiveChannelNumber();
+	}
+	
 	if(channelList->getSize() && CZapit::getInstance()->getCurrentChannelID())
 	{
+		////test
+		printf("CNeutrinoApp::initZapper: channellist name:%s\n", bouquetList->Bouquets[activBouquet]->channelList->getName());
+		
 		// channellist adjust to channeliD
 		channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
+		//if(bouquetList->Bouquets.size() && bouquetList->Bouquets[activBouquet]->channelList->getSize() > 0)
+		//	bouquetList->Bouquets[activBouquet]->channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
 
 		// start epg scanning
 		CSectionsd::getInstance()->pauseScanning(false);
@@ -3300,9 +3314,9 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 			if( msg == CRCInput::RC_ok ) 
 			{
 				if(bouquetList->Bouquets.size() && bouquetList->Bouquets[old_b]->channelList->getSize() > 0)
-					nNewChannel = bouquetList->Bouquets[old_b]->channelList->exec();//with ZAP!
+					nNewChannel = bouquetList->Bouquets[old_b]->channelList->exec();
 				else
-					nNewChannel = bouquetList->exec();	//with zap
+					nNewChannel = bouquetList->exec();
 			}
 			else if(msg == CRCInput::RC_sat) 
 			{
@@ -4039,7 +4053,17 @@ void CNeutrinoApp::realRun(void)
 				stopSubtitles();
 				
 				// Zap-History "Bouquet"
-				int res = channelList->numericZap( msg );
+				//int res = channelList->numericZap( msg );
+				int activBouquet = 0;
+				
+				if(bouquetList->Bouquets.size())
+				{ 
+					activBouquet = bouquetList->getActiveBouquetNumber();
+					//activChannel = bouquetList->Bouquets[activBouquet]->channelList->getActiveChannelNumber();
+				}
+				////
+				
+				int res = bouquetList->Bouquets[activBouquet]->channelList->numericZap( msg );
 
 				startSubtitles(res < 0);
 			}
@@ -4048,7 +4072,17 @@ void CNeutrinoApp::realRun(void)
 				stopSubtitles();
 				
 				// Quick Zap
-				int res = channelList->numericZap( msg );
+				//int res = channelList->numericZap( msg );
+				int activBouquet = 0;
+				
+				if(bouquetList->Bouquets.size())
+				{ 
+					activBouquet = bouquetList->getActiveBouquetNumber();
+					//activChannel = bouquetList->Bouquets[activBouquet]->channelList->getActiveChannelNumber();
+				}
+				////
+				
+				int res = bouquetList->Bouquets[activBouquet]->channelList->numericZap( msg );
 
 				startSubtitles(res < 0);
 			}
@@ -4375,7 +4409,17 @@ void CNeutrinoApp::realRun(void)
 
 				stopSubtitles();
 				
-				channelList->numericZap( msg );
+				////
+				int activBouquet = 0;
+				
+				if(bouquetList->Bouquets.size())
+				{ 
+					activBouquet = bouquetList->getActiveBouquetNumber();
+					//activChannel = bouquetList->Bouquets[activBouquet]->channelList->getActiveChannelNumber();
+				}
+				////
+				
+				bouquetList->Bouquets[activBouquet]->channelList->numericZap( msg );
 				
 				startSubtitles();
 			}			
@@ -4406,7 +4450,17 @@ void CNeutrinoApp::realRun(void)
 				stopSubtitles();
 				
 				// first step show channels from the same TP
-				channelList->numericZap( msg );
+				//channelList->numericZap( msg );
+				int activBouquet = 0;
+				
+				if(bouquetList->Bouquets.size())
+				{ 
+					activBouquet = bouquetList->getActiveBouquetNumber();
+					//activChannel = bouquetList->Bouquets[activBouquet]->channelList->getActiveChannelNumber();
+				}
+				////
+				
+				bouquetList->Bouquets[activBouquet]->channelList->numericZap( msg );
 				
 				startSubtitles();
 			}
@@ -4694,8 +4748,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 			if (parser != NULL) 
 			{	
 				tzSelect = new CMenuOptionStringChooser(_("Time Zone"), g_settings.timezone, true, new CTZChangeNotifier(), CRCInput::RC_nokey, "", true);
-				
-				tzSelect->msg = CRCInput::RC_ok;
 
 				xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode;
 				bool found = false;
