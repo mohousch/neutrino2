@@ -53,6 +53,15 @@ extern "C" {
 #include <jpeglib.h>
 }
 
+#ifndef __DARWIN_LITTLE_ENDIAN
+#include <byteswap.h>
+#else
+
+#define bswap_16(value) \
+((((value) & 0xff) << 8) | ((value) >> 8))
+
+#endif
+
 #include <system/settings.h>
 #include <system/debug.h>
 

@@ -153,9 +153,10 @@ int COSDSettings::showMenu(void)
 		osdSettings->addItem(new CMenuForwarder(_("Screen"), true, NULL, new CScreenSetup(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCREENSETUP));
 		
 		// alpha setup
-		//FIXME:
-		//CAlphaSetup * chAlphaSetup = new CAlphaSetup(_("Alpha"), &g_settings.gtx_alpha);
-		//osdSettings->addItem( new CMenuForwarder(_("Alpha Setup"), true, NULL, chAlphaSetup, NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_ALPHASETUP));
+#ifdef __sh__
+		CAlphaSetup * chAlphaSetup = new CAlphaSetup(_("Alpha"), &g_settings.gtx_alpha);
+		osdSettings->addItem( new CMenuForwarder(_("Alpha Setup"), true, NULL, chAlphaSetup, NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_ALPHASETUP));	
+#endif
 		
 		// personalize
 		if (g_settings.preferred_skin == "standard")
@@ -353,7 +354,7 @@ void COSDMenuColorSettings::showMenu()
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Gradient type"), &g_settings.Head_gradient_type, GRADIENT_TYPE_OPTIONS, GRADIENT_TYPE_OPTION_COUNT, true));
 	
 	// head corner
-	//OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.Head_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));
+	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.Head_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));
 	
 	// head radius
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Radius"), &g_settings.Head_radius, RADIUS_TYPE_OPTIONS, RADIUS_TYPE_OPTION_COUNT, true));
@@ -392,7 +393,7 @@ void COSDMenuColorSettings::showMenu()
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Gradient type"), &g_settings.Foot_gradient_type, GRADIENT_TYPE_OPTIONS, GRADIENT_TYPE_OPTION_COUNT, true));
 	
 	// foot corner
-	//OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.Foot_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));
+	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.Foot_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));
 	
 	// foot radius
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Radius"), &g_settings.Foot_radius, RADIUS_TYPE_OPTIONS, RADIUS_TYPE_OPTION_COUNT, true));
@@ -425,7 +426,7 @@ void COSDMenuColorSettings::showMenu()
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Radius"), &g_settings.Hint_radius, RADIUS_TYPE_OPTIONS, RADIUS_TYPE_OPTION_COUNT, true));
 	
 	// itemInfo corner
-	//OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.Hint_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));
+	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.Hint_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));
 	
 	// sep gradient
 	OSDmenuColorsSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Separator")));
@@ -444,69 +445,6 @@ void COSDMenuColorSettings::showMenu()
 	
 	//
 	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
-}
-
-//// color setup notifier
-bool CColorSetupNotifier::changeNotify(const std::string&, void *)
-{
-	dprintf(DEBUG_INFO, "CColorSetupNotifier::changeNotify:\n");
-	
-	CFrameBuffer *frameBuffer = CFrameBuffer::getInstance();
-	
-	// head
-	frameBuffer->paletteGenFade(COL_MENUHEAD, convertSetupColor2RGB(g_settings.menu_Head_red, g_settings.menu_Head_green, g_settings.menu_Head_blue), convertSetupColor2RGB(g_settings.menu_Head_Text_red, g_settings.menu_Head_Text_green, g_settings.menu_Head_Text_blue), 8, convertSetupAlpha2Alpha( g_settings.menu_Head_alpha ));
-
-	// menu content
-	frameBuffer->paletteGenFade(COL_MENUCONTENT, convertSetupColor2RGB(g_settings.menu_Content_red, g_settings.menu_Content_green, g_settings.menu_Content_blue), convertSetupColor2RGB(g_settings.menu_Content_Text_red, g_settings.menu_Content_Text_green, g_settings.menu_Content_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha) );
-
-	// menu content dark
-	frameBuffer->paletteGenFade(COL_MENUCONTENTDARK, convertSetupColor2RGB(int(g_settings.menu_Content_red*0.6), int(g_settings.menu_Content_green*0.6), int(g_settings.menu_Content_blue*0.6)), convertSetupColor2RGB(g_settings.menu_Content_Text_red, g_settings.menu_Content_Text_green, g_settings.menu_Content_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha) );
-
-	// menu content selected
-	frameBuffer->paletteGenFade(COL_MENUCONTENTSELECTED, convertSetupColor2RGB(g_settings.menu_Content_Selected_red, g_settings.menu_Content_Selected_green, g_settings.menu_Content_Selected_blue), convertSetupColor2RGB(g_settings.menu_Content_Selected_Text_red, g_settings.menu_Content_Selected_Text_green, g_settings.menu_Content_Selected_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.menu_Content_Selected_alpha) );
-
-	// menu content inactiv
-	frameBuffer->paletteGenFade(COL_MENUCONTENTINACTIVE, convertSetupColor2RGB(g_settings.menu_Content_inactive_red, g_settings.menu_Content_inactive_green, g_settings.menu_Content_inactive_blue), convertSetupColor2RGB(g_settings.menu_Content_inactive_Text_red, g_settings.menu_Content_inactive_Text_green, g_settings.menu_Content_inactive_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.menu_Content_inactive_alpha) );
-
-	// foot
-	frameBuffer->paletteGenFade(COL_MENUFOOT, convertSetupColor2RGB(g_settings.menu_Foot_red, g_settings.menu_Foot_green, g_settings.menu_Foot_blue), convertSetupColor2RGB(g_settings.menu_Foot_Text_red, g_settings.menu_Foot_Text_green, g_settings.menu_Foot_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.menu_Foot_alpha) );
-
-	// infobar
-	frameBuffer->paletteGenFade(COL_INFOBAR, convertSetupColor2RGB(g_settings.infobar_red, g_settings.infobar_green, g_settings.infobar_blue), convertSetupColor2RGB(g_settings.infobar_Text_red, g_settings.infobar_Text_green, g_settings.infobar_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
-
-	// infobar shadow
-	frameBuffer->paletteGenFade(COL_INFOBAR_SHADOW, convertSetupColor2RGB(int(g_settings.infobar_red*0.4), int(g_settings.infobar_green*0.4), int(g_settings.infobar_blue*0.4)), convertSetupColor2RGB(g_settings.infobar_Text_red, g_settings.infobar_Text_green, g_settings.infobar_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
-
-	// hint
-	frameBuffer->paletteGenFade(COL_MENUHINT, convertSetupColor2RGB(g_settings.menu_Hint_red, g_settings.menu_Hint_green, g_settings.menu_Hint_blue), convertSetupColor2RGB(g_settings.menu_Hint_Text_red, g_settings.menu_Hint_Text_green, g_settings.menu_Hint_Text_blue), 8, convertSetupAlpha2Alpha( g_settings.menu_Hint_alpha ) );
-	
-	// menu content inactiv text
-	frameBuffer->paletteSetColor(COL_MENUCONTENTINACTIVE_TEXT, convertSetupColor2RGB(g_settings.menu_Content_inactive_Text_red, g_settings.menu_Content_inactive_Text_green, g_settings.menu_Content_inactive_Text_blue), convertSetupAlpha2Alpha(g_settings.menu_Content_inactive_alpha) );
-	
-	// menu content selected text
-	frameBuffer->paletteSetColor(COL_MENUCONTENTSELECTED_TEXT,	convertSetupColor2RGB(g_settings.menu_Content_Selected_Text_red, g_settings.menu_Content_Selected_Text_green, g_settings.menu_Content_Selected_Text_blue), convertSetupAlpha2Alpha(g_settings.menu_Content_Selected_alpha) );
-	
-	// menu content text
-	frameBuffer->paletteSetColor(COL_MENUCONTENT_TEXT, convertSetupColor2RGB(g_settings.menu_Content_Text_red, g_settings.menu_Content_Text_green, g_settings.menu_Content_Text_blue), convertSetupAlpha2Alpha(g_settings.menu_Content_alpha) );
-	
-	// head text
-	frameBuffer->paletteSetColor(COL_MENUHEAD_TEXT, convertSetupColor2RGB(g_settings.menu_Head_Text_red, g_settings.menu_Head_Text_green, g_settings.menu_Head_Text_blue), convertSetupAlpha2Alpha( g_settings.menu_Head_alpha ));
-	
-	// foot text
-	frameBuffer->paletteSetColor(COL_MENUFOOT_TEXT, convertSetupColor2RGB(g_settings.menu_Foot_Text_red, g_settings.menu_Foot_Text_green, g_settings.menu_Foot_Text_blue), convertSetupAlpha2Alpha(g_settings.menu_Foot_alpha) );
-	
-	// infobar text
-	frameBuffer->paletteSetColor(COL_INFOBAR_TEXT, convertSetupColor2RGB(g_settings.infobar_Text_red, g_settings.infobar_Text_green, g_settings.infobar_Text_blue), convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
-
-	// infobar colored events text
-	frameBuffer->paletteSetColor(COL_INFOBAR_COLORED_EVENTS_TEXT, convertSetupColor2RGB(g_settings.infobar_colored_events_red, g_settings.infobar_colored_events_green, g_settings.infobar_colored_events_blue), convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
-
-	// hint text
-	frameBuffer->paletteSetColor(COL_MENUHINT_TEXT, convertSetupColor2RGB(g_settings.menu_Hint_Text_red, g_settings.menu_Hint_Text_green, g_settings.menu_Hint_Text_blue), convertSetupAlpha2Alpha( g_settings.menu_Hint_alpha ) );
-
-	frameBuffer->paletteSet();
-
-	return false;
 }
 
 //// osd infobarcolor settings
@@ -624,7 +562,7 @@ void COSDInfoBarColorSettings::showMenu()
 	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Gradient type"), &g_settings.infobar_gradient_type, GRADIENT_TYPE_OPTIONS, GRADIENT_TYPE_OPTION_COUNT, true));
 	
 	// corner
-	//OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.infobar_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));
+	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.infobar_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));
 	
 	// radius
 	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Radius"), &g_settings.infobar_radius, RADIUS_TYPE_OPTIONS, RADIUS_TYPE_OPTION_COUNT, true));
@@ -649,14 +587,10 @@ void COSDInfoBarColorSettings::showMenu()
 	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
-// osd language settings
+//// osd language settings
 CLanguageSettings::CLanguageSettings(bool wizzard)
 {
 	fromStartWizzard = wizzard;
-}
-
-CLanguageSettings::~CLanguageSettings()
-{
 }
 
 int CLanguageSettings::exec(CMenuTarget *parent, const std::string &actionKey)
@@ -800,21 +734,6 @@ int CLanguageSettings::showMenu()
 	
 	return res;
 }
-
-bool CLanguageSettings::changeNotify(const std::string& OptionName, void */*data*/)
-{
-	if (OptionName == _("Select language"))
-	{
-		dprintf(DEBUG_NORMAL, "CLanguageSettings::changeNotify: %s\n", g_settings.language);
-		
-		g_Locale->loadLocale(Lang2I18N(g_settings.language).c_str());
-
-		return true;
-	}
-	
-	return false;
-}
-
 
 //// CFontSettings
 int CFontSettings::exec(CMenuTarget* parent, const std::string& actionKey)

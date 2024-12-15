@@ -900,7 +900,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 		pos = 0;
 	}
 	
-	dprintf(DEBUG_NORMAL, "CChannelList::zapTo (%s) tuned %d new %d %s id: 0x%llx\n", name.c_str(), tuned, pos, chanlist[pos]->name.c_str(), chanlist[pos]->channel_id);
+	dprintf(DEBUG_NORMAL, "CChannelList::zapTo (%s) tuned %d new %d (%s) id: 0x%llx\n", name.c_str(), tuned, pos, chanlist[pos]->name.c_str(), chanlist[pos]->channel_id);
 	
 	if ( (pos != (int)tuned) || rezap ) //FIXME: allow after scan to tun
 	{ 
@@ -1320,7 +1320,7 @@ void CChannelList::virtual_zap_mode(bool up)
 
 void CChannelList::quickZap(int key, bool cycle)
 {
-	dprintf(DEBUG_NORMAL, "CChannelList::quickZap:\n");
+	dprintf(DEBUG_NORMAL, "CChannelList::quickZap: (%s) key:0x%x cycle:%s\n", name.c_str(), key, cycle? "true" : "false");
 	
         if(chanlist.size() == 0)
                 return;
@@ -1339,9 +1339,9 @@ void CChannelList::quickZap(int key, bool cycle)
 
 	dprintf(DEBUG_NORMAL, "CChannelList::quickZap: quick zap selected = %d getActiveBouquetNumber %d\n", selected, bouquetList->getActiveBouquetNumber());
 
-	if(cycle)
-		bouquetList->orgChannelList->zapTo(bouquetList->Bouquets[bouquetList->getActiveBouquetNumber()]->channelList->getKey(selected) - 1);
-	else
+//	if(cycle)
+//		bouquetList->orgChannelList->zapTo(bouquetList->Bouquets[bouquetList->getActiveBouquetNumber()]->channelList->getKey(selected) - 1);
+//	else
         	zapTo(selected);
 
 	g_RCInput->clearRCMsg(); //FIXME test for n.103

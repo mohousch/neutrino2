@@ -564,7 +564,7 @@ class CZapit
 		bool startScan(commandScanProvider &msg);
 		bool stopScan();
 		//
-		void Start(Zapit_config zapitCfg);
+		void Start();
 		void Stop();
 };
 

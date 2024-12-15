@@ -63,8 +63,6 @@ static const char* const colorchooser_names[4] =
 
 CColorChooser::CColorChooser(const char * const Name, unsigned char *R, unsigned char *G, unsigned char *B, unsigned char* Alpha) // UTF-8
 {
-	notifier = NULL;
-
 	name = Name? Name : "";
 	
 	frameBuffer = CFrameBuffer::getInstance();
@@ -272,10 +270,7 @@ int CColorChooser::exec(CMenuTarget* parent, const std::string&)
 	hide();
 
 	//
-	notifier = new CColorSetupNotifier();
-	notifier->changeNotify("", NULL);
-	delete notifier;
-	notifier = NULL;
+	::setupColor();
 
 	return res;
 }

@@ -54,8 +54,6 @@ class CColorChooser : public CMenuTarget
 
 		std::string name;
 
-		CColorSetupNotifier * notifier;
-
 		void paint();
 		void setColor();
 		void paintSlider(int x, int y, unsigned char *spos, const char* const text, const char * const iconname, const bool selected);

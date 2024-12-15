@@ -3221,15 +3221,9 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 		
 		// progressbar color
 		g_settings.progressbar_color = skin_configfile.getInt32("progressbar_color", 1);
-		
-		// font
-//		strcpy( g_settings.font_file, skin_configfile.getString( "font_file", DATADIR "/fonts/arial.ttf" ).c_str() );
 
 		// setup colors
-		CColorSetupNotifier *colorSetupNotifier = new CColorSetupNotifier();
-		colorSetupNotifier->changeNotify("", NULL);
-		
-		delete colorSetupNotifier;
+		::setupColor();
 	}
 	else
 		printf("CNeutrinoApp::readSkinConfig: %s not found\n", filename);
@@ -3346,9 +3340,6 @@ void CNeutrinoApp::saveSkinConfig(const char * const filename)
 	
 	// progressbar color
 	skin_configfile.setInt32("progressbar_color", g_settings.progressbar_color);
-
-	// font		
-//	skin_configfile.setString("font_file", g_settings.font_file);
 
 	if (!skin_configfile.saveConfig(filename))
 		printf("CNeutrinoApp::saveSkinConfig %s write error\n", filename);

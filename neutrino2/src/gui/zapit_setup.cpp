@@ -36,8 +36,7 @@
 #include <system/debug.h>
 
 
-//// globals
-extern Zapit_config zapitCfg;
+Zapit_config zapitCfg;
 
 //option off0_on1
 #define OPTIONS_OFF0_ON1_OPTION_COUNT 2
@@ -58,8 +57,8 @@ const keyval OPTIONS_OFF1_ON0_OPTIONS[OPTIONS_OFF1_ON0_OPTION_COUNT] =
 #define OPTIONS_LASTMODE_OPTION_COUNT 2
 const keyval OPTIONS_LASTMODE_OPTIONS[OPTIONS_LASTMODE_OPTION_COUNT] =
 {
-	{ CNeutrinoApp::mode_tv, "TV" },
-        { CNeutrinoApp::mode_radio, "Radio" },
+	{ CZapit::TV_MODE, "TV" },
+	{ CZapit::RADIO_MODE, "Radio" }
 };
 
 CZapitSetup::CZapitSetup()
@@ -105,7 +104,6 @@ int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		CSelectChannelWidgetHandler = NULL;
 		
 		//
-//		setValueString(g_settings.StartChannelTV.c_str());
 		m3->addOption(g_settings.StartChannelTV.c_str());
 		
 		return CMenuTarget::RETURN_REPAINT;
@@ -123,20 +121,19 @@ int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		CSelectChannelWidgetHandler = NULL;
 		
 		//
-//		setValueString(g_settings.StartChannelRadio.c_str());
 		m4->addOption(g_settings.StartChannelRadio.c_str());
 		
 		return CMenuTarget::RETURN_REPAINT;
 	}
 	else if (actionKey == "savesettings")
 	{
-		// save zapitconfig	
+		// save zapitconfig
 		zapitCfg.saveLastChannel = !g_settings.uselastchannel;
-		zapitCfg.lastchannelmode = g_settings.lastChannelMode;
-		zapitCfg.startchanneltv_nr = g_settings.startchanneltv_nr;
-		zapitCfg.startchannelradio_nr = g_settings.startchannelradio_nr;
-		zapitCfg.startchanneltv_id = g_settings.startchanneltv_id;
-		zapitCfg.startchannelradio_id = g_settings.startchannelradio_id;
+		zapitCfg.lastChannelMode = g_settings.lastChannelMode;
+		zapitCfg.lastChannelTV = g_settings.startchanneltv_nr;
+		zapitCfg.lastChannelRadio = g_settings.startchannelradio_nr;
+		zapitCfg.lastChannelTV_id = g_settings.startchanneltv_id;
+		zapitCfg.lastChannelRadio_id = g_settings.startchannelradio_id;
 		
 		CZapit::getInstance()->setZapitConfig(&zapitCfg);
 		
@@ -206,10 +203,10 @@ void CZapitSetup::showMenu()
 	bool activTV = false;
 	bool activRadio = false;
 
-	if( (g_settings.uselastchannel) && (g_settings.lastChannelMode == CNeutrinoApp::mode_tv) )
+	if( (g_settings.uselastchannel) && (g_settings.lastChannelMode == CZapit::TV_MODE) )
 		activTV = true;
 
-	if( (g_settings.uselastchannel) && (g_settings.lastChannelMode == CNeutrinoApp::mode_radio) )
+	if( (g_settings.uselastchannel) && (g_settings.lastChannelMode == CZapit::RADIO_MODE) )
 		activRadio = true;
 
 	// last TV channel
@@ -264,10 +261,10 @@ bool CZapitSetupNotifier::changeNotify(const std::string& OptionName, void *)
 		bool activTV = false;
 		bool activRadio = false;
 
-		if( (g_settings.uselastchannel) && (g_settings.lastChannelMode == CNeutrinoApp::mode_tv) )
+		if( (g_settings.uselastchannel) && (g_settings.lastChannelMode == CZapit::TV_MODE) )
 			activTV = true;
 
-		if( (g_settings.uselastchannel) && (g_settings.lastChannelMode == CNeutrinoApp::mode_radio) )
+		if( (g_settings.uselastchannel) && (g_settings.lastChannelMode == CZapit::RADIO_MODE) )
 			activRadio = true;
 
 		zapit1->setActive(g_settings.uselastchannel);

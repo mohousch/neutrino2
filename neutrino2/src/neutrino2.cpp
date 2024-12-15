@@ -191,7 +191,6 @@ static CCProgressBar * g_volscale;
 int prev_video_Mode;
 int current_volume;
 int current_muted;
-Zapit_config zapitCfg;
 // bouquets lists
 CBouquetList* bouquetList; 				//current bqt list
 //
@@ -1541,14 +1540,14 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 	TVallList = new CBouquetList(_("All Services"));
 	tmp = TVallList->addBouquet(_("All Services"));
 	*(tmp->channelList) = *TVchannelList;
-	//tmp->channelList->SortAlpha();
+	tmp->channelList->SortAlpha();
 	TVallList->orgChannelList = TVchannelList;
 
 	// radio all list
 	RADIOallList = new CBouquetList(_("All Services"));
 	tmp = RADIOallList->addBouquet(_("All Services"));
 	*(tmp->channelList) = *RADIOchannelList;
-	//tmp->channelList->SortAlpha();
+	tmp->channelList->SortAlpha();
 	RADIOallList->orgChannelList = RADIOchannelList;
 
 	// sat
@@ -1612,6 +1611,8 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 				ltmp->channelList->addChannel((*channels)[j]);
 			}
 			bnum++;
+			
+			ltmp->channelList->SortAlpha();
 		}
 	}
 	
@@ -1641,6 +1642,8 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 				ltmp->channelList->addChannel((*channels)[j]);
 			}
 			bnum++;
+			
+			ltmp->channelList->SortAlpha();
 		}
 	}
 
@@ -2143,13 +2146,8 @@ void CNeutrinoApp::initZapper()
 	
 	if(channelList->getSize() && CZapit::getInstance()->getCurrentChannelID())
 	{
-		////test
-		printf("CNeutrinoApp::initZapper: channellist name:%s\n", bouquetList->Bouquets[activBouquet]->channelList->getName());
-		
 		// channellist adjust to channeliD
 		channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
-		//if(bouquetList->Bouquets.size() && bouquetList->Bouquets[activBouquet]->channelList->getSize() > 0)
-		//	bouquetList->Bouquets[activBouquet]->channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
 
 		// start epg scanning
 		CSectionsd::getInstance()->pauseScanning(false);
@@ -2171,7 +2169,7 @@ void CNeutrinoApp::initZapper()
 // quickZap
 void CNeutrinoApp::quickZap(int msg)
 {
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::quickZap:\n");
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::quickZap: key:0x%x\n", msg);
 	
 	stopSubtitles();
 	
@@ -4053,15 +4051,12 @@ void CNeutrinoApp::realRun(void)
 				stopSubtitles();
 				
 				// Zap-History "Bouquet"
-				//int res = channelList->numericZap( msg );
 				int activBouquet = 0;
 				
 				if(bouquetList->Bouquets.size())
 				{ 
 					activBouquet = bouquetList->getActiveBouquetNumber();
-					//activChannel = bouquetList->Bouquets[activBouquet]->channelList->getActiveChannelNumber();
 				}
-				////
 				
 				int res = bouquetList->Bouquets[activBouquet]->channelList->numericZap( msg );
 
@@ -4072,15 +4067,12 @@ void CNeutrinoApp::realRun(void)
 				stopSubtitles();
 				
 				// Quick Zap
-				//int res = channelList->numericZap( msg );
 				int activBouquet = 0;
 				
 				if(bouquetList->Bouquets.size())
 				{ 
 					activBouquet = bouquetList->getActiveBouquetNumber();
-					//activChannel = bouquetList->Bouquets[activBouquet]->channelList->getActiveChannelNumber();
 				}
-				////
 				
 				int res = bouquetList->Bouquets[activBouquet]->channelList->numericZap( msg );
 
@@ -4409,15 +4401,13 @@ void CNeutrinoApp::realRun(void)
 
 				stopSubtitles();
 				
-				////
+				//
 				int activBouquet = 0;
 				
 				if(bouquetList->Bouquets.size())
 				{ 
 					activBouquet = bouquetList->getActiveBouquetNumber();
-					//activChannel = bouquetList->Bouquets[activBouquet]->channelList->getActiveChannelNumber();
 				}
-				////
 				
 				bouquetList->Bouquets[activBouquet]->channelList->numericZap( msg );
 				
@@ -4450,15 +4440,12 @@ void CNeutrinoApp::realRun(void)
 				stopSubtitles();
 				
 				// first step show channels from the same TP
-				//channelList->numericZap( msg );
 				int activBouquet = 0;
 				
 				if(bouquetList->Bouquets.size())
 				{ 
 					activBouquet = bouquetList->getActiveBouquetNumber();
-					//activChannel = bouquetList->Bouquets[activBouquet]->channelList->getActiveChannelNumber();
 				}
-				////
 				
 				bouquetList->Bouquets[activBouquet]->channelList->numericZap( msg );
 				
@@ -4548,10 +4535,11 @@ int CNeutrinoApp::run(int argc, char **argv)
 	setupFonts(g_settings.font_file);
 	
 	// setup color
-	CColorSetupNotifier *colorSetupNotifier = new CColorSetupNotifier();
-	colorSetupNotifier->changeNotify("", NULL);
-	delete colorSetupNotifier;
-	colorSetupNotifier = NULL;
+//	CColorSetupNotifier *colorSetupNotifier = new CColorSetupNotifier();
+//	colorSetupNotifier->changeNotify("", NULL);
+//	delete colorSetupNotifier;
+//	colorSetupNotifier = NULL;
+	::setupColor();
 	
 	// init remote control defore CLCD otherwise CLCD crashes
 	g_RemoteControl = new CRemoteControl();
@@ -4584,14 +4572,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 	
 	// load selected skin
 	loadSkin(g_settings.preferred_skin);
-	
-	// zapit	
-	zapitCfg.lastchannelmode = g_settings.lastChannelMode;
-	zapitCfg.startchanneltv_id = g_settings.startchanneltv_id;
-	zapitCfg.startchannelradio_id = g_settings.startchannelradio_id;
-	zapitCfg.startchanneltv_nr = g_settings.startchanneltv_nr;
-	zapitCfg.startchannelradio_nr = g_settings.startchannelradio_nr;
-	zapitCfg.saveLastChannel = !g_settings.uselastchannel;
 	
 	current_volume = g_settings.current_volume;
 
@@ -4640,7 +4620,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 #endif
 	
 	// zapit
-	CZapit::getInstance()->Start(zapitCfg);
+	CZapit::getInstance()->Start();
 	
 	// sectionsd
 	CSectionsd::getInstance()->Start();

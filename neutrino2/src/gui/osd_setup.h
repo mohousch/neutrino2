@@ -45,13 +45,6 @@ class COSDSettings : public CMenuTarget
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
 
-////
-class CColorSetupNotifier : public CChangeObserver
-{
-	public:
-		bool changeNotify(const std::string&, void *);
-};
-
 //// osd menucolor settings
 class COSDMenuColorSettings : public CMenuTarget
 {
@@ -79,7 +72,7 @@ class COSDInfoBarColorSettings : public CMenuTarget
 };
 
 // osd language settings
-class CLanguageSettings : public CMenuTarget, CChangeObserver
+class CLanguageSettings : public CMenuTarget
 {
 	private:
 		bool fromStartWizzard;
@@ -87,9 +80,7 @@ class CLanguageSettings : public CMenuTarget, CChangeObserver
 		
 	public:
 		CLanguageSettings(bool wizzard = false);
-		virtual ~CLanguageSettings();
-		
-		bool changeNotify(const std::string& OptionName, void *);
+		virtual ~CLanguageSettings(){};
 		
 		int exec(CMenuTarget *parent, const std::string &actionKey);
 };

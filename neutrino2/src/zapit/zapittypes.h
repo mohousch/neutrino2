@@ -325,11 +325,11 @@ typedef struct Zapit_config {
 	bool makeRemainingChannelsBouquet;
 	int scanSDT;
 	bool saveLastChannel;
-	int lastchannelmode;
-	t_channel_id startchanneltv_id;
-	t_channel_id startchannelradio_id;
-	uint32_t startchanneltv_nr;
-	uint32_t startchannelradio_nr;
+	int lastChannelMode;
+	t_channel_id lastChannelTV_id;
+	t_channel_id lastChannelRadio_id;
+	uint32_t lastChannelTV;
+	uint32_t lastChannelRadio;
 } t_zapit_config;
 
 // fetype

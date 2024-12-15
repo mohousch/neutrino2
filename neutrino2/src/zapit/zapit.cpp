@@ -774,7 +774,6 @@ void CZapit::loadFrontendConfig()
 			fe->lastSatellitePosition = getConfigValue(fe, "lastSatellitePosition", 0);
 		}
 		
-		////
 		// set loop frontend as slave 
 		bool setslave = ( fe->mode == FE_LOOP );
 		
@@ -916,7 +915,7 @@ void CZapit::saveZapitSettings(bool write, bool write_a)
 	{
 		config.setBool("saveLastChannel", saveLastChannel);
 		
-		//if (config.getBool("saveLastChannel", true)) 
+		if (config.getBool("saveLastChannel", true)) 
 		{
 			if (currentMode & RADIO_MODE)
 			{
@@ -926,11 +925,16 @@ void CZapit::saveZapitSettings(bool write, bool write_a)
 			{
 				config.setInt32("lastChannelMode", TV_MODE);
 			}
-
-			config.setInt32("lastChannelRadio", lastChannelRadio);
-			config.setInt32("lastChannelTV", lastChannelTV);
-			config.setInt64("lastChannel", live_channel_id);
 		}
+		else
+		{
+			config.setInt32("lastChannelMode", lastChannelMode);
+		}
+		
+		//
+		config.setInt32("lastChannelRadio", lastChannelRadio);
+		config.setInt32("lastChannelTV", lastChannelTV);
+		config.setInt64("lastChannel", live_channel_id);
 		
 		config.setInt64("lastChannelTV_id", lastChannelTV_id);
 		config.setInt64("lastChannelRadio_id", lastChannelRadio_id);
@@ -1745,7 +1749,6 @@ void CZapit::renumServices(void)
 	int tvi = 1;
 	int ri = 1;
 	
-#if 1
 	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++) 
 	{
 		if ((it->second.getServiceType() == ST_DIGITAL_TELEVISION_SERVICE)) 
@@ -1756,8 +1759,7 @@ void CZapit::renumServices(void)
 		{
 			it->second.setNumber(ri++);
 		}
-	}
-#endif	
+	}	
 }
 
 void CZapit::readEPGMapping()
@@ -1812,7 +1814,7 @@ int CZapit::prepareChannels()
 	// clear all channels/bouquets/TP's lists
 	transponders.clear();
 	clearAll();
-	allchans.clear();  				// <- this invalidates all bouquets, too!
+	allchans.clear();
 	
 	// load frontend config
 	loadFrontendConfig();
@@ -3599,11 +3601,11 @@ void CZapit::setZapitConfig(Zapit_config * Cfg)
 	saveLastChannel = Cfg->saveLastChannel;
 	scanSDT = Cfg->scanSDT;
 	////
-	lastChannelMode = Cfg->lastchannelmode;
-	lastChannelTV = Cfg->startchanneltv_nr;
-	lastChannelRadio = Cfg->startchannelradio_nr;
-	lastChannelTV_id = Cfg->startchanneltv_id;
-	lastChannelRadio_id = Cfg->startchannelradio_id;
+	lastChannelMode = Cfg->lastChannelMode;
+	lastChannelTV = Cfg->lastChannelTV;
+	lastChannelRadio = Cfg->lastChannelRadio;
+	lastChannelTV_id = Cfg->lastChannelTV_id;
+	lastChannelRadio_id = Cfg->lastChannelRadio_id;
 	
 	// save it
 	saveZapitSettings(true, false);
@@ -3615,11 +3617,11 @@ void CZapit::getZapitConfig(Zapit_config *Cfg)
         Cfg->saveLastChannel = saveLastChannel;
         Cfg->scanSDT = scanSDT;
         ////
-        Cfg->lastchannelmode = lastChannelMode;
-        Cfg->startchanneltv_nr = lastChannelTV;
-        Cfg->startchannelradio_nr = lastChannelRadio;
-        Cfg->startchanneltv_id = lastChannelTV_id;
-        Cfg->startchannelradio_id = lastChannelRadio_id;
+        Cfg->lastChannelMode = lastChannelMode;
+        Cfg->lastChannelTV = lastChannelTV;
+        Cfg->lastChannelRadio = lastChannelRadio;
+        Cfg->lastChannelTV_id = lastChannelTV_id;
+        Cfg->lastChannelRadio_id = lastChannelRadio_id;
 }
 
 //
@@ -6565,7 +6567,7 @@ void CZapit::saveServices(bool tocopy)
 }
 
 //
-void CZapit::Start(Zapit_config zapitCfg)
+void CZapit::Start()
 {
 	dprintf(DEBUG_NORMAL, "CZapit::Start\n");	
 	
@@ -6616,7 +6618,7 @@ void CZapit::Start(Zapit_config zapitCfg)
 	prepareChannels();
 	
 	//
-	if (zapitCfg.saveLastChannel)
+	if (saveLastChannel)
 	{
 		if (lastChannelMode == RADIO_MODE)
 			setRadioMode();
@@ -6626,19 +6628,16 @@ void CZapit::Start(Zapit_config zapitCfg)
 	else // start channel
 	{
 		// mode
-		if (zapitCfg.lastchannelmode == RADIO_MODE)
+		if (lastChannelMode == RADIO_MODE)
 			setRadioMode();
-		else if (zapitCfg.lastchannelmode == TV_MODE)
+		else if (lastChannelMode == TV_MODE)
 			setTVMode();
 		
 		// live channel id
 		if (currentMode & RADIO_MODE)
-			live_channel_id = zapitCfg.startchannelradio_id;
+			live_channel_id = lastChannelRadio_id;
 		else if (currentMode & TV_MODE)
-			live_channel_id = zapitCfg.startchanneltv_id;
-			
-		lastChannelTV = zapitCfg.startchanneltv_nr;
-		lastChannelRadio = zapitCfg.startchannelradio_nr;
+			live_channel_id = lastChannelTV_id;
 	}
 
 	//create sdt thread
