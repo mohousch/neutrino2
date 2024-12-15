@@ -122,7 +122,7 @@ static int writeData(void* _call)
 		return 0;
 	}
 
-	memset (PesHeader, '0', PES_AUDIO_HEADER_SIZE);
+	memset(PesHeader, '0', PES_AUDIO_HEADER_SIZE);
 
 	Data = (unsigned char *) malloc(call->len);
 	memcpy(Data, call->data, call->len);
@@ -131,11 +131,11 @@ static int writeData(void* _call)
 	for (i = 0; i < call->len; i += 2)
 	{
 		unsigned char Tmp = Data[i];
-		Data[i] = Data[i+1];
-		Data[i+1] = Tmp;
+		Data[i] = Data[i + 1];
+		Data[i + 1] = Tmp;
 	}
 
-	int HeaderLength    = InsertPesHeader (PesHeader, call->len, MPEG_AUDIO_PES_START_CODE, call->Pts, 0);
+	int HeaderLength = InsertPesHeader (PesHeader, call->len, MPEG_AUDIO_PES_START_CODE, call->Pts, 0);
 	unsigned char* PacketStart = malloc(call->len + HeaderLength);
 	memcpy (PacketStart, PesHeader, HeaderLength);
 	memcpy (PacketStart + HeaderLength, call->data, call->len);
@@ -182,5 +182,4 @@ struct Writer_s WriterAudioDTSHD = {
 	NULL,
 	&caps_dtshd
 };
-
 

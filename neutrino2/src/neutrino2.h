@@ -135,6 +135,7 @@ class CNeutrinoApp : public CMenuTarget
 		////
 		void saveSetup(const char * fname);
 		int loadSetup(const char * fname);
+		void setupColor(void);
 		void setupFonts(const char* font_file);
 		//// skin
 		void loadSkin(std::string skinName);

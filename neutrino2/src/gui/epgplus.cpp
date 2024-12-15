@@ -663,7 +663,7 @@ void EpgPlus::createChannelEntries (int selectedChannelEntryIndex)
 
 void EpgPlus::init()
 {
-	frameBuffer = CFrameBuffer::getInstance ();
+	frameBuffer = CFrameBuffer::getInstance();
 	usableScreenWidth = g_settings.screen_EndX;
 	usableScreenHeight = g_settings.screen_EndY;
 	

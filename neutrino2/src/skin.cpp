@@ -3223,7 +3223,7 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 		g_settings.progressbar_color = skin_configfile.getInt32("progressbar_color", 1);
 
 		// setup colors
-		::setupColor();
+		setupColor();
 	}
 	else
 		printf("CNeutrinoApp::readSkinConfig: %s not found\n", filename);

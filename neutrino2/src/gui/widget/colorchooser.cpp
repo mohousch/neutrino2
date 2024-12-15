@@ -270,7 +270,7 @@ int CColorChooser::exec(CMenuTarget* parent, const std::string&)
 	hide();
 
 	//
-	::setupColor();
+	CNeutrinoApp::getInstance()->setupColor();
 
 	return res;
 }

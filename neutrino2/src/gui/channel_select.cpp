@@ -107,6 +107,7 @@ void CSelectChannelWidget::InitZapitChannelHelper(CZapit::channelsMode mode)
 		}
 	}
 	
+	tmpChannelList->SortAlpha();
 	tmpChannelList->exec(true); // without zap
 	
 	ChannelID = tmpChannelList->getActiveChannel_ChannelID();

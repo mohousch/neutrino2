@@ -410,7 +410,7 @@ int CChannelList::exec(bool customMode)
 	if(!customMode)
 	{
 		if ( nNewChannel > -1 && nNewChannel < (int) chanlist.size()) 
-			this->zapTo(/*getKey(nNewChannel) - 1*/nNewChannel); ////
+			this->zapTo(nNewChannel);
 	}
 
 	return nNewChannel;
@@ -902,7 +902,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 	
 	dprintf(DEBUG_NORMAL, "CChannelList::zapTo (%s) tuned %d new %d (%s) id: 0x%llx\n", name.c_str(), tuned, pos, chanlist[pos]->name.c_str(), chanlist[pos]->channel_id);
 	
-	if ( (pos != (int)tuned) || rezap ) //FIXME: allow after scan to tun
+	if ( /*(pos != (int)tuned)*/true || rezap ) //FIXME:
 	{ 
 		// stop radiotext
 		if ((g_settings.radiotext_enable) && ((CNeutrinoApp::getInstance()->getMode()) == CNeutrinoApp::mode_radio) && (g_Radiotext))
@@ -916,7 +916,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 		g_RemoteControl->zapToChannelID(chanlist[pos]->channel_id, !chanlist[pos]->bAlwaysLocked); // UTF-8
 		
 		//// test
-		chanlist[pos]->setNumber(tuned + 1);
+//		chanlist[pos]->setNumber(tuned + 1);
 		
 		// adjust to ID
 		if (bouquetList != NULL) 
@@ -1462,6 +1462,9 @@ void CChannelList::paint(bool customMode)
 	{
 		for(unsigned int i = 0; i < chanlist.size(); i++)
 		{
+			////
+			chanlist[i]->setNumber(i + 1);
+			
 			p_event = NULL;
 			jetzt = time(NULL);
 			runningPercent = 0;
@@ -1521,7 +1524,7 @@ void CChannelList::paint(bool customMode)
 			}
 
 			// channel number
-			if (g_settings.channellist_number) item->setNumber(/*chanlist[i]->getNumber()*/i + 1);
+			if (g_settings.channellist_number) item->setNumber(i + 1);
 			
 			// timescale
 			if (g_settings.channellist_timescale && !displayNext) item->setPercent(runningPercent);
