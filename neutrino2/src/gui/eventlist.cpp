@@ -581,6 +581,8 @@ void EventList::paint(t_channel_id channel_id)
 		listBox->enablePaintDate();
 		
 		evlWidget->addCCItem(listBox);
+		
+		evlWidget->paintMainFrame(true);
 	}
 
 	listBox->clear();

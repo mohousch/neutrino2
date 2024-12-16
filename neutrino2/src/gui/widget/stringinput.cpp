@@ -105,7 +105,7 @@ void CStringInput::init()
 	selected = 0;
 	exit_pressed = false;
 
-	m_cBoxWindow.setPosition(x, y + hheight, width, height - hheight);
+	m_cBoxWindow.setPosition(x, y, width, height);
 	
 	// head
 	headers.setPosition(x, y, width, hheight);
@@ -431,7 +431,6 @@ void CStringInput::hide()
 	dprintf(DEBUG_NORMAL, "CStringInput::hide\n");
 
 	m_cBoxWindow.hide();
-	headers.hide();
 	
 	frameBuffer->blit();
 }
@@ -446,12 +445,12 @@ void CStringInput::paint()
 	dprintf(DEBUG_NORMAL, "CStringInput::paint\n");
 
 	// reinit
-	m_cBoxWindow.setPosition(x, y + hheight, width, height - hheight);
+	m_cBoxWindow.setPosition(x, y, width, height);
 
 	//box
-	//m_cBoxWindow.enableSaveScreen();
+	m_cBoxWindow.enableSaveScreen();
 	m_cBoxWindow.setColor(COL_MENUCONTENT_PLUS_0);
-	m_cBoxWindow.setCorner(g_settings.Foot_radius, g_settings.Foot_corner);
+	m_cBoxWindow.setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Foot_corner);
 	m_cBoxWindow.paint();
 
 	// head

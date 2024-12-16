@@ -605,6 +605,9 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t *a_start
 		widget->addCCItem(headers);
 		widget->addCCItem(footers);
 		widget->addCCItem(cFollowScreeningWindow);
+		
+		//
+		widget->paintMainFrame(true);
 	}
 	
 	//	
