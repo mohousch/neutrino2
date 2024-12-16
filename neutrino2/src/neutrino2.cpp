@@ -1540,14 +1540,14 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 	TVallList = new CBouquetList(_("All Services"));
 	tmp = TVallList->addBouquet(_("All Services"));
 	*(tmp->channelList) = *TVchannelList;
-	tmp->channelList->SortAlpha();
+	//tmp->channelList->SortAlpha();
 	TVallList->orgChannelList = TVchannelList;
 
 	// radio all list
 	RADIOallList = new CBouquetList(_("All Services"));
 	tmp = RADIOallList->addBouquet(_("All Services"));
 	*(tmp->channelList) = *RADIOchannelList;
-	tmp->channelList->SortAlpha();
+	//tmp->channelList->SortAlpha();
 	RADIOallList->orgChannelList = RADIOchannelList;
 
 	// sat
@@ -1577,12 +1577,12 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 		}
 
 		if(tvi)
-			tmp1->channelList->SortAlpha();
+			; //tmp1->channelList->SortAlpha();
 		else
 			TVsatList->deleteBouquet(tmp1);
 
 		if(ri)
-			tmp2->channelList->SortAlpha();
+			; //tmp2->channelList->SortAlpha();
 		else
 			RADIOsatList->deleteBouquet(tmp2);
 
@@ -1592,6 +1592,7 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 
 	// tv/webtv fav / provider list
 	bnum = 0;
+	
 	for (i = 0; i < CZapit::getInstance()->Bouquets.size(); i++) 
 	{
 		// tv
@@ -1612,7 +1613,7 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 			}
 			bnum++;
 			
-			ltmp->channelList->SortAlpha();
+			//ltmp->channelList->SortAlpha();
 		}
 	}
 	
@@ -1635,15 +1636,13 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 			ZapitChannelList *channels = &(CZapit::getInstance()->Bouquets[i]->radioChannels);
 			ltmp->channelList->setSize(channels->size());
 			
-			tvi = 1;
-			
 			for(int j = 0; j < (int) channels->size(); j++) 
 			{
 				ltmp->channelList->addChannel((*channels)[j]);
 			}
 			bnum++;
 			
-			ltmp->channelList->SortAlpha();
+			//ltmp->channelList->SortAlpha();
 		}
 	}
 
@@ -1700,19 +1699,7 @@ void CNeutrinoApp::setChannelMode(int newmode, int nMode)
 				bouquetList = TVsatList;
 			}
 			break;
-
-		case CChannelList::LIST_MODE_ALL:
-			if(nMode == mode_radio) 
-			{
-				bouquetList = RADIOallList;
-			} 
-			else if(nMode == mode_tv)
-			{
-				bouquetList = TVallList;
-			}
-			break;
-
-		default:
+			
 		case CChannelList::LIST_MODE_PROV:
 			if(nMode == mode_radio) 
 			{
@@ -1721,6 +1708,18 @@ void CNeutrinoApp::setChannelMode(int newmode, int nMode)
 			else if(nMode == mode_tv)
 			{
 				bouquetList = TVbouquetList;
+			}
+			break;
+
+		default:
+		case CChannelList::LIST_MODE_ALL:
+			if(nMode == mode_radio) 
+			{
+				bouquetList = RADIOallList;
+			} 
+			else if(nMode == mode_tv)
+			{
+				bouquetList = TVallList;
 			}
 			break;
 	}

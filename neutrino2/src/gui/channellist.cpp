@@ -117,6 +117,7 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 	this->historyMode = _historyMode;
 	vlist = _vlist;
 	displayNext = false;
+	tuned_chid = 0;
 	
 	events.clear();
 
@@ -789,7 +790,7 @@ bool CChannelList::showInfo(int pos, int epgpos, bool fromNumZap)
 		return false;
 	
 	// channel infobar
-	g_InfoViewer->showTitle(/*chanlist[pos]->getNumber()*/pos + 1, chanlist[pos]->name, chanlist[pos]->getSatellitePosition(), chanlist[pos]->channel_id, fromNumZap, epgpos); // UTF-8
+	g_InfoViewer->showTitle(chanlist[pos]->getNumber(), chanlist[pos]->name, chanlist[pos]->getSatellitePosition(), chanlist[pos]->channel_id, fromNumZap, epgpos); // UTF-8
 	
 	return true;
 }
@@ -900,9 +901,9 @@ void CChannelList::zapTo(int pos, bool rezap)
 		pos = 0;
 	}
 	
-	dprintf(DEBUG_NORMAL, "CChannelList::zapTo (%s) tuned %d new %d (%s) id: 0x%llx\n", name.c_str(), tuned, pos, chanlist[pos]->name.c_str(), chanlist[pos]->channel_id);
+	dprintf(DEBUG_NORMAL, "CChannelList::zapTo (%s) tuned %d id:0x%llx new %d (%s) id: 0x%llx\n", name.c_str(), tuned, tuned_chid, pos, chanlist[pos]->name.c_str(), chanlist[pos]->channel_id);
 	
-	if ( /*(pos != (int)tuned)*/true || rezap ) //FIXME:
+	if ( /*(pos != tuned) || (chanlist[pos]->channel_id != tuned_chid)*/true || rezap )
 	{ 
 		// stop radiotext
 		if ((g_settings.radiotext_enable) && ((CNeutrinoApp::getInstance()->getMode()) == CNeutrinoApp::mode_radio) && (g_Radiotext))
@@ -913,10 +914,9 @@ void CChannelList::zapTo(int pos, bool rezap)
 		
 		// zap
 		tuned = pos;
-		g_RemoteControl->zapToChannelID(chanlist[pos]->channel_id, !chanlist[pos]->bAlwaysLocked); // UTF-8
+		tuned_chid = chanlist[pos]->channel_id;
 		
-		//// test
-//		chanlist[pos]->setNumber(tuned + 1);
+		g_RemoteControl->zapToChannelID(chanlist[pos]->channel_id, !chanlist[pos]->bAlwaysLocked); // UTF-8
 		
 		// adjust to ID
 		if (bouquetList != NULL) 
@@ -1465,6 +1465,7 @@ void CChannelList::paint(bool customMode)
 			////
 			chanlist[i]->setNumber(i + 1);
 			
+			//
 			p_event = NULL;
 			jetzt = time(NULL);
 			runningPercent = 0;

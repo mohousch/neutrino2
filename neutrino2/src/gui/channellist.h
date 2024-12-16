@@ -83,9 +83,8 @@ class CChannelList
 		void paintCurrentNextEvent(int _selected);
 
 		//
-		t_channel_id selected_chid;
+		t_channel_id tuned_chid;
 		CLastChannel lastChList;
-
 		std::string name;
 		ZapitChannelList chanlist;
 		CChannelEventList events;
