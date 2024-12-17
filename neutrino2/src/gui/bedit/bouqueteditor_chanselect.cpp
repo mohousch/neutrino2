@@ -125,14 +125,14 @@ void CBEChannelSelectWidget::paint()
 		widget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
 		
+		listBox->paintMainFrame(true);
+		
 		//
 		listBox->enablePaintHead();
 		listBox->enablePaintDate();
-//		listBox->setHeadLine(true, true);
 		
 		//
 		listBox->enablePaintFoot();
-//		listBox->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(listBox);

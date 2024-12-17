@@ -102,6 +102,8 @@ int CPluginList::showMenu()
 		plist->setWidgetType(ClistBox::TYPE_CLASSIC);
 		plist->setWidgetMode(ClistBox::MODE_MENU);
 		plist->enableShrinkMenu();
+		plist->paintMainFrame(true);
+		
 		// head
 		plist->enablePaintHead();
 		plist->setTitle(_("Plugins"), NEUTRINO_ICON_FEATURES);

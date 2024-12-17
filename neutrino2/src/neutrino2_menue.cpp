@@ -572,10 +572,12 @@ void CNeutrinoApp::selectNVOD()
                 	widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 			widget->name = "nvodselect";
 			widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
-                	
+
+			//                	
 			NVODSelector = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 			NVODSelector->setWidgetMode(ClistBox::MODE_SETUP);
 			NVODSelector->enableShrinkMenu();
+			NVODSelector->paintMainFrame(true);
 							
 			NVODSelector->enablePaintHead();
 			NVODSelector->setTitle(g_RemoteControl->are_subchannels ? _("Select Subservice") : _("Select starting-time"), NEUTRINO_ICON_VIDEO);

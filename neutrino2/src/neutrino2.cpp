@@ -1437,7 +1437,7 @@ void CNeutrinoApp::firstChannel()
 }
 
 // CNeutrinoApp -  channelsInit, get the Channellist from zapit
-void CNeutrinoApp::channelsInit(bool /*bOnly*/)
+void CNeutrinoApp::channelsInit()
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::channelsInit\n");
 
@@ -1540,14 +1540,14 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 	TVallList = new CBouquetList(_("All Services"));
 	tmp = TVallList->addBouquet(_("All Services"));
 	*(tmp->channelList) = *TVchannelList;
-	//tmp->channelList->SortAlpha();
+	tmp->channelList->SortAlpha();
 	TVallList->orgChannelList = TVchannelList;
 
 	// radio all list
 	RADIOallList = new CBouquetList(_("All Services"));
 	tmp = RADIOallList->addBouquet(_("All Services"));
 	*(tmp->channelList) = *RADIOchannelList;
-	//tmp->channelList->SortAlpha();
+	tmp->channelList->SortAlpha();
 	RADIOallList->orgChannelList = RADIOchannelList;
 
 	// sat
@@ -1577,12 +1577,12 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 		}
 
 		if(tvi)
-			; //tmp1->channelList->SortAlpha();
+			tmp1->channelList->SortAlpha();
 		else
 			TVsatList->deleteBouquet(tmp1);
 
 		if(ri)
-			; //tmp2->channelList->SortAlpha();
+			tmp2->channelList->SortAlpha();
 		else
 			RADIOsatList->deleteBouquet(tmp2);
 
@@ -1613,7 +1613,7 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 			}
 			bnum++;
 			
-			//ltmp->channelList->SortAlpha();
+			ltmp->channelList->SortAlpha();
 		}
 	}
 	
@@ -1642,7 +1642,7 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 			}
 			bnum++;
 			
-			//ltmp->channelList->SortAlpha();
+			ltmp->channelList->SortAlpha();
 		}
 	}
 

@@ -713,6 +713,8 @@ void CFileBrowser::paint()
 		//
 		listBox = new ClistBox(&cFrameBox);
 		
+		listBox->paintMainFrame(true);
+		
 		//
 		listBox->enablePaintHead();
 		listBox->enablePaintDate();

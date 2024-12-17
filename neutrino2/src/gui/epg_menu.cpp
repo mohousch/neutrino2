@@ -84,6 +84,7 @@ int CEPGMenuHandler::doMenu()
 		redMenu->setWidgetMode(ClistBox::MODE_MENU);
 		redMenu->setWidgetType(ClistBox::TYPE_CLASSIC);
 		redMenu->enableShrinkMenu();
+		redMenu->paintMainFrame(true);
 		// head
 		redMenu->enablePaintHead();
 		redMenu->setTitle(_("EPG / Timer"), NEUTRINO_ICON_BUTTON_EPG);

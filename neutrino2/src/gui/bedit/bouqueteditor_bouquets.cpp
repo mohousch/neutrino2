@@ -107,6 +107,8 @@ void CBEBouquetWidget::paint()
 		widget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
 		
+		listBox->paintMainFrame(true);
+		
 		//
 		listBox->enablePaintHead();
 		listBox->enablePaintDate();

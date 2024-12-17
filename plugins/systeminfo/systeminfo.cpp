@@ -41,8 +41,7 @@ CSysInfoWidget::CSysInfoWidget(int m)
 	cFrameBox.iHeight = frameBuffer->getScreenHeight() - 100;
 	
 	//head height
-	titleIcon.setIcon(NEUTRINO_ICON_SETTINGS);
-	cFrameBoxTitle.iHeight = std::max(g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight(), titleIcon.height) + 6;
+	cFrameBoxTitle.iHeight = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight() + 6;
        
 	//foot height
 	cFrameBoxFoot.iHeight = cFrameBoxTitle.iHeight;
@@ -62,11 +61,34 @@ CSysInfoWidget::CSysInfoWidget(int m)
 	textBox = new CTextBox(&cFrameBoxText);
 
 	textBox->setBackgroundColor(COL_BLACK_PLUS_0);
+	
+	widget = new CWidget(&cFrameBox);
+	widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
+	widget->paintMainFrame(true);
+}
+
+CSysInfoWidget::~CSysInfoWidget()
+{
+	if(textBox != NULL)
+	{
+		delete textBox;
+		textBox = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 // paintlistbox
 void CSysInfoWidget::paint()
 {
+	widget->paint();
+	
+	paintHead();
+	
 	// paint
 	textBox->paint();
 
@@ -74,6 +96,8 @@ void CSysInfoWidget::paint()
 	textBox->setText(buffer.c_str());
 	
 	textBox->refresh();
+	
+	paintFoot();
 }
 
 // paint head
@@ -104,7 +128,7 @@ void CSysInfoWidget::paintHead()
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, buf);
 	
 	// title
-	CCHeaders headers(&cFrameBoxTitle, buf, titleIcon.iconName.c_str());
+	CCHeaders headers(&cFrameBoxTitle, buf, NEUTRINO_ICON_INFO);
 	headers.enablePaintDate();
 
 	headers.paint();
@@ -137,14 +161,15 @@ void CSysInfoWidget::paintFoot()
 // hide
 void CSysInfoWidget::hide()
 {
-	frameBuffer->paintBackgroundBoxRel(cFrameBox.iX, cFrameBox.iY, cFrameBox.iWidth, cFrameBox.iHeight);
+//	frameBuffer->paintBackgroundBoxRel(cFrameBox.iX, cFrameBox.iY, cFrameBox.iWidth, cFrameBox.iHeight);
+	widget->hide();
 	
 	frameBuffer->blit();
 
-	if(textBox != NULL)
+	//if(textBox != NULL)
 	{
-		delete textBox;
-		textBox = NULL;
+	//	delete textBox;
+	//	textBox = NULL;
 	}
 	
 	//
@@ -178,9 +203,10 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 	if (parent)
 		parent->hide();
 
-	paintHead();
+	//paintHead();
 	paint();
-	paintFoot();
+	//paintHead();
+	//paintFoot();
 	
 	frameBuffer->blit();
 
@@ -204,9 +230,9 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 				timercount = 0;
 				sysinfo();
 
-				paintHead();
+				//paintHead();
 				paint();
-				paintFoot();
+				//paintFoot();
 			}
 			
 			if ((mode == DMESGINFO) && (++timercount>11))
@@ -214,9 +240,9 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 				timercount = 0;
 				dmesg();
 
-				paintHead();
+				//paintHead();
 				paint();
-				paintFoot();
+				//paintFoot();
 			}
 			
 			if ((mode == PSINFO)&&(refreshIt == true))
@@ -224,9 +250,10 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 				timercount = 0;
 				ps();
 
-				paintHead();
+				//paintHead();
 				paint();
-				paintFoot();
+				//paintHead();
+				//paintFoot();
 			}
 
 			timeoutEnd = g_RCInput->calcTimeoutEnd(5);
@@ -250,9 +277,10 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 			if (textBox)
 				textBox->refresh();
 
-			paintHead();
+			//paintHead();
 			paint();
-			paintFoot();
+			//paintHead();
+			//paintFoot();
 
 		}
 		else if ((msg == CRCInput::RC_green) && (mode != DMESGINFO))
@@ -261,27 +289,30 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 			timercount = 0;
 			dmesg();
 
-			paintHead();
+			//paintHead();
 			paint();
-			paintFoot();
+			//paintHead();
+			//paintFoot();
 		}
 		else if ((msg == CRCInput::RC_yellow) && (mode != CPUINFO))
 		{
 			mode = CPUINFO;
 			cpuinfo();
 
-			paintHead();
+			//paintHead();
 			paint();
-			paintFoot();
+			//paintHead();
+			//paintFoot();
 		}
 		else if (msg == CRCInput::RC_blue)
 		{
 			mode = PSINFO;
 			ps();
 
-			paintHead();
+			//paintHead();
 			paint();
-			paintFoot();
+			//paintHead();
+			//paintFoot();
 		}
 		else
 		{

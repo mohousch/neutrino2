@@ -187,7 +187,7 @@ class CNeutrinoApp : public CMenuTarget
 		CChannelList* RADIOchannelList;
 		CChannelList* channelList;
 		////
-		void channelsInit(bool bOnly = false);
+		void channelsInit();
 		////
 		void readEPG();
 		void saveEpg();

@@ -2219,11 +2219,29 @@ void ClistBox::paint()
 		if (iteminfosavescreen) itemsLine.enableSaveScreen();
 	}
 	
-	//// FIXME:
+	// FIXME:
 	if (paint_ItemInfo && itemInfoBox2.iWidth != 0)
 	{
 		label.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
 		label.enableSaveScreen();
+	}
+	
+	// paint bg FIXME:
+	if (paintframe)
+	{
+		if (paintTitle)
+		{
+			radius = g_settings.Head_radius;
+			corner = g_settings.Head_corner;
+		}
+		
+		if (paint_Foot)
+		{
+			radius |= g_settings.Foot_radius;
+			corner += g_settings.Foot_corner;
+		}
+		
+		frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient);
 	}
 
 	//
@@ -2346,7 +2364,7 @@ void ClistBox::paintItems()
 			//
 			if(widgetType == TYPE_EXTENDED && widgetMode == MODE_MENU)
 			{
-				frameBuffer->paintBoxRel(itemBox.iX + items_width, item_start_y, itemBox.iWidth - items_width, items_height, /*COL_MENUCONTENTDARK_PLUS_0*/bgcolor);
+				frameBuffer->paintBoxRel(itemBox.iX + items_width, item_start_y, itemBox.iWidth - items_width, items_height, bgcolor);
 
 			}
 		}

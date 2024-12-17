@@ -41,8 +41,8 @@ class CSysInfoWidget : public CMenuTarget
 		CBox cFrameBoxText;
 		CBox cFrameBoxFoot;
 
-		CCIcon titleIcon;
 		CTextBox *textBox;
+		CWidget *widget;
 
 		std::string buffer;
 
@@ -62,7 +62,7 @@ class CSysInfoWidget : public CMenuTarget
 		void readList(const char * const filename);
 	public:
 		CSysInfoWidget(int m = SYSINFO);
-		~CSysInfoWidget(){};
+		~CSysInfoWidget();
 		int exec(CMenuTarget *parent, const std::string &actionKey);
 		void hide();
 };
