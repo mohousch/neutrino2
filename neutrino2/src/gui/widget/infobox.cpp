@@ -65,9 +65,6 @@ CInfoBox::CInfoBox(const int x, const int y, const int dx, const int dy, const c
 	
 	if(icon != NULL)		
 		m_cIcon = icon;
-	
-//	if(position != NULL)	
-//		m_cBoxFrame = *position;
 
 	CBox position(x, y, dx, dy); 
 
@@ -99,6 +96,8 @@ CInfoBox::CInfoBox(const int x, const int y, const int dx, const int dy, const c
 		widget->addCCItem(m_pcTextBox);
 		widget->addCCItem(headers);
 		widget->addCCItem(footers);
+		
+		widget->paintMainFrame(true);
 	}
 	
 	if (m_pcTextBox)
@@ -163,6 +162,8 @@ CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 		widget->addCCItem(m_pcTextBox);
 		widget->addCCItem(headers);
 		widget->addCCItem(footers);
+		
+		widget->paintMainFrame(true);
 	}
 	
 	if (m_pcTextBox)
@@ -231,6 +232,8 @@ CInfoBox::CInfoBox()
 		widget->addCCItem(m_pcTextBox);
 		widget->addCCItem(headers);
 		widget->addCCItem(footers);
+		
+		widget->paintMainFrame(true);
 	}
 	
 	if (m_pcTextBox)

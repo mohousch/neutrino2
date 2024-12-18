@@ -2720,16 +2720,6 @@ void ClistBox::paintItemInfo(int pos)
 				infoIcon.setIcon(NEUTRINO_ICON_INFO);
 				int iw, ih;
 				frameBuffer->getIconSize(NEUTRINO_ICON_INFO, &iw, &ih);
-					
-				//
-				//if (paintframe)
-				//{
-					// refresh box
-					//frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight, itemBox.iWidth, fheight, COL_MENUFOOT_PLUS_0, g_settings.Foot_radius, g_settings.Foot_corner, g_settings.Foot_gradient, GRADIENT_VERTICAL, INT_LIGHT, g_settings.Foot_gradient_type);
-					
-					//
-					//label.setPosition(itemBox.iX + BORDER_LEFT + iw + ICON_OFFSET, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight + 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - iw, fheight - 2);
-				//}
 								
 				// paint horizontal line buttom
 				if (g_settings.Foot_line)
@@ -2914,16 +2904,6 @@ void ClistBox::paintItemInfo(int pos)
 			{
 				int iw, ih;
 				frameBuffer->getIconSize(NEUTRINO_ICON_INFO, &iw, &ih);
-				
-				//
-				//if (paintframe)
-				//{
-					// refresh box
-					//frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight, itemBox.iWidth, fheight, COL_MENUFOOT_PLUS_0, g_settings.Foot_radius, g_settings.Foot_corner, g_settings.Foot_gradient, GRADIENT_VERTICAL, INT_LIGHT, g_settings.Foot_gradient_type);
-					
-					//
-					//label.setPosition(itemBox.iX + BORDER_LEFT + iw + ICON_OFFSET, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight + 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - iw, fheight - 2);
-				//}
 							
 				// paint horizontal line buttom
 				if (g_settings.Foot_line)

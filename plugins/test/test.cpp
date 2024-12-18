@@ -154,7 +154,6 @@ class CTestMenu : public CMenuTarget
 		void testClistBox8();
 		void testClistBox9();
 		void testCFrameBox();
-		void testCFrameBox1();
 		//// misc widgets
 		void testCStringInput();
 		void testCStringInputSMS();
@@ -2033,8 +2032,8 @@ void CTestMenu::testCHeaders()
 	headers->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	headers->setButtonMode(CCButtons::BUTTON_FRAME);
 	headers->setHAlign(CComponent::CC_ALIGN_CENTER);
-	headers->setCorner(RADIUS_SMALL, CORNER_TOP_LEFT|CORNER_BOTTOM_RIGHT);
-	headers->setGradient(LIGHT2DARK);
+	//headers->setCorner(RADIUS_SMALL, CORNER_TOP_LEFT|CORNER_BOTTOM_RIGHT);
+	//headers->setGradient(LIGHT2DARK);
 		
 	headers->exec(10);
 
@@ -2058,8 +2057,8 @@ void CTestMenu::testCFooters()
 	//
 	footers = new CCFooters(&footBox);
 	
-	footers->setCorner(RADIUS_SMALL, CORNER_TOP_RIGHT|CORNER_BOTTOM_LEFT);
-	footers->setGradient(LIGHT2DARK);
+	//footers->setCorner(RADIUS_SMALL, CORNER_TOP_RIGHT|CORNER_BOTTOM_LEFT);
+	//footers->setGradient(LIGHT2DARK);
 	footers->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	footers->setButtonMode(CCButtons::BUTTON_COLOREDLINE);
 
@@ -2899,82 +2898,7 @@ void CTestMenu::testClistBox9()
 	}
 }
 
-
 void CTestMenu::testCFrameBox()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testCFrameBox\n");
-
-	// frameBox
-	CBox topBox;
-	
-	topBox.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 20)/4;
-	topBox.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 20);
-	topBox.iX = g_settings.screen_StartX + ((g_settings.screen_EndX - g_settings.screen_StartX - 20) - topBox.iWidth )>> 1;
-	topBox.iY = g_settings.screen_StartY + 10;
-
-	frameBoxWidget = new CFrameBox(&topBox);
-	frameBoxWidget->paintMainFrame(false);
-
-	CFrameItem * frame = NULL;
-
-	frame = new CFrameItem();
-	frame->setPosition(topBox.iX + 10, topBox.iY + 10, topBox.iWidth - 20, 60);
-	frame->setTitle("Neu Filme");
-	frame->setIconName(NEUTRINO_ICON_MOVIE);
-	frame->setOption("in allen Kinos");
-	frame->setActionKey(this, "help");
-	frame->setColor(COL_RED_PLUS_0);
-	frame->setGradient(DARK2LIGHT2DARK);
-	frame->setHAlign(CComponent::CC_ALIGN_CENTER);
-	frameBoxWidget->addFrame(frame);
-	
-	frame = new CFrameItem();
-	frame->setPosition(topBox.iX + 10, topBox.iY + 10 + 60 + 10, topBox.iWidth - 20, 60);
-	frame->setTitle("Im Kino");
-	frame->setActionKey(this, "help");
-	frame->setColor(COL_GREEN_PLUS_0);
-	frame->setGradient(LIGHT2DARK);
-	frame->setHAlign(CComponent::CC_ALIGN_CENTER);
-	frameBoxWidget->addFrame(frame);
-
-	frame = new CFrameItem();
-	frame->setPosition(topBox.iX + 10, topBox.iY + 2*(10 + 60) +10, topBox.iWidth - 20, 60);
-	frame->setTitle("Am populärsten");
-	frame->setOption("(2019)");
-	frame->setActionKey(this, "help");
-	frame->setColor(COL_NOBEL_PLUS_0);
-	frame->setHAlign(CComponent::CC_ALIGN_CENTER);
-	frameBoxWidget->addFrame(frame);
-	
-	// pic
-	frame = new CFrameItem();
-	frame->setMode(CFrameItem::FRAME_PICTURE);
-	frame->setPosition(topBox.iX + 10, topBox.iY + 3*(10 + 60) +50, topBox.iWidth - 20, 200);
-	frame->setIconName(DATADIR "/icons/nopreview.jpg");
-	frame->paintMainFrame(false);
-	frameBoxWidget->addFrame(frame);
-
-	frame = new CFrameItem();
-	frame->setPosition(topBox.iX + 10, topBox.iY + topBox.iHeight - 60 - 10, topBox.iWidth - 20, 60);
-	frame->setTitle("Exit");
-	frame->setActionKey(this, "exit");
-	frame->setGradient(LIGHT2DARK);
-	frame->setColor(COL_BLUE_PLUS_0);
-	frame->setHAlign(CComponent::CC_ALIGN_CENTER);
-	frameBoxWidget->addFrame(frame);
-
-	frameBoxWidget->setSelected(selected);
-
-	frameBoxWidget->exec();
-	
-	if (frameBoxWidget)
-	{
-		delete frameBoxWidget;
-		frameBoxWidget = NULL;
-	}
-}
-
-void CTestMenu::testCFrameBox1()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu:testCFrameBox1:\n");
 	
@@ -4848,12 +4772,6 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}
-	else if(actionKey == "framebox")
-	{
-		testCFrameBox();
-
-		return RETURN_REPAINT;
-	}
 	else if(actionKey == "playmovieurl")
 	{
 		testPlayMovieURL();
@@ -5855,9 +5773,9 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}	
-	else if(actionKey == "singleWidget")
+	else if(actionKey == "framebox")
 	{
-		testCFrameBox1();
+		testCFrameBox();
 
 		return RETURN_REPAINT;
 	}
@@ -6095,8 +6013,8 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("ClistBox(HINTICON)", true, NULL, this, "listbox7"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(ICON)", true, NULL, this, "listbox8"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(HINT)", true, NULL, this, "listbox9"));
+	//mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "framebox"));
 	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "framebox"));
-	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "singleWidget"));
 	
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CWidget"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(CTextBox)", true, NULL, this, "textboxwidget"));
