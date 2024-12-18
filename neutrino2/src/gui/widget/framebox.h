@@ -167,7 +167,7 @@ class CFrameBox : public CComponent
 		button_label_list_t hbutton_labels;
 		bool paintDate;
 		bool logo;
-		bool paintTitle;
+		bool paint_Head;
 		CCTime *timer;
 		const char* format;
 		
@@ -215,7 +215,7 @@ class CFrameBox : public CComponent
 		void initFrames();
 		void paint();
 		void hide();
-		void refresh(bool show = false){if (paintDate && paintTitle) timer->refresh();};
+		void refresh(bool show = false){if (paintDate && paint_Head) timer->refresh();};
 		bool update() const {return paintDate;};
 
 		//// main properties
@@ -231,7 +231,7 @@ class CFrameBox : public CComponent
 		void homeKeyPressed(){selected = -1;};
 
 		//// head properties
-		void enablePaintHead(){paintTitle = true;};
+		void enablePaintHead(){paint_Head = true;};
 		virtual void paintHead();
 		void enablePaintDate(void){paintDate = true;};
 		void setTitle(const char* title = "", const char* icon = NULL, bool logo_ok = false){l_name = title; if(icon != NULL) iconfile = icon; logo = logo_ok;};

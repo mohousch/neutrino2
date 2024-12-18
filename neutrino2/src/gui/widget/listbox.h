@@ -417,7 +417,7 @@ class ClistBox : public CComponent
 		int widgetType;
 
 		// head
-		bool paintTitle;
+		bool paint_Head;
 		std::string iconfile;
 		std::string l_name;
 		int hheight;
@@ -530,10 +530,10 @@ class ClistBox : public CComponent
 		void hideItemInfo();
 		void paint();
 		void hide();
-		void refresh(bool show = false){if (paintDate && paintTitle) timer->refresh();};
+		void refresh(bool show = false){if (paintDate && paint_Head) timer->refresh();};
 		bool update() const {return paintDate;};
 		inline bool isPainted(void){return painted;};
-		bool hasHead(){return paintTitle;};
+		bool hasHead(){return paint_Head;};
 		bool hasFoot(){return paint_Foot;};
 		
 		//// main properties
@@ -584,7 +584,7 @@ class ClistBox : public CComponent
 		}
 		
 		//// head properties
-		void enablePaintHead(){paintTitle = true;};
+		void enablePaintHead(){paint_Head = true;};
 		void enablePaintDate(void){paintDate = true;};
 		void setTitle(const char* title = "", const char* icon = NULL){if (title) l_name = title; if(icon) iconfile = icon;};
 		void setTitleHAlign(const int m){thalign = m;};

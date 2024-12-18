@@ -2375,7 +2375,10 @@ void CTestMenu::testClistBox()
 
 	// footer
 	rightWidget->enablePaintFoot();
-	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
+	//rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
+	
+	//
+	rightWidget->enablePaintItemInfo();
 	
 	//
 //	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
@@ -2443,10 +2446,10 @@ void CTestMenu::testClistBox2()
 
 	// footer
 	rightWidget->enablePaintFoot();
-	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
+	//rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	
-	rightWidget->setHeadGradient(LIGHT2DARK);
-	rightWidget->setFootGradient(DARK2LIGHT);
+	//
+	rightWidget->enablePaintItemInfo();
 	
 	//
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");

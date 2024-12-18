@@ -216,20 +216,15 @@ void CWidget::paint()
 	// paint mainFrame	
 	if (paintframe)
 	{
-		// mainframe
-		if (borderMode == CComponent::BORDER_NO)
-			frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, backgroundColor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
-		else
-		{
-			// border
+		// border (paint only border_all)
+		if (borderMode != CComponent::BORDER_NO)
 			frameBuffer->paintBoxRel(mainFrameBox.iX - 2, mainFrameBox.iY - 2, mainFrameBox.iWidth + 4, mainFrameBox.iHeight + 4, borderColor, radius, corner);
 			
-			// mainframe
-			frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, backgroundColor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
-		}
+		// mainframe
+		frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, backgroundColor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 	}
 	
-	// CCItems	
+	// paint CCItems	
 	paintCCItems();
 }
 

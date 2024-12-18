@@ -472,7 +472,7 @@ CFrameBox::CFrameBox(const int x, int const y, const int dx, const int dy)
 	background = NULL;
 	
 	// head
-	paintTitle = false;
+	paint_Head = false;
 	paintDate = false;
 	l_name = "";
 	iconfile = "";
@@ -525,7 +525,7 @@ CFrameBox::CFrameBox(CBox* position)
 	background = NULL;
 	
 	// head
-	paintTitle = false;
+	paint_Head = false;
 	paintDate = false;
 	l_name = "";
 	iconfile = "";
@@ -596,7 +596,7 @@ void CFrameBox::initFrames()
 	dprintf(DEBUG_INFO, "CFrameBox::initFrames:\n");
 	
 	// head
-	if(paintTitle)
+	if(paint_Head)
 	{
 		hheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
 	}
@@ -837,7 +837,7 @@ int CFrameBox::oKKeyPressed(CMenuTarget *target, neutrino_msg_t _msg)
 
 void CFrameBox::paintHead()
 {
-	if(paintTitle)
+	if(paint_Head)
 	{
 		// paint head
 		if (paintframe)
@@ -900,7 +900,7 @@ void CFrameBox::paintHead()
 
 void CFrameBox::setHeadButtons(const struct button_label *_hbutton_labels, const int _hbutton_count)
 {
-	if(paintTitle)
+	if(paint_Head)
 	{
 		if (_hbutton_count)
 		{
