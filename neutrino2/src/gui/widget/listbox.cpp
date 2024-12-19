@@ -2205,11 +2205,6 @@ void ClistBox::paint()
 			corner |= g_settings.Foot_corner;
 		}
 		
-		////test
-		printf("ClistBox::paint: corner:%d radius:%d\n", corner, radius);
-		printf("ClistBox::paint: Head_corner:%d Head_radius:%d\n", g_settings.Head_corner, g_settings.Head_radius);
-		printf("ClistBox::paint: Foot_corner:%d Foot_radius:%d\n", g_settings.Foot_corner, g_settings.Foot_radius);
-		
 		// border
 		
 		// mainframe
