@@ -413,8 +413,28 @@ class ClistBox : public CComponent
 		int item_height;
 		int item_width;
 
-		// widget type
+		// widget type / mode
 		int widgetType;
+		int widgetMode;
+		
+		// mainframe
+		fb_pixel_t bgcolor;
+		int radius;
+		int corner;
+		bool scrollbar;
+		int gradient;
+		fb_pixel_t * background;
+		void saveScreen();
+		void restoreScreen();
+		int full_height;
+		int full_width;
+
+		// item
+		int itemBorderMode;
+		fb_pixel_t itemBorderColor;
+		int itemGradient;
+		bool item2Lines;
+		bool paintIconName;
 
 		// head
 		bool paint_Head;
@@ -472,28 +492,6 @@ class ClistBox : public CComponent
 
 		// methods
 		virtual void paintItems();
-
-		//
-		fb_pixel_t * background;
-		void saveScreen();
-		void restoreScreen();
-		int full_height;
-		int full_width;
-		
-		// mainframe
-		fb_pixel_t bgcolor;
-		int radius;
-		int corner;
-		bool scrollbar;
-		int gradient;
-		//
-		int widgetMode;
-		// item
-		int itemBorderMode;
-		fb_pixel_t itemBorderColor;
-		int itemGradient;
-		bool item2Lines;
-		bool paintIconName;
 		
 	public:
 		ClistBox(const int x = 0, int const y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);

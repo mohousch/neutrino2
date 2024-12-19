@@ -203,10 +203,7 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 	if (parent)
 		parent->hide();
 
-	//paintHead();
 	paint();
-	//paintHead();
-	//paintFoot();
 	
 	frameBuffer->blit();
 
@@ -230,9 +227,7 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 				timercount = 0;
 				sysinfo();
 
-				//paintHead();
 				paint();
-				//paintFoot();
 			}
 			
 			if ((mode == DMESGINFO) && (++timercount>11))
@@ -240,9 +235,7 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 				timercount = 0;
 				dmesg();
 
-				//paintHead();
 				paint();
-				//paintFoot();
 			}
 			
 			if ((mode == PSINFO)&&(refreshIt == true))
@@ -250,10 +243,7 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 				timercount = 0;
 				ps();
 
-				//paintHead();
 				paint();
-				//paintHead();
-				//paintFoot();
 			}
 
 			timeoutEnd = g_RCInput->calcTimeoutEnd(5);
@@ -277,11 +267,7 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 			if (textBox)
 				textBox->refresh();
 
-			//paintHead();
 			paint();
-			//paintHead();
-			//paintFoot();
-
 		}
 		else if ((msg == CRCInput::RC_green) && (mode != DMESGINFO))
 		{
@@ -289,30 +275,21 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 			timercount = 0;
 			dmesg();
 
-			//paintHead();
 			paint();
-			//paintHead();
-			//paintFoot();
 		}
 		else if ((msg == CRCInput::RC_yellow) && (mode != CPUINFO))
 		{
 			mode = CPUINFO;
 			cpuinfo();
 
-			//paintHead();
 			paint();
-			//paintHead();
-			//paintFoot();
 		}
 		else if (msg == CRCInput::RC_blue)
 		{
 			mode = PSINFO;
 			ps();
 
-			//paintHead();
 			paint();
-			//paintHead();
-			//paintFoot();
 		}
 		else
 		{

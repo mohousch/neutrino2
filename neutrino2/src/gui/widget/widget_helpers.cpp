@@ -84,6 +84,9 @@ int CComponent::exec(int timeout)
 	bool show = true;
 	exit_pressed = false;
 	int retval = CMenuTarget::RETURN_REPAINT;
+	
+	if (parent)
+		hide();
 
 	//
 	paint();

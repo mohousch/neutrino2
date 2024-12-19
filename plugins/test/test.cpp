@@ -1155,16 +1155,16 @@ void CTestMenu::testCFrameBoxWidget()
 	int pic_w = box.iWidth/6;
 
 	testWidget = new CWidget(&box);
-	
-	headers = new CCHeaders(box.iX, box.iY, box.iWidth, 40, "testCFrameBoxWidget", NEUTRINO_ICON_MP3);
-
-	headers->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	headers->enablePaintDate();
 
 	// frameBox
 	frameBoxWidget = new CFrameBox(&box);
-	//frameBoxWidget->setRadius(RADIUS_MID);
-	frameBoxWidget->setCorner(RADIUS_MID, CORNER_ALL);
+	
+	frameBoxWidget->paintMainFrame(true);
+	
+	frameBoxWidget->enablePaintHead();
+	frameBoxWidget->setTitle("testCFrameBoxWidget", NEUTRINO_ICON_MP3);
+	frameBoxWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
+	frameBoxWidget->enablePaintDate();
 
 	CHintBox loadBox("testCFrameBoxWidget", _("Scan for Movies ..."));
 	loadBox.paint();
@@ -1283,7 +1283,6 @@ void CTestMenu::testCFrameBoxWidget()
 	}
 
 	testWidget->addCCItem(frameBoxWidget);
-	testWidget->addCCItem(headers);
 	
 	testWidget->exec(NULL, "");
 
@@ -2900,7 +2899,7 @@ void CTestMenu::testClistBox9()
 
 void CTestMenu::testCFrameBox()
 {
-	dprintf(DEBUG_NORMAL, "CTestMenu:testCFrameBox1:\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu:testCFrameBox:\n");
 	
 	// mainBox
 	CBox box;
@@ -2910,7 +2909,6 @@ void CTestMenu::testCFrameBox()
 	box.iHeight = CFrameBuffer::getInstance()->getScreenHeight() - 80;
 
 	frameBoxWidget = new CFrameBox(&box);
-	frameBoxWidget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 
 	CHintBox loadBox("CFrameBox", __("Scan for Movies ..."));
 	loadBox.paint();
@@ -2946,12 +2944,6 @@ void CTestMenu::testCFrameBox()
 	textBox.iHeight = box.iHeight - playBox.iHeight - 80 - titleBox.iHeight - starBox.iHeight - 4*10 - 100;
 	textBox.iX = box.iX + 10 + 40;
 	textBox.iY = starBox.iY + 20;
-
-	// head
-	frameBoxWidget->enablePaintHead();
-	frameBoxWidget->setTitle("CFrameBox", NEUTRINO_ICON_MOVIE);
-	frameBoxWidget->enablePaintDate();
-	frameBoxWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 
 	// artFrame
 	CFrameItem * artFrame = new CFrameItem();
@@ -3057,6 +3049,12 @@ void CTestMenu::testCFrameBox()
 	playFrame->setBorderMode();
 
 	frameBoxWidget->addFrame(playFrame);
+	
+	// head
+	frameBoxWidget->enablePaintHead();
+	frameBoxWidget->setTitle("CFrameBox", NEUTRINO_ICON_MOVIE);
+	frameBoxWidget->enablePaintDate();
+	frameBoxWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 
 	// foot
 	frameBoxWidget->enablePaintFoot();

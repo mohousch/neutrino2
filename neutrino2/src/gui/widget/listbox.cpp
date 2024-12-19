@@ -2195,16 +2195,24 @@ void ClistBox::paint()
 	{
 		if (paint_Head)
 		{
-			radius = g_settings.Head_radius;
-			corner = g_settings.Head_corner;
+			radius |= g_settings.Head_radius;
+			corner |= g_settings.Head_corner;
 		}
 		
 		if (paint_Foot)
 		{
 			radius |= g_settings.Foot_radius;
-			corner += g_settings.Foot_corner;
+			corner |= g_settings.Foot_corner;
 		}
 		
+		////test
+		printf("ClistBox::paint: corner:%d radius:%d\n", corner, radius);
+		printf("ClistBox::paint: Head_corner:%d Head_radius:%d\n", g_settings.Head_corner, g_settings.Head_radius);
+		printf("ClistBox::paint: Foot_corner:%d Foot_radius:%d\n", g_settings.Foot_corner, g_settings.Foot_radius);
+		
+		// border
+		
+		// mainframe
 		frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient);
 	}
 	else
