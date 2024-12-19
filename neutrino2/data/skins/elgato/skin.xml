@@ -672,7 +672,7 @@
 		<image width="1180" height="620" image="images/menu_bg3.png" scale="1"/>
 		<head posx="10" posy="10" width="1160" height="60" paintframe="0" paintdate="1" format="%d.%m.%Y %H:%M:%S" line="1"/>
 		<textbox posx="10" posy="70" width="1160" height="440" paintframe="0"/>
-		<window name="widgeting" posx="10" posy="520" width="1160" height="30" paintframe="0"/>
+		<window name="screening" posx="10" posy="520" width="1160" height="30" paintframe="0"/>
 		<foot posx="10" posy="550" width="1160" height="60" paintframe="0" line="1"/>
 	</widget>
 	

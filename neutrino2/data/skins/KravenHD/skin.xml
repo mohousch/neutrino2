@@ -1065,7 +1065,7 @@
 	<widget name="epgview" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<head posx="50" posy="0" width="1180" height="50" paintframe="0" line="1"/>
 		<textbox posx="50" posy="50" width="840" height="590"/>	
-		<window name="widgeting" posx="50" posy="640" width="1180" height="30"/>
+		<window name="screening" posx="50" posy="640" width="1180" height="30"/>
 		<foot posx="50" posy="670" width="1180" height="50" paintframe="0" line="1"/>
 		<image posx="890" posy="150" width="390" height="300" image="background/logo.png"/>
 		<time posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y"/>

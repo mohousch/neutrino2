@@ -194,7 +194,7 @@ void CEpgData::initFrames()
 	cFootBox.iWidth = cFrameBox.iWidth;
 	cFootBox.iX = cFrameBox.iX;
 	cFootBox.iY = cFrameBox.iY + cFrameBox.iHeight - cFootBox.iHeight;
-
+	
 	// followScreeningBarBox
 	cFollowScreeningBox.iHeight = g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight() + 6;
 	cFollowScreeningBox.iWidth = cFrameBox.iWidth;
