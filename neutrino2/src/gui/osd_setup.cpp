@@ -113,6 +113,7 @@ int COSDSettings::showMenu(void)
 		osdSettings->setWidgetMode(ClistBox::MODE_MENU);
 		osdSettings->setWidgetType(ClistBox::TYPE_CLASSIC);
 		osdSettings->enableShrinkMenu();
+		osdSettings->paintMainFrame(true);
 		//
 		osdSettings->enablePaintHead();
 		osdSettings->setTitle(_("OSD"), NEUTRINO_ICON_COLORS);

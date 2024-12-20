@@ -96,6 +96,7 @@ int CUserMenu::doMenu(void)
 		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY + 50, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight - 100);
 		
 		menu->setWidgetMode(ClistBox::MODE_MENU);
+		menu->paintMainFrame(true);
 		
 		// 	
 		head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);

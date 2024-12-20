@@ -428,6 +428,8 @@ class ClistBox : public CComponent
 		void restoreScreen();
 		int full_height;
 		int full_width;
+		int borderMode;
+		uint32_t borderColor;
 
 		// item
 		int itemBorderMode;
@@ -533,13 +535,14 @@ class ClistBox : public CComponent
 		inline bool isPainted(void){return painted;};
 		bool hasHead(){return paint_Head;};
 		bool hasFoot(){return paint_Foot;};
-		
 		//// main properties
 		void enableShrinkMenu(){shrinkMenu = true;};
 		void setColor(fb_pixel_t col){bgcolor = col;};
 		void setCorner(int ra, int co){radius = ra; corner = co;};
 		void paintScrollBar(bool sb){scrollbar = sb;};
 		void setGradient(int grad){ gradient = grad;};
+		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
+		void setBorderColor(uint32_t col){borderColor = col;};
 		// frame method
 		void setItemsPerPage(int itemsX = 6, int itemsY = 3){itemsPerX = itemsX; itemsPerY = itemsY; maxItemsPerPage = itemsPerX*itemsPerY;};
 		//

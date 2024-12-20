@@ -731,7 +731,7 @@ class CCItemInfo : public CComponent
 		void setIcon(const char* const ic){if (ic) icon = ic;};
 		// custom mode
 		void setFont(unsigned int f){tFont = f;};
-		void setBorderMode(int m){borderMode = m;};
+		void setBorderMode(int m = CComponent::BORDER_ALL){borderMode = m;};
 		void setColor(uint32_t col){color = col;};
 		void setScaling(bool s){scale = s;};
 		void setCorner(int ra, int co){radius = ra; corner = co;};
@@ -781,7 +781,7 @@ class CCWindow : public CComponent
 		void setColor(fb_pixel_t col){bgcolor = col;};
 		void setCorner(int ra, int co){radius = ra; corner = co;};
 		void setGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){gradient = grad; grad_direction = direction; grad_intensity = intensity; grad_type = type;};
-		void setBorderMode(int sm){borderMode = sm;};
+		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
 		void setBorderColor(fb_pixel_t col){borderColor = col;};
 		//
 		void paint(void);

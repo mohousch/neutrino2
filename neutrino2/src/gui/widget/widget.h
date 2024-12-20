@@ -127,7 +127,6 @@ class CWidget : public CMenuTarget
 		void setCorner(int ra, int co){radius = ra; corner = co;};
 		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
 		void setBorderColor(fb_pixel_t col){borderColor = col;};
-		//
 		void enableSaveScreen();
 		void setMenuPosition(int p){menu_position = p; initFrames();};
 		

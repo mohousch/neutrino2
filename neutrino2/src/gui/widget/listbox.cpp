@@ -422,6 +422,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY + 50, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight - 100);
 
 			menu->setWidgetMode(ClistBox::MODE_SETUP);
+			menu->paintMainFrame(true);
 			
 			//
 			head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
@@ -871,6 +872,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY + 50, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight - 100);
 
 			menu->setWidgetMode(ClistBox::MODE_SETUP);
+			menu->paintMainFrame(true);
 			
 			//
 			head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
@@ -1806,6 +1808,8 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	corner = CORNER_NONE;
 	scrollbar = true;
 	gradient = NOGRADIENT;
+	borderMode = CComponent::BORDER_NO;
+	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
 	
 	//
 	item_height = 0;
@@ -1919,14 +1923,15 @@ ClistBox::ClistBox(CBox* position)
 	itemsPerX = 6;
 	itemsPerY = 3;
 	maxItemsPerPage = itemsPerX*itemsPerY;
-
+	//
 	background = NULL;
-	
 	bgcolor = COL_MENUCONTENT_PLUS_0;
 	radius = NO_RADIUS;
 	corner = CORNER_NONE;
 	scrollbar = true;
 	gradient = NOGRADIENT;
+	borderMode = CComponent::BORDER_NO;
+	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
 	
 	//
 	item_height = 0;
@@ -2206,6 +2211,8 @@ void ClistBox::paint()
 		}
 		
 		// border
+		if (borderMode != CComponent::BORDER_NO)
+			frameBuffer->paintBoxRel(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + 4, itemBox.iHeight + 4, borderColor, radius, corner);
 		
 		// mainframe
 		frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient);

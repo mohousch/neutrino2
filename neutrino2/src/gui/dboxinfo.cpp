@@ -567,6 +567,7 @@ int CInfoMenu::showMenu()
 		infoMenu->setWidgetMode(ClistBox::MODE_MENU);
 		infoMenu->setWidgetType(ClistBox::TYPE_CLASSIC);
 		infoMenu->enableShrinkMenu();
+		infoMenu->paintMainFrame(true);
 		
 		//
 		infoMenu->enablePaintHead();

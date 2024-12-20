@@ -149,38 +149,11 @@ class CFrameBox : public CComponent
 		fb_pixel_t bgcolor;
 		int radius;
 		int corner;
-		
-		//
 		fb_pixel_t * background;
 		void saveScreen();
 		void restoreScreen();
-		
-		// head
-		std::string iconfile;
-		std::string l_name;
-		int hheight;
-		fb_pixel_t headColor;
-		int headRadius;
-		int headCorner;
-		int headGradient;
-		int hbutton_count;
-		button_label_list_t hbutton_labels;
-		bool paintDate;
-		bool logo;
-		bool paint_Head;
-		CCTime *timer;
-		const char* format;
-		
-		// foot
-		int fheight;
-		fb_pixel_t footColor;
-		int footRadius;
-		int footCorner;
-		int footGradient;
-		int fbutton_count;
-		int fbutton_width;
-		button_label_list_t fbutton_labels;
-		bool paint_Foot;
+		int borderMode;
+		uint32_t borderColor;
 		
 		//
 		unsigned int current_page;
@@ -201,27 +174,22 @@ class CFrameBox : public CComponent
 			initFrames();
 		};
 		void setPosition(CBox* position){itemBox = *position; initFrames();};
-		
 		//
 		bool isSelectable(void);
-
 		//// 
 		void addFrame(CFrameItem *frame, const bool defaultselected = false);
 		bool hasItem();
 		void clearFrames(void){frames.clear();};
 		void setSelected(unsigned int _new) { /*if(_new <= frames.size())*/ selected = _new; };
-
 		//// 
 		void initFrames();
 		void paint();
 		void hide();
-		void refresh(bool show = false){if (paintDate && paint_Head) timer->refresh();};
-		bool update() const {return paintDate;};
-
 		//// main properties
 		void setColor(fb_pixel_t col){bgcolor = col;};
 		void setCorner(int ra, int co){radius = ra; corner = co;};
-
+		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
+		void setBorderColor(uint32_t col){borderColor = col;};
 		//// events
 		int swipRight();
 		int swipLeft();
@@ -229,28 +197,9 @@ class CFrameBox : public CComponent
 		void scrollLineUp(const int lines = 1);
 		int oKKeyPressed(CMenuTarget *target, neutrino_msg_t _msg = CRCInput::RC_ok);
 		void homeKeyPressed(){selected = -1;};
-
-		//// head properties
-		void enablePaintHead(){paint_Head = true;};
-		virtual void paintHead();
-		void enablePaintDate(void){paintDate = true;};
-		void setTitle(const char* title = "", const char* icon = NULL, bool logo_ok = false){l_name = title; if(icon != NULL) iconfile = icon; logo = logo_ok;};
-		void setHeadButtons(const struct button_label *_hbutton_label, const int _hbutton_count = 1);
-		void setHeadColor(fb_pixel_t col) {headColor = col;};
-		void setHeadCorner(int ra, int co = CORNER_TOP){headRadius = ra; headCorner = co;};
-		void setHeadGradient(int grad){headGradient = grad;};
-		void setFormat(const char* f){format = f;};
-		
-		//// foot properties
-		void enablePaintFoot(){paint_Foot = true;};
-		virtual void paintFoot();
-		void setFootButtons(const struct button_label *_fbutton_label, const int _fbutton_count = 1, const int _fbutton_width = 0);
-		void setFootColor(fb_pixel_t col) {footColor = col;};
-		void setFootCorner(int ra, int co = CORNER_BOTTOM){footRadius = ra; footCorner = co;};
-		void setFootGradient(int grad){footGradient = grad;};
-		
 		//// get methods
 		int getSelected(){return selected;};
 };
 
 #endif
+

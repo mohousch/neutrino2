@@ -92,6 +92,7 @@ void CMediaPlayerMenu::showMenu()
 		mediaPlayer->enablePaintHead();
 		mediaPlayer->setTitle(_("Media Player"), NEUTRINO_ICON_MULTIMEDIA);
 		mediaPlayer->enablePaintDate();
+		mediaPlayer->paintMainFrame(true);
 		
 		//
 		mediaPlayer->enablePaintFoot();	

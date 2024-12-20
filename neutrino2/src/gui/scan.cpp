@@ -62,6 +62,7 @@ extern CScanSettings * scanSettings;						// defined in scan_setup.cpp
 CScanTs::CScanTs(CFrontend *f, CScanSettings *sc)
 {
 	frameBuffer = CFrameBuffer::getInstance();
+	
 	radar = 0;
 	total = done = 0;
 	freqready = 0;
@@ -619,10 +620,12 @@ void CScanTs::paint(bool fortest)
 	const struct button_label btn = { NEUTRINO_ICON_BUTTON_HOME, " ", 0 };
 			
 	head.setButtons(&btn);
-	head.paint();
 	
 	// main box
-	frameBuffer->paintBoxRel(x, ypos + hheight, width, height - hheight, COL_MENUCONTENT_PLUS_0, g_settings.Foot_radius, g_settings.Foot_corner);
+	frameBuffer->paintBoxRel(x, ypos, width, height, COL_MENUCONTENT_PLUS_0, g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
+	
+	//
+	head.paint();
 	
 	// radar
 	frameBuffer->loadPal("radar.pal", RADAR_OFFSET, RADAR_OFFSET + 20);	// 17/37

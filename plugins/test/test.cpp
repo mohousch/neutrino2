@@ -1160,11 +1160,6 @@ void CTestMenu::testCFrameBoxWidget()
 	frameBoxWidget = new CFrameBox(&box);
 	
 	frameBoxWidget->paintMainFrame(true);
-	
-	frameBoxWidget->enablePaintHead();
-	frameBoxWidget->setTitle("testCFrameBoxWidget", NEUTRINO_ICON_MP3);
-	frameBoxWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	frameBoxWidget->enablePaintDate();
 
 	CHintBox loadBox("testCFrameBoxWidget", _("Scan for Movies ..."));
 	loadBox.paint();
@@ -2909,6 +2904,10 @@ void CTestMenu::testCFrameBox()
 	box.iHeight = CFrameBuffer::getInstance()->getScreenHeight() - 80;
 
 	frameBoxWidget = new CFrameBox(&box);
+	
+	frameBoxWidget->setBorderMode();
+	frameBoxWidget->setBorderColor(COL_WHITE_PLUS_0);
+	frameBoxWidget->setCorner(15, 15);
 
 	CHintBox loadBox("CFrameBox", __("Scan for Movies ..."));
 	loadBox.paint();
@@ -3049,18 +3048,8 @@ void CTestMenu::testCFrameBox()
 	playFrame->setBorderMode();
 
 	frameBoxWidget->addFrame(playFrame);
-	
-	// head
-	frameBoxWidget->enablePaintHead();
-	frameBoxWidget->setTitle("CFrameBox", NEUTRINO_ICON_MOVIE);
-	frameBoxWidget->enablePaintDate();
-	frameBoxWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 
-	// foot
-	frameBoxWidget->enablePaintFoot();
-	frameBoxWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-
-	// loop
+	// 
 	frameBoxWidget->exec();
 	
 	if (frameBoxWidget)
@@ -4151,7 +4140,17 @@ void CTestMenu::testCEventlist()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCEventlist\n");
 	
-	leftWidget = new ClistBox();
+	leftWidget = new ClistBox(100, 100, MENU_WIDTH, MENU_HEIGHT);
+	
+	leftWidget->paintMainFrame(true);
+	leftWidget->setBorderMode();
+	leftWidget->setCorner(15, 15);
+	leftWidget->setBorderColor(COL_WHITE_PLUS_0);
+	leftWidget->enablePaintHead();
+	leftWidget->setTitle("CTestMenu::testCEventlist");
+	leftWidget->setHeadColor(COL_MENUCONTENT_PLUS_0);
+	leftWidget->setHeadGradient(NOGRADIENT);
+	leftWidget->setHeadCorner(15, 3);
 	
 	CSectionsd::getInstance()->getEventsServiceKey(CZapit::getInstance()->getCurrentChannelID() & 0xFFFFFFFFFFFFULL, evtlist);
 
