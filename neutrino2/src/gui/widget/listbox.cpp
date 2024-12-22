@@ -408,18 +408,21 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 		
 		if (widget)
 		{
+			widget->clearCCItems();
+			
 			widget->setPosition(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50, 450, 400);
 			widget->enableSaveScreen();
 			
-			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
-
-			menu->setPosition(widget->getWindowsPos().iX, widget->getWindowsPos().iY, 450, 400);
+			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+			
 			menu->setWidgetMode(ClistBox::MODE_SETUP);
 			menu->enablePaintHead();
 			menu->setTitle(itemName.c_str());
 			menu->enablePaintFoot();
 			menu->setFootButtons(&btn);
 			menu->setBorderMode();
+			
+			widget->addCCItem(menu);
 		}
 		else
 		{
@@ -503,12 +506,18 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0};	
 			
 			//
-			widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+			CBox box;
+			box.iWidth = MENU_WIDTH;
+			box.iHeight = MENU_HEIGHT;
+			box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+			box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+			widget = new CWidget(&box);
 			widget->name = "optionchooser";
 			widget->enableSaveScreen();
 			
 			//
-			menu = new ClistBox();
+			menu = new ClistBox(&box);
 
 			menu->setWidgetMode(ClistBox::MODE_SETUP);
 			menu->paintMainFrame(true);
@@ -932,20 +941,20 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		
 		if (widget)
 		{
-			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
+			widget->clearCCItems();
 
 			widget->setPosition(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50, 450, 400);
 			widget->enableSaveScreen();
 			
-			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
-
-			menu->setPosition(0, 0, 450, 400);
+			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 			menu->setWidgetMode(ClistBox::MODE_SETUP);
 			menu->enablePaintHead();
 			menu->setTitle(itemName.c_str());
 			menu->enablePaintFoot();
 			menu->setFootButtons(&btn);
 			menu->setBorderMode();
+			
+			widget->addCCItem(menu);
 		}
 		else
 		{
