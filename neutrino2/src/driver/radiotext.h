@@ -46,8 +46,8 @@
 #ifndef __RADIO_AUDIO_H
 #define __RADIO_AUDIO_H
 
-#include <driver/gfx/framebuffer.h>
-#include <driver/gfx/fontrenderer.h>
+#include <driver/gdi/framebuffer.h>
+#include <driver/gdi/fontrenderer.h>
 
 #include <libdvbapi/dmx_cs.h>
 

@@ -41,8 +41,8 @@
 
 #include <driver/encoding.h>
 
-#include <driver/gfx/fontrenderer.h>
-#include <driver/gfx/color.h>
+#include <driver/gdi/fontrenderer.h>
+#include <driver/gdi/color.h>
 
 #include <driver/rcinput.h>
 
@@ -52,7 +52,6 @@
 #include <gui/filebrowser.h>
 
 #include <gui/widget/icons.h>
-#include <gui/widget/widget_helpers.h>
 #include <gui/widget/hintbox.h>
 #include <gui/widget/messagebox.h>
 #include <gui/widget/stringinput.h>
@@ -297,7 +296,6 @@ CTimerList::CTimerList()
 		//
 		timerlistWidget = new CWidget(&cFrameBox);
 		timerlistWidget->name = "timerlist";
-		timerlistWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		listBox = new ClistBox(&cFrameBox);
@@ -965,12 +963,17 @@ int CTimerList::modifyTimer()
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "modifytimer";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		timerSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		timerSettings = new ClistBox(&box);
 
 		timerSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		
@@ -1051,12 +1054,17 @@ int CTimerList::modifyTimer()
 	ClistBox* timerSettings_apids = NULL;
 	
 	//
-	timerSettings_apidsWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+	CBox box;
+	box.iWidth = MENU_WIDTH;
+	box.iHeight = MENU_HEIGHT;
+	box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+	box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+	timerSettings_apidsWidget = new CWidget(&box);
 	timerSettings_apidsWidget->name = "apidstimerlist";
-	timerSettings_apidsWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 	
 	//			
-	timerSettings_apids = new ClistBox(timerSettings_apidsWidget->getWindowsPos().iX, timerSettings_apidsWidget->getWindowsPos().iY, timerSettings_apidsWidget->getWindowsPos().iWidth, timerSettings_apidsWidget->getWindowsPos().iHeight);
+	timerSettings_apids = new ClistBox(&box);
 
 	timerSettings_apids->setWidgetMode(ClistBox::MODE_SETUP);
 	
@@ -1140,12 +1148,17 @@ int CTimerList::newTimer()
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "newtimer";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		timerSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		timerSettings = new ClistBox(&box);
 
 		timerSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		

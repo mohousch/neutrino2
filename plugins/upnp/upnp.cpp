@@ -39,8 +39,8 @@
 #include <driver/audioplay.h>
 #include <driver/audiofile.h>
 
-#include <driver/gfx/fontrenderer.h>
-#include <driver/gfx/color.h>
+#include <driver/gdi/fontrenderer.h>
+#include <driver/gdi/color.h>
 
 #include <daemonc/remotecontrol.h>
 
@@ -48,7 +48,7 @@
 #include <gui/infoviewer.h>
 
 #include <gui/widget/icons.h>
-#include <gui/widget/widget_helpers.h>
+//#include <gui/widget/widget_helpers.h>
 #include <gui/widget/messagebox.h>
 #include <gui/widget/hintbox.h>
 #include <gui/widget/stringinput.h>

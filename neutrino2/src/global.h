@@ -36,7 +36,7 @@
 #include <sectionsd/sectionsd.h>
 #include <timerd/timerd.h>
 
-#include <driver/gfx/fontrenderer.h>
+#include <driver/gdi/fontrenderer.h>
 #include <driver/rcinput.h>
 
 #include <driver/lcd/lcdd.h>

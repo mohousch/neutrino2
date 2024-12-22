@@ -67,9 +67,9 @@
 #include <driver/hdmi_cec.h>
 #include <driver/movieinfo.h>
 
-#include <driver/gfx/framebuffer.h>
-#include <driver/gfx/fontrenderer.h>
-#include <driver/gfx/color.h>
+#include <driver/gdi/framebuffer.h>
+#include <driver/gdi/fontrenderer.h>
+#include <driver/gdi/color.h>
 
 #include <gui/epgplus.h>
 #include <gui/streaminfo.h>

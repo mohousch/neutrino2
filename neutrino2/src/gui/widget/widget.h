@@ -1,22 +1,26 @@
-/*
-	$Id: widget.h 25062024 mohousch Exp $
+//
+//	$Id: widget.h 21122024 mohousch Exp $
+//
+//	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
+//	Homepage: http://dbox.cyberphoria.org/
+//
+//	License: GPL
+//
+//	This program is free software; you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation; either version 2 of the License, or
+//	(at your option) any later version.
+//
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program; if not, write to the Free Software
+//	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
-	License: GPL
-
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-*/
 #if !defined(WIDGET_H_)
 #define WIDGET_H_
 
@@ -24,21 +28,13 @@
 #include <config.h>
 #endif
 
-#include <gui/widget/widget_helpers.h>
+#include <gui/widget/component.h>
 
 
 ////
 class CWidget : public CMenuTarget
 {
 	public:
-		enum 
-		{
-			MENU_POSITION_NONE = 0,
-			MENU_POSITION_LEFT = 1,
-			MENU_POSITION_CENTER = 2,
-			MENU_POSITION_RIGHT = 3
-		};
-
 		//
 		std::string name;
 			
@@ -70,8 +66,6 @@ class CWidget : public CMenuTarget
 		bool savescreen;
 		void saveScreen();
 		void restoreScreen();
-		//
-		int menu_position;
 		// mainframe		
 		bool paintframe;
 		fb_pixel_t backgroundColor;
@@ -81,14 +75,12 @@ class CWidget : public CMenuTarget
 		int grad_type;
 		int radius;
 		int corner;
-		int borderMode;
-		fb_pixel_t borderColor;
 		//// for future use
 		unsigned int current_page;
 		unsigned int total_pages;
 
 	public:
-		CWidget(const int x = 0, const int y = 0, const int dx = DEFAULT_XRES, const int dy = DEFAULT_YRES);
+		CWidget(const int x = 0, const int y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);
 		CWidget(CBox *position);
 		virtual ~CWidget();
 		
@@ -99,8 +91,10 @@ class CWidget : public CMenuTarget
 			mainFrameBox.iY = y;
 			mainFrameBox.iWidth = dx;
 			mainFrameBox.iHeight = dy;
+			
+			initFrames();
 		};
-		virtual void setPosition(CBox* position){mainFrameBox = *position;};
+		virtual void setPosition(CBox* position){mainFrameBox = *position; initFrames();};
 
 		// CCITEMS
 		virtual void addCCItem(CComponent *CCItem, const bool defaultselected = false);
@@ -125,10 +119,7 @@ class CWidget : public CMenuTarget
 		void setColor(fb_pixel_t col) {backgroundColor = col;};
 		void setGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){gradient = grad; grad_direction = direction; grad_intensity = intensity; grad_type = type;};
 		void setCorner(int ra, int co){radius = ra; corner = co;};
-		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
-		void setBorderColor(fb_pixel_t col){borderColor = col;};
 		void enableSaveScreen();
-		void setMenuPosition(int p){menu_position = p; initFrames();};
 		
 		//// events
 		virtual void onOKKeyPressed();
@@ -151,7 +142,6 @@ class CWidget : public CMenuTarget
 		CComponent *getCCItem(const int type, const std::string& name = "");
 		//
 		inline CBox getWindowsPos(void){return mainFrameBox;};
-		int getMenuPosition(){return menu_position;};
 		// lua compatibility
 		std::string getActionKey(){return actionKey;};
 		neutrino_msg_t getKey(){return msg;};

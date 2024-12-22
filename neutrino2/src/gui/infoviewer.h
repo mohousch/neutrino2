@@ -33,14 +33,14 @@
 
 #include <driver/rcinput.h>
 
-#include <driver/gfx/framebuffer.h>
-#include <driver/gfx/fontrenderer.h>
+#include <driver/gdi/framebuffer.h>
+#include <driver/gdi/fontrenderer.h>
 
 #include <system/settings.h>
 
 #include <gui/widget/icons.h>
 #include <gui/widget/widget.h>
-#include <gui/widget/widget_helpers.h>
+#include <gui/widget/component.h>
 
 
 class CInfoViewer

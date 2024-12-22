@@ -32,8 +32,8 @@
 #include <global.h>
 #include <neutrino2.h>
 
-#include <driver/gfx/fontrenderer.h>
-#include <driver/gfx/color.h>
+#include <driver/gdi/fontrenderer.h>
+#include <driver/gdi/color.h>
 
 #include <driver/rcinput.h>
 
@@ -42,7 +42,6 @@
 #include <gui/epgplus.h>
 
 #include <gui/widget/icons.h>
-#include <gui/widget/widget_helpers.h>
 #include <gui/widget/messagebox.h>
 #include <gui/widget/infobox.h>
 
@@ -1394,10 +1393,11 @@ void CChannelList::paint(bool customMode)
 		widget = new CWidget(&cFrameBox);
 		widget->name = "channellist";
 		widget->paintMainFrame(true);
+		widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 		
 		// listBox
 		listBox = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY + 50, (widget->getWindowsPos().iWidth/3)*2, widget->getWindowsPos().iHeight - 100);
-		listBox->paintMainFrame(true); //test
+		listBox->paintMainFrame(true);
 		
 		//
 		head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
@@ -1774,14 +1774,21 @@ int CChannelList::doChannelMenu(void)
 	else
 	{
 		//
-		mWidget = new CWidget(0, 0, 500, 250);
+		CBox box;
+		box.iWidth = 500;
+		box.iHeight = 250;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		mWidget = new CWidget(&box);
 		mWidget->name = "channellistedit";
-		mWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
+//		mWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		menu = new ClistBox(mWidget->getWindowsPos().iX, mWidget->getWindowsPos().iY, mWidget->getWindowsPos().iWidth, mWidget->getWindowsPos().iHeight);
+		menu = new ClistBox(&box);
 
 		menu->setWidgetMode(ClistBox::MODE_MENU);
+		menu->setBorderMode();
 		
 		//
 		menu->enablePaintHead();
@@ -1799,8 +1806,7 @@ int CChannelList::doChannelMenu(void)
 	}
 	
 	//
-	mWidget->setCorner(g_settings.Head_radius > g_settings.Foot_radius? g_settings.Head_radius : g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
-	mWidget->setBorderMode();
+	mWidget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	mWidget->paintMainFrame(true);
 	mWidget->enableSaveScreen();
 	

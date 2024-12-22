@@ -35,7 +35,7 @@
 
 #include <driver/rcinput.h>
 
-#include <driver/gfx/color.h>
+#include <driver/gdi/color.h>
 
 #include <gui/widget/messagebox.h>
 

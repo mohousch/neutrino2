@@ -46,9 +46,9 @@
 #include <string>
 #include <vector>
 
-#include <driver/gfx/fontrenderer.h>
+#include <driver/gdi/fontrenderer.h>
 
-#include <gui/widget/widget_helpers.h>
+#include <gui/widget/component.h>
 
 
 #define LF_MAX_ROWS 6

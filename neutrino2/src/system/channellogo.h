@@ -41,7 +41,7 @@
 #include <driver/file.h>
 #include <driver/rcinput.h>
 
-#include <driver/gfx/framebuffer.h>
+#include <driver/gdi/framebuffer.h>
 
 #include <system/settings.h>
 #include <system/helpers.h>

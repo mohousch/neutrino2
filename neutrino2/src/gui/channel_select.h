@@ -27,7 +27,7 @@
 // zapit includes
 #include <zapit/zapit.h>
 
-#include <gui/widget/widget_helpers.h>
+#include <gui/widget/component.h>
 #include <gui/channellist.h>
 
 		

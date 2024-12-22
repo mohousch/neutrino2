@@ -367,8 +367,8 @@ void CHelpBox::paint(void)
 	
 	// 
 	widget->setPosition(&cFrameBox);
-	widget->setBorderMode(borderMode);
-	widget->setBorderColor(borderColor);
+//	widget->setBorderMode(borderMode);
+//	widget->setBorderColor(borderColor);
 	widget->enableSaveScreen();
 
 	// title

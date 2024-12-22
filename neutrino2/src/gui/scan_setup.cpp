@@ -472,12 +472,17 @@ int CScanSetup::showScanService()
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "scansetup";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		scansetup = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		scansetup = new ClistBox(&box);
 
 		scansetup->setWidgetMode(ClistBox::MODE_SETUP);
 		
@@ -695,12 +700,17 @@ int CScanSetup::showMotorSetup()
 	else
 	{
 		//
-		motorMenuWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		motorMenuWidget = new CWidget(&box);
 		motorMenuWidget->name = "motorsetup";
-		motorMenuWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		motorMenu = new ClistBox(motorMenuWidget->getWindowsPos().iX, motorMenuWidget->getWindowsPos().iY, motorMenuWidget->getWindowsPos().iWidth, motorMenuWidget->getWindowsPos().iHeight);
+		motorMenu = new ClistBox(&box);
 
 		motorMenu->setWidgetMode(ClistBox::MODE_SETUP);
 			
@@ -791,12 +801,17 @@ int CScanSetup::showUnicableSetup()
 	else
 	{
 		//
-		uniWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		uniWidget = new CWidget(&box);
 		uniWidget->name = "unicablesetup";
-		uniWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		uni_setup = new ClistBox(uniWidget->getWindowsPos().iX, uniWidget->getWindowsPos().iY, uniWidget->getWindowsPos().iWidth, uniWidget->getWindowsPos().iHeight);
+		uni_setup = new ClistBox(&box);
 
 		uni_setup->setWidgetMode(ClistBox::MODE_SETUP);
 		
@@ -857,12 +872,17 @@ int CScanSetup::showLNBSetup()
 	else
 	{
 		//
-		satSetupWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		satSetupWidget = new CWidget(&box);
 		satSetupWidget->name = "satsetup";
-		satSetupWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		satSetup = new ClistBox(satSetupWidget->getWindowsPos().iX, satSetupWidget->getWindowsPos().iY, satSetupWidget->getWindowsPos().iWidth, satSetupWidget->getWindowsPos().iHeight);
+		satSetup = new ClistBox(&box);
 
 		satSetup->setWidgetMode(ClistBox::MODE_SETUP);
 			
@@ -895,13 +915,18 @@ int CScanSetup::showLNBSetup()
 	else
 	{
 		//
-		tempsatWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		tempsatWidget = new CWidget(&box);
 		tempsatWidget->name = "tempsat";
-		tempsatWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		tempsatWidget->enableSaveScreen();
 		
 		//
-		tempsatlistBox = new ClistBox(tempsatWidget->getWindowsPos().iX, tempsatWidget->getWindowsPos().iY, tempsatWidget->getWindowsPos().iWidth, tempsatWidget->getWindowsPos().iHeight);
+		tempsatlistBox = new ClistBox(&box);
 
 		tempsatlistBox->setWidgetMode(ClistBox::MODE_SETUP);
 					
@@ -1012,12 +1037,17 @@ int CScanSetup::showSatOnOffSetup()
 	else
 	{
 		//
-		satOnOffWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		satOnOffWidget = new CWidget(&box);
 		satOnOffWidget->name = "satOnOff";
-		satOnOffWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		satOnOfflistBox = new ClistBox(satOnOffWidget->getWindowsPos().iX, satOnOffWidget->getWindowsPos().iY, satOnOffWidget->getWindowsPos().iWidth, satOnOffWidget->getWindowsPos().iHeight);
+		satOnOfflistBox = new ClistBox(&box);
 
 		satOnOfflistBox->setWidgetMode(ClistBox::MODE_SETUP);
 			
@@ -1081,12 +1111,17 @@ int CScanSetup::showManualScanSetup()
 	else
 	{
 		//
-		manualScanWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		manualScanWidget = new CWidget(&box);
 		manualScanWidget->name = "manualscan";
-		manualScanWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		manualScanlistBox = new ClistBox(manualScanWidget->getWindowsPos().iX, manualScanWidget->getWindowsPos().iY, manualScanWidget->getWindowsPos().iWidth, manualScanWidget->getWindowsPos().iHeight);
+		manualScanlistBox = new ClistBox(&box);
 
 		manualScanlistBox->setWidgetMode(ClistBox::MODE_SETUP);
 		
@@ -1362,12 +1397,17 @@ int CScanSetup::showAutoScanSetup()
 	else
 	{
 		//
-		autoScanWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		autoScanWidget = new CWidget(&box);
 		autoScanWidget->name = "autoscan";
-		autoScanWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		autoScanlistBox = new ClistBox(autoScanWidget->getWindowsPos().iX, autoScanWidget->getWindowsPos().iY, autoScanWidget->getWindowsPos().iWidth, autoScanWidget->getWindowsPos().iHeight);
+		autoScanlistBox = new ClistBox(&box);
 
 		autoScanlistBox->setWidgetMode(ClistBox::MODE_SETUP);
 		
@@ -1496,12 +1536,17 @@ int CScanSetup::showAllAutoScanSetup()
 	else
 	{
 		//
-		autoScanAllWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		autoScanAllWidget = new CWidget(&box);
 		autoScanAllWidget->name = "autoscanall";
-		autoScanAllWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		autoScanAlllistBox = new ClistBox(autoScanAllWidget->getWindowsPos().iX, autoScanAllWidget->getWindowsPos().iY, autoScanAllWidget->getWindowsPos().iWidth, autoScanAllWidget->getWindowsPos().iHeight);
+		autoScanAlllistBox = new ClistBox(&box);
 
 		autoScanAlllistBox->setWidgetMode(ClistBox::MODE_SETUP);
 			
@@ -1596,12 +1641,17 @@ int CTPSelectHandler::exec(CMenuTarget *parent, const std::string &)
 	else
 	{
 		//
-		tpWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		tpWidget = new CWidget(&box);
 		tpWidget->name = "transponder";
-		tpWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		menu = new ClistBox(tpWidget->getWindowsPos().iX, tpWidget->getWindowsPos().iY, tpWidget->getWindowsPos().iWidth, tpWidget->getWindowsPos().iHeight);
+		menu = new ClistBox(&box);
 
 		menu->setWidgetMode(ClistBox::MODE_SETUP);
 		
@@ -2310,12 +2360,17 @@ int CTunerSetup::showMenu()
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "tunersetup";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		TunerSetup = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		TunerSetup = new ClistBox(&box);
 		
 		TunerSetup->setWidgetMode(ClistBox::MODE_MENU);
 		

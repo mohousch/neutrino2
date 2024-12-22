@@ -32,8 +32,6 @@
 
 #include <dmx_cs.h>
 
-#include <driver/gfx/framebuffer.h>
-
 #include <system/debug.h>
 	
 #include <configfile.h>

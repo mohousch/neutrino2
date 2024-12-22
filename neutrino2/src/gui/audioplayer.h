@@ -26,7 +26,7 @@
 #ifndef __audioplayergui__
 #define __audioplayergui__
 
-#include <driver/gfx/framebuffer.h>
+#include <driver/gdi/framebuffer.h>
 
 #include <driver/audiofile.h>
 #include <driver/audioplay.h>

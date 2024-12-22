@@ -33,7 +33,7 @@
 #include <gui/widget/listbox.h>
 #include <gui/widget/progresswindow.h>
 
-#include <driver/gfx/framebuffer.h>
+#include <driver/gdi/framebuffer.h>
 
 
 //// CFlashUpdate

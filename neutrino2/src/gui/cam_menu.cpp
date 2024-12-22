@@ -118,12 +118,17 @@ void CCAMMenuHandler::doMainMenu()
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "cammenu";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		cammenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		cammenu = new ClistBox(&box);
 
 		cammenu->setWidgetMode(ClistBox::MODE_SETUP);
 		cammenu->enableShrinkMenu();
@@ -195,12 +200,17 @@ void CCAMMenuHandler::doMainMenu()
 			else
 			{
 				//
-				tempMenuWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-				tempMenuWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
+				CBox box;
+				box.iWidth = MENU_WIDTH;
+				box.iHeight = MENU_HEIGHT;
+				box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+				box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+				tempMenuWidget = new CWidget(&box);
 				tempMenuWidget->enableSaveScreen();
 				
 				//
-				tempMenu = new ClistBox(tempMenuWidget->getWindowsPos().iX, tempMenuWidget->getWindowsPos().iY, tempMenuWidget->getWindowsPos().iWidth, tempMenuWidget->getWindowsPos().iHeight);
+				tempMenu = new ClistBox(&box);
 
 				tempMenu->setWidgetMode(ClistBox::MODE_SETUP);
 				tempMenu->enableShrinkMenu();
@@ -388,12 +398,17 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 			else
 			{
 				//
-				menuWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-				menuWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
+				CBox box;
+				box.iWidth = MENU_WIDTH;
+				box.iHeight = MENU_HEIGHT;
+				box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+				box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+				menuWidget = new CWidget(&box);
 				menuWidget->enableSaveScreen();
 				
 				//
-				menu = new ClistBox(menuWidget->getWindowsPos().iX, menuWidget->getWindowsPos().iY, menuWidget->getWindowsPos().iWidth, menuWidget->getWindowsPos().iHeight);
+				menu = new ClistBox(&box);
 
 				menu->setWidgetMode(ClistBox::MODE_SETUP);
 				menu->enableShrinkMenu();

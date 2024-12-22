@@ -1,21 +1,25 @@
-/*
- * $Id: widget_helpers.h 21042024 mohousch Exp $
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- *
- */
+//
+//	$Id: component.h 21122024 mohousch Exp $
+//
+//	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
+//	Homepage: http://dbox.cyberphoria.org/
+//
+//	License: GPL
+//
+//	This program is free software; you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation; either version 2 of the License, or
+//	(at your option) any later version.
+//
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program; if not, write to the Free Software
+//	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #ifndef __gui_widget_helpers_h__
 #define __gui_widget_helpers_h__
@@ -31,9 +35,9 @@
 #include <string>
 #include <vector>
 
-#include <driver/gfx/fontrenderer.h>
-#include <driver/gfx/framebuffer.h>
-#include <driver/gfx/color.h>
+#include <driver/gdi/fontrenderer.h>
+#include <driver/gdi/framebuffer.h>
+#include <driver/gdi/color.h>
 
 #include <gui/widget/icons.h>
 
@@ -148,6 +152,7 @@ class CComponent
 		////
 		bool inFocus;
 		bool painted;
+		bool adjustToParent;
 		////
 		CWidget *parent;
 		//
@@ -186,7 +191,7 @@ class CComponent
 		virtual int getCCType(){return cc_type;};
 		virtual std::string getCCName(){return cc_name;};
 		////
-		virtual void initFrames(){};
+		virtual void initFrames();
 		virtual void setPosition(const int _x, const int _y, const int _width, const int _height)
 		{
 			itemBox.iX = _x;
@@ -710,6 +715,7 @@ class CCItemInfo : public CComponent
 		int radius;
 		int corner;
 		int gradient;
+		uint32_t borderColor;
 		
 		//
 		fb_pixel_t *background;
@@ -732,6 +738,7 @@ class CCItemInfo : public CComponent
 		// custom mode
 		void setFont(unsigned int f){tFont = f;};
 		void setBorderMode(int m = CComponent::BORDER_ALL){borderMode = m;};
+		void setBorderColor(fb_pixel_t col){borderColor = col;};
 		void setColor(uint32_t col){color = col;};
 		void setScaling(bool s){scale = s;};
 		void setCorner(int ra, int co){radius = ra; corner = co;};
@@ -774,7 +781,6 @@ class CCWindow : public CComponent
 		CCWindow(CBox* position);
 		virtual ~CCWindow();
 		//
-		void initFrames();
 		void setPosition(const int x, const int y, const int dx, const int dy);
 		void setPosition(CBox* position);
 		//

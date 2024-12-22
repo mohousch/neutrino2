@@ -1,4 +1,4 @@
-SUBDIRS = gfx lcd
+SUBDIRS = gdi lcd
 
 AM_CPPFLAGS = \
 	-I$(top_builddir) \

@@ -589,6 +589,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t *a_start
 		//
 		widget = new CWidget(&cFrameBox);
 		widget->name = "epgview";
+		widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 		
 		//
 		textBox = new CTextBox(&cTextBox);

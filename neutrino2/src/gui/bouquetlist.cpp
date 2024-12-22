@@ -32,15 +32,14 @@
 
 #include <gui/bouquetlist.h>
 
-#include <driver/gfx/color.h>
-#include <driver/gfx/fontrenderer.h>
+#include <driver/gdi/color.h>
+#include <driver/gdi/fontrenderer.h>
 
 #include <gui/eventlist.h>
 #include <gui/infoviewer.h>
 #include <gui/filebrowser.h>
 
 #include <gui/widget/icons.h>
-#include <gui/widget/widget_helpers.h>
 
 #include <driver/rcinput.h>
 #include <daemonc/remotecontrol.h>
@@ -538,19 +537,24 @@ int CBouquetList::doMenu()
 	else
 	{
 		//
-		widget = new CWidget(0, 0, 500, 150);
+		CBox box;
+		box.iWidth = 500;
+		box.iHeight = 150;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;		
+		
+		widget = new CWidget(&box);
 		widget->name = "bouquetlistedit";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		menu = new ClistBox(&box);
 
 		menu->setWidgetMode(ClistBox::MODE_MENU);
+		menu->setBorderMode();
 		
 		//
 		menu->enablePaintHead();
 		menu->setTitle(_("Edit"), NEUTRINO_ICON_SETTINGS);
-//		menu->setHeadLine(true, true);
 
 		//
 		menu->enablePaintFoot();
@@ -558,15 +562,13 @@ int CBouquetList::doMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 			
 		menu->setFootButtons(&btn);
-//		menu->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(menu);
 	}
 	
 	//
-	widget->setCorner(g_settings.Head_radius > g_settings.Foot_radius? g_settings.Head_radius : g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
-	widget->setBorderMode();
+	widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	widget->paintMainFrame(true);
 	widget->enableSaveScreen();
 

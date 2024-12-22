@@ -32,7 +32,6 @@
 /* include <config.h> before <gui/filebrowser.h> to enable 64 bit file offsets */
 #include <gui/filebrowser.h>
 
-#include <gui/widget/widget_helpers.h>
 #include <gui/widget/messagebox.h>
 
 #include <gui/widget/hintbox.h>
@@ -714,12 +713,8 @@ void CFileBrowser::paint()
 		listBox = new ClistBox(&cFrameBox);
 		
 		listBox->paintMainFrame(true);
-		
-		//
 		listBox->enablePaintHead();
 		listBox->enablePaintDate();
-		
-		//
 		listBox->enablePaintFoot();
 		
 		//

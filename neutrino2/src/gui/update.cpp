@@ -33,8 +33,8 @@
 #include <driver/encoding.h>
 #include <driver/rcinput.h>
 
-#include <driver/gfx/fontrenderer.h>
-#include <driver/gfx/color.h>
+#include <driver/gdi/fontrenderer.h>
+#include <driver/gdi/color.h>
 
 #include <gui/filebrowser.h>
 #include <system/fsmounter.h>
@@ -165,12 +165,17 @@ bool CFlashUpdate::selectHttpImage(void)
 	else
 	{
 		//
-		widget = new CWidget(0, 0, 800, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = 800;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "selecthttpimage";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		SelectionWidget = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		SelectionWidget = new ClistBox(&box);
 
 		SelectionWidget->setWidgetMode(ClistBox::MODE_SETUP);
 		SelectionWidget->enableShrinkMenu();
@@ -441,12 +446,17 @@ int CFlashUpdate::showOfgWriteMenu()
 	else
 	{
 		//
-		mWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		mWidget = new CWidget(&box);
 		mWidget->name = "ofgwrite";
-		mWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		mlistBox = new ClistBox(mWidget->getWindowsPos().iX, mWidget->getWindowsPos().iY, mWidget->getWindowsPos().iWidth, mWidget->getWindowsPos().iHeight);
+		mlistBox = new ClistBox(&box);
 
 		mlistBox->setWidgetMode(ClistBox::MODE_SETUP);
 		
@@ -753,12 +763,17 @@ void CFlashExpert::showMTDSelector(const std::string &actionkey)
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "mtdselector";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		mtdselector = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		mtdselector = new ClistBox(&box);
 
 		mtdselector->setWidgetMode(ClistBox::MODE_SETUP);
 		mtdselector->enableShrinkMenu();
@@ -824,12 +839,17 @@ void CFlashExpert::showFileSelector(const std::string &actionkey)
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "fileselector";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		fileselector = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		fileselector = new ClistBox(&box);
 
 		fileselector->setWidgetMode(ClistBox::MODE_SETUP);
 		fileselector->enableShrinkMenu();
@@ -997,12 +1017,17 @@ int CUpdateSettings::showMTDExpert()
 	else
 	{
 		//
-		mtdexpertWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		mtdexpertWidget = new CWidget(&box);
 		mtdexpertWidget->name = "flashexpert";
-		mtdexpertWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		mtdexpert = new ClistBox(mtdexpertWidget->getWindowsPos().iX, mtdexpertWidget->getWindowsPos().iY, mtdexpertWidget->getWindowsPos().iWidth, mtdexpertWidget->getWindowsPos().iHeight);
+		mtdexpert = new ClistBox(&box);
 
 		mtdexpert->setWidgetMode(ClistBox::MODE_SETUP);
 		mtdexpert->enableShrinkMenu();
@@ -1062,12 +1087,17 @@ int CUpdateSettings::showMenu()
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "updatesetup";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		updateSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		updateSettings = new ClistBox(&box);
 
 		updateSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		updateSettings->enableShrinkMenu();

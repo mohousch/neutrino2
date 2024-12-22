@@ -39,7 +39,7 @@
 #include <driver/file.h>
 #include <driver/rcinput.h>
 
-#include <driver/gfx/framebuffer.h>
+#include <driver/gdi/framebuffer.h>
 
 #include <gui/widget/icons.h>
 

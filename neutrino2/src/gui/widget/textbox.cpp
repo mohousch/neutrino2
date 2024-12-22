@@ -185,6 +185,14 @@ void CTextBox::setBigFonts()
 void CTextBox::initFrames(void)
 {
 	dprintf(DEBUG_DEBUG, "CTextBox::InitFrames:\r\n");
+	
+	// sanity check
+	if(itemBox.iHeight > ((int)CFrameBuffer::getInstance()->getScreenHeight(true)))
+		itemBox.iHeight = CFrameBuffer::getInstance()->getScreenHeight(true) - 4;  	// 4 pixels for border
+
+	// sanity check
+	if(itemBox.iWidth > (int)CFrameBuffer::getInstance()->getScreenWidth(true))
+		itemBox.iWidth = CFrameBuffer::getInstance()->getScreenWidth(true) - 4; 	// 4 pixels for border
 
 	m_cFrameTextRel.iX = itemBox.iX + BORDER_LEFT;
 	m_cFrameTextRel.iY = itemBox.iY + 10;

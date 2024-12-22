@@ -32,12 +32,11 @@
 #include <global.h>
 #include <neutrino2.h>
 
-#include <driver/gfx/fontrenderer.h>
+#include <driver/gdi/fontrenderer.h>
 
 #include <gui/bedit/bouqueteditor_channels.h>
 
 #include <gui/widget/icons.h>
-#include <gui/widget/widget_helpers.h>
 #include <gui/widget/hintbox.h>
 #include <gui/widget/messagebox.h>
 #include <gui/widget/stringinput.h>

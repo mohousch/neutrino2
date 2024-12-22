@@ -29,12 +29,12 @@
 
 #include <string>
 
-#include <driver/gfx/framebuffer.h>
+#include <driver/gdi/framebuffer.h>
 
 #include <system/localize.h>
 
 #include <gui/widget/widget.h>
-#include <gui/widget/widget_helpers.h>
+#include <gui/widget/component.h>
 
 
 class CColorChooser : public CMenuTarget

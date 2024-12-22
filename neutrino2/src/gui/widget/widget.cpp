@@ -1,22 +1,25 @@
-/*
-	$Id: widget.cpp 12.03.2020 mohousch Exp $
-
-	License: GPL
-
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-*/
+//
+//	$Id: widget.cpp 21122024 mohousch Exp $
+//
+//	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
+//	Homepage: http://dbox.cyberphoria.org/
+//
+//	License: GPL
+//
+//	This program is free software; you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation; either version 2 of the License, or
+//	(at your option) any later version.
+//
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program; if not, write to the Free Software
+//	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -42,18 +45,12 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 	mainFrameBox.iY = y;
 	mainFrameBox.iWidth = dx;
 	mainFrameBox.iHeight = dy;
+	
+	name = "";
+	
 	//
 	savescreen = false;
 	background = NULL;
-	//
-	menu_position = MENU_POSITION_NONE;
-	//
-	timeout = g_settings.timing_menu;
-	sec_timer_id = 0;
-	sec_timer_interval = 1;
-	//
-	selected = -1;
-	//
 	paintframe = false;
 	backgroundColor = COL_MENUCONTENT_PLUS_0;
 	gradient = NOGRADIENT;
@@ -62,19 +59,18 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 	grad_type = GRADIENT_COLOR2TRANSPARENT;
 	radius = NO_RADIUS;
 	corner = CORNER_NONE;
-	borderMode = CComponent::BORDER_NO;
-	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
 	//
+	selected = -1;
+	timeout = g_settings.timing_menu;
+	sec_timer_id = 0;
+	sec_timer_interval = 1;
 	current_page = 0;
 	total_pages = 1;
-	//
 	actionKey = "";
-	//
-	name = "";
+	
 	//
 	CCItems.clear();
 	
-	////
 	dprintf(DEBUG_INFO, "CWidget::CWidget: x:%d y:%d w:%d h:%d\n", mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight);
 }
 
@@ -83,38 +79,32 @@ CWidget::CWidget(CBox *position)
 	frameBuffer = CFrameBuffer::getInstance();
 	//
 	mainFrameBox = *position;
+	
+	name = "";
+	
 	//
 	savescreen = false;
 	background = NULL;
-	//
-	menu_position = MENU_POSITION_NONE;
-	//
-	timeout = g_settings.timing_menu;
-	sec_timer_id = 0;
-	sec_timer_interval = 1;
-	//
-	selected = -1;
-	//
 	paintframe = false;
 	backgroundColor = COL_MENUCONTENT_PLUS_0;
 	gradient = NOGRADIENT;
 	grad_direction = GRADIENT_VERTICAL;
 	grad_intensity = INT_LIGHT;
 	grad_type = GRADIENT_COLOR2TRANSPARENT;
-	radius = RADIUS_MID;
-	corner = CORNER_ALL;
-	borderMode = CComponent::BORDER_NO;
-	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
+	radius = NO_RADIUS;
+	corner = CORNER_NONE;
 	//
+	selected = -1;
+	timeout = g_settings.timing_menu;
+	sec_timer_id = 0;
+	sec_timer_interval = 1;
 	current_page = 0;
 	total_pages = 1;
-	//
 	actionKey = "";
-	name = "";
+	
 	//
 	CCItems.clear();
 	
-	////
 	dprintf(DEBUG_INFO, "CWidget::CWidget: x:%d y:%d w:%d h:%d\n", mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight);
 }
 
@@ -166,25 +156,6 @@ void CWidget::initFrames()
 
 	if(mainFrameBox.iWidth >= (int)frameBuffer->getScreenWidth(true))
 		mainFrameBox.iWidth = frameBuffer->getScreenWidth(true);
-		
-	// menu position (x/y)
-	if(menu_position == MENU_POSITION_CENTER)
-	{
-		mainFrameBox.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - mainFrameBox.iWidth ) >> 1);
-		mainFrameBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - mainFrameBox.iHeight) >> 1);
-	}
-	else if(menu_position == MENU_POSITION_LEFT)
-	{
-		mainFrameBox.iX = frameBuffer->getScreenX();
-		mainFrameBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - mainFrameBox.iHeight) >> 1 );
-	}
-	else if(menu_position == MENU_POSITION_RIGHT)
-	{
-		mainFrameBox.iX = frameBuffer->getScreenX() + frameBuffer->getScreenWidth() - mainFrameBox.iWidth;
-		mainFrameBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - mainFrameBox.iHeight) >> 1 );
-	}
-	
-	dprintf(DEBUG_INFO, "CWidget::initFrames: x:%d y:%d w:%d h:%d\n", mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight);
 }
 
 //
@@ -210,16 +181,11 @@ void CWidget::paint()
 {
 	dprintf(DEBUG_NORMAL, "CWidget::paint (%s)\n", name.c_str());
 	
-	//
 	initFrames();
 
 	// paint mainFrame	
 	if (paintframe)
-	{
-		// border (paint only border_all)
-		if (borderMode != CComponent::BORDER_NO)
-			frameBuffer->paintBoxRel(mainFrameBox.iX - 2, mainFrameBox.iY - 2, mainFrameBox.iWidth + 4, mainFrameBox.iHeight + 4, borderColor, radius, corner);
-			
+	{	
 		// mainframe
 		frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, backgroundColor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 	}
@@ -241,14 +207,11 @@ void CWidget::saveScreen()
 		background = NULL;
 	}
 
-	background = new fb_pixel_t[borderMode? (mainFrameBox.iWidth + 4)* (mainFrameBox.iHeight + 4) : mainFrameBox.iWidth*mainFrameBox.iHeight];
+	background = new fb_pixel_t[mainFrameBox.iWidth*mainFrameBox.iHeight];
 	
 	if(background)
 	{
-		if (borderMode)
-			frameBuffer->saveScreen(mainFrameBox.iX - 2, mainFrameBox.iY - 2, mainFrameBox.iWidth + 4, mainFrameBox.iHeight + 4, background);
-		else
-			frameBuffer->saveScreen(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, background);		
+		frameBuffer->saveScreen(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, background);		
 	}
 }
 
@@ -258,10 +221,7 @@ void CWidget::restoreScreen()
 	
 	if(savescreen && background) 
 	{
-		if (borderMode)
-			frameBuffer->restoreScreen(mainFrameBox.iX - 2, mainFrameBox.iY - 2, mainFrameBox.iWidth + 4, mainFrameBox.iHeight + 4, background);
-		else
-			frameBuffer->restoreScreen(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, background);
+		frameBuffer->restoreScreen(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, background);
 	}
 }
 
@@ -271,7 +231,7 @@ void CWidget::enableSaveScreen()
 	savescreen = true;
 	
 	//
-	initFrames();
+//	initFrames();
 	
 	//
 	saveScreen();
@@ -301,10 +261,7 @@ void CWidget::hide()
 	}
 	else
 	{
-		if (borderMode)
-			frameBuffer->paintBackgroundBoxRel(mainFrameBox.iX - 2, mainFrameBox.iY - 2, mainFrameBox.iWidth + 4, mainFrameBox.iHeight + 4);
-		else
-			frameBuffer->paintBackgroundBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight);
+		frameBuffer->paintBackgroundBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight);
 	}
 
 	frameBuffer->blit();
@@ -393,10 +350,8 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 				}
 				else
 				{
-					selected = -1; // ???
+					selected = -1;
 					handled = true;
-					//FIXME: TEST
-					//exit_pressed = true;
 
 					break;
 				}

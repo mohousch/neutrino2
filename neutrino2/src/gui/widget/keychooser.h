@@ -29,15 +29,15 @@
 
 #include <string>
 
-#include <driver/gfx/framebuffer.h>
-#include <driver/gfx/fontrenderer.h>
+#include <driver/gdi/framebuffer.h>
+#include <driver/gdi/fontrenderer.h>
 
 #include <driver/rcinput.h>
 
 #include <system/localize.h>
 
 #include <gui/widget/listbox.h>
-#include <gui/widget/widget_helpers.h>
+#include <gui/widget/component.h>
 #include <gui/widget/widget.h>
 
 
@@ -55,6 +55,7 @@ class CKeyChooser : public CMenuTarget
 		CKeyChooserItemNoKey* keyDeleter;
 		
 		//
+		CBox cFrameBox;
 		CWidget* widget;
 		ClistBox* menu;
 		

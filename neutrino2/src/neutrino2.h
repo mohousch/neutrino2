@@ -35,7 +35,7 @@
 
 #include <neutrinoMessages.h>
 
-#include <driver/gfx/framebuffer.h>
+#include <driver/gdi/framebuffer.h>
 
 #include <system/configure_network.h>
 
@@ -166,7 +166,6 @@ class CNeutrinoApp : public CMenuTarget
 		int convertGradientType(const char * const type);
 		neutrino_msg_t convertKey(const char* const key);
 		int convertButtonMode(const char * const mode);
-		int convertMenuPosition(const char * const position);
 		int convertClistBoxMode(const char * const mode);
 		int convertClistBoxType(const char * const type);
 		int convertItemInfoMode(const char * const mode);

@@ -30,7 +30,7 @@
 #include <global.h>
 #include <neutrino2.h>
 
-#include <driver/gfx/color.h>
+#include <driver/gdi/color.h>
 
 #include <system/debug.h>
 
@@ -69,6 +69,12 @@ CKeyChooser::CKeyChooser(int * const Key, const char* const Title, const std::st
 	keyDeleter = new CKeyChooserItemNoKey(key);
 	
 	//
+	cFrameBox.iWidth = MENU_WIDTH;
+	cFrameBox.iHeight = MENU_HEIGHT;
+	
+	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
+	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
+	
 	widget = CNeutrinoApp::getInstance()->getWidget("keychooser");	
 	
 	if (widget)
@@ -84,13 +90,12 @@ CKeyChooser::CKeyChooser(int * const Key, const char* const Title, const std::st
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget = new CWidget(&cFrameBox);
 		widget->name = "keychooser";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		widget->enableSaveScreen();
 		
 		//
-		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		menu = new ClistBox(&cFrameBox);
 		menu->setWidgetMode(ClistBox::MODE_MENU);
 		
 		//	

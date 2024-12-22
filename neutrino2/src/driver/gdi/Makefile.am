@@ -26,14 +26,14 @@ endif
 
 AM_CXXFLAGS = -fno-rtti -fno-exceptions
 
-noinst_LIBRARIES = libneutrino2_driver_gfx.a 
+noinst_LIBRARIES = libneutrino2_driver_gdi.a 
 
-libneutrino2_driver_gfx_a_SOURCES = \
+libneutrino2_driver_gdi_a_SOURCES = \
 	fontrenderer.cpp \
 	framebuffer.cpp \
 	color.cpp
 
 if USE_OPENGL
-libneutrino2_driver_gfx_a_SOURCES += glthread.cpp
+libneutrino2_driver_gdi_a_SOURCES += glthread.cpp
 endif
 

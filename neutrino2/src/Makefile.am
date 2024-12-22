@@ -50,7 +50,7 @@ neutrino2_LDADD = \
 	driver/libneutrino2_driver.a \
 	gui/pictureviewer.o \
 	gui/audioplayer.o \
-	driver/gfx/libneutrino2_driver_gfx.a \
+	driver/gdi/libneutrino2_driver_gdi.a \
 	driver/lcd/libneutrino2_driver_lcd.a \
 	gui/bedit/bouqueteditor_bouquets.o \
 	sectionsd/libsectionsd.a \

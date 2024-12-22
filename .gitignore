@@ -3238,3 +3238,16 @@
 /neutrino2/data/skins/ice/icons/Makefile
 /neutrino2/data/skins/ice/icons/Makefile.in
 /neutrino2/data/skins/ice/buttons/Makefile
+/neutrino2/src/driver/gdi/.deps/color.Po
+/neutrino2/src/driver/gdi/.deps/fontrenderer.Po
+/neutrino2/src/driver/gdi/.deps/framebuffer.Po
+/neutrino2/src/driver/gdi/.deps/glthread.Po
+/neutrino2/src/driver/gdi/Makefile
+/neutrino2/src/driver/gdi/Makefile.in
+/neutrino2/src/driver/gdi/color.o
+/neutrino2/src/driver/gdi/fontrenderer.o
+/neutrino2/src/driver/gdi/framebuffer.o
+/neutrino2/src/driver/gdi/glthread.o
+/neutrino2/src/driver/gdi/libneutrino2_driver_gdi.a
+/neutrino2/src/gui/widget/.deps/component.Po
+/neutrino2/src/gui/widget/component.o

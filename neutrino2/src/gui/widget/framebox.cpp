@@ -536,6 +536,14 @@ bool CFrameBox::hasItem()
 void CFrameBox::initFrames()
 {
 	dprintf(DEBUG_INFO, "CFrameBox::initFrames:\n");
+	
+	// sanity check
+	if(itemBox.iHeight > ((int)CFrameBuffer::getInstance()->getScreenHeight(true)))
+		itemBox.iHeight = CFrameBuffer::getInstance()->getScreenHeight(true) - 4;  // 4 pixels for border
+
+	// sanity check
+	if(itemBox.iWidth > (int)CFrameBuffer::getInstance()->getScreenWidth(true))
+		itemBox.iWidth = CFrameBuffer::getInstance()->getScreenWidth(true) - 4; // 4 pixels for border
 }
 
 void CFrameBox::paintFrames()

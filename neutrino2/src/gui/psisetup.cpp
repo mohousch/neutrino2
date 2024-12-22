@@ -27,8 +27,8 @@
 
 #include <gui/psisetup.h>
 
-#include <driver/gfx/fontrenderer.h>
-#include <driver/gfx/color.h>
+#include <driver/gdi/fontrenderer.h>
+#include <driver/gdi/color.h>
 
 #include <driver/rcinput.h>
 

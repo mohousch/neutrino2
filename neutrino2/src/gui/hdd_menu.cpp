@@ -179,12 +179,17 @@ int CHDDMenuHandler::hddMenu()
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "hddsetup";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		hddmenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		hddmenu = new ClistBox(&box);
 
 		hddmenu->setWidgetMode(ClistBox::MODE_SETUP);
 		hddmenu->enableShrinkMenu();
@@ -334,8 +339,13 @@ int CHDDMenuHandler::hddMenu()
 		*/
 		{
 			//
-			tempMenuWidget[i] = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			tempMenuWidget[i]->setMenuPosition(CWidget::MENU_POSITION_CENTER);
+			CBox box;
+			box.iWidth = MENU_WIDTH;
+			box.iHeight = MENU_HEIGHT;
+			box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+			box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+			tempMenuWidget[i] = new CWidget(&box);
 			tempMenuWidget[i]->enableSaveScreen();
 			
 			//
@@ -415,8 +425,13 @@ int CHDDMenuHandler::hddMenu()
 			*/
 			{
 				//
-				PartMenuWidget[j] = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-				PartMenuWidget[j]->setMenuPosition(CWidget::MENU_POSITION_CENTER);
+				CBox box;
+				box.iWidth = MENU_WIDTH;
+				box.iHeight = MENU_HEIGHT;
+				box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+				box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+				PartMenuWidget[j] = new CWidget(&box);
 				PartMenuWidget[j]->enableSaveScreen();
 				
 				//

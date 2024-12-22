@@ -28,8 +28,8 @@
 #include <string>
 
 #include <gui/widget/widget.h>
-#include <driver/gfx/framebuffer.h>
-#include <gui/widget/widget_helpers.h>
+#include <driver/gdi/framebuffer.h>
+#include <gui/widget/component.h>
 
 #include <zapit/frontend_c.h>
 

@@ -193,12 +193,17 @@ int CNFSMountGui::menu()
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "nfs";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		mountMenuW = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		mountMenuW = new ClistBox(&box);
 
 		mountMenuW->setWidgetMode(ClistBox::MODE_SETUP);
 		mountMenuW->enableShrinkMenu();
@@ -324,12 +329,17 @@ int CNFSMountGui::menuEntry(int nr)
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "mountvolume";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		mountMenuEntryW = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		mountMenuEntryW = new ClistBox(&box);
 		mountMenuEntryW->setWidgetMode(ClistBox::MODE_SETUP);
 		mountMenuEntryW->enableShrinkMenu();
 		
@@ -443,12 +453,17 @@ int CNFSUmountGui::menu()
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "umountvolume";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		umountMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		umountMenu = new ClistBox(&box);
 		umountMenu->setWidgetMode(ClistBox::MODE_SETUP);
 		umountMenu->enableShrinkMenu();
 		
@@ -522,12 +537,17 @@ int CNFSSmallMenu::exec( CMenuTarget *parent, const std::string &actionKey )
 		else
 		{
 			//
-			widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+			CBox box;
+			box.iWidth = MENU_WIDTH;
+			box.iHeight = MENU_HEIGHT;
+			box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+			box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+			widget = new CWidget(&box);
 			widget->name = "nfssmall";
-			widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 			
 			//
-			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+			menu = new ClistBox(&box);
 			menu->setWidgetMode(ClistBox::MODE_SETUP);
 			menu->enableShrinkMenu();
 			

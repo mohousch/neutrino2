@@ -34,7 +34,7 @@
 
 #include <config.h>
 
-#include <driver/gfx/color.h>
+#include <driver/gdi/color.h>
 
 #ifdef ENABLE_GRAPHLCD
 #include <glcddrivers/config.h>

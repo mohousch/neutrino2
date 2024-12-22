@@ -237,8 +237,8 @@ void CMessageBox::paint(void)
 	
 	// 
 	widget->setPosition(&cFrameBox);
-	widget->setBorderMode(borderMode);
-	widget->setBorderColor(borderColor);
+	//widget->setBorderMode(borderMode);
+	//widget->setBorderColor(borderColor);
 	widget->enableSaveScreen();
 
 	// title
@@ -524,7 +524,7 @@ int MessageBox(const char * const Caption, const char * const Text, const CMessa
 {
    	CMessageBox * messageBox = new CMessageBox(Caption, Text, Width, Icon, Default, ShowButtons);
 	messageBox->returnDefaultValueOnTimeout(returnDefaultOnTimeout);
-	messageBox->setBorderMode(border);
+	//messageBox->setBorderMode(border);
 	//messageBox->setBorderColor(bcol);
 	messageBox->exec(timeout);
 	

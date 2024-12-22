@@ -38,8 +38,6 @@
 #include <system/screenshot.h>
 #include <system/debug.h>
 
-#include <driver/gfx/color.h>
-
 #include <libdvbapi/video_cs.h>
 
 extern "C" {
@@ -73,7 +71,7 @@ CScreenshot::CScreenshot()
 
 bool CScreenshot::getData()
 {
-	dprintf(0, "osd:%d video:%d scale:%d\n", get_osd, get_video, scale_to_video);
+	dprintf(DEBUG_NORMAL, "CScreenshot::getData: osd:%d video:%d scale:%d\n", get_osd, get_video, scale_to_video);
 	
 	int aspect = 0;
 	videoDecoder->getPictureInfo(xres, yres, aspect); // aspect is dummy here
@@ -82,7 +80,7 @@ bool CScreenshot::getData()
 	if (xres <= 0 || yres <= 0)
 		get_video = false;
 		
-	dprintf(0, "xres:%d yres:%d aspect:%d\n", xres, xres, aspect);
+	dprintf(0, "CScreenshot::getData: xres:%d yres:%d aspect:%d\n", xres, xres, aspect);
 
 	if (!get_video && !get_osd)
 		return false;
@@ -101,7 +99,7 @@ bool CScreenshot::getData()
 		osd_w = var->xres;
 		osd_h = var->yres;
 		
-		dprintf(0, "osd_w:%d osd_h:%d bpp:%d stride:%d\n", osd_w, osd_h, bits_per_pixel, CFrameBuffer::getInstance()->getStride());
+		dprintf(0, "CScreenshot::getData: osd_w:%d osd_h:%d bpp:%d stride:%d\n", osd_w, osd_h, bits_per_pixel, CFrameBuffer::getInstance()->getStride());
 		
 		if (osd_w <= 0 || osd_h <= 0 || bits_per_pixel != 32)
 			get_osd = false;
@@ -231,7 +229,7 @@ bool CScreenshot::openFile()
 	
 	if (!fd)
 	{
-		dprintf(DEBUG_NORMAL, "failed to open %s\n", filename.c_str());
+		dprintf(DEBUG_NORMAL, "CScreenshot::openFile: failed to open %s\n", filename.c_str());
 		return false;
 	}
 	
@@ -247,7 +245,7 @@ bool CScreenshot::savePNG()
 	if (!openFile())
 		return false;
 		
-	dprintf(0, "xres: %d yres: %d\n\n", xres, yres);
+	dprintf(0, "CScreenshot::savePNG: xres: %d yres: %d\n\n", xres, yres);
 
 	row_pointers = (png_bytep *) malloc(sizeof(png_bytep) * yres);
 	if (!row_pointers)
@@ -289,7 +287,7 @@ bool CScreenshot::savePNG()
 	
 	if (setjmp(png_jmpbuf(png_ptr)))
 	{
-        	dprintf(0, "Error during end of write\n");
+        	dprintf(0, "CScreenshot::savePNG: Error during end of write\n");
 		return false;
 	}
 

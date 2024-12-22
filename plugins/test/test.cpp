@@ -1056,7 +1056,6 @@ void CTestMenu::testCComponentWidget()
 	
 	// Hline
 	CCHline *testHline = new CCHline();
-	//testHline->setPosition(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 20, 10);
 	testHline->setPosition(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 20, 2);
 	testHline->setGradient(4);
 	
@@ -1064,7 +1063,6 @@ void CTestMenu::testCComponentWidget()
 	
 	// Vline
 	CCVline *testVline = new CCVline();
-	//testVline->setPosition(Box.iX + Box.iWidth - 20 - 15, Box.iY + 10, 10, Box.iHeight - 20);
 	testVline->setPosition(Box.iX + Box.iWidth - 20 - 15, Box.iY + 50, 2, Box.iHeight - 100);
 	testVline->setGradient(4);
 	
@@ -1134,6 +1132,7 @@ void CTestMenu::testCTextBoxWidget()
 	testWidget = new CWidget(&box);
 	testWidget->addKey(CRCInput::RC_info, this, "tinfo");
 	testWidget->addCCItem(textBoxWidget);
+	testWidget->paintMainFrame(true);
 	
 	testWidget->exec(this, "");
 	
@@ -5946,8 +5945,13 @@ void CTestMenu::showMenu()
 	else
 	{
 		//
-		mWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		mWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);	
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		mWidget = new CWidget(&box);	
 		mWidget->name = "testmenu";
 		
 		//	

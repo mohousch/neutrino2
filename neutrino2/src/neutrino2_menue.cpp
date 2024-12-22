@@ -81,12 +81,17 @@ void CNeutrinoApp::mainMenu(void)
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "mainmenu";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		nMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		nMenu = new ClistBox(&box);
 		
 		nMenu->setWidgetMode(ClistBox::MODE_MENU);
 		nMenu->setWidgetType(ClistBox::TYPE_CLASSIC);
@@ -354,12 +359,17 @@ bool CNeutrinoApp::showUserMenu(int button)
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "features";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		menu = new ClistBox(&box);
 		menu->setWidgetMode(ClistBox::MODE_MENU);
 		menu->setWidgetType(ClistBox::TYPE_CLASSIC);
 		menu->enableShrinkMenu();
@@ -569,12 +579,17 @@ void CNeutrinoApp::selectNVOD()
 		else
                 {
                 	//
-                	widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+                	CBox box;
+			box.iWidth = MENU_WIDTH;
+			box.iHeight = MENU_HEIGHT;
+			box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+			box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+                	widget = new CWidget(&box);
 			widget->name = "nvodselect";
-			widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 
 			//                	
-			NVODSelector = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+			NVODSelector = new ClistBox(&box);
 			NVODSelector->setWidgetMode(ClistBox::MODE_SETUP);
 			NVODSelector->enableShrinkMenu();
 			NVODSelector->paintMainFrame(true);

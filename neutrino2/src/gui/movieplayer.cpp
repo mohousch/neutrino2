@@ -55,8 +55,8 @@
 #include <global.h>
 #include <neutrino2.h>
 
-#include <driver/gfx/fontrenderer.h>
-#include <driver/gfx/color.h>
+#include <driver/gdi/fontrenderer.h>
+#include <driver/gdi/color.h>
 
 #include <driver/rcinput.h>
 #include <driver/vcrcontrol.h>
@@ -77,7 +77,6 @@
 #include <gui/movieplayer_setup.h>
 #include <gui/filebrowser.h>
 
-#include <gui/widget/widget_helpers.h>
 #include <gui/widget/messagebox.h>
 #include <gui/widget/hintbox.h>
 #include <gui/widget/stringinput.h>
@@ -710,12 +709,17 @@ void CMoviePlayerGui::PlayFile(void)
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "bookmark";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		bookStartMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		bookStartMenu = new ClistBox(&box);
 
 		bookStartMenu->setWidgetMode(ClistBox::MODE_MENU);
 		bookStartMenu->enableShrinkMenu();
@@ -1713,12 +1717,17 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "startpos";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		startPosSelectionMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		startPosSelectionMenu = new ClistBox(&box);
 		startPosSelectionMenu->setWidgetMode(ClistBox::MODE_SETUP);
 		startPosSelectionMenu->enableShrinkMenu();
 		//	

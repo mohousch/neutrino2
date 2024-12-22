@@ -25,7 +25,7 @@
 
 #include <neutrino2.h>
 #include <gui/widget/stringinput.h>
-#include <gui/widget/widget_helpers.h>
+//#include <gui/widget/widget_helpers.h>
 
 #include <sys/vfs.h> // for statfs
 #include <sys/types.h>
@@ -37,8 +37,6 @@
 
 
 #include <driver/movieinfo.h>
-#include <driver/gfx/color.h>
-#include <driver/gfx/framebuffer.h>
 
 #include <system/settings.h>
 

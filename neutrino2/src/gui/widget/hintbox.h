@@ -34,7 +34,7 @@
 #include <system/settings.h>
 
 #include <gui/widget/icons.h>
-#include <gui/widget/widget_helpers.h>
+#include <gui/widget/component.h>
 
 
 class CHintBox

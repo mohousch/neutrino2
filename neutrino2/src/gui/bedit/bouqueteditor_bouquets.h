@@ -26,7 +26,7 @@
 #ifndef __bouqueteditor_bouquets__
 #define __bouqueteditor_bouquets__
 
-#include <driver/gfx/framebuffer.h>
+#include <driver/gdi/framebuffer.h>
 
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>

@@ -35,9 +35,9 @@
 #ifndef __EPGPLUS_HPP__
 #define __EPGPLUS_HPP__
 
-#include <driver/gfx/framebuffer.h>
-#include <driver/gfx/fontrenderer.h>
-#include <driver/gfx/color.h>
+#include <driver/gdi/framebuffer.h>
+#include <driver/gdi/fontrenderer.h>
+#include <driver/gdi/color.h>
 
 #include <driver/rcinput.h>
 #include <system/settings.h>
@@ -47,7 +47,7 @@
 #include <gui/filebrowser.h>
 
 #include <gui/widget/widget.h>
-#include <gui/widget/widget_helpers.h>
+#include <gui/widget/component.h>
 
 #include <string>
 

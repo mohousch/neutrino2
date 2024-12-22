@@ -66,13 +66,9 @@
 #include "radiotext.h"
 #include "radiotools.h"
 
-/*zapit includes*/
 #include <zapit/frontend_c.h>
 
 #include <video_cs.h>
-//
-#include <driver/gfx/framebuffer.h>
-#include <driver/gfx/color.h>
 
 #include <system/helpers.h>
 #include <system/debug.h>

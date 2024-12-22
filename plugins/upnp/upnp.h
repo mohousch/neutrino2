@@ -28,7 +28,7 @@
 #include <sstream>
 #include <upnpclient.h>
 
-#include <driver/gfx/framebuffer.h>
+#include <driver/gdi/framebuffer.h>
 
 #include <driver/audiofile.h>
 #include <driver/pictureviewer.h>

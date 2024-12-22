@@ -1,21 +1,25 @@
-/*
- * $Id: widget_helpers.cpp 20.10.2023 mohousch Exp $
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- *
- */
+//
+//	$Id: component.cpp 21122024 mohousch Exp $
+//
+//	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
+//	Homepage: http://dbox.cyberphoria.org/
+//
+//	License: GPL
+//
+//	This program is free software; you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation; either version 2 of the License, or
+//	(at your option) any later version.
+//
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program; if not, write to the Free Software
+//	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -26,13 +30,11 @@
 
 #include <lib/libngpng/libngpng.h>
 
-#include <driver/gfx/color.h>
-
 #include <system/settings.h>
 #include <system/debug.h>
 #include <system/helpers.h>
 
-#include <gui/widget/widget_helpers.h>
+#include <gui/widget/component.h>
 #include <gui/widget/framebox.h>
 
 #include <video_cs.h>
@@ -54,7 +56,8 @@ CComponent::CComponent()
 	rePaint = false;
 	painted = false;
 	savescreen = false;
-	inFocus = true; 
+	inFocus = true;
+	adjustToParent = false;
 	//
 	halign = CC_ALIGN_LEFT;
 	//
@@ -65,6 +68,17 @@ CComponent::CComponent()
 	//
 	cc_type = -1;
 	cc_name = "";
+}
+
+void CComponent::initFrames()
+{
+	// sanity check
+	if(itemBox.iHeight > ((int)CFrameBuffer::getInstance()->getScreenHeight(true)))
+		itemBox.iHeight = CFrameBuffer::getInstance()->getScreenHeight(true) - 4;  	// 4 pixels for border
+
+	// sanity check
+	if(itemBox.iWidth > (int)CFrameBuffer::getInstance()->getScreenWidth(true))
+		itemBox.iWidth = CFrameBuffer::getInstance()->getScreenWidth(true) - 4; 	// 4 pixels for border
 }
 
 //
@@ -340,6 +354,9 @@ void CCIcon::paint()
 {
 	dprintf(DEBUG_DEBUG, "CCIcon::paint\n");
 	
+	////
+	initFrames();
+	
 	//
 	if (savescreen || rePaint)
 	{
@@ -429,6 +446,9 @@ void CCImage::restoreScreen(void)
 void CCImage::paint()
 {
 	dprintf(DEBUG_DEBUG, "CCImage::paint\n");
+	
+	////
+	initFrames();
 	
 	if (iWidth > itemBox.iWidth && itemBox.iWidth != 0) 
 		iWidth = itemBox.iWidth;
@@ -525,6 +545,9 @@ void CCButtons::addButton(const char *btn, const char *lname, const fb_pixel_t c
 void CCButtons::paint()
 {
 	dprintf(DEBUG_DEBUG, "CCButtons::CCButtons:paint:\n");
+	
+	////
+	initFrames();
 
 	count = buttons.size();
 	
@@ -726,6 +749,9 @@ void CCHline::paint()
 {
 	dprintf(DEBUG_DEBUG, "CCHline::paint\n");
 	
+	////
+	initFrames();
+	
 	if (itemBox.iHeight > 2)
 		itemBox.iHeight = 2;
 	
@@ -758,6 +784,9 @@ void CCVline::paint()
 {
 	dprintf(DEBUG_DEBUG, "CCVline::paint\n");
 	
+	////
+	initFrames();
+	
 	if (itemBox.iWidth > 2)
 		itemBox.iWidth = 2;
 	
@@ -785,6 +814,9 @@ CCFrameLine::CCFrameLine(const int x, const int y, const int dx, const int dy)
 void CCFrameLine::paint()
 {
 	dprintf(DEBUG_DEBUG, "CCFrameLine::paint\n");
+	
+	////
+	initFrames();
 	
 	frameBuffer->paintFrameBox(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, color);
 }
@@ -827,6 +859,9 @@ void CCGrid::init()
 void CCGrid::paint()
 {
 	dprintf(DEBUG_DEBUG, "CCGrid::paint\n");
+	
+	////
+	initFrames();
 	
 	// hlines grid
 	for(int count = 0; count < itemBox.iHeight; count += inter_frame)
@@ -915,6 +950,9 @@ void CCLabel::enableSaveScreen()
 void CCLabel::paint()
 {
 	dprintf(DEBUG_DEBUG, "CCLabel::paint\n");
+	
+	////
+	initFrames();
 	
 	//
 	if (rePaint)
@@ -1119,6 +1157,9 @@ void CCText::paint()
 {
 	dprintf(DEBUG_DEBUG, "CCText::paint\n");
 	
+	////
+	initFrames();
+	
 	//
 	if (rePaint)
 		saveScreen();
@@ -1234,6 +1275,9 @@ void CCTime::paint()
 {
 	dprintf(DEBUG_DEBUG, "CCTime::paint: x:%d y:%d dx:%d dy:%d\n", itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
 	
+	////
+	initFrames();
+	
 	//
 	saveScreen();
 	
@@ -1344,6 +1388,9 @@ void CCCounter::paint()
 {
 	dprintf(DEBUG_DEBUG, "CCCounter::paint\n");
 	
+	////
+	initFrames();
+	
 	//
 	saveScreen();
 	
@@ -1442,6 +1489,9 @@ void CCSpinner::paint()
 {
 	dprintf(DEBUG_DEBUG, "CCSpinner::paint\n");
 	
+	////
+	initFrames();
+	
 	//
 	saveScreen();
 	
@@ -1532,6 +1582,9 @@ CCSlider::CCSlider(const int x, const int y, const int dx, const int dy)
 void CCSlider::paint()
 {
 	dprintf(DEBUG_DEBUG, "CCSlider::paint:\n");
+	
+	////
+	initFrames();
 	
 	paintSlider(itemBox.iX, itemBox.iY, value, "test CCSlider", NEUTRINO_ICON_VOLUMESLIDER2RED);
 }
@@ -1674,6 +1727,9 @@ CCProgressBar::CCProgressBar(const CBox* position, int r, int g, int b, bool inv
 void CCProgressBar::paint()
 {
 	dprintf(DEBUG_DEBUG, "CCProgressBar::paint:\n");
+	
+	////
+	initFrames();
 	
 	// body
 	frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, COL_MENUCONTENT_PLUS_2, NO_RADIUS, CORNER_ALL, g_settings.progressbar_color? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
@@ -1844,6 +1900,7 @@ CCItemInfo::CCItemInfo()
 	// hintitem / hinticon
 	tFont = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
 	borderMode = g_settings.Hint_border;
+	borderColor = COL_MENUCONTENT_PLUS_6;
 	savescreen = false;
 	color = COL_MENUCONTENT_PLUS_0;
 	scale = false;
@@ -1881,7 +1938,7 @@ void CCItemInfo::paint()
 	if (paintframe)
 	{
 		if (borderMode) 
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, COL_MENUCONTENT_PLUS_6, g_settings.Hint_radius, g_settings.Hint_corner);
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, borderColor, g_settings.Hint_radius, g_settings.Hint_corner);
 				
 		// infoBox
 		frameBuffer->paintBoxRel(borderMode? itemBox.iX + 2 : itemBox.iX, borderMode? itemBox.iY + 2 : itemBox.iY, borderMode? itemBox.iWidth - 4 : itemBox.iWidth, borderMode? itemBox.iHeight - 4 : itemBox.iHeight, color, radius, corner, gradient);
@@ -2141,19 +2198,6 @@ void CCWindow::setPosition(CBox* position)
 	initFrames();
 }
 
-void CCWindow::initFrames()
-{
-	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
-
-	// sanity check
-	if(itemBox.iHeight > ((int)frameBuffer->getScreenHeight(true)))
-		itemBox.iHeight = frameBuffer->getScreenHeight(true) - 4;  // 4 pixels for border
-
-	// sanity check
-	if(itemBox.iWidth > (int)frameBuffer->getScreenWidth(true))
-		itemBox.iWidth = frameBuffer->getScreenWidth(true) - 4; // 4 pixels for border
-}
-
 void CCWindow::saveScreen()
 {
 	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
@@ -2229,6 +2273,9 @@ void CCWindow::paintPage(void)
 void CCWindow::paint()
 {
 	dprintf(DEBUG_INFO, "CCWindow::%s\n", __FUNCTION__);
+	
+	////
+	initFrames();
 
 	//
 	if (!paintframe)
@@ -2302,6 +2349,9 @@ void CCPig::init()
 void CCPig::paint()
 {
 	dprintf(DEBUG_DEBUG, "CCPig::paint\n");
+	
+	////
+	initFrames();
 	
 	frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);	
 		
@@ -2438,6 +2488,9 @@ void CCHeaders::addButton(const char *btn, const char *lname, const fb_pixel_t c
 void CCHeaders::paint()
 {
 	dprintf(DEBUG_INFO, "CCHeaders::paint: (%s) (%s)\n", htitle.c_str(), hicon.c_str());
+	
+	////
+	initFrames();
 	
 	// box
 	if (paintframe)
@@ -2674,6 +2727,9 @@ void CCFooters::addButton(const char *btn, const char *lname, const fb_pixel_t c
 void CCFooters::paint()
 {
 	dprintf(DEBUG_INFO, "CCFooters::paint:\n");
+	
+	////
+	initFrames();
 	
 	// box
 	if (paintframe)

@@ -38,9 +38,9 @@
 //#include <libdvbapi/dmx_cs.h>
 
 // driver
-#include <driver/gfx/framebuffer.h>
-#include <driver/gfx/fontrenderer.h>
-#include <driver/gfx/color.h>
+#include <driver/gdi/framebuffer.h>
+#include <driver/gdi/fontrenderer.h>
+#include <driver/gdi/color.h>
 #include <driver/rcinput.h>
 #include <driver/file.h>
 #include <driver/audiofile.h>
@@ -59,7 +59,7 @@
 
 // widget
 #include <gui/widget/icons.h>
-#include <gui/widget/widget_helpers.h>
+#include <gui/widget/component.h>
 #include <gui/widget/progresswindow.h>
 #include <gui/widget/messagebox.h>
 #include <gui/widget/helpbox.h>
@@ -128,9 +128,9 @@
 //%include <lib/libdvbapi/dmx_cs.h>
 
 // driver
-%include <src/driver/gfx/fontrenderer.h>
-%include <src/driver/gfx/framebuffer.h>
-%include <src/driver/gfx/color.h>
+%include <src/driver/gdi/fontrenderer.h>
+%include <src/driver/gdi/framebuffer.h>
+%include <src/driver/gdi/color.h>
 %include <src/driver/rcinput.h>
 %include <src/driver/file.h>
 %include <src/driver/audiofile.h>
@@ -148,7 +148,7 @@
 
 // widget
 %include <src/gui/widget/icons.h>
-%include <src/gui/widget/widget_helpers.h>
+%include <src/gui/widget/component.h>
 %include <src/gui/widget/progresswindow.h>
 %include <src/gui/widget/messagebox.h>
 %include <src/gui/widget/helpbox.h>

@@ -163,12 +163,17 @@ void CGeneralSettings::showMenu()
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "miscsetup";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		miscSettingsGeneral = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		miscSettingsGeneral = new ClistBox(&box);
 
 		miscSettingsGeneral->setWidgetMode(ClistBox::MODE_SETUP);
 		miscSettingsGeneral->enableShrinkMenu();
@@ -562,12 +567,17 @@ void CChannelListSettings::showMenu()
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "channelssetup";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		miscSettingsChannelList = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		miscSettingsChannelList = new ClistBox(&box);
 
 		miscSettingsChannelList->setWidgetMode(ClistBox::MODE_SETUP);
 		miscSettingsChannelList->enableShrinkMenu();
@@ -753,12 +763,17 @@ void CEPGSettings::showMenu()
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "epgsetup";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		miscSettingsEPG = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		miscSettingsEPG = new ClistBox(&box);
 
 		miscSettingsEPG->setWidgetMode(ClistBox::MODE_SETUP);
 		miscSettingsEPG->enableShrinkMenu();
@@ -1016,12 +1031,17 @@ void CFileBrowserSettings::showMenu()
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "filebrowsersetup";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		miscSettingsFileBrowser = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		miscSettingsFileBrowser = new ClistBox(&box);
 
 		miscSettingsFileBrowser->setWidgetMode(ClistBox::MODE_SETUP);
 		miscSettingsFileBrowser->enableShrinkMenu();

@@ -94,12 +94,17 @@ void CMainSettingsMenu::showMenu(void)
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "settings";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		mainSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		mainSettings = new ClistBox(&box);
 		
 		mainSettings->setWidgetMode(ClistBox::MODE_MENU);
 		mainSettings->setWidgetType(ClistBox::TYPE_CLASSIC);

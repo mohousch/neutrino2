@@ -37,7 +37,7 @@
 #include <driver/file.h>
 
 #include <gui/widget/widget.h>
-#include <gui/widget/widget_helpers.h>
+#include <gui/widget/component.h>
 #include <gui/widget/framebox.h>
 
 #include <driver/movieinfo.h>

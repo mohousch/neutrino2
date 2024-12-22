@@ -29,8 +29,8 @@
 
 #include <gui/widget/messagebox.h>
 
-#include <driver/gfx/color.h>
-#include <driver/gfx/fontrenderer.h>
+#include <driver/gdi/color.h>
+#include <driver/gdi/fontrenderer.h>
 
 #include <driver/rcinput.h>
 

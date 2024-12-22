@@ -1,22 +1,27 @@
-/*
-	$Id: listbox.cpp 06.11.2023 mohousch Exp $
-
-	License: GPL
-
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-*/
+//
+//	Neutrino-GUI  -   DBoxII-Project
+//
+//	$Id: listbox.cpp 21122024 mohousch Exp $
+//
+//	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
+//	Homepage: http://dbox.cyberphoria.org/
+//
+//	License: GPL
+//
+//	This program is free software; you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation; either version 2 of the License, or
+//	(at your option) any later version.
+//
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program; if not, write to the Free Software
+//	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -33,8 +38,8 @@
 #include <gui/widget/textbox.h>
 #include <gui/widget/stringinput.h>
 
-#include <driver/gfx/color.h>
-#include <driver/gfx/fontrenderer.h>
+#include <driver/gdi/color.h>
+#include <driver/gdi/fontrenderer.h>
 
 #include <driver/rcinput.h>
 
@@ -92,7 +97,7 @@ CMenuItem::CMenuItem()
 	
 	paintFrame = true;
 	borderMode = CComponent::BORDER_NO;
-	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
+	borderColor = COL_MENUCONTENT_PLUS_6;
 	itemGradient = NOGRADIENT;
 	
 	//
@@ -389,7 +394,87 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 	//	*optionValue = options.begin()->key;
 
 	// pulldown
-	if( (msg == CRCInput::RC_ok) && pulldown ) 
+	if( (msg == CRCInput::RC_ok) && pulldown) 
+	{	
+		int select = -1;
+
+		//
+		CWidget* widget = NULL;
+		ClistBox* menu = NULL;
+
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0};	
+		
+		widget = CNeutrinoApp::getInstance()->getWidget("optionchooser");
+		
+		if (widget)
+		{
+			widget->setPosition(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50, 450, 400);
+			widget->enableSaveScreen();
+			
+			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
+
+			menu->setPosition(widget->getWindowsPos().iX, widget->getWindowsPos().iY, 450, 400);
+			menu->setWidgetMode(ClistBox::MODE_SETUP);
+			menu->enablePaintHead();
+			menu->setTitle(itemName.c_str());
+			menu->enablePaintFoot();
+			menu->setFootButtons(&btn);
+			menu->setBorderMode();
+		}
+		else
+		{
+			widget = new CWidget(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50, 450, 400);
+			widget->name = "optionchooser";
+			widget->enableSaveScreen();
+			
+			//
+			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+
+			menu->setWidgetMode(ClistBox::MODE_SETUP);
+			menu->paintMainFrame(true);
+			menu->enablePaintHead();
+			menu->setHeadColor(COL_MENUCONTENT_PLUS_0);
+			menu->setHeadGradient(NOGRADIENT);
+			menu->setTitle(itemName.c_str());
+			menu->enablePaintFoot();
+			menu->setFootColor(COL_MENUCONTENT_PLUS_0);
+			menu->setFootGradient(NOGRADIENT);
+			menu->setFootButtons(&btn);
+			menu->setBorderMode();
+			
+			//
+			widget->addCCItem(menu);
+		}
+		
+		//
+		for(unsigned int count = 0; count < number_of_options; count++) 
+		{
+			bool selected = false;
+			const char *l_option;
+			
+			if (options[count].key == (*optionValue))
+				selected = true;
+
+			if(options[count].valname != 0)
+				l_option = options[count].valname;
+			
+			menu->addItem(new CMenuForwarder(_(l_option)), selected);
+		}
+		
+		ret = widget->exec(NULL, "");
+
+		select = menu->getSelected();
+		
+		if(select >= 0) 
+			*optionValue = options[select].key;
+			
+		if (widget)
+		{
+			delete widget;
+			widget = NULL;
+		}
+	}
+	else if(msg == CRCInput::RC_ok) 
 	{
 		if (parent && parent->parent)
 			parent->parent->hide();
@@ -409,38 +494,32 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
 			head = (CCHeaders *)widget->getCCItem(CComponent::CC_HEAD);
 			foot = (CCFooters *)widget->getCCItem(CComponent::CC_FOOT);
+			
+			if (head)
+				head->setTitle(itemName.c_str());
 		}
 		else
 		{
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0};	
+			
 			//
 			widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 			widget->name = "optionchooser";
-			widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 			widget->enableSaveScreen();
 			
 			//
-			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY + 50, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight - 100);
+			menu = new ClistBox();
 
 			menu->setWidgetMode(ClistBox::MODE_SETUP);
 			menu->paintMainFrame(true);
-			
-			//
-			head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
-			
-			//	
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0};		
-
-			foot = new CCFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
-			foot->setButtons(&btn);
+			menu->enablePaintHead();
+			menu->setTitle(itemName.c_str());
+			menu->enablePaintFoot();
+			menu->setFootButtons(&btn);
 			
 			//
 			widget->addCCItem(menu);
-			widget->addCCItem(head);
-			widget->addCCItem(foot);
 		}
-		
-		if (head)
-			head->setTitle(itemName.c_str());
 
 		//
 		for(unsigned int count = 0; count < number_of_options; count++) 
@@ -843,6 +922,83 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 	{
 		int select = -1;
 		
+		//
+		CWidget* widget = NULL;
+		ClistBox* menu = NULL;
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0};	
+
+		
+		widget = CNeutrinoApp::getInstance()->getWidget("optionstringchooser");
+		
+		if (widget)
+		{
+			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
+
+			widget->setPosition(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50, 450, 400);
+			widget->enableSaveScreen();
+			
+			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
+
+			menu->setPosition(0, 0, 450, 400);
+			menu->setWidgetMode(ClistBox::MODE_SETUP);
+			menu->enablePaintHead();
+			menu->setTitle(itemName.c_str());
+			menu->enablePaintFoot();
+			menu->setFootButtons(&btn);
+			menu->setBorderMode();
+		}
+		else
+		{
+			widget = new CWidget(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50, 500, 450);
+			widget->name = "optionstringchooser";
+			widget->enableSaveScreen();
+			
+			//
+			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+
+			menu->setWidgetMode(ClistBox::MODE_SETUP);
+			menu->paintMainFrame(true);
+			menu->enablePaintHead();
+			menu->setHeadColor(COL_MENUCONTENT_PLUS_0);
+			menu->setHeadGradient(NOGRADIENT);
+			menu->setTitle(itemName.c_str());
+			menu->enablePaintFoot();
+			menu->setFootColor(COL_MENUCONTENT_PLUS_0);
+			menu->setFootGradient(NOGRADIENT);
+			menu->setFootButtons(&btn);
+			menu->setBorderMode();
+			
+			//
+			widget->addCCItem(menu);
+		}
+		
+		//
+		for(unsigned int count = 0; count < options.size(); count++) 
+		{
+			bool selected = false;
+			if (strcmp(options[count].c_str(), optionStringValue) == 0)
+				selected = true;
+
+			menu->addItem(new CMenuForwarder(_(options[count].c_str())), selected);
+		}
+		
+		ret = widget->exec(NULL, "");
+
+		select = menu->getSelected();
+		
+		if(select >= 0)
+			strcpy(optionStringValue, options[select].c_str());
+			
+		if (widget)
+		{
+			delete widget;
+			widget = NULL;
+		}
+	}
+	else if(msg == CRCInput::RC_ok) 
+	{
+		int select = -1;
+		
 		if (parent && parent->parent)
 			parent->parent->hide();
 		
@@ -859,38 +1015,39 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
 			head = (CCHeaders *)widget->getCCItem(CComponent::CC_HEAD);
 			foot = (CCFooters *)widget->getCCItem(CComponent::CC_FOOT);
+			
+			if (head)
+				head->setTitle(itemName.c_str());
 		}
 		else
 		{
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0};	
+			
 			//
-			widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+			CBox box;
+			box.iWidth = MENU_WIDTH;
+			box.iHeight = MENU_HEIGHT;
+			box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+			box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+			widget = new CWidget(&box);
 			widget->name = "optionstringchooser";
-			widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 			widget->enableSaveScreen();
 			
 			//
-			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY + 50, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight - 100);
+			menu = new ClistBox(&box);
 
 			menu->setWidgetMode(ClistBox::MODE_SETUP);
 			menu->paintMainFrame(true);
-			
-			//
-			head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
-			
-			//	
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0};		
-
-			foot = new CCFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
-			foot->setButtons(&btn);
+			menu->enablePaintHead();
+			menu->setTitle(itemName.c_str());
+			menu->enablePaintFoot();
+			menu->setFootButtons(&btn);
+			menu->setBorderMode();
 			
 			//
 			widget->addCCItem(menu);
-			widget->addCCItem(head);
-			widget->addCCItem(foot);
 		}
-		
-		if (head)
-			head->setTitle(itemName.c_str());
 		
 		//
 		for(unsigned int count = 0; count < options.size(); count++) 
@@ -940,7 +1097,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 	if(observ) 
 		wantsRepaint = observ->changeNotify(itemName.c_str(), optionStringValue);
 		
-	//if (wantsRepaint)
+	//
 	if (wantsRepaint || !paintFrame)
 		ret = CMenuTarget::RETURN_REPAINT;
 		
@@ -1715,17 +1872,6 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
 	
-	// sanity check
-	if(itemBox.iHeight > ((int)frameBuffer->getScreenHeight(true)))
-		itemBox.iHeight = frameBuffer->getScreenHeight(true);
-
-	// sanity check
-	if(itemBox.iWidth > (int)frameBuffer->getScreenWidth(true))
-		itemBox.iWidth = frameBuffer->getScreenWidth(true);
-	
-	full_width = itemBox.iWidth;
-	full_height = itemBox.iHeight;
-	
 	//
 	listmaxshow = 0;
 
@@ -1809,7 +1955,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	scrollbar = true;
 	gradient = NOGRADIENT;
 	borderMode = CComponent::BORDER_NO;
-	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
+	borderColor = COL_MENUCONTENT_PLUS_6;
 	
 	//
 	item_height = 0;
@@ -1824,6 +1970,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	
 	//
 	sec_timer_id = 0;
+	adjustToParent = false;
 	
 	cc_type = CC_LISTBOX;
 }
@@ -1837,17 +1984,6 @@ ClistBox::ClistBox(CBox* position)
 	pos = 0;
 
 	itemBox = *position;
-	
-	// sanity check
-	if(itemBox.iHeight > ((int)frameBuffer->getScreenHeight(true)))
-		itemBox.iHeight = frameBuffer->getScreenHeight(true);
-
-	// sanity check
-	if(itemBox.iWidth > (int)frameBuffer->getScreenWidth(true))
-		itemBox.iWidth = frameBuffer->getScreenWidth(true);
-	
-	full_width = itemBox.iWidth;
-	full_height = itemBox.iHeight;
 	
 	//
 	listmaxshow = 0;
@@ -1931,7 +2067,7 @@ ClistBox::ClistBox(CBox* position)
 	scrollbar = true;
 	gradient = NOGRADIENT;
 	borderMode = CComponent::BORDER_NO;
-	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
+	borderColor = COL_MENUCONTENT_PLUS_0;
 	
 	//
 	item_height = 0;
@@ -1946,6 +2082,7 @@ ClistBox::ClistBox(CBox* position)
 	
 	//
 	sec_timer_id = 0;
+	adjustToParent = false;
 	
 	cc_type = CC_LISTBOX;
 }
@@ -2107,14 +2244,13 @@ void ClistBox::initFrames()
 			if((heightCurrPage + hheight + fheight + cFrameFootInfoHeight) > itemBox.iHeight)
 			{
 				page_start.push_back(i);
-				//heightFirstPage = heightCurrPage - item_height;
-				heightFirstPage = std::max(heightCurrPage - item_height, heightFirstPage); //FIXME:
+				heightFirstPage = std::max(heightCurrPage - item_height, heightFirstPage);
 				total_pages++;
 				heightCurrPage = item_height;
 			}
 		}
 
-		heightFirstPage = std::max(heightCurrPage, heightFirstPage); //FIXME:
+		heightFirstPage = std::max(heightCurrPage, heightFirstPage);
 		page_start.push_back(items.size());
 
 		// recalculate height
@@ -2130,36 +2266,8 @@ void ClistBox::initFrames()
 				itemBox.iHeight = std::min(itemBox.iHeight, hheight + heightFirstPage + fheight + cFrameFootInfoHeight);
 			}
 			
-			//FIXME:
+			//
 			itemBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - itemBox.iHeight) >> 1 );
-		}
-		
-		// sanity check after recalculating height
-		if(itemBox.iHeight > (int)frameBuffer->getScreenHeight(true))
-			itemBox.iHeight = frameBuffer->getScreenHeight(true);
-
-		// sanity check
-		if(itemBox.iWidth > (int)frameBuffer->getScreenWidth(true))
-			itemBox.iWidth = frameBuffer->getScreenWidth(true);
-		
-		//
-		full_height = itemBox.iHeight;
-		full_width = itemBox.iWidth;
-		
-		////
-		items_height = itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight; 
-
-		sb_width = 0;
-	
-		if(total_pages > 1)
-			sb_width = scrollbar? SCROLLBAR_WIDTH : 0;
-
-		items_width = itemBox.iWidth - sb_width;
-
-		// extended
-		if(widgetType == TYPE_EXTENDED)
-		{
-			items_width = 2*(itemBox.iWidth/3) - sb_width;			
 		}
 	}
 }
@@ -2179,19 +2287,19 @@ void ClistBox::paint()
 	}
 	else
 	{
-		items_height = itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight; 
+		items_height = itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight - (borderMode? 4 : 0); 
 
 		sb_width = 0;
 		
 		if(total_pages > 1)
 			sb_width = scrollbar? SCROLLBAR_WIDTH : 0;
 
-		items_width = itemBox.iWidth - sb_width;
+		items_width = itemBox.iWidth - sb_width - (borderMode? 4 : 0);
 
 		// extended
 		if(widgetType == TYPE_EXTENDED)
 		{
-			items_width = 2*(itemBox.iWidth/3) - sb_width;			
+			items_width = 2*(itemBox.iWidth/3) - sb_width - (borderMode? 4 : 0);			
 		}
 	}
 	
@@ -2212,10 +2320,10 @@ void ClistBox::paint()
 		
 		// border
 		if (borderMode != CComponent::BORDER_NO)
-			frameBuffer->paintBoxRel(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + 4, itemBox.iHeight + 4, borderColor, radius, corner);
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, borderColor, radius, corner);
 		
 		// mainframe
-		frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient);
+		frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), itemBox.iHeight - (borderMode? 4 : 0), bgcolor, radius, corner, gradient);
 	}
 	else
 	{
@@ -2336,7 +2444,7 @@ void ClistBox::paintItems()
 	}
 	else //
 	{
-		item_start_y = itemBox.iY + hheight;
+		item_start_y = itemBox.iY + hheight + (borderMode? 2 : 0);
 
 		// item not currently on screen
 		if (selected >= 0)
@@ -2351,12 +2459,12 @@ void ClistBox::paintItems()
 		// paint items background
 		if (paintframe) //FIXME: twice ?
 		{
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, itemBox.iWidth, items_height, bgcolor, radius, corner, gradient);
+			frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + hheight + (borderMode? 2 : 0), items_width, items_height, bgcolor, radius, corner, gradient);
 			
 			//
 			if(widgetType == TYPE_EXTENDED && widgetMode == MODE_MENU)
 			{
-				frameBuffer->paintBoxRel(itemBox.iX + items_width, item_start_y, itemBox.iWidth - items_width, items_height, bgcolor);
+				frameBuffer->paintBoxRel(itemBox.iX + items_width + (borderMode? 2 : 0), item_start_y, itemBox.iWidth - items_width, items_height, bgcolor);
 
 			}
 		}
@@ -2365,21 +2473,21 @@ void ClistBox::paintItems()
 			restoreScreen();
 		}
 	
-		// paint right scrollBar if we have more then one page
+		// paint scrollbar
 		if(total_pages > 1)
 		{
 			if (scrollbar)
 			{
 				if(widgetType == TYPE_EXTENDED)
-					scrollBar.paint(itemBox.iX + items_width, itemBox.iY + hheight, itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight, total_pages, current_page);
+					scrollBar.paint(itemBox.iX + items_width + (borderMode? 2 : 0), itemBox.iY + hheight + (borderMode? 2 : 0), items_height, total_pages, current_page);
 				else
-					scrollBar.paint(itemBox.iX + itemBox.iWidth - SCROLLBAR_WIDTH, itemBox.iY + hheight, itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight, total_pages, current_page);
+					scrollBar.paint(itemBox.iX + (borderMode? 2 : 0) + items_width, itemBox.iY + hheight + (borderMode? 2 : 0), items_height, total_pages, current_page);
 			}
 		}
 
 		// paint items
-		int ypos = itemBox.iY + hheight;
-		int xpos = itemBox.iX;
+		int ypos = itemBox.iY + hheight + (borderMode? 2 : 0);
+		int xpos = itemBox.iX + (borderMode? 2 : 0);
 	
 		for (unsigned int count = 0; count < items.size(); count++) 
 		{
@@ -2390,7 +2498,7 @@ void ClistBox::paintItems()
 				//
 				item->init(xpos, ypos, items_width, item->getHeight());
 				
-			
+				//
 				if((item->isSelectable()) && (selected == -1)) 
 				{
 					selected = count;
@@ -2506,11 +2614,11 @@ void ClistBox::paintHead()
 		{		
 			// paint head
 			if (paintframe)
-				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, hheight, headColor, headRadius, headCorner, headGradient, headGradient_direction, headGradient_intensity, headGradient_type);
+				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), hheight, headColor, headRadius, headCorner, headGradient, headGradient_direction, headGradient_intensity, headGradient_type);
 			
 			// paint horizontal line top
 			if (head_line)
-				frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + hheight - 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT + (borderMode? 2 : 0), itemBox.iY + hheight - 2 + (borderMode? 2 : 0), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - (borderMode? 4 : 0), 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 		
 			//paint icon (left)
 			int i_w = 0;
@@ -2525,11 +2633,11 @@ void ClistBox::paintHead()
 				i_w = i_h*1.67;
 			}
 
-			CFrameBuffer::getInstance()->paintIcon(iconfile, itemBox.iX + BORDER_LEFT, itemBox.iY + (hheight - i_h)/2, 0, i_w, i_h);
+			CFrameBuffer::getInstance()->paintIcon(iconfile, itemBox.iX + BORDER_LEFT + (borderMode? 2 : 0), itemBox.iY + (hheight - i_h)/2 + (borderMode? 2 : 0), 0, i_w, i_h);
 
 			// Buttons
 			int iw[hbutton_count], ih[hbutton_count];
-			int xstartPos = itemBox.iX + itemBox.iWidth - BORDER_RIGHT;
+			int xstartPos = itemBox.iX + itemBox.iWidth - BORDER_RIGHT - (borderMode? 4 : 0);
 			int buttonWidth = 0; //FIXME
 
 			if (hbutton_count)
@@ -2640,11 +2748,11 @@ void ClistBox::paintFoot()
 		{
 			// foot
 			if (paintframe)
-				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight, itemBox.iWidth, fheight, footColor, footRadius, footCorner, footGradient, footGradient_direction, footGradient_intensity, footGradient_type);
+				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight - (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), fheight, footColor, footRadius, footCorner, footGradient, footGradient_direction, footGradient_intensity, footGradient_type);
 			
 			// foot line
 			if (foot_line)
-				frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT + (borderMode? 2 : 0), itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight - (borderMode? 2 : 0), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - (borderMode? 4 : 0), 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 			// buttons
 			int buttonWidth = 0;

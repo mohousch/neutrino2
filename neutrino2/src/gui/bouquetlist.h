@@ -29,7 +29,7 @@
 
 #include <gui/channellist.h>
 
-#include <driver/gfx/framebuffer.h>
+#include <driver/gdi/framebuffer.h>
 
 #include <system/lastchannel.h>
 

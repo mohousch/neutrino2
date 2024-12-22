@@ -187,13 +187,18 @@ int CLCDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		else
 		{
 			//
-			widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+			CBox box;
+			box.iWidth = MENU_WIDTH;
+			box.iHeight = MENU_HEIGHT;
+			box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+			box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+			widget = new CWidget(&box);
 			widget->name = "optionstringchooser";
-			widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 			widget->enableSaveScreen();
 			
 			//
-			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY + 50, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight - 100);
+			menu = new ClistBox(box.iX, box.iY + 50, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight - 100);
 
 			menu->setWidgetMode(ClistBox::MODE_SETUP);
 			
@@ -276,12 +281,17 @@ void CLCDSettings::showMenu()
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
 		widget->name = "lcdsetup";
-		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		lcdSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		lcdSettings = new ClistBox(&box);
 
 		lcdSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		lcdSettings->enableShrinkMenu();

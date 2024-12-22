@@ -26,7 +26,7 @@
 #ifndef __channellist__
 #define __channellist__
 
-#include <driver/gfx/framebuffer.h>
+#include <driver/gdi/framebuffer.h>
 
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>

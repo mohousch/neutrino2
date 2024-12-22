@@ -1,22 +1,25 @@
-/*
-	$Id: listbox.h 06.11.2023 mohousch Exp $
-
-	License: GPL
-
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-*/
+//
+//	$Id: listbox.h 21122024 mohousch Exp $
+//
+//	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
+//	Homepage: http://dbox.cyberphoria.org/
+//
+//	License: GPL
+//
+//	This program is free software; you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation; either version 2 of the License, or
+//	(at your option) any later version.
+//
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program; if not, write to the Free Software
+//	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #if !defined(LISTBOX_H_)
 #define LISTBOX_H_
@@ -28,10 +31,10 @@
 #include <string>
 #include <vector>
 
-#include <driver/gfx/framebuffer.h>
+#include <driver/gdi/framebuffer.h>
 
 #include <gui/widget/textbox.h>
-#include <gui/widget/widget_helpers.h>
+#include <gui/widget/component.h>
 #include <gui/widget/widget.h>
 
 #include <gui/plugins.h>
@@ -91,8 +94,6 @@ class CMenuItem
 		std::string optionInfo;
 		std::string itemHint;
 		std::string itemIcon;
-		//std::string info1, option_info1;
-		//std::string info2, option_info2;
 		std::string icon1;
 		std::string icon2;
 		int number;
@@ -426,8 +427,6 @@ class ClistBox : public CComponent
 		fb_pixel_t * background;
 		void saveScreen();
 		void restoreScreen();
-		int full_height;
-		int full_width;
 		int borderMode;
 		uint32_t borderColor;
 
@@ -437,6 +436,23 @@ class ClistBox : public CComponent
 		int itemGradient;
 		bool item2Lines;
 		bool paintIconName;
+		
+		// itemInfo
+		bool paint_ItemInfo;
+		int cFrameFootInfoHeight;
+		int footInfoHeight;
+		CCItemInfo itemsLine;
+		int footInfoMode;
+		CBox itemInfoBox;
+		bool iteminfoborder;
+		bool iteminfosavescreen;
+		int iteminfobordermode;
+		bool iteminfoframe;
+		unsigned int iteminfofont;
+		uint32_t iteminfocolor;
+		bool iteminfoscale;
+		CCLabel label;
+		CBox itemInfoBox2;
 
 		// head
 		bool paint_Head;
@@ -474,23 +490,6 @@ class ClistBox : public CComponent
 		button_label_list_t fbutton_labels;
 		bool foot_line;
 		bool foot_line_gradient;
-
-		// itemInfo
-		bool paint_ItemInfo;
-		int cFrameFootInfoHeight;
-		int footInfoHeight;
-		CCItemInfo itemsLine;
-		int footInfoMode;
-		CBox itemInfoBox;
-		bool iteminfoborder;
-		bool iteminfosavescreen;
-		int iteminfobordermode;
-		bool iteminfoframe;
-		unsigned int iteminfofont;
-		uint32_t iteminfocolor;
-		bool iteminfoscale;
-		CCLabel label;
-		CBox itemInfoBox2;
 
 		// methods
 		virtual void paintItems();

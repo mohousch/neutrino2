@@ -93,12 +93,17 @@ int CPluginList::showMenu()
 	else
 	{
 		//
-		pWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		pWidget = new CWidget(&box);
 		pWidget->name = "plugins";
-		pWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
-		plist = new ClistBox(pWidget->getWindowsPos().iX, pWidget->getWindowsPos().iY, pWidget->getWindowsPos().iWidth, pWidget->getWindowsPos().iHeight);
+		plist = new ClistBox(&box);
 		plist->setWidgetType(ClistBox::TYPE_CLASSIC);
 		plist->setWidgetMode(ClistBox::MODE_MENU);
 		plist->enableShrinkMenu();

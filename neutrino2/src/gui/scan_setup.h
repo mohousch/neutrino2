@@ -35,7 +35,7 @@
 
 #include <gui/scan.h>
 
-#include <driver/gfx/framebuffer.h>
+#include <driver/gdi/framebuffer.h>
 
 #include <zapit/frontend_c.h>
 

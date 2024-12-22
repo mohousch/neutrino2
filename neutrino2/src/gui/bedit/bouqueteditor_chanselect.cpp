@@ -30,10 +30,9 @@
 #include <global.h>
 #include <neutrino2.h>
 
-#include <driver/gfx/fontrenderer.h>
+#include <driver/gdi/fontrenderer.h>
 
 #include <gui/widget/icons.h>
-#include <gui/widget/widget_helpers.h>
 
 //
 #include <zapit/channel.h>

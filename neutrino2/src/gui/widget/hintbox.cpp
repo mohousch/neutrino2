@@ -190,8 +190,8 @@ void CHintBox::paint(void)
 	}
 	
 	widget->setPosition(&cFrameBox);
-	widget->setBorderMode(borderMode);
-	widget->setBorderColor(borderColor);
+//	widget->setBorderMode(borderMode);
+//	widget->setBorderColor(borderColor);
 	widget->enableSaveScreen();
 
 	//
@@ -340,7 +340,7 @@ int HintBox(const char * const Caption, const char * const Text, const int Width
 	int res = messages_return::none;
 
  	CHintBox * hintBox = new CHintBox(Caption, Text, Width, Icon);
-	hintBox->setBorderMode(border);
+//	hintBox->setBorderMode(border);
 
 	res = hintBox->exec(timeout);
 		

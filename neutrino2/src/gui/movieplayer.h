@@ -34,11 +34,11 @@
 
 #include <configfile.h>
 
-#include <driver/gfx/framebuffer.h>
+#include <driver/gdi/framebuffer.h>
 
 #include <gui/widget/icons.h>
 #include <gui/widget/widget.h>
-#include <gui/widget/widget_helpers.h>
+#include <gui/widget/component.h>
 #include <gui/widget/listbox.h>
 
 #include <driver/movieinfo.h>

@@ -35,7 +35,7 @@
 
 #include <lib/libngpng/libngpng.h>
 
-#include <driver/gfx/framebuffer.h>
+#include <driver/gdi/framebuffer.h>
 
 
 ////

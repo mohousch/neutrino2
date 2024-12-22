@@ -31,7 +31,7 @@
 #include <memory.h>
 #include <byteswap.h>
 
-#include <driver/gfx/framebuffer.h>
+#include <driver/gdi/framebuffer.h>
 
 extern "C"
 {
