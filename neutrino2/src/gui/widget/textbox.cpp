@@ -49,6 +49,8 @@ CTextBox::CTextBox(const int x, const int y, const int dx, const int dy)
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
 	
+	oldPosition = itemBox;
+	
 	//
 	initFrames();
 }
@@ -64,6 +66,7 @@ CTextBox::CTextBox(CBox* position)
 	if(position != NULL)
 	{
 		itemBox = *position;
+		oldPosition = itemBox;
 	}
 	
 	//

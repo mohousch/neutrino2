@@ -71,6 +71,8 @@ CListFrame::CListFrame(const int x, const int y, const int dx, const int dy)
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
 	
+	oldPosition = itemBox;
+	
 	m_nMaxHeight = itemBox.iHeight;
 	m_nMaxWidth = itemBox.iWidth;
 	
@@ -87,6 +89,7 @@ CListFrame::CListFrame(CBox* position)
 	frameBuffer = CFrameBuffer::getInstance();
 	
 	itemBox	= *position;
+	oldPosition = itemBox;
 
 	m_nMaxHeight = itemBox.iHeight;
 	m_nMaxWidth = itemBox.iWidth;

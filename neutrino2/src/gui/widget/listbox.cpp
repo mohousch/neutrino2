@@ -388,10 +388,6 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 		
 		locked = false;
 	}
-	
-	// check if value is out of range (not working)
-	//if (*optionValue < options.begin()->key || *optionValue > options.end()->key)
-	//	*optionValue = options.begin()->key;
 
 	// pulldown
 	if( (msg == CRCInput::RC_ok) && pulldown) 
@@ -401,28 +397,22 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 		//
 		CWidget* widget = NULL;
 		ClistBox* menu = NULL;
+		CCHeaders *head = NULL;
 
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0};	
 		
-		widget = CNeutrinoApp::getInstance()->getWidget("optionchooser");
+		//widget = CNeutrinoApp::getInstance()->getWidget("optionchooser");
 		
 		if (widget)
 		{
-			widget->clearCCItems();
-			
-			widget->setPosition(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50, 450, 400);
+			widget->move(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50, 450, 400);
 			widget->enableSaveScreen();
 			
-			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
+			head = (CCHeaders *)widget->getCCItem(CComponent::CC_HEAD);
 			
-			menu->setWidgetMode(ClistBox::MODE_SETUP);
-			menu->enablePaintHead();
-			menu->setTitle(itemName.c_str());
-			menu->enablePaintFoot();
-			menu->setFootButtons(&btn);
-			menu->setBorderMode();
-			
-			widget->addCCItem(menu);
+			if (head)
+				head->setTitle(itemName.c_str());
 		}
 		else
 		{
@@ -488,7 +478,6 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 		CWidget* widget = NULL;
 		ClistBox* menu = NULL;
 		CCHeaders *head = NULL;
-		CCFooters *foot = NULL;
 		
 		widget = CNeutrinoApp::getInstance()->getWidget("optionchooser");
 		
@@ -496,7 +485,6 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 		{
 			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
 			head = (CCHeaders *)widget->getCCItem(CComponent::CC_HEAD);
-			foot = (CCFooters *)widget->getCCItem(CComponent::CC_FOOT);
 			
 			if (head)
 				head->setTitle(itemName.c_str());
@@ -934,27 +922,25 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		//
 		CWidget* widget = NULL;
 		ClistBox* menu = NULL;
+		CCHeaders *head = NULL;
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0};	
 
 		
-		widget = CNeutrinoApp::getInstance()->getWidget("optionstringchooser");
+		//widget = CNeutrinoApp::getInstance()->getWidget("optionstringchooser");
 		
 		if (widget)
 		{
-			widget->clearCCItems();
-
-			widget->setPosition(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50, 450, 400);
+			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
+			head = (CCHeaders *)widget->getCCItem(CComponent::CC_HEAD);
+			
+			//
+			widget->move(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50, 450, 400);
 			widget->enableSaveScreen();
 			
-			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
-			menu->setWidgetMode(ClistBox::MODE_SETUP);
-			menu->enablePaintHead();
-			menu->setTitle(itemName.c_str());
-			menu->enablePaintFoot();
-			menu->setFootButtons(&btn);
-			menu->setBorderMode();
+			if (head)
+				head->setTitle(itemName.c_str());
 			
-			widget->addCCItem(menu);
+			
 		}
 		else
 		{
@@ -1015,7 +1001,6 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		CWidget* widget = NULL;
 		ClistBox* menu = NULL;
 		CCHeaders *head = NULL;
-		CCFooters *foot = NULL;
 		
 		widget = CNeutrinoApp::getInstance()->getWidget("optionstringchooser");
 		
@@ -1023,7 +1008,6 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		{
 			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
 			head = (CCHeaders *)widget->getCCItem(CComponent::CC_HEAD);
-			foot = (CCFooters *)widget->getCCItem(CComponent::CC_FOOT);
 			
 			if (head)
 				head->setTitle(itemName.c_str());
@@ -1881,6 +1865,8 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
 	
+	oldPosition = itemBox;
+	
 	//
 	listmaxshow = 0;
 
@@ -1993,6 +1979,7 @@ ClistBox::ClistBox(CBox* position)
 	pos = 0;
 
 	itemBox = *position;
+	oldPosition = itemBox;
 	
 	//
 	listmaxshow = 0;

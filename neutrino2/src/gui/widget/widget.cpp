@@ -46,6 +46,8 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 	mainFrameBox.iWidth = dx;
 	mainFrameBox.iHeight = dy;
 	
+	oldPosition = mainFrameBox;
+	
 	name = "";
 	
 	//
@@ -79,6 +81,7 @@ CWidget::CWidget(CBox *position)
 	frameBuffer = CFrameBuffer::getInstance();
 	//
 	mainFrameBox = *position;
+	oldPosition = mainFrameBox;
 	
 	name = "";
 	
@@ -156,6 +159,28 @@ void CWidget::initFrames()
 
 	if(mainFrameBox.iWidth >= (int)frameBuffer->getScreenWidth(true))
 		mainFrameBox.iWidth = frameBuffer->getScreenWidth(true);
+}
+
+void CWidget::move(const int x, const int y, const int dx, const int dy)
+{
+	dprintf(DEBUG_NORMAL, "CWidget::move\n");
+	
+	mainFrameBox.iX = x;
+	mainFrameBox.iY = y;
+	mainFrameBox.iWidth = dx;
+	mainFrameBox.iHeight = dy;
+	
+	// reinit
+	initFrames();
+	
+	// reinit CCItems
+	if (hasCCItem())
+	{
+		for (unsigned int count = 0; count < (unsigned int)CCItems.size(); count++) 
+		{
+			CCItems[count]->adjustToParentPosition();
+		}
+	}
 }
 
 //

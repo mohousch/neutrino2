@@ -51,6 +51,8 @@ CComponent::CComponent()
 	itemBox.iY = 0;
 	itemBox.iWidth = 0;
 	itemBox.iHeight = 0;
+	
+	oldPosition = itemBox;
 	//
 	paintframe = false;
 	rePaint = false;
@@ -72,6 +74,8 @@ CComponent::CComponent()
 
 void CComponent::initFrames()
 {
+	dprintf(DEBUG_INFO, "CComponent::initFrames\n");
+	
 	// sanity check
 	if(itemBox.iHeight > ((int)CFrameBuffer::getInstance()->getScreenHeight(true)))
 		itemBox.iHeight = CFrameBuffer::getInstance()->getScreenHeight(true) - 4;  	// 4 pixels for border
@@ -79,6 +83,70 @@ void CComponent::initFrames()
 	// sanity check
 	if(itemBox.iWidth > (int)CFrameBuffer::getInstance()->getScreenWidth(true))
 		itemBox.iWidth = CFrameBuffer::getInstance()->getScreenWidth(true) - 4; 	// 4 pixels for border
+}
+
+void CComponent::adjustToParentPosition()
+{
+	dprintf(DEBUG_INFO, "CComponent::adjustToParentPosition\n");
+	
+	// do stuff here
+	bool parentMoved = false;
+	CBox pOldPos;
+	CBox pNewPos;
+	
+	if (parent)
+	{
+		pOldPos = parent->getOldPosition();
+		pNewPos = parent->getWindowsPos();
+		
+		printf("CComponent::adjustToParentPosition: parent oldPos: %d %d %d %d\n", pOldPos.iX, pOldPos.iY, pOldPos.iWidth, pOldPos.iHeight);
+		
+		printf("CComponent::adjustToParentPosition: parent newPos: %d %d %d %d\n", pNewPos.iX, pNewPos.iY, pNewPos.iWidth, pNewPos.iHeight);
+		
+		if (pOldPos.iX != pNewPos.iX || pOldPos.iY != pNewPos.iY)
+			parentMoved = true;
+	}
+	
+	// FIXME:
+	int xOffset = pNewPos.iX - pOldPos.iX;
+	int yOffset = pNewPos.iY - pOldPos.iY;
+	double dxOffset = 1.0;
+	if (pNewPos.iWidth > pOldPos.iWidth)	
+		dxOffset = pNewPos.iWidth/pOldPos.iWidth;
+	else
+		dxOffset = pOldPos.iWidth/pNewPos.iWidth;
+	double dyOffset = 1.0;
+	if (pNewPos.iHeight > pOldPos.iHeight)
+		dyOffset = pNewPos.iHeight/pOldPos.iHeight;
+	else
+		dyOffset = pOldPos.iHeight/pNewPos.iHeight;
+	
+	printf("CComponent::adjustToParentPosition; xOffset:%d yOffset:%d dxOffset:%d dyOffset:%d\n", xOffset, yOffset, dxOffset, dyOffset);
+	
+	// calculate old Offsets
+	CBox iOldPos = getOldPosition();
+	
+	printf("CComponent::adjustToParentPosition: item oldPos: %d %d %d %d\n", iOldPos.iX, iOldPos.iY, iOldPos.iWidth, iOldPos.iHeight);
+	
+	// check if newPos width / height is smaller than oldPos
+	
+	// calculate new Pos
+	if (parentMoved)
+	{
+		CBox iNewPos;
+		
+		iNewPos.iX = iOldPos.iX + xOffset;
+		iNewPos.iY = iOldPos.iY + yOffset;
+		iNewPos.iWidth = iOldPos.iWidth*dxOffset;
+		iNewPos.iHeight = iOldPos.iHeight*dyOffset; 
+		
+		itemBox = iNewPos;
+		
+		printf("CComponent::adjustToParentPosition: item newPos: %d %d %d %d\n", iNewPos.iX, iNewPos.iY, iNewPos.iWidth, iNewPos.iHeight);
+	}
+	
+	// 
+	initFrames();
 }
 
 //
@@ -302,6 +370,8 @@ CCIcon::CCIcon(const int x, const int y, const int dx, const int dy)
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
 	
+	oldPosition = itemBox;
+	
 	iconName = ""; 
 	width = 0; 
 	height = 0; 
@@ -397,6 +467,8 @@ CCImage::CCImage(const int x, const int y, const int dx, const int dy)
 	itemBox.iY = y;
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
+	
+	oldPosition = itemBox;
 	 
 	imageName = ""; 
 	iWidth = 0; 
@@ -504,7 +576,9 @@ CCButtons::CCButtons(const int x, const int y, const int dx, const int dy)
 	itemBox.iX = x;
 	itemBox.iY = y;
 	itemBox.iWidth = dx;
-	itemBox.iHeight = dy; 
+	itemBox.iHeight = dy;
+	
+	oldPosition = itemBox;
 	
 	buttons.clear(); 
 	count = 0;
@@ -736,6 +810,8 @@ CCHline::CCHline(const int x, const int y, const int dx, const int dy)
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
 	
+	oldPosition = itemBox;
+	
 	if (itemBox.iHeight > 2)
 		itemBox.iHeight = 2;
 	
@@ -770,6 +846,8 @@ CCVline::CCVline(const int x, const int y, const int dx, const int dy)
 	itemBox.iY = y;
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
+	
+	oldPosition = itemBox;
 	
 	if (itemBox.iWidth > 2)
 		itemBox.iWidth = 2;
@@ -806,6 +884,8 @@ CCFrameLine::CCFrameLine(const int x, const int y, const int dx, const int dy)
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
 	
+	oldPosition = itemBox;
+	
 	color = COL_WHITE_PLUS_0; 
 	cc_type = CC_FRAMELINE;
 }
@@ -832,6 +912,8 @@ CCGrid::CCGrid(const int x, const int y, const int dx, const int dy)
 	itemBox.iY = y;
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
+	
+	oldPosition = itemBox;
 
 	init();
 }
@@ -843,6 +925,8 @@ CCGrid::CCGrid(CBox* position)
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
 	itemBox = *position;
+	
+	oldPosition = itemBox;
 
 	init();
 }
@@ -891,6 +975,8 @@ CCLabel::CCLabel(const int x, const int y, const int dx, const int dy)
 	itemBox.iY = y;
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
+	
+	oldPosition = itemBox;
 	
 	background = NULL;
 	
@@ -1021,6 +1107,8 @@ CCText::CCText(const int x, const int y, const int dx, const int dy)
 	itemBox.iY = y;
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
+	
+	oldPosition = itemBox;
 	
 	background = NULL;
 	
@@ -1228,6 +1316,8 @@ CCTime::CCTime(const int x, const int y, const int dx, const int dy)
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
 	
+	oldPosition = itemBox;
+	
 	font = SNeutrinoSettings::FONT_TYPE_MENU_TITLE;
 	color = COL_MENUHEAD_TEXT_PLUS_0;
 	
@@ -1343,6 +1433,8 @@ CCCounter::CCCounter(const int x, const int y, const int dx, const int dy)
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
 	
+	oldPosition = itemBox;
+	
 	font = SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO;
 	color = COL_INFOBAR_TEXT_PLUS_0;
 	
@@ -1453,6 +1545,8 @@ CCSpinner::CCSpinner(const int x, const int y, const int dx, const int dy)
 	itemBox.iY = y;
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
+	
+	oldPosition = itemBox;
 	
 	int iw, ih;
 	frameBuffer->getIconSize("hourglass0", &iw, &ih);
@@ -1567,7 +1661,9 @@ CCSlider::CCSlider(const int x, const int y, const int dx, const int dy)
 	itemBox.iX = x;
 	itemBox.iY = y;
 	itemBox.iWidth = dx;
-	itemBox.iHeight = dy; 
+	itemBox.iHeight = dy;
+	
+	oldPosition = itemBox;
 	
 	//
 	value = 0;
@@ -1669,6 +1765,8 @@ CCProgressBar::CCProgressBar(int x, int y, int w, int h, int r, int g, int b, bo
 	itemBox.iHeight = h;
 	inverse = inv;
 	
+	oldPosition = itemBox;
+	
 	div = (double) itemBox.iWidth / (double) 100;
 	
 	red = (double) r * (double) div ;
@@ -1700,6 +1798,8 @@ CCProgressBar::CCProgressBar(const CBox* position, int r, int g, int b, bool inv
 	
 	itemBox = *position;
 	inverse = inv;
+	
+	oldPosition = itemBox;
 	
 	div = (double) itemBox.iWidth / (double) 100;
 	
@@ -1884,6 +1984,8 @@ void CCScrollBar::paint(CBox* position, const int NrOfPages, const int CurrentPa
 CCItemInfo::CCItemInfo()
 {
 	frameBuffer = CFrameBuffer::getInstance();
+	
+	oldPosition = itemBox;
 	
 	//
 	mode = ITEMINFO_INFO; 
@@ -2125,6 +2227,8 @@ CCWindow::CCWindow(const int x, const int y, const int dx, const int dy)
 	itemBox.iY = y;
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
+	
+	oldPosition = itemBox;
 
 	initFrames();
 
@@ -2138,6 +2242,7 @@ CCWindow::CCWindow(CBox* position)
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
 	itemBox = *position;
+	oldPosition = itemBox;
 
 	initFrames();
 
@@ -2186,6 +2291,8 @@ void CCWindow::setPosition(const int x, const int y, const int dx, const int dy)
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
 	
+	oldPosition = itemBox;
+	
 	initFrames();
 }
 
@@ -2194,6 +2301,8 @@ void CCWindow::setPosition(CBox* position)
 	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
 	
 	itemBox = *position;
+	
+	oldPosition = itemBox;
 	
 	initFrames();
 }
@@ -2324,6 +2433,8 @@ CCPig::CCPig(const int x, const int y, const int dx, const int dy)
 	itemBox.iY = y;
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
+	
+	oldPosition = itemBox;
 
 	init();
 }
@@ -2336,6 +2447,7 @@ CCPig::CCPig(CBox* position)
 	
 	//
 	itemBox = *position;
+	oldPosition = itemBox;
 
 	init();
 }
@@ -2381,6 +2493,8 @@ CCHeaders::CCHeaders(const int x, const int y, const int dx, const int dy, const
 	itemBox.iY = y;
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
+	
+	oldPosition = itemBox;
 
 	htitle = title? title : "";
 	hicon = icon? icon : "";
@@ -2418,6 +2532,7 @@ CCHeaders::CCHeaders(CBox* position, const char * const title, const char * cons
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
 	itemBox = *position;
+	oldPosition = itemBox;
 
 	htitle = title? title : "";
 	hicon = icon? icon : "";
@@ -2640,6 +2755,8 @@ CCFooters::CCFooters(const int x, const int y, const int dx, const int dy)
 	itemBox.iY = y;
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
+	
+	oldPosition = itemBox;
 
 	//
 	paintframe = true;
@@ -2669,6 +2786,7 @@ CCFooters::CCFooters(CBox* position)
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
 	itemBox = *position;
+	oldPosition = itemBox;
 
 	//
 	paintframe = true;

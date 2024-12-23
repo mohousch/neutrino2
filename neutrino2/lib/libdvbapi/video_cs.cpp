@@ -501,20 +501,6 @@ int cVideo::SetVideoSystem(int video_system)
 {	
 	
 #if defined (__sh__)
-/*
-pal 
-1080i50 
-720p50 
-576p50 
-576i50 
-1080i60 
-720p60 
-1080p24 
-1080p25 
-1080p30 
-1080p50
-PC
-*/
 	const char *aVideoSystems[][2] = {
 		{"VIDEO_STD_PAL", "pal"},
 		{"VIDEO_STD_1080I50", "1080i50"},
@@ -530,19 +516,6 @@ PC
 		{"VIDEO_STD_PC", "PC"},
 	};
 #else
-// giga
-/*
-pal 
-ntsc 
-480i 
-576i 
-480p 
-576p 
-720p50 
-720p 
-1080i50 
-1080i
-*/
 	const char *aVideoSystems[][2] = {
 		{"VIDEO_STD_PAL", "pal"},
 		{"VIDEO_STD_NTSC", "ntsc"},

@@ -46,9 +46,7 @@
 
 extern cVideo * videoDecoder;		//libdvbapi (video_cs.cpp)
 
-//Video Settings
 //hdmi color space
-#if !defined (PLATFORM_COOLSTREAM)
 #ifdef __sh__
 #define VIDEOMENU_HDMI_COLOR_SPACE_OPTION_COUNT 3
 const keyval VIDEOMENU_HDMI_COLOR_SPACE_OPTIONS[VIDEOMENU_HDMI_COLOR_SPACE_OPTION_COUNT] =
@@ -58,12 +56,6 @@ const keyval VIDEOMENU_HDMI_COLOR_SPACE_OPTIONS[VIDEOMENU_HDMI_COLOR_SPACE_OPTIO
 	 { HDMI_422, "HDMI-422" }
 };
 #else
-// giga
-//
-//Edid(Auto) 
-//Hdmi_Rgb 
-//Itu_R_BT_709 
-//Unknown
 #define VIDEOMENU_HDMI_COLOR_SPACE_OPTION_COUNT 4
 const keyval VIDEOMENU_HDMI_COLOR_SPACE_OPTIONS[VIDEOMENU_HDMI_COLOR_SPACE_OPTION_COUNT] =
 {
@@ -73,7 +65,6 @@ const keyval VIDEOMENU_HDMI_COLOR_SPACE_OPTIONS[VIDEOMENU_HDMI_COLOR_SPACE_OPTIO
 	 { HDMI_UNKNOW, "unknow" }
 };
 #endif
-#endif // !coolstream
 
 //Analog Output 
 #ifdef __sh__
@@ -85,15 +76,6 @@ const keyval VIDEOMENU_ANALOGUE_MODE_OPTIONS[VIDEOMENU_ANALOGUE_MODE_OPTION_COUN
 	 { ANALOG_CVBS, "CVBS" },
 	 { ANALOG_SVIDEO, "SVIDEO" }, //not used
 	 { ANALOG_YUV, "YUV" }
-};
-#elif defined (PLATFORM_COOLSTREAM)
-#define VIDEOMENU_ANALOGUE_MODE_OPTION_COUNT 4
-const keyval VIDEOMENU_ANALOGUE_MODE_OPTIONS[VIDEOMENU_ANALOGUE_MODE_OPTION_COUNT] =
-{
-	{ ANALOG_SD_RGB_SCART, "RGB"   }, /* composite + RGB */
-	{ ANALOG_SD_YPRPB_SCART, "YPbPr" }, /* YPbPr SCART */
-	{ ANALOG_HD_RGB_SCART, "RGB scart"   },
-	{ ANALOG_HD_YPRPB_SCART, "YPbPr scart" },
 };
 #else
 //rgb/cvbs/yuv
@@ -114,13 +96,6 @@ const keyval VIDEOMENU_VIDEORATIO_OPTIONS[VIDEOMENU_VIDEORATIO_OPTION_COUNT] =
 	{ ASPECTRATIO_43, "4:3" },
 	{ ASPECTRATIO_169, "16:9" }
 };
-#elif defined (PLATFORM_COOLSTREAM)
-#define VIDEOMENU_VIDEORATIO_OPTION_COUNT 2
-const keyval VIDEOMENU_VIDEORATIO_OPTIONS[VIDEOMENU_VIDEORATIO_OPTION_COUNT] =
-{
-	{ DISPLAY_AR_4_3, "4:3" },
-	{ DISPLAY_AR_16_9, "16:9" },
-};
 #else
 #define VIDEOMENU_VIDEORATIO_OPTION_COUNT 3
 const keyval VIDEOMENU_VIDEORATIO_OPTIONS[VIDEOMENU_VIDEORATIO_OPTION_COUNT] =
@@ -133,12 +108,6 @@ const keyval VIDEOMENU_VIDEORATIO_OPTIONS[VIDEOMENU_VIDEORATIO_OPTION_COUNT] =
 
 // policy
 #ifdef __sh__
-//
-//letterbox 
-//panscan 
-//non 
-//bestfit
-//
 #define VIDEOMENU_VIDEOFORMAT_OPTION_COUNT 4
 const keyval VIDEOMENU_VIDEOFORMAT_OPTIONS[VIDEOMENU_VIDEOFORMAT_OPTION_COUNT] = 
 {
@@ -147,23 +116,7 @@ const keyval VIDEOMENU_VIDEOFORMAT_OPTIONS[VIDEOMENU_VIDEOFORMAT_OPTION_COUNT] =
 	{ VIDEOFORMAT_FULLSCREEN, _("fullscreen") },
 	{ VIDEOFORMAT_PANSCAN2, "bestfit" }
 };
-#elif defined (PLATFORM_COOLSTREAM)
-#define VIDEOMENU_VIDEOFORMAT_OPTION_COUNT 4
-const keyval VIDEOMENU_VIDEOFORMAT_OPTIONS[VIDEOMENU_VIDEOFORMAT_OPTION_COUNT] = 
-{
-	{ DISPLAY_AR_MODE_PANSCAN, "panscan" },
-	{ DISPLAY_AR_MODE_PANSCAN2, "bestfit" },
-	{ DISPLAY_AR_MODE_LETTERBOX, "letterbox" },
-	{ DISPLAY_AR_MODE_NONE, _("fullscreen") }
-};
 #else
-// giga
-//
-//letterbox 
-//panscan 
-//bestfit 
-//nonlinear
-//
 #define VIDEOMENU_VIDEOFORMAT_OPTION_COUNT 4
 const keyval VIDEOMENU_VIDEOFORMAT_OPTIONS[VIDEOMENU_VIDEOFORMAT_OPTION_COUNT] = 
 {
@@ -176,21 +129,6 @@ const keyval VIDEOMENU_VIDEOFORMAT_OPTIONS[VIDEOMENU_VIDEOFORMAT_OPTION_COUNT] =
 
 //video mode
 #ifdef __sh__
-// cuberevo
-//
-//pal 
-//1080i50 
-//720p50 
-//576p50 
-//576i50 
-//1080i60 
-//720p60 
-//1080p24 
-//1080p25 
-//1080p30 
-//1080p50
-//PC
-//
 #define VIDEOMENU_VIDEOMODE_OPTION_COUNT 12
 const keyval VIDEOMENU_VIDEOMODE_OPTIONS[VIDEOMENU_VIDEOMODE_OPTION_COUNT] =
 {
@@ -207,37 +145,7 @@ const keyval VIDEOMENU_VIDEOMODE_OPTIONS[VIDEOMENU_VIDEOMODE_OPTION_COUNT] =
 	{ VIDEO_STD_1080P50, "1080p 50Hz" 	},
 	{ VIDEO_STD_PC, "PC"		}
 };
-#elif defined (PLATFORM_COOLSTREAM)
-#define VIDEOMENU_VIDEOMODE_OPTION_COUNT 12
-const keyval VIDEOMENU_VIDEOMODE_OPTIONS[VIDEOMENU_VIDEOMODE_OPTION_COUNT] =
-{
-	{ VIDEO_STD_SECAM,   "SECAM"	},
-	{ VIDEO_STD_PAL,     "PAL"		},
-	{ VIDEO_STD_576P,    "576p"		},
-	{ VIDEO_STD_720P50,  "720p 50Hz"	},
-	{ VIDEO_STD_1080I50, "1080i 50Hz"	},
-	{ VIDEO_STD_1080P24, "1080p 24Hz"	},
-	{ VIDEO_STD_1080P25, "1080p 25Hz"	},
-	{ VIDEO_STD_NTSC,    "NTSC"		},
-	{ VIDEO_STD_480P,    "480p"		},
-	{ VIDEO_STD_720P60,  "720p 60Hz"	},
-	{ VIDEO_STD_1080I60, "1080i 60Hz"	},
-	{ VIDEO_STD_AUTO,    "Auto"         }
-};
 #else
-// giga
-//
-//pal 
-//ntsc 
-//480i 
-//576i 
-//480p 
-//576p 
-//720p50 
-//720p 
-//1080i50 
-//1080i
-//
 #define VIDEOMENU_VIDEOMODE_OPTION_COUNT 10
 const keyval VIDEOMENU_VIDEOMODE_OPTIONS[VIDEOMENU_VIDEOMODE_OPTION_COUNT] =
 {
@@ -255,20 +163,6 @@ const keyval VIDEOMENU_VIDEOMODE_OPTIONS[VIDEOMENU_VIDEOMODE_OPTION_COUNT] =
 #endif
 
 // wss
-//
-//off 
-//auto 
-//auto(4:3_off) 
-//4:3_full_format 
-//16:9_full_format 
-//14:9_letterbox_center 
-//14:9_letterbox_top 
-//16:9_letterbox_center 
-//16:9_letterbox_top 
-//>16:9_letterbox_center 
-//14:9_full_format
-//
-#if !defined (PLATFORM_COOLSTREAM)
 #ifdef __sh__
 #define VIDEOMENU_WSS_OPTION_COUNT 3
 const keyval VIDEOMENU_WSS_OPTIONS[VIDEOMENU_WSS_OPTION_COUNT] =
@@ -278,20 +172,6 @@ const keyval VIDEOMENU_WSS_OPTIONS[VIDEOMENU_WSS_OPTION_COUNT] =
 	{ WSS_43_OFF, "auto(4:3_off)" },
 };
 #else
-// giga
-//
-//off 
-//auto 
-//auto(4:3_off) 
-//4:3_full_format 
-//16:9_full_format 
-//14:9_letterbox_center 
-//14:9_letterbox_top 
-//16:9_letterbox_center 
-//16:9_letterbox_top 
-//>16:9_letterbox_center 
-//14:9_full_format
-//
 #define VIDEOMENU_WSS_OPTION_COUNT 11
 const keyval VIDEOMENU_WSS_OPTIONS[VIDEOMENU_WSS_OPTION_COUNT] =
 {
@@ -309,7 +189,6 @@ const keyval VIDEOMENU_WSS_OPTIONS[VIDEOMENU_WSS_OPTION_COUNT] =
 	
 };
 #endif
-#endif // !coolstream
 
 CVideoSettings::CVideoSettings()
 {
@@ -417,13 +296,11 @@ void CVideoSettings::showMenu()
 	// video analogue mode
 	videoSettings->addItem(new CMenuOptionChooser(_("Analog Output"), &g_settings.analog_mode, VIDEOMENU_ANALOGUE_MODE_OPTIONS, VIDEOMENU_ANALOGUE_MODE_OPTION_COUNT, true, videoSetupNotifier));
 
-#if !defined (PLATFORM_COOLSTREAM)
 	// video hdmi space colour	
 	//videoSettings->addItem(new CMenuOptionChooser(_("HDMI Color Space"), &g_settings.hdmi_color_space, VIDEOMENU_HDMI_COLOR_SPACE_OPTIONS, VIDEOMENU_HDMI_COLOR_SPACE_OPTION_COUNT, true, videoSetupNotifier));	
 	
 	// wss
-	videoSettings->addItem(new CMenuOptionChooser(_("Colour Range"), &g_settings.wss_mode, VIDEOMENU_WSS_OPTIONS, VIDEOMENU_WSS_OPTION_COUNT, true, videoSetupNotifier));
-#endif	
+	videoSettings->addItem(new CMenuOptionChooser(_("Colour Range"), &g_settings.wss_mode, VIDEOMENU_WSS_OPTIONS, VIDEOMENU_WSS_OPTION_COUNT, true, videoSetupNotifier));	
 
 	// video mode
 	videoSettings->addItem(new CMenuOptionChooser(_("Video Resolution"), &g_settings.video_Mode, VIDEOMENU_VIDEOMODE_OPTIONS, VIDEOMENU_VIDEOMODE_OPTION_COUNT, true, videoSetupNotifier, CRCInput::RC_nokey, "", true));
@@ -475,12 +352,8 @@ bool CVideoSetupNotifier::changeNotify(const std::string& OptionName, void *)
 
 	if (OptionName == _("Analog Output"))	/* video analoue mode */
 	{
-		if(videoDecoder)
-#if defined (PLATFORM_COOLSTREAM)
-			videoDecoder->SetVideoMode((analog_mode_t) g_settings.analog_mode);
-#else			
-			videoDecoder->SetAnalogMode(g_settings.analog_mode);
-#endif			
+		if(videoDecoder)			
+			videoDecoder->SetAnalogMode(g_settings.analog_mode);		
 	}
 	else if ( (OptionName == _("TV-System") ) || (OptionName == _("Video Format")) )	// format aspect-ratio
 	{
@@ -509,8 +382,7 @@ bool CVideoSetupNotifier::changeNotify(const std::string& OptionName, void *)
 				prev_video_Mode = g_settings.video_Mode;
 			}
 		}
-	}
-#if !defined (PLATFORM_COOLSTREAM)	
+	}	
 	else if (OptionName == _("HDMI Color Space")) 
 	{
 		if(videoDecoder)
@@ -521,7 +393,6 @@ bool CVideoSetupNotifier::changeNotify(const std::string& OptionName, void *)
 		if(videoDecoder)
 			videoDecoder->SetWideScreen(g_settings.wss_mode);
 	}
-#endif	
 
 	return true;
 }

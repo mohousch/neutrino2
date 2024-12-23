@@ -41,6 +41,7 @@ class CWidget : public CMenuTarget
 	protected:
 		CFrameBuffer *frameBuffer;
 		CBox mainFrameBox;
+		CBox oldPosition;
 		// 
 		CCITEMLIST CCItems;
 		//
@@ -95,6 +96,7 @@ class CWidget : public CMenuTarget
 			initFrames();
 		};
 		virtual void setPosition(CBox* position){mainFrameBox = *position; initFrames();};
+		virtual void move(const int x, const int y, const int dx, const int dy);
 
 		// CCITEMS
 		virtual void addCCItem(CComponent *CCItem, const bool defaultselected = false);
@@ -142,6 +144,7 @@ class CWidget : public CMenuTarget
 		CComponent *getCCItem(const int type, const std::string& name = "");
 		//
 		inline CBox getWindowsPos(void){return mainFrameBox;};
+		inline CBox getOldPosition(void){ return oldPosition;};
 		// lua compatibility
 		std::string getActionKey(){return actionKey;};
 		neutrino_msg_t getKey(){return msg;};

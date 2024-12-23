@@ -1396,20 +1396,6 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	// recalculate posx / posy
 	int x = posx;
 	int y = posy;
-	
-	/*	
-	if (widget)
-	{			
-		x = widget->getWindowsPos().iX + posx;
-		y = widget->getWindowsPos().iY + posy;
-				
-		if (width > widget->getWindowsPos().iWidth)
-			width = widget->getWindowsPos().iWidth;
-				
-		if (height > widget->getWindowsPos().iHeight)
-			height = widget->getWindowsPos().iHeight;
-	}
-	*/
 					
 	listBox = new ClistBox(x, y, width, height);
 		
@@ -1782,20 +1768,6 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 	// recalculate posx / posy
 	int x = posx;
 	int y = posy;
-	
-	/*	
-	if (widget)
-	{			
-		x = widget->getWindowsPos().iX + posx;
-		y = widget->getWindowsPos().iY + posy;
-				
-		if (width > widget->getWindowsPos().iWidth)
-			width = widget->getWindowsPos().iWidth;
-				
-		if (height > widget->getWindowsPos().iHeight)
-			height = widget->getWindowsPos().iHeight;
-	}
-	*/
 
 	head = new CCHeaders(x, y, width, height);
 		
@@ -1921,20 +1893,6 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 	// recalculate posx / posy
 	int x = posx;
 	int y = posy;
-	
-	/*	
-	if (widget)
-	{			
-		x = widget->getWindowsPos().iX + posx;
-		y = widget->getWindowsPos().iY + posy;
-				
-		if (width > widget->getWindowsPos().iWidth)
-			width = widget->getWindowsPos().iWidth;
-				
-		if (height > widget->getWindowsPos().iHeight)
-			height = widget->getWindowsPos().iHeight;
-	}
-	*/
 						
 	foot = new CCFooters(x, y, width, height);
 		
@@ -2054,20 +2012,6 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 	// recalculate posx / posy
 	int x = posx;
 	int y = posy;
-	
-	/*	
-	if (widget)
-	{			
-		x = widget->getWindowsPos().iX + posx;
-		y = widget->getWindowsPos().iY + posy;
-				
-		if (width > widget->getWindowsPos().iWidth)
-			width = widget->getWindowsPos().iWidth;
-				
-		if (height > widget->getWindowsPos().iHeight)
-			height = widget->getWindowsPos().iHeight;
-	}
-	*/
 						
 	textBox = new CTextBox(x, y, width, height);
 		
@@ -2165,20 +2109,6 @@ void CNeutrinoApp::parseCCWindow(xmlNodePtr node, CWidget* widget)
 	// recalculate posx / posy
 	int x = posx;
 	int y = posy;
-	
-	/*	
-	if (widget)
-	{			
-		x = widget->getWindowsPos().iX + posx;
-		y = widget->getWindowsPos().iY + posy;
-				
-		if (width > widget->getWindowsPos().iWidth)
-			width = widget->getWindowsPos().iWidth;
-				
-		if (height > widget->getWindowsPos().iHeight)
-			height = widget->getWindowsPos().iHeight;
-	}
-	*/
 					
 	window = new CCWindow(x, y, width, height);
 		
@@ -2273,20 +2203,6 @@ void CNeutrinoApp::parseCCLabel(xmlNodePtr node, CWidget* widget)
 	// recalculate posx / posy
 	int x = cc_x;
 	int y = cc_y;
-	
-	/*	
-	if (widget)
-	{
-		x = widget->getWindowsPos().iX + cc_x;
-		y = widget->getWindowsPos().iY + cc_y;
-				
-		if (cc_dx > widget->getWindowsPos().iWidth)
-			cc_dx = widget->getWindowsPos().iWidth;
-				
-		if (cc_dy > widget->getWindowsPos().iHeight)
-			cc_dy = widget->getWindowsPos().iHeight;
-	}
-	*/
 							
 	label = new CCLabel(x, y, cc_dx, cc_dy);
 		
@@ -2339,20 +2255,6 @@ void CNeutrinoApp::parseCCImage(xmlNodePtr node, CWidget* widget)
 	// recalculate posx / posy
 	int x = cc_x;
 	int y = cc_y;
-	
-	/*	
-	if (widget)
-	{			
-		x = widget->getWindowsPos().iX + cc_x;
-		y = widget->getWindowsPos().iY + cc_y;
-				
-		if (cc_dx > widget->getWindowsPos().iWidth)
-			cc_dx = widget->getWindowsPos().iWidth;
-				
-		if (cc_dy > widget->getWindowsPos().iHeight)
-			cc_dy = widget->getWindowsPos().iHeight;
-	}
-	*/
 							
 	pic = new CCImage(x, y, cc_dx, cc_dy);
 		
@@ -2423,20 +2325,6 @@ void CNeutrinoApp::parseCCTime(xmlNodePtr node, CWidget* widget)
 	// recalculate posx / posy
 	int x = cc_x;
 	int y = cc_y;
-	
-	/*	
-	if (widget)
-	{			
-		x = widget->getWindowsPos().iX + cc_x;
-		y = widget->getWindowsPos().iY + cc_y;
-				
-		if (cc_dx > widget->getWindowsPos().iWidth)
-			cc_dx = widget->getWindowsPos().iWidth;
-				
-		if (cc_dy > widget->getWindowsPos().iHeight)
-			cc_dy = widget->getWindowsPos().iHeight;
-	}
-	*/
 							
 	time = new CCTime(x, y, cc_dx, cc_dy);
 		
@@ -2486,20 +2374,6 @@ void CNeutrinoApp::parseCCButtons(xmlNodePtr node, CWidget* widget)
 	// recalculate posx / posy
 	int x = cc_x;
 	int y = cc_y;
-	
-	/*	
-	if (widget)
-	{			
-		x = widget->getWindowsPos().iX + cc_x;
-		y = widget->getWindowsPos().iY + cc_y;
-				
-		if (cc_dx > widget->getWindowsPos().iWidth)
-			cc_dx = widget->getWindowsPos().iWidth;
-				
-		if (cc_dy > widget->getWindowsPos().iHeight)
-			cc_dy = widget->getWindowsPos().iHeight;
-	}
-	*/
 				
 	cButton = new CCButtons(x, y, cc_dx, cc_dy);
 	
@@ -2577,20 +2451,6 @@ void CNeutrinoApp::parseCCHline(xmlNodePtr node, CWidget* widget)
 	// recalculate posx / posy
 	int x = cc_x;
 	int y = cc_y;
-	
-	/*	
-	if (widget)
-	{			
-		x = widget->getWindowsPos().iX + cc_x;
-		y = widget->getWindowsPos().iY + cc_y;
-				
-		if (cc_dx > widget->getWindowsPos().iWidth)
-			cc_dx = widget->getWindowsPos().iWidth;
-				
-		if (cc_dy > widget->getWindowsPos().iHeight)
-			cc_dy = widget->getWindowsPos().iHeight;
-	}
-	*/
 				
 	hline = new CCHline(x, y, cc_dx, cc_dy);
 		
@@ -2644,20 +2504,6 @@ void CNeutrinoApp::parseCCVline(xmlNodePtr node, CWidget* widget)
 	// recalculate posx / posy
 	int x = cc_x;
 	int y = cc_y;
-	
-	/*	
-	if (widget)
-	{			
-		x = widget->getWindowsPos().iX + cc_x;
-		y = widget->getWindowsPos().iY + cc_y;
-				
-		if (cc_dx > widget->getWindowsPos().iWidth)
-			cc_dx = widget->getWindowsPos().iWidth;
-				
-		if (cc_dy > widget->getWindowsPos().iHeight)
-			cc_dy = widget->getWindowsPos().iHeight;
-	}
-	*/
 		
 	vline = new CCVline(x, y, cc_dx, cc_dy);
 		
@@ -2705,20 +2551,6 @@ void CNeutrinoApp::parseCCPig(xmlNodePtr node, CWidget* widget)
 	// recalculate posx / posy
 	int x = cc_x;
 	int y = cc_y;
-	
-	/*	
-	if (widget)
-	{			
-		x = widget->getWindowsPos().iX + cc_x;
-		y = widget->getWindowsPos().iY + cc_y;
-				
-		if (cc_dx > widget->getWindowsPos().iWidth)
-			cc_dx = widget->getWindowsPos().iWidth;
-				
-		if (cc_dy > widget->getWindowsPos().iHeight)
-			cc_dy = widget->getWindowsPos().iHeight;
-	}
-	*/
 				
 	pig = new CCPig(x, y, cc_dx, cc_dy);
 		

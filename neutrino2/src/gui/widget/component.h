@@ -143,6 +143,7 @@ class CComponent
 		
 		//
 		CBox itemBox;
+		CBox oldPosition;
 		int halign;
 		
 		//
@@ -208,6 +209,8 @@ class CComponent
 			initFrames();
 		};
 		virtual inline CBox getWindowsPos(void){return itemBox;};
+		virtual inline CBox getOldPosition(void){ return oldPosition;};
+		virtual void adjustToParentPosition();
 		////
 		virtual void paintMainFrame(bool p){paintframe = p;};
 		virtual void setHAlign(int h){halign = h;};

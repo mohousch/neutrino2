@@ -66,34 +66,6 @@ typedef enum {
 
 // video mode
 #if defined (__sh__)
-/*
-pal 
-1080i50 
-720p50 
-576p50 
-576i50 
-1080i60 
-720p60 
-1080p24 
-1080p25 
-1080p30 
-PC
-//spark7162
-pal 
-1080i50 
-720p50 
-576p50 
-576i50 
-1080i60 
-720p60 
-1080p24 
-1080p25 
-1080p30 
-1080p50 
-1080p59 
-1080p60 
-PC
-*/
 enum {
 	VIDEO_STD_PAL,
 	VIDEO_STD_1080I50,
@@ -109,19 +81,6 @@ enum {
 	VIDEO_STD_PC
 };
 #else
-// bcm
-/*
-pal 
-ntsc 
-480i 
-576i 
-480p 
-576p 
-720p50 
-720p 
-1080i50 
-1080i
-*/
 enum {
 	VIDEO_STD_PAL,
 	VIDEO_STD_NTSC,
