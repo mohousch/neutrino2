@@ -4001,6 +4001,9 @@ void CNeutrinoApp::realRun(void)
 				stopSubtitles();
 
 				g_EventList->exec(CZapit::getInstance()->getCurrentChannelID(), channelList->getActiveChannelName());
+				
+				// restore mute symbol
+				audioMute(current_muted, true);
 
 				startSubtitles();
 			}
@@ -4037,6 +4040,8 @@ void CNeutrinoApp::realRun(void)
 				delete Timerlist;
 				Timerlist = NULL;
 				
+				// restore mute symbol
+				audioMute(current_muted, true);
 				startSubtitles();
 			}		
 			else if( msg == CRCInput::RC_setup ) 
@@ -4263,6 +4268,9 @@ void CNeutrinoApp::realRun(void)
 				delete redMenu;
 				redMenu = NULL;
 				
+				// restore mute symbol
+				audioMute(current_muted, true);
+				
 				//
 				startSubtitles();
 			}
@@ -4270,6 +4278,8 @@ void CNeutrinoApp::realRun(void)
 			{
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
+					
+				stopSubtitles();
 
 				if (IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 				{
@@ -4281,8 +4291,6 @@ void CNeutrinoApp::realRun(void)
 				}
 				else
 				{
-					stopSubtitles();
-
 					// audio handler
 					CAudioSelectMenuHandler* audioSelectMenuHandler = new CAudioSelectMenuHandler();
 
@@ -4290,9 +4298,11 @@ void CNeutrinoApp::realRun(void)
 							
 					delete audioSelectMenuHandler;
 					audioSelectMenuHandler = NULL;
-
-					startSubtitles();
 				}
+				
+				startSubtitles();
+				// restore mute symbol
+				audioMute(current_muted, true);
 			}
 			else if( (msg == CRCInput::RC_yellow || msg == CRCInput::RC_multifeed) )
 			{ 
@@ -4307,6 +4317,9 @@ void CNeutrinoApp::realRun(void)
 					selectNVOD();
 				}
 
+				// restore mute symbol
+				audioMute(current_muted, true);
+				
 				startSubtitles();
 			}
 			else if( msg == CRCInput::RC_blue ) 
@@ -4318,6 +4331,9 @@ void CNeutrinoApp::realRun(void)
 
 				// features
 				showUserMenu(SNeutrinoSettings::BUTTON_BLUE);
+				
+				// restore mute symbol
+				audioMute(current_muted, true);
 
 				startSubtitles();
 			}
@@ -4330,6 +4346,9 @@ void CNeutrinoApp::realRun(void)
 
 				stopSubtitles();
 				showUserMenu(SNeutrinoSettings::BUTTON_F1);
+				
+				// restore mute symbol
+				audioMute(current_muted, true);
 				startSubtitles();
 			}
 			else if( msg == CRCInput::RC_f2 )
@@ -4340,6 +4359,9 @@ void CNeutrinoApp::realRun(void)
 
 				stopSubtitles();
 				showUserMenu(SNeutrinoSettings::BUTTON_F2);
+				
+				// restore mute symbol
+				audioMute(current_muted, true);
 				startSubtitles();
 			}
 			else if( msg == CRCInput::RC_f3 ) 
@@ -4350,6 +4372,9 @@ void CNeutrinoApp::realRun(void)
  
 				stopSubtitles();
 				showUserMenu(SNeutrinoSettings::BUTTON_F3);
+				
+				// restore mute symbol
+				audioMute(current_muted, true);
 				startSubtitles();
 			}
 			else if( msg == CRCInput::RC_f4 ) 
@@ -4360,6 +4385,9 @@ void CNeutrinoApp::realRun(void)
 
 				stopSubtitles();
 				showUserMenu(SNeutrinoSettings::BUTTON_F4);
+				
+				// restore mute symbol
+				audioMute(current_muted, true);
 				startSubtitles();
 			}
 #endif			
@@ -4382,6 +4410,9 @@ void CNeutrinoApp::realRun(void)
 						}
 					}
 					
+					
+					// restore mute symbol
+					audioMute(current_muted, true);
 					startSubtitles();
 				}
 			}
@@ -4392,6 +4423,9 @@ void CNeutrinoApp::realRun(void)
 
 				stopSubtitles();
 				g_PluginList->startPlugin("audioplayer");
+				
+				// restore mute symbol
+				audioMute(current_muted, true);
 				startSubtitles();
 			}
 			else if( msg == (neutrino_msg_t)g_settings.key_inetradio ) 	// internet radio
@@ -4401,6 +4435,9 @@ void CNeutrinoApp::realRun(void)
 	  
 				stopSubtitles();
 				g_PluginList->startPlugin("internetradio");
+				
+				// restore mute symbol
+				audioMute(current_muted, true);
 				startSubtitles();	
 			}			
 			else if( msg == (neutrino_msg_t)g_settings.key_movieplayer )	// recordsbrowser
@@ -4410,6 +4447,9 @@ void CNeutrinoApp::realRun(void)
 
 				stopSubtitles();
 				g_PluginList->startPlugin("movieplayer");
+				
+				// restore mute symbol
+				audioMute(current_muted, true);
 				startSubtitles();			
 			}
 			else if( msg == (neutrino_msg_t)g_settings.key_moviebrowser)		// mediaportal
@@ -4419,6 +4459,9 @@ void CNeutrinoApp::realRun(void)
 
 				stopSubtitles();
 				g_PluginList->startPlugin("moviebrowser");
+				
+				// restore mute symbol
+				audioMute(current_muted, true);
 				startSubtitles();	
 			}
 			else if( msg == (neutrino_msg_t)g_settings.key_pvr)		// mediaportal
@@ -4428,6 +4471,9 @@ void CNeutrinoApp::realRun(void)
 
 				stopSubtitles();
 				g_PluginList->startPlugin("mediaportal");
+				
+				// restore mute symbol
+				audioMute(current_muted, true);
 				startSubtitles();	
 			}
 			else if( msg == (neutrino_msg_t)g_settings.key_pictureviewer ) 	// picture viewer
@@ -4437,6 +4483,9 @@ void CNeutrinoApp::realRun(void)
 
 				stopSubtitles();
 				g_PluginList->startPlugin("picviewer");
+				
+				// restore mute symbol
+				audioMute(current_muted, true);
 				startSubtitles();
 			}			
 			else if ( CRCInput::isNumeric(msg) && g_RemoteControl->director_mode ) 
@@ -4450,6 +4499,8 @@ void CNeutrinoApp::realRun(void)
 				
 				g_InfoViewer->showSubchan();
 				
+				// restore mute symbol
+				audioMute(current_muted, true);
 				startSubtitles();
 			}
 			else if (CRCInput::isNumeric(msg)) 
@@ -4469,6 +4520,8 @@ void CNeutrinoApp::realRun(void)
 				
 				bouquetList->Bouquets[activBouquet]->channelList->numericZap( msg );
 				
+				// restore mute symbol
+				audioMute(current_muted, true);
 				startSubtitles();
 			}			
 			else if (CRCInput::isNumeric(msg) && (mode == mode_radio && g_settings.radiotext_enable && g_Radiotext != NULL && g_Radiotext->Rass_Show) ) 
@@ -4507,6 +4560,8 @@ void CNeutrinoApp::realRun(void)
 				
 				bouquetList->Bouquets[activBouquet]->channelList->numericZap( msg );
 				
+				// restore mute symbol
+				audioMute(current_muted, true);
 				startSubtitles();
 			}
 			else 

@@ -3,7 +3,7 @@
 <!-- SKIN: standard -->
 <!-- AUTHOR: mohousch -->
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
-<!-- all part of this skin are hardcoded as backfall for all skins if it contains malfunctioned lines -->
+<!-- all part of this skin are hardcoded as fallback for all skins if it contains malformed lines -->
 
 <skin>
 	<skininfo author="mohousch" version="1.0" info="default Skin for NeutrinoNG"/>

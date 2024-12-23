@@ -428,7 +428,7 @@ end
 -- CWidget
 function testCWidget()
 	local testWidget = neutrino2.CWidget()
-	testWidget:setMenuPosition(neutrino2.CWidget_MENU_POSITION_LEFT)
+	--testWidget:setMenuPosition(neutrino2.CWidget_MENU_POSITION_LEFT)
 	
 	local listBox = neutrino2.ClistBox(340, 60, 600,600)
 
