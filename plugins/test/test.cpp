@@ -531,7 +531,6 @@ void CTestMenu::loadMoviePlaylist()
 	m_vMovieInfo.clear();
 	
 	//
-	//if(CFileHelpers::getInstance()->readDir(Path, &filelist, &fileFilter))
 	CFileHelpers::getInstance()->addRecursiveDir(&filelist, Path, &fileFilter);
 
 	if(filelist.size() > 0)
@@ -2278,7 +2277,7 @@ void CTestMenu::testCListFrame()
 
 		snprintf(duration, 8, "(%ld:%02ld)", AudioPlaylist[i].MetaData.total_time / 60, AudioPlaylist[i].MetaData.total_time % 60);
 		
-		////
+		//
 		listFrameLines.icon = NEUTRINO_ICON_MP3;
 
 		listFrameLines.lineArray[0].push_back(toString(i + 1));
@@ -2347,7 +2346,7 @@ void CTestMenu::testClistBox()
 
 		item->setHint(tmp.c_str());
 		
-		////
+		//
 		item->setActionKey(this, "wplay");
 		
 		rightWidget->addItem(item);
@@ -2356,6 +2355,7 @@ void CTestMenu::testClistBox()
 	// mode
 	rightWidget->setWidgetType(ClistBox::TYPE_STANDARD);
 	rightWidget->enableShrinkMenu();
+	rightWidget->paintMainFrame(true);
 
 	// head
 	rightWidget->enablePaintHead();
@@ -2428,6 +2428,8 @@ void CTestMenu::testClistBox2()
 	// widgettype
 	rightWidget->setWidgetType(ClistBox::TYPE_CLASSIC);
 	rightWidget->enableShrinkMenu();
+	rightWidget->paintMainFrame(true);
+	
 
 	// head
 	rightWidget->setTitle("ClistBox(classic)", NEUTRINO_ICON_MOVIE);
@@ -2480,11 +2482,10 @@ void CTestMenu::testClistBox3()
 	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{
 		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "wplay");
+		item->set2lines(true);
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
 		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-		//item->set2lines(true);
 
 		std::string tmp = m_vMovieInfo[i].epgInfo1;
 		tmp += "\n";
@@ -2496,8 +2497,10 @@ void CTestMenu::testClistBox3()
 	}
 
 	// widgettype
+	rightWidget->setWidgetMode(ClistBox::MODE_LISTBOX);
 	rightWidget->setWidgetType(ClistBox::TYPE_EXTENDED);
 	rightWidget->enableShrinkMenu();
+	rightWidget->paintMainFrame(true);
 
 	// head
 	rightWidget->setTitle("ClistBox(extended)", NEUTRINO_ICON_MOVIE);
@@ -2566,8 +2569,7 @@ void CTestMenu::testClistBox4()
 	// widgettype
 	rightWidget->setWidgetType(ClistBox::TYPE_FRAME);
 	rightWidget->setItemsPerPage(6,2);
-	
-	rightWidget->paintMainFrame(true);
+	rightWidget->paintMainFrame(false);
 	
 	// head
 	rightWidget->enablePaintHead();

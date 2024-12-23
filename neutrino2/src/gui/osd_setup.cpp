@@ -194,8 +194,8 @@ int COSDSettings::showMenu(void)
 }
 
 // osd menucolor settings
-#define COLOR_GRADIENT_TYPE_OPTION_COUNT	5
-const keyval COLOR_GRADIENT_TYPE_OPTIONS[COLOR_GRADIENT_TYPE_OPTION_COUNT] =
+#define COLOR_GRADIENT_OPTION_COUNT	5
+const keyval COLOR_GRADIENT_OPTIONS[COLOR_GRADIENT_OPTION_COUNT] =
 {
 	{ NOGRADIENT, _("no gradient") },
 	{ DARK2LIGHT, _("dark to light") },
@@ -359,7 +359,7 @@ void COSDMenuColorSettings::showMenu()
 	OSDmenuColorsSettings->addItem( new CMenuForwarder(_("Textcolor"), true, NULL, chHeadTextcolor ));
 
 	// head gradient
-	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Gradient"), &g_settings.Head_gradient, COLOR_GRADIENT_TYPE_OPTIONS, COLOR_GRADIENT_TYPE_OPTION_COUNT, true));
+	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Gradient"), &g_settings.Head_gradient, COLOR_GRADIENT_OPTIONS, COLOR_GRADIENT_OPTION_COUNT, true));
 	
 	// head gradienttype
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Gradient type"), &g_settings.Head_gradient_type, GRADIENT_TYPE_OPTIONS, GRADIENT_TYPE_OPTION_COUNT, true));
@@ -398,7 +398,7 @@ void COSDMenuColorSettings::showMenu()
 	OSDmenuColorsSettings->addItem( new CMenuForwarder(_("Textcolor"), true, NULL, chFootTextcolor ));
 
 	// foot gradient
-	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Gradient"), &g_settings.Foot_gradient, COLOR_GRADIENT_TYPE_OPTIONS, COLOR_GRADIENT_TYPE_OPTION_COUNT, true));
+	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Gradient"), &g_settings.Foot_gradient, COLOR_GRADIENT_OPTIONS, COLOR_GRADIENT_OPTION_COUNT, true));
 	
 	// foot gradienttype
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Gradient type"), &g_settings.Foot_gradient_type, GRADIENT_TYPE_OPTIONS, GRADIENT_TYPE_OPTION_COUNT, true));
@@ -425,7 +425,7 @@ void COSDMenuColorSettings::showMenu()
 	OSDmenuColorsSettings->addItem( new CMenuForwarder(_("Textcolor"), true, NULL, chHintTextColor ));
 
 	// itemInfo gradient
-	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Gradient"), &g_settings.Hint_gradient, COLOR_GRADIENT_TYPE_OPTIONS, COLOR_GRADIENT_TYPE_OPTION_COUNT, true));
+	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Gradient"), &g_settings.Hint_gradient, COLOR_GRADIENT_OPTIONS, COLOR_GRADIENT_OPTION_COUNT, true));
 	
 	// iteminfo gradienttype
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Gradient type"), &g_settings.Hint_gradient_type, GRADIENT_TYPE_OPTIONS, GRADIENT_TYPE_OPTION_COUNT, true));
@@ -572,7 +572,7 @@ void COSDInfoBarColorSettings::showMenu()
 	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Buttons Line Gradient"), &g_settings.infobar_buttonline_gradient, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
 
 	// gradient
-	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Gradient"), &g_settings.infobar_gradient, COLOR_GRADIENT_TYPE_OPTIONS, COLOR_GRADIENT_TYPE_OPTION_COUNT, true));
+	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Gradient"), &g_settings.infobar_gradient, COLOR_GRADIENT_OPTIONS, COLOR_GRADIENT_OPTION_COUNT, true));
 	
 	// gradient type
 	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Gradient type"), &g_settings.infobar_gradient_type, GRADIENT_TYPE_OPTIONS, GRADIENT_TYPE_OPTION_COUNT, true));
@@ -1195,7 +1195,9 @@ int CSkinManager::showMenu()
 	else
 	{
 		//
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
 		CBox box;
+		
 		box.iWidth = MENU_WIDTH;
 		box.iHeight = MENU_HEIGHT;
 		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
@@ -1207,19 +1209,12 @@ int CSkinManager::showMenu()
 		//
 		skinMenu = new ClistBox(&box);
 
-		skinMenu->setWidgetMode(ClistBox::MODE_LISTBOX);
-		skinMenu->setWidgetType(ClistBox::TYPE_CLASSIC);
+		skinMenu->setWidgetMode(ClistBox::MODE_MENU);
+		skinMenu->setWidgetType(ClistBox::TYPE_EXTENDED);
 		skinMenu->enableShrinkMenu();
-		
-		//
 		skinMenu->enablePaintHead();
 		skinMenu->setTitle(_("Skin Select"), NEUTRINO_ICON_COLORS);
-
-		//
-		skinMenu->enablePaintFoot();
-			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
-			
+		skinMenu->enablePaintFoot();	
 		skinMenu->setFootButtons(&btn);
 		
 		//

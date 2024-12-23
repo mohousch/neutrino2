@@ -2453,20 +2453,23 @@ void ClistBox::paintItems()
 		}
 
 		// paint items background
-		if (paintframe) //FIXME: twice ?
+		if (paintframe)
 		{
 			frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + hheight + (borderMode? 2 : 0), items_width, items_height, bgcolor, radius, corner, gradient);
-			
-			//
-			if(widgetType == TYPE_EXTENDED && widgetMode == MODE_MENU)
-			{
-				frameBuffer->paintBoxRel(itemBox.iX + items_width + (borderMode? 2 : 0), item_start_y, itemBox.iWidth - items_width, items_height, bgcolor);
-
-			}
 		}
 		else
 		{
 			restoreScreen();
+		}
+		
+		//
+		if(widgetType == TYPE_EXTENDED)
+		{
+			CCVline line(itemBox.iX + items_width + sb_width + (borderMode? 2 : 0), item_start_y + 2, 2, items_height - 4);
+				
+			line.setColor(COL_MENUCONTENT_PLUS_6);
+			line.paint(); 
+
 		}
 	
 		// paint scrollbar
@@ -2527,11 +2530,12 @@ void ClistBox::paintHead()
 		if(widgetType == TYPE_FRAME)
 		{
 			// box
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, hheight, COL_MENUCONTENT_PLUS_0);
+			if (paintframe)
+				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, hheight, COL_MENUCONTENT_PLUS_0);
 
 			// line
 			if (head_line)
-				frameBuffer->paintBoxRel(itemBox.iX /*+ BORDER_LEFT*/, itemBox.iY + hheight - 2, itemBox.iWidth /*- BORDER_LEFT - BORDER_RIGHT*/, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight - 2, itemBox.iWidth, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 			// icon
 			int i_w = 0;
@@ -2614,7 +2618,7 @@ void ClistBox::paintHead()
 			
 			// line
 			if (head_line)
-				frameBuffer->paintBoxRel(itemBox.iX /*+ BORDER_LEFT*/ + (borderMode? 2 : 0), itemBox.iY + hheight - 2 + (borderMode? 2 : 0), itemBox.iWidth /*- BORDER_LEFT - BORDER_RIGHT*/ - (borderMode? 4 : 0), 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + hheight - 2 + (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 		
 			//paint icon (left)
 			int i_w = 0;
@@ -2700,43 +2704,41 @@ void ClistBox::paintFoot()
 		
 		if(widgetType == TYPE_FRAME)
 		{
-			if(fbutton_count)
-			{
-				// box
+			// box
+			if (paintframe)
 				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - fheight, itemBox.iWidth, fheight, COL_MENUCONTENT_PLUS_0);
 
-				// line
-				if (foot_line)
-					frameBuffer->paintBoxRel(itemBox.iX /*+ BORDER_LEFT*/, itemBox.iY + itemBox.iHeight - fheight, itemBox.iWidth /*- BORDER_LEFT - BORDER_RIGHT*/, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+			// line
+			if (foot_line)
+				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - fheight, itemBox.iWidth, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
-				// buttons
-				int buttonWidth = 0;
-				int iw[fbutton_count];
-				int ih[fbutton_count];
+			// buttons
+			int buttonWidth = 0;
+			int iw[fbutton_count];
+			int ih[fbutton_count];
 
-				buttonWidth = (fbutton_width)/fbutton_count;
+			buttonWidth = (fbutton_width)/fbutton_count;
 	
-				for (int i = 0; i < (int)fbutton_count; i++)
+			for (int i = 0; i < (int)fbutton_count; i++)
+			{
+				if (!fbutton_labels[i].button.empty())
 				{
-					if (!fbutton_labels[i].button.empty())
+					iw[i] = 0;
+					ih[i] = 0;
+
+					CFrameBuffer::getInstance()->getIconSize(fbutton_labels[i].button.c_str(), &iw[i], &ih[i]);
+						
+					if(ih[i] >= fheight)
 					{
-						iw[i] = 0;
-						ih[i] = 0;
-
-						CFrameBuffer::getInstance()->getIconSize(fbutton_labels[i].button.c_str(), &iw[i], &ih[i]);
-						
-						if(ih[i] >= fheight)
-						{
 							ih[i] = fheight - 4;
-						}
-						
-						int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
-		
-						CFrameBuffer::getInstance()->paintIcon(fbutton_labels[i].button, itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + itemBox.iHeight - fheight + (fheight - ih[i])/2, 0, iw[i], ih[i]);
-
-						// FIXME: i18n
-						g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, itemBox.iY + itemBox.iHeight - fheight + f_h + (fheight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(fbutton_labels[i].localename.c_str()), COL_MENUFOOT_TEXT_PLUS_0, 0, true); // UTF-8
 					}
+						
+					int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
+		
+					CFrameBuffer::getInstance()->paintIcon(fbutton_labels[i].button, itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + itemBox.iHeight - fheight + (fheight - ih[i])/2, 0, iw[i], ih[i]);
+
+					// FIXME: i18n
+					g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, itemBox.iY + itemBox.iHeight - fheight + f_h + (fheight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(fbutton_labels[i].localename.c_str()), COL_MENUFOOT_TEXT_PLUS_0, 0, true); // UTF-8
 				}
 			}
 		}
@@ -2748,7 +2750,7 @@ void ClistBox::paintFoot()
 			
 			// line
 			if (foot_line)
-				frameBuffer->paintBoxRel(itemBox.iX /*+ BORDER_LEFT*/ + (borderMode? 2 : 0), itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight - (borderMode? 2 : 0), itemBox.iWidth /*- BORDER_LEFT - BORDER_RIGHT*/ - (borderMode? 4 : 0), 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight - (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 			// buttons
 			int buttonWidth = 0;
@@ -2969,7 +2971,7 @@ void ClistBox::paintItemInfo(int pos)
 			::scaleImage(fname, &p_w, &p_h);
 					
 			//
-			itemsLine.setPosition(itemBox.iX + 2*(itemBox.iWidth/3), itemBox.iY + hheight, (itemBox.iWidth/3), items_height);
+			itemsLine.setPosition(itemBox.iX + 2*(itemBox.iWidth/3) + 2, itemBox.iY + hheight, (itemBox.iWidth/3) - 2, items_height);
 			itemsLine.setCorner(NO_RADIUS, CORNER_ALL);
 			itemsLine.setGradient(NOGRADIENT);
 					
@@ -2987,10 +2989,7 @@ void ClistBox::paintItemInfo(int pos)
 		}
 		else //if (widgetMode == MODE_MENU)
 		{
-			if (paintframe)
-			{
-				itemsLine.setPosition(itemBox.iX + items_width + (itemBox.iWidth - items_width - ITEM_ICON_W)/2, itemBox.iY + (itemBox.iHeight - ITEM_ICON_H)/2, ITEM_ICON_W, ITEM_ICON_H);
-			}
+			itemsLine.setPosition(itemBox.iX + items_width + (itemBox.iWidth - items_width - ITEM_ICON_W)/2, itemBox.iY + (itemBox.iHeight - ITEM_ICON_H)/2, ITEM_ICON_W, ITEM_ICON_H);
 			
 			// item icon (right) check for minimum hight
 			if(itemBox.iHeight - hheight - fheight >= ITEM_ICON_H)
@@ -3001,17 +3000,17 @@ void ClistBox::paintItemInfo(int pos)
 						
 				if (item->isPlugin)
 					fname = item->itemIcon;
-				else				
+				
+				if (!::file_exists(fname.c_str()))
 					fname = CFrameBuffer::getInstance()->getHintBasePath() + item->itemIcon.c_str() + ".png";
 					
 				itemsLine.setIcon(fname.c_str());
 				itemsLine.setScaling(true);
 				itemsLine.paint();
-				//
 			}
 		}
 		
-		////	
+		//// itemHint on FootBar
 		if (paint_ItemInfo) // MODE_LISTBOX | MODE_MENU
 		{
 			if ( paint_Foot && fbutton_count == 0)

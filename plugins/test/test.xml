@@ -1,9 +1,10 @@
-<skin>
+<?xml version="1.0" encoding="iso-8859-1"?>
 
 <!-- SKIN: testmenu -->
 <!-- AUTHOR: mohousch -->
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
 
+<skin>
 	<widget name="testmenu" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode ="MODE_MENU" scrollbar="1">
