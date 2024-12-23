@@ -2847,7 +2847,7 @@ void ClistBox::paintItemInfo(int pos)
 				infoIcon.paint();
 
 				// Hint
-				label.setText(item->itemHint.c_str());
+				label.setText(_(item->itemHint.c_str()));
 				label.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
 				label.setColor(COL_MENUFOOT_TEXT_PLUS_0);
 				label.paint();
@@ -2856,7 +2856,7 @@ void ClistBox::paintItemInfo(int pos)
 			//// label InfoBox2: FIXME
 			if (widgetMode == MODE_MENU && itemInfoBox2.iWidth != 0)
 			{
-				label.setText(item->itemHint.c_str());
+				label.setText(_(item->itemHint.c_str()));
 				label.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
 				label.setColor(COL_MENUFOOT_TEXT_PLUS_0);
 				label.paint();
