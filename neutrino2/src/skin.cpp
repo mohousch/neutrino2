@@ -2603,12 +2603,12 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 	char* color = NULL;
 	char *gradient = NULL;
 	char *gradient_type = NULL;
-	//char *gradient_direction = NULL;
-	//char *gradient_intensity = NULL;
+//	char *gradient_direction = NULL;
+//	char *gradient_intensity = NULL;
 	char * corner = NULL;
 	char * radius = NULL;
-	//char * border = NULL;
-	//char *bordercolor = NULL;
+//	char * border = NULL;
+//	char *bordercolor = NULL;
 			
 	unsigned int paintframe = 0;
 	unsigned int savescreen = 0;

@@ -1209,13 +1209,18 @@ int CSkinManager::showMenu()
 		//
 		skinMenu = new ClistBox(&box);
 
-		skinMenu->setWidgetMode(ClistBox::MODE_MENU);
-		skinMenu->setWidgetType(ClistBox::TYPE_EXTENDED);
+		skinMenu->setWidgetMode(ClistBox::MODE_LISTBOX);
+		skinMenu->setWidgetType(ClistBox::TYPE_CLASSIC);
 		skinMenu->enableShrinkMenu();
 		skinMenu->enablePaintHead();
 		skinMenu->setTitle(_("Skin Select"), NEUTRINO_ICON_COLORS);
 		skinMenu->enablePaintFoot();	
 		skinMenu->setFootButtons(&btn);
+		
+		if (g_settings.item_info)
+		{
+			skinMenu->enablePaintItemInfo();
+		}
 		
 		//
 		widget->addCCItem(skinMenu);
@@ -1244,11 +1249,19 @@ int CSkinManager::showMenu()
 				
 				item->setActionKey(this, namelist[i]->d_name);
 				
-				std::string hint = skinPath;
-				hint += "/";
-				hint += namelist[i]->d_name;
-				hint += "/prev.png";
-				item->setHintIcon(hint.c_str());
+				// itemIcom
+				std::string hintIcon = skinPath;
+				hintIcon += "/";
+				hintIcon += namelist[i]->d_name;
+				hintIcon += "/prev.png";
+				item->setHintIcon(hintIcon.c_str());
+				
+				// itemHint
+				if (strstr(namelist[i]->d_name, "standard"))
+				{
+					item->setOption("Author: mohousch");
+					item->setHint(_("default Skin for NeutrinoNG"));
+				}
 				
 				bool select = false;
 				

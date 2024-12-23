@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-12-22 15:25+0100\n"
+"POT-Creation-Date: 2024-12-23 20:51+0100\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -2874,6 +2874,9 @@ msgstr "dunkel bis hell"
 
 msgid "dark to light to dark"
 msgstr "dunkel über hell bis dunkel"
+
+msgid "default Skin for NeutrinoNG"
+msgstr ""
 
 msgid "default audio streams"
 msgstr "Standard-Audiostreams"
