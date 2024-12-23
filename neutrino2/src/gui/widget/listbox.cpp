@@ -2529,9 +2529,9 @@ void ClistBox::paintHead()
 			// box
 			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, hheight, COL_MENUCONTENT_PLUS_0);
 
-			// head line
+			// line
 			if (head_line)
-				frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + hheight - 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(itemBox.iX /*+ BORDER_LEFT*/, itemBox.iY + hheight - 2, itemBox.iWidth /*- BORDER_LEFT - BORDER_RIGHT*/, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 			// icon
 			int i_w = 0;
@@ -2608,13 +2608,13 @@ void ClistBox::paintHead()
 		}
 		else
 		{		
-			// paint head
+			// box
 			if (paintframe)
 				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), hheight, headColor, headRadius, headCorner, headGradient, headGradient_direction, headGradient_intensity, headGradient_type);
 			
-			// paint horizontal line top
+			// line
 			if (head_line)
-				frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT + (borderMode? 2 : 0), itemBox.iY + hheight - 2 + (borderMode? 2 : 0), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - (borderMode? 4 : 0), 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(itemBox.iX /*+ BORDER_LEFT*/ + (borderMode? 2 : 0), itemBox.iY + hheight - 2 + (borderMode? 2 : 0), itemBox.iWidth /*- BORDER_LEFT - BORDER_RIGHT*/ - (borderMode? 4 : 0), 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 		
 			//paint icon (left)
 			int i_w = 0;
@@ -2702,12 +2702,12 @@ void ClistBox::paintFoot()
 		{
 			if(fbutton_count)
 			{
-				// 
+				// box
 				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - fheight, itemBox.iWidth, fheight, COL_MENUCONTENT_PLUS_0);
 
-				// foot line
+				// line
 				if (foot_line)
-					frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - fheight, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+					frameBuffer->paintBoxRel(itemBox.iX /*+ BORDER_LEFT*/, itemBox.iY + itemBox.iHeight - fheight, itemBox.iWidth /*- BORDER_LEFT - BORDER_RIGHT*/, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 				// buttons
 				int buttonWidth = 0;
@@ -2742,13 +2742,13 @@ void ClistBox::paintFoot()
 		}
 		else
 		{
-			// foot
+			// box
 			if (paintframe)
 				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight - (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), fheight, footColor, footRadius, footCorner, footGradient, footGradient_direction, footGradient_intensity, footGradient_type);
 			
-			// foot line
+			// line
 			if (foot_line)
-				frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT + (borderMode? 2 : 0), itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight - (borderMode? 2 : 0), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - (borderMode? 4 : 0), 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(itemBox.iX /*+ BORDER_LEFT*/ + (borderMode? 2 : 0), itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight - (borderMode? 2 : 0), itemBox.iWidth /*- BORDER_LEFT - BORDER_RIGHT*/ - (borderMode? 4 : 0), 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 			// buttons
 			int buttonWidth = 0;

@@ -2604,15 +2604,16 @@ void CCHeaders::paint()
 {
 	dprintf(DEBUG_INFO, "CCHeaders::paint: (%s) (%s)\n", htitle.c_str(), hicon.c_str());
 	
-	////
+	//
 	initFrames();
 	
 	// box
 	if (paintframe)
 		CFrameBuffer::getInstance()->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, color, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 	
+	// line
 	if (line)
-		frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+		frameBuffer->paintBoxRel(itemBox.iX /*+ BORDER_LEFT*/, itemBox.iY + itemBox.iHeight - 2, itemBox.iWidth /*- BORDER_LEFT - BORDER_RIGHT*/, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 	// left icon
 	int i_w = 0;
@@ -2846,16 +2847,16 @@ void CCFooters::paint()
 {
 	dprintf(DEBUG_INFO, "CCFooters::paint:\n");
 	
-	////
+	//
 	initFrames();
 	
 	// box
 	if (paintframe)
 		CFrameBuffer::getInstance()->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, color, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 	
-	// paint horizontal line buttom
+	// line
 	if (line)
-		frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+		frameBuffer->paintBoxRel(itemBox.iX /*+ BORDER_LEFT*/, itemBox.iY, itemBox.iWidth /*- BORDER_LEFT - BORDER_RIGHT*/, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 	int buttonWidth = 0;
 

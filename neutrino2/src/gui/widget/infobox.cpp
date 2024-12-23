@@ -98,6 +98,7 @@ CInfoBox::CInfoBox(const int x, const int y, const int dx, const int dy, const c
 		widget->addCCItem(footers);
 		
 		widget->paintMainFrame(true);
+		widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	}
 	
 	if (m_pcTextBox)
@@ -164,6 +165,7 @@ CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 		widget->addCCItem(footers);
 		
 		widget->paintMainFrame(true);
+		widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	}
 	
 	if (m_pcTextBox)
@@ -234,6 +236,7 @@ CInfoBox::CInfoBox()
 		widget->addCCItem(footers);
 		
 		widget->paintMainFrame(true);
+		widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	}
 	
 	if (m_pcTextBox)

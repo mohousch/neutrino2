@@ -572,6 +572,7 @@ void EventList::paint(t_channel_id channel_id)
 		//
 		evlWidget = new CWidget(&cFrameBox);
 		evlWidget->name = "eventlist";
+		evlWidget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 		
 		//
 		listBox = new ClistBox(&cFrameBox);
