@@ -6655,8 +6655,6 @@ void CZapit::Start()
 	
 	//create pmt update filter thread
 	pthread_create(&tpmt, NULL, updatePMTFilter, (void *) NULL);
-	
-	dprintf(DEBUG_NORMAL, "CZapit::Start: init succeeded\n");
 }
 
 //

@@ -92,7 +92,7 @@ void Cyhttpd::Start(void)
 	CLogging::getInstance()->LogLevel = 0;
 	
 	// start webserver thread
-	if (pthread_create (&thrWebServer, NULL, webServerThread, (void *) this) != 0 )
+	if (pthread_create(&thrWebServer, NULL, webServerThread, (void *) this) != 0 )
 	{
 		aprintf("Cyhttpd::Init: create webServerThread failed\n");
 	}
