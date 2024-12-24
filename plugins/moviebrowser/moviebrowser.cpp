@@ -2659,7 +2659,7 @@ int CMovieBrowser::showMovieInfoMenu(MI_MOVIE_INFO * movie_info)
 	// remove screenshot
 	movieInfoMenu.addItem(new CMenuForwarder(__("remove screenshot?"), true, NULL, this, "remove_screenshot"));
 
-	int ret = movieInfoMenu.exec();
+	int ret = movieInfoMenu.exec(this);
 
 	for(int i3 = 0 ; i3 < MI_MOVIE_BOOK_USER_MAX && i3 < MAX_NUMBER_OF_BOOKMARK_ITEMS; i3++ )
 	{
@@ -2690,7 +2690,7 @@ void CMovieBrowser::showParentalMenu(void)
 
 	parentalMenu.addItem( new CMenuOptionChooser(__("Lock movies from"), (int*)(&m_settings.parentalLockAge), MESSAGEBOX_PARENTAL_LOCKAGE_OPTIONS, MESSAGEBOX_PARENTAL_LOCKAGE_OPTION_COUNT, true ));
 	
-	parentalMenu.exec();
+	parentalMenu.exec(this);
 	
 	if (m_parentalLock != MB_PARENTAL_LOCK_OFF_TMP)
 		m_settings.parentalLock = m_parentalLock;
@@ -2746,7 +2746,7 @@ void CMovieBrowser::showOptionsMenuDir(void)
 			optionsMenuDir.addItem(new CMenuSeparator(CMenuSeparator::EMPTY));
 	}
 
-	optionsMenuDir.exec();
+	optionsMenuDir.exec(this);
 	
 	for(int i = 0; i < MB_MAX_DIRS ;i++)
 	{
@@ -2792,7 +2792,7 @@ void CMovieBrowser::showOptionMenuBrowser(void)
 			optionsMenuBrowser.addItem(new CMenuSeparator(CMenuSeparator::EMPTY));
 	}
 
-	optionsMenuBrowser.exec();
+	optionsMenuBrowser.exec(this);
 	
 	if(m_settings.browserFrameHeight < MIN_BROWSER_FRAME_HEIGHT )
 		m_settings.browserFrameHeight = MIN_BROWSER_FRAME_HEIGHT;
@@ -2852,7 +2852,7 @@ void CMovieBrowser::showOptionMenu(void)
 	//
 	optionsMenu.addItem( new CMenuOptionChooser(__("Serie auto create"), (int*)(&m_settings.serie_auto_create), MESSAGEBOX_YES_NO_OPTIONS, MESSAGEBOX_YES_NO_OPTIONS_COUNT, true ));
 	
-	optionsMenu.exec();
+	optionsMenu.exec(this);
 }
 
 bool CMovieBrowser::isParentalLock(MI_MOVIE_INFO& movie_info)
@@ -3402,7 +3402,7 @@ void CDirMenu::show(void)
 		listBox->addItem( new CMenuForwarder( (*dirList)[i].name.c_str(), (dirState[i] != DIR_STATE_UNKNOWN), dirOptionText[i].c_str(), this, tmp));
 	}
 	
-	listBox->exec();
+	listBox->exec(this);
 	
 	if (listBox)
 	{

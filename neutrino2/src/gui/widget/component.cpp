@@ -1,4 +1,6 @@
 //
+//	Neutrino-GUI  -   DBoxII-Project
+//
 //	$Id: component.cpp 21122024 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
@@ -63,8 +65,11 @@ CComponent::CComponent()
 	//
 	halign = CC_ALIGN_LEFT;
 	//
-	actionKey = ""; 
-	parent = NULL; 
+	jumpTarget = NULL;
+	actionKey = "";
+	selected = false;
+	parent = NULL;
+	timeout = g_settings.timing_menu;
 	sec_timer_id = 0;
 	sec_timer_interval = 1;
 	//
@@ -159,7 +164,7 @@ void CComponent::addKey(neutrino_msg_t key, CMenuTarget *target, const std::stri
 }
 
 //
-int CComponent::exec(int timeout)
+int CComponent::exec(CMenuTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "CComponent::exec: timeout:%d\n", timeout);
 	
@@ -167,20 +172,17 @@ int CComponent::exec(int timeout)
 	exit_pressed = false;
 	int retval = CMenuTarget::RETURN_REPAINT;
 	
-	if (parent)
+	if (target)
 		hide();
 
 	//
 	paint();
 	CFrameBuffer::getInstance()->blit();
-	
-	if ( timeout == -1 )
-		timeout = 0xFFFF;
 		
 	// add sec timer
 	sec_timer_id = g_RCInput->addTimer(sec_timer_interval*1000*1000, false);
 		
-	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(timeout);
+	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(timeout == 0 ? 0xFFFF : timeout);
 
 	do {
 		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);

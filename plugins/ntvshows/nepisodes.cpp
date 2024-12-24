@@ -220,7 +220,7 @@ void CNEpisodes::showMenu()
 
 	listBox->addKey(CRCInput::RC_info, this, CRCInput::getSpecialKeyName(CRCInput::RC_info));
 
-	listBox->exec();
+	listBox->exec(this);
 
 	if (listBox)
 	{

@@ -1644,7 +1644,7 @@ void CTestMenu::testCIcon()
 	testIcon.enableRepaint();
 
 	// loop
-	testIcon.exec();
+	testIcon.exec(this);
 	
 //	hide();  // CCIcon dont hide()
 }
@@ -1665,7 +1665,7 @@ void CTestMenu::testCImage()
 	testImage.setPosition(150 + BORDER_LEFT, 150, testImage.iWidth, testImage.iHeight);
 	testImage.enableRepaint();
 	
-	testImage.exec();
+	testImage.exec(this);
 	
 	hide();
 }
@@ -1689,7 +1689,7 @@ void CTestMenu::testCCLabel()
 	CTextBox.setHAlign(CComponent::CC_ALIGN_CENTER);
 	CTextBox.enableRepaint(); // refresh
 		
-	CTextBox.exec();
+	CTextBox.exec(this);
 }
 
 void CTestMenu::testCCText()
@@ -1716,7 +1716,7 @@ void CTestMenu::testCCText()
 	CTextBox.setHAlign(CComponent::CC_ALIGN_CENTER);
 	CTextBox.enableRepaint();
 		
-	CTextBox.exec();
+	CTextBox.exec(this);
 }
 
 void CTestMenu::testCCTime()
@@ -1734,7 +1734,7 @@ void CTestMenu::testCCTime()
 	timer.setFormat(format);
 	//timer.enableRepaint();
 	
-	timer.exec();
+	timer.exec(this);
 }
 
 // CProgressBar
@@ -1835,7 +1835,7 @@ void CTestMenu::testCButtons()
 	buttons.setButtonMode(CCButtons::BUTTON_COLOREDLINE);
 	
 	//
-	buttons.exec();
+	buttons.exec(this);
 	
 	hide();
 }
@@ -1869,7 +1869,7 @@ void CTestMenu::testCHButtons()
 	buttons.setButtons(HeadButtons, HEAD_BUTTONS_COUNT, true);
 	buttons.setButtonMode(CCButtons::BUTTON_FRAME);
 	
-	buttons.exec();
+	buttons.exec(this);
 	
 	hide();
 }
@@ -1880,7 +1880,7 @@ void CTestMenu::testCSpinner()
 	
 	CCSpinner * testSpinner = new CCSpinner(10, 10, 20, 20);
 	
-	testSpinner->exec();
+	testSpinner->exec(this);
 	
 	delete testSpinner;
 	testSpinner = NULL;
@@ -1892,7 +1892,7 @@ void CTestMenu::testCCSlider()
 	
 	CCSlider * testSlider = new CCSlider(100, 100, 250, 20);
 	
-	testSlider->exec();
+	testSlider->exec(this);
 	
 	hide(); //
 	
@@ -1915,7 +1915,7 @@ void CTestMenu::testCCItemInfo()
 	itemInfo->setHint("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
 	itemInfo->setIcon(DATADIR "/icons/nopreview.jpg");
 	
-	itemInfo->exec();
+	itemInfo->exec(this);
 	
 	delete itemInfo;
 	itemInfo = NULL;
@@ -1936,7 +1936,7 @@ void CTestMenu::testCCItemInfo2()
 	itemInfo->setHint("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
 	itemInfo->setIcon(DATADIR "/icons/nopreview.jpg");
 	
-	itemInfo->exec();
+	itemInfo->exec(this);
 	
 	delete itemInfo;
 	itemInfo = NULL;
@@ -1957,7 +1957,7 @@ void CTestMenu::testCCItemInfo3()
 	itemInfo->setHint("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
 	itemInfo->setIcon(DATADIR "/icons/nopreview.jpg");
 	
-	itemInfo->exec();
+	itemInfo->exec(this);
 	
 	delete itemInfo;
 	itemInfo = NULL;
@@ -1977,7 +1977,7 @@ void CTestMenu::testCCItemInfo4()
 	itemInfo->setHint("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
 	itemInfo->setIcon(DATADIR "/icons/nopreview.jpg");
 	
-	itemInfo->exec();
+	itemInfo->exec(this);
 	
 	delete itemInfo;
 	itemInfo = NULL;
@@ -1997,7 +1997,7 @@ void CTestMenu::testCCItemInfo5()
 	itemInfo->setHint("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
 	itemInfo->setIcon(DATADIR "/icons/nopreview.jpg");
 	
-	itemInfo->exec();
+	itemInfo->exec(this);
 	
 	delete itemInfo;
 	itemInfo = NULL;
@@ -2027,7 +2027,7 @@ void CTestMenu::testCHeaders()
 	//headers->setCorner(RADIUS_SMALL, CORNER_TOP_LEFT|CORNER_BOTTOM_RIGHT);
 	//headers->setGradient(LIGHT2DARK);
 		
-	headers->exec(10);
+	headers->exec(this);
 
 	if(headers)
 	{
@@ -2055,7 +2055,7 @@ void CTestMenu::testCFooters()
 	footers->setButtonMode(CCButtons::BUTTON_COLOREDLINE);
 
 	// loop
-	footers->exec(10);
+	footers->exec(this);
 
 	if(footers)
 	{
@@ -2081,7 +2081,7 @@ void CTestMenu::testCCWindow(void)
 	testPanel.setBorderMode(CComponent::BORDER_ALL);
 	testPanel.paintMainFrame(true);
 	
-	testPanel.exec();
+	testPanel.exec(this);
 }
 
 void CTestMenu::testCWindow()
@@ -2102,7 +2102,7 @@ void CTestMenu::testCWindow()
 	window->setCorner(RADIUS_MID, CORNER_ALL);
 	window->setGradient(DARK2LIGHT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_COLOR2TRANSPARENT);
 
-	window->exec();
+	window->exec(this);
 	
 	if (window)
 	{
@@ -2131,7 +2131,7 @@ void CTestMenu::testCWindowShadow()
 	window->setBorderMode(CComponent::BORDER_ALL);
 	window->paintMainFrame(true);
 
-	window->exec();
+	window->exec(this);
 	
 	if (window)
 	{
@@ -2163,7 +2163,7 @@ void CTestMenu::testCWindowCustomColor()
 	window->paintMainFrame(true);
 
 	// loop
-	window->exec();
+	window->exec(this);
 	
 	if (window)
 	{
@@ -2196,7 +2196,7 @@ void CTestMenu::testCTextBox()
 	textBoxWidget->addKey(CRCInput::RC_info, this, "tinfo");
 	
 	// loop
-	textBoxWidget->exec();
+	textBoxWidget->exec(this);
 	
 	if (textBoxWidget)
 	{
@@ -2298,7 +2298,7 @@ void CTestMenu::testCListFrame()
 	CAudioPlayer::getInstance()->init();
 	
 	// loop
-	listFrame->exec();		
+	listFrame->exec(this);		
 	
 	//
 	for(int i = 0; i < 6; i++)
@@ -2376,7 +2376,7 @@ void CTestMenu::testClistBox()
 //	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
 	
-	rightWidget->exec();
+	rightWidget->exec(this);
 	
 	if (rightWidget)
 	{
@@ -2449,7 +2449,7 @@ void CTestMenu::testClistBox2()
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
 	
-	rightWidget->exec();		
+	rightWidget->exec(this);		
 	
 	if (rightWidget)
 	{
@@ -2519,7 +2519,7 @@ void CTestMenu::testClistBox3()
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
 	
-	rightWidget->exec();		
+	rightWidget->exec(this);		
 	
 	if (rightWidget)
 	{
@@ -2569,7 +2569,7 @@ void CTestMenu::testClistBox4()
 	// widgettype
 	rightWidget->setWidgetType(ClistBox::TYPE_FRAME);
 	rightWidget->setItemsPerPage(6,2);
-	rightWidget->paintMainFrame(false);
+	rightWidget->paintMainFrame(true);
 	
 	// head
 	rightWidget->enablePaintHead();
@@ -2589,7 +2589,7 @@ void CTestMenu::testClistBox4()
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
 	
-	rightWidget->exec();		
+	rightWidget->exec(this);		
 	
 	if (rightWidget)
 	{
@@ -2661,7 +2661,7 @@ void CTestMenu::testClistBox6()
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
 	
-	rightWidget->exec();		
+	rightWidget->exec(this);		
 	
 	if (rightWidget)
 	{
@@ -2734,7 +2734,7 @@ void CTestMenu::testClistBox7()
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
 	
-	rightWidget->exec();		
+	rightWidget->exec(this);		
 	
 	if (rightWidget)
 	{
@@ -2807,7 +2807,7 @@ void CTestMenu::testClistBox8()
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
 	
-	rightWidget->exec();		
+	rightWidget->exec(this);		
 	
 	if (rightWidget)
 	{
@@ -2884,7 +2884,7 @@ void CTestMenu::testClistBox9()
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
 	
-	rightWidget->exec();
+	rightWidget->exec(this);
 	
 	if (rightWidget)
 	{
@@ -3051,7 +3051,7 @@ void CTestMenu::testCFrameBox()
 	frameBoxWidget->addFrame(playFrame);
 
 	// 
-	frameBoxWidget->exec();
+	frameBoxWidget->exec(this);
 	
 	if (frameBoxWidget)
 	{
@@ -4229,7 +4229,7 @@ void CTestMenu::testCEventlist()
 		}
 	}
 
-	leftWidget->exec();
+	leftWidget->exec(this);
 }
 
 //// skin
@@ -4327,7 +4327,7 @@ void CTestMenu::testWeather()
 	}
 	
 	//
-	win->exec();
+	win->exec(this);
 	
 	delete win;
 	win = NULL;
@@ -4371,7 +4371,7 @@ void CTestMenu::testlibNGPNG()
 		// blit2fb
 		CFrameBuffer::getInstance()->blitBox2FB(image, w, h, 50, 50);
 		
-		win->exec();
+		win->exec(this);
 		
 		if (win)
 		{

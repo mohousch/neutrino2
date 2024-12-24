@@ -676,7 +676,7 @@ function rssurlmenu(url)
 	
 	m:setSelected(selected)
 
-	m:exec()
+	m:exec(self)
 
 	selected = m:getSelected()
 
@@ -734,7 +734,7 @@ function start()
 	
 	sm:setSelected(s_selected)
 	
-	sm:exec()
+	sm:exec(self)
 
 	s_selected = sm:getSelected()
 

@@ -180,7 +180,7 @@ void CYTBrowser::showMenu()
 	moviesMenu->addKey(CRCInput::RC_blue, this, CRCInput::getSpecialKeyName(CRCInput::RC_blue));
 	moviesMenu->addKey(CRCInput::RC_record, this, CRCInput::getSpecialKeyName(CRCInput::RC_record));
 
-	moviesMenu->exec();
+	moviesMenu->exec(this);
 	
 	delete moviesMenu;
 	moviesMenu = NULL;
@@ -403,7 +403,7 @@ int CYTBrowser::showCategoriesMenu(void)
 	// autoplay
 	mainMenu.addItem(new CMenuOptionChooser(_("Auto Play"), &m_settings.ytautoplay, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 
-	mainMenu.exec();
+	mainMenu.exec(this);
 	
 	if(rstr != m_settings.ytregion) 
 	{

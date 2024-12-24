@@ -1,4 +1,6 @@
 //
+//	Neutrino-GUI  -   DBoxII-Project
+//
 //	$Id: widget.cpp 21122024 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys

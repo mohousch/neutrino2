@@ -1,4 +1,6 @@
 //
+//	Neutrino-GUI  -   DBoxII-Project
+//
 //	$Id: component.h 21122024 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
@@ -21,8 +23,8 @@
 //	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef __gui_widget_helpers_h__
-#define __gui_widget_helpers_h__
+#ifndef __gui_component_h__
+#define __gui_component_h__
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -114,6 +116,7 @@ class CComponent
 			CC_FRAMEBOX,
 			CC_LISTFRAME,
 			CC_TEXTBOX,
+			CC_FRAME,
 			//// not to be added with addCCItem method.
 			CC_SCROLLBAR,
 			CC_PROGRESSBAR,
@@ -163,9 +166,12 @@ class CComponent
 			CMenuTarget *target; 
 		};
 		std::map<neutrino_msg_t, keyAction> keyActionMap;
+		uint64_t timeout;
 		uint32_t sec_timer_id;
 		uint64_t sec_timer_interval;
+		CMenuTarget *jumpTarget;
 		std::string actionKey; // for lua
+		bool selected;
 		bool exit_pressed;
 		neutrino_msg_t      msg;
 		neutrino_msg_data_t data;
@@ -234,9 +240,11 @@ class CComponent
 		////
 		virtual void setParent(CWidget *p){parent = p;};
 		virtual void addKey(neutrino_msg_t key, CMenuTarget *target = NULL, const std::string &action = "");
-		void setSecTimerInterval(uint64_t sec){sec_timer_interval = sec;}; // in sec
+		virtual void setTimeOut(uint64_t to = 0){timeout = to;};
+		virtual void setSecTimerInterval(uint64_t sec){sec_timer_interval = sec;}; // in sec
+		virtual void setActionKey(CMenuTarget *Target, const char *const ActionKey){jumpTarget = Target; actionKey = ActionKey;};
 		////
-		virtual int exec(int timeout = -1); // in sec
+		virtual int exec(CMenuTarget *target = NULL);
 		////
 		virtual std::string getActionKey(void){ return actionKey; }; // lua
 		virtual int getSelected(void){return -1;};
@@ -914,5 +922,5 @@ class CCFooters : public CComponent
 		void clear(){buttons.clear();};
 };
 
-#endif /* __gui_widget_helpers_h__ */
+#endif /* __gui_component_h__ */
 

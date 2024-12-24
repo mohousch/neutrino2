@@ -142,8 +142,6 @@ class CFrameBox : public CComponent
 		int pos;
 
 		std::vector<CFrameItem*> frames;
-
-		virtual void paintFrames();
 		
 		//
 		fb_pixel_t bgcolor;
@@ -158,6 +156,8 @@ class CFrameBox : public CComponent
 		//
 		unsigned int current_page;
 		unsigned int total_pages;
+		
+		virtual void paintFrames();
 
 	public:
 		CFrameBox(const int x = 0, int const y = 0, const int dx = 0, const int dy = 0);

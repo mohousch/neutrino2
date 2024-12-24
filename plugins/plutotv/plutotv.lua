@@ -248,7 +248,7 @@ function cat_menu(_id)
 	
 	cm:setSelected(cm_selected)
 	
-	cm:exec()
+	cm:exec(self)
 	
 	cm_selected = cm:getSelected()
 	
@@ -335,7 +335,7 @@ function season_menu(_id)
 	
 	sm:setSelected(sm_selected)
 	
-	sm:exec()
+	sm:exec(self)
 	
 	sm_selected = sm:getSelected()
 	local actionKey = sm:getActionKey()
@@ -428,7 +428,7 @@ function episode_menu(s)
 	
 	em:setSelected(em_selected)
 	
-	em:exec()
+	em:exec(self)
 	
 	em_selected = em:getSelected()
 	local actionKey = em:getActionKey()
@@ -552,7 +552,7 @@ function categories_menu()
 	
 	m:setSelected(m_selected)
 	
-	m:exec()
+	m:exec(self)
 	
 	m_selected = m:getSelected()
 	local actionKey = m:getActionKey()

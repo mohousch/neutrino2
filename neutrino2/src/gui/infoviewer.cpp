@@ -532,7 +532,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 			
 	g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->RenderString(BoxEndX - BORDER_RIGHT - dateWidth, BoxStartY + (SAT_INFOBOX_HEIGHT - dateHeight)/2 + dateHeight, dateWidth, datestr.c_str(), COL_INFOBAR_TEXT_PLUS_0, 0, true); // UTF-8
 		
-	// botton bar
+	// bottonbar
 	if (g_settings.infobar_buttonbar)
 	{
 		frameBuffer->paintBoxRel(g_settings.infobar_border? buttonBarStartX + 2 : buttonBarStartX, buttonBarStartY, g_settings.infobar_border? BoxWidth - 4 : BoxWidth, g_settings.infobar_border? buttonBarHeight - 2 : buttonBarHeight, COL_INFOBAR_SHADOW_PLUS_1, g_settings.infobar_radius, g_settings.infobar_radius? CORNER_BOTTOM : CORNER_NONE);
@@ -541,7 +541,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 	// botton line
 	if(g_settings.infobar_buttonline)
 	{
-		frameBuffer->paintBoxRel(buttonBarStartX + BORDER_LEFT, buttonBarStartY, BoxWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_INFOBAR_SHADOW_PLUS_1, 0, CORNER_NONE, g_settings.infobar_buttonline_gradient? LIGHT2DARK2LIGHT : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+		frameBuffer->paintBoxRel(buttonBarStartX, buttonBarStartY, BoxWidth, 2, COL_INFOBAR_SHADOW_PLUS_1, 0, CORNER_NONE, g_settings.infobar_buttonline_gradient? LIGHT2DARK2LIGHT : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 	}
 
 	// blue button

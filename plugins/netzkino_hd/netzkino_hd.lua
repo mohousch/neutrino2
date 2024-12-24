@@ -180,7 +180,7 @@ function get_categories_menu()
 
 	m_categories:setSelected(selected_category)
 
-	m_categories:exec()
+	m_categories:exec(self)
 
 	selected_category = m_categories:getSelected()
 		
@@ -336,7 +336,7 @@ function get_movies_menu(_id)
 
 	m_movies:setSelected(selected_movie)
 	
-	m_movies:exec()
+	m_movies:exec(self)
 	
 	selected_movie = m_movies:getSelected()
 	local key = m_movies:getKey()

@@ -336,7 +336,7 @@ function testCFrameBox()
 	frame4:setBorderMode()
 	frameBox:addFrame(frame4)
 
-	frameBox:exec()
+	frameBox:exec(self)
 
 	local actionKey = frameBox:getActionKey()
 	
@@ -404,7 +404,7 @@ function testCFrameBoxRandom()
 	frame10:setBorderMode()
 	frameBox:addFrame(frame10)
 
-	frameBox:exec()
+	frameBox:exec(self)
 
 	local actionKey = frameBox:getActionKey()
 	
@@ -427,8 +427,7 @@ end
 
 -- CWidget
 function testCWidget()
-	local testWidget = neutrino2.CWidget()
-	--testWidget:setMenuPosition(neutrino2.CWidget_MENU_POSITION_LEFT)
+	local testWidget = neutrino2.CWidget(340, 60, 600,600)
 	
 	local listBox = neutrino2.ClistBox(340, 60, 600,600)
 
@@ -442,7 +441,7 @@ function testCWidget()
 	listBox:setWidgetType(neutrino2.ClistBox_TYPE_CLASSIC)
 
 	-- CMessageBox
-	item1 = neutrino2.CMenuForwarder("CMessageBox", true, "", null, "msgBox")
+	item1 = neutrino2.CMenuForwarder("CMessageBox", true, "", self, "msgBox")
 	item1:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item1:setHint("testing CMessageBox")
 

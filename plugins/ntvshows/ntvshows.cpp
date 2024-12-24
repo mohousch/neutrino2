@@ -338,7 +338,7 @@ void CTVShows::showMenu()
 	mlist->addKey(CRCInput::RC_red, this, CRCInput::getSpecialKeyName(CRCInput::RC_red));
 	mlist->addKey(CRCInput::RC_green, this, CRCInput::getSpecialKeyName(CRCInput::RC_green));
 
-	mlist->exec();
+	mlist->exec(this);
 	
 	if (mlist)
 	{
@@ -371,7 +371,7 @@ int CTVShows::showCategoriesMenu()
 	menu->addItem(new CMenuForwarder(__("Popular"), true, NULL, new CTVShows("popular"), "popular"));
 	menu->addItem(new CMenuForwarder(__("Top rated"), true, NULL, new CTVShows("top_rated"), "top_rated"));
 
-	menu->exec();
+	menu->exec(this);
 
 	res = menu->getSelected();
 	

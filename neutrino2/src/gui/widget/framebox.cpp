@@ -579,10 +579,10 @@ void CFrameBox::paint()
 	{
 		// border
 		if (borderMode != CComponent::BORDER_NO)
-			frameBuffer->paintBoxRel(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + 4, itemBox.iHeight + 4, borderColor, radius, corner);
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, borderColor, radius, corner);
 		
 		// mainframe
-		frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, NOGRADIENT);		
+		frameBuffer->paintBoxRel(itemBox.iX + 2, itemBox.iY + 2, itemBox.iWidth - 4, itemBox.iHeight - 4, bgcolor, radius, corner, NOGRADIENT);		
 	}
 	else
 	{
@@ -624,6 +624,7 @@ void CFrameBox::hide()
 {
 	dprintf(DEBUG_INFO, "CFrameBox::hide:\n");
 	
+	// reset pig
 	if (hasItem())
 	{
 		for (int i = 0; i < frames.size(); i++)
@@ -642,7 +643,6 @@ void CFrameBox::hide()
 	}
 	else
 	{
-		// mainframe
 		frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
 	}
 	
