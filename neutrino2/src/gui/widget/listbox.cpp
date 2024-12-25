@@ -419,7 +419,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			if (parent)
 				widget = new CWidget(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50, 450, 400);
 			else
-				widget = new CWidget(390, 135, 500, 450);
+				widget = new CWidget(340, 60, 600,600);
 			widget->name = "optionchooser";
 			widget->enableSaveScreen();
 			
@@ -950,7 +950,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 			if (parent)
 				widget = new CWidget(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50, 500, 450);
 			else
-				widget = new CWidget(390, 135, 500, 450);
+				widget = new CWidget(340, 60, 600,600);
 			widget->name = "optionstringchooser";
 			widget->enableSaveScreen();
 			

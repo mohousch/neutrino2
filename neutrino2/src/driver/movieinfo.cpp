@@ -1,40 +1,30 @@
- /***************************************************************************
-	Neutrino-GUI  -   DBoxII-Project
+//
+//	Neutrino-GUI  -   DBoxII-Project
+//
+//	$Id: movieinfo.cpp 21122024 mohousch Exp $
+//
+//	Homepage: http://dbox.cyberphoria.org/
+//
+//	Author: Günther@tuxbox.berlios.org
+//		based on code of Steffen Hehn 'McClean'
+//
+//	License: GPL
+//
+//	This program is free software; you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation; either version 2 of the License, or
+//	(at your option) any later version.
+//
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program; if not, write to the Free Software
+//	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
- 	Homepage: http://dbox.cyberphoria.org/
-
-	License: GPL
-
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
-	***********************************************************
-
-	Module Name: movieinfo.cpp .
-
-	Description: Implementation of the CMovieInfo class
-	             This class loads, saves and shows the movie Information from the any .xml File on HD
-
-	Date:	  Nov 2005
-
-	Author: Günther@tuxbox.berlios.org
-
-	Revision History:
-	Date			Author		Change Description
-	Nov 2005		Günther	initial start
-
-****************************************************************************/
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -889,15 +879,6 @@ void CMovieInfo::showMovieInfo(MI_MOVIE_INFO &movie_info)
 		print_buffer += "\n";
 	}
 
-	// release date
-	/*
-	if(!movie_info.release_date.empty())
-	{
-		print_buffer += (std::string)_("Year of profuction") + " : " + movie_info.release_date.substr(0,4);
-		print_buffer += "\n";
-	}
-	*/
-
 	// cast
 	if (!movie_info.cast.empty())
 	{
@@ -1448,11 +1429,11 @@ void CMovieInfo::clearMovieInfo(MI_MOVIE_INFO * movie_info)
 	movie_info->dirItNr = 0;			// 
 	movie_info->genreMajor = 0;			//genreMajor;                           
 	movie_info->genreMinor = 0;			//genreMinor;                           
-	movie_info->length = 0;			// (minutes)
+	movie_info->length = 0;				// (minutes)
 	movie_info->quality = 0;			// (3 stars: classics, 2 stars: very good, 1 star: good, 0 stars: OK)
-	movie_info->productionDate = 0;		// (Year)  years since 1900
+	movie_info->productionDate = 0;			// (Year)  years since 1900
 	movie_info->parentalLockAge = 0;		// MI_PARENTAL_LOCKAGE (0,6,12,16,18)
-	movie_info->format = 0;			// MI_VIDEO_FORMAT(16:9, 4:3)
+	movie_info->format = 0;				// MI_VIDEO_FORMAT(16:9, 4:3)
 	movie_info->audio = 0;				// MI_AUDIO (AC3, Deutsch, Englisch)
 
 	movie_info->epgId = 0;

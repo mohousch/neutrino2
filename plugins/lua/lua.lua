@@ -24,7 +24,7 @@ local selected = 0
 -- CMessageBox
 function messageBox()
 	title = "lua: CMessageBox"
-	msg = "neutrino lua:\n testing lua CMessageBox\n"
+	msg = "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA."
 	mBox = neutrino2.CMessageBox(title, msg)
 	mBox:exec()
 end
@@ -41,7 +41,7 @@ end
 
 -- CHintBox
 function hintBox()
-	hint = neutrino2.CHintBox("lua: CHintBox","neutrino lua:\n first test\ntesting CHintBox\ndas ist alles ;-)")
+	hint = neutrino2.CHintBox("lua: CHintBox", "This program is free software;\n")
 	hint:exec(10)
 end
 
@@ -49,7 +49,7 @@ end
 function infoBox()
 	info = neutrino2.CInfoBox()
 	info:setTitle("lua: CInfoBox")
-	info:setText("neutrino lua:\nfirst test\ntesting CHintBox ;-)\n")
+	info:setText("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.")
 	info:exec()
 end
 
