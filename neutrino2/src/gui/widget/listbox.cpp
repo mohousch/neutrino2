@@ -416,7 +416,10 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 		}
 		else
 		{
-			widget = new CWidget(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50, 450, 400);
+			if (parent)
+				widget = new CWidget(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50, 450, 400);
+			else
+				widget = new CWidget(390, 135, 500, 450);
 			widget->name = "optionchooser";
 			widget->enableSaveScreen();
 			
@@ -426,14 +429,14 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			menu->setWidgetMode(ClistBox::MODE_SETUP);
 			menu->paintMainFrame(true);
 			menu->enablePaintHead();
-			menu->setHeadColor(COL_MENUCONTENT_PLUS_0);
-			menu->setHeadGradient(NOGRADIENT);
+			if (parent) menu->setHeadColor(COL_MENUCONTENT_PLUS_0);
+			if (parent) menu->setHeadGradient(NOGRADIENT);
 			menu->setTitle(itemName.c_str());
 			menu->enablePaintFoot();
-			menu->setFootColor(COL_MENUCONTENT_PLUS_0);
-			menu->setFootGradient(NOGRADIENT);
+			if (parent) menu->setFootColor(COL_MENUCONTENT_PLUS_0);
+			if (parent) menu->setFootGradient(NOGRADIENT);
 			menu->setFootButtons(&btn);
-			menu->setBorderMode();
+			if (parent) menu->setBorderMode();
 			
 			//
 			widget->addCCItem(menu);
@@ -559,7 +562,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 					else
 						*optionValue = options[number_of_options - 1].key;
 				} 
-				else // RC_right / RC_ok
+				else // RC_right
 					*optionValue = options[(count + 1) % number_of_options].key;
 				
 				break;
@@ -944,7 +947,10 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		}
 		else
 		{
-			widget = new CWidget(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50, 500, 450);
+			if (parent)
+				widget = new CWidget(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50, 500, 450);
+			else
+				widget = new CWidget(390, 135, 500, 450);
 			widget->name = "optionstringchooser";
 			widget->enableSaveScreen();
 			
@@ -954,14 +960,14 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 			menu->setWidgetMode(ClistBox::MODE_SETUP);
 			menu->paintMainFrame(true);
 			menu->enablePaintHead();
-			menu->setHeadColor(COL_MENUCONTENT_PLUS_0);
-			menu->setHeadGradient(NOGRADIENT);
+			if (parent) menu->setHeadColor(COL_MENUCONTENT_PLUS_0);
+			if (parent) menu->setHeadGradient(NOGRADIENT);
 			menu->setTitle(itemName.c_str());
 			menu->enablePaintFoot();
-			menu->setFootColor(COL_MENUCONTENT_PLUS_0);
-			menu->setFootGradient(NOGRADIENT);
+			if (parent) menu->setFootColor(COL_MENUCONTENT_PLUS_0);
+			if (parent) menu->setFootGradient(NOGRADIENT);
 			menu->setFootButtons(&btn);
-			menu->setBorderMode();
+			if (parent) menu->setBorderMode();
 			
 			//
 			widget->addCCItem(menu);

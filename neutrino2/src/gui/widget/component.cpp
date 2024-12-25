@@ -2319,14 +2319,11 @@ void CCWindow::saveScreen()
 		background = NULL;
 	}
 
-	background = new fb_pixel_t[borderMode? (itemBox.iWidth + 4)*(itemBox.iHeight + 4) : itemBox.iWidth*itemBox.iHeight];
+	background = new fb_pixel_t[borderMode? (itemBox.iWidth)*(itemBox.iHeight) : itemBox.iWidth*itemBox.iHeight];
 		
 	if(background)
 	{
-		if (borderMode)
-			frameBuffer->saveScreen(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + 4, itemBox.iHeight + 4, background);
-		else
-			frameBuffer->saveScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
+		frameBuffer->saveScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
 	}
 }
 
@@ -2336,10 +2333,7 @@ void CCWindow::restoreScreen()
 	
 	if(background) 
 	{
-		if (borderMode)
-			frameBuffer->restoreScreen(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + 4, itemBox.iHeight + 4, background);
-		else
-			frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
+		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
 	}
 }
 
@@ -2349,34 +2343,26 @@ void CCWindow::paintPage(void)
 
 	if (paintframe)
 	{
+		// border
+		if (borderMode)
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, borderColor, radius, corner);
+		
+		// frame
 		if (borderMode == BORDER_NO)
 		{
-			// frame
 			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 		}
 		else if (borderMode == BORDER_ALL)
 		{
-			// border
-			frameBuffer->paintBoxRel(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + 4, itemBox.iHeight + 4, borderColor, radius, corner);
-				
-			// frame
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
+			frameBuffer->paintBoxRel(itemBox.iX + 2, itemBox.iY + 2, itemBox.iWidth - 4, itemBox.iHeight - 4, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 		}
 		else if (borderMode == BORDER_LEFTRIGHT)
 		{
-			// border
-			frameBuffer->paintBoxRel(itemBox.iX - 2, itemBox.iY, itemBox.iWidth + 4, itemBox.iHeight, borderColor, radius, corner);
-				
-			// frame
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
+			frameBuffer->paintBoxRel(itemBox.iX + 2, itemBox.iY, itemBox.iWidth - 4, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 		}
 		else if (borderMode == BORDER_TOPBOTTOM)
 		{
-			// border
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY - 2, itemBox.iWidth, itemBox.iHeight + 4, borderColor, radius, corner);
-				
-			// frame
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + 2, itemBox.iWidth, itemBox.iHeight - 4, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 		}
 	}
 }
@@ -2406,10 +2392,7 @@ void CCWindow::hide()
 		restoreScreen();
 	else
 	{
-		if (borderMode)
-			frameBuffer->paintBackgroundBoxRel(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + 4, itemBox.iHeight + 4);
-		else
-			frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
+		frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
 	}
 		
 	CFrameBuffer::getInstance()->blit();

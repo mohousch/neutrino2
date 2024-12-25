@@ -1593,6 +1593,14 @@ void CMoviePlayerGui::PlayFile(void)
 			exit = true;
 			g_RCInput->postMsg(msg, data);
 		}
+		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
+		{
+			if (IsVisible())
+			{
+				killMovieInfoViewer();
+				hide();
+			}
+		}
 		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == timer_id) )
 		{
 			if (mplist && mplist->isPainted())
@@ -1871,16 +1879,16 @@ void CMoviePlayerGui::show(std::string Title, std::string Info, short Percent, c
 	// paint info box
 	frameBuffer->paintBoxRel(g_settings.infobar_border? cFrameBoxInfo.iX + 2 : cFrameBoxInfo.iX, g_settings.infobar_border? cFrameBoxInfo.iY + 2 : cFrameBoxInfo.iY, g_settings.infobar_border? cFrameBoxInfo.iWidth - 4 : cFrameBoxInfo.iWidth, g_settings.infobar_border? cFrameBoxInfo.iHeight - 4 : cFrameBoxInfo.iHeight, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner, g_settings.infobar_gradient, GRADIENT_VERTICAL, INT_LIGHT, g_settings.infobar_gradient_type); 
 		
-	// botton bar
+	// bottonbar
 	if (g_settings.infobar_buttonbar)
 	{
 		frameBuffer->paintBoxRel(g_settings.infobar_border? cFrameBoxButton.iX + 2: cFrameBoxButton.iX, cFrameBoxButton.iY, g_settings.infobar_border? cFrameBoxButton.iWidth - 4 : cFrameBoxButton.iWidth, g_settings.infobar_border? cFrameBoxButton.iHeight - 2 : cFrameBoxButton.iHeight, COL_INFOBAR_SHADOW_PLUS_1, g_settings.infobar_radius, g_settings.infobar_radius? CORNER_BOTTOM : CORNER_NONE);
 	}
 	
-	// button line
+	// buttonbar line
 	if(g_settings.infobar_buttonline)
 	{
-		CCHline hline(cFrameBoxButton.iX + BORDER_LEFT, cFrameBoxButton.iY, cFrameBoxButton.iWidth - BORDER_LEFT - BORDER_RIGHT, cFrameBoxButton.iHeight);
+		CCHline hline(cFrameBoxButton.iX, cFrameBoxButton.iY, cFrameBoxButton.iWidth, cFrameBoxButton.iHeight);
 		
 		hline.setColor(COL_INFOBAR_SHADOW_PLUS_1);
 		hline.setGradient(3);
