@@ -28,11 +28,12 @@ install_DATA += \
 	hint_keys.png \
 	hint_audioplayer.png \
 	hint_picview.png \
-	hint_extended.png \
+	hint_misc.png \
 	hint_hdd.png
 
 # osd settings
 install_DATA += \
+	hint_skin.png \
 	hint_themes.png \
 	hint_menucolors.png \
 	hint_infobarcolors.png \

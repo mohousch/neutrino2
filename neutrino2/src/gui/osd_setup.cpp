@@ -135,10 +135,10 @@ int COSDSettings::showMenu(void)
 		widget->addCCItem(osdSettings);
 	
 		// skin manager
-		osdSettings->addItem( new CMenuForwarder(_("Skin select"), true, NULL, new CSkinManager(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_THEMES));
+		osdSettings->addItem( new CMenuForwarder(_("Skin select"), true, NULL, new CSkinManager(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SKIN));
 			
 		// skin themes
-		osdSettings->addItem(new CMenuForwarder(_("Skin Style"), true, NULL, new CSkinSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
+		osdSettings->addItem(new CMenuForwarder(_("Skin Style"), true, NULL, new CSkinSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_THEMES));
 
 		// menu colors
 		osdSettings->addItem( new CMenuForwarder(_("Menu"), true, NULL, new COSDMenuColorSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_MENUCOLORS));
@@ -167,11 +167,11 @@ int COSDSettings::showMenu(void)
 		// personalize
 		if (g_settings.preferred_skin == "standard")
 		{
-			osdSettings->addItem(new CMenuForwarder(_("Personalisation"), true, NULL, new CPersonalisation(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
+			osdSettings->addItem(new CMenuForwarder(_("Personalisation"), true, NULL, new CPersonalisation(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSD));
 		}
 		
 		// diverses
-		osdSettings->addItem(new CMenuForwarder(_("Misc settings"), true, NULL, new COSDDiverses(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
+		osdSettings->addItem(new CMenuForwarder(_("Misc settings"), true, NULL, new COSDDiverses(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSD));
 
 		//
 		osdSettings->integratePlugins(CPlugins::I_TYPE_OSD);

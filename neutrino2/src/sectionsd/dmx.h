@@ -39,7 +39,6 @@ typedef unsigned char version_number_t;
 class DMX
 {
 	private:
-
 		int fd;
 		cDemux * dmx;
 		int dmx_num;

@@ -211,6 +211,7 @@
 
 // hints
 // mainmenu
+#define NEUTRINO_ICON_MENUITEM_TVRADIO_SWITCH			"hint_tvradio_switch"
 #define NEUTRINO_ICON_MENUITEM_TV				"hint_tvmode"
 #define NEUTRINO_ICON_MENUITEM_RADIO			 	"hint_radiomode"
 #define NEUTRINO_ICON_MENUITEM_SCART			 	"hint_avinputmode"
@@ -221,6 +222,7 @@
 #define NEUTRINO_ICON_MENUITEM_TIMERLIST		 	"hint_timers"
 #define NEUTRINO_ICON_MENUITEM_POWERMENU		 	"hint_shutdown"
 #define NEUTRINO_ICON_MENUITEM_BOXINFO				"hint_dboxinfo"
+#define NEUTRINO_ICON_MENUITEM_OSD			 	"hint_osd"
 
 // settings
 #define NEUTRINO_ICON_MENUITEM_VIDEOSETTINGS		 	"hint_video"
@@ -229,15 +231,21 @@
 #define NEUTRINO_ICON_MENUITEM_NETWORKSETTINGS			"hint_network"
 #define NEUTRINO_ICON_MENUITEM_RECORDINGSETTINGS	 	"hint_recording"
 #define NEUTRINO_ICON_MENUITEM_MOVIEPLAYERSETTINGS	 	"hint_movieplayer"
-#define NEUTRINO_ICON_MENUITEM_OSDSETTINGS		 	"hint_osd"
 #define NEUTRINO_ICON_MENUITEM_LCDSETTINGS		 	"hint_lcd"
 #define NEUTRINO_ICON_MENUITEM_REMOTECONTROLSETTINGS	 	"hint_keys"
 #define NEUTRINO_ICON_MENUITEM_AUDIOPLAYERSETTINGS		"hint_audioplayer"
 #define NEUTRINO_ICON_MENUITEM_PICTUREVIEWERSETTINGS		"hint_picview"
-#define NEUTRINO_ICON_MENUITEM_MISCSETTINGS			"hint_extended"
+#define NEUTRINO_ICON_MENUITEM_MISCSETTINGS			"hint_misc"
 #define NEUTRINO_ICON_MENUITEM_HDDSETTINGS			"hint_hdd"
+//#define NEUTRINO_ICON_MENUITEM_GENERALSETTINGS			"hint_settings"
+#define NEUTRINO_ICON_MENUITEM_CHANNELLISTSETTINGS	 	"hint_bedit"
+#define NEUTRINO_ICON_MENUITEM_EPGSETTINGS		 	"hint_streaminfo"
+#define NEUTRINO_ICON_MENUITEM_FILEBROWSERSETTINGS	 	"hint_fileplay"
+#define NEUTRINO_ICON_MENUITEM_STARTCHANNELSETTINGS	 	"hint_personalize"
+#define NEUTRINO_ICON_MENUITEM_PSISETTINGS		 	"hint_psi"
 
 // osd
+#define NEUTRINO_ICON_MENUITEM_SKIN				"hint_skin"
 #define NEUTRINO_ICON_MENUITEM_THEMES				"hint_themes"
 #define NEUTRINO_ICON_MENUITEM_MENUCOLORS			"hint_menucolors"
 #define NEUTRINO_ICON_MENUITEM_INFOBARCOLORS			"hint_infobarcolors"
@@ -247,20 +255,10 @@
 #define NEUTRINO_ICON_MENUITEM_SCREENSETUP			"hint_lcd4linux"
 #define NEUTRINO_ICON_MENUITEM_ALPHASETUP			"hint_alphasetup"
 
-// misc
-#define NEUTRINO_ICON_MENUITEM_GENERALSETTINGS			"hint_settings"
-#define NEUTRINO_ICON_MENUITEM_CHANNELLISTSETTINGS	 	"hint_bedit"
-#define NEUTRINO_ICON_MENUITEM_EPGSETTINGS		 	"hint_streaminfo"
-#define NEUTRINO_ICON_MENUITEM_FILEBROWSERSETTINGS	 	"hint_fileplay"
-#define NEUTRINO_ICON_MENUITEM_STARTCHANNELSETTINGS	 	"hint_personalize"
-#define NEUTRINO_ICON_MENUITEM_PSISETTINGS		 	"hint_psi"
-
 // service
 #define NEUTRINO_ICON_MENUITEM_SCANSETTINGS			"hint_scan"
-#define NEUTRINO_ICON_MENUITEM_RELOADCHANNELS			"hint_reload"
 #define NEUTRINO_ICON_MENUITEM_BOUQUETSEDITOR			"hint_bedit"
 #define NEUTRINO_ICON_MENUITEM_CICAM				"hint_ci"
-#define NEUTRINO_ICON_MENUITEM_IMAGEINFO			"hint_imageinfo"
 #define NEUTRINO_ICON_MENUITEM_SOFTUPDATE			"hint_swupdate"
 
 // powermenu
@@ -270,12 +268,14 @@
 #define NEUTRINO_ICON_MENUITEM_REBOOT			 	"hint_reboot"
 #define NEUTRINO_ICON_MENUITEM_SHUTDOWN		 		"hint_shutdown"
 
+// information
+#define NEUTRINO_ICON_MENUITEM_IMAGEINFO			"hint_imageinfo"
+
 // usermenu
 #define NEUTRINO_ICON_MENUITEM_PLUGIN				"hint_plugins"
 #define NEUTRINO_ICON_MENUITEM_NOPREVIEW			"hint_default"
 #define NEUTRINO_ICON_MENUITEM_VTXT				"hint_xmltv"
-
-#define NEUTRINO_ICON_MENUITEM_TVRADIO_SWITCH			"hint_tvradio_switch"
+#define NEUTRINO_ICON_MENUITEM_RELOADCHANNELS			"hint_reload"
 
 // misc
 #define DUMMY_ICON						"dummy"

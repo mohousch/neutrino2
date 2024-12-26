@@ -176,13 +176,13 @@ void CNeutrinoApp::mainMenu(void)
 		
 		// osd
 		item = new CMenuForwarder(_("OSD"), true, NULL, new COSDSettings(), NULL);
-		item->setHintIcon(NEUTRINO_ICON_MENUITEM_OSDSETTINGS);
+		item->setHintIcon(NEUTRINO_ICON_MENUITEM_OSD);
 		item->setHint(_("Here you can setup OSD"));
 		item->setIconName(NEUTRINO_ICON_BUTTON_3);
 		item->setDirectKey(CRCInput::RC_3);
 		if (nMenu) nMenu->addItem(item);
 		
-		//box info
+		// information
 		item = new CMenuForwarder(_("Information"), true, NULL, new CInfoMenu(), NULL);
 		item->setHintIcon(NEUTRINO_ICON_MENUITEM_BOXINFO);
 		item->setHint(_("Here you can get device Info"));

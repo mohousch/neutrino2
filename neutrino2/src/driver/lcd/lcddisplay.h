@@ -45,7 +45,7 @@
 #endif
 
 // argb
-#define LCD_PIXEL_OFF				0xFF000000  // bg
+#define LCD_PIXEL_OFF				0xFF000000  		// bg
 #define LCD_PIXEL_ON				0xFFFFFFFF
 #define LCD_PIXEL_INV				0x1000000
 
@@ -196,7 +196,6 @@ class CLCDDisplay
 		int raw_buffer_size;
 		int raw_bpp, raw_bypp;
 		gPalette raw_clut;
-		////
 		int xres, yres;
 		void setSize(int w, int h, int b);
 		////

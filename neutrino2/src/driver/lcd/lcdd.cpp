@@ -498,10 +498,11 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	if (!has_lcd)
 		return false;
-		
+	
+	// init raw_buffer	
 	display->initBuffer();
 		
-	//
+	// init fonts
 	fontRenderer = new LcdFontRenderClass(display);
 	
 	const char * style_name = fontRenderer->AddFont(fontfile);

@@ -180,11 +180,11 @@ void CMainSettingsMenu::showMenu(void)
 		
 		// cec setup 
 #if !defined (__sh__)
-		mainSettings->addItem(new CMenuForwarder(_("CEC settings"), true, NULL, new CCECSetup(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_GENERALSETTINGS));
+		mainSettings->addItem(new CMenuForwarder(_("CEC settings"), true, NULL, new CCECSetup(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SETTINGS));
 #endif
 	
 		//miscSettings general
-		mainSettings->addItem(new CMenuForwarder(_("Misc settings"), true, NULL, new CGeneralSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_GENERALSETTINGS));
+		mainSettings->addItem(new CMenuForwarder(_("Misc settings"), true, NULL, new CGeneralSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_MISCSETTINGS));
 	
 		//
 		mainSettings->integratePlugins(CPlugins::I_TYPE_SETTING);

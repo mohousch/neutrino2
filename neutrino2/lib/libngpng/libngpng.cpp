@@ -71,10 +71,12 @@ extern int fh_svg_id (const char *);
 void add_format(int (*picsize) (const char *, int *, int *, int, int), int (*picread) (const char *, unsigned char **, int *, int *), int (*id) (const char *))
 {
 	CFormathandler * fhn = NULL;
+	
 	fhn = (CFormathandler *) malloc(sizeof(CFormathandler));
 	fhn->get_size = picsize;
 	fhn->get_pic = picread;
 	fhn->id_pic = id;
+	
 	fhn->next = fh_root;
 	fh_root = fhn;
 }
@@ -105,7 +107,7 @@ void init_handlers(void)
 void deinit_handlers(void)
 {
 	printf("deinit_handlers\n");
-	
+
 	CFormathandler *fh = fh_root;
 	
 	while (fh) 
@@ -124,7 +126,7 @@ CFormathandler * fh_getsize(const char *name, int *x, int *y, int width_wanted, 
 	{
 		if (fh->id_pic (name))
 		{
-			if (fh->get_size (name, x, y, width_wanted, height_wanted) == FH_ERROR_OK)
+			if (fh->get_size(name, x, y, width_wanted, height_wanted) == FH_ERROR_OK)
 				return (fh);
 		}
 	}

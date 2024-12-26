@@ -49,10 +49,6 @@
 #include <zlib.h>
 #include <math.h>
 
-extern "C" {
-#include <jpeglib.h>
-}
-
 #ifndef __DARWIN_LITTLE_ENDIAN
 #include <byteswap.h>
 #else
@@ -100,8 +96,8 @@ CLCDDisplay::CLCDDisplay()
 	
 	//
 	xres = DEFAULT_LCD_XRES;
-	yres = DEFAULT_LCD_YRES;	
-	//
+	yres = DEFAULT_LCD_YRES;
+	////	
 	raw_buffer_size = 0;
 	raw_bypp = sizeof(lcd_pixel_t);
 	raw_bpp = 8*sizeof(lcd_pixel_t);
@@ -120,8 +116,8 @@ CLCDDisplay::CLCDDisplay()
 #ifdef ENABLE_LCD
 	surface_data = NULL;
 	surface_stride = 0;
-	surface_bpp = 0;
-	surface_bypp = 0;
+	surface_bpp = 16;
+	surface_bypp = 2;
 	surface_buffer_size = 0;
 	////
 	real_offset = 0;
@@ -215,7 +211,7 @@ bool CLCDDisplay::init(const char *fbdevice)
 #ifdef ENABLE_LCD
 	int _bpp = 16; 
 	
-	//open device
+	//open device | get xres / yres /lcd_type
 #ifdef USE_OPENGL
 	fd = open("/dev/null", O_RDWR);
 #else
@@ -324,8 +320,8 @@ bool CLCDDisplay::init(const char *fbdevice)
 	setMode(xres, yres, tftbpp);
 	enableManualBlit();
 #else
-	xres = DEFAULT_LCD_XRES;
-	yres = DEFAULT_LCD_YRES;
+	xres = DEFAULT_LCD_XRES; //
+	yres = DEFAULT_LCD_YRES; //
 	tftbpp = 32;
 	tftstride = xres* sizeof(uint32_t);
 	tft_buffer_size = xres*yres*sizeof(uint32_t);
