@@ -794,7 +794,7 @@ void cAudio::run()
 		av_packet_unref(&avpkt);
 	}
 	
-	// ao_close(adevice); /* can take long :-(*/
+	// ao_close(adevice); // can take long :-(
 	av_free(obuf);
 	swr_free(&swr);
 out3:
