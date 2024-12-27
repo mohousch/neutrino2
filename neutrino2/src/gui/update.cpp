@@ -369,7 +369,6 @@ bool CFlashUpdate::checkVersion4Update()
 		UpdatesFilter.addFilter("img");
 		UpdatesFilter.addFilter("txt");
 		UpdatesFilter.addFilter("ipk");
-		////
 		UpdatesFilter.addFilter("bin");
 		UpdatesFilter.addFilter("bz2");
 		UpdatesFilter.addFilter("nfi");
@@ -597,8 +596,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 			return CMenuTarget::RETURN_REPAINT;
 		}
 	}
-	else
-	if(fileType == 'T') // display file contents
+	else if(fileType == 'T') // display file contents
 	{
 		FILE* fd = fopen(filename.c_str(), "r");
 		if(fd) 
@@ -614,7 +612,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 			free(buffer);
 		}
 	}
-	else if (fileType == 'A')
+	else if (fileType == 'A') // ipk package
 	{
 		// 100% status
 //		progressWindow->showGlobalStatus(100);
@@ -636,7 +634,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 //		if(updateMode == UPDATEMODE_MANUAL)
 //			remove(pkgManager.getBlankPkgName(filename).c_str());
 	}
-	else if (fileType == 'Z')
+	else if (fileType == 'Z') // kernel /rootfs
 	{
 		if ( allow_flash)
 		{
