@@ -151,9 +151,9 @@ void CInfoViewer::Init()
 	snrscale = NULL;
 	timescale = NULL;	//5? see in code
 	
-	sigscale = new CCProgressBar(BoxStartX + satNameWidth + 20 + g_SignalFont->getRenderWidth("FREQ:1000000MHZ") + 10, BoxStartY + (SAT_INFOBOX_HEIGHT - SIGSCALE_BAR_HEIGHT)/2, BAR_WIDTH, SIGSCALE_BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR, false);
+	sigscale = new CCProgressBar(BoxStartX + satNameWidth + 20 + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth("FREQ:1000000MHZ") + 10, BoxStartY + (SAT_INFOBOX_HEIGHT - SIGSCALE_BAR_HEIGHT)/2, BAR_WIDTH, SIGSCALE_BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR, false);
 	
-	snrscale = new CCProgressBar(BoxStartX + satNameWidth + 20 + g_SignalFont->getRenderWidth("FREQ:1000000MHZ") + 10 + g_SignalFont->getRenderWidth("SIG:100%") + 10, BoxStartY + (SAT_INFOBOX_HEIGHT - SIGSCALE_BAR_HEIGHT)/2, BAR_WIDTH, SNRSCALE_BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR, false);
+	snrscale = new CCProgressBar(BoxStartX + satNameWidth + 20 + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth("FREQ:1000000MHZ") + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth("SIG:100%") + 10, BoxStartY + (SAT_INFOBOX_HEIGHT - SIGSCALE_BAR_HEIGHT)/2, BAR_WIDTH, SNRSCALE_BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR, false);
 	
 	timescale = new CCProgressBar(timescale_posx, timescale_posy, BoxWidth - BORDER_LEFT - BORDER_RIGHT, TIMESCALE_BAR_HEIGHT);	//5? see in code
 	
@@ -270,7 +270,7 @@ void CInfoViewer::initFrames(void)
 	ChanNameY = BoxStartY + SAT_INFOBOX_HEIGHT + TIMESCALE_BAR_HEIGHT + 5 + ChanNameHeight;
 	
 	// satname
-	satNameHeight = g_SignalFont->getHeight();
+	satNameHeight = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
 	satNameWidth = 0;
 	
 	//
@@ -456,26 +456,26 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 
 		if(sit != satellitePositions.end()) 
 		{
-			satNameWidth = g_SignalFont->getRenderWidth(sit->second.name);
+			satNameWidth = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(sit->second.name);
 			
 			// 
 			if (satNameWidth > ((BoxEndX - BoxStartX) / 3) ) 
 				satNameWidth = (BoxEndX - BoxStartX) / 3;
 			
 			//	
-			g_SignalFont->RenderString(BoxStartX + BORDER_LEFT, BoxStartY + (SAT_INFOBOX_HEIGHT - satNameHeight)/2 + satNameHeight, satNameWidth, sit->second.name, COL_INFOBAR_TEXT_PLUS_0);
+			g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(BoxStartX + BORDER_LEFT, BoxStartY + (SAT_INFOBOX_HEIGHT - satNameHeight)/2 + satNameHeight, satNameWidth, sit->second.name, COL_INFOBAR_TEXT_PLUS_0);
 		}
 	}
 
 	//
 	if (IS_WEBTV(channel_id))
 	{
-		satNameWidth = g_SignalFont->getRenderWidth("WebTV");
+		satNameWidth = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth("WebTV");
 			
 		if (satNameWidth > ((BoxEndX - BoxStartX) / 3) ) 
 			satNameWidth = (BoxEndX - BoxStartX) / 3;
 				
-		g_SignalFont->RenderString( BoxStartX + BORDER_LEFT, BoxStartY + (SAT_INFOBOX_HEIGHT - satNameHeight)/2 + satNameHeight, satNameWidth, "WebTV", COL_INFOBAR_TEXT_PLUS_0 );
+		g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString( BoxStartX + BORDER_LEFT, BoxStartY + (SAT_INFOBOX_HEIGHT - satNameHeight)/2 + satNameHeight, satNameWidth, "WebTV", COL_INFOBAR_TEXT_PLUS_0 );
 	}
 
 	// channel number/logo/name
@@ -1504,11 +1504,11 @@ void CInfoViewer::showSNR()
 				else
 					sprintf (freq, "FREQ:%d.%d MHz", si.tsfrequency / 1000, si.tsfrequency % 1000);
 
-				freqWidth = g_SignalFont->getRenderWidth(freq);
+				freqWidth = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(freq);
 				// see above comment about lenght of sat name
 				freqStartX = BoxStartX + satNameWidth + 20;
 
-				g_SignalFont->RenderString(freqStartX, BoxStartY + (SAT_INFOBOX_HEIGHT - satNameHeight)/2 + satNameHeight, freqWidth, freq, COL_INFOBAR_TEXT_PLUS_0);
+				g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(freqStartX, BoxStartY + (SAT_INFOBOX_HEIGHT - satNameHeight)/2 + satNameHeight, freqWidth, freq, COL_INFOBAR_TEXT_PLUS_0);
 			
 				if(CZapit::getInstance()->getCurrentFrontend() != NULL)
 				{
@@ -1531,29 +1531,29 @@ void CInfoViewer::showSNR()
 				// therefore > sig- and snrscale always painting
 				//if (sigscale->getPercent() != sig) 
 				{
-					posx = BoxStartX + satNameWidth + 20 + g_SignalFont->getRenderWidth(freq) + 10;
+					posx = BoxStartX + satNameWidth + 20 + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(freq) + 10;
 
 					//sigscale->reset();
 					//sigscale->paint( sig);
 
 					sprintf (percent, "SIG:%d%%S", sig);
 					//posx = posx + barwidth + 2;
-					sw = g_SignalFont->getRenderWidth(percent);
+					sw = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(percent);
 
-					g_SignalFont->RenderString(posx, posy, sw, percent, COL_INFOBAR_TEXT_PLUS_0);
+					g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(posx, posy, sw, percent, COL_INFOBAR_TEXT_PLUS_0);
 				}
 
 				// snr
 				// see comment at sig
 				//if (snrscale->getPercent() != snr) 
 				{
-					int snr_posx = BoxStartX + satNameWidth + 20 + g_SignalFont->getRenderWidth(freq) + 10 + g_SignalFont->getRenderWidth(percent) + 10;
+					int snr_posx = BoxStartX + satNameWidth + 20 + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(freq) + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(percent) + 10;
 
 					sprintf (percent, "SNR:%d%%Q", snr);
 					//snr_posx = snr_posx + barwidth + 2;
-					sw = g_SignalFont->getRenderWidth(percent);
+					sw = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(percent);
 					
-					g_SignalFont->RenderString (snr_posx, posy, sw, percent, COL_INFOBAR_TEXT_PLUS_0);
+					g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString (snr_posx, posy, sw, percent, COL_INFOBAR_TEXT_PLUS_0);
 				}
 			}
 		}

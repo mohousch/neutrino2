@@ -66,7 +66,6 @@
 NEUTRINO_CPP  SNeutrinoSettings		g_settings;
 NEUTRINO_CPP  FBFontRenderClass		*g_fontRenderer;
 NEUTRINO_CPP  CFont 			*g_Font[FONT_TYPE_COUNT];
-NEUTRINO_CPP  CFont 			*g_SignalFont;
 NEUTRINO_CPP  CRCInput			*g_RCInput;
 NEUTRINO_CPP  CEpgData			*g_EpgData;
 NEUTRINO_CPP  CInfoViewer		*g_InfoViewer;

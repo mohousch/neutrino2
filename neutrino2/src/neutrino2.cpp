@@ -264,6 +264,47 @@ static void initGlobals(void)
 	g_Locale        = new CLocaleManager;
 }
 
+// fonts
+#define FONT_STYLE_REGULAR 0
+#define FONT_STYLE_BOLD    1
+#define FONT_STYLE_ITALIC  2
+
+typedef struct font_sizes
+{
+        const char* const 	name;
+        const unsigned int      defaultsize;
+        const unsigned int      style;
+        const unsigned int      size_offset;
+} font_sizes_struct;
+
+// neutrino_font
+font_sizes_struct neutrino_font[FONT_TYPE_COUNT] =
+{
+        {_("Menu Text")               	,  20, FONT_STYLE_BOLD   , 0},
+        {_("Menu Title")         	,  30, FONT_STYLE_BOLD   , 0},
+        {_("Menu Info")          	,  16, FONT_STYLE_REGULAR, 0},
+        {_("EPG Title")          	,  25, FONT_STYLE_REGULAR, 1},
+        {_("EPG Info1")          	,  17, FONT_STYLE_ITALIC , 2},
+        {_("EPG Info2")          	,  17, FONT_STYLE_REGULAR, 2},
+        {_("EPG Date")           	,  15, FONT_STYLE_REGULAR, 2},
+        {_("Eventlist Title")    	,  30, FONT_STYLE_REGULAR, 0},
+        {_("Eventlist large")		,  20, FONT_STYLE_BOLD   , 1},
+        {_("Eventlist small")		,  14, FONT_STYLE_REGULAR, 1},
+        {_("Eventlist date / time") 	,  16, FONT_STYLE_REGULAR, 1},
+        {_("Pluginlist large") 		,  20, FONT_STYLE_BOLD   , 1},
+        {_("Pluginlist small") 		,  16, FONT_STYLE_REGULAR, 1},
+        {_("Channellist")        	,  20, FONT_STYLE_BOLD   , 1},
+        {_("Channellist Description")  	,  20, FONT_STYLE_REGULAR, 1},
+        {_("Channellist Number") 	,  14, FONT_STYLE_BOLD   , 2},
+        {_("Channel direct selection")  ,  40, FONT_STYLE_BOLD   , 0},
+        {_("Infobar Number")     	,  30, FONT_STYLE_BOLD   , 0},
+        {_("Infobar Channel name")   	,  30, FONT_STYLE_BOLD   , 0},
+        {_("Infobar info")       	,  20, FONT_STYLE_REGULAR, 1},
+        {_("Infobar small")      	,  14, FONT_STYLE_REGULAR, 1},
+        {_("Filebrowser item")   	,  16, FONT_STYLE_BOLD   , 1},
+        {_("Menu Title large")         	,  40, FONT_STYLE_REGULAR, 0},
+};
+
 ////
 CNeutrinoApp::CNeutrinoApp()
 : configfile('\t')
@@ -318,51 +359,7 @@ CNeutrinoApp * CNeutrinoApp::getInstance()
 	return neutrinoApp;
 }
 
-// fonts
-#define FONT_STYLE_REGULAR 0
-#define FONT_STYLE_BOLD    1
-#define FONT_STYLE_ITALIC  2
-
-typedef struct font_sizes
-{
-        const char* const 	name;
-        const unsigned int      defaultsize;
-        const unsigned int      style;
-        const unsigned int      size_offset;
-} font_sizes_struct;
-
-// neutrino_font
-font_sizes_struct neutrino_font[FONT_TYPE_COUNT] =
-{
-        {_("Menu Text")               	,  20, FONT_STYLE_BOLD   , 0},
-        {_("Menu Title")         	,  30, FONT_STYLE_BOLD   , 0},
-        {_("Menu Info")          	,  16, FONT_STYLE_REGULAR, 0},
-        {_("EPG Title")          	,  25, FONT_STYLE_REGULAR, 1},
-        {_("EPG Info1")          	,  17, FONT_STYLE_ITALIC , 2},
-        {_("EPG Info2")          	,  17, FONT_STYLE_REGULAR, 2},
-        {_("EPG Date")           	,  15, FONT_STYLE_REGULAR, 2},
-        {_("Eventlist Title")    	,  30, FONT_STYLE_REGULAR, 0},
-        {_("Eventlist large")		,  20, FONT_STYLE_BOLD   , 1},
-        {_("Eventlist small")		,  14, FONT_STYLE_REGULAR, 1},
-        {_("Eventlist date / time") 	,  16, FONT_STYLE_REGULAR, 1},
-        {_("Pluginlist large") 		,  20, FONT_STYLE_BOLD   , 1},
-        {_("Pluginlist small") 		,  16, FONT_STYLE_REGULAR, 1},
-        {_("Channellist")        	,  20, FONT_STYLE_BOLD   , 1},
-        {_("Channellist Description")  	,  20, FONT_STYLE_REGULAR, 1},
-        {_("Channellist Number") 	,  14, FONT_STYLE_BOLD   , 2},
-        {_("Channel direct selection")  ,  40, FONT_STYLE_BOLD   , 0},
-        {_("Infobar Number")     	,  30, FONT_STYLE_BOLD   , 0},
-        {_("Infobar Channel name")   	,  30, FONT_STYLE_BOLD   , 0},
-        {_("Infobar info")       	,  20, FONT_STYLE_REGULAR, 1},
-        {_("Infobar small")      	,  14, FONT_STYLE_REGULAR, 1},
-        {_("Filebrowser item")   	,  16, FONT_STYLE_BOLD   , 1},
-        {_("Menu Title large")         	,  40, FONT_STYLE_REGULAR, 0},
-};
-
-// signal font
-const font_sizes_struct signal_font = {_("Signal small"),  14, FONT_STYLE_REGULAR, 1};
-
-// loadSetup, load the application-settings
+// loadSetup
 int CNeutrinoApp::loadSetup(const char * fname)
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::loadSetup\n");
@@ -1896,9 +1893,6 @@ void CNeutrinoApp::setupFonts(const char* font_file)
 
 		g_Font[i] = g_fontRenderer->getFont(font.name, style[neutrino_font[i].style], neutrino_font[i].defaultsize + neutrino_font[i].size_offset * font.size_offset);
 	}
-
-	// set signal font
-	g_SignalFont = g_fontRenderer->getFont(font.name, style[signal_font.style], signal_font.defaultsize + signal_font.size_offset * font.size_offset);
 }
 
 //// start autoRecord (permanent/temp timeshift)
