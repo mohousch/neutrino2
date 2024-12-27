@@ -1603,7 +1603,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 				
 			menuItem->setIconName(filename.c_str());
 		}
-		if (item_hint) menuItem->setHint(item_hint);
+		if (item_hint) menuItem->setHint(_(item_hint));
 		if (item_lines) menuItem->set2lines(item_lines);
 		if (item_option) menuItem->setOption(item_option);
 		if (item_option_info) menuItem->setOptionInfo(item_option_info);

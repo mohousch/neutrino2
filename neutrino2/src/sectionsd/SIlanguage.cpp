@@ -35,8 +35,6 @@
 // Revision 1.1  2006/03/26 20:13:49  Arzka
 // Added support for selecting EPG language
 //
-//
-//
 
 #include "SIlanguage.hpp"
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-12-23 20:51+0100\n"
+"POT-Creation-Date: 2024-12-27 18:55+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -2177,9 +2177,6 @@ msgstr "اغلاق"
 
 msgid "Shutdown time in min. (000=off)"
 msgstr "وقت الإغلاق بالدقيقة. (000=إيقاف)"
-
-msgid "Signal small"
-msgstr "الإشارة صغيرة"
 
 msgid "Size"
 msgstr "مقاس"

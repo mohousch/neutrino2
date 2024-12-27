@@ -157,8 +157,8 @@ class SIlinkage
 			return 0;
 		}
 
-		unsigned char linkageType; // Linkage Descriptor
-		std::string name; // Text aus dem Linkage Descriptor
+		unsigned char linkageType; 		// Linkage Descriptor
+		std::string name; 			// Text aus dem Linkage Descriptor
 		t_transport_stream_id transportStreamId; // Linkage Descriptor
 		t_original_network_id originalNetworkId; // Linkage Descriptor
 		t_service_id          serviceId;         // Linkage Descriptor
@@ -231,10 +231,10 @@ class SIcomponent
 			return 0;
 		}
 		
-		std::string component; // Text aus dem Component Descriptor
-		unsigned char componentType; // Component Descriptor
-		unsigned char componentTag; // Component Descriptor
-		unsigned char streamContent; // Component Descriptor
+		std::string component; 		// Text aus dem Component Descriptor
+		unsigned char componentType; 	// Component Descriptor
+		unsigned char componentTag; 	// Component Descriptor
+		unsigned char streamContent; 	// Component Descriptor
 };
 
 struct printSIcomponent : public std::unary_function<class SIcomponent, void>
@@ -392,16 +392,16 @@ class SIevent
 		std::string getText() const;
 		void setText(const std::string &lang, const std::string &text);
 
-		std::string itemDescription; // Aus dem Extended Descriptor
-		std::string item; // Aus dem Extended Descriptor
+		std::string itemDescription; 		// Aus dem Extended Descriptor
+		std::string item; 			// Aus dem Extended Descriptor
 
 		// Aus dem Extended Descriptor
 		std::string getExtendedText() const;
 		void appendExtendedText(const std::string &lang, const std::string &text);
 		void setExtendedText(const std::string &lang, const std::string &text);
 
-		std::string contentClassification; // Aus dem Content Descriptor, als String, da mehrere vorkommen koennen
-		std::string userClassification; // Aus dem Content Descriptor, als String, da mehrere vorkommen koennen
+		std::string contentClassification; 	// Aus dem Content Descriptor, als String, da mehrere vorkommen koennen
+		std::string userClassification; 	// Aus dem Content Descriptor, als String, da mehrere vorkommen koennen
 		
 		//
 		t_channel_id get_channel_id(void) const 
@@ -431,11 +431,11 @@ class SIevent
 		{
 			return uniqueKey()<e.uniqueKey();
 		}
-		int saveXML(FILE *file) const { // saves the event
+		int saveXML(FILE *file) const { 			// saves the event
 			return saveXML0(file) || saveXML2(file);
 		}
 		int saveXML(FILE *file, const char *serviceName) const; // saves the event
-		void dump(void) const; // dumps the event to stdout
+		void dump(void) const; 					// dumps the event to stdout
 		char getFSK() const;
 		
 	protected:

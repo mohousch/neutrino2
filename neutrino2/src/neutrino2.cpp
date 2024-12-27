@@ -222,12 +222,12 @@ const char *usermenu_button_def[SNeutrinoSettings::BUTTON_MAX] =
 };
 
 ////
-extern cDemux *videoDemux;
-extern cDemux *audioDemux;
+extern cDemux *videoDemux;				// defined in zapit.cpp
+extern cDemux *audioDemux;				// defined in zapit.cpp
 //
-extern char rec_filename[1024];
+extern char rec_filename[1024];				// defined in vcrcontrol.cpp
 //
-extern satellite_map_t satellitePositions;		// defined in getServices.cpp
+extern satellite_map_t satellitePositions;		// defined in zapit.cpp
 extern tallchans allchans;				// defined in zapit.cpp
 // tuxtxt
 extern int  tuxtxt_stop();

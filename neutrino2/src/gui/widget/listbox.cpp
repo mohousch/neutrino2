@@ -62,7 +62,7 @@ CMenuItem::CMenuItem()
 	itemName = "";
 	option = "";
 	optionInfo = "";
-	itemHint = "";
+	itemHint = " ";
 	icon1 = "";
 	icon2 = "";
 
@@ -1765,7 +1765,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 					if(hint_width > dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width)
 						hint_width = dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width;
 					
-					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + height/2, hint_width, _(itemHint.c_str()), (selected || !active)? color : optionFontColor, 0, true);
+					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + height/2, hint_width, itemHint.c_str(), (selected || !active)? color : optionFontColor, 0, true);
 				}
 			}
 			else
@@ -2855,7 +2855,7 @@ void ClistBox::paintItemInfo(int pos)
 				infoIcon.paint();
 
 				// Hint
-				label.setText(_(item->itemHint.c_str()));
+				label.setText(item->itemHint.c_str());
 				label.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
 				label.setColor(COL_MENUFOOT_TEXT_PLUS_0);
 				label.paint();
@@ -2864,7 +2864,7 @@ void ClistBox::paintItemInfo(int pos)
 			//// label InfoBox2: FIXME
 			if (widgetMode == MODE_MENU && itemInfoBox2.iWidth != 0)
 			{
-				label.setText(_(item->itemHint.c_str()));
+				label.setText(item->itemHint.c_str());
 				label.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
 				label.setColor(COL_MENUFOOT_TEXT_PLUS_0);
 				label.paint();

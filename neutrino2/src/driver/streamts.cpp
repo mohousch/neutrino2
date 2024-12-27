@@ -1,28 +1,28 @@
-/*
-        Neutrino-GUI  -   DBoxII-Project
-
-        Copyright (C) 2011-2014 CoolStream International Ltd
-
-	based on code which is
-	Copyright (C) 2002 Andreas Oberritter <obi@tuxbox.org>
-	Copyright (C) 2001 TripleDES
-	Copyright (C) 2000, 2001 Marcus Metzler <marcus@convergence.de>
-
-        License: GPLv2
-
-        This program is free software; you can redistribute it and/or modify
-        it under the terms of the GNU General Public License as published by
-        the Free Software Foundation;
-
-        This program is distributed in the hope that it will be useful,
-        but WITHOUT ANY WARRANTY; without even the implied warranty of
-        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-        GNU General Public License for more details.
-
-        You should have received a copy of the GNU General Public License
-        along with this program; if not, write to the Free Software
-        Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-*/
+//
+//      Neutrino-GUI  -   DBoxII-Project
+//
+//      Copyright (C) 2011-2012 CoolStream International Ltd
+//
+//	based on code which is
+//	Copyright (C) 2002 Andreas Oberritter <obi@tuxbox.org>
+//	Copyright (C) 2001 TripleDES
+//	Copyright (C) 2000, 2001 Marcus Metzler <marcus@convergence.de>
+//
+//      License: GPLv2
+//
+//      This program is free software; you can redistribute it and/or modify
+//      it under the terms of the GNU General Public License as published by
+//      the Free Software Foundation;
+//
+//      This program is distributed in the hope that it will be useful,
+//      but WITHOUT ANY WARRANTY; without even the implied warranty of
+//      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//      GNU General Public License for more details.
+//
+//      You should have received a copy of the GNU General Public License
+//      along with this program; if not, write to the Free Software
+//      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #include <fcntl.h>
 #include <stdio.h>

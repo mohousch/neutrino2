@@ -3771,7 +3771,7 @@ void CTestMenu::testCEPGView()
 	CEPGData epgData;
 	event_id_t epgid = 0;
 			
-	if(CSectionsd::getInstance()->getActualEPGServiceKey(CNeutrinoApp::getInstance()->channelList->getActiveChannel_ChannelID() & 0xFFFFFFFFFFFFULL, &epgData))
+	if(CSectionsd::getInstance()->getActualEPGServiceKey(CZapit::getInstance()->getCurrentChannelID() & 0xFFFFFFFFFFFFULL, &epgData))
 		epgid = epgData.eventID;
 
 	if(epgid != 0) 

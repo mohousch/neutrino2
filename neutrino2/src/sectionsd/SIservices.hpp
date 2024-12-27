@@ -136,7 +136,7 @@ class SIservice
 			original_network_id = _original_network_id;
 			transport_stream_id = _transport_stream_id;
 			serviceTyp = 0;
-			is_actual =0;
+			is_actual = 0;
 			memset(&flags, 0, sizeof(flags));
 		}
 		

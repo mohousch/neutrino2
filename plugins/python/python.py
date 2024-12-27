@@ -11,7 +11,7 @@
 # You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-from _neutrino2 import *
+from neutrino2 import *
 
 class messageBox(CMessageBox):
 	title = "python: CMessageBox"
@@ -21,15 +21,16 @@ class messageBox(CMessageBox):
 		self._exec(-1)
 
 class helpBox(CHelpBox):
+	title = "python: CHelpBox"
 	line1 = "python: CHelpBox"
 	line2 = "Huhu"
 	line3 = "alles gut"
 	def __init__(self):
-		CHelpBox.__init__(self)
+		CHelpBox.__init__(self, self.title)
 		self.addLine(self.line1)
 		self.addLine(self.line2)
 		self.addLine(self.line3)
-		self.show("python: CHelpBox")
+		self._exec()
 
 class hintBox(CHintBox):
 	title = "python: CHintBox:"
@@ -180,9 +181,109 @@ class moviePlayer(CFileBrowser):
 			
 		if self.getExitPressed() is not True:
 			self.__init__()
+			
+class listBox():
+	selected = 0
+	listWidget = ClistBox(360, 60, 600, 600)
+
+	def __init__(self):
+		self.showMenu()
+
+	def showMenu(self):
+		self.listWidget.setWidgetType(ClistBox.TYPE_STANDARD)
+		self.listWidget.setWidgetMode(ClistBox.MODE_LISTBOX)
+		self.listWidget.enableShrinkMenu()
+		self.listWidget.enablePaintHead()
+		self.listWidget.setTitle("Python: Test", NEUTRINO_ICON_MAINMENU)
+		self.listWidget.enablePaintDate()
+		self.listWidget.enablePaintFoot()
+
+		# messageBox
+		item1 = CMenuForwarder("CMessageBox")
+		item1.setHintIcon(DATADIR + "/icons/plugin.png")
+		item1.setHint("testing CMessageBox")
+
+		# CHelpBox
+		item2 = CMenuForwarder("CHelpBox")
+		item2.setHintIcon(DATADIR + "/icons/plugin.png")
+		item2.setHint("testing CHelpBox")
+
+		# CHintBox
+		item3 = CMenuForwarder("CHintBox")
+		item3.setHintIcon(DATADIR + "/icons/plugin.png")
+		item3.setHint("testing CHintBox")
+
+		# CInfoBox
+		item4 = CMenuForwarder("CInfoBox")
+		item4.setHintIcon(DATADIR + "/icons/plugin.png")
+		item4.setHint("testing CInfoBox")
+
+		# CStringInput
+		item5 = CMenuForwarder("CStringInput", False)
+		item5.setHintIcon(DATADIR + "/icons/plugin.png")
+		item5.setHint("testing CStringInput")
+
+		# CAudioPlayerGui
+		item6 = CMenuForwarder("CAudioPlayerGui")
+		item6.setHintIcon(DATADIR + "/icons/plugin.png")
+		item6.setHint("testing CAudioPlayerGui")
+
+		# CPictureViewerGui
+		item7 = CMenuForwarder("CPictureViewerGui")
+		item7.setHintIcon(DATADIR + "/icons/plugin.png")
+		item7.setHint("testing CPictureViewerGui")
+
+		# CMoviePlayerGui
+		item8 = CMenuForwarder("CMoviePlayerGui")
+		item8.setHintIcon(DATADIR + "/icons/plugin.png")
+		item8.setHint("testing CMoviePlayerGui")
+
+		self.listWidget.addItem(item1)
+		self.listWidget.addItem(item2)
+		self.listWidget.addItem(item3)
+		self.listWidget.addItem(item4)
+		self.listWidget.addItem(item5)
+		self.listWidget.addItem(item6)
+		self.listWidget.addItem(item7)
+		self.listWidget.addItem(item8)
+
+		self.listWidget.addKey(CRCInput.RC_info)
+
+		self.listWidget._exec()
+
+		self.selected = self.listWidget.getSelected()
+		key = self.listWidget.getKey()
+
+		# first handle keys
+		if key == CRCInput.RC_info:
+			infoBox()
+
+		# handle selected line
+		if self.selected == 0:
+			messageBox()
+		elif self.selected == 1:
+			helpBox()
+		elif self.selected == 2:
+			hintBox()
+		elif self.selected == 3:
+			infoBox()
+		elif self.selected == 4:
+			stringInput()
+		elif self.selected == 5:
+			audioPlayer()
+		elif self.selected == 6:
+			pictureViewer()
+		elif self.selected == 7:
+			moviePlayer()
+
+		# exit pressed
+		if self.listWidget.getExitPressed() is False:
+			self.listWidget.clearItems()
+			self.showMenu()
+
 
 if __name__ == "__main__":
-	moviePlayer()
+	listBox()
 
 
 
