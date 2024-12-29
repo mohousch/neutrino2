@@ -1553,7 +1553,7 @@ void CChannelList::paint(bool customMode)
 			item->setOptionFont(SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER);
 
 			// option font color
-			item->setOptionFontColor(displayNext? COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0 : COL_MENUCONTENT_TEXT_PLUS_0 + 1);
+			item->setOptionFontColor(displayNext? COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0 : COL_MENUCONTENT_TEXT_PLUS_0);
 			
 			if (listBox) listBox->addItem(item);
 		}

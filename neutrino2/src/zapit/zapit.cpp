@@ -2331,95 +2331,15 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 
 	xmlDocPtr parser = NULL;
 	
-	// check for extension
-	bool iptv = false;
-	bool webtv = false;
-	bool playlist = false;
-					
+	// check for extension				
 	std::string extension = getFileExt(filename);
 						
-	if( strcasecmp("tv", extension.c_str()) == 0)
-		iptv = true;
-	else if( strcasecmp("m3u8", extension.c_str()) == 0)
-		playlist = true;
-	else if( strcasecmp("m3u", extension.c_str()) == 0)
-		playlist = true;
-	if( strcasecmp("xml", extension.c_str()) == 0)
-		webtv = true;
-
 	std::string name = std::string(rindex(filename.c_str(), '/') + 1);
 	removeExtension(name);
 
 	CZapitBouquet *newBouquet = addBouquetIfNotExist(name, false, true);
 	
-	if(iptv)
-	{
-		FILE * f = fopen(filename.c_str(), "r");
-
-		std::string title;
-		std::string url;
-		std::string description;
-		
-		if(f != NULL)
-		{
-			while(true)
-			{
-				t_channel_id id = 0;
-				char line[1024] = "";
-				
-				if (!fgets(line, 1024, f))
-					break;
-				
-				size_t len = strlen(line);
-				if (len < 2)
-					// Lines with less than one char aren't meaningful
-					continue;
-				
-				// strip newline
-				line[--len] = 0;
-				
-				// strip carriage return (when found)
-				if (line[len - 1] == '\r')
-					line[len - 1 ] = 0;
-				
-				if (strncmp(line, "#SERVICE 4097:0:1:0:0:0:0:0:0:0:", 32) == 0)
-					url = line + 32;
-				else if (strncmp(line, "#DESCRIPTION", 12) == 0)
-				{
-					int offs = line[12] == ':' ? 14 : 13;
-			
-					title = line + offs;
-
-					description = "stream";
-
-					if(!url.empty())
-					{
-						id = create_channel_id(0, 0, 0, 0, 0, url.c_str());
-					
-						std::pair<std::map<t_channel_id, CZapitChannel>::iterator, bool> ret;
-
-						ret = allchans.insert (std::pair<t_channel_id, CZapitChannel> (id, CZapitChannel(title, id, url, description)));
-
-						CZapitChannel *chan = findChannelByChannelID(id);
-
-						if (chan != NULL) 
-						{
-							chan->setName(title);
-							chan->setDescription(description);
-							
-							//		
-							newBouquet->addService(chan);
-
-							cnt++;
-						}
-					}
-				}
-			}
-			
-			fclose(f);
-		}
-	}
-	else if(webtv)
+	if( strcasecmp("xml", extension.c_str()) == 0)
 	{
 		if (parser != NULL)
 		{
@@ -2519,7 +2439,7 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 		xmlFreeDoc(parser);
 		parser = NULL;
 	}
-	else if(playlist)
+	else if( (strcasecmp("m3u8", extension.c_str()) == 0) || (strcasecmp("m3u", extension.c_str()) == 0) )
 	{
 		std::ifstream infile;
 		char cLine[1024] = ""; // causes stack-buffer-overflow
