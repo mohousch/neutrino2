@@ -108,6 +108,14 @@ const keyval DEBUG_LEVEL_OPTIONS[DEBUG_LEVEL_OPTIONS_COUNT] =
 	{ DEBUG_DEBUG, _("Debug") }
 };
 
+#define CHANNELLIST_NUMBER_OPTION_COUNT	3
+const keyval CHANNELLIST_NUMBER_OPTIONS[CHANNELLIST_NUMBER_OPTION_COUNT]
+{
+	{ 0, _("None") },
+	{ 1, _("List Order") },
+	{ 2, _("Real Channel Number") }
+};
+
 //// general settings
 int CGeneralSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
@@ -641,7 +649,7 @@ void CChannelListSettings::showMenu()
 	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("Event to right"), &g_settings.channellist_alt, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 	
 	// number
-	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("Channel number"), &g_settings.channellist_number, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
+	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("Channel number"), &g_settings.channellist_number, CHANNELLIST_NUMBER_OPTIONS, CHANNELLIST_NUMBER_OPTION_COUNT, true));
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);

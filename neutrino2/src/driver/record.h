@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$Id: vcrcontrol.h 21122024 mohousch Exp $
+//	$Id: record.h 21122024 mohousch Exp $
 //
 //	Homepage: http://dbox.cyberphoria.org/
 //
@@ -24,8 +24,8 @@
 //	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef __vcrcontrol__
-#define __vcrcontrol__
+#ifndef __record__
+#define __record__
 
 #include <string>
 #include <list>
@@ -75,19 +75,19 @@ typedef struct pvr_file_info
 	uint32_t  uTSPacketSize;
 } PVR_FILE_INFO;
 
-class CVCRControl : public OpenThreads::Thread
+class CRecord : public OpenThreads::Thread
 {
 	public:
-		typedef enum CVCRStates 
+		typedef enum CRECORDStates 
 		{
-			CMD_VCR_UNKNOWN =	0,
-			CMD_VCR_RECORD	=	1,
-			CMD_VCR_STOP	=	2
-		} CVCRCommand;
+			CMD_RECORD_UNKNOWN =	0,
+			CMD_RECORD_RECORD	=	1,
+			CMD_RECORD_STOP	=	2
+		} CRECORDCommand;
 	
 		int last_mode;
 		time_t start_time;
-		CVCRStates  deviceState;
+		CRECORDStates deviceState;
 		std::string  Directory;
 		t_channel_id channel_id;
 		CMovieInfo * g_cMovieInfo;
@@ -104,7 +104,7 @@ class CVCRControl : public OpenThreads::Thread
 				
 		virtual void getAPIDs(const t_channel_id channel_id, const unsigned char apids, APIDList & apid_list);
 		
-		bool  SwitchToScart;
+		bool SwitchToScart;
 		unsigned long long record_EPGid;
 		CZapit::responseGetPIDs pids;
 		
@@ -130,11 +130,11 @@ class CVCRControl : public OpenThreads::Thread
 		std::string getMovieInfoString(const t_channel_id channel_id, const event_id_t epgid, const std::string& epgTitle, APIDList apid_list, const time_t epg_time);
 	
 	public:
-		CVCRControl();
-		virtual ~CVCRControl();
-		static CVCRControl * getInstance();
+		CRecord();
+		virtual ~CRecord();
+		static CRecord * getInstance();
 
-		inline CVCRStates getDeviceState(void) const { return deviceState; };
+		inline CRECORDStates getDeviceState(void) const { return deviceState; };
 		bool Record(const CTimerd::EventInfo * const eventinfo);
 		void Stop();
 		

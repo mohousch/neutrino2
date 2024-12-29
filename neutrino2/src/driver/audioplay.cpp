@@ -270,7 +270,7 @@ CAudioPlayer::~CAudioPlayer()
 
 void CAudioPlayer::init()
 {
-	dprintf(DEBUG_NORMAL, "CAudioPlayer::%s\n", __FUNCTION__);
+	dprintf(DEBUG_INFO, "CAudioPlayer::%s\n", __FUNCTION__);
 	
 	state = STOP;	
 	thrPlay = 0;

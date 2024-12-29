@@ -61,7 +61,7 @@
 
 #include <driver/encoding.h>
 #include <driver/rcinput.h>
-#include <driver/vcrcontrol.h>
+#include <driver/record.h>
 #include <driver/shutdown_count.h>
 #include <driver/streamts.h>
 #include <driver/hdmi_cec.h>
@@ -225,7 +225,7 @@ const char *usermenu_button_def[SNeutrinoSettings::BUTTON_MAX] =
 extern cDemux *videoDemux;				// defined in zapit.cpp
 extern cDemux *audioDemux;				// defined in zapit.cpp
 //
-extern char rec_filename[1024];				// defined in vcrcontrol.cpp
+extern char rec_filename[1024];				// defined in record.cpp
 //
 extern satellite_map_t satellitePositions;		// defined in zapit.cpp
 extern tallchans allchans;				// defined in zapit.cpp
@@ -1473,22 +1473,16 @@ void CNeutrinoApp::channelsInit()
 	RADIOchannelList = new CChannelList(_("All Services"));
 
 	TVbouquetList = new CBouquetList(_("Providers"));
-	TVbouquetList->orgChannelList = TVchannelList;
 
 	TVsatList = new CBouquetList(_("Satellites"));
-	TVsatList->orgChannelList = TVchannelList;
 
 	TVfavList = new CBouquetList(_("Favorites"));
-	TVfavList->orgChannelList = TVchannelList;
 
 	RADIObouquetList = new CBouquetList(_("Provider"));
-	RADIObouquetList->orgChannelList = RADIOchannelList;
 
 	RADIOsatList = new CBouquetList(_("Satellites"));
-	RADIOsatList->orgChannelList = RADIOchannelList;
 
 	RADIOfavList = new CBouquetList(_("Favorites"));
-	RADIOfavList->orgChannelList = RADIOchannelList;
 
 	//
 	uint32_t i = 1;
@@ -1538,14 +1532,12 @@ void CNeutrinoApp::channelsInit()
 	tmp = TVallList->addBouquet(_("All Services"));
 	*(tmp->channelList) = *TVchannelList;
 	tmp->channelList->SortAlpha();
-	TVallList->orgChannelList = TVchannelList;
 
 	// radio all list
 	RADIOallList = new CBouquetList(_("All Services"));
 	tmp = RADIOallList->addBouquet(_("All Services"));
 	*(tmp->channelList) = *RADIOchannelList;
 	tmp->channelList->SortAlpha();
-	RADIOallList->orgChannelList = RADIOchannelList;
 
 	// sat
 	int bnum;
@@ -1604,6 +1596,7 @@ void CNeutrinoApp::channelsInit()
 			ZapitChannelList * channels = &(CZapit::getInstance()->Bouquets[i]->tvChannels);
 			ltmp->channelList->setSize(channels->size());
 			
+			int tvi = 1;
 			for(int j = 0; j < (int) channels->size(); j++) 
 			{
 				ltmp->channelList->addChannel((*channels)[j]);
@@ -1924,12 +1917,12 @@ int CNeutrinoApp::startAutoRecord(bool addTimer)
 	
 	dprintf(DEBUG_NORMAL, "startAutoRecord: dir %s\n", timeshiftDir);
 
-	CVCRControl::getInstance()->Directory = timeshiftDir;
+	CRecord::getInstance()->Directory = timeshiftDir;
 
 	autoshift = 1;
 	CNeutrinoApp::getInstance()->recordingstatus = 1;
 
-	if( CVCRControl::getInstance()->Record(&eventinfo) == false ) 
+	if( CRecord::getInstance()->Record(&eventinfo) == false ) 
 	{
 		CNeutrinoApp::getInstance()->recordingstatus = 0;
 		autoshift = 0;
@@ -1954,7 +1947,7 @@ void CNeutrinoApp::stopAutoRecord()
 	
 	if(autoshift && recordingstatus) 
 	{
-		CVCRControl::getInstance()->Stop();
+		CRecord::getInstance()->Stop();
 		autoshift = false;
 		
 		if(CNeutrinoApp::getInstance()->recording_id) 
@@ -2023,12 +2016,12 @@ void CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 		// rec dir
 		strcpy(recDir, (preselectedDir != NULL) ? preselectedDir : g_settings.network_nfs_recordingdir);
 				
-		CVCRControl::getInstance()->Directory = recDir;
+		CRecord::getInstance()->Directory = recDir;
 			
 		dprintf(DEBUG_NORMAL, "CNeutrinoApp::doGuiRecord: start record to dir %s\n", recDir);
 
 		// start to record 
-		if(CVCRControl::getInstance()->Record(&eventinfo) == false )
+		if(CRecord::getInstance()->Record(&eventinfo) == false )
 		{
 			recordingstatus = 0;
 			timeshiftstatus = 0;
@@ -2105,13 +2098,13 @@ void CNeutrinoApp::startNextRecording()
 				}
 			}
 
-			CVCRControl::getInstance()->Directory = lrecDir;
+			CRecord::getInstance()->Directory = lrecDir;
 			dprintf(DEBUG_NORMAL, "CNeutrinoApp::startNextRecording: start to dir %s\n", lrecDir);
 
 			CLCD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, true);
 		}
 			
-		if(doRecord && CVCRControl::getInstance()->Record(nextRecordingInfo))
+		if(doRecord && CRecord::getInstance()->Record(nextRecordingInfo))
 			recordingstatus = 1;
 		else
 			recordingstatus = 0;
@@ -3098,7 +3091,7 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		// stop recording
 		if(recordingstatus) 
 		{
-			CVCRControl::getInstance()->Stop();
+			CRecord::getInstance()->Stop();
 			CTimerd::getInstance()->stopTimerEvent(recording_id);
 		}
 
@@ -3551,9 +3544,9 @@ _repeat:
 		if(((CTimerd::RecordingStopInfo*)data)->eventID == recording_id)
 		{ 
 			
-			if (CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_RECORD)
+			if (CRecord::getInstance()->getDeviceState() == CRecord::CMD_RECORD_RECORD)
 			{
-				CVCRControl::getInstance()->Stop();
+				CRecord::getInstance()->Stop();
 					
 				recordingstatus = 0;
 				autoshift = 0;
@@ -4222,7 +4215,7 @@ void CNeutrinoApp::realRun(void)
 						if (recording_id)
 							CTimerd::getInstance()->stopTimerEvent(recording_id);
 						else
-							CVCRControl::getInstance()->Stop();
+							CRecord::getInstance()->Stop();
 							
 						recordingstatus = 0;
 						timeshiftstatus = 0;
@@ -4582,9 +4575,9 @@ void CNeutrinoApp::realRun(void)
 				if( mode == mode_scart ) 
 				{
 					//wenn VCR Aufnahme dann stoppen
-					if (CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_RECORD)
+					if (CRecord::getInstance()->getDeviceState() == CRecord::CMD_RECORD_RECORD)
 					{
-						CVCRControl::getInstance()->Stop();
+						CRecord::getInstance()->Stop();
 						recordingstatus = 0;
 						startNextRecording();
 					}

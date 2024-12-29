@@ -52,7 +52,7 @@
 #include <driver/encoding.h>
 #include <driver/pictureviewer.h>
 #include <driver/audioplay.h>
-//#include <driver/vcrcontrol.h>
+//#include <driver/record.h>
 
 // system
 #include <system/settings.h>

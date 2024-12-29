@@ -62,13 +62,7 @@ class CWidget : public CMenuTarget
 		uint64_t timeout;
 		uint32_t sec_timer_id;
 		uint64_t sec_timer_interval;
-		//
 		std::string actionKey; // for lua
-		// screen
-		fb_pixel_t * background;
-		bool savescreen;
-		void saveScreen();
-		void restoreScreen();
 		// mainframe		
 		bool paintframe;
 		fb_pixel_t backgroundColor;
@@ -78,6 +72,12 @@ class CWidget : public CMenuTarget
 		int grad_type;
 		int radius;
 		int corner;
+		int borderMode;
+		uint32_t borderColor;
+		fb_pixel_t * background;
+		bool savescreen;
+		void saveScreen();
+		void restoreScreen();
 		//// for future use
 		unsigned int current_page;
 		unsigned int total_pages;
@@ -124,7 +124,8 @@ class CWidget : public CMenuTarget
 		void setGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){gradient = grad; grad_direction = direction; grad_intensity = intensity; grad_type = type;};
 		void setCorner(int ra, int co){radius = ra; corner = co;};
 		void enableSaveScreen();
-		
+		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
+		void setBorderColor(uint32_t col){borderColor = col;};
 		//// events
 		virtual void onOKKeyPressed();
 		virtual void onHomeKeyPressed();

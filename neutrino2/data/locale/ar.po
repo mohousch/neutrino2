@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-12-27 18:55+0100\n"
+"POT-Creation-Date: 2024-12-29 17:54+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1229,6 +1229,10 @@ msgstr "تدرج الخط"
 msgid "List End"
 msgstr "نهاية القائمة"
 
+#, fuzzy
+msgid "List Order"
+msgstr "نهاية القائمة"
+
 msgid "List Start"
 msgstr "قائمة البداية"
 
@@ -1555,6 +1559,9 @@ msgstr "لم يتم العثور على إعدادات النيوترينو، ا
 msgid "Noise"
 msgstr "ضوضاء"
 
+msgid "None"
+msgstr ""
+
 msgid "Normal"
 msgstr "طبيعي"
 
@@ -1768,6 +1775,10 @@ msgstr "اقرأ الصورة كاملة"
 
 msgid "Reading Flash"
 msgstr "قراءة الفلاش"
+
+#, fuzzy
+msgid "Real Channel Number"
+msgstr "ارقام قائمة القنوات"
 
 msgid "Reboot"
 msgstr "إعادة التشغيل"

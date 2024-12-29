@@ -55,7 +55,7 @@
 
 #include <gui/bouquetlist.h>
 #include <daemonc/remotecontrol.h>
-#include <driver/vcrcontrol.h>
+#include <driver/record.h>
 
 //
 #include <zapit/bouquets.h>
@@ -169,8 +169,8 @@ void CChannelList::setSize(int newsize)
 
 void CChannelList::addChannel(CZapitChannel * channel, int num)
 {
-//	if (num != 0)
-//		channel->setNumber(num);
+	if (num != 0)
+		channel->setNumber(num);
 		
 	chanlist.push_back(channel);
 }
@@ -789,7 +789,7 @@ bool CChannelList::showInfo(int pos, int epgpos, bool fromNumZap)
 		return false;
 	
 	// channel infobar
-	g_InfoViewer->showTitle(chanlist[pos]->getNumber(), chanlist[pos]->name, chanlist[pos]->getSatellitePosition(), chanlist[pos]->channel_id, fromNumZap, epgpos); // UTF-8
+	g_InfoViewer->showTitle(chanlist[pos]->getNumber(), chanlist[pos]->name, chanlist[pos]->getSatellitePosition(), chanlist[pos]->channel_id, fromNumZap, epgpos);
 	
 	return true;
 }
@@ -970,7 +970,7 @@ int CChannelList::numericZap(int key)
 		// current transponder bouquet
 		if(!autoshift && CNeutrinoApp::getInstance()->recordingstatus && !IS_WEBTV(CZapit::getInstance()->getRecordChannelID())) 
 		{
-			CChannelList * orgList = bouquetList->orgChannelList;
+			CChannelList * orgList = CNeutrinoApp::getInstance()->channelList;
 			CChannelList * channelList = new CChannelList(_("Current transponder"), false, true);
 			
 			t_channel_id recid = CZapit::getInstance()->getRecordChannelID() >> 16;
@@ -1033,7 +1033,7 @@ int CChannelList::numericZap(int key)
 	// pip key
 	if(key == g_settings.key_pip )
 	{
-		CChannelList * orgList = bouquetList->orgChannelList;
+		CChannelList * orgList = CNeutrinoApp::getInstance()->channelList;
 		CChannelList * channelList = new CChannelList(_("Current transponder"), false, true);
 			
 		t_channel_id pipid = CZapit::getInstance()->getCurrentChannelID() >> 16;
@@ -1339,7 +1339,7 @@ void CChannelList::quickZap(int key, bool cycle)
 	dprintf(DEBUG_NORMAL, "CChannelList::quickZap: quick zap selected = %d getActiveBouquetNumber %d\n", selected, bouquetList->getActiveBouquetNumber());
 
 //	if(cycle)
-//		bouquetList->orgChannelList->zapTo(bouquetList->Bouquets[bouquetList->getActiveBouquetNumber()]->channelList->getKey(selected) - 1);
+//		CNeutrinoApp::getInstance()->channelList->zapTo(bouquetList->Bouquets[bouquetList->getActiveBouquetNumber()]->channelList->getKey(selected) - 1);
 //	else
         	zapTo(selected);
 
@@ -1462,9 +1462,6 @@ void CChannelList::paint(bool customMode)
 	{
 		for(unsigned int i = 0; i < chanlist.size(); i++)
 		{
-			////
-			chanlist[i]->setNumber(i + 1);
-			
 			//
 			p_event = NULL;
 			jetzt = time(NULL);
@@ -1525,7 +1522,10 @@ void CChannelList::paint(bool customMode)
 			}
 
 			// channel number
-			if (g_settings.channellist_number) item->setNumber(i + 1);
+			if (g_settings.channellist_number > 0)
+			{ 
+				item->setNumber( (g_settings.channellist_number == 1)? i + 1 : chanlist[i]->getNumber());
+			}
 			
 			// timescale
 			if (g_settings.channellist_timescale && !displayNext) item->setPercent(runningPercent);

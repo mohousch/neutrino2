@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-12-27 18:55+0100\n"
+"POT-Creation-Date: 2024-12-29 17:54+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1212,6 +1212,10 @@ msgstr "Линия Градиент"
 msgid "List End"
 msgstr "Конец списка"
 
+#, fuzzy
+msgid "List Order"
+msgstr "Конец списка"
+
 msgid "List Start"
 msgstr "Список Начало"
 
@@ -1542,6 +1546,9 @@ msgstr "Настройки neutrino не найдены, используютс�
 msgid "Noise"
 msgstr "Шум"
 
+msgid "None"
+msgstr ""
+
 msgid "Normal"
 msgstr "Нормальный"
 
@@ -1753,6 +1760,10 @@ msgstr "Прочитать изображение целиком"
 
 msgid "Reading Flash"
 msgstr "Чтение Флэша»"
+
+#, fuzzy
+msgid "Real Channel Number"
+msgstr "Номер каналов"
 
 msgid "Reboot"
 msgstr "Перезагрузить"

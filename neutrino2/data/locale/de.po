@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-12-27 18:55+0100\n"
+"POT-Creation-Date: 2024-12-29 17:54+0100\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1229,6 +1229,10 @@ msgstr "Linie Farbverlauf"
 msgid "List End"
 msgstr "Ende der Liste"
 
+#, fuzzy
+msgid "List Order"
+msgstr "Ende der Liste"
+
 msgid "List Start"
 msgstr "Listenstart"
 
@@ -1559,6 +1563,9 @@ msgstr "Keine Einstellugen gefunden standard Werte werden benutzt."
 msgid "Noise"
 msgstr "Lärm"
 
+msgid "None"
+msgstr ""
+
 msgid "Normal"
 msgstr "Normal"
 
@@ -1772,6 +1779,10 @@ msgstr "Ganzes Image lesen"
 
 msgid "Reading Flash"
 msgstr "Flash Speicher lesen"
+
+#, fuzzy
+msgid "Real Channel Number"
+msgstr "Kanallistennummer"
 
 msgid "Reboot"
 msgstr "Neustart"

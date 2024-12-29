@@ -54,7 +54,7 @@
 #include <driver/radiotext.h>
 #include <driver/encoding.h>
 #include <driver/rcinput.h>
-#include <driver/vcrcontrol.h>
+#include <driver/record.h>
 #include <driver/shutdown_count.h>
 #include <driver/audioplay.h>
 #include <driver/lcd/lcdd.h>

@@ -32,7 +32,7 @@
 #include <global.h>
 #include <neutrino2.h>
 #include <gui/infoviewer.h>
-#include <driver/vcrcontrol.h>
+#include <driver/record.h>
 
 #include <driver/encoding.h>
 #include <system/debug.h>

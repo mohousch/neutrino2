@@ -30,7 +30,7 @@ libneutrino2_driver_a_SOURCES = \
 	encoding.cpp \
 	rcinput.cpp \
 	genpsi.cpp \
-	vcrcontrol.cpp \
+	record.cpp \
 	pictureviewer.cpp \
 	file.cpp \
 	shutdown_count.cpp \

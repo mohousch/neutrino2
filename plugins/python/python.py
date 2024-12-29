@@ -190,52 +190,53 @@ class listBox():
 		self.showMenu()
 
 	def showMenu(self):
-		self.listWidget.setWidgetType(ClistBox.TYPE_STANDARD)
+		self.listWidget.setWidgetType(ClistBox.TYPE_CLASSIC)
 		self.listWidget.setWidgetMode(ClistBox.MODE_LISTBOX)
 		self.listWidget.enableShrinkMenu()
 		self.listWidget.enablePaintHead()
-		self.listWidget.setTitle("Python: Test", NEUTRINO_ICON_MAINMENU)
+		self.listWidget.setTitle("Python: ClistBox", NEUTRINO_ICON_MAINMENU)
 		self.listWidget.enablePaintDate()
 		self.listWidget.enablePaintFoot()
+		self.listWidget.enablePaintItemInfo()
 
 		# messageBox
 		item1 = CMenuForwarder("CMessageBox")
-		item1.setHintIcon(DATADIR + "/icons/plugin.png")
+		item1.setHintIcon(DATADIR + "/hints/hint_plugins.png")
 		item1.setHint("testing CMessageBox")
 
 		# CHelpBox
 		item2 = CMenuForwarder("CHelpBox")
-		item2.setHintIcon(DATADIR + "/icons/plugin.png")
+		item2.setHintIcon(DATADIR + "/hints/hint_plugins.png")
 		item2.setHint("testing CHelpBox")
 
 		# CHintBox
 		item3 = CMenuForwarder("CHintBox")
-		item3.setHintIcon(DATADIR + "/icons/plugin.png")
+		item3.setHintIcon(DATADIR + "/hints/hint_plugins.png")
 		item3.setHint("testing CHintBox")
 
 		# CInfoBox
 		item4 = CMenuForwarder("CInfoBox")
-		item4.setHintIcon(DATADIR + "/icons/plugin.png")
+		item4.setHintIcon(DATADIR + "/hints/hint_plugins.png")
 		item4.setHint("testing CInfoBox")
 
 		# CStringInput
 		item5 = CMenuForwarder("CStringInput", False)
-		item5.setHintIcon(DATADIR + "/icons/plugin.png")
+		item5.setHintIcon(DATADIR + "/hints/hint_plugins.png")
 		item5.setHint("testing CStringInput")
 
 		# CAudioPlayerGui
 		item6 = CMenuForwarder("CAudioPlayerGui")
-		item6.setHintIcon(DATADIR + "/icons/plugin.png")
+		item6.setHintIcon(DATADIR + "/hints/hint_plugins.png")
 		item6.setHint("testing CAudioPlayerGui")
 
 		# CPictureViewerGui
 		item7 = CMenuForwarder("CPictureViewerGui")
-		item7.setHintIcon(DATADIR + "/icons/plugin.png")
+		item7.setHintIcon(DATADIR + "/hints/hint_plugins.png")
 		item7.setHint("testing CPictureViewerGui")
 
 		# CMoviePlayerGui
 		item8 = CMenuForwarder("CMoviePlayerGui")
-		item8.setHintIcon(DATADIR + "/icons/plugin.png")
+		item8.setHintIcon(DATADIR + "/hints/hint_plugins.png")
 		item8.setHint("testing CMoviePlayerGui")
 
 		self.listWidget.addItem(item1)
@@ -284,21 +285,4 @@ class listBox():
 
 if __name__ == "__main__":
 	listBox()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

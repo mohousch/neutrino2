@@ -56,7 +56,7 @@
 #include <driver/encoding.h>
 #include <driver/pictureviewer.h>
 #include <driver/audioplay.h>
-#include <driver/vcrcontrol.h>
+#include <driver/record.h>
 #include <driver/movieinfo.h>
 
 // system
@@ -188,7 +188,7 @@
 %include <src/driver/encoding.h>
 %include <src/driver/pictureviewer.h>
 %include <src/driver/audioplay.h>
-%include <src/driver/vcrcontrol.h>
+%include <src/driver/record.h>
 %include <src/driver/movieinfo.h>
 
 

@@ -59,7 +59,7 @@
 #include <driver/gdi/color.h>
 
 #include <driver/rcinput.h>
-#include <driver/vcrcontrol.h>
+#include <driver/record.h>
 #include <driver/file.h>
 
 #include <daemonc/remotecontrol.h>

@@ -53,7 +53,7 @@
 #include <zapit/zapit.h>
 #include <zapit/pat.h>
 #include <driver/streamts.h>
-#include <driver/vcrcontrol.h>
+#include <driver/record.h>
 #include <driver/genpsi.h>
 #include <system/set_threadname.h>
 #include <gui/movieplayer.h>

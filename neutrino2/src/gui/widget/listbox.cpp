@@ -2143,11 +2143,11 @@ void ClistBox::initFrames()
 	
 	// sanity check
 	if(itemBox.iHeight > ((int)frameBuffer->getScreenHeight(true)))
-		itemBox.iHeight = frameBuffer->getScreenHeight(true) - 4; // 4 pixels for border
+		itemBox.iHeight = frameBuffer->getScreenHeight(true);
 
 	// sanity check
 	if(itemBox.iWidth > (int)frameBuffer->getScreenWidth(true))
-		itemBox.iWidth = frameBuffer->getScreenWidth(true) - 4; // 4 pixels for border
+		itemBox.iWidth = frameBuffer->getScreenWidth(true);
 
 	// widgettype forwarded to item 
 	for (unsigned int count = 0; count < items.size(); count++) 
@@ -2284,8 +2284,8 @@ void ClistBox::paint()
 	// calculate items_width / items_height
 	if(widgetType == TYPE_FRAME)
 	{
-		items_height = itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight - 20;
-		items_width = itemBox.iWidth;
+		items_height = itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight - 20 - (borderMode? 4 : 0);
+		items_width = itemBox.iWidth - (borderMode? 4 : 0);
 	}
 	else
 	{
@@ -2308,13 +2308,13 @@ void ClistBox::paint()
 	// paint mainFrame
 	if (paintframe)
 	{
-		if (paint_Head)
+		if (paint_Head && widgetType != TYPE_FRAME)
 		{
 			radius |= g_settings.Head_radius;
 			corner |= g_settings.Head_corner;
 		}
 		
-		if (paint_Foot)
+		if (paint_Foot && widgetType != TYPE_FRAME)
 		{
 			radius |= g_settings.Foot_radius;
 			corner |= g_settings.Foot_corner;
@@ -2391,7 +2391,7 @@ void ClistBox::paintItems()
 
 		// items background
 		if (paintframe)
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, items_width, items_height + cFrameFootInfoHeight + 20, bgcolor, radius, corner, gradient);
+			frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + hheight, items_width, items_height + cFrameFootInfoHeight + 20, bgcolor, radius, corner, gradient);
 		else
 		{
 			restoreScreen();
@@ -2537,11 +2537,11 @@ void ClistBox::paintHead()
 		{
 			// box
 			if (paintframe)
-				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, hheight, COL_MENUCONTENT_PLUS_0);
+				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), hheight, COL_MENUCONTENT_PLUS_0);
 
 			// line
 			if (head_line)
-				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight - 2, itemBox.iWidth, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + hheight - 2 + (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 			// icon
 			int i_w = 0;
@@ -2712,11 +2712,11 @@ void ClistBox::paintFoot()
 		{
 			// box
 			if (paintframe)
-				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - fheight, itemBox.iWidth, fheight, COL_MENUCONTENT_PLUS_0);
+				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + itemBox.iHeight - fheight + (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), fheight, COL_MENUCONTENT_PLUS_0);
 
 			// line
 			if (foot_line)
-				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - fheight, itemBox.iWidth, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + itemBox.iHeight - fheight - (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 			// buttons
 			int buttonWidth = 0;

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-12-27 18:55+0100\n"
+"POT-Creation-Date: 2024-12-29 17:54+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1208,6 +1208,9 @@ msgstr ""
 msgid "List End"
 msgstr ""
 
+msgid "List Order"
+msgstr ""
+
 msgid "List Start"
 msgstr ""
 
@@ -1528,6 +1531,9 @@ msgstr ""
 msgid "Noise"
 msgstr ""
 
+msgid "None"
+msgstr ""
+
 msgid "Normal"
 msgstr ""
 
@@ -1738,6 +1744,9 @@ msgid "Read whole image"
 msgstr ""
 
 msgid "Reading Flash"
+msgstr ""
+
+msgid "Real Channel Number"
 msgstr ""
 
 msgid "Reboot"

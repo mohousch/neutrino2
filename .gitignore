@@ -3252,3 +3252,5 @@
 /neutrino2/src/gui/widget/.deps/component.Po
 /neutrino2/src/gui/widget/component.o
 /neutrino2/data/skins/elgato/images/Makefile
+/neutrino2/src/driver/.deps/record.Po
+/neutrino2/src/driver/record.o
