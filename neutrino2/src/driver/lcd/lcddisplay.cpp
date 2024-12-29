@@ -692,7 +692,7 @@ int CLCDDisplay::setLCDContrast(int contrast)
 
 int CLCDDisplay::setLCDBrightness(int brightness)
 {
-	dprintf(DEBUG_NORMAL, "CLCDDisplay::setLCDBrightness %d\n", brightness);
+	dprintf(DEBUG_INFO, "CLCDDisplay::setLCDBrightness %d\n", brightness);
 	
 #ifdef ENABLE_LCD
 	FILE *f = fopen("/proc/stb/lcd/oled_brightness", "w");
@@ -1463,7 +1463,7 @@ void CLCDDisplay::dump_screen(lcd_pixel_t **screen)
 
 void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int top) 
 {
-	dprintf(DEBUG_NORMAL, "CLCDDisplay::load_screen_element: %s %dx%dx%d (posx: %d posy: %d)\n", element->name.c_str(), element->width, element->height, element->bpp, left, top);
+	dprintf(DEBUG_INFO, "CLCDDisplay::load_screen_element: %s %dx%dx%d (posx: %d posy: %d)\n", element->name.c_str(), element->width, element->height, element->bpp, left, top);
 	
 	if ((element->buffer) && (element->height <= yres - top))
 	{
@@ -1568,7 +1568,7 @@ bool CLCDDisplay::dump_png(const char * const filename)
 
 int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int width, int height, int flag)
 {
-	dprintf(DEBUG_NORMAL, "CLCDDisplay::showPNGImage %s %d %d %d %d (flag: %d)\n", filename, posx, posy, width, height, flag);
+	dprintf(DEBUG_INFO, "CLCDDisplay::showPNGImage %s %d %d %d %d (flag: %d)\n", filename, posx, posy, width, height, flag);
 	
 	raw_lcd_element_t element;
 	int p_w, p_h, p_bpp;
@@ -1576,7 +1576,7 @@ int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int widt
 	
 	::getSize(filename, &p_w, &p_h, &p_bpp, &chans);
 	
-	dprintf(DEBUG_NORMAL, "CLCDDisplay::showPNGImage real: %s %d %d %d %d\n", filename, p_w, p_h, p_bpp, chans);
+	dprintf(DEBUG_INFO, "CLCDDisplay::showPNGImage real: %s %d %d %d %d\n", filename, p_w, p_h, p_bpp, chans);
 
 #if BYTE_ORDER == LITTLE_ENDIAN
 	if (raw_bpp == 32)
@@ -1606,14 +1606,14 @@ int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int widt
 
 void CLCDDisplay::load_png_element(raw_lcd_element_t *element, int posx, int posy, int width, int height)
 {
-	dprintf(DEBUG_NORMAL, "CLCDDisplay::load_png_element %s %d %d %d %d\n", element->name.c_str(), posx, posy, width, height);
+	dprintf(DEBUG_INFO, "CLCDDisplay::load_png_element %s %d %d %d %d\n", element->name.c_str(), posx, posy, width, height);
 	
 	int p_w, p_h, p_bpp;
 	int chans = 1;
 	
 	::getSize(element->name.c_str(), &p_w, &p_h, &p_bpp, &chans);
 	
-	dprintf(DEBUG_NORMAL, "CLCDDisplay::load_png_element real: %s %d %d\n", element->name.c_str(), p_w, p_h);
+	dprintf(DEBUG_INFO, "CLCDDisplay::load_png_element real: %s %d %d\n", element->name.c_str(), p_w, p_h);
 	
 	uint8_t *image = ::getBitmap(element->name.c_str());
 	
@@ -1650,7 +1650,7 @@ void CLCDDisplay::load_png_element(raw_lcd_element_t *element, int posx, int pos
 
 void CLCDDisplay::show_png_element(raw_lcd_element_t *element, int posx, int posy, int width, int height)
 {
-	dprintf(DEBUG_NORMAL, "CLCDDisplay::show_png_element %s %d %d %d %d\n", element->name.c_str(), posx, posy, width, height);
+	dprintf(DEBUG_INFO, "CLCDDisplay::show_png_element %s %d %d %d %d\n", element->name.c_str(), posx, posy, width, height);
 	
 	load_png_element(element, posx, posy, width, height);
 	

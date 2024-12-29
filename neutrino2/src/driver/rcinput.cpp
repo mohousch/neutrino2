@@ -375,7 +375,7 @@ CRCInput::CRCInput() : configfile('\t')
 	// pipe_high
 	if (pipe(fd_pipe_high_priority) < 0)
 	{
-		ng_err("fd_pipe_high_priority failed\n");
+		ng_err("CRCInput::CRCInput: fd_pipe_high_priority failed\n");
 		exit(-1);
 	}
 
@@ -385,7 +385,7 @@ CRCInput::CRCInput() : configfile('\t')
 	// pipe_low
 	if (pipe(fd_pipe_low_priority) < 0)
 	{
-		ng_err("fd_pipe_low_priority failed\n");
+		ng_err("CRCInput::CRCInput: fd_pipe_low_priority failed\n");
 		exit(-1);
 	}
 
@@ -416,7 +416,7 @@ CRCInput::CRCInput() : configfile('\t')
 	
 	if(fd_lirc < 0)
 	{
-		ng_err("/dev/lirc0 failed\n");
+		ng_err("CRCInput::CRCInput: /dev/lirc0 failed\n");
 		haveLirc = false;
 	}
 	else
@@ -424,7 +424,7 @@ CRCInput::CRCInput() : configfile('\t')
 
 	if (::ioctl(fd_lirc, LIRC_SET_REC_MODE, &mode) < 0)
 	{
-		ng_err("/dev/lirc0 failed\n");
+		ng_err("CRCInput::CRCInput /dev/lirc0 failed\n");
 	}
 #else
 	struct sockaddr_un  vAddr;
@@ -442,13 +442,13 @@ CRCInput::CRCInput() : configfile('\t')
 	
 	if(fd_lirc < 0)
 	{
-		ng_err("lircd socket failed\n");
+		ng_err("CRCInput::CRCInput lircd socket failed\n");
 		fd_lirc = -1;
 	}
 	
 	if (connect(fd_lirc, (struct sockaddr *)&vAddr, sizeof(vAddr)) == -1)
 	{
-		ng_err("lircd connect failed\n");
+		ng_err("CRCInput::CRCInput lircd connect failed\n");
 		::close(fd_lirc);
 		fd_lirc = 1;
 	}
@@ -465,7 +465,6 @@ CRCInput::CRCInput() : configfile('\t')
 
 void CRCInput::open()
 {
-//#ifndef ENABLE_LIRC
 	close();
 
 	// 
@@ -480,14 +479,12 @@ void CRCInput::open()
 				
 		dprintf(DEBUG_INFO, "CRCInput::open: %s fd %d\n", RC_EVENT_DEVICE[i], fd_rc[i]);		
 	}
-//#endif
 	
 	calculateMaxFd();
 }
 
 void CRCInput::close()
 {
-//#ifndef ENABLE_LIRC
 	// fd_rc
 	for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++) 
 	{
@@ -497,7 +494,6 @@ void CRCInput::close()
 			fd_rc[i] = -1;
 		}
 	}
-//#endif
 
 	calculateMaxFd();
 }
@@ -507,11 +503,9 @@ void CRCInput::calculateMaxFd()
 	fd_max = fd_lirc;
 
 	//
-//#ifndef ENABLE_LIRC
 	for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++)
 		if (fd_rc[i] > fd_max)
 			fd_max = fd_rc[i];
-//#endif
 	
 	if(fd_pipe_high_priority[0] > fd_max)
 		fd_max = fd_pipe_high_priority[0];
@@ -792,7 +786,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 
 		if ( status == -1 )
 		{
-			ng_err("select failed\n");
+			ng_err("CRCInput::getMsg_us select failed\n");
 			
 			// in case of an error return timeout...?!
 			*msg = RC_timeout;
@@ -1049,7 +1043,6 @@ void CRCInput::setRepeat(unsigned int delay,unsigned int period)
 	repeat_block = delay * 1000ULL;
 	repeat_block_generic = period * 1000ULL;
 
-//#ifndef ENABLE_LIRC
 	struct input_event ie;
 	
 	// delay
@@ -1076,7 +1069,6 @@ void CRCInput::setRepeat(unsigned int delay,unsigned int period)
 			write(fd_rc[i], &ie, sizeof(ie));
 		}
 	}
-//#endif
 }
 
 void CRCInput::postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data, const bool Priority)
@@ -1096,7 +1088,6 @@ void CRCInput::postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data,
 
 void CRCInput::clearRCMsg()
 {
-//#ifndef ENABLE_LIRC
 	t_input_event ev;
 
 	for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++)
@@ -1107,7 +1098,6 @@ void CRCInput::clearRCMsg()
 				;
 		}
 	}
-//#endif
 	
 	rc_last_key =  KEY_MAX;
 }
@@ -1491,7 +1481,7 @@ uint32_t CRCInput::translateKey(const char *name)
 	else if (!strcmp(name, "KEY_BLUE")) return RC_blue;
 	else if (!strcmp(name, "KEY_INFO")) return RC_info;
 	else if (!strcmp(name, "KEY_EPG")) return RC_epg;
-	else if (!strcmp(name, "KEY_MODE")) return RC_setup; //FIXME: my rc have no menu key
+	else if (!strcmp(name, "KEY_MODE")) return RC_setup; //FIXME:
 	else if (!strcmp(name, "KEY_RECORD")) return RC_record;
 	else if (!strcmp(name, "KEY_PLAY")) return RC_play;
 	else if (!strcmp(name, "KEY_STOP")) return RC_stop;
