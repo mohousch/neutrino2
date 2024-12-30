@@ -83,7 +83,7 @@ void add_format(int (*picsize) (const char *, int *, int *, int, int), int (*pic
 
 void init_handlers(void)
 {
-	printf("% init_handlers\n", __FILE__);
+	printf("[%s] init_handlers\n", __FILE__);
 	
 	// add png format
   	add_format(fh_png_getsize, fh_png_load, fh_png_id);
@@ -106,7 +106,7 @@ void init_handlers(void)
 
 void deinit_handlers(void)
 {
-	printf("%s deinit_handlers\n", __FILE__);
+	printf("[%s] deinit_handlers\n", __FILE__);
 
 	CFormathandler *fh = fh_root;
 	
@@ -309,7 +309,7 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 // convert rgba <-> argb
 uint32_t * convertRGBA2ARGB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
-	printf("%s convertRGBA2ARGB32\n", __FILE__);
+	//printf("[%s] convertRGBA2ARGB32\n", __FILE__);
 	
 	unsigned long i;
 	uint32_t *fbbuff = NULL;
@@ -367,7 +367,7 @@ uint32_t * convertRGBA2ARGB32(uint8_t *rgbbuff, unsigned long x, unsigned long y
 // convert rgba <-> abgr
 uint32_t * convertRGBA2ABGR32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
-	printf("%s convertRGBA2ABGR32\n", __FILE__);
+	//printf("[%s] convertRGBA2ABGR32\n", __FILE__);
 	
 	unsigned long i;
 	uint32_t *fbbuff = NULL;
@@ -451,7 +451,7 @@ uint32_t * convertRGBA2ABGR32(uint8_t *rgbbuff, unsigned long x, unsigned long y
 // convert rgba to argb
 uint16_t * convertRGBA2ARGB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
-	printf("%s convertRGBA2ARGB16\n", __FILE__);
+	//printf("[%s] convertRGBA2ARGB16\n", __FILE__);
 	
 	unsigned long i;
 	uint16_t *fbbuff = NULL;
@@ -509,7 +509,7 @@ uint16_t * convertRGBA2ARGB16(uint8_t *rgbbuff, unsigned long x, unsigned long y
 // convert rgba to abgr
 uint16_t * convertRGBA2ABGR16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
-	printf("%s convertRGBA2ABGR16\n", __FILE__);
+	//printf("[%s] convertRGBA2ABGR16\n", __FILE__);
 	
 	unsigned long i;
 	uint16_t *fbbuff = NULL;
@@ -567,7 +567,7 @@ uint16_t * convertRGBA2ABGR16(uint8_t *rgbbuff, unsigned long x, unsigned long y
 // convert rgba to argb
 uint8_t * convertRGBA2ARGB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
-	printf("%s convertRGBA2ARGB8\n", __FILE__);
+	//printf("[%s] convertRGBA2ARGB8\n", __FILE__);
 	 
 	unsigned long i;
 	uint8_t *fbbuff = NULL;
@@ -625,7 +625,7 @@ uint8_t * convertRGBA2ARGB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, 
 // convert rgba to abgr
 uint8_t * convertRGBA2ABGR8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
-	printf("%s convertRGBA2ABGR8\n", __FILE__);
+	//printf("[%s] convertRGBA2ABGR8\n", __FILE__);
 	
 	unsigned long i;
 	uint8_t *fbbuff = NULL;
@@ -683,7 +683,7 @@ uint8_t * convertRGBA2ABGR8(uint8_t *rgbbuff, unsigned long x, unsigned long y, 
 // get argb image
 uint32_t * getARGB32Image(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
 {
-	printf("%s getARGB32Image\n", __FILE__);
+	//printf("[%s] getARGB32Image\n", __FILE__);
 	
 	int x = 0;
 	int y = 0;
@@ -754,7 +754,7 @@ uint32_t * getARGB32Image(const std::string &name, int width, int height, int tr
 		} 
 		else 
 		{
-	  		printf("%s Error decoding file %s\n", __FILE__, name.c_str ());
+	  		printf("[%s] Error decoding file %s\n", __FILE__, name.c_str ());
 	  		free (buffer);
 	  		buffer = NULL;
 		}
@@ -770,7 +770,7 @@ uint32_t * getARGB32Image(const std::string &name, int width, int height, int tr
 // get abgr image
 uint32_t * getABGR32Image(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
 {
-	printf("%s getABGR32Image\n", __FILE__);
+	//printf("[%s] getABGR32Image\n", __FILE__);
 	
 	int x = 0;
 	int y = 0;
@@ -830,7 +830,7 @@ uint32_t * getABGR32Image(const std::string &name, int width, int height, int tr
 		} 
 		else 
 		{
-	  		printf("%s Error decoding file %s\n", __FILE__, name.c_str ());
+	  		printf("[%s] Error decoding file %s\n", __FILE__, name.c_str ());
 	  		free (buffer);
 	  		buffer = NULL;
 		}
@@ -846,7 +846,7 @@ uint32_t * getABGR32Image(const std::string &name, int width, int height, int tr
 // get abgr image
 uint16_t * getABGR16Image(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
 {
-	printf("%s getABGR16Image\n", __FILE__);
+	//printf("[%s] getABGR16Image\n", __FILE__);
 	
 	int x = 0;
 	int y = 0;
@@ -906,7 +906,7 @@ uint16_t * getABGR16Image(const std::string &name, int width, int height, int tr
 		} 
 		else 
 		{
-	  		printf("%s Error decoding file %s\n", __FILE__, name.c_str ());
+	  		printf("[%s] Error decoding file %s\n", __FILE__, name.c_str ());
 	  		free (buffer);
 	  		buffer = NULL;
 		}
@@ -922,7 +922,7 @@ uint16_t * getABGR16Image(const std::string &name, int width, int height, int tr
 // get abgr image
 uint8_t * getABGR8Image(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
 {
-	printf("%s getABGR8Image\n", __FILE__);
+	//printf("[%s] getABGR8Image\n", __FILE__);
 	
 	int x = 0;
 	int y = 0;
@@ -983,7 +983,7 @@ uint8_t * getABGR8Image(const std::string &name, int width, int height, int tran
 		} 
 		else 
 		{
-	  		printf("%s Error decoding file %s\n", __FILE__, name.c_str ());
+	  		printf("[%s] Error decoding file %s\n", __FILE__, name.c_str ());
 	  		free (buffer);
 	  		buffer = NULL;
 		}
@@ -1031,7 +1031,7 @@ uint8_t * getBitmap(const std::string &name)
 
 		if (load_ret != FH_ERROR_OK) 
 		{
-	  		printf("%s Error decoding file %s\n", __FILE__, name.c_str ());
+	  		printf("[%s] Error decoding file %s\n", __FILE__, name.c_str ());
 	  		free (buffer);
 	  		buffer = NULL;
 		}
