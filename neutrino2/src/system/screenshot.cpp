@@ -302,31 +302,31 @@ bool CScreenshot::savePNG()
 
 #define SWAP(x,y)       { x ^= y; y ^= x; x ^= y; }
 
-/* from libjpg example.c */
+// from libjpg example.c
 struct my_error_mgr
 {
-	/* "public" fields */
+	// "public" fields
 	struct jpeg_error_mgr pub;
 	
-	/* for return to caller */
+	// for return to caller
 	jmp_buf setjmp_buffer;
 };
 typedef struct my_error_mgr *my_error_ptr;
 
 void my_error_exit(j_common_ptr cinfo)
 {
-	/* cinfo->err really points to a my_error_mgr struct, so coerce pointer */
+	// cinfo->err really points to a my_error_mgr struct, so coerce pointer
 	my_error_ptr myerr = (my_error_ptr) cinfo->err;
 
-	/* Always display the message. */
-	/* We could postpone this until after returning, if we chose. */
+	// Always display the message
+	// We could postpone this until after returning, if we chose
 	(*cinfo->err->output_message)(cinfo);
 
-	/* Return control to the setjmp point */
+	// Return control to the setjmp point
 	longjmp(myerr->setjmp_buffer, 1);
 }
 
-/* save screenshot in jpg format, return true if success, or false */
+// save screenshot in jpg format, return true if success, or false
 bool CScreenshot::saveJPG()
 {
 	int quality = 90;

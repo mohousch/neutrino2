@@ -67,16 +67,16 @@ CFormathandler *fh_getsize(const char * name, int * x, int * y, int width_wanted
 ////
 void getSize(const std::string &name, int * width, int * height, int * nbpp, int *channels);
 uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode type = SCALE_COLOR, bool alpha = false);
-uint32_t * convertRGB2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
-uint32_t * convertBGR2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
-uint16_t * convertRGB2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
-uint16_t * convertBGR2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
-uint8_t * convertRGB2FB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
-uint8_t * convertBGR2FB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
-uint32_t *getImage(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
-uint32_t *getBGR32Image(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
-uint16_t *getBGR16Image(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
-uint8_t *getBGR8Image(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
+uint32_t * convertRGBA2ARGB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
+uint32_t * convertRGBA2ABGR32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
+uint16_t * convertRGBA2ARGB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
+uint16_t * convertRGBA2ABGR16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
+uint8_t * convertRGBA2ARGB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
+uint8_t * convertRGBA2ABGR8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
+uint32_t *getARGB32Image(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
+uint32_t *getABGR32Image(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
+uint16_t *getABGR16Image(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
+uint8_t *getABGR8Image(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
 uint8_t *getBitmap(const std::string &name);
 
 #endif

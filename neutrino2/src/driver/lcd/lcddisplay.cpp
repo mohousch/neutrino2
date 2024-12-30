@@ -96,8 +96,7 @@ CLCDDisplay::CLCDDisplay()
 	
 	//
 	xres = DEFAULT_LCD_XRES;
-	yres = DEFAULT_LCD_YRES;
-	////	
+	yres = DEFAULT_LCD_YRES;	
 	raw_buffer_size = 0;
 	raw_bypp = sizeof(lcd_pixel_t);
 	raw_bpp = 8*sizeof(lcd_pixel_t);
@@ -119,7 +118,6 @@ CLCDDisplay::CLCDDisplay()
 	surface_bpp = 16;
 	surface_bypp = 2;
 	surface_buffer_size = 0;
-	////
 	real_offset = 0;
 	real_yres = 0;
 #endif
@@ -1174,7 +1172,8 @@ void CLCDDisplay::blitBox2LCD(int flag)
                 	else if (flag & blitAlphaBlend)
                     		blit_8i_to_32_ab((gRGB*)dstptr, srcptr, (const gRGB*)pal, width);
                 	else
-                    			blit_8i_to_32((uint32_t*)dstptr, srcptr, pal, width);
+                    		blit_8i_to_32((uint32_t*)dstptr, srcptr, pal, width);
+                    		
                 	srcptr += raw_stride;
                 	dstptr += surface_stride;
             	}
@@ -1277,8 +1276,15 @@ void CLCDDisplay::blitBox2LCD(int flag)
 #endif
 
 #ifdef ENABLE_GRAPHLCD
-		// scale / copy to ng_buffer
-		swscale((uint8_t *)raw_buffer, (uint8_t *)ngbuffer, xres, yres, ngxres, ngyres, AV_PIX_FMT_BGR32, AV_PIX_FMT_RGB32);	
+	// scale / copy to ng_buffer
+	if (raw_bpp = 32)
+	{
+#if BYTE_ORDER == LITTLE_ENDIAN
+		swscale((uint8_t *)raw_buffer, (uint8_t *)ngbuffer, xres, yres, ngxres, ngyres, AV_PIX_FMT_BGR32, AV_PIX_FMT_RGB32);
+#else
+		swscale((uint8_t *)raw_buffer, (uint8_t *)ngbuffer, xres, yres, ngxres, ngyres, AV_PIX_FMT_RGB32, AV_PIX_FMT_RGB32);
+#endif
+	}	
 #endif
 }
 
@@ -1539,9 +1545,13 @@ bool CLCDDisplay::dump_png(const char * const filename)
 					}
 
 					ret_value = true;
-					
-					//fbptr = (png_byte *)raw_buffer;
-					fbptr = (png_byte *)::convertBGR2FB32((png_byte *)raw_buffer, xres, yres, true, 0XFF, TM_BLACK);
+	
+					// convert			
+#if BYTE_ORDER == LITTLE_ENDIAN
+					fbptr = (png_byte *)::convertRGBA2ABGR32((png_byte *)raw_buffer, xres, yres, true);
+#else
+					fbptr = (png_byte *)::convertRGBA2ARGB32((png_byte *)raw_buffer, xres, yres, true);
+#endif
 					
 					for (int i = 0; i < yres; i++)
 					{
@@ -1580,14 +1590,14 @@ int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int widt
 
 #if BYTE_ORDER == LITTLE_ENDIAN
 	if (raw_bpp == 32)
-		element.buffer = (lcd_pixel_t *)::getBGR32Image(filename, width, height, 0xFF, SCALE_COLOR);
+		element.buffer = (lcd_pixel_t *)::getABGR32Image(filename, width, height, 0xFF, SCALE_COLOR);
 	else
-		element.buffer = (lcd_pixel_t *)::getBGR8Image(filename, width, height, 0xFF, SCALE_COLOR);
+		element.buffer = (lcd_pixel_t *)::getABGR8Image(filename, width, height, 0xFF, SCALE_COLOR);
 #else
 	if (raw_bpp == 32)
-		element.buffer = (lcd_pixel_t *)::getImage(filename, width, height, 0xFF, SCALE_COLOR);
+		element.buffer = (lcd_pixel_t *)::getARGB32Image(filename, width, height, 0xFF, SCALE_COLOR);
 	else
-		element.buffer = (lcd_pixel_t *)::getImage(filename, width, height, 0xFF, SCALE_COLOR);
+		element.buffer = (lcd_pixel_t *)::getARB32Image(filename, width, height, 0xFF, SCALE_COLOR);
 #endif
 
 	element.x = posx;
@@ -1629,14 +1639,14 @@ void CLCDDisplay::load_png_element(raw_lcd_element_t *element, int posx, int pos
 
 #if BYTE_ORDER == LITTLE_ENDIAN
 	if (raw_bpp == 32)
-		element->buffer = (lcd_pixel_t *)::convertBGR2FB32(image, width, height, (chans == 4)? true : false, 0xFF, TM_NONE);
+		element->buffer = (lcd_pixel_t *)::convertRGBA2ABGR32(image, width, height, (chans == 4)? true : false, 0xFF, TM_NONE);
 	else
-		element->buffer = (lcd_pixel_t *)::convertBGR2FB8(image, width, height, (chans == 4)? true : false, 0xFF, TM_NONE);
+		element->buffer = (lcd_pixel_t *)::convertRGBA2ABGR8(image, width, height, (chans == 4)? true : false, 0xFF, TM_NONE);
 #else
 	if (raw_bpp == 32)
-		element->buffer = (lcd_pixel_t *)::convertRGB2FB32(image, width, height, (chans == 4)? true : false, 0xFF, TM_NONE);
+		element->buffer = (lcd_pixel_t *)::convertRGBA2ARGB32(image, width, height, (chans == 4)? true : false, 0xFF, TM_NONE);
 	else
-		element->buffer = (lcd_pixel_t *)::convertRGB2FB8(image, width, height, (chans == 4)? true : false, 0xFF, TM_NONE);
+		element->buffer = (lcd_pixel_t *)::convertRGBA2ARGB8(image, width, height, (chans == 4)? true : false, 0xFF, TM_NONE);
 #endif
 
 	element->x = posx;

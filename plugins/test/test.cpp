@@ -4372,7 +4372,7 @@ void CTestMenu::testlibNGPNG()
 		h = wanted_height;
 		
 		// convert
-		image = ::convertRGB2FB32((uint8_t *)image, w, h, (chans == 4)? true : false);
+		image = ::convertRGBA2ARGB32((uint8_t *)image, w, h, (chans == 4)? true : false);
 		
 		// blit2fb
 		CFrameBuffer::getInstance()->blitBox2FB(image, w, h, 50, 50);

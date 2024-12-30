@@ -306,9 +306,11 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 	return(cr);
 }
 
-// convert rgba to argb
-uint32_t * convertRGB2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
+// convert rgba <-> argb
+uint32_t * convertRGBA2ARGB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
+	printf("convertRGBA2ARGB32\n");
+	
 	unsigned long i;
 	uint32_t *fbbuff = NULL;
 	unsigned long count = x*y;
@@ -362,9 +364,11 @@ uint32_t * convertRGB2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, b
 	return (uint32_t *)fbbuff;
 }
 
-// convert rgba to abgr
-uint32_t * convertBGR2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
+// convert rgba <-> abgr
+uint32_t * convertRGBA2ABGR32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
+	printf("convertRGBA2ABGR32\n");
+	
 	unsigned long i;
 	uint32_t *fbbuff = NULL;
 	unsigned long count = x*y;
@@ -445,8 +449,10 @@ uint32_t * convertBGR2FB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, b
 }
 
 // convert rgba to argb
-uint16_t * convertRGB2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
+uint16_t * convertRGBA2ARGB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
+	printf("convertRGBA2ARGB16\n");
+	
 	unsigned long i;
 	uint16_t *fbbuff = NULL;
 	unsigned long count = x*y;
@@ -501,8 +507,10 @@ uint16_t * convertRGB2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, b
 }
 
 // convert rgba to abgr
-uint16_t * convertBGR2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
+uint16_t * convertRGBA2ABGR16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
+	printf("convertRGBA2ABGR16\n");
+	
 	unsigned long i;
 	uint16_t *fbbuff = NULL;
 	unsigned long count = x*y;
@@ -557,8 +565,10 @@ uint16_t * convertBGR2FB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, b
 }
 
 // convert rgba to argb
-uint8_t * convertRGB2FB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
+uint8_t * convertRGBA2ARGB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
+	printf("convertRGBA2ARGB8\n");
+	 
 	unsigned long i;
 	uint8_t *fbbuff = NULL;
 	unsigned long count = x*y;
@@ -613,8 +623,10 @@ uint8_t * convertRGB2FB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, boo
 }
 
 // convert rgba to abgr
-uint8_t * convertBGR2FB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
+uint8_t * convertRGBA2ABGR8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
+	printf("convertRGBA2ABGR8\n");
+	
 	unsigned long i;
 	uint8_t *fbbuff = NULL;
 	unsigned long count = x*y;
@@ -668,8 +680,11 @@ uint8_t * convertBGR2FB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, boo
 	return (uint8_t *)fbbuff;
 }
 
-uint32_t * getImage(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
+// get argb image
+uint32_t * getARGB32Image(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
 {
+	printf("getARGB32Image\n");
+	
 	int x = 0;
 	int y = 0;
 	int nbpp = 0;
@@ -726,13 +741,13 @@ uint32_t * getImage(const std::string &name, int width, int height, int transp, 
 			{
 				// alpha
 				if (channels == 4)
-					ret = (uint32_t *)convertRGB2FB32(buffer, x, y, true);
+					ret = (uint32_t *)convertRGBA2ARGB32(buffer, x, y, true);
 				else
-					ret = (uint32_t *)convertRGB2FB32(buffer, x, y, false, transp, TM_BLACK); // TM_BLACK
+					ret = (uint32_t *)convertRGBA2ARGB32(buffer, x, y, false, transp, TM_BLACK); // TM_BLACK
 			}
 			else
 			{
-				ret = (uint32_t *)convertRGB2FB32(buffer, x, y, false, transp, TM_NONE); //TM_NONE
+				ret = (uint32_t *)convertRGBA2ARGB32(buffer, x, y, false, transp, TM_NONE); //TM_NONE
 			}
 			
 			free(buffer);
@@ -752,8 +767,11 @@ uint32_t * getImage(const std::string &name, int width, int height, int transp, 
 	return ret;
 }
 
-uint32_t * getBGR32Image(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
+// get abgr image
+uint32_t * getABGR32Image(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
 {
+	printf("getABGR32Image\n");
+	
 	int x = 0;
 	int y = 0;
 	int nbpp = 0;
@@ -806,7 +824,7 @@ uint32_t * getBGR32Image(const std::string &name, int width, int height, int tra
 			}
 			
 			// convert
-			ret = (uint32_t *)convertBGR2FB32(buffer, x, y, (channels == 4)? true : false, transp, TM_NONE); //TM_NONE
+			ret = (uint32_t *)convertRGBA2ABGR32(buffer, x, y, (channels == 4)? true : false, transp, TM_NONE); //TM_NONE
 			
 			free(buffer);
 		} 
@@ -825,8 +843,11 @@ uint32_t * getBGR32Image(const std::string &name, int width, int height, int tra
 	return ret;
 }
 
-uint16_t * getBGR16Image(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
+// get abgr image
+uint16_t * getABGR16Image(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
 {
+	printf("getABGR16Image\n");
+	
 	int x = 0;
 	int y = 0;
 	int nbpp = 0;
@@ -879,7 +900,7 @@ uint16_t * getBGR16Image(const std::string &name, int width, int height, int tra
 			}
 			
 			// convert
-			ret = (uint16_t *)convertBGR2FB16(buffer, x, y, (channels == 4)? true : false, transp, TM_NONE); //TM_NONE
+			ret = (uint16_t *)convertRGBA2ABGR16(buffer, x, y, (channels == 4)? true : false, transp, TM_NONE); //TM_NONE
 			
 			free(buffer);
 		} 
@@ -898,8 +919,11 @@ uint16_t * getBGR16Image(const std::string &name, int width, int height, int tra
 	return ret;
 }
 
-uint8_t * getBGR8Image(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
+// get abgr image
+uint8_t * getABGR8Image(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
 {
+	printf("getABGR8Image\n");
+	
 	int x = 0;
 	int y = 0;
 	int nbpp = 0;
@@ -952,7 +976,7 @@ uint8_t * getBGR8Image(const std::string &name, int width, int height, int trans
 			}
 			
 			// convert
-			ret = (uint8_t *)convertBGR2FB8(buffer, x, y, (channels == 4)? true : false, transp, TM_NONE); // TM_NONE
+			ret = (uint8_t *)convertRGBA2ABGR8(buffer, x, y, (channels == 4)? true : false, transp, TM_NONE); // TM_NONE
 			
 			
 			free(buffer);
@@ -972,6 +996,7 @@ uint8_t * getBGR8Image(const std::string &name, int width, int height, int trans
 	return ret;
 }
 
+// get rgba bitmap
 uint8_t * getBitmap(const std::string &name)
 {
 	int x = 0;

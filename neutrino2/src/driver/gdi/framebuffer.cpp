@@ -1100,7 +1100,7 @@ bool CFrameBuffer::paintIcon(const std::string &filename, const int x, const int
 	if(width == 0 || height == 0)	
 		getIconSize(newname.c_str(), &width, &height);
 
-	data = (fb_pixel_t *)getImage(newname, width, height, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
+	data = (fb_pixel_t *)getARGB32Image(newname, width, height, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
 	
 	// check into buttonBasePath
 	if(!data) 
@@ -1110,7 +1110,7 @@ bool CFrameBuffer::paintIcon(const std::string &filename, const int x, const int
 		if(width == 0 || height == 0)	
 			getIconSize(newname.c_str(), &width, &height);
 
-		data = (fb_pixel_t *)getImage(newname, width, height,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
+		data = (fb_pixel_t *)getARGB32Image(newname, width, height,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
 	}
 	
 	// check into spinnerBasePath	
@@ -1121,7 +1121,7 @@ bool CFrameBuffer::paintIcon(const std::string &filename, const int x, const int
 		if(width == 0 || height == 0)	
 			getIconSize(newname.c_str(), &width, &height);
 
-		data = (fb_pixel_t *)getImage(newname, width, height,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
+		data = (fb_pixel_t *)getARGB32Image(newname, width, height,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
 	}
 	
 	// full path
@@ -1134,7 +1134,7 @@ bool CFrameBuffer::paintIcon(const std::string &filename, const int x, const int
 		if(width == 0 || height == 0)	
 			getIconSize(newname.c_str(), &width, &height);
 
-		data = (fb_pixel_t *)getImage(newname, width, height,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
+		data = (fb_pixel_t *)getARGB32Image(newname, width, height,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
 	}
 
 	if(data) 
@@ -1324,10 +1324,10 @@ bool CFrameBuffer::loadBackgroundPic(const std::string &filename, bool show)
 		free(background);
 	
 	// get bg image
-	background = (fb_pixel_t *)getImage(iconBasePath + filename, BACKGROUNDIMAGEWIDTH, BACKGROUNDIMAGEHEIGHT);
+	background = (fb_pixel_t *)getARGB32Image(iconBasePath + filename, BACKGROUNDIMAGEWIDTH, BACKGROUNDIMAGEHEIGHT);
 	
 	if(!background) 
-		background = (fb_pixel_t *)getImage(filename, BACKGROUNDIMAGEWIDTH, BACKGROUNDIMAGEHEIGHT);
+		background = (fb_pixel_t *)getARGB32Image(filename, BACKGROUNDIMAGEWIDTH, BACKGROUNDIMAGEHEIGHT);
 
 	// if not found
 	if (background == NULL) 
@@ -1731,7 +1731,7 @@ void CFrameBuffer::displayRGB(uint8_t *rgbbuff, int x_size, int y_size, int x_pa
 		y_offs = 0;
 
         // convert
-        fbbuff = convertRGB2FB32(rgbbuff, x_size, y_size);
+        fbbuff = convertRGBA2ARGB32(rgbbuff, x_size, y_size);
         if(fbbuff == NULL)
                 return;
 
@@ -1768,7 +1768,7 @@ bool CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int
 	if( name.find(".png") == (name.length() - 4) )
 		isPNG = true;
 	
-	fb_pixel_t *data = (fb_pixel_t *)getImage(name, width, height,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha), scaletype);
+	fb_pixel_t *data = (fb_pixel_t *)getARGB32Image(name, width, height,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha), scaletype);
 
 	if(data) 
 	{
