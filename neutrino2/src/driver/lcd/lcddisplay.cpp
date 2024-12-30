@@ -231,7 +231,7 @@ bool CLCDDisplay::init(const char *fbdevice)
 	
 	if (fd < 0)
 	{
-		ng_err("couldn't open LCD - load lcd.ko!\n");
+		ng_err("CLCDDisplay::init couldn't open LCD - load lcd.ko!\n");
 		return false;
 	}
 	else
@@ -279,14 +279,14 @@ bool CLCDDisplay::init(const char *fbdevice)
 	
 	if (fd < 0)
 	{
-		ng_err("%s: %m\n", fbdevice);
+		ng_err("CLCDDisplay::init %s: %m\n", fbdevice);
 		goto nolfb;
 	}
 
 #ifndef USE_OPENGL
 	if (::ioctl(fd, FBIOGET_VSCREENINFO, &m_screeninfo) < 0)
 	{
-		ng_err("FBIOGET_VSCREENINFO: %m\n");
+		ng_err("CLCDDisplay::init FBIOGET_VSCREENINFO: %m\n");
 
 		goto nolfb;
 	}
@@ -294,7 +294,7 @@ bool CLCDDisplay::init(const char *fbdevice)
 	fb_fix_screeninfo fix;
 	if (ioctl(fd, FBIOGET_FSCREENINFO, &fix) < 0)
 	{
-		ng_err("FBIOGET_FSCREENINFO: %m\n");
+		ng_err("CLCDDisplay::init FBIOGET_FSCREENINFO: %m\n");
 
 		goto nolfb;
 	}
@@ -308,7 +308,7 @@ bool CLCDDisplay::init(const char *fbdevice)
 	
 	if (!tftbuffer)
 	{
-		ng_err("mmap: %m\n");
+		ng_err("CLCDDisplay::init mmap: %m\n");
 
 		goto nolfb;
 	}
@@ -340,7 +340,7 @@ nolfb:
 		fd = -1;
 	}
 	
-	ng_err("framebuffer %s not available\n", fbdevice);
+	ng_err("CLCDDisplay::init framebuffer %s not available\n", fbdevice);
 	
 	return false;
 #endif
@@ -352,14 +352,14 @@ bool CLCDDisplay::initGLCD()
 	// configfile
 	if (GLCD::Config.Load(kDefaultConfigFile) == false)
 	{
-		ng_err("Error loading config file!\n");
+		ng_err("CLCDDisplay::initGLCD Error loading config file!\n");
 		return false;
 	}
 	
 	// driver config
 	if ((GLCD::Config.driverConfigs.size() < 1))
 	{
-		ng_err("No driver config found!\n");
+		ng_err("CLCDDisplay::initGLCD No driver config found!\n");
 		return false;
 	}
 	
@@ -375,7 +375,7 @@ bool CLCDDisplay::initGLCD()
 	
 	if (!lcd)
 	{
-		ng_err("CreateDriver failed.\n");
+		ng_err("CLCDDisplay::initGLCD CreateDriver failed.\n");
 		return false;
 	}
 	
@@ -387,7 +387,7 @@ bool CLCDDisplay::initGLCD()
 		delete lcd;
 		lcd = NULL;
 
-		ng_err("init failed.\n");
+		ng_err("CLCDDisplay::initGLCD init failed.\n");
 		
 		return false;
 	}
@@ -514,14 +514,14 @@ int CLCDDisplay::setMode(int nxRes, int nyRes, int nbpp)
 		dprintf(DEBUG_NORMAL, "CLCDDisplay::setMode double buffering not available\n");
 	}
 	else
-		ng_err("double buffering available\n");
+		ng_err("CLCDDisplay::setMode double buffering available\n");
 
 	ioctl(fd, FBIOGET_VSCREENINFO, &m_screeninfo);
 
 	if ((m_screeninfo.xres != (unsigned int)nxRes) || (m_screeninfo.yres != (unsigned int)nyRes) ||
 		(m_screeninfo.bits_per_pixel != (unsigned int)nbpp))
 	{
-		ng_err("failed: wanted: %dx%dx%d, got %dx%dx%d\n",
+		ng_err("CLCDDisplay::setMode failed: wanted: %dx%dx%d, got %dx%dx%d\n",
 			nxRes, nyRes, nbpp,
 			m_screeninfo.xres, m_screeninfo.yres, m_screeninfo.bits_per_pixel);
 	}
@@ -534,7 +534,7 @@ int CLCDDisplay::setMode(int nxRes, int nyRes, int nbpp)
 	
 	if (ioctl(fd, FBIOGET_FSCREENINFO, &fix) < 0)
 	{
-		ng_err("FBIOGET_FSCREENINFO: %m\n");
+		ng_err("CLCDDisplay::setMode FBIOGET_FSCREENINFO: %m\n");
 	}
 	
 	tftstride = fix.line_length;
@@ -673,13 +673,13 @@ int CLCDDisplay::setLCDContrast(int contrast)
 		
 	if (fp < 0)
 	{
-		ng_err("can't open /dev/dbox/fp0(%m)\n");
+		ng_err("CLCDDisplay::setLCDContrast can't open /dev/dbox/fp0(%m)\n");
 		return (-1);
 	}
 	
 	if(ioctl(fd, LCD_IOCTL_SRV, &contrast) < 0)
 	{
-		ng_err("can't set lcd contrast(%m)\n");
+		ng_err("CLCDDisplay::setLCDContrast can't set lcd contrast(%m)\n");
 	}
 	
 	close(fp);
@@ -953,7 +953,7 @@ void CLCDDisplay::blit(void)
 	if (m_manual_blit == 1)
 	{
 		if (ioctl(fd, FBIO_BLIT) < 0)
-			ng_err("FBIO_BLIT: %m\n");
+			ng_err("CLCDDisplay::blit FBIO_BLIT: %m\n");
 	}
 #endif
 
@@ -1506,30 +1506,30 @@ bool CLCDDisplay::dump_png(const char * const filename)
         // create file
         fp = fopen(filename, "wb");
         if (!fp)
-                ng_err("[CLCDDisplay] File %s could not be opened for writing\n", filename);
+                ng_err("CLCDDisplay::dump_png File %s could not be opened for writing\n", filename);
 	else
 	{
 	        // initialize stuff
         	png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 
 	        if (!png_ptr)
-        	        printf("[CLCDDisplay] png_create_write_struct failed\n");
+        	        printf("CLCDDisplay::dump_png png_create_write_struct failed\n");
 		else
 		{
 		        info_ptr = png_create_info_struct(png_ptr);
 		        if (!info_ptr)
-                		printf("[CLCDDisplay] png_create_info_struct failed\n");
+                		printf("CLCDDisplay::dump_png png_create_info_struct failed\n");
 			else
 			{
 			        if (setjmp(png_jmpbuf(png_ptr)))
-			                printf("[CLCDDisplay] Error during init_io\n");
+			                printf("CLCDDisplay::dump_png Error during init_io\n");
 				else
 				{
         				png_init_io(png_ptr, fp);
 
         				// write header
         				if (setjmp(png_jmpbuf(png_ptr)))
-        				        printf("[CLCDDisplay] Error during writing header\n");
+        				        printf("CLCDDisplay::dump_png Error during writing header\n");
 
 					//
 					png_set_IHDR(png_ptr, info_ptr, xres, yres, 8, (raw_bpp == 32)? PNG_COLOR_TYPE_RGBA : PNG_COLOR_TYPE_GRAY, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
@@ -1540,7 +1540,7 @@ bool CLCDDisplay::dump_png(const char * const filename)
         				// write bytes
 					if (setjmp(png_jmpbuf(png_ptr)))
 					{
-        				        printf("[CLCDDisplay] Error during writing bytes\n");
+        				        printf("CLCDDisplay::dump_png Error during writing bytes\n");
 						return ret_value;
 					}
 
@@ -1562,7 +1562,7 @@ bool CLCDDisplay::dump_png(const char * const filename)
         				// end write
         				if (setjmp(png_jmpbuf(png_ptr)))
 					{
-        				        printf("[CLCDDisplay] Error during end of write\n");
+        				        printf("CLCDDisplay::dump_png Error during end of write\n");
 						return ret_value;
 					}
 
