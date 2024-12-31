@@ -78,17 +78,10 @@
 #define LED_IOCTL_BLINKING_TIME 		0X12
 #define LED_IOCTL_SET_DEFAULT 			0x13
 
-#if defined BOXMODEL_DM8000 || defined BOXMODEL_DM7080
-#define lcd_pixel_t 				uint8_t
-
-#define DEFAULT_LCD_XRES			132
-#define DEFAULT_LCD_YRES			64
-#else
 #define lcd_pixel_t 				uint32_t
 
 #define DEFAULT_LCD_XRES			220
 #define DEFAULT_LCD_YRES			176
-#endif
 
 struct raw_lcd_element_t
 {
@@ -107,26 +100,29 @@ struct raw_lcd_element_t
 class CLCDDisplay
 {
 	private:
-		int           	fd;
-		int	      	paused;
-		int 		locked;
-		uint32_t	inverted;
-		bool 	      	flipped;
-		int 	      	lcd_type;
-		int 	      	last_brightness;
+		int fd;
+		int paused;
+		int locked;
+		uint32_t inverted;
+		bool flipped;
+		int lcd_type;
+		int last_brightness;
 		
 #ifdef ENABLE_LCD
-		uint8_t     	* surface_data;
-		int 	      	surface_stride;
-		int 	      	surface_bpp, surface_bypp;
-		int 	      	surface_buffer_size;
+		uint8_t * lcd_data;
+		int lcd_xres, lcd_yres;
+		int lcd_stride;
+		int lcd_bpp, lcd_bypp;
+		int lcd_buffer_size;
 		////
-		int 	      	real_offset;
-		int 	      	real_yres;
+		int lcd_real_offset;
+		int lcd_real_yres;
+		void setSize(int w, int h, int b);
 #endif
 	
 #ifdef ENABLE_TFTLCD
 		uint32_t * tftbuffer;
+		int tftxres, tftyres;
 		int tftstride;
 		int tftbpp;
 		int tftbypp;
@@ -144,7 +140,6 @@ class CLCDDisplay
 		void getMode();
 		void enableManualBlit();
 		void disableManualBlit();
-		// low level gfx stuff
 		int putCMAP();
 		int waitVSync();
 		int lock();
@@ -184,28 +179,17 @@ class CLCDDisplay
 		void load_screen(lcd_pixel_t ** const screen);
 		void dump_screen(lcd_pixel_t **screen);
 		bool dump_png(const char * const filename);
+		int showPNGImage(const char* filename, int posx, int posy, int width = 0, int height = 0, int flag = blitAlphaBlend);
+		void load_png_element(raw_lcd_element_t * element, int posx, int posy, int width = 0, int height = 0);
+		void show_png_element(raw_lcd_element_t *element, int posx, int posy, int width = 0, int height = 0);
+		void show_analog_clock(int hour, int min, int sec, int posx, int posy, int hour_size, int min_size, int sec_size);
 		////
 		int setLCDContrast(int contrast);
 		int setLCDBrightness(int brightness);
 		int setLED(int value, int option);
 		void setInverted(uint32_t inv);
 		void setFlipped(bool);
-		//// raw buffer
-		lcd_pixel_t *raw_buffer;
-		int raw_stride;
-		int raw_buffer_size;
-		int raw_bpp, raw_bypp;
-		gPalette raw_clut;
-		int xres, yres;
-		void setSize(int w, int h, int b);
-		////
 		int islocked() { return locked; }
-		////
-		int showPNGImage(const char* filename, int posx, int posy, int width = 0, int height = 0, int flag = blitAlphaBlend);
-		void load_png_element(raw_lcd_element_t * element, int posx, int posy, int width = 0, int height = 0);
-		void show_png_element(raw_lcd_element_t *element, int posx, int posy, int width = 0, int height = 0);
-		////
-		void show_analog_clock(int hour, int min, int sec, int posx, int posy, int hour_size, int min_size, int sec_size);
 		
 #ifdef ENABLE_GRAPHLCD
 		GLCD::cDriver *lcd;
@@ -220,6 +204,14 @@ class CLCDDisplay
 		std::string GetConfigName(int);
 		int setGLCDBrightness(int brightness);
 #endif
+
+		//// raw buffer
+		lcd_pixel_t *raw_buffer;
+		int raw_stride;
+		int raw_buffer_size;
+		int raw_bpp, raw_bypp;
+		gPalette raw_clut;
+		int xres, yres;
 };
 
 #endif
