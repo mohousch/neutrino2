@@ -277,9 +277,10 @@ bool CLCDDisplay::init(const char *fbdevice)
 	}
 	
 	setSize(_xres, _yres, _bpp);
+	
+	return true;
 #endif
 
-	return true;
 #elif defined (ENABLE_TFTLCD)
 	fd = open(fbdevice, O_RDWR);
 	
