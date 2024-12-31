@@ -102,14 +102,6 @@ CLCDDisplay::CLCDDisplay()
 	raw_bpp = 8*sizeof(lcd_pixel_t);
 	raw_buffer = NULL;
 	raw_stride = 0;
-#ifdef ENABLE_LCD
-	raw_clut.colors = 0;
-	raw_clut.data = 0;
-#elif defined (ENABLE_TFTLCD)
-	raw_clut.colors = 256;
-        raw_clut.data = new gRGB[raw_clut.colors];
-        memset(static_cast<void*>(raw_clut.data), 0, sizeof(*raw_clut.data)*raw_clut.colors);
-#endif
 	
 	// surface
 #ifdef ENABLE_LCD
@@ -807,7 +799,6 @@ void CLCDDisplay::resume()
 	paused = 0;
 }
 
-//// 
 void CLCDDisplay::blit(void)
 {
 #ifdef ENABLE_LCD
@@ -985,87 +976,33 @@ void CLCDDisplay::blitBox2LCD(int flag)
 	int area_width  = area_right - area_left;
 	int area_height = area_bottom - area_top;
 	
-	if (lcd_bpp == 8 && raw_bpp == 8)
+	if (lcd_bpp == 8 && raw_bpp == 32)
 	{
-		uint8_t *srcptr = (uint8_t*)raw_buffer;
-            	uint8_t *dstptr = (uint8_t*)lcd_buffer;
-
-            	srcptr += area_left*raw_bypp + area_top*raw_stride;
-            	dstptr += area_left*lcd_bypp + area_top*lcd_stride;
-            
-            	if ( (flag & blitAlphaTest) || (flag & blitAlphaBlend) )
-            	{
-                	for (int y = area_height; y != 0; --y)
-                	{
-                    		// no real alphatest yet
-                    		int width = area_width;
-                    		unsigned char *s = (unsigned char*)srcptr;
-                    		unsigned char *d = (unsigned char*)dstptr;
-                    			
-                    		// use duff's device here!
-                    		while (width--)
-                    		{
-                        		if (!*s)
-                        		{
-                            			s++;
-                            			d++;
-                        		}
-                        		else
-                        		{
-                            			*d++ = *s++;
-                        		}
-                    		}
-                    		srcptr += raw_stride;
-                    		dstptr += lcd_stride;
-                	}
-            	}
-            	else
-            	{
-                	int linesize = area_width*lcd_bypp;
-                	for (int y = area_height; y != 0; --y)
-                	{
-                    		memcpy(dstptr, srcptr, linesize);
-                    		srcptr += raw_stride;
-                    		dstptr += lcd_stride;
-                	}
-            	}
-	} 
-	else if (lcd_bpp == 16 && raw_bpp == 8)
-	{
-		uint8_t *srcptr = (uint8_t*)raw_buffer;
-            	uint8_t *dstptr = (uint8_t*)lcd_buffer;
-            	uint32_t pal[256];
-
-            	for (int i = 0; i != 256; ++i)
-            	{
-                	uint32_t icol;
-                	icol = 0x010101*i;
-#if BYTE_ORDER == LITTLE_ENDIAN
-                	pal[i] = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
-#else
-                	pal[i] = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
-#endif
-                	pal[i] ^= 0xFF000000;
-            	}
-
-            	srcptr += area_left*raw_bypp + area_top*raw_stride;
-            	dstptr += area_left*lcd_bypp + area_top*lcd_stride;
-
-            	for (int y = 0; y < area_height; y++)
-            	{
-                	int width = area_width;
-                	uint8_t *psrc = (uint8_t *)srcptr;
-                	uint16_t *dst=(uint16_t*)dstptr;
-                		
-                	if (flag & blitAlphaTest)
-                    		blit_8i_to_16_at(dst, psrc, pal, width);
-                	else
-                    		blit_8i_to_16(dst, psrc, pal, width);
-                    			
-                	srcptr += raw_stride;
-                	dstptr += lcd_stride;
-            	}
-        }
+                // no clue yet
+                const uint8_t *srcptr = (uint8_t *)raw_buffer;
+	        uint8_t *dstptr = (uint8_t *)lcd_buffer;
+	        
+	        for (int y = area_height; y != 0; --y)
+		{
+			gRGB pixel32;
+			uint8_t pixval;
+			int x = area_width;
+			gRGB *dst = (gRGB *)dstptr;
+			const uint8_t *src = (const uint8_t *)srcptr;
+			
+			while (x--)
+			{
+				pixval = *src++;
+				pixel32.a = 0xFF;
+				pixel32.r = pixval;
+				pixel32.g = pixval;
+				pixel32.b = pixval;
+				*dst++ = pixel32;
+			}
+			srcptr += raw_stride;
+			dstptr += lcd_stride;
+		}
+	}
 	else if (lcd_bpp == 16 && raw_bpp == 32)
 	{
             	uint8_t *srcptr = (uint8_t*)raw_buffer;
@@ -1155,30 +1092,6 @@ void CLCDDisplay::blitBox2LCD(int flag)
                 	dstptr += lcd_stride;
             	}
 	} 
-	else if (lcd_bpp == 32 && raw_bpp == 8)
-	{
-		const uint8_t *srcptr = (uint8_t*)raw_buffer;
-            	uint8_t *dstptr = (uint8_t*)lcd_buffer;
-            	uint32_t pal[256];
-            	convert_palette(pal, raw_clut);
-
-            	srcptr += area_left*raw_bypp + area_top*raw_stride;
-            	dstptr += area_left*lcd_bypp + area_top*lcd_stride;
-            	const int width = area_width;
-            		
-            	for (int y = area_height; y != 0; --y)
-            	{
-                	if (flag & blitAlphaTest)
-                    		blit_8i_to_32_at((uint32_t*)dstptr, srcptr, pal, width);
-                	else if (flag & blitAlphaBlend)
-                    		blit_8i_to_32_ab((gRGB*)dstptr, srcptr, (const gRGB*)pal, width);
-                	else
-                    		blit_8i_to_32((uint32_t*)dstptr, srcptr, pal, width);
-                    		
-                	srcptr += raw_stride;
-                	dstptr += lcd_stride;
-            	}
-	}
 	else if (lcd_bpp == 32 && raw_bpp == 32)
 	{
 		uint32_t *srcptr = (uint32_t*)raw_buffer;
@@ -1224,7 +1137,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
                 	srcptr = (uint32_t*)((uint8_t*)srcptr + raw_stride);
                 	dstptr = (uint32_t*)((uint8_t*)dstptr + lcd_stride);
             	}
-	}
+	} 
 #endif
 #endif
 
