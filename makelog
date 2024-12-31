@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ ! -z $1 ] ; then
-	LOGFILE=make.log
+	LOGFILE=neutrinoNG_build_log.txt
 
 	echo "--- DISTRIBUTION ---" > $LOGFILE
 	cat /etc/*release >> $LOGFILE

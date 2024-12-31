@@ -96,7 +96,17 @@ CLCDDisplay::CLCDDisplay()
 	
 	//
 	xres = DEFAULT_LCD_XRES;
-	yres = DEFAULT_LCD_YRES;	
+	yres = DEFAULT_LCD_YRES;
+#if defined (BOXMODEL_VUDUO4K) || defined (BOXMODEL_VUULTIMO4K)
+        xres = 480;
+        yres = 320;
+#elif defined (BOXMODEL_VUUNO4KSE)
+        xres = 400;
+        yres = 240;
+#elif defined (BOXMODEL_DM7080) || defined (BOXMODEL_DM8000HD)
+        xres = 128;
+        yres = 64;
+#endif
 	raw_buffer_size = 0;
 	raw_bypp = sizeof(lcd_pixel_t);
 	raw_bpp = 8*sizeof(lcd_pixel_t);

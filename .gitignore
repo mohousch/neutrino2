@@ -2202,7 +2202,7 @@
 /neutrino2/src/driver/basedec.o
 /neutrino2/src/driver/ffmpegdec.o
 /neutrino2/src/driver/netfile.o
-/make.log
+/neutrinoNG_build_log.txt
 /neutrino2/src/driver/lcd/.deps/fontrenderer.Po
 /neutrino2/src/driver/lcd/.deps/lcddisplay.Po
 /neutrino2/src/driver/lcd/fontrenderer.o

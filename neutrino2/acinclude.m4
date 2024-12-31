@@ -336,7 +336,7 @@ AC_ARG_WITH(boxmodel,
 				valid for atevio: atevio700,atevio7000,atevio7500,atevio7600
 				valid for octagon: octagon1008 sf4008 sf8008 sf8008m sfx6008 sx88v2 sx998
 				valid for topfield: tf7700
-				valid for vuplus: vusolo,vuduo,vuuno,vuultimo,vuduo2,vusolo2,vusolo4k,vusolose,vuzero,vuduo4k
+				valid for vuplus: vusolo,vuduo,vuuno,vuultimo,vuduo2,vusolo2,vusolose,vuzero,vusolo4k,vuduo4k, vuultimo4k,vuuno4k, vuuno4kse
 				valid for azbox: azboxhd,azboxme,azboxminime
 				valid for technomate: tmtwin,tm2t,tmsingle,tmnano
 				valid for venton: ventonhde,ventonhdx,inihde,inihdp
@@ -437,7 +437,7 @@ AC_ARG_WITH(boxmodel,
 				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
 			fi
 			;;
-		vusolo2|vuduo2|vusolo|vuduo|vuuno|vuultimo|vusolose|vusolo4k|vuzero|vuduo4k)
+		vusolo2|vuduo2|vusolo|vuduo|vuuno|vuultimo|vusolose|vuzero|vusolo4k|vuduo4k|vuultimo4k|vuuno4k|vuuno4kse)
 			if test "$BOXTYPE" = "vuplus"; then
 				BOXMODEL="$withval"
 			else
@@ -759,6 +759,9 @@ AM_CONDITIONAL(BOXMODEL_VUSOLOSE, test "$BOXMODEL" = "vusolose")
 AM_CONDITIONAL(BOXMODEL_VUSOLO4K, test "$BOXMODEL" = "vusolo4k")
 AM_CONDITIONAL(BOXMODEL_VUZERO, test "$BOXMODEL" = "vuzero")
 AM_CONDITIONAL(BOXMODEL_VUDUO4K, test "$BOXMODEL" = "vuduo4k")
+AM_CONDITIONAL(BOXMODEL_VUULTIMO4K, test "$BOXMODEL" = "vuultimo4k")
+AM_CONDITIONAL(BOXMODEL_VUUNO4K, test "$BOXMODEL" = "vuuno4k")
+AM_CONDITIONAL(BOXMODEL_VUNO4KSE, test "$BOXMODEL" = "vuno4kse")
 
 AM_CONDITIONAL(BOXMODEL_AZBOXHD, test "$BOXMODEL" = "azboxhd")
 AM_CONDITIONAL(BOXMODEL_AZBOXME, test "$BOXMODEL" = "azboxme")
@@ -1086,6 +1089,12 @@ elif test "$BOXMODEL" = "vuzero"; then
 	AC_DEFINE(BOXMODEL_VUZERO, 1, [building for vuplus zero])
 elif test "$BOXMODEL" = "vuduo4k"; then
 	AC_DEFINE(BOXMODEL_VUDUO4K, 1, [building for vuplus duo4k])
+elif test "$BOXMODEL" = "vuultimo4k"; then
+	AC_DEFINE(BOXMODEL_VULTIMO4K, 1, [building for vuplus ultimo4k])
+elif test "$BOXMODEL" = "vuuno4k"; then
+	AC_DEFINE(BOXMODEL_VUUNO4K, 1, [building for vuplus uno4k])
+elif test "$BOXMODEL" = "vuuno4kse"; then
+	AC_DEFINE(BOXMODEL_VUUNO4KSE, 1, [building for vuplus uno4kse])
 
 elif test "$BOXMODEL" = "azboxhd"; then
 	AC_DEFINE(BOXMODEL_AZBOXHD, 1, [building for azbox hd])
