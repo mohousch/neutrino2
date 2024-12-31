@@ -113,7 +113,7 @@ CLCDDisplay::CLCDDisplay()
 	
 	// surface
 #ifdef ENABLE_LCD
-	lcd_data = NULL;
+	lcd_buffer = NULL;
 	lcd_xres = 220;
 	lcd_yres = 176;
 	lcd_stride = 0;
@@ -161,10 +161,10 @@ CLCDDisplay::CLCDDisplay()
 CLCDDisplay::~CLCDDisplay()
 {
 #ifdef ENABLE_LCD
-	if (lcd_data)
+	if (lcd_buffer)
 	{
-		delete [] lcd_data;
-		lcd_data = NULL;
+		delete [] lcd_buffer;
+		lcd_buffer = NULL;
 	}
 #endif
 
@@ -465,8 +465,8 @@ void CLCDDisplay::setSize(int w, int h, int b)
 	// surface
 	lcd_stride = lcd_xres*lcd_bypp;
 	lcd_buffer_size = lcd_xres * lcd_yres * lcd_bypp;
-	lcd_data = new uint8_t[lcd_buffer_size];
-	memset(lcd_data, 0, lcd_buffer_size);
+	lcd_buffer = new uint8_t[lcd_buffer_size];
+	memset(lcd_buffer, 0, lcd_buffer_size);
 }
 #endif
 
@@ -820,9 +820,9 @@ void CLCDDisplay::blit(void)
 
 			// hack move last line to top
 			uint8_t linebuffer[width];
-			memmove(linebuffer, lcd_data + lcd_buffer_size - width, width);
-			memmove(lcd_data + width, lcd_data, lcd_buffer_size - width);
-			memmove(lcd_data, linebuffer, width);
+			memmove(linebuffer, lcd_buffer + lcd_buffer_size - width, width);
+			memmove(lcd_buffer + width, lcd_buffer, lcd_buffer_size - width);
+			memmove(lcd_buffer, linebuffer, width);
 
 			uint8_t raw[132*8];
 			int x, y, yy;
@@ -838,7 +838,7 @@ void CLCDDisplay::blit(void)
 					
 					for (yy = 0; yy < 8; yy++)
 					{
-						pix |= (lcd_data[(y*8 + yy)*width + x] >= 108)<<yy;
+						pix |= (lcd_buffer[(y*8 + yy)*width + x] >= 108)<<yy;
 					}
 					
 					if (flipped)
@@ -857,9 +857,9 @@ void CLCDDisplay::blit(void)
 			write(fd, raw, 132*8);
 			
 			// hack move last line back to bottom
-			memmove(linebuffer, lcd_data, width);
-			memmove(lcd_data, lcd_data + width, lcd_buffer_size - width);
-			memmove(lcd_data + lcd_buffer_size - width, linebuffer, width);
+			memmove(linebuffer, lcd_buffer, width);
+			memmove(lcd_buffer, lcd_buffer + width, lcd_buffer_size - width);
+			memmove(lcd_buffer + lcd_buffer_size - width, linebuffer, width);
 		}
 		else if (lcd_type == 3)
 		{
@@ -877,11 +877,11 @@ void CLCDDisplay::blit(void)
 						if (flipped)
 						{
 							/* 8bpp, no bit swapping */
-							raw[(height - 1 - y) * width + (width - 1 - x)] = lcd_data[y * width + x] ^ inverted;
+							raw[(height - 1 - y) * width + (width - 1 - x)] = lcd_buffer[y * width + x] ^ inverted;
 						}
 						else
 						{
-							raw[y * width + x] = lcd_data[y * width + x] ^ inverted;
+							raw[y * width + x] = lcd_buffer[y * width + x] ^ inverted;
 						}
 					}
 				}
@@ -901,7 +901,7 @@ void CLCDDisplay::blit(void)
 					// fast
 					for (int offset = 0; offset < ((lcd_stride * lcd_yres) >> 2); offset++)
 					{
-						unsigned int src = ((unsigned int *)lcd_data)[offset];
+						unsigned int src = ((unsigned int *)lcd_buffer)[offset];
 						((unsigned int *)gb_buffer)[offset] = src & 0xE007E007 | (src & 0x1F001F00) >> 5 | (src & 0x00F800F8) << 5;
 					}
 				}
@@ -910,14 +910,14 @@ void CLCDDisplay::blit(void)
 					// slow
 					for (int offset = 0; offset < lcd_stride * lcd_yres; offset += 2)
 					{
-						gb_buffer[offset] = (lcd_data[offset] & 0x07) | ((lcd_data[offset + 1] << 3) & 0xE8);
-						gb_buffer[offset + 1] = (lcd_data[offset + 1] & 0xE0) | ((lcd_data[offset] >> 3) & 0x1F);
+						gb_buffer[offset] = (lcd_buffer[offset] & 0x07) | ((lcd_buffer[offset + 1] << 3) & 0xE8);
+						gb_buffer[offset + 1] = (lcd_buffer[offset + 1] & 0xE0) | ((lcd_buffer[offset] >> 3) & 0x1F);
 					}
 				}
 				
 				write(fd, gb_buffer, lcd_stride * lcd_yres);
 #else
-				write(fd, lcd_data + lcd_stride * lcd_real_offset, lcd_stride * lcd_real_yres);
+				write(fd, lcd_buffer + lcd_stride * lcd_real_offset, lcd_stride * lcd_real_yres);
 #endif				
 			}
 		}
@@ -932,7 +932,7 @@ void CLCDDisplay::blit(void)
 				int pix = 0;
 				for (x = 0; x < 128 / 2; x++)
 				{
-					pix = (lcd_data[y*132 + x * 2 + 2] & 0xF0) |(lcd_data[y*132 + x * 2 + 1 + 2] >> 4);
+					pix = (lcd_buffer[y*132 + x * 2 + 2] & 0xF0) |(lcd_buffer[y*132 + x * 2 + 1 + 2] >> 4);
 					if (inverted)
 						pix = 0xFF - pix;
 						
@@ -988,7 +988,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
 	if (lcd_bpp == 8 && raw_bpp == 8)
 	{
 		uint8_t *srcptr = (uint8_t*)raw_buffer;
-            	uint8_t *dstptr = (uint8_t*)lcd_data;
+            	uint8_t *dstptr = (uint8_t*)lcd_buffer;
 
             	srcptr += area_left*raw_bypp + area_top*raw_stride;
             	dstptr += area_left*lcd_bypp + area_top*lcd_stride;
@@ -1033,7 +1033,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
 	else if (lcd_bpp == 16 && raw_bpp == 8)
 	{
 		uint8_t *srcptr = (uint8_t*)raw_buffer;
-            	uint8_t *dstptr = (uint8_t*)lcd_data;
+            	uint8_t *dstptr = (uint8_t*)lcd_buffer;
             	uint32_t pal[256];
 
             	for (int i = 0; i != 256; ++i)
@@ -1069,7 +1069,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
 	else if (lcd_bpp == 16 && raw_bpp == 32)
 	{
             	uint8_t *srcptr = (uint8_t*)raw_buffer;
-            	uint8_t *dstptr = (uint8_t*)lcd_data;
+            	uint8_t *dstptr = (uint8_t*)lcd_buffer;
 
             	srcptr += area_left*raw_bypp + area_top*raw_stride;
             	dstptr += area_left*lcd_bypp + area_top*lcd_stride;
@@ -1158,7 +1158,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
 	else if (lcd_bpp == 32 && raw_bpp == 8)
 	{
 		const uint8_t *srcptr = (uint8_t*)raw_buffer;
-            	uint8_t *dstptr = (uint8_t*)lcd_data;
+            	uint8_t *dstptr = (uint8_t*)lcd_buffer;
             	uint32_t pal[256];
             	convert_palette(pal, raw_clut);
 
@@ -1182,7 +1182,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
 	else if (lcd_bpp == 32 && raw_bpp == 32)
 	{
 		uint32_t *srcptr = (uint32_t*)raw_buffer;
-            	uint32_t *dstptr = (uint32_t*)lcd_data;
+            	uint32_t *dstptr = (uint32_t*)lcd_buffer;
 
             	srcptr += area_left + area_top*raw_stride/4;
             	dstptr += area_left + area_top*lcd_stride/4;
@@ -1415,7 +1415,7 @@ void CLCDDisplay::clear_screen()
 {
 	memset(raw_buffer, 0, raw_buffer_size);
 #ifdef ENABLE_LCD
-	memset(lcd_data, 0, lcd_buffer_size);
+	memset(lcd_buffer, 0, lcd_buffer_size);
 #endif
 #ifdef ENABLE_TFTLCD
 	memset(tftbuffer, 0, tft_buffer_size);

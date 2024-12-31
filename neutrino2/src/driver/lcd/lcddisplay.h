@@ -109,7 +109,7 @@ class CLCDDisplay
 		int last_brightness;
 		
 #ifdef ENABLE_LCD
-		uint8_t * lcd_data;
+		uint8_t * lcd_buffer;
 		int lcd_xres, lcd_yres;
 		int lcd_stride;
 		int lcd_bpp, lcd_bypp;
