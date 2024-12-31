@@ -977,6 +977,7 @@ void CLCDDisplay::blit(void)
 void CLCDDisplay::blitBox2LCD(int flag) 
 {
 #ifdef ENABLE_LCD
+#ifndef USE_OPENGL
 	int area_left = 0;
 	int area_top = 0;
 	int area_right = lcd_xres;
@@ -1224,6 +1225,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
                 	dstptr = (uint32_t*)((uint8_t*)dstptr + lcd_stride);
             	}
 	}
+#endif
 #endif
 
 #ifdef ENABLE_TFTLCD
