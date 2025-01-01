@@ -106,6 +106,9 @@ CLCDDisplay::CLCDDisplay()
 #elif defined (BOXMODEL_DM7080) || defined (BOXMODEL_DM8000HD)
         xres = 128;
         yres = 64;
+#elif defined (BOXMODEL_DM800SE) || defined (BOXMODEL_DM900) || defined (BOXMODEL_DM920)
+        xres = 96;
+        yres = 64;
 #endif
 	raw_buffer_size = 0;
 	raw_bypp = sizeof(lcd_pixel_t);

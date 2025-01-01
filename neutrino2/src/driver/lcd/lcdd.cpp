@@ -87,7 +87,7 @@ void CLCD::openDevice()
 		fd = open("/dev/vfd", O_RDWR);
 		if(fd < 0)
 		{
-			printf(DEBUG_NORMAL, "CLCD::openDevice: failed to open vfd\n");
+			dprintf(DEBUG_NORMAL, "CLCD::openDevice: failed to open vfd\n");
 			
 			fd = open("/dev/fplarge", O_RDWR);
 			if (fd < 0)
@@ -191,6 +191,9 @@ CLCD::CLCD()
         lcd_height = 240;
 #elif defined (BOXMODEL_DM7080) || defined (BOXMODEL_DM8000HD)
         lcd_width = 128;
+        lcd_height = 64;
+#elif defined (BOXMODEL_DM800SE) || defined (BOXMODEL_DM900) || defined (BOXMODEL_DM920)
+        lcd_width = 96;
         lcd_height = 64;
 #endif
 	servicename = "";
