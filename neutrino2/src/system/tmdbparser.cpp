@@ -51,7 +51,7 @@ CTmdb::CTmdb()
 {
 	thumbnail_dir = "/tmp/tmdbparser";
 
-	key = "507930c8d6d400c85eae3a7e7b3f6c78";
+	key = g_settings.tmdbkey;
 
 	lang = g_settings.language;
 
