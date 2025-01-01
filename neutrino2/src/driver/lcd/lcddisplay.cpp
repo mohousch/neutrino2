@@ -95,8 +95,8 @@ CLCDDisplay::CLCDDisplay()
 	locked = 0;
 	
 	//
-	xres = DEFAULT_LCD_XRES;
-	yres = DEFAULT_LCD_YRES;
+	xres = 220;
+	yres = 176;
 #if defined (BOXMODEL_VUDUO4K) || defined (BOXMODEL_VUULTIMO4K)
         xres = 480;
         yres = 320;

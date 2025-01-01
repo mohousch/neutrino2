@@ -181,8 +181,18 @@ CLCD::CLCD()
 	has_nglcd = false;
 	clearClock = 0;
 	fd = -1;
-	lcd_width = DEFAULT_LCD_XRES;
-	lcd_height = DEFAULT_LCD_YRES;
+	lcd_width = 220;
+	lcd_height = 176;
+#if defined (BOXMODEL_VUDUO4K) || defined (BOXMODEL_VUULTIMO4K)
+        lcd_width = 480;
+        lcd_height = 320;
+#elif defined (BOXMODEL_VUUNO4KSE)
+        lcd_width = 400;
+        lcd_height = 240;
+#elif defined (BOXMODEL_DM7080) || defined (BOXMODEL_DM8000HD)
+        lcd_width = 128;
+        lcd_height = 64;
+#endif
 	servicename = "";
 	servicenumber = 0;
 	epg_title = "";
