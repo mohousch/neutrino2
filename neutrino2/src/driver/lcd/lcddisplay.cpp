@@ -1205,12 +1205,8 @@ void CLCDDisplay::draw_point(const int x, const int y, uint32_t color)
 
 	tmpcol = ((a << 24) & 0xFF000000) | ((b << 16) & 0x00FF0000) | ((g << 8) & 0x0000FF00) | (r & 0x000000FF);
 #endif
-	
 
-	if (color == LCD_PIXEL_INV)
-		raw_buffer[(y * xres + x)] ^= 1;
-	else
-		raw_buffer[(y * xres + x)] = tmpcol;
+	raw_buffer[(y * xres + x)] = tmpcol;
 }
 
 void CLCDDisplay::draw_line(const int x1, const int y1, const int x2, const int y2, const uint32_t color)  

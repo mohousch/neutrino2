@@ -45,10 +45,6 @@
 #endif
 
 // argb
-#define LCD_PIXEL_OFF				0xFF000000  		// bg
-#define LCD_PIXEL_ON				0xFFFFFFFF
-#define LCD_PIXEL_INV				0x1000000
-
 #define LCD_PIXEL_BACKGROUND			COL_BACKGROUND_PLUS_0 	//0xFF000000
 #define LCD_PIXEL_WHITE				COL_WHITE_PLUS_0
 #define LCD_PIXEL_RED				COL_RED_PLUS_0
@@ -64,8 +60,8 @@
 ////
 #define LCDSET 					0x1000
 #define LCD_IOCTL_ASC_MODE 			(21 | LCDSET)
-#define LCD_MODE_ASC 0
-#define LCD_MODE_BIN 1
+#define LCD_MODE_ASC 				0
+#define LCD_MODE_BIN 				1
 
 #define FP_IOCTL_LCD_DIMM       		3
 

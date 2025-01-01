@@ -262,7 +262,7 @@ FT_Error LcdFont::getGlyphBitmap(FT_ULong glyph_index, FTC_SBit *sbit)
 	return renderer->getGlyphBitmap(&font, glyph_index, sbit);
 }
 
-void LcdFont::RenderString(int x, int y, const int width, const char * text, const int color, const int selected, const bool utf8_encoded)
+void LcdFont::RenderString(int x, int y, const int width, const char * text, const uint32_t color, const int selected, const bool utf8_encoded)
 {
 	int err;
 	pthread_mutex_lock(&renderer->render_mutex);
@@ -318,12 +318,6 @@ void LcdFont::RenderString(int x, int y, const int width, const char * text, con
     
 		int rx = x + glyph->left;
 		int ry = y - glyph->top;
-		
-		// need this ???
-		if(pos == selected)
-		{
-			framebuffer->draw_fill_rect(x - 2, y - glyph->height - 2, x + glyph->width + 2, y + 2, LCD_PIXEL_INV);
-		}
 		
 		for (int ay = 0; ay < glyph->height; ay++)
 		{
