@@ -991,7 +991,6 @@ void CLCDDisplay::blitBox2LCD(int flag)
 	
 	if (lcd_bpp == 8 && raw_bpp == 32)
 	{
-                // no clue yet
                 const uint8_t *srcptr = (uint8_t *)raw_buffer;
 	        uint8_t *dstptr = (uint8_t *)lcd_buffer;
 	        
@@ -1159,11 +1158,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
 	// scale / copy to tftbuffer
 	if (raw_bpp = 32)
 	{
-#if BYTE_ORDER == LITTLE_ENDIAN
 		swscale((uint8_t *)raw_buffer, (uint8_t *)tftbuffer, xres, yres, tftxres, tftyres, AV_PIX_FMT_BGR32, AV_PIX_FMT_RGB32);
-#else
-		swscale((uint8_t *)raw_buffer, (uint8_t *)tftbuffer, xres, yres, tftxres, tftyres, AV_PIX_FMT_RGB32, AV_PIX_FMT_RGB32);
-#endif
 	}
 #endif	
 
@@ -1171,11 +1166,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
 	// scale / copy to ng_buffer
 	if (raw_bpp = 32)
 	{
-#if BYTE_ORDER == LITTLE_ENDIAN
 		swscale((uint8_t *)raw_buffer, (uint8_t *)ngbuffer, xres, yres, ngxres, ngyres, AV_PIX_FMT_BGR32, AV_PIX_FMT_RGB32);
-#else
-		swscale((uint8_t *)raw_buffer, (uint8_t *)ngbuffer, xres, yres, ngxres, ngyres, AV_PIX_FMT_RGB32, AV_PIX_FMT_RGB32);
-#endif
 	}	
 #endif
 }
@@ -1193,20 +1184,8 @@ void CLCDDisplay::draw_point(const int x, const int y, uint32_t color)
 {
 	if ((x < 0) || (x >= xres) || (y < 0) || (y >= yres))
 		return;
-		
-	uint32_t tmpcol = color;
-	
-	// argb to abgr
-#if BYTE_ORDER == LITTLE_ENDIAN
-	uint8_t a = (color & 0xFF000000) >> 24;
-	uint8_t r = (color & 0x00FF0000) >> 16;
-	uint8_t g = (color & 0x0000FF00) >> 8;
-	uint8_t b = (color & 0x000000FF);
 
-	tmpcol = ((a << 24) & 0xFF000000) | ((b << 16) & 0x00FF0000) | ((g << 8) & 0x0000FF00) | (r & 0x000000FF);
-#endif
-
-	raw_buffer[(y * xres + x)] = tmpcol;
+	raw_buffer[(y * xres + x)] = color;
 }
 
 void CLCDDisplay::draw_line(const int x1, const int y1, const int x2, const int y2, const uint32_t color)  
@@ -1435,11 +1414,7 @@ bool CLCDDisplay::dump_png(const char * const filename)
 					ret_value = true;
 	
 					// convert			
-#if BYTE_ORDER == LITTLE_ENDIAN
 					fbptr = (png_byte *)::convertRGBA2ABGR32((png_byte *)raw_buffer, xres, yres, true);
-#else
-					fbptr = (png_byte *)::convertRGBA2ARGB32((png_byte *)raw_buffer, xres, yres, true);
-#endif
 					
 					for (int i = 0; i < yres; i++)
 					{
@@ -1476,17 +1451,10 @@ int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int widt
 	
 	dprintf(DEBUG_INFO, "CLCDDisplay::showPNGImage real: %s %d %d %d %d\n", filename, p_w, p_h, p_bpp, chans);
 
-#if BYTE_ORDER == LITTLE_ENDIAN
 	if (raw_bpp == 32)
 		element.buffer = (lcd_pixel_t *)::getABGR32Image(filename, width, height, 0xFF, SCALE_COLOR);
 	else
 		element.buffer = (lcd_pixel_t *)::getABGR8Image(filename, width, height, 0xFF, SCALE_COLOR);
-#else
-	if (raw_bpp == 32)
-		element.buffer = (lcd_pixel_t *)::getARGB32Image(filename, width, height, 0xFF, SCALE_COLOR);
-	else
-		element.buffer = (lcd_pixel_t *)::getARB32Image(filename, width, height, 0xFF, SCALE_COLOR);
-#endif
 
 	element.x = posx;
 	element.y = posy;
@@ -1525,17 +1493,10 @@ void CLCDDisplay::load_png_element(raw_lcd_element_t *element, int posx, int pos
 		height = p_h;
 	}
 
-#if BYTE_ORDER == LITTLE_ENDIAN
 	if (raw_bpp == 32)
 		element->buffer = (lcd_pixel_t *)::convertRGBA2ABGR32(image, width, height, (chans == 4)? true : false, 0xFF, TM_NONE);
 	else
 		element->buffer = (lcd_pixel_t *)::convertRGBA2ABGR8(image, width, height, (chans == 4)? true : false, 0xFF, TM_NONE);
-#else
-	if (raw_bpp == 32)
-		element->buffer = (lcd_pixel_t *)::convertRGBA2ARGB32(image, width, height, (chans == 4)? true : false, 0xFF, TM_NONE);
-	else
-		element->buffer = (lcd_pixel_t *)::convertRGBA2ARGB8(image, width, height, (chans == 4)? true : false, 0xFF, TM_NONE);
-#endif
 
 	element->x = posx;
 	element->y = posy;
