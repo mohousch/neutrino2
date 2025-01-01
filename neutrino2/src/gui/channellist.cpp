@@ -1546,7 +1546,8 @@ void CChannelList::paint(bool customMode)
 
 				logo = CChannellogo::getInstance()->getLogoName(chanlist[i]->getLogoID());
 				
-				item->setIconName(logo.c_str());
+				//FIXME:
+				//item->setIconName(logo.c_str());
 			}
 			
 			// option font
