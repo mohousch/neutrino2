@@ -1305,7 +1305,7 @@ void CLCD::showRCLock(int duration)
 		return;
 	
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
-	lcd_pixel_t * curr_screen = new lcd_pixel_t[display->raw_buffer_size];
+	uint32_t * curr_screen = new uint32_t[display->raw_buffer_size];
 
 	// Saving the whole screen is not really nice since the clock is updated
 	// every second. Restoring the screen can cause a short travel to the past ;)

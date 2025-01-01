@@ -111,8 +111,8 @@ CLCDDisplay::CLCDDisplay()
         yres = 64;
 #endif
 	raw_buffer_size = 0;
-	raw_bypp = sizeof(lcd_pixel_t);
-	raw_bpp = 8*sizeof(lcd_pixel_t);
+	raw_bypp = sizeof(uint32_t);
+	raw_bpp = 8*sizeof(uint32_t);
 	raw_buffer = NULL;
 	raw_stride = 0;
 	
@@ -421,7 +421,7 @@ void CLCDDisplay::initBuffer()
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	raw_stride = xres*raw_bypp;
 	raw_buffer_size = xres * yres * raw_bypp;
-	raw_buffer = new lcd_pixel_t[raw_buffer_size];
+	raw_buffer = new uint32_t[raw_buffer_size];
 	memset(raw_buffer, 0, raw_buffer_size);
 	
 	dprintf(DEBUG_NORMAL, "CLCDDisplay::initBuffer %d %d %d %dk video mem\n", xres, yres, raw_bypp, raw_buffer_size);
@@ -989,7 +989,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
 	int area_width  = area_right - area_left;
 	int area_height = area_bottom - area_top;
 	
-	if (lcd_bpp == 8 && raw_bpp == 32)
+	if (lcd_bpp == 8)
 	{
                 const uint8_t *srcptr = (uint8_t *)raw_buffer;
 	        uint8_t *dstptr = (uint8_t *)lcd_buffer;
@@ -1015,7 +1015,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
 			dstptr += lcd_stride;
 		}
 	}
-	else if (lcd_bpp == 16 && raw_bpp == 32)
+	else if (lcd_bpp == 16)
 	{
             	uint8_t *srcptr = (uint8_t*)raw_buffer;
             	uint8_t *dstptr = (uint8_t*)lcd_buffer;
@@ -1104,7 +1104,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
                 	dstptr += lcd_stride;
             	}
 	} 
-	else if (lcd_bpp == 32 && raw_bpp == 32)
+	else if (lcd_bpp == 32)
 	{
 		uint32_t *srcptr = (uint32_t*)raw_buffer;
             	uint32_t *dstptr = (uint32_t*)lcd_buffer;
@@ -1156,18 +1156,12 @@ void CLCDDisplay::blitBox2LCD(int flag)
 #ifdef ENABLE_TFTLCD
 	// TODO: now HW to test
 	// scale / copy to tftbuffer
-	if (raw_bpp = 32)
-	{
-		swscale((uint8_t *)raw_buffer, (uint8_t *)tftbuffer, xres, yres, tftxres, tftyres, AV_PIX_FMT_BGR32, AV_PIX_FMT_RGB32);
-	}
+	swscale((uint8_t *)raw_buffer, (uint8_t *)tftbuffer, xres, yres, tftxres, tftyres, AV_PIX_FMT_BGR32, AV_PIX_FMT_RGB32);
 #endif	
 
 #ifdef ENABLE_GRAPHLCD
 	// scale / copy to ng_buffer
-	if (raw_bpp = 32)
-	{
-		swscale((uint8_t *)raw_buffer, (uint8_t *)ngbuffer, xres, yres, ngxres, ngyres, AV_PIX_FMT_BGR32, AV_PIX_FMT_RGB32);
-	}	
+	swscale((uint8_t *)raw_buffer, (uint8_t *)ngbuffer, xres, yres, ngxres, ngyres, AV_PIX_FMT_BGR32, AV_PIX_FMT_RGB32);	
 #endif
 }
 
@@ -1329,9 +1323,9 @@ void CLCDDisplay::clear_screen()
 	blit();
 }
 
-void CLCDDisplay::dump_screen(lcd_pixel_t **screen) 
+void CLCDDisplay::dump_screen(uint32_t **screen) 
 {
-	memmove(*screen, (lcd_pixel_t *)raw_buffer, raw_buffer_size);
+	memmove(*screen, (uint32_t *)raw_buffer, raw_buffer_size);
 }
 
 void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int top) 
@@ -1342,18 +1336,18 @@ void CLCDDisplay::load_screen_element(raw_lcd_element_t * element, int left, int
 	{
 		for (unsigned int i = 0; i < min(element->height, yres - top); i++)
 		{	
-			memmove(raw_buffer + ((top + i)*xres) + left, (lcd_pixel_t *)element->buffer + (i*element->width), min(element->width, xres - left)*raw_bypp);
+			memmove(raw_buffer + ((top + i)*xres) + left, (uint32_t *)element->buffer + (i*element->width), min(element->width, xres - left)*raw_bypp);
 		}
 	}
 	
 	free(element->buffer);
 }
 
-void CLCDDisplay::load_screen(lcd_pixel_t **const screen) 
+void CLCDDisplay::load_screen(uint32_t **const screen) 
 {
 	raw_lcd_element_t element;
 	
-	element.buffer = (lcd_pixel_t *)*screen;
+	element.buffer = (uint32_t *)*screen;
 	element.width = xres;
 	element.height = yres;
 	element.bpp = raw_bpp;
@@ -1399,7 +1393,7 @@ bool CLCDDisplay::dump_png(const char * const filename)
         				        printf("CLCDDisplay::dump_png Error during writing header\n");
 
 					//
-					png_set_IHDR(png_ptr, info_ptr, xres, yres, 8, (raw_bpp == 32)? PNG_COLOR_TYPE_RGBA : PNG_COLOR_TYPE_GRAY, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+					png_set_IHDR(png_ptr, info_ptr, xres, yres, 8, PNG_COLOR_TYPE_RGBA, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
 					
 					//
         				png_write_info(png_ptr, info_ptr);
@@ -1451,10 +1445,7 @@ int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int widt
 	
 	dprintf(DEBUG_INFO, "CLCDDisplay::showPNGImage real: %s %d %d %d %d\n", filename, p_w, p_h, p_bpp, chans);
 
-	if (raw_bpp == 32)
-		element.buffer = (lcd_pixel_t *)::getABGR32Image(filename, width, height, 0xFF, SCALE_COLOR);
-	else
-		element.buffer = (lcd_pixel_t *)::getABGR8Image(filename, width, height, 0xFF, SCALE_COLOR);
+	element.buffer = (uint32_t *)::getABGR32Image(filename, width, height, 0xFF, SCALE_COLOR);
 
 	element.x = posx;
 	element.y = posy;
@@ -1493,10 +1484,7 @@ void CLCDDisplay::load_png_element(raw_lcd_element_t *element, int posx, int pos
 		height = p_h;
 	}
 
-	if (raw_bpp == 32)
-		element->buffer = (lcd_pixel_t *)::convertRGBA2ABGR32(image, width, height, (chans == 4)? true : false, 0xFF, TM_NONE);
-	else
-		element->buffer = (lcd_pixel_t *)::convertRGBA2ABGR8(image, width, height, (chans == 4)? true : false, 0xFF, TM_NONE);
+	element->buffer = (uint32_t *)::convertRGBA2ABGR32(image, width, height, (chans == 4)? true : false, 0xFF, TM_NONE);
 
 	element->x = posx;
 	element->y = posy;

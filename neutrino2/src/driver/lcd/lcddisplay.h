@@ -73,8 +73,6 @@
 #define LED_IOCTL_BLINKING_TIME 		0X12
 #define LED_IOCTL_SET_DEFAULT 			0x13
 
-#define lcd_pixel_t 				uint32_t
-
 struct gRGB
 {
     	union {
@@ -211,7 +209,7 @@ struct raw_lcd_element_t
 	int bpp;
 	int bypp;
 	int stride;
-	lcd_pixel_t *buffer;
+	uint32_t *buffer;
 };
 
 class CLCDDisplay
@@ -300,8 +298,8 @@ class CLCDDisplay
 		void draw_polygon(int num_vertices, int *vertices, uint32_t color);
 		////
 		void load_screen_element(raw_lcd_element_t * element, int left, int top);
-		void load_screen(lcd_pixel_t ** const screen);
-		void dump_screen(lcd_pixel_t **screen);
+		void load_screen(uint32_t ** const screen);
+		void dump_screen(uint32_t **screen);
 		bool dump_png(const char * const filename);
 		int showPNGImage(const char* filename, int posx, int posy, int width = 0, int height = 0, int flag = blitAlphaBlend);
 		void load_png_element(raw_lcd_element_t * element, int posx, int posy, int width = 0, int height = 0);
@@ -330,7 +328,7 @@ class CLCDDisplay
 #endif
 
 		//// raw buffer
-		lcd_pixel_t *raw_buffer;
+		uint32_t *raw_buffer;
 		int raw_stride;
 		int raw_buffer_size;
 		int raw_bpp, raw_bypp;
