@@ -111,7 +111,7 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 	frameBuffer = CFrameBuffer::getInstance();
 
 	name = Name;
-	selected = 0;
+	selected = -1;
 	tuned = 0xfffffff;
 	this->historyMode = _historyMode;
 	vlist = _vlist;
@@ -167,11 +167,8 @@ void CChannelList::setSize(int newsize)
 	chanlist.reserve(newsize);
 }
 
-void CChannelList::addChannel(CZapitChannel * channel, int num)
-{
-	if (num != 0)
-		channel->setNumber(num);
-		
+void CChannelList::addChannel(CZapitChannel * channel)
+{	
 	chanlist.push_back(channel);
 }
 

@@ -33,6 +33,7 @@
 #include <string>
 
 
+////
 class COSDSettings : public CMenuTarget
 {
 	private:
