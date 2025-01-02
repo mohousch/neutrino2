@@ -1338,9 +1338,9 @@ void CChannelList::quickZap(int key, bool cycle)
 
 	dprintf(DEBUG_NORMAL, "CChannelList::quickZap: quick zap selected = %d getActiveBouquetNumber %d\n", selected, bouquetList->getActiveBouquetNumber());
 
-//	if(cycle)
-//		CNeutrinoApp::getInstance()->channelList->zapTo(bouquetList->Bouquets[bouquetList->getActiveBouquetNumber()]->channelList->getKey(selected) - 1);
-//	else
+	if(cycle)
+		CNeutrinoApp::getInstance()->channelList->zapTo(bouquetList->Bouquets[bouquetList->getActiveBouquetNumber()]->channelList->getKey(selected) - 1);
+	else
         	zapTo(selected);
 
 	g_RCInput->clearRCMsg(); //FIXME test for n.103

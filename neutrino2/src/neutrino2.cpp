@@ -1531,7 +1531,7 @@ void CNeutrinoApp::channelsInit()
 	TVallList = new CBouquetList(_("All Services"));
 	tmp = TVallList->addBouquet(_("All Services"));
 	*(tmp->channelList) = *TVchannelList;
-	tmp->channelList->SortAlpha();
+	//tmp->channelList->SortAlpha();
 
 	// radio all list
 	RADIOallList = new CBouquetList(_("All Services"));
@@ -2180,15 +2180,6 @@ void CNeutrinoApp::initZapper()
 	}
 
 	// zap / epg / autorecord / infoviewer
-	int activBouquet = 0;
-	int activChannel = 0;
-	
-	if(bouquetList->Bouquets.size())
-	{ 
-		activBouquet = bouquetList->getActiveBouquetNumber();
-		activChannel = bouquetList->Bouquets[activBouquet]->channelList->getActiveChannelNumber();
-	}
-	
 	if(channelList->getSize() && CZapit::getInstance()->getCurrentChannelID())
 	{
 		// channellist adjust to channeliD
@@ -4101,14 +4092,7 @@ void CNeutrinoApp::realRun(void)
 				stopSubtitles();
 				
 				// Zap-History "Bouquet"
-				int activBouquet = 0;
-				
-				if(bouquetList->Bouquets.size())
-				{ 
-					activBouquet = bouquetList->getActiveBouquetNumber();
-				}
-				
-				int res = bouquetList->Bouquets[activBouquet]->channelList->numericZap( msg );
+				int res = channelList->numericZap( msg );
 
 				startSubtitles(res < 0);
 			}
@@ -4117,14 +4101,7 @@ void CNeutrinoApp::realRun(void)
 				stopSubtitles();
 				
 				// Quick Zap
-				int activBouquet = 0;
-				
-				if(bouquetList->Bouquets.size())
-				{ 
-					activBouquet = bouquetList->getActiveBouquetNumber();
-				}
-				
-				int res = bouquetList->Bouquets[activBouquet]->channelList->numericZap( msg );
+				int res = channelList->numericZap( msg );
 
 				startSubtitles(res < 0);
 			}
@@ -4498,14 +4475,7 @@ void CNeutrinoApp::realRun(void)
 				stopSubtitles();
 				
 				//
-				int activBouquet = 0;
-				
-				if(bouquetList->Bouquets.size())
-				{ 
-					activBouquet = bouquetList->getActiveBouquetNumber();
-				}
-				
-				bouquetList->Bouquets[activBouquet]->channelList->numericZap( msg );
+				channelList->numericZap( msg );
 				
 				// restore mute symbol
 				audioMute(current_muted, true);
@@ -4538,14 +4508,7 @@ void CNeutrinoApp::realRun(void)
 				stopSubtitles();
 				
 				// first step show channels from the same TP
-				int activBouquet = 0;
-				
-				if(bouquetList->Bouquets.size())
-				{ 
-					activBouquet = bouquetList->getActiveBouquetNumber();
-				}
-				
-				bouquetList->Bouquets[activBouquet]->channelList->numericZap( msg );
+				channelList->numericZap( msg );
 				
 				// restore mute symbol
 				audioMute(current_muted, true);
