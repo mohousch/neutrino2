@@ -171,10 +171,12 @@ function cat_menu(_id)
 	neutrino2.CFileHelpers():createDir("/tmp/plutotv")
 
 	local cm = neutrino2.ClistBox(40, 40, 1200, 640)
+	cm:setWidgetType(neutrino2.ClistBox_TYPE_FRAME)
 	cm:enablePaintHead()
 	cm:setTitle(catlist[tonumber(_id)], neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	cm:enablePaintDate()
 	cm:enablePaintFoot()
+	cm:enablePaintItemInfo()
 	
 	local red = neutrino2.button_label_struct()
 	red.button = neutrino2.NEUTRINO_ICON_BUTTON_RED
@@ -198,7 +200,8 @@ function cat_menu(_id)
 		if cat == tonumber(_id) then
 			local count = 1
 			for item, item_detail in pairs(itemlist_detail) do
-				--[[	
+			
+			-- test	
 				tfile = neutrino2.DATADIR .. "/icons/nopreview.jpg"
 					
 				if item_detail.cover ~= nil then
@@ -208,15 +211,14 @@ function cat_menu(_id)
 						neutrino2.downloadUrl(conv_utf8(item_detail.cover) .. "?h=640&w=480", tfile, "Mozilla/5.0")
 					end
 				end
-				]]
 					
 				playback_details[item] = 
 				{
 					uuid = item_detail.uuid;
 					name = item_detail.name;
 					desc = item_detail.desc;
-					cover = item_detail.cover;
-					--cover = tfile;
+					--cover = item_detail.cover;
+					cover = tfile;
 					type = item_detail.type;
 					duration = item_detail.duration;
 					rating = item_detail.rating;
@@ -224,7 +226,7 @@ function cat_menu(_id)
 				}
 					
 				item = neutrino2.CMenuForwarder(conv_utf8(item_detail.name))
-				--item:setHintIcon(tfile)
+				item:setHintIcon(tfile)
 				item:setOption(item_detail.desc)
 				item:set2lines(true)
 				
@@ -294,6 +296,7 @@ function season_menu(_id)
 			sm = neutrino2.ClistBox(340, 60, 600, 600)
 			sm:enablePaintHead()
 			sm:setTitle(jd.name, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
+			sm:enablePaintFoot()
 			
 			episodelist = {}
 			local count = 1
@@ -353,10 +356,12 @@ function episode_menu(s)
 	neutrino2.CFileHelpers():createDir("/tmp/plutotv")
 	
 	local em = neutrino2.ClistBox(40, 40, 1200, 640)
+	em:setWidgetType(neutrino2.ClistBox_TYPE_FRAME)
 	em:enablePaintHead()
 	em:setTitle(episodelist[tonumber(s)][1].title .. dgettext("plutotv", _(" - Season "))..s, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	em:enablePaintDate()
 	em:enablePaintFoot()
+	em:enablePaintItemInfo()
 	
 	local red = neutrino2.button_label_struct()
 	red.button = neutrino2.NEUTRINO_ICON_BUTTON_RED
@@ -380,8 +385,6 @@ function episode_menu(s)
 		if season == tonumber(s) then
 			local count = 1
 			for episode, episode_detail in pairs(episodelist_detail) do
-			
-				--[[
 				local tfile = neutrino2.DATADIR .. "/icons/nopreview.jpg"
 					
 				if episode_detail.cover ~= nil then
@@ -391,15 +394,14 @@ function episode_menu(s)
 						neutrino2.downloadUrl(conv_utf8(episode_detail.cover) .. "?h=640&w=480", tfile, "Mozilla/5.0")
 					end
 				end
-				]]
 				
 				playback_details[episode] = 
 				{
 					uuid = episode_detail.uuid;
 					name = episode_detail.name;
 					desc = episode_detail.desc;
-					cover = episode_detail.cover;
-					--cover = tfile;
+					--cover = episode_detail.cover;
+					cover = tfile;
 					type =  episode_detail.type;
 					duration = episode_detail.duration;
 					rating = episode_detail.rating;
@@ -409,7 +411,7 @@ function episode_menu(s)
 				}
 				
 				item = neutrino2.CMenuForwarder(episode_detail.name)
-				--item:setHintIcon(tfile)
+				item:setHintIcon(tfile)
 				item:setOption(episode_detail.desc)
 				item:setActionKey(null, "play")
 				item:set2lines(true)
