@@ -30,10 +30,9 @@ function convert(s)
 	return s
 end
 
-
 function get_channels()
 	httpTool = neutrino2.CHTTPTool()
-	httpTool:setTitle("Pluto TV Channels downlaoding please wait ...")
+	httpTool:setTitle(dgettext("plutotv", _("Pluto TV Channels downlaoding please wait ...")))
 		
 	local obj_file = "https://i.mjh.nz/PlutoTV/de.m3u8"
 	local target = neutrino2.CONFIGDIR .. "/webtv/plutotv.m3u8"
