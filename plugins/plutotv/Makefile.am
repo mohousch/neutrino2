@@ -1,3 +1,5 @@
+SUBDIRS = locale
+
 install-exec-local:
 	install -d $(DESTDIR)$(PLUGINDIR)/plutotv
 	install -m 0644 plutotv.cfg $(DESTDIR)$(PLUGINDIR)/plutotv

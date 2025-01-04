@@ -114,7 +114,7 @@ function getVideoData(url) -- Generate stream address and evaluate it according 
 end
 
 function get_cat()
-	local hint = neutrino2.CHintBox(plugin_title, "loading...", neutrino2.HINTBOX_WIDTH, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
+	local hint = neutrino2.CHintBox(plugin_title, dgettext("plutotv", _("loading...")), neutrino2.HINTBOX_WIDTH, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	hint:paint()
 	
 	local r = false
@@ -162,7 +162,7 @@ function get_cat()
 		
 		categories_menu()
 	else
-		local mBox = neutrino2.CMessageBox("Fehler", "Keinen Kategorien gefunden!")
+		local mBox = neutrino2.CMessageBox(dgettext("plutotv",_("Error")), dgettext("plutotv", _("No Catgeries found!")))
 		mBox:exec()
 	end
 end
@@ -179,11 +179,11 @@ function cat_menu(_id)
 	
 	local red = neutrino2.button_label_struct()
 	red.button = neutrino2.NEUTRINO_ICON_BUTTON_RED
-	red.localename = "Download"
+	red.localename = dgettext("plutotv", _("Download"))
 
 	local green = neutrino2.button_label_struct()
 	green.button = neutrino2.NEUTRINO_ICON_BUTTON_GREEN
-	green.localename = "Info"
+	green.localename = _("Info")
 	
 	cm:setFootButtons(red)
 	cm:setFootButtons(green)
@@ -192,7 +192,7 @@ function cat_menu(_id)
 	cm:addKey(neutrino2.CRCInput_RC_green, null, "play")
 	cm:addKey(neutrino2.CRCInput_RC_info, null, "info")
 	
-	local hint = neutrino2.CHintBox(plugin_title, "loading...", neutrino2.HINTBOX_WIDTH, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
+	local hint = neutrino2.CHintBox(plugin_title, dgettext("plutotv", _("loading...")), neutrino2.HINTBOX_WIDTH, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	hint:paint()
 	
 	for cat, itemlist_detail in pairs (itemlist) do
@@ -277,7 +277,7 @@ end
 sm_selected = 0
 function season_menu(_id)
 	local sm = nil
-	local h = neutrino2.CHintBox(plugin_title, "Suche Episoden ...")
+	local h = neutrino2.CHintBox(plugin_title, dgettext("plutotv", _("Search ...")))
 	h:paint()
 	local seasons = 1
 	local c_data = neutrino2.getUrlAnswer("http://api.pluto.tv/v3/vod/series/".. _id .."/seasons?includeItems=true&deviceType=web", "Mozilla/5.0")
@@ -299,7 +299,7 @@ function season_menu(_id)
 			episodelist = {}
 			local count = 1
 			for i=1, #jd.seasons do
-				item = neutrino2.CMenuForwarder("Season "..i)
+				item = neutrino2.CMenuForwarder(dgettext("plutotv", _("Season "))..i)
 				item:setActionKey(null, "episode_menu")
 				
 				sm:addItem(item)
@@ -355,17 +355,17 @@ function episode_menu(s)
 	
 	local em = neutrino2.ClistBox(40, 40, 1200, 640)
 	em:enablePaintHead()
-	em:setTitle(episodelist[tonumber(s)][1].title .. " - Season "..s, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
+	em:setTitle(episodelist[tonumber(s)][1].title .. dgettext("plutotv", _(" - Season "))..s, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	em:enablePaintDate()
 	em:enablePaintFoot()
 	
 	local red = neutrino2.button_label_struct()
 	red.button = neutrino2.NEUTRINO_ICON_BUTTON_RED
-	red.localename = "Download"
+	red.localename = dgettext("plutotv",_("Download"))
 
 	local green = neutrino2.button_label_struct()
 	green.button = neutrino2.NEUTRINO_ICON_BUTTON_GREEN
-	green.localename = "Play"
+	green.localename = dgettext("plutotv",_("Play"))
 	
 	em:setFootButtons(red)
 	em:setFootButtons(green)
@@ -374,7 +374,7 @@ function episode_menu(s)
 	em:addKey(neutrino2.CRCInput_RC_green, null, "play")
 	em:addKey(neutrino2.CRCInput_RC_info, null, "info")
 	
-	local hint = neutrino2.CHintBox(plugin_title, "loading...", neutrino2.HINTBOX_WIDTH, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
+	local hint = neutrino2.CHintBox(plugin_title, dgettext("plutotv", _("loading...")), neutrino2.HINTBOX_WIDTH, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	hint:paint()
 	
 	for season, episodelist_detail in pairs (episodelist) do
@@ -533,7 +533,7 @@ function categories_menu()
 	
 	local red = neutrino2.button_label_struct()
 	red.button = neutrino2.NEUTRINO_ICON_BUTTON_RED
-	red.localename = "Update Channels"
+	red.localename = dgettext("plutotv",_("Update Channels"))
 	
 	m:setFootButtons(red)
 	
