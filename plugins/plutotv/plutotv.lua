@@ -171,7 +171,8 @@ function cat_menu(_id)
 	neutrino2.CFileHelpers():createDir("/tmp/plutotv")
 
 	local cm = neutrino2.ClistBox(40, 40, 1200, 640)
-	cm:setWidgetType(neutrino2.ClistBox_TYPE_FRAME)
+	--cm:setWidgetType(neutrino2.ClistBox_TYPE_FRAME)
+	cm:setItemsPerPage(6, 2)
 	cm:enablePaintHead()
 	cm:setTitle(catlist[tonumber(_id)], neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	cm:enablePaintDate()
@@ -191,7 +192,6 @@ function cat_menu(_id)
 	
 	cm:addKey(neutrino2.CRCInput_RC_red, null, "rec")
 	cm:addKey(neutrino2.CRCInput_RC_green, null, "play")
-	cm:addKey(neutrino2.CRCInput_RC_info, null, "info")
 	
 	local hint = neutrino2.CHintBox(plugin_title, dgettext("plutotv", _("loading...")), neutrino2.HINTBOX_WIDTH, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	hint:paint()
@@ -199,9 +199,7 @@ function cat_menu(_id)
 	for cat, itemlist_detail in pairs (itemlist) do
 		if cat == tonumber(_id) then
 			local count = 1
-			for item, item_detail in pairs(itemlist_detail) do
-			
-			-- test	
+			for item, item_detail in pairs(itemlist_detail) do	
 				tfile = neutrino2.DATADIR .. "/icons/nopreview.jpg"
 					
 				if item_detail.cover ~= nil then
@@ -217,8 +215,7 @@ function cat_menu(_id)
 					uuid = item_detail.uuid;
 					name = item_detail.name;
 					desc = item_detail.desc;
-					--cover = item_detail.cover;
-					cover = tfile;
+					cover = item_detail.cover;
 					type = item_detail.type;
 					duration = item_detail.duration;
 					rating = item_detail.rating;
@@ -229,6 +226,7 @@ function cat_menu(_id)
 				item:setHintIcon(tfile)
 				item:setOption(item_detail.desc)
 				item:set2lines(true)
+				item:setHint(item_detail.desc)
 				
 				if item_detail.type == "movie" then
 					item:setActionKey(null, "play");
@@ -263,9 +261,6 @@ function cat_menu(_id)
 	end
 	if actionKey == "rec" then
 		recStream(cm_selected + 1)
-	end
-	if actionKey == "info" then
-		infoStream(cm_selected + 1)
 	end
 	
 	if cm:getExitPressed() ~= true then
@@ -356,12 +351,12 @@ function episode_menu(s)
 	neutrino2.CFileHelpers():createDir("/tmp/plutotv")
 	
 	local em = neutrino2.ClistBox(40, 40, 1200, 640)
-	em:setWidgetType(neutrino2.ClistBox_TYPE_FRAME)
+	--em:setWidgetType(neutrino2.ClistBox_TYPE_EXTENDED)
 	em:enablePaintHead()
 	em:setTitle(episodelist[tonumber(s)][1].title .. dgettext("plutotv", _(" - Season "))..s, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	em:enablePaintDate()
 	em:enablePaintFoot()
-	em:enablePaintItemInfo()
+	--em:enablePaintItemInfo()
 	
 	local red = neutrino2.button_label_struct()
 	red.button = neutrino2.NEUTRINO_ICON_BUTTON_RED
@@ -376,7 +371,6 @@ function episode_menu(s)
 	
 	em:addKey(neutrino2.CRCInput_RC_red, null, "rec")
 	em:addKey(neutrino2.CRCInput_RC_green, null, "play")
-	em:addKey(neutrino2.CRCInput_RC_info, null, "info")
 	
 	local hint = neutrino2.CHintBox(plugin_title, dgettext("plutotv", _("loading...")), neutrino2.HINTBOX_WIDTH, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	hint:paint()
@@ -400,8 +394,7 @@ function episode_menu(s)
 					uuid = episode_detail.uuid;
 					name = episode_detail.name;
 					desc = episode_detail.desc;
-					--cover = episode_detail.cover;
-					cover = tfile;
+					cover = episode_detail.cover;
 					type =  episode_detail.type;
 					duration = episode_detail.duration;
 					rating = episode_detail.rating;
@@ -415,6 +408,7 @@ function episode_menu(s)
 				item:setOption(episode_detail.desc)
 				item:setActionKey(null, "play")
 				item:set2lines(true)
+				item:setHint(episode_detail.desc)
 				
 				em:addItem(item)
 			end
@@ -439,9 +433,6 @@ function episode_menu(s)
 	end
 	if actionKey == "rec" then
 		recStream(em_selected + 1)
-	end
-	if actionKey == "info" then
-		infoStream(em_selected + 1)
 	end
 	
 	if em:getExitPressed() ~= true then
@@ -473,31 +464,6 @@ function playStream(id)
 	movieWidget:setMovie(file, title, info1, "", tfile, duration)
 
 	movieWidget:exec(null, "")
-end
-
-function infoStream(id)
-	file = getVideoData(playback_details[id].uuid)
-	title = playback_details[id].name
-	info1 = playback_details[id].desc
-	cover = playback_details[id].cover	
-	duration = playback_details[id].duration
-	rating = playback_details[id].rating
-	
-	tfile = neutrino2.DATADIR .. "/icons/nopreview.jpg"
-					
-	if cover ~= nil then
-		tfile = "/tmp/plutotv/" .. conv_utf8(title) .. ".jpg"
-					
-		if neutrino2.file_exists(tfile) ~= true then
-			neutrino2.downloadUrl(conv_utf8(cover) .. "?h=640&w=480", tfile, "Mozilla/5.0")
-		end
-	end
-		
-	movieWidget = neutrino2.CInfoBox()
-	movieWidget:setTitle(title)
-	movieWidget:setText(info1, tfile)
-
-	movieWidget:exec()
 end
 
 function recStream(id)
