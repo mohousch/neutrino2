@@ -1,3 +1,5 @@
+SUBDIRS = locale
+
 install-exec-local:
 	install -d $(DESTDIR)$(PLUGINDIR)/lua
 	install -m 0644 lua.cfg $(DESTDIR)$(PLUGINDIR)/lua

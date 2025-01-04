@@ -15,8 +15,8 @@
 			<item id="FORWARDER" localename="Settings" itemicon="hint_settings" target="settings"/>
 			<item id="FORWARDER" localename="OSD" itemicon="hint_osd" target="osd"/>
 			<item id="FORWARDER" localename="Information" itemicon="hint_dboxinfo" target="information"/>
-			<item id="FORWARDER" localename="Power Menu" itemicon="hint_shutdown" target="powermenu"/>
 			<item id="FORWARDER" localename="Media Player" itemicon="hint_media" target="mediaplayer"/>
+			<item id="FORWARDER" localename="Power Menu" itemicon="hint_shutdown" target="powermenu"/>
 		</listbox>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>

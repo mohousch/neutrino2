@@ -53,8 +53,6 @@ youtube/Makefile
 systeminfo/Makefile
 systeminfo/locale/Makefile
 tuxcom/Makefile
-tuxcal/Makefile
-tuxcal/daemon/Makefile
 fileexplorer/Makefile
 mediaportal/Makefile
 satipclient/Makefile
@@ -78,6 +76,7 @@ upnp/Makefile
 upnp/locale/Makefile
 python/Makefile
 lua/Makefile
+lua/locale/Makefile
 netzkino_hd/Makefile
 mtv/Makefile
 media_one/Makefile

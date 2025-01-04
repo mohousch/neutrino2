@@ -42,7 +42,7 @@ extern "C" void plugin_del(void);
 
 //// defines
 //FIXME: make this global
-#define __(string) dgettext("icecast", string)
+#define _(string) dgettext("icecast", string)
 //
 #define NEUTRINO_ICON_ICECAST_SMALL		PLUGINDIR "/icecast/icecast_small.png"
 #define SHOW_FILE_LOAD_LIMIT 50
@@ -292,7 +292,7 @@ void CIceCast::scanXmlData(xmlDocPtr answer_parser, const char *nametag, const c
 
 			long listPos = 1;
 			
-			progress.setTitle(__("Receiving list, please wait"));
+			progress.setTitle(_("Receiving list, please wait"));
 			progress.enableCancelIcon();
 			progress.paint();
 			
@@ -402,7 +402,7 @@ bool CIceCast::openFileBrowser(void)
 		
 		if (maxProgress > SHOW_FILE_LOAD_LIMIT)
 		{
-			progress.setTitle(__("Receiving list, please wait"));	
+			progress.setTitle(_("Receiving list, please wait"));	
 			progress.paint();
 		}
 
@@ -644,7 +644,7 @@ void CIceCast::loadPlaylist(void)
 		scanXmlData(answer_parser, "server_name", "listen_url", "bitrate", true);
 	}
 	else
-		HintBox(__("Information"), __("can't load icecast list"));
+		HintBox(_("Information"), _("can't load icecast list"));
 }
 
 #define HEAD_BUTTONS_COUNT 2
@@ -653,10 +653,10 @@ const struct button_label HeadButtons{ NEUTRINO_ICON_BUTTON_SETUP, "" };
 #define FOOT_BUTTONS_COUNT 4
 const struct button_label AudioPlayerButtons[FOOT_BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, __("Delete") },
-	{ NEUTRINO_ICON_BUTTON_GREEN, __("Add") },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, __("Delete all") },
-	{ NEUTRINO_ICON_BUTTON_BLUE, __("Reload") }
+	{ NEUTRINO_ICON_BUTTON_RED, _("Delete") },
+	{ NEUTRINO_ICON_BUTTON_GREEN, _("Add") },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Delete all") },
+	{ NEUTRINO_ICON_BUTTON_BLUE, _("Reload") }
 };
 
 void CIceCast::showMenu()
@@ -699,7 +699,7 @@ void CIceCast::showMenu()
 	ilist->setSelected(selected);
 
 	ilist->enablePaintHead();
-	ilist->setTitle(__("ICE Cast"), NEUTRINO_ICON_ICECAST_SMALL);
+	ilist->setTitle(_("ICE Cast"), NEUTRINO_ICON_ICECAST_SMALL);
 	ilist->setHeadButtons(&HeadButtons);
 	ilist->enablePaintDate();
 	

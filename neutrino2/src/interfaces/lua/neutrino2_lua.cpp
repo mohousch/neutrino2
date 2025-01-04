@@ -36,7 +36,19 @@
 #include <system/debug.h>
 
 
-extern "C" int luaopen_neutrino2(lua_State* L); // declare the wrapped module
+extern "C" int luaopen_neutrino2(lua_State *L); // declare the wrapped module
+
+static int lua_gettext(lua_State *L)
+{
+	lua_pushstring(L, gettext(luaL_checkstring(L, 1)));
+	return (1);
+}
+
+static int lua_dgettext(lua_State *L)
+{
+	lua_pushstring(L, dgettext(luaL_checkstring(L, 1), luaL_checkstring(L, 2) ));
+	return (1);
+}
 
 neutrinoLua::neutrinoLua()
 {
@@ -47,6 +59,10 @@ neutrinoLua::neutrinoLua()
 
 	// call wrapped module
 	luaopen_neutrino2(lua);
+	
+	//
+	lua_register(lua, "_", lua_gettext);
+	lua_register(lua, "dgettext", lua_dgettext);
 }
 
 neutrinoLua::~neutrinoLua()

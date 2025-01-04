@@ -19,7 +19,6 @@ SUBDIRS = \
 if ENABLE_TESTING
 SUBDIRS += \
 	netzkino \
-	tuxcal \
 	youtube \
 	moviebrowser
 endif

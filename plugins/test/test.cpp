@@ -31,7 +31,7 @@ extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
 
 //FIXME: make this global
-#define __(string) dgettext("test", string)
+#define _(string) dgettext("test", string)
 
 class CTestMenu : public CMenuTarget
 {
@@ -941,7 +941,7 @@ void CTestMenu::testCWidget()
 	rightWidget->enablePaintItemInfo(80);
 
 	// loadPlaylist
-	CHintBox loadBox(__("CWidget(CFrameBox/ClistBox)"), _("Scan for Movies ..."));
+	CHintBox loadBox(_("CWidget(CFrameBox/ClistBox)"), _("Scan for Movies ..."));
 	loadBox.paint();
 	
 	loadTMDBPlaylist();
@@ -1335,7 +1335,7 @@ void CTestMenu::testCListFrameWidget()
 	listFrame->setMode(CListFrame::TITLE | CListFrame::HEADER_LINE);
 	listFrame->setTitle("listFrame (AudioPlayer)", NEUTRINO_ICON_MP3);
 
-	CHintBox loadBox("ListFrame Widget", __("Scan for Movies ..."));
+	CHintBox loadBox("ListFrame Widget", _("Scan for Movies ..."));
 	loadBox.paint();
 	
 	loadAudioPlaylist();
@@ -1416,7 +1416,7 @@ void CTestMenu::testClistBoxWidget()
 	rightWidget->enableShrinkMenu();
 
 	// loadPlaylist
-	CHintBox loadBox("CWidget", __("Scan for Movies ..."));
+	CHintBox loadBox("CWidget", _("Scan for Movies ..."));
 	loadBox.paint();
 	
 	loadMoviePlaylist();
@@ -2258,7 +2258,7 @@ void CTestMenu::testCListFrame()
 	listFrame->setTitle("listFrame (AudioPlayer)", NEUTRINO_ICON_MP3);
 	
 	// fill lineArrays list
-	CHintBox loadBox("listFrame", __("Scan for Movies ..."));
+	CHintBox loadBox("listFrame", _("Scan for Movies ..."));
 	loadBox.paint();
 	
 	loadAudioPlaylist();
@@ -2330,7 +2330,7 @@ void CTestMenu::testClistBox()
 
 	rightWidget = new ClistBox(&Box);
 	
-	CHintBox loadBox("testClistBox(standard)", __("Scan for Movies ..."));
+	CHintBox loadBox("testClistBox(standard)", _("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -2405,7 +2405,7 @@ void CTestMenu::testClistBox2()
 
 	rightWidget = new ClistBox(&Box);
 
-	CHintBox loadBox("ClistBox(classic)", __("Scan for Movies ..."));
+	CHintBox loadBox("ClistBox(classic)", _("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -2478,7 +2478,7 @@ void CTestMenu::testClistBox3()
 
 	rightWidget = new ClistBox(&Box);
 
-	CHintBox loadBox("ClistBox(extended)", __("Scan for Movies ..."));
+	CHintBox loadBox("ClistBox(extended)", _("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -2547,7 +2547,7 @@ void CTestMenu::testClistBox4()
 	
 	rightWidget = new ClistBox(&Box);
 
-	CHintBox loadBox("ClistBox(frame)", __("Scan for Movies ..."));
+	CHintBox loadBox("ClistBox(frame)", _("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -2619,7 +2619,7 @@ void CTestMenu::testClistBox6()
 
 	rightWidget = new ClistBox(&Box);
 
-	CHintBox loadBox("ClistBox(HINTITEM)", __("Scan for Movies ..."));
+	CHintBox loadBox("ClistBox(HINTITEM)", _("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -2691,7 +2691,7 @@ void CTestMenu::testClistBox7()
 
 	rightWidget = new ClistBox(&Box);
 
-	CHintBox loadBox("ClistBox(HINTICON)", __("Scan for Movies ..."));
+	CHintBox loadBox("ClistBox(HINTICON)", _("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -2764,7 +2764,7 @@ void CTestMenu::testClistBox8()
 
 	rightWidget = new ClistBox(&Box);
 
-	CHintBox loadBox("ClistBox(ICON)", __("Scan for Movies ..."));
+	CHintBox loadBox("ClistBox(ICON)", _("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -2837,7 +2837,7 @@ void CTestMenu::testClistBox9()
 
 	rightWidget = new ClistBox(&Box);
 	
-	CHintBox loadBox("testClistBox(HINT)", __("Scan for Movies ..."));
+	CHintBox loadBox("testClistBox(HINT)", _("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -2916,7 +2916,7 @@ void CTestMenu::testCFrameBox()
 	frameBoxWidget->setBorderColor(COL_WHITE_PLUS_0);
 	frameBoxWidget->setCorner(15, 15);
 
-	CHintBox loadBox("CFrameBox", __("Scan for Movies ..."));
+	CHintBox loadBox("CFrameBox", _("Scan for Movies ..."));
 	loadBox.paint();
 	
 	loadMoviePlaylist();
@@ -3147,7 +3147,7 @@ void CTestMenu::testCIPInput()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCIPInput\n");
 
 	std::string value;
-	CIPInput * ipInput = new CIPInput(__("IP:"), value);
+	CIPInput * ipInput = new CIPInput(_("IP:"), value);
 	
 	ipInput->exec(NULL, "");
 	
@@ -3189,7 +3189,7 @@ void CTestMenu::testCTimeInput()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCTimeInput\n");
 
 	std::string value;
-	CTimeInput * timeInput = new CTimeInput(__("Time:"), (char *)value.c_str());
+	CTimeInput * timeInput = new CTimeInput(_("Time:"), (char *)value.c_str());
 	
 	timeInput->exec(NULL, "");
 	
@@ -3204,7 +3204,7 @@ void CTestMenu::testCIntInput()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCIntInput\n");
 
 	int value;
-	CIntInput * intInput = new CIntInput(__("Test"), value);
+	CIntInput * intInput = new CIntInput(_("Test"), value);
 	
 	intInput->exec(NULL, "");
 	
@@ -3251,7 +3251,7 @@ void CTestMenu::testCMessageBox()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCMessageBox\n");
 
-	CMessageBox * messageBox = new CMessageBox(__("Information"), "testing CMessageBox"/*, 600, NEUTRINO_ICON_INFO, CMessageBox::mbrYes, CMessageBox::mbNone*/);
+	CMessageBox * messageBox = new CMessageBox(_("Information"), "testing CMessageBox"/*, 600, NEUTRINO_ICON_INFO, CMessageBox::mbrYes, CMessageBox::mbNone*/);
 	
 	int res = messageBox->exec();
 
@@ -3268,7 +3268,7 @@ void CTestMenu::testCMessageBoxInfoMsg()
 
 	std::string Text = "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.";
 
-	MessageBox(__("Information"), Text.c_str(), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
+	MessageBox(_("Information"), Text.c_str(), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
 }
 
 // MessageBox
@@ -3276,7 +3276,7 @@ void CTestMenu::testCMessageBoxErrorMsg()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCMessageBox\n");
 
-	MessageBox(__("Error"), "testing CMessageBoxErrorMsg", CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
+	MessageBox(_("Error"), "testing CMessageBoxErrorMsg", CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 }
 
 // CHintBox
