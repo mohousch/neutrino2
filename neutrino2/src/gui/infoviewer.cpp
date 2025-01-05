@@ -487,19 +487,13 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 		ChanNameWidth = BoxWidth - (ICON_OFFSET + 30 + CHANNUMBER_WIDTH + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->getRenderWidth(ChannelName, true));
 
 		// display channel picon
-		bool logo_ok = false;
-		
-		//
 		logo_w = pic_w; 
 		logo_h = pic_h;
 		logo_bpp = 0;
 		int logo_chans = 0;
 		t_channel_id logoid = CZapit::getInstance()->getChannelLogoID(channel_id);
 		
-		// check logo
-		logo_ok = CChannellogo::getInstance()->checkLogo(logoid);
-		
-		if(logo_ok && g_settings.logos_show_logo)
+		if(g_settings.logos_show_logo)
 		{
 			// get logo size	
 			CChannellogo::getInstance()->getLogoSize(logoid, &logo_w, &logo_h);

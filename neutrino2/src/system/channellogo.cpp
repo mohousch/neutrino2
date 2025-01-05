@@ -79,10 +79,10 @@ bool CChannellogo::checkLogo(t_channel_id logo_id)
 	bool logo_ok = false;
 	
 	// first png, then jpg, then gif
-	std::string strLogoExt[3] = { ".png", ".jpg", ".svg" };
+	std::string strLogoExt[2] = { ".png", ".jpg" };
 	
 	// check for logo
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		logo_name = g_settings.logos_dir;
 		logo_name += "/";
@@ -108,10 +108,10 @@ void CChannellogo::getLogoSize(t_channel_id logo_id, int * width, int * height)
 	int nchans = 0;
 	
 	// check for logo/convert channelid to logo
-	std::string strLogoExt[3] = { ".png", ".jpg", ".svg" };
+	std::string strLogoExt[2] = { ".png", ".jpg" };
 	
 	// check for logo
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		logo_name = g_settings.logos_dir;
 		logo_name += "/";
@@ -134,12 +134,36 @@ void CChannellogo::getLogoSize(t_channel_id logo_id, int * width, int * height)
 	}
 }
 
+std::string CChannellogo::getLogoName(t_channel_id logo_id)
+{
+	std::string logo_name = DATADIR "/lcd/picon_default.png";
+	
+	// check for logo/convert channelid to logo
+	std::string strLogoExt[2] = { ".png", ".jpg" };
+	
+	// check for logo
+	for (int i = 0; i < 2; i++)
+	{
+		std::string fname = g_settings.logos_dir;
+		fname += "/";
+		fname += toHexString(logo_id & 0xFFFFFFFFFFFFULL);
+		fname += strLogoExt[i].c_str();
+
+		if(!access(fname.c_str(), F_OK)) 
+		{
+			logo_name = fname;
+			break;
+		}
+	}
+
+	return logo_name;
+}
+
 // display logo
-bool CChannellogo::displayLogo(t_channel_id logo_id, int posx, int posy, int width, int height, bool upscale, bool center_x, bool center_y)
+void CChannellogo::displayLogo(t_channel_id logo_id, int posx, int posy, int width, int height, bool upscale, bool center_x, bool center_y)
 {	
-        std::string logo_name;
-	bool ret = false;
-	bool logo_ok = false;
+        std::string logo_name = DATADIR "/lcd/picon_default.png";
+	bool logo_ok = true;
 	
 	int logo_w = width;
 	int logo_h = height;
@@ -148,17 +172,18 @@ bool CChannellogo::displayLogo(t_channel_id logo_id, int posx, int posy, int wid
 	int nchans = 0;
 	
 	// check for logo
-	std::string strLogoExt[3] = { ".png", ".jpg", ".svg" };
+	std::string strLogoExt[2] = { ".png", ".jpg" };
 	
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 2; i++)
 	{
-		logo_name = g_settings.logos_dir;
-		logo_name += "/";
-		logo_name += toHexString(logo_id & 0xFFFFFFFFFFFFULL);
-		logo_name += strLogoExt[i].c_str();
+		std::string fname = g_settings.logos_dir;
+		fname += "/";
+		fname += toHexString(logo_id & 0xFFFFFFFFFFFFULL);
+		fname += strLogoExt[i].c_str();
 
-		if(!access(logo_name.c_str(), F_OK)) 
+		if(!access(fname.c_str(), F_OK)) 
 		{
+			logo_name = fname;
 			logo_ok = true;
 			break;
 		}
@@ -190,41 +215,13 @@ bool CChannellogo::displayLogo(t_channel_id logo_id, int posx, int posy, int wid
 				}
 			}
 			
-			ret = CFrameBuffer::getInstance()->displayImage(logo_name, center_x?posx + (width - logo_w)/2 : posx, center_y?posy + (height - logo_h)/2 : posy, logo_w, logo_h);
+			CFrameBuffer::getInstance()->displayImage(logo_name, center_x?posx + (width - logo_w)/2 : posx, center_y?posy + (height - logo_h)/2 : posy, logo_w, logo_h);
 		}
 		else
 		{
-			ret = CFrameBuffer::getInstance()->displayImage(logo_name, posx, posy, width, height);
+			CFrameBuffer::getInstance()->displayImage(logo_name, posx, posy, width, height);
 		}
         }
-
-	return ret;
-}
-
-std::string CChannellogo::getLogoName(t_channel_id logo_id)
-{
-	std::string logo_name = "";
-	bool logo_ok = false;
-	
-	// check for logo/convert channelid to logo
-	std::string strLogoExt[3] = { ".png", ".jpg", ".svg" };
-	
-	// check for logo
-	for (int i = 0; i < 2; i++)
-	{
-		logo_name = g_settings.logos_dir;
-		logo_name += "/";
-		logo_name += toHexString(logo_id & 0xFFFFFFFFFFFFULL);
-		logo_name += strLogoExt[i].c_str();
-
-		if(!access(logo_name.c_str(), F_OK)) 
-		{
-			logo_ok = true;
-			break;
-		}
-	}
-
-	return logo_name;
 }
 
 //

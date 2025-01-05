@@ -371,7 +371,7 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 					switch ( rv ) 
 					{
 						case CMenuTarget::RETURN_EXIT_ALL:
-							retval = CMenuTarget::RETURN_EXIT_ALL; //fall through
+							retval = CMenuTarget::RETURN_EXIT_ALL;
 						case CMenuTarget::RETURN_EXIT:
 							msg = CRCInput::RC_timeout;
 							break;

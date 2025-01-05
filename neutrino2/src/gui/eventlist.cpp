@@ -653,7 +653,7 @@ void EventList::paint(t_channel_id channel_id)
 	}
 
 	// head
-	std::string logo;
+	std::string logo = DATADIR "/lcd/picon_default.png";
 	t_channel_id logoid = CZapit::getInstance()->getChannelLogoID(channel_id);
 
 	logo = CChannellogo::getInstance()->getLogoName(logoid);

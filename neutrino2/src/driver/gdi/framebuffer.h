@@ -246,10 +246,10 @@ class CFrameBuffer
 
 		// icon
 		void getIconSize(const char * const filename, int* width, int *height);
-		bool paintIcon(const std::string &filename, const int x, const int y, const int h = 0, int width = 0, int height = 0);
-		bool paintHintIcon(const std::string &filename, int posx, int posy, int width , int height);
-		bool paintIcon8(const std::string &filename, const int x, const int y, const unsigned char offset = 0);
-		bool paintIconRaw(const std::string &filename, const int x, const int y, const int h = 0, const unsigned char offset = 1);
+		void paintIcon(const std::string &filename, const int x, const int y, const int h = 0, int width = 0, int height = 0);
+		void paintHintIcon(const std::string &filename, int posx, int posy, int width , int height);
+		void paintIcon8(const std::string &filename, const int x, const int y, const unsigned char offset = 0);
+		void paintIconRaw(const std::string &filename, const int x, const int y, const int h = 0, const unsigned char offset = 1);
 		void loadPal(const std::string &filename, const unsigned char offset = 0, const unsigned char endidx = 255);
 		
 		// background
@@ -258,7 +258,7 @@ class CFrameBuffer
 		void useBackground(bool ub);
 		bool getuseBackground(void);
 
-		void saveBackgroundImage(void);  // <- implies useBackground(false);
+		void saveBackgroundImage(void);
 		void restoreBackgroundImage(void);
 
 		void paintBackgroundBoxRel(int x, int y, int dx, int dy);
@@ -284,7 +284,7 @@ class CFrameBuffer
 
 		////
 		void displayRGB(uint8_t *rgbbuff, int x_size, int y_size, int x_pan, int y_pan, int x_offs, int y_offs, bool clearfb = true);
-		bool displayImage(const std::string &name, int posx = 0, int posy = 0, int width = 0, int height = 0, int x_pan = 0, int y_pan = 0, ScalingMode scaletype = SCALE_COLOR);
+		void displayImage(const std::string &name, int posx = 0, int posy = 0, int width = 0, int height = 0, int x_pan = 0, int y_pan = 0, ScalingMode scaletype = SCALE_COLOR);
 };
 
 ////

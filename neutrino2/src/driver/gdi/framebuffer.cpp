@@ -957,10 +957,10 @@ void CFrameBuffer::getIconSize(const char * const filename, int * width, int * h
 }
 
 //
-bool CFrameBuffer::paintIcon8(const std::string &filename, const int x, const int y, const unsigned char offset)
+void CFrameBuffer::paintIcon8(const std::string &filename, const int x, const int y, const unsigned char offset)
 {
 	if (!getActive())
-		return false;
+		return;
 
 	struct rawHeader header;
 	uint16_t width, height;
@@ -971,7 +971,7 @@ bool CFrameBuffer::paintIcon8(const std::string &filename, const int x, const in
 	if (_fd == -1) 
 	{
 		printf("CFrameBuffer::paintIcon8: error while loading icon: %s%s\n", iconBasePath.c_str(), filename.c_str());
-		return false;
+		return;
 	}
 
 	read(_fd, &header, sizeof(struct rawHeader));
@@ -1005,15 +1005,13 @@ bool CFrameBuffer::paintIcon8(const std::string &filename, const int x, const in
 		d += stride;
 	}
 	close(_fd);
-
-	return true;
 }
 
 // paint icon raw
-bool CFrameBuffer::paintIconRaw(const std::string & filename, const int x, const int y, const int h, const unsigned char offset)
+void CFrameBuffer::paintIconRaw(const std::string & filename, const int x, const int y, const int h, const unsigned char offset)
 {
 	if (!getActive())
-		return false;
+		return;
 	
 	struct rawHeader header;
 	
@@ -1032,7 +1030,7 @@ bool CFrameBuffer::paintIconRaw(const std::string & filename, const int x, const
 	if (lfd == -1) 
 	{
 		dprintf(DEBUG_NORMAL, "paintIcon: error while loading icon: %s\n", newname.c_str());
-		return false;
+		return;
 	}
 		
 	read(lfd, &header, sizeof(struct rawHeader));
@@ -1079,17 +1077,15 @@ bool CFrameBuffer::paintIconRaw(const std::string & filename, const int x, const
 	blitBox2FB(data, width, height, x, yy);
 
 	free(tmp_data);
-	
-	return true;
 }
 
 //
-bool CFrameBuffer::paintIcon(const std::string &filename, const int x, const int y, const int h, int width, int height)
+void CFrameBuffer::paintIcon(const std::string &filename, const int x, const int y, const int h, int width, int height)
 {
 	dprintf(DEBUG_DEBUG, "CFrameBuffer::paintIcon: %s\n", filename.c_str());
 	
 	if (!getActive())
-		return false;
+		return;
 	
 	fb_pixel_t * data;
 	int  yy = y;
@@ -1139,43 +1135,30 @@ bool CFrameBuffer::paintIcon(const std::string &filename, const int x, const int
 
 	if(data) 
 	{	
-		// display icon
-		goto _display;
-	}
-	else
-	{
-		dprintf(DEBUG_DEBUG, "paintIcon: error while loading icon: %s\n", filename.c_str());
-		return false;
-	}
-	
-_display:
-	if (h != 0)
-		yy += (h - height) / 2;	
+		if (h != 0)
+			yy += (h - height) / 2;	
 
-	blitBox2FB(data, width, height, x, yy, 0, 0, true);
-	free(data);
-
-	return true;
+		blitBox2FB(data, width, height, x, yy, 0, 0, true);
+		free(data);
+	}
 }
 
 // paintHintIcon
-bool CFrameBuffer::paintHintIcon(const std::string& filename, int posx, int posy, int width, int height)
+void CFrameBuffer::paintHintIcon(const std::string& filename, int posx, int posy, int width, int height)
 {
 	dprintf(DEBUG_DEBUG, "CFrameBuffer::paintHintIcon: %s\n", filename.c_str());
 	
 	if (!getActive())
-		return false;
+		return;
 
 	if (::file_exists(filename.c_str()))
-		return displayImage(filename, posx, posy, width, height);
+		displayImage(filename, posx, posy, width, height);
 	else
 	{
 		std::string newname = hintBasePath + filename.c_str() + ".png";		
 
-		return displayImage(newname, posx, posy, width, height);
+		displayImage(newname, posx, posy, width, height);
 	}
-
-	return false;
 }
 
 void CFrameBuffer::loadPal(const std::string &filename, const unsigned char offset, const unsigned char endidx)
@@ -1746,12 +1729,12 @@ void CFrameBuffer::displayRGB(uint8_t *rgbbuff, int x_size, int y_size, int x_pa
 }
 
 // display image
-bool CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int width, int height, int x_pan, int y_pan, ScalingMode scaletype)
+void CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int width, int height, int x_pan, int y_pan, ScalingMode scaletype)
 {
 	dprintf(DEBUG_DEBUG, "CFrameBuffer::displayImage %s\n", name.c_str());
 	
 	if(!getActive())
-		return false;
+		return;
 		
 	int i_w, i_h, i_bpp, i_chans;
 	
@@ -1774,9 +1757,6 @@ bool CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int
 	{
 		blitBox2FB(data, width, height, posx, posy, x_pan, y_pan, isPNG? true : false);
 		free(data);
-		return true;
 	}
-	
-	return false;
 }
 
