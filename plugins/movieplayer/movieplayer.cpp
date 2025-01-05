@@ -23,7 +23,7 @@
 
 //// defines
 //FIXME: make this global
-#define _(string) dgettext("movieplayer", string)
+#define __(string) dgettext("movieplayer", string)
 
 //// globals
 extern "C" void plugin_exec(void);
@@ -125,7 +125,7 @@ void CMoviePlayer::loadPlaylist()
 	// recordingdir
 	Path = g_settings.network_nfs_recordingdir;
 
-	CHintBox loadBox(_("Movie Player"), _("Scan for Movies ..."));
+	CHintBox loadBox(__("Movie Player"), __("Scan for Movies ..."));
 	loadBox.paint();
 	
 	//
@@ -208,7 +208,7 @@ void CMoviePlayer::openFileBrowser()
 		MI_MOVIE_INFO movieInfo;
 		m_movieInfo.clearMovieInfo(&movieInfo); // refresh structure
 
-		CHintBox loadBox(_("Movie Player"), _("Scan for Movies ..."));
+		CHintBox loadBox(__("Movie Player"), __("Scan for Movies ..."));
 		loadBox.paint();
 
 		CFileList::const_iterator files = filebrowser.getSelectedFiles().begin();
@@ -260,18 +260,18 @@ void CMoviePlayer::doTMDB(MI_MOVIE_INFO& movieFile)
 		buffer += minfo_list[0].overview;
 		buffer += "\n";
 
-		buffer += (std::string)_("Length (Min)") + ": " + toString(minfo_list[0].runtime);
+		buffer += (std::string)__("Length (Min)") + ": " + toString(minfo_list[0].runtime);
 		buffer += "\n";
 
-		buffer += (std::string)_("Genre") + ": " + minfo_list[0].genres;
+		buffer += (std::string)__("Genre") + ": " + minfo_list[0].genres;
 		buffer += "\n";
-		buffer += (std::string)_("Original Title") + " : " + minfo_list[0].original_title;
+		buffer += (std::string)__("Original Title") + " : " + minfo_list[0].original_title;
 		buffer += "\n";
-		buffer += (std::string)_("Year of production") + " : " + minfo_list[0].release_date.substr(0,4);
+		buffer += (std::string)__("Year of production") + " : " + minfo_list[0].release_date.substr(0,4);
 		buffer += "\n";
 
 		if (!minfo_list[0].cast.empty())
-			buffer += (std::string)_("Actors") + ":\n" + minfo_list[0].cast;
+			buffer += (std::string)__("Actors") + ":\n" + minfo_list[0].cast;
 
 		// thumbnail
 		std::string tname = tmdb->getThumbnailDir();
@@ -295,7 +295,7 @@ void CMoviePlayer::doTMDB(MI_MOVIE_INFO& movieFile)
 		infoBox->exec();
 		delete infoBox;
 
-		if(MessageBox(_("Information"), _("Prefer TMDB infos ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
+		if(MessageBox(__("Information"), __("Prefer TMDB infos ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
 		{
 			// tfile
 			std::string tname = movieFile.file.Name;
@@ -325,7 +325,7 @@ void CMoviePlayer::doTMDB(MI_MOVIE_INFO& movieFile)
 	}
 	else
 	{
-		MessageBox(_("Information"), _("Not available"), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
+		MessageBox(__("Information"), __("Not available"), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
 	}
 
 	delete tmdb;
@@ -342,7 +342,7 @@ bool CMoviePlayer::delFile(CFile& file)
 
 void CMoviePlayer::onDeleteFile(MI_MOVIE_INFO& movieFile)
 {
-	std::string msg = _("Delete");
+	std::string msg = __("Delete");
 	msg += "\r\n ";
 
 	if (movieFile.file.Name.length() > 40)
@@ -356,7 +356,7 @@ void CMoviePlayer::onDeleteFile(MI_MOVIE_INFO& movieFile)
 	msg += "\r\n ";
 	msg += "?";
 
-	if (MessageBox(_("Delete"), msg.c_str(), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes)
+	if (MessageBox(__("Delete"), msg.c_str(), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes)
 	{
 		delFile(movieFile.file);
                        
@@ -384,10 +384,10 @@ const struct button_label HeadButtons[HEAD_BUTTONS_COUNT] =
 #define FOOT_BUTTONS_COUNT	4
 const struct button_label FootButtons[FOOT_BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, _("TMDB") },
-	{ NEUTRINO_ICON_BUTTON_GREEN, _("Add")  },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Delete all") },
-	{ NEUTRINO_ICON_BUTTON_BLUE, _("Scan for Movies ...") },
+	{ NEUTRINO_ICON_BUTTON_RED, __("TMDB") },
+	{ NEUTRINO_ICON_BUTTON_GREEN, __("Add")  },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, __("Delete all") },
+	{ NEUTRINO_ICON_BUTTON_BLUE, __("Scan for Movies ...") },
 };
 
 void CMoviePlayer::showMenu()
@@ -420,7 +420,7 @@ void CMoviePlayer::showMenu()
 	
 	//
 	mlist->enablePaintHead();
-	mlist->setTitle(_("Movie Player"), NEUTRINO_ICON_MOVIE);
+	mlist->setTitle(__("Movie Player"), NEUTRINO_ICON_MOVIE);
 	mlist->enablePaintDate();
 	mlist->setFormat("%A %d.%m.%Y %H:%M:%S");
 	mlist->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);

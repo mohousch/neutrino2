@@ -24,7 +24,7 @@
 
 //// defines
 //FIXME: make this global
-#define _(string) dgettext("ntvshows", string)
+#define __(string) dgettext("ntvshows", string)
 
 CNSeasons::CNSeasons(int id)
 {
@@ -76,7 +76,7 @@ void CNSeasons::loadSeasonsTitle()
 	removeThumbnailDir();
 	createThumbnailDir();
 
-	CHintBox loadBox(_("Series Trailer"), _("Scan for Movies ..."));
+	CHintBox loadBox(__("Series Trailer"), __("Scan for Movies ..."));
 	loadBox.paint();
 
 	tmdb = new CTmdb();
@@ -165,7 +165,7 @@ void CNSeasons::showMenu()
 	listBox = new ClistBox(CFrameBuffer::getInstance()->getScreenX() + 20, CFrameBuffer::getInstance()->getScreenY() + 20, CFrameBuffer::getInstance()->getScreenWidth() - 40, CFrameBuffer::getInstance()->getScreenHeight() - 40);
 	
 	listBox->enablePaintHead();
-	listBox->setTitle(_("Seasons"), NEUTRINO_ICON_MOVIE);
+	listBox->setTitle(__("Seasons"), NEUTRINO_ICON_MOVIE);
 	listBox->enablePaintDate();
 	listBox->enablePaintItemInfo();
 	

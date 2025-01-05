@@ -2215,6 +2215,25 @@ void CNeutrinoApp::quickZap(int msg)
 		channelList->quickZap(msg);
 }
 
+int CNeutrinoApp::numericZap(int msg)
+{
+	int res = 0;
+	int old_num = 0;
+	int old_b = bouquetList->getActiveBouquetNumber();
+
+	if(bouquetList->Bouquets.size()) 
+	{
+		old_num = bouquetList->Bouquets[old_b]->channelList->getActiveChannelNumber();
+	}
+				
+	if(bouquetList->Bouquets.size() && bouquetList->Bouquets[old_b]->channelList->getSize() > 0)
+		res = bouquetList->Bouquets[old_b]->channelList->numericZap( msg );
+	else
+		res = channelList->numericZap( msg );
+		
+	return res;
+}
+
 // showInfo
 void CNeutrinoApp::showInfo(const CZapitChannel *channel)
 {
@@ -2931,12 +2950,9 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 // start subtitle
 void CNeutrinoApp::startSubtitles(bool show)
 {
-	if (IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
-		return;
-	
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::startSubtitles\n");
 	
-	if(!show)
+	if(!show || IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 		return;
 	
 	//start dvbsub
@@ -4092,7 +4108,7 @@ void CNeutrinoApp::realRun(void)
 				stopSubtitles();
 				
 				// Zap-History "Bouquet"
-				int res = channelList->numericZap( msg );
+				int res = numericZap( msg );
 
 				startSubtitles(res < 0);
 			}
@@ -4101,10 +4117,66 @@ void CNeutrinoApp::realRun(void)
 				stopSubtitles();
 				
 				// Quick Zap
-				int res = channelList->numericZap( msg );
+				int res = numericZap( msg );
 
 				startSubtitles(res < 0);
 			}
+			else if(msg == (neutrino_msg_t) g_settings.key_pip) // current TP
+			{
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+				
+				// first step show channels from the same TP
+				int res = numericZap( msg );
+				
+				// restore mute symbol
+				audioMute(current_muted, true);
+				
+				//
+				startSubtitles();
+			}
+			else if ( CRCInput::isNumeric(msg) && g_RemoteControl->director_mode ) 
+			{
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+				
+				g_RemoteControl->setSubChannel(CRCInput::getNumericValue(msg));
+				
+				g_InfoViewer->showSubchan();
+				
+				// restore mute symbol
+				audioMute(current_muted, true);
+				
+				//
+				startSubtitles();
+			}
+			else if (CRCInput::isNumeric(msg)) 
+			{
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+				
+				//
+				numericZap( msg );
+				
+				// restore mute symbol
+				audioMute(current_muted, true);
+				
+				//
+				startSubtitles();
+			}			
+			else if (CRCInput::isNumeric(msg) && (mode == mode_radio && g_settings.radiotext_enable && g_Radiotext != NULL && g_Radiotext->Rass_Show) ) 
+			{
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				g_Radiotext->RassImage(0, g_RCInput->getNumericValue(msg), true);
+			}			
 			else if(msg == CRCInput::RC_pause) // start timeshift recording
 			{
 				if (recDir != NULL)
@@ -4452,42 +4524,6 @@ void CNeutrinoApp::realRun(void)
 				audioMute(current_muted, true);
 				startSubtitles();
 			}			
-			else if ( CRCInput::isNumeric(msg) && g_RemoteControl->director_mode ) 
-			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-				
-				g_RemoteControl->setSubChannel(CRCInput::getNumericValue(msg));
-				
-				g_InfoViewer->showSubchan();
-				
-				// restore mute symbol
-				audioMute(current_muted, true);
-				startSubtitles();
-			}
-			else if (CRCInput::isNumeric(msg)) 
-			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-				
-				//
-				channelList->numericZap( msg );
-				
-				// restore mute symbol
-				audioMute(current_muted, true);
-				startSubtitles();
-			}			
-			else if (CRCInput::isNumeric(msg) && (mode == mode_radio && g_settings.radiotext_enable && g_Radiotext != NULL && g_Radiotext->Rass_Show) ) 
-			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				g_Radiotext->RassImage(0, g_RCInput->getNumericValue(msg), true);
-			}			
 			else if((msg == CRCInput::RC_info) || ( msg == NeutrinoMessages::SHOW_INFOBAR ))
 			{
 				bool show_info = ((msg != NeutrinoMessages::SHOW_INFOBAR) || (g_InfoViewer->is_visible || g_settings.timing_infobar != 0));
@@ -4499,20 +4535,6 @@ void CNeutrinoApp::realRun(void)
 				{
 					showInfo(CZapit::getInstance()->getCurrentChannel());
 				}
-			}
-			else if(msg == (neutrino_msg_t) g_settings.key_pip) // current TP
-			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-				
-				// first step show channels from the same TP
-				channelList->numericZap( msg );
-				
-				// restore mute symbol
-				audioMute(current_muted, true);
-				startSubtitles();
 			}
 			else 
 			{

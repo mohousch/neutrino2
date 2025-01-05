@@ -1297,8 +1297,8 @@ void CChannelList::virtual_zap_mode(bool up)
 
         if ( doZap )
         {
-		//if(g_settings.timing_infobar == 0)
-		//	g_InfoViewer->killTitle();
+		if(g_settings.timing_infobar == 0)
+			g_InfoViewer->killTitle();
 
                 zapTo(chn);
         }
@@ -1306,7 +1306,7 @@ void CChannelList::virtual_zap_mode(bool up)
         {
         	showInfo(tuned, 0, false);
         	
-                //g_InfoViewer->killTitle();
+                g_InfoViewer->killTitle();
 
                 // Rote Taste zeigt EPG fuer gewaehlten Kanal an
                 if ( showEPG )

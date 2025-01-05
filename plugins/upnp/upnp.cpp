@@ -70,7 +70,7 @@ extern "C" void plugin_del(void);
 
 //// defines
 //FIXME: make this global
-#define _(string) dgettext("upnp", string)
+#define __(string) dgettext("upnp", string)
 //
 #define UPNP_ICON_SMALL PLUGINDIR "/upnp/upnp_small.png"
 
@@ -79,7 +79,7 @@ const struct button_label RescanButton[4] =
 	{ "", "" },
 	{ "", "" },
 	{ "", "" },
-	{ NEUTRINO_ICON_BUTTON_BLUE, _("Scan again") }
+	{ NEUTRINO_ICON_BUTTON_BLUE, __("Scan again") }
 };
 
 CUpnpBrowserGui::CUpnpBrowserGui(UPNP_GUI g)
@@ -610,7 +610,7 @@ void CUpnpBrowserGui::loadDevices(bool hint)
 {
 	m_devices.clear();
 
-	CHintBox *scanBox = new CHintBox(_("Information"), _("Scanning for UPnP servers")); // UTF-8
+	CHintBox *scanBox = new CHintBox(__("Information"), __("Scanning for UPnP servers")); // UTF-8
 
 	if(hint)
 		scanBox->paint();
@@ -622,7 +622,7 @@ void CUpnpBrowserGui::loadDevices(bool hint)
 
 	if (!m_devices.size())
 	{
-		MessageBox(_("Information"), _("No UPnP servers found"), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_UPDATE);
+		MessageBox(__("Information"), __("No UPnP servers found"), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_UPDATE);
 		delete scanBox;
 		return;
 	}
@@ -664,7 +664,7 @@ void CUpnpBrowserGui::showMenuDevice()
 	}
 
 	// head
-	listBox->setTitle(_("UPnP Browser"), UPNP_ICON_SMALL);
+	listBox->setTitle(__("UPnP Browser"), UPNP_ICON_SMALL);
 	listBox->enablePaintHead();
 	listBox->enablePaintDate();
 
@@ -771,7 +771,7 @@ void CUpnpBrowserGui::showMenuEntry()
 	}
 
 	// head
-	listBox->setTitle(_("UPnP Browser"), UPNP_ICON_SMALL);
+	listBox->setTitle(__("UPnP Browser"), UPNP_ICON_SMALL);
 	listBox->enablePaintHead();
 	listBox->enablePaintDate();
 

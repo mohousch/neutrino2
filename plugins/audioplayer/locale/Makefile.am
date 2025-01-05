@@ -6,7 +6,7 @@ LANGPO = $(LANGS:=.po)
 EXTRA_DIST = $(LANGPO)
 
 audioplayer.pot: $(top_srcdir)/audioplayer/*.cpp
-	$(XGETTEXT) -L C++ --keyword=_ --from-code=utf-8 --no-wrap --add-comments="TRANSLATORS:" -d audioplayer --package-name=@PACKAGE_NAME@ --package-version=@PACKAGE_VERSION@ --msgid-bugs-address='<see README>' --copyright-holder=neutrino2 -s -o $@ $^
+	$(XGETTEXT) -L C++ --keyword=__ --from-code=utf-8 --no-wrap --add-comments="TRANSLATORS:" -d audioplayer --package-name=@PACKAGE_NAME@ --package-version=@PACKAGE_VERSION@ --msgid-bugs-address='<see README>' --copyright-holder=neutrino2 -s -o $@ $^
 	$(SED) --in-place $@ --expression=s/CHARSET/UTF-8/
 	
 %.po: audioplayer.pot

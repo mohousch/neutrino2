@@ -27,7 +27,7 @@ extern "C" void plugin_del(void);
 
 //// defines
 //FIXME: make this global
-#define _(string) dgettext("systeminfo", string)
+#define __(string) dgettext("systeminfo", string)
 
 bool refreshIt = true;
 
@@ -111,16 +111,16 @@ void CSysInfoWidget::paintHead()
 	cFrameBoxTitle.iWidth = cFrameBox.iWidth;
 	
 	if(mode == SYSINFO)
-		sprintf((char *) buf, "%s", _("System-Info:"));
+		sprintf((char *) buf, "%s", __("System-Info:"));
 	
 	if(mode == DMESGINFO)
-		sprintf((char *) buf, "%s", _("System-Messages:"));
+		sprintf((char *) buf, "%s", __("System-Messages:"));
 	
 	if(mode == CPUINFO)
-		sprintf((char *) buf, "%s", _("CPU/File-Info:"));
+		sprintf((char *) buf, "%s", __("CPU/File-Info:"));
 	
 	if(mode == PSINFO)
-		sprintf((char *) buf, "%s", _("Process-List:"));
+		sprintf((char *) buf, "%s", __("Process-List:"));
 	
 	//
 	oldLcdMode = CLCD::getInstance()->getMode();
@@ -137,10 +137,10 @@ void CSysInfoWidget::paintHead()
 // paint foot
 const struct button_label Buttons[4] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, _("info") },
-	{ NEUTRINO_ICON_BUTTON_GREEN, _("dmesg") },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("cpu/file") },
-	{ NEUTRINO_ICON_BUTTON_BLUE, _("ps") },
+	{ NEUTRINO_ICON_BUTTON_RED, __("info") },
+	{ NEUTRINO_ICON_BUTTON_GREEN, __("dmesg") },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, __("cpu/file") },
+	{ NEUTRINO_ICON_BUTTON_BLUE, __("ps") },
 	
 };
 
@@ -414,9 +414,9 @@ void CSysInfoWidget::sysinfo()
 	{
 		fgets(line, 256, f);
 		float ret[4];
-		const char* strTage[2] = {_("Days"), _("Day")};
-		const char* strStunden[2] = {_("Hours"), _("Hour")};
-		const char* strMinuten[2] = {_("Minutes"), _("Minute")};
+		const char* strTage[2] = {__("Days"), __("Day")};
+		const char* strStunden[2] = {__("Hours"), __("Hour")};
+		const char* strMinuten[2] = {__("Minutes"), __("Minute")};
 		sscanf(line, "%f", &ret[0]);
 		ret[0] /= 60;
 		ret[1] = long(ret[0])/60/24; // Tage
@@ -426,7 +426,7 @@ void CSysInfoWidget::sysinfo()
 
 		f = fopen("/tmp/sysinfo", "a");
 		if(f)
-			fprintf(f, "UPTIME:\n %s %.0f %s %.0f %s %.0f %s\n", _("System running:"), ret[1], strTage[int(ret[1]) == 1], ret[2], strStunden[int(ret[2]) == 1], ret[3], strMinuten[int(ret[3]) == 1]);
+			fprintf(f, "UPTIME:\n %s %.0f %s %.0f %s %.0f %s\n", __("System running:"), ret[1], strTage[int(ret[1]) == 1], ret[2], strStunden[int(ret[2]) == 1], ret[3], strMinuten[int(ret[3]) == 1]);
 	}
 	fclose(f);
 

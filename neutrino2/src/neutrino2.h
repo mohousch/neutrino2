@@ -91,6 +91,12 @@ class CNeutrinoApp : public CMenuTarget
 			norezap = 0x100		//
 		};
 		
+		enum {
+			RESTART = 0,
+			SHUTDOWN,
+			REBOOT
+		};
+		
  	private:
 		CFrameBuffer * frameBuffer;
 
@@ -101,7 +107,7 @@ class CNeutrinoApp : public CMenuTarget
 		//// modes
 		int mode;
 		int lastMode;
-		int chmode;	// to custom channel/bouquet mode needed by channel_select widget.
+		int chmode;
 		////
 		CTimerd::EventInfo *nextRecordingInfo;
 		struct timeval standby_pressed_at;
@@ -197,7 +203,7 @@ class CNeutrinoApp : public CMenuTarget
 		////
 		int getMode() { return mode; };
 		int getLastMode() { return lastMode; };
-		int getChMode(){return chmode;};	// to custom channel/bouquet mode needed by channel_select widget.
+		int getChMode(){return chmode;};
 		////
 		void doGuiRecord(char * preselectedDir, bool addTimer = false);
 		void startNextRecording();
@@ -216,6 +222,7 @@ class CNeutrinoApp : public CMenuTarget
 		////
 		void quickZap(int msg);
 		void showInfo(const CZapitChannel *channel);
+		int numericZap(int msg);
 		////
 		void stopSubtitles();
 		void startSubtitles(bool show = true);
@@ -223,16 +230,7 @@ class CNeutrinoApp : public CMenuTarget
 		////
 		void lockPlayBack(void);
 		void unlockPlayBack(void);
-		
-		// 0 - restart 
-		// 1 - shutdown
-		// 2 - reboot
-		enum {
-			RESTART = 0,
-			SHUTDOWN,
-			REBOOT
-		};
-		
+		////
 		void exitRun(int retcode = SHUTDOWN, bool save = true);
 };
 
