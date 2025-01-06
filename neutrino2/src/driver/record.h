@@ -106,7 +106,7 @@ class CRecord : public OpenThreads::Thread
 		
 		bool SwitchToScart;
 		unsigned long long record_EPGid;
-		CZapit::responseGetPIDs pids;
+		CZapit::PIDs pids;
 		
 		//
 		CGenPsi psi;

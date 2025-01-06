@@ -52,7 +52,7 @@ class CZapProtection
 class CSubService
 {
 	private:
-		struct CZapit::commandAddSubServices service;
+		struct CZapit::subServices service;
 	
 	public:
 		time_t      starttime;
@@ -63,7 +63,7 @@ class CSubService
 		CSubService(const t_original_network_id, const t_service_id, const t_transport_stream_id, const time_t astarttime, const unsigned aduration);
 	
 		t_channel_id getChannelID(void) const;
-		inline const struct CZapit::commandAddSubServices getAsZapitSubService(void) const { return service;}
+		inline const struct CZapit::subServices getAsZapitSubService(void) const { return service;}
 };
 
 typedef std::vector<CSubService> CSubServiceListSorted;
@@ -83,21 +83,21 @@ class CRemoteControl
 		virtual ~CRemoteControl(){};
 		
 		////
-		t_channel_id                  current_channel_id;
-		unsigned long long            current_EPGid;
-		unsigned long long            next_EPGid;
-		CZapit::responseGetPIDs       current_PIDs;
+		t_channel_id current_channel_id;
+		unsigned long long current_EPGid;
+		unsigned long long next_EPGid;
+		CZapit::PIDs current_PIDs;
 	
 		// APID - Details
-		bool                          has_ac3;
-		bool                          has_unresolved_ctags;
+		bool has_ac3;
+		bool has_unresolved_ctags;
 	
 		// SubChannel/NVOD - Details
-		CSubServiceListSorted         subChannels;
-		int                           selected_subchannel;
-		bool                          are_subchannels;
-		bool                          needs_nvods;
-		int                           director_mode;
+		CSubServiceListSorted subChannels;
+		int selected_subchannel;
+		bool are_subchannels;
+		bool needs_nvods;
+		int director_mode;
 	
 		// Video / Parental-Lock
 		CZapProtection *zapProtection;
@@ -115,7 +115,7 @@ class CRemoteControl
 		const std::string & subChannelDown(void);
 		void radioMode();
 		void tvMode();
-	
+		////
 		int handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data);
 };
 

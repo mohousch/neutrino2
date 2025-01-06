@@ -167,8 +167,11 @@ void CChannelList::setSize(int newsize)
 	chanlist.reserve(newsize);
 }
 
-void CChannelList::addChannel(CZapitChannel * channel)
-{	
+void CChannelList::addChannel(CZapitChannel * channel, int num)
+{
+	if (num)
+		channel->number = num;
+			
 	chanlist.push_back(channel);
 }
 
@@ -280,7 +283,7 @@ struct CmpChannelByFreq: public std::binary_function <const CZapitChannel * cons
 
 void CChannelList::SortAlpha(void)
 {
-	sort(chanlist.begin(), chanlist.end(), CmpChannelByChName()); //FIXME:
+	sort(chanlist.begin(), chanlist.end(), CmpChannelByChName());
 }
 
 void CChannelList::SortSat(void)

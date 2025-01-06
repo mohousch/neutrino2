@@ -112,7 +112,7 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 	moving = 0;
 
         CZapit::ScanSatelliteList satList;
-        CZapit::commandSetScanSatelliteList sat;
+        CZapit::scanSatelliteList_t sat;
 	sat_iterator_t sit;
 
 	sigscale->reset();

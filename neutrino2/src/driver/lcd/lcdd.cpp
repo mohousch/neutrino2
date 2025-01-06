@@ -650,7 +650,7 @@ void CLCD::setlcdparameter(void)
 	if(!has_lcd) 
 		return;
 		
-	dprintf(DEBUG_NORMAL, "CLCD::setlcdparameter:\n");
+	dprintf(DEBUG_DEBUG, "CLCD::setlcdparameter:\n");
 
 	last_toggle_state_power = g_settings.lcd_power;
 	int dim_time = atoi(g_settings.lcd_setting_dim_time);
@@ -1353,8 +1353,8 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 			{
 				uint count = g_RemoteControl->current_PIDs.APIDs.size();
 					
-				if ((g_RemoteControl->current_PIDs.PIDs.selected_apid < count) &&
-					    (g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.PIDs.selected_apid].is_ac3))
+				if ((g_RemoteControl->current_PIDs.otherPIDs.selected_apid < count) &&
+					    (g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.otherPIDs.selected_apid].is_ac3))
 					icon_dolby = true;
 				else
 					icon_dolby = false;
@@ -1629,7 +1629,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	if(!has_lcd) 
 		return;
 		
-	dprintf(DEBUG_NORMAL, "CLCD::setMode: %d\n", m);
+	dprintf(DEBUG_DEBUG, "CLCD::setMode: %d\n", m);
 		
 	mode = m;
 	menutitle = title;

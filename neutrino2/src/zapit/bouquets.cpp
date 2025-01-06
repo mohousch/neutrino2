@@ -155,9 +155,3 @@ void CZapitBouquet::moveService(const unsigned int oldPosition, const unsigned i
 	}
 }
 
-void CZapitBouquet::sortBouquet(void)
-{
-	sort(tvChannels.begin(), tvChannels.end(), CmpChannelByChName());
-	sort(radioChannels.begin(), radioChannels.end(), CmpChannelByChName());
-}
-

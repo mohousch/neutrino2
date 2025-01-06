@@ -58,11 +58,11 @@ class CZapitBouquet
 		CZapitChannel * getChannelByChannelID(const t_channel_id channel_id, const unsigned char serviceType = ST_RESERVED);
 		void addService(CZapitChannel * newChannel);
 		void removeService(CZapitChannel * oldChannel);
-		void removeService(const t_channel_id channel_id, unsigned char serviceType = ST_RESERVED) 			 			{ 
+		void removeService(const t_channel_id channel_id, unsigned char serviceType = ST_RESERVED)
+		{ 
 			removeService(getChannelByChannelID(channel_id, serviceType)); 
 		}
 		void moveService (const unsigned int oldPosition, const unsigned int newPosition, const unsigned char serviceType);
-		void sortBouquet(void);
 };
 
 typedef std::vector<CZapitBouquet *> BouquetList;

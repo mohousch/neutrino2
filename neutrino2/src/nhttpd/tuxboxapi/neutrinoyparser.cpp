@@ -437,7 +437,7 @@ std::string CNeutrinoYParser::func_get_bouquets_with_epg(CyhookHandler *hh, std:
 
 				for (CSectionsd::NVODTimesList::iterator ni = nvod_list.begin(); ni != nvod_list.end(); ni++)
 				{
-					CZapit::commandAddSubServices cmd;
+					CZapit::subServices cmd;
 					CEPGData epg;
 
 					// Byte Sequence by ntohs
@@ -528,20 +528,22 @@ std::string  CNeutrinoYParser::func_get_mode(CyhookHandler *, std::string)
 //
 std::string  CNeutrinoYParser::func_get_video_pids(CyhookHandler *, std::string para)
 {
-	CZapit::responseGetPIDs pids;
-	int apid=0,apid_no=0,apid_idx=0;
-	pids.PIDs.vpid=0;
+	CZapit::PIDs pids;
+	int apid = 0, apid_no = 0, apid_idx = 0;
+	pids.otherPIDs.vpid = 0;
 
 	if(para != "")
 		apid_no = atoi(para.c_str());
+		
 	CZapit::getInstance()->getCurrentPIDS(pids);
 
 	if( apid_no < (int)pids.APIDs.size())
-		apid_idx=apid_no;
+		apid_idx = apid_no;
+		
 	if(!pids.APIDs.empty())
 		apid = pids.APIDs[apid_idx].pid;
 		
-	return string_printf("0x%04x,0x%04x,0x%04x", pids.PIDs.pmtpid, pids.PIDs.vpid, apid);
+	return string_printf("0x%04x,0x%04x,0x%04x", pids.otherPIDs.pmtpid, pids.otherPIDs.vpid, apid);
 }
 
 //
@@ -549,10 +551,11 @@ std::string  CNeutrinoYParser::func_get_video_pids(CyhookHandler *, std::string 
 //
 std::string  CNeutrinoYParser::func_get_radio_pid(CyhookHandler *, std::string)
 {
-	CZapit::responseGetPIDs pids;
+	CZapit::PIDs pids;
 	int apid = 0;
 
 	CZapit::getInstance()->getCurrentPIDS(pids);
+	
 	if(!pids.APIDs.empty())
 		apid = pids.APIDs[0].pid;
 
@@ -572,10 +575,10 @@ std::string  CNeutrinoYParser::func_get_audio_pids_as_dropdown(CyhookHandler *, 
 		idx_as_id=false;
 		
 	bool eit_not_ok=true;
-	CZapit::responseGetPIDs pids;
+	CZapit::PIDs pids;
 
 	CSectionsd::ComponentTagList tags;
-	pids.PIDs.vpid = 0;
+	pids.otherPIDs.vpid = 0;
 	CZapit::getInstance()->getCurrentPIDS(pids);
 
 	t_channel_id current_channel = CZapit::getInstance()->getCurrentChannelID();
@@ -584,7 +587,7 @@ std::string  CNeutrinoYParser::func_get_audio_pids_as_dropdown(CyhookHandler *, 
 	
 	if (CSectionsd::getInstance()->getComponentTagsUniqueKey(currentNextInfo.current_uniqueKey,tags))
 	{
-		for (unsigned int i=0; i< tags.size(); i++)
+		for (unsigned int i = 0; i < tags.size(); i++)
 		{
 			for (unsigned short j=0; j< pids.APIDs.size(); j++)
 			{

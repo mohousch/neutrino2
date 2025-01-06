@@ -111,7 +111,7 @@ class CNeutrinoApp : public CMenuTarget
 		////
 		CTimerd::EventInfo *nextRecordingInfo;
 		struct timeval standby_pressed_at;
-		CZapit::responseGetLastChannel firstchannel;
+		CZapit::lastChannel firstchannel;
 		bool skipShutdownTimer;
 		CRCLock *rcLock;
 		////

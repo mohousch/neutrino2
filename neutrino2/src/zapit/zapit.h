@@ -75,7 +75,7 @@
 #define DVBADAPTER_MAX			4	// 
 #define FRONTEND_MAX			8	//
 ////
-#define CHANNEL_NAME_SIZE 40
+#define CHANNEL_NAME_SIZE 		40
 
 class CZapitBouquet;
 
@@ -83,6 +83,13 @@ class CZapitBouquet;
 class CZapit
 {
 	public:
+		enum zapitMode
+		{
+			TV_MODE 	= 0x01,
+			RADIO_MODE 	= 0x02,
+			RECORD_MODE 	= 0x04,
+		};
+		
 		enum zapStatus
 		{
 			ZAP_OK 			= 0x01,
@@ -117,39 +124,33 @@ class CZapit
 			MODE_RADIO
 		} channelsMode;
 
-		typedef enum channelsOrder_
-		{
-			SORT_ALPHA,
-			SORT_BOUQUET
-		} channelsOrder;
-
-		struct commandAddSubServices
+		struct subServices
 		{
 			t_original_network_id original_network_id;
 			t_service_id          service_id;
 			t_transport_stream_id transport_stream_id;
 		};
 		
-		typedef std::vector<commandAddSubServices> subServiceList;
+		typedef std::vector<subServices> subServiceList;
 
-		struct responseGetLastChannel
+		struct lastChannel
 		{
-			unsigned int	channelNumber;
-			char		mode;
+			unsigned int channelNumber;
+			int mode;
 		};
 
-		struct responseGetBouquetChannels
+		struct bouquetChannels
 		{
 			unsigned int nr;
 			t_channel_id channel_id;
-			char	 name[CHANNEL_NAME_SIZE];
+			char name[CHANNEL_NAME_SIZE];
 			t_satellite_position satellitePosition;
 			unsigned char service_type;
 		};
 		
-		typedef std::vector<responseGetBouquetChannels> BouquetChannelList;
+		typedef std::vector<bouquetChannels> BouquetChannelList;
 
-		struct responseGetAPIDs
+		struct APIDs
 		{
 			uint32_t    pid;
 			char    desc[25];
@@ -157,9 +158,9 @@ class CZapit
 			int     component_tag;
 		};
 		
-		typedef std::vector<responseGetAPIDs> APIDList;
+		typedef std::vector<APIDs> APIDList;
 		
-		struct responseGetSubPIDs
+		struct SubPIDs
 		{
 			uint    pid;
 			char    desc[4];
@@ -168,9 +169,9 @@ class CZapit
 			bool	hearingImpaired;
 		};
 		
-		typedef std::vector<responseGetSubPIDs> SubPIDList;
+		typedef std::vector<SubPIDs> SubPIDList;
 
-		struct responseGetOtherPIDs
+		struct OtherPIDs
 		{
 			uint		vpid;
 			uint		vtxtpid;
@@ -180,11 +181,11 @@ class CZapit
 			uint		privatepid;
 		};
 		
-		struct responseGetPIDs
+		struct PIDs
 		{
-			responseGetOtherPIDs	PIDs;
-			APIDList		APIDs;
-			SubPIDList  		SubPIDs;
+			OtherPIDs	otherPIDs;
+			APIDList	APIDs;
+			SubPIDList  	SubPIDs;
 		};
 
 		class CServiceInfo
@@ -206,33 +207,26 @@ class CZapit
 				fe_code_rate	fec;
 		};
 		
-		struct commandSetScanSatelliteList
+		struct scanSatelliteList_t
 		{
 			char satName[50];
 			t_satellite_position  position;
 		};
 		
-		typedef std::vector<commandSetScanSatelliteList> ScanSatelliteList;
+		typedef std::vector<scanSatelliteList_t> ScanSatelliteList;
 		
 		//
-		struct commandScanTP
+		struct scanTP_t
 		{
 			transponder TP;
 			int scanmode;
 			CFrontend *fe;
 		};
 		
-		struct commandScanProvider
+		struct scanProvider_t
 		{
 			int scanmode;
 			CFrontend *fe;
-		};
-		
-		// zapit mode
-		enum {
-			TV_MODE 	= 0x01,
-			RADIO_MODE 	= 0x02,
-			RECORD_MODE 	= 0x04,
 		};
 		
 		//
@@ -479,7 +473,7 @@ class CZapit
 		void setZapitConfig(Zapit_config * Cfg);
 		void getZapitConfig(Zapit_config *Cfg);
 		//
-		void getLastChannel(unsigned int &channumber, char &mode);
+		void getLastChannel(unsigned int &channumber, int &mode);
 		int getMode(void);
 		void setMode(const channelsMode mode);
 		// playback
@@ -518,7 +512,7 @@ class CZapit
 		int32_t getCurrentSatellitePosition();
 		bool getCurrentTP(transponder *TP);
 		CZapit::CServiceInfo getCurrentServiceInfo();
-		void getCurrentPIDS(responseGetPIDs &pids);
+		void getCurrentPIDS(PIDs &pids);
 		CFrontend* getCurrentFrontend();
 		// novd
 		void setSubServices( subServiceList& subServices );
@@ -527,10 +521,10 @@ class CZapit
 		bool isRecordModeActive();
 		t_channel_id getRecordChannelID();
 		CZapit::CServiceInfo getRecordServiceInfo();
-		void getRecordPIDS(responseGetPIDs &pids);
+		void getRecordPIDS(PIDs &pids);
 		//
 		CZapit::CServiceInfo getServiceInfo(t_channel_id chid);
-		void getPIDS(t_channel_id chid, responseGetPIDs &pids);
+		void getPIDS(t_channel_id chid, PIDs &pids);
 		//
 		void reinitChannels();
 		void reloadCurrentServices();
@@ -545,7 +539,7 @@ class CZapit
 		void getVolumePercent(unsigned int *percent, t_channel_id channel_id = 0, const unsigned int apid = 0, const bool is_ac3 = false);
 		void setAudioChannel(const unsigned int channel);
 		void setVideoSystem(int video_system);
-		// own bouquetManager needed for nhttpd
+		//// needed by nhttpd controlapi
 		bool getBouquetChannels(const unsigned int bouquet, BouquetChannelList &channels, const channelsMode mode = MODE_CURRENT, const bool utf_encoded = false);
 		//// bouquetManager
 		void saveBouquets();
@@ -558,12 +552,12 @@ class CZapit
 		//// scanManager
 		int addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, bool fromnit = false, CFrontend* fe = NULL);
 		bool tuneTP(transponder TP, CFrontend* fe);
-		bool scanTP(commandScanTP &msg);
+		bool scanTP(scanTP_t &msg);
 		void setScanSatelliteList( ScanSatelliteList &satelliteList );
 		void setScanType(const scanType mode);
 		void setFEMode(const fe_mode_t mode, CFrontend* fe);
 		void setScanBouquetMode(const bouquetMode mode);
-		bool startScan(commandScanProvider &msg);
+		bool startScan(scanProvider_t &msg);
 		bool stopScan();
 		//
 		void Start();

@@ -154,7 +154,7 @@ void CRecord::getAPIDs(const t_channel_id channel_id, const unsigned char ap, AP
                 apids = g_settings.recording_audio_pids_default;
 
         apid_list.clear();
-        CZapit::responseGetPIDs allpids;
+        CZapit::PIDs allpids;
 	
 	CZapit::getInstance()->getPIDS(channel_id, allpids);
 

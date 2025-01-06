@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-12-29 17:54+0100\n"
+"POT-Creation-Date: 2025-01-06 18:04+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -102,6 +102,10 @@ msgstr "Возраст"
 
 msgid "Alarm time"
 msgstr "Время пробуждения"
+
+#, fuzzy
+msgid "All Channels"
+msgstr "Канал"
 
 msgid "All Services"
 msgstr "Все сервисы"
@@ -1592,6 +1596,9 @@ msgstr "Оригинальное название"
 
 msgid "Original title"
 msgstr "Оригинальное название"
+
+msgid "Other"
+msgstr ""
 
 msgid "Overwrite?"
 msgstr "Перезаписать?"

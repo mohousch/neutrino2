@@ -428,7 +428,7 @@ void CStreamInfo::paint_signal_fe(struct bitrate br, struct feSignal s)
 	SignalRenderStr(br.max_short_average/ 1000ULL, sig_text_rate_x, yt - sheight - sheight);
 	SignalRenderStr(br.min_short_average/ 1000ULL, sig_text_rate_x, yt);
 	
-	if ( g_RemoteControl->current_PIDs.PIDs.vpid > 0 )
+	if ( g_RemoteControl->current_PIDs.otherPIDs.vpid > 0 )
 	{
 		yd = y_signal_fe (value, 15000, sigBox_h);// Video + Audio
 	} 
@@ -766,9 +766,9 @@ void CStreamInfo::paint_techinfo(int xpos, int ypos)
 
 		// vpid
 		ypos += sheight;
-		if ( g_RemoteControl->current_PIDs.PIDs.vpid > 0 )
+		if ( g_RemoteControl->current_PIDs.otherPIDs.vpid > 0 )
 		{
-			sprintf((char*) buf, "0x%04x (%i)", g_RemoteControl->current_PIDs.PIDs.vpid, g_RemoteControl->current_PIDs.PIDs.vpid );
+			sprintf((char*) buf, "0x%04x (%i)", g_RemoteControl->current_PIDs.otherPIDs.vpid, g_RemoteControl->current_PIDs.otherPIDs.vpid );
 		} 
 		else 
 		{
@@ -791,7 +791,7 @@ void CStreamInfo::paint_techinfo(int xpos, int ypos)
 			for (i1 = 0; (i1 < g_RemoteControl->current_PIDs.APIDs.size()) && (i1 < 10); i1++)
 			{
 				sprintf((char*) buf, "0x%04x (%i)", g_RemoteControl->current_PIDs.APIDs[i1].pid, g_RemoteControl->current_PIDs.APIDs[i1].pid );
-				if (i1 == g_RemoteControl->current_PIDs.PIDs.selected_apid)
+				if (i1 == g_RemoteControl->current_PIDs.otherPIDs.selected_apid)
 				{
 					g_Font[font_small]->RenderString(xpos + sw, ypos, width*2/3 - 10, buf, COL_MENUHEAD_TEXT_PLUS_0, 0, true); // UTF-8
 				}
@@ -811,10 +811,10 @@ void CStreamInfo::paint_techinfo(int xpos, int ypos)
 
 		// vtxtpid
 		ypos += sheight;
-		if ( g_RemoteControl->current_PIDs.PIDs.vtxtpid == 0 )
+		if ( g_RemoteControl->current_PIDs.otherPIDs.vtxtpid == 0 )
 			sprintf((char*) buf, "%s", _("not available"));
 		else
-			sprintf((char*) buf, "0x%04x (%i)", g_RemoteControl->current_PIDs.PIDs.vtxtpid, g_RemoteControl->current_PIDs.PIDs.vtxtpid );
+			sprintf((char*) buf, "0x%04x (%i)", g_RemoteControl->current_PIDs.otherPIDs.vtxtpid, g_RemoteControl->current_PIDs.otherPIDs.vtxtpid );
 		g_Font[font_small]->RenderString(xpos, ypos, width*2/3-10, "VTXTpid:" , COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 		g_Font[font_small]->RenderString(xpos + spaceoffset, ypos, width*2/3-10, buf, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 
@@ -845,11 +845,11 @@ int CStreamInfo::ts_setup()
 		unsigned short vpid, apid = 0;
 
 		// vpid
-		vpid = g_RemoteControl->current_PIDs.PIDs.vpid;
+		vpid = g_RemoteControl->current_PIDs.otherPIDs.vpid;
 		
 		// apids
 		if(g_RemoteControl->current_PIDs.APIDs.size() > 0)
-			apid = g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.PIDs.selected_apid].pid;
+			apid = g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.otherPIDs.selected_apid].pid;
 
 		if(vpid == 0 && apid == 0)
 			return -1;

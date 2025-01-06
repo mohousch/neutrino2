@@ -165,7 +165,7 @@ int CAudioSelectMenuHandler::doMenu()
 		char apid[5];
 		sprintf(apid, "%d", count);
 
-		AudioSelector->addItem(new CMenuForwarder(g_RemoteControl->current_PIDs.APIDs[count].desc, true, NULL, &APIDChanger, apid, CRCInput::convertDigitToKey(count + 1)), (count == g_RemoteControl->current_PIDs.PIDs.selected_apid));
+		AudioSelector->addItem(new CMenuForwarder(g_RemoteControl->current_PIDs.APIDs[count].desc, true, NULL, &APIDChanger, apid, CRCInput::convertDigitToKey(count + 1)), (count == g_RemoteControl->current_PIDs.otherPIDs.selected_apid));
 	}
 
 	if(g_RemoteControl->current_PIDs.APIDs.size())
@@ -253,7 +253,7 @@ int CAudioSelectMenuHandler::doMenu()
 	for(count = 0; count < g_RemoteControl->current_PIDs.APIDs.size(); count++ ) 
 	{
 		CZapit::getInstance()->getVolumePercent((unsigned int *) &percent[count], 0, g_RemoteControl->current_PIDs.APIDs[count].pid);
-		int is_active = count == g_RemoteControl->current_PIDs.PIDs.selected_apid;
+		int is_active = count == g_RemoteControl->current_PIDs.otherPIDs.selected_apid;
 		
 		if(!sep_added) 
 		{
@@ -289,7 +289,7 @@ int CAPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actionKey
 
 	unsigned int sel = atoi(actionKey.c_str());
 	
-	if (g_RemoteControl->current_PIDs.PIDs.selected_apid != sel )
+	if (g_RemoteControl->current_PIDs.otherPIDs.selected_apid != sel )
 	{
 		g_RemoteControl->setAPID(sel);
 	}
@@ -302,7 +302,7 @@ bool CAudioSetupNotifierVolPercent::changeNotify(const std::string& OptionName _
 {
 	int percent = *(int *) data;
 	
-	CZapit::getInstance()->setVolumePercent(percent, CZapit::getInstance()->getCurrentChannelID(), g_RemoteControl->current_PIDs.PIDs.selected_apid);
+	CZapit::getInstance()->setVolumePercent(percent, CZapit::getInstance()->getCurrentChannelID(), g_RemoteControl->current_PIDs.otherPIDs.selected_apid);
 	
 	return true;
 }
@@ -369,7 +369,7 @@ int CTuxtxtChangeExec::exec(CMenuTarget *parent, const std::string &actionKey)
 		CNeutrinoApp::getInstance()->stopSubtitles();
 				
 		tuxtx_stop_subtitle();
-		tuxtx_main(g_RemoteControl->current_PIDs.PIDs.vtxtpid, 0, false);
+		tuxtx_main(g_RemoteControl->current_PIDs.otherPIDs.vtxtpid, 0, false);
 				
 		CNeutrinoApp::getInstance()->audioMute(current_muted, true);
 

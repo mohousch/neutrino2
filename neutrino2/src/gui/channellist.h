@@ -99,7 +99,7 @@ class CChannelList
 		CChannelList(const char * const Name, bool _historyMode = false, bool _vlist = false );
 		~CChannelList();
 		
-		void addChannel(CZapitChannel* chan);
+		void addChannel(CZapitChannel* chan, int num = 0);
 		
 		CZapitChannel * getChannel(int number);
 		CZapitChannel * getChannel(t_channel_id channel_id);

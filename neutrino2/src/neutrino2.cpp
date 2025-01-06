@@ -1487,47 +1487,45 @@ void CNeutrinoApp::channelsInit()
 	//
 	uint32_t i = 1;
 
-	int tvi = 1, ri = 1, hi = 0, webtvi = 0;
+	int tvi = 1, ri = 1, hi = 1;
 	
 	// hd bouquet
 	CBouquet * hdBouquet;
 	if(g_settings.make_hd_list)
 		hdBouquet = new CBouquet(0, (char *) "HD", 0);
 
-	// all services TV/ Radio/WebTV Channellist
+	//// all services TV/ Radio/WebTV Channellist
 	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++) 
 	{
 		if ((it->second.getServiceType() == ST_DIGITAL_TELEVISION_SERVICE)) 
 		{
+			//(it->second).setNumber(tvi++);
 			TVchannelList->addChannel(&(it->second));
-			tvi++;
 
 			if(it->second.isHD()) 
 			{
 				if(g_settings.make_hd_list)
+				{
+					//(it->second).setNumber(hi++);
 					hdBouquet->channelList->addChannel(&(it->second));
-				hi++;
+				}
 			}
-			
-			if (it->second.isWEBTV())
-				webtvi++;
 		}
 		else if (it->second.getServiceType() == ST_DIGITAL_RADIO_SOUND_SERVICE) 
 		{
+			//(it->second).setNumber(ri++);
 			RADIOchannelList->addChannel(&(it->second));
-			ri++;
 		}
 	}
 	
-	if(g_settings.make_hd_list)
-		hdBouquet->channelList->SortSat();
+//	if(g_settings.make_hd_list)
+//		hdBouquet->channelList->SortSat();
 
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::channelsInit: got %d TV and %d RADIO and %d WEBTV channels\n", tvi - 1, ri - 1, webtvi);
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::channelsInit: got %d TV and %d RADIO\n", tvi - 1, ri - 1);
 
-	// tv all list
 	CBouquet * tmp;
 
-	//
+	// tv all list
 	TVallList = new CBouquetList(_("All Services"));
 	tmp = TVallList->addBouquet(_("All Services"));
 	*(tmp->channelList) = *TVchannelList;
@@ -1537,10 +1535,11 @@ void CNeutrinoApp::channelsInit()
 	RADIOallList = new CBouquetList(_("All Services"));
 	tmp = RADIOallList->addBouquet(_("All Services"));
 	*(tmp->channelList) = *RADIOchannelList;
-	tmp->channelList->SortAlpha();
+	//tmp->channelList->SortAlpha();
 
-	// sat
+	//// sat
 	int bnum;
+	
 	sat_iterator_t sit;
 	for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 	{
@@ -1554,89 +1553,134 @@ void CNeutrinoApp::channelsInit()
 			{
 				if (it->second.getServiceType() == ST_DIGITAL_TELEVISION_SERVICE) 
 				{
+					//(it->second).setNumber(tvi++);
 					tmp1->channelList->addChannel(&(it->second));
-					tvi++;
 				}
 				else if (it->second.getServiceType() == ST_DIGITAL_RADIO_SOUND_SERVICE) 
 				{
+					//(it->second).setNumber(ri++);
 					tmp2->channelList->addChannel(&(it->second));
-					ri++;
 				}
 			}
 		}
 
 		if(tvi)
-			tmp1->channelList->SortAlpha();
+			;//tmp1->channelList->SortAlpha();
 		else
 			TVsatList->deleteBouquet(tmp1);
 
 		if(ri)
-			tmp2->channelList->SortAlpha();
+			; //tmp2->channelList->SortAlpha();
 		else
 			RADIOsatList->deleteBouquet(tmp2);
-
-		if(tvi || ri)
-			printf("CNeutrinoApp::channelsInit: created %s with %d TV and %d RADIO channels\n", sit->second.name.c_str(), tvi, ri);
 	}
 
-	// tv/webtv fav / provider list
+	// tv favorites
 	bnum = 0;
-	
+	tvi = 1;
 	for (i = 0; i < CZapit::getInstance()->Bouquets.size(); i++) 
 	{
-		// tv
 		if (!CZapit::getInstance()->Bouquets[i]->bHidden && !CZapit::getInstance()->Bouquets[i]->tvChannels.empty())
 		{
 			CBouquet * ltmp;
-			if(CZapit::getInstance()->Bouquets[i]->bUser || CZapit::getInstance()->Bouquets[i]->bWebTV) 
-				ltmp = TVfavList->addBouquet(CZapit::getInstance()->Bouquets[i]);
-			else
-				ltmp = TVbouquetList->addBouquet(CZapit::getInstance()->Bouquets[i]);
-
-			ZapitChannelList * channels = &(CZapit::getInstance()->Bouquets[i]->tvChannels);
-			ltmp->channelList->setSize(channels->size());
-			
-			int tvi = 1;
-			for(int j = 0; j < (int) channels->size(); j++) 
+			if (CZapit::getInstance()->Bouquets[i]->bUser || CZapit::getInstance()->Bouquets[i]->bWebTV) 
 			{
-				ltmp->channelList->addChannel((*channels)[j]);
+				ltmp = TVfavList->addBouquet(CZapit::getInstance()->Bouquets[i]);
+				//else
+				//	ltmp = TVbouquetList->addBouquet(CZapit::getInstance()->Bouquets[i]);
+
+				ZapitChannelList * channels = &(CZapit::getInstance()->Bouquets[i]->tvChannels);
+				if (channels->size()) ltmp->channelList->setSize(channels->size());
+				
+				for(int j = 0; j < (int) channels->size(); j++) 
+				{
+					//(*channels)[j]->setNumber(tvi++);
+					ltmp->channelList->addChannel((*channels)[j]);
+				}
+				bnum++;
 			}
-			bnum++;
-			
-			ltmp->channelList->SortAlpha();
 		}
 	}
 	
 	if(g_settings.make_hd_list)
 		TVfavList->Bouquets.push_back(hdBouquet);
 
-	// radio fav / provider list
+	// radio fav
 	bnum = 0;
-
+	ri = 1;
 	for (i = 0; i < CZapit::getInstance()->Bouquets.size(); i++) 
 	{	
 		if (!CZapit::getInstance()->Bouquets[i]->bHidden && !CZapit::getInstance()->Bouquets[i]->bWebTV && !CZapit::getInstance()->Bouquets[i]->radioChannels.empty())
 		{
 			CBouquet * ltmp;
-			if(CZapit::getInstance()->Bouquets[i]->bUser) 
-				ltmp = RADIOfavList->addBouquet(CZapit::getInstance()->Bouquets[i]);
-			else
-				ltmp = RADIObouquetList->addBouquet(CZapit::getInstance()->Bouquets[i]);
-
-			ZapitChannelList *channels = &(CZapit::getInstance()->Bouquets[i]->radioChannels);
-			ltmp->channelList->setSize(channels->size());
-			
-			for(int j = 0; j < (int) channels->size(); j++) 
+			if (CZapit::getInstance()->Bouquets[i]->bUser) 
 			{
-				ltmp->channelList->addChannel((*channels)[j]);
+				ltmp = RADIOfavList->addBouquet(CZapit::getInstance()->Bouquets[i]);
+				//else
+				//	ltmp = RADIObouquetList->addBouquet(CZapit::getInstance()->Bouquets[i]);
+
+				ZapitChannelList *channels = &(CZapit::getInstance()->Bouquets[i]->radioChannels);
+				if (channels->size()) ltmp->channelList->setSize(channels->size());
+				
+				for(int j = 0; j < (int) channels->size(); j++) 
+				{
+					//(*channels)[j]->setNumber(ri++);
+					ltmp->channelList->addChannel((*channels)[j]);
+				}
+				bnum++;
 			}
-			bnum++;
-			
-			ltmp->channelList->SortAlpha();
 		}
 	}
+	
+	// tv provider
+	bnum = 0;
+	tvi = 1;
+	for (i = 0; i < CZapit::getInstance()->Bouquets.size(); i++) 
+	{
+		if (!CZapit::getInstance()->Bouquets[i]->bHidden && !CZapit::getInstance()->Bouquets[i]->tvChannels.empty())
+		{
+			CBouquet * ltmp;
+			if(!CZapit::getInstance()->Bouquets[i]->bUser && !CZapit::getInstance()->Bouquets[i]->bWebTV) 
+			{
+				ltmp = TVbouquetList->addBouquet(CZapit::getInstance()->Bouquets[i]);
 
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::channelsInit: got %d bouquets\n", bnum);
+				ZapitChannelList * channels = &(CZapit::getInstance()->Bouquets[i]->tvChannels);
+				if (channels->size()) ltmp->channelList->setSize(channels->size());
+				
+				for(int j = 0; j < (int) channels->size(); j++) 
+				{
+					//(*channels)[j]->setNumber(tvi++);
+					ltmp->channelList->addChannel((*channels)[j]);
+				}
+				bnum++;
+			}
+		}
+	}
+	
+	// radio provider
+	bnum = 0;
+	ri = 1;
+	for (i = 0; i < CZapit::getInstance()->Bouquets.size(); i++) 
+	{	
+		if (!CZapit::getInstance()->Bouquets[i]->bHidden && !CZapit::getInstance()->Bouquets[i]->radioChannels.empty())
+		{
+			CBouquet * ltmp;
+			if(!CZapit::getInstance()->Bouquets[i]->bUser && !CZapit::getInstance()->Bouquets[i]->bWebTV) 
+			{
+				ltmp = RADIObouquetList->addBouquet(CZapit::getInstance()->Bouquets[i]);
+
+				ZapitChannelList *channels = &(CZapit::getInstance()->Bouquets[i]->radioChannels);
+				if (channels->size()) ltmp->channelList->setSize(channels->size());
+				
+				for(int j = 0; j < (int) channels->size(); j++) 
+				{
+					//(*channels)[j]->setNumber(ri++);
+					ltmp->channelList->addChannel((*channels)[j]);
+				}
+				bnum++;
+			}
+		}
+	}
 
 	//
 	setChannelMode( g_settings.channel_mode, mode);
@@ -2151,15 +2195,17 @@ void CNeutrinoApp::initZapper()
 	}
 
 	// first channel
-	firstChannel();
+//	firstChannel();
 
 	// getchannelsMode
 	int tvmode = CZapit::getInstance()->getMode();
 
 	if (tvmode == CZapit::MODE_TV)
-		mode = mode_tv;
+		//mode = mode_tv;
+		tvMode(false);
 	else if (tvmode == CZapit::MODE_RADIO)
-		mode = mode_radio;
+		//mode = mode_radio;
+		radioMode(false);
 
 	lastMode = mode;
 	
@@ -2168,16 +2214,6 @@ void CNeutrinoApp::initZapper()
 	
 	//
 	epgUpdateTimer = g_RCInput->addTimer( 60 * 1000 * 1000, false );
-
-	// firstchanel mode
-	if(firstchannel.mode == 't') 
-	{
-		tvMode(false);
-	} 
-	else if(firstchannel.mode == 'r') 
-	{	  
-		radioMode(false);
-	}
 
 	// zap / epg / autorecord / infoviewer
 	if(channelList->getSize() && CZapit::getInstance()->getCurrentChannelID())
@@ -4013,7 +4049,7 @@ void CNeutrinoApp::realRun(void)
 					
 					tuxtx_stop_subtitle();
 
-					tuxtx_main(g_RemoteControl->current_PIDs.PIDs.vtxtpid, 0, false);
+					tuxtx_main(g_RemoteControl->current_PIDs.otherPIDs.vtxtpid, 0, false);
 					
 					// restore mute symbol
 					audioMute(current_muted, true);

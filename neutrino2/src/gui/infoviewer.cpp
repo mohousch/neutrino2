@@ -799,8 +799,8 @@ void CInfoViewer::showSubchan()
 	else if (g_RemoteControl->current_PIDs.APIDs.size () > 1 ) 
 	{
 		// get info for audio channel
-		subchannel = g_RemoteControl->current_PIDs.PIDs.selected_apid;
-		subChannelName = g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.PIDs.selected_apid].desc;
+		subchannel = g_RemoteControl->current_PIDs.otherPIDs.selected_apid;
+		subChannelName = g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.otherPIDs.selected_apid].desc;
   	}
 
   	if (!(subChannelName.empty ())) 
@@ -948,7 +948,7 @@ void CInfoViewer::showIcon_VTXT() const
 {
 	if (is_visible)
 	{
-		frameBuffer->paintIcon((g_RemoteControl->current_PIDs.PIDs.vtxtpid != 0) ? NEUTRINO_ICON_VTXT : NEUTRINO_ICON_VTXT_GREY, BoxEndX - (BORDER_RIGHT + icon_w_subt + ICON_TO_ICON_OFFSET + icon_w_vtxt), buttonBarStartY + (buttonBarHeight - icon_h_vtxt)/2 );
+		frameBuffer->paintIcon((g_RemoteControl->current_PIDs.otherPIDs.vtxtpid != 0) ? NEUTRINO_ICON_VTXT : NEUTRINO_ICON_VTXT_GREY, BoxEndX - (BORDER_RIGHT + icon_w_subt + ICON_TO_ICON_OFFSET + icon_w_vtxt), buttonBarStartY + (buttonBarHeight - icon_h_vtxt)/2 );
 	}
 }
 
@@ -1743,7 +1743,7 @@ void CInfoViewer::showButton_Audio()
 	}
 
 	int ac3state;
-  	if ((g_RemoteControl->current_PIDs.PIDs.selected_apid < count) && (g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.PIDs.selected_apid].is_ac3))
+  	if ((g_RemoteControl->current_PIDs.otherPIDs.selected_apid < count) && (g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.otherPIDs.selected_apid].is_ac3))
 	{
 		ac3state = AC3_ACTIVE;
 	}

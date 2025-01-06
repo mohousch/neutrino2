@@ -1500,11 +1500,13 @@ void CControlAPI::SendStreamInfo(CyhookHandler *hh)
 //
 void CControlAPI::SendcurrentVAPid(CyhookHandler *hh)
 {
-	CZapit::responseGetPIDs pids;
-	pids.PIDs.vpid=0;
+	CZapit::PIDs pids;
+	pids.otherPIDs.vpid = 0;
+	
 	CZapit::getInstance()->getCurrentPIDS(pids);
 
-	hh->printf("%u\n", pids.PIDs.vpid);
+	hh->printf("%u\n", pids.otherPIDs.vpid);
+	
 	if(!pids.APIDs.empty())
 		hh->printf("%u\n", pids.APIDs[0].pid);
 	else
@@ -1514,21 +1516,24 @@ void CControlAPI::SendcurrentVAPid(CyhookHandler *hh)
 //
 void CControlAPI::SendAllCurrentVAPid(CyhookHandler *hh)
 {
-	bool eit_not_ok=true;
-	CZapit::responseGetPIDs pids;
+	bool eit_not_ok = true;
+	CZapit::PIDs pids;
 
 	CSectionsd::ComponentTagList tags;
-	pids.PIDs.vpid=0;
+	pids.otherPIDs.vpid = 0;
+	
 	CZapit::getInstance()->getCurrentPIDS(pids);
 
-	hh->printf("%05u\n", pids.PIDs.vpid);
+	hh->printf("%05u\n", pids.otherPIDs.vpid);
 
 	t_channel_id current_channel = CZapit::getInstance()->getCurrentChannelID();
+	
 	CSectionsd::CurrentNextInfo currentNextInfo;
 	CSectionsd::getInstance()->getCurrentNextServiceKey(current_channel&0xFFFFFFFFFFFFULL, currentNextInfo);
+	
 	if (CSectionsd::getInstance()->getComponentTagsUniqueKey(currentNextInfo.current_uniqueKey,tags))
 	{
-		for (unsigned int i=0; i< tags.size(); i++)
+		for (unsigned int i = 0; i < tags.size(); i++)
 		{
 			for (unsigned short j=0; j< pids.APIDs.size(); j++)
 			{
@@ -1537,7 +1542,7 @@ void CControlAPI::SendAllCurrentVAPid(CyhookHandler *hh)
  					if(!tags[i].component.empty())
 					{
 						if(!(isalnum(tags[i].component[0])))
-							tags[i].component=tags[i].component.substr(1,tags[i].component.length()-1);
+							tags[i].component = tags[i].component.substr(1,tags[i].component.length()-1);
 						hh->printf("%05u %s\n",pids.APIDs[j].pid,tags[i].component.c_str());
 					}
 					else
@@ -1567,10 +1572,11 @@ void CControlAPI::SendAllCurrentVAPid(CyhookHandler *hh)
 
 	if(pids.APIDs.empty())
 		hh->printf("0\n"); // shouldnt happen, but print at least one apid
-	if(pids.PIDs.vtxtpid)
-		hh->printf("%05u vtxt\n",pids.PIDs.vtxtpid);
-	if (pids.PIDs.pmtpid)
-		hh->printf("%05u pmt\n",pids.PIDs.pmtpid);
+	if(pids.otherPIDs.vtxtpid)
+		hh->printf("%05u vtxt\n", pids.otherPIDs.vtxtpid);
+		
+	if (pids.otherPIDs.pmtpid)
+		hh->printf("%05u pmt\n", pids.otherPIDs.pmtpid);
 
 }
 
@@ -1896,28 +1902,31 @@ void CControlAPI::YWebCGI(CyhookHandler *hh)
 //
 void CControlAPI::YWeb_SendVideoStreamingPids(CyhookHandler *hh, int apid_no)
 {
-	CZapit::responseGetPIDs pids;
-	int apid=0,apid_idx=0;
-	pids.PIDs.vpid=0;
+	CZapit::PIDs pids;
+	int apid = 0, apid_idx = 0;
+	pids.otherPIDs.vpid = 0;
+	
 	CZapit::getInstance()->getCurrentPIDS(pids);
 
 	if( apid_no < (int)pids.APIDs.size())
 		apid_idx=apid_no;
+		
 	if(!pids.APIDs.empty())
 		apid = pids.APIDs[apid_idx].pid;
+		
 	if(hh->ParamList["no_commas"] != "")
 	{
-		if(pids.PIDs.pcrpid != pids.PIDs.vpid)
-			hh->printf("0x%04x 0x%04x 0x%04x 0x%04x",pids.PIDs.pmtpid,pids.PIDs.vpid,apid,pids.PIDs.pcrpid);
+		if(pids.otherPIDs.pcrpid != pids.otherPIDs.vpid)
+			hh->printf("0x%04x 0x%04x 0x%04x 0x%04x", pids.otherPIDs.pmtpid, pids.otherPIDs.vpid, apid, pids.otherPIDs.pcrpid);
 		else
-			hh->printf("0x%04x 0x%04x 0x%04x",pids.PIDs.pmtpid,pids.PIDs.vpid,apid);
+			hh->printf("0x%04x 0x%04x 0x%04x", pids.otherPIDs.pmtpid, pids.otherPIDs.vpid, apid);
 	}
 	else
 	{
-		if(pids.PIDs.pcrpid != pids.PIDs.vpid)
-			hh->printf("0x%04x,0x%04x,0x%04x,0x%04x",pids.PIDs.pmtpid,pids.PIDs.vpid,apid,pids.PIDs.pcrpid);
+		if(pids.otherPIDs.pcrpid != pids.otherPIDs.vpid)
+			hh->printf("0x%04x,0x%04x,0x%04x,0x%04x", pids.otherPIDs.pmtpid, pids.otherPIDs.vpid, apid, pids.otherPIDs.pcrpid);
 		else
-			hh->printf("0x%04x,0x%04x,0x%04x",pids.PIDs.pmtpid,pids.PIDs.vpid,apid);
+			hh->printf("0x%04x,0x%04x,0x%04x", pids.otherPIDs.pmtpid, pids.otherPIDs.vpid, apid);
 	}
 }
 
@@ -1926,12 +1935,13 @@ void CControlAPI::YWeb_SendVideoStreamingPids(CyhookHandler *hh, int apid_no)
 //
 void CControlAPI::YWeb_SendRadioStreamingPid(CyhookHandler *hh)
 {
-	CZapit::responseGetPIDs pids;
-	int apid=0;
+	CZapit::PIDs pids;
+	int apid = 0;
 	CZapit::getInstance()->getCurrentPIDS(pids);
 
 	if(!pids.APIDs.empty())
 		apid = pids.APIDs[0].pid;
+		
 	hh->printf("0x%04x",apid);
 }
 
@@ -2170,9 +2180,9 @@ void CControlAPI::doNewTimer(CyhookHandler *hh)
 		bool standby_on = (hh->ParamList["sbon"]=="1");
 		data=&standby_on;
 	}
-	else if(type==CTimerd::TIMER_NEXTPROGRAM || type==CTimerd::TIMER_ZAPTO)
+	else if(type == CTimerd::TIMER_NEXTPROGRAM || type == CTimerd::TIMER_ZAPTO)
 		data = &eventinfo;
-	else if (type==CTimerd::TIMER_RECORD)
+	else if (type == CTimerd::TIMER_RECORD)
 	{
 		if(_rec_dir == "")
 		{
@@ -2184,25 +2194,24 @@ void CControlAPI::doNewTimer(CyhookHandler *hh)
 		}
 		if(changeApids)
 			eventinfo.apids = apids;
-		//recinfo = eventinfo;
-		////
+		
 		recinfo.epgID = eventinfo.epgID;
 		recinfo.epg_starttime = eventinfo.epg_starttime;
 		recinfo.channel_id = eventinfo.channel_id;
 		recinfo.recordingSafety = eventinfo.recordingSafety;
 		recinfo.apids = eventinfo.apids;
-		////
+
 		strncpy(recinfo.recordingDir, _rec_dir.c_str(), RECORD_DIR_MAXLEN-1);
 		data = &recinfo;
 	}
-	else if(type==CTimerd::TIMER_REMIND)
+	else if(type == CTimerd::TIMER_REMIND)
 	{
 		char msg[REMINDER_MESSAGE_MAXLEN];
 		memset(msg, 0, sizeof(msg));
 		strncpy(msg, hh->ParamList["msg"].c_str(),REMINDER_MESSAGE_MAXLEN-1);
 		data=msg;
 	}
-	else if(type==CTimerd::TIMER_EXEC_PLUGIN)
+	else if(type == CTimerd::TIMER_EXEC_PLUGIN)
 	{
 		char msg[EXEC_PLUGIN_NAME_MAXLEN];
 		memset(msg, 0, sizeof(msg));
@@ -2357,7 +2366,7 @@ void CControlAPI::changeBouquetCGI(CyhookHandler *hh)
 		CZapit::getInstance()->getBouquetChannels(selected - 1, BChannelList, CZapit::MODE_CURRENT, true);
 		CZapit::BouquetChannelList::iterator channels = BChannelList.begin();
 		
-		for(; channels != BChannelList.end();channels++)
+		for(; channels != BChannelList.end(); channels++)
 		{
 			CZapit::getInstance()->removeChannelFromBouquet(selected - 1, channels->channel_id);
 		}

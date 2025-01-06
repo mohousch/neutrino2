@@ -333,7 +333,7 @@ bool CGeneralSettings::changeNotify(const std::string& OptionName, void */*data*
 			if (g_Radiotext && ((CNeutrinoApp::getInstance()->getMode()) == CNeutrinoApp::mode_radio))
 			{
 				if(CZapit::getInstance()->getCurrentFrontend() && !IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
-					g_Radiotext->setPid(g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.PIDs.selected_apid].pid);
+					g_Radiotext->setPid(g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.otherPIDs.selected_apid].pid);
 			}
 		} 
 		else 

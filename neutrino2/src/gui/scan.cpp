@@ -119,7 +119,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	
 	sat_iterator_t sit;
 	CZapit::ScanSatelliteList satList;
-	CZapit::commandSetScanSatelliteList sat;
+	CZapit::scanSatelliteList_t sat;
 	transponder TP;
 
 	// window size
@@ -335,7 +335,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	} 
 	else if(manual) // manual
 	{
-		CZapit::commandScanTP msg;
+		CZapit::scanTP_t msg;
 	
 		msg.TP = TP;
 		msg.scanmode = scan_mode;
@@ -345,7 +345,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 	else // auto / all
 	{
-		CZapit::commandScanProvider msg;
+		CZapit::scanProvider_t msg;
 		
 		msg.scanmode = scan_mode;
 		msg.fe = fe;

@@ -108,7 +108,7 @@ CRemoteControl::CRemoteControl()
 	current_EPGid =	0;
 	next_EPGid = 	0;
 	
-	memset(&current_PIDs.PIDs, 0, sizeof(current_PIDs.PIDs) );
+	memset(&current_PIDs.otherPIDs, 0, sizeof(current_PIDs.otherPIDs) );
 	
 	has_ac3 = 	false;
 	selected_subchannel = -1;
@@ -176,7 +176,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				current_EPGid = 0;
 				next_EPGid = 0;
 
-				memset(&current_PIDs.PIDs, 0, sizeof(current_PIDs.PIDs) );
+				memset(&current_PIDs.otherPIDs, 0, sizeof(current_PIDs.otherPIDs) );
 
 				current_PIDs.APIDs.clear();
 				has_ac3 = false;
@@ -320,7 +320,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			// radiotext			
 			if (g_settings.radiotext_enable && g_Radiotext && ((CNeutrinoApp::getInstance()->getMode()) == CNeutrinoApp::mode_radio))
 			{
-				g_Radiotext->setPid(current_PIDs.APIDs[current_PIDs.PIDs.selected_apid].pid);
+				g_Radiotext->setPid(current_PIDs.APIDs[current_PIDs.otherPIDs.selected_apid].pid);
 			}
 			
 			// lcd
@@ -622,7 +622,7 @@ void CRemoteControl::processAPIDnames()
 		dprintf(DEBUG_NORMAL, "CRemoteControl::processAPIDnames: set apid name= %s pid= 0x%x\n", current_PIDs.APIDs[ac3_found].desc, current_PIDs.APIDs[ac3_found].pid);
 		setAPID(ac3_found);
 	}
-	else if ( current_PIDs.PIDs.selected_apid >= current_PIDs.APIDs.size() )
+	else if ( current_PIDs.otherPIDs.selected_apid >= current_PIDs.APIDs.size() )
 	{
 		setAPID( 0 );
 	}
@@ -642,15 +642,15 @@ void CRemoteControl::copySubChannelsToZapit(void)
 
 void CRemoteControl::setAPID( uint32_t APID )
 {
-	if ((current_PIDs.PIDs.selected_apid == APID ) || (APID >= current_PIDs.APIDs.size()))
+	if ((current_PIDs.otherPIDs.selected_apid == APID ) || (APID >= current_PIDs.APIDs.size()))
 		return;
 
-	current_PIDs.PIDs.selected_apid = APID;
+	current_PIDs.otherPIDs.selected_apid = APID;
 	CZapit::getInstance()->setAudioChannel( APID );
 	
 	// needed for auto audio select
-	CLCD::getInstance()->setMovieAudio(current_PIDs.APIDs[current_PIDs.PIDs.selected_apid].is_ac3);
-	CLCD::getInstance()->ShowIcon(VFD_ICON_DOLBY, current_PIDs.APIDs[current_PIDs.PIDs.selected_apid].is_ac3? true : false);
+	CLCD::getInstance()->setMovieAudio(current_PIDs.APIDs[current_PIDs.otherPIDs.selected_apid].is_ac3);
+	CLCD::getInstance()->ShowIcon(VFD_ICON_DOLBY, current_PIDs.APIDs[current_PIDs.otherPIDs.selected_apid].is_ac3? true : false);
 }
 
 static const std::string empty_string;
@@ -692,7 +692,7 @@ const std::string & CRemoteControl::subChannelUp(void)
   	{
   		if (current_PIDs.APIDs.size() > 0)
   		{
-  			setAPID((current_PIDs.PIDs.selected_apid + 1) % current_PIDs.APIDs.size());
+  			setAPID((current_PIDs.otherPIDs.selected_apid + 1) % current_PIDs.APIDs.size());
   		}
   		return (empty_string);
   	}
@@ -709,10 +709,10 @@ const std::string & CRemoteControl::subChannelDown(void)
   	{
   		if (current_PIDs.APIDs.size() > 0)
   		{
-  			if (current_PIDs.PIDs.selected_apid <= 0)
+  			if (current_PIDs.otherPIDs.selected_apid <= 0)
   				setAPID(current_PIDs.APIDs.size() - 1);
   			else
-  				setAPID((current_PIDs.PIDs.selected_apid - 1));
+  				setAPID((current_PIDs.otherPIDs.selected_apid - 1));
   		}
   		return (empty_string);
   	}
@@ -732,7 +732,7 @@ void CRemoteControl::zapToChannelID(const t_channel_id channel_id, const bool st
 	current_EPGid = 0;
 	next_EPGid = 0;
 
-	memset(&current_PIDs.PIDs, 0, sizeof(current_PIDs.PIDs) );
+	memset(&current_PIDs.otherPIDs, 0, sizeof(current_PIDs.otherPIDs) );
 
 	current_PIDs.APIDs.clear();
 	has_ac3 = false;

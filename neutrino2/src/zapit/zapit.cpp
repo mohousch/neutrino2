@@ -933,16 +933,13 @@ void CZapit::saveZapitSettings(bool write, bool write_a)
 		config.setInt32("lastChannelRadio", lastChannelRadio);
 		config.setInt32("lastChannelTV", lastChannelTV);
 		config.setInt64("lastChannel", live_channel_id);
-		
 		config.setInt64("lastChannelTV_id", lastChannelTV_id);
 		config.setInt64("lastChannelRadio_id", lastChannelRadio_id);
 		config.setBool("makeRemainingChannelsBouquet", makeRemainingChannelsBouquet);
 		config.setInt32("scanSDT", scanSDT);
 
-		//
 		//if (config.getModifiedFlag())
 		config.saveConfig(ZAPIT_CONFIGFILE);
-
 	}
 
 	// write audio config
@@ -1840,7 +1837,7 @@ void CZapit::sendCurrentAPIDs(APIDList &apids)
 {
 	for (uint32_t  i = 0; i < live_channel->getAudioChannelCount(); i++) 
 	{
-		responseGetAPIDs response;
+		APIDs response;
 		response.pid = live_channel->getAudioPid(i);
 		strncpy(response.desc, live_channel->getAudioChannel(i)->description.c_str(), 25);
 
@@ -1867,7 +1864,7 @@ void CZapit::sendCurrentSubPIDs(SubPIDList &subpids)
 {
 	for (int i = 0 ; i < (int)live_channel->getSubtitleCount() ; ++i) 
 	{
-		responseGetSubPIDs response;
+		SubPIDs response;
 		CZapitAbsSub* s = live_channel->getChannelSub(i);
 		CZapitDVBSub* sd = reinterpret_cast<CZapitDVBSub*>(s);
 		CZapitTTXSub* st = reinterpret_cast<CZapitTTXSub*>(s);
@@ -1904,7 +1901,7 @@ void CZapit::sendRecordAPIDs(APIDList &apids)
 {
 	for (uint32_t  i = 0; i < rec_channel->getAudioChannelCount(); i++) 
 	{
-		responseGetAPIDs response;
+		APIDs response;
 		
 		response.pid = rec_channel->getAudioPid(i);
 		strncpy(response.desc, rec_channel->getAudioChannel(i)->description.c_str(), 25);
@@ -1932,7 +1929,7 @@ void CZapit::sendRecordSubPIDs(SubPIDList &subpids)
 {	
 	for (int i = 0 ; i < (int)rec_channel->getSubtitleCount() ; ++i) 
 	{
-		responseGetSubPIDs response;
+		SubPIDs response;
 		
 		CZapitAbsSub* s = rec_channel->getChannelSub(i);
 		CZapitDVBSub* sd = reinterpret_cast<CZapitDVBSub*>(s);
@@ -1973,7 +1970,7 @@ void CZapit::sendAPIDs(t_channel_id chid, APIDList &apids)
 	{
 		for (uint32_t  i = 0; i < channel->getAudioChannelCount(); i++) 
 		{
-			responseGetAPIDs response;
+			APIDs response;
 			response.pid = channel->getAudioPid(i);
 			strncpy(response.desc, channel->getAudioChannel(i)->description.c_str(), 25);
 
@@ -2005,7 +2002,7 @@ void CZapit::sendSubPIDs(t_channel_id chid, SubPIDList &subpids)
 	{
 		for (int i = 0 ; i < (int)channel->getSubtitleCount() ; ++i) 
 		{
-			responseGetSubPIDs response;
+			SubPIDs response;
 			
 			CZapitAbsSub* s = channel->getChannelSub(i);
 			CZapitDVBSub* sd = reinterpret_cast<CZapitDVBSub*>(s);
@@ -2040,12 +2037,12 @@ void CZapit::sendSubPIDs(t_channel_id chid, SubPIDList &subpids)
 	}
 }
 
-//
+////
 void CZapit::internalSendChannels(ZapitChannelList *channels, const unsigned int first_channel_nr, BouquetChannelList &Bchannels)
 {
 	for (uint32_t  i = 0; i < channels->size();i++) 
 	{
-		responseGetBouquetChannels response;
+		bouquetChannels response;
 		
 		strncpy(response.name, ((*channels)[i]->getName()).c_str(), CHANNEL_NAME_SIZE);
 		response.name[CHANNEL_NAME_SIZE-1] = 0;	
@@ -2069,6 +2066,13 @@ void CZapit::sendBouquetChannels(BouquetChannelList &Bchannels, const unsigned i
 		internalSendChannels(&(Bouquets[bouquet]->radioChannels), radioChannelsBegin().getNrofFirstChannelofBouquet(bouquet), Bchannels);
 	else if (((currentMode & TV_MODE) && (mode == MODE_CURRENT)) || (mode == MODE_TV))
 		internalSendChannels(&(Bouquets[bouquet]->tvChannels), tvChannelsBegin().getNrofFirstChannelofBouquet(bouquet), Bchannels);
+}
+
+bool CZapit::getBouquetChannels(const unsigned int bouquet, BouquetChannelList& channels, const channelsMode mode, const bool utf_encoded)
+{
+	sendBouquetChannels(channels, bouquet, mode);
+	
+	return true;
 }
 
 //// bouquetsManager
@@ -2196,6 +2200,8 @@ void CZapit::sortBouquets(void)
 
 void CZapit::parseBouquetsXml(const char *fname, bool bUser)
 {
+	dprintf(DEBUG_INFO, "CZapit::parseBouquetsXml %s\n", fname);
+	
 	xmlDocPtr parser = NULL;
 
 	parser = parseXmlFile(fname);
@@ -2262,8 +2268,8 @@ void CZapit::parseBouquetsXml(const char *fname, bool bUser)
 				channel_node = channel_node->xmlNextNode;
 			}
 
-			if(!bUser)
-				newBouquet->sortBouquet();
+//			if(!bUser)
+//				newBouquet->sortBouquet();
 				
 			search = search->xmlNextNode;
 		}
@@ -2277,6 +2283,8 @@ void CZapit::parseBouquetsXml(const char *fname, bool bUser)
 
 void CZapit::makeBouquetfromCurrentservices(const xmlNodePtr root)
 {
+	dprintf(DEBUG_INFO, "CZapit::makeBouquetfromCurrentservices\n");
+	
 	xmlNodePtr provider = root->xmlChildrenNode;
 	
 	// TODO: use locales
@@ -2382,8 +2390,8 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 
 						id = create_channel_id(0, 0, 0, 0, 0, url);
 							
-						std::pair<std::map<t_channel_id, CZapitChannel>::iterator, bool> ret;
-						ret = allchans.insert(std::pair<t_channel_id, CZapitChannel> (id, CZapitChannel(title, id, url, description)));
+						//std::pair<std::map<t_channel_id, CZapitChannel>::iterator, bool> ret;
+						allchans.insert(std::pair<t_channel_id, CZapitChannel> (id, CZapitChannel(title, id, url, description)));
 						
 						CZapitChannel * chan = findChannelByChannelID(id);
 
@@ -2532,8 +2540,8 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 						//
 						id = create_channel_id(0, 0, 0, 0, 0, url);
 							
-						std::pair<std::map<t_channel_id, CZapitChannel>::iterator, bool> ret;
-						ret = allchans.insert(std::pair<t_channel_id, CZapitChannel> (id, CZapitChannel(title, id, url, description)));
+						//std::pair<std::map<t_channel_id, CZapitChannel>::iterator, bool> ret;
+						allchans.insert(std::pair<t_channel_id, CZapitChannel> (id, CZapitChannel(title, id, url, description)));
 					
 						CZapitChannel * chan = findChannelByChannelID(id);
 
@@ -2587,7 +2595,7 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 			deleteBouquet(Bouquets[i]);
 	}
 
-	dprintf(DEBUG_INFO, "CZapit::loadWebTVBouquet: load %d WEBTV Channels (allchans:%d)\n", cnt, (int) allchans.size());
+	dprintf(DEBUG_NORMAL, "CZapit::loadWebTVBouquet: load %d WEBTV Channels (allchans:%d)\n", cnt, (int) allchans.size());
 }
 
 void CZapit::loadWebTVBouquets(const std::string &dirname)
@@ -2629,7 +2637,7 @@ void CZapit::loadBouquets(bool loadCurrentBouquet)
 	
 	// bouquets
 	parseBouquetsXml(BOUQUETS_XML, false);
-	sortBouquets();
+//	sortBouquets();
 
 	// ubouquets
 	parseBouquetsXml(UBOUQUETS_XML, true);
@@ -2652,7 +2660,7 @@ void CZapit::loadBouquets(bool loadCurrentBouquet)
 	// webTV bouquets
 	loadWebTVBouquets(CONFIGDIR "/webtv"); //FIXME: ==35683==ERROR: AddressSanitizer: stack-buffer-overflow on address 0x7ffc0899c7df at pc 0x5624fd9cdcf8 bp 0x7ffc08999fa0 sp 0x7ffc08999f90
 
-	//
+	// remaingChannels
 	makeRemainingChannelsBouquets();
 }
 
@@ -2695,7 +2703,7 @@ void CZapit::makeRemainingChannelsBouquets(void)
 		return;
 
 	//
-	remainChannels = addBouquet((Bouquets.size() == 0) ? "All Channels" : "Other");
+	remainChannels = addBouquet((Bouquets.size() == 0) ? _("All Channels") : _("Other"));
 
 	for (tallchans::iterator it = allchans.begin(); it != allchans.end(); it++)
 	{
@@ -3896,18 +3904,18 @@ void *CZapit::updatePMTFilter(void *)
 }
 
 //
-void CZapit::getLastChannel(unsigned int &channumber, char &mode)
+void CZapit::getLastChannel(unsigned int &channumber, int &mode)
 {
-	responseGetLastChannel lastChannel;
+	lastChannel lastChannel;
 	
 	if (currentMode & RADIO_MODE)
 	{
-		lastChannel.mode = 'r';
+		lastChannel.mode = MODE_RADIO;
 		lastChannel.channelNumber = lastChannelRadio;
 	}
 	else if (currentMode & TV_MODE)
 	{
-		lastChannel.mode = 't';
+		lastChannel.mode = MODE_TV;
 		lastChannel.channelNumber = lastChannelTV;
 	}
 	
@@ -4117,11 +4125,11 @@ std::string CZapit::getSatelliteName(t_satellite_position position)
 	return "";
 }
 
-void CZapit::getCurrentPIDS( responseGetPIDs &pids )
+void CZapit::getCurrentPIDS( PIDs &pids )
 {
 	if (live_channel) 
 	{
-		responseGetOtherPIDs responseGetOtherPIDs;
+		OtherPIDs responseGetOtherPIDs;
 		APIDList apids;
 		SubPIDList subpids;
 		
@@ -4136,7 +4144,7 @@ void CZapit::getCurrentPIDS( responseGetPIDs &pids )
 		sendCurrentSubPIDs(subpids);
 		
 		//
-		pids.PIDs = responseGetOtherPIDs;
+		pids.otherPIDs = responseGetOtherPIDs;
 		pids.APIDs = apids;
 		pids.SubPIDs = subpids;
 	}
@@ -4213,13 +4221,13 @@ CFrontend* CZapit::getCurrentFrontend()
 }
 
 //
-void CZapit::getPIDS( t_channel_id chid, responseGetPIDs &pids )
+void CZapit::getPIDS( t_channel_id chid, PIDs &pids )
 {
 	CZapitChannel * channel = findChannelByChannelID(chid);
 	
 	if (channel) 
 	{
-		responseGetOtherPIDs responseGetOtherPIDs;
+		OtherPIDs responseGetOtherPIDs;
 		APIDList apids;
 		SubPIDList subpids;
 		
@@ -4234,7 +4242,7 @@ void CZapit::getPIDS( t_channel_id chid, responseGetPIDs &pids )
 		sendSubPIDs(chid, subpids);
 		
 		//
-		pids.PIDs = responseGetOtherPIDs;
+		pids.otherPIDs = responseGetOtherPIDs;
 		pids.APIDs = apids;
 		pids.SubPIDs = subpids;
 	}
@@ -4363,12 +4371,12 @@ CZapit::CServiceInfo CZapit::getRecordServiceInfo()
 	return msgRecordServiceInfo;
 }
 
-void CZapit::getRecordPIDS(responseGetPIDs &pids)
+void CZapit::getRecordPIDS(PIDs &pids)
 {
 	//FIXME:
 	if (rec_channel) 
 	{
-		responseGetOtherPIDs responseGetOtherPIDs;
+		OtherPIDs responseGetOtherPIDs;
 		APIDList apids;
 		SubPIDList subpids;
 		
@@ -4383,7 +4391,7 @@ void CZapit::getRecordPIDS(responseGetPIDs &pids)
 		sendRecordSubPIDs(subpids);
 		
 		//
-		pids.PIDs = responseGetOtherPIDs;
+		pids.otherPIDs = responseGetOtherPIDs;
 		pids.APIDs = apids;
 		pids.SubPIDs = subpids;
 	}
@@ -4480,14 +4488,6 @@ void CZapit::setVideoSystem(int video_system)
 {
 	if(videoDecoder)
 		videoDecoder->SetVideoSystem(video_system);
-}
-
-//
-bool CZapit::getBouquetChannels(const unsigned int bouquet, BouquetChannelList& channels, const channelsMode mode, const bool utf_encoded)
-{
-	sendBouquetChannels(channels, bouquet, mode);
-	
-	return true;
 }
 
 // bqtedit
@@ -4629,7 +4629,7 @@ void CZapit::setScanSatelliteList( ScanSatelliteList &satelliteList )
 	
 	for (uint32_t i = 0; i < satelliteList.size(); i++)
 	{
-		commandSetScanSatelliteList sat = satelliteList[i];
+		scanSatelliteList_t sat = satelliteList[i];
 		
 		scanProviders[sat.position] = sat.satName;
 	}
@@ -5147,7 +5147,7 @@ bool CZapit::tuneTP(transponder TP, CFrontend *fe)
 }
 
 //
-bool CZapit::scanTP(commandScanTP &msg)
+bool CZapit::scanTP(scanTP_t &msg)
 {
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanTP fe:(%d:%d) forceddelsys:0x%x scanmode:%d\n", msg.fe->feadapter, msg.fe->fenumber, msg.fe->getForcedDelSys(), msg.scanmode);
 	
@@ -5175,7 +5175,7 @@ bool CZapit::scanTP(commandScanTP &msg)
 }
 
 //
-bool CZapit::startScan(commandScanProvider &msg)
+bool CZapit::startScan(scanProvider_t &msg)
 {		
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::startScan: fe(%d:%d) scanmode: %d\n", msg.fe->feadapter, msg.fe->fenumber, msg.scanmode);
 	
@@ -5222,7 +5222,7 @@ void * CZapit::scanThread(void * data)
 {
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanThread: starting... tid %ld\n", syscall(__NR_gettid));
 	
-	CZapit::commandScanProvider params = *(CZapit::commandScanProvider*)data;
+	CZapit::scanProvider_t params = *(CZapit::scanProvider_t *)data;
 	
 	int mode = params.scanmode;
 	CFrontend* fe = params.fe;
@@ -5418,7 +5418,7 @@ void * CZapit::scanTransponderThread(void * data)
 {
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanTransponderThread: starting... tid %ld\n", syscall(__NR_gettid));
 	
-	CZapit::commandScanTP params = *(CZapit::commandScanTP*)data;
+	CZapit::scanTP_t params = *(CZapit::scanTP_t *)data;
 	
 	transponder *TP = &params.TP;
 	scanmode = params.scanmode;
@@ -5681,7 +5681,7 @@ void CZapit::parseChannels(xmlNodePtr node, const t_transport_stream_id transpor
 
 		if(ret.second == false) 
 		{
-			dprintf(DEBUG_INFO, "CZapit::parseChannels: duplicate channel %s id 0x%llx freq %d (old %s at %d)\n", name.c_str(), chid, freq, ret.first->second.getName().c_str(), ret.first->second.getFreqId());
+			dprintf(DEBUG_NORMAL, "CZapit::parseChannels: duplicate channel %s id 0x%llx freq %d (old %s at %d)\n", name.c_str(), chid, freq, ret.first->second.getName().c_str(), ret.first->second.getFreqId());
 		} 
 		else 
 		{
@@ -6527,52 +6527,38 @@ void CZapit::Start()
 	cam0 = new CCam();
 	cam1 = new CCam();	
 	
-	//globals
-	scan_runs = 0;
-	found_channels = 0;
-	curr_sat = 0;
-	
 	// load channels / bouquets
 	prepareChannels();
 	
 	//
-	if (saveLastChannel)
+	if (lastChannelMode == RADIO_MODE)
+		setRadioMode();
+	else if (lastChannelMode == TV_MODE)
+		setTVMode();
+			
+	if (!saveLastChannel)
 	{
-		if (lastChannelMode == RADIO_MODE)
-			setRadioMode();
-		else if (lastChannelMode == TV_MODE)
-			setTVMode();
-	}
-	else // start channel
-	{
-		// mode
-		if (lastChannelMode == RADIO_MODE)
-			setRadioMode();
-		else if (lastChannelMode == TV_MODE)
-			setTVMode();
-		
 		// live channel id
 		if (currentMode & RADIO_MODE)
 			live_channel_id = lastChannelRadio_id;
 		else if (currentMode & TV_MODE)
 			live_channel_id = lastChannelTV_id;
 	}
-
-	//create sdt thread
-	pthread_create(&tsdt, NULL, sdtThread, (void *) NULL);
-
-	//get live channel
+	
 	tallchans_iterator cit;
 	cit = allchans.find(live_channel_id);
 
 	if(cit != allchans.end())
 		live_channel = &(cit->second);
+		
+	// wakeup from standby and zap it to live channel
+	leaveStandby();
 	
-	//wakeup from standby and zap it to live channel
-	leaveStandby(); 
-	
-	//create pmt update filter thread
+	// create pmt update filter thread
 	pthread_create(&tpmt, NULL, updatePMTFilter, (void *) NULL);
+
+	// create sdt thread
+	pthread_create(&tsdt, NULL, sdtThread, (void *) NULL);
 }
 
 //
