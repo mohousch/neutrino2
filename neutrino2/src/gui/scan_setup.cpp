@@ -74,7 +74,7 @@
 #endif
 
 //// globals
-static int dmode = NO_DISEQC;
+static int dmode = CFrontend::NO_DISEQC;
 //
 char zapit_lat[20];						
 char zapit_long[20];
@@ -117,14 +117,14 @@ const keyval SCANTS_ZAPIT_SCANTYPE[SCANTS_ZAPIT_SCANTYPE_COUNT] =
 #define SATSETUP_DISEQC_OPTION_COUNT 8
 const keyval SATSETUP_DISEQC_OPTIONS[SATSETUP_DISEQC_OPTION_COUNT] =
 {
-	{ NO_DISEQC          , _("no DiSEqC") },
-	{ MINI_DISEQC        , _("Mini-DiSEqC") },
-	{ DISEQC_1_0         , _("DiSEqC 1.0") },
-	{ DISEQC_1_1         , _("DiSEqC 1.1") },
-	{ DISEQC_ADVANCED    , _("Advanced") },
-	{ DISEQC_UNICABLE    , _("Unicable") },
-	{ DISEQC_UNICABLE2   , _("Unicable2 (JESS)") },
-	{ SMATV_REMOTE_TUNING, _("SMATV Remote Tuning") }
+	{ CFrontend::NO_DISEQC          , _("no DiSEqC") },
+	{ CFrontend::MINI_DISEQC        , _("Mini-DiSEqC") },
+	{ CFrontend::DISEQC_1_0         , _("DiSEqC 1.0") },
+	{ CFrontend::DISEQC_1_1         , _("DiSEqC 1.1") },
+	{ CFrontend::DISEQC_ADVANCED    , _("Advanced") },
+	{ CFrontend::DISEQC_UNICABLE    , _("Unicable") },
+	{ CFrontend::DISEQC_UNICABLE2   , _("Unicable2 (JESS)") },
+	{ CFrontend::SMATV_REMOTE_TUNING, _("SMATV Remote Tuning") }
 };
 
 #define SATSETUP_SCANTP_FEC_COUNT 28
@@ -252,8 +252,8 @@ const keyval SATSETUP_SCANTP_POL[SATSETUP_SCANTP_POL_COUNT] =
 #define DISEQC_ORDER_OPTION_COUNT 2
 const keyval DISEQC_ORDER_OPTIONS[DISEQC_ORDER_OPTION_COUNT] =
 {
-	{ COMMITED_FIRST, _("Commited/Uncommited") },
-	{ UNCOMMITED_FIRST, _("Uncommited/Commited") }
+	{ CFrontend::COMMITED_FIRST, _("Commited/Uncommited") },
+	{ CFrontend::UNCOMMITED_FIRST, _("Uncommited/Commited") }
 };
 
 #define OPTIONS_SOUTH0_NORTH1_OPTION_COUNT 2
@@ -352,7 +352,7 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		
 		// send directly diseqc
 #if HAVE_DVB_API_VERSION >= 5
-		if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+		if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 #else
 		if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -450,7 +450,7 @@ int CScanSetup::showScanService()
 	
 	// load motorposition
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+	if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 #else
 	if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -526,21 +526,21 @@ int CScanSetup::showScanService()
 	if (fe->isHybrid())
 	{
 		// 
-		if (fe->getDeliverySystem() & DVB_C)
-			fe->forcedDelSys = DVB_C;
-		else if (fe->getDeliverySystem() & DVB_T)
-			fe->forcedDelSys = DVB_T;
-		else if (fe->getDeliverySystem() & DVB_T2)
-			fe->forcedDelSys = DVB_T2;
+		if (fe->getDeliverySystem() & CFrontend::DVB_C)
+			fe->forcedDelSys = CFrontend::DVB_C;
+		else if (fe->getDeliverySystem() & CFrontend::DVB_T)
+			fe->forcedDelSys = CFrontend::DVB_T;
+		else if (fe->getDeliverySystem() & CFrontend::DVB_T2)
+			fe->forcedDelSys = CFrontend::DVB_T2;
 		//
 		CMenuOptionChooser *tunerType = new CMenuOptionChooser(_("Tuner type"),  (int *)&fe->forcedDelSys);
 		
-		if (fe->getDeliverySystem() & DVB_C)
-			tunerType->addOption("DVBC", DVB_C);
-		if (fe->getDeliverySystem() & DVB_T)
-			tunerType->addOption("DVBT", DVB_T);
-		if (fe->getDeliverySystem() & DVB_T2)
-			tunerType->addOption("DVBT2", DVB_T2);
+		if (fe->getDeliverySystem() & CFrontend::DVB_C)
+			tunerType->addOption("DVBC", CFrontend::DVB_C);
+		if (fe->getDeliverySystem() & CFrontend::DVB_T)
+			tunerType->addOption("DVBT", CFrontend::DVB_T);
+		if (fe->getDeliverySystem() & CFrontend::DVB_T2)
+			tunerType->addOption("DVBT2", CFrontend::DVB_T2);
 			
 		tunerType->setChangeObserver(feDelSysNotifier);
 		tunerType->setActive(true);
@@ -554,7 +554,7 @@ int CScanSetup::showScanService()
 	bool hidden = true;
 	
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
+	if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2)
 #else
 	if(fe->getInfo()->type == FE_OFDM)
 #endif
@@ -601,7 +601,7 @@ int CScanSetup::showScanService()
 	
 	// DVB_S / DVB_S2
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+	if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 #else
 	if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -612,13 +612,13 @@ int CScanSetup::showScanService()
 		
 		// diseqc repeat
 		CMenuOptionNumberChooser *ojDiseqcRepeats = new CMenuOptionNumberChooser(_("DiSEqC-repeats"), &fe->diseqcRepeats, true, 0, 2, NULL);
-		ojDiseqcRepeats->setHidden((dmode == NO_DISEQC) || (dmode > DISEQC_ADVANCED) || (fe->mode == CFrontend::FE_NOTCONNECTED) || (fe->mode == CFrontend::FE_LOOP));
+		ojDiseqcRepeats->setHidden((dmode == CFrontend::NO_DISEQC) || (dmode > CFrontend::DISEQC_ADVANCED) || (fe->mode == CFrontend::FE_NOTCONNECTED) || (fe->mode == CFrontend::FE_LOOP));
 		satNotify->addItem(4, ojDiseqcRepeats);
 		feModeNotifier->addItem(4, ojDiseqcRepeats);
 
 		// unicablesetup
 		CMenuForwarder *uniSetup = new CMenuForwarder(_("Unicable Setup"), true, NULL, this, "unisetup");
-		uniSetup->setHidden((dmode > DISEQC_ADVANCED ? false : true));
+		uniSetup->setHidden((dmode > CFrontend::DISEQC_ADVANCED ? false : true));
 		satNotify->addItem(3, uniSetup);
 		feModeNotifier->addItem(3, uniSetup);
 
@@ -653,13 +653,13 @@ int CScanSetup::showScanService()
 
 	// allautoscan ( DVB_S / DVB_S2)
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+	if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 #else
 	if(fe->getInfo()->type == FE_QPSK)
 #endif
 	{
 		CMenuForwarder *fautoScanAll = new CMenuForwarder(_("Auto-Scan multiple Satellites"), true, NULL, this, "allautoscansetup", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE);
-		fautoScanAll->setHidden(( (dmode == NO_DISEQC) || (fe->mode == CFrontend::FE_NOTCONNECTED) || (fe->mode == CFrontend::FE_LOOP)));
+		fautoScanAll->setHidden(( (dmode == CFrontend::NO_DISEQC) || (fe->mode == CFrontend::FE_NOTCONNECTED) || (fe->mode == CFrontend::FE_LOOP)));
 		satNotify->addItem(2, fautoScanAll);
 		feModeNotifier->addItem(2, fautoScanAll);
 		
@@ -832,7 +832,7 @@ int CScanSetup::showUnicableSetup()
 	uni_setup->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	// uni_scr
-	CMenuOptionNumberChooser * uniscr = new CMenuOptionNumberChooser(_("Unicable SCR address"), &fe->uni_scr, true, -1, dmode == DISEQC_UNICABLE ? 7 : 31);
+	CMenuOptionNumberChooser * uniscr = new CMenuOptionNumberChooser(_("Unicable SCR address"), &fe->uni_scr, true, -1, dmode == CFrontend::DISEQC_UNICABLE ? 7 : 31);
 	uni_setup->addItem(uniscr);
 
 	// uni_qrg
@@ -945,7 +945,7 @@ int CScanSetup::showLNBSetup()
 	for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 	{
 		// satname
-		if(sit->second.system == DVB_S)
+		if(sit->second.system == CFrontend::DVB_S)
 		{	
 			//
 			if (tempsatlistBox->hasHead())
@@ -963,13 +963,13 @@ int CScanSetup::showLNBSetup()
 			tempsatlistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 			// diseqc
-			CMenuOptionNumberChooser * diseqc = new CMenuOptionNumberChooser(_("Diseqc input"), &sit->second.diseqc, ((dmode != NO_DISEQC) && (dmode != DISEQC_ADVANCED)), -1, 15, NULL, 1, -1);
+			CMenuOptionNumberChooser * diseqc = new CMenuOptionNumberChooser(_("Diseqc input"), &sit->second.diseqc, ((dmode != CFrontend::NO_DISEQC) && (dmode != CFrontend::DISEQC_ADVANCED)), -1, 15, NULL, 1, -1);
 
 			// commited input
-			CMenuOptionNumberChooser * comm = new CMenuOptionNumberChooser(_("Commited/Uncommited"), &sit->second.commited, dmode == DISEQC_ADVANCED, -1, 15, NULL, 1, -1);
+			CMenuOptionNumberChooser * comm = new CMenuOptionNumberChooser(_("Commited/Uncommited"), &sit->second.commited, dmode == CFrontend::DISEQC_ADVANCED, -1, 15, NULL, 1, -1);
 
 			// uncommited input
-			CMenuOptionNumberChooser * uncomm = new CMenuOptionNumberChooser(_("Uncommited/Commited"), &sit->second.uncommited, dmode == DISEQC_ADVANCED, -1, 15, NULL, 1, -1);
+			CMenuOptionNumberChooser * uncomm = new CMenuOptionNumberChooser(_("Uncommited/Commited"), &sit->second.uncommited, dmode == CFrontend::DISEQC_ADVANCED, -1, 15, NULL, 1, -1);
 
 			// motor position
 			CMenuOptionNumberChooser * motor = new CMenuOptionNumberChooser(_("Rotor position"), &sit->second.motor_position, true, 0, 64);
@@ -1072,7 +1072,7 @@ int CScanSetup::showSatOnOffSetup()
 	for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 	{
 		// satname
-		if(sit->second.system == DVB_S)
+		if(sit->second.system == CFrontend::DVB_S)
 		{
 			// inuse
 			CMenuOptionChooser * inuse = new CMenuOptionChooser(sit->second.name.c_str(),  &sit->second.use_in_scan, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
@@ -1150,7 +1150,7 @@ int CScanSetup::showManualScanSetup()
 	CMenuOptionStringChooser * satSelect = NULL;
 	
 #if HAVE_DVB_API_VERSION >= 5 
-	if (fe->getForcedDelSys() == DVB_C)
+	if (fe->getForcedDelSys() == CFrontend::DVB_C)
 #else
 	if (fe->getInfo()->type == FE_QAM)
 #endif
@@ -1159,14 +1159,14 @@ int CScanSetup::showManualScanSetup()
 
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 		{
-			if(sit->second.system == DVB_C)
+			if(sit->second.system == CFrontend::DVB_C)
 			{
 				satSelect->addOption(sit->second.name.c_str());
 			}
 		}
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2)
 #else
 	else if (fe->getInfo()->type == FE_OFDM) 
 #endif
@@ -1175,14 +1175,14 @@ int CScanSetup::showManualScanSetup()
 
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++)
 		{
-			if(sit->second.system == DVB_T)
+			if(sit->second.system == CFrontend::DVB_T)
 			{
 				satSelect->addOption(sit->second.name.c_str());
 			}
 		}
 	}
 #if HAVE_DVB_API_VERSION >= 5
-    	else if (fe->getForcedDelSys() == DVB_A)
+    	else if (fe->getForcedDelSys() == CFrontend::DVB_A)
 #else
 	else if (fe->getInfo()->type == FE_ATSC)
 #endif
@@ -1191,14 +1191,14 @@ int CScanSetup::showManualScanSetup()
 
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++)
 		{
-			if(sit->second.system == DVB_A)
+			if(sit->second.system == CFrontend::DVB_A)
 			{
 				satSelect->addOption(sit->second.name.c_str());
 			}
 		}
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+	else if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 #else
 	else if(fe->getInfo()->type == FE_QPSK)
 #endif 
@@ -1208,7 +1208,7 @@ int CScanSetup::showManualScanSetup()
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 		{
 			// satname
-			if(sit->second.system == DVB_S)
+			if(sit->second.system == CFrontend::DVB_S)
 			{
 				satSelect->addOption(sit->second.name.c_str());
 			}
@@ -1223,11 +1223,11 @@ int CScanSetup::showManualScanSetup()
 		
 	// frequency
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+	if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 		freq_length = 8;
-	else if (fe->getForcedDelSys() == DVB_C)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_C)
 		freq_length = 6;
-	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2 || fe->getForcedDelSys() == DVB_A)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2 || fe->getForcedDelSys() == CFrontend::DVB_A)
 		freq_length = 9;
 #else
 	switch (fe->getInfo()->type)
@@ -1259,7 +1259,7 @@ int CScanSetup::showManualScanSetup()
 	CMenuOptionChooser * mod_pol = NULL;
 
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+	if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 #else
 	if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -1267,7 +1267,7 @@ int CScanSetup::showManualScanSetup()
 		mod_pol = new CMenuOptionChooser(_("Polarization"), (int *)&scanSettings->TP_pol, SATSETUP_SCANTP_POL, SATSETUP_SCANTP_POL_COUNT, true);
 	}
 #if HAVE_DVB_API_VERSION >= 5 
-	else if (fe->getForcedDelSys() == DVB_C)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_C)
 #else
 	else if (fe->getInfo()->type == FE_QAM)
 #endif
@@ -1275,7 +1275,7 @@ int CScanSetup::showManualScanSetup()
 		mod_pol = new CMenuOptionChooser(_("Modulation"), (int *)&scanSettings->TP_mod, CABLETERRESTRIALSETUP_SCANTP_MOD, CABLETERRESTRIALSETUP_SCANTP_MOD_COUNT, true);
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2)
 #else
 	else if (fe->getInfo()->type == FE_OFDM) 
 #endif
@@ -1283,7 +1283,7 @@ int CScanSetup::showManualScanSetup()
 		mod_pol = new CMenuOptionChooser(_("Modulation"), (int *)&scanSettings->TP_mod, CABLETERRESTRIALSETUP_SCANTP_MOD, CABLETERRESTRIALSETUP_SCANTP_MOD_COUNT, true);
 	}
 #if HAVE_DVB_API_VERSION >= 5
-    	else if (fe->getForcedDelSys() == DVB_A)
+    	else if (fe->getForcedDelSys() == CFrontend::DVB_A)
 #else
 	else if (fe->getInfo()->type == FE_ATSC)
 #endif
@@ -1298,14 +1298,14 @@ int CScanSetup::showManualScanSetup()
 
 	// fec
 #if HAVE_DVB_API_VERSION >= 5
-	int fec_count = (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X) ? SATSETUP_SCANTP_FEC_COUNT : CABLESETUP_SCANTP_FEC_COUNT;
+	int fec_count = (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X) ? SATSETUP_SCANTP_FEC_COUNT : CABLESETUP_SCANTP_FEC_COUNT;
 #else
 	int fec_count = (fe->getInfo()->type == FE_QPSK) ? SATSETUP_SCANTP_FEC_COUNT : CABLESETUP_SCANTP_FEC_COUNT;
 #endif
 	CMenuOptionChooser * fec = new CMenuOptionChooser(_("FEC"), (int *)&scanSettings->TP_fec, SATSETUP_SCANTP_FEC, fec_count, true);
 	
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() != DVB_T && fe->getForcedDelSys() != DVB_T2 && fe->getForcedDelSys() != DVB_A)
+	if (fe->getForcedDelSys() != CFrontend::DVB_T && fe->getForcedDelSys() != CFrontend::DVB_T2 && fe->getForcedDelSys() != CFrontend::DVB_A)
 #else	
 	if(fe->getInfo()->type != FE_OFDM && fe->getInfo()->type != FE_ATSC)
 #endif
@@ -1319,7 +1319,7 @@ int CScanSetup::showManualScanSetup()
 
 	// band/hp/lp/transmode/guard/hierarchy/plp_id
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
+	if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2)
 #else
 	if (fe->getInfo()->type == FE_OFDM) 
 #endif
@@ -1350,7 +1350,7 @@ int CScanSetup::showManualScanSetup()
 		
 		// plp_id
 #if HAVE_DVB_API_VERSION >= 5
-		if (fe->getForcedDelSys() == DVB_T2)
+		if (fe->getForcedDelSys() == CFrontend::DVB_T2)
 		{
 			CStringInput * plp = new CStringInput(_("PLP ID"), (char *) scanSettings->TP_plp_id, 3);
 			CMenuForwarder * plp_id = new CMenuForwarder(_("PLP ID"), true, scanSettings->TP_plp_id, plp);
@@ -1435,7 +1435,7 @@ int CScanSetup::showAutoScanSetup()
 	// satselect
 	CMenuOptionStringChooser * satSelect = NULL;
 #if HAVE_DVB_API_VERSION >= 5 
-	if (fe->getForcedDelSys() == DVB_C)
+	if (fe->getForcedDelSys() == CFrontend::DVB_C)
 #else
 	if (fe->getInfo()->type == FE_QAM)
 #endif
@@ -1444,14 +1444,14 @@ int CScanSetup::showAutoScanSetup()
 
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 		{
-			if(sit->second.system == DVB_C)
+			if(sit->second.system == CFrontend::DVB_C)
 			{
 				satSelect->addOption(sit->second.name.c_str());
 			}
 		}
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2)
 #else
 	else if (fe->getInfo()->type == FE_OFDM) 
 #endif
@@ -1460,14 +1460,14 @@ int CScanSetup::showAutoScanSetup()
 
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++)
 		{
-			if(sit->second.system == DVB_T)
+			if(sit->second.system == CFrontend::DVB_T)
 			{
 				satSelect->addOption(sit->second.name.c_str());
 			}
 		}
 	}
 #if HAVE_DVB_API_VERSION >= 5
-    	else if (fe->getForcedDelSys() == DVB_A)
+    	else if (fe->getForcedDelSys() == CFrontend::DVB_A)
 #else
 	else if (fe->getInfo()->type == FE_ATSC)
 #endif
@@ -1476,14 +1476,14 @@ int CScanSetup::showAutoScanSetup()
 
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++)
 		{
-			if(sit->second.system == DVB_A)
+			if(sit->second.system == CFrontend::DVB_A)
 			{
 				satSelect->addOption(sit->second.name.c_str());
 			}
 		}
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+	else if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 #else
 	else if(fe->getInfo()->type == FE_QPSK)
 #endif 
@@ -1493,7 +1493,7 @@ int CScanSetup::showAutoScanSetup()
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 		{
 			// satname
-			if(sit->second.system == DVB_S)
+			if(sit->second.system == CFrontend::DVB_S)
 			{
 				satSelect->addOption(sit->second.name.c_str());
 			}
@@ -1686,25 +1686,25 @@ int CTPSelectHandler::exec(CMenuTarget *parent, const std::string &)
 		char * f, *s, *m;
 		
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+	if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 	{
 		fe->getDelSys(tI->second.feparams.fec_inner, dvbs_get_modulation(tI->second.feparams.fec_inner),  f, s, m);
 
 		snprintf(buf, sizeof(buf), "%d %c %d %s %s %s ", tI->second.feparams.frequency, tI->second.feparams.polarization ? 'V' : 'H', tI->second.feparams.symbol_rate, f, s, m);
 	}
-	else if (fe->getForcedDelSys() == DVB_C)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_C)
 	{
 		fe->getDelSys(tI->second.feparams.fec_inner, tI->second.feparams.modulation, f, s, m);
 
 		snprintf(buf, sizeof(buf), "%d %d %s %s %s ", tI->second.feparams.frequency, tI->second.feparams.symbol_rate, f, s, m);
 	}
-	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2 || fe->getForcedDelSys() == DVB_DTMB)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2 || fe->getForcedDelSys() == CFrontend::DVB_DTMB)
 	{
 		fe->getDelSys(tI->second.feparams.code_rate_HP, tI->second.feparams.modulation, f, s, m);
 
 		snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency, f, s, m);
 	}
-	else if (fe->getForcedDelSys() == DVB_A)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_A)
 	{
 		fe->getDelSys(FEC_NONE, tI->second.feparams.modulation, f, s, m);
 
@@ -1773,19 +1773,19 @@ int CTPSelectHandler::exec(CMenuTarget *parent, const std::string &)
 		scanSettings->TP_delsys = tmpI->second.feparams.delsys;
 		
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+	if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 	{
 		sprintf(scanSettings->TP_rate, "%d", tmpI->second.feparams.symbol_rate);
 		scanSettings->TP_fec = tmpI->second.feparams.fec_inner;
 		scanSettings->TP_pol = tmpI->second.feparams.polarization;
 	}
-	else if (fe->getForcedDelSys() == DVB_C)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_C)
 	{
 		sprintf( scanSettings->TP_rate, "%d", tmpI->second.feparams.symbol_rate);
 		scanSettings->TP_fec = tmpI->second.feparams.fec_inner;
 		scanSettings->TP_mod = tmpI->second.feparams.modulation;
 	}
-	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2 || fe->getForcedDelSys() == DVB_DTMB)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2 || fe->getForcedDelSys() == CFrontend::DVB_DTMB)
 	{
 		scanSettings->TP_band = tmpI->second.feparams.bandwidth;
 		scanSettings->TP_HP = tmpI->second.feparams.code_rate_HP;
@@ -1795,10 +1795,10 @@ int CTPSelectHandler::exec(CMenuTarget *parent, const std::string &)
 		scanSettings->TP_guard = tmpI->second.feparams.guard_interval;
 		scanSettings->TP_hierarchy = tmpI->second.feparams.hierarchy_information;
 				
-		if (fe->getForcedDelSys() == DVB_T2)
+		if (fe->getForcedDelSys() == CFrontend::DVB_T2)
 			sprintf( scanSettings->TP_plp_id, "%d", tmpI->second.feparams.plp_id);
 	}
-	else if (fe->getForcedDelSys() == DVB_A)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_A)
 	{
 		//sprintf( scanSettings->TP_rate, "%d", tmpI->second.feparams.symbol_rate);
 		//scanSettings->TP_fec = tmpI->second.feparams.fec_inner;
@@ -1947,7 +1947,7 @@ bool CScanSettings::loadSettings(const char * const fileName)
 	strcpy(TP_plp_id, configfile.getString(cfg_key, "000").c_str());
 	
 	// delsys
-	TP_delsys = (uint32_t)getConfigValue(fe, "TP_delsys", UNDEFINED);
+	TP_delsys = (uint32_t)getConfigValue(fe, "TP_delsys", CFrontend::UNDEFINED);
 
 	return true;
 }
@@ -2065,7 +2065,7 @@ bool CSatelliteSetupNotifier::changeNotify(const std::string&, void * Data)
 	std::vector<CMenuItem*>::iterator it;
 	int type = *((int*) Data);
 
-	if (type == NO_DISEQC) 
+	if (type == CFrontend::NO_DISEQC) 
 	{
 		for(it = items1.begin(); it != items1.end(); it++)
 		{
@@ -2092,7 +2092,7 @@ bool CSatelliteSetupNotifier::changeNotify(const std::string&, void * Data)
 			if (*it) (*it)->setHidden(true);
 		}
 	}
-	else if(type < DISEQC_ADVANCED) 
+	else if(type < CFrontend::DISEQC_ADVANCED) 
 	{
 		for(it = items1.begin(); it != items1.end(); it++) 
 		{
@@ -2119,7 +2119,7 @@ bool CSatelliteSetupNotifier::changeNotify(const std::string&, void * Data)
 			if (*it) (*it)->setHidden(false);
 		}
 	}
-	else if(type == DISEQC_ADVANCED) 
+	else if(type == CFrontend::DISEQC_ADVANCED) 
 	{
 		for(it = items1.begin(); it != items1.end(); it++) 
 		{
@@ -2146,7 +2146,7 @@ bool CSatelliteSetupNotifier::changeNotify(const std::string&, void * Data)
 			if (*it) (*it)->setHidden(true);
 		}
 	}
-	else if(type > DISEQC_ADVANCED) 
+	else if(type > CFrontend::DISEQC_ADVANCED) 
 	{
 		for(it = items1.begin(); it != items1.end(); it++) 
 		{
@@ -2269,7 +2269,7 @@ bool CScanSetupFEModeNotifier::changeNotify(const std::string&, void * Data)
 
 		for(it = items3.begin(); it != items3.end(); it++) 
 		{
-			if (dmode != NO_DISEQC)
+			if (dmode != CFrontend::NO_DISEQC)
 			{
 				if (*it) (*it)->setHidden(false);
 			}
@@ -2277,7 +2277,7 @@ bool CScanSetupFEModeNotifier::changeNotify(const std::string&, void * Data)
 
 		for(it = items4.begin(); it != items4.end(); it++) 
 		{
-			if (dmode > DISEQC_ADVANCED)
+			if (dmode > CFrontend::DISEQC_ADVANCED)
 			{
 				if (*it) (*it)->setHidden(false);
 			}
@@ -2285,7 +2285,7 @@ bool CScanSetupFEModeNotifier::changeNotify(const std::string&, void * Data)
 
 		for(it = items5.begin(); it != items5.end(); it++) 
 		{
-			if (dmode != NO_DISEQC && dmode < DISEQC_ADVANCED)
+			if (dmode != CFrontend::NO_DISEQC && dmode < CFrontend::DISEQC_ADVANCED)
 			{
 				if (*it) (*it)->setHidden(false);
 			}
@@ -2313,7 +2313,7 @@ bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 {
 	uint32_t delsys = *((uint32_t*) Data);
 	
-	if (delsys == DVB_T || delsys == DVB_T2)
+	if (delsys == CFrontend::DVB_T || delsys == CFrontend::DVB_T2)
 	{
 		if (item)
 			item->setHidden(false);

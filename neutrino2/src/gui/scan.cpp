@@ -182,7 +182,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		TP.feparams.inversion = INVERSION_AUTO;
 		
 #if HAVE_DVB_API_VERSION >= 5
-		if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+		if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 #else
 		if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -194,7 +194,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d:%d delsys:0x%x) freq %d rate %d fec %d pol %d\n", fe->feadapter, fe->fenumber, fe->getForcedDelSys(), TP.feparams.frequency, TP.feparams.symbol_rate, TP.feparams.fec_inner, TP.feparams.polarization);
 		} 
 #if HAVE_DVB_API_VERSION >= 5 
-		else if (fe->getForcedDelSys() == DVB_C)
+		else if (fe->getForcedDelSys() == CFrontend::DVB_C)
 #else
 		else if ( fe->getInfo()->type == FE_QAM )
 #endif
@@ -206,7 +206,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d:%d delsys:0x%x) freq %d rate %d fec %d mod %d\n", fe->feadapter, fe->fenumber, fe->getForcedDelSys(), TP.feparams.frequency, TP.feparams.symbol_rate, TP.feparams.fec_inner, TP.feparams.modulation);
 		}
 #if HAVE_DVB_API_VERSION >= 5
-		else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2 || fe->getForcedDelSys() == DVB_DTMB)
+		else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2 || fe->getForcedDelSys() == CFrontend::DVB_DTMB)
 #else
 		else if ( fe->getInfo()->type == FE_OFDM) 
 #endif
@@ -220,14 +220,14 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			TP.feparams.hierarchy_information = (fe_hierarchy_t)scanSettings->TP_hierarchy;
 			
 #if HAVE_DVB_API_VERSION >= 5
-			if (fe->getForcedDelSys() == DVB_T2)
+			if (fe->getForcedDelSys() == CFrontend::DVB_T2)
 				TP.feparams.plp_id = (unsigned int) atoi(scanSettings->TP_plp_id);
 #endif
 
 			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d:%d delsys:0x%x) freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", fe->feadapter, fe->fenumber, fe->getForcedDelSys(), TP.feparams.frequency, TP.feparams.bandwidth, TP.feparams.code_rate_HP, TP.feparams.code_rate_LP, TP.feparams.modulation, TP.feparams.transmission_mode, TP.feparams.guard_interval, TP.feparams.hierarchy_information);
 		}
 #if HAVE_DVB_API_VERSION >= 5 
-		else if (fe->getForcedDelSys() == DVB_A)
+		else if (fe->getForcedDelSys() == CFrontend::DVB_A)
 #else
 		else if (fe->getInfo()->type == FE_ATSC)
 #endif
@@ -288,7 +288,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		char *f, *s, *m;
 
 #if HAVE_DVB_API_VERSION >= 5
-		if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+		if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 #else
 		if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -298,7 +298,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			sprintf(buffer, "%u %c %d %s %s %s", atoi(scanSettings->TP_freq), scanSettings->TP_pol == 0 ? 'H' : 'V', atoi(scanSettings->TP_rate), f, s, m);
 		} 
 #if HAVE_DVB_API_VERSION >= 5 
-		else if (fe->getForcedDelSys() == DVB_C)
+		else if (fe->getForcedDelSys() == CFrontend::DVB_C)
 #else
 		else if ( fe->getInfo()->type == FE_QAM )
 #endif
@@ -308,7 +308,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			sprintf(buffer, "%u %d %s %s %s", atoi(scanSettings->TP_freq), atoi(scanSettings->TP_rate), f, s, m);
 		}
 #if HAVE_DVB_API_VERSION >= 5
-		else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2 || fe->getForcedDelSys() == DVB_DTMB)
+		else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2 || fe->getForcedDelSys() == CFrontend::DVB_DTMB)
 #else
 		else if (fe->getInfo()->type == FE_OFDM) 
 #endif
@@ -318,7 +318,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			sprintf(buffer, "%u %s %s %s", atoi(scanSettings->TP_freq), f, s, m);
 		}
 #if HAVE_DVB_API_VERSION >= 5
-		else if (fe->getForcedDelSys() == DVB_A)
+		else if (fe->getForcedDelSys() == CFrontend::DVB_A)
 #else
 		else if(fe->getInfo()->type == FE_ATSC)
 #endif
@@ -473,7 +473,7 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 				char *f, *s, *m;
 				
 #if HAVE_DVB_API_VERSION >= 5
-				if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+				if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 #else
 				if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -483,7 +483,7 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 					snprintf(buffer, sizeof(buffer), "%d %c %d %s %s %s ", feparams->frequency, feparams->polarization ? 'V' : 'H', feparams->symbol_rate, f, s, m);
 				} 
 #if HAVE_DVB_API_VERSION >= 5 
-				else if (fe->getForcedDelSys() == DVB_C)
+				else if (fe->getForcedDelSys() == CFrontend::DVB_C)
 #else
 				else if ( fe->getInfo()->type == FE_QAM )
 #endif
@@ -493,7 +493,7 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 					snprintf(buffer, sizeof(buffer), "%d %d %s %s %s ", feparams->frequency, feparams->symbol_rate, f, s, m);
 				}
 #if HAVE_DVB_API_VERSION >= 5
-				else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2 || fe->getForcedDelSys() == DVB_DTMB)
+				else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2 || fe->getForcedDelSys() == CFrontend::DVB_DTMB)
 #else
 				else if (fe->getInfo()->type == FE_OFDM) 
 #endif
@@ -503,7 +503,7 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 					snprintf(buffer, sizeof(buffer), "%d %s %s %s ", feparams->frequency, f, s, m);
 				}
 #if HAVE_DVB_API_VERSION >= 5
-				else if (fe->getForcedDelSys() == DVB_A)
+				else if (fe->getForcedDelSys() == CFrontend::DVB_A)
 #else
 				else if(fe->getInfo()->type == FE_ATSC)
 #endif
@@ -636,7 +636,7 @@ void CScanTs::paint(bool fortest)
 	ypos_cur_satellite = ypos;
 	
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+	if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 #else
 	if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -645,7 +645,7 @@ void CScanTs::paint(bool fortest)
 		xpos2 = xpos1 + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_("Satellite:"), true); // UTF-8
 	}
 #if HAVE_DVB_API_VERSION >= 5 
-	else if (fe->getForcedDelSys() == DVB_C)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_C)
 #else
 	else if (fe->getInfo()->type == FE_QAM)
 #endif
@@ -654,7 +654,7 @@ void CScanTs::paint(bool fortest)
 		xpos2 = xpos1 + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_("Cable:"), true); // UTF-8
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2)
 #else
 	else if (fe->getInfo()->type == FE_OFDM) 
 #endif
@@ -663,7 +663,7 @@ void CScanTs::paint(bool fortest)
 		xpos2 = xpos1 + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_("Terrestrial:"), true); // UTF-8
 	}
 #if HAVE_DVB_API_VERSION >= 5
-    	else if (fe->getForcedDelSys() == DVB_A)
+    	else if (fe->getForcedDelSys() == CFrontend::DVB_A)
 #else
 	else if (fe->getInfo()->type == FE_ATSC)
 #endif

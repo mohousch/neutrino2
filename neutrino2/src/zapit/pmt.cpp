@@ -256,11 +256,11 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 			descramble = true;
 
 			if(esInfo->stream_type == 0x1b || esInfo->stream_type == 0x10)
-				channel->videoType = CHANNEL_VIDEO_MPEG4;
+				channel->videoType = CZapitChannel::CHANNEL_VIDEO_MPEG4;
 			else if(esInfo->stream_type == 0x24 || esInfo->stream_type == 0x27)
-				channel->videoType = CHANNEL_VIDEO_HEVC;
+				channel->videoType = CZapitChannel::CHANNEL_VIDEO_HEVC;
 			else if(esInfo->stream_type == 0x42)
-				channel->videoType = CHANNEL_VIDEO_CAVS;
+				channel->videoType = CZapitChannel::CHANNEL_VIDEO_CAVS;
 
 			dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: vpid 0x%x stream 0x%02x type 0x%02x\n", esInfo->elementary_PID, esInfo->stream_type, channel->videoType);
 			break;

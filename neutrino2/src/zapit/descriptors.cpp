@@ -273,14 +273,14 @@ int CDescriptors::satellite_delivery_system_descriptor(const unsigned char * con
 	int modulationSystem, modulationType, rollOff, fec_inner;
 
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() != DVB_S || fe->getForcedDelSys() != DVB_S2)
+	if (fe->getForcedDelSys() != CFrontend::DVB_S || fe->getForcedDelSys() != CFrontend::DVB_S2)
 #else
 	if (fe->getInfo()->type != FE_QPSK)
 #endif
 		return -1;
 		
 	// delsys
-	feparams.delsys = DVB_S;
+	feparams.delsys = CFrontend::DVB_S;
 
 	//freq
 	feparams.frequency =
@@ -305,7 +305,7 @@ int CDescriptors::satellite_delivery_system_descriptor(const unsigned char * con
 	modulationSystem = (buffer[8] >> 2) & 0x01; 	// 1= DVB_S2
 	
 	if (modulationSystem == 1)
-		feparams.delsys = DVB_S2;
+		feparams.delsys = CFrontend::DVB_S2;
 
 	//mod
 	modulationType = (buffer[8]) & 0x03; 	// 1=QPSK, 2=M8PSK
@@ -361,7 +361,7 @@ int CDescriptors::cable_delivery_system_descriptor(const unsigned char * const b
 	transponder_id_t TsidOnid;
 
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() != DVB_C)
+	if (fe->getForcedDelSys() != CFrontend::DVB_C)
 #else
 	if (fe->getInfo()->type != FE_QAM)
 #endif
@@ -370,7 +370,7 @@ int CDescriptors::cable_delivery_system_descriptor(const unsigned char * const b
 	FrontendParameters feparams;
 	
 	// delsys
-	feparams.delsys = DVB_C;
+	feparams.delsys = CFrontend::DVB_C;
 
 	//freq
 	feparams.frequency =
@@ -689,7 +689,7 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 				char pname[100];
 				
 #if HAVE_DVB_API_VERSION >= 5
-				if (fe->getForcedDelSys() == DVB_S || fe->getForcedDelSys() == DVB_S2)
+				if (fe->getForcedDelSys() == CFrontend::DVB_S || fe->getForcedDelSys() == CFrontend::DVB_S2)
 #else
 				if (fe->getInfo()->type == FE_QPSK)
 #endif
@@ -904,7 +904,7 @@ void CDescriptors::subtitling_descriptor(const unsigned char * const)
 int CDescriptors::terrestrial_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe)
 {
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() != DVB_T)
+	if (fe->getForcedDelSys() != CFrontend::DVB_T)
 #else
 	if (fe->getInfo()->type != FE_OFDM)
 #endif
@@ -914,7 +914,7 @@ int CDescriptors::terrestrial_delivery_system_descriptor(const unsigned char * c
 	transponder_id_t TsidOnid;
 	
 	// delsys
-	feparams.delsys = DVB_T;
+	feparams.delsys = CFrontend::DVB_T;
 	
 	// inv
 	feparams.inversion = INVERSION_AUTO;
@@ -1058,7 +1058,7 @@ int CDescriptors::terrestrial2_delivery_system_descriptor(const unsigned char * 
 {
 // FIXME: dummy function
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() != DVB_T2)
+	if (fe->getForcedDelSys() != CFrontend::DVB_T2)
 #else	
 	if (fe->getInfo()->type != FE_OFDM)
 #endif
@@ -1068,7 +1068,7 @@ int CDescriptors::terrestrial2_delivery_system_descriptor(const unsigned char * 
 	transponder_id_t TsidOnid;
 	
 	// delsys
-	feparams.delsys = DVB_T2;
+	feparams.delsys = CFrontend::DVB_T2;
 	
 	// inv
 	feparams.inversion = INVERSION_AUTO;

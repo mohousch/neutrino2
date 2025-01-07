@@ -740,9 +740,9 @@ int CEPGSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 #define EPG_SERVERBOX_TYPE_OPTION_COUNT 3
 const keyval EPG_SERVERBOX_TYPE_OPTIONS[EPG_SERVERBOX_TYPE_OPTION_COUNT] =
 {
-	{ DVB_C, _("cable") },
-	{ DVB_S, _("sat") },
-	{ DVB_T, _("terrestrial") }
+	{ CFrontend::DVB_C, _("cable") },
+	{ CFrontend::DVB_S, _("sat") },
+	{ CFrontend::DVB_T, _("terrestrial") }
 };
 
 #define EPG_SERVERBOX_GUI_OPTION_COUNT 3

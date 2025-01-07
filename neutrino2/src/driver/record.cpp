@@ -455,7 +455,7 @@ bool CRecord::doRecord(const t_channel_id channel_id, int mode, const event_id_t
 		// vpid / pcrpid
 		if (si.vpid != 0)
 		{
-			psi.addPid(si.vpid, si.vtype == CHANNEL_VIDEO_MPEG4 ? EN_TYPE_AVC : si.vtype == CHANNEL_VIDEO_HEVC ? EN_TYPE_HEVC : EN_TYPE_VIDEO, 0);
+			psi.addPid(si.vpid, si.vtype == CZapitChannel::CHANNEL_VIDEO_MPEG4 ? EN_TYPE_AVC : si.vtype == CZapitChannel::CHANNEL_VIDEO_HEVC ? EN_TYPE_HEVC : EN_TYPE_VIDEO, 0);
 			
 			if (si.pcrpid && (si.pcrpid != si.vpid))
 			{

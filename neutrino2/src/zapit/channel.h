@@ -169,6 +169,14 @@ class CZapitChannel
 		std::string ttx_language_code;
 
 	public:
+		enum ChannelVideoType 
+		{
+			CHANNEL_VIDEO_MPEG2 	= 0,
+			CHANNEL_VIDEO_MPEG4 	= 1,	
+			CHANNEL_VIDEO_HEVC 	= 2,
+			CHANNEL_VIDEO_CAVS	= 3
+		};
+
 		// channel name
 		std::string name;
 

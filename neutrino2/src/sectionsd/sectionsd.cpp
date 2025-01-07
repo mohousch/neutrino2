@@ -2015,15 +2015,15 @@ void *CSectionsd::insertEventsfromLocalTV(void *data)
 		evUrl += toHexString(GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(epgid)); //onid
 		evUrl += ":";
 
-		if(g_settings.epg_serverbox_type == DVB_C)
+		if(g_settings.epg_serverbox_type == CFrontend::DVB_C)
 		{
 			evUrl += "FFFF"; // namenspace for cable
 		}
-		else if (g_settings.epg_serverbox_type == DVB_T)
+		else if (g_settings.epg_serverbox_type == CFrontend::DVB_T)
 		{
 			evUrl += "EEEE"; // namenspace for terrestrial
 		}
-		else if (g_settings.epg_serverbox_type == DVB_S)
+		else if (g_settings.epg_serverbox_type == CFrontend::DVB_S)
 		{
 			// namenspace for sat
 			evUrl += toHexString(satellitePosition); //satpos

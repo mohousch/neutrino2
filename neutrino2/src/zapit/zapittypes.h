@@ -98,16 +98,9 @@ static inline bool IS_WEBTV(t_channel_id cid)
 
 #define SAME_TRANSPONDER(id1, id2) ((id1 >> 16) == (id2 >> 16))
 
-////
-enum ChannelVideoType {
-	CHANNEL_VIDEO_MPEG2 	= 0,
-	CHANNEL_VIDEO_MPEG4 	= 1,	
-	CHANNEL_VIDEO_HEVC 	= 2,
-	CHANNEL_VIDEO_CAVS	= 3
-};
-
 //// dvbsi++
-enum SiDescriptorTag {
+enum SiDescriptorTag 
+{
 	/* 0x00 - 0x3F: ITU-T Rec. H.222.0 | ISO/IEC 13818-1 */
 	VIDEO_STREAM_DESCRIPTOR				= 0x02,
 	AUDIO_STREAM_DESCRIPTOR				= 0x03,
@@ -200,7 +193,8 @@ enum SiDescriptorTag {
 };
 
 // service types
-typedef enum {
+typedef enum 
+{
 	ST_RESERVED				= 0x00,
 	ST_DIGITAL_TELEVISION_SERVICE		= 0x01,
 	ST_DIGITAL_RADIO_SOUND_SERVICE		= 0x02,
@@ -236,32 +230,6 @@ typedef enum {
 	// 0x80 - 0xFE: user defined
 	// 0xFF: reserved for future use
 } service_type_t;
-
-//// diseqc types
-typedef enum {
-	NO_DISEQC,
-	MINI_DISEQC,
-	SMATV_REMOTE_TUNING,
-	DISEQC_1_0,
-	DISEQC_1_1,
-	DISEQC_1_2,
-	DISEQC_ADVANCED,
-	DISEQC_UNICABLE,
-	DISEQC_UNICABLE2
-} diseqc_t;
-
-// dvb transmission types
-typedef enum {
-	UNDEFINED 	= 0x0000,
-	DVB_S 		= 0x0001,
-	DVB_S2		= 0x0002,
-	DVB_S2X		= 0x0004,
-	DVB_C 		= 0x0008,
-	DVB_T 		= 0x0010,
-	DVB_T2		= 0x0020,
-	DVB_DTMB	= 0x0040,
-	DVB_A 		= 0x0080
-} delivery_system_t;
 
 //
 typedef struct 
@@ -338,11 +306,6 @@ typedef struct sat_config {
 	int have_channels;
     	uint32_t system;
 } sat_config_t;
-
-typedef enum diseqc_cmd_order {
-	UNCOMMITED_FIRST,
-	COMMITED_FIRST
-} diseqc_cmd_order_t;
 
 typedef std::map<t_satellite_position, sat_config_t> satellite_map_t;
 typedef std::map<t_satellite_position, sat_config_t>::iterator sat_iterator_t;

@@ -863,7 +863,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	// online epg
 	g_settings.epg_enable_localtv_epg = configfile.getBool("epg_enable_localtv_epg", false);
 	g_settings.epg_serverbox_ip = configfile.getString("epg_serverbox_ip", "192.168.0.12");
-	g_settings.epg_serverbox_type = configfile.getInt32("epg_serverbox_type", DVB_C);
+	g_settings.epg_serverbox_type = configfile.getInt32("epg_serverbox_type", CFrontend::DVB_C);
 	g_settings.epg_serverbox_gui = configfile.getInt32("epg_serverbox_gui", SNeutrinoSettings::SATIP_SERVERBOX_GUI_ENIGMA2);
 
 	//

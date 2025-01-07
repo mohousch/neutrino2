@@ -261,13 +261,13 @@ void CZapit::initFrontend()
 
 #if HAVE_DVB_API_VERSION >= 5
 				//
-				if (fe->getDeliverySystem() & DVB_S || fe->getDeliverySystem() & DVB_S2 || fe->getDeliverySystem() & DVB_S2X)
+				if (fe->getDeliverySystem() & CFrontend::DVB_S || fe->getDeliverySystem() & CFrontend::DVB_S2 || fe->getDeliverySystem() & CFrontend::DVB_S2X)
 					have_s = true;
-				if (fe->getDeliverySystem() & DVB_C)
+				if (fe->getDeliverySystem() & CFrontend::DVB_C)
 					have_c = true;
-				if (fe->getDeliverySystem() & DVB_T || fe->getDeliverySystem() & DVB_T2)
+				if (fe->getDeliverySystem() & CFrontend::DVB_T || fe->getDeliverySystem() & CFrontend::DVB_T2)
 					have_t = true;
-				if (fe->getDeliverySystem() & DVB_A)
+				if (fe->getDeliverySystem() & CFrontend::DVB_A)
 					have_a = true;
 #else
 				if (fe->info.type == FE_QPSK)
@@ -298,8 +298,8 @@ void CZapit::initFrontend()
 
 	fe->info.type = FE_QPSK;
 	strcpy(fe->info.name, "Sat Fake Tuner");
-	fe->forcedDelSys = DVB_S | DVB_S2 | DVB_S2X;
-	fe->deliverySystemMask = DVB_S | DVB_S2 | DVB_S2X;
+	fe->forcedDelSys = CFrontend::DVB_S | CFrontend::DVB_S2 | CFrontend::DVB_S2X;
+	fe->deliverySystemMask = CFrontend::DVB_S | CFrontend::DVB_S2 | CFrontend::DVB_S2X;
 	have_s = true;
 
 	index++;
@@ -760,7 +760,7 @@ void CZapit::loadFrontendConfig()
 			fe->gotoXXLoDirection = getConfigValue(fe, "gotoXXLoDirection", 0);
 			
 			fe->repeatUsals = getConfigValue(fe, "repeatUsals", 0);
-			fe->diseqcType = (diseqc_t)getConfigValue(fe, "diseqcType", (diseqc_t)NO_DISEQC);
+			fe->diseqcType = (CFrontend::diseqc_t)getConfigValue(fe, "diseqcType", CFrontend::NO_DISEQC);
 			fe->diseqcRepeats = getConfigValue(fe, "diseqcRepeats", 0);
 
 			// unicable
@@ -3207,22 +3207,22 @@ int CZapit::startPlayBack(CZapitChannel * thisChannel)
 		
 			if(videoDecoder)
 			{
-				if(thisChannel->videoType == CHANNEL_VIDEO_MPEG2)
+				if(thisChannel->videoType == CZapitChannel::CHANNEL_VIDEO_MPEG2)
 				{
 					videoStr = "MPEG2";
 					videoDecoder->SetStreamType(VIDEO_STREAMTYPE_MPEG2);
 				}
-				else if(thisChannel->videoType == CHANNEL_VIDEO_MPEG4)
+				else if(thisChannel->videoType == CZapitChannel::CHANNEL_VIDEO_MPEG4)
 				{
 					videoStr = "H.264/MPEG-4 AVC";
 					videoDecoder->SetStreamType(VIDEO_STREAMTYPE_MPEG4_H264);				
 				}
-				else if(thisChannel->videoType == CHANNEL_VIDEO_HEVC)
+				else if(thisChannel->videoType == CZapitChannel::CHANNEL_VIDEO_HEVC)
 				{
 					videoStr = "H.265 HEVC";
 					videoDecoder->SetStreamType(VIDEO_STREAMTYPE_H265_HEVC);				
 				}
-				else if(thisChannel->videoType == CHANNEL_VIDEO_CAVS)
+				else if(thisChannel->videoType == CZapitChannel::CHANNEL_VIDEO_CAVS)
 				{
 					videoStr = "AVS";
 					videoDecoder->SetStreamType(VIDEO_STREAMTYPE_AVS);				
@@ -3658,9 +3658,9 @@ void * CZapit::sdtThread(void */*arg*/)
 			{
 				switch(spos_it->second.system)
 				{
-					case DVB_S: /* satellite */
-					case DVB_S2:
-					case DVB_S2X:
+					case CFrontend::DVB_S: /* satellite */
+					case CFrontend::DVB_S2:
+					case CFrontend::DVB_S2X:
 						sprintf(satstr, "\t<%s name=\"%s\" position=\"%hd\">\n", "sat", spos_it->second.name.c_str(), satellitePosition);
 						sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" sr=\"%u\" fec=\"%hu\" pol=\"%hu\">\n",
 						tI->second.transport_stream_id, tI->second.original_network_id,
@@ -3670,7 +3670,7 @@ void * CZapit::sdtThread(void */*arg*/)
 						delsys = "</sat>";
 						break;
 
-					case DVB_C: /* cable */
+					case CFrontend::DVB_C: /* cable */
 						sprintf(satstr, "\t<%s name=\"%s\">\n", "cable", spos_it->second.name.c_str());
 						sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" sr=\"%u\" fec=\"%hu\" mod=\"%hu\">\n",
 						tI->second.transport_stream_id, tI->second.original_network_id,
@@ -3680,9 +3680,9 @@ void * CZapit::sdtThread(void */*arg*/)
 						delsys = "</cable>";
 						break;
 						
-					case DVB_T: /* terrestrial */
-					case DVB_T2:
-					case DVB_DTMB:
+					case CFrontend::DVB_T: /* terrestrial */
+					case CFrontend::DVB_T2:
+					case CFrontend::DVB_DTMB:
 						sprintf(satstr, "\t<%s name=\"%s\">\n", "terrestrial", spos_it->second.name.c_str());
 						sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" bw=\"%hu\" hp=\"%hu\" lp=\"%hu\" con=\"%hu\" tm=\"%hu\" gi=\"%hu\" hi=\"%hu\" syss=\"%hu\">\n",
 						tI->second.transport_stream_id, tI->second.original_network_id,
@@ -4679,25 +4679,25 @@ int CZapit::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, b
 	freq_id_t freq;
 
 #if HAVE_DVB_API_VERSION >= 5 
-	if (fe->getForcedDelSys() == DVB_C)
+	if (fe->getForcedDelSys() == CFrontend::DVB_C)
 #else
 	if (fe->getInfo()->type == FE_QAM)
 #endif
 		freq = feparams->frequency / 100;
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+	else if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 #else
 	else if (fe->getInfo()->type == FE_QPSK)
 #endif
 		freq = feparams->frequency / 1000;
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2)
 #else
 	else if (fe->getInfo()->type == FE_OFDM)
 #endif
 		freq = feparams->frequency / 1000000;
 #if HAVE_DVB_API_VERSION >= 5
-    	else if (fe->getForcedDelSys() == DVB_A)
+    	else if (fe->getForcedDelSys() == CFrontend::DVB_A)
 #else
 	else if (fe->getInfo()->type == FE_ATSC)
 #endif
@@ -4811,25 +4811,25 @@ _repeat:
 		freq_id_t freq;
 
 #if HAVE_DVB_API_VERSION >= 5 
-		if (fe->getForcedDelSys() == DVB_C)
+		if (fe->getForcedDelSys() == CFrontend::DVB_C)
 #else
 		if (fe->getInfo()->type == FE_QAM)
 #endif
 			freq = tI->second.feparams.frequency/100;
 #if HAVE_DVB_API_VERSION >= 5
-		else if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+		else if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 #else
 		else if (fe->getInfo()->type == FE_QPSK)
 #endif
 			freq = tI->second.feparams.frequency/1000;
 #if HAVE_DVB_API_VERSION >= 5
-		else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
+		else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2)
 #else
 		else if (fe->getInfo()->type == FE_OFDM)
 #endif
 			freq = tI->second.feparams.frequency/1000000;
 #if HAVE_DVB_API_VERSION >= 5
-    		else if (fe->getForcedDelSys() == DVB_A)
+    		else if (fe->getForcedDelSys() == CFrontend::DVB_A)
 #else
 		else if (fe->getInfo()->type == FE_ATSC)
 #endif
@@ -4909,7 +4909,7 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
 
 	//frequency
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
+	if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2)
 #else
 	if (fe->getInfo()->type == FE_OFDM) 
 #endif
@@ -4919,25 +4919,25 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
 
 	// freq
 #if HAVE_DVB_API_VERSION >= 5 
-	if (fe->getForcedDelSys() == DVB_C)
+	if (fe->getForcedDelSys() == CFrontend::DVB_C)
 #else
 	if (fe->getInfo()->type == FE_QAM )
 #endif
 		freq = feparams.frequency/100;
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+	else if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 #else
 	else if(fe->getInfo()->type == FE_QPSK)
 #endif
 		freq = feparams.frequency/1000;
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2)
 #else
 	else if (fe->getInfo()->type == FE_OFDM) 
 #endif
 		freq = feparams.frequency/1000000;
 #if HAVE_DVB_API_VERSION >= 5
-    	else if (fe->getForcedDelSys() == DVB_A)
+    	else if (fe->getForcedDelSys() == CFrontend::DVB_A)
 #else
 	else if (fe->getInfo()->type == FE_ATSC)
 #endif
@@ -4945,7 +4945,7 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
 	
 	// 	
 #if HAVE_DVB_API_VERSION >= 5 
-	if (fe->getForcedDelSys() == DVB_C)
+	if (fe->getForcedDelSys() == CFrontend::DVB_C)
 #else
 	if (fe->getInfo()->type == FE_QAM)
 #endif
@@ -4953,10 +4953,10 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
 		feparams.symbol_rate = xmlGetNumericAttribute(transponder, "symbol_rate", 0);
 		feparams.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(transponder, "fec_inner", 0);
 		feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(transponder, "modulation", 0);
-		feparams.delsys = DVB_C;
+		feparams.delsys = CFrontend::DVB_C;
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2)
 #else
 	else if (fe->getInfo()->type == FE_OFDM) 
 #endif
@@ -4977,21 +4977,21 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
 			system = xmlGetNumericAttribute(transponder, "system", 0);
 			
 			if (system == 0)
-		    		feparams.delsys = DVB_T;
+		    		feparams.delsys = CFrontend::DVB_T;
 		    	else //if (system == 1)
 		    	{
-		    		feparams.delsys = DVB_T2;
+		    		feparams.delsys = CFrontend::DVB_T2;
 		    		feparams.plp_id = xmlGetNumericAttribute(transponder, "plp_id", 0);
 		    	}
             	}
             	else
             	{
-            		feparams.delsys = DVB_T2;
+            		feparams.delsys = CFrontend::DVB_T2;
             		feparams.plp_id = xmlGetNumericAttribute(transponder, "plp_id", 0);
             	}
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+	else if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 #else
 	else if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -5010,12 +5010,12 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
 		feparams.fec_inner = (fe_code_rate_t) xml_fec;
 		
 		if (system == 0)
-            		feparams.delsys = DVB_S;
+            		feparams.delsys = CFrontend::DVB_S;
             	else if (system == 1)
-            		feparams.delsys = DVB_S2;
+            		feparams.delsys = CFrontend::DVB_S2;
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == DVB_A)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_A)
 #else
 	else if(fe->getInfo()->type == FE_ATSC)
 #endif
@@ -5126,7 +5126,7 @@ bool CZapit::tuneTP(transponder TP, CFrontend *fe)
 	
 	// drivetosatpos
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+	if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 #else
 	if (fe->getInfo()->type == FE_QPSK)
 #endif
@@ -5250,7 +5250,7 @@ void * CZapit::scanThread(void * data)
 	xmlDocPtr scanInputParser = NULL;
 
 #if HAVE_DVB_API_VERSION >= 5 
-	if (fe->getForcedDelSys() == DVB_C)
+	if (fe->getForcedDelSys() == CFrontend::DVB_C)
 #else
 	if (fe->getInfo()->type == FE_QAM)
 #endif
@@ -5259,7 +5259,7 @@ void * CZapit::scanThread(void * data)
 		scanInputParser = parseXmlFile(CABLES_XML);
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2)
 #else
 	else if (fe->getInfo()->type == FE_OFDM) 
 #endif
@@ -5268,7 +5268,7 @@ void * CZapit::scanThread(void * data)
 		scanInputParser = parseXmlFile(TERRESTRIALS_XML);
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+	else if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 #else
 	else if(fe->getInfo()->type == FE_QPSK)
 #endif
@@ -5277,7 +5277,7 @@ void * CZapit::scanThread(void * data)
 		scanInputParser = parseXmlFile(SATELLITES_XML);
 	}
 #if HAVE_DVB_API_VERSION >= 5
-    	else if (fe->getForcedDelSys() == DVB_A)
+    	else if (fe->getForcedDelSys() == CFrontend::DVB_A)
 #else
 	else if (fe->getInfo()->type == FE_ATSC)
 #endif
@@ -5297,7 +5297,7 @@ void * CZapit::scanThread(void * data)
 			t_satellite_position position = xmlGetSignedNumericAttribute(search, "position", 10);
 		
 #if HAVE_DVB_API_VERSION >= 5
-    			if ( (fe->getForcedDelSys() == DVB_C) || (fe->getForcedDelSys() == DVB_T) || (fe->getForcedDelSys() == DVB_T2) || (fe->getForcedDelSys() == DVB_A) )
+    			if ( (fe->getForcedDelSys() == CFrontend::DVB_C) || (fe->getForcedDelSys() == CFrontend::DVB_T) || (fe->getForcedDelSys() == CFrontend::DVB_T2) || (fe->getForcedDelSys() == CFrontend::DVB_A) )
 #else
 			if( (fe->getInfo()->type == FE_QAM) || (fe->getInfo()->type == FE_OFDM) || (fe->getInfo()->type == FE_ATSC) )
 #endif
@@ -5450,19 +5450,19 @@ void * CZapit::scanTransponderThread(void * data)
 	freq_id_t freq;
 
 #if HAVE_DVB_API_VERSION >= 5 
-	if (fe->getForcedDelSys() == DVB_C)
+	if (fe->getForcedDelSys() == CFrontend::DVB_C)
 #else
 	if (fe->getInfo()->type == FE_QAM)
 #endif
 		freq = TP->feparams.frequency/100;
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() & DVB_S || fe->getForcedDelSys() & DVB_S2 || fe->getForcedDelSys() & DVB_S2X)
+	else if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 #else
 	else if(fe->getInfo()->type == FE_QPSK)
 #endif
 		freq = TP->feparams.frequency/1000;
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == DVB_T || fe->getForcedDelSys() == DVB_T2)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2)
 #else
 	else if (fe->getInfo()->type == FE_OFDM) 
 #endif
@@ -5547,7 +5547,7 @@ void CZapit::parseTransponders(xmlNodePtr node, t_satellite_position satellitePo
 			feparams.symbol_rate = xmlGetNumericAttribute(node, "sr", 0);
 			feparams.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(node, "fec", 0);
 			feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(node, "mod", 0);
-			feparams.delsys = DVB_C;
+			feparams.delsys = CFrontend::DVB_C;
 		}
 		// DVB-T/T2
 		else if (frontendType == FE_OFDM)
@@ -5816,7 +5816,7 @@ void CZapit::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_s
 			feparams.symbol_rate = xmlGetNumericAttribute(tps, "symbol_rate", 0);
 			feparams.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(tps, "fec_inner", 0);
 			feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(tps, "modulation", 0);
-            		feparams.delsys = DVB_C;
+            		feparams.delsys = CFrontend::DVB_C;
 		}
 		else if (frontendType == FE_OFDM)	//DVB-T/T2
 		{
@@ -5836,16 +5836,16 @@ void CZapit::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_s
 		    		system = xmlGetNumericAttribute(tps, "system", 0);
 
 		    		if (system == 0)
-		    			feparams.delsys = DVB_T;
+		    			feparams.delsys = CFrontend::DVB_T;
 		    		else //if (system == 1)
 		    		{
-		    			feparams.delsys = DVB_T2;
+		    			feparams.delsys = CFrontend::DVB_T2;
 		    			feparams.plp_id = (unsigned int) xmlGetNumericAttribute(tps, "plp_id", 0);
 		    		}
             		}
             		else
             		{
-            			feparams.delsys = DVB_T2;
+            			feparams.delsys = CFrontend::DVB_T2;
             			feparams.plp_id = (unsigned int) xmlGetNumericAttribute(tps, "plp_id", 0);
             		}
 		}
@@ -5866,14 +5866,14 @@ void CZapit::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_s
 			feparams.fec_inner = (fe_code_rate_t)xml_fec;
 
             		if (system == 0)
-            			feparams.delsys = DVB_S;
+            			feparams.delsys = CFrontend::DVB_S;
             		else if (system == 1)
-            			feparams.delsys = DVB_S2;
+            			feparams.delsys = CFrontend::DVB_S2;
 		}
 		else if (frontendType == FE_ATSC)
 		{
 		    feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(tps, "modulation", 0);
-		    feparams.delsys = DVB_A;
+		    feparams.delsys = CFrontend::DVB_A;
 		}
 		
 		if (frontendType == FE_QAM) 
@@ -5958,7 +5958,7 @@ void CZapit::saveMotorPositions()
 	
 	for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 	{
-		if(sit->second.system == DVB_S)
+		if(sit->second.system == CFrontend::DVB_S)
 			fprintf(fd, "%d %d %d %d %d %d %d %d %d %d\n", 
 				sit->first, 
 				sit->second.motor_position,
@@ -6042,7 +6042,7 @@ int CZapit::loadTransponders()
 					satellitePositions[position].name = name;
 					
 					// delsys
-					satellitePositions[position].system = DVB_S;
+					satellitePositions[position].system = CFrontend::DVB_S;
 				}
 				
 				// parse sat TP
@@ -6081,7 +6081,7 @@ int CZapit::loadTransponders()
 					satellitePositions[position].name = name;
 					
 					// delsys
-					satellitePositions[position].system = DVB_C;
+					satellitePositions[position].system = CFrontend::DVB_C;
 				}
 
 				// parse sat TP
@@ -6123,7 +6123,7 @@ int CZapit::loadTransponders()
 					satellitePositions[position].name = name;
 					
 					// delsys
-					satellitePositions[position].system = DVB_T;
+					satellitePositions[position].system = CFrontend::DVB_T;
 				}
 
 				// parse sat TP
@@ -6164,7 +6164,7 @@ int CZapit::loadTransponders()
 					satellitePositions[position].name = name;
 					
 					// delsys
-					satellitePositions[position].system = DVB_A;
+					satellitePositions[position].system = CFrontend::DVB_A;
 				}
 
 				// parse sat TP
@@ -6321,9 +6321,9 @@ void CZapit::saveServices(bool tocopy)
 			
 			switch(spos_it->second.system)
 			{
-				case DVB_S:
-				case DVB_S2:
-				case DVB_S2X:
+				case CFrontend::DVB_S:
+				case CFrontend::DVB_S2:
+				case CFrontend::DVB_S2X:
 					sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" sr=\"%u\" fec=\"%hu\" pol=\"%hu\" sys=\"%hu\">\n",
 							tI->second.transport_stream_id, tI->second.original_network_id,
 							tI->second.feparams.frequency, tI->second.feparams.inversion,
@@ -6332,7 +6332,7 @@ void CZapit::saveServices(bool tocopy)
 							tI->second.feparams.delsys);
 					break;
 
-				case DVB_C:
+				case CFrontend::DVB_C:
 					sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" sr=\"%u\" fec=\"%hu\" mod=\"%hu\">\n",
 							tI->second.transport_stream_id, tI->second.original_network_id,
 							tI->second.feparams.frequency, tI->second.feparams.inversion,
@@ -6340,9 +6340,9 @@ void CZapit::saveServices(bool tocopy)
 							tI->second.feparams.modulation);
 					break;
 
-				case DVB_T:
-				case DVB_T2:
-				case DVB_DTMB:
+				case CFrontend::DVB_T:
+				case CFrontend::DVB_T2:
+				case CFrontend::DVB_DTMB:
 					sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" bw=\"%hu\" hp=\"%hu\" lp=\"%hu\" con=\"%hu\" tm=\"%hu\" gi=\"%hu\" hi=\"%hu\" sys=\"%hu\">\n",
                                         tI->second.transport_stream_id, tI->second.original_network_id,
                                         tI->second.feparams.frequency, tI->second.feparams.inversion,
@@ -6366,19 +6366,19 @@ void CZapit::saveServices(bool tocopy)
 					{
 						switch(spos_it->second.system)
 						{
-							case DVB_S:
+							case CFrontend::DVB_S:
 							{
 								fprintf(fd, "\t<sat name=\"%s\" position=\"%hd\" diseqc=\"%hd\" uncommited=\"%hd\">\n",spos_it->second.name.c_str(), spos_it->first, spos_it->second.diseqc, spos_it->second.uncommited);
 							}
 							break;
 
-							case DVB_C:
+							case CFrontend::DVB_C:
 							{
 								fprintf(fd, "\t<cable name=\"%s\">\n", spos_it->second.name.c_str());
 							}
 							break;
 
-							case DVB_T:
+							case CFrontend::DVB_T:
 							{
 								fprintf(fd, "\t<terrestrial name=\"%s\">\n", spos_it->second.name.c_str());
 							}
@@ -6431,15 +6431,15 @@ void CZapit::saveServices(bool tocopy)
 		{
 			switch(spos_it->second.system)
 			{
-				case DVB_S:
+				case CFrontend::DVB_S:
 					fprintf(fd, "\t</sat>\n");
 					break;
 					
-				case DVB_C:
+				case CFrontend::DVB_C:
 					fprintf(fd, "\t</cable>\n");
 					break;
 					
-				case DVB_T:
+				case CFrontend::DVB_T:
 					fprintf(fd, "\t</terrestrial>\n");
 					break;
 				default:
