@@ -587,7 +587,7 @@ void CLCD::setlcdparameter(int dimm, const int contrast, const int power, const 
 	if(!has_lcd) 
 		return;
 		
-	dprintf(DEBUG_NORMAL, "CLCD::setlcdparameter: brightness: %d contrast: %d power: %d inverse: %d\n", dimm, contrast, power, inverse);
+	dprintf(DEBUG_INFO, "CLCD::setlcdparameter: brightness: %d contrast: %d power: %d inverse: %d\n", dimm, contrast, power, inverse);
 	
 #ifndef ENABLE_GRAPHLCD	
 	if (power == 0)

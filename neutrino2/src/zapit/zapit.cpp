@@ -2594,13 +2594,11 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 		if (Bouquets[i]->bWebTV && Bouquets[i]->tvChannels.empty())
 			deleteBouquet(Bouquets[i]);
 	}
-
-	dprintf(DEBUG_NORMAL, "CZapit::loadWebTVBouquet: load %d WEBTV Channels (allchans:%d)\n", cnt, (int) allchans.size());
 }
 
 void CZapit::loadWebTVBouquets(const std::string &dirname)
 {
-	dprintf(DEBUG_INFO, "CZapit::loadWebTVBouquets: %s\n", dirname.c_str());
+	dprintf(DEBUG_NORMAL, "CZapit::loadWebTVBouquets: %s\n", dirname.c_str());
 
 	dirent64 **namelist;
 	int n;
