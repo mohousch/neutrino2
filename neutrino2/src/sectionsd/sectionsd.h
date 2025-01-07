@@ -72,23 +72,23 @@ class CSectionsd
 			};
 		};
 
-		struct responseGetComponentTags
+		struct componentTags
 		{
 			std::string   component;        // Text aus dem Component Descriptor
 			unsigned char componentType;    // Component Descriptor
 			unsigned char componentTag;     // Component Descriptor
 			unsigned char streamContent;    // Component Descriptor
 		};
-		typedef std::vector<responseGetComponentTags> ComponentTagList;
+		typedef std::vector<componentTags> ComponentTagList;
 
-		struct responseGetLinkageDescriptors
+		struct linkageDescriptors
 		{
 			std::string           name;
 			t_transport_stream_id transportStreamId;
 			t_original_network_id originalNetworkId;
 			t_service_id          serviceId;
 		};
-		typedef std::vector<responseGetLinkageDescriptors> LinkageDescriptorList;
+		typedef std::vector<linkageDescriptors> LinkageDescriptorList;
 
 		struct responseGetNVODTimes
 		{

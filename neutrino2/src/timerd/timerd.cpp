@@ -307,7 +307,7 @@ int CTimerd::getSleepTimerRemaining()
 	
 	if((timerID = getSleeptimerID()) != 0)
 	{
-		responseGetTimer timer;
+		timerEvent timer;
 		getTimer( timer, timerID);
 		
 		int min = (((timer.alarmTime + 1 - time(NULL)) / 60) + 1); //aufrunden auf n�chst gr��erere Min.
@@ -409,7 +409,7 @@ bool CTimerd::modifyTimerEvent(int eventid, time_t announcetime, time_t alarmtim
 	dprintf(DEBUG_NORMAL, "CTimerd::modifyTimerEvent\n");
 	
 	//
-	responseGetTimer *timerInfo = static_cast<responseGetTimer*>(data);
+	timerEvent *timerInfo = static_cast<timerEvent*>(data);
 			
 	int ret = CTimerManager::getInstance()->modifyEvent(eventid, announcetime, alarmtime, stoptime, repeatcount, evrepeat, *timerInfo);
 	
@@ -422,7 +422,7 @@ bool CTimerd::modifyRecordTimerEvent(int eventid, time_t announcetime, time_t al
 {
 	dprintf(DEBUG_NORMAL, "CTimerd::modifyRecordTimerEvent\n");
 	
-	responseGetTimer resp;
+	timerEvent resp;
 	
 	strncpy(resp.recordingDir, recordingdir, RECORD_DIR_MAXLEN - 1);
 	
@@ -457,12 +457,12 @@ bool CTimerd::isTimerdAvailable()
 	return true;
 }
 
-void CTimerd::getTimer(CTimerd::responseGetTimer &timer, unsigned timerID)
+void CTimerd::getTimer(CTimerd::timerEvent &timer, unsigned timerID)
 {
 	dprintf(DEBUG_NORMAL, "CTimerd::getTimer\n");
 	
 	CTimerEventMap events;
-	responseGetTimer resp;
+	timerEvent resp;
 	
 	if(CTimerManager::getInstance()->listEvents(events))
 	{
@@ -536,7 +536,7 @@ void CTimerd::getTimerList( CTimerd::TimerList &timerlist)
 	{
 		for(CTimerEventMap::iterator lpos = events.begin(); lpos != events.end(); lpos++)
 		{
-			responseGetTimer lresp;
+			timerEvent lresp;
 
 			CTimerEvent *event = lpos->second;
 

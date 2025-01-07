@@ -275,9 +275,9 @@ const keyval OPTIONS_EAST0_WEST1_OPTIONS[OPTIONS_EAST0_WEST1_OPTION_COUNT] =
 #define FRONTEND_MODE_TWIN_OPTION_COUNT 3
 const keyval FRONTEND_MODE_OPTIONS[FRONTEND_MODE_TWIN_OPTION_COUNT] =
 {
-	{ (fe_mode_t)FE_SINGLE, _("direct connected") },
-	{ (fe_mode_t)FE_NOTCONNECTED, _("not connected") },
-	{ (fe_mode_t)FE_LOOP, _("loop") },
+	{ CFrontend::FE_SINGLE, _("direct connected") },
+	{ CFrontend::FE_NOTCONNECTED, _("not connected") },
+	{ CFrontend::FE_LOOP, _("loop") },
 };
 
 //
@@ -568,7 +568,7 @@ int CScanSetup::showScanService()
 	scansetup->addItem(ojVoltage);
 	
 	// separartor
-	if (fe->mode == FE_NOTCONNECTED)
+	if (fe->mode == CFrontend::FE_NOTCONNECTED)
 		hidden = true;
 	else
 		hidden = false;
@@ -579,17 +579,17 @@ int CScanSetup::showScanService()
 	scansetup->addItem(item);
 
 	// scantype
-	CMenuOptionChooser * ojScantype = new CMenuOptionChooser(_("Scan for services"), (int *)&scanSettings->scanType, SCANTS_ZAPIT_SCANTYPE, SCANTS_ZAPIT_SCANTYPE_COUNT, ((fe->mode != (fe_mode_t)FE_NOTCONNECTED) && (fe->mode != (fe_mode_t)FE_LOOP)));
+	CMenuOptionChooser * ojScantype = new CMenuOptionChooser(_("Scan for services"), (int *)&scanSettings->scanType, SCANTS_ZAPIT_SCANTYPE, SCANTS_ZAPIT_SCANTYPE_COUNT, ((fe->mode != CFrontend::FE_NOTCONNECTED) && (fe->mode != CFrontend::FE_LOOP)));
 	feModeNotifier->addItem(0, ojScantype);
 	scansetup->addItem(ojScantype);
 		
 	// bqtsmode
-	CMenuOptionChooser * ojBouquets = new CMenuOptionChooser(_("Bouquet"), (int *)&scanSettings->bouquetMode, SCANTS_BOUQUET_OPTIONS, SCANTS_BOUQUET_OPTION_COUNT, ((fe->mode != (fe_mode_t)FE_NOTCONNECTED) && (fe->mode != (fe_mode_t)FE_LOOP)));
+	CMenuOptionChooser * ojBouquets = new CMenuOptionChooser(_("Bouquet"), (int *)&scanSettings->bouquetMode, SCANTS_BOUQUET_OPTIONS, SCANTS_BOUQUET_OPTION_COUNT, ((fe->mode != CFrontend::FE_NOTCONNECTED) && (fe->mode != CFrontend::FE_LOOP)));
 	feModeNotifier->addItem(0, ojBouquets);
 	scansetup->addItem(ojBouquets);
 	
 	// scanmode
-	CMenuOptionChooser * useNit = new CMenuOptionChooser(_("Scan Mode"), (int *)&scanSettings->scan_mode, SCANTS_SCANMODE_OPTIONS, SCANTS_SCANMODE_OPTION_COUNT, ( (fe->mode != (fe_mode_t)FE_NOTCONNECTED) && (fe->mode != (fe_mode_t)FE_LOOP) ));
+	CMenuOptionChooser * useNit = new CMenuOptionChooser(_("Scan Mode"), (int *)&scanSettings->scan_mode, SCANTS_SCANMODE_OPTIONS, SCANTS_SCANMODE_OPTION_COUNT, ( (fe->mode != CFrontend::FE_NOTCONNECTED) && (fe->mode != CFrontend::FE_LOOP) ));
 	feModeNotifier->addItem(0, useNit);
 	scansetup->addItem(useNit);
 		
@@ -612,7 +612,7 @@ int CScanSetup::showScanService()
 		
 		// diseqc repeat
 		CMenuOptionNumberChooser *ojDiseqcRepeats = new CMenuOptionNumberChooser(_("DiSEqC-repeats"), &fe->diseqcRepeats, true, 0, 2, NULL);
-		ojDiseqcRepeats->setHidden((dmode == NO_DISEQC) || (dmode > DISEQC_ADVANCED) || (fe->mode == (fe_mode_t)FE_NOTCONNECTED) || (fe->mode == FE_LOOP));
+		ojDiseqcRepeats->setHidden((dmode == NO_DISEQC) || (dmode > DISEQC_ADVANCED) || (fe->mode == CFrontend::FE_NOTCONNECTED) || (fe->mode == CFrontend::FE_LOOP));
 		satNotify->addItem(4, ojDiseqcRepeats);
 		feModeNotifier->addItem(4, ojDiseqcRepeats);
 
@@ -624,12 +624,12 @@ int CScanSetup::showScanService()
 
 		// lnbsetup
 		CMenuForwarder *lnbSetup = new CMenuForwarder(_("Setup satellites input / LNB"), true, NULL, this, "lnbsetup");
-		lnbSetup->setHidden((fe->mode == FE_NOTCONNECTED) || (fe->mode == (fe_mode_t)FE_LOOP));
+		lnbSetup->setHidden((fe->mode == CFrontend::FE_NOTCONNECTED) || (fe->mode == CFrontend::FE_LOOP));
 		feModeNotifier->addItem(1, lnbSetup);
 		
 		// motorsetup
 		CMenuForwarder *motorSetup = new CMenuForwarder(_("Motor settings"), true, NULL, this, "motorsetup");
-		motorSetup->setHidden((fe->mode == (fe_mode_t)FE_NOTCONNECTED) || (fe->mode == (fe_mode_t)FE_LOOP));
+		motorSetup->setHidden((fe->mode == CFrontend::FE_NOTCONNECTED) || (fe->mode == CFrontend::FE_LOOP));
 		feModeNotifier->addItem(1, motorSetup);
 		
 		scansetup->addItem(ojDiseqc);		// diseqc
@@ -640,13 +640,13 @@ int CScanSetup::showScanService()
 	}
 	
 	// manual scan	
-	CMenuForwarder * manScan = new CMenuForwarder(_("Manual frequency scan / Test signal"), (fe->mode != (fe_mode_t)FE_NOTCONNECTED) && (fe->mode != (fe_mode_t)FE_LOOP), NULL, this, "manualscan", CRCInput::RC_green, NEUTRINO_ICON_BUTTON_GREEN);
+	CMenuForwarder * manScan = new CMenuForwarder(_("Manual frequency scan / Test signal"), (fe->mode != CFrontend::FE_NOTCONNECTED) && (fe->mode != CFrontend::FE_LOOP), NULL, this, "manualscan", CRCInput::RC_green, NEUTRINO_ICON_BUTTON_GREEN);
 	feModeNotifier->addItem(0, manScan);
 	
 	scansetup->addItem(manScan);
 		
 	// autoscan
-	CMenuForwarder * auScan = new CMenuForwarder(_("Auto-Scan"), (fe->mode != (fe_mode_t)FE_NOTCONNECTED) && (fe->mode != (fe_mode_t)FE_LOOP), NULL, this, "autoscan", CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW);
+	CMenuForwarder * auScan = new CMenuForwarder(_("Auto-Scan"), (fe->mode != CFrontend::FE_NOTCONNECTED) && (fe->mode != CFrontend::FE_LOOP), NULL, this, "autoscan", CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW);
 	feModeNotifier->addItem(0, auScan);
 	
 	scansetup->addItem(auScan);
@@ -659,7 +659,7 @@ int CScanSetup::showScanService()
 #endif
 	{
 		CMenuForwarder *fautoScanAll = new CMenuForwarder(_("Auto-Scan multiple Satellites"), true, NULL, this, "allautoscansetup", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE);
-		fautoScanAll->setHidden(( (dmode == NO_DISEQC) || (fe->mode == (fe_mode_t)FE_NOTCONNECTED) || (fe->mode == (fe_mode_t)FE_LOOP)));
+		fautoScanAll->setHidden(( (dmode == NO_DISEQC) || (fe->mode == CFrontend::FE_NOTCONNECTED) || (fe->mode == CFrontend::FE_LOOP)));
 		satNotify->addItem(2, fautoScanAll);
 		feModeNotifier->addItem(2, fautoScanAll);
 		
@@ -2228,7 +2228,7 @@ bool CScanSetupFEModeNotifier::changeNotify(const std::string&, void * Data)
 	
 	dprintf(DEBUG_NORMAL, "Femode:%d\n", FeMode);
 
-	if ( (FeMode == FE_NOTCONNECTED) || (FeMode == FE_LOOP) ) 
+	if ( (FeMode == CFrontend::FE_NOTCONNECTED) || (FeMode == CFrontend::FE_LOOP) ) 
 	{
 		for(it = items1.begin(); it != items1.end(); it++) 
 		{

@@ -54,11 +54,6 @@ $:~ make clean
 $:~ make distclean
 ```
 
-* tested with:
-- debian 8 Jessie, 9 Stretch and 11 Bullseye
-- linuxmint 20.1 Ulyssa, 20.2 Uma, 20.3 Una, 21.1 Vera, 21,2 Victoria, LMDE 5 Elsie and LMDE 6 Faye
-- Ubuntu 20.04 Focal Fossa, 22.04 Jammy Jellyfish and 23.10 Mantic Minotaur
-
 ## how to build neutrino2 for sh4/arm/mips boxes ##
 see:
 * https://github.com/mohousch/buildsystem

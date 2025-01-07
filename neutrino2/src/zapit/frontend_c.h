@@ -88,10 +88,16 @@ static inline fe_rolloff_t dvbs_get_rolloff(fe_delivery_system_t delsys)
 
 #define MAX_LNBS	64	/* due to Diseqc 1.1  (2003-01-10 rasc) */
 
-
 class CFrontend
 {
 	public:
+		typedef enum fe_mode
+		{
+			FE_SINGLE,
+			FE_LOOP,
+			FE_NOTCONNECTED
+		} fe_mode_t;
+
 		int fenumber;
 		int feadapter;
 

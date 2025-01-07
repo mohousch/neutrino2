@@ -56,7 +56,7 @@ class CTimerList : public CMenuTarget
 		bool visible;			
 		//
 		CTimerd::TimerList timerlist;             // List of timers		
-		CTimerd::responseGetTimer timerNew;
+		CTimerd::timerEvent timerNew;
 		int timerNew_standby_on;
 		std::string m_weekdaysStr;
 		//

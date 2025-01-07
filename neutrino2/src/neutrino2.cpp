@@ -3702,7 +3702,7 @@ _repeat:
 			{
 				sort( tmpTimerList.begin(), tmpTimerList.end() );
 
-				CTimerd::responseGetTimer &timer = tmpTimerList[0];
+				CTimerd::timerEvent &timer = tmpTimerList[0];
 
 				name += "\n";
 

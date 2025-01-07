@@ -968,7 +968,7 @@ std::string  CNeutrinoYParser::func_set_timer_form(CyhookHandler *hh, std::strin
 {
 	unsigned timerId = 0;
 	std::string cmd, stimerid;
-	CTimerd::responseGetTimer timer;             // Timer
+	CTimerd::timerEvent timer;             // Timer
 	time_t now_t = time(NULL);
 	ySplitString(para, " ", cmd, stimerid);
 	

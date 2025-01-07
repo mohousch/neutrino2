@@ -351,17 +351,17 @@ CFrontend * CZapit::getFE(int index)
 	return NULL;
 }
 
-void CZapit::setFEMode(fe_mode_t newmode, CFrontend* fe)
+void CZapit::setFEMode(CFrontend::fe_mode_t newmode, CFrontend* fe)
 {
 	// set mode
 	fe->mode = newmode;
 	
 	// set not connected frontend to standby
-	if(fe->mode == (fe_mode_t)FE_NOTCONNECTED )
+	if(fe->mode == CFrontend::FE_NOTCONNECTED)
 		fe->Close();
 
 	// set loop frontend as slave
-	bool setslave = ( fe->mode == FE_LOOP );
+	bool setslave = ( fe->mode == CFrontend::FE_LOOP );
 	
 	if(setslave)
 	{
@@ -385,7 +385,7 @@ void CZapit::initTuner(CFrontend * fe)
 		fe->Open();
 				
 		// set loop frontend as slave 
-		bool setslave = ( fe->mode == FE_LOOP );
+		bool setslave = ( fe->mode == CFrontend::FE_LOOP );
 		
 		dprintf(DEBUG_INFO, "CZapit::initTuner: Frontend (%d,%d) as slave: %s\n", fe->feadapter, fe->fenumber, setslave ? "yes" : "no");
 					
@@ -483,7 +483,7 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 				thischannel->getTransponderId());
 				
 		// skip not connected frontend
-		if( fe->mode == (fe_mode_t)FE_NOTCONNECTED )
+		if( fe->mode == CFrontend::FE_NOTCONNECTED )
 			continue;
 		
 		// same tid
@@ -495,7 +495,7 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 		// first zap/record/other frontend type
 		else if (transponder != transponders.end())
 		{	
-			if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
+			if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == CFrontend::FE_SINGLE || (fe->mode == CFrontend::FE_LOOP && loopCanTune(fe, thischannel)) ) )
 			{
 				free_frontend = fe;
 				break;
@@ -547,7 +547,7 @@ CFrontend * CZapit::getRecordFrontend(CZapitChannel * thischannel)
 				);
 				
 		// skip not connected frontend
-		if( fe->mode == (fe_mode_t)FE_NOTCONNECTED )
+		if( fe->mode == CFrontend::FE_NOTCONNECTED )
 			continue;
 		
 		// frontend on same tid
@@ -559,7 +559,7 @@ CFrontend * CZapit::getRecordFrontend(CZapitChannel * thischannel)
 		// other free tuner
 		else if (transponder != transponders.end())
 		{
-			if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
+			if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == CFrontend::FE_SINGLE || (fe->mode == CFrontend::FE_LOOP && loopCanTune(fe, thischannel)) ) )
 			{
 				rec_frontend = fe;
 				break;
@@ -611,7 +611,7 @@ CFrontend * CZapit::getFreeFrontend(CZapitChannel * thischannel)
 				);
 				
 		// skip not connected frontend
-		if( fe->mode == (fe_mode_t)FE_NOTCONNECTED )
+		if( fe->mode == CFrontend::FE_NOTCONNECTED )
 			continue;
 
 		// same tid frontend (locked)
@@ -623,7 +623,7 @@ CFrontend * CZapit::getFreeFrontend(CZapitChannel * thischannel)
 		// first zap/record/other frontend type
 		else if (transponder != transponders.end())
 		{
-			if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
+			if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == CFrontend::FE_SINGLE || (fe->mode == CFrontend::FE_LOOP && loopCanTune(fe, thischannel)) ) )
 			{
 				pref_frontend = fe;
 				break;
@@ -735,7 +735,7 @@ void CZapit::loadFrontendConfig()
 		CFrontend * fe = fe_it->second;
 		
 		// mode
-		fe->mode = (fe_mode_t)getConfigValue(fe, "mode", (fe_mode_t)FE_SINGLE);
+		fe->mode = (CFrontend::fe_mode_t)getConfigValue(fe, "mode", CFrontend::FE_SINGLE);
 		
 		// powered
 		fe->powered = getConfigValue(fe, "powered", 0);
@@ -773,7 +773,7 @@ void CZapit::loadFrontendConfig()
 		}
 		
 		// set loop frontend as slave 
-		bool setslave = ( fe->mode == FE_LOOP );
+		bool setslave = ( fe->mode == CFrontend::FE_LOOP );
 		
 		dprintf(DEBUG_INFO, "CZapit::loadFrontendConfig: Frontend (%d,%d) as slave: %s\n", fe->feadapter, fe->fenumber, setslave ? "yes" : "no");
 					
@@ -3521,12 +3521,11 @@ unsigned CZapit::zapTo(const unsigned int channel)
 		return 0;
 }
 
-void CZapit::setZapitConfig(Zapit_config * Cfg)
+void CZapit::setZapitConfig(zapit_config * Cfg)
 {
 	makeRemainingChannelsBouquet = Cfg->makeRemainingChannelsBouquet;
 	saveLastChannel = Cfg->saveLastChannel;
 	scanSDT = Cfg->scanSDT;
-	////
 	lastChannelMode = Cfg->lastChannelMode;
 	lastChannelTV = Cfg->lastChannelTV;
 	lastChannelRadio = Cfg->lastChannelRadio;
@@ -3537,12 +3536,11 @@ void CZapit::setZapitConfig(Zapit_config * Cfg)
 	saveZapitSettings(true, false);
 }
 
-void CZapit::getZapitConfig(Zapit_config *Cfg)
+void CZapit::getZapitConfig(zapit_config *Cfg)
 {
         Cfg->makeRemainingChannelsBouquet = makeRemainingChannelsBouquet;
         Cfg->saveLastChannel = saveLastChannel;
         Cfg->scanSDT = scanSDT;
-        ////
         Cfg->lastChannelMode = lastChannelMode;
         Cfg->lastChannelTV = lastChannelTV;
         Cfg->lastChannelRadio = lastChannelRadio;

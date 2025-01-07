@@ -628,7 +628,7 @@ int CTimerList::show()
 		{
 			selected = listBox->getSelected();
 
-			CTimerd::responseGetTimer *timer = &timerlist[selected];
+			CTimerd::timerEvent *timer = &timerlist[selected];
 			
 			if(timer != NULL)
 			{
@@ -706,7 +706,7 @@ void CTimerList::paint()
 	{
 		std::string alarm("");
 
-		CTimerd::responseGetTimer &timer = timerlist[count];
+		CTimerd::timerEvent &timer = timerlist[count];
 		char zAlarmTime[25] = {0};
 		struct tm *alarmTime = localtime(&(timer.alarmTime));
 		strftime(zAlarmTime, 20, "%d.%m. %H:%M", alarmTime);
@@ -947,7 +947,7 @@ int CTimerList::modifyTimer()
 {
 	int res = CMenuTarget::RETURN_REPAINT;
 
-	CTimerd::responseGetTimer* timer = &timerlist[selected];
+	CTimerd::timerEvent *timer = &timerlist[selected];
 
 	//
 	ClistBox* timerSettings = NULL;

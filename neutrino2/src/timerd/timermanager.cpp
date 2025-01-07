@@ -368,7 +368,7 @@ CTimerd::CTimerEventTypes *CTimerManager::getEventType(int leventID)
 	return res;
 }
 
-int CTimerManager::modifyEvent(int leventID, time_t announceTime, time_t alarmTime, time_t stopTime, uint32_t repeatCount, CTimerd::CTimerEventRepeat evrepeat, CTimerd::responseGetTimer& data)
+int CTimerManager::modifyEvent(int leventID, time_t announceTime, time_t alarmTime, time_t stopTime, uint32_t repeatCount, CTimerd::CTimerEventRepeat evrepeat, CTimerd::timerEvent& data)
 {
 	dprintf(DEBUG_NORMAL, "CTimerManager::modifyEvent\n");
 	

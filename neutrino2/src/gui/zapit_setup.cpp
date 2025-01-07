@@ -36,7 +36,7 @@
 #include <system/debug.h>
 
 
-Zapit_config zapitCfg;
+CZapit::zapit_config zapitCfg;
 
 //option off0_on1
 #define OPTIONS_OFF0_ON1_OPTION_COUNT 2

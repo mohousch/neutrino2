@@ -321,25 +321,6 @@ typedef std::map<transponder_id_t, transponder> transponder_list_t;
 typedef std::map <transponder_id_t, transponder>::iterator stiterator;
 typedef std::map<transponder_id_t, bool> sdt_tp_t; 			// used in zapit.cpp sdtthread
 
-////
-typedef struct Zapit_config {
-	bool makeRemainingChannelsBouquet;
-	int scanSDT;
-	bool saveLastChannel;
-	int lastChannelMode;
-	t_channel_id lastChannelTV_id;
-	t_channel_id lastChannelRadio_id;
-	uint32_t lastChannelTV;
-	uint32_t lastChannelRadio;
-} t_zapit_config;
-
-// fetype
-typedef enum {
-	FE_SINGLE,
-	FE_LOOP,
-	FE_NOTCONNECTED
-} fe_mode_t;
-
 //// sat config
 typedef struct sat_config {
 	t_satellite_position position;

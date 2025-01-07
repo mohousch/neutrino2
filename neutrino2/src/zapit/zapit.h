@@ -229,7 +229,19 @@ class CZapit
 			CFrontend *fe;
 		};
 		
-		//
+		typedef struct zapit_config 
+		{
+			bool makeRemainingChannelsBouquet;
+			int scanSDT;
+			bool saveLastChannel;
+			int lastChannelMode;
+			t_channel_id lastChannelTV_id;
+			t_channel_id lastChannelRadio_id;
+			uint32_t lastChannelTV;
+			uint32_t lastChannelRadio;
+		} zapit_config_t;
+		
+		// cammanager
 		CCam * cam0;
 		CCam * cam1;
 		//// femanager
@@ -470,8 +482,8 @@ class CZapit
 		void lockFrontend(CFrontend *fe);
 		void unlockFrontend(CFrontend *fe);
 		//
-		void setZapitConfig(Zapit_config * Cfg);
-		void getZapitConfig(Zapit_config *Cfg);
+		void setZapitConfig(zapit_config * Cfg);
+		void getZapitConfig(zapit_config *Cfg);
 		//
 		void getLastChannel(unsigned int &channumber, int &mode);
 		int getMode(void);
@@ -555,7 +567,7 @@ class CZapit
 		bool scanTP(scanTP_t &msg);
 		void setScanSatelliteList( ScanSatelliteList &satelliteList );
 		void setScanType(const scanType mode);
-		void setFEMode(const fe_mode_t mode, CFrontend* fe);
+		void setFEMode(const CFrontend::fe_mode_t mode, CFrontend* fe);
 		void setScanBouquetMode(const bouquetMode mode);
 		bool startScan(scanProvider_t &msg);
 		bool stopScan();

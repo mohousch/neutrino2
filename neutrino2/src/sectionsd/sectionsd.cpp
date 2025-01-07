@@ -4760,7 +4760,7 @@ bool CSectionsd::getComponentTagsUniqueKey(const event_id_t uniqueKey, Component
 
 	if (eFirst != mySIeventsOrderUniqueKey.end()) 
 	{
-		responseGetComponentTags response;
+		componentTags response;
 		ret = true;
 
 		for (SIcomponents::iterator cmp = eFirst->second->components.begin(); cmp != eFirst->second->components.end(); ++cmp) 
@@ -4797,7 +4797,7 @@ bool CSectionsd::getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, Link
 			if (linkage_desc->linkageType == 0xB0) 
 			{
 
-				responseGetLinkageDescriptors response;
+				linkageDescriptors response;
 				
 				response.name = linkage_desc->name.c_str();
 				response.transportStreamId = linkage_desc->transportStreamId;

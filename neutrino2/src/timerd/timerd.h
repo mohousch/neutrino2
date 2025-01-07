@@ -39,18 +39,6 @@
 class CTimerd
 {
 	public:
-		enum CTimerEventRepeat 
-		{ 
-			TIMERREPEAT_ONCE = 0,
-			TIMERREPEAT_DAILY, 
-			TIMERREPEAT_WEEKLY, 
-			TIMERREPEAT_BIWEEKLY, 
-			TIMERREPEAT_FOURWEEKLY, 
-			TIMERREPEAT_MONTHLY, 
-			TIMERREPEAT_BYEVENTDESCRIPTION,
-			TIMERREPEAT_WEEKDAYS = 0x100 // Bits 9-15 specify weekdays (9=mo,10=di,...)
-		};
-
 		enum CTimerEventTypes
 		{
 			TIMER_SHUTDOWN = 1,
@@ -72,6 +60,18 @@ class CTimerd
 			TIMERSTATE_HASFINISHED, 
 			TIMERSTATE_TERMINATED 
 		};
+		
+		enum CTimerEventRepeat 
+		{ 
+			TIMERREPEAT_ONCE = 0,
+			TIMERREPEAT_DAILY, 
+			TIMERREPEAT_WEEKLY, 
+			TIMERREPEAT_BIWEEKLY, 
+			TIMERREPEAT_FOURWEEKLY, 
+			TIMERREPEAT_MONTHLY, 
+			TIMERREPEAT_BYEVENTDESCRIPTION,
+			TIMERREPEAT_WEEKDAYS = 0x100 // Bits 9-15 specify weekdays (9=mo,10=di,...)
+		};
 
 		struct EventInfo
 		{
@@ -90,7 +90,7 @@ class CTimerd
 			int eventID;
 		};
 
-		struct responseGetTimer
+		struct timerEvent
 		{		
 			int               eventID;
 			CTimerEventTypes  eventType;
@@ -110,13 +110,13 @@ class CTimerd
 			char              recordingDir[RECORD_DIR_MAXLEN];	//only filled if applicable
 			char              epgTitle[EPG_TITLE_MAXLEN];		//only filled if applicable
 			
-			bool operator< (const responseGetTimer& a) const
+			bool operator< (const timerEvent& a) const
 			{
 				return this->alarmTime < a.alarmTime ;
 			}
 		};
 		
-		typedef std::vector<responseGetTimer> TimerList;
+		typedef std::vector<timerEvent> TimerList;
 
 	private:
 		CTimerd(){};
@@ -155,7 +155,7 @@ class CTimerd
 		bool modifyTimerEvent(int eventid, time_t announcetime, time_t alarmtime, time_t stoptime = 0, CTimerEventRepeat evrepeat = TIMERREPEAT_ONCE, uint32_t repeatcount = 0, void *data = NULL);
 		bool modifyRecordTimerEvent(int eventid, time_t announcetime, time_t alarmtime, time_t stoptime, CTimerEventRepeat evrepeat, uint32_t repeatcount, const char * const recordingdir);
 
-		void getTimer(responseGetTimer &timer, unsigned timerID);
+		void getTimer(timerEvent &timer, unsigned timerID);
 		void getTimerList(TimerList &timerlist);
 
 		TimerList getOverlappingTimers(time_t& startTime, time_t& stopTime);
