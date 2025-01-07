@@ -815,7 +815,7 @@ const keyval SEARCH_EPG_OPTIONS[SEARCH_EPG_OPTION_COUNT] =
 	{ CSectionsd::SEARCH_EPG_INFO2, _("EPG Info2") }
 };
 
-CEventFinderMenu::CEventFinderMenu(int * event, int * search_epg_item, std::string * search_keyword, int * search_list, t_channel_id * search_channel_id, t_bouquet_id * search_bouquet_id)
+CEventFinderMenu::CEventFinderMenu(int * event, int * search_epg_item, std::string * search_keyword, int * search_list, t_channel_id * search_channel_id, uint16_t * search_bouquet_id)
 {
 	m_event = event;
 	m_search_epg_item = search_epg_item;

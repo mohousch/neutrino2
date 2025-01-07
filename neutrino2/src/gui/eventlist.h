@@ -83,7 +83,7 @@ class EventList
 		std::string m_search_keyword;
 		int m_search_list;
 		t_channel_id m_search_channel_id;
-		t_bouquet_id m_search_bouquet_id;
+		uint16_t m_search_bouquet_id;
 		bool m_showChannel;
                 int findEvents(void);
 
@@ -124,13 +124,13 @@ class CEventFinderMenu : public CMenuTarget
                 int * m_search_list;
                 std::string m_search_channelname;
                 t_channel_id * m_search_channel_id;
-                t_bouquet_id * m_search_bouquet_id;
+                uint16_t * m_search_bouquet_id;
                 CMenuForwarder * mf1;
                 
 		int showMenu(void);
 
         public:
-                CEventFinderMenu(int * event, int * search_epg_item, std::string * search_keyword, int * search_list, t_channel_id * search_channel_id, t_bouquet_id * search_bouquet_id);
+                CEventFinderMenu(int * event, int * search_epg_item, std::string * search_keyword, int * search_list, t_channel_id * search_channel_id, uint16_t * search_bouquet_id);
                 
                 int  exec( CMenuTarget* parent,  const std::string &actionKey);
 };

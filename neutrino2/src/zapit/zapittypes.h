@@ -30,11 +30,16 @@
 
 #include <inttypes.h>
 #include <string>
+#include <string.h>
 
 #include <map>
 
 #include <linux/dvb/frontend.h>
 #include <linux/dvb/version.h>
+
+extern "C" {
+#include <libmd5sum/md5.h>
+}
 
 
 //
@@ -53,16 +58,8 @@ typedef int16_t t_satellite_position;
 typedef uint16_t freq_id_t;
 typedef uint64_t t_channel_id;
 typedef uint64_t transponder_id_t;
-typedef uint16_t t_bouquet_id;		// used in eventlist.h
 
-//// channel
-extern "C" {
-#include <libmd5sum/md5.h>
-}
-#include <string.h>
-
-
-// channel_id
+//// channel_id
 static inline t_channel_id create_channel_id(t_service_id service_id, t_original_network_id original_network_id, t_transport_stream_id transport_stream_id, t_satellite_position satellitePosition = 0, freq_id_t freq = 0, const char *url = NULL) 
 {
 	if (url) 
