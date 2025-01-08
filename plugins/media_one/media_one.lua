@@ -34,6 +34,10 @@ local epgtitle = nil
 local LinksBrowser = "/links.so"
 local picdir = "/tmp/rssPics"
 
+function _(string)
+	return dgettext("media_one", string)
+end
+
 feedentries = {
     { name = "Krimi",                                   exec = "https://mediathekviewweb.de/feed?query=%23Krimi&everywhere=true"},
     { name = "Spielfilm",                                exec = "https://mediathekviewweb.de/feed?query=%23spielfilm&everywhere=true"},
@@ -123,7 +127,7 @@ end
 
 function info(infotxt, cap)
 	if cap == nil then
-		cap = dgettext("media_one", _("Information"))
+		cap = _("Information")
 	end
 	local h = neutrino2.CHintBox(cap, infotxt)
 	h:exec()
@@ -517,7 +521,7 @@ function paintMenuItem(idNr)
 				a.newText = nil
 			end
 		else
-			local errMsg = dgettext("media_one", _(".lua not found in directory: ")) .. conf.addonsdir
+			local errMsg = _(".lua not found in directory: ") .. conf.addonsdir
 			info( addon .. errMsg ,"ADDON: Error")
 		end
 	end
