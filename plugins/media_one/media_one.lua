@@ -121,9 +121,9 @@ function check_if_double(tab,name)
 	return true
 end
 
-function info(infotxt,cap)
+function info(infotxt, cap)
 	if cap == nil then
-		cap = "Information"
+		cap = dgettext("media_one", _("Information"))
 	end
 	local h = neutrino2.CHintBox(cap, infotxt)
 	h:exec()
@@ -517,7 +517,7 @@ function paintMenuItem(idNr)
 				a.newText = nil
 			end
 		else
-			local errMsg = ".lua not found in directory: " .. conf.addonsdir
+			local errMsg = dgettext("media_one", _(".lua not found in directory: ")) .. conf.addonsdir
 			info( addon .. errMsg ,"ADDON: Error")
 		end
 	end

@@ -54,7 +54,7 @@
 #include <system/helpers.h>
 #include <system/settings.h>
 
-#include <driver/vcrcontrol.h>
+#include <driver/record.h>
 
 #include <gui/widget/icons.h>
 #include <gui/widget/infobox.h>

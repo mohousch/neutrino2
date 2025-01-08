@@ -75,11 +75,14 @@ ntvshows/locale/Makefile
 upnp/Makefile
 upnp/locale/Makefile
 python/Makefile
+python/locale/Makefile
 lua/Makefile
 lua/locale/Makefile
 netzkino_hd/Makefile
+netzkino_hd/locale/Makefile
 mtv/Makefile
 media_one/Makefile
+media_one/locale/Makefile
 arte_concert/Makefile
 plutotv/Makefile
 plutotv/locale/Makefile

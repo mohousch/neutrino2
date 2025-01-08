@@ -365,9 +365,6 @@ class CZapit
 		void setBouquetHidden(const unsigned int bouquet, const bool hidden);
 		//
 		void clearAll();
-		//
-		CZapitChannel* findChannelByChannelID(const t_channel_id channel_id);
-		CZapitChannel* findChannelByName(std::string name, const t_service_id sid);
 		// webtv
 		void parseWebTVBouquet(std::string &filename);
 		void loadWebTVBouquets(const std::string &dirname);
@@ -408,11 +405,6 @@ class CZapit
 		void readEPGMapping();
 		//
 		unsigned int zapToChannelID(const t_channel_id channel_id, const bool isSubService);
-		//
-		void sendCurrentAPIDs(APIDList &apids);
-		void sendCurrentSubPIDs(SubPIDList &subpids);
-		void sendRecordAPIDs(APIDList &apids);
-		void sendRecordSubPIDs(SubPIDList &subpids);
 		void sendAPIDs(t_channel_id chid, APIDList &apids);
 		void sendSubPIDs(t_channel_id chid, SubPIDList &subpids);
 		//
@@ -498,10 +490,6 @@ class CZapit
 		bool isPlayBackActive();
 		void setStandby(bool enable);
 		//
-		bool isChannelTVChannel(const t_channel_id channel_id);
-		bool isChannelWEBTVChannel(const t_channel_id channel_id);
-		bool isChannelRadioChannel(const t_channel_id channel_id);
-		//
 		void zapToServiceIDNOWAIT(const t_channel_id channel_id);
 		void zapToSubServiceIDNOWAIT(const t_channel_id channel_id);
 		unsigned int zapTo(const unsigned int bouquet, const unsigned int channel);
@@ -510,13 +498,17 @@ class CZapit
 		unsigned int zapToSubServiceID(const t_channel_id channel_id);
 		int zapToRecordID(const t_channel_id channel_id);
 		//
+		CZapitChannel* findChannelByChannelID(const t_channel_id channel_id);
+		CZapitChannel* findChannelByName(std::string name, const t_service_id sid);
 		std::string getChannelName(const t_channel_id channel_id);
 		int getChannelNumber(const t_channel_id channel_id);
 		std::string getChannelURL(const t_channel_id channel_id);
 		std::string getChannelDescription(const t_channel_id channel_id);
 		t_channel_id getChannelEPGID(const t_channel_id channel_id);
 		t_channel_id getChannelLogoID(const t_channel_id channel_id);
-		//
+		bool isChannelTVChannel(const t_channel_id channel_id);
+		bool isChannelWEBTVChannel(const t_channel_id channel_id);
+		bool isChannelRadioChannel(const t_channel_id channel_id);
 		std::string getSatelliteName(t_satellite_position position);
 		// current service
 		CZapitChannel* getCurrentChannel();
@@ -558,7 +550,7 @@ class CZapit
 		void restoreBouquets();
 		void addChannelToBouquet(const unsigned int bouquet, const t_channel_id channel_id);
 		void removeChannelFromBouquet(const unsigned int bouquet, const t_channel_id channel_id);
-		//// channelManager
+		//// serviceManager
 		int loadMotorPositions(void);
 		void saveMotorPositions();
 		//// scanManager

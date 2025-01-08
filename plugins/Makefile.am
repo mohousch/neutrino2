@@ -13,14 +13,14 @@ SUBDIRS = \
 	nfilm \
 	ntvshows \
 	upnp \
-	tuxcom
+	tuxcom \
+	moviebrowser
 
 #testing
 if ENABLE_TESTING
 SUBDIRS += \
 	netzkino \
-	youtube \
-	moviebrowser
+	youtube
 endif
 
 if ENABLE_PYTHON

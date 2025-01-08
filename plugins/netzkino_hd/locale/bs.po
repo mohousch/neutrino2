@@ -1,0 +1,41 @@
+# Bosnian translations for neutrino2-plugins package.
+# Copyright (C) 2025 neutrino2
+# This file is distributed under the same license as the neutrino2-plugins package.
+# Automatically generated, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: neutrino2-plugins 5.1\n"
+"Report-Msgid-Bugs-To: <see README>\n"
+"POT-Creation-Date: 2025-01-08 17:10+0100\n"
+"PO-Revision-Date: 2025-01-08 16:21+0100\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: bs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid " Categories"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Highlight"
+msgstr ""
+
+msgid "New"
+msgstr ""
+
+msgid "Next Page"
+msgstr ""
+
+msgid "No Categorie found!"
+msgstr ""
+
+msgid "No Stream found!"
+msgstr ""
+
+msgid "loading categories ..."
+msgstr ""

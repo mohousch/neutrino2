@@ -104,7 +104,6 @@ class CFrontend
 			COMMITED_FIRST
 		} diseqc_cmd_order_t;
 		
-		/////
 		typedef enum 
 		{
 			NO_DISEQC,
@@ -118,7 +117,6 @@ class CFrontend
 			DISEQC_UNICABLE2
 		} diseqc_t;
 
-		// dvb transmission types
 		typedef enum {
 			UNDEFINED 	= 0x0000,
 			DVB_S 		= 0x0001,
@@ -130,7 +128,6 @@ class CFrontend
 			DVB_DTMB	= 0x0040,
 			DVB_A 		= 0x0080
 		} delivery_system_t;
-		/////
 
 		int fenumber;
 		int feadapter;

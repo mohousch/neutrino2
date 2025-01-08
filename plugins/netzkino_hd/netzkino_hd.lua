@@ -96,7 +96,7 @@ function get_categories()
 
 	local fname = "/tmp/netzkino/netzkino_categories.txt";
 
-	local h = neutrino2.CHintBox(caption, "Kategorien werden geladen ...", neutrino2.HINTBOX_WIDTH, netzkino_png)
+	local h = neutrino2.CHintBox(caption, dgettext("netzkino_hd", _("loading categories ...")), neutrino2.HINTBOX_WIDTH, netzkino_png)
 	h:paint();
 
 	local fp = neutrino2.getUrlAnswer(base_url .. "index.json?d=www", 'Mozilla/5.0;', 90)
@@ -145,7 +145,7 @@ function get_categories()
 		if j > 1 then
 			get_categories_menu();
 		else
-			local mBox = neutrino2.CMessageBox("Fehler", "Keinen Kategorien gefunden!")
+			local mBox = neutrino2.CMessageBox(dgettext("netzkino_hd", _("Error")), dgettext("netzkino_hd", _("No Categorie found!")))
 			mBox:exec()
 		end
 	end
@@ -160,7 +160,7 @@ function get_categories_menu()
 
 	m_categories = neutrino2.ClistBox(340, 60, 600, 600)
 	m_categories:enablePaintHead()
-	m_categories:setTitle("" .. caption.." Kategorien", netzkino_png)
+	m_categories:setTitle("" .. caption..dgettext("netzkino_hd", _(" Categories")), netzkino_png)
 	m_categories:enablePaintDate()
 	m_categories:enablePaintFoot()
 	m_categories:enableShrinkMenu()
@@ -268,7 +268,7 @@ function get_movies(_id)
 		if j > 1 then
 			get_movies_menu(_id);
 		else
-			local mBox = neutrino2.CMessageBox("Fehler", "Keinen Stream gefunden!")
+			local mBox = neutrino2.CMessageBox(dgettext("netzkino_hd", _("Error")), dgettext("netzkino_hd", _("No Stream found!")))
 			mBox:exec()
 
 			get_categories();
@@ -283,7 +283,7 @@ function get_movies_menu(_id)
 
 	local red = neutrino2.button_label_struct()
 	red.button = neutrino2.NEUTRINO_ICON_BUTTON_RED
-	red.localename = "Next Page"
+	red.localename = dgettext("netzkino_hd", _("Next Page"))
 
 	local green = neutrino2.button_label_struct()
 	green.button = neutrino2.NEUTRINO_ICON_BUTTON_GREEN
@@ -291,11 +291,11 @@ function get_movies_menu(_id)
 
 	local yellow = neutrino2.button_label_struct()
 	yellow.button = neutrino2.NEUTRINO_ICON_BUTTON_YELLOW
-	yellow.localename = "Neu bei NetzKino"
+	yellow.localename = dgettext("netzkino_hd", _("New"))
 
 	local blue = neutrino2.button_label_struct()
 	blue.button = neutrino2.NEUTRINO_ICON_BUTTON_BLUE
-	blue.localename = "Highlight"
+	blue.localename = dgettext("netzkino_hd", _("Highlight"))
 
 	local info = neutrino2.button_label_struct()
 	info.button = neutrino2.NEUTRINO_ICON_BUTTON_HELP

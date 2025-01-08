@@ -1833,135 +1833,6 @@ int CZapit::prepareChannels()
 }
 
 //
-void CZapit::sendCurrentAPIDs(APIDList &apids)
-{
-	for (uint32_t  i = 0; i < live_channel->getAudioChannelCount(); i++) 
-	{
-		APIDs response;
-		response.pid = live_channel->getAudioPid(i);
-		strncpy(response.desc, live_channel->getAudioChannel(i)->description.c_str(), 25);
-
-		response.is_ac3 = 0;
-		
-		if (live_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AC3
-			|| live_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AAC
-			|| live_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AACHE
-			|| live_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::EAC3
-			|| live_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::DTS
-			|| live_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::DTSHD
-			) 
-		{
-			response.is_ac3 = 1;
-		} 
-		
-		response.component_tag = live_channel->getAudioChannel(i)->componentTag;
-		
-		apids.push_back(response);
-	}
-}
-
-void CZapit::sendCurrentSubPIDs(SubPIDList &subpids)
-{
-	for (int i = 0 ; i < (int)live_channel->getSubtitleCount() ; ++i) 
-	{
-		SubPIDs response;
-		CZapitAbsSub* s = live_channel->getChannelSub(i);
-		CZapitDVBSub* sd = reinterpret_cast<CZapitDVBSub*>(s);
-		CZapitTTXSub* st = reinterpret_cast<CZapitTTXSub*>(s);
-
-		response.pid = sd->pId;
-		strncpy(response.desc, sd->ISO639_language_code.c_str(), 4);
-		
-		if (s->thisSubType == CZapitAbsSub::DVB) 
-		{
-			response.composition_page = sd->composition_page_id;
-			response.ancillary_page = sd->ancillary_page_id;
-			if (sd->subtitling_type >= 0x20) 
-			{
-				response.hearingImpaired = true;
-			} 
-			else 
-			{
-				response.hearingImpaired = false;
-			}
-		} 
-		else if (s->thisSubType == CZapitAbsSub::TTX) 
-		{
-			response.composition_page = (st->teletext_magazine_number * 100) + ((st->teletext_page_number >> 4) * 10) + (st->teletext_page_number & 0xf);
-			response.ancillary_page = 0;
-			response.hearingImpaired = st->hearingImpaired;
-		}
-		
-		subpids.push_back(response);
-	}
-}
-
-//
-void CZapit::sendRecordAPIDs(APIDList &apids)
-{
-	for (uint32_t  i = 0; i < rec_channel->getAudioChannelCount(); i++) 
-	{
-		APIDs response;
-		
-		response.pid = rec_channel->getAudioPid(i);
-		strncpy(response.desc, rec_channel->getAudioChannel(i)->description.c_str(), 25);
-
-		response.is_ac3 = 0;
-		
-		if (rec_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AC3
-			|| rec_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AAC
-			|| rec_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AACHE
-			|| rec_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::EAC3
-			|| rec_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::DTS
-			|| rec_channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::DTSHD
-			) 
-		{
-			response.is_ac3 = 1;
-		} 
-		
-		response.component_tag = rec_channel->getAudioChannel(i)->componentTag;
-		
-		apids.push_back(response);
-	}
-}
-
-void CZapit::sendRecordSubPIDs(SubPIDList &subpids)
-{	
-	for (int i = 0 ; i < (int)rec_channel->getSubtitleCount() ; ++i) 
-	{
-		SubPIDs response;
-		
-		CZapitAbsSub* s = rec_channel->getChannelSub(i);
-		CZapitDVBSub* sd = reinterpret_cast<CZapitDVBSub*>(s);
-		CZapitTTXSub* st = reinterpret_cast<CZapitTTXSub*>(s);
-
-		response.pid = sd->pId;
-		strncpy(response.desc, sd->ISO639_language_code.c_str(), 4);
-		if (s->thisSubType == CZapitAbsSub::DVB) 
-		{
-			response.composition_page = sd->composition_page_id;
-			response.ancillary_page = sd->ancillary_page_id;
-			if (sd->subtitling_type >= 0x20) 
-			{
-				response.hearingImpaired = true;
-			} 
-			else 
-			{
-				response.hearingImpaired = false;
-			}
-		} 
-		else if (s->thisSubType == CZapitAbsSub::TTX) 
-		{
-			response.composition_page = (st->teletext_magazine_number * 100) + ((st->teletext_page_number >> 4) * 10) + (st->teletext_page_number & 0xf);
-			response.ancillary_page = 0;
-			response.hearingImpaired = st->hearingImpaired;
-		}
-		
-		subpids.push_back(response);
-	}
-}
-
-//
 void CZapit::sendAPIDs(t_channel_id chid, APIDList &apids)
 {
 	CZapitChannel * channel = findChannelByChannelID(chid);
@@ -2908,29 +2779,6 @@ void CZapit::clearAll()
 
 	Bouquets.clear();
 	remainChannels = NULL;
-}
-
-CZapitChannel *CZapit::findChannelByChannelID(const t_channel_id channel_id)
-{
-	tallchans_iterator itChannel = allchans.find(channel_id);
-	
-	if (itChannel != allchans.end())
-		return &(itChannel->second);
-
-	return NULL;
-}
-
-CZapitChannel *CZapit::findChannelByName(std::string name, const t_service_id sid)
-{
-	for (tallchans_iterator itChannel = allchans.begin(); itChannel != allchans.end(); ++itChannel) 
-	{
-		if( (itChannel->second.getName().length() == name.length() && !strcasecmp(itChannel->second.getName().c_str(), name.c_str()) ) && (itChannel->second.getServiceId() == sid) ) 
-		{
-			return &itChannel->second;
-		}
-	}
-	
-	return NULL;
 }
 
 //// ChannelIterator
@@ -3965,56 +3813,6 @@ void CZapit::setStandby(bool enable)
 		leaveStandby();
 }
 
-bool CZapit::isChannelTVChannel(const t_channel_id channel_id)
-{
-	bool ret = false;
-			
-	tallchans_iterator it = allchans.find(channel_id);
-	if (it == allchans.end()) 
-	{
-		it = nvodchannels.find(channel_id);
-
-		if (it == nvodchannels.end())
-			ret = true;
-		else
-			ret = (it->second.getServiceType() != ST_DIGITAL_RADIO_SOUND_SERVICE);
-	} 
-	else
-		ret = (it->second.getServiceType() != ST_DIGITAL_RADIO_SOUND_SERVICE);
-		
-	return ret;
-}
-
-bool CZapit::isChannelWEBTVChannel(const t_channel_id channel_id)
-{
-	bool ret = false;
-			
-	tallchans_iterator it = allchans.find(channel_id);
-	if (it == allchans.end()) 
-	{
-		ret = it->second.isWebTV;
-	} 
-	
-	ret = it->second.isWebTV;
-		
-	return ret;
-}
-
-bool CZapit::isChannelRadioChannel(const t_channel_id channel_id)
-{
-	bool ret = false;
-			
-	tallchans_iterator it = allchans.find(channel_id);
-	if (it == allchans.end()) 
-	{
-		ret = (it->second.getServiceType() == ST_DIGITAL_RADIO_SOUND_SERVICE);
-	} 
-
-	ret = (it->second.getServiceType() == ST_DIGITAL_RADIO_SOUND_SERVICE);
-		
-	return ret;
-}
-
 void CZapit::zapToServiceIDNOWAIT(const t_channel_id channel_id)
 {
 	zapToChannelID(channel_id, false);
@@ -4044,6 +3842,29 @@ unsigned int CZapit::zapToSubServiceID(const t_channel_id channel_id)
 }
 
 //
+CZapitChannel *CZapit::findChannelByChannelID(const t_channel_id channel_id)
+{
+	tallchans_iterator itChannel = allchans.find(channel_id);
+	
+	if (itChannel != allchans.end())
+		return &(itChannel->second);
+
+	return NULL;
+}
+
+CZapitChannel *CZapit::findChannelByName(std::string name, const t_service_id sid)
+{
+	for (tallchans_iterator itChannel = allchans.begin(); itChannel != allchans.end(); ++itChannel) 
+	{
+		if( (itChannel->second.getName().length() == name.length() && !strcasecmp(itChannel->second.getName().c_str(), name.c_str()) ) && (itChannel->second.getServiceId() == sid) ) 
+		{
+			return &itChannel->second;
+		}
+	}
+	
+	return NULL;
+}
+
 std::string CZapit::getChannelName(const t_channel_id channel_id)
 {
 	std::string name = "";
@@ -4110,6 +3931,57 @@ t_channel_id CZapit::getChannelLogoID(const t_channel_id channel_id)
 	return id;
 }
 
+bool CZapit::isChannelTVChannel(const t_channel_id channel_id)
+{
+	bool ret = false;
+			
+	tallchans_iterator it = allchans.find(channel_id);
+	if (it == allchans.end()) 
+	{
+		it = nvodchannels.find(channel_id);
+
+		if (it == nvodchannels.end())
+			ret = true;
+		else
+			ret = (it->second.getServiceType() != ST_DIGITAL_RADIO_SOUND_SERVICE);
+	} 
+	else
+		ret = (it->second.getServiceType() != ST_DIGITAL_RADIO_SOUND_SERVICE);
+		
+	return ret;
+}
+
+bool CZapit::isChannelWEBTVChannel(const t_channel_id channel_id)
+{
+	bool ret = false;
+			
+	tallchans_iterator it = allchans.find(channel_id);
+	if (it == allchans.end()) 
+	{
+		ret = it->second.isWebTV;
+	} 
+	
+	ret = it->second.isWebTV;
+		
+	return ret;
+}
+
+bool CZapit::isChannelRadioChannel(const t_channel_id channel_id)
+{
+	bool ret = false;
+			
+	tallchans_iterator it = allchans.find(channel_id);
+	if (it == allchans.end()) 
+	{
+		ret = (it->second.getServiceType() == ST_DIGITAL_RADIO_SOUND_SERVICE);
+	} 
+
+	ret = (it->second.getServiceType() == ST_DIGITAL_RADIO_SOUND_SERVICE);
+		
+	return ret;
+}
+
+
 //
 std::string CZapit::getSatelliteName(t_satellite_position position)
 {
@@ -4136,8 +4008,8 @@ void CZapit::getCurrentPIDS( PIDs &pids )
 		responseGetOtherPIDs.selected_apid = live_channel->getAudioChannelIndex();
 		responseGetOtherPIDs.privatepid = live_channel->getPrivatePid();
 		
-		sendCurrentAPIDs(apids);
-		sendCurrentSubPIDs(subpids);
+		sendAPIDs(live_channel->getChannelID(), apids);
+		sendSubPIDs(live_channel->getChannelID(), subpids);
 		
 		//
 		pids.otherPIDs = responseGetOtherPIDs;
@@ -4383,8 +4255,8 @@ void CZapit::getRecordPIDS(PIDs &pids)
 		responseGetOtherPIDs.selected_apid = rec_channel->getAudioChannelIndex();
 		responseGetOtherPIDs.privatepid = rec_channel->getPrivatePid();
 		
-		sendRecordAPIDs(apids);
-		sendRecordSubPIDs(subpids);
+		sendAPIDs(rec_channel->getChannelID(), apids);
+		sendSubPIDs(rec_channel->getChannelID(), subpids);
 		
 		//
 		pids.otherPIDs = responseGetOtherPIDs;

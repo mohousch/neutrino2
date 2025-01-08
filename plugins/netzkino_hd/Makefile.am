@@ -1,3 +1,5 @@
+SUBDIRS = locale
+
 install-exec-local:
 	install -d $(DESTDIR)$(PLUGINDIR)/netzkino_hd
 	install -m 0644 netzkino_hd.cfg $(DESTDIR)$(PLUGINDIR)/netzkino_hd

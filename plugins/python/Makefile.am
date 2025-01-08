@@ -1,3 +1,5 @@
+SUBDIRS = locale
+
 install-exec-local:
 	install -d $(DESTDIR)$(PLUGINDIR)/python
 	install -m 0644 python.cfg $(DESTDIR)$(PLUGINDIR)/python
