@@ -90,14 +90,14 @@ class CSectionsd
 		};
 		typedef std::vector<linkageDescriptors> LinkageDescriptorList;
 
-		struct responseGetNVODTimes
+		struct NVODTimes
 		{
 			t_service_id                    service_id;
 			t_original_network_id           original_network_id;
 			t_transport_stream_id           transport_stream_id;
 			sectionsdTime 	zeit;
 		};
-		typedef std::vector<responseGetNVODTimes> NVODTimesList;
+		typedef std::vector<NVODTimes> NVODTimesList;
 
 		struct CurrentNextInfo
 		{

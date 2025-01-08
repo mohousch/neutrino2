@@ -4837,7 +4837,7 @@ bool CSectionsd::getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, NVO
 				SItime zeitEvt1(0, 0);
 				findActualSIeventForServiceUniqueKey(ni->uniqueKey(), zeitEvt1, 15*60);
 
-				responseGetNVODTimes response;
+				NVODTimes response;
 
 				response.service_id =  ni->service_id;
 				response.original_network_id = ni->original_network_id;
