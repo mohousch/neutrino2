@@ -36,7 +36,8 @@ extern "C" void plugin_del(void);
 
 //// defines
 //FIXME: make this global
-#define __(string) dgettext("internetradio", string)
+#undef _
+#define _(string) dgettext("internetradio", string)
 //
 #define SHOW_FILE_LOAD_LIMIT 50
 #define AUDIOPLAYER_CHECK_FOR_DUPLICATES
@@ -309,7 +310,7 @@ void CInternetRadio::scanXmlData(xmlDocPtr answer_parser, const char *nametag, c
 			element = element_tmp;
 			long listPos = 1;
 			
-			progress.setTitle(__("Receiving list, please wait"));
+			progress.setTitle(_("Receiving list, please wait"));
 			progress.enableCancelIcon();
 			progress.paint();
 			frameBuffer->blit();
@@ -417,7 +418,7 @@ bool CInternetRadio::openFileBrowser(void)
 		
 		if (maxProgress > SHOW_FILE_LOAD_LIMIT)
 		{
-			progress.setTitle(__("Receiving list, please wait"));	
+			progress.setTitle(_("Receiving list, please wait"));	
 			progress.paint();
 		}
 
@@ -658,10 +659,10 @@ const struct button_label HeadButtons{ NEUTRINO_ICON_BUTTON_SETUP, "" };
 #define FOOT_BUTTONS_COUNT 4
 const struct button_label AudioPlayerButtons[FOOT_BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, __("Delete") },
-	{ NEUTRINO_ICON_BUTTON_GREEN, __("Add") },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, __("Delete all") },
-	{ NEUTRINO_ICON_BUTTON_BLUE, __("Reload") }
+	{ NEUTRINO_ICON_BUTTON_RED, _("Delete") },
+	{ NEUTRINO_ICON_BUTTON_GREEN, _("Add") },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Delete all") },
+	{ NEUTRINO_ICON_BUTTON_BLUE, _("Reload") }
 };
 
 void CInternetRadio::showMenu()
@@ -704,7 +705,7 @@ void CInternetRadio::showMenu()
 	ilist->setSelected(selected);
 
 	ilist->enablePaintHead();
-	ilist->setTitle(__("ICE Cast"), NEUTRINO_ICON_MP3);
+	ilist->setTitle(_("ICE Cast"), NEUTRINO_ICON_MP3);
 	ilist->setHeadButtons(&HeadButtons);
 	ilist->enablePaintDate();
 	

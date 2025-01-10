@@ -28,7 +28,8 @@ extern "C" void plugin_del(void);
 
 //// defines
 //FIXME: make this global
-#define __(string) dgettext("picviewer", string)
+#undef _
+#define _(string) dgettext("picviewer", string)
 
 class CPicViewer : public CMenuTarget
 {
@@ -169,10 +170,10 @@ const struct button_label HeadButtons[HEAD_BUTTONS_COUNT] =
 #define FOOT_BUTTONS_COUNT 4
 const struct button_label PictureViewerButtons[FOOT_BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, __("Delete") },
-	{ NEUTRINO_ICON_BUTTON_GREEN , __("Add") },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, __("Delete all") },
-	{ NEUTRINO_ICON_BUTTON_BLUE  , __("Slideshow") }
+	{ NEUTRINO_ICON_BUTTON_RED, _("Delete") },
+	{ NEUTRINO_ICON_BUTTON_GREEN , _("Add") },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Delete all") },
+	{ NEUTRINO_ICON_BUTTON_BLUE  , _("Slideshow") }
 };
 
 void CPicViewer::showMenu()
@@ -208,7 +209,7 @@ void CPicViewer::showMenu()
 	
 	//
 	plist->enablePaintHead();
-	plist->setTitle(__("Pictureviewer"), NEUTRINO_ICON_PICTURE);
+	plist->setTitle(_("Pictureviewer"), NEUTRINO_ICON_PICTURE);
 	plist->enablePaintDate();
 	plist->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	plist->setHeadLine(true, true);

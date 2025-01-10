@@ -34,7 +34,8 @@ extern "C" void plugin_del(void);
 
 //// defines
 //FIXME: make this global
-#define __(string) dgettext("ntvshows", string)
+#undef _
+#define _(string) dgettext("ntvshows", string)
 
 class CTVShows : public CMenuTarget
 {
@@ -135,7 +136,7 @@ void CTVShows::loadMoviesTitle(void)
 	removeThumbnailDir();
 	createThumbnailDir();
 
-	CHintBox loadBox(__("Series Trailer"), __("Scan for Movies ..."));
+	CHintBox loadBox(_("Series Trailer"), _("Scan for Movies ..."));
 	loadBox.paint();
 
 	//
@@ -279,8 +280,8 @@ const struct button_label HeadButtons[HEAD_BUTTONS_COUNT] =
 #define FOOT_BUTTONS_COUNT	4
 const struct button_label FootButtons[FOOT_BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, __("Next Page") },
-	{ NEUTRINO_ICON_BUTTON_GREEN, __("Prev Page") },
+	{ NEUTRINO_ICON_BUTTON_RED, _("Next Page") },
+	{ NEUTRINO_ICON_BUTTON_GREEN, _("Prev Page") },
 	{ NEUTRINO_ICON_BUTTON_YELLOW, " " },
 	{ NEUTRINO_ICON_BUTTON_BLUE, " " }
 };
@@ -290,13 +291,13 @@ void CTVShows::showMenu()
 	dprintf(DEBUG_NORMAL, "CTVShows::showMenu:");
 
 	if(plist == "airing_today")
-		caption = __("Airing today");
+		caption = _("Airing today");
 	else if(plist == "on_the_air")
-		caption = __("On the air");
+		caption = _("On the air");
 	else if(plist == "popular")
-		caption = __("Popular");
+		caption = _("Popular");
 	else if(plist == "top_rated")
-		caption = __("Top rated");
+		caption = _("Top rated");
 
 	mlist = new ClistBox(CFrameBuffer::getInstance()->getScreenX() + 20, CFrameBuffer::getInstance()->getScreenY() + 20, CFrameBuffer::getInstance()->getScreenWidth() - 40, CFrameBuffer::getInstance()->getScreenHeight() - 40);
 	
@@ -359,17 +360,17 @@ int CTVShows::showCategoriesMenu()
 	ClistBox * menu = new ClistBox(CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - 600)/2, CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - 600)/2, 600, 600);
 	
 	menu->enablePaintHead();
-	menu->setTitle(__("Series Trailer"));
+	menu->setTitle(_("Series Trailer"));
 	menu->enablePaintDate();
 	menu->enablePaintFoot();
 	
 	menu->setWidgetMode(ClistBox::MODE_MENU);
 	menu->enableShrinkMenu();
 
-	menu->addItem(new CMenuForwarder(__("Airing today"), true, NULL, new CTVShows("airing_today"), "airing_today"));
-	menu->addItem(new CMenuForwarder(__("On the air"), true, NULL, new CTVShows("on_the_air"), "on_the_air"));
-	menu->addItem(new CMenuForwarder(__("Popular"), true, NULL, new CTVShows("popular"), "popular"));
-	menu->addItem(new CMenuForwarder(__("Top rated"), true, NULL, new CTVShows("top_rated"), "top_rated"));
+	menu->addItem(new CMenuForwarder(_("Airing today"), true, NULL, new CTVShows("airing_today"), "airing_today"));
+	menu->addItem(new CMenuForwarder(_("On the air"), true, NULL, new CTVShows("on_the_air"), "on_the_air"));
+	menu->addItem(new CMenuForwarder(_("Popular"), true, NULL, new CTVShows("popular"), "popular"));
+	menu->addItem(new CMenuForwarder(_("Top rated"), true, NULL, new CTVShows("top_rated"), "top_rated"));
 
 	menu->exec(this);
 

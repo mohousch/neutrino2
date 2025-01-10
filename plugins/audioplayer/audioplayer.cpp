@@ -29,7 +29,8 @@ extern "C" void plugin_del(void);
 
 //// defines
 //FIXME: make this global
-#define __(string) dgettext("audioplayer", string)
+#undef _
+#define _(string) dgettext("audioplayer", string)
 
 //
 #define SHOW_FILE_LOAD_LIMIT 50
@@ -335,7 +336,7 @@ void CMP3Player::openFileBrowser()
 		
 		if (maxProgress > SHOW_FILE_LOAD_LIMIT)
 		{
-			progress.setTitle(__("Receiving list, please wait..."));	
+			progress.setTitle(_("Receiving list, please wait..."));	
 			progress.paint();
 		}
 		
@@ -521,7 +522,7 @@ void CMP3Player::showTrackInfo(CAudiofile& file)
 	// title
 	if (!title.empty())
 	{
-		buffer = __("Title: ");
+		buffer = _("Title: ");
 		buffer += title.c_str();
 	}
 	
@@ -529,7 +530,7 @@ void CMP3Player::showTrackInfo(CAudiofile& file)
 	if (!artist.empty())
 	{
 		buffer += "\n\n";
-		buffer += __("Artist: ");
+		buffer += _("Artist: ");
 		buffer += artist.c_str();
 	}
 	
@@ -537,7 +538,7 @@ void CMP3Player::showTrackInfo(CAudiofile& file)
 	if (!genre.empty())
 	{
 		buffer += "\n\n";
-		buffer += __("Genre: ");
+		buffer += _("Genre: ");
 		buffer += genre.c_str();
 	}
 	
@@ -545,7 +546,7 @@ void CMP3Player::showTrackInfo(CAudiofile& file)
 	if (!date.empty())
 	{
 		buffer += "\n\n";
-		buffer += __("Date: ");
+		buffer += _("Date: ");
 		buffer += date.c_str();
 	}
 	
@@ -553,14 +554,14 @@ void CMP3Player::showTrackInfo(CAudiofile& file)
 	if (duration)
 	{
 		buffer += "\n\n";
-		buffer += __("Length (Min): ");
+		buffer += _("Length (Min): ");
 		buffer += duration;
 	}
 	
 	// infoBox
 	CBox position(g_settings.screen_StartX + 50, g_settings.screen_StartY + 50, g_settings.screen_EndX - g_settings.screen_StartX - 100, g_settings.screen_EndY - g_settings.screen_StartY - 100); 
 	
-	CInfoBox * infoBox = new CInfoBox(&position, __("Track Infos"), NEUTRINO_ICON_MP3);
+	CInfoBox * infoBox = new CInfoBox(&position, _("Track Infos"), NEUTRINO_ICON_MP3);
 
 	// scale pic
 	int p_w = 0;
@@ -585,10 +586,10 @@ const struct button_label HeadButtons[HEAD_BUTTONS_COUNT] =
 #define FOOT_BUTTONS_COUNT 4
 const struct button_label AudioPlayerButtons[FOOT_BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, __("Delete") },
-	{ NEUTRINO_ICON_BUTTON_GREEN, __("Add") },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, __("Delete all") },
-	{ NEUTRINO_ICON_BUTTON_BLUE, __("Reload") }
+	{ NEUTRINO_ICON_BUTTON_RED, _("Delete") },
+	{ NEUTRINO_ICON_BUTTON_GREEN, _("Add") },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Delete all") },
+	{ NEUTRINO_ICON_BUTTON_BLUE, _("Reload") }
 };
 
 int CMP3Player::showMenu()
@@ -649,7 +650,7 @@ int CMP3Player::showMenu()
 
 	//
 	alist->enablePaintHead();
-	alist->setTitle(__("Audio Player"), NEUTRINO_ICON_MP3);
+	alist->setTitle(_("Audio Player"), NEUTRINO_ICON_MP3);
 	alist->enablePaintDate();
 	alist->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	
