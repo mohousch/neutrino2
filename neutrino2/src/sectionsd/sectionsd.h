@@ -182,10 +182,6 @@ class CSectionsd
 		};
 		
 		//
-		void Start(void);
-		void Stop(void);
-		
-		//
 		void getChannelEvents(CChannelEventList &eList, bool tv_mode = true, t_channel_id *chidlist = NULL, int clen = 0);
 		void getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
 		void getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CurrentNextInfo& current_next );
@@ -210,6 +206,10 @@ class CSectionsd
 		
 		//
 		void dumpStatus(void);
+		
+		//
+		void Start(void);
+		void Stop(void);
 };
 
 #endif
