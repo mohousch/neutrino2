@@ -144,16 +144,16 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				g_InfoViewer->chanready = 1;
 			}
 			
-			//
+			// infoviewer
 			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
 
-			//
+			// zapProtection
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
 				processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
 
 			// lcd
 			CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
-		}
+		} 	
 	} 
 	else 
 	{
@@ -187,10 +187,10 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				needs_nvods = (msg == NeutrinoMessages:: EVT_ZAP_ISNVOD);
 			}
 			
-			//
+			// infoViewer
 			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR);
 
-			//
+			// zapProtection
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
 				processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
 

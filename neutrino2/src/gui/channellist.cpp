@@ -167,11 +167,8 @@ void CChannelList::setSize(int newsize)
 	chanlist.reserve(newsize);
 }
 
-void CChannelList::addChannel(CZapitChannel * channel, int num)
-{
-	if (num)
-		channel->number = num;
-			
+void CChannelList::addChannel(CZapitChannel * channel)
+{		
 	chanlist.push_back(channel);
 }
 

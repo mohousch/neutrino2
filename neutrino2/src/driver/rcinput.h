@@ -79,7 +79,6 @@
 #define KEY_GAMES        0x1a1
 #endif
 
-// this values are token from cuberevo3000hd
 #ifndef KEY_PIP	
 #define KEY_PIP	0x041
 #endif
@@ -186,9 +185,7 @@ class CRCInput
 		static const neutrino_msg_t RC_Repeat   = 0x0400;
 		static const neutrino_msg_t RC_Release  = 0x0800;
 		static const neutrino_msg_t RC_MaxRC    = KEY_MAX | RC_Repeat | RC_Release;
-		static const neutrino_msg_t RC_Events   = 0x80000000;
-		static const neutrino_msg_t RC_Messages = 0x90000000;
-		static const neutrino_msg_t RC_WithData = 0xA0000000;
+		static const neutrino_msg_t RC_Messages = 0x80000000;
 		
 		bool haveLirc;		
 
@@ -292,8 +289,8 @@ class CRCInput
 			RC_vfdexit	= VFD_EXIT,
 			RC_vfdok	= VFD_OK,
 
-			RC_timeout	= 0xFFFFFFFF,
-			RC_nokey	= 0xFFFFFFFE
+			RC_nokey	= 0xFFFFFFFE,
+			RC_timeout	= 0xFFFFFFFF
 		};
 
 

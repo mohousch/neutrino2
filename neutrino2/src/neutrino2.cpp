@@ -2195,10 +2195,10 @@ void CNeutrinoApp::initZapper()
 
 	lastMode = mode;
 	
-	// init channel
+	// init channel / setChannelsMode
 	channelsInit();
 	
-	//
+	// start epgTimer
 	epgUpdateTimer = g_RCInput->addTimer( 60 * 1000 * 1000, false );
 
 	// zap / epg / autorecord / infoviewer
@@ -2206,13 +2206,6 @@ void CNeutrinoApp::initZapper()
 	{
 		// channellist adjust to channeliD
 		channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
-
-		// start epg scanning
-		CSectionsd::getInstance()->pauseScanning(false);
-		CSectionsd::getInstance()->setServiceChanged(CZapit::getInstance()->getCurrentChannelID(), true );
-		
-		// lcd
-		CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
 				
 		// permenant timeshift
 		if(g_settings.auto_timeshift)

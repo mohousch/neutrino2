@@ -1037,57 +1037,58 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	if (g_settings.lcd_mode == MODE_CHANNEL_INFO)
 	{
-	showTextScreen(servicename, epg_title, showmode, perform_wakeup, g_settings.lcd_epgalign);
-	
-	// logo
-	logo_w = 120;
-	logo_h = 60;
-	
-	logo_x = (lcd_width - logo_w)/2; if (logo_x < 0) logo_x = 0; // FIXME:
-	logo_y = lcd_height - fonts.time->getHeight() - logo_h - 2; if (logo_y < 0) logo_y = 0; // FIXME:
-	
-	if (g_settings.lcd_weather)
-		logo_x = lcd_width - logo_w - 1;
+		// servicename
+		showTextScreen(servicename, epg_title, showmode, perform_wakeup, g_settings.lcd_epgalign);
 		
-	if (logo_x < 0) logo_x = 0; // FIXME:
-	
-	if (g_settings.lcd_picon && lcd_height > 64)
-	{
-		std::string logo = DATADIR "/lcd/picon_default.png";
+		// servicelogo
+		logo_w = 120;
+		logo_h = 60;
 		
-		t_channel_id logoid = CZapit::getInstance()->getChannelLogoID(CZapit::getInstance()->getCurrentChannelID());
-	
-		if (CChannellogo::getInstance()->checkLogo(logoid))
-			logo = CChannellogo::getInstance()->getLogoName(logoid);
-			
-		int l_w, l_h, l_bpp, l_chans;
-		
-		::getSize(logo.c_str(), &l_w, &l_h, &l_bpp, &l_chans);
-		
-		if (l_h < logo_h)
-			logo_h = l_h;
-			
-		if (l_w < logo_w)
-			logo_w = l_w;
-			
-		// recalculate logo_x / logo_y
 		logo_x = (lcd_width - logo_w)/2; if (logo_x < 0) logo_x = 0; // FIXME:
 		logo_y = lcd_height - fonts.time->getHeight() - logo_h - 2; if (logo_y < 0) logo_y = 0; // FIXME:
 		
 		if (g_settings.lcd_weather)
-			logo_x = lcd_width - logo_w - 1; if (logo_x < 0) logo_x = 0; // FIXME:
-
-		if (logoid != 0)
+			logo_x = lcd_width - logo_w - 1;
+			
+		if (logo_x < 0) logo_x = 0; // FIXME:
+		
+		if (g_settings.lcd_picon && lcd_height > 64)
 		{
-			display->showPNGImage(logo.c_str(), logo_x, logo_y, logo_w, logo_h);
+			std::string logo = DATADIR "/lcd/picon_default.png";
+			
+			t_channel_id logoid = CZapit::getInstance()->getChannelLogoID(CZapit::getInstance()->getCurrentChannelID());
+		
+			if (CChannellogo::getInstance()->checkLogo(logoid))
+				logo = CChannellogo::getInstance()->getLogoName(logoid);
+				
+			int l_w, l_h, l_bpp, l_chans;
+			
+			::getSize(logo.c_str(), &l_w, &l_h, &l_bpp, &l_chans);
+			
+			if (l_h < logo_h)
+				logo_h = l_h;
+				
+			if (l_w < logo_w)
+				logo_w = l_w;
+				
+			// recalculate logo_x / logo_y
+			logo_x = (lcd_width - logo_w)/2; if (logo_x < 0) logo_x = 0; // FIXME:
+			logo_y = lcd_height - fonts.time->getHeight() - logo_h - 2; if (logo_y < 0) logo_y = 0; // FIXME:
+			
+			if (g_settings.lcd_weather)
+				logo_x = lcd_width - logo_w - 1; if (logo_x < 0) logo_x = 0; // FIXME:
+
+			if (logoid != 0)
+			{
+				display->showPNGImage(logo.c_str(), logo_x, logo_y, logo_w, logo_h);
+			}
 		}
-	}
-	
-	// weather
-	if (g_settings.lcd_weather && lcd_height > 64)
-	{
-		showWeather();
-	}
+		
+		// weather
+		if (g_settings.lcd_weather && lcd_height > 64)
+		{
+			showWeather();
+		}
 	}
 #endif
 	
