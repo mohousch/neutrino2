@@ -1691,44 +1691,7 @@ void CFrameBuffer::blit(int mode3d)
 #endif	
 }
 
-//// display RGB
-void CFrameBuffer::displayRGB(uint8_t *rgbbuff, int x_size, int y_size, int x_pan, int y_pan, int x_offs, int y_offs, bool clearfb)
-{
-	dprintf(DEBUG_INFO, "CFrameBuffer::displayRGB\n");
-	
-        fb_pixel_t * fbbuff = NULL;
-
-        if(rgbbuff == NULL)
-                return;
-
-        // correct panning
-        if(x_pan > x_size - (int)xRes) 
-		x_pan = 0;
-        if(y_pan > y_size - (int)yRes) 
-		y_pan = 0;
-
-        // correct offset
-        if(x_offs + x_size > (int)xRes) 
-		x_offs = 0;
-        if(y_offs + y_size > (int)yRes) 
-		y_offs = 0;
-
-        // convert
-        fbbuff = convertRGBA2ARGB32(rgbbuff, x_size, y_size);
-        if(fbbuff == NULL)
-                return;
-
-        // ClearFB if image is smaller
-        if(clearfb)
-                clearFrameBuffer();
-
-	// blit2fb
-        blitBox2FB(fbbuff, x_size, y_size, x_offs, y_offs, x_pan, y_pan);
-	
-        free(fbbuff);
-}
-
-// display image
+//// display image
 void CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int width, int height, int x_pan, int y_pan, ScalingMode scaletype)
 {
 	dprintf(DEBUG_DEBUG, "CFrameBuffer::displayImage %s\n", name.c_str());

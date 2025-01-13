@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-12-22 14:47+0100\n"
+"POT-Creation-Date: 2025-01-10 21:40+0100\n"
 "PO-Revision-Date: 2023-10-29 18:19+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -54,7 +54,7 @@ msgid "Browser hight [Pixel]"
 msgstr "Browserhöhe [Pixel]"
 
 msgid "Change order"
-msgstr ""
+msgstr "Reihenfolge ändern"
 
 msgid "Channel"
 msgstr "Kanal"
@@ -141,55 +141,55 @@ msgid "Information"
 msgstr "Information"
 
 msgid "Jump (<0 back , >0 for):"
-msgstr ""
+msgstr "Springen (<0 zurück , >0 forward"
 
 msgid "Last play date"
-msgstr ""
+msgstr "Letzte Abspiel Datum"
 
 msgid "Last play stop:"
-msgstr ""
+msgstr "Letzte Stop Datum"
 
 msgid "Length (Min)"
 msgstr ""
 
 msgid "Load default settings"
-msgstr ""
+msgstr "Lade standard Einstellungen"
 
 msgid "Lock movies from"
-msgstr ""
+msgstr "Film sperren ab"
 
 msgid "Movie Browser"
 msgstr ""
 
 msgid "Movie end:"
-msgstr ""
+msgstr "Film Ende:"
 
 msgid "Movie start:"
-msgstr ""
+msgstr "Film Begin:"
 
 msgid "Moviebrowser"
 msgstr ""
 
 msgid "NFS settings"
-msgstr ""
+msgstr "NFS Einstellungen"
 
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 msgid "Next focus"
 msgstr "Nächster Fokus"
 
 msgid "No"
-msgstr ""
+msgstr "Nein"
 
 msgid "No (temporary)"
-msgstr ""
+msgstr "Nein ()"
 
 msgid "No End bookmark defined!"
 msgstr ""
 
 msgid "Options"
-msgstr ""
+msgstr "Optionen"
 
 msgid "Parental Lock"
 msgstr ""

@@ -50,20 +50,6 @@
 
 #include <daemonc/remotecontrol.h>
 
-#if 0
-//#define LCDD_DEBUG
-
-static short debug_level = 10;
-
-#ifdef LCDD_DEBUG
-#define lcdd_printf(level, fmt, x...) do { \
-if (debug_level >= level) printf(fmt, ## x); } while (0)
-#else
-#define lcdd_printf(level, fmt, x...)
-#endif
-
-#define lcdd_err(fmt, x...) do { printf(fmt, ## x); } while (0)
-#endif
 
 extern CRemoteControl * g_RemoteControl;
 
