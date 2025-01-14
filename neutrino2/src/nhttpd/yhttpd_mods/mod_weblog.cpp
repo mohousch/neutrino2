@@ -26,13 +26,15 @@
 //=============================================================================
 // Constructor & Destructor
 //=============================================================================
-CmWebLog::CmWebLog(void) {
+CmWebLog::CmWebLog(void) 
+{
 	pthread_mutex_lock(&WebLog_mutex); // yea, its mine
 	RefCounter++;
 	pthread_mutex_unlock(&WebLog_mutex);
 }
 //-----------------------------------------------------------------------------
-CmWebLog::~CmWebLog(void) {
+CmWebLog::~CmWebLog(void) 
+{
 	pthread_mutex_lock(&WebLog_mutex); // yea, its mine
 	--RefCounter;
 	if (RefCounter <= 0)
@@ -45,7 +47,8 @@ CmWebLog::~CmWebLog(void) {
 //-----------------------------------------------------------------------------
 // HOOK: Hook_EndConnection
 //-----------------------------------------------------------------------------
-THandleStatus CmWebLog::Hook_EndConnection(CyhookHandler *hh) {
+THandleStatus CmWebLog::Hook_EndConnection(CyhookHandler *hh) 
+{
 	if (LogFormat == "CLF")
 		AddLogEntry_CLF(hh);
 	else if (LogFormat == "ELF")
@@ -57,23 +60,28 @@ THandleStatus CmWebLog::Hook_EndConnection(CyhookHandler *hh) {
 // HOOK: Hook_ReadConfig
 // This hook ist called from ReadConfig
 //-----------------------------------------------------------------------------
-THandleStatus CmWebLog::Hook_ReadConfig(CConfigFile *Config, CStringList &) {
+THandleStatus CmWebLog::Hook_ReadConfig(CConfigFile *Config, CStringList &) 
+{
 	LogFormat = Config->getString("mod_weblog.log_format", LOG_FORMAT);
 	WebLogFilename = Config->getString("mod_weblog.logfile", LOG_FILE);
 	return HANDLED_CONTINUE;
 }
 //-----------------------------------------------------------------------------
-bool CmWebLog::OpenLogFile() {
+bool CmWebLog::OpenLogFile() 
+{
 	if (WebLogFilename == "")
 		return false;
-	if (WebLogFile == NULL) {
+	if (WebLogFile == NULL) 
+	{
 		bool isNew = false;
 		pthread_mutex_lock(&WebLog_mutex); // yeah, its mine
 		if (access(WebLogFilename.c_str(), 4) != 0)
 			isNew = true;
 		WebLogFile = fopen(WebLogFilename.c_str(), "a");
-		if (isNew) {
-			if (LogFormat == "ELF") {
+		if (isNew) 
+		{
+			if (LogFormat == "ELF") 
+			{
 				printf("#Version: 1.0\n");
 				printf("#Remarks: yhttpd" WEBSERVERNAME "\n");
 				printf(
@@ -85,8 +93,10 @@ bool CmWebLog::OpenLogFile() {
 	return (WebLogFile != NULL);
 }
 //-----------------------------------------------------------------------------
-void CmWebLog::CloseLogFile() {
-	if (WebLogFile != NULL) {
+void CmWebLog::CloseLogFile() 
+{
+	if (WebLogFile != NULL) 
+	{
 		pthread_mutex_lock(&WebLog_mutex); // yeah, its mine
 		fclose( WebLogFile);
 		WebLogFile = NULL;
@@ -95,12 +105,14 @@ void CmWebLog::CloseLogFile() {
 }
 //-----------------------------------------------------------------------------
 #define bufferlen 1024*8
-bool CmWebLog::printf(const char *fmt, ...) {
+bool CmWebLog::printf(const char *fmt, ...) 
+{
 	if (!OpenLogFile())
 		return false;
 	bool success = false;
 	char buffer[bufferlen];
-	if (WebLogFile != NULL) {
+	if (WebLogFile != NULL) 
+	{
 		pthread_mutex_lock(&WebLog_mutex); // yeah, its mine
 		va_list arglist;
 		va_start(arglist, fmt);
@@ -354,3 +366,4 @@ void CmWebLog::AddLogEntry_ELF(CyhookHandler *hh)
 		cached
 		);
 }
+

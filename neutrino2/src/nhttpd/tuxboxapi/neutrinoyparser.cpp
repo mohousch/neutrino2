@@ -24,6 +24,7 @@
 #include <global.h>
 #include <neutrino2.h>
 #include <system/settings.h>
+#include <system/debug.h>
 
 #include <zapit/zapit.h>
 
@@ -51,7 +52,7 @@ THandleStatus CNeutrinoYParser::Hook_SendResponse(CyhookHandler *hh)
 {
 	hh->status = HANDLED_NONE;
 
-	log_level_printf(4, "Neutrinoparser Hook Start url:%s\n", hh->UrlData["url"].c_str());
+	dprintf(DEBUG_DEBUG, "Neutrinoparser Hook Start url:%s\n", hh->UrlData["url"].c_str());
 	init(hh);
 
 	CNeutrinoYParser *yP = new CNeutrinoYParser(NeutrinoAPI);		// create a Session
@@ -67,7 +68,7 @@ THandleStatus CNeutrinoYParser::Hook_SendResponse(CyhookHandler *hh)
 
 	delete yP;
 
-	log_level_printf(4, "Neutrinoparser Hook Ende status:%d\n",(int)hh->status);
+	dprintf(DEBUG_DEBUG, "Neutrinoparser Hook Ende status:%d\n",(int)hh->status);
 
 	return hh->status;
 }
@@ -131,7 +132,8 @@ std::string  CNeutrinoYParser::YWeb_cgi_func(CyhookHandler *hh, std::string ycmd
 	bool found = false;
 	ySplitString(ycmd," ",func, para);
 
-	log_level_printf(4,"NeutrinoYParser: func:(%s)\n", func.c_str());
+	dprintf(DEBUG_DEBUG, "NeutrinoYParser: func:(%s)\n", func.c_str());
+	
 	for(unsigned int i = 0;i < (sizeof(yFuncCallList)/sizeof(yFuncCallList[0])); i++)
 	{
 		if (func == yFuncCallList[i].func_name)
@@ -142,7 +144,7 @@ std::string  CNeutrinoYParser::YWeb_cgi_func(CyhookHandler *hh, std::string ycmd
 		}
 	}
 		
-	log_level_printf(8,"NeutrinoYParser: func:(%s) para:(%s) Result:(%s)\n", func.c_str(), para.c_str(), yresult.c_str() );
+	dprintf(DEBUG_DEBUG,"NeutrinoYParser: func:(%s) para:(%s) Result:(%s)\n", func.c_str(), para.c_str(), yresult.c_str() );
 	
 	if(!found)
 		yresult = CyParser::YWeb_cgi_func(hh, ycmd);

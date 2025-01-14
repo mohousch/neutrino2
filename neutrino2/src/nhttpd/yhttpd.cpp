@@ -14,7 +14,6 @@
 
 // yhttpd
 #include "yconfig.h"
-#include "ylogging.h"
 #include "ylanguage.h"
 #include "yhook.h"
 
@@ -57,6 +56,8 @@ static CmodCache mod_cache; // static instance
 static CNeutrinoAPI *NeutrinoAPI;
 #endif
 
+#include <system/debug.h>
+
 //
 //
 //
@@ -86,15 +87,12 @@ void thread_cleanup (void *p)
 //
 void Cyhttpd::Start(void)
 {
-	aprintf("Cyhttpd::Start:\n");
-	
-	CLogging::getInstance()->setDebug(true);
-	CLogging::getInstance()->LogLevel = 0;
+	dprintf(DEBUG_DEBUG, "Cyhttpd::Start:\n");
 	
 	// start webserver thread
 	if (pthread_create(&thrWebServer, NULL, webServerThread, (void *) this) != 0 )
 	{
-		aprintf("Cyhttpd::Init: create webServerThread failed\n");
+		dprintf(DEBUG_DEBUG, "Cyhttpd::Init: create webServerThread failed\n");
 	}
 }
 
@@ -103,7 +101,7 @@ void Cyhttpd::Start(void)
 //
 void Cyhttpd::Stop(void)
 {
-	aprintf("Cyhttpd::Stop:\n");
+	dprintf(DEBUG_DEBUG, "Cyhttpd::Stop:\n");
 }
 
 //
@@ -114,7 +112,7 @@ void * Cyhttpd::webServerThread(void *data)
 	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, 0);
 	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
 	
-	aprintf("Webserver %s tid %ld\n", WEBSERVERNAME, syscall(__NR_gettid));
+	dprintf(DEBUG_DEBUG, "Webserver %s tid %ld\n", WEBSERVERNAME, syscall(__NR_gettid));
 	
 	Cyhttpd *yhttpd = (Cyhttpd *)data;
 
@@ -128,15 +126,15 @@ void * Cyhttpd::webServerThread(void *data)
 	if (yhttpd->Configure()) 
 	{
 		// Start Webserver: fork ist if not in debug mode
-		aprintf("Webserver starting...\n");
-		dprintf("Start in Debug-Mode\n"); // non forked debugging loop
+		dprintf(DEBUG_DEBUG, "Webserver starting...\n");
+		dprintf(DEBUG_DEBUG, "Start in Debug-Mode\n"); // non forked debugging loop
 
 		yhttpd->run();
 	}
 
 	pthread_cleanup_pop(0);
 
-	aprintf("Main end\n");
+	dprintf(DEBUG_DEBUG, "Main end\n");
 	return (void *) EXIT_SUCCESS;
 }
 
@@ -189,7 +187,7 @@ bool Cyhttpd::Configure()
 		{
 			if((grp = getgrnam(groupname.c_str())) == NULL)
 			{
-				aprintf("Can not get Group-Information. Group: %s\n", groupname.c_str());
+				dprintf(DEBUG_DEBUG, "Can not get Group-Information. Group: %s\n", groupname.c_str());
 				return false;
 			}
 		}
@@ -198,7 +196,8 @@ bool Cyhttpd::Configure()
 #ifdef Y_CONFIG_FEATURE_CHROOT
 		if(!ConfigList["server.chroot"].empty())
 		{
-			log_level_printf(2, "do chroot to dir:%s\n", ConfigList["server.chroot"].c_str() );
+			dprintf(DEBUG_DEBUG, "do chroot to dir:%s\n", ConfigList["server.chroot"].c_str() );
+			
 			// do change Root
 			if(chroot(ConfigList["server.chroot"].c_str()) == -1)
 			{
@@ -216,7 +215,7 @@ bool Cyhttpd::Configure()
 #ifdef Y_CONFIG_FEATURE_HTTPD_USER
 		if(username != "" && pwd != NULL && grp != NULL)
 		{
-			log_level_printf(2, "set user and groups\n");
+			dprintf(DEBUG_DEBUG, "set user and groups\n");
 
 			// drop root privileges
 			setgid(grp->gr_gid);
@@ -250,7 +249,7 @@ void Cyhttpd::run()
 		webserver->run();
 	} 
 	else
-		aprintf("Error initializing WebServer\n");
+		dprintf(DEBUG_DEBUG, "Error initializing WebServer\n");
 }
 
 //
@@ -266,7 +265,7 @@ void Cyhttpd::version(FILE *dest)
 //
 void Cyhttpd::stop_webserver() 
 {
-	aprintf("stop requested......\n");
+	dprintf(DEBUG_DEBUG, "stop requested......\n");
 	
 	if (webserver) 
 	{
@@ -359,7 +358,7 @@ void Cyhttpd::hooks_detach()
 //
 void Cyhttpd::ReadConfig(void) 
 {
-	log_level_printf(3, "ReadConfig Start\n");
+	dprintf(DEBUG_DEBUG, "ReadConfig Start\n");
 	
 	CConfigFile *Config = new CConfigFile(',');
 	bool have_config = false;
@@ -415,12 +414,6 @@ void Cyhttpd::ReadConfig(void)
 			Config->saveConfig(HTTPD_CONFIGFILE);
 		}
 	}
-	
-	// configure debugging & logging
-	if (CLogging::getInstance()->LogLevel == 0)
-		CLogging::getInstance()->LogLevel = Config->getInt32("server.log.loglevel", 0);
-	if (CLogging::getInstance()->LogLevel > 0)
-		CLogging::getInstance()->setDebug(true);
 
 	// get variables
 	webserver->init(Config->getInt32("WebsiteMain.port", HTTPD_STANDARD_PORT), Config->getBool("webserver.threading", true));
@@ -478,7 +471,8 @@ void Cyhttpd::ReadConfig(void)
 	// Save if new defaults are set
 	if (!have_config)
 		Config->saveConfig(HTTPD_CONFIGFILE);
-	log_level_printf(3, "ReadConfig End\n");
+		
+	dprintf(DEBUG_DEBUG, "ReadConfig End\n");
 	
 	delete Config;
 	Config = NULL;
@@ -491,7 +485,9 @@ void Cyhttpd::ReadLanguage(void)
 {
 	// Init Class vars
 	CLanguage *lang = CLanguage::getInstance();
-	log_level_printf(3, "ReadLanguage:%s\n", ConfigList["Language.selected"].c_str());
+	
+	dprintf(DEBUG_DEBUG, "ReadLanguage:%s\n", ConfigList["Language.selected"].c_str());
+	
 	lang->setLanguage(ConfigList["Language.selected"]);
 }
 

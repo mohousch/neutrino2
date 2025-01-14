@@ -20,7 +20,7 @@
 // yhttpd
 #include "yhttpd.h"
 #include "ysocket.h"
-#include "ylogging.h"
+
 // system
 #ifdef Y_CONFIG_HAVE_SENDFILE
 #include <sys/sendfile.h>
@@ -30,6 +30,8 @@
 #include <openssl/err.h>
 #include <openssl/rand.h>
 #endif
+
+#include <system/debug.h>
 
 //=============================================================================
 // Initialization of static variables
@@ -195,7 +197,7 @@ CySocket* CySocket::accept()
 	
 	if (newSock == INVALID_SOCKET) 
 	{
-		dperror("accept: invalid socket\n");
+		ng_err("accept: invalid socket\n");
 		return NULL;
 	}
 	
@@ -246,7 +248,7 @@ void CySocket::set_reuse_port()
 {
 #ifdef SO_REUSEPORT
 	if(!set_option(SOL_SOCKET, SO_REUSEPORT))
-	dperror("setsockopt(SO_REUSEPORT)\n");
+	ng_err("setsockopt(SO_REUSEPORT)\n");
 #endif
 }
 
@@ -257,7 +259,7 @@ void CySocket::set_reuse_addr()
 {
 #ifdef SO_REUSEADDR
 	if(!set_option(SOL_SOCKET, SO_REUSEADDR))
-	dperror("setsockopt(SO_REUSEADDR)\n");
+	ng_err("setsockopt(SO_REUSEADDR)\n");
 #endif
 }
 
@@ -268,7 +270,7 @@ void CySocket::set_keep_alive()
 {
 #ifdef SO_KEEPALIVE
 	if(!set_option(SOL_SOCKET, SO_KEEPALIVE))
-	dperror("setsockopt(SO_KEEPALIVE)\n");
+	ng_err("setsockopt(SO_KEEPALIVE)\n");
 #endif
 }
 
@@ -279,7 +281,7 @@ void CySocket::set_tcp_nodelay()
 {
 #ifdef TCP_NODELAY
 	if(!set_option(IPPROTO_TCP, TCP_NODELAY))
-	dperror("setsockopt(SO_KEEPALIVE)\n");
+	ng_err("setsockopt(SO_KEEPALIVE)\n");
 #endif
 }
 //=============================================================================
@@ -361,7 +363,7 @@ int CySocket::SendFile(int filed)
 		}
 	}
 #endif // Y_CONFIG_HAVE_SENDFILE
-	log_level_printf(9, "<Sock:SendFile>: Bytes:%ld\n", BytesSend);
+	dprintf(DEBUG_DEBUG,  "<Sock:SendFile>: Bytes:%ld\n", BytesSend);
 	return true;
 }
 //-----------------------------------------------------------------------------
@@ -416,7 +418,7 @@ unsigned int CySocket::ReceiveFileGivenLength(int filed, unsigned int _length)
 			if (bytes_gotten < NON_BLOCKING_TRY_BYTES) // to few bytes gotten: sleep
 				sleep(1);
 		}
-		log_level_printf(8, "Receive Block length:%d all:%d\n", _readbytes,
+		dprintf(DEBUG_DEBUG,  "Receive Block length:%d all:%d\n", _readbytes,
 				_length);
 	} while (_readbytes + RECEIVE_BLOCK_LEN < _length);
 	return _readbytes;

@@ -13,6 +13,8 @@
 #include "helper.h"
 #include "mod_cache.h"
 
+#include <system/debug.h>
+
 //=============================================================================
 // Initialization of static variables
 //=============================================================================
@@ -27,8 +29,8 @@ TCacheList CmodCache::CacheList;
 THandleStatus CmodCache::Hook_PrepareResponse(CyhookHandler *hh) {
 	hh->status = HANDLED_NONE;
 
-	log_level_printf(4, "mod_cache prepare hook start url:%s\n",
-			hh->UrlData["fullurl"].c_str());
+	dprintf(DEBUG_DEBUG, "mod_cache prepare hook start url:%s\n", hh->UrlData["fullurl"].c_str()); 
+	
 	std::string url = hh->UrlData["fullurl"];
 	if (CacheList.find(url) != CacheList.end()) // is in Cache. Rewrite URL or not modified
 	{
@@ -61,8 +63,7 @@ THandleStatus CmodCache::Hook_PrepareResponse(CyhookHandler *hh) {
 					HANDLED_READY);
 		pthread_mutex_unlock(&mutex);
 	}
-	log_level_printf(4, "mod_cache hook prepare end status:%d\n",
-			(int) hh->status);
+	dprintf(DEBUG_DEBUG, "mod_cache hook prepare end status:%d\n", (int) hh->status);
 
 	return hh->status;
 }
@@ -72,10 +73,11 @@ THandleStatus CmodCache::Hook_PrepareResponse(CyhookHandler *hh) {
 // in hh->yresult should be cached into a file.
 // Remeber: url, filename, mimetype, category, createdate
 //-----------------------------------------------------------------------------
-THandleStatus CmodCache::Hook_SendResponse(CyhookHandler *hh) {
+THandleStatus CmodCache::Hook_SendResponse(CyhookHandler *hh) 
+{
 	hh->status = HANDLED_NONE;
 	std::string url = hh->UrlData["fullurl"];
-	log_level_printf(4, "mod_cache hook start url:%s\n", url.c_str());
+	dprintf(DEBUG_DEBUG, "mod_cache hook start url:%s\n", url.c_str());
 
 	std::string category = hh->HookVarList["CacheCategory"];
 	if (!(hh->HookVarList["CacheCategory"]).empty()) // Category set = cache it
@@ -95,7 +97,7 @@ THandleStatus CmodCache::Hook_SendResponse(CyhookHandler *hh) {
 		else
 			hh->status = HANDLED_CONTINUE; // y-calls can be implemented anywhere
 	}
-	log_level_printf(4, "mod_cache hook end status:%d\n", (int) hh->status);
+	dprintf(DEBUG_DEBUG, "mod_cache hook end status:%d\n", (int) hh->status);
 
 	return hh->status;
 }

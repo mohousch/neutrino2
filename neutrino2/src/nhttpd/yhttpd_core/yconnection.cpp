@@ -13,6 +13,9 @@
 #include "ywebserver.h"
 #include "yconnection.h"
 #include "helper.h"
+
+#include <system/debug.h>
+
 //=============================================================================
 // Initialization of static variables
 //=============================================================================
@@ -99,7 +102,7 @@ void CWebserverConnection::HandleConnection() {
 						- tv_connection_Response_start.tv_usec));
 
 		// print production times			
-		log_level_printf(1, "enlapsed time request:%ld response:%ld url:%s\n",
+		dprintf(DEBUG_DEBUG,  "enlapsed time request:%ld response:%ld url:%s\n",
 				enlapsed_request, enlapsed_response,
 				(Request.UrlData["fullurl"]).c_str());
 
@@ -107,7 +110,7 @@ void CWebserverConnection::HandleConnection() {
 		RequestCanceled = true;
 		keep_alive = false; // close this connection socket
 		//		dperror("Error while parsing request\n");
-		log_level_printf(1, "request canceled: %s\n", strerror(errno));
+		dprintf(DEBUG_DEBUG,  "request canceled: %s\n", strerror(errno));
 	}
 	EndConnection();
 }
@@ -116,7 +119,7 @@ void CWebserverConnection::HandleConnection() {
 void CWebserverConnection::ShowEnlapsedRequest(char *text) {
 
 	long enlapsed = GetEnlapsedRequestTime() / 1000;
-	log_level_printf(1, "enlapsed-f-start (%s) t:%ld url:%s\n", text, enlapsed,
+	dprintf(DEBUG_DEBUG,  "enlapsed-f-start (%s) t:%ld url:%s\n", text, enlapsed,
 			(Request.UrlData["fullurl"]).c_str());
 }
 //-------------------------------------------------------------------------

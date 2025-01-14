@@ -19,7 +19,7 @@
 #include "yconfig.h"
 #include "yhttpd.h"
 #include "ytypes_globals.h"
-#include "ylogging.h"
+//#include "ylogging.h"
 #include "ywebserver.h"
 #include "yconnection.h"
 #include "helper.h"
@@ -28,6 +28,8 @@
 #ifdef Y_CONFIG_HAVE_SENDFILE
 #include <sys/sendfile.h>
 #endif
+
+#include <system/debug.h>
 
 //=============================================================================
 // Constructor & Destructor
@@ -80,7 +82,7 @@ bool CWebserverResponse::SendResponse() {
 		Connection->HookHandler.Hooks_PrepareResponse();
 		if (Connection->HookHandler.status == HANDLED_ERROR
 				|| Connection->HookHandler.status == HANDLED_ABORT) {
-			log_level_printf(2, "Response Prepare Hook found but Error\n");
+			dprintf(DEBUG_DEBUG, "Response Prepare Hook found but Error\n");
 			Write(Connection->HookHandler.BuildHeader());
 			Write(Connection->HookHandler.yresult);
 			return false;
@@ -115,14 +117,14 @@ bool CWebserverResponse::SendResponse() {
 			Connection->HookHandler.Hooks_SendResponse();
 			if ((Connection->HookHandler.status == HANDLED_READY)
 					|| (Connection->HookHandler.status == HANDLED_CONTINUE)) {
-				log_level_printf(2, "Response Hook Output. Status:%d\n", Connection->HookHandler.status);
+				dprintf(DEBUG_DEBUG, "Response Hook Output. Status:%d\n", Connection->HookHandler.status);
 				Write(Connection->HookHandler.BuildHeader());
 				if (Connection->Method != M_HEAD)
 					Write(Connection->HookHandler.yresult);
 				if (Connection->HookHandler.status != HANDLED_CONTINUE)
 					return true;
 			} else if (Connection->HookHandler.status == HANDLED_ERROR) {
-				log_level_printf(2, "Response Hook found but Error\n");
+				dprintf(DEBUG_DEBUG, "Response Hook found but Error\n");
 				Write(Connection->HookHandler.BuildHeader());
 				if (Connection->Method != M_HEAD)
 					Write(Connection->HookHandler.yresult);
@@ -174,7 +176,7 @@ bool CWebserverResponse::WriteData(char const * data, long length) {
 	if (Connection->RequestCanceled)
 		return false;
 	if (Connection->sock->Send(data, length) == -1) {
-		log_level_printf(1, "response canceled: %s\n", strerror(errno));
+		dprintf(DEBUG_DEBUG,  "response canceled: %s\n", strerror(errno));
 		Connection->RequestCanceled = true;
 		return false;
 	} else

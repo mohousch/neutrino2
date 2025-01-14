@@ -39,13 +39,13 @@
 // yhttpd
 #include "yhttpd.h"
 #include "ytypes_globals.h"
-#include "ylogging.h"
 #include "helper.h"
 // nhttpd
 #include "neutrinoapi.h"
 #include "controlapi.h"
 
 #include <system/screenshot.h>
+#include <system/debug.h>
 
 
 // globals
@@ -121,7 +121,7 @@ THandleStatus CControlAPI::Hook_SendResponse(CyhookHandler *hh)
 //
 void CControlAPI::compatibility_Timer(CyhookHandler *hh)
 {
-	log_level_printf(4,"CControlAPI Compatibility Timer Start url:%s\n",hh->UrlData["url"].c_str());
+	dprintf(DEBUG_DEBUG, "CControlAPI Compatibility Timer Start url:%s\n",hh->UrlData["url"].c_str());
 	
 	if(CTimerd::getInstance()->isTimerdAvailable() && hh->ParamList.size() > 0)
 	{
@@ -212,20 +212,17 @@ void CControlAPI::Execute(CyhookHandler *hh)
 	std::string yresult;
 	std::string filename = hh->UrlData["filename"];
 
-	log_level_printf(4, "ControlAPI.Execute filename:(%s)\n", filename.c_str());
+	dprintf(DEBUG_DEBUG, "ControlAPI.Execute filename:(%s)\n", filename.c_str());
 	
 	// tolower(filename)
 	for(unsigned int i = 0; i < filename.length(); i++)
 		filename[i] = tolower(filename[i]);
 
 	// debugging informations
-	if(CLogging::getInstance()->getDebug())
-	{
-		dprintf("CControlAPI::Execute CGI : %s\n", filename.c_str());
+	dprintf(DEBUG_NORMAL, "CControlAPI::Execute CGI : %s\n", filename.c_str());
 		
-		for(CStringList::iterator it = hh->ParamList.begin(); it != hh->ParamList.end(); it++)
-			dprintf("  Parameter %s : %s\n",it->first.c_str(), it->second.c_str());
-	}
+	for(CStringList::iterator it = hh->ParamList.begin(); it != hh->ParamList.end(); it++)
+		dprintf(DEBUG_NORMAL, "  Parameter %s : %s\n",it->first.c_str(), it->second.c_str());
 
 	// get function index
 	for(unsigned int i = 0;i < (sizeof(yCgiCallList)/sizeof(yCgiCallList[0])); i++)
@@ -1326,7 +1323,7 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 		{
 			CZapit::getInstance()->startPlayBack(CZapit::getInstance()->getCurrentChannel());
 			CSectionsd::getInstance()->pauseScanning(false);
-			dprintf("start playback requested..\n");
+			dprintf(DEBUG_NORMAL, "start playback requested..\n");
 			hh->SendOk();
 		}
 		else if (hh->ParamList["1"] == "statusplayback")

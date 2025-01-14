@@ -54,6 +54,8 @@
 #include "helper.h"
 #include "mod_sendfile.h"
 
+#include <system/debug.h>
+
 //=============================================================================
 // Initialization of static variables
 //=============================================================================
@@ -67,7 +69,8 @@ THandleStatus CmodSendfile::Hook_PrepareResponse(CyhookHandler *hh) {
 	hh->status = HANDLED_NONE;
 
 	int filed;
-	log_level_printf(4, "mod_sendfile prepare hook start url:%s\n", hh->UrlData["fullurl"].c_str());
+	dprintf(DEBUG_DEBUG, "mod_sendfile prepare hook start url:%s\n", hh->UrlData["fullurl"].c_str());
+	
 	std::string mime = sendfileTypes[hh->UrlData["fileext"]];
 	if (((mime != "") || (hh->WebserverConfigList["mod_sendfile.sendAll"] == "true"))
 			&& !(hh->UrlData["fileext"] == "yhtm" || hh->UrlData["fileext"] == "yjs" || hh->UrlData["fileext"] == "ysh")) {
@@ -112,14 +115,15 @@ THandleStatus CmodSendfile::Hook_PrepareResponse(CyhookHandler *hh) {
 				hh->ResponseMimeType = mime;
 			} else
 				hh->SetHeader(HTTP_NOT_MODIFIED, mime, HANDLED_READY);
-		} else {
-			aprintf("mod_sendfile: File not found. url:(%s) fullfilename:(%s)\n",
-					hh->UrlData["url"].c_str(), fullfilename.c_str());
+		} 
+		else 
+		{
+			dprintf(DEBUG_NORMAL, "mod_sendfile: File not found. url:(%s) fullfilename:(%s)\n", hh->UrlData["url"].c_str(), fullfilename.c_str());
 			hh->SetError(HTTP_NOT_FOUND);
 		}
 	}
-	log_level_printf(4, "mod_sendfile prepare hook end status:%d\n",
-			(int) hh->status);
+	
+	dprintf(DEBUG_DEBUG, "mod_sendfile prepare hook end status:%d\n", (int) hh->status);
 
 	return hh->status;
 }
@@ -180,14 +184,17 @@ std::string CmodSendfile::GetFileName(CyhookHandler *hh, std::string path, std::
 //-----------------------------------------------------------------------------
 // Send File: Open File and check file type
 //-----------------------------------------------------------------------------
-int CmodSendfile::OpenFile(CyhookHandler *, std::string fullfilename) {
+int CmodSendfile::OpenFile(CyhookHandler *, std::string fullfilename) 
+{
 	int fd = -1;
 	std::string tmpstring;
-	if (fullfilename.length() > 0) {
+	if (fullfilename.length() > 0) 
+	{
 		fd = open(fullfilename.c_str(), O_RDONLY);
-		if (fd <= 0) {
-			aprintf("cannot open file %s: ", fullfilename.c_str());
-			dperror("");
+		if (fd <= 0) 
+		{
+			dprintf(DEBUG_NORMAL, "cannot open file %s: ", fullfilename.c_str());
+			ng_err("");
 		}
 	}
 	return fd;

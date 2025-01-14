@@ -23,11 +23,12 @@
 #include "yhttpd.h"
 #include "ytypes_globals.h"
 #include "ywebserver.h"
-#include "ylogging.h"
 #include "helper.h"
 #include "ysocket.h"
 #include "yconnection.h"
 #include "yrequest.h"
+
+#include <system/debug.h>
 
 //=============================================================================
 // Initialization of static variables
@@ -120,7 +121,7 @@ bool CWebserver::run(void)
 {
 	if (!listenSocket.listen(port, HTTPD_MAX_CONNECTIONS)) 
 	{
-		dperror("Socket cannot bind and listen. Abort.\n");
+		ng_err("Socket cannot bind and listen. Abort.\n");
 		return false;
 	}
 	
@@ -168,7 +169,7 @@ bool CWebserver::run(void)
 			{
 				for(int j=0;j < HTTPD_MAX_CONNECTIONS;j++)
 				if(SocketList[j] != NULL) // here is a socket
-				log_level_printf(2,"FD-TEST sock:%d handle:%d open:%d\n",SocketList[j]->get_socket(),
+				dprintf(DEBUG_DEBUG, "FD-TEST sock:%d handle:%d open:%d\n",SocketList[j]->get_socket(),
 						SocketList[j]->handling,SocketList[j]->isOpened);
 				test_counter=0;
 			}
@@ -194,13 +195,13 @@ bool CWebserver::run(void)
 				{
 					slot = SL_GetExistingSocket(i);
 					if(slot>=0)
-					log_level_printf(2,"FD: reuse con fd:%d\n",SocketList[slot]->get_socket());
+					dprintf(DEBUG_DEBUG, "FD: reuse con fd:%d\n",SocketList[slot]->get_socket());
 				}
 				// prepare Connection handling
 				if(slot>=0)
 				if(SocketList[slot] != NULL && !SocketList[slot]->handling && SocketList[slot]->isValid)
 				{
-					log_level_printf(2,"FD: START CON HANDLING con fd:%d\n",SocketList[slot]->get_socket());
+					dprintf(DEBUG_DEBUG, "FD: START CON HANDLING con fd:%d\n",SocketList[slot]->get_socket());
 					FD_CLR(SocketList[slot]->get_socket(), &master); // remove from master set
 					SocketList[slot]->handling = true; // prepares for thread-handling
 					if(!handle_connection(SocketList[slot]))// handle this activity
@@ -222,10 +223,10 @@ bool CWebserver::run(void)
 		
 		if (!(newConnectionSock = listenSocket.accept())) //Now: Blocking wait
 		{
-			dperror("Socket accept error. Continue.\n");
+			ng_err("Socket accept error. Continue.\n");
 			continue;
 		}
-		log_level_printf(3, "Socket connect from %s\n", (listenSocket.get_client_ip()).c_str());
+		dprintf(DEBUG_DEBUG, , "Socket connect from %s\n", (listenSocket.get_client_ip()).c_str());
 		
 #ifdef Y_CONFIG_USE_OPEN_SSL
 		if(Cyhttpd::ConfigList["SSL"]=="true")
@@ -250,7 +251,7 @@ int CWebserver::AcceptNewConnectionSocket()
 
 	if (!(connectionSock = listenSocket.accept())) // Blocking wait
 	{
-		dperror("Socket accept error. Continue.\n");
+		ng_err("Socket accept error. Continue.\n");
 		delete connectionSock;
 		return -1;
 	}
@@ -258,14 +259,14 @@ int CWebserver::AcceptNewConnectionSocket()
 	if(Cyhttpd::ConfigList["SSL"]=="true")
 	connectionSock->initAsSSL(); // make it a SSL-socket
 #endif
-	log_level_printf(2, "FD: new con fd:%d on port:%d\n",
+	dprintf(DEBUG_DEBUG,  "FD: new con fd:%d on port:%d\n",
 			connectionSock->get_socket(), connectionSock->get_accept_port());
 
 	// Add Socket to List
 	slot = SL_GetFreeSlot();
 	if (slot < 0) {
 		connectionSock->close();
-		aprintf("No free Slot in SocketList found. Open:%d\n", open_connections);
+		dprintf(DEBUG_DEBUG, "No free Slot in SocketList found. Open:%d\n", open_connections);
 	} else {
 		SocketList[slot] = connectionSock; // put it to list
 		fcntl(connectionSock->get_socket(), F_SETFD, O_NONBLOCK); // set non-blocking
@@ -334,7 +335,7 @@ void CWebserver::CloseConnectionSocketsByTimeout() {
 					shouldClose = false;
 			}
 			if (shouldClose) {
-				log_level_printf(2, "FD: close con Timeout fd:%d\n", thisSocket);
+				dprintf(DEBUG_DEBUG,  "FD: close con Timeout fd:%d\n", thisSocket);
 				SL_CloseSocketBySlot(j);
 			}
 		}
@@ -347,7 +348,7 @@ void CWebserver::addSocketToMasterSet(SOCKET fd) {
 	int slot = SL_GetExistingSocket(fd); // get slot/index for fd
 	if (slot < 0)
 		return;
-	log_level_printf(2, "FD: add to master fd:%d\n", fd);
+	dprintf(DEBUG_DEBUG,  "FD: add to master fd:%d\n", fd);
 	struct timeval tv_now;
 	struct timezone tz_now;
 	gettimeofday(&tv_now, &tz_now);
@@ -429,11 +430,11 @@ void *WebThread(void *args) {
 
 	bool is_threaded = newConn->is_treaded;
 	if (is_threaded)
-		log_level_printf(1, "++ Thread 0x06%X gestartet\n",
+		dprintf(DEBUG_DEBUG,  "++ Thread 0x06%X gestartet\n",
 				(int) pthread_self());
 
 	if (!newConn) {
-		dperror("WebThread called without arguments!\n");
+		ng_err("WebThread called without arguments!\n");
 		if (newConn->is_treaded)
 			pthread_exit( NULL);
 	}
@@ -450,7 +451,7 @@ void *WebThread(void *args) {
 	// (3) end connection handling
 #ifdef Y_CONFIG_FEATURE_KEEP_ALIVE
 	if(!con->keep_alive)
-	log_level_printf(2,"FD SHOULD CLOSE sock:%d!!!\n",con->sock->get_socket());
+	dprintf(DEBUG_DEBUG, "FD SHOULD CLOSE sock:%d!!!\n",con->sock->get_socket());
 	else
 	ws->addSocketToMasterSet(con->sock->get_socket()); // add to master set
 #else
@@ -465,7 +466,7 @@ void *WebThread(void *args) {
 	int thread_number = newConn->thread_number;
 	delete newConn;
 	if (is_threaded) {
-		log_level_printf(1, "-- Thread 0x06%X beendet\n", (int) pthread_self());
+		dprintf(DEBUG_DEBUG,  "-- Thread 0x06%X beendet\n", (int) pthread_self());
 		ws->clear_Thread_List_Number(thread_number);
 		pthread_exit( NULL);
 	}

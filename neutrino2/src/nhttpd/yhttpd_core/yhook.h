@@ -53,7 +53,7 @@
 // yhttpd
 #include "yconfig.h"
 #include "ytypes_globals.h"
-#include "ylogging.h"
+
 // tuxbox
 #include <configfile.h>
 

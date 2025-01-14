@@ -40,7 +40,6 @@ class CControlAPI : public Cyhook
 		void SendTimersXML(CyhookHandler *hh);
 
 		// subs
-		friend class CNeutrinoWebserver; // for timer /fb/ compatibility
 		void doModifyTimer(CyhookHandler *hh);
 		void doNewTimer(CyhookHandler *hh);
 		void _SendTime(CyhookHandler *hh, struct tm *Time, int digits);

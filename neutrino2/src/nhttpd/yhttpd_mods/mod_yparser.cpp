@@ -24,9 +24,10 @@
 #include "yconfig.h"
 #include "ytypes_globals.h"
 #include "helper.h"
-#include "ylogging.h"
 #include "mod_yparser.h"
 #include "ylanguage.h"
+
+#include <system/debug.h>
 
 //=============================================================================
 // Initialization of static variables
@@ -87,7 +88,7 @@ THandleStatus CyParser::Hook_SendResponse(CyhookHandler *hh)
 {
 	hh->status = HANDLED_NONE;
 
-	log_level_printf(4, "yparser hook start url:%s\n",
+	dprintf(DEBUG_DEBUG,  "yparser hook start url:%s\n",
 			hh->UrlData["url"].c_str());
 	init(hh);
 
@@ -102,8 +103,8 @@ THandleStatus CyParser::Hook_SendResponse(CyhookHandler *hh)
 	}
 	delete yP;
 
-	//	log_level_printf(4,"yparser hook end status:%d\n",(int)hh->status);
-	//	log_level_printf(5,"yparser hook result:%s\n",hh->yresult.c_str());
+	//	dprintf(DEBUG_DEBUG, "yparser hook end status:%d\n",(int)hh->status);
+	//	dprintf(DEBUG_DEBUG, "yparser hook result:%s\n",hh->yresult.c_str());
 
 	return hh->status;
 }
@@ -116,22 +117,19 @@ void CyParser::Execute(CyhookHandler *hh)
 	int index = -1;
 	std::string filename = hh->UrlData["filename"];
 
-	log_level_printf(4, "yParser.Execute filename%s\n", filename.c_str());
+	dprintf(DEBUG_DEBUG,  "yParser.Execute filename%s\n", filename.c_str());
 	filename = string_tolower(filename);
 
 	// debugging informations
-	if (CLogging::getInstance()->getDebug()) 
-	{
-		dprintf("Execute CGI : %s\n", filename.c_str());
+	dprintf(DEBUG_DEBUG, "Execute CGI : %s\n", filename.c_str());
 
-		for (CStringList::iterator it = hh->ParamList.begin(); it!= hh->ParamList.end(); it++)
-			dprintf("  Parameter %s : %s\n", it->first.c_str(), it->second.c_str());
-	}
+	for (CStringList::iterator it = hh->ParamList.begin(); it!= hh->ParamList.end(); it++)
+		dprintf(DEBUG_DEBUG, "  Parameter %s : %s\n", it->first.c_str(), it->second.c_str());
 
 	// get function index
-	for (unsigned int i = 0; i < (sizeof(yCgiCallList)
-			/ sizeof(yCgiCallList[0])); i++)
-		if (filename == yCgiCallList[i].func_name) {
+	for (unsigned int i = 0; i < (sizeof(yCgiCallList) / sizeof(yCgiCallList[0])); i++)
+		if (filename == yCgiCallList[i].func_name) 
+		{
 			index = i;
 			break;
 		}
@@ -245,7 +243,7 @@ void CyParser::ParseAndSendFile(CyhookHandler *hh)
 {
 	bool ydebug = false;
 	std::string yresult, ycmd;
-	log_level_printf(3, "yParser.ParseAndSendFile: File: %s\n",
+	dprintf(DEBUG_DEBUG,  "yParser.ParseAndSendFile: File: %s\n",
 			(hh->UrlData["filename"]).c_str());
 
 	hh->SetHeader(HTTP_OK, "text/html; charset=UTF-8");
@@ -257,7 +255,7 @@ void CyParser::ParseAndSendFile(CyhookHandler *hh)
 	{
 		ycmd = hh->ParamList["execute"];
 		ycmd = YPARSER_ESCAPE_START + ycmd + YPARSER_ESCAPE_END;
-		log_level_printf(3, "<yParser.ParseAndSendFile>: Execute!: %s\n",
+		dprintf(DEBUG_DEBUG,  "<yParser.ParseAndSendFile>: Execute!: %s\n",
 				ycmd.c_str());
 		yresult = cgi_cmd_parsing(hh, ycmd, ydebug); // parsing engine
 	}
@@ -348,8 +346,8 @@ std::string CyParser::cgi_cmd_parsing(CyhookHandler *hh, std::string html_templa
 				if (ydebug)
 					hh->printf("[ycgi debug]: CMD:[%s]<br/>\n", ycmd.c_str());
 				yresult = YWeb_cgi_cmd(hh, ycmd); // 4. execute cmd
-				log_level_printf(5, "<yLoop>: ycmd...:%s\n", ycmd.c_str());
-				log_level_printf(6, "<yLoop>: yresult:%s\n", yresult.c_str());
+				dprintf(DEBUG_DEBUG,  "<yLoop>: ycmd...:%s\n", ycmd.c_str());
+				dprintf(DEBUG_DEBUG,  "<yLoop>: yresult:%s\n", yresult.c_str());
 				if (ydebug)
 					hh->printf("[ycgi debug]: RESULT:[%s]<br/>\n",
 							yresult.c_str());
@@ -581,7 +579,7 @@ std::string CyParser::YWeb_cgi_include_block(std::string filename, std::string b
 	pthread_mutex_lock(&yParser_mutex);
 	if ((attrib.st_mtime == yCached_blocks_attrib.st_mtime) && (filename
 			== yCached_blocks_filename)) {
-		log_level_printf(6, "include-block: (%s) from cache\n",
+		dprintf(DEBUG_DEBUG,  "include-block: (%s) from cache\n",
 				blockname.c_str());
 		yfile = yCached_blocks_content;
 	} else {
@@ -602,7 +600,7 @@ std::string CyParser::YWeb_cgi_include_block(std::string filename, std::string b
 		yCached_blocks_content = yfile;
 		yCached_blocks_attrib = attrib;
 		yCached_blocks_filename = filename;
-		log_level_printf(6, "include-block: (%s) from file\n",
+		dprintf(DEBUG_DEBUG,  "include-block: (%s) from file\n",
 				blockname.c_str());
 	}
 	pthread_mutex_unlock(&yParser_mutex);
@@ -614,17 +612,17 @@ std::string CyParser::YWeb_cgi_include_block(std::string filename, std::string b
 					!= std::string::npos) {
 				yresult = yfile.substr(start + t.length(), end - (start
 						+ t.length()));
-				log_level_printf(7, "include-block: (%s) yresult:(%s)\n",
+				dprintf(DEBUG_DEBUG,  "include-block: (%s) yresult:(%s)\n",
 						blockname.c_str(), yresult.c_str());
 			} else
-				aprintf(
+				dprintf(DEBUG_DEBUG, 
 						"include-blocks: Block END not found:%s Blockname:%s\n",
 						filename.c_str(), blockname.c_str());
 		} else
-			aprintf("include-blocks: Block START not found:%s Blockname:%s\n",
+			dprintf(DEBUG_DEBUG, "include-blocks: Block START not found:%s Blockname:%s\n",
 					filename.c_str(), blockname.c_str());
 	} else
-		aprintf("include-blocks: file not found:%s Blockname:%s\n",
+		dprintf(DEBUG_DEBUG, "include-blocks: file not found:%s Blockname:%s\n",
 				filename.c_str(), blockname.c_str());
 
 	return yresult;
@@ -711,7 +709,7 @@ std::string CyParser::YWeb_cgi_func(CyhookHandler *hh, std::string ycmd)
 			found = true;
 			break;
 		}
-	log_level_printf(8, "<yparser: func>:%s Result:%s\n", func.c_str(),
+	dprintf(DEBUG_DEBUG,  "<yparser: func>:%s Result:%s\n", func.c_str(),
 			yresult.c_str());
 	return yresult;
 }
@@ -754,7 +752,7 @@ std::string CyParser::func_get_config_data(CyhookHandler *hh, std::string para)
 extern void yhttpd_reload_config();
 std::string CyParser::func_do_reload_httpd_config(CyhookHandler *, std::string) 
 {
-	log_level_printf(1, "func_do_reload_httpd_config: raise USR1 !!!\n");
+	dprintf(DEBUG_DEBUG,  "func_do_reload_httpd_config: raise USR1 !!!\n");
 	//raise(SIGUSR1); // Send HUP-Signal to Reload Settings
 	yhttpd_reload_config();
 	return "";

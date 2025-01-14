@@ -44,8 +44,7 @@ extern tallchans allchans;
 extern cVideo * videoDecoder;
 extern cAudio * audioDecoder;
 
-// yhttpd
-#include "ylogging.h"
+#include <system/debug.h>
 
 // nhttpd
 #include "neutrinoapi.h"
@@ -186,7 +185,7 @@ bool CNeutrinoAPI::GetStreamInfo(int bitInfo[10])
 
 	if (fd == NULL)
 	{
-		dprintf("error while opening proc-bitstream\n" );
+		ng_err("error while opening proc-bitstream\n" );
 		return false;
 	}
 
