@@ -16,6 +16,8 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 #include <fcntl.h>
+#include <pthread.h>
+
 // tuxbox
 #include <configfile.h>
 

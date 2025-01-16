@@ -11,6 +11,7 @@
 #include <cstdlib>
 
 #include <unistd.h>
+#include <pthread.h>
 
 #include "mod_weblog.h"
 #include "helper.h"
