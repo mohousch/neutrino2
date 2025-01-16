@@ -27,6 +27,7 @@
 #ifndef __neutrino_debug__
 #define __neutrino_debug__
 
+#include <stdio.h>
 
 #define ANSI_RESET   "\33[0m"
 #define ANSI_BOLD    "\33[1m"
