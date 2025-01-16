@@ -171,8 +171,7 @@ bool CWebserver::run(void)
 			{
 				for(int j=0;j < HTTPD_MAX_CONNECTIONS;j++)
 				if(SocketList[j] != NULL) // here is a socket
-				dprintf(DEBUG_DEBUG, "FD-TEST sock:%d handle:%d open:%d\n",SocketList[j]->get_socket(),
-						SocketList[j]->handling,SocketList[j]->isOpened);
+					dprintf(DEBUG_NORMAL, "FD-TEST sock:%d handle:%d open:%d\n",SocketList[j]->get_socket(), SocketList[j]->handling,SocketList[j]->isOpened);
 				test_counter=0;
 			}
 			// some connection closing previous missed?
@@ -197,7 +196,7 @@ bool CWebserver::run(void)
 				{
 					slot = SL_GetExistingSocket(i);
 					if(slot>=0)
-					dprintf(DEBUG_DEBUG, "FD: reuse con fd:%d\n",SocketList[slot]->get_socket());
+						dprintf(DEBUG_NORMAL, "FD: reuse con fd:%d\n",SocketList[slot]->get_socket());
 				}
 				// prepare Connection handling
 				if(slot>=0)
@@ -228,7 +227,7 @@ bool CWebserver::run(void)
 			ng_err("Socket accept error. Continue.\n");
 			continue;
 		}
-		dprintf(DEBUG_DEBUG, , "Socket connect from %s\n", (listenSocket.get_client_ip()).c_str());
+		dprintf(DEBUG_DEBUG, "Socket connect from %s\n", (listenSocket.get_client_ip()).c_str());
 		
 #ifdef Y_CONFIG_USE_OPEN_SSL
 		if(Cyhttpd::ConfigList["SSL"]=="true")
@@ -259,17 +258,19 @@ int CWebserver::AcceptNewConnectionSocket()
 	}
 #ifdef Y_CONFIG_USE_OPEN_SSL
 	if(Cyhttpd::ConfigList["SSL"]=="true")
-	connectionSock->initAsSSL(); // make it a SSL-socket
+		connectionSock->initAsSSL(); // make it a SSL-socket
 #endif
-	dprintf(DEBUG_DEBUG,  "FD: new con fd:%d on port:%d\n",
-			connectionSock->get_socket(), connectionSock->get_accept_port());
+	dprintf(DEBUG_DEBUG, "FD: new con fd:%d on port:%d\n", connectionSock->get_socket(), connectionSock->get_accept_port());
 
 	// Add Socket to List
 	slot = SL_GetFreeSlot();
-	if (slot < 0) {
+	if (slot < 0) 
+	{
 		connectionSock->close();
 		dprintf(DEBUG_DEBUG, "No free Slot in SocketList found. Open:%d\n", open_connections);
-	} else {
+	} 
+	else 
+	{
 		SocketList[slot] = connectionSock; // put it to list
 		fcntl(connectionSock->get_socket(), F_SETFD, O_NONBLOCK); // set non-blocking
 		open_connections++; // count open connectins
@@ -336,8 +337,10 @@ void CWebserver::CloseConnectionSocketsByTimeout() {
 				if (tdiff < HTTPD_KEEPALIVE_TIMEOUT || tdiff < 0)
 					shouldClose = false;
 			}
-			if (shouldClose) {
-				dprintf(DEBUG_DEBUG,  "FD: close con Timeout fd:%d\n", thisSocket);
+			
+			if (shouldClose) 
+			{
+				dprintf(DEBUG_DEBUG, "FD: close con Timeout fd:%d\n", thisSocket);
 				SL_CloseSocketBySlot(j);
 			}
 		}
@@ -350,7 +353,7 @@ void CWebserver::addSocketToMasterSet(SOCKET fd) {
 	int slot = SL_GetExistingSocket(fd); // get slot/index for fd
 	if (slot < 0)
 		return;
-	dprintf(DEBUG_DEBUG,  "FD: add to master fd:%d\n", fd);
+	dprintf(DEBUG_DEBUG, "FD: add to master fd:%d\n", fd);
 	struct timeval tv_now;
 	struct timezone tz_now;
 	gettimeofday(&tv_now, &tz_now);
@@ -432,10 +435,10 @@ void *WebThread(void *args) {
 
 	bool is_threaded = newConn->is_treaded;
 	if (is_threaded)
-		dprintf(DEBUG_DEBUG,  "++ Thread 0x06%X gestartet\n",
-				(int) pthread_self());
+		dprintf(DEBUG_NORMAL, "++ Thread 0x06%X gestartet\n", (int) pthread_self());
 
-	if (!newConn) {
+	if (!newConn) 
+	{
 		ng_err("WebThread called without arguments!\n");
 		if (newConn->is_treaded)
 			pthread_exit( NULL);
@@ -453,9 +456,9 @@ void *WebThread(void *args) {
 	// (3) end connection handling
 #ifdef Y_CONFIG_FEATURE_KEEP_ALIVE
 	if(!con->keep_alive)
-	dprintf(DEBUG_DEBUG, "FD SHOULD CLOSE sock:%d!!!\n",con->sock->get_socket());
+		dprintf(DEBUG_NORMAL, "FD SHOULD CLOSE sock:%d!!!\n",con->sock->get_socket());
 	else
-	ws->addSocketToMasterSet(con->sock->get_socket()); // add to master set
+		ws->addSocketToMasterSet(con->sock->get_socket()); // add to master set
 #else
 	delete newConn->ySock;
 #endif
@@ -467,8 +470,9 @@ void *WebThread(void *args) {
 	delete con;
 	int thread_number = newConn->thread_number;
 	delete newConn;
-	if (is_threaded) {
-		dprintf(DEBUG_DEBUG,  "-- Thread 0x06%X beendet\n", (int) pthread_self());
+	if (is_threaded) 
+	{
+		dprintf(DEBUG_DEBUG, "-- Thread 0x06%X beendet\n", (int) pthread_self());
 		ws->clear_Thread_List_Number(thread_number);
 		pthread_exit( NULL);
 	}
