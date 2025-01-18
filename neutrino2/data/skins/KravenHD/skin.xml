@@ -85,7 +85,7 @@
 		<image posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
 		<time posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
 		<time posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
-		<listbox posx="50" posy="50" width="540" height="620" type="TYPE_CLASSIC" mode="MODE_MENU" itemborder="1" itemlines="1"/>
+		<listbox posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" itemlines="1"/>
 		<key name="RC_blue" target="neutrino" actionkey="plugins"> 
 		</key>
 	</widget>
@@ -795,7 +795,7 @@
 	</widget>
 	
 	<widget name="skinsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<listbox posx="50" posy="50" width="540" height="620" type="TYPE_CLASSIC" mode="MODE_listbox" scrollbar="1" itemborder="1">
+		<listbox posx="50" posy="50" width="540" height="620" type="TYPE_CLASSIC" mode="MODE_LISTBOX" scrollbar="1" itemborder="1">
 		</listbox>
 		<label posx="640" posy="50" width="640" height="50" text="Skin Select" halign="1">
 		</label>
@@ -1006,7 +1006,7 @@
 	</widget>
 	
 	<widget name="bouquetlist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<listbox posx="50" posy="50" width="840" height="620" type="TYPE_STANDARD" mode="MODE_listbox" scrollbar="1" itemborder="1" painthead="1" headline="1" paintfoot="1" footline="1"/>	
+		<listbox posx="50" posy="50" width="840" height="620" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" itemborder="1" painthead="1" headline="1" paintfoot="1" footline="1"/>	
 		<image posx="890" posy="150" width="390" height="300" image="background/logo.png"/>
 		<time posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y"/>
 		<time posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S"/>
@@ -1019,7 +1019,7 @@
 	</widget>
 	
 	<widget name="channellist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<listbox posx="50" posy="50" width="840" height="620" type="TYPE_STANDARD" mode="MODE_listbox" scrollbar="1" itemborder="1"/>
+		<listbox posx="50" posy="50" width="840" height="620" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" itemborder="1"/>
 		<head posx="50" posy="0" width="1180" height="50" paintframe="0" paintdate="1" line="1"/>
 		<foot posx="50" posy="670" width="1180" height="50" paintframe="0" line="1"/>
 		<window posx="890" posy="50" width="340" height="620"/>
@@ -1034,7 +1034,7 @@
 	</widget>
 	
 	<widget name="eventlist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<listbox posx="50" posy="50" width="840" height="620" type="TYPE_STANDARD" mode="MODE_listbox" scrollbar="1" itemborder="1" painthead="1" headline="1"/>	
+		<listbox posx="50" posy="50" width="840" height="620" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" itemborder="1" painthead="1" headline="1"/>	
 		<image posx="890" posy="150" width="390" height="300" image="background/logo.png"/>
 		<time posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y"/>
 		<time posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S"/>

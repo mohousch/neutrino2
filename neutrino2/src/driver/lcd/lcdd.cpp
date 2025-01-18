@@ -717,28 +717,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	int y = 0;
 	int x = 0;
 		
-#if defined (ENABLE_4DIGITS)
-	int len = big.length();
-	
-	if(len == 0)
-		return;
-
-	// replace chars
-	replace_all(big, "\x0d", "");
-    	replace_all(big, "\n\n", "\\N");
-	replace_all(big, "\n", "");
-    	replace_all(big, "\\N", "\n");
-    	replace_all(big, "ö", "oe");
-    	replace_all(big, "ä", "ae");
-    	replace_all(big, "ü", "ue");
-	replace_all(big, "Ö", "Oe");
-    	replace_all(big, "Ä", "Ae");
-    	replace_all(big, "Ü", "Ue");
-    	replace_all(big, "ß", "ss");
-    	
-    	if( write(fd, big.c_str(), len > 5? 5 : len ) < 0)
-		perror("write to vfd failed");
-#elif defined (ENABLE_VFD)
+#if defined (ENABLE_VFD)
 #ifdef __sh__
 	int len = big.length();
 	
