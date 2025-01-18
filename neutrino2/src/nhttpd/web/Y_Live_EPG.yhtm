@@ -128,7 +128,7 @@ function _show_epg()
 	<thead align="left">
 	<tr>
 		<th colspan="2"><img id="logo" src="{=func:get_logo_name {=channel=}=}" style="visibility:hidden; max-width: 50px;"/></th>
-		<!--<th>{=L:date=}</th><th>{=L:from=}</th><th>{=L:to=}</th><th>{=L:program=}</th>-->
+		<th>{=L:date=}</th><th>{=L:from=}</th><th>{=L:to=}</th><th>{=L:program=}</th>
 	</tr>
 	</thead>
 	<tbody id="slog_list">
