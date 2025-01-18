@@ -761,7 +761,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.channellist_ca = configfile.getInt32("channellist_ca", 1);
 	g_settings.channellist_timescale = configfile.getInt32("channellist_timescale", 1);
 	g_settings.channellist_alt = configfile.getInt32("channellist_alt", 0);
-	g_settings.channellist_number = configfile.getInt32("channellist_number", 1);
+	g_settings.channellist_number = configfile.getInt32("channellist_number", CChannelList::CHANNEL_NUMBER_LIST_ORDER);
 	
 	// record screenshot
 	g_settings.recording_screenshot = configfile.getInt32("recording_screenshot", 1);

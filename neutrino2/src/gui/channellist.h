@@ -57,6 +57,13 @@ class CChannelList
 			LIST_MODE_SAT,
 			LIST_MODE_ALL
 		};
+		
+		enum
+		{
+			CHANNEL_NUMBER_NONE,
+			CHANNEL_NUMBER_LIST_ORDER,
+			CHANNEL_NUMBER_REALNUMBER
+		};
 
 	private:
 		CFrameBuffer *frameBuffer;

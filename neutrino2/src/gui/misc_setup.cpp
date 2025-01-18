@@ -110,9 +110,9 @@ const keyval DEBUG_LEVEL_OPTIONS[DEBUG_LEVEL_OPTIONS_COUNT] =
 #define CHANNELLIST_NUMBER_OPTION_COUNT	3
 const keyval CHANNELLIST_NUMBER_OPTIONS[CHANNELLIST_NUMBER_OPTION_COUNT]
 {
-	{ 0, _("None") },
-	{ 1, _("List Order") },
-	{ 2, _("Real Channel Number") }
+	{ CChannelList::CHANNEL_NUMBER_NONE, _("None") },
+	{ CChannelList::CHANNEL_NUMBER_LIST_ORDER, _("List Order") },
+	{ CChannelList::CHANNEL_NUMBER_REALNUMBER, _("Real Channel Number") }
 };
 
 //// general settings

@@ -1520,9 +1520,9 @@ void CChannelList::paint(bool customMode)
 			}
 
 			// channel number
-			if (g_settings.channellist_number > 0)
+			if (g_settings.channellist_number > CHANNEL_NUMBER_NONE)
 			{ 
-				item->setNumber( (g_settings.channellist_number == 1)? i + 1 : chanlist[i]->getNumber());
+				item->setNumber( (g_settings.channellist_number == CHANNEL_NUMBER_LIST_ORDER)? i + 1 : chanlist[i]->getNumber());
 			}
 			
 			// timescale

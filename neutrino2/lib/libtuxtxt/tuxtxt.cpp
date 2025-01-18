@@ -325,14 +325,7 @@ void dump_page()
 	tuxtxt_decompress_page(tuxtxt_cache.page, tuxtxt_cache.subpage, pagedata);
 	
 	for (r = 1; r < 24; r++)
-	{
-//		p = (char *) pagedata + 40*(r - 1);
-		
-//		for (c = 0; c < 40; c++)
-//			printf(" %02x", *p++);
-//			
-//		printf("\n");
-		
+	{		
 		p = (char *) page_char + 40*r;
 		for (c = 0; c < 40 && c != '�'; c++)
 			printf(" %c", *p++);
@@ -1146,9 +1139,6 @@ static void * reader_thread(void * /*arg*/)
 			usleep(10);
 		else
 			RenderPage();
-			
-		////TEST
-//		dump_page();
 
 		if(ttx_req_pause) 
 		{
@@ -2081,7 +2071,6 @@ int GetNationalSubset(const char *cc)
 	
         return NAT_DEFAULT;
 }
-
 
 //// Menu_HighlightLine
 void Menu_HighlightLine(char *menu, int line, int high)
