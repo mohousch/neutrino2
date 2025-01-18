@@ -90,7 +90,6 @@ EventList::EventList()
 	sort_mode = SORT_DESCRIPTION;
 
 	m_search_list = SEARCH_LIST_NONE;
-	m_search_epg_item = SEARCH_LIST_NONE;
 	m_search_epg_item = CSectionsd::SEARCH_EPG_TITLE;
 	m_search_channel_id = 1;
 	m_search_bouquet_id= 1;
@@ -227,7 +226,7 @@ int EventList::show(const t_channel_id channel_id, const std::string &channelnam
 
 	int res = CMenuTarget::RETURN_REPAINT;
 	
-	if(m_search_list == SEARCH_LIST_NONE) // init globals once only
+	if (m_search_list == SEARCH_LIST_NONE) // init globals once only
 	{
 		m_search_epg_item = CSectionsd::SEARCH_EPG_TITLE;
 		m_search_list = SEARCH_LIST_CHANNEL;
@@ -548,7 +547,7 @@ void EventList::paint(t_channel_id channel_id)
 	dprintf(DEBUG_NORMAL, "EventList::paint\n");
 	
 	//
-	readEvents(channel_id);
+	if (channel_id != 0) readEvents(channel_id);
 	
 	// 
 	timerlist.clear();
@@ -676,20 +675,17 @@ int EventList::findEvents(void)
 {
 	int res = 0;
 	int event = 0;
-	t_channel_id channel_id;  //CZapit::getInstance()->getCurrentServiceID()
+	t_channel_id channel_id; 
 	
 	CEventFinderMenu menu(&event, &m_search_epg_item, &m_search_keyword, &m_search_list, &m_search_channel_id, &m_search_bouquet_id);
 	
 	hide();
-	menu.exec(NULL, "");
+	res = menu.exec(NULL, "");
 	
 	if(event == 1)
 	{
 		res = 1;
 		m_showChannel = true;   // force the event list to paint the channel name
-		
-//		if (evtlist.size())
-//			evtlist.clear();
 		
 		if(m_search_list == SEARCH_LIST_CHANNEL)
 		{
@@ -760,7 +756,7 @@ int EventList::findEvents(void)
 		
 		name = _("Search");
 		name += ": '";
-		name += m_search_keyword;
+		name += m_search_keyword.c_str();
 		name += "'";
 	}
 	
@@ -814,10 +810,14 @@ CEventFinderMenu::CEventFinderMenu(int * event, int * search_epg_item, std::stri
 	m_search_list = search_list;
 	m_search_channel_id = search_channel_id;
 	m_search_bouquet_id = search_bouquet_id;
+	mf1 = NULL;
+	mf2 = NULL;
 }
 
 int CEventFinderMenu::exec(CMenuTarget * parent, const std::string &actionKey)
 {
+	dprintf(DEBUG_NORMAL, "CEventFinderMenu::exec %s\n", actionKey.c_str());
+	
 	int res = CMenuTarget::RETURN_REPAINT;
 	
 	if(actionKey == "")
@@ -827,32 +827,19 @@ int CEventFinderMenu::exec(CMenuTarget * parent, const std::string &actionKey)
 
 		showMenu();
 	}
+	else if (actionKey == "search")
+	{
+		CStringInputSMS stringInput(_("Keyword"), m_search_keyword->c_str());
+		stringInput.exec(NULL, "");
+		
+		if (mf2) mf2->addOption(m_search_keyword->c_str());
+		
+		return RETURN_REPAINT;
+	}
 	else if(actionKey == "1")
 	{
 		*m_event = true;
 		res = CMenuTarget::RETURN_EXIT_ALL;
-	}	
-	else if(actionKey == "2")
-	{
-		//printf("2\n");
-		
-		/*
-		if(*m_search_list == EventList::SEARCH_LIST_CHANNEL)
-		{
-			mf[1]->setActive(true);
-			m_search_channelname = CZapit::getInstance()->getChannelName(*m_search_channel_id);;
-		}
-		else if(*m_search_list == EventList::SEARCH_LIST_BOUQUET)
-		{
-			mf[1]->setActive(true);
-			m_search_channelname = bouquetList->Bouquets[*m_search_bouquet_id]->channelList->getName();
-		}
-		else if(*m_search_list == EventList::SEARCH_LIST_ALL)
-		{
-			mf[1]->setActive(false);
-			m_search_channelname = "";
-		}
-		*/
 	}	
 	else if(actionKey == "3")
 	{
@@ -890,13 +877,8 @@ int CEventFinderMenu::exec(CMenuTarget * parent, const std::string &actionKey)
 			}
 		}
 		
-		//setValueString(m_search_channelname.c_str());
 		if (mf1) mf1->addOption(m_search_channelname.c_str());
-	}	
-	else if(actionKey == "4")
-	{
-		//printf("4\n");
-	}	
+	}		
 	
 	return res;
 }
@@ -918,15 +900,14 @@ int CEventFinderMenu::showMenu(void)
 	}
 	else if(*m_search_list == EventList::SEARCH_LIST_ALL)
 	{
-		m_search_channelname == "";
+		m_search_channelname = " ";
 	}
 	
-	CStringInputSMS stringInput(_("Keyword"), m_search_keyword->c_str());
-	CMenuForwarder * mf2 = new CMenuForwarder(_("Keyword"), true, m_search_keyword->c_str(), &stringInput);
+	mf2 = new CMenuForwarder(_("Keyword"), true, m_search_keyword->c_str(), this, "search");
 	
 	CMenuOptionChooser * mo0 = new CMenuOptionChooser(_("Search within"), m_search_list, SEARCH_LIST_OPTIONS, SEARCH_LIST_OPTION_COUNT, true);
 	
-	mf1 = new CMenuForwarder("", *m_search_list != EventList::SEARCH_LIST_ALL, m_search_channelname.c_str(), this, "3");
+	mf1 = new CMenuForwarder(_("Kanal"), *m_search_list != EventList::SEARCH_LIST_ALL, m_search_channelname.c_str(), this, "3");
 	
 	CMenuOptionChooser * mo1 = new CMenuOptionChooser(_("Search in EPG"), m_search_epg_item, SEARCH_EPG_OPTIONS, SEARCH_EPG_OPTION_COUNT, true);
 	
