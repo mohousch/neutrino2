@@ -106,8 +106,8 @@ function do_clearshot2(){
 	{=var-set:help_url=Help-BoxControl-TV_Screenshot=}{=var-set:menu={=L:bc.menue.tv_screenshot=}=}{=include-block:Y_Blocks.txt;work_menu=}</div></div>
 	<div class="work_box_body">
 		<button name="fbsnapshot" ytype="shot" onclick="do_fb_snapshot()">{=L:bc.osd.shot=}</button>&nbsp;
-		<button name="tvsnapshot" ytype="shot" onclick="do_tv_snapshot()">{=L:bc.tv.shot=}</button>&nbsp;
-		<button name="snapshot" ytype="shot" onclick="do_snapshot()">{=L:bc.all.shot=}</button>
+		<!--<button name="tvsnapshot" ytype="shot" onclick="do_tv_snapshot()">{=L:bc.tv.shot=}</button>&nbsp;-->
+		<!--<button name="snapshot" ytype="shot" onclick="do_snapshot()">{=L:bc.all.shot=}</button>-->
 		{=var-set:dboxshot={=if-file-exists:/bin/dboxshot~true~{=if-file-exists:/var/bin/dboxshot~true~false=}=}=}
 		<button name="clearshot" ytype="clearshot" onclick="do_clearshot()">{=L:bc.osd.delete_shots=}</button>
 		&nbsp;Filename:<input type="text" value="dump" id="file" size="16"/>
