@@ -907,7 +907,7 @@ int CEventFinderMenu::showMenu(void)
 	
 	CMenuOptionChooser * mo0 = new CMenuOptionChooser(_("Search within"), m_search_list, SEARCH_LIST_OPTIONS, SEARCH_LIST_OPTION_COUNT, true);
 	
-	mf1 = new CMenuForwarder(_("Kanal"), *m_search_list != EventList::SEARCH_LIST_ALL, m_search_channelname.c_str(), this, "3");
+	mf1 = new CMenuForwarder(_("Channel"), *m_search_list != EventList::SEARCH_LIST_ALL, m_search_channelname.c_str(), this, "3");
 	
 	CMenuOptionChooser * mo1 = new CMenuOptionChooser(_("Search in EPG"), m_search_epg_item, SEARCH_EPG_OPTIONS, SEARCH_EPG_OPTION_COUNT, true);
 	
