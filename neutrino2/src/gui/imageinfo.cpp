@@ -179,7 +179,7 @@ void CImageInfo::paint()
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Image info"));
 	
  	int  xpos = x + 10;
-	int x_offset = g_Font[font_info]->getRenderWidth(_("Home page:")) + 10;
+	int x_offset = g_Font[font_info]->getRenderWidth(_("Home page:")) + 20;
 
 	ypos = head? y + head->getWindowsPos().iHeight + 10 : 60;
 
@@ -206,7 +206,8 @@ void CImageInfo::paint()
 	std::string releaseCycle = versionInfo.getReleaseCycle();
 	std::string releaseType = versionInfo.getType();
 	std::string date = versionInfo.getDate();
-	std::string time = versionInfo.getTime();
+	date += " ";
+	date += versionInfo.getTime();
 
 	// release name
 	ypos += iheight;
@@ -232,11 +233,6 @@ void CImageInfo::paint()
 	ypos += iheight;
 	paintLine(xpos, font_info, _("Built date:"));
 	paintLine(xpos + x_offset, font_info, date.c_str());
-	
-	//
-	ypos += iheight;
-	paintLine(xpos, font_info, _("Built time: "));
-	paintLine(xpos + x_offset, font_info, time.c_str());
 
 	// 
 	ypos += iheight;
