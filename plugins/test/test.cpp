@@ -198,6 +198,7 @@ class CTestMenu : public CMenuTarget
 		void testStartPlugin();
 		void testCEPGView();
 		void testCEventlist();
+		void testCEPGPlus();
 		
 		//// players
 		void testPlayMovieURL();
@@ -3771,6 +3772,7 @@ void CTestMenu::testCEPGView()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCEPGView\n");
 	
+#if 0
 	std::string title = "testCEPGView:";
 	std::string buffer;
 
@@ -3804,7 +3806,10 @@ void CTestMenu::testCEPGView()
 	
 	infoBox->exec();
 	delete infoBox;
-	infoBox = NULL;	
+	infoBox = NULL;
+#else
+	g_EpgData->show(CZapit::getInstance()->getCurrentChannelID());
+#endif	
 }
 
 // CChannelSelect
@@ -4143,11 +4148,11 @@ void CTestMenu::testCBouquetlist()
 	webTVBouquetList->exec(true, true); // without zap
 }
 
-////
 void CTestMenu::testCEventlist()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCEventlist\n");
 	
+#if 0
 	leftWidget = new ClistBox(100, 100, MENU_WIDTH, MENU_HEIGHT);
 	
 	leftWidget->paintMainFrame(true);
@@ -4237,6 +4242,17 @@ void CTestMenu::testCEventlist()
 	}
 
 	leftWidget->exec(this);
+#else
+	g_EventList->show(CZapit::getInstance()->getCurrentChannelID(), CZapit::getInstance()->getCurrentChannelName());
+#endif
+}
+
+void CTestMenu::testCEPGPlus()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCEPGPlus\n");
+	
+	CEPGplusHandler eplus;
+	eplus.exec(NULL, "");
 }
 
 //// skin
@@ -4819,12 +4835,6 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}
-	else if(actionKey == "showepg")
-	{
-		testCEPGView();
-
-		return RETURN_REPAINT;
-	}
 	else if(actionKey == "channelselect")
 	{
 		testChannelSelectWidget();
@@ -4965,9 +4975,21 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}
+	else if(actionKey == "epgview")
+	{
+		testCEPGView();
+
+		return RETURN_REPAINT;
+	}
 	else if (actionKey == "eventlist")
 	{
 		testCEventlist();
+		
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "epgplus")
+	{
+		testCEPGPlus();
 		
 		return RETURN_REPAINT;
 	}
@@ -6099,8 +6121,9 @@ void CTestMenu::showMenu()
 
 	// EPG
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "EPG") );
-	mainMenu->addItem(new CMenuForwarder("ShowActuellEPG", true, NULL, this, "showepg"));
-	mainMenu->addItem(new CMenuForwarder("CEventList:", true, NULL, this, "eventlist"));
+	mainMenu->addItem(new CMenuForwarder("ShowActuellEPG", true, NULL, this, "epgview"));
+	mainMenu->addItem(new CMenuForwarder("CEventList", true, NULL, this, "eventlist"));
+	mainMenu->addItem(new CMenuForwarder("CEPGPlus", true, NULL, this, "epgplus"));
 
 	// channellist / bouquets
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "Channellist") );

@@ -1088,17 +1088,14 @@ int CEPGDataHandler::exec(CMenuTarget *parent, const std::string &/*actionKey*/)
 	dprintf(DEBUG_NORMAL, "CEPGDataHandler::exec:\n");
 
 	int res = CMenuTarget::RETURN_REPAINT;
-	CChannelList *channelList;
-	CEpgData *e;
+	CEpgData *e = NULL;
 
 	if (parent) 
 		parent->hide();
 
-	e = new CEpgData;
+	e = new CEpgData();
 
-	channelList = CNeutrinoApp::getInstance()->channelList;
-
-	res = e->show(channelList->getActiveChannel_EPGID());
+	res = e->show(CZapit::getInstance()->getCurrentChannelEPGID());
 	
 	delete e;
 

@@ -92,7 +92,7 @@ class CEpgData
 	public:
 
 		CEpgData();
-		~CEpgData();
+		virtual ~CEpgData();
 		int show(const t_channel_id channel_id, uint64_t id = 0, time_t * starttime = NULL, bool doLoop = true );
 		void hide();
 };

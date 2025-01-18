@@ -96,14 +96,13 @@ class EventList
 		int sort_mode;
 		
 		void readEvents(const t_channel_id channel_id);
-
 		CTimerd::CTimerEventTypes isScheduled(t_channel_id channel_id, CChannelEvent * event, int * tID = NULL);
 
 	public:
 		EventList();
-		~EventList();
+		virtual ~EventList();
 		
-		int exec(const t_channel_id channel_id, const std::string& channelname); // UTF-8
+		int show(const t_channel_id channel_id, const std::string& channelname); // UTF-8
 };
 
 ////

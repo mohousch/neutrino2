@@ -701,13 +701,13 @@ int CChannelList::show(bool customMode)
 
 			paint(customMode);
 		}
-		else if (msg == CRCInput::RC_epg) // epg
+		else if (msg == CRCInput::RC_epg) // eventlist
 		{
 			selected = listBox? listBox->getSelected() : 0;
 
 			hide();
 
-			if ( chanlist.size() && g_EventList->exec(chanlist[selected]->epgid, chanlist[selected]->name) == CMenuTarget::RETURN_EXIT_ALL) 
+			if ( chanlist.size() && g_EventList->show(chanlist[selected]->epgid, chanlist[selected]->name) == CMenuTarget::RETURN_EXIT_ALL) 
 			{
 				res = -2;
 				loop = false;
@@ -899,6 +899,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 	
 	dprintf(DEBUG_NORMAL, "CChannelList::zapTo (%s) tuned %d id:0x%llx new %d (%s) id: 0x%llx\n", name.c_str(), tuned, tuned_chid, pos, chanlist[pos]->name.c_str(), chanlist[pos]->channel_id);
 	
+	// zap
 	if ( /*(pos != tuned) || (chanlist[pos]->channel_id != tuned_chid)*/true || rezap )
 	{ 
 		// stop radiotext
@@ -1187,7 +1188,7 @@ int CChannelList::numericZap(int key)
 		showInfo(tuned, 0, false);
 
 		if ( showEPG )
-			g_EventList->exec(chanlist[chn]->epgid, chanlist[chn]->name);
+			g_EventList->show(chanlist[chn]->epgid, chanlist[chn]->name);
 	}
 	
 	return res;
@@ -1310,7 +1311,7 @@ void CChannelList::virtual_zap_mode(bool up)
 
                 // Rote Taste zeigt EPG fuer gewaehlten Kanal an
                 if ( showEPG )
-                        g_EventList->exec(chanlist[chn]->epgid, chanlist[chn]->name);
+                        g_EventList->show(chanlist[chn]->epgid, chanlist[chn]->name);
         }
 }
 

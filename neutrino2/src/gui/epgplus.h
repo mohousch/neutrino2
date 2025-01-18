@@ -333,7 +333,7 @@ class EpgPlus
 		void init();
 		void free();
 
-		int exec(CChannelList* channelList , int selectedChannelIndex , CBouquetList* bouquetList); 
+		int exec(CChannelList* channelList, int selectedChannelIndex, CBouquetList* bouquetList); 
 
 	private:
 		//// methods
@@ -441,7 +441,7 @@ class CEPGplusHandler : public CMenuTarget
 {
 	public:
 		CEPGplusHandler(){};
-		~CEPGplusHandler(){};
+		virtual ~CEPGplusHandler(){};
 		
 		int exec(CMenuTarget* parent,  const std::string &actionKey);
 };

@@ -360,7 +360,7 @@ EpgPlus::ChannelEntry::~ChannelEntry()
 	this->channelEventEntries.clear();
 }
 
-void EpgPlus::ChannelEntry::paint (bool isSelected, time_t selectedTime)
+void EpgPlus::ChannelEntry::paint(bool isSelected, time_t selectedTime)
 {
 	this->frameBuffer->paintBoxRel(this->x, this->y, this->width, this->font->getHeight() + 10, isSelected ? COL_MENUCONTENTSELECTED_PLUS_0 : COL_MENUCONTENT_PLUS_0);
 	
@@ -559,7 +559,7 @@ void EpgPlus::createChannelEntries (int selectedChannelEntryIndex)
 		{
 			CZapitChannel * channel = (*this->channelList)[i];
 	
-			ChannelEntry * channelEntry = new ChannelEntry (channel, i, this->frameBuffer, this->footer, this->bouquetList, this->channelsTableX + 2, yPosChannelEntry, this->channelsTableWidth);
+			ChannelEntry * channelEntry = new ChannelEntry(channel, i, this->frameBuffer, this->footer, this->bouquetList, this->channelsTableX + 2, yPosChannelEntry, this->channelsTableWidth);
 			
 			CChannelEventList channelEventList;
 			CSectionsd::getInstance()->getEventsServiceKey(channel->epgid & 0xFFFFFFFFFFFFULL, channelEventList);
@@ -797,9 +797,10 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 		neutrino_msg_t msg;
 		neutrino_msg_data_t data;
 
+		//
 		this->createChannelEntries(selectedChannelIndex);
 
-		//
+		// paint head
 		this->header->paint();
 		this->footer->paintButtons(buttonLabels, sizeof (buttonLabels) / sizeof (button_label));
 		this->paint();
@@ -872,24 +873,6 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 					}
 				}
 	  		}
-	  		/*
-			else if (CRCInput::isNumeric (msg)) 
-			{	//numeric zap
-				this->hide ();
-				this->channelList->numericZap(msg);
-
-				int selectedChannelEntryIndex = this->channelList->getSelectedChannelIndex();
-				if (selectedChannelEntryIndex < this->channelList->getSize()) 
-				{
-		  			this->hide ();
-		  			this->createChannelEntries(selectedChannelEntryIndex);
-
-		  			this->header->paint();
-		  			this->footer->paintButtons(buttonLabels, sizeof (buttonLabels) / sizeof (button_label));
-		  			this->paint();
-				}
-	  		}
-	  		*/
 			else if (msg == CRCInput::RC_up) 
 			{
 				int selectedChannelEntryIndex = this->selectedChannelEntry->index;
@@ -1112,7 +1095,7 @@ void EpgPlus::paintChannelEntry (int position)
 		currentChannelIsSelected = true;
 	}
 
-	channelEntry->paint (currentChannelIsSelected, this->selectedTime);
+	channelEntry->paint(currentChannelIsSelected, this->selectedTime);
 }
 
 std::string EpgPlus::getTimeString (const time_t & time, const std::string & format)
@@ -1127,8 +1110,6 @@ std::string EpgPlus::getTimeString (const time_t & time, const std::string & for
 
 void EpgPlus::paint()
 {
-	// clear
-	//this->frameBuffer->paintBackgroundBoxRel (this->channelsTableX, this->channelsTableY, this->usableScreenWidth, this->channelsTableHeight);
 	// refresh
 	this->frameBuffer->paintBoxRel (this->channelsTableX, this->channelsTableY, this->usableScreenWidth, this->channelsTableHeight, COL_MENUCONTENT_PLUS_0);
 	
@@ -1243,9 +1224,20 @@ int CEPGplusHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
 	
 	e = new EpgPlus();
 
-	channelList = CNeutrinoApp::getInstance()->channelList;
+	int old_num = 0;
+	int old_b = bouquetList->getActiveBouquetNumber();
 
-	res = e->exec(channelList, channelList->getActiveChannelNumber(), bouquetList);
+	if(bouquetList->Bouquets.size()) 
+	{
+		old_num = bouquetList->Bouquets[old_b]->channelList->getActiveChannelNumber();
+	}
+				
+	if(bouquetList->Bouquets.size() && bouquetList->Bouquets[old_b]->channelList->getSize() > 0)
+		channelList = bouquetList->Bouquets[old_b]->channelList;
+	else
+		channelList = CNeutrinoApp::getInstance()->channelList;
+
+	res = e->exec(channelList, channelList->getActiveChannelNumber() - 1, bouquetList);
 
 	delete e;
 	e = NULL;

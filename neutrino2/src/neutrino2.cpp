@@ -4009,7 +4009,7 @@ void CNeutrinoApp::realRun(void)
 
 				stopSubtitles();
 
-				g_EventList->exec(CZapit::getInstance()->getCurrentChannelID(), channelList->getActiveChannelName());
+				g_EventList->show(CZapit::getInstance()->getCurrentChannelID(), CZapit::getInstance()->getCurrentChannelName());
 				
 				// restore mute symbol
 				audioMute(current_muted, true);
@@ -4733,13 +4733,13 @@ int CNeutrinoApp::run(int argc, char **argv)
 	CLCD::getInstance()->setMuted(current_muted);
 	
 	// epg view
-	g_EpgData = new CEpgData;
+	g_EpgData = new CEpgData();
 	
 	// channel infoviewer
-	g_InfoViewer = new CInfoViewer;
+	g_InfoViewer = new CInfoViewer();
 	
 	// event list
-	g_EventList = new EventList;
+	g_EventList = new EventList();
 
 	// Ci Cammenu handler
 #if defined (ENABLE_CI)	

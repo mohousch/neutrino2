@@ -513,6 +513,8 @@ class CZapit
 		// current service
 		CZapitChannel* getCurrentChannel();
 		t_channel_id getCurrentChannelID();
+		const std::string& getCurrentChannelName(void) const;
+		t_channel_id getCurrentChannelEPGID();
 		int32_t getCurrentSatellitePosition();
 		bool getCurrentTP(transponder *TP);
 		CZapit::CServiceInfo getCurrentServiceInfo();

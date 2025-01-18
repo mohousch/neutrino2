@@ -219,7 +219,7 @@ void EventList::readEvents(const t_channel_id channel_id)
 	selected = current_event;
 }
 
-int EventList::exec(const t_channel_id channel_id, const std::string &channelname) // UTF-8
+int EventList::show(const t_channel_id channel_id, const std::string &channelname) // UTF-8
 {
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
@@ -303,7 +303,6 @@ int EventList::exec(const t_channel_id channel_id, const std::string &channelnam
 		else if (msg == CRCInput::RC_setup) // reload epg
 		{
 			sort_mode = SORT_DESCRIPTION;
-//			hide();
 			paint(channel_id);			
 		}
 		else if ( msg == CRCInput::RC_red ) // add record
@@ -320,7 +319,6 @@ int EventList::exec(const t_channel_id channel_id, const std::string &channelnam
 
 				usleep(1000);
 				
-//				hide();
 				paint(channel_id);
 				continue;
 			}
@@ -352,10 +350,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string &channelnam
 				}
 				
 				paint(channel_id);
-			}
-				
-			//
-			//paint(channel_id);					
+			}				
 		}
 		else if ( msg == CRCInput::RC_yellow )	// add remind	  
 		{
@@ -371,7 +366,6 @@ int EventList::exec(const t_channel_id channel_id, const std::string &channelnam
 				
 				usleep(1000);
 
-//				hide();
 				paint(channel_id);
 				continue;
 			}
@@ -781,17 +775,14 @@ int CEventListHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*
 	dprintf(DEBUG_NORMAL, "CEventListHandler::exec:\n");
 
 	int res = CMenuTarget::RETURN_REPAINT;
-	EventList* e;
-	CChannelList* channelList;
+	EventList* e = NULL;
 
 	if (parent)
 		parent->hide();
 
-	e = new EventList;
+	e = new EventList();
 
-	channelList = CNeutrinoApp::getInstance()->channelList;
-
-	res = e->exec(channelList->getActiveChannel_ChannelID(), channelList->getActiveChannelName());
+	res = e->show(CZapit::getInstance()->getCurrentChannelID(), CZapit::getInstance()->getCurrentChannelName());
 
 	delete e;
 

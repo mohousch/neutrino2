@@ -4026,7 +4026,18 @@ CZapitChannel* CZapit::getCurrentChannel()
 
 t_channel_id CZapit::getCurrentChannelID()
 {
-	return (live_channel != 0) ? live_channel->getChannelID() : 0;
+	return (live_channel != NULL) ? live_channel->getChannelID() : 0;
+}
+
+t_channel_id CZapit::getCurrentChannelEPGID()
+{
+	return (live_channel != NULL) ? live_channel->getEPGID() : 0;
+}
+
+static const std::string empty_string;
+const std::string & CZapit::getCurrentChannelName(void) const
+{
+	return (live_channel != NULL)? live_channel->getName() : empty_string;
 }
 
 CZapit::CServiceInfo CZapit::getCurrentServiceInfo()
@@ -4061,10 +4072,10 @@ CZapit::CServiceInfo CZapit::getCurrentServiceInfo()
 		}
 				
 		msgCurrentServiceInfo.vtype = live_channel->videoType;
+		
+		if(!msgCurrentServiceInfo.fec)
+			msgCurrentServiceInfo.fec = (fe_code_rate)3;
 	}
-			
-	if(!msgCurrentServiceInfo.fec)
-		msgCurrentServiceInfo.fec = (fe_code_rate)3;
 		
 	return msgCurrentServiceInfo;
 }
