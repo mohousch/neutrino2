@@ -662,8 +662,8 @@ void EpgPlus::createChannelEntries (int selectedChannelEntryIndex)
 void EpgPlus::init()
 {
 	frameBuffer = CFrameBuffer::getInstance();
-	usableScreenWidth = g_settings.screen_EndX;
-	usableScreenHeight = g_settings.screen_EndY;
+	usableScreenWidth = frameBuffer->getScreenWidth();
+	usableScreenHeight = frameBuffer->getScreenHeight();
 	
 	//
 	for (size_t i = 0; i < NumberOfSizeSettings; ++i) 
@@ -695,8 +695,9 @@ void EpgPlus::init()
 	this->maxNumberOfDisplayableEntries = (this->usableScreenHeight - headerHeight - timeLineHeight - horGap1Height - horGap2Height - footerHeight) / this->entryHeight;
 	
 	this->usableScreenHeight = headerHeight + timeLineHeight + horGap1Height + this->maxNumberOfDisplayableEntries * this->entryHeight + horGap2Height + footerHeight;	// recalc deltaY
-	this->usableScreenX = (((g_settings.screen_EndX - g_settings.screen_StartX) - this->usableScreenWidth) / 2) + g_settings.screen_StartX;
-	this->usableScreenY = (((g_settings.screen_EndY - g_settings.screen_StartY) - this->usableScreenHeight) / 2) + g_settings.screen_StartY;
+	
+	this->usableScreenX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - this->usableScreenWidth) / 2;
+	this->usableScreenY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - this->usableScreenHeight) / 2;
 	
 	this->headerX = this->usableScreenX;
 	this->headerY = this->usableScreenY;
