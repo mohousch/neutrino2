@@ -7,11 +7,13 @@ var sLog_body;
 var sLog_line_number;
 var epg_data;
 var epg_data_index=0;
+
 function sLog_init()
 {
 	sLog_line_number = 0;
 	sLog_body=document.getElementById("slog_list");
 }
+
 function sLog_clear()
 {
 	while(sLog_body.childNodes.length > 0){
@@ -20,6 +22,7 @@ function sLog_clear()
 	}
 	sLog_line_number =  0;
 }
+
 function sLog_addRow(_body, _date, _rec, _zap, _start, _end, _title)
 {
 	sLog_line_number++;
@@ -32,30 +35,36 @@ function sLog_addRow(_body, _date, _rec, _zap, _start, _end, _title)
 	y_add_html_cell_to_row(mycurrent_row, "endtime", _end);
 	y_add_html_cell_to_row(mycurrent_row, "epgtitle", _title);
 }
+
 function set_timer_rec(_channel_id, _start, _stop)
 {
 	var res = dbox_set_timer_rec(_channel_id, _start, _stop);
 	alert("{=L:epg.set_timer_rec=}");
 }
+
 function set_timer_zap(_channel_id, _start)
 {
 	var res = dbox_set_timer_zap(_channel_id, _start);
 	alert("{=L:epg.set_timer_zap=}");
 }
+
 function show_info(_index)
 {
 	parent.epg_info.show_info(epg_data[_index][0], epg_data[_index][1], epg_data[_index][2]);
 }
+
 function check_logo()
 {
 	{=if-empty:{=logoid=}~~
 		show_obj("logo",true);
 	=}
 }
+
 function show_epg() {
 	show_waitbox(true);
 	window.setTimeout("_show_epg()",100);
 }
+
 function _show_epg()
 {
 	check_logo();
@@ -118,8 +127,8 @@ function _show_epg()
 	<table id="epglist" class="y_invisible_table" cellpadding="4" cellspacing="0" width="100%">
 	<thead align="left">
 	<tr>
-		<!--<th colspan="2"><img id="logo" src="{=func:get_logo_name {=channel=}=}" style="visibility:hidden; max-width: 50px;"/></th>-->
-		<th>{=L:date=}</th><th>{=L:from=}</th><th>{=L:to=}</th><th>{=L:program=}</th>
+		<th colspan="2"><img id="logo" src="{=func:get_logo_name {=channel=}=}" style="visibility:hidden; max-width: 50px;"/></th>
+		<!--<th>{=L:date=}</th><th>{=L:from=}</th><th>{=L:to=}</th><th>{=L:program=}</th>-->
 	</tr>
 	</thead>
 	<tbody id="slog_list">

@@ -687,6 +687,8 @@ int EventList::findEvents(void)
 		res = 1;
 		m_showChannel = true;   // force the event list to paint the channel name
 		
+		evtlist.clear();
+		
 		if(m_search_list == SEARCH_LIST_CHANNEL)
 		{
 			CSectionsd::getInstance()->getEventsServiceKey(CZapit::getInstance()->getChannelEPGID(m_search_channel_id) & 0xFFFFFFFFFFFFULL, evtlist, m_search_epg_item, m_search_keyword);
