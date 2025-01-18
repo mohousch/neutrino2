@@ -2598,7 +2598,7 @@ void CCHeaders::paint()
 	
 	// line
 	if (line)
-		frameBuffer->paintBoxRel(itemBox.iX /*+ BORDER_LEFT*/, itemBox.iY + itemBox.iHeight - 2, itemBox.iWidth /*- BORDER_LEFT - BORDER_RIGHT*/, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+		frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - 2, itemBox.iWidth, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 	// left icon
 	int i_w = 0;
@@ -2841,7 +2841,7 @@ void CCFooters::paint()
 	
 	// line
 	if (line)
-		frameBuffer->paintBoxRel(itemBox.iX /*+ BORDER_LEFT*/, itemBox.iY, itemBox.iWidth /*- BORDER_LEFT - BORDER_RIGHT*/, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+		frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 	int buttonWidth = 0;
 

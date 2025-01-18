@@ -535,7 +535,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 	// botton line
 	if(g_settings.infobar_buttonline)
 	{
-		frameBuffer->paintBoxRel(buttonBarStartX, buttonBarStartY, BoxWidth, 2, COL_INFOBAR_SHADOW_PLUS_1, 0, CORNER_NONE, g_settings.infobar_buttonline_gradient? LIGHT2DARK2LIGHT : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+		frameBuffer->paintBoxRel(buttonBarStartX, buttonBarStartY, BoxWidth, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, g_settings.infobar_buttonline_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 	}
 
 	// blue button
