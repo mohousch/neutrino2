@@ -425,12 +425,10 @@ void CMoviePlayer::showMenu()
 	mlist->enablePaintDate();
 	mlist->setFormat("%A %d.%m.%Y %H:%M:%S");
 	mlist->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	mlist->setHeadLine(true, true);
 	
 	//
 	mlist->enablePaintFoot();
 	mlist->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	mlist->setFootLine(true, true);
 	
 	//
 	mlist->enablePaintItemInfo();
