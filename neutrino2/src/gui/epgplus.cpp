@@ -320,15 +320,15 @@ int EpgPlus::ChannelEventEntry::getUsedHeight()
 CFont * EpgPlus::ChannelEntry::font = NULL;
 int EpgPlus::ChannelEntry::separationLineHeight = 0;
 
-EpgPlus::ChannelEntry::ChannelEntry(const CZapitChannel * _channel, int _index, CFrameBuffer * _frameBuffer, Footer * _footer, CBouquetList * _bouquetList, int _x, int _y, int _width)
+EpgPlus::ChannelEntry::ChannelEntry(const CZapitChannel * _channel, int _index, CFrameBuffer * _frameBuffer, Footer * _footer, int _x, int _y, int _width)
 {
 	this->channel = _channel;
 	
 	if (_channel != NULL) 
 	{
 		std::stringstream _displayName;
-		//_displayName << index + 1 << " " << _channel->getName();
-		_displayName << _channel->number << " " << _channel->getName();
+		_displayName << _index + 1 << " " << _channel->getName();
+		//_displayName << _channel->number << " " << _channel->getName(); // FIXME:
 	
 		this->displayName = _displayName.str ();
 	}
@@ -337,7 +337,6 @@ EpgPlus::ChannelEntry::ChannelEntry(const CZapitChannel * _channel, int _index, 
 	
 	this->frameBuffer = _frameBuffer;
 	this->footer = _footer;
-	this->bouquetList = _bouquetList;
 	
 	this->x = _x;
 	this->y = _y;
@@ -400,7 +399,7 @@ void EpgPlus::ChannelEntry::paint(bool isSelected, time_t selectedTime)
 	
 	if (isSelected) 
 	{
-		this->footer->setBouquetChannelName("", this->channel->getName());
+		this->footer->setBouquetChannelName(this->channel->getName());
 	}
 	
 	// paint the separation line
@@ -449,9 +448,8 @@ void EpgPlus::Footer::init()
 	fontButtons = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL];
 }
 
-void EpgPlus::Footer::setBouquetChannelName (const std::string & newBouquetName, const std::string & newChannelName)
+void EpgPlus::Footer::setBouquetChannelName (const std::string & newChannelName)
 {
-	this->currentBouquetName = newBouquetName;
 	this->currentChannelName = newChannelName;
 }
 
@@ -472,7 +470,7 @@ void EpgPlus::Footer::paintEventDetails (const std::string & description, const 
 	yPos += height;
 	
 	// display new text
-	this->fontBouquetChannelName->RenderString (this->x + 10, yPos, this->width - 20, /*this->currentBouquetName + " : " +*/ this->currentChannelName, COL_MENUHEAD_TEXT_PLUS_0, 0, true);
+	this->fontBouquetChannelName->RenderString (this->x + 10, yPos, this->width - 20, this->currentChannelName, COL_MENUHEAD_TEXT_PLUS_0, 0, true);
 	
 	height = this->fontEventDescription->getHeight ();
 	
@@ -559,7 +557,7 @@ void EpgPlus::createChannelEntries (int selectedChannelEntryIndex)
 		{
 			CZapitChannel * channel = (*this->channelList)[i];
 	
-			ChannelEntry * channelEntry = new ChannelEntry(channel, i, this->frameBuffer, this->footer, this->bouquetList, this->channelsTableX + 2, yPosChannelEntry, this->channelsTableWidth);
+			ChannelEntry * channelEntry = new ChannelEntry(channel, i, this->frameBuffer, this->footer, this->channelsTableX + 2, yPosChannelEntry, this->channelsTableWidth);
 			
 			CChannelEventList channelEventList;
 			CSectionsd::getInstance()->getEventsServiceKey(channel->epgid & 0xFFFFFFFFFFFFULL, channelEventList);
@@ -766,13 +764,12 @@ void EpgPlus::free()
 	delete this->footer;
 }
 
-int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouquetList * _bouquetList)
+int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex)
 {
 	dprintf(DEBUG_NORMAL, "EpgPlus::exec:\n");
 
 	this->channelList = _channelList;
 	this->channelListStartIndex = int (selectedChannelIndex / maxNumberOfDisplayableEntries) * maxNumberOfDisplayableEntries;
-	this->bouquetList = _bouquetList;
 	
 	int res = CMenuTarget::RETURN_REPAINT;
 
@@ -1224,20 +1221,14 @@ int CEPGplusHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
 	
 	e = new EpgPlus();
 
-	int old_num = 0;
 	int old_b = bouquetList->getActiveBouquetNumber();
-
-	if(bouquetList->Bouquets.size()) 
-	{
-		old_num = bouquetList->Bouquets[old_b]->channelList->getActiveChannelNumber();
-	}
 				
 	if(bouquetList->Bouquets.size() && bouquetList->Bouquets[old_b]->channelList->getSize() > 0)
 		channelList = bouquetList->Bouquets[old_b]->channelList;
 	else
 		channelList = CNeutrinoApp::getInstance()->channelList;
 
-	res = e->exec(channelList, channelList->getActiveChannelNumber() - 1, bouquetList);
+	res = e->exec(channelList, channelList->getSelectedChannelIndex());
 
 	delete e;
 	e = NULL;

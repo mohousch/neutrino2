@@ -2233,13 +2233,7 @@ void CNeutrinoApp::quickZap(int msg)
 int CNeutrinoApp::numericZap(int msg)
 {
 	int res = 0;
-	int old_num = 0;
 	int old_b = bouquetList->getActiveBouquetNumber();
-
-	if(bouquetList->Bouquets.size()) 
-	{
-		old_num = bouquetList->Bouquets[old_b]->channelList->getActiveChannelNumber();
-	}
 				
 	if(bouquetList->Bouquets.size() && bouquetList->Bouquets[old_b]->channelList->getSize() > 0)
 		res = bouquetList->Bouquets[old_b]->channelList->numericZap( msg );

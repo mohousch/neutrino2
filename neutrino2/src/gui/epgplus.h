@@ -52,8 +52,6 @@
 #include <string>
 
 
-class CBouquetList;
-
 class EpgPlus
 {
 	//// types, inner classes
@@ -146,14 +144,9 @@ class EpgPlus
 				//// methods
 				static void init();
 
-				bool isSelected
-				  ( time_t selectedTime
-				  ) const;
+				bool isSelected( time_t selectedTime) const;
 
-				void paint
-				  ( bool isSelected
-				  , bool toggleColor
-				  );
+				void paint( bool isSelected, bool toggleColor);
 
 				static int getUsedHeight();
 
@@ -180,25 +173,14 @@ class EpgPlus
 			public:
 				//// construction / destruction
 				ChannelEntry
-				  ( const CZapitChannel* channel
-				  , int index
-				  , CFrameBuffer* frameBuffer
-				  , Footer* footer
-				  , CBouquetList* bouquetList
-				  , int x
-				  , int y
-				  , int width
-				  );
+				  ( const CZapitChannel* channel, int index, CFrameBuffer* frameBuffer, Footer* footer, int x, int y, int width);
 
 				~ChannelEntry();
 
 				//// methods
 				static void init();
 
-				void paint
-				  ( bool   isSelected
-				  , time_t selectedTime
-				  );
+				void paint( bool   isSelected, time_t selectedTime);
 
 				static int getUsedHeight();
 
@@ -209,7 +191,6 @@ class EpgPlus
 
 				CFrameBuffer* frameBuffer;
 				Footer* footer;
-				CBouquetList* bouquetList;
 
 				int x;
 				int y;
@@ -228,33 +209,16 @@ class EpgPlus
 		{
 			public:
 				//// construction / destruction
-				Footer
-				  ( CFrameBuffer* _frameBuffer
-				  , int _x
-				  , int _y
-				  , int _width
-				  );
+				Footer( CFrameBuffer* _frameBuffer, int _x, int _y, int _width);
 
 				~Footer();
 
 				//// methods
 				static void init();
 
-				void setBouquetChannelName
-				  ( const std::string& newBouquetName
-				  , const std::string& newChannelName
-				  );
-
-				void paintEventDetails
-				  ( const std::string& description
-				  , const std::string& shortDescription
-				  );
-
-				void paintButtons
-				  ( button_label* _buttonLabels
-				  , int numberOfButtons
-				  );
-
+				void setBouquetChannelName(const std::string& newChannelName);
+				void paintEventDetails( const std::string& description, const std::string& shortDescription);
+				void paintButtons( button_label* _buttonLabels, int numberOfButtons);
 				static int getUsedHeight();
 	  
 				//// attributes
@@ -271,7 +235,6 @@ class EpgPlus
 				static CFont*  fontEventShortDescription;
 				static CFont*  fontButtons;
 
-				std::string currentBouquetName;
 				std::string currentChannelName;
 		};
 
@@ -333,7 +296,7 @@ class EpgPlus
 		void init();
 		void free();
 
-		int exec(CChannelList* channelList, int selectedChannelIndex, CBouquetList* bouquetList); 
+		int exec(CChannelList* channelList, int selectedChannelIndex); 
 
 	private:
 		//// methods
@@ -353,7 +316,6 @@ class EpgPlus
 		TimeLine*       timeLine;
 
 		CChannelList*   channelList;
-		CBouquetList*   bouquetList;
 
 		Footer*         footer;
 
