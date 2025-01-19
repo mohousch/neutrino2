@@ -7,10 +7,12 @@
 //<![CDATA[
 var gurl= "";
 var gurl_last= "";
+
 function hide_forms(){
 	show_obj("add",false);
 	show_obj("rename",false);
 }
+
 function do_reload(){
 	if((document.location.pathname+document.location.search+document.location.hash) == gurl)
 		document.location.reload();
@@ -23,15 +25,18 @@ function do_set(bouquetnr, action){
 	gurl = "/Y_Boxcontrol_Bouquet_Editor_Main.yhtm?selected=" + bouquetnr+ "#akt";
 	window.setTimeout('do_reload()',50);
 }
+
 function do_save(){
 	hide_forms();
 	loadSyncURL("/control/savebouquet");
 	alert("{=L:bou.bouqets_saved=}");
 }
+
 function do_update(){
 	hide_forms();
 	loadSyncURL("/control/updatebouquet");
 }
+
 function do_move(bouquetnr, action){
 	var sel = parseInt(String(bouquetnr));
 	loadSyncURL("/control/movebouquet?selected="+bouquetnr+"&action="+action);
@@ -41,6 +46,7 @@ function do_move(bouquetnr, action){
 	gurl = "/Y_Boxcontrol_Bouquet_Editor_Main.yhtm?selected=" + sel+ "#akt";
 	window.setTimeout('do_reload()',50);
 }
+
 function do_delete(bouquetnr, bouquet_name){
 	if (confirm("{=L:bou.delete1=} \""+bouquet_name+"\" {=L:bou.delete2=}?")==true){
 		loadSyncURL("/control/deletebouquet?selected="+bouquetnr);
@@ -48,14 +54,17 @@ function do_delete(bouquetnr, bouquet_name){
 		window.setTimeout('do_reload()',50);
 	}
 }
+
 function do_add_start(){
 	hide_forms();
 	show_obj("add",true);
 	document.add.bouquet_name.focus();
 }
+
 function do_add_abort(){
 	show_obj("add",false);
 }
+
 function do_add(){
 	if(document.add.bouquet_name.value != ""){
 		res=loadSyncURL("/control/addbouquet?name="+document.add.bouquet_name.value);
@@ -66,6 +75,7 @@ function do_add(){
 	else
 		alert("{=L:bou.no_bouquet_name=}!");
 }
+
 function do_rename_start(bouquetnr, bouquet_name){
 	hide_forms();
 	document.rename.bouquetnr.value = bouquetnr;
@@ -73,6 +83,7 @@ function do_rename_start(bouquetnr, bouquet_name){
 	show_obj("rename",true);
 	document.rename.bouquet_name.focus();
 }
+
 function do_rename_abort(){
 	show_obj("rename",false);
 }

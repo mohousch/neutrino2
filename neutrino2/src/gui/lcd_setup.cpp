@@ -321,90 +321,7 @@ void CLCDSettings::showMenu()
 	// save settings
 	lcdSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	
-	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	
-	// lcd_power
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
-	lcdSettings->addItem(new CMenuOptionChooser(_("LCD Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
-#endif
-
-	// mode
-	lcdSettings->addItem(new CMenuOptionChooser(_("Mode"), &g_settings.lcd_mode, LCDMENU_MODE_OPTIONS, LCDMENU_MODE_OPTION_COUNT, true));
-	
-	// led_color
-#if defined (PLATFORM_GIGABLUE)	
-	lcdSettings->addItem(new CMenuOptionChooser(_("LED Color"), &g_settings.lcd_led, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, this));
-#endif
-
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
-	// minitv
-//	lcdSettings->addItem(new CMenuOptionChooser(_("Mini TV"), &g_settings.lcd_minitv, LCDMENU_MINITV_OPTIONS, LCDMENU_MINITV_OPTION_COUNT, true, this, CRCInput::RC_nokey, NULL, true));
-	
-	// minitv fps
-//	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Mini TV FPS"), &g_settings.lcd_minitvfps, true, 0, 30, this));
-
-	// invert
-//	lcdSettings->addItem(new CMenuOptionChooser(_("Invert"), &g_settings.lcd_inverse, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
-#endif
-
-#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
-	// statusline
-	lcdSettings->addItem(new CMenuOptionChooser(_("Status line"), &g_settings.lcd_statusline, LCDMENU_STATUSLINE_OPTIONS, LCDMENU_STATUSLINE_OPTION_COUNT, true));
-	
-	// lcd_epg
-	lcdSettings->addItem(new CMenuOptionChooser(_("EPG"), &g_settings.lcd_epgmode, LCDMENU_EPG_OPTIONS, LCDMENU_EPG_OPTION_COUNT, true));
-
-	// align
-	lcdSettings->addItem(new CMenuOptionChooser(_("LCD EPG Align"), &g_settings.lcd_epgalign, LCDMENU_EPGALIGN_OPTIONS, LCDMENU_EPGALIGN_OPTION_COUNT, true));
-	
-	// logo
-	lcdSettings->addItem(new CMenuOptionChooser(_("Show picon"), &g_settings.lcd_picon, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
-	
-	// weather
-	lcdSettings->addItem(new CMenuOptionChooser(_("Show weather"), &g_settings.lcd_weather, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
-
-	// standby_clock
-	lcdSettings->addItem(new CMenuOptionChooser(_("Standby Clock"), &g_settings.lcd_standby_clock, LCDMENU_STANDBY_CLOCK_OPTIONS, LCDMENU_STANDBY_CLOCK_OPTION_COUNT, true, this, CRCInput::RC_nokey, NULL, false, false));
-#endif
-
-#ifdef ENABLE_4DIGITS
-	// dimm-time
-	m1 = new CMenuForwarder(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, this, "set_dimm_timeout");
-	lcdSettings->addItem(m1);
-
-	// dimm brightness
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, MAXBRIGHTNESS, this));
-
-	// brightness
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness"), &g_settings.lcd_brightness, true, 0, MAXBRIGHTNESS, this));
-	
-	// standby brightness
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Standby Brightness"), &g_settings.lcd_standbybrightness, true, 0, MAXBRIGHTNESS, this));
-	
-	// reset brightness / contrast to default
-	lcdSettings->addItem(new CMenuForwarder(_("Reset to defaults"), true, NULL, this, "reset"));
-#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_VFD)
-	// dimm-time
-	m1 = new CMenuForwarder(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, this, "set_dimm_timeout");
-	lcdSettings->addItem(m1);
-
-	// dimm brightness
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, MAXBRIGHTNESS, this));
-
-	// brightness
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness"), &g_settings.lcd_brightness, true, 0, MAXBRIGHTNESS, this));
-	
-	// standby brightness
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Standby Brightness"), &g_settings.lcd_standbybrightness, true, 0, MAXBRIGHTNESS, this));
-	
-	// contrast
-	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Contrast"), &g_settings.lcd_contrast, true, 0, MAXCONTRAST, this));
-	
-	// reset brightness / contrast to default
-	lcdSettings->addItem(new CMenuForwarder(_("Reset to defaults"), true, NULL, this, "reset"));
-#endif	
-
-#ifdef ENABLE_GRAPHLCD	
+	#ifdef ENABLE_GRAPHLCD	
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// enable glcd
@@ -448,6 +365,92 @@ void CLCDSettings::showMenu()
 	}
 	lcdSettings->addItem(item2);
 #endif
+
+	
+	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+
+	// mode
+	lcdSettings->addItem(new CMenuOptionChooser(_("Mode"), &g_settings.lcd_mode, LCDMENU_MODE_OPTIONS, LCDMENU_MODE_OPTION_COUNT, true));
+
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
+	// minitv
+//	lcdSettings->addItem(new CMenuOptionChooser(_("Mini TV"), &g_settings.lcd_minitv, LCDMENU_MINITV_OPTIONS, LCDMENU_MINITV_OPTION_COUNT, true, this, CRCInput::RC_nokey, NULL, true));
+	
+	// minitv fps
+//	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Mini TV FPS"), &g_settings.lcd_minitvfps, true, 0, 30, this));
+
+	// invert
+//	lcdSettings->addItem(new CMenuOptionChooser(_("Invert"), &g_settings.lcd_inverse, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
+#endif
+
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
+	// statusline
+	lcdSettings->addItem(new CMenuOptionChooser(_("Status line"), &g_settings.lcd_statusline, LCDMENU_STATUSLINE_OPTIONS, LCDMENU_STATUSLINE_OPTION_COUNT, true));
+	
+	// lcd_epg
+	lcdSettings->addItem(new CMenuOptionChooser(_("EPG"), &g_settings.lcd_epgmode, LCDMENU_EPG_OPTIONS, LCDMENU_EPG_OPTION_COUNT, true));
+
+	// align
+	lcdSettings->addItem(new CMenuOptionChooser(_("LCD EPG Align"), &g_settings.lcd_epgalign, LCDMENU_EPGALIGN_OPTIONS, LCDMENU_EPGALIGN_OPTION_COUNT, true));
+	
+	// logo
+	lcdSettings->addItem(new CMenuOptionChooser(_("Show picon"), &g_settings.lcd_picon, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
+	
+	// weather
+	lcdSettings->addItem(new CMenuOptionChooser(_("Show weather"), &g_settings.lcd_weather, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
+
+	// standby_clock
+	lcdSettings->addItem(new CMenuOptionChooser(_("Standby Clock"), &g_settings.lcd_standby_clock, LCDMENU_STANDBY_CLOCK_OPTIONS, LCDMENU_STANDBY_CLOCK_OPTION_COUNT, true, this, CRCInput::RC_nokey, NULL, false, false));
+#endif
+
+	// lcd_power
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_4DIGITS) || defined (ENABLE_VFD)
+	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+	
+	lcdSettings->addItem(new CMenuOptionChooser(_("LCD Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
+	
+	// led_color
+#if defined (PLATFORM_GIGABLUE)	
+	lcdSettings->addItem(new CMenuOptionChooser(_("LED Color"), &g_settings.lcd_led, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, this));
+#endif
+#endif
+
+#ifdef ENABLE_4DIGITS
+	// dimm-time
+	m1 = new CMenuForwarder(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, this, "set_dimm_timeout");
+	lcdSettings->addItem(m1);
+
+	// dimm brightness
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, MAXBRIGHTNESS, this));
+
+	// brightness
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness"), &g_settings.lcd_brightness, true, 0, MAXBRIGHTNESS, this));
+	
+	// standby brightness
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Standby Brightness"), &g_settings.lcd_standbybrightness, true, 0, MAXBRIGHTNESS, this));
+	
+	// reset brightness / contrast to default
+	lcdSettings->addItem(new CMenuForwarder(_("Reset to defaults"), true, NULL, this, "reset"));
+#elif defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_VFD)
+	// dimm-time
+	m1 = new CMenuForwarder(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, this, "set_dimm_timeout");
+	lcdSettings->addItem(m1);
+
+	// dimm brightness
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, MAXBRIGHTNESS, this));
+
+	// brightness
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness"), &g_settings.lcd_brightness, true, 0, MAXBRIGHTNESS, this));
+	
+	// standby brightness
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Standby Brightness"), &g_settings.lcd_standbybrightness, true, 0, MAXBRIGHTNESS, this));
+	
+	// contrast
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Contrast"), &g_settings.lcd_contrast, true, 0, MAXCONTRAST, this));
+	
+	// reset brightness / contrast to default
+	lcdSettings->addItem(new CMenuForwarder(_("Reset to defaults"), true, NULL, this, "reset"));
+#endif	
 
 	lcdSettings->setSelected(selected);	
 	

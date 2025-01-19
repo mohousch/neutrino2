@@ -10,9 +10,11 @@ function do_submit(){
 	}
 	document.getElementById('channels').submit();
 }
+
 function do_abort(){
 	document.location.href="/Y_Boxcontrol_Bouquet_Editor_Main.yhtm?selected={=selected=}";
 }
+
 function movechannels(source, destination){
 	for (i=0; i < source.length; i++) {
 		if (source.options[i].selected==true) {
@@ -25,6 +27,7 @@ function movechannels(source, destination){
 		}
 	}
 }
+
 function poschannel(box, direction){
 	if (direction==0) {
 		for (i=1; i < box.length  ; i++) {

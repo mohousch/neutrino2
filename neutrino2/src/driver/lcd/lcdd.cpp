@@ -997,16 +997,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 	if (mode != MODE_TVRADIO)
 		return;
 
-#ifdef ENABLE_4DIGITS
-	if (g_settings.lcd_mode == MODE_CHANNEL_INFO)
-	{
-		char tmp[5];
-							
-		sprintf(tmp, "%04d", servicenumber); // FIXME:
-							
-		showText(tmp); // UTF-8
-	}
-#elif defined (ENABLE_VFD)
+#if defined (ENABLE_VFD)
 	if (g_settings.lcd_mode == MODE_CHANNEL_INFO)
 	{
 		showText((char *)servicename.c_str() );
