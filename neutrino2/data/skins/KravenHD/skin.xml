@@ -143,6 +143,7 @@
 		<image posx="850" posy="150" width="380" height="300" image="background/logo.png"/>
 		<time posx="850" posy="450" width="380" height="100" refresh="1" format="%A %d.%m.%Y"/>
 		<time posx="850" posy="500" width="380" height="100" refresh="1" format="%H:%M:%S"/>
+		<hline posx="10" posy="680" width="1260" height="2"/>
 		<button posx="10" posy="680" width="1260" height="40">
 			<button_label name="btn_red" localename="Delete"/>
 			<button_label name="btn_green" localename="Start"/>
@@ -157,7 +158,7 @@
 		<image posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
 		<time posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
 		<time name="time" posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
-		<hline posx="10" posy="680" width="1260" height="2" gradient="DARK2LIGHT2DARK"/>
+		<hline posx="10" posy="680" width="1260" height="2"/>
 		<button posx="10" posy="680" width="1260" height="40">
 			<button_label name="btn_red" localename="Delete"/>
 			<button_label name="btn_green" localename="New timer"/>

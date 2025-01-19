@@ -369,8 +369,10 @@ void CLCDSettings::showMenu()
 	
 	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
+#if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_VFD) || defined (ENABLE_GRAPHLCD)
 	// mode
 	lcdSettings->addItem(new CMenuOptionChooser(_("Mode"), &g_settings.lcd_mode, LCDMENU_MODE_OPTIONS, LCDMENU_MODE_OPTION_COUNT, true));
+#endif
 
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD)
 	// minitv
