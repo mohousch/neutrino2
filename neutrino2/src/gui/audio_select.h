@@ -31,7 +31,7 @@
 #include <gui/widget/listbox.h>
 
 
-class CAudioSelectMenuHandler : public CMenuTarget
+class CAudioSelectMenuHandler : public CMenuTarget, CChangeObserver
 {
 	public:
 		CAudioSelectMenuHandler(){};
@@ -39,38 +39,33 @@ class CAudioSelectMenuHandler : public CMenuTarget
 		
 		int exec( CMenuTarget * parent, const std::string &actionkey);
 		int doMenu();
+		bool changeNotify(const std::string& OptionName, void *);
 };
 
+//// apid
 class CAPIDChangeExec : public CMenuTarget
 {
 	public:
 		int exec(CMenuTarget* parent, const std::string & actionKey);
 };
 
-// volume conf
-class CAudioSetupNotifierVolPercent : public CChangeObserver
-{
-		int apid;
-		t_channel_id channel_id;
-	public:
-		bool changeNotify(const std::string& OptionName, void *);
-};
-
-// subtitle
+//// subtitle
 class CSubtitleChangeExec : public CMenuTarget
 {
 	public:
 		CSubtitleChangeExec(){};
 		~CSubtitleChangeExec(){};
+		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
 
-// tuxtxt
+//// tuxtxt
 class CTuxtxtChangeExec : public CMenuTarget
 {
 	public:
 		CTuxtxtChangeExec(){};
 		~CTuxtxtChangeExec(){};
+		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
 

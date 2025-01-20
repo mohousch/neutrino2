@@ -579,7 +579,7 @@
 	<widget name="channellist" posx="50" posy="50" width="1180" height="620" paintframe="0" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" >
 		<image posx="50" posy="50" width="1180" height="620" image="images/menu_bg3.png"/>
 		<head posx="150" posy="150" width="1080" height="50" paintframe="0" paintdate="1" line="1"/>
-		<listbox posx="50" posy="100" width="700" height="420" paintframe="0" type="TYPE_STANDARD" mode="MODE_listbox" itemborder="1" scrollbar="1"/>
+		<listbox posx="80" posy="80" width="700" height="420" paintframe="0" type="TYPE_STANDARD" mode="MODE_listbox" itemborder="1" scrollbar="1"/>
 		<window posx="750" posy="100" width="380" height="420" paintframe="0"/>
 		<foot posx="50" posy="520" width="1080" height="50" paintframe="0" line="1"/>
 		<hline posx="790" posy="310" width="360" height="360" gradient="DARK2LIGHT2DARK"/>

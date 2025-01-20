@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-01-18 10:21+0100\n"
+"POT-Creation-Date: 2025-01-20 08:25+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -164,9 +164,6 @@ msgstr "Аудио плейлист"
 
 msgid "Audio language preferences"
 msgstr "Предпочтение языка Audio"
-
-msgid "Audio master"
-msgstr "Audio мастер"
 
 msgid "Audio settings"
 msgstr "Настройки звука"

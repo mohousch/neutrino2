@@ -127,14 +127,12 @@ const keyval VIDEOMENU_VIDEOFORMAT_OPTIONS[VIDEOMENU_VIDEOFORMAT_OPTION_COUNT] =
 };
 #endif
 
-#if !defined (PLATFORM_COOLSTREAM)
 #define AC3_OPTION_COUNT 2
 const keyval AC3_OPTIONS[AC3_OPTION_COUNT] =
 {
 	{ AC3_PASSTHROUGH, "passthrough" },
 	{ AC3_DOWNMIX, "downmix" }
 };
-#endif
 
 ////
 int CAVPIDChangeExec::exec(CMenuTarget*, const std::string & actionKey)
@@ -369,10 +367,8 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 		AVPIDSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	} 
 	
-	//ac3
-#if !defined (PLATFORM_COOLSTREAM)				
-	AVPIDSelector->addItem(new CMenuOptionChooser(_("Dolby Digital"), &g_settings.hdmi_dd, AC3_OPTIONS, AC3_OPTION_COUNT, true, CAudioSettings::getInstance()->audioSetupNotifier, CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED ));
-#endif				
+	//ac3				
+	AVPIDSelector->addItem(new CMenuOptionChooser(_("Dolby Digital"), &g_settings.hdmi_dd, AC3_OPTIONS, AC3_OPTION_COUNT, true, CAudioSettings::getInstance()->audioSetupNotifier, CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED ));				
 				
 	// policy/aspect ratio
 	AVPIDSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));

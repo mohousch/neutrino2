@@ -53,8 +53,6 @@ extern int tuxtx_subtitle_running(int * pid, int * page, int * running);
 //
 extern int current_muted;
 
-// -- this is a copy from neutrino.cpp!!
-/* option off0_on1 */
 #define OPTIONS_OFF0_ON1_OPTION_COUNT 2
 const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
 {
@@ -71,14 +69,12 @@ const keyval AUDIOMENU_ANALOGOUT_OPTIONS[AUDIOMENU_ANALOGOUT_OPTION_COUNT] =
 };
 
 // ac3
-#if !defined (PLATFORM_COOLSTREAM)
 #define AC3_OPTION_COUNT 2
 const keyval AC3_OPTIONS[AC3_OPTION_COUNT] =
 {
 	{ AC3_PASSTHROUGH, _("passthrough") },
 	{ AC3_DOWNMIX, _("downmix") }
 };
-#endif
 
 int CAudioSelectMenuHandler::exec(CMenuTarget * parent, const std::string &/*actionKey*/)
 {
@@ -90,11 +86,6 @@ int CAudioSelectMenuHandler::exec(CMenuTarget * parent, const std::string &/*act
 		parent->hide();
 
 	res = doMenu();
-	
-	if(!parent)
-	{
-		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
-	}
 
 	return res;
 }
@@ -174,15 +165,11 @@ int CAudioSelectMenuHandler::doMenu()
 	// analogue output
 	AudioSelector->addItem(new CMenuOptionChooser(_("Analog Output"), &g_settings.audio_AnalogMode, AUDIOMENU_ANALOGOUT_OPTIONS, AUDIOMENU_ANALOGOUT_OPTION_COUNT, true, CAudioSettings::getInstance()->audioSetupNotifier, CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	
-	// ac3
-#if !defined (PLATFORM_COOLSTREAM)	
+	// ac3	
 	AudioSelector->addItem(new CMenuOptionChooser(_("Dolby Digital"), &g_settings.hdmi_dd, AC3_OPTIONS, AC3_OPTION_COUNT, true, CAudioSettings::getInstance()->audioSetupNotifier, CRCInput::RC_green, NEUTRINO_ICON_BUTTON_GREEN ));
-#endif
 
 	//dvb/tuxtxt subs
-	CChannelList * channelList = CNeutrinoApp::getInstance()->channelList;
-	int curnum = channelList->getActiveChannelNumber();
-	CZapitChannel * cc = channelList->getChannel(curnum);
+	CZapitChannel * cc = CZapit::getInstance()->getCurrentChannel();
 
 	bool sep_added = false;
 	if(cc) 
@@ -246,11 +233,9 @@ int CAudioSelectMenuHandler::doMenu()
 	}
 	
 	// volume percent
-#if 0 //FIXME:
-	CAudioSetupNotifierVolPercent * audioSetupNotifierVolPercent = new CAudioSetupNotifierVolPercent;
-	int percent[g_RemoteControl->current_PIDs.APIDs.size()];
+	int percent[g_RemoteControl->current_PIDs.APIDs.size()] = {0};
 	
-	for(count = 0; count < g_RemoteControl->current_PIDs.APIDs.size(); count++ ) 
+	for(count = 0; count < g_RemoteControl->current_PIDs.APIDs.size(); count++) 
 	{
 		CZapit::getInstance()->getVolumePercent((unsigned int *) &percent[count], 0, g_RemoteControl->current_PIDs.APIDs[count].pid);
 		int is_active = count == g_RemoteControl->current_PIDs.otherPIDs.selected_apid;
@@ -261,14 +246,11 @@ int CAudioSelectMenuHandler::doMenu()
 			AudioSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Volume adjustment (in %)")));
 		}
 		
-		AudioSelector->addItem(new CMenuOptionNumberChooser(g_RemoteControl->current_PIDs.APIDs[count].desc, &percent[count], is_active, 0, 100, audioSetupNotifierVolPercent));
+		AudioSelector->addItem(new CMenuOptionNumberChooser(g_RemoteControl->current_PIDs.APIDs[count].desc, &percent[count], is_active, 0, 100, this));
 	}
-#endif
 
 	widget->setTimeOut(g_settings.timing_menu);
 	res = widget->exec(NULL, "");
-	
-	//delete audioSetupNotifierVolPercent;
 	
 	if (widget)
 	{
@@ -282,7 +264,16 @@ int CAudioSelectMenuHandler::doMenu()
 	return res;
 }
 
-// apid change notifier
+bool CAudioSelectMenuHandler::changeNotify(const std::string& OptionName __attribute__((unused)), void *data)
+{
+	int per= *(int *) data;
+	
+	CZapit::getInstance()->setVolumePercent(per, CZapit::getInstance()->getCurrentChannelID(), g_RemoteControl->current_PIDs.otherPIDs.selected_apid);
+	
+	return false;
+}
+
+//// apid change notifier
 int CAPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CAPIDChangeExec exec: %s\n", actionKey.c_str());
@@ -297,17 +288,7 @@ int CAPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actionKey
 	return CMenuTarget::RETURN_EXIT;
 }
 
-// volume conf
-bool CAudioSetupNotifierVolPercent::changeNotify(const std::string& OptionName __attribute__((unused)), void *data)
-{
-	int percent = *(int *) data;
-	
-	CZapit::getInstance()->setVolumePercent(percent, CZapit::getInstance()->getCurrentChannelID(), g_RemoteControl->current_PIDs.otherPIDs.selected_apid);
-	
-	return true;
-}
-
-// txt/dvb subtitle
+//// txt/dvb subtitle
 int CSubtitleChangeExec::exec(CMenuTarget *, const std::string & actionKey)
 {
 	dprintf(DEBUG_INFO, "CSubtitleChangeExec::exec: action %s\n", actionKey.c_str());
@@ -355,7 +336,7 @@ int CSubtitleChangeExec::exec(CMenuTarget *, const std::string & actionKey)
         return RETURN_EXIT;
 }
 
-// tuxtxt
+//// tuxtxt
 int CTuxtxtChangeExec::exec(CMenuTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_INFO, "CTuxtxtChangeExec exec: %s\n", actionKey.c_str());

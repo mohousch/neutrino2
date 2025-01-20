@@ -43,8 +43,8 @@
 #include <video_cs.h>
 
 
-extern cVideo 		* videoDecoder;		//libcoolstream (video_cs.cpp)
-extern cAudio 		* audioDecoder;		//libcoolstream (audio_cs.cpp)
+extern cVideo * videoDecoder;		// libdvbapi (video_cs.cpp)
+extern cAudio * audioDecoder;		// libdvbapi (audio_cs.cpp)
 
 #define OPTIONS_OFF0_ON1_OPTION_COUNT 2
 const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
@@ -61,15 +61,6 @@ const keyval AUDIOMENU_ANALOGOUT_OPTIONS[AUDIOMENU_ANALOGOUT_OPTION_COUNT] =
 	{ 2, _("mono right") }
 };
 
-#if defined (PLATFORM_COOLSTREAM)
-#define AUDIOMENU_AVSYNC_OPTION_COUNT 3
-const keyval AUDIOMENU_AVSYNC_OPTIONS[AUDIOMENU_AVSYNC_OPTION_COUNT] =
-{
-        { 0, _("off") },
-        { 1, _("on") },
-        { 2, _("Audio master") }
-};
-#else
 #define AUDIOMENU_AVSYNC_OPTION_COUNT 3
 const keyval AUDIOMENU_AVSYNC_OPTIONS[AUDIOMENU_AVSYNC_OPTION_COUNT] =
 {
@@ -77,10 +68,8 @@ const keyval AUDIOMENU_AVSYNC_OPTIONS[AUDIOMENU_AVSYNC_OPTION_COUNT] =
         { AVSYNC_ON, _("on") },
         { AVSYNC_AM, _("audio master") }
 };
-#endif
 
 // ac3
-#if !defined (PLATFORM_COOLSTREAM)
 #define AC3_OPTION_COUNT 2
 const keyval AC3_OPTIONS[AC3_OPTION_COUNT] =
 {
@@ -101,7 +90,6 @@ const keyval AUDIODELAY_OPTIONS[AUDIODELAY_OPTION_COUNT] =
 	{ 750, "750" },
 	{ 1000, "1000" }
 };
-#endif
 
 CAudioSettings::CAudioSettings()
 {
@@ -202,22 +190,18 @@ void CAudioSettings::showMenu()
 
 	// analog output
 	audioSettings->addItem(new CMenuOptionChooser(_("Analog Output"), &g_settings.audio_AnalogMode, AUDIOMENU_ANALOGOUT_OPTIONS, AUDIOMENU_ANALOGOUT_OPTION_COUNT, true, audioSetupNotifier));
-
-#if !defined (PLATFORM_COOLSTREAM)	
+	
 	// hdmi-dd
-	audioSettings->addItem(new CMenuOptionChooser(_("Dolby Digital"), &g_settings.hdmi_dd, AC3_OPTIONS, AC3_OPTION_COUNT, true, audioSetupNotifier));	
-#endif	
+	audioSettings->addItem(new CMenuOptionChooser(_("Dolby Digital"), &g_settings.hdmi_dd, AC3_OPTIONS, AC3_OPTION_COUNT, true, audioSetupNotifier));		
 
 	// A/V sync
 	audioSettings->addItem(new CMenuOptionChooser(_("A/V sync"), &g_settings.avsync, AUDIOMENU_AVSYNC_OPTIONS, AUDIOMENU_AVSYNC_OPTION_COUNT, true, audioSetupNotifier));
-	
-#if !defined (PLATFORM_COOLSTREAM)	
+		
 	// ac3 delay
 	audioSettings->addItem(new CMenuOptionChooser(_("AC3 Delay"), &g_settings.ac3_delay, AUDIODELAY_OPTIONS, AUDIODELAY_OPTION_COUNT, true, audioSetupNotifier));
 	
 	// pcm delay
-	audioSettings->addItem(new CMenuOptionChooser(_("PCM Delay"), &g_settings.pcm_delay, AUDIODELAY_OPTIONS, AUDIODELAY_OPTION_COUNT, true, audioSetupNotifier));
-#endif	
+	audioSettings->addItem(new CMenuOptionChooser(_("PCM Delay"), &g_settings.pcm_delay, AUDIODELAY_OPTIONS, AUDIODELAY_OPTION_COUNT, true, audioSetupNotifier));	
 	
 	// pref lang
 	audioSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Audio language preferences"), true));
@@ -307,21 +291,12 @@ bool CAudioSetupNotifier::changeNotify(const std::string& OptionName, void *)
 	}
 	else if (OptionName == _("A/V sync")) 
 	{
-#if defined (PLATFORM_COOLSTREAM)
-		videoDecoder->SetSyncMode((AVSYNC_TYPE)g_settings.avsync);
-		audioDecoder->SetSyncMode((AVSYNC_TYPE)g_settings.avsync);
-		videoDemux->SetSyncMode((AVSYNC_TYPE)g_settings.avsync);
-		audioDemux->SetSyncMode((AVSYNC_TYPE)g_settings.avsync);
-		pcrDemux->SetSyncMode((AVSYNC_TYPE)g_settings.avsync);
-#else
 		if(videoDecoder)
 			videoDecoder->SetSyncMode(g_settings.avsync);			
 		
 		if(audioDecoder)
-			audioDecoder->SetSyncMode(g_settings.avsync);
-#endif			
-	}
-#if !defined (PLATFORM_COOLSTREAM)	
+			audioDecoder->SetSyncMode(g_settings.avsync);			
+	}	
 	else if(OptionName == _("AC3 Delay"))
 	{
 		if(audioDecoder)
@@ -331,8 +306,7 @@ bool CAudioSetupNotifier::changeNotify(const std::string& OptionName, void *)
 	{
 		if(audioDecoder)
 			audioDecoder->setHwPCMDelay(g_settings.pcm_delay);
-	}
-#endif	
+	}	
 
 	return true;
 }

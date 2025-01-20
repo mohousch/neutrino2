@@ -1288,7 +1288,7 @@ void CZapit::restoreChannelPids(CZapitChannel * thischannel)
 	// set saved volume pro pid
 	if(thischannel->getAudioChannel() != NULL)
 		volume_percent = getPidVolume(thischannel->getChannelID(), thischannel->getAudioPid(), thischannel->getAudioChannel()->audioChannelType == CZapitAudioChannel::AC3);
-	setVolumePercent(volume_percent);
+	setVolPercent(volume_percent);
 	
 	//FIXME: is is muted
 	if(current_muted)
@@ -1558,16 +1558,14 @@ int CZapit::getPidVolume(t_channel_id channel_id, int pid, bool ac3)
 	return percent;
 }
 
-void CZapit::setVolumePercent(int percent)
+void CZapit::setVolPercent(int percent)
 {
-	dprintf(DEBUG_NORMAL, "CZapit::setVolumePercent: current_volume %d volume_percent %d percent %d\n", current_volume, volume_percent, percent);
+	dprintf(DEBUG_NORMAL, "CZapit::setVolPercent: percent %d\n", percent);
 		
 	if (volume_percent != percent) 
 		volume_percent = percent;
 		
 	int vol = current_volume + (current_volume*volume_percent)/100;
-		
-	dprintf(DEBUG_NORMAL, "CZapit::setVolumePercent: vol %d current_volume %d volume_percent %d\n", vol, current_volume, volume_percent);
 		
 	audioDecoder->setVolume(vol, vol);
 }
@@ -1652,7 +1650,7 @@ int CZapit::changeAudioPid(uint8_t index)
 	
 	// set saved volume pro pid
 	volume_percent = getPidVolume(live_channel_id, live_channel->getAudioPid(), currentAudioChannel->audioChannelType == CZapitAudioChannel::AC3);
-	setVolumePercent(volume_percent);
+	setVolPercent(volume_percent);
 	
 	//FIXME: is muted
 	if(current_muted)
@@ -4340,9 +4338,9 @@ void CZapit::setVolumePercent(const unsigned int percent, t_channel_id channel_i
 	setPidVolume(channel_id, apid, percent);
 			
 	// set volume percent
-	setVolumePercent(percent);
+	setVolPercent(percent);
 			
-	//FIXME: is is muted
+	//FIXME: is muted
 	if(current_muted)
 		audioDecoder->SetMute(true);
 }
@@ -5016,7 +5014,6 @@ bool CZapit::tuneTP(transponder TP, CFrontend *fe)
 		fe->driveToSatellitePosition(satellitePosition);
 		
 	// tuneFreq
-//	ret = fe->tuneFrequency(&TP.feparams);
 	ret = tuneFrequency(&TP.feparams, satellitePosition, fe);
 			
 	// set retune flag
@@ -5096,7 +5093,6 @@ bool CZapit::stopScan()
 	return scan_runs;
 }		
 
-//
 void * CZapit::scanThread(void * data)
 {
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanThread: starting... tid %ld\n", syscall(__NR_gettid));
@@ -5292,7 +5288,6 @@ void * CZapit::scanThread(void * data)
 	pthread_exit(NULL);
 }
 
-//
 void * CZapit::scanTransponderThread(void * data)
 {
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanTransponderThread: starting... tid %ld\n", syscall(__NR_gettid));

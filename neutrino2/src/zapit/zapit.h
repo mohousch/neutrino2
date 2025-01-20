@@ -394,7 +394,7 @@ class CZapit
 		int zapit(const t_channel_id channel_id, bool in_nvod, bool forupdate = 0);
 		void setPidVolume(t_channel_id channel_id, int pid, int percent);
 		int getPidVolume(t_channel_id channel_id, int pid, bool ac3);
-		void setVolumePercent(int percent);
+		void setVolPercent(int percent);
 		int changeAudioPid(uint8_t index);
 		void enableRecordMode(void);
 		void disableRecordMode(void);
@@ -541,8 +541,8 @@ class CZapit
 		void setAudioMode(int mode);
 		void setVolume(const unsigned int left, const unsigned int right);
 		void getVolume(unsigned int *left, unsigned int *right);
-		void setVolumePercent(const unsigned int percent, t_channel_id channel_id = 0, const unsigned int apid = 0);
-		void getVolumePercent(unsigned int *percent, t_channel_id channel_id = 0, const unsigned int apid = 0, const bool is_ac3 = false);
+		void setVolumePercent(const unsigned int percent, t_channel_id channel_id, const unsigned int apid);
+		void getVolumePercent(unsigned int *percent, t_channel_id channel_id, const unsigned int apid, const bool is_ac3 = false);
 		void setAudioChannel(const unsigned int channel);
 		void setVideoSystem(int video_system);
 		//// needed by nhttpd controlapi
