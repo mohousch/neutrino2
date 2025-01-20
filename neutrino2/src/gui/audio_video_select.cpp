@@ -400,7 +400,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 	if (extnumpids || numpids)
 	{
 		AVPIDSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-		AVPIDSelector->addItem(new CMenuForwarder(_("Stop subtitles"), true, NULL, &AVSubPIDChanger, "off", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE));
+		AVPIDSelector->addItem(new CMenuForwarder(_("Stop subtitles"), true, NULL, &AVSubPIDChanger, "off", CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW));
 	}
 #endif
 
