@@ -1539,7 +1539,6 @@ void CNeutrinoApp::channelsInit()
 	sat_iterator_t sit;
 	for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 	{
-		tvi = 0, ri = 0;
 		CBouquet * tmp1 = TVsatList->addBouquet(sit->second.name.c_str());
 		CBouquet * tmp2 = RADIOsatList->addBouquet(sit->second.name.c_str());
 
@@ -1550,20 +1549,18 @@ void CNeutrinoApp::channelsInit()
 				if (it->second.getServiceType() == ST_DIGITAL_TELEVISION_SERVICE) 
 				{
 					tmp1->channelList->addChannel(&(it->second));
-					tvi++;
 				}
 				else if (it->second.getServiceType() == ST_DIGITAL_RADIO_SOUND_SERVICE) 
 				{
 					tmp2->channelList->addChannel(&(it->second));
-					ri++;
 				}
 			}
 		}
 
-		if (tvi == 0)
+		if (tmp1->channelList->getSize() == 0)
 			TVsatList->deleteBouquet(tmp1);
 
-		if(ri == 0)
+		if(tmp2->channelList->getSize() == 0)
 			RADIOsatList->deleteBouquet(tmp2);
 	}
 
