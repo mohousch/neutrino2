@@ -38,7 +38,7 @@
 
 
 ////
-class CAVPIDChangeExec : public CMenuTarget
+class CAVPIDChangeExec : public CMenuTarget, CChangeObserver
 {
 	public:
 		int exec(CMenuTarget* parent, const std::string & actionKey);

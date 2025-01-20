@@ -75,57 +75,13 @@ std::string subtitle_file;
 //
 extern cPlayback *playback;
 
-// aspect ratio
-#if defined (__sh__)
-#define VIDEOMENU_VIDEORATIO_OPTION_COUNT 2
-const keyval VIDEOMENU_VIDEORATIO_OPTIONS[VIDEOMENU_VIDEORATIO_OPTION_COUNT] =
+#define AUDIOMENU_ANALOGOUT_OPTION_COUNT 3
+const keyval AUDIOMENU_ANALOGOUT_OPTIONS[AUDIOMENU_ANALOGOUT_OPTION_COUNT] =
 {
-	{ ASPECTRATIO_43, "4:3" },
-	{ ASPECTRATIO_169, "16:9" }
+	{ 0, _("stereo")   },
+	{ 1, _("mono left") },
+	{ 2, _("mono right") }
 };
-#else
-#define VIDEOMENU_VIDEORATIO_OPTION_COUNT 3
-const keyval VIDEOMENU_VIDEORATIO_OPTIONS[VIDEOMENU_VIDEORATIO_OPTION_COUNT] =
-{
-	{ ASPECTRATIO_43, "4:3" },
-	{ ASPECTRATIO_169, "16:9" },
-	{ ASPECTRATIO_AUTO, "Auto" }
-};
-#endif
-
-// policy
-#if defined (__sh__)
-/*
-letterbox 
-panscan 
-non 
-bestfit
-*/
-#define VIDEOMENU_VIDEOFORMAT_OPTION_COUNT 4
-const keyval VIDEOMENU_VIDEOFORMAT_OPTIONS[VIDEOMENU_VIDEOFORMAT_OPTION_COUNT] = 
-{
-	{ VIDEOFORMAT_LETTERBOX, "Letterbox" },
-	{ VIDEOFORMAT_PANSCAN, "Panscan" },
-	{ VIDEOFORMAT_FULLSCREEN, "Fullscreen" },
-	{ VIDEOFORMAT_PANSCAN2, "Bestfit" }
-};
-#else
-// giga/generic
-/*
-letterbox 
-panscan 
-bestfit 
-nonlinear
-*/
-#define VIDEOMENU_VIDEOFORMAT_OPTION_COUNT 4
-const keyval VIDEOMENU_VIDEOFORMAT_OPTIONS[VIDEOMENU_VIDEOFORMAT_OPTION_COUNT] = 
-{
-	{ VIDEOFORMAT_LETTERBOX, "letterbox" },
-	{ VIDEOFORMAT_PANSCAN, "panscan" },
-	{ VIDEOFORMAT_PANSCAN2, "bestfit" },
-	{ VIDEOFORMAT_FULLSCREEN, "fullscreen" }
-};
-#endif
 
 #define AC3_OPTION_COUNT 2
 const keyval AC3_OPTIONS[AC3_OPTION_COUNT] =
@@ -365,19 +321,13 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 		}
 		
 		AVPIDSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	} 
+	}
+	
+	// analogue output
+	AVPIDSelector->addItem(new CMenuOptionChooser(_("Analog Output"), &g_settings.audio_AnalogMode, AUDIOMENU_ANALOGOUT_OPTIONS, AUDIOMENU_ANALOGOUT_OPTION_COUNT, true, CAudioSettings::getInstance()->audioSetupNotifier, CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	
 	//ac3				
-	AVPIDSelector->addItem(new CMenuOptionChooser(_("Dolby Digital"), &g_settings.hdmi_dd, AC3_OPTIONS, AC3_OPTION_COUNT, true, CAudioSettings::getInstance()->audioSetupNotifier, CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED ));				
-				
-	// policy/aspect ratio
-	AVPIDSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-				
-	// video aspect ratio 4:3/16:9
-	AVPIDSelector->addItem(new CMenuOptionChooser(_("TV-System"), &g_settings.video_Ratio, VIDEOMENU_VIDEORATIO_OPTIONS, VIDEOMENU_VIDEORATIO_OPTION_COUNT, true, CVideoSettings::getInstance()->videoSetupNotifier, CRCInput::RC_green, NEUTRINO_ICON_BUTTON_GREEN));
-	
-	// video format bestfit/letterbox/panscan/non
-	AVPIDSelector->addItem(new CMenuOptionChooser(_("Video Format"), &g_settings.video_Format, VIDEOMENU_VIDEOFORMAT_OPTIONS, VIDEOMENU_VIDEOFORMAT_OPTION_COUNT, true, CVideoSettings::getInstance()->videoSetupNotifier, CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW));
+	AVPIDSelector->addItem(new CMenuOptionChooser(_("Dolby Digital"), &g_settings.hdmi_dd, AC3_OPTIONS, AC3_OPTION_COUNT, true, CAudioSettings::getInstance()->audioSetupNotifier, CRCInput::RC_green, NEUTRINO_ICON_BUTTON_GREEN ));				
 	
 	// subs
 	CAVSubPIDChangeExec AVSubPIDChanger;
