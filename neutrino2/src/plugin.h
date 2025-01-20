@@ -217,8 +217,8 @@ extern CScanSettings * scanSettings;
 extern int sectionsd_stop;				// defined in sectionsd.cpp
 extern bool timeset;
 //Audio/Video Decoder
-extern cVideo 		* videoDecoder;		//libcoolstream (video_cs.cpp)
-extern cAudio 		* audioDecoder;		//libcoolstream (audio_cs.cpp)
+extern cVideo 		* videoDecoder;		// libdvbapi (video_cs.cpp)
+extern cAudio 		* audioDecoder;		// libdvbapi (audio_cs.cpp)
 /* bouquets lists */
 extern CBouquetList   		* bouquetList; 				//current bqt list
 extern CBouquetList   		* TVbouquetList;

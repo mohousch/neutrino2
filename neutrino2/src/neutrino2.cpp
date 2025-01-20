@@ -1550,22 +1550,20 @@ void CNeutrinoApp::channelsInit()
 				if (it->second.getServiceType() == ST_DIGITAL_TELEVISION_SERVICE) 
 				{
 					tmp1->channelList->addChannel(&(it->second));
+					tvi++;
 				}
 				else if (it->second.getServiceType() == ST_DIGITAL_RADIO_SOUND_SERVICE) 
 				{
 					tmp2->channelList->addChannel(&(it->second));
+					ri++;
 				}
 			}
 		}
 
-		if(tvi)
-			;
-		else
+		if (tvi == 0)
 			TVsatList->deleteBouquet(tmp1);
 
-		if(ri)
-			;
-		else
+		if(ri == 0)
 			RADIOsatList->deleteBouquet(tmp2);
 	}
 

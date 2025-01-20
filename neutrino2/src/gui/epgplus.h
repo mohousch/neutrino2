@@ -244,7 +244,6 @@ class EpgPlus
 			public:
 				MenuTargetAddReminder( EpgPlus* _epgPlus);
 
-			public:
 				int exec(CMenuTarget* parent, const std::string& actionKey);
 
 			private:
@@ -256,9 +255,8 @@ class EpgPlus
 		class MenuTargetAddRecordTimer : public CMenuTarget
 		{
 			public:
-				MenuTargetAddRecordTimer ( EpgPlus* _epgPlus);
+				MenuTargetAddRecordTimer( EpgPlus* _epgPlus);
 
-			public:
 				int exec(CMenuTarget* parent , const std::string& actionKey);
 
 			private:
@@ -270,9 +268,8 @@ class EpgPlus
 		class MenuTargetRefreshEpg : public CMenuTarget
 		{
 			public:
-				MenuTargetRefreshEpg ( EpgPlus* _epgPlus);
+				MenuTargetRefreshEpg( EpgPlus* _epgPlus);
 
-			public:
 				int exec(CMenuTarget* parent, const std::string& actionKey);
 
 			private:

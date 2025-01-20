@@ -111,7 +111,7 @@ void CNeutrinoApp::mainMenu(void)
 		// iteminfo
 		if (g_settings.item_info)
 		{
-			if (nMenu) nMenu->enablePaintItemInfo();
+			nMenu->enablePaintItemInfo();
 		}
 		
 		//
@@ -127,7 +127,7 @@ void CNeutrinoApp::mainMenu(void)
 		item->setIconName(NEUTRINO_ICON_BUTTON_RED);
 		item->setDirectKey(CRCInput::RC_red);
 		item->setState(g_settings.personalize_tvradio);
-		if (nMenu) nMenu->addItem(item);
+		nMenu->addItem(item);
 
 		// epg / sleeptimer
 		item = new CMenuForwarder(_("EPG / Timer"), true, NULL, new CEPGMenuHandler(), NULL);
@@ -136,7 +136,7 @@ void CNeutrinoApp::mainMenu(void)
 		item->setIconName(NEUTRINO_ICON_BUTTON_GREEN);
 		item->setDirectKey(CRCInput::RC_green);
 		item->setState(g_settings.personalize_epgtimer);
-		if (nMenu) nMenu->addItem(item);
+		nMenu->addItem(item);
 			
 #if defined (ENABLE_SCART)
 		// scart
@@ -145,7 +145,7 @@ void CNeutrinoApp::mainMenu(void)
 		item->setHint(_("Here you can switch to scart modus"));
 		item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
 		item->setState(g_settings.personalize_scart);
-		if (nMenu) nMenu->addItem(item);
+		nMenu->addItem(item);
 #endif
 
 		// features
@@ -155,7 +155,7 @@ void CNeutrinoApp::mainMenu(void)
 		item->setIconName(NEUTRINO_ICON_BUTTON_BLUE);
 		item->setDirectKey(CRCInput::RC_blue);
 		item->setState(g_settings.personalize_features);
-		if (nMenu) nMenu->addItem(item);
+		nMenu->addItem(item);
 		
 		// service
 		item = new CMenuForwarder(_("Service"), true, NULL, new CServiceMenu(), NULL);
@@ -164,7 +164,7 @@ void CNeutrinoApp::mainMenu(void)
 		item->setIconName(NEUTRINO_ICON_BUTTON_1);
 		item->setDirectKey(CRCInput::RC_1);
 		item->setState(g_settings.personalize_service);
-		if (nMenu) nMenu->addItem(item);
+		nMenu->addItem(item);
 			
 		// main setting
 		item = new CMenuForwarder(_("Settings"), true, NULL, new CMainSettingsMenu(), NULL);
@@ -172,7 +172,7 @@ void CNeutrinoApp::mainMenu(void)
 		item->setHint(_("Here you can setup your box"));
 		item->setIconName(NEUTRINO_ICON_BUTTON_2);
 		item->setDirectKey(CRCInput::RC_2);
-		if (nMenu) nMenu->addItem(item);
+		nMenu->addItem(item);
 		
 		// osd
 		item = new CMenuForwarder(_("OSD"), true, NULL, new COSDSettings(), NULL);
@@ -180,7 +180,7 @@ void CNeutrinoApp::mainMenu(void)
 		item->setHint(_("Here you can setup OSD"));
 		item->setIconName(NEUTRINO_ICON_BUTTON_3);
 		item->setDirectKey(CRCInput::RC_3);
-		if (nMenu) nMenu->addItem(item);
+		nMenu->addItem(item);
 		
 		// information
 		item = new CMenuForwarder(_("Information"), true, NULL, new CInfoMenu(), NULL);
@@ -189,7 +189,7 @@ void CNeutrinoApp::mainMenu(void)
 		item->setIconName(NEUTRINO_ICON_BUTTON_INFO_SMALL);
 		item->setDirectKey(CRCInput::RC_info);
 		item->setState(g_settings.personalize_information);
-		if (nMenu) nMenu->addItem(item);
+		nMenu->addItem(item);
 
 		// power menu
 		item = new CMenuForwarder(_("Power Menu"), true, NULL, new CPowerMenu(), NULL);
@@ -198,7 +198,7 @@ void CNeutrinoApp::mainMenu(void)
 		item->setIconName(NEUTRINO_ICON_BUTTON_POWER);
 		item->setDirectKey(CRCInput::RC_standby);
 		item->setState(g_settings.personalize_powermenu);
-		if (nMenu) nMenu->addItem(item);
+		nMenu->addItem(item);
 		
 		// mediaplayer
 		item = new CMenuForwarder(_("Media Player"), true, NULL, new CMediaPlayerMenu(), NULL);
@@ -207,10 +207,10 @@ void CNeutrinoApp::mainMenu(void)
 		item->setIconName(NEUTRINO_ICON_BUTTON_PLAY_SMALL);
 		item->setDirectKey(CRCInput::RC_video);
 		item->setState(g_settings.personalize_mediaplayer);
-		if (nMenu) nMenu->addItem(item);
+		nMenu->addItem(item);
 		
 		//
-		if (nMenu) nMenu->integratePlugins(CPlugins::I_TYPE_MAIN);
+		nMenu->integratePlugins(CPlugins::I_TYPE_MAIN);
 	}
 
 	//
@@ -389,7 +389,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 		// iteminfo
 		if (g_settings.item_info)
 		{
-			if (menu) menu->enablePaintItemInfo();
+			menu->enablePaintItemInfo();
 		}
 		
 		//
