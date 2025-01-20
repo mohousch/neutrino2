@@ -226,13 +226,14 @@ int CAudioSelectMenuHandler::doMenu()
 		
 		if(sep_added) 
 		{
-			AudioSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+//			AudioSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 			AudioSelector->addItem(new CMenuForwarder(_("Stop subtitles"), true, NULL, &SubtitleChanger, "off", CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW ));
 		}
 
 	}
 	
 	// volume percent
+	sep_added = false;
 	int percent[g_RemoteControl->current_PIDs.APIDs.size()] = {0};
 	
 	for(count = 0; count < g_RemoteControl->current_PIDs.APIDs.size(); count++) 
