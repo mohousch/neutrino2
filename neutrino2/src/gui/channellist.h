@@ -97,13 +97,12 @@ class CChannelList
 		CChannelEventList events;
 
 		bool historyMode;
-		bool vlist; 		// "virtual" list, not bouquet
 		bool displayNext;
 
 		SMSKeyInput c_SMSKeyInput;
 
 	public:
-		CChannelList(const char * const Name, bool _historyMode = false, bool _vlist = false );
+		CChannelList(const char * const Name, bool _historyMode = false);
 		~CChannelList();
 		
 		void addChannel(CZapitChannel* chan);

@@ -693,7 +693,7 @@ void CStreamInfo::paint_techinfo(int xpos, int ypos)
 	sprintf ((char *) buf, "%s:", _("Satellite"));//swiped locale
 	g_Font[font_info]->RenderString(xpos, ypos, width*2/3 - 10, buf, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 
-	t_satellite_position satellitePosition = CNeutrinoApp::getInstance ()->channelList->getActiveSatellitePosition ();
+	t_satellite_position satellitePosition = CNeutrinoApp::getInstance()->getChannelList()->getActiveSatellitePosition ();
 	sat_iterator_t sit = satellitePositions.find(satellitePosition);
 
 	if(IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
@@ -710,7 +710,7 @@ void CStreamInfo::paint_techinfo(int xpos, int ypos)
 	}
 
 	// channel
-	CChannelList *channelList = CNeutrinoApp::getInstance()->channelList;
+	CChannelList *channelList = CNeutrinoApp::getInstance()->getChannelList();
 
 	ypos += iheight;
 	sprintf ((char *) buf, "%s:", _("Channel"));//swiped locale

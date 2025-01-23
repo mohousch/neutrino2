@@ -672,7 +672,7 @@ bool CChannelListSettings::changeNotify(const std::string& OptionName, void */*d
 	if(OptionName == _("Create list of HD channels")) // HD bouquet
 	{
 		CNeutrinoApp::getInstance()->channelsInit();
-		CNeutrinoApp::getInstance()->channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
+		CNeutrinoApp::getInstance()->getChannelList()->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
 		
 		return true;
 	}

@@ -1537,14 +1537,14 @@ void CNeutrinoApp::channelsInit()
 	int bnum = 0;
 	
 	sat_iterator_t sit;
-	for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
+	for (sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 	{
 		CBouquet * tmp1 = TVsatList->addBouquet(sit->second.name.c_str());
 		CBouquet * tmp2 = RADIOsatList->addBouquet(sit->second.name.c_str());
 
 		for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++) 
 		{
-			if(it->second.getSatellitePosition() == sit->first && !it->second.isWEBTV()) //FIXME: 
+			if (it->second.getSatellitePosition() == sit->first && !it->second.isWEBTV()) //FIXME: 
 			{
 				if (it->second.getServiceType() == ST_DIGITAL_TELEVISION_SERVICE) 
 				{
@@ -1664,7 +1664,7 @@ void CNeutrinoApp::channelsInit()
 	}
 
 	//
-	setChannelMode( g_settings.channel_mode, mode);
+	setChannelMode(g_settings.channel_mode, mode);
 	
 	// loadwebtvlogos
 	if (g_settings.logos_show_logo)
@@ -1683,12 +1683,6 @@ void CNeutrinoApp::setChannelMode(int newmode, int nMode)
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::setChannelMode: ChannelsMode: %s nMode: %d\n", aLISTMODE[newmode], nMode);
 
 	chmode = nMode;
-
-	// channelList
-	if(nMode == mode_radio)
-		channelList = RADIOchannelList;
-	else if(nMode == mode_tv)
-		channelList = TVchannelList;
 
 	// bouquetList
 	switch(newmode) 
@@ -1738,6 +1732,12 @@ void CNeutrinoApp::setChannelMode(int newmode, int nMode)
 			}
 			break;
 	}
+	
+	// channelList // FIXME:
+	if(nMode == mode_radio)
+		channelList = RADIOchannelList;
+	else if(nMode == mode_tv)
+		channelList = TVchannelList;
 
 	g_settings.channel_mode = newmode;
 }

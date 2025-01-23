@@ -697,7 +697,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 
 		if (virtual_zap_mode)
 		{
-			CNeutrinoApp::getInstance()->channelList->virtual_zap_mode(msg == CRCInput::RC_right);
+			CNeutrinoApp::getInstance()->getChannelList()/*channelList*/->virtual_zap_mode(msg == CRCInput::RC_right);
 			virtual_zap_mode = false;
 		}
 	}
@@ -1081,7 +1081,7 @@ void CInfoViewer::showIcon_SubT() const
 	
         bool have_sub = false;
 
-	CZapitChannel * cc = CNeutrinoApp::getInstance()->channelList->getChannel(CNeutrinoApp::getInstance()->channelList->getActiveChannelNumber());
+	CZapitChannel * cc = CNeutrinoApp::getInstance()->getChannelList()->getChannel(CNeutrinoApp::getInstance()->getChannelList()->getActiveChannelNumber());
 
 	if(cc && cc->getSubtitleCount())
 		have_sub = true;

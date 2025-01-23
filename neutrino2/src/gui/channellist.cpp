@@ -106,7 +106,7 @@ const struct button_label HeadButtons[HEAD_BUTTONS_COUNT] =
 };
 
 ////
-CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vlist)
+CChannelList::CChannelList(const char * const Name, bool _historyMode)
 {
 	frameBuffer = CFrameBuffer::getInstance();
 
@@ -114,7 +114,6 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 	selected = -1;
 	tuned = 0xfffffff;
 	this->historyMode = _historyMode;
-	vlist = _vlist;
 	displayNext = false;
 	tuned_chid = 0;
 	
@@ -900,7 +899,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 	dprintf(DEBUG_NORMAL, "CChannelList::zapTo (%s) tuned %d id:0x%llx new %d (%s) id: 0x%llx\n", name.c_str(), tuned, tuned_chid, pos, chanlist[pos]->name.c_str(), chanlist[pos]->channel_id);
 	
 	// zap
-	if ( /*(pos != tuned) || (chanlist[pos]->channel_id != tuned_chid)*/true || rezap )
+	if ( (pos != tuned) /*|| (chanlist[pos]->channel_id != tuned_chid)*/ || rezap )
 	{ 
 		// stop radiotext
 		if ((g_settings.radiotext_enable) && ((CNeutrinoApp::getInstance()->getMode()) == CNeutrinoApp::mode_radio) && (g_Radiotext))
@@ -968,8 +967,8 @@ int CChannelList::numericZap(int key)
 		// current transponder bouquet
 		if(!autoshift && CNeutrinoApp::getInstance()->recordingstatus && !IS_WEBTV(CZapit::getInstance()->getRecordChannelID())) 
 		{
-			CChannelList * orgList = CNeutrinoApp::getInstance()->channelList;
-			CChannelList * channelList = new CChannelList(_("Current transponder"), false, true);
+			CChannelList * orgList = CNeutrinoApp::getInstance()->getChannelList();
+			CChannelList * channelList = new CChannelList(_("Current transponder"), false);
 			
 			t_channel_id recid = CZapit::getInstance()->getRecordChannelID() >> 16;
 			
@@ -997,10 +996,10 @@ int CChannelList::numericZap(int key)
 			return res;
 		}
 		
-		// -- zap history bouquet
+		// zap history bouquet
 		if (this->lastChList.size() > 1) 
 		{
-			CChannelList * channelList = new CChannelList(_("History"), true, true);
+			CChannelList * channelList = new CChannelList(_("History"), true);
 
 			for(unsigned int i = 1 ; i < this->lastChList.size() ; ++i) 
 			{
@@ -1031,8 +1030,8 @@ int CChannelList::numericZap(int key)
 	// pip key
 	if(key == g_settings.key_pip )
 	{
-		CChannelList * orgList = CNeutrinoApp::getInstance()->channelList;
-		CChannelList * channelList = new CChannelList(_("Current transponder"), false, true);
+		CChannelList * orgList = CNeutrinoApp::getInstance()->getChannelList();
+		CChannelList * channelList = new CChannelList(_("Current transponder"), false);
 			
 		t_channel_id pipid = CZapit::getInstance()->getCurrentChannelID() >> 16;
 			
@@ -1337,7 +1336,7 @@ void CChannelList::quickZap(int key, bool cycle)
 	dprintf(DEBUG_NORMAL, "CChannelList::quickZap: quick zap selected = %d getActiveBouquetNumber %d\n", selected, bouquetList->getActiveBouquetNumber());
 
 	if(cycle)
-		CNeutrinoApp::getInstance()->channelList->zapTo(bouquetList->Bouquets[bouquetList->getActiveBouquetNumber()]->channelList->getKey(selected) - 1);
+		CNeutrinoApp::getInstance()->getChannelList()->zapTo(bouquetList->Bouquets[bouquetList->getActiveBouquetNumber()]->channelList->getKey(selected) - 1);
 	else
         	zapTo(selected);
 

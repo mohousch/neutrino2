@@ -424,9 +424,9 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	CSectionsd::getInstance()->pauseScanning(false);
 
 	// zap
-	if (CNeutrinoApp::getInstance()->channelList)
+	if (CNeutrinoApp::getInstance()->getChannelList())
 	{
-		CNeutrinoApp::getInstance()->channelList->zapToChannelID(CNeutrinoApp::getInstance()->channelList->getActiveChannel_ChannelID(), true);
+		CNeutrinoApp::getInstance()->getChannelList()->zapToChannelID(CNeutrinoApp::getInstance()->getChannelList()->getActiveChannel_ChannelID(), true);
 	}
 	
 	//

@@ -117,6 +117,12 @@ class CNeutrinoApp : public CMenuTarget
 		////
 		fb_pixel_t * vol_pixbuf;
 		CCIcon *muteIcon;
+		
+		////
+		CChannelList* TVchannelList;
+		CChannelList* RADIOchannelList;
+		CChannelList* channelList;
+		////
 
 		////
 		void firstChannel();
@@ -187,9 +193,9 @@ class CNeutrinoApp : public CMenuTarget
 		void audioMute( int newValue, bool isEvent= false );
 		void setVolume(const neutrino_msg_t key, const bool bDoPaint = true);
 		//// channellist
-		CChannelList* TVchannelList;
-		CChannelList* RADIOchannelList;
-		CChannelList* channelList;
+		CChannelList *getTVChannelList(){return TVchannelList;};
+		CChannelList *getRADIOChannelList(){return RADIOchannelList;};
+		CChannelList *getChannelList(){return channelList;};
 		////
 		void channelsInit();
 		////

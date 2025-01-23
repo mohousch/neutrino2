@@ -1227,7 +1227,7 @@ int CEPGplusHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
 	if(bouquetList->Bouquets.size() && bouquetList->Bouquets[old_b]->channelList->getSize() > 0)
 		channelList = bouquetList->Bouquets[old_b]->channelList;
 	else
-		channelList = CNeutrinoApp::getInstance()->channelList;
+		channelList = CNeutrinoApp::getInstance()->getChannelList();
 
 	res = e->exec(channelList, channelList->getSelectedChannelIndex());
 

@@ -109,9 +109,7 @@ int CDVBSubSelectMenuHandler::doMenu()
 	unsigned int count;
 
 	//dvb/tuxtxt subs
-	CChannelList * channelList = CNeutrinoApp::getInstance ()->channelList;
-	int curnum = channelList->getActiveChannelNumber();
-	CZapitChannel * cc = channelList->getChannel(curnum);
+	CZapitChannel * cc = CZapit::getInstance()->getCurrentChannel();
 
 	bool sep_added = false;
 	if(cc) 
