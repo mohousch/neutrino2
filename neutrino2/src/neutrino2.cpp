@@ -1662,9 +1662,6 @@ void CNeutrinoApp::channelsInit()
 			}
 		}
 	}
-
-	//
-	setChannelMode(g_settings.channel_mode, mode);
 	
 	// loadwebtvlogos
 	if (g_settings.logos_show_logo)
@@ -1734,10 +1731,20 @@ void CNeutrinoApp::setChannelMode(int newmode, int nMode)
 	}
 	
 	// channelList // FIXME:
-	if(nMode == mode_radio)
-		channelList = RADIOchannelList;
-	else if(nMode == mode_tv)
-		channelList = TVchannelList;
+	int old_b = 0;
+	
+	if ((bouquetList != NULL) && !(bouquetList->Bouquets.empty()))
+		old_b = bouquetList->getActiveBouquetNumber();
+				
+	if(bouquetList->Bouquets.size() && bouquetList->Bouquets[old_b]->channelList->getSize() > 0)
+		channelList = bouquetList->Bouquets[old_b]->channelList;
+	else
+	{
+		if(nMode == mode_radio)
+			channelList = RADIOchannelList;
+		else if(nMode == mode_tv)
+			channelList = TVchannelList;
+	}
 
 	g_settings.channel_mode = newmode;
 }
@@ -2174,24 +2181,19 @@ void CNeutrinoApp::initZapper()
 			CSectionsd::getInstance()->readSIfromXMLTV(g_settings.xmltv[i].c_str());
 		}
 	}
-
-	// first channel
-//	firstChannel();
+	
+	// init channel / setChannelsMode
+	channelsInit();
 
 	// getchannelsMode
 	int tvmode = CZapit::getInstance()->getMode();
 
 	if (tvmode == CZapit::MODE_TV)
-		//mode = mode_tv;
 		tvMode(false);
 	else if (tvmode == CZapit::MODE_RADIO)
-		//mode = mode_radio;
 		radioMode(false);
 
 	lastMode = mode;
-	
-	// init channel / setChannelsMode
-	channelsInit();
 	
 	// start epgTimer
 	epgUpdateTimer = g_RCInput->addTimer( 60 * 1000 * 1000, false );
