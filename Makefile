@@ -47,6 +47,8 @@ CFLAGS += -D__KERNEL_STRICT_NAMES
 CFLAGS += -D__STDC_FORMAT_MACROS
 CFLAGS += -D__STDC_CONSTANT_MACROS
 #CFLAGS += -fsanitize=address
+#CFLAGS += -Wno-analyzer-double-free
+#CFLAGS += -Wno-analyzer-malloc-leak
 
 CXXFLAGS = $(CFLAGS) 
 

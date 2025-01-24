@@ -354,8 +354,8 @@ void CRecord::Stop()
 	// set lastmode
 	if(last_mode != CNeutrinoApp::mode_scart)
 	{
-		g_RCInput->postMsg( NeutrinoMessages::VCR_OFF);
-		g_RCInput->postMsg( NeutrinoMessages::CHANGEMODE , (const neutrino_msg_data_t)last_mode);
+		g_RCInput->postMsg( NeutrinoMessages::RECORD_OFF);
+		g_RCInput->postMsg( NeutrinoMessages::CHANGEMODE, (const neutrino_msg_data_t)last_mode);
 	}
 	
 	// cleanup
@@ -426,10 +426,10 @@ bool CRecord::doRecord(const t_channel_id channel_id, int mode, const event_id_t
 	if(SwitchToScart)
 	{
 		// Auf Scart schalten
-		CNeutrinoApp::getInstance()->handleMsg( NeutrinoMessages::VCR_ON, 0 );
+		CNeutrinoApp::getInstance()->handleMsg( NeutrinoMessages::RECORD_ON, 0 );
 		// Das ganze nochmal in die queue, da obiges RC_timeout erst in der naechsten ev. loop ausgef�hrt wird
 		// und dann das menu widget das display falsch r�cksetzt
-		g_RCInput->postMsg( NeutrinoMessages::VCR_ON);
+		g_RCInput->postMsg( NeutrinoMessages::RECORD_ON);
 	}
 
 	deviceState = CMD_RECORD_RECORD;

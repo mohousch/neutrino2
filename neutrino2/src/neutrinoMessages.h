@@ -49,9 +49,9 @@ struct NeutrinoMessages
 		SHOW_EPG				 = CRCInput::RC_Messages + 1,
 		SHOW_INFOBAR				 = CRCInput::RC_Messages + 2,
 		
-		// vcrcontrol
-		VCR_ON					 = CRCInput::RC_Messages + 3,
-		VCR_OFF					 = CRCInput::RC_Messages + 4,
+		// record
+		RECORD_ON					 = CRCInput::RC_Messages + 3,
+		RECORD_OFF					 = CRCInput::RC_Messages + 4,
 		
 		// nhttpd
 		STANDBY_ON				 = CRCInput::RC_Messages + 5,
@@ -70,7 +70,7 @@ struct NeutrinoMessages
 		ANNOUNCE_SLEEPTIMER			 = CRCInput::RC_Messages + 14,
 		SLEEPTIMER				 = CRCInput::RC_Messages + 15,
 		
-		// nhttpd / vcrcontrol
+		// nhttpd / record
 		CHANGEMODE				 = CRCInput::RC_Messages + 16,
 		
 		// timerd

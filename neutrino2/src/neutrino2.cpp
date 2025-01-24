@@ -2572,6 +2572,7 @@ void CNeutrinoApp::tvMode( bool rezap )
 	// rezap
 	if( rezap ) 
 	{
+		// FIXME:
 		firstChannel();
 		channelList->tuned = 0xfffffff;
 		channelList->zapTo(firstchannel.channelNumber);
@@ -2635,6 +2636,7 @@ void CNeutrinoApp::radioMode( bool rezap)
 	
 	if( rezap ) 
 	{
+		// FIXME:
 		firstChannel();
 		channelList->tuned = 0xfffffff;
 		channelList->zapTo(firstchannel.channelNumber);
@@ -2819,7 +2821,6 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 	}
 }
 
-// exec, menuitem callback (shutdown)
 int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::exec: actionKey: %s\n", actionKey.c_str());
@@ -2861,7 +2862,7 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 	else if(actionKey == "scart") 
 	{
-		g_RCInput->postMsg( NeutrinoMessages::VCR_ON);
+		g_RCInput->postMsg( NeutrinoMessages::RECORD_ON);
 		returnval = RETURN_EXIT_ALL;
 	}
 	else if (actionKey == "tvradioswitch")
@@ -3917,7 +3918,7 @@ _repeat:
 			mode = mode_ts;
 		}
 	}	
-	else if( msg == NeutrinoMessages::VCR_ON ) 
+	else if( msg == NeutrinoMessages::RECORD_ON ) 
 	{
 		if( mode != mode_scart ) 
 		{
@@ -3928,7 +3929,7 @@ _repeat:
 			CLCD::getInstance()->setMode(CLCD::MODE_SCART);
 		}
 	}	
-	else if( msg == NeutrinoMessages::VCR_OFF ) 
+	else if( msg == NeutrinoMessages::RECORD_OFF ) 
 	{
 		if( mode == mode_scart ) 
 		{
