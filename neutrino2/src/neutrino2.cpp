@@ -1430,7 +1430,7 @@ void CNeutrinoApp::firstChannel()
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::firstChannel\n");
 
-	CZapit::getInstance()->getLastChannel(firstchannel.channelNumber, firstchannel.mode);
+	CZapit::getInstance()->getLastChannel(firstchannel.id, firstchannel.channelNumber, firstchannel.mode);
 }
 
 // CNeutrinoApp -  channelsInit, get the Channellist from zapit

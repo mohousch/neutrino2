@@ -3746,21 +3746,24 @@ void *CZapit::updatePMTFilter(void *)
 }
 
 //
-void CZapit::getLastChannel(unsigned int &channumber, int &mode)
+void CZapit::getLastChannel(t_channel_id &channelid, unsigned int &channumber, int &mode)
 {
 	lastChannel lastChannel;
 	
 	if (currentMode & RADIO_MODE)
 	{
+		lastChannel.id = lastChannelRadio_id;
 		lastChannel.mode = MODE_RADIO;
 		lastChannel.channelNumber = lastChannelRadio;
 	}
 	else if (currentMode & TV_MODE)
 	{
+		lastChannel.id = lastChannelTV_id;
 		lastChannel.mode = MODE_TV;
 		lastChannel.channelNumber = lastChannelTV;
 	}
 	
+	channelid = lastChannel.id;
 	channumber = lastChannel.channelNumber;
 	mode = lastChannel.mode;
 }

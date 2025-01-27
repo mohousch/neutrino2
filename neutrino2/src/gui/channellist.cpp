@@ -912,7 +912,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 		tuned = pos;
 		tuned_chid = chanlist[pos]->channel_id;
 		
-		g_RemoteControl->zapToChannelID(chanlist[pos]->channel_id, !chanlist[pos]->bAlwaysLocked); // UTF-8
+		g_RemoteControl->zapToChannelID(chanlist[pos]->channel_id, !chanlist[pos]->bAlwaysLocked);
 		
 		// adjust to ID
 		if (bouquetList != NULL) 

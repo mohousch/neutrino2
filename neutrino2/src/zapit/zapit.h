@@ -135,6 +135,7 @@ class CZapit
 
 		struct lastChannel
 		{
+			t_channel_id id;
 			unsigned int channelNumber;
 			int mode;
 		};
@@ -477,7 +478,7 @@ class CZapit
 		void setZapitConfig(zapit_config * Cfg);
 		void getZapitConfig(zapit_config *Cfg);
 		//
-		void getLastChannel(unsigned int &channumber, int &mode);
+		void getLastChannel(t_channel_id &channelid, unsigned int &channumber, int &mode);
 		int getMode(void);
 		void setMode(const channelsMode mode);
 		// playback
