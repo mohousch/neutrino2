@@ -188,7 +188,7 @@ class CFrameBox : public CComponent
 		void setSelected(unsigned int _new) { /*if(_new <= frames.size())*/ selected = _new; };
 		//// 
 		void initFrames();
-		void paint();
+		void paint(bool _selected = false);
 		void hide();
 		//// main properties
 		void setColor(fb_pixel_t col){bgcolor = col;};

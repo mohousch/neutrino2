@@ -422,7 +422,7 @@ void CCIcon::restoreScreen(void)
 }
 
 //// FIXME:
-void CCIcon::paint()
+void CCIcon::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCIcon::paint\n");
 	
@@ -517,7 +517,7 @@ void CCImage::restoreScreen(void)
 }
 
 //
-void CCImage::paint()
+void CCImage::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCImage::paint\n");
 	
@@ -618,7 +618,7 @@ void CCButtons::addButton(const char *btn, const char *lname, const fb_pixel_t c
 	count++;
 }
 
-void CCButtons::paint()
+void CCButtons::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCButtons::CCButtons:paint:\n");
 	
@@ -823,7 +823,7 @@ CCHline::CCHline(const int x, const int y, const int dx, const int dy)
 	cc_type = CC_HLINE;
 }
 
-void CCHline::paint()
+void CCHline::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCHline::paint\n");
 	
@@ -860,7 +860,7 @@ CCVline::CCVline(const int x, const int y, const int dx, const int dy)
 	cc_type = CC_VLINE;
 }
 
-void CCVline::paint()
+void CCVline::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCVline::paint\n");
 	
@@ -893,7 +893,7 @@ CCFrameLine::CCFrameLine(const int x, const int y, const int dx, const int dy)
 }
 
 //
-void CCFrameLine::paint()
+void CCFrameLine::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCFrameLine::paint\n");
 	
@@ -942,7 +942,7 @@ void CCGrid::init()
 	cc_type = CC_GRID;
 }
 
-void CCGrid::paint()
+void CCGrid::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCGrid::paint\n");
 	
@@ -1035,7 +1035,7 @@ void CCLabel::enableSaveScreen()
 	saveScreen();
 }
 
-void CCLabel::paint()
+void CCLabel::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCLabel::paint\n");
 	
@@ -1243,7 +1243,7 @@ void CCText::processTextToArray(std::string text) // UTF-8
 	addTextToArray( aktLine + aktWord );
 }
 
-void CCText::paint()
+void CCText::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCText::paint\n");
 	
@@ -1363,7 +1363,7 @@ void CCTime::paintDigits(void)
 	g_Font[font]->RenderString(startPosX, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), timestr_len, timestr.c_str(), color);
 }
 
-void CCTime::paint()
+void CCTime::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCTime::paint: x:%d y:%d dx:%d dy:%d\n", itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
 	
@@ -1478,7 +1478,7 @@ void CCCounter::paintDigits(void)
 	g_Font[font]->RenderString(itemBox.iX + itemBox.iWidth/2, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), itemBox.iWidth/2, totalTime, color, 0, true);
 }
 
-void CCCounter::paint()
+void CCCounter::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCCounter::paint\n");
 	
@@ -1581,7 +1581,7 @@ CCSpinner::~CCSpinner()
 	}
 }
 
-void CCSpinner::paint()
+void CCSpinner::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCSpinner::paint\n");
 	
@@ -1677,7 +1677,7 @@ CCSlider::CCSlider(const int x, const int y, const int dx, const int dy)
 	cc_type = CC_SLIDER;
 }
 
-void CCSlider::paint()
+void CCSlider::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCSlider::paint:\n");
 	
@@ -1826,7 +1826,7 @@ CCProgressBar::CCProgressBar(const CBox* position, int r, int g, int b, bool inv
 	cc_type = CC_PROGRESSBAR;
 }
 
-void CCProgressBar::paint()
+void CCProgressBar::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCProgressBar::paint:\n");
 	
@@ -2034,7 +2034,7 @@ CCItemInfo::~CCItemInfo()
 	}
 }
 
-void CCItemInfo::paint()
+void CCItemInfo::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCItemInfo::paint:\n");
 	
@@ -2367,7 +2367,7 @@ void CCWindow::paintPage(void)
 	}
 }
 
-void CCWindow::paint()
+void CCWindow::paint(bool _selected)
 {
 	dprintf(DEBUG_INFO, "CCWindow::%s\n", __FUNCTION__);
 	
@@ -2443,7 +2443,7 @@ void CCPig::init()
 	cc_type = CC_PIG;
 }
 
-void CCPig::paint()
+void CCPig::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCPig::paint\n");
 	
@@ -2585,7 +2585,7 @@ void CCHeaders::addButton(const char *btn, const char *lname, const fb_pixel_t c
 	count++;
 }		
 
-void CCHeaders::paint()
+void CCHeaders::paint(bool _selected)
 {
 	dprintf(DEBUG_INFO, "CCHeaders::paint: (%s) (%s)\n", htitle.c_str(), hicon.c_str());
 	
@@ -2828,7 +2828,7 @@ void CCFooters::addButton(const char *btn, const char *lname, const fb_pixel_t c
 	count++;
 }
 
-void CCFooters::paint()
+void CCFooters::paint(bool _selected)
 {
 	dprintf(DEBUG_INFO, "CCFooters::paint:\n");
 	

@@ -581,7 +581,7 @@ bool CTextBox::setText(const char * const newText, const char * const _thumbnail
 	return(result);
 }
 
-void CTextBox::paint(void)
+void CTextBox::paint(bool _selected)
 {
 	dprintf(DEBUG_INFO, "CTextBox::paint:\n");
 	

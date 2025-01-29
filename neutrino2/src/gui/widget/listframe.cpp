@@ -643,7 +643,7 @@ void CListFrame::hide(void)
 	CFrameBuffer::getInstance()->blit();
 }
 
-void CListFrame::paint(void)
+void CListFrame::paint(bool _selected)
 {
 	dprintf(DEBUG_INFO, "CListFrame::paint: %s\n", m_textTitle.c_str());
 

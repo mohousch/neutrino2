@@ -132,7 +132,7 @@ class CTextBox : public CComponent
 		
 		////
 		void initFrames(void);
-		void paint(void);
+		void paint(bool _selected = false);
 		void hide(void);
 		inline bool isPainted(void){return painted;};
 		

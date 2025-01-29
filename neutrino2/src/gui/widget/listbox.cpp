@@ -2274,7 +2274,7 @@ void ClistBox::initFrames()
 	}
 }
 
-void ClistBox::paint()
+void ClistBox::paint(bool _selected)
 {
 	dprintf(DEBUG_INFO, "ClistBox::paint: (%s)\n", l_name.c_str());
 

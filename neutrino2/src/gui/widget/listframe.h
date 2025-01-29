@@ -128,7 +128,7 @@ class CListFrame : public CComponent
 		////
 		void initFrames(void);
 		void hide(void);
-		void paint(void);
+		void paint(bool _selected = false);
 		
 		//// events
 		void scrollPageDown(const int pages = 1);

@@ -572,7 +572,7 @@ void CFrameBox::paintFrames()
 	}
 }
 
-void CFrameBox::paint()
+void CFrameBox::paint(bool _selected)
 {
 	dprintf(DEBUG_INFO, "CFrameBox::paint:\n");
 	

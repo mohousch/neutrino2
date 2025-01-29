@@ -529,7 +529,7 @@ class ClistBox : public CComponent
 		void paintFoot();
 		void paintItemInfo(int pos);
 		void hideItemInfo();
-		void paint();
+		void paint(bool _selected = false);
 		void hide();
 		void refresh(bool show = false){if (paintDate && paint_Head) timer->refresh();};
 		bool update() const {return paintDate;};

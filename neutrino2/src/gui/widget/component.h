@@ -68,12 +68,20 @@ class CMenuTarget
 		
 		CLCD::MODES oldLcdMode;
 		std::string oldLcdMenutitle;
+		
+		bool exit_pressed;
 				
 	public:
-		CMenuTarget(){};
+		CMenuTarget()
+		{
+			oldLcdMode = CLCD::MODE_TVRADIO;
+			exit_pressed = false;
+		};
 		virtual ~CMenuTarget(){};
 		virtual void hide(){};
 		virtual int exec(CMenuTarget *parent, const std::string &actionKey) = 0;
+		
+		virtual bool getExitPressed(){return exit_pressed;};
 };
 
 //// CChangeObserver
@@ -184,7 +192,7 @@ class CComponent
 		virtual bool isSelectable(void){return false;};
 		virtual bool hasItem(){return false;};
 		////
-		virtual void paint(void){};
+		virtual void paint(bool _selected = false){};
 		virtual void hide(void){};
 		virtual void refresh(bool show = false){};
 		virtual void paintItemInfo(int){};
@@ -282,7 +290,7 @@ class CCIcon : public CComponent
 		//
 		void setIcon(const char *const icon);
 		//
-		void paint();
+		void paint(bool _selected = false);
 		void hide();
 		void refresh(bool show = false);
 		//
@@ -320,7 +328,7 @@ class CCImage : public CComponent
 		void setImage(const char* const image);
 		void setScaling(bool s){scale = s;};
 		//
-		void paint();
+		void paint(bool _selected = false);
 		void hide();
 		void refresh(bool show = false);
 		//
@@ -367,7 +375,7 @@ class CCButtons : public CComponent
 		void setButtons(const struct button_label *button_label, const int button_count = 1, bool _head = false);
 		void addButton(const char *btn, const char *lname = NULL, const fb_pixel_t col = 0);
 		//
-		void paint();
+		void paint(bool _selected = false);
 		//
 		void clear(){buttons.clear();};
 };
@@ -390,7 +398,7 @@ class CCHline : public CComponent
 		void setColor(fb_pixel_t col){color = col;};
 		void setGradient(int gr){gradient = gr;};
 		//
-		void paint();
+		void paint(bool _selected = false);
 };
 
 //// CVline
@@ -412,7 +420,7 @@ class CCVline : public CComponent
 		void setGradient(int gr){gradient = gr;};
 		
 		//
-		void paint();
+		void paint(bool _selected = false);
 };
 
 //// CFrameline
@@ -432,7 +440,7 @@ class CCFrameLine : public CComponent
 		void setColor(fb_pixel_t col){color = col;};
 		
 		//
-		void paint();
+		void paint(bool _selected = false);
 };
 
 //// CCGrid
@@ -456,7 +464,7 @@ class CCGrid : public CComponent
 		void setColor(fb_pixel_t col){rgb = col;};
 		void setInterFrame(int iframe = 15){inter_frame = iframe;};
 		//
-		void paint();
+		void paint(bool _selected = false);
 		void hide();
 };
 
@@ -487,7 +495,7 @@ class CCLabel : public CComponent
 		void restoreScreen(void);
 		void enableSaveScreen();
 		//
-		void paint();
+		void paint(bool _selected = false);
 		void hide();
 		void refresh(bool show = false);
 		//
@@ -528,7 +536,7 @@ class CCText : public CComponent
 		void saveScreen(void);
 		void restoreScreen(void);
 		//
-		void paint();
+		void paint(bool _selected = false);
 		void hide();
 		void refresh(bool show = false);
 		//
@@ -561,7 +569,7 @@ class CCTime : public CComponent
 		void setFont(unsigned int f){font = f;};
 		void setFormat(const char* const f);
 		//
-		void paint();
+		void paint(bool _selected = false);
 		void hide();
 		void refresh(bool show = false);
 };
@@ -594,7 +602,7 @@ class CCCounter : public CComponent
 		void setTotalTime(time_t tot_time){total_time = tot_time;};
 		void setPlayTime(time_t p_time){play_time = p_time;};
 		//
-		void paint();
+		void paint(bool _selected = false);
 		void hide();
 		void refresh(bool show = false);
 };
@@ -617,7 +625,7 @@ class CCSpinner : public CComponent
 		virtual ~CCSpinner();
 		
 		//
-		void paint();
+		void paint(bool _selected = false);
 		void hide();
 		//
 		void refresh(bool show = false);
@@ -641,7 +649,7 @@ class CCSlider : public CComponent
 		virtual ~CCSlider(){};
 		
 		//
-		void paint();
+		void paint(bool _selected = false);
 		//
 		void paintSlider(const int _x, const int _y, const unsigned int spos, const char* const text, const char * const iconname);
 		int swipRight();
@@ -672,7 +680,7 @@ class CCProgressBar : public CComponent
 		virtual ~CCProgressBar(){};
 		
 		//
-		void paint();
+		void paint(bool _selected = false);
 		void refresh(unsigned char pcr);
 		void reset();
 		int getPercent() { return percent; };
@@ -736,7 +744,7 @@ class CCItemInfo : public CComponent
 		virtual ~CCItemInfo();
 		
 		//
-		void paint();
+		void paint(bool _selected = false);
 		void hide();
 		//
 		void setMode(int m){mode = m;};
@@ -801,7 +809,7 @@ class CCWindow : public CComponent
 		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
 		void setBorderColor(fb_pixel_t col){borderColor = col;};
 		//
-		void paint(void);
+		void paint(bool _selected = false);
 		void hide(void);
 		//
 		void refresh(bool show = false);
@@ -821,7 +829,7 @@ class CCPig : public CComponent
 		//
 		void init();
 		//
-		void paint();
+		void paint(bool _selected = false);
 		void hide();
 };
 
@@ -871,7 +879,7 @@ class CCHeaders : public CComponent
 		void addButton(const char *btn, const char *lname = NULL, const fb_pixel_t col = 0);
 		void setButtonMode(int m){mode = m;};
 		//
-		void paint();
+		void paint(bool _selected = false);
 		void hide();
 		void refresh(bool show = false){if (paintDate) timer->refresh();};
 		bool update() const {return paintDate;};
@@ -916,7 +924,7 @@ class CCFooters : public CComponent
 		void addButton(const char *btn, const char *lname = NULL, const fb_pixel_t col = 0);
 		void setButtonMode(int m){mode = m;};
 		//
-		void paint();
+		void paint(bool _selected = false);
 		void hide();
 		//
 		void clear(){buttons.clear();};
