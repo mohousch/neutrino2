@@ -492,7 +492,7 @@ void CBouquetList::paint()
 	// head
 	if (listBox)
 	{
-		listBox->setTitle(name.c_str());
+		if (!name.empty()) listBox->setTitle(name.c_str());
 		listBox->enablePaintDate();
 		listBox->setHeadButtons(&HButton, 1);
 		listBox->setFootButtons(CBouquetListButtons, 4);

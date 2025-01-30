@@ -76,6 +76,8 @@ class CKeyChooserItem : public CMenuTarget
 	private:
 		CBox m_cBox;
 		CBox m_cTitle;
+		int hheight;
+		int mheight;
 
 		CCWindow m_cBoxWindow;
 

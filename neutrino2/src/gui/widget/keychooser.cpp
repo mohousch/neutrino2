@@ -56,6 +56,7 @@ class CKeyValue : public CMenuSeparator
 		};
 };
 
+////
 CKeyChooser::CKeyChooser(long * const Key, const char* const Title, const std::string& Icon)
 {
 	frameBuffer = CFrameBuffer::getInstance();
@@ -178,6 +179,14 @@ CKeyChooserItem::CKeyChooserItem(const char * const Name, long * Key)
 {
 	name = Name;
 	key = Key;
+	
+	hheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight();
+	mheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();
+
+	m_cBox.iWidth = MENU_WIDTH;
+	m_cBox.iHeight = hheight + 2*mheight;
+	m_cBox.iX = CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - m_cBox.iWidth) >> 1);
+	m_cBox.iY = CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_cBox.iHeight) >> 1);
 }
 
 int CKeyChooserItem::exec(CMenuTarget *parent, const std::string &)
@@ -231,16 +240,6 @@ void CKeyChooserItem::paint()
 {
 	dprintf(DEBUG_INFO, "CKeyChooserItem::paint\n");
 
-	int hheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight();
-	int mheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();
-
-	CFrameBuffer * frameBuffer = CFrameBuffer::getInstance();
-
-	m_cBox.iWidth = 600;
-	m_cBox.iHeight = hheight + 2*mheight;
-	m_cBox.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - m_cBox.iWidth) >> 1);
-	m_cBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - m_cBox.iHeight) >> 1);
-
 	//box
 	m_cBoxWindow.setPosition(&m_cBox);
 	m_cBoxWindow.setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
@@ -259,6 +258,6 @@ void CKeyChooserItem::paint()
 	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(m_cBox.iX + BORDER_LEFT, m_cBox.iY + hheight + mheight, m_cBox.iWidth, _("Please press the new key"), COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 
 	// line 2
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(m_cBox.iX + BORDER_LEFT, m_cBox.iY + hheight + mheight* 2, m_cBox.iWidth, _("Wait a few seconds for abort"), COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(m_cBox.iX + BORDER_LEFT, m_cBox.iY + hheight + mheight*2, m_cBox.iWidth, _("Wait a few seconds for abort"), COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 }
 
