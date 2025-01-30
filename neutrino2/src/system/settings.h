@@ -260,40 +260,40 @@ struct SNeutrinoSettings
 	char repeat_blocker[4];
 	char repeat_genericblocker[4];
 
-	int key_tvradio_mode;
+	long key_tvradio_mode;
 	
-	int key_channelList_pageup;
-	int key_channelList_pagedown;
-	int key_channelList_cancel;
+	long key_channelList_pageup;
+	long key_channelList_pagedown;
+	long key_channelList_cancel;
 
-	int key_quickzap_up;
-	int key_quickzap_down;
+	long key_quickzap_up;
+	long key_quickzap_down;
 
-	int key_bouquet_up;
-	int key_bouquet_down;
+	long key_bouquet_up;
+	long key_bouquet_down;
 
-	int key_subchannel_up;
-	int key_subchannel_down;
+	long key_subchannel_up;
+	long key_subchannel_down;
 
-	int key_zaphistory;
-	int key_lastchannel;
-	int key_list_start;
-	int key_list_end;
+	long key_zaphistory;
+	long key_lastchannel;
+	long key_list_start;
+	long key_list_end;
 	
 	//pip
-	int key_pip;
+	long key_pip;
 
 	// media	
-	int key_movieplayer;
-	int key_audioplayer;
-	int key_pictureviewer;
-	int key_inetradio;
-	int key_moviebrowser;
-	int key_pvr;
+	long key_movieplayer;
+	long key_audioplayer;
+	long key_pictureviewer;
+	long key_inetradio;
+	long key_moviebrowser;
+	long key_pvr;
 	
 	// divers
-	int key_timerlist;
-	int key_screenshot;
+	long key_timerlist;
+	long key_screenshot;
 
 	// USERMENU
         typedef enum

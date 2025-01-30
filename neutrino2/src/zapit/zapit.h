@@ -77,7 +77,6 @@
 ////
 #define CHANNEL_NAME_SIZE 		40
 
-class CZapitBouquet;
 
 ////
 class CZapit

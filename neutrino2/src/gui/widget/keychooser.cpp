@@ -42,11 +42,9 @@ class CKeyValue : public CMenuSeparator
 	std::string the_text;
 	
 	public:
-		int keyvalue;
+		long keyvalue;
 
-		CKeyValue() : CMenuSeparator(CMenuSeparator::STRING, _("Current key"))
-		{
-		};
+		CKeyValue(long key) : CMenuSeparator(CMenuSeparator::STRING, _("Current key")){keyvalue = key;};
 
 		virtual const char * getString(void)
 		{
@@ -58,15 +56,18 @@ class CKeyValue : public CMenuSeparator
 		};
 };
 
-CKeyChooser::CKeyChooser(int * const Key, const char* const Title, const std::string& Icon)
+CKeyChooser::CKeyChooser(long * const Key, const char* const Title, const std::string& Icon)
 {
 	frameBuffer = CFrameBuffer::getInstance();
 	
 	//
 	title = Title? Title : " ";
 	key = Key;
+	icon = Icon;
 	keyChooser = new CKeyChooserItem(_("Setup New Key"), key);
 	keyDeleter = new CKeyChooserItemNoKey(key);
+	widget = NULL;
+	menu = NULL;
 	
 	//
 	cFrameBox.iWidth = MENU_WIDTH;
@@ -74,6 +75,23 @@ CKeyChooser::CKeyChooser(int * const Key, const char* const Title, const std::st
 	
 	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
+}
+
+CKeyChooser::~CKeyChooser()
+{
+	delete keyChooser;
+	delete keyDeleter;
+}
+
+void CKeyChooser::hide()
+{
+	CFrameBuffer::getInstance()->paintBackground();
+	CFrameBuffer::getInstance()->blit();
+}
+
+int CKeyChooser::paint()
+{
+	int ret = RETURN_REPAINT;
 	
 	widget = CNeutrinoApp::getInstance()->getWidget("keychooser");	
 	
@@ -81,10 +99,9 @@ CKeyChooser::CKeyChooser(int * const Key, const char* const Title, const std::st
 	{
 		menu = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 		
-		//
 		if (menu->hasHead())
 		{
-			menu->setTitle(title.c_str(), Icon.c_str());
+			menu->setTitle(title.c_str(), icon.c_str());
 		}
 	}
 	else
@@ -100,7 +117,7 @@ CKeyChooser::CKeyChooser(int * const Key, const char* const Title, const std::st
 		
 		//	
 		menu->enablePaintHead();
-		menu->setTitle(title.c_str(), Icon.c_str());
+		menu->setTitle(title.c_str(), icon.c_str());
 			
 		//
 		menu->enablePaintFoot();		
@@ -111,37 +128,53 @@ CKeyChooser::CKeyChooser(int * const Key, const char* const Title, const std::st
 		widget->addCCItem(menu);
 	}
 
-	//
-	menu->addItem(new CKeyValue());
+	menu->clear();
+	
+	menu->addItem(new CKeyValue(*key));
 	menu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	menu->addItem(new CMenuForwarder(_("back")));
 	menu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	menu->addItem(new CMenuForwarder(_("Setup new key"), true, NULL, keyChooser));
-	menu->addItem(new CMenuForwarder(_("No key"), true, NULL, keyDeleter));
-}
+	menu->addItem(new CMenuForwarder(_("Setup new key"), true, NULL, this, "setnewkey"));
+	menu->addItem(new CMenuForwarder(_("No key"), true, NULL, this, "deletekey"));
 
-CKeyChooser::~CKeyChooser()
-{
-	delete keyChooser;
-	delete keyDeleter;
+	ret = widget->exec(NULL, "");
 	
-	delete widget;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
+	
+	return ret;
 }
 
-void CKeyChooser::paint()
+int CKeyChooser::exec(CMenuTarget *parent, const std::string &actionKey)
 {
-	(((CKeyValue *)(menu->items[0]))->keyvalue) = *key;
-
-	widget->paint();
+	int ret = RETURN_REPAINT;
+	
+	if (parent)
+		hide();
+	
+	if (actionKey == "setnewkey")
+	{
+		keyChooser->exec(NULL, "");
+		paint();
+		return RETURN_EXIT;
+	}
+	else if (actionKey == "deletekey")
+	{
+		keyDeleter->exec(NULL, "");
+		paint();
+		return RETURN_EXIT;
+	}
+	
+	ret = paint();
+	
+	return ret;
 }
 
-int CKeyChooser::exec(CMenuTarget* parent, const std::string& actionKey)
-{
-	return widget->exec(parent, actionKey);
-}
-
-//
-CKeyChooserItem::CKeyChooserItem(const char * const Name, int * Key)
+////
+CKeyChooserItem::CKeyChooserItem(const char * const Name, long * Key)
 {
 	name = Name;
 	key = Key;
@@ -210,8 +243,7 @@ void CKeyChooserItem::paint()
 
 	//box
 	m_cBoxWindow.setPosition(&m_cBox);
-	//m_cBoxWindow.enableSaveScreen();
-	m_cBoxWindow.setColor(COL_MENUCONTENT_PLUS_0);
+	m_cBoxWindow.setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	m_cBoxWindow.paint();
 
 	//head 
@@ -221,13 +253,12 @@ void CKeyChooserItem::paint()
 	m_cTitle.iY = m_cBox.iY;
 
 	CCHeaders headers(&m_cTitle, name.c_str(), NEUTRINO_ICON_KEYBINDING);
-	headers.setCorner(RADIUS_SMALL);
-	headers.setGradient(LIGHT2DARK);
 	headers.paint();
 
-	//paint msg...
+	// line 1
 	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(m_cBox.iX + BORDER_LEFT, m_cBox.iY + hheight + mheight, m_cBox.iWidth, _("Please press the new key"), COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 
+	// line 2
 	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(m_cBox.iX + BORDER_LEFT, m_cBox.iY + hheight + mheight* 2, m_cBox.iWidth, _("Wait a few seconds for abort"), COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 }
 

@@ -300,7 +300,7 @@ void CKeysBindingSettings::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CKeysBindingSettings::showMenu:\n");
 
-	int * keyvalue_p[KEYBINDS_COUNT] =
+	long * keyvalue_p[KEYBINDS_COUNT] =
 	{
 		// zap
 		&g_settings.key_tvradio_mode,
