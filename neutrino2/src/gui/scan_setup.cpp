@@ -948,8 +948,8 @@ int CScanSetup::showLNBSetup()
 		if(sit->second.system == CFrontend::DVB_S)
 		{	
 			//
-			if (tempsatlistBox->hasHead())
-				tempsatlistBox->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_SCAN);
+//			if (tempsatlistBox->hasTitle())
+			tempsatWidget->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_SCAN);
 			tempsatlistBox->setWidgetMode(ClistBox::MODE_SETUP);
 				
 			tempsatlistBox->clear();

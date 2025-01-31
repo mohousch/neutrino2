@@ -192,10 +192,7 @@ void CCAMMenuHandler::doMainMenu()
 			{
 				tempMenu = (ClistBox*)tempMenuWidget->getCCItem(CComponent::CC_LISTBOX);
 				
-				if (tempMenu->hasHead())
-				{
-					tempMenu->setTitle(str, NEUTRINO_ICON_CI);
-				}
+				tempMenuWidget->setTitle(str, NEUTRINO_ICON_CI);
 			}
 			else
 			{
@@ -392,8 +389,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 			{
 				menu = (ClistBox*)menuWidget->getCCItem(CComponent::CC_LISTBOX);
 				
-				if (menu->hasHead())
-					menu->setTitle(convertDVBUTF8(pMenu->title, strlen(pMenu->title), 0).c_str(), NEUTRINO_ICON_CI);
+				menuWidget->setTitle(convertDVBUTF8(pMenu->title, strlen(pMenu->title), 0).c_str(), NEUTRINO_ICON_CI);
 			}
 			else
 			{

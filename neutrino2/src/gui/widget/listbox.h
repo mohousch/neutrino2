@@ -534,8 +534,8 @@ class ClistBox : public CComponent
 		void refresh(bool show = false){if (paintDate && paint_Head) timer->refresh();};
 		bool update() const {return paintDate;};
 		inline bool isPainted(void){return painted;};
-		bool hasHead(){return paint_Head;};
-		bool hasFoot(){return paint_Foot;};
+//		bool hasHead(){return paint_Head;};
+//		bool hasFoot(){return paint_Foot;};
 		//// main properties
 		void enableShrinkMenu(){shrinkMenu = true;};
 		void setColor(fb_pixel_t col){bgcolor = col;};
