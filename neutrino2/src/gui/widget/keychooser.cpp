@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$Id: keychooser.cpp 21122024 mohousch Exp $
+//	$Id: keychooser.cpp 31012025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -57,14 +57,13 @@ class CKeyValue : public CMenuSeparator
 };
 
 ////
-CKeyChooser::CKeyChooser(long * const Key, const char* const Title, const std::string& Icon)
+CKeyChooser::CKeyChooser(long * const Key, const char* const Title)
 {
 	frameBuffer = CFrameBuffer::getInstance();
 	
 	//
 	title = Title? Title : " ";
 	key = Key;
-	icon = Icon;
 	keyChooser = new CKeyChooserItem(_("Setup New Key"), key);
 	keyDeleter = new CKeyChooserItemNoKey(key);
 	widget = NULL;
@@ -100,10 +99,7 @@ int CKeyChooser::paint()
 	{
 		menu = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 		
-		if (menu->hasHead())
-		{
-			menu->setTitle(title.c_str(), icon.c_str());
-		}
+		widget->setTitle(title.c_str(), NEUTRINO_ICON_KEYBINDING);
 	}
 	else
 	{
@@ -118,7 +114,7 @@ int CKeyChooser::paint()
 		
 		//	
 		menu->enablePaintHead();
-		menu->setTitle(title.c_str(), icon.c_str());
+		menu->setTitle(title.c_str(), NEUTRINO_ICON_KEYBINDING);
 			
 		//
 		menu->enablePaintFoot();		

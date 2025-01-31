@@ -126,6 +126,7 @@ class CWidget : public CMenuTarget
 		void enableSaveScreen();
 		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
 		void setBorderColor(uint32_t col){borderColor = col;};
+		void setTitle(const char * title, const char *icon = NULL);
 		//// events
 		virtual void onOKKeyPressed();
 		virtual void onHomeKeyPressed();

@@ -1040,6 +1040,8 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 
 void CRCInput::setRepeat(unsigned int delay,unsigned int period)
 {
+	dprintf(DEBUG_NORMAL, "CRCInput::setRepeat: %d %d\n", delay, period);
+	
 	repeat_block = delay * 1000ULL;
 	repeat_block_generic = period * 1000ULL;
 

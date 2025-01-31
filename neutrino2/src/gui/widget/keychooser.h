@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$Id: keychooser.h 21122024 mohousch Exp $
+//	$Id: keychooser.h 31012025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -49,7 +49,7 @@ class CKeyChooser : public CMenuTarget
 		CFrameBuffer* frameBuffer;
 		
 		std::string title;
-		std::string icon;
+//		std::string icon;
 		long * key;
 		CKeyChooserItem* keyChooser;
 		CKeyChooserItemNoKey* keyDeleter;
@@ -63,7 +63,7 @@ class CKeyChooser : public CMenuTarget
 
 	public:
 		//
-		CKeyChooser(long * const Key, const char* const Title, const std::string& Icon = "");
+		CKeyChooser(long * const Key, const char* const Title/*, const std::string& Icon = ""*/);
 		virtual ~CKeyChooser();
 		
 		//

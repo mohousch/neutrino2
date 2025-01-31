@@ -375,8 +375,7 @@ void CHelpBox::paint(void)
 	{
 		headers->setPosition(borderMode? cFrameBox.iX + 2 : cFrameBox.iX, borderMode? cFrameBox.iY + 2 : cFrameBox.iY, borderMode? m_width - 4 : m_width, m_theight);
 	
-		headers->setTitle(m_caption.c_str());
-		headers->setIcon(m_iconfile.c_str());
+		headers->setTitle(m_caption.c_str(), m_iconfile.c_str());
 	}
 
 	refreshPage();

@@ -817,3 +817,14 @@ CComponent* CWidget::getCCItem(const int type, const std::string& name)
 	return ret;
 }
 
+void CWidget::setTitle(const char * title, const char *icon)
+{
+	dprintf(DEBUG_INFO, "CWidget::setTitle:\n");
+	
+	for (unsigned int count = 0; count < (unsigned int)CCItems.size(); count++)
+	{
+		if ( CCItems[count]->hasTitle() )
+			CCItems[count]->setTitle(title, icon);
+	}
+}
+

@@ -237,8 +237,8 @@ void CMessageBox::paint(void)
 	
 	// 
 	widget->setPosition(&cFrameBox);
-	//widget->setBorderMode(borderMode);
-	//widget->setBorderColor(borderColor);
+	widget->setBorderMode(borderMode);
+	widget->setBorderColor(borderColor);
 	widget->enableSaveScreen();
 
 	// title
@@ -246,8 +246,7 @@ void CMessageBox::paint(void)
 	{
 		headers->setPosition(borderMode? CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - m_width ) >> 1) + 2 : CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - m_width ) >> 1), borderMode? CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2) + 2 : CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2), borderMode? m_width - 4 : m_width, m_theight);
 	
-		headers->setTitle(m_caption.c_str());
-		headers->setIcon(m_iconfile.c_str());
+		headers->setTitle(m_caption.c_str(), m_iconfile.c_str());
 	}
 
 	refreshPage();
@@ -524,8 +523,8 @@ int MessageBox(const char * const Caption, const char * const Text, const CMessa
 {
    	CMessageBox * messageBox = new CMessageBox(Caption, Text, Width, Icon, Default, ShowButtons);
 	messageBox->returnDefaultValueOnTimeout(returnDefaultOnTimeout);
-	//messageBox->setBorderMode(border);
-	//messageBox->setBorderColor(bcol);
+	messageBox->setBorderMode(border);
+//	messageBox->setBorderColor(bcol);
 	messageBox->exec(timeout);
 	
 	int res = messageBox->result;

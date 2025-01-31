@@ -840,7 +840,7 @@
 	
 	<widget name="keychooser" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1" headline="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>

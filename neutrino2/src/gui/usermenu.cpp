@@ -120,8 +120,7 @@ int CUserMenu::doMenu(void)
 	
 	if (head)
 	{
-		head->setTitle(local.c_str());
-		head->setIcon(NEUTRINO_ICON_KEYBINDING);
+		head->setTitle(local.c_str(), NEUTRINO_ICON_KEYBINDING);
 	}
 	
 	//

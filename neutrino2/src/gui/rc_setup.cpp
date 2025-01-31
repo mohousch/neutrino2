@@ -1,28 +1,28 @@
-/*
-	Neutrino-GUI  -   DBoxII-Project
-
-	$id: rc_setup.cpp 2016.01.02 21:33:30 mohousch $
-	
-	Copyright (C) 2001 Steffen Hehn 'McClean'
-	and some other guys
-	Homepage: http://dbox.cyberphoria.org/
-
-	License: GPL
-
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-*/ 
+//
+//	Neutrino-GUI  -   DBoxII-Project
+//
+//	$id: rc_setup.cpp 31012025 mohousch $
+//	
+//	Copyright (C) 2001 Steffen Hehn 'McClean'
+//	and some other guys
+//	Homepage: http://dbox.cyberphoria.org/
+//
+//	License: GPL
+//
+//	This program is free software; you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation; either version 2 of the License, or
+//	(at your option) any later version.
+//
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program; if not, write to the Free Software
+//	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// 
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -109,12 +109,12 @@ const char* const  keydescription[KEYBINDS_COUNT] =
 	_("Screenshot")
 };
 
+////
 CRemoteControlSettings::CRemoteControlSettings()
 {
-}
-
-CRemoteControlSettings::~CRemoteControlSettings()
-{
+	selected = -1; 
+	widget = NULL; 
+	remoteControlSettings = NULL;
 }
 
 int CRemoteControlSettings::exec(CMenuTarget* parent, const std::string& actionKey)
@@ -126,7 +126,35 @@ int CRemoteControlSettings::exec(CMenuTarget* parent, const std::string& actionK
 	if(parent)
 		parent->hide();
 	
-	if(actionKey == "savesettings")
+	if (actionKey == "repeat_blocker")
+	{
+		CStringInput * remoteControlSettings_repeatBlocker = new CStringInput(_("Repeat delay"), g_settings.repeat_blocker, 3, _("Shortest time (in ms) to recognize 2 keystrokes"), _("Enter 0 to switch of the blocker (red is space)"), "0123456789 ", this);
+		
+		remoteControlSettings_repeatBlocker->exec(this, "");
+		
+		if (remoteControlSettings)
+		{
+			selected = remoteControlSettings->getSelected();
+		}
+		showMenu();
+		
+		return RETURN_EXIT;
+	}
+	else if (actionKey == "repeat_generic_blocker")
+	{
+		CStringInput * remoteControlSettings_repeat_genericblocker = new CStringInput(_("Generic delay"), g_settings.repeat_genericblocker, 3, _("Shortest time (in ms) to recognize 2 keystrokes"), _("Enter 0 to switch of the blocker (red is space)"), "0123456789 ", this);
+		
+		remoteControlSettings_repeat_genericblocker->exec(this, "");
+		
+		if (remoteControlSettings)
+		{
+			selected = remoteControlSettings->getSelected();
+		}
+		showMenu();
+		
+		return RETURN_EXIT;
+	}
+	else if(actionKey == "savesettings")
 	{
 		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 		
@@ -159,8 +187,8 @@ void CRemoteControlSettings::showMenu()
 	dprintf(DEBUG_NORMAL, "CRemoteControlSettings::showMenu:\n");
 	
 	//
-	CWidget* widget = NULL;
-	ClistBox* remoteControlSettings = NULL;
+//	CWidget* widget = NULL;
+//	ClistBox* remoteControlSettings = NULL;
 	
 	widget = CNeutrinoApp::getInstance()->getWidget("rcsetup");
 	
@@ -213,22 +241,13 @@ void CRemoteControlSettings::showMenu()
 	// save settings
 	remoteControlSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 
-	keySetupNotifier = new CKeySetupNotifier;
-	
-	// repeat generic blocker
-	CStringInput * remoteControlSettings_repeat_genericblocker = new CStringInput(_("Generic delay"), g_settings.repeat_genericblocker, 3, _("Shortest time (in ms) to recognize 2 keystrokes"), _("Enter 0 to switch of the blocker (red is space)"), "0123456789 ", keySetupNotifier);
-	
-	// repeat blocker
-	CStringInput * remoteControlSettings_repeatBlocker = new CStringInput(_("Repeat delay"), g_settings.repeat_blocker, 3, _("Shortest time (in ms) to recognize 2 keystrokes"), _("Enter 0 to switch of the blocker (red is space)"), "0123456789 ", keySetupNotifier);
-	keySetupNotifier->changeNotify("", NULL);
-
 	remoteControlSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Key Repeat-blocker")));
 	
 	// repeat blocker
-	remoteControlSettings->addItem(new CMenuForwarder(_("Repeat delay"), true, g_settings.repeat_blocker, remoteControlSettings_repeatBlocker));
+	remoteControlSettings->addItem(new CMenuForwarder(_("Repeat delay"), true, g_settings.repeat_blocker, this, "repeat_blocker"));
 	
 	// repeat generic blocker
- 	remoteControlSettings->addItem(new CMenuForwarder(_("Generic delay"), true, g_settings.repeat_genericblocker, remoteControlSettings_repeat_genericblocker));
+ 	remoteControlSettings->addItem(new CMenuForwarder(_("Generic delay"), true, g_settings.repeat_genericblocker, this, "repeat_generic_blocker"));
 
 	// keybinding menu
 	remoteControlSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Hot Keys mapping")));
@@ -241,6 +260,7 @@ void CRemoteControlSettings::showMenu()
 	// blue
         remoteControlSettings->addItem(new CMenuForwarder(_("User menu blue"), true, NULL, new CUserMenu(_("User menu blue"), SNeutrinoSettings::BUTTON_BLUE)));
 
+	// F-Keys
 #if defined (ENABLE_FUNCTIONKEYS)	
 	remoteControlSettings->addItem(new CMenuForwarder(_("User menu F1"), true, NULL, new CUserMenu(_("User menu F1"), SNeutrinoSettings::BUTTON_F1) ));
         remoteControlSettings->addItem(new CMenuForwarder(_("User menu F2"), true, NULL, new CUserMenu(_("User menu F2"), SNeutrinoSettings::BUTTON_F2) ));
@@ -252,6 +272,9 @@ void CRemoteControlSettings::showMenu()
 	remoteControlSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Misc settings")));
 	
 	remoteControlSettings->addItem(new CMenuForwarder(_("Save RC configuration"), true, NULL, this, "savercconfig" ) );
+	
+	////
+	remoteControlSettings->setSelected(selected);
 	
 	//
 	widget->exec(NULL, "");
@@ -266,15 +289,14 @@ void CRemoteControlSettings::showMenu()
         CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
-// keys binding settings
-CKeysBindingSettings::CKeysBindingSettings()
+bool CRemoteControlSettings::changeNotify(const std::string&, void *)
 {
+	g_RCInput->setRepeat(atoi(g_settings.repeat_blocker), atoi(g_settings.repeat_genericblocker));
+
+	return false;
 }
 
-CKeysBindingSettings::~CKeysBindingSettings()
-{
-}
-
+//// keys binding settings
 int CKeysBindingSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CKeysBindingSettings::exec: actionKey: %s\n", actionKey.c_str());
@@ -390,30 +412,30 @@ void CKeysBindingSettings::showMenu()
 	bindSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Modechange")));
 	
 	// tv/radio mode
-	bindSettings->addItem(new CMenuForwarder(_(keydescription[KEY_TV_RADIO_MODE]), true, NULL, new CKeyChooser(keyvalue_p[KEY_TV_RADIO_MODE], _(keydescription[KEY_TV_RADIO_MODE]), NEUTRINO_ICON_SETTINGS)));
+	bindSettings->addItem(new CMenuForwarder(_(keydescription[KEY_TV_RADIO_MODE]), true, NULL, new CKeyChooser(keyvalue_p[KEY_TV_RADIO_MODE], _(keydescription[KEY_TV_RADIO_MODE]))));
 
 	// channellist
 	bindSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Channellist")));
 
 	for (int i = KEY_PAGE_UP; i <= KEY_BOUQUET_DOWN; i++)
-		bindSettings->addItem(new CMenuForwarder(_(keydescription[i]), true, NULL, new CKeyChooser(keyvalue_p[i], _(keydescription[i]), NEUTRINO_ICON_SETTINGS)));
+		bindSettings->addItem(new CMenuForwarder(_(keydescription[i]), true, NULL, new CKeyChooser(keyvalue_p[i], _(keydescription[i]))));
 
 	// quick zap
 	bindSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Quickzap")));
 
 	for (int i = KEY_CHANNEL_UP; i <= KEY_SAME_TP; i++)
-		bindSettings->addItem(new CMenuForwarder(_(keydescription[i]), true, NULL, new CKeyChooser(keyvalue_p[i], _(keydescription[i]), NEUTRINO_ICON_SETTINGS)));
+		bindSettings->addItem(new CMenuForwarder(_(keydescription[i]), true, NULL, new CKeyChooser(keyvalue_p[i], _(keydescription[i]))));
 	
 	// media
 	bindSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Media")));
 	for (int i = KEY_EXTRAS_MOVIEPLAYER; i <= KEY_EXTRAS_PVR; i++)
-		bindSettings->addItem(new CMenuForwarder(_(keydescription[i]), true, NULL, new CKeyChooser(keyvalue_p[i], _(keydescription[i]), NEUTRINO_ICON_SETTINGS)));
+		bindSettings->addItem(new CMenuForwarder(_(keydescription[i]), true, NULL, new CKeyChooser(keyvalue_p[i], _(keydescription[i]))));
 
 	// misc
 	bindSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Misc settings")));
 	
 	for (int i = KEY_EXTRAS_TIMERLIST; i <= KEY_EXTRAS_SCREENSHOT; i++)
-		bindSettings->addItem(new CMenuForwarder(_(keydescription[i]), true, NULL, new CKeyChooser(keyvalue_p[i], _(keydescription[i]), NEUTRINO_ICON_SETTINGS)));
+		bindSettings->addItem(new CMenuForwarder(_(keydescription[i]), true, NULL, new CKeyChooser(keyvalue_p[i], _(keydescription[i]))));
 	
 	//
 	widget->exec(NULL, "");
@@ -426,13 +448,5 @@ void CKeysBindingSettings::showMenu()
 	
 	//
         CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
-}
-
-// key setup notifier
-bool CKeySetupNotifier::changeNotify(const std::string&, void *)
-{
-	g_RCInput->setRepeat(atoi(g_settings.repeat_blocker), atoi(g_settings.repeat_genericblocker));
-
-	return false;
 }
 

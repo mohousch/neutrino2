@@ -2024,8 +2024,7 @@ void CTestMenu::testCHeaders()
 	//
 	headers = new CCHeaders(&headBox);
 
-	headers->setTitle("test CHeaders");
-	headers->setIcon(NEUTRINO_ICON_MP3);
+	headers->setTitle("test CHeaders", NEUTRINO_ICON_MP3);
 	headers->enablePaintDate();
 	headers->setFormat("%d.%m.%Y %H:%M:%S");
 	headers->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
@@ -3957,7 +3956,7 @@ void CTestMenu::testKeyChooser()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testKeyChooser\n");
 	
-	CKeyChooser *keyChooser = new CKeyChooser(&g_settings.key_screenshot, "testingKeyChooser: Screenshot", NEUTRINO_ICON_KEYBINDING);
+	CKeyChooser *keyChooser = new CKeyChooser(&g_settings.key_screenshot, "testingKeyChooser: Screenshot");
 
 	keyChooser->exec(NULL, "");
 	

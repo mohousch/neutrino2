@@ -184,13 +184,12 @@ void CHintBox::paint(void)
 	if (headers)
 	{
 		headers->setPosition(&cFrameBoxTitle);
-		headers->setTitle(caption.c_str());
-		headers->setIcon(iconfile.c_str());
+		headers->setTitle(caption.c_str(), iconfile.c_str());
 	}
 	
 	widget->setPosition(&cFrameBox);
-//	widget->setBorderMode(borderMode);
-//	widget->setBorderColor(borderColor);
+	widget->setBorderMode(borderMode);
+	widget->setBorderColor(borderColor);
 	widget->enableSaveScreen();
 
 	//

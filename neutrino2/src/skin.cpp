@@ -1776,22 +1776,28 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 	
 	// mainframe	
 	head->paintMainFrame(paintframe);
-	// title
-	if (title != NULL) head->setTitle(_(title));
-	head->setHAlign(halign);
+	// title / icon
+	std::string htitle = "";
+	std::string hicon = "";
+	
+	if (title != NULL) htitle = title;
 	// icon
 	if (icon != NULL)
 	{
-		std::string filename = CONFIGDIR "/skins/";
-		filename += g_settings.preferred_skin;
-		filename += "/";
-		filename += icon;
+		std::string iconfile = CONFIGDIR "/skins/";
+		iconfile += g_settings.preferred_skin;
+		iconfile += "/";
+		iconfile += icon;
 					
-		if (file_exists(filename.c_str()))
-			head->setIcon(filename.c_str());
+		if (file_exists(iconfile.c_str()))
+			hicon = iconfile.c_str();
 		else
-			head->setIcon(icon);
+			hicon = icon;
 	}
+	
+	head->setTitle(htitle.c_str(), hicon.c_str());
+	head->setHAlign(halign);
+	
 	// color
 	if(color != NULL) head->setColor(finalColor);
 	// gradient

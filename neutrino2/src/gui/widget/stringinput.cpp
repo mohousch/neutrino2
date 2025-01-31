@@ -455,8 +455,7 @@ void CStringInput::paint()
 
 	// head
 	headers.setPosition(x, y, width, hheight);
-	headers.setTitle(name.c_str());
-	headers.setIcon(iconfile.c_str());
+	headers.setTitle(name.c_str(), iconfile.c_str());
 	headers.paint();
 
 	if (!hint_1.empty())

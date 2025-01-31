@@ -458,8 +458,8 @@ class ClistBox : public CComponent
 
 		// head
 		bool paint_Head;
-		std::string iconfile;
-		std::string l_name;
+//		std::string iconfile;
+//		std::string l_name;
 		int hheight;
 		fb_pixel_t headColor;
 		int headRadius;
@@ -586,9 +586,8 @@ class ClistBox : public CComponent
 		}
 		
 		//// head properties
-		void enablePaintHead(){paint_Head = true;};
+		void enablePaintHead(){paint_Head = true; has_Title = true;};
 		void enablePaintDate(void){paintDate = true;};
-		void setTitle(const char* title = "", const char* icon = NULL){if (title) l_name = title; if(icon) iconfile = icon;};
 		void setTitleHAlign(const int m){thalign = m;};
 		void setHeadButtons(const struct button_label *_hbutton_label, const int _hbutton_count = 1);
 		void setHeadColor(fb_pixel_t col) {headColor = col;};

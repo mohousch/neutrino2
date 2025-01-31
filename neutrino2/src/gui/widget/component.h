@@ -161,6 +161,11 @@ class CComponent
 		bool rePaint;
 		bool savescreen;
 		bool paintframe;
+		bool paint_Head;
+		bool paint_Foot;
+		bool has_Title;
+		std::string htitle;
+		std::string hicon;
 		////
 		bool inFocus;
 		bool painted;
@@ -231,6 +236,10 @@ class CComponent
 		virtual void saveScreen(void){};
 		virtual void restoreScreen(void){};
 		virtual void enableSaveScreen(void){savescreen = true;};
+		virtual bool hasHead(){return paint_Head;};
+		virtual bool hasFoot(){return paint_Foot;};
+		virtual bool hasTitle(){return has_Title;};
+		virtual void setTitle(const char * title, const char *icon = NULL){if (title) htitle = title; if (icon) hicon = icon;};
 		////
 		virtual void scrollLineDown(const int lines = 1){};
 		virtual void scrollLineUp(const int lines = 1){};
@@ -854,8 +863,8 @@ class CCHeaders : public CComponent
 		button_label_list_t buttons;
 		int mode;
 		//
-		std::string htitle;
-		std::string hicon;
+//		std::string htitle;
+//		std::string hicon;
 		bool paintDate;
 		std::string format;
 		CCTime* timer;
@@ -866,8 +875,8 @@ class CCHeaders : public CComponent
 		virtual ~CCHeaders();
 
 		//
-		void setTitle(const char * const title){htitle.clear(); if (title) htitle = title;};
-		void setIcon(const char * const icon){hicon.clear(); if (icon) hicon = icon;};
+		void setTitle(const char * title, const char *icon = NULL){ /*htitle.clear();*/ if (title) htitle = title; if (icon) hicon = icon;};
+//		void setIcon(const char * const icon){hicon.clear(); if (icon) hicon = icon;};
 		void setColor(fb_pixel_t col){color = col;};
 		void setGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){gradient = grad; grad_direction = direction; grad_intensity = intensity; grad_type = type;};
 		void setCorner(int ra, int co = CORNER_TOP){radius = ra; corner = co;};

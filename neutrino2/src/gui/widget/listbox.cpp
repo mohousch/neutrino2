@@ -1878,12 +1878,13 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 
 	// head
 	paint_Head = false;
+	has_Title = false;
 	hheight = 0;
 	hbutton_count	= 0;
 	hbutton_labels.clear();
 	paintDate = false;
-	l_name = "";
-	iconfile = "";
+//	l_name = "";
+//	iconfile = "";
 	thalign = CC_ALIGN_LEFT;
 	headColor = COL_MENUHEAD_PLUS_0;
 	headRadius = g_settings.Head_radius;
@@ -1992,6 +1993,7 @@ ClistBox::ClistBox(CBox* position)
 
 	// head
 	paint_Head = false;
+	has_Title = false;
 	hheight = 0;
 	hbutton_count	= 0;
 	hbutton_labels.clear();
@@ -1999,8 +2001,8 @@ ClistBox::ClistBox(CBox* position)
 	fbutton_labels.clear();
 	fbutton_width = itemBox.iWidth - 20;
 	paintDate = false;
-	l_name = "";
-	iconfile = "";
+//	l_name = "";
+//	iconfile = "";
 	thalign = CC_ALIGN_LEFT;
 	headColor = COL_MENUHEAD_PLUS_0;
 	headRadius = g_settings.Head_radius;
@@ -2091,7 +2093,7 @@ ClistBox::ClistBox(CBox* position)
 
 ClistBox::~ClistBox()
 {
-	dprintf(DEBUG_INFO, "ClistBox:: del (%s)\n", l_name.c_str());
+	dprintf(DEBUG_INFO, "ClistBox:: del (%s)\n", htitle.c_str());
 
 	//
 	if (background)
@@ -2276,7 +2278,7 @@ void ClistBox::initFrames()
 
 void ClistBox::paint(bool _selected)
 {
-	dprintf(DEBUG_INFO, "ClistBox::paint: (%s)\n", l_name.c_str());
+	dprintf(DEBUG_INFO, "ClistBox::paint: (%s)\n", htitle.c_str());
 
 	//
 	initFrames();
@@ -2547,7 +2549,7 @@ void ClistBox::paintHead()
 			int i_w = 0;
 			int i_h = 0;
 
-			frameBuffer->getIconSize(iconfile.c_str(), &i_w, &i_h);
+			frameBuffer->getIconSize(hicon.c_str(), &i_w, &i_h);
 			
 			if(i_h >= hheight)
 			{
@@ -2555,7 +2557,7 @@ void ClistBox::paintHead()
 				i_w = i_h*1.67;
 			}
 
-			CFrameBuffer::getInstance()->paintIcon(iconfile, itemBox.iX + BORDER_LEFT, itemBox.iY + (hheight - i_h)/2, 0, i_w, i_h);
+			CFrameBuffer::getInstance()->paintIcon(hicon, itemBox.iX + BORDER_LEFT, itemBox.iY + (hheight - i_h)/2, 0, i_w, i_h);
 
 			// Buttons
 			int iw[hbutton_count], ih[hbutton_count];
@@ -2609,12 +2611,12 @@ void ClistBox::paintHead()
 
 			// title
 			int startPosX = itemBox.iX + BORDER_LEFT + i_w + ICON_OFFSET;
-			int stringWidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getRenderWidth(_(l_name.c_str()));
+			int stringWidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getRenderWidth(_(htitle.c_str()));
 			
 			if (thalign == CC_ALIGN_CENTER)
 				startPosX = itemBox.iX + (itemBox.iWidth >> 1) - (stringWidth >> 1);
 		
-			g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, itemBox.iY + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - buttonWidth - (hbutton_count - 1)*ICON_TO_ICON_OFFSET - timestr_len, _(l_name.c_str()), COL_MENUHEAD_TEXT_PLUS_0);
+			g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, itemBox.iY + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - buttonWidth - (hbutton_count - 1)*ICON_TO_ICON_OFFSET - timestr_len, _(htitle.c_str()), COL_MENUHEAD_TEXT_PLUS_0);
 		}
 		else
 		{		
@@ -2630,7 +2632,7 @@ void ClistBox::paintHead()
 			int i_w = 0;
 			int i_h = 0;
 			
-			frameBuffer->getIconSize(iconfile.c_str(), &i_w, &i_h);
+			frameBuffer->getIconSize(hicon.c_str(), &i_w, &i_h);
 			
 			// limit icon height
 			if(i_h >= hheight)
@@ -2639,7 +2641,7 @@ void ClistBox::paintHead()
 				i_w = i_h*1.67;
 			}
 
-			CFrameBuffer::getInstance()->paintIcon(iconfile, itemBox.iX + BORDER_LEFT + (borderMode? 2 : 0), itemBox.iY + (hheight - i_h)/2 + (borderMode? 2 : 0), 0, i_w, i_h);
+			CFrameBuffer::getInstance()->paintIcon(hicon, itemBox.iX + BORDER_LEFT + (borderMode? 2 : 0), itemBox.iY + (hheight - i_h)/2 + (borderMode? 2 : 0), 0, i_w, i_h);
 
 			// Buttons
 			int iw[hbutton_count], ih[hbutton_count];
@@ -2692,12 +2694,12 @@ void ClistBox::paintHead()
 		
 			// head title
 			int startPosX = itemBox.iX + BORDER_LEFT + i_w + ICON_OFFSET;
-			int stringWidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getRenderWidth(_(l_name.c_str()));
+			int stringWidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getRenderWidth(_(htitle.c_str()));
 			
 			if (thalign == CC_ALIGN_CENTER)
 				startPosX = itemBox.iX + (itemBox.iWidth >> 1) - (stringWidth >> 1);
 				
-			g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, itemBox.iY + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), itemBox.iWidth - BORDER_RIGHT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - timestr_len - buttonWidth - (hbutton_count - 1)*ICON_TO_ICON_OFFSET, _(l_name.c_str()), COL_MENUHEAD_TEXT_PLUS_0, 0, true); // UTF-8
+			g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, itemBox.iY + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), itemBox.iWidth - BORDER_RIGHT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - timestr_len - buttonWidth - (hbutton_count - 1)*ICON_TO_ICON_OFFSET, _(htitle.c_str()), COL_MENUHEAD_TEXT_PLUS_0, 0, true); // UTF-8
 		}		
 	}	
 }
@@ -3124,7 +3126,7 @@ void ClistBox::restoreScreen()
 
 void ClistBox::hide()
 {
-	dprintf(DEBUG_INFO, "ClistBox::hide: (%s)\n", l_name.c_str());
+	dprintf(DEBUG_INFO, "ClistBox::hide: (%s)\n", htitle.c_str());
 
 	if (paintframe)
 		frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);

@@ -1403,8 +1403,7 @@ void CMovieBrowser::refreshTitle(void)
 	title = _("Movie Browser");
 
 	//
-	headers->setTitle(title.c_str());
-	headers->setIcon(NEUTRINO_ICON_MOVIE);
+	headers->setTitle(title.c_str(), NEUTRINO_ICON_MOVIE);
 	headers->enablePaintDate();
 	headers->setButtons(MBHeadButtons, MB_HEAD_BUTTONS_COUNT);
 	

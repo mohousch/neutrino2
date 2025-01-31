@@ -353,8 +353,7 @@ void CInfoBox::refreshTitle(void)
 	if (headers)
 	{
 		headers->setPosition(&m_cBoxFrameTitleRel);
-		headers->setTitle(m_cTitle.c_str());
-		headers->setIcon(m_cIcon.c_str());
+		headers->setTitle(m_cTitle.c_str(), m_cIcon.c_str());
 	}
 }
 

@@ -62,6 +62,11 @@ CComponent::CComponent()
 	savescreen = false;
 	inFocus = true;
 	adjustToParent = false;
+	paint_Head = false;
+	paint_Foot = false;
+	has_Title = false;
+	htitle = "";
+	hicon = "";
 	//
 	halign = CC_ALIGN_LEFT;
 	//
@@ -2506,6 +2511,9 @@ CCHeaders::CCHeaders(const int x, const int y, const int dx, const int dy, const
 	mode = CCButtons::BUTTON_ICON;
 	
 	halign = CC_ALIGN_LEFT;
+	
+	paint_Head = true;
+	has_Title = true;
 
 	cc_type = CC_HEAD;
 }
@@ -2542,6 +2550,9 @@ CCHeaders::CCHeaders(CBox* position, const char * const title, const char * cons
 	mode = CCButtons::BUTTON_ICON;
 	
 	halign = CC_ALIGN_LEFT;
+	
+	paint_Head = true;
+	has_Title = true;
 
 	cc_type = CC_HEAD;
 }
@@ -2730,7 +2741,7 @@ void CCHeaders::hide()
 	}
 }
 
-// CCFooters
+//// CCFooters
 CCFooters::CCFooters(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CCFooters::CCFooters: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
@@ -2761,6 +2772,8 @@ CCFooters::CCFooters(const int x, const int y, const int dx, const int dy)
 	button_width = itemBox.iWidth;
 	mode = CCButtons::BUTTON_ICON;
 	
+	paint_Foot = true;
+	
 	//
 	cc_type = CC_FOOT;
 }
@@ -2790,6 +2803,8 @@ CCFooters::CCFooters(CBox* position)
 	count = 0;
 	button_width = itemBox.iWidth;
 	mode = CCButtons::BUTTON_ICON;
+	
+	paint_Foot = true;
 
 	//
 	cc_type = CC_FOOT;

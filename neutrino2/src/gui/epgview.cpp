@@ -402,20 +402,21 @@ void CEpgData::showHead(const t_channel_id channel_id)
 {
 	std::string text1 = epgData.title;
 
-	std::string logo = DATADIR "/lcd/picon_default.png";
-	t_channel_id logoid = CZapit::getInstance()->getChannelLogoID(channel_id);
+	std::string logo = "";
+	
+	if (g_settings.logos_show_logo)
+	{
+		logo = DATADIR "/lcd/picon_default.png";
 
-	logo = CChannellogo::getInstance()->getLogoName(logoid);
+		logo = CChannellogo::getInstance()->getLogoName(CZapit::getInstance()->getChannelLogoID(channel_id));
+	}
 
 	//
 	if (headers)
 	{
 		headers->clear();
-		
-		headers->setTitle(text1.c_str());
-		
-		if (g_settings.logos_show_logo)
-			headers->setIcon(logo.c_str());
+			
+		headers->setTitle(text1.c_str(), logo.c_str());
 	}
 }
 
