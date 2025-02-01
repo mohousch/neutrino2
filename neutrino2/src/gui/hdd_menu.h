@@ -34,7 +34,7 @@
 class CHDDMenuHandler : public CMenuTarget
 {
 	private:
-		int  hddMenu();
+		int HDDMenu();
 			
 	public:
 		int  exec( CMenuTarget * parent,  const std::string &actionKey);

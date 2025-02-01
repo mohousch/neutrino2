@@ -2250,6 +2250,8 @@
 /neutrino2/src/gui/widget/keyboard_input.o
 /neutrino2/src/gui/.deps/usermenu.Po
 /neutrino2/src/gui/usermenu.o
+/debian/usr/share/tuxbox/*
+/debian/var/*
 /debian/usr/bin/backup.sh
 /debian/usr/bin/init_hdd.sh
 /debian/usr/bin/install.sh

@@ -78,7 +78,7 @@ class CMenuTarget
 			exit_pressed = false;
 		};
 		virtual ~CMenuTarget(){};
-		virtual void hide(){};
+		virtual void hide(){CFrameBuffer::getInstance()->paintBackground(); CFrameBuffer::getInstance()->blit();};
 		virtual int exec(CMenuTarget *parent, const std::string &actionKey) = 0;
 		
 		virtual bool getExitPressed(){return exit_pressed;};

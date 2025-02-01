@@ -141,12 +141,12 @@ int CHDDMenuHandler::exec(CMenuTarget * parent, const std::string &actionKey)
 		return CMenuTarget::RETURN_REPAINT;
 	}
 	
-	hddMenu();
+	HDDMenu();
 	
 	return CMenuTarget::RETURN_REPAINT;
 }
 
-int CHDDMenuHandler::hddMenu()
+int CHDDMenuHandler::HDDMenu()
 {
 	FILE * f;
 	int fd;
@@ -343,7 +343,6 @@ int CHDDMenuHandler::hddMenu()
 			box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
 		
 			tempMenuWidget[i] = new CWidget(&box);
-			tempMenuWidget[i]->enableSaveScreen();
 			
 			//
 			tempMenu[i] = new ClistBox(tempMenuWidget[i]->getWindowsPos().iX, tempMenuWidget[i]->getWindowsPos().iY, tempMenuWidget[i]->getWindowsPos().iWidth, tempMenuWidget[i]->getWindowsPos().iHeight);
@@ -372,7 +371,7 @@ int CHDDMenuHandler::hddMenu()
 		tempMenu[i]->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		
 		//init hdd	
-		tempMenu[i]->addItem(new CMenuForwarder(_("HDD Init"), enabled, "", new CHDDInit, namelist[i]->d_name));
+		tempMenu[i]->addItem(new CMenuForwarder(_("HDD Init"), enabled, "", new CHDDInit(), namelist[i]->d_name));
 		tempMenu[i]->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		
 		// check for parts
@@ -407,7 +406,6 @@ int CHDDMenuHandler::hddMenu()
 			mounted = check_if_mounted(DEVICE);
 			
 			// part submenu
-			
 			PartMenuWidget[j] = CNeutrinoApp::getInstance()->getWidget("temphdd");
 			
 			if (PartMenuWidget[j] != NULL)
@@ -426,7 +424,6 @@ int CHDDMenuHandler::hddMenu()
 				box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
 		
 				PartMenuWidget[j] = new CWidget(&box);
-				PartMenuWidget[j]->enableSaveScreen();
 				
 				//
 				PartMenu[j] = new ClistBox(PartMenuWidget[j]->getWindowsPos().iX, PartMenuWidget[j]->getWindowsPos().iY, PartMenuWidget[j]->getWindowsPos().iWidth, PartMenuWidget[j]->getWindowsPos().iHeight);
@@ -476,7 +473,6 @@ int CHDDMenuHandler::hddMenu()
 			close(fd);
 		}
 		
-		//hddmenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		hddmenu->addItem(new CMenuForwarder(str, enabled, NULL, tempMenuWidget[i]));
 
 		// result
@@ -489,7 +485,6 @@ int CHDDMenuHandler::hddMenu()
 	if (n >= 0)
                 free(namelist);
 	
-	// no parts found
 	ret = widget->exec(NULL, "");
 	
 	if (widget)
@@ -546,12 +541,10 @@ int CHDDDestExec::exec(CMenuTarget *, const std::string&)
 		if (removable) 
 		{
 			printf("CHDDDestExec: /dev/%s is not a hdd, no sleep needed\n", namelist[i]->d_name);
-
 		} 
 		else 
 		{
 			//set hdparm for all hdd's
-
 	                printf("CHDDDestExec: noise %d sleep %d /dev/%s\n", g_settings.hdd_noise, g_settings.hdd_sleep, namelist[i]->d_name);
 
 			if(hdparm_link)
@@ -598,16 +591,7 @@ int CHDDInit::exec(CMenuTarget * parent, const std::string& actionKey)
 	res = MessageBox(_("HDD Init"), _("Are you sure to init ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo );
 
 	if(res != CMessageBox::mbrYes)
-		return 0;
-	
-	/*
-	f = fopen("/proc/sys/kernel/hotplug", "w");
-	if(f) 
-	{
-		fprintf(f, "none\n");
-		fclose(f);
-	}
-	*/
+		return RETURN_REPAINT;
 	
 	// find mount point
 	FILE * fstab = setmntent("/etc/mtab", "r");
@@ -650,8 +634,7 @@ int CHDDInit::exec(CMenuTarget * parent, const std::string& actionKey)
 	if (!output) 
 	{
 		hintbox = new CHintBox(_("HDD Init"), _("HDD init failed !"));
-		hintbox->paint();
-		sleep(2);
+		hintbox->exec();
 		delete hintbox;
 		return CMenuTarget::RETURN_REPAINT;
 	}
@@ -717,7 +700,7 @@ int CHDDFmtExec::exec(CMenuTarget *parent, const std::string& actionKey)
 	res = MessageBox(_("HDD Format"), _("Are you sure to format ? You will lost all data "), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo );
 
 	if(res != CMessageBox::mbrYes)
-		return 0;
+		return RETURN_REPAINT;
 
 	bool srun = system("killall -9 smbd");
 
@@ -756,23 +739,12 @@ int CHDDFmtExec::exec(CMenuTarget *parent, const std::string& actionKey)
 			if(res == -1)
 			{
 				hintbox = new CHintBox(_("HDD Format"), _("HDD unmount failed !"));
-				hintbox->paint();
-				sleep(2);
+				hintbox->exec();
 				delete hintbox;
 				return CMenuTarget::RETURN_REPAINT;
 			}
 		}
 	}
-
-	// check hotplug
-	/*
-	f = fopen("/proc/sys/kernel/hotplug", "w");
-	if(f) 
-	{
-		fprintf(f, "none\n");
-		fclose(f);
-	}
-	*/
 
 	progress = new CProgressWindow();
 	progress->setTitle(_("HDD Format"));
@@ -798,8 +770,7 @@ int CHDDFmtExec::exec(CMenuTarget *parent, const std::string& actionKey)
 	if (!output) 
 	{
 		hintbox = new CHintBox(_("HDD Format"), _("HDD format failed !"));
-		hintbox->paint();
-		sleep(2);
+		hintbox->exec();
 		delete hintbox;
 		return CMenuTarget::RETURN_REPAINT;
 	}
@@ -845,15 +816,6 @@ int CHDDFmtExec::exec(CMenuTarget *parent, const std::string& actionKey)
 
 	// mount
 	res = mount(src, dst, "ext3", 0, NULL);
-
-	/*
-	f = fopen("/proc/sys/kernel/hotplug", "w");
-	if(f) 
-	{
-		fprintf(f, "/sbin/hotplug\n");
-		fclose(f);
-	}
-	*/
 
 	// create directories
 	if(!res) 
@@ -935,8 +897,7 @@ int CHDDChkExec::exec(CMenuTarget *parent, const std::string& actionKey)
 			dprintf(DEBUG_NORMAL, "CHDDChkExec::exec: can not umount %s\n", dst);
 				
 			hintbox = new CHintBox(_("Check filesystem"), _("HDD check failed !"));
-			hintbox->paint();
-			sleep(2);
+			hintbox->exec();
 			delete hintbox;
 			return CMenuTarget::RETURN_REPAINT;
 		}
@@ -959,8 +920,7 @@ int CHDDChkExec::exec(CMenuTarget *parent, const std::string& actionKey)
 	if (!output) 
 	{
 		hintbox = new CHintBox(_("Check filesystem"), _("HDD check failed !"));
-		hintbox->paint();
-		sleep(2);
+		hintbox->exec();
 		delete hintbox;
 		return CMenuTarget::RETURN_REPAINT;
 	}
@@ -1014,8 +974,7 @@ int CHDDChkExec::exec(CMenuTarget *parent, const std::string& actionKey)
 	if(res < 0)
 	{
 		hintbox = new CHintBox(_("Check filesystem"), _("HDD Mount Failed"));
-		hintbox->paint();
-		sleep(2);
+		hintbox->exec();
 		delete hintbox;
 	}
 	
@@ -1048,8 +1007,7 @@ int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 	if(res == 1) 
 	{
 		hintbox = new CHintBox(_("HDD Mount"), _("HDD Mounted"));
-		hintbox->paint();
-		sleep(2);
+		hintbox->exec();
 		delete hintbox;
 		return CMenuTarget::RETURN_REPAINT;
 	}
@@ -1070,8 +1028,7 @@ int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 			if(res == 0) 
 			{
 				hintbox = new CHintBox(_("HDD Mount"), _("HDD Mounted"));
-				hintbox->paint();
-				sleep(2);
+				hintbox->exec();
 				delete hintbox;
 				
 				return CMenuTarget::RETURN_REPAINT;
@@ -1086,8 +1043,7 @@ int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 				if(res == 0)
 				{
 					hintbox = new CHintBox(_("HDD Mount"), _("HDD Mounted"));
-					hintbox->paint();
-					sleep(2);
+					hintbox->exec();
 					delete hintbox;
 					
 					return CMenuTarget::RETURN_REPAINT;
@@ -1104,8 +1060,7 @@ int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 					if(res == 0)
 					{
 						hintbox = new CHintBox(_("HDD Mount"), _("HDD Mounted"));
-						hintbox->paint();
-						sleep(2);
+						hintbox->exec();
 						delete hintbox;
 						
 						return CMenuTarget::RETURN_REPAINT;
@@ -1113,8 +1068,7 @@ int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 					else
 					{
 						hintbox = new CHintBox(_("HDD Mount"), _("HDD Mount failed !"));
-						hintbox->paint();
-						sleep(2);
+						hintbox->exec();
 						delete hintbox;
 						return CMenuTarget::RETURN_REPAINT;
 					}
@@ -1124,8 +1078,7 @@ int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 		else // can not get fstype
 		{
 			hintbox = new CHintBox(_("HDD Mount"), _("HDD Mount failed !"));
-			hintbox->paint();
-			sleep(2);
+			hintbox->exec();
 			delete hintbox;
 			return CMenuTarget::RETURN_REPAINT;
 		}
@@ -1175,8 +1128,7 @@ int CHDDuMountMSGExec::exec(CMenuTarget* parent, const std::string& actionKey)
 		if(res == 0)
 		{
 			hintbox = new CHintBox(_("HDD Mount"), _("HDD umount"));
-			hintbox->paint();
-			sleep(2);
+			hintbox->exec();
 			delete hintbox;
 			
 			return CMenuTarget::RETURN_REPAINT;
@@ -1184,8 +1136,7 @@ int CHDDuMountMSGExec::exec(CMenuTarget* parent, const std::string& actionKey)
 		else
 		{
 			hintbox = new CHintBox(_("HDD Mount"), _("HDD unmount failed !"));
-			hintbox->paint();
-			sleep(2);
+			hintbox->exec();
 			delete hintbox;
 			return CMenuTarget::RETURN_REPAINT;
 
@@ -1194,8 +1145,7 @@ int CHDDuMountMSGExec::exec(CMenuTarget* parent, const std::string& actionKey)
 
 	// not mounted
 	hintbox = new CHintBox(_("HDD Mount"), _("HDD umounted"));
-	hintbox->paint();
-	sleep(2);
+	hintbox->exec();
 	delete hintbox;
 	
 	return CMenuTarget::RETURN_REPAINT;
@@ -1307,8 +1257,7 @@ REPEAT:
 	else
 	{
 		hintbox = new CHintBox(_("HDD Mount"), _("HDD umounted"));
-		hintbox->paint();
-		sleep(2);
+		hintbox->exec();
 		delete hintbox;
 	}
 	

@@ -445,7 +445,7 @@ bool CFileBrowser::exec(const char * const dirname)
 				use_filter = !use_filter;
 
 				ChangeDir(Path);
-				//hide();
+
 				paint();
 			}
 		}
@@ -480,7 +480,7 @@ bool CFileBrowser::exec(const char * const dirname)
 						recursiveDelete((filelist[selected].Name.substr(0,filelist[selected].Name.length()-7)+".xml").c_str());//remove bla.xml von bla.ts
 					}
 					ChangeDir(Path);
-					//hide();
+
 					paint();
 				}
 			}
@@ -497,7 +497,7 @@ bool CFileBrowser::exec(const char * const dirname)
 					{
 						ChangeDir("..", selections.back());
 						selections.pop_back();
-						//hide();
+
 						paint();
 					} 
 					else
@@ -506,7 +506,7 @@ bool CFileBrowser::exec(const char * const dirname)
 						if (pos != std::string::npos) 
 						{
 							ChangeDir("..");
-							//hide();
+
 							paint();
 						}
 						else 
@@ -526,7 +526,7 @@ bool CFileBrowser::exec(const char * const dirname)
 						{
 							selections.push_back(selected);
 							ChangeDir(filelist[selected].Name);
-							//hide();
+
 							paint();
 						}
 						else

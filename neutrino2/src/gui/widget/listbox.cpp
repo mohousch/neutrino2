@@ -1094,7 +1094,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 	}
 	
 	if(observ) 
-		wantsRepaint = observ->changeNotify(itemName.c_str(), optionStringValue);
+		wantsRepaint = observ->changeNotify(itemName, optionStringValue);
 		
 	//
 	if (wantsRepaint || !paintFrame)
