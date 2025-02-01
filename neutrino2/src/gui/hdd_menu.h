@@ -30,69 +30,63 @@
 #include <gui/filebrowser.h>
 
 
-using namespace std;
+//// HDD menu handler
+class CHDDMenuHandler : public CMenuTarget
+{
+	private:
+		int  hddMenu();
+			
+	public:
+		int  exec( CMenuTarget * parent,  const std::string &actionKey);
+};
 
-// dst
+//// HDDdest
 class CHDDDestExec : public CMenuTarget
 {
 	public:
 		int exec(CMenuTarget * parent, const std::string&);
 };
 
-// format
-class CHDDFmtExec : public CMenuTarget
-{
-	public:
-		int exec(CMenuTarget * parent, const std::string&);
-};
-
-// checkfs
-class CHDDChkExec : public CMenuTarget
-{
-	public:
-		int exec(CMenuTarget * parent, const std::string&);
-};
-
-// mount
-class CHDDMountMSGExec : public CMenuTarget
-{
-	public:
-		int exec(CMenuTarget * parent, const std::string&);
-};
-
-class CHDDMountExec : public CMenuTarget
-{
-	public:
-		int exec(CMenuTarget * parent, const std::string&);
-};
-
-// umount
-class CHDDuMountMSGExec : public CMenuTarget
-{
-	public:
-		int exec(CMenuTarget * parent, const std::string&);
-};
-
-// init
+//// HDDinit
 class CHDDInit : public CMenuTarget
 {
 	public:
 		int exec(CMenuTarget * parent, const std::string& actionKey);
 };
 
-// explore
+//// HDDformat
+class CHDDFmtExec : public CMenuTarget
+{
+	public:
+		int exec(CMenuTarget * parent, const std::string&);
+};
+
+//// HDDcheckfs
+class CHDDChkExec : public CMenuTarget
+{
+	public:
+		int exec(CMenuTarget * parent, const std::string&);
+};
+
+//// HDDmountMSG
+class CHDDMountMSGExec : public CMenuTarget
+{
+	public:
+		int exec(CMenuTarget * parent, const std::string&);
+};
+
+//// HDDumount
+class CHDDuMountMSGExec : public CMenuTarget
+{
+	public:
+		int exec(CMenuTarget * parent, const std::string&);
+};
+
+//// HDDBrowser
 class CHDDBrowser : public CMenuTarget
 {	
 	public:
 		int exec(CMenuTarget * parent, const std::string& actionKey);
-};
-
-// HDD menu handler
-class CHDDMenuHandler : public CMenuTarget
-{	
-	public:
-		int  exec( CMenuTarget * parent,  const std::string &actionKey);
-		int  hddMenu();
 };
 
 #endif	//hdd_menu_h

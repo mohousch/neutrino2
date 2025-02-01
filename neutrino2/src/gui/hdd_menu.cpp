@@ -236,8 +236,9 @@ int CHDDMenuHandler::hddMenu()
 	
 	if (ret != -1) 
 	{
-		if ((s.st_dev & drive_mask) == 0x0300) /* hda, hdb,... has max 63 partitions */
-			drive_mask = 0xffc0; /* hda: 0x0300, hdb: 0x0340, sda: 0x0800, sdb: 0x0810 */
+		if ((s.st_dev & drive_mask) == 0x0300) 	/* hda, hdb,... has max 63 partitions */
+			drive_mask = 0xffc0; 		/* hda: 0x0300, hdb: 0x0340, sda: 0x0800, sdb: 0x0810 */
+			
 		root_dev = (s.st_dev & drive_mask);
 	}
 	
@@ -324,19 +325,15 @@ int CHDDMenuHandler::hddMenu()
 		bool enabled = !CNeutrinoApp::getInstance()->recordingstatus && !isroot;
 
 		// hdd menu
-		/*
-		if (CNeutrinoApp::getInstance()->widget_exists("temphdd2"))
+		tempMenuWidget[i] = CNeutrinoApp::getInstance()->getWidget("temphdd2");
+		
+		if (tempMenuWidget[i] != NULL)
 		{
-			tempMenuWidget[i] = CNeutrinoApp::getInstance()->getWidget("temphdd2");
 			tempMenu[i] = (ClistBox*)tempMenuWidget[i]->getCCItem(CComponent::CC_LISTBOX);
 			
-			if (tempMenu[i]->hasHead())
-			{
-				tempMenu[i]->setTitle(str, NEUTRINO_ICON_HDD);
-			}
+			tempMenuWidget[i]->setTitle(str, NEUTRINO_ICON_HDD);
 		}
 		else
-		*/
 		{
 			//
 			CBox box;
@@ -410,19 +407,16 @@ int CHDDMenuHandler::hddMenu()
 			mounted = check_if_mounted(DEVICE);
 			
 			// part submenu
-			/*
-			if (CNeutrinoApp::getInstance()->widget_exists("temphdd"))
+			
+			PartMenuWidget[j] = CNeutrinoApp::getInstance()->getWidget("temphdd");
+			
+			if (PartMenuWidget[j] != NULL)
 			{
-				PartMenuWidget[j] = CNeutrinoApp::getInstance()->getWidget("temphdd");
 				PartMenu[j] = (ClistBox*)PartMenuWidget[j]->getCCItem(CComponent::CC_LISTBOX);
 				
-				if (PartMenu[j]->hasHead())
-				{
-					PartMenu[j]->setTitle(PART, NEUTRINO_ICON_HDD);
-				}
+				PartMenuWidget[j]->setTitle(PART, NEUTRINO_ICON_HDD);
 			}
 			else
-			*/
 			{
 				//
 				CBox box;
@@ -510,7 +504,79 @@ int CHDDMenuHandler::hddMenu()
 	return ret;
 }
 
-// hdd init
+//// HDDDestExec
+int CHDDDestExec::exec(CMenuTarget *, const std::string&)
+{
+	dprintf(DEBUG_NORMAL, "CHDDDestExec::exec:\n");
+
+        char cmd[100];
+	char str[256];
+	FILE * f;
+	int removable = 0;
+        struct dirent **namelist;
+
+        int n = scandir("/sys/block", &namelist, my_filter, alphasort);
+
+        if (n < 0)
+                return 0;
+	
+	const char hdparm[] = "/sbin/hdparm";
+	bool hdparm_link = false;
+	struct stat stat_buf;
+	
+	if(::lstat(hdparm, &stat_buf) == 0)
+		if( S_ISLNK(stat_buf.st_mode) )
+			hdparm_link = true;
+
+        for (int i = 0; i < n; i++) 
+	{
+                removable = 0;
+//		printf("CHDDDestExec: checking /sys/block/%s\n", namelist[i]->d_name);
+ 
+		sprintf(str, "/sys/block/%s/removable", namelist[i]->d_name);
+		f = fopen(str, "r");
+		if (!f)
+		{
+			printf("Can't open %s\n", str);
+			continue;
+		}
+		fscanf(f, "%d", &removable);
+		fclose(f);
+		
+		if (removable) 
+		{
+			printf("CHDDDestExec: /dev/%s is not a hdd, no sleep needed\n", namelist[i]->d_name);
+
+		} 
+		else 
+		{
+			//set hdparm for all hdd's
+
+	                printf("CHDDDestExec: noise %d sleep %d /dev/%s\n", g_settings.hdd_noise, g_settings.hdd_sleep, namelist[i]->d_name);
+
+			if(hdparm_link)
+			{
+				//hdparm -M is not included in busybox hdparm!
+	        	        snprintf(cmd, sizeof(cmd), "%s -S%d /dev/%s >/dev/null 2>/dev/null &", hdparm, g_settings.hdd_sleep, namelist[i]->d_name);
+			}
+			else
+			{
+	        	        snprintf(cmd, sizeof(cmd), "%s -M%d -S%d /dev/%s >/dev/null 2>/dev/null &", hdparm, g_settings.hdd_noise, g_settings.hdd_sleep, namelist[i]->d_name);
+			}
+			
+        	        system(cmd);
+		}
+
+                free(namelist[i]);
+        }
+
+        free(namelist);
+
+        return 1;
+}
+
+
+//// hdd init
 int CHDDInit::exec(CMenuTarget * /*parent*/, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CHDDInit::exec: actionKey:%s\n", actionKey.c_str());
@@ -526,17 +592,19 @@ int CHDDInit::exec(CMenuTarget * /*parent*/, const std::string& actionKey)
 	
 	sprintf(src, "/dev/%s", actionKey.c_str());
 
-	res = MessageBox(_("Hdd Format"), _("Are you sure to init ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo );
+	res = MessageBox(_("HDD Init"), _("Are you sure to init ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo );
 
 	if(res != CMessageBox::mbrYes)
 		return 0;
 	
+	/*
 	f = fopen("/proc/sys/kernel/hotplug", "w");
 	if(f) 
 	{
 		fprintf(f, "none\n");
 		fclose(f);
 	}
+	*/
 	
 	// find mount point
 	FILE * fstab = setmntent("/etc/mtab", "r");
@@ -551,7 +619,7 @@ int CHDDInit::exec(CMenuTarget * /*parent*/, const std::string& actionKey)
 		}
 	}
 		
-	printf("mount point is %s\n", dst);
+//	printf("mount point is %s\n", dst);
 	endmntent(fstab);
 		
 	// umount /media/sda%
@@ -561,12 +629,12 @@ int CHDDInit::exec(CMenuTarget * /*parent*/, const std::string& actionKey)
 	progress = new CProgressWindow();
 	progress->setTitle(_("HDD Init"));
 	progress->paint();
-	progress->showStatusMessageUTF("HDD init");
+	progress->showStatusMessageUTF(_("HDD Init"));
 	progress->showGlobalStatus(0);
 	
-	const char init[]= "init_hdd.sh";
+	const char init[] = "init_hdd.sh";
 	sprintf(cmd, "%s /dev/%s > /tmp/%s.txt", init, actionKey.c_str(), init);
-	printf("CHDDInit: executing %s\n", cmd);
+//	printf("CHDDInit: executing %s\n", cmd);
 	
 	system(cmd);
 	
@@ -622,81 +690,7 @@ int CHDDInit::exec(CMenuTarget * /*parent*/, const std::string& actionKey)
 	return CMenuTarget::RETURN_REPAINT;
 }
 
-int CHDDDestExec::exec(CMenuTarget *, const std::string&)
-{
-	dprintf(DEBUG_NORMAL, "CHDDDestExec::exec:\n");
-
-        char cmd[100];
-	char str[256];
-	FILE * f;
-	int removable = 0;
-        struct dirent **namelist;
-
-        int n = scandir("/sys/block", &namelist, my_filter, alphasort);
-
-        if (n < 0)
-                return 0;
-	
-	const char hdparm[] = "/sbin/hdparm";
-	bool hdparm_link = false;
-	struct stat stat_buf;
-	
-	if(::lstat(hdparm, &stat_buf) == 0)
-		if( S_ISLNK(stat_buf.st_mode) )
-			hdparm_link = true;
-
-        for (int i = 0; i < n; i++) 
-	{
-                removable = 0;
-		printf("CHDDDestExec: checking /sys/block/%s\n", namelist[i]->d_name);
- 
-		sprintf(str, "/sys/block/%s/removable", namelist[i]->d_name);
-		f = fopen(str, "r");
-		if (!f)
-		{
-			printf("Can't open %s\n", str);
-			continue;
-		}
-		fscanf(f, "%d", &removable);
-		fclose(f);
-		
-		if (removable)   // show USB icon, no need for hdparm
-		{
-#if defined(PLATFORM_KATHREIN) || defined(PLATFORM_SPARK7162)
-			CLCD::getInstance()->ShowIcon(VFD_ICON_USB, true);
-#endif
-			printf("CHDDDestExec: /dev/%s is not a hdd, no sleep needed\n", namelist[i]->d_name);
-
-		} 
-		else 
-		{
-			//show HDD icon and set hdparm for all hdd's
-#if defined(PLATFORM_KATHREIN)
-			CLCD::getInstance()->ShowIcon(VFD_ICON_HDD, true);
-#endif
-	                printf("CHDDDestExec: noise %d sleep %d /dev/%s\n", g_settings.hdd_noise, g_settings.hdd_sleep, namelist[i]->d_name);
-
-			if(hdparm_link)
-			{
-				//hdparm -M is not included in busybox hdparm!
-	        	        snprintf(cmd, sizeof(cmd), "%s -S%d /dev/%s >/dev/null 2>/dev/null &", hdparm, g_settings.hdd_sleep, namelist[i]->d_name);
-			}
-			else
-			{
-	        	        snprintf(cmd, sizeof(cmd), "%s -M%d -S%d /dev/%s >/dev/null 2>/dev/null &", hdparm, g_settings.hdd_noise, g_settings.hdd_sleep, namelist[i]->d_name);
-			}
-			
-        	        system(cmd);
-		}
-
-                free(namelist[i]);
-        }
-
-        free(namelist);
-
-        return 1;
-}
-
+//// format
 int CHDDFmtExec::exec(CMenuTarget *parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CHDDFmtExec::exec: actionKey:%s\n", actionKey.c_str());
@@ -724,7 +718,7 @@ int CHDDFmtExec::exec(CMenuTarget *parent, const std::string& actionKey)
 
 	bool srun = system("killall -9 smbd");
 
-	/* check if mounted then umount */
+	// check if mounted then umount
 	if(check_if_mounted(src) == 1)
 	{
 		// find mount point
@@ -740,14 +734,14 @@ int CHDDFmtExec::exec(CMenuTarget *parent, const std::string& actionKey)
 				break;
 			}
 		}
-		printf("mount point is %s\n", dst);
+//		printf("mount point is %s\n", dst);
 		endmntent(fstab);
 		
 		// can not parse mtab, fallback to /media/sda%
 		if(!mountPoint)
 			sprintf((char *)dst, "/media/%s", actionKey.c_str());
 		
-		/* umount /media/sda%n */
+		// umount /media/sda%n
 		res = umount(dst);
 		
 		if(res == -1) 
@@ -762,18 +756,20 @@ int CHDDFmtExec::exec(CMenuTarget *parent, const std::string& actionKey)
 				hintbox->paint();
 				sleep(2);
 				delete hintbox;
-				return CMenuTarget::RETURN_EXIT;
+				return CMenuTarget::RETURN_REPAINT;
 			}
 		}
 	}
 
 	// check hotplug
+	/*
 	f = fopen("/proc/sys/kernel/hotplug", "w");
 	if(f) 
 	{
 		fprintf(f, "none\n");
 		fclose(f);
 	}
+	*/
 
 	progress = new CProgressWindow();
 	progress->setTitle(_("HDD Format"));
@@ -798,11 +794,11 @@ int CHDDFmtExec::exec(CMenuTarget *parent, const std::string& actionKey)
 	
 	if (!output) 
 	{
-		hintbox = new CHintBox(_("HDD Init"), _("HDD format failed !"));
+		hintbox = new CHintBox(_("HDD Format"), _("HDD format failed !"));
 		hintbox->paint();
 		sleep(2);
 		delete hintbox;
-		return CMenuTarget::RETURN_EXIT;
+		return CMenuTarget::RETURN_REPAINT;
 	}
 
 	char buf[256];
@@ -847,12 +843,14 @@ int CHDDFmtExec::exec(CMenuTarget *parent, const std::string& actionKey)
 	// mount
 	res = mount(src, dst, "ext3", 0, NULL);
 
+	/*
 	f = fopen("/proc/sys/kernel/hotplug", "w");
 	if(f) 
 	{
 		fprintf(f, "/sbin/hotplug\n");
 		fclose(f);
 	}
+	*/
 
 	// create directories
 	if(!res) 
@@ -869,6 +867,8 @@ int CHDDFmtExec::exec(CMenuTarget *parent, const std::string& actionKey)
 		safe_mkdir((char *) cmd);
 		sprintf(cmd, "%s/backup", dst);
 		safe_mkdir((char *) cmd);
+		sprintf(cmd, "%s/logos", dst);
+		safe_mkdir((char *) cmd);
 		sync();
 	}
 	
@@ -876,9 +876,10 @@ int CHDDFmtExec::exec(CMenuTarget *parent, const std::string& actionKey)
 	if(!srun) 
 		system("smbd");
 
-	return CMenuTarget::RETURN_EXIT;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
+//// HDD checkfs
 int CHDDChkExec::exec(CMenuTarget *parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CHDDChkExec: actionKey %s\n", actionKey.c_str());
@@ -919,7 +920,7 @@ int CHDDChkExec::exec(CMenuTarget *parent, const std::string& actionKey)
 			}
 		}
 		
-		printf("mount point is %s type %s\n", dst, fstype);
+//		printf("mount point is %s type %s\n", dst, fstype);
 		endmntent(fstab);
 		
 		// unmout /media/sda%
@@ -934,7 +935,7 @@ int CHDDChkExec::exec(CMenuTarget *parent, const std::string& actionKey)
 			hintbox->paint();
 			sleep(2);
 			delete hintbox;
-			return CMenuTarget::RETURN_EXIT;
+			return CMenuTarget::RETURN_REPAINT;
 		}
 	}
 
@@ -954,11 +955,11 @@ int CHDDChkExec::exec(CMenuTarget *parent, const std::string& actionKey)
 	
 	if (!output) 
 	{
-		hintbox = new CHintBox(_("HDD Init"), _("HDD check failed !"));
+		hintbox = new CHintBox(_("Check filesystem"), _("HDD check failed !"));
 		hintbox->paint();
 		sleep(2);
 		delete hintbox;
-		return CMenuTarget::RETURN_EXIT;
+		return CMenuTarget::RETURN_REPAINT;
 	}
 
 	progress = new CProgressWindow();
@@ -1009,7 +1010,7 @@ int CHDDChkExec::exec(CMenuTarget *parent, const std::string& actionKey)
 	
 	if(res < 0)
 	{
-		hintbox = new CHintBox(_("HDD Mount"), _("HDD Mount Failed"));
+		hintbox = new CHintBox(_("Check filesystem"), _("HDD Mount Failed"));
 		hintbox->paint();
 		sleep(2);
 		delete hintbox;
@@ -1018,9 +1019,10 @@ int CHDDChkExec::exec(CMenuTarget *parent, const std::string& actionKey)
 	if(!srun) 
 		system("smbd");
 	
-	return CMenuTarget::RETURN_EXIT;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
+//// HDD mount
 int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CHDDMountMSGExec: %s\n", (char *)actionKey.c_str());
@@ -1039,18 +1041,18 @@ int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 
 	res = check_if_mounted((char *)actionKey.c_str());
 
-	/* if mounted */
+	// if mounted 
 	if(res == 1) 
 	{
 		hintbox = new CHintBox(_("HDD Mount"), _("HDD Mounted"));
 		hintbox->paint();
 		sleep(2);
 		delete hintbox;
-		return CMenuTarget::RETURN_EXIT;
+		return CMenuTarget::RETURN_REPAINT;
 	}
 	else
 	{
-		/* get fs type */
+		// get fs type
 		fstype = blkid_get_tag_value(NULL, "TYPE", src);
 		
 		dprintf(DEBUG_NORMAL, "fstype: %s\n", fstype);
@@ -1060,7 +1062,7 @@ int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 			//mount to /hdd
 			res = mount(src, "/hdd", fstype, 0, NULL);
 	
-			dprintf(DEBUG_NORMAL, "CHDDMountExec: mount1 to /hdd res %d\n", res);
+			dprintf(DEBUG_NORMAL, "CHDDMountMSGExec::exec: mount1 to /hdd res %d\n", res);
 
 			if(res == 0) 
 			{
@@ -1069,14 +1071,14 @@ int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 				sleep(2);
 				delete hintbox;
 				
-				return CMenuTarget::RETURN_EXIT_ALL;
+				return CMenuTarget::RETURN_REPAINT;
 			}
 			else
 			{
 				// mount to /media/sda%
 				res = mount(src, dst, fstype, 0, NULL);
 	
-				dprintf(DEBUG_NORMAL, "CHDDMountExec: mount2 to %s res %d\n", dst, res);
+				dprintf(DEBUG_NORMAL, "CHDDMountMSGExec::exec: mount2 to %s res %d\n", dst, res);
 				
 				if(res == 0)
 				{
@@ -1085,7 +1087,7 @@ int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 					sleep(2);
 					delete hintbox;
 					
-					return CMenuTarget::RETURN_EXIT_ALL;
+					return CMenuTarget::RETURN_REPAINT;
 				}
 				else //fallback to /tmp/hdd
 				{
@@ -1094,7 +1096,7 @@ int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 					// mount to /tmp/hdd
 					res = mount(src, "/tmp/hdd", fstype, 0, NULL);
 					
-					dprintf(DEBUG_NORMAL, "CHDDMountExec: mount3 to /tmp/hdd res %d\n", res);
+					dprintf(DEBUG_NORMAL, "CHDDMountMSGExec::exec: mount3 to /tmp/hdd res %d\n", res);
 					
 					if(res == 0)
 					{
@@ -1103,7 +1105,7 @@ int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 						sleep(2);
 						delete hintbox;
 						
-						return CMenuTarget::RETURN_EXIT_ALL;
+						return CMenuTarget::RETURN_REPAINT;
 					}
 					else
 					{
@@ -1111,7 +1113,7 @@ int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 						hintbox->paint();
 						sleep(2);
 						delete hintbox;
-						return CMenuTarget::RETURN_EXIT;
+						return CMenuTarget::RETURN_REPAINT;
 					}
 				}
 			}
@@ -1122,91 +1124,14 @@ int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 			hintbox->paint();
 			sleep(2);
 			delete hintbox;
-			return CMenuTarget::RETURN_EXIT;
+			return CMenuTarget::RETURN_REPAINT;
 		}
 	}
 	
-	return CMenuTarget::RETURN_EXIT_ALL;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
-int CHDDMountExec::exec(CMenuTarget *parent, const std::string& actionKey)
-{
-	dprintf(DEBUG_NORMAL, "CHDDMountExec: %s\n", actionKey.c_str());
-
-	if(parent)
-		hide();
-	
-	int res;
-	char src[128];
-	char dst[128];
-	const char * fstype = NULL;
-
-	sprintf(src, "/dev/%s", actionKey.c_str());
-	sprintf(dst, "/media/%s", actionKey.c_str());
-
-	res = check_if_mounted((char *)actionKey.c_str());
-
-	// if mounted
-	if(res == 1) 
-	{
-		return 0;
-	}
-	else
-	{
-		// get fs type
-		fstype = blkid_get_tag_value(NULL, "TYPE", src);
-
-		if(fstype != NULL)
-		{
-			//mount to /hdd
-			res = mount(src, "/hdd", fstype, 0, NULL);
-	
-			dprintf(DEBUG_NORMAL, "CHDDMountExec: mount1 to /hdd res %d\n", res);
-
-			if(res == 0) 
-			{
-				return 0;
-			}
-			else
-			{
-				// mount to /media/sda%
-				res = mount(src, dst, fstype, 0, NULL);
-	
-				dprintf(DEBUG_NORMAL, "CHDDMountExec: mount2 to %s res %d\n", dst, res);
-				
-				if(res == 0)
-				{
-					return 0;
-				}
-				else //fallback to /tmp/hdd
-				{
-					// create /tmp/hdd
-					safe_mkdir((char *)"/tmp/hdd");
-					// mount to /tmp/hdd
-					res = mount(src, "/tmp/hdd", fstype, 0, NULL);
-					
-					dprintf(DEBUG_NORMAL, "CHDDMountExec: mount3 to /tmp/hdd res %d\n", res);
-					
-					if(res == 0)
-					{
-						return 0;
-					}
-					else
-					{
-						return -1;
-					}
-				}
-			}
-		}
-		else // can not get fstype
-		{
-			return -1;
-		}
-	}
-	
-	return -1;
-}
-
+//// umount
 int CHDDuMountMSGExec::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CHDDuMountExec: actionKey:%s\n", actionKey.c_str());
@@ -1217,12 +1142,11 @@ int CHDDuMountMSGExec::exec(CMenuTarget* parent, const std::string& actionKey)
 	CHintBox * hintbox;
 	int res;
 	char src[128];
-	//char dst[128];
 	const char * dst = NULL;
 
 	sprintf(src, "/dev/%s", actionKey.c_str());
 
-	/* umount */
+	// umount
 	if(check_if_mounted(src) == 1)
 	{
 		// find mount point
@@ -1245,14 +1169,14 @@ int CHDDuMountMSGExec::exec(CMenuTarget* parent, const std::string& actionKey)
 		res = umount(dst);
 		dprintf(DEBUG_NORMAL, "CHDDuMountExec: umount res %d\n", res);
 
-		if(res == 0)	/* umounted */
+		if(res == 0)
 		{
 			hintbox = new CHintBox(_("HDD Mount"), _("HDD umount"));
 			hintbox->paint();
 			sleep(2);
 			delete hintbox;
 			
-			return CMenuTarget::RETURN_EXIT;
+			return CMenuTarget::RETURN_REPAINT;
 		}
 		else
 		{
@@ -1260,7 +1184,7 @@ int CHDDuMountMSGExec::exec(CMenuTarget* parent, const std::string& actionKey)
 			hintbox->paint();
 			sleep(2);
 			delete hintbox;
-			return CMenuTarget::RETURN_EXIT;
+			return CMenuTarget::RETURN_REPAINT;
 
 		}
 	}
@@ -1271,20 +1195,19 @@ int CHDDuMountMSGExec::exec(CMenuTarget* parent, const std::string& actionKey)
 	sleep(2);
 	delete hintbox;
 	
-	return CMenuTarget::RETURN_EXIT;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
-// hdd browser
+//// hdd browser
 int CHDDBrowser::exec(CMenuTarget * parent, const std::string& actionKey)
 {
-	printf("CHDDBrowser: key %s\n", actionKey.c_str());
+	dprintf(DEBUG_NORMAL, "CHDDBrowser::exec: actionKey:%s\n", actionKey.c_str());
 	
 	if(parent)
 		parent->hide();
 	
 	CFileBrowser filebrowser;
 	CHintBox * hintbox;
-	//char dst[128];
 	const char * dst = NULL;
 
 	// find mount point
@@ -1300,7 +1223,6 @@ int CHDDBrowser::exec(CMenuTarget * parent, const std::string& actionKey)
 		}
 	}
 		
-	printf("mount point is %s\n", dst);
 	endmntent(fstab);
 	
 	if(dst != NULL)
@@ -1323,7 +1245,7 @@ REPEAT:
 					CPictureViewerGui tmpPictureViewerGui;
 			
 					tmpPictureViewerGui.addToPlaylist(*file);
-					tmpPictureViewerGui.exec(NULL, "urlplayback");	
+					tmpPictureViewerGui.exec(NULL, "");	
 				}
 				else if(file->getType() == CFile::FILE_VIDEO)
 				{
@@ -1347,7 +1269,7 @@ REPEAT:
 					CAudioPlayerGui tmpAudioPlayerGui;
 			
 					tmpAudioPlayerGui.addToPlaylist(*file);
-					tmpAudioPlayerGui.exec(NULL, "urlplayback");
+					tmpAudioPlayerGui.exec(NULL, "");
 				}
 				else
 				{
@@ -1387,6 +1309,6 @@ REPEAT:
 		delete hintbox;
 	}
 	
-	return CMenuTarget::RETURN_EXIT;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
