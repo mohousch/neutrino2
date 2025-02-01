@@ -455,16 +455,16 @@ int CHDDMenuHandler::hddMenu()
 			PartMenu[j]->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 			
 			// format part
-			PartMenu[j]->addItem(new CMenuForwarder(_("HDD Format"), true, NULL, new CHDDFmtExec, PART));
+			PartMenu[j]->addItem(new CMenuForwarder(_("HDD Format"), true, NULL, new CHDDFmtExec(), PART));
 			
 			// fs check
-			PartMenu[j]->addItem(new CMenuForwarder(_("Check filesystem"), true, NULL, new CHDDChkExec, PART));
+			PartMenu[j]->addItem(new CMenuForwarder(_("Check filesystem"), true, NULL, new CHDDChkExec(), PART));
 			
 			// mount part
-			PartMenu[j]->addItem(new CMenuForwarder(_("HDD Mount"), true, NULL, new CHDDMountMSGExec, PART));
+			PartMenu[j]->addItem(new CMenuForwarder(_("HDD Mount"), true, NULL, new CHDDMountMSGExec(), PART));
 
 			// umount part
-			PartMenu[j]->addItem(new CMenuForwarder(_("HDD Umount"), true, NULL, new CHDDuMountMSGExec, PART));
+			PartMenu[j]->addItem(new CMenuForwarder(_("HDD Umount"), true, NULL, new CHDDuMountMSGExec(), PART));
 			
 			// hdd explorer
 			PartMenu[j]->addItem(new CMenuSeparator(CMenuSeparator::LINE));
@@ -577,9 +577,12 @@ int CHDDDestExec::exec(CMenuTarget *, const std::string&)
 
 
 //// hdd init
-int CHDDInit::exec(CMenuTarget * /*parent*/, const std::string& actionKey)
+int CHDDInit::exec(CMenuTarget * parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CHDDInit::exec: actionKey:%s\n", actionKey.c_str());
+	
+	if(parent)
+		parent->hide();
 
 	char cmd[100];
 	CHintBox * hintbox;
