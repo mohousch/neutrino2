@@ -49,7 +49,6 @@ class CKeyChooser : public CMenuTarget
 		CFrameBuffer* frameBuffer;
 		
 		std::string title;
-//		std::string icon;
 		long * key;
 		CKeyChooserItem* keyChooser;
 		CKeyChooserItemNoKey* keyDeleter;
@@ -58,12 +57,13 @@ class CKeyChooser : public CMenuTarget
 		CBox cFrameBox;
 		CWidget* widget;
 		ClistBox* menu;
+		int selected;
 		
 		int paint();
 
 	public:
 		//
-		CKeyChooser(long * const Key, const char* const Title/*, const std::string& Icon = ""*/);
+		CKeyChooser(long * const Key, const char* const Title);
 		virtual ~CKeyChooser();
 		
 		//

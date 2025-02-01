@@ -68,6 +68,7 @@ CKeyChooser::CKeyChooser(long * const Key, const char* const Title)
 	keyDeleter = new CKeyChooserItemNoKey(key);
 	widget = NULL;
 	menu = NULL;
+	selected = -1;
 	
 	//
 	cFrameBox.iWidth = MENU_WIDTH;
@@ -134,6 +135,9 @@ int CKeyChooser::paint()
 	menu->addItem(new CMenuForwarder(_("Setup new key"), true, NULL, this, "setnewkey"));
 	menu->addItem(new CMenuForwarder(_("No key"), true, NULL, this, "deletekey"));
 
+
+	menu->setSelected(selected);
+	
 	ret = widget->exec(NULL, "");
 	
 	if (widget)
@@ -155,12 +159,20 @@ int CKeyChooser::exec(CMenuTarget *parent, const std::string &actionKey)
 	if (actionKey == "setnewkey")
 	{
 		keyChooser->exec(NULL, "");
+		if (menu) 
+		{
+			selected = menu->getSelected();
+		}
 		paint();
 		return RETURN_EXIT;
 	}
 	else if (actionKey == "deletekey")
 	{
 		keyDeleter->exec(NULL, "");
+		if (menu) 
+		{
+			selected = menu->getSelected();
+		}
 		paint();
 		return RETURN_EXIT;
 	}

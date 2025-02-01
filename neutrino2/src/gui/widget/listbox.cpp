@@ -397,11 +397,10 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 		//
 		CWidget* widget = NULL;
 		ClistBox* menu = NULL;
-		CCHeaders *head = NULL;
 
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0};	
 		
-		//widget = CNeutrinoApp::getInstance()->getWidget("optionchooser");
+//		widget = CNeutrinoApp::getInstance()->getWidget("optionchooser");
 		
 		if (widget)
 		{
@@ -409,10 +408,8 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			widget->enableSaveScreen();
 			
 			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
-			head = (CCHeaders *)widget->getCCItem(CComponent::CC_HEAD);
 			
-			if (head)
-				head->setTitle(itemName.c_str());
+			widget->setTitle(itemName.c_str());
 		}
 		else
 		{
@@ -480,17 +477,14 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 		//
 		CWidget* widget = NULL;
 		ClistBox* menu = NULL;
-		CCHeaders *head = NULL;
 		
 		widget = CNeutrinoApp::getInstance()->getWidget("optionchooser");
 		
 		if (widget)
 		{
 			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
-			head = (CCHeaders *)widget->getCCItem(CComponent::CC_HEAD);
 			
-			if (head)
-				head->setTitle(itemName.c_str());
+			widget->setTitle(itemName.c_str());
 		}
 		else
 		{
@@ -925,23 +919,20 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		//
 		CWidget* widget = NULL;
 		ClistBox* menu = NULL;
-		CCHeaders *head = NULL;
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0};	
 
 		
-		//widget = CNeutrinoApp::getInstance()->getWidget("optionstringchooser");
+//		widget = CNeutrinoApp::getInstance()->getWidget("optionstringchooser");
 		
 		if (widget)
 		{
 			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
-			head = (CCHeaders *)widget->getCCItem(CComponent::CC_HEAD);
 			
 			//
 			widget->move(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50, 450, 400);
 			widget->enableSaveScreen();
 			
-			if (head)
-				head->setTitle(itemName.c_str());
+			widget->setTitle(itemName.c_str());
 			
 			
 		}
@@ -1006,17 +997,14 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		//
 		CWidget* widget = NULL;
 		ClistBox* menu = NULL;
-		CCHeaders *head = NULL;
 		
 		widget = CNeutrinoApp::getInstance()->getWidget("optionstringchooser");
 		
 		if (widget)
 		{
 			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
-			head = (CCHeaders *)widget->getCCItem(CComponent::CC_HEAD);
 			
-			if (head)
-				head->setTitle(itemName.c_str());
+			widget->setTitle(itemName.c_str());
 		}
 		else
 		{

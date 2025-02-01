@@ -5966,7 +5966,7 @@ void CTestMenu::showMenu()
 	CWidget* mWidget = NULL;
 	ClistBox* mainMenu = NULL;
 	
-	mWidget = CNeutrinoApp::getInstance()->getWidget("testmenu", PLUGINDIR "/test/test.xml");
+//	mWidget = CNeutrinoApp::getInstance()->getWidget("testmenu", PLUGINDIR "/test/test.xml");
 	
 	if (mWidget)
 	{
