@@ -1431,9 +1431,9 @@ int CMenuForwarder::exec(CMenuTarget *target)
 	{
 		ret = jumpTarget->exec(target, actionKey);
 		
-		if(ret && !option.empty()) 
+		if (!jumpTarget->getValueString().empty()) 
 		{
-			setOption(option.c_str());
+			setOption(jumpTarget->getValueString().c_str()); // FIXME:
 		}
 	}
 

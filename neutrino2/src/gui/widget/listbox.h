@@ -315,12 +315,12 @@ class CMenuSeparator : public CMenuItem
 	public:
 		enum
 		{
-			EMPTY =	0,
-			LINE = 1,
-			STRING = 2,
-			ALIGN_CENTER = 4,
-			ALIGN_LEFT = 8,
-			ALIGN_RIGHT = 16
+			EMPTY =		0,
+			LINE = 		1,
+			STRING = 	2,
+			ALIGN_CENTER = 	4,
+			ALIGN_LEFT = 	8,
+			ALIGN_RIGHT = 	16
 		};
 
 	public:

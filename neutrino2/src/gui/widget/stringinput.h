@@ -103,7 +103,7 @@ class CStringInput : public CMenuTarget
 
 		//
 		bool getExitPressed(){return exit_pressed;};
-		virtual std::string& getValueString(void) { return valueString; };
+		std::string& getValueString(void) { return valueString; };
 };
 
 class CStringInputSMS : public CStringInput

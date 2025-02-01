@@ -68,6 +68,8 @@ CZapitSetup::CZapitSetup()
 	zapit = NULL;
 	m3 = NULL;
 	m4 = NULL;
+	
+	valueString.clear();
 }
 
 CZapitSetup::~CZapitSetup()
@@ -77,6 +79,8 @@ CZapitSetup::~CZapitSetup()
 		delete widget;
 		widget = NULL;
 	}
+	
+	valueString.clear();
 }
 
 int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)

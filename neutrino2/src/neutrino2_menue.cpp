@@ -410,7 +410,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 			// timerlist
 			case SNeutrinoSettings::ITEM_TIMERLIST:
 				keyhelper.get(&key, &icon, CRCInput::RC_yellow);
-				menu_item = new CMenuForwarder(_("Timerlist"), true, NULL, new CTimerList, "-1", key, icon, NEUTRINO_ICON_MENUITEM_TIMERLIST);
+				menu_item = new CMenuForwarder(_("Timerlist"), true, NULL, new CTimerList(), "-1", key, icon, NEUTRINO_ICON_MENUITEM_TIMERLIST);
 				menu_item->setHint(_("Here you can set timers"));
 				if (menu) menu->addItem(menu_item, false);
 				break;
@@ -426,7 +426,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 			case SNeutrinoSettings::ITEM_VTXT:
 				{
 					keyhelper.get(&key, &icon);
-					menu_item = new CMenuForwarder(_("Teletext"), true, NULL, new CTuxtxtChangeExec, "-1", key, icon, NEUTRINO_ICON_MENUITEM_VTXT);
+					menu_item = new CMenuForwarder(_("Teletext"), true, NULL, new CTuxtxtChangeExec(), "-1", key, icon, NEUTRINO_ICON_MENUITEM_VTXT);
 					if (menu) menu->addItem(menu_item, false);
 				}
 				break;	

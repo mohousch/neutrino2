@@ -313,6 +313,8 @@ CTimerList::CTimerList()
 		//
 		timerlistWidget->addCCItem(listBox);
 	}
+	
+	valueString.clear();
 }
 
 CTimerList::~CTimerList()
@@ -332,6 +334,8 @@ CTimerList::~CTimerList()
 		delete timerlistWidget;
 		timerlistWidget = NULL;
 	}
+	
+	this->clearValueString();
 }
 
 int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
@@ -345,9 +349,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 	
 	CSelectChannelWidget * CSelectChannelWidgetHandler = NULL;
 	
-	////
 	selected = listBox? listBox->getSelected() : 0;
-	////
 	
 	if(actionKey == "tv")
 	{
@@ -357,7 +359,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		timerNew_chan_id = CSelectChannelWidgetHandler->getChannelID();
 		timerNew_channel_name = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 		
-		m6->addOption(CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID()).c_str());
+		m6->setOption(timerNew_channel_name.c_str());
 		
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;
@@ -372,7 +374,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		timerNew_chan_id = CSelectChannelWidgetHandler->getChannelID();
 		timerNew_channel_name = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 		
-		m6->addOption(CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID()).c_str());
+		m6->setOption(timerNew_channel_name.c_str());
 		
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;

@@ -1731,6 +1731,7 @@ void CNeutrinoApp::setChannelMode(int newmode, int nMode)
 	}
 	
 	// channelList // FIXME:
+	/*
 	int old_b = 0;
 	
 	if ((bouquetList != NULL) && !(bouquetList->Bouquets.empty()))
@@ -1739,6 +1740,7 @@ void CNeutrinoApp::setChannelMode(int newmode, int nMode)
 	if(bouquetList->Bouquets.size() && bouquetList->Bouquets[old_b]->channelList->getSize() > 0)
 		channelList = bouquetList->Bouquets[old_b]->channelList;
 	else
+	*/
 	{
 		if(nMode == mode_radio)
 			channelList = RADIOchannelList;
