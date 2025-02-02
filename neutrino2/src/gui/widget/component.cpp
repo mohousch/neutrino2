@@ -171,7 +171,7 @@ void CComponent::addKey(neutrino_msg_t key, CMenuTarget *target, const std::stri
 //
 int CComponent::exec(CMenuTarget *target)
 {
-	dprintf(DEBUG_NORMAL, "CComponent::exec: timeout:%d\n", timeout);
+	dprintf(DEBUG_NORMAL, "CComponent::exec:\n");
 	
 	bool show = true;
 	exit_pressed = false;
