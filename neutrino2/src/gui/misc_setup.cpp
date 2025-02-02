@@ -787,7 +787,7 @@ void CEPGSettings::showMenu()
 		
 		//
 		miscSettingsEPG->enablePaintHead();
-		miscSettingsEPG->setTitle(_("EPG settings"), NEUTRINO_ICON_BUTTON_EPG);
+		miscSettingsEPG->setTitle(_("EPG settings"), NEUTRINO_ICON_INFO);
 
 		//
 		miscSettingsEPG->enablePaintFoot();
