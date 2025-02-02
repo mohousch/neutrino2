@@ -111,7 +111,7 @@
 #define NEUTRINO_ICON_PICTUREVIEWER				"pictureviewer"
 #define NEUTRINO_ICON_STREAMING					"streaming"
 #define NEUTRINO_ICON_EDIT					"edit"
-#define NEUTRINO_ICON_EDIT_FIND					"edit-find"
+#define NEUTRINO_ICON_SEARCH					"search"
 #define NEUTRINO_ICON_BOOKMARKMANAGER				"bookmarkmanager"
 #define NEUTRINO_ICON_CI					"ci"
 #define NEUTRINO_ICON_HDD					"hdd"

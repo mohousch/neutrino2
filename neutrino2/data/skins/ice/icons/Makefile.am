@@ -27,7 +27,7 @@ install_DATA = \
 	dd_gray.png \
 	dd.png \
 	de.png \
-	edit-find.png \
+	search.png \
 	edit.png \
 	ellinika.png \
 	en.png \

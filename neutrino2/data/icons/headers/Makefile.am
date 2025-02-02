@@ -22,7 +22,7 @@ install_DATA = \
 	video.png \
 	bookmarkmanager.png \
 	edit.png \
-	edit-find.png \
+	search.png \
 	audioplayer.png \
 	movieplayer.png \
 	pictureviewer.png \

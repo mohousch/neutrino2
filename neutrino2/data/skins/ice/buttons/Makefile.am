@@ -43,5 +43,6 @@ install_DATA = \
 	ok.png \
 	power.png \
 	right.png \
-	up.png
+	up.png \
+	epg.png
 
