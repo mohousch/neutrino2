@@ -779,7 +779,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.radiotext_enable = configfile.getBool("radiotext_enable", false);
 	
 	// logos_dir
-	g_settings.logos_dir = configfile.getString("logos_dir", "/var/tuxbox/logos");
+	g_settings.logos_dir = configfile.getString("logos_dir", "/media/hdd/logos");
 	g_settings.logos_show_logo = configfile.getBool("logos_show_logo", false);
 	
 	// vol

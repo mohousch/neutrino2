@@ -616,7 +616,7 @@ struct SNeutrinoSettings
 #define MIN_WINDOW_HEIGHT 			40
 
 // CTextBox
-#define THUMBNAIL_OFFSET			3
+#define THUMBNAIL_OFFSET			1
 #define BIG_FONT_FAKTOR 			1.5
 
 // multi widget
