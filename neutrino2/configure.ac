@@ -255,7 +255,6 @@ src/driver/gdi/Makefile
 src/driver/lcd/Makefile
 src/driver/Makefile
 src/gui/Makefile
-src/gui/bedit/Makefile
 src/gui/widget/Makefile
 src/system/Makefile
 data/Makefile

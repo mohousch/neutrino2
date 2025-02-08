@@ -112,6 +112,7 @@ class CTextBox : public CComponent
 		void refreshScroll(void);
 		void refreshText(void);
 		void refreshPage(void);
+		void refreshThumbnail(void);
 
 	public:
 		CTextBox(const int x = 0, const int y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);
@@ -120,7 +121,7 @@ class CTextBox : public CComponent
 		virtual ~CTextBox();
 
 		//// properties			
-		bool setText(const char * const newText, const char * const _thumbnail = NULL, int _tw = 0, int _th = 0, int _tmode = PIC_RIGHT, bool enable_frame = false);
+		void setText(const char * const newText, const char * const _thumbnail = NULL, int _tw = 0, int _th = 0, int _tmode = PIC_RIGHT, bool enable_frame = false);
 		void setPosition(const int x, const int y, const int dx, const int dy);
 		void setPosition(const CBox * position);
 		void setCorner(int ra, int co){m_textRadius = ra; m_textCorner = co;};
@@ -131,7 +132,7 @@ class CTextBox : public CComponent
 		void setBigFonts();
 		
 		////
-		void initFrames(void);
+		void initFrames(bool force = false);
 		void paint(bool _selected = false);
 		void hide(void);
 		inline bool isPainted(void){return painted;};

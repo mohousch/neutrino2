@@ -3328,3 +3328,10 @@
 /plugins/python/locale/ru.mo
 /plugins/python/locale/sk.mo
 /plugins/python/locale/sv.mo
+/neutrino2/src/gui/.deps/bouqueteditor_bouquets.Po
+/neutrino2/src/gui/.deps/bouqueteditor_channels.Po
+/neutrino2/src/gui/.deps/bouqueteditor_chanselect.Po
+/neutrino2/src/gui/bouqueteditor_bouquets.o
+/neutrino2/src/gui/bouqueteditor_channels.o
+/neutrino2/src/gui/bouqueteditor_chanselect.o
+/neutrino2/src/gui/libneutrino2_gui_bedit.a

@@ -30,14 +30,13 @@
 #include <gui/widget/messagebox.h>
 #include <gui/widget/icons.h>
 
-#include <gui/bedit/bouqueteditor_channels.h>
-
 #include <global.h>
 #include <neutrino2.h>
 
 #include <driver/gdi/fontrenderer.h>
 
-#include <gui/bedit/bouqueteditor_chanselect.h>
+#include <gui/bouqueteditor_channels.h>
+#include <gui/bouqueteditor_chanselect.h>
 
 //
 #include <zapit/bouquets.h>

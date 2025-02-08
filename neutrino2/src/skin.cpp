@@ -71,7 +71,7 @@
 #include <gui/screensetup.h>
 #include <gui/alphasetup.h>
 #include <gui/zapit_setup.h>
-#include <gui/bedit/bouqueteditor_bouquets.h>
+#include <gui/bouqueteditor_bouquets.h>
 #include <gui/cam_menu.h>
 #include <gui/update.h>
 #include <gui/imageinfo.h>

@@ -1,6 +1,6 @@
 AM_CPPFLAGS = -fno-strict-aliasing
 
-SUBDIRS = widget bedit
+SUBDIRS = widget
 
 AM_CPPFLAGS += \
 	-I$(top_builddir) \
@@ -29,7 +29,7 @@ endif
 
 AM_CPPFLAGS += -fno-rtti -fno-exceptions
 
-noinst_LIBRARIES = libneutrino2_gui.a
+noinst_LIBRARIES = libneutrino2_gui.a libneutrino2_gui_bedit.a
 
 libneutrino2_gui_a_SOURCES = \
 	bouquetlist.cpp \
@@ -118,4 +118,10 @@ endif
 endif
 endif
 endif
+
+libneutrino2_gui_bedit_a_SOURCES = \
+	bouqueteditor_bouquets.cpp \
+	bouqueteditor_channels.cpp \
+	bouqueteditor_chanselect.cpp
+
 

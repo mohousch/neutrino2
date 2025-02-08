@@ -41,7 +41,7 @@
 #include <system/debug.h>
 #include <system/helpers.h>
 
-#include <gui/bedit/bouqueteditor_chanselect.h>
+#include <gui/bouqueteditor_chanselect.h>
 
 
 //// globals

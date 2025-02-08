@@ -82,7 +82,7 @@
 #include <gui/widget/stringinput.h>
 #include <gui/widget/stringinput_ext.h>
 
-#include <gui/bedit/bouqueteditor_bouquets.h>
+#include <gui/bouqueteditor_bouquets.h>
 #include <gui/bouquetlist.h>
 #include <gui/eventlist.h>
 #include <gui/channellist.h>

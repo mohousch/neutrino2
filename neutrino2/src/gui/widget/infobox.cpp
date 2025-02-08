@@ -77,6 +77,7 @@ CInfoBox::CInfoBox(const int x, const int y, const int dx, const int dy, const c
 	//
 	m_cBoxFrame.iX = g_settings.screen_StartX + ((g_settings.screen_EndX - g_settings.screen_StartX - m_cBoxFrame.iWidth) >>1);
 	m_cBoxFrame.iY = g_settings.screen_StartY + ((g_settings.screen_EndY - g_settings.screen_StartY - m_cBoxFrame.iHeight) >>1);
+	
 	//
 	widget = CNeutrinoApp::getInstance()->getWidget("infobox");
 	
@@ -144,6 +145,7 @@ CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 	//
 	m_cBoxFrame.iX = g_settings.screen_StartX + ((g_settings.screen_EndX - g_settings.screen_StartX - m_cBoxFrame.iWidth) >>1);
 	m_cBoxFrame.iY = g_settings.screen_StartY + ((g_settings.screen_EndY - g_settings.screen_StartY - m_cBoxFrame.iHeight) >>1);
+	
 	//
 	widget = CNeutrinoApp::getInstance()->getWidget("infobox");
 	
@@ -322,20 +324,20 @@ void CInfoBox::initVar(void)
 void CInfoBox::initFrames(void)
 {
 	// init the title frame
-	m_cBoxFrameTitleRel.iX		= m_cBoxFrame.iX;
-	m_cBoxFrameTitleRel.iY		= m_cBoxFrame.iY;
+	m_cBoxFrameTitleRel.iX		= 0;
+	m_cBoxFrameTitleRel.iY		= 0;
 	m_cBoxFrameTitleRel.iWidth	= m_cBoxFrame.iWidth;
 	m_cBoxFrameTitleRel.iHeight	= g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
 
 	// init the foot frame
-	m_cBoxFrameFootRel.iX		= m_cBoxFrame.iX;
+	m_cBoxFrameFootRel.iX		= 0;
 	m_cBoxFrameFootRel.iWidth	= m_cBoxFrame.iWidth;
 	m_cBoxFrameFootRel.iHeight	= g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
-	m_cBoxFrameFootRel.iY		= m_cBoxFrame.iY + m_cBoxFrame.iHeight - m_cBoxFrameFootRel.iHeight;
+	m_cBoxFrameFootRel.iY		= m_cBoxFrame.iHeight - m_cBoxFrameFootRel.iHeight;
 
 	// init the text frame
-	m_cBoxFrameText.iY		= m_cBoxFrame.iY + m_cBoxFrameTitleRel.iHeight;
-	m_cBoxFrameText.iX		= m_cBoxFrame.iX;
+	m_cBoxFrameText.iY		= m_cBoxFrameTitleRel.iHeight;
+	m_cBoxFrameText.iX		= 0;
 	m_cBoxFrameText.iHeight	= m_cBoxFrame.iHeight - m_cBoxFrameTitleRel.iHeight - m_cBoxFrameFootRel.iHeight;
 	m_cBoxFrameText.iWidth		= m_cBoxFrame.iWidth;	
 }
@@ -476,17 +478,13 @@ void CInfoBox::setFont(unsigned int font_text)
 // Return:		
 // Notes:		
 //////////////////////////////////////////////////////////////////////
-bool CInfoBox::setText(const char * const newText, const char * const _thumbnail, int _tw, int _th, int tmode, bool enable_frame)
+void CInfoBox::setText(const char * const newText, const char * const _thumbnail, int _tw, int _th, int tmode, bool enable_frame)
 {
-	bool _result = false;
-	
 	// update text in textbox if there is one
 	if(m_pcTextBox != NULL && newText != NULL)
 	{
-		_result = m_pcTextBox->setText(newText, _thumbnail, _tw, _th, tmode, enable_frame);
+		m_pcTextBox->setText(newText, _thumbnail, _tw, _th, tmode, enable_frame);
 	}
-	
-	return(_result);
 }
 
 //////////////////////////////////////////////////////////////////////

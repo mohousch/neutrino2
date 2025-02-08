@@ -79,10 +79,10 @@
 #include <gui/widget/component.h>
 #include <gui/widget/widget.h>
 
-#include <gui/bedit/bouqueteditor_bouquets.h>
-#include <gui/bedit/bouqueteditor_chanselect.h>
-#include <gui/bedit/bouqueteditor_channels.h>
-#include <gui/bedit/bouqueteditor_bouquets.h>
+#include <gui/bouqueteditor_bouquets.h>
+#include <gui/bouqueteditor_chanselect.h>
+#include <gui/bouqueteditor_channels.h>
+#include <gui/bouqueteditor_bouquets.h>
 
 #include <gui/epgview.h>
 #include <gui/infoviewer.h>

@@ -27,14 +27,13 @@
 #include <config.h>
 #endif
 
-#include <gui/bedit/bouqueteditor_bouquets.h>
-
 #include <global.h>
 #include <neutrino2.h>
 
 #include <driver/gdi/fontrenderer.h>
 
-#include <gui/bedit/bouqueteditor_channels.h>
+#include <gui/bouqueteditor_bouquets.h>
+#include <gui/bouqueteditor_channels.h>
 
 #include <gui/widget/icons.h>
 #include <gui/widget/hintbox.h>

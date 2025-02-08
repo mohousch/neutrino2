@@ -36,10 +36,11 @@ neutrino2_SOURCES = neutrino2_menue.cpp skin.cpp neutrino2.cpp
 
 neutrino2_LDADD = \
 	daemonc/libneutrino2_daemonc.a \
-	gui/bedit/libneutrino2_gui_bedit.a \
 	gui/widget/libneutrino2_gui_widget.a \
 	gui/widget/libneutrino2_gui_widget2.a \
 	gui/libneutrino2_gui.a \
+	gui/libneutrino2_gui_bedit.a \
+	gui/bouqueteditor_bouquets.o \
 	system/libneutrino2_system.a \
 	system/helpers.o \
 	system/ytparser.o \
@@ -52,7 +53,6 @@ neutrino2_LDADD = \
 	gui/audioplayer.o \
 	driver/gdi/libneutrino2_driver_gdi.a \
 	driver/lcd/libneutrino2_driver_lcd.a \
-	gui/bedit/bouqueteditor_bouquets.o \
 	sectionsd/libsectionsd.a \
 	timerd/libtimerd.a \
 	zapit/libzapit.a \

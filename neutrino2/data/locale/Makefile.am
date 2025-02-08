@@ -8,7 +8,6 @@ EXTRA_DIST = $(LANGPO)
 neutrino2.pot: $(top_srcdir)/src/*.cpp \
 	$(top_srcdir)/src/gui/*.cpp \
 	$(top_srcdir)/src/gui/widget/*.cpp \
-	$(top_srcdir)/src/gui/bedit/*.cpp \
 	$(top_srcdir)/src/system/*.cpp \
 	$(top_srcdir)/src/driver/*.cpp \
 	$(top_srcdir)/src/daemonc/*.cpp \

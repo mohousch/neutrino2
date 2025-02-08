@@ -41,11 +41,9 @@
 
 CTextBox::CTextBox(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_INFO, "CTextBox::CTextBox:\r\n");
+	dprintf(DEBUG_INFO, "CTextBox::CTextBox:\n");
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
-	
-	initVar();
 
 	itemBox.iX = x;
 	itemBox.iY = y;
@@ -55,16 +53,17 @@ CTextBox::CTextBox(const int x, const int y, const int dx, const int dy)
 	oldPosition = itemBox;
 	
 	//
+	initVar();
+	
+	////
 	initFrames();
 }
 
 CTextBox::CTextBox(CBox* position)
 {
-	dprintf(DEBUG_INFO, "CTextBox::CTextBox:\r\n");
+	dprintf(DEBUG_INFO, "CTextBox::CTextBox:\n");
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
-	
-	initVar();
 
 	if(position != NULL)
 	{
@@ -73,12 +72,15 @@ CTextBox::CTextBox(CBox* position)
 	}
 	
 	//
+	initVar();
+	
+	////
 	initFrames();
 }
 
 CTextBox::~CTextBox()
 {
-	dprintf(DEBUG_INFO, "CTextBox::~CTextBox\r\n");
+	dprintf(DEBUG_INFO, "CTextBox::~CTextBox\n");
 	
 	//
 	m_cLineArray.clear();
@@ -100,7 +102,7 @@ CTextBox::~CTextBox()
 
 void CTextBox::initVar(void)
 {
-	dprintf(DEBUG_DEBUG, "CTextBox::InitVar:\r\n");
+	dprintf(DEBUG_DEBUG, "CTextBox::InitVar:\n");
 	
 	m_cText	= "";
 	m_tMode = PIC_RIGHT;
@@ -113,22 +115,13 @@ void CTextBox::initVar(void)
 	m_nLinesPerPage = 1;
 	m_nCurrentLine = 0;
 	m_nCurrentPage = 0;
-
-	itemBox.iWidth	= MENU_WIDTH;
-	itemBox.iHeight = MENU_HEIGHT;
-
-	itemBox.iX = g_settings.screen_StartX + ((g_settings.screen_EndX - g_settings.screen_StartX - itemBox.iWidth) >>1);
-	itemBox.iY = g_settings.screen_StartY + ((g_settings.screen_EndY - g_settings.screen_StartY - itemBox.iHeight) >>1);
 	
 	m_textBackgroundColor = COL_MENUCONTENT_PLUS_0;
 	m_textColor = COL_MENUCONTENT_TEXT_PLUS_0;
-	m_textRadius = RADIUS_MID;
+	m_textRadius = NO_RADIUS;
 	m_textCorner = CORNER_NONE;
 
 	m_cLineArray.clear();
-	
-	lx = itemBox.iX + 10;
-	ly = itemBox.iY + 10;
 
 	tw = th = 0;
 	thumbnail = "";
@@ -156,7 +149,7 @@ void CTextBox::setPosition(const int x, const int y, const int dx, const int dy)
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
 
-	initFrames();
+	initFrames(true);
 }
 
 void CTextBox::setPosition(const CBox * position)
@@ -166,31 +159,32 @@ void CTextBox::setPosition(const CBox * position)
 		itemBox = *position;
 	}
 
-	initFrames();
+	initFrames(true);
 }
 
-void CTextBox::setBigFonts()
+void CTextBox::initFrames(bool force)
 {
-	bigFonts = bigFonts? false : true;
+	dprintf(DEBUG_INFO, "CTextBox::InitFrames:\n");
 	
-	dprintf(DEBUG_INFO, "CTextBox::setBigFonts: %d\n", bigFonts? 1 : 0);
-
-	if(bigFonts)
+	////test
+	/*
+	if (parent)
 	{
-		g_Font[m_pcFontText]->setSize((int)(g_Font[m_pcFontText]->getSize() * BIG_FONT_FAKTOR));
+		if (!adjustToParent || force)
+		{
+			itemBox.iX = parent->getWindowsPos().iX + itemBox.iX;
+			itemBox.iY = parent->getWindowsPos().iY + itemBox.iY;
+			
+			if (itemBox.iWidth > parent->getWindowsPos().iWidth)
+				itemBox.iWidth = parent->getWindowsPos().iWidth;
+				
+			if (itemBox.iHeight > parent->getWindowsPos().iHeight)
+				itemBox.iHeight = parent->getWindowsPos().iHeight;
+			
+			adjustToParent = true;
+		}
 	}
-	else
-	{
-		g_Font[m_pcFontText]->setSize((int)(g_Font[m_pcFontText]->getSize() / BIG_FONT_FAKTOR));
-	}
-
-	refreshTextLineArray();
-	refreshPage();
-}
-
-void CTextBox::initFrames(void)
-{
-	dprintf(DEBUG_DEBUG, "CTextBox::InitFrames:\r\n");
+	*/
 	
 	// sanity check
 	if(itemBox.iHeight > ((int)CFrameBuffer::getInstance()->getScreenHeight(true)))
@@ -210,8 +204,30 @@ void CTextBox::initFrames(void)
 	m_cFrameScrollRel.iHeight = itemBox.iHeight;
 
 	m_cFrameTextRel.iWidth = itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - m_cFrameScrollRel.iWidth;
+	
+	lx = itemBox.iX + 10;
+	ly = itemBox.iY + 10;
 
 	m_nLinesPerPage = m_cFrameTextRel.iHeight/m_nFontTextHeight;
+}
+
+void CTextBox::setBigFonts()
+{
+	bigFonts = bigFonts? false : true;
+	
+	dprintf(DEBUG_INFO, "CTextBox::setBigFonts: %d\n", bigFonts? 1 : 0);
+
+	if(bigFonts)
+	{
+		g_Font[m_pcFontText]->setSize((int)(g_Font[m_pcFontText]->getSize() * BIG_FONT_FAKTOR));
+	}
+	else
+	{
+		g_Font[m_pcFontText]->setSize((int)(g_Font[m_pcFontText]->getSize() / BIG_FONT_FAKTOR));
+	}
+
+//	refreshTextLineArray();
+	refreshPage();
 }
 
 void CTextBox::saveScreen()
@@ -240,7 +256,7 @@ void CTextBox::restoreScreen()
 
 void CTextBox::refreshTextLineArray(void)
 {      
-	dprintf(DEBUG_DEBUG, "CTextBox::RefreshLineArray:\r\n");
+	dprintf(DEBUG_DEBUG, "CTextBox::RefreshLineArray:\n");
 	
 	int loop = true;
 	int pos_prev = 0;
@@ -365,6 +381,55 @@ void CTextBox::refreshTextLineArray(void)
 	}
 }
 
+void CTextBox::refreshThumbnail(void)
+{
+	dprintf(DEBUG_NORMAL, "CTextBox::refreshThumbnail\n");
+	
+	// check th
+	if(itemBox.iHeight > MAX_WINDOW_HEIGHT/2)
+	{
+		if(th > itemBox.iHeight/2)
+			th = itemBox.iHeight/2 - 20;
+	}
+	else
+	{
+		if(th >= (itemBox.iHeight - 20))
+			th = itemBox.iHeight - 20;
+	}
+
+	if(th >= (itemBox.iHeight - 20))
+		th = itemBox.iHeight - 20;
+		
+	// check tw
+	if(itemBox.iWidth > MAX_WINDOW_WIDTH/2)
+	{
+		if(tw > itemBox.iWidth/2)
+			tw = itemBox.iWidth/2 - 20;
+	}
+	else if(itemBox.iWidth <= MAX_WINDOW_WIDTH/2)
+	{
+		if(tw >= itemBox.iWidth)
+			tw = itemBox.iWidth - 20;
+	}
+
+	// position
+	if(m_tMode == PIC_RIGHT)
+	{
+		lx = itemBox.iX + itemBox.iWidth - (tw + m_cFrameScrollRel.iWidth + 10);
+		ly = itemBox.iY + 10;
+	}
+	else if(m_tMode == PIC_LEFT)
+	{
+		lx = itemBox.iX + 10;
+		ly = itemBox.iY + 10;
+	}
+	else if(m_tMode == PIC_CENTER)
+	{
+		lx = itemBox.iX + (itemBox.iWidth - tw)/2;
+		ly = itemBox.iY + 10;
+	}
+}
+
 void CTextBox::refreshScroll(void)
 {
 	if (m_nNrOfPages > 1) 
@@ -375,7 +440,7 @@ void CTextBox::refreshScroll(void)
 
 void CTextBox::refreshText(void)
 {
-	dprintf(DEBUG_DEBUG, "CTextBox::refreshText:\r\n");
+	dprintf(DEBUG_DEBUG, "CTextBox::refreshText:\n");
 
 	// restoreScreen/paint background	
 	if (!paintframe)
@@ -409,7 +474,7 @@ void CTextBox::refreshText(void)
 			CFrameBuffer::getInstance()->paintFrameBox(lx, ly, tw, th, COL_WHITE_PLUS_0);
 		
 		// picture
-		CFrameBuffer::getInstance()->displayImage(thumbnail.c_str(), lx + THUMBNAIL_OFFSET, ly + THUMBNAIL_OFFSET, tw - THUMBNAIL_OFFSET, th - THUMBNAIL_OFFSET);
+		CFrameBuffer::getInstance()->displayImage(thumbnail.c_str(), lx + THUMBNAIL_OFFSET, ly + THUMBNAIL_OFFSET, tw - 2*THUMBNAIL_OFFSET, th - 2*THUMBNAIL_OFFSET);
 	}
 	
 	// paint text
@@ -442,6 +507,8 @@ void CTextBox::refreshText(void)
 			startPosX = m_cFrameTextRel.iX + x_start + (m_cFrameTextRel.iWidth - g_Font[m_pcFontText]->getRenderWidth(m_cLineArray[i]))/2;
 		else if (halign == CC_ALIGN_RIGHT)
 			startPosX = m_cFrameTextRel.iX + x_start + m_cFrameTextRel.iWidth - g_Font[m_pcFontText]->getRenderWidth(m_cLineArray[i]);
+		else
+			startPosX = m_cFrameTextRel.iX + x_start;
 
 		g_Font[m_pcFontText]->RenderString(startPosX, y, m_cFrameTextRel.iWidth, m_cLineArray[i].c_str(), m_textColor); // UTF-8
 	}
@@ -452,7 +519,7 @@ void CTextBox::scrollPageDown(const int pages)
 	if( m_nNrOfLines <= 0) 
 		return;
 	
-	dprintf(DEBUG_DEBUG, "CTextBox::ScrollPageDown:\r\n");
+	dprintf(DEBUG_DEBUG, "CTextBox::ScrollPageDown:\n");
 
 	if(m_nCurrentPage + pages < m_nNrOfPages)
 	{
@@ -472,7 +539,7 @@ void CTextBox::scrollPageUp(const int pages)
 	if( m_nNrOfLines <= 0) 
 		return;
 	
-	dprintf(DEBUG_DEBUG, "CTextBox::ScrollPageUp:\r\n");
+	dprintf(DEBUG_DEBUG, "CTextBox::ScrollPageUp:\n");
 
 	if(m_nCurrentPage - pages > 0)
 	{
@@ -489,7 +556,11 @@ void CTextBox::scrollPageUp(const int pages)
 
 void CTextBox::refreshPage(void)
 {
-	dprintf(DEBUG_DEBUG, "CTextBox::RefreshPage:\r\n");	
+	dprintf(DEBUG_DEBUG, "CTextBox::RefreshPage:\n");
+	
+	////
+	refreshTextLineArray();
+	refreshThumbnail();
 
 	// paint text
 	refreshText();
@@ -498,9 +569,9 @@ void CTextBox::refreshPage(void)
 	refreshScroll();	
 }
 
-bool CTextBox::setText(const char * const newText, const char * const _thumbnail, int _tw, int _th, int _tmode, bool enable_frame)
+void CTextBox::setText(const char * const newText, const char * const _thumbnail, int _tw, int _th, int _tmode, bool enable_frame)
 {
-	dprintf(DEBUG_DEBUG, "CTextBox::setText:\r\n");
+	dprintf(DEBUG_INFO, "CTextBox::setText:\n");
 
 	m_tMode = _tmode;
 	enableFrame = enable_frame;
@@ -514,71 +585,13 @@ bool CTextBox::setText(const char * const newText, const char * const _thumbnail
 
 		tw = _tw;
 		th = _th;
-
-		// check th
-		if(itemBox.iHeight > MAX_WINDOW_HEIGHT/2)
-		{
-			if(th > itemBox.iHeight/2)
-				th = itemBox.iHeight/2 - 20;
-		}
-		else
-		{
-			if(th >= (itemBox.iHeight - 20))
-				th = itemBox.iHeight - 20;
-		}
-
-		if(th >= (itemBox.iHeight - 20))
-			th = itemBox.iHeight - 20;
-		
-		// check tw
-		if(itemBox.iWidth > MAX_WINDOW_WIDTH/2)
-		{
-			if(tw > itemBox.iWidth/2)
-				tw = itemBox.iWidth/2 - 20;
-		}
-		else if(itemBox.iWidth <= MAX_WINDOW_WIDTH/2)
-		{
-			if(tw >= itemBox.iWidth)
-				tw = itemBox.iWidth - 20;
-		}
-
-		// position
-		if(m_tMode == PIC_RIGHT)
-		{
-			lx = itemBox.iX + itemBox.iWidth - (tw + m_cFrameScrollRel.iWidth + 10);
-			ly = itemBox.iY + 10;
-		}
-		else if(m_tMode == PIC_LEFT)
-		{
-			lx = itemBox.iX + 10;
-			ly = itemBox.iY + 10;
-		}
-		else if(m_tMode == PIC_CENTER)
-		{
-			lx = itemBox.iX + (itemBox.iWidth - tw)/2;
-			ly = itemBox.iY + 10;
-		}
 	}
-	
-	// text
-	m_nNrOfPages = 0;
-	m_nNrOfLines = 0;
-	m_nCurrentPage = 0;
-	m_nCurrentLine = 0;
-	m_nLinesPerPage = 1;
-		
-	bool result = false;
-	
+
+	// text	
 	if (newText != NULL)
 	{
 		m_cText = newText;
-		
-		refreshTextLineArray();
-		
-		result = true;
 	}
-	
-	return(result);
 }
 
 void CTextBox::paint(bool _selected)
@@ -586,7 +599,7 @@ void CTextBox::paint(bool _selected)
 	dprintf(DEBUG_INFO, "CTextBox::paint:\n");
 	
 	//
-	initFrames();
+//	initFrames();
 	
 	//
 	if (!paintframe)

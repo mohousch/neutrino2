@@ -102,7 +102,7 @@
 #include <gui/timerlist.h>
 #include <gui/imageinfo.h>
 #include <gui/pluginlist.h>
-#include <gui/bedit/bouqueteditor_bouquets.h>
+#include <gui/bouqueteditor_bouquets.h>
 #include <gui/update.h>
 #include <gui/cam_menu.h>
 #include <gui/hdd_menu.h>
@@ -235,7 +235,7 @@
 %include <src/gui/timerlist.h>
 %include <src/gui/imageinfo.h>
 %include <src/gui/pluginlist.h>
-%include <src/gui/bedit/bouqueteditor_bouquets.h>
+%include <src/gui/bouqueteditor_bouquets.h>
 %include <src/gui/update.h>
 //%include <src/gui/cam_menu.h>
 %include <src/gui/hdd_menu.h>
