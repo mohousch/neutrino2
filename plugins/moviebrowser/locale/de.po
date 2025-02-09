@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-01-10 21:40+0100\n"
+"POT-Creation-Date: 2025-02-09 10:19+0100\n"
 "PO-Revision-Date: 2023-10-29 18:19+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -195,67 +195,67 @@ msgid "Parental Lock"
 msgstr ""
 
 msgid "Path"
-msgstr ""
+msgstr "Pfad"
 
 msgid "Paths"
-msgstr ""
+msgstr "Pfade"
 
 msgid "Picture"
-msgstr ""
+msgstr "Bild"
 
 msgid "Position:"
-msgstr ""
+msgstr "Position"
 
 msgid "Quality"
-msgstr ""
+msgstr "Qualität"
 
 msgid "Record date"
-msgstr ""
+msgstr "Aufnahme Datum"
 
 msgid "Reload movie info at start"
-msgstr ""
+msgstr "Film Daten am Start laden"
 
 msgid "Remount at start"
-msgstr ""
+msgstr "Am Start mounten"
 
 msgid "Row item"
 msgstr ""
 
 msgid "Row settings"
-msgstr ""
+msgstr "Row Einstellungen"
 
 msgid "Row width"
-msgstr ""
+msgstr "Row Breite"
 
 msgid "Save changes"
-msgstr ""
+msgstr "Änderungen speichern"
 
 msgid "Save changes in all movie info files"
-msgstr ""
+msgstr "Änderungen in allen Film Daten speichern"
 
 msgid "Save settings now"
-msgstr ""
+msgstr "Einstellungen jetzt speichern"
 
 msgid "Scan for Movies ..."
-msgstr ""
+msgstr "Scanne Filme"
 
 msgid "Select"
-msgstr ""
+msgstr "Auswahl"
 
 msgid "Serie"
-msgstr ""
+msgstr "Serie"
 
 msgid "Serie auto create"
-msgstr ""
+msgstr "Automatisch Serien krierien"
 
 msgid "Settings"
-msgstr ""
+msgstr "Einstellungen"
 
 msgid "Show / Gameshow"
 msgstr ""
 
 msgid "Size"
-msgstr ""
+msgstr "Größe"
 
 msgid "Start update of movie info files"
 msgstr ""

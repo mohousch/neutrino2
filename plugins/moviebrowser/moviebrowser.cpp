@@ -1207,7 +1207,7 @@ void CMovieBrowser::refreshMovieInfo()
 		
 		scaleImage(fname, &p_w, &p_h);
 		
-		m_pcInfo->setText(m_movieSelectionHandler->epgInfo2.c_str(), fname.c_str(), p_w, p_h);
+		m_pcInfo->setText(m_movieSelectionHandler->epgInfo2.c_str(), fname.c_str(), p_w, p_h, CTextBox::PIC_RIGHT, true);
 	}
 	
 	m_pcInfo->paint();

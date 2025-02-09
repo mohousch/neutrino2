@@ -292,7 +292,7 @@ void CMoviePlayer::doTMDB(MI_MOVIE_INFO& movieFile)
 	
 		CInfoBox * infoBox = new CInfoBox(&position, movieFile.epgTitle.c_str(), NEUTRINO_ICON_TMDB);
 
-		infoBox->setText(buffer.c_str(), tname.c_str(), p_w, p_h);
+		infoBox->setText(buffer.c_str(), tname.c_str(), p_w, p_h, CTextBox::PIC_RIGHT, true);
 		infoBox->exec();
 		delete infoBox;
 

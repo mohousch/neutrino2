@@ -206,7 +206,6 @@ void CTextBox::setBigFonts()
 		g_Font[m_pcFontText]->setSize((int)(g_Font[m_pcFontText]->getSize() / BIG_FONT_FAKTOR));
 	}
 
-//	refreshTextLineArray();
 	refreshPage();
 }
 
@@ -460,7 +459,7 @@ void CTextBox::refreshText(void)
 	// paint text
 	int y = m_cFrameTextRel.iY + 10;
 	int i;
-	int x_start = 0; // from / to pic
+	int x_start = 0;
 	int startPosX = m_cFrameTextRel.iX + x_start;
 
 	if(m_tMode == PIC_CENTER && m_nCurrentPage == 0)
@@ -480,6 +479,8 @@ void CTextBox::refreshText(void)
 			{
 				if(i <= (th / m_nFontTextHeight))
 					x_start = tw + 10;
+				else
+					x_start = 0;
 			}
 		}
 		

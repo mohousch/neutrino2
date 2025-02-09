@@ -324,20 +324,20 @@ void CInfoBox::initVar(void)
 void CInfoBox::initFrames(void)
 {
 	// init the title frame
-	m_cBoxFrameTitleRel.iX		= 0;
-	m_cBoxFrameTitleRel.iY		= 0;
+	m_cBoxFrameTitleRel.iX		= m_cBoxFrame.iX;
+	m_cBoxFrameTitleRel.iY		= m_cBoxFrame.iY;
 	m_cBoxFrameTitleRel.iWidth	= m_cBoxFrame.iWidth;
 	m_cBoxFrameTitleRel.iHeight	= g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
 
 	// init the foot frame
-	m_cBoxFrameFootRel.iX		= 0;
+	m_cBoxFrameFootRel.iX		= m_cBoxFrame.iX;
 	m_cBoxFrameFootRel.iWidth	= m_cBoxFrame.iWidth;
 	m_cBoxFrameFootRel.iHeight	= g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
-	m_cBoxFrameFootRel.iY		= m_cBoxFrame.iHeight - m_cBoxFrameFootRel.iHeight;
+	m_cBoxFrameFootRel.iY		= m_cBoxFrame.iY + m_cBoxFrame.iHeight - m_cBoxFrameFootRel.iHeight;
 
 	// init the text frame
-	m_cBoxFrameText.iY		= m_cBoxFrameTitleRel.iHeight;
-	m_cBoxFrameText.iX		= 0;
+	m_cBoxFrameText.iY		= m_cBoxFrame.iY + m_cBoxFrameTitleRel.iHeight;
+	m_cBoxFrameText.iX		= m_cBoxFrame.iX;
 	m_cBoxFrameText.iHeight	= m_cBoxFrame.iHeight - m_cBoxFrameTitleRel.iHeight - m_cBoxFrameFootRel.iHeight;
 	m_cBoxFrameText.iWidth		= m_cBoxFrame.iWidth;	
 }
