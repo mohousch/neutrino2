@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$Id: listbox.cpp 21122024 mohousch Exp $
+//	$Id: listbox.cpp 07022025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -400,11 +400,11 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0};	
 		
-//		widget = CNeutrinoApp::getInstance()->getWidget("optionchooser");
+		widget = CNeutrinoApp::getInstance()->getWidget("optionchooser");
 		
 		if (widget)
 		{
-			widget->move(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50, 450, 400);
+			widget->move(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50);
 			widget->enableSaveScreen();
 			
 			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
@@ -922,14 +922,14 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0};	
 
 		
-//		widget = CNeutrinoApp::getInstance()->getWidget("optionstringchooser");
+		widget = CNeutrinoApp::getInstance()->getWidget("optionstringchooser");
 		
 		if (widget)
 		{
 			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
 			
 			//
-			widget->move(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50, 450, 400);
+			widget->move(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50);
 			widget->enableSaveScreen();
 			
 			widget->setTitle(itemName.c_str());

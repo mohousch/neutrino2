@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$Id: component.cpp 21122024 mohousch Exp $
+//	$Id: component.cpp 07022025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -120,35 +120,23 @@ void CComponent::adjustToParentPosition()
 	// FIXME:
 	int xOffset = pNewPos.iX - pOldPos.iX;
 	int yOffset = pNewPos.iY - pOldPos.iY;
-	double dxOffset = 1.0;
-	if (pNewPos.iWidth > pOldPos.iWidth)	
-		dxOffset = pNewPos.iWidth/pOldPos.iWidth;
-	else
-		dxOffset = pOldPos.iWidth/pNewPos.iWidth;
-	double dyOffset = 1.0;
-	if (pNewPos.iHeight > pOldPos.iHeight)
-		dyOffset = pNewPos.iHeight/pOldPos.iHeight;
-	else
-		dyOffset = pOldPos.iHeight/pNewPos.iHeight;
 	
-	printf("CComponent::adjustToParentPosition; xOffset:%d yOffset:%d dxOffset:%d dyOffset:%d\n", xOffset, yOffset, dxOffset, dyOffset);
+	printf("CComponent::adjustToParentPosition; xOffset:%d yOffset:%d\n", xOffset, yOffset);
 	
-	// calculate old Offsets
+	// calculate oldOffsets
 	CBox iOldPos = getOldPosition();
 	
 	printf("CComponent::adjustToParentPosition: item oldPos: %d %d %d %d\n", iOldPos.iX, iOldPos.iY, iOldPos.iWidth, iOldPos.iHeight);
 	
-	// check if newPos width / height is smaller than oldPos
-	
-	// calculate new Pos
+	// calculate newPos
 	if (parentMoved)
 	{
 		CBox iNewPos;
 		
 		iNewPos.iX = iOldPos.iX + xOffset;
 		iNewPos.iY = iOldPos.iY + yOffset;
-		iNewPos.iWidth = iOldPos.iWidth*dxOffset;
-		iNewPos.iHeight = iOldPos.iHeight*dyOffset; 
+		iNewPos.iWidth = iOldPos.iWidth;
+		iNewPos.iHeight = iOldPos.iHeight; 
 		
 		itemBox = iNewPos;
 		

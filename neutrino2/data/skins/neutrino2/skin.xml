@@ -457,40 +457,40 @@
 	
 	<widget name="optionstringchooser" posx="340" posy="60" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<head posx="370" posy="90" width="540" height="50" paintframe="0" paintdate="1" line="1"/>
-		<listbox posx="30" posy="80" width="540" height="440" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" scrollbar="1"/>
-		<foot posx="30" posy="520" width="540" height="50" paintframe="0" line="1">
+		<listbox posx="370" posy="140" width="540" height="440" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" scrollbar="1"/>
+		<foot posx="370" posy="550" width="540" height="50" paintframe="0" line="1">
 			<button_label name="information"/>
 		</foot>
 	</widget>
 	
 	<widget name="optionchooser" posx="340" posy="60" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<head posx="370" posy="90" width="540" height="50" paintframe="0" paintdate="1" line="1"/>
-		<listbox posx="30" posy="80" width="540" height="440" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" scrollbar="1"/>
-		<foot posx="30" posy="520" width="540" height="50" paintframe="0" line="1">
+		<listbox posx="370" posy="140" width="540" height="440" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" scrollbar="1"/>
+		<foot posx="370" posy="550" width="540" height="50" paintframe="0" line="1">
 			<button_label name="information"/>
 		</foot>
 	</widget>
 	
 	<widget name="keychooser" posx="340" posy="60" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<head posx="370" posy="90" width="540" height="50" paintframe="0" paintdate="1" line="1"/>
-		<listbox posx="30" posy="80" width="540" height="440" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" scrollbar="1"/>
-		<foot posx="30" posy="520" width="540" height="50" paintframe="0" line="1">
+		<listbox posx="370" posy="140" width="540" height="440" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" scrollbar="1"/>
+		<foot posx="370" posy="550" width="540" height="50" paintframe="0" line="1">
 			<button_label name="information"/>
 		</foot>
 	</widget>
 	
 	<widget name="mountchooser" posx="340" posy="60" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<head posx="370" posy="90" width="540" height="50" paintframe="0" paintdate="1" line="1"/>
-		<listbox posx="30" posy="80" width="540" height="440" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" scrollbar="1"/>
-		<foot posx="30" posy="520" width="540" height="50" paintframe="0" line="1">
+		<listbox posx="370" posy="140" width="540" height="440" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" scrollbar="1"/>
+		<foot posx="370" posy="550" width="540" height="50" paintframe="0" line="1">
 			<button_label name="information"/>
 		</foot>
 	</widget>
 	
 	<widget name="usermenu" posx="340" posy="60" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<head posx="370" posy="90" width="540" height="50" paintframe="0" paintdate="1" line="1"/>
-		<listbox posx="30" posy="80" width="540" height="440" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" scrollbar="1"/>
-		<foot posx="30" posy="520" width="540" height="50" paintframe="0" line="1">
+		<listbox posx="370" posy="140" width="540" height="440" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" scrollbar="1"/>
+		<foot posx="370" posy="550" width="540" height="50" paintframe="0" line="1">
 			<button_label name="information"/>
 		</foot>
 	</widget>

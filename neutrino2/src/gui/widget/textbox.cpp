@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$Id: textbox.cpp 21122024 mohousch Exp $
+//	$Id: textbox.cpp 07022025 mohousch Exp $
 //
 //	Homepage: http://dbox.cyberphoria.org/
 //
@@ -55,7 +55,7 @@ CTextBox::CTextBox(const int x, const int y, const int dx, const int dy)
 	//
 	initVar();
 	
-	////
+	//
 	initFrames();
 }
 
@@ -74,7 +74,7 @@ CTextBox::CTextBox(CBox* position)
 	//
 	initVar();
 	
-	////
+	//
 	initFrames();
 }
 
@@ -165,26 +165,6 @@ void CTextBox::setPosition(const CBox * position)
 void CTextBox::initFrames(bool force)
 {
 	dprintf(DEBUG_INFO, "CTextBox::InitFrames:\n");
-	
-	////test
-	/*
-	if (parent)
-	{
-		if (!adjustToParent || force)
-		{
-			itemBox.iX = parent->getWindowsPos().iX + itemBox.iX;
-			itemBox.iY = parent->getWindowsPos().iY + itemBox.iY;
-			
-			if (itemBox.iWidth > parent->getWindowsPos().iWidth)
-				itemBox.iWidth = parent->getWindowsPos().iWidth;
-				
-			if (itemBox.iHeight > parent->getWindowsPos().iHeight)
-				itemBox.iHeight = parent->getWindowsPos().iHeight;
-			
-			adjustToParent = true;
-		}
-	}
-	*/
 	
 	// sanity check
 	if(itemBox.iHeight > ((int)CFrameBuffer::getInstance()->getScreenHeight(true)))
@@ -471,7 +451,7 @@ void CTextBox::refreshText(void)
 	if(m_nCurrentPage == 0 && !access(thumbnail.c_str(), F_OK) )
 	{
 		if (enableFrame) 
-			CFrameBuffer::getInstance()->paintFrameBox(lx, ly, tw, th, COL_WHITE_PLUS_0);
+			CFrameBuffer::getInstance()->paintFrameBox(lx, ly, tw, th, COL_MENUCONTENTSELECTED_PLUS_0);
 		
 		// picture
 		CFrameBuffer::getInstance()->displayImage(thumbnail.c_str(), lx + THUMBNAIL_OFFSET, ly + THUMBNAIL_OFFSET, tw - 2*THUMBNAIL_OFFSET, th - 2*THUMBNAIL_OFFSET);

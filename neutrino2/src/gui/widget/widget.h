@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$Id: widget.h 21122024 mohousch Exp $
+//	$Id: widget.h 07022025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -98,7 +98,8 @@ class CWidget : public CMenuTarget
 			initFrames();
 		};
 		virtual void setPosition(CBox* position){mainFrameBox = *position; initFrames();};
-		virtual void move(const int x, const int y, const int dx, const int dy);
+		virtual void move(const int x, const int y);
+//		virtual void resize(int dx, int dy);		
 
 		// CCITEMS
 		virtual void addCCItem(CComponent *CCItem, const bool defaultselected = false);

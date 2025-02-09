@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$Id: textbox.h 21122024 mohousch Exp $
+//	$Id: textbox.h 07022025 mohousch Exp $
 //
 //	Homepage: http://dbox.cyberphoria.org/
 //

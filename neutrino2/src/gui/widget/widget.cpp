@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$Id: widget.cpp 21122024 mohousch Exp $
+//	$Id: widget.cpp 07022025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -166,14 +166,13 @@ void CWidget::initFrames()
 		mainFrameBox.iWidth = frameBuffer->getScreenWidth(true);
 }
 
-void CWidget::move(const int x, const int y, const int dx, const int dy)
+void CWidget::move(const int x, const int y)
 {
-	dprintf(DEBUG_NORMAL, "CWidget::move\n");
+	dprintf(DEBUG_NORMAL, "CWidget::move: x:%d y:%d\n", x, y);
 	
+#if 0
 	mainFrameBox.iX = x;
 	mainFrameBox.iY = y;
-	mainFrameBox.iWidth = dx;
-	mainFrameBox.iHeight = dy;
 	
 	// reinit
 	initFrames();
@@ -186,6 +185,7 @@ void CWidget::move(const int x, const int y, const int dx, const int dy)
 			CCItems[count]->adjustToParentPosition();
 		}
 	}
+#endif
 }
 
 //
