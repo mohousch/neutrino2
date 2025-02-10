@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$Id: infobox.h 21122024 mohousch Exp $
+//	$Id: infobox.h 10022025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -46,12 +46,12 @@ class CInfoBox
 	private:
 		CFrameBuffer * frameBuffer;
 
-		// body
-		CBox m_cBoxFrame;
+		// widget
+		CBox cFrameBox;
 		CWidget * widget;
 		
 		// head
-		CBox m_cBoxFrameTitleRel;
+		CBox cFrameBoxTitleRel;
 		CCHeaders *headers;
 		std::string m_cIcon;
 		std::string m_cTitle;
@@ -61,14 +61,14 @@ class CInfoBox
 		int headGradient;
 		
 		// text
-		CBox m_cBoxFrameText;
-		CTextBox *m_pcTextBox;
+		CBox cFrameBoxText;
+		CTextBox *textBox;
 		unsigned int m_pcFontText;
 		int m_nMode;
 		int borderMode;
 		
 		// foot
-		CBox m_cBoxFrameFootRel;
+		CBox cFrameBoxFootRel;
 		CCFooters *footers;
 		fb_pixel_t footColor;
 		int footRadius;

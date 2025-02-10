@@ -439,6 +439,8 @@ void CControlAPI::StandbyCGI(CyhookHandler *hh)
 			g_RCInput->postMsg(NeutrinoMessages::STANDBY_OFF);
 			hh->SendOk();
 		}
+		else if (hh->ParamList["1"] == "statusstandby")
+			hh->Write((char *) (CZapit::getInstance()->isStandbyActive() ? "1" : "0"));
 		else
 			hh->SendError();
 	}

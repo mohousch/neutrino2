@@ -8,8 +8,6 @@ function do_submit()
 		_url="/control/exec?Y_Tools&zapit_upload&bouquets.xml";
 	else if (document.f.R1[1].checked == true)
 		_url="/control/exec?Y_Tools&zapit_upload&services.xml";
-	else if (document.f.R1[2].checked == true)
-		_url="/control/exec?Y_Tools&zapit_upload&myservices.xml";
 	else
 		alert("Bitte eine Auswahl treffen");
 	document.f.action=_url;
@@ -31,7 +29,6 @@ function do_submit()
 					<p>
 					<input type="radio" name="R1" checked="checked" value="bouquets.xml"/>bouquets.xml<br/>
 					<input type="radio" name="R1" value="services.xml"/>services.xml<br/>
-					<input type="radio" name="R1" value="myservices.xml"/>myservices.xml<br/>
 					<input type="radio" name="R1" value="ubouquets.xml"/>ubouquets.xml<br/>
 				
 					<input type="file" name="F1" size="20"/><br/>
@@ -43,7 +40,6 @@ function do_submit()
 				<ul>
 				<li><a type="application/octet-stream" href="/var/tuxbox/config/zapit/bouquets.xml"><u>bouquets.xml</u></a></li>
 				<li><a type="application/octet-stream" href="/var/tuxbox/config/zapit/services.xml"><u>services.xml</u></a></li>
-				<li><a type="application/octet-stream" href="/var/tuxbox/config/zapit/myservices.xml"><u>myservices.xml</u></a></li>
 				<li><a type="application/octet-stream" href="/var/tuxbox/config/zapit/ubouquets.xml"><u>ubouquets.xml</u></a></li>
 				</ul>
 			</td>

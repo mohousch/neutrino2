@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$Id: infobox.cpp 21122024 mohousch Exp $
+//	$Id: infobox.cpp 10022025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -54,7 +54,7 @@ CInfoBox::CInfoBox(const int x, const int y, const int dx, const int dy, const c
 {
 	//
 	widget = NULL;
-	m_pcTextBox = NULL;
+	textBox = NULL;
 	headers = NULL;
 	footers = NULL;
 	
@@ -69,14 +69,15 @@ CInfoBox::CInfoBox(const int x, const int y, const int dx, const int dy, const c
 
 	CBox position(x, y, dx, dy); 
 
-	m_cBoxFrame = position;
+	cFrameBox = position;
 
 	// initialise the window frames first
-	initFrames();
+//	initFrames();
 
-	//
-	m_cBoxFrame.iX = g_settings.screen_StartX + ((g_settings.screen_EndX - g_settings.screen_StartX - m_cBoxFrame.iWidth) >>1);
-	m_cBoxFrame.iY = g_settings.screen_StartY + ((g_settings.screen_EndY - g_settings.screen_StartY - m_cBoxFrame.iHeight) >>1);
+	cFrameBox.iX = g_settings.screen_StartX + ((g_settings.screen_EndX - g_settings.screen_StartX - cFrameBox.iWidth) >>1);
+	cFrameBox.iY = g_settings.screen_StartY + ((g_settings.screen_EndY - g_settings.screen_StartY - cFrameBox.iHeight) >>1);
+	
+	initFrames();
 	
 	//
 	widget = CNeutrinoApp::getInstance()->getWidget("infobox");
@@ -85,17 +86,17 @@ CInfoBox::CInfoBox(const int x, const int y, const int dx, const int dy, const c
 	{
 		headers = (CCHeaders*)widget->getCCItem(CComponent::CC_HEAD);
 		footers = (CCFooters*)widget->getCCItem(CComponent::CC_FOOT);
-		m_pcTextBox = (CTextBox*)widget->getCCItem(CComponent::CC_TEXTBOX);
+		textBox = (CTextBox*)widget->getCCItem(CComponent::CC_TEXTBOX);
 	}
 	else
 	{
 		//
-		widget = new CWidget(&m_cBoxFrame);
+		widget = new CWidget(&cFrameBox);
 		headers = new CCHeaders();
 		footers = new CCFooters();
-		m_pcTextBox = new CTextBox(&m_cBoxFrameText);
+		textBox = new CTextBox(&cFrameBoxText);
 		
-		widget->addCCItem(m_pcTextBox);
+		widget->addCCItem(textBox);
 		widget->addCCItem(headers);
 		widget->addCCItem(footers);
 		
@@ -103,9 +104,9 @@ CInfoBox::CInfoBox(const int x, const int y, const int dx, const int dy, const c
 		widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	}
 	
-	if (m_pcTextBox)
+	if (textBox)
 	{
-		m_pcTextBox->setPosition(&m_cBoxFrameText);
+		textBox->setPosition(&cFrameBoxText);
 	}
 	
 	if (headers)
@@ -123,7 +124,7 @@ CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 {
 	//
 	widget = NULL;
-	m_pcTextBox = NULL;
+	textBox = NULL;
 	headers = NULL;
 	footers = NULL;
 	
@@ -137,14 +138,16 @@ CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 		m_cIcon = icon;
 	
 	if(position != NULL)	
-		m_cBoxFrame = *position;
+		cFrameBox = *position;
 
 	// initialise the window frames first
-	initFrames();
+//	initFrames();
 
 	//
-	m_cBoxFrame.iX = g_settings.screen_StartX + ((g_settings.screen_EndX - g_settings.screen_StartX - m_cBoxFrame.iWidth) >>1);
-	m_cBoxFrame.iY = g_settings.screen_StartY + ((g_settings.screen_EndY - g_settings.screen_StartY - m_cBoxFrame.iHeight) >>1);
+	cFrameBox.iX = g_settings.screen_StartX + ((g_settings.screen_EndX - g_settings.screen_StartX - cFrameBox.iWidth) >>1);
+	cFrameBox.iY = g_settings.screen_StartY + ((g_settings.screen_EndY - g_settings.screen_StartY - cFrameBox.iHeight) >>1);
+	
+	initFrames();
 	
 	//
 	widget = CNeutrinoApp::getInstance()->getWidget("infobox");
@@ -153,17 +156,17 @@ CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 	{
 		headers = (CCHeaders*)widget->getCCItem(CComponent::CC_HEAD);
 		footers = (CCFooters*)widget->getCCItem(CComponent::CC_FOOT);
-		m_pcTextBox = (CTextBox*)widget->getCCItem(CComponent::CC_TEXTBOX);
+		textBox = (CTextBox*)widget->getCCItem(CComponent::CC_TEXTBOX);
 	}
 	else
 	{
 		//
-		widget = new CWidget(&m_cBoxFrame);
+		widget = new CWidget(&cFrameBox);
 		headers = new CCHeaders();
 		footers = new CCFooters();
-		m_pcTextBox = new CTextBox(&m_cBoxFrameText);
+		textBox = new CTextBox(&cFrameBoxText);
 		
-		widget->addCCItem(m_pcTextBox);
+		widget->addCCItem(textBox);
 		widget->addCCItem(headers);
 		widget->addCCItem(footers);
 		
@@ -171,9 +174,9 @@ CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 		widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	}
 	
-	if (m_pcTextBox)
+	if (textBox)
 	{
-		m_pcTextBox->setPosition(&m_cBoxFrameText);
+		textBox->setPosition(&cFrameBoxText);
 	}
 	
 	if (headers)
@@ -199,7 +202,7 @@ CInfoBox::CInfoBox()
 {
 	//
 	widget = NULL;
-	m_pcTextBox = NULL;
+	textBox = NULL;
 	headers = NULL;
 	footers = NULL;
 	
@@ -208,14 +211,16 @@ CInfoBox::CInfoBox()
 
 	CBox position(g_settings.screen_StartX + 50, g_settings.screen_StartY + 50, g_settings.screen_EndX - g_settings.screen_StartX - 100, g_settings.screen_EndY - g_settings.screen_StartY - 100); 
 
-	m_cBoxFrame = position;
+	cFrameBox = position;
 
 	// initialise the window frames first
-	initFrames();
+//	initFrames();
 
 	//
-	m_cBoxFrame.iX = g_settings.screen_StartX + ((g_settings.screen_EndX - g_settings.screen_StartX - m_cBoxFrame.iWidth) >>1);
-	m_cBoxFrame.iY = g_settings.screen_StartY + ((g_settings.screen_EndY - g_settings.screen_StartY - m_cBoxFrame.iHeight) >>1);
+	cFrameBox.iX = g_settings.screen_StartX + ((g_settings.screen_EndX - g_settings.screen_StartX - cFrameBox.iWidth) >>1);
+	cFrameBox.iY = g_settings.screen_StartY + ((g_settings.screen_EndY - g_settings.screen_StartY - cFrameBox.iHeight) >>1);
+	
+	initFrames();
 	
 	//
 	widget = CNeutrinoApp::getInstance()->getWidget("infobox");
@@ -224,17 +229,17 @@ CInfoBox::CInfoBox()
 	{
 		headers = (CCHeaders*)widget->getCCItem(CComponent::CC_HEAD);
 		footers = (CCFooters*)widget->getCCItem(CComponent::CC_FOOT);
-		m_pcTextBox = (CTextBox*)widget->getCCItem(CComponent::CC_TEXTBOX);
+		textBox = (CTextBox*)widget->getCCItem(CComponent::CC_TEXTBOX);
 	}
 	else
 	{
-		widget = new CWidget(&m_cBoxFrame);
+		widget = new CWidget(&cFrameBox);
 		
 		headers = new CCHeaders();
 		footers = new CCFooters();
-		m_pcTextBox = new CTextBox(&m_cBoxFrameText);
+		textBox = new CTextBox(&cFrameBoxText);
 		
-		widget->addCCItem(m_pcTextBox);
+		widget->addCCItem(textBox);
 		widget->addCCItem(headers);
 		widget->addCCItem(footers);
 		
@@ -242,9 +247,9 @@ CInfoBox::CInfoBox()
 		widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	}
 	
-	if (m_pcTextBox)
+	if (textBox)
 	{
-		m_pcTextBox->setPosition(&m_cBoxFrameText);
+		textBox->setPosition(&cFrameBoxText);
 	}
 	
 	if (headers)
@@ -303,10 +308,10 @@ void CInfoBox::initVar(void)
 	footGradient = g_settings.Foot_gradient;
 
 	// set the main frame to default
-	m_cBoxFrame.iX = g_settings.screen_StartX + ((g_settings.screen_EndX - g_settings.screen_StartX - MIN_WINDOW_WIDTH) >>1);
-	m_cBoxFrame.iWidth = MIN_WINDOW_WIDTH;
-	m_cBoxFrame.iY = g_settings.screen_StartY + ((g_settings.screen_EndY - g_settings.screen_StartY - MIN_WINDOW_HEIGHT) >>1);
-	m_cBoxFrame.iHeight = MIN_WINDOW_HEIGHT;
+	cFrameBox.iX = g_settings.screen_StartX + ((g_settings.screen_EndX - g_settings.screen_StartX - MIN_WINDOW_WIDTH) >>1);
+	cFrameBox.iWidth = MIN_WINDOW_WIDTH;
+	cFrameBox.iY = g_settings.screen_StartY + ((g_settings.screen_EndY - g_settings.screen_StartY - MIN_WINDOW_HEIGHT) >>1);
+	cFrameBox.iHeight = MIN_WINDOW_HEIGHT;
 
 	frameBuffer = CFrameBuffer::getInstance();
 	
@@ -324,22 +329,22 @@ void CInfoBox::initVar(void)
 void CInfoBox::initFrames(void)
 {
 	// init the title frame
-	m_cBoxFrameTitleRel.iX		= m_cBoxFrame.iX;
-	m_cBoxFrameTitleRel.iY		= m_cBoxFrame.iY;
-	m_cBoxFrameTitleRel.iWidth	= m_cBoxFrame.iWidth;
-	m_cBoxFrameTitleRel.iHeight	= g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
+	cFrameBoxTitleRel.iX		= cFrameBox.iX;
+	cFrameBoxTitleRel.iY		= cFrameBox.iY;
+	cFrameBoxTitleRel.iWidth	= cFrameBox.iWidth;
+	cFrameBoxTitleRel.iHeight	= g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
 
 	// init the foot frame
-	m_cBoxFrameFootRel.iX		= m_cBoxFrame.iX;
-	m_cBoxFrameFootRel.iWidth	= m_cBoxFrame.iWidth;
-	m_cBoxFrameFootRel.iHeight	= g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
-	m_cBoxFrameFootRel.iY		= m_cBoxFrame.iY + m_cBoxFrame.iHeight - m_cBoxFrameFootRel.iHeight;
+	cFrameBoxFootRel.iX		= cFrameBox.iX;
+	cFrameBoxFootRel.iWidth		= cFrameBox.iWidth;
+	cFrameBoxFootRel.iHeight	= g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
+	cFrameBoxFootRel.iY		= cFrameBox.iY + cFrameBox.iHeight - cFrameBoxFootRel.iHeight;
 
 	// init the text frame
-	m_cBoxFrameText.iY		= m_cBoxFrame.iY + m_cBoxFrameTitleRel.iHeight;
-	m_cBoxFrameText.iX		= m_cBoxFrame.iX;
-	m_cBoxFrameText.iHeight	= m_cBoxFrame.iHeight - m_cBoxFrameTitleRel.iHeight - m_cBoxFrameFootRel.iHeight;
-	m_cBoxFrameText.iWidth		= m_cBoxFrame.iWidth;	
+	cFrameBoxText.iY		= cFrameBox.iY + cFrameBoxTitleRel.iHeight;
+	cFrameBoxText.iX		= cFrameBox.iX;
+	cFrameBoxText.iHeight		= cFrameBox.iHeight - cFrameBoxTitleRel.iHeight - cFrameBoxFootRel.iHeight;
+	cFrameBoxText.iWidth		= cFrameBox.iWidth;	
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -354,7 +359,7 @@ void CInfoBox::refreshTitle(void)
 {
 	if (headers)
 	{
-		headers->setPosition(&m_cBoxFrameTitleRel);
+		headers->setPosition(&cFrameBoxTitleRel);
 		headers->setTitle(m_cTitle.c_str(), m_cIcon.c_str());
 	}
 }
@@ -371,7 +376,7 @@ void CInfoBox::refreshFoot(void)
 {
 	if (footers)
 	{
-		footers->setPosition(&m_cBoxFrameFootRel);
+		footers->setPosition(&cFrameBoxFootRel);
 	}
 }
 
@@ -404,9 +409,9 @@ void CInfoBox::hide(void)
 void CInfoBox::scrollPageDown(const int pages)
 {
 	// send scroll up event to text box if there is one
-	if(m_pcTextBox != NULL)
+	if(textBox != NULL)
 	{
-		m_pcTextBox->scrollPageDown(pages);
+		textBox->scrollPageDown(pages);
 	}
 
 }
@@ -422,9 +427,9 @@ void CInfoBox::scrollPageDown(const int pages)
 void CInfoBox::scrollPageUp(const int pages)
 {
 	// send scroll up event to text box if there is one
-	if(m_pcTextBox != NULL)
+	if(textBox != NULL)
 	{
-		m_pcTextBox->scrollPageUp(pages);
+		textBox->scrollPageUp(pages);
 	}
 }
 
@@ -441,24 +446,24 @@ void CInfoBox::setBigFonts()
 	dprintf(DEBUG_NORMAL, "CInfoBox::setBigFonts\n");
 
 	// send setBigFonts event to textbox if there is one
-	if(m_pcTextBox != NULL)
+	if(textBox != NULL)
 	{
-		m_pcTextBox->setBigFonts();
+		textBox->setBigFonts();
 	}
 }
 
 //
 void CInfoBox::setBackgroundColor(fb_pixel_t col)
 {
-	if(m_pcTextBox != NULL)
-		m_pcTextBox->setBackgroundColor(col);
+	if(textBox != NULL)
+		textBox->setBackgroundColor(col);
 }
 
 //
 void CInfoBox::setTextColor(uint32_t col)
 {
-	if(m_pcTextBox != NULL)
-		m_pcTextBox->setTextColor(col);
+	if(textBox != NULL)
+		textBox->setTextColor(col);
 }
 
 //
@@ -466,8 +471,8 @@ void CInfoBox::setFont(unsigned int font_text)
 {
 	m_pcFontText = font_text;
 	
-	if(m_pcTextBox != NULL)
-		m_pcTextBox->setFont(m_pcFontText);
+	if(textBox != NULL)
+		textBox->setFont(m_pcFontText);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -481,9 +486,9 @@ void CInfoBox::setFont(unsigned int font_text)
 void CInfoBox::setText(const char * const newText, const char * const _thumbnail, int _tw, int _th, int tmode, bool enable_frame)
 {
 	// update text in textbox if there is one
-	if(m_pcTextBox != NULL && newText != NULL)
+	if(textBox != NULL && newText != NULL)
 	{
-		m_pcTextBox->setText(newText, _thumbnail, _tw, _th, tmode, enable_frame);
+		textBox->setText(newText, _thumbnail, _tw, _th, tmode, enable_frame);
 	}
 }
 
@@ -530,8 +535,6 @@ int CInfoBox::exec(int timeout)
 
 	if ( timeout == -1 )
 		timeout = g_settings.timing_epg;
-		
-	dprintf(DEBUG_NORMAL, "CInfoBox::exec: timeout:%d\n", timeout);
 
 	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd( timeout );
 

@@ -6134,18 +6134,6 @@ do_current:
 			saveServices(true);
 	}
 
-	if(!only_current) 
-	{
-		parser = parseXmlFile(MYSERVICES_XML);
-		
-		if (parser != NULL) 
-		{
-			findTransponder(xmlDocGetRootElement(parser)->xmlChildrenNode);
-			
-			xmlFreeDoc(parser);
-		}
-	}
-
 	return 0;
 }
 

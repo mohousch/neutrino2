@@ -34,7 +34,7 @@ function goUrl(_url){
 			<td>
 			<input type="button" value="{=L:on=}" onclick='goUrl("/control/standby?on");'/>
 			<input type="button" value="{=L:off=}" onclick='goUrl("/control/standby?off");'/>
-			<input type="button" value="{=L:bc.control.status=}" onclick='goUrl("/control/exec?Y_Tools&amp;standby_status");'/>
+			<input type="button" value="{=L:bc.control.status=}" onclick='goUrl("/control/standby?statusstandby");'/>
 			</td>
 		</tr>
 		<tr><td class="y_form_header">{=L:bc.control.playback=}</td><td class="y_form_header">{=L:bc.control.recording_mode=}</td></tr>

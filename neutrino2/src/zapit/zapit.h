@@ -53,7 +53,6 @@
 #define SERVICES_XML    		CONFIGDIR "/zapit/services.xml"
 #define BOUQUETS_XML    		CONFIGDIR "/zapit/bouquets.xml"
 #define UBOUQUETS_XML    		CONFIGDIR "/zapit/ubouquets.xml"
-#define MYSERVICES_XML			CONFIGDIR "/zapit/myservices.xml"
 #define EPG_MAPPING_XML			CONFIGDIR "/zapit/epgmap.xml"
 // services
 #define SERVICES_TMP    		"/tmp/services.tmp"
@@ -72,8 +71,8 @@
 #define VOLUME_CONFIG_FILE 		CONFIGDIR "/zapit/audiovolume.conf"
 #define AUDIO_CONFIG_FILE 		CONFIGDIR "/zapit/audio.conf"
 // frontend
-#define DVBADAPTER_MAX			4	// 
-#define FRONTEND_MAX			8	//
+#define DVBADAPTER_MAX			4
+#define FRONTEND_MAX			8
 ////
 #define CHANNEL_NAME_SIZE 		40
 
@@ -489,6 +488,7 @@ class CZapit
 		void unlockPlayBack();
 		bool isPlayBackActive();
 		void setStandby(bool enable);
+		bool isStandbyActive(){return standby;};
 		//
 		void zapToServiceIDNOWAIT(const t_channel_id channel_id);
 		void zapToSubServiceIDNOWAIT(const t_channel_id channel_id);
