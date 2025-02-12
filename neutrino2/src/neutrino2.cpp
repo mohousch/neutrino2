@@ -2201,7 +2201,7 @@ void CNeutrinoApp::initZapper()
 	epgUpdateTimer = g_RCInput->addTimer( 60 * 1000 * 1000, false );
 
 	// zap / epg / autorecord / infoviewer
-	if(channelList->getSize() && CZapit::getInstance()->getCurrentChannelID())
+	if(channelList->getSize() && CZapit::getInstance()->getCurrentChannelID() != 0)
 	{
 		// channellist adjust to channeliD
 		channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
