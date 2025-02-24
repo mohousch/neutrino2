@@ -136,18 +136,12 @@ int CUserMenu::doMenu(void)
 	menu->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	menu->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
-	//
-        CStringInputSMS name(_("User menu"), g_settings.usermenu_text[button].c_str());
-        
-        menu->addItem(new CMenuForwarder(_("Name"), true, g_settings.usermenu_text[button].c_str(), &name));
-        menu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-
         char text[10];
         
         for(int item = 0; item < SNeutrinoSettings::ITEM_MAX; item++)
         {
                 snprintf(text, 10, "%d:", item);
-                text[9] = 0;// terminate for sure
+                text[9] = 0;
                 
                 menu->addItem( new CMenuOptionChooser(text, &g_settings.usermenu[button][item], USERMENU_ITEM_OPTIONS, USERMENU_ITEM_OPTION_COUNT, true, NULL, CRCInput::RC_nokey, "", true ));
         }

@@ -325,7 +325,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 	//
 	static int selected[SNeutrinoSettings::BUTTON_MAX] = {
 		-1,
-#if defined (ENABLE_FUNCTIONKEYS) //FIXME:???
+#if defined (ENABLE_FUNCTIONKEYS)
 		-1,
 		-1,
 		-1,
@@ -333,13 +333,30 @@ bool CNeutrinoApp::showUserMenu(int button)
 #endif		
 	};
 
-	std::string txt = g_settings.usermenu_text[button];
+	std::string txt;
 
-	if( button == SNeutrinoSettings::BUTTON_BLUE) 
-	{
-		if( txt.empty() )		                
-			txt = _("Features");
+	if ( button == SNeutrinoSettings::BUTTON_BLUE) 
+	{		                
+		txt = _("Features");
 	}
+#if defined (ENABLE_FUNCTIONKEYS)
+	else if ( button == SNeutrinoSettings::BUTTON_F1) 
+	{	                
+		txt = "F1";
+	}
+	else if ( button == SNeutrinoSettings::BUTTON_F2) 
+	{		                
+		txt = "F2";
+	}
+	else if ( button == SNeutrinoSettings::BUTTON_F3) 
+	{	                
+		txt = "F3";
+	}
+	else if ( button == SNeutrinoSettings::BUTTON_F4) 
+	{		                
+		txt = "F4";
+	}
+#endif
 	
 	//
 	oldLcdMode = CLCD::getInstance()->getMode();

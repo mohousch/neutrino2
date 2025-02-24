@@ -642,11 +642,10 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.key_timerlist = configfile.getInt32( "key_timerlist", CRCInput::RC_timer );
 	g_settings.key_screenshot = configfile.getInt32( "key_screenshot", CRCInput::RC_record );
 	
-        // USERMENU -> in system/settings.h
-        //-------------------------------------------
-        // this is as the current neutrino usermen
-        const char * usermenu_default[SNeutrinoSettings::BUTTON_MAX] = {
-                "1, 2, 3",   			// BLUE
+        // USERMENU
+        const char * usermenu_default[SNeutrinoSettings::BUTTON_MAX] = 
+        {
+                "1, 2, 3, 8",   		// BLUE
 #if defined (ENABLE_FUNCTIONKEYS)
 		"0",				// F1
 		"0",				// F2
@@ -660,12 +659,8 @@ int CNeutrinoApp::loadSetup(const char * fname)
 
         for(int button = 0; button < SNeutrinoSettings::BUTTON_MAX; button++)
         {
-                snprintf(txt1,80,"usermenu_tv_%s_text",usermenu_button_def[button]);
-                txt1[80] = 0; // terminate for sure
-                g_settings.usermenu_text[button] = configfile.getString(txt1, "" );
-
-                snprintf(txt1,80,"usermenu_tv_%s",usermenu_button_def[button]);
-                txt2 = configfile.getString(txt1,usermenu_default[button]);
+                snprintf(txt1, 80, "usermenu_tv_%s", usermenu_button_def[button]);
+                txt2 = configfile.getString(txt1, usermenu_default[button]);
                 txt2ptr = txt2.c_str();
 
                 for( int pos = 0; pos < SNeutrinoSettings::ITEM_MAX; pos++)
@@ -1188,11 +1183,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
         char txt2[81];
         for(int button = 0; button < SNeutrinoSettings::BUTTON_MAX; button++) 
 	{
-                snprintf(txt1, 80, "usermenu_tv_%s_text", usermenu_button_def[button]);
-                txt1[80] = 0; // terminate for sure
-                configfile.setString(txt1,g_settings.usermenu_text[button]);
-
-                char* txt2ptr = txt2;
+                char* txt2ptr = txt1;
                 snprintf(txt1, 80, "usermenu_tv_%s", usermenu_button_def[button]);
 
                 for(int pos = 0; pos < SNeutrinoSettings::ITEM_MAX; pos++) 
