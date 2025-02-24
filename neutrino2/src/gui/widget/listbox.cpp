@@ -1421,8 +1421,12 @@ int CMenuForwarder::exec(CMenuTarget *target)
 		
 		if (!jumpTarget->getValueString().empty()) 
 		{
-			setOption(jumpTarget->getValueString().c_str()); // FIXME:
+			setOption(jumpTarget->getValueString().c_str());
 		}
+		
+		// 
+		if (ret == CMenuTarget::RETURN_REPAINT)
+			paint(true);
 	}
 
 	return ret;

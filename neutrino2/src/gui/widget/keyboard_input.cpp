@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$Id: keyboard_input.cpp 21122024 mohousch Exp $
+//	$Id: keyboard_input.cpp 24022025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Copyright (C) 2014 CoolStream International Ltd
@@ -151,7 +151,7 @@ void CKeyboardInput::init()
 	input_w = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth("M") + INPUT_BORDER;// hack font width + border
 	offset  = BORDER_OFFSET;
 	fheight = hheight;
-	iwidth = inputSize*input_w + BORDER_LEFT + BORDER_RIGHT;
+	iwidth = inputSize*input_w;
 
 	key_w = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getRenderWidth("M") + 20;
 	key_h = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 10;
@@ -244,8 +244,8 @@ void CKeyboardInput::switchLayout()
 	layout = &keyboards[i];
 	keyboard = layout->keys[caps];
 	
-	paintFooter();
 	paintKeyboard();
+	paintFooter();
 }
 
 void CKeyboardInput::NormalKeyPressed()
@@ -287,8 +287,8 @@ void CKeyboardInput::switchCaps()
 	caps = caps ? 0 : 1;
 	keyboard = layout->keys[caps];
 	
-	paintFooter();
 	paintKeyboard();
+	paintFooter();
 }
 
 void CKeyboardInput::keyUpPressed()
@@ -644,11 +644,11 @@ void CKeyboardInput::hide()
 	frameBuffer->blit();
 }
 
-int CKeyboardInput::paintFooter()
+void CKeyboardInput::paintFooter()
 {
 	dprintf(DEBUG_NORMAL, "CKeyboardInput::paintFooter\n");
 	
-	struct button_label footerButtons[] =
+	struct button_label footerButtons[6] =
 	{
 		{ NEUTRINO_ICON_BUTTON_RED, _("Save"), COL_RED_PLUS_0 },
 		{ NEUTRINO_ICON_BUTTON_GREEN, _("Insert"), COL_GREEN_PLUS_0 },
@@ -658,11 +658,9 @@ int CKeyboardInput::paintFooter()
 		{ NEUTRINO_ICON_BUTTON_SETUP, _(layout->name.c_str()), COL_RED_PLUS_0 }
 	};
 	
-	int cnt = (sizeof(footerButtons) / sizeof(struct button_label));
-	
 	CCFooters buttons(x, y + hheight + bheight, width, fheight);
 		
-	buttons.setButtons(footerButtons, cnt);
+	buttons.setButtons(footerButtons, 6);
 	buttons.paint();
 }
 
@@ -670,10 +668,10 @@ void CKeyboardInput::paint()
 {
 	dprintf(DEBUG_NORMAL, "CKeyboardInput::paint\n");
 	
-	//
+	// main
 	frameBuffer->paintBoxRel(x, y + hheight, width, bheight, COL_MENUCONTENT_PLUS_0);
 
-	//
+	// head
 	CCHeaders header(x, y, width, hheight, title.c_str(), iconfile.c_str());
 	header.paint();
 
@@ -697,13 +695,13 @@ void CKeyboardInput::paint()
 	for (int count = 0; count < inputSize; count++)
 		paintChar(count);
 
-	//
+	// footer
 	paintFooter();
 }
 
 void CKeyboardInput::paintChar(int pos)
 {
-	dprintf(DEBUG_NORMAL, "CKeyboardInput::paintChar: pos:%d\n", pos);
+	dprintf(DEBUG_DEBUG, "CKeyboardInput::paintChar: pos:%d\n", pos);
 	
 	if (pos < (int) inputString->length())
 		paintChar(pos, inputString->at(pos));
@@ -711,9 +709,9 @@ void CKeyboardInput::paintChar(int pos)
 
 void CKeyboardInput::paintChar(int pos, std::string &c)
 {
-	dprintf(DEBUG_NORMAL, "CKeyboardInput::paintChar: pos:%d char:%s\n", pos, c.c_str());
+	dprintf(DEBUG_DEBUG, "CKeyboardInput::paintChar: pos:%d char:%s\n", pos, c.c_str());
 	
-	int xpos = x + offset + (width - iwidth) / 2 + pos * input_w;
+	int xpos = x + (width - iwidth) / 2 + pos * input_w;
 	int ypos = y + hheight + offset;
 
 	fb_pixel_t color = COL_MENUCONTENT_TEXT_PLUS_0;
@@ -747,7 +745,7 @@ void CKeyboardInput::paintKeyboard()
 
 void CKeyboardInput::paintKey(int row, int column)
 {
-	dprintf(DEBUG_NORMAL, "CKeyboardInput::paintKey: row:%d column:%d\n", row, column);
+	dprintf(DEBUG_DEBUG, "CKeyboardInput::paintKey: row:%d column:%d\n", row, column);
 	
 	int xpos = x + offset + (width - kwidth) / 2 + (key_w + KEY_BORDER) * column;
 	int ypos = key_y + (key_h + KEY_BORDER) * row;

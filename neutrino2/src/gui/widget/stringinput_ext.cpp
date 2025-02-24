@@ -62,7 +62,12 @@ void CExtendedInput::Init(void)
 	mheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();
 	iheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->getHeight();
 
-	width = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getRenderWidth(name) + 40; // UTF-8
+//	width = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getRenderWidth(name) + 40; // UTF-8
+	width = MAX_INPUT_CHARS*20 + BORDER_LEFT + BORDER_RIGHT;
+
+	if (width < MENU_WIDTH)
+		width = MENU_WIDTH;
+
 	height = hheight + mheight + 20;
 
 	if (!hint_1.empty())

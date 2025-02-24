@@ -126,35 +126,7 @@ int CRemoteControlSettings::exec(CMenuTarget* parent, const std::string& actionK
 	if(parent)
 		parent->hide();
 	
-	if (actionKey == "repeat_blocker")
-	{
-		CStringInput * remoteControlSettings_repeatBlocker = new CStringInput(_("Repeat delay"), g_settings.repeat_blocker, 3, _("Shortest time (in ms) to recognize 2 keystrokes"), _("Enter 0 to switch of the blocker (red is space)"), "0123456789 ", this);
-		
-		remoteControlSettings_repeatBlocker->exec(this, "");
-		
-		if (remoteControlSettings)
-		{
-			selected = remoteControlSettings->getSelected();
-		}
-		showMenu();
-		
-		return RETURN_EXIT;
-	}
-	else if (actionKey == "repeat_generic_blocker")
-	{
-		CStringInput * remoteControlSettings_repeat_genericblocker = new CStringInput(_("Generic delay"), g_settings.repeat_genericblocker, 3, _("Shortest time (in ms) to recognize 2 keystrokes"), _("Enter 0 to switch of the blocker (red is space)"), "0123456789 ", this);
-		
-		remoteControlSettings_repeat_genericblocker->exec(this, "");
-		
-		if (remoteControlSettings)
-		{
-			selected = remoteControlSettings->getSelected();
-		}
-		showMenu();
-		
-		return RETURN_EXIT;
-	}
-	else if(actionKey == "savesettings")
+	if(actionKey == "savesettings")
 	{
 		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 		
@@ -187,9 +159,6 @@ void CRemoteControlSettings::showMenu()
 	dprintf(DEBUG_NORMAL, "CRemoteControlSettings::showMenu:\n");
 	
 	//
-//	CWidget* widget = NULL;
-//	ClistBox* remoteControlSettings = NULL;
-	
 	widget = CNeutrinoApp::getInstance()->getWidget("rcsetup");
 	
 	if (widget)
@@ -244,10 +213,12 @@ void CRemoteControlSettings::showMenu()
 	remoteControlSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Key Repeat-blocker")));
 	
 	// repeat blocker
-	remoteControlSettings->addItem(new CMenuForwarder(_("Repeat delay"), true, g_settings.repeat_blocker, this, "repeat_blocker"));
+	CStringInput * remoteControlSettings_repeatBlocker = new CStringInput(_("Repeat delay"), g_settings.repeat_blocker, 3, _("Shortest time (in ms) to recognize 2 keystrokes"), _("Enter 0 to switch of the blocker (red is space)"), "0123456789 ", this);
+	remoteControlSettings->addItem(new CMenuForwarder(_("Repeat delay"), true, g_settings.repeat_blocker, remoteControlSettings_repeatBlocker));
 	
 	// repeat generic blocker
- 	remoteControlSettings->addItem(new CMenuForwarder(_("Generic delay"), true, g_settings.repeat_genericblocker, this, "repeat_generic_blocker"));
+	CStringInput * remoteControlSettings_repeat_genericblocker = new CStringInput(_("Generic delay"), g_settings.repeat_genericblocker, 3, _("Shortest time (in ms) to recognize 2 keystrokes"), _("Enter 0 to switch of the blocker (red is space)"), "0123456789 ", this);
+ 	remoteControlSettings->addItem(new CMenuForwarder(_("Generic delay"), true, g_settings.repeat_genericblocker, remoteControlSettings_repeat_genericblocker));
 
 	// keybinding menu
 	remoteControlSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Hot Keys mapping")));
@@ -258,14 +229,14 @@ void CRemoteControlSettings::showMenu()
         remoteControlSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("User menu")));
 
 	// blue
-        remoteControlSettings->addItem(new CMenuForwarder(_("User menu blue"), true, NULL, new CUserMenu(_("User menu blue"), SNeutrinoSettings::BUTTON_BLUE)));
+        remoteControlSettings->addItem(new CMenuForwarder(_("Blue key"), true, NULL, new CUserMenu(_("Blue key"), SNeutrinoSettings::BUTTON_BLUE)));
 
 	// F-Keys
 #if defined (ENABLE_FUNCTIONKEYS)	
-	remoteControlSettings->addItem(new CMenuForwarder(_("User menu F1"), true, NULL, new CUserMenu(_("User menu F1"), SNeutrinoSettings::BUTTON_F1) ));
-        remoteControlSettings->addItem(new CMenuForwarder(_("User menu F2"), true, NULL, new CUserMenu(_("User menu F2"), SNeutrinoSettings::BUTTON_F2) ));
-        remoteControlSettings->addItem(new CMenuForwarder(_("User menu F3"), true, NULL, new CUserMenu(_("User menu F3"), SNeutrinoSettings::BUTTON_F3) ));
-        remoteControlSettings->addItem(new CMenuForwarder(_("User menu F4"), true, NULL, new CUserMenu(_("User menu F4"), SNeutrinoSettings::BUTTON_F4) ));	
+	remoteControlSettings->addItem(new CMenuForwarder(_("F1 key"), true, NULL, new CUserMenu(_("F1 key"), SNeutrinoSettings::BUTTON_F1) ));
+        remoteControlSettings->addItem(new CMenuForwarder(_("F2 key"), true, NULL, new CUserMenu(_("F2 key"), SNeutrinoSettings::BUTTON_F2) ));
+        remoteControlSettings->addItem(new CMenuForwarder(_("F3 key"), true, NULL, new CUserMenu(_("F3 key"), SNeutrinoSettings::BUTTON_F3) ));
+        remoteControlSettings->addItem(new CMenuForwarder(_("F4 key"), true, NULL, new CUserMenu(_("F4 key"), SNeutrinoSettings::BUTTON_F4) ));	
 #endif
 
 	// misc
@@ -283,6 +254,18 @@ void CRemoteControlSettings::showMenu()
 	{
 		delete widget;
 		widget = NULL;
+	}
+	
+	if (remoteControlSettings_repeatBlocker)
+	{
+		delete remoteControlSettings_repeatBlocker;
+		remoteControlSettings_repeatBlocker = NULL;
+	}
+	
+	if (remoteControlSettings_repeat_genericblocker)
+	{
+		delete remoteControlSettings_repeat_genericblocker;
+		remoteControlSettings_repeat_genericblocker = NULL;
 	}
 	
 	//

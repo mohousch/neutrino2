@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-02-24 14:09+0100\n"
+"POT-Creation-Date: 2025-02-24 17:54+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -214,6 +214,9 @@ msgid "Bandwidth"
 msgstr ""
 
 msgid "Bitrate"
+msgstr ""
+
+msgid "Blue key"
 msgstr ""
 
 msgid "Bookmarks"
@@ -740,6 +743,18 @@ msgid "Expert functions"
 msgstr ""
 
 msgid "Expert-functions"
+msgstr ""
+
+msgid "F1 key"
+msgstr ""
+
+msgid "F2 key"
+msgstr ""
+
+msgid "F3 key"
+msgstr ""
+
+msgid "F4 key"
 msgstr ""
 
 msgid "FEC"
@@ -2563,21 +2578,6 @@ msgid "Use gotoXX"
 msgstr ""
 
 msgid "User menu"
-msgstr ""
-
-msgid "User menu F1"
-msgstr ""
-
-msgid "User menu F2"
-msgstr ""
-
-msgid "User menu F3"
-msgstr ""
-
-msgid "User menu F4"
-msgstr ""
-
-msgid "User menu blue"
 msgstr ""
 
 msgid "Username"

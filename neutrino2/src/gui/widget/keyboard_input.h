@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$Id: keyboard_input.h 21122024 mohousch Exp $
+//	$Id: keyboard_input.h 24022025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Copyright (C) 2014 CoolStream International Ltd
@@ -113,7 +113,7 @@ class CKeyboardInput : public CMenuTarget
 		void init();
 
 		void paint();
-		int  paintFooter();
+		void paintFooter();
 		void paintChar(int pos, std::string &c);
 		void paintChar(int pos);
 		void paintKeyboard();

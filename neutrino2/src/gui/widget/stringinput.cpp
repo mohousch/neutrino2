@@ -74,11 +74,10 @@ CStringInput::~CStringInput()
 
 void CStringInput::init() 
 {
-	width = size*20 + BORDER_LEFT + BORDER_RIGHT;
+	width = MAX_INPUT_CHARS*20 + BORDER_LEFT + BORDER_RIGHT;
 
-	// 
-	if (width < 420)
-		width = 420;
+	if (width < MENU_WIDTH)
+		width = MENU_WIDTH;
 
 	hheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
 	
@@ -450,7 +449,7 @@ void CStringInput::paint()
 	//box
 	m_cBoxWindow.enableSaveScreen();
 	m_cBoxWindow.setColor(COL_MENUCONTENT_PLUS_0);
-	m_cBoxWindow.setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Foot_corner);
+	m_cBoxWindow.setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	m_cBoxWindow.paint();
 
 	// head

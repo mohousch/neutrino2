@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-02-24 14:09+0100\n"
+"POT-Creation-Date: 2025-02-24 17:54+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -218,6 +218,10 @@ msgstr "Пропускная способность"
 
 msgid "Bitrate"
 msgstr "Битрэйт"
+
+#, fuzzy
+msgid "Blue key"
+msgstr "Текущий ключ"
 
 msgid "Bookmarks"
 msgstr "Закладки"
@@ -746,6 +750,22 @@ msgstr "Функции эксперта"
 
 msgid "Expert-functions"
 msgstr "Функции эксперта"
+
+#, fuzzy
+msgid "F1 key"
+msgstr "Нет ключа"
+
+#, fuzzy
+msgid "F2 key"
+msgstr "Нет ключа"
+
+#, fuzzy
+msgid "F3 key"
+msgstr "Нет ключа"
+
+#, fuzzy
+msgid "F4 key"
+msgstr "Нет ключа"
 
 msgid "FEC"
 msgstr ""
@@ -2601,21 +2621,6 @@ msgstr "Используйте gotoXX"
 
 msgid "User menu"
 msgstr "Меню пользователя"
-
-msgid "User menu F1"
-msgstr "Меню пользователя F1"
-
-msgid "User menu F2"
-msgstr "Меню пользователя F2"
-
-msgid "User menu F3"
-msgstr "Меню пользователя F3"
-
-msgid "User menu F4"
-msgstr "Меню пользователя F4"
-
-msgid "User menu blue"
-msgstr "Меню пользователя синее"
 
 msgid "Username"
 msgstr "Имя пользователя"

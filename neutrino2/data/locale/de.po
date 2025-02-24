@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-02-24 14:09+0100\n"
+"POT-Creation-Date: 2025-02-24 17:54+0100\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -217,6 +217,10 @@ msgstr "Bandbreite"
 
 msgid "Bitrate"
 msgstr "Bitrate"
+
+#, fuzzy
+msgid "Blue key"
+msgstr "Aktuelle Taste"
 
 msgid "Bookmarks"
 msgstr "Lesezeichen"
@@ -751,6 +755,22 @@ msgstr "Expertenfunktionen"
 
 msgid "Expert-functions"
 msgstr "Expertenfunktionen"
+
+#, fuzzy
+msgid "F1 key"
+msgstr "Keine Taste"
+
+#, fuzzy
+msgid "F2 key"
+msgstr "Keine Taste"
+
+#, fuzzy
+msgid "F3 key"
+msgstr "Keine Taste"
+
+#, fuzzy
+msgid "F4 key"
+msgstr "Keine Taste"
 
 msgid "FEC"
 msgstr "FEC"
@@ -2620,21 +2640,6 @@ msgstr "gotoXX verwenden"
 
 msgid "User menu"
 msgstr "Benutzermenü"
-
-msgid "User menu F1"
-msgstr "Benutzermenü F1"
-
-msgid "User menu F2"
-msgstr "Benutzermenü F2"
-
-msgid "User menu F3"
-msgstr "Benutzermenü F3"
-
-msgid "User menu F4"
-msgstr "Benutzermenü F4"
-
-msgid "User menu blue"
-msgstr "Benutzermenü blau"
 
 msgid "Username"
 msgstr "Nutzername"
