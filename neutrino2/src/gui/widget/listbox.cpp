@@ -1419,10 +1419,7 @@ int CMenuForwarder::exec(CMenuTarget *target)
 	{
 		ret = jumpTarget->exec(target, actionKey);
 		
-		if (!jumpTarget->getValueString().empty()) 
-		{
-			setOption(jumpTarget->getValueString().c_str());
-		}
+		setOption(jumpTarget->getValueString().c_str());
 		
 		// 
 		if (ret == CMenuTarget::RETURN_REPAINT)
