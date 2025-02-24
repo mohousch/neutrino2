@@ -1,28 +1,28 @@
-/*
-	Neutrino-GUI  -   DBoxII-Project
-
-	$id: audioplayer_setup.cpp 2016.01.02 20:57:30 mohousch $
-	
-	Copyright (C) 2001 Steffen Hehn 'McClean'
-	and some other guys
-	Homepage: http://dbox.cyberphoria.org/
-
-	License: GPL
-
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-*/ 
+//
+//	Neutrino-GUI  -   DBoxII-Project
+//
+//	$id: audioplayer_setup.cpp 24022025 mohousch $
+//	
+//	Copyright (C) 2001 Steffen Hehn 'McClean'
+//	and some other guys
+//	Homepage: http://dbox.cyberphoria.org/
+//
+//	License: GPL
+//
+//	This program is free software; you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation; either version 2 of the License, or
+//	(at your option) any later version.
+//
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program; if not, write to the Free Software
+//	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// 
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -63,12 +63,13 @@ int CAudioPlayerSettings::exec(CMenuTarget* parent, const std::string& actionKey
 		if (b.exec(g_settings.network_nfs_audioplayerdir))
 			strncpy(g_settings.network_nfs_audioplayerdir, b.getSelectedFile()->Name.c_str(), sizeof(g_settings.network_nfs_audioplayerdir) - 1);
 
-		m1->addOption(g_settings.network_nfs_audioplayerdir);
+		this->setValueString(g_settings.network_nfs_audioplayerdir);
 		
 		return CMenuTarget::RETURN_REPAINT;
 	}
 	
 	showMenu();
+	this->clearValueString();
 	
 	return CMenuTarget::RETURN_REPAINT;
 }
@@ -138,7 +139,7 @@ void CAudioPlayerSettings::showMenu()
 	audioPlayerSettings->addItem(new CMenuOptionChooser(_("High decode priority"), &g_settings.audioplayer_highprio, MESSAGEBOX_NO_YES_OPTIONS, MESSAGEBOX_NO_YES_OPTION_COUNT, true ));
 
 	// start dir
-	m1 = new CMenuForwarder(_("Start dir."), true, g_settings.network_nfs_audioplayerdir, this, "audioplayerdir");
+	CMenuForwarder *m1 = new CMenuForwarder(_("Start dir."), true, g_settings.network_nfs_audioplayerdir, this, "audioplayerdir");
 	audioPlayerSettings->addItem(m1);
 	
 	//

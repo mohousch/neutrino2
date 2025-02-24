@@ -1,28 +1,28 @@
-/*
-	Neutrino-GUI  -   DBoxII-Project
-
-	$id: misc_setup.cpp 23.09.2023 mohousch $
-	
-	Copyright (C) 2001 Steffen Hehn 'McClean'
-	and some other guys
-	Homepage: http://dbox.cyberphoria.org/
-
-	License: GPL
-
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-*/ 
+//
+//	Neutrino-GUI  -   DBoxII-Project
+//
+//	$id: misc_setup.cpp 24022025 mohousch $
+//	
+//	Copyright (C) 2001 Steffen Hehn 'McClean'
+//	and some other guys
+//	Homepage: http://dbox.cyberphoria.org/
+//
+//	License: GPL
+//
+//	This program is free software; you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation; either version 2 of the License, or
+//	(at your option) any later version.
+//
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program; if not, write to the Free Software
+//	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// 
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -720,7 +720,7 @@ int CEPGSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 			}
 		}
 		
-		m1->addOption(g_settings.epg_dir.c_str());
+		this->setValueString(g_settings.epg_dir.c_str());
 
 		return ret;
 	}
@@ -733,6 +733,7 @@ int CEPGSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	}
 	
 	showMenu();
+	this->clearValueString();
 	
 	return ret;
 }
@@ -837,7 +838,7 @@ void CEPGSettings::showMenu()
         miscSettingsEPG->addItem(new CMenuForwarder(_("Max. Events"), true, g_settings.epg_max_events.c_str(), miscSettings_epg_max_events));
 
 	// epg save dir
-	m1 = new CMenuForwarder(_("EPG save path"), true, g_settings.epg_dir.c_str(), this, "epgdir");
+	CMenuForwarder *m1 = new CMenuForwarder(_("EPG save path"), true, g_settings.epg_dir.c_str(), this, "epgdir");
         miscSettingsEPG->addItem(m1);
 	
 	// epglang

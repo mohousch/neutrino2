@@ -1,28 +1,28 @@
-/*
-	Neutrino-GUI  -   DBoxII-Project
-
-	$id: recording_setup.cpp 2016.01.02 21:43:30 mohousch $
-	
-	Copyright (C) 2001 Steffen Hehn 'McClean'
-	and some other guys
-	Homepage: http://dbox.cyberphoria.org/
-
-	License: GPL
-
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-*/ 
+//
+//	Neutrino-GUI  -   DBoxII-Project
+//
+//	$id: recording_setup.cpp 24022025 mohousch $
+//	
+//	Copyright (C) 2001 Steffen Hehn 'McClean'
+//	and some other guys
+//	Homepage: http://dbox.cyberphoria.org/
+//
+//	License: GPL
+//
+//	This program is free software; you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation; either version 2 of the License, or
+//	(at your option) any later version.
+//
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program; if not, write to the Free Software
+//	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// 
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -60,9 +60,9 @@ const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
 };
 
 // recording settings
-extern char recDir[255];			// defined in neutrino.cpp
-extern char timeshiftDir[255];			// defined in neutrino.cpp
-extern bool autoshift;				// defined in neutrino.cpp
+extern char recDir[255];			// defined in neutrino2.cpp
+extern char timeshiftDir[255];			// defined in neutrino2.cpp
+extern bool autoshift;				// defined in neutrino2.cpp
 
 int CRecordingSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
@@ -80,10 +80,7 @@ int CRecordingSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		return ret;
 	}
 	else if(actionKey == "recordingdir")
-	{
-		if(parent)
-			parent->hide();
-		
+	{		
 		CFileBrowser b;
 		b.Dir_Mode = true;
 
@@ -106,13 +103,14 @@ int CRecordingSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 				dprintf(DEBUG_NORMAL, "CRecordingSettings::exec: New timeshift dir: %s\n", timeshiftDir);
 			}
 		}
-		
-		fRecDir->addOption(g_settings.network_nfs_recordingdir);
+
+		this->setValueString(g_settings.network_nfs_recordingdir);
 		
 		return ret;
 	}
 	
 	showMenu();
+	this->clearValueString();
 	
 	return ret;
 }
@@ -234,7 +232,7 @@ void CRecordingSettings::showMenu()
 	CMenuOptionChooser* oj13 = new CMenuOptionChooser(_("Save in channel dir"), &g_settings.recording_save_in_channeldir, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
 
 	//RecDir
-	fRecDir = new CMenuForwarder(_("Recording directory"), true, g_settings.network_nfs_recordingdir, this, "recordingdir");
+	CMenuForwarder *fRecDir = new CMenuForwarder(_("Recording directory"), true, g_settings.network_nfs_recordingdir, this, "recordingdir");
 
 	// intros
 	recordingSettings->addItem(new CMenuForwarder(_("back")));

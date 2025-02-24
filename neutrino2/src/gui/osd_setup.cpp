@@ -1,28 +1,28 @@
-/*
-	Neutrino-GUI  -   DBoxII-Project
-
-	$id: osd_setup.cpp 21.09.21 mohousch $
-	
-	Copyright (C) 2001 Steffen Hehn 'McClean'
-	and some other guys
-	Homepage: http://dbox.cyberphoria.org/
-
-	License: GPL
-
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-*/ 
+//
+//	Neutrino-GUI  -   DBoxII-Project
+//
+//	$id: osd_setup.cpp 24022025 mohousch $
+//	
+//	Copyright (C) 2001 Steffen Hehn 'McClean'
+//	and some other guys
+//	Homepage: http://dbox.cyberphoria.org/
+//
+//	License: GPL
+//
+//	This program is free software; you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation; either version 2 of the License, or
+//	(at your option) any later version.
+//
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program; if not, write to the Free Software
+//	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// 
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -792,12 +792,13 @@ int CFontSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 			CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
 		}
 		
-		m1->addOption(g_settings.font_file);
+		this->setValueString(g_settings.font_file);
 		
 		return ret;
 	}
 		
 	showMenu();
+	this->clearValueString();
 	
 	return ret;
 }
@@ -862,7 +863,7 @@ void CFontSettings::showMenu()
 	fontSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// font name
-	m1 = new CMenuForwarder(_("Font name"), true, g_settings.font_file, this, "select_font");
+	CMenuForwarder *m1 = new CMenuForwarder(_("Font name"), true, g_settings.font_file, this, "select_font");
 	fontSettings->addItem(m1);
 	
 	// font scaling
@@ -1023,12 +1024,13 @@ int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 			dprintf(DEBUG_NORMAL, "COSDDiverses::exec: new logos dir %s\n", b.getSelectedFile()->Name.c_str());
 		}
 
-		m1->addOption(g_settings.logos_dir.c_str());
+		this->setValueString(g_settings.logos_dir.c_str());
 		
 		return ret;
 	}
 	
 	showMenu();
+	this->clearValueString();
 	
 	return ret;
 }
@@ -1145,7 +1147,7 @@ void COSDDiverses::showMenu()
 	osdDiverseSettings->addItem(new CMenuOptionChooser(_("Channel Logo"), &g_settings.logos_show_logo, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
 	
 	// logos dir
-	m1 = new CMenuForwarder(_("logos Dir"), true, g_settings.logos_dir.c_str(), this, "logos_dir" );
+	CMenuForwarder *m1 = new CMenuForwarder(_("logos Dir"), true, g_settings.logos_dir.c_str(), this, "logos_dir" );
 	osdDiverseSettings->addItem(m1);
 	
 	// weather
