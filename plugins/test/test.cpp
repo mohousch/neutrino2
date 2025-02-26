@@ -168,7 +168,6 @@ class CTestMenu : public CMenuTarget
 		void testCPINChangeWidget();
 		void testCIPInput();
 		void testCDateInput();
-		void testCMACInput();
 		void testCTimeInput();
 		void testCIntInput();
 		void testCKeyBoard();
@@ -3111,6 +3110,8 @@ void CTestMenu::testCPINInput()
 	
 	pinInput->exec(NULL, "");
 	
+	printf("CTestMenu::testCPINInput: value=%s\n", value.c_str());
+	
 	delete pinInput;
 	pinInput = NULL;
 }
@@ -3124,6 +3125,8 @@ void CTestMenu::testCPLPINInput()
 	CPLPINInput * pinInput = new CPLPINInput("CPLPINInput", (char *)value.c_str());
 	
 	pinInput->exec(NULL, "");
+	
+	printf("CTestMenu::testCPLPINInput: value=%s\n", value.c_str());
 	
 	delete pinInput;
 	pinInput = NULL;
@@ -3139,6 +3142,8 @@ void CTestMenu::testCPINChangeWidget()
 	
 	pinInput->exec(NULL, "");
 	
+	printf("CTestMenu::testCPINChangeWidget: value=%s\n", value.c_str());
+	
 	delete pinInput;
 	pinInput = NULL;
 }
@@ -3153,21 +3158,9 @@ void CTestMenu::testCIPInput()
 	
 	ipInput->exec(NULL, "");
 	
+	printf("CTestMenu::testCIPInput: value=%s\n", value.c_str());
+	
 	delete ipInput;
-}
-
-// CMACInput
-void CTestMenu::testCMACInput()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testCMACInput\n");
-
-	std::string value;
-	CMACInput * macInput = new CMACInput(_("MAC address:"), (char *)value.c_str());
-	
-	macInput->exec(NULL, "");
-	
-	delete macInput;
-	macInput = NULL;
 }
 
 // CDateInput
@@ -4592,12 +4585,6 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	else if(actionKey == "ipinput")
 	{
 		testCIPInput();
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "macinput")
-	{
-		testCMACInput();
 
 		return RETURN_REPAINT;
 	}
@@ -6032,12 +6019,10 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("ClistBox(classic)", true, NULL, this, "listbox2"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(extended)", true, NULL, this, "listbox3"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(Frame)", true, NULL, this, "listbox4"));
-	//mainMenu->addItem(new CMenuForwarder("ClistBox(INFO)", true, NULL, this, "listbox5"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(HINTITEM)", true, NULL, this, "listbox6"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(HINTICON)", true, NULL, this, "listbox7"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(ICON)", true, NULL, this, "listbox8"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(HINT)", true, NULL, this, "listbox9"));
-	//mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "framebox"));
 	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "framebox"));
 	
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CWidget"));
@@ -6057,10 +6042,9 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CPLPINInput", true, NULL, this, "plpininput"));
 	mainMenu->addItem(new CMenuForwarder("CPINChangeWidget", true, NULL, this, "pinchangewidget"));
 	mainMenu->addItem(new CMenuForwarder("CIPInput", true, NULL, this, "ipinput"));
-	//mainMenu->addItem(new CMenuForwarder("CMACInput", true, NULL, this, "macinput"));
-	//mainMenu->addItem(new CMenuForwarder("CDateInput", true, NULL, this, "dateinput"));
-	//mainMenu->addItem(new CMenuForwarder("CTimeInput", true, NULL, this, "timeinput"));
-	//mainMenu->addItem(new CMenuForwarder("CIntInput", true, NULL, this, "intinput"));
+	mainMenu->addItem(new CMenuForwarder("CDateInput", true, NULL, this, "dateinput"));
+	mainMenu->addItem(new CMenuForwarder("CTimeInput", true, NULL, this, "timeinput"));
+	mainMenu->addItem(new CMenuForwarder("CIntInput", true, NULL, this, "intinput"));
 	mainMenu->addItem(new CMenuForwarder("CKeyBoard", true, NULL, this, "ckeyboard"));
 	mainMenu->addItem(new CMenuForwarder("ColorChooser", true, NULL, this, "colorchooser"));
 	mainMenu->addItem(new CMenuForwarder("KeyChooser", true, NULL, this, "keychooser"));
@@ -6073,7 +6057,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("PSISetup", true, NULL, this, "psisetup"));
 	mainMenu->addItem(new CMenuForwarder("RCLock", true, NULL, this, "rclock"));
 	mainMenu->addItem(new CMenuForwarder("MountGUI", true, NULL, this, "mountgui"));
-	//mainMenu->addItem(new CMenuForwarder("UmountGUI", true, NULL, this, "umountgui"));
+	mainMenu->addItem(new CMenuForwarder("UmountGUI", true, NULL, this, "umountgui"));
 	mainMenu->addItem(new CMenuForwarder("MountSmallMenu", true, NULL, this, "mountsmallmenu"));
 	mainMenu->addItem(new CMenuForwarder("Pluginlist", true, NULL, this, "pluginslist"));
 	mainMenu->addItem(new CMenuForwarder("CUserMenu", true, NULL, this, "usermenu"));
@@ -6143,7 +6127,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CMenuItem") );
 	mainMenu->addItem(new CMenuForwarder("CMenuOptionChooser", true, NULL, this, "menuoptionchooser"));
 	mainMenu->addItem(new CMenuForwarder("CMenuOptionStringChooser", true, NULL, this, "menuoptionstringchooser"));
-	//mainMenu->addItem(new CMenuForwarder("CMenuOptionNumberChooser", true, NULL, this, "menuoptionnumberchooser"));
+	mainMenu->addItem(new CMenuForwarder("CMenuOptionNumberChooser", true, NULL, this, "menuoptionnumberchooser"));
 
 	// subs
 	unsigned int count = 0;

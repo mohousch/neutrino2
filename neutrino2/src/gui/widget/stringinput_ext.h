@@ -82,7 +82,7 @@ class CExtendedInput : public CMenuTarget
 		bool getExitPressed(){return *cancel;};
 };
 
-
+////
 class CExtendedInput_Item
 {
 	protected:
@@ -101,6 +101,7 @@ class CExtendedInput_Item
 		virtual ~CExtendedInput_Item(){}
 };
 
+////
 class CExtendedInput_Item_Spacer : public CExtendedInput_Item
 {
 	protected:
@@ -113,6 +114,7 @@ class CExtendedInput_Item_Spacer : public CExtendedInput_Item
 		virtual bool isSelectable(){return false;};
 };
 
+////
 class CExtendedInput_Item_newLiner : public CExtendedInput_Item
 {
 	protected:
@@ -124,6 +126,7 @@ class CExtendedInput_Item_newLiner : public CExtendedInput_Item
 		virtual bool isSelectable(){return false;};
 };
 
+////
 class CExtendedInput_Item_Char : public CExtendedInput_Item
 {
 	protected:
@@ -144,6 +147,7 @@ class CExtendedInput_Item_Char : public CExtendedInput_Item
 		virtual bool isSelectable(){return selectable;};
 };
 
+////
 class CIPInput : public CExtendedInput
 {
 	char          IP[16];
@@ -157,6 +161,7 @@ class CIPInput : public CExtendedInput
 		CIPInput(const char * const Name, std::string &Value, const char* const Hint_1 = NULL, const char* const Hint_2 = NULL, CChangeObserver* Observ = NULL);
 };
 
+////
 class CDateInput : public CExtendedInput
 {
    	private:
@@ -173,6 +178,7 @@ class CDateInput : public CExtendedInput
 		char* getValue() {return value;}
 };
 
+////
 class CMACInput : public CExtendedInput
 {
 	protected:
@@ -183,6 +189,7 @@ class CMACInput : public CExtendedInput
 		CMACInput(const char * const Name, char* Value, const char* const Hint_1 = NULL, const char* const Hint_2 = NULL, CChangeObserver* Observ = NULL);
 };
 
+////
 class CTimeInput : public CExtendedInput
 {
 	protected:
@@ -193,6 +200,7 @@ class CTimeInput : public CExtendedInput
 		CTimeInput(const char * const Name, char* Value, const char* const Hint_1 = NULL, const char* const Hint_2 = NULL, CChangeObserver* Observ = NULL, bool* cancel = NULL);
 };
 
+////
 class CIntInput : public CExtendedInput
 {
 #define MAX_CINTINPUT_SIZE 16

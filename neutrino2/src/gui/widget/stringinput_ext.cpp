@@ -45,7 +45,7 @@
 CExtendedInput::CExtendedInput(const char * const Name, const char * const Value, const char* const Hint_1, const char* const Hint_2, CChangeObserver* Observ, bool* Cancel)
 {
 	name = Name? Name : "";
-	value = (char *)Value;
+	value = Value? (char*)Value : (char*)"";
 	cancel = Cancel;
 
 	hint_1 = Hint_1? Hint_1 : "";
@@ -62,7 +62,6 @@ void CExtendedInput::Init(void)
 	mheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();
 	iheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->getHeight();
 
-//	width = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getRenderWidth(name) + 40; // UTF-8
 	width = MAX_INPUT_CHARS*20 + BORDER_LEFT + BORDER_RIGHT;
 
 	if (width < MENU_WIDTH)
@@ -90,7 +89,6 @@ void CExtendedInput::addInputField( CExtendedInput_Item* fld )
 {
 	inputFields.push_back(fld);
 }
-
 
 void CExtendedInput::calculateDialog()
 {
@@ -162,6 +160,7 @@ int CExtendedInput::exec( CMenuTarget* parent, const std::string& )
 		{
 			bool found = false;
 			int oldSelectedChar = selectedChar;
+			
 			if(selectedChar > 0) 
 			{
 				for(int i=selectedChar-1; i>=0;i--) 
@@ -267,7 +266,7 @@ int CExtendedInput::exec( CMenuTarget* parent, const std::string& )
 			else 
 			{
 				//keine �nderungen - beenden ok
-				loop=false;
+				loop = false;
 				if(cancel != NULL)
 					*cancel = true;
 			}
@@ -331,6 +330,7 @@ void CExtendedInput::paint()
 	}
 }
 
+////
 CExtendedInput_Item_Char::CExtendedInput_Item_Char(const std::string & Chars, bool Selectable )
 {
 	frameBuffer = CFrameBuffer::getInstance();
@@ -431,11 +431,12 @@ void CExtendedInput_Item_Char::keyPressed(const int key)
 	}
 }
 
+////
 CIPInput::CIPInput(const char * const Name, std::string & Value, const char* const Hint_1, const char* const Hint_2, CChangeObserver* Observ)
 	: CExtendedInput(Name, IP, Hint_1, Hint_2, Observ)
 {
 	ip = &Value;
-	frameBuffer = CFrameBuffer::getInstance();
+
 	addInputField( new CExtendedInput_Item_Char("012") );
 	addInputField( new CExtendedInput_Item_Char("0123456789") );
 	addInputField( new CExtendedInput_Item_Char("0123456789") );
@@ -460,7 +461,7 @@ void CIPInput::onBeforeExec()
 	if (ip->empty())
 	{
 		strcpy(value, "000.000.000.000");
-		//printf("[neutrino] value-before(2): %s\n", value);
+
 		return;
 	}
 	unsigned char _ip[4];
@@ -482,6 +483,7 @@ void CIPInput::onAfterExec()
 		(*ip) = value;
 }
 
+////
 CDateInput::CDateInput(const char * const Name, time_t* Time, const char* const Hint_1, const char* const Hint_2, CChangeObserver* Observ)
 	: CExtendedInput(Name, (char *) "", Hint_1, Hint_2, Observ)
 {
@@ -490,7 +492,6 @@ CDateInput::CDateInput(const char * const Name, time_t* Time, const char* const 
 	struct tm *tmTime = localtime(time);
 	sprintf( value, "%02d.%02d.%04d %02d:%02d", tmTime->tm_mday, tmTime->tm_mon + 1, tmTime->tm_year + 1900, tmTime->tm_hour, tmTime->tm_min);
 	
-	frameBuffer = CFrameBuffer::getInstance();
 	addInputField( new CExtendedInput_Item_Char("0123") );
 	addInputField( new CExtendedInput_Item_Char("0123456789") );
 	addInputField( new CExtendedInput_Item_Char(".",false) );
@@ -564,6 +565,7 @@ void CDateInput::onAfterExec()
 				tmTime2->tm_hour, tmTime2->tm_min);
 }
 
+////
 CMACInput::CMACInput(const char * const Name, char* Value, const char* const Hint_1, const char* const Hint_2, CChangeObserver* Observ)
 	: CExtendedInput(Name, Value, Hint_1, Hint_2, Observ)
 {
@@ -611,10 +613,11 @@ void CMACInput::onAfterExec()
 		value[0] = 0;
 }
 
+
+//// 
 CTimeInput::CTimeInput(const char * const Name, char* Value, const char* const Hint_1, const char* const Hint_2, CChangeObserver* Observ, bool* Cancel)
 	: CExtendedInput(Name, Value, Hint_1, Hint_2, Observ, Cancel)
 {
-	frameBuffer = CFrameBuffer::getInstance();
 	addInputField( new CExtendedInput_Item_Char("=+-") );
 	addInputField( new CExtendedInput_Item_Spacer(20) );
 	addInputField( new CExtendedInput_Item_Char("0123456789") );
@@ -659,7 +662,6 @@ CIntInput::CIntInput(const char * const Name, int& Value, const unsigned int Siz
 		sprintf(myValueStringOutput,"%*d",m_size,*myValue);
 	}
 
-	frameBuffer = CFrameBuffer::getInstance();
 	for (unsigned int i=0;i<Size;i++)
 	{
 		addInputField( new CExtendedInput_Item_Char("0123456789 ") );
@@ -674,7 +676,9 @@ void CIntInput::onBeforeExec()
  	{
 		sprintf(myValueStringInput,"%-7d",0);
 		sprintf(myValueStringOutput,"%7d",0);
- 	} else {
+ 	} 
+ 	else 
+ 	{
 		sprintf(myValueStringInput,"%-*d",m_size,*myValue);
 		sprintf(myValueStringOutput,"%*d",m_size,*myValue);
 	}
@@ -685,6 +689,4 @@ void CIntInput::onAfterExec()
 	sscanf(myValueStringInput, "%d", myValue);
 	sprintf(myValueStringOutput,"%d",*myValue);
 }
-
-
 
