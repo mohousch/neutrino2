@@ -94,8 +94,7 @@ class CKeyboardInput : public CMenuTarget
 		struct keyboard_layout *layout;
 		std::string(*keyboard)[KEY_COLUMNS];
 		CInputString *inputString;
-		
-		std::string valueString;
+		char *value;
 
 		std::string  title;
 		std::string hintText_1, hintText_2;
@@ -133,14 +132,11 @@ class CKeyboardInput : public CMenuTarget
 		void setLayout();
 
 	public:
-		CKeyboardInput(const char *const Name, int Size = MAX_INPUT_CHARS, CChangeObserver *Observ = NULL, const char *const Icon = NULL, std::string HintText_1 = "", std::string HintText_2 = "");
+		CKeyboardInput(const char *const Name, const char *Value, int Size = MAX_INPUT_CHARS, std::string HintText_1 = "", std::string HintText_2 = "", CChangeObserver *Observ = NULL, const char *const Icon = NEUTRINO_ICON_EDIT);
 		virtual ~CKeyboardInput(){valueString.clear();};
 
 		void hide();
 		int exec(CMenuTarget *parent, const std::string &actionKey);
-		//
-		bool getExitPressed(){return exit_pressed;};
-		virtual std::string &getValueString(void) { return valueString; };
 
 		void enableSaveScreen(bool enable);
 };

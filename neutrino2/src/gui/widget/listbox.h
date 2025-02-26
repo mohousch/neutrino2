@@ -93,6 +93,8 @@ class CMenuItem
 		std::string iconName;
 		std::string itemName;
 		std::string option;
+		int * optionValue;
+		char *optionString;
 		std::string optionInfo;
 		std::string itemHint;
 		std::string itemIcon;
@@ -134,9 +136,6 @@ class CMenuItem
 		//
 		CChangeObserver *observ;
 		bool pulldown;
-		//
-		int * optionValue;
-		char *optionStringValue;
 		
 		//
 		CMenuItem();
@@ -170,6 +169,7 @@ class CMenuItem
 		virtual int getYPosition(void) const { return y; }
 		virtual int getMenuItemType(){ return menuItem_type;};
 		//
+		virtual void setName(const char * const name){itemName = name;};
 		virtual void setOption(const char* text){if (text) option = text;};
 		virtual void setOptionInfo(const char* text){if (text) optionInfo = text;};
 		virtual void setHint(const char* const Text){if (Text) itemHint =  Text;};
@@ -291,7 +291,7 @@ class CMenuOptionStringChooser : public CMenuItem
 	std::vector<std::string> options;
 
 	public:
-		CMenuOptionStringChooser(const char* const Name, char * OptionValue, bool Active = false, CChangeObserver* Observ = NULL, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const char *const IconName = NULL, bool Pulldown = false);
+		CMenuOptionStringChooser(const char* const Name, char *OptionValue, bool Active = false, CChangeObserver* Observ = NULL, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const char *const IconName = NULL, bool Pulldown = false);
 		
 		virtual ~CMenuOptionStringChooser();
 
@@ -359,8 +359,6 @@ class CMenuForwarder : public CMenuItem
 
 		int exec(CMenuTarget *target);
 		bool isSelectable(void) const {return (active && !hidden);};
-		
-		void setName(const char * const name){itemName = name;};
 };
 
 ////

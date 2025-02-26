@@ -112,10 +112,13 @@ const char *CInputString::c_str()
 }
 
 ////
-CKeyboardInput::CKeyboardInput(const char* const Name, int Size, CChangeObserver *Observ, const char *const Icon, std::string HintText_1, std::string HintText_2)
+CKeyboardInput::CKeyboardInput(const char *const Name, const char *Value, int Size, std::string HintText_1, std::string HintText_2, CChangeObserver *Observ, const char *const Icon)
 {
 	title = Name? Name : "";
 	inputSize = Size;
+
+	valueString = Value; //FIXME:
+	value = Value? (char*)Value : (char*)"";
 
 	iconfile = Icon ? Icon : NEUTRINO_ICON_EDIT;
 
@@ -201,6 +204,8 @@ void CKeyboardInput::init()
 
 	x = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - width) >> 1 );
 	y = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - height) >> 1 );
+
+	*inputString = valueString;
 	
 	changed = false;
 }
@@ -622,6 +627,8 @@ int CKeyboardInput::exec(CMenuTarget* parent, const std::string&)
 		hide();
 
 	valueString = inputString->getValue();
+	valueStringSetted = true;
+	strcpy(value, valueString.c_str());
 
 	if (inputString)
 	{
@@ -677,18 +684,19 @@ void CKeyboardInput::paint()
 
 	key_y = y + hheight + offset + input_h + offset;
 
+	// hint1 / hint2
 	if (!hintText_1.empty())
 	{
 		key_y += iheight;
 		const char *_hint_1 = hintText_1.c_str();
-		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->RenderString(x + offset, key_y, width - 2 * offset, _hint_1, COL_MENUCONTENT_TEXT);
+		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->RenderString(x + offset, key_y, width - 2 * offset, _hint_1, COL_MENUCONTENT_TEXT_PLUS_0);
 	}
 	
 	if (!hintText_2.empty())
 	{
 		key_y += iheight;
 		const char *_hint_2 = hintText_2.c_str();
-		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->RenderString(x + offset, key_y, width - 2 * offset, _hint_2, COL_MENUCONTENT_TEXT);
+		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->RenderString(x + offset, key_y, width - 2 * offset, _hint_2, COL_MENUCONTENT_TEXT_PLUS_0);
 	}
 	key_y += offset;
 

@@ -59,7 +59,6 @@ class CExtendedInput : public CMenuTarget
 		std::string hint_2;
 
 		char * value;
-		std::string valueString;
 
 		CChangeObserver* observ;
 		bool* cancel;
@@ -81,7 +80,6 @@ class CExtendedInput : public CMenuTarget
 		void addInputField( CExtendedInput_Item* );
 
 		bool getExitPressed(){return *cancel;};
-		virtual std::string& getValueString(void) { return valueString; };
 };
 
 
@@ -156,7 +154,7 @@ class CIPInput : public CExtendedInput
 		virtual void onAfterExec();
 
 	public:
-		CIPInput(const char * const Name, std::string & Value, const char* const Hint_1 = NULL, const char* const Hint_2 = NULL, CChangeObserver* Observ = NULL);
+		CIPInput(const char * const Name, std::string &Value, const char* const Hint_1 = NULL, const char* const Hint_2 = NULL, CChangeObserver* Observ = NULL);
 };
 
 class CDateInput : public CExtendedInput

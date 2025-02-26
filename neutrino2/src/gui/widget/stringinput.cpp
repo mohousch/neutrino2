@@ -410,6 +410,7 @@ int CStringInput::exec(CMenuTarget* parent, const std::string& )
 	if (value != NULL)
         {
                 valueString = value;
+                valueStringSetted = true;
         }
 
         if ( (observ) && (msg == CRCInput::RC_ok) )
@@ -519,13 +520,13 @@ void CStringInputSMS::initSMS(const char * const Valid_Chars)
 	last_digit = -1;				// no key pressed yet
 	const char CharList[10][11] = { "0 -_/()<>=",	// 10 characters
 					"1+.,:!?%\\",
-					"abc2@ä",
+					"abc2@",
 					"def3",
 					"ghi4",
 					"jkl5",
-					"mno6ö",
-					"pqrs7ß",
-					"tuv8ü",
+					"mno6",
+					"pqrs7",
+					"tuv8",
 					"wxyz9" };
 
 	for (int i = 0; i < 10; i++)
@@ -688,7 +689,7 @@ void CStringInputSMS::paint()
 	buttons.paint();
 }
 
-// CPINInput
+//// CPINInput
 void CPINInput::paintChar(int pos)
 {
 	CStringInput::paintChar(pos, (value[pos] == ' ') ? ' ' : '*');
@@ -778,10 +779,11 @@ int CPINInput::exec( CMenuTarget* parent, const std::string&)
 
 	value[size] = 0;
 	
-	////
+	//
 	if (value != NULL)
         {
                 valueString = value;
+                valueStringSetted = true;
         }
 
 	if ( (observ) && (msg == CRCInput::RC_ok) )
@@ -792,7 +794,7 @@ int CPINInput::exec( CMenuTarget* parent, const std::string&)
 	return res;
 }
 
-//PLPINInput
+//// PLPINInput
 int CPLPINInput::handleOthers(neutrino_msg_t msg, neutrino_msg_data_t data)
 {
 	int res = messages_return::unhandled;

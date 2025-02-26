@@ -3073,14 +3073,14 @@ void CTestMenu::testCStringInput()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCStringInput\n");
 
 	std::string value;
-	CStringInput * stringInput = new CStringInput("CStringInput", value.c_str());
+	CStringInput * stringInput = new CStringInput("CStringInput", (char *)value.c_str());
 	
 	stringInput->exec(NULL, "");
 	
+	printf("CTestMenu::testCStringInput: value=%s\n", value.c_str());
+	
 	delete stringInput;
 	stringInput = NULL;
-	
-	value.clear();
 }
 
 // CStringInputSMS
@@ -3089,12 +3089,16 @@ void CTestMenu::testCStringInputSMS()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCStringInputSMS\n");
 
 	std::string value;
-	CStringInputSMS * stringInputSMS = new CStringInputSMS("CStringInputSMS", value.c_str(), MAX_INPUT_CHARS, "Hint 1", "Hint 2");
+	CStringInputSMS * stringInputSMS = new CStringInputSMS("CStringInputSMS", (const char *)value.c_str(), MAX_INPUT_CHARS, "Testing CStringInputSMS", "type any things for testing");
 	
 	stringInputSMS->exec(NULL, "");
+	
+	printf("CTestMenu::testCStringInputSMS: value=%s\n", value.c_str());
+	printf("CTestMenu::testCStringInputSMS: valueString=%s\n", stringInputSMS->getValueString().c_str());
+	printf("CTestMenu::testCStringInputSMS: targetStringValue=%s\n", this->getValueString().c_str());
 
 	delete stringInputSMS;
-	value.clear();
+	stringInputSMS = NULL;
 }
 
 // CPINInput
@@ -3103,13 +3107,12 @@ void CTestMenu::testCPINInput()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCPINInput\n");
 
 	std::string value;
-	CPINInput * pinInput = new CPINInput("CPINInput", value.c_str());
+	CPINInput * pinInput = new CPINInput("CPINInput", (char *)value.c_str());
 	
 	pinInput->exec(NULL, "");
 	
 	delete pinInput;
 	pinInput = NULL;
-	value.clear();
 }
 
 // CPLPINInput
@@ -3118,13 +3121,12 @@ void CTestMenu::testCPLPINInput()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCPLPINInput\n");
 
 	std::string value;
-	CPLPINInput * pinInput = new CPLPINInput("CPLPINInput", value.c_str());
+	CPLPINInput * pinInput = new CPLPINInput("CPLPINInput", (char *)value.c_str());
 	
 	pinInput->exec(NULL, "");
 	
 	delete pinInput;
 	pinInput = NULL;
-	value.clear();
 }
 
 // CPINChangeWidget
@@ -3133,13 +3135,12 @@ void CTestMenu::testCPINChangeWidget()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCPINChangeWidget\n");
 
 	std::string value;
-	CPINChangeWidget * pinInput = new CPINChangeWidget("CPINChangeWidget", value.c_str());
+	CPINChangeWidget * pinInput = new CPINChangeWidget("CPINChangeWidget", (char *)value.c_str());
 	
 	pinInput->exec(NULL, "");
 	
 	delete pinInput;
 	pinInput = NULL;
-	value.clear();
 }
 
 // CIPInput
@@ -3147,13 +3148,12 @@ void CTestMenu::testCIPInput()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCIPInput\n");
 
-	std::string value;
+	std::string value = "0.0.0.0";
 	CIPInput * ipInput = new CIPInput(_("IP:"), value);
 	
 	ipInput->exec(NULL, "");
 	
 	delete ipInput;
-	value.clear();
 }
 
 // CMACInput
@@ -3168,7 +3168,6 @@ void CTestMenu::testCMACInput()
 	
 	delete macInput;
 	macInput = NULL;
-	value.clear();
 }
 
 // CDateInput
@@ -3196,7 +3195,6 @@ void CTestMenu::testCTimeInput()
 	
 	delete timeInput;
 	timeInput = NULL;
-	value.clear();
 }
 
 // CIntInput
@@ -3218,9 +3216,12 @@ void CTestMenu::testCKeyBoard()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCKeyboardInput\n");
 	
-	CKeyboardInput * stringInput = new CKeyboardInput("CKeyboardInput");
+	std::string value = "test";
+	CKeyboardInput * stringInput = new CKeyboardInput("CKeyboardInput", (char *)value.c_str());
 	
 	stringInput->exec(NULL, "");
+	
+	printf("CTestMenu::testCKeyBoard: value=%s\n", value.c_str());
 	
 	delete stringInput;
 }

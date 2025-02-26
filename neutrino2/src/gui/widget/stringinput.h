@@ -56,8 +56,6 @@ class CStringInput : public CMenuTarget
 		CCHeaders headers;
 		
 		uint32_t smstimer;
-		
-		std::string valueString;
 
 		std::string name;
 		std::string hint_1;
@@ -100,10 +98,6 @@ class CStringInput : public CMenuTarget
 
 		void hide();
 		int exec(CMenuTarget* parent, const std::string &actionKey);
-
-		//
-		bool getExitPressed(){return exit_pressed;};
-		std::string& getValueString(void) { return valueString; };
 };
 
 class CStringInputSMS : public CStringInput

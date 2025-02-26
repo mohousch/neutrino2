@@ -42,6 +42,7 @@
 #include <gui/widget/hintbox.h>
 #include <gui/widget/stringinput.h>
 #include <gui/widget/stringinput_ext.h>
+#include <gui/widget/keyboard_input.h>
 #include <gui/widget/messagebox.h>
 
 #include <gui/network_setup.h>
@@ -209,19 +210,6 @@ int CNetworkSettings::exec(CMenuTarget *parent, const std::string &actionKey)
 		
 		return RETURN_EXIT_ALL;
 	}
-	else if (actionKey == "key")
-	{
-		CStringInputSMS *networkSettings_key = new CStringInputSMS(_("Key"), network_key.c_str());
-		
-		networkSettings_key->exec(this, "");
-		
-		m10->addOption(networkSettings_key->getValueString().c_str());
-		
-		delete networkSettings_key;
-		networkSettings_key = NULL;
-		
-		return ret;
-	}
 	
 	showMenu();
 	
@@ -304,7 +292,9 @@ void CNetworkSettings::showMenu()
 	}
 
 	//key
-	m10 = new CMenuForwarder(_("Key"), true, network_key.c_str(), this, "key");
+	CKeyboardInput *networkSettings_key = new CKeyboardInput(_("Key"), network_key.c_str());
+	
+	m10 = new CMenuForwarder(_("Key"), true, network_key.c_str(), networkSettings_key);
 	m10->setHidden(!has_wireless);
 		
 	// encryption
@@ -354,11 +344,11 @@ void CNetworkSettings::showMenu()
 	CIPInput * networkSettings_NameServer = new CIPInput(_("Name server"), networkConfig->nameserver, _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"));
 	
 	//hostname
-	CStringInputSMS * networkSettings_Hostname = new CStringInputSMS(_("Hostname"), network_hostname.c_str());
+	CKeyboardInput * networkSettings_Hostname = new CKeyboardInput(_("Hostname"), network_hostname.c_str());
 
         CSectionsdConfigNotifier * sectionsdConfigNotifier = new CSectionsdConfigNotifier();
 	// ntp server
-        CStringInputSMS * networkSettings_NtpServer = new CStringInputSMS(_("NTP-Server"), g_settings.network_ntpserver.c_str(), MAX_INPUT_CHARS, _("NTP-Server example: ntp1.ptb.de"), _("need reboot or epg-reset"), "abcdefghijklmnopqrstuvwxyz0123456789-. ", sectionsdConfigNotifier);
+        CKeyboardInput * networkSettings_NtpServer = new CKeyboardInput(_("NTP-Server"), g_settings.network_ntpserver.c_str(), MAX_INPUT_CHARS, _("NTP-Server example: ntp1.ptb.de"), _("need reboot or epg-reset"), sectionsdConfigNotifier);
         CStringInput * networkSettings_NtpRefresh = new CStringInput(_("NTP/DVB-Refresh"), g_settings.network_ntprefresh.c_str(), 3, _("NTP/DVB-Time-Sync in minutes"), _("need reboot or epg-reset"), "0123456789 ", sectionsdConfigNotifier);
 
 	CMenuForwarder * m0 = new CMenuForwarder(_("Setup network now"), true, NULL, this, "network");

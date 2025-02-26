@@ -866,7 +866,8 @@ CMenuOptionStringChooser::CMenuOptionStringChooser(const char * const Name, char
 
 	itemName = Name? Name : "";
 	active = Active;
-	optionStringValue = OptionValue;
+	option = OptionValue;
+	optionString = OptionValue;
 	observ = Observ;
 
 	directKey = DirectKey;
@@ -968,7 +969,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		for(unsigned int count = 0; count < options.size(); count++) 
 		{
 			bool selected = false;
-			if (strcmp(options[count].c_str(), optionStringValue) == 0)
+			if (strcmp(options[count].c_str(), optionString) == 0)
 				selected = true;
 
 			menu->addItem(new CMenuForwarder(_(options[count].c_str())), selected);
@@ -979,7 +980,8 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		select = menu->getSelected();
 		
 		if(select >= 0)
-			strcpy(optionStringValue, options[select].c_str());
+			//option = options[select].c_str();
+			strcpy(optionString, options[select].c_str());
 			
 		if (widget)
 		{
@@ -1040,7 +1042,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		for(unsigned int count = 0; count < options.size(); count++) 
 		{
 			bool selected = false;
-			if (strcmp(options[count].c_str(), optionStringValue) == 0)
+			if (strcmp(options[count].c_str(), optionString) == 0)
 				selected = true;
 
 			menu->addItem(new CMenuForwarder(_(options[count].c_str())), selected);
@@ -1051,7 +1053,8 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		select = menu->getSelected();
 		
 		if(select >= 0)
-			strcpy(optionStringValue, options[select].c_str());
+			//option = options[select].c_str();
+			strcpy(optionString, options[select].c_str());
 			
 		if (widget)
 		{
@@ -1064,17 +1067,20 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		//select next value
 		for(unsigned int count = 0; count < options.size(); count++) 
 		{
-			if (strcmp(options[count].c_str(), optionStringValue) == 0) //FIXME
+			if (strcmp(options[count].c_str(), optionString) == 0) //FIXME
 			{
 				if( msg == CRCInput::RC_left ) 
 				{
 					if(count > 0)
-						strcpy(optionStringValue, options[(count - 1) % options.size()].c_str());
+						//option = options[(count - 1) % options.size()].c_str();
+						strcpy(optionString, options[(count - 1) % options.size()].c_str());
 					else
-						strcpy(optionStringValue, options[options.size() - 1].c_str());
+						//option = options[options.size() - 1].c_str();
+						strcpy(optionString, options[options.size() - 1].c_str());
 				} 
 				else
-					strcpy(optionStringValue, options[(count + 1) % options.size()].c_str());
+					//option = options[(count + 1) % options.size()].c_str();
+					strcpy(optionString, options[(count + 1) % options.size()].c_str());
 				
 				break;
 			}
@@ -1082,7 +1088,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 	}
 	
 	if(observ) 
-		wantsRepaint = observ->changeNotify(itemName, optionStringValue);
+		wantsRepaint = observ->changeNotify(itemName, optionString);
 		
 	//
 	if (wantsRepaint || !paintFrame)
@@ -1176,15 +1182,15 @@ int CMenuOptionStringChooser::paint( bool selected, bool afterPulldown)
 	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposName, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_RIGHT - (stringstartposName - x), _(l_name), color, 0, true); // UTF-8
 	
 	// option value
-	int stringwidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_(optionStringValue), true);
+	int stringwidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_(optionString), true);
 	int stringstartposOption = std::max(stringstartposName + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_(l_name), true) + ICON_OFFSET, x + dx - stringwidth - BORDER_RIGHT); //
 	
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposOption, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_RIGHT - (stringstartposOption - x), _(optionStringValue), color, 0, true);
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposOption, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_RIGHT - (stringstartposOption - x), _(optionString), color, 0, true);
 	
 	if (selected && !afterPulldown)
 	{
 		char str[256];
-		snprintf(str, 255, "%s %s", l_name, optionStringValue);
+		snprintf(str, 255, "%s %s", l_name, optionString);
 
 		CLCD::getInstance()->showMenuText(0, str, -1, true);
 	}
@@ -1419,9 +1425,9 @@ int CMenuForwarder::exec(CMenuTarget *target)
 	{
 		ret = jumpTarget->exec(target, actionKey);
 		
-		setOption(jumpTarget->getValueString().c_str());
+		if (jumpTarget->valueStringSetted)
+			setOption(jumpTarget->getValueString().c_str());
 		
-		// 
 		if (ret == CMenuTarget::RETURN_REPAINT)
 			paint(true);
 	}
@@ -3674,7 +3680,7 @@ void ClistBox::selectItemByName(const char *name)
 	
 	if (hasItem())
 	{
-		for (int i = 0; i < items.size(); i++)
+		for (int i = 0; i < (int)items.size(); i++)
 		{
 			if (items[i]->itemName == name)
 				setSelected(i);

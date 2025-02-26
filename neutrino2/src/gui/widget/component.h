@@ -69,6 +69,7 @@ class CMenuTarget
 		CLCD::MODES oldLcdMode;
 		std::string oldLcdMenutitle;
 		std::string valueString;
+		bool valueStringSetted;
 		bool exit_pressed;
 				
 	public:
@@ -76,15 +77,16 @@ class CMenuTarget
 		{
 			oldLcdMode = CLCD::MODE_TVRADIO;
 			exit_pressed = false;
+			valueStringSetted = false;
 		};
-		virtual ~CMenuTarget(){valueString.clear();};
+		virtual ~CMenuTarget(){valueString.clear(); valueStringSetted = false;};
 		virtual void hide(){CFrameBuffer::getInstance()->paintBackground(); CFrameBuffer::getInstance()->blit();};
 		virtual int exec(CMenuTarget *parent, const std::string &actionKey) = 0;
 		
 		virtual bool getExitPressed(){return exit_pressed;};
 		virtual std::string& getValueString(void) { return valueString;};
-		virtual void setValueString(const char * text){valueString = text;};
-		virtual void clearValueString(){valueString.clear(); valueString = " ";};
+		virtual void setValueString(const char * text){valueString = text; valueStringSetted = true;};
+		virtual void clearValueString(){valueString.clear(); valueString = " "; valueStringSetted = false;};
 		
 };
 
