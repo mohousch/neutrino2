@@ -980,7 +980,6 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		select = menu->getSelected();
 		
 		if(select >= 0)
-			//option = options[select].c_str();
 			strcpy(optionString, options[select].c_str());
 			
 		if (widget)
@@ -1053,7 +1052,6 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		select = menu->getSelected();
 		
 		if(select >= 0)
-			//option = options[select].c_str();
 			strcpy(optionString, options[select].c_str());
 			
 		if (widget)
@@ -1072,14 +1070,11 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 				if( msg == CRCInput::RC_left ) 
 				{
 					if(count > 0)
-						//option = options[(count - 1) % options.size()].c_str();
 						strcpy(optionString, options[(count - 1) % options.size()].c_str());
 					else
-						//option = options[options.size() - 1].c_str();
 						strcpy(optionString, options[options.size() - 1].c_str());
 				} 
 				else
-					//option = options[(count + 1) % options.size()].c_str();
 					strcpy(optionString, options[(count + 1) % options.size()].c_str());
 				
 				break;
