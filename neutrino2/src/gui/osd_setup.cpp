@@ -44,6 +44,7 @@
 
 #include <gui/widget/colorchooser.h>
 #include <gui/widget/stringinput.h>
+#include <gui/widget/keyboard_input.h>
 
 #include <gui/filebrowser.h>
 #include <gui/osd_setup.h>
@@ -77,7 +78,6 @@ int COSDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	return ret;
 }
 
-// showmenu
 int COSDSettings::showMenu(void)
 {
 	dprintf(DEBUG_NORMAL, "COSDSettings::showMenu:\n");
@@ -193,7 +193,7 @@ int COSDSettings::showMenu(void)
 	return res;
 }
 
-// osd menucolor settings
+//// osd menucolor settings
 #define COLOR_GRADIENT_OPTION_COUNT	5
 const keyval COLOR_GRADIENT_OPTIONS[COLOR_GRADIENT_OPTION_COUNT] =
 {
@@ -237,7 +237,6 @@ const keyval RADIUS_TYPE_OPTIONS[RADIUS_TYPE_OPTION_COUNT] =
 	{ RADIUS_VERYLARGE, _("very large") }
 };
 
-////
 int COSDMenuColorSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "COSDMenuColorSettings::exec: actionKey: %s\n", actionKey.c_str());
@@ -1469,7 +1468,7 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		if (actionKey == "savecurrentstyle")
 		{
 			std::string file_name = "";
-			CStringInputSMS * nameInput = new CStringInputSMS(_("Skin Style name"), file_name.c_str());
+			CKeyboardInput * nameInput = new CKeyboardInput(_("Skin Style name"), file_name.c_str());
 
 			nameInput->exec(NULL, "");
 				
