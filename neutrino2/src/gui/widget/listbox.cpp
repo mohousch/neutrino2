@@ -62,7 +62,7 @@ CMenuItem::CMenuItem()
 	itemName = "";
 	option = "";
 	optionInfo = "";
-	itemHint = " ";
+	itemHint = "";
 	icon1 = "";
 	icon2 = "";
 
@@ -1311,19 +1311,19 @@ int CMenuSeparator::paint(bool /*selected*/, bool /*AfterPulldown*/)
 //// CMenuForwarder
 CMenuForwarder::CMenuForwarder(const char * const Text, const bool Active, const char * const Option, CMenuTarget* Target, const char * const ActionKey, const neutrino_msg_t DirectKey, const char * const IconName, const char* const ItemIcon, const char* const Hint)
 {
-	itemName = Text? Text : "";
+	itemName = Text? Text : " ";
 
-	option = Option? Option : "";
+	option = Option? Option : " ";
 
 	active = Active;
 	jumpTarget = Target;
-	actionKey = ActionKey ? ActionKey : "";
+	actionKey = ActionKey ? ActionKey : " ";
 
 	directKey = DirectKey;
 
 	iconName = IconName ? IconName : "";
 	itemIcon = ItemIcon? ItemIcon : "";
-	itemHint = Hint? Hint : "";
+	itemHint = Hint? Hint : " ";
 	
 	runningPercent = 0;
 

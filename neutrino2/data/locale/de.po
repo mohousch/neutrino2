@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-02-24 17:54+0100\n"
+"POT-Creation-Date: 2025-02-27 17:51+0100\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -103,9 +103,8 @@ msgstr "Alter"
 msgid "Alarm time"
 msgstr "Weckzeit"
 
-#, fuzzy
 msgid "All Channels"
-msgstr "Kanal"
+msgstr "Alle Kanäle"
 
 msgid "All Services"
 msgstr "Alle Sender"
@@ -218,9 +217,8 @@ msgstr "Bandbreite"
 msgid "Bitrate"
 msgstr "Bitrate"
 
-#, fuzzy
 msgid "Blue key"
-msgstr "Aktuelle Taste"
+msgstr "Blauer Taste"
 
 msgid "Bookmarks"
 msgstr "Lesezeichen"
@@ -756,21 +754,17 @@ msgstr "Expertenfunktionen"
 msgid "Expert-functions"
 msgstr "Expertenfunktionen"
 
-#, fuzzy
 msgid "F1 key"
-msgstr "Keine Taste"
+msgstr "F1 Taste"
 
-#, fuzzy
 msgid "F2 key"
-msgstr "Keine Taste"
+msgstr "F2 Taste"
 
-#, fuzzy
 msgid "F3 key"
-msgstr "Keine Taste"
+msgstr "F3 Taste"
 
-#, fuzzy
 msgid "F4 key"
-msgstr "Keine Taste"
+msgstr "F4 Taste"
 
 msgid "FEC"
 msgstr "FEC"
@@ -1244,9 +1238,8 @@ msgstr "Linie Farbverlauf"
 msgid "List End"
 msgstr "Ende der Liste"
 
-#, fuzzy
 msgid "List Order"
-msgstr "Ende der Liste"
+msgstr "Listen Numerierung"
 
 msgid "List Start"
 msgstr "Listenstart"
@@ -1795,9 +1788,8 @@ msgstr "Ganzes Image lesen"
 msgid "Reading Flash"
 msgstr "Flash Speicher lesen"
 
-#, fuzzy
 msgid "Real Channel Number"
-msgstr "Kanallistennummer"
+msgstr "Realle Kanallistennummer"
 
 msgid "Reboot"
 msgstr "Neustart"
