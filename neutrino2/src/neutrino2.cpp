@@ -2188,22 +2188,28 @@ void CNeutrinoApp::initZapper()
 
 	lastMode = mode;
 	
+	//
+	setChannelMode(g_settings.channel_mode, mode);
+	
 	// start epgTimer
 	epgUpdateTimer = g_RCInput->addTimer( 60 * 1000 * 1000, false );
 
 	// zap / epg / autorecord / infoviewer
-	if(channelList->getSize() && CZapit::getInstance()->getCurrentChannelID() != 0)
+	if (channelList)
 	{
-		// channellist adjust to channeliD
-		channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
-				
-		// permenant timeshift
-		if(g_settings.auto_timeshift)
-			startAutoRecord(true);
-		
-		//
-		selectSubtitles();
-		startSubtitles();
+		if (channelList->getSize() && CZapit::getInstance()->getCurrentChannelID() != 0)
+		{
+			// channellist adjust to channeliD
+			channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
+					
+			// permenant timeshift
+			if(g_settings.auto_timeshift)
+				startAutoRecord(true);
+			
+			//
+			selectSubtitles();
+			startSubtitles();
+		}
 	}
 }
 
