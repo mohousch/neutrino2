@@ -26,7 +26,7 @@ msgid "(b) Movement:"
 msgstr "(b) Bewegung:"
 
 msgid "(c) Step Size:"
-msgstr "(c) Schrittgröße:"
+msgstr "(c) Schrittgre:"
 
 msgid "(relative, in seconds)"
 msgstr "(relativ, in Sekunden)"
@@ -39,7 +39,7 @@ msgid ", please be patient..."
 msgstr ", bitte haben Sie etwas Geduld..."
 
 msgid "0 for unlimited repeats"
-msgstr "0 für unbegrenzte Wiederholungen"
+msgstr "0 fr unbegrenzte Wiederholungen"
 
 msgid "5 Volt"
 msgstr "5 Volt"
@@ -48,7 +48,7 @@ msgid "A/V sync"
 msgstr "A/V-Synchronisierung"
 
 msgid "AC3 Delay"
-msgstr "AC3-Verzögerung"
+msgstr "AC3-Verzgerung"
 
 msgid "AV Select"
 msgstr "AV-Auswahl"
@@ -66,13 +66,13 @@ msgid "Actors"
 msgstr "Schauspieler"
 
 msgid "Add"
-msgstr "Hinzufügen"
+msgstr "Hinzufgen"
 
 msgid "Add Subtitle File"
-msgstr "Untertiteldatei hinzufügen"
+msgstr "Untertiteldatei hinzufgen"
 
 msgid "Add to Bouquets"
-msgstr "Zu Bouquets hinzufügen"
+msgstr "Zu Bouquets hinzufgen"
 
 msgid "Adult movie / Drama"
 msgstr "Erotikfilm / Drama"
@@ -90,7 +90,7 @@ msgid "Alarm time"
 msgstr "Weckzeit"
 
 msgid "All Channels"
-msgstr "Alle Kanäle"
+msgstr "Alle Kanle"
 
 msgid "All Services"
 msgstr "Alle Sender"
@@ -120,7 +120,7 @@ msgid "Are you sure to format ? You will lost all data "
 msgstr "Sind Sie sicher, dass Sie formatieren? Sie verlieren alle Daten "
 
 msgid "Are you sure to init ?"
-msgstr "Sind Sie sicher, dass Sie die Initialisierung durchführen?"
+msgstr "Sind Sie sicher, dass Sie die Initialisierung durchfhren?"
 
 msgid "Arts / Culture"
 msgstr "Kunst / Kultur"
@@ -129,7 +129,7 @@ msgid "Arts / Culture magazines"
 msgstr "Kunst- / Kulturmagazine"
 
 msgid "Aspect Ratio"
-msgstr "Seitenverhältnis"
+msgstr "Seitenverhltnis"
 
 msgid "Athletics"
 msgstr "Leichtathletik"
@@ -174,7 +174,7 @@ msgid "Auto-Scan multiple Satellites"
 msgstr "Automatisches Scannen mehrerer Satelliten"
 
 msgid "Available Images/Packages"
-msgstr "Verfügbare Image/Pakete"
+msgstr "Verfgbare Image/Pakete"
 
 msgid "BOTTOM"
 msgstr "UNTEN"
@@ -186,7 +186,7 @@ msgid "BOTTOM RIGHT"
 msgstr "UNTEN RECHTS"
 
 msgid "Back"
-msgstr "Zurück"
+msgstr "Zurck"
 
 msgid "Background"
 msgstr "Hintergrund"
@@ -222,7 +222,7 @@ msgid "Bouquet Editor"
 msgstr "Bouquet-Editor"
 
 msgid "Bouquet back"
-msgstr "Bouquet zurück"
+msgstr "Bouquet zurck"
 
 msgid "Bouquets"
 msgstr "Bouquets"
@@ -253,7 +253,7 @@ msgid "Built date:"
 msgstr "Baudatum: "
 
 msgid "Buttons Bar"
-msgstr "Schaltflächenleiste"
+msgstr "Schaltflchenleiste"
 
 msgid "Buttons Line"
 msgstr "Tastenlinie"
@@ -292,22 +292,22 @@ msgid "CEC standby"
 msgstr "CEC-Standby"
 
 msgid "CEC volume"
-msgstr "CEC-Lautstärke"
+msgstr "CEC-Lautstrke"
 
 msgid "CEC volume TV"
-msgstr "CEC-Lautstärkefernseher"
+msgstr "CEC-Lautstrkefernseher"
 
 msgid "CEC volume audiosystem"
-msgstr "CEC-Lautstärke-Audiosystem"
+msgstr "CEC-Lautstrke-Audiosystem"
 
 msgid "CEC volume off"
-msgstr "CEC-Lautstärke aus"
+msgstr "CEC-Lautstrke aus"
 
 msgid "CI Cam"
 msgstr ""
 
 msgid "CI cam reset"
-msgstr "CI-CAM zurückgesetzt"
+msgstr "CI-CAM zurckgesetzt"
 
 msgid "CIFS"
 msgstr "CIFS"
@@ -334,19 +334,19 @@ msgid "Cancel movie cut/split ?"
 msgstr ""
 
 msgid "Caps"
-msgstr "Größe Schreibung"
+msgstr "Gre Schreibung"
 
 msgid "Caps / No Caps"
-msgstr "Größe / Kleine Schreibung"
+msgstr "Gre / Kleine Schreibung"
 
 msgid "Cartoons / Puppets"
 msgstr "Cartoons / Puppen"
 
 msgid "Change PIN code"
-msgstr "PIN-Code ändern"
+msgstr "PIN-Code ndern"
 
 msgid "Change sort order"
-msgstr "Sortierreihenfolge ändern"
+msgstr "Sortierreihenfolge ndern"
 
 msgid "Channel"
 msgstr "Kanal"
@@ -361,7 +361,7 @@ msgid "Channel down"
 msgstr "Kanal runter"
 
 msgid "Channel not available"
-msgstr "Kanal nicht verfügbar"
+msgstr "Kanal nicht verfgbar"
 
 msgid "Channel number"
 msgstr "Kanallistennummer"
@@ -385,13 +385,13 @@ msgid "Channellist settings"
 msgstr "Kanallisteneinstellungen"
 
 msgid "Check filesystem"
-msgstr "Dateisystem prüfen"
+msgstr "Dateisystem prfen"
 
 msgid "Children / Juvenile program"
 msgstr "Kinder- / Jugendprogramm"
 
 msgid "Clear"
-msgstr "Löschen"
+msgstr "Lschen"
 
 msgid "Code Rate HP"
 msgstr "Coderate HP"
@@ -409,7 +409,7 @@ msgid "Colour Range"
 msgstr "Farbbereich"
 
 msgid "Comedy"
-msgstr "Komödie"
+msgstr "Komdie"
 
 msgid "Commited/Uncommited"
 msgstr "Festgeschrieben/Nicht festgeschrieben"
@@ -436,7 +436,7 @@ msgid "Create bookmark"
 msgstr "Lesezeichen erstellen"
 
 msgid "Create list of HD channels"
-msgstr "eine Liste mit HD-Kanälen erstellen"
+msgstr "eine Liste mit HD-Kanlen erstellen"
 
 msgid "Current Track"
 msgstr "Aktueller Titel"
@@ -481,22 +481,22 @@ msgid "Default gateway"
 msgstr "Standard-Gateway"
 
 msgid "Delayed shutdown"
-msgstr "Verzögertes Herunterfahren"
+msgstr "Verzgertes Herunterfahren"
 
 msgid "Delete"
-msgstr "Löschen"
+msgstr "Lschen"
 
 msgid "Delete WebTV channels"
-msgstr "WebTV-Kanäle löschen"
+msgstr "WebTV-Kanle lschen"
 
 msgid "Delete all"
-msgstr "Alles löschen"
+msgstr "Alles lschen"
 
 msgid "Delete channel from bouquet?"
-msgstr "Kanal aus Bouquet löschen?"
+msgstr "Kanal aus Bouquet lschen?"
 
 msgid "Delete channels"
-msgstr "Senderlisten löschen"
+msgstr "Senderlisten lschen"
 
 msgid "Description: "
 msgstr "Beschreibung: "
@@ -538,16 +538,16 @@ msgid "Director"
 msgstr "Direktor"
 
 msgid "Directory for updates"
-msgstr "Verzeichnis für Updates"
+msgstr "Verzeichnis fr Updates"
 
 msgid "Disable (soft) Limits"
 msgstr "(weiche) Limits deaktivieren"
 
 msgid "Discard changes?"
-msgstr "Änderungen verwerfen?"
+msgstr "nderungen verwerfen?"
 
 msgid "Discarding changes. Please be patient."
-msgstr "Änderungen verwerfen. Bitte haben Sie Geduld."
+msgstr "nderungen verwerfen. Bitte haben Sie Geduld."
 
 msgid "Discussion / Interview/ Debate"
 msgstr "Diskussion / Interview / Debatte"
@@ -577,18 +577,18 @@ msgstr ""
 "Willst du wirklich flashen?\n"
 "\n"
 "Wenn ein Fehler auftritt oder das Image nicht vorhanden ist\n"
-"gültig, die Box bootet nach dem Flashen nicht.\n"
+"gltig, die Box bootet nach dem Flashen nicht.\n"
 "\n"
 "Imagename: %sZiel: %s"
 
 msgid "Do you want to overwrite this file:"
-msgstr "Möchten Sie diese Datei überschreiben:"
+msgstr "Mchten Sie diese Datei berschreiben:"
 
 msgid "Do you want to restore the previous settings?"
-msgstr "Möchten Sie die vorherigen Einstellungen wiederherstellen?"
+msgstr "Mchten Sie die vorherigen Einstellungen wiederherstellen?"
 
 msgid "Do you want to save the changes?"
-msgstr "Wollen Sie die Änderungen speichern?"
+msgstr "Wollen Sie die nderungen speichern?"
 
 msgid "Docs:"
 msgstr "Dokumente:"
@@ -609,7 +609,7 @@ msgid "Drive Mode/auto stop"
 msgstr "Fahrmodus/Auto-Stopp"
 
 msgid "Dutch"
-msgstr "Niederländisch"
+msgstr "Niederlndisch"
 
 msgid "EPG"
 msgstr "EPG"
@@ -633,10 +633,10 @@ msgid "EPG Title"
 msgstr "EPG-Titel"
 
 msgid "EPG is not available"
-msgstr "EPG ist nicht verfügbar"
+msgstr "EPG ist nicht verfgbar"
 
 msgid "EPG not available"
-msgstr "EPG nicht verfügbar"
+msgstr "EPG nicht verfgbar"
 
 msgid "EPG not loaded..."
 msgstr "EPG nicht geladen..."
@@ -687,10 +687,10 @@ msgid "Enter your new youth protection pin code here!"
 msgstr "Geben Sie hier Ihren neuen Jugendschutz-PIN-Code ein!"
 
 msgid "Entertainment programmes for 10 to 16"
-msgstr "Unterhaltungsprogramme für 10 bis 16"
+msgstr "Unterhaltungsprogramme fr 10 bis 16"
 
 msgid "Entertainment programmes for 6 to 14"
-msgstr "Unterhaltungsprogramme für 6 bis 14"
+msgstr "Unterhaltungsprogramme fr 6 bis 14"
 
 msgid "Equestrian"
 msgstr "Reitsport"
@@ -714,7 +714,7 @@ msgid "Eventlist date / time"
 msgstr "Ereignissliste Datum / Zeit"
 
 msgid "Eventlist large"
-msgstr "Ereignissliste groß"
+msgstr "Ereignissliste gro"
 
 msgid "Eventlist overview"
 msgstr "Vorschau alle Programme"
@@ -723,10 +723,10 @@ msgid "Eventlist small"
 msgstr "Ereignissliste klein"
 
 msgid "Events Textcolor"
-msgstr "Textfarbe für Ereignisse"
+msgstr "Textfarbe fr Ereignisse"
 
 msgid "Execute plugin"
-msgstr "Plugin ausführen"
+msgstr "Plugin ausfhren"
 
 msgid "Exit"
 msgstr "Ausgang"
@@ -769,7 +769,7 @@ msgid "Fast"
 msgstr "Schnell"
 
 msgid "Fast/timeshift record time(hours)"
-msgstr "Zeit für schnelle/zeitversetzte Aufnahme (Stunden)"
+msgstr "Zeit fr schnelle/zeitversetzte Aufnahme (Stunden)"
 
 msgid "Favorites"
 msgstr "Favoriten"
@@ -826,7 +826,7 @@ msgid "Font name"
 msgstr "Schriftartenname"
 
 msgid "Foot"
-msgstr "Fußleiste"
+msgstr "Fuleiste"
 
 msgid "Football / Soccer"
 msgstr "Fussball"
@@ -850,7 +850,7 @@ msgstr ""
 "Datum: %s, %s\n"
 "BaseImage: %s\n"
 "ImageTyp: %s\n"
-"Möchten Sie diese Version jetzt installieren?"
+"Mchten Sie diese Version jetzt installieren?"
 
 #, c-format
 msgid ""
@@ -868,7 +868,7 @@ msgstr ""
 "BaseImage: %s\n"
 "Typ: %s\n"
 "\n"
-"Möchten Sie diese Version jetzt herunterladen und installieren?"
+"Mchten Sie diese Version jetzt herunterladen und installieren?"
 
 msgid "Framerate"
 msgstr "Framerate"
@@ -877,7 +877,7 @@ msgid "Free Memory"
 msgstr "Freier Speicher"
 
 msgid "French"
-msgstr "Französisch"
+msgstr "Franzsisch"
 
 msgid "Frequency"
 msgstr "Frequenz"
@@ -910,7 +910,7 @@ msgid "Gardening"
 msgstr "Gartenarbeit"
 
 msgid "Generic delay"
-msgstr "Allgemeine Verzögerung"
+msgstr "Allgemeine Verzgerung"
 
 msgid "Genre"
 msgstr "Genre"
@@ -934,13 +934,13 @@ msgid "Guard Interval"
 msgstr "Schutzintervall"
 
 msgid "Guests"
-msgstr "Gäste"
+msgstr "Gste"
 
 msgid "HD / Crypt Icons"
 msgstr "HD / Crypt Icons"
 
 msgid "HDD Devices:"
-msgstr "Festplattengeräte:"
+msgstr "Festplattengerte:"
 
 msgid "HDD Filexplorer"
 msgstr "HDD-Datei-Explorer"
@@ -985,10 +985,10 @@ msgid "HDD umount"
 msgstr "HDD umount"
 
 msgid "HDD umounted"
-msgstr "Festplatte ausgehängt"
+msgstr "Festplatte ausgehngt"
 
 msgid "HDD unmount failed !"
-msgstr "Das Aushängen der Festplatte ist fehlgeschlagen!"
+msgstr "Das Aushngen der Festplatte ist fehlgeschlagen!"
 
 msgid "HDMI Color Space"
 msgstr "HDMI-Farbraum"
@@ -1006,43 +1006,43 @@ msgid "Help"
 msgstr "Hilfe"
 
 msgid "Here you can choose plugins"
-msgstr "Hier können Sie die Features benutzen"
+msgstr "Hier knnen Sie die Features benutzen"
 
 msgid "Here you can get device Info"
-msgstr "Hier erhalten Sie Infos über ihren Device"
+msgstr "Hier erhalten Sie Infos ber ihren Device"
 
 msgid "Here you can play / show  music / movies / pics"
-msgstr "Hier können Sie Musik / Filme abspielen"
+msgstr "Hier knnen Sie Musik / Filme abspielen"
 
 msgid "Here you can power off or standby your device"
-msgstr "Hier können Sie ihren Box ausschalten"
+msgstr "Hier knnen Sie ihren Box ausschalten"
 
 msgid "Here you can set Timers and show EPG"
 msgstr "Hier erhalten Sie Details zum laufenden Sender"
 
 msgid "Here you can set channel scan and more"
-msgstr "Hier können Sie Sender suchlauf führen"
+msgstr "Hier knnen Sie Sender suchlauf fhren"
 
 msgid "Here you can set timers"
-msgstr "Hier können Sie Timers einstellen"
+msgstr "Hier knnen Sie Timers einstellen"
 
 msgid "Here you can setup OSD"
-msgstr "Hier können Sie Farbschema wechseln"
+msgstr "Hier knnen Sie Farbschema wechseln"
 
 msgid "Here you can setup your box"
-msgstr "Hier können Sie ihre Box einstellen"
+msgstr "Hier knnen Sie ihre Box einstellen"
 
 msgid "Here you can switch between TV / Radio"
-msgstr "Hier können Sie in den TV Modus wechseln"
+msgstr "Hier knnen Sie in den TV Modus wechseln"
 
 msgid "Here you can switch into Radio mode"
-msgstr "Hier können Sie in den Radio Modus wechseln"
+msgstr "Hier knnen Sie in den Radio Modus wechseln"
 
 msgid "Here you can switch into TV mode"
-msgstr "Hier können Sie in den TV Modus wechseln"
+msgstr "Hier knnen Sie in den TV Modus wechseln"
 
 msgid "Here you can switch to scart modus"
-msgstr "Hier können Sie in den Scart Modus wechseln"
+msgstr "Hier knnen Sie in den Scart Modus wechseln"
 
 msgid "Hide"
 msgstr "Verstecken"
@@ -1051,7 +1051,7 @@ msgid "Hierarchy"
 msgstr "Hierarchie"
 
 msgid "High decode priority"
-msgstr "Hohe Dekodierungspriorität"
+msgstr "Hohe Dekodierungsprioritt"
 
 msgid "History"
 msgstr "Senderverlauf"
@@ -1075,7 +1075,7 @@ msgid "How long will EPG-Data be stored after they timed out?"
 msgstr "Wie lange werden EPG-Daten nach Ablauf des Zeitlimits gespeichert?"
 
 msgid "How long will EPG-Data in the future cached?"
-msgstr "Wie lange werden EPG-Daten künftig zwischengespeichert?"
+msgstr "Wie lange werden EPG-Daten knftig zwischengespeichert?"
 
 msgid "How many events should be stored?"
 msgstr "Wie viele Ereignisse sollen gespeichert werden?"
@@ -1093,7 +1093,7 @@ msgid "Image info"
 msgstr "Image Info"
 
 msgid "Increase Motor Position (a)"
-msgstr "Motorposition erhöhen (a)"
+msgstr "Motorposition erhhen (a)"
 
 msgid "Info"
 msgstr "Info"
@@ -1120,13 +1120,13 @@ msgid "Informational / educational / school programmes"
 msgstr "Informations- / Bildungs- / Schulprogramme"
 
 msgid "Insert"
-msgstr "Einfügen"
+msgstr "Einfgen"
 
 msgid "Install menu"
-msgstr "Menü installieren"
+msgstr "Men installieren"
 
 msgid "Installed packages"
-msgstr "Menü installieren"
+msgstr "Men installieren"
 
 msgid "Interface"
 msgstr "Schnittstelle"
@@ -1265,7 +1265,7 @@ msgid "Locked program (from %d years up)"
 msgstr "Gesperrtes Programm (ab %d Jahren)"
 
 msgid "Longitude"
-msgstr "Längengrad"
+msgstr "Lngengrad"
 
 msgid "Lower Right"
 msgstr "Rechts unten"
@@ -1277,10 +1277,10 @@ msgid "Magazines / Reports / Documentary"
 msgstr "Zeitschriften / Reportagen / Dokumentationen"
 
 msgid "Main Menu"
-msgstr "Hauptmenü"
+msgstr "Hauptmen"
 
 msgid "Make Remaining Channels list"
-msgstr "verbleibende Kanäle Liste erstellen"
+msgstr "verbleibende Kanle Liste erstellen"
 
 msgid "Manual frequency scan / Test signal"
 msgstr "Manueller Frequenzscan / Testsignal"
@@ -1310,22 +1310,22 @@ msgid "Medicine / Physiology / Psychology"
 msgstr "Medizin / Physiologie / Psychologie"
 
 msgid "Menu"
-msgstr "Menü"
+msgstr "Men"
 
 msgid "Menu Info"
-msgstr "Menü Info"
+msgstr "Men Info"
 
 msgid "Menu Text"
-msgstr "Menütext"
+msgstr "Mentext"
 
 msgid "Menu Title"
-msgstr "Menütitel"
+msgstr "Mentitel"
 
 msgid "Menu Title large"
-msgstr "Menütitel"
+msgstr "Mentitel"
 
 msgid "Menu mode"
-msgstr "Menümodus"
+msgstr "Menmodus"
 
 msgid "Message"
 msgstr "Nachricht"
@@ -1355,10 +1355,10 @@ msgid "Modechange"
 msgstr "Moduswechsel"
 
 msgid "Modify"
-msgstr "Ändern"
+msgstr "ndern"
 
 msgid "Modify timer"
-msgstr "Timer ändern"
+msgstr "Timer ndern"
 
 msgid "Modulation"
 msgstr "Modulation"
@@ -1427,7 +1427,7 @@ msgid "NTP-Server"
 msgstr "NTP-Server"
 
 msgid "NTP-Server example: ntp1.ptb.de"
-msgstr "Beispiel für einen NTP-Server: ntp1.ptb.de"
+msgstr "Beispiel fr einen NTP-Server: ntp1.ptb.de"
 
 msgid "NTP/DVB-Refresh"
 msgstr "NTP/DVB-Refresh"
@@ -1469,15 +1469,15 @@ msgid ""
 "New jump back\n"
 " 'blue' for endposition"
 msgstr ""
-"Neuer Sprung zurück\n"
-" 'blau' für Endposition"
+"Neuer Sprung zurck\n"
+" 'blau' fr Endposition"
 
 msgid ""
 "New jump forward\n"
 " 'blue' for endposition"
 msgstr ""
 "Neuer Sprung nach vorne\n"
-" 'blau' für Endposition"
+" 'blau' fr Endposition"
 
 msgid "New media"
 msgstr "Neue Medien"
@@ -1495,19 +1495,19 @@ msgid "News magazine"
 msgstr "Nachrichtenmagazin"
 
 msgid "Next"
-msgstr "Nächste"
+msgstr "Nchste"
 
 msgid "Next Page"
-msgstr "Nächste Seite"
+msgstr "Nchste Seite"
 
 msgid "Next bouquet"
-msgstr "Nächster Bouquet"
+msgstr "Nchster Bouquet"
 
 msgid "Next image"
-msgstr "Nächstes Bild"
+msgstr "Nchstes Bild"
 
 msgid "Next program"
-msgstr "Nächstes Programm"
+msgstr "Nchstes Programm"
 
 msgid "No"
 msgstr "Nein"
@@ -1526,24 +1526,24 @@ msgid ""
 "Please execute a scan\n"
 "(MENU-key -> Service)"
 msgstr ""
-"Es wurden keine Kanäle gefunden!\n"
-"Bitte führen Sie einen Scan durch\n"
-"(MENÜ-Taste -> Service)"
+"Es wurden keine Kanle gefunden!\n"
+"Bitte fhren Sie einen Scan durch\n"
+"(MEN-Taste -> Service)"
 
 msgid ""
 "No channels were found!\n"
 "Please execute a scan\n"
 "(MENU-key -> service)"
 msgstr ""
-"Es wurden keine Kanäle gefunden!\n"
-"Bitte führen Sie einen Scan durch\n"
-"(MENÜ-Taste -> Service)"
+"Es wurden keine Kanle gefunden!\n"
+"Bitte fhren Sie einen Scan durch\n"
+"(MEN-Taste -> Service)"
 
 msgid "No detailed informations available"
-msgstr "Keine Informationen verfügbar"
+msgstr "Keine Informationen verfgbar"
 
 msgid "No info for current program available"
-msgstr "Keine Informationen zum aktuellen Programm verfügbar"
+msgstr "Keine Informationen zum aktuellen Programm verfgbar"
 
 msgid "No key"
 msgstr "Keine Taste"
@@ -1552,7 +1552,7 @@ msgid "No neutrino-settings found, Using defaults."
 msgstr "Keine Einstellugen gefunden standard Werte werden benutzt."
 
 msgid "Noise"
-msgstr "Lärm"
+msgstr "Lrm"
 
 msgid "None"
 msgstr ""
@@ -1591,7 +1591,7 @@ msgid ""
 "One or several recording processes are active.\n"
 "If you encounter this message and no recording is active, please restart Neutrino."
 msgstr ""
-"Ein oder mehrere Aufnahmevorgänge sind aktiv.\n"
+"Ein oder mehrere Aufnahmevorgnge sind aktiv.\n"
 "Wenn diese Meldung angezeigt wird und keine Aufzeichnung aktiv ist, starten Sie Neutrino bitte neu."
 
 msgid "Online Software Manager"
@@ -1607,10 +1607,10 @@ msgid "Other"
 msgstr ""
 
 msgid "Overwrite?"
-msgstr "Überschreiben?"
+msgstr "berschreiben?"
 
 msgid "PCM Delay"
-msgstr "PCM-Verzögerung"
+msgstr "PCM-Verzgerung"
 
 msgid "PIN-Code was wrong! Try again."
 msgstr "PIN-Code war falsch! Versuchen Sie es erneut."
@@ -1646,7 +1646,7 @@ msgid "Path"
 msgstr "Pfad"
 
 msgid "Performing arts"
-msgstr "Darstellende Künste"
+msgstr "Darstellende Knste"
 
 msgid "Permanent timeshift"
 msgstr "Permanente Zeitverschiebung"
@@ -1667,13 +1667,13 @@ msgid "Please enter the filename of the playlist"
 msgstr "Bitte geben Sie den Dateinamen der Playlist ein"
 
 msgid "Please press the new key"
-msgstr "Bitte drücken Sie die neue Taste"
+msgstr "Bitte drcken Sie die neue Taste"
 
 msgid "Plugin"
 msgstr "Plugin"
 
 msgid "Pluginlist large"
-msgstr "Pluginliste groß"
+msgstr "Pluginliste gro"
 
 msgid "Pluginlist small"
 msgstr "Pluginliste klein"
@@ -1688,16 +1688,16 @@ msgid "Polish"
 msgstr "Polnisch"
 
 msgid "Popular culture / Traditional arts"
-msgstr "Populäre Kultur / Traditionelle Kunst"
+msgstr "Populre Kultur / Traditionelle Kunst"
 
 msgid "Portugues"
 msgstr "Portugiesen"
 
 msgid "Power Menu"
-msgstr "Power-Menü"
+msgstr "Power-Men"
 
 msgid "Pre-school children's programmes"
-msgstr "Programme für Vorschulkinder"
+msgstr "Programme fr Vorschulkinder"
 
 msgid "Prefer TMDB Infos"
 msgstr "TMDB-Infos bevorzugen"
@@ -1745,7 +1745,7 @@ msgid "Proxyserver"
 msgstr "Proxy Server"
 
 msgid "Quality"
-msgstr "Qualität"
+msgstr "Qualitt"
 
 msgid "Quickzap"
 msgstr "Quickzap"
@@ -1880,7 +1880,7 @@ msgid "Repeat"
 msgstr "Wiederholen"
 
 msgid "Repeat delay"
-msgstr "Wiederholungsverzögerung"
+msgstr "Wiederholungsverzgerung"
 
 msgid "Reread image"
 msgstr "Bild erneut lesen (keine Skalierung)"
@@ -1889,13 +1889,13 @@ msgid "Reread image (no scaling)"
 msgstr ""
 
 msgid "Reset settings to defaults"
-msgstr "Einstellungen auf Standard zurück"
+msgstr "Einstellungen auf Standard zurck"
 
 msgid "Reset to defaults"
-msgstr "Auf Standardeinstellung zurücksetzen"
+msgstr "Auf Standardeinstellung zurcksetzen"
 
 msgid "Resolution"
-msgstr "Auflösung"
+msgstr "Auflsung"
 
 msgid "Rock / Pop"
 msgstr "Rock / Pop"
@@ -1940,7 +1940,7 @@ msgid "Satellites"
 msgstr "Satelliten"
 
 msgid "Saturation"
-msgstr "Sättigung"
+msgstr "Sttigung"
 
 msgid "Saturday"
 msgstr "Samstag"
@@ -1976,7 +1976,7 @@ msgid "Saving RC configuration, please wait..."
 msgstr "RC Konfiguration wird gespeichert, bitte warten..."
 
 msgid "Saving changes. Please be patient."
-msgstr "Änderungen werden gespeichert, bitte warten..."
+msgstr "nderungen werden gespeichert, bitte warten..."
 
 msgid "Saving current style!"
 msgstr "Aktuellen Skin-Theme speichern!"
@@ -2003,7 +2003,7 @@ msgid "Scan transponder"
 msgstr "Transponder scannen"
 
 msgid "Scanning for networks, please wait..."
-msgstr "Suche nach Wlan Netzwerk läuft, bitte warten..."
+msgstr "Suche nach Wlan Netzwerk luft, bitte warten..."
 
 msgid "Scart"
 msgstr "Scart"
@@ -2024,7 +2024,7 @@ msgid "Science fiction / Fantasy / Horror"
 msgstr "Science-Fiction / Fantasy / Horror"
 
 msgid "Scrambled channel"
-msgstr "Verschlüsselten Kanal"
+msgstr "Verschlsselten Kanal"
 
 msgid "Screen"
 msgstr "Bildschirm"
@@ -2051,7 +2051,7 @@ msgid "Search"
 msgstr "Suche"
 
 msgid "Search for keyword in EPG..."
-msgstr "Suche nach Schlüsselwort im EPG..."
+msgstr "Suche nach Schlsselwort im EPG..."
 
 msgid "Search in EPG"
 msgstr "Suche im EPG"
@@ -2069,7 +2069,7 @@ msgid "Select audio track"
 msgstr "Audiospur Auswahl"
 
 msgid "Select channel"
-msgstr "Sender auswählen"
+msgstr "Sender auswhlen"
 
 msgid "Select language"
 msgstr "Sprache Auswahl"
@@ -2090,7 +2090,7 @@ msgid "Serie"
 msgstr "Serie"
 
 msgid "Serious / Classical / Religious / Historical movie / Drama"
-msgstr "Ernster / klassischer / religiöser / historischer Film / Drama"
+msgstr "Ernster / klassischer / religiser / historischer Film / Drama"
 
 msgid "Serious music / Classical music"
 msgstr "Ernste Musik / klassische Musik"
@@ -2153,7 +2153,7 @@ msgid "Setup satellites input / LNB"
 msgstr "Satelliteneingang / LNB einrichten"
 
 msgid "Shortest time (in ms) to recognize 2 keystrokes"
-msgstr "Kürzeste Zeit (in ms), um 2 Tastenanschläge zu erkennen"
+msgstr "Krzeste Zeit (in ms), um 2 Tastenanschlge zu erkennen"
 
 msgid "Should the search really be aborted?"
 msgstr "Sollte die Suche wirklich abgebrochen werden?"
@@ -2186,7 +2186,7 @@ msgid "Shutdown time in min. (000=off)"
 msgstr "Abschaltzeit in Min. (000=aus)"
 
 msgid "Size"
-msgstr "Größe"
+msgstr "Gre"
 
 msgid "Skin Select"
 msgstr "Skin-Auswahl"
@@ -2219,7 +2219,7 @@ msgid "Soap / Melodrama / Folkloric"
 msgstr "Soap / Melodram / Folklorisch"
 
 msgid "Social & politic events / Business"
-msgstr "Gesellschaftliche und politische Veranstaltungen / Geschäft"
+msgstr "Gesellschaftliche und politische Veranstaltungen / Geschft"
 
 msgid "Social / Spiritual sciences"
 msgstr "Sozial- / Spirituelle Wissenschaften"
@@ -2231,7 +2231,7 @@ msgid "Software update URL"
 msgstr "Software-Update-URL"
 
 msgid "South"
-msgstr "Süd"
+msgstr "Sd"
 
 msgid "Space"
 msgstr "Leer"
@@ -2324,7 +2324,7 @@ msgid "Subtitle Select"
 msgstr "Untertitel-Auswahl"
 
 msgid "Subtitle language preferences"
-msgstr "Einstellungen für die Untertitelsprache"
+msgstr "Einstellungen fr die Untertitelsprache"
 
 msgid "Subtitles"
 msgstr "Untertitel"
@@ -2348,13 +2348,13 @@ msgid "Symbol rate"
 msgstr "Symbolrate"
 
 msgid "Syncronisation via"
-msgstr "Synchronisation über"
+msgstr "Synchronisation ber"
 
 msgid "TMDB"
 msgstr "TMDB"
 
 msgid "TMDB Infos are not available"
-msgstr "TMDB-Infos sind nicht verfügbar"
+msgstr "TMDB-Infos sind nicht verfgbar"
 
 msgid "TMDB Preview"
 msgstr "TMDB-Vorschau"
@@ -2396,7 +2396,7 @@ msgid "Talk show"
 msgstr "Talkshow"
 
 msgid "Team sports (excluding football)"
-msgstr "Mannschaftssportarten (außer Fußball)"
+msgstr "Mannschaftssportarten (auer Fuball)"
 
 msgid "Technology / Natural sciences"
 msgstr "Technik / Naturwissenschaften"
@@ -2441,7 +2441,7 @@ msgstr ""
 "wechselt zum angegebenen Zeitpunkt auf diesen Kanal."
 
 msgid "The extension .m3u will be added automatically"
-msgstr "Die Erweiterung .m3u wird automatisch hinzugefügt"
+msgstr "Die Erweiterung .m3u wird automatisch hinzugefgt"
 
 msgid ""
 "The image was successfully flashed.\n"
@@ -2464,10 +2464,10 @@ msgid ""
 "\n"
 "Do you really want to update to this version?"
 msgstr ""
-"Das heißt, das von Ihnen ausgewählte Image ist eine ungetestete Version\n"
-"Möglicherweise startet Ihre Box nach dem Update nicht mehr.\n"
+"Das heit, das von Ihnen ausgewhlte Image ist eine ungetestete Version\n"
+"Mglicherweise startet Ihre Box nach dem Update nicht mehr.\n"
 "\n"
-"Möchten Sie wirklich auf diese Version aktualisieren?"
+"Mchten Sie wirklich auf diese Version aktualisieren?"
 
 msgid ""
 "The neutrino-settings have been updated.\n"
@@ -2488,7 +2488,7 @@ msgid ""
 "because the target file could not be opened."
 msgstr ""
 "Die Aufnahme wurde abgebrochen,\n"
-"weil die Zieldatei nicht geöffnet werden konnte."
+"weil die Zieldatei nicht geffnet werden konnte."
 
 msgid "Thursday"
 msgstr "Donnerstag"
@@ -2506,7 +2506,7 @@ msgid "Timed Step Mode"
 msgstr "Zeitgesteuerter Schrittmodus"
 
 msgid "Timeout waiting CI menu ready"
-msgstr "Zeitüberschreitung beim Warten auf CI-Menü bereit"
+msgstr "Zeitberschreitung beim Warten auf CI-Men bereit"
 
 msgid "Timer conflict. Create the timer anyway?"
 msgstr "Timer-Konflikt. Den Timer trotzdem erstellen?"
@@ -2542,7 +2542,7 @@ msgid "Tourism / Travel"
 msgstr "Tourismus / Reisen"
 
 msgid "Transmission mode"
-msgstr "Übertragungsmodus"
+msgstr "bertragungsmodus"
 
 msgid "Transponders:"
 msgstr "Transponder:"
@@ -2617,13 +2617,13 @@ msgid "Use gotoXX"
 msgstr "gotoXX verwenden"
 
 msgid "User menu"
-msgstr "Benutzermenü"
+msgstr "Benutzermen"
 
 msgid "Username"
 msgstr "Nutzername"
 
 msgid "Variety show"
-msgstr "Varieté-Show"
+msgstr "Variet-Show"
 
 msgid "Vertikal (in %)"
 msgstr "Vertikal (in %)"
@@ -2632,7 +2632,7 @@ msgid "Video Format"
 msgstr "Videoformat"
 
 msgid "Video Resolution"
-msgstr "Video Auflösung"
+msgstr "Video Auflsung"
 
 msgid "Video settings"
 msgstr "Video-Einstellungen"
@@ -2644,13 +2644,13 @@ msgid "Virtual zap"
 msgstr "Virtueller Zap"
 
 msgid "Volume Step Size"
-msgstr "Lautstärkeschrittgröße"
+msgstr "Lautstrkeschrittgre"
 
 msgid "Volume adjustment (in %)"
-msgstr "Lautstärkeanpassung (in %)"
+msgstr "Lautstrkeanpassung (in %)"
 
 msgid "Volumebar"
-msgstr "Lautstärkeleiste"
+msgstr "Lautstrkeleiste"
 
 msgid "Wait a few seconds for abort"
 msgstr "Warten Sie einige Sekunden auf den Abbruch"
@@ -2683,7 +2683,7 @@ msgid "Window-Content inactive"
 msgstr "Fensterinhalt inaktiv"
 
 msgid "Window-Content selected"
-msgstr "Fensterinhalt ausgewählt"
+msgstr "Fensterinhalt ausgewhlt"
 
 msgid "Winter sports"
 msgstr "Wintersport"
@@ -2704,7 +2704,7 @@ msgid "Yes"
 msgstr "Ja"
 
 msgid "You really want to to stop record ?"
-msgstr "Möchten Sie die Aufnahme wirklich stoppen?"
+msgstr "Mchten Sie die Aufnahme wirklich stoppen?"
 
 msgid ""
 "Your Release cycle differs.\n"
@@ -2719,7 +2719,7 @@ msgid ""
 " and <MENU> on your remote control."
 msgstr ""
 "Die Fernbedienung Ihrer Box wird gesperrt.\n"
-" Um es zu entsperren, drücken Sie <ROT> \n"
+" Um es zu entsperren, drcken Sie <ROT> \n"
 " und <MENU> auf Ihrer Fernbedienung."
 
 msgid "Youth protection"
@@ -2753,7 +2753,7 @@ msgid "active"
 msgstr "aktiv"
 
 msgid "add channel to my favorites"
-msgstr "Kanal zu meinen Favoriten hinzufügen"
+msgstr "Kanal zu meinen Favoriten hinzufgen"
 
 msgid "advanced"
 msgstr "fortschrittlich"
@@ -2771,28 +2771,28 @@ msgid "angular"
 msgstr "eckig"
 
 msgid "approx. 1 minute back"
-msgstr "ca. 1 Minute zurück"
+msgstr "ca. 1 Minute zurck"
 
 msgid "approx. 10 minutes back"
-msgstr "ca. 10 Minuten zurück"
+msgstr "ca. 10 Minuten zurck"
 
 msgid "approx. 10 seconds back"
-msgstr "ca. 10 Sekunden zurück"
+msgstr "ca. 10 Sekunden zurck"
 
 msgid "approx. 5 minutes back"
-msgstr "ca. 5 Minuten zurück"
+msgstr "ca. 5 Minuten zurck"
 
 msgid "audio master"
 msgstr "Audio-Master"
 
 msgid "back"
-msgstr "zurück"
+msgstr "zurck"
 
 msgid "be Cached? (Set in hours)"
 msgstr "zwischengespeichert werden? (Eingestellt in Stunden)"
 
 msgid "biweekly"
-msgstr "zweiwöchentlich"
+msgstr "zweiwchentlich"
 
 msgid "blue"
 msgstr "Blau"
@@ -2807,23 +2807,23 @@ msgid ""
 "by manual package update version checks are currently not supported.\n"
 "Are you sure that you wish to install this package?"
 msgstr ""
-"Durch manuelle Paketaktualisierungen werden Versionsprüfungen derzeit nicht unterstützt.\n"
-"Sind Sie sicher, dass Sie dieses Paket installieren möchten?"
+"Durch manuelle Paketaktualisierungen werden Versionsprfungen derzeit nicht untersttzt.\n"
+"Sind Sie sicher, dass Sie dieses Paket installieren mchten?"
 
 msgid "cable"
 msgstr "Kabel"
 
 msgid "can't get mtd-info"
-msgstr "mtd-device kann nicht geöffnet werden"
+msgstr "mtd-device kann nicht geffnet werden"
 
 msgid "can't get update list"
 msgstr "Aktualisierungsliste kann nicht abgerufen werden"
 
 msgid "can't open file"
-msgstr "Datei kann nicht geöffnet werden"
+msgstr "Datei kann nicht geffnet werden"
 
 msgid "can't open mtd-device"
-msgstr "mtd-device kann nicht geöffnet werden"
+msgstr "mtd-device kann nicht geffnet werden"
 
 msgid "center"
 msgstr "Center"
@@ -2832,8 +2832,8 @@ msgid ""
 "changes are activ after restart\n"
 "do you want to restart?"
 msgstr ""
-"Änderungen sind nach neu Start aktiv\n"
-"möchten Sie jetzt neu starten?"
+"nderungen sind nach neu Start aktiv\n"
+"mchten Sie jetzt neu starten?"
 
 msgid "channel"
 msgstr "Kanal"
@@ -2851,13 +2851,13 @@ msgid "create new"
 msgstr "Neu erstellen"
 
 msgid "daily"
-msgstr "täglich"
+msgstr "tglich"
 
 msgid "dark to light"
 msgstr "dunkel bis hell"
 
 msgid "dark to light to dark"
-msgstr "dunkel über hell bis dunkel"
+msgstr "dunkel ber hell bis dunkel"
 
 msgid "default Skin for NeutrinoNG"
 msgstr ""
@@ -2869,7 +2869,7 @@ msgid "default center"
 msgstr "Standardzentrum"
 
 msgid "delete"
-msgstr "löschen"
+msgstr "lschen"
 
 msgid "direct connected"
 msgstr "direkt verbunden"
@@ -2896,10 +2896,10 @@ msgid "enter the proxyserver username"
 msgstr "Geben Sie den Proxyserver-Benutzernamen ein"
 
 msgid "erasing flash"
-msgstr "Flash Speicher löschen"
+msgstr "Flash Speicher lschen"
 
 msgid "erasure of flash failed"
-msgstr "Das Löschen des Flash-Speichers ist fehlgeschlagen"
+msgstr "Das Lschen des Flash-Speichers ist fehlgeschlagen"
 
 msgid "error umounting volume"
 msgstr "Fehler beim Mounten des Volumes"
@@ -2908,10 +2908,10 @@ msgid "fast"
 msgstr "schnell"
 
 msgid "filesystem type not supported"
-msgstr "Dateisystemtyp wird nicht unterstützt"
+msgstr "Dateisystemtyp wird nicht untersttzt"
 
 msgid "fourweekly"
-msgstr "vierwöchentlich"
+msgstr "vierwchentlich"
 
 msgid "from 12 years up"
 msgstr "ab 12 Jahren"
@@ -2935,13 +2935,13 @@ msgid "goto start"
 msgstr "Gehe zum Anfang"
 
 msgid "green"
-msgstr "Grün"
+msgstr "Grn"
 
 msgid "hidden"
 msgstr "versteckt"
 
 msgid "higher center"
-msgstr "höhere Mitte"
+msgstr "hhere Mitte"
 
 msgid "image can't be flashed."
 msgstr ""
@@ -2986,7 +2986,7 @@ msgid "jump prev"
 msgstr "springen vorh"
 
 msgid "large"
-msgstr "groß"
+msgstr "gro"
 
 msgid "left"
 msgstr "links"
@@ -2995,7 +2995,7 @@ msgid "light to dark"
 msgstr "hell bis dunkel"
 
 msgid "light to dark to light"
-msgstr "hell über dunkel bis hell"
+msgstr "hell ber dunkel bis hell"
 
 msgid "local dir"
 msgstr "lokales Verzeichnis"
@@ -3013,8 +3013,8 @@ msgid ""
 "manual flash update version checks are currently not supported.\n"
 "Are you sure that you wish to install this image?"
 msgstr ""
-"Manuelle Überprüfungen der Flash-Update-Version werden derzeit nicht unterstützt.\n"
-"Sind Sie sicher, dass Sie dieses Image installieren möchten?"
+"Manuelle berprfungen der Flash-Update-Version werden derzeit nicht untersttzt.\n"
+"Sind Sie sicher, dass Sie dieses Image installieren mchten?"
 
 msgid "middle"
 msgstr "Mitte"
@@ -3041,7 +3041,7 @@ msgid "mount error"
 msgstr "Mount-Fehler"
 
 msgid "mount error: timeout"
-msgstr "Mountfehler: Zeitüberschreitung"
+msgstr "Mountfehler: Zeitberschreitung"
 
 msgid "mount now"
 msgstr "Jetzt mounten"
@@ -3077,7 +3077,7 @@ msgid "normaly 50000, 0 to disable limit"
 msgstr "normalerweise 50000, 0 zum Deaktivieren des Grenzwerts"
 
 msgid "not available"
-msgstr "Nicht verfügbar"
+msgstr "Nicht verfgbar"
 
 msgid "not connected"
 msgstr "nicht verbunden"
@@ -3107,7 +3107,7 @@ msgid "only tv"
 msgstr "nur Fernseher"
 
 msgid "package has errors"
-msgstr "Paket enthält Fehler"
+msgstr "Paket enthlt Fehler"
 
 msgid "passthrough"
 msgstr "Passthrough"
@@ -3167,19 +3167,19 @@ msgid "simple"
 msgstr "einfach"
 
 msgid "skip approx. 1 minute"
-msgstr "überspringe ca. 1 Minuten"
+msgstr "berspringe ca. 1 Minuten"
 
 msgid "skip approx. 10 minutes"
-msgstr "überspringe ca. 10 Minuten"
+msgstr "berspringe ca. 10 Minuten"
 
 msgid "skip approx. 10 seconds"
-msgstr "überspringe ca. 10 Sekunden"
+msgstr "berspringe ca. 10 Sekunden"
 
 msgid "skip approx. 5 minutes"
-msgstr "überspringe ca. 5 Minuten"
+msgstr "berspringe ca. 5 Minuten"
 
 msgid "skip bookmark"
-msgstr "Lesezeichen überspringen"
+msgstr "Lesezeichen berspringen"
 
 msgid "slow"
 msgstr "Langsam"
@@ -3209,7 +3209,7 @@ msgid "terrestrial"
 msgstr "terrestrisch"
 
 msgid "the filesize is 0 Bytes"
-msgstr "Die Dateigröße beträgt 0 Bytes"
+msgstr "Die Dateigre betrgt 0 Bytes"
 
 msgid ""
 "this need GUI restart\n"
@@ -3251,10 +3251,10 @@ msgid "username"
 msgstr "Nutzername"
 
 msgid "very large"
-msgstr "sehr groß"
+msgstr "sehr gro"
 
 msgid "volume"
-msgstr "Lautstärke"
+msgstr "Lautstrke"
 
 msgid "waiting for EPG..."
 msgstr "warte auf EPG..."
@@ -3263,7 +3263,7 @@ msgid "weekly"
 msgstr "wochentlich"
 
 msgid "will added to stop time of every record timer."
-msgstr "wird zur Stoppzeit jedes Aufnahmetimers hinzugefügt."
+msgstr "wird zur Stoppzeit jedes Aufnahmetimers hinzugefgt."
 
 msgid "will be deducted of every record timer."
 msgstr "wird von jedem Rekordtimer abgezogen."
