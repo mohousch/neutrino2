@@ -1049,12 +1049,12 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex)
 		g_RCInput->killTimer(sec_timer_id);
 		sec_timer_id = 0;
 
-		for (TChannelEntries::iterator It = this->displayedChannelEntries.begin (); It != this->displayedChannelEntries.end (); It++) 
+		for (TChannelEntries::iterator It = this->displayedChannelEntries.begin(); It != this->displayedChannelEntries.end(); It++) 
 		{
 	  		delete *It;
 		}
 
-  		this->displayedChannelEntries.clear ();
+  		this->displayedChannelEntries.clear();
   	}
   	while (this->refreshAll);
 
@@ -1063,27 +1063,27 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex)
 
 EpgPlus::TCChannelEventEntries::const_iterator EpgPlus::getSelectedEvent() const
 {
-	for (TCChannelEventEntries::const_iterator It = this->selectedChannelEntry->channelEventEntries.begin ();
-		It != this->selectedChannelEntry->channelEventEntries.end ();
+	for (TCChannelEventEntries::const_iterator It = this->selectedChannelEntry->channelEventEntries.begin();
+		It != this->selectedChannelEntry->channelEventEntries.end();
 		++It) 
 	{
-		if ((*It)->isSelected (this->selectedTime)) 
+		if ((*It)->isSelected(this->selectedTime)) 
 		{
 			return It;
 		}
 	}
 
-	return this->selectedChannelEntry->channelEventEntries.end ();
+	return this->selectedChannelEntry->channelEventEntries.end();
 }
 
-void EpgPlus::hide ()
+void EpgPlus::hide()
 {
   	this->frameBuffer->paintBackgroundBoxRel(this->usableScreenX, this->usableScreenY, this->usableScreenWidth, this->usableScreenHeight);	
 
 	this->frameBuffer->blit();
 }
 
-void EpgPlus::paintChannelEntry (int position)
+void EpgPlus::paintChannelEntry(int position)
 {
 	ChannelEntry *channelEntry = this->displayedChannelEntries[position];
 	
@@ -1096,12 +1096,12 @@ void EpgPlus::paintChannelEntry (int position)
 	channelEntry->paint(currentChannelIsSelected, this->selectedTime);
 }
 
-std::string EpgPlus::getTimeString (const time_t & time, const std::string & format)
+std::string EpgPlus::getTimeString(const time_t & time, const std::string & format)
 {
 	char tmpstr[256];
 	struct tm *tmStartTime = localtime (&time);
 	
-	strftime (tmpstr, sizeof (tmpstr), format.c_str (), tmStartTime);
+	strftime(tmpstr, sizeof (tmpstr), format.c_str (), tmStartTime);
 
 	return tmpstr;
 }
@@ -1112,31 +1112,31 @@ void EpgPlus::paint()
 	this->frameBuffer->paintBoxRel (this->channelsTableX, this->channelsTableY, this->usableScreenWidth, this->channelsTableHeight, COL_MENUCONTENT_PLUS_0);
 	
 	// paint the gaps
-	this->frameBuffer->paintBoxRel (this->horGap1X, this->horGap1Y, this->horGap1Width, horGap1Height, horGap1Color);
-	this->frameBuffer->paintBoxRel (this->horGap2X, this->horGap2Y, this->horGap2Width, horGap2Height, horGap2Color);
-	this->frameBuffer->paintBoxRel (this->verGap1X, this->verGap1Y, verGap1Width, this->verGap1Height, verGap1Color);
-	this->frameBuffer->paintBoxRel (this->verGap2X, this->verGap2Y, verGap2Width, this->verGap2Height, verGap2Color);
+	this->frameBuffer->paintBoxRel(this->horGap1X, this->horGap1Y, this->horGap1Width, horGap1Height, horGap1Color);
+	this->frameBuffer->paintBoxRel(this->horGap2X, this->horGap2Y, this->horGap2Width, horGap2Height, horGap2Color);
+	this->frameBuffer->paintBoxRel(this->verGap1X, this->verGap1Y, verGap1Width, this->verGap1Height, verGap1Color);
+	this->frameBuffer->paintBoxRel(this->verGap2X, this->verGap2Y, verGap2Width, this->verGap2Height, verGap2Color);
 	
 	// paint the time line
-	timeLine->paint (this->startTime, this->duration);
+	timeLine->paint(this->startTime, this->duration);
 	
 	// paint the channel entries
-	for (int i = 0; i < (int) this->displayedChannelEntries.size (); ++i) 
+	for (int i = 0; i < (int) this->displayedChannelEntries.size(); ++i) 
 	{
-		this->paintChannelEntry (i);
+		this->paintChannelEntry(i);
 	}
 	
 	// paint the time line grid
-	this->timeLine->paintGrid ();
+	this->timeLine->paintGrid();
 	
 	// paint slider
-	this->frameBuffer->paintBoxRel (this->sliderX, this->sliderY, this->sliderWidth, this->sliderHeight, COL_MENUCONTENT_PLUS_0);
+	this->frameBuffer->paintBoxRel(this->sliderX, this->sliderY, this->sliderWidth, this->sliderHeight, COL_MENUCONTENT_PLUS_0);
 	
 	int tmp = ((this->channelList->getSize () - 1) / this->maxNumberOfDisplayableEntries) + 1;
 	float sliderKnobHeight = (sliderHeight - 4) / tmp;
 	int sliderKnobPosition = this->selectedChannelEntry == NULL ? 0 : (this->selectedChannelEntry->index / this->maxNumberOfDisplayableEntries);
 	
-	this->frameBuffer->paintBoxRel (this->sliderX + 2, this->sliderY + int (sliderKnobPosition * sliderKnobHeight), this->sliderWidth - 4, int (sliderKnobHeight) , COL_MENUCONTENT_PLUS_3);	
+	this->frameBuffer->paintBoxRel(this->sliderX + 2, this->sliderY + int (sliderKnobPosition * sliderKnobHeight), this->sliderWidth - 4, int (sliderKnobHeight) , COL_MENUCONTENT_PLUS_3);	
 }
 
 EpgPlus::MenuTargetAddReminder::MenuTargetAddReminder(EpgPlus * _epgPlus) 
@@ -1148,20 +1148,18 @@ int EpgPlus::MenuTargetAddReminder::exec(CMenuTarget */*parent*/, const std::str
 {
 	dprintf(DEBUG_NORMAL, "EpgPlus::MenuTargetAddReminder::exec:\n");
 
-	TCChannelEventEntries::const_iterator It = this->epgPlus->getSelectedEvent ();
+	TCChannelEventEntries::const_iterator It = this->epgPlus->getSelectedEvent();
 	
-	if ((It != this->epgPlus->selectedChannelEntry->channelEventEntries.end ()) 
-		&& (!(*It)->channelEvent.description.empty ())
+	if ((It != this->epgPlus->selectedChannelEntry->channelEventEntries.end()) 
+		&& (!(*It)->channelEvent.description.empty())
 		) 
 	{
-		if (CTimerd::getInstance()->isTimerdAvailable ()) 
+		if (CTimerd::getInstance()->isTimerdAvailable()) 
 		{
 			CTimerd::getInstance()->addZaptoTimerEvent (this->epgPlus->selectedChannelEntry->channel->channel_id, (*It)->channelEvent.startTime, (*It)->channelEvent.startTime - ANNOUNCETIME, 0, (*It)->channelEvent.eventID, (*It)->channelEvent.startTime, 0);
 	
 			MessageBox(_("Schedule Event"), _("The event is scheduled.\nThe box will power on and \nswitch to this channel at the given time."), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);	// UTF-8
 		} 
-		else
-			printf ("timerd not available\n");
 	}
 
 	return CMenuTarget::RETURN_EXIT_ALL;
@@ -1176,13 +1174,13 @@ int EpgPlus::MenuTargetAddRecordTimer::exec(CMenuTarget */*parent*/, const std::
 {
 	dprintf(DEBUG_NORMAL, "EpgPlus::MenuTargetAddRecordTimer::exec:\n");
 
-	TCChannelEventEntries::const_iterator It = this->epgPlus->getSelectedEvent ();
+	TCChannelEventEntries::const_iterator It = this->epgPlus->getSelectedEvent();
 	
-	if ((It != this->epgPlus->selectedChannelEntry->channelEventEntries.end ())
+	if ((It != this->epgPlus->selectedChannelEntry->channelEventEntries.end())
 		&& (!(*It)->channelEvent.description.empty ())
 		) 
 	{
-		if (CTimerd::getInstance()->isTimerdAvailable ()) 
+		if (CTimerd::getInstance()->isTimerdAvailable()) 
 		{
 			CTimerd::getInstance()->addRecordTimerEvent (this->epgPlus->selectedChannelEntry->channel->channel_id, (*It)->channelEvent.startTime, (*It)->channelEvent.startTime + (*It)->channelEvent.duration, (*It)->channelEvent.eventID, (*It)->channelEvent.startTime, (*It)->channelEvent.startTime - (ANNOUNCETIME + 120) , TIMERD_APIDS_CONF, true);
 
