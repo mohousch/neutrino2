@@ -234,7 +234,7 @@ int CAudioSelectMenuHandler::doMenu()
 	
 	// volume percent
 	sep_added = false;
-	int percent[g_RemoteControl->current_PIDs.APIDs.size()] = {0};
+	int percent[g_RemoteControl->current_PIDs.APIDs.size()];
 	
 	for(count = 0; count < g_RemoteControl->current_PIDs.APIDs.size(); count++) 
 	{
