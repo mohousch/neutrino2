@@ -1850,7 +1850,7 @@ void CCProgressBar::refresh(unsigned char pcr)
 		int step = 0;
 		uint32_t diff = 0;
 
-		if(g_settings.progressbar_color)
+		if(g_settings.progressbar_color == CCProgressBar::PROGRESSBAR_COLORED)
 		{
 			//red
 			for (i = 0; (i < red) && (i < siglen); i++) 
@@ -1900,9 +1900,25 @@ void CCProgressBar::refresh(unsigned char pcr)
 				frameBuffer->paintBoxRel(itemBox.iX + i, itemBox.iY, 1, itemBox.iHeight, ::rgbaToColor(rgb), NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
 			}
 		}
-		else
+		else if (g_settings.progressbar_color == CCProgressBar::PROGRESSBAR_MONOCHROM)
 		{
 			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, siglen, itemBox.iHeight, COL_MENUCONTENT_PLUS_6, NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
+		}
+		else if (g_settings.progressbar_color == CCProgressBar::PROGRESSBAR_RED)
+		{
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, siglen, itemBox.iHeight, COL_RED_PLUS_0, NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
+		}
+		else if (g_settings.progressbar_color == CCProgressBar::PROGRESSBAR_GREEN)
+		{
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, siglen, itemBox.iHeight, COL_GREEN_PLUS_0, NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
+		}
+		else if (g_settings.progressbar_color == CCProgressBar::PROGRESSBAR_YELLOW)
+		{
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, siglen, itemBox.iHeight, COL_YELLOW_PLUS_0, NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
+		}
+		else if (g_settings.progressbar_color == CCProgressBar::PROGRESSBAR_BLUE)
+		{
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, siglen, itemBox.iHeight, COL_BLUE_PLUS_0, NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
 		}
 		
 		percent = pcr;

@@ -1035,11 +1035,15 @@ int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 }
 
 // progressbar color
-#define PROGRESSBAR_COLOR_OPTION_COUNT 2
+#define PROGRESSBAR_COLOR_OPTION_COUNT 6
 const keyval PROGRESSBAR_COLOR_OPTIONS[PROGRESSBAR_COLOR_OPTION_COUNT] =
 {
-	{ 0, _("monochrom") },
-	{ 1, _("colored") }
+	{ CCProgressBar::PROGRESSBAR_MONOCHROM, _("monochrom") },
+	{ CCProgressBar::PROGRESSBAR_COLORED, _("colored") },
+	{ CCProgressBar::PROGRESSBAR_RED, _("red") },
+	{ CCProgressBar::PROGRESSBAR_GREEN, _("green") },
+	{ CCProgressBar::PROGRESSBAR_YELLOW, _("yellow") },
+	{ CCProgressBar::PROGRESSBAR_BLUE, _("blue") }
 };
 
 // volumebar position
@@ -1124,9 +1128,6 @@ void COSDDiverses::showMenu()
 
 	// progressbar color
 	osdDiverseSettings->addItem(new CMenuOptionChooser(_("Progressbar Color"), &g_settings.progressbar_color, PROGRESSBAR_COLOR_OPTIONS, PROGRESSBAR_COLOR_OPTION_COUNT, true));
-	
-	// progressbar_gradient_type
-	//osdDiverseSettings->addItem(new CMenuOptionChooser("ProgressBar Gradient type", &g_settings.progressbar_gradient_type, GRADIENT_TYPE_OPTION_COUNT, GRADIENT_TYPE_OPTIONS, true));
 	
 	// subchan pos
 	osdDiverseSettings->addItem(new CMenuOptionChooser(_("Subchannel display"), &g_settings.infobar_subchan_disp_pos, INFOBAR_SUBCHAN_DISP_POS_OPTIONS, INFOBAR_SUBCHAN_DISP_POS_OPTIONS_COUNT, true));

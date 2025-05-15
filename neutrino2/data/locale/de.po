@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.8\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-05-14 23:57+0200\n"
+"POT-Creation-Date: 2025-05-16 00:13+0200\n"
 "PO-Revision-Date: 2023-09-22 10:51+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -2949,7 +2949,7 @@ msgid "goto start"
 msgstr "Gehe zum Anfang"
 
 msgid "green"
-msgstr "Grn"
+msgstr "Gruen"
 
 msgid "hidden"
 msgstr "versteckt"
@@ -3281,6 +3281,9 @@ msgstr "wird zur Stoppzeit jedes Aufnahmetimers hinzugefgt."
 
 msgid "will be deducted of every record timer."
 msgstr "wird von jedem Rekordtimer abgezogen."
+
+msgid "yellow"
+msgstr "Geld"
 
 msgid "yes"
 msgstr "ja"

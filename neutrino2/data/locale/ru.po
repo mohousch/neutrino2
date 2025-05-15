@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-05-14 23:57+0200\n"
+"POT-Creation-Date: 2025-05-16 00:13+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -3259,6 +3259,9 @@ msgstr "будет добавлено для остановки времени �
 
 msgid "will be deducted of every record timer."
 msgstr "будет вычтено из каждого таймера записи."
+
+msgid "yellow"
+msgstr ""
 
 msgid "yes"
 msgstr "да"

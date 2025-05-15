@@ -498,78 +498,78 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	// themes
 	g_settings.menu_Head_alpha = configfile.getInt32( "menu_Head_alpha", 255);
 	g_settings.menu_Head_red = configfile.getInt32( "menu_Head_red", 0);
-	g_settings.menu_Head_green = configfile.getInt32( "menu_Head_green", 25);
-	g_settings.menu_Head_blue = configfile.getInt32( "menu_Head_blue", 63);
+	g_settings.menu_Head_green = configfile.getInt32( "menu_Head_green", 11);
+	g_settings.menu_Head_blue = configfile.getInt32( "menu_Head_blue", 37);
 
 	g_settings.menu_Head_Text_alpha = configfile.getInt32( "menu_Head_Text_alpha", 0);
-	g_settings.menu_Head_Text_red = configfile.getInt32( "menu_Head_Text_red", 242);
-	g_settings.menu_Head_Text_green = configfile.getInt32( "menu_Head_Text_green", 178);
-	g_settings.menu_Head_Text_blue = configfile.getInt32( "menu_Head_Text_blue", 0);
+	g_settings.menu_Head_Text_red = configfile.getInt32( "menu_Head_Text_red", 255);
+	g_settings.menu_Head_Text_green = configfile.getInt32( "menu_Head_Text_green", 255);
+	g_settings.menu_Head_Text_blue = configfile.getInt32( "menu_Head_Text_blue", 255);
 	
 	g_settings.menu_Content_alpha = configfile.getInt32( "menu_Content_alpha", 255);
 	g_settings.menu_Content_red = configfile.getInt32( "menu_Content_red", 0);
-	g_settings.menu_Content_green = configfile.getInt32( "menu_Content_green", 63);
-	g_settings.menu_Content_blue = configfile.getInt32( "menu_Content_blue", 127);
+	g_settings.menu_Content_green = configfile.getInt32( "menu_Content_green", 11);
+	g_settings.menu_Content_blue = configfile.getInt32( "menu_Content_blue", 37);
 	
-	g_settings.menu_Content_Text_alpha = configfile.getInt32( "menu_Content_Text_alpha", 0);
+	g_settings.menu_Content_Text_alpha = configfile.getInt32( "menu_Content_Text_alpha", 255);
 	g_settings.menu_Content_Text_red = configfile.getInt32( "menu_Content_Text_red", 255);
 	g_settings.menu_Content_Text_green = configfile.getInt32( "menu_Content_Text_green", 255);
 	g_settings.menu_Content_Text_blue = configfile.getInt32( "menu_Content_Text_blue", 255);
 	
-	g_settings.menu_Content_Selected_alpha = configfile.getInt32( "menu_Content_Selected_alpha", 204);
-	g_settings.menu_Content_Selected_red = configfile.getInt32( "menu_Content_Selected_red", 63);
-	g_settings.menu_Content_Selected_green = configfile.getInt32( "menu_Content_Selected_green", 140);
-	g_settings.menu_Content_Selected_blue = configfile.getInt32( "menu_Content_Selected_blue", 255);
+	g_settings.menu_Content_Selected_alpha = configfile.getInt32( "menu_Content_Selected_alpha", 255);
+	g_settings.menu_Content_Selected_red = configfile.getInt32( "menu_Content_Selected_red", 20);
+	g_settings.menu_Content_Selected_green = configfile.getInt32( "menu_Content_Selected_green", 25);
+	g_settings.menu_Content_Selected_blue = configfile.getInt32( "menu_Content_Selected_blue", 65);
 	
 	g_settings.menu_Content_Selected_Text_alpha = configfile.getInt32( "menu_Content_Selected_Text_alpha", 0);
-	g_settings.menu_Content_Selected_Text_red = configfile.getInt32( "menu_Content_Selected_Text_red", 0);
-	g_settings.menu_Content_Selected_Text_green = configfile.getInt32( "menu_Content_Selected_Text_green", 0);
-	g_settings.menu_Content_Selected_Text_blue = configfile.getInt32( "menu_Content_Selected_Text_blue", 0);
+	g_settings.menu_Content_Selected_Text_red = configfile.getInt32( "menu_Content_Selected_Text_red", 125);
+	g_settings.menu_Content_Selected_Text_green = configfile.getInt32( "menu_Content_Selected_Text_green", 125);
+	g_settings.menu_Content_Selected_Text_blue = configfile.getInt32( "menu_Content_Selected_Text_blue", 125);
 	
-	g_settings.menu_Content_inactive_alpha = configfile.getInt32( "menu_Content_inactive_alpha", 204);
-	g_settings.menu_Content_inactive_red = configfile.getInt32( "menu_Content_inactive_red", 0);
-	g_settings.menu_Content_inactive_green = configfile.getInt32( "menu_Content_inactive_green", 15);
-	g_settings.menu_Content_inactive_blue = configfile.getInt32( "menu_Content_inactive_blue", 35);
+	g_settings.menu_Content_inactive_alpha = configfile.getInt32( "menu_Content_inactive_alpha", 205);
+	g_settings.menu_Content_inactive_red = configfile.getInt32( "menu_Content_inactive_red", 63);
+	g_settings.menu_Content_inactive_green = configfile.getInt32( "menu_Content_inactive_green", 63);
+	g_settings.menu_Content_inactive_blue = configfile.getInt32( "menu_Content_inactive_blue", 63);
 	
 	g_settings.menu_Content_inactive_Text_alpha = configfile.getInt32( "menu_Content_inactive_Text_alpha", 0);
-	g_settings.menu_Content_inactive_Text_red = configfile.getInt32( "menu_Content_inactive_Text_red", 127);
-	g_settings.menu_Content_inactive_Text_green = configfile.getInt32( "menu_Content_inactive_Text_green", 178);
-	g_settings.menu_Content_inactive_Text_blue = configfile.getInt32( "menu_Content_inactive_Text_blue", 204);
+	g_settings.menu_Content_inactive_Text_red = configfile.getInt32( "menu_Content_inactive_Text_red", 125);
+	g_settings.menu_Content_inactive_Text_green = configfile.getInt32( "menu_Content_inactive_Text_green", 125);
+	g_settings.menu_Content_inactive_Text_blue = configfile.getInt32( "menu_Content_inactive_Text_blue", 125);
 
 	g_settings.infobar_alpha = configfile.getInt32( "infobar_alpha", 255);
 	g_settings.infobar_red = configfile.getInt32( "infobar_red", 0);
-	g_settings.infobar_green = configfile.getInt32( "infobar_green", 63);
-	g_settings.infobar_blue = configfile.getInt32( "infobar_blue", 127);
+	g_settings.infobar_green = configfile.getInt32( "infobar_green", 11);
+	g_settings.infobar_blue = configfile.getInt32( "infobar_blue", 37);
 	
 	g_settings.infobar_Text_alpha = configfile.getInt32( "infobar_Text_alpha", 0);
 	g_settings.infobar_Text_red = configfile.getInt32( "infobar_Text_red", 255);
 	g_settings.infobar_Text_green = configfile.getInt32( "infobar_Text_green", 255);
 	g_settings.infobar_Text_blue = configfile.getInt32( "infobar_Text_blue", 255);
 		
-	g_settings.infobar_colored_events_alpha = configfile.getInt32( "infobar_colored_events_alpha", 255);
-	g_settings.infobar_colored_events_red = configfile.getInt32( "infobar_colored_events_red", 242);
-	g_settings.infobar_colored_events_green = configfile.getInt32( "infobar_colored_events_green", 178);
+	g_settings.infobar_colored_events_alpha = configfile.getInt32( "infobar_colored_events_alpha", 0);
+	g_settings.infobar_colored_events_red = configfile.getInt32( "infobar_colored_events_red", 255);
+	g_settings.infobar_colored_events_green = configfile.getInt32( "infobar_colored_events_green", 255);
 	g_settings.infobar_colored_events_blue = configfile.getInt32( "infobar_colored_events_blue", 0);
 	
 	g_settings.menu_Foot_alpha = configfile.getInt32( "menu_Foot_alpha", 255);
 	g_settings.menu_Foot_red = configfile.getInt32( "menu_Foot_red", 0);
-	g_settings.menu_Foot_green = configfile.getInt32( "menu_Foot_green", 25);
-	g_settings.menu_Foot_blue = configfile.getInt32( "menu_Foot_blue", 63);
+	g_settings.menu_Foot_green = configfile.getInt32( "menu_Foot_green", 11);
+	g_settings.menu_Foot_blue = configfile.getInt32( "menu_Foot_blue", 37);
 		
 	g_settings.menu_Foot_Text_alpha = configfile.getInt32( "menu_Foot_Text_alpha", 0);
-	g_settings.menu_Foot_Text_red = configfile.getInt32( "menu_Foot_Text_red", 242);
-	g_settings.menu_Foot_Text_green = configfile.getInt32( "menu_Foot_Text_green", 178);
-	g_settings.menu_Foot_Text_blue = configfile.getInt32( "menu_Foot_Text_blue", 0);
+	g_settings.menu_Foot_Text_red = configfile.getInt32( "menu_Foot_Text_red", 255);
+	g_settings.menu_Foot_Text_green = configfile.getInt32( "menu_Foot_Text_green", 255);
+	g_settings.menu_Foot_Text_blue = configfile.getInt32( "menu_Foot_Text_blue", 255);
 
-	g_settings.menu_Hint_alpha = configfile.getInt32( "menu_Hint_alpha", 255);
-	g_settings.menu_Hint_red = configfile.getInt32( "menu_Hint_red", 0);
-	g_settings.menu_Hint_green = configfile.getInt32( "menu_Hint_green", 25);
+	g_settings.menu_Hint_alpha = configfile.getInt32( "menu_Hint_alpha", 205);
+	g_settings.menu_Hint_red = configfile.getInt32( "menu_Hint_red", 63);
+	g_settings.menu_Hint_green = configfile.getInt32( "menu_Hint_green", 63);
 	g_settings.menu_Hint_blue = configfile.getInt32( "menu_Hint_blue", 63);
 		
 	g_settings.menu_Hint_Text_alpha = configfile.getInt32( "menu_Hint_Text_alpha", 0);
-	g_settings.menu_Hint_Text_red = configfile.getInt32( "menu_Hint_Text_red", 255);
-	g_settings.menu_Hint_Text_green = configfile.getInt32( "menu_Hint_Text_green", 255);
-	g_settings.menu_Hint_Text_blue = configfile.getInt32( "menu_Hint_Text_blue", 255);
+	g_settings.menu_Hint_Text_red = configfile.getInt32( "menu_Hint_Text_red", 215);
+	g_settings.menu_Hint_Text_green = configfile.getInt32( "menu_Hint_Text_green", 215);
+	g_settings.menu_Hint_Text_blue = configfile.getInt32( "menu_Hint_Text_blue", 215);
 
 	//
 	strcpy( g_settings.font_file, configfile.getString( "font_file", DATADIR "/fonts/arial.ttf" ).c_str() );
@@ -783,43 +783,43 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	strcpy( g_settings.audio_step, configfile.getString( "audio_step" , "5" ).c_str() );
 
 	// progressbar color
-	g_settings.progressbar_color = configfile.getInt32("progressbar_color", 1);
+	g_settings.progressbar_color = configfile.getInt32("progressbar_color", CCProgressBar::PROGRESSBAR_COLORED);
 
 	// head
 	g_settings.Head_corner = configfile.getInt32("Head_corner", CORNER_TOP);
-	g_settings.Head_radius = configfile.getInt32("Head_radius", RADIUS_MID);
-	g_settings.Head_gradient = configfile.getInt32("Head_gradient", LIGHT2DARK);
+	g_settings.Head_radius = configfile.getInt32("Head_radius", NO_RADIUS);
+	g_settings.Head_gradient = configfile.getInt32("Head_gradient", NOGRADIENT);
 	g_settings.Head_gradient_type = configfile.getInt32("Head_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 	g_settings.Head_line = configfile.getBool("Head_line", true);
-	g_settings.Head_line_gradient = configfile.getBool("Head_line_gradient", true);
+	g_settings.Head_line_gradient = configfile.getBool("Head_line_gradient", false);
 	
 	// foot
 	g_settings.Foot_corner = configfile.getInt32("Foot_corner", CORNER_BOTTOM);
-	g_settings.Foot_radius = configfile.getInt32("Foot_radius", RADIUS_MID);
-	g_settings.Foot_gradient = configfile.getInt32("Foot_gradient", DARK2LIGHT);
+	g_settings.Foot_radius = configfile.getInt32("Foot_radius", NO_RADIUS);
+	g_settings.Foot_gradient = configfile.getInt32("Foot_gradient", NOGRADIENT);
 	g_settings.Foot_gradient_type = configfile.getInt32("Foot_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 	g_settings.Foot_line = configfile.getBool("Foot_line", true);
-	g_settings.Foot_line_gradient = configfile.getBool("Foot_line_gradient", true);
+	g_settings.Foot_line_gradient = configfile.getBool("Foot_line_gradient", false);
 	
 	// infobar
 	g_settings.infobar_corner = configfile.getInt32("infobar_corner", CORNER_ALL);
-	g_settings.infobar_radius = configfile.getInt32("infobar_radius", RADIUS_VERYLARGE);
-	g_settings.infobar_gradient = configfile.getInt32("infobar_gradient", DARK2LIGHT);
+	g_settings.infobar_radius = configfile.getInt32("infobar_radius", NO_RADIUS);
+	g_settings.infobar_gradient = configfile.getInt32("infobar_gradient", NOGRADIENT);
 	g_settings.infobar_gradient_type = configfile.getInt32("infobar_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 	g_settings.infobar_buttonbar = configfile.getBool("infobar_buttonbar", false);
 	g_settings.infobar_buttonline = configfile.getBool("infobar_buttonline", true);
-	g_settings.infobar_buttonline_gradient = configfile.getBool("infobar_buttonline_gradient", true);
+	g_settings.infobar_buttonline_gradient = configfile.getBool("infobar_buttonline_gradient", false);
 	g_settings.infobar_border = configfile.getBool("infobar_border", false);
 	
 	// hint
-	g_settings.Hint_gradient = configfile.getInt32("Hint_gradient", DARK2LIGHT);
+	g_settings.Hint_gradient = configfile.getInt32("Hint_gradient", NOGRADIENT);
 	g_settings.Hint_gradient_type = configfile.getInt32("Hint_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 	g_settings.Hint_border = configfile.getBool("Hint_border", true);
 	g_settings.Hint_radius = configfile.getInt32("Hint_radius", NO_RADIUS);
 	g_settings.Hint_corner = configfile.getInt32("Hint_corner", CORNER_ALL);
 	
 	// sep
-	g_settings.sep_gradient = configfile.getBool("separator_gradient", true);
+	g_settings.sep_gradient = configfile.getBool("separator_gradient", false);
 	// END MISC OPTS
 
 	// HDD
@@ -1287,7 +1287,6 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setString( "audio_step"	, g_settings.audio_step);
 
 	configfile.setInt32("progressbar_color", g_settings.progressbar_color);
-	//configfile.setInt32("progressbar_gradient_type", g_settings.progressbar_gradient_type);
 
 	// head
 	configfile.setInt32("Head_corner", g_settings.Head_corner);

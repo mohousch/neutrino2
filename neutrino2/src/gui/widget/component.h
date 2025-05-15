@@ -686,7 +686,17 @@ class CCProgressBar : public CComponent
 		double div;
 
 	public:
+		enum {
+			PROGRESSBAR_MONOCHROM,
+			PROGRESSBAR_COLORED,
+			PROGRESSBAR_RED,
+			PROGRESSBAR_GREEN,
+			PROGRESSBAR_YELLOW,
+			PROGRESSBAR_BLUE
+		};
+		
 		CFrameBuffer* frameBuffer;
+		int pbColor;
 		
 		//
 		CCProgressBar(int x, int y, int w, int h, int r = 40, int g = 100, int b = 70, bool inv = true);

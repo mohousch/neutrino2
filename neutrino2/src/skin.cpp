@@ -2935,74 +2935,74 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 	if (skin_configfile.loadConfig(filename))
 	{
 		g_settings.menu_Head_alpha = skin_configfile.getInt32( "menu_Head_alpha", 215);
-		g_settings.menu_Head_red = skin_configfile.getInt32( "menu_Head_red", 38);
-		g_settings.menu_Head_green = skin_configfile.getInt32( "menu_Head_green", 38);
-		g_settings.menu_Head_blue = skin_configfile.getInt32( "menu_Head_blue", 38);
+		g_settings.menu_Head_red = skin_configfile.getInt32( "menu_Head_red", 0);
+		g_settings.menu_Head_green = skin_configfile.getInt32( "menu_Head_green", 11);
+		g_settings.menu_Head_blue = skin_configfile.getInt32( "menu_Head_blue", 37);
 
 		g_settings.menu_Head_Text_alpha = skin_configfile.getInt32( "menu_Head_Text_alpha", 0);
 		g_settings.menu_Head_Text_red = skin_configfile.getInt32( "menu_Head_Text_red", 255);
 		g_settings.menu_Head_Text_green = skin_configfile.getInt32( "menu_Head_Text_green", 255);
 		g_settings.menu_Head_Text_blue = skin_configfile.getInt32( "menu_Head_Text_blue", 255);
 	
-		g_settings.menu_Content_alpha = skin_configfile.getInt32( "menu_Content_alpha", 210);
-		g_settings.menu_Content_red = skin_configfile.getInt32( "menu_Content_red", 63);
-		g_settings.menu_Content_green = skin_configfile.getInt32( "menu_Content_green", 63);
-		g_settings.menu_Content_blue = skin_configfile.getInt32( "menu_Content_blue", 63);
+		g_settings.menu_Content_alpha = skin_configfile.getInt32( "menu_Content_alpha", 255);
+		g_settings.menu_Content_red = skin_configfile.getInt32( "menu_Content_red", 0);
+		g_settings.menu_Content_green = skin_configfile.getInt32( "menu_Content_green", 11);
+		g_settings.menu_Content_blue = skin_configfile.getInt32( "menu_Content_blue", 37);
 		
-		g_settings.menu_Content_Text_alpha = skin_configfile.getInt32( "menu_Content_Text_alpha", 0);
-		g_settings.menu_Content_Text_red = skin_configfile.getInt32( "menu_Content_Text_red", 215);
-		g_settings.menu_Content_Text_green = skin_configfile.getInt32( "menu_Content_Text_green", 215);
-		g_settings.menu_Content_Text_blue = skin_configfile.getInt32( "menu_Content_Text_blue", 215);
+		g_settings.menu_Content_Text_alpha = skin_configfile.getInt32( "menu_Content_Text_alpha", 255);
+		g_settings.menu_Content_Text_red = skin_configfile.getInt32( "menu_Content_Text_red", 255);
+		g_settings.menu_Content_Text_green = skin_configfile.getInt32( "menu_Content_Text_green", 255);
+		g_settings.menu_Content_Text_blue = skin_configfile.getInt32( "menu_Content_Text_blue", 255);
 	
-		g_settings.menu_Content_Selected_alpha = skin_configfile.getInt32( "menu_Content_Selected_alpha", 210);
-		g_settings.menu_Content_Selected_red = skin_configfile.getInt32( "menu_Content_Selected_red", 190);
-		g_settings.menu_Content_Selected_green = skin_configfile.getInt32( "menu_Content_Selected_green", 190);
-		g_settings.menu_Content_Selected_blue = skin_configfile.getInt32( "menu_Content_Selected_blue", 190);
+		g_settings.menu_Content_Selected_alpha = skin_configfile.getInt32( "menu_Content_Selected_alpha", 255);
+		g_settings.menu_Content_Selected_red = skin_configfile.getInt32( "menu_Content_Selected_red", 20);
+		g_settings.menu_Content_Selected_green = skin_configfile.getInt32( "menu_Content_Selected_green", 25);
+		g_settings.menu_Content_Selected_blue = skin_configfile.getInt32( "menu_Content_Selected_blue", 65);
 		
 		g_settings.menu_Content_Selected_Text_alpha = skin_configfile.getInt32( "menu_Content_Selected_Text_alpha", 0);
-		g_settings.menu_Content_Selected_Text_red = skin_configfile.getInt32( "menu_Content_Selected_Text_red", 63);
-		g_settings.menu_Content_Selected_Text_green = skin_configfile.getInt32( "menu_Content_Selected_Text_green", 63);
-		g_settings.menu_Content_Selected_Text_blue = skin_configfile.getInt32( "menu_Content_Selected_Text_blue", 63);
+		g_settings.menu_Content_Selected_Text_red = skin_configfile.getInt32( "menu_Content_Selected_Text_red", 125);
+		g_settings.menu_Content_Selected_Text_green = skin_configfile.getInt32( "menu_Content_Selected_Text_green", 125);
+		g_settings.menu_Content_Selected_Text_blue = skin_configfile.getInt32( "menu_Content_Selected_Text_blue", 125);
 	
-		g_settings.menu_Content_inactive_alpha = skin_configfile.getInt32( "menu_Content_inactive_alpha", 210);
+		g_settings.menu_Content_inactive_alpha = skin_configfile.getInt32( "menu_Content_inactive_alpha", 205);
 		g_settings.menu_Content_inactive_red = skin_configfile.getInt32( "menu_Content_inactive_red", 63);
 		g_settings.menu_Content_inactive_green = skin_configfile.getInt32( "menu_Content_inactive_green", 63);
 		g_settings.menu_Content_inactive_blue = skin_configfile.getInt32( "menu_Content_inactive_blue", 63);
 		
 		g_settings.menu_Content_inactive_Text_alpha = skin_configfile.getInt32( "menu_Content_inactive_Text_alpha", 0);
-		g_settings.menu_Content_inactive_Text_red = skin_configfile.getInt32( "menu_Content_inactive_Text_red", 140);
-		g_settings.menu_Content_inactive_Text_green = skin_configfile.getInt32( "menu_Content_inactive_Text_green", 140);
-		g_settings.menu_Content_inactive_Text_blue = skin_configfile.getInt32( "menu_Content_inactive_Text_blue", 140);
+		g_settings.menu_Content_inactive_Text_red = skin_configfile.getInt32( "menu_Content_inactive_Text_red", 125);
+		g_settings.menu_Content_inactive_Text_green = skin_configfile.getInt32( "menu_Content_inactive_Text_green", 125);
+		g_settings.menu_Content_inactive_Text_blue = skin_configfile.getInt32( "menu_Content_inactive_Text_blue", 125);
 
-		g_settings.infobar_alpha = skin_configfile.getInt32( "infobar_alpha", 255);
-		g_settings.infobar_red = skin_configfile.getInt32( "infobar_red", 63);
-		g_settings.infobar_green = skin_configfile.getInt32( "infobar_green", 63);
-		g_settings.infobar_blue = skin_configfile.getInt32( "infobar_blue", 63);
+		g_settings.infobar_alpha = skin_configfile.getInt32( "infobar_alpha", 25);
+		g_settings.infobar_red = skin_configfile.getInt32( "infobar_red", 0);
+		g_settings.infobar_green = skin_configfile.getInt32( "infobar_green", 11);
+		g_settings.infobar_blue = skin_configfile.getInt32( "infobar_blue", 37);
 		
 		g_settings.infobar_Text_alpha = skin_configfile.getInt32( "infobar_Text_alpha", 0);
 		g_settings.infobar_Text_red = skin_configfile.getInt32( "infobar_Text_red", 255);
 		g_settings.infobar_Text_green = skin_configfile.getInt32( "infobar_Text_green", 255);
 		g_settings.infobar_Text_blue = skin_configfile.getInt32( "infobar_Text_blue", 255);
 		
-		g_settings.infobar_colored_events_alpha = skin_configfile.getInt32( "infobar_colored_events_alpha", 255);
-		g_settings.infobar_colored_events_red = skin_configfile.getInt32( "infobar_colored_events_red", 242);
-		g_settings.infobar_colored_events_green = skin_configfile.getInt32( "infobar_colored_events_green", 178);
+		g_settings.infobar_colored_events_alpha = skin_configfile.getInt32( "infobar_colored_events_alpha", 0);
+		g_settings.infobar_colored_events_red = skin_configfile.getInt32( "infobar_colored_events_red", 255);
+		g_settings.infobar_colored_events_green = skin_configfile.getInt32( "infobar_colored_events_green", 255);
 		g_settings.infobar_colored_events_blue = skin_configfile.getInt32( "infobar_colored_events_blue", 0);
 	
-		g_settings.menu_Foot_alpha = skin_configfile.getInt32( "menu_Foot_alpha", 215);
-		g_settings.menu_Foot_red = skin_configfile.getInt32( "menu_Foot_red", 38);
-		g_settings.menu_Foot_green = skin_configfile.getInt32( "menu_Foot_green", 38);
-		g_settings.menu_Foot_blue = skin_configfile.getInt32( "menu_Foot_blue", 38);
+		g_settings.menu_Foot_alpha = skin_configfile.getInt32( "menu_Foot_alpha", 255);
+		g_settings.menu_Foot_red = skin_configfile.getInt32( "menu_Foot_red", 0);
+		g_settings.menu_Foot_green = skin_configfile.getInt32( "menu_Foot_green", 11);
+		g_settings.menu_Foot_blue = skin_configfile.getInt32( "menu_Foot_blue", 37);
 		
 		g_settings.menu_Foot_Text_alpha = skin_configfile.getInt32( "menu_Foot_Text_alpha", 0);
 		g_settings.menu_Foot_Text_red = skin_configfile.getInt32( "menu_Foot_Text_red", 255);
 		g_settings.menu_Foot_Text_green = skin_configfile.getInt32( "menu_Foot_Text_green", 255);
 		g_settings.menu_Foot_Text_blue = skin_configfile.getInt32( "menu_Foot_Text_blue", 255);
 
-		g_settings.menu_Hint_alpha = skin_configfile.getInt32( "menu_Hint_alpha", 255);
-		g_settings.menu_Hint_red = skin_configfile.getInt32( "menu_Hint_red", 38);
-		g_settings.menu_Hint_green = skin_configfile.getInt32( "menu_Hint_green", 38);
-		g_settings.menu_Hint_blue = skin_configfile.getInt32( "menu_Hint_blue", 38);
+		g_settings.menu_Hint_alpha = skin_configfile.getInt32( "menu_Hint_alpha", 205);
+		g_settings.menu_Hint_red = skin_configfile.getInt32( "menu_Hint_red", 63);
+		g_settings.menu_Hint_green = skin_configfile.getInt32( "menu_Hint_green", 63);
+		g_settings.menu_Hint_blue = skin_configfile.getInt32( "menu_Hint_blue", 63);
 		
 		g_settings.menu_Hint_Text_alpha = skin_configfile.getInt32( "menu_Hint_Text_alpha", 0);
 		g_settings.menu_Hint_Text_red = skin_configfile.getInt32( "menu_Hint_Text_red", 215);
@@ -3010,43 +3010,43 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 		g_settings.menu_Hint_Text_blue = skin_configfile.getInt32( "menu_Hint_Text_blue", 215);
 		
 		// head
-		g_settings.Head_gradient = skin_configfile.getInt32("Head_gradient", DARK2LIGHT);
+		g_settings.Head_gradient = skin_configfile.getInt32("Head_gradient", NOGRADIENT);
 		g_settings.Head_gradient_type = skin_configfile.getInt32("Head_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 		g_settings.Head_corner = skin_configfile.getInt32("Head_corner", CORNER_TOP);
-		g_settings.Head_radius = skin_configfile.getInt32("Head_radius", RADIUS_MID);
+		g_settings.Head_radius = skin_configfile.getInt32("Head_radius", NO_RADIUS);
 		g_settings.Head_line = skin_configfile.getBool("Head_line", false);
 		g_settings.Head_line_gradient = skin_configfile.getBool("Head_line_gradient", false);
 		
 		// foot
-		g_settings.Foot_gradient = skin_configfile.getInt32("Foot_gradient", LIGHT2DARK);
+		g_settings.Foot_gradient = skin_configfile.getInt32("Foot_gradient", NOGRADIENT);
 		g_settings.Foot_gradient_type = skin_configfile.getInt32("Foot_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 		g_settings.Foot_corner = skin_configfile.getInt32("Foot_corner", CORNER_BOTTOM);
-		g_settings.Foot_radius = skin_configfile.getInt32("Foot_radius", RADIUS_MID);
+		g_settings.Foot_radius = skin_configfile.getInt32("Foot_radius", NO_RADIUS);
 		g_settings.Foot_line = skin_configfile.getBool("Foot_line", false);
 		g_settings.Foot_line_gradient = skin_configfile.getBool("Foot_line_gradient", false);
 		
 		// infobar
 		g_settings.infobar_corner = skin_configfile.getInt32("infobar_corner", CORNER_ALL);
-		g_settings.infobar_radius = skin_configfile.getInt32("infobar_radius", RADIUS_VERYLARGE);
+		g_settings.infobar_radius = skin_configfile.getInt32("infobar_radius", NO_RADIUS);
 		g_settings.infobar_border = skin_configfile.getBool("infobar_border", false);
-		g_settings.infobar_gradient = skin_configfile.getInt32("infobar_gradient", DARK2LIGHT);
+		g_settings.infobar_gradient = skin_configfile.getInt32("infobar_gradient", NOGRADIENT);
 		g_settings.infobar_gradient_type = skin_configfile.getInt32("infobar_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 		g_settings.infobar_buttonbar = skin_configfile.getBool("infobar_buttonbar", false);
 		g_settings.infobar_buttonline = skin_configfile.getBool("infobar_buttonline", true);
-		g_settings.infobar_buttonline_gradient = skin_configfile.getBool("infobar_buttonline_gradient", true);
+		g_settings.infobar_buttonline_gradient = skin_configfile.getBool("infobar_buttonline_gradient", false);
 		
 		// itemInfo
 		g_settings.Hint_border = skin_configfile.getBool("Hint_border", true);
-		g_settings.Hint_gradient = skin_configfile.getInt32("Hint_gradient", DARK2LIGHT);
+		g_settings.Hint_gradient = skin_configfile.getInt32("Hint_gradient", NOGRADIENT);
 		g_settings.Hint_gradient_type = skin_configfile.getInt32("Hint_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 		g_settings.Hint_radius = skin_configfile.getInt32("Hint_radius", NO_RADIUS);
 		g_settings.Hint_corner = skin_configfile.getInt32("Hint_corner", CORNER_ALL);
 		
 		//
-		g_settings.sep_gradient = skin_configfile.getBool("separator_gradient", true);
+		g_settings.sep_gradient = skin_configfile.getBool("separator_gradient", false);
 		
 		// progressbar color
-		g_settings.progressbar_color = skin_configfile.getInt32("progressbar_color", 1);
+		g_settings.progressbar_color = skin_configfile.getInt32("progressbar_color", CCProgressBar::PROGRESSBAR_COLORED);
 
 		// setup colors
 		setupColor();
