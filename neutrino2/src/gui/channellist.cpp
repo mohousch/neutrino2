@@ -1408,11 +1408,9 @@ void CChannelList::paint(bool customMode)
 		
 		// vline
 		vline = new CCVline(widget->getWindowsPos().iX + (widget->getWindowsPos().iWidth/3)*2, widget->getWindowsPos().iY + 60, 2, widget->getWindowsPos().iHeight - 120);
-		vline->setGradient(3);
 			
 		// hline
 		hline = new CCHline(widget->getWindowsPos().iX + (widget->getWindowsPos().iWidth/3)*2 + 10, widget->getWindowsPos().iY + 50 + (widget->getWindowsPos().iHeight - 100)/2, widget->getWindowsPos().iWidth/3 - 20, 2);
-		hline->setGradient(3);
 		
 		widget->addCCItem(listBox);
 		//
