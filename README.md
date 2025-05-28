@@ -7,6 +7,7 @@
 - skin support.
 - plugins interfaces: legacy, lua and python (exp) NeutrinoNG shares all his functionality with plugins.
   and more...
+- still in developing...
   
   happy zapping
 
