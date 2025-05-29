@@ -82,7 +82,6 @@ int InsertVideoPrivateDataHeader(unsigned char *data, int payload_size)
 	FlushBits (&ld2);
 
 	return PES_PRIVATE_DATA_LENGTH + 1;
-
 }
 
 //

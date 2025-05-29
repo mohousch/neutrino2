@@ -34,8 +34,8 @@ typedef struct BitPacker_s
 #define PADDING_LENGTH                          (1024*BLOCK_COUNT)
 
 /* subtitle hacks ->for file subtitles */
-#define TEXTSRTOFFSET 100
-#define TEXTSSAOFFSET 200
+#define TEXTSRTOFFSET 				100
+#define TEXTSSAOFFSET 				200
 
 /* ***************************** */
 /* Prototypes                    */
