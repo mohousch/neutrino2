@@ -2,12 +2,12 @@
   Welcome to NeutrinoNG software
 </h1>
 
-- the GUI is completely reworked.
-- i18n localizaton.
-- skin support.
-- plugins interfaces: legacy, lua and python (exp) NeutrinoNG shares all his functionality with plugins.
+- The GUI is completely reworked.
+- I18n localizaton.
+- Skin support.
+- Plugins interfaces: legacy, lua and python (exp) NeutrinoNG shares all his functionality with plugins.
   and more...
-- still in developing...
+- Still in development...
   
   happy zapping
 
@@ -53,7 +53,7 @@ $:~ make clean
 $:~ make distclean
 ```
 
-## how to build neutrino2 for sh4/arm/mips boxes ##
+## How to build neutrino2 for sh4/arm/mips boxes ##
 see:
 * https://github.com/mohousch/buildsystem
 
