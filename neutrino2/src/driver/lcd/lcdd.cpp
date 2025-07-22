@@ -1586,7 +1586,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	if(!has_lcd) 
 		return;
 		
-	dprintf(DEBUG_DEBUG, "CLCD::setMode: %d\n", m);
+	dprintf(DEBUG_NORMAL, "CLCD::setMode: %d (%s)\n", m, (title !=NULL)? title : "NULL");
 		
 	mode = m;
 	menutitle = title;

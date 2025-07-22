@@ -88,6 +88,19 @@ class CMenuTarget
 		virtual void setValueString(const char * text){valueString = text; valueStringSetted = true;};
 		virtual void clearValueString(){valueString.clear(); valueString = " "; valueStringSetted = false;};
 		
+		////
+		void setLCDMode(const char * name)
+		{
+			oldLcdMode = CLCD::getInstance()->getMode();
+			oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+			CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, name);
+		};
+		
+		void resetLCDMode()
+		{
+			CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+		};
+		
 };
 
 //// CChangeObserver
