@@ -64,9 +64,7 @@ void CNeutrinoApp::mainMenu(void)
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::mainMenu:\n");
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Main Menu"));
+	setLCDMode(_("Main Menu"));
 	
 	CWidget* widget = NULL;
 	ClistBox* nMenu = NULL;
@@ -224,7 +222,7 @@ void CNeutrinoApp::mainMenu(void)
 	}
 	
 	//
-	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+	resetLCDMode();
 }
 
 //// User menu
@@ -359,9 +357,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 #endif
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, txt.c_str());
+	setLCDMode(txt.c_str());
 
 	//
 	CWidget* widget = NULL;
@@ -549,7 +545,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 	}
 	
 	//
-	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+	resetLCDMode();
 
 	return 0;
 }
@@ -624,7 +620,7 @@ void CNeutrinoApp::selectNVOD()
 			widget->addCCItem(NVODSelector);
 		}
 		
-		CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, g_RemoteControl->are_subchannels ? _("Select Subservice") : _("Select starting-time"));
+		setLCDMode(g_RemoteControl->are_subchannels ? _("Select Subservice") : _("Select starting-time"));
 		
 		//
 		int count = 0;
@@ -691,5 +687,8 @@ void CNeutrinoApp::selectNVOD()
                         widget = NULL;
 		}
         }
+        
+        //
+        resetLCDMode();
 }
 

@@ -5947,9 +5947,6 @@ void CTestMenu::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::showMenu:\n");
 	
-	//oldLcdMode = CLCD::getInstance()->getMode();
-	//oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	//CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Test Menu"));
 	setLCDMode(_("TestMenu"));
 
 	CWidget* mWidget = NULL;
