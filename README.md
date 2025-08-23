@@ -5,7 +5,7 @@
 - The GUI is completely reworked.
 - I18n localizaton.
 - Skin support.
-- Plugins interfaces: legacy, lua and python (exp) NeutrinoNG shares all his functionality with plugins.
+- Plugins interfaces: legacy, lua and python (exp) Neutrino2 shares all his functionality with plugins.
   and more...
 - Still in development...
   
