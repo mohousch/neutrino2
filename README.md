@@ -1,5 +1,5 @@
 <h1 align="center">
-  Welcome to NeutrinoNG software
+  Welcome to Neutrino2 software
 </h1>
 
 - The GUI is completely reworked.
@@ -11,7 +11,7 @@
   
   happy zapping
 
-## How to build NeutrinoNG for PC (x86) ##
+## How to build Neutrino2 for PC (x86) ##
 
 ```bash
 $:~ git clone https://github.com/mohousch/neutrino2.git
@@ -38,7 +38,7 @@ $:~ make
 $:~ make run
 ```
 
-* to update NeutrinoNG source code:
+* to update Neutrino2 source code:
 ```bash
 $:~ make update
 ```
