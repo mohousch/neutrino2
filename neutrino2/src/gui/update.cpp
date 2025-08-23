@@ -66,7 +66,7 @@
 
 
 #define gTmpPath 					"/var/tmp/"
-#define gUserAgent 					"NeutrinoNG/softupdater 1.0"
+#define gUserAgent 					"Neutrino2/softupdater 1.0"
 
 #define LIST_OF_UPDATES_LOCAL_FILENAME 			"update.list"
 #define RELEASE_CYCLE                  			PACKAGE_VERSION
@@ -509,7 +509,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 	}
 
 	// install
-//	CLCD::getInstance()->showProgressBar2(0, "checking", 0, "Update NeutrinoNG");
+//	CLCD::getInstance()->showProgressBar2(0, "checking", 0, "Update Neutrino2");
 //	CLCD::getInstance()->setMode(CLCD::MODE_PROGRESSBAR2);
 //	progressWindow->showGlobalStatus(19);
 //	progressWindow->paint();
@@ -720,7 +720,7 @@ void CFlashExpert::writemtd(const std::string &filename, int mtdNumber)
 	if (MessageBox(_("Information"), message, CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo, NEUTRINO_ICON_UPDATE) != CMessageBox::mbrYes) // UTF-8
 		return;
 
-        CLCD::getInstance()->showProgressBar2(0, "checking", 0, "Update NeutrinoNG");
+        CLCD::getInstance()->showProgressBar2(0, "checking", 0, "Update Neutrino2");
         CLCD::getInstance()->setMode(CLCD::MODE_PROGRESSBAR2);	
 
 	progressWindow->setTitle(_("Writing Flash"));

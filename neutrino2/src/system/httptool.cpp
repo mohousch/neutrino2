@@ -31,7 +31,7 @@ CHTTPTool::CHTTPTool()
 {
 	statusViewer = NULL;
 	
-	userAgent = "NeutrinoNG/httpdownloader";
+	userAgent = "Neutrino2/httpdownloader";
 }
 
 void CHTTPTool::setStatusViewer( CProgressWindow *statusview )

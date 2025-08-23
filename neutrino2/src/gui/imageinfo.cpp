@@ -224,9 +224,9 @@ void CImageInfo::paint()
 	paintLine(xpos, font_info, _("Type:"));
 	paintLine(xpos + x_offset, font_info, releaseType.c_str());
 	
-	// NeutrinoNG version
+	// Neutrino2 version
 	ypos += iheight;
-	paintLine(xpos, font_info, _("NeutrinoNG:"));
+	paintLine(xpos, font_info, _("Neutrino2:"));
 	paintLine(xpos + x_offset, font_info, PACKAGE_VERSION);
 	
 	// git built date
