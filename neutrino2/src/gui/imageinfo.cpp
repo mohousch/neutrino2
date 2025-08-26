@@ -212,7 +212,7 @@ void CImageInfo::paint()
 	// release name
 	ypos += iheight;
 	paintLine(xpos, font_info, _("Release:"));
-	paintLine(xpos + x_offset, font_info, "NG Buildsystem");
+	paintLine(xpos + x_offset, font_info, "NeutrinoNG");
 
 	// release cycle
 	ypos += iheight;
