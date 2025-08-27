@@ -55,7 +55,7 @@ $:~ make distclean
 
 ## How to build neutrino2 for sh4/arm/mips boxes ##
 see:
-* https://github.com/mohousch/buildsystem
+* https://github.com/mohousch/NeutrinoNG
 
 
 
