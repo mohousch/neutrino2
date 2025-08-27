@@ -197,7 +197,7 @@ void CImageInfo::paint()
 	
 	std::string versionString = "1201201205091849";
 	
-	lconfigfile.loadConfig("/etc/.version");
+	lconfigfile.loadConfig("/.version");
 	
 	versionString = lconfigfile.getString( "version", "1201201205091849").c_str();
 	
