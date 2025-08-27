@@ -1147,7 +1147,7 @@ int CUpdateSettings::showMenu()
 	
 	std::string versionString = "1201201205091849";
 	
-	lconfigfile.loadConfig("/etc/imageversion");
+	lconfigfile.loadConfig("/.version");
 	
 	versionString = lconfigfile.getString( "version", "1201201205091849").c_str();
 	
@@ -1159,7 +1159,7 @@ int CUpdateSettings::showMenu()
 	std::string time = versionInfo.getTime();
 	
 	// release name
-	updateSettings->addItem(new CMenuForwarder(_("Release"), false, "NG Buildsystem"));
+	updateSettings->addItem(new CMenuForwarder(_("Release"), false, "NeutrinoNG"));
 
 	// release cycle
 	updateSettings->addItem(new CMenuForwarder(_("Release cycle"), false, releaseCycle.c_str()));
