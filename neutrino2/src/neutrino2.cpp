@@ -1517,11 +1517,13 @@ void CNeutrinoApp::channelsInit()
 	TVallList = new CBouquetList(_("All Services"));
 	tmp = TVallList->addBouquet(_("All Services"));
 	*(tmp->channelList) = *TVchannelList;
+	tmp->channelList->sortAlpha();
 
 	// radio all list
 	RADIOallList = new CBouquetList(_("All Services"));
 	tmp = RADIOallList->addBouquet(_("All Services"));
 	*(tmp->channelList) = *RADIOchannelList;
+	tmp->channelList->sortAlpha();
 
 	//// sat
 	int bnum = 0;

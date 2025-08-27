@@ -4103,8 +4103,7 @@ void CTestMenu::testCChannellist()
 
 	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++) 
 	{
-		if (it->second.isWebTV)
-		//if ((it->second.getServiceType() == ST_DIGITAL_TELEVISION_SERVICE)) 
+		if ((it->second.getServiceType() == ST_DIGITAL_TELEVISION_SERVICE)) 
 		{
 			webTVchannelList->addChannel(&(it->second));
 		}
