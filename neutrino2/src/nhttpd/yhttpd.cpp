@@ -469,7 +469,7 @@ void Cyhttpd::ReadConfig(void)
 	CyhookHandler::Hooks_ReadConfig(Config, ConfigList);
 
 	// Save if new defaults are set
-	if (!have_config)
+	//if (!have_config)
 		Config->saveConfig(HTTPD_CONFIGFILE);
 		
 	dprintf(DEBUG_DEBUG, "ReadConfig End\n");

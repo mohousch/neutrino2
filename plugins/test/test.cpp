@@ -4352,8 +4352,8 @@ void CTestMenu::testlibNGPNG()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testlibNGPNG\n");
 	
-	CCWindow * win = new CCWindow();
-	win->paintMainFrame(false);
+	CWidget * win = new CWidget();
+//	win->paintMainFrame(false);
 	
 	std::string filename = DATADIR "/lcd/picon_default.png";
 	
@@ -4366,33 +4366,32 @@ void CTestMenu::testlibNGPNG()
 	
 	::getSize(filename.c_str(), &w, &h, &bpp, &chans);
 	
-	printf("%s %d %d %d %d\n", filename.c_str(), w, h, bpp, chans);
+	dprintf(DEBUG_NORMAL, "%s %d %d %d %d\n", filename.c_str(), w, h, bpp, chans);
 	
-	fb_pixel_t *image = (fb_pixel_t *)::getBitmap(filename.c_str());
+	uint8_t *image = (uint8_t *)::getARGB32Image(filename.c_str(), w, h, SCALE_COLOR);//::getBitmap(filename.c_str());
 	
 	if (image)
 	{
+		/*
 		// resize
-		int wanted_width = w;
-		int wanted_height = h;
-
-		image = (fb_pixel_t *)::resize((uint8_t *)image, w, h, wanted_width, wanted_height, SCALE_COLOR, (chans == 4)? true : false);
+		image = ::resize(image, w, h, w, h, SCALE_COLOR, (chans == 4)? true : false);
 		w = wanted_width;
 		h = wanted_height;
 		
 		// convert
-		image = ::convertRGBA2ARGB32((uint8_t *)image, w, h, (chans == 4)? true : false);
+		image = (uint8_t *)::convertRGBA2ARGB32((uint8_t *)image, w, h, (chans == 4)? true : false);
+		*/
 		
 		// blit2fb
 		CFrameBuffer::getInstance()->blitBox2FB(image, w, h, 50, 50);
-		
-		win->exec(this);
-		
-		if (win)
-		{
-			delete win;
-			win = NULL;
-		}
+	}
+	
+	win->exec(NULL, "");
+	
+	if (win)
+	{
+		delete win;
+		win = NULL;
 	}
 }
 

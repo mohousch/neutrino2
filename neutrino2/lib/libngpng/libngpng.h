@@ -68,14 +68,8 @@ void getSize(const std::string &name, int * width, int * height, int * nbpp, int
 uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode type = SCALE_COLOR, bool alpha = false);
 uint32_t * convertRGBA2ARGB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
 uint32_t * convertRGBA2ABGR32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
-uint16_t * convertRGBA2ARGB16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
-uint16_t * convertRGBA2ABGR16(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
-uint8_t * convertRGBA2ARGB8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
-uint8_t * convertRGBA2ABGR8(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha = false, int transp = 0xFF, int m_transparent = TM_BLACK);
 uint32_t *getARGB32Image(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
 uint32_t *getABGR32Image(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
-uint16_t *getABGR16Image(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
-uint8_t *getABGR8Image(const std::string &name, int width = 0, int height = 0, int transp = 0xFF, ScalingMode scaletype = SCALE_COLOR);
 uint8_t *getBitmap(const std::string &name);
 
 #endif
