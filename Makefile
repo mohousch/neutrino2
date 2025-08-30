@@ -382,7 +382,7 @@ plugins-distclean:
 	rm -f $(PLUGINS)/config.status
 
 update:
-	git stash && git stash show -p > ./pull-stash-ng-$(shell date '+%d.%m.%Y-%H.%M').patch || true && git pull || true;
+	git stash && git stash show -p > ./pull-stash-neutrino2.patch || true && git pull || true;
 
 clean: neutrino2-clean plugins-clean
 distclean: neutrino2-distclean plugins-distclean
