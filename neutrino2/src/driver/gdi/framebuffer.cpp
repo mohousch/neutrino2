@@ -1708,7 +1708,7 @@ void CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int
 		width = i_w;
 		height = i_h;
 	}
-
+	
 	bool isPNG = false;
 	
 	if( name.find(".png") == (name.length() - 4) )

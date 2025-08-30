@@ -136,7 +136,7 @@ CFormathandler * fh_getsize(const char *name, int *x, int *y, int width_wanted, 
 
 void getSize(const std::string &name, int *width, int *height, int *nbpp, int *channels)
 {
-	unsigned char *rgbbuff;
+	uint8_t *rgbbuff;
 	int x = 0;
 	int y = 0;
 	int bpp = 0;
@@ -154,7 +154,7 @@ void getSize(const std::string &name, int *width, int *height, int *nbpp, int *c
 		return;
 	}
 	
-	rgbbuff = (unsigned char *)malloc(x*y*4);
+	rgbbuff = (uint8_t *)malloc(x*y*4);
 	
 	if (rgbbuff != NULL) 
 	{
@@ -186,7 +186,7 @@ void getSize(const std::string &name, int *width, int *height, int *nbpp, int *c
 	return;
 }
 
-// rgba
+// resize rgba
 uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode type, bool alpha)
 {
 	uint8_t * cr = NULL;
@@ -307,7 +307,7 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 	return(cr);
 }
 
-// convert rgba <-> argb
+// convert rgba to argb
 uint32_t * convertRGBA2ARGB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
 	unsigned long i;
@@ -363,7 +363,7 @@ uint32_t * convertRGBA2ARGB32(uint8_t *rgbbuff, unsigned long x, unsigned long y
 	return (uint32_t *)fbbuff;
 }
 
-// convert rgba <-> abgr
+// convert rgba to abgr
 uint32_t * convertRGBA2ABGR32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
 	unsigned long i;
@@ -492,7 +492,14 @@ uint32_t * getARGB32Image(const std::string &name, int width, int height, int tr
 			}
 
 			// convert
-			ret = convertRGBA2ARGB32(buffer, x, y, (channels == 4)? true : false, transp, TM_BLACK); // TM_BLACK
+			if( name.find(".png") == (name.length() - 4) )
+			{
+				ret = (uint32_t *)convertRGBA2ARGB32(buffer, x, y, (channels == 4)?true : false, transp, TM_BLACK); // TM_BLACK
+			}
+			else
+			{
+				ret = (uint32_t *)convertRGBA2ARGB32(buffer, x, y, false, transp, TM_NONE); //TM_NONE
+			}
 			
 			free(buffer);
 		} 
@@ -554,7 +561,7 @@ uint32_t * getABGR32Image(const std::string &name, int width, int height, int tr
 			}
 			
 			// convert
-			ret = convertRGBA2ABGR32(buffer, x, y, (channels == 4)? true : false, transp, TM_BLACK); //TM_NONE
+			ret = convertRGBA2ABGR32(buffer, x, y, (channels == 4)? true : false, transp, TM_NONE);
 			
 			free(buffer);
 		} 
