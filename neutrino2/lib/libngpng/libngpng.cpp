@@ -310,8 +310,6 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 // convert rgba <-> argb
 uint32_t * convertRGBA2ARGB32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
-	//printf("[%s] convertRGBA2ARGB32\n", __FILE__);
-	
 	unsigned long i;
 	uint32_t *fbbuff = NULL;
 	unsigned long count = x*y;
@@ -368,8 +366,6 @@ uint32_t * convertRGBA2ARGB32(uint8_t *rgbbuff, unsigned long x, unsigned long y
 // convert rgba <-> abgr
 uint32_t * convertRGBA2ABGR32(uint8_t *rgbbuff, unsigned long x, unsigned long y, bool alpha, int transp, int m_transparent)
 {
-	//printf("[%s] convertRGBA2ABGR32\n", __FILE__);
-	
 	unsigned long i;
 	uint32_t *fbbuff = NULL;
 	unsigned long count = x*y;
@@ -452,8 +448,6 @@ uint32_t * convertRGBA2ABGR32(uint8_t *rgbbuff, unsigned long x, unsigned long y
 // get argb image
 uint32_t * getARGB32Image(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
 {
-	//printf("[%s] getARGB32Image\n", __FILE__);
-	
 	int x = 0;
 	int y = 0;
 	int nbpp = 0;
@@ -491,33 +485,14 @@ uint32_t * getARGB32Image(const std::string &name, int width, int height, int tr
 			// resize
 			if( (width != 0 && height != 0) && (x != width || y != height) )
 			{
-				// alpha
-				if(channels == 4)
-				{
-					buffer = resize(buffer, x, y, width, height, scaletype, true);
-				}
-				else
-				{
-					buffer = resize(buffer, x, y, width, height, scaletype);
-				}
+				buffer = resize(buffer, x, y, width, height, scaletype, (channels == 4)? true : false);
 					
 				x = width ;
 				y = height;
 			}
 
 			// convert
-			if( name.find(".png") == (name.length() - 4) )
-			{
-				// alpha
-				if (channels == 4)
-					ret = (uint32_t *)convertRGBA2ARGB32(buffer, x, y, true);
-				else
-					ret = (uint32_t *)convertRGBA2ARGB32(buffer, x, y, false, transp, TM_BLACK); // TM_BLACK
-			}
-			else
-			{
-				ret = (uint32_t *)convertRGBA2ARGB32(buffer, x, y, false, transp, TM_NONE); //TM_NONE
-			}
+			ret = convertRGBA2ARGB32(buffer, x, y, (channels == 4)? true : false, transp, TM_BLACK); // TM_BLACK
 			
 			free(buffer);
 		} 
@@ -528,10 +503,6 @@ uint32_t * getARGB32Image(const std::string &name, int width, int height, int tr
 	  		buffer = NULL;
 		}
   	} 
-	else
-	{
-		//printf("Error open file %s\n", name.c_str ());
-	}
 
 	return ret;
 }
@@ -539,8 +510,6 @@ uint32_t * getARGB32Image(const std::string &name, int width, int height, int tr
 // get abgr image
 uint32_t * getABGR32Image(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
 {
-	//printf("[%s] getABGR32Image\n", __FILE__);
-	
 	int x = 0;
 	int y = 0;
 	int nbpp = 0;
@@ -578,22 +547,14 @@ uint32_t * getABGR32Image(const std::string &name, int width, int height, int tr
 			// resize
 			if( (width != 0 && height != 0) && (x != width || y != height) )
 			{
-				// alpha
-				if(channels == 4)
-				{
-					buffer = resize(buffer, x, y, width, height, scaletype, true);
-				}
-				else
-				{
-					buffer = resize(buffer, x, y, width, height, scaletype);
-				}
-					
+				buffer = resize(buffer, x, y, width, height, scaletype, (channels == 4)? true : false);
+	
 				x = width ;
 				y = height;
 			}
 			
 			// convert
-			ret = (uint32_t *)convertRGBA2ABGR32(buffer, x, y, (channels == 4)? true : false, transp, TM_NONE); //TM_NONE
+			ret = convertRGBA2ABGR32(buffer, x, y, (channels == 4)? true : false, transp, TM_BLACK); //TM_NONE
 			
 			free(buffer);
 		} 
@@ -604,10 +565,6 @@ uint32_t * getABGR32Image(const std::string &name, int width, int height, int tr
 	  		buffer = NULL;
 		}
   	} 
-	else
-	{
-		//printf("Error open file %s\n", name.c_str ());
-	}
 
 	return ret;
 }
@@ -652,10 +609,6 @@ uint8_t * getBitmap(const std::string &name)
 	  		buffer = NULL;
 		}
   	} 
-	else
-	{
-		//printf("Error open file %s\n", name.c_str ());
-	}
 
 	return buffer;
 }
