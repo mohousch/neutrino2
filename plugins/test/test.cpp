@@ -4386,6 +4386,8 @@ void CTestMenu::testlibNGPNG()
 		
 		// blit2fb
 		CFrameBuffer::getInstance()->blitBox2FB(image, wanted_w, wanted_h, 50, 50);
+		
+		free(image);
 	}
 	
 	win->exec(NULL, "");

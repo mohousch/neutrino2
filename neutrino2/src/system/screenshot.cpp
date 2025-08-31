@@ -256,7 +256,9 @@ bool CScreenshot::savePNG()
 	}
 
 	png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, (png_voidp)NULL, (png_error_ptr)NULL, (png_error_ptr)NULL);
+	
 	info_ptr = png_create_info_struct(png_ptr);
+	
 #if (PNG_LIBPNG_VER < 10500)
 	if (setjmp(png_ptr->jmpbuf))
 #else
