@@ -96,11 +96,11 @@ const char * nfs_entry_printf_string[4] =
 	"SMBFS //%s%s -> %s auto: %4s"
 };
 
-int CNFSMountGui::exec( CMenuTarget *parent, const std::string &actionKey )
+int CNFSMountGui::exec( CWidgetTarget *parent, const std::string &actionKey )
 {
 	dprintf(DEBUG_NORMAL, "CNFSMountGui::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int returnval = CMenuTarget::RETURN_REPAINT;
+	int returnval = CWidgetTarget::RETURN_REPAINT;
 	
 	if (m_nfs_sup == CFSMounter::FS_UNPROBED)
 		m_nfs_sup = CFSMounter::fsSupported(CFSMounter::NFS);
@@ -158,7 +158,7 @@ int CNFSMountGui::exec( CMenuTarget *parent, const std::string &actionKey )
 				  g_settings.network_nfs_username[nr], g_settings.network_nfs_password[nr],
 				  g_settings.network_nfs_mount_options1[nr], g_settings.network_nfs_mount_options2[nr]);
 		// TODO show msg in case of error
-		returnval = CMenuTarget::RETURN_EXIT;
+		returnval = CWidgetTarget::RETURN_EXIT;
 	}
 	else if(actionKey.substr(0, 3) == "dir")
 	{
@@ -172,7 +172,7 @@ int CNFSMountGui::exec( CMenuTarget *parent, const std::string &actionKey )
 		if (b.exec(g_settings.network_nfs_local_dir[nr]))
 			strcpy(g_settings.network_nfs_local_dir[nr], b.getSelectedFile()->Name.c_str());
 
-		returnval = CMenuTarget::RETURN_REPAINT;
+		returnval = CWidgetTarget::RETURN_REPAINT;
 	}
 	
 	return returnval;
@@ -411,7 +411,7 @@ int CNFSMountGui::menuEntry(int nr)
 	return ret;
 }
 
-int CNFSUmountGui::exec( CMenuTarget *parent, const std::string &actionKey )
+int CNFSUmountGui::exec( CWidgetTarget *parent, const std::string &actionKey )
 {
 	dprintf(DEBUG_NORMAL, "CNFSUmountGui::exec: actionKey:%s\n", actionKey.c_str());
 
@@ -427,10 +427,10 @@ int CNFSUmountGui::exec( CMenuTarget *parent, const std::string &actionKey )
 	else if(actionKey.substr(0,8) == "doumount")
 	{
 		CFSMounter::umount((actionKey.substr(9)).c_str());
-		returnval = CMenuTarget::RETURN_EXIT;
+		returnval = CWidgetTarget::RETURN_EXIT;
 	}
 	else
-		returnval = CMenuTarget::RETURN_REPAINT;
+		returnval = CWidgetTarget::RETURN_REPAINT;
 
 	return returnval;
 }
@@ -505,7 +505,7 @@ int CNFSUmountGui::menu()
 	if(infos.size() > 0)
 		return widget->exec(this, "");
 	else
-		return CMenuTarget::RETURN_REPAINT;
+		return CWidgetTarget::RETURN_REPAINT;
 }
 
 //// CNFSSmallMenu
@@ -515,7 +515,7 @@ void CNFSSmallMenu::hide()
 	CFrameBuffer::getInstance()->blit();
 }
 
-int CNFSSmallMenu::exec( CMenuTarget *parent, const std::string &actionKey )
+int CNFSSmallMenu::exec( CWidgetTarget *parent, const std::string &actionKey )
 {
 	dprintf(DEBUG_NORMAL, "CNFSSmallMenu::exec: actionKey:%s\n", actionKey.c_str());
 	
@@ -587,10 +587,10 @@ int CNFSSmallMenu::exec( CMenuTarget *parent, const std::string &actionKey )
 		}
 
 		CFSMounter::automount();
-		return CMenuTarget::RETURN_REPAINT;
+		return CWidgetTarget::RETURN_REPAINT;
 	}
 
-	return CMenuTarget::RETURN_REPAINT;
+	return CWidgetTarget::RETURN_REPAINT;
 }
 
 ////

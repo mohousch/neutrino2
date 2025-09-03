@@ -40,7 +40,7 @@
 #include <system/debug.h>
 
 
-int CEPGMenuHandler::exec(CMenuTarget *parent, const std::string &)
+int CEPGMenuHandler::exec(CWidgetTarget *parent, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "CEPGMenuHandler::exec:\n");
 	

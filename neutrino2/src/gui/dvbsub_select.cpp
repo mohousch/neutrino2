@@ -44,11 +44,11 @@ extern int dvbsub_getpid();				// defined in libdvbsub
 // tuxtxt
 extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
 
-int CDVBSubSelectMenuHandler::exec(CMenuTarget * parent, const std::string &/*actionKey*/)
+int CDVBSubSelectMenuHandler::exec(CWidgetTarget * parent, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CDVBSubSelectMenuHandler::exec:\n");
 
-	int res = CMenuTarget::RETURN_EXIT_ALL;
+	int res = CWidgetTarget::RETURN_EXIT_ALL;
 
 	if (parent) 
 		parent->hide();
@@ -60,7 +60,7 @@ int CDVBSubSelectMenuHandler::exec(CMenuTarget * parent, const std::string &/*ac
 
 int CDVBSubSelectMenuHandler::doMenu()
 {
-	int res = CMenuTarget::RETURN_EXIT_ALL;
+	int res = CWidgetTarget::RETURN_EXIT_ALL;
 	
 	dprintf(DEBUG_NORMAL, "CDVBSubSelectMenuHandler::doMenu:\n");
 

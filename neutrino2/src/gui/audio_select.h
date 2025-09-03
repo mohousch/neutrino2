@@ -31,42 +31,42 @@
 #include <gui/widget/listbox.h>
 
 
-class CAudioSelectMenuHandler : public CMenuTarget, CChangeObserver
+class CAudioSelectMenuHandler : public CWidgetTarget, CChangeObserver
 {
 	public:
 		CAudioSelectMenuHandler(){};
 		~CAudioSelectMenuHandler(){};
 		
-		int exec( CMenuTarget * parent, const std::string &actionkey);
+		int exec( CWidgetTarget * parent, const std::string &actionkey);
 		int doMenu();
 		bool changeNotify(const std::string& OptionName, void *);
 };
 
 //// apid
-class CAPIDChangeExec : public CMenuTarget
+class CAPIDChangeExec : public CWidgetTarget
 {
 	public:
-		int exec(CMenuTarget* parent, const std::string & actionKey);
+		int exec(CWidgetTarget* parent, const std::string & actionKey);
 };
 
 //// subtitle
-class CSubtitleChangeExec : public CMenuTarget
+class CSubtitleChangeExec : public CWidgetTarget
 {
 	public:
 		CSubtitleChangeExec(){};
 		~CSubtitleChangeExec(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 //// tuxtxt
-class CTuxtxtChangeExec : public CMenuTarget
+class CTuxtxtChangeExec : public CWidgetTarget
 {
 	public:
 		CTuxtxtChangeExec(){};
 		~CTuxtxtChangeExec(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 #endif

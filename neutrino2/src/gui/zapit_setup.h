@@ -33,7 +33,7 @@
 #include <string>
 
 
-class CZapitSetup : public CMenuTarget
+class CZapitSetup : public CWidgetTarget
 {
 	private:
 		int selected;
@@ -47,7 +47,7 @@ class CZapitSetup : public CMenuTarget
 		CZapitSetup();
 		~CZapitSetup();
 		
-		int exec(CMenuTarget* parent, const std::string & actionKey);
+		int exec(CWidgetTarget* parent, const std::string & actionKey);
 };
 
 class CZapitSetupNotifier : public CChangeObserver

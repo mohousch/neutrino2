@@ -299,7 +299,7 @@ void CWidget::hide()
 	frameBuffer->blit();
 }
 
-void CWidget::addKey(neutrino_msg_t key, CMenuTarget *target, const std::string &action)
+void CWidget::addKey(neutrino_msg_t key, CWidgetTarget *target, const std::string &action)
 {
 	dprintf(DEBUG_INFO, "CWidget::addKey: %s\n", action.c_str());
 	
@@ -307,11 +307,11 @@ void CWidget::addKey(neutrino_msg_t key, CMenuTarget *target, const std::string 
 	keyActionMap[key].action = action;
 }
 
-int CWidget::exec(CMenuTarget *parent, const std::string &)
+int CWidget::exec(CWidgetTarget *parent, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "CWidget::exec: (%s)\n", name.c_str());
 
-	retval = CMenuTarget::RETURN_REPAINT;
+	retval = CWidgetTarget::RETURN_REPAINT;
 	pos = 0;
 	exit_pressed = false;
 	bool show = true;
@@ -370,12 +370,12 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 					//FIXME:review this
 					switch ( rv ) 
 					{
-						case CMenuTarget::RETURN_EXIT_ALL:
-							retval = CMenuTarget::RETURN_EXIT_ALL;
-						case CMenuTarget::RETURN_EXIT:
+						case CWidgetTarget::RETURN_EXIT_ALL:
+							retval = CWidgetTarget::RETURN_EXIT_ALL;
+						case CWidgetTarget::RETURN_EXIT:
 							msg = CRCInput::RC_timeout;
 							break;
-						case CMenuTarget::RETURN_REPAINT:
+						case CWidgetTarget::RETURN_REPAINT:
 							paint();
 							break;
 					}
@@ -411,7 +411,7 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 				case (NeutrinoMessages::EVT_TIMER):
 					if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
 					{
-						retval = CMenuTarget::RETURN_EXIT_ALL;
+						retval = CWidgetTarget::RETURN_EXIT_ALL;
 						msg = CRCInput::RC_timeout;
 					}
 					break;
@@ -463,7 +463,7 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 				default:
 					if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
 					{
-						retval = CMenuTarget::RETURN_EXIT_ALL;
+						retval = CWidgetTarget::RETURN_EXIT_ALL;
 						msg = CRCInput::RC_timeout;
 					}
 			}
@@ -614,12 +614,12 @@ void CWidget::onOKKeyPressed()
 			//
 			switch ( rv ) 
 			{
-				case CMenuTarget::RETURN_EXIT_ALL:
-					retval = CMenuTarget::RETURN_EXIT_ALL; //fall through
-				case CMenuTarget::RETURN_EXIT:
+				case CWidgetTarget::RETURN_EXIT_ALL:
+					retval = CWidgetTarget::RETURN_EXIT_ALL; //fall through
+				case CWidgetTarget::RETURN_EXIT:
 					msg = CRCInput::RC_timeout;
 					break;
-				case CMenuTarget::RETURN_REPAINT:
+				case CWidgetTarget::RETURN_REPAINT:
 					paint();
 					break;
 			}
@@ -640,12 +640,12 @@ void CWidget::onRightKeyPressed()
 		//
 		switch ( rv ) 
 		{
-			case CMenuTarget::RETURN_EXIT_ALL:
-				retval = CMenuTarget::RETURN_EXIT_ALL; //fall through
-			case CMenuTarget::RETURN_EXIT:
+			case CWidgetTarget::RETURN_EXIT_ALL:
+				retval = CWidgetTarget::RETURN_EXIT_ALL; //fall through
+			case CWidgetTarget::RETURN_EXIT:
 				msg = CRCInput::RC_timeout;
 				break;
-			case CMenuTarget::RETURN_REPAINT:
+			case CWidgetTarget::RETURN_REPAINT:
 				paint();
 				break;
 		}
@@ -665,12 +665,12 @@ void CWidget::onLeftKeyPressed()
 		//
 		switch ( rv ) 
 		{
-			case CMenuTarget::RETURN_EXIT_ALL:
-				retval = CMenuTarget::RETURN_EXIT_ALL; //fall through
-			case CMenuTarget::RETURN_EXIT:
+			case CWidgetTarget::RETURN_EXIT_ALL:
+				retval = CWidgetTarget::RETURN_EXIT_ALL; //fall through
+			case CWidgetTarget::RETURN_EXIT:
 				msg = CRCInput::RC_timeout;
 				break;
-			case CMenuTarget::RETURN_REPAINT:
+			case CWidgetTarget::RETURN_REPAINT:
 				paint();
 				break;
 		}
@@ -691,12 +691,12 @@ void CWidget::onDirectKeyPressed(neutrino_msg_t _msg)
 		//
 		switch ( rv ) 
 		{
-			case CMenuTarget::RETURN_EXIT_ALL:
-				retval = CMenuTarget::RETURN_EXIT_ALL; //fall through
-			case CMenuTarget::RETURN_EXIT:
+			case CWidgetTarget::RETURN_EXIT_ALL:
+				retval = CWidgetTarget::RETURN_EXIT_ALL; //fall through
+			case CWidgetTarget::RETURN_EXIT:
 				msg = CRCInput::RC_timeout;
 				break;
-			case CMenuTarget::RETURN_REPAINT:
+			case CWidgetTarget::RETURN_REPAINT:
 				paint();
 				break;
 		}

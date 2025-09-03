@@ -33,7 +33,7 @@
 #include <string>
 
 
-class CRecordingSettings : public CMenuTarget, CChangeObserver
+class CRecordingSettings : public CWidgetTarget, CChangeObserver
 {
 	private:		
 		void showMenu();
@@ -42,7 +42,7 @@ class CRecordingSettings : public CMenuTarget, CChangeObserver
 		CRecordingSettings(){};
 		virtual ~CRecordingSettings(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 		bool changeNotify(const std::string &OptionName, void *);
 };
 

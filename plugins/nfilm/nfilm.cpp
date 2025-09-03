@@ -33,7 +33,7 @@ extern "C" void plugin_exec(void);
 extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
 
-class CNFilm : public CMenuTarget
+class CNFilm : public CWidgetTarget
 {
 	public:
 		enum{
@@ -103,7 +103,7 @@ class CNFilm : public CMenuTarget
 	public:
 		CNFilm(int id = 0, bool genre = false);
 		~CNFilm();
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 		void hide();
 };
 
@@ -510,7 +510,7 @@ void CNFilm::showMenu(bool genre)
 	}
 }
 
-int CNFilm::exec(CMenuTarget *parent, const std::string& actionKey)
+int CNFilm::exec(CWidgetTarget *parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CNFilm::exec: actionKey: %s\n", actionKey.c_str());
 

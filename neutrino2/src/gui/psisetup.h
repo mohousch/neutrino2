@@ -36,7 +36,7 @@
 #include <string>
 
 
-class CPSISetup : public CMenuTarget
+class CPSISetup : public CWidgetTarget
 {
 	private:
 		CFrameBuffer *frameBuffer;
@@ -68,7 +68,7 @@ class CPSISetup : public CMenuTarget
 		CPSISetup(const char* const Name, unsigned char *Contrast, unsigned char *Saturation, unsigned char *Brightness, unsigned char *Tint, CChangeObserver *Observer = NULL);
 
 		void hide();
-		int exec(CMenuTarget *parent, const std::string &actionKey);
+		int exec(CWidgetTarget *parent, const std::string &actionKey);
 };
 
 #endif	//psisetup.h

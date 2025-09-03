@@ -31,7 +31,7 @@
 #include <dmx_cs.h>
 
 
-class CStreamInfo : public CMenuTarget
+class CStreamInfo : public CWidgetTarget
 {
 	private:
 
@@ -109,7 +109,7 @@ class CStreamInfo : public CMenuTarget
 		~CStreamInfo();
 
 		void hide();
-		int exec(CMenuTarget* parent, const std::string & actionKey);
+		int exec(CWidgetTarget* parent, const std::string & actionKey);
 
 };
 

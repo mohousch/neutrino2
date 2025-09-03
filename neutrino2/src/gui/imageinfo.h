@@ -32,7 +32,7 @@
 #include <driver/gdi/framebuffer.h>
 
 
-class CImageInfo : public CMenuTarget
+class CImageInfo : public CWidgetTarget
 {
 	private:
 		CFrameBuffer	*frameBuffer;
@@ -61,7 +61,7 @@ class CImageInfo : public CMenuTarget
 		~CImageInfo();
 
 		void hide();
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 #endif

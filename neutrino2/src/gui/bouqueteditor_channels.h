@@ -41,7 +41,7 @@
 #include <gui/widget/listbox.h>
 
 
-class CBEChannelWidget : public CMenuTarget
+class CBEChannelWidget : public CWidgetTarget
 {
 	public:
 		ZapitChannelList *Channels;
@@ -82,7 +82,7 @@ class CBEChannelWidget : public CMenuTarget
 	public:
 		CBEChannelWidget( const std::string & Caption, unsigned int Bouquet);
 		~CBEChannelWidget();
-		int exec(CMenuTarget* parent, const std::string & actionKey);
+		int exec(CWidgetTarget* parent, const std::string & actionKey);
 
 		bool hasChanged();
 };

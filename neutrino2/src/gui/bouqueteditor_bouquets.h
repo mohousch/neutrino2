@@ -40,7 +40,7 @@
 #include <gui/widget/listbox.h>
 
 
-class CBEBouquetWidget : public CMenuTarget
+class CBEBouquetWidget : public CWidgetTarget
 {
 	public:
 		BouquetList *Bouquets;
@@ -95,7 +95,7 @@ class CBEBouquetWidget : public CMenuTarget
 		CBEBouquetWidget();
 		~CBEBouquetWidget();
 		
-		int exec(CMenuTarget *parent, const std::string &actionKey);
+		int exec(CWidgetTarget *parent, const std::string &actionKey);
 		void hide();
 };
 

@@ -424,7 +424,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t *a_start
 {
 	dprintf(DEBUG_NORMAL, "CEpgData::show: 0x%llx\n", channel_id);
 
-	int res = CMenuTarget::RETURN_REPAINT;
+	int res = CWidgetTarget::RETURN_REPAINT;
 	static uint64_t id;
 	static time_t starttime;
 	 
@@ -893,7 +893,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t *a_start
 						if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all )
 						{
 							loop = false;
-							res = CMenuTarget::RETURN_EXIT_ALL;
+							res = CWidgetTarget::RETURN_EXIT_ALL;
 						}
 					}
 			}
@@ -1084,11 +1084,11 @@ void CEpgData::showTimerEventBar(bool _show)
 }
 
 ////
-int CEPGDataHandler::exec(CMenuTarget *parent, const std::string &/*actionKey*/)
+int CEPGDataHandler::exec(CWidgetTarget *parent, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CEPGDataHandler::exec:\n");
 
-	int res = CMenuTarget::RETURN_REPAINT;
+	int res = CWidgetTarget::RETURN_REPAINT;
 	CEpgData *e = NULL;
 
 	if (parent) 

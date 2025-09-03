@@ -68,7 +68,7 @@ class CFrameItem
 		unsigned int captionFont;
 		unsigned int optionFont;
 
-		CMenuTarget *jumpTarget;
+		CWidgetTarget *jumpTarget;
 		std::string actionKey;
 		neutrino_msg_t directKey;
 		neutrino_msg_t msg;
@@ -108,13 +108,13 @@ class CFrameItem
 		virtual void showPluginName(){pluginOrigName = true;};
 		virtual void setHAlign(int h){halign = h;};
 		//
-		virtual void setActionKey(CMenuTarget *Target, const char *const ActionKey){jumpTarget = Target; actionKey = ActionKey;};
+		virtual void setActionKey(CWidgetTarget *Target, const char *const ActionKey){jumpTarget = Target; actionKey = ActionKey;};
 		virtual void setDirectKey(neutrino_msg_t key){directKey = key;};
 		//
 		virtual void setCaptionFont(unsigned int font){captionFont = font;};
 		virtual void setOptionFont(unsigned int font){optionFont = font;}; 
 		//
-		int exec(CMenuTarget *target);
+		int exec(CWidgetTarget *target);
 		//
 		virtual void setActive(const bool Active);
 		virtual void setMarked(const bool Marked);
@@ -200,7 +200,7 @@ class CFrameBox : public CComponent
 		int swipLeft();
 		void scrollLineDown(const int lines = 1);
 		void scrollLineUp(const int lines = 1);
-		int oKKeyPressed(CMenuTarget *target, neutrino_msg_t _msg = CRCInput::RC_ok);
+		int oKKeyPressed(CWidgetTarget *target, neutrino_msg_t _msg = CRCInput::RC_ok);
 		void homeKeyPressed(){selected = -1;};
 		//// get methods
 		int getSelected(){return selected;};

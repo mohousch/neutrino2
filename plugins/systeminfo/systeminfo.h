@@ -24,7 +24,7 @@
 #include <plugin.h>
 
 
-class CSysInfoWidget : public CMenuTarget
+class CSysInfoWidget : public CWidgetTarget
 {
 	private:
 		enum {
@@ -63,7 +63,7 @@ class CSysInfoWidget : public CMenuTarget
 	public:
 		CSysInfoWidget(int m = SYSINFO);
 		~CSysInfoWidget();
-		int exec(CMenuTarget *parent, const std::string &actionKey);
+		int exec(CWidgetTarget *parent, const std::string &actionKey);
 		void hide();
 };
 

@@ -82,7 +82,7 @@
 #define MTD_DEVICE_OF_UPDATE_PART      			"/dev/mtd5"
 #endif
 
-class CUpdateMenuTarget : public CMenuTarget
+class CUpdateMenuTarget : public CWidgetTarget
 {
 	int    myID;
 	int *  myselectedID;
@@ -94,11 +94,11 @@ class CUpdateMenuTarget : public CMenuTarget
 			myselectedID = selectedID;
 		}
 
-		virtual int exec(CMenuTarget *, const std::string &)
+		virtual int exec(CWidgetTarget *, const std::string &)
 		{
 			*myselectedID = myID;
 
-			return CMenuTarget::RETURN_EXIT_ALL;
+			return CWidgetTarget::RETURN_EXIT_ALL;
 		}
 };
 
@@ -488,7 +488,7 @@ int CFlashUpdate::showOfgWriteMenu()
 	return ret;
 }
 
-int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
+int CFlashUpdate::exec(CWidgetTarget * parent, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "CFlashUpdate::exec\n");
 	
@@ -505,7 +505,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 	{
 		hide();
 
-		return CMenuTarget::RETURN_REPAINT;
+		return CWidgetTarget::RETURN_REPAINT;
 	}
 
 	// install
@@ -525,7 +525,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 		{
 			hide();
 			HintBox(_("Error"), _("can't get update list"), 600, 5, NEUTRINO_ICON_ERROR); // UTF-8
-			return CMenuTarget::RETURN_REPAINT;
+			return CWidgetTarget::RETURN_REPAINT;
 		}
 		
 		sprintf(fullname, "%s/%s", g_settings.update_dir, fname);
@@ -539,7 +539,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 //			progressWindow->hide();
 			HintBox(_("Error"), (fileType < '3')? _("image has errors") : _("package has errors"), 600, 5, NEUTRINO_ICON_ERROR); // UTF-8
 
-			return CMenuTarget::RETURN_REPAINT;
+			return CWidgetTarget::RETURN_REPAINT;
 		}
 	}
 
@@ -572,7 +572,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 	
 				HintBox(_("Error"), _(ft.getErrorMessage().c_str()), 600, 5, NEUTRINO_ICON_ERROR); // UTF-8
 
-				return CMenuTarget::RETURN_REPAINT;
+				return CWidgetTarget::RETURN_REPAINT;
 			}
 
 			//status anzeigen
@@ -593,7 +593,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 		{
 			HintBox(_("Error"), _("image can't be flashed."), 600, 5, NEUTRINO_ICON_ERROR); // UTF-8
 			
-			return CMenuTarget::RETURN_REPAINT;
+			return CWidgetTarget::RETURN_REPAINT;
 		}
 	}
 	else if(fileType == 'T') // display file contents
@@ -661,13 +661,13 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 		{
 			HintBox(_("Error"), _("image can't be flashed."), 600, 5, NEUTRINO_ICON_ERROR); // UTF-8
 			
-			return CMenuTarget::RETURN_REPAINT;
+			return CWidgetTarget::RETURN_REPAINT;
 		}
 	}
 	
 //	progressWindow->hide();
 	
-	return CMenuTarget::RETURN_REPAINT;
+	return CWidgetTarget::RETURN_REPAINT;
 }
 
 ////
@@ -906,7 +906,7 @@ void CFlashExpert::showFileSelector(const std::string &actionkey)
 	}
 }
 
-int CFlashExpert::exec(CMenuTarget *parent, const std::string &actionKey)
+int CFlashExpert::exec(CWidgetTarget *parent, const std::string &actionKey)
 {
 	if(parent)
 		parent->hide();
@@ -946,20 +946,20 @@ int CFlashExpert::exec(CMenuTarget *parent, const std::string &actionKey)
 		
 		hide();
 
-		return CMenuTarget::RETURN_EXIT_ALL;
+		return CWidgetTarget::RETURN_EXIT_ALL;
 	}
 	
 	hide();
 	
-	return CMenuTarget::RETURN_REPAINT;
+	return CWidgetTarget::RETURN_REPAINT;
 }
 
 //
-int CUpdateSettings::exec(CMenuTarget* parent, const std::string& actionKey)
+int CUpdateSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CUpdateSettings::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -1001,7 +1001,7 @@ int CUpdateSettings::showMTDExpert()
 {
 	dprintf(DEBUG_NORMAL, "CUpdateSettings::showMTDExpert\n");
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	CWidget *mtdexpertWidget = NULL;
 	ClistBox *mtdexpert = NULL; 
@@ -1070,7 +1070,7 @@ int CUpdateSettings::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CUpdateSettings::showMenu\n");
 	
-	int res = CMenuTarget::RETURN_REPAINT;
+	int res = CWidgetTarget::RETURN_REPAINT;
 	
 	//
 	CWidget* widget = NULL;

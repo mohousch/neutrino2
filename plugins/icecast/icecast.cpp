@@ -54,7 +54,7 @@ const long int GET_PLAYLIST_TIMEOUT = 10;
 std::string icecasturl = "http://dir.xiph.org/yp.xml";
 const long int GET_ICECAST_TIMEOUT = 90; 		// list is about 500kB!
 
-class CIceCast : public CMenuTarget
+class CIceCast : public CWidgetTarget
 {
 	private:
 		CFrameBuffer* frameBuffer;
@@ -90,7 +90,7 @@ class CIceCast : public CMenuTarget
 	public:
 		CIceCast();
 		~CIceCast();
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 		void hide();
 };
 
@@ -718,7 +718,7 @@ void CIceCast::showMenu()
 	widget->exec(NULL, "");
 }
 
-int CIceCast::exec(CMenuTarget* parent, const std::string& actionKey)
+int CIceCast::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CIceCast::exec: actionKey:%s\n", actionKey.c_str());
 	

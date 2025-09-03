@@ -126,7 +126,7 @@ void CExtendedInput::calculateDialog()
 	hintPosY += y;
 }
 
-int CExtendedInput::exec( CMenuTarget* parent, const std::string& )
+int CExtendedInput::exec( CWidgetTarget* parent, const std::string& )
 {
 	dprintf(DEBUG_NORMAL, "CExtendedInput::exec\n");
 

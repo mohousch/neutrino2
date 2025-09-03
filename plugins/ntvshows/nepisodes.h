@@ -22,7 +22,7 @@
 #include <system/ytparser.h>
 
 
-class CNEpisodes : public CMenuTarget
+class CNEpisodes : public CWidgetTarget
 {
 	private:
 		CFrameBuffer* frameBuffer;
@@ -55,7 +55,7 @@ class CNEpisodes : public CMenuTarget
 	public:
 		CNEpisodes(int id, int nr = 0);
 		~CNEpisodes();
-		int exec(CMenuTarget *parent, const std::string &actionKey);
+		int exec(CWidgetTarget *parent, const std::string &actionKey);
 		void hide();
 };
 

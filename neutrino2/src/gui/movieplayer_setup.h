@@ -33,7 +33,7 @@
 #include <string>
 
 
-class CMoviePlayerSettings : public CMenuTarget
+class CMoviePlayerSettings : public CWidgetTarget
 {
 	private:
 		void showMenu();
@@ -42,7 +42,7 @@ class CMoviePlayerSettings : public CMenuTarget
 		CMoviePlayerSettings(){};
 		~CMoviePlayerSettings(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 #endif //__movieplayer_setup__

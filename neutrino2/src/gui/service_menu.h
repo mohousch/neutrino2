@@ -33,7 +33,7 @@
 #include <string>
 
 
-class CServiceMenu : public CMenuTarget
+class CServiceMenu : public CWidgetTarget
 {
 	private:
 		int showMenu(void);
@@ -42,7 +42,7 @@ class CServiceMenu : public CMenuTarget
 		CServiceMenu(){};
 		~CServiceMenu(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 #endif //__service__

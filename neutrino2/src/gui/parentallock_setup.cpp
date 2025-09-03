@@ -66,11 +66,11 @@ CParentalLockSettings::~CParentalLockSettings()
 {
 }
 
-int CParentalLockSettings::exec(CMenuTarget* parent, const std::string& actionKey)
+int CParentalLockSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CParentalLockSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();

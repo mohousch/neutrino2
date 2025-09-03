@@ -60,11 +60,11 @@ const keyval PICTUREVIEWER_SCALING_OPTIONS[PICTUREVIEWER_SCALING_OPTION_COUNT] =
 	{ SCALE_COLOR , _("advanced") }
 };
 
-int CPictureViewerSettings::exec(CMenuTarget* parent, const std::string& actionKey)
+int CPictureViewerSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CPicTureViewerSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();

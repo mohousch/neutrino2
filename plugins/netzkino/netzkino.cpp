@@ -275,7 +275,7 @@ void CNKMovies::recordMovie(MI_MOVIE_INFO& movie)
 	}
 }
 
-int CNKMovies::exec(CMenuTarget* parent, const std::string& actionKey)
+int CNKMovies::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CNKMovies::exec: actionKey:%s\n", actionKey.c_str());
 

@@ -31,62 +31,62 @@
 
 
 //// HDD menu handler
-class CHDDMenuHandler : public CMenuTarget
+class CHDDMenuHandler : public CWidgetTarget
 {
 	private:
 		int HDDMenu();
 			
 	public:
-		int  exec( CMenuTarget * parent,  const std::string &actionKey);
+		int  exec( CWidgetTarget * parent,  const std::string &actionKey);
 };
 
 //// HDDdest
-class CHDDDestExec : public CMenuTarget
+class CHDDDestExec : public CWidgetTarget
 {
 	public:
-		int exec(CMenuTarget * parent, const std::string&);
+		int exec(CWidgetTarget * parent, const std::string&);
 };
 
 //// HDDinit
-class CHDDInit : public CMenuTarget
+class CHDDInit : public CWidgetTarget
 {
 	public:
-		int exec(CMenuTarget * parent, const std::string& actionKey);
+		int exec(CWidgetTarget * parent, const std::string& actionKey);
 };
 
 //// HDDformat
-class CHDDFmtExec : public CMenuTarget
+class CHDDFmtExec : public CWidgetTarget
 {
 	public:
-		int exec(CMenuTarget * parent, const std::string&);
+		int exec(CWidgetTarget * parent, const std::string&);
 };
 
 //// HDDcheckfs
-class CHDDChkExec : public CMenuTarget
+class CHDDChkExec : public CWidgetTarget
 {
 	public:
-		int exec(CMenuTarget * parent, const std::string&);
+		int exec(CWidgetTarget * parent, const std::string&);
 };
 
 //// HDDmountMSG
-class CHDDMountMSGExec : public CMenuTarget
+class CHDDMountMSGExec : public CWidgetTarget
 {
 	public:
-		int exec(CMenuTarget * parent, const std::string&);
+		int exec(CWidgetTarget * parent, const std::string&);
 };
 
 //// HDDumount
-class CHDDuMountMSGExec : public CMenuTarget
+class CHDDuMountMSGExec : public CWidgetTarget
 {
 	public:
-		int exec(CMenuTarget * parent, const std::string&);
+		int exec(CWidgetTarget * parent, const std::string&);
 };
 
 //// HDDBrowser
-class CHDDBrowser : public CMenuTarget
+class CHDDBrowser : public CWidgetTarget
 {	
 	public:
-		int exec(CMenuTarget * parent, const std::string& actionKey);
+		int exec(CWidgetTarget * parent, const std::string& actionKey);
 };
 
 #endif	//hdd_menu_h

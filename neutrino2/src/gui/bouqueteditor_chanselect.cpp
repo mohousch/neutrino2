@@ -178,7 +178,7 @@ void CBEChannelSelectWidget::hide()
 	}
 }
 
-int CBEChannelSelectWidget::exec(CMenuTarget* parent, const std::string& actionKey)
+int CBEChannelSelectWidget::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CBEChannelSelectWidget::exec: actionKey:%s\n", actionKey.c_str());
 

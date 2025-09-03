@@ -38,7 +38,7 @@
 #include <string>
 
 
-class CProxySetup : public CMenuTarget
+class CProxySetup : public CWidgetTarget
 {
 	private:
 		std::string menue_title;
@@ -50,7 +50,7 @@ class CProxySetup : public CMenuTarget
 		CProxySetup(){};
 		~CProxySetup(){};
 		
-		int exec(CMenuTarget * parent, const std::string &actionKey);
+		int exec(CWidgetTarget * parent, const std::string &actionKey);
 };
 
 #endif

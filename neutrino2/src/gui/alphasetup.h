@@ -39,7 +39,7 @@
 #include <string>
 
 
-class CAlphaSetup : public CMenuTarget
+class CAlphaSetup : public CWidgetTarget
 {
 	private:
 		CFrameBuffer *frameBuffer;
@@ -64,7 +64,7 @@ class CAlphaSetup : public CMenuTarget
 		virtual ~CAlphaSetup(){};
 
 		void hide();
-		int exec(CMenuTarget *parent, const std::string &actionKey);
+		int exec(CWidgetTarget *parent, const std::string &actionKey);
 };
 
 #endif

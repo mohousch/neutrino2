@@ -33,7 +33,7 @@
 #include <string>
 
 
-class CAudioPlayerSettings : public CMenuTarget
+class CAudioPlayerSettings : public CWidgetTarget
 {
 	private:
 		void showMenu();
@@ -42,7 +42,7 @@ class CAudioPlayerSettings : public CMenuTarget
 		CAudioPlayerSettings(){};
 		~CAudioPlayerSettings(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 #endif //__audioplayer_setup__

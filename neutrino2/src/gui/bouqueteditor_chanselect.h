@@ -39,7 +39,7 @@
 #include <zapit/bouquets.h>
 
 
-class CBEChannelSelectWidget : public CMenuTarget
+class CBEChannelSelectWidget : public CWidgetTarget
 {
 	public:
 		ZapitChannelList Channels;
@@ -73,7 +73,7 @@ class CBEChannelSelectWidget : public CMenuTarget
 	public:
 		CBEChannelSelectWidget(const std::string& Caption, unsigned int Bouquet, CZapit::channelsMode Mode);
 		~CBEChannelSelectWidget();
-		int exec(CMenuTarget *parent, const std::string &actionKey);
+		int exec(CWidgetTarget *parent, const std::string &actionKey);
 		void hide();
 		
 		bool hasChanged();

@@ -239,12 +239,12 @@ class EpgPlus
 		};
 
 		////
-		class MenuTargetAddReminder : public CMenuTarget
+		class MenuTargetAddReminder : public CWidgetTarget
 		{
 			public:
 				MenuTargetAddReminder( EpgPlus* _epgPlus);
 
-				int exec(CMenuTarget* parent, const std::string& actionKey);
+				int exec(CWidgetTarget* parent, const std::string& actionKey);
 
 			private:
 				EpgPlus * epgPlus;
@@ -252,12 +252,12 @@ class EpgPlus
 		};
 
 		////
-		class MenuTargetAddRecordTimer : public CMenuTarget
+		class MenuTargetAddRecordTimer : public CWidgetTarget
 		{
 			public:
 				MenuTargetAddRecordTimer( EpgPlus* _epgPlus);
 
-				int exec(CMenuTarget* parent , const std::string& actionKey);
+				int exec(CWidgetTarget* parent , const std::string& actionKey);
 
 			private:
 				EpgPlus * epgPlus;
@@ -265,12 +265,12 @@ class EpgPlus
 		};
 
 		////
-		class MenuTargetRefreshEpg : public CMenuTarget
+		class MenuTargetRefreshEpg : public CWidgetTarget
 		{
 			public:
 				MenuTargetRefreshEpg( EpgPlus* _epgPlus);
 
-				int exec(CMenuTarget* parent, const std::string& actionKey);
+				int exec(CWidgetTarget* parent, const std::string& actionKey);
 
 			private:
 				EpgPlus * epgPlus;
@@ -396,13 +396,13 @@ class EpgPlus
 		MenuTargetAddReminder *addReminder;
 };
 
-class CEPGplusHandler : public CMenuTarget
+class CEPGplusHandler : public CWidgetTarget
 {
 	public:
 		CEPGplusHandler(){};
 		virtual ~CEPGplusHandler(){};
 		
-		int exec(CMenuTarget* parent,  const std::string &actionKey);
+		int exec(CWidgetTarget* parent,  const std::string &actionKey);
 };
 
 #endif

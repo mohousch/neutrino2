@@ -43,7 +43,7 @@
 #include <ctime>
 
 
-class CAudioPlayerGui : public CMenuTarget
+class CAudioPlayerGui : public CWidgetTarget
 {
 	public:
 		enum State
@@ -166,7 +166,7 @@ class CAudioPlayerGui : public CMenuTarget
 		CAudioPlayerGui();
 		~CAudioPlayerGui();
 
-		int exec(CMenuTarget *parent, const std::string &actionKey);
+		int exec(CWidgetTarget *parent, const std::string &actionKey);
 
 		//
 		void addToPlaylist(CAudiofile& file);

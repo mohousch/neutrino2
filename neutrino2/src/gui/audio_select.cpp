@@ -76,11 +76,11 @@ const keyval AC3_OPTIONS[AC3_OPTION_COUNT] =
 	{ AC3_DOWNMIX, _("downmix") }
 };
 
-int CAudioSelectMenuHandler::exec(CMenuTarget * parent, const std::string &/*actionKey*/)
+int CAudioSelectMenuHandler::exec(CWidgetTarget * parent, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CAudioSelectMenuHandler::exec:\n");
 
-	int res = CMenuTarget::RETURN_REPAINT;
+	int res = CWidgetTarget::RETURN_REPAINT;
 
 	if (parent) 
 		parent->hide();
@@ -95,7 +95,7 @@ int CAudioSelectMenuHandler::doMenu()
 {
 	dprintf(DEBUG_NORMAL, "CAudioSelectMenuHandler::doMenu\n");
 	
-	int res = CMenuTarget::RETURN_REPAINT;
+	int res = CWidgetTarget::RETURN_REPAINT;
 	
 	//
 	CWidget* widget = NULL;
@@ -275,7 +275,7 @@ bool CAudioSelectMenuHandler::changeNotify(const std::string& OptionName __attri
 }
 
 //// apid change notifier
-int CAPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actionKey)
+int CAPIDChangeExec::exec(CWidgetTarget */*parent*/, const std::string & actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CAPIDChangeExec exec: %s\n", actionKey.c_str());
 
@@ -286,11 +286,11 @@ int CAPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actionKey
 		g_RemoteControl->setAPID(sel);
 	}
 
-	return CMenuTarget::RETURN_EXIT;
+	return CWidgetTarget::RETURN_EXIT;
 }
 
 //// txt/dvb subtitle
-int CSubtitleChangeExec::exec(CMenuTarget *, const std::string & actionKey)
+int CSubtitleChangeExec::exec(CWidgetTarget *, const std::string & actionKey)
 {
 	dprintf(DEBUG_INFO, "CSubtitleChangeExec::exec: action %s\n", actionKey.c_str());
 	
@@ -338,7 +338,7 @@ int CSubtitleChangeExec::exec(CMenuTarget *, const std::string & actionKey)
 }
 
 //// tuxtxt
-int CTuxtxtChangeExec::exec(CMenuTarget *parent, const std::string &actionKey)
+int CTuxtxtChangeExec::exec(CWidgetTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_INFO, "CTuxtxtChangeExec exec: %s\n", actionKey.c_str());
 

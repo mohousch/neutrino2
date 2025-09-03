@@ -64,11 +64,11 @@ const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
 };
 
 //// osd settings
-int COSDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
+int COSDSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "COSDSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -82,7 +82,7 @@ int COSDSettings::showMenu(void)
 {
 	dprintf(DEBUG_NORMAL, "COSDSettings::showMenu:\n");
 	
-	int res = CMenuTarget::RETURN_REPAINT;
+	int res = CWidgetTarget::RETURN_REPAINT;
 	
 	//
 	oldLcdMode = CLCD::getInstance()->getMode();
@@ -237,11 +237,11 @@ const keyval RADIUS_TYPE_OPTIONS[RADIUS_TYPE_OPTION_COUNT] =
 	{ RADIUS_VERYLARGE, _("very large") }
 };
 
-int COSDMenuColorSettings::exec(CMenuTarget* parent, const std::string& actionKey)
+int COSDMenuColorSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "COSDMenuColorSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -458,11 +458,11 @@ void COSDMenuColorSettings::showMenu()
 }
 
 //// osd infobarcolor settings
-int COSDInfoBarColorSettings::exec(CMenuTarget* parent, const std::string& actionKey)
+int COSDInfoBarColorSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "COSDInfoBarColorSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -608,11 +608,11 @@ CLanguageSettings::CLanguageSettings(bool wizzard)
 	fromStartWizzard = wizzard;
 }
 
-int CLanguageSettings::exec(CMenuTarget *parent, const std::string &actionKey)
+int CLanguageSettings::exec(CWidgetTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CLanguageSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -631,7 +631,7 @@ int CLanguageSettings::exec(CMenuTarget *parent, const std::string &actionKey)
 			return RETURN_EXIT_ALL;
 		}
 		
-		return CMenuTarget::RETURN_EXIT;
+		return CWidgetTarget::RETURN_EXIT;
 	}
 	
 	ret = showMenu();
@@ -643,7 +643,7 @@ int CLanguageSettings::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CLanguageSettings::showMenu:\n");
 	
-	int res = CMenuTarget::RETURN_REPAINT;
+	int res = CWidgetTarget::RETURN_REPAINT;
 	
 	//
 	CMenuItem* item = NULL;
@@ -756,11 +756,11 @@ int CLanguageSettings::showMenu()
 }
 
 //// CFontSettings
-int CFontSettings::exec(CMenuTarget* parent, const std::string& actionKey)
+int CFontSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CFontSettings::exec: %s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if (parent)
 		parent->hide();
@@ -885,11 +885,11 @@ void CFontSettings::showMenu()
 }
 
 //// osd timing settings
-int COSDTimingSettings::exec(CMenuTarget* parent, const std::string& actionKey)
+int COSDTimingSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "COSDTimingSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -996,11 +996,11 @@ void COSDTimingSettings::showMenu()
 }
 
 //// diverses
-int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
+int COSDDiverses::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "COSDDiverses::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -1181,7 +1181,7 @@ int CSkinManager::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CSkinManager::showMenu:\n");
 	
-	int res = CMenuTarget::RETURN_REPAINT;
+	int res = CWidgetTarget::RETURN_REPAINT;
 	
 	//
 	CMenuItem* item = NULL;
@@ -1298,11 +1298,11 @@ int CSkinManager::showMenu()
 	return res;
 }
 
-int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
+int CSkinManager::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CSkinManager::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if (parent)
 		parent->hide();
@@ -1327,7 +1327,7 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 		
-		return CMenuTarget::RETURN_EXIT_ALL;
+		return CWidgetTarget::RETURN_EXIT_ALL;
 	}
 		
 	ret = showMenu();
@@ -1340,7 +1340,7 @@ int CSkinSettings::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CSkinSettings::showMenu:\n");
 	
-	int res = CMenuTarget::RETURN_REPAINT;
+	int res = CWidgetTarget::RETURN_REPAINT;
 	
 	//
 	CMenuItem* item = NULL;
@@ -1455,11 +1455,11 @@ int CSkinSettings::showMenu()
 	return res;
 }
 
-int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
+int CSkinSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CSkinSettings::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if (parent)
 		parent->hide();
@@ -1539,7 +1539,7 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 			// 
 			CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 			
-			return CMenuTarget::RETURN_EXIT_ALL;
+			return CWidgetTarget::RETURN_EXIT_ALL;
 		}
 	}
 		
@@ -1549,11 +1549,11 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 }
 
 //// personalize
-int CPersonalisation::exec(CMenuTarget *parent, const std::string &actionKey)
+int CPersonalisation::exec(CWidgetTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CPersonalisation::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if (parent)
 		parent->hide();
@@ -1567,7 +1567,7 @@ int CPersonalisation::showMenu(void)
 {
 	dprintf(DEBUG_NORMAL, "CSkinSettings::showMenu:\n");
 	
-	int res = CMenuTarget::RETURN_REPAINT;
+	int res = CWidgetTarget::RETURN_REPAINT;
 	
 	//
 	CMenuItem *item = NULL;

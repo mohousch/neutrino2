@@ -331,11 +331,11 @@ CScanSetup::~CScanSetup()
 	}
 }
 
-int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
+int CScanSetup::exec(CWidgetTarget * parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_DEBUG, "CScanSetup::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int res = CMenuTarget::RETURN_REPAINT;
+	int res = CWidgetTarget::RETURN_REPAINT;
 	
 	if (parent)
 		parent->hide();
@@ -374,7 +374,7 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		delete hintBox;
 		hintBox = NULL;
 		
-		return CMenuTarget::RETURN_REPAINT;
+		return CWidgetTarget::RETURN_REPAINT;
 	}
 	else if(actionKey == "unisetup") 
 	{
@@ -413,7 +413,7 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		delete freq;
 		freq = NULL;
 		
-		return CMenuTarget::RETURN_REPAINT;
+		return CWidgetTarget::RETURN_REPAINT;
 	}
 	else if (actionKey == "srate")
 	{
@@ -424,7 +424,7 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		delete rate;
 		rate = NULL;
 		
-		return CMenuTarget::RETURN_REPAINT;
+		return CWidgetTarget::RETURN_REPAINT;
 	}
 	
 	res = showScanService();
@@ -436,7 +436,7 @@ int CScanSetup::showScanService()
 {
 	dprintf(DEBUG_NORMAL, "Tuner: %d:%d\n", fe->feadapter, fe->fenumber);
 	
-	int res = CMenuTarget::RETURN_REPAINT;
+	int res = CWidgetTarget::RETURN_REPAINT;
 	
 	if(!fe)
 		return res;
@@ -685,7 +685,7 @@ int CScanSetup::showMotorSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showMotorSetup\n");
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	CWidget* motorMenuWidget = NULL;
 	ClistBox* motorMenu = NULL;
@@ -786,7 +786,7 @@ int CScanSetup::showUnicableSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showUnicableSetup\n");
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	//
 	CWidget* uniWidget = NULL;
@@ -857,7 +857,7 @@ int CScanSetup::showLNBSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showLNBSetup\n");
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	//
 	CWidget* satSetupWidget = NULL;
@@ -1021,7 +1021,7 @@ int CScanSetup::showSatOnOffSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showSatOnOffSetup\n");
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	//
 	CWidget *satOnOffWidget = NULL;
@@ -1097,7 +1097,7 @@ int CScanSetup::showManualScanSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showManualScanSetup\n");
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	CWidget* manualScanWidget = NULL;
 	ClistBox* manualScanlistBox = NULL;
@@ -1383,7 +1383,7 @@ int CScanSetup::showAutoScanSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showAutoScanSetup\n");
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	CWidget* autoScanWidget = NULL;
 	ClistBox* autoScanlistBox = NULL;
@@ -1521,7 +1521,7 @@ int CScanSetup::showAllAutoScanSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showAllAutoScanSetup\n");
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	//
 	CWidget* autoScanAllWidget = NULL;
@@ -1595,7 +1595,7 @@ CTPSelectHandler::CTPSelectHandler(CFrontend *f, CScanSettings * sc)
 	scanSettings = sc;
 }
 
-int CTPSelectHandler::exec(CMenuTarget *parent, const std::string &)
+int CTPSelectHandler::exec(CWidgetTarget *parent, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "CTPSelectHandler::exec\n");
 	
@@ -1842,10 +1842,10 @@ int CTPSelectHandler::exec(CMenuTarget *parent, const std::string &)
 #endif	
 	}
 	
-	if(retval == CMenuTarget::RETURN_EXIT_ALL)
-		return CMenuTarget::RETURN_EXIT_ALL;
+	if(retval == CWidgetTarget::RETURN_EXIT_ALL)
+		return CWidgetTarget::RETURN_EXIT_ALL;
 
-	return CMenuTarget::RETURN_REPAINT;
+	return CWidgetTarget::RETURN_REPAINT;
 }
 
 //// CScanSettings
@@ -2328,11 +2328,11 @@ bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 }
 
 //// TunerSetup
-int CTunerSetup::exec(CMenuTarget *parent, const std::string &actionKey)
+int CTunerSetup::exec(CWidgetTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CTunerSetup::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -2346,7 +2346,7 @@ int CTunerSetup::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CTunerSetup::showMenu\n");
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	CWidget* widget = NULL;
 	ClistBox* TunerSetup = NULL;

@@ -34,7 +34,7 @@
 
 
 ////
-class COSDSettings : public CMenuTarget
+class COSDSettings : public CWidgetTarget
 {
 	private:
 		int showMenu(void);
@@ -43,11 +43,11 @@ class COSDSettings : public CMenuTarget
 		COSDSettings(){};
 		virtual ~COSDSettings(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 //// osd menucolor settings
-class COSDMenuColorSettings : public CMenuTarget
+class COSDMenuColorSettings : public CWidgetTarget
 {
 	private:
 		void showMenu();
@@ -56,11 +56,11 @@ class COSDMenuColorSettings : public CMenuTarget
 		COSDMenuColorSettings(){};
 		virtual ~COSDMenuColorSettings(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 //// osd infobarcolor settings
-class COSDInfoBarColorSettings : public CMenuTarget
+class COSDInfoBarColorSettings : public CWidgetTarget
 {
 	private:
 		void showMenu();
@@ -69,11 +69,11 @@ class COSDInfoBarColorSettings : public CMenuTarget
 		COSDInfoBarColorSettings(){};
 		virtual ~COSDInfoBarColorSettings(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 // osd language settings
-class CLanguageSettings : public CMenuTarget
+class CLanguageSettings : public CWidgetTarget
 {
 	private:
 		bool fromStartWizzard;
@@ -83,10 +83,10 @@ class CLanguageSettings : public CMenuTarget
 		CLanguageSettings(bool wizzard = false);
 		virtual ~CLanguageSettings(){};
 		
-		int exec(CMenuTarget *parent, const std::string &actionKey);
+		int exec(CWidgetTarget *parent, const std::string &actionKey);
 };
 
-class CFontSettings : public CMenuTarget
+class CFontSettings : public CWidgetTarget
 {
 	private:
 		void showMenu();
@@ -95,11 +95,11 @@ class CFontSettings : public CMenuTarget
 		CFontSettings(){};
 		virtual ~CFontSettings(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 // osd timing settings
-class COSDTimingSettings : public CMenuTarget
+class COSDTimingSettings : public CWidgetTarget
 {
 	private:
 		void showMenu();
@@ -108,11 +108,11 @@ class COSDTimingSettings : public CMenuTarget
 		COSDTimingSettings(){};
 		virtual ~COSDTimingSettings(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 // diverses
-class COSDDiverses : public CMenuTarget
+class COSDDiverses : public CWidgetTarget
 {
 	private:
 		void showMenu();
@@ -121,11 +121,11 @@ class COSDDiverses : public CMenuTarget
 		COSDDiverses(){};
 		virtual ~COSDDiverses(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 // skin
-class CSkinManager : public CMenuTarget
+class CSkinManager : public CWidgetTarget
 {
 	private:
 		int showMenu();
@@ -134,10 +134,10 @@ class CSkinManager : public CMenuTarget
 		CSkinManager(){};
 		virtual ~CSkinManager(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
-class CSkinSettings : public CMenuTarget
+class CSkinSettings : public CWidgetTarget
 {
 	private:
 		ClistBox *skinSettings;
@@ -148,10 +148,10 @@ class CSkinSettings : public CMenuTarget
 		CSkinSettings(){};
 		virtual ~CSkinSettings(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
-class CPersonalisation : public CMenuTarget
+class CPersonalisation : public CWidgetTarget
 {
 	private:
 		int showMenu(void);
@@ -160,7 +160,7 @@ class CPersonalisation : public CMenuTarget
 		CPersonalisation(){};
 		virtual ~CPersonalisation(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 #endif //__osd_setup__

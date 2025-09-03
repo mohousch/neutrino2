@@ -62,11 +62,11 @@ extern CCAMMenuHandler * g_CamHandler;		// defined neutrino.cpp
 extern int FrontendCount;			// defined in zapit.cpp
 
 //
-int CServiceMenu::exec(CMenuTarget* parent, const std::string& actionKey)
+int CServiceMenu::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CServiceMenu::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -81,7 +81,7 @@ int CServiceMenu::showMenu(void)
 {
 	dprintf(DEBUG_NORMAL, "CServiceMenu::showMenu\n");
 	
-	int res = CMenuTarget::RETURN_REPAINT;
+	int res = CWidgetTarget::RETURN_REPAINT;
 	
 	//
 	oldLcdMode = CLCD::getInstance()->getMode();

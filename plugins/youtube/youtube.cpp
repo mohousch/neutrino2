@@ -415,7 +415,7 @@ int CYTBrowser::showCategoriesMenu(void)
 	return res;
 }
 
-int CYTBrowser::exec(CMenuTarget* parent, const std::string& actionKey)
+int CYTBrowser::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CYTBrowser::exec: actionKey:%s\n", actionKey.c_str());
 

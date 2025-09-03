@@ -45,10 +45,10 @@ class CMiscNotifier : public CChangeObserver
 
 // general settings
 // data reset notifier
-class CDataResetNotifier : public CMenuTarget
+class CDataResetNotifier : public CWidgetTarget
 {
 	public:
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 // TZ change notifier
@@ -59,7 +59,7 @@ class CTZChangeNotifier : public CChangeObserver
 };
 
 //// general settings
-class CGeneralSettings : public CMenuTarget, CChangeObserver
+class CGeneralSettings : public CWidgetTarget, CChangeObserver
 {
 	private:
 		CMenuItem * forecast_item;
@@ -71,11 +71,11 @@ class CGeneralSettings : public CMenuTarget, CChangeObserver
 		CGeneralSettings(){};
 		~CGeneralSettings(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 // channellist settings
-class CChannelListSettings : public CMenuTarget, CChangeObserver
+class CChannelListSettings : public CWidgetTarget, CChangeObserver
 {
 	private:
 		void showMenu();
@@ -86,7 +86,7 @@ class CChannelListSettings : public CMenuTarget, CChangeObserver
 		CChannelListSettings(){};
 		~CChannelListSettings(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 //// epg settings
@@ -130,7 +130,7 @@ class CXMLTVConfigNotifier : public CChangeObserver
 };
 
 //// epg settings
-class CEPGSettings : public CMenuTarget, CChangeObserver
+class CEPGSettings : public CWidgetTarget, CChangeObserver
 {
 	private:
 		void showMenu();
@@ -139,11 +139,11 @@ class CEPGSettings : public CMenuTarget, CChangeObserver
 		CEPGSettings(){};
 		~CEPGSettings(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 //// filebrowser settings
-class CFileBrowserSettings : public CMenuTarget, CChangeObserver
+class CFileBrowserSettings : public CWidgetTarget, CChangeObserver
 {
 	private:
 		void showMenu();
@@ -152,7 +152,7 @@ class CFileBrowserSettings : public CMenuTarget, CChangeObserver
 		CFileBrowserSettings(){};
 		~CFileBrowserSettings(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 #endif //__misc_setup__

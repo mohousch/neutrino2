@@ -114,11 +114,11 @@ CAudioSettings::~CAudioSettings()
 	delete audioSetupNotifier;
 }
 
-int CAudioSettings::exec(CMenuTarget* parent, const std::string& actionKey)
+int CAudioSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CAudioSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();

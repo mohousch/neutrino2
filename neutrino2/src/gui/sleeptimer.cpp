@@ -41,11 +41,11 @@
 #include <system/debug.h>
 
 
-int CSleepTimerWidget::exec(CMenuTarget* parent, const std::string &)
+int CSleepTimerWidget::exec(CWidgetTarget* parent, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "CSleepTimerWidget::exec\n");
 
-	int    res = CMenuTarget::RETURN_REPAINT;
+	int    res = CWidgetTarget::RETURN_REPAINT;
 	int    shutdown_min = 0;
 	char   value[16];
 	CStringInput* inbox = NULL;

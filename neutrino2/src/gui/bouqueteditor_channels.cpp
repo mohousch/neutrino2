@@ -153,7 +153,7 @@ void CBEChannelWidget::hide()
 	}
 }
 
-int CBEChannelWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
+int CBEChannelWidget::exec(CWidgetTarget* parent, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CBEChannelWidget::exec:\n");
 

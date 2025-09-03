@@ -90,11 +90,11 @@
 CConfigFile skin_configfile(',', true);
 
 //
-CMenuTarget* CNeutrinoApp::convertTarget(const std::string& name)
+CWidgetTarget* CNeutrinoApp::convertTarget(const std::string& name)
 {
 	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertTarget: %s\n", name.c_str());
 	
-	CMenuTarget* parent = NULL;
+	CWidgetTarget* parent = NULL;
 	
 	if (name == "neutrino") 
 	{
@@ -1549,7 +1549,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		item_gradient = xmlGetAttribute(listboxitem_node, (char *)"gradient");
 		sep_type = xmlGetAttribute(listboxitem_node, (char *)"type");
 						
-		CMenuTarget* parent = NULL;
+		CWidgetTarget* parent = NULL;
 		std::string actionKey = "";
 		std::string itemName = "";
 		neutrino_msg_t key = CRCInput::RC_nokey;
@@ -2581,7 +2581,7 @@ void CNeutrinoApp::parseKey(xmlNodePtr node, CWidget* widget)
 	key_target = xmlGetAttribute(node, (char*)"target");
 		
 	neutrino_msg_t key = CRCInput::RC_nokey;		
-	CMenuTarget* key_parent = NULL;
+	CWidgetTarget* key_parent = NULL;
 		
 	if (key_name) key = convertKey(key_name);		
 	if (key_target) key_parent = convertTarget(key_target);

@@ -85,7 +85,7 @@ void CPictureViewerGui::hide()
 	frameBuffer->blit();
 }
 
-int CPictureViewerGui::exec(CMenuTarget* parent, const std::string &actionKey)
+int CPictureViewerGui::exec(CWidgetTarget* parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CPictureViewerGui::exec: actionKey:%s\n", actionKey.c_str());
 	
@@ -138,7 +138,7 @@ int CPictureViewerGui::exec(CMenuTarget* parent, const std::string &actionKey)
 		playlist.clear();
 
 	// 
-	return CMenuTarget::RETURN_EXIT;
+	return CWidgetTarget::RETURN_EXIT;
 }
 
 void CPictureViewerGui::show()

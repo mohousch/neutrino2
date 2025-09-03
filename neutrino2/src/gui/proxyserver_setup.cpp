@@ -42,11 +42,11 @@
 #include <system/debug.h>
 
 
-int CProxySetup::exec(CMenuTarget * parent, const std::string &actionKey)
+int CProxySetup::exec(CWidgetTarget * parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_DEBUG, "CProxySetup::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int res = CMenuTarget::RETURN_REPAINT;
+	int res = CWidgetTarget::RETURN_REPAINT;
 
 	if (parent)
 		parent->hide();

@@ -234,7 +234,7 @@ void CSatIPClient::showMenu()
 	satIPClientMenu = NULL;
 }
 
-int CSatIPClient::exec(CMenuTarget* parent, const std::string &actionKey)
+int CSatIPClient::exec(CWidgetTarget* parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CSatIPClient::exec: actionKey: %s\n", actionKey.c_str());
 	

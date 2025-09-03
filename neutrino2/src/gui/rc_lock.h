@@ -27,11 +27,11 @@
 #include <string>
 
 
-class CRCLock: public CMenuTarget
+class CRCLock: public CWidgetTarget
 {
 	public:
 		static const std::string NO_USER_INPUT; 
-		int  exec(CMenuTarget *parent, const std::string &actionKey);
+		int  exec(CWidgetTarget *parent, const std::string &actionKey);
 		void lockBox();
 };
 

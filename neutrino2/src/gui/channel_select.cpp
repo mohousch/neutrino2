@@ -62,7 +62,7 @@ CSelectChannelWidget::~CSelectChannelWidget()
 	}
 }
 
-int CSelectChannelWidget::exec(CMenuTarget *parent, const std::string &actionKey)
+int CSelectChannelWidget::exec(CWidgetTarget *parent, const std::string &actionKey)
 {
 	int   res = RETURN_REPAINT;
 	

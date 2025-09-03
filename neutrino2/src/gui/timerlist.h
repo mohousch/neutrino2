@@ -39,7 +39,7 @@
 #include <gui/pluginlist.h>
 
 
-class CTimerList : public CMenuTarget
+class CTimerList : public CWidgetTarget
 {
 	private:
 		CFrameBuffer* frameBuffer;
@@ -81,7 +81,7 @@ class CTimerList : public CMenuTarget
 		CTimerList();
 		~CTimerList();
 		void hide();
-		int  exec(CMenuTarget* parent, const std::string & actionKey);
+		int  exec(CWidgetTarget* parent, const std::string & actionKey);
 
 		//
 		static const char * convertTimerType2String(const CTimerd::CTimerEventTypes type); // UTF-8

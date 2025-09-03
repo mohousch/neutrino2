@@ -43,7 +43,7 @@
 class CKeyChooserItem;
 class CKeyChooserItemNoKey;
 
-class CKeyChooser : public CMenuTarget
+class CKeyChooser : public CWidgetTarget
 {
 	private:
 		CFrameBuffer* frameBuffer;
@@ -68,10 +68,10 @@ class CKeyChooser : public CMenuTarget
 		
 		//
 		void hide();
-		int exec(CMenuTarget* parent, const std::string & actionKey);
+		int exec(CWidgetTarget* parent, const std::string & actionKey);
 };
 
-class CKeyChooserItem : public CMenuTarget
+class CKeyChooserItem : public CWidgetTarget
 {
 	private:
 		CBox m_cBox;
@@ -90,11 +90,11 @@ class CKeyChooserItem : public CMenuTarget
 		CKeyChooserItem(const char* const Name, long *Key);
 
 		void hide();
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 
 };
 
-class CKeyChooserItemNoKey : public CMenuTarget
+class CKeyChooserItemNoKey : public CWidgetTarget
 {
 		long *key;
 
@@ -104,7 +104,7 @@ class CKeyChooserItemNoKey : public CMenuTarget
 			key = Key;
 		};
 
-		int exec(CMenuTarget */*parent*/, const std::string &/*actionKey*/)
+		int exec(CWidgetTarget */*parent*/, const std::string &/*actionKey*/)
 		{
 			*key = CRCInput::RC_nokey;
 			return RETURN_REPAINT;

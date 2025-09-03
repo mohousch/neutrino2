@@ -149,7 +149,7 @@ int CKeyChooser::paint()
 	return ret;
 }
 
-int CKeyChooser::exec(CMenuTarget *parent, const std::string &actionKey)
+int CKeyChooser::exec(CWidgetTarget *parent, const std::string &actionKey)
 {
 	int ret = RETURN_REPAINT;
 	
@@ -197,7 +197,7 @@ CKeyChooserItem::CKeyChooserItem(const char * const Name, long * Key)
 	m_cBox.iY = CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_cBox.iHeight) >> 1);
 }
 
-int CKeyChooserItem::exec(CMenuTarget *parent, const std::string &)
+int CKeyChooserItem::exec(CWidgetTarget *parent, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "CKeyChooserItem::exec\n");
 

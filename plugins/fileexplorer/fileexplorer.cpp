@@ -26,7 +26,7 @@ extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
 
 
-class CFileExplorer : public CMenuTarget
+class CFileExplorer : public CWidgetTarget
 {
 	private:
 		CFileBrowser fileBrowser;
@@ -44,7 +44,7 @@ class CFileExplorer : public CMenuTarget
 	public:
 		CFileExplorer(){};
 		~CFileExplorer(){};
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 //
@@ -115,7 +115,7 @@ BROWSER:
 	}
 }
 
-int CFileExplorer::exec(CMenuTarget* parent, const std::string& actionKey)
+int CFileExplorer::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CFileExplorer::exec: %s\n", actionKey.c_str());
 

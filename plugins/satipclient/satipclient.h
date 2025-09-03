@@ -26,7 +26,7 @@
 
 //#define CONFIG_FILE		"/etc/satip-client.conf"
 #define CONFIG_FILE		PLUGINDIR "/satipclient/satip-client.conf"
-class CSatIPClient : public CMenuTarget
+class CSatIPClient : public CWidgetTarget
 {
 	private:
 		std::string SatIPServerIP;
@@ -41,7 +41,7 @@ class CSatIPClient : public CMenuTarget
 		CSatIPClient(){};
 		~CSatIPClient(){};
 		
-		int exec(CMenuTarget* parent,  const std::string& actionkey);
+		int exec(CWidgetTarget* parent,  const std::string& actionkey);
 
 		//
 		void readSettings();

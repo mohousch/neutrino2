@@ -57,7 +57,7 @@ struct UPnPEntry
 	int		preferred;
 };
 
-class CUpnpBrowserGui : public CMenuTarget
+class CUpnpBrowserGui : public CWidgetTarget
 {
 	private:
 		std::vector<CUPnPDevice> m_devices;
@@ -102,7 +102,7 @@ class CUpnpBrowserGui : public CMenuTarget
 	public:
 		CUpnpBrowserGui(UPNP_GUI g = UPNP_GUI_DEVICE);
 		~CUpnpBrowserGui();
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 		void hide();
 };
 

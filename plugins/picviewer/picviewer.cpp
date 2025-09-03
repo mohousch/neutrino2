@@ -31,7 +31,7 @@ extern "C" void plugin_del(void);
 #undef _
 #define _(string) dgettext("picviewer", string)
 
-class CPicViewer : public CMenuTarget
+class CPicViewer : public CWidgetTarget
 {
 	private:
 		CFrameBuffer* frameBuffer;
@@ -56,7 +56,7 @@ class CPicViewer : public CMenuTarget
 	public:
 		CPicViewer();
 		~CPicViewer();
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 		void hide();
 };
 
@@ -240,7 +240,7 @@ void CPicViewer::showMenu()
 	}
 }
 
-int CPicViewer::exec(CMenuTarget* parent, const std::string& actionKey)
+int CPicViewer::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CPicViewer::exec: actionKey:%s\n", actionKey.c_str());
 	

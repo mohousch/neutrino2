@@ -65,7 +65,7 @@ bool CZapProtection::check()
 		hint2 = _("PIN-Code was wrong! Try again.");
 	} while ( (strncmp(cPIN,validPIN, 4) != 0) &&
 		  (cPIN[0] != 0) &&
-		  ( res == CMenuTarget::RETURN_REPAINT ) &&
+		  ( res == CWidgetTarget::RETURN_REPAINT ) &&
 		  ( fsk >= g_settings.parentallock_lockage ) );
 		  
 	return ( ( strncmp(cPIN, validPIN, 4) == 0 ) || ( fsk < g_settings.parentallock_lockage ) );

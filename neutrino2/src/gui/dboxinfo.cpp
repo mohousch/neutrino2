@@ -118,7 +118,7 @@ CDBoxInfoWidget::CDBoxInfoWidget()
 	CCLabel* tunerLabel1 = NULL;
 }
 
-int CDBoxInfoWidget::exec(CMenuTarget *parent, const std::string &actionKey)
+int CDBoxInfoWidget::exec(CWidgetTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CDBoxInfoWidget::exec:\n");
 
@@ -132,7 +132,7 @@ int CDBoxInfoWidget::exec(CMenuTarget *parent, const std::string &actionKey)
 		CLCD::getInstance()->setMode(CLCD::MODE_TVRADIO);
 	}	
 
-	return CMenuTarget::RETURN_REPAINT;
+	return CWidgetTarget::RETURN_REPAINT;
 }
 
 void CDBoxInfoWidget::hide()
@@ -144,7 +144,7 @@ int CDBoxInfoWidget::showInfo()
 {
 	dprintf(DEBUG_NORMAL, "CDBoxInfoWidget::showInfo:\n");
 	
-	int res = CMenuTarget::RETURN_REPAINT;
+	int res = CWidgetTarget::RETURN_REPAINT;
 	
 	dboxInfoWidget = CNeutrinoApp::getInstance()->getWidget("boxinfo");
 	
@@ -519,11 +519,11 @@ int CDBoxInfoWidget::showInfo()
 }
 
 //
-int CInfoMenu::exec(CMenuTarget* parent, const std::string& actionKey)
+int CInfoMenu::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CInfoMenu::exec: %s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if (parent)
 		parent->hide();
@@ -537,7 +537,7 @@ int CInfoMenu::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CInfoMenu::showMenu:\n");
 	
-	int res = CMenuTarget::RETURN_REPAINT;
+	int res = CWidgetTarget::RETURN_REPAINT;
 	
 	//
 	oldLcdMode = CLCD::getInstance()->getMode();

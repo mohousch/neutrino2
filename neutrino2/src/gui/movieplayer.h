@@ -45,7 +45,7 @@
 
 
 //
-class CMoviePlayerGui : public CMenuTarget
+class CMoviePlayerGui : public CWidgetTarget
 {
 	public:
 		enum state
@@ -150,7 +150,7 @@ class CMoviePlayerGui : public CMenuTarget
 	public:
 		CMoviePlayerGui();
 		~CMoviePlayerGui();
-		int exec(CMenuTarget* parent, const std::string & actionKey);
+		int exec(CWidgetTarget* parent, const std::string & actionKey);
 		void hide();
 
 		//

@@ -279,7 +279,7 @@ void CMovieInfoWidget::funArt()
 	widget = NULL;
 }
 
-int CMovieInfoWidget::exec(CMenuTarget* parent, const std::string& actionKey)
+int CMovieInfoWidget::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CMovieInfoWidget::exec: actionKey:%s\n", actionKey.c_str());
 	
@@ -293,17 +293,17 @@ int CMovieInfoWidget::exec(CMenuTarget* parent, const std::string& actionKey)
 
 		tmpMoviePlayerGui.exec(NULL, "");
 
-		return CMenuTarget::RETURN_REPAINT;
+		return CWidgetTarget::RETURN_REPAINT;
 	}
 	else if(actionKey == "MovieInfo")
 	{
 		m_movieInfo.showMovieInfo(movieFile);
 
-		return CMenuTarget::RETURN_REPAINT;
+		return CWidgetTarget::RETURN_REPAINT;
 	}
 
 	funArt();
 	
-	return CMenuTarget::RETURN_EXIT;
+	return CWidgetTarget::RETURN_EXIT;
 }
 

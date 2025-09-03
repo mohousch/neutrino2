@@ -33,7 +33,7 @@
 #include <string>
 
 
-class CPowerMenu : public CMenuTarget
+class CPowerMenu : public CWidgetTarget
 {
 	private:
 		int showMenu(void);
@@ -42,7 +42,7 @@ class CPowerMenu : public CMenuTarget
 		CPowerMenu(){};
 		~CPowerMenu(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 #endif //__power_setup__

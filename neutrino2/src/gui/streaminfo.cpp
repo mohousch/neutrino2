@@ -113,7 +113,7 @@ CStreamInfo::~CStreamInfo()
 	}
 }
 
-int CStreamInfo::exec(CMenuTarget * parent, const std::string&)
+int CStreamInfo::exec(CWidgetTarget * parent, const std::string&)
 {
 	dprintf(DEBUG_NORMAL, "CStreamInfo::exec\n");
 
@@ -129,7 +129,7 @@ int CStreamInfo::exec(CMenuTarget * parent, const std::string&)
 
 	hide();
 	
-	return CMenuTarget::RETURN_REPAINT;
+	return CWidgetTarget::RETURN_REPAINT;
 }
 
 void CStreamInfo::doSignalStrengthLoop()

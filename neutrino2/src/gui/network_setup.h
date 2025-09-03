@@ -36,7 +36,7 @@
 
 class CIPChangeNotifier;
 ////
-class CNetworkSettings : public CMenuTarget, CChangeObserver
+class CNetworkSettings : public CWidgetTarget, CChangeObserver
 {
 	private:
 		CWidget* widget;
@@ -70,7 +70,7 @@ class CNetworkSettings : public CMenuTarget, CChangeObserver
 		void setNetwork(void);
 		void getWlanList(void);
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 // IP notifier

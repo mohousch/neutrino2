@@ -33,10 +33,10 @@
 
 using namespace std;
 
-class CEPGMenuHandler : public CMenuTarget
+class CEPGMenuHandler : public CWidgetTarget
 {
 	public:
-		int  exec( CMenuTarget* parent,  const std::string &actionkey);
+		int  exec( CWidgetTarget* parent,  const std::string &actionkey);
 		int  doMenu();
 };
 

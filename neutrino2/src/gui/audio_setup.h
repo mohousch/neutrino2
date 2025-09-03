@@ -39,7 +39,7 @@ class CAudioSetupNotifier : public CChangeObserver
 		bool changeNotify(const std::string& OptionName, void *);
 };
 
-class CAudioSettings : public CMenuTarget
+class CAudioSettings : public CWidgetTarget
 {
 	private:
 		void showMenu();
@@ -51,7 +51,7 @@ class CAudioSettings : public CMenuTarget
 		CAudioSetupNotifier * audioSetupNotifier;
 		static CAudioSettings* getInstance();
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 // autoaudio select notifier

@@ -368,11 +368,11 @@ void CMenuOptionChooser::addOption(const char *optionname, const int optionvalue
 	number_of_options++;
 }
 
-int CMenuOptionChooser::exec(CMenuTarget*)
+int CMenuOptionChooser::exec(CWidgetTarget*)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionChooser::exec: (%s)\n", itemName.c_str());
 	
-	int ret = CMenuTarget::RETURN_NONE; // FIXME
+	int ret = CWidgetTarget::RETURN_NONE; // FIXME
 	bool wantsRepaint = false;
 	
 	//
@@ -382,7 +382,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 		{
 			if (!check())
 			{
-				return CMenuTarget::RETURN_REPAINT;
+				return CWidgetTarget::RETURN_REPAINT;
 			}
 		}
 		
@@ -569,7 +569,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 		
 	//
 	if (wantsRepaint || !paintFrame)
-		ret = CMenuTarget::RETURN_REPAINT;
+		ret = CWidgetTarget::RETURN_REPAINT;
 		
 	paint(true, true);
 
@@ -730,11 +730,11 @@ CMenuOptionNumberChooser::CMenuOptionNumberChooser(const char * const Name, int 
 	menuItem_type = MENUITEM_OPTIONNUMBERCHOOSER;
 }
 
-int CMenuOptionNumberChooser::exec(CMenuTarget*)
+int CMenuOptionNumberChooser::exec(CWidgetTarget*)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionNumberChooser::exec: (%s)\n", itemName.c_str());
 	
-	int ret = CMenuTarget::RETURN_NONE; // FIXME
+	int ret = CWidgetTarget::RETURN_NONE; // FIXME
 	bool wantsRepaint = false;
 	
 	//
@@ -744,7 +744,7 @@ int CMenuOptionNumberChooser::exec(CMenuTarget*)
 		{
 			if (!check())
 			{
-				return CMenuTarget::RETURN_REPAINT;
+				return CWidgetTarget::RETURN_REPAINT;
 			}
 		}
 		
@@ -771,7 +771,7 @@ int CMenuOptionNumberChooser::exec(CMenuTarget*)
 		wantsRepaint = observ->changeNotify(itemName, optionValue);
 		
 	if (wantsRepaint || !paintFrame)
-		ret = CMenuTarget::RETURN_REPAINT;
+		ret = CWidgetTarget::RETURN_REPAINT;
 		
 	paint(true);
 
@@ -891,11 +891,11 @@ void CMenuOptionStringChooser::addOption(const char * optionname, const int opti
 	options.push_back(std::string(optionname));
 }
 
-int CMenuOptionStringChooser::exec(CMenuTarget *)
+int CMenuOptionStringChooser::exec(CWidgetTarget *)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionStringChooser::exec: (%s) options:%d\n", itemName.c_str(), (int)options.size());
 	
-	int ret = CMenuTarget::RETURN_NONE; // FIXME
+	int ret = CWidgetTarget::RETURN_NONE; // FIXME
 	bool wantsRepaint = false;
 	
 	//
@@ -905,7 +905,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		{
 			if (!check())
 			{
-				return CMenuTarget::RETURN_REPAINT;
+				return CWidgetTarget::RETURN_REPAINT;
 			}
 		}
 		
@@ -1087,7 +1087,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		
 	//
 	if (wantsRepaint || !paintFrame)
-		ret = CMenuTarget::RETURN_REPAINT;
+		ret = CWidgetTarget::RETURN_REPAINT;
 		
 	paint(true, true);
 
@@ -1309,7 +1309,7 @@ int CMenuSeparator::paint(bool /*selected*/, bool /*AfterPulldown*/)
 }
 
 //// CMenuForwarder
-CMenuForwarder::CMenuForwarder(const char * const Text, const bool Active, const char * const Option, CMenuTarget* Target, const char * const ActionKey, const neutrino_msg_t DirectKey, const char * const IconName, const char* const ItemIcon, const char* const Hint)
+CMenuForwarder::CMenuForwarder(const char * const Text, const bool Active, const char * const Option, CWidgetTarget* Target, const char * const ActionKey, const neutrino_msg_t DirectKey, const char * const IconName, const char* const ItemIcon, const char* const Hint)
 {
 	itemName = Text? Text : "";
 
@@ -1395,11 +1395,11 @@ int CMenuForwarder::getWidth(void) const
 	}
 }
 
-int CMenuForwarder::exec(CMenuTarget *target)
+int CMenuForwarder::exec(CWidgetTarget *target)
 {
 	dprintf(DEBUG_DEBUG, "CMenuForwarder::exec: (%s) actionKey: (%s)\n", getName(), actionKey.c_str());
 
-	int ret = CMenuTarget::RETURN_EXIT;
+	int ret = CWidgetTarget::RETURN_EXIT;
 	
 	// locked
 	if (locked)
@@ -1408,7 +1408,7 @@ int CMenuForwarder::exec(CMenuTarget *target)
 		{
 			if (!check())
 			{
-				return CMenuTarget::RETURN_REPAINT;
+				return CWidgetTarget::RETURN_REPAINT;
 			}
 		}
 		
@@ -1423,7 +1423,7 @@ int CMenuForwarder::exec(CMenuTarget *target)
 		if (jumpTarget->valueStringSetted)
 			setOption(jumpTarget->getValueString().c_str());
 		
-		if (ret == CMenuTarget::RETURN_REPAINT)
+		if (ret == CWidgetTarget::RETURN_REPAINT)
 			paint(true);
 	}
 
@@ -3436,7 +3436,7 @@ int ClistBox::swipLeft()
 {
 	dprintf(DEBUG_NORMAL, "ClistBox::swipLeft:\n");
 	
-	int ret = CMenuTarget::RETURN_NONE;
+	int ret = CWidgetTarget::RETURN_NONE;
 
 	if(widgetType == TYPE_FRAME)
 	{
@@ -3503,7 +3503,7 @@ int ClistBox::swipRight()
 {
 	dprintf(DEBUG_NORMAL, "ClistBox::swipRight:\n");
 	
-	int ret = CMenuTarget::RETURN_NONE;
+	int ret = CWidgetTarget::RETURN_NONE;
 
 	if(widgetType == TYPE_FRAME)
 	{
@@ -3564,11 +3564,11 @@ int ClistBox::swipRight()
 }
 
 //
-int ClistBox::oKKeyPressed(CMenuTarget *target, neutrino_msg_t _msg)
+int ClistBox::oKKeyPressed(CWidgetTarget *target, neutrino_msg_t _msg)
 {
 	dprintf(DEBUG_NORMAL, "ClistBox::okKeyPressed: msg:0x%x\n", _msg);
 	
-	int ret = CMenuTarget::RETURN_EXIT;
+	int ret = CWidgetTarget::RETURN_EXIT;
 
 	if (hasItem() && selected >= 0 && items[selected]->isSelectable())
 	{
@@ -3587,7 +3587,7 @@ int ClistBox::directKeyPressed(neutrino_msg_t _msg)
 {
 	dprintf(DEBUG_DEBUG, "ClistBox::directKeyPressed: msg:0x%x\n", _msg);
 	
-	int ret = CMenuTarget::RETURN_NONE;
+	int ret = CWidgetTarget::RETURN_NONE;
 	
 	// 
 	for (unsigned int i = 0; i < items.size(); i++) 

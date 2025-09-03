@@ -34,7 +34,7 @@
 
 
 // main settings
-class CMainSettingsMenu : public CMenuTarget
+class CMainSettingsMenu : public CWidgetTarget
 {
 	private:
 		void showMenu(void);
@@ -43,7 +43,7 @@ class CMainSettingsMenu : public CMenuTarget
 		CMainSettingsMenu(){};
 		~CMainSettingsMenu(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 #endif //__main_setup__

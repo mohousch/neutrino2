@@ -37,7 +37,7 @@ extern "C" void plugin_del(void);
 #undef _
 #define _(string) dgettext("ntvshows", string)
 
-class CTVShows : public CMenuTarget
+class CTVShows : public CWidgetTarget
 {
 	private:
 		//
@@ -81,7 +81,7 @@ class CTVShows : public CMenuTarget
 	public:
 		CTVShows(std::string tvlist = "popular");
 		~CTVShows();
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 		void hide();
 };
 
@@ -385,7 +385,7 @@ int CTVShows::showCategoriesMenu()
 	return res;
 }
 
-int CTVShows::exec(CMenuTarget* parent, const std::string& actionKey)
+int CTVShows::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CTVShows::exec: actionKey: %s\n", actionKey.c_str());
 

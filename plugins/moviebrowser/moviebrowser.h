@@ -174,7 +174,7 @@ typedef struct
 }MB_SETTINGS;
 
 // Priorities for Developmemt: P1: critical feature, P2: important feature, P3: for next release, P4: looks nice, lets see
-class CMovieBrowser : public CMenuTarget
+class CMovieBrowser : public CWidgetTarget
 {	
 	private: // Variables
 		CFrameBuffer * frameBuffer;
@@ -241,7 +241,7 @@ class CMovieBrowser : public CMenuTarget
 		CMovieBrowser(); //P1 
 		~CMovieBrowser(); //P1 
 		int exec(int timeout = -1); //P1 
-        	int exec(CMenuTarget* parent, const std::string & actionKey);
+        	int exec(CWidgetTarget* parent, const std::string & actionKey);
 		////
 		MI_MOVIE_BOOKMARKS* getCurrentMovieBookmark(void){if(m_movieSelectionHandler == NULL) return NULL; return(&(m_movieSelectionHandler->bookmarks));};
 		
@@ -317,23 +317,23 @@ class CMovieBrowser : public CMenuTarget
 };
 
 // Class to show Moviebrowser Information, to be used by menu
-class CMovieHelp : public CMenuTarget
+class CMovieHelp : public CWidgetTarget
 {
 	public:
 		CMovieHelp(){};
 		~CMovieHelp(){};
-		int exec( CMenuTarget* parent, const std::string & actionKey );
+		int exec( CWidgetTarget* parent, const std::string & actionKey );
 };
 
 //
-class CFileChooser : public CMenuTarget
+class CFileChooser : public CWidgetTarget
 {
 	private:
 		std::string *dirPath;
 
 	public:
 		CFileChooser(std::string *path){dirPath = path;};
-		int exec(CMenuTarget *parent, const std::string & actionKey);
+		int exec(CWidgetTarget *parent, const std::string & actionKey);
  };
 
 typedef enum
@@ -346,7 +346,7 @@ typedef enum
 }DIR_STATE;
 
 #define MAX_DIR 10
-class CDirMenu : public CMenuTarget
+class CDirMenu : public CWidgetTarget
 {
 	private:
 		std::vector<MB_DIR>* dirList;
@@ -360,7 +360,7 @@ class CDirMenu : public CMenuTarget
 
 	public:
 		CDirMenu(std::vector<MB_DIR>* dir_list);
-		int exec(CMenuTarget* parent, const std::string & actionKey);
+		int exec(CWidgetTarget* parent, const std::string & actionKey);
 		void show(void);
 		bool isChanged(){return changed;};
 };

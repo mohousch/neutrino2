@@ -208,7 +208,7 @@ void CNSeasons::showMenu()
 	}
 }
 
-int CNSeasons::exec(CMenuTarget* parent, const std::string& actionKey)
+int CNSeasons::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CNSeasons::exec: %s\n", actionKey.c_str());
 

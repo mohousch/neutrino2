@@ -44,7 +44,7 @@
 
 
 // CMovieInfoWidget
-class CMovieInfoWidget : public CMenuTarget
+class CMovieInfoWidget : public CWidgetTarget
 {
 	private:
 		MI_MOVIE_INFO movieFile;
@@ -56,7 +56,7 @@ class CMovieInfoWidget : public CMenuTarget
 		~CMovieInfoWidget();
 
 		void hide();
-		int exec(CMenuTarget *parent, const std::string &actionKey);
+		int exec(CWidgetTarget *parent, const std::string &actionKey);
 
 		void setMovie(MI_MOVIE_INFO& file);
 		void setMovie(const CFile& file, std::string title = "", std::string info1 = "", std::string info2 = "", std::string tfile = "", std::string duration = "", std::string rating = "");

@@ -46,7 +46,7 @@ extern "C" void plugin_del(void);
 //// globals
 const long int GET_PLAYLIST_TIMEOUT = 10;
 
-class CInternetRadio : public CMenuTarget
+class CInternetRadio : public CWidgetTarget
 {
 	private:
 		CFrameBuffer* frameBuffer;
@@ -83,7 +83,7 @@ class CInternetRadio : public CMenuTarget
 	public:
 		CInternetRadio();
 		~CInternetRadio();
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 		void hide();
 };
 
@@ -723,7 +723,7 @@ void CInternetRadio::showMenu()
 	widget->exec(NULL, "");
 }
 
-int CInternetRadio::exec(CMenuTarget* parent, const std::string& actionKey)
+int CInternetRadio::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CInternetRadio::exec: actionKey:%s\n", actionKey.c_str());
 	

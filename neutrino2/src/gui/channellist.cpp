@@ -706,7 +706,7 @@ int CChannelList::show(bool customMode)
 
 			hide();
 
-			if ( chanlist.size() && g_EventList->show(chanlist[selected]->epgid, chanlist[selected]->name) == CMenuTarget::RETURN_EXIT_ALL) 
+			if ( chanlist.size() && g_EventList->show(chanlist[selected]->epgid, chanlist[selected]->name) == CWidgetTarget::RETURN_EXIT_ALL) 
 			{
 				res = -2;
 				loop = false;

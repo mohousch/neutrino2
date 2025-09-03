@@ -116,11 +116,11 @@ const keyval CHANNELLIST_NUMBER_OPTIONS[CHANNELLIST_NUMBER_OPTION_COUNT]
 };
 
 //// general settings
-int CGeneralSettings::exec(CMenuTarget* parent, const std::string& actionKey)
+int CGeneralSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CGeneralSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -400,7 +400,7 @@ bool CTZChangeNotifier::changeNotify(const std::string&, void * Data)
 }
 
 //
-int CDataResetNotifier::exec(CMenuTarget *parent, const std::string& actionKey)
+int CDataResetNotifier::exec(CWidgetTarget *parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CDataResetNotifier::exec: %s\n", actionKey.c_str());
 	
@@ -534,11 +534,11 @@ int CDataResetNotifier::exec(CMenuTarget *parent, const std::string& actionKey)
 
 
 //// channellist settings
-int CChannelListSettings::exec(CMenuTarget* parent, const std::string& actionKey)
+int CChannelListSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CChannelListSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -694,11 +694,11 @@ bool CChannelListSettings::changeNotify(const std::string& OptionName, void */*d
 
 
 //// epg settings
-int CEPGSettings::exec(CMenuTarget* parent, const std::string& actionKey)
+int CEPGSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CEPGSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -1007,11 +1007,11 @@ bool CXMLTVConfigNotifier::changeNotify(const std::string&, void *)
 }
 
 //// filebrowser settings
-int CFileBrowserSettings::exec(CMenuTarget* parent, const std::string& actionKey)
+int CFileBrowserSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CFileBrowserSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();

@@ -98,10 +98,10 @@ class CEpgData
 };
 
 ////
-class CEPGDataHandler : public CMenuTarget
+class CEPGDataHandler : public CWidgetTarget
 {
 	public:
-		int exec(CMenuTarget *parent,  const std::string &actionKey);
+		int exec(CWidgetTarget *parent,  const std::string &actionKey);
 };
 
 #endif

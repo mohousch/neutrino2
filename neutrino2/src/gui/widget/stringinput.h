@@ -39,7 +39,7 @@
 #include <system/settings.h>
 
 
-class CStringInput : public CMenuTarget
+class CStringInput : public CWidgetTarget
 {
 	protected:
 		CFrameBuffer* frameBuffer;
@@ -97,7 +97,7 @@ class CStringInput : public CMenuTarget
 		virtual ~CStringInput();
 
 		void hide();
-		int exec(CMenuTarget* parent, const std::string &actionKey);
+		int exec(CWidgetTarget* parent, const std::string &actionKey);
 };
 
 class CStringInputSMS : public CStringInput
@@ -132,7 +132,7 @@ class CPINInput : public CStringInput
 	public:
 		CPINInput(const char * const Head, const char * const Value, int Size = 10, const char* const Hint_1 = NULL, const char* const Hint_2 = NULL, const char * const Valid_Chars = (const char *)"0123456789", CChangeObserver* Observ = NULL) : CStringInput(Head, Value, Size, Hint_1, Hint_2, Valid_Chars, Observ, (char *)NEUTRINO_ICON_LOCK){};
 
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 class CPLPINInput : public CPINInput
@@ -148,7 +148,7 @@ class CPLPINInput : public CPINInput
 	public:
 		CPLPINInput(const char * const Name, const char * const Value, int Size = 10, const char* const Hint_2 = NULL, int FSK = 0x100) : CPINInput(Name, Value, Size, NULL, Hint_2) { fsk = FSK; };
 
-		int exec(CMenuTarget* parent, const std::string & actionKey);
+		int exec(CWidgetTarget* parent, const std::string & actionKey);
 };
 
 class CPINChangeWidget : public CStringInput

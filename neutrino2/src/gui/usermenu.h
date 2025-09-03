@@ -32,7 +32,7 @@
 #include <gui/widget/listbox.h>
 
 
-class CUserMenu : public CMenuTarget
+class CUserMenu : public CWidgetTarget
 {
         private:
                 int button;
@@ -43,7 +43,7 @@ class CUserMenu : public CMenuTarget
                 CUserMenu(const char *const _local, int _button){local = _local; button = _button;};
                 virtual ~CUserMenu(){};
                 
-                int exec(CMenuTarget *parent, const std::string &actionKey);
+                int exec(CWidgetTarget *parent, const std::string &actionKey);
 };
 
 #endif

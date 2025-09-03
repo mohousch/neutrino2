@@ -26,7 +26,7 @@ extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
 
 
-class CMediaPortal : public CMenuTarget
+class CMediaPortal : public CWidgetTarget
 {
 	private:
 		CFrameBuffer* frameBuffer;
@@ -42,7 +42,7 @@ class CMediaPortal : public CMenuTarget
 		CMediaPortal();
 		~CMediaPortal();
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 CMediaPortal::CMediaPortal()
@@ -63,7 +63,7 @@ CMediaPortal::~CMediaPortal()
 	dprintf(DEBUG_NORMAL, "CMediaPortal: del\n");
 }
 
-int CMediaPortal::exec(CMenuTarget * parent, const std::string & actionKey)
+int CMediaPortal::exec(CWidgetTarget * parent, const std::string & actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CMediaPortal::exec: actionKey:%s\n", actionKey.c_str());
 

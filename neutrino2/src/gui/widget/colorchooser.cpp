@@ -117,7 +117,7 @@ void CColorChooser::setColor()
 	frameBuffer->paintBoxRel(cFrameBoxColorPreview.iX + 2, cFrameBoxColorPreview.iY + 2,  cFrameBoxColorPreview.iWidth - 4, cFrameBoxColorPreview.iHeight - 4, col);
 }
 
-int CColorChooser::exec(CMenuTarget* parent, const std::string&)
+int CColorChooser::exec(CWidgetTarget* parent, const std::string&)
 {
 	dprintf(DEBUG_NORMAL, "CColorChooser::exec:\n");
 	

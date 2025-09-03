@@ -88,14 +88,14 @@ CPSISetup::CPSISetup(const char* const Name, unsigned char *Contrast, unsigned c
 	videoDecoder->setTint(*tint);
 }
 
-int CPSISetup::exec(CMenuTarget * parent, const std::string &)
+int CPSISetup::exec(CWidgetTarget * parent, const std::string &)
 {
 	dprintf(DEBUG_DEBUG, "CPSISetup::exec\n");
 
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
 
-	int res = CMenuTarget::RETURN_REPAINT;
+	int res = CWidgetTarget::RETURN_REPAINT;
 	
 	if (parent)
 		parent->hide();
@@ -345,7 +345,7 @@ int CPSISetup::exec(CMenuTarget * parent, const std::string &)
 				if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all )
 				{
 					loop = false;
-					res = CMenuTarget::RETURN_EXIT_ALL;
+					res = CWidgetTarget::RETURN_EXIT_ALL;
 				}
 		}
 

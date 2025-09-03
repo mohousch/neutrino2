@@ -156,11 +156,11 @@ void CNetworkSettings::getWlanList()
 	get_wlan_list(g_settings.ifname, networks);
 }
 
-int CNetworkSettings::exec(CMenuTarget *parent, const std::string &actionKey)
+int CNetworkSettings::exec(CWidgetTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CNetworkSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();

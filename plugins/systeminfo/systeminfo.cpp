@@ -178,11 +178,11 @@ void CSysInfoWidget::hide()
 }
 
 // main
-int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
+int CSysInfoWidget::exec(CWidgetTarget* parent, const std::string& /*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CsysInfoWidget::exec:\n");
 
-	int res = CMenuTarget::RETURN_REPAINT;
+	int res = CWidgetTarget::RETURN_REPAINT;
 
 	if(mode == SYSINFO)
 	{

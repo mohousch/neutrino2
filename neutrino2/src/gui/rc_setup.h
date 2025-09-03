@@ -34,7 +34,7 @@
 
 
 ////
-class CRemoteControlSettings : public CMenuTarget, CChangeObserver
+class CRemoteControlSettings : public CWidgetTarget, CChangeObserver
 {
 	private:
 		CWidget* widget;
@@ -47,12 +47,12 @@ class CRemoteControlSettings : public CMenuTarget, CChangeObserver
 		CRemoteControlSettings();
 		virtual ~CRemoteControlSettings(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 		bool changeNotify(const std::string&, void *);
 };
 
 //// keys binding settings
-class CKeysBindingSettings : public CMenuTarget
+class CKeysBindingSettings : public CWidgetTarget
 {
 	private:
 		void showMenu();
@@ -61,7 +61,7 @@ class CKeysBindingSettings : public CMenuTarget
 		CKeysBindingSettings(){};
 		~CKeysBindingSettings(){};
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CWidgetTarget* parent, const std::string& actionKey);
 };
 
 #endif //__rc_setup__

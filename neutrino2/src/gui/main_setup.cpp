@@ -56,11 +56,11 @@
 
 
 // main settings
-int CMainSettingsMenu::exec(CMenuTarget* parent, const std::string& actionKey)
+int CMainSettingsMenu::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CMainSettingsMenu::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = CMenuTarget::RETURN_REPAINT;
+	int ret = CWidgetTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
