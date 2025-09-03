@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$Id: channellist.cpp 21122024 mohousch Exp $
+//	$Id: channellist.cpp 03092025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -242,40 +242,6 @@ void CChannelList::updateEvents(void)
 		}
 	}
 }
-
-struct CmpChannelBySat: public std::binary_function <const CZapitChannel * const, const CZapitChannel * const, bool>
-{
-        static bool comparetolower(const char a, const char b)
-        {
-		    return tolower(a) < tolower(b);
-        };
-
-        bool operator() (const CZapitChannel * const c1, const CZapitChannel * const c2)
-        {
-		    if(c1->getSatellitePosition() == c2->getSatellitePosition())
-			    return std::lexicographical_compare(c1->getName().begin(), c1->getName().end(), c2->getName().begin(), c2->getName().end(), comparetolower);
-		    else
-			    return c1->getSatellitePosition() < c2->getSatellitePosition();
-;
-	};
-};
-
-struct CmpChannelByFreq: public std::binary_function <const CZapitChannel * const, const CZapitChannel * const, bool>
-{
-        static bool comparetolower(const char a, const char b)
-        {
-                return tolower(a) < tolower(b);
-        };
-
-        bool operator() (const CZapitChannel * const c1, const CZapitChannel * const c2)
-        {
-		    if(c1->getFreqId() == c2->getFreqId())
-			    return std::lexicographical_compare(c1->getName().begin(), c1->getName().end(), c2->getName().begin(), c2->getName().end(), comparetolower);
-		    else
-			    return c1->getFreqId() < c2->getFreqId();
-;
-	};
-};
 
 void CChannelList::SortAlpha(void)
 {

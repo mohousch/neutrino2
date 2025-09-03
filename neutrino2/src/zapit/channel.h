@@ -1,5 +1,5 @@
 //
-// $Id: channel.h 20.10.2023 mohousch Exp $
+// $Id: channel.h 03092025 mohousch Exp $
 //
 // (C) 2002 Steffen Hehn <mcclean@berlios.de>
 // (C) 2002 by Andreas Oberritter <obi@tuxbox.org>
@@ -304,6 +304,40 @@ struct CmpChannelByChName: public std::binary_function <const CZapitChannel * co
 	bool operator() (const CZapitChannel * const c1, const CZapitChannel * const c2)
 	{
 		return std::lexicographical_compare(c1->getName().begin(), c1->getName().end(), c2->getName().begin(), c2->getName().end(), comparetolower);
+	};
+};
+
+struct CmpChannelBySat: public std::binary_function <const CZapitChannel * const, const CZapitChannel * const, bool>
+{
+        static bool comparetolower(const char a, const char b)
+        {
+		    return tolower(a) < tolower(b);
+        };
+
+        bool operator() (const CZapitChannel * const c1, const CZapitChannel * const c2)
+        {
+		    if(c1->getSatellitePosition() == c2->getSatellitePosition())
+			    return std::lexicographical_compare(c1->getName().begin(), c1->getName().end(), c2->getName().begin(), c2->getName().end(), comparetolower);
+		    else
+			    return c1->getSatellitePosition() < c2->getSatellitePosition();
+;
+	};
+};
+
+struct CmpChannelByFreq: public std::binary_function <const CZapitChannel * const, const CZapitChannel * const, bool>
+{
+        static bool comparetolower(const char a, const char b)
+        {
+                return tolower(a) < tolower(b);
+        };
+
+        bool operator() (const CZapitChannel * const c1, const CZapitChannel * const c2)
+        {
+		    if(c1->getFreqId() == c2->getFreqId())
+			    return std::lexicographical_compare(c1->getName().begin(), c1->getName().end(), c2->getName().begin(), c2->getName().end(), comparetolower);
+		    else
+			    return c1->getFreqId() < c2->getFreqId();
+;
 	};
 };
 
