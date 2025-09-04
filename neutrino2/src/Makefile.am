@@ -39,7 +39,6 @@ neutrino2_LDADD = \
 	gui/widget/libneutrino2_gui_widget.a \
 	gui/widget/libneutrino2_gui_widget2.a \
 	gui/libneutrino2_gui.a \
-	gui/libneutrino2_gui_bedit.a \
 	gui/bouqueteditor_bouquets.o \
 	system/libneutrino2_system.a \
 	system/helpers.o \

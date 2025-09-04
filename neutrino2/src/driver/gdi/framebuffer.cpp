@@ -1463,51 +1463,29 @@ void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const 
 
 	fb_pixel_t *data = (fb_pixel_t *)boxBuf;
 	fb_pixel_t *fbp = (fb_pixel_t *)lfb + (swidth * yoff);
-	fb_pixel_t *d2;
 	
 	if (!data)
 		return;
  
-	for (uint32_t line = 0; line < yc; line++)	
+ 	uint32_t line = 0;
+	
+	while (line < yc)
 	{
 		fb_pixel_t *pixpos = &data[(line) * xc];
 		
 		for (uint32_t pos = xoff; pos < xoff + xc; pos++) 
 		{
-			d2 = (fb_pixel_t *) fbp + pos;
-			
-			if ( (*pixpos) )
-				*d2 = *(pixpos);
-			else
-			{
-				uint8_t* in = (uint8_t *)(pixpos);
-				uint8_t* out = (uint8_t *)d2;
-				
-#if __BYTE_ORDER == __LITTLE_ENDIAN
-				int a = in[3];
-#elif __BYTE_ORDER == __BIG_ENDIAN
-				int a = in[0];
-				out++; 
-				in++;
-#endif				
-				*out = (*out + ((*in - *out) * a) / 256);
-				in++; 
-				out++;
-				*out = (*out + ((*in - *out) * a) / 256);
-				in++; 
-				out++;
-				*out = (*out + ((*in - *out) * a) / 256);
-			}
-
-			d2++;
+			if (*pixpos)
+				*(fbp + pos) = *pixpos;
 			pixpos++;
 		}
 		fbp += swidth;
+		line++;
 	}
 }
 
 // blitBox2FB
-void CFrameBuffer::blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp, uint32_t yp, bool transp )
+void CFrameBuffer::blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp, uint32_t yp, bool transp)
 {
 	int xc = (width > xRes) ? xRes : width;
 	int yc = (height > yRes) ? yRes : height;

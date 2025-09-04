@@ -29,7 +29,7 @@ endif
 
 AM_CPPFLAGS += -fno-rtti -fno-exceptions
 
-noinst_LIBRARIES = libneutrino2_gui.a libneutrino2_gui_bedit.a
+noinst_LIBRARIES = libneutrino2_gui.a
 
 libneutrino2_gui_a_SOURCES = \
 	bouquetlist.cpp \
@@ -83,7 +83,10 @@ libneutrino2_gui_a_SOURCES = \
 	alphasetup.cpp \
 	psisetup.cpp \
 	movieinfo.cpp \
-	usermenu.cpp
+	usermenu.cpp \
+	bouqueteditor_bouquets.cpp \
+	bouqueteditor_channels.cpp \
+	bouqueteditor_chanselect.cpp
 
 if ENABLE_CI
 libneutrino2_gui_a_SOURCES += cam_menu.cpp
@@ -118,10 +121,4 @@ endif
 endif
 endif
 endif
-
-libneutrino2_gui_bedit_a_SOURCES = \
-	bouqueteditor_bouquets.cpp \
-	bouqueteditor_channels.cpp \
-	bouqueteditor_chanselect.cpp
-
 
