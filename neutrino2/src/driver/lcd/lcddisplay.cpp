@@ -1433,9 +1433,9 @@ bool CLCDDisplay::dump_png(const char * const filename)
 	return ret_value;
 }
 
-int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int width, int height, int flag)
+int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int width, int height, int transp)
 {
-	dprintf(DEBUG_INFO, "CLCDDisplay::showPNGImage %s %d %d %d %d (flag: %d)\n", filename, posx, posy, width, height, flag);
+	dprintf(DEBUG_INFO, "CLCDDisplay::showPNGImage %s %d %d %d %d (transp:%d)\n", filename, posx, posy, width, height, transp);
 	
 	raw_lcd_element_t element;
 	int p_w, p_h, p_bpp;
@@ -1445,7 +1445,7 @@ int CLCDDisplay::showPNGImage(const char *filename, int posx, int posy, int widt
 	
 	dprintf(DEBUG_INFO, "CLCDDisplay::showPNGImage real: %s %d %d %d %d\n", filename, p_w, p_h, p_bpp, chans);
 
-	element.buffer = (uint32_t *)::getABGR32Image(filename, width, height, 0xFF, SCALE_COLOR);
+	element.buffer = (uint32_t *)::getABGR32Image(filename, width, height, transp, SCALE_COLOR);
 
 	element.x = posx;
 	element.y = posy;

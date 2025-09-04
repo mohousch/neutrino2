@@ -45,33 +45,33 @@
 #endif
 
 // aabbggrr
-#define LCD_PIXEL_BACKGROUND			0xFF000000
-#define LCD_PIXEL_WHITE				0xFFFFFFFF
-#define LCD_PIXEL_RED				0xFF0000FF
-#define LCD_PIXEL_GREEN				0xFF00FF00
-#define LCD_PIXEL_BLUE				0xFFFF0000
-#define LCD_PIXEL_YELLOW			0xFF00FFFF
-#define LCD_PIXEL_PERCENT			0xFF02C6FF
-#define LCD_PIXEL_BLACK				0xFF000000
+#define LCD_PIXEL_BACKGROUND				0xFF000000
+#define LCD_PIXEL_WHITE						0xFFFFFFFF
+#define LCD_PIXEL_RED							0xFF0000FF
+#define LCD_PIXEL_GREEN						0xFF00FF00
+#define LCD_PIXEL_BLUE							0xFFFF0000
+#define LCD_PIXEL_YELLOW						0xFF00FFFF
+#define LCD_PIXEL_PERCENT						0xFF02C6FF
+#define LCD_PIXEL_BLACK						0xFF000000
 
-#define LCD_IOCTL_CLEAR				(26)
+#define LCD_IOCTL_CLEAR						(26)
 
 ////
-#define LCDSET 					0x1000
-#define LCD_IOCTL_ASC_MODE 			(21 | LCDSET)
-#define LCD_MODE_ASC 				0
-#define LCD_MODE_BIN 				1
+#define LCDSET 									0x1000
+#define LCD_IOCTL_ASC_MODE 					(21 | LCDSET)
+#define LCD_MODE_ASC 							0
+#define LCD_MODE_BIN 							1
 
-#define FP_IOCTL_LCD_DIMM       		3
+#define FP_IOCTL_LCD_DIMM       					3
 
-#define LCD_IOCTL_ON            		(2 |LCDSET)
-#define LCD_IOCTL_REVERSE       		(4 |LCDSET)
-#define LCD_IOCTL_SRV           		(10|LCDSET)
+#define LCD_IOCTL_ON            					(2 |LCDSET)
+#define LCD_IOCTL_REVERSE       					(4 |LCDSET)
+#define LCD_IOCTL_SRV           					(10|LCDSET)
 
 #define LED_IOCTL_BRIGHTNESS_NORMAL 		0X10
 #define LED_IOCTL_BRIGHTNESS_DEEPSTANDBY 	0X11
-#define LED_IOCTL_BLINKING_TIME 		0X12
-#define LED_IOCTL_SET_DEFAULT 			0x13
+#define LED_IOCTL_BLINKING_TIME 				0X12
+#define LED_IOCTL_SET_DEFAULT 				0x13
 
 struct gRGB
 {
@@ -301,7 +301,7 @@ class CLCDDisplay
 		void load_screen(uint32_t ** const screen);
 		void dump_screen(uint32_t **screen);
 		bool dump_png(const char * const filename);
-		int showPNGImage(const char* filename, int posx, int posy, int width = 0, int height = 0, int flag = blitAlphaBlend);
+		int showPNGImage(const char* filename, int posx, int posy, int width = 0, int height = 0, int transp = 0xFF);
 		void load_png_element(raw_lcd_element_t * element, int posx, int posy, int width = 0, int height = 0);
 		void show_png_element(raw_lcd_element_t *element, int posx, int posy, int width = 0, int height = 0);
 		void show_analog_clock(int hour, int min, int sec, int posx, int posy, int hour_size, int min_size, int sec_size);
