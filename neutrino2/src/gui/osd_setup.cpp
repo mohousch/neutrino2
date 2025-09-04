@@ -137,8 +137,8 @@ int COSDSettings::showMenu(void)
 		// skin manager
 		osdSettings->addItem( new CMenuForwarder(_("Skin select"), true, NULL, new CSkinManager(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SKIN));
 			
-		// skin themes
-		osdSettings->addItem(new CMenuForwarder(_("Skin Style"), true, NULL, new CSkinSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_THEMES));
+		// themes
+		osdSettings->addItem(new CMenuForwarder(_("Themes"), true, NULL, new CSkinSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_THEMES));
 
 		// menu colors
 		osdSettings->addItem( new CMenuForwarder(_("Menu"), true, NULL, new COSDMenuColorSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_MENUCOLORS));
@@ -1372,7 +1372,7 @@ int CSkinSettings::showMenu()
 		
 		//
 		skinSettings->enablePaintHead();
-		skinSettings->setTitle(_("Skin Style"), NEUTRINO_ICON_COLORS);
+		skinSettings->setTitle(_("Themes"), NEUTRINO_ICON_COLORS);
 
 		//
 		skinSettings->enablePaintFoot();
@@ -1388,14 +1388,14 @@ int CSkinSettings::showMenu()
 	//
 	oldLcdMode = CLCD::getInstance()->getMode();
 	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Skin Style"));
+	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Themes"));
 	
 	// intros
 	skinSettings->addItem(new CMenuForwarder(_("back")));
 	skinSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save current skin style
-	skinSettings->addItem(new CMenuForwarder(_("Save current skin style"), true, NULL, this, "savecurrentstyle", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
+	skinSettings->addItem(new CMenuForwarder(_("Save current Skin Theme"), true, NULL, this, "savecurrentstyle", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 
 	skinSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
@@ -1429,7 +1429,7 @@ int CSkinSettings::showMenu()
 						item = new CMenuForwarder(removeExtension(filename).c_str());
 				
 						item->setActionKey(this, namelist[i]->d_name);
-						item->setHint(_("choose Skin Style."));
+						item->setHint(_("choose Skin Theme."));
 						
 						skinSettings->addItem(item);
 					}
@@ -1469,14 +1469,14 @@ int CSkinSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
 		if (actionKey == "savecurrentstyle")
 		{
 			std::string file_name = "";
-			CKeyboardInput * nameInput = new CKeyboardInput(_("Skin Style name"), file_name.c_str());
+			CKeyboardInput * nameInput = new CKeyboardInput(_("Skin Theme Name"), file_name.c_str());
 
 			nameInput->exec(NULL, "");
 				
 			//
 			if (!nameInput->getExitPressed())
 			{
-				HintBox(_("Save current style"), _("Saving current style!"));
+				HintBox(_("Save current Skin Theme"), _("Saving current Skin Theme!"));
 					
 				std::string skinConfig = CONFIGDIR "/skins/";
 				skinConfig += g_settings.preferred_skin.c_str();
@@ -1513,7 +1513,7 @@ int CSkinSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
 			g_settings.theme = actionKey.c_str();
 			//
 			std::string buffer;
-			buffer = _("Loading skin style ");
+			buffer = _("Loading Skin Theme ");
 			buffer += actionKey.c_str();
 			buffer += _(", please be patient...");
 			

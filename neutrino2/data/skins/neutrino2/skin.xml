@@ -46,7 +46,7 @@
 	<widget name="osd" posx="340" posy="60" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<listbox posx="370" posy="90" width="540" height="540" paintframe="0" type="TYPE_CLASSIC" mode="MODE_MENU" itemborder="1" painthead="1" title="OSD" icon="colors" paintdate="1" headline="1" paintfoot="1" footline="1" scrollbar="1">
 			<item id="FORWARDER" localename="Skin select" itemicon="hint_themes" target="skinsetup"/>
-			<item id="FORWARDER" localename="Skin Style" itemicon="hint_osd" target="skinstyleselectionsetup"/>
+			<item id="FORWARDER" localename="Themes" itemicon="hint_osd" target="skinstyleselectionsetup"/>
 			<item id="FORWARDER" localename="Menu" itemicon="hint_menucolors" target="menusetup"/>
 			<item id="FORWARDER" localename="Infobar" itemicon="hint_infobarcolors" target="infobarsetup"/>
 			<item id="FORWARDER" localename="Language" itemicon="hint_language" target="languagesetup"/>
@@ -408,7 +408,7 @@
 	</widget>
 	
 	<widget name="skinstyleselectionsetup" posx="340" posy="60" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
-		<listbox posx="370" posy="90" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" painthead="1" title="Skin Style" icon="colors" headline="1" paintfoot="1" footline="1" scrollbar="1">
+		<listbox posx="370" posy="90" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" painthead="1" title="Themes" icon="colors" headline="1" paintfoot="1" footline="1" scrollbar="1">
 			<foot_button_label name="information"/>
 		</listbox>
 	</widget>

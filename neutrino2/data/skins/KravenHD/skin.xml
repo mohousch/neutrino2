@@ -56,7 +56,7 @@
 		<time posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 		<listbox posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" itemlines="1">
 			<item id="FORWARDER" localename="Skin select" itemicon="hint_themes" target="skinsetup"/>
-			<item id="FORWARDER" localename="Skin Style" itemicon="hint_osd" target="skinstyleselectionsetup"/>
+			<item id="FORWARDER" localename="Themes" itemicon="hint_osd" target="skinstyleselectionsetup"/>
 			<item id="FORWARDER" localename="Menu" itemicon="hint_menucolors" target="menusetup"/>
 			<item id="FORWARDER" localename="Infobar" itemicon="hint_infobarcolors" target="infobarsetup"/>
 			<item id="FORWARDER" localename="Language" itemicon="hint_language" target="languagesetup"/>
@@ -814,7 +814,7 @@
 	<widget name="skinstyleselectionsetup" osx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<listbox posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" itemborder="1">
 		</listbox>
-		<label posx="640" posy="50" width="640" height="50" text="Skin Style" halign="1">
+		<label posx="640" posy="50" width="640" height="50" text="Themes" halign="1">
 		</label>
 			
 		<image posx="640" posy="150" width="640" height="300" image="background/logo.png">

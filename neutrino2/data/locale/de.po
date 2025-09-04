@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.8\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-08-31 14:24+0200\n"
+"POT-Creation-Date: 2025-09-04 10:52+0200\n"
 "PO-Revision-Date: 2023-09-22 10:51+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1250,11 +1250,11 @@ msgstr "Literature"
 msgid "LoDirection"
 msgstr "LoDirection"
 
+msgid "Loading Skin Theme "
+msgstr "Skin Theme wird geladen "
+
 msgid "Loading skin "
 msgstr "Skin wird geladen "
-
-msgid "Loading skin style "
-msgstr "Skin-Theme wird geladen "
 
 msgid "LocalTV EPG"
 msgstr "LocalTV EPG"
@@ -1968,11 +1968,8 @@ msgstr "RC-Konfiguration speichern"
 msgid "Save Timer"
 msgstr "Timer speichern"
 
-msgid "Save current skin style"
-msgstr "Aktuellen Skin-Theme speichern"
-
-msgid "Save current style"
-msgstr "Aktuellen Skin-Theme speichern"
+msgid "Save current Skin Theme"
+msgstr "Aktuellen Skin Theme speichern"
 
 msgid "Save in channel dir"
 msgstr "speichere in Kanalnamen Ordner"
@@ -1992,8 +1989,8 @@ msgstr "RC Konfiguration wird gespeichert, bitte warten..."
 msgid "Saving changes. Please be patient."
 msgstr "nderungen werden gespeichert, bitte warten..."
 
-msgid "Saving current style!"
-msgstr "Aktuellen Skin-Theme speichern!"
+msgid "Saving current Skin Theme!"
+msgstr "Aktuellen Skin Theme speichern!"
 
 msgid "Saving settings now, please be patient."
 msgstr "Einstellungen werden gespeichert, Bitte haben Sie etwas Geduld."
@@ -2205,11 +2202,8 @@ msgstr "Gre"
 msgid "Skin Select"
 msgstr "Skin-Auswahl"
 
-msgid "Skin Style"
-msgstr "Farbschema Auswahl"
-
-msgid "Skin Style name"
-msgstr "Name des Skin-Theme"
+msgid "Skin Theme Name"
+msgstr "Name des Skin Theme"
 
 msgid "Skin select"
 msgstr "Skin-Auswahl"
@@ -2503,6 +2497,9 @@ msgid ""
 msgstr ""
 "Die Aufnahme wurde abgebrochen,\n"
 "weil die Zieldatei nicht geffnet werden konnte."
+
+msgid "Themes"
+msgstr "Themes"
 
 msgid "Thursday"
 msgstr "Donnerstag"
@@ -2855,7 +2852,7 @@ msgstr "Kanal"
 msgid "channel / title"
 msgstr "Kanal / Titel"
 
-msgid "choose Skin Style."
+msgid "choose Skin Theme."
 msgstr "Skin-Theme Auswahl"
 
 msgid "colored"

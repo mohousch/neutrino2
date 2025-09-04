@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-08-31 14:24+0200\n"
+"POT-Creation-Date: 2025-09-04 10:52+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -103,14 +103,12 @@ msgstr "Возраст"
 msgid "Alarm time"
 msgstr "Время пробуждения"
 
-#, fuzzy
 msgid "All Channels"
 msgstr "Канал"
 
 msgid "All Services"
 msgstr "Все сервисы"
 
-#, fuzzy
 msgid "Alpha"
 msgstr "альфа"
 
@@ -219,7 +217,6 @@ msgstr "Пропускная способность"
 msgid "Bitrate"
 msgstr "Битрэйт"
 
-#, fuzzy
 msgid "Blue key"
 msgstr "Текущий ключ"
 
@@ -751,19 +748,15 @@ msgstr "Функции эксперта"
 msgid "Expert-functions"
 msgstr "Функции эксперта"
 
-#, fuzzy
 msgid "F1 key"
 msgstr "Нет ключа"
 
-#, fuzzy
 msgid "F2 key"
 msgstr "Нет ключа"
 
-#, fuzzy
 msgid "F3 key"
 msgstr "Нет ключа"
 
-#, fuzzy
 msgid "F4 key"
 msgstr "Нет ключа"
 
@@ -773,7 +766,6 @@ msgstr ""
 msgid "FEC_NONE"
 msgstr ""
 
-#, c-format
 msgid "FSK: ab %d"
 msgstr ""
 
@@ -1227,7 +1219,6 @@ msgstr "Линия Градиент"
 msgid "List End"
 msgstr "Конец списка"
 
-#, fuzzy
 msgid "List Order"
 msgstr "Конец списка"
 
@@ -1240,11 +1231,11 @@ msgstr "Литература                                                    
 msgid "LoDirection"
 msgstr ""
 
-msgid "Loading skin "
+msgid "Loading Skin Theme "
 msgstr "Загрузка скина"
 
-msgid "Loading skin style "
-msgstr "Загрузка стиля скина"
+msgid "Loading skin "
+msgstr "Загрузка скина"
 
 msgid "LocalTV EPG"
 msgstr "Электронная программа передач местного телевидения"
@@ -1776,7 +1767,6 @@ msgstr "Прочитать изображение целиком"
 msgid "Reading Flash"
 msgstr "Чтение Флэша»"
 
-#, fuzzy
 msgid "Real Channel Number"
 msgstr "Номер каналов"
 
@@ -1957,11 +1947,8 @@ msgstr "Сохранить конфигурацию RC"
 msgid "Save Timer"
 msgstr "Сохранить таймер"
 
-msgid "Save current skin style"
+msgid "Save current Skin Theme"
 msgstr "Сохранить текущий стиль оформления"
-
-msgid "Save current style"
-msgstr "Сохранить текущий стиль"
 
 msgid "Save in channel dir"
 msgstr "Сохранить в каталоге канала"
@@ -1981,7 +1968,7 @@ msgstr "Сохраняю конфигурацию RC, пожалуйста, по
 msgid "Saving changes. Please be patient."
 msgstr "Сохранение изменений. Пожалуйста, наберитесь терпения."
 
-msgid "Saving current style!"
+msgid "Saving current Skin Theme!"
 msgstr "Сохраняем текущий стиль!"
 
 msgid "Saving settings now, please be patient."
@@ -2071,7 +2058,6 @@ msgstr "Выбрать подсервис"
 msgid "Select audio track"
 msgstr "Выбрать аудиодорожку"
 
-#, fuzzy
 msgid "Select channel"
 msgstr "Удаление каналов"
 
@@ -2195,10 +2181,7 @@ msgstr "Размер"
 msgid "Skin Select"
 msgstr "Выбор скина"
 
-msgid "Skin Style"
-msgstr "Стиль скина"
-
-msgid "Skin Style name"
+msgid "Skin Theme Name"
 msgstr "Имя стиля скина"
 
 msgid "Skin select"
@@ -2492,6 +2475,9 @@ msgid ""
 msgstr ""
 "Запись была прервана,\n"
 " потому что целевой файл не удалось открыть»."
+
+msgid "Themes"
+msgstr ""
 
 msgid "Thursday"
 msgstr "Четверг"
@@ -2835,7 +2821,7 @@ msgstr "канал"
 msgid "channel / title"
 msgstr "kanal/nazvaniye"
 
-msgid "choose Skin Style."
+msgid "choose Skin Theme."
 msgstr "выберите стиль скина»."
 
 msgid "colored"

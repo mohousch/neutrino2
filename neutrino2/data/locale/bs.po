@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-08-31 14:24+0200\n"
+"POT-Creation-Date: 2025-09-04 10:52+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1229,10 +1229,10 @@ msgstr ""
 msgid "LoDirection"
 msgstr ""
 
-msgid "Loading skin "
+msgid "Loading Skin Theme "
 msgstr ""
 
-msgid "Loading skin style "
+msgid "Loading skin "
 msgstr ""
 
 msgid "LocalTV EPG"
@@ -1935,10 +1935,7 @@ msgstr ""
 msgid "Save Timer"
 msgstr ""
 
-msgid "Save current skin style"
-msgstr ""
-
-msgid "Save current style"
+msgid "Save current Skin Theme"
 msgstr ""
 
 msgid "Save in channel dir"
@@ -1959,7 +1956,7 @@ msgstr ""
 msgid "Saving changes. Please be patient."
 msgstr ""
 
-msgid "Saving current style!"
+msgid "Saving current Skin Theme!"
 msgstr ""
 
 msgid "Saving settings now, please be patient."
@@ -2172,10 +2169,7 @@ msgstr ""
 msgid "Skin Select"
 msgstr ""
 
-msgid "Skin Style"
-msgstr ""
-
-msgid "Skin Style name"
+msgid "Skin Theme Name"
 msgstr ""
 
 msgid "Skin select"
@@ -2449,6 +2443,9 @@ msgstr ""
 msgid ""
 "The recording was aborted,\n"
 "because the target file could not be opened."
+msgstr ""
+
+msgid "Themes"
 msgstr ""
 
 msgid "Thursday"
@@ -2793,7 +2790,7 @@ msgstr ""
 msgid "channel / title"
 msgstr ""
 
-msgid "choose Skin Style."
+msgid "choose Skin Theme."
 msgstr ""
 
 msgid "colored"

@@ -53,7 +53,7 @@
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="OSD" icon="colors" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
 		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1"  mode="MODE_MENU">
 			<item id="FORWARDER" localename="Skin select" itemicon="hint_themes" target="skinsetup"/>
-			<item id="FORWARDER" localename="Skin Style" itemicon="hint_osd" target="skinstyleselectionsetup"/>
+			<item id="FORWARDER" localename="Themes" itemicon="hint_osd" target="skinstyleselectionsetup"/>
 			<item id="FORWARDER" localename="Menu" itemicon="hint_menucolors" target="menusetup"/>
 			<item id="FORWARDER" localename="Infobar" itemicon="hint_infobarcolors" target="infobarsetup"/>
 			<item id="FORWARDER" localename="Language" itemicon="hint_language" target="languagesetup"/>
@@ -519,7 +519,7 @@
 	
 	<widget name="skinstyleselectionsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
-		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Skin Style" icon="colors" paintframe="1"/>
+		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Themes" icon="colors" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
 		</foot>
