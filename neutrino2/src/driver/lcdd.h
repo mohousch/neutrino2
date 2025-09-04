@@ -1,5 +1,5 @@
 //
-//	$Id: lcdd.h 21122024 mohousch Exp $
+//	$Id: lcdd.h 04092025 mohousch Exp $
 //
 //	LCD-Daemon  -   DBoxII-Project
 //
@@ -40,10 +40,6 @@
 
 #include <driver/lcd/lcddisplay.h>
 #include <driver/lcd/fontrenderer.h>
-
-//#ifdef ENABLE_GRAPHLCD
-//#include <driver/lcd/nglcd.h>
-//#endif
 
 
 #if defined (__sh__)
