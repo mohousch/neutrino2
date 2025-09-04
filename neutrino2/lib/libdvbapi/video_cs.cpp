@@ -1461,7 +1461,8 @@ void cVideo::run(void)
 					buf_num--;
 				}
 				
-				dec_r = c->time_base.den / (c->time_base.num * c->ticks_per_frame);
+				if (c->time_base.num && c->ticks_per_frame)
+					dec_r = c->time_base.den / (c->time_base.num * c->ticks_per_frame);
 				
 				buf_m.unlock();
 			}

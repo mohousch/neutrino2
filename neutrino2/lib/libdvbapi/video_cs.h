@@ -261,7 +261,7 @@ class cVideo
 		void run();
 		SWFramebuffer buffers[VDEC_MAXBUFS];
 		int dec_w, dec_h;
-		int dec_r;
+		float dec_r;
 		int64_t dec_vpts;
 		bool thread_running;
 		OpenThreads::Mutex buf_m;
