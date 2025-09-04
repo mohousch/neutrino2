@@ -24,5 +24,5 @@ AM_CXXFLAGS = -fno-rtti -fno-exceptions
 
 noinst_LIBRARIES = libneutrino2_driver_lcd.a
 
-libneutrino2_driver_lcd_a_SOURCES = lcdd.cpp lcddisplay.cpp fontrenderer.cpp
+libneutrino2_driver_lcd_a_SOURCES = lcddisplay.cpp fontrenderer.cpp
 

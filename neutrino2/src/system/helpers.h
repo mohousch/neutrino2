@@ -4,6 +4,8 @@
 
 /*
 	Neutrino-HD
+	
+	$Id: helpers.h 04092025 mohousch Exp $
 
 	License: GPL
 

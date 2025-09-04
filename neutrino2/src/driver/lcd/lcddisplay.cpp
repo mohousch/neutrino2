@@ -1,7 +1,7 @@
 //
 //	LCD-Daemon  -   DBoxII-Project
 //	
-//	$Id: lcddisplay.cpp 31052024 mohousch Exp $
+//	$Id: lcddisplay.cpp 04092025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean'
 //      baseroutines by Shadow_
@@ -32,7 +32,7 @@
 #include <driver/lcd/lcddisplay.h>
 
 #include <png.h>
-#include <lib/libngpng/libngpng.h>
+#include <driver/gdi/libngpng.h>
 
 #include <stdint.h>
 #include <fcntl.h>

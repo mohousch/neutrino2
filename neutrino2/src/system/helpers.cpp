@@ -2,6 +2,8 @@
 	Neutrino-HD
 
 	License: GPL
+	
+	$Id: helpers.cpp 04092025 mohousch Exp $
 
 	(C) 2012-2013 the neutrino-hd developers
 	(C) 2012,2013 Stefan Seyfried
@@ -44,7 +46,7 @@
 
 #include <global.h>
 
-#include <lib/libngpng/libngpng.h>
+#include <driver/gdi/libngpng.h>
 
 #include <gui/widget/messagebox.h>
 #include <gui/widget/infobox.h>

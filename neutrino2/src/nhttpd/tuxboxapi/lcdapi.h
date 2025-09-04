@@ -4,7 +4,7 @@
         Copyright (C) 2001/2002 Dirk Szymanski 'Dirch'
         Copyright (C) 2005 SnowHead
 
-        $Id: lcdapi.h 20072024 mohousch Exp $
+        $Id: lcdapi.h 04092025 mohousch Exp $
 
         License: GPL
 
@@ -27,7 +27,7 @@
 #define __nhttpd_lcdapi_h__
 
 //
-#include <driver/lcd/lcdd.h>
+#include <driver/lcdd.h>
 
 
 //

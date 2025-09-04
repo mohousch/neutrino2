@@ -52,6 +52,7 @@ neutrino2_LDADD = \
 	gui/pictureviewer.o \
 	gui/audioplayer.o \
 	driver/gdi/libneutrino2_driver_gdi.a \
+	driver/gdi/libngpng.a \
 	driver/lcd/libneutrino2_driver_lcd.a \
 	sectionsd/libsectionsd.a \
 	timerd/libtimerd.a \
@@ -89,7 +90,6 @@ neutrino2_LDADD = \
 	$(top_builddir)/lib/libiw/libiw.a \
 	$(top_builddir)/lib/libdvbapi/libdvbapi.a \
 	$(top_builddir)/lib/libdvbci/libdvbci.a \
-	$(top_builddir)/lib/libngpng/libngpng.a \
 	@CURL_LIBS@ \
 	@FREETYPE_LIBS@ \
 	@PNG_LIBS@ \

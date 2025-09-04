@@ -14,10 +14,6 @@ AM_CPPFLAGS = \
 	@FREETYPE_CFLAGS@ \
 	@FRIBIDI_CFLAGS@
 
-if ENABLE_LCD
-AM_CPPFLAGS += -I$(top_srcdir)/lib/liblcddisplay
-endif
-
 if ENABLE_GSTREAMER
 AM_CPPFLAGS += @GSTREAMER_CFLAGS@
 else
@@ -26,7 +22,7 @@ endif
 
 AM_CXXFLAGS = -fno-rtti -fno-exceptions
 
-noinst_LIBRARIES = libneutrino2_driver_gdi.a 
+noinst_LIBRARIES = libneutrino2_driver_gdi.a libngpng.a
 
 libneutrino2_driver_gdi_a_SOURCES = \
 	fontrenderer.cpp \
@@ -36,4 +32,14 @@ libneutrino2_driver_gdi_a_SOURCES = \
 if USE_OPENGL
 libneutrino2_driver_gdi_a_SOURCES += glthread.cpp
 endif
+
+####
+libngpng_a_SOURCES = \
+	png.cpp \
+	jpeg.cpp \
+	bmp.cpp \
+	gif.cpp \
+	crw.cpp \
+	svg.cpp \
+	libngpng.cpp
 

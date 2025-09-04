@@ -19,8 +19,11 @@ AM_CPPFLAGS += -fno-rtti -fno-exceptions
 
 noinst_LIBRARIES = libdvbapi.a
 
-libdvbapi_a_SOURCES = audio_cs.cpp dmx_cs.cpp playback_cs.cpp record_cs.cpp \
-	video_cs.cpp
+libdvbapi_a_SOURCES = audio_cs.cpp \
+						dmx_cs.cpp \
+						playback_cs.cpp \
+						record_cs.cpp \
+						video_cs.cpp
 
 
 

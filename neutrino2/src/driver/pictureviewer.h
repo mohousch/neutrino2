@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$Id: pictureviewer.h 21122024 mohousch Exp $
+//	$Id: pictureviewer.h 04092025 mohousch Exp $
 //
 //	Homepage: http://dbox.cyberphoria.org/
 //
@@ -39,7 +39,7 @@
 
 #include <vector>
 
-#include <lib/libngpng/libngpng.h>
+#include <driver/gdi/libngpng.h>
 
 #include <driver/gdi/framebuffer.h>
 

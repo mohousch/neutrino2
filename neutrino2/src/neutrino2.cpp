@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$Id: neutrino2.cpp 21122024 mohousch Exp $
+//	$Id: neutrino2.cpp 04092025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -168,8 +168,6 @@
 #ifdef USE_OPENGL
 #include <ao/ao.h>
 #endif
-
-#include <lib/libngpng/libngpng.h>
 
 
 //// globals

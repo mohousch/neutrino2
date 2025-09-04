@@ -1,5 +1,5 @@
 //
-//	$Id: lcdd.cpp 24072024 mohousch Exp $
+//	$Id: lcdd.cpp 04092025 mohousch Exp $
 //
 //	LCD-Daemon  -   DBoxII-Project
 //
@@ -30,7 +30,7 @@
 #include <config.h>
 #endif
 
-#include <driver/lcd/lcdd.h>
+#include <driver/lcdd.h>
 
 #include <global.h>
 #include <neutrino2.h>

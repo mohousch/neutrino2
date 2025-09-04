@@ -1,5 +1,5 @@
 /*
-	$Id: channellogo.cpp 23.09.2023 mohousch Exp $
+	$Id: channellogo.cpp 04092025 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 	Homepage: http://dbox.cyberphoria.org/
@@ -44,7 +44,7 @@
 
 #include <global.h>
 
-#include <lib/libngpng/libngpng.h>
+#include <driver/gdi/libngpng.h>
 
 #include <system/debug.h>
 #include <system/settings.h>

@@ -4,7 +4,7 @@
 	Copyright (C) 2001/2002 Dirk Szymanski 'Dirch'
 	Copyright (C) 2005 SnowHead
 
-	$Id: lcdapi.cpp 20072024 mohousch Exp $
+	$Id: lcdapi.cpp 0492025 mohousch Exp $
 
 	License: GPL
 
@@ -29,7 +29,7 @@
 #include <cstring>
 
 // tuxbox
-#include <driver/lcd/lcdd.h>
+#include <driver/lcdd.h>
 #include <global.h>
 #include <neutrino2.h>
 #include <system/settings.h>

@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$Id: framebuffer.h 30.10.2023 mohousch Exp $
+//	$Id: framebuffer.h 04092025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean'
 //	Homepage: http://dbox.cyberphoria.org/
@@ -42,7 +42,7 @@
 #include <linux/stmfb.h>
 #endif
 
-#include <lib/libngpng/libngpng.h>
+#include <driver/gdi/libngpng.h>
 
 
 #ifdef USE_OPENGL
