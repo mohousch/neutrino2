@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$Id: libngpng.h 21122024 mohousch Exp $
+//	$Id: bitmap.h 04092025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -23,8 +23,8 @@
 //	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA
 //
 
-#ifndef __libngpng__
-#define __libngpng__
+#ifndef __bitmap__
+#define __bitmap__
 
 #include <stdint.h>
 #include <string>

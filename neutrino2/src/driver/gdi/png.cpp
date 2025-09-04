@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$Id: png.cpp 21122024 mohousch Exp $
+//	$Id: png.cpp 04092025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -31,7 +31,7 @@
 #include <stdlib.h>
 #include <zlib.h>
 
-#include "libngpng.h"
+#include "bitmap.h"
 
 
 //#define PNG_DEBUG

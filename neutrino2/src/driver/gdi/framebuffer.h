@@ -42,7 +42,7 @@
 #include <linux/stmfb.h>
 #endif
 
-#include <driver/gdi/libngpng.h>
+#include <driver/gdi/bitmap.h>
 
 
 #ifdef USE_OPENGL

@@ -44,7 +44,7 @@
 
 #include <global.h>
 
-#include <driver/gdi/libngpng.h>
+#include <driver/gdi/bitmap.h>
 
 #include <system/debug.h>
 #include <system/settings.h>

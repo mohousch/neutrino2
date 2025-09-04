@@ -46,7 +46,7 @@
 
 #include <global.h>
 
-#include <driver/gdi/libngpng.h>
+#include <driver/gdi/bitmap.h>
 
 #include <gui/widget/messagebox.h>
 #include <gui/widget/infobox.h>

@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$Id: crw.cpp 21122024 mohousch Exp $
+//	$Id: crw.cpp 04092025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -23,7 +23,7 @@
 //	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA
 //
 
-#include "libngpng.h"
+#include "bitmap.h"
 
 #include <cstring>
 #include <cstdlib>

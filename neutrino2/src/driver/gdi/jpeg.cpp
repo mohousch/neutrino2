@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$Id: jpeg.cpp 21122024 mohousch Exp $
+//	$Id: jpeg.cpp 04092025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -44,7 +44,7 @@ extern "C" {
 	
 #include <setjmp.h>
 
-#include "libngpng.h"
+#include "bitmap.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 

@@ -3351,3 +3351,5 @@
 /neutrino2/src/driver/gdi/libngpng.o
 /neutrino2/src/driver/gdi/png.o
 /neutrino2/src/driver/gdi/svg.o
+/neutrino2/src/driver/gdi/bitmap.o
+/neutrino2/src/driver/gdi/.deps/bitmap.Po

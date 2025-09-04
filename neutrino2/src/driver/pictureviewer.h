@@ -39,7 +39,7 @@
 
 #include <vector>
 
-#include <driver/gdi/libngpng.h>
+#include <driver/gdi/bitmap.h>
 
 #include <driver/gdi/framebuffer.h>
 

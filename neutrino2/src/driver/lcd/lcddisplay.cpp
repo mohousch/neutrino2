@@ -32,7 +32,7 @@
 #include <driver/lcd/lcddisplay.h>
 
 #include <png.h>
-#include <driver/gdi/libngpng.h>
+#include <driver/gdi/bitmap.h>
 
 #include <stdint.h>
 #include <fcntl.h>

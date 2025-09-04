@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$Id: libngpng.cpp 21122024 mohousch Exp $
+//	$Id: bitmap.cpp 04092025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -31,7 +31,7 @@
 #include <climits>
 #include <stdlib.h>
 
-#include "libngpng.h"
+#include <driver/gdi/bitmap.h>
 
 
 CFormathandler * fh_root = NULL;
