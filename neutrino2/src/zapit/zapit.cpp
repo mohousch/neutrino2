@@ -447,9 +447,10 @@ bool CZapit::CanZap(CZapitChannel * thischannel)
 bool CZapit::FrontendIsTwin(CFrontend* fe)
 {
 	bool twin = false;
-			
-	if( (fe->getInfo()->type == live_fe->getInfo()->type) && (fe->fenumber != live_fe->fenumber) )
-		twin = true;
+	
+	if (live_fe)		
+		if( (fe->getInfo()->type == live_fe->getInfo()->type) && (fe->fenumber != live_fe->fenumber) )
+			twin = true;
 		
 	return twin;
 }
