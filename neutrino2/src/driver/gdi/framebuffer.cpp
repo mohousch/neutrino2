@@ -621,9 +621,8 @@ bool CFrameBuffer::calcCorners(int *ofs, int *ofl, int *ofr, const int& dy, cons
 	int scf = (540 * MUL) / ((radius < 1) ? 1 : radius);
 
 	// one of the top corners
-	if (line < radius && (type & CORNER_TOP)) 
+	if (line < radius && (type & CORNER_TOP)) // uper round corners
 	{
-		// uper round corners
 		scl = scf * (radius - line) / MUL;
 		if ((scf * (radius - line) % MUL) >= (MUL / 2)) // round up
 			scl++;
@@ -634,9 +633,7 @@ bool CFrameBuffer::calcCorners(int *ofs, int *ofl, int *ofr, const int& dy, cons
 		if (ofr != NULL) 
 			*ofr = corner_tr ? _ofs : 0;
 	}
-
-	// one of the bottom corners 
-	else if ((line >= dy - radius) && (type & CORNER_BOTTOM)) 
+	else if ((line >= dy - radius) && (type & CORNER_BOTTOM)) // one of the bottom corners 
 	{
 		// lower round corners
 		scl = scf * (radius - (dy - (line + 1))) / MUL;
@@ -732,7 +729,7 @@ void CFrameBuffer::paintBoxRel(const int x, const int y, const int dx, const int
 	fb_pixel_t MASK = 0xFFFFFFFF;
 
 	// boxBuf
-	fb_pixel_t *boxBuf = paintBoxRel2Buf(dx, dy, (mode > NOGRADIENT)? MASK : col, radius, type);
+	fb_pixel_t *boxBuf = paintBoxRel2Buf(dx, dy,  (mode > NOGRADIENT)? MASK : col, radius, type);
 	
         if (!boxBuf)
                return;
@@ -747,8 +744,8 @@ void CFrameBuffer::paintBoxRel(const int x, const int y, const int dx, const int
 			gradientBuf = gradientOneColor(col, (direction == GRADIENT_VERTICAL)? dy : dx, mode, intensity);
 		else if (grad_type == GRADIENT_COLOR2TRANSPARENT)
 			gradientBuf = gradientColorToTransparent(col, (direction == GRADIENT_VERTICAL)? dy : dx, mode, intensity);
-		else if (grad_type == GRADIENT_COLOR2COLOR) // FIXME:
-			gradientBuf = gradientColorToColor(COL_SILVER_PLUS_0, col, (direction == GRADIENT_VERTICAL)? dy : dx, mode, intensity);
+//		else if (grad_type == GRADIENT_COLOR2COLOR) // FIXME:
+//			gradientBuf = gradientColorToColor(COL_SILVER_PLUS_0, col, (direction == GRADIENT_VERTICAL)? dy : dx, mode, intensity);
 
 		fb_pixel_t *bp = boxBuf;
 		fb_pixel_t *gra = gradientBuf;
@@ -1197,6 +1194,38 @@ void CFrameBuffer::loadPal(const std::string &filename, const unsigned char offs
 	close(_fd);
 }
 
+//// display image
+void CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int width, int height, int x_pan, int y_pan, ScalingMode scaletype)
+{
+	dprintf(DEBUG_DEBUG, "CFrameBuffer::displayImage %s\n", name.c_str());
+	
+	if(!getActive())
+		return;
+		
+	int i_w, i_h, i_bpp, i_chans;
+	
+	::getSize(name.c_str(), &i_w, &i_h, &i_bpp, &i_chans);
+	
+	if (width == 0 && height == 0)
+	{
+		width = i_w;
+		height = i_h;
+	}
+	
+	bool isPNG = false;
+	
+	if( name.find(".png") == (name.length() - 4) )
+		isPNG = true;
+	
+	fb_pixel_t *data = (fb_pixel_t *)getARGB32Image(name, width, height,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha), scaletype);
+
+	if(data) 
+	{
+		blitBox2FB(data, width, height, posx, posy, x_pan, y_pan, isPNG? true : false);
+		free(data);
+	}
+}
+
 void CFrameBuffer::paintPixel(const int x, const int y, const fb_pixel_t col)
 {
 	if (!getActive())
@@ -1463,29 +1492,31 @@ void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const 
 
 	fb_pixel_t *data = (fb_pixel_t *)boxBuf;
 	fb_pixel_t *fbp = (fb_pixel_t *)lfb + (swidth * yoff);
+	fb_pixel_t *d2;
 	
 	if (!data)
 		return;
  
- 	uint32_t line = 0;
-	
-	while (line < yc)
+	for (uint32_t line = 0; line < yc; line++)	
 	{
 		fb_pixel_t *pixpos = &data[(line) * xc];
 		
 		for (uint32_t pos = xoff; pos < xoff + xc; pos++) 
 		{
-			if (*pixpos)
-				*(fbp + pos) = *pixpos;
+			d2 = (fb_pixel_t *) fbp + pos;
+			
+			if ( (*pixpos) )
+				*d2 = *(pixpos);
+
+			d2++;
 			pixpos++;
 		}
 		fbp += swidth;
-		line++;
 	}
 }
 
 // blitBox2FB
-void CFrameBuffer::blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp, uint32_t yp, bool transp)
+void CFrameBuffer::blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp, uint32_t yp, bool transp )
 {
 	int xc = (width > xRes) ? xRes : width;
 	int yc = (height > yRes) ? yRes : height;
@@ -1667,37 +1698,5 @@ void CFrameBuffer::blit(int mode3d)
 			perror("FBIO_BLIT");		
 	}
 #endif	
-}
-
-//// display image
-void CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int width, int height, int x_pan, int y_pan, ScalingMode scaletype)
-{
-	dprintf(DEBUG_DEBUG, "CFrameBuffer::displayImage %s\n", name.c_str());
-	
-	if(!getActive())
-		return;
-		
-	int i_w, i_h, i_bpp, i_chans;
-	
-	::getSize(name.c_str(), &i_w, &i_h, &i_bpp, &i_chans);
-	
-	if (width == 0 && height == 0)
-	{
-		width = i_w;
-		height = i_h;
-	}
-	
-	bool isPNG = false;
-	
-	if( name.find(".png") == (name.length() - 4) )
-		isPNG = true;
-	
-	fb_pixel_t *data = (fb_pixel_t *)getARGB32Image(name, width, height,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha), scaletype);
-
-	if(data) 
-	{
-		blitBox2FB(data, width, height, posx, posy, x_pan, y_pan, isPNG? true : false);
-		free(data);
-	}
 }
 

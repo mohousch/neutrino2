@@ -251,6 +251,7 @@ class CFrameBuffer
 		void paintIcon8(const std::string &filename, const int x, const int y, const unsigned char offset = 0);
 		void paintIconRaw(const std::string &filename, const int x, const int y, const int h = 0, const unsigned char offset = 1);
 		void loadPal(const std::string &filename, const unsigned char offset = 0, const unsigned char endidx = 255);
+		void displayImage(const std::string &name, int posx = 0, int posy = 0, int width = 0, int height = 0, int x_pan = 0, int y_pan = 0, ScalingMode scaletype = SCALE_COLOR);
 		
 		// background
 		int getBackgroundColor() { return backgroundColor;}
@@ -281,9 +282,6 @@ class CFrameBuffer
 		void enableManualBlit();
 		void disableManualBlit();
 		void blit(int mode3d = THREE_NONE);
-
-		////
-		void displayImage(const std::string &name, int posx = 0, int posy = 0, int width = 0, int height = 0, int x_pan = 0, int y_pan = 0, ScalingMode scaletype = SCALE_COLOR);
 };
 
 ////
