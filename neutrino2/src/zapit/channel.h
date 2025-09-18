@@ -182,7 +182,8 @@ class CZapitChannel
 
 		bool bAlwaysLocked;
 
-		int number;
+		int number; // fixed
+		int index;  // to used in channellist
 		CChannelEvent currentEvent, nextEvent;
 		int videoType;
 		t_channel_id channel_id;
@@ -227,6 +228,7 @@ class CZapitChannel
 		//// get methods - read and write variables
 		const std::string&	getName(void)			const { return name; }
 		const int 		getNumber(void)			const { return number;}
+		const int		getIndex(void)			const { return index;}
 		t_satellite_position	getSatellitePosition(void)	const { return satellitePosition; }
 		unsigned char 		getAudioChannelCount(void)	{ return audioChannels.size(); }
 		unsigned short		getPcrPid(void)			{ return pcrPid; }
@@ -269,6 +271,7 @@ class CZapitChannel
 		void setCaPmt(CCaPmt * pCaPmt);
 		void setaitPid(unsigned short aitPID)			{ aitPid = aitPID; };
 		void setNumber(unsigned int num)			{ number = num; };
+		void setIndex (unsigned int i)				{ index = i;};
 		//
 		void setLogoUrl(const std::string l)			{ logourl = l; };
 		void setEPGUrl(const std::string l)			{ epgurl = l; };

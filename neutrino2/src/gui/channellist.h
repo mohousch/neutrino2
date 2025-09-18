@@ -91,7 +91,7 @@ class CChannelList
 
 		//
 		t_channel_id tuned_chid;
-		CLastChannel lastChList;
+//		CLastChannel lastChList;
 		std::string name;
 		ZapitChannelList chanlist;
 		CChannelEventList events;
@@ -105,7 +105,7 @@ class CChannelList
 		CChannelList(const char * const Name, bool _historyMode = false);
 		~CChannelList();
 		
-		void addChannel(CZapitChannel* chan);
+		void addChannel(CZapitChannel* chan, unsigned int i = 0);
 		
 		CZapitChannel * getChannel(int number);
 		CZapitChannel * getChannel(t_channel_id channel_id);

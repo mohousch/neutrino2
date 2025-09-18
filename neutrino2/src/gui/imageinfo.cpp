@@ -196,10 +196,12 @@ void CImageInfo::paint()
 	CConfigFile lconfigfile('\t');
 	
 	std::string versionString = "1201201205091849";
+	std::string imagename = "NeutrinoNG";
 	
 	lconfigfile.loadConfig("/.version");
 	
 	versionString = lconfigfile.getString( "version", "1201201205091849").c_str();
+	imagename = lconfigfile.getString("imagename", "NeutrinoNG").c_str();
 	
 	static CFlashVersionInfo versionInfo(versionString);
 	
@@ -212,7 +214,7 @@ void CImageInfo::paint()
 	// release name
 	ypos += iheight;
 	paintLine(xpos, font_info, _("Release:"));
-	paintLine(xpos + x_offset, font_info, "NeutrinoNG");
+	paintLine(xpos + x_offset, font_info, imagename.c_str());
 
 	// release cycle
 	ypos += iheight;

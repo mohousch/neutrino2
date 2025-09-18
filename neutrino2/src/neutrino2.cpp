@@ -1473,7 +1473,7 @@ void CNeutrinoApp::channelsInit()
 	RADIOfavList = new CBouquetList(_("Favorites"));
 
 	//
-	int tvi = 0, ri = 0, hi = 0, webtvi = 0;
+	int tvi = 1, ri = 1, hi = 0, webtvi = 0;
 	
 	// hd bouquet
 	CBouquet * hdBouquet;
@@ -1485,8 +1485,8 @@ void CNeutrinoApp::channelsInit()
 	{
 		if ((it->second.getServiceType() == ST_DIGITAL_TELEVISION_SERVICE)) 
 		{
-			TVchannelList->addChannel(&(it->second));
-			tvi++;
+			TVchannelList->addChannel(&(it->second), tvi++);
+			//tvi++;
 			
 			if (it->second.isWEBTV())
 				webtvi++;
@@ -1502,12 +1502,12 @@ void CNeutrinoApp::channelsInit()
 		}
 		else if (it->second.getServiceType() == ST_DIGITAL_RADIO_SOUND_SERVICE) 
 		{
-			RADIOchannelList->addChannel(&(it->second));
-			ri++;
+			RADIOchannelList->addChannel(&(it->second), ri++);
+			//ri++;
 		}
 	}
 
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::channelsInit: got %d services %d TV and %d RADIO (%d HD %d WEBTV)\n", (int)allchans.size(), tvi, ri, hi, webtvi);
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::channelsInit: got %d services %d TV and %d RADIO (%d HD %d WEBTV)\n", (int)allchans.size(), tvi - 1, ri - 1, hi, webtvi);
 
 	CBouquet * tmp;
 
@@ -1515,17 +1515,18 @@ void CNeutrinoApp::channelsInit()
 	TVallList = new CBouquetList(_("All Services"));
 	tmp = TVallList->addBouquet(_("All Services"));
 	*(tmp->channelList) = *TVchannelList;
-	tmp->channelList->SortAlpha();
+//	tmp->channelList->SortAlpha();
 
 	// radio all list
 	RADIOallList = new CBouquetList(_("All Services"));
 	tmp = RADIOallList->addBouquet(_("All Services"));
 	*(tmp->channelList) = *RADIOchannelList;
-	tmp->channelList->SortAlpha();
+//	tmp->channelList->SortAlpha();
 
 	//// sat
 	int bnum = 0;
-	
+	tvi = 1;
+	ri = 1;
 	sat_iterator_t sit;
 	for (sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 	{
@@ -1538,11 +1539,11 @@ void CNeutrinoApp::channelsInit()
 			{
 				if (it->second.getServiceType() == ST_DIGITAL_TELEVISION_SERVICE) 
 				{
-					tmp1->channelList->addChannel(&(it->second));
+					tmp1->channelList->addChannel(&(it->second), tvi++);
 				}
 				else if (it->second.getServiceType() == ST_DIGITAL_RADIO_SOUND_SERVICE) 
 				{
-					tmp2->channelList->addChannel(&(it->second));
+					tmp2->channelList->addChannel(&(it->second), ri++);
 				}
 			}
 		}
@@ -1556,6 +1557,7 @@ void CNeutrinoApp::channelsInit()
 
 	// tv favorites
 	bnum = 0;
+	tvi = 1;
 
 	for (uint32_t i = 0; i < CZapit::getInstance()->Bouquets.size(); i++) 
 	{
@@ -1571,7 +1573,7 @@ void CNeutrinoApp::channelsInit()
 				
 				for(int j = 0; j < (int) channels->size(); j++) 
 				{
-					ltmp->channelList->addChannel((*channels)[j]);
+					ltmp->channelList->addChannel((*channels)[j], tvi++);
 				}
 				bnum++;
 			}
@@ -1583,7 +1585,8 @@ void CNeutrinoApp::channelsInit()
 
 	// radio fav
 	bnum = 0;
-
+	ri = 1;
+	
 	for (uint32_t i = 0; i < CZapit::getInstance()->Bouquets.size(); i++) 
 	{	
 		if (!CZapit::getInstance()->Bouquets[i]->bHidden && !CZapit::getInstance()->Bouquets[i]->bWebTV && !CZapit::getInstance()->Bouquets[i]->radioChannels.empty())
@@ -1598,7 +1601,7 @@ void CNeutrinoApp::channelsInit()
 				
 				for(int j = 0; j < (int) channels->size(); j++) 
 				{
-					ltmp->channelList->addChannel((*channels)[j]);
+					ltmp->channelList->addChannel((*channels)[j], ri++);
 				}
 				bnum++;
 			}
@@ -1607,6 +1610,7 @@ void CNeutrinoApp::channelsInit()
 	
 	// tv provider
 	bnum = 0;
+	tvi = 1;
 
 	for (uint32_t i = 0; i < CZapit::getInstance()->Bouquets.size(); i++) 
 	{
@@ -1622,7 +1626,7 @@ void CNeutrinoApp::channelsInit()
 				
 				for(int j = 0; j < (int) channels->size(); j++) 
 				{
-					ltmp->channelList->addChannel((*channels)[j]);
+					ltmp->channelList->addChannel((*channels)[j], tvi++);
 				}
 				bnum++;
 			}
@@ -1631,6 +1635,7 @@ void CNeutrinoApp::channelsInit()
 	
 	// radio provider
 	bnum = 0;
+	ri = 1;
 
 	for (uint32_t i = 0; i < CZapit::getInstance()->Bouquets.size(); i++) 
 	{	
@@ -1646,7 +1651,7 @@ void CNeutrinoApp::channelsInit()
 				
 				for(int j = 0; j < (int) channels->size(); j++) 
 				{
-					ltmp->channelList->addChannel((*channels)[j]);
+					ltmp->channelList->addChannel((*channels)[j], ri++);
 				}
 				bnum++;
 			}
@@ -1721,22 +1726,10 @@ void CNeutrinoApp::setChannelMode(int newmode, int nMode)
 	}
 	
 	// channelList // FIXME:
-	/*
-	int old_b = 0;
-	
-	if ((bouquetList != NULL) && !(bouquetList->Bouquets.empty()))
-		old_b = bouquetList->getActiveBouquetNumber();
-				
-	if(bouquetList->Bouquets.size() && bouquetList->Bouquets[old_b]->channelList->getSize() > 0)
-		channelList = bouquetList->Bouquets[old_b]->channelList;
-	else
-	*/
-	{
-		if(nMode == mode_radio)
-			channelList = RADIOchannelList;
-		else if(nMode == mode_tv)
-			channelList = TVchannelList;
-	}
+	if(nMode == mode_radio)
+		channelList = RADIOchannelList;
+	else if(nMode == mode_tv)
+		channelList = TVchannelList;
 
 	g_settings.channel_mode = newmode;
 }
@@ -2246,7 +2239,7 @@ void CNeutrinoApp::showInfo(const CZapitChannel *channel)
 	stopSubtitles();
 
 	//
-	g_InfoViewer->showTitle(channel? channel->getNumber() : 0, channel? channel->getName() : "", channel? channel->getSatellitePosition() : 0, channel? channel->getChannelID() : 0);
+	g_InfoViewer->showTitle(channel? channel->getIndex() : 0, channel? channel->getName() : "", channel? channel->getSatellitePosition() : 0, channel? channel->getChannelID() : 0);
 
 	startSubtitles();
 }
@@ -2573,7 +2566,8 @@ void CNeutrinoApp::tvMode( bool rezap )
 		// FIXME:
 		firstChannel();
 		channelList->tuned = 0xfffffff;
-		channelList->zapTo(firstchannel.channelNumber);
+		//channelList->zapTo(firstchannel.channelNumber);
+		channelList->zapToChannelID(firstchannel.id, rezap);
 	}
 }
 
@@ -2637,7 +2631,8 @@ void CNeutrinoApp::radioMode( bool rezap)
 		// FIXME:
 		firstChannel();
 		channelList->tuned = 0xfffffff;
-		channelList->zapTo(firstchannel.channelNumber);
+		//channelList->zapTo(firstchannel.channelNumber);
+		channelList->zapToChannelID(firstchannel.id, rezap);
 	}
 }
 

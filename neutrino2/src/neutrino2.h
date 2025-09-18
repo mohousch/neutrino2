@@ -37,6 +37,7 @@
 #include <driver/gdi/framebuffer.h>
 
 #include <system/configure_network.h>
+#include <system/lastchannel.h>
 
 #include <timerd/timerdtypes.h>
 
@@ -238,6 +239,11 @@ class CNeutrinoApp : public CWidgetTarget
 		void unlockPlayBack(void);
 		////
 		void exitRun(int retcode = SHUTDOWN, bool save = true);
+		
+		
+		////
+		CLastChannel _lastChList;
+		CLastChannel lastChList(){return _lastChList;};
 };
 
 #endif

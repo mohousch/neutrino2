@@ -40,6 +40,8 @@ void CLastChannel::clear(void)
 // -- and time store delay is large enough
 void CLastChannel::store(int channel, t_channel_id channel_id, bool forceStoreToLastChannels)
 {
+	printf("CLastChannel::store: %d %llx %d\n\n", channel, channel_id, forceStoreToLastChannels);
+	
 	struct timeval  tv;
 
 	gettimeofday (&tv, NULL);
@@ -87,6 +89,8 @@ void CLastChannel::store(int channel, t_channel_id channel_id, bool forceStoreTo
 		this->lastChannels.front().channel_id = channel_id;
 		this->lastChannels.front().timestamp  = tv.tv_sec;
 	}
+	
+	printf("ClastChannel::store: size: %d\n", this->lastChannels.size());
 }
 
 unsigned int CLastChannel::size() const

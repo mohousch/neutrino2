@@ -166,8 +166,11 @@ void CChannelList::setSize(int newsize)
 	chanlist.reserve(newsize);
 }
 
-void CChannelList::addChannel(CZapitChannel * channel)
-{		
+void CChannelList::addChannel(CZapitChannel * channel, unsigned int i)
+{
+	if (channel)
+		channel->setIndex(i);
+				
 	chanlist.push_back(channel);
 }
 
@@ -751,7 +754,7 @@ bool CChannelList::showInfo(int pos, int epgpos, bool fromNumZap)
 		return false;
 	
 	// channel infobar
-	g_InfoViewer->showTitle(chanlist[pos]->getNumber(), chanlist[pos]->name, chanlist[pos]->getSatellitePosition(), chanlist[pos]->channel_id, fromNumZap, epgpos);
+	g_InfoViewer->showTitle(chanlist[pos]->getIndex(), chanlist[pos]->name, chanlist[pos]->getSatellitePosition(), chanlist[pos]->channel_id, fromNumZap, epgpos);
 	
 	return true;
 }
@@ -770,7 +773,7 @@ bool CChannelList::adjustToChannelID(const t_channel_id channel_id, bool bToo)
 			if (chanlist[i]->channel_id == channel_id) 
 			{
 				selected = i;
-				lastChList.store(selected, channel_id, false);
+				CNeutrinoApp::getInstance()->lastChList().store(selected, channel_id, true);
 
 				tuned = i;
 				
@@ -865,7 +868,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 	dprintf(DEBUG_NORMAL, "CChannelList::zapTo (%s) tuned %d id:0x%llx new %d (%s) id: 0x%llx\n", name.c_str(), tuned, tuned_chid, pos, chanlist[pos]->name.c_str(), chanlist[pos]->channel_id);
 	
 	// zap
-	if ( (pos != tuned) /*|| (chanlist[pos]->channel_id != tuned_chid)*/ || rezap )
+	if ( (pos != tuned) || (chanlist[pos]->channel_id != tuned_chid) || rezap )
 	{ 
 		// stop radiotext
 		if ((g_settings.radiotext_enable) && ((CNeutrinoApp::getInstance()->getMode()) == CNeutrinoApp::mode_radio) && (g_Radiotext))
@@ -917,10 +920,10 @@ int CChannelList::numericZap(int key)
 	// lastchannel key
 	if (key == g_settings.key_lastchannel) 
 	{
-		t_channel_id channel_id = lastChList.getlast(1);
+		t_channel_id channel_id = CNeutrinoApp::getInstance()->lastChList().getlast(1);
 		if(channel_id) 
 		{
-			lastChList.clear_storedelay(); // ignore store delay
+			CNeutrinoApp::getInstance()->lastChList().clear_storedelay(); // ignore store delay
 			zapToChannelID(channel_id);
 		}
 		
@@ -961,15 +964,16 @@ int CChannelList::numericZap(int key)
 			delete channelList;
 			return res;
 		}
-		
+		////test
+		printf("zap history: %d\n", CNeutrinoApp::getInstance()->lastChList().size());
 		// zap history bouquet
-		if (this->lastChList.size() > 1) 
+		if (CNeutrinoApp::getInstance()->lastChList().size() > 1) 
 		{
 			CChannelList * channelList = new CChannelList(_("History"), true);
 
-			for(unsigned int i = 1 ; i < this->lastChList.size() ; ++i) 
+			for(unsigned int i = 1; i < CNeutrinoApp::getInstance()->lastChList().size(); ++i) 
 			{
-				t_channel_id channel_id = this->lastChList.getlast(i);
+				t_channel_id channel_id = CNeutrinoApp::getInstance()->lastChList().getlast(i);
 
 				if(channel_id) 
 				{
@@ -1071,7 +1075,7 @@ int CChannelList::numericZap(int key)
 		}
 		else if (CRCInput::isNumeric(msg)) 
 		{
-			if (pos == 4) 
+			if (pos == 4)
 			{
 				chn = 0;
 				pos = 1;
@@ -1483,9 +1487,10 @@ void CChannelList::paint(bool customMode)
 			}
 
 			// channel number
-			if (g_settings.channellist_number > CHANNEL_NUMBER_NONE)
+			//if (g_settings.channellist_number > CHANNEL_NUMBER_NONE)
 			{ 
-				item->setNumber( (g_settings.channellist_number == CHANNEL_NUMBER_LIST_ORDER)? i + 1 : chanlist[i]->getNumber());
+				//item->setNumber( (g_settings.channellist_number == CHANNEL_NUMBER_LIST_ORDER)? i + 1 : chanlist[i]->getNumber());
+				item->setNumber(chanlist[i]->getIndex());
 			}
 			
 			// timescale

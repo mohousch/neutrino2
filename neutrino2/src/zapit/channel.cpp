@@ -39,6 +39,7 @@ CZapitChannel::CZapitChannel(const std::string& p_name, t_service_id p_sid, t_tr
 	caPmt = NULL;
 	videoType = CHANNEL_VIDEO_MPEG2;
 	number = 0;
+	index = 0;
 	scrambled = 0;
 	pname = NULL;
 	
@@ -74,6 +75,7 @@ CZapitChannel::CZapitChannel(const std::string& p_name, t_channel_id p_chid, con
 	caPmt = NULL;
 	videoType = CHANNEL_VIDEO_MPEG2;
 	number = 0;
+	index = 0;
 	scrambled = 0;
 	pname = NULL;
 	
