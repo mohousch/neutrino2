@@ -219,6 +219,7 @@ class CComponent
 		virtual void paint(bool _selected = false){};
 		virtual void hide(void){};
 		virtual void refresh(bool show = false){};
+		virtual void refresh(unsigned char){};
 		virtual void paintItemInfo(int){};
 		////
 		virtual void enableRepaint(){rePaint = true;};
@@ -255,8 +256,6 @@ class CComponent
 		virtual void saveScreen(void){};
 		virtual void restoreScreen(void){};
 		virtual void enableSaveScreen(void){savescreen = true;};
-//		virtual bool hasHead(){return paint_Head;};
-//		virtual bool hasFoot(){return paint_Foot;};
 		virtual bool hasTitle(){return has_Title;};
 		virtual void setTitle(const char * title, const char *icon = NULL){if (title) htitle = title; if (icon) hicon = icon;};
 		////

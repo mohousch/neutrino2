@@ -309,7 +309,6 @@ off64_t cut_movie(MI_MOVIE_INFO * minfo, CMovieInfo * cmovie)
 	off64_t sdone, spos;
 	off64_t newsize;
 	time_t tt;
-	int percent = 0;
 	char * name = (char *) minfo->file.Name.c_str();
 	CFile file;
 	MI_MOVIE_INFO ninfo;
@@ -508,7 +507,6 @@ off64_t cut_movie(MI_MOVIE_INFO * minfo, CMovieInfo * cmovie)
 					}
 					sdone += r;
 					spos += r - wptr;
-					percent = (int) ((float)(spos)/(float)(newsize)*100.);
 
 					
 #if REAL_CUT
@@ -600,7 +598,6 @@ off64_t copy_movie(MI_MOVIE_INFO * minfo, CMovieInfo * cmovie, bool onefile)
 	off64_t sdone, spos = 0, btotal = 0;
 	off64_t newsize;
 	time_t tt;
-	int percent = 0;
 	char * name = (char *) minfo->file.Name.c_str();
 	CFile file;
 	bool need_gop = 0;
@@ -770,7 +767,6 @@ next_file:
 				bskip -= r;
 				spos += r - wptr;
 				btotal += r;
-				percent = (int) ((float)(btotal)/(float)(newsize)*100.);
 
 #if REAL_CUT
 				int wr = write(dstfd, &buf[wptr], r-wptr);
