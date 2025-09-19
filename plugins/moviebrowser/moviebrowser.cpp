@@ -1184,30 +1184,23 @@ void CMovieBrowser::refreshMovieInfo()
 	if (m_settings.gui != MB_GUI_MOVIE_INFO)
 		return;
 	
-	std::string emptytext = " ";
+	std::string buffer = " ";
+	std::string fname = " ";
 	
-	if(m_vMovieInfo.size() <= 0) 
+	if (m_movieSelectionHandler != NULL)
 	{
-		if(m_pcInfo != NULL)
-			m_pcInfo->setText(emptytext.c_str());
-		return;
-	}
-	
-	if (m_movieSelectionHandler == NULL)
-	{
-		// There is no selected element, clear LCD
-		m_pcInfo->setText(emptytext.c_str());
-	}
-	else
-	{
-		std::string fname = m_movieSelectionHandler->tfile;
+		buffer.clear();
+		fname.clear();
+		
+		buffer = m_movieSelectionHandler->epgInfo2;
+		fname = m_movieSelectionHandler->tfile;
 
 		int p_w = 0;
 		int p_h = 0;
 		
 		scaleImage(fname, &p_w, &p_h);
 		
-		m_pcInfo->setText(m_movieSelectionHandler->epgInfo2.c_str(), fname.c_str(), p_w, p_h, CTextBox::PIC_RIGHT, true);
+		m_pcInfo->setText(buffer.c_str(), fname.c_str(), p_w, p_h, CTextBox::PIC_RIGHT, true);
 	}
 	
 	m_pcInfo->paint();
@@ -1439,7 +1432,7 @@ void CMovieBrowser::refreshFoot(void)
 		std::string filter_text = _("Filter:");
 		filter_text += m_settings.filter.optionString;
 
-		MBFootButtons[1].localename = filter_text.c_str();
+		//MBFootButtons[1].localename = filter_text.c_str();
 		//MBFootButtons[1].localename = _("Filter:");
 	}
 
@@ -1511,10 +1504,10 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 	}
 	else if (msg == CRCInput::RC_green) 
 	{		
-		if(m_settings.gui == MB_GUI_MOVIE_INFO)
-			onSetGUIWindow(MB_GUI_FILTER);
-		else if(m_settings.gui == MB_GUI_FILTER)
-			onSetGUIWindow(MB_GUI_MOVIE_INFO);			
+//		if(m_settings.gui == MB_GUI_MOVIE_INFO)
+//			onSetGUIWindow(MB_GUI_FILTER);
+//		else if(m_settings.gui == MB_GUI_FILTER)
+//			onSetGUIWindow(MB_GUI_MOVIE_INFO);			
 	}
 	else if (msg == CRCInput::RC_yellow) 
 	{
@@ -1832,7 +1825,7 @@ void CMovieBrowser::onSetGUIWindow(MB_GUI gui)
 		m_pcBrowser->paint();
 		m_pcInfo->paint();
 		
-		onSetFocus(MB_FOCUS_BROWSER);
+		onSetFocus(MB_FOCUS_MOVIE_INFO);
 		
 		refreshMovieInfo();
 	}
@@ -1842,14 +1835,15 @@ void CMovieBrowser::onSetGUIWindow(MB_GUI gui)
 		
 		// Paint these frames ...
 		m_showFilter = true;
+		m_showBrowserFiles = true;
 		m_showMovieInfo = false;
-		
-//		m_pcInfo->hide();
 		
 		m_pcBrowser->paint();
 		m_pcFilter->paint();
 		
 		onSetFocus(MB_FOCUS_FILTER);
+		
+		refreshFilterList();
 	}	
 }
 
@@ -1876,8 +1870,9 @@ void CMovieBrowser::onSetFocus(MB_FOCUS new_focus)
 	}
 	
 	updateMovieSelection();
-	refreshFoot();
-	refreshTitle();
+//	refreshFoot();
+//	refreshTitle();
+	refresh();
 }
 
 void CMovieBrowser::onSetFocusNext(void) 
