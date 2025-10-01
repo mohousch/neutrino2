@@ -55,7 +55,7 @@ CXXFLAGS = $(CFLAGS)
 export CFLAGS CXXFLAGS
 
 # first target is default...
-default: neutrino plugins
+all: neutrino2 plugins
 
 run:
 	$(DEST)/bin/neutrino2		
@@ -335,7 +335,7 @@ help:
 #
 # neutrino2
 #
-neutrino: $(N2_SRC)/config.status
+neutrino2: $(N2_SRC)/config.status
 	$(MAKE) -C $(N2_SRC) install
 
 $(N2_SRC)/config.status: | $(N2_SRC) $(DEST)
@@ -390,7 +390,7 @@ distclean: neutrino2-distclean plugins-distclean
 #
 # debian package
 #
-neutrino-deb: | $(N2_SRC) $(PWD)/debian
+neutrino2-deb: | $(N2_SRC) $(PWD)/debian
 	$(N2_SRC)/autogen.sh
 	set -e; cd $(N2_SRC); \
 		$(N2_SRC)/configure \
@@ -412,7 +412,7 @@ plugins-deb: $(PLUGINS_SRC) $(PWD)/debian
 			$(N2_OPTS)
 	$(MAKE) -C $(PLUGINS_SRC) install DESTDIR=$(PWD)/debian
 
-package: neutrino-deb plugins-deb
+package: neutrino2-deb plugins-deb
 	dpkg --build debian neutrinong_`sed -n 's/\#define PACKAGE_VERSION "//p' neutrino2/config.h | sed 's/"//'`_`git log | grep "^commit" | wc -l`_all.deb
 	
 package-clean:

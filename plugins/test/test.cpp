@@ -851,7 +851,7 @@ void CTestMenu::testCWidget()
 	top_selected = 0;
 
 	frameBoxWidget = new CFrameBox(&topBox);
-	frameBoxWidget->setFocus();
+	frameBoxWidget->setInFocus(false);
 
 	CFrameItem * frame = NULL;
 
@@ -893,7 +893,7 @@ void CTestMenu::testCWidget()
 	leftWidget = new ClistBox(&leftBox);
 
 	leftWidget->setSelected(left_selected);
-	leftWidget->setFocus();
+	leftWidget->setInFocus(false);
 
 	CMenuForwarder *item1 = new CMenuForwarder("In den Kinos", true, NULL, this, "movie_in_cinema");
 	//item1->setHidden(true);

@@ -116,6 +116,40 @@ class CChangeObserver
 		};
 };
 
+////
+class CBox
+{
+	public:
+		// Variables
+		int iX;
+		int iY;
+		int iWidth;
+		int iHeight;
+
+		//
+		inline CBox()
+		{
+			iX = 0;
+			iY = 0;
+			iWidth = 0;
+			iHeight = 0;
+		};
+		
+		inline CBox( const int _iX, const int _iY, const int _iWidth, const int _iHeight)
+		{
+			iX =_iX; 
+			iY=_iY; 
+			iWidth =_iWidth; 
+			iHeight =_iHeight;
+		};
+		
+		inline ~CBox(){};
+		
+		void move(int posx, int posy){iX = posx; iY = posy;};
+};
+
+typedef std::vector<CBox> nRegion;
+
 //// CComponent
 class CComponent
 {
@@ -266,7 +300,8 @@ class CComponent
 		virtual int swipLeft(){return 0;};
 		virtual int swipRight(){return 0;};
 		////
-		virtual void setFocus(bool focus = true){inFocus = !focus;};
+		//virtual void setFocus(bool focus = true){inFocus = !focus;};
+		virtual void setInFocus(bool focus = true){ if (isSelectable()) inFocus = focus;else inFocus = false; };
 		virtual void setSelected(unsigned int _new) {};
 		////
 		virtual int oKKeyPressed(CWidgetTarget *target, neutrino_msg_t _msg = CRCInput::RC_ok){return CWidgetTarget::RETURN_EXIT;};

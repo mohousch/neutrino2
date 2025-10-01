@@ -545,12 +545,12 @@ void CWidget::onYellowKeyPressed()
 
 			if(item->isSelectable() && item->hasItem())
 			{
-				CCItems[selected]->setFocus();
+				CCItems[selected]->setInFocus(false);
 				CCItems[selected]->paint();
 
 				selected = pos;
 
-				item->setFocus(false);
+				item->setInFocus(true);
 				item->paint();
 
 				break;

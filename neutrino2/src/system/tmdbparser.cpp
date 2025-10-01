@@ -73,7 +73,7 @@ bool CTmdb::getMovieInfo(std::string text)
 
 	minfo.clear();
 
-	std::string url = "http://api.themoviedb.org/3/";
+	std::string url = "https://api.themoviedb.org/3/";
 
 	url += "search/multi?api_key=" + key + "&language=" + lang + "&query=" + encodeUrl(text);
 
@@ -125,7 +125,7 @@ bool CTmdb::getMovieInfo(std::string text)
 	}
 
 	// credits infos
-	url = "http://api.themoviedb.org/3/" + tmp.media_type + "/" + toString(tmp.id) + "?api_key=" + key + "&language=" + lang + "&append_to_response=credits";
+	url = "https://api.themoviedb.org/3/" + tmp.media_type + "/" + toString(tmp.id) + "?api_key=" + key + "&language=" + lang + "&append_to_response=credits";
 
 	answer.clear();
 	if (!::getUrl(url, answer, "", 90))
@@ -187,7 +187,7 @@ bool CTmdb::getBigCover(std::string cover, std::string tname)
 	if (!cover.empty())
 	{
 		bool found = false;
-		found = ::downloadUrl("http://image.tmdb.org/t/p/w342" + cover, tname);
+		found = ::downloadUrl("https://image.tmdb.org/t/p/w342" + cover, tname);
 
 		ret |= found;
 	}
@@ -205,7 +205,7 @@ bool CTmdb::getSmallCover(std::string cover, std::string tname)
 	{
 		bool found = false;
 
-		found = ::downloadUrl("http://image.tmdb.org/t/p/w185" + cover, tname);
+		found = ::downloadUrl("https://image.tmdb.org/t/p/w185" + cover, tname);
 
 		ret |= found;
 	}
@@ -260,7 +260,7 @@ bool CTmdb::getMovieTVList(std::string mtype, std::string list, int page)
 {
 	dprintf(DEBUG_NORMAL, "cTmdb::getMovieTVList: %s: %s page:%d\n", mtype.c_str(), list.c_str(), page);
 
-	std::string url	= "http://api.themoviedb.org/3/";
+	std::string url	= "https://api.themoviedb.org/3/";
 
 	url += mtype + "/" + encodeUrl(list) + "?api_key=" + key + "&language=" + lang + "&page=" + toString(page);
 
@@ -329,7 +329,7 @@ bool CTmdb::getGenreList(std::string mtype)
 {
 	dprintf(DEBUG_NORMAL, "cTmdb::getGenreList:\n");
 
-	std::string url	= "http://api.themoviedb.org/3/genre/";
+	std::string url	= "https://api.themoviedb.org/3/genre/";
 
 	url += mtype + "/list?api_key=" + key + "&language=" + lang;
 
@@ -378,7 +378,7 @@ bool CTmdb::getGenreMovieList(const int id)
 {
 	dprintf(DEBUG_NORMAL, "cTmdb::getGenreMovieList:\n");
 
-	std::string url	= "http://api.themoviedb.org/3/list/";
+	std::string url	= "https://api.themoviedb.org/3/list/";
 
 	url += toString(id) + "?api_key=" + key + "&language=" + lang;
 
@@ -448,7 +448,7 @@ bool CTmdb::getSeasonsList(int id)
 
 	seasonList.clear();
 
-	std::string url = "http://api.themoviedb.org/3/tv/" + toString(id) + "?api_key=" + key + "&language=" + lang + "&append_to_response=credits";
+	std::string url = "https://api.themoviedb.org/3/tv/" + toString(id) + "?api_key=" + key + "&language=" + lang + "&append_to_response=credits";
 
 	std::string answer;
 
@@ -501,7 +501,7 @@ bool CTmdb::getEpisodesList(int id, int nr)
 
 	episodeList.clear();
 
-	std::string url = "http://api.themoviedb.org/3/tv/" + toString(id) + "/season/" + toString(nr) + "?api_key=" + key + "&language=" + lang + "&append_to_response=credits";
+	std::string url = "https://api.themoviedb.org/3/tv/" + toString(id) + "/season/" + toString(nr) + "?api_key=" + key + "&language=" + lang + "&append_to_response=credits";
 
 	std::string answer;
 
@@ -556,9 +556,9 @@ bool CTmdb::getVideoInfo(std::string mtype, int id, int s_nr)
 	std::string url;
 
 	if(mtype == "tv")
-		url = "http://api.themoviedb.org/3/tv/" + toString(id) + "/season/" + toString(s_nr) + "/videos?api_key=" + key + "&language=" + lang;
+		url = "https://api.themoviedb.org/3/tv/" + toString(id) + "/season/" + toString(s_nr) + "/videos?api_key=" + key + "&language=" + lang;
 	else
-		url = "http://api.themoviedb.org/3/movie/" + toString(id) + "/videos?api_key=" +
+		url = "https://api.themoviedb.org/3/movie/" + toString(id) + "/videos?api_key=" +
  key + "&language=" + lang + "&append_to_response=credits";
 
 	dprintf(DEBUG_NORMAL, "CTmdb::getVideoInfo: %s\n", url.c_str());
@@ -607,7 +607,7 @@ bool CTmdb::getMovieTVInfo(std::string mtype, int id)
 
 	movieInfo.clear();
 
-	std::string url = "http://api.themoviedb.org/3/" + mtype + "/" + toString(id) + "?api_key=" + key + "&language=" + lang + "&append_to_response=credits";
+	std::string url = "https://api.themoviedb.org/3/" + mtype + "/" + toString(id) + "?api_key=" + key + "&language=" + lang + "&append_to_response=credits";
 
 	std::string answer;
 
@@ -688,7 +688,7 @@ bool CTmdb::searchMovieInfo(std::string text)
 
 	minfo.clear();
 
-	std::string url = "http://api.themoviedb.org/3/";
+	std::string url = "https://api.themoviedb.org/3/";
 
 	url += "search/multi?api_key=" + key + "&language=" + lang + "&query=" + encodeUrl(text);
 

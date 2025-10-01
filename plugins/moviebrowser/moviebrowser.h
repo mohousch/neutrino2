@@ -183,7 +183,7 @@ class CMovieBrowser : public CWidgetTarget
 
 		CListFrame * m_pcBrowser;
 		CTextBox * m_pcInfo;
-		CListFrame * m_pcFilter;
+//		CListFrame * m_pcFilter;
 		CCHeaders *headers;
 		CCFooters *footers;
 	
@@ -191,12 +191,12 @@ class CMovieBrowser : public CWidgetTarget
 		CBox m_cBoxFrameBrowserList;
 		CBox m_cBoxFrameInfo;
 		CBox m_cBoxFrameBookmarkList;
-		CBox m_cBoxFrameFilter;
+//		CBox m_cBoxFrameFilter;
 		CBox m_cBoxFrameFootRel;
 		CBox m_cBoxFrameTitleRel;
 		
 		LF_LINES m_browserListLines;
-		LF_LINES m_FilterLines;
+//		LF_LINES m_FilterLines;
 
 		std::vector<MI_MOVIE_INFO> m_vMovieInfo;
 		std::vector<MI_MOVIE_INFO*> m_vHandleBrowserList;
@@ -204,12 +204,12 @@ class CMovieBrowser : public CWidgetTarget
         	std::vector<MI_MOVIE_INFO*> m_vHandleSerienames;
 
 		unsigned int m_currentBrowserSelection;
-		unsigned int m_currentFilterSelection;
+//		unsigned int m_currentFilterSelection;
  		unsigned int m_prevBrowserSelection;
 
 		bool m_showBrowserFiles;
 		bool m_showMovieInfo;
-		bool m_showFilter;
+//		bool m_showFilter;
 
 		MI_MOVIE_INFO * m_movieSelectionHandler;
 		std::string m_selectedDir;
@@ -262,7 +262,7 @@ class CMovieBrowser : public CWidgetTarget
 		void refresh(void); //P1
         	void hide(void); //P1
 		void refreshBrowserList(void); //P1
-		void refreshFilterList(void); //P1
+//		void refreshFilterList(void); //P1
 		void refreshMovieInfo(); //P1
 		void refreshFoot(void); //P2
 		void refreshTitle(void); //P2
@@ -272,7 +272,7 @@ class CMovieBrowser : public CWidgetTarget
 		bool onButtonPress(neutrino_msg_t msg); // P1
 		bool onButtonPressMainFrame(neutrino_msg_t msg); // P1
 		bool onButtonPressBrowserList(neutrino_msg_t msg); // P1
-		bool onButtonPressFilterList(neutrino_msg_t msg); // P2
+//		bool onButtonPressFilterList(neutrino_msg_t msg); // P2
 		bool onButtonPressMovieInfoList(neutrino_msg_t msg); // P2
 		void onSetFocus(MB_FOCUS new_focus); // P2
 		void onSetFocusNext(void); // P2
@@ -307,11 +307,11 @@ class CMovieBrowser : public CWidgetTarget
 	
 		//// misc
 //		void showHelp(void);
-		bool isFiltered(MI_MOVIE_INFO& movie_info);
+//		bool isFiltered(MI_MOVIE_INFO& movie_info);
 		bool isParentalLock(MI_MOVIE_INFO& movie_info);
 		bool getMovieInfoItem(MI_MOVIE_INFO& movie_info, MB_INFO_ITEM item, std::string* item_string);
 		void updateMovieSelection(void);
-		void updateFilterSelection(void);
+//		void updateFilterSelection(void);
 		void updateSerienames(void);
         	void autoFindSerie(void);
 };

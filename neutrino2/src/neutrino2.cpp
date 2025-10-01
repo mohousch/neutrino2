@@ -865,7 +865,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.show_weather = configfile.getInt32("show_weather", 0);
 
 	// tmdb
-	g_settings.tmdbkey = configfile.getString("tmdbkey", "");
+	g_settings.tmdbkey = configfile.getString("tmdbkey", "af3a53eb387d57fc935e9128468b1899");
 	g_settings.enable_tmdb_infos = configfile.getBool("enable_tmdb_infos", false);
 	g_settings.enable_tmdb_preview = configfile.getBool("enable_tmdb_preview", false);
 	

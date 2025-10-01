@@ -471,7 +471,7 @@ void CNFilm::showMenu(bool genre)
 	leftWidget = new ClistBox(&leftBox);
 
 	leftWidget->setSelected(left_selected);
-	leftWidget->setFocus();
+	leftWidget->setInFocus(false);
 
 	loadGenreList(genre);
 	paintLeftWidgetItems(leftWidget, genre);

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-08-31 14:29+0200\n"
+"POT-Creation-Date: 2025-10-01 14:42+0200\n"
 "PO-Revision-Date: 2023-10-29 18:19+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -109,9 +109,6 @@ msgstr "Dateigröße (MB)"
 
 msgid "Film Informationen"
 msgstr "Film Informationen"
-
-msgid "Filter movies by category:"
-msgstr "Filme nach Kategorie filtern:"
 
 msgid "Filter:"
 msgstr "Filter:"
@@ -239,9 +236,6 @@ msgstr "Einstellungen jetzt speichern"
 msgid "Scan for Movies ..."
 msgstr "Scanne Filme"
 
-msgid "Select"
-msgstr "Auswahl"
-
 msgid "Serie"
 msgstr "Serie"
 
@@ -315,9 +309,6 @@ msgid "arts/culture magazines"
 msgstr ""
 
 msgid "athletics"
-msgstr ""
-
-msgid "back"
 msgstr ""
 
 msgid "ballet"
