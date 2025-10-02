@@ -5,6 +5,8 @@
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
 
 <skin>
+	<skininfo author="mohousch" version="1.0" info="OpenATV MetruixHD alike skin"/>
+	
 	<widget name="mainmenu" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
 		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1" paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="300" iteminfoposy="50" iteminfowidth="300" iteminfoheight="300" iteminfocolor="COL_MENUCONTENTSELECTED_PLUS_0">

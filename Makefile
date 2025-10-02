@@ -418,6 +418,6 @@ package: neutrino2-deb plugins-deb
 package-clean:
 	rm -rf neutrinong_*
 
-PHONY = clean distclean
+PHONY = neutrino2 plugins clean distclean
 .PHONY: $(PHONY)
 

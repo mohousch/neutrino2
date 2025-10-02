@@ -1252,18 +1252,42 @@ int CSkinManager::showMenu()
 				item->setActionKey(this, namelist[i]->d_name);
 				
 				// itemIcom
-				std::string hintIcon = skinPath;
-				hintIcon += "/";
-				hintIcon += namelist[i]->d_name;
-				hintIcon += "/prev.png";
+				std::string hintIcon = skinPath + "/" + namelist[i]->d_name + "/prev.png";
+
 				item->setHintIcon(hintIcon.c_str());
 				
-				// itemHint
-				if (strstr(namelist[i]->d_name, "standard"))
+				// parse skininfo
+				std::string skin = skinPath + "/" + namelist[i]->d_name + "/skin.xml";
+				
+				std:: string author;
+				std::string version;
+				std::string description;
+				
+				xmlDocPtr parser = NULL;
+				
+				parser = parseXmlFile(skin.c_str());
+				
+				if (parser != NULL)
 				{
-					item->setOption("Author: mohousch");
-					item->setHint(_("default Skin for NeutrinoNG"));
+					xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode;
+					
+					while (search) 
+					{
+						if (!strcmp(xmlGetName(search), "skininfo")) 
+						{
+							author = xmlGetAttribute(search, (char *) "author");
+							version = xmlGetAttribute(search, (char *) "version");
+							description = xmlGetAttribute(search, (char *) "info");
+						}
+						search = search->xmlNextNode;
+					}
+					
+					xmlFreeDoc(parser);
 				}
+				
+				item->setOption(author.c_str());
+				item->setOptionInfo(version.c_str());
+				item->setHint(_(description.c_str()));
 				
 				bool select = false;
 				

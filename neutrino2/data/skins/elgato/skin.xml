@@ -5,6 +5,8 @@
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
 
 <skin>
+	<skininfo author="mohousch" version="1.0" info="delgato alike skin"/>
+	
 	<widget name="mainmenu" posx="340" posy="60" width="600" height="600" paintframe="0" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<image posx="340" posy="60" width="600" height="600" image="images/menu_bg2.png"/>
 		<listbox posx="370" posy="90" width="540" height="540" paintframe="0" type="TYPE_CLASSIC" mode="MODE_MENU" itemborder="1" painthead="1" title="Main Menu" icon="mainmenu" paintdate="1" headline="1" headlinegradient="1" paintfoot="1" footline="1" footlinegradient="1">

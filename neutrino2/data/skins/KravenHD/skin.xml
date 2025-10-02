@@ -5,6 +5,8 @@
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
 
 <skin>
+	<skininfo author="mohousch" version="1.0" info="KravenHD alike skin"/>
+	
 	<widget name="mainmenu" posx="10" posy="10" width="1260" height="700" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<label posx="640" posy="50" width="640" height="50" text="Main Menu" halign="1"/>
 		<image posx="640" posy="150" width="640" height="300" image="background/logo.png"/>

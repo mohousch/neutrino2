@@ -5,6 +5,8 @@
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
 
 <skin>
+	<skininfo author="mohousch" version="1.0" info="TitanNit alike skin"/>
+	
 	<widget name="mainmenu" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Main Menu" icon="mainmenu" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
 		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" mode="MODE_MENU">

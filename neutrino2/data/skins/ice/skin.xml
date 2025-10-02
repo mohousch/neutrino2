@@ -5,6 +5,8 @@
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
 
 <skin>
+	<skininfo author="mohousch" version="1.0" info="old neutrino2 alike skin"/>
+	
 	<widget name="mainmenu" posx="340" posy="135" width="600" height="450" position="MENU_POSITION_CENTER" paintframe="1" corner="CORNER_TOP" radius="RADIUS_MID" color="#ffeeeeee">
 		<head posx="340" posy="135" width="600" height="40" gradient="DARK2LIGHT" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_TOP" radius="RADIUS_MID" title="Main Menu" icon="icons/title.png" paintdate="1" format="%d.%m.%Y" paintframe="1" color="#ffe0e0e0"/>
 		<hline posx="340" posy="176" width="600" height="2" color="#ff000000"/>

@@ -595,8 +595,8 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.screen_height = configfile.getInt32("screen_height", frameBuffer->getScreenHeight(true) );
 	
 	//
-	g_settings.screen_xres = configfile.getInt32("screen_xres", 100);
-	g_settings.screen_yres = configfile.getInt32("screen_yres", 100);
+	g_settings.screen_xres = configfile.getInt32("screen_xres", 110);
+	g_settings.screen_yres = configfile.getInt32("screen_yres", 85);
 	
 	//
 	g_settings.preferred_skin = configfile.getString("preferred_skin", "standard");
