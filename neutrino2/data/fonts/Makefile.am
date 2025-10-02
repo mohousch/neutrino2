@@ -6,8 +6,5 @@ install_DATA = \
 	tuxtxt.otb \
 	neutrino.ttf \
 	micron.ttf \
-	micron_bold.ttf \
-	micron_italic.ttf \
-	micron_italic_old.ttf \
 	pakenham.ttf
 	
