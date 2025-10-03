@@ -1093,7 +1093,7 @@ void CFrameBuffer::paintIcon(const std::string &filename, const int x, const int
 	if(width == 0 || height == 0)	
 		getIconSize(newname.c_str(), &width, &height);
 
-	data = (fb_pixel_t *)getARGB32Image(newname, width, height, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
+	data = (fb_pixel_t *)getARGB32Image(newname, width, height, g_settings.menu_Content_alpha);
 	
 	// check into buttonBasePath
 	if(!data) 
@@ -1103,7 +1103,7 @@ void CFrameBuffer::paintIcon(const std::string &filename, const int x, const int
 		if(width == 0 || height == 0)	
 			getIconSize(newname.c_str(), &width, &height);
 
-		data = (fb_pixel_t *)getARGB32Image(newname, width, height,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
+		data = (fb_pixel_t *)getARGB32Image(newname, width, height, g_settings.menu_Content_alpha);
 	}
 	
 	// check into spinnerBasePath	
@@ -1114,7 +1114,7 @@ void CFrameBuffer::paintIcon(const std::string &filename, const int x, const int
 		if(width == 0 || height == 0)	
 			getIconSize(newname.c_str(), &width, &height);
 
-		data = (fb_pixel_t *)getARGB32Image(newname, width, height,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
+		data = (fb_pixel_t *)getARGB32Image(newname, width, height, g_settings.menu_Content_alpha);
 	}
 	
 	// full path
@@ -1127,7 +1127,7 @@ void CFrameBuffer::paintIcon(const std::string &filename, const int x, const int
 		if(width == 0 || height == 0)	
 			getIconSize(newname.c_str(), &width, &height);
 
-		data = (fb_pixel_t *)getARGB32Image(newname, width, height,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha));
+		data = (fb_pixel_t *)getARGB32Image(newname, width, height, g_settings.menu_Content_alpha);
 	}
 
 	if(data) 
@@ -1217,7 +1217,7 @@ void CFrameBuffer::displayImage(const std::string &name, int posx, int posy, int
 	if( name.find(".png") == (name.length() - 4) )
 		isPNG = true;
 	
-	fb_pixel_t *data = (fb_pixel_t *)getARGB32Image(name, width, height,  convertSetupAlpha2Alpha(g_settings.menu_Content_alpha), scaletype);
+	fb_pixel_t *data = (fb_pixel_t *)getARGB32Image(name, width, height, g_settings.menu_Content_alpha, scaletype);
 
 	if(data) 
 	{

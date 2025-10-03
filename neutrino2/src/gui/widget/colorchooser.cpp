@@ -110,7 +110,7 @@ void CColorChooser::setColor()
 	dprintf(DEBUG_NORMAL, "CColorChooser::setColor:\n");
 	
 	uint32_t color = convertSetupColor2RGB(*(value[VALUE_R]), *(value[VALUE_G]), *(value[VALUE_B]));
-	uint8_t tAlpha = (value[VALUE_ALPHA]) ? (convertSetupAlpha2Alpha(*(value[VALUE_ALPHA]))) : 0xFF;
+	uint8_t tAlpha = (value[VALUE_ALPHA]) ? *(value[VALUE_ALPHA]) : 0xFF;
 
 	fb_pixel_t col = ((tAlpha << 24) & 0xFF000000) | color;
 	
@@ -132,10 +132,7 @@ int CColorChooser::exec(CWidgetTarget* parent, const std::string&)
 	unsigned char r_alt= *value[VALUE_R];
 	unsigned char g_alt= *value[VALUE_G];
 	unsigned char b_alt= *value[VALUE_B];
-	unsigned char a_alt = (value[VALUE_ALPHA]) ? (*(value[VALUE_ALPHA])) : 0;
-	
-	if(!value[VALUE_ALPHA]) 
-		a_alt = 0xFF;
+	unsigned char a_alt = (value[VALUE_ALPHA]) ? (*(value[VALUE_ALPHA])) : 0xFF;
 
 	paint();
 	setColor();

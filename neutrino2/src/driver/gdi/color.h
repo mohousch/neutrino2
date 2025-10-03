@@ -130,7 +130,6 @@ extern "C"
 
 ////
 uint32_t convertSetupColor2RGB(uint8_t r, uint8_t g, uint8_t b);
-uint8_t convertSetupAlpha2Alpha(uint8_t alpha);
 uint32_t convertSetupColor2Color(uint8_t r, uint8_t g, uint8_t b, uint8_t alpha);
 
 ////

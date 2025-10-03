@@ -1767,55 +1767,55 @@ void CNeutrinoApp::setupColor(void)
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::setupColor\n");
 	
 	// head
-	CFrameBuffer::getInstance()->paletteGenFade(COL_MENUHEAD, convertSetupColor2RGB(g_settings.menu_Head_red, g_settings.menu_Head_green, g_settings.menu_Head_blue), convertSetupColor2RGB(g_settings.menu_Head_Text_red, g_settings.menu_Head_Text_green, g_settings.menu_Head_Text_blue), 8, convertSetupAlpha2Alpha( g_settings.menu_Head_alpha ));
+	CFrameBuffer::getInstance()->paletteGenFade(COL_MENUHEAD, convertSetupColor2RGB(g_settings.menu_Head_red, g_settings.menu_Head_green, g_settings.menu_Head_blue), convertSetupColor2RGB(g_settings.menu_Head_Text_red, g_settings.menu_Head_Text_green, g_settings.menu_Head_Text_blue), 8, g_settings.menu_Head_alpha);
 
 	// menu content
-	CFrameBuffer::getInstance()->paletteGenFade(COL_MENUCONTENT, convertSetupColor2RGB(g_settings.menu_Content_red, g_settings.menu_Content_green, g_settings.menu_Content_blue), convertSetupColor2RGB(g_settings.menu_Content_Text_red, g_settings.menu_Content_Text_green, g_settings.menu_Content_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha) );
+	CFrameBuffer::getInstance()->paletteGenFade(COL_MENUCONTENT, convertSetupColor2RGB(g_settings.menu_Content_red, g_settings.menu_Content_green, g_settings.menu_Content_blue), convertSetupColor2RGB(g_settings.menu_Content_Text_red, g_settings.menu_Content_Text_green, g_settings.menu_Content_Text_blue), 8, g_settings.menu_Content_alpha);
 
 	// menu content dark
-	CFrameBuffer::getInstance()->paletteGenFade(COL_MENUCONTENTDARK, convertSetupColor2RGB((g_settings.menu_Content_red*0.6), (g_settings.menu_Content_green*0.6), (g_settings.menu_Content_blue*0.6)), convertSetupColor2RGB(g_settings.menu_Content_Text_red, g_settings.menu_Content_Text_green, g_settings.menu_Content_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha) );
+	CFrameBuffer::getInstance()->paletteGenFade(COL_MENUCONTENTDARK, convertSetupColor2RGB((g_settings.menu_Content_red*0.6), (g_settings.menu_Content_green*0.6), (g_settings.menu_Content_blue*0.6)), convertSetupColor2RGB(g_settings.menu_Content_Text_red, g_settings.menu_Content_Text_green, g_settings.menu_Content_Text_blue), 8, g_settings.menu_Content_alpha);
 
 	// menu content selected
-	CFrameBuffer::getInstance()->paletteGenFade(COL_MENUCONTENTSELECTED, convertSetupColor2RGB(g_settings.menu_Content_Selected_red, g_settings.menu_Content_Selected_green, g_settings.menu_Content_Selected_blue), convertSetupColor2RGB(g_settings.menu_Content_Selected_Text_red, g_settings.menu_Content_Selected_Text_green, g_settings.menu_Content_Selected_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.menu_Content_Selected_alpha) );
+	CFrameBuffer::getInstance()->paletteGenFade(COL_MENUCONTENTSELECTED, convertSetupColor2RGB(g_settings.menu_Content_Selected_red, g_settings.menu_Content_Selected_green, g_settings.menu_Content_Selected_blue), convertSetupColor2RGB(g_settings.menu_Content_Selected_Text_red, g_settings.menu_Content_Selected_Text_green, g_settings.menu_Content_Selected_Text_blue), 8, g_settings.menu_Content_Selected_alpha);
 
 	// menu content inactiv
-	CFrameBuffer::getInstance()->paletteGenFade(COL_MENUCONTENTINACTIVE, convertSetupColor2RGB(g_settings.menu_Content_inactive_red, g_settings.menu_Content_inactive_green, g_settings.menu_Content_inactive_blue), convertSetupColor2RGB(g_settings.menu_Content_inactive_Text_red, g_settings.menu_Content_inactive_Text_green, g_settings.menu_Content_inactive_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.menu_Content_inactive_alpha) );
+	CFrameBuffer::getInstance()->paletteGenFade(COL_MENUCONTENTINACTIVE, convertSetupColor2RGB(g_settings.menu_Content_inactive_red, g_settings.menu_Content_inactive_green, g_settings.menu_Content_inactive_blue), convertSetupColor2RGB(g_settings.menu_Content_inactive_Text_red, g_settings.menu_Content_inactive_Text_green, g_settings.menu_Content_inactive_Text_blue), 8, g_settings.menu_Content_inactive_alpha);
 
 	// foot
-	CFrameBuffer::getInstance()->paletteGenFade(COL_MENUFOOT, convertSetupColor2RGB(g_settings.menu_Foot_red, g_settings.menu_Foot_green, g_settings.menu_Foot_blue), convertSetupColor2RGB(g_settings.menu_Foot_Text_red, g_settings.menu_Foot_Text_green, g_settings.menu_Foot_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.menu_Foot_alpha) );
+	CFrameBuffer::getInstance()->paletteGenFade(COL_MENUFOOT, convertSetupColor2RGB(g_settings.menu_Foot_red, g_settings.menu_Foot_green, g_settings.menu_Foot_blue), convertSetupColor2RGB(g_settings.menu_Foot_Text_red, g_settings.menu_Foot_Text_green, g_settings.menu_Foot_Text_blue), 8, g_settings.menu_Foot_alpha);
 
 	// infobar
-	CFrameBuffer::getInstance()->paletteGenFade(COL_INFOBAR, convertSetupColor2RGB(g_settings.infobar_red, g_settings.infobar_green, g_settings.infobar_blue), convertSetupColor2RGB(g_settings.infobar_Text_red, g_settings.infobar_Text_green, g_settings.infobar_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
+	CFrameBuffer::getInstance()->paletteGenFade(COL_INFOBAR, convertSetupColor2RGB(g_settings.infobar_red, g_settings.infobar_green, g_settings.infobar_blue), convertSetupColor2RGB(g_settings.infobar_Text_red, g_settings.infobar_Text_green, g_settings.infobar_Text_blue), 8, g_settings.infobar_alpha);
 
 	// infobar shadow
-	CFrameBuffer::getInstance()->paletteGenFade(COL_INFOBAR_SHADOW, convertSetupColor2RGB((g_settings.infobar_red*0.4), (g_settings.infobar_green*0.4), (g_settings.infobar_blue*0.4)), convertSetupColor2RGB(g_settings.infobar_Text_red, g_settings.infobar_Text_green, g_settings.infobar_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
+	CFrameBuffer::getInstance()->paletteGenFade(COL_INFOBAR_SHADOW, convertSetupColor2RGB((g_settings.infobar_red*0.4), (g_settings.infobar_green*0.4), (g_settings.infobar_blue*0.4)), convertSetupColor2RGB(g_settings.infobar_Text_red, g_settings.infobar_Text_green, g_settings.infobar_Text_blue), 8, g_settings.infobar_alpha);
 
 	// hint
-	CFrameBuffer::getInstance()->paletteGenFade(COL_MENUHINT, convertSetupColor2RGB(g_settings.menu_Hint_red, g_settings.menu_Hint_green, g_settings.menu_Hint_blue), convertSetupColor2RGB(g_settings.menu_Hint_Text_red, g_settings.menu_Hint_Text_green, g_settings.menu_Hint_Text_blue), 8, convertSetupAlpha2Alpha( g_settings.menu_Hint_alpha ) );
+	CFrameBuffer::getInstance()->paletteGenFade(COL_MENUHINT, convertSetupColor2RGB(g_settings.menu_Hint_red, g_settings.menu_Hint_green, g_settings.menu_Hint_blue), convertSetupColor2RGB(g_settings.menu_Hint_Text_red, g_settings.menu_Hint_Text_green, g_settings.menu_Hint_Text_blue), 8, g_settings.menu_Hint_alpha);
 	
 	// menu content inactiv text
-	CFrameBuffer::getInstance()->paletteSetColor(COL_MENUCONTENTINACTIVE_TEXT, convertSetupColor2RGB(g_settings.menu_Content_inactive_Text_red, g_settings.menu_Content_inactive_Text_green, g_settings.menu_Content_inactive_Text_blue), convertSetupAlpha2Alpha(g_settings.menu_Content_inactive_alpha) );
+	CFrameBuffer::getInstance()->paletteSetColor(COL_MENUCONTENTINACTIVE_TEXT, convertSetupColor2RGB(g_settings.menu_Content_inactive_Text_red, g_settings.menu_Content_inactive_Text_green, g_settings.menu_Content_inactive_Text_blue), g_settings.menu_Content_inactive_alpha);
 	
 	// menu content selected text
-	CFrameBuffer::getInstance()->paletteSetColor(COL_MENUCONTENTSELECTED_TEXT, convertSetupColor2RGB(g_settings.menu_Content_Selected_Text_red, g_settings.menu_Content_Selected_Text_green, g_settings.menu_Content_Selected_Text_blue), convertSetupAlpha2Alpha(g_settings.menu_Content_Selected_alpha) );
+	CFrameBuffer::getInstance()->paletteSetColor(COL_MENUCONTENTSELECTED_TEXT, convertSetupColor2RGB(g_settings.menu_Content_Selected_Text_red, g_settings.menu_Content_Selected_Text_green, g_settings.menu_Content_Selected_Text_blue), g_settings.menu_Content_Selected_alpha);
 	
 	// menu content text
-	CFrameBuffer::getInstance()->paletteSetColor(COL_MENUCONTENT_TEXT, convertSetupColor2RGB(g_settings.menu_Content_Text_red, g_settings.menu_Content_Text_green, g_settings.menu_Content_Text_blue), convertSetupAlpha2Alpha(g_settings.menu_Content_alpha) );
+	CFrameBuffer::getInstance()->paletteSetColor(COL_MENUCONTENT_TEXT, convertSetupColor2RGB(g_settings.menu_Content_Text_red, g_settings.menu_Content_Text_green, g_settings.menu_Content_Text_blue), g_settings.menu_Content_alpha);
 	
 	// head text
-	CFrameBuffer::getInstance()->paletteSetColor(COL_MENUHEAD_TEXT, convertSetupColor2RGB(g_settings.menu_Head_Text_red, g_settings.menu_Head_Text_green, g_settings.menu_Head_Text_blue), convertSetupAlpha2Alpha( g_settings.menu_Head_alpha ));
+	CFrameBuffer::getInstance()->paletteSetColor(COL_MENUHEAD_TEXT, convertSetupColor2RGB(g_settings.menu_Head_Text_red, g_settings.menu_Head_Text_green, g_settings.menu_Head_Text_blue), g_settings.menu_Head_alpha);
 	
 	// foot text
-	CFrameBuffer::getInstance()->paletteSetColor(COL_MENUFOOT_TEXT, convertSetupColor2RGB(g_settings.menu_Foot_Text_red, g_settings.menu_Foot_Text_green, g_settings.menu_Foot_Text_blue), convertSetupAlpha2Alpha(g_settings.menu_Foot_alpha) );
+	CFrameBuffer::getInstance()->paletteSetColor(COL_MENUFOOT_TEXT, convertSetupColor2RGB(g_settings.menu_Foot_Text_red, g_settings.menu_Foot_Text_green, g_settings.menu_Foot_Text_blue), g_settings.menu_Foot_alpha);
 	
 	// infobar text
-	CFrameBuffer::getInstance()->paletteSetColor(COL_INFOBAR_TEXT, convertSetupColor2RGB(g_settings.infobar_Text_red, g_settings.infobar_Text_green, g_settings.infobar_Text_blue), convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
+	CFrameBuffer::getInstance()->paletteSetColor(COL_INFOBAR_TEXT, convertSetupColor2RGB(g_settings.infobar_Text_red, g_settings.infobar_Text_green, g_settings.infobar_Text_blue), g_settings.infobar_alpha);
 
 	// infobar colored events text
-	CFrameBuffer::getInstance()->paletteSetColor(COL_INFOBAR_COLORED_EVENTS_TEXT, convertSetupColor2RGB(g_settings.infobar_colored_events_red, g_settings.infobar_colored_events_green, g_settings.infobar_colored_events_blue), convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
+	CFrameBuffer::getInstance()->paletteSetColor(COL_INFOBAR_COLORED_EVENTS_TEXT, convertSetupColor2RGB(g_settings.infobar_colored_events_red, g_settings.infobar_colored_events_green, g_settings.infobar_colored_events_blue), g_settings.infobar_alpha);
 
 	// hint text
-	CFrameBuffer::getInstance()->paletteSetColor(COL_MENUHINT_TEXT, convertSetupColor2RGB(g_settings.menu_Hint_Text_red, g_settings.menu_Hint_Text_green, g_settings.menu_Hint_Text_blue), convertSetupAlpha2Alpha( g_settings.menu_Hint_alpha ) );
+	CFrameBuffer::getInstance()->paletteSetColor(COL_MENUHINT_TEXT, convertSetupColor2RGB(g_settings.menu_Hint_Text_red, g_settings.menu_Hint_Text_green, g_settings.menu_Hint_Text_blue), g_settings.menu_Hint_alpha);
 
 	CFrameBuffer::getInstance()->paletteSet();
 }

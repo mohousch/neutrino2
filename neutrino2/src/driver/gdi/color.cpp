@@ -46,17 +46,11 @@ uint32_t convertSetupColor2RGB(uint8_t r, uint8_t g, uint8_t b)
 	return (r << 16) | (g << 8) | b;
 }
 
-uint8_t convertSetupAlpha2Alpha(uint8_t alpha)
-{	
-	return alpha;
-}
-
 uint32_t convertSetupColor2Color(uint8_t r, uint8_t g, uint8_t b, uint8_t alpha)
 {
-	int color = convertSetupColor2RGB(r, g, b);
-	int tAlpha = (alpha ? (convertSetupAlpha2Alpha(alpha)) : 0xFF);
+	uint32_t color = convertSetupColor2RGB(r, g, b);
 
-	uint32_t col = ((tAlpha << 24) & 0xFF000000) | color;
+	uint32_t col = ((alpha << 24) & 0xFF000000) | color;
 	
 	return col;
 }
