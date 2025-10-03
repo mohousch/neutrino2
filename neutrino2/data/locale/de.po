@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.8\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-10-02 13:30+0200\n"
+"POT-Creation-Date: 2025-10-03 13:27+0200\n"
 "PO-Revision-Date: 2023-09-22 10:51+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -40,7 +40,7 @@ msgid "(b) Movement:"
 msgstr "(b) Bewegung:"
 
 msgid "(c) Step Size:"
-msgstr "(c) Schrittgre:"
+msgstr "(c) Schrittgröße:"
 
 msgid "(relative, in seconds)"
 msgstr "(relativ, in Sekunden)"
@@ -62,7 +62,7 @@ msgid "A/V sync"
 msgstr "A/V-Synchronisierung"
 
 msgid "AC3 Delay"
-msgstr "AC3-Verzgerung"
+msgstr "AC3-Verzögerung"
 
 msgid "AV Select"
 msgstr "AV-Auswahl"
@@ -80,13 +80,13 @@ msgid "Actors"
 msgstr "Schauspieler"
 
 msgid "Add"
-msgstr "Hinzufgen"
+msgstr "Hinzufügen"
 
 msgid "Add Subtitle File"
-msgstr "Untertiteldatei hinzufgen"
+msgstr "Untertiteldatei hinzufügen"
 
 msgid "Add to Bouquets"
-msgstr "Zu Bouquets hinzufgen"
+msgstr "Zu Bouquets hinzufügen"
 
 msgid "Adult movie / Drama"
 msgstr "Erotikfilm / Drama"
@@ -104,7 +104,7 @@ msgid "Alarm time"
 msgstr "Weckzeit"
 
 msgid "All Channels"
-msgstr "Alle Kanle"
+msgstr "Alle Kanäle"
 
 msgid "All Services"
 msgstr "Alle Sender"
@@ -134,7 +134,7 @@ msgid "Are you sure to format ? You will lost all data "
 msgstr "Sind Sie sicher, dass Sie formatieren? Sie verlieren alle Daten "
 
 msgid "Are you sure to init ?"
-msgstr "Sind Sie sicher, dass Sie die Initialisierung durchfhren?"
+msgstr "Sind Sie sicher, dass Sie die Initialisierung durchführen?"
 
 msgid "Arts / Culture"
 msgstr "Kunst / Kultur"
@@ -143,7 +143,7 @@ msgid "Arts / Culture magazines"
 msgstr "Kunst- / Kulturmagazine"
 
 msgid "Aspect Ratio"
-msgstr "Seitenverhltnis"
+msgstr "Seitenverhältnis"
 
 msgid "Athletics"
 msgstr "Leichtathletik"
@@ -176,7 +176,7 @@ msgid "Audiotype"
 msgstr "Audiotyp"
 
 msgid "Auto select audio"
-msgstr "Audio automatisch Auswahln"
+msgstr "Audio automatisch Auswahl"
 
 msgid "Auto select subtitles"
 msgstr "Untertitel automatisch Auswahl"
@@ -188,7 +188,7 @@ msgid "Auto-Scan multiple Satellites"
 msgstr "Automatisches Scannen mehrerer Satelliten"
 
 msgid "Available Images/Packages"
-msgstr "Verfgbare Image/Pakete"
+msgstr "Verfügbare Image/Pakete"
 
 msgid "BOTTOM"
 msgstr "UNTEN"
@@ -200,7 +200,7 @@ msgid "BOTTOM RIGHT"
 msgstr "UNTEN RECHTS"
 
 msgid "Back"
-msgstr "Zurck"
+msgstr "Zurück"
 
 msgid "Background"
 msgstr "Hintergrund"
@@ -236,7 +236,7 @@ msgid "Bouquet Editor"
 msgstr "Bouquet-Editor"
 
 msgid "Bouquet back"
-msgstr "Bouquet zurck"
+msgstr "Bouquet zurück"
 
 msgid "Bouquets"
 msgstr "Bouquets"
@@ -267,7 +267,7 @@ msgid "Built date:"
 msgstr "Baudatum: "
 
 msgid "Buttons Bar"
-msgstr "Schaltflchenleiste"
+msgstr "Schaltflächenleiste"
 
 msgid "Buttons Line"
 msgstr "Tastenlinie"
@@ -306,22 +306,22 @@ msgid "CEC standby"
 msgstr "CEC-Standby"
 
 msgid "CEC volume"
-msgstr "CEC-Lautstrke"
+msgstr "CEC-Lautästrke"
 
 msgid "CEC volume TV"
-msgstr "CEC-Lautstrkefernseher"
+msgstr "CEC-Lautstärkefernseher"
 
 msgid "CEC volume audiosystem"
-msgstr "CEC-Lautstrke-Audiosystem"
+msgstr "CEC-Lautstärke-Audiosystem"
 
 msgid "CEC volume off"
-msgstr "CEC-Lautstrke aus"
+msgstr "CEC-Lautstärke aus"
 
 msgid "CI Cam"
 msgstr ""
 
 msgid "CI cam reset"
-msgstr "CI-CAM zurckgesetzt"
+msgstr "CI-CAM zurückgesetzt"
 
 msgid "CIFS"
 msgstr "CIFS"
@@ -348,7 +348,7 @@ msgid "Cancel movie cut/split ?"
 msgstr ""
 
 msgid "Caps"
-msgstr "Gre Schreibung"
+msgstr "Größe Schreibung"
 
 msgid "Caps / No Caps"
 msgstr "Gre / Kleine Schreibung"
@@ -357,10 +357,10 @@ msgid "Cartoons / Puppets"
 msgstr "Cartoons / Puppen"
 
 msgid "Change PIN code"
-msgstr "PIN-Code ndern"
+msgstr "PIN-Code ändern"
 
 msgid "Change sort order"
-msgstr "Sortierreihenfolge ndern"
+msgstr "Sortierreihenfolge ändern"
 
 msgid "Channel"
 msgstr "Kanal"
@@ -375,7 +375,7 @@ msgid "Channel down"
 msgstr "Kanal runter"
 
 msgid "Channel not available"
-msgstr "Kanal nicht verfgbar"
+msgstr "Kanal nicht verfügbar"
 
 msgid "Channel number"
 msgstr "Kanallistennummer"
@@ -405,7 +405,7 @@ msgid "Children / Juvenile program"
 msgstr "Kinder- / Jugendprogramm"
 
 msgid "Clear"
-msgstr "Lschen"
+msgstr "Löschen"
 
 msgid "Code Rate HP"
 msgstr "Coderate HP"
@@ -420,7 +420,7 @@ msgid "Colour Range"
 msgstr "Farbbereich"
 
 msgid "Comedy"
-msgstr "Komdie"
+msgstr "Komödie"
 
 msgid "Commited/Uncommited"
 msgstr "Festgeschrieben/Nicht festgeschrieben"
@@ -447,7 +447,7 @@ msgid "Create bookmark"
 msgstr "Lesezeichen erstellen"
 
 msgid "Create list of HD channels"
-msgstr "eine Liste mit HD-Kanlen erstellen"
+msgstr "eine Liste mit HD-Kanälen erstellen"
 
 msgid "Current Track"
 msgstr "Aktueller Titel"
@@ -492,22 +492,22 @@ msgid "Default gateway"
 msgstr "Standard-Gateway"
 
 msgid "Delayed shutdown"
-msgstr "Verzgertes Herunterfahren"
+msgstr "Verzögertes Herunterfahren"
 
 msgid "Delete"
-msgstr "Lschen"
+msgstr "Löschen"
 
 msgid "Delete WebTV channels"
 msgstr "WebTV-Kanle lschen"
 
 msgid "Delete all"
-msgstr "Alles lschen"
+msgstr "Alles löschen"
 
 msgid "Delete channel from bouquet?"
-msgstr "Kanal aus Bouquet lschen?"
+msgstr "Kanal aus Bouquet löschen?"
 
 msgid "Delete channels"
-msgstr "Senderlisten lschen"
+msgstr "Senderlisten löschen"
 
 msgid "Description: "
 msgstr "Beschreibung: "
