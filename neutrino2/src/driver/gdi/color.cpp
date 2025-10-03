@@ -41,12 +41,12 @@
 #define FLT_EPSILON 1E-5
 #endif
 
-int convertSetupColor2RGB(uint8_t r, uint8_t g, uint8_t b)
+uint32_t convertSetupColor2RGB(uint8_t r, uint8_t g, uint8_t b)
 {
 	return (r << 16) | (g << 8) | b;
 }
 
-int convertSetupAlpha2Alpha(uint8_t alpha)
+uint8_t convertSetupAlpha2Alpha(uint8_t alpha)
 {	
 	return alpha;
 }

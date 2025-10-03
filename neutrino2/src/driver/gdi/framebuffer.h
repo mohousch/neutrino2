@@ -204,8 +204,8 @@ class CFrameBuffer
 
 		// Palette stuff
 		void paletteFade(int i, __u32 rgb1, __u32 rgb2, int level);
-		void paletteGenFade(int in, __u32 rgb1, __u32 rgb2, int num, int tr = 0);
-		void paletteSetColor(int i, __u32 rgb, int tr);
+		void paletteGenFade(int in, __u32 rgb1, __u32 rgb2, int num, uint8_t tr = 0);
+		void paletteSetColor(int i, __u32 rgb, uint8_t tr);
 		void paletteSet(struct fb_cmap * map = NULL);
 
 		// paint functions

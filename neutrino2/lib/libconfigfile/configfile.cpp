@@ -33,6 +33,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+
 CConfigFile::CConfigFile(const char p_delimiter, const bool p_saveDefaults)
 {
 	modifiedFlag = false;
@@ -84,7 +85,7 @@ bool CConfigFile::loadConfig(const char * const filename)
 	}
 }
 
-bool CConfigFile::loadConfig(const std::string & filename)
+bool CConfigFile::loadConfig(const std::string &filename)
 {
 	return loadConfig(filename.c_str());
 }
@@ -144,7 +145,7 @@ void CConfigFile::storeInt64(const std::string & key, const int64_t val)
 	s >> configData[key];
 }
 
-void CConfigFile::storeString(const std::string & key, const std::string & val)
+void CConfigFile::storeString(const std::string & key, const std::string &val)
 {
 	configData[key] = val;
 }
@@ -180,7 +181,7 @@ int32_t CConfigFile::getInt32(const char * const key, const int32_t defaultVal)
 	return getInt32(std::string(key), defaultVal);
 }
 
-int32_t CConfigFile::getInt32(const std::string & key, const int32_t defaultVal)
+int32_t CConfigFile::getInt32(const std::string &key, const int32_t defaultVal)
 {
 	if (configData.find(key) == configData.end())
 	{
@@ -203,7 +204,7 @@ int64_t CConfigFile::getInt64(const char * const key, const int64_t defaultVal)
 	return getInt64(std::string(key), defaultVal);
 }
 
-int64_t CConfigFile::getInt64(const std::string & key, const int64_t defaultVal)
+int64_t CConfigFile::getInt64(const std::string &key, const int64_t defaultVal)
 {
 	if (configData.find(key) == configData.end())
 	{
@@ -226,7 +227,7 @@ std::string CConfigFile::getString(const char * const key, const std::string & d
 	return getString(std::string(key), defaultVal);
 }
 
-std::string CConfigFile::getString(const std::string & key, const std::string & defaultVal)
+std::string CConfigFile::getString(const std::string &key, const std::string & defaultVal)
 {
 	if (configData.find(key) == configData.end())
 	{
@@ -244,7 +245,7 @@ std::string CConfigFile::getString(const std::string & key, const std::string & 
 	return configData[key];
 }
 
-std::vector <int32_t> CConfigFile::getInt32Vector(const std::string & key)
+std::vector <int32_t> CConfigFile::getInt32Vector(const std::string &key)
 {
 	std::string val = configData[key];
 	std::vector <int32_t> vec;
@@ -274,7 +275,7 @@ std::vector <int32_t> CConfigFile::getInt32Vector(const std::string & key)
 	return vec;
 }
 
-std::vector <std::string> CConfigFile::getStringVector(const std::string & key)
+std::vector <std::string> CConfigFile::getStringVector(const std::string &key)
 {
 	std::string val = configData[key];
 	std::vector <std::string> vec;
@@ -312,7 +313,7 @@ void CConfigFile::setBool(const char * const key, const bool val)
 	setBool(std::string(key), val);
 }
 
-void CConfigFile::setBool(const std::string & key, const bool val)
+void CConfigFile::setBool(const std::string &key, const bool val)
 {
 	bool tmpUnknownKeyQueryedFlag = unknownKeyQueryedFlag;
 	unknownKeyQueryedFlag = false;
@@ -332,7 +333,7 @@ void CConfigFile::setInt32(const char * const key, int32_t val)
 	setInt32(std::string(key), val);
 }
 
-void CConfigFile::setInt32(const std::string & key, int32_t val)
+void CConfigFile::setInt32(const std::string &key, int32_t val)
 {
 	bool tmpUnknownKeyQueryedFlag = unknownKeyQueryedFlag;
 	unknownKeyQueryedFlag = false;
@@ -352,7 +353,7 @@ void CConfigFile::setInt64(const char * const key, const int64_t val)
 	setInt64(std::string(key), val);
 }
 
-void CConfigFile::setInt64(const std::string & key, const int64_t val)
+void CConfigFile::setInt64(const std::string &key, const int64_t val)
 {
 	bool tmpUnknownKeyQueryedFlag = unknownKeyQueryedFlag;
 	unknownKeyQueryedFlag = false;
@@ -372,7 +373,7 @@ void CConfigFile::setString(const char * const key, const std::string & val)
 	setString(std::string(key), val);
 }
 
-void CConfigFile::setString(const std::string & key, const std::string & val)
+void CConfigFile::setString(const std::string &key, const std::string & val)
 {
 	bool tmpUnknownKeyQueryedFlag = unknownKeyQueryedFlag;
 	unknownKeyQueryedFlag = false;
@@ -387,7 +388,7 @@ void CConfigFile::setString(const std::string & key, const std::string & val)
 	unknownKeyQueryedFlag = tmpUnknownKeyQueryedFlag;
 }
 
-void CConfigFile::setInt32Vector(const std::string & key, const std::vector<int32_t> vec)
+void CConfigFile::setInt32Vector(const std::string &key, const std::vector<int32_t> vec)
 {
 	std::stringstream s;
 
@@ -402,7 +403,7 @@ void CConfigFile::setInt32Vector(const std::string & key, const std::vector<int3
 	s >> configData[key];
 }
 
-void CConfigFile::setStringVector(const std::string & key, const std::vector<std::string> vec)
+void CConfigFile::setStringVector(const std::string &key, const std::vector<std::string> vec)
 {
 	configData[key] = "";
 

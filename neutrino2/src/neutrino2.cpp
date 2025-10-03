@@ -1773,7 +1773,7 @@ void CNeutrinoApp::setupColor(void)
 	CFrameBuffer::getInstance()->paletteGenFade(COL_MENUCONTENT, convertSetupColor2RGB(g_settings.menu_Content_red, g_settings.menu_Content_green, g_settings.menu_Content_blue), convertSetupColor2RGB(g_settings.menu_Content_Text_red, g_settings.menu_Content_Text_green, g_settings.menu_Content_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha) );
 
 	// menu content dark
-	CFrameBuffer::getInstance()->paletteGenFade(COL_MENUCONTENTDARK, convertSetupColor2RGB(int(g_settings.menu_Content_red*0.6), int(g_settings.menu_Content_green*0.6), int(g_settings.menu_Content_blue*0.6)), convertSetupColor2RGB(g_settings.menu_Content_Text_red, g_settings.menu_Content_Text_green, g_settings.menu_Content_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha) );
+	CFrameBuffer::getInstance()->paletteGenFade(COL_MENUCONTENTDARK, convertSetupColor2RGB((g_settings.menu_Content_red*0.6), (g_settings.menu_Content_green*0.6), (g_settings.menu_Content_blue*0.6)), convertSetupColor2RGB(g_settings.menu_Content_Text_red, g_settings.menu_Content_Text_green, g_settings.menu_Content_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha) );
 
 	// menu content selected
 	CFrameBuffer::getInstance()->paletteGenFade(COL_MENUCONTENTSELECTED, convertSetupColor2RGB(g_settings.menu_Content_Selected_red, g_settings.menu_Content_Selected_green, g_settings.menu_Content_Selected_blue), convertSetupColor2RGB(g_settings.menu_Content_Selected_Text_red, g_settings.menu_Content_Selected_Text_green, g_settings.menu_Content_Selected_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.menu_Content_Selected_alpha) );
@@ -1788,7 +1788,7 @@ void CNeutrinoApp::setupColor(void)
 	CFrameBuffer::getInstance()->paletteGenFade(COL_INFOBAR, convertSetupColor2RGB(g_settings.infobar_red, g_settings.infobar_green, g_settings.infobar_blue), convertSetupColor2RGB(g_settings.infobar_Text_red, g_settings.infobar_Text_green, g_settings.infobar_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
 
 	// infobar shadow
-	CFrameBuffer::getInstance()->paletteGenFade(COL_INFOBAR_SHADOW, convertSetupColor2RGB(int(g_settings.infobar_red*0.4), int(g_settings.infobar_green*0.4), int(g_settings.infobar_blue*0.4)), convertSetupColor2RGB(g_settings.infobar_Text_red, g_settings.infobar_Text_green, g_settings.infobar_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
+	CFrameBuffer::getInstance()->paletteGenFade(COL_INFOBAR_SHADOW, convertSetupColor2RGB((g_settings.infobar_red*0.4), (g_settings.infobar_green*0.4), (g_settings.infobar_blue*0.4)), convertSetupColor2RGB(g_settings.infobar_Text_red, g_settings.infobar_Text_green, g_settings.infobar_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
 
 	// hint
 	CFrameBuffer::getInstance()->paletteGenFade(COL_MENUHINT, convertSetupColor2RGB(g_settings.menu_Hint_red, g_settings.menu_Hint_green, g_settings.menu_Hint_blue), convertSetupColor2RGB(g_settings.menu_Hint_Text_red, g_settings.menu_Hint_Text_green, g_settings.menu_Hint_Text_blue), 8, convertSetupAlpha2Alpha( g_settings.menu_Hint_alpha ) );
@@ -2566,8 +2566,8 @@ void CNeutrinoApp::tvMode( bool rezap )
 		// FIXME:
 		firstChannel();
 		channelList->tuned = 0xfffffff;
-		//channelList->zapTo(firstchannel.channelNumber);
-		channelList->zapToChannelID(firstchannel.id, rezap);
+		channelList->zapTo(firstchannel.channelNumber);
+		//channelList->zapToChannelID(firstchannel.id, rezap);
 	}
 }
 
@@ -2631,8 +2631,8 @@ void CNeutrinoApp::radioMode( bool rezap)
 		// FIXME:
 		firstChannel();
 		channelList->tuned = 0xfffffff;
-		//channelList->zapTo(firstchannel.channelNumber);
-		channelList->zapToChannelID(firstchannel.id, rezap);
+		channelList->zapTo(firstchannel.channelNumber);
+		//channelList->zapToChannelID(firstchannel.id, rezap);
 	}
 }
 
