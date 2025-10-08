@@ -1285,9 +1285,9 @@ int CSkinManager::showMenu()
 					xmlFreeDoc(parser);
 				}
 				
-				item->setOption(author.c_str());
+				item->setOption(_(description.c_str()));
 				item->setOptionInfo(version.c_str());
-				item->setHint(_(description.c_str()));
+				item->setHint(author.c_str());
 				
 				bool select = false;
 				
