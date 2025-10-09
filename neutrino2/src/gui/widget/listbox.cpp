@@ -921,7 +921,6 @@ int CMenuOptionStringChooser::exec(CWidgetTarget *)
 		CWidget* widget = NULL;
 		ClistBox* menu = NULL;
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0};	
-
 		
 		widget = CNeutrinoApp::getInstance()->getWidget("optionstringchooser");
 		
@@ -3678,7 +3677,12 @@ void ClistBox::selectItemByName(const char *name)
 		for (int i = 0; i < (int)items.size(); i++)
 		{
 			if (items[i]->itemName == name)
+			{
 				setSelected(i);
+				return;
+			}
+			else
+				setSelected(0);
 		}
 	}
 }

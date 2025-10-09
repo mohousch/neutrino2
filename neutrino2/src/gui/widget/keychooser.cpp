@@ -135,7 +135,6 @@ int CKeyChooser::paint()
 	menu->addItem(new CMenuForwarder(_("Setup new key"), true, NULL, this, "setnewkey"));
 	menu->addItem(new CMenuForwarder(_("No key"), true, NULL, this, "deletekey"));
 
-
 	menu->setSelected(selected);
 	
 	ret = widget->exec(NULL, "");
