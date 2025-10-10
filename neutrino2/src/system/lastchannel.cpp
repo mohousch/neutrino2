@@ -39,9 +39,7 @@ void CLastChannel::clear(void)
 // -- Store only if channel != last channel...
 // -- and time store delay is large enough
 void CLastChannel::store(int channel, t_channel_id channel_id, bool forceStoreToLastChannels)
-{
-	printf("CLastChannel::store: %d %llx %d\n\n", channel, channel_id, forceStoreToLastChannels);
-	
+{	
 	struct timeval  tv;
 
 	gettimeofday (&tv, NULL);
@@ -57,7 +55,7 @@ void CLastChannel::store(int channel, t_channel_id channel_id, bool forceStoreTo
 		lastTimestamp  = this->lastChannels.front().timestamp;
 	}
 
-	if (((forceStoreToLastChannels || (tv.tv_sec - lastTimestamp) > secs_diff_before_store)) && (lastChannel != channel) )
+	if (((forceStoreToLastChannels || (tv.tv_sec - lastTimestamp) > secs_diff_before_store)) && (lastChannel_id != channel_id) )
 	{
 		if (this->shallRemoveEqualChannel && (this->lastChannels.size() > 1))
 		{
@@ -76,6 +74,7 @@ void CLastChannel::store(int channel, t_channel_id channel_id, bool forceStoreTo
 		// -- store channel on next pos (new channel)
 		_LastCh newChannel = {channel, channel_id, tv.tv_sec};
 		this->lastChannels.push_front(newChannel);
+		
 		if (this->lastChannels.size() > this->maxSize)
 		{
 			this->lastChannels.pop_back();
@@ -89,8 +88,6 @@ void CLastChannel::store(int channel, t_channel_id channel_id, bool forceStoreTo
 		this->lastChannels.front().channel_id = channel_id;
 		this->lastChannels.front().timestamp  = tv.tv_sec;
 	}
-	
-	printf("ClastChannel::store: size: %d\n", this->lastChannels.size());
 }
 
 unsigned int CLastChannel::size() const
