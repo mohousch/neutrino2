@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$Id: channellist.cpp 03092025 mohousch Exp $
+//	$Id: channellist.cpp 11102025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -85,7 +85,7 @@ extern CBouquetList   * RADIOsatList;
 extern CBouquetList   * RADIOfavList;
 extern CBouquetList   * RADIOallList;
 //
-extern CLastChannel _lastChList;
+extern CLastChannel _lastChList;			// defined in neutrino2.cpp
 
 #define CHANNEL_SMSKEY_TIMEOUT 800
 
@@ -768,6 +768,11 @@ bool CChannelList::adjustToChannelID(const t_channel_id channel_id, bool bToo)
 
 	dprintf(DEBUG_NORMAL, "CChannelList::adjustToChannelID: channel_id 0x%llx\n", channel_id);
 	
+	// store channel into lastchannellist
+	if (channel_id)
+		_lastChList.store(channel_id, true);
+	
+	// adjust to bouquets
 	for (i = 0; i < chanlist.size(); i++) 
 	{
 		if (chanlist[i] != NULL)
@@ -775,7 +780,6 @@ bool CChannelList::adjustToChannelID(const t_channel_id channel_id, bool bToo)
 			if (chanlist[i]->channel_id == channel_id) 
 			{
 				selected = i;
-				_lastChList.store(/*selected*/chanlist[i]->number, channel_id, true);
 
 				tuned = i;
 				
