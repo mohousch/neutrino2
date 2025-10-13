@@ -86,7 +86,7 @@ PACKAGES="\
 	gperf \
 	\
 	${UBUNTU:+rpm}                                               ${FEDORA:+rpm-build}      ${GENTOO:+rpm}         \
-	${UBUNTU:+lsb-release}          ${SUSE:+lsb-release}         ${FEDORA:+redhat-lsb}     ${GENTOO:+lsb-release} \
+	${UBUNTU:+lsb-release}          ${SUSE:+lsb-release}                                   ${GENTOO:+lsb-release} \
 	${UBUNTU:+git}             	${SUSE:+git-core}            ${FEDORA:+git}            ${GENTOO:+git}         \
 	${UBUNTU:+libncurses5-dev}      ${SUSE:+ncurses-devel}       ${FEDORA:+ncurses-devel}  ${GENTOO:+ncurses}     \
 	${UBUNTU:+libncursesw5-dev}                                                                                   \
@@ -105,7 +105,7 @@ PACKAGES="\
 	${UBUNTU:+libglib2.0-dev}       ${SUSE:+glibc-devel-static}  ${FEDORA:+glibc-static}                          \
 	${UBUNTU:+doc-base}             ${SUSE:+libuuid-devel}       ${FEDORA:+libuuid-devel}                         \
 	${UBUNTU:+texi2html}                                                                                          \
-	${UBUNTU:+help2man}                                                                                           \
+	${UBUNTU:+help2man}                                          ${FEDORA:+help2man}                              \
 	${UBUNTU:+libcurl4-openssl-dev} ${SUSE:+libcurl-devel}       ${FEDORA:+libcurl-devel}                         \
 	${UBUNTU:+liblzo2-dev}          ${SUSE:+lzo-devel}           ${FEDORA:+lzo-devel}      ${GENTOO:+lzo:2}       \
 	${UBUNTU:+ruby}                                                                        ${GENTOO:+ruby}        \
@@ -116,14 +116,14 @@ PACKAGES="\
 	${UBUNTU:+mtools}                                                                                             \
 	${UBUNTU:+u-boot-tools}											      \
 	${UBUNTU:+android-sdk-libsparse-utils}									      \
-	${UBUNTU:+lua5.2}                                                                                             \
-	${UBUNTU:+liblua5.2-dev}                                                                                      \
+	${UBUNTU:+lua5.2}                                            ${FEDORA:+lua}				      \
+	${UBUNTU:+liblua5.2-dev}                                     ${FEDORA:+lua-devel}       		      \
     	${UBUNTU:+python-dev-is-python3}                                                                              \
-    	${UBUNTU:+libfreetype6-dev}										      \
+    	${UBUNTU:+libfreetype6-dev}				     ${FEDORA:+freetype-devel}          	      \
     	${UBUNTU:+libid3tag0-dev}										      \
     	${UBUNTU:+libmad0-dev}											      \
     	${UBUNTU:+libavformat-dev}										      \
-    	${UBUNTU:+libfribidi-dev}										      \
+    	${UBUNTU:+libfribidi-dev}				     ${FEDORA:+fribidi-devel} 			      \
     	${UBUNTU:+libogg-dev}											      \
     	${UBUNTU:+libpng-dev}											      \
     	${UBUNTU:+libgif-dev}											      \
@@ -135,15 +135,17 @@ PACKAGES="\
     	${UBUNTU:+libgstreamer1.0-dev}										      \
     	${UBUNTU:+libgstreamer-plugins-base1.0-dev}								      \
     	${UBUNTU:+libgstreamer-plugins-bad1.0-dev}								      \
-    	${UBUNTU:+lua-json}											      \
-    	${UBUNTU:+lua-expat}											      \
-    	${UBUNTU:+lua-posix}											      \
-    	${UBUNTU:+lua-socket}											      \
-    	${UBUNTU:+lua-soap}											      \
-    	${UBUNTU:+lua-curl}											      \
-    	${UBUNTU:+libass-dev}											      \
-    	${UBUNTU:+libglew-dev}											      \
-    	${UBUNTU:+freeglut3-dev}										      \
+    								     ${FEDORA:+libavcodec-freeworld}     	      \
+    								     ${FEDORA:+ffmpeg-devel} 			      \
+    	${UBUNTU:+lua-json}					     ${FEDORA:+lua-json}                              \
+    	${UBUNTU:+lua-expat}					     ${FEDORA:+lua-expat}                             \
+    	${UBUNTU:+lua-posix}					     ${FEDORA:+lua-posix}                             \
+    	${UBUNTU:+lua-socket}					     ${FEDORA:+lua-socket} 			      \
+    	${UBUNTU:+lua-soap}					     		         			      \
+    	${UBUNTU:+lua-curl}					     		        			      \
+    	${UBUNTU:+libass-dev}					     						      \
+    	${UBUNTU:+libglew-dev}					     ${FEDORA:+glew-devel} 			      \
+    	${UBUNTU:+freeglut3-dev}				     ${FEDORA:+freeglut-devel}			      \
     	${UBUNTU:+libao-dev}											      \
     	${UBUNTU:+libtool-bin} 											      \
 	${UBUNTU:+gtk-doc-tools}
@@ -157,7 +159,6 @@ if [ `which arch > /dev/null 2>&1 && arch || uname -m` == x86_64 ]; then
 	${UBUNTU:+binutils-multiarch}   ${SUSE:+glibc-devel-32bit}      ${FEDORA:+glibc-devel.i686}                   \
 	${UBUNTU:+lib32z1-dev}          ${SUSE:+zlib-devel-32bit}       ${FEDORA:+libgcc.i686}                        \
 	                                                                ${FEDORA:+ncurses-devel.i686}                 \
-	                                                                ${FEDORA:+redhat-lsb.i686}                    \
 	                                ${SUSE:+libstdc++-devel-32bit}  ${FEDORA:+glibc-static.i686}
 	";
 fi
@@ -175,7 +176,4 @@ if [ ! "$?" -eq "0" ]; then
 		ln -s /bin/bash /bin/sh
 	fi
 fi
-
-# for user mknod
-#chmod +s /bin/mknod
 
