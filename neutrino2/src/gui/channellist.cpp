@@ -984,7 +984,7 @@ int CChannelList::numericZap(int key)
 				{
 					CZapitChannel * channel = getChannel(channel_id);
 					if(channel) 
-						channelList->addChannel(channel);
+						channelList->addChannel(channel, i);
 				}
 			}
 
