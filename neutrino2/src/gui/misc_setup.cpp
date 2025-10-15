@@ -521,6 +521,9 @@ int CDataResetNotifier::exec(CWidgetTarget *parent, const std::string& actionKey
 				dprintf(DEBUG_NORMAL, "CDataResetNotifier::exec: executing %s\n", fname);
 				
 				system(fname);
+				
+				// restart neutrino2
+				CNeutrinoApp::getInstance()->exec(NULL, "restart");
 			}
 			
 			

@@ -12,4 +12,4 @@ fi
 tar xf $1
 sync
 sync
-reboot -f
+
