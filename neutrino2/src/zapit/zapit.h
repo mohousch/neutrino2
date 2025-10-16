@@ -336,7 +336,7 @@ class CZapit
 				ChannelIterator(CZapit *owner = NULL, const CZapit::channelsMode Mode = CZapit::MODE_TV);
 				ChannelIterator operator ++(int);
 				CZapitChannel* operator *();
-				ChannelIterator FindChannelNr(const unsigned int channel);
+				////
 				int getLowestChannelNumberWithChannelID(const t_channel_id channel_id);
 				int getNrofFirstChannelofBouquet(const unsigned int bouquet_nr);
 				bool EndOfChannels() { return (c == -2); };
@@ -345,7 +345,7 @@ class CZapit
 		ChannelIterator tvChannelsBegin() { return ChannelIterator(this, CZapit::MODE_TV); };
 		ChannelIterator radioChannelsBegin() { return ChannelIterator(this, CZapit::MODE_RADIO); };
 		
-		//
+		////
 		void saveZapitBouquets(void);
 		void saveZapitUBouquets(void);
 		void loadBouquets(bool loadCurrentBouquet = false);
@@ -404,7 +404,7 @@ class CZapit
 		void sendAPIDs(t_channel_id chid, APIDList &apids);
 		void sendSubPIDs(t_channel_id chid, SubPIDList &subpids);
 		//
-		void internalSendChannels(ZapitChannelList* channels, const unsigned int first_channel_nr, BouquetChannelList &Bchannels);
+		void internalSendChannels(ZapitChannelList *channels, const unsigned int first_channel_nr, BouquetChannelList &Bchannels);
 		void sendBouquetChannels(BouquetChannelList &Bchannels, const unsigned int bouquet, const channelsMode mode);
 		//// channelManager
 		void parseTransponders(xmlNodePtr node, t_satellite_position satellitePosition, fe_type_t frontendType);
@@ -489,8 +489,6 @@ class CZapit
 		//
 		void zapToServiceIDNOWAIT(const t_channel_id channel_id);
 		void zapToSubServiceIDNOWAIT(const t_channel_id channel_id);
-		unsigned int zapTo(const unsigned int bouquet, const unsigned int channel);
-		unsigned int zapTo(const unsigned int channel);
 		unsigned int zapToServiceID(const t_channel_id channel_id);
 		unsigned int zapToSubServiceID(const t_channel_id channel_id);
 		int zapToRecordID(const t_channel_id channel_id);
@@ -543,7 +541,7 @@ class CZapit
 		void setAudioChannel(const unsigned int channel);
 		void setVideoSystem(int video_system);
 		//// needed by nhttpd controlapi
-		bool getBouquetChannels(const unsigned int bouquet, BouquetChannelList &channels, const channelsMode mode = MODE_CURRENT, const bool utf_encoded = false);
+		bool getBouquetChannels(const unsigned int bouquet, BouquetChannelList &channels, const channelsMode mode = MODE_CURRENT);
 		//// bouquetManager
 		void saveBouquets();
 		void restoreBouquets();

@@ -1907,6 +1907,84 @@ void CZapit::sendSubPIDs(t_channel_id chid, SubPIDList &subpids)
 	}
 }
 
+//// ChannelIterator
+CZapit::ChannelIterator::ChannelIterator(CZapit *owner, const CZapit::channelsMode Mode)
+{
+	Owner = owner;
+	mode = Mode;
+
+	if (Owner->Bouquets.size() == 0)
+		c = -2;
+	else 
+	{
+		b = 0;
+		c = -1; 
+		(*this)++;
+	}
+}
+
+CZapit::ChannelIterator CZapit::ChannelIterator::operator ++(int)
+{
+	if (c != -2)  // we can add if it's not the end marker
+	{
+		c++;
+		if ((unsigned int) c >= getBouquet()->size()) 
+		{
+			for (b++; b < Owner->Bouquets.size(); b++)
+			{
+				if (getBouquet()->size() != 0) 
+				{
+					c = 0;
+					goto end;
+				}
+			}
+			
+			c = -2;
+		}
+	}
+
+ end:
+	return(*this);
+}
+
+CZapitChannel* CZapit::ChannelIterator::operator *()
+{
+	return (*getBouquet())[c];               // returns junk if we are an end marker !!
+}
+
+//
+int CZapit::ChannelIterator::getLowestChannelNumberWithChannelID(const t_channel_id channel_id)
+{
+	int i = 0;
+
+	for (b = 0; b < Owner->Bouquets.size(); b++)
+	{
+		for (c = 0; (unsigned int) c < getBouquet()->size(); c++, i++)
+		{
+			if ((**this)->getChannelID() == channel_id)
+				return (**this)->number -1;
+		}
+	}
+		
+	return -1; // not found
+}
+
+//
+int CZapit::ChannelIterator::getNrofFirstChannelofBouquet(const unsigned int bouquet_nr)
+{
+	if (bouquet_nr >= Owner->Bouquets.size())
+		return -1;  // not found
+
+	int i = 0;
+
+	for (b = 0; b < bouquet_nr; b++)
+	{
+		i += getBouquet()->size();
+	}
+
+	return i;
+}
+
 ////
 void CZapit::internalSendChannels(ZapitChannelList *channels, const unsigned int first_channel_nr, BouquetChannelList &Bchannels)
 {
@@ -1938,7 +2016,7 @@ void CZapit::sendBouquetChannels(BouquetChannelList &Bchannels, const unsigned i
 		internalSendChannels(&(Bouquets[bouquet]->tvChannels), tvChannelsBegin().getNrofFirstChannelofBouquet(bouquet), Bchannels);
 }
 
-bool CZapit::getBouquetChannels(const unsigned int bouquet, BouquetChannelList& channels, const channelsMode mode, const bool utf_encoded)
+bool CZapit::getBouquetChannels(const unsigned int bouquet, BouquetChannelList &channels, const channelsMode mode)
 {
 	sendBouquetChannels(channels, bouquet, mode);
 	
@@ -2780,102 +2858,6 @@ void CZapit::clearAll()
 	remainChannels = NULL;
 }
 
-//// ChannelIterator
-CZapit::ChannelIterator::ChannelIterator(CZapit *owner, const CZapit::channelsMode Mode)
-{
-	Owner = owner;
-	mode = Mode;
-
-	if (Owner->Bouquets.size() == 0)
-		c = -2;
-	else 
-	{
-		b = 0;
-		c = -1; 
-		(*this)++;
-	}
-}
-
-CZapit::ChannelIterator CZapit::ChannelIterator::operator ++(int)
-{
-	if (c != -2)  // we can add if it's not the end marker
-	{
-		c++;
-		if ((unsigned int) c >= getBouquet()->size()) 
-		{
-			for (b++; b < Owner->Bouquets.size(); b++)
-			{
-				if (getBouquet()->size() != 0) 
-				{
-					c = 0;
-					goto end;
-				}
-			}
-			
-			c = -2;
-		}
-	}
-
- end:
-	return(*this);
-}
-
-CZapitChannel* CZapit::ChannelIterator::operator *()
-{
-	return (*getBouquet())[c];               // returns junk if we are an end marker !!
-}
-
-CZapit::ChannelIterator CZapit::ChannelIterator::FindChannelNr(const unsigned int channel)
-{
-	c = channel;
-	
-	for (b = 0; b < Owner->Bouquets.size(); b++)
-	{
-		if (getBouquet()->size() > (unsigned int)c)
-			goto end;
-		else
-			c -= getBouquet()->size();
-	}
-	
-	c = -2;
-	
-end:
-	return (*this);
-}
-
-//
-int CZapit::ChannelIterator::getLowestChannelNumberWithChannelID(const t_channel_id channel_id)
-{
-	int i = 0;
-
-	for (b = 0; b < Owner->Bouquets.size(); b++)
-	{
-		for (c = 0; (unsigned int) c < getBouquet()->size(); c++, i++)
-		{
-			if ((**this)->getChannelID() == channel_id)
-				return (**this)->number -1;
-		}
-	}
-		
-	return -1; // not found
-}
-
-//
-int CZapit::ChannelIterator::getNrofFirstChannelofBouquet(const unsigned int bouquet_nr)
-{
-	if (bouquet_nr >= Owner->Bouquets.size())
-		return -1;  // not found
-
-	int i = 0;
-
-	for (b = 0; b < bouquet_nr; b++)
-	{
-		i += getBouquet()->size();
-	}
-
-	return i;
-}
-
 //// startplayback return: 0=playing, -1= failed
 int CZapit::startPlayBack(CZapitChannel * thisChannel)
 {
@@ -3285,30 +3267,6 @@ void CZapit::leaveStandby(void)
 	zapToChannelID(live_channel_id, current_is_nvod);
 }
 
-unsigned CZapit::zapTo(const unsigned int bouquet, const unsigned int channel)
-{
-	if (bouquet >= Bouquets.size()) 
-	{
-		dprintf(DEBUG_INFO, "CZapit::zapTo: Invalid bouquet %d\n", bouquet);
-		return ZAP_INVALID_PARAM;
-	}
-
-	ZapitChannelList * channels;
-
-	if (currentMode & RADIO_MODE)
-		channels = &(Bouquets[bouquet]->radioChannels);
-	else if (currentMode & TV_MODE)
-		channels = &(Bouquets[bouquet]->tvChannels);
-
-	if (channel >= channels->size()) 
-	{
-		dprintf(DEBUG_INFO, "CZapit::zapTo: Invalid channel %d in bouquet %d\n", channel, bouquet);
-		return ZAP_INVALID_PARAM;
-	}
-
-	return zapToChannelID((*channels)[channel]->getChannelID(), false);
-}
-
 unsigned int CZapit::zapToChannelID(t_channel_id channel_id, bool isSubService)
 {
 	unsigned int result = 0;
@@ -3348,22 +3306,6 @@ unsigned int CZapit::zapToChannelID(t_channel_id channel_id, bool isSubService)
 	}
 
 	return result;
-}
-
-unsigned CZapit::zapTo(const unsigned int channel)
-{
-	//FIXME:
-	CZapit::ChannelIterator cit = (tvChannelsBegin()).FindChannelNr(channel);
-
-	if (currentMode & RADIO_MODE)
-		cit = (radioChannelsBegin()).FindChannelNr(channel);
-	else if (currentMode & TV_MODE)
-		cit = (tvChannelsBegin()).FindChannelNr(channel);
-	
-	if (!(cit.EndOfChannels()))
-		return zapToChannelID((*cit)->getChannelID(), false);
-	else
-		return 0;
 }
 
 void CZapit::setZapitConfig(zapit_config * Cfg)

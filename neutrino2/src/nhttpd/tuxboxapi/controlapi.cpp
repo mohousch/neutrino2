@@ -2362,7 +2362,7 @@ void CControlAPI::changeBouquetCGI(CyhookHandler *hh)
 	{
 		int selected = atoi(hh->ParamList["selected"].c_str());
 		CZapit::BouquetChannelList BChannelList;
-		CZapit::getInstance()->getBouquetChannels(selected - 1, BChannelList, CZapit::MODE_CURRENT, true);
+		CZapit::getInstance()->getBouquetChannels(selected - 1, BChannelList, CZapit::MODE_CURRENT);
 		CZapit::BouquetChannelList::iterator channels = BChannelList.begin();
 		
 		for(; channels != BChannelList.end(); channels++)
