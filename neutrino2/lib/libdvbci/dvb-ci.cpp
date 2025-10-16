@@ -942,52 +942,6 @@ cDvbCi::cDvbCi(int Slots)
 	ci_num = 0;
 	
 	//
-	for (i = 0; i < Slots; i++)
-	{
-		sprintf(filename, "/dev/ci%d", i); 
-		fd = open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
-		
-		if (fd > 0)
-		{
-			tSlot *slot = (tSlot*) malloc(sizeof(tSlot));
-				
-			ci_num++;
-
-			slot->slot = i;
-			slot->fd = fd;
-			slot->connection_id = 0;
-			slot->status = eStatusNone;
-			slot->receivedLen = 0;
-			slot->receivedData = NULL;
-			slot->pClass = this;
-			slot->pollConnection = false;
-			slot->camIsReady = false;
-			slot->hasMMIManager = false;
-			slot->hasCAManager = false;
-			slot->hasDateTime = false;
-			slot->hasAppManager = false;
-			slot->mmiOpened = false;
-			slot->init = false;
-			slot->caPmt = NULL;
-			slot->source = TUNER_A;
-			sprintf(slot->name, "unknown module %d", i);
-
-			slot_data.push_back(slot);
-				
-			// now reset the slot so the poll pri can happen in the thread
-			reset(i); 
-				
-			usleep(200000);
-
-			// create a thread for each slot
-			if (pthread_create(&slot->slot_thread, 0, execute_thread,  (void*)slot)) 
-			{
-				printf("pthread_create\n");
-			}
-		}
-	}
-	
-	//
 	for(j = 0; j < DVBADAPTER_MAX; j++)
 	{
 		for (i = 0; i < Slots; i++)
@@ -998,6 +952,11 @@ cDvbCi::cDvbCi(int Slots)
 			sprintf(filename, "/dev/dvb/adapter%d/ci%d", j, i);
 #endif
 
+			fd = open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
+			
+			if (fd < 0)
+				sprintf(filename, "/dev/ci%d", i);
+				
 			fd = open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
 		    
 			if (fd > 0)
