@@ -164,7 +164,7 @@ int CComponent::exec(CWidgetTarget *target)
 	int retval = CWidgetTarget::RETURN_REPAINT;
 	
 	if (target)
-		hide();
+		target->hide();
 
 	//
 	paint();
@@ -1928,67 +1928,6 @@ void CCProgressBar::reset()
   	percent = 255;
 }
 
-//// CCScrollBar
-void CCScrollBar::paint(const int x, const int y, const int dy, const int NrOfPages, const int CurrentPage)
-{
-	// scrollBar
-	CBox cFrameScrollBar;
-	CCWindow cScrollBarWindow;
-
-	cFrameScrollBar.iX = x;
-	cFrameScrollBar.iY = y;
-	cFrameScrollBar.iWidth = SCROLLBAR_WIDTH;
-	cFrameScrollBar.iHeight = dy;
-
-
-	cScrollBarWindow.setPosition(&cFrameScrollBar);
-	cScrollBarWindow.setColor(COL_MENUCONTENT_PLUS_1);
-	cScrollBarWindow.setCorner(NO_RADIUS, CORNER_ALL);
-	cScrollBarWindow.paint();
-		
-	// scrollBar slider
-	CBox cFrameSlider;
-	CCWindow cSliderWindow;	
-
-	cFrameSlider.iX = cFrameScrollBar.iX + 2;
-	cFrameSlider.iY = cFrameScrollBar.iY + CurrentPage*(cFrameScrollBar.iHeight/NrOfPages);
-	cFrameSlider.iWidth = cFrameScrollBar.iWidth - 4;
-	cFrameSlider.iHeight = cFrameScrollBar.iHeight/NrOfPages;
-
-	cSliderWindow.setPosition(&cFrameSlider);
-	cSliderWindow.setColor(COL_MENUCONTENT_PLUS_3);
-	cSliderWindow.setCorner(NO_RADIUS, CORNER_ALL);
-	cSliderWindow.paint();
-}
-
-void CCScrollBar::paint(CBox* position, const int NrOfPages, const int CurrentPage)
-{
-	// scrollBar
-	CBox cFrameScrollBar;
-	CCWindow cScrollBarWindow;
-
-	cFrameScrollBar = *position;
-
-	cScrollBarWindow.setPosition(&cFrameScrollBar);
-	cScrollBarWindow.setColor(COL_MENUCONTENT_PLUS_1);
-	cScrollBarWindow.setCorner(NO_RADIUS, CORNER_ALL);
-	cScrollBarWindow.paint();
-		
-	// scrollBar slider
-	CBox cFrameSlider;
-	CCWindow cSliderWindow;	
-
-	cFrameSlider.iX = cFrameScrollBar.iX + 2;
-	cFrameSlider.iY = cFrameScrollBar.iY + CurrentPage*(cFrameScrollBar.iHeight/NrOfPages);
-	cFrameSlider.iWidth = cFrameScrollBar.iWidth - 4;
-	cFrameSlider.iHeight = cFrameScrollBar.iHeight/NrOfPages;
-
-	cSliderWindow.setPosition(&cFrameSlider);
-	cSliderWindow.setColor(COL_MENUCONTENT_PLUS_3);
-	cSliderWindow.setCorner(NO_RADIUS, CORNER_ALL);
-	cSliderWindow.paint();
-}
-
 //// CItemInfo
 CCItemInfo::CCItemInfo()
 {
@@ -2978,5 +2917,67 @@ void CCFooters::hide()
 	
 	if (paintframe)
 		CFrameBuffer::getInstance()->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
+}
+
+//// Component helpers
+//// CCScrollBar
+void CCScrollBar::paint(const int x, const int y, const int dy, const int NrOfPages, const int CurrentPage)
+{
+	// scrollBar
+	CBox cFrameScrollBar;
+	CCWindow cScrollBarWindow;
+
+	cFrameScrollBar.iX = x;
+	cFrameScrollBar.iY = y;
+	cFrameScrollBar.iWidth = SCROLLBAR_WIDTH;
+	cFrameScrollBar.iHeight = dy;
+
+
+	cScrollBarWindow.setPosition(&cFrameScrollBar);
+	cScrollBarWindow.setColor(COL_MENUCONTENT_PLUS_1);
+	cScrollBarWindow.setCorner(NO_RADIUS, CORNER_ALL);
+	cScrollBarWindow.paint();
+		
+	// scrollBar slider
+	CBox cFrameSlider;
+	CCWindow cSliderWindow;	
+
+	cFrameSlider.iX = cFrameScrollBar.iX + 2;
+	cFrameSlider.iY = cFrameScrollBar.iY + CurrentPage*(cFrameScrollBar.iHeight/NrOfPages);
+	cFrameSlider.iWidth = cFrameScrollBar.iWidth - 4;
+	cFrameSlider.iHeight = cFrameScrollBar.iHeight/NrOfPages;
+
+	cSliderWindow.setPosition(&cFrameSlider);
+	cSliderWindow.setColor(COL_MENUCONTENT_PLUS_3);
+	cSliderWindow.setCorner(NO_RADIUS, CORNER_ALL);
+	cSliderWindow.paint();
+}
+
+void CCScrollBar::paint(CBox* position, const int NrOfPages, const int CurrentPage)
+{
+	// scrollBar
+	CBox cFrameScrollBar;
+	CCWindow cScrollBarWindow;
+
+	cFrameScrollBar = *position;
+
+	cScrollBarWindow.setPosition(&cFrameScrollBar);
+	cScrollBarWindow.setColor(COL_MENUCONTENT_PLUS_1);
+	cScrollBarWindow.setCorner(NO_RADIUS, CORNER_ALL);
+	cScrollBarWindow.paint();
+		
+	// scrollBar slider
+	CBox cFrameSlider;
+	CCWindow cSliderWindow;	
+
+	cFrameSlider.iX = cFrameScrollBar.iX + 2;
+	cFrameSlider.iY = cFrameScrollBar.iY + CurrentPage*(cFrameScrollBar.iHeight/NrOfPages);
+	cFrameSlider.iWidth = cFrameScrollBar.iWidth - 4;
+	cFrameSlider.iHeight = cFrameScrollBar.iHeight/NrOfPages;
+
+	cSliderWindow.setPosition(&cFrameSlider);
+	cSliderWindow.setColor(COL_MENUCONTENT_PLUS_3);
+	cSliderWindow.setCorner(NO_RADIUS, CORNER_ALL);
+	cSliderWindow.paint();
 }
 

@@ -234,8 +234,7 @@ int CNEpisodes::exec(CWidgetTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CNEpisodes::exec: %s\n", actionKey.c_str());
 
-	if(parent)
-		hide();
+	hide();
 
 	if(actionKey == "RC_info")
 	{

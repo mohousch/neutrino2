@@ -353,9 +353,6 @@ int CTVShows::showCategoriesMenu()
 	dprintf(DEBUG_NORMAL, "showCategoriesMenu:\n");
 
 	int res = -1;
-	
-	//// FIXME:
-	hide();
 
 	ClistBox * menu = new ClistBox(CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - 600)/2, CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - 600)/2, 600, 600);
 	
@@ -389,8 +386,7 @@ int CTVShows::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CTVShows::exec: actionKey: %s\n", actionKey.c_str());
 
-	if(parent)
-		hide();
+	hide();
 
 	if(actionKey == "RC_info")
 	{

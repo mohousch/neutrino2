@@ -178,11 +178,9 @@ class CComponent
 			CC_LISTFRAME,
 			CC_TEXTBOX,
 			CC_FRAME,
-			//// not to be added with addCCItem method.
-			CC_SCROLLBAR,
 			CC_PROGRESSBAR,
 			CC_ITEMINFO,
-			CC_SLIDER,
+			CC_SLIDER
 		};
 		
 		// border
@@ -300,7 +298,6 @@ class CComponent
 		virtual int swipLeft(){return 0;};
 		virtual int swipRight(){return 0;};
 		////
-		//virtual void setFocus(bool focus = true){inFocus = !focus;};
 		virtual void setInFocus(bool focus = true){ if (isSelectable()) inFocus = focus;else inFocus = false; };
 		virtual void setSelected(unsigned int _new) {};
 		////
@@ -760,21 +757,6 @@ class CCProgressBar : public CComponent
 		void setColor(uint32_t c){rgb = c;};
 };
 
-//// CCScrollBar
-class CCScrollBar : public CComponent
-{
-	public:
-		CFrameBuffer* frameBuffer;
-		
-		//
-		CCScrollBar(){frameBuffer = CFrameBuffer::getInstance(); cc_type = CC_SCROLLBAR;};
-		virtual ~CCScrollBar(){};
-
-		// currentPage start with 0
-		void paint(const int x, const int y, const int dy, const int NrOfPages, const int CurrentPage);
-		void paint(CBox* position, const int NrOfPages, const int CurrentPage);
-};
-
 //// CCItemInfo
 class CCItemInfo : public CComponent
 {
@@ -1000,6 +982,22 @@ class CCFooters : public CComponent
 		void hide();
 		//
 		void clear(){buttons.clear();};
+};
+
+//// Component helpers
+//// CCScrollBar
+class CCScrollBar : public CComponent
+{
+	public:
+		CFrameBuffer* frameBuffer;
+		
+		//
+		CCScrollBar(){frameBuffer = CFrameBuffer::getInstance(); /*cc_type = CC_SCROLLBAR;*/};
+		virtual ~CCScrollBar(){};
+
+		// currentPage start with 0
+		void paint(const int x, const int y, const int dy, const int NrOfPages, const int CurrentPage);
+		void paint(CBox* position, const int NrOfPages, const int CurrentPage);
 };
 
 #endif /* __gui_component_h__ */
