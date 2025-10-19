@@ -123,6 +123,7 @@ class CNeutrinoApp : public CWidgetTarget
 		CChannelList* TVchannelList;
 		CChannelList* RADIOchannelList;
 		CChannelList* channelList;
+		CLastChannel _lastChList;
 		////
 
 		////
@@ -197,6 +198,7 @@ class CNeutrinoApp : public CWidgetTarget
 		CChannelList *getTVChannelList(){return TVchannelList;};
 		CChannelList *getRADIOChannelList(){return RADIOchannelList;};
 		CChannelList *getChannelList(){return channelList;};
+		CLastChannel &getlastChList() {return _lastChList;};
 		////
 		void channelsInit();
 		////

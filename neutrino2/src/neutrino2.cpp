@@ -202,8 +202,6 @@ CBouquetList* RADIOsatList;
 CBouquetList* RADIOfavList;
 CBouquetList* RADIOallList;
 //
-CLastChannel _lastChList;
-//
 #if defined (ENABLE_CI)
 CCAMMenuHandler* g_CamHandler;
 #endif
@@ -3300,6 +3298,9 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		
 		//
 		CLCD::getInstance()->setEPGTitle("");
+		
+		// store channel into lastchannellist
+		_lastChList.store(CZapit::getInstance()->getCurrentChannelID());
 	}
 
 	// shift / scrambled timer events

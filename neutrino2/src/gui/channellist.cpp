@@ -84,8 +84,6 @@ extern CBouquetList   * RADIObouquetList;
 extern CBouquetList   * RADIOsatList;
 extern CBouquetList   * RADIOfavList;
 extern CBouquetList   * RADIOallList;
-//
-extern CLastChannel _lastChList;			// defined in neutrino2.cpp
 
 #define CHANNEL_SMSKEY_TIMEOUT 800
 
@@ -768,10 +766,6 @@ bool CChannelList::adjustToChannelID(const t_channel_id channel_id, bool bToo)
 
 	dprintf(DEBUG_NORMAL, "CChannelList::adjustToChannelID: channel_id 0x%llx\n", channel_id);
 	
-	// store channel into lastchannellist
-	if (channel_id)
-		_lastChList.store(channel_id, true);
-	
 	// adjust to bouquets
 	for (i = 0; i < chanlist.size(); i++) 
 	{
@@ -926,17 +920,16 @@ int CChannelList::numericZap(int key)
 	// lastchannel key
 	if (key == g_settings.key_lastchannel) 
 	{
-		t_channel_id channel_id = _lastChList.getlast(1);
+		t_channel_id channel_id = CNeutrinoApp::getInstance()->getlastChList().getlast(1);
 		if(channel_id) 
 		{
-			_lastChList.clear_storedelay(); // ignore store delay
+			CNeutrinoApp::getInstance()->getlastChList().clear_storedelay(); // ignore store delay
 			zapToChannelID(channel_id);
 		}
 		
 		return res;
 	}
 
-	// zap history key
 	if (key == g_settings.key_zaphistory) 
 	{
 		// current transponder bouquet
@@ -972,13 +965,13 @@ int CChannelList::numericZap(int key)
 		}
 
 		// zap history bouquet
-		if (_lastChList.size() > 1) 
+		if (CNeutrinoApp::getInstance()->getlastChList().size() > 1) 
 		{
 			CChannelList * channelList = new CChannelList(_("History"), true);
 
-			for(unsigned int i = 1; i < _lastChList.size(); ++i) 
+			for(unsigned int i = 1; i < CNeutrinoApp::getInstance()->getlastChList().size(); ++i) 
 			{
-				t_channel_id channel_id = _lastChList.getlast(i);
+				t_channel_id channel_id = CNeutrinoApp::getInstance()->getlastChList().getlast(i);
 
 				if(channel_id) 
 				{
