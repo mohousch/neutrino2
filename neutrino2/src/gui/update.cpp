@@ -1129,9 +1129,11 @@ int CUpdateSettings::showMenu()
 	updateSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	// experten function
+#if defined (__sh__)
 	//FIXME: allow update only when the rootfs is jffs2/squashfs
 	updateSettings->addItem(new CMenuForwarder(_("Expert-functions"), true, NULL, this, "mtdexpert"));
 	updateSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+#endif
 		
 	// update dir
 	updateSettings->addItem( new CMenuForwarder(_("Directory for updates"), true, g_settings.update_dir , this, "update_dir") );
