@@ -129,6 +129,15 @@ CWidget::~CWidget()
 	}
 	
 	//
+	for (unsigned int count = 0; count < CCItems.size(); count++)
+	{
+		CComponent *item = CCItems[count];
+		
+		delete item;
+		item = NULL;
+	}
+	
+	//
 	CCItems.clear();
 }
 
@@ -376,6 +385,7 @@ int CWidget::exec(CWidgetTarget *parent, const std::string &)
 							msg = CRCInput::RC_timeout;
 							break;
 						case CWidgetTarget::RETURN_REPAINT:
+							hide();
 							paint();
 							break;
 					}
@@ -620,6 +630,7 @@ void CWidget::onOKKeyPressed()
 					msg = CRCInput::RC_timeout;
 					break;
 				case CWidgetTarget::RETURN_REPAINT:
+					hide();
 					paint();
 					break;
 			}

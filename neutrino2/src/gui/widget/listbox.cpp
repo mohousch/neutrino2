@@ -219,10 +219,10 @@ void CMenuItem::saveScreen()
 {
 	if (background)
 	{
-			delete [] background;
-			background = NULL;
+		delete [] background;
+		background = NULL;
 	}
-								
+	
 	background = new fb_pixel_t[dx*dy];
 						
 	if (background)
@@ -2103,7 +2103,17 @@ ClistBox::~ClistBox()
 	hbutton_labels.clear();
 	fbutton_labels.clear();
 	
-	//
+	//FIXME:
+#if 0	
+	for (unsigned int count = 0; count < items.size(); count++)
+	{
+		CMenuItem *item = items[count];
+				
+		delete item;
+		item = NULL;
+	}
+#endif	
+
 	items.clear();
 	page_start.clear();
 }
