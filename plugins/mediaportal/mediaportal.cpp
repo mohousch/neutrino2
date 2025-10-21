@@ -164,12 +164,14 @@ void CMediaPortal::showMenu(void)
 	mediaPortal->setWidgetType(ClistBox::TYPE_FRAME);
 	
 	//
-	mediaPortal->enablePaintHead();
-	mediaPortal->setTitle(_("Media Portal"), PLUGINDIR "/mediaportal/mp.png");
-	mediaPortal->enablePaintDate();
+	//mediaPortal->enablePaintHead();
+	//mediaPortal->setTitle(_("Media Portal"), PLUGINDIR "/mediaportal/mp.png");
+	//mediaPortal->enablePaintDate();
 	
 	// 
-	mediaPortal->enablePaintItemInfo();
+	//mediaPortal->enablePaintItemInfo();
+	
+	mediaPortal->paintMainFrame(false);
 
 	// youtube
 	if (g_PluginList->plugin_exists("youtube"))
