@@ -86,6 +86,7 @@ CFrameBuffer::CFrameBuffer()
 	backgroundFilename = "";
 	fd  = 0;
 	m_manual_blit = -1;
+	nofb = false;
 	
 	// 
 	memset(red, 0, 256*sizeof(__u16));
@@ -125,8 +126,6 @@ void CFrameBuffer::init(const char * const fbDevice)
 {
 	dprintf(DEBUG_NORMAL, "CFrameBuffer::init\n");
 	
-	bool nofb = false;
-	
 #if defined (USE_OPENGL)
 	fd = -1;
 	
@@ -165,6 +164,8 @@ void CFrameBuffer::init(const char * const fbDevice)
 	{
 		perror(fbDevice);
 		nofb = true;
+		
+		goto nofbdevice;
 	}
 
 	// get variable screeninfo
@@ -177,7 +178,7 @@ void CFrameBuffer::init(const char * const fbDevice)
 	// get fix screen info
 	fb_fix_screeninfo fix;
 
-	if (ioctl(fd, FBIOGET_FSCREENINFO, &fix)<0) 
+	if (ioctl(fd, FBIOGET_FSCREENINFO, &fix) < 0) 
 	{
 		perror("FBIOGET_FSCREENINFO");
 		nofb = true;
@@ -186,8 +187,12 @@ void CFrameBuffer::init(const char * const fbDevice)
 	available = fix.smem_len;
 	
 	dprintf(DEBUG_NORMAL, "CFrameBuffer::init %dk video mem\n", available/1024);
+
+	// workaround	
+	if (available < (DEFAULT_XRES*DEFAULT_YRES*DEFAULT_BPP))
+		nofb = true;
 	
-	if (!nofb) lfb = (fb_pixel_t *)mmap(0, available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
+	lfb = (fb_pixel_t *)mmap(0, available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
 
 	if (!lfb) 
 	{
@@ -202,29 +207,37 @@ void CFrameBuffer::init(const char * const fbDevice)
 	if (available / (1024 * 1024) < 12)
 	{
 		printf("CFrameBuffer::init: to less memory for stmfb given, need at least 12mb\n"); 
-		nofb = true;
+		goto nolfb;
 	}
 #else
 	enableManualBlit();
 #endif /*sh*/ 
 #endif /* USE_OPENGL */
-	
+
+nofbdevice:	
 	if (nofb)
 	{
 		fd = -1;
+		
 		screeninfo.bits_per_pixel = DEFAULT_BPP;
 		screeninfo.xres = DEFAULT_XRES;
 		screeninfo.xres_virtual = screeninfo.xres;
 		screeninfo.yres = DEFAULT_YRES;
 		screeninfo.yres_virtual = screeninfo.yres;
+		
+		available = DEFAULT_XRES*DEFAULT_YRES*32;
 			
-		lfb  = new uint32_t[DEFAULT_XRES*DEFAULT_YRES*4];
+		lfb  = new uint32_t[available];
 	
 		if (!lfb) 
 		{
 			perror("mmap");
 			goto nolfb;
 		}
+		
+		nofb = true;
+		
+		dprintf(DEBUG_NORMAL, "CFrameBuffer::init %dk video mem\n", available/1024);
 	}
 	
 	// set colors
@@ -387,7 +400,7 @@ t_fb_var_screeninfo *CFrameBuffer::getScreenInfo()
 
 void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, unsigned int nbpp)
 {
-	bool nofb = false;
+	dprintf(DEBUG_NORMAL, "CFRameBuffer::setFrameBufferMode: xRes:%d yRes:%d bpp:%d\n", nxRes, nyRes, nbpp);
 	
 	screeninfo.xres_virtual = screeninfo.xres = nxRes;
 	screeninfo.yres_virtual = (screeninfo.yres = nyRes)*2;
@@ -465,14 +478,6 @@ void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, un
 	}
 
 	stride = fix.line_length;
-	
-	if (nofb)
-	{
-		xRes = nxRes;
-		yRes = nyRes;
-		bpp = nbpp;
-		stride = nxRes * sizeof(fb_pixel_t);
-	}
 }
 
 int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
@@ -488,7 +493,15 @@ int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
 	bpp = _bpp;
 	stride = xRes * sizeof(fb_pixel_t);
 #else
-	setFrameBufferMode(x, y, _bpp);
+	if (nofb)
+	{
+		xRes = x;
+		yRes = y;
+		bpp = _bpp;
+		stride = xRes * sizeof(fb_pixel_t);
+	}
+	else
+		setFrameBufferMode(x, y, _bpp);
 #endif	
 
 	// clear frameBuffer
