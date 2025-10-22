@@ -125,8 +125,11 @@ void CFrameBuffer::init(const char * const fbDevice)
 {
 	dprintf(DEBUG_NORMAL, "CFrameBuffer::init\n");
 	
+	bool nofb = false;
+	
 #if defined (USE_OPENGL)
 	fd = -1;
+	
 	if(!mpGLThreadObj)
 	{
 		screeninfo.bits_per_pixel = DEFAULT_BPP;
@@ -153,22 +156,6 @@ void CFrameBuffer::init(const char * const fbDevice)
 		goto nolfb;
 	}
 #else	
-#ifdef ENABLE_NOFB
-	fd = -1;
-	screeninfo.bits_per_pixel = DEFAULT_BPP;
-	screeninfo.xres = DEFAULT_XRES;
-	screeninfo.xres_virtual = screeninfo.xres;
-	screeninfo.yres = DEFAULT_YRES;
-	screeninfo.yres_virtual = screeninfo.yres;
-			
-	lfb  = new uint32_t[DEFAULT_XRES*DEFAULT_YRES*4];
-	
-	if (!lfb) 
-	{
-		perror("mmap");
-		goto nolfb;
-	}
-#else
 	fd = open(fbDevice, O_RDWR);
 
 	if(!fd) 
@@ -177,14 +164,14 @@ void CFrameBuffer::init(const char * const fbDevice)
 	if (fd < 0) 
 	{
 		perror(fbDevice);
-		goto nolfb;
+		nofb = true;
 	}
 
 	// get variable screeninfo
 	if (ioctl(fd, FBIOGET_VSCREENINFO, &screeninfo) < 0) 
 	{
 		perror("FBIOGET_VSCREENINFO");
-		goto nolfb;
+		nofb = true;
 	}
 
 	// get fix screen info
@@ -193,21 +180,20 @@ void CFrameBuffer::init(const char * const fbDevice)
 	if (ioctl(fd, FBIOGET_FSCREENINFO, &fix)<0) 
 	{
 		perror("FBIOGET_FSCREENINFO");
-		goto nolfb;
+		nofb = true;
 	}
 
 	available = fix.smem_len;
 	
 	dprintf(DEBUG_NORMAL, "CFrameBuffer::init %dk video mem\n", available/1024);
 	
-	lfb = (fb_pixel_t *)mmap(0, available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
+	if (!nofb) lfb = (fb_pixel_t *)mmap(0, available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
 
 	if (!lfb) 
 	{
 		perror("mmap");
-		goto nolfb;
+		nofb = true;
 	}
-#endif
 	
 #ifdef __sh__ 
 	//we add 2MB at the end of the buffer, the rest does the blitter 
@@ -216,12 +202,30 @@ void CFrameBuffer::init(const char * const fbDevice)
 	if (available / (1024 * 1024) < 12)
 	{
 		printf("CFrameBuffer::init: to less memory for stmfb given, need at least 12mb\n"); 
-		goto nolfb;
+		nofb = true;
 	}
 #else
 	enableManualBlit();
 #endif /*sh*/ 
 #endif /* USE_OPENGL */
+	
+	if (nofb)
+	{
+		fd = -1;
+		screeninfo.bits_per_pixel = DEFAULT_BPP;
+		screeninfo.xres = DEFAULT_XRES;
+		screeninfo.xres_virtual = screeninfo.xres;
+		screeninfo.yres = DEFAULT_YRES;
+		screeninfo.yres_virtual = screeninfo.yres;
+			
+		lfb  = new uint32_t[DEFAULT_XRES*DEFAULT_YRES*4];
+	
+		if (!lfb) 
+		{
+			perror("mmap");
+			goto nolfb;
+		}
+	}
 	
 	// set colors
 	paletteSetColor(0x1, 0x010101, 0xFF);			// black
@@ -255,10 +259,12 @@ void CFrameBuffer::init(const char * const fbDevice)
 	return;
 
 nolfb:
-	dprintf(DEBUG_NORMAL, "CFrameBuffer::init: framebuffer not available.\n");
-	lfb = 0;
+	if (!lfb) 
+	{
+		dprintf(DEBUG_NORMAL, "CFrameBuffer::init: framebuffer not available.\n");
+		lfb = 0;
+	}
 }
-
 
 CFrameBuffer::~CFrameBuffer()
 {
@@ -381,6 +387,8 @@ t_fb_var_screeninfo *CFrameBuffer::getScreenInfo()
 
 void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, unsigned int nbpp)
 {
+	bool nofb = false;
+	
 	screeninfo.xres_virtual = screeninfo.xres = nxRes;
 	screeninfo.yres_virtual = (screeninfo.yres = nyRes)*2;
 	screeninfo.height = 0;
@@ -438,6 +446,8 @@ void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, un
 	if ((screeninfo.xres != nxRes) && (screeninfo.yres != nyRes) && (screeninfo.bits_per_pixel != nbpp))
 	{
 		printf("CFrameBuffer::setVideoMode: failed: wanted: %dx%dx%d, got %dx%dx%d\n", nxRes, nyRes, nbpp, screeninfo.xres, screeninfo.yres, screeninfo.bits_per_pixel);
+		
+		nofb = true;
 	}
 	
 	xRes = screeninfo.xres;
@@ -450,9 +460,19 @@ void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, un
 	if (ioctl(fd, FBIOGET_FSCREENINFO, &fix)<0)
 	{
 		perror("FBIOGET_FSCREENINFO");
+		
+		nofb = true;
 	}
 
 	stride = fix.line_length;
+	
+	if (nofb)
+	{
+		xRes = nxRes;
+		yRes = nyRes;
+		bpp = nbpp;
+		stride = nxRes * sizeof(fb_pixel_t);
+	}
 }
 
 int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
@@ -462,7 +482,7 @@ int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
 	
 	dprintf(DEBUG_NORMAL, "CFrameBuffer::setMode: FB: %dx%dx%d\n", x, y, _bpp);
 
-#if defined (__sh__) || defined (USE_OPENGL) || defined (ENABLE_NOFB)
+#if defined (__sh__) || defined (USE_OPENGL)
 	xRes = x;
 	yRes = y;
 	bpp = _bpp;
