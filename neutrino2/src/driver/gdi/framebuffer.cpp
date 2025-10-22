@@ -153,7 +153,22 @@ void CFrameBuffer::init(const char * const fbDevice)
 		goto nolfb;
 	}
 #else	
-
+#ifdef ENABLE_NOFB
+	fd = -1;
+	screeninfo.bits_per_pixel = DEFAULT_BPP;
+	screeninfo.xres = DEFAULT_XRES;
+	screeninfo.xres_virtual = screeninfo.xres;
+	screeninfo.yres = DEFAULT_YRES;
+	screeninfo.yres_virtual = screeninfo.yres;
+			
+	lfb  = new uint32_t[DEFAULT_XRES*DEFAULT_YRES*4];
+	
+	if (!lfb) 
+	{
+		perror("mmap");
+		goto nolfb;
+	}
+#else
 	fd = open(fbDevice, O_RDWR);
 
 	if(!fd) 
@@ -192,7 +207,8 @@ void CFrameBuffer::init(const char * const fbDevice)
 		perror("mmap");
 		goto nolfb;
 	}
-
+#endif
+	
 #ifdef __sh__ 
 	//we add 2MB at the end of the buffer, the rest does the blitter 
 	lfb += 1920*1080;
@@ -446,7 +462,7 @@ int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
 	
 	dprintf(DEBUG_NORMAL, "CFrameBuffer::setMode: FB: %dx%dx%d\n", x, y, _bpp);
 
-#if defined (__sh__) || defined (USE_OPENGL)
+#if defined (__sh__) || defined (USE_OPENGL) || defined (ENABLE_NOFB)
 	xRes = x;
 	yRes = y;
 	bpp = _bpp;
@@ -1611,6 +1627,9 @@ void CFrameBuffer::disableManualBlit()
 
 void CFrameBuffer::blit(int mode3d)
 {
+	if (!getActive())
+		return;
+
 #if defined USE_OPENGL  
 	mpGLThreadObj->blit();
 #elif defined (__sh__)

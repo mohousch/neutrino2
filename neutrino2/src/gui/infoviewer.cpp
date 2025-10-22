@@ -645,7 +645,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 				}
 				
 				//
-				timer->refresh();
+				if (timer) timer->refresh();
 				
 				//
 				showEPGData(_calledFromNumZap);

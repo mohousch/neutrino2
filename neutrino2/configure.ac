@@ -206,10 +206,21 @@ if test "$enable_testing" = "yes"; then
 AC_DEFINE(ENABLE_TESTING,1,[include testing stuff support])
 fi
 
+# nofb
+AC_ARG_ENABLE(nofb,
+	AS_HELP_STRING(--enable-nofb,include testing without fb / opengl support),
+	,[enable_nofb=no])
+AM_CONDITIONAL(ENABLE_NOFB,test "$enable_nofb" = "yes")
+
+if test "$enable_nofb" = "yes"; then
+AC_DEFINE(ENABLE_NOFB,1,[include testing without fb / opengl support])
+fi
+
 AC_MSG_RESULT([
 Boxtype          	: $BOXTYPE
 Box Model		: $BOXMODEL
 OpenGL			: $enable_opengl
+Disable FB Device       : $enable_nofb
 Gstreamer		: $enable_gstreamer
 SCART			: $enable_scart
 VFD			: $enable_vfd

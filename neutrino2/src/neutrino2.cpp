@@ -1758,7 +1758,10 @@ void CNeutrinoApp::setupFrameBuffer()
 	if(frameBuffer->setMode()) 
 	{
 		dprintf(DEBUG_NORMAL, "CNeutrinoApp::setupFrameBuffer: Error while setting framebuffer mode\n");
+		
+#ifndef ENABLE_NOFB		
 		exit(-1);
+#endif
 	}	
 }
 

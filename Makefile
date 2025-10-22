@@ -223,6 +223,8 @@ init-clean:
 # opengl
 ifeq ($(OPENGL), opengl)
 N2_OPTS += --enable-opengl
+else
+N2_OPTS += --enable-nofb
 endif
 
 # lirc
