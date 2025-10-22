@@ -86,7 +86,6 @@ CFrameBuffer::CFrameBuffer()
 	backgroundFilename = "";
 	fd  = 0;
 	m_manual_blit = -1;
-	nofb = false;
 	
 	// 
 	memset(red, 0, 256*sizeof(__u16));
@@ -128,7 +127,6 @@ void CFrameBuffer::init(const char * const fbDevice)
 	
 #if defined (USE_OPENGL)
 	fd = -1;
-	
 	if(!mpGLThreadObj)
 	{
 		screeninfo.bits_per_pixel = DEFAULT_BPP;
@@ -155,6 +153,7 @@ void CFrameBuffer::init(const char * const fbDevice)
 		goto nolfb;
 	}
 #else	
+
 	fd = open(fbDevice, O_RDWR);
 
 	if(!fd) 
@@ -163,43 +162,37 @@ void CFrameBuffer::init(const char * const fbDevice)
 	if (fd < 0) 
 	{
 		perror(fbDevice);
-		nofb = true;
-		
-		goto nofbdevice;
+		goto nolfb;
 	}
 
 	// get variable screeninfo
 	if (ioctl(fd, FBIOGET_VSCREENINFO, &screeninfo) < 0) 
 	{
 		perror("FBIOGET_VSCREENINFO");
-		nofb = true;
+		goto nolfb;
 	}
 
 	// get fix screen info
 	fb_fix_screeninfo fix;
 
-	if (ioctl(fd, FBIOGET_FSCREENINFO, &fix) < 0) 
+	if (ioctl(fd, FBIOGET_FSCREENINFO, &fix)<0) 
 	{
 		perror("FBIOGET_FSCREENINFO");
-		nofb = true;
+		goto nolfb;
 	}
 
 	available = fix.smem_len;
 	
 	dprintf(DEBUG_NORMAL, "CFrameBuffer::init %dk video mem\n", available/1024);
-
-	// workaround	
-	if (available < (DEFAULT_XRES*DEFAULT_YRES*DEFAULT_BPP))
-		nofb = true;
 	
 	lfb = (fb_pixel_t *)mmap(0, available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
 
 	if (!lfb) 
 	{
 		perror("mmap");
-		nofb = true;
+		goto nolfb;
 	}
-	
+
 #ifdef __sh__ 
 	//we add 2MB at the end of the buffer, the rest does the blitter 
 	lfb += 1920*1080;
@@ -213,32 +206,6 @@ void CFrameBuffer::init(const char * const fbDevice)
 	enableManualBlit();
 #endif /*sh*/ 
 #endif /* USE_OPENGL */
-
-nofbdevice:	
-	if (nofb)
-	{
-		fd = -1;
-		
-		screeninfo.bits_per_pixel = DEFAULT_BPP;
-		screeninfo.xres = DEFAULT_XRES;
-		screeninfo.xres_virtual = screeninfo.xres;
-		screeninfo.yres = DEFAULT_YRES;
-		screeninfo.yres_virtual = screeninfo.yres;
-		
-		available = DEFAULT_XRES*DEFAULT_YRES*32;
-			
-		lfb  = new uint32_t[available];
-	
-		if (!lfb) 
-		{
-			perror("mmap");
-			goto nolfb;
-		}
-		
-		nofb = true;
-		
-		dprintf(DEBUG_NORMAL, "CFrameBuffer::init %dk video mem\n", available/1024);
-	}
 	
 	// set colors
 	paletteSetColor(0x1, 0x010101, 0xFF);			// black
@@ -272,12 +239,10 @@ nofbdevice:
 	return;
 
 nolfb:
-	if (!lfb) 
-	{
-		dprintf(DEBUG_NORMAL, "CFrameBuffer::init: framebuffer not available.\n");
-		lfb = 0;
-	}
+	dprintf(DEBUG_NORMAL, "CFrameBuffer::init: framebuffer not available.\n");
+	lfb = 0;
 }
+
 
 CFrameBuffer::~CFrameBuffer()
 {
@@ -400,8 +365,6 @@ t_fb_var_screeninfo *CFrameBuffer::getScreenInfo()
 
 void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, unsigned int nbpp)
 {
-	dprintf(DEBUG_NORMAL, "CFRameBuffer::setFrameBufferMode: xRes:%d yRes:%d bpp:%d\n", nxRes, nyRes, nbpp);
-	
 	screeninfo.xres_virtual = screeninfo.xres = nxRes;
 	screeninfo.yres_virtual = (screeninfo.yres = nyRes)*2;
 	screeninfo.height = 0;
@@ -459,8 +422,6 @@ void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, un
 	if ((screeninfo.xres != nxRes) && (screeninfo.yres != nyRes) && (screeninfo.bits_per_pixel != nbpp))
 	{
 		printf("CFrameBuffer::setVideoMode: failed: wanted: %dx%dx%d, got %dx%dx%d\n", nxRes, nyRes, nbpp, screeninfo.xres, screeninfo.yres, screeninfo.bits_per_pixel);
-		
-		nofb = true;
 	}
 	
 	xRes = screeninfo.xres;
@@ -473,8 +434,6 @@ void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, un
 	if (ioctl(fd, FBIOGET_FSCREENINFO, &fix)<0)
 	{
 		perror("FBIOGET_FSCREENINFO");
-		
-		nofb = true;
 	}
 
 	stride = fix.line_length;
@@ -493,15 +452,7 @@ int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
 	bpp = _bpp;
 	stride = xRes * sizeof(fb_pixel_t);
 #else
-	if (nofb)
-	{
-		xRes = x;
-		yRes = y;
-		bpp = _bpp;
-		stride = xRes * sizeof(fb_pixel_t);
-	}
-	else
-		setFrameBufferMode(x, y, _bpp);
+	setFrameBufferMode(x, y, _bpp);
 #endif	
 
 	// clear frameBuffer
@@ -1660,9 +1611,6 @@ void CFrameBuffer::disableManualBlit()
 
 void CFrameBuffer::blit(int mode3d)
 {
-	if (!getActive())
-		return;
-
 #if defined USE_OPENGL  
 	mpGLThreadObj->blit();
 #elif defined (__sh__)
