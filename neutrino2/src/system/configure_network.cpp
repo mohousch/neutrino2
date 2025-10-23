@@ -194,7 +194,7 @@ void CNetworkConfig::commitConfig(void)
 			setDhcpAttributes(ifname, automatic_start, wireless);
 		}
 
-		if( wireless && ((key != orig_key) || (ssid != orig_ssid) || (encryption != orig_encryption)) )
+		if( wireless /*&& ((key != orig_key) || (ssid != orig_ssid) || (encryption != orig_encryption))*/ )
 			saveWpaConfig();
 
 		copy_to_orig();
