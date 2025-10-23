@@ -468,7 +468,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	// end network
 
 	// recording
-	strcpy( g_settings.network_nfs_recordingdir, configfile.getString( "network_nfs_recordingdir", "/media/hdd/record" ).c_str() );
+	strcpy( g_settings.network_nfs_recordingdir, configfile.getString( "network_nfs_recordingdir", "/media/sda1/record" ).c_str() );
 
 	// permanent timeshift
 	g_settings.auto_timeshift = configfile.getInt32( "auto_timeshift", 0 );	
@@ -486,7 +486,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	// end recording
 
 	// movieplayer
-	strcpy( g_settings.network_nfs_moviedir, configfile.getString( "network_nfs_moviedir", "/media/hdd/movie" ).c_str() );
+	strcpy( g_settings.network_nfs_moviedir, configfile.getString( "network_nfs_moviedir", "/media/sda1/movie" ).c_str() );
 	// end movieplayer
 
 	// OSD
@@ -686,13 +686,13 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	// end keysbinding
 
 	// audioplayer
-	strcpy( g_settings.network_nfs_audioplayerdir, configfile.getString( "network_nfs_audioplayerdir", "/media/hdd/music" ).c_str() );
+	strcpy( g_settings.network_nfs_audioplayerdir, configfile.getString( "network_nfs_audioplayerdir", "/media/sda1/music" ).c_str() );
 
 	g_settings.audioplayer_highprio  = configfile.getInt32("audioplayer_highprio", 0);
 	// end audioplayer
 
 	// pictureviewer
-	strcpy( g_settings.network_nfs_picturedir, configfile.getString( "network_nfs_picturedir", "/media/hdd/picture" ).c_str() );
+	strcpy( g_settings.network_nfs_picturedir, configfile.getString( "network_nfs_picturedir", "/media/sda1/picture" ).c_str() );
 
 	g_settings.picviewer_slide_time = configfile.getInt32("picviewer_slide_time", 10);	// in sec
 	g_settings.picviewer_scaling = configfile.getInt32("picviewer_scaling", (int)SCALE_SIMPLE);
@@ -735,7 +735,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
         g_settings.epg_extendedcache    = configfile.getString("epg_extendedcache_time", "360");
         g_settings.epg_old_events       = configfile.getString("epg_old_events", "1");
         g_settings.epg_max_events       = configfile.getString("epg_max_events", "50000");
-        g_settings.epg_dir              = configfile.getString("epg_dir", "/media/hdd/epg");
+        g_settings.epg_dir              = configfile.getString("epg_dir", "/media/sda1/epg");
 	g_settings.epg_save 		= configfile.getBool("epg_save", false);
 	
 	for(int i = 0; i < 3; i++) 
@@ -772,7 +772,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.radiotext_enable = configfile.getBool("radiotext_enable", false);
 	
 	// logos_dir
-	g_settings.logos_dir = configfile.getString("logos_dir", "/media/hdd/logos");
+	g_settings.logos_dir = configfile.getString("logos_dir", "/media/sda1/logos");
 	g_settings.logos_show_logo = configfile.getBool("logos_show_logo", false);
 	
 	// vol

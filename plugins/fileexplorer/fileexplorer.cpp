@@ -50,7 +50,7 @@ class CFileExplorer : public CWidgetTarget
 //
 void CFileExplorer::showMenu()
 {	
-	Path_local = "/media/hdd";
+	Path_local = "/media/sda1";
 	
 BROWSER:	
 	if (fileBrowser.exec(Path_local.c_str())) 
