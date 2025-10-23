@@ -178,7 +178,7 @@ void CNetworkConfig::commitConfig(void)
 {
 	dprintf(DEBUG_NORMAL, "CNetworkConfig::commitConfig: automatic_start:%d inet_static:%d hostname:%s ssid:%s key:%s encryption:%s\n", automatic_start, inet_static, hostname.c_str(), ssid.c_str(), key.c_str(), encryption.c_str());
 
-	if (modified_from_orig())
+//	if (modified_from_orig())
 	{
 		if(orig_hostname != hostname)
 			netSetHostname((char *) hostname.c_str());
