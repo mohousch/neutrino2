@@ -45,14 +45,14 @@
 #endif
 
 // aabbggrr
-#define LCD_PIXEL_BACKGROUND				0xFF000000
-#define LCD_PIXEL_WHITE						0xFFFFFFFF
-#define LCD_PIXEL_RED							0xFF0000FF
-#define LCD_PIXEL_GREEN						0xFF00FF00
-#define LCD_PIXEL_BLUE							0xFFFF0000
-#define LCD_PIXEL_YELLOW						0xFF00FFFF
-#define LCD_PIXEL_PERCENT						0xFF02C6FF
-#define LCD_PIXEL_BLACK						0xFF000000
+#define LCD_PIXEL_BACKGROUND				0x00000000
+#define LCD_PIXEL_WHITE					0xFFFFFFFF
+#define LCD_PIXEL_RED					0xFF0000FF
+#define LCD_PIXEL_GREEN					0xFF00FF00
+#define LCD_PIXEL_BLUE					0xFFFF0000
+#define LCD_PIXEL_YELLOW				0xFF00FFFF
+#define LCD_PIXEL_PERCENT				0xFF02C6FF
+#define LCD_PIXEL_BLACK					0xFF000000
 
 #define LCD_IOCTL_CLEAR						(26)
 
@@ -287,7 +287,7 @@ class CLCDDisplay
 		void resume();
 
 		void update();
-		void blitBox2LCD(int flag = blitAlphaBlend);
+		void renderBox2LCD(int flag = blitAlphaBlend);
 		void blit(void);
 		void clear_screen();
 		////

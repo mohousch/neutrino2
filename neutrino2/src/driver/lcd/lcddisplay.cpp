@@ -847,7 +847,7 @@ void CLCDDisplay::blit(void)
 					
 					if (flipped)
 					{
-						/* 8 pixels per byte, swap bits */
+						// 8 pixels per byte, swap bits
 #define BIT_SWAP(a) (( ((a << 7)&0x80) + ((a << 5)&0x40) + ((a << 3)&0x20) + ((a << 1)&0x10) + ((a >> 1)&0x08) + ((a >> 3)&0x04) + ((a >> 5)&0x02) + ((a >> 7)&0x01) )&0xff)
 						raw[(7 - y) * 132 + (132-1 - x - 2)] = BIT_SWAP(pix ^ inverted);
 					}
@@ -880,7 +880,7 @@ void CLCDDisplay::blit(void)
 					{
 						if (flipped)
 						{
-							/* 8bpp, no bit swapping */
+							// 8bpp, no bit swapping
 							raw[(height - 1 - y) * width + (width - 1 - x)] = lcd_buffer[y * width + x] ^ inverted;
 						}
 						else
@@ -925,7 +925,7 @@ void CLCDDisplay::blit(void)
 #endif				
 			}
 		}
-		else /* lcd_type == 1 */
+		else // lcd_type == 1
 		{
 			uint8_t raw[64*64];
 			int x, y;
@@ -937,12 +937,13 @@ void CLCDDisplay::blit(void)
 				for (x = 0; x < 128 / 2; x++)
 				{
 					pix = (lcd_buffer[y*132 + x * 2 + 2] & 0xF0) |(lcd_buffer[y*132 + x * 2 + 1 + 2] >> 4);
+					
 					if (inverted)
 						pix = 0xFF - pix;
 						
 					if (flipped)
 					{
-						/* device seems to be 4bpp, swap nibbles */
+						// device seems to be 4bpp, swap nibbles
 						uint8_t byte;
 						byte = (pix >> 4) & 0x0f;
 						byte |= (pix << 4) & 0xf0;
@@ -978,7 +979,7 @@ void CLCDDisplay::blit(void)
 }
 
 // blit2lcd
-void CLCDDisplay::blitBox2LCD(int flag) 
+void CLCDDisplay::renderBox2LCD(int flag) 
 {
 #ifdef ENABLE_LCD
 #ifndef USE_OPENGL
@@ -1156,7 +1157,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
 #ifdef ENABLE_TFTLCD
 	// TODO: now HW to test
 	// scale / copy to tftbuffer
-	swscale((uint8_t *)raw_buffer, (uint8_t *)tftbuffer, xres, yres, tftxres, tftyres, AV_PIX_FMT_BGR32, AV_PIX_FMT_RGB32);
+	swscale((uint8_t *)raw_buffer, (uint8_t *)tftbuffer, xres, yres, tftxres, tftyres, AV_PIX_FMT_BGR32, AV_PIX_FMT_RGB32);	
 #endif	
 
 #ifdef ENABLE_GRAPHLCD
@@ -1168,7 +1169,7 @@ void CLCDDisplay::blitBox2LCD(int flag)
 void CLCDDisplay::update()
 {
 	//
-	blitBox2LCD();
+	renderBox2LCD();
 	
 	//
 	blit();
