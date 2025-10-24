@@ -1169,7 +1169,7 @@ void CLCDDisplay::renderBox2LCD(int flag)
 void CLCDDisplay::update()
 {
 	//
-	renderBox2LCD();
+	renderBox2LCD(blitAlphaNone);
 	
 	//
 	blit();

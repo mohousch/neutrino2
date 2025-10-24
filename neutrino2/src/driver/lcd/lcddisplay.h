@@ -287,7 +287,7 @@ class CLCDDisplay
 		void resume();
 
 		void update();
-		void renderBox2LCD(int flag = blitAlphaBlend);
+		void renderBox2LCD(int flag = blitAlphaNone);
 		void blit(void);
 		void clear_screen();
 		////
