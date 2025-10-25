@@ -168,7 +168,7 @@ fb_pixel_t *gradientOneColor(uint32_t col, int bSize, int mode, int intensity = 
 fb_pixel_t *gradientColorToColor(uint32_t start_col, uint32_t end_col, int bSize, int mode, int intensity = INT_LIGHT);
 
 ////
-static bool swscale(uint8_t *src, uint8_t *dst, int sw, int sh, int dw, int dh, AVPixelFormat srcfmt = AV_PIX_FMT_RGB32, AVPixelFormat dstfmt = AV_PIX_FMT_RGB32)
+inline static bool swscale(uint8_t *src, uint8_t *dst, int sw, int sh, int dw, int dh, AVPixelFormat srcfmt = AV_PIX_FMT_RGB32, AVPixelFormat dstfmt = AV_PIX_FMT_RGB32)
 {
 	bool ret = false;
 	int len = 0;

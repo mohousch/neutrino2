@@ -129,6 +129,7 @@ CWidget::~CWidget()
 	}
 	
 	//
+#ifndef ENABLE_LUA	
 	for (unsigned int count = 0; count < CCItems.size(); count++)
 	{
 		CComponent *item = CCItems[count];
@@ -136,6 +137,7 @@ CWidget::~CWidget()
 		delete item;
 		item = NULL;
 	}
+#endif	
 	
 	//
 	CCItems.clear();

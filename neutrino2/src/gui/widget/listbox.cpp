@@ -2103,6 +2103,8 @@ ClistBox::~ClistBox()
 	hbutton_labels.clear();
 	fbutton_labels.clear();
 	
+	//
+#ifndef 	ENABLE_LUA
 	for (unsigned int count = 0; count < items.size(); count++)
 	{
 		CMenuItem *item = items[count];
@@ -2110,6 +2112,7 @@ ClistBox::~ClistBox()
 		delete item;
 		item = NULL;
 	}
+#endif	
 
 	items.clear();
 	page_start.clear();
