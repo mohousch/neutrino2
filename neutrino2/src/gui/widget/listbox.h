@@ -456,8 +456,6 @@ class ClistBox : public CComponent
 
 		// head
 		bool paint_Head;
-//		std::string iconfile;
-//		std::string l_name;
 		int hheight;
 		fb_pixel_t headColor;
 		int headRadius;
