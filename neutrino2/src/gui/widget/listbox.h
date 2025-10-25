@@ -497,7 +497,9 @@ class ClistBox : public CComponent
 	public:
 		ClistBox(const int x = 0, int const y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);
 		ClistBox(CBox* position);
+#ifndef SWIG		
 		virtual ~ClistBox();
+#endif		
 		
 		void setPosition(const int x, const int y, const int dx, const int dy)
 		{
