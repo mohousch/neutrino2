@@ -766,12 +766,14 @@ bool CChannelList::adjustToChannelID(const t_channel_id channel_id, bool bToo)
 
 	dprintf(DEBUG_NORMAL, "CChannelList::adjustToChannelID: channel_id 0x%llx\n", channel_id);
 	
+	if (!chanlist.empty())
+	{
 	// adjust to bouquets
 	for (i = 0; i < chanlist.size(); i++) 
 	{
 		if (chanlist[i] != NULL)
 		{
-			if (chanlist[i]->channel_id == channel_id) 
+			if (chanlist[i]->getChannelID() == channel_id) 
 			{
 				selected = i;
 
@@ -799,6 +801,7 @@ bool CChannelList::adjustToChannelID(const t_channel_id channel_id, bool bToo)
 				return true;
 			}
 		}
+	}
 	}
 
 	return false;
@@ -868,7 +871,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 	dprintf(DEBUG_NORMAL, "CChannelList::zapTo (%s) tuned %d id:0x%llx new %d (%s) id: 0x%llx\n", name.c_str(), tuned, tuned_chid, pos, chanlist[pos]->name.c_str(), chanlist[pos]->channel_id);
 	
 	// zap
-	if ( (pos != tuned) || (chanlist[pos]->channel_id != tuned_chid) || rezap )
+	if ( /*(pos != tuned) ||*/ (chanlist[pos]->channel_id != tuned_chid) || rezap )
 	{ 
 		// stop radiotext
 		if ((g_settings.radiotext_enable) && ((CNeutrinoApp::getInstance()->getMode()) == CNeutrinoApp::mode_radio) && (g_Radiotext))

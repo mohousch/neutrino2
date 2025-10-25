@@ -3353,29 +3353,29 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 			// pre-selected channel-num/bouquet-num/channel-mode
 			int nNewChannel = -1;
 			int old_num = 0;
-			int old_b = bouquetList->getActiveBouquetNumber();
+			int old_b = bouquetList? bouquetList->getActiveBouquetNumber() : 0;
 			int old_mode = g_settings.channel_mode;
 
 			if(bouquetList->Bouquets.size()) 
 			{
-				old_num = bouquetList->Bouquets[old_b]->channelList->getActiveChannelNumber();
+				old_num = bouquetList? bouquetList->Bouquets[old_b]->channelList->getActiveChannelNumber() : 0;
 			}
 			
 			dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: ZAP START: bouquet: %d channel: %d\n", old_b, old_num);
 
 			if( msg == CRCInput::RC_ok ) 
 			{
-				if(bouquetList->Bouquets.size() && bouquetList->Bouquets[old_b]->channelList->getSize() > 0)
+				if (bouquetList->Bouquets.size() && bouquetList->Bouquets[old_b]->channelList->getSize() > 0)
 					nNewChannel = bouquetList->Bouquets[old_b]->channelList->exec();
-				else
-					nNewChannel = bouquetList->exec();
+//				else
+//					nNewChannel = bouquetList->exec();
 			}
-			else if(msg == CRCInput::RC_sat) 
+			else if (msg == CRCInput::RC_sat) 
 			{
 				setChannelMode(CChannelList::LIST_MODE_SAT, mode);
 				nNewChannel = bouquetList->exec();
 			}
-			else if(msg == CRCInput::RC_favorites) 
+			else if (msg == CRCInput::RC_favorites) 
 			{
 				setChannelMode(CChannelList::LIST_MODE_FAV, mode);
 				nNewChannel = bouquetList->exec();
@@ -3383,23 +3383,23 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 _repeat:
 			dprintf(DEBUG_DEBUG, "CNeutrinoApp::handleMsg: ZAP RES: nNewChannel %d\n", nNewChannel);
 
-			if(nNewChannel == -1) // timeout / cancel
+			if (nNewChannel == -1) // timeout / cancel
 			{
 				// restore orig. bouquet and selected channel on cancel
 				setChannelMode(old_mode, mode);
 				bouquetList->activateBouquet(old_b);
 				
-				if(bouquetList->Bouquets.size())
+				if (bouquetList->Bouquets.size())
 					bouquetList->Bouquets[old_b]->channelList->setSelected(old_num - 1);
 				
 				startSubtitles(mode == mode_tv);
 			}
-			else if(nNewChannel == -3) // list mode changed
+			else if (nNewChannel == -3) // list mode changed
 			{ 
 				nNewChannel = bouquetList->exec();
 				goto _repeat;
 			}
-			else if(nNewChannel == -4) // list edited
+			else if (nNewChannel == -4) // list edited
 			{
 				if(old_b_id < 0) 
 					old_b_id = old_b;
