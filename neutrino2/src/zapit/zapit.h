@@ -90,8 +90,8 @@ class CZapit
 		
 		enum zapStatus
 		{
-			ZAP_OK 			= 0x01,
-			ZAP_IS_NVOD 		= 0x02,
+			ZAP_OK 				= 0x01,
+			ZAP_IS_NVOD 			= 0x02,
 			ZAP_INVALID_PARAM 	= 0x04
 		};
 

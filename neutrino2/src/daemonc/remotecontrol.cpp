@@ -122,7 +122,7 @@ CRemoteControl::CRemoteControl()
 int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 {
 	//
-	if(msg == NeutrinoMessages::EVT_ZAP_COMPLETE || msg == NeutrinoMessages::EVT_ZAP_FAILED) 
+	if (msg == NeutrinoMessages::EVT_ZAP_COMPLETE || msg == NeutrinoMessages::EVT_ZAP_FAILED) 
 	{
 		dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: %s current_channel_id: 0x%llx data:0x%llx\n", (msg == NeutrinoMessages::EVT_ZAP_FAILED)? "EVT_ZAP_FAILED" : "EVT_ZAP_COMPLETE", CZapit::getInstance()->getCurrentChannelID(), data);
 		
@@ -187,7 +187,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			scrambled_timer = 0;
 			
 #ifdef USE_SCRAMBLED_TIMER
-			if(true && (videoDecoder->getBlank() && videoDecoder->getPlayState())) 
+			if (true && (videoDecoder->getBlank() && videoDecoder->getPlayState())) 
 			{
 				HintBox(_("Information"), _("Scrambled channel"), g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth (_("Scrambled channel"), true) + 10, 5);
 			}
@@ -826,12 +826,12 @@ void CRemoteControl::zapToChannelID(const t_channel_id channel_id, const bool st
 	{
 		g_InfoViewer->chanready = 0;		
 		
-		if(autoshift) 
+		if (autoshift) 
 		{
 			CNeutrinoApp::getInstance()->stopAutoRecord();
 		}
 		
-		if(scrambled_timer) 
+		if (scrambled_timer) 
 		{
 			g_RCInput->killTimer(scrambled_timer);
 			scrambled_timer = 0;
