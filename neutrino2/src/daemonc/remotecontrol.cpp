@@ -43,8 +43,9 @@
 
 
 //// globals
-extern bool autoshift;			// defined in neutrino2.cpp
-extern uint32_t scrambled_timer;	// defined in neutrino2.cpp
+extern bool autoshift;					// defined in neutrino2.cpp
+extern uint32_t scrambled_timer;		// defined in neutrino2.cpp
+extern uint32_t shift_timer;				// defined in neutrino2.cpp
 
 //// class CZapProtection
 bool CZapProtection::check()
@@ -120,6 +121,83 @@ CRemoteControl::CRemoteControl()
 
 int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 {
+	//
+	if(msg == NeutrinoMessages::EVT_ZAP_COMPLETE || msg == NeutrinoMessages::EVT_ZAP_FAILED) 
+	{
+		dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: %s current_channel_id: 0x%llx data:0x%llx\n", (msg == NeutrinoMessages::EVT_ZAP_FAILED)? "EVT_ZAP_FAILED" : "EVT_ZAP_COMPLETE", CZapit::getInstance()->getCurrentChannelID(), data);
+		
+		// set audio map after channel zap
+		CZapit::getInstance()->getAudioMode(&g_settings.audio_AnalogMode);
+
+		if(g_settings.audio_AnalogMode < 0 || g_settings.audio_AnalogMode > 2)
+			g_settings.audio_AnalogMode = 0;
+
+		// kill shifttimer
+		if(shift_timer) 
+		{
+			g_RCInput->killTimer(shift_timer);
+			shift_timer = 0;
+		}	
+
+		// auto timeshift
+		if (!CNeutrinoApp::getInstance()->recordingstatus && g_settings.auto_timeshift) 		  
+		{
+			int delay = g_settings.auto_timeshift;
+			
+			// add shift timer
+			shift_timer = g_RCInput->addTimer( delay*1000*1000, true );
+			
+			// infoviewer handle msg
+			g_InfoViewer->handleMsg(NeutrinoMessages::EVT_RECORDMODE, CNeutrinoApp::getInstance()->recordingstatus);
+		}	
+
+		// scrambled timer
+		if(scrambled_timer) 
+		{
+			g_RCInput->killTimer(scrambled_timer);
+			scrambled_timer = 0;
+		}
+
+		scrambled_timer = g_RCInput->addTimer(10*1000*1000, true); // 10 sec
+		
+		// select subtitle
+		CNeutrinoApp::getInstance()->selectSubtitles();
+		
+		CNeutrinoApp::getInstance()->startSubtitles(!g_InfoViewer->is_visible);
+		
+		//
+		CLCD::getInstance()->setEPGTitle("");
+		
+		// store channel into lastchannellist
+		CNeutrinoApp::getInstance()->getlastChList() .store(CZapit::getInstance()->getCurrentChannelID());
+	}
+	
+	// shift / scrambled timer events
+	if ((msg == NeutrinoMessages::EVT_TIMER)) 
+	{
+		if(data == shift_timer) 
+		{
+			shift_timer = 0;
+			CNeutrinoApp::getInstance()->startAutoRecord(true);
+			
+			return messages_return::handled;
+		} 
+		else if(data == scrambled_timer) 
+		{
+			scrambled_timer = 0;
+			
+#ifdef USE_SCRAMBLED_TIMER
+			if(true && (videoDecoder->getBlank() && videoDecoder->getPlayState())) 
+			{
+				HintBox(_("Information"), _("Scrambled channel"), g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth (_("Scrambled channel"), true) + 10, 5);
+			}
+#endif
+
+			return messages_return::handled;	
+		}
+	}
+	
+	//
 	if ( zap_completion_timeout != 0 ) 
 	{
     		if ( (msg == NeutrinoMessages::EVT_ZAP_COMPLETE) || 
@@ -142,17 +220,17 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			{
 				zap_completion_timeout = 0;
 				g_InfoViewer->chanready = 1;
-			}
 			
-			// infoviewer
-			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
+				// infoviewer
+				g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
 
-			// zapProtection
-			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
-				processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
+				// zapProtection
+				if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
+					processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
 
-			// lcd
-			CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
+				// lcd
+				CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
+			}
 		} 	
 	} 
 	else 
@@ -165,7 +243,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			
 			g_InfoViewer->chanready = 1;
 
-			// warte auf keine Meldung vom ZAPIT -> jemand anderer hat das zappen ausgel�st...
+			// 
 			if (data != current_channel_id)
 			{
 				current_channel_id = data;
