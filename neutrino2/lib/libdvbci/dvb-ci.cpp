@@ -498,7 +498,7 @@ void cDvbCi::SetTSClock(uint32_t Speed, int slot)
 
 void cDvbCi::slot_pollthread(void *c)
 {
-	printf("cDvbCi::slot_pollthread: starting... tid %ld\n", syscall(__NR_gettid));
+	//printf("cDvbCi::slot_pollthread: starting... tid %ld\n", syscall(__NR_gettid));
 	
 	tSlot* slot = (tSlot*) c;
 	ca_slot_info_t info;
@@ -992,7 +992,7 @@ cDvbCi::cDvbCi(int Slots)
 				usleep(200000);
 
 				// create a thread for each slot
-				if (pthread_create(&slot->slot_thread, 0, execute_thread,  (void*)slot)) 
+				if (pthread_create(&slot->slot_thread, 0, execute_thread,  (void*)slot) != 0) 
 				{
 					printf("ci%d found and pthread_created\n", i);
 				}
