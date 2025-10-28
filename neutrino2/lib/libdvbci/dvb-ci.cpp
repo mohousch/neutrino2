@@ -560,7 +560,7 @@ void cDvbCi::slot_pollthread(void *c)
 							sprintf(slot->name, "unknown module %d", slot->slot);
 							slot->status = eStatusNone;
 
-							if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, (const neutrino_msg_data_t)slot->slot);
+							if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, (const neutrino_msg_data_t)slot->slot, false);
 
 							slot->camIsReady = true;
 						}
@@ -586,7 +586,7 @@ void cDvbCi::slot_pollthread(void *c)
 						slot->status = eStatusWait;
 						slot->connection_id = slot->slot + 1;
 
-						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, (const neutrino_msg_data_t)slot->slot);
+						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, (const neutrino_msg_data_t)slot->slot, false);
 
 						slot->camIsReady = true;
 						
@@ -639,7 +639,7 @@ void cDvbCi::slot_pollthread(void *c)
 						sprintf(slot->name, "unknown module %d", slot->slot);
 						slot->status = eStatusNone;
 
-						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, (const neutrino_msg_data_t)slot->slot);
+						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, (const neutrino_msg_data_t)slot->slot, false);
 
 						while(slot->sendqueue.size())
 						{
@@ -754,7 +754,7 @@ void cDvbCi::slot_pollthread(void *c)
 						sprintf(slot->name, "unknown module %d", slot->slot);
 						slot->status = eStatusNone;
 
-						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, (const neutrino_msg_data_t)slot->slot);
+						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, (const neutrino_msg_data_t)slot->slot, false);
 
 						slot->camIsReady = true;
 					} 
@@ -774,7 +774,7 @@ void cDvbCi::slot_pollthread(void *c)
 						sprintf(slot->name, "unknown module %d", slot->slot);
 						slot->status = eStatusNone;
 
-						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, (const neutrino_msg_data_t)slot->slot);
+						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, (const neutrino_msg_data_t)slot->slot, false);
 
 						while(slot->sendqueue.size())
 						{
@@ -844,7 +844,7 @@ void cDvbCi::slot_pollthread(void *c)
 						sprintf(slot->name, "unknown module %d", slot->slot);
 						slot->status = eStatusNone;
 
-						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, (const neutrino_msg_data_t)slot->slot);
+						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, (const neutrino_msg_data_t)slot->slot, false);
 
 						while(slot->sendqueue.size())
 						{
@@ -871,7 +871,7 @@ void cDvbCi::slot_pollthread(void *c)
 
 			slot->init = true;
 			
-			if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INIT_OK, (const neutrino_msg_data_t)slot->slot);
+			if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INIT_OK, (const neutrino_msg_data_t)slot->slot, false);
 		    
 			//resend capmt
 			if (slot->caPmt != NULL)
@@ -952,12 +952,12 @@ cDvbCi::cDvbCi(int Slots)
 			sprintf(filename, "/dev/dvb/adapter%d/ci%d", j, i);
 #endif
 
-			fd = open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
+			fd = ::open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
 			
 			if (fd < 0)
 				sprintf(filename, "/dev/ci%d", i);
 				
-			fd = open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
+			fd = ::open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
 		    
 			if (fd > 0)
 			{
@@ -994,7 +994,7 @@ cDvbCi::cDvbCi(int Slots)
 				// create a thread for each slot
 				if (pthread_create(&slot->slot_thread, 0, execute_thread,  (void*)slot)) 
 				{
-					printf("pthread_create\n");
+					printf("ci%d found and pthread_created\n", i);
 				}
 			}
 		}
@@ -1072,14 +1072,14 @@ void cDvbCi::reset(int slot)
 	if (haveFound)
 	{
 #if defined (__sh__)
-		if (ioctl((*it)->fd, CA_RESET, (*it)->slot) < 0)
+		if (::ioctl((*it)->fd, CA_RESET, (*it)->slot) < 0)
 			printf("IOCTL CA_RESET failed for slot %d\n", slot);
 #else
 #ifdef USE_OPENGL
-		if (ioctl((*it)->fd, CA_RESET, (*it)->slot) < 0)
+		if (::ioctl((*it)->fd, CA_RESET, (*it)->slot) < 0)
 			printf("IOCTL CA_RESET failed for slot %d\n", slot);
 #else
-		ioctl((*it)->fd, 0);
+		::ioctl((*it)->fd, 0);
 #endif
 #endif
 	}    

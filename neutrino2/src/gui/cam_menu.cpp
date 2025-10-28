@@ -273,9 +273,9 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 	MMI_MENU_LIST_INFO * pMenu = &Menu;
 	MMI_ENGUIRY_INFO * pMmiEnquiry = &MmiEnquiry;
 
-	if(msg == NeutrinoMessages::EVT_CI_INSERTED) 
+	if (msg == NeutrinoMessages::EVT_CI_INSERTED) 
 	{
-		if(hintBox != NULL) 
+		if (hintBox != NULL) 
 		{
 			hintBox->hide();
 			delete hintBox;
@@ -288,12 +288,12 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 		
 		hintBox = new CHintBox(_("Information"), str);
 
-		if(hintBox != NULL) 
+		if (hintBox != NULL) 
 			hintBox->paint();
 
 		sleep(CI_MSG_TIME);
 
-		if(hintBox != NULL) 
+		if (hintBox != NULL) 
 		{
 			hintBox->hide();
 			delete hintBox;
@@ -303,7 +303,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 	} 
 	else if (msg == NeutrinoMessages::EVT_CI_REMOVED) 
 	{
-		if(hintBox != NULL) 
+		if (hintBox != NULL) 
 		{
 			hintBox->hide();
 			delete hintBox;
@@ -316,12 +316,12 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 		
 		hintBox = new CHintBox(_("Information"), str);
 
-		if(hintBox != NULL) 
+		if (hintBox != NULL) 
 			hintBox->paint();
 
 		sleep(CI_MSG_TIME);
 
-		if(hintBox != NULL) 
+		if (hintBox != NULL) 
 		{
 			hintBox->hide();
 			delete hintBox;
@@ -330,7 +330,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 	} 
 	else if(msg == NeutrinoMessages::EVT_CI_INIT_OK) 
 	{
-		if(hintBox != NULL) 
+		if (hintBox != NULL) 
 		{
 			hintBox->hide();
 			delete hintBox;
@@ -346,23 +346,23 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 		
 		hintBox = new CHintBox(_("Information"), str);
 
-		if(hintBox != NULL) 
+		if (hintBox != NULL) 
 			hintBox->paint();
 
 		sleep(CI_MSG_TIME);
 
-		if(hintBox != NULL) 
+		if (hintBox != NULL) 
 		{
 			hintBox->hide();
 			delete hintBox;
 			hintBox = NULL;
 		}
 	}
-	else if(msg == NeutrinoMessages::EVT_CI_MMI_MENU || msg == NeutrinoMessages::EVT_CI_MMI_LIST) 
+	else if (msg == NeutrinoMessages::EVT_CI_MMI_MENU || msg == NeutrinoMessages::EVT_CI_MMI_LIST) 
 	{
 		bool sublevel = false;
 		
-		if(msg != NeutrinoMessages::EVT_CI_MMI_MENU)
+		if (msg != NeutrinoMessages::EVT_CI_MMI_MENU)
 			sublevel = true;
 		
 		memcpy(pMenu, (MMI_MENU_LIST_INFO*) data, sizeof(MMI_MENU_LIST_INFO));
@@ -371,18 +371,18 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 
 		dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleCamMsg: slot %d menu ready, title %s choices %d\n", curslot, convertDVBUTF8(pMenu->title, strlen(pMenu->title), 0).c_str(), pMenu->choice_nb);
 
-		if(hintBox) 
+		if (hintBox) 
 			hintBox->hide();
 
 		int selected = -1;
 		
-		if(pMenu->choice_nb) 
+		if (pMenu->choice_nb) 
 		{
 			//
 			CWidget* menuWidget = NULL;
 			ClistBox* menu = NULL;
 			
-			//
+			// FIXME:
 			//menuWidget = CNeutrinoApp::getInstance()->getWidget("tempcam");
 			
 			if (menuWidget)
@@ -426,15 +426,15 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 
 			int slen = strlen(pMenu->subtitle);
 			
-			if(slen) 
+			if (slen) 
 			{
 				char * sptr = pMenu->subtitle;
 				char * tptr = sptr;
 				int bpos = 0;
 				
-				for(int i1 = 0; i1 < slen; i1++) 
+				for (int i1 = 0; i1 < slen; i1++) 
 				{
-					if((tptr[i1] == 0x8A) || ((bpos >= 38) && (tptr[i1] == 0x20)) ) 
+					if ((tptr[i1] == 0x8A) || ((bpos >= 38) && (tptr[i1] == 0x20)) ) 
 					{
 						bpos = 0;
 						tptr[i1] = 0;
@@ -447,7 +447,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 					bpos++;
 				}
 				
-				if(strlen(sptr)) 
+				if (strlen(sptr)) 
 				{
 					dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleCamMsg: subtitle: %s\n", sptr);
 					
@@ -455,16 +455,16 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 				}
 			}
 			
-			for(i = 0; i < pMenu->choice_nb; i++) 
+			for (i = 0; i < pMenu->choice_nb; i++) 
 			{
-				if(sublevel)
+				if (sublevel)
 					menu->addItem(new CMenuForwarder(convertDVBUTF8(pMenu->choice_item[i], strlen(pMenu->choice_item[i]), 0).c_str()));
 				else
 					menu->addItem(new CMenuForwarder(convertDVBUTF8(pMenu->choice_item[i], strlen(pMenu->choice_item[i]), 0).c_str(), true, NULL, NULL, NULL, CRCInput::convertDigitToKey(i+1)));
 			}
 			slen = strlen(pMenu->bottom);
 			
-			if(slen) 
+			if (slen) 
 			{
 				dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleCamMsg: bottom: %s\n", pMenu->bottom);
 				
@@ -479,21 +479,21 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 			char _str[255];
 			snprintf(_str, 255, "%s\n%s\n%s", pMenu->title, pMenu->subtitle, pMenu->bottom);
 			
-			if(hintBox)
+			if (hintBox)
 			{
 				delete hintBox;
 				hintBox = NULL;
 			}
 
 			hintBox = new CHintBox(_("Information"), _(convertDVBUTF8(_str, strlen(_str), 0).c_str()));
-			if(hintBox != NULL) 
+			if (hintBox != NULL) 
 				hintBox->paint();
 
 			sleep(4);//FIXME
 			
-			if(!from_menu) 
+			if (!from_menu) 
 			{
-				if(hintBox != NULL) 
+				if (hintBox != NULL) 
 				{
 					delete hintBox;
 					hintBox = NULL;
@@ -502,10 +502,10 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 			return 1;
 		}
 
-		if(sublevel)
+		if (sublevel)
 			return 0;
 
-		if(selected >= 0) 
+		if (selected >= 0) 
 		{
 			dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleCamMsg: selected %d:%s sublevel %s\n", selected, pMenu->choice_item[i], sublevel ? "yes" : "no");
 
@@ -519,14 +519,14 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 			return 2;
 		}
 	}
-	else if(msg == NeutrinoMessages::EVT_CI_MMI_REQUEST_INPUT) 
+	else if (msg == NeutrinoMessages::EVT_CI_MMI_REQUEST_INPUT) 
 	{
 		memcpy(pMmiEnquiry, (MMI_ENGUIRY_INFO*) data, sizeof(MMI_ENGUIRY_INFO));
 		curslot = pMmiEnquiry->slot;
 		
 		dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleCamMsg: slot %d input request, text %s\n", curslot, convertDVBUTF8(pMmiEnquiry->enguiryText, strlen(pMmiEnquiry->enguiryText), 0).c_str());
 		
-		if(hintBox)
+		if (hintBox)
 			hintBox->hide();
 
 		char cPIN[pMmiEnquiry->answerlen+1];
@@ -538,7 +538,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 
 		dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleCamMsg: input=[%s]\n", cPIN);
 
-		if((int) strlen(cPIN) != pMmiEnquiry->answerlen) 
+		if ((int) strlen(cPIN) != pMmiEnquiry->answerlen) 
 		{
 			dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleCamMsg: wrong input len\n");
 
@@ -553,7 +553,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 			return 1;
 		}
 	}
-	else if(msg == NeutrinoMessages::EVT_CI_MMI_CLOSE) 
+	else if (msg == NeutrinoMessages::EVT_CI_MMI_CLOSE) 
 	{
 		curslot = (int) data;
 		
@@ -563,7 +563,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 
 		return 0;
 	}
-	else if(msg == NeutrinoMessages::EVT_CI_MMI_TEXT) 
+	else if (msg == NeutrinoMessages::EVT_CI_MMI_TEXT) 
 	{
 		curslot = (int) data;
 		
@@ -600,14 +600,14 @@ int CCAMMenuHandler::doMenu(int slot)
 			
 			hintBox = new CHintBox(_("Information"), _("Waiting for CI answer"));
 
-			if(hintBox != NULL) 
+			if (hintBox != NULL) 
 				hintBox->paint();
 
 			g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
 			
 			if (msg == CRCInput::RC_timeout) 
 			{
-				if(hintBox)
+				if (hintBox)
 				{
 					delete hintBox;
 					hintBox = NULL;
@@ -622,7 +622,7 @@ int CCAMMenuHandler::doMenu(int slot)
 				
 				sleep(5);
 
-				if(hintBox != NULL) 
+				if (hintBox != NULL) 
 				{
 					delete hintBox;
 					hintBox = NULL;
@@ -639,7 +639,7 @@ int CCAMMenuHandler::doMenu(int slot)
 			// 2 = quit
 			int ret = handleCamMsg(msg, data, true);
 			
-			if(ret < 0 && (msg > CRCInput::RC_Messages)) 
+			if (ret < 0 && (msg > CRCInput::RC_Messages)) 
 			{
 				if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & ( messages_return::cancel_all | messages_return::cancel_info ) )
 				{

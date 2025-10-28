@@ -62,19 +62,20 @@ typedef struct
 } MMI_ENGUIRY_INFO;
 
 // constants taken from dvb-apps 
-#define T_SB                0x80	// sb                           primitive   h<--m
-#define T_RCV               0x81	// receive                      primitive   h-->m
-#define T_CREATE_T_C        0x82	// create transport connection  primitive   h-->m
-#define T_C_T_C_REPLY       0x83	// ctc reply                    primitive   h<--m
-#define T_DELETE_T_C        0x84	// delete tc                    primitive   h<->m
-#define T_D_T_C_REPLY       0x85	// dtc reply                    primitive   h<->m
-#define T_REQUEST_T_C       0x86	// request transport connection primitive   h<--m
-#define T_NEW_T_C           0x87	// new tc / reply to t_request  primitive   h-->m
-#define T_T_C_ERROR         0x77	// error creating tc            primitive   h-->m
-#define T_DATA_LAST         0xA0	// convey data from higher      constructed h<->m
-#define T_DATA_MORE         0xA1	// convey data from higher      constructed h<->m
+#define T_SB                		0x80	// sb                           primitive   h<--m
+#define T_RCV               		0x81	// receive                      primitive   h-->m
+#define T_CREATE_T_C       	0x82	// create transport connection  primitive   h-->m
+#define T_C_T_C_REPLY       	0x83	// ctc reply                    primitive   h<--m
+#define T_DELETE_T_C        	0x84	// delete tc                    primitive   h<->m
+#define T_D_T_C_REPLY       	0x85	// dtc reply                    primitive   h<->m
+#define T_REQUEST_T_C       	0x86	// request transport connection primitive   h<--m
+#define T_NEW_T_C           	0x87	// new tc / reply to t_request  primitive   h-->m
+#define T_T_C_ERROR         	0x77	// error creating tc            primitive   h-->m
+#define T_DATA_LAST         	0xA0	// convey data from higher      constructed h<->m
+#define T_DATA_MORE         	0xA1	// convey data from higher      constructed h<->m
 
-typedef enum {
+typedef enum 
+{
 	eDataTimeout, 
 	eDataError, 
 	eDataReady, 
@@ -82,7 +83,8 @@ typedef enum {
 	eDataStatusChanged
 } eData;
 
-typedef enum {
+typedef enum 
+{
 	eStatusNone, 
 	eStatusWait
 } eStatus;
@@ -127,7 +129,7 @@ typedef struct
 	eDVBCIApplicationManagerSession* appSession;
 	eDVBCICAManagerSession* camgrSession;
 	
-	bool	    hasAppManager;
+	bool	 hasAppManager;
 	bool        hasMMIManager;
 	bool        hasCAManager;
 	bool        hasDateTime;

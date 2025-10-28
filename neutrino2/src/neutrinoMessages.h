@@ -124,12 +124,12 @@ struct NeutrinoMessages
 		// cicam
 		EVT_CI_INSERTED				= CRCInput::RC_Messages + 45,
 		EVT_CI_REMOVED				= CRCInput::RC_Messages + 46,
-		EVT_CI_INIT_OK				= CRCInput::RC_Messages + 47,
+		EVT_CI_INIT_OK					= CRCInput::RC_Messages + 47,
 		EVT_CI_MMI_MENU				= CRCInput::RC_Messages + 48,
 		EVT_CI_MMI_LIST				= CRCInput::RC_Messages + 49,
 		EVT_CI_MMI_TEXT				= CRCInput::RC_Messages + 50,
-		EVT_CI_MMI_REQUEST_INPUT		= CRCInput::RC_Messages + 51,
-		EVT_CI_MMI_CLOSE			= CRCInput::RC_Messages + 52,
+		EVT_CI_MMI_REQUEST_INPUT	= CRCInput::RC_Messages + 51,
+		EVT_CI_MMI_CLOSE				= CRCInput::RC_Messages + 52,
 
 		// infoviewer
 		EVT_CURRENTEPG				= CRCInput::RC_Messages + 53,
