@@ -949,13 +949,13 @@ cDvbCi::cDvbCi(int Slots)
 #ifdef USE_OPENGL
 			sprintf(filename, "/dev/dvb/adapter%d/ca%d", j, i);
 #else
-			sprintf(filename, "/dev/dvb/adapter%d/ci%d", j, i);
+			sprintf(filename, "/dev/ci%d", i);
 #endif
 
 			fd = ::open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
 			
 			if (fd < 0)
-				sprintf(filename, "/dev/ci%d", i);
+				sprintf(filename, "/dev/dvb/adapter%d/ci%d", j, i);
 				
 			fd = ::open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
 		    
