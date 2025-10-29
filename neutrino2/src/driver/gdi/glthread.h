@@ -60,6 +60,7 @@ class GLThreadObj : public OpenThreads::Thread
 		void join() { OpenThreads::Thread::join(); }
 		unsigned char *getOSDBuffer() { return &mOSDBuffer[0]; } 	/* gets pointer to OSD bounce buffer */
 		//
+		int getOSDBufferSize() { return OSDBufferSize; };
 		int getOSDWidth() { return mState.width; }
 		int getOSDHeight() { return mState.height; }
 		//
@@ -89,6 +90,7 @@ class GLThreadObj : public OpenThreads::Thread
 		bool mInitDone;			/* condition predicate */
 
 		std::vector<unsigned char> mOSDBuffer; /* silly bounce buffer */
+		int OSDBufferSize;
 
 		std::map<unsigned char, neutrino_msg_t> mKeyMap;
 		std::map<int, neutrino_msg_t> mSpecialMap;

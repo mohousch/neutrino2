@@ -85,6 +85,7 @@ GLThreadObj::GLThreadObj(int x, int y) : mReInit(true), mShutDown(false), mInitD
 	zoom = 1.0;
 	xscale = 1.0;
 	mFullscreen = true;
+	OSDBufferSize = 0;
 
 	initKeys();
 }
@@ -208,10 +209,10 @@ void GLThreadObj::setupOSDBuffer()
 {	
 	if(mState.width && mState.height)
 	{
-		int fbmem = mState.width * mState.height * sizeof(fb_pixel_t);
-		mOSDBuffer.resize(fbmem);
+		OSDBufferSize = mState.width * mState.height * sizeof(fb_pixel_t);
+		mOSDBuffer.resize(OSDBufferSize);
 		
-		dprintf(DEBUG_NORMAL, "GLThreadObj::setupOSDBuffer: OSD buffer set to %d bytes\n", fbmem);
+		dprintf(DEBUG_INFO, "GLThreadObj::setupOSDBuffer: OSD buffer set to %d KBytes\n", OSDBufferSize / 1024);
 	}
 }
 

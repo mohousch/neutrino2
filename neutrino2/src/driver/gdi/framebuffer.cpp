@@ -146,6 +146,7 @@ void CFrameBuffer::init(const char * const fbDevice)
 	}
 	
 	lfb = reinterpret_cast<fb_pixel_t *>(mpGLThreadObj->getOSDBuffer());
+	available = mpGLThreadObj->getOSDBufferSize();
 	
 	if (!lfb) 
 	{
@@ -183,8 +184,6 @@ void CFrameBuffer::init(const char * const fbDevice)
 
 	available = fix.smem_len;
 	
-	dprintf(DEBUG_NORMAL, "CFrameBuffer::init %dk video mem\n", available/1024);
-	
 	lfb = (fb_pixel_t *)mmap(0, available, PROT_WRITE|PROT_READ, MAP_SHARED, fd, 0);
 
 	if (!lfb) 
@@ -206,6 +205,8 @@ void CFrameBuffer::init(const char * const fbDevice)
 	enableManualBlit();
 #endif /*sh*/ 
 #endif /* USE_OPENGL */
+
+	dprintf(DEBUG_NORMAL, "CFrameBuffer::init %dk video mem\n", available/1024);
 	
 	// set colors
 	paletteSetColor(0x1, 0x010101, 0xFF);			// black
@@ -227,7 +228,7 @@ void CFrameBuffer::init(const char * const fbDevice)
         paletteSetColor(COL_BLACK, 0x000000, 0xFF);		// black
         paletteSetColor(COL_ORANGE, 0xFF5500, 0xFF);		// orange
         paletteSetColor(COL_SILVER, 0xBEBEBE, 0xFF);		// silver
-        paletteSetColor(COL_BACKGROUND, 0x000000, 0x0);
+        paletteSetColor(COL_BACKGROUND, 0x000000, 0x0);		// background
 
         paletteSet(&cmap);
 
