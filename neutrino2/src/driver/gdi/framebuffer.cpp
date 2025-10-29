@@ -233,7 +233,7 @@ void CFrameBuffer::init(const char * const fbDevice)
 
         useBackground(false);
         
-        // init libngpng
+        // init bitmap
 	init_handlers();
 
 	return;

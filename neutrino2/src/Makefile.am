@@ -120,7 +120,7 @@ endif
 
 if ENABLE_LUA
 neutrino2_LDADD += interfaces/lua/libneutrino2_interfaces_lua.a \
-	@LUA_LIB@
+	@LUA_LIB@ @SWSCALE_LIBS@
 endif
 
 if ENABLE_GRAPHLCD
