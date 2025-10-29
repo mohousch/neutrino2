@@ -937,7 +937,8 @@ cDvbCi::cDvbCi(int Slots)
 {
 	printf("%s:%s\n", FILENAME, __FUNCTION__);
 
-	int fd, i, j;
+	int fd = -1;
+	int i, j;
 	char filename[128];
 	ci_num = 0;
 	
@@ -954,45 +955,48 @@ cDvbCi::cDvbCi(int Slots)
 #else	
 			sprintf(filename, "/dev/ci%d", i);
 #endif
-#endif		
-			fd = ::open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
-		    
-			if (fd > 0)
+#endif
+			if (fd < 0)	
 			{
-				tSlot *slot = (tSlot*) malloc(sizeof(tSlot));
-				
-				ci_num++;
-
-				slot->slot = i;
-				slot->fd = fd;
-				slot->connection_id = 0;
-				slot->status = eStatusNone;
-				slot->receivedLen = 0;
-				slot->receivedData = NULL;
-				slot->pClass = this;
-				slot->pollConnection = false;
-				slot->camIsReady = false;
-				slot->hasMMIManager = false;
-				slot->hasCAManager = false;
-				slot->hasDateTime = false;
-				slot->hasAppManager = false;
-				slot->mmiOpened = false;
-				slot->init = false;
-				slot->caPmt = NULL;
-				slot->source = TUNER_A;
-				sprintf(slot->name, "unknown module %d", i);
-
-				slot_data.push_back(slot);
-				
-				// now reset the slot so the poll pri can happen in the thread
-				reset(i); 
-				
-				usleep(200000);
-
-				// create a thread for each slot
-				if (pthread_create(&slot->slot_thread, 0, execute_thread,  (void*)slot) != 0) 
+				fd = ::open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
+			    
+				if (fd > 0)
 				{
-					printf("ci%d found and pthread_created\n", i);
+					tSlot *slot = (tSlot*) malloc(sizeof(tSlot));
+					
+					ci_num++;
+
+					slot->slot = i;
+					slot->fd = fd;
+					slot->connection_id = 0;
+					slot->status = eStatusNone;
+					slot->receivedLen = 0;
+					slot->receivedData = NULL;
+					slot->pClass = this;
+					slot->pollConnection = false;
+					slot->camIsReady = false;
+					slot->hasMMIManager = false;
+					slot->hasCAManager = false;
+					slot->hasDateTime = false;
+					slot->hasAppManager = false;
+					slot->mmiOpened = false;
+					slot->init = false;
+					slot->caPmt = NULL;
+					slot->source = TUNER_A;
+					sprintf(slot->name, "unknown module %d", i);
+
+					slot_data.push_back(slot);
+					
+					// now reset the slot so the poll pri can happen in the thread
+					reset(i); 
+					
+					usleep(200000);
+
+					// create a thread for each slot
+					if (pthread_create(&slot->slot_thread, 0, execute_thread,  (void*)slot) != 0) 
+					{
+						printf("ci%d found and pthread_created\n", i);
+					}
 				}
 			}
 		}

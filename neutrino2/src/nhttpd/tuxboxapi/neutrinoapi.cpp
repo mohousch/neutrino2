@@ -129,7 +129,7 @@ void CNeutrinoAPI::ZapToChannelId(t_channel_id channel_id)
 		if (CZapit::getInstance()->zapToServiceID(channel_id) != CZapit::ZAP_INVALID_PARAM)
 		{
 			CSectionsd::getInstance()->setServiceChanged(channel_id, false);
-			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
+			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 ); // ???
 		}
 	}
 }

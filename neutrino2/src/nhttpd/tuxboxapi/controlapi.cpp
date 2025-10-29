@@ -1355,6 +1355,7 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 					t_channel_id sub_channel_id =
 						create_channel_id(
 						desc[i].serviceId, desc[i].originalNetworkId, desc[i].transportStreamId);
+						
 					hh->printf("%llx"
 						" %s\n",
 						sub_channel_id&0xFFFFFFFFFFFFULL,

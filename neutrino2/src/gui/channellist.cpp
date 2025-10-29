@@ -768,40 +768,40 @@ bool CChannelList::adjustToChannelID(const t_channel_id channel_id, bool bToo)
 	
 	if (!chanlist.empty())
 	{
-	// adjust to bouquets
-	for (i = 0; i < chanlist.size(); i++) 
-	{
-		if (chanlist[i] != NULL)
+		// adjust to bouquets
+		for (i = 0; i < chanlist.size(); i++) 
 		{
-			if (chanlist[i]->getChannelID() == channel_id) 
+			if (chanlist[i] != NULL)
 			{
-				selected = i;
-
-				tuned = i;
-				
-				if (bToo && (bouquetList != NULL)) 
+				if (chanlist[i]->getChannelID() == channel_id) 
 				{
-					//FIXME
-					if(CNeutrinoApp::getInstance()->getMode() == CNeutrinoApp::mode_tv) 
+					selected = i;
+
+					tuned = i;
+					
+					if (bToo && (bouquetList != NULL)) 
 					{
-						TVbouquetList->adjustToChannelID(channel_id);
-						TVsatList->adjustToChannelID(channel_id);
-						TVfavList->adjustToChannelID(channel_id);
-						TVallList->adjustToChannelID(channel_id);
-					} 
-					else if(CNeutrinoApp::getInstance()->getMode() == CNeutrinoApp::mode_radio) 
-					{
-						RADIObouquetList->adjustToChannelID(channel_id);
-						RADIOsatList->adjustToChannelID(channel_id);
-						RADIOfavList->adjustToChannelID(channel_id);
-						RADIOallList->adjustToChannelID(channel_id);
+						//FIXME
+						if(CNeutrinoApp::getInstance()->getMode() == CNeutrinoApp::mode_tv) 
+						{
+							TVbouquetList->adjustToChannelID(channel_id);
+							TVsatList->adjustToChannelID(channel_id);
+							TVfavList->adjustToChannelID(channel_id);
+							TVallList->adjustToChannelID(channel_id);
+						} 
+						else if(CNeutrinoApp::getInstance()->getMode() == CNeutrinoApp::mode_radio) 
+						{
+							RADIObouquetList->adjustToChannelID(channel_id);
+							RADIOsatList->adjustToChannelID(channel_id);
+							RADIOfavList->adjustToChannelID(channel_id);
+							RADIOallList->adjustToChannelID(channel_id);
+						}
 					}
+					
+					return true;
 				}
-				
-				return true;
 			}
 		}
-	}
 	}
 
 	return false;
@@ -933,6 +933,7 @@ int CChannelList::numericZap(int key)
 		return res;
 	}
 
+	// current transponder / zap history
 	if (key == g_settings.key_zaphistory) 
 	{
 		// current transponder bouquet
