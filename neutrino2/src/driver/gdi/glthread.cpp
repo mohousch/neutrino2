@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$Id: glthread.cpp 30.10.2023 mohousch Exp $
+//	$Id: glthread.cpp 30102025 mohousch Exp $
 //
 //	Copyright 2010 Carsten Juttner <carjay@gmx.net>
 //	Copyright 2012 Stefan Seyfried <seife@tuxboxcvs.slipkontur.de>
@@ -292,10 +292,7 @@ void GLThreadObj::specialcb(int key, int, int)
 	}
 	else if(i != gThiz->mSpecialMap.end())
 	{
-		if(g_RCInput && !g_RCInput->haveLirc)
-		{
-			g_RCInput->postMsg(i->second);
-		}
+		g_RCInput->postMsg(i->second);
 	}
 }
   

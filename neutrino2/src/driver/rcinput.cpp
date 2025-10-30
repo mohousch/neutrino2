@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$Id: rcinput.cpp 21122024 mohousch Exp $
+//	$Id: rcinput.cpp 30102025 mohousch Exp $
 //
 //	Homepage: http://dbox.cyberphoria.org/
 //
@@ -369,8 +369,6 @@ bool CRCInput::saveRCConfig(const char * const fileName)
 CRCInput::CRCInput() : configfile('\t')
 {
 	timerid = 1;
-	
-	haveLirc = false;
 
 	// pipe_high
 	if (pipe(fd_pipe_high_priority) < 0)
@@ -417,10 +415,7 @@ CRCInput::CRCInput() : configfile('\t')
 	if(fd_lirc < 0)
 	{
 		ng_err("CRCInput::CRCInput: /dev/lirc0 failed\n");
-		haveLirc = false;
 	}
-	else
-		haveLirc = true;
 
 	if (::ioctl(fd_lirc, LIRC_SET_REC_MODE, &mode) < 0)
 	{
@@ -450,10 +445,8 @@ CRCInput::CRCInput() : configfile('\t')
 	{
 		ng_err("CRCInput::CRCInput lircd connect failed\n");
 		::close(fd_lirc);
-		fd_lirc = 1;
+		fd_lirc = -1;
 	}
-	else
-		haveLirc = true;
 #endif
 #endif
 
@@ -550,7 +543,7 @@ void CRCInput::restartInput()
 	open();
 }
 
-int CRCInput::addTimer(uint64_t Interval, bool oneshot, bool correct_time )
+uint32_t CRCInput::addTimer(uint64_t Interval, bool oneshot, bool correct_time )
 {
 	struct timeval tv;
 
@@ -567,7 +560,7 @@ int CRCInput::addTimer(uint64_t Interval, bool oneshot, bool correct_time )
 	_newtimer.id = timerid++;
 	
 	if ( correct_time )
-		_newtimer.times_out = timeNow+ Interval;
+		_newtimer.times_out = timeNow + Interval;
 	else
 		_newtimer.times_out = Interval;
 
@@ -585,14 +578,14 @@ int CRCInput::addTimer(uint64_t Interval, bool oneshot, bool correct_time )
 	return _newtimer.id;
 }
 
-int CRCInput::addTimer(struct timeval Timeout)
+uint32_t CRCInput::addTimer(struct timeval Timeout)
 {
 	uint64_t timesout = (uint64_t) Timeout.tv_usec + (uint64_t)((uint64_t) Timeout.tv_sec * (uint64_t) 1000000);
 
 	return addTimer( timesout, true, false );
 }
 
-int CRCInput::addTimer(const time_t *Timeout)
+uint32_t CRCInput::addTimer(const time_t *Timeout)
 {
 	return addTimer( (uint64_t)*Timeout*(uint64_t)1000000, true, false );
 }

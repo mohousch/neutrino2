@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$Id: rcinput.h 21122024 mohousch Exp $
+//	$Id: rcinput.h 30102025 mohousch Exp $
 //
 //	Homepage: http://dbox.cyberphoria.org/
 //
@@ -58,7 +58,6 @@
 #define KEY_BLUE         0x191
 #endif
 
-// SAGEM remote controls have the following additional keys
 #ifndef KEY_TOPLEFT
 #define KEY_TOPLEFT      0x1a2
 #endif
@@ -124,7 +123,7 @@
 #endif
 
 #ifndef KEY_NET
-#define KEY_NET	0x096
+#define KEY_NET		0x096
 #endif
 
 // VFD
@@ -138,8 +137,8 @@
 #define VFD_OK		0x058
 
 //// defines
-typedef unsigned long long neutrino_msg_t;
-typedef unsigned long long neutrino_msg_data_t;
+typedef uint64_t neutrino_msg_t;
+typedef uint64_t neutrino_msg_data_t;
 
 #define NEUTRINO_RCCONFIG_FILE		CONFIGDIR "/rc.conf"
 
@@ -154,7 +153,7 @@ class CRCInput
 
 		struct timer
 		{
-			uint id;
+			uint32_t id;
 			uint64_t interval;
 			uint64_t times_out;
 			bool correct_time;
@@ -167,7 +166,6 @@ class CRCInput
 		int fd_pipe_low_priority[2];
 
 #define NUMBER_OF_EVENT_DEVICES 4
-
 		int fd_rc[NUMBER_OF_EVENT_DEVICES];
 		int fd_lirc;
 		int fd_max;
@@ -177,6 +175,9 @@ class CRCInput
 		void open();
 		void close();
 		int translate(uint64_t code, int num);
+#ifdef ENABLE_LIRC
+		uint32_t translateKey(const char *name);
+#endif		
 		void calculateMaxFd(void);
 		uint32_t checkTimers();
 
@@ -185,9 +186,7 @@ class CRCInput
 		static const neutrino_msg_t RC_Repeat   = 0x0400;
 		static const neutrino_msg_t RC_Release  = 0x0800;
 		static const neutrino_msg_t RC_MaxRC    = KEY_MAX | RC_Repeat | RC_Release;
-		static const neutrino_msg_t RC_Messages = 0x80000000;
-		
-		bool haveLirc;		
+		static const neutrino_msg_t RC_Messages = 0x80000000;		
 
 		//	
 		enum
@@ -413,9 +412,9 @@ class CRCInput
 		static std::string getKeyName(const unsigned long key);
 
 		// in nanosec
-		int addTimer(uint64_t Interval, bool oneshot = true, bool correct_time = true );
-		int addTimer(struct timeval Timeout);
-		int addTimer(const time_t *Timeout);
+		uint32_t addTimer(uint64_t Interval, bool oneshot = true, bool correct_time = true );
+		uint32_t addTimer(struct timeval Timeout);
+		uint32_t addTimer(const time_t *Timeout);
 		void killTimer(uint32_t id);
 
 		//
@@ -432,11 +431,7 @@ class CRCInput
 		void postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data = 0, const bool Priority = true);
 		
 		//
-		void clearRCMsg();
-		
-#ifdef ENABLE_LIRC
-		uint32_t translateKey(const char *name);
-#endif		
+		void clearRCMsg();		
 };
 
 //// Converts input of numeric keys to SMS style char input
