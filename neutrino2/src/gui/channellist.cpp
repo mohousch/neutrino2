@@ -341,7 +341,14 @@ t_channel_id CChannelList::getActiveChannel_LogoID(void) const
 
 int CChannelList::getActiveChannelNumber(void) const
 {
-	return (selected + 1);
+	if (selected < chanlist.size()) 
+	{
+		printf("CChannelList::getActiveChannelNumber: %d\n", chanlist[selected]->number);
+		
+		return chanlist[selected]->number;
+	} 
+	else
+		return -1;
 }
 
 int CChannelList::getSize() const
@@ -807,17 +814,6 @@ bool CChannelList::adjustToChannelID(const t_channel_id channel_id, bool bToo)
 	return false;
 }
 
-int CChannelList::hasChannel(int nChannelNr)
-{
-	for (uint32_t i = 0; i < chanlist.size(); i++) 
-	{
-		if (getKey(i) == nChannelNr)
-			return(i);
-	}
-	
-	return(-1);
-}
-
 int CChannelList::hasChannelID(t_channel_id channel_id)
 {
 	for (uint32_t i = 0; i < chanlist.size(); i++) 
@@ -1037,7 +1033,7 @@ int CChannelList::numericZap(int key)
 	int ox = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - sx)/2;
 	int oy = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - sy)/2;
 	char valstr[10];
-	int chn = CRCInput::getNumericValue(key);
+	int chn = CRCInput::getNumericValue(key);  // index
 	int pos = 1;
 	int lastchan = -1;
 	bool doZap = true;

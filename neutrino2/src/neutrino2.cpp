@@ -1486,7 +1486,6 @@ void CNeutrinoApp::channelsInit()
 		if ((it->second.getServiceType() == ST_DIGITAL_TELEVISION_SERVICE)) 
 		{
 			TVchannelList->addChannel(&(it->second), tvi++);
-			//tvi++;
 			
 			if (it->second.isWEBTV())
 				webtvi++;
@@ -1503,7 +1502,6 @@ void CNeutrinoApp::channelsInit()
 		else if (it->second.getServiceType() == ST_DIGITAL_RADIO_SOUND_SERVICE) 
 		{
 			RADIOchannelList->addChannel(&(it->second), ri++);
-			//ri++;
 		}
 	}
 
@@ -3291,8 +3289,9 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 			{
 				if (bouquetList->Bouquets.size() && bouquetList->Bouquets[old_b]->channelList->getSize() > 0)
 					nNewChannel = bouquetList->Bouquets[old_b]->channelList->exec();
-//				else
-//					nNewChannel = bouquetList->exec();
+				else
+				//	nNewChannel = bouquetList->exec() : -1
+					nNewChannel = channelList->exec();
 			}
 			else if (msg == CRCInput::RC_sat) 
 			{

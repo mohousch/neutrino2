@@ -91,7 +91,6 @@ class CChannelList
 
 		//
 		t_channel_id tuned_chid;
-//		CLastChannel lastChList;
 		std::string name;
 		ZapitChannelList chanlist;
 		CChannelEventList events;
@@ -130,7 +129,6 @@ class CChannelList
 		void updateEvents(void);
 		int numericZap(int key);
 		void quickZap(int key, bool cycle = false);
-		int hasChannel(int nChannelNr);
 		int hasChannelID(t_channel_id channel_id);
 		void setSelected( int nChannelNr); 	// for adjusting bouquet's channel list after numzap or quickzap
 		int getSize() const;

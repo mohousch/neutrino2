@@ -138,21 +138,6 @@ int CBouquetList::getActiveBouquetNumber()
 	return res;
 }
 
-void CBouquetList::adjustToChannel( int nChannelNr)
-{
-	for (uint32_t i = 0; i < Bouquets.size(); i++) 
-	{
-		int nChannelPos = Bouquets[i]->channelList->hasChannel(nChannelNr);
-		
-		if (nChannelPos > -1) 
-		{
-			selected = i;
-			Bouquets[i]->channelList->setSelected(nChannelPos);
-			return;
-		}
-	}
-}
-
 void CBouquetList::adjustToChannelID(t_channel_id channel_id)
 {
 	if(selected < Bouquets.size()) 
@@ -318,12 +303,10 @@ int CBouquetList::show(bool customMode)
 			hide();
 			return -3;
 		}
-		/*
 		else if(Bouquets.size() == 0)
 		{
 			continue;
 		}
-		*/
 		else if ( msg == CRCInput::RC_setup ) 
 		{
 			selected = listBox? listBox->getSelected() : 0;

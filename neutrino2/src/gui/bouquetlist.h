@@ -103,7 +103,6 @@ class CBouquetList
 		void deleteBouquet(CBouquet* bouquet);
 		int getActiveBouquetNumber();
 		void activateBouquet(int id);
-		void adjustToChannel(int nChannelNr);
 		void adjustToChannelID(t_channel_id channel_id);
 		int showChannelList(int nBouquet = -1, bool customMode = false);
 		int show(bool customMode = false);

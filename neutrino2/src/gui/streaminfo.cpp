@@ -158,7 +158,7 @@ void CStreamInfo::doSignalStrengthLoop()
 	maxb = minb = lastb = 0;
 	
 	//channel
-	//CChannelList *channelList = CNeutrinoApp::getInstance ()->channelList;
+	//CChannelList *channelList = CNeutrinoApp::getInstance()->channelList;
 	//int curnum = channelList->getActiveChannelNumber();
 	//CZapitChannel * channel = channelList->getChannel(curnum);
 	//CZapit::CServiceInfo si = CZapit::getInstance()->getCurrentServiceInfo();
