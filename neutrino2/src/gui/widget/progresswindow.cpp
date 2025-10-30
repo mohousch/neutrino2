@@ -150,7 +150,7 @@ void CProgressWindow::hide()
 	CFrameBuffer::getInstance()->blit();	
 }
 
-void CProgressWindow::paint()
+void CProgressWindow::paint(bool)
 {
 	dprintf(DEBUG_NORMAL, "CProgressWindow::paint\n");
 

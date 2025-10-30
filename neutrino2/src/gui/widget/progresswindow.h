@@ -73,7 +73,7 @@ class CProgressWindow : public CComponent
 		CProgressWindow(int _x = 0, int _y = 0, int _width = 0, int _height = 0);
 		virtual ~CProgressWindow(){ delete progressBar; progressBar = NULL;};
 
-		void paint();
+		void paint(bool _selected = false);
 		void hide();
 
 		//
