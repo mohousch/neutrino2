@@ -709,7 +709,7 @@ void CInternetRadio::showMenu()
 	ilist->setSelected(selected);
 
 	ilist->enablePaintHead();
-	ilist->setTitle(_("ICE Cast"), NEUTRINO_ICON_MP3);
+	ilist->setTitle(_("Internet Radio"), NEUTRINO_ICON_MP3);
 	ilist->setHeadButtons(&HeadButtons);
 	ilist->enablePaintDate();
 	
