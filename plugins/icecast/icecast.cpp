@@ -84,7 +84,7 @@ class CIceCast : public CWidgetTarget
 		void GetMetaData(CAudiofile& File);
 		void getFileInfoToDisplay(std::string& fileInfo, CAudiofile& file);
 		//
-		bool openFileBrowser(void);
+		void openFileBrowser(void);
 		void showMenu();
 		
 	public:
@@ -380,39 +380,38 @@ void CIceCast::scanXmlData(xmlDocPtr answer_parser, const char *nametag, const c
 	}
 }
 
-bool CIceCast::openFileBrowser(void)
+void CIceCast::openFileBrowser(void)
 {
-	dprintf(DEBUG_INFO, "CIceCast::openFileBrowser\n");
+	dprintf(DEBUG_NORMAL, "CMP3Player::openFileBrowser\n");
 	
-	bool result = false;
-	CFileBrowser filebrowser((g_settings.filebrowser_denydirectoryleave) ? g_settings.network_nfs_audioplayerdir : "");
+	oldLcdMode = CLCD::getInstance()->getMode();
+	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
+	CLCD::getInstance()->setMode(CLCD::MODE_PROGRESSBAR);
+	
+	CFileBrowser filebrowser((g_settings.filebrowser_denydirectoryleave) ? g_settings.network_nfs_picturedir : "");
 
 	filebrowser.Multi_Select = true;
 	filebrowser.Dirs_Selectable = true;
 	filebrowser.Filter = &fileFilter;
 
-	m_Path = g_settings.network_nfs_audioplayerdir;
-
-	hide();
-
 	if (filebrowser.exec(m_Path.c_str()))
 	{
+		////
 		CProgressWindow progress;
 		long maxProgress = (filebrowser.getSelectedFiles().size() > 1) ? filebrowser.getSelectedFiles().size() - 1 : 1;
 		long currentProgress = -1;
 		
 		if (maxProgress > SHOW_FILE_LOAD_LIMIT)
 		{
-			progress.setTitle(_("Receiving list, please wait"));	
+			progress.setTitle(_("Receiving list, please wait..."));	
 			progress.paint();
 		}
-
+		
 		m_Path = filebrowser.getCurrentDir();
 		CFileList::const_iterator files = filebrowser.getSelectedFiles().begin();
-		
-		//
 		for(; files != filebrowser.getSelectedFiles().end(); files++)
 		{
+			////
 			if (maxProgress > SHOW_FILE_LOAD_LIMIT)
 			{
 				currentProgress++;
@@ -420,10 +419,30 @@ bool CIceCast::openFileBrowser(void)
 				int global = 100*currentProgress/maxProgress;
 				progress.showGlobalStatus(global);
 				progress.showStatusMessageUTF(files->Name);
+				
+				CLCD::getInstance()->showProgressBar(global, "Receiving list, please wait...");
 			}
 			
-			//url
-			if(files->getType() == CFile::FILE_URL)
+			if ( (files->getExtension() == CFile::EXTENSION_CDR)
+					||  (files->getExtension() == CFile::EXTENSION_MP3)
+					||  (files->getExtension() == CFile::EXTENSION_WAV)
+					||  (files->getExtension() == CFile::EXTENSION_FLAC))
+			{
+				CAudiofile audiofile(files->Name, files->getExtension());
+
+				// skip duplicate
+				for (unsigned long i = 0; i < (unsigned long)playlist.size(); i++)
+				{
+					if(playlist[i].Filename == audiofile.Filename)
+						playlist.erase(playlist.begin() + i); 
+				}
+
+				//
+				GetMetaData(audiofile);
+		
+				playlist.push_back(audiofile);
+			}
+			else if(files->getType() == CFile::FILE_URL)
 			{
 				std::string filename = files->Name;
 				FILE *fd = fopen(filename.c_str(), "r");
@@ -434,9 +453,9 @@ bool CIceCast::openFileBrowser(void)
 					unsigned int len = fread(buf, sizeof(char), 512, fd);
 					fclose(fd);
 
-					if (len && (strstr(buf, ".m3u") || strstr(buf, ".pls")))
+					if (len && (strstr(buf, ".m3u") || strstr(buf, ".m3u8") || strstr(buf, ".pls")))
 					{
-						dprintf(DEBUG_INFO, "CIceCast::openFilebrowser: m3u/pls Playlist found: %s\n", buf);
+						dprintf(DEBUG_NORMAL, "CMP3Player::openFilebrowser: m3u/pls Playlist found: %s\n", buf);
 						
 						filename = buf;
 						processPlaylistUrl(files->Name.c_str());
@@ -470,6 +489,8 @@ bool CIceCast::openFileBrowser(void)
 					if(strlen(cLine) > 0 && cLine[0] != '#')
 					{
 						char *url = strstr(cLine, "http://");
+						
+						//
 						if (url != NULL) 
 						{
 							if (strstr(url, ".m3u") || strstr(url, ".m3u8") || strstr(url, ".pls"))
@@ -498,16 +519,7 @@ bool CIceCast::openFileBrowser(void)
 							
 							if(testfile.good())
 							{
-#ifdef AUDIOPLAYER_CHECK_FOR_DUPLICATES
-								// Check for duplicates and remove (new entry has higher prio)
-								// this really needs some time :(
-								for (unsigned long i = 0; i < (unsigned int)playlist.size(); i++)
-								{
-									if(playlist[i].Filename == filename)
-										//removeFromPlaylist(i);
-										playlist.erase(playlist.begin() + i); 
-								}
-#endif
+								//
 								if(strcasecmp(filename.substr(filename.length() - 3, 3).c_str(), "url") == 0)
 								{
 									addUrl2Playlist(filename.c_str());
@@ -525,11 +537,12 @@ bool CIceCast::openFileBrowser(void)
 									)
 									{
 										CAudiofile audioFile(filename, fileExtension);
+										GetMetaData(audioFile);
 										playlist.push_back(audioFile);
 									} 
 									else
 									{
-										dprintf(DEBUG_NORMAL, "CIceCast::openFilebrowser: file type (%d) is *not* supported in playlists\n(%s)\n", fileExtension, filename.c_str());
+										dprintf(DEBUG_NORMAL, "CMP3Player::openFilebrowser: file type (%d) is *not* supported in playlists\n(%s)\n", fileExtension, filename.c_str());
 									}
 								}
 							}
@@ -539,22 +552,13 @@ bool CIceCast::openFileBrowser(void)
 				}
 				infile.close();
 			}
-			else if(files->getType() == CFile::FILE_XML)
-			{
-				if (!files->Name.empty())
-				{
-					scanXmlFile(files->Name);
-				}
-			}
 		}
 		
 		usleep(1000000);
 		progress.hide();
-		
-		result = true;
 	}
-
-	return ( result);
+	
+	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 }
 
 void CIceCast::GetMetaData(CAudiofile &File)
