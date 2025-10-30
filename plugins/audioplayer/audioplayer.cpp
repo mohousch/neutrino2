@@ -671,6 +671,12 @@ int CMP3Player::showMenu()
 	
 	res = widget->exec(NULL, "");
 	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
+	
 	return res;
 }
 

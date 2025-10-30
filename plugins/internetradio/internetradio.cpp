@@ -438,26 +438,7 @@ void CInternetRadio::openFileBrowser(void)
 				CLCD::getInstance()->showProgressBar(global, "Receiving list, please wait...");
 			}
 			
-			if ( (files->getExtension() == CFile::EXTENSION_CDR)
-					||  (files->getExtension() == CFile::EXTENSION_MP3)
-					||  (files->getExtension() == CFile::EXTENSION_WAV)
-					||  (files->getExtension() == CFile::EXTENSION_FLAC))
-			{
-				CAudiofile audiofile(files->Name, files->getExtension());
-
-				// skip duplicate
-				for (unsigned long i = 0; i < (unsigned long)playlist.size(); i++)
-				{
-					if(playlist[i].Filename == audiofile.Filename)
-						playlist.erase(playlist.begin() + i); 
-				}
-
-				//
-				GetMetaData(audiofile);
-		
-				playlist.push_back(audiofile);
-			}
-			else if(files->getType() == CFile::FILE_URL)
+			if(files->getType() == CFile::FILE_URL)
 			{
 				std::string filename = files->Name;
 				FILE *fd = fopen(filename.c_str(), "r");
@@ -725,6 +706,12 @@ void CInternetRadio::showMenu()
 	widget->addCCItem(ilist);
 	
 	widget->exec(NULL, "");
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 int CInternetRadio::exec(CWidgetTarget* parent, const std::string& actionKey)
