@@ -127,6 +127,7 @@ void CFrameBuffer::init(const char * const fbDevice)
 	
 #if defined (USE_OPENGL)
 	fd = -1;
+	
 	if(!mpGLThreadObj)
 	{
 		screeninfo.bits_per_pixel = DEFAULT_BPP;

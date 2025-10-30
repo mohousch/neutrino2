@@ -219,7 +219,7 @@ class CTestMenu : public CWidgetTarget
 		void testTuxTxt();
 		//// weather
 		void testWeather();
-		void testlibNGPNG();
+		void testBitmap();
 		////
 		void testCMenuOptionChooser();
 		void testCMenuOptionNumberChooser();
@@ -4348,9 +4348,9 @@ void CTestMenu::testWeather()
 	win = NULL;
 }
 
-void CTestMenu::testlibNGPNG()
+void CTestMenu::testBitmap()
 {
-	dprintf(DEBUG_NORMAL, "CTestMenu::testlibNGPNG\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testBitmap\n");
 	
 	CWidget * win = new CWidget();
 //	win->paintMainFrame(false);
@@ -5902,9 +5902,9 @@ int CTestMenu::exec(CWidgetTarget *parent, const std::string &actionKey)
 		
 		return RETURN_REPAINT;
 	}
-	else if (actionKey == "libngpng")
+	else if (actionKey == "bitmap")
 	{
-		testlibNGPNG();
+		testBitmap();
 		
 		return RETURN_REPAINT;
 	}
@@ -6119,7 +6119,7 @@ void CTestMenu::showMenu()
 	// lcd / weather
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "Misc") );
 	mainMenu->addItem(new CMenuForwarder("Weather", true, NULL, this, "weather"));
-	mainMenu->addItem(new CMenuForwarder("LibNGPNG", true, NULL, this, "libngpng"));
+	mainMenu->addItem(new CMenuForwarder("Bitmap", true, NULL, this, "bitmap"));
 	mainMenu->addItem(new CMenuForwarder("DumpLCD", true, NULL, this, "dumplcd"));
 	mainMenu->addItem(new CMenuForwarder("ShowLCD", true, NULL, this, "showlcd"));
 	
