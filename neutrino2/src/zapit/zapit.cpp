@@ -1334,13 +1334,15 @@ int CZapit::zapToRecordID(const t_channel_id channel_id)
 	rec_channel_id = channel_id;
 	
 	// find record frontend
-	record_fe = getFrontend(rec_channel);
+	CFrontend * fe = getFrontend(rec_channel);
 	
-	if(record_fe == NULL) 
+	if(fe == NULL) 
 	{
 		dprintf(DEBUG_NORMAL, "CZapit::zapToRecordID: can not allocate record frontend\n");
 		return -1;
 	}
+	
+	record_fe = fe;
 	
 	//
 	if(record_fe == live_fe)
