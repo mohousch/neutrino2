@@ -330,7 +330,7 @@ CFrontend *CStreamManager::FindFrontend(CZapitChannel *channel)
 	for (std::set<CFrontend *>::iterator ft = frontends.begin(); ft != frontends.end(); ++ft)
 		CZapit::getInstance()->lockFrontend(*ft);
 
-	frontend = CZapit::getInstance()->getFreeFrontend(channel);
+	frontend = CZapit::getInstance()->getFrontend(channel);
 
 	if (frontend) 
 	{

@@ -124,7 +124,7 @@ bool cAudio::Open(CFrontend * fe)
 { 
 #if !defined USE_OPENGL 
 	if(fe)
-		audio_adapter = fe->feadapter;
+		audio_adapter = 0; //fe->feadapter; //FIXME:
 	
 	char devname[32];
 

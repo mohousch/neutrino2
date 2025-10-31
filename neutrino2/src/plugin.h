@@ -205,16 +205,10 @@ extern int dvbsub_pause();
 extern int dvbsub_getpid();
 extern void dvbsub_setpid(int pid);
 extern int dvbsub_terminate();
-// streamts thread
-extern int streamts_stop;				// defined in streamts.cpp
-// zapit thread
-extern int zapit_ready;					//defined in zapit.cpp
-//extern t_channel_id live_channel_id; 			//defined in zapit.cpp
-//extern CZapitChannel * live_channel;			// defined in zapit.cpp
-//extern CFrontend * live_fe;
+//
 extern CScanSettings * scanSettings;
 // sectionsd thread
-extern int sectionsd_stop;				// defined in sectionsd.cpp
+extern int sectionsd_stop;			// defined in sectionsd.cpp
 extern bool timeset;
 //Audio/Video Decoder
 extern cVideo 		* videoDecoder;		// libdvbapi (video_cs.cpp)

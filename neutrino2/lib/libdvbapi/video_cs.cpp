@@ -114,7 +114,7 @@ bool cVideo::Open(CFrontend * fe)
 	
 #ifndef USE_OPENGL
 	if(fe)
-		video_adapter = fe->feadapter;
+		video_adapter = 0; //fe->feadapter; //FIXME:
 	
 	char devname[32];
 

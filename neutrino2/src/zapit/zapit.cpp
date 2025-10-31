@@ -438,7 +438,7 @@ bool CZapit::CanZap(CZapitChannel * thischannel)
 		return true;
 	
 	//	
-	CFrontend * fe = getFreeFrontend(thischannel);
+	CFrontend * fe = getFrontend(thischannel);
 	
 	return (fe != NULL);
 }
@@ -455,6 +455,7 @@ bool CZapit::FrontendIsTwin(CFrontend* fe)
 	return twin;
 }
 
+//
 CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 {
 	const char *FEMODE[] = {
@@ -515,127 +516,6 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 	}
 	
 	return free_frontend;
-}
-
-//
-CFrontend * CZapit::getRecordFrontend(CZapitChannel * thischannel)
-{
-	 const char *FEMODE[] = {
-		"SINGLE",
-		"LOOP",
-		"NOTCONNECTED"
-	 };
-	 
-	// check for frontend
-	CFrontend * rec_frontend = NULL;
-	
-	transponder_list_t::iterator transponder = transponders.find(thischannel->getTransponderId());
-	
-	// get record frontend
-	for(fe_map_iterator_t fe_it = femap.begin(); fe_it != femap.end(); fe_it++) 
-	{
-		CFrontend * fe = fe_it->second;
-		
-		dprintf(DEBUG_INFO, "CZapit::getRecordFrontend: fe(%d,%d): (%s) tuned:%d (locked:%d) fe_freq: %d fe_TP: 0x%llx chan_TP: 0x%llx\n",
-				fe->feadapter,
-				fe->fenumber,
-				FEMODE[fe->mode],
-				fe->tuned,
-				fe->locked,
-				fe->getFrequency(), 
-				fe->getTsidOnid(),  
-				thischannel->getTransponderId() 
-				);
-				
-		// skip not connected frontend
-		if( fe->mode == CFrontend::FE_NOTCONNECTED )
-			continue;
-		
-		// frontend on same tid
-		if( (fe->tuned) && (fe->getTsidOnid() == thischannel->getTransponderId()) )
-		{
-			rec_frontend = fe;
-			break;
-		}
-		// other free tuner
-		else if (transponder != transponders.end())
-		{
-			if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == CFrontend::FE_SINGLE || (fe->mode == CFrontend::FE_LOOP && loopCanTune(fe, thischannel)) ) )
-			{
-				rec_frontend = fe;
-				break;
-			}
-		}
-	}
-	
-	//
-	if(rec_frontend)
-	{
-		dprintf(DEBUG_NORMAL, "CZapit::getRecordFrontend: Selected fe(%d,%d)\n", rec_frontend->feadapter, rec_frontend->fenumber);
-		
-		if(rec_frontend->standby)
-			initTuner(rec_frontend);
-		
-	}
-	
-	return rec_frontend;
-}
-
-//
-CFrontend * CZapit::getFreeFrontend(CZapitChannel * thischannel)
-{
-	const char *FEMODE[] = {
-		"SINGLE",
-		"LOOP",
-		"NOTCONNECTED"
-	 };
-	 
-	// check for frontend
-	CFrontend * pref_frontend = NULL;
-	
-	transponder_list_t::iterator transponder = transponders.find(thischannel->getTransponderId());
-	
-	// get preferred frontend
-	for(fe_map_iterator_t fe_it = femap.begin(); fe_it != femap.end(); fe_it++) 
-	{
-		CFrontend * fe = fe_it->second;
-		
-		dprintf(DEBUG_NORMAL, "CZapit::getFreeFrontend: fe(%d,%d): (%s) tuned:%d (locked:%d) fe_freq: %d fe_TP: 0x%llx chan_TP: 0x%llx\n",
-				fe->feadapter,
-				fe->fenumber,
-				FEMODE[fe->mode],
-				fe->tuned,
-				fe->locked,
-				fe->getFrequency(), 
-				fe->getTsidOnid(),  
-				thischannel->getTransponderId()
-				);
-				
-		// skip not connected frontend
-		if( fe->mode == CFrontend::FE_NOTCONNECTED )
-			continue;
-
-		// same tid frontend (locked)
-		if(fe->locked && fe->getTsidOnid() == thischannel->getTransponderId())
-		{
-			pref_frontend = fe;
-			break;
-		}
-		// first zap/record/other frontend type
-		else if (transponder != transponders.end())
-		{
-			if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == CFrontend::FE_SINGLE || (fe->mode == CFrontend::FE_LOOP && loopCanTune(fe, thischannel)) ) )
-			{
-				pref_frontend = fe;
-				break;
-			}
-		}
-	}
-	
-	if (pref_frontend)
-		dprintf(DEBUG_NORMAL, "CZapit::getFreeFrontend: Selected fe(%d,%d)\n", pref_frontend->feadapter, pref_frontend->fenumber);
-	
-	return pref_frontend;
 }
 
 void CZapit::lockFrontend(CFrontend *fe)
@@ -1454,7 +1334,7 @@ int CZapit::zapToRecordID(const t_channel_id channel_id)
 	rec_channel_id = channel_id;
 	
 	// find record frontend
-	CFrontend * frontend = getRecordFrontend(rec_channel);
+	CFrontend * frontend = /*getRecordFrontend*/getFrontend(rec_channel);
 	if(frontend == NULL) 
 	{
 		dprintf(DEBUG_NORMAL, "CZapit::zapToRecordID: can not allocate record frontend\n");

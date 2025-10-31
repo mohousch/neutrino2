@@ -961,7 +961,7 @@ stream2file_error_msg_t CRecord::startRecording(const char * const filename, con
 	record->Open();
 
 	// start_recording	  
-	if(!record->Start(fd, vpid, pids, numpids, CZapit::getInstance()->getRecordFrontend(CZapit::getInstance()->findChannelByChannelID(channel_id)))) 	  
+	if(!record->Start(fd, vpid, pids, numpids, CZapit::getInstance()->getRecordFrontend())) 	  
 	{
 		record->Stop();
 		delete record;

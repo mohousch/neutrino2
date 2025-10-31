@@ -461,16 +461,16 @@ class CZapit
 		void saveFrontendConfig();
 		void loadFrontendConfig();
 		int getFrontendCount(void){return femap.size();};
-		bool loopCanTune(CFrontend * fe, CZapitChannel * thischannel);
-		bool CanZap(CZapitChannel * thischannel);
-		bool FrontendIsTwin(CFrontend* fe);
-		CFrontend * getFreeFrontend(CZapitChannel * thischannel);
-		CFrontend * getFrontend(CZapitChannel * thischannel);
-		CFrontend * getRecordFrontend(CZapitChannel * thischannel);
+		bool loopCanTune(CFrontend *fe, CZapitChannel *thischannel);
+		bool CanZap(CZapitChannel *thischannel);
+		bool FrontendIsTwin(CFrontend *fe);
+		CFrontend * getFrontend(CZapitChannel *thischannel);
+		CFrontend * getLiveFrontend() { return live_fe; };
+		CFrontend * getRecordFrontend(){ return record_fe;};
 		void lockFrontend(CFrontend *fe);
 		void unlockFrontend(CFrontend *fe);
 		//
-		void setZapitConfig(zapit_config * Cfg);
+		void setZapitConfig(zapit_config *Cfg);
 		void getZapitConfig(zapit_config *Cfg);
 		//
 		void getLastChannel(t_channel_id &channelid, unsigned int &channumber, int &mode);
