@@ -78,7 +78,7 @@ class CInternetRadio : public CWidgetTarget
 
 		void openFileBrowser(void);
 
-		void showMenu();
+		int showMenu();
 		
 	public:
 		CInternetRadio();
@@ -408,6 +408,8 @@ void CInternetRadio::openFileBrowser(void)
 	filebrowser.Multi_Select = true;
 	filebrowser.Dirs_Selectable = true;
 	filebrowser.Filter = &fileFilter;
+	
+	m_Path = g_settings.network_nfs_audioplayerdir;
 
 	if (filebrowser.exec(m_Path.c_str()))
 	{
@@ -636,6 +638,8 @@ void CInternetRadio::getFileInfoToDisplay(std::string &info, CAudiofile& file)
 
 void CInternetRadio::loadPlaylist(void)
 {
+	playlist.clear();
+	
 	scanXmlFile(RADIO_STATION_XML_FILE);
 }
 
@@ -650,8 +654,10 @@ const struct button_label AudioPlayerButtons[FOOT_BUTTONS_COUNT] =
 	{ NEUTRINO_ICON_BUTTON_BLUE, _("Reload") }
 };
 
-void CInternetRadio::showMenu()
+int CInternetRadio::showMenu()
 {
+	int ret = RETURN_REPAINT;
+	
 	widget = new CWidget(frameBuffer->getScreenX() + 20, frameBuffer->getScreenY() + 20, frameBuffer->getScreenWidth() - 40, frameBuffer->getScreenHeight() - 40);
 	ilist = new ClistBox(frameBuffer->getScreenX() + 20, frameBuffer->getScreenY() + 20, frameBuffer->getScreenWidth() - 40, frameBuffer->getScreenHeight() - 40);
 
@@ -705,18 +711,22 @@ void CInternetRadio::showMenu()
 
 	widget->addCCItem(ilist);
 	
-	widget->exec(NULL, "");
+	ret = widget->exec(NULL, "");
 	
 	if (widget)
 	{
 		delete widget;
 		widget = NULL;
 	}
+	
+	return ret;
 }
 
 int CInternetRadio::exec(CWidgetTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CInternetRadio::exec: actionKey:%s\n", actionKey.c_str());
+	
+	int res = RETURN_REPAINT;
 	
 	if(parent)
 		hide();
@@ -781,9 +791,9 @@ int CInternetRadio::exec(CWidgetTarget* parent, const std::string& actionKey)
 	}
 	
 	loadPlaylist();
-	showMenu();
+	res = showMenu();
 
-	return RETURN_EXIT_ALL;
+	return res;
 }
 
 void plugin_init(void)
