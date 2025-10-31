@@ -278,7 +278,7 @@ void CRecord::RestoreNeutrino(void)
 {
 	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CRecord::RestoreNeutrino\n");
 	
-	CZapit::getInstance()->setRecordMode( false );
+	CZapit::getInstance()->setRecordMode(false);
 
 	// start playback
 	if (!CZapit::getInstance()->isPlayBackActive() && (CNeutrinoApp::getInstance()->getMode() != CNeutrinoApp::mode_standby))
@@ -327,7 +327,7 @@ void CRecord::CutBackNeutrino(const t_channel_id channel_id, const int mode)
 		CZapit::getInstance()->stopPlayBack();
 	
 	// after this zapit send EVT_RECORDMODE_ACTIVATED, so neutrino getting NeutrinoMessages::EVT_RECORDMODE
-	CZapit::getInstance()->setRecordMode( true );
+	CZapit::getInstance()->setRecordMode(true);
 }
 
 //
