@@ -4186,10 +4186,10 @@ void CNeutrinoApp::realRun(void)
 				{
 					if(MessageBox(_("Information"), _("You really want to to stop record ?"), CMessageBox::mbrYes, CMessageBox::mbYes | CMessageBox::mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == CMessageBox::mbrYes)
 					{
+						CRecord::getInstance()->Stop();
+						
 						if (recording_id)
 							CTimerd::getInstance()->stopTimerEvent(recording_id);
-						else
-							CRecord::getInstance()->Stop();
 							
 						recordingstatus = 0;
 						timeshiftstatus = 0;
