@@ -1656,6 +1656,9 @@ void CNeutrinoApp::channelsInit()
 		}
 	}
 	
+	//
+	setChannelMode(g_settings.channel_mode, mode);
+	
 	// loadwebtvlogos
 	if (g_settings.logos_show_logo)
 		CChannellogo::getInstance()->loadWebTVlogos();
