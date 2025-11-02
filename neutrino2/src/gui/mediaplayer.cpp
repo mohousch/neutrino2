@@ -41,11 +41,11 @@
 #include <gui/pictureviewer.h>
 
 
-int CMediaPlayerMenu::exec(CWidgetTarget* parent, const std::string& actionKey)
+int CMediaPlayerMenu::exec(CTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CMediaplayerMenu::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int res = CWidgetTarget::RETURN_REPAINT;
+	int res = CTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();

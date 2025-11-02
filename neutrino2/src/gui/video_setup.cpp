@@ -213,11 +213,11 @@ CVideoSettings::~CVideoSettings()
 	delete videoSetupNotifier;
 }
 
-int CVideoSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
+int CVideoSettings::exec(CTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CVideoSettings::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int ret = CWidgetTarget::RETURN_REPAINT;
+	int ret = CTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();

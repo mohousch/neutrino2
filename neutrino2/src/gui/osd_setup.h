@@ -34,7 +34,7 @@
 
 
 ////
-class COSDSettings : public CWidgetTarget
+class COSDSettings : public CTarget
 {
 	private:
 		int showMenu(void);
@@ -43,11 +43,11 @@ class COSDSettings : public CWidgetTarget
 		COSDSettings(){};
 		virtual ~COSDSettings(){};
 		
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 };
 
 //// osd menucolor settings
-class COSDMenuColorSettings : public CWidgetTarget
+class COSDMenuColorSettings : public CTarget
 {
 	private:
 		void showMenu();
@@ -56,11 +56,11 @@ class COSDMenuColorSettings : public CWidgetTarget
 		COSDMenuColorSettings(){};
 		virtual ~COSDMenuColorSettings(){};
 		
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 };
 
 //// osd infobarcolor settings
-class COSDInfoBarColorSettings : public CWidgetTarget
+class COSDInfoBarColorSettings : public CTarget
 {
 	private:
 		void showMenu();
@@ -69,11 +69,11 @@ class COSDInfoBarColorSettings : public CWidgetTarget
 		COSDInfoBarColorSettings(){};
 		virtual ~COSDInfoBarColorSettings(){};
 		
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 };
 
 // osd language settings
-class CLanguageSettings : public CWidgetTarget
+class CLanguageSettings : public CTarget
 {
 	private:
 		bool fromStartWizzard;
@@ -83,10 +83,10 @@ class CLanguageSettings : public CWidgetTarget
 		CLanguageSettings(bool wizzard = false);
 		virtual ~CLanguageSettings(){};
 		
-		int exec(CWidgetTarget *parent, const std::string &actionKey);
+		int exec(CTarget *parent, const std::string &actionKey);
 };
 
-class CFontSettings : public CWidgetTarget
+class CFontSettings : public CTarget
 {
 	private:
 		void showMenu();
@@ -95,11 +95,11 @@ class CFontSettings : public CWidgetTarget
 		CFontSettings(){};
 		virtual ~CFontSettings(){};
 		
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 };
 
 // osd timing settings
-class COSDTimingSettings : public CWidgetTarget
+class COSDTimingSettings : public CTarget
 {
 	private:
 		void showMenu();
@@ -108,11 +108,11 @@ class COSDTimingSettings : public CWidgetTarget
 		COSDTimingSettings(){};
 		virtual ~COSDTimingSettings(){};
 		
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 };
 
 // diverses
-class COSDDiverses : public CWidgetTarget
+class COSDDiverses : public CTarget
 {
 	private:
 		void showMenu();
@@ -121,11 +121,11 @@ class COSDDiverses : public CWidgetTarget
 		COSDDiverses(){};
 		virtual ~COSDDiverses(){};
 		
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 };
 
 // skin
-class CSkinManager : public CWidgetTarget
+class CSkinManager : public CTarget
 {
 	private:
 		int showMenu();
@@ -134,10 +134,10 @@ class CSkinManager : public CWidgetTarget
 		CSkinManager(){};
 		virtual ~CSkinManager(){};
 		
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 };
 
-class CSkinSettings : public CWidgetTarget
+class CSkinSettings : public CTarget
 {
 	private:
 		ClistBox *skinSettings;
@@ -148,10 +148,10 @@ class CSkinSettings : public CWidgetTarget
 		CSkinSettings(){};
 		virtual ~CSkinSettings(){};
 		
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 };
 
-class CPersonalisation : public CWidgetTarget
+class CPersonalisation : public CTarget
 {
 	private:
 		int showMenu(void);
@@ -160,7 +160,7 @@ class CPersonalisation : public CWidgetTarget
 		CPersonalisation(){};
 		virtual ~CPersonalisation(){};
 		
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 };
 
 #endif //__osd_setup__

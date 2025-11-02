@@ -38,7 +38,7 @@ extern "C" void plugin_del(void);
 //// globals
 const long int GET_PLAYLIST_TIMEOUT = 10;
 
-class CMP3Player : public CWidgetTarget
+class CMP3Player : public CTarget
 {
 	private:
 		CFrameBuffer* frameBuffer;
@@ -68,7 +68,7 @@ class CMP3Player : public CWidgetTarget
 	public:
 		CMP3Player();
 		~CMP3Player();
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 		void hide();
 };
 
@@ -680,7 +680,7 @@ int CMP3Player::showMenu()
 	return res;
 }
 
-int CMP3Player::exec(CWidgetTarget* parent, const std::string& actionKey)
+int CMP3Player::exec(CTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CMP3Player::exec: actionKey:%s\n", actionKey.c_str());
 	

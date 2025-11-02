@@ -30,10 +30,10 @@
 #include <gui/widget/listbox.h>
 
 
-class CDVBSubSelectMenuHandler : public CWidgetTarget
+class CDVBSubSelectMenuHandler : public CTarget
 {
 	public:
-		int  exec( CWidgetTarget* parent,  const std::string &actionKey);
+		int  exec( CTarget* parent,  const std::string &actionKey);
 		int  doMenu();
 };
 

@@ -65,11 +65,11 @@ void CCAMMenuHandler::init(void)
 	hintBox = NULL;
 }
 
-int CCAMMenuHandler::exec(CWidgetTarget * parent, const std::string &actionKey)
+int CCAMMenuHandler::exec(CTarget * parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CCAMMenuHandler::exec: actionkey %s\n", actionKey.c_str());
 
-	int ret = CWidgetTarget::RETURN_REPAINT;
+	int ret = CTarget::RETURN_REPAINT;
 
         if (parent)
                 parent->hide();
@@ -85,12 +85,12 @@ int CCAMMenuHandler::exec(CWidgetTarget * parent, const std::string &actionKey)
 	else if(actionKey == "reset1") 
 	{
 		ci->reset(0);
-		return CWidgetTarget::RETURN_EXIT_ALL;
+		return CTarget::RETURN_EXIT_ALL;
 	}	
 	else if(actionKey == "reset2") 
 	{
 		ci->reset(1);
-		return CWidgetTarget::RETURN_EXIT_ALL;
+		return CTarget::RETURN_EXIT_ALL;
 	}	
 
 	doMainMenu();
@@ -577,7 +577,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 
 int CCAMMenuHandler::doMenu(int slot)
 {
-	int res = CWidgetTarget::RETURN_REPAINT;
+	int res = CTarget::RETURN_REPAINT;
 	neutrino_msg_t msg;
 	neutrino_msg_data_t data;
 	bool doexit = false;
@@ -630,7 +630,7 @@ int CCAMMenuHandler::doMenu(int slot)
 
 				ci->CI_CloseMMI(slot);
 
-				return CWidgetTarget::RETURN_REPAINT;
+				return CTarget::RETURN_REPAINT;
 			} 
 			
 			// -1 = not our event
@@ -644,7 +644,7 @@ int CCAMMenuHandler::doMenu(int slot)
 				if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & ( messages_return::cancel_all | messages_return::cancel_info ) )
 				{
 					doexit = true;
-					res = CWidgetTarget::RETURN_EXIT_ALL;
+					res = CTarget::RETURN_EXIT_ALL;
 				}
 			} 
 			else if (ret == 1) 

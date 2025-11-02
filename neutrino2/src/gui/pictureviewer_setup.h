@@ -33,7 +33,7 @@
 #include <string>
 
 
-class CPictureViewerSettings : public CWidgetTarget
+class CPictureViewerSettings : public CTarget
 {
 	private:
 		void showMenu();
@@ -42,7 +42,7 @@ class CPictureViewerSettings : public CWidgetTarget
 		CPictureViewerSettings(){};
 		virtual ~CPictureViewerSettings(){};
 		
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 };
 
 #endif //__pictureviewer_setup__

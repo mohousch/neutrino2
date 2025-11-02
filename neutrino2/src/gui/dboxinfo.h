@@ -36,7 +36,7 @@
 #include <gui/widget/widget.h>
 
 
-class CDBoxInfoWidget : public CWidgetTarget
+class CDBoxInfoWidget : public CTarget
 {
 	private:
 		CFrameBuffer* frameBuffer;
@@ -70,10 +70,10 @@ class CDBoxInfoWidget : public CWidgetTarget
 		~CDBoxInfoWidget(){};
 
 		void hide();
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 };
 
-class CInfoMenu : public CWidgetTarget
+class CInfoMenu : public CTarget
 {
 	private:
 		CWidget* widget;
@@ -86,7 +86,7 @@ class CInfoMenu : public CWidgetTarget
 		~CInfoMenu(){};
 		
 		void hide(){};
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 };
 
 #endif

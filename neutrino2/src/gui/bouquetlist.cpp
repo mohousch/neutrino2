@@ -493,7 +493,7 @@ int CBouquetList::doMenu()
 	int i = 0;
 	int select = -1;
 	static int old_selected = 0;
-	//int ret = CWidgetTarget::RETURN_NONE;
+	//int ret = CTarget::RETURN_NONE;
 	signed int bouquet_id;
 	CZapitBouquet * tmp, * zapitBouquet;
 	ZapitChannelList * channels;

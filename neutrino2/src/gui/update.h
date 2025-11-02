@@ -37,7 +37,7 @@
 
 
 //// CFlashUpdate
-class CFlashUpdate : public CWidgetTarget
+class CFlashUpdate : public CTarget
 {
 	public:
 		enum 
@@ -70,11 +70,11 @@ class CFlashUpdate : public CWidgetTarget
 	public:
 		CFlashUpdate(int uMode);
 		virtual ~CFlashUpdate();
-		int exec( CWidgetTarget *parent, const std::string &actionKey );
+		int exec( CTarget *parent, const std::string &actionKey );
 };
 
 //// CFlashExppert
-class CFlashExpert : public CWidgetTarget
+class CFlashExpert : public CTarget
 {
 	private:
 		CProgressWindow *progressWindow;
@@ -89,11 +89,11 @@ class CFlashExpert : public CWidgetTarget
 
 	public:
 		CFlashExpert();
-		int exec(CWidgetTarget *parent, const std::string &actionKey);
+		int exec(CTarget *parent, const std::string &actionKey);
 };
 
 //// update setup
-class CUpdateSettings : public CWidgetTarget
+class CUpdateSettings : public CTarget
 {
 	private:
 		int showMenu();
@@ -103,7 +103,7 @@ class CUpdateSettings : public CWidgetTarget
 		CUpdateSettings(){};
 		~CUpdateSettings(){};
 		
-		int exec(CWidgetTarget *parent, const std::string &actionKey);
+		int exec(CTarget *parent, const std::string &actionKey);
 };
 
 #endif

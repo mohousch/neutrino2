@@ -33,7 +33,7 @@
 #include <string>
 
 
-class CZapitSetup : public CWidgetTarget
+class CZapitSetup : public CTarget
 {
 	private:
 		int selected;
@@ -47,7 +47,7 @@ class CZapitSetup : public CWidgetTarget
 		CZapitSetup();
 		~CZapitSetup();
 		
-		int exec(CWidgetTarget* parent, const std::string & actionKey);
+		int exec(CTarget* parent, const std::string & actionKey);
 };
 
 class CZapitSetupNotifier : public CChangeObserver

@@ -58,13 +58,13 @@
 
 
 //// NVOD
-class CNVODChangeExec : public CWidgetTarget
+class CNVODChangeExec : public CTarget
 {
 	public:
 		CNVODChangeExec(){};
 		virtual ~CNVODChangeExec(){};
 		
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 };
 
 ////
@@ -75,7 +75,7 @@ typedef struct neutrino_font_descr
 	int          size_offset;
 } neutrino_font_descr_struct;
 
-class CNeutrinoApp : public CWidgetTarget
+class CNeutrinoApp : public CTarget
 {
 	public:
 		enum
@@ -144,7 +144,7 @@ class CNeutrinoApp : public CWidgetTarget
 		static CNeutrinoApp* getInstance();
 		
 		////
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 		////
 		void saveSetup(const char * fname);
 		int loadSetup(const char * fname);
@@ -170,7 +170,7 @@ class CNeutrinoApp : public CWidgetTarget
 		void parseCCVline(xmlNodePtr node, CWidget* widget);
 		void parseCCPig(xmlNodePtr node, CWidget* widget);
 		void parseKey(xmlNodePtr node, CWidget* widget);
-		CWidgetTarget* convertTarget(const std::string& name);
+		CTarget* convertTarget(const std::string& name);
 		uint32_t convertColor(const char* const color);
 		uint32_t convertFontColor(const char* const color);
 		int convertCorner(const char * const corner);

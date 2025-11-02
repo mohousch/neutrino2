@@ -100,7 +100,7 @@ void CMotorControl::Init(void)
 	snrscale = new CCProgressBar(x + 10 + 210 - 1, y + height - mheight - 5, BAR_WIDTH, BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR);
 }
 
-int CMotorControl::exec(CWidgetTarget* parent, const std::string &)
+int CMotorControl::exec(CTarget* parent, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "CMotorControl::exec:\n");
 
@@ -121,7 +121,7 @@ int CMotorControl::exec(CWidgetTarget* parent, const std::string &)
 	bool istheend = false;
 	int lim_cmd;
 	if (!frameBuffer->getActive())
-		return CWidgetTarget::RETURN_EXIT_ALL;
+		return CTarget::RETURN_EXIT_ALL;
 	
 	if (parent)
 		parent->hide();
@@ -407,7 +407,7 @@ int CMotorControl::exec(CWidgetTarget* parent, const std::string &)
 	
 	hide();
 
-	return CWidgetTarget::RETURN_REPAINT;
+	return CTarget::RETURN_REPAINT;
 }
 
 void CMotorControl::motorStepWest(void)

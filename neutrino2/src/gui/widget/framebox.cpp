@@ -436,11 +436,11 @@ int CFrameItem::paint(bool selected)
 	return 0;
 }
 
-int CFrameItem::exec(CWidgetTarget *target)
+int CFrameItem::exec(CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "CFrameItem::exec: actionKey:(%s)\n", actionKey.c_str());
 
-	int ret = CWidgetTarget::RETURN_EXIT;
+	int ret = CTarget::RETURN_EXIT;
 
 	if(jumpTarget)
 		ret = jumpTarget->exec(target, actionKey);
@@ -672,7 +672,7 @@ int CFrameBox::swipRight()
 {
 	dprintf(DEBUG_INFO, "CFrameBox::swipRight:\n");
 	
-	int ret = CWidgetTarget::RETURN_NONE;
+	int ret = CTarget::RETURN_NONE;
 
 	for (unsigned int count = 1; count < frames.size(); count++) 
 	{
@@ -698,7 +698,7 @@ int CFrameBox::swipLeft()
 {
 	dprintf(DEBUG_INFO, "CFrameBox::swipLeft:\n");
 	
-	int ret = CWidgetTarget::RETURN_NONE;
+	int ret = CTarget::RETURN_NONE;
 
 	for (unsigned int count = 1; count < frames.size(); count++) 
 	{
@@ -768,11 +768,11 @@ void CFrameBox::scrollLineUp(const int lines)
 	}
 }
 
-int CFrameBox::oKKeyPressed(CWidgetTarget *target, neutrino_msg_t _msg)
+int CFrameBox::oKKeyPressed(CTarget *target, neutrino_msg_t _msg)
 {
 	dprintf(DEBUG_INFO, "CFrameBox::okKeyPressed:\n");
 	
-	int ret = CWidgetTarget::RETURN_EXIT;
+	int ret = CTarget::RETURN_EXIT;
 
 	if (hasItem() && selected >= 0 && frames[selected]->isSelectable())
 	{

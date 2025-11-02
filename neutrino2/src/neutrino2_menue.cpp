@@ -551,7 +551,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 }
 
 //// nvod
-int CNVODChangeExec::exec(CWidgetTarget *parent, const std::string &actionKey)
+int CNVODChangeExec::exec(CTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_INFO, "CNVODChangeExec exec: %s\n", actionKey.c_str());
 	

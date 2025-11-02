@@ -97,7 +97,7 @@ CScanTs::CScanTs(CFrontend *f, CScanSettings *sc)
 	dprintf(DEBUG_NORMAL, "CScanTs::CScanTs: fe(%d:%d) forcedDelsys:0x%x\n", fe->feadapter, fe->fenumber, fe->forcedDelSys);
 }
 
-int CScanTs::exec(CWidgetTarget * parent, const std::string & actionKey)
+int CScanTs::exec(CTarget * parent, const std::string & actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CScanTs::exec: actionKey: %s\n", actionKey.c_str());
 
@@ -149,7 +149,7 @@ int CScanTs::exec(CWidgetTarget * parent, const std::string & actionKey)
 	snrscale->reset();
 
 	if (!frameBuffer->getActive())
-		return CWidgetTarget::RETURN_EXIT_ALL;
+		return CTarget::RETURN_EXIT_ALL;
 
 	//
         CZapit::getInstance()->stopPlayBack();
@@ -432,7 +432,7 @@ int CScanTs::exec(CWidgetTarget * parent, const std::string & actionKey)
 	//
         CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 	
-	return CWidgetTarget::RETURN_REPAINT;
+	return CTarget::RETURN_REPAINT;
 }
 
 neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)

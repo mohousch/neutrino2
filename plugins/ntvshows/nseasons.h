@@ -21,7 +21,7 @@
 #include <plugin.h>
 
 
-class CNSeasons : public CWidgetTarget
+class CNSeasons : public CTarget
 {
 	private:
 		CFrameBuffer* frameBuffer;
@@ -52,7 +52,7 @@ class CNSeasons : public CWidgetTarget
 	public:
 		CNSeasons(int id);
 		~CNSeasons();
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 		void hide();
 };
 

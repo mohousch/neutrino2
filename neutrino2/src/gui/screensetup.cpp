@@ -55,14 +55,14 @@ CScreenSetup::CScreenSetup()
 	BoxWidth = 15*27;
 }
 
-int CScreenSetup::exec(CWidgetTarget *parent, const std::string &)
+int CScreenSetup::exec(CTarget *parent, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "CScreenSetup::exec\n");
 	
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
 
-	int res = CWidgetTarget::RETURN_REPAINT;
+	int res = CTarget::RETURN_REPAINT;
 
 	if (parent)
 		parent->hide();
@@ -180,7 +180,7 @@ int CScreenSetup::exec(CWidgetTarget *parent, const std::string &)
 				if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all )
 				{
 					loop = false;
-					res = CWidgetTarget::RETURN_EXIT_ALL;
+					res = CTarget::RETURN_EXIT_ALL;
 				}
 		}
 

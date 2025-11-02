@@ -118,7 +118,7 @@ static int check_if_mounted(char * dev)
 	return 0;
 }
 
-int CHDDMenuHandler::exec(CWidgetTarget * parent, const std::string &actionKey)
+int CHDDMenuHandler::exec(CTarget * parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CHDDMenuHandler::exec:\n");
 
@@ -138,12 +138,12 @@ int CHDDMenuHandler::exec(CWidgetTarget * parent, const std::string &actionKey)
 		hintBox->hide();
 		delete hintBox;
 		
-		return CWidgetTarget::RETURN_REPAINT;
+		return CTarget::RETURN_REPAINT;
 	}
 	
 	HDDMenu();
 	
-	return CWidgetTarget::RETURN_REPAINT;
+	return CTarget::RETURN_REPAINT;
 }
 
 int CHDDMenuHandler::HDDMenu()
@@ -163,7 +163,7 @@ int CHDDMenuHandler::HDDMenu()
 	{
                 perror("CHDDMenuHandler::doMenu: scandir(\"/sys/block\") failed");
 
-                return CWidgetTarget::RETURN_REPAINT;
+                return CTarget::RETURN_REPAINT;
         }
 	
 	//
@@ -500,7 +500,7 @@ int CHDDMenuHandler::HDDMenu()
 }
 
 //// HDDDestExec
-int CHDDDestExec::exec(CWidgetTarget *, const std::string&)
+int CHDDDestExec::exec(CTarget *, const std::string&)
 {
 	dprintf(DEBUG_NORMAL, "CHDDDestExec::exec:\n");
 
@@ -570,7 +570,7 @@ int CHDDDestExec::exec(CWidgetTarget *, const std::string&)
 
 
 //// hdd init
-int CHDDInit::exec(CWidgetTarget * parent, const std::string& actionKey)
+int CHDDInit::exec(CTarget * parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CHDDInit::exec: actionKey:%s\n", actionKey.c_str());
 	
@@ -636,7 +636,7 @@ int CHDDInit::exec(CWidgetTarget * parent, const std::string& actionKey)
 		hintbox = new CHintBox(_("HDD Init"), _("HDD init failed !"));
 		hintbox->exec();
 		delete hintbox;
-		return CWidgetTarget::RETURN_REPAINT;
+		return CTarget::RETURN_REPAINT;
 	}
 	
 	char buf[256];
@@ -673,11 +673,11 @@ int CHDDInit::exec(CWidgetTarget * parent, const std::string& actionKey)
 	progress->hide();
 	delete progress;
 
-	return CWidgetTarget::RETURN_REPAINT;
+	return CTarget::RETURN_REPAINT;
 }
 
 //// format
-int CHDDFmtExec::exec(CWidgetTarget *parent, const std::string& actionKey)
+int CHDDFmtExec::exec(CTarget *parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CHDDFmtExec::exec: actionKey:%s\n", actionKey.c_str());
 
@@ -741,7 +741,7 @@ int CHDDFmtExec::exec(CWidgetTarget *parent, const std::string& actionKey)
 				hintbox = new CHintBox(_("HDD Format"), _("HDD unmount failed !"));
 				hintbox->exec();
 				delete hintbox;
-				return CWidgetTarget::RETURN_REPAINT;
+				return CTarget::RETURN_REPAINT;
 			}
 		}
 	}
@@ -772,7 +772,7 @@ int CHDDFmtExec::exec(CWidgetTarget *parent, const std::string& actionKey)
 		hintbox = new CHintBox(_("HDD Format"), _("HDD format failed !"));
 		hintbox->exec();
 		delete hintbox;
-		return CWidgetTarget::RETURN_REPAINT;
+		return CTarget::RETURN_REPAINT;
 	}
 
 	char buf[256];
@@ -841,11 +841,11 @@ int CHDDFmtExec::exec(CWidgetTarget *parent, const std::string& actionKey)
 	if(!srun) 
 		system("smbd");
 
-	return CWidgetTarget::RETURN_REPAINT;
+	return CTarget::RETURN_REPAINT;
 }
 
 //// HDD checkfs
-int CHDDChkExec::exec(CWidgetTarget *parent, const std::string& actionKey)
+int CHDDChkExec::exec(CTarget *parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CHDDChkExec: actionKey %s\n", actionKey.c_str());
 
@@ -899,7 +899,7 @@ int CHDDChkExec::exec(CWidgetTarget *parent, const std::string& actionKey)
 			hintbox = new CHintBox(_("Check filesystem"), _("HDD check failed !"));
 			hintbox->exec();
 			delete hintbox;
-			return CWidgetTarget::RETURN_REPAINT;
+			return CTarget::RETURN_REPAINT;
 		}
 	}
 
@@ -922,7 +922,7 @@ int CHDDChkExec::exec(CWidgetTarget *parent, const std::string& actionKey)
 		hintbox = new CHintBox(_("Check filesystem"), _("HDD check failed !"));
 		hintbox->exec();
 		delete hintbox;
-		return CWidgetTarget::RETURN_REPAINT;
+		return CTarget::RETURN_REPAINT;
 	}
 
 	progress = new CProgressWindow();
@@ -981,11 +981,11 @@ int CHDDChkExec::exec(CWidgetTarget *parent, const std::string& actionKey)
 	if(!srun) 
 		system("smbd");
 	
-	return CWidgetTarget::RETURN_REPAINT;
+	return CTarget::RETURN_REPAINT;
 }
 
 //// HDD mount
-int CHDDMountMSGExec::exec(CWidgetTarget *parent, const std::string& actionKey)
+int CHDDMountMSGExec::exec(CTarget *parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CHDDMountMSGExec: %s\n", (char *)actionKey.c_str());
 
@@ -1009,7 +1009,7 @@ int CHDDMountMSGExec::exec(CWidgetTarget *parent, const std::string& actionKey)
 		hintbox = new CHintBox(_("HDD Mount"), _("HDD Mounted"));
 		hintbox->exec();
 		delete hintbox;
-		return CWidgetTarget::RETURN_REPAINT;
+		return CTarget::RETURN_REPAINT;
 	}
 	else
 	{
@@ -1031,7 +1031,7 @@ int CHDDMountMSGExec::exec(CWidgetTarget *parent, const std::string& actionKey)
 				hintbox->exec();
 				delete hintbox;
 				
-				return CWidgetTarget::RETURN_REPAINT;
+				return CTarget::RETURN_REPAINT;
 			}
 			else
 			{
@@ -1046,7 +1046,7 @@ int CHDDMountMSGExec::exec(CWidgetTarget *parent, const std::string& actionKey)
 					hintbox->exec();
 					delete hintbox;
 					
-					return CWidgetTarget::RETURN_REPAINT;
+					return CTarget::RETURN_REPAINT;
 				}
 				else //fallback to /tmp/hdd
 				{
@@ -1063,14 +1063,14 @@ int CHDDMountMSGExec::exec(CWidgetTarget *parent, const std::string& actionKey)
 						hintbox->exec();
 						delete hintbox;
 						
-						return CWidgetTarget::RETURN_REPAINT;
+						return CTarget::RETURN_REPAINT;
 					}
 					else
 					{
 						hintbox = new CHintBox(_("HDD Mount"), _("HDD Mount failed !"));
 						hintbox->exec();
 						delete hintbox;
-						return CWidgetTarget::RETURN_REPAINT;
+						return CTarget::RETURN_REPAINT;
 					}
 				}
 			}
@@ -1080,15 +1080,15 @@ int CHDDMountMSGExec::exec(CWidgetTarget *parent, const std::string& actionKey)
 			hintbox = new CHintBox(_("HDD Mount"), _("HDD Mount failed !"));
 			hintbox->exec();
 			delete hintbox;
-			return CWidgetTarget::RETURN_REPAINT;
+			return CTarget::RETURN_REPAINT;
 		}
 	}
 	
-	return CWidgetTarget::RETURN_REPAINT;
+	return CTarget::RETURN_REPAINT;
 }
 
 //// umount
-int CHDDuMountMSGExec::exec(CWidgetTarget* parent, const std::string& actionKey)
+int CHDDuMountMSGExec::exec(CTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CHDDuMountExec: actionKey:%s\n", actionKey.c_str());
 
@@ -1131,14 +1131,14 @@ int CHDDuMountMSGExec::exec(CWidgetTarget* parent, const std::string& actionKey)
 			hintbox->exec();
 			delete hintbox;
 			
-			return CWidgetTarget::RETURN_REPAINT;
+			return CTarget::RETURN_REPAINT;
 		}
 		else
 		{
 			hintbox = new CHintBox(_("HDD Mount"), _("HDD unmount failed !"));
 			hintbox->exec();
 			delete hintbox;
-			return CWidgetTarget::RETURN_REPAINT;
+			return CTarget::RETURN_REPAINT;
 
 		}
 	}
@@ -1148,11 +1148,11 @@ int CHDDuMountMSGExec::exec(CWidgetTarget* parent, const std::string& actionKey)
 	hintbox->exec();
 	delete hintbox;
 	
-	return CWidgetTarget::RETURN_REPAINT;
+	return CTarget::RETURN_REPAINT;
 }
 
 //// hdd browser
-int CHDDBrowser::exec(CWidgetTarget * parent, const std::string& actionKey)
+int CHDDBrowser::exec(CTarget * parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CHDDBrowser::exec: actionKey:%s\n", actionKey.c_str());
 	
@@ -1261,6 +1261,6 @@ REPEAT:
 		delete hintbox;
 	}
 	
-	return CWidgetTarget::RETURN_REPAINT;
+	return CTarget::RETURN_REPAINT;
 }
 

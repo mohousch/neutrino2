@@ -35,7 +35,7 @@
 #include <gui/channellist.h>
 
 		
-class CSelectChannelWidget : public CWidgetTarget
+class CSelectChannelWidget : public CTarget
 {	
 	private:
 		CChannelList *tmpChannelList;
@@ -46,7 +46,7 @@ class CSelectChannelWidget : public CWidgetTarget
 	public:
 		CSelectChannelWidget();
 		~CSelectChannelWidget();
-		int exec(CWidgetTarget *parent, const std::string & actionKey);
+		int exec(CTarget *parent, const std::string & actionKey);
 
 		t_channel_id getChannelID(){return ChannelID;};
 };

@@ -36,7 +36,7 @@
 
 const std::string CRCLock::NO_USER_INPUT = "noUserInput";
 
-int CRCLock::exec(CWidgetTarget* parent, const std::string &actionKey)
+int CRCLock::exec(CTarget* parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_DEBUG, "CRCLock::exec\n");
 
@@ -46,14 +46,14 @@ int CRCLock::exec(CWidgetTarget* parent, const std::string &actionKey)
 	bool no_input = (actionKey == NO_USER_INPUT);
 
 	if (MessageBox(_("Lock Remote Control"), _("Your box remote control will be locked.\n To unlock it, press <RED> \n and <MENU> on your remote control."), CMessageBox::mbrYes, CMessageBox::mbYes | CMessageBox::mbCancel, NEUTRINO_ICON_INFO, 450, no_input ? 5 : -1, no_input) == CMessageBox::mbrCancel)
-		return CWidgetTarget::RETURN_EXIT_ALL;
+		return CTarget::RETURN_EXIT_ALL;
 
 	// -- Lockup Box	
 	lockBox();
 
 	MessageBox(_("Lock Remote Control"), _("Remote control reactivated."), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO, 450, no_input ? 5 : -1);
 
-	return  CWidgetTarget::RETURN_EXIT_ALL;
+	return  CTarget::RETURN_EXIT_ALL;
 }
 
 void CRCLock::lockBox()

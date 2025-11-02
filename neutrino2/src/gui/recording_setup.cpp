@@ -64,11 +64,11 @@ extern char recDir[255];			// defined in neutrino2.cpp
 extern char timeshiftDir[255];			// defined in neutrino2.cpp
 extern bool autoshift;				// defined in neutrino2.cpp
 
-int CRecordingSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
+int CRecordingSettings::exec(CTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CRecordingSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = CWidgetTarget::RETURN_REPAINT;
+	int ret = CTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();

@@ -55,7 +55,7 @@
 class CWidget;
 
 ////
-class CWidgetTarget
+class CTarget
 {
 	public:
 		enum
@@ -73,15 +73,15 @@ class CWidgetTarget
 		bool exit_pressed;
 				
 	public:
-		CWidgetTarget()
+		CTarget()
 		{
 			oldLcdMode = CLCD::MODE_TVRADIO;
 			exit_pressed = false;
 			valueStringSetted = false;
 		};
-		virtual ~CWidgetTarget(){valueString.clear(); valueStringSetted = false;};
+		virtual ~CTarget(){valueString.clear(); valueStringSetted = false;};
 		virtual void hide(){CFrameBuffer::getInstance()->paintBackground(); CFrameBuffer::getInstance()->blit();};
-		virtual int exec(CWidgetTarget *parent, const std::string &actionKey) = 0;
+		virtual int exec(CTarget *parent, const std::string &actionKey) = 0;
 		
 		virtual bool getExitPressed(){return exit_pressed;};
 		virtual std::string& getValueString(void) { return valueString;};
@@ -227,13 +227,13 @@ class CComponent
 		struct keyAction 
 		{ 
 			std::string action; 
-			CWidgetTarget *target; 
+			CTarget *target; 
 		};
 		std::map<neutrino_msg_t, keyAction> keyActionMap;
 		uint64_t timeout;
 		uint32_t sec_timer_id;
 		uint64_t sec_timer_interval;
-		CWidgetTarget *jumpTarget;
+		CTarget *jumpTarget;
 		std::string actionKey; // for lua
 		bool selected;
 		bool exit_pressed;
@@ -301,17 +301,17 @@ class CComponent
 		virtual void setInFocus(bool focus = true){ if (isSelectable()) inFocus = focus;else inFocus = false; };
 		virtual void setSelected(unsigned int _new) {};
 		////
-		virtual int oKKeyPressed(CWidgetTarget *target, neutrino_msg_t _msg = CRCInput::RC_ok){return CWidgetTarget::RETURN_EXIT;};
+		virtual int oKKeyPressed(CTarget *target, neutrino_msg_t _msg = CRCInput::RC_ok){return CTarget::RETURN_EXIT;};
 		virtual void homeKeyPressed(){};
-		virtual int directKeyPressed(neutrino_msg_t ){return CWidgetTarget::RETURN_NONE;};
+		virtual int directKeyPressed(neutrino_msg_t ){return CTarget::RETURN_NONE;};
 		////
 		virtual void setParent(CWidget *p){parent = p;};
-		virtual void addKey(neutrino_msg_t key, CWidgetTarget *target = NULL, const std::string &action = "");
+		virtual void addKey(neutrino_msg_t key, CTarget *target = NULL, const std::string &action = "");
 		virtual void setTimeOut(uint64_t to = 0){timeout = to;};
 		virtual void setSecTimerInterval(uint64_t sec){sec_timer_interval = sec;}; // in sec
-		virtual void setActionKey(CWidgetTarget *Target, const char *const ActionKey){jumpTarget = Target; actionKey = ActionKey;};
+		virtual void setActionKey(CTarget *Target, const char *const ActionKey){jumpTarget = Target; actionKey = ActionKey;};
 		////
-		virtual int exec(CWidgetTarget *target = NULL);
+		virtual int exec(CTarget *target = NULL);
 		////
 		virtual std::string getActionKey(void){ return actionKey; }; // lua
 		virtual int getSelected(void){return -1;};

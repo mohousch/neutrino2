@@ -118,7 +118,7 @@ class CMenuItem
 
 		bool nLinesItem;
 
-		CWidgetTarget *jumpTarget;
+		CTarget *jumpTarget;
 		std::string actionKey;
 		
 		//
@@ -158,7 +158,7 @@ class CMenuItem
 		}
 
 		virtual bool isSelectable(void) const {return false;}
-		virtual int exec(CWidgetTarget *) {return 0;}
+		virtual int exec(CTarget *) {return 0;}
 		//
 		virtual void setActive(const bool Active);
 		virtual void setMarked(const bool Marked);
@@ -192,7 +192,7 @@ class CMenuItem
 		virtual void setGradient(int gr){itemGradient = gr;};
 		//
 		virtual void setDirectKey(neutrino_msg_t key){directKey = key;};
-		virtual void setActionKey(CWidgetTarget *Target, const char *const ActionKey){jumpTarget = Target; actionKey = ActionKey;};
+		virtual void setActionKey(CTarget *Target, const char *const ActionKey){jumpTarget = Target; actionKey = ActionKey;};
 		//
 		virtual void setParent(ClistBox* p){parent = p;};
 		//
@@ -246,7 +246,7 @@ class CMenuOptionChooser : public CMenuItem
 
 		int paint(bool selected, bool AfterPulldown = false);
 
-		int exec(CWidgetTarget *target);
+		int exec(CTarget *target);
 };
 
 //// CMenuOptionNumberChooser
@@ -281,7 +281,7 @@ class CMenuOptionNumberChooser : public CMenuItem
 		
 		int paint(bool selected, bool AfterPulldown = false);
 
-		int exec(CWidgetTarget *target);
+		int exec(CTarget *target);
 };
 
 //// CMenuOptionStringChooser
@@ -302,7 +302,7 @@ class CMenuOptionStringChooser : public CMenuItem
 
 		bool isSelectable(void) const {return (active && !hidden);}
 
-		int exec(CWidgetTarget *target);
+		int exec(CTarget *target);
 };
 
 //// CMenuSeparator
@@ -347,7 +347,7 @@ class CMenuForwarder : public CMenuItem
 		virtual const char *getOption(void);
 
 	public:
-		CMenuForwarder(const char * const Text, const bool Active = true, const char* const Option = NULL, CWidgetTarget * Target = NULL, const char* const ActionKey = NULL, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const char* const IconName = NULL, const char* const ItemIcon = NULL, const char* const Hint = NULL);
+		CMenuForwarder(const char * const Text, const bool Active = true, const char* const Option = NULL, CTarget * Target = NULL, const char* const ActionKey = NULL, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const char* const IconName = NULL, const char* const ItemIcon = NULL, const char* const Hint = NULL);
 		
 		virtual ~CMenuForwarder();
 		
@@ -357,7 +357,7 @@ class CMenuForwarder : public CMenuItem
 		int getHeight(void) const;
 		int getWidth(void) const;
 
-		int exec(CWidgetTarget *target);
+		int exec(CTarget *target);
 		bool isSelectable(void) const {return (active && !hidden);};
 };
 
@@ -608,7 +608,7 @@ class ClistBox : public CComponent
 		int swipLeft();
 		int swipRight();
 		//
-		int oKKeyPressed(CWidgetTarget* target, neutrino_msg_t _msg = CRCInput::RC_ok);
+		int oKKeyPressed(CTarget* target, neutrino_msg_t _msg = CRCInput::RC_ok);
 		void homeKeyPressed(){selected = -1;};
 		int directKeyPressed(neutrino_msg_t _msg);
 

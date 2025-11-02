@@ -2814,7 +2814,7 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 	}
 }
 
-int CNeutrinoApp::exec(CWidgetTarget * parent, const std::string & actionKey)
+int CNeutrinoApp::exec(CTarget * parent, const std::string & actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::exec: actionKey: %s\n", actionKey.c_str());
 

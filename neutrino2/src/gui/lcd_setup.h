@@ -33,7 +33,7 @@
 #include <gui/widget/listbox.h>
 
 
-class CLCDSettings : public CWidgetTarget, CChangeObserver
+class CLCDSettings : public CTarget, CChangeObserver
 {
 	private:
 		CWidget* widget;
@@ -52,7 +52,7 @@ class CLCDSettings : public CWidgetTarget, CChangeObserver
 		CLCDSettings();
 		~CLCDSettings();
 		
-		int exec(CWidgetTarget *parent, const std::string &actionKey);
+		int exec(CTarget *parent, const std::string &actionKey);
 		bool changeNotify(const std::string &locale, void *Data);
 };
 

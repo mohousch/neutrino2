@@ -282,7 +282,7 @@ end
 
 --Auswahlmenü der Filme anzeigen
 function get_movies_menu(_id)
-	local ret = neutrino2.CWidgetTarget_RETURN_REPAINT
+	local ret = neutrino2.CTarget_RETURN_REPAINT
 	local menu_title = caption .. ": " .. categories[_id].title;
 
 	local red = neutrino2.button_label_struct()

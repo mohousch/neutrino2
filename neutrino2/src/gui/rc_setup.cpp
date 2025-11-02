@@ -117,11 +117,11 @@ CRemoteControlSettings::CRemoteControlSettings()
 	remoteControlSettings = NULL;
 }
 
-int CRemoteControlSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
+int CRemoteControlSettings::exec(CTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CRemoteControlSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = CWidgetTarget::RETURN_REPAINT;
+	int ret = CTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -146,7 +146,7 @@ int CRemoteControlSettings::exec(CWidgetTarget* parent, const std::string& actio
 		delete hintBox;
 		hintBox = NULL;
 
-		return CWidgetTarget::RETURN_REPAINT;	
+		return CTarget::RETURN_REPAINT;	
 	}
 	
 	showMenu();
@@ -280,11 +280,11 @@ bool CRemoteControlSettings::changeNotify(const std::string&, void *)
 }
 
 //// keys binding settings
-int CKeysBindingSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
+int CKeysBindingSettings::exec(CTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CKeysBindingSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = CWidgetTarget::RETURN_REPAINT;
+	int ret = CTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();

@@ -338,7 +338,7 @@ CTimerList::~CTimerList()
 	this->clearValueString();
 }
 
-int CTimerList::exec(CWidgetTarget* parent, const std::string& actionKey)
+int CTimerList::exec(CTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CTimerList::exec: actionKey:%s\n", actionKey.c_str());
 
@@ -364,7 +364,7 @@ int CTimerList::exec(CWidgetTarget* parent, const std::string& actionKey)
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;
 		
-		return CWidgetTarget::RETURN_REPAINT;
+		return CTarget::RETURN_REPAINT;
 	}
 	else if(actionKey == "radio")
 	{
@@ -379,7 +379,7 @@ int CTimerList::exec(CWidgetTarget* parent, const std::string& actionKey)
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;
 		
-		return CWidgetTarget::RETURN_REPAINT;
+		return CTarget::RETURN_REPAINT;
 	}
 	else if(actionKey == "recording_dir")
 	{
@@ -391,7 +391,7 @@ int CTimerList::exec(CWidgetTarget* parent, const std::string& actionKey)
 
 		this->setValueString(b.getSelectedFile()->Name.c_str());
 
-		return CWidgetTarget::RETURN_REPAINT;
+		return CTarget::RETURN_REPAINT;
 	}
 	else if (actionKey == "plugin_chooser")
 	{
@@ -401,7 +401,7 @@ int CTimerList::exec(CWidgetTarget* parent, const std::string& actionKey)
 		
 		this->setValueString(timerNew.pluginName);
 		
-		return CWidgetTarget::RETURN_REPAINT;
+		return CTarget::RETURN_REPAINT;
 	}
 	else if (actionKey == "modifytimer")
 	{
@@ -426,7 +426,7 @@ int CTimerList::exec(CWidgetTarget* parent, const std::string& actionKey)
 			CTimerd::getInstance()->modifyTimerEvent(timerlist[selected].eventID, timerlist[selected].announceTime, timerlist[selected].alarmTime, timerlist[selected].stopTime, timerlist[selected].eventRepeat, timerlist[selected].repeatCount);
 		}
 		
-		return CWidgetTarget::RETURN_EXIT;
+		return CTarget::RETURN_EXIT;
 	}
 	else if (actionKey == "newtimer")
 	{
@@ -449,7 +449,7 @@ int CTimerList::exec(CWidgetTarget* parent, const std::string& actionKey)
 			timerNew.eventType == CTimerd::TIMER_RECORD)
 		{
 			if(timerNew_channel_name.empty())
-				return CWidgetTarget::RETURN_REPAINT;
+				return CTarget::RETURN_REPAINT;
 			else
 				timerNew.channel_id = timerNew_chan_id;
 			
@@ -498,7 +498,7 @@ int CTimerList::exec(CWidgetTarget* parent, const std::string& actionKey)
 			}
 		}
 		
-		return CWidgetTarget::RETURN_EXIT;
+		return CTarget::RETURN_EXIT;
 	}
 
 	int ret = show();
@@ -537,7 +537,7 @@ int CTimerList::show()
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
 
-	int res = CWidgetTarget::RETURN_REPAINT;
+	int res = CTarget::RETURN_REPAINT;
 	
 	//
 	updateEvents();
@@ -586,9 +586,9 @@ int CTimerList::show()
 		{
 			selected = listBox->getSelected();
 			
-			if ( !(timerlist.empty()) && (modifyTimer() == CWidgetTarget::RETURN_EXIT_ALL) )
+			if ( !(timerlist.empty()) && (modifyTimer() == CTarget::RETURN_EXIT_ALL) )
 			{
-				res = CWidgetTarget::RETURN_EXIT_ALL;
+				res = CTarget::RETURN_EXIT_ALL;
 				loop = false;
 			}
 			else
@@ -604,9 +604,9 @@ int CTimerList::show()
 		}
 		else if(msg == CRCInput::RC_green)
 		{
-			if (newTimer() == CWidgetTarget::RETURN_EXIT_ALL)
+			if (newTimer() == CTarget::RETURN_EXIT_ALL)
 			{
-				res = CWidgetTarget::RETURN_EXIT_ALL;
+				res = CTarget::RETURN_EXIT_ALL;
 				loop = false;
 			}
 			else
@@ -624,7 +624,7 @@ int CTimerList::show()
 		}
 		else if(msg == CRCInput::RC_setup)
 		{
-			res = CWidgetTarget::RETURN_EXIT_ALL;
+			res = CTarget::RETURN_EXIT_ALL;
 			loop = false;
 		}
 		else if(msg == CRCInput::RC_info)
@@ -639,7 +639,7 @@ int CTimerList::show()
 				{
 					hide();
 					res = g_EpgData->show(timer->channel_id, timer->epgID, &timer->epg_starttime);
-					if(res == CWidgetTarget::RETURN_EXIT_ALL)
+					if(res == CTarget::RETURN_EXIT_ALL)
 						loop = false;
 					else
 					{
@@ -652,7 +652,7 @@ int CTimerList::show()
 		{
 			g_RCInput->postMsg(msg);
 			loop = false;
-			res = CWidgetTarget::RETURN_EXIT_ALL;
+			res = CTarget::RETURN_EXIT_ALL;
 		}
 		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
@@ -664,7 +664,7 @@ int CTimerList::show()
 			if( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all )
 			{
 				loop = false;
-				res = CWidgetTarget::RETURN_EXIT_ALL;
+				res = CTarget::RETURN_EXIT_ALL;
 			}
 		}
 
@@ -948,7 +948,7 @@ const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
 
 int CTimerList::modifyTimer()
 {
-	int res = CWidgetTarget::RETURN_REPAINT;
+	int res = CTarget::RETURN_REPAINT;
 
 	CTimerd::timerEvent *timer = &timerlist[selected];
 
@@ -1124,7 +1124,7 @@ int CTimerList::modifyTimer()
 
 int CTimerList::newTimer()
 {
-	int res = CWidgetTarget::RETURN_REPAINT;
+	int res = CTarget::RETURN_REPAINT;
 	
 	// Defaults
 	timerNew.eventType = CTimerd::TIMER_RECORD ;

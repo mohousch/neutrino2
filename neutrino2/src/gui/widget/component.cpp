@@ -146,7 +146,7 @@ void CComponent::adjustToParentPosition()
 }
 
 //
-void CComponent::addKey(neutrino_msg_t key, CWidgetTarget *target, const std::string & action)
+void CComponent::addKey(neutrino_msg_t key, CTarget *target, const std::string & action)
 {
 	dprintf(DEBUG_DEBUG, "CComponent::addKey: %s\n", action.c_str());
 	
@@ -155,13 +155,13 @@ void CComponent::addKey(neutrino_msg_t key, CWidgetTarget *target, const std::st
 }
 
 //
-int CComponent::exec(CWidgetTarget *target)
+int CComponent::exec(CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "CComponent::exec:\n");
 	
 	bool show = true;
 	exit_pressed = false;
-	int retval = CWidgetTarget::RETURN_REPAINT;
+	int retval = CTarget::RETURN_REPAINT;
 	
 	if (target)
 		target->hide();
@@ -197,12 +197,12 @@ int CComponent::exec(CWidgetTarget *target)
 					//
 					switch ( rv ) 
 					{
-						case CWidgetTarget::RETURN_EXIT_ALL:
-							retval = CWidgetTarget::RETURN_EXIT_ALL;
-						case CWidgetTarget::RETURN_EXIT:
+						case CTarget::RETURN_EXIT_ALL:
+							retval = CTarget::RETURN_EXIT_ALL;
+						case CTarget::RETURN_EXIT:
 							msg = CRCInput::RC_timeout;
 							break;
-						case CWidgetTarget::RETURN_REPAINT:
+						case CTarget::RETURN_REPAINT:
 							paint();
 							break;
 					}
@@ -222,12 +222,12 @@ int CComponent::exec(CWidgetTarget *target)
 
 			switch ( rv ) 
 			{
-				case CWidgetTarget::RETURN_EXIT_ALL:
-					retval = CWidgetTarget::RETURN_EXIT_ALL; //fall through
-				case CWidgetTarget::RETURN_EXIT:
+				case CTarget::RETURN_EXIT_ALL:
+					retval = CTarget::RETURN_EXIT_ALL; //fall through
+				case CTarget::RETURN_EXIT:
 					msg = CRCInput::RC_timeout;
 					break;
-				case CWidgetTarget::RETURN_REPAINT:
+				case CTarget::RETURN_REPAINT:
 					paint();
 					break;
 			}
@@ -250,7 +250,7 @@ int CComponent::exec(CWidgetTarget *target)
 				case (NeutrinoMessages::EVT_TIMER):
 					if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
 					{
-						retval = CWidgetTarget::RETURN_EXIT_ALL;
+						retval = CTarget::RETURN_EXIT_ALL;
 						msg = CRCInput::RC_timeout;
 					}
 					break;
@@ -297,12 +297,12 @@ int CComponent::exec(CWidgetTarget *target)
 					
 						switch ( rv ) 
 						{
-							case CWidgetTarget::RETURN_EXIT_ALL:
-								retval = CWidgetTarget::RETURN_EXIT_ALL;
-							case CWidgetTarget::RETURN_EXIT:
+							case CTarget::RETURN_EXIT_ALL:
+								retval = CTarget::RETURN_EXIT_ALL;
+							case CTarget::RETURN_EXIT:
 								msg = CRCInput::RC_timeout;
 								break;
-							case CWidgetTarget::RETURN_REPAINT:
+							case CTarget::RETURN_REPAINT:
 								paint();
 								break;
 						}
@@ -323,7 +323,7 @@ int CComponent::exec(CWidgetTarget *target)
 				default:
 					if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
 					{
-						retval = CWidgetTarget::RETURN_EXIT_ALL;
+						retval = CTarget::RETURN_EXIT_ALL;
 						msg = CRCInput::RC_timeout;
 					}
 			}

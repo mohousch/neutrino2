@@ -39,7 +39,7 @@
 #include <string>
 
 
-class CAlphaSetup : public CWidgetTarget
+class CAlphaSetup : public CTarget
 {
 	private:
 		CFrameBuffer *frameBuffer;
@@ -64,7 +64,7 @@ class CAlphaSetup : public CWidgetTarget
 		virtual ~CAlphaSetup(){};
 
 		void hide();
-		int exec(CWidgetTarget *parent, const std::string &actionKey);
+		int exec(CTarget *parent, const std::string &actionKey);
 };
 
 #endif

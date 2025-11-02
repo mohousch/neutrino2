@@ -788,7 +788,7 @@ void CUpnpBrowserGui::showMenuEntry()
 	listBox->paint();
 }
 
-int CUpnpBrowserGui::exec(CWidgetTarget* parent, const std::string& actionKey)
+int CUpnpBrowserGui::exec(CTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CUpnpBrowserGui::exec: %s\n", actionKey.c_str());
 

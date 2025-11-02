@@ -70,7 +70,7 @@ CImageInfo::~CImageInfo()
 	}
 }
 
-int CImageInfo::exec(CWidgetTarget *parent, const std::string&)
+int CImageInfo::exec(CTarget *parent, const std::string&)
 {
 	dprintf(DEBUG_NORMAL, "CImageInfo::exec:\n");
 	
@@ -110,7 +110,7 @@ int CImageInfo::exec(CWidgetTarget *parent, const std::string&)
 	g_RCInput->killTimer(sec_timer_id);
 	sec_timer_id = 0;
 
-	return CWidgetTarget::RETURN_REPAINT;
+	return CTarget::RETURN_REPAINT;
 }
 
 void CImageInfo::hide()

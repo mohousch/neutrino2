@@ -60,7 +60,7 @@ class CInputString
 };
 
 ////
-class CKeyboardInput : public CWidgetTarget
+class CKeyboardInput : public CTarget
 {
 	protected:
 		CFrameBuffer	*frameBuffer;
@@ -136,7 +136,7 @@ class CKeyboardInput : public CWidgetTarget
 		virtual ~CKeyboardInput(){valueString.clear();};
 
 		void hide();
-		int exec(CWidgetTarget *parent, const std::string &actionKey);
+		int exec(CTarget *parent, const std::string &actionKey);
 
 		void enableSaveScreen(bool enable);
 };

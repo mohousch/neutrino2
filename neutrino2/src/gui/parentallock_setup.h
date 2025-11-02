@@ -33,7 +33,7 @@
 #include <string>
 
 
-class CParentalLockSettings : public CWidgetTarget
+class CParentalLockSettings : public CTarget
 {
 	private:
 		void showMenu();
@@ -42,7 +42,7 @@ class CParentalLockSettings : public CWidgetTarget
 		CParentalLockSettings();
 		~CParentalLockSettings();
 		
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 };
 
 #endif //__parentallock_setup__

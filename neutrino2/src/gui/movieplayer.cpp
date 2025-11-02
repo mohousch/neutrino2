@@ -388,7 +388,7 @@ void CMoviePlayerGui::stopSubtitles()
 	CFrameBuffer::getInstance()->clearFrameBuffer();
 }
 
-int CMoviePlayerGui::exec(CWidgetTarget * parent, const std::string & actionKey)
+int CMoviePlayerGui::exec(CTarget * parent, const std::string & actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CMoviePlayerGui::exec: actionKey:%s\n", actionKey.c_str());
 
@@ -457,7 +457,7 @@ int CMoviePlayerGui::exec(CWidgetTarget * parent, const std::string & actionKey)
 	currentapid = 0;
 	currentspid = -1;
 
-	return CWidgetTarget::RETURN_EXIT;
+	return CTarget::RETURN_EXIT;
 }
 
 void CMoviePlayerGui::play(unsigned int pos)

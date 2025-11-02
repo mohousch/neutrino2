@@ -353,7 +353,7 @@ function testCFrameBox()
 	elseif actionKey == "pictureViewer" then
 		pictureViewer()
 	elseif actionKey == "exit" then
-		return neutrino2.CWidgetTarget_RETURN_EXIT
+		return neutrino2.CTarget_RETURN_EXIT
 	end
 
 	if frameBox:getExitPressed() ~= true then
@@ -420,7 +420,7 @@ function testCFrameBoxRandom()
 	elseif actionKey == "pictureViewer" then
 		pictureViewer()
 	elseif actionKey == "exit" then
-		return neutrino2.CWidgetTarget_RETURN_EXIT
+		return neutrino2.CTarget_RETURN_EXIT
 	end
 
 	if frameBox:getExitPressed() ~= true then

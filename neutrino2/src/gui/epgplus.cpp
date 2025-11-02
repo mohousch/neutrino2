@@ -772,7 +772,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex)
 	this->channelList = _channelList;
 	this->channelListStartIndex = int (selectedChannelIndex / maxNumberOfDisplayableEntries) * maxNumberOfDisplayableEntries;
 	
-	int res = CWidgetTarget::RETURN_REPAINT;
+	int res = CTarget::RETURN_REPAINT;
 
   	do {
 		this->refreshAll = false;
@@ -1001,7 +1001,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex)
 						time_t _startTime = (*It)->channelEvent.startTime;
 						res = g_EpgData->show (this->selectedChannelEntry->channel->channel_id, (*It)->channelEvent.eventID, &_startTime);
 
-						if (res == CWidgetTarget::RETURN_EXIT_ALL) 
+						if (res == CTarget::RETURN_EXIT_ALL) 
 						{
 			  				loop = false;
 						} 
@@ -1031,7 +1031,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex)
 				if (CNeutrinoApp::getInstance ()->handleMsg (msg, data) & messages_return::cancel_all) 
 				{
 		  			loop = false;
-		  			res = CWidgetTarget::RETURN_EXIT_ALL;
+		  			res = CTarget::RETURN_EXIT_ALL;
 				}
 	 		}
 
@@ -1144,7 +1144,7 @@ EpgPlus::MenuTargetAddReminder::MenuTargetAddReminder(EpgPlus * _epgPlus)
   	this->epgPlus = _epgPlus;
 }
 
-int EpgPlus::MenuTargetAddReminder::exec(CWidgetTarget */*parent*/, const std::string &/*actionKey*/)
+int EpgPlus::MenuTargetAddReminder::exec(CTarget */*parent*/, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "EpgPlus::MenuTargetAddReminder::exec:\n");
 
@@ -1162,7 +1162,7 @@ int EpgPlus::MenuTargetAddReminder::exec(CWidgetTarget */*parent*/, const std::s
 		} 
 	}
 
-	return CWidgetTarget::RETURN_EXIT_ALL;
+	return CTarget::RETURN_EXIT_ALL;
 }
 
 EpgPlus::MenuTargetAddRecordTimer::MenuTargetAddRecordTimer (EpgPlus * _epgPlus) 
@@ -1170,7 +1170,7 @@ EpgPlus::MenuTargetAddRecordTimer::MenuTargetAddRecordTimer (EpgPlus * _epgPlus)
   	this->epgPlus = _epgPlus;
 }
 
-int EpgPlus::MenuTargetAddRecordTimer::exec(CWidgetTarget */*parent*/, const std::string &/*actionKey*/)
+int EpgPlus::MenuTargetAddRecordTimer::exec(CTarget */*parent*/, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "EpgPlus::MenuTargetAddRecordTimer::exec:\n");
 
@@ -1188,7 +1188,7 @@ int EpgPlus::MenuTargetAddRecordTimer::exec(CWidgetTarget */*parent*/, const std
 		} 
 	}
 
-	return CWidgetTarget::RETURN_EXIT_ALL;
+	return CTarget::RETURN_EXIT_ALL;
 }
 
 EpgPlus::MenuTargetRefreshEpg::MenuTargetRefreshEpg (EpgPlus * _epgPlus) 
@@ -1196,21 +1196,21 @@ EpgPlus::MenuTargetRefreshEpg::MenuTargetRefreshEpg (EpgPlus * _epgPlus)
   	this->epgPlus = _epgPlus;
 }
 
-int EpgPlus::MenuTargetRefreshEpg::exec(CWidgetTarget */*parent*/, const std::string &/*actionKey*/)
+int EpgPlus::MenuTargetRefreshEpg::exec(CTarget */*parent*/, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "EpgPlus::MenuTargetRefreshEpg::exec:\n");
 
 	this->epgPlus->refreshAll = true;
 
-	return CWidgetTarget::RETURN_EXIT_ALL;
+	return CTarget::RETURN_EXIT_ALL;
 }
 
 ////
-int CEPGplusHandler::exec(CWidgetTarget* parent, const std::string &/*actionKey*/)
+int CEPGplusHandler::exec(CTarget* parent, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CEPGplusHandler::exec:\n");
 
-	int res = CWidgetTarget::RETURN_REPAINT;
+	int res = CTarget::RETURN_REPAINT;
 
 	EpgPlus* e = NULL;
 	CChannelList* channelList = NULL;

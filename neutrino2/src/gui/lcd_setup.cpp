@@ -125,11 +125,11 @@ CLCDSettings::~CLCDSettings()
 {
 }
 
-int CLCDSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
+int CLCDSettings::exec(CTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CLCDSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = CWidgetTarget::RETURN_REPAINT;
+	int ret = CTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -231,7 +231,7 @@ int CLCDSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
 		}
 		
 		widget->exec(NULL, "");
-		ret = CWidgetTarget::RETURN_REPAINT;
+		ret = CTarget::RETURN_REPAINT;
 
 		select = menu->getSelected();
 		

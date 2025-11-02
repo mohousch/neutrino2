@@ -41,7 +41,7 @@
 
 class CScanSettings;      
 
-class CMotorControl : public CWidgetTarget
+class CMotorControl : public CTarget
 {
 	private:
 		void Init(void);
@@ -84,7 +84,7 @@ class CMotorControl : public CWidgetTarget
 
 		CMotorControl(CFrontend* f, CScanSettings * sc);
 		void hide();
-		int exec(CWidgetTarget* parent, const std::string & actionKey);
+		int exec(CTarget* parent, const std::string & actionKey);
 };
 
 

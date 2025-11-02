@@ -230,7 +230,7 @@ void CNEpisodes::showMenu()
 	}
 }
 
-int CNEpisodes::exec(CWidgetTarget *parent, const std::string &actionKey)
+int CNEpisodes::exec(CTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CNEpisodes::exec: %s\n", actionKey.c_str());
 

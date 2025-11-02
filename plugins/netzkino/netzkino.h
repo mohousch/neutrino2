@@ -25,7 +25,7 @@
 #include <nkparser.h>
 
 
-class CNKMovies : public CWidgetTarget
+class CNKMovies : public CTarget
 {
 	public:
 		enum
@@ -78,7 +78,7 @@ class CNKMovies : public CWidgetTarget
 	public:
 		CNKMovies(int mode, int id, std::string title);
 		~CNKMovies();
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 		void hide();
 };
 

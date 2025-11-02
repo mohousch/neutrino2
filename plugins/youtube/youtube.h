@@ -35,7 +35,7 @@ typedef struct
 	int ytautoplay;
 }YTB_SETTINGS;
 
-class CYTBrowser : public CWidgetTarget
+class CYTBrowser : public CTarget
 {
 	private:
 		CFrameBuffer* frameBuffer;
@@ -74,7 +74,7 @@ class CYTBrowser : public CWidgetTarget
 	public:
 		CYTBrowser(int mode = cYTFeedParser::MOST_POPULAR);
 		~CYTBrowser();
-		int exec(CWidgetTarget* parent, const std::string & actionKey);
+		int exec(CTarget* parent, const std::string & actionKey);
 		void hide();
 }; 
 

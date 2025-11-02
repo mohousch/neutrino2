@@ -39,7 +39,7 @@ class CVideoSetupNotifier : public CChangeObserver
 		bool changeNotify(const std::string& OptionName, void *);
 };
 
-class CVideoSettings : public CWidgetTarget
+class CVideoSettings : public CTarget
 {
 	private:
 		void showMenu();
@@ -51,7 +51,7 @@ class CVideoSettings : public CWidgetTarget
 		CVideoSetupNotifier * videoSetupNotifier;
 		static CVideoSettings* getInstance();
 		
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 };
 
 #endif //__video_setup__

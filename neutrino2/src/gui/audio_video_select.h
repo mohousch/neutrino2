@@ -38,25 +38,25 @@
 
 
 ////
-class CAVPIDChangeExec : public CWidgetTarget, CChangeObserver
+class CAVPIDChangeExec : public CTarget, CChangeObserver
 {
 	public:
-		int exec(CWidgetTarget* parent, const std::string & actionKey);
+		int exec(CTarget* parent, const std::string & actionKey);
 };
 
 ////
-class CAVSubPIDChangeExec : public CWidgetTarget
+class CAVSubPIDChangeExec : public CTarget
 {
 	public:
-		int exec(CWidgetTarget* parent, const std::string & actionKey);
+		int exec(CTarget* parent, const std::string & actionKey);
 };
 
 ////
-class CAVPIDSelectWidget : public CWidgetTarget
+class CAVPIDSelectWidget : public CTarget
 {		
 	public:
 		int showAudioDialog();
-		int exec(CWidgetTarget * parent, const std::string & actionKey);
+		int exec(CTarget * parent, const std::string & actionKey);
 };
 
 #endif

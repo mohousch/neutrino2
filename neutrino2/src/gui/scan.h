@@ -43,7 +43,7 @@
 
 class CScanSettings;
 
-class CScanTs : public CWidgetTarget
+class CScanTs : public CTarget
 {
 	private:
 		CFrameBuffer *frameBuffer;
@@ -87,7 +87,7 @@ class CScanTs : public CWidgetTarget
 	public:
 		CScanTs(CFrontend *f, CScanSettings * sc);
 		void hide();
-		int exec(CWidgetTarget* parent, const std::string & actionKey);
+		int exec(CTarget* parent, const std::string & actionKey);
 };
 
 #endif

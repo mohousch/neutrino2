@@ -106,15 +106,15 @@ class EventList
 };
 
 ////
-class CEventListHandler : public CWidgetTarget
+class CEventListHandler : public CTarget
 {
 	public:
-		int  exec(CWidgetTarget* parent,  const std::string &/*actionKey*/);
+		int  exec(CTarget* parent,  const std::string &/*actionKey*/);
 
 };
 
 ////
-class CEventFinderMenu : public CWidgetTarget
+class CEventFinderMenu : public CTarget
 {
         private:
                 int * m_event;
@@ -131,7 +131,7 @@ class CEventFinderMenu : public CWidgetTarget
         public:
                 CEventFinderMenu(int * event, int * search_epg_item, std::string * search_keyword, int * search_list, t_channel_id * search_channel_id, uint16_t * search_bouquet_id);
                 
-                int  exec( CWidgetTarget* parent,  const std::string &actionKey);
+                int  exec( CTarget* parent,  const std::string &actionKey);
 };
 
 #endif

@@ -262,7 +262,7 @@ void CStringInput::keyPlusPressed()
 	paintChar(item);
 }
 
-int CStringInput::exec(CWidgetTarget* parent, const std::string& )
+int CStringInput::exec(CTarget* parent, const std::string& )
 {
 	dprintf(DEBUG_NORMAL, "CStringInput::exec\n");
 
@@ -695,7 +695,7 @@ void CPINInput::paintChar(int pos)
 	CStringInput::paintChar(pos, (value[pos] == ' ') ? ' ' : '*');
 }
 
-int CPINInput::exec( CWidgetTarget* parent, const std::string&)
+int CPINInput::exec( CTarget* parent, const std::string&)
 {
 	dprintf(DEBUG_NORMAL, "CPINInput::exec\n");
 
@@ -825,7 +825,7 @@ const char * CPLPINInput::getHint1(void)
 	}
 }
 
-int CPLPINInput::exec( CWidgetTarget* parent, const std::string & )
+int CPLPINInput::exec( CTarget* parent, const std::string & )
 {
 	dprintf(DEBUG_NORMAL, "CPLPINInput::exec\n");
 

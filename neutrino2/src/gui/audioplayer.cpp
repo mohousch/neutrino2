@@ -136,7 +136,7 @@ CAudioPlayerGui::~CAudioPlayerGui()
 	}
 }
 
-int CAudioPlayerGui::exec(CWidgetTarget * parent, const std::string &actionKey)
+int CAudioPlayerGui::exec(CTarget * parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CAudioPlayerGui::exec: actionKey:%s\n", actionKey.c_str());
 
@@ -200,7 +200,7 @@ int CAudioPlayerGui::exec(CWidgetTarget * parent, const std::string &actionKey)
 		m_playlist.clear();
 
 	//always exit all
-	return CWidgetTarget::RETURN_EXIT_ALL;
+	return CTarget::RETURN_EXIT_ALL;
 }
 
 void CAudioPlayerGui::playFile()
@@ -369,7 +369,7 @@ void CAudioPlayerGui::playFile()
 							
 				int res = secondsInput.exec(NULL, "");
 					
-				if (seconds != 0 && res != CWidgetTarget::RETURN_EXIT_ALL)
+				if (seconds != 0 && res != CTarget::RETURN_EXIT_ALL)
 					rev(seconds);
 			}
 		}
@@ -387,7 +387,7 @@ void CAudioPlayerGui::playFile()
 							
 				int res = secondsInput.exec(NULL, "");
 					
-				if (seconds != 0 && res != CWidgetTarget::RETURN_EXIT_ALL)
+				if (seconds != 0 && res != CTarget::RETURN_EXIT_ALL)
 					ff(seconds);
 			}
 		}

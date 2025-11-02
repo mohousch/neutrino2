@@ -35,7 +35,7 @@
 #include <string>
 
 
-class CCECSetup : public CWidgetTarget, CChangeObserver
+class CCECSetup : public CTarget, CChangeObserver
 {
 	private:
 		CMenuOptionChooser *cec2, *cec3;		
@@ -46,7 +46,7 @@ class CCECSetup : public CWidgetTarget, CChangeObserver
 		CCECSetup();
 		virtual ~CCECSetup(){};
 
-		int exec(CWidgetTarget* parent, const std::string & actionKey);
+		int exec(CTarget* parent, const std::string & actionKey);
 		bool changeNotify(const std::string& OptionName, void * data);
 };
 

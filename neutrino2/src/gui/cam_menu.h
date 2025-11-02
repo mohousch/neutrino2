@@ -30,7 +30,7 @@
 
 using namespace std;
 
-class CCAMMenuHandler : public CWidgetTarget
+class CCAMMenuHandler : public CTarget
 {
 	private:
 		CHintBox* hintBox;
@@ -43,7 +43,7 @@ class CCAMMenuHandler : public CWidgetTarget
 		
 	public:
 		void init(void);
-		int exec(CWidgetTarget *parent,  const std::string &actionKey);
+		int exec(CTarget *parent,  const std::string &actionKey);
 
 		//
 		int handleMsg (const neutrino_msg_t msg, neutrino_msg_data_t data);

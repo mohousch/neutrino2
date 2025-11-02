@@ -91,7 +91,7 @@ const keyval AC3_OPTIONS[AC3_OPTION_COUNT] =
 };
 
 ////
-int CAVPIDChangeExec::exec(CWidgetTarget*, const std::string & actionKey)
+int CAVPIDChangeExec::exec(CTarget*, const std::string & actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CAVPIDSelectWidget::exec: %s (currentapid:%d)\n", actionKey.c_str(), currentapid);
 	
@@ -108,11 +108,11 @@ int CAVPIDChangeExec::exec(CWidgetTarget*, const std::string & actionKey)
 		ac3state = currentac3? CInfoViewer::AC3_ACTIVE : CInfoViewer::NO_AC3;
 	}
 	
-	return CWidgetTarget::RETURN_EXIT_ALL;
+	return CTarget::RETURN_EXIT_ALL;
 }
 
 ////
-int CAVSubPIDChangeExec::exec(CWidgetTarget */*parent*/, const std::string & actionKey)
+int CAVSubPIDChangeExec::exec(CTarget */*parent*/, const std::string & actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CAVSubPIDSelectWidget::exec: %s (currentspid:%d)\n", actionKey.c_str(), currentspid);
 	
@@ -126,7 +126,7 @@ int CAVSubPIDChangeExec::exec(CWidgetTarget */*parent*/, const std::string & act
 		if(playback)
 			playback->SetSubPid(currentspid);
 			
-		return CWidgetTarget::RETURN_EXIT_ALL;
+		return CTarget::RETURN_EXIT_ALL;
 	}
 	else if(actionKey == "off") 
 	{
@@ -135,7 +135,7 @@ int CAVSubPIDChangeExec::exec(CWidgetTarget */*parent*/, const std::string & act
 		if(playback)
 			playback->SetSubPid(-1);
 			
-		return CWidgetTarget::RETURN_EXIT_ALL;
+		return CTarget::RETURN_EXIT_ALL;
 	}
 #else
 	if (strstr(actionKey.c_str(), "DVB") || strstr(actionKey.c_str(), "PGS") || strstr(actionKey.c_str(), "SUBRIP") || strstr(actionKey.c_str(), "ASS") || strstr(actionKey.c_str(), "SSA") || strstr(actionKey.c_str(), "SRT") || strstr(actionKey.c_str(), "UTF-8") || strstr(actionKey.c_str(), "XSUB"))
@@ -161,7 +161,7 @@ int CAVSubPIDChangeExec::exec(CWidgetTarget */*parent*/, const std::string & act
 				playback->SetSubPid(currentspid);
 		}
 			
-		return CWidgetTarget::RETURN_EXIT_ALL;
+		return CTarget::RETURN_EXIT_ALL;
 	}
 	else if (strstr(actionKey.c_str(), "TELETEXT"))
 	{
@@ -173,7 +173,7 @@ int CAVSubPIDChangeExec::exec(CWidgetTarget */*parent*/, const std::string & act
 		if(playback)
 			playback->SetSubPid(currentspid);
 			
-		return CWidgetTarget::RETURN_EXIT_ALL;		
+		return CTarget::RETURN_EXIT_ALL;		
 	}
 	else if(actionKey == "off") 
 	{
@@ -186,19 +186,19 @@ int CAVSubPIDChangeExec::exec(CWidgetTarget */*parent*/, const std::string & act
 			playback->SetExtSubPid(-1);
 		}
 			
-		return CWidgetTarget::RETURN_EXIT_ALL;
+		return CTarget::RETURN_EXIT_ALL;
 	}
 #endif
 
-	return CWidgetTarget::RETURN_EXIT_ALL;
+	return CTarget::RETURN_EXIT_ALL;
 }
 
 ////
-int CAVPIDSelectWidget::exec(CWidgetTarget * parent, const std::string & actionKey)
+int CAVPIDSelectWidget::exec(CTarget * parent, const std::string & actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CAVPIDSelectWidget::exec: %s\n", actionKey.c_str());
 	
-	int res = CWidgetTarget::RETURN_REPAINT;
+	int res = CTarget::RETURN_REPAINT;
 
 	if (parent) 
 		parent->hide();
@@ -228,7 +228,7 @@ int CAVPIDSelectWidget::exec(CWidgetTarget * parent, const std::string & actionK
 		hide();
 		showAudioDialog();
 		
-		return CWidgetTarget::RETURN_EXIT_ALL;
+		return CTarget::RETURN_EXIT_ALL;
 	}
 #endif
 
@@ -241,7 +241,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 {
 	dprintf(DEBUG_NORMAL, "CAVPIDSelectWidget::showAudioDialog (currentapid:%d)\n", currentapid);
 	
-	int res = CWidgetTarget::RETURN_REPAINT;
+	int res = CTarget::RETURN_REPAINT;
 	
 	//
 	CWidget* widget = NULL;

@@ -34,7 +34,7 @@ extern "C" void plugin_del(void);
 #undef _
 #define _(string) dgettext("test", string)
 
-class CTestMenu : public CWidgetTarget
+class CTestMenu : public CTarget
 {
 	private:
 		////
@@ -232,7 +232,7 @@ class CTestMenu : public CWidgetTarget
 	public:
 		CTestMenu();
 		~CTestMenu();
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 		void hide();
 };
 
@@ -4456,7 +4456,7 @@ void CTestMenu::testCMenuOptionStringChooser()
 }
 
 // exec
-int CTestMenu::exec(CWidgetTarget *parent, const std::string &actionKey)
+int CTestMenu::exec(CTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::exec: actionKey:%s\n", actionKey.c_str());
 	

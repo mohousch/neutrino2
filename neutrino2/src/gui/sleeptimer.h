@@ -24,13 +24,13 @@
 #include <gui/widget/widget.h>
 
 
-class CSleepTimerWidget: public CWidgetTarget
+class CSleepTimerWidget: public CTarget
 {
 	public:
 		CSleepTimerWidget(){};
 		~CSleepTimerWidget(){};
 		
-		int exec(CWidgetTarget * parent, const std::string & actionKey);
+		int exec(CTarget * parent, const std::string & actionKey);
 };
 
 #endif

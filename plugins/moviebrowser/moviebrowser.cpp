@@ -729,7 +729,7 @@ bool CMovieBrowser::saveSettings(MB_SETTINGS *settings)
 	return (result);
 }
 
-int CMovieBrowser::exec(CWidgetTarget *parent, const std::string &actionKey)
+int CMovieBrowser::exec(CTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CMovieBrowser::exec: actionKey:%s\n", actionKey.c_str());
 
@@ -3158,7 +3158,7 @@ void CMovieBrowser::autoFindSerie(void)
 	}
 }
 
-int CMovieHelp::exec(CWidgetTarget* /*parent*/, const std::string&/*actionKey*/)
+int CMovieHelp::exec(CTarget* /*parent*/, const std::string&/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CMovieHelp::exec:\n");
 
@@ -3182,7 +3182,7 @@ int CMovieHelp::exec(CWidgetTarget* /*parent*/, const std::string&/*actionKey*/)
 	return RETURN_REPAINT;
 }
 
-int CFileChooser::exec(CWidgetTarget *parent, const std::string &/*actionKey*/)
+int CFileChooser::exec(CTarget *parent, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CFileChooser::exec:\n");
 
@@ -3240,7 +3240,7 @@ CDirMenu::CDirMenu(std::vector<MB_DIR>* dir_list)
 	}
 };
 
-int CDirMenu::exec(CWidgetTarget *parent, const std::string & actionKey)
+int CDirMenu::exec(CTarget *parent, const std::string & actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CDirMenu::exec: actionKey:%s\n", actionKey.c_str());
 

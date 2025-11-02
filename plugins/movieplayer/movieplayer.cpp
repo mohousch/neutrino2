@@ -31,7 +31,7 @@ extern "C" void plugin_exec(void);
 extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
 
-class CMoviePlayer : public CWidgetTarget
+class CMoviePlayer : public CTarget
 {
 	private:
 		// variables
@@ -62,7 +62,7 @@ class CMoviePlayer : public CWidgetTarget
 	public:
 		CMoviePlayer();
 		~CMoviePlayer();
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 		void hide();
 };
 
@@ -455,7 +455,7 @@ void CMoviePlayer::showMenu()
 	}
 }
 
-int CMoviePlayer::exec(CWidgetTarget* parent, const std::string& actionKey)
+int CMoviePlayer::exec(CTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "\nMoviePlayer::exec: actionKey:%s\n", actionKey.c_str());
 	

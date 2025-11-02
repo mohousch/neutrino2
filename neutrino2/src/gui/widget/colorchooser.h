@@ -36,7 +36,7 @@
 #include <gui/widget/component.h>
 
 
-class CColorChooser : public CWidgetTarget
+class CColorChooser : public CTarget
 {
 	private:
 		CFrameBuffer* frameBuffer;
@@ -63,7 +63,7 @@ class CColorChooser : public CWidgetTarget
 		virtual ~CColorChooser();
 
 		void hide();
-		int exec(CWidgetTarget *parent, const std::string &actionKey);
+		int exec(CTarget *parent, const std::string &actionKey);
 };
 
 #endif

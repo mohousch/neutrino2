@@ -38,7 +38,7 @@
 #include <gui/plugins.h>
 
 
-class CPluginList : public CWidgetTarget
+class CPluginList : public CTarget
 {
 	public:
 		enum result_
@@ -64,7 +64,7 @@ class CPluginList : public CWidgetTarget
 		~CPluginList();
 
 		void hide();
-		int exec(CWidgetTarget* parent, const std::string &actionKey);
+		int exec(CTarget* parent, const std::string &actionKey);
 };
 
 class CPluginChooser : public CPluginList
@@ -79,11 +79,11 @@ class CPluginChooser : public CPluginList
 		CPluginChooser(char* pluginname);
 };
 
-class CPluginsExec : public CWidgetTarget
+class CPluginsExec : public CTarget
 {
 	public:
 		static CPluginsExec* getInstance();
-		int exec(CWidgetTarget* parent, const std::string &actionKey);
+		int exec(CTarget* parent, const std::string &actionKey);
 };
 
 #endif

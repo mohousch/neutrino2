@@ -78,14 +78,14 @@ CAlphaSetup::CAlphaSetup(const char* const Name, unsigned char * Alpha, CChangeO
 	frameBuffer->setBlendLevel(*alpha);
 }
 
-int CAlphaSetup::exec(CWidgetTarget *parent, const std::string &)
+int CAlphaSetup::exec(CTarget *parent, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "CAlphaSetup::exec\n");
 
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
 
-	int res = CWidgetTarget::RETURN_REPAINT;
+	int res = CTarget::RETURN_REPAINT;
 	
 	if (parent)
 		parent->hide();
@@ -199,7 +199,7 @@ int CAlphaSetup::exec(CWidgetTarget *parent, const std::string &)
 				if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all )
 				{
 					loop = false;
-					res = CWidgetTarget::RETURN_EXIT_ALL;
+					res = CTarget::RETURN_EXIT_ALL;
 				}
 		}
 		

@@ -51,11 +51,11 @@ CCECSetup::CCECSetup()
 	cec3 = NULL;
 }
 
-int CCECSetup::exec(CWidgetTarget* parent, const std::string &/*actionKey*/)
+int CCECSetup::exec(CTarget* parent, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CCECSetup::exec:\n");
 	
-	int   res = CWidgetTarget::RETURN_REPAINT;
+	int   res = CTarget::RETURN_REPAINT;
 
 	if (parent)
 		parent->hide();

@@ -310,7 +310,7 @@ void CWidget::hide()
 	frameBuffer->blit();
 }
 
-void CWidget::addKey(neutrino_msg_t key, CWidgetTarget *target, const std::string &action)
+void CWidget::addKey(neutrino_msg_t key, CTarget *target, const std::string &action)
 {
 	dprintf(DEBUG_INFO, "CWidget::addKey: %s\n", action.c_str());
 	
@@ -318,11 +318,11 @@ void CWidget::addKey(neutrino_msg_t key, CWidgetTarget *target, const std::strin
 	keyActionMap[key].action = action;
 }
 
-int CWidget::exec(CWidgetTarget *parent, const std::string &)
+int CWidget::exec(CTarget *parent, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "CWidget::exec: (%s)\n", name.c_str());
 
-	retval = CWidgetTarget::RETURN_REPAINT;
+	retval = CTarget::RETURN_REPAINT;
 	pos = 0;
 	exit_pressed = false;
 	bool show = true;
@@ -381,12 +381,12 @@ int CWidget::exec(CWidgetTarget *parent, const std::string &)
 					//FIXME:review this
 					switch ( rv ) 
 					{
-						case CWidgetTarget::RETURN_EXIT_ALL:
-							retval = CWidgetTarget::RETURN_EXIT_ALL;
-						case CWidgetTarget::RETURN_EXIT:
+						case CTarget::RETURN_EXIT_ALL:
+							retval = CTarget::RETURN_EXIT_ALL;
+						case CTarget::RETURN_EXIT:
 							msg = CRCInput::RC_timeout;
 							break;
-						case CWidgetTarget::RETURN_REPAINT:
+						case CTarget::RETURN_REPAINT:
 							hide();
 							paint();
 							break;
@@ -423,7 +423,7 @@ int CWidget::exec(CWidgetTarget *parent, const std::string &)
 				case (NeutrinoMessages::EVT_TIMER):
 					if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
 					{
-						retval = CWidgetTarget::RETURN_EXIT_ALL;
+						retval = CTarget::RETURN_EXIT_ALL;
 						msg = CRCInput::RC_timeout;
 					}
 					break;
@@ -475,7 +475,7 @@ int CWidget::exec(CWidgetTarget *parent, const std::string &)
 				default:
 					if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
 					{
-						retval = CWidgetTarget::RETURN_EXIT_ALL;
+						retval = CTarget::RETURN_EXIT_ALL;
 						msg = CRCInput::RC_timeout;
 					}
 			}
@@ -626,12 +626,12 @@ void CWidget::onOKKeyPressed()
 			//
 			switch ( rv ) 
 			{
-				case CWidgetTarget::RETURN_EXIT_ALL:
-					retval = CWidgetTarget::RETURN_EXIT_ALL; //fall through
-				case CWidgetTarget::RETURN_EXIT:
+				case CTarget::RETURN_EXIT_ALL:
+					retval = CTarget::RETURN_EXIT_ALL; //fall through
+				case CTarget::RETURN_EXIT:
 					msg = CRCInput::RC_timeout;
 					break;
-				case CWidgetTarget::RETURN_REPAINT:
+				case CTarget::RETURN_REPAINT:
 					hide();
 					paint();
 					break;
@@ -653,12 +653,12 @@ void CWidget::onRightKeyPressed()
 		//
 		switch ( rv ) 
 		{
-			case CWidgetTarget::RETURN_EXIT_ALL:
-				retval = CWidgetTarget::RETURN_EXIT_ALL; //fall through
-			case CWidgetTarget::RETURN_EXIT:
+			case CTarget::RETURN_EXIT_ALL:
+				retval = CTarget::RETURN_EXIT_ALL; //fall through
+			case CTarget::RETURN_EXIT:
 				msg = CRCInput::RC_timeout;
 				break;
-			case CWidgetTarget::RETURN_REPAINT:
+			case CTarget::RETURN_REPAINT:
 				paint();
 				break;
 		}
@@ -678,12 +678,12 @@ void CWidget::onLeftKeyPressed()
 		//
 		switch ( rv ) 
 		{
-			case CWidgetTarget::RETURN_EXIT_ALL:
-				retval = CWidgetTarget::RETURN_EXIT_ALL; //fall through
-			case CWidgetTarget::RETURN_EXIT:
+			case CTarget::RETURN_EXIT_ALL:
+				retval = CTarget::RETURN_EXIT_ALL; //fall through
+			case CTarget::RETURN_EXIT:
 				msg = CRCInput::RC_timeout;
 				break;
-			case CWidgetTarget::RETURN_REPAINT:
+			case CTarget::RETURN_REPAINT:
 				paint();
 				break;
 		}
@@ -704,12 +704,12 @@ void CWidget::onDirectKeyPressed(neutrino_msg_t _msg)
 		//
 		switch ( rv ) 
 		{
-			case CWidgetTarget::RETURN_EXIT_ALL:
-				retval = CWidgetTarget::RETURN_EXIT_ALL; //fall through
-			case CWidgetTarget::RETURN_EXIT:
+			case CTarget::RETURN_EXIT_ALL:
+				retval = CTarget::RETURN_EXIT_ALL; //fall through
+			case CTarget::RETURN_EXIT:
 				msg = CRCInput::RC_timeout;
 				break;
-			case CWidgetTarget::RETURN_REPAINT:
+			case CTarget::RETURN_REPAINT:
 				paint();
 				break;
 		}

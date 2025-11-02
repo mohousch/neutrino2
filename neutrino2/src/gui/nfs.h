@@ -30,7 +30,7 @@
 #include <gui/widget/widget.h>
 
 
-class CNFSMountGui : public CWidgetTarget
+class CNFSMountGui : public CTarget
 {
 	private:
 		int menu();
@@ -46,10 +46,10 @@ class CNFSMountGui : public CWidgetTarget
 
 	public:
 		CNFSMountGui();
-		int exec(CWidgetTarget* parent, const std::string & actionKey);
+		int exec(CTarget* parent, const std::string & actionKey);
 };
 
-class CNFSUmountGui : public CWidgetTarget
+class CNFSUmountGui : public CTarget
 {
 	private:
 		int menu();
@@ -57,16 +57,16 @@ class CNFSUmountGui : public CWidgetTarget
 	public:
 		CNFSUmountGui(){};
 		virtual ~CNFSUmountGui(){};
-		int exec(CWidgetTarget* parent, const std::string & actionKey);
+		int exec(CTarget* parent, const std::string & actionKey);
 };
 
-class CNFSSmallMenu : public CWidgetTarget
+class CNFSSmallMenu : public CTarget
 {
 	public:
 		CNFSSmallMenu(){};
 		virtual ~CNFSSmallMenu(){};
 		
-		int exec( CWidgetTarget* parent, const std::string & actionKey );
+		int exec( CTarget* parent, const std::string & actionKey );
 		void hide();
 };
 

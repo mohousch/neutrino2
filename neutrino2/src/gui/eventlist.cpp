@@ -224,7 +224,7 @@ int EventList::show(const t_channel_id channel_id, const std::string &channelnam
 	neutrino_msg_data_t data;
 	bool in_search = 0;
 
-	int res = CWidgetTarget::RETURN_REPAINT;
+	int res = CTarget::RETURN_REPAINT;
 	
 	if (m_search_list == SEARCH_LIST_NONE) // init globals once only
 	{
@@ -421,7 +421,7 @@ int EventList::show(const t_channel_id channel_id, const std::string &channelnam
 
 				res = g_EpgData->show(channel_id, evtlist[selected].eventID, &evtlist[selected].startTime);
 				
-				if ( res == CWidgetTarget::RETURN_EXIT_ALL )
+				if ( res == CTarget::RETURN_EXIT_ALL )
 				{
 					loop = false;
 				}
@@ -461,7 +461,7 @@ int EventList::show(const t_channel_id channel_id, const std::string &channelnam
 		else if (msg == CRCInput::RC_sat || msg == CRCInput::RC_favorites)
 		{
 			g_RCInput->postMsg(msg);
-			res = CWidgetTarget::RETURN_EXIT_ALL;
+			res = CTarget::RETURN_EXIT_ALL;
 			loop = false;
 		}
 		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
@@ -473,7 +473,7 @@ int EventList::show(const t_channel_id channel_id, const std::string &channelnam
 			if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all )
 			{
 				loop = false;
-				res = CWidgetTarget::RETURN_EXIT_ALL;
+				res = CTarget::RETURN_EXIT_ALL;
 			}
 		}
 
@@ -768,11 +768,11 @@ int EventList::findEvents(void)
 }
 
 ////
-int CEventListHandler::exec(CWidgetTarget* parent, const std::string &/*actionKey*/)
+int CEventListHandler::exec(CTarget* parent, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CEventListHandler::exec:\n");
 
-	int res = CWidgetTarget::RETURN_REPAINT;
+	int res = CTarget::RETURN_REPAINT;
 	EventList* e = NULL;
 
 	if (parent)
@@ -816,11 +816,11 @@ CEventFinderMenu::CEventFinderMenu(int * event, int * search_epg_item, std::stri
 	mf2 = NULL;
 }
 
-int CEventFinderMenu::exec(CWidgetTarget * parent, const std::string &actionKey)
+int CEventFinderMenu::exec(CTarget * parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CEventFinderMenu::exec %s\n", actionKey.c_str());
 	
-	int res = CWidgetTarget::RETURN_REPAINT;
+	int res = CTarget::RETURN_REPAINT;
 	
 	if(actionKey == "")
 	{
@@ -841,7 +841,7 @@ int CEventFinderMenu::exec(CWidgetTarget * parent, const std::string &actionKey)
 	else if(actionKey == "1")
 	{
 		*m_event = true;
-		res = CWidgetTarget::RETURN_EXIT_ALL;
+		res = CTarget::RETURN_EXIT_ALL;
 	}	
 	else if(actionKey == "3")
 	{
@@ -889,7 +889,7 @@ int CEventFinderMenu::showMenu(void)
 {
 	dprintf(DEBUG_NORMAL, "CEventFinderMenu::showMenu:\n");
 
-	int res = CWidgetTarget::RETURN_REPAINT;
+	int res = CTarget::RETURN_REPAINT;
 	*m_event = false;
 	
 	if(*m_search_list == EventList::SEARCH_LIST_CHANNEL)

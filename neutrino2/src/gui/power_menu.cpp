@@ -40,11 +40,11 @@
 
 
 //
-int CPowerMenu::exec(CWidgetTarget* parent, const std::string& actionKey)
+int CPowerMenu::exec(CTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CPowerMenu::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = CWidgetTarget::RETURN_REPAINT;
+	int ret = CTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -59,7 +59,7 @@ int CPowerMenu::showMenu(void)
 {
 	dprintf(DEBUG_NORMAL, "CPowerMenu::showMenu:\n");
 	
-	int res = CWidgetTarget::RETURN_REPAINT;
+	int res = CTarget::RETURN_REPAINT;
 	
 	//
 	oldLcdMode = CLCD::getInstance()->getMode();

@@ -34,7 +34,7 @@
 
 
 ////
-class CWidget : public CWidgetTarget
+class CWidget : public CTarget
 {
 	public:
 		//
@@ -56,7 +56,7 @@ class CWidget : public CWidgetTarget
 		struct keyAction 
 		{ 
 			std::string action; 
-			CWidgetTarget *target; 
+			CTarget *target; 
 		};
 		std::map<neutrino_msg_t, keyAction> keyActionMap;
 		uint64_t timeout;
@@ -111,14 +111,14 @@ class CWidget : public CWidgetTarget
 		void initFrames();
 		virtual void paint();
 		virtual void hide();
-		virtual int exec(CWidgetTarget *parent, const std::string &actionKey);
+		virtual int exec(CTarget *parent, const std::string &actionKey);
 		virtual void refresh(bool show = false);
 		virtual void paintItemInfo(CComponent *CCItem){};
 		//
 		void setTimeOut(uint64_t to = 0){timeout = to;};
 		void setSecTimerInterval(uint64_t sec){sec_timer_interval = sec;};
 		//
-		void addKey(neutrino_msg_t key, CWidgetTarget *target = NULL, const std::string &action = "");
+		void addKey(neutrino_msg_t key, CTarget *target = NULL, const std::string &action = "");
 		//
 		void paintMainFrame(bool p){paintframe = p;};
 		void setColor(fb_pixel_t col) {backgroundColor = col;};

@@ -81,7 +81,7 @@ int CPluginList::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CPluginList::showMenu\n");
 	
-	int res = CWidgetTarget::RETURN_REPAINT;
+	int res = CTarget::RETURN_REPAINT;
 	
 	pWidget = CNeutrinoApp::getInstance()->getWidget("plugins");
 
@@ -178,11 +178,11 @@ int CPluginList::showMenu()
 	return res;
 }
 
-int CPluginList::exec(CWidgetTarget * parent, const std::string& actionKey)
+int CPluginList::exec(CTarget * parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CPluginList::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int res = CWidgetTarget::RETURN_REPAINT;
+	int res = CTarget::RETURN_REPAINT;
 
 	if (parent)
 		parent->hide();
@@ -201,7 +201,7 @@ int CPluginList::exec(CWidgetTarget * parent, const std::string& actionKey)
 			selected = (int)g_PluginList->getNumberOfPlugins() - 1;
 
 		showMenu();
-		return CWidgetTarget::RETURN_EXIT_ALL;
+		return CTarget::RETURN_EXIT_ALL;
 	}
 	else if(actionKey == "RC_green")
 	{
@@ -212,7 +212,7 @@ int CPluginList::exec(CWidgetTarget * parent, const std::string& actionKey)
 	{
 		g_PluginList->loadPlugins();
 		showMenu();
-		return CWidgetTarget::RETURN_EXIT_ALL;
+		return CTarget::RETURN_EXIT_ALL;
 	}
 	else if(actionKey == "RC_info")
 	{
@@ -238,14 +238,14 @@ int CPluginList::exec(CWidgetTarget * parent, const std::string& actionKey)
 		}
 		
 		InfoBox(_("Plugins"), buffer.c_str(), NEUTRINO_ICON_SHELL);
-		return CWidgetTarget::RETURN_REPAINT;
+		return CTarget::RETURN_REPAINT;
 	}
 	else if(actionKey == "RC_ok")
 	{
 		if(pluginSelected() == close)
-			return CWidgetTarget::RETURN_EXIT_ALL;
+			return CTarget::RETURN_EXIT_ALL;
 		else
-			return CWidgetTarget::RETURN_REPAINT;
+			return CTarget::RETURN_REPAINT;
 	}
 
 	res = showMenu();
@@ -287,10 +287,10 @@ CPluginsExec* CPluginsExec::getInstance()
 	return pluginsExec;
 }
 
-int CPluginsExec::exec(CWidgetTarget* parent, const std::string& actionKey)
+int CPluginsExec::exec(CTarget* parent, const std::string& actionKey)
 {
 	if (actionKey.empty())
-		return CWidgetTarget::RETURN_NONE;
+		return CTarget::RETURN_NONE;
 
 	dprintf(DEBUG_NORMAL, "CPluginsExec exec: %s\n", actionKey.c_str());
 
@@ -300,6 +300,6 @@ int CPluginsExec::exec(CWidgetTarget* parent, const std::string& actionKey)
 	if (!actionKey.empty())
 		g_PluginList->startPlugin(actionKey.c_str());
 
-	return CWidgetTarget::RETURN_REPAINT;
+	return CTarget::RETURN_REPAINT;
 }
 

@@ -34,7 +34,7 @@
 
 
 ////
-class CPictureViewerGui : public CWidgetTarget
+class CPictureViewerGui : public CTarget
 {
 	public:
 		enum State
@@ -66,7 +66,7 @@ class CPictureViewerGui : public CWidgetTarget
 	public:
 		CPictureViewerGui();
 		~CPictureViewerGui();
-		int  exec(CWidgetTarget* parent, const std::string& actionKey);
+		int  exec(CTarget* parent, const std::string& actionKey);
 
 		void addToPlaylist(CPicture& file);
 		void addToPlaylist(const CFile& file);

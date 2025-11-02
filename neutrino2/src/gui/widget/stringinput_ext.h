@@ -37,7 +37,7 @@
 
 
 class CExtendedInput_Item;
-class CExtendedInput : public CWidgetTarget
+class CExtendedInput : public CTarget
 {
 	protected:
 		void Init(void);
@@ -74,7 +74,7 @@ class CExtendedInput : public CWidgetTarget
 		virtual ~CExtendedInput();
 
 		void hide();
-		int exec( CWidgetTarget* parent, const std::string & actionKey );
+		int exec( CTarget* parent, const std::string & actionKey );
 		void calculateDialog();
 
 		void addInputField( CExtendedInput_Item* );

@@ -78,7 +78,7 @@ class CScanSettings
 };
 
 ////
-class CTPSelectHandler : public CWidgetTarget
+class CTPSelectHandler : public CTarget
 {
 	private:
 		CFrontend * fe;
@@ -88,7 +88,7 @@ class CTPSelectHandler : public CWidgetTarget
 		CTPSelectHandler(CFrontend* f = NULL, CScanSettings * sc = NULL);
 		virtual ~CTPSelectHandler(){};
 		
-		int exec(CWidgetTarget *parent, const std::string &actionkey);
+		int exec(CTarget *parent, const std::string &actionkey);
 };
 
 //// satsetupnotifuer
@@ -144,7 +144,7 @@ class CScanSetupDelSysNotifier : public CChangeObserver
 };
 
 //// scansetup
-class CScanSetup : public CWidgetTarget
+class CScanSetup : public CTarget
 {
 	private:
 		CFrontend * fe;
@@ -173,11 +173,11 @@ class CScanSetup : public CWidgetTarget
 		CScanSetup(CFrontend* f = NULL);
 		virtual ~CScanSetup();
 		
-		int exec(CWidgetTarget *parent, const std::string &actionKey);
+		int exec(CTarget *parent, const std::string &actionKey);
 };
 
 ////
-class CTunerSetup : public CWidgetTarget
+class CTunerSetup : public CTarget
 {
 	private:
 		int showMenu();
@@ -186,7 +186,7 @@ class CTunerSetup : public CWidgetTarget
 		CTunerSetup(){};
 		virtual ~CTunerSetup(){};
 		
-		int exec(CWidgetTarget* parent, const std::string& actionKey);
+		int exec(CTarget* parent, const std::string& actionKey);
 };
 
 #endif

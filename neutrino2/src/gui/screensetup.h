@@ -32,7 +32,7 @@
 #include <string>
 
 
-class CScreenSetup : public CWidgetTarget
+class CScreenSetup : public CTarget
 {
 	private:
 		CFrameBuffer * frameBuffer;
@@ -58,7 +58,7 @@ class CScreenSetup : public CWidgetTarget
 	public:
 		CScreenSetup();
 		void hide();
-		int exec(CWidgetTarget* parent, const std::string & actionKey);
+		int exec(CTarget* parent, const std::string & actionKey);
 };
 
 

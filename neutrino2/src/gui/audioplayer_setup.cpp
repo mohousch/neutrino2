@@ -48,7 +48,7 @@ const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
 	{ 1, _("yes") }
 };
 
-int CAudioPlayerSettings::exec(CWidgetTarget* parent, const std::string& actionKey)
+int CAudioPlayerSettings::exec(CTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CAudioPlayerSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
@@ -65,13 +65,13 @@ int CAudioPlayerSettings::exec(CWidgetTarget* parent, const std::string& actionK
 
 		this->setValueString(g_settings.network_nfs_audioplayerdir);
 		
-		return CWidgetTarget::RETURN_REPAINT;
+		return CTarget::RETURN_REPAINT;
 	}
 	
 	showMenu();
 	this->clearValueString();
 	
-	return CWidgetTarget::RETURN_REPAINT;
+	return CTarget::RETURN_REPAINT;
 }
 
 void CAudioPlayerSettings::showMenu()
