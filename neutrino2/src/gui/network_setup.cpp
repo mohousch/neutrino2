@@ -461,7 +461,7 @@ void CNetworkSettings::showMenu()
 	networkSettings->addItem(new CMenuForwarder(_("Umount network volume"), true, NULL, new CNFSUmountGui()));
 	
 	//
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{

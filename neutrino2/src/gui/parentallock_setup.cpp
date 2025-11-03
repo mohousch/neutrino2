@@ -151,7 +151,7 @@ void CParentalLockSettings::showMenu()
 	listBox->addItem( new CMenuForwarder(_("Change PIN code"), true, g_settings.parentallock_pincode, pinChangeWidget, NULL));
 	
 	//
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{

@@ -230,7 +230,7 @@ int CLCDSettings::exec(CTarget* parent, const std::string& actionKey)
 			menu->addItem(new CMenuForwarder(CLCD::getInstance()->GetConfigName(i).c_str(), true), selected);
 		}
 		
-		widget->exec(NULL, "");
+		widget->exec(this, "");
 		ret = CTarget::RETURN_REPAINT;
 
 		select = menu->getSelected();
@@ -458,7 +458,7 @@ void CLCDSettings::showMenu()
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{

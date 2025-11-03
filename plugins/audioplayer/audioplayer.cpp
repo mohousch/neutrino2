@@ -669,7 +669,7 @@ int CMP3Player::showMenu()
 
 	widget->addCCItem(alist);
 	
-	res = widget->exec(NULL, "");
+	res = widget->exec(this, "");
 	
 	if (widget)
 	{

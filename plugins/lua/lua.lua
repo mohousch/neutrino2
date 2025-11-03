@@ -264,7 +264,7 @@ function testClistBox()
 	
 	listBox:addKey(neutrino2.CRCInput_RC_info, self, "infoBox")
 	
-	listBox:exec()
+	listBox:exec(self)
 	
 	local actionKey = listBox:getActionKey()
 	
@@ -530,7 +530,7 @@ function testCWidget()
 	testWidget:addCCItem(listBox)
 	testWidget:addKey(neutrino2.CRCInput_RC_info, null, "info")
 
-	testWidget:exec(null, "")
+	testWidget:exec(self, "")
 
 	selected = listBox:getSelected()
 	local key = testWidget:getKey()

@@ -192,7 +192,7 @@ int CComponent::exec(CTarget *target)
 
 				if (it->second.target != NULL)
 				{
-					int rv = it->second.target->exec(parent, it->second.action);
+					int rv = it->second.target->exec(target, it->second.action);
 
 					//
 					switch ( rv ) 
@@ -218,7 +218,7 @@ int CComponent::exec(CTarget *target)
 			}
 			
 			//
-			int rv = directKeyPressed(msg);
+			int rv = directKeyPressed(msg, target);
 
 			switch ( rv ) 
 			{
@@ -269,13 +269,13 @@ int CComponent::exec(CTarget *target)
 					
 				case CRCInput::RC_left:
 					{
-						swipLeft();
+						swipLeft(target);
 					}
 					break;
 					
 				case CRCInput::RC_right:
 					{
-						swipRight();
+						swipRight(target);
 					}
 					break;
 					
@@ -293,7 +293,7 @@ int CComponent::exec(CTarget *target)
 				
 				case CRCInput::RC_ok:
 					{
-						int rv = oKKeyPressed(parent);
+						int rv = oKKeyPressed(target);
 					
 						switch ( rv ) 
 						{
@@ -1710,7 +1710,7 @@ void CCSlider::paintSlider(const int _x, const int _y, const unsigned int spos, 
 }
 
 //
-int CCSlider::swipRight()
+int CCSlider::swipRight(CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "CCSlider::swipRight:\n");
 	
@@ -1728,7 +1728,7 @@ int CCSlider::swipRight()
 }
 
 //
-int CCSlider::swipLeft()
+int CCSlider::swipLeft(CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "CCSlider::swipLeft:\n");
 	

@@ -235,7 +235,7 @@ void CCAMMenuHandler::doMainMenu()
 	}	
 
 	//
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{
@@ -471,7 +471,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 				menu->addItem(new CMenuForwarder(convertDVBUTF8(pMenu->bottom, slen, 0).c_str(), false));
 			}
 
-			menuWidget->exec(NULL, "");
+			menuWidget->exec(this, "");
 			selected = menu->getSelected();
 		} 
 		else 

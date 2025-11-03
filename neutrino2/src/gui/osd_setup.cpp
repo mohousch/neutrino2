@@ -179,7 +179,7 @@ int COSDSettings::showMenu(void)
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	res = widget->exec(NULL, "");
+	res = widget->exec(this, "");
 	
 	if (widget)
 	{
@@ -445,7 +445,7 @@ void COSDMenuColorSettings::showMenu()
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{
@@ -590,7 +590,7 @@ void COSDInfoBarColorSettings::showMenu()
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{
@@ -741,7 +741,7 @@ int CLanguageSettings::showMenu()
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	res = widget->exec(NULL, "");
+	res = widget->exec(this, "");
 	
 	if (widget)
 	{
@@ -872,7 +872,7 @@ void CFontSettings::showMenu()
 		
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{
@@ -983,7 +983,7 @@ void COSDTimingSettings::showMenu()
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{
@@ -1164,7 +1164,7 @@ void COSDDiverses::showMenu()
 
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{
@@ -1308,7 +1308,7 @@ int CSkinManager::showMenu()
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	res = widget->exec(NULL, "");
+	res = widget->exec(this, "");
 	
 	if (widget)
 	{
@@ -1465,7 +1465,7 @@ int CSkinSettings::showMenu()
 	}
 	
 	widget->setTimeOut(g_settings.timing_menu);
-	res = widget->exec(NULL, "");
+	res = widget->exec(this, "");
 	
 	if (widget)
 	{
@@ -1728,7 +1728,7 @@ int CPersonalisation::showMenu(void)
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	res = widget->exec(NULL, "");
+	res = widget->exec(this, "");
 	
 	if (widget)
 	{

@@ -137,7 +137,7 @@ int CKeyChooser::paint()
 
 	menu->setSelected(selected);
 	
-	ret = widget->exec(NULL, "");
+	ret = widget->exec(this, "");
 	
 	if (widget)
 	{

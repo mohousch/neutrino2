@@ -1020,7 +1020,7 @@ void CMoviePlayerGui::PlayFile(void)
 						new_bookmark.length = 0;
 
 						//
-						widget->exec(NULL, "none");
+						widget->exec(this, "");
 						int select = -1;
 						select = bookStartMenu->getSelected();
 						
@@ -1524,7 +1524,7 @@ void CMoviePlayerGui::PlayFile(void)
 			
 			if (mplist && mplist->isPainted())
 			{
-				mplist->swipLeft();
+				mplist->swipLeft(this);
 			}
 			else
 			{
@@ -1539,7 +1539,7 @@ void CMoviePlayerGui::PlayFile(void)
 			
 			if (mplist && mplist->isPainted())
 			{
-				mplist->swipRight();
+				mplist->swipRight(this);
 			}
 			else
 			{
@@ -1794,7 +1794,7 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 	}
 
 	widget->setTimeOut(10);
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	// check what menu item was ok'd  and set the appropriate play offset
 	result = startPosSelectionMenu->getSelected();

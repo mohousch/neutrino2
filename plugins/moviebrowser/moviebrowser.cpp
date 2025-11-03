@@ -2372,7 +2372,7 @@ bool CMovieBrowser::showMenu()
     
 	widget->addCCItem(&mainMenu);
 	
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	delete widget;
 	widget = NULL;

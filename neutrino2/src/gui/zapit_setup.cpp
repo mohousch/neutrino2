@@ -249,7 +249,7 @@ void CZapitSetup::showMenu()
 	zapit->setSelected(selected);
 
 	//
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{

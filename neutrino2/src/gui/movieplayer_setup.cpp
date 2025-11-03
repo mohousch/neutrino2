@@ -133,7 +133,7 @@ void CMoviePlayerSettings::showMenu()
 	moviePlayerSettings->addItem(m1); 
 	
 	//
-	widget->exec(NULL, "");
+	widget->exec(this,"");
 	
 	if (widget)
 	{

@@ -164,7 +164,7 @@ int CPluginList::showMenu()
 	
 	//
 	pWidget->setTimeOut(g_settings.timing_filebrowser);
-	res = pWidget->exec(NULL, "");
+	res = pWidget->exec(this, "");
 	
 	if (pWidget)
 	{

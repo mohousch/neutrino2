@@ -979,7 +979,7 @@ void CTestMenu::testCWidget()
 	testWidget->addKey(CRCInput::RC_red, this, "nextPage");
 	testWidget->addKey(CRCInput::RC_green, this, "prevPage");
 
-	testWidget->exec(NULL, "");
+	testWidget->exec(this, "");
 
 	if (testWidget)
 	{
@@ -1108,7 +1108,7 @@ void CTestMenu::testCComponentWidget()
 	testWidget->addKey(CRCInput::RC_yellow, this, "mplay");
 	testWidget->addKey(CRCInput::RC_blue, this, "mplay");
 	
-	testWidget->exec(NULL, "");
+	testWidget->exec(this, "");
 	
 	delete testWidget;
 	testWidget = NULL;
@@ -1283,7 +1283,7 @@ void CTestMenu::testCFrameBoxWidget()
 
 	testWidget->addCCItem(frameBoxWidget);
 	
-	testWidget->exec(NULL, "");
+	testWidget->exec(this, "");
 
 	delete testWidget;
 	testWidget = NULL;
@@ -1386,7 +1386,7 @@ void CTestMenu::testCListFrameWidget()
 	testWidget->addKey(CRCInput::RC_ok, this, "aplay");
 	testWidget->addKey(CRCInput::RC_info, this, "ainfo");
 
-	testWidget->exec(NULL, "");
+	testWidget->exec(this, "");
 
 	delete testWidget;
 	testWidget = NULL;
@@ -1452,7 +1452,7 @@ void CTestMenu::testClistBoxWidget()
 
 	testWidget->addKey(CRCInput::RC_info, this, "linfo");
 
-	testWidget->exec(NULL, "");
+	testWidget->exec(this, "");
 	
 	delete testWidget;
 	testWidget = NULL;
@@ -1627,7 +1627,7 @@ void CTestMenu::testMultiWidget()
 	testWidget->addCCItem(testPig);
 	
 	//
-	testWidget->exec(NULL, "");
+	testWidget->exec(this, "");
 	
 	delete testWidget;
 	testWidget = NULL;
@@ -1652,7 +1652,7 @@ void CTestMenu::testCIcon()
 	// loop
 	testIcon.exec(this);
 	
-//	hide();  // CCIcon dont hide()
+	hide();
 }
 
 // CImage
@@ -4255,14 +4255,14 @@ void CTestMenu::testSkinWidget()
 	//
 	std::string skin = "\n<skin>\n\t<widget name=\"testingmenu\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<head posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" gradienttype=\"GRADIENT_ONECOLOR\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\" title=\"Test Skin\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"/>\n\t\t<listbox posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"0\" mode=\"MODE_MENU\" type=\"TYPE_STANDARD\" scrollbar=\"1\">\n\t\t\t<item id=\"FORWARDER\" localename=\"item 1\" optioninfo=\"test 1\" actionkey=\"do not thing\" target=\"0\" itemicon=\"hint_tvmode\" hint=\"any hint or comments\" iconname=\"red\" directkey=\"red\" lines=\"0\" border=\"BORDER_ALL\" gradient=\"DARK2LIGHT2DARK\" type=\"TYPE_CLASSIC\"/>\n\t\t\t<item id=\"SEPARATOR\" type=\"LINE|STRING\" localename=\"entry\"/>\n\t\t\t<item id=\"FORWARDER\" localename=\"item 2\" lines=\"1\"/>\n\t\t</listbox>\n\t\t<foot posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" gradienttype=\"GRADIENT_ONECOLOR\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\">\n\t\t\t<button_label name=\"info\"/>\n\t\t</foot>\n\t</widget>\n</skin>\n";
 	
-	CWidget * widget = CNeutrinoApp::getInstance()->getWidget("testingmenu", skin.c_str(), true);
+	testWidget = CNeutrinoApp::getInstance()->getWidget("testingmenu", skin.c_str(), true);
 	
-	if (widget)
+	if (testWidget)
 	{
-		widget->exec(NULL, "");
+		testWidget->exec(this, "");
 		
-		delete widget;
-		widget = NULL;
+		delete testWidget;
+		testWidget = NULL;
 	}
 }
 
@@ -4274,14 +4274,14 @@ void CTestMenu::testSkinWidget3()
 	//
 	std::string skin = PLUGINDIR "/test/test.xml";
 	
-	CWidget * widget = CNeutrinoApp::getInstance()->getWidget("testmenu", skin.c_str());
+	testWidget = CNeutrinoApp::getInstance()->getWidget("testmenu", skin.c_str());
 	
-	if (widget)
+	if (testWidget)
 	{
-		widget->exec(NULL, "");
+		testWidget->exec(this, "");
 		
-		delete widget;
-		widget = NULL;
+		delete testWidget;
+		testWidget = NULL;
 	}
 }
 
@@ -4352,8 +4352,8 @@ void CTestMenu::testBitmap()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testBitmap\n");
 	
-	CWidget * win = new CWidget();
-//	win->paintMainFrame(false);
+	testWidget = new CWidget();
+//	testWidget->paintMainFrame(false);
 	
 	std::string filename = DATADIR "/lcd/picon_default.png";
 	
@@ -4390,12 +4390,12 @@ void CTestMenu::testBitmap()
 		free(image);
 	}
 	
-	win->exec(NULL, "");
+	testWidget->exec(this, "");
 	
-	if (win)
+	if (testWidget)
 	{
-		delete win;
-		win = NULL;
+		delete testWidget;
+		testWidget = NULL;
 	}
 }
 
@@ -6162,7 +6162,7 @@ void CTestMenu::showMenu()
 		}
         }
 	
-	mWidget->exec(NULL, "");
+	mWidget->exec(this, "");
 	
 	if (mWidget)
 	{

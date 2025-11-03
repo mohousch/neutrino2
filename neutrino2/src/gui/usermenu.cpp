@@ -146,7 +146,7 @@ int CUserMenu::doMenu(void)
                 menu->addItem( new CMenuOptionChooser(text, &g_settings.usermenu[button][item], USERMENU_ITEM_OPTIONS, USERMENU_ITEM_OPTION_COUNT, true, NULL, CRCInput::RC_nokey, "", true ));
         }
 
-	int res = widget->exec(NULL, "");
+	int res = widget->exec(this, "");
         
         if (widget)
         {

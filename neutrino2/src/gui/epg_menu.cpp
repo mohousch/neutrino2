@@ -122,7 +122,7 @@ int CEPGMenuHandler::doMenu()
 		
 	//
 	widget->setTimeOut(g_settings.timing_menu);				
-	res = widget->exec(NULL, "");
+	res = widget->exec(this, "");
 	
 	if (widget)
 	{

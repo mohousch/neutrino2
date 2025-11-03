@@ -180,7 +180,7 @@ void CYTBrowser::showMenu()
 	moviesMenu->addKey(CRCInput::RC_blue, this, CRCInput::getSpecialKeyName(CRCInput::RC_blue));
 	moviesMenu->addKey(CRCInput::RC_record, this, CRCInput::getSpecialKeyName(CRCInput::RC_record));
 
-	moviesMenu->exec(this);
+	moviesMenu->exec(this, "");
 	
 	delete moviesMenu;
 	moviesMenu = NULL;

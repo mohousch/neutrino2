@@ -213,7 +213,7 @@ void CNeutrinoApp::mainMenu(void)
 
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{
@@ -536,7 +536,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 	//
 	widget->addKey(CRCInput::RC_blue, this, "plugins");
 	widget->setTimeOut(g_settings.timing_menu);	
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{
@@ -679,7 +679,7 @@ void CNeutrinoApp::selectNVOD()
 		}
 
                 widget->setTimeOut(g_settings.timing_menu);
-		widget->exec(NULL, "");
+		widget->exec(this, "");
                         
 		if (widget)
 		{

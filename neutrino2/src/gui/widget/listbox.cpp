@@ -198,7 +198,7 @@ void CMenuItem::setState(int st)
 }
 
 // locked
-bool CMenuItem::check()
+bool CMenuItem::check(CTarget *target)
 {
 	char cPIN[5];
 	std::string hint = "";
@@ -207,7 +207,7 @@ bool CMenuItem::check()
 	{
 		cPIN[0] = 0;
 		CPINInput * PINInput = new CPINInput(_("Youth protection"), cPIN, 4, hint.c_str());
-		PINInput->exec(parent->parent, "");
+		PINInput->exec(target, "");
 		delete PINInput;
 		hint = _("PIN-Code was wrong! Try again.");
 	} while ((strncmp(cPIN, validPIN, 4) != 0) && (cPIN[0] != 0));
@@ -368,7 +368,7 @@ void CMenuOptionChooser::addOption(const char *optionname, const int optionvalue
 	number_of_options++;
 }
 
-int CMenuOptionChooser::exec(CTarget*)
+int CMenuOptionChooser::exec(CTarget *target)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionChooser::exec: (%s)\n", itemName.c_str());
 	
@@ -380,7 +380,7 @@ int CMenuOptionChooser::exec(CTarget*)
 	{
 		if( (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER) || AlwaysAsk )
 		{
-			if (!check())
+			if (!check(target))
 			{
 				return CTarget::RETURN_REPAINT;
 			}
@@ -454,7 +454,7 @@ int CMenuOptionChooser::exec(CTarget*)
 			menu->addItem(new CMenuForwarder(_(l_option)), selected);
 		}
 		
-		ret = widget->exec(NULL, "");
+		ret = widget->exec(target, "");
 
 		select = menu->getSelected();
 		
@@ -530,7 +530,7 @@ int CMenuOptionChooser::exec(CTarget*)
 			menu->addItem(new CMenuForwarder(_(l_option)), selected);
 		}
 		
-		ret = widget->exec(NULL, "");
+		ret = widget->exec(target, "");
 
 		select = menu->getSelected();
 		
@@ -730,7 +730,7 @@ CMenuOptionNumberChooser::CMenuOptionNumberChooser(const char * const Name, int 
 	menuItem_type = MENUITEM_OPTIONNUMBERCHOOSER;
 }
 
-int CMenuOptionNumberChooser::exec(CTarget*)
+int CMenuOptionNumberChooser::exec(CTarget *target)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionNumberChooser::exec: (%s)\n", itemName.c_str());
 	
@@ -742,7 +742,7 @@ int CMenuOptionNumberChooser::exec(CTarget*)
 	{
 		if( (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER) || AlwaysAsk )
 		{
-			if (!check())
+			if (!check(target))
 			{
 				return CTarget::RETURN_REPAINT;
 			}
@@ -891,7 +891,7 @@ void CMenuOptionStringChooser::addOption(const char * optionname, const int opti
 	options.push_back(std::string(optionname));
 }
 
-int CMenuOptionStringChooser::exec(CTarget *)
+int CMenuOptionStringChooser::exec(CTarget *target)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionStringChooser::exec: (%s) options:%d\n", itemName.c_str(), (int)options.size());
 	
@@ -903,7 +903,7 @@ int CMenuOptionStringChooser::exec(CTarget *)
 	{
 		if( (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER) || AlwaysAsk )
 		{
-			if (!check())
+			if (!check(target))
 			{
 				return CTarget::RETURN_REPAINT;
 			}
@@ -974,7 +974,7 @@ int CMenuOptionStringChooser::exec(CTarget *)
 			menu->addItem(new CMenuForwarder(_(options[count].c_str())), selected);
 		}
 		
-		ret = widget->exec(NULL, "");
+		ret = widget->exec(target, "");
 
 		select = menu->getSelected();
 		
@@ -1046,7 +1046,7 @@ int CMenuOptionStringChooser::exec(CTarget *)
 			menu->addItem(new CMenuForwarder(_(options[count].c_str())), selected);
 		}
 		
-		ret = widget->exec(NULL, "");
+		ret = widget->exec(target, "");
 
 		select = menu->getSelected();
 		
@@ -1405,7 +1405,7 @@ int CMenuForwarder::exec(CTarget *target)
 	{
 		if( (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER) || AlwaysAsk )
 		{
-			if (!check())
+			if (!check(target))
 			{
 				return CTarget::RETURN_REPAINT;
 			}
@@ -3441,7 +3441,7 @@ void ClistBox::scrollPageUp(const int)
 }
 
 //
-int ClistBox::swipLeft()
+int ClistBox::swipLeft(CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "ClistBox::swipLeft:\n");
 	
@@ -3498,7 +3498,7 @@ int ClistBox::swipLeft()
 					item->msg = CRCInput::RC_left;
 					actionKey = item->actionKey;
 					
-					ret = item->exec(parent);
+					ret = item->exec(target);
 				}
 			} 
 		}
@@ -3508,7 +3508,7 @@ int ClistBox::swipLeft()
 }
 
 //
-int ClistBox::swipRight()
+int ClistBox::swipRight(CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "ClistBox::swipRight:\n");
 	
@@ -3563,7 +3563,7 @@ int ClistBox::swipRight()
 					actionKey = item->actionKey;
 					
 					//
-					ret = item->exec(parent);
+					ret = item->exec(target);
 				}
 			} 
 		}
@@ -3592,7 +3592,7 @@ int ClistBox::oKKeyPressed(CTarget *target, neutrino_msg_t _msg)
 }
 
 //
-int ClistBox::directKeyPressed(neutrino_msg_t _msg)
+int ClistBox::directKeyPressed(neutrino_msg_t _msg, CTarget *target)
 {
 	dprintf(DEBUG_DEBUG, "ClistBox::directKeyPressed: msg:0x%x\n", _msg);
 	
@@ -3624,7 +3624,7 @@ int ClistBox::directKeyPressed(neutrino_msg_t _msg)
 				titem->paint(true);
 
 				//
-				ret = titem->exec(parent);
+				ret = titem->exec(target);
 			} 
 			break;
 		}

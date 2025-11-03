@@ -165,7 +165,7 @@ void CPictureViewerSettings::showMenu()
 	PicViewerSettings->addItem(m1);
 	
 	//
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{

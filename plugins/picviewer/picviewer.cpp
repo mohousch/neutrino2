@@ -231,7 +231,7 @@ void CPicViewer::showMenu()
 	
 	widget->addCCItem(plist);
 
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{

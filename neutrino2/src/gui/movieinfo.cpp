@@ -273,7 +273,7 @@ void CMovieInfoWidget::funArt()
 	
 	//
 	widget->setTimeOut(g_settings.timing_filebrowser);
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 
 	delete widget;
 	widget = NULL;

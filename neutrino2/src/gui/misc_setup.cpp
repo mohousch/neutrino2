@@ -302,7 +302,7 @@ void CGeneralSettings::showMenu()
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{
@@ -655,7 +655,7 @@ void CChannelListSettings::showMenu()
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{
@@ -895,7 +895,7 @@ void CEPGSettings::showMenu()
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{
@@ -1096,7 +1096,7 @@ void CFileBrowserSettings::showMenu()
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{

@@ -666,7 +666,7 @@ int CScanSetup::showScanService()
 		scansetup->addItem(fautoScanAll);
 	}
 
-	res = widget->exec(NULL, "");
+	res = widget->exec(this, "");
 	
 	if (widget)
 	{
@@ -770,7 +770,7 @@ int CScanSetup::showMotorSetup()
 	motorMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	motorMenu->addItem(new CMenuForwarder(_("Motor settings"), true, NULL, new CMotorControl(fe, scanSettings)));
 	
-	ret = motorMenuWidget->exec(NULL, "");
+	ret = motorMenuWidget->exec(this, "");
 	
 	if (motorMenuWidget)
 	{
@@ -841,7 +841,7 @@ int CScanSetup::showUnicableSetup()
 	uni_setup->addItem(uniqrg);
 
 	//
-	ret = uniWidget->exec(NULL, "");
+	ret = uniWidget->exec(this, "");
 	
 	if (uniWidget)
 	{
@@ -999,7 +999,7 @@ int CScanSetup::showLNBSetup()
 		satSetup->addItem(new CMenuForwarder(sit->second.name.c_str(), true, NULL, tempsatWidget));
 	}
 	
-	ret = satSetupWidget->exec(NULL, "");
+	ret = satSetupWidget->exec(this, "");
 		
 	if (tempsatWidget)
 	{
@@ -1081,7 +1081,7 @@ int CScanSetup::showSatOnOffSetup()
 		}
 	}
 	
-	ret = satOnOffWidget->exec(NULL, "");
+	ret = satOnOffWidget->exec(this, "");
 	
 	if (satOnOffWidget)
 	{
@@ -1367,7 +1367,7 @@ int CScanSetup::showManualScanSetup()
 	// scan
 	manualScanlistBox->addItem(new CMenuForwarder(_("Start scan"), true, NULL, scanTs, "manual", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE) );
 	
-	ret = manualScanWidget->exec(NULL, "");
+	ret = manualScanWidget->exec(this, "");
 	
 	if (manualScanWidget)
 	{
@@ -1505,7 +1505,7 @@ int CScanSetup::showAutoScanSetup()
 	// scan
 	autoScanlistBox->addItem(new CMenuForwarder(_("Start scan"), true, NULL, scanTs, "auto", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE) );
 	
-	ret = autoScanWidget->exec(NULL, "");
+	ret = autoScanWidget->exec(this, "");
 	
 	if (autoScanWidget)
 	{
@@ -1577,7 +1577,7 @@ int CScanSetup::showAllAutoScanSetup()
 	// scants
 	autoScanAlllistBox->addItem(new CMenuForwarder(_("Start scan"), true, NULL, scanTs, "all", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE) );
 	
-	ret = autoScanAllWidget->exec(NULL, "");
+	ret = autoScanAllWidget->exec(this, "");
 
 	if (autoScanAllWidget)
 	{	
@@ -1754,7 +1754,7 @@ int CTPSelectHandler::exec(CTarget *parent, const std::string &)
 	
 	select = menu->getSelected();
 
-	int retval = tpWidget->exec(NULL, "");
+	int retval = tpWidget->exec(this, "");
 	
 	if (tpWidget)
 	{
@@ -2406,7 +2406,7 @@ int CTunerSetup::showMenu()
 		TunerSetup->addItem(new CMenuForwarder(tbuf, true, NULL, new CScanSetup(fe) ));
 	}
 	
-	ret = widget->exec(NULL, "");
+	ret = widget->exec(this, "");
 	
 	delete widget;
 	widget = NULL;

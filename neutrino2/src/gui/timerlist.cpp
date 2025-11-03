@@ -1105,7 +1105,7 @@ int CTimerList::modifyTimer()
 
 	if(timer->eventType ==  CTimerd::TIMER_RECORD)
 	{  
-		timerSettings->addItem( new CMenuForwarder(_("Audio PIDs"), true, NULL, timerSettings_apidsWidget ));
+		timerSettings->addItem(new CMenuForwarder(_("Audio PIDs"), true, NULL, timerSettings_apidsWidget));
 	}
 
 	res = widget->exec(this, "");

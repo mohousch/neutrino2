@@ -170,7 +170,7 @@ int CDVBSubSelectMenuHandler::doMenu()
 			DVBSubSelector->addItem(new CMenuForwarder(_("Subtitles not found"), false));
 	}
 
-	res = widget->exec(NULL, "");
+	res = widget->exec(this, "");
 	
 	if (widget)
 	{

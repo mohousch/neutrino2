@@ -3293,8 +3293,8 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 				if (bouquetList->Bouquets.size() && bouquetList->Bouquets[old_b]->channelList->getSize() > 0)
 					nNewChannel = bouquetList->Bouquets[old_b]->channelList->exec();
 				else
-				//	nNewChannel = bouquetList->exec() : -1
-					nNewChannel = channelList->exec();
+					nNewChannel = bouquetList->exec();
+				//	nNewChannel = channelList->exec();
 			}
 			else if (msg == CRCInput::RC_sat) 
 			{

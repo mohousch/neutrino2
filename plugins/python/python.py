@@ -254,7 +254,7 @@ class listBox():
 
 		self.listWidget.addKey(CRCInput.RC_info)
 
-		self.listWidget._exec()
+		self.listWidget._exec(self, "")
 
 		self.selected = self.listWidget.getSelected()
 		key = self.listWidget.getKey()

@@ -504,7 +504,7 @@ int CDBoxInfoWidget::showInfo()
 		
 	}
 	
-	res = dboxInfoWidget->exec(NULL, "");
+	res = dboxInfoWidget->exec(this, "");
 	
 	if (dboxInfoWidget)
 	{
@@ -605,7 +605,7 @@ int CInfoMenu::showMenu()
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	res = widget->exec(NULL, "");
+	res = widget->exec(this, "");
 	
 	if (widget)
 	{

@@ -161,7 +161,7 @@ int CCECSetup::showMenu()
 
 	widget->setTimeOut(g_settings.timing_menu);
 	
-	int res = widget->exec(NULL, "");
+	int res = widget->exec(this, "");
 	
 	if (widget)
 	{

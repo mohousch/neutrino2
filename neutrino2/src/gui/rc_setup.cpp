@@ -248,7 +248,7 @@ void CRemoteControlSettings::showMenu()
 	remoteControlSettings->setSelected(selected);
 	
 	//
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{
@@ -421,7 +421,7 @@ void CKeysBindingSettings::showMenu()
 		bindSettings->addItem(new CMenuForwarder(_(keydescription[i]), true, NULL, new CKeyChooser(keyvalue_p[i], _(keydescription[i]))));
 	
 	//
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{

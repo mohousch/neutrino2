@@ -192,7 +192,7 @@ void CMainSettingsMenu::showMenu(void)
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{

@@ -743,7 +743,7 @@ function chooser_menu(id)
 		menu:addItem(neutrino2.CMenuForwarder("Favoriten löschen", true, "", null, "set_bool_in_mtv"))
 	end]]
 
-	menu:exec(null, "")
+	menu:exec(self)
 
 	local selected = menu:getSelected()
 	local actionKey = menu:getActionKey()
@@ -807,7 +807,7 @@ function mtv_liste(id)
 	end
 
 	repeat
-		menu:exec(null, "")
+		menu:exec(self)
 
 		selected = menu:getSelected()
 		actionKey = menu:getActionKey()
@@ -905,7 +905,7 @@ function settings()
 
 	menu:setSelected(m_selected)
 
-	menu:exec(null, "")
+	menu:exec(self)
 
 	m_selected = menu:getSelected()
 
@@ -1118,7 +1118,7 @@ function searchliste(id)
 	end
 
 	repeat
-		menu:exec(null, "")
+		menu:exec(self)
 
 		local selected = menu:getSelected()
 		local actionKey = menu:getActionKey()
@@ -1169,7 +1169,7 @@ function search_artists()
 		end
 	end
 
-	menu:exec(null, "")
+	menu:exec(self)
 
 	local selected = menu:getSelected()
 	local actionKey = menu:getActionKey()
@@ -1234,7 +1234,7 @@ function mtv_listen_menu()
 		menu:addItem(item)
 	end
 
-	menu:exec(null, "")
+	menu:exec(self)
 
 	selected_mtl = menu:getSelected()
 	actionKey = menu:getActionKey()
@@ -1274,7 +1274,7 @@ function main_menu()
 	menu:addItem(neutrino2.CMenuForwarder("MTV Live", glob.mtv_live_url ~= nil, "", null, "live"))
 	menu:addItem(neutrino2.CMenuForwarder("Einstellugen", true, "", null, "settings"))
 
-	menu:exec(null, "")
+	menu:exec(self)
 
 	actionKey = menu:getActionKey()
 

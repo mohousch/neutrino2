@@ -485,7 +485,7 @@ int CHDDMenuHandler::HDDMenu()
 	if (n >= 0)
                 free(namelist);
 	
-	ret = widget->exec(NULL, "");
+	ret = widget->exec(this, "");
 	
 	if (widget)
 	{

@@ -295,15 +295,15 @@ class CComponent
 		virtual void scrollLineUp(const int lines = 1){};
 		virtual void scrollPageDown(const int pages = 1){};
 		virtual void scrollPageUp(const int pages = 1){};
-		virtual int swipLeft(){return 0;};
-		virtual int swipRight(){return 0;};
+		virtual int swipLeft(CTarget *target){return 0;};
+		virtual int swipRight(CTarget *target){return 0;};
 		////
 		virtual void setInFocus(bool focus = true){ if (isSelectable()) inFocus = focus;else inFocus = false; };
 		virtual void setSelected(unsigned int _new) {};
 		////
 		virtual int oKKeyPressed(CTarget *target, neutrino_msg_t _msg = CRCInput::RC_ok){return CTarget::RETURN_EXIT;};
 		virtual void homeKeyPressed(){};
-		virtual int directKeyPressed(neutrino_msg_t ){return CTarget::RETURN_NONE;};
+		virtual int directKeyPressed(neutrino_msg_t, CTarget *target){return CTarget::RETURN_NONE;};
 		////
 		virtual void setParent(CWidget *p){parent = p;};
 		virtual void addKey(neutrino_msg_t key, CTarget *target = NULL, const std::string &action = "");
@@ -711,8 +711,8 @@ class CCSlider : public CComponent
 		void paint(bool _selected = false);
 		//
 		void paintSlider(const int _x, const int _y, const unsigned int spos, const char* const text, const char * const iconname);
-		int swipRight();
-		int swipLeft();
+		int swipRight(CTarget *target);
+		int swipLeft(CTarget *target);
 		//
 		void setMaxValue(int val){max_value = val;};
 		void setMinValue(int val){min_value = val;};

@@ -575,7 +575,7 @@ int CNFSSmallMenu::exec( CTarget *parent, const std::string &actionKey )
 		menu->addItem(new CMenuForwarder(_("mount"), true, NULL, &mountGui));
 		menu->addItem(new CMenuForwarder(_("umount"), true, NULL, &umountGui));
 
-		return widget->exec(parent, actionKey);
+		return widget->exec(this, "");
 	}
 	else if(actionKey.substr(0, 7) == "remount")
 	{

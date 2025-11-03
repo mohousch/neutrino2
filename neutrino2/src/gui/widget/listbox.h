@@ -75,7 +75,7 @@ class CMenuItem
 		// pinprotection
 		bool AlwaysAsk;
 		char * validPIN;
-		bool check();
+		bool check(CTarget *target);
 		
 	public:
 		bool active;
@@ -605,12 +605,12 @@ class ClistBox : public CComponent
 		void scrollLineUp(const int lines = 1);
 		void scrollPageDown(const int pages = 1);
 		void scrollPageUp(const int pages = 1);
-		int swipLeft();
-		int swipRight();
+		int swipLeft(CTarget *target);
+		int swipRight(CTarget *target);
 		//
 		int oKKeyPressed(CTarget* target, neutrino_msg_t _msg = CRCInput::RC_ok);
 		void homeKeyPressed(){selected = -1;};
-		int directKeyPressed(neutrino_msg_t _msg);
+		int directKeyPressed(neutrino_msg_t _msg, CTarget *target);
 
 		//// get methods
 		int getItemsCount()const{return items.size();};

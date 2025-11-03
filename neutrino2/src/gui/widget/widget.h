@@ -129,16 +129,16 @@ class CWidget : public CTarget
 		void setBorderColor(uint32_t col){borderColor = col;};
 		void setTitle(const char * title, const char *icon = NULL);
 		//// events
-		virtual void onOKKeyPressed();
+		virtual void onOKKeyPressed(CTarget *target);
 		virtual void onHomeKeyPressed();
 		virtual void onUpKeyPressed();
 		virtual void onDownKeyPressed();
-		virtual void onRightKeyPressed();
-		virtual void onLeftKeyPressed();
+		virtual void onRightKeyPressed(CTarget *target);
+		virtual void onLeftKeyPressed(CTarget *target);
 		virtual void onPageUpKeyPressed();
 		virtual void onPageDownKeyPressed();
 		virtual void onYellowKeyPressed();
-		virtual void onDirectKeyPressed(neutrino_msg_t _msg);
+		virtual void onDirectKeyPressed(neutrino_msg_t _msg, CTarget *target);
 		
 		//
 		void setSelected(unsigned int _new) {selected = _new; if (selected < 0) selected = 0;};

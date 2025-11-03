@@ -231,7 +231,7 @@ void CNKMovies::showMenu()
 	mainWidget->addKey(CRCInput::RC_blue, this, CRCInput::getSpecialKeyName(CRCInput::RC_blue));
 	mainWidget->addKey(CRCInput::RC_home, this, "exit");
 
-	mainWidget->exec(NULL, "");
+	mainWidget->exec(this, "");
 
 	if (mainWidget)
 	{

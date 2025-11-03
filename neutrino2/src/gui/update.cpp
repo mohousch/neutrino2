@@ -271,7 +271,7 @@ bool CFlashUpdate::selectHttpImage(void)
 		return false;
 	}
 		
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{
@@ -477,7 +477,7 @@ int CFlashUpdate::showOfgWriteMenu()
 	mlistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	//
-	ret = mWidget->exec(NULL, "");
+	ret = mWidget->exec(this, "");
 	
 	if (mWidget)
 	{
@@ -813,7 +813,7 @@ void CFlashExpert::showMTDSelector(const std::string &actionkey)
 	}
 	
 	//
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{
@@ -897,7 +897,7 @@ void CFlashExpert::showFileSelector(const std::string &actionkey)
 	}
 
 	//
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{
@@ -1055,7 +1055,7 @@ int CUpdateSettings::showMTDExpert()
 	// write mtd
 	mtdexpert->addItem(new CMenuForwarder(_("Write one partition"), true, NULL, new CFlashExpert(), "writeflashmtd"));
 	
-	ret = mtdexpertWidget->exec(NULL, "");
+	ret = mtdexpertWidget->exec(this, "");
 	
 	if (mtdexpertWidget)
 	{
@@ -1200,7 +1200,7 @@ int CUpdateSettings::showMenu()
 	}
 	
 	//
-	res = widget->exec(NULL, "");
+	res = widget->exec(this, "");
 	
 	if (widget)
 	{

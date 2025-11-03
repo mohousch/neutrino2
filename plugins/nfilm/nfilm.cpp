@@ -501,7 +501,7 @@ void CNFilm::showMenu(bool genre)
 	mainWidget->addKey(CRCInput::RC_green, this, "prevPage");
 	mainWidget->addKey(CRCInput::RC_blue, this, "startMenu");
 
-	mainWidget->exec(NULL, ""); // handler
+	mainWidget->exec(this, "");
 
 	if (mainWidget)
 	{

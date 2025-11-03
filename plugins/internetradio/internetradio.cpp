@@ -711,7 +711,7 @@ int CInternetRadio::showMenu()
 
 	widget->addCCItem(ilist);
 	
-	ret = widget->exec(NULL, "");
+	ret = widget->exec(this, "");
 	
 	if (widget)
 	{

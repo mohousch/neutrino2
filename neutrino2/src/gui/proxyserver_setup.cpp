@@ -130,7 +130,7 @@ int CProxySetup::showProxySetup()
 	mn->addItem(new CMenuForwarder(_("Password"), true, g_settings.softupdate_proxypassword, softUpdate_proxypass));
 
 	//
-	int res = widget->exec(NULL, "");
+	int res = widget->exec(this, "");
 	
 	if (widget)
 	{

@@ -259,7 +259,7 @@ void CAudioSettings::showMenu()
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	widget->exec(this, "");
 	
 	if (widget)
 	{

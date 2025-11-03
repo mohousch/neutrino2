@@ -376,7 +376,7 @@ int CWidget::exec(CTarget *parent, const std::string &)
 
 				if (it->second.target != NULL)
 				{
-					int rv = it->second.target->exec(this, it->second.action);
+					int rv = it->second.target->exec(parent, it->second.action);
 
 					//FIXME:review this
 					switch ( rv ) 
@@ -405,7 +405,7 @@ int CWidget::exec(CTarget *parent, const std::string &)
 			}
 			
 			// handle directKey
-			onDirectKeyPressed(msg);
+			onDirectKeyPressed(msg, parent);
 		}
 
 		if (!handled) 
@@ -438,11 +438,11 @@ int CWidget::exec(CTarget *parent, const std::string &)
 					break;
 
 				case (CRCInput::RC_right):
-					onRightKeyPressed();
+					onRightKeyPressed(parent);
 					break;
 
 				case (CRCInput::RC_left):
-					onLeftKeyPressed();
+					onLeftKeyPressed(parent);
 					break;
 
 				case (CRCInput::RC_page_up):
@@ -463,7 +463,7 @@ int CWidget::exec(CTarget *parent, const std::string &)
 					break;
 
 				case (CRCInput::RC_ok):
-					onOKKeyPressed();
+					onOKKeyPressed(parent);
 					break;
 				
 				//	
@@ -611,7 +611,7 @@ void CWidget::onPageDownKeyPressed()
 	}
 }
 
-void CWidget::onOKKeyPressed()
+void CWidget::onOKKeyPressed(CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "CWidget::onOKKeyPressed:\n");
 	
@@ -619,7 +619,7 @@ void CWidget::onOKKeyPressed()
 	{
 		if (CCItems[selected]->hasItem() && CCItems[selected]->isSelectable())
 		{
-			int rv = CCItems[selected]->oKKeyPressed(this);
+			int rv = CCItems[selected]->oKKeyPressed(target);
 
 			actionKey = CCItems[selected]->getActionKey();	// for lua
 
@@ -640,13 +640,13 @@ void CWidget::onOKKeyPressed()
 	}
 }
 
-void CWidget::onRightKeyPressed()
+void CWidget::onRightKeyPressed(CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "CWidget::onRightKeyPressed\n");
 	
 	if(hasCCItem() && selected >= 0)
 	{
-		int rv = CCItems[selected]->swipRight();
+		int rv = CCItems[selected]->swipRight(target);
 		
 		actionKey = CCItems[selected]->getActionKey();	// lua
 
@@ -665,13 +665,13 @@ void CWidget::onRightKeyPressed()
 	}
 }
 
-void CWidget::onLeftKeyPressed()
+void CWidget::onLeftKeyPressed(CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "CWidget::onLeftKeyPressed\n");
 	
 	if(hasCCItem() && selected >= 0)
 	{
-		int rv = CCItems[selected]->swipLeft();
+		int rv = CCItems[selected]->swipLeft(target);
 		
 		actionKey = CCItems[selected]->getActionKey();	// lua
 
@@ -691,13 +691,13 @@ void CWidget::onLeftKeyPressed()
 }
 
 //
-void CWidget::onDirectKeyPressed(neutrino_msg_t _msg)
+void CWidget::onDirectKeyPressed(neutrino_msg_t _msg, CTarget *target)
 {
 	dprintf(DEBUG_DEBUG, "CWidget::onDirectKeyPressed: msg:0x%x\n", _msg);
 	
 	if(hasCCItem() && selected >= 0)
 	{
-		int rv = CCItems[selected]->directKeyPressed(_msg);
+		int rv = CCItems[selected]->directKeyPressed(_msg, target);
 
 //		actionKey = CCItems[selected]->getActionKey();	// lua
 

@@ -110,7 +110,7 @@ function getFeedDataFromUrl(url)
 		print(data) --  DEBUG
 		print ("ERROR >> ".. error .. "\n###")
 		local window = neutrino2.CHintBox("DEBUG Output", data)
-		window:exec()
+		window:exec(self)
 	end
 	data = nil
 	return fp
