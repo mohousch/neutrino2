@@ -389,7 +389,7 @@ function play_stream(_id)
 	movieWidget = neutrino2.CMovieInfoWidget()
 	movieWidget:setMovie(file, title, info1, "", tfile)
 
-	movieWidget:exec(self)
+	movieWidget:exec(self, "")
 end
 
 --Stream downloaden
