@@ -63,7 +63,8 @@ CPluginList::~CPluginList()
 
 void CPluginList::hide()
 {
-	if (plist) plist->hide();	
+	CFrameBuffer::getInstance()->paintBackground();
+	CFrameBuffer::getInstance()->blit();
 }
 
 #define NUM_LIST_BUTTONS 4
@@ -216,6 +217,8 @@ int CPluginList::exec(CTarget * parent, const std::string& actionKey)
 	}
 	else if(actionKey == "RC_info")
 	{
+		hide();
+		
 		selected = plist? plist->getSelected() : 0;
 		std::string buffer;
 
@@ -242,6 +245,8 @@ int CPluginList::exec(CTarget * parent, const std::string& actionKey)
 	}
 	else if(actionKey == "RC_ok")
 	{
+		hide();
+		
 		if(pluginSelected() == close)
 			return CTarget::RETURN_EXIT_ALL;
 		else

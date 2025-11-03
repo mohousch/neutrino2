@@ -668,7 +668,7 @@ bool CFrameBox::isSelectable(void)
 	return false;
 }
 
-int CFrameBox::swipRight()
+int CFrameBox::swipRight(CTarget *target)
 {
 	dprintf(DEBUG_INFO, "CFrameBox::swipRight:\n");
 	
@@ -694,7 +694,7 @@ int CFrameBox::swipRight()
 	return ret;
 }
 
-int CFrameBox::swipLeft()
+int CFrameBox::swipLeft(CTarget *target)
 {
 	dprintf(DEBUG_INFO, "CFrameBox::swipLeft:\n");
 	

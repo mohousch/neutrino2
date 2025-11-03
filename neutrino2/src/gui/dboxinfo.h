@@ -73,6 +73,7 @@ class CDBoxInfoWidget : public CTarget
 		int exec(CTarget* parent, const std::string& actionKey);
 };
 
+////
 class CInfoMenu : public CTarget
 {
 	private:
@@ -85,7 +86,7 @@ class CInfoMenu : public CTarget
 		CInfoMenu(){};
 		~CInfoMenu(){};
 		
-		void hide(){};
+		void hide();
 		int exec(CTarget* parent, const std::string& actionKey);
 };
 

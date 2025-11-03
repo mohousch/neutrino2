@@ -138,6 +138,9 @@ int CDBoxInfoWidget::exec(CTarget *parent, const std::string &actionKey)
 void CDBoxInfoWidget::hide()
 {
 	dprintf(DEBUG_NORMAL, "CDBoxInfoWidget::hide:\n");
+	
+	CFrameBuffer::getInstance()->paintBackground();
+	CFrameBuffer::getInstance()->blit();
 }
 
 int CDBoxInfoWidget::showInfo()
@@ -518,8 +521,8 @@ int CDBoxInfoWidget::showInfo()
 	return res;
 }
 
-//
-int CInfoMenu::exec(CTarget* parent, const std::string& actionKey)
+////
+int CInfoMenu::exec(CTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CInfoMenu::exec: %s\n", actionKey.c_str());
 	
@@ -617,5 +620,13 @@ int CInfoMenu::showMenu()
 	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 	
 	return res;
+}
+
+void CInfoMenu::hide()
+{
+	dprintf(DEBUG_NORMAL, "CInfoMenu::hide:\n");
+	
+	CFrameBuffer::getInstance()->paintBackground();
+	CFrameBuffer::getInstance()->blit();
 }
 

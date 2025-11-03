@@ -196,8 +196,8 @@ class CFrameBox : public CComponent
 		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
 		void setBorderColor(uint32_t col){borderColor = col;};
 		//// events
-		int swipRight();
-		int swipLeft();
+		int swipRight(CTarget *target);
+		int swipLeft(CTarget *target);
 		void scrollLineDown(const int lines = 1);
 		void scrollLineUp(const int lines = 1);
 		int oKKeyPressed(CTarget *target, neutrino_msg_t _msg = CRCInput::RC_ok);
