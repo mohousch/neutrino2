@@ -172,31 +172,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		CNeutrinoApp::getInstance()->getlastChList() .store(CZapit::getInstance()->getCurrentChannelID());
 	}
 	
-	// shift / scrambled timer events
-	if ((msg == NeutrinoMessages::EVT_TIMER)) 
-	{
-		if(data == shift_timer) 
-		{
-			shift_timer = 0;
-			CNeutrinoApp::getInstance()->startAutoRecord(true);
-			
-			return messages_return::handled;
-		} 
-		else if(data == scrambled_timer) 
-		{
-			scrambled_timer = 0;
-			
-#ifdef USE_SCRAMBLED_TIMER
-			if (true && (videoDecoder->getBlank() && videoDecoder->getPlayState())) 
-			{
-				HintBox(_("Information"), _("Scrambled channel"), g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth (_("Scrambled channel"), true) + 10, 5);
-			}
-#endif
-
-			return messages_return::handled;	
-		}
-	}
-	
 	//
 	if ( zap_completion_timeout != 0 ) 
 	{
@@ -204,7 +179,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		     (msg == NeutrinoMessages::EVT_ZAP_FAILED  ) || 
 		     (msg == NeutrinoMessages::EVT_ZAP_ISNVOD  ) ) 
 		{
-			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: zap_completion_timeout: %llx EVT_ZAP current_channel_id: 0x%llx data: 0x%llx\n", zap_completion_timeout, current_channel_id, data);
+			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: zap_completion_timeout: %d EVT_ZAP current_channel_id: 0x%llx data: 0x%llx\n", zap_completion_timeout, current_channel_id, data);
 			
 			if (data != current_channel_id)
 			{
@@ -300,7 +275,30 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 	}
 
 	////
-	if ( msg == NeutrinoMessages::EVT_CURRENTEPG )
+	if ((msg == NeutrinoMessages::EVT_TIMER)) 
+	{
+		if(data == shift_timer) 
+		{
+			shift_timer = 0;
+			CNeutrinoApp::getInstance()->startAutoRecord(true);
+			
+			return messages_return::handled;
+		} 
+		else if(data == scrambled_timer) 
+		{
+			scrambled_timer = 0;
+			
+#ifdef USE_SCRAMBLED_TIMER
+			if (true && (videoDecoder->getBlank() && videoDecoder->getPlayState())) 
+			{
+				HintBox(_("Information"), _("Scrambled channel"), g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth (_("Scrambled channel"), true) + 10, 5);
+			}
+#endif
+
+			return messages_return::handled;	
+		}
+	}
+	else if ( msg == NeutrinoMessages::EVT_CURRENTEPG )
 	{
 		if ( (data != current_channel_id) && (data != current_sub_channel_id) )
 			return messages_return::handled;
@@ -412,7 +410,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		CZapit::getInstance()->getCurrentPIDS(current_PIDs);
 		processAPIDnames();
 		
-		return messages_return::unhandled;
+		return messages_return::handled;
 	}
 	else if (msg == NeutrinoMessages::EVT_ZAP_ISNVOD)
 	{

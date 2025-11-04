@@ -83,8 +83,6 @@ void add_format(int (*picsize) (const char *, int *, int *, int, int), int (*pic
 
 void init_handlers(void)
 {
-	printf("[%s] init_handlers\n", __FILE__);
-	
 	// add png format
   	add_format(fh_png_getsize, fh_png_load, fh_png_id);
 	
@@ -106,8 +104,6 @@ void init_handlers(void)
 
 void deinit_handlers(void)
 {
-	printf("[%s] deinit_handlers\n", __FILE__);
-
 	CFormathandler *fh = fh_root;
 	
 	while (fh) 

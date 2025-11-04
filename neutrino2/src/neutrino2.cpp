@@ -3542,11 +3542,6 @@ _repeat:
 	
 		return messages_return::handled;
 	}
-	else if( msg == NeutrinoMessages::EVT_PMT_CHANGED) 
-	{
-		// FIXME:
-		return messages_return::handled;
-	}
 	else if( msg == NeutrinoMessages::ZAPTO ) 
 	{
 		CTimerd::EventInfo * eventinfo;
