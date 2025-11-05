@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$Id: remotecontrol.h 21122024 mohousch Exp $
+//	$Id: remotecontrol.h 04112025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -55,12 +55,12 @@ class CSubService
 		struct CZapit::subServices service;
 	
 	public:
-		time_t      starttime;
-		unsigned    duration;
+		time_t starttime;
+		unsigned int duration;
 		std::string subservice_name;
 	
 		CSubService(const t_original_network_id, const t_service_id, const t_transport_stream_id, const std::string &asubservice_name);
-		CSubService(const t_original_network_id, const t_service_id, const t_transport_stream_id, const time_t astarttime, const unsigned aduration);
+		CSubService(const t_original_network_id, const t_service_id, const t_transport_stream_id, const time_t astarttime, const unsigned int aduration);
 	
 		t_channel_id getChannelID(void) const;
 		inline const struct CZapit::subServices getAsZapitSubService(void) const { return service;}
@@ -71,8 +71,8 @@ typedef std::vector<CSubService> CSubServiceListSorted;
 //// CRemoteControl
 class CRemoteControl
 {
-	unsigned long long      zap_completion_timeout;
-	t_channel_id            current_sub_channel_id;
+	uint64_t zap_completion_timeout;
+	t_channel_id current_sub_channel_id;
 
 	void getNVODs();
 	void getSubChannels();
@@ -84,8 +84,8 @@ class CRemoteControl
 		
 		////
 		t_channel_id current_channel_id;
-		unsigned long long current_EPGid;
-		unsigned long long next_EPGid;
+		uint64_t current_EPGid;
+		uint64_t next_EPGid;
 		CZapit::PIDs current_PIDs;
 	
 		// APID - Details

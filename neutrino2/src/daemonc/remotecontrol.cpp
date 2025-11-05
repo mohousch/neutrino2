@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$Id: remotecontrol.cpp 21122024 mohousch Exp $
+//	$Id: remotecontrol.cpp 05112025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -124,7 +124,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 	//
 	if (msg == NeutrinoMessages::EVT_ZAP_COMPLETE || msg == NeutrinoMessages::EVT_ZAP_FAILED) 
 	{
-		dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: %s current_channel_id: 0x%llx data:0x%llx\n", (msg == NeutrinoMessages::EVT_ZAP_FAILED)? "EVT_ZAP_FAILED" : "EVT_ZAP_COMPLETE", CZapit::getInstance()->getCurrentChannelID(), data);
+		dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: %s current_channel_id: 0x%llx data:0x%llx\n", (msg == NeutrinoMessages::EVT_ZAP_FAILED)? "EVT_ZAP_FAILED" : "EVT_ZAP_COMPLETE[1]", CZapit::getInstance()->getCurrentChannelID(), data);
 		
 		// set audio map after channel zap
 		CZapit::getInstance()->getAudioMode(&g_settings.audio_AnalogMode);
@@ -169,7 +169,13 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		CLCD::getInstance()->setEPGTitle("");
 		
 		// store channel into lastchannellist
-		CNeutrinoApp::getInstance()->getlastChList() .store(CZapit::getInstance()->getCurrentChannelID());
+		CNeutrinoApp::getInstance()->getlastChList().store(CZapit::getInstance()->getCurrentChannelID());
+		
+		////
+		g_InfoViewer->chanready = 1;
+			
+		// infoviewer
+		g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
 	}
 	
 	//
@@ -179,7 +185,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		     (msg == NeutrinoMessages::EVT_ZAP_FAILED  ) || 
 		     (msg == NeutrinoMessages::EVT_ZAP_ISNVOD  ) ) 
 		{
-			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: zap_completion_timeout: %d EVT_ZAP current_channel_id: 0x%llx data: 0x%llx\n", zap_completion_timeout, current_channel_id, data);
+			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: zap_completion_timeout: %d EVT_ZAP_COMPLETE[2] current_channel_id: 0x%llx data: 0x%llx\n", zap_completion_timeout, current_channel_id, data);
 			
 			if (data != current_channel_id)
 			{
@@ -214,7 +220,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		     (msg == NeutrinoMessages::EVT_ZAP_FAILED) || 
 		     (msg == NeutrinoMessages::EVT_ZAP_ISNVOD) )
 		{
-			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: EVT_ZAP current_channel_id: 0x%llx data: 0x%llx\n", current_channel_id, data);
+			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: EVT_ZAP_COMPLETE[3] current_channel_id: 0x%llx data: 0x%llx\n", current_channel_id, data);
 			
 			g_InfoViewer->chanready = 1;
 
@@ -378,7 +384,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 	}
 	else if ( (msg == NeutrinoMessages::EVT_ZAP_COMPLETE) || (msg == NeutrinoMessages::EVT_ZAP_SUB_COMPLETE) ) 
 	{
-		dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: EVT_ZAP_COMPLETE current_channel_id: 0x%llx\n", current_channel_id);
+		dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: EVT_ZAP_COMPLETE[4] current_channel_id: 0x%llx\n", current_channel_id);
 		
 		if (data == ((msg == NeutrinoMessages::EVT_ZAP_COMPLETE) ? current_channel_id : current_sub_channel_id))
 		{
@@ -818,7 +824,7 @@ void CRemoteControl::zapToChannelID(const t_channel_id channel_id, const bool st
 	needs_nvods = false;
 	director_mode = 0;
 
-	unsigned long long now = getcurrenttime();
+	uint64_t now = getcurrenttime();
 	
 	if ( zap_completion_timeout < now )
 	{
