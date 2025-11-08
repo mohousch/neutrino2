@@ -126,7 +126,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		     (msg == NeutrinoMessages::EVT_ZAP_SUB_COMPLETE) || 
 		     (msg == NeutrinoMessages:: EVT_ZAP_SUB_FAILED) ) 
 	{
-		dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: %s current_channel_id: 0x%llx data:0x%llx\n", (msg == NeutrinoMessages::EVT_ZAP_FAILED)? "EVT_ZAP_FAILED" : "EVT_ZAP_COMPLETE[1]", CZapit::getInstance()->getCurrentChannelID(), data);
+		dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: %s current_channel_id: 0x%llx data:0x%llx\n", (msg == NeutrinoMessages::EVT_ZAP_FAILED)? "EVT_ZAP_FAILED" : "EVT_ZAP_COMPLETE", CZapit::getInstance()->getCurrentChannelID(), data);
 		current_channel_id = data;
 		
 		////
@@ -216,7 +216,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
 			processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
 			
-		////
 		// sectionsd
 		CSectionsd::getInstance()->setServiceChanged( current_channel_id, false );
 			
@@ -282,11 +281,8 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			{
 				if ( current_EPGid != 0 )
 				{
-					// ist nur ein neues Programm, kein neuer Kanal
-					// PIDs neu holen
 					CZapit::getInstance()->getCurrentPIDS( current_PIDs );
 					
-					// APID Bearbeitung neu anstossen
 					has_unresolved_ctags = true;
 				}
 				
