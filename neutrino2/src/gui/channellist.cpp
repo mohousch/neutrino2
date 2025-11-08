@@ -1560,7 +1560,7 @@ static bool sortByDateTime(const CChannelEvent& a, const CChannelEvent& b)
 
 void CChannelList::paintCurrentNextEvent(int _selected)
 {
-	if (_selected < 0 || chanlist.size() == 0)
+	if (_selected < 0 || _selected >= chanlist.size() || chanlist.size() == 0)
 		return;
 		
 	if (window)
