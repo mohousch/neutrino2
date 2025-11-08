@@ -206,7 +206,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		// store channel into lastchannellist
 		CNeutrinoApp::getInstance()->getlastChList().store(CZapit::getInstance()->getCurrentChannelID());
 		
-		////
+		//
 		g_InfoViewer->chanready = 1;
 			
 		// infoviewer
