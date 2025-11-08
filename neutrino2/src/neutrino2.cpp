@@ -4196,7 +4196,7 @@ void CNeutrinoApp::realRun(void)
 						//
 						if (playback->playing)
 						{
-							playback->Close(); // not needed???
+							playback->Close(); // FIXME: not needed???
 						}
 						
 						CZapit::getInstance()->unlockPlayBack();

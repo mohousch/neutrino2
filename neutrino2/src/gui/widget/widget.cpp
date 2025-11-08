@@ -273,10 +273,6 @@ void CWidget::enableSaveScreen()
 {
 	savescreen = true;
 	
-	//
-//	initFrames();
-	
-	//
 	saveScreen();
 }
 

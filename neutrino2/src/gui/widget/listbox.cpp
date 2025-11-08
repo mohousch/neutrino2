@@ -2104,7 +2104,7 @@ ClistBox::~ClistBox()
 	fbutton_labels.clear();
 	
 	//
-#ifndef 	ENABLE_LUA
+#ifndef ENABLE_LUA
 	for (unsigned int count = 0; count < items.size(); count++)
 	{
 		CMenuItem *item = items[count];
@@ -3141,6 +3141,18 @@ void ClistBox::hide()
 		timer->hide();
 		delete timer;
 		timer = NULL;
+	}
+	
+	////test
+	for (unsigned int count = 0; count < items.size(); count++)
+	{
+		CMenuItem *item = items[count];
+				
+		if (item->background)
+		{
+			delete item->background;
+			item->background = NULL;
+		}
 	}
 	
 	CFrameBuffer::getInstance()->blit();
