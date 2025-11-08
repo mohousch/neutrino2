@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$Id: remotecontrol.cpp 05112025 mohousch Exp $
+//	$Id: remotecontrol.cpp 08112025 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -104,8 +104,6 @@ CRemoteControl::CRemoteControl()
 	current_channel_id = 	0;
 	current_sub_channel_id = 0;
 
-	zap_completion_timeout = 0;
-
 	current_EPGid =	0;
 	next_EPGid = 	0;
 	
@@ -122,9 +120,44 @@ CRemoteControl::CRemoteControl()
 int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 {
 	//
-	if (msg == NeutrinoMessages::EVT_ZAP_COMPLETE || msg == NeutrinoMessages::EVT_ZAP_FAILED) 
+	if ( (msg == NeutrinoMessages::EVT_ZAP_COMPLETE) || 
+		     (msg == NeutrinoMessages::EVT_ZAP_FAILED) || 
+		     (msg == NeutrinoMessages::EVT_ZAP_ISNVOD) || 
+		     (msg == NeutrinoMessages::EVT_ZAP_SUB_COMPLETE) || 
+		     (msg == NeutrinoMessages:: EVT_ZAP_SUB_FAILED) ) 
 	{
 		dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: %s current_channel_id: 0x%llx data:0x%llx\n", (msg == NeutrinoMessages::EVT_ZAP_FAILED)? "EVT_ZAP_FAILED" : "EVT_ZAP_COMPLETE[1]", CZapit::getInstance()->getCurrentChannelID(), data);
+		////
+		if ( (msg == NeutrinoMessages::EVT_ZAP_SUB_COMPLETE) || (msg == NeutrinoMessages:: EVT_ZAP_SUB_FAILED) ) 
+		{
+			if (data != current_sub_channel_id)
+			{
+				current_sub_channel_id = data;
+
+				for(unsigned int i = 0; i < subChannels.size(); i++)
+				{
+					if (subChannels[i].getChannelID() == data)
+					{
+						selected_subchannel = i;
+						break;
+					}
+				}
+			}
+		}
+		
+		////
+		current_EPGid = 0;
+		next_EPGid = 0;
+
+		memset(&current_PIDs.otherPIDs, 0, sizeof(current_PIDs.otherPIDs) );
+
+		current_PIDs.APIDs.clear();
+		has_ac3 = false;
+
+		subChannels.clear();
+		selected_subchannel = -1;
+		director_mode = 0;
+		needs_nvods = (msg == NeutrinoMessages:: EVT_ZAP_ISNVOD);
 		
 		// set audio map after channel zap
 		CZapit::getInstance()->getAudioMode(&g_settings.audio_AnalogMode);
@@ -176,119 +209,42 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			
 		// infoviewer
 		g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
-	}
-	
-	//
-	if ( zap_completion_timeout != 0 ) 
-	{
-    		if ( (msg == NeutrinoMessages::EVT_ZAP_COMPLETE) || 
-		     (msg == NeutrinoMessages::EVT_ZAP_FAILED  ) || 
-		     (msg == NeutrinoMessages::EVT_ZAP_ISNVOD  ) ) 
+		
+		// zapProtection
+		if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
+			processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
+			
+		////
+		// sectionsd
+		CSectionsd::getInstance()->setServiceChanged( current_channel_id, false );
+			
+		// pids
+		CZapit::getInstance()->getCurrentPIDS(current_PIDs );
+		
+		g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_GOTPIDS, (const neutrino_msg_data_t)current_channel_id, false);
+
+		// apids
+		processAPIDnames();
+			
+		// radiotext			
+		if (g_settings.radiotext_enable && g_Radiotext && ((CNeutrinoApp::getInstance()->getMode()) == CNeutrinoApp::mode_radio))
 		{
-			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: zap_completion_timeout: %d EVT_ZAP_COMPLETE[2] current_channel_id: 0x%llx data: 0x%llx\n", zap_completion_timeout, current_channel_id, data);
-			
-			if (data != current_channel_id)
-			{
-				g_InfoViewer->chanready = 0;
-				CZapit::getInstance()->zapToServiceIDNOWAIT(current_channel_id );
-				CSectionsd::getInstance()->setServiceChanged(current_channel_id, false);
-
-				zap_completion_timeout = getcurrenttime() + 2 * (long long) 1000000;
-
-				return messages_return::handled;
-			}
-			else 
-			{
-				zap_completion_timeout = 0;
-				g_InfoViewer->chanready = 1;
-			
-				// infoviewer
-				g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
-
-				// zapProtection
-				if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
-					processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
-
-				// lcd
-				CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
-			}
-		} 	
-	} 
-	else 
-	{
-		if ( (msg == NeutrinoMessages::EVT_ZAP_COMPLETE) || 
-		     (msg == NeutrinoMessages::EVT_ZAP_FAILED) || 
-		     (msg == NeutrinoMessages::EVT_ZAP_ISNVOD) )
-		{
-			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: EVT_ZAP_COMPLETE[3] current_channel_id: 0x%llx data: 0x%llx\n", current_channel_id, data);
-			
-			g_InfoViewer->chanready = 1;
-
-			// 
-			if (data != current_channel_id)
-			{
-				current_channel_id = data;
-				
-				//
-				is_video_started= true;
-
-				current_EPGid = 0;
-				next_EPGid = 0;
-
-				memset(&current_PIDs.otherPIDs, 0, sizeof(current_PIDs.otherPIDs) );
-
-				current_PIDs.APIDs.clear();
-				has_ac3 = false;
-
-				subChannels.clear();
-				selected_subchannel = -1;
-				director_mode = 0;
-				needs_nvods = (msg == NeutrinoMessages:: EVT_ZAP_ISNVOD);
-			}
-			
-			// infoViewer
-			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR);
-
-			// zapProtection
-			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
-				processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
-
-			// lcd
-			CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
+			g_Radiotext->setPid(current_PIDs.APIDs[current_PIDs.otherPIDs.selected_apid].pid);
 		}
-		else
-		{
-			if ( (msg == NeutrinoMessages::EVT_ZAP_SUB_COMPLETE) || 
-			     (msg == NeutrinoMessages:: EVT_ZAP_SUB_FAILED ) ) 
-			{
-				dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg EVT_ZAP_SUB current_sub_channel_id: 0x%llx data: 0x%llx\n", current_sub_channel_id, data);
-				
-				if (data != current_sub_channel_id)
-				{
-					current_sub_channel_id = data;
 
-					for(unsigned int i = 0; i < subChannels.size(); i++)
-					{
-						if (subChannels[i].getChannelID() == data)
-						{
-							selected_subchannel = i;
-							break;
-						}
-					}
-				}
-			}
-		}
+		// lcd
+		CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
+		
+		is_video_started = true;
+		
+		return messages_return::handled;
 	}
-
-	////
-	if ((msg == NeutrinoMessages::EVT_TIMER)) 
+	else if ((msg == NeutrinoMessages::EVT_TIMER)) 
 	{
 		if(data == shift_timer) 
 		{
 			shift_timer = 0;
 			CNeutrinoApp::getInstance()->startAutoRecord(true);
-			
-			return messages_return::handled;
 		} 
 		else if(data == scrambled_timer) 
 		{
@@ -299,10 +255,10 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			{
 				HintBox(_("Information"), _("Scrambled channel"), g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth (_("Scrambled channel"), true) + 10, 5);
 			}
-#endif
-
-			return messages_return::handled;	
+#endif	
 		}
+		
+		return messages_return::handled;
 	}
 	else if ( msg == NeutrinoMessages::EVT_CURRENTEPG )
 	{
@@ -381,35 +337,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		}
 		
 		return messages_return::handled;
-	}
-	else if ( (msg == NeutrinoMessages::EVT_ZAP_COMPLETE) || (msg == NeutrinoMessages::EVT_ZAP_SUB_COMPLETE) ) 
-	{
-		dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: EVT_ZAP_COMPLETE[4] current_channel_id: 0x%llx\n", current_channel_id);
-		
-		if (data == ((msg == NeutrinoMessages::EVT_ZAP_COMPLETE) ? current_channel_id : current_sub_channel_id))
-		{
-			// sectionsd
-			CSectionsd::getInstance()->setServiceChanged( current_channel_id, false );
-			
-			// pids
-			CZapit::getInstance()->getCurrentPIDS(current_PIDs );
-		
-			g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_GOTPIDS, (const neutrino_msg_data_t)current_channel_id, false);
-
-			// apids
-			processAPIDnames();
-			
-			// radiotext			
-			if (g_settings.radiotext_enable && g_Radiotext && ((CNeutrinoApp::getInstance()->getMode()) == CNeutrinoApp::mode_radio))
-			{
-				g_Radiotext->setPid(current_PIDs.APIDs[current_PIDs.otherPIDs.selected_apid].pid);
-			}
-			
-			// lcd
-			CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
-		}
-
-	    	return messages_return::handled;
 	}
 	else if (msg == NeutrinoMessages::EVT_PMT_CHANGED) 
 	{
@@ -824,28 +751,21 @@ void CRemoteControl::zapToChannelID(const t_channel_id channel_id, const bool st
 	needs_nvods = false;
 	director_mode = 0;
 
-	uint64_t now = getcurrenttime();
-	
-	if ( zap_completion_timeout < now )
+	g_InfoViewer->chanready = 0;		
+		
+	if (autoshift) 
 	{
-		g_InfoViewer->chanready = 0;		
-		
-		if (autoshift) 
-		{
-			CNeutrinoApp::getInstance()->stopAutoRecord();
-		}
-		
-		if (scrambled_timer) 
-		{
-			g_RCInput->killTimer(scrambled_timer);
-			scrambled_timer = 0;
-		}
-
-		// zap
-		CZapit::getInstance()->zapToServiceIDNOWAIT(channel_id);
-
-		zap_completion_timeout = now + 2 * (long long) 1000000;
+		CNeutrinoApp::getInstance()->stopAutoRecord();
 	}
+		
+	if (scrambled_timer) 
+	{
+		g_RCInput->killTimer(scrambled_timer);
+		scrambled_timer = 0;
+	}
+
+	// zap
+	CZapit::getInstance()->zapToServiceIDNOWAIT(channel_id);
 	
 	current_channel_id = channel_id;
 }

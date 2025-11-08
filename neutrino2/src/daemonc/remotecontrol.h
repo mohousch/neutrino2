@@ -71,7 +71,6 @@ typedef std::vector<CSubService> CSubServiceListSorted;
 //// CRemoteControl
 class CRemoteControl
 {
-	uint64_t zap_completion_timeout;
 	t_channel_id current_sub_channel_id;
 
 	void getNVODs();
