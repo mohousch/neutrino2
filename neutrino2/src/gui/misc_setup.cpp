@@ -414,6 +414,7 @@ int CDataResetNotifier::exec(CTarget *parent, const std::string& actionKey)
 	if( actionKey == "factory") 
 	{
 		int result = MessageBox(_("Reset settings to defaults"), _("Are you sure ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo);
+		
 		if(result != CMessageBox::mbrYes) 
 			return true;
 		
