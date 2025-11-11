@@ -1467,7 +1467,10 @@ void CLCD::showAudioTrack(const std::string &artist, const std::string &title, c
 		return;
 		
 	// refresh
-	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height, lcd_width, element[ELEMENT_BANNER].height - 12, LCD_PIXEL_BACKGROUND);
+	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height - 1, lcd_width, lcd_height - fonts.time->getHeight(), LCD_PIXEL_BACKGROUND);
+		
+	// refresh
+//	display->draw_fill_rect(-1, element[ELEMENT_BANNER].height, lcd_width, element[ELEMENT_BANNER].height - 12, LCD_PIXEL_BACKGROUND);
 	
 	// title
 	fonts.channelname->RenderString((lcd_width - fonts.channelname->getRenderWidth(title.c_str(), isUTF8(title)))/2, element[ELEMENT_BANNER].height/2 + fonts.channelname->getHeight(), lcd_width + 10, title.c_str(), LCD_PIXEL_YELLOW, 0, isUTF8(title));
