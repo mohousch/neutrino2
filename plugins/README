@@ -1,0 +1,10 @@
+- the GUI is completely reworked.
+- i18n localization.
+- skin support.
+- plugins interfaces: legacy, lua and python (exp) neutrino2 shares all his functionality with plugins.
+  and more...
+  
+- how to write a plugin take a look at test plugin.
+  
+  happy zapping
+
