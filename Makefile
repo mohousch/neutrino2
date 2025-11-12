@@ -49,8 +49,9 @@ CFLAGS += -D__STDC_CONSTANT_MACROS
 #CFLAGS += -fsanitize=address
 #CFLAGS += -Wno-analyzer-double-free
 #CFLAGS += -Wno-analyzer-malloc-leak
+#CFLAGS += -DHAVE_KERNEL_LIRC
 
-CXXFLAGS = $(CFLAGS) 
+CXXFLAGS = $(CFLAGS)
 
 export CFLAGS CXXFLAGS
 
