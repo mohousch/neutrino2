@@ -500,7 +500,7 @@ void cDvbCi::slot_pollthread(void *c)
 	tSlot *slot = (tSlot *) c;
 	ca_slot_info_t info;
 	eData status;
-	int len = 4096;
+	int len = 1024;
 	uint8_t data[len];
 #if defined (__sh__)
 	uint8_t *d;
@@ -539,7 +539,7 @@ void cDvbCi::slot_pollthread(void *c)
 
 						if (info.flags & CA_CI_MODULE_READY)
 						{
-							printf("1. cam (%d) status changed ->cam now present\n", slot->slot);
+							printf("cDvbCi::slot_pollthread: cam (%d) status changed ->cam now present\n", slot->slot);
 
 							slot->mmiSession = NULL;
 							slot->hasMMIManager = false;
@@ -564,7 +564,7 @@ void cDvbCi::slot_pollthread(void *c)
 				{
 					if (!slot->camIsReady)
 					{
-						printf("2. cam (%d) status changed ->cam now present\n", slot->slot);
+						printf("cDvbCi::slot_pollthread: cam (%d) status changed ->cam now present\n", slot->slot);
 
 						slot->mmiSession = NULL;
 						slot->hasMMIManager = false;
@@ -616,7 +616,7 @@ void cDvbCi::slot_pollthread(void *c)
 				{
 					if (slot->camIsReady)
 					{
-						printf("cam (%d) status changed ->cam now _not_ present\n", slot->slot);
+						printf("cDvbCi::slot_pollthread: cam (%d) status changed ->cam now _not_ present\n", slot->slot);
 
 						eDVBCISession::deleteSessions(slot);
 
@@ -669,13 +669,13 @@ void cDvbCi::slot_pollthread(void *c)
 
 						if ((length_field_len = asn_1_decode(&asn_data_length, d + 1, data_length - 1)) < 0) 
 						{
-							printf("Received data with invalid asn from module on slot %02x\n", slot->slot);
+							printf("cDvbCi::slot_pollthread: Received data with invalid asn from module on slot %02x\n", slot->slot);
 							break;
 						}
 
 						if ((asn_data_length < 1) || (asn_data_length > (data_length - (1 + length_field_len)))) 
 						{
-							printf("Received data with invalid length from module on slot %02x\n", slot->slot);
+							printf("cDvbCi::slot_pollthread: Received data with invalid length from module on slot %02x\n", slot->slot);
 							break;
 						}
 
@@ -715,7 +715,7 @@ void cDvbCi::slot_pollthread(void *c)
 					}
 					else
 					{
-						printf("sendqueue emtpy\n");
+						printf("cDvbCi::slot_pollthread: sendqueue emtpy\n");
 						
 						if ((checkQueueSize(slot) == false) && ((!slot->hasCAManager) || (slot->mmiOpened)))
 							slot->pollConnection = true;
@@ -729,11 +729,11 @@ void cDvbCi::slot_pollthread(void *c)
 					if (ioctl(slot->fd, CA_GET_SLOT_INFO, &info) < 0)
 						printf("IOCTL CA_GET_SLOT_INFO failed for slot %d\n", slot->slot);
 
-					printf("flags %d %d %d ->slot %d\n", info.flags, CA_CI_MODULE_READY, info.flags & CA_CI_MODULE_READY, slot->slot);
+					printf("cDvbCi::slot_pollthread: flags %d %d %d ->slot %d\n", info.flags, CA_CI_MODULE_READY, info.flags & CA_CI_MODULE_READY, slot->slot);
 
 					if ((slot->camIsReady == false) && (info.flags & CA_CI_MODULE_READY))
 					{
-						printf("2. cam (%d) status changed ->cam now present\n", slot->slot);
+						printf("cDvbCi::slot_pollthread: cam (%d) status changed ->cam now present\n", slot->slot);
 
 						slot->mmiSession = NULL;
 						slot->hasMMIManager = false;
@@ -751,7 +751,7 @@ void cDvbCi::slot_pollthread(void *c)
 					} 
 					else if ((slot->camIsReady == true) && (!(info.flags & CA_CI_MODULE_READY)))
 					{
-						printf("cam (%d) status changed ->cam now _not_ present\n", slot->slot);
+						printf("cDvbCi::slot_pollthread: cam (%d) status changed ->cam now _not_ present\n", slot->slot);
 
 						eDVBCISession::deleteSessions(slot);
 
@@ -821,7 +821,7 @@ void cDvbCi::slot_pollthread(void *c)
 				{
 					if (slot->camIsReady)
 					{
-						printf("cam (%d) status changed ->cam now _not_ present\n", slot->slot);
+						printf("cDvbCi::slot_pollthread: cam (%d) status changed ->cam now _not_ present\n", slot->slot);
 
 						eDVBCISession::deleteSessions(slot);
 
