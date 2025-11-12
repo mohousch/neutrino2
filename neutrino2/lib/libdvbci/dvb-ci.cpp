@@ -286,19 +286,18 @@ eData sendData(tSlot* slot, uint8_t *data, int len)
 
 	slot->sendqueue.push( queueData(d, len) );
 #else
-	if (slot->sendqueue.empty())
-		res = ::write(slot->fd, data, len);
+	/*
+	res = ::write(slot->fd, data, len);
+	free(data);
 	
 	if (res < 0 || res != len) 
 	{ 
-		uint8_t *d = new uint8_t[len];
-		memcpy(d, data, len);
-		slot->sendqueue.push( queueData(d, len) );
-		
 		printf("error writing data to fd %d, slot %d: %m\n", slot->fd, slot->slot);
 		
 		return eDataError; 
 	}
+	*/
+	slot->sendqueue.push( queueData(data, len) );
 #endif
 	
 	return eDataReady;
