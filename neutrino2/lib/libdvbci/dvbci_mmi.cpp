@@ -22,8 +22,7 @@ eDVBCIMMISession::eDVBCIMMISession(tSlot *tslot)
 
 eDVBCIMMISession::~eDVBCIMMISession()
 {
-        if (g_RCInput)
-           	g_RCInput->postMsg(NeutrinoMessages::EVT_CI_MMI_CLOSE, 0, false);
+        g_RCInput->postMsg(NeutrinoMessages::EVT_CI_MMI_CLOSE, 0);
 	
 	slot->hasMMIManager = false;
 	slot->mmiSession = NULL;
@@ -39,8 +38,7 @@ int eDVBCIMMISession::receivedAPDU(const unsigned char *tag, const void *data, i
                 switch (tag[2])
 		{
 			case 0x00: /* close */
-                        	if (g_RCInput) 
-                        		g_RCInput->postMsg(NeutrinoMessages::EVT_CI_MMI_CLOSE, 0, false);
+                        	g_RCInput->postMsg(NeutrinoMessages::EVT_CI_MMI_CLOSE, 0);
 		    	break;
 
 		    	case 0x01: /* display control */
@@ -79,8 +77,7 @@ int eDVBCIMMISession::receivedAPDU(const unsigned char *tag, const void *data, i
 				enquiry->answerlen = alen;
 				strcpy(enquiry->enguiryText, str);
 
-		                if (g_RCInput)
-		                  	g_RCInput->postMsg(NeutrinoMessages::EVT_CI_MMI_REQUEST_INPUT, (const neutrino_msg_data_t)enquiry, false);
+		                g_RCInput->postMsg(NeutrinoMessages::EVT_CI_MMI_REQUEST_INPUT, (const neutrino_msg_data_t)enquiry);
 
 			        slot->mmiOpened = true;
                     	}
@@ -145,13 +142,10 @@ int eDVBCIMMISession::receivedAPDU(const unsigned char *tag, const void *data, i
 		                       }
 			       	}
 
-		               	if (g_RCInput)
-			       	{
-					if (tag[2] == 0x09)
-				               g_RCInput->postMsg(NeutrinoMessages::EVT_CI_MMI_MENU, (const neutrino_msg_data_t) listInfo, false);
-					else
-				               g_RCInput->postMsg(NeutrinoMessages::EVT_CI_MMI_LIST, (const neutrino_msg_data_t) listInfo, false);
-			       	}
+				if (tag[2] == 0x09)
+					g_RCInput->postMsg(NeutrinoMessages::EVT_CI_MMI_MENU, (const neutrino_msg_data_t) listInfo);
+				else
+				        g_RCInput->postMsg(NeutrinoMessages::EVT_CI_MMI_LIST, (const neutrino_msg_data_t) listInfo);
 		    	}
 		   	 break;
 		}

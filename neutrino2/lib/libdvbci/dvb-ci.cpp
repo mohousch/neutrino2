@@ -181,7 +181,7 @@ int asn_1_decode(uint16_t * length, unsigned char * asn_1_array, uint32_t asn_1_
 }
 
 // wait for a while for some data and read it if some
-eData waitData(int fd, uint8_t *buffer, int *len)
+eData waitData(int fd, uint8_t *buffer, size_t len)
 {
 	int retval;
 	struct pollfd fds;
@@ -191,8 +191,6 @@ eData waitData(int fd, uint8_t *buffer, int *len)
 	fds.revents = 0;
 	
 	retval = ::poll(&fds, 1, 200);
-	
-//	printf("dvb-ci::waitData: %d\n", retval);
 
 	if (retval < 0)
 	{
@@ -206,14 +204,14 @@ eData waitData(int fd, uint8_t *buffer, int *len)
 	{
 		if (fds.revents & ( POLLIN | POLLPRI ))
 		{ 
-			int n = ::read(fd, buffer, *len);
+			int n = ::read(fd, buffer, len);
 		      
 			if (n > 0)
 			{
-				*len = n;
+				//len = n;
 				return eDataReady;
 			}
-			*len = 0;
+			//len = 0;
 
 			return eDataError;
 		} 
@@ -510,9 +508,7 @@ void cDvbCi::slot_pollthread(void *c)
 #endif
 	
 	while (1)
-	{ 
-		// check status
-//		printf("slot->state=%d\n", slot->status);  
+	{   
 		switch (slot->status)
 		{
 			case eStatusNone: // 0
@@ -533,7 +529,7 @@ void cDvbCi::slot_pollthread(void *c)
 				else
 				{
 					// wait for pollpri
-					status = waitData(slot->fd, data, &len);
+					status = waitData(slot->fd, data, len);
 					
 					if (status == eDataStatusChanged)	// 4
 					{
@@ -556,14 +552,14 @@ void cDvbCi::slot_pollthread(void *c)
 							sprintf(slot->name, "unknown module %d", slot->slot);
 							slot->status = eStatusNone;
 
-							if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, (const neutrino_msg_data_t)slot->slot, false);
+							g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, (const neutrino_msg_data_t)slot->slot);
 
 							slot->camIsReady = true;
 						}
 					}
 				}
 #else
-				status = waitData(slot->fd, data, &len);
+				status = waitData(slot->fd, data, len);
 				
 				if (status == eDataReady)
 				{
@@ -582,7 +578,7 @@ void cDvbCi::slot_pollthread(void *c)
 						slot->status = eStatusWait;
 						slot->connection_id = slot->slot + 1;
 
-						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, (const neutrino_msg_data_t)slot->slot, false);
+						g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, (const neutrino_msg_data_t)slot->slot);
 
 						slot->camIsReady = true;
 						
@@ -599,7 +595,7 @@ void cDvbCi::slot_pollthread(void *c)
 				else if (status == eDataWrite)
 				{
 					// FIXME:
-					/*
+					//
 					if (!slot->sendqueue.empty())
 					{
 						const queueData &qe = slot->sendqueue.top();
@@ -615,7 +611,7 @@ void cDvbCi::slot_pollthread(void *c)
 							printf("r = %d, %m\n", res);
 						}
 					}
-					*/
+					//
 				}
 				else if (status == eDataStatusChanged)
 				{
@@ -635,7 +631,7 @@ void cDvbCi::slot_pollthread(void *c)
 						sprintf(slot->name, "unknown module %d", slot->slot);
 						slot->status = eStatusNone;
 
-						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, (const neutrino_msg_data_t)slot->slot, false);
+						g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, (const neutrino_msg_data_t)slot->slot);
 
 						while(slot->sendqueue.size())
 						{
@@ -653,7 +649,7 @@ void cDvbCi::slot_pollthread(void *c)
 			
 			case eStatusWait:	// 1
 			{
-				status = waitData(slot->fd, data, &len);
+				status = waitData(slot->fd, data, len);
 				 		 
 #if defined (__sh__)  
 				if (status == eDataReady)	// 2
@@ -701,7 +697,7 @@ void cDvbCi::slot_pollthread(void *c)
 				else if (status == eDataWrite)	// 3
 				{
 					// FIXME
-					/*
+					//
 					if (!slot->sendqueue.empty()) 
 					{
 						const queueData &qe = slot->sendqueue.top();
@@ -725,7 +721,7 @@ void cDvbCi::slot_pollthread(void *c)
 						if ((checkQueueSize(slot) == false) && ((!slot->hasCAManager) || (slot->mmiOpened)))
 							slot->pollConnection = true;
 					}
-					*/
+					//
 				}
 				else if (status == eDataStatusChanged)	// 4
 				{
@@ -750,7 +746,7 @@ void cDvbCi::slot_pollthread(void *c)
 						sprintf(slot->name, "unknown module %d", slot->slot);
 						slot->status = eStatusNone;
 
-						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, (const neutrino_msg_data_t)slot->slot, false);
+						g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, (const neutrino_msg_data_t)slot->slot);
 
 						slot->camIsReady = true;
 					} 
@@ -770,7 +766,7 @@ void cDvbCi::slot_pollthread(void *c)
 						sprintf(slot->name, "unknown module %d", slot->slot);
 						slot->status = eStatusNone;
 
-						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, (const neutrino_msg_data_t)slot->slot, false);
+						g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, (const neutrino_msg_data_t)slot->slot);
 
 						while(slot->sendqueue.size())
 						{
@@ -804,7 +800,7 @@ void cDvbCi::slot_pollthread(void *c)
 				else if (status == eDataWrite)
 				{
 					// FIXME:
-					/*
+					//
 					if (!slot->sendqueue.empty())
 					{
 						const queueData &qe = slot->sendqueue.top();
@@ -820,7 +816,7 @@ void cDvbCi::slot_pollthread(void *c)
 							printf("r = %d, %m\n", res);
 						}
 					}
-					*/
+					//
 				}
 				else if (status == eDataStatusChanged)
 				{
@@ -840,7 +836,7 @@ void cDvbCi::slot_pollthread(void *c)
 						sprintf(slot->name, "unknown module %d", slot->slot);
 						slot->status = eStatusNone;
 
-						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, (const neutrino_msg_data_t)slot->slot, false);
+						g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, (const neutrino_msg_data_t)slot->slot);
 
 						while(slot->sendqueue.size())
 						{
@@ -867,7 +863,7 @@ void cDvbCi::slot_pollthread(void *c)
 
 			slot->init = true;
 			
-			if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INIT_OK, (const neutrino_msg_data_t)slot->slot, false);
+			g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INIT_OK, (const neutrino_msg_data_t)slot->slot);
 		    
 			//resend capmt
 			if (slot->caPmt != NULL)
