@@ -1305,7 +1305,7 @@ void CChannelList::quickZap(int key, bool cycle)
 	else
         	zapTo(selected);
 
-	g_RCInput->clearRCMsg(); //FIXME test for n.103
+	g_RCInput->clearRCMsg();
 }
 
 bool CChannelList::canZap(CZapitChannel * channel)
@@ -1317,7 +1317,7 @@ bool CChannelList::canZap(CZapitChannel * channel)
 		if(channel == NULL)
 			channel = chanlist[selected];
 		
-		iscurrent = CZapit::getInstance()->CanZap(channel);
+		iscurrent = CZapit::getInstance()->canZap(channel);
 	}
 	
 	return iscurrent;
@@ -1466,8 +1466,10 @@ void CChannelList::paint(bool customMode)
 			 	option = " - ";
 				option += p_event->description.c_str();
 			}
+			
+			bool active = canZap(chanlist[i]);
 
-			item = new CMenuForwarder(chanlist[i]->name.c_str());
+			item = new CMenuForwarder(chanlist[i]->name.c_str(), active);
 			
 			// align right / left
 			if (g_settings.channellist_alt)

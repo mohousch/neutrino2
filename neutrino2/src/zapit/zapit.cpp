@@ -431,7 +431,7 @@ bool CZapit::loopCanTune(CFrontend * fe, CZapitChannel * thischannel)
 }
 
 // 
-bool CZapit::CanZap(CZapitChannel * thischannel)
+bool CZapit::canZap(CZapitChannel * thischannel)
 {
 	//
 	if (IS_WEBTV(thischannel->getChannelID()))

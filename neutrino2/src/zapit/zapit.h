@@ -462,7 +462,7 @@ class CZapit
 		void loadFrontendConfig();
 		int getFrontendCount(void){return femap.size();};
 		bool loopCanTune(CFrontend *fe, CZapitChannel *thischannel);
-		bool CanZap(CZapitChannel *thischannel);
+		bool canZap(CZapitChannel *thischannel);
 		bool FrontendIsTwin(CFrontend *fe);
 		CFrontend * getFrontend(CZapitChannel *thischannel);
 		CFrontend * getLiveFrontend() { return live_fe; };
