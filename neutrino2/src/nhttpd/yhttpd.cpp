@@ -83,28 +83,6 @@ void thread_cleanup (void *p)
 }
 
 //
-// Start
-//
-void Cyhttpd::Start(void)
-{
-	dprintf(DEBUG_DEBUG, "Cyhttpd::Start:\n");
-	
-	// start webserver thread
-	if (pthread_create(&thrWebServer, NULL, webServerThread, (void *) this) != 0 )
-	{
-		dprintf(DEBUG_DEBUG, "Cyhttpd::Init: create webServerThread failed\n");
-	}
-}
-
-//
-// Stop
-//
-void Cyhttpd::Stop(void)
-{
-	dprintf(DEBUG_DEBUG, "Cyhttpd::Stop:\n");
-}
-
-//
 //
 //
 void * Cyhttpd::webServerThread(void *data)
@@ -490,4 +468,27 @@ void Cyhttpd::ReadLanguage(void)
 	
 	lang->setLanguage(ConfigList["Language.selected"]);
 }
+
+//
+// Start
+//
+void Cyhttpd::Start(void)
+{
+	dprintf(DEBUG_DEBUG, "Cyhttpd::Start:\n");
+	
+	// start webserver thread
+	if (pthread_create(&thrWebServer, NULL, webServerThread, (void *) this) != 0 )
+	{
+		dprintf(DEBUG_DEBUG, "Cyhttpd::Init: create webServerThread failed\n");
+	}
+}
+
+//
+// Stop
+//
+void Cyhttpd::Stop(void)
+{
+	dprintf(DEBUG_DEBUG, "Cyhttpd::Stop:\n");
+}
+
 

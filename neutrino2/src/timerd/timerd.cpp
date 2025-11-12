@@ -37,15 +37,6 @@
 
 
 //
-void CTimerd::Start(void)
-{
-	dprintf(DEBUG_NORMAL, "CTimerd::Start:\n");
-
-	// Start timer thread
-	CTimerManager::getInstance();
-}
-
-//
 void CTimerd::stopTimerEvent(int evId)
 {
 	dprintf(DEBUG_NORMAL, "CTimerd::stopTimerEvent\n");
@@ -660,6 +651,15 @@ void CTimerd::setWeekdaysToStr(CTimerEventRepeat rep, char* str)
 		}
 		str[7] = 0;
 	}
+}
+
+//
+void CTimerd::Start(void)
+{
+	dprintf(DEBUG_NORMAL, "CTimerd::Start:\n");
+
+	// Start timer thread
+	CTimerManager::getInstance();
 }
 
 void CTimerd::Stop(void)
