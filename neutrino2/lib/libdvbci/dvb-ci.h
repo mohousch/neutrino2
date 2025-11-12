@@ -111,36 +111,36 @@ class eDVBCICAManagerSession;
 
 typedef struct
 {
-        pthread_t   slot_thread;
-	int          slot;
-	int          fd;
-	int          connection_id;
-        eStatus     status;  
+        pthread_t slot_thread;
+	int slot;
+	int fd;
+	int connection_id;
+        eStatus status;  
 
-        int          receivedLen;
-	unsigned char * receivedData;
+        int receivedLen;
+	unsigned char *receivedData;
 	
-	void*        pClass;
+	void *pClass;
         
-	bool        pollConnection;
-	bool        camIsReady;
+	bool pollConnection;
+	bool camIsReady;
 	
 	eDVBCIMMISession* mmiSession;
 	eDVBCIApplicationManagerSession* appSession;
 	eDVBCICAManagerSession* camgrSession;
 	
-	bool	 hasAppManager;
-	bool        hasMMIManager;
-	bool        hasCAManager;
-	bool        hasDateTime;
+	bool hasAppManager;
+	bool hasMMIManager;
+	bool hasCAManager;
+	bool hasDateTime;
 	
-	bool        mmiOpened;
-	char        name[512];
-        bool        init;
+	bool mmiOpened;
+	char name[512];
+        bool init;
  
 	std::priority_queue<queueData> sendqueue;
 
-        CCaPmt      *caPmt;
+        CCaPmt *caPmt;
 	int source;
 } tSlot;
 

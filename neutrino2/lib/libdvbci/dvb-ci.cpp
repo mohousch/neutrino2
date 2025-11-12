@@ -180,8 +180,8 @@ int asn_1_decode(uint16_t * length, unsigned char * asn_1_array, uint32_t asn_1_
 	return -1;
 }
 
-// wait for a while for some data und read it if some
-eData waitData(int fd, unsigned char* buffer, int* len)
+// wait for a while for some data and read it if some
+eData waitData(int fd, uint8_t *buffer, int *len)
 {
 	int retval;
 	struct pollfd fds;
@@ -190,7 +190,7 @@ eData waitData(int fd, unsigned char* buffer, int* len)
 	fds.events = POLLOUT | POLLPRI | POLLIN;
 	fds.revents = 0;
 	
-	retval = ::poll(&fds, 1, 300);
+	retval = ::poll(&fds, 1, 200);
 	
 //	printf("dvb-ci::waitData: %d\n", retval);
 
@@ -206,7 +206,7 @@ eData waitData(int fd, unsigned char* buffer, int* len)
 	{
 		if (fds.revents & ( POLLIN | POLLPRI ))
 		{ 
-			int n = ::read (fd, buffer, *len);
+			int n = ::read(fd, buffer, *len);
 		      
 			if (n > 0)
 			{
@@ -231,14 +231,14 @@ eData waitData(int fd, unsigned char* buffer, int* len)
 }
 
 //send some data on an fd, for a special slot and connection_id
-eData sendData(tSlot* slot, unsigned char* data, int len)
+eData sendData(tSlot* slot, uint8_t *data, int len)
 {	
         printf("%s: %p, %d\n", __func__, data, len);
         
         int res = 0;
 	
 #if defined (__sh__)
-	unsigned char *d = (unsigned char*) malloc(len + 5);
+	uint8_t *d = (uint8_t *) malloc(len + 5);
 		
 	// only poll connection if we are not awaiting an answer
 	slot->pollConnection = false;	
@@ -293,7 +293,7 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
 	
 	if (res < 0 || res != len) 
 	{ 
-		unsigned char *d = new unsigned char[len];
+		uint8_t *d = new uint8_t[len];
 		memcpy(d, data, len);
 		slot->sendqueue.push( queueData(d, len) );
 		
@@ -500,23 +500,19 @@ void cDvbCi::slot_pollthread(void *c)
 {
 	printf("cDvbCi::slot_pollthread: starting... tid %ld\n", syscall(__NR_gettid));
 	
-	tSlot* slot = (tSlot*) c;
+	tSlot *slot = (tSlot *) c;
 	ca_slot_info_t info;
 	eData status;
-#ifdef USE_OPENGL
-	int len = 256;
-	unsigned char data[len];
-#else
 	int len = 4096;
-	unsigned char data[len];
-#endif
+	uint8_t data[len];
 #if defined (__sh__)
-	unsigned char* d;
+	uint8_t *d;
 #endif
 	
 	while (1)
 	{ 
-		// check status   
+		// check status
+//		printf("slot->state=%d\n", slot->status);  
 		switch (slot->status)
 		{
 			case eStatusNone: // 0
