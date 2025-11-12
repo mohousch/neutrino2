@@ -24,7 +24,7 @@
 			<item id="FORWARDER" localename="OSD" directkey="RC_3" itemicon="hint_osd" target="osd" hint="Here you can setup OSD"/>
 			<item id="FORWARDER" localename="Information" directkey="RC_info" itemicon="hint_dboxinfo" target="information" hint="Here you can get device Info"/>
 			<item id="FORWARDER" localename="Power Menu" iconname="buttons/power.png" directkey="RC_standby" itemicon="hint_shutdown" target="powermenu" hint="Here you can power off or standby your device"/>
-			<item id="FORWARDER" localename="Media Player" itemicon="hint_media" target="mediaplayer" hint="Here you can play / show  music / movies / pics"/>
+			<item id="FORWARDER" localename="Media Player" directkey="RC_media" itemicon="hint_media" target="mediaplayer" hint="Here you can play / show  music / movies / pics"/>
 		</listbox>
 		<time posx="690" posy="455" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
 	</widget>

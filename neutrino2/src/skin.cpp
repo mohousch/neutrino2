@@ -1011,6 +1011,10 @@ neutrino_msg_t CNeutrinoApp::convertKey(const char * const key)
 		{
 			msg = CRCInput::RC_epg;
 		}
+		else if ( strcmp(key, "RC_media") == 0)
+		{
+			msg = CRCInput::RC_media;
+		}
 	}
 	
 	return msg;
@@ -1605,8 +1609,8 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		}
 		if (item_hint) menuItem->setHint(_(item_hint));
 		if (item_lines) menuItem->set2lines(item_lines);
-		if (item_option) menuItem->setOption(item_option);
-		if (item_option_info) menuItem->setOptionInfo(item_option_info);
+		if (item_option) menuItem->setOption(_(item_option));
+		if (item_option_info) menuItem->setOptionInfo(_(item_option_info));
 		int br = CComponent::BORDER_NO;
 		if (item_border) br = convertBorder(item_border);
 		menuItem->setBorderMode(br);
