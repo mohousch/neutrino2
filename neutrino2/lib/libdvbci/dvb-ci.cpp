@@ -188,7 +188,6 @@ eData waitData(int fd, uint8_t *buffer, size_t len)
 	
 	fds.fd = fd;
 	fds.events = POLLOUT | POLLPRI | POLLIN;
-	fds.revents = 0;
 	
 	retval = ::poll(&fds, 1, 200);
 
@@ -202,7 +201,7 @@ eData waitData(int fd, uint8_t *buffer, size_t len)
 	}
 	else if (retval > 0)
 	{
-		if (fds.revents & ( POLLIN | POLLPRI ))
+		if (fds.revents & POLLIN)
 		{ 
 			int n = ::read(fd, buffer, len);
 		      
@@ -286,10 +285,10 @@ eData sendData(tSlot* slot, uint8_t *data, int len)
 
 	slot->sendqueue.push( queueData(d, len) );
 #else
-	/*
 	uint8_t *d = (uint8_t *) malloc(len);
 	memcpy(d, data, len);
 
+	/*
 	res = ::write(slot->fd, d, len);
 	free(data);
 	
@@ -300,7 +299,7 @@ eData sendData(tSlot* slot, uint8_t *data, int len)
 		return eDataError; 
 	}
 	*/
-	slot->sendqueue.push( queueData(data, len) );
+	slot->sendqueue.push( queueData(d, len) );
 #endif
 	
 	return eDataReady;
