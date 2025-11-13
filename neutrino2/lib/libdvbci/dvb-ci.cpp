@@ -935,21 +935,26 @@ cDvbCi::cDvbCi(int Slots)
 	{
 		for (i = 0; i < Slots; i++)
 		{
-#ifdef USE_OPENGL
-			sprintf(filename, "/dev/dvb/adapter%d/ca%d", j, i);
-#elif defined (__sh__)
-			sprintf(filename, "/dev/dvb/adapter%d/ci%d", j, i);
-#else
-			sprintf(filename, "/dev/ci%d", i);
-#endif		
-			if (fd < 0)	
+			if (fd < 0)
 			{
-				fd = ::open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
-			    
+#ifdef USE_OPENGL
+				sprintf(filename, "/dev/dvb/adapter%d/ca%d", j, i);
+#else
+				sprintf(filename, "/dev/dvb/adapter%d/ci%d", j, i);
+#endif
+
+				fd = ::open(filename, O_RDWR | O_NONBLOCK);
+				
+				if(fd < 0)
+				{
+					sprintf(filename, "/dev/ci%d", i);
+					fd = ::open(filename, O_RDWR | O_NONBLOCK);
+				}
+				    
 				if (fd > 0)
 				{
 					tSlot *slot = (tSlot*) malloc(sizeof(tSlot));
-					
+						
 					ci_num++;
 
 					slot->slot = i;
@@ -972,19 +977,17 @@ cDvbCi::cDvbCi(int Slots)
 					sprintf(slot->name, "unknown module %d", i);
 
 					slot_data.push_back(slot);
-					
+						
 					// now reset the slot so the poll pri can happen in the thread
 					reset(i); 
-					
+						
 					usleep(200000);
 
 					// create a thread for each slot
 					if (pthread_create(&slot->slot_thread, 0, execute_thread,  (void*)slot) != 0) 
 					{
 						printf("pthread_create failed\n");
-					}
-					
-					fd = -1;
+					}	
 				}
 			}
 		}
