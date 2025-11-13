@@ -233,8 +233,9 @@ int eDVBCISession::pollAll()
 				sessions[session_nb-1]->handleClose();
 				sessions[session_nb-1] = 0;
 				r=1;
-			} else
-				r=sessions[session_nb - 1]->poll();
+			} 
+			else
+				r = sessions[session_nb - 1]->poll();
 
 			if (r)
 			{
@@ -268,15 +269,15 @@ void eDVBCISession::receiveData(tSlot *slot, const unsigned char *ptr, size_t le
 		if (session)
 		{
 			session->state=stateStarted;
-			session->action=1;
+			session->action = 1;
 		}
 	}
 	else
 	{
 		unsigned session_nb;
 
-		session_nb=pkt[hlen-2]<<8;
-		session_nb|=pkt[hlen-1]&0xFF;
+		session_nb = pkt[hlen - 2]<<8;
+		session_nb |= pkt[hlen - 1]&0xFF;
 		
 		if ((!session_nb) || (session_nb >= SLMS))
 		{
@@ -284,7 +285,7 @@ void eDVBCISession::receiveData(tSlot *slot, const unsigned char *ptr, size_t le
 			return;
 		}
 		
-		session=sessions[session_nb-1];
+		session = sessions[session_nb-1];
 		if (!session)
 		{
 //			printf("PROTOCOL: data on closed session %x\n", session_nb);

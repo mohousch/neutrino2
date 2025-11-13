@@ -181,10 +181,11 @@ int asn_1_decode(uint16_t * length, unsigned char * asn_1_array, uint32_t asn_1_
 }
 
 // wait for a while for some data and read it if some
-eData waitData(int fd, uint8_t *buffer, size_t len)
+eData waitData(int fd, uint8_t *buffer, int *len)
 {
 	int retval;
 	struct pollfd fds;
+	int n = 0;
 	
 	fds.fd = fd;
 	fds.events = POLLOUT | POLLPRI | POLLIN;
@@ -203,14 +204,14 @@ eData waitData(int fd, uint8_t *buffer, size_t len)
 	{
 		if (fds.revents & POLLIN)
 		{ 
-			int n = ::read(fd, buffer, len);
+			n = ::read(fd, buffer, *len);
 		      
 			if (n > 0)
 			{
-				//len = n;
+				*len = n;
 				return eDataReady;
 			}
-			//len = 0;
+			*len = 0;
 
 			return eDataError;
 		} 
@@ -530,7 +531,7 @@ void cDvbCi::slot_pollthread(void *c)
 				else
 				{
 					// wait for pollpri
-					status = waitData(slot->fd, data, len);
+					status = waitData(slot->fd, data, &len);
 					
 					if (status == eDataStatusChanged)
 					{
@@ -560,8 +561,8 @@ void cDvbCi::slot_pollthread(void *c)
 					}
 				}
 #else
-				status = waitData(slot->fd, data, len);
-				
+				status = waitData(slot->fd, data, &len);
+
 				if (status == eDataReady)
 				{
 					if (!slot->camIsReady)
@@ -585,12 +586,6 @@ void cDvbCi::slot_pollthread(void *c)
 						
 						//
 						slot->pollConnection = false;
-					
-						if (len)
-						{
-							eDVBCISession::receiveData(slot, data, len);
-							eDVBCISession::pollAll();
-						}
 					}
 				}
 				else if (status == eDataWrite)
@@ -647,7 +642,7 @@ void cDvbCi::slot_pollthread(void *c)
 			
 			case eStatusWait:
 			{
-				status = waitData(slot->fd, data, len);
+				status = waitData(slot->fd, data, &len);
 				 		 
 #if defined (__sh__)  
 				if (status == eDataReady)
@@ -794,8 +789,6 @@ void cDvbCi::slot_pollthread(void *c)
 				}
 				else if (status == eDataWrite)
 				{
-					// FIXME:
-					//
 					if (!slot->sendqueue.empty())
 					{
 						const queueData &qe = slot->sendqueue.top();
@@ -811,7 +804,6 @@ void cDvbCi::slot_pollthread(void *c)
 							printf("r = %d, %m\n", res);
 						}
 					}
-					//
 				}
 				else if (status == eDataStatusChanged)
 				{
@@ -848,7 +840,7 @@ void cDvbCi::slot_pollthread(void *c)
 			break;
 			
 			default:
-				printf("unknown state %d\n", slot->status);		
+				//printf("unknown state %d\n", slot->status);		
 			break;
 		}
 	   
