@@ -165,31 +165,31 @@ eDVBCISession* eDVBCISession::createSession(tSlot *slot, const unsigned char *re
 	{
 		case 0x00010041:
 			sessions[session_nb - 1] = new eDVBCIResourceManagerSession;
-			printf("RESOURCE MANAGER\n");
+//			printf("RESOURCE MANAGER\n");
 			break;
 		case 0x00020041:
 			sessions[session_nb - 1] = new eDVBCIApplicationManagerSession(slot);
-			printf("APPLICATION MANAGER\n");
+//			printf("APPLICATION MANAGER\n");
 			break;
 		case 0x00030041:
 			sessions[session_nb - 1] = new eDVBCICAManagerSession(slot);
-			printf("CA MANAGER\n");
+//			printf("CA MANAGER\n");
 			break;
 		case 0x00240041:
 			sessions[session_nb - 1] = new eDVBCIDateTimeSession(slot);
-			printf("DATE-TIME\n");
+//			printf("DATE-TIME\n");
 			break;
 		case 0x00400041:
 			sessions[session_nb - 1] = new eDVBCIMMISession(slot);
 			printf("MMI - create session\n");
 			break;
 		case 0x00100041:
-	//		session = new eDVBCIAuthSession;
-			printf("AuthSession\n");
-	//		break;
+//			session = new eDVBCIAuthSession;
+//			printf("AuthSession\n");
+//			break;
 		case 0x00200041:
 		default:
-			printf("unknown resource type %02x %02x %02x %02x\n", resource_identifier[0], resource_identifier[1], resource_identifier[2],resource_identifier[3]);
+//			printf("unknown resource type %02x %02x %02x %02x\n", resource_identifier[0], resource_identifier[1], resource_identifier[2],resource_identifier[3]);
 			sessions[session_nb - 1] = 0;
 			status = 0xF0;
 	}
@@ -280,14 +280,14 @@ void eDVBCISession::receiveData(tSlot *slot, const unsigned char *ptr, size_t le
 		
 		if ((!session_nb) || (session_nb >= SLMS))
 		{
-			printf("PROTOCOL: illegal session number %x\n", session_nb);
+//			printf("PROTOCOL: illegal session number %x\n", session_nb);
 			return;
 		}
 		
 		session=sessions[session_nb-1];
 		if (!session)
 		{
-			printf("PROTOCOL: data on closed session %x\n", session_nb);
+//			printf("PROTOCOL: data on closed session %x\n", session_nb);
 			return;
 		}
 
@@ -299,11 +299,11 @@ void eDVBCISession::receiveData(tSlot *slot, const unsigned char *ptr, size_t le
 				session->recvCreateSessionResponse(pkt);
 				break;
 			case 0x95:
-				printf("recvCloseSessionRequest");
+//				printf("recvCloseSessionRequest");
 				session->recvCloseSessionRequest(pkt);
 				break;
 			default:
-				printf("INTERNAL: nyi, tag %02x.\n", tag);
+//				printf("INTERNAL: nyi, tag %02x.\n", tag);
 				return;
 		}
 	}
@@ -329,8 +329,8 @@ void eDVBCISession::receiveData(tSlot *slot, const unsigned char *ptr, size_t le
 			{
 				if (((len - alen) > 0) && ((len - alen) < 3))
 				{
-					printf("WORKAROUND: applying work around MagicAPDULength\n");
-					alen=len;
+//					printf("WORKAROUND: applying work around MagicAPDULength\n");
+					alen = len;
 				}
 			}
 

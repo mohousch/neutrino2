@@ -203,8 +203,6 @@ class CSectionsd
 		void setConfig(const epg_config config);
 		void deleteSIexceptEPG();
 		void setLanguages(const std::vector<std::string>& newLanguages);
-		
-		//
 		void dumpStatus(void);
 		
 		//

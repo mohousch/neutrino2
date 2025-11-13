@@ -287,7 +287,10 @@ eData sendData(tSlot* slot, uint8_t *data, int len)
 	slot->sendqueue.push( queueData(d, len) );
 #else
 	/*
-	res = ::write(slot->fd, data, len);
+	uint8_t *d = (uint8_t *) malloc(len);
+	memcpy(d, data, len);
+
+	res = ::write(slot->fd, d, len);
 	free(data);
 	
 	if (res < 0 || res != len) 
@@ -510,7 +513,7 @@ void cDvbCi::slot_pollthread(void *c)
 	{   
 		switch (slot->status)
 		{
-			case eStatusNone: // 0
+			case eStatusNone:
 			{
 #if defined (__sh__)
 				if (slot->camIsReady)
@@ -530,7 +533,7 @@ void cDvbCi::slot_pollthread(void *c)
 					// wait for pollpri
 					status = waitData(slot->fd, data, len);
 					
-					if (status == eDataStatusChanged)	// 4
+					if (status == eDataStatusChanged)
 					{
 						info.num = slot->slot;
 
@@ -593,8 +596,6 @@ void cDvbCi::slot_pollthread(void *c)
 				}
 				else if (status == eDataWrite)
 				{
-					// FIXME:
-					//
 					if (!slot->sendqueue.empty())
 					{
 						const queueData &qe = slot->sendqueue.top();
@@ -610,7 +611,6 @@ void cDvbCi::slot_pollthread(void *c)
 							printf("r = %d, %m\n", res);
 						}
 					}
-					//
 				}
 				else if (status == eDataStatusChanged)
 				{
@@ -646,12 +646,12 @@ void cDvbCi::slot_pollthread(void *c)
 			}
 			break;
 			
-			case eStatusWait:	// 1
+			case eStatusWait:
 			{
 				status = waitData(slot->fd, data, len);
 				 		 
 #if defined (__sh__)  
-				if (status == eDataReady)	// 2
+				if (status == eDataReady)
 				{
 					slot->pollConnection = false;
 					
@@ -695,8 +695,6 @@ void cDvbCi::slot_pollthread(void *c)
 				}
 				else if (status == eDataWrite)	// 3
 				{
-					// FIXME
-					//
 					if (!slot->sendqueue.empty()) 
 					{
 						const queueData &qe = slot->sendqueue.top();
@@ -720,9 +718,8 @@ void cDvbCi::slot_pollthread(void *c)
 						if ((checkQueueSize(slot) == false) && ((!slot->hasCAManager) || (slot->mmiOpened)))
 							slot->pollConnection = true;
 					}
-					//
 				}
-				else if (status == eDataStatusChanged)	// 4
+				else if (status == eDataStatusChanged)
 				{
 					info.num = slot->slot;
 
@@ -938,6 +935,7 @@ cDvbCi::cDvbCi(int Slots)
 	{
 		for (i = 0; i < Slots; i++)
 		{
+		/*
 #if defined (__sh__)
 			sprintf(filename, "/dev/dvb/adapter%d/ci%d", j, i);
 #else
@@ -947,6 +945,14 @@ cDvbCi::cDvbCi(int Slots)
 			sprintf(filename, "/dev/ci%d", i);
 #endif
 #endif
+		*/
+#ifdef USE_OPENGL
+			sprintf(filename, "/dev/dvb/adapter%d/ca%d", j, i);
+#elif defined (__sh__)
+			sprintf(filename, "/dev/dvb/adapter%d/ci%d", j, i);
+#else
+			sprintf(filename, "/dev/ci%d", i);
+#endif		
 			if (fd < 0)	
 			{
 				fd = ::open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
