@@ -589,6 +589,12 @@ void cDvbCi::slot_pollthread(void *c)
 						
 						//
 						slot->pollConnection = false;
+						
+						if (len)
+						{
+							//eDVBCISession::receiveData(slot, data, len); //FIXME:
+							eDVBCISession::pollAll();
+						}
 					}
 				}
 				else if (status == eDataWrite)
