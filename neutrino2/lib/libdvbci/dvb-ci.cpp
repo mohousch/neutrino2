@@ -310,7 +310,7 @@ eData sendData(tSlot* slot, uint8_t *data, int len)
 #if defined (__sh__)
 bool sendCreateTC(tSlot* slot)
 {
-	unsigned char* data = (unsigned char*) malloc(sizeof(char) * 5);
+	uint8_t *data = (uint8_t *) malloc(sizeof(char) * 5);
 	
 	data[0] = slot->slot;
 	data[1] = slot->slot + 1; 	// conid
@@ -518,6 +518,8 @@ void cDvbCi::slot_pollthread(void *c)
 #if defined (__sh__)
 				if (slot->camIsReady)
 				{
+					//FIXME:
+					/*
 					if (sendCreateTC(slot))
 					{
 						slot->status = eStatusWait;
@@ -527,6 +529,7 @@ void cDvbCi::slot_pollthread(void *c)
 					{
 						usleep(100000);
 					}
+					*/
 				} 
 				else
 				{
