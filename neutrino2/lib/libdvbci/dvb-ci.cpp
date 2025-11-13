@@ -929,17 +929,6 @@ cDvbCi::cDvbCi(int Slots)
 	{
 		for (i = 0; i < Slots; i++)
 		{
-		/*
-#if defined (__sh__)
-			sprintf(filename, "/dev/dvb/adapter%d/ci%d", j, i);
-#else
-#ifdef USE_OPENGL
-			sprintf(filename, "/dev/dvb/adapter%d/ca%d", j, i);
-#else	
-			sprintf(filename, "/dev/ci%d", i);
-#endif
-#endif
-		*/
 #ifdef USE_OPENGL
 			sprintf(filename, "/dev/dvb/adapter%d/ca%d", j, i);
 #elif defined (__sh__)
@@ -988,6 +977,8 @@ cDvbCi::cDvbCi(int Slots)
 					{
 						printf("pthread_create failed\n");
 					}
+					
+					fd = -1;
 				}
 			}
 		}
