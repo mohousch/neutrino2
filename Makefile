@@ -140,14 +140,14 @@ init:
 	echo ""
 # cicam
 	@echo -e "\nCICAM support ?:"
-	@echo -e "   \033[01;32m1)  yes\033[00m"
-	@echo "   2) no"
+	@echo -e "   \033[01;32m1)  no\033[00m"
+	@echo "   2) yes"
 	@read -p "Select CI-CAM support (1-2)?" CICAM; \
 	CICAM=$${CICAM}; \
 	case "$$CICAM" in \
-		1) echo "CICAM=cicam" >> config.local;; \
-		2) echo "CICAM=" >> config.local;; \
-		*) echo "CICAM=cicam" >> config.local;; \
+		1) echo "CICAM=" >> config.local;; \
+		2) echo "CICAM=cicam" >> config.local;; \
+		*) echo "CICAM=" >> config.local;; \
 	esac; \
 	echo ""
 # 4digits / vfd / lcd / tftlcd
@@ -169,7 +169,7 @@ init:
 	esac; \
 	echo ""
 # graphlcd
-	@echo -e "\GraphLCD spport ?:"
+	@echo -e "\nGraphLCD spport ?:"
 	@echo "   1)  yes"
 	@echo -e "   \033[01;32m2)  No\033[00m"
 	@read -p "Select NGLCD support (1-2)?" NGLCD; \
@@ -257,8 +257,6 @@ N2_OPTS += --enable-lua
 endif
 
 # CICAM
-CICAM ?= cicam
-
 ifeq ($(CICAM), cicam)
 N2_OPTS += --enable-ci
 endif
