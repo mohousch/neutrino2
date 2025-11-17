@@ -895,7 +895,7 @@ void CLCDDisplay::blit(void)
 			else
 			{
 				// LCD_COLOR_BITORDER_RGB565
-#if defined (PLATFORM_DREAMBOX)	|| defined (PLATFORM_GIGABLUE)
+#if defined (PLATFORM_DREAMBOX)	|| defined (PLATFORM_GIGABLUE) || defined (LCD_COLOR_BITORDER_RGB565)
 				// gggrrrrrbbbbbggg bit order from memory
 				// gggbbbbbrrrrrggg bit order to LCD
 				uint8_t gb_buffer[lcd_stride * lcd_yres];

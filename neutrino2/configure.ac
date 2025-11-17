@@ -93,6 +93,16 @@ if test "$enable_lcd" = "yes"; then
 AC_DEFINE(ENABLE_LCD,1,[include lcd support])
 fi
 
+# LCD_COLOR_BITORDER_RGB565
+AC_ARG_ENABLE(lcd_color_bitorder_rgb565,
+	AS_HELP_STRING(--enable-lcd-color-bitorder-rgb565,include lcd color bitorder rgb565 support),
+	,[enable_lcd_color_bitorder_rgb565=no])
+AM_CONDITIONAL(ENABLE_LCD_COLOR_BITORDER_RGB565,test "$enable_lcd_color_bitorder_rgb565" = "yes")
+
+if test "$enable_lcd_color_bitorder_rgb565" = "yes"; then
+AC_DEFINE(ENABLE_LCD_COLOR_BITORDER_RGB565,1,[include lcd color bitorder rgb565 support])
+fi
+
 # tftlcd
 AC_ARG_ENABLE(tftlcd,
 	AS_HELP_STRING(--enable-tftlcd,include tftlcd support),
