@@ -116,7 +116,7 @@ int COSDSettings::showMenu(void)
 		osdSettings = new ClistBox(&box);
 		
 		osdSettings->setWidgetMode(ClistBox::MODE_MENU);
-		osdSettings->setWidgetType(ClistBox::TYPE_CLASSIC);
+		osdSettings->setWidgetType(ClistBox::TYPE_STANDARD);
 		osdSettings->enableShrinkMenu();
 		osdSettings->paintMainFrame(true);
 		//
@@ -1212,7 +1212,7 @@ int CSkinManager::showMenu()
 		skinMenu = new ClistBox(&box);
 
 		skinMenu->setWidgetMode(ClistBox::MODE_LISTBOX);
-		skinMenu->setWidgetType(ClistBox::TYPE_CLASSIC);
+		skinMenu->setWidgetType(ClistBox::TYPE_STANDARD);
 		skinMenu->enableShrinkMenu();
 		skinMenu->enablePaintHead();
 		skinMenu->setTitle(_("Skin Select"), NEUTRINO_ICON_COLORS);

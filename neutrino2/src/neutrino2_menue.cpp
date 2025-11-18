@@ -92,7 +92,7 @@ void CNeutrinoApp::mainMenu(void)
 		nMenu = new ClistBox(&box);
 		
 		nMenu->setWidgetMode(ClistBox::MODE_MENU);
-		nMenu->setWidgetType(ClistBox::TYPE_CLASSIC);
+		nMenu->setWidgetType(ClistBox::TYPE_STANDARD);
 		nMenu->enableShrinkMenu();
 		nMenu->paintMainFrame(true);
 		
@@ -384,7 +384,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 		//
 		menu = new ClistBox(&box);
 		menu->setWidgetMode(ClistBox::MODE_MENU);
-		menu->setWidgetType(ClistBox::TYPE_CLASSIC);
+		menu->setWidgetType(ClistBox::TYPE_STANDARD);
 		menu->enableShrinkMenu();
 		menu->paintMainFrame(true);
 		

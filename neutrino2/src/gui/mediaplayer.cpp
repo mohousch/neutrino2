@@ -91,7 +91,7 @@ void CMediaPlayerMenu::showMenu()
 		//
 		mediaPlayer = new ClistBox(&box);
 		mediaPlayer->setWidgetMode(ClistBox::MODE_MENU);
-		mediaPlayer->setWidgetType(ClistBox::TYPE_CLASSIC);
+		mediaPlayer->setWidgetType(ClistBox::TYPE_STANDARD);
 		mediaPlayer->enableShrinkMenu();
 		//
 		mediaPlayer->enablePaintHead();

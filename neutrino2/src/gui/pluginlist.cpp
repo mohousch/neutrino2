@@ -105,7 +105,7 @@ int CPluginList::showMenu()
 		
 		//
 		plist = new ClistBox(&box);
-		plist->setWidgetType(ClistBox::TYPE_CLASSIC);
+		plist->setWidgetType(ClistBox::TYPE_STANDARD);
 		plist->setWidgetMode(ClistBox::MODE_MENU);
 		plist->enableShrinkMenu();
 		plist->paintMainFrame(true);

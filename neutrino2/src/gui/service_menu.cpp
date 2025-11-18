@@ -113,7 +113,7 @@ int CServiceMenu::showMenu(void)
 		//
 		service = new ClistBox(&box);
 		service->setWidgetMode(ClistBox::MODE_MENU);
-		service->setWidgetType(ClistBox::TYPE_CLASSIC);
+		service->setWidgetType(ClistBox::TYPE_STANDARD);
 		service->enableShrinkMenu();
 		// head
 		service->enablePaintHead();
@@ -131,18 +131,18 @@ int CServiceMenu::showMenu(void)
 		widget->addCCItem(service);
 	
 		// tuner/scan setup
-		service->addItem(new CMenuForwarder(_("Scan transponder"), true, NULL, new CTunerSetup(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCANSETTINGS));
+		service->addItem(new CMenuForwarder(_("Scan transponder"), true, NULL, new CTunerSetup(), NULL, CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED, NEUTRINO_ICON_MENUITEM_SCANSETTINGS));
 			
 		// Bouquets Editor
-		service->addItem(new CMenuForwarder(_("Bouquet Editor"), true, NULL, new CBEBouquetWidget(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOUQUETSEDITOR));
+		service->addItem(new CMenuForwarder(_("Bouquet Editor"), true, NULL, new CBEBouquetWidget(), NULL, CRCInput::RC_green, NEUTRINO_ICON_BUTTON_GREEN, NEUTRINO_ICON_MENUITEM_BOUQUETSEDITOR));
 			
 		// CI Cam 	
 #if defined (ENABLE_CI) 
-		service->addItem(new CMenuForwarder(_("CI Cam"), true, NULL, g_CamHandler, NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_CICAM));
+		service->addItem(new CMenuForwarder(_("CI Cam"), true, NULL, g_CamHandler, NULL, CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW, NEUTRINO_ICON_MENUITEM_CICAM));
 #endif
 			
 		// software update
-		service->addItem(new CMenuForwarder(_("Software update"), true, NULL, new CUpdateSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SOFTUPDATE));
+		service->addItem(new CMenuForwarder(_("Software update"), true, NULL, new CUpdateSettings(), NULL, CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE, NEUTRINO_ICON_MENUITEM_SOFTUPDATE));
 	}
 
 	service->integratePlugins(CPlugins::I_TYPE_SERVICE);

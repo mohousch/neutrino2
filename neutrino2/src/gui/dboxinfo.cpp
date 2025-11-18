@@ -573,7 +573,7 @@ int CInfoMenu::showMenu()
 		infoMenu = new ClistBox(&box);
 		
 		infoMenu->setWidgetMode(ClistBox::MODE_MENU);
-		infoMenu->setWidgetType(ClistBox::TYPE_CLASSIC);
+		infoMenu->setWidgetType(ClistBox::TYPE_STANDARD);
 		infoMenu->enableShrinkMenu();
 		infoMenu->paintMainFrame(true);
 		
@@ -594,16 +594,16 @@ int CInfoMenu::showMenu()
 		widget->addCCItem(infoMenu);
 	
 		//
-		infoMenu->addItem( new CMenuForwarder(_("Information"), true, NULL, new CDBoxInfoWidget(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO));
+		infoMenu->addItem( new CMenuForwarder(_("Information"), true, NULL, new CDBoxInfoWidget(), NULL, CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED, NEUTRINO_ICON_MENUITEM_BOXINFO));
 			
 		//
-		infoMenu->addItem(new CMenuForwarder(_("Image info"),  true, NULL, new CImageInfo(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_IMAGEINFO), false);
+		infoMenu->addItem(new CMenuForwarder(_("Image info"),  true, NULL, new CImageInfo(), NULL, CRCInput::RC_green, NEUTRINO_ICON_BUTTON_GREEN, NEUTRINO_ICON_MENUITEM_IMAGEINFO), false);
 			
 		//
-		infoMenu->addItem(new CMenuForwarder(_("Stream information"), true, NULL, new CStreamInfo(), "", CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO));
+		infoMenu->addItem(new CMenuForwarder(_("Stream information"), true, NULL, new CStreamInfo(), "", CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW, NEUTRINO_ICON_MENUITEM_BOXINFO));
 		
 		//
-		infoMenu->integratePlugins(CPlugins::I_TYPE_INFORMATION);
+		infoMenu->integratePlugins(CPlugins::I_TYPE_INFORMATION, CRCInput::RC_blue);
 	}
 	
 	//
