@@ -227,7 +227,7 @@ function cat_menu(_id)
 				}
 					
 				item = neutrino2.CMenuForwarder(conv_utf8(item_detail.name))
-				item:setHintIcon(tfile)
+				--item:setHintIcon(tfile)
 				item:setOption(item_detail.desc)
 				item:set2lines(true)
 				item:setHint(item_detail.desc)
@@ -408,7 +408,7 @@ function episode_menu(s)
 				}
 				
 				item = neutrino2.CMenuForwarder(episode_detail.name)
-				item:setHintIcon(tfile)
+				--item:setHintIcon(tfile)
 				item:setOption(episode_detail.desc)
 				item:setActionKey(null, "play")
 				item:set2lines(true)
