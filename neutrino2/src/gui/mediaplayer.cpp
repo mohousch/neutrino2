@@ -112,7 +112,10 @@ void CMediaPlayerMenu::showMenu()
 	}
 
 	//
-	mediaPlayer->integratePlugins(CPlugins::I_TYPE_MULTIMEDIA);
+	mediaPlayer->addPluginItem("audioplayer", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED);
+	mediaPlayer->addPluginItem("moviebrowser", CRCInput::RC_green, NEUTRINO_ICON_BUTTON_GREEN);
+	mediaPlayer->addPluginItem("movieplayer", CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW);
+	mediaPlayer->addPluginItem("picviewer", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE);
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);

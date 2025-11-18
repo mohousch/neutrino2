@@ -373,7 +373,7 @@ class ClistBox : public CComponent
 			MODE_SETUP
 		};
 		
-		// type
+		// type / layout
 		enum
 		{
 			TYPE_STANDARD = 0,
@@ -517,7 +517,8 @@ class ClistBox : public CComponent
 		void clearItems(void){items.clear(); current_page = 0;};
 		void clear(void){hbutton_labels.clear(); fbutton_labels.clear(); current_page = 0; items.clear();};
 		void setSelected(unsigned int _new) { selected = _new; };
-		void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const char* const Icon = NULL, bool enabled = true, int imode = MODE_MENU, int itype = TYPE_STANDARD, bool i2lines = false, int iBorder = CComponent::BORDER_NO);
+		void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, bool enabled = true, int imode = MODE_MENU, int itype = TYPE_STANDARD, bool i2lines = false, int iBorder = CComponent::BORDER_NO);
+		void addPluginItem(const char *const pluginName, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const char* const Icon = NULL, bool enabled = true, int imode = MODE_MENU, int itype = TYPE_STANDARD, bool i2lines = false, int iBorder = CComponent::BORDER_NO);
 		void selectItemByName(const char *name);
 		////
 		void initFrames();
@@ -530,8 +531,6 @@ class ClistBox : public CComponent
 		void refresh(bool show = false){if (paintDate && paint_Head) timer->refresh();};
 		bool update() const {return paintDate;};
 		inline bool isPainted(void){return painted;};
-//		bool hasHead(){return paint_Head;};
-//		bool hasFoot(){return paint_Foot;};
 		//// main properties
 		void enableShrinkMenu(){shrinkMenu = true;};
 		void setColor(fb_pixel_t col){bgcolor = col;};

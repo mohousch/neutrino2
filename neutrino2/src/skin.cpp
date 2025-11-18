@@ -1643,8 +1643,6 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		
 	CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED;
 	unsigned int mode = ClistBox::MODE_MENU;
-	char * shortcut = NULL;
-	char * shortcut_icon = NULL;
 	unsigned int type = ClistBox::TYPE_STANDARD;
 	unsigned int i_lines = false;
 	unsigned int i_border = false;
@@ -1653,29 +1651,11 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	{	
 		integration = (CPlugins::i_type_t)xmlGetSignedNumericAttribute(listboxintegration_node, "id", 0);
 		mode = xmlGetSignedNumericAttribute(listboxintegration_node, "mode", 0);
-		shortcut = xmlGetAttribute(listboxintegration_node, (char *)"shortcut");
-		shortcut_icon = xmlGetAttribute(listboxintegration_node, (char *)"shortcut_icon");
 		type = xmlGetSignedNumericAttribute(listboxintegration_node, "type", 0);
 		i_lines = xmlGetSignedNumericAttribute(listboxintegration_node, "lines", 0);
 		i_border = xmlGetSignedNumericAttribute(listboxintegration_node, "border", 0);
-		
-		neutrino_msg_t key = CRCInput::RC_nokey;
-		
-		key = convertKey(shortcut);
-		std::string filename;
-		
-		if (shortcut_icon)
-		{
-			filename = CONFIGDIR "/skins/";
-			filename += g_settings.preferred_skin;
-			filename += "/";
-			filename += shortcut_icon;
 						
-			if (!file_exists(filename.c_str()))
-				filename = shortcut_icon;
-		}
-						
-		listBox->integratePlugins(integration, key, filename.c_str(), true, mode, type, i_lines, i_border);
+		listBox->integratePlugins(integration, true, mode, type, i_lines, i_border);
 				
 		listboxintegration_node = listboxintegration_node->xmlNextNode;
 	}

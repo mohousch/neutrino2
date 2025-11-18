@@ -3646,7 +3646,7 @@ int ClistBox::directKeyPressed(neutrino_msg_t _msg, CTarget *target)
 }
 
 //
-void ClistBox::integratePlugins(CPlugins::i_type_t integration, const neutrino_msg_t DirectKey, const char* const Icon, bool enabled, int imode, int itype, bool i2lines, int iBorder)
+void ClistBox::integratePlugins(CPlugins::i_type_t integration, bool enabled, int imode, int itype, bool i2lines, int iBorder)
 {
 	unsigned int number_of_plugins = (unsigned int) g_PluginList->getNumberOfPlugins();
 
@@ -3671,8 +3671,42 @@ void ClistBox::integratePlugins(CPlugins::i_type_t integration, const neutrino_m
 				IconName += g_PluginList->getIcon(count);
 			}
 
-			//FIXME: iconName
-			CMenuForwarder *fw_plugin = new CMenuForwarder(_(g_PluginList->getName(count)), enabled, NULL, CPluginsExec::getInstance(), g_PluginList->getFileName(count), DirectKey, Icon, IconName.c_str());
+			CMenuForwarder *fw_plugin = new CMenuForwarder(_(g_PluginList->getName(count)), enabled, NULL, CPluginsExec::getInstance(), g_PluginList->getFileName(count), CRCInput::RC_nokey, NULL, IconName.c_str());
+
+			fw_plugin->setHint(_(g_PluginList->getDescription(count).c_str()));
+			fw_plugin->setWidgetType(itype);
+			fw_plugin->set2lines(i2lines);
+			fw_plugin->setBorderMode(iBorder);
+			
+			fw_plugin->isPlugin = true;
+			
+			addItem(fw_plugin);
+		}
+	}
+}
+
+////test
+void ClistBox::addPluginItem(const char *const pluginName, const neutrino_msg_t DirectKey, const char* const Icon, bool enabled, int imode, int itype, bool i2lines, int iBorder)
+{
+	if (g_PluginList->plugin_exists(pluginName))
+	{
+		unsigned int count = g_PluginList->find_plugin(pluginName);
+
+		if (!g_PluginList->isHidden(count))
+		{
+			//iconName
+			std::string iconName = NEUTRINO_ICON_MENUITEM_PLUGIN;
+
+			if(g_PluginList->getIcon(count) != NULL)
+			{
+				iconName = PLUGINDIR;
+				iconName += "/";
+				iconName += g_PluginList->getFileName(count);
+				iconName += "/";
+				iconName += g_PluginList->getIcon(count);
+			}
+			
+			CMenuForwarder *fw_plugin = new CMenuForwarder(_(g_PluginList->getName(count)), enabled, NULL, CPluginsExec::getInstance(), g_PluginList->getFileName(count), DirectKey, Icon, iconName.c_str());
 
 			fw_plugin->setHint(_(g_PluginList->getDescription(count).c_str()));
 			fw_plugin->setWidgetType(itype);
