@@ -60,7 +60,6 @@ class cDvbSubtitleBitmaps : public cListObject
 		}
 };
 
-
 class cDvbSubtitleConverter  /*: public cThread */
 {
 	private:
@@ -84,7 +83,6 @@ class cDvbSubtitleConverter  /*: public cThread */
 		void Pause(bool pause);
 		void Lock();
 		void Unlock();
-		//int Convert(const unsigned char *Data, int Length, int64_t pts);
 		int Convert(const uint8_t *Data, int Length, int64_t pts);
 		int Convert(AVSubtitle *sub, int64_t pts);
 		bool Running() { return running; };

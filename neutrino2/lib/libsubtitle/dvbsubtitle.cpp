@@ -233,7 +233,7 @@ int cDvbSubtitleConverter::Convert(AVSubtitle *sub, int64_t pts)
 	return 0;
 }
 
-int cDvbSubtitleConverter::Convert(const unsigned char *Data, int Length, int64_t pts)
+int cDvbSubtitleConverter::Convert(const uint8:t *Data, int Length, int64_t pts)
 {
 	AVPacket avpkt;
 	int got_subtitle = 0;

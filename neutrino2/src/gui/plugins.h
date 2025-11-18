@@ -129,9 +129,9 @@ class CPlugins
 		void loadPlugins();
 		
 		//
-		int find_plugin(const std::string & filename);
-		bool pluginfile_exists(const std::string & filename);
-		bool plugin_exists(const std::string & filename);
+		int find_plugin(const std::string &filename);
+		bool pluginfile_exists(const std::string &filename);
+		bool plugin_exists(const std::string &filename);
 
 		// get methods
 		inline int getNumberOfPlugins(void) const { return plugin_list.size(); }
