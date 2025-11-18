@@ -126,11 +126,11 @@ function get_cat()
 	if c_data then
 		local jd
 		
-		if neutrino2.USE_OPENGL == 1 then
-			jd = json.decode(c_data)
-		else
+		--if neutrino2.USE_OPENGL == 1 then
+		--	jd = json.decode(c_data)
+		--else
 			jd = json:decode(c_data)
-		end
+		--end
 		
 		if jd then
 			for i = 1, jd.totalCategories do
@@ -285,11 +285,11 @@ function season_menu(_id)
 	if c_data then
 		local jd
 		
-		if neutrino2.USE_OPENGL == 1 then
-			jd = json.decode(c_data)
-		else
+		--if neutrino2.USE_OPENGL == 1 then
+		--	jd = json.decode(c_data)
+		--else
 			jd = json:decode(c_data)
-		end
+		--end
 		
 		if jd then
 			sm = neutrino2.ClistBox(340, 60, 600, 600)
