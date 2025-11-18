@@ -603,7 +603,7 @@ int CInfoMenu::showMenu()
 		infoMenu->addItem(new CMenuForwarder(_("Stream information"), true, NULL, new CStreamInfo(), "", CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW, NEUTRINO_ICON_MENUITEM_BOXINFO));
 		
 		//
-		infoMenu->integratePlugins(CPlugins::I_TYPE_INFORMATION, CRCInput::RC_blue);
+		infoMenu->integratePlugins(CPlugins::I_TYPE_INFORMATION, CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE);
 	}
 	
 	//

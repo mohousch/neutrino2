@@ -3646,12 +3646,11 @@ int ClistBox::directKeyPressed(neutrino_msg_t _msg, CTarget *target)
 }
 
 //
-void ClistBox::integratePlugins(CPlugins::i_type_t integration, const unsigned int shortcut, bool enabled, int imode, int itype, bool i2lines, int iBorder)
+void ClistBox::integratePlugins(CPlugins::i_type_t integration, const neutrino_msg_t DirectKey, const char* const Icon, bool enabled, int imode, int itype, bool i2lines, int iBorder)
 {
 	unsigned int number_of_plugins = (unsigned int) g_PluginList->getNumberOfPlugins();
 
 	std::string IconName;
-	unsigned int sc = shortcut;
 
 	for (unsigned int count = 0; count < number_of_plugins; count++)
 	{
@@ -3672,11 +3671,8 @@ void ClistBox::integratePlugins(CPlugins::i_type_t integration, const unsigned i
 				IconName += g_PluginList->getIcon(count);
 			}
 
-			//
-			neutrino_msg_t dk = (shortcut != CRCInput::RC_nokey) ? CRCInput::convertDigitToKey(sc++) : CRCInput::RC_nokey;
-
 			//FIXME: iconName
-			CMenuForwarder *fw_plugin = new CMenuForwarder(_(g_PluginList->getName(count)), enabled, NULL, CPluginsExec::getInstance(), g_PluginList->getFileName(count), dk, NULL, IconName.c_str());
+			CMenuForwarder *fw_plugin = new CMenuForwarder(_(g_PluginList->getName(count)), enabled, NULL, CPluginsExec::getInstance(), g_PluginList->getFileName(count), DirectKey, Icon, IconName.c_str());
 
 			fw_plugin->setHint(_(g_PluginList->getDescription(count).c_str()));
 			fw_plugin->setWidgetType(itype);
