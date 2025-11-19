@@ -122,12 +122,6 @@ extern void tuxtx_set_pid(int pid, int page, const char * cc);
 extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
 extern int tuxtx_main(int pid, int page, bool isEplayer);
 
-void getPlayerPts(int64_t* pts)
-{
-	if (playback)
-		playback->GetPts((uint64_t &) *pts);
-}
-
 //// movieplayer
 CMoviePlayerGui::CMoviePlayerGui()
 {

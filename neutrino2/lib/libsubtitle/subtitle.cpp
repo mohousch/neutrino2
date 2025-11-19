@@ -10,7 +10,8 @@
 
 #include <cerrno>
 
-#include <dmx_cs.h>	/* libdvbapi */
+#include <libdvbapi/dmx_cs.h>
+#include <libdvbapi/playback_cs.h>
 
 #include "semaphore.h"
 #include "dvbsubtitle.h"
@@ -217,12 +218,12 @@ int dvbsub_close()
 }
 
 static cDemux * dmx;
-extern void getPlayerPts(int64_t *);
+extern cPlayback *playback;
 void dvbsub_get_stc(int64_t * STC)
 {
 	if (isEplayer)
 	{
-		getPlayerPts(STC);
+		playback->GetPts((uint64_t &) *STC);
 		return;
 	}
 	
