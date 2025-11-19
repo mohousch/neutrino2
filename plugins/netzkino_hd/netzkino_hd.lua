@@ -113,11 +113,11 @@ function get_categories()
 
 		local j_table
 		
-		--if neutrino2.USE_OPENGL == 1 then
-		--	j_table = json.decode(s)
-		--else
+		if neutrino2.USE_OPENGL == 1 then
+			j_table = json.decode(s)
+		else
 			j_table = json:decode(s)
-		--end
+		end
 	
 		if j_table == nil  then 
 			return nil 
@@ -217,11 +217,11 @@ function get_movies(_id)
 		local s = fp
 		local j_table
 
-		--if neutrino2.USE_OPENGL == 1 then
-		--	j_table = json.decode(s)
-		--else
+		if neutrino2.USE_OPENGL == 1 then
+			j_table = json.decode(s)
+		else
 			j_table = json:decode(s)
-		--end
+		end
 		
 		max_page = tonumber(j_table.pages);
 		local posts = j_table.posts
