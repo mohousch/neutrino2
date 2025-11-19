@@ -3143,7 +3143,6 @@ void ClistBox::hide()
 		timer = NULL;
 	}
 	
-	////test
 	for (unsigned int count = 0; count < items.size(); count++)
 	{
 		CMenuItem *item = items[count];
@@ -3685,7 +3684,6 @@ void ClistBox::integratePlugins(CPlugins::i_type_t integration, bool enabled, in
 	}
 }
 
-////test
 void ClistBox::addPluginItem(const char *const pluginName, const neutrino_msg_t DirectKey, const char* const Icon, bool enabled, int imode, int itype, bool i2lines, int iBorder)
 {
 	if (g_PluginList->plugin_exists(pluginName))

@@ -286,7 +286,6 @@ static void clear_queue()
 	pthread_mutex_unlock(&packetMutex);
 }
 
-////
 void dvbsub_write(AVSubtitle *sub, int64_t pts)
 {
 	pthread_mutex_lock(&packetMutex);
@@ -297,7 +296,6 @@ void dvbsub_write(AVSubtitle *sub, int64_t pts)
 	pthread_cond_broadcast(&packetCond);
 	pthread_mutex_unlock(&packetMutex);
 }
-////
 
 static void* reader_thread(void * /*arg*/)
 {
