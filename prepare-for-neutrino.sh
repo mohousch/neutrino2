@@ -84,6 +84,8 @@ PACKAGES="\
 	wget \
 	cmake \
 	gperf \
+	gdb \
+	valgrind \
 	\
 	${UBUNTU:+rpm}                                               ${FEDORA:+rpm-build}      ${GENTOO:+rpm}         \
 	${UBUNTU:+lsb-release}          ${SUSE:+lsb-release}                                   ${GENTOO:+lsb-release} \
