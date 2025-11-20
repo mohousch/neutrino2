@@ -111,7 +111,7 @@ void tuxtxt_compress_page(int p, int sp, unsigned char* buffer)
 
 #else
 	//if (pg->pData)
-		memcpy(pg->data,buffer,23*40);
+		memcpy(pg->data, buffer, 23*40);
 #endif
 	pthread_mutex_unlock(&tuxtxt_cache_lock);
 
@@ -210,6 +210,7 @@ int tuxtxt_next_hex(int i) /* return next existing non-decimal page number */
 	
 	return i;
 }
+
 /*
  * TOP-Text
  * Info entnommen aus videotext-0.6.19991029,
@@ -452,7 +453,6 @@ void tuxtxt_clear_cache()
 static cDemux * dmx = NULL;
 int tuxtxt_init_demuxer()
 {
-
 	if(dmx == NULL) 
 	{
 		dmx = new cDemux();
@@ -547,8 +547,8 @@ void tuxtxt_allocate_cache(int magazine)
 	// check cachetable and allocate memory if needed
 	if (tuxtxt_cache.astCachetable[tuxtxt_cache.current_page[magazine]][tuxtxt_cache.current_subpage[magazine]] == 0)
 	{
-
 		tuxtxt_cache.astCachetable[tuxtxt_cache.current_page[magazine]][tuxtxt_cache.current_subpage[magazine]] = (tstCachedPage*) malloc(sizeof(tstCachedPage));
+		
 		if (tuxtxt_cache.astCachetable[tuxtxt_cache.current_page[magazine]][tuxtxt_cache.current_subpage[magazine]] )
 		{
 #if TUXTXT_COMPRESS >0

@@ -1,3 +1,7 @@
+//
+//
+//
+
 #include <errno.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
@@ -457,41 +461,41 @@ static void* dvbsub_thread(void* /*arg*/)
 
 		if (packet_queue.size())
 		{
-		pthread_mutex_lock(&packetMutex);
-		packet = packet_queue.pop();
-		pthread_mutex_unlock(&packetMutex);
+			pthread_mutex_lock(&packetMutex);
+			packet = packet_queue.pop();
+			pthread_mutex_unlock(&packetMutex);
 
-		if (!packet) 
-		{
-			continue;
-		}
+			if (!packet) 
+			{
+				continue;
+			}
+			
+			packlen = (packet[4] << 8 | packet[5]) + 6;
+
+			pts = get_pts(packet);
+
+			dataoffset = packet[8] + 8 + 1;
 		
-		packlen = (packet[4] << 8 | packet[5]) + 6;
+			if (packet[dataoffset] != 0x20) 
+			{
+				goto next_round;
+			}
 
-		pts = get_pts(packet);
+			if (packlen <= dataoffset + 3) 
+			{
+				goto next_round;
+			}
 
-		dataoffset = packet[8] + 8 + 1;
+			if (packet[dataoffset + 2] == 0x0f) 
+			{
+				dvbSubtitleConverter->Convert(&packet[dataoffset + 2], packlen - (dataoffset + 2), pts);
+			} 
 		
-		if (packet[dataoffset] != 0x20) 
-		{
-			goto next_round;
-		}
-
-		if (packlen <= dataoffset + 3) 
-		{
-			goto next_round;
-		}
-
-		if (packet[dataoffset + 2] == 0x0f) 
-		{
-			dvbSubtitleConverter->Convert(&packet[dataoffset + 2], packlen - (dataoffset + 2), pts);
-		} 
-		
-//		timeout = dvbSubtitleConverter->Action();
+//			timeout = dvbSubtitleConverter->Action();
 
 next_round:
-		if (packet)
-			free(packet);
+			if (packet)
+				free(packet);
 			
 		}
 		else

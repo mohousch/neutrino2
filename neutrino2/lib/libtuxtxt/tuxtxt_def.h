@@ -27,7 +27,6 @@ enum /* page function */
 	FUNC_TRIGGER /* Page contain trigger messages defined according to [8] */
 };
 
-
 /* struct for (G)POP/(G)DRCS links for level 2.5, allocated at reception of p27/4 or /5, initialized with 0 after allocation */
 typedef struct
 {
