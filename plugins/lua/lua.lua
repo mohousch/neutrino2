@@ -264,11 +264,14 @@ function testClistBox()
 	
 	listBox:addKey(neutrino2.CRCInput_RC_info, self, "infoBox")
 	
+::REPEAT::	
 	listBox:exec(self)
 	
-	local actionKey = listBox:getActionKey()
+	if listBox:getExitPressed() == true then
+		return neutrino2.CTarget_RETURN_EXIT
+	end
 	
-	print("actionKey: " .. actionKey)
+	local actionKey = listBox:getActionKey()
 	
 	if actionKey == "msgBox" then
 		messageBox()
@@ -289,7 +292,7 @@ function testClistBox()
 	end
 	
 	if listBox:getExitPressed() ~= true then
-		testClistBox()
+		goto REPEAT
 	end
 end
 
@@ -339,11 +342,14 @@ function testCFrameBox()
 	frame4:setBorderMode()
 	frameBox:addFrame(frame4)
 
+::REPEAT::
 	frameBox:exec(self)
+	
+	if frameBox:getExitPressed() == true then
+		return neutrino2.CTarget_RETURN_EXIT
+	end
 
 	local actionKey = frameBox:getActionKey()
-	
-	print("actionKey: " .. actionKey)
 
 	if actionKey == "moviePlayer" then
 		print("testCFrameBox: actionKey: moviePlayer")
@@ -357,74 +363,7 @@ function testCFrameBox()
 	end
 
 	if frameBox:getExitPressed() ~= true then
-		testCFrameBox()
-	end
-end
-
--- CFrameBox
-function testCFrameBoxRandom()
-	local fb = neutrino2.CFrameBuffer_getInstance()
-	local box = neutrino2.CBox()
-
-	box.iX = fb:getScreenX() + 40
-	box.iY = fb:getScreenY() + 40
-	box.iWidth = fb:getScreenWidth() - 80
-	box.iHeight = fb:getScreenHeight() - 80
-
-	local frameBox = neutrino2.CFrameBox(box)
-
-	frame1 = neutrino2.CFrameItem()
-	frame1:setPosition(box.iX, box.iY + 2, 350, 60)
-	frame1:setTitle("MP3")
-	frame1:setHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
-	frame1:setActionKey(null, "audioPlayer")
-	frame1:setBorderMode()
-	frameBox:addFrame(frame1)
-
-	frame2 = neutrino2.CFrameItem()
-	frame2:setPosition(box.iX, box.iY + 2 + 60, 350, 60)
-	frame2:setTitle("PicViewer")
-	frame2:setHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
-	frame2:setActionKey(null, "pictureViewer")
-	frame2:setBorderMode()
-	frameBox:addFrame(frame2)
-
-	frame3 = neutrino2.CFrameItem()
-	frame3:setPosition(box.iX, box.iY + 2 + 60 + 2 + 60, 350, 60)
-	frame3:setTitle("MoviePlayer")
-	frame3:setHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
-	frame3:setIconName(neutrino2.NEUTRINO_ICON_MOVIE)
-	frame3:setOption("spielt Movie Dateien")
-	frame3:setActionKey(null, "moviePlayer")
-	frame3:setBorderMode()
-	frameBox:addFrame(frame3)
-
-	frame10 = neutrino2.CFrameItem()
-	frame10:setPosition(box.iX, fb:getScreenHeight() - 80 - 60, 350, 60)
-	frame10:setTitle("Beenden")
-	frame10:setHAlign(neutrino2.CComponent_CC_ALIGN_CENTER)
-	frame10:setActionKey(null, "exit")
-	frame10:setBorderMode()
-	frameBox:addFrame(frame10)
-
-	frameBox:exec(self)
-
-	local actionKey = frameBox:getActionKey()
-	
-	print("actionKey: " .. actionKey)
-
-	if actionKey == "moviePlayer" then
-		moviePlayer()
-	elseif actionKey == "audioPlayer" then
-		audioPlayer()
-	elseif actionKey == "pictureViewer" then
-		pictureViewer()
-	elseif actionKey == "exit" then
-		return neutrino2.CTarget_RETURN_EXIT
-	end
-
-	if frameBox:getExitPressed() ~= true then
-		testCFrameBoxRandom()
+		goto REPEAT
 	end
 end
 
@@ -502,12 +441,6 @@ function testCWidget()
 	item10:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item10:setHint("testing CFrameBox")
 	item10:setActionKey(null, "framebox")
-	
-	-- testCFrameBoxRandom
-	item11 = neutrino2.CMenuForwarder("CFrameBox2")
-	item11:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
-	item11:setHint("testing CFrameBox")
-	item11:setActionKey(null, "frameboxrandom")
 
 	listBox:addItem(item1)
 	listBox:addItem(item2)
@@ -519,7 +452,6 @@ function testCWidget()
 	listBox:addItem(item8)
 	listBox:addItem(item9)
 	listBox:addItem(item10)
-	listBox:addItem(item11)
 
 	if selected < 0 then
 		selected = 0
@@ -530,16 +462,17 @@ function testCWidget()
 	testWidget:addCCItem(listBox)
 	testWidget:addKey(neutrino2.CRCInput_RC_info, null, "info")
 
+::REPEAT::
 	testWidget:exec(self, "")
+	
+	if testWidget:getExitPressed() == true then
+		return neutrino2.CTarget_RETURN_EXIT
+	end
 
 	selected = listBox:getSelected()
 	local key = testWidget:getKey()
 	local actionKey = testWidget:getActionKey()
-	
-	print("selected: " .. selected)
-	print("key: " .. key)
-	print("actionKey: " .. actionKey)
-	
+		
 	if actionKey == "msgBox" then
 		messageBox()
 	elseif actionKey == "helpBox" then
@@ -567,9 +500,9 @@ function testCWidget()
 	elseif actionKey == "info" then
 		infoBox()
 	end
-
+	
 	if testWidget:getExitPressed() ~= true then
-		testCWidget()
+		goto REPEAT
 	end
 end
 

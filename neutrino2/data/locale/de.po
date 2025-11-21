@@ -1288,7 +1288,7 @@ msgid "Magazines / Reports / Documentary"
 msgstr "Zeitschriften / Reportagen / Dokumentationen"
 
 msgid "Main Menu"
-msgstr "Hauptmen"
+msgstr "Hauptmenü"
 
 msgid "Make Remaining Channels list"
 msgstr "verbleibende Kanle Liste erstellen"
@@ -1705,10 +1705,10 @@ msgid "Portugues"
 msgstr "Portugiesen"
 
 msgid "Power Menu"
-msgstr "Power-Men"
+msgstr "Power Menü"
 
 msgid "Pre-school children's programmes"
-msgstr "Programme fr Vorschulkinder"
+msgstr "Programme für Vorschulkinder"
 
 msgid "Prefer TMDB Infos"
 msgstr "TMDB-Infos bevorzugen"

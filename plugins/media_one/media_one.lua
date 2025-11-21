@@ -680,7 +680,12 @@ function rssurlmenu(url)
 	
 	m:setSelected(selected)
 
+::REPEAT::
 	m:exec(self)
+	
+	if m:getExitPressed() == true then
+		return neutrino2.CTarget_RETURN_EXIT
+	end
 
 	selected = m:getSelected()
 
@@ -689,7 +694,8 @@ function rssurlmenu(url)
 	end
 
 	if m:getExitPressed() ~= true then
-		rssurlmenu(url)
+	--	rssurlmenu(url)
+		goto REPEAT
 	end
 
 	glob.feedpersed = nil
@@ -738,7 +744,12 @@ function start()
 	
 	sm:setSelected(s_selected)
 	
+::REPEAT::
 	sm:exec(self)
+	
+	if sm:getExitPressed() == true then
+		return neutrino2.CTarget_RETURN_EXIT
+	end
 
 	s_selected = sm:getSelected()
 
@@ -747,7 +758,8 @@ function start()
 	end
 
 	if sm:getExitPressed() ~= true then
-		start()
+		--start()
+		goto REPEAT
 	end
 end
 
