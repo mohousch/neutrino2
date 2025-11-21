@@ -2811,7 +2811,7 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 	}
 }
 
-int CNeutrinoApp::exec(CTarget * parent, const std::string & actionKey)
+int CNeutrinoApp::exec(CTarget * parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::exec: actionKey: %s\n", actionKey.c_str());
 
@@ -2852,7 +2852,7 @@ int CNeutrinoApp::exec(CTarget * parent, const std::string & actionKey)
 	}
 	else if(actionKey == "scart") 
 	{
-		g_RCInput->postMsg( NeutrinoMessages::RECORD_ON);
+		g_RCInput->postMsg( NeutrinoMessages::SCART_ON);
 		returnval = RETURN_EXIT_ALL;
 	}
 	else if (actionKey == "tvradioswitch")
@@ -3831,7 +3831,7 @@ _repeat:
 			mode = mode_ts;
 		}
 	}	
-	else if( msg == NeutrinoMessages::RECORD_ON ) 
+	else if( msg == NeutrinoMessages::SCART_ON ) 
 	{
 		if( mode != mode_scart ) 
 		{
@@ -3842,7 +3842,7 @@ _repeat:
 			CLCD::getInstance()->setMode(CLCD::MODE_SCART);
 		}
 	}	
-	else if( msg == NeutrinoMessages::RECORD_OFF ) 
+	else if( msg == NeutrinoMessages::SCART_OFF ) 
 	{
 		if( mode == mode_scart ) 
 		{
@@ -3990,7 +3990,7 @@ void CNeutrinoApp::realRun(void)
 				{
 					stopSubtitles();
 					g_RemoteControl->subChannelUp();
-					g_InfoViewer->showSubchan(); 
+					g_InfoViewer->showSubChan(); 
 			    	} 
 			    	else if(g_settings.virtual_zap_mode) 
 				{
@@ -4007,7 +4007,7 @@ void CNeutrinoApp::realRun(void)
 				{
 					stopSubtitles();
 					g_RemoteControl->subChannelDown();
-					g_InfoViewer->showSubchan();
+					g_InfoViewer->showSubChan();
 			    	} 
 			    	else if(g_settings.virtual_zap_mode) 
 				{
@@ -4066,7 +4066,7 @@ void CNeutrinoApp::realRun(void)
 				
 				g_RemoteControl->setSubChannel(CRCInput::getNumericValue(msg));
 				
-				g_InfoViewer->showSubchan();
+				g_InfoViewer->showSubChan();
 				
 				// restore mute symbol
 				audioMute(current_muted, true);

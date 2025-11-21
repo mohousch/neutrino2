@@ -782,131 +782,6 @@ void CInfoViewer::getCurrentNextEPG(t_channel_id ChannelID, bool newChan, int EP
 	}		
 }
 
-void CInfoViewer::showSubchan()
-{
-	dprintf(DEBUG_INFO, "CInfoViewer::showSubchan:\n");
-
-  	std::string subChannelName;	// holds the name of the subchannel/audio channel
-  	int subchannel = 0;		// holds the channel index
-
-  	if (!(g_RemoteControl->subChannels.empty ())) 
-	{
-		// get info for nvod/subchannel
-		subchannel = g_RemoteControl->selected_subchannel;
-		if (g_RemoteControl->selected_subchannel >= 0)
-	  		subChannelName = g_RemoteControl->subChannels[g_RemoteControl->selected_subchannel].subservice_name;
-  	} 
-	else if (g_RemoteControl->current_PIDs.APIDs.size () > 1 ) 
-	{
-		// get info for audio channel
-		subchannel = g_RemoteControl->current_PIDs.otherPIDs.selected_apid;
-		subChannelName = g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.otherPIDs.selected_apid].desc;
-  	}
-
-  	if (!(subChannelName.empty ())) 
-	{
-		char text[100];
-		sprintf (text, "%d - %s", subchannel, subChannelName.c_str ());
-
-		int dx = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getRenderWidth(text) + 20;
-		int dy = 25;
-
-		int icon_w;
-		int icon_h;
-
-		if (g_RemoteControl->director_mode) 
-		{
-	  		int w = 20 + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth (_("Direct-Mode"), true) + 20;	// UTF-8
-	  		if (w > dx)
-				dx = w;
-
-			frameBuffer->getIconSize(NEUTRINO_ICON_BUTTON_YELLOW, &icon_w, &icon_h);
-			
-	  		dy = 25 + icon_h + 10;
-		} 
-		else
-	  		dy = 25 + 5;
-
-		int x = 0, y = 0;
-		
-		if (g_settings.infobar_subchan_disp_pos == 0) 
-		{
-	  		// Rechts-Oben
-	  		x = g_settings.screen_EndX - dx - 10;
-	  		y = g_settings.screen_StartY + 10;
-		} 
-		else if (g_settings.infobar_subchan_disp_pos == 1) 
-		{
-	  		// Links-Oben
-	  		x = g_settings.screen_StartX + 10;
-	  		y = g_settings.screen_StartY + 10;
-		} 
-		else if (g_settings.infobar_subchan_disp_pos == 2) 
-		{
-	  		// Links-Unten
-	  		x = g_settings.screen_StartX + 10;
-	  		y = g_settings.screen_EndY - dy - 10;
-		} 
-		else if (g_settings.infobar_subchan_disp_pos == 3) 
-		{
-	  		// Rechts-Unten
-	  		x = g_settings.screen_EndX - dx - 10;
-	  		y = g_settings.screen_EndY - dy - 10;
-		}
-
-		fb_pixel_t pixbuf[(dx + 2 * borderwidth) * (dy + 2 * borderwidth)];
-		frameBuffer->saveScreen (x - borderwidth, y - borderwidth, dx + 2 * borderwidth, dy + 2 * borderwidth, pixbuf);		
-
-		// clear border
-		frameBuffer->paintBackgroundBoxRel(x - borderwidth, y - borderwidth, dx + 2 * borderwidth, borderwidth);
-		frameBuffer->paintBackgroundBoxRel(x - borderwidth, y + dy, dx + 2 * borderwidth, borderwidth);
-		frameBuffer->paintBackgroundBoxRel(x - borderwidth, y, borderwidth, dy);
-		frameBuffer->paintBackgroundBoxRel(x + dx, y, borderwidth, dy);
-
-		frameBuffer->paintBoxRel(x, y, dx, dy, COL_MENUCONTENT_PLUS_0);
-		g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->RenderString (x + 10, y + 30, dx - 20, text, COL_MENUCONTENT_TEXT_PLUS_0);
-
-		if (g_RemoteControl->director_mode) 
-		{
-	  		frameBuffer->paintIcon(NEUTRINO_ICON_BUTTON_YELLOW, x + 8, y + dy - 20);
-	  		g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(x + 30 - icon_w + icon_w, y + dy - 2, dx - 40, _("Direct-Mode"), COL_MENUCONTENT_TEXT_PLUS_0, 0, true);	// UTF-8
-		}
-		
-		frameBuffer->blit();	
-
-		uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(2);
-		int res = messages_return::none;
-
-		neutrino_msg_t msg;
-		neutrino_msg_data_t data;
-
-		while (!(res & (messages_return::cancel_info | messages_return::cancel_all))) 
-		{
-	  		g_RCInput->getMsgAbsoluteTimeout (&msg, &data, &timeoutEnd);
-
-	  		if (msg == CRCInput::RC_timeout) 
-			{
-				res = messages_return::cancel_info;
-	  		} 
-			else 
-			{
-				res = CNeutrinoApp::getInstance()->handleMsg(msg, data);
-
-				if (res & messages_return::unhandled) 
-				{
-		  			// raus hier und im Hauptfenster behandeln...
-		  			g_RCInput->postMsg(msg, data);
-		  			res = messages_return::cancel_info;
-				}
-	  		}
-		}
-
-		frameBuffer->restoreScreen(x - borderwidth, y - borderwidth, dx + 2 * borderwidth, dy + 2 * borderwidth, pixbuf);
-		frameBuffer->blit();	
-  		
-	}
-}
-
 // radiotext
 void CInfoViewer::showIcon_RadioText(bool rt_available) const
 {
@@ -1945,6 +1820,131 @@ void CInfoViewer::showWeather()
 				
 			g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO2]->RenderString(w_x + w_icon_w + 5, w_y + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 5 + (w_icon_h - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO2]->getHeight())/2, g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO2]->getRenderWidth("00°") + 1, current_wtemp, COL_WHITE_PLUS_0);
 		}
+	}
+}
+
+void CInfoViewer::showSubChan()
+{
+	dprintf(DEBUG_INFO, "CInfoViewer::showSubChan:\n");
+
+  	std::string subChannelName;	// holds the name of the subchannel/audio channel
+  	int subchannel = 0;		// holds the channel index
+
+  	if (!(g_RemoteControl->subChannels.empty ())) 
+	{
+		// get info for nvod/subchannel
+		subchannel = g_RemoteControl->selected_subchannel;
+		
+		if (g_RemoteControl->selected_subchannel >= 0)
+	  		subChannelName = g_RemoteControl->subChannels[g_RemoteControl->selected_subchannel].subservice_name;
+  	} 
+	else if (g_RemoteControl->current_PIDs.APIDs.size () > 1 ) 
+	{
+		// get info for audio channel
+		subchannel = g_RemoteControl->current_PIDs.otherPIDs.selected_apid;
+		subChannelName = g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.otherPIDs.selected_apid].desc;
+  	}
+
+  	if (!(subChannelName.empty ())) 
+	{
+		char text[100];
+		sprintf (text, "%d - %s", subchannel, subChannelName.c_str ());
+
+		int dx = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getRenderWidth(text) + 20;
+		int dy = 25;
+
+		int icon_w;
+		int icon_h;
+
+		if (g_RemoteControl->director_mode) 
+		{
+	  		int w = 20 + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth (_("Direct-Mode"), true) + 20;	// UTF-8
+	  		if (w > dx)
+				dx = w;
+
+			CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_YELLOW, &icon_w, &icon_h);
+			
+	  		dy = 25 + icon_h + 10;
+		} 
+		else
+	  		dy = 25 + 5;
+
+		int x = 0, y = 0;
+		
+		if (g_settings.infobar_subchan_disp_pos == 0) 
+		{
+	  		// Rechts-Oben
+	  		x = g_settings.screen_EndX - dx - 10;
+	  		y = g_settings.screen_StartY + 10;
+		} 
+		else if (g_settings.infobar_subchan_disp_pos == 1) 
+		{
+	  		// Links-Oben
+	  		x = g_settings.screen_StartX + 10;
+	  		y = g_settings.screen_StartY + 10;
+		} 
+		else if (g_settings.infobar_subchan_disp_pos == 2) 
+		{
+	  		// Links-Unten
+	  		x = g_settings.screen_StartX + 10;
+	  		y = g_settings.screen_EndY - dy - 10;
+		} 
+		else if (g_settings.infobar_subchan_disp_pos == 3) 
+		{
+	  		// Rechts-Unten
+	  		x = g_settings.screen_EndX - dx - 10;
+	  		y = g_settings.screen_EndY - dy - 10;
+		}
+
+		fb_pixel_t pixbuf[(dx + 10) * (dy + 10)];
+		CFrameBuffer::getInstance()->saveScreen (x - 5, y - 5, dx + 10, dy + 10, pixbuf);		
+
+		// clear border
+		CFrameBuffer::getInstance()->paintBackgroundBoxRel(x - 5, y - 5, dx + 10, 5);
+		CFrameBuffer::getInstance()->paintBackgroundBoxRel(x - 5, y + dy, dx + 10, 5);
+		CFrameBuffer::getInstance()->paintBackgroundBoxRel(x - 5, y, 5, dy);
+		CFrameBuffer::getInstance()->paintBackgroundBoxRel(x + dx, y, 5, dy);
+
+		CFrameBuffer::getInstance()->paintBoxRel(x, y, dx, dy, COL_MENUCONTENT_PLUS_0);
+		g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->RenderString (x + 10, y + 30, dx - 20, text, COL_MENUCONTENT_TEXT_PLUS_0);
+
+		if (g_RemoteControl->director_mode) 
+		{
+	  		CFrameBuffer::getInstance()->paintIcon(NEUTRINO_ICON_BUTTON_YELLOW, x + 8, y + dy - 20);
+	  		g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(x + 30 - icon_w + icon_w, y + dy - 2, dx - 40, _("Direct-Mode"), COL_MENUCONTENT_TEXT_PLUS_0, 0, true);	// UTF-8
+		}
+		
+		CFrameBuffer::getInstance()->blit();	
+
+		uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(2);
+		int res = messages_return::none;
+
+		neutrino_msg_t msg;
+		neutrino_msg_data_t data;
+
+		while (!(res & (messages_return::cancel_info | messages_return::cancel_all))) 
+		{
+	  		g_RCInput->getMsgAbsoluteTimeout (&msg, &data, &timeoutEnd);
+
+	  		if (msg == CRCInput::RC_timeout) 
+			{
+				res = messages_return::cancel_info;
+	  		} 
+			else 
+			{
+				res = CNeutrinoApp::getInstance()->handleMsg(msg, data);
+
+				if (res & messages_return::unhandled) 
+				{
+		  			// raus hier und im Hauptfenster behandeln...
+		  			g_RCInput->postMsg(msg, data);
+		  			res = messages_return::cancel_info;
+				}
+	  		}
+		}
+
+		CFrameBuffer::getInstance()->restoreScreen(x - 5, y - 5, dx + 10, dy + 10, pixbuf);
+		CFrameBuffer::getInstance()->blit();
 	}
 }
 

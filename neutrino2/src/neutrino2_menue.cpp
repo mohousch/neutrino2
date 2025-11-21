@@ -561,7 +561,7 @@ int CNVODChangeExec::exec(CTarget *parent, const std::string &actionKey)
 	if(parent)
 		parent->hide();
 	
-	g_InfoViewer->showSubchan();
+	g_InfoViewer->showSubChan();
 
 	return RETURN_EXIT;
 }

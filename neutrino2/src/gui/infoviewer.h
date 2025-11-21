@@ -225,7 +225,7 @@ class CInfoViewer
 		////
 		int handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data);
 		void clearVirtualZapMode() {virtual_zap_mode = false;}	// used in channellist.cpp
-		void showSubchan(); 					// needed in CNVODChangeExec
+		void showSubChan();
 		////
 		void showEPGInfo();
 };

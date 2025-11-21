@@ -50,8 +50,8 @@ struct NeutrinoMessages
 		SHOW_INFOBAR				= CRCInput::RC_Messages + 2,
 		
 		// record
-		RECORD_ON				= CRCInput::RC_Messages + 3,
-		RECORD_OFF				= CRCInput::RC_Messages + 4,
+		SCART_ON				= CRCInput::RC_Messages + 3,
+		SCART_OFF				= CRCInput::RC_Messages + 4,
 		
 		// nhttpd
 		STANDBY_ON				= CRCInput::RC_Messages + 5,

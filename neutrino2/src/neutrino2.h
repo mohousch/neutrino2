@@ -64,7 +64,7 @@ class CNVODChangeExec : public CTarget
 		CNVODChangeExec(){};
 		virtual ~CNVODChangeExec(){};
 		
-		int exec(CTarget* parent, const std::string& actionKey);
+		int exec(CTarget *parent, const std::string &actionKey);
 };
 
 ////
