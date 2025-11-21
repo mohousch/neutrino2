@@ -208,7 +208,6 @@ class CInfoViewer
 		void showMotorMoving(int duration);
 		void showLcdPercentOver();
 		void showSNR();
-		void Set_CA_Status(int Status);
 		void getCurrentNextEPG(t_channel_id ChannelID, bool newChan = false, int EPGPos = 0);
 		void getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentNextInfo &info);
 		void showRadiotext();

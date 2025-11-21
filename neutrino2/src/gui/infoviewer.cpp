@@ -1248,15 +1248,6 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		gotTime = true;
 		return messages_return::handled;
   	}
-	else if (msg == NeutrinoMessages::EVT_ZAP_CA_ID) 
-	{
-		chanready = 1;
-		Set_CA_Status(data);
-
-		showSNR();
-
-		return messages_return::handled;
-  	}
   	else if (msg == NeutrinoMessages::EVT_SHOW_RADIOTEXT)
   	{
   		showRadiotext();
@@ -1731,16 +1722,6 @@ void CInfoViewer::killTitle()
 	}
 	
 	evtlist.clear();	
-}
-
-void CInfoViewer::Set_CA_Status(int Status)
-{
-	dprintf(DEBUG_INFO, "CInfoViewer::Set_CA_Status: %d\n", Status);
-	
-	CA_Status = Status;
-
-	if ( is_visible && showButtonBar )
-		showIcon_CA_Status();
 }
 
 void CInfoViewer::showLcdPercentOver()

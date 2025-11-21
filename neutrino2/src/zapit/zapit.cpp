@@ -1297,11 +1297,6 @@ tune_again:
 		// ci / cam
 		sendCaPmtPlayBackStart(live_channel, live_fe);
 
-		// send caid
-		int caid = 1;
-
-		g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_CA_ID, (const neutrino_msg_data_t)caid, false);
-
 		// start pmt update filter
 		pmt.pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);
 	}	

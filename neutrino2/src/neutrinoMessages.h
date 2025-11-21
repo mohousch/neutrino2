@@ -97,7 +97,7 @@ struct NeutrinoMessages
 		
 		// zapit
 		EVT_RECORDMODE				= CRCInput::RC_Messages + 29,
-		EVT_ZAP_CA_ID				= CRCInput::RC_Messages + 30,
+//		EVT_ZAP_CA_ID				= CRCInput::RC_Messages + 30,
 		EVT_SCAN_FAILED				= CRCInput::RC_Messages + 31,
 		EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS= CRCInput::RC_Messages + 32,
  		EVT_SCAN_REPORT_FREQUENCY		= CRCInput::RC_Messages + 33,
