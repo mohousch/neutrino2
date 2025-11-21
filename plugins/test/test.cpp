@@ -936,7 +936,7 @@ void CTestMenu::testCWidget()
 
 	//
 	rightWidget = new ClistBox(&rightBox);
-	rightWidget->setWidgetType(ClistBox::TYPE_FRAME);
+	rightWidget->setWidgetLayout(ClistBox::LAYOUT_FRAME);
 	rightWidget->setItemsPerPage(6,2);
 	rightWidget->setSelected(right_selected);
 	rightWidget->enablePaintItemInfo(80);
@@ -1404,7 +1404,7 @@ void CTestMenu::testClistBoxWidget()
 
 	rightWidget = new ClistBox(&rightBox);
 
-	rightWidget->setWidgetType(ClistBox::TYPE_FRAME);
+	rightWidget->setWidgetLayout(ClistBox::LAYOUT_FRAME);
 	rightWidget->setSelected(selected);
 	rightWidget->enablePaintHead();
 	rightWidget->setTitle("CWidget(ClistBox)", NEUTRINO_ICON_MP3);
@@ -2358,7 +2358,7 @@ void CTestMenu::testClistBox()
 	}
 
 	// mode
-	rightWidget->setWidgetType(ClistBox::TYPE_STANDARD);
+	rightWidget->setWidgetLayout(ClistBox::LAYOUT_STANDARD);
 	rightWidget->enableShrinkMenu();
 	rightWidget->paintMainFrame(true);
 
@@ -2431,7 +2431,7 @@ void CTestMenu::testClistBox2()
 	}
 
 	// widgettype
-	rightWidget->setWidgetType(ClistBox::TYPE_CLASSIC);
+	rightWidget->setWidgetLayout(ClistBox::LAYOUT_CLASSIC);
 	rightWidget->enableShrinkMenu();
 	rightWidget->paintMainFrame(true);
 	
@@ -2503,7 +2503,7 @@ void CTestMenu::testClistBox3()
 
 	// widgettype
 	rightWidget->setWidgetMode(ClistBox::MODE_LISTBOX);
-	rightWidget->setWidgetType(ClistBox::TYPE_EXTENDED);
+	rightWidget->setWidgetLayout(ClistBox::LAYOUT_EXTENDED);
 	rightWidget->enableShrinkMenu();
 	rightWidget->paintMainFrame(true);
 
@@ -2572,7 +2572,7 @@ void CTestMenu::testClistBox4()
 	}
 
 	// widgettype
-	rightWidget->setWidgetType(ClistBox::TYPE_FRAME);
+	rightWidget->setWidgetLayout(ClistBox::LAYOUT_FRAME);
 	rightWidget->setItemsPerPage(6,2);
 	rightWidget->paintMainFrame(true);
 //	rightWidget->setBorderMode();
@@ -2646,7 +2646,7 @@ void CTestMenu::testClistBox6()
 	}
 
 	// mode
-	rightWidget->setWidgetType(ClistBox::TYPE_STANDARD);
+	rightWidget->setWidgetLayout(ClistBox::LAYOUT_STANDARD);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -2718,7 +2718,7 @@ void CTestMenu::testClistBox7()
 	}
 
 	// mode
-	rightWidget->setWidgetType(ClistBox::TYPE_STANDARD);
+	rightWidget->setWidgetLayout(ClistBox::LAYOUT_STANDARD);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -2791,7 +2791,7 @@ void CTestMenu::testClistBox8()
 	}
 
 	// mode
-	rightWidget->setWidgetType(ClistBox::TYPE_STANDARD);
+	rightWidget->setWidgetLayout(ClistBox::LAYOUT_STANDARD);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -2860,7 +2860,7 @@ void CTestMenu::testClistBox9()
 	}
 
 	// mode
-	rightWidget->setWidgetType(ClistBox::TYPE_CLASSIC);
+	rightWidget->setWidgetLayout(ClistBox::LAYOUT_CLASSIC);
 	rightWidget->setWidgetMode(ClistBox::MODE_MENU);
 	rightWidget->enableShrinkMenu();
 	rightWidget->paintMainFrame(true);

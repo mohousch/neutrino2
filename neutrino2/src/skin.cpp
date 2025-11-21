@@ -1077,29 +1077,29 @@ int CNeutrinoApp::convertClistBoxMode(const char * const mode)
 }
 
 //
-int CNeutrinoApp::convertClistBoxType(const char * const type)
+int CNeutrinoApp::convertClistBoxLayout(const char * const layout)
 {
-	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertClistBoxType: type: %s\n", type);
+	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertClistBoxType: layout: %s\n", layout);
 	
-	int t = ClistBox::TYPE_STANDARD;
+	int t = ClistBox::LAYOUT_STANDARD;
 	
-	if (type != NULL)
+	if (layout != NULL)
 	{
-		if ( strcmp(type, "TYPE_STANDARD") == 0)
+		if ( strcmp(layout, "LAYOUT_STANDARD") == 0)
 		{
-			t = ClistBox::TYPE_STANDARD;
+			t = ClistBox::LAYOUT_STANDARD;
 		}
-		else if ( strcmp(type, "TYPE_CLASSIC") == 0)
+		else if ( strcmp(layout, "LAYOUT_CLASSIC") == 0)
 		{
-			t = ClistBox::TYPE_CLASSIC;
+			t = ClistBox::LAYOUT_CLASSIC;
 		}
-		else if ( strcmp(type, "TYPE_EXTENDED") == 0)
+		else if ( strcmp(layout, "LAYOUT_EXTENDED") == 0)
 		{
-			t = ClistBox::TYPE_EXTENDED;
+			t = ClistBox::LAYOUT_EXTENDED;
 		}
-		else if ( strcmp(type, "TYPE_FRAME") == 0)
+		else if ( strcmp(layout, "LAYOUT_FRAME") == 0)
 		{
-			t = ClistBox::TYPE_FRAME;
+			t = ClistBox::LAYOUT_FRAME;
 		}
 	}
 	
@@ -1292,7 +1292,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	//char *corner = NULL;
 	//char * radius = NULL;
 	
-	char * listboxtype = NULL;
+	char * listboxlayout = NULL;
 	char * listboxmode = NULL;
 	unsigned int scrollbar = 1;
 	
@@ -1354,7 +1354,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	//gradient = xmlGetAttribute(node, (char *)"gradient");
 	//corner = xmlGetAttribute(node, (char *)"corner");
 	//radius = xmlGetAttribute(node, (char *)"radius");
-	listboxtype = xmlGetAttribute(node, (char *)"type");
+	listboxlayout = xmlGetAttribute(node, (char *)"layout");
 	listboxmode = xmlGetAttribute(node, (char *)"mode");
 	scrollbar = xmlGetSignedNumericAttribute(node, "scrollbar", 0);
 	shrink = xmlGetSignedNumericAttribute(node, "shrink", 0);			
@@ -1407,9 +1407,9 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	if (name) listBox->cc_name = name;
 		
 	//
-	int t = ClistBox::TYPE_STANDARD;
-	if (listboxtype) t = convertClistBoxType(listboxtype);
-	listBox->setWidgetType(t);
+	int t = ClistBox::LAYOUT_STANDARD;
+	if (listboxlayout) t = convertClistBoxLayout(listboxlayout);
+	listBox->setWidgetLayout(t);
 	//
 	int m = ClistBox::MODE_LISTBOX;
 	if (listboxmode) m = convertClistBoxMode(listboxmode);
@@ -1643,7 +1643,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		
 	CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED;
 	unsigned int mode = ClistBox::MODE_MENU;
-	unsigned int type = ClistBox::TYPE_STANDARD;
+	unsigned int layout = ClistBox::LAYOUT_STANDARD;
 	unsigned int i_lines = false;
 	unsigned int i_border = false;
 					
@@ -1651,11 +1651,11 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	{	
 		integration = (CPlugins::i_type_t)xmlGetSignedNumericAttribute(listboxintegration_node, "id", 0);
 		mode = xmlGetSignedNumericAttribute(listboxintegration_node, "mode", 0);
-		type = xmlGetSignedNumericAttribute(listboxintegration_node, "type", 0);
+		layout = xmlGetSignedNumericAttribute(listboxintegration_node, "layout", 0);
 		i_lines = xmlGetSignedNumericAttribute(listboxintegration_node, "lines", 0);
 		i_border = xmlGetSignedNumericAttribute(listboxintegration_node, "border", 0);
 						
-		listBox->integratePlugins(integration, true, mode, type, i_lines, i_border);
+		listBox->integratePlugins(integration, true, mode, layout, i_lines, i_border);
 				
 		listboxintegration_node = listboxintegration_node->xmlNextNode;
 	}

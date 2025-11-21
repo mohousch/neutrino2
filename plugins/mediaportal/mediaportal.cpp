@@ -161,7 +161,7 @@ void CMediaPortal::showMenu(void)
 	mediaPortal = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 	mediaPortal->setWidgetMode(ClistBox::MODE_LISTBOX);
-	mediaPortal->setWidgetType(ClistBox::TYPE_FRAME);
+	mediaPortal->setWidgetLayout(ClistBox::LAYOUT_FRAME);
 	
 	//
 	//mediaPortal->enablePaintHead();

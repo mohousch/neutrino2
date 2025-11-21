@@ -573,7 +573,7 @@ int CInfoMenu::showMenu()
 		infoMenu = new ClistBox(&box);
 		
 		infoMenu->setWidgetMode(ClistBox::MODE_MENU);
-		infoMenu->setWidgetType(ClistBox::TYPE_STANDARD);
+		infoMenu->setWidgetLayout(ClistBox::LAYOUT_STANDARD);
 		infoMenu->enableShrinkMenu();
 		infoMenu->paintMainFrame(true);
 		

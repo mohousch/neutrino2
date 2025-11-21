@@ -113,7 +113,7 @@ int CServiceMenu::showMenu(void)
 		//
 		service = new ClistBox(&box);
 		service->setWidgetMode(ClistBox::MODE_MENU);
-		service->setWidgetType(ClistBox::TYPE_STANDARD);
+		service->setWidgetLayout(ClistBox::LAYOUT_STANDARD);
 		service->enableShrinkMenu();
 		// head
 		service->enablePaintHead();

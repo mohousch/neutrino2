@@ -175,7 +175,7 @@ function cat_menu(_id)
 	neutrino2.CFileHelpers():createDir("/tmp/plutotv")
 
 	local cm = neutrino2.ClistBox(40, 40, 1200, 640)
-	--cm:setWidgetType(neutrino2.ClistBox_TYPE_FRAME)
+
 	cm:setItemsPerPage(6, 2)
 	cm:enablePaintHead()
 	cm:setTitle(catlist[tonumber(_id)], neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
@@ -363,12 +363,11 @@ function episode_menu(s)
 	neutrino2.CFileHelpers():createDir("/tmp/plutotv")
 	
 	local em = neutrino2.ClistBox(40, 40, 1200, 640)
-	--em:setWidgetType(neutrino2.ClistBox_TYPE_EXTENDED)
+	
 	em:enablePaintHead()
 	em:setTitle(episodelist[tonumber(s)][1].title .. _(" - Season ")..s, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	em:enablePaintDate()
 	em:enablePaintFoot()
-	--em:enablePaintItemInfo()
 	
 	local red = neutrino2.button_label_struct()
 	red.button = neutrino2.NEUTRINO_ICON_BUTTON_RED

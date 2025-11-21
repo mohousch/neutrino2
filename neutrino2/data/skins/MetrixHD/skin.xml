@@ -9,7 +9,7 @@
 	
 	<widget name="mainmenu" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
-		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" paintframe="0" itemlines="1" paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="300" iteminfoposy="50" iteminfowidth="300" iteminfoheight="300" iteminfocolor="COL_MENUCONTENTSELECTED_PLUS_0">
+		<listbox posx="640" posy="60" width="540" height="500" layout="LAYOUT_STANDARD" mode="MODE_MENU" paintframe="0" itemlines="1" paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="300" iteminfoposy="50" iteminfowidth="300" iteminfoheight="300" iteminfocolor="COL_MENUCONTENTSELECTED_PLUS_0">
 			<item id="FORWARDER" localename="TV / Radio" itemicon="hint_tvmode" target="neutrino" actionkey="tvradioswitch"/>
 			<item id="FORWARDER" localename="EPG / Timer" itemicon="hint_timers" target="epgtimer"/>
 			<item id="FORWARDER" localename="Features" itemicon="hint_features" target="neutrino" actionkey="features"/>
@@ -28,7 +28,7 @@
 	
 	<widget name="settings" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
-		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1">
+		<listbox posx="640" posy="60" width="540" height="500" layout="LAYOUT_STANDARD" mode="MODE_MENU" itemlines="1">
 			<item id="FORWARDER" localename="Video settings" itemicon="hint_video" target="videosetup"/>
 			<item id="FORWARDER" localename="Audio settings" itemicon="hint_audio" target="audiosetup"/>
 			<item id="FORWARDER" localename="Parentallock settings" itemicon="hint_protection" target="parentallocksetup"/>
@@ -57,7 +57,7 @@
 	
 	<widget name="epgtimer" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
-		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1">
+		<listbox posx="640" posy="60" width="540" height="500" layout="LAYOUT_STANDARD" mode="MODE_MENU" itemlines="1">
 			<item id="FORWARDER" localename="Eventlist current programm" itemicon="hint_sleeptimer" target="eventlist" directkey="RC_red"/>
 			<item id="FORWARDER" localename="Details current program" itemicon="hint_restart" target="epgview" directkey="RC_green"/>
 			<item id="FORWARDER" localename="Eventlist overview" itemicon="hint_standby" target="epgplus" directkey="RC_yellow"/>
@@ -73,7 +73,7 @@
 	
 	<widget name="features" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
-		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1" disableitemicon="1"/>
+		<listbox posx="640" posy="60" width="540" height="500" layout="LAYOUT_STANDARD" mode="MODE_MENU" itemlines="1" disableitemicon="1"/>
 		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="Features" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
 		<window posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="image" posx="300" posy="50" width="300" height="300" image="hints/hint_features.png"/>
@@ -85,7 +85,7 @@
 	
 	<widget name="service" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
-		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1">
+		<listbox posx="640" posy="60" width="540" height="500" layout="LAYOUT_STANDARD" mode="MODE_MENU" itemlines="1">
 			<item id="FORWARDER" localename="Scan transponder" itemicon="hint_scan" target="scansetup"/>
 			<item id="FORWARDER" localename="Bouquet Editor" itemicon="hint_bedit" target="bouqueteditor"/>
 			<item id="FORWARDER" localename="CI Cam" itemicon="hint_ci" target="cicamsetup"/>
@@ -101,7 +101,7 @@
 	
 	<widget name="powermenu" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
-		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1">
+		<listbox posx="640" posy="60" width="540" height="500" layout="LAYOUT_STANDARD" mode="MODE_MENU" itemlines="1">
 			<item id="FORWARDER" localename="Sleeptimer" itemicon="hint_sleeptimer" target="sleeptimer"/>
 			<item id="FORWARDER" localename="GUI restart" itemicon="hint_restart" target="neutrino" actionkey="restart"/>
 			<item id="FORWARDER" localename="Standby" itemicon="hint_standby" target="neutrino" actionkey="standby"/>
@@ -118,7 +118,7 @@
 	
 	<widget name="information" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
-		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1">
+		<listbox posx="640" posy="60" width="540" height="500" layout="LAYOUT_STANDARD" mode="MODE_MENU" itemlines="1">
 			<item id="FORWARDER" localename="Information" itemicon="hint_dboxinfo" target="boxinfo"/>
 			<item id="FORWARDER" localename="Image info" itemicon="hint_imageinfo" target="imageinfo"/>
 			<item id="FORWARDER" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo"/>
@@ -134,7 +134,7 @@
 	
 	<widget name="mediaplayer" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
-		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
+		<listbox posx="640" posy="60" width="540" height="500" layout="LAYOUT_STANDARD" mode="MODE_MENU" itemlines="1"/>
 		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="Media Player" halign="1" font="FONT_TYPE_MENU_TITLELARGE"/>
 		<window posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="image" id="1" posx="300" posy="50" width="300" height="300" image="hints/hint_media.png"/>
@@ -145,7 +145,7 @@
 	
 	<widget name="osd" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
-		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1">
+		<listbox posx="640" posy="60" width="540" height="500" layout="LAYOUT_STANDARD" mode="MODE_MENU" itemlines="1">
 			<item id="FORWARDER" localename="Skin select" itemicon="hint_themes" target="skinsetup"/>
 			<item id="FORWARDER" localename="Themes" itemicon="hint_osd" target="skinstyleselectionsetup"/>
 			<item id="FORWARDER" localename="Menu" itemicon="hint_menucolors" target="menusetup"/>
@@ -166,7 +166,7 @@
 	
 	<widget name="plugins" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="540" type="TYPE_CLASSIC" mode="MODE_MENU" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="540" layout="LAYOUT_CLASSIC" mode="MODE_MENU" scrollbar="1"/>
 		<hline posx="70" posy="628" width="715" height="2" gradient="DARK2LIGHT2DARK"/>
 		<button posx="50" posy="630" width="735" height="40" mode="MODE_MENU" head="0">
 			<button_label name="btn_red" localename="Delete" color="COL_RED_PLUS_0"/>
@@ -186,7 +186,7 @@
 	
 	<widget name="timerlist" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="540" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="540" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<hline posx="70" posy="628" width="715" height="2" gradient="DARK2LIGHT2DARK"/>
 		<button posx="50" posy="630" width="735" height="40">
 			<button_label name="btn_red" localename="Delete"/>
@@ -203,7 +203,7 @@
 	
 	<widget name="newtimer" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="540" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="540" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="New timer" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -213,7 +213,7 @@
 	
 	<widget name="modfytimer" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="540" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="540" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Modify timer" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -223,7 +223,7 @@
 	
 	<widget name="tunersetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_MENU" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Servicescan" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -233,7 +233,7 @@
 	
 	<widget name="scansetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Scan transponder" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -243,7 +243,7 @@
 	
 	<widget name="transponder" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Select transponder" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -253,7 +253,7 @@
 	
 	<widget name="unicablesetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Unicable settings" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -263,7 +263,7 @@
 	
 	<widget name="manualscan" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Manual frequency scan / Test signal" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -273,7 +273,7 @@
 	
 	<widget name="autoscan" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Auto scan" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -283,7 +283,7 @@
 	
 	<widget name="autoscanall" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Auto-Scan multiple Satellites" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -293,7 +293,7 @@
 	
 	<widget name="satsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Sat settings" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -303,7 +303,7 @@
 	
 	<widget name="motorsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="DiSEqC settings" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -313,7 +313,7 @@
 	
 	<widget name="satfindMenu" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Motor settings" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -323,7 +323,7 @@
 	
 	<widget name="satOnOff" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Satellite" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -333,7 +333,7 @@
 	
 	<widget name="tempsat" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
@@ -342,7 +342,7 @@
 	
 	<widget name="updatesetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Software update" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -352,7 +352,7 @@
 	
 	<widget name="flashexpert" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Expert functions" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -362,7 +362,7 @@
 	
 	<widget name="fileselector" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="File selector" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -372,7 +372,7 @@
 	
 	<widget name="mtdselector" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Partition selector" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -382,7 +382,7 @@
 	
 	<widget name="cammenu" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="CI CAM settings" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -392,7 +392,7 @@
 	
 	<widget name="tempcam" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
@@ -401,7 +401,7 @@
 	
 	<widget name="tempcam2" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
@@ -410,7 +410,7 @@
 	
 	<widget name="videosetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Video settings" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -420,7 +420,7 @@
 	
 	<widget name="audiosetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Audio settings" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -430,7 +430,7 @@
 	
 	<widget name="parentallocksetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</window>
@@ -445,7 +445,7 @@
 	
 	<widget name="networksetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</window>
@@ -460,7 +460,7 @@
 	
 	<widget name="proxysetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</window>
@@ -475,7 +475,7 @@
 	
 	<widget name="nfs" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</window>
@@ -490,7 +490,7 @@
 	
 	<widget name="mountvolume" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</window>
@@ -505,7 +505,7 @@
 	
 	<widget name="umountvolume" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</window>
@@ -520,7 +520,7 @@
 	
 	<widget name="nfssmall" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Network Mount Manager" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -530,7 +530,7 @@
 	
 	<widget name="recordingsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</window>
@@ -545,7 +545,7 @@
 	
 	<widget name="movieplayersetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</window>
@@ -560,7 +560,7 @@
 	
 	<widget name="audioplayersetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</window>
@@ -575,7 +575,7 @@
 	
 	<widget name="pictureviewersetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</window>
@@ -590,7 +590,7 @@
 	
 	<widget name="lcdsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</window>
@@ -605,7 +605,7 @@
 	
 	<widget name="hddsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</window>
@@ -620,7 +620,7 @@
 	
 	<widget name="temphdd" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
 		
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</window>
@@ -633,7 +633,7 @@
 	
 	<widget name="temphdd2" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
 		
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</window>
@@ -646,7 +646,7 @@
 	
 	<widget name="zapitsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</window>
@@ -661,7 +661,7 @@
 	
 	<widget name="miscsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</window>
@@ -676,7 +676,7 @@
 	
 	<widget name="filebrowsersetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</window>
@@ -691,7 +691,7 @@
 	
 	<widget name="epgsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</window>
@@ -706,7 +706,7 @@
 	
 	<widget name="channelssetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Channellist settings" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -720,12 +720,12 @@
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoframe="0" iteminfocolor="COL_MENUCONTENTSELECTED_PLUS_0" iteminfoposx="795" iteminfoposy="150" iteminfowidth="425" iteminfoheight="275"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1" paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoframe="0" iteminfocolor="COL_MENUCONTENTSELECTED_PLUS_0" iteminfoposx="795" iteminfoposy="150" iteminfowidth="425" iteminfoheight="275"/>
 	</widget>
 	
 	<widget name="menusetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Menu" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -735,7 +735,7 @@
 	
 	<widget name="skinstyleselectionsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Themes" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -745,7 +745,7 @@
 	
 	<widget name="themesetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Themes" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -755,7 +755,7 @@
 	
 	<widget name="infobarsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Infobar" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -765,7 +765,7 @@
 	
 	<widget name="languagesetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Language" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -775,7 +775,7 @@
 	
 	<widget name="fontsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Font" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -785,7 +785,7 @@
 	
 	<widget name="osdtimingsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Timing" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -795,7 +795,7 @@
 	
 	<widget name="osdmiscsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Misc settings" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -805,7 +805,7 @@
 	
 	<widget name="rcsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Keybinding settings" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -815,7 +815,7 @@
 	
 	<widget name="rcbinding" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Hot Keys mapping" halign="1"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -825,7 +825,7 @@
 	
 	<widget name="optionstringchooser" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
@@ -834,7 +834,7 @@
 	
 	<widget name="optionchooser" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
@@ -843,7 +843,7 @@
 	
 	<widget name="keychooser" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1" headline="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1" headline="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
@@ -852,7 +852,7 @@
 	
 	<widget name="mountchooser" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
@@ -861,7 +861,7 @@
 	
 	<widget name="usermenu" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="1" painthead="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_MENU" scrollbar="1" painthead="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
@@ -870,7 +870,7 @@
 	
 	<widget name="bouquetlist" posx="0" posy="0" width="1280" height="720">
 		<window name="bg" posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" headline="1" headlinegradient="DARK2LIGHT2DARK" paintfoot="1" footline="1" footlinegradient="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" headline="1" headlinegradient="DARK2LIGHT2DARK" paintfoot="1" footline="1" footlinegradient="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
@@ -879,7 +879,7 @@
 	
 	<widget name="channellist" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="120" width="715" height="480" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1"/>
+		<listbox posx="60" posy="120" width="715" height="480" layout="LAYOUT_STANDARD" mode="MODE_LISTBOX" scrollbar="1"/>
 		<head posx="60" posy="60" width="715" height="50" paintdate="1" line="1" linegradient="DARK2LIGHT"/>
 		<foot posx="60" posy="620" width="715" height="50" line="1" linegradient="DARK2LIGHT"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
@@ -888,7 +888,7 @@
 	
 	<widget name="bqeditbq" posx="0" posy="0" width="1280" height="720">
 		<window name="bg" posx="50" posy="50" width="775" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="755" height="600" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" headline="1" paintfoot="1" footline="1"/>
+		<listbox posx="60" posy="60" width="755" height="600" layout="LAYOUT_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" headline="1" paintfoot="1" footline="1"/>
 		<window posx="825" posy="70" width="405" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="hint" posx="835" posy="150" width="385" height="275" image="picon_default.png"/>
 		<time name="date" posx="835" posy="460" width="385" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
@@ -897,7 +897,7 @@
 	
 	<widget name="bqeditch" posx="0" posy="0" width="1280" height="720">
 		<window name="bg" posx="50" posy="50" width="775" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="755" height="600" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" headline="1" paintfoot="1" footline="1"/>
+		<listbox posx="60" posy="60" width="755" height="600" layout="LAYOUT_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" headline="1" paintfoot="1" footline="1"/>
 		<window posx="825" posy="70" width="405" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="hint" posx="835" posy="150" width="385" height="275" image="picon_default.png"/>
 		<time name="date" posx="835" posy="460" width="385" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
@@ -906,7 +906,7 @@
 	
 	<widget name="bqeditchselect" posx="0" posy="0" width="1280" height="720">
 		<window name="bg" posx="50" posy="50" width="775" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="755" height="600" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" headline="1" paintfoot="1" footline="1"/>
+		<listbox posx="60" posy="60" width="755" height="600" layout="LAYOUT_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" headline="1" paintfoot="1" footline="1"/>
 		<window posx="825" posy="70" width="405" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="hint" posx="835" posy="150" width="385" height="275" image="picon_default.png"/>
 		<time name="date" posx="835" posy="460" width="385" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
@@ -915,7 +915,7 @@
 	
 	<widget name="eventlist" posx="0" posy="0" width="1280" height="720">
 		<window name="bg" posx="50" posy="50" width="775" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="755" height="600" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" headline="1" headlinegradient="DARK2LIGHT2DARK" paintfoot="1" footline="1" footlinegradient="DARK2LIGHT2DARK"/>
+		<listbox posx="60" posy="60" width="755" height="600" layout="LAYOUT_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" headline="1" headlinegradient="DARK2LIGHT2DARK" paintfoot="1" footline="1" footlinegradient="DARK2LIGHT2DARK"/>
 		<window posx="825" posy="70" width="405" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="hint" posx="835" posy="150" width="385" height="275" image="picon_default.png"/>
 		<time name="date" posx="835" posy="460" width="385" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
@@ -936,7 +936,7 @@
 	
 	<widget name="filebrowser" posx="0" posy="0" width="1280" height="720">
 		<window name="bg" posx="50" posy="50" width="775" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="755" height="600" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="1" painthead="1" paintdate="1" headline="1" paintfoot="1" footline="1"/>
+		<listbox posx="60" posy="60" width="755" height="600" layout="LAYOUT_STANDARD" mode="MODE_MENU" scrollbar="1" painthead="1" paintdate="1" headline="1" paintfoot="1" footline="1"/>
 		<window posx="825" posy="70" width="405" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="hint" posx="835" posy="150" width="385" height="275" image="picon_default.png"/>
 		<time name="date" posx="835" posy="460" width="385" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
@@ -949,7 +949,7 @@
 	
 	<widget name="personalisation" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="Personalisation" halign="1"/>	
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
@@ -959,7 +959,7 @@
 	
 	<widget name="cecsetup" posx="0" posy="0" width="1280" height="720">
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<window posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<label name="title" posx="795" posy="80" width="425" height="60" text="CEC Setup" halign="1"/>	
 		<image name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>

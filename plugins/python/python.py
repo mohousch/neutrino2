@@ -194,7 +194,7 @@ class listBox():
 		self.showMenu()
 
 	def showMenu(self):
-		self.listWidget.setWidgetType(ClistBox.TYPE_CLASSIC)
+		self.listWidget.setWidgetLayout(ClistBox.LAYOUT_CLASSIC)
 		self.listWidget.setWidgetMode(ClistBox.MODE_LISTBOX)
 		self.listWidget.enableShrinkMenu()
 		self.listWidget.enablePaintHead()

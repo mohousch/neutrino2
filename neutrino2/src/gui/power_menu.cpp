@@ -92,7 +92,7 @@ int CPowerMenu::showMenu(void)
 		powerMenu = new ClistBox(&box);
 		
 		powerMenu->setWidgetMode(ClistBox::MODE_MENU);
-		powerMenu->setWidgetType(ClistBox::TYPE_STANDARD);
+		powerMenu->setWidgetLayout(ClistBox::LAYOUT_STANDARD);
 		powerMenu->enableShrinkMenu();
 		powerMenu->paintMainFrame(true);
 		

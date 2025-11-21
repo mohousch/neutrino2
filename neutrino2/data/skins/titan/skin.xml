@@ -9,7 +9,7 @@
 	
 	<widget name="mainmenu" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Main Menu" icon="mainmenu" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" mode="MODE_MENU">
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_CLASSIC" mode="MODE_MENU">
 			<item id="FORWARDER" localename="TV / Radio" itemicon="hint_tvmode" target="neutrino" actionkey="tvradioswitch"/>
 			<item id="FORWARDER" localename="EPG / Timer" itemicon="hint_timers" target="epgtimer"/>
 			<item id="FORWARDER" localename="Features" itemicon="hint_features" target="neutrino" actionkey="features"/>
@@ -27,7 +27,7 @@
 	
 	<widget name="settings" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Settings" icon="menu" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1" mode="MODE_MENU">
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_CLASSIC" scrollbar="1" mode="MODE_MENU">
 			<item id="FORWARDER" localename="Video settings" itemicon="hint_video" target="videosetup"/>
 			<item id="FORWARDER" localename="Audio settings" itemicon="hint_audio" target="audiosetup"/>
 			<item id="FORWARDER" localename="Parentallock settings" itemicon="hint_protection" target="parentallocksetup"/>
@@ -53,7 +53,7 @@
 	
 	<widget name="osd" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="OSD" icon="colors" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1"  mode="MODE_MENU">
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_CLASSIC" scrollbar="1"  mode="MODE_MENU">
 			<item id="FORWARDER" localename="Skin select" itemicon="hint_themes" target="skinsetup"/>
 			<item id="FORWARDER" localename="Themes" itemicon="hint_osd" target="skinstyleselectionsetup"/>
 			<item id="FORWARDER" localename="Menu" itemicon="hint_menucolors" target="menusetup"/>
@@ -71,7 +71,7 @@
 	
 	<widget name="epgtimer" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="EPG / Timer" icon="epg" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1" mode="MODE_MENU">
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_CLASSIC" scrollbar="1" mode="MODE_MENU">
 			<item id="FORWARDER" localename="Eventlist current programm" itemicon="hint_sleeptimer" target="eventlist" directkey="RC_red"/>
 			<item id="FORWARDER" localename="Details current program" itemicon="hint_restart" target="epgview" directkey="RC_green"/>
 			<item id="FORWARDER" localename="Eventlist overview" itemicon="hint_standby" target="epgplus" directkey="RC_yellow"/>
@@ -84,7 +84,7 @@
 	
 	<widget name="features" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Features" icon="features" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1" mode="MODE_MENU"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_CLASSIC" scrollbar="1" mode="MODE_MENU"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
 		</foot>
@@ -93,7 +93,7 @@
 	
 	<widget name="service" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Service" icon="service" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1" mode="MODE_MENU">
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_CLASSIC" scrollbar="1" mode="MODE_MENU">
 			<item id="FORWARDER" localename="Scan transponder" itemicon="hint_scan" target="scansetup"/>
 			<item id="FORWARDER" localename="Bouquet Editor" itemicon="hint_bedit" target="bouqueteditor"/>
 			<item id="FORWARDER" localename="CI Cam" itemicon="hint_ci" target="cicamsetup"/>
@@ -106,7 +106,7 @@
 	
 	<widget name="powermenu" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Power Menu" icon="power" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1" mode="MODE_MENU">
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_CLASSIC" scrollbar="1" mode="MODE_MENU">
 			<item id="FORWARDER" localename="Sleeptimer" itemicon="hint_sleeptimer" target="sleeptimer"/>
 			<item id="FORWARDER" localename="GUI restart" itemicon="hint_restart" target="neutrino" actionkey="restart"/>
 			<item id="FORWARDER" localename="Standby" itemicon="hint_standby" target="neutrino" actionkey="standby"/>
@@ -120,7 +120,7 @@
 	
 	<widget name="information" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Information" icon="information" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1" mode="MODE_MENU">
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_CLASSIC" scrollbar="1" mode="MODE_MENU">
 			<item id="FORWARDER" localename="Information" itemicon="hint_dboxinfo" target="boxinfo"/>
 			<item id="FORWARDER" localename="Image info" itemicon="hint_imageinfo" target="imageinfo"/>
 			<item id="FORWARDER" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo"/>
@@ -133,14 +133,14 @@
 	
 	<widget name="mediaplayer" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Media Player" icon="multimedia" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1" mode="MODE_MENU"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_CLASSIC" scrollbar="1" mode="MODE_MENU"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
 		</foot>
 	</widget>
 	
 	<widget name="plugins" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" mode="MODE_MENU" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_CLASSIC" mode="MODE_MENU" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Plugins" icon="features" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="btn_red" localename="Delete"/>
@@ -151,7 +151,7 @@
 	</widget>
 	
 	<widget name="timerlist" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="0"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU" scrollbar="0"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Timerlist" icon="timer" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="btn_red" localename="Delete"/>
@@ -162,7 +162,7 @@
 	</widget>
 	
 	<widget name="newtimer" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="0"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="0"/>
 		
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="New timer" icon="timer" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
@@ -171,7 +171,7 @@
 	</widget>
 	
 	<widget name="modifytimer" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="0"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="0"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Modify timer" icon="timer" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -179,7 +179,7 @@
 	</widget>
 	
 	<widget name="tunersetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="0"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU" scrollbar="0"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Servicescan" icon="softupdate" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -187,7 +187,7 @@
 	</widget>
 	
 	<widget name="scansetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Scan transponder" icon="softupdate" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -195,7 +195,7 @@
 	</widget>
 	
 	<widget name="transponder" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Select transponder" icon="softupdate" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -203,7 +203,7 @@
 	</widget>
 	
 	<widget name="unicablesetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Unicable settings" icon="softupdate" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -211,7 +211,7 @@
 	</widget>
 	
 	<widget name="manualscan" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Manual frequency scan / Test signal" icon="softupdate" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -219,7 +219,7 @@
 	</widget>
 	
 	<widget name="autoscan" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Auto scan" icon="softupdate" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -227,7 +227,7 @@
 	</widget>
 	
 	<widget name="autoscanall" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Auto-Scan multiple Satellite" icon="softupdate" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -235,7 +235,7 @@
 	</widget>
 	
 	<widget name="satsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Sat settings" icon="softupdate" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -243,7 +243,7 @@
 	</widget>
 	
 	<widget name="motorsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="DiSEqC settings" icon="softupdate" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -251,7 +251,7 @@
 	</widget>
 	
 	<widget name="satfindMenu" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Motor settings" icon="softupdate" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -259,7 +259,7 @@
 	</widget>
 	
 	<widget name="satOnOff" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Satellite" icon="softupdate" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -267,13 +267,13 @@
 	</widget>
 	
 	<widget name="tempsat" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="1" painthead="1" paintfoot="1">
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU" scrollbar="1" painthead="1" paintfoot="1">
 			<foot_button_label name="information"/>
 		</listbox>
 	</widget>
 	
 	<widget name="updatesetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Software update" icon="softupdate" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -281,7 +281,7 @@
 	</widget>
 	
 	<widget name="flashexpert" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Expert functions" icon="softupdate" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -289,7 +289,7 @@
 	</widget>
 	
 	<widget name="fileselector" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="File selector" icon="softupdate" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -297,7 +297,7 @@
 	</widget>
 	
 	<widget name="mtdselector" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Partition selector" icon="softupdate" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -305,7 +305,7 @@
 	</widget>
 	
 	<widget name="cammenu" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="CI CAM settings" icon="settings" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -313,19 +313,19 @@
 	</widget>
 	
 	<widget name="tempcam" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1" paintfoot="1">
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1" paintfoot="1">
 			<foot_button_label name="information"/>
 		</listbox>
 	</widget>
 	
 	<widget name="tempcam2" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1" paintfoot="1">
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1" paintfoot="1">
 			<foot_button_label name="information"/>
 		</listbox>
 	</widget>
 	
 	<widget name="videosetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Video settings" icon="video" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -333,7 +333,7 @@
 	</widget>
 	
 	<widget name="audiosetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Audio settings" icon="audio" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -341,7 +341,7 @@
 	</widget>
 	
 	<widget name="parentallocksetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="0"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="0"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Parentallock settings" icon="lock" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -349,7 +349,7 @@
 	</widget>
 	
 	<widget name="networksetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Network settings" icon="network" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -357,7 +357,7 @@
 	</widget>
 	
 	<widget name="proxysetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Proxy server" icon="network" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -365,7 +365,7 @@
 	</widget>
 	
 	<widget name="nfs" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Mount network volume" icon="network" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -373,7 +373,7 @@
 	</widget>
 	
 	<widget name="mountvolume" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Mount network volume" icon="keybinding" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -381,7 +381,7 @@
 	</widget>
 	
 	<widget name="umountvolume" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Umount network volume" icon="keybinding" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -389,7 +389,7 @@
 	</widget>
 	
 	<widget name="nsfsmall" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Network Mount Manager" icon="keybinding" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -397,7 +397,7 @@
 	</widget>
 	
 	<widget name="recordingsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Recording settings" icon="recording" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -405,7 +405,7 @@
 	</widget>
 	
 	<widget name="movieplayersetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Movieplayer settings" icon="movie" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -413,7 +413,7 @@
 	</widget>
 	
 	<widget name="audioplayersetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Audioplayer settings" icon="mp3" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -421,7 +421,7 @@
 	</widget>
 	
 	<widget name="pictureviewersetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Pictureviewer settings" icon="picture" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -429,7 +429,7 @@
 	</widget>
 	
 	<widget name="lcdsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Display settings" icon="lcd" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -437,7 +437,7 @@
 	</widget>
 	
 	<widget name="zapitsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Start Channel settings" icon="settings" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -445,7 +445,7 @@
 	</widget>
 	
 	<widget name="lcdsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Display settings" icon="lcd" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -453,7 +453,7 @@
 	</widget>
 	
 	<widget name="hddsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="HDD settings" icon="settings" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -461,19 +461,19 @@
 	</widget>
 	
 	<widget name="temphdd" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1" paintfoot="1">
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1" paintfoot="1">
 			<foot_button_label name="information"/>
 		</listbox>
 	</widget>
 	
 	<widget name="temphdd2" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1" paintfoot="1">
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1" paintfoot="1">
 			<foot_button_label name="information"/>
 		</listbox>
 	</widget>
 	
 	<widget name="miscsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Misc settings" icon="settings" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -481,7 +481,7 @@
 	</widget>
 	
 	<widget name="filebrowsersetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Filebrowser settings" icon="settings" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -489,7 +489,7 @@
 	</widget>
 	
 	<widget name="epgsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="EPG settings" icon="settings" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -497,7 +497,7 @@
 	</widget>
 	
 	<widget name="channelssetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Channellist settings" icon="settings" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -505,7 +505,7 @@
 	</widget>
 	
 	<widget name="skinsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" mode="MODE_listbox" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_CLASSIC" mode="MODE_listbox" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Skin Select" icon="colors" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -513,7 +513,7 @@
 	</widget>
 	
 	<widget name="menusetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Menu" icon="colors" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -521,7 +521,7 @@
 	</widget>
 	
 	<widget name="skinstyleselectionsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Themes" icon="colors" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -529,7 +529,7 @@
 	</widget>
 	
 	<widget name="themesetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Themes" icon="colors" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -537,7 +537,7 @@
 	</widget>
 	
 	<widget name="infobarsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Infobar" icon="colors" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -545,7 +545,7 @@
 	</widget>
 	
 	<widget name="languagesetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Language" icon="language" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -553,7 +553,7 @@
 	</widget>
 	
 	<widget name="fontsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Font" icon="colors" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -561,7 +561,7 @@
 	</widget>
 	
 	<widget name="osdtimingsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Timing" icon="colors" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -569,7 +569,7 @@
 	</widget>
 	
 	<widget name="osdmiscsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Misc settings" icon="colors" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -577,7 +577,7 @@
 	</widget>
 	
 	<widget name="rcsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Keybinding settings" icon="keybinding" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -585,7 +585,7 @@
 	</widget>
 	
 	<widget name="rcbinding" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Hot Keys mapping" icon="keybinding" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -593,7 +593,7 @@
 	</widget>
 	
 	<widget name="keychooser" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -601,7 +601,7 @@
 	</widget>
 	
 	<widget name="mountchooser" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -609,7 +609,7 @@
 	</widget>
 	
 	<widget name="optionstringchooser" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -617,7 +617,7 @@
 	</widget>
 	
 	<widget name="optionchooser" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -625,7 +625,7 @@
 	</widget>
 	
 	<widget name="usermenu" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -633,7 +633,7 @@
 	</widget>
 	
 	<widget name="personalisation" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Personalisation" icon="colors" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>
@@ -641,7 +641,7 @@
 	</widget>
 	
 	<widget name="cecsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="CEC Setup" icon="colors" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>

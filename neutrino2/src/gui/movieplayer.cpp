@@ -2081,7 +2081,7 @@ void CMoviePlayerGui::showPlaylist()
 		mplist->addItem(item);
 	}
 
-	mplist->setWidgetType(ClistBox::TYPE_FRAME);
+	mplist->setWidgetLayout(ClistBox::LAYOUT_FRAME);
 	mplist->setItemsPerPage(6, 2);
 	
 	mplist->setSelected(selected);

@@ -180,7 +180,7 @@ class CNeutrinoApp : public CTarget
 		neutrino_msg_t convertKey(const char* const key);
 		int convertButtonMode(const char * const mode);
 		int convertClistBoxMode(const char * const mode);
-		int convertClistBoxType(const char * const type);
+		int convertClistBoxLayout(const char * const layout);
 		int convertItemInfoMode(const char * const mode);
 		int convertCMenuItemID(const char * const id);
 		int convertCMeuSeparatorType(const char * const type);

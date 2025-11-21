@@ -105,7 +105,7 @@ class CMenuItem
 		bool pb;
 		
 		//
-		int widgetType;
+		int widgetLayout;
 		int widgetMode;
 		bool isPlugin;
 		bool paintIconName;
@@ -186,7 +186,7 @@ class CMenuItem
 		virtual void setOptionHAlign(unsigned int al){ optionHAlign = al;};
 		//
 		virtual void set2lines(bool p){nLinesItem = p;};
-		virtual void setWidgetType(int type){widgetType = type;};
+		virtual void setWidgetLayout(int type){widgetLayout = type;};
 		virtual void setBorderMode(int m = CComponent::BORDER_ALL){borderMode = m;};
 		virtual void setBorderColor(fb_pixel_t col){borderColor = col;};
 		virtual void setGradient(int gr){itemGradient = gr;};
@@ -376,10 +376,10 @@ class ClistBox : public CComponent
 		// type / layout
 		enum
 		{
-			TYPE_STANDARD = 0,
-			TYPE_CLASSIC,
-			TYPE_EXTENDED,
-			TYPE_FRAME
+			LAYOUT_STANDARD = 0,
+			LAYOUT_CLASSIC,
+			LAYOUT_EXTENDED,
+			LAYOUT_FRAME
 		};
 
 		//
@@ -415,7 +415,7 @@ class ClistBox : public CComponent
 		int item_width;
 
 		// widget type / mode
-		int widgetType;
+		int widgetLayout;
 		int widgetMode;
 		
 		// mainframe
@@ -517,8 +517,8 @@ class ClistBox : public CComponent
 		void clearItems(void){items.clear(); current_page = 0;};
 		void clear(void){hbutton_labels.clear(); fbutton_labels.clear(); current_page = 0; items.clear();};
 		void setSelected(unsigned int _new) { selected = _new; };
-		void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, bool enabled = true, int imode = MODE_MENU, int itype = TYPE_STANDARD, bool i2lines = false, int iBorder = CComponent::BORDER_NO);
-		void addPluginItem(const char *const pluginName, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const char* const Icon = NULL, bool enabled = true, int imode = MODE_MENU, int itype = TYPE_STANDARD, bool i2lines = false, int iBorder = CComponent::BORDER_NO);
+		void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, bool enabled = true, int imode = MODE_MENU, int ilayout = LAYOUT_STANDARD, bool i2lines = false, int iBorder = CComponent::BORDER_NO);
+		void addPluginItem(const char *const pluginName, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const char* const Icon = NULL, bool enabled = true, int imode = MODE_MENU, int ilayout = LAYOUT_STANDARD, bool i2lines = false, int iBorder = CComponent::BORDER_NO);
 		void selectItemByName(const char *name);
 		////
 		void initFrames();
@@ -542,7 +542,7 @@ class ClistBox : public CComponent
 		// frame method
 		void setItemsPerPage(int itemsX = 6, int itemsY = 3){itemsPerX = itemsX; itemsPerY = itemsY; maxItemsPerPage = itemsPerX*itemsPerY;};
 		//
-		void setWidgetType(int type){widgetType = type; initFrames();};
+		void setWidgetLayout(int type){widgetLayout = type; initFrames();};
 		void setWidgetMode(int mode){widgetMode = mode;};
 		
 		//// item properties
@@ -631,7 +631,7 @@ class ClistBox : public CComponent
 		int getItemsPerY()const{return itemsPerY;};
 		int getMaxItemsPerPage()const{return maxItemsPerPage;};
 		// widget type/mode/pos
-		int getWidgetType(){return widgetType;};
+		int getWidgetLayout(){return widgetLayout;};
 };
 
 #endif // LISTBOX_H_
