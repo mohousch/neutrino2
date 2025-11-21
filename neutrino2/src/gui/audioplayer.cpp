@@ -791,7 +791,7 @@ void CAudioPlayerGui::play(unsigned int pos)
 		CAudioPlayer::getInstance()->stop();
 
 	// play
-	CAudioPlayer::getInstance()->play(&m_playlist[pos], g_settings.audioplayer_highprio == 1);
+	CAudioPlayer::getInstance()->play(&m_playlist[pos]);
 
 	m_state = CAudioPlayerGui::PLAY;
 	
@@ -967,7 +967,7 @@ void CAudioPlayerGui::GetMetaData(CAudiofile& File)
 	bool ret = 1;
 
 	if (CFile::EXTENSION_URL != File.FileExtension)
-		ret = CAudioPlayer::getInstance()->readMetaData(&File, m_state != CAudioPlayerGui::STOP && !g_settings.audioplayer_highprio);
+		ret = CAudioPlayer::getInstance()->readMetaData(&File, m_state != CAudioPlayerGui::STOP);
 
 	if (!ret || (File.MetaData.artist.empty() && File.MetaData.title.empty() ))
 	{

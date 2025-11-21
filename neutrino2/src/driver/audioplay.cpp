@@ -216,7 +216,7 @@ void * CAudioPlayer::PlayThread( void * /*arg*/)
 	return NULL;
 }
 
-bool CAudioPlayer::play(const CAudiofile *file, const bool highPrio)
+bool CAudioPlayer::play(const CAudiofile *file)
 {
 	dprintf(DEBUG_NORMAL, "CAudioPlayer::play:\n");
 	
@@ -232,15 +232,6 @@ bool CAudioPlayer::play(const CAudiofile *file, const bool highPrio)
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
-
-	if(highPrio)
-	{
-		struct sched_param param;
-		pthread_attr_setschedpolicy(&attr, SCHED_RR);
-		param.sched_priority = 1;
-		pthread_attr_setschedparam(&attr, &param);
-		usleep(100000); // give the event thread some time to handle his stuff without this sleep there were duplicated events...
-	}
 
 	bool ret = true;
 

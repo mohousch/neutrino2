@@ -67,7 +67,7 @@ class CAudioPlayer
 		static CAudioPlayer* getInstance();
 		
 		////
-		bool play(const CAudiofile*, const bool highPrio = false);
+		bool play(const CAudiofile*);
 		void stop();
 		void pause();
 		void init();

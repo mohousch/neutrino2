@@ -41,13 +41,6 @@
 #include <system/helpers.h>
 
 
-#define MESSAGEBOX_NO_YES_OPTION_COUNT 2
-const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
-{
-	{ 0, _("no") },
-	{ 1, _("yes") }
-};
-
 int CAudioPlayerSettings::exec(CTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CAudioPlayerSettings::exec: actionKey: %s\n", actionKey.c_str());
@@ -123,9 +116,7 @@ void CAudioPlayerSettings::showMenu()
 	}
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Audioplayer settings"));
+	setLCDMode(_("Audioplayer settings"));
 	
 	// intros
 	audioPlayerSettings->addItem(new CMenuForwarder(_("back")));
@@ -134,9 +125,6 @@ void CAudioPlayerSettings::showMenu()
 	// save settings
 	audioPlayerSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	audioPlayerSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
-
-	// high prio
-	audioPlayerSettings->addItem(new CMenuOptionChooser(_("High decode priority"), &g_settings.audioplayer_highprio, MESSAGEBOX_NO_YES_OPTIONS, MESSAGEBOX_NO_YES_OPTION_COUNT, true ));
 
 	// start dir
 	CMenuForwarder *m1 = new CMenuForwarder(_("Start dir."), true, g_settings.network_nfs_audioplayerdir, this, "audioplayerdir");
@@ -153,6 +141,6 @@ void CAudioPlayerSettings::showMenu()
 	}
 	
 	//
-        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+        resetLCDMode();
 }
 
