@@ -39,4 +39,4 @@ msgid "No Stream found!"
 msgstr "Keine Stream gefunden!"
 
 msgid "loading categories ..."
-msgstr "Kategorien werden geldaen ..."
+msgstr "Kategorien werden geladen ..."

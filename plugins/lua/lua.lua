@@ -264,7 +264,6 @@ function testClistBox()
 	
 	listBox:addKey(neutrino2.CRCInput_RC_info, self, "infoBox")
 	
-::REPEAT::	
 	listBox:exec(self)
 	
 	if listBox:getExitPressed() == true then
@@ -292,7 +291,7 @@ function testClistBox()
 	end
 	
 	if listBox:getExitPressed() ~= true then
-		goto REPEAT
+		testClistBox()
 	end
 end
 
@@ -342,7 +341,6 @@ function testCFrameBox()
 	frame4:setBorderMode()
 	frameBox:addFrame(frame4)
 
-::REPEAT::
 	frameBox:exec(self)
 	
 	if frameBox:getExitPressed() == true then
@@ -363,7 +361,7 @@ function testCFrameBox()
 	end
 
 	if frameBox:getExitPressed() ~= true then
-		goto REPEAT
+		testCFrameBox()
 	end
 end
 
@@ -462,7 +460,6 @@ function testCWidget()
 	testWidget:addCCItem(listBox)
 	testWidget:addKey(neutrino2.CRCInput_RC_info, null, "info")
 
-::REPEAT::
 	testWidget:exec(self, "")
 	
 	if testWidget:getExitPressed() == true then
@@ -502,7 +499,7 @@ function testCWidget()
 	end
 	
 	if testWidget:getExitPressed() ~= true then
-		goto REPEAT
+		testCWidget()
 	end
 end
 

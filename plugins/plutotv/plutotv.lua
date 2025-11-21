@@ -253,6 +253,10 @@ function cat_menu(_id)
 	
 	cm:exec(self)
 	
+	if cm:getExitPressed() == true then
+		return neutrino2.CTarget_RETURN_EXIT
+	end
+	
 	cm_selected = cm:getSelected()
 	
 	local actionKey = cm:getActionKey()
@@ -337,6 +341,10 @@ function season_menu(_id)
 	sm:setSelected(sm_selected)
 	
 	sm:exec(self)
+	
+	if sm:getExitPressed() == true then
+		return neutrino2.CTarget_RETURN_EXIT
+	end
 	
 	sm_selected = sm:getSelected()
 	local actionKey = sm:getActionKey()
@@ -428,6 +436,10 @@ function episode_menu(s)
 	em:setSelected(em_selected)
 	
 	em:exec(self)
+	
+	if em:getExitPressed() == true then
+		return neutrino2.CTarget_RETURN_EXIT
+	end
 	
 	em_selected = em:getSelected()
 	local actionKey = em:getActionKey()
@@ -524,6 +536,10 @@ function categories_menu()
 	m:setSelected(m_selected)
 	
 	m:exec(self)
+	
+	if m:getExitPressed() == true then
+		return neutrino2.CTarget_RETURN_EXIT
+	end
 	
 	m_selected = m:getSelected()
 	local actionKey = m:getActionKey()

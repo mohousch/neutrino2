@@ -185,6 +185,10 @@ function get_categories_menu()
 	m_categories:setSelected(selected_category)
 
 	m_categories:exec(self)
+	
+	if m_categories:getExitPressed() == true then
+		return neutrino2.CTarget_RETURN_EXIT
+	end
 
 	selected_category = m_categories:getSelected()
 		
@@ -341,6 +345,10 @@ function get_movies_menu(_id)
 	m_movies:setSelected(selected_movie)
 	
 	m_movies:exec(self)
+	
+	if m_movies:getExitPressed() == true then
+		return neutrino2.CTarget_RETURN_EXIT
+	end
 	
 	selected_movie = m_movies:getSelected()
 	local key = m_movies:getKey()

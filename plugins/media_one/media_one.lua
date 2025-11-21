@@ -680,7 +680,6 @@ function rssurlmenu(url)
 	
 	m:setSelected(selected)
 
-::REPEAT::
 	m:exec(self)
 	
 	if m:getExitPressed() == true then
@@ -694,8 +693,7 @@ function rssurlmenu(url)
 	end
 
 	if m:getExitPressed() ~= true then
-	--	rssurlmenu(url)
-		goto REPEAT
+		rssurlmenu(url)
 	end
 
 	glob.feedpersed = nil
@@ -744,7 +742,6 @@ function start()
 	
 	sm:setSelected(s_selected)
 	
-::REPEAT::
 	sm:exec(self)
 	
 	if sm:getExitPressed() == true then
@@ -758,8 +755,7 @@ function start()
 	end
 
 	if sm:getExitPressed() ~= true then
-		--start()
-		goto REPEAT
+		start()
 	end
 end
 
