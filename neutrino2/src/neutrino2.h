@@ -191,6 +191,7 @@ class CNeutrinoApp : public CTarget
 		void mainMenu();
 		bool showUserMenu(int button);
 		void selectNVOD();
+		void showSubChan();
 		////
 		void audioMute( int newValue, bool isEvent= false );
 		void setVolume(const neutrino_msg_t key, const bool bDoPaint = true);

@@ -3990,7 +3990,7 @@ void CNeutrinoApp::realRun(void)
 				{
 					stopSubtitles();
 					g_RemoteControl->subChannelUp();
-					g_InfoViewer->showSubChan(); 
+					showSubChan(); 
 			    	} 
 			    	else if(g_settings.virtual_zap_mode) 
 				{
@@ -4007,7 +4007,7 @@ void CNeutrinoApp::realRun(void)
 				{
 					stopSubtitles();
 					g_RemoteControl->subChannelDown();
-					g_InfoViewer->showSubChan();
+					showSubChan();
 			    	} 
 			    	else if(g_settings.virtual_zap_mode) 
 				{
@@ -4066,7 +4066,7 @@ void CNeutrinoApp::realRun(void)
 				
 				g_RemoteControl->setSubChannel(CRCInput::getNumericValue(msg));
 				
-				g_InfoViewer->showSubChan();
+				showSubChan();
 				
 				// restore mute symbol
 				audioMute(current_muted, true);

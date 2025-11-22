@@ -154,7 +154,6 @@ class CTestMenu : public CTarget
 		void testClistBox2();
 		void testClistBox3();
 		void testClistBox4();
-//		void testClistBox5();
 		void testClistBox6();
 		void testClistBox7();
 		void testClistBox8();
@@ -212,6 +211,7 @@ class CTestMenu : public CTarget
 		//// channellist / bouquetlist
 		void testCChannellist();
 		void testCBouquetlist();
+		void testSubChannellist();
 		//// skin
 		void testSkinWidget();
 		void testSkinWidget3();
@@ -4140,6 +4140,13 @@ void CTestMenu::testCBouquetlist()
 	webTVBouquetList->exec(true, true); // without zap
 }
 
+void CTestMenu::testSubChannellist()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testSubChannellist\n");
+	
+	CNeutrinoApp::getInstance()->showSubChan();
+}
+
 void CTestMenu::testCEventlist()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCEventlist\n");
@@ -4962,6 +4969,12 @@ int CTestMenu::exec(CTarget *parent, const std::string &actionKey)
 	{
 		testCBouquetlist();
 
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "subchannellist")
+	{
+		testSubChannellist();
+		
 		return RETURN_REPAINT;
 	}
 	else if(actionKey == "epgview")
@@ -6105,6 +6118,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "Channellist") );
 	mainMenu->addItem(new CMenuForwarder("CChannelList:", true, NULL, this, "channellist"));
 	mainMenu->addItem(new CMenuForwarder("CBouquetList:", true, NULL, this, "bouquetlist"));
+	mainMenu->addItem(new CMenuForwarder("SubChannellist:", true, NULL, this, "subchannellist"));
 	
 	// skins
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "SKIN") );		
