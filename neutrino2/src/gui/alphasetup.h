@@ -49,7 +49,7 @@ class CAlphaSetup : public CTarget
 		int hheight;		// head menu font height
 		int mheight; 		// menu font height
 
-		CCWindow *mainWindow;
+		CWidget *mainWindow;
 
 		unsigned char *alpha;
 		std::string name;

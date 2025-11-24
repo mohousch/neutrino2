@@ -497,7 +497,7 @@ void CKeyboardInput::enableSaveScreen(bool enable)
 	}
 }
 
-int CKeyboardInput::exec(CTarget* parent, const std::string&)
+int CKeyboardInput::exec(CTarget *parent, const std::string&)
 {
 	dprintf(DEBUG_NORMAL, "CKeyboardInput::exec\n");
 	

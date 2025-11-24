@@ -47,7 +47,7 @@ class CColorChooser : public CTarget
 		CBox cFrameBoxItem;
 		CBox cFrameBoxColorPreview;
 
-		CCWindow *m_cBoxWindow;
+		CWidget *m_cBoxWindow;
 
 		unsigned char * value[4]; // r, g, b, alpha
 
