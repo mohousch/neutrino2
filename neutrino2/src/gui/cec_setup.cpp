@@ -90,7 +90,6 @@ const keyval VIDEOMENU_HDMI_CEC_VOL_OPTIONS[VIDEOMENU_HDMI_CEC_VOL_OPTION_COUNT]
 
 int CCECSetup::showMenu()
 {
-	//menue init
 	CWidget *widget = NULL;
 	ClistBox *cec = NULL;
 	
@@ -134,9 +133,7 @@ int CCECSetup::showMenu()
 	}
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("CEC Setup"));
+	setLCDMode(_("CEC Setup"));
 	
 	// intros
 	cec->addItem(new CMenuForwarder(_("back")));
@@ -170,7 +167,7 @@ int CCECSetup::showMenu()
 	}
 	
 	//
-        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+        resetLCDMode();
 
 	return res;
 }

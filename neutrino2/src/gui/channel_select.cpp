@@ -44,7 +44,6 @@
 extern CBouquetList * bouquetList;
 extern tallchans allchans;
 
-//select menu
 CSelectChannelWidget::CSelectChannelWidget()
 {
 	tmpChannelList = NULL;
@@ -64,7 +63,7 @@ CSelectChannelWidget::~CSelectChannelWidget()
 
 int CSelectChannelWidget::exec(CTarget *parent, const std::string &actionKey)
 {
-	int   res = RETURN_REPAINT;
+	int res = RETURN_REPAINT;
 	
 	dprintf(DEBUG_NORMAL, "CSelectChannelWidget::exec: actionKey:%s\n", actionKey.c_str());
 
