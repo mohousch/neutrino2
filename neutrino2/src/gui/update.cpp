@@ -427,67 +427,6 @@ bool CFlashUpdate::checkVersion4Update()
 	return ( (fileType == 'T')? true : MessageBox(_("Information"), msg, CMessageBox::mbrYes, CMessageBox::mbYes | CMessageBox::mbNo, NEUTRINO_ICON_UPDATE, 800) == CMessageBox::mbrYes); // UTF-8
 }
 
-int CFlashUpdate::showOfgWriteMenu()
-{
-	dprintf(DEBUG_NORMAL, "CFlashUpdate::showOfgWriteMenu\n");
-	
-	int ret = RETURN_REPAINT;
-	
-	CWidget * mWidget = NULL;
-	ClistBox *mlistBox = NULL;
-	
-	mWidget = CNeutrinoApp::getInstance()->getWidget("ofgwrite");
-	
-	if (mWidget)
-	{
-		mlistBox = (ClistBox *)mWidget->getCCItem(CComponent::CC_LISTBOX);
-	}
-	else
-	{
-		//
-		CBox box;
-		box.iWidth = MENU_WIDTH;
-		box.iHeight = MENU_HEIGHT;
-		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
-		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
-		
-		mWidget = new CWidget(&box);
-		mWidget->name = "ofgwrite";
-		
-		//
-		mlistBox = new ClistBox(&box);
-
-		mlistBox->setWidgetMode(ClistBox::MODE_SETUP);
-		
-		mlistBox->enablePaintHead();
-		mlistBox->setTitle(_("Software update"), NEUTRINO_ICON_SCAN);
-
-		mlistBox->enablePaintFoot();
-			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };
-			
-		mlistBox->setFootButtons(&btn);
-		
-		//
-		mWidget->addCCItem(mlistBox);
-	}
-	
-	// intros
-	mlistBox->addItem(new CMenuForwarder(_("back")));
-	mlistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	
-	//
-	ret = mWidget->exec(this, "");
-	
-	if (mWidget)
-	{
-		delete mWidget;
-		mWidget = NULL;
-	}
-
-	return ret;
-}
-
 int CFlashUpdate::exec(CTarget * parent, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "CFlashUpdate::exec\n");
@@ -636,7 +575,7 @@ int CFlashUpdate::exec(CTarget * parent, const std::string &)
 	}
 	else if (fileType == 'Z') // kernel /rootfs
 	{
-		if ( allow_flash)
+		if (allow_flash)
 		{
 			char cmd[255];
 			
@@ -685,28 +624,28 @@ void CFlashExpert::readmtd(int _readmtd)
 	filename += tmp;
 	filename += ".img"; // US-ASCII (subset of UTF-8 and ISO8859-1)
 	
-	progressWindow->setTitle(_("Reading Flash"));
-	progressWindow->paint();
-	progressWindow->showGlobalStatus(0);
-	progressWindow->showStatusMessageUTF((std::string(_("Read whole image")) + " (" + CMTDInfo::getInstance()->getMTDName(_readmtd) + ')')); // UTF-8
+//	progressWindow->setTitle(_("Reading Flash"));
+//	progressWindow->paint();
+//	progressWindow->showGlobalStatus(0);
+//	progressWindow->showStatusMessageUTF((std::string(_("Read whole image")) + " (" + CMTDInfo::getInstance()->getMTDName(_readmtd) + ')')); // UTF-8
 	
 	CFlashTool ft;
-	ft.setStatusViewer(progressWindow);
+//	ft.setStatusViewer(progressWindow);
 	ft.setMTDDevice(CMTDInfo::getInstance()->getMTDFileName(_readmtd));
 
 	if(!ft.readFromMTD(filename, 100)) 
 	{
-		progressWindow->showStatusMessageUTF(ft.getErrorMessage()); // UTF-8
+//		progressWindow->showStatusMessageUTF(ft.getErrorMessage()); // UTF-8
 		sleep(10);
 	} 
 	else 
 	{
-		progressWindow->showGlobalStatus(100);
-		progressWindow->showStatusMessageUTF(_("Package successfully installed")); // UTF-8
+//		progressWindow->showGlobalStatus(100);
+//		progressWindow->showStatusMessageUTF(_("Package successfully installed")); // UTF-8
 		char message[500];
 		sprintf(message, _("The image was successfully saved \nunder %s."), filename.c_str());
 		sleep(1);
-		progressWindow->hide();
+//		progressWindow->hide();
 		HintBox(_("Information"), _(message));
 	}
 }
@@ -723,24 +662,24 @@ void CFlashExpert::writemtd(const std::string &filename, int mtdNumber)
         CLCD::getInstance()->showProgressBar2(0, "checking", 0, "Update Neutrino2");
         CLCD::getInstance()->setMode(CLCD::MODE_PROGRESSBAR2);	
 
-	progressWindow->setTitle(_("Writing Flash"));
-	progressWindow->paint();
-	progressWindow->showGlobalStatus(0);
+//	progressWindow->setTitle(_("Writing Flash"));
+//	progressWindow->paint();
+//	progressWindow->showGlobalStatus(0);
 	CFlashTool ft;
-	ft.setStatusViewer(progressWindow);
+//	ft.setStatusViewer(progressWindow);
 	ft.setMTDDevice( CMTDInfo::getInstance()->getMTDFileName(mtdNumber) );
 
 	if(!ft.program( "/tmp/" + filename, 50, 100)) 
 	{
-		progressWindow->showStatusMessageUTF(ft.getErrorMessage()); // UTF-8
+//		progressWindow->showStatusMessageUTF(ft.getErrorMessage()); // UTF-8
 		sleep(10);
 	} 
 	else 
 	{
-		progressWindow->showGlobalStatus(100);
-		progressWindow->showStatusMessageUTF(_("Package successfully installed")); // UTF-8
+//		progressWindow->showGlobalStatus(100);
+//		progressWindow->showStatusMessageUTF(_("Package successfully installed")); // UTF-8
 		sleep(1);
-		progressWindow->hide();
+//		progressWindow->hide();
 		HintBox(_("Information"), _("The image was successfully flashed.\nThe box will be rebooted now.")); // UTF-8
 		ft.reboot();
 	}

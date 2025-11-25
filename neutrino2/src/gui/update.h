@@ -64,9 +64,6 @@ class CFlashUpdate : public CTarget
 		bool getUpdateImage(const std::string &version);
 		bool checkVersion4Update();
 		
-		////
-		int showOfgWriteMenu();
-		
 	public:
 		CFlashUpdate(int uMode);
 		virtual ~CFlashUpdate();
