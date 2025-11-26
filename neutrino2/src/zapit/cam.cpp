@@ -53,7 +53,6 @@ unsigned int CCaDescriptor::writeToBuffer(unsigned char * const buffer) // retur
 	return descriptor_length + 2;
 }
 
-
 //// generic table containing conditional access descriptors
 void CCaTable::addCaDescriptor(const unsigned char * const buffer)
 {
@@ -82,7 +81,6 @@ CCaTable::~CCaTable(void)
 	for (unsigned int i = 0; i < ca_descriptor.size(); i++)
 		delete ca_descriptor[i];
 }
-
 
 //// elementary stream information
 unsigned int CEsInfo::writeToBuffer(unsigned char * const buffer) // returns number of bytes written

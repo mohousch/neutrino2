@@ -682,7 +682,13 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 						g_RCInput->killTimer(sec_timer_id);
 					}
 						
-					CNeutrinoApp::getInstance()->handleMsg(msg, data);
+					res = CNeutrinoApp::getInstance()->handleMsg(msg, data);
+					
+					if ( res == messages_return::unhandled )
+					{
+						g_RCInput->postMsg(msg, data);
+						res = messages_return::cancel_info;
+					}
 				}
 			}
 					
