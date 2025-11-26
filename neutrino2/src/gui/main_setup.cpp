@@ -119,7 +119,7 @@ void CMainSettingsMenu::showMenu(void)
 		mainSettings->setFootButtons(&btn);
 		
 		// iteminfo
-		if (g_settings.item_info) mainSettings->enablePaintItemInfo(60);
+		if (g_settings.item_info) mainSettings->enablePaintItemInfo();
 		
 		//
 		widget->addCCItem(mainSettings);
