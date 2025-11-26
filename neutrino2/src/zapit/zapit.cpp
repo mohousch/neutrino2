@@ -3706,6 +3706,29 @@ int CZapit::getChannelNumber(const t_channel_id channel_id)
 	return number;
 }
 
+int CZapit::getChannelIndex(const t_channel_id channel_id)
+{
+	int index = 0;
+	
+	tallchans_iterator it = allchans.find(channel_id);
+	if (it != allchans.end())
+		index = it->second.index;
+		
+	return index;
+}
+
+int CZapit::getChannelSatellitePosition(const t_channel_id channel_id)
+{
+	int position = 0;
+	
+	tallchans_iterator it = allchans.find(channel_id);
+	if (it != allchans.end())
+		position = it->second.getSatellitePosition();
+		
+	return position;
+}
+
+
 std::string CZapit::getChannelURL(const t_channel_id channel_id)
 {
 	std::string url = "";

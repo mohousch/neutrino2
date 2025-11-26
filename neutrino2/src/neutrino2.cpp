@@ -3247,9 +3247,9 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 // handle msg
 int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 {
-	int res = 0;
+	int res = messages_return::none;
 
-	// handle msg with CRemotecontrol / CInfoviewer / CCAMMenuHandler
+	//
 	res = res | g_RemoteControl->handleMsg(msg, data);
 	res = res | g_InfoViewer->handleMsg(msg, data);
 #if defined (ENABLE_CI)	
@@ -4552,7 +4552,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	CLCD::getInstance()->Clear();
 		
 	// show startup msg on CLCD
-	CLCD::getInstance()->showTextScreen("NeutrinoNG", "", CLCD::EPGMODE_CHANNEL, true, true); // always centered
+	CLCD::getInstance()->showTextScreen("Neutrino2", "", CLCD::EPGMODE_CHANNEL, true, true); // always centered
 
 	// rcinput
 	g_RCInput = new CRCInput();
@@ -4884,7 +4884,7 @@ void sighandler(int signum)
 int main(int argc, char *argv[])
 {
 	// build date
-	printf(">>> neutrinoNG v %s (compiled %s %s) <<<\n", PACKAGE_VERSION, __DATE__, __TIME__);	
+	printf(">>> neutrino2 v %s (compiled %s %s) <<<\n", PACKAGE_VERSION, __DATE__, __TIME__);	
 
 	// sighandler
         signal(SIGTERM, sighandler);
