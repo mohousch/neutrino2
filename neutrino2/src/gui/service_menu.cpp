@@ -53,10 +53,8 @@
 #include <gui/bouqueteditor_bouquets.h>
 
 
-#if !defined (PLATFORM_COOLSTREAM)
 #if defined (ENABLE_CI)
 extern CCAMMenuHandler * g_CamHandler;		// defined neutrino.cpp
-#endif
 #endif
 
 extern int FrontendCount;			// defined in zapit.cpp
@@ -84,9 +82,8 @@ int CServiceMenu::showMenu(void)
 	int res = CTarget::RETURN_REPAINT;
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Service"));
+	
+	setLCDMode(_("Service"));
 	
 	//
 	CWidget* widget = NULL;
@@ -125,7 +122,7 @@ int CServiceMenu::showMenu(void)
 		if (!g_settings.item_info) service->setFootButtons(&btn);
 		
 		// iteminfo
-		if (g_settings.item_info) service->enablePaintItemInfo(60);
+		if (g_settings.item_info) service->enablePaintItemInfo();
 		
 		//
 		widget->addCCItem(service);
@@ -158,7 +155,7 @@ int CServiceMenu::showMenu(void)
 	}
 	
 	//
-	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+	resetLCDMode();
 	
 	return res;
 }

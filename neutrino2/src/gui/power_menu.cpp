@@ -62,9 +62,7 @@ int CPowerMenu::showMenu(void)
 	int res = CTarget::RETURN_REPAINT;
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Power Menu"));
+	setLCDMode(_("Power Menu"));
 
 	//
 	CWidget* widget = NULL;
@@ -107,7 +105,7 @@ int CPowerMenu::showMenu(void)
 		powerMenu->setFootButtons(&btn);
 		
 		// iteminfo
-		if (g_settings.item_info) powerMenu->enablePaintItemInfo(60);
+		if (g_settings.item_info) powerMenu->enablePaintItemInfo();
 		
 		//
 		widget->addCCItem(powerMenu);
@@ -142,7 +140,7 @@ int CPowerMenu::showMenu(void)
 	}
 	
 	//
-	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+	resetLCDMode();
 	
 	return res;
 }

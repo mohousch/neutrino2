@@ -92,3 +92,4 @@ class CTimerList : public CTarget
 bool askUserOnTimerConflict(time_t announceTime, time_t stopTime);
 
 #endif
+

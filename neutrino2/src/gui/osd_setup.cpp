@@ -85,9 +85,7 @@ int COSDSettings::showMenu(void)
 	int res = CTarget::RETURN_REPAINT;
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("OSD"));
+	setLCDMode(_("OSD"));
 	
 	//
 	CWidget* widget = NULL;
@@ -188,7 +186,7 @@ int COSDSettings::showMenu(void)
 	}
 	
 	//
-	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+	resetLCDMode();
 	
 	return res;
 }

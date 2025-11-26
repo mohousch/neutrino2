@@ -126,9 +126,7 @@ int CPluginList::showMenu()
 	}
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Plugins"));
+	setLCDMode(_("Plugins"));
 
 	//
 	for(unsigned int count = 0; count < (unsigned int)g_PluginList->getNumberOfPlugins(); count++)
@@ -174,7 +172,7 @@ int CPluginList::showMenu()
 	}
 	
 	//
-	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+	resetLCDMode();
 	
 	return res;
 }

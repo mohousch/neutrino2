@@ -61,9 +61,7 @@ void CMediaPlayerMenu::showMenu()
 	dprintf(DEBUG_NORMAL, "CMediaPlayerMenu::showMenu:\n");
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Media Player"));
+	setLCDMode(_("Media Player"));
 
 	//
 	CWidget* widget = NULL;
@@ -128,6 +126,6 @@ void CMediaPlayerMenu::showMenu()
 	}
 	
 	//
-	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+	resetLCDMode();
 }
 

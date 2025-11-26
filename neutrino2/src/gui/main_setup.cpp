@@ -76,9 +76,7 @@ void CMainSettingsMenu::showMenu(void)
 	dprintf(DEBUG_NORMAL, "CMainSettingsMenu::showMenu:\n");
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Settings"));
+	setLCDMode(_("Settings"));
 
 	//
 	CWidget* widget = NULL;
@@ -201,6 +199,6 @@ void CMainSettingsMenu::showMenu(void)
 	}
 	
 	//
-	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+	resetLCDMode();
 }
 

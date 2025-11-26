@@ -543,9 +543,7 @@ int CInfoMenu::showMenu()
 	int res = CTarget::RETURN_REPAINT;
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Information"));
+	setLCDMode(_("Information"));
 	
 	//
 	widget = NULL; 
@@ -588,7 +586,7 @@ int CInfoMenu::showMenu()
 		infoMenu->setFootButtons(&btn);
 		
 		// iteminfo
-		if (g_settings.item_info) infoMenu->enablePaintItemInfo(60);
+		if (g_settings.item_info) infoMenu->enablePaintItemInfo();
 		
 		//
 		widget->addCCItem(infoMenu);
@@ -617,7 +615,7 @@ int CInfoMenu::showMenu()
 	}
 	
 	//
-	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+	resetLCDMode();
 	
 	return res;
 }

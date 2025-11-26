@@ -59,9 +59,7 @@ int CEPGMenuHandler::doMenu()
 	int res = RETURN_REPAINT;
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("EPG / Timer"));
+	setLCDMode(_("EPG / Timer"));
 	
 	//
 	CWidget* widget = NULL;
@@ -131,7 +129,7 @@ int CEPGMenuHandler::doMenu()
         }
         
         //
-        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+        resetLCDMode();
 	
 	return res;
 }
