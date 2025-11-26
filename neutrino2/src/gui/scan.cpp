@@ -55,8 +55,7 @@
 #define BAR_WIDTH 	150
 #define BAR_HEIGHT 	8
 
-extern satellite_map_t satellitePositions;					// defined in getServices.cpp
-extern CScanSettings * scanSettings;						// defined in scan_setup.cpp
+extern satellite_map_t satellitePositions;					// defined in zapit.cpp
 
 //
 CScanTs::CScanTs(CFrontend *f, CScanSettings *sc)

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-11-21 13:09+0100\n"
+"POT-Creation-Date: 2025-11-26 15:59+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1599,9 +1599,6 @@ msgstr ""
 msgid "PSI settings"
 msgstr ""
 
-msgid "Package successfully installed"
-msgstr ""
-
 msgid "Page Down"
 msgstr ""
 
@@ -1741,12 +1738,6 @@ msgid "Radius"
 msgstr ""
 
 msgid "Read one partition"
-msgstr ""
-
-msgid "Read whole image"
-msgstr ""
-
-msgid "Reading Flash"
 msgstr ""
 
 msgid "Real Channel Number"
@@ -2641,9 +2632,6 @@ msgid "Winter sports"
 msgstr ""
 
 msgid "Write one partition"
-msgstr ""
-
-msgid "Writing Flash"
 msgstr ""
 
 msgid "YT:"
