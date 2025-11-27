@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$id: timerlist.cpp 24022025 mohousch $
+//	$id: timerlist.cpp 26112025 mohousch $
 //	
 //	Copyright (C) 2001 Steffen Hehn 'McClean'
 //	and some other guys
@@ -158,6 +158,7 @@ class CTimerListRepeatNotifier : public CChangeObserver
 		CMenuForwarder *m2;
 
 		int* iRepeat;
+
 	public:
 		CTimerListRepeatNotifier( int *repeat, CMenuForwarder *a1, CMenuForwarder *a2)
 		{
@@ -241,6 +242,7 @@ class CTimerListApidNotifier : public CChangeObserver
 		}
 };
 
+////
 const struct button_label TimerListButtons[4] =
 {
 	{ NEUTRINO_ICON_BUTTON_RED   , _("Delete"), 0 },
@@ -249,16 +251,12 @@ const struct button_label TimerListButtons[4] =
 	{ NEUTRINO_ICON_BUTTON_OKAY, _("Modify"), 0 }
 };
 
-struct button_label CTimerListHeadButtons = {NEUTRINO_ICON_BUTTON_HELP_SMALL, " ", 0 };
-
-//
 CTimerList::CTimerList()
 {
 	dprintf(DEBUG_DEBUG, "CTimerList::CTimerList:\n");
 
 	frameBuffer = CFrameBuffer::getInstance();
 
-	visible = false;
 	selected = 0;
 	skipEventID = 0;
 
@@ -284,37 +282,7 @@ CTimerList::CTimerList()
 	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
 	
-	//
-	timerlistWidget = CNeutrinoApp::getInstance()->getWidget("timerlist");
-	
-	if (timerlistWidget)
-	{
-		listBox = (ClistBox*)timerlistWidget->getCCItem(CComponent::CC_LISTBOX);
-	}
-	else
-	{
-		//
-		timerlistWidget = new CWidget(&cFrameBox);
-		timerlistWidget->name = "timerlist";
-		
-		//
-		listBox = new ClistBox(&cFrameBox);
-		
-		// head
-		listBox->enablePaintHead();
-		listBox->setTitle(_("Timerlist"), NEUTRINO_ICON_TIMER);
-		listBox->enablePaintDate();
-		listBox->setHeadButtons(&CTimerListHeadButtons, 1);
-
-		// foot
-		listBox->enablePaintFoot();
-		listBox->setFootButtons(TimerListButtons, 4);
-		
-		//
-		timerlistWidget->addCCItem(listBox);
-	}
-	
-	valueString.clear();
+	valueString.clear();	
 }
 
 CTimerList::~CTimerList()
@@ -351,7 +319,40 @@ int CTimerList::exec(CTarget* parent, const std::string& actionKey)
 	
 	selected = listBox? listBox->getSelected() : 0;
 	
-	if(actionKey == "tv")
+	if((actionKey == "RC_red") && !(timerlist.empty()))
+	{
+		CTimerd::getInstance()->removeTimerEvent(timerlist[selected].eventID);
+		skipEventID = timerlist[selected].eventID;
+		
+		showMenu();
+		
+		return RETURN_EXIT;
+	}
+	else if(actionKey == "RC_green")
+	{
+		hide();
+			
+		showNewTimerMenu();
+		
+		showMenu();
+		
+		return RETURN_EXIT;
+	}
+	else if(actionKey == "RC_yellow")
+	{
+		showMenu();
+		
+		return RETURN_EXIT;
+	}
+	else if(actionKey == "RC_ok"  && !(timerlist.empty()))
+	{
+		showModifyTimerMenu();
+		
+		showMenu();
+		
+		return RETURN_EXIT;
+	}
+	else if(actionKey == "tv")
 	{
 		CSelectChannelWidgetHandler = new CSelectChannelWidget();
 		CSelectChannelWidgetHandler->exec(NULL, "tv");
@@ -501,7 +502,7 @@ int CTimerList::exec(CTarget* parent, const std::string& actionKey)
 		return CTarget::RETURN_EXIT;
 	}
 
-	int ret = show();
+	int ret = showMenu();
 	this->clearValueString();
 
 	return ret;
@@ -530,12 +531,9 @@ void CTimerList::updateEvents(void)
 	sort(timerlist.begin(), timerlist.end());
 }
 
-int CTimerList::show()
+int CTimerList::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CTimerList::show\n");
-
-	neutrino_msg_t      msg;
-	neutrino_msg_data_t data;
 
 	int res = CTarget::RETURN_REPAINT;
 	
@@ -543,165 +541,35 @@ int CTimerList::show()
 	updateEvents();
 	
 	//
-	paint();
-	CFrameBuffer::getInstance()->blit();
-
-	// add sec timer
-	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-
-	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_menu == 0 ? 0xFFFF : g_settings.timing_menu);
-
-	bool loop = true;
-	bool update = false;
+	setLCDMode(_("Timerlist"));
 	
-	while(loop)
+	timerlistWidget = CNeutrinoApp::getInstance()->getWidget("timerlist");
+	
+	if (timerlistWidget)
 	{
-		if(update)
-		{
-			hide();
-			updateEvents();
-			update = false;
-			paint();
-		}
-
-		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
-
-		if( msg <= CRCInput::RC_MaxRC )
-			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_menu == 0 ? 0xFFFF : g_settings.timing_menu);
-
-		if( ( msg == CRCInput::RC_timeout ) || ( msg == CRCInput::RC_home) )
-		{ 
-			//Exit after timeout or cancel key
-			loop = false;
-		}
-		else if ((msg == CRCInput::RC_up) && !(timerlist.empty()))
-		{
-			listBox->scrollLineUp();
-		}
-		else if ((msg == CRCInput::RC_down) && !(timerlist.empty()))
-		{
-			listBox->scrollLineDown();
-		}
-		else if (msg == CRCInput::RC_ok)
-		{
-			selected = listBox->getSelected();
-			
-			if ( !(timerlist.empty()) && (modifyTimer() == CTarget::RETURN_EXIT_ALL) )
-			{
-				res = CTarget::RETURN_EXIT_ALL;
-				loop = false;
-			}
-			else
-				update = true;
-		}
-		else if((msg == CRCInput::RC_red) && !(timerlist.empty()))
-		{
-			selected = listBox->getSelected();
-
-			CTimerd::getInstance()->removeTimerEvent(timerlist[selected].eventID);
-			skipEventID = timerlist[selected].eventID;
-			update = true;
-		}
-		else if(msg == CRCInput::RC_green)
-		{
-			if (newTimer() == CTarget::RETURN_EXIT_ALL)
-			{
-				res = CTarget::RETURN_EXIT_ALL;
-				loop = false;
-			}
-			else
-				update = true;
-		}
-		else if(msg == CRCInput::RC_yellow)
-		{
-			update = true;
-		}
-		else if( (msg == CRCInput::RC_blue) || (CRCInput::isNumeric(msg)) )
-		{
-			//pushback key if...
-			g_RCInput->postMsg( msg, data );
-			loop = false;
-		}
-		else if(msg == CRCInput::RC_setup)
-		{
-			res = CTarget::RETURN_EXIT_ALL;
-			loop = false;
-		}
-		else if(msg == CRCInput::RC_info)
-		{
-			selected = listBox->getSelected();
-
-			CTimerd::timerEvent *timer = &timerlist[selected];
-			
-			if(timer != NULL)
-			{
-				if(timer->eventType == CTimerd::TIMER_RECORD || timer->eventType == CTimerd::TIMER_ZAPTO)
-				{
-					hide();
-					res = g_EpgData->show(timer->channel_id, timer->epgID, &timer->epg_starttime);
-					if(res == CTarget::RETURN_EXIT_ALL)
-						loop = false;
-					else
-					{
-						paint();
-					}
-				}
-			}
-		}
-		else if (msg == CRCInput::RC_sat || msg == CRCInput::RC_favorites)
-		{
-			g_RCInput->postMsg(msg);
-			loop = false;
-			res = CTarget::RETURN_EXIT_ALL;
-		}
-		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
-		{
-			//
-			timerlistWidget->refresh();
-		} 
-		else
-		{
-			if( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all )
-			{
-				loop = false;
-				res = CTarget::RETURN_EXIT_ALL;
-			}
-		}
-
-		frameBuffer->blit();	
+		listBox = (ClistBox*)timerlistWidget->getCCItem(CComponent::CC_LISTBOX);
 	}
-	
-	hide();
-
-	//
-	g_RCInput->killTimer(sec_timer_id);
-	sec_timer_id = 0;
-	
-	//
-        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
-
-	return(res);
-}
-
-void CTimerList::hide()
-{
-	if(visible)
+	else
 	{
-		if (timerlistWidget) 
-			timerlistWidget->hide();
+		//
+		timerlistWidget = new CWidget(&cFrameBox);
+		timerlistWidget->name = "timerlist";
 		
-		visible = false;
-	}
-}
+		//
+		listBox = new ClistBox(&cFrameBox);
+		
+		// head
+		listBox->enablePaintHead();
+		listBox->setTitle(_("Timerlist"), NEUTRINO_ICON_TIMER);
+		listBox->enablePaintDate();
 
-void CTimerList::paint()
-{
-	dprintf(DEBUG_NORMAL, "CTimerList::paint\n");
-	
-	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Timerlist"));
+		// foot
+		listBox->enablePaintFoot();
+		listBox->setFootButtons(TimerListButtons, 4);
+		
+		//
+		timerlistWidget->addCCItem(listBox);
+	}
 	
 	listBox->clearItems();
 
@@ -825,14 +693,32 @@ void CTimerList::paint()
 
 		listBox->addItem(item);
 	}
+	
+	timerlistWidget->addKey(CRCInput::RC_red, this, CRCInput::getSpecialKeyName(CRCInput::RC_red));
+	timerlistWidget->addKey(CRCInput::RC_green, this, CRCInput::getSpecialKeyName(CRCInput::RC_green));
+	timerlistWidget->addKey(CRCInput::RC_yellow, this, CRCInput::getSpecialKeyName(CRCInput::RC_yellow));
+	timerlistWidget->addKey(CRCInput::RC_ok, this, CRCInput::getSpecialKeyName(CRCInput::RC_ok));
 
+	res = timerlistWidget->exec(this, "");
+	
+	if (timerlistWidget)
+	{
+		delete timerlistWidget;
+		timerlistWidget = NULL;
+	}
+	
 	//
-	if (timerlistWidget) 
-		timerlistWidget->paint();
-		
-	selected = listBox->getSelected();
+	resetLCDMode();
 
-	visible = true;
+	return(res);
+}
+
+void CTimerList::hide()
+{
+	if (timerlistWidget) 
+		timerlistWidget->hide();
+			
+	//CFrameBuffer::getInstance()->paintBackground();
 }
 
 const char * CTimerList::convertTimerType2String(const CTimerd::CTimerEventTypes type) // UTF-8
@@ -946,7 +832,7 @@ const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
 	{ 1, _("Yes") }
 };
 
-int CTimerList::modifyTimer()
+int CTimerList::showModifyTimerMenu()
 {
 	int res = CTarget::RETURN_REPAINT;
 
@@ -996,9 +882,7 @@ int CTimerList::modifyTimer()
 	}
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Modify timer"));
+	setLCDMode(_("Modify timer"));
 	
 	timerSettings->clearItems();
 	
@@ -1015,10 +899,12 @@ int CTimerList::modifyTimer()
 	CMenuForwarder *m0 = new CMenuForwarder(_("Timer typ"), false, type);
 	timerSettings->addItem( m0);
 
+	// alarm time start
 	CDateInput timerSettings_alarmTime(_("Alarm time"), &timer->alarmTime , _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"));
 	CMenuForwarder *m1 = new CMenuForwarder(_("Alarm time"), true, timerSettings_alarmTime.getValue(), &timerSettings_alarmTime );
 	timerSettings->addItem( m1);
 
+	// alarm time stop
 	CDateInput timerSettings_stopTime(_("Stop time"), &timer->stopTime , _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"));
 	if(timer->stopTime != 0)
 	{
@@ -1026,12 +912,14 @@ int CTimerList::modifyTimer()
 		timerSettings->addItem( m2);
 	}
 
+	// week days
 	CTimerd::getInstance()->setWeekdaysToStr(timer->eventRepeat, (char *)m_weekdaysStr.c_str());
 	timer->eventRepeat = (CTimerd::CTimerEventRepeat)(((int)timer->eventRepeat) & 0x1FF);
 	CStringInput timerSettings_weekdays(_("on weekdays"), (char *)m_weekdaysStr.c_str(), 7, _("Mo Tu We Th Fr Sa Su"), _("'X'=timer '-' no timer"), "-X");
 	CMenuForwarder *m4 = new CMenuForwarder(_("on weekdays"), true, m_weekdaysStr.c_str(), &timerSettings_weekdays );
 	CIntInput timerSettings_repeatCount(_("repeats"), (int&)timer->repeatCount,3, _("amount of timer repeats"), _("0 for unlimited repeats"));
 
+	// repeats
 	CMenuForwarder *m5 = new CMenuForwarder(_("repeats"), true, timerSettings_repeatCount.getValue(), &timerSettings_repeatCount);
 
 	// repeat
@@ -1117,12 +1005,12 @@ int CTimerList::modifyTimer()
 	}
 	
 	//
-        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+        resetLCDMode();
 	
 	return res;
 }
 
-int CTimerList::newTimer()
+int CTimerList::showNewTimerMenu()
 {
 	int res = CTarget::RETURN_REPAINT;
 	
@@ -1181,9 +1069,7 @@ int CTimerList::newTimer()
 	}
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("New timer"));
+	setLCDMode(_("New timer"));
 	
 	timerSettings->clearItems();
 	
@@ -1269,7 +1155,7 @@ int CTimerList::newTimer()
 	}
 	
 	//
-        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+        resetLCDMode();
 
 	return res;
 }

@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$id: timerlist.h 24022025 mohousch $
+//	$id: timerlist.h 26112025 mohousch $
 //	
 //	Copyright (C) 2001 Steffen Hehn 'McClean'
 //	and some other guys
@@ -50,11 +50,8 @@ class CTimerList : public CTarget
 		CMenuItem *item, *m6, *m7, *m10;
 		CBox cFrameBox;
 		uint32_t sec_timer_id;
-		void paint();
-		int show();
 		unsigned int selected;
-		bool visible;			
-		//
+		////
 		CTimerd::TimerList timerlist;             // List of timers		
 		CTimerd::timerEvent timerNew;
 		int timerNew_standby_on;
@@ -69,13 +66,13 @@ class CTimerList : public CTarget
 		int timer_apids_alt;
 		//
 		int skipEventID;
-		//
-		int modifyTimer();
-		int newTimer();
+		CPluginChooser * plugin_chooser;
+		////
+		int showMenu();
+		int showModifyTimerMenu();
+		int showNewTimerMenu();
 		//
 		void updateEvents(void);
-		//
-		CPluginChooser * plugin_chooser;
 
 	public:
 		CTimerList();
