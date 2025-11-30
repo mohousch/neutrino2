@@ -491,7 +491,7 @@ int CTimerList::exec(CTarget* parent, const std::string& actionKey)
 
 		if (CTimerd::getInstance()->addTimerEvent(timerNew.eventType, data, timerNew.announceTime, timerNew.alarmTime,  timerNew.stopTime, timerNew.eventRepeat, timerNew.repeatCount, false) == -1)
 		{
-			bool forceAdd = askUserOnTimerConflict(timerNew.announceTime,timerNew.stopTime);
+			bool forceAdd = askUserOnTimerConflict(timerNew.announceTime, timerNew.stopTime);
 
 			if (forceAdd)
 			{
