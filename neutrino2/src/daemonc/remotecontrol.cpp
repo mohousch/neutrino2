@@ -209,10 +209,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		
 		//
 		g_InfoViewer->chanready = 1;
-			
-		// infoviewer
-//		g_RCInput->postMsg(NeutrinoMessages::SHOW_INFOBAR);
-		g_InfoViewer->showTitle(CZapit::getInstance()->getChannelIndex(current_channel_id), CZapit::getInstance()->getChannelName(current_channel_id), CZapit::getInstance()->getChannelSatellitePosition(current_channel_id), current_channel_id);
 		
 		// zapProtection
 		if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
@@ -234,6 +230,10 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		{
 			g_Radiotext->setPid(current_PIDs.APIDs[current_PIDs.otherPIDs.selected_apid].pid);
 		}
+		
+		// infoviewer
+//		g_RCInput->postMsg(NeutrinoMessages::SHOW_INFOBAR);
+		g_InfoViewer->showTitle(CZapit::getInstance()->getChannelIndex(current_channel_id), CZapit::getInstance()->getChannelName(current_channel_id), CZapit::getInstance()->getChannelSatellitePosition(current_channel_id), current_channel_id);
 
 		// lcd
 		CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
