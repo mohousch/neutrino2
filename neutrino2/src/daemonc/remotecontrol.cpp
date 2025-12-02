@@ -211,7 +211,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		g_InfoViewer->chanready = 1;
 			
 		// infoviewer
-//		g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
+//		g_RCInput->postMsg(NeutrinoMessages::SHOW_INFOBAR);
 		g_InfoViewer->showTitle(CZapit::getInstance()->getChannelIndex(current_channel_id), CZapit::getInstance()->getChannelName(current_channel_id), CZapit::getInstance()->getChannelSatellitePosition(current_channel_id), current_channel_id);
 		
 		// zapProtection
@@ -289,7 +289,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				}
 				
 				//	
-				g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR);
+				g_RCInput->postMsg(NeutrinoMessages::SHOW_INFOBAR);
 
 				current_EPGid = info_CN.current_uniqueKey;
 

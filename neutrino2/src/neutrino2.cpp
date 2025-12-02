@@ -2852,7 +2852,7 @@ int CNeutrinoApp::exec(CTarget * parent, const std::string &actionKey)
 	}
 	else if(actionKey == "scart") 
 	{
-		g_RCInput->postMsg( NeutrinoMessages::SCART_ON);
+		g_RCInput->postMsg(NeutrinoMessages::SCART_ON);
 		returnval = RETURN_EXIT_ALL;
 	}
 	else if (actionKey == "tvradioswitch")
@@ -3454,7 +3454,7 @@ _repeat:
 		recordingstatus = data;
 		
 		if( ( !g_InfoViewer->is_visible ) && data && !autoshift)
-			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR);
+			g_RCInput->postMsg(NeutrinoMessages::SHOW_INFOBAR);
 
 		return messages_return::handled;
 	}
