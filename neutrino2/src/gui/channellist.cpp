@@ -289,7 +289,7 @@ static const std::string empty_string;
 
 const std::string & CChannelList::getActiveChannelName(void) const
 {
-	if (selected < chanlist.size())
+	if (chanlist.size() && selected < chanlist.size())
 		return chanlist[selected]->name;
 	else
 		return empty_string;
@@ -297,7 +297,7 @@ const std::string & CChannelList::getActiveChannelName(void) const
 
 t_satellite_position CChannelList::getActiveSatellitePosition(void) const
 {
-	if (selected < chanlist.size())
+	if (chanlist.size() && selected < chanlist.size())
 		return chanlist[selected]->getSatellitePosition();
 	else
 		return 0;
@@ -305,7 +305,7 @@ t_satellite_position CChannelList::getActiveSatellitePosition(void) const
 
 t_channel_id CChannelList::getActiveChannel_ChannelID(void) const
 {
-	if (selected < chanlist.size()) 
+	if (chanlist.size() && selected < chanlist.size()) 
 	{
 		dprintf(DEBUG_NORMAL, "CChannelList::getActiveChannel_ChannelID: 0x%llx\n", chanlist[selected]->channel_id);
 		
@@ -317,7 +317,7 @@ t_channel_id CChannelList::getActiveChannel_ChannelID(void) const
 
 t_channel_id CChannelList::getActiveChannel_EPGID(void) const
 {
-	if (selected < chanlist.size()) 
+	if (chanlist.size() && selected < chanlist.size()) 
 	{
 		printf("CChannelList::getActiveChannel_EPGID: 0x%llx\n", chanlist[selected]->epgid);
 		
@@ -329,7 +329,7 @@ t_channel_id CChannelList::getActiveChannel_EPGID(void) const
 
 t_channel_id CChannelList::getActiveChannel_LogoID(void) const
 {
-	if (selected < chanlist.size()) 
+	if (chanlist.size() && selected < chanlist.size()) 
 	{
 		printf("CChannelList::getActiveChannel_LogoID: 0x%llx\n", chanlist[selected]->logoid);
 		
@@ -341,7 +341,7 @@ t_channel_id CChannelList::getActiveChannel_LogoID(void) const
 
 int CChannelList::getActiveChannelNumber(void) const
 {
-	if (selected < chanlist.size()) 
+	if (chanlist.size() && selected < chanlist.size()) 
 	{
 		printf("CChannelList::getActiveChannelNumber: %d\n", chanlist[selected]->number);
 		

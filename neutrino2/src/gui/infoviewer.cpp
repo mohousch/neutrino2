@@ -960,6 +960,9 @@ void CInfoViewer::showIcon_SubT() const
 {
 	dprintf(DEBUG_INFO, "CInfoViewer::showIcon_SubT:\n");
 	
+	if (channel_id == 0)
+		return;
+	
         bool have_sub = false;
 
 	CZapitChannel * cc = CNeutrinoApp::getInstance()->getChannelList()->getChannel(CNeutrinoApp::getInstance()->getChannelList()->getActiveChannelNumber());

@@ -128,7 +128,8 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 	{
 		dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: %s current_channel_id: 0x%llx data:0x%llx\n", (msg == NeutrinoMessages::EVT_ZAP_FAILED)? "EVT_ZAP_FAILED" : "EVT_ZAP_COMPLETE", CZapit::getInstance()->getCurrentChannelID(), data);
 		
-		current_channel_id = data;
+		if (data != current_channel_id)
+			current_channel_id = data;
 		
 		////
 		if ( (msg == NeutrinoMessages::EVT_ZAP_SUB_COMPLETE) || (msg == NeutrinoMessages:: EVT_ZAP_SUB_FAILED) ) 
@@ -233,10 +234,13 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		
 		// infoviewer
 //		g_RCInput->postMsg(NeutrinoMessages::SHOW_INFOBAR);
-		g_InfoViewer->showTitle(CZapit::getInstance()->getChannelIndex(current_channel_id), CZapit::getInstance()->getChannelName(current_channel_id), CZapit::getInstance()->getChannelSatellitePosition(current_channel_id), current_channel_id);
+		if (current_channel_id != 0)
+		{
+			g_InfoViewer->showTitle(CZapit::getInstance()->getChannelIndex(current_channel_id), CZapit::getInstance()->getChannelName(current_channel_id), CZapit::getInstance()->getChannelSatellitePosition(current_channel_id), current_channel_id);
 
-		// lcd
-		CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
+			// lcd
+			CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
+		}
 		
 		is_video_started = true;
 		
