@@ -418,7 +418,7 @@ int CDataResetNotifier::exec(CTarget *parent, const std::string& actionKey)
 		if(result != CMessageBox::mbrYes) 
 			return true;
 		
-		// neutrino settings
+		// neutrino2 settings
 		unlink(NEUTRINO_SETTINGS_FILE);
 		
 		// timerd settings
@@ -447,16 +447,9 @@ int CDataResetNotifier::exec(CTarget *parent, const std::string& actionKey)
 			videoDecoder->SetVideoSystem(g_settings.video_Mode);
 
 			//aspect-ratio
-			videoDecoder->setAspectRatio(g_settings.video_Ratio, g_settings.video_Format);
-#if defined (PLATFORM_COOLSTREAM)
-			videoDecoder->SetVideoMode((analog_mode_t) g_settings.analog_mode);
-#else			
+			videoDecoder->setAspectRatio(g_settings.video_Ratio, g_settings.video_Format);			
 			videoDecoder->SetAnalogMode( g_settings.analog_mode); 
-#endif
-
-#if !defined (PLATFORM_COOLSTREAM)	
 			videoDecoder->SetSpaceColour(g_settings.hdmi_color_space);
-#endif
 		}
 
 		// audio mode
@@ -511,6 +504,7 @@ int CDataResetNotifier::exec(CTarget *parent, const std::string& actionKey)
 		if (fileBrowser.exec("/media") == true) 
 		{
 			int result = MessageBox(_("Settings restore"), _("Do you want to restore the previous settings?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo);
+			
 			if(result == CMessageBox::mbrYes) 
 			{
 				char  fname[256];
@@ -523,11 +517,12 @@ int CDataResetNotifier::exec(CTarget *parent, const std::string& actionKey)
 				
 				system(fname);
 				
+				// load new settings
+				CNeutrinoApp::getInstance()->loadSetup(NEUTRINO_SETTINGS_FILE);
+				
 				// restart neutrino2
 				CNeutrinoApp::getInstance()->exec(NULL, "restart");
 			}
-			
-			
 		}
 
 		return true;
