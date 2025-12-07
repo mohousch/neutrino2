@@ -217,6 +217,7 @@ class CTestMenu : public CTarget
 		void testSkinWidget3();
 		//// tuxtxt
 		void testTuxTxt();
+		void testSubtitle();
 		//// weather
 		void testWeather();
 		void testBitmap();
@@ -225,7 +226,7 @@ class CTestMenu : public CTarget
 		void testCMenuOptionNumberChooser();
 		void testCMenuOptionStringChooser();
 		
-		//// paint()
+		////
 		void showMenu();
 		
 
@@ -4303,6 +4304,77 @@ void CTestMenu::testTuxTxt()
 	tuxtx_main(si.vtxtpid, 0, false);
 }
 
+void CTestMenu::testSubtitle()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testSubtitle\n");
+	
+	CBox Box;
+	
+	Box.iWidth = g_settings.screen_EndX - g_settings.screen_StartX - 20;
+	Box.iHeight = g_settings.screen_EndY - g_settings.screen_StartY - 20;
+
+	Box.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
+	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
+
+	rightWidget = new ClistBox(&Box);
+
+	// mode
+	rightWidget->setWidgetLayout(ClistBox::LAYOUT_STANDARD);
+	rightWidget->enableShrinkMenu();
+	rightWidget->paintMainFrame(true);
+
+	// head
+	rightWidget->enablePaintHead();
+	rightWidget->setTitle("Subtitle", NEUTRINO_ICON_MOVIE);
+	rightWidget->setTitleHAlign(CComponent::CC_ALIGN_CENTER);
+	rightWidget->enablePaintDate();
+	rightWidget->setFormat("%d.%m.%Y %H:%M:%S");
+
+	// footer
+	rightWidget->enablePaintFoot();
+	
+	// subs
+	unsigned int count = 0;
+	CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(CZapit::getInstance()->getCurrentChannelID());
+        
+        // subs
+        if (channel)
+        {
+        	for (int i = 0 ; i < (int)channel->getSubtitleCount() ; ++i) 
+		{
+			CZapitAbsSub* s = channel->getChannelSub(i);
+			
+			// teletext
+			if (s->thisSubType == CZapitAbsSub::TTX) 
+			{
+				CZapitTTXSub* sd = reinterpret_cast<CZapitTTXSub*>(s);
+				
+				dprintf(DEBUG_NORMAL, "TestMenu: adding TTX subtitle %s pid 0x%x mag 0x%X page 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId, sd->teletext_magazine_number, sd->teletext_page_number);
+				
+				char spid[64];
+				int page = ((sd->teletext_magazine_number & 0xFF) << 8) | sd->teletext_page_number;
+				int pid = sd->pId;
+				
+				snprintf(spid, sizeof(spid), "TTX:%d:%03X:%s", sd->pId, page, sd->ISO639_language_code.c_str()); 
+				
+				char item[64];
+				
+				snprintf(item, sizeof(item), "TTX: %s", sd->ISO639_language_code.c_str());
+				
+				rightWidget->addItem(new CMenuForwarder(item, !tuxtx_subtitle_running(&pid, &page, NULL), NULL, this, spid, CRCInput::convertDigitToKey(++count)));
+			}
+		}
+        }
+        
+        rightWidget->exec(this);
+	
+	if (rightWidget)
+	{
+		delete rightWidget;
+		rightWidget = NULL;
+	}
+}
+
 void CTestMenu::testWeather()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testWeather\n");
@@ -5907,7 +5979,13 @@ int CTestMenu::exec(CTarget *parent, const std::string &actionKey)
 //		tuxtx_set_pid(pid, page, ptr);
 		tuxtx_main(pid, page, false);
 		
-		return RETURN_EXIT_ALL;
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "subtitle")
+	{
+		testSubtitle();
+		
+		return RETURN_REPAINT;
 	}
 	else if (actionKey == "weather")
 	{
@@ -6002,7 +6080,7 @@ void CTestMenu::showMenu()
 		mWidget->addCCItem(mainMenu);
 	}
 	
-	mainMenu->clear();  // clear example items for test.xml
+	mainMenu->clear();
 	
 	//
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CComponent", true));
@@ -6047,7 +6125,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CWidget(ClistBox|CWindow|CHead|CFoot)", true, NULL, this, "multiwidget"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(ClistBox|CFrameBox|CHead|CFoot)", true, NULL, this, "widget"));
 	
-	// CMenuWidhet
+	// diverses widget
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("CStringInput", true, NULL, this, "stringinput"));
 	mainMenu->addItem(new CMenuForwarder("CStringInputSMS", true, NULL, this, "stringinputsms"));
@@ -6125,10 +6203,11 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET", true, NULL, this, "skin"));
 	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET3", true, NULL, this, "skin3"));
 	
-	// tuxtxt
+	// tuxtxt / subs
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "Tuxtxt") );
 	mainMenu->addItem(new CMenuForwarder("Show Tuxtxt (No Pid)", true, NULL, this, "tuxtxtnopid"));		
 	mainMenu->addItem(new CMenuForwarder("Show Tuxtxt", true, NULL, this, "tuxtxt"));
+	mainMenu->addItem(new CMenuForwarder("Show Subtitle", true, NULL, this, "subtitle"));
 	
 	// lcd / weather
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "Misc") );
@@ -6142,39 +6221,6 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CMenuOptionChooser", true, NULL, this, "menuoptionchooser"));
 	mainMenu->addItem(new CMenuForwarder("CMenuOptionStringChooser", true, NULL, this, "menuoptionstringchooser"));
 	mainMenu->addItem(new CMenuForwarder("CMenuOptionNumberChooser", true, NULL, this, "menuoptionnumberchooser"));
-
-	// subs
-	unsigned int count = 0;
-	CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(CZapit::getInstance()->getCurrentChannelID());
-        
-        // subs
-        if (channel)
-        {
-        	for (int i = 0 ; i < (int)channel->getSubtitleCount() ; ++i) 
-		{
-			CZapitAbsSub* s = channel->getChannelSub(i);
-			
-			// teletext
-			if (s->thisSubType == CZapitAbsSub::TTX) 
-			{
-				CZapitTTXSub* sd = reinterpret_cast<CZapitTTXSub*>(s);
-				
-				dprintf(DEBUG_NORMAL, "TestMenu: adding TTX subtitle %s pid 0x%x mag 0x%X page 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId, sd->teletext_magazine_number, sd->teletext_page_number);
-				
-				char spid[64];
-				int page = ((sd->teletext_magazine_number & 0xFF) << 8) | sd->teletext_page_number;
-				int pid = sd->pId;
-				
-				snprintf(spid, sizeof(spid), "TTX:%d:%03X:%s", sd->pId, page, sd->ISO639_language_code.c_str()); 
-				
-				char item[64];
-				
-				snprintf(item, sizeof(item), "TTX: %s", sd->ISO639_language_code.c_str());
-				
-				mainMenu->addItem(new CMenuForwarder(item, !tuxtx_subtitle_running(&pid, &page, NULL), NULL, this, spid, CRCInput::convertDigitToKey(++count)));
-			}
-		}
-        }
 	
 	mWidget->exec(this, "");
 	
@@ -6185,7 +6231,6 @@ void CTestMenu::showMenu()
 	}
 	
 	//
-	//CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 	resetLCDMode();
 }
 

@@ -68,7 +68,7 @@ class CTimerList : public CTarget
 		int skipEventID;
 		CPluginChooser * plugin_chooser;
 		////
-		int showMenu();
+		int showMainMenu();
 		int showModifyTimerMenu();
 		int showNewTimerMenu();
 		//

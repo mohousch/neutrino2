@@ -51,6 +51,8 @@ CExtendedInput::CExtendedInput(const char * const Name, const char * const Value
 	hint_1 = Hint_1? Hint_1 : "";
 	hint_2 = Hint_2? Hint_2 : "";
 
+	valueString = value;
+	
 	observ = Observ;
 	Init();
 }
@@ -83,6 +85,8 @@ CExtendedInput::~CExtendedInput()
 {
 	for (std::vector<CExtendedInput_Item*>::iterator it = inputFields.begin(); it < inputFields.end(); it++)
 		delete *it;
+		
+	valueString.clear();
 }
 
 void CExtendedInput::addInputField( CExtendedInput_Item* fld )

@@ -1417,7 +1417,7 @@ int CMenuForwarder::exec(CTarget *target)
 	// exec
 	if(jumpTarget)
 	{
-		ret = jumpTarget->exec(target, actionKey);
+		ret = jumpTarget->exec(target? target : parent->parent, actionKey);
 		
 		if (jumpTarget->valueStringSetted)
 			setOption(jumpTarget->getValueString().c_str());
@@ -3596,7 +3596,7 @@ int ClistBox::oKKeyPressed(CTarget *target, neutrino_msg_t _msg)
 		item->msg = _msg;
 		actionKey = item->actionKey;
 		
-		ret = item->exec(target);
+		ret = item->exec(target? target : parent);
 	}
 	
 	return ret;

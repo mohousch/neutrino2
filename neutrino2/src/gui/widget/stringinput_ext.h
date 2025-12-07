@@ -41,7 +41,7 @@ class CExtendedInput : public CTarget
 {
 	protected:
 		void Init(void);
-		CFrameBuffer	*frameBuffer;
+		CFrameBuffer *frameBuffer;
 		int x;
 		int y;
 		int width;
@@ -220,10 +220,7 @@ class CIntInput : public CExtendedInput
 		 */
 		CIntInput(const char * const Name, int &Value, const unsigned int Size = MAX_CINTINPUT_SIZE, const char* const Hint_1 = NULL, const char* const Hint_2 = NULL, CChangeObserver* Observ = NULL);
 		
-		char* getValue() 
-		{
-			return myValueStringOutput;
-		}
+		char* getValue(){return myValueStringOutput;};
 };
 
 #endif

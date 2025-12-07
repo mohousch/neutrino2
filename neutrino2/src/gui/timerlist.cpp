@@ -324,7 +324,7 @@ int CTimerList::exec(CTarget* parent, const std::string& actionKey)
 		CTimerd::getInstance()->removeTimerEvent(timerlist[selected].eventID);
 		skipEventID = timerlist[selected].eventID;
 		
-		showMenu();
+		showMainMenu();
 		
 		return RETURN_EXIT;
 	}
@@ -334,13 +334,13 @@ int CTimerList::exec(CTarget* parent, const std::string& actionKey)
 			
 		showNewTimerMenu();
 		
-		showMenu();
+		showMainMenu();
 		
 		return RETURN_EXIT;
 	}
 	else if(actionKey == "RC_yellow")
 	{
-		showMenu();
+		showMainMenu();
 		
 		return RETURN_EXIT;
 	}
@@ -348,7 +348,7 @@ int CTimerList::exec(CTarget* parent, const std::string& actionKey)
 	{
 		showModifyTimerMenu();
 		
-		showMenu();
+		showMainMenu();
 		
 		return RETURN_EXIT;
 	}
@@ -483,7 +483,6 @@ int CTimerList::exec(CTarget* parent, const std::string& actionKey)
 		else if (timerNew.eventType == CTimerd::TIMER_EXEC_PLUGIN)
 		{	
 			data = timerNew.pluginName;
-//			plugin_chooser->setValueString(timerNew.pluginName);
 		}
 		
 		if(timerNew.eventRepeat >= CTimerd::TIMERREPEAT_WEEKDAYS)
@@ -502,7 +501,7 @@ int CTimerList::exec(CTarget* parent, const std::string& actionKey)
 		return CTarget::RETURN_EXIT;
 	}
 
-	int ret = showMenu();
+	int ret = showMainMenu();
 	this->clearValueString();
 
 	return ret;
@@ -531,9 +530,9 @@ void CTimerList::updateEvents(void)
 	sort(timerlist.begin(), timerlist.end());
 }
 
-int CTimerList::showMenu()
+int CTimerList::showMainMenu()
 {
-	dprintf(DEBUG_NORMAL, "CTimerList::show\n");
+	dprintf(DEBUG_NORMAL, "CTimerList::showMainMenu\n");
 
 	int res = CTarget::RETURN_REPAINT;
 	
@@ -901,14 +900,14 @@ int CTimerList::showModifyTimerMenu()
 
 	// alarm time start
 	CDateInput timerSettings_alarmTime(_("Alarm time"), &timer->alarmTime , _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"));
-	CMenuForwarder *m1 = new CMenuForwarder(_("Alarm time"), true, timerSettings_alarmTime.getValue(), &timerSettings_alarmTime );
+	CMenuForwarder *m1 = new CMenuForwarder(_("Alarm time"), true, (char *)timerSettings_alarmTime.getValue(), &timerSettings_alarmTime );
 	timerSettings->addItem( m1);
 
 	// alarm time stop
 	CDateInput timerSettings_stopTime(_("Stop time"), &timer->stopTime , _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"));
 	if(timer->stopTime != 0)
 	{
-		CMenuForwarder *m2 = new CMenuForwarder(_("Stop time"), true, timerSettings_stopTime.getValue(), &timerSettings_stopTime );
+		CMenuForwarder *m2 = new CMenuForwarder(_("Stop time"), true, (char *)timerSettings_stopTime.getValue(), &timerSettings_stopTime );
 		timerSettings->addItem( m2);
 	}
 
@@ -920,7 +919,7 @@ int CTimerList::showModifyTimerMenu()
 	CIntInput timerSettings_repeatCount(_("repeats"), (int&)timer->repeatCount,3, _("amount of timer repeats"), _("0 for unlimited repeats"));
 
 	// repeats
-	CMenuForwarder *m5 = new CMenuForwarder(_("repeats"), true, timerSettings_repeatCount.getValue(), &timerSettings_repeatCount);
+	CMenuForwarder *m5 = new CMenuForwarder(_("repeats"), true, (char *)timerSettings_repeatCount.getValue(), &timerSettings_repeatCount);
 
 	// repeat
 	CTimerListRepeatNotifier notifier((int *)&timer->eventRepeat, m4, m5);
@@ -1083,12 +1082,12 @@ int CTimerList::showNewTimerMenu()
 
 	// alarm time
 	CDateInput timerSettings_alarmTime(_("Alarm time"), &(timerNew.alarmTime) , _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"));
-	CMenuForwarder *m1 = new CMenuForwarder(_("Alarm time"), true, timerSettings_alarmTime.getValue(), &timerSettings_alarmTime );
+	CMenuForwarder *m1 = new CMenuForwarder(_("Alarm time"), true, (char *)timerSettings_alarmTime.getValue(), &timerSettings_alarmTime );
 	m1->setHidden(false);
 
 	// stop time
 	CDateInput timerSettings_stopTime(_("Stop time"), &(timerNew.stopTime) , _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"));
-	CMenuForwarder *m2 = new CMenuForwarder(_("Stop time"), true, timerSettings_stopTime.getValue(), &timerSettings_stopTime );
+	CMenuForwarder *m2 = new CMenuForwarder(_("Stop time"), true, (char *)timerSettings_stopTime.getValue(), &timerSettings_stopTime );
 	m2->setHidden(false);
 
 	// weeks
@@ -1098,7 +1097,7 @@ int CTimerList::showNewTimerMenu()
 
 	// repeat count
 	CIntInput timerSettings_repeatCount(_("repeats"), (int&)timerNew.repeatCount, 3, _("amount of timer repeats"), _("0 for unlimited repeats"));
-	CMenuForwarder *m5 = new CMenuForwarder(_("repeats"), true, timerSettings_repeatCount.getValue(), &timerSettings_repeatCount);
+	CMenuForwarder *m5 = new CMenuForwarder(_("repeats"), true, (char *)timerSettings_repeatCount.getValue(), &timerSettings_repeatCount);
 	m5->setHidden(true);
 
 	CTimerListRepeatNotifier notifier((int *)&timerNew.eventRepeat, m4, m5);
@@ -1127,7 +1126,7 @@ int CTimerList::showNewTimerMenu()
 
 	CTimerListNewNotifier notifier2((int *)&timerNew.eventType,
 					&timerNew.stopTime, m2, m6, m8, m9, m10, m7,
-					timerSettings_stopTime.getValue());
+					(char *)timerSettings_stopTime.getValue());
 					
 	CMenuOptionChooser *m0 = new CMenuOptionChooser(_("Timer typ"), (int *)&timerNew.eventType, TIMERLIST_TYPE_OPTIONS, TIMERLIST_TYPE_OPTION_COUNT, true, &notifier2);
 
@@ -1146,7 +1145,7 @@ int CTimerList::showNewTimerMenu()
 	timerSettings->addItem( m10);
 
 	//
-	res = widget->exec(this, "");
+	res = widget->exec(NULL, "");
 	
 	if (widget)
 	{

@@ -98,6 +98,9 @@ class CStringInput : public CTarget
 
 		void hide();
 		int exec(CTarget* parent, const std::string &actionKey);
+		
+		////
+		char* getValue() {return value;}
 };
 
 class CStringInputSMS : public CStringInput
