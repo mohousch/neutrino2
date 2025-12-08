@@ -4344,7 +4344,23 @@ void CTestMenu::testSubtitle()
 		{
 			CZapitAbsSub* s = channel->getChannelSub(i);
 			
-			// teletext
+			////dvbsub
+			if (s->thisSubType == CZapitAbsSub::DVB) 
+			{
+				CZapitDVBSub* sd = reinterpret_cast<CZapitDVBSub*>(s);
+				
+				printf("CAudioSelectMenuHandler::doMenu: adding DVB subtitle lang=%s pid=0x%x\n", sd->ISO639_language_code.c_str(), sd->pId);
+				
+				char spid[10];
+				snprintf(spid,sizeof(spid), "DVB:%d", sd->pId);
+				char item[64];
+				
+				snprintf(item, sizeof(item), "DVB: %s", sd->ISO639_language_code.c_str());
+				
+				rightWidget->addItem(new CMenuForwarder(item, sd->pId != dvbsub_getpid(), NULL, this, spid, CRCInput::convertDigitToKey(++count)));
+			}
+			
+			//// teletext
 			if (s->thisSubType == CZapitAbsSub::TTX) 
 			{
 				CZapitTTXSub* sd = reinterpret_cast<CZapitTTXSub*>(s);
