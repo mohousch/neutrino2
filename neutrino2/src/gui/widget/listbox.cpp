@@ -454,7 +454,7 @@ int CMenuOptionChooser::exec(CTarget *target)
 			menu->addItem(new CMenuForwarder(_(l_option)), selected);
 		}
 		
-		ret = widget->exec(target, "");
+		ret = widget->exec(NULL, "");
 
 		select = menu->getSelected();
 		
@@ -530,7 +530,7 @@ int CMenuOptionChooser::exec(CTarget *target)
 			menu->addItem(new CMenuForwarder(_(l_option)), selected);
 		}
 		
-		ret = widget->exec(target, "");
+		ret = widget->exec(NULL, "");
 
 		select = menu->getSelected();
 		
@@ -974,7 +974,7 @@ int CMenuOptionStringChooser::exec(CTarget *target)
 			menu->addItem(new CMenuForwarder(_(options[count].c_str())), selected);
 		}
 		
-		ret = widget->exec(target, "");
+		ret = widget->exec(NULL, "");
 
 		select = menu->getSelected();
 		
@@ -1046,7 +1046,7 @@ int CMenuOptionStringChooser::exec(CTarget *target)
 			menu->addItem(new CMenuForwarder(_(options[count].c_str())), selected);
 		}
 		
-		ret = widget->exec(target, "");
+		ret = widget->exec(NULL, "");
 
 		select = menu->getSelected();
 		
