@@ -2615,8 +2615,8 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 //	char *gradient_intensity = NULL;
 	char * corner = NULL;
 	char * radius = NULL;
-//	char * border = NULL;
-//	char *bordercolor = NULL;
+	char * border = NULL;
+	char *bordercolor = NULL;
 			
 	unsigned int paintframe = 0;
 	unsigned int savescreen = 0;
@@ -2681,8 +2681,8 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 				corner = xmlGetAttribute(search, (char *)"corner");
 				radius = xmlGetAttribute(search, (char *)"radius");
 				
-				//border = xmlGetAttribute(search, (char *)"border");
-				//bordercolor = xmlGetAttribute(search, (char*)"bordercolor");
+				border = xmlGetAttribute(search, (char *)"border");
+				bordercolor = xmlGetAttribute(search, (char*)"bordercolor");
 					
 				paintframe = xmlGetSignedNumericAttribute(search, "paintframe", 0);
 				savescreen = xmlGetSignedNumericAttribute(search, "savescreen", 0);
@@ -2728,17 +2728,17 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 				widget->setCorner(ra, co);
 				
 				// border
-				//int br = CComponent::BORDER_NO;
-				//if (border) br = convertBorder(border);
-				//widget->setBorderMode(br);
+				int br = CComponent::BORDER_NO;
+				if (border) br = convertBorder(border);
+				widget->setBorderMode(br);
 				
 				// bordercolor
-				//fb_pixel_t bColor = COL_MENUCONTENT_PLUS_6;	
-				//if (bordercolor != NULL)
-				//{ 
-				//	bColor = convertColor(bordercolor);
-				//	widget->setBorderColor(bColor);
-				//}
+				fb_pixel_t bColor = COL_MENUCONTENT_PLUS_6;	
+				if (bordercolor != NULL)
+				{ 
+					bColor = convertColor(bordercolor);
+					widget->setBorderColor(bColor);
+				}
 				
 				// saveScreen
 				if (savescreen) widget->enableSaveScreen();

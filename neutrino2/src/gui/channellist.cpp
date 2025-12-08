@@ -489,7 +489,7 @@ int CChannelList::show(bool customMode)
 		else if ( msg == CRCInput::RC_setup ) 
 		{
 			selected = listBox? listBox->getSelected() : 0;
-			
+
 			if (chanlist.size() && !IS_WEBTV(chanlist[selected]->channel_id) && !customMode)
 			{
 				// channellist setup (add/move)
@@ -1746,7 +1746,6 @@ int CChannelList::doChannelMenu(void)
 		
 		mWidget = new CWidget(&box);
 		mWidget->name = "channellistedit";
-//		mWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		menu = new ClistBox(&box);
@@ -1773,6 +1772,7 @@ int CChannelList::doChannelMenu(void)
 	mWidget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	mWidget->paintMainFrame(true);
 	mWidget->enableSaveScreen();
+	mWidget->setBorderMode();
 	
 	//
 	menu->addItem(new CMenuForwarder(_("delete")), old_selected == i++);

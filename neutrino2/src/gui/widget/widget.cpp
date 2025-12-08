@@ -171,10 +171,10 @@ void CWidget::initFrames()
 	
 	// sanity check
 	if(mainFrameBox.iHeight >= ((int)frameBuffer->getScreenHeight(true)))
-		mainFrameBox.iHeight = frameBuffer->getScreenHeight(true);
+		mainFrameBox.iHeight = (borderMode != CComponent::BORDER_NO)? frameBuffer->getScreenHeight(true) - 4 : frameBuffer->getScreenHeight(true);
 
 	if(mainFrameBox.iWidth >= (int)frameBuffer->getScreenWidth(true))
-		mainFrameBox.iWidth = frameBuffer->getScreenWidth(true);
+		mainFrameBox.iWidth = (borderMode != CComponent::BORDER_NO)? frameBuffer->getScreenWidth(true) - 4 : frameBuffer->getScreenWidth(true);
 }
 
 void CWidget::move(const int x, const int y)
@@ -228,6 +228,8 @@ void CWidget::paint()
 	if (paintframe)
 	{
 		// border
+		if (borderMode != CComponent::BORDER_NO)
+			frameBuffer->paintBoxRel(mainFrameBox.iX - 2, mainFrameBox.iY - 2, mainFrameBox.iWidth + 4, mainFrameBox.iHeight + 4, borderColor, radius, corner);
 			
 		// mainframe
 		frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, backgroundColor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
@@ -250,11 +252,11 @@ void CWidget::saveScreen()
 		background = NULL;
 	}
 
-	background = new fb_pixel_t[mainFrameBox.iWidth*mainFrameBox.iHeight];
+	background = new fb_pixel_t[(borderMode != CComponent::BORDER_NO)?(mainFrameBox.iWidth + 4)*(mainFrameBox.iHeight + 4) : mainFrameBox.iWidth*mainFrameBox.iHeight];
 	
 	if(background)
 	{
-		frameBuffer->saveScreen(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, background);		
+		frameBuffer->saveScreen((borderMode != CComponent::BORDER_NO)? mainFrameBox.iX - 2 : mainFrameBox.iX, (borderMode != CComponent::BORDER_NO)? mainFrameBox.iY - 2 : mainFrameBox.iY, (borderMode != CComponent::BORDER_NO)? mainFrameBox.iWidth + 4 : mainFrameBox.iWidth, (borderMode != CComponent::BORDER_NO)? mainFrameBox.iHeight + 4 : mainFrameBox.iHeight, background);		
 	}
 }
 
@@ -264,7 +266,7 @@ void CWidget::restoreScreen()
 	
 	if(savescreen && background) 
 	{
-		frameBuffer->restoreScreen(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, background);
+		frameBuffer->restoreScreen((borderMode != CComponent::BORDER_NO)? mainFrameBox.iX - 2 : mainFrameBox.iX, (borderMode != CComponent::BORDER_NO)? mainFrameBox.iY - 2 : mainFrameBox.iY, (borderMode != CComponent::BORDER_NO)? mainFrameBox.iWidth + 4 : mainFrameBox.iWidth, (borderMode != CComponent::BORDER_NO)? mainFrameBox.iHeight + 4 : mainFrameBox.iHeight, background);
 	}
 }
 
@@ -300,7 +302,7 @@ void CWidget::hide()
 	}
 	else
 	{
-		frameBuffer->paintBackgroundBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight);
+		frameBuffer->paintBackgroundBoxRel((borderMode != CComponent::BORDER_NO)? mainFrameBox.iX - 2 : mainFrameBox.iX, (borderMode != CComponent::BORDER_NO)? mainFrameBox.iY - 2 : mainFrameBox.iY, (borderMode != CComponent::BORDER_NO)? mainFrameBox.iWidth + 4 : mainFrameBox.iWidth, (borderMode != CComponent::BORDER_NO)? mainFrameBox.iHeight + 4 : mainFrameBox.iHeight);
 	}
 
 	frameBuffer->blit();
