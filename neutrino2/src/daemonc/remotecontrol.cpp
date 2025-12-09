@@ -233,14 +233,10 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		}
 		
 		// infoviewer
-//		g_RCInput->postMsg(NeutrinoMessages::SHOW_INFOBAR);
-		if (current_channel_id != 0)
-		{
-			g_InfoViewer->showTitle(CZapit::getInstance()->getChannelIndex(current_channel_id), CZapit::getInstance()->getChannelName(current_channel_id), CZapit::getInstance()->getChannelSatellitePosition(current_channel_id), current_channel_id);
-
-			// lcd
-			CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
-		}
+		g_RCInput->postMsg(NeutrinoMessages::SHOW_INFOBAR);
+		
+		// lcd
+		CLCD::getInstance()->showServicename(CZapit::getInstance()->getChannelName(CZapit::getInstance()->getCurrentChannelID()), true, CZapit::getInstance()->getChannelNumber(CZapit::getInstance()->getCurrentChannelID()));
 		
 		is_video_started = true;
 		
