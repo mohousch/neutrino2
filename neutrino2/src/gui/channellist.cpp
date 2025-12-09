@@ -168,7 +168,7 @@ void CChannelList::setSize(int newsize)
 
 void CChannelList::addChannel(CZapitChannel * channel, unsigned int i)
 {
-	if (channel)
+	if (channel && i > 0)
 		channel->setIndex(i);
 				
 	chanlist.push_back(channel);
@@ -974,7 +974,7 @@ int CChannelList::numericZap(int key)
 				{
 					CZapitChannel * channel = getChannel(channel_id);
 					if(channel) 
-						channelList->addChannel(channel, i);
+						channelList->addChannel(channel);
 				}
 			}
 
