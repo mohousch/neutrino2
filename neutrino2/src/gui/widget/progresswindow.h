@@ -36,7 +36,7 @@
 #include <gui/widget/component.h>
 
 
-class CProgressWindow : public CComponent
+class CProgressWindow
 {
 	protected:
 
