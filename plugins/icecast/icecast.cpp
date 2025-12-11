@@ -70,21 +70,17 @@ class CIceCast : public CTarget
 		std::string m_Path;
 		int selected;
 
-		//
+		////
 		void loadPlaylist(void);
-		//
 		void addUrl2Playlist(const char *url, const char *name = NULL, const time_t bitrate = 0);
 		void processPlaylistUrl(const char *url, const char *name = NULL, const time_t bitrate = 0);
-		
-		//
 		void scanXmlFile(std::string filename);
 		void scanXmlData(xmlDocPtr answer_parser, const char *nametag, const char *urltag, const char *bitratetag = NULL, bool usechild = false);
-
-		//
 		void GetMetaData(CAudiofile& File);
 		void getFileInfoToDisplay(std::string& fileInfo, CAudiofile& file);
-		//
 		void openFileBrowser(void);
+		
+		////
 		int showMenu();
 		
 	public:
@@ -810,3 +806,4 @@ void plugin_exec(void)
 	delete iceCastHandler;
 	iceCastHandler = NULL;
 }
+

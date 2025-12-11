@@ -54,15 +54,15 @@ class CMP3Player : public CTarget
 		std::string Path;
 		int selected;
 
+		////
 		void loadPlaylist();
 		void openFileBrowser();
 		void showTrackInfo(CAudiofile& file);
-		
-		//
 		void addUrl2Playlist(const char *url, const char *name = NULL, const time_t bitrate = 0);
 		void processPlaylistUrl(const char *url, const char *name = NULL, const time_t bitrate = 0);
 		void getMetaData(CAudiofile& File);
 
+		////
 		int showMenu();
 		
 	public:
