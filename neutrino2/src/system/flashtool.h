@@ -50,7 +50,7 @@ class CFlashTool
 		void setMTDDevice( const std::string & mtddevice );
 		void setStatusViewer(CProgressWindow *statusview );
 		bool program( const std::string &filename, int globalProgressEndErase = -1, int globalProgressEndFlash = -1 );
-		bool readFromMTD( const std::string & filename, int globalProgressEnd=-1 );
+		bool readFromMTD( const std::string & filename, int globalProgressEnd = -1 );
 		bool check_md5( const std::string &filename, const std::string &smd5);
 
 		void reboot();

@@ -527,6 +527,11 @@ int cVideo::SetVideoSystem(int video_system)
 		{"VIDEO_STD_720P60", "720p"},
 		{"VIDEO_STD_1080P50", "1080i50"},
 		{"VIDEO_STD_1080P60", "1080i"},
+		{"VIDEO_STD_2160P24", "2160p24"},
+		{"VIDEO_STD_2160P25", "2160p25"},
+		{"VIDEO_STD_2160P30", "2160p30"},
+		{"VIDEO_STD_2160P50", "2160p50"},
+		{"VIDEO_STD_2160P60", "2160p60"}
 	};
 #endif
 

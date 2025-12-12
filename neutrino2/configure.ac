@@ -164,6 +164,16 @@ if test "$enable_ci" = "yes"; then
 AC_DEFINE(ENABLE_CI,1,[include ci cam support])
 fi
 
+# 4k
+AC_ARG_ENABLE(4k,
+	AS_HELP_STRING(--enable-4k,have 4k),
+	,[enable_4k=no])
+AM_CONDITIONAL(ENABLE_4K,test "$enable_4k" = "yes")
+
+if test "$enable_4k" = "yes"; then
+AC_DEFINE(ENABLE_4K,1,[include 4k support])
+fi
+
 # function keys
 AC_ARG_ENABLE(functionkeys,
 	AS_HELP_STRING(--enable-functionkeys,include RC functions keys support),

@@ -426,12 +426,12 @@ int CMenuOptionChooser::exec(CTarget *target)
 			menu->setWidgetMode(ClistBox::MODE_SETUP);
 			menu->paintMainFrame(true);
 			menu->enablePaintHead();
-			if (parent) menu->setHeadColor(COL_MENUCONTENT_PLUS_0);
-			if (parent) menu->setHeadGradient(NOGRADIENT);
+			//if (parent) menu->setHeadColor(COL_MENUCONTENT_PLUS_0);
+			//if (parent) menu->setHeadGradient(NOGRADIENT);
 			menu->setTitle(itemName.c_str());
 			menu->enablePaintFoot();
-			if (parent) menu->setFootColor(COL_MENUCONTENT_PLUS_0);
-			if (parent) menu->setFootGradient(NOGRADIENT);
+			//if (parent) menu->setFootColor(COL_MENUCONTENT_PLUS_0);
+			//if (parent) menu->setFootGradient(NOGRADIENT);
 			menu->setFootButtons(&btn);
 			if (parent) menu->setBorderMode();
 			
@@ -951,12 +951,12 @@ int CMenuOptionStringChooser::exec(CTarget *target)
 			menu->setWidgetMode(ClistBox::MODE_SETUP);
 			menu->paintMainFrame(true);
 			menu->enablePaintHead();
-			if (parent) menu->setHeadColor(COL_MENUCONTENT_PLUS_0);
-			if (parent) menu->setHeadGradient(NOGRADIENT);
+			//if (parent) menu->setHeadColor(COL_MENUCONTENT_PLUS_0);
+			//if (parent) menu->setHeadGradient(NOGRADIENT);
 			menu->setTitle(itemName.c_str());
 			menu->enablePaintFoot();
-			if (parent) menu->setFootColor(COL_MENUCONTENT_PLUS_0);
-			if (parent) menu->setFootGradient(NOGRADIENT);
+			//if (parent) menu->setFootColor(COL_MENUCONTENT_PLUS_0);
+			//if (parent) menu->setFootGradient(NOGRADIENT);
 			menu->setFootButtons(&btn);
 			if (parent) menu->setBorderMode();
 			

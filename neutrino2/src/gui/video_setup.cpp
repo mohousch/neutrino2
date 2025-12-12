@@ -303,7 +303,17 @@ void CVideoSettings::showMenu()
 	videoSettings->addItem(new CMenuOptionChooser(_("Colour Range"), &g_settings.wss_mode, VIDEOMENU_WSS_OPTIONS, VIDEOMENU_WSS_OPTION_COUNT, true, videoSetupNotifier));	
 
 	// video mode
-	videoSettings->addItem(new CMenuOptionChooser(_("Video Resolution"), &g_settings.video_Mode, VIDEOMENU_VIDEOMODE_OPTIONS, VIDEOMENU_VIDEOMODE_OPTION_COUNT, true, videoSetupNotifier, CRCInput::RC_nokey, "", true));
+	CMenuItem *item = new CMenuOptionChooser(_("Video Resolution"), &g_settings.video_Mode, VIDEOMENU_VIDEOMODE_OPTIONS, VIDEOMENU_VIDEOMODE_OPTION_COUNT, true, videoSetupNotifier, CRCInput::RC_nokey, "", true);
+	
+#ifdef ENABLE_4K
+	item->addOption("2160p 24HZ", VIDEO_STD_2160P24);
+	item->addOption("2160p 25HZ", VIDEO_STD_2160P25);
+	item->addOption("2160p 30HZ", VIDEO_STD_2160P30);
+	item->addOption("2160p 50HZ", VIDEO_STD_2160P50);
+	item->addOption("2160p 60HZ", VIDEO_STD_2160P60);
+#endif
+	
+	videoSettings->addItem(item);
 	
 	// psi
 #if defined (__sh__)
