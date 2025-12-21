@@ -41,6 +41,7 @@
 #include <gui/widget/messagebox.h>
 #include <gui/widget/stringinput_ext.h>
 #include <gui/widget/stringinput.h>
+#include <gui/widget/keyboard_input.h>
 
 #include <gui/filebrowser.h>
 #include <gui/misc_setup.h>
@@ -127,22 +128,31 @@ int CGeneralSettings::exec(CTarget* parent, const std::string& actionKey)
 		
 	if (actionKey == "ytkey")
 	{
+		CKeyboardInput yt(_("Youtube Key"), g_settings.ytkey.c_str());
+		
+		yt.exec(this, "");
+		
+		this->setValueString(yt.getValueString().c_str());
+		
 		return RETURN_REPAINT;
 	}
 	else if (actionKey == "tmdbkey")
 	{
+		CKeyboardInput tmdb(_("TMDB Key"), g_settings.tmdbkey.c_str());
+		
+		tmdb.exec(this, "");
+		
+		this->setValueString(tmdb.getValueString().c_str());
+		
 		return RETURN_REPAINT;
 	}
 	else if (actionKey == "forecastkey")
 	{
-		CStringInputSMS * forecast = new CStringInputSMS(_("Weather Forcast"), g_settings.weather_api_key.c_str());
+		CKeyboardInput forecast(_("Weather Forcast Key"), g_settings.weather_api_key.c_str());
 		
-		forecast->exec(NULL, "");
+		forecast.exec(this, "");
 		
-		forecast_item->addOption(forecast->getValueString().c_str());
-		
-		delete forecast;
-		forecast = NULL;
+		this->setValueString(forecast.getValueString().c_str());
 		
 		return RETURN_REPAINT;
 	}
@@ -280,7 +290,7 @@ void CGeneralSettings::showMenu()
 	miscSettingsGeneral->addItem(new CMenuForwarder(_("YT:"), true, g_settings.ytkey.c_str(), this, "ytkey"));
 	
 	// weather
-	forecast_item = new CMenuForwarder(_("Weather Forcast"), true, g_settings.weather_api_key.c_str(), this, "forecastkey");
+	forecast_item = new CMenuForwarder(_("Weather Forcast:"), true, g_settings.weather_api_key.c_str(), this, "forecastkey");
 	miscSettingsGeneral->addItem(forecast_item);
 
 	// tmdb

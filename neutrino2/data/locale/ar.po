@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-11-26 15:59+0100\n"
+"POT-Creation-Date: 2025-12-21 15:40+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -2344,6 +2344,10 @@ msgstr ""
 msgid "TMDB Infos are not available"
 msgstr "معلومات TMDB غير متوفرة"
 
+#, fuzzy
+msgid "TMDB Key"
+msgstr "معاينة TMDB"
+
 msgid "TMDB Preview"
 msgstr "معاينة TMDB"
 
@@ -2654,7 +2658,12 @@ msgstr "في انتظار الوقت..."
 msgid "Water sports"
 msgstr "الرياضات المائية"
 
-msgid "Weather Forcast"
+#, fuzzy
+msgid "Weather Forcast Key"
+msgstr "توقعات الطقس"
+
+#, fuzzy
+msgid "Weather Forcast:"
 msgstr "توقعات الطقس"
 
 msgid "Wednesday"
@@ -2711,6 +2720,9 @@ msgstr ""
 
 msgid "Youth protection"
 msgstr "حماية الشباب"
+
+msgid "Youtube Key"
+msgstr ""
 
 msgid "Zap cycle"
 msgstr ""
