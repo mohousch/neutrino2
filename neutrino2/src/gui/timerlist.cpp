@@ -81,11 +81,11 @@ class CTimerListNewNotifier : public CChangeObserver
 		CMenuItem* m4;
 		CMenuItem* m5;
 		CMenuItem* m6;
-		time_t* display;
+
 		int* iType;
 		time_t* stopTime;
 	public:
-		CTimerListNewNotifier( int *Type, time_t *time, CMenuItem *a1, CMenuItem *a2, CMenuItem *a3, CMenuItem *a4, CMenuItem *a5, CMenuItem *a6, time_t *d)
+		CTimerListNewNotifier( int *Type, time_t *time, CMenuItem *a1, CMenuItem *a2, CMenuItem *a3, CMenuItem *a4, CMenuItem *a5, CMenuItem *a6)
 		{
 			m1 = a1;
 			m2 = a2;
@@ -93,7 +93,7 @@ class CTimerListNewNotifier : public CChangeObserver
 			m4 = a4;
 			m5 = a5;
 			m6 = a6;
-			display = d;
+
 			iType = Type;
 			stopTime = time;
 		}
@@ -106,7 +106,6 @@ class CTimerListNewNotifier : public CChangeObserver
 			{
 				*stopTime = (time(NULL)/60)*60;
 				struct tm *tmTime2 = localtime(stopTime);
-				//sprintf( display, "%02d.%02d.%04d %02d:%02d", tmTime2->tm_mday, tmTime2->tm_mon + 1,tmTime2->tm_year + 1900, tmTime2->tm_hour, tmTime2->tm_min);
 
 				m1->setHidden(false);
 				m6->setHidden((recDir != NULL)? false : true);
@@ -114,7 +113,6 @@ class CTimerListNewNotifier : public CChangeObserver
 			else
 			{
 				*stopTime = 0;
-//				strcpy(display,"                ");
 				m1->setHidden(true);
 				m6->setHidden(true);
 			}
@@ -1170,8 +1168,7 @@ int CTimerList::showNewTimerMenu()
 	m10->setHidden(true);
 
 	CTimerListNewNotifier notifier2((int *)&timerNew.eventType,
-					&timerNew.stopTime, m2, m6, m8, m9, m10, m7,
-					&timerNew.stopTime);
+					&timerNew.stopTime, m2, m6, m8, m9, m10, m7);
 					
 	CMenuOptionChooser *m0 = new CMenuOptionChooser(_("Timer typ"), (int *)&timerNew.eventType, TIMERLIST_TYPE_OPTIONS, TIMERLIST_TYPE_OPTION_COUNT, true, &notifier2);
 
