@@ -81,11 +81,11 @@ class CTimerListNewNotifier : public CChangeObserver
 		CMenuItem* m4;
 		CMenuItem* m5;
 		CMenuItem* m6;
-		char* display;
+		time_t* display;
 		int* iType;
 		time_t* stopTime;
 	public:
-		CTimerListNewNotifier( int *Type, time_t *time, CMenuItem *a1, CMenuItem *a2, CMenuItem *a3, CMenuItem *a4, CMenuItem *a5, CMenuItem *a6, char *d)
+		CTimerListNewNotifier( int *Type, time_t *time, CMenuItem *a1, CMenuItem *a2, CMenuItem *a3, CMenuItem *a4, CMenuItem *a5, CMenuItem *a6, time_t *d)
 		{
 			m1 = a1;
 			m2 = a2;
@@ -106,9 +106,7 @@ class CTimerListNewNotifier : public CChangeObserver
 			{
 				*stopTime = (time(NULL)/60)*60;
 				struct tm *tmTime2 = localtime(stopTime);
-				sprintf( display, "%02d.%02d.%04d %02d:%02d", tmTime2->tm_mday, tmTime2->tm_mon + 1,
-							tmTime2->tm_year + 1900,
-							tmTime2->tm_hour, tmTime2->tm_min);
+				//sprintf( display, "%02d.%02d.%04d %02d:%02d", tmTime2->tm_mday, tmTime2->tm_mon + 1,tmTime2->tm_year + 1900, tmTime2->tm_hour, tmTime2->tm_min);
 
 				m1->setHidden(false);
 				m6->setHidden((recDir != NULL)? false : true);
@@ -116,7 +114,7 @@ class CTimerListNewNotifier : public CChangeObserver
 			else
 			{
 				*stopTime = 0;
-				strcpy(display,"                ");
+//				strcpy(display,"                ");
 				m1->setHidden(true);
 				m6->setHidden(true);
 			}
@@ -269,6 +267,8 @@ CTimerList::CTimerList()
 	m10 = NULL;
 	
 	sec_timer_id = 0;
+	
+	timer = NULL;
 
 	plugin_chooser = NULL;
 	strcpy(timerNew.pluginName, "");
@@ -351,6 +351,45 @@ int CTimerList::exec(CTarget* parent, const std::string& actionKey)
 		showMainMenu();
 		
 		return RETURN_EXIT;
+	}
+	else if (actionKey == "newalarmtime")
+	{
+		CDateInput timerSettings_alarmTime(_("Alarm time"), &(timerNew.alarmTime) , _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"));
+		
+		timerSettings_alarmTime.exec(this, "");
+		
+		this->setValueString(timerSettings_alarmTime.getValue());
+		
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "newstoptime")
+	{
+		CDateInput timerSettings_stopTime(_("Stop time"), &(timerNew.stopTime) , _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"));
+		
+		timerSettings_stopTime.exec(this, "");
+		
+		this->setValueString(timerSettings_stopTime.getValue());
+		
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "alarmtime")
+	{
+		CDateInput timerSettings_alarmTime(_("Alarm time"), &timer->alarmTime , _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"));
+		
+		timerSettings_alarmTime.exec(this, "");
+		
+		this->setValueString(timerSettings_alarmTime.getValue());
+		
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "stoptime")
+	{
+		CDateInput timerSettings_stopTime(_("Stop time"), &timer->stopTime , _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"));
+		
+		timerSettings_stopTime.exec(this, "");
+		this->setValueString(timerSettings_stopTime.getValue());
+		
+		return RETURN_REPAINT;
 	}
 	else if(actionKey == "tv")
 	{
@@ -835,7 +874,7 @@ int CTimerList::showModifyTimerMenu()
 {
 	int res = CTarget::RETURN_REPAINT;
 
-	CTimerd::timerEvent *timer = &timerlist[selected];
+	/*CTimerd::timerEvent **/timer = &timerlist[selected];
 
 	//
 	ClistBox* timerSettings = NULL;
@@ -899,15 +938,18 @@ int CTimerList::showModifyTimerMenu()
 	timerSettings->addItem( m0);
 
 	// alarm time start
-	CDateInput timerSettings_alarmTime(_("Alarm time"), &timer->alarmTime , _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"));
-	CMenuForwarder *m1 = new CMenuForwarder(_("Alarm time"), true, (char *)timerSettings_alarmTime.getValue(), &timerSettings_alarmTime );
+	char value[20];
+	struct tm *tmTime = localtime(&timer->alarmTime);
+	sprintf(value, "%02d.%02d.%04d %02d:%02d", tmTime->tm_mday, tmTime->tm_mon + 1, tmTime->tm_year + 1900, tmTime->tm_hour, tmTime->tm_min);
+	CMenuForwarder *m1 = new CMenuForwarder(_("Alarm time"), true, value, this, "alarmtime");
 	timerSettings->addItem( m1);
 
 	// alarm time stop
-	CDateInput timerSettings_stopTime(_("Stop time"), &timer->stopTime , _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"));
+	tmTime = localtime(&timer->stopTime);
+	sprintf(value, "%02d.%02d.%04d %02d:%02d", tmTime->tm_mday, tmTime->tm_mon + 1, tmTime->tm_year + 1900, tmTime->tm_hour, tmTime->tm_min);
 	if(timer->stopTime != 0)
 	{
-		CMenuForwarder *m2 = new CMenuForwarder(_("Stop time"), true, (char *)timerSettings_stopTime.getValue(), &timerSettings_stopTime );
+		CMenuForwarder *m2 = new CMenuForwarder(_("Stop time"), true, value, this, "stoptime");
 		timerSettings->addItem( m2);
 	}
 
@@ -1081,13 +1123,16 @@ int CTimerList::showNewTimerMenu()
 	timerSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	// alarm time
-	CDateInput timerSettings_alarmTime(_("Alarm time"), &(timerNew.alarmTime) , _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"));
-	CMenuForwarder *m1 = new CMenuForwarder(_("Alarm time"), true, (char *)timerSettings_alarmTime.getValue(), &timerSettings_alarmTime );
+	char value[20];
+	struct tm *tmTime = localtime(&timerNew.alarmTime);
+	sprintf(value, "%02d.%02d.%04d %02d:%02d", tmTime->tm_mday, tmTime->tm_mon + 1, tmTime->tm_year + 1900, tmTime->tm_hour, tmTime->tm_min);
+	CMenuForwarder *m1 = new CMenuForwarder(_("Alarm time"), true, value, this, "newalarmtime");
 	m1->setHidden(false);
 
 	// stop time
-	CDateInput timerSettings_stopTime(_("Stop time"), &(timerNew.stopTime) , _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"));
-	CMenuForwarder *m2 = new CMenuForwarder(_("Stop time"), true, (char *)timerSettings_stopTime.getValue(), &timerSettings_stopTime );
+	tmTime = localtime(&timerNew.stopTime);
+	sprintf(value, "%02d.%02d.%04d %02d:%02d", tmTime->tm_mday, tmTime->tm_mon + 1, tmTime->tm_year + 1900, tmTime->tm_hour, tmTime->tm_min);
+	CMenuForwarder *m2 = new CMenuForwarder(_("Stop time"), true, value, this, "newstoptime");
 	m2->setHidden(false);
 
 	// weeks
@@ -1126,7 +1171,7 @@ int CTimerList::showNewTimerMenu()
 
 	CTimerListNewNotifier notifier2((int *)&timerNew.eventType,
 					&timerNew.stopTime, m2, m6, m8, m9, m10, m7,
-					(char *)timerSettings_stopTime.getValue());
+					&timerNew.stopTime);
 					
 	CMenuOptionChooser *m0 = new CMenuOptionChooser(_("Timer typ"), (int *)&timerNew.eventType, TIMERLIST_TYPE_OPTIONS, TIMERLIST_TYPE_OPTION_COUNT, true, &notifier2);
 

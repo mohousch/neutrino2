@@ -54,6 +54,7 @@ class CTimerList : public CTarget
 		////
 		CTimerd::TimerList timerlist;             // List of timers		
 		CTimerd::timerEvent timerNew;
+		CTimerd::timerEvent *timer;
 		int timerNew_standby_on;
 		std::string m_weekdaysStr;
 		//
