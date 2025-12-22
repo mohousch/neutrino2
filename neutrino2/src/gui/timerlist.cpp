@@ -936,18 +936,13 @@ int CTimerList::showModifyTimerMenu()
 	timerSettings->addItem( m0);
 
 	// alarm time start
-	char value[20];
-	struct tm *tmTime = localtime(&timer->alarmTime);
-	sprintf(value, "%02d.%02d.%04d %02d:%02d", tmTime->tm_mday, tmTime->tm_mon + 1, tmTime->tm_year + 1900, tmTime->tm_hour, tmTime->tm_min);
-	CMenuForwarder *m1 = new CMenuForwarder(_("Alarm time"), true, value, this, "alarmtime");
+	CMenuForwarder *m1 = new CMenuForwarder(_("Alarm time"), true, ::getFormatedTime(&timer->alarmTime).c_str(), this, "alarmtime");
 	timerSettings->addItem( m1);
 
 	// alarm time stop
-	tmTime = localtime(&timer->stopTime);
-	sprintf(value, "%02d.%02d.%04d %02d:%02d", tmTime->tm_mday, tmTime->tm_mon + 1, tmTime->tm_year + 1900, tmTime->tm_hour, tmTime->tm_min);
 	if(timer->stopTime != 0)
 	{
-		CMenuForwarder *m2 = new CMenuForwarder(_("Stop time"), true, value, this, "stoptime");
+		CMenuForwarder *m2 = new CMenuForwarder(_("Stop time"), true, ::getFormatedTime(&timer->stopTime).c_str(), this, "stoptime");
 		timerSettings->addItem( m2);
 	}
 
@@ -1121,16 +1116,11 @@ int CTimerList::showNewTimerMenu()
 	timerSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	// alarm time
-	char value[20];
-	struct tm *tmTime = localtime(&timerNew.alarmTime);
-	sprintf(value, "%02d.%02d.%04d %02d:%02d", tmTime->tm_mday, tmTime->tm_mon + 1, tmTime->tm_year + 1900, tmTime->tm_hour, tmTime->tm_min);
-	CMenuForwarder *m1 = new CMenuForwarder(_("Alarm time"), true, value, this, "newalarmtime");
+	CMenuForwarder *m1 = new CMenuForwarder(_("Alarm time"), true, ::getFormatedTime(&timerNew.alarmTime).c_str(), this, "newalarmtime");
 	m1->setHidden(false);
 
 	// stop time
-	tmTime = localtime(&timerNew.stopTime);
-	sprintf(value, "%02d.%02d.%04d %02d:%02d", tmTime->tm_mday, tmTime->tm_mon + 1, tmTime->tm_year + 1900, tmTime->tm_hour, tmTime->tm_min);
-	CMenuForwarder *m2 = new CMenuForwarder(_("Stop time"), true, value, this, "newstoptime");
+	CMenuForwarder *m2 = new CMenuForwarder(_("Stop time"), true, ::getFormatedTime(&timerNew.stopTime).c_str(), this, "newstoptime");
 	m2->setHidden(false);
 
 	// weeks

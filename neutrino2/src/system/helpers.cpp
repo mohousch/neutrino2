@@ -441,6 +441,15 @@ std::string replace_all(const std::string &in, const std::string &entity, const 
 	return out;
 }
 
+std::string getFormatedTime(time_t *time)
+{
+	char value[20];
+	struct tm *tmTime = localtime(time);
+	sprintf(value, "%02d.%02d.%04d %02d:%02d", tmTime->tm_mday, tmTime->tm_mon + 1, tmTime->tm_year + 1900, tmTime->tm_hour, tmTime->tm_min);
+	
+	return std::string(value);
+}
+
 void strReplace(std::string & orig, const char *fstr, const std::string rstr)
 {
 	//replace all occurrence of fstr with rstr and, and returns a reference to itself
