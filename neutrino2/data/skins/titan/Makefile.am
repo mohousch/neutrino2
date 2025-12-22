@@ -1,3 +1,5 @@
+SUBDIRS = hints
+
 installdir = $(CONFIGDIR)/skins/titan
 
 install_DATA = \

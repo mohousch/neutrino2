@@ -1,73 +1,61 @@
 installdir = $(DATADIR)/hints
 
-# mainmenu
 install_DATA = \
-	hint_tvmode.png \
-	hint_radiomode.png \
-	hint_webtv.png \
-	hint_avinputmode.png \
-	hint_media.png \
-	hint_settings.png \
-	hint_service.png \
-	hint_timers.png \
-	hint_plugins.png \
-	hint_features.png \
-	hint_shutdown.png \
-	hint_dboxinfo.png
-
-# settings
-install_DATA += \
-	hint_video.png \
+	hint_a_pic.png \
+	hint_adzap.png \
+	hint_aplay.png \
 	hint_audio.png \
-	hint_protection.png \
-	hint_network.png \
-	hint_recording.png \
-	hint_movieplayer.png \
-	hint_osd.png \
-	hint_lcd.png \
-	hint_keys.png \
-	hint_audioplayer.png \
-	hint_picview.png \
-	hint_misc.png \
-	hint_hdd.png
-
-# osd settings
-install_DATA += \
-	hint_skin.png \
-	hint_themes.png \
-	hint_menucolors.png \
-	hint_infobarcolors.png \
-	hint_language.png \
-	hint_font.png \
-	hint_osdtiming.png \
-	hint_lcd4linux.png \
-	hint_alpha.png
-
-# misc settings
-install_DATA += \
-	hint_streaminfo.png \
-	hint_fileplay.png \
-	hint_personalize.png \
-	hint_psi.png
-
-# service
-install_DATA += \
-	hint_scan.png \
-	hint_reload.png \
+	hint_back.png \
+	hint_backup.png \
 	hint_bedit.png \
 	hint_ci.png \
+	hint_dboxinfo.png \
+	hint_default.png \
+	hint_delete.png \
+	hint_extended.png \
+	hint_factory.png \
+	hint_fileplay.png \
+	hint_games.png \
+	hint_hdd.png \
 	hint_imageinfo.png \
-	hint_swupdate.png
-
-# power menu
-install_DATA += \
-	hint_sleeptimer.png \
-	hint_restart.png \
-	hint_standby.png \
+	hint_inetradio.png \
+	hint_info.png \
+	hint_keys.png \
+	hint_language.png \
+	hint_lcd4linux.png \
+	hint_load.png \
+	hint_manage.png \
+	hint_mb.png \
+	hint_media.png \
+	hint_movie.png \
+	hint_network.png \
+	hint_next.png \
+	hint_osd.png \
+	hint_personalize.png \
+	hint_picview.png \
+	hint_plugin.png \
+	hint_protection.png \
+	hint_radiomode.png \
 	hint_reboot.png \
-	hint_shutdown.png
+	hint_recording.png \
+	hint_reload.png \
+	hint_reset.png \
+	hint_restart.png \
+	hint_restore.png \
+	hint_save.png \
+	hint_saveas.png \
+	hint_scan.png \
+	hint_scripts.png \
+	hint_service.png \
+	hint_settings.png \
+	hint_shutdown.png \
+	hint_sleeptimer.png \
+	hint_streaminfo.png \
+	hint_swupdate.png \
+	hint_timers.png \
+	hint_tvmode.png \
+	hint_tvradio_switch.png \
+	hint_vfd.png \
+	hint_video.png \
+	hint_avinputmode.png
 
-# divers
-install_DATA += \
-	hint_default.png hint_xmltv.png
-	
