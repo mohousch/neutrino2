@@ -24,4 +24,4 @@ TOBACKUP=$(echo $RES)
 
 echo Backup to $1/settings_$DATE.tar
 
-tar -cf $1/settings_$DATE.tar $TOBACKUP 2>&1 >/dev/null
+tar -cf $1/settings_$DATE.tar $TOBACKUP --exclude=skins 2>&1 >/dev/null
