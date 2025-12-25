@@ -318,10 +318,6 @@ CTarget* CNeutrinoApp::convertTarget(const std::string& name)
 	{
 		parent = new CTunerSetup();
 	}
-	else if (name == "transponder")
-	{
-		parent = new CTPSelectHandler();
-	}
 	else if (name == "manualscan")
 	{
 		parent = new CScanSetup();

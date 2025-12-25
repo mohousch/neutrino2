@@ -289,7 +289,6 @@ CScanSetup::CScanSetup(CFrontend *f)
 	
 	scanSettings = new CScanSettings(fe);
 	scanTs = new CScanTs(fe, scanSettings);
-	tpSelect = NULL;
 	satNotify = new CSatelliteSetupNotifier(fe);
 	feModeNotifier = new CScanSetupFEModeNotifier(fe);
 	feDelSysNotifier = new CScanSetupDelSysNotifier(fe);
@@ -425,6 +424,12 @@ int CScanSetup::exec(CTarget * parent, const std::string &actionKey)
 		rate = NULL;
 		
 		return CTarget::RETURN_REPAINT;
+	}
+	else if (actionKey == "tpselect")
+	{
+		return showTPSelect();
+		
+		//return RETURN_REPAINT;
 	}
 	
 	res = showScanService();
@@ -1099,6 +1104,10 @@ int CScanSetup::showManualScanSetup()
 	
 	int ret = CTarget::RETURN_REPAINT;
 	
+	// load scansettings 
+	if( !scanSettings->loadSettings(NEUTRINO_SCAN_SETTINGS_FILE) )
+		dprintf(DEBUG_NORMAL, "CScanSetup::CScanSetup: Loading of scan settings failed. Using defaults.\n");
+	
 	CWidget* manualScanWidget = NULL;
 	ClistBox* manualScanlistBox = NULL;
 	
@@ -1218,8 +1227,7 @@ int CScanSetup::showManualScanSetup()
 	manualScanlistBox->addItem(satSelect);
 		
 	// TP select
-	tpSelect = new CTPSelectHandler(fe, scanSettings);	
-	manualScanlistBox->addItem(new CMenuForwarder(_("Select transponder"), true, NULL, tpSelect));
+	manualScanlistBox->addItem(new CMenuForwarder(_("Select transponder"), true, NULL, this, "tpselect"));
 		
 	// frequency
 #if HAVE_DVB_API_VERSION >= 5
@@ -1588,16 +1596,9 @@ int CScanSetup::showAllAutoScanSetup()
 	return ret;
 }
 
-//// CTPSelectHandler
-CTPSelectHandler::CTPSelectHandler(CFrontend *f, CScanSettings * sc)
+int CScanSetup::showTPSelect()
 {
-	fe = f;
-	scanSettings = sc;
-}
-
-int CTPSelectHandler::exec(CTarget *parent, const std::string &)
-{
-	dprintf(DEBUG_NORMAL, "CTPSelectHandler::exec\n");
+	dprintf(DEBUG_NORMAL, "CScanSetup::showTPSelect\n");
 	
 	transponder_list_t::iterator tI;
 	sat_iterator_t sit;
@@ -1608,9 +1609,6 @@ int CTPSelectHandler::exec(CTarget *parent, const std::string &)
 	int select = -1;
 	static int old_selected = 0;
 	static t_satellite_position old_position = 0;
-
-	if (parent)
-		parent->hide();
 
 	// get satposition (loop throught satpos)
 	for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
@@ -1751,10 +1749,10 @@ int CTPSelectHandler::exec(CTarget *parent, const std::string &)
 		tmplist.insert(std::pair <int, transponder>(i, tI->second));
 		i++;
 	}
-	
-	select = menu->getSelected();
 
 	int retval = tpWidget->exec(this, "");
+	
+	select = menu->getSelected();
 	
 	if (tpWidget)
 	{
@@ -1841,11 +1839,8 @@ int CTPSelectHandler::exec(CTarget *parent, const std::string &)
 		}
 #endif	
 	}
-	
-	if(retval == CTarget::RETURN_EXIT_ALL)
-		return CTarget::RETURN_EXIT_ALL;
 
-	return CTarget::RETURN_REPAINT;
+	return retval;
 }
 
 //// CScanSettings

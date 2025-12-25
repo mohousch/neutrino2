@@ -77,20 +77,6 @@ class CScanSettings
 		bool saveSettings(const char * const fileName);
 };
 
-////
-class CTPSelectHandler : public CTarget
-{
-	private:
-		CFrontend * fe;
-		CScanSettings * scanSettings;
-	
-	public:
-		CTPSelectHandler(CFrontend* f = NULL, CScanSettings * sc = NULL);
-		virtual ~CTPSelectHandler(){};
-		
-		int exec(CTarget *parent, const std::string &actionkey);
-};
-
 //// satsetupnotifuer
 class CSatelliteSetupNotifier : public CChangeObserver
 {
@@ -153,7 +139,6 @@ class CScanSetup : public CTarget
 		CSatelliteSetupNotifier *satNotify;
 		CScanSetupFEModeNotifier *feModeNotifier;
 		CScanSetupDelSysNotifier *feDelSysNotifier;
-		CTPSelectHandler *tpSelect;
 		CScanSettings * scanSettings;
 		CMenuItem *item_freq;
 		CMenuItem *item_sr;
@@ -168,6 +153,7 @@ class CScanSetup : public CTarget
 		int showMotorSetup();
 		int showLNBSetup();
 		int showSatOnOffSetup();
+		int showTPSelect();
 		
 	public:
 		CScanSetup(CFrontend* f = NULL);
