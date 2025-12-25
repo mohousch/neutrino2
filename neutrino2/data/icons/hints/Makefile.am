@@ -15,7 +15,7 @@ install_DATA = \
 	hint_extended.png \
 	hint_factory.png \
 	hint_fileplay.png \
-	hint_games.png \
+	hint_features.png \
 	hint_hdd.png \
 	hint_imageinfo.png \
 	hint_inetradio.png \
