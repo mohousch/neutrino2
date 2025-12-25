@@ -427,9 +427,11 @@ int CScanSetup::exec(CTarget * parent, const std::string &actionKey)
 	}
 	else if (actionKey == "tpselect")
 	{
-		return showTPSelect();
+		showTPSelect();
 		
-		//return RETURN_REPAINT;
+		showManualScanSetup();
+		
+		return RETURN_EXIT;
 	}
 	
 	res = showScanService();
@@ -1839,6 +1841,10 @@ int CScanSetup::showTPSelect()
 		}
 #endif	
 	}
+	
+	// save scanSettings (scan.conf)
+	if(!scanSettings->saveSettings(NEUTRINO_SCAN_SETTINGS_FILE))
+		dprintf(DEBUG_NORMAL, "CNeutrinoApp::exec: error while saving scan-settings!\n");
 
 	return retval;
 }
