@@ -33,7 +33,7 @@ install_DATA = \
 	hint_osd.png \
 	hint_personalize.png \
 	hint_picviewer.png \
-	hint_plugin.png \
+	hint_plugins.png \
 	hint_protection.png \
 	hint_radiomode.png \
 	hint_reboot.png \
