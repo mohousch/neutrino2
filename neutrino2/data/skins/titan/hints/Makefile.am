@@ -27,7 +27,7 @@ install_DATA += \
 	hint_lcd.png \
 	hint_keys.png \
 	hint_audioplayer.png \
-	hint_picview.png \
+	hint_picviewer.png \
 	hint_misc.png \
 	hint_hdd.png
 

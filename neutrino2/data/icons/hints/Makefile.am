@@ -3,7 +3,7 @@ installdir = $(DATADIR)/hints
 install_DATA = \
 	hint_a_pic.png \
 	hint_adzap.png \
-	hint_aplay.png \
+	hint_audioplayer.png \
 	hint_audio.png \
 	hint_back.png \
 	hint_backup.png \
@@ -25,14 +25,14 @@ install_DATA = \
 	hint_lcd4linux.png \
 	hint_load.png \
 	hint_manage.png \
-	hint_mb.png \
+	hint_movieplayer.png \
 	hint_media.png \
 	hint_movie.png \
 	hint_network.png \
 	hint_next.png \
 	hint_osd.png \
 	hint_personalize.png \
-	hint_picview.png \
+	hint_picviewer.png \
 	hint_plugin.png \
 	hint_protection.png \
 	hint_radiomode.png \
@@ -55,7 +55,7 @@ install_DATA = \
 	hint_timers.png \
 	hint_tvmode.png \
 	hint_tvradio_switch.png \
-	hint_vfd.png \
+	hint_lcd.png \
 	hint_video.png \
 	hint_avinputmode.png
 
