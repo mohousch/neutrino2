@@ -36,7 +36,7 @@
 			<item id="FORWARDER" localename="Pictureviewer settings" itemicon="hint_picviewer" target="pictureviewersetup"/>
 			<item id="FORWARDER" localename="HDD settings" itemicon="hint_hdd" target="hddsetup"/>
 			<item id="FORWARDER" localename="Channellist settings" itemicon="hint_bedit" target="channellistsetup" />
-			<item id="FORWARDER" localename="EPG settings" itemicon="hint_streaminfo" target="epgsetup"/>
+			<item id="FORWARDER" localename="EPG settings" itemicon="hint_epgsetup" target="epgsetup"/>
 			<item id="FORWARDER" localename="Filebrowser settings" itemicon="hint_fileplay" target="filebrowsersetup"/>
 			<item id="FORWARDER" localename="Start Channel settings" itemicon="hint_personalize" target="zapitsetup"/>
 			<item id="FORWARDER" localename="CEC settings" itemicon="hint_personalize" target="cecsetup"/>
