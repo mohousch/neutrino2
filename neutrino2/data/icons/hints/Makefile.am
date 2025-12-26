@@ -12,7 +12,7 @@ install_DATA = \
 	hint_dboxinfo.png \
 	hint_default.png \
 	hint_delete.png \
-	hint_extended.png \
+	hint_osdtiming.png \
 	hint_factory.png \
 	hint_fileplay.png \
 	hint_features.png \

@@ -45,7 +45,7 @@ install_DATA += \
 
 # misc settings
 install_DATA += \
-	hint_streaminfo.png \
+	hint_epgsetup.png \
 	hint_fileplay.png \
 	hint_personalize.png \
 	hint_psi.png
