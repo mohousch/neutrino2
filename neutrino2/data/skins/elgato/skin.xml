@@ -5,7 +5,7 @@
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
 
 <skin>
-	<skininfo author="mohousch" version="1.0" info="delgato alike skin (currently brocken)."/>
+	<skininfo author="mohousch" version="1.0" info="elgato alike skin (currently brocken)."/>
 	
 	<widget name="mainmenu" posx="340" posy="60" width="600" height="600" paintframe="0" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<image posx="340" posy="60" width="600" height="600" image="images/menu_bg2.png"/>
