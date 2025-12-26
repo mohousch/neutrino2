@@ -1,8 +1,8 @@
 installdir = $(DATADIR)/hints
 
 install_DATA = \
-	hint_a_pic.png \
-	hint_adzap.png \
+	hint_skin.png \
+	hint_vtxt.png \
 	hint_audioplayer.png \
 	hint_audio.png \
 	hint_back.png \
@@ -24,7 +24,7 @@ install_DATA = \
 	hint_language.png \
 	hint_lcd4linux.png \
 	hint_load.png \
-	hint_manage.png \
+	hint_menucolors.png \
 	hint_movieplayer.png \
 	hint_media.png \
 	hint_movie.png \
@@ -39,7 +39,7 @@ install_DATA = \
 	hint_reboot.png \
 	hint_recording.png \
 	hint_reload.png \
-	hint_reset.png \
+	hint_standby.png \
 	hint_restart.png \
 	hint_restore.png \
 	hint_save.png \

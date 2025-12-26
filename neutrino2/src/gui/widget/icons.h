@@ -274,7 +274,7 @@
 // usermenu
 #define NEUTRINO_ICON_MENUITEM_PLUGIN				"hint_plugins"
 #define NEUTRINO_ICON_MENUITEM_NOPREVIEW			"hint_default"
-#define NEUTRINO_ICON_MENUITEM_VTXT				"hint_xmltv"
+#define NEUTRINO_ICON_MENUITEM_VTXT				"hint_vtxt"
 #define NEUTRINO_ICON_MENUITEM_RELOADCHANNELS			"hint_reload"
 
 // misc

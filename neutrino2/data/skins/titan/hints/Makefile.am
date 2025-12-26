@@ -69,5 +69,5 @@ install_DATA += \
 
 # divers
 install_DATA += \
-	hint_default.png hint_xmltv.png
+	hint_default.png hint_vtxt.png
 	
