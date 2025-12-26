@@ -5,7 +5,7 @@ install_DATA = \
 	hint_vtxt.png \
 	hint_audioplayer.png \
 	hint_audio.png \
-	hint_back.png \
+	hint_font.png \
 	hint_backup.png \
 	hint_bedit.png \
 	hint_ci.png \
@@ -22,7 +22,7 @@ install_DATA = \
 	hint_info.png \
 	hint_keys.png \
 	hint_language.png \
-	hint_lcd4linux.png \
+	hint_screensetup.png \
 	hint_load.png \
 	hint_menucolors.png \
 	hint_movieplayer.png \
@@ -50,12 +50,13 @@ install_DATA = \
 	hint_settings.png \
 	hint_shutdown.png \
 	hint_sleeptimer.png \
-	hint_streaminfo.png \
+	hint_themes.png \
 	hint_swupdate.png \
 	hint_timers.png \
 	hint_tvmode.png \
 	hint_tvradio_switch.png \
 	hint_lcd.png \
 	hint_video.png \
-	hint_avinputmode.png
+	hint_avinputmode.png \
+	hint_infobarcolors.png
 

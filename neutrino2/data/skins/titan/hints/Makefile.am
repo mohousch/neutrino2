@@ -40,7 +40,7 @@ install_DATA += \
 	hint_language.png \
 	hint_font.png \
 	hint_osdtiming.png \
-	hint_lcd4linux.png \
+	hint_screensetup.png \
 	hint_alpha.png
 
 # misc settings

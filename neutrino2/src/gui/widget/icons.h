@@ -252,7 +252,7 @@
 #define NEUTRINO_ICON_MENUITEM_LANGUAGE				"hint_language"
 #define NEUTRINO_ICON_MENUITEM_FONT				"hint_font"
 #define NEUTRINO_ICON_MENUITEM_OSDTIMING			"hint_osdtiming"
-#define NEUTRINO_ICON_MENUITEM_SCREENSETUP			"hint_lcd4linux"
+#define NEUTRINO_ICON_MENUITEM_SCREENSETUP			"hint_screensetup"
 #define NEUTRINO_ICON_MENUITEM_ALPHASETUP			"hint_alphasetup"
 
 // service

@@ -54,7 +54,7 @@
 			<item id="FORWARDER" localename="Language" itemicon="hint_language" target="languagesetup"/>
 			<item id="FORWARDER" localename="Font" itemicon="hint_font" target="fontsetup"/>
 			<item id="FORWARDER" localename="Timing" itemicon="hint_osdtiming" target="osdtimingsetup"/>
-			<item id="FORWARDER" localename="Screen" itemicon="hint_lcd4linux" target="screensetup"/>
+			<item id="FORWARDER" localename="Screen" itemicon="hint_screensetup" target="screensetup"/>
 			<item id="FORWARDER" localename="Misc settings" itemicon="hint_osd" target="osdmiscsetup"/>
 			<foot_button_label name="information"/>
 		</listbox>
