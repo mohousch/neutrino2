@@ -1,5 +1,5 @@
 /*
- * Subtitle output handling.
+ * Subtitle output Handling.
  *
  *
  * This program is free software; you can redistribute it and/or modify
@@ -77,10 +77,6 @@ static const char FILENAME[] = "subtitle.c";
 /* ***************************** */
 /* Varaibles                     */
 /* ***************************** */
-
-static pthread_mutex_t mutex;
-
-////
 extern int            	screen_x;
 extern int            	screen_y;
 extern int            	screen_width;
@@ -98,23 +94,6 @@ extern void writeText(uint8_t* text, int x, int y, int w, int h);
 /* ***************************** */
 /* MISC Functions                */
 /* ***************************** */
-static void getMutex(int line) 
-{
-    subtitle_printf(100, "%d requesting mutex\n", line);
-
-    pthread_mutex_lock(&mutex);
-
-    subtitle_printf(100, "%d received mutex\n", line);
-}
-
-static void releaseMutex(int line) 
-{
-    pthread_mutex_unlock(&mutex);
-
-    subtitle_printf(100, "%d released mutex\n", line);
-}
-
-//
 static char * ass_get_text(char *str)
 {
     	// Events are stored in the Block in this order:
