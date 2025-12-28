@@ -74,6 +74,7 @@ class CWidget : public CTarget
 		int corner;
 		int borderMode;
 		uint32_t borderColor;
+		int borderGradient;
 		fb_pixel_t * background;
 		bool savescreen;
 		void saveScreen();
@@ -127,6 +128,7 @@ class CWidget : public CTarget
 		void enableSaveScreen();
 		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
 		void setBorderColor(uint32_t col){borderColor = col;};
+		void setBorderGradient(int gr){borderGradient = gr;};
 		void setTitle(const char * title, const char *icon = NULL);
 		//// events
 		virtual void onOKKeyPressed(CTarget *target);

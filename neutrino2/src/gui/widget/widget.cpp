@@ -65,6 +65,7 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 	corner = CORNER_NONE;
 	borderMode = CComponent::BORDER_NO;
 	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
+	borderGradient = NOGRADIENT;
 	//
 	selected = -1;
 	timeout = g_settings.timing_menu;
@@ -102,6 +103,7 @@ CWidget::CWidget(CBox *position)
 	corner = CORNER_NONE;
 	borderMode = CComponent::BORDER_NO;
 	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
+	borderGradient = NOGRADIENT;
 	//
 	selected = -1;
 	timeout = g_settings.timing_menu;
@@ -229,7 +231,7 @@ void CWidget::paint()
 	{
 		// border
 		if (borderMode != CComponent::BORDER_NO)
-			frameBuffer->paintBoxRel(mainFrameBox.iX - 2, mainFrameBox.iY - 2, mainFrameBox.iWidth + 4, mainFrameBox.iHeight + 4, borderColor, radius, corner);
+			frameBuffer->paintBoxRel(mainFrameBox.iX - 2, mainFrameBox.iY - 2, mainFrameBox.iWidth + 4, mainFrameBox.iHeight + 4, borderColor, radius, corner, borderGradient);
 			
 		// mainframe
 		frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, backgroundColor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
