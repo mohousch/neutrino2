@@ -32,7 +32,6 @@ extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
 
 //
-//
 // getRCcode
 //
 int getRCcode()
@@ -278,7 +277,7 @@ void RenderFrame(int frame)
 		
 		if      ((pfe->fentry.st_mode & S_IXUSR) == S_IXUSR )
 		{
-			fcolor = /*YELLOW*/WHITE;
+			fcolor = WHITE;
 		}
 		
 		if     (S_ISDIR(pfe->fentry.st_mode))
@@ -293,7 +292,7 @@ void RenderFrame(int frame)
 		}
 		else if (S_ISLNK(pfe->fentry.st_mode))
 		{
-			fcolor = /*ORANGE*/WHITE;
+			fcolor = WHITE;
 			sprintf(sizeString,"<LINK>");
 			if (bselected)
 				tool[ACTION_VIEW-1] = ACTION_NOACTION; // view not allowed
@@ -431,13 +430,11 @@ int MessageBox(const char* msg1, const char* msg2, int mode)
 
 	he = 4* BORDERSIZE+ BUTTONHEIGHT + (*msg2 == 0x00 ?  1 : 2) * FONTHEIGHT_BIG + (maxsel > 2 ? BORDERSIZE+BUTTONHEIGHT : 0);
 
-
 	RenderBox((viewx-wi)/2 - 2*BORDERSIZE, (viewy-he) /2, viewx-(viewx-wi)/2+ 2*BORDERSIZE, viewy-(viewy-he)/2, FILL, trans_map[curvisibility]);
 	RenderBox((viewx-wi)/2 - 2*BORDERSIZE, (viewy-he) /2, viewx-(viewx-wi)/2+ 2*BORDERSIZE, viewy-(viewy-he)/2, GRID, WHITE);
 	RenderString(msg1,(viewx-wi)/2-BORDERSIZE , (viewy-he)/2 + BORDERSIZE + FONTHEIGHT_BIG-FONT_OFFSET , wi+2*BORDERSIZE, TC_CENTER, BIG, WHITE);
 	if (le2 > 0)
 		RenderString(msg2,(viewx-wi)/2-BORDERSIZE , (viewy-he)/2 + BORDERSIZE + 2*FONTHEIGHT_BIG-FONT_OFFSET , wi+2*BORDERSIZE, TC_CENTER, BIG, WHITE);
-
 
 	RenderButtons(he, mode);
 	if (mode == NOBUTTON) return 0;
@@ -537,7 +534,6 @@ int MessageBox(const char* msg1, const char* msg2, int mode)
 	}while(1);
 	rccode = -1;
 	return sel;
-
 }
 
 //
@@ -1204,7 +1200,6 @@ int GetInputString(int width, int maxchars, char *str, char *message, int pass)
 //
 int DoEditString(int x, int y, int width, unsigned int maxchars, char* str, int vsize, int back, int pass)
 {
-#if 1
 	unsigned int pos = 0, markpos = 0, start = 0;
 	int slen, he = (vsize==BIG ? FONTHEIGHT_BIG : FONTHEIGHT_SMALL);
 	int prev_key = -1;
@@ -1484,7 +1479,6 @@ int DoEditString(int x, int y, int width, unsigned int maxchars, char* str, int 
 		// blit
 		CFrameBuffer::getInstance()->blit();
 	}while(1);
-#endif	
 
 	rccode = -1;
 	return rccode;
@@ -1495,7 +1489,6 @@ int DoEditString(int x, int y, int width, unsigned int maxchars, char* str, int 
 //
 int flistcmp(struct fileentry * p1, struct fileentry * p2)
 {
-
 	if (S_ISDIR(p1->fentry.st_mode) )
 	{
 		if (strcmp(p1->name,"..") == 0)
@@ -1507,6 +1500,7 @@ int flistcmp(struct fileentry * p1, struct fileentry * p2)
 		else
 			return -1;
 	}
+	
 	if (S_ISDIR(p2->fentry.st_mode) )
 	{
 		if (strcmp(p1->name,"..") == 0)
@@ -1595,7 +1589,6 @@ struct fileentry* FindFile(int frame, const char* szFile)
 //
 void ClearEntries(int frame)
 {
-
 	if (finfo[frame].flist != NULL)
 	{
 		free(finfo[frame].flist);
@@ -1625,7 +1618,6 @@ void ClearZipEntries(int frame)
 		fclose(finfo[frame].ftpconn);
 		finfo[frame].ftpconn = NULL;
 	}
-
 }
 
 //
@@ -1931,7 +1923,6 @@ void FillDir(int frame, int selmode)
 
 		finfo[frame].flist = (struct fileentry*)calloc(finfo[frame].count, sizeof(struct fileentry));
 
-
 		// rewinddir not defined ?????????????????
 		closedir(dp);
 		dp = opendir(finfo[frame].path);
@@ -1976,9 +1967,6 @@ void FillDir(int frame, int selmode)
 	}
 	cursort = finfo[frame].sort;
 	sortframe(frame, szSel);
-
-
-
 }
 
 //
@@ -2222,7 +2210,6 @@ int DoCopy(struct fileentry* pfe, int typ, int checktype, char* szZipCommand)
 				}
 				pzfe = pzfe->next;
 			}
-
 		}
 		int elen = strlen(pfe->name)+strlen(finfo[curframe].zippath)+2;
 		if (elen + zlen >= commandsize)
@@ -3219,7 +3206,6 @@ void ReadZip(int typ)
 
 
 	fclose(_pipe);
-
 }
 
 //
@@ -3385,7 +3371,6 @@ void ReadFTPDir(int frame, char* seldir)
 		}
 	}
 
-
 	if (FTPcmd(frame, "PASV", NULL, buf) != 227)
 	{
 		fclose(finfo[frame].ftpconn);
@@ -3404,9 +3389,7 @@ void ReadFTPDir(int frame, char* seldir)
 	connect(sControl, (struct sockaddr *)&s_inlist, sizeof(struct sockaddr_in));
 	FILE* fData = fdopen(sControl, "r+");
 
-
 	FTPcmd(frame, "LIST", NULL, buf);
-
 
 	if (fData == NULL)
 	{
@@ -3429,7 +3412,6 @@ void ReadFTPDir(int frame, char* seldir)
 		if ( p )
 			*p=0;
 		sscanf(buf,"%c%c%c%c%*s%*d%*s%*s%lu%*s%*s%*s%[^\n]s",&d,&r,&w,&x,&size,name);
-
 
 		if (name[0] != 0x00)
 		{
@@ -3462,7 +3444,6 @@ void ReadFTPDir(int frame, char* seldir)
 		MessageBox(szMessage,buf,OK);
 		return;
 	}
-
 }
 
 //
@@ -3571,7 +3552,6 @@ void SetPassword()
 		strcpy(szPass,szP1);
 		MessageBox(info[INFO_PASS4*NUM_LANG+language],"",OK);
 	}
-
 }
 
 //
@@ -3617,7 +3597,6 @@ void GetSizeString(char* sizeString, unsigned long long size, int forcebytes)
 		tmp /= (unsigned long long)1000;
 	}
 	sprintf(sizeString,"%lu%s",(unsigned long)tmp,sztmp);
-
 }
 
 //
@@ -4548,5 +4527,4 @@ void plugin_exec(void)
 	CFrameBuffer::getInstance()->clearFrameBuffer();
 	CFrameBuffer::getInstance()->blit();
 }
-
 

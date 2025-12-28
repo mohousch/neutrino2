@@ -177,7 +177,6 @@ enum {
 	GRID
 };
 
-//enum {
 #define	TRANSP COL_BACKGROUND_PLUS_0 
 #define	WHITE COL_WHITE_PLUS_0
 #define	BLACK COL_BLACK_PLUS_0
@@ -193,7 +192,6 @@ enum {
 #define	BLUE_TRANSP COL_NAVY_PLUS_0 
 #define	GRAY_TRANSP COL_NOBEL_PLUS_0
 #define	BLUE3 COL_NAVY_PLUS_0
-//};
 
 #define CONFIG_FILE PLUGINDIR "/tuxcom/tuxcom.conf"
 
@@ -279,8 +277,8 @@ int language, langselect, autosave, filesize_in_byte;
 #define BTN_SWEDISH       15
 #define BTN_PORTUGUES     16
 
-#define SORT_UP    1
-#define SORT_DOWN -1
+#define SORT_UP    	1
+#define SORT_DOWN 	-1
 
 #define SELECT_NOCHANGE 0
 #define SELECT_UPDIR    1
@@ -290,69 +288,72 @@ int language, langselect, autosave, filesize_in_byte;
 #define SHOW_OUTPUT       1
 #define SHOW_SEARCHRESULT 2
 
-#define REPEAT_TIMER 3
+#define REPEAT_TIMER 	3
 
-#define INI_VERSION 1
+#define INI_VERSION 	1
 
-#define NUM_LANG 5
+#define NUM_LANG 	5
 
-#define MAINMENU 8
+#define MAINMENU 	8
 
-enum {MSG_EXEC              ,
-      MSG_EXEC_NOT_POSSIBLE ,
-      MSG_COPY              ,
-      MSG_COPY_MULTI        ,
-      MSG_COPY_PROGRESS     ,
-      MSG_COPY_NOT_POSSIBLE ,
-      MSG_MOVE              ,
-      MSG_MOVE_MULTI        ,
-      MSG_MOVE_PROGRESS     ,
-      MSG_DELETE            ,
-      MSG_DELETE_MULTI      ,
-      MSG_DELETE_PROGRESS   ,
-      MSG_RENAME            ,
-      MSG_MKDIR             ,
-      MSG_MKFILE            ,
-      MSG_MKLINK            ,
-      MSG_COMMAND           ,
-      MSG_SAVE              ,
-      MSG_FILE_EXISTS       ,
-      MSG_LINE              ,
-      MSG_READ_ZIP_DIR      ,
-      MSG_EXTRACT           ,
-      MSG_FTP_NOCONN        ,
-      MSG_FTP_CONN          ,
-      MSG_FTP_ERROR         ,
-      MSG_FTP_READDIR       ,
-      MSG_KILLPROC          ,
-      MSG_PROCESSID         ,
-      MSG_PROCESSUSER       ,
-      MSG_PROCESSNAME       ,
-      MSG_CANCELDOWNLOAD    ,
-      MSG_APPENDDOWNLOAD    ,
-      MSG_SEARCHFILES       ,
-      MSG_SAVESETTINGS		
+enum {
+	MSG_EXEC              ,
+      	MSG_EXEC_NOT_POSSIBLE ,
+      	MSG_COPY              ,
+      	MSG_COPY_MULTI        ,
+      	MSG_COPY_PROGRESS     ,
+      	MSG_COPY_NOT_POSSIBLE ,
+      	MSG_MOVE              ,
+      	MSG_MOVE_MULTI        ,
+      	MSG_MOVE_PROGRESS     ,
+      	MSG_DELETE            ,
+      	MSG_DELETE_MULTI      ,
+      	MSG_DELETE_PROGRESS   ,
+      	MSG_RENAME            ,
+      	MSG_MKDIR             ,
+      	MSG_MKFILE            ,
+      	MSG_MKLINK            ,
+      	MSG_COMMAND           ,
+      	MSG_SAVE              ,
+      	MSG_FILE_EXISTS       ,
+      	MSG_LINE              ,
+      	MSG_READ_ZIP_DIR      ,
+      	MSG_EXTRACT           ,
+      	MSG_FTP_NOCONN        ,
+      	MSG_FTP_CONN          ,
+      	MSG_FTP_ERROR         ,
+      	MSG_FTP_READDIR       ,
+      	MSG_KILLPROC          ,
+      	MSG_PROCESSID         ,
+      	MSG_PROCESSUSER       ,
+      	MSG_PROCESSNAME       ,
+      	MSG_CANCELDOWNLOAD    ,
+      	MSG_APPENDDOWNLOAD    ,
+      	MSG_SEARCHFILES       ,
+      	MSG_SAVESETTINGS		
 };
 
-enum {INFO_COPY     ,
-      INFO_MOVE     ,
-      INFO_EXEC     ,
-      INFO_MARKER   ,
-      INFO_PROC     ,
-      INFO_PASS1    ,
-      INFO_PASS2    ,
-      INFO_PASS3    ,
-      INFO_PASS4    ,
-      INFO_SEARCH1  ,
-      INFO_SEARCH2  ,
-      INFO_SAVED    ,
-      INFO_ACCESSED ,
-      INFO_MODIFIED ,
-      INFO_CREATED  ,
-      INFO_DATETIME 
+enum {
+	INFO_COPY     ,
+	INFO_MOVE     ,
+      	INFO_EXEC     ,
+      	INFO_MARKER   ,
+      	INFO_PROC     ,
+      	INFO_PASS1    ,
+      	INFO_PASS2    ,
+      	INFO_PASS3    ,
+      	INFO_PASS4    ,
+      	INFO_SEARCH1  ,
+      	INFO_SEARCH2  ,
+      	INFO_SAVED    ,
+      	INFO_ACCESSED ,
+      	INFO_MODIFIED ,
+      	INFO_CREATED  ,
+      	INFO_DATETIME 
 };
 
-const char *numberchars[] = {  "0#!$%&?*()@\\",
+const char *numberchars[] = {  
+				"0#!$%&?*()@\\",
                  		 "1/=<>+-_,.;:" ,
                  		 "abc2",
                  		 "def3",
@@ -503,20 +504,20 @@ const char *mainmenu[] = { "search files"                       , "Dateien suche
 
 struct fileentry
 {
-    char name[256];
+    	char name[256];
 	struct stat   fentry;
 };
 
 struct zipfileentry
 {
-    char name[FILENAME_MAX];
+    	char name[FILENAME_MAX];
 	struct stat   fentry;
 	struct zipfileentry * next;
 };
 
 struct marker
 {
-    char name[256];
+    	char name[256];
 	struct marker* next;
 };
 
@@ -543,7 +544,6 @@ struct frameinfo
 	int  			ftpport;
 	char 			ftpuser[100];
 	char 			ftppass[100];
-
 };
 
 struct frameinfo finfo[2];
@@ -592,3 +592,4 @@ int			FTPcmd(int frame, const char *s1, const char *s2, char *buf);
 void 			DoEditFTP(char* szFile,char* szTitle);
 void 			DoMainMenu();
 void 			DoSearchFiles();
+
