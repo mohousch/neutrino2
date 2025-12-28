@@ -256,7 +256,7 @@ void CMovieInfoWidget::funArt()
 	playFrame->setActionKey(this, "playMovie");
 	playFrame->setBorderMode();
 
-	testFrameBox->addFrame(playFrame);
+	testFrameBox->addFrame(playFrame, true);
 
 	// infoFrame
 	CFrameItem * infoFrame = new CFrameItem();
@@ -267,7 +267,7 @@ void CMovieInfoWidget::funArt()
 	infoFrame->setActionKey(this, "MovieInfo");
 	infoFrame->setBorderMode();
 
-	testFrameBox->addFrame(infoFrame, true);
+	testFrameBox->addFrame(infoFrame);
 
 	widget->addCCItem(testFrameBox);
 	

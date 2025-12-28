@@ -292,8 +292,6 @@ int CMotorControl::exec(CTarget* parent, const std::string &)
 					
 					default:
 						//dprintf(DEBUG_NORMAL, "[motorcontrol] message received...\n");
-						if ((msg >= CRCInput::RC_Messages) && (msg < CRCInput::RC_Messages + 0x10000000)) 
-							delete (unsigned char*) data;
 						break;
 				}
 			}
@@ -381,8 +379,6 @@ int CMotorControl::exec(CTarget* parent, const std::string &)
 					
 					default:
 						//dprintf(DEBUG_NORMAL, "[motorcontrol] message received...\n");
-						if ((msg >= CRCInput::RC_Messages) && (msg < CRCInput::RC_Messages + 0x10000000)) 
-							delete (unsigned char*) data;
 						break;
 				}
 			}
