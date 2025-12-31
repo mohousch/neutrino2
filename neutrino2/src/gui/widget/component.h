@@ -235,7 +235,7 @@ class CComponent
 		uint64_t sec_timer_interval;
 		CTarget *jumpTarget;
 		std::string actionKey; // for lua
-		bool selected;
+		bool isExecutable;
 		bool exit_pressed;
 		neutrino_msg_t      msg;
 		neutrino_msg_data_t data;
@@ -245,7 +245,8 @@ class CComponent
 		virtual ~CComponent(){};
 		
 		//
-		virtual bool isSelectable(void){return false;};
+		virtual bool isSelectable(void){return isExecutable;};
+		virtual void setExecutable(){isExecutable = true;};
 		virtual bool hasItem(){return false;};
 		////
 		virtual void paint(bool _selected = false){};

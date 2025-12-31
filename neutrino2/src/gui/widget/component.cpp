@@ -70,7 +70,7 @@ CComponent::CComponent()
 	//
 	jumpTarget = NULL;
 	actionKey = "";
-	selected = false;
+	isExecutable = false;
 	parent = NULL;
 	timeout = g_settings.timing_menu;
 	sec_timer_id = 0;
@@ -162,6 +162,9 @@ int CComponent::exec(CTarget *target)
 	bool show = true;
 	exit_pressed = false;
 	int retval = CTarget::RETURN_REPAINT;
+	
+	if (!isSelectable())
+		return CTarget::RETURN_NONE;
 	
 	if (target)
 		target->hide();
