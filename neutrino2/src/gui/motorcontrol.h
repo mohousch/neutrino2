@@ -31,12 +31,14 @@
 #include <driver/gdi/framebuffer.h>
 #include <gui/widget/component.h>
 
+#include <gui/scan_setup.h>
+
 #include <zapit/frontend_c.h>
 
 
-#define STEP_MODE_OFF 0
-#define STEP_MODE_AUTO 1
-#define STEP_MODE_ON 2 
+#define STEP_MODE_OFF 	0
+#define STEP_MODE_AUTO 	1
+#define STEP_MODE_ON 	2 
 #define STEP_MODE_TIMED 3 
 
 class CScanSettings;      
@@ -87,5 +89,5 @@ class CMotorControl : public CTarget
 		int exec(CTarget* parent, const std::string & actionKey);
 };
 
-
 #endif
+

@@ -51,8 +51,7 @@ static int g_snr;
 static int last_snr = 0;
 static int moving = 0;
 //
-extern satellite_map_t satellitePositions;
-extern CScanSettings * scanSettings;
+extern satellite_map_t satellitePositions;		// defined in zapit.cpp
 
 //// defines
 #define RED_BAR 40
@@ -129,7 +128,7 @@ int CMotorControl::exec(CTarget* parent, const std::string &)
         x = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - width) / 2;
         y = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - height) / 2;
 
-       	/* send satellite list to zapit */
+       	// send satellite list to zapit
 	for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 	{
 		if(!strcmp(sit->second.name.c_str(), scanSettings->satNameNoDiseqc)) 
