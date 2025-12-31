@@ -82,7 +82,7 @@ void CMotorControl::Init(void)
 	width = MENU_WIDTH;
 	mheight = mheight - 2;
 	height = hheight + (20 * mheight) - 5;
-	height = height;
+//	height = height;
 
 	x = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - width) / 2;
 	y = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - height) / 2;
@@ -575,12 +575,21 @@ void CMotorControl::paint()
 {
 	ypos = y;
 	
+	CCWindow body(x, y, width, height);
+	
+	body.paintMainFrame(true);
+	body.setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
+	body.setGradient(DARK2LIGHT2DARK);
+	body.paint();
+	
 	// headBox
 	CCHeaders head(x, ypos, width, hheight, _("Motor Setup"), NEUTRINO_ICON_SCAN);
 	head.paint();
 	
 	// footer
-	CCFooters foot(x, ypos + hheight, width, height - hheight);
+	CCFooters foot(x, /*ypos + hheight*/y + height - hheight, width, /*height - */hheight);
+	const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };	
+	foot.setButtons(&btn);
 	foot.paint();
 
 	ypos += hheight + (mheight >> 1) - 10;

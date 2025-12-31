@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-12-21 15:40+0100\n"
+"POT-Creation-Date: 2025-12-31 19:15+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1376,8 +1376,9 @@ msgstr "الاثنين"
 msgid "More Screenings on this Channel"
 msgstr "عروض أخرى على هذه القناة"
 
+#, fuzzy
 msgid "Motor Control Settings"
-msgstr "إعدادات التحكم في المحرك"
+msgstr "إعدادات التحكم عن بعد"
 
 msgid "Motor Setup"
 msgstr "إعداد المحرك"
@@ -2269,8 +2270,9 @@ msgstr "بدء المسح"
 msgid "Startup to standby"
 msgstr "بدء التشغيل إلى وضع الاستعداد"
 
+#, fuzzy
 msgid "Status"
-msgstr "الحالة"
+msgstr "سطر الحالة"
 
 msgid "Status line"
 msgstr "سطر الحالة"

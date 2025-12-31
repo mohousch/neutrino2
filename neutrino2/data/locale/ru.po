@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-12-21 15:40+0100\n"
+"POT-Creation-Date: 2025-12-31 19:15+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1359,8 +1359,9 @@ msgstr "Понедельник"
 msgid "More Screenings on this Channel"
 msgstr "Больше показов на этом канале»"
 
+#, fuzzy
 msgid "Motor Control Settings"
-msgstr "Настройки управления двигателем"
+msgstr "Настройки дистанционного управления"
 
 msgid "Motor Setup"
 msgstr "Настройка мотора"
@@ -2254,8 +2255,9 @@ msgstr "Начать сканирование"
 msgid "Startup to standby"
 msgstr "Запуск в режим ожидания"
 
+#, fuzzy
 msgid "Status"
-msgstr "Статус"
+msgstr "Строка состояния"
 
 msgid "Status line"
 msgstr "Строка состояния"
