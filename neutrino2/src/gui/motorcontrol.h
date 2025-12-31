@@ -74,8 +74,6 @@ class CMotorControl : public CTarget
 		void paintSeparator(int xpos, int * ypos, int width, char * txt);
 		void motorStepEast(void);
 		void motorStepWest(void);
-		//void startSatFind(void);
-		//void stopSatFind(void);
 		void showSNR(void);
 		
 		//

@@ -76,13 +76,10 @@ void CMotorControl::Init(void)
 	frameBuffer = CFrameBuffer::getInstance();
 	hheight     = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight();
 	mheight     = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();
-
-	satfindpid = -1;
 	
 	width = MENU_WIDTH;
 	mheight = mheight - 2;
 	height = hheight + (20 * mheight) - 5;
-//	height = height;
 
 	x = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - width) / 2;
 	y = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - height) / 2;
@@ -471,8 +468,6 @@ void CMotorControl::hide()
 	frameBuffer->paintBackgroundBoxRel(x, y, width, height + 20); //20:???
 
 	frameBuffer->blit();
-
-	//stopSatFind();
 }
 
 void CMotorControl::paintLine(int _x, int * _y, int _width, char * txt)
@@ -587,7 +582,7 @@ void CMotorControl::paint()
 	head.paint();
 	
 	// footer
-	CCFooters foot(x, /*ypos + hheight*/y + height - hheight, width, /*height - */hheight);
+	CCFooters foot(x, y + height - hheight, width, hheight);
 	const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };	
 	foot.setButtons(&btn);
 	foot.paint();
@@ -663,47 +658,6 @@ void CMotorControl::paintMenu()
 	
 	ypos_status = ypos;
 }
-/*
-void CMotorControl::startSatFind(void)
-{
-	if (satfindpid != -1) 
-	{
-		kill(satfindpid, SIGKILL);
-		waitpid(satfindpid, 0, 0);
-		satfindpid = -1;
-	}
-		
-	switch ((satfindpid = fork())) 
-	{
-		case -1:
-			printf("[motorcontrol] fork");
-			break;
-		case 0:
-			printf("[motorcontrol] starting satfind...\n");
-#if HAVE_DVB_API_VERSION >= 3
-			if (execlp("/bin/satfind", "satfind", NULL) < 0)
-#else
-			//if (execlp("/bin/satfind", "satfind", "--tune", NULL) < 0)
-			if (execlp("/bin/satfind", "satfind", NULL) < 0)
-#endif
-				printf("[motorcontrol] execlp satfind failed.\n");		
-			break;
-	}
-}
-*/
-/*
-void CMotorControl::stopSatFind(void)
-{
-	
-	if (satfindpid != -1) 
-	{
-		dprintf(DEBUG_NORMAL, "[motorcontrol] killing satfind...\n");
-		kill(satfindpid, SIGKILL);
-		waitpid(satfindpid, 0, 0);
-		satfindpid = -1;
-	}
-}
-*/
 
 #define BARWT 10 
 #define BAR_BL 2
