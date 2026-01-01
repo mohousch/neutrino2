@@ -28,8 +28,6 @@
 #include <gui/widget/hintbox.h>
 
 
-using namespace std;
-
 class CCAMMenuHandler : public CTarget
 {
 	private:
