@@ -290,10 +290,10 @@ void* CLCD::TimeThread(void *)
 	return NULL;
 }
 
-void CLCD::init(const char * fontfile, const char * fontname, const char * fontfile2, const char * fontname2, const char * fontfile3, const char * fontname3)
+void CLCD::init(const char * fontfile, const char * fontname/*, const char * fontfile2, const char * fontname2, const char * fontfile3, const char * fontname3*/)
 {
 	// init lcd 
-	if (!lcdInit(fontfile, fontname, fontfile2, fontname2, fontfile3, fontname3 ))
+	if (!lcdInit(fontfile, fontname))
 	{
 		ng_err("CLCD::init failed!\n");
 		has_lcd = false;
@@ -347,7 +347,7 @@ const char * const element_name[LCD_NUMBER_OF_ELEMENTS] = {
 	"picon_default"
 };
 
-bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fontfile2, const char * fontname2, const char * fontfile3, const char * fontname3)
+bool CLCD::lcdInit(const char * fontfile, const char * fontname)
 {
 	// 4digits
 #ifdef ENABLE_4DIGITS
@@ -505,32 +505,14 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	fontRenderer = new LcdFontRenderClass(display);
 	
 	const char * style_name = fontRenderer->AddFont(fontfile);
-	const char * style_name2;
-	const char * style_name3;
-
-	if (fontfile2 != NULL)
-		style_name2 = fontRenderer->AddFont(fontfile2);
-	else
-	{
-		style_name2 = style_name;
-		fontname2   = fontname;
-	}
-
-	if (fontfile3 != NULL)
-		style_name3 = fontRenderer->AddFont(fontfile3);
-	else
-	{
-		style_name3 = style_name;
-		fontname3   = fontname;
-	}
 	
 	fontRenderer->InitFontCache();
 
-	fonts.menu        = fontRenderer->getFont(fontname,  style_name , (lcd_height > 64)? 24 : 12);
-	fonts.time        = fontRenderer->getFont(fontname2, style_name2, (lcd_height > 64)? 22 : 14);
-	fonts.channelname = fontRenderer->getFont(fontname3, style_name3, (lcd_height > 64)? 30 : 15);
+	fonts.menu        = fontRenderer->getFont(fontname, style_name, (lcd_height > 64)? 24 : 12);
+	fonts.time        = fontRenderer->getFont(fontname, style_name, (lcd_height > 64)? 22 : 14);
+	fonts.channelname = fontRenderer->getFont(fontname, style_name, (lcd_height > 64)? 30 : 15);
 	fonts.menutitle   = fonts.channelname;
-	fonts.timestandby = fontRenderer->getFont(fontname,  style_name , (lcd_height > 64)? 50 : 20);
+	fonts.timestandby = fontRenderer->getFont(fontname, style_name, (lcd_height > 64)? 50 : 20);
 
  	// init lcd_element struct
 	for (int i = 0; i < LCD_NUMBER_OF_ELEMENTS; i++)

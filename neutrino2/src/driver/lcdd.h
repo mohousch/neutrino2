@@ -562,9 +562,7 @@ class CLCD
 		////
 		void count_down();
 		static void* TimeThread(void*);
-		bool lcdInit(const char * fontfile1, const char * fontname1, 
-		             const char * fontfile2 = NULL, const char * fontname2 = NULL,
-		             const char * fontfile3 = NULL, const char * fontname3 = NULL);
+		bool lcdInit(const char * fontfile1, const char * fontname1);
 		void setlcdparameter(int dimm, int contrast, int power, int inverse, int bias);
 		void displayUpdate();
 		void drawBanner();
@@ -581,9 +579,7 @@ class CLCD
 		void setlcdparameter(void);
 
 		static CLCD* getInstance();
-		void init(const char * fontfile, const char * fontname,
-		          const char * fontfile2 = NULL, const char * fontname2 = NULL,
-		          const char * fontfile3 = NULL, const char * fontname3 = NULL); 
+		void init(const char * fontfile, const char * fontname); 
 
 		void setMode(const MODES m, const char * const title = "");
 		MODES getMode() { return mode; };
