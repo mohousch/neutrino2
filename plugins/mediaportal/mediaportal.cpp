@@ -71,77 +71,11 @@ int CMediaPortal::exec(CTarget * parent, const std::string & actionKey)
 
 	if(parent) 
 		parent->hide();
-
-	if(actionKey == "youtube")
+	
+	if (!actionKey.empty())
 	{
-		g_PluginList->startPlugin("youtube");
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "netzkino")
-	{
-		g_PluginList->startPlugin("netzkino");
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "icecast")
-	{
-		g_PluginList->startPlugin("icecast");
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "internetradio")
-	{
-		g_PluginList->startPlugin("internetradio");
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "ard")
-	{
-		g_PluginList->startPlugin("ard");
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "nfilm")
-	{
-		g_PluginList->startPlugin("nfilm");
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "ntvshows")
-	{
-		g_PluginList->startPlugin("ntvshows");
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "arte_concert")
-	{
-		g_PluginList->startPlugin("arte_concert");
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "media_one")
-	{
-		g_PluginList->startPlugin("media_one");
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "mtv")
-	{
-		g_PluginList->startPlugin("mtv");
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "netzkino_hd")
-	{
-		g_PluginList->startPlugin("netzkino_hd");
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "plutotv")
-	{
-		g_PluginList->startPlugin("plutotv");
-
+		g_PluginList->startPlugin(actionKey.c_str());
+		
 		return RETURN_REPAINT;
 	}
 
