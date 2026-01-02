@@ -879,7 +879,7 @@ void CLCD::showText(const char *str)
 	if (!has_lcd)
 		return;
 		
-	dprintf(DEBUG_NORMAL, "CLCD::showText: %s\n", str? str : "null");
+	dprintf(DEBUG_INFO, "CLCD::showText: %s\n", str? str : "null");
 		 
 #if defined (ENABLE_4DIGITS)
 	int len = strlen(str);

@@ -719,7 +719,7 @@ void hdmi_cec::Receive(int what)
 					    ((uint64_t)rxmessage.data[2] << 8) +
 					    (uint64_t)rxmessage.data[3];
 					    
-					dprintf(DEBUG_NORMAL, "[CEC] decoded message '%s' (%s)\n", ToString((cec_opcode)rxmessage.opcode), ToString((cec_vendor_id)iVendorId));
+					dprintf(DEBUG_INFO, "[CEC] decoded message '%s' (%s)\n", ToString((cec_opcode)rxmessage.opcode), ToString((cec_vendor_id)iVendorId));
 					break;
 				}
 				case CEC_OPCODE_GIVE_DEVICE_POWER_STATUS:
