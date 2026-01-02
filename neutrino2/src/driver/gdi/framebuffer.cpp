@@ -446,7 +446,7 @@ int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
 	if (!available && !active)
 		return -1;
 	
-	dprintf(DEBUG_NORMAL, "CFrameBuffer::setMode: FB: %dx%dx%d\n", x, y, _bpp);
+	dprintf(DEBUG_NORMAL, "CFrameBuffer::setMode: FB: %dx%d (%d bit)\n", x, y, _bpp);
 
 #if defined (__sh__) || defined (USE_OPENGL)
 	xRes = x;

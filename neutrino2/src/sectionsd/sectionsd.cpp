@@ -2818,7 +2818,7 @@ void *CSectionsd::timeThread(void *)
 					actTime = time(NULL);
 					tmTime = localtime(&actTime);
 					
-					//dprintf(DEBUG_NORMAL, "[sectionsd] timeThread: current= %02d.%02d.%04d %02d:%02d:%02d, tim: %s\n", tmTime->tm_mday, tmTime->tm_mon+1, tmTime->tm_year+1900, tmTime->tm_hour, tmTime->tm_min, tmTime->tm_sec, ctime(&tim));
+					//dprintf(DEBUG_NORMAL, "CSectionsd::timeThread: current= %02d.%02d.%04d %02d:%02d:%02d, tim: %s\n", tmTime->tm_mday, tmTime->tm_mon+1, tmTime->tm_year+1900, tmTime->tm_hour, tmTime->tm_min, tmTime->tm_sec, ctime(&tim));
 					
 					pthread_mutex_lock(&timeIsSetMutex);
 					timeset = true;
