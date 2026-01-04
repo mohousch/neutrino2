@@ -429,6 +429,7 @@ class ClistBox : public CComponent
 		void restoreScreen();
 		int borderMode;
 		uint32_t borderColor;
+		int borderGradient;
 
 		// item
 		int itemBorderMode;
@@ -539,6 +540,7 @@ class ClistBox : public CComponent
 		void setGradient(int grad){ gradient = grad;};
 		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
 		void setBorderColor(uint32_t col){borderColor = col;};
+		void setBorderGradient(int gr) {borderGradient = gr;};
 		// frame method
 		void setItemsPerPage(int itemsX = 6, int itemsY = 3){itemsPerX = itemsX; itemsPerY = itemsY; maxItemsPerPage = itemsPerX*itemsPerY;};
 		//

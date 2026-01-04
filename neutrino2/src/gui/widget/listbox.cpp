@@ -1947,6 +1947,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	gradient = NOGRADIENT;
 	borderMode = CComponent::BORDER_NO;
 	borderColor = COL_MENUCONTENT_PLUS_6;
+	borderGradient = NOGRADIENT;
 	
 	//
 	item_height = 0;
@@ -2061,6 +2062,7 @@ ClistBox::ClistBox(CBox* position)
 	gradient = NOGRADIENT;
 	borderMode = CComponent::BORDER_NO;
 	borderColor = COL_MENUCONTENT_PLUS_0;
+	borderGradient = NOGRADIENT;
 	
 	//
 	item_height = 0;
@@ -2323,7 +2325,7 @@ void ClistBox::paint(bool _selected)
 		
 		// border
 		if (borderMode != CComponent::BORDER_NO)
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, borderColor, radius, corner);
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, borderColor, radius, corner, borderGradient);
 		
 		// mainframe
 		frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), itemBox.iHeight - (borderMode? 4 : 0), bgcolor, radius, corner, gradient);
