@@ -67,8 +67,6 @@ int CMediaPortal::exec(CTarget * parent, const std::string & actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CMediaPortal::exec: actionKey:%s\n", actionKey.c_str());
 
-	int returnval = RETURN_REPAINT;
-
 	if(parent) 
 		parent->hide();
 	
@@ -81,7 +79,7 @@ int CMediaPortal::exec(CTarget * parent, const std::string & actionKey)
 
 	showMenu();
 	
-	return returnval;
+	return RETURN_REPAINT;
 }
 
 void CMediaPortal::showMenu(void)
@@ -224,5 +222,4 @@ void plugin_exec(void)
 	delete mpHandler;
 	mpHandler = NULL;
 }
-
 
