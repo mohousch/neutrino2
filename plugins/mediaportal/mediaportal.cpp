@@ -95,15 +95,8 @@ void CMediaPortal::showMenu(void)
 	mediaPortal->setWidgetMode(ClistBox::MODE_LISTBOX);
 	mediaPortal->setWidgetLayout(ClistBox::LAYOUT_FRAME);
 	
-	//
-	//mediaPortal->enablePaintHead();
-	//mediaPortal->setTitle(_("Media Portal"), PLUGINDIR "/mediaportal/mp.png");
-	//mediaPortal->enablePaintDate();
-	
-	// 
-	//mediaPortal->enablePaintItemInfo();
-	
 	mediaPortal->paintMainFrame(false);
+//	mediaPortal->enableSaveScreen();
 
 	// youtube
 	if (g_PluginList->plugin_exists("youtube"))

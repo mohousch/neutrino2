@@ -1421,9 +1421,6 @@ int CMenuForwarder::exec(CTarget *target)
 		
 		if (jumpTarget->valueStringSetted)
 			setOption(jumpTarget->getValueString().c_str());
-		
-		if (ret == CTarget::RETURN_REPAINT)
-			paint(true);
 	}
 
 	return ret;

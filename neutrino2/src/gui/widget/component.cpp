@@ -206,7 +206,6 @@ int CComponent::exec(CTarget *target)
 							msg = CRCInput::RC_timeout;
 							break;
 						case CTarget::RETURN_REPAINT:
-							hide();
 							paint();
 							break;
 					}
@@ -232,7 +231,6 @@ int CComponent::exec(CTarget *target)
 					msg = CRCInput::RC_timeout;
 					break;
 				case CTarget::RETURN_REPAINT:
-					hide();
 					paint();
 					break;
 			}
@@ -308,7 +306,6 @@ int CComponent::exec(CTarget *target)
 								msg = CRCInput::RC_timeout;
 								break;
 							case CTarget::RETURN_REPAINT:
-								hide();
 								paint();
 								break;
 						}

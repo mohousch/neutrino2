@@ -386,7 +386,6 @@ int CWidget::exec(CTarget *parent, const std::string &)
 							msg = CRCInput::RC_timeout;
 							break;
 						case CTarget::RETURN_REPAINT:
-							hide();
 							paint();
 							break;
 					}
@@ -631,7 +630,6 @@ void CWidget::onOKKeyPressed(CTarget *target)
 					msg = CRCInput::RC_timeout;
 					break;
 				case CTarget::RETURN_REPAINT:
-					hide();
 					paint();
 					break;
 			}
