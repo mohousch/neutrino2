@@ -1,28 +1,28 @@
-/*
-	Neutrino-GUI  -   DBoxII-Project
-
-	$id: main_setup.cpp 2015.12.22 21:31:30 mohousch $
-	
-	Copyright (C) 2001 Steffen Hehn 'McClean'
-	and some other guys
-	Homepage: http://dbox.cyberphoria.org/
-
-	License: GPL
-
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-*/ 
+//
+//	Neutrino-GUI  -   DBoxII-Project
+//
+//	$id: video_setup.cpp 09012026 mohousch $
+//	
+//	Copyright (C) 2001 Steffen Hehn 'McClean'
+//	and some other guys
+//	Homepage: http://dbox.cyberphoria.org/
+//
+//	License: GPL
+//
+//	This program is free software; you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation; either version 2 of the License, or
+//	(at your option) any later version.
+//
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program; if not, write to the Free Software
+//	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// 
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -44,7 +44,8 @@
 #include <video_cs.h>
 
 
-extern cVideo * videoDecoder;		//libdvbapi (video_cs.cpp)
+extern cVideo * videoDecoder;		// defined in libdvbapi (video_cs.cpp)
+extern int prev_video_Mode;		// defined in neutrino2.cpp
 
 //hdmi color space
 #ifdef __sh__
@@ -190,41 +191,16 @@ const keyval VIDEOMENU_WSS_OPTIONS[VIDEOMENU_WSS_OPTION_COUNT] =
 };
 #endif
 
-CVideoSettings::CVideoSettings()
-{
-	videoSetupNotifier = new CVideoSetupNotifier;
-}
-
-CVideoSettings *CVideoSettings::getInstance()
-{
-	static CVideoSettings *videoSettings = NULL;
-
-	if(!videoSettings)
-	{
-		videoSettings = new CVideoSettings();
-		dprintf(DEBUG_NORMAL, "CVideoSettings::getInstance: Instance created\n");
-	}
-	
-	return videoSettings;
-}
-
-CVideoSettings::~CVideoSettings()
-{
-	delete videoSetupNotifier;
-}
-
-int CVideoSettings::exec(CTarget* parent, const std::string& actionKey)
+int CVideoSettings::exec(CTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CVideoSettings::exec: actionKey:%s\n", actionKey.c_str());
-	
-	int ret = CTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
 	
 	showMenu();
 	
-	return ret;
+	return RETURN_REPAINT;
 }
 
 void CVideoSettings::showMenu()
@@ -275,9 +251,7 @@ void CVideoSettings::showMenu()
 	}
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Video settings"));
+	setLCDMode(_("Video settings"));
 	
 	// intros
 	videoSettings->addItem(new CMenuForwarder(_("back")));
@@ -288,22 +262,22 @@ void CVideoSettings::showMenu()
 	videoSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE, NULL, true) );
 
 	// video aspect ratio 4:3/16:9
-	videoSettings->addItem(new CMenuOptionChooser(_("TV-System"), &g_settings.video_Ratio, VIDEOMENU_VIDEORATIO_OPTIONS, VIDEOMENU_VIDEORATIO_OPTION_COUNT, true, videoSetupNotifier));
+	videoSettings->addItem(new CMenuOptionChooser(_("TV-System"), &g_settings.video_Ratio, VIDEOMENU_VIDEORATIO_OPTIONS, VIDEOMENU_VIDEORATIO_OPTION_COUNT, true, this));
 	
 	// video format bestfit/letterbox/panscan/non
-	videoSettings->addItem(new CMenuOptionChooser(_("Video Format"), &g_settings.video_Format, VIDEOMENU_VIDEOFORMAT_OPTIONS, VIDEOMENU_VIDEOFORMAT_OPTION_COUNT, true, videoSetupNotifier));
+	videoSettings->addItem(new CMenuOptionChooser(_("Video Format"), &g_settings.video_Format, VIDEOMENU_VIDEOFORMAT_OPTIONS, VIDEOMENU_VIDEOFORMAT_OPTION_COUNT, true, this));
 	
 	// video analogue mode
-	videoSettings->addItem(new CMenuOptionChooser(_("Analog Output"), &g_settings.analog_mode, VIDEOMENU_ANALOGUE_MODE_OPTIONS, VIDEOMENU_ANALOGUE_MODE_OPTION_COUNT, true, videoSetupNotifier));
+	videoSettings->addItem(new CMenuOptionChooser(_("Analog Output"), &g_settings.analog_mode, VIDEOMENU_ANALOGUE_MODE_OPTIONS, VIDEOMENU_ANALOGUE_MODE_OPTION_COUNT, true, this));
 
 	// video hdmi space colour	
-	//videoSettings->addItem(new CMenuOptionChooser(_("HDMI Color Space"), &g_settings.hdmi_color_space, VIDEOMENU_HDMI_COLOR_SPACE_OPTIONS, VIDEOMENU_HDMI_COLOR_SPACE_OPTION_COUNT, true, videoSetupNotifier));	
+	//videoSettings->addItem(new CMenuOptionChooser(_("HDMI Color Space"), &g_settings.hdmi_color_space, VIDEOMENU_HDMI_COLOR_SPACE_OPTIONS, VIDEOMENU_HDMI_COLOR_SPACE_OPTION_COUNT, true, this));	
 	
 	// wss
-	videoSettings->addItem(new CMenuOptionChooser(_("Colour Range"), &g_settings.wss_mode, VIDEOMENU_WSS_OPTIONS, VIDEOMENU_WSS_OPTION_COUNT, true, videoSetupNotifier));	
+	videoSettings->addItem(new CMenuOptionChooser(_("Colour Range"), &g_settings.wss_mode, VIDEOMENU_WSS_OPTIONS, VIDEOMENU_WSS_OPTION_COUNT, true, this));	
 
 	// video mode
-	CMenuItem *item = new CMenuOptionChooser(_("Video Resolution"), &g_settings.video_Mode, VIDEOMENU_VIDEOMODE_OPTIONS, VIDEOMENU_VIDEOMODE_OPTION_COUNT, true, videoSetupNotifier, CRCInput::RC_nokey, "", true);
+	CMenuItem *item = new CMenuOptionChooser(_("Video Resolution"), &g_settings.video_Mode, VIDEOMENU_VIDEOMODE_OPTIONS, VIDEOMENU_VIDEOMODE_OPTION_COUNT, true, this, CRCInput::RC_nokey, "", true);
 	
 #ifdef ENABLE_4K
 	item->addOption("2160p 24HZ", VIDEO_STD_2160P24);
@@ -322,20 +296,6 @@ void CVideoSettings::showMenu()
 	CPSISetup * chPSISetup = new CPSISetup(_("PSI settings"), &g_settings.contrast, &g_settings.saturation, &g_settings.brightness, &g_settings.tint);
 	videoSettings->addItem( new CMenuForwarder(_("PSI settings"), true, NULL, chPSISetup));
 #endif
-
-	/*
-	// contrast
-	videoSettings->addItem(new CMenuOptionNumberChooser(_("Contrast"), (int *)&g_settings.contrast, true, 0, 255));
-
-	// saturation
-	videoSettings->addItem(new CMenuOptionNumberChooser(_("Saturation"), (int *)&g_settings.saturation, true, 0, 255));
-
-	// brightness
-	videoSettings->addItem(new CMenuOptionNumberChooser(_("Brightness"), (int *)&g_settings.brightness, true, 0, 255));
-
-	// tint
-	videoSettings->addItem(new CMenuOptionNumberChooser(_("Tint"), (int *)&g_settings.tint, true, 0, 255));
-	*/
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
@@ -348,17 +308,12 @@ void CVideoSettings::showMenu()
 	}
 	
 	//
-        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+        resetLCDMode();
 }
 
-// video setup notifier
-extern int prev_video_Mode;
-
-bool CVideoSetupNotifier::changeNotify(const std::string& OptionName, void *)
+bool CVideoSettings::changeNotify(const std::string& OptionName, void *)
 {
-	dprintf(DEBUG_NORMAL, "CVideoSetupNotifier::changeNotify\n");
-	
-	CFrameBuffer *frameBuffer = CFrameBuffer::getInstance();
+	dprintf(DEBUG_NORMAL, "CVideoSettings::changeNotify\n");
 
 	if (OptionName == _("Analog Output"))	/* video analoue mode */
 	{
@@ -374,11 +329,7 @@ bool CVideoSetupNotifier::changeNotify(const std::string& OptionName, void *)
 	{
 		if(videoDecoder)
 			videoDecoder->SetVideoSystem(g_settings.video_Mode);
-		
-		// clear screen
-		frameBuffer->paintBackground();
-		frameBuffer->blit();		
-
+					
 		if(prev_video_Mode != g_settings.video_Mode) 
 		{
 			if(MessageBox(_("Information"), _("Is this video mode working ok ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo, NEUTRINO_ICON_INFO) != CMessageBox::mbrYes) 
@@ -406,6 +357,4 @@ bool CVideoSetupNotifier::changeNotify(const std::string& OptionName, void *)
 
 	return true;
 }
-
-
 
