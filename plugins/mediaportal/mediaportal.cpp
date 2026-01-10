@@ -96,6 +96,7 @@ void CMediaPortal::showMenu(void)
 	mediaPortal->setWidgetLayout(ClistBox::LAYOUT_FRAME);
 	
 	mediaPortal->paintMainFrame(false);
+	mediaPortal->enablePaintItemInfo();
 
 	// youtube
 	if (g_PluginList->plugin_exists("youtube"))

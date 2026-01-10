@@ -453,6 +453,7 @@ class ClistBox : public CComponent
 		uint32_t iteminfocolor;
 		bool iteminfoscale;
 		CCLabel label;
+		CCLabel label2;
 		CBox itemInfoBox2;
 
 		// head
