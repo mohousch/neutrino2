@@ -2355,8 +2355,8 @@ void ClistBox::paint(bool _selected)
 	{
 		if (paint_ItemInfo)
 		{
-			label.setPosition(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - fheight - cFrameFootInfoHeight + 4, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight());
-			label2.setPosition(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - fheight - cFrameFootInfoHeight/2 + 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight());
+			label.setPosition(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - fheight - cFrameFootInfoHeight + 3, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, /*g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight()*/(cFrameFootInfoHeight - 3)/2);
+			label2.setPosition(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - fheight - cFrameFootInfoHeight/2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, /*g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight()*/(cFrameFootInfoHeight - 3)/2);
 			
 			if (!paintframe)
 			{
