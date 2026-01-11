@@ -2369,7 +2369,8 @@ void ClistBox::paint(bool _selected)
 	//
 	paintHead();
 	paintFoot();
-	
+
+	//	
 	if (paint_ItemInfo && paint_Foot && widgetLayout != LAYOUT_FRAME)
 	{
 		int iw, ih;
@@ -3070,7 +3071,7 @@ void ClistBox::paintItemInfo(int pos)
 			if (paintframe)
 				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - fheight - cFrameFootInfoHeight, itemBox.iWidth, cFrameFootInfoHeight, COL_MENUCONTENT_PLUS_0);
 
-			// refresh horizontal line buttom
+			// horizontal line buttom
 			frameBuffer->paintHLineRel(itemBox.iX + BORDER_LEFT, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, itemBox.iY + itemBox.iHeight - fheight - cFrameFootInfoHeight + 2, COL_MENUCONTENT_PLUS_5);
 
 			//

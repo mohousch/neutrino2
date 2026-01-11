@@ -424,7 +424,7 @@ class ClistBox : public CComponent
 		int corner;
 		bool scrollbar;
 		int gradient;
-		fb_pixel_t * background;
+		fb_pixel_t *background;
 		void saveScreen();
 		void restoreScreen();
 		int borderMode;
@@ -496,7 +496,7 @@ class ClistBox : public CComponent
 		
 	public:
 		ClistBox(const int x = 0, int const y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);
-		ClistBox(CBox* position);		
+		ClistBox(CBox *position);		
 		virtual ~ClistBox();	
 		
 		void setPosition(const int x, const int y, const int dx, const int dy)
@@ -508,7 +508,7 @@ class ClistBox : public CComponent
 
 			initFrames();
 		};
-		void setPosition(CBox* position){itemBox = *position; initFrames();};
+		void setPosition(CBox *position){itemBox = *position; initFrames();};
 		
 		//
 		bool isSelectable(void){return true;};
@@ -518,7 +518,7 @@ class ClistBox : public CComponent
 		bool hasItem();
 		void clearItems(void){items.clear(); current_page = 0;};
 		void clear(void){hbutton_labels.clear(); fbutton_labels.clear(); current_page = 0; items.clear();};
-		void setSelected(unsigned int _new) { selected = _new; };
+		void setSelected(unsigned int _new) { if (_new < 0) _new = 0; selected = _new; };
 		void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, bool enabled = true, int imode = MODE_MENU, int ilayout = LAYOUT_STANDARD, bool i2lines = false, int iBorder = CComponent::BORDER_NO);
 		void addPluginItem(const char *const pluginName, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const char* const Icon = NULL, bool enabled = true, int imode = MODE_MENU, int ilayout = LAYOUT_STANDARD, bool i2lines = false, int iBorder = CComponent::BORDER_NO);
 		void selectItemByName(const char *name);
