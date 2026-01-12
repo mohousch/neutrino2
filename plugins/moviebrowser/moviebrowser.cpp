@@ -1374,10 +1374,9 @@ void CMovieBrowser::refreshBrowserList(void) //P1
 	}
 }
 
-#define MB_HEAD_BUTTONS_COUNT	4
+#define MB_HEAD_BUTTONS_COUNT	3
 const struct button_label MBHeadButtons[MB_HEAD_BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_0, "" },
 	{ NEUTRINO_ICON_BUTTON_HELP, "" },
 	{ NEUTRINO_ICON_BUTTON_SETUP, "" },
 	{ NEUTRINO_ICON_BUTTON_MUTE_SMALL, "" },
@@ -1420,35 +1419,18 @@ void CMovieBrowser::refreshFoot(void)
 	
 	footers->clear();
 
-	{
-		// red
-		std::string sort_text = _("Filter:");
-		sort_text += m_localizedItemName[m_settings.sorting.item]; //FIXME:
+	// red
+	std::string sort_text = _("Filter:");
+	sort_text += m_localizedItemName[m_settings.sorting.item]; //FIXME:
 	
-		MBFootButtons[0].localename = sort_text.c_str();
-		//MBFootButtons[0].localename = _("Filter:");
+	MBFootButtons[0].localename = sort_text.c_str();
+	//MBFootButtons[0].localename = _("Filter:");	
 		
-		
-		// green
-//		std::string filter_text = _("Filter:");
-//		filter_text += m_settings.filter.optionString;
-
-		//MBFootButtons[1].localename = filter_text.c_str();
-		//MBFootButtons[1].localename = _("Filter:");
-	}
+	// green
+	MBFootButtons[1].localename = _("TMDB");
 
 	// yellow
 	std::string next_text = _("Next focus");
-/*
-	if(m_settings.gui == MB_GUI_FILTER && m_windowFocus == MB_FOCUS_FILTER)
-	{
-		next_text = _("Select");
-	}
-	else
-	{
-		next_text = _("Next focus");
-	}
-*/
 
 	MBFootButtons[2].localename = next_text;
 
@@ -1499,17 +1481,19 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 
 	if (msg == CRCInput::RC_home)
 	{
-//		if(m_settings.gui == MB_GUI_FILTER)
-//			onSetGUIWindow(MB_GUI_MOVIE_INFO);
-//		else
-			result = false;
+		result = false;
 	}
 	else if (msg == CRCInput::RC_green) 
 	{		
-//		if(m_settings.gui == MB_GUI_MOVIE_INFO)
-//			onSetGUIWindow(MB_GUI_FILTER);
-//		else if(m_settings.gui == MB_GUI_FILTER)
-//			onSetGUIWindow(MB_GUI_MOVIE_INFO);			
+		if(m_movieSelectionHandler != NULL)
+		{
+			frameBuffer->paintBackground();
+			frameBuffer->blit();
+			
+			::getTMDBInfo(m_movieSelectionHandler->epgTitle.c_str());
+			
+			refresh();
+		}		
 	}
 	else if (msg == CRCInput::RC_yellow) 
 	{
@@ -1522,19 +1506,17 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 	}
 	else if (msg == CRCInput::RC_red ) 
 	{	
+		// sorting is not avialable for last play and record
+		do
 		{
-			// sorting is not avialable for last play and record
-			do
-			{
-				if(m_settings.sorting.item + 1 >= MB_INFO_MAX_NUMBER)
-					m_settings.sorting.item = (MB_INFO_ITEM)0;
-				else
-					m_settings.sorting.item = (MB_INFO_ITEM)(m_settings.sorting.item + 1);
-			}while(sortBy[m_settings.sorting.item] == NULL);
+			if(m_settings.sorting.item + 1 >= MB_INFO_MAX_NUMBER)
+				m_settings.sorting.item = (MB_INFO_ITEM)0;
+			else
+				m_settings.sorting.item = (MB_INFO_ITEM)(m_settings.sorting.item + 1);
+		}while(sortBy[m_settings.sorting.item] == NULL);
 					
-			refreshBrowserList();	
-			refreshFoot();
-		}
+		refreshBrowserList();	
+		refreshFoot();
 	}
 	else if (msg == CRCInput::RC_spkr) 
 	{
@@ -1580,18 +1562,6 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 	
 		showMenu();
 	}
-	else if(msg == CRCInput::RC_0)
-	{
-		if(m_movieSelectionHandler != NULL)
-		{
-			frameBuffer->paintBackground();
-			frameBuffer->blit();
-			
-			::getTMDBInfo(m_movieSelectionHandler->epgTitle.c_str());
-			
-			refresh();
-		}
-	}	
 	else
 	{
 		result = false;
