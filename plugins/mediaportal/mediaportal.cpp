@@ -84,8 +84,6 @@ int CMediaPortal::exec(CTarget * parent, const std::string & actionKey)
 
 void CMediaPortal::showMenu(void)
 {
-	const struct button_label HButtons = { NEUTRINO_ICON_BUTTON_MUTE_SMALL, "" };
-	
 	//
 	widget = new CWidget(frameBuffer->getScreenX(), frameBuffer->getScreenY(), frameBuffer->getScreenWidth(), frameBuffer->getScreenHeight());
 	

@@ -59,7 +59,7 @@ CTextBox::CTextBox(const int x, const int y, const int dx, const int dy)
 	initFrames();
 }
 
-CTextBox::CTextBox(CBox* position)
+CTextBox::CTextBox(const CBox* position)
 {
 	dprintf(DEBUG_INFO, "CTextBox::CTextBox:\n");
 	

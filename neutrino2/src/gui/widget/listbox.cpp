@@ -1964,7 +1964,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	cc_type = CC_LISTBOX;
 }
 
-ClistBox::ClistBox(CBox* position)
+ClistBox::ClistBox(const CBox* position)
 {
 	frameBuffer = CFrameBuffer::getInstance();
 

@@ -85,7 +85,7 @@ class CWidget : public CTarget
 
 	public:
 		CWidget(const int x = 0, const int y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);
-		CWidget(CBox *position);		
+		CWidget(const CBox *position);		
 		virtual ~CWidget();		
 		
 		//
@@ -98,7 +98,7 @@ class CWidget : public CTarget
 			
 			initFrames();
 		};
-		virtual void setPosition(CBox* position){mainFrameBox = *position; initFrames();};
+		virtual void setPosition(const CBox* position){mainFrameBox = *position; initFrames();};
 		virtual void move(const int x, const int y);
 //		virtual void resize(int dx, int dy);		
 
@@ -150,8 +150,8 @@ class CWidget : public CTarget
 		//
 		CComponent *getCCItem(const int type, const std::string& name = "");
 		//
-		inline CBox getWindowsPos(void){return mainFrameBox;};
-		inline CBox getOldPosition(void){ return oldPosition;};
+		inline CBox &getWindowsPos(void){return mainFrameBox;};
+		inline CBox &getOldPosition(void){ return oldPosition;};
 		// lua compatibility
 		std::string getActionKey(){return actionKey;};
 		neutrino_msg_t getKey(){return msg;};

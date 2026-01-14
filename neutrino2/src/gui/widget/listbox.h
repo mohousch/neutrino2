@@ -496,7 +496,7 @@ class ClistBox : public CComponent
 		
 	public:
 		ClistBox(const int x = 0, int const y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);
-		ClistBox(CBox *position);		
+		ClistBox(const CBox *position);		
 		virtual ~ClistBox();	
 		
 		void setPosition(const int x, const int y, const int dx, const int dy)
@@ -628,7 +628,7 @@ class ClistBox : public CComponent
 		std::string getItemName(){if (hasItem()) return items[selected]->itemName; else return "";};
 		std::string getItemHint(){if (hasItem()) return items[selected]->itemHint; else return "";};
 		std::string getItemIcon(){if (hasItem()) return items[selected]->itemIcon; else return "";};
-		CBox getWindowsPos(void){initFrames(); return (itemBox);};
+		inline CBox &getWindowsPos(void){initFrames(); return (itemBox);};
 		// frame type methods
 		int getItemsPerX()const{return itemsPerX;};
 		int getItemsPerY()const{return itemsPerY;};

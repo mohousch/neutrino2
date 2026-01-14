@@ -116,7 +116,7 @@ class CTextBox : public CComponent
 
 	public:
 		CTextBox(const int x = 0, const int y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);
-		CTextBox(CBox* position);
+		CTextBox(const CBox* position);
 
 		virtual ~CTextBox();
 

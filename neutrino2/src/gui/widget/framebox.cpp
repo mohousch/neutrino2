@@ -483,7 +483,7 @@ CFrameBox::CFrameBox(const int x, int const y, const int dx, const int dy)
 	total_pages = 1;
 }
 
-CFrameBox::CFrameBox(CBox* position)
+CFrameBox::CFrameBox(const CBox* position)
 {
 	dprintf(DEBUG_INFO, "CFrameBox::CFrameBox:\n");
 

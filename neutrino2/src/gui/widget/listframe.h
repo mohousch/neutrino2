@@ -112,7 +112,7 @@ class CListFrame : public CComponent
 
 	public:
 		CListFrame(const int x = 0, const int y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);
-		CListFrame(CBox* position);
+		CListFrame(const CBox* position);
 
 		virtual ~CListFrame();
 		

@@ -166,7 +166,7 @@ class CFrameBox : public CComponent
 
 	public:
 		CFrameBox(const int x = 0, int const y = 0, const int dx = 0, const int dy = 0);
-		CFrameBox(CBox* position);
+		CFrameBox(const CBox* position);
 		virtual ~CFrameBox();
 
 		void setPosition(const int x, const int y, const int dx, const int dy)
@@ -178,7 +178,7 @@ class CFrameBox : public CComponent
 
 			initFrames();
 		};
-		void setPosition(CBox* position){itemBox = *position; initFrames();};
+		void setPosition(const CBox* position){itemBox = *position; initFrames();};
 		//
 		bool isSelectable(void);
 		//// 

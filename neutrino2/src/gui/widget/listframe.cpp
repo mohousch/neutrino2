@@ -87,7 +87,7 @@ CListFrame::CListFrame(const int x, const int y, const int dx, const int dy)
 	m_pLines = NULL;
 }
 
-CListFrame::CListFrame(CBox* position)
+CListFrame::CListFrame(const CBox* position)
 {
 	dprintf(DEBUG_DEBUG, "CListFrame::CListFrame\r\n");
 	
