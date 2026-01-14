@@ -1,27 +1,26 @@
-/*
-	Neutrino-GUI  -   DBoxII-Project
-
- 	Homepage: http://dbox.cyberphoria.org/
-
-	$Id: moviebrowser.cpp 10042024 mohousch Exp $
-
-	License: GPL
-
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
-*/
+//
+//	Neutrino-GUI  -   DBoxII-Project
+//
+ //	Homepage: http://dbox.cyberphoria.org/
+//
+//	$Id: moviebrowser.cpp 14012026 mohousch Exp $
+//
+//	License: GPL
+//
+//	This program is free software; you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation; either version 2 of the License, or
+//	(at your option) any later version.
+//
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program; if not, write to the Free Software
+//	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -136,10 +135,7 @@ const keyval MESSAGEBOX_PARENTAL_LOCKAGE_OPTIONS[MESSAGEBOX_PARENTAL_LOCKAGE_OPT
 	{ 16, _("16 years") },
 	{ 18, _("18 years") },
 	{ 99, _("never") }
-};	
-
-#define TITLE_FONT 			g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]
-#define FOOT_FONT 			g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]
+};
 
 CFont* CMovieBrowser::m_pcFontFoot = NULL;
 CFont* CMovieBrowser::m_pcFontTitle = NULL;
@@ -172,9 +168,9 @@ const char* const m_localizedItemName[MB_INFO_MAX_NUMBER + 1] =
 // default row size in pixel for any element
 #define	MB_ROW_WIDTH_FILENAME 		150
 #define	MB_ROW_WIDTH_FILEPATH		150
-#define	MB_ROW_WIDTH_TITLE		500
+#define	MB_ROW_WIDTH_TITLE		CFrameBuffer::getInstance()->getScreenWidth()/2
 #define	MB_ROW_WIDTH_SERIE		150 
-#define	MB_ROW_WIDTH_INFO1		200
+#define	MB_ROW_WIDTH_INFO1		CFrameBuffer::getInstance()->getScreenWidth()/4
 #define	MB_ROW_WIDTH_MAJOR_GENRE 	150
 #define	MB_ROW_WIDTH_MINOR_GENRE 	36
 #define	MB_ROW_WIDTH_INFO2 		36
@@ -183,13 +179,13 @@ const char* const m_localizedItemName[MB_INFO_MAX_NUMBER + 1] =
 #define	MB_ROW_WIDTH_BOOKMARK		50
 #define	MB_ROW_WIDTH_QUALITY 		120
 #define	MB_ROW_WIDTH_PREVPLAYDATE	80
-#define	MB_ROW_WIDTH_RECORDDATE 	120
+#define	MB_ROW_WIDTH_RECORDDATE 	CFrameBuffer::getInstance()->getScreenWidth()/8
 #define	MB_ROW_WIDTH_PRODDATE 		50
 #define	MB_ROW_WIDTH_COUNTRY 		50
 #define	MB_ROW_WIDTH_GEOMETRIE		50
 #define	MB_ROW_WIDTH_AUDIO		50 	
 #define	MB_ROW_WIDTH_LENGTH		40
-#define	MB_ROW_WIDTH_SIZE 		80
+#define	MB_ROW_WIDTH_SIZE 		CFrameBuffer::getInstance()->getScreenWidth()/8
 
 const int m_defaultRowWidth[MB_INFO_MAX_NUMBER + 1] = 
 {
@@ -219,7 +215,7 @@ const int m_defaultRowWidth[MB_INFO_MAX_NUMBER + 1] =
 static MI_MOVIE_INFO* playing_info;
 
 // sorting
-#define FILEBROWSER_NUMBER_OF_SORT_VARIANTS 5
+#define FILEBROWSER_NUMBER_OF_SORT_VARIANTS 	5
 
 bool sortDirection = 0;
 
@@ -345,7 +341,6 @@ bool (* const sortBy[MB_INFO_MAX_NUMBER+1])(const MI_MOVIE_INFO* a, const MI_MOV
 CMovieBrowser::CMovieBrowser(const char* path): configfile ('\t')
 {
 	m_selectedDir = path; 
-	//addDir(m_selectedDir);
 	CMovieBrowser();
 }
 
@@ -372,7 +367,7 @@ CMovieBrowser::~CMovieBrowser()
 	m_vHandleSerienames.clear();
 	m_movieSelectionHandler = NULL;
 
-	for(int i = 0; i < LF_MAX_ROWS; i++)
+	for(int i = 0; i < /*LF_MAX_ROWS*/4; i++)
 	{
 		m_browserListLines.lineArray[i].clear();
 //		m_FilterLines.lineArray[i].clear();
@@ -420,7 +415,7 @@ void CMovieBrowser::fileInfoStale(void)
 	m_movieSelectionHandler = NULL;
 	
 	//
-	for(int i = 0; i < LF_MAX_ROWS; i++)
+	for(int i = 0; i < /*LF_MAX_ROWS*/4; i++)
 	{
 		m_browserListLines.lineArray[i].clear();
 //		m_FilterLines.lineArray[i].clear();
@@ -489,23 +484,22 @@ void CMovieBrowser::init(void)
 		dprintf(DEBUG_NORMAL, " row error\r\n");
 		
 		// init browser row elements if not configured correctly by neutrino.config
-		m_settings.browserRowNr = 6;
+		m_settings.browserRowNr = MB_MAX_ROWS;
 		m_settings.browserRowItem[0] = MB_INFO_TITLE;
 		m_settings.browserRowItem[1] = MB_INFO_INFO1;
 		m_settings.browserRowItem[2] = MB_INFO_RECORDDATE;
 		m_settings.browserRowItem[3] = MB_INFO_SIZE;
-		m_settings.browserRowItem[4] = MB_INFO_PARENTAL_LOCKAGE;
-		m_settings.browserRowItem[5] = MB_INFO_QUALITY;
+		//m_settings.browserRowItem[4] = MB_INFO_PARENTAL_LOCKAGE;
+		//m_settings.browserRowItem[5] = MB_INFO_QUALITY;
 		m_settings.browserRowWidth[0] = m_defaultRowWidth[m_settings.browserRowItem[0]];		//300;
 		m_settings.browserRowWidth[1] = m_defaultRowWidth[m_settings.browserRowItem[1]]; 		//100;
 		m_settings.browserRowWidth[2] = m_defaultRowWidth[m_settings.browserRowItem[2]]; 		//80;
 		m_settings.browserRowWidth[3] = m_defaultRowWidth[m_settings.browserRowItem[3]]; 		//50;
-		m_settings.browserRowWidth[4] = m_defaultRowWidth[m_settings.browserRowItem[4]]; 		//30;
-		m_settings.browserRowWidth[5] = m_defaultRowWidth[m_settings.browserRowItem[5]]; 		//30;
+		//m_settings.browserRowWidth[4] = m_defaultRowWidth[m_settings.browserRowItem[4]]; 		//30;
+		//m_settings.browserRowWidth[5] = m_defaultRowWidth[m_settings.browserRowItem[5]]; 		//30;
 	}
 
 	initFrames();
-//	initRows();
 }
 
 void CMovieBrowser::initGlobalSettings(void)
@@ -533,19 +527,19 @@ void CMovieBrowser::initGlobalSettings(void)
 	// Browser List
 	m_settings.browserFrameHeight = g_settings.screen_EndY - g_settings.screen_StartY - 20 - ((g_settings.screen_EndY - g_settings.screen_StartY - 20)>>1) - (INTER_FRAME_SPACE>>1);
 	
-	m_settings.browserRowNr = 6;
+	m_settings.browserRowNr = MB_MAX_ROWS;
 	m_settings.browserRowItem[0] = MB_INFO_TITLE;
 	m_settings.browserRowItem[1] = MB_INFO_INFO1;
 	m_settings.browserRowItem[2] = MB_INFO_RECORDDATE;
 	m_settings.browserRowItem[3] = MB_INFO_SIZE;
-	m_settings.browserRowItem[4] = MB_INFO_PARENTAL_LOCKAGE;
-	m_settings.browserRowItem[5] = MB_INFO_QUALITY;
+	//m_settings.browserRowItem[4] = MB_INFO_PARENTAL_LOCKAGE;
+	//m_settings.browserRowItem[5] = MB_INFO_QUALITY;
 	m_settings.browserRowWidth[0] = m_defaultRowWidth[m_settings.browserRowItem[0]];		//300;
 	m_settings.browserRowWidth[1] = m_defaultRowWidth[m_settings.browserRowItem[1]]; 		//100;
 	m_settings.browserRowWidth[2] = m_defaultRowWidth[m_settings.browserRowItem[2]]; 		//80;
 	m_settings.browserRowWidth[3] = m_defaultRowWidth[m_settings.browserRowItem[3]]; 		//50;
-	m_settings.browserRowWidth[4] = m_defaultRowWidth[m_settings.browserRowItem[4]]; 		//30;
-	m_settings.browserRowWidth[5] = m_defaultRowWidth[m_settings.browserRowItem[5]]; 		//30;
+	//m_settings.browserRowWidth[4] = m_defaultRowWidth[m_settings.browserRowItem[4]]; 		//30;
+	//m_settings.browserRowWidth[5] = m_defaultRowWidth[m_settings.browserRowItem[5]]; 		//30;
 	
 	//
 	m_settings.storageDirMovieUsed = true;
@@ -560,8 +554,8 @@ void CMovieBrowser::initFrames(void)
 {
 	dprintf(DEBUG_NORMAL, "CMovieBrowser::initFrames:\r\n");
 	
-	m_pcFontFoot  = FOOT_FONT;
-	m_pcFontTitle = TITLE_FONT;
+	m_pcFontFoot  = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL];
+	m_pcFontTitle = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE];
 	
 	m_cBoxFrame.iX = 			g_settings.screen_StartX + 10;
 	m_cBoxFrame.iY = 			g_settings.screen_StartY + 10;
@@ -1343,7 +1337,7 @@ void CMovieBrowser::refreshBrowserList(void) //P1
 
 	for(unsigned int handle = 0; handle < m_vHandleBrowserList.size() ;handle++)
 	{	
-		for(int row = 0; row < m_settings.browserRowNr ;row++)
+		for(int row = 0; row < m_settings.browserRowNr; row++)
 		{
 			if ( getMovieInfoItem(*m_vHandleBrowserList[handle], m_settings.browserRowItem[row], &string_item) == false)
 			{
@@ -2359,8 +2353,8 @@ bool CMovieBrowser::showMenu()
 	
 	for(int i = 0; i < m_settings.browserRowNr; i++)
 	{
-		if( m_settings.browserRowWidth[i] > 500)
-			m_settings.browserRowWidth[i] = 500;
+		if( m_settings.browserRowWidth[i] > CFrameBuffer::getInstance()->getScreenWidth()/2)
+			m_settings.browserRowWidth[i] = CFrameBuffer::getInstance()->getScreenWidth()/2;
 		if( m_settings.browserRowWidth[i] < 10)
 			m_settings.browserRowWidth[i] = 10;
 	}
@@ -2615,8 +2609,8 @@ int CMovieBrowser::showMovieInfoMenu(MI_MOVIE_INFO * movie_info)
 	movieInfoMenu.addItem(new CMenuForwarder(_("File size (MB)"), false, size, NULL));
 
 	// tmdb
-	movieInfoMenu.addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	movieInfoMenu.addItem(new CMenuForwarder(_("tmdb Info"), true, NULL, this, "tmdb"));
+//	movieInfoMenu.addItem(new CMenuSeparator(CMenuSeparator::LINE));
+//	movieInfoMenu.addItem(new CMenuForwarder(_("tmdb Info"), true, NULL, this, "tmdb"));
 
 	// cut jumps
 	movieInfoMenu.addItem(new CMenuSeparator(CMenuSeparator::LINE));
@@ -2777,8 +2771,8 @@ void CMovieBrowser::showOptionMenuBrowser(void)
 	
 	for(int i = 0; i < m_settings.browserRowNr; i++)
 	{
-		if( m_settings.browserRowWidth[i] > 500)
-			m_settings.browserRowWidth[i] = 500;
+		if( m_settings.browserRowWidth[i] > CFrameBuffer::getInstance()->getScreenWidth()/2)
+			m_settings.browserRowWidth[i] = CFrameBuffer::getInstance()->getScreenWidth()/2;
 		if( m_settings.browserRowWidth[i] < 10)
 			m_settings.browserRowWidth[i] = 10;
 	}
@@ -2807,7 +2801,7 @@ void CMovieBrowser::showOptionMenu(void)
 	optionsMenu.addItem( new CMenuSeparator(CMenuSeparator::LINE));
 	optionsMenu.addItem( new CMenuForwarder(_("Load default settings"), true, NULL, this, "loaddefault", CRCInput::RC_green,  NEUTRINO_ICON_BUTTON_GREEN));
 	//
-	optionsMenu.addItem( new CMenuForwarder(_("Browser Options"), true, NULL, this, "optionmenubrowser", CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW));
+	//optionsMenu.addItem( new CMenuForwarder(_("Browser Options"), true, NULL, this, "optionmenubrowser", CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW));
 	//
 	optionsMenu.addItem( new CMenuForwarder(_("Paths"), true, NULL, this, "optionmenudir", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE));
 	//

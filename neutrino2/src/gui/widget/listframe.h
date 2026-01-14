@@ -40,7 +40,7 @@
 #include <gui/widget/component.h>
 
 
-#define LF_MAX_ROWS 6
+#define LF_MAX_ROWS 	6
 
 typedef struct
 {

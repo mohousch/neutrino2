@@ -1,27 +1,26 @@
-/*
-	Neutrino-GUI  -   DBoxII-Project
- 
- 	Homepage: http://dbox.cyberphoria.org/
-
-	$Id: moviebrowser.h 10042024 mohousch Exp $
-
-	License: GPL
-
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
-*/
+//
+//	Neutrino-GUI  -   DBoxII-Project
+// 
+// 	Homepage: http://dbox.cyberphoria.org
+//
+//	$Id: moviebrowser.h 14012026 mohousch Exp $
+//
+//	License: GPL
+//
+//	This program is free software; you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation; either version 2 of the License, or
+//	(at your option) any later version.
+//
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program; if not, write to the Free Software
+//	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #ifndef MOVIEBROWSER_H_
 #define MOVIEBROWSER_H_
@@ -142,8 +141,8 @@ typedef struct
     int* used;
 }MB_DIR;
 
-#define MB_MAX_ROWS 6
-#define MB_MAX_DIRS 10
+#define MB_MAX_ROWS 	4
+#define MB_MAX_DIRS 	10
 /* MB_SETTINGS to be stored in g_settings anytime ....*/
 typedef struct
 {
@@ -183,7 +182,6 @@ class CMovieBrowser : public CTarget
 
 		CListFrame * m_pcBrowser;
 		CTextBox * m_pcInfo;
-//		CListFrame * m_pcFilter;
 		CCHeaders *headers;
 		CCFooters *footers;
 	
@@ -191,7 +189,6 @@ class CMovieBrowser : public CTarget
 		CBox m_cBoxFrameBrowserList;
 		CBox m_cBoxFrameInfo;
 		CBox m_cBoxFrameBookmarkList;
-//		CBox m_cBoxFrameFilter;
 		CBox m_cBoxFrameFootRel;
 		CBox m_cBoxFrameTitleRel;
 		
@@ -204,12 +201,10 @@ class CMovieBrowser : public CTarget
         	std::vector<MI_MOVIE_INFO*> m_vHandleSerienames;
 
 		unsigned int m_currentBrowserSelection;
-//		unsigned int m_currentFilterSelection;
  		unsigned int m_prevBrowserSelection;
 
 		bool m_showBrowserFiles;
 		bool m_showMovieInfo;
-//		bool m_showFilter;
 
 		MI_MOVIE_INFO * m_movieSelectionHandler;
 		std::string m_selectedDir;
@@ -262,7 +257,6 @@ class CMovieBrowser : public CTarget
 		void refresh(void); //P1
         	void hide(void); //P1
 		void refreshBrowserList(void); //P1
-//		void refreshFilterList(void); //P1
 		void refreshMovieInfo(); //P1
 		void refreshFoot(void); //P2
 		void refreshTitle(void); //P2
@@ -272,7 +266,6 @@ class CMovieBrowser : public CTarget
 		bool onButtonPress(neutrino_msg_t msg); // P1
 		bool onButtonPressMainFrame(neutrino_msg_t msg); // P1
 		bool onButtonPressBrowserList(neutrino_msg_t msg); // P1
-//		bool onButtonPressFilterList(neutrino_msg_t msg); // P2
 		bool onButtonPressMovieInfoList(neutrino_msg_t msg); // P2
 		void onSetFocus(MB_FOCUS new_focus); // P2
 		void onSetFocusNext(void); // P2
@@ -306,12 +299,9 @@ class CMovieBrowser : public CTarget
 		void saveMovieInfo(std::string* filename, MI_MOVIE_INFO* movie_info); // P2
 	
 		//// misc
-//		void showHelp(void);
-//		bool isFiltered(MI_MOVIE_INFO& movie_info);
 		bool isParentalLock(MI_MOVIE_INFO& movie_info);
 		bool getMovieInfoItem(MI_MOVIE_INFO& movie_info, MB_INFO_ITEM item, std::string* item_string);
 		void updateMovieSelection(void);
-//		void updateFilterSelection(void);
 		void updateSerienames(void);
         	void autoFindSerie(void);
 };
@@ -601,7 +591,4 @@ class COnOffNotifier : public CChangeObserver
 };
 
 #endif /*MOVIEBROWSER_H_*/
-
-
-
 
