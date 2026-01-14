@@ -168,7 +168,7 @@ const char* const m_localizedItemName[MB_INFO_MAX_NUMBER + 1] =
 // default row size in pixel for any element
 #define	MB_ROW_WIDTH_FILENAME 		150
 #define	MB_ROW_WIDTH_FILEPATH		150
-#define	MB_ROW_WIDTH_TITLE		CFrameBuffer::getInstance()->getScreenWidth()/2
+#define	MB_ROW_WIDTH_TITLE		CFrameBuffer::getInstance()->getScreenWidth()/2 - 50
 #define	MB_ROW_WIDTH_SERIE		150 
 #define	MB_ROW_WIDTH_INFO1		CFrameBuffer::getInstance()->getScreenWidth()/4
 #define	MB_ROW_WIDTH_MAJOR_GENRE 	150
@@ -179,7 +179,7 @@ const char* const m_localizedItemName[MB_INFO_MAX_NUMBER + 1] =
 #define	MB_ROW_WIDTH_BOOKMARK		50
 #define	MB_ROW_WIDTH_QUALITY 		120
 #define	MB_ROW_WIDTH_PREVPLAYDATE	80
-#define	MB_ROW_WIDTH_RECORDDATE 	CFrameBuffer::getInstance()->getScreenWidth()/8
+#define	MB_ROW_WIDTH_RECORDDATE 	CFrameBuffer::getInstance()->getScreenWidth()/8 + 50
 #define	MB_ROW_WIDTH_PRODDATE 		50
 #define	MB_ROW_WIDTH_COUNTRY 		50
 #define	MB_ROW_WIDTH_GEOMETRIE		50
