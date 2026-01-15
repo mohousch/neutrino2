@@ -49,11 +49,11 @@
 //FIXME: make this global
 #define _(string) dgettext("moviebrowser", string)
 //
-#define MAX_NUMBER_OF_BOOKMARK_ITEMS MI_MOVIE_BOOK_USER_MAX // we just use the same size as used in Movie info (MAX_NUMBER_OF_BOOKMARK_ITEMS is used for the number of menu items)
-#define MOVIEBROWSER_SETTINGS_FILE          PLUGINDIR "/moviebrowser/moviebrowser.conf"
+#define MAX_NUMBER_OF_BOOKMARK_ITEMS 		MI_MOVIE_BOOK_USER_MAX
+#define MOVIEBROWSER_SETTINGS_FILE          	PLUGINDIR "/moviebrowser/moviebrowser.conf"
 
-#define MIN_BROWSER_FRAME_HEIGHT 100
-#define MAX_BROWSER_FRAME_HEIGHT 400
+#define MIN_BROWSER_FRAME_HEIGHT 		100
+#define MAX_BROWSER_FRAME_HEIGHT 		400
 
 /* !!!! Do NOT change the order of the enum, just add items at the end !!!! */
 typedef enum
@@ -193,7 +193,6 @@ class CMovieBrowser : public CTarget
 		CBox m_cBoxFrameTitleRel;
 		
 		LF_LINES m_browserListLines;
-//		LF_LINES m_FilterLines;
 
 		std::vector<MI_MOVIE_INFO> m_vMovieInfo;
 		std::vector<MI_MOVIE_INFO*> m_vHandleBrowserList;
