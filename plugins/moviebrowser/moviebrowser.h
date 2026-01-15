@@ -253,7 +253,7 @@ class CMovieBrowser : public CTarget
 		void initDevelopment(void); //P1 for development testing only
 		void reinit(void); //P1
 		///// MovieBrowser Main Window////////// 
-		int paint(void); //P1
+		int initWidget(void); //P1
 		void refresh(void); //P1
         	void hide(void); //P1
 		void refreshBrowserList(void); //P1

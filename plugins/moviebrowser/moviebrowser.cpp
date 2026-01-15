@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
- //	Homepage: http://dbox.cyberphoria.org/
+//	Homepage: http://dbox.cyberphoria.org/
 //
 //	$Id: moviebrowser.cpp 14012026 mohousch Exp $
 //
@@ -972,7 +972,7 @@ int CMovieBrowser::exec(int timeout)
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
 
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Movie Browser"));
+	setLCDMode(_("Movie Browser"));
 	
 	// load settings
 	loadSettings(&m_settings);
@@ -995,8 +995,8 @@ int CMovieBrowser::exec(int timeout)
 
 	m_selectedDir = g_settings.network_nfs_moviedir; 
 
-	//// add all ccomponents
-	if(paint() == false)
+	// add all ccomponents
+	if(initWidget() == false)
 		return res;// paint failed due to less memory , exit 
 
 	if ( timeout == -1 )
@@ -1020,7 +1020,7 @@ int CMovieBrowser::exec(int timeout)
 		CFSMounter::automount();
 	}
 	
-	// reload movies
+	// load movies
 	loadMovies();
 
 	// get old movie selection and set position in windows	
@@ -1087,6 +1087,8 @@ int CMovieBrowser::exec(int timeout)
 
 	saveSettings(&m_settings);
 	
+	resetLCDMode();
+	
 	return (res);
 }
 
@@ -1098,11 +1100,9 @@ void CMovieBrowser::hide(void)
 	CFrameBuffer::getInstance()->blit();
 }
 
-int CMovieBrowser::paint(void)
+int CMovieBrowser::initWidget(void)
 {
-	dprintf(DEBUG_NORMAL, "CMovieBrowser::Paint\r\n");
-
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Movie Browser"));
+	dprintf(DEBUG_NORMAL, "CMovieBrowser::initWidget\r\n");
 	
 	headers = new CCHeaders(&m_cBoxFrameTitleRel);
 
@@ -1197,10 +1197,10 @@ void CMovieBrowser::refreshBrowserList(void) //P1
 			
 		return; // exit here if nothing else is to do
 	}
-	
+
+	// prepare Browser list for sorting and filtering	
 	MI_MOVIE_INFO *movie_handle;
-	// prepare Browser list for sorting and filtering
-	//
+
 	for(unsigned int file = 0; file < m_vMovieInfo.size(); file++)
 	{
 		if(isParentalLock(m_vMovieInfo[file]) == false  &&
@@ -1282,8 +1282,7 @@ struct button_label MBFootButtons[MB_FOOT_BUTTONS_COUNT] =
 	{ NEUTRINO_ICON_BUTTON_RED, " " },
 	{ NEUTRINO_ICON_BUTTON_GREEN, " " },
 	{ NEUTRINO_ICON_BUTTON_YELLOW, " " },
-	{ NEUTRINO_ICON_BUTTON_BLUE, _("scan for Movies ...") },
-	
+	{ NEUTRINO_ICON_BUTTON_BLUE, _("scan for Movies ...") }	
 };
 
 void CMovieBrowser::refreshFoot(void) 
@@ -1317,7 +1316,7 @@ bool CMovieBrowser::onButtonPress(neutrino_msg_t msg)
 	
 	bool result = false;
 	
-	/// main frame
+	// main frame
 	result = onButtonPressMainFrame(msg);
 
 	if(result == false)
@@ -1355,8 +1354,7 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 	{		
 		if(m_movieSelectionHandler != NULL)
 		{
-			frameBuffer->paintBackground();
-			frameBuffer->blit();
+			hide();
 			
 			::getTMDBInfo(m_movieSelectionHandler->epgTitle.c_str());
 			
@@ -1402,8 +1400,7 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 		{
 			playing_info = m_movieSelectionHandler;
 
-			frameBuffer->paintBackground();
-			frameBuffer->blit();
+			hide();
 			
 			tmpMoviePlayerGui.addToPlaylist(*m_movieSelectionHandler);
 			tmpMoviePlayerGui.exec(NULL, "");
@@ -1415,8 +1412,7 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 	{
 		if(m_movieSelectionHandler != NULL)
 		{
-			frameBuffer->paintBackground();
-			frameBuffer->blit();
+			hide();
 	  
 			m_movieInfo.showMovieInfo(*m_movieSelectionHandler);
 			
@@ -1512,8 +1508,8 @@ void CMovieBrowser::onDeleteFile(MI_MOVIE_INFO& movieSelectionHandler)
 	
 	if (movieSelectionHandler.file.Name.length() > 40)
 	{
-			msg += movieSelectionHandler.file.Name.substr(0, 40);
-			msg += "...";
+		msg += movieSelectionHandler.file.Name.substr(0, 40);
+		msg += "...";
 	}
 	else
 		msg += movieSelectionHandler.file.Name;
@@ -1774,9 +1770,7 @@ bool CMovieBrowser::loadTsFileNamesFromDir(const std::string & dirname)
 				loadTsFileNamesFromDir(flist[i].Name);
 			}
 			else
-			{
-//				int test = -1;
-				
+			{	
 				// use filter
 				CFileFilter fileFilter;
 	
@@ -1900,6 +1894,7 @@ bool CMovieBrowser::delFile(CFile& file)
 	bool result = true;
 	unlink(file.Name.c_str()); // fix: use full path
 	dprintf(DEBUG_NORMAL, "CMovieBrowser::delete file: %s\r\n", file.Name.c_str());
+	
 	return(result);
 }
 
@@ -2225,7 +2220,7 @@ int CMovieBrowser::showMovieInfoMenu(MI_MOVIE_INFO * movie_info)
 
         movieInfoMenuUpdate.addItem(new CMenuOptionChooser(_("Country"), &movieInfoUpdateAll[MB_INFO_COUNTRY], MESSAGEBOX_YES_NO_OPTIONS, MESSAGEBOX_YES_NO_OPTIONS_COUNT, true,NULL, CRCInput::RC_9, NEUTRINO_ICON_BUTTON_9));
 
-        movieInfoMenuUpdate.addItem(new CMenuOptionChooser(_("Length (Min)"),            &movieInfoUpdateAll[MB_INFO_LENGTH], MESSAGEBOX_YES_NO_OPTIONS, MESSAGEBOX_YES_NO_OPTIONS_COUNT, true, NULL, CRCInput::RC_0, NEUTRINO_ICON_BUTTON_0));
+        movieInfoMenuUpdate.addItem(new CMenuOptionChooser(_("Length (Min)"), &movieInfoUpdateAll[MB_INFO_LENGTH], MESSAGEBOX_YES_NO_OPTIONS, MESSAGEBOX_YES_NO_OPTIONS_COUNT, true, NULL, CRCInput::RC_0, NEUTRINO_ICON_BUTTON_0));
 
 	// movieInfo Menu
 #define BUFFER_SIZE 100
@@ -2502,7 +2497,7 @@ void CMovieBrowser::showOptionMenuBrowser(void)
 			m_settings.browserRowWidth[i] = 10;
 	}
 	
-	for(int i = 0; i < MB_MAX_ROWS ;i++)
+	for(int i = 0; i < MB_MAX_ROWS; i++)
 		delete browserRowWidthIntInput[i];
 }
 
@@ -2525,13 +2520,14 @@ void CMovieBrowser::showOptionMenu(void)
 	//
 	optionsMenu.addItem( new CMenuSeparator(CMenuSeparator::LINE));
 	optionsMenu.addItem( new CMenuForwarder(_("Load default settings"), true, NULL, this, "loaddefault", CRCInput::RC_green,  NEUTRINO_ICON_BUTTON_GREEN));
+	
 	//
 	//optionsMenu.addItem( new CMenuForwarder(_("Browser Options"), true, NULL, this, "optionmenubrowser", CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW));
 	//
-	optionsMenu.addItem( new CMenuForwarder(_("Paths"), true, NULL, this, "optionmenudir", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE));
+	optionsMenu.addItem( new CMenuForwarder(_("Paths"), true, NULL, this, "optionmenudir", CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW));
 	//
 	optionsMenu.addItem( new CMenuSeparator(CMenuSeparator::LINE));
-	optionsMenu.addItem( new CMenuForwarder(_("Parental Lock"),   true, NULL, this, "parentalmenu", CRCInput::RC_nokey, NULL));
+	optionsMenu.addItem( new CMenuForwarder(_("Parental Lock"),   true, NULL, this, "parentalmenu", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE));
 	//
 	optionsMenu.addItem( new CMenuSeparator(CMenuSeparator::LINE));
 	optionsMenu.addItem( new CMenuOptionChooser(_("Reload movie info at start"), (int*)(&m_settings.reload), MESSAGEBOX_YES_NO_OPTIONS, MESSAGEBOX_YES_NO_OPTIONS_COUNT, true ));
