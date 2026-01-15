@@ -1381,8 +1381,9 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 				m_settings.sorting.item = (MB_INFO_ITEM)(m_settings.sorting.item + 1);
 		}while(sortBy[m_settings.sorting.item] == NULL);
 					
-		refreshBrowserList();	
-		refreshFoot();
+//		refreshBrowserList();	
+//		refreshFoot();
+		refresh();
 	}
 	else if (msg == CRCInput::RC_spkr) 
 	{
