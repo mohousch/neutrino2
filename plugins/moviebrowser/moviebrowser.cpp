@@ -1149,18 +1149,6 @@ void CMovieBrowser::refreshMovieInfo()
 	}
 	
 	m_pcInfo->paint();
-	frameBuffer->blit();
-}
-
-void CMovieBrowser::refreshLCD(void)
-{
-	if(m_vMovieInfo.size() <= 0) 
-		return;
-
-	if(m_movieSelectionHandler != NULL)
-	{
-		CLCD::getInstance()->showMenuText(0, m_movieSelectionHandler->epgTitle.c_str(), -1, true); // UTF-8
-	} 	
 }
 
 void CMovieBrowser::refreshBrowserList(void) //P1
@@ -1240,6 +1228,8 @@ void CMovieBrowser::refreshBrowserList(void) //P1
 	{
 		updateMovieSelection();	
 	}
+	
+	m_pcBrowser->paint();
 }
 
 #define MB_HEAD_BUTTONS_COUNT	3
@@ -1303,6 +1293,17 @@ void CMovieBrowser::refreshFoot(void)
 	footers->setButtons(MBFootButtons, MB_FOOT_BUTTONS_COUNT);
 	
 	footers->paint();
+}
+
+void CMovieBrowser::refreshLCD(void)
+{
+	if(m_vMovieInfo.size() <= 0) 
+		return;
+
+	if(m_movieSelectionHandler != NULL)
+	{
+		CLCD::getInstance()->showMenuText(0, m_movieSelectionHandler->epgTitle.c_str(), -1, true); // UTF-8
+	} 	
 }
 
 bool CMovieBrowser::onButtonPress(neutrino_msg_t msg)
@@ -1565,29 +1566,6 @@ void CMovieBrowser::onDeleteFile(MI_MOVIE_INFO& movieSelectionHandler)
 	    		
 		//loadMovies(); // //TODO we might remove the handle from the handle list only, to avoid reload .....
 		refresh();
-	}
-}
-
-void CMovieBrowser::onSetGUIWindow(MB_GUI gui)
-{
-	m_settings.gui = gui;
-	
-	hide();
-	
-	if (gui == MB_GUI_MOVIE_INFO)
-	{
-		dprintf(DEBUG_NORMAL, "CMovieBrowser::onSetGUIWindow: browser info\r\n");
-		
-		// 
-		m_showMovieInfo = true;
-		m_showBrowserFiles = true;
-		
-		m_pcBrowser->paint();
-		m_pcInfo->paint();
-		
-		onSetFocus(MB_FOCUS_MOVIE_INFO);
-		
-		refreshMovieInfo();
 	}
 }
 

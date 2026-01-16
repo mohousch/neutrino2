@@ -268,7 +268,6 @@ class CMovieBrowser : public CTarget
 		bool onButtonPressMovieInfoList(neutrino_msg_t msg); // P2
 		void onSetFocus(MB_FOCUS new_focus); // P2
 		void onSetFocusNext(void); // P2
-		void onSetGUIWindow(MB_GUI gui);
 		void onDeleteFile(MI_MOVIE_INFO& movieSelectionHandler);  // P4
 		bool onSortMovieInfoHandleList(std::vector<MI_MOVIE_INFO*>& pv_handle_list, MB_INFO_ITEM sort_type, MB_DIRECTION direction);
 		
