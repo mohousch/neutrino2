@@ -888,14 +888,9 @@ int CMovieBrowser::exec(CTarget *parent, const std::string &actionKey)
 		
 		return RETURN_REPAINT;
 	}
-	else if(actionKey == "tmdb")
+	else if(actionKey == "show_help")
 	{
-		if(m_movieSelectionHandler != NULL)
-		{
-			hide();
-
-			::getTMDBInfo(m_movieSelectionHandler->epgTitle.c_str());
-		}
+		showHelp();
 		
 		return RETURN_REPAINT;
 	}
@@ -2024,7 +2019,6 @@ bool CMovieBrowser::showMenu()
 	dprintf(DEBUG_NORMAL, "CMovieBrowser::showMenu:\n");
 
 	// main menu
-	CMovieHelp * movieHelp = new CMovieHelp();
 	CNFSSmallMenu * nfs = new CNFSSmallMenu();
 	CDirMenu dirMenu(&m_dir);
 
@@ -2054,7 +2048,7 @@ bool CMovieBrowser::showMenu()
 
 	// help
 	mainMenu.addItem( new CMenuSeparator(CMenuSeparator::LINE));
-	mainMenu.addItem( new CMenuForwarder(_("Help"), true, NULL, movieHelp, NULL, CRCInput::RC_info, NEUTRINO_ICON_BUTTON_HELP_SMALL));
+	mainMenu.addItem( new CMenuForwarder(_("Help"), true, NULL, this, "show_help", CRCInput::RC_info, NEUTRINO_ICON_BUTTON_HELP_SMALL));
     
 	widget->addCCItem(&mainMenu);
 	
@@ -2091,7 +2085,6 @@ bool CMovieBrowser::showMenu()
 	refresh();
 
 	//
-	delete movieHelp;
 	delete nfs;
 
 	return(true);
@@ -2810,29 +2803,27 @@ void CMovieBrowser::autoFindSerie(void)
 	}
 }
 
-int CMovieHelp::exec(CTarget* /*parent*/, const std::string&/*actionKey*/)
+void CMovieBrowser::showHelp(void)
 {
-	dprintf(DEBUG_NORMAL, "CMovieHelp::exec:\n");
-
-	CFrameBuffer::getInstance()->paintBackground();
-	CFrameBuffer::getInstance()->blit();
+	dprintf(DEBUG_NORMAL, "CMovieBrowser::showHelp\n");
 
 	CHelpBox *helpbox = new CHelpBox(_("Information"));
 
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_RED, _("Change order"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_GREEN, _("TMDB"));
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_YELLOW, "Change focus");
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_BLUE, "Reload Movies");
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_SETUP, "Main Menu");
-	helpbox->addLine("'+/-'  Change GUI");
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_HELP, _("Movie Information"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_MUTE_SMALL, _("Delete Movie"));
 
 	helpbox->exec();
 	
 	delete helpbox;
 	helpbox = NULL;
-
-	return RETURN_REPAINT;
 }
 
+////
 int CFileChooser::exec(CTarget *parent, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CFileChooser::exec:\n");
@@ -2858,6 +2849,7 @@ int CFileChooser::exec(CTarget *parent, const std::string &/*actionKey*/)
 	return RETURN_REPAINT;
 }
 
+////
 CDirMenu::CDirMenu(std::vector<MB_DIR>* dir_list)
 {
 	unsigned int i;
@@ -3006,6 +2998,7 @@ void CDirMenu::updateDirState(void)
 			// not a nfs dir, probably IDE? we accept this so far
 			dirState[i]=DIR_STATE_MOUNTED;
 		}
+		
 		if(dirState[i] == DIR_STATE_MOUNTED)
 		{
 			if(*(*dirList)[i].used == true)
@@ -3067,7 +3060,7 @@ void CDirMenu::show(void)
 
 }
 
-// onoff notifier needed by moviebrowser
+//// onoff notifier needed by moviebrowser
 COnOffNotifier::COnOffNotifier( CMenuItem* a1,CMenuItem* a2,CMenuItem* a3,CMenuItem* a4,CMenuItem* a5)
 {
         number = 0;

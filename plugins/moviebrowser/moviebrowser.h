@@ -286,6 +286,7 @@ class CMovieBrowser : public CTarget
         	void showOptionsMenuDir(void);
         	void showOptionMenuBrowser(void);
         	void showOptionMenu(void);
+        	void showHelp(void);
 		
 		///// settings /////////////////////////////////// 
 		bool loadSettings(MB_SETTINGS* settings); // P2
@@ -303,15 +304,6 @@ class CMovieBrowser : public CTarget
 		void updateMovieSelection(void);
 		void updateSerienames(void);
         	void autoFindSerie(void);
-};
-
-// Class to show Moviebrowser Information, to be used by menu
-class CMovieHelp : public CTarget
-{
-	public:
-		CMovieHelp(){};
-		~CMovieHelp(){};
-		int exec( CTarget* parent, const std::string & actionKey );
 };
 
 //
