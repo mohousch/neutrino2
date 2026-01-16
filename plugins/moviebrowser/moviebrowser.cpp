@@ -1111,17 +1111,6 @@ int CMovieBrowser::initWidget(void)
 	return (true);
 }
 
-void CMovieBrowser::refresh(void)
-{
-	dprintf(DEBUG_NORMAL, "CMovieBrowser::refresh\r\n");
-	
-	refreshTitle();
-	refreshBrowserList();
-	refreshMovieInfo();
-	refreshFoot();
-	refreshLCD();
-}
-
 void CMovieBrowser::refreshMovieInfo()
 {
 	dprintf(DEBUG_NORMAL, "CMovieBrowser::refreshMovieInfo:\n");
@@ -1304,6 +1293,17 @@ void CMovieBrowser::refreshLCD(void)
 	{
 		CLCD::getInstance()->showMenuText(0, m_movieSelectionHandler->epgTitle.c_str(), -1, true); // UTF-8
 	} 	
+}
+
+void CMovieBrowser::refresh(void)
+{
+	dprintf(DEBUG_NORMAL, "CMovieBrowser::refresh\r\n");
+	
+	refreshTitle();
+	refreshBrowserList();
+	refreshMovieInfo();
+	refreshFoot();
+	refreshLCD();
 }
 
 bool CMovieBrowser::onButtonPress(neutrino_msg_t msg)
@@ -1583,10 +1583,6 @@ void CMovieBrowser::onSetFocus(MB_FOCUS new_focus)
 	{
 		m_pcBrowser->showSelection(false);
 	}
-	else if(m_windowFocus == MB_FOCUS_FILTER)
-	{
-		m_pcBrowser->showSelection(false);
-	}
 	
 	updateMovieSelection();
 
@@ -1609,8 +1605,6 @@ void CMovieBrowser::onSetFocusNext(void)
 			onSetFocus(MB_FOCUS_BROWSER);
 		}
 	}
-	
-	frameBuffer->blit();
 }
 
 bool CMovieBrowser::onSortMovieInfoHandleList(std::vector<MI_MOVIE_INFO*>& handle_list, MB_INFO_ITEM sort_item, MB_DIRECTION direction)
@@ -1776,9 +1770,6 @@ bool CMovieBrowser::loadTsFileNamesFromDir(const std::string & dirname)
 				fileFilter.addFilter("webm");
 
 				if(fileFilter.matchFilter(flist[i].Name))
-//					test = 0;
-//				
-//				if( test != -1)
 				{
 					m_movieInfo.clearMovieInfo(&movieInfo); // refresh structure
 					
@@ -1956,7 +1947,7 @@ void CMovieBrowser::loadMovies(void)
 {
 	dprintf(DEBUG_NORMAL, "CMovieBrowser::loadMovies:\n");
 	
-	//first clear screen */
+	// first clear screen
 	hide();
 
 	CHintBox loadBox(_("Moviebrowser"), _("Scan for Movies ..."));
@@ -2299,10 +2290,6 @@ int CMovieBrowser::showMovieInfoMenu(MI_MOVIE_INFO * movie_info)
 
 	// file size
 	movieInfoMenu.addItem(new CMenuForwarder(_("File size (MB)"), false, size, NULL));
-
-	// tmdb
-//	movieInfoMenu.addItem(new CMenuSeparator(CMenuSeparator::LINE));
-//	movieInfoMenu.addItem(new CMenuForwarder(_("tmdb Info"), true, NULL, this, "tmdb"));
 
 	// cut jumps
 	movieInfoMenu.addItem(new CMenuSeparator(CMenuSeparator::LINE));
