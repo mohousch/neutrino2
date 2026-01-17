@@ -3073,7 +3073,6 @@ void CDirMenu::show(void)
 	}
 	
 	return;
-
 }
 
 //// onoff notifier needed by moviebrowser
