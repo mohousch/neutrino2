@@ -2138,12 +2138,11 @@ void CMovieBrowser::showBookMarkMenu(MI_MOVIE_INFO *movie_info)
 	dprintf(DEBUG_NORMAL, "CMovieBrowser::showBookMarkMenu\n");
 	
 	// bookmark Menu
-	CStringInputSMS * pBookNameInput[MAX_NUMBER_OF_BOOKMARK_ITEMS];
-	CIntInput * pBookPosIntInput[MAX_NUMBER_OF_BOOKMARK_ITEMS];
-	CIntInput * pBookTypeIntInput[MAX_NUMBER_OF_BOOKMARK_ITEMS];
+	//CStringInputSMS * pBookNameInput[MAX_NUMBER_OF_BOOKMARK_ITEMS];
+	//CIntInput * pBookPosIntInput[MAX_NUMBER_OF_BOOKMARK_ITEMS];
+	//CIntInput * pBookTypeIntInput[MAX_NUMBER_OF_BOOKMARK_ITEMS];
 	
-	////
-	ClistBox *pBookItemMenu[MAX_NUMBER_OF_BOOKMARK_ITEMS];
+	//ClistBox *pBookItemMenu[MAX_NUMBER_OF_BOOKMARK_ITEMS];
 
 	CIntInput bookStartIntInput(_("Bookmark change"), (int&)movie_info->bookmarks.start, 5, _("Enter new Position (s)"), _("Enter new Position (s)"));
 	CIntInput bookLastIntInput(_("Bookmark change"), (int&)movie_info->bookmarks.lastPlayStop, 5, _("Enter new Position (s)"), _("Enter new Position (s)"));
@@ -2165,6 +2164,8 @@ void CMovieBrowser::showBookMarkMenu(MI_MOVIE_INFO *movie_info)
 	bookmarkMenu.addItem(new CMenuForwarder(_("Movie start:"), true, (char *)bookStartIntInput.getValue(), &bookStartIntInput));
 	bookmarkMenu.addItem(new CMenuForwarder(_("Movie end:"), true, (char *)bookLastIntInput.getValue(),  &bookLastIntInput));
 	bookmarkMenu.addItem(new CMenuForwarder(_("Last play stop:"), true, (char *)bookEndIntInput.getValue(),   &bookEndIntInput));
+	
+	/*
 	bookmarkMenu.addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	for(int i1 = 0 ; i1 < MI_MOVIE_BOOK_USER_MAX && i1 < MAX_NUMBER_OF_BOOKMARK_ITEMS; i1++ )
@@ -2189,9 +2190,11 @@ void CMovieBrowser::showBookMarkMenu(MI_MOVIE_INFO *movie_info)
 
 		bookmarkMenu.addItem( new CMenuForwarder(movie_info->bookmarks.user[i1].name.c_str(), true, (char *)pBookPosIntInput[i1]->getValue(), this));
 	}
+	*/
 
 	bookmarkMenu.exec(this);
 	
+	/*
 	for(int i3 = 0 ; i3 < MI_MOVIE_BOOK_USER_MAX && i3 < MAX_NUMBER_OF_BOOKMARK_ITEMS; i3++ )
 	{
 		delete pBookNameInput[i3] ;
@@ -2199,6 +2202,7 @@ void CMovieBrowser::showBookMarkMenu(MI_MOVIE_INFO *movie_info)
 		delete pBookTypeIntInput[i3];
 		delete pBookItemMenu[i3];
 	}
+	*/
 }
 
 void CMovieBrowser::showMenuSerie(MI_MOVIE_INFO *movie_info)
