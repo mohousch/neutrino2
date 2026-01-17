@@ -817,6 +817,10 @@ int CMovieBrowser::exec(CTarget *parent, const std::string &actionKey)
 				m_movieSelectionHandler->bookmarks.user[i].length = 0;
 				m_movieSelectionHandler->bookmarks.user[i].pos = 0;
 			}
+			
+			showBookMarkMenu(m_movieSelectionHandler);
+			
+			return RETURN_EXIT;
 		}
 		
 		return RETURN_REPAINT;
@@ -2140,11 +2144,12 @@ void CMovieBrowser::showBookMarkMenu(MI_MOVIE_INFO *movie_info)
 	dprintf(DEBUG_NORMAL, "CMovieBrowser::showBookMarkMenu\n");
 	
 	// bookmark Menu
-	//CStringInputSMS * pBookNameInput[MAX_NUMBER_OF_BOOKMARK_ITEMS];
-	//CIntInput * pBookPosIntInput[MAX_NUMBER_OF_BOOKMARK_ITEMS];
-	//CIntInput * pBookTypeIntInput[MAX_NUMBER_OF_BOOKMARK_ITEMS];
+	CKeyboardInput * pBookNameInput[MAX_NUMBER_OF_BOOKMARK_ITEMS];
+	CIntInput * pBookPosIntInput[MAX_NUMBER_OF_BOOKMARK_ITEMS];
+	CIntInput * pBookTypeIntInput[MAX_NUMBER_OF_BOOKMARK_ITEMS];
 	
-	//ClistBox *pBookItemMenu[MAX_NUMBER_OF_BOOKMARK_ITEMS];
+	ClistBox *pBookItemMenu[MAX_NUMBER_OF_BOOKMARK_ITEMS];
+	CWidget *widgetpBookMarkMenu[MAX_NUMBER_OF_BOOKMARK_ITEMS];
 
 	CIntInput bookStartIntInput(_("Bookmark change"), (int&)movie_info->bookmarks.start, 5, _("Enter new Position (s)"), _("Enter new Position (s)"));
 	CIntInput bookLastIntInput(_("Bookmark change"), (int&)movie_info->bookmarks.lastPlayStop, 5, _("Enter new Position (s)"), _("Enter new Position (s)"));
@@ -2161,18 +2166,19 @@ void CMovieBrowser::showBookMarkMenu(MI_MOVIE_INFO *movie_info)
 	bookmarkMenu.setWidgetMode(ClistBox::MODE_SETUP);
 
 	// intros
-	bookmarkMenu.addItem(new CMenuForwarder(_("Clear all"), true, NULL, this, "book_clear_all", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE));
+	bookmarkMenu.addItem(new CMenuForwarder(_("Clear all"), true, NULL, this, "book_clear_all", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
+	
 	bookmarkMenu.addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	bookmarkMenu.addItem(new CMenuForwarder(_("Movie start:"), true, (char *)bookStartIntInput.getValue(), &bookStartIntInput));
 	bookmarkMenu.addItem(new CMenuForwarder(_("Movie end:"), true, (char *)bookLastIntInput.getValue(),  &bookLastIntInput));
 	bookmarkMenu.addItem(new CMenuForwarder(_("Last play stop:"), true, (char *)bookEndIntInput.getValue(),   &bookEndIntInput));
 	
-	/*
+	//
 	bookmarkMenu.addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	for(int i1 = 0 ; i1 < MI_MOVIE_BOOK_USER_MAX && i1 < MAX_NUMBER_OF_BOOKMARK_ITEMS; i1++ )
 	{
-		pBookNameInput[i1] = new CStringInputSMS (_("Bookmark change"), movie_info->bookmarks.user[i1].name.c_str(), MAX_INPUT_CHARS, _("Enter new Position (s)"), _("Enter new Position (s)"));
+		pBookNameInput[i1] = new CKeyboardInput(_("Bookmark change"), movie_info->bookmarks.user[i1].name.c_str(), MAX_INPUT_CHARS, _("Enter new Position (s)"), _("Enter new Position (s)"));
 		pBookPosIntInput[i1] =  new CIntInput (_("Bookmark change"), (int&) movie_info->bookmarks.user[i1].pos, 20, _("Enter new Position (s)"), _("Enter new Position (s)"));
 		pBookTypeIntInput[i1] = new CIntInput (_("Bookmark change"), (int&) movie_info->bookmarks.user[i1].length, 20, _("Enter new Position (s)"), _("Enter new Position (s)"));
 
@@ -2186,25 +2192,32 @@ void CMovieBrowser::showBookMarkMenu(MI_MOVIE_INFO *movie_info)
 		pBookItemMenu[i1]->setWidgetMode(ClistBox::MODE_SETUP);
 		pBookItemMenu[i1]->enableShrinkMenu();
 		
-		pBookItemMenu[i1]->addItem( new CMenuForwarder(_("Bookmarks"), true,  movie_info->bookmarks.user[i1].name.c_str(), pBookNameInput[i1]));
+		// bookmark name
+		pBookItemMenu[i1]->addItem( new CMenuForwarder(_("Bookmarks"), true,  pBookNameInput[i1]->getValueString().c_str(), pBookNameInput[i1]));
+		
+		// position
 		pBookItemMenu[i1]->addItem( new CMenuForwarder(_("Position:"), true,  (char *)pBookPosIntInput[i1]->getValue(), pBookPosIntInput[i1]));
+		
+		// jump
 		pBookItemMenu[i1]->addItem( new CMenuForwarder(_("Jump (<0 back , >0 for):"), true, (char *)pBookTypeIntInput[i1]->getValue(),pBookTypeIntInput[i1]));
+		
+		//
+		widgetpBookMarkMenu[i1] = new CWidget();
+		widgetpBookMarkMenu[i1]->addCCItem(pBookItemMenu[i1]);
 
-		bookmarkMenu.addItem( new CMenuForwarder(movie_info->bookmarks.user[i1].name.c_str(), true, (char *)pBookPosIntInput[i1]->getValue(), this));
+		bookmarkMenu.addItem( new CMenuForwarder(movie_info->bookmarks.user[i1].name.c_str(), true, (char *)pBookPosIntInput[i1]->getValue(), widgetpBookMarkMenu[i1]));
 	}
-	*/
 
 	bookmarkMenu.exec(this);
 	
-	/*
 	for(int i3 = 0 ; i3 < MI_MOVIE_BOOK_USER_MAX && i3 < MAX_NUMBER_OF_BOOKMARK_ITEMS; i3++ )
 	{
 		delete pBookNameInput[i3] ;
 		delete pBookPosIntInput[i3] ;
 		delete pBookTypeIntInput[i3];
 		delete pBookItemMenu[i3];
+		delete widgetpBookMarkMenu[i3];
 	}
-	*/
 }
 
 void CMovieBrowser::showMenuSerie(MI_MOVIE_INFO *movie_info)
