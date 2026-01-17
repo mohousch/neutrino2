@@ -43,6 +43,7 @@
 #include <gui/widget/hintbox.h>
 #include <gui/bouquetlist.h>
 #include <gui/widget/stringinput.h>
+#include <gui/widget/keyboard_input.h>
 
 #include <gui/epgplus.h>
 
@@ -831,7 +832,7 @@ int CEventFinderMenu::exec(CTarget * parent, const std::string &actionKey)
 	}
 	else if (actionKey == "search")
 	{
-		CStringInputSMS stringInput(_("Keyword"), m_search_keyword->c_str());
+		CKeyboardInput stringInput(_("Keyword"), m_search_keyword->c_str());
 		stringInput.exec(NULL, "");
 		
 		if (mf2) mf2->addOption(m_search_keyword->c_str());

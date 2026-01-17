@@ -2433,11 +2433,11 @@ void CMovieBrowser::showOptionsMenuDir(void)
 		
 		chooser[i] =   new CMenuOptionChooser(_("Use directory"), &m_settings.storageDirUsed[i], MESSAGEBOX_YES_NO_OPTIONS, MESSAGEBOX_YES_NO_OPTIONS_COUNT, true, notifier[i]);
 		
-		optionsMenuDir.addItem(chooser[i] );
-		optionsMenuDir.addItem(forwarder[i] );
+		optionsMenuDir.addItem(chooser[i]);
+		optionsMenuDir.addItem(forwarder[i]);
 		
 		if(i != (MB_MAX_DIRS - 1))
-			optionsMenuDir.addItem(new CMenuSeparator(CMenuSeparator::EMPTY));
+			optionsMenuDir.addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	}
 
 	optionsMenuDir.exec(this);
