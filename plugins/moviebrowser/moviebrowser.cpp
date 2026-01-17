@@ -738,7 +738,7 @@ int CMovieBrowser::exec(CTarget *parent, const std::string &actionKey)
 			CHintBox * hintBox = new CHintBox(_("Moviebrowser"), _("save settings now")); // UTF-8
 			hintBox->paint();
 		
-			m_movieInfo.saveMovieInfo( *m_movieSelectionHandler);
+			m_movieInfo.saveMovieInfo(*m_movieSelectionHandler);
 			
 			hintBox->hide();
 			delete hintBox;
@@ -2824,9 +2824,9 @@ void CMovieBrowser::showHelp(void)
 
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_RED, _("Change order"));
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_GREEN, _("TMDB"));
-	helpbox->addLine(NEUTRINO_ICON_BUTTON_YELLOW, "Change focus");
-	helpbox->addLine(NEUTRINO_ICON_BUTTON_BLUE, "Reload Movies");
-	helpbox->addLine(NEUTRINO_ICON_BUTTON_SETUP, "Main Menu");
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_YELLOW, _("Change focus"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_BLUE, _("Reload Movies"));
+	helpbox->addLine(NEUTRINO_ICON_BUTTON_SETUP, _("Main Menu"));
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_HELP, _("Movie Information"));
 	helpbox->addLine(NEUTRINO_ICON_BUTTON_MUTE_SMALL, _("Delete Movie"));
 

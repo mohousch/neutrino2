@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2026-01-17 11:09+0100\n"
+"POT-Creation-Date: 2026-01-17 11:47+0100\n"
 "PO-Revision-Date: 2023-10-29 18:19+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -52,6 +52,9 @@ msgstr "Browseroptionen"
 
 msgid "Browser hight [Pixel]"
 msgstr "Browserhöhe [Pixel]"
+
+msgid "Change focus"
+msgstr "Reihenfolge ändern"
 
 msgid "Change order"
 msgstr "Reihenfolge ändern"
@@ -98,9 +101,8 @@ msgstr "Datum"
 msgid "Delete"
 msgstr "Löschen"
 
-#, fuzzy
 msgid "Delete Movie"
-msgstr "Löschen"
+msgstr "Film Löschen"
 
 msgid "Enter new Position (s)"
 msgstr "Neue Position (s) eingeben"
@@ -148,7 +150,7 @@ msgid "Last play stop:"
 msgstr "Letzte Stop Datum"
 
 msgid "Length (Min)"
-msgstr ""
+msgstr "Dauer (Min)"
 
 msgid "Load default settings"
 msgstr "Lade standard Einstellungen"
@@ -156,12 +158,14 @@ msgstr "Lade standard Einstellungen"
 msgid "Lock movies from"
 msgstr "Film sperren ab"
 
+msgid "Main Menu"
+msgstr ""
+
 msgid "Movie Browser"
 msgstr ""
 
-#, fuzzy
 msgid "Movie Information"
-msgstr "Information"
+msgstr "Film Information"
 
 msgid "Movie end:"
 msgstr "Film Ende:"
@@ -188,7 +192,7 @@ msgid "No (temporary)"
 msgstr "Nein ()"
 
 msgid "No End bookmark defined!"
-msgstr ""
+msgstr "Keine Ende Zeichnung gegeben"
 
 msgid "Options"
 msgstr "Optionen"
@@ -210,6 +214,9 @@ msgstr "Qualität"
 
 msgid "Record date"
 msgstr "Aufnahme Datum"
+
+msgid "Reload Movies"
+msgstr "Film Löschen"
 
 msgid "Reload movie info at start"
 msgstr "Film Daten am Start laden"
@@ -263,7 +270,7 @@ msgid "Titel"
 msgstr ""
 
 msgid "Title"
-msgstr ""
+msgstr "Titel"
 
 msgid "Truncate failed."
 msgstr ""
@@ -287,13 +294,13 @@ msgid "Use record directory"
 msgstr ""
 
 msgid "Year"
-msgstr ""
+msgstr "Jahr"
 
 msgid "Yes"
-msgstr ""
+msgstr "Ja"
 
 msgid "activated"
-msgstr ""
+msgstr "aktiviert"
 
 msgid "adult movie/drama"
 msgstr ""
