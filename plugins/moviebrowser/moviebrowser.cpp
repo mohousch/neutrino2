@@ -707,7 +707,9 @@ int CMovieBrowser::exec(CTarget *parent, const std::string &actionKey)
 		delete hintBox;
 		hintBox = NULL;
 		
-		return RETURN_REPAINT;
+		showOptionMenu();
+		
+		return RETURN_EXIT;
 	}
 	else if(actionKey == "save_options")
 	{
@@ -2293,10 +2295,10 @@ int CMovieBrowser::showMovieInfoMenu(MI_MOVIE_INFO * movie_info)
 	movieInfoMenu.addItem(new CMenuForwarder(_("Save changes"), true, NULL, this, "save_movie_info", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 
 	// save change in all menu 
-	movieInfoMenu.addItem(new CMenuForwarder(_("Save changes in all movie info files"), true, NULL, this, "movieinfoupdate", CRCInput::RC_green, NEUTRINO_ICON_BUTTON_GREEN));
+	//movieInfoMenu.addItem(new CMenuForwarder(_("Save changes in all movie info files"), true, NULL, this, "movieinfoupdate", CRCInput::RC_green, NEUTRINO_ICON_BUTTON_GREEN));
 
 	// bookmark menu
-	movieInfoMenu.addItem(new CMenuForwarder(_("Bookmarks"), true, NULL, this, "bookmarkMenu", CRCInput::RC_blue,  NEUTRINO_ICON_BUTTON_BLUE));
+	movieInfoMenu.addItem(new CMenuForwarder(_("Bookmarks"), true, NULL, this, "bookmarkMenu", CRCInput::RC_green,  NEUTRINO_ICON_BUTTON_GREEN));
 
 	// title
 	movieInfoMenu.addItem(new CMenuSeparator(CMenuSeparator::LINE));
@@ -2523,27 +2525,28 @@ void CMovieBrowser::showOptionMenu(void)
 
 	//
 	optionsMenu.addItem( new CMenuForwarder(_("Save changes"), true, NULL, this, "save_options", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
-	//
-	optionsMenu.addItem( new CMenuSeparator(CMenuSeparator::LINE));
-	optionsMenu.addItem( new CMenuForwarder(_("Load default settings"), true, NULL, this, "loaddefault", CRCInput::RC_green,  NEUTRINO_ICON_BUTTON_GREEN));
 	
 	//
-	//optionsMenu.addItem( new CMenuForwarder(_("Browser Options"), true, NULL, this, "optionmenubrowser", CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW));
-	//
-	optionsMenu.addItem( new CMenuForwarder(_("Paths"), true, NULL, this, "optionmenudir", CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW));
-	//
 	optionsMenu.addItem( new CMenuSeparator(CMenuSeparator::LINE));
-	optionsMenu.addItem( new CMenuForwarder(_("Parental Lock"),   true, NULL, this, "parentalmenu", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE));
+	optionsMenu.addItem( new CMenuForwarder(_("Paths"), true, NULL, this, "optionmenudir", CRCInput::RC_green, NEUTRINO_ICON_BUTTON_GREEN));
+	
+	optionsMenu.addItem( new CMenuForwarder(_("Parental Lock"),   true, NULL, this, "parentalmenu", CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW));
+	
 	//
 	optionsMenu.addItem( new CMenuSeparator(CMenuSeparator::LINE));
 	optionsMenu.addItem( new CMenuOptionChooser(_("Reload movie info at start"), (int*)(&m_settings.reload), MESSAGEBOX_YES_NO_OPTIONS, MESSAGEBOX_YES_NO_OPTIONS_COUNT, true ));
 	//
 	optionsMenu.addItem( new CMenuOptionChooser(_("Remount at start"), (int*)(&m_settings.remount), MESSAGEBOX_YES_NO_OPTIONS, MESSAGEBOX_YES_NO_OPTIONS_COUNT, true ));
+	
 	//
 	optionsMenu.addItem( new CMenuSeparator(CMenuSeparator::LINE));
 	optionsMenu.addItem( new CMenuOptionChooser(_("Hide series"), (int*)(&m_settings.browser_serie_mode), MESSAGEBOX_YES_NO_OPTIONS, MESSAGEBOX_YES_NO_OPTIONS_COUNT, true ));
 	//
 	optionsMenu.addItem( new CMenuOptionChooser(_("Serie auto create"), (int*)(&m_settings.serie_auto_create), MESSAGEBOX_YES_NO_OPTIONS, MESSAGEBOX_YES_NO_OPTIONS_COUNT, true ));
+	
+	//
+	optionsMenu.addItem( new CMenuSeparator(CMenuSeparator::LINE));
+	optionsMenu.addItem( new CMenuForwarder(_("Load default settings"), true, NULL, this, "loaddefault", CRCInput::RC_blue,  NEUTRINO_ICON_BUTTON_BLUE));
 	
 	optionsMenu.exec(this);
 }
