@@ -280,7 +280,7 @@ class CMovieBrowser : public CTarget
 		
 		///// Menu //////////////////////////////////// 
 		bool showMenu(); // P2
-        	int showMovieInfoMenu(MI_MOVIE_INFO* movie_info); // P2
+        	int showMovieInfoMenu(MI_MOVIE_INFO *movie_info); // P2
         	void showMovieInfoMenuUpdate(void);
         	void showBookMarkMenu(MI_MOVIE_INFO *movie_info);
         	void showMenuSerie(MI_MOVIE_INFO *movie_info);

@@ -976,7 +976,13 @@ int CMovieBrowser::exec(CTarget *parent, const std::string &actionKey)
 		hide();
 		
 		if(m_movieSelectionHandler != NULL)
+		{
 			showMenuSerie(m_movieSelectionHandler);
+		
+			showMovieInfoMenu(m_movieSelectionHandler);
+			
+			return RETURN_EXIT;	
+		}
 		
 		return RETURN_REPAINT;
 	}
@@ -2202,10 +2208,10 @@ void CMovieBrowser::showBookMarkMenu(MI_MOVIE_INFO *movie_info)
 		pBookItemMenu[i1]->addItem( new CMenuForwarder(_("Jump (<0 back , >0 for):"), true, (char *)pBookTypeIntInput[i1]->getValue(),pBookTypeIntInput[i1]));
 		
 		//
-		widgetpBookMarkMenu[i1] = new CWidget();
+		widgetpBookMarkMenu[i1] = new CWidget(&m_cBoxFrame);
 		widgetpBookMarkMenu[i1]->addCCItem(pBookItemMenu[i1]);
 
-		bookmarkMenu.addItem( new CMenuForwarder(movie_info->bookmarks.user[i1].name.c_str(), true, (char *)pBookPosIntInput[i1]->getValue(), widgetpBookMarkMenu[i1]));
+		bookmarkMenu.addItem( new CMenuForwarder(movie_info->bookmarks.user[i1].name.c_str(), true, NULL, widgetpBookMarkMenu[i1]));
 	}
 
 	bookmarkMenu.exec(this);
