@@ -1902,9 +1902,8 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	
 	// iteminfo
 	paint_ItemInfo = false;
-	footInfoHeight = 0;
 	cFrameFootInfoHeight = 0;
-	footInfoMode = CCItemInfo::ITEMINFO_HINTITEM;
+	itemInfoMode = CCItemInfo::ITEMINFO_HINTITEM;
 	itemInfoBox.iX = 0;
 	itemInfoBox.iY = 0;
 	itemInfoBox.iWidth = 0;
@@ -2018,9 +2017,8 @@ ClistBox::ClistBox(const CBox* position)
 	
 	// itemInfo
 	paint_ItemInfo = false;
-	footInfoHeight = 0;
 	cFrameFootInfoHeight = 0;
-	footInfoMode = CCItemInfo::ITEMINFO_HINTITEM;
+	itemInfoMode = CCItemInfo::ITEMINFO_HINTITEM;
 	itemInfoBox.iX = 0;
 	itemInfoBox.iY = 0;
 	itemInfoBox.iWidth = 0;
@@ -2219,15 +2217,6 @@ void ClistBox::initFrames()
 	}
 	else 
 	{
-		// footInfoBox
-		if(paint_ItemInfo)
-		{
-			if(widgetLayout == LAYOUT_STANDARD)
-			{
-				cFrameFootInfoHeight = footInfoHeight;
-			}
-		}
-
 		// calculate some values
 		int itemHeightTotal = 0;
 		item_height = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 3;
@@ -2243,7 +2232,7 @@ void ClistBox::initFrames()
 			itemHeightTotal += item_height;
 			heightCurrPage += item_height;
 
-			if((heightCurrPage + hheight + fheight + cFrameFootInfoHeight) > itemBox.iHeight)
+			if((heightCurrPage + hheight + fheight) > itemBox.iHeight)
 			{
 				page_start.push_back(i);
 				heightFirstPage = std::max(heightCurrPage - item_height, heightFirstPage);
@@ -2260,12 +2249,12 @@ void ClistBox::initFrames()
 		{
 			if (widgetMode == MODE_LISTBOX)
 			{
-				listmaxshow = (itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight)/item_height;
-				itemBox.iHeight = hheight + listmaxshow*item_height + fheight + cFrameFootInfoHeight;
+				listmaxshow = (itemBox.iHeight - hheight - fheight)/item_height;
+				itemBox.iHeight = hheight + listmaxshow*item_height + fheight;
 			}
 			else if ( (widgetMode == MODE_MENU) || (widgetMode == MODE_SETUP) )
 			{
-				itemBox.iHeight = std::min(itemBox.iHeight, hheight + heightFirstPage + fheight + cFrameFootInfoHeight);
+				itemBox.iHeight = std::min(itemBox.iHeight, hheight + heightFirstPage + fheight);
 			}
 			
 			//
@@ -2289,7 +2278,7 @@ void ClistBox::paint(bool _selected)
 	}
 	else
 	{
-		items_height = itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight - (borderMode? 4 : 0); 
+		items_height = itemBox.iHeight - hheight - fheight - (borderMode? 4 : 0); 
 
 		sb_width = 0;
 		
@@ -2376,7 +2365,7 @@ void ClistBox::paint(bool _selected)
 		int iw, ih;
 		frameBuffer->getIconSize(NEUTRINO_ICON_INFO, &iw, &ih);
 			
-		label.setPosition(itemBox.iX + BORDER_LEFT + iw + ICON_OFFSET, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight + 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - iw, fheight - 2);
+		label.setPosition(itemBox.iX + BORDER_LEFT + iw + ICON_OFFSET, itemBox.iY + itemBox.iHeight /*- cFrameFootInfoHeight*/ - fheight + 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - iw, fheight - 2);
 			
 		label.enableSaveScreen();
 	}
@@ -2768,11 +2757,11 @@ void ClistBox::paintFoot()
 		{
 			// box
 			if (paintframe)
-				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight - (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), fheight, footColor, footRadius, footCorner, footGradient, footGradient_direction, footGradient_intensity, footGradient_type);
+				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + itemBox.iHeight - fheight - (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), fheight, footColor, footRadius, footCorner, footGradient, footGradient_direction, footGradient_intensity, footGradient_type);
 			
 			// line
 			if (foot_line)
-				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight - (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + itemBox.iHeight - fheight - (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 			// buttons
 			int buttonWidth = 0;
@@ -2798,9 +2787,9 @@ void ClistBox::paintFoot()
 						
 					int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
 		
-					CFrameBuffer::getInstance()->paintIcon(fbutton_labels[i].button, itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight + (fheight - ih[i])/2, 0, iw[i], ih[i]);
+					CFrameBuffer::getInstance()->paintIcon(fbutton_labels[i].button, itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + itemBox.iHeight - fheight + (fheight - ih[i])/2, 0, iw[i], ih[i]);
 					// FIXME: i18n
-					g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight + f_h + (fheight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(fbutton_labels[i].localename.c_str()), COL_MENUFOOT_TEXT_PLUS_0, 0, true); // UTF-8
+					g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, itemBox.iY + itemBox.iHeight - fheight + f_h + (fheight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(fbutton_labels[i].localename.c_str()), COL_MENUFOOT_TEXT_PLUS_0, 0, true); // UTF-8
 				}
 			}
 		}
@@ -2850,7 +2839,7 @@ void ClistBox::paintItemInfo(int pos)
 		{
 			CMenuItem* item = items[pos];
 			
-			////
+			//// on FootBar
 			if (paint_Foot && (widgetMode == MODE_MENU || (widgetMode == MODE_LISTBOX && fbutton_count == 0)))
 			{	
 				// info icon
@@ -2861,13 +2850,13 @@ void ClistBox::paintItemInfo(int pos)
 								
 				// paint horizontal line buttom
 				if (g_settings.Foot_line)
-					frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, g_settings.Foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+					frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - fheight, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, g_settings.Foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 				
 				// limit icon height
 				if(ih >= fheight)
 					ih = fheight;
 						
-				infoIcon.setPosition(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight + (fheight - ih)/2, iw, ih);
+				infoIcon.setPosition(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - fheight + (fheight - ih)/2, iw, ih);
 				infoIcon.paint();
 
 				// Hint
@@ -2887,32 +2876,7 @@ void ClistBox::paintItemInfo(int pos)
 			}
 			
 			////
-			if (footInfoMode == CCItemInfo::ITEMINFO_HINTITEM)
-			{
-				// detailslines box
-				itemsLine.setPosition(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight + 2, itemBox.iWidth, cFrameFootInfoHeight);
-				itemsLine.setMode(CCItemInfo::ITEMINFO_HINTITEM);
-				itemsLine.setHint(_(item->itemHint.c_str()));
-					
-				if (widgetLayout == LAYOUT_STANDARD)
-				{
-					std::string fname = item->itemIcon;
-						
-					if (widgetMode == MODE_MENU)
-					{
-						if (item->isPlugin)
-							fname = item->itemIcon;
-						else				
-							fname = CFrameBuffer::getInstance()->getHintBasePath() + item->itemIcon.c_str() + ".png";
-					}
-				
-					itemsLine.setIcon(fname.c_str());
-				}
-				
-				itemsLine.paintMainFrame(true);		
-				itemsLine.paint();
-			}
-			else if (footInfoMode == CCItemInfo::ITEMINFO_HINTICON)
+			if (itemInfoMode == CCItemInfo::ITEMINFO_HINTICON)
 			{
 				// detailslines box
 				itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
@@ -2938,7 +2902,7 @@ void ClistBox::paintItemInfo(int pos)
 						
 				itemsLine.paint();
 			}
-			else if (footInfoMode == CCItemInfo::ITEMINFO_ICON)
+			else if (itemInfoMode == CCItemInfo::ITEMINFO_ICON)
 			{
 				// detailslines box
 				itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
@@ -2962,7 +2926,7 @@ void ClistBox::paintItemInfo(int pos)
 						
 				itemsLine.paint();
 			}
-			else if (footInfoMode == CCItemInfo::ITEMINFO_HINT)
+			else if (itemInfoMode == CCItemInfo::ITEMINFO_HINT)
 			{
 				// detailslines box
 				itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
@@ -3042,7 +3006,7 @@ void ClistBox::paintItemInfo(int pos)
 							
 				// paint horizontal line buttom
 				if (g_settings.Foot_line)
-					frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, g_settings.Foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+					frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - fheight, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, g_settings.Foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 				// info icon
 				CCIcon infoIcon;
@@ -3052,7 +3016,7 @@ void ClistBox::paintItemInfo(int pos)
 				if(ih >= fheight)
 					ih = fheight;
 					
-				infoIcon.setPosition(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight + (fheight - ih)/2, iw, ih);
+				infoIcon.setPosition(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - fheight + (fheight - ih)/2, iw, ih);
 				infoIcon.paint();
 
 				// Hint

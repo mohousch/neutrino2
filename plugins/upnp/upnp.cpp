@@ -674,7 +674,7 @@ void CUpnpBrowserGui::showMenuDevice()
 	listBox->setFootButtons(RescanButton, 4);
 
 	// foot info
-	listBox->enablePaintItemInfo(70);
+	listBox->enablePaintItemInfo();
 
 	//
 	listBox->setSelected(selected);
@@ -781,7 +781,7 @@ void CUpnpBrowserGui::showMenuEntry()
 	listBox->setFootButtons(RescanButton, 4);
 
 	// foot info
-	listBox->enablePaintItemInfo(70);
+	listBox->enablePaintItemInfo();
 
 	//
 	listBox->setSelected(selected);

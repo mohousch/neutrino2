@@ -440,10 +440,9 @@ class ClistBox : public CComponent
 		
 		// itemInfo
 		bool paint_ItemInfo;
-		int cFrameFootInfoHeight;
-		int footInfoHeight;
+		int cFrameFootInfoHeight; // layout_frame
 		CCItemInfo itemsLine;
-		int footInfoMode;
+		int itemInfoMode;
 		CBox itemInfoBox;
 		bool iteminfoborder;
 		bool iteminfosavescreen;
@@ -556,17 +555,16 @@ class ClistBox : public CComponent
 		void disablePaintIconName(void) { paintIconName = false;};
 		
 		//// itemInfo properties
-		void enablePaintItemInfo(int fh = 0){paint_ItemInfo = true; footInfoHeight = fh;};
-		void setItemInfoMode(int mode){footInfoMode = mode;};
+		void enablePaintItemInfo(){paint_ItemInfo = true;};
+		void setItemInfoMode(int mode){itemInfoMode = mode;};
 		void setItemInfoPos(int x, int y, int dx, int dy)
 		{
-			if ( (footInfoMode == CCItemInfo::ITEMINFO_HINTICON) || (footInfoMode == CCItemInfo::ITEMINFO_ICON) || (footInfoMode == CCItemInfo::ITEMINFO_HINT))
+			if ( (itemInfoMode == CCItemInfo::ITEMINFO_HINTICON) || (itemInfoMode == CCItemInfo::ITEMINFO_ICON) || (itemInfoMode == CCItemInfo::ITEMINFO_HINT))
 			{
 				itemInfoBox.iX = x; 
 				itemInfoBox.iY = y; 
 				itemInfoBox.iWidth = dx; 
 				itemInfoBox.iHeight = dy; 
-				footInfoHeight = 0;
 			}
 		};
 		void paintItemInfoBorder(int m){iteminfoborder = true; iteminfobordermode = m;};
@@ -622,7 +620,6 @@ class ClistBox : public CComponent
 		int getTitleHeight(){return hheight;};
 		int getFootHeight(){return fheight;};
 		int getItemHeight(){return item_height;};
-		int getFootInfoHeight(){return footInfoHeight;};
 		int getListMaxShow(void) const {return listmaxshow;};
 		int getPageStart(int page) const {return page_start[page];};
 		std::string getItemName(){if (hasItem()) return items[selected]->itemName; else return "";};

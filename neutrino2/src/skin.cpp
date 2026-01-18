@@ -1472,7 +1472,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		if (iteminfo_height > widget->getWindowsPos().iHeight)
 			iteminfo_height = widget->getWindowsPos().iHeight;
 			
-		listBox->enablePaintItemInfo(iteminfo_height);
+		listBox->enablePaintItemInfo();
 		int iimode = CCItemInfo::ITEMINFO_INFO;
 		if (iteminfomode) iimode = convertItemInfoMode(iteminfomode);
 		listBox->setItemInfoMode(iimode);		

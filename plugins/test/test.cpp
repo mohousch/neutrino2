@@ -940,7 +940,7 @@ void CTestMenu::testCWidget()
 	rightWidget->setWidgetLayout(ClistBox::LAYOUT_FRAME);
 	rightWidget->setItemsPerPage(6,2);
 	rightWidget->setSelected(right_selected);
-	rightWidget->enablePaintItemInfo(80);
+	rightWidget->enablePaintItemInfo();
 
 	// loadPlaylist
 	CHintBox loadBox(_("CWidget(CFrameBox/ClistBox)"), _("Scan for Movies ..."));
@@ -1413,7 +1413,7 @@ void CTestMenu::testClistBoxWidget()
 	rightWidget->enablePaintDate();
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	rightWidget->enablePaintItemInfo(80);
+	rightWidget->enablePaintItemInfo();
 	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINTICON);
 	rightWidget->enableShrinkMenu();
 
@@ -2688,7 +2688,7 @@ void CTestMenu::testClistBox6()
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 
 	// footinfo
-	rightWidget->enablePaintItemInfo(80);
+	rightWidget->enablePaintItemInfo();
 	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINTITEM);
 
 	//
@@ -2760,7 +2760,7 @@ void CTestMenu::testClistBox7()
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 
 	// footinfo
-	rightWidget->enablePaintItemInfo(80);
+	rightWidget->enablePaintItemInfo();
 	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINTICON);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 
@@ -2833,7 +2833,7 @@ void CTestMenu::testClistBox8()
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 
 	// footinfo
-	rightWidget->enablePaintItemInfo(80);
+	rightWidget->enablePaintItemInfo();
 	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_ICON);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 
@@ -2906,7 +2906,7 @@ void CTestMenu::testClistBox9()
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 
 	// itemInfo
-	rightWidget->enablePaintItemInfo(70);
+	rightWidget->enablePaintItemInfo();
 	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINT);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 	rightWidget->paintItemInfoBorder(CComponent::BORDER_ALL);

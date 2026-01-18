@@ -2984,6 +2984,7 @@ int CDirMenu::exec(CTarget *parent, const std::string & actionKey)
 				{
 					*(*dirList)[number].used = true;
 				}
+				
 				//CFSMounter::umount(g_settings.network_nfs_local_dir[dirNfsMountNr[number]]);
 				updateDirState();
 				changed = true;
@@ -3010,6 +3011,7 @@ void CDirMenu::updateDirState(void)
 		if(dirNfsMountNr[i] != -1)
 		{
 			int retvalue = pinghost(g_settings.network_nfs_ip[dirNfsMountNr[i]].c_str());
+			
 			if (retvalue == 0)//LOCALE_PING_UNREACHABLE
 			{
 				dirOptionText[i] = "Server, offline";
@@ -3024,14 +3026,14 @@ void CDirMenu::updateDirState(void)
 				}
 				else
 				{
-					dirState[i]=DIR_STATE_MOUNTED;
+					dirState[i] = DIR_STATE_MOUNTED;
 				}
 			}
 		}
 		else
 		{
 			// not a nfs dir, probably IDE? we accept this so far
-			dirState[i]=DIR_STATE_MOUNTED;
+			dirState[i] = DIR_STATE_MOUNTED;
 		}
 		
 		if(dirState[i] == DIR_STATE_MOUNTED)
@@ -3043,12 +3045,12 @@ void CDirMenu::updateDirState(void)
 					drivefree = (s.f_bfree * s.f_bsize)>>30;
 					char tmp[20];
 					snprintf(tmp, 19,"%3d GB free",drivefree);
-					tmp[19]=0;
-					dirOptionText[i]=tmp;
+					tmp[19] = 0;
+					dirOptionText[i] = tmp;
 				}
 				else
 				{
-					dirOptionText[i]="? GB free";
+					dirOptionText[i] = "? GB free";
 				}
 			}
 			else
@@ -3078,9 +3080,14 @@ void CDirMenu::show(void)
 	
 	for(unsigned int i = 0; i < dirList->size() && i < MAX_DIR; i++)
 	{
+		CMenuItem *item;
 		sprintf(tmp,"%d",i);
 		tmp[1]=0;
-		listBox->addItem( new CMenuForwarder( (*dirList)[i].name.c_str(), (dirState[i] != DIR_STATE_UNKNOWN), dirOptionText[i].c_str(), this, tmp));
+		
+		item = new CMenuForwarder( (*dirList)[i].name.c_str(), (dirState[i] != DIR_STATE_UNKNOWN), NULL, this, tmp);
+		item->setOptionInfo(dirOptionText[i].c_str());
+		
+		listBox->addItem(item);
 	}
 	
 	listBox->exec(this);
