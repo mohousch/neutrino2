@@ -1419,8 +1419,8 @@ int CMenuForwarder::exec(CTarget *target)
 	{
 		ret = jumpTarget->exec(target? target : parent->parent, actionKey);
 		
-		if (jumpTarget->valueStringSetted)
-			setOption(jumpTarget->getValueString().c_str());
+		setOption(jumpTarget->getValueString().c_str());
+		jumpTarget->clearValueString();
 	}
 
 	return ret;

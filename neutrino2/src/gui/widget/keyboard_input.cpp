@@ -627,7 +627,6 @@ int CKeyboardInput::exec(CTarget *parent, const std::string&)
 		hide();
 
 	valueString = inputString->getValue();
-	valueStringSetted = true;
 	strcpy(value, valueString.c_str());
 
 	if (inputString)

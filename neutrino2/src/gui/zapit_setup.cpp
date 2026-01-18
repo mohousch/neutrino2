@@ -152,7 +152,6 @@ int CZapitSetup::exec(CTarget * parent, const std::string &actionKey)
 	}
 
 	showMenu();
-	this->clearValueString();
 
 	return res;
 }
@@ -203,9 +202,7 @@ void CZapitSetup::showMenu()
 	}
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Start Channel settings"));
+	setLCDMode(_("Start Channel settings"));
 	
 	// intros
 	zapit->addItem(new CMenuForwarder(_("back")));
@@ -258,7 +255,7 @@ void CZapitSetup::showMenu()
 	}
 	
 	 //
-        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+        resetLCDMode();
 }
 
 //

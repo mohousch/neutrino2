@@ -410,7 +410,6 @@ int CStringInput::exec(CTarget* parent, const std::string& )
 	if (value != NULL)
         {
                 valueString = value;
-                valueStringSetted = true;
         }
 
         if ( (observ) && (msg == CRCInput::RC_ok) )
@@ -783,7 +782,6 @@ int CPINInput::exec( CTarget* parent, const std::string&)
 	if (value != NULL)
         {
                 valueString = value;
-                valueStringSetted = true;
         }
 
 	if ( (observ) && (msg == CRCInput::RC_ok) )

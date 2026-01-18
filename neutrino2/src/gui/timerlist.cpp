@@ -300,8 +300,6 @@ CTimerList::~CTimerList()
 		delete timerlistWidget;
 		timerlistWidget = NULL;
 	}
-	
-	this->clearValueString();
 }
 
 int CTimerList::exec(CTarget* parent, const std::string& actionKey)
@@ -539,7 +537,6 @@ int CTimerList::exec(CTarget* parent, const std::string& actionKey)
 	}
 
 	int ret = showMainMenu();
-	this->clearValueString();
 
 	return ret;
 }

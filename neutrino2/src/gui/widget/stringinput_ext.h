@@ -175,7 +175,7 @@ class CDateInput : public CExtendedInput
 	public:
 		CDateInput(const char * const Name, time_t* Time, const char* const Hint_1 = NULL, const char* const Hint_2 = NULL, CChangeObserver* Observ = NULL);
 		virtual ~CDateInput();
-		char* getValue() {return value;}
+		char *getValue() {return value;}
 };
 
 ////
@@ -220,7 +220,7 @@ class CIntInput : public CExtendedInput
 		 */
 		CIntInput(const char * const Name, int &Value, const unsigned int Size = MAX_CINTINPUT_SIZE, const char* const Hint_1 = NULL, const char* const Hint_2 = NULL, CChangeObserver* Observ = NULL);
 		
-		char* getValue(){return myValueStringOutput;};
+		char *getValue(){return myValueStringOutput;};
 };
 
 #endif

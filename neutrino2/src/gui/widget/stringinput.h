@@ -100,7 +100,7 @@ class CStringInput : public CTarget
 		int exec(CTarget* parent, const std::string &actionKey);
 		
 		////
-		char* getValue() {return value;}
+		char *getValue() {return value;}
 };
 
 class CStringInputSMS : public CStringInput
