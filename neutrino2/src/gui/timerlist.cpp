@@ -56,6 +56,7 @@
 #include <gui/widget/messagebox.h>
 #include <gui/widget/stringinput.h>
 #include <gui/widget/stringinput_ext.h>
+#include <gui/widget/keyboard_input.h>
 
 #include <system/settings.h>
 #include <system/fsmounter.h>
@@ -1146,7 +1147,7 @@ int CTimerList::showNewTimerMenu()
 	m8->setHidden(true);
 
 	// message
-	CStringInputSMS timerSettings_msg(_("Message"), timerNew.message);
+	CKeyboardInput timerSettings_msg(_("Message"), timerNew.message);
 	CMenuForwarder *m9 = new CMenuForwarder(_("Message"), true, timerNew.message, &timerSettings_msg );
 	m9->setHidden(true);
 
