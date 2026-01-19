@@ -1354,7 +1354,7 @@ int CMenuForwarder::getHeight(void) const
 		ih = ITEM_ICON_H_MINI;
 			
 		//
-		if(nLinesItem /*&& widgetMode == ClistBox::MODE_LISTBOX*/)
+		if(nLinesItem)
 		{
 			ih = ITEM_ICON_H_MINI*2;
 		}
@@ -1664,7 +1664,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 				icon_h = ITEM_ICON_H_MINI;
 				icon_w = ITEM_ICON_W_MINI;
 				
-				if(nLinesItem /*&& widgetMode == ClistBox::MODE_LISTBOX*/)
+				if(nLinesItem)
 				{
 					icon_h = ITEM_ICON_H_MINI*2;
 					icon_w = ITEM_ICON_W_MINI;
@@ -2365,7 +2365,7 @@ void ClistBox::paint(bool _selected)
 		int iw, ih;
 		frameBuffer->getIconSize(NEUTRINO_ICON_INFO, &iw, &ih);
 			
-		label.setPosition(itemBox.iX + BORDER_LEFT + iw + ICON_OFFSET, itemBox.iY + itemBox.iHeight /*- cFrameFootInfoHeight*/ - fheight + 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - iw, fheight - 2);
+		label.setPosition(itemBox.iX + BORDER_LEFT + iw + ICON_OFFSET, itemBox.iY + itemBox.iHeight - fheight + 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - iw, fheight - 2);
 			
 		label.enableSaveScreen();
 	}
