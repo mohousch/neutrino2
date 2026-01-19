@@ -1621,7 +1621,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 		int optionInfo_width = 0;
 		int option_info_max = (dx - BORDER_LEFT - BORDER_RIGHT)/3;
 		
-		if (widgetLayout != ClistBox::LAYOUT_CLASSIC && !nLinesItem)
+		if ( !(widgetLayout == ClistBox::LAYOUT_CLASSIC && nLinesItem) )
 		{
 			if(!optionInfo.empty())
 			{
