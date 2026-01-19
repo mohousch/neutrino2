@@ -109,6 +109,7 @@ int CPluginList::showMenu()
 		plist->setWidgetMode(ClistBox::MODE_MENU);
 		plist->enableShrinkMenu();
 		plist->paintMainFrame(true);
+		plist->disablePaintIconName();
 		
 		// head
 		plist->enablePaintHead();
