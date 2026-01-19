@@ -1620,15 +1620,18 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 		// optionInfo (right)
 		int optionInfo_width = 0;
 		int option_info_max = (dx - BORDER_LEFT - BORDER_RIGHT)/3;
-	
-		if(!optionInfo.empty())
+		
+		if (widgetLayout != ClistBox::LAYOUT_CLASSIC && !nLinesItem)
 		{
-			optionInfo_width = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getRenderWidth(_(optionInfo.c_str()));
-			
-			if (optionInfo_width > option_info_max)
-				optionInfo_width = option_info_max;
+			if(!optionInfo.empty())
+			{
+				optionInfo_width = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getRenderWidth(_(optionInfo.c_str()));
+				
+				if (optionInfo_width > option_info_max)
+					optionInfo_width = option_info_max;
 
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(x + dx - BORDER_RIGHT - icon1_w - icon1_offset - icon2_w -icon2_offset - optionInfo_width, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight(), optionInfo_width, _(optionInfo.c_str()), color, 0, true); // UTF-8
+				g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(x + dx - BORDER_RIGHT - icon1_w - icon1_offset - icon2_w -icon2_offset - optionInfo_width, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight(), optionInfo_width, _(optionInfo.c_str()), color, 0, true); // UTF-8
+			}
 		}
 
 		// number
@@ -1741,6 +1744,17 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 				if(option_text != NULL)
 				{
 					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + height, option_width, _(option_text), (selected || !active)? color : optionFontColor, 0, true);
+				}
+				
+				// optionInfo
+				if(!optionInfo.empty())
+				{
+					optionInfo_width = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getRenderWidth(_(optionInfo.c_str()));
+					
+					if (optionInfo_width > option_info_max)
+						optionInfo_width = option_info_max;
+
+					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + (height)/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight(), optionInfo_width, _(optionInfo.c_str()), color, 0, true); // UTF-8
 				}
 				
 				// hint
