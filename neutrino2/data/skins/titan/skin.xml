@@ -505,7 +505,7 @@
 	</widget>
 	
 	<widget name="skinsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_CLASSIC" mode="MODE_listbox" scrollbar="1"/>
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_CLASSIC" mode="MODE_LISTBOX" scrollbar="1"/>
 		<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" title="Skin Select" icon="colors" paintframe="1"/>
 		<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<button_label name="information"/>

@@ -126,7 +126,7 @@
 	</widget>
 	
 	<widget name="timerlist" posx="340" posy="60" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
-		<listbox posx="370" posy="90" width="540" height="540" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_listbox" itemborder="1" itemlines="1" painthead="1" title="Timerlist" icon="timer" paintdate="1" headline="1" paintfoot="1" footline="1" scrollbar="1">
+		<listbox posx="370" posy="90" width="540" height="540" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_LISTBOX" itemborder="1" itemlines="1" painthead="1" title="Timerlist" icon="timer" paintdate="1" headline="1" paintfoot="1" footline="1" scrollbar="1">
 			<foot_button_label name="btn_red" localename="Delete"/>
 			<foot_button_label name="btn_green" localename="New timer"/>
 			<foot_button_label name="btn_yellow" localename="Reload"/>
@@ -399,7 +399,7 @@
 	</widget>
 	
 	<widget name="skinsetup" posx="340" posy="60" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
-		<listbox posx="370" posy="90" width="540" height="540" paintframe="0" layout="LAYOUT_CLASSIC" mode="MODE_listbox" itemborder="1" painthead="1" title="Skin Select" icon="colors" headline="1" paintfoot="1" footline="1">
+		<listbox posx="370" posy="90" width="540" height="540" paintframe="0" layout="LAYOUT_CLASSIC" mode="MODE_LISTBOX" itemborder="1" painthead="1" title="Skin Select" icon="colors" headline="1" paintfoot="1" footline="1">
 			<foot_button_label name="information"/>
 		</listbox>
 	</widget>
@@ -499,18 +499,18 @@
 	</widget>
 	
 	<widget name="bouquetlist" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
-		<listbox posx="100" posy="100" width="1080" height="520" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_listbox" itemborder="1" painthead="1" headline="1" paintfoot="1" footline="1" scrollbar="1"/>
+		<listbox posx="100" posy="100" width="1080" height="520" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" headline="1" paintfoot="1" footline="1" scrollbar="1"/>
 	</widget>
 	
 	<widget name="bouquetlistedit" posx="390" posy="160" width="500" height="400" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
-		<listbox posx="440" posy="210" width="400" height="300" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_listbox" itemborder="1" painthead="1" title="Edit" icon="settings" paintdate="1" headline="1" paintfoot="1" footline="1" scrollbar="1">
+		<listbox posx="440" posy="210" width="400" height="300" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" title="Edit" icon="settings" paintdate="1" headline="1" paintfoot="1" footline="1" scrollbar="1">
 			<foot_button_label name="information"/>
 		</listbox>
 	</widget>
 	
 	<widget name="channellist" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
 		<head posx="100" posy="100" width="1080" height="50" paintframe="0" paintdate="1" line="1"/>
-		<listbox posx="100" posy="150" width="700" height="420" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_listbox" itemborder="1" scrollbar="1"/>
+		<listbox posx="100" posy="150" width="700" height="420" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_LISTBOX" itemborder="1" scrollbar="1"/>
 		<window posx="800" posy="150" width="380" height="420" paintframe="0"/>
 		<foot posx="100" posy="570" width="1080" height="50" paintframe="0" line="1"/>
 		<hline posx="860" posy="360" width="360" height="360" gradient="DARK2LIGHT2DARK"/>
@@ -518,25 +518,25 @@
 	</widget>
 	
 	<widget name="channellistedit" posx="340" posy="110" width="600" height="500" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
-		<listbox posx="390" posy="160" width="500" height="400" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_listbox" itemborder="1" painthead="1" title="Edit" icon="settings" paintdate="1" headline="1" paintfoot="1" footline="1" scrollbar="1">
+		<listbox posx="390" posy="160" width="500" height="400" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" title="Edit" icon="settings" paintdate="1" headline="1" paintfoot="1" footline="1" scrollbar="1">
 			<foot_button_label name="information"/>
 		</listbox>
 	</widget>
 	
 	<widget name="bqeditchselect" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
-		<listbox posx="100" posy="100" width="1080" height="520" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_listbox" itemborder="1" painthead="1" paintdate="1" headline="1" paintfoot="1" footline="1" scrollbar="1"/>
+		<listbox posx="100" posy="100" width="1080" height="520" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" paintdate="1" headline="1" paintfoot="1" footline="1" scrollbar="1"/>
 	</widget>
 	
 	<widget name="bqeditch" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
-		<listbox posx="100" posy="100" width="1080" height="520" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_listbox" scrollbar="1" painthead="1" paintdate="1" headline="1" paintfoot="1" footline="1"/>
+		<listbox posx="100" posy="100" width="1080" height="520" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" paintdate="1" headline="1" paintfoot="1" footline="1"/>
 	</widget>
 	
 	<widget name="bqeditbq" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
-		<listbox posx="100" posy="100" width="1080" height="520" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_listbox" itemborder="1" painthead="1" paintdate="1" headline="1" paintfoot="1" footline="1" scrollbar="1"/>
+		<listbox posx="100" posy="100" width="1080" height="520" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" paintdate="1" headline="1" paintfoot="1" footline="1" scrollbar="1"/>
 	</widget>
 	
 	<widget name="eventlist" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
-		<listbox posx="100" posy="100" width="1080" height="520" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_listbox" itemborder="1" itemlines="1" painthead="1" headline="1" paintdate="1" paintfoot="1" footline="1" scrollbar="1"/>
+		<listbox posx="100" posy="100" width="1080" height="520" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_LISTBOX" itemborder="1" itemlines="1" painthead="1" headline="1" paintdate="1" paintfoot="1" footline="1" scrollbar="1"/>
 	</widget>
 	
 	<widget name="epgsearch" posx="340" posy="60" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">

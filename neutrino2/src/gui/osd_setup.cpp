@@ -1210,7 +1210,7 @@ int CSkinManager::showMenu()
 		skinMenu = new ClistBox(&box);
 
 		skinMenu->setWidgetMode(ClistBox::MODE_LISTBOX);
-		skinMenu->setWidgetLayout(ClistBox::LAYOUT_STANDARD);
+		skinMenu->setWidgetLayout(ClistBox::LAYOUT_CLASSIC);
 		skinMenu->enableShrinkMenu();
 		skinMenu->enablePaintHead();
 		skinMenu->setTitle(_("Skin Select"), NEUTRINO_ICON_COLORS);
