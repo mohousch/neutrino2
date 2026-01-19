@@ -1354,7 +1354,7 @@ int CMenuForwarder::getHeight(void) const
 		ih = ITEM_ICON_H_MINI;
 			
 		//
-		if(nLinesItem && widgetMode == ClistBox::MODE_LISTBOX)
+		if(nLinesItem /*&& widgetMode == ClistBox::MODE_LISTBOX*/)
 		{
 			ih = ITEM_ICON_H_MINI*2;
 		}
@@ -1664,7 +1664,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 				icon_h = ITEM_ICON_H_MINI;
 				icon_w = ITEM_ICON_W_MINI;
 				
-				if(nLinesItem && widgetMode == ClistBox::MODE_LISTBOX)
+				if(nLinesItem /*&& widgetMode == ClistBox::MODE_LISTBOX*/)
 				{
 					icon_h = ITEM_ICON_H_MINI*2;
 					icon_w = ITEM_ICON_W_MINI;
