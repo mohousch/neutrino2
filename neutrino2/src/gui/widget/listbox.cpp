@@ -1756,6 +1756,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 			}
 			else
 			{
+				#if 0 // FIXME:
 				// local
 				if(l_text != NULL)
 				{
@@ -1775,6 +1776,24 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 						
 					g_Font[optionFont]->RenderString(option_startPosX, y + g_Font[optionFont]->getHeight() + (height - g_Font[optionFont]->getHeight())/2, option_width, _(option_text), (selected || !active)? color : optionFontColor, 0, true);
 				}
+				#else
+				// local
+				if(l_text != NULL)
+				{
+					g_Font[nameFont]->RenderString(l_startPosX, y + 3 + g_Font[nameFont]->getHeight(), l_text_width, _(l_text), color, 0, true); // UTF-8
+				}
+
+				// option
+				if(option_text != NULL)
+				{
+					if(option_width > dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width)
+						option_width = dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width;
+			
+					option_startPosX = l_startPosX;
+						
+					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + height, option_width, _(option_text), (selected || !active)? color : optionFontColor, 0, true);
+				}
+				#endif
 			}
 		}
 		else // standard / extended

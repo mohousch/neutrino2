@@ -127,7 +127,7 @@
 	
 	<widget name="plugins" posx="340" posy="60" width="600" height="600" paintframe="0" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<image posx="340" posy="60" width="600" height="600" image="images/menu_bg2.png"/>
-		<listbox posx="370" posy="90" width="540" height="540" paintframe="0" layout="LAYOUT_CLASSIC" mode="MODE_MENU" itemborder="1" itemlines="1" painthead="1" title="Plugins" icon="features" paintdate="1" headline="1" paintfoot="1" footline="1" scrollbar="1">
+		<listbox posx="370" posy="90" width="540" height="540" paintframe="0" layout="LAYOUT_CLASSIC" mode="MODE_MENU" itemborder="1" painthead="1" title="Plugins" icon="features" paintdate="1" headline="1" paintfoot="1" footline="1" scrollbar="1">
 			<foot_button_label name="btn_red" localename="Delete"/>
 			<foot_button_label name="btn_green" localename="Start"/>
 			<foot_button_label name="btn_yellow"/>

@@ -105,7 +105,7 @@ int CPluginList::showMenu()
 		
 		//
 		plist = new ClistBox(&box);
-		plist->setWidgetLayout(ClistBox::LAYOUT_STANDARD);
+		plist->setWidgetLayout(ClistBox::LAYOUT_CLASSIC);
 		plist->setWidgetMode(ClistBox::MODE_MENU);
 		plist->enableShrinkMenu();
 		plist->paintMainFrame(true);
@@ -147,8 +147,6 @@ int CPluginList::showMenu()
 			item = new CMenuForwarder(_(g_PluginList->getName(count)), enabled, _(g_PluginList->getDescription(count).c_str()), CPluginsExec::getInstance(), g_PluginList->getFileName(count));
 			
 			item->setHintIcon(file_exists(IconName.c_str())? IconName.c_str() : NEUTRINO_ICON_MENUITEM_PLUGIN);
-			
-			item->set2lines(true);
 
 			if (plist) plist->addItem(item);
 		}
