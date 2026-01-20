@@ -1543,7 +1543,7 @@ void CTestMenu::testMultiWidget()
 	Box.iX = mainBox.iX + leftBox.iWidth;
 	Box.iY = mainBox.iY + headBox.iHeight;
 	
-	loadMoviePlaylist();
+/*	loadMoviePlaylist();
 	
 	std::string buffer;
 	
@@ -1553,7 +1553,7 @@ void CTestMenu::testMultiWidget()
 		buffer += "\n";
 		buffer += m_vMovieInfo[0].epgInfo2;
 	}
-	
+*/	
 	// CWindow
 	windowWidget = new CCWindow(&Box);
 	windowWidget->setColor(COL_MENUCONTENT_PLUS_0);
@@ -1569,8 +1569,8 @@ void CTestMenu::testMultiWidget()
 	
 	// image
 	CCImage *testImage = new CCImage();
-	if (!m_vMovieInfo.empty())
-		testImage->setImage(m_vMovieInfo[0].tfile.c_str());
+
+	testImage->setImage(DATADIR "/icons/nopreview.jpg");
 	testImage->setPosition(Box.iX + Box.iWidth - 210, Box.iY + 50, 200, 350);
 	
 	testWidget->addCCItem(testImage);
@@ -1586,12 +1586,12 @@ void CTestMenu::testMultiWidget()
 	testWidget->addCCItem(testLabel);
 	
 	// CButtons
-	CCButtons *testButton = new CCButtons(Box.iX + 10, Box.iY + Box.iHeight - 100, Box.iWidth, 40);
-	int icon_w, icon_h;
-	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
-	testButton->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
+//	CCButtons *testButton = new CCButtons(Box.iX + 10, Box.iY + Box.iHeight - 100, Box.iWidth, 40);
+//	int icon_w, icon_h;
+//	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
+//	testButton->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	
-	testWidget->addCCItem(testButton);
+//	testWidget->addCCItem(testButton);
 	
 	// Hline
 	CCHline *testHline = new CCHline(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 10, 10);
@@ -1610,9 +1610,7 @@ void CTestMenu::testMultiWidget()
 	
 	// text
 	CCText *testText = new CCText(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 20, Box.iHeight/4);
-	testText->setText(buffer.c_str());
-	////
-	testText->enableRepaint();
+	testText->setText("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
 	
 	testWidget->addCCItem(testText);
 
@@ -2860,7 +2858,7 @@ void CTestMenu::testClistBox9()
 	Box.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 20)/2;
 	Box.iHeight = g_settings.screen_EndY - g_settings.screen_StartY - 20;
 
-	Box.iX = 50; //frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
+	Box.iX = 50;
 	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
 
 	rightWidget = new ClistBox(&Box);
