@@ -2910,7 +2910,6 @@ void CTestMenu::testClistBox9()
 	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINT);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 	rightWidget->paintItemInfoBorder(CComponent::BORDER_ALL);
-	rightWidget->paintItemInfoFrame(true);
 	rightWidget->enableItemInfoSaveScreen();
 	rightWidget->setItemInfoFont(SNeutrinoSettings::FONT_TYPE_PLUGINLIST_ITEMLARGE);
 	

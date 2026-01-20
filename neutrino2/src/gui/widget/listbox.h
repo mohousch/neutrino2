@@ -413,6 +413,7 @@ class ClistBox : public CComponent
 		int maxItemsPerPage;
 		int item_height;
 		int item_width;
+		int cFrameFootInfoHeight;
 
 		// widget type / mode
 		int widgetLayout;
@@ -440,20 +441,18 @@ class ClistBox : public CComponent
 		
 		// itemInfo
 		bool paint_ItemInfo;
-		int cFrameFootInfoHeight; // layout_frame
-		CCItemInfo itemsLine;
-		int itemInfoMode;
 		CBox itemInfoBox;
+		CBox itemInfoBox2;
+		CCItemInfo itemInfo;
+		CCLabel label;
+		CCLabel label2;
+		int itemInfoMode;
 		bool iteminfoborder;
 		bool iteminfosavescreen;
 		int iteminfobordermode;
-		bool iteminfoframe;
 		unsigned int iteminfofont;
 		uint32_t iteminfocolor;
 		bool iteminfoscale;
-		CCLabel label;
-		CCLabel label2;
-		CBox itemInfoBox2;
 
 		// head
 		bool paint_Head;
@@ -567,12 +566,6 @@ class ClistBox : public CComponent
 				itemInfoBox.iHeight = dy; 
 			}
 		};
-		void paintItemInfoBorder(int m){iteminfoborder = true; iteminfobordermode = m;};
-		void enableItemInfoSaveScreen(){iteminfosavescreen = true;};
-		void paintItemInfoFrame(bool p){iteminfoframe = p;};
-		void setItemInfoFont(unsigned int f){iteminfofont = f;};
-		void setItemInfoColor(uint32_t col){iteminfocolor = col;};
-		void setItemInfoScaling(bool s){iteminfoscale = s;};
 		void setItemInfoPos2(int x, int y, int dx, int dy)
 		{
 			itemInfoBox2.iX = x;
@@ -580,6 +573,11 @@ class ClistBox : public CComponent
 			itemInfoBox2.iWidth = dx;
 			itemInfoBox2.iHeight = dy;
 		}
+		void paintItemInfoBorder(int m){iteminfoborder = true; iteminfobordermode = m;};
+		void enableItemInfoSaveScreen(){iteminfosavescreen = true;};
+		void setItemInfoFont(unsigned int f){iteminfofont = f;};
+		void setItemInfoColor(uint32_t col){iteminfocolor = col;};
+		void setItemInfoScaling(bool s){iteminfoscale = s;};
 		
 		//// head properties
 		void enablePaintHead(){paint_Head = true; has_Title = true;};
