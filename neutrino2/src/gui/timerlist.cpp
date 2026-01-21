@@ -424,9 +424,11 @@ int CTimerList::exec(CTarget* parent, const std::string& actionKey)
 		b.Dir_Mode = true;
 		
 		if (b.exec(g_settings.network_nfs_recordingdir))
+		{
 			strncpy(timerNew.recordingDir, b.getSelectedFile()->Name.c_str(), sizeof(timerNew.recordingDir) - 1);
 
-		this->setValueString(b.getSelectedFile()->Name.c_str());
+			this->setValueString(b.getSelectedFile()->Name.c_str());
+		}
 
 		return CTarget::RETURN_REPAINT;
 	}
