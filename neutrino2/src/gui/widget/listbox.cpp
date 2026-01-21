@@ -2872,7 +2872,7 @@ void ClistBox::paintItemInfo(int pos)
 			CMenuItem* item = items[pos];
 			
 			//// on FootBar
-			if (paint_Foot && (widgetMode == MODE_MENU || (widgetMode == MODE_LISTBOX && fbutton_count == 0)))
+			if (paint_Foot && ( (widgetMode == MODE_MENU && fbutton_count <= 1) || (widgetMode == MODE_LISTBOX && fbutton_count == 0) ))
 			{	
 				// info icon
 				CCIcon infoIcon;
