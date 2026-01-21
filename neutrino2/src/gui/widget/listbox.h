@@ -185,7 +185,7 @@ class CMenuItem
 		virtual void setOptionFontColor(uint32_t c){optionFontColor = c;};
 		virtual void setOptionHAlign(unsigned int al){ optionHAlign = al;};
 		//
-		virtual void set2lines(bool p){nLinesItem = p;};
+		virtual void set2lines(bool p = true){nLinesItem = p;};
 		virtual void setWidgetLayout(int type){widgetLayout = type;};
 		virtual void setBorderMode(int m = CComponent::BORDER_ALL){borderMode = m;};
 		virtual void setBorderColor(fb_pixel_t col){borderColor = col;};

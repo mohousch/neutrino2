@@ -660,6 +660,8 @@ void CUpnpBrowserGui::showMenuDevice()
 		tmp += ")";
 		
 		item->setHint(tmp.c_str());
+		
+		item->set2lines(true);
 
 		listBox->addItem(item);
 	}

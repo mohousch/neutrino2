@@ -2830,7 +2830,7 @@ void CTestMenu::testClistBox8()
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 
-	// footinfo
+	// itemInfo
 	rightWidget->enablePaintItemInfo();
 	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_ICON);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
@@ -6150,7 +6150,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("ClistBox(classic)", true, NULL, this, "listbox2"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(extended)", true, NULL, this, "listbox3"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(Frame)", true, NULL, this, "listbox4"));
-	mainMenu->addItem(new CMenuForwarder("ClistBox(HINTITEM)", true, NULL, this, "listbox6"));
+//	mainMenu->addItem(new CMenuForwarder("ClistBox(HINTITEM)", true, NULL, this, "listbox6"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(HINTICON)", true, NULL, this, "listbox7"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(ICON)", true, NULL, this, "listbox8"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(HINT)", true, NULL, this, "listbox9"));
