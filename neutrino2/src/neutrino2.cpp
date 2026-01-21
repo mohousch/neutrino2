@@ -4793,6 +4793,12 @@ int CNeutrinoApp::run(int argc, char **argv)
 			bindSettings.exec(NULL, "");
 		}
 		
+		if (ret != RETURN_EXIT_ALL)
+		{
+			CGeneralSettings generalSettings;
+			generalSettings.exec(NULL, "");
+		}
+		
 		// service settings
 		if(ret != RETURN_EXIT_ALL)
 		{

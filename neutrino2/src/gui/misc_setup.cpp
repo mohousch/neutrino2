@@ -211,9 +211,7 @@ void CGeneralSettings::showMenu()
 	}
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Misc settings"));
+	setLCDMode(_("Misc settings"));
 	
 	// intros
 	miscSettingsGeneral->addItem(new CMenuForwarder(_("back")));
@@ -321,7 +319,7 @@ void CGeneralSettings::showMenu()
 	}
 	
 	//
-        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+        resetLCDMode();
 }
 
 //
