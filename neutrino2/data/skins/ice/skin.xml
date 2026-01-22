@@ -14,7 +14,7 @@
 			<button_label name="information"/>
 		</foot>
 		<window posx="348" posy="198" width="304" height="324" color="#ff000000" paintframe="1"/>
-		<listbox posx="350" posy="200" width="300" height="320" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfosavescreen="1" iteminfo2posx="50" iteminfo2posy="410" iteminfo2width="530" iteminfo2height="40" iteminfocolor="#ffeeeeee">
+		<listbox posx="350" posy="200" width="300" height="320" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICONONLY" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfosavescreen="1" iteminfo2posx="50" iteminfo2posy="410" iteminfo2width="530" iteminfo2height="40" iteminfocolor="#ffeeeeee">
 			<item id="FORWARDER" localename="TV Mode" iconname="buttons/btn_red.png" directkey="RC_red" itemicon="hint_tvmode" target="neutrino" actionkey="tv" hint="Here you can switch into TV mode"/>
 			<item id="FORWARDER" localename="Radio Mode" iconname="buttons/btn_green.png" directkey="RC_green" itemicon="hint_radiomode" target="neutrino" actionkey="radio" hint="Here you can switch into Radio mode"/>
 			<item id="FORWARDER" localename="EPG / Timer" iconname="buttons/btn_yellow.png" directkey="RC_yellow" itemicon="hint_timers" target="epgtimer" hint="Here you can set Timers and show EPG"/>
@@ -33,7 +33,7 @@
 		<head posx="340" posy="135" width="600" height="40" gradient="DARK2LIGHT" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_TOP" radius="RADIUS_LARGE" title="EPG / Timer" icon="icons/title.png" paintdate="1" format="%d.%m.%Y" paintframe="1" color="#ffe0e0e0"/>
 		<hline posx="340" posy="176" width="600" height="2" color="#ff000000"/>
 		<window posx="348" posy="198" width="304" height="324" color="#ff000000" paintframe="1"/>
-		<listbox posx="350" posy="200" width="300" height="320" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee">
+		<listbox posx="350" posy="200" width="300" height="320" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICONONLY" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee">
 			<item id="FORWARDER" localename="Eventlist current programm" itemicon="hint_timers" target="eventlist" directkey="RC_red"/>
 			<item id="FORWARDER" localename="Details current program" itemicon="hint_timers" target="epgview" directkey="RC_green"/>
 			<item id="FORWARDER" localename="Eventlist overview" itemicon="hint_timers" target="epgplus" directkey="RC_yellow"/>
@@ -49,7 +49,7 @@
 		<head posx="340" posy="135" width="600" height="40" gradient="DARK2LIGHT" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_TOP" radius="RADIUS_LARGE" title="Features" icon="icons/title.png" paintdate="1" format="%d.%m.%Y" paintframe="1" color="#ffe0e0e0"/>
 		<hline posx="340" posy="176" width="600" height="2" color="#ff000000"/>
 		<window posx="348" posy="198" width="304" height="324" color="#ff000000" paintframe="1"/>
-		<listbox posx="350" posy="200" width="300" height="320" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee"/>
+		<listbox posx="350" posy="200" width="300" height="320" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICONONLY" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee"/>
 		<time posx="690" posy="455" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
 		<foot posx="340" posy="545" width="600" height="40" color="#ff4c4c4c" paintframe="1">
 			<button_label name="information"/>
@@ -60,7 +60,7 @@
 		<head posx="340" posy="135" width="600" height="40" gradient="DARK2LIGHT" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_TOP" radius="RADIUS_LARGE" title="Service" icon="icons/title.png" paintdate="1" format="%d.%m.%Y" paintframe="1" color="#ffe0e0e0"/>
 		<hline posx="340" posy="176" width="600" height="2" color="#ff000000"/>
 		<window posx="348" posy="198" width="304" height="324" color="#ff000000" paintframe="1"/>
-		<listbox posx="350" posy="200" width="300" height="320" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee">
+		<listbox posx="350" posy="200" width="300" height="320" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICONONLY" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee">
 			<item id="FORWARDER" localename="Scan transponder" itemicon="hint_scan" target="scansetup"/>
 			<item id="FORWARDER" localename="Bouquet Editor" itemicon="hint_bedit" target="bouqueteditor"/>
 			<item id="FORWARDER" localename="CI Cam" itemicon="hint_ci" target="cicamsetup"/>
@@ -76,7 +76,7 @@
 		<head posx="340" posy="135" width="600" height="40" gradient="DARK2LIGHT" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_TOP" radius="RADIUS_LARGE" title="Settings" icon="icons/title.png" paintdate="1" format="%d.%m.%Y" paintframe="1" color="#ffe0e0e0"/>
 		<hline posx="340" posy="176" width="600" height="2" color="#ff000000"/>
 		<window posx="348" posy="198" width="304" height="324" color="#ff000000" paintframe="1"/>
-		<listbox posx="350" posy="200" width="300" height="320" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee">
+		<listbox posx="350" posy="200" width="300" height="320" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICONONLY" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee">
 			<item id="FORWARDER" localename="Video settings" itemicon="hint_video" target="videosetup"/>
 			<item id="FORWARDER" localename="Audio settings" itemicon="hint_audio" target="audiosetup"/>
 			<item id="FORWARDER" localename="Parentallock settings" itemicon="hint_protection" target="parentallocksetup"/>
@@ -105,7 +105,7 @@
 		<head posx="340" posy="135" width="600" height="40" gradient="DARK2LIGHT" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_TOP" radius="RADIUS_LARGE" title="OSD" icon="icons/title.png" paintdate="1" format="%d.%m.%Y" paintframe="1" color="#ffe0e0e0"/>
 		<hline posx="340" posy="176" width="600" height="2" color="#ff000000"/>
 		<window posx="348" posy="198" width="304" height="324" color="#ff000000" paintframe="1"/>
-		<listbox posx="350" posy="200" width="300" height="320" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee">
+		<listbox posx="350" posy="200" width="300" height="320" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICONONLY" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee">
 			<item id="FORWARDER" localename="Skin select" itemicon="hint_themes" target="skinsetup"/>
 			<item id="FORWARDER" localename="Themes" itemicon="hint_osd" target="skinstyleselectionsetup"/>
 			<item id="FORWARDER" localename="Menu" itemicon="hint_menucolors" target="menusetup"/>
@@ -126,7 +126,7 @@
 		<head posx="340" posy="135" width="600" height="40" gradient="DARK2LIGHT" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_TOP" radius="RADIUS_LARGE" title="Information" icon="icons/title.png" paintdate="1" format="%d.%m.%Y" paintframe="1" color="#ffe0e0e0"/>
 		<hline posx="340" posy="176" width="600" height="2" color="#ff000000"/>
 		<window posx="348" posy="198" width="304" height="324" color="#ff000000" paintframe="1"/>
-		<listbox posx="350" posy="200" width="300" height="320" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee">
+		<listbox posx="350" posy="200" width="300" height="320" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICONONLY" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee">
 			<item id="FORWARDER" localename="Information" itemicon="hint_dboxinfo" target="boxinfo"/>
 			<item id="FORWARDER" localename="Image info" itemicon="hint_imageinfo" target="imageinfo"/>
 			<item id="FORWARDER" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo"/>
@@ -142,7 +142,7 @@
 		<head posx="340" posy="135" width="600" height="40" gradient="DARK2LIGHT" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_TOP" radius="RADIUS_LARGE" title="Power Menu" icon="icons/title.png" paintdate="1" format="%d.%m.%Y" paintframe="1" color="#ffe0e0e0"/>
 		<hline posx="340" posy="176" width="600" height="2" color="#ff000000"/>
 		<window posx="348" posy="198" width="304" height="324" color="#ff000000" paintframe="1"/>
-		<listbox posx="350" posy="200" width="300" height="320" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee">
+		<listbox posx="350" posy="200" width="300" height="320" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICONONLY" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee">
 			<item id="FORWARDER" localename="Sleeptimer" itemicon="hint_timers" target="sleeptimer"/>
 			<item id="FORWARDER" localename="GUI restart" itemicon="hint_restart" target="neutrino" actionkey="restart"/>
 			<item id="FORWARDER" localename="Standby" itemicon="hint_standby" target="neutrino" actionkey="standby"/>
@@ -159,7 +159,7 @@
 		<head posx="340" posy="135" width="600" height="40" gradient="DARK2LIGHT" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_TOP" radius="RADIUS_LARGE" title="Media Player" icon="icons/title.png" paintdate="1" format="%d.%m.%Y" paintframe="1" color="#ffe0e0e0"/>
 		<hline posx="340" posy="176" width="600" height="2" color="#ff000000"/>
 		<window posx="348" posy="198" width="304" height="324" color="#ff000000" paintframe="1"/>
-		<listbox posx="350" posy="200" width="300" height="320" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICON" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee"/>
+		<listbox posx="350" posy="200" width="300" height="320" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU"  paintiteminfo="1" iteminfomode="ITEMINFO_ICONONLY" iteminfoposx="400" iteminfoposy="160" iteminfowidth="120" iteminfoheight="120" iteminfocolor="#ffeeeeee"/>
 		<time posx="690" posy="455" width="340" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE" color="#ff000000"/>
 		<foot posx="340" posy="545" width="600" height="40" color="#ff4c4c4c" paintframe="1">
 			<button_label name="information"/>

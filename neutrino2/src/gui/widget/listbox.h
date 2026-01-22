@@ -558,13 +558,10 @@ class ClistBox : public CComponent
 		void setItemInfoMode(int mode){itemInfoMode = mode;};
 		void setItemInfoPos(int x, int y, int dx, int dy)
 		{
-			if ( (itemInfoMode == CCItemInfo::ITEMINFO_HINTICON) || (itemInfoMode == CCItemInfo::ITEMINFO_ICON) || (itemInfoMode == CCItemInfo::ITEMINFO_HINT))
-			{
-				itemInfoBox.iX = x; 
-				itemInfoBox.iY = y; 
-				itemInfoBox.iWidth = dx; 
-				itemInfoBox.iHeight = dy; 
-			}
+			itemInfoBox.iX = x; 
+			itemInfoBox.iY = y; 
+			itemInfoBox.iWidth = dx; 
+			itemInfoBox.iHeight = dy; 
 		};
 		void setItemInfoPos2(int x, int y, int dx, int dy)
 		{

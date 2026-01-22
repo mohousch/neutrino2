@@ -1939,11 +1939,7 @@ CCItemInfo::CCItemInfo()
 	oldPosition = itemBox;
 	
 	//
-	mode = ITEMINFO_INFO; 
-	info1 = "";
-	option_info1 = "";
-	info2 = "";
-	option_info2 = "";
+	mode = ITEMINFO_HINTITEM; 
 	hint = "";
 	icon = "";
 	
@@ -1966,10 +1962,6 @@ CCItemInfo::CCItemInfo()
 
 CCItemInfo::~CCItemInfo()
 {
-	info1.clear();
-	option_info1.clear();
-	info2.clear();
-	option_info2.clear();
 	hint.clear();
 	icon.clear();
 	
@@ -1999,46 +1991,8 @@ void CCItemInfo::paint(bool _selected)
 	else
 		restoreScreen();
 	
-	//
-	if (mode == ITEMINFO_INFO)
-	{
-		// option_info1
-		int l_ow1 = 0;
-		if(!option_info1.empty())
-		{
-			l_ow1 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getRenderWidth(option_info1.c_str());
-
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->RenderString(itemBox.iX + itemBox.iWidth - BORDER_RIGHT - l_ow1, itemBox.iY + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow1, option_info1.c_str(), COL_MENUHINT_TEXT_PLUS_0, 0, true);
-		}
-
-		// info1
-		//int l_w1 = 0;
-		if(!info1.empty())
-		{
-			//l_w1 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getRenderWidth(info1.c_str());
-
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->RenderString(itemBox.iX + BORDER_LEFT, itemBox.iY + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow1, info1.c_str(), COL_MENUHINT_TEXT_PLUS_0, 0, true);
-		}
-
-		// option_info2
-		int l_ow2 = 0;
-		if(!option_info2.empty())
-		{
-			l_ow2 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getRenderWidth(option_info2.c_str());
-
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(itemBox.iX + itemBox.iWidth - BORDER_RIGHT - l_ow2, itemBox.iY + itemBox.iHeight/2 + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow2, option_info2.c_str(), COL_MENUHINT_TEXT_PLUS_0, 0, true);
-		}
-
-		// info2
-		//int l_w2 = 0;
-		if(!info2.empty())
-		{
-			//l_w2 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getRenderWidth(info2.c_str());
-
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->RenderString (itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight/2 + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow2, info2.c_str(), COL_MENUHINT_TEXT_PLUS_0, 0, true); // UTF-8
-		}
-	}
-	else if (mode == ITEMINFO_HINTITEM)
+	/*
+	if (mode == ITEMINFO_HINTITEM)
 	{
 		// icon
 		int iw = 0;
@@ -2069,9 +2023,10 @@ void CCItemInfo::paint(bool _selected)
 		Dline.setText(hint.c_str());		
 		Dline.paint();
 	}
-	else if (mode == ITEMINFO_HINTICON)
+	else*/ 
+	if (mode == ITEMINFO_HINTITEM)
 	{
-		//
+		// icon (top)
 		int iw = 0;
 		int ih = 0;
 		
@@ -2092,14 +2047,14 @@ void CCItemInfo::paint(bool _selected)
 			DImage.paint();
 		}
 		
-		//
+		// hint
 		CCText Dline(itemBox.iX + 10, itemBox.iY + ih + 10, itemBox.iWidth - 20, itemBox.iHeight - ih - 20);
 		Dline.setFont(tFont);
 		Dline.setText(hint.c_str());		
 		Dline.paint();
 		
 	}
-	else if (mode == ITEMINFO_ICON)	
+	else if (mode == ITEMINFO_ICONONLY)	
 	{
 		CCImage DImage(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
 		DImage.setImage(icon.c_str());
@@ -2107,7 +2062,7 @@ void CCItemInfo::paint(bool _selected)
 		//DImage.setColor(color);
 		DImage.paint();
 	}
-	else if (mode == ITEMINFO_HINT)
+	else if (mode == ITEMINFO_HINTONLY)
 	{
 		CCText Dline(itemBox.iX + 10, itemBox.iY + 10, itemBox.iWidth - 20, itemBox.iHeight - 20);
 		Dline.setFont(tFont);

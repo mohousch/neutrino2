@@ -762,19 +762,15 @@ class CCItemInfo : public CComponent
 	public:
 		enum 
 		{
-			ITEMINFO_INFO,
 			ITEMINFO_HINTITEM,
-			ITEMINFO_HINTICON,
-			ITEMINFO_ICON,
-			ITEMINFO_HINT
+			ITEMINFO_ICONONLY,
+			ITEMINFO_HINTONLY
 		};
 
 		//
 		CFrameBuffer* frameBuffer;
 		
 		//
-		std::string info1, option_info1;
-		std::string info2, option_info2;
 		std::string hint;
 		std::string icon;
 		int mode;
@@ -801,10 +797,6 @@ class CCItemInfo : public CComponent
 		void hide();
 		//
 		void setMode(int m){mode = m;};
-		void setInfo1(const char* const text){if (text) info1 = text;};
-		void setInfo2(const char* const text){if (text)  info2 = text;};
-		void setOptionInfo1(const char* const text){if (text) option_info1 = text;};
-		void setOptionInfo2(const char* const text){if (text) option_info2 = text;};
 		void setHint(const char* const Text){if (Text) hint =  Text;};
 		void setIcon(const char* const ic){if (ic) icon = ic;};
 		// custom mode

@@ -2897,9 +2897,7 @@ void ClistBox::paintItemInfo(int pos)
 				label.setColor(COL_MENUFOOT_TEXT_PLUS_0);
 				label.paint();
 			}
-			
-			//// label InfoBox2: FIXME
-			if (widgetMode == MODE_MENU && itemInfoBox2.iWidth != 0)
+			else if (widgetMode == MODE_MENU && itemInfoBox2.iWidth != 0)
 			{
 				label.setText(_(item->itemHint.c_str()));
 				label.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
@@ -2908,11 +2906,11 @@ void ClistBox::paintItemInfo(int pos)
 			}
 			
 			////
-			if (itemInfoMode == CCItemInfo::ITEMINFO_HINTICON)
+			if (itemInfoMode == CCItemInfo::ITEMINFO_HINTITEM && (itemInfoBox.iWidth != 0 && itemInfoBox.iHeight != 0))
 			{
 				// detailslines box
 				itemInfo.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
-				itemInfo.setMode(CCItemInfo::ITEMINFO_HINTICON);
+				itemInfo.setMode(CCItemInfo::ITEMINFO_HINTITEM);
 				itemInfo.setBorderMode(iteminfobordermode);
 				itemInfo.setColor(iteminfocolor);
 				itemInfo.setFont(iteminfofont);
@@ -2934,11 +2932,10 @@ void ClistBox::paintItemInfo(int pos)
 						
 				itemInfo.paint();
 			}
-			else if (itemInfoMode == CCItemInfo::ITEMINFO_ICON)
+			else if (itemInfoMode == CCItemInfo::ITEMINFO_ICONONLY && (itemInfoBox.iWidth != 0 && itemInfoBox.iHeight != 0))
 			{
-				// detailslines box
 				itemInfo.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
-				itemInfo.setMode(CCItemInfo::ITEMINFO_ICON);
+				itemInfo.setMode(CCItemInfo::ITEMINFO_ICONONLY);
 				itemInfo.setBorderMode(iteminfobordermode);
 				itemInfo.setColor(iteminfocolor);
 				itemInfo.setScaling(iteminfoscale);
@@ -2958,11 +2955,11 @@ void ClistBox::paintItemInfo(int pos)
 						
 				itemInfo.paint();
 			}
-			else if (itemInfoMode == CCItemInfo::ITEMINFO_HINT)
+			else if (itemInfoMode == CCItemInfo::ITEMINFO_HINTONLY && (itemInfoBox.iWidth != 0 && itemInfoBox.iHeight != 0))
 			{
 				// detailslines box
 				itemInfo.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
-				itemInfo.setMode(CCItemInfo::ITEMINFO_HINT);
+				itemInfo.setMode(CCItemInfo::ITEMINFO_HINTONLY);
 				itemInfo.setBorderMode(iteminfobordermode);
 				itemInfo.setColor(iteminfocolor);
 				itemInfo.setFont(iteminfofont);
@@ -2999,7 +2996,7 @@ void ClistBox::paintItemInfo(int pos)
 				itemInfo.setBorderMode(CComponent::BORDER_NO);
 			}
 					
-			itemInfo.setMode(CCItemInfo::ITEMINFO_HINTICON);		
+			itemInfo.setMode(CCItemInfo::ITEMINFO_HINTITEM);		
 			itemInfo.setHint(_(item->itemHint.c_str()));
 			itemInfo.setIcon(fname.c_str());
 					
@@ -3012,7 +3009,7 @@ void ClistBox::paintItemInfo(int pos)
 			// item icon (right) check for minimum hight
 			if(itemBox.iHeight - hheight - fheight >= ITEM_ICON_H)
 			{ 
-				itemInfo.setMode(CCItemInfo::ITEMINFO_ICON);
+				itemInfo.setMode(CCItemInfo::ITEMINFO_ICONONLY);
 					
 				std::string fname = item->itemIcon;
 						

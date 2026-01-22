@@ -156,7 +156,6 @@ class CTestMenu : public CTarget
 		void testClistBox4();
 		void testClistBox6();
 		void testClistBox7();
-		void testClistBox8();
 		void testClistBox9();
 		void testCFrameBox();
 		//// misc widgets
@@ -1414,7 +1413,7 @@ void CTestMenu::testClistBoxWidget()
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	rightWidget->enablePaintItemInfo();
-	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINTICON);
+	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINTITEM);
 	rightWidget->enableShrinkMenu();
 
 	// loadPlaylist
@@ -1921,6 +1920,7 @@ void CTestMenu::testCCSlider()
 	testSlider = NULL;
 }
 
+
 void CTestMenu::testCCItemInfo()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCCItemInfo:\n");
@@ -1930,9 +1930,7 @@ void CTestMenu::testCCItemInfo()
 	itemInfo->setPosition(40, 40, 1200, 400);
 	itemInfo->paintMainFrame(true);
 	itemInfo->enableSaveScreen();
-	itemInfo->setMode(CCItemInfo::ITEMINFO_INFO);
-	itemInfo->setInfo1("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
-	itemInfo->setInfo2("");
+	itemInfo->setMode(CCItemInfo::ITEMINFO_HINTITEM);
 	itemInfo->setHint("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
 	itemInfo->setIcon(DATADIR "/icons/nopreview.jpg");
 	
@@ -1952,13 +1950,11 @@ void CTestMenu::testCCItemInfo2()
 	itemInfo->setPosition(40, 40, 1200, 400);
 	itemInfo->paintMainFrame(true);
 	itemInfo->enableSaveScreen();
-	itemInfo->setMode(CCItemInfo::ITEMINFO_HINTITEM);
-	itemInfo->setInfo1("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
-	itemInfo->setInfo2("");
+	itemInfo->setMode(CCItemInfo::ITEMINFO_ICONONLY);
 	itemInfo->setHint("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
 	itemInfo->setIcon(DATADIR "/icons/nopreview.jpg");
-	
-	itemInfo->setExecutable();
+
+	itemInfo->setExecutable();	
 	itemInfo->exec(this);
 	
 	delete itemInfo;
@@ -1974,51 +1970,7 @@ void CTestMenu::testCCItemInfo3()
 	itemInfo->setPosition(40, 40, 1200, 400);
 	itemInfo->paintMainFrame(true);
 	itemInfo->enableSaveScreen();
-	itemInfo->setMode(CCItemInfo::ITEMINFO_HINTICON);
-	itemInfo->setInfo1("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
-	itemInfo->setInfo2("");
-	itemInfo->setHint("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
-	itemInfo->setIcon(DATADIR "/icons/nopreview.jpg");
-	
-	itemInfo->setExecutable();
-	itemInfo->exec(this);
-	
-	delete itemInfo;
-	itemInfo = NULL;
-}
-void CTestMenu::testCCItemInfo4()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testCCItemInfo:\n");
-	
-	CCItemInfo *itemInfo = new CCItemInfo();
-	
-	itemInfo->setPosition(40, 40, 1200, 400);
-	itemInfo->paintMainFrame(true);
-	itemInfo->enableSaveScreen();
-	itemInfo->setMode(CCItemInfo::ITEMINFO_ICON);
-	itemInfo->setInfo1("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
-	itemInfo->setInfo2("");
-	itemInfo->setHint("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
-	itemInfo->setIcon(DATADIR "/icons/nopreview.jpg");
-
-	itemInfo->setExecutable();	
-	itemInfo->exec(this);
-	
-	delete itemInfo;
-	itemInfo = NULL;
-}
-void CTestMenu::testCCItemInfo5()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testCCItemInfo:\n");
-	
-	CCItemInfo *itemInfo = new CCItemInfo();
-	
-	itemInfo->setPosition(40, 40, 1200, 400);
-	itemInfo->paintMainFrame(true);
-	itemInfo->enableSaveScreen();
-	itemInfo->setMode(CCItemInfo::ITEMINFO_HINT);
-	itemInfo->setInfo1("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
-	itemInfo->setInfo2("");
+	itemInfo->setMode(CCItemInfo::ITEMINFO_HINTONLY);
 	itemInfo->setHint("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
 	itemInfo->setIcon(DATADIR "/icons/nopreview.jpg");
 
@@ -2637,10 +2589,10 @@ void CTestMenu::testClistBox6()
 
 	CBox Box;
 	
-	Box.iWidth = g_settings.screen_EndX - g_settings.screen_StartX - 20;
+	Box.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 20)/2;
 	Box.iHeight = g_settings.screen_EndY - g_settings.screen_StartY - 20;
 
-	Box.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
+	Box.iX = 50; //frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
 	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
 
 	rightWidget = new ClistBox(&Box);
@@ -2688,6 +2640,7 @@ void CTestMenu::testClistBox6()
 	// footinfo
 	rightWidget->enablePaintItemInfo();
 	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINTITEM);
+	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 
 	//
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
@@ -2705,7 +2658,7 @@ void CTestMenu::testClistBox6()
 // ClistBox(hintIcon)
 void CTestMenu::testClistBox7()
 {
-	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox7(HINTICON)\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox7(ICONONLY)\n");
 
 	CBox Box;
 	
@@ -2759,80 +2712,7 @@ void CTestMenu::testClistBox7()
 
 	// footinfo
 	rightWidget->enablePaintItemInfo();
-	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINTICON);
-	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
-
-	//
-	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
-	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
-	
-	rightWidget->exec(this);		
-	
-	if (rightWidget)
-	{
-		delete rightWidget;
-		rightWidget = NULL;
-	}
-}
-
-// ClistBox(ICON)
-void CTestMenu::testClistBox8()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox8(ICON)\n");
-
-	CBox Box;
-	
-	Box.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 20)/2;
-	Box.iHeight = g_settings.screen_EndY - g_settings.screen_StartY - 20;
-
-	Box.iX = 50; //frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
-	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
-
-	rightWidget = new ClistBox(&Box);
-
-	CHintBox loadBox("ClistBox(ICON)", _("Scan for Movies ..."));
-	loadBox.paint();
-	loadMoviePlaylist();
-	loadBox.hide();
-
-	// load items
-	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-	{
-		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "wplay");
-
-		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-		item->set2lines(true);
-
-		std::string tmp = m_vMovieInfo[i].epgInfo1;
-		tmp += "\n";
-		tmp += m_vMovieInfo[i].epgInfo2;
-
-		item->setHint(tmp.c_str());
-		
-		item->setBorderMode(CComponent::BORDER_TOPBOTTOM);
-		
-		rightWidget->addItem(item);
-	}
-
-	// mode
-	rightWidget->setWidgetLayout(ClistBox::LAYOUT_STANDARD);
-	rightWidget->enableShrinkMenu();
-
-	// head
-	rightWidget->setTitle("ClistBox(ICON)", NEUTRINO_ICON_MOVIE);
-	rightWidget->enablePaintHead();
-	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	rightWidget->enablePaintDate();
-
-	// footer
-	rightWidget->enablePaintFoot();
-	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-
-	// itemInfo
-	rightWidget->enablePaintItemInfo();
-	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_ICON);
+	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_ICONONLY);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 
 	//
@@ -2905,7 +2785,7 @@ void CTestMenu::testClistBox9()
 
 	// itemInfo
 	rightWidget->enablePaintItemInfo();
-	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINT);
+	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINTONLY);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 	rightWidget->paintItemInfoBorder(CComponent::BORDER_ALL);
 	rightWidget->enableItemInfoSaveScreen();
@@ -4841,18 +4721,6 @@ int CTestMenu::exec(CTarget *parent, const std::string &actionKey)
 		
 		return RETURN_REPAINT;
 	}
-	else if (actionKey == "iteminfo4")
-	{
-		testCCItemInfo4();
-		
-		return RETURN_REPAINT;
-	}
-	else if (actionKey == "iteminfo5")
-	{
-		testCCItemInfo5();
-		
-		return RETURN_REPAINT;
-	}
 	else if(actionKey == "listbox")
 	{
 		testClistBox();
@@ -4886,12 +4754,6 @@ int CTestMenu::exec(CTarget *parent, const std::string &actionKey)
 	else if(actionKey == "listbox7")
 	{
 		testClistBox7();
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "listbox8")
-	{
-		testClistBox8();
 
 		return RETURN_REPAINT;
 	}
@@ -6132,11 +5994,9 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CCButtons (foot)", true, NULL, this, "buttons"));
 	mainMenu->addItem(new CMenuForwarder("CCButtons (head)", true, NULL, this, "hbuttons"));
 	mainMenu->addItem(new CMenuForwarder("CCSpinner", true, NULL, this, "spinner"));
-	mainMenu->addItem(new CMenuForwarder("CCItemInfo", true, NULL, this, "iteminfo"));
-	mainMenu->addItem(new CMenuForwarder("CCItemInfo2", true, NULL, this, "iteminfo2"));
-	mainMenu->addItem(new CMenuForwarder("CCItemInfo3", true, NULL, this, "iteminfo3"));
-	mainMenu->addItem(new CMenuForwarder("CCItemInfo4", true, NULL, this, "iteminfo4"));
-	mainMenu->addItem(new CMenuForwarder("CCItemInfo5", true, NULL, this, "iteminfo5"));
+	mainMenu->addItem(new CMenuForwarder("CCItemInfo(HINTITEM)", true, NULL, this, "iteminfo"));
+	mainMenu->addItem(new CMenuForwarder("CCItemInfo(ICONONLY)", true, NULL, this, "iteminfo2"));
+	mainMenu->addItem(new CMenuForwarder("CCItemInfo(HINTONLY)", true, NULL, this, "iteminfo3"));
 	mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
 	mainMenu->addItem(new CMenuForwarder("CCWindow", true, NULL, this, "panel"));
 	mainMenu->addItem(new CMenuForwarder("CCWindow(gradient)", true, NULL, this, "window"));
@@ -6150,10 +6010,9 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("ClistBox(classic)", true, NULL, this, "listbox2"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(extended)", true, NULL, this, "listbox3"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(Frame)", true, NULL, this, "listbox4"));
-//	mainMenu->addItem(new CMenuForwarder("ClistBox(HINTITEM)", true, NULL, this, "listbox6"));
-	mainMenu->addItem(new CMenuForwarder("ClistBox(HINTICON)", true, NULL, this, "listbox7"));
-	mainMenu->addItem(new CMenuForwarder("ClistBox(ICON)", true, NULL, this, "listbox8"));
-	mainMenu->addItem(new CMenuForwarder("ClistBox(HINT)", true, NULL, this, "listbox9"));
+	mainMenu->addItem(new CMenuForwarder("ClistBox(HINTITEM)", true, NULL, this, "listbox6"));
+	mainMenu->addItem(new CMenuForwarder("ClistBox(ICONONLY)", true, NULL, this, "listbox7"));
+	mainMenu->addItem(new CMenuForwarder("ClistBox(HINTONLY)", true, NULL, this, "listbox9"));
 	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "framebox"));
 	
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CWidget"));

@@ -1107,29 +1107,21 @@ int CNeutrinoApp::convertItemInfoMode(const char * const mode)
 {
 	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertItemInfoMode: mode: %s\n", mode);
 	
-	int m = CCItemInfo::ITEMINFO_INFO;
+	int m = CCItemInfo::ITEMINFO_HINTITEM;
 	
 	if (mode != NULL)
 	{
-		if ( strcmp(mode, "ITEMINFO_INFO") == 0)
-		{
-			m = CCItemInfo::ITEMINFO_INFO;
-		}
-		else if ( strcmp(mode, "ITEMINFO_HINTITEM") == 0)
+		if ( strcmp(mode, "ITEMINFO_HINTITEM") == 0)
 		{
 			m = CCItemInfo::ITEMINFO_HINTITEM;
 		}
-		else if ( strcmp(mode, "ITEMINFO_HINTICON") == 0)
+		else if ( strcmp(mode, "ITEMINFO_ICONONLY") == 0)
 		{
-			m = CCItemInfo::ITEMINFO_HINTICON;
+			m = CCItemInfo::ITEMINFO_ICONONLY;
 		}
-		else if ( strcmp(mode, "ITEMINFO_ICON") == 0)
+		else if ( strcmp(mode, "ITEMINFO_HINTONLY") == 0)
 		{
-			m = CCItemInfo::ITEMINFO_ICON;
-		}
-		else if ( strcmp(mode, "ITEMINFO_HINT") == 0)
-		{
-			m = CCItemInfo::ITEMINFO_HINT;
+			m = CCItemInfo::ITEMINFO_HINTONLY;
 		}
 	}
 	
@@ -1471,7 +1463,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 			iteminfo_height = widget->getWindowsPos().iHeight;
 			
 		listBox->enablePaintItemInfo();
-		int iimode = CCItemInfo::ITEMINFO_INFO;
+		int iimode = CCItemInfo::ITEMINFO_HINTITEM;
 		if (iteminfomode) iimode = convertItemInfoMode(iteminfomode);
 		listBox->setItemInfoMode(iimode);		
 		listBox->setItemInfoPos(iteminfo_posx, iteminfo_posy, iteminfo_width, iteminfo_height);
