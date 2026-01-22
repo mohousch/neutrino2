@@ -1991,39 +1991,7 @@ void CCItemInfo::paint(bool _selected)
 	else
 		restoreScreen();
 	
-	/*
-	if (mode == ITEMINFO_HINTITEM)
-	{
-		// icon
-		int iw = 0;
-		int ih = 0;
-		int nbpp = 0;
-		int nchans = 0;
-		
-		if (!icon.empty())
-		{
-			getSize(icon.c_str(), &iw, &iw, &nbpp, &nchans);
-			
-			if (iw > 100)
-				iw = 100;
-				
-			if (ih > (itemBox.iHeight - 4))
-				ih = itemBox.iHeight - 4;
-			
-			CCImage DImage(itemBox.iX + 5, itemBox.iY + 2, 100, itemBox.iHeight - 4);
-			DImage.setImage(icon.c_str());
-			DImage.setScaling(scale);
-			//DImage.setColor(color);
-			DImage.paint();
-		}
-		
-		// hint
-		CCText Dline(itemBox.iX + 5 + 100 + 10, itemBox.iY + 10, itemBox.iWidth - 5 - 100 - 10 - 10, itemBox.iHeight - 20);
-		Dline.setFont(tFont);
-		Dline.setText(hint.c_str());		
-		Dline.paint();
-	}
-	else*/ 
+	//
 	if (mode == ITEMINFO_HINTITEM)
 	{
 		// icon (top)
