@@ -2992,14 +2992,10 @@ void CTestMenu::testCStringInputSMS()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCStringInputSMS\n");
 
-	std::string value;
-	CStringInputSMS * stringInputSMS = new CStringInputSMS("CStringInputSMS", (const char *)value.c_str(), MAX_INPUT_CHARS, "Testing CStringInputSMS", "type any things for testing");
+//	std::string value;
+	CStringInputSMS * stringInputSMS = new CStringInputSMS("CStringInputSMS", /*(const char *)value.c_str()*/NULL, MAX_INPUT_CHARS, "Testing CStringInputSMS", "type any things for testing");
 	
 	stringInputSMS->exec(NULL, "");
-	
-	printf("CTestMenu::testCStringInputSMS: value=%s\n", value.c_str());
-	printf("CTestMenu::testCStringInputSMS: valueString=%s\n", stringInputSMS->getValueString().c_str());
-	printf("CTestMenu::testCStringInputSMS: targetStringValue=%s\n", this->getValueString().c_str());
 
 	delete stringInputSMS;
 	stringInputSMS = NULL;
