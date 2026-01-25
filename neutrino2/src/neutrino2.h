@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$Id: neutrino2.h 21122024 mohousch Exp $
+//	$Id: neutrino2.h 25012026 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -97,6 +97,12 @@ class CNeutrinoApp : public CTarget
 			SHUTDOWN,
 			REBOOT
 		};
+		
+		////
+		int recordingstatus;
+		int timeshiftstatus;
+		int recording_id;
+		uint32_t epgUpdateTimer;
 		
  	private:
 		CFrameBuffer * frameBuffer;
@@ -218,12 +224,7 @@ class CNeutrinoApp : public CTarget
 		void doGuiRecord(char * preselectedDir, bool addTimer = false);
 		void startNextRecording();
 		int startAutoRecord(bool addTimer);
-		void stopAutoRecord();
-		////
-		int recordingstatus;
-		int timeshiftstatus;
-		int recording_id;
-		uint32_t epgUpdateTimer;		
+		void stopAutoRecord();		
 		////
 		void sendSectionsdConfig(void);
 		////

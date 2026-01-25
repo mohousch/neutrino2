@@ -377,7 +377,7 @@ function testCWidget()
 	listBox:enablePaintFoot()
 	listBox:enableShrinkMenu()
 
-	--listBox:setWidgetMode(neutrino2.ClistBox_MODE_LISTBOX)
+	listBox:setWidgetMode(neutrino2.ClistBox_MODE_MENU)
 	listBox:setWidgetLayout(neutrino2.ClistBox_LAYOUT_CLASSIC)
 
 	-- CMessageBox

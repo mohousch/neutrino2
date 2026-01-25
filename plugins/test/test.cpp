@@ -2992,8 +2992,8 @@ void CTestMenu::testCStringInputSMS()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCStringInputSMS\n");
 
-//	std::string value;
-	CStringInputSMS * stringInputSMS = new CStringInputSMS("CStringInputSMS", /*(const char *)value.c_str()*/NULL, MAX_INPUT_CHARS, "Testing CStringInputSMS", "type any things for testing");
+	std::string value;
+	CStringInputSMS * stringInputSMS = new CStringInputSMS("CStringInputSMS", (const char *)value.c_str(), MAX_INPUT_CHARS, "Testing CStringInputSMS", "type any things for testing");
 	
 	stringInputSMS->exec(NULL, "");
 
