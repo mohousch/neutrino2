@@ -254,7 +254,7 @@ void CRecordingSettings::showMenu()
 	//
 	recordingSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
-	//epg in name format
+	// epg in name format
 	recordingSettings->addItem(oj11);
 	
 	// save in channeldir
@@ -262,7 +262,7 @@ void CRecordingSettings::showMenu()
 
 	recordingSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
-	//recdir
+	// recdir
 	recordingSettings->addItem(fRecDir);
 	
 	// timeshift

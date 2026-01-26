@@ -185,7 +185,7 @@ void CRecord::getAPIDs(const t_channel_id channel_id, const unsigned char ap, AP
 	// alternate
         if (apids & TIMERD_APIDS_ALT)
         {
-                uint32_t apid_min=UINT_MAX;
+                uint32_t apid_min = UINT_MAX;
                 uint32_t apid_min_idx = 0;
 //                std::string language = "Stream";
                 
@@ -435,7 +435,7 @@ bool CRecord::doRecord(const t_channel_id channel_id, int mode, const event_id_t
 	deviceState = CMD_RECORD_RECORD;
 	
 	//
-	unsigned short pids[MAXPIDS];
+	unsigned short _pids[MAXPIDS];
 	unsigned int numpids = 0;
 	unsigned int pos = 0;
 
@@ -460,7 +460,7 @@ bool CRecord::doRecord(const t_channel_id channel_id, int mode, const event_id_t
 			if (si.pcrpid && (si.pcrpid != si.vpid))
 			{
 				psi.addPid(si.pcrpid, EN_TYPE_PCR, 0);
-				pids[numpids++] = si.pcrpid;
+				_pids[numpids++] = si.pcrpid;
 			}
 		}
 			
@@ -469,7 +469,7 @@ bool CRecord::doRecord(const t_channel_id channel_id, int mode, const event_id_t
 
 		for(APIDList::iterator it = apid_list.begin(); it != apid_list.end(); it++) 
 		{
-		        pids[numpids++] = it->apid;
+		        _pids[numpids++] = it->apid;
 
 			psi.addPid(it->apid, EN_TYPE_AUDIO, it->ac3 ? 1 : 0, it->language.c_str());
 		}
@@ -488,7 +488,7 @@ bool CRecord::doRecord(const t_channel_id channel_id, int mode, const event_id_t
 					
 					dprintf(DEBUG_NORMAL, "CRecord::doRecord: adding TTX subtitle %s pid 0x%x mag 0x%X page 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId, sd->teletext_magazine_number, sd->teletext_page_number);
 					
-					pids[numpids++] = sd->pId;
+					_pids[numpids++] = sd->pId;
 					
 					psi.addPid(sd->pId, EN_TYPE_TELTEX, 0, sd->ISO639_language_code.c_str());
 				}
@@ -500,7 +500,7 @@ bool CRecord::doRecord(const t_channel_id channel_id, int mode, const event_id_t
 					
 					dprintf(DEBUG_NORMAL, "CRecord::doRecord: adding DVB subtitle %s pid 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId);
 
-					pids[numpids++] = sd->pId;
+					_pids[numpids++] = sd->pId;
 					
 					psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0, sd->ISO639_language_code.c_str());
 				}
@@ -510,8 +510,8 @@ bool CRecord::doRecord(const t_channel_id channel_id, int mode, const event_id_t
 		//
 		if (si.pmtpid)
 		{
-			pids[numpids++] = si.pmtpid;
-			pids[numpids++] = 0;
+			_pids[numpids++] = si.pmtpid;
+			_pids[numpids++] = 0;
 		}
         }
 
@@ -652,7 +652,7 @@ bool CRecord::doRecord(const t_channel_id channel_id, int mode, const event_id_t
 	}
 	else
 	{
-		error_msg = startRecording(filename, getMovieInfoString(channel_id, epgid, epgTitle, apid_list, epg_time).c_str(), si.vpid, pids, numpids);
+		error_msg = startRecording(filename, getMovieInfoString(channel_id, epgid, epgTitle, apid_list, epg_time).c_str(), si.vpid, _pids, numpids);
 	}
 
 	if (error_msg == STREAM2FILE_OK) 
