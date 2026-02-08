@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$Id: audio_video_select.cpp 21122024 mohousch Exp $
+//	$Id: audio_video_select.cpp 08022026 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -73,7 +73,8 @@ unsigned short extnumpids = 0;
 int currentextspid = -1;
 std::string subtitle_file;
 //
-extern cPlayback *playback;
+extern cPlayback *playback;		// libdvbapi (playback_cs.cpp)
+extern cAudio * audioDecoder;		// libdvbapi (audio_cs.cpp)
 
 #define AUDIOMENU_ANALOGOUT_OPTION_COUNT 3
 const keyval AUDIOMENU_ANALOGOUT_OPTIONS[AUDIOMENU_ANALOGOUT_OPTION_COUNT] =
@@ -324,10 +325,10 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 	}
 	
 	// analogue output
-	AVPIDSelector->addItem(new CMenuOptionChooser(_("Analog Output"), &g_settings.audio_AnalogMode, AUDIOMENU_ANALOGOUT_OPTIONS, AUDIOMENU_ANALOGOUT_OPTION_COUNT, true, CAudioSettings::getInstance()->audioSetupNotifier, CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
+	AVPIDSelector->addItem(new CMenuOptionChooser(_("Analog Output"), &g_settings.audio_AnalogMode, AUDIOMENU_ANALOGOUT_OPTIONS, AUDIOMENU_ANALOGOUT_OPTION_COUNT, true, this, CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	
 	//ac3				
-	AVPIDSelector->addItem(new CMenuOptionChooser(_("Dolby Digital"), &g_settings.hdmi_dd, AC3_OPTIONS, AC3_OPTION_COUNT, true, CAudioSettings::getInstance()->audioSetupNotifier, CRCInput::RC_green, NEUTRINO_ICON_BUTTON_GREEN ));				
+	AVPIDSelector->addItem(new CMenuOptionChooser(_("Dolby Digital"), &g_settings.hdmi_dd, AC3_OPTIONS, AC3_OPTION_COUNT, true, this, CRCInput::RC_green, NEUTRINO_ICON_BUTTON_GREEN ));				
 	
 	// subs
 	CAVSubPIDChangeExec AVSubPIDChanger;
@@ -418,5 +419,23 @@ int CAVPIDSelectWidget::showAudioDialog(void)
         CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
         
         return res;
+}
+
+bool CAVPIDSelectWidget::changeNotify(const std::string& OptionName, void *)
+{
+	dprintf(DEBUG_NORMAL, "CAVPIDSelectWidget::changeNotify\n");
+
+	if (OptionName == _("Analog Output")) 
+	{
+		if(audioDecoder) 
+				audioDecoder->setChannel(g_settings.audio_AnalogMode);
+	}
+	else if (OptionName == _("Dolby Digital")) 
+	{
+		if(audioDecoder)
+			audioDecoder->SetHdmiDD(g_settings.hdmi_dd );
+	}
+	
+	return false;
 }
 

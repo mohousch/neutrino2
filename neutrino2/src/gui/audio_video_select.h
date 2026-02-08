@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$Id: audio_video_select.h 21122024 mohousch Exp $
+//	$Id: audio_video_select.h 08022026 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -38,7 +38,7 @@
 
 
 ////
-class CAVPIDChangeExec : public CTarget, CChangeObserver
+class CAVPIDChangeExec : public CTarget
 {
 	public:
 		int exec(CTarget* parent, const std::string & actionKey);
@@ -52,11 +52,13 @@ class CAVSubPIDChangeExec : public CTarget
 };
 
 ////
-class CAVPIDSelectWidget : public CTarget
+class CAVPIDSelectWidget : public CTarget, CChangeObserver
 {		
 	public:
 		int showAudioDialog();
 		int exec(CTarget * parent, const std::string & actionKey);
+		
+		bool changeNotify(const std::string& OptionName, void *);
 };
 
 #endif

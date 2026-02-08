@@ -348,7 +348,3 @@ bool CSubLangSelectNotifier::changeNotify(const std::string&, void *)
 	return true;
 }
 
-
-
-
-
