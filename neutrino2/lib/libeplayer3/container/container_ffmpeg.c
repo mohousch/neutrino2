@@ -429,10 +429,10 @@ static void FFMPEGThread(Context_t* context)
 	int audioMute = 0;
 	AudioVideoOut_t avOut;
 #ifdef USE_OPENGL
-	AVFrame *frame = NULL;
-	AVFrame* aframe = NULL;
+	AVFrame *vframe = NULL;
+	AVFrame *aframe = NULL;
 	
-	frame = av_frame_alloc();
+	vframe = av_frame_alloc();
 	aframe = av_frame_alloc();
 #endif	
 
@@ -565,7 +565,7 @@ static void FFMPEGThread(Context_t* context)
 #ifdef USE_OPENGL
 					avOut.stream 	 = videoTrack->stream;
 					avOut.ctx 	 = videoTrack->ctx;
-					avOut.frame 	 = frame;
+					avOut.vframe 	 = vframe;
 					avOut.aframe 	 = NULL;
 #endif
 
@@ -601,7 +601,7 @@ static void FFMPEGThread(Context_t* context)
 					avOut.type       = "audio";
 					avOut.stream 	 = audioTrack->stream;
 					avOut.ctx 	 = audioTrack->ctx;
-					avOut.frame 	 = NULL;
+					avOut.vframe 	 = NULL;
 					avOut.aframe 	 = aframe;
 
 					if (!context->playback->BackWard)
@@ -849,10 +849,10 @@ static void FFMPEGThread(Context_t* context)
 	
 	//
 #ifdef USE_OPENGL
-	if (frame)
+	if (vframe)
 	{
-		av_frame_free(&frame);
-		frame = NULL;
+		av_frame_free(&vframe);
+		vframe = NULL;
 	}
 	
 	if (aframe)

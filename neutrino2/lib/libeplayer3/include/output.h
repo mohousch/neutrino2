@@ -56,7 +56,7 @@ typedef struct
 #ifdef USE_OPENGL	
 	AVStream* 		stream;
 	AVCodecContext 		*ctx;
-	AVFrame*		frame;
+	AVFrame*		vframe;
 	AVFrame* 		aframe;
 #endif
 } AudioVideoOut_t;

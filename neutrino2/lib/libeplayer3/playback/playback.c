@@ -438,6 +438,7 @@ static int PlaybackClose(Context_t* context)
 	context->manager->audio->Command(context, MANAGER_DEL, NULL);
 	context->manager->video->Command(context, MANAGER_DEL, NULL);    
 	context->manager->subtitle->Command(context, MANAGER_DEL, NULL); 
+	context->manager->extsubtitle->Command(context, MANAGER_DEL, NULL);
 
 	context->playback->isPaused     = 0;
 	context->playback->isPlaying    = 0;

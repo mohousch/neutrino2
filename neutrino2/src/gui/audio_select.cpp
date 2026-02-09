@@ -271,7 +271,7 @@ bool CAudioSelectMenuHandler::changeNotify(const std::string& OptionName __attri
 	
 	CZapit::getInstance()->setVolumePercent(per, CZapit::getInstance()->getCurrentChannelID(), g_RemoteControl->current_PIDs.otherPIDs.selected_apid);
 	
-	return false;
+	return true;
 }
 
 //// apid change notifier

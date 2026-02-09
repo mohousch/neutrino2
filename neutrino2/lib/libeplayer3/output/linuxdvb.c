@@ -1315,12 +1315,12 @@ static int Write(void* _context, void* _out)
 		//
 		int got_frame = 0;
 		
-		if (out->frame)
-			av_frame_unref(out->frame);
+		if (out->vframe)
+			av_frame_unref(out->vframe);
 	
 		// decode frame
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
-		res = avcodec_decode_video2(out->ctx, out->frame, &got_frame, &avpkt);
+		res = avcodec_decode_video2(out->ctx, out->vframe, &got_frame, &avpkt);
 		
 		if (res < 0)
 		{
@@ -1339,7 +1339,7 @@ static int Write(void* _context, void* _out)
 		}
 		else
 		{
-			res = avcodec_receive_frame(out->ctx, out->frame);
+			res = avcodec_receive_frame(out->ctx, out->vframe);
 							
 			if (res != 0 && res != AVERROR(EAGAIN))
 			{
@@ -1371,7 +1371,7 @@ static int Write(void* _context, void* _out)
 				uint8_t *dest[4] = { data[buf_in].buffer, NULL, NULL, NULL };
 	    			int dest_linesize[4] = { out->ctx->width*4, 0, 0, 0 }; // sufficient ?
 	    			
-				sws_scale(convert, out->frame->data, out->frame->linesize, 0, out->ctx->height, dest, dest_linesize);
+				sws_scale(convert, out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);
 					
 				//
 				data[buf_in].width = out->ctx->width;
@@ -1379,9 +1379,9 @@ static int Write(void* _context, void* _out)
 					
 				//
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-				data[buf_in].vpts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(out->frame);
+				data[buf_in].vpts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(out->vframe);
 #else
-				data[buf_in].vpts = sCURRENT_PTS = out->frame->best_effort_timestamp;
+				data[buf_in].vpts = sCURRENT_PTS = out->vframe->best_effort_timestamp;
 #endif
 					
 				//
@@ -1413,8 +1413,8 @@ static int Write(void* _context, void* _out)
 			convert = NULL;
 		}
 		
-		if (out->frame)
-			av_frame_unref(out->frame);
+		if (out->vframe)
+			av_frame_unref(out->vframe);
 		
 		ret = cERR_LINUXDVB_ERROR;
 #endif

@@ -436,6 +436,6 @@ bool CAVPIDSelectWidget::changeNotify(const std::string& OptionName, void *)
 			audioDecoder->SetHdmiDD(g_settings.hdmi_dd );
 	}
 	
-	return false;
+	return true;
 }
 
