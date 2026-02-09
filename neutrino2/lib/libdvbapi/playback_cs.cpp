@@ -767,12 +767,6 @@ bool cPlayback::Start(char *filename)
 		{	
 			if (player->playback->Command(player, PLAYBACK_PLAY, NULL) == 0 ) 
 			{
-				//
-				if ( file_exists(suburi.c_str()) )
-				{
-					player->playback->Command(player, PLAYBACK_PLAY_SUB, NULL);
-				}
-				
 				playing = true;
 				mSpeed = 1;
 			}
@@ -913,7 +907,10 @@ bool cPlayback::SetExtSubPid(short pid)
 	if(pid != mExtSubStream)
 	{
 		if(player && player->playback)
+		{
 			player->playback->Command(player, PLAYBACK_SWITCH_EXTSUBTITLE, (void*)&track);
+			player->playback->Command(player, PLAYBACK_PLAY_SUB, NULL);
+		}
 
 		mExtSubStream = pid;
 		mSubStream = -1;
@@ -1516,7 +1513,6 @@ void cPlayback::AddSubtitleFile(const char* const file)
 	if (file != NULL)
 	{
 		player->playback->Command(player, PLAYBACK_OPEN_SUB, (char *)file);
-		player->playback->Command(player, PLAYBACK_PLAY_SUB, NULL);
 	}
 #endif
 }
