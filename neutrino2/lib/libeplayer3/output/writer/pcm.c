@@ -205,11 +205,7 @@ static uint32_t writeData(void* _call)
 {
 	WriterAVCallData_t* call = (WriterAVCallData_t*) _call;
 
-#if defined (__sh__)
-	unsigned char  PesHeader[PES_MAX_HEADER_SIZE];
-#else
 	static uint8_t  PesHeader[PES_MAX_HEADER_SIZE + 22];
-#endif
 
 	pcm_printf(10, "\n");
 
@@ -233,131 +229,10 @@ static uint32_t writeData(void* _call)
 	    return 0;
 	}
 
-	// FIXME: segfault
-#if 0	
 	pcmPrivateData_t* pcmPrivateData = (pcmPrivateData_t*)call->private_data;
 	uint8_t *buffer = call->data;
 	uint32_t size = call->len;
 
-#if defined (__sh__)
-	if (initialHeader && pcmPrivateData != NULL)
-	{
-		uint32_t codecID = (uint32_t)pcmPrivateData->avCodecId;
-		uint8_t LE = 0;
-		
-		switch (codecID)
-		{
-			case AV_CODEC_ID_PCM_S8:
-			case AV_CODEC_ID_PCM_U8:
-				break;
-			case AV_CODEC_ID_PCM_S16LE:
-			case AV_CODEC_ID_PCM_U16LE:
-				LE = 1;
-			case AV_CODEC_ID_PCM_S16BE:
-			case AV_CODEC_ID_PCM_U16BE:
-				break;
-			case AV_CODEC_ID_PCM_S24LE:
-			case AV_CODEC_ID_PCM_U24LE:
-				LE = 1;
-			case AV_CODEC_ID_PCM_S24BE:
-			case AV_CODEC_ID_PCM_U24BE:
-				break;
-			case AV_CODEC_ID_PCM_S32LE:
-			case AV_CODEC_ID_PCM_U32LE:
-				LE = 1;
-			case AV_CODEC_ID_PCM_S32BE:
-			case AV_CODEC_ID_PCM_U32BE:
-				break;
-			default:
-				break;
-		}
-		
-		initialHeader = 0;
-		prepareClipPlay(pcmPrivateData->uNoOfChannels, pcmPrivateData->uSampleRate, pcmPrivateData->uBitsPerSample, LE);
-	}
-
-	uint32_t n;
-	uint8_t *injectBuffer = malloc(SubFrameLen);
-	uint32_t pos;
-
-	for (pos = 0; pos < size;)
-	{
-		//
-		if ((size - pos) < SubFrameLen)
-		{
-			breakBufferFillSize = size - pos;
-			memcpy(breakBuffer, &buffer[pos], sizeof(uint8_t) * breakBufferFillSize);
-			break;
-		}
-
-		//get first PES's worth
-		if (breakBufferFillSize > 0)
-		{
-			memcpy(injectBuffer, breakBuffer, sizeof(uint8_t)*breakBufferFillSize);
-			memcpy(&injectBuffer[breakBufferFillSize], &buffer[pos], sizeof(unsigned char) * (SubFrameLen - breakBufferFillSize));
-			pos += (SubFrameLen - breakBufferFillSize);
-			breakBufferFillSize = 0;
-		}
-		else
-		{
-			memcpy(injectBuffer, &buffer[pos], sizeof(uint8_t)*SubFrameLen);
-			pos += SubFrameLen;
-		}
-
-		struct iovec iov[3];
-		iov[0].iov_base = PesHeader;
-		iov[1].iov_base = lpcm_prv;
-		iov[1].iov_len = sizeof(lpcm_prv);
-
-		iov[2].iov_base = injectBuffer;
-		iov[2].iov_len = SubFrameLen;
-
-		//write the PCM data
-		if (pcmPrivateData && 16 == pcmPrivateData->uBitsPerSample)
-		{
-			for (n = 0; n < SubFrameLen; n += 2)
-			{
-				uint8_t tmp;
-				tmp = injectBuffer[n];
-				injectBuffer[n] = injectBuffer[n + 1];
-				injectBuffer[n + 1] = tmp;
-			}
-		}
-		else
-		{
-			//      0   1   2   3   4   5   6   7   8   9  10  11
-			//    A1c A1b A1a-B1c B1b B1a-A2c A2b A2a-B2c B2b B2a
-			// to A1a A1b B1a B1b.A2a A2b B2a B2b-A1c B1c A2c B2c
-			for (n = 0; n < SubFrameLen; n += 12)
-			{
-				unsigned char t, *p = &injectBuffer[n];
-				t = p[0];
-				p[ 0] = p[ 2];
-				p[ 2] = p[ 5];
-				p[ 5] = p[ 7];
-				p[ 7] = p[11];
-				p[11] = p[ 9];
-				p[ 9] = p[ 3];
-				p[ 3] = p[ 4];
-				p[ 4] = p[ 8];
-				p[ 8] = t;
-			}
-		}
-
-		//increment err... subframe count?
-		lpcm_prv[1] = ((lpcm_prv[1] + SubFramesPerPES) & 0x1F);
-
-		iov[0].iov_len = InsertPesHeader(PesHeader, iov[1].iov_len + iov[2].iov_len, PCM_AUDIO_PES_START_CODE, call->Pts, 0);
-		int32_t len = call->WriteV(call->fd, iov, 3);
-		
-		if (len < 0)
-		{
-			break;
-		}
-	}
-	
-	free(injectBuffer);
-#else
 	if (pcmPrivateData->bResampling || NULL == fixed_buffer)
 	{
 		int32_t width = 8;
@@ -505,24 +380,8 @@ static uint32_t writeData(void* _call)
 		
 		fixed_buffertimestamp += fixed_bufferduration;
 	}
-#endif
-
-	return size;
-#endif
-
-	////
-	int HeaderLength = InsertPesHeader (PesHeader, call->len , MPEG_AUDIO_PES_START_CODE, call->Pts, 0);
-
-	unsigned char* PacketStart = malloc(call->len + HeaderLength);
-
-	memcpy (PacketStart, PesHeader, HeaderLength);
-	memcpy (PacketStart + HeaderLength, call->data, call->len);
-
-	int len = write(call->fd, PacketStart, call->len + HeaderLength);
-
-	free(PacketStart);
 	
-	return len;
+	return size;
 }
 
 /* ***************************** */

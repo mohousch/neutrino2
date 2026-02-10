@@ -119,51 +119,6 @@ static int writeData(void* _call)
 		return 0;
 	}
 
-#ifdef __sh__
-	if (initialHeader) 
-	{
-
-		unsigned char  PesHeader[PES_MAX_HEADER_SIZE];
-		int HeaderLength;
-
-		if ((call->private_size <= 0) || (call->private_data == NULL))
-		{
-			wma_err("private NULL.\n");
-			return -1;
-		}
-
-		HeaderLength = InsertPesHeader (PesHeader, call->private_size, MPEG_AUDIO_PES_START_CODE, 0, 0);
-
-		unsigned char* PacketStart = malloc(call->private_size + HeaderLength);
-		memcpy (PacketStart, PesHeader, HeaderLength);
-		memcpy (PacketStart + HeaderLength, call->private_data, call->private_size);
-
-		len = write(call->fd, PacketStart, call->private_size + HeaderLength);
-
-		free(PacketStart);
-
-		initialHeader = 0;
-	}
-
-	if (call->len > 0 && call->data)
-	{
-		unsigned char  PesHeader[PES_MAX_HEADER_SIZE];
-
-		int HeaderLength = InsertPesHeader (PesHeader, call->len, MPEG_AUDIO_PES_START_CODE, call->Pts, 0);
-
-		unsigned char* PacketStart = malloc(call->len + HeaderLength);
-		memcpy (PacketStart, PesHeader, HeaderLength);
-		memcpy (PacketStart + HeaderLength, call->data, call->len);
-
-		len = write(call->fd, PacketStart, call->len + HeaderLength);
-
-		free(PacketStart);
-	}
-
-	wma_printf(10, "wma < %d\n", len);
-
-	return len;
-#else
 	if (call == NULL || call->data == NULL || call->len <= 0 || call->fd < 0 || \
         !call->private_data || call->private_size != sizeof(pcmPrivateData_t)) 
         {
@@ -201,16 +156,6 @@ static int writeData(void* _call)
     	{
         	private_size = pcmPrivateData->private_size;
     	}
-
-/*
-    	if( STB_DREAMBOX == GetSTBType() ) 
-    	{
-        	PesHeader[headerSize++] = 'B';
-        	PesHeader[headerSize++] = 'C';
-        	PesHeader[headerSize++] = 'M';
-        	PesHeader[headerSize++] = 'A';
-    	}
-*/
 
     	if (pcmPrivateData->avCodecId != AV_CODEC_ID_VORBIS || pcmPrivateData->avCodecId != AV_CODEC_ID_OPUS) 
     	{
@@ -317,7 +262,6 @@ static int writeData(void* _call)
     	iov[i++].iov_len  = call->len;
 
     	return call->WriteV(call->fd, iov, i);
-#endif
 }
 
 /* ***************************** */

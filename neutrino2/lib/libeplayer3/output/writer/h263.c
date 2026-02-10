@@ -94,7 +94,7 @@ static int writeData(void* _call)
 	WriterAVCallData_t* call = (WriterAVCallData_t*) _call;
 
 	unsigned char PesHeader[PES_MAX_HEADER_SIZE];
-#if defined (__sh__)
+#if 0 //defined (__sh__)
 	unsigned char DataCopy[PES_MAX_HEADER_SIZE];
 	int len = 0;
 #endif
@@ -121,7 +121,7 @@ static int writeData(void* _call)
 		return 0;
 	}
 
-#if defined (__sh__)
+#if 0 //defined (__sh__)
 	int HeaderLength = InsertPesHeader(PesHeader, call->len, H263_VIDEO_PES_START_CODE, call->Pts,0);
 	int PrivateHeaderLength = InsertVideoPrivateDataHeader (&PesHeader[HeaderLength], call->len);
 	int PesLength = PesHeader[PES_LENGTH_BYTE_0] + (PesHeader[PES_LENGTH_BYTE_1] << 8) + PrivateHeaderLength;

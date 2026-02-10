@@ -121,11 +121,7 @@ static int writeData(void* _call)
 	struct iovec iov[2];
 
 	iov[0].iov_base = PesHeader;
-#if defined (__sh__)
-	iov[0].iov_len = InsertPesHeader(PesHeader, call->len, PCM_AUDIO_PES_START_CODE, call->Pts, 0);
-#else
 	iov[0].iov_len = InsertPesHeader(PesHeader, call->len, MPEG_AUDIO_PES_START_CODE, call->Pts, 0);
-#endif
 	iov[1].iov_base = call->data;
 	iov[1].iov_len = call->len;
 

@@ -116,16 +116,6 @@ static int writeData(void* _call)
 		return 0;
 	}
 
-#if defined (__sh__)
-	struct iovec iov[2];
-
-	iov[0].iov_base = PesHeader;
-	iov[0].iov_len = InsertPesHeader(PesHeader, call->len, MPEG_AUDIO_PES_START_CODE, call->Pts, 0);
-	iov[1].iov_base = call->data;
-	iov[1].iov_len = call->len;
-
-	int len = call->WriteV(call->fd, iov, 2);
-#else
 	call->private_size = 0;
 
 	uint32_t headerSize = InsertPesHeader(PesHeader, call->len + call->private_size, MPEG_AUDIO_PES_START_CODE, call->Pts, 0);
@@ -144,9 +134,9 @@ static int writeData(void* _call)
 	iov[1].iov_len = call->len;
 
 	int len = call->WriteV(call->fd, iov, 2);
-#endif
 
 	mp3_printf(10, "mp3_Write-< len=%d\n", len);
+	
 	return len;
 }
 
