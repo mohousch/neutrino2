@@ -46,9 +46,7 @@
 #include "common.h"
 #include "output.h"
 #include "misc.h"
-#include "pes.h"
 #include "writer.h"
-#include "pcm.h"
 
 /* ***************************** */
 /* Makros/Constants              */

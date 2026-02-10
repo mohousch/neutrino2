@@ -46,8 +46,6 @@
 
 #include "common.h"
 #include "misc.h"
-#include "aac.h"
-#include "pcm.h"
 #include "ffmpeg_metadata.h"
 #include "writer.h"
 

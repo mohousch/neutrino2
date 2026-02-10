@@ -41,8 +41,6 @@
 #include "common.h"
 #include "output.h"
 #include "misc.h"
-#include "pes.h"
-#include "pcm.h"
 #include "writer.h"
 
 /* ***************************** */

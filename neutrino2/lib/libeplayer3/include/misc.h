@@ -21,6 +21,7 @@
 #define misc_123
 
 #include <dirent.h>
+#include <libavcodec/avcodec.h>
 
 /* some useful things needed by many files ... */
 
@@ -33,6 +34,24 @@ typedef struct BitPacker_s
 	unsigned int        BitBuffer;                              /* bitreader shifter */
 	int                 Remaining;                              /* number of remaining in the shifter */
 } BitPacker_t;
+
+typedef struct pcmPrivateData_s
+{
+	int uNoOfChannels;
+	int uSampleRate;
+	int uBitsPerSample;
+	int bLittleEndian;
+	
+	//
+	uint8_t bResampling;
+	enum AVCodecID avCodecId;
+	uint8_t *private_data;
+    	uint32_t private_size;
+    	int32_t block_align;
+    	int32_t frame_size;
+    	int32_t bits_per_coded_sample;
+    	int32_t bit_rate;
+} pcmPrivateData_t;
 
 /* ***************************** */
 /* Makros/Constants              */
@@ -52,12 +71,77 @@ typedef struct BitPacker_s
 #define BUFFER_SIZE                             (TP_PACKET_SIZE*NUMBER_PACKETS)
 #define PADDING_LENGTH                          (1024*BLOCK_COUNT)
 
+//// aac
+#define AAC_HEADER_LENGTH       		7
+
+//// pes
+#define PES_HEADER_SIZE				9
+#define PES_MAX_HEADER_SIZE                     (PES_HEADER_SIZE + 256) // 64
+#define PES_PRIVATE_DATA_FLAG                   0x80
+#define PES_PRIVATE_DATA_LENGTH                 8
+#define PES_LENGTH_BYTE_0                       5
+#define PES_LENGTH_BYTE_1                       4
+#define PES_FLAGS_BYTE                          7
+#define PES_EXTENSION_DATA_PRESENT              0x01
+#define PES_HEADER_DATA_LENGTH_BYTE             8
+#define PES_START_CODE_RESERVED_4               0xfd
+#define PES_VERSION_FAKE_START_CODE             0x31
+
+////
+#define MAX_PES_PACKET_SIZE                     (65535) //65400
+
+//// start codes
+#define PCM_AUDIO_PES_START_CODE        	0xbd
+#define H263_VIDEO_PES_START_CODE		0xfe
+#define H264_VIDEO_PES_START_CODE               0xe2
+#define MPEG_VIDEO_PES_START_CODE               0xe0
+#define MPEG_AUDIO_PES_START_CODE           	0xc0
+#define VC1_VIDEO_PES_START_CODE	    	0xfd
+#define AAC_AUDIO_PES_START_CODE            	0xcf
+
 /* ***************************** */
 /* Prototypes                    */
 /* ***************************** */
 
 void PutBits(BitPacker_t * ld, unsigned int code, unsigned int length);
 void FlushBits(BitPacker_t * ld);
+////
+int InsertPesHeader(unsigned char *data, int size, unsigned char stream_id, unsigned long long int pts, int pic_start_code);
+int InsertVideoPrivateDataHeader(unsigned char *data, int payload_size);
+void UpdatePesHeaderPayloadSize(uint8_t *data, int32_t size);
+
+//// aac
+static inline int aac_get_sample_rate_index (uint32_t sample_rate)
+{
+	if (96000 <= sample_rate)
+		return 0;
+	else if (88200 <= sample_rate)
+		return 1;
+	else if (64000 <= sample_rate)
+		return 2;
+	else if (48000 <= sample_rate)
+		return 3;
+	else if (44100 <= sample_rate)
+		return 4;
+	else if (32000 <= sample_rate)
+		return 5;
+	else if (24000 <= sample_rate)
+		return 6;
+	else if (22050 <= sample_rate)
+		return 7;
+	else if (16000 <= sample_rate)
+		return 8;
+	else if (12000 <= sample_rate)
+		return 9;
+	else if (11025 <= sample_rate)
+		return 10;
+	else if (8000 <= sample_rate)
+		return 11;
+	else if (7350 <= sample_rate)
+		return 12;
+	else
+	      return 13;
+}
 
 /* ***************************** */
 /* MISC Functions                */
