@@ -1,5 +1,5 @@
 /*
- * linuxdvb output/writer handling.
+ * h263 writer handling.
  *
  * crow 2010
  *

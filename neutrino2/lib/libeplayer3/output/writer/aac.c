@@ -1,5 +1,5 @@
 /*
- * linuxdvb output/writer handling.
+ * aac writer handling.
  *
  * konfetti 2010 based on linuxdvb.c code from libeplayer2
  *

@@ -1,5 +1,5 @@
 /*
- * linuxdvb output/writer handling.
+ * linuxdvb output/writer handling (pes).
  *
  * konfetti 2010 based on linuxdvb.c code from libeplayer2
  *

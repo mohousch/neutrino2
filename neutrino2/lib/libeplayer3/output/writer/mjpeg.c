@@ -1,5 +1,5 @@
 /*
- * linuxdvb output/writer handling.
+ * mjpeg writer handling.
  *
  * konfetti 2010 based on linuxdvb.c code from libeplayer2
  *

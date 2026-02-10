@@ -1,4 +1,23 @@
-#ifndef misc_123
+/*
+ * misc.h
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ */
+ 
+ #ifndef misc_123
 #define misc_123
 
 #include <dirent.h>
@@ -21,7 +40,7 @@ typedef struct BitPacker_s
 
 #define INVALID_PTS_VALUE                       0x200000000ull
 
-/*#define BIG_READS*/
+//#define BIG_READS
 #if defined (BIG_READS)
 #define BLOCK_COUNT                             8
 #else
@@ -32,10 +51,6 @@ typedef struct BitPacker_s
 #define NUMBER_PACKETS                          (199*BLOCK_COUNT)
 #define BUFFER_SIZE                             (TP_PACKET_SIZE*NUMBER_PACKETS)
 #define PADDING_LENGTH                          (1024*BLOCK_COUNT)
-
-/* subtitle hacks ->for file subtitles */
-#define TEXTSRTOFFSET 				100
-#define TEXTSSAOFFSET 				200
 
 /* ***************************** */
 /* Prototypes                    */

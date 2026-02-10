@@ -1,5 +1,5 @@
 /*
- * framebuffer output/writer handling.
+ * framebuffer writer handling.
  *
  * This is a hacky implementation of a framebuffer output for the subtitling.
  * This is ment as a POV, later this should be implemented in enigma2 and
