@@ -279,7 +279,7 @@ static char* Codec2Encoding(uint32_t codec_id, int* version)
 		case AV_CODEC_ID_PCM_S32BE:
 		case AV_CODEC_ID_PCM_U32LE:
 		case AV_CODEC_ID_PCM_U32BE:
-			return	"A_IPCM"; 
+			return	"A_PCM"; 
 			
 		case AV_CODEC_ID_AMR_NB:
     		case AV_CODEC_ID_AMR_WB:
