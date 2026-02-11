@@ -182,8 +182,8 @@ static int writeData(void* _call)
 /* Writer  Definition            */
 /* ***************************** */
 
-static WriterCaps_t divix3_caps = {
-    	"divix3",
+static WriterCaps_t divx3_caps = {
+    	"divx3",
     	eVideo,
     	"V_DIVX3",
     	VIDEO_STREAMTYPE_DIVX311
@@ -193,6 +193,6 @@ struct Writer_s WriterVideoDIVX3 = {
     	&reset,
     	&writeData,
     	NULL,
-    	&divix3_caps
+    	&divx3_caps
 };
 
