@@ -87,7 +87,7 @@ CMP3Player::CMP3Player()
 	fileFilter.addFilter("m2a");
 	fileFilter.addFilter("mpa");
 	fileFilter.addFilter("mp2");
-//	fileFilter.addFilter("wav"); // player segfault
+	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("aac");
 	fileFilter.addFilter("dts");
