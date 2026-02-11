@@ -604,14 +604,6 @@ static void FFMPEGThread(Context_t* context)
 					avOut.ctx 	 = audioTrack->ctx;
 					avOut.vframe 	 = NULL;
 					avOut.aframe 	 = aframe;
-
-					if (!context->playback->BackWard)
-					{
-						if (context->output->audio->Write(context, &avOut) < 0)
-						{
-							ffmpeg_err("writing data to audio device failed\n");
-						}
-					}
 #else
 					// pcm extradata
 					pcmPrivateData_t extradata;
@@ -645,14 +637,6 @@ static void FFMPEGThread(Context_t* context)
 						avOut.width      = 0;
 						avOut.height     = 0;
 						avOut.type       = "audio";
-
-						if (!context->playback->BackWard)
-						{
-							if (context->output->audio->Write(context, &avOut) < 0)
-							{
-								ffmpeg_err("(raw pcm) writing data to audio device failed\n");
-							}
-						}
 					}
 					else if (audioTrack->inject_as_pcm == 1)
 					{
@@ -703,14 +687,6 @@ static void FFMPEGThread(Context_t* context)
 							avOut.width      = 0;
 							avOut.height     = 0;
 							avOut.type       = "audio";
-
-							if (!context->playback->BackWard)
-							{
-								if (context->output->audio->Write(context, &avOut) < 0)
-								{
-									ffmpeg_err("writing data to audio device failed\n");
-								}
-							}
 						}
 					}
 					else if (audioTrack->have_aacheader == 1)
@@ -727,14 +703,6 @@ static void FFMPEGThread(Context_t* context)
 						avOut.width      = 0;
 						avOut.height     = 0;
 						avOut.type       = "audio";
-
-						if (!context->playback->BackWard)
-						{
-							if (context->output->audio->Write(context, &avOut) < 0)
-							{
-								ffmpeg_err("(aac) writing data to audio device failed\n");
-							}
-						}
 					}
 					else
 					{
@@ -748,16 +716,15 @@ static void FFMPEGThread(Context_t* context)
 						avOut.width      = 0;
 						avOut.height     = 0;
 						avOut.type       = "audio";
-
-						if (!context->playback->BackWard)
-						{
-							if (context->output->audio->Write(context, &avOut) < 0)
-							{
-								ffmpeg_err("writing data to audio device failed\n");
-							}
-						}
 					}
 #endif
+					if (!context->playback->BackWard)
+					{
+						if (context->output->audio->Write(context, &avOut) < 0)
+						{
+							ffmpeg_err("writing data to audio device failed\n");
+						}
+					}
 				}
 			}
 
@@ -918,7 +885,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	{
 		av_dict_set(&options, "timeout", "20000000", 0); //20sec
 		av_dict_set(&options, "reconnect", "1", 0);
-		av_dict_set(&options, "reconnect_delay_max", "7", 0);
+//		av_dict_set(&options, "reconnect_delay_max", "7", 0);
 		
 		av_dict_set(&options, "seekable", "0", 0);
 		av_dict_set(&options, "reconnect_streamed", "1", 0);
@@ -943,7 +910,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	//
 	av_dict_free(&options);
 	
-	avContext->flags |= AVFMT_FLAG_GENPTS;
+	avContext->flags = AVFMT_FLAG_GENPTS;
 #if (LIBAVFORMAT_VERSION_MAJOR > 55) && (LIBAVFORMAT_VERSION_MAJOR < 56)
 	avContext->max_analyze_duration2 = 1;
 #else
