@@ -279,7 +279,7 @@ static char* Codec2Encoding(uint32_t codec_id, int* version)
 		case AV_CODEC_ID_PCM_S32BE:
 		case AV_CODEC_ID_PCM_U32LE:
 		case AV_CODEC_ID_PCM_U32BE:
-			return	"A_PCM"; 
+			return	"A_IPCM"; 
 			
 		case AV_CODEC_ID_AMR_NB:
     		case AV_CODEC_ID_AMR_WB:
@@ -1126,18 +1126,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 					track.inject_as_pcm = 1;
 					
 					ffmpeg_printf(10, " Handle inject_as_pcm = %d\n", track.inject_as_pcm);
-
-					// init codec
-					AVCodec* codec = avcodec_find_decoder(stream->codecpar->codec_id);
-
-#if LIBAVCODEC_VERSION_MAJOR < 54
-					if(codec != NULL && !avcodec_open(stream->codec, codec))
-#else
-					if(codec != NULL && !avcodec_open2(actx, codec, NULL))
-#endif					  
-						printf("AVCODEC__INIT__SUCCESS\n");
-					else
-						printf("AVCODEC__INIT__FAILED\n");
 				}
 				// aac
 				else if(stream->codecpar->codec_id == AV_CODEC_ID_AAC) 
