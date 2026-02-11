@@ -78,44 +78,12 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 /* ***************************** */
 
 static int initialHeader = 1;
-static unsigned int SubFrameLen = 0;
-static unsigned int SubFramesPerPES = 0;
-
-//
 static uint8_t codec_data[18];
 static uint64_t fixed_buffertimestamp;
 static uint64_t fixed_bufferduration;
 static uint32_t fixed_buffersize;
 static uint8_t *fixed_buffer;
 static uint32_t fixed_bufferfilled;
-
-static const unsigned char clpcm_pes[18] = {   0x00, 0x00, 0x01, 0xBD, //start code
-					0x07, 0xF1,             //pes length
-					0x81, 0x81, 0x09,       //fixed
-					0x21, 0x00, 0x01, 0x00, 0x01, //PTS marker bits
-					0x1E, 0x60, 0x0A,       //first pes only, 0xFF after
-					0xFF
-			};
-			
-static const unsigned char clpcm_prv[14] = {   0xA0,   //sub_stream_id
-					0, 0,   //resvd and UPC_EAN_ISRC stuff, unused
-					0x0A,   //private header length
-					0, 9,   //first_access_unit_pointer
-					0x00,   //emph,rsvd,stereo,downmix
-					0x0F,   //quantisation word length 1,2
-					0x0F,   //audio sampling freqency 1,2
-					0,      //resvd, multi channel type
-					0,      //bit shift on channel GR2, assignment
-					0x80,   //dynamic range control
-					0, 0    //resvd for copyright management
-			};
-
-static unsigned char lpcm_prv[14];
-static unsigned char breakBuffer[8192];
-static unsigned int breakBufferFillSize = 0;
-
-//
-//static unsigned char lpcm_pes[18];
 
 /* ***************************** */
 /* Prototypes                    */
@@ -124,76 +92,6 @@ static unsigned int breakBufferFillSize = 0;
 /* ***************************** */
 /* MISC Functions                */
 /* ***************************** */
-
-static int prepareClipPlay(int uNoOfChannels, int uSampleRate, int uBitsPerSample, int bLittleEndian)
-{
-	pcm_printf(10, "rate: %d ch: %d bits: %d (%d bps)\n",
-		uSampleRate,
-		uNoOfChannels,
-		uBitsPerSample,
-		(uBitsPerSample / 8)
-	);
-
-	SubFrameLen = 0;
-	SubFramesPerPES = 0;
-	breakBufferFillSize = 0;
-
-	memcpy(lpcm_prv, clpcm_prv, sizeof(lpcm_prv));
-
-	//figure out size of subframe and set up sample rate
-	switch(uSampleRate) 
-	{
-		case 48000:             
-			SubFrameLen = 40;
-			break;
-		case 96000:             
-			lpcm_prv[8] |= 0x10;
-			SubFrameLen = 80;
-			break;
-		case 192000:    
-			lpcm_prv[8] |= 0x20;
-			SubFrameLen = 160;
-			break;
-		case 44100:             
-			lpcm_prv[8] |= 0x80;
-			SubFrameLen = 40;
-			break;
-		case 88200:             
-			lpcm_prv[8] |= 0x90;
-			SubFrameLen = 80;
-			break;
-		case 176400:    
-			lpcm_prv[8] |= 0xA0;
-			SubFrameLen = 160;
-			break;
-		default:                
-			break;
-	}
-
-	SubFrameLen *= uNoOfChannels;
-	SubFrameLen *= (uBitsPerSample / 8);
-
-	//rewrite PES size to have as many complete subframes per PES as we can
-	SubFramesPerPES = ((2048 - 18) - sizeof(lpcm_prv)) / SubFrameLen;
-	SubFrameLen *= SubFramesPerPES;
-
-	//set number of channels
-	lpcm_prv[10]  = uNoOfChannels - 1;
-
-	switch(uBitsPerSample) 
-	{
-		case 16: 
-			break;
-		case 24: 
-			lpcm_prv[7] |= 0x20;
-			break;
-		default:        
-			printf("inappropriate bits per sample (%d) - must be 16 or 24\n",uBitsPerSample);
-			return 1;
-	}
-
-	return 0;
-}
 
 static int reset()
 {
