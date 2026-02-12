@@ -272,7 +272,7 @@ static int32_t writeData(void *_call)
 
 static WriterCaps_t caps_lpcm = 
 {
-    	"ipcm",
+    	"lpcm",
     	eAudio,
     	"A_LPCM",
     	AUDIO_STREAMTYPE_LPCMDVD
