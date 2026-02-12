@@ -604,7 +604,7 @@ static void FFMPEGThread(Context_t* context)
 					extradata.bit_rate = audioTrack->stream->codecpar->bit_rate;
                 			extradata.block_align = audioTrack->stream->codecpar->block_align;
                 			extradata.frame_size = audioTrack->stream->codecpar->frame_size;
-                			extradata.bResampling  = 1;
+                			extradata.bResampling  = 0;
                 			
 					//
 					if(!strncmp(audioTrack->Encoding, "A_PCM", 5))
@@ -624,6 +624,8 @@ static void FFMPEGThread(Context_t* context)
 					}
 					else if (audioTrack->inject_as_pcm == 1)
 					{
+						extradata.bResampling  = 1;
+						
 						// FIXME:
 						int      bytesDone = 0;
 						unsigned int samples_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
