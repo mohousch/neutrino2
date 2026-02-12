@@ -315,3 +315,19 @@ struct Writer_s WriterAudioIPCM = {
 	&caps_ipcm
 };
 
+// flac
+static WriterCaps_t caps_flac = {
+	"flac",
+	eAudio,
+	"A_FLAC",
+	AUDIO_STREAMTYPE_RAW
+};
+
+struct Writer_s WriterAudioFLAC = {
+	&reset,
+	&writeData,
+	NULL,
+	&caps_ipcm
+};
+
+

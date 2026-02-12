@@ -263,7 +263,7 @@ static char* Codec2Encoding(uint32_t codec_id, int* version)
 			return "A_OPUS";	//FIXME:
 			
 		case AV_CODEC_ID_FLAC:
-			return "A_IPCM";
+			return "A_FLAC";
 			
 		case AV_CODEC_ID_PCM_S8:
 		case AV_CODEC_ID_PCM_U8:
@@ -589,22 +589,6 @@ static void FFMPEGThread(Context_t* context)
 
 					ffmpeg_printf(200, "AudioTrack index = %d\n",index);
 								
-#ifdef USE_OPENGL
-					avOut.data       = packet.data;
-					avOut.len        = packet.size;
-					avOut.pts        = audioTrack->pts;
-					avOut.extradata  = NULL;
-					avOut.extralen   = 0;
-					avOut.frameRate  = 0;
-					avOut.timeScale  = 0;
-					avOut.width      = 0;
-					avOut.height     = 0;
-					avOut.type       = "audio";
-					avOut.stream 	 = audioTrack->stream;
-					avOut.ctx 	 = audioTrack->ctx;
-					avOut.vframe 	 = NULL;
-					avOut.aframe 	 = aframe;
-#else
 					// pcm extradata
 					pcmPrivateData_t extradata;
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 37, 100)
@@ -717,7 +701,14 @@ static void FFMPEGThread(Context_t* context)
 						avOut.height     = 0;
 						avOut.type       = "audio";
 					}
+
+#ifdef USE_OPENGL
+					avOut.stream 	 = audioTrack->stream;
+					avOut.ctx 	 = audioTrack->ctx;
+					avOut.vframe 	 = NULL;
+					avOut.aframe 	 = aframe;
 #endif
+
 					if (!context->playback->BackWard)
 					{
 						if (context->output->audio->Write(context, &avOut) < 0)
