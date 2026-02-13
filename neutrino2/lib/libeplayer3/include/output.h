@@ -58,10 +58,10 @@ typedef struct
 	unsigned char*         	data;
 	unsigned int           	len;
 
-	unsigned char*         	extradata;
+	uint8_t         	*extradata;
 	unsigned int           	extralen;
 	
-	unsigned long long int 	pts;
+	uint64_t         	pts;
 	
 	float                  	frameRate;
 	unsigned int           	timeScale;
@@ -84,13 +84,13 @@ typedef struct
 typedef struct
 {
 	//
-	unsigned char* 		data;
+	uint8_t 		*data;
 	int            		len;
 
-	unsigned char* 		extradata;
+	uint8_t 		*extradata;
 	int            		extralen;
 	
-	long long int  		pts;
+	int64_t  		pts;
 	float          		duration;
 	
 	int          		width;

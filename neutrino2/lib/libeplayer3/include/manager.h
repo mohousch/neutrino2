@@ -58,11 +58,11 @@ typedef struct Track_s
 	char*                 language;
 
 	// length of track
-	long long int         duration;
-	unsigned int          frame_rate;
-	unsigned int          TimeScale;
+	int64_t               duration;
+	uint32_t             frame_rate;
+	uint32_t             TimeScale;
 	int                   version;
-	long long int         pts;
+	int64_t		      pts;
 
 	// for later use:
 	eTrackTypeEplayer     type;
