@@ -118,12 +118,12 @@ static AVCodecContext* subctx = NULL;
 
 static unsigned char isContainerRunning = 0;
 
-static long long int latestPts = 0;
+static int64_t latestPts = 0;
 
 /* ***************************** */
 /* Prototypes                    */
 /* ***************************** */
-static int container_ffmpeg_seek_rel(Context_t *context, off_t pos, long long int pts, float sec);
+static int32_t container_ffmpeg_seek_rel(Context_t *context, off_t pos, int64_t pts, float sec);
 
 /* ***************************** */
 /* MISC Functions                */
@@ -328,9 +328,9 @@ static char* Codec2Encoding(uint32_t codec_id, int* version)
 	return NULL;
 }
 
-long long int calcPts(AVStream *stream, AVPacket *packet, AVFormatContext *_avContext)
+int64_t calcPts(AVStream *stream, AVPacket *packet, AVFormatContext *_avContext)
 {
-	long long int pts;
+	int64_t pts;
 
 	if ((stream == NULL) || (packet == NULL) || (_avContext == NULL))
 	{
@@ -424,11 +424,11 @@ static void FFMPEGThread(Context_t* context)
 {
 	AVPacket   packet;
 	off_t lastSeek = -1;
-	long long int lastPts = -1;
-	long long int currentVideoPts = -1;
-	long long int currentAudioPts = -1;
-	long long int showtime = 0;
-	long long int bofcount = 0;
+	int64_t lastPts = -1;
+	int64_t currentVideoPts = -1;
+	int64_t currentAudioPts = -1;
+	int64_t showtime = 0;
+	int64_t bofcount = 0;
 	int err = 0;
 	int audioMute = 0;
 	AudioVideoOut_t avOut;
@@ -630,7 +630,7 @@ static void FFMPEGThread(Context_t* context)
 						extradata.bResampling  = 1;
 						
 						// FIXME:
-						int      bytesDone = 0;
+						int bytesDone = 0;
 						unsigned int samples_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
 
 						if(samples == NULL)
@@ -669,7 +669,7 @@ static void FFMPEGThread(Context_t* context)
 							avOut.len        = samples_size;
 
 							avOut.pts        = audioTrack->pts;
-							avOut.extradata  = (unsigned char *) &extradata;
+							avOut.extradata  = (uint8_t *) &extradata;
 							avOut.extralen   = sizeof(extradata);
 							avOut.frameRate  = 0;
 							avOut.timeScale  = 0;
@@ -1378,9 +1378,9 @@ static void FFMPEGSubThread(Context_t* context)
 {
 	AVPacket   subpacket;
 	off_t lastSeek = -1;
-	long long int lastPts = -1;
-	long long int showtime = 0;
-	long long int bofcount = 0;
+	int64_t lastPts = -1;
+	int64_t showtime = 0;
+	int64_t bofcount = 0;
 	int err = 0;
 	int audioMute = 0;	
 
@@ -1872,7 +1872,7 @@ static int container_ffmpeg_seek_bytes(off_t pos)
 }
 
 // seeking relative to a given byteposition N seconds ->for reverse playback needed
-static int container_ffmpeg_seek_rel(Context_t *context, off_t pos, long long int pts, float sec) 
+static int container_ffmpeg_seek_rel(Context_t *context, off_t pos, int64_t pts, float sec) 
 {
 	Track_t * videoTrack = NULL;
 	Track_t * audioTrack = NULL;
@@ -2259,7 +2259,7 @@ static int Command(void* _context, ContainerCmd_t command, void* argument)
 		
 		case CONTAINER_LAST_PTS: 
 		{
-			*((long long int*)argument) = latestPts;
+			*((int64_t*)argument) = latestPts;
 			break;
 		}
 		

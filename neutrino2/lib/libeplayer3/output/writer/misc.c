@@ -134,10 +134,10 @@ void FlushBits(BitPacker_t* ld)
 	ld->BitBuffer = 0;
 }
 
-int InsertVideoPrivateDataHeader(unsigned char *data, int payload_size)
+int32_t InsertVideoPrivateDataHeader(uint8_t *data, int32_t payload_size)
 {
 	BitPacker_t ld2 = {data, 0, 32};
-	int         i;
+	int32_t         i;
 
 	PutBits (&ld2, PES_PRIVATE_DATA_FLAG, 8);
 	PutBits (&ld2, payload_size & 0xff, 8);
@@ -161,7 +161,7 @@ void UpdatePesHeaderPayloadSize(uint8_t *data, int32_t size)
 	data[5] = size & 0xFF;
 }
 
-int InsertPesHeader(unsigned char *data, int size, unsigned char stream_id, unsigned long long int pts, int pic_start_code)
+int32_t InsertPesHeader(uint8_t *data, int size, unsigned char stream_id, uint64_t pts, int32_t pic_start_code)
 {
 	BitPacker_t ld2 = {data, 0, 32};
 

@@ -106,8 +106,8 @@ typedef struct pcmPrivateData_s
 void PutBits(BitPacker_t * ld, unsigned int code, unsigned int length);
 void FlushBits(BitPacker_t * ld);
 ////
-int InsertPesHeader(unsigned char *data, int size, unsigned char stream_id, unsigned long long int pts, int pic_start_code);
-int InsertVideoPrivateDataHeader(unsigned char *data, int payload_size);
+int32_t InsertPesHeader(uint8_t *data, int32_t size, unsigned char stream_id, uint64_t pts, int32_t pic_start_code);
+int InsertVideoPrivateDataHeader(uint8_t *data, int32_t payload_size);
 void UpdatePesHeaderPayloadSize(uint8_t *data, int32_t size);
 
 //// aac
