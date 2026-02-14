@@ -1257,7 +1257,6 @@ const struct button_label MBHeadButtons[MB_HEAD_BUTTONS_COUNT] =
 
 void CMovieBrowser::refreshTitle(void) 
 {
-	//Paint Text Background
 	dprintf(DEBUG_NORMAL, "CMovieBrowser::refreshTitle: %s\r\n", m_textTitle.c_str());
 	
 	headers->clear();
@@ -1280,8 +1279,8 @@ void CMovieBrowser::refreshTitle(void)
 struct button_label MBFootButtons[MB_FOOT_BUTTONS_COUNT] =
 {
 	{ NEUTRINO_ICON_BUTTON_RED, " " },
-	{ NEUTRINO_ICON_BUTTON_GREEN, " " },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, " " },
+	{ NEUTRINO_ICON_BUTTON_GREEN, _("TMDB") },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Next focus") },
 	{ NEUTRINO_ICON_BUTTON_BLUE, _("scan for Movies ...") }	
 };
 
@@ -1296,14 +1295,6 @@ void CMovieBrowser::refreshFoot(void)
 	sort_text += m_localizedItemName[m_settings.sorting.item]; //FIXME:
 	
 	MBFootButtons[0].localename = sort_text.c_str();
-		
-	// green
-	MBFootButtons[1].localename = _("TMDB");
-
-	// yellow
-	std::string next_text = _("Next focus");
-
-	MBFootButtons[2].localename = next_text;
 
 	footers->setButtons(MBFootButtons, MB_FOOT_BUTTONS_COUNT);
 	
@@ -1403,8 +1394,6 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 				m_settings.sorting.item = (MB_INFO_ITEM)(m_settings.sorting.item + 1);
 		}while(sortBy[m_settings.sorting.item] == NULL);
 					
-//		refreshBrowserList();	
-//		refreshFoot();
 		refresh();
 	}
 	else if (msg == CRCInput::RC_spkr) 
