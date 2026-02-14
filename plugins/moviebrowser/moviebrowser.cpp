@@ -1164,7 +1164,8 @@ void CMovieBrowser::refreshMovieInfo()
 		buffer.clear();
 		fname.clear();
 		
-		buffer = m_movieSelectionHandler->epgInfo2;
+		buffer = m_movieSelectionHandler->epgInfo1;
+		buffer += m_movieSelectionHandler->epgInfo2;
 		fname = m_movieSelectionHandler->tfile;
 
 		int p_w = 0;
