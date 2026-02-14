@@ -249,8 +249,6 @@ class CMovieBrowser : public CTarget
 		void init(void); //P1
 		void initGlobalSettings(void); //P1
 		void initFrames(void);
-		void initDevelopment(void); //P1 for development testing only
-		void reinit(void); //P1
 		///// MovieBrowser Main Window////////// 
 		int initWidget(void); //P1
 		void refresh(void); //P1

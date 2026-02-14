@@ -558,19 +558,6 @@ void CMovieBrowser::initFrames(void)
 	m_cBoxFrameInfo.iWidth = 		m_cBoxFrameBrowserList.iWidth;
 	m_cBoxFrameInfo.iHeight = 		m_cBoxFrame.iHeight - m_cBoxFrameBrowserList.iHeight - INTER_FRAME_SPACE - m_cBoxFrameFootRel.iHeight - m_cBoxFrameTitleRel.iHeight;
 }
- 
-void CMovieBrowser::initDevelopment(void)
-{
-	dprintf(DEBUG_NORMAL, "CMovieBrowser::initDevelopment:\r\n");
-	
-	std::string name;
-	name = "/mnt/movie/";
-	//addDir(name);
-	name = "/mnt/record/";
-	//addDir(name);
-	name = "/mnt/nfs/";
-	//addDir(name);	
-}
 
 void CMovieBrowser::defaultSettings(MB_SETTINGS *settings)
 {
