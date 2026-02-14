@@ -837,7 +837,7 @@ int CMovieBrowser::exec(CTarget *parent, const std::string &actionKey)
 				hintBox->hide();
 				delete hintBox;
 		
-				off64_t res = cut_movie(m_movieSelectionHandler, &m_movieInfo);
+				off64_t res = ::cut_movie(m_movieSelectionHandler, &m_movieInfo);
 
 				if(res == 0)
 					MessageBox(_("Error"), _("Cut failed, is there jump bookmarks ? Or check free space."), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
@@ -860,7 +860,9 @@ int CMovieBrowser::exec(CTarget *parent, const std::string &actionKey)
 				{
 					CHintBox * hintBox = new CHintBox(_("Information"), _("Truncating, please wait"));
 					hintBox->paint();
-					off64_t res = truncate_movie(m_movieSelectionHandler);
+					
+					off64_t res = ::truncate_movie(m_movieSelectionHandler);
+					
 					hintBox->hide();
 					delete hintBox;
 
@@ -885,7 +887,7 @@ int CMovieBrowser::exec(CTarget *parent, const std::string &actionKey)
 				hintBox->hide();
 				delete hintBox;
 
-				off64_t res = copy_movie(m_movieSelectionHandler, &m_movieInfo, true);
+				off64_t res = ::copy_movie(m_movieSelectionHandler, &m_movieInfo, true);
 			
 				if(res == 0)
 					MessageBox(_("Information"), _("Copy failed, is there jump bookmarks ? Or check free space."), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
@@ -2872,13 +2874,6 @@ int CFileChooser::exec(CTarget *parent, const std::string &/*actionKey*/)
 	if (browser.exec(dirPath->c_str()))
 	{
 		*dirPath = browser.getSelectedFile()->Name;
-		
-		short a = dirPath->compare(0, 5, "/mnt/");
-		short b = dirPath->compare(0, 7, "/media/");
-		short c = dirPath->compare(0, 5, "/hdd/");
-		
-//		if(a != 0 && b != 0 && c != 0)
-//			*dirPath = "";   // We clear the  string if the selected folder is not at leaset /mnt/ or /hdd (There is no other possibility to clear this) 
 	}
 	  
 	return RETURN_REPAINT;
@@ -2892,10 +2887,10 @@ CDirMenu::CDirMenu(std::vector<MB_DIR>* dir_list)
 	dirList = dir_list;
 
 	if( dirList->empty())
-	    return;
+	    	return;
 
 	for(i = 0; i < MAX_DIR; i++)
-	    dirNfsMountNr[i]=-1;
+	    	dirNfsMountNr[i]=-1;
 
 	for(i = 0; i < dirList->size() && i < MAX_DIR; i++)
 	{

@@ -110,7 +110,7 @@ static inline int HasADTSHeader(uint8_t *data, int size)
 /// O                 2             (9-8)            num of raw data blocks in frame
 
 /*
-LC: Audio: aac, 44100 Hz, stereo, s16, 192 kb/ ->ff f1 50 80 00 1f fc
+LC: Audio: aac, 44100 Hz, stereo, s16, 192 kb/s ->ff f1 50 80 00 1f fc
 HE: Audio: aac, 48000 Hz, stereo, s16, 77 kb/s ->ff f1 4c 80 00 1f fc
 */
 
