@@ -257,7 +257,7 @@ class CComponent
 		virtual bool update() const {return rePaint;};
 		virtual inline bool isPainted(void){return painted;};
 		////
-		virtual void clear(void){}; //
+		virtual void clear(void){};
 		////
 		virtual int getCCType(){return cc_type;};
 		virtual std::string getCCName(){return cc_name;};
@@ -301,7 +301,7 @@ class CComponent
 		virtual void setSelected(unsigned int _new) {};
 		////
 		virtual int oKKeyPressed(CTarget *target, neutrino_msg_t _msg = CRCInput::RC_ok){return CTarget::RETURN_EXIT;};
-		virtual void homeKeyPressed(){};
+		virtual void homeKeyPressed(){exit_pressed = true;};
 		virtual int directKeyPressed(neutrino_msg_t, CTarget *target){return CTarget::RETURN_NONE;};
 		////
 		virtual void setParent(CWidget *p){parent = p;};
