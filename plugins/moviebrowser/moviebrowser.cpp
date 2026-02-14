@@ -1583,14 +1583,9 @@ void CMovieBrowser::onDeleteFile(MI_MOVIE_INFO& movieSelectionHandler)
 	    	}
 	    	
 		m_vMovieInfo.erase( (std::vector<MI_MOVIE_INFO>::iterator)&movieSelectionHandler);
-		dprintf(DEBUG_NORMAL, "List size: %d\n", m_vMovieInfo.size());
-		//if(m_vMovieInfo.size() == 0) fileInfoStale();
-		//if(m_vMovieInfo.size() == 0) onSetGUIWindow(m_settings.gui);
+		
 		updateSerienames();
-		refreshBrowserList();	
-		refreshMovieInfo();
-	    		
-		//loadMovies(); // //TODO we might remove the handle from the handle list only, to avoid reload .....
+
 		refresh();
 	}
 }
@@ -1883,6 +1878,7 @@ bool CMovieBrowser::readDir(const std::string & dirname, CFileList* flist)
 bool CMovieBrowser::delFile(CFile& file)
 {
 	bool result = true;
+	
 	unlink(file.Name.c_str()); // fix: use full path
 	dprintf(DEBUG_NORMAL, "CMovieBrowser::delete file: %s\r\n", file.Name.c_str());
 	
@@ -1996,16 +1992,6 @@ void CMovieBrowser::loadMovies(void)
 
 	refreshBrowserList();	
 	refreshMovieInfo();	// is done by refreshBrowserList if needed
-}
-
-void CMovieBrowser::loadAllMovieInfo(void)
-{
-	dprintf(DEBUG_NORMAL, "CMovieBrowser::loadAllMovieInfo:\r\n");
-
-	for(unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-	{
-		m_movieInfo.loadMovieInfo( &(m_vMovieInfo[i]));
-	}
 }
 
 extern "C" int pinghost( const char *hostname );
@@ -2573,7 +2559,7 @@ bool CMovieBrowser::isParentalLock(MI_MOVIE_INFO& movie_info)
 
 bool CMovieBrowser::getMovieInfoItem(MI_MOVIE_INFO &movie_info, MB_INFO_ITEM item, std::string* item_string)
 {
-	#define MAX_STR_TMP 100
+#define MAX_STR_TMP 100
 	char str_tmp[MAX_STR_TMP];
 	bool result = true;
 	*item_string="";
@@ -2675,80 +2661,11 @@ bool CMovieBrowser::getMovieInfoItem(MI_MOVIE_INFO &movie_info, MB_INFO_ITEM ite
 			break;
 			
 		case MB_INFO_AUDIO: 				// 		= 17,
-#if 1  // MB_INFO_AUDIO test
 			// we just return the number of audiopids
 			char _text[10];
 			snprintf(_text, 8,"%d",movie_info.audioPids.size());
 			_text[9] = 0; // just to make sure string is terminated
 			*item_string = _text;
-#else // MB_INFO_AUDIO test
-			for(i=0; i < movie_info.audioPids.size() && i < 10; i++)
-			{
-				if(movie_info.audioPids[i].epgAudioPidName[0].size() < 2)
-				{
-					_text[counter++] = '?'; // two chars ??? -> strange name
-					continue;
-				}
-				
-				// check for Dolby Digital / AC3 Audio audiopids (less than 5.1 is not remarkable)
-				if(	(movie_info.audioPids[i].epgAudioPidName.find("AC3") != -1 ) || 
-					(movie_info.audioPids[i].epgAudioPidName.find("5.1") != -1 ))
-				{
-					ac3_found = true;
-				}
-				// Check for german audio pids
-				if( movie_info.audioPids[i].epgAudioPidName[0] == 'D' || // Deutsch
-					movie_info.audioPids[i].epgAudioPidName[0] == 'd' ||
-					movie_info.audioPids[i].epgAudioPidName[0] == 'G' || // German
-					movie_info.audioPids[i].epgAudioPidName[0] == 'g' ||
-					movie_info.audioPids[i].epgAudioPidName[0] == 'M' || // for Mono, mono and Stereo, stereo we assume German ;)
-					movie_info.audioPids[i].epgAudioPidName[0] == 'n' || 
-					(movie_info.audioPids[i].epgAudioPidName[0] == 'S' && movie_info.audioPids[i].epgAudioPidName[1] == 't' ) || 
-					(movie_info.audioPids[i].epgAudioPidName[0] == 's' && movie_info.audioPids[i].epgAudioPidName[1] == 't' ))
-				{
-					text[counter++] = 'D';
-					continue;
-				}
-				// Check for english audio pids
-				if( movie_info.audioPids[i].epgAudioPidName[0] == 'E' ||
-					movie_info.audioPids[i].epgAudioPidName[0] == 'e')
-				{
-					_text[counter++] = 'E';
-					continue;
-				}
-				// Check for french audio pids
-				if( movie_info.audioPids[i].epgAudioPidName[0] == 'F' ||
-					movie_info.audioPids[i].epgAudioPidName[0] == 'f')
-				{
-					_text[counter++] = 'F';
-					continue;
-				}
-				// Check for italian audio pids
-				if( movie_info.audioPids[i].epgAudioPidName[0] == 'I' ||
-					movie_info.audioPids[i].epgAudioPidName[0] == 'i')
-				{
-					_text[counter++] = 'I';
-					continue;
-				}
-				// Check for spanish audio pids
-				if( movie_info.audioPids[i].epgAudioPidName[0] == 'E' ||
-					movie_info.audioPids[i].epgAudioPidName[0] == 'e' ||
-					movie_info.audioPids[i].epgAudioPidName[0] == 'S' ||
-					movie_info.audioPids[i].epgAudioPidName[0] == 's')
-				{
-					_text[counter++] = 'S';
-					continue;
-				}
-				_text[counter++] = '?'; // We have not found any language for this pid
-			}
-			if(ac3_found == true)
-			{
-				_text[counter++] = '5';
-				_text[counter++] = '.';
-				_text[counter++] = '1';
-			}
-			_text[counter] = 0; // terminate string 
-#endif	// MB_INFO_AUDIO test
 			break;
 			
 		case MB_INFO_LENGTH: 				// 		= 18,
@@ -2773,9 +2690,6 @@ bool CMovieBrowser::getMovieInfoItem(MI_MOVIE_INFO &movie_info, MB_INFO_ITEM ite
 
 void CMovieBrowser::updateSerienames(void)
 {
-	//if(m_seriename_stale == false) 
-	//	return;
-		
 	m_vHandleSerienames.clear();
 
 	for(unsigned int i = 0; i < m_vMovieInfo.size(); i++)
@@ -2794,10 +2708,6 @@ void CMovieBrowser::updateSerienames(void)
 				m_vHandleSerienames.push_back(&m_vMovieInfo[i]);
 		}
 	}
-	
-	//dprintf(DEBUG_NORMAL, "CMovieBrowser::updateSerienames: %d\r\n",m_vHandleSerienames.size());
-	// TODO sort(m_serienames.begin(), m_serienames.end(), my_alphasort);
-	//m_seriename_stale = false;
 }	
 
 void CMovieBrowser::autoFindSerie(void)

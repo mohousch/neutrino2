@@ -295,7 +295,6 @@ class CMovieBrowser : public CTarget
 		
 		///// EPG_DATA /XML /////////////////////////////// 
 		void loadMovies();
-		void loadAllMovieInfo(void); // P1
 		void saveMovieInfo(std::string* filename, MI_MOVIE_INFO* movie_info); // P2
 	
 		//// misc
