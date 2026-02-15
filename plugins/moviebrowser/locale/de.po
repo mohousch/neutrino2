@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2026-01-17 15:01+0100\n"
+"POT-Creation-Date: 2026-02-15 10:21+0100\n"
 "PO-Revision-Date: 2023-10-29 18:19+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -28,6 +28,9 @@ msgstr "18 Jahre"
 
 msgid "6 years"
 msgstr "6 Jahre"
+
+msgid "Actors"
+msgstr ""
 
 msgid "Additional paths"
 msgstr "Zusätzliche Pfade"
@@ -197,8 +200,14 @@ msgstr "Nein ()"
 msgid "No End bookmark defined!"
 msgstr "Keine Ende Zeichnung gegeben"
 
+msgid "Not available"
+msgstr ""
+
 msgid "Options"
 msgstr "Optionen"
+
+msgid "Original Title"
+msgstr ""
 
 msgid "Parental Lock"
 msgstr ""
@@ -213,6 +222,9 @@ msgid "Picture"
 msgstr "Bild"
 
 msgid "Position:"
+msgstr ""
+
+msgid "Prefer TMDB infos ?"
 msgstr ""
 
 msgid "Quality"
@@ -301,6 +313,9 @@ msgstr ""
 
 msgid "Year"
 msgstr "Jahr"
+
+msgid "Year of production"
+msgstr ""
 
 msgid "Yes"
 msgstr "Ja"

@@ -1050,7 +1050,7 @@ void CMovieInfo::showMovieInfo(MI_MOVIE_INFO &movie_info)
 	::scaleImage(movie_info.tfile, &p_w, &p_h);
 
 	infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
-	infoBox->setText(print_buffer.c_str(), movie_info.tfile.c_str(), p_w, p_h, CTextBox::PIC_LEFT, true);
+	infoBox->setText(print_buffer.c_str(), movie_info.tfile.c_str(), p_w, p_h, CTextBox::PIC_RIGHT, true);
 	infoBox->exec();
 	delete infoBox;
 	infoBox = NULL;
