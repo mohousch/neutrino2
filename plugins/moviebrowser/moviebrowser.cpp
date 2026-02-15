@@ -1369,7 +1369,7 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 		{
 			hide();
 			
-			::getTMDBInfo(m_movieSelectionHandler->epgTitle.c_str());
+			doTMDB(*m_movieSelectionHandler);
 			
 			refresh();
 		}		
@@ -1656,6 +1656,102 @@ bool CMovieBrowser::onSortMovieInfoHandleList(std::vector<MI_MOVIE_INFO*>& handl
 	sort(handle_list.begin(), handle_list.end(), sortBy[sort_item]);
 	
 	return (true);
+}
+
+void CMovieBrowser::doTMDB(MI_MOVIE_INFO& movieFile)
+{
+	dprintf(DEBUG_NORMAL, "CMovieBrowser::doTMDB:\n");
+	
+	//				
+	CTmdb * tmdb = new CTmdb();
+
+	tmdb->clearMInfo();
+
+	if(tmdb->getMovieInfo(movieFile.epgTitle))
+	{
+		std::vector<tmdbinfo>& minfo_list = tmdb->getMInfos();
+
+		std::string buffer;
+
+		buffer = movieFile.epgTitle;
+		buffer += "\n\n";
+	
+		// prepare print buffer  
+		buffer += "Vote: " + toString(minfo_list[0].vote_average) + "/10 Votecount: " + toString(minfo_list[0].vote_count);
+		buffer += "\n\n";
+		buffer += minfo_list[0].overview;
+		buffer += "\n";
+
+		buffer += (std::string)_("Length (Min)") + ": " + toString(minfo_list[0].runtime);
+		buffer += "\n";
+
+		buffer += (std::string)_("Genre") + ": " + minfo_list[0].genres;
+		buffer += "\n";
+		buffer += (std::string)_("Original Title") + " : " + minfo_list[0].original_title;
+		buffer += "\n";
+		buffer += (std::string)_("Year of production") + " : " + minfo_list[0].release_date.substr(0,4);
+		buffer += "\n";
+
+		if (!minfo_list[0].cast.empty())
+			buffer += (std::string)_("Actors") + ":\n" + minfo_list[0].cast;
+
+		// thumbnail
+		std::string tname = tmdb->getThumbnailDir();
+		tname += "/";
+		tname += movieFile.epgTitle;
+		tname += ".jpg";
+
+		tmdb->getSmallCover(minfo_list[0].poster_path, tname);
+		
+		// scale pic
+		int p_w = 0;
+		int p_h = 0;
+
+		scaleImage(tname, &p_w, &p_h);
+	
+		CBox position(g_settings.screen_StartX + 50, g_settings.screen_StartY + 50, g_settings.screen_EndX - g_settings.screen_StartX - 100, g_settings.screen_EndY - g_settings.screen_StartY - 100); 
+	
+		CInfoBox * infoBox = new CInfoBox(&position, movieFile.epgTitle.c_str(), NEUTRINO_ICON_TMDB);
+
+		infoBox->setText(buffer.c_str(), tname.c_str(), p_w, p_h, CTextBox::PIC_RIGHT, true);
+		infoBox->exec();
+		delete infoBox;
+
+		if(MessageBox(_("Information"), _("Prefer TMDB infos ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
+		{
+			// tfile
+			std::string tname = movieFile.file.Name;
+			changeFileNameExt(tname, ".jpg");
+
+			if(tmdb->getSmallCover(minfo_list[0].poster_path, tname)) 
+				movieFile.tfile = tname;
+
+			// epgInfo1
+			if(movieFile.epgInfo1.empty())
+				movieFile.epgInfo1 = buffer;
+			
+			// productionDate	
+			if (movieFile.productionDate == 0)
+				movieFile.productionDate = atoi(minfo_list[0].release_date.substr(0,4));
+			
+			// genres	
+			if(movieFile.genres.empty())
+				movieFile.genres = minfo_list[0].genres;
+				
+			// average
+			if (movieFile.vote_average == 0)
+				movieFile.vote_average = minfo_list[0].vote_average;
+
+			m_movieInfo.saveMovieInfo(movieFile);
+		}  
+	}
+	else
+	{
+		MessageBox(_("Information"), _("Not available"), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
+	}
+
+	delete tmdb;
+	tmdb = NULL;
 }
 
 void CMovieBrowser::updateDir(void)

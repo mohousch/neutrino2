@@ -241,6 +241,8 @@ void CMoviePlayer::openFileBrowser()
 
 void CMoviePlayer::doTMDB(MI_MOVIE_INFO& movieFile)
 {
+	dprintf(DEBUG_NORMAL, "CMoviePlayer::doTMDB:\n");
+	
 	//				
 	CTmdb * tmdb = new CTmdb();
 

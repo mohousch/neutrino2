@@ -268,6 +268,7 @@ class CMovieBrowser : public CTarget
 		void onSetFocusNext(void); // P2
 		void onDeleteFile(MI_MOVIE_INFO& movieSelectionHandler);  // P4
 		bool onSortMovieInfoHandleList(std::vector<MI_MOVIE_INFO*>& pv_handle_list, MB_INFO_ITEM sort_type, MB_DIRECTION direction);
+		void doTMDB(MI_MOVIE_INFO& movieFile);
 		
 		///// parse Storage Directories ///////////// 
         	bool addDir(std::string& dirname, int* used);
