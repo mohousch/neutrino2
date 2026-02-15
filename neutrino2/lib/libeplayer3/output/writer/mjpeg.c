@@ -192,12 +192,7 @@ static int writeData(void *_call)
 
     	mjpeg_printf(10, "VideoPts %lld\n", call->Pts);
 
-//   	if (STB_HISILICON == GetSTBType()) 
-//   	{
-//     		return writeDataSimple(_call);
-//    	}
-
-    	return writeDataBCMV(call); 
+     	return writeDataSimple(call); 
 }
 
 /* ***************************** */

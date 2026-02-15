@@ -88,6 +88,7 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 /* MISC Functions                */
 /* ***************************** */
 extern void blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp, uint32_t yp, bool transp);
+extern void clearFrameBuffer(void);
 
 /* ***************************** */
 /* Writer Functions              */
@@ -96,7 +97,8 @@ extern void blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t 
 //
 static int reset()
 {
-    return 0;
+	clearFrameBuffer();
+    	return 0;
 }
 
 static int writeData(void* _call)

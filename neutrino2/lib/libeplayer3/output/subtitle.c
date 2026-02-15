@@ -88,7 +88,6 @@ extern int            	screen_height;
 extern uint32_t * simple_resize32(uint8_t * origin, uint32_t * colors, int nb_colors, int ox, int oy, int dx, int dy);
 extern void teletext_write(int pid, uint8_t *data, int size);
 extern void clearFrameBuffer(void);
-extern void writeLabel(uint8_t* text, int x, int y, int w, int h);
 extern void writeText(uint8_t* text, int x, int y, int w, int h);
 
 /* ***************************** */

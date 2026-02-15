@@ -2156,15 +2156,18 @@ void writeLabel(uint8_t* text, int x, int y, int w, int h)
 
 void writeText(uint8_t* text, int x, int y, int w, int h)
 {
-	CTextBox textLabel;	// FIXME: replace with CCText class
+	CCText *textLabel = new CCText(x, y, w, h);	// FIXME: replace with CCText class
 	
-	textLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLELARGE);
-	textLabel.setTextColor(COL_WHITE_PLUS_0);
-	textLabel.paintMainFrame(false);
-	textLabel.setText((const char*)text);
-	textLabel.setHAlign(CComponent::CC_ALIGN_CENTER);
-	textLabel.setPosition(x, y, w, h);
+	textLabel->setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLELARGE);
+	textLabel->setColor(COL_WHITE_PLUS_0);
+	textLabel->paintMainFrame(false);
+	textLabel->setText((const char*)text);
+	textLabel->setHAlign(CComponent::CC_ALIGN_CENTER);
+	textLabel->setPosition(x, y, w, h);
 	
-	textLabel.paint();
+	textLabel->paint();
+	
+	delete textLabel;
+	textLabel = NULL;
 }
 
