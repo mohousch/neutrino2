@@ -173,3 +173,18 @@ struct Writer_s WriterAudioMPEGL3 = {
 	&caps_mpegl3,
 };
 
+static WriterCaps_t capsVORBIS = {
+    	"vorbis",
+    	eAudio,
+    	"A_VORBIS",
+    	AUDIO_STREAMTYPE_VORBIS
+};
+
+struct Writer_s WriterAudioVORBIS = {
+    	&reset,
+    	&writeData,
+    	NULL,
+    	&capsVORBIS
+};
+
+

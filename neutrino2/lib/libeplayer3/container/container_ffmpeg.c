@@ -257,10 +257,10 @@ static char* Codec2Encoding(uint32_t codec_id, int* version)
 			return "A_WMA";
 			
 		case AV_CODEC_ID_VORBIS:
-			return "A_VORBIS"; 	//FIXME:
+			return "A_VORBIS";
 			
 		case AV_CODEC_ID_OPUS:
-			return "A_OPUS";	//FIXME:
+			return "A_OPUS";
 			
 		case AV_CODEC_ID_FLAC:
 			return "A_FLAC";
@@ -629,7 +629,6 @@ static void FFMPEGThread(Context_t* context)
 					{
 						extradata.bResampling  = 1;
 						
-						// FIXME:
 						int bytesDone = 0;
 						unsigned int samples_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
 
