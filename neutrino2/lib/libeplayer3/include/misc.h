@@ -59,18 +59,6 @@ typedef struct pcmPrivateData_s
 
 #define INVALID_PTS_VALUE                       0x200000000ull
 
-//#define BIG_READS
-#if defined (BIG_READS)
-#define BLOCK_COUNT                             8
-#else
-#define BLOCK_COUNT                             1
-#endif
-#define TP_PACKET_SIZE                          188
-#define BD_TP_PACKET_SIZE                       192
-#define NUMBER_PACKETS                          (199*BLOCK_COUNT)
-#define BUFFER_SIZE                             (TP_PACKET_SIZE*NUMBER_PACKETS)
-#define PADDING_LENGTH                          (1024*BLOCK_COUNT)
-
 //// aac
 #define AAC_HEADER_LENGTH       		7
 
