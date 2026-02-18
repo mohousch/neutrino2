@@ -260,16 +260,21 @@ static int Write(void* _context, void *data)
 							// 256 = PGS
 							if (sub.rects[i]->nb_colors == 16) // DVB
 							{		
-								int xoff = sub.rects[i]->x * screen_width / sub.rects[i]->w;
-								int yoff = sub.rects[i]->y;
-								int nw = screen_width;
-								int nh = screen_height;
+								int width = sub.rects[i]->w;
+								int height = sub.rects[i]->h;
+
+								int h2 = screen_height;
+										
+								int xoff = sub.rects[i]->x * screen_width / width;
+								int yoff = sub.rects[i]->y * screen_height / h2;
+								int nw = width * screen_width / width;
+								int nh = height * screen_height / h2;
 
 								// resize color to 32 bit
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
-								uint32_t *newdata = simple_resize32(sub.rects[i]->pict.data[0], (uint32_t*)sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, sub.rects[i]->w, sub.rects[i]->h, nw, nh);
+								uint32_t *newdata = simple_resize32(sub.rects[i]->pict.data[0], (uint32_t*)sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
 #else
-								uint32_t *newdata = simple_resize32(sub.rects[i]->data[0], (uint32_t*)sub.rects[i]->data[1], sub.rects[i]->nb_colors, sub.rects[i]->w, sub.rects[i]->h, nw, nh);
+								uint32_t *newdata = simple_resize32(sub.rects[i]->data[0], (uint32_t*)sub.rects[i]->data[1], sub.rects[i]->nb_colors, width, height, nw, nh);
 #endif
 										
 								// writeData
