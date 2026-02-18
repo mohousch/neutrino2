@@ -276,15 +276,9 @@ void* CLCD::TimeThread(void *)
 	while(1)
 	{
 		sleep(1);
-		struct stat buf;
 		
-		if (stat("/tmp/lcd.locked", &buf) == -1) 
-		{
-			CLCD::getInstance()->showTime();
-			CLCD::getInstance()->count_down();
-		} 
-		else
-			CLCD::getInstance()->wake_up();
+		CLCD::getInstance()->showTime();
+		CLCD::getInstance()->count_down();
 	}
 	
 	return NULL;
@@ -540,13 +534,8 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname)
 
 void CLCD::displayUpdate()
 {
-	struct stat buf;
-	
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
-	if (stat("/tmp/lcd.locked", &buf) == -1)
-	{
-		display->update();
-	}
+	display->update();
 #endif
 }
 
@@ -2173,22 +2162,6 @@ void CLCD::ClearIcons()
 #endif
 #endif
 #endif
-}
-
-void CLCD::Lock()
-{
-	if(!has_lcd) 
-		return;
-	
-	creat("/tmp/lcd.locked", 0);
-}
-
-void CLCD::Unlock()
-{
-	if(!has_lcd) 
-		return;
-	
-	unlink("/tmp/lcd.locked");
 }
 
 void CLCD::Clear()

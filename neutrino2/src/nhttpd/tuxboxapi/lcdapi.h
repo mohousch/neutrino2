@@ -39,7 +39,6 @@ class CLCDAPI
 		CLCDAPI();
 		~CLCDAPI(void){};
 		
-		void lockDisplay(int lock);
 		bool showPng(char *filename);
 		void clear(void);
 		bool shotPng(char *filename);

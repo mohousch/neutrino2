@@ -49,11 +49,6 @@ void CLCDAPI::clear(void)
 	lcdd->Clear();
 }
 
-void CLCDAPI::lockDisplay(int plock)
-{
-	lcdd->Lock();
-}
-
 bool CLCDAPI::showPng(char *filename)
 {
 	return lcdd->ShowPng(filename);

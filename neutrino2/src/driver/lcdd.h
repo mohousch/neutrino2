@@ -631,8 +631,6 @@ class CLCD
 		void resume();
 		void pause();
 
-		void Lock();
-		void Unlock();
 		void Clear();
 		void ShowIcon(vfd_icon icon, bool show);
 		void ShowDiskLevel();
