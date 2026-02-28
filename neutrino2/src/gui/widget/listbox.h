@@ -186,7 +186,7 @@ class CMenuItem
 		virtual void setOptionHAlign(unsigned int al){ optionHAlign = al;};
 		//
 		virtual void set2lines(bool p = true){nLinesItem = p;};
-		virtual void setWidgetLayout(int type){widgetLayout = type;};
+		virtual void setLayout(int type){widgetLayout = type;};
 		virtual void setBorderMode(int m = CComponent::BORDER_ALL){borderMode = m;};
 		virtual void setBorderColor(fb_pixel_t col){borderColor = col;};
 		virtual void setGradient(int gr){itemGradient = gr;};
@@ -361,6 +361,94 @@ class CMenuForwarder : public CMenuItem
 		bool isSelectable(void) const {return (active && !hidden);};
 };
 
+//// CMenuItemInfo
+class CMenuItemInfo
+{
+	public:
+		enum 
+		{
+			ITEMINFO_HINTITEM,
+			ITEMINFO_ICONONLY,
+			ITEMINFO_HINTONLY
+		};
+
+		//
+		CFrameBuffer* frameBuffer;
+		
+		//
+		CBox itemBox;
+		CBox oldPosition;
+		int halign;
+		
+		//
+		bool savescreen;
+		bool paintframe;
+		
+		//
+		std::string hint;
+		std::string icon;
+		int mode;
+		
+		// custom mode
+		unsigned int tFont;
+		int borderMode;
+		uint32_t color;
+		bool scale;
+		int radius;
+		int corner;
+		int gradient;
+		uint32_t borderColor;
+		
+		//
+		fb_pixel_t *background;
+		
+		//
+		CMenuItemInfo();
+		virtual ~CMenuItemInfo();
+		
+		//
+		virtual void initFrames();
+		
+		virtual void setPosition(const int _x, const int _y, const int _width, const int _height)
+		{
+			itemBox.iX = _x;
+			itemBox.iY = _y;
+			itemBox.iWidth = _width;
+			itemBox.iHeight = _height;
+			
+			initFrames();
+		};
+		virtual void setPosition(const CBox * position)
+		{
+			itemBox = *position;
+			
+			initFrames();
+		};
+		
+		virtual void paintMainFrame(bool p){paintframe = p;};
+		virtual void setHAlign(int h){halign = h;};
+		
+		//
+		void paint(bool _selected = false);
+		void hide();
+		//
+		void setMode(int m){mode = m;};
+		void setHint(const char* const Text){if (Text) hint =  Text;};
+		void setIcon(const char* const ic){if (ic) icon = ic;};
+		// custom mode
+		void setFont(unsigned int f){tFont = f;};
+		void setBorderMode(int m = CComponent::BORDER_ALL){borderMode = m;};
+		void setBorderColor(fb_pixel_t col){borderColor = col;};
+		void setColor(uint32_t col){color = col;};
+		void setScaling(bool s){scale = s;};
+		void setCorner(int ra, int co){radius = ra; corner = co;};
+		void setGradient(int grad){gradient = grad;};
+		//
+		void saveScreen(void);
+		void restoreScreen(void);
+		void enableSaveScreen();
+};
+
 ////
 class ClistBox : public CComponent
 {
@@ -443,7 +531,7 @@ class ClistBox : public CComponent
 		bool paint_ItemInfo;
 		CBox itemInfoBox;
 		CBox itemInfoBox2;
-		CCItemInfo itemInfo;
+		CMenuItemInfo itemInfo;
 		CCLabel label;
 		CCLabel label2;
 		int itemInfoMode;
@@ -543,8 +631,8 @@ class ClistBox : public CComponent
 		// frame method
 		void setItemsPerPage(int itemsX = 6, int itemsY = 3){itemsPerX = itemsX; itemsPerY = itemsY; maxItemsPerPage = itemsPerX*itemsPerY;};
 		//
-		void setWidgetLayout(int type){widgetLayout = type; initFrames();};
-		void setWidgetMode(int mode){widgetMode = mode;};
+		void setLayout(int type){widgetLayout = type; initFrames();};
+		void setMode(int mode){widgetMode = mode;};
 		
 		//// item properties
 		void setItemBorderMode(int m = CComponent::BORDER_ALL){itemBorderMode = m;};

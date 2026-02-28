@@ -194,8 +194,8 @@ class listBox():
 		self.showMenu()
 
 	def showMenu(self):
-		self.listWidget.setWidgetLayout(ClistBox.LAYOUT_CLASSIC)
-		self.listWidget.setWidgetMode(ClistBox.MODE_LISTBOX)
+		self.listWidget.setLayout(ClistBox.LAYOUT_CLASSIC)
+		self.listWidget.setMode(ClistBox.MODE_LISTBOX)
 		self.listWidget.enableShrinkMenu()
 		self.listWidget.enablePaintHead()
 		self.listWidget.setTitle("Python: ClistBox", NEUTRINO_ICON_MAINMENU)

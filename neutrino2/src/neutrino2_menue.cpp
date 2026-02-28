@@ -91,8 +91,8 @@ void CNeutrinoApp::mainMenu(void)
 		//
 		nMenu = new ClistBox(&box);
 		
-		nMenu->setWidgetMode(ClistBox::MODE_MENU);
-		nMenu->setWidgetLayout(ClistBox::LAYOUT_STANDARD);
+		nMenu->setMode(ClistBox::MODE_MENU);
+		nMenu->setLayout(ClistBox::LAYOUT_STANDARD);
 		nMenu->enableShrinkMenu();
 		nMenu->paintMainFrame(true);
 		
@@ -383,8 +383,8 @@ bool CNeutrinoApp::showUserMenu(int button)
 		
 		//
 		menu = new ClistBox(&box);
-		menu->setWidgetMode(ClistBox::MODE_MENU);
-		menu->setWidgetLayout(ClistBox::LAYOUT_STANDARD);
+		menu->setMode(ClistBox::MODE_MENU);
+		menu->setLayout(ClistBox::LAYOUT_STANDARD);
 		menu->enableShrinkMenu();
 		menu->paintMainFrame(true);
 		
@@ -603,7 +603,7 @@ void CNeutrinoApp::selectNVOD()
 
 			//                	
 			NVODSelector = new ClistBox(&box);
-			NVODSelector->setWidgetMode(ClistBox::MODE_SETUP);
+			NVODSelector->setMode(ClistBox::MODE_SETUP);
 			NVODSelector->enableShrinkMenu();
 			NVODSelector->paintMainFrame(true);
 							

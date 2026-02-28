@@ -2096,7 +2096,7 @@ bool CMovieBrowser::showMenu()
 	mainMenu.setTitle(_("Settings"), NEUTRINO_ICON_MOVIE);
 	mainMenu.enablePaintDate();
 	mainMenu.enablePaintFoot();
-	mainMenu.setWidgetMode(ClistBox::MODE_MENU);
+	mainMenu.setMode(ClistBox::MODE_MENU);
 	mainMenu.enableShrinkMenu();
 	
 	// show movie info
@@ -2168,7 +2168,7 @@ void CMovieBrowser::showMovieInfoMenuUpdate(void)
 	movieInfoMenuUpdate.enablePaintDate();
 	movieInfoMenuUpdate.enablePaintFoot();
 	//movieInfoMenuUpdate.enableSaveScreen();
-	movieInfoMenuUpdate.setWidgetMode(ClistBox::MODE_SETUP);
+	movieInfoMenuUpdate.setMode(ClistBox::MODE_SETUP);
 	movieInfoMenuUpdate.enableShrinkMenu();
 	
 	// save 
@@ -2230,7 +2230,7 @@ void CMovieBrowser::showBookMarkMenu(MI_MOVIE_INFO *movie_info)
 	bookmarkMenu.setTitle(_("Bookmarks"), NEUTRINO_ICON_MOVIE);
 	bookmarkMenu.enablePaintDate();
 	bookmarkMenu.enablePaintFoot();
-	bookmarkMenu.setWidgetMode(ClistBox::MODE_SETUP);
+	bookmarkMenu.setMode(ClistBox::MODE_SETUP);
 
 	// intros
 	bookmarkMenu.addItem(new CMenuForwarder(_("Clear all"), true, NULL, this, "book_clear_all", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
@@ -2256,7 +2256,7 @@ void CMovieBrowser::showBookMarkMenu(MI_MOVIE_INFO *movie_info)
 		pBookItemMenu[i1]->enablePaintDate();
 		pBookItemMenu[i1]->enablePaintFoot();
 
-		pBookItemMenu[i1]->setWidgetMode(ClistBox::MODE_SETUP);
+		pBookItemMenu[i1]->setMode(ClistBox::MODE_SETUP);
 		pBookItemMenu[i1]->enableShrinkMenu();
 		
 		// bookmark name
@@ -2300,7 +2300,7 @@ void CMovieBrowser::showMenuSerie(MI_MOVIE_INFO *movie_info)
 	serieMenu.setTitle(_("Serie"), NEUTRINO_ICON_MOVIE);
 	serieMenu.enablePaintDate();
 	serieMenu.enablePaintFoot();
-	serieMenu.setWidgetMode(ClistBox::MODE_SETUP);
+	serieMenu.setMode(ClistBox::MODE_SETUP);
 	serieMenu.enableShrinkMenu();
 	
 	serieMenu.addItem( new CMenuForwarder(_("Serie"), true, serieUserInput.getValueString().c_str(), &serieUserInput));
@@ -2368,7 +2368,7 @@ int CMovieBrowser::showMovieInfoMenu(MI_MOVIE_INFO * movie_info)
 	movieInfoMenu.setTitle(_("Film Informationen"), NEUTRINO_ICON_MOVIE);
 	movieInfoMenu.enablePaintDate();
 	movieInfoMenu.enablePaintFoot();
-	movieInfoMenu.setWidgetMode(ClistBox::MODE_SETUP);
+	movieInfoMenu.setMode(ClistBox::MODE_SETUP);
 	movieInfoMenu.enableShrinkMenu();
 
 	// save changes
@@ -2457,7 +2457,7 @@ void CMovieBrowser::showParentalMenu(void)
 	parentalMenu.setTitle(_("Parental Lock"), NEUTRINO_ICON_MOVIE);
 	parentalMenu.enablePaintDate();
 	parentalMenu.enablePaintFoot();
-	parentalMenu.setWidgetMode(ClistBox::MODE_SETUP);
+	parentalMenu.setMode(ClistBox::MODE_SETUP);
 	parentalMenu.enableShrinkMenu();
 	
 	parentalMenu.addItem( new CMenuOptionChooser(_("activated"), (int*)(&m_parentalLock), MESSAGEBOX_PARENTAL_LOCK_OPTIONS, MESSAGEBOX_PARENTAL_LOCK_OPTIONS_COUNT, true ));
@@ -2481,7 +2481,7 @@ void CMovieBrowser::showOptionsMenuDir(void)
 	optionsMenuDir.setTitle(_("Additional paths"), NEUTRINO_ICON_MOVIE);
 	optionsMenuDir.enablePaintDate();
 	optionsMenuDir.enablePaintFoot();
-	optionsMenuDir.setWidgetMode(ClistBox::MODE_SETUP);
+	optionsMenuDir.setMode(ClistBox::MODE_SETUP);
 	optionsMenuDir.enableShrinkMenu();
 	
 	//
@@ -2547,7 +2547,7 @@ void CMovieBrowser::showOptionMenuBrowser(void)
 	optionsMenuBrowser.setTitle(_("Browser Options"), NEUTRINO_ICON_MOVIE);
 	optionsMenuBrowser.enablePaintDate();
 	optionsMenuBrowser.enablePaintFoot();
-	optionsMenuBrowser.setWidgetMode(ClistBox::MODE_SETUP);
+	optionsMenuBrowser.setMode(ClistBox::MODE_SETUP);
 	optionsMenuBrowser.enableShrinkMenu();
 	
 	//
@@ -2600,7 +2600,7 @@ void CMovieBrowser::showOptionMenu(void)
 	optionsMenu.setTitle(_("Options"), NEUTRINO_ICON_MOVIE);
 	optionsMenu.enablePaintDate();
 	optionsMenu.enablePaintFoot();
-	optionsMenu.setWidgetMode(ClistBox::MODE_SETUP);
+	optionsMenu.setMode(ClistBox::MODE_SETUP);
 	optionsMenu.enableShrinkMenu();
 
 	//

@@ -97,7 +97,7 @@ void CMoviePlayerSettings::showMenu()
 		//
 		moviePlayerSettings = new ClistBox(&box);
 
-		moviePlayerSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		moviePlayerSettings->setMode(ClistBox::MODE_SETUP);
 		moviePlayerSettings->enableShrinkMenu();
 		
 		//

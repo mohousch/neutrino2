@@ -682,7 +682,7 @@ int CIceCast::showMenu()
 		ilist->addItem(item);
 	}
 	
-	ilist->setWidgetMode(ClistBox::MODE_LISTBOX);
+	ilist->setMode(ClistBox::MODE_LISTBOX);
 
 	ilist->setSelected(selected);
 

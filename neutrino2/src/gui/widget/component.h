@@ -148,6 +148,21 @@ class CBox
 
 typedef std::vector<CBox> nRegion;
 
+//// CCScrollBar
+class CCScrollBar
+{
+	public:
+		CFrameBuffer* frameBuffer;
+		
+		//
+		CCScrollBar(){frameBuffer = CFrameBuffer::getInstance();};
+		virtual ~CCScrollBar(){};
+
+		// currentPage start with 0
+		void paint(const int x, const int y, const int dy, const int NrOfPages, const int CurrentPage);
+		void paint(CBox* position, const int NrOfPages, const int CurrentPage);
+};
+
 //// CComponent
 class CComponent
 {
@@ -177,7 +192,6 @@ class CComponent
 			CC_TEXTBOX,
 			CC_FRAME,
 			CC_PROGRESSBAR,
-			CC_ITEMINFO,
 			CC_SLIDER
 		};
 		
@@ -757,6 +771,7 @@ class CCProgressBar : public CComponent
 };
 
 //// CCItemInfo
+/*
 class CCItemInfo : public CComponent
 {
 	public:
@@ -812,6 +827,7 @@ class CCItemInfo : public CComponent
 		void restoreScreen(void);
 		void enableSaveScreen();
 };
+*/
 
 //// window
 class CCWindow : public CComponent
@@ -973,22 +989,6 @@ class CCFooters : public CComponent
 		void hide();
 		//
 		void clear(){buttons.clear();};
-};
-
-//// Component helpers
-//// CCScrollBar
-class CCScrollBar : public CComponent
-{
-	public:
-		CFrameBuffer* frameBuffer;
-		
-		//
-		CCScrollBar(){frameBuffer = CFrameBuffer::getInstance(); /*cc_type = CC_SCROLLBAR;*/};
-		virtual ~CCScrollBar(){};
-
-		// currentPage start with 0
-		void paint(const int x, const int y, const int dy, const int NrOfPages, const int CurrentPage);
-		void paint(CBox* position, const int NrOfPages, const int CurrentPage);
 };
 
 #endif /* __gui_component_h__ */

@@ -270,7 +270,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 		//			
 		AVPIDSelector = new ClistBox(&box);
 
-		AVPIDSelector->setWidgetMode(ClistBox::MODE_SETUP);
+		AVPIDSelector->setMode(ClistBox::MODE_SETUP);
 		AVPIDSelector->enableShrinkMenu();
 						
 		AVPIDSelector->enablePaintHead();

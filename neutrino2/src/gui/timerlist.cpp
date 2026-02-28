@@ -900,7 +900,7 @@ int CTimerList::showModifyTimerMenu()
 		//
 		timerSettings = new ClistBox(&box);
 
-		timerSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		timerSettings->setMode(ClistBox::MODE_SETUP);
 		
 		//
 		timerSettings->enablePaintHead();
@@ -991,7 +991,7 @@ int CTimerList::showModifyTimerMenu()
 	//			
 	timerSettings_apids = new ClistBox(&box);
 
-	timerSettings_apids->setWidgetMode(ClistBox::MODE_SETUP);
+	timerSettings_apids->setMode(ClistBox::MODE_SETUP);
 	
 	//				
 	timerSettings_apids->enablePaintHead();
@@ -1085,7 +1085,7 @@ int CTimerList::showNewTimerMenu()
 		//
 		timerSettings = new ClistBox(&box);
 
-		timerSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		timerSettings->setMode(ClistBox::MODE_SETUP);
 		
 		//
 		timerSettings->enablePaintHead();

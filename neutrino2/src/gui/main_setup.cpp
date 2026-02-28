@@ -104,8 +104,8 @@ void CMainSettingsMenu::showMenu(void)
 		//
 		mainSettings = new ClistBox(&box);
 		
-		mainSettings->setWidgetMode(ClistBox::MODE_MENU);
-		mainSettings->setWidgetLayout(ClistBox::LAYOUT_STANDARD);
+		mainSettings->setMode(ClistBox::MODE_MENU);
+		mainSettings->setLayout(ClistBox::LAYOUT_STANDARD);
 		mainSettings->enableShrinkMenu();
 		mainSettings->paintMainFrame(true);
 		

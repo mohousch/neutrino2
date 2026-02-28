@@ -325,8 +325,8 @@ void CTVShows::showMenu()
 		mlist->addItem(item);
 	}
 
-	mlist->setWidgetMode(ClistBox::MODE_LISTBOX);
-	mlist->setWidgetLayout(ClistBox::LAYOUT_FRAME);
+	mlist->setMode(ClistBox::MODE_LISTBOX);
+	mlist->setLayout(ClistBox::LAYOUT_FRAME);
 	mlist->setItemsPerPage(6, 2);
 
 	mlist->setSelected(selected);
@@ -361,7 +361,7 @@ int CTVShows::showCategoriesMenu()
 	menu->enablePaintDate();
 	menu->enablePaintFoot();
 	
-	menu->setWidgetMode(ClistBox::MODE_MENU);
+	menu->setMode(ClistBox::MODE_MENU);
 	menu->enableShrinkMenu();
 
 	menu->addItem(new CMenuForwarder(_("Airing today"), true, NULL, new CTVShows("airing_today"), "airing_today"));

@@ -377,8 +377,8 @@ function testCWidget()
 	listBox:enablePaintFoot()
 	listBox:enableShrinkMenu()
 
-	listBox:setWidgetMode(neutrino2.ClistBox_MODE_MENU)
-	listBox:setWidgetLayout(neutrino2.ClistBox_LAYOUT_CLASSIC)
+	listBox:setMode(neutrino2.ClistBox_MODE_MENU)
+	listBox:setLayout(neutrino2.ClistBox_LAYOUT_CLASSIC)
 
 	-- CMessageBox
 	item1 = neutrino2.CMenuForwarder("CMessageBox", true, "", self, "msgBox")

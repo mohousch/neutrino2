@@ -206,7 +206,7 @@ void CNKMovies::showMenu()
 
 	//
 	rightWidget = new ClistBox(&rightBox);
-	rightWidget->setWidgetLayout(ClistBox::LAYOUT_FRAME);
+	rightWidget->setLayout(ClistBox::LAYOUT_FRAME);
 	rightWidget->setItemsPerPage(5,2);
 	rightWidget->setSelected(right_selected);
 

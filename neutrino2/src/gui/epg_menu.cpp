@@ -86,8 +86,8 @@ int CEPGMenuHandler::doMenu()
 		
 		//
 		redMenu = new ClistBox(&box);
-		redMenu->setWidgetMode(ClistBox::MODE_MENU);
-		redMenu->setWidgetLayout(ClistBox::LAYOUT_STANDARD);
+		redMenu->setMode(ClistBox::MODE_MENU);
+		redMenu->setLayout(ClistBox::LAYOUT_STANDARD);
 		redMenu->enableShrinkMenu();
 		redMenu->paintMainFrame(true);
 		// head

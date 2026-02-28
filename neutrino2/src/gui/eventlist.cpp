@@ -941,7 +941,7 @@ int CEventFinderMenu::showMenu(void)
 		//
 		searchMenu = new ClistBox(&box);
 
-		searchMenu->setWidgetMode(ClistBox::MODE_SETUP);
+		searchMenu->setMode(ClistBox::MODE_SETUP);
 		searchMenu->enableShrinkMenu();
 		
 		//

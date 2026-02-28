@@ -111,7 +111,7 @@ int CKeyChooser::paint()
 		
 		//
 		menu = new ClistBox(&cFrameBox);
-		menu->setWidgetMode(ClistBox::MODE_MENU);
+		menu->setMode(ClistBox::MODE_MENU);
 		
 		//	
 		menu->enablePaintHead();

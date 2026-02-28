@@ -203,8 +203,8 @@ void CPicViewer::showMenu()
 		plist->addItem(item);
 	}
 
-	plist->setWidgetMode(ClistBox::MODE_LISTBOX);
-	plist->setWidgetLayout(ClistBox::LAYOUT_FRAME);
+	plist->setMode(ClistBox::MODE_LISTBOX);
+	plist->setLayout(ClistBox::LAYOUT_FRAME);
 	plist->setItemsPerPage(10, 6);
 	
 	//

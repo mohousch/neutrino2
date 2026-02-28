@@ -113,8 +113,8 @@ int COSDSettings::showMenu(void)
 		//
 		osdSettings = new ClistBox(&box);
 		
-		osdSettings->setWidgetMode(ClistBox::MODE_MENU);
-		osdSettings->setWidgetLayout(ClistBox::LAYOUT_STANDARD);
+		osdSettings->setMode(ClistBox::MODE_MENU);
+		osdSettings->setLayout(ClistBox::LAYOUT_STANDARD);
 		osdSettings->enableShrinkMenu();
 		osdSettings->paintMainFrame(true);
 		//
@@ -286,7 +286,7 @@ void COSDMenuColorSettings::showMenu()
 		//
 		OSDmenuColorsSettings = new ClistBox(&box);
 
-		OSDmenuColorsSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		OSDmenuColorsSettings->setMode(ClistBox::MODE_SETUP);
 		OSDmenuColorsSettings->enableShrinkMenu();
 		
 		//
@@ -507,7 +507,7 @@ void COSDInfoBarColorSettings::showMenu()
 		//
 		OSDinfobarColorSettings = new ClistBox(&box);
 
-		OSDinfobarColorSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		OSDinfobarColorSettings->setMode(ClistBox::MODE_SETUP);
 		OSDinfobarColorSettings->enableShrinkMenu();
 		
 		//
@@ -669,7 +669,7 @@ int CLanguageSettings::showMenu()
 		//
 		languageSettings = new ClistBox(&box);
 
-		languageSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		languageSettings->setMode(ClistBox::MODE_SETUP);
 		languageSettings->enableShrinkMenu();
 		
 		//
@@ -829,7 +829,7 @@ void CFontSettings::showMenu()
 		//
 		fontSettings = new ClistBox(&box);
 
-		fontSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		fontSettings->setMode(ClistBox::MODE_SETUP);
 		fontSettings->enableShrinkMenu();
 		
 		//
@@ -938,7 +938,7 @@ void COSDTimingSettings::showMenu()
 		//
 		osdTimingSettings = new ClistBox(&box);
 
-		osdTimingSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		osdTimingSettings->setMode(ClistBox::MODE_SETUP);
 		osdTimingSettings->enableShrinkMenu();
 		
 		//
@@ -1094,7 +1094,7 @@ void COSDDiverses::showMenu()
 		//
 		osdDiverseSettings = new ClistBox(&box);
 
-		osdDiverseSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		osdDiverseSettings->setMode(ClistBox::MODE_SETUP);
 		osdDiverseSettings->enableShrinkMenu();
 		
 		//
@@ -1209,8 +1209,8 @@ int CSkinManager::showMenu()
 		//
 		skinMenu = new ClistBox(&box);
 
-		skinMenu->setWidgetMode(ClistBox::MODE_LISTBOX);
-		skinMenu->setWidgetLayout(ClistBox::LAYOUT_CLASSIC);
+		skinMenu->setMode(ClistBox::MODE_LISTBOX);
+		skinMenu->setLayout(ClistBox::LAYOUT_CLASSIC);
 		skinMenu->enableShrinkMenu();
 		skinMenu->enablePaintHead();
 		skinMenu->setTitle(_("Skin Select"), NEUTRINO_ICON_COLORS);
@@ -1389,7 +1389,7 @@ int CSkinSettings::showMenu()
 		//
 		skinSettings = new ClistBox(&box);
 
-		skinSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		skinSettings->setMode(ClistBox::MODE_SETUP);
 		skinSettings->enableShrinkMenu();
 		
 		//
@@ -1617,7 +1617,7 @@ int CPersonalisation::showMenu(void)
 		//
 		personalizeSettings = new ClistBox(&box);
 
-		personalizeSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		personalizeSettings->setMode(ClistBox::MODE_SETUP);
 		personalizeSettings->enableShrinkMenu();
 		
 		//

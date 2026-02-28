@@ -183,7 +183,7 @@ void CZapitSetup::showMenu()
 		//
 		zapit = new ClistBox(&box);
 
-		zapit->setWidgetMode(ClistBox::MODE_SETUP);
+		zapit->setMode(ClistBox::MODE_SETUP);
 		zapit->enableShrinkMenu();
 		
 		//

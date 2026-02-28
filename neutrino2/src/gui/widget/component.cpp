@@ -43,6 +43,68 @@
 //// globals
 extern cVideo * videoDecoder;
 
+//// Component helpers
+//// CCScrollBar
+void CCScrollBar::paint(const int x, const int y, const int dy, const int NrOfPages, const int CurrentPage)
+{
+	// scrollBar
+	CBox cFrameScrollBar;
+	CCWindow cScrollBarWindow;
+
+	cFrameScrollBar.iX = x;
+	cFrameScrollBar.iY = y;
+	cFrameScrollBar.iWidth = SCROLLBAR_WIDTH;
+	cFrameScrollBar.iHeight = dy;
+
+
+	cScrollBarWindow.setPosition(&cFrameScrollBar);
+	cScrollBarWindow.setColor(COL_MENUCONTENT_PLUS_1);
+	cScrollBarWindow.setCorner(NO_RADIUS, CORNER_ALL);
+	cScrollBarWindow.paint();
+		
+	// scrollBar slider
+	CBox cFrameSlider;
+	CCWindow cSliderWindow;	
+
+	cFrameSlider.iX = cFrameScrollBar.iX + 2;
+	cFrameSlider.iY = cFrameScrollBar.iY + CurrentPage*(cFrameScrollBar.iHeight/NrOfPages);
+	cFrameSlider.iWidth = cFrameScrollBar.iWidth - 4;
+	cFrameSlider.iHeight = cFrameScrollBar.iHeight/NrOfPages;
+
+	cSliderWindow.setPosition(&cFrameSlider);
+	cSliderWindow.setColor(COL_MENUCONTENT_PLUS_3);
+	cSliderWindow.setCorner(NO_RADIUS, CORNER_ALL);
+	cSliderWindow.paint();
+}
+
+void CCScrollBar::paint(CBox* position, const int NrOfPages, const int CurrentPage)
+{
+	// scrollBar
+	CBox cFrameScrollBar;
+	CCWindow cScrollBarWindow;
+
+	cFrameScrollBar = *position;
+
+	cScrollBarWindow.setPosition(&cFrameScrollBar);
+	cScrollBarWindow.setColor(COL_MENUCONTENT_PLUS_1);
+	cScrollBarWindow.setCorner(NO_RADIUS, CORNER_ALL);
+	cScrollBarWindow.paint();
+		
+	// scrollBar slider
+	CBox cFrameSlider;
+	CCWindow cSliderWindow;	
+
+	cFrameSlider.iX = cFrameScrollBar.iX + 2;
+	cFrameSlider.iY = cFrameScrollBar.iY + CurrentPage*(cFrameScrollBar.iHeight/NrOfPages);
+	cFrameSlider.iWidth = cFrameScrollBar.iWidth - 4;
+	cFrameSlider.iHeight = cFrameScrollBar.iHeight/NrOfPages;
+
+	cSliderWindow.setPosition(&cFrameSlider);
+	cSliderWindow.setColor(COL_MENUCONTENT_PLUS_3);
+	cSliderWindow.setCorner(NO_RADIUS, CORNER_ALL);
+	cSliderWindow.paint();
+}
+
 //// CComponent
 CComponent::CComponent()
 {
@@ -1932,6 +1994,7 @@ void CCProgressBar::reset()
 }
 
 //// CItemInfo
+/*
 CCItemInfo::CCItemInfo()
 {
 	frameBuffer = CFrameBuffer::getInstance();
@@ -2089,6 +2152,7 @@ void CCItemInfo::enableSaveScreen()
 	
 	saveScreen();
 }
+*/
 
 ////
 CCWindow::CCWindow(const int x, const int y, const int dx, const int dy)
@@ -2843,67 +2907,5 @@ void CCFooters::hide()
 	
 	if (paintframe)
 		CFrameBuffer::getInstance()->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
-}
-
-//// Component helpers
-//// CCScrollBar
-void CCScrollBar::paint(const int x, const int y, const int dy, const int NrOfPages, const int CurrentPage)
-{
-	// scrollBar
-	CBox cFrameScrollBar;
-	CCWindow cScrollBarWindow;
-
-	cFrameScrollBar.iX = x;
-	cFrameScrollBar.iY = y;
-	cFrameScrollBar.iWidth = SCROLLBAR_WIDTH;
-	cFrameScrollBar.iHeight = dy;
-
-
-	cScrollBarWindow.setPosition(&cFrameScrollBar);
-	cScrollBarWindow.setColor(COL_MENUCONTENT_PLUS_1);
-	cScrollBarWindow.setCorner(NO_RADIUS, CORNER_ALL);
-	cScrollBarWindow.paint();
-		
-	// scrollBar slider
-	CBox cFrameSlider;
-	CCWindow cSliderWindow;	
-
-	cFrameSlider.iX = cFrameScrollBar.iX + 2;
-	cFrameSlider.iY = cFrameScrollBar.iY + CurrentPage*(cFrameScrollBar.iHeight/NrOfPages);
-	cFrameSlider.iWidth = cFrameScrollBar.iWidth - 4;
-	cFrameSlider.iHeight = cFrameScrollBar.iHeight/NrOfPages;
-
-	cSliderWindow.setPosition(&cFrameSlider);
-	cSliderWindow.setColor(COL_MENUCONTENT_PLUS_3);
-	cSliderWindow.setCorner(NO_RADIUS, CORNER_ALL);
-	cSliderWindow.paint();
-}
-
-void CCScrollBar::paint(CBox* position, const int NrOfPages, const int CurrentPage)
-{
-	// scrollBar
-	CBox cFrameScrollBar;
-	CCWindow cScrollBarWindow;
-
-	cFrameScrollBar = *position;
-
-	cScrollBarWindow.setPosition(&cFrameScrollBar);
-	cScrollBarWindow.setColor(COL_MENUCONTENT_PLUS_1);
-	cScrollBarWindow.setCorner(NO_RADIUS, CORNER_ALL);
-	cScrollBarWindow.paint();
-		
-	// scrollBar slider
-	CBox cFrameSlider;
-	CCWindow cSliderWindow;	
-
-	cFrameSlider.iX = cFrameScrollBar.iX + 2;
-	cFrameSlider.iY = cFrameScrollBar.iY + CurrentPage*(cFrameScrollBar.iHeight/NrOfPages);
-	cFrameSlider.iWidth = cFrameScrollBar.iWidth - 4;
-	cFrameSlider.iHeight = cFrameScrollBar.iHeight/NrOfPages;
-
-	cSliderWindow.setPosition(&cFrameSlider);
-	cSliderWindow.setColor(COL_MENUCONTENT_PLUS_3);
-	cSliderWindow.setCorner(NO_RADIUS, CORNER_ALL);
-	cSliderWindow.paint();
 }
 

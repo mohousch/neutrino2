@@ -1107,21 +1107,21 @@ int CNeutrinoApp::convertItemInfoMode(const char * const mode)
 {
 	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertItemInfoMode: mode: %s\n", mode);
 	
-	int m = CCItemInfo::ITEMINFO_HINTITEM;
+	int m = CMenuItemInfo::ITEMINFO_HINTITEM;
 	
 	if (mode != NULL)
 	{
 		if ( strcmp(mode, "ITEMINFO_HINTITEM") == 0)
 		{
-			m = CCItemInfo::ITEMINFO_HINTITEM;
+			m = CMenuItemInfo::ITEMINFO_HINTITEM;
 		}
 		else if ( strcmp(mode, "ITEMINFO_ICONONLY") == 0)
 		{
-			m = CCItemInfo::ITEMINFO_ICONONLY;
+			m = CMenuItemInfo::ITEMINFO_ICONONLY;
 		}
 		else if ( strcmp(mode, "ITEMINFO_HINTONLY") == 0)
 		{
-			m = CCItemInfo::ITEMINFO_HINTONLY;
+			m = CMenuItemInfo::ITEMINFO_HINTONLY;
 		}
 	}
 	
@@ -1397,11 +1397,11 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	//
 	int t = ClistBox::LAYOUT_STANDARD;
 	if (listboxlayout) t = convertClistBoxLayout(listboxlayout);
-	listBox->setWidgetLayout(t);
+	listBox->setLayout(t);
 	//
 	int m = ClistBox::MODE_LISTBOX;
 	if (listboxmode) m = convertClistBoxMode(listboxmode);
-	listBox->setWidgetMode(m);
+	listBox->setMode(m);
 	listBox->paintScrollBar(scrollbar);
 	listBox->paintMainFrame(paintframe);
 	if (savescreen) listBox->enableSaveScreen();
@@ -1463,7 +1463,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 			iteminfo_height = widget->getWindowsPos().iHeight;
 			
 		listBox->enablePaintItemInfo();
-		int iimode = CCItemInfo::ITEMINFO_HINTITEM;
+		int iimode = CMenuItemInfo::ITEMINFO_HINTITEM;
 		if (iteminfomode) iimode = convertItemInfoMode(iteminfomode);
 		listBox->setItemInfoMode(iimode);		
 		listBox->setItemInfoPos(iteminfo_posx, iteminfo_posy, iteminfo_width, iteminfo_height);

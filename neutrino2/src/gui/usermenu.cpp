@@ -100,7 +100,7 @@ int CUserMenu::doMenu(void)
 		//
 		menu = new ClistBox(box.iX, box.iY + 50, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight - 100);
 		
-		menu->setWidgetMode(ClistBox::MODE_MENU);
+		menu->setMode(ClistBox::MODE_MENU);
 		menu->paintMainFrame(true);
 		
 		// 	

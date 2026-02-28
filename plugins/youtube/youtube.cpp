@@ -156,8 +156,8 @@ void CYTBrowser::showMenu()
 	}
 
 	//
-	moviesMenu->setWidgetMode(ClistBox::MODE_LISTBOX);
-	moviesMenu->setWidgetLayout(ClistBox::LAYOUT_FRAME);
+	moviesMenu->setMode(ClistBox::MODE_LISTBOX);
+	moviesMenu->setLayout(ClistBox::LAYOUT_FRAME);
 	moviesMenu->setItemsPerPage(3, 2);
 
 	//
@@ -369,7 +369,7 @@ int CYTBrowser::showCategoriesMenu(void)
 	mainMenu.enablePaintDate();
 	mainMenu.enablePaintFoot();
 	mainMenu.enableSaveScreen();
-	mainMenu.setWidgetMode(ClistBox::MODE_MENU);
+	mainMenu.setMode(ClistBox::MODE_MENU);
 	mainMenu.enableShrinkMenu();
 
 	mainMenu.addItem(new CMenuForwarder(_("Most popular today"), true, NULL, new CYTBrowser(cYTFeedParser::MOST_POPULAR), NULL));

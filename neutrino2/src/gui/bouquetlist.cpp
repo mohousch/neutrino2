@@ -532,7 +532,7 @@ int CBouquetList::doMenu()
 		//
 		menu = new ClistBox(&box);
 
-		menu->setWidgetMode(ClistBox::MODE_MENU);
+		menu->setMode(ClistBox::MODE_MENU);
 		menu->setBorderMode();
 		
 		//

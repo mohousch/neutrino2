@@ -169,7 +169,7 @@ void CRecordingSettings::showMenu()
 		//
 		recordingSettings = new ClistBox(&box);
 
-		recordingSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		recordingSettings->setMode(ClistBox::MODE_SETUP);
 		recordingSettings->enableShrinkMenu();
 		
 		//

@@ -715,7 +715,7 @@ void CMoviePlayerGui::PlayFile(void)
 		//
 		bookStartMenu = new ClistBox(&box);
 
-		bookStartMenu->setWidgetMode(ClistBox::MODE_MENU);
+		bookStartMenu->setMode(ClistBox::MODE_MENU);
 		bookStartMenu->enableShrinkMenu();
 			
 		bookStartMenu->enablePaintHead();
@@ -1730,7 +1730,7 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 		
 		//
 		startPosSelectionMenu = new ClistBox(&box);
-		startPosSelectionMenu->setWidgetMode(ClistBox::MODE_SETUP);
+		startPosSelectionMenu->setMode(ClistBox::MODE_SETUP);
 		startPosSelectionMenu->enableShrinkMenu();
 		//	
 		startPosSelectionMenu->enablePaintHead();
@@ -2081,7 +2081,7 @@ void CMoviePlayerGui::showPlaylist()
 		mplist->addItem(item);
 	}
 
-	mplist->setWidgetLayout(ClistBox::LAYOUT_FRAME);
+	mplist->setLayout(ClistBox::LAYOUT_FRAME);
 	mplist->setItemsPerPage(6, 2);
 	
 	mplist->setSelected(selected);

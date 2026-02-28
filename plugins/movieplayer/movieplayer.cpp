@@ -417,8 +417,8 @@ void CMoviePlayer::showMenu()
 	mlist->setSelected(selected);
 
 	//
-	mlist->setWidgetMode(ClistBox::MODE_LISTBOX);
-	mlist->setWidgetLayout(ClistBox::LAYOUT_FRAME);
+	mlist->setMode(ClistBox::MODE_LISTBOX);
+	mlist->setLayout(ClistBox::LAYOUT_FRAME);
 	mlist->setItemsPerPage(6, 2);
 	
 	//

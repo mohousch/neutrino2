@@ -89,7 +89,7 @@ int CDVBSubSelectMenuHandler::doMenu()
 		//			
 		DVBSubSelector = new ClistBox(&box);
 
-		DVBSubSelector->setWidgetMode(ClistBox::MODE_SETUP);
+		DVBSubSelector->setMode(ClistBox::MODE_SETUP);
 		DVBSubSelector->enableShrinkMenu();
 		
 		//				

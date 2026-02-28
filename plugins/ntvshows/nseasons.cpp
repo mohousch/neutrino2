@@ -189,8 +189,8 @@ void CNSeasons::showMenu()
 		listBox->addItem(item);
 	}
 
-	listBox->setWidgetMode(ClistBox::MODE_LISTBOX);
-	listBox->setWidgetLayout(ClistBox::LAYOUT_FRAME);
+	listBox->setMode(ClistBox::MODE_LISTBOX);
+	listBox->setLayout(ClistBox::LAYOUT_FRAME);
 	listBox->setItemsPerPage(6, 2);
 	
 	listBox->setSelected(selected);

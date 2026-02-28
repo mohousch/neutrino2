@@ -92,7 +92,7 @@ int CProxySetup::showProxySetup()
 		//
 		mn = new ClistBox(&box);
 
-		mn->setWidgetMode(ClistBox::MODE_SETUP);
+		mn->setMode(ClistBox::MODE_SETUP);
 		mn->enableShrinkMenu();
 		
 		mn->enablePaintHead();

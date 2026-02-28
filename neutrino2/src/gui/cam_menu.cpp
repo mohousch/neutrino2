@@ -130,7 +130,7 @@ void CCAMMenuHandler::doMainMenu()
 		//
 		cammenu = new ClistBox(&box);
 
-		cammenu->setWidgetMode(ClistBox::MODE_SETUP);
+		cammenu->setMode(ClistBox::MODE_SETUP);
 		cammenu->enableShrinkMenu();
 		
 		//
@@ -209,7 +209,7 @@ void CCAMMenuHandler::doMainMenu()
 				//
 				tempMenu = new ClistBox(&box);
 
-				tempMenu->setWidgetMode(ClistBox::MODE_SETUP);
+				tempMenu->setMode(ClistBox::MODE_SETUP);
 				tempMenu->enableShrinkMenu();
 				
 				//
@@ -406,7 +406,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 				//
 				menu = new ClistBox(&box);
 
-				menu->setWidgetMode(ClistBox::MODE_SETUP);
+				menu->setMode(ClistBox::MODE_SETUP);
 				menu->enableShrinkMenu();
 				
 				//

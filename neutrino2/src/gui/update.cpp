@@ -177,7 +177,7 @@ bool CFlashUpdate::selectHttpImage(void)
 		//
 		SelectionWidget = new ClistBox(&box);
 
-		SelectionWidget->setWidgetMode(ClistBox::MODE_SETUP);
+		SelectionWidget->setMode(ClistBox::MODE_SETUP);
 		SelectionWidget->enableShrinkMenu();
 		
 		//
@@ -712,7 +712,7 @@ void CFlashExpert::showMTDSelector(const std::string &actionkey)
 		//
 		mtdselector = new ClistBox(&box);
 
-		mtdselector->setWidgetMode(ClistBox::MODE_SETUP);
+		mtdselector->setMode(ClistBox::MODE_SETUP);
 		mtdselector->enableShrinkMenu();
 		
 		//
@@ -788,7 +788,7 @@ void CFlashExpert::showFileSelector(const std::string &actionkey)
 		//
 		fileselector = new ClistBox(&box);
 
-		fileselector->setWidgetMode(ClistBox::MODE_SETUP);
+		fileselector->setMode(ClistBox::MODE_SETUP);
 		fileselector->enableShrinkMenu();
 		
 		//
@@ -966,7 +966,7 @@ int CUpdateSettings::showMTDExpert()
 		//
 		mtdexpert = new ClistBox(&box);
 
-		mtdexpert->setWidgetMode(ClistBox::MODE_SETUP);
+		mtdexpert->setMode(ClistBox::MODE_SETUP);
 		mtdexpert->enableShrinkMenu();
 		
 		//
@@ -1036,7 +1036,7 @@ int CUpdateSettings::showMenu()
 		//
 		updateSettings = new ClistBox(&box);
 
-		updateSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		updateSettings->setMode(ClistBox::MODE_SETUP);
 		updateSettings->enableShrinkMenu();
 		
 		//

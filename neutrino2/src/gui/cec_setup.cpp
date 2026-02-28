@@ -114,7 +114,7 @@ int CCECSetup::showMenu()
 		//
 		cec = new ClistBox(&box);
 
-		cec->setWidgetMode(ClistBox::MODE_SETUP);
+		cec->setMode(ClistBox::MODE_SETUP);
 		cec->enableShrinkMenu();
 		
 		//

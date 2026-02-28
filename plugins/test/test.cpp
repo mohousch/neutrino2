@@ -140,11 +140,6 @@ class CTestMenu : public CTarget
 		void testCHButtons();
 		void testCSpinner();
 		void testCCSlider();
-		void testCCItemInfo();
-		void testCCItemInfo2();
-		void testCCItemInfo3();
-		void testCCItemInfo4();
-		void testCCItemInfo5();
 		void testCHeaders();
 		void testCFooters();
 		void testCProgressWindow();
@@ -936,7 +931,7 @@ void CTestMenu::testCWidget()
 
 	//
 	rightWidget = new ClistBox(&rightBox);
-	rightWidget->setWidgetLayout(ClistBox::LAYOUT_FRAME);
+	rightWidget->setLayout(ClistBox::LAYOUT_FRAME);
 	rightWidget->setItemsPerPage(6,2);
 	rightWidget->setSelected(right_selected);
 	rightWidget->enablePaintItemInfo();
@@ -1404,7 +1399,7 @@ void CTestMenu::testClistBoxWidget()
 
 	rightWidget = new ClistBox(&rightBox);
 
-	rightWidget->setWidgetLayout(ClistBox::LAYOUT_FRAME);
+	rightWidget->setLayout(ClistBox::LAYOUT_FRAME);
 	rightWidget->setSelected(selected);
 	rightWidget->enablePaintHead();
 	rightWidget->setTitle("CWidget(ClistBox)", NEUTRINO_ICON_MP3);
@@ -1413,7 +1408,7 @@ void CTestMenu::testClistBoxWidget()
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	rightWidget->enablePaintItemInfo();
-	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINTITEM);
+	rightWidget->setItemInfoMode(CMenuItemInfo::ITEMINFO_HINTITEM);
 	rightWidget->enableShrinkMenu();
 
 	// loadPlaylist
@@ -1920,67 +1915,6 @@ void CTestMenu::testCCSlider()
 	testSlider = NULL;
 }
 
-
-void CTestMenu::testCCItemInfo()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testCCItemInfo:\n");
-	
-	CCItemInfo *itemInfo = new CCItemInfo();
-	
-	itemInfo->setPosition(40, 40, 1200, 400);
-	itemInfo->paintMainFrame(true);
-	itemInfo->enableSaveScreen();
-	itemInfo->setMode(CCItemInfo::ITEMINFO_HINTITEM);
-	itemInfo->setHint("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
-	itemInfo->setIcon(DATADIR "/icons/nopreview.jpg");
-	
-	itemInfo->setExecutable();
-	itemInfo->exec(this);
-	
-	delete itemInfo;
-	itemInfo = NULL;
-}
-
-void CTestMenu::testCCItemInfo2()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testCCItemInfo:\n");
-	
-	CCItemInfo *itemInfo = new CCItemInfo();
-	
-	itemInfo->setPosition(40, 40, 1200, 400);
-	itemInfo->paintMainFrame(true);
-	itemInfo->enableSaveScreen();
-	itemInfo->setMode(CCItemInfo::ITEMINFO_ICONONLY);
-	itemInfo->setHint("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
-	itemInfo->setIcon(DATADIR "/icons/nopreview.jpg");
-
-	itemInfo->setExecutable();	
-	itemInfo->exec(this);
-	
-	delete itemInfo;
-	itemInfo = NULL;
-}
-
-void CTestMenu::testCCItemInfo3()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testCCItemInfo:\n");
-	
-	CCItemInfo *itemInfo = new CCItemInfo();
-	
-	itemInfo->setPosition(40, 40, 1200, 400);
-	itemInfo->paintMainFrame(true);
-	itemInfo->enableSaveScreen();
-	itemInfo->setMode(CCItemInfo::ITEMINFO_HINTONLY);
-	itemInfo->setHint("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");
-	itemInfo->setIcon(DATADIR "/icons/nopreview.jpg");
-
-	itemInfo->setExecutable();	
-	itemInfo->exec(this);
-	
-	delete itemInfo;
-	itemInfo = NULL;
-}
-
 //
 void CTestMenu::testCHeaders()
 {
@@ -2336,7 +2270,7 @@ void CTestMenu::testClistBox()
 	}
 
 	// mode
-	rightWidget->setWidgetLayout(ClistBox::LAYOUT_STANDARD);
+	rightWidget->setLayout(ClistBox::LAYOUT_STANDARD);
 	rightWidget->enableShrinkMenu();
 	rightWidget->paintMainFrame(true);
 
@@ -2409,7 +2343,7 @@ void CTestMenu::testClistBox2()
 	}
 
 	// widgettype
-	rightWidget->setWidgetLayout(ClistBox::LAYOUT_CLASSIC);
+	rightWidget->setLayout(ClistBox::LAYOUT_CLASSIC);
 	rightWidget->enableShrinkMenu();
 	rightWidget->paintMainFrame(true);
 	
@@ -2480,8 +2414,8 @@ void CTestMenu::testClistBox3()
 	}
 
 	// widgettype
-	rightWidget->setWidgetMode(ClistBox::MODE_LISTBOX);
-	rightWidget->setWidgetLayout(ClistBox::LAYOUT_EXTENDED);
+	rightWidget->setMode(ClistBox::MODE_LISTBOX);
+	rightWidget->setLayout(ClistBox::LAYOUT_EXTENDED);
 	rightWidget->enableShrinkMenu();
 	rightWidget->paintMainFrame(true);
 
@@ -2550,7 +2484,7 @@ void CTestMenu::testClistBox4()
 	}
 
 	// widgettype
-	rightWidget->setWidgetLayout(ClistBox::LAYOUT_FRAME);
+	rightWidget->setLayout(ClistBox::LAYOUT_FRAME);
 	rightWidget->setItemsPerPage(6,2);
 	rightWidget->paintMainFrame(true);
 //	rightWidget->setBorderMode();
@@ -2624,7 +2558,7 @@ void CTestMenu::testClistBox6()
 	}
 
 	// mode
-	rightWidget->setWidgetLayout(ClistBox::LAYOUT_STANDARD);
+	rightWidget->setLayout(ClistBox::LAYOUT_STANDARD);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -2639,7 +2573,7 @@ void CTestMenu::testClistBox6()
 
 	// footinfo
 	rightWidget->enablePaintItemInfo();
-	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINTITEM);
+	rightWidget->setItemInfoMode(CMenuItemInfo::ITEMINFO_HINTITEM);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 
 	//
@@ -2697,7 +2631,7 @@ void CTestMenu::testClistBox7()
 	}
 
 	// mode
-	rightWidget->setWidgetLayout(ClistBox::LAYOUT_STANDARD);
+	rightWidget->setLayout(ClistBox::LAYOUT_STANDARD);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -2712,7 +2646,7 @@ void CTestMenu::testClistBox7()
 
 	// footinfo
 	rightWidget->enablePaintItemInfo();
-	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_ICONONLY);
+	rightWidget->setItemInfoMode(CMenuItemInfo::ITEMINFO_ICONONLY);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 
 	//
@@ -2766,8 +2700,8 @@ void CTestMenu::testClistBox9()
 	}
 
 	// mode
-	rightWidget->setWidgetLayout(ClistBox::LAYOUT_CLASSIC);
-	rightWidget->setWidgetMode(ClistBox::MODE_MENU);
+	rightWidget->setLayout(ClistBox::LAYOUT_CLASSIC);
+	rightWidget->setMode(ClistBox::MODE_MENU);
 	rightWidget->enableShrinkMenu();
 	rightWidget->paintMainFrame(true);
 
@@ -2785,7 +2719,7 @@ void CTestMenu::testClistBox9()
 
 	// itemInfo
 	rightWidget->enablePaintItemInfo();
-	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINTONLY);
+	rightWidget->setItemInfoMode(CMenuItemInfo::ITEMINFO_HINTONLY);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 	rightWidget->paintItemInfoBorder(CComponent::BORDER_ALL);
 	rightWidget->enableItemInfoSaveScreen();
@@ -4219,7 +4153,7 @@ void CTestMenu::testSubtitle()
 	rightWidget = new ClistBox(&Box);
 
 	// mode
-	rightWidget->setWidgetLayout(ClistBox::LAYOUT_STANDARD);
+	rightWidget->setLayout(ClistBox::LAYOUT_STANDARD);
 	rightWidget->enableShrinkMenu();
 	rightWidget->paintMainFrame(true);
 
@@ -4696,24 +4630,6 @@ int CTestMenu::exec(CTarget *parent, const std::string &actionKey)
 	else if (actionKey == "slider")
 	{
 		testCCSlider();
-		
-		return RETURN_REPAINT;
-	}
-	else if (actionKey == "iteminfo")
-	{
-		testCCItemInfo();
-		
-		return RETURN_REPAINT;
-	}
-	else if (actionKey == "iteminfo2")
-	{
-		testCCItemInfo2();
-		
-		return RETURN_REPAINT;
-	}
-	else if (actionKey == "iteminfo3")
-	{
-		testCCItemInfo3();
 		
 		return RETURN_REPAINT;
 	}
@@ -5966,7 +5882,7 @@ void CTestMenu::showMenu()
 
 		mainMenu->enablePaintHead();
 		mainMenu->setTitle(_("Test Menu"), NEUTRINO_ICON_BUTTON_SETUP);
-		mainMenu->setWidgetMode(ClistBox::MODE_MENU);
+		mainMenu->setMode(ClistBox::MODE_MENU);
 		mainMenu->enableShrinkMenu(),
 		mainMenu->enablePaintDate();
 		mainMenu->enablePaintFoot();
@@ -5990,9 +5906,6 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CCButtons (foot)", true, NULL, this, "buttons"));
 	mainMenu->addItem(new CMenuForwarder("CCButtons (head)", true, NULL, this, "hbuttons"));
 	mainMenu->addItem(new CMenuForwarder("CCSpinner", true, NULL, this, "spinner"));
-	mainMenu->addItem(new CMenuForwarder("CCItemInfo(HINTITEM)", true, NULL, this, "iteminfo"));
-	mainMenu->addItem(new CMenuForwarder("CCItemInfo(ICONONLY)", true, NULL, this, "iteminfo2"));
-	mainMenu->addItem(new CMenuForwarder("CCItemInfo(HINTONLY)", true, NULL, this, "iteminfo3"));
 	mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
 	mainMenu->addItem(new CMenuForwarder("CCWindow", true, NULL, this, "panel"));
 	mainMenu->addItem(new CMenuForwarder("CCWindow(gradient)", true, NULL, this, "window"));

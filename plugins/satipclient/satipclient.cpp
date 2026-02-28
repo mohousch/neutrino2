@@ -181,7 +181,7 @@ void CSatIPClient::showMenu()
 	// create menu
 	CMenuWidget * satIPClientMenu = new CMenuWidget("SatIP Client", NEUTRINO_ICON_SETTINGS);
 
-	satIPClientMenu->setWidgetMode(ClistBox::MODE_SETUP);
+	satIPClientMenu->setMode(ClistBox::MODE_SETUP);
 
 	//
 	CMenuForwarder *m1= new CMenuForwarder(_("Start SatIP Client"), true, NULL, this, "start", CRCInput::RC_green, NEUTRINO_ICON_BUTTON_GREEN);

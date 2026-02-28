@@ -232,7 +232,7 @@ void CVideoSettings::showMenu()
 		//
 		videoSettings = new ClistBox(&box);
 
-		videoSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		videoSettings->setMode(ClistBox::MODE_SETUP);
 		videoSettings->enableShrinkMenu();
 		
 		//

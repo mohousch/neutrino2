@@ -200,7 +200,7 @@ int CLCDSettings::exec(CTarget* parent, const std::string& actionKey)
 			//
 			menu = new ClistBox(box.iX, box.iY + 50, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight - 100);
 
-			menu->setWidgetMode(ClistBox::MODE_SETUP);
+			menu->setMode(ClistBox::MODE_SETUP);
 			
 			//
 			head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
@@ -293,7 +293,7 @@ void CLCDSettings::showMenu()
 		//
 		lcdSettings = new ClistBox(&box);
 
-		lcdSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		lcdSettings->setMode(ClistBox::MODE_SETUP);
 		lcdSettings->enableShrinkMenu();
 		
 		lcdSettings->enablePaintHead();

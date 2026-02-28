@@ -123,7 +123,7 @@ int CAudioSelectMenuHandler::doMenu()
 		//			
 		AudioSelector = new ClistBox(&box);
 
-		AudioSelector->setWidgetMode(ClistBox::MODE_SETUP);
+		AudioSelector->setMode(ClistBox::MODE_SETUP);
 		AudioSelector->enableShrinkMenu();
 						
 		AudioSelector->enablePaintHead();

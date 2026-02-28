@@ -109,7 +109,7 @@ void CParentalLockSettings::showMenu()
 		//
 		listBox = new ClistBox(&box);
 
-		listBox->setWidgetMode(ClistBox::MODE_SETUP);
+		listBox->setMode(ClistBox::MODE_SETUP);
 		listBox->enableShrinkMenu();
 		
 		//

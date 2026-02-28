@@ -491,7 +491,7 @@ int CScanSetup::showScanService()
 		//
 		scansetup = new ClistBox(&box);
 
-		scansetup->setWidgetMode(ClistBox::MODE_SETUP);
+		scansetup->setMode(ClistBox::MODE_SETUP);
 		
 		// head
 		scansetup->enablePaintHead();
@@ -719,7 +719,7 @@ int CScanSetup::showMotorSetup()
 		//
 		motorMenu = new ClistBox(&box);
 
-		motorMenu->setWidgetMode(ClistBox::MODE_SETUP);
+		motorMenu->setMode(ClistBox::MODE_SETUP);
 			
 		motorMenu->enablePaintHead();
 		motorMenu->setTitle(_("Motor settings"), NEUTRINO_ICON_SCAN);
@@ -820,7 +820,7 @@ int CScanSetup::showUnicableSetup()
 		//
 		uni_setup = new ClistBox(&box);
 
-		uni_setup->setWidgetMode(ClistBox::MODE_SETUP);
+		uni_setup->setMode(ClistBox::MODE_SETUP);
 		
 		uni_setup->enablePaintHead();
 		uni_setup->setTitle(_("Unicable settings"), NEUTRINO_ICON_SCAN);
@@ -891,7 +891,7 @@ int CScanSetup::showLNBSetup()
 		//
 		satSetup = new ClistBox(&box);
 
-		satSetup->setWidgetMode(ClistBox::MODE_SETUP);
+		satSetup->setMode(ClistBox::MODE_SETUP);
 			
 		satSetup->enablePaintHead();
 		satSetup->setTitle(_("Sat settings"), NEUTRINO_ICON_SCAN);
@@ -935,7 +935,7 @@ int CScanSetup::showLNBSetup()
 		//
 		tempsatlistBox = new ClistBox(&box);
 
-		tempsatlistBox->setWidgetMode(ClistBox::MODE_SETUP);
+		tempsatlistBox->setMode(ClistBox::MODE_SETUP);
 					
 		//
 		tempsatlistBox->enablePaintHead();
@@ -957,7 +957,7 @@ int CScanSetup::showLNBSetup()
 			//
 //			if (tempsatlistBox->hasTitle())
 			tempsatWidget->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_SCAN);
-			tempsatlistBox->setWidgetMode(ClistBox::MODE_SETUP);
+			tempsatlistBox->setMode(ClistBox::MODE_SETUP);
 				
 			tempsatlistBox->clear();
 				
@@ -1056,7 +1056,7 @@ int CScanSetup::showSatOnOffSetup()
 		//
 		satOnOfflistBox = new ClistBox(&box);
 
-		satOnOfflistBox->setWidgetMode(ClistBox::MODE_SETUP);
+		satOnOfflistBox->setMode(ClistBox::MODE_SETUP);
 			
 		satOnOfflistBox->enablePaintHead();
 		satOnOfflistBox->setTitle(_("Satellite"), NEUTRINO_ICON_SCAN);
@@ -1134,7 +1134,7 @@ int CScanSetup::showManualScanSetup()
 		//
 		manualScanlistBox = new ClistBox(&box);
 
-		manualScanlistBox->setWidgetMode(ClistBox::MODE_SETUP);
+		manualScanlistBox->setMode(ClistBox::MODE_SETUP);
 		
 		manualScanlistBox->enablePaintHead();
 		manualScanlistBox->setTitle(_("Manual frequency scan / Test signal"), NEUTRINO_ICON_SCAN);
@@ -1419,7 +1419,7 @@ int CScanSetup::showAutoScanSetup()
 		//
 		autoScanlistBox = new ClistBox(&box);
 
-		autoScanlistBox->setWidgetMode(ClistBox::MODE_SETUP);
+		autoScanlistBox->setMode(ClistBox::MODE_SETUP);
 		
 		autoScanlistBox->enablePaintHead();
 		autoScanlistBox->setTitle(_("Auto-Scan"), NEUTRINO_ICON_SCAN);
@@ -1558,7 +1558,7 @@ int CScanSetup::showAllAutoScanSetup()
 		//
 		autoScanAlllistBox = new ClistBox(&box);
 
-		autoScanAlllistBox->setWidgetMode(ClistBox::MODE_SETUP);
+		autoScanAlllistBox->setMode(ClistBox::MODE_SETUP);
 			
 		autoScanAlllistBox->enablePaintHead();
 		autoScanAlllistBox->setTitle(_("Auto-Scan multiple Satellites"), NEUTRINO_ICON_SCAN);
@@ -1653,7 +1653,7 @@ int CScanSetup::showTPSelect()
 		//
 		menu = new ClistBox(&box);
 
-		menu->setWidgetMode(ClistBox::MODE_SETUP);
+		menu->setMode(ClistBox::MODE_SETUP);
 		
 		//
 		menu->enablePaintHead();
@@ -2373,7 +2373,7 @@ int CTunerSetup::showMenu()
 		//
 		TunerSetup = new ClistBox(&box);
 		
-		TunerSetup->setWidgetMode(ClistBox::MODE_MENU);
+		TunerSetup->setMode(ClistBox::MODE_MENU);
 		
 		//
 		TunerSetup->enablePaintHead();

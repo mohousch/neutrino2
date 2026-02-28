@@ -192,7 +192,7 @@ void CGeneralSettings::showMenu()
 		//
 		miscSettingsGeneral = new ClistBox(&box);
 
-		miscSettingsGeneral->setWidgetMode(ClistBox::MODE_SETUP);
+		miscSettingsGeneral->setMode(ClistBox::MODE_SETUP);
 		miscSettingsGeneral->enableShrinkMenu();
 		
 		//
@@ -593,7 +593,7 @@ void CChannelListSettings::showMenu()
 		//
 		miscSettingsChannelList = new ClistBox(&box);
 
-		miscSettingsChannelList->setWidgetMode(ClistBox::MODE_SETUP);
+		miscSettingsChannelList->setMode(ClistBox::MODE_SETUP);
 		miscSettingsChannelList->enableShrinkMenu();
 		
 		//
@@ -790,7 +790,7 @@ void CEPGSettings::showMenu()
 		//
 		miscSettingsEPG = new ClistBox(&box);
 
-		miscSettingsEPG->setWidgetMode(ClistBox::MODE_SETUP);
+		miscSettingsEPG->setMode(ClistBox::MODE_SETUP);
 		miscSettingsEPG->enableShrinkMenu();
 		
 		//
@@ -1058,7 +1058,7 @@ void CFileBrowserSettings::showMenu()
 		//
 		miscSettingsFileBrowser = new ClistBox(&box);
 
-		miscSettingsFileBrowser->setWidgetMode(ClistBox::MODE_SETUP);
+		miscSettingsFileBrowser->setMode(ClistBox::MODE_SETUP);
 		miscSettingsFileBrowser->enableShrinkMenu();
 		
 		//

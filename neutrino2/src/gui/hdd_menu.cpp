@@ -191,7 +191,7 @@ int CHDDMenuHandler::HDDMenu()
 		//
 		hddmenu = new ClistBox(&box);
 
-		hddmenu->setWidgetMode(ClistBox::MODE_SETUP);
+		hddmenu->setMode(ClistBox::MODE_SETUP);
 		hddmenu->enableShrinkMenu();
 		
 		hddmenu->enablePaintHead();
@@ -347,7 +347,7 @@ int CHDDMenuHandler::HDDMenu()
 			//
 			tempMenu[i] = new ClistBox(tempMenuWidget[i]->getWindowsPos().iX, tempMenuWidget[i]->getWindowsPos().iY, tempMenuWidget[i]->getWindowsPos().iWidth, tempMenuWidget[i]->getWindowsPos().iHeight);
 
-			tempMenu[i]->setWidgetMode(ClistBox::MODE_SETUP);
+			tempMenu[i]->setMode(ClistBox::MODE_SETUP);
 			tempMenu[i]->enableShrinkMenu();
 			
 			//
@@ -428,7 +428,7 @@ int CHDDMenuHandler::HDDMenu()
 				//
 				PartMenu[j] = new ClistBox(PartMenuWidget[j]->getWindowsPos().iX, PartMenuWidget[j]->getWindowsPos().iY, PartMenuWidget[j]->getWindowsPos().iWidth, PartMenuWidget[j]->getWindowsPos().iHeight);
 
-				PartMenu[j]->setWidgetMode(ClistBox::MODE_SETUP);
+				PartMenu[j]->setMode(ClistBox::MODE_SETUP);
 				PartMenu[j]->enableShrinkMenu();
 				
 				//

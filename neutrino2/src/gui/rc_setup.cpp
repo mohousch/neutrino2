@@ -180,7 +180,7 @@ void CRemoteControlSettings::showMenu()
 		//
 		remoteControlSettings = new ClistBox(&box);
 
-		remoteControlSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		remoteControlSettings->setMode(ClistBox::MODE_SETUP);
 		remoteControlSettings->enableShrinkMenu();
 		
 		//
@@ -362,7 +362,7 @@ void CKeysBindingSettings::showMenu()
 		//
 		bindSettings = new ClistBox(&box);
 
-		bindSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		bindSettings->setMode(ClistBox::MODE_SETUP);
 		bindSettings->enableShrinkMenu();
 		
 		//

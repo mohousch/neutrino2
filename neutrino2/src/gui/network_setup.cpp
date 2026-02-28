@@ -242,7 +242,7 @@ void CNetworkSettings::showMenu()
 		//
 		networkSettings = new ClistBox(&box);
 
-		networkSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		networkSettings->setMode(ClistBox::MODE_SETUP);
 		networkSettings->enableShrinkMenu();
 		
 		//

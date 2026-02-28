@@ -123,7 +123,7 @@ void CPictureViewerSettings::showMenu()
 		//
 		PicViewerSettings = new ClistBox(&box);
 
-		PicViewerSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		PicViewerSettings->setMode(ClistBox::MODE_SETUP);
 		PicViewerSettings->enableShrinkMenu();
 		
 		//

@@ -205,7 +205,7 @@ int CNFSMountGui::menu()
 		//
 		mountMenuW = new ClistBox(&box);
 
-		mountMenuW->setWidgetMode(ClistBox::MODE_SETUP);
+		mountMenuW->setMode(ClistBox::MODE_SETUP);
 		mountMenuW->enableShrinkMenu();
 		
 		mountMenuW->enablePaintHead();
@@ -340,7 +340,7 @@ int CNFSMountGui::menuEntry(int nr)
 		
 		//
 		mountMenuEntryW = new ClistBox(&box);
-		mountMenuEntryW->setWidgetMode(ClistBox::MODE_SETUP);
+		mountMenuEntryW->setMode(ClistBox::MODE_SETUP);
 		mountMenuEntryW->enableShrinkMenu();
 		
 		mountMenuEntryW->enablePaintHead();
@@ -464,7 +464,7 @@ int CNFSUmountGui::menu()
 		
 		//
 		umountMenu = new ClistBox(&box);
-		umountMenu->setWidgetMode(ClistBox::MODE_SETUP);
+		umountMenu->setMode(ClistBox::MODE_SETUP);
 		umountMenu->enableShrinkMenu();
 		
 		umountMenu->enablePaintHead();
@@ -548,7 +548,7 @@ int CNFSSmallMenu::exec( CTarget *parent, const std::string &actionKey )
 			
 			//
 			menu = new ClistBox(&box);
-			menu->setWidgetMode(ClistBox::MODE_SETUP);
+			menu->setMode(ClistBox::MODE_SETUP);
 			menu->enableShrinkMenu();
 			
 			menu->enablePaintHead();
