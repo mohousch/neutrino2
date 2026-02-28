@@ -376,7 +376,7 @@ int CWidget::exec(CTarget *parent, const std::string &)
 
 				if (it->second.target != NULL)
 				{
-					int rv = it->second.target->exec(this, it->second.action);
+					int rv = it->second.target->exec(parent, it->second.action);
 
 					switch ( rv ) 
 					{
@@ -403,7 +403,7 @@ int CWidget::exec(CTarget *parent, const std::string &)
 			}
 			
 			// handle directKey
-			onDirectKeyPressed(msg, this);
+			onDirectKeyPressed(msg, parent);
 		}
 
 		if (!handled) 
@@ -436,11 +436,11 @@ int CWidget::exec(CTarget *parent, const std::string &)
 					break;
 
 				case (CRCInput::RC_right):
-					onRightKeyPressed(this);
+					onRightKeyPressed(parent);
 					break;
 
 				case (CRCInput::RC_left):
-					onLeftKeyPressed(this);
+					onLeftKeyPressed(parent);
 					break;
 
 				case (CRCInput::RC_page_up):
@@ -461,7 +461,7 @@ int CWidget::exec(CTarget *parent, const std::string &)
 					break;
 
 				case (CRCInput::RC_ok):
-					onOKKeyPressed(this);
+					onOKKeyPressed(parent);
 					break;
 				
 				//	
