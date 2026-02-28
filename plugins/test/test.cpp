@@ -5859,40 +5859,31 @@ void CTestMenu::showMenu()
 	CWidget* mWidget = NULL;
 	ClistBox* mainMenu = NULL;
 	
-//	mWidget = CNeutrinoApp::getInstance()->getWidget("testmenu", PLUGINDIR "/test/test.xml");
-	
-	if (mWidget)
-	{
-		mainMenu = (ClistBox*)mWidget->getCCItem(CComponent::CC_LISTBOX);
-	}
-	else
-	{
-		//
-		CBox box;
-		box.iWidth = MENU_WIDTH;
-		box.iHeight = MENU_HEIGHT;
-		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
-		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+	//
+	CBox box;
+	box.iWidth = MENU_WIDTH;
+	box.iHeight = MENU_HEIGHT;
+	box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+	box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
 		
-		mWidget = new CWidget(&box);	
-		mWidget->name = "testmenu";
+//	mWidget = new CWidget(&box);	
+//	mWidget->name = "testmenu";
 		
-		//	
-		mainMenu = new ClistBox(mWidget->getWindowsPos().iX, mWidget->getWindowsPos().iY, mWidget->getWindowsPos().iWidth, mWidget->getWindowsPos().iHeight);
+	//	
+	mainMenu = new ClistBox(&box);
 
-		mainMenu->enablePaintHead();
-		mainMenu->setTitle(_("Test Menu"), NEUTRINO_ICON_BUTTON_SETUP);
-		mainMenu->setMode(ClistBox::MODE_MENU);
-		mainMenu->enableShrinkMenu(),
-		mainMenu->enablePaintDate();
-		mainMenu->enablePaintFoot();
+	mainMenu->enablePaintHead();
+	mainMenu->setTitle(_("Test Menu"), NEUTRINO_ICON_BUTTON_SETUP);
+	mainMenu->setMode(ClistBox::MODE_MENU);
+	mainMenu->enableShrinkMenu(),
+	mainMenu->enablePaintDate();
+	mainMenu->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+	const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
-		mainMenu->setFootButtons(&btn);
+	mainMenu->setFootButtons(&btn);
 			
-		mWidget->addCCItem(mainMenu);
-	}
+//	mWidget->addCCItem(mainMenu);
 	
 	mainMenu->clear();
 	
@@ -6030,12 +6021,20 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CMenuOptionStringChooser", true, NULL, this, "menuoptionstringchooser"));
 	mainMenu->addItem(new CMenuForwarder("CMenuOptionNumberChooser", true, NULL, this, "menuoptionnumberchooser"));
 	
-	mWidget->exec(this, "");
+//	mWidget->exec(this, "");
+//	
+//	if (mWidget)
+//	{
+//		delete mWidget;
+//		mWidget = NULL;
+//	}
+
+	mainMenu->exec(this);
 	
-	if (mWidget)
+	if (mainMenu)
 	{
-		delete mWidget;
-		mWidget = NULL;
+		delete mainMenu;
+		mainMenu = NULL;
 	}
 	
 	//
