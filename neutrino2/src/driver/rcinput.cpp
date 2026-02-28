@@ -841,12 +841,12 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					continue;
 				}
 								
-				dprintf(DEBUG_NORMAL, ANSI_RED"CRCInput::getMsg_us:got event from device type: 0x%X key: 0x%X value %d, translate: 0x%X -%s <\n", ev.type, ev.code, ev.value, translate(ev.code, i), getKeyName(translate(ev.code, i)).c_str() );
+				dprintf(DEBUG_NORMAL, ANSI_RED"CRCInput::getMsg_us:got event from device type: 0x%X key: 0x%X value %d, translate: 0x%X -%s <\n", ev.type, ev.code, ev.value, translate(ev.code), getKeyName(translate(ev.code)).c_str() );
 				
 				if (ev.type != EV_KEY)
 					continue;
 
-				uint32_t trkey = translate(ev.code, i);
+				uint32_t trkey = translate(ev.code);
 
 				if (trkey == RC_nokey) 
 					continue;
@@ -936,13 +936,13 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
               				continue;
               			
               			//
-              			dprintf(DEBUG_NORMAL, ANSI_RED"CRCInput::getMsg_us: got event from LIRC: timestamp:%lld flags:%d proto:%d keycode: 0x%x scancode:%llx (%s) timestampdiff:%d repeat_block:%d <\n", lircdata.timestamp, lircdata.flags, lircdata.rc_proto, lircdata.keycode, lircdata.scancode, getSpecialKeyName(translate(lircdata.scancode, 0)), (lircdata.timestamp - FirstTime) / 1000000, repeat_block/1000);
+              			dprintf(DEBUG_NORMAL, ANSI_RED"CRCInput::getMsg_us: got event from LIRC: timestamp:%lld flags:%d proto:%d keycode: 0x%x scancode:%llx (%s) timestampdiff:%d repeat_block:%d <\n", lircdata.timestamp, lircdata.flags, lircdata.rc_proto, lircdata.keycode, lircdata.scancode, getSpecialKeyName(translate(lircdata.scancode)), (lircdata.timestamp - FirstTime) / 1000000, repeat_block/1000);
               		
               			FirstTime = lircdata.timestamp;
               			lastScanCode = lircdata.scancode;
               			
               			*data = 0;
-				*msg = translate(lastScanCode, 0);
+				*msg = translate(lastScanCode);
               		}
               		else
               		{
@@ -950,14 +950,14 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
            			if ( (lircdata.scancode == lastScanCode) && ((lircdata.timestamp - FirstTime) / 1000000) < repeat_block/1000)
               				continue;
               			
-              			dprintf(DEBUG_NORMAL, ANSI_RED"CRCInput::getMsg_us: got event from LIRC: timestamp:%lld flags:%d proto:%d keycode: 0x%x scancode:%llx (%s) timestampdiff:%d repeat_block:%d <\n", lircdata.timestamp, lircdata.flags, lircdata.rc_proto, lircdata.keycode, lircdata.scancode, getSpecialKeyName(translate(lircdata.keycode, 0)), (lircdata.timestamp - FirstTime) / 1000000, repeat_block);
+              			dprintf(DEBUG_NORMAL, ANSI_RED"CRCInput::getMsg_us: got event from LIRC: timestamp:%lld flags:%d proto:%d keycode: 0x%x scancode:%llx (%s) timestampdiff:%d repeat_block:%d <\n", lircdata.timestamp, lircdata.flags, lircdata.rc_proto, lircdata.keycode, lircdata.scancode, getSpecialKeyName(translate(lircdata.keycode)), (lircdata.timestamp - FirstTime) / 1000000, repeat_block);
               		
               			FirstTime = lircdata.timestamp;
               			lastKeyCode = lircdata.keycode;
               			lastScanCode = lircdata.scancode;
               			
               			*data = 0;
-				*msg = translate(lastKeyCode, 0);
+				*msg = translate(lastKeyCode);
               		}
 			
 			return;
@@ -1364,7 +1364,7 @@ std::string CRCInput::getKeyName(const unsigned long key)
 }
 
 // transforms the rc-key to generic - internal use only!
-int CRCInput::translate(uint64_t code, int num)
+int CRCInput::translate(uint64_t code)
 {
 	// common
 	if (code == key_standby) return RC_standby;
@@ -1501,6 +1501,17 @@ uint32_t CRCInput::translateKey(const char *name)
 	else if (!strcmp(name, "KEY_NUMERIC_9")) return RC_9;
 	else if (!strcmp(name, "KEY_MUTE")) return RC_spkr;
 	else if (!strcmp(name, "KEY_POWER")) return RC_standby;
+	else if (!strcmp(name, "KEY_RECALL")) return RC_recall;
+	else if (!strcmp(name, "KEY_PAGE+")) return RC_page_up;
+	else if (!strcmp(name, "KEY_PAGE-")) return RC_page_down;
+	else if (!strcmp(name, "KEY_MENU")) return RC_setup;
+	else if (!strcmp(name, "KEY_FAV")) return RC_favorites;
+	else if (!strcmp(name, "KEY_PORTAL")) return RC_pvr;
+	else if (!strcmp(name, "KEY_TimeShift")) return RC_timeshift;
+	else if (!strcmp(name, "KEY_SLOW")) return RC_slow;
+	else if (!strcmp(name, "KEY_NEXT")) return RC_next;
+	else if (!strcmp(name, "KEY_PREV")) return RC_prev;
+	else if (!strcmp(name, "KEY_HOME")) return RC_home;
 	else return RC_nokey;
 }
 #endif

@@ -174,7 +174,7 @@ class CRCInput
 
 		void open();
 		void close();
-		int translate(uint64_t code, int num);
+		int translate(uint64_t code);
 #ifdef ENABLE_LIRC
 		uint32_t translateKey(const char *name);
 #endif		
