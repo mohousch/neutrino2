@@ -1017,43 +1017,43 @@ msgid "Help"
 msgstr "Hilfe"
 
 msgid "Here you can choose plugins"
-msgstr "Hier knnen Sie die Features benutzen"
+msgstr "Hier können Sie die Features benutzen"
 
 msgid "Here you can get device Info"
-msgstr "Hier erhalten Sie Infos ber ihren Device"
+msgstr "Hier erhalten Sie Infos über ihren Device"
 
 msgid "Here you can play / show  music / movies / pics"
-msgstr "Hier knnen Sie Musik / Filme abspielen"
+msgstr "Hier können Sie Musik / Filme abspielen"
 
 msgid "Here you can power off or standby your device"
-msgstr "Hier knnen Sie ihren Box ausschalten"
+msgstr "Hier können Sie ihren Box ausschalten"
 
 msgid "Here you can set Timers and show EPG"
 msgstr "Hier erhalten Sie Details zum laufenden Sender"
 
 msgid "Here you can set channel scan and more"
-msgstr "Hier knnen Sie Sender suchlauf fhren"
+msgstr "Hier können Sie Sender suchlauf führen"
 
 msgid "Here you can set timers"
-msgstr "Hier knnen Sie Timers einstellen"
+msgstr "Hier können Sie Timers einstellen"
 
 msgid "Here you can setup OSD"
-msgstr "Hier knnen Sie Farbschema wechseln"
+msgstr "Hier können Sie Farbschema wechseln"
 
 msgid "Here you can setup your box"
-msgstr "Hier knnen Sie ihre Box einstellen"
+msgstr "Hier können Sie ihre Box einstellen"
 
 msgid "Here you can switch between TV / Radio"
-msgstr "Hier knnen Sie in den TV Modus wechseln"
+msgstr "Hier können Sie in den TV Modus wechseln"
 
 msgid "Here you can switch into Radio mode"
-msgstr "Hier knnen Sie in den Radio Modus wechseln"
+msgstr "Hier können Sie in den Radio Modus wechseln"
 
 msgid "Here you can switch into TV mode"
-msgstr "Hier knnen Sie in den TV Modus wechseln"
+msgstr "Hier können Sie in den TV Modus wechseln"
 
 msgid "Here you can switch to scart modus"
-msgstr "Hier knnen Sie in den Scart Modus wechseln"
+msgstr "Hier können Sie in den Scart Modus wechseln"
 
 msgid "Hide"
 msgstr "Verstecken"
@@ -1504,19 +1504,19 @@ msgid "News magazine"
 msgstr "Nachrichtenmagazin"
 
 msgid "Next"
-msgstr "Nchste"
+msgstr "Nächste"
 
 msgid "Next Page"
-msgstr "Nchste Seite"
+msgstr "Nächste Seite"
 
 msgid "Next bouquet"
-msgstr "Nchster Bouquet"
+msgstr "Nächster Bouquet"
 
 msgid "Next image"
-msgstr "Nchstes Bild"
+msgstr "Nächstes Bild"
 
 msgid "Next program"
-msgstr "Nchstes Programm"
+msgstr "Nächstes Programm"
 
 msgid "No"
 msgstr "Nein"
@@ -2646,13 +2646,13 @@ msgid "Virtual zap"
 msgstr "Virtueller Zap"
 
 msgid "Volume Step Size"
-msgstr "Lautstrkeschrittgre"
+msgstr "Lautstärkeschrittgröße"
 
 msgid "Volume adjustment (in %)"
-msgstr "Lautstrkeanpassung (in %)"
+msgstr "Lautstärkeanpassung (in %)"
 
 msgid "Volumebar"
-msgstr "Lautstrkeleiste"
+msgstr "Lautstärkeleiste"
 
 msgid "Wait a few seconds for abort"
 msgstr "Warten Sie einige Sekunden auf den Abbruch"
@@ -2666,11 +2666,9 @@ msgstr "Warten auf die Zeit..."
 msgid "Water sports"
 msgstr "Wassersport"
 
-#, fuzzy
 msgid "Weather Forcast Key"
 msgstr "Wetter Dienst"
 
-#, fuzzy
 msgid "Weather Forcast:"
 msgstr "Wetter Dienst"
 
@@ -2708,7 +2706,7 @@ msgid "Yes"
 msgstr "Ja"
 
 msgid "You really want to to stop record ?"
-msgstr "Mchten Sie die Aufnahme wirklich stoppen?"
+msgstr "Möchten Sie die Aufnahme wirklich stoppen?"
 
 msgid ""
 "Your Release cycle differs.\n"
@@ -2723,7 +2721,7 @@ msgid ""
 " and <MENU> on your remote control."
 msgstr ""
 "Die Fernbedienung Ihrer Box wird gesperrt.\n"
-" Um es zu entsperren, drcken Sie <ROT> \n"
+" Um es zu entsperren, drücken Sie <ROT> \n"
 " und <MENU> auf Ihrer Fernbedienung."
 
 msgid "Youth protection"
@@ -2793,7 +2791,7 @@ msgid "audio master"
 msgstr "Audio-Master"
 
 msgid "back"
-msgstr "zurck"
+msgstr "zurück"
 
 msgid "be Cached? (Set in hours)"
 msgstr "zwischengespeichert werden? (Eingestellt in Stunden)"
@@ -2814,23 +2812,23 @@ msgid ""
 "by manual package update version checks are currently not supported.\n"
 "Are you sure that you wish to install this package?"
 msgstr ""
-"Durch manuelle Paketaktualisierungen werden Versionsprfungen derzeit nicht untersttzt.\n"
-"Sind Sie sicher, dass Sie dieses Paket installieren mchten?"
+"Durch manuelle Paketaktualisierungen werden Versionsprüfungen derzeit nicht unterstützt.\n"
+"Sind Sie sicher, dass Sie dieses Paket installieren möchten?"
 
 msgid "cable"
 msgstr "Kabel"
 
 msgid "can't get mtd-info"
-msgstr "mtd-device kann nicht geffnet werden"
+msgstr "mtd-device kann nicht geöffnet werden"
 
 msgid "can't get update list"
 msgstr "Aktualisierungsliste kann nicht abgerufen werden"
 
 msgid "can't open file"
-msgstr "Datei kann nicht geffnet werden"
+msgstr "Datei kann nicht geöffnet werden"
 
 msgid "can't open mtd-device"
-msgstr "mtd-device kann nicht geffnet werden"
+msgstr "mtd-device kann nicht geöffnet werden"
 
 msgid "center"
 msgstr "Center"
@@ -2839,8 +2837,8 @@ msgid ""
 "changes are activ after restart\n"
 "do you want to restart?"
 msgstr ""
-"nderungen sind nach neu Start aktiv\n"
-"mchten Sie jetzt neu starten?"
+"Änderungen sind nach neu Start aktiv\n"
+"möchten Sie jetzt neu starten?"
 
 msgid "channel"
 msgstr "Kanal"
@@ -2858,13 +2856,13 @@ msgid "create new"
 msgstr "Neu erstellen"
 
 msgid "daily"
-msgstr "tglich"
+msgstr "täglich"
 
 msgid "dark to light"
 msgstr "dunkel bis hell"
 
 msgid "dark to light to dark"
-msgstr "dunkel ber hell bis dunkel"
+msgstr "dunkel bis hell bis dunkel"
 
 msgid "default audio streams"
 msgstr "Standard-Audiostreams"
@@ -2873,7 +2871,7 @@ msgid "default center"
 msgstr "Standardzentrum"
 
 msgid "delete"
-msgstr "lschen"
+msgstr "löschen"
 
 msgid "direct connected"
 msgstr "direkt verbunden"
@@ -2900,7 +2898,7 @@ msgid "enter the proxyserver username"
 msgstr "Geben Sie den Proxyserver-Benutzernamen ein"
 
 msgid "erasing flash"
-msgstr "Flash Speicher lschen"
+msgstr "Flash Speicher löschen"
 
 msgid "erasure of flash failed"
 msgstr "Das Lschen des Flash-Speichers ist fehlgeschlagen"
@@ -2912,7 +2910,7 @@ msgid "fast"
 msgstr "schnell"
 
 msgid "filesystem type not supported"
-msgstr "Dateisystemtyp wird nicht untersttzt"
+msgstr "Dateisystemtyp wird nicht unterstützt"
 
 msgid "fourweekly"
 msgstr "vierwchentlich"
@@ -2945,7 +2943,7 @@ msgid "hidden"
 msgstr "versteckt"
 
 msgid "higher center"
-msgstr "hhere Mitte"
+msgstr "höhere Mitte"
 
 msgid "image can't be flashed."
 msgstr ""
@@ -2987,10 +2985,10 @@ msgid "jump forwards"
 msgstr "nach vorne springen"
 
 msgid "jump prev"
-msgstr "springen vorh"
+msgstr "springen vorher"
 
 msgid "large"
-msgstr "gro"
+msgstr "groß"
 
 msgid "left"
 msgstr "links"
@@ -3017,8 +3015,8 @@ msgid ""
 "manual flash update version checks are currently not supported.\n"
 "Are you sure that you wish to install this image?"
 msgstr ""
-"Manuelle berprfungen der Flash-Update-Version werden derzeit nicht untersttzt.\n"
-"Sind Sie sicher, dass Sie dieses Image installieren mchten?"
+"Manuelle berprüfungen der Flash-Update-Version werden derzeit nicht unterstützt.\n"
+"Sind Sie sicher, dass Sie dieses Image installieren möchten?"
 
 msgid "middle"
 msgstr "Mitte"
@@ -3081,7 +3079,7 @@ msgid "normaly 50000, 0 to disable limit"
 msgstr "normalerweise 50000, 0 zum Deaktivieren des Grenzwerts"
 
 msgid "not available"
-msgstr "Nicht verfgbar"
+msgstr "Nicht verfügbar"
 
 msgid "not connected"
 msgstr "nicht verbunden"
@@ -3213,7 +3211,7 @@ msgid "terrestrial"
 msgstr "terrestrisch"
 
 msgid "the filesize is 0 Bytes"
-msgstr "Die Dateigre betrgt 0 Bytes"
+msgstr "Die Dateigröße beträgt 0 Bytes"
 
 msgid ""
 "this need GUI restart\n"
@@ -3255,10 +3253,10 @@ msgid "username"
 msgstr "Nutzername"
 
 msgid "very large"
-msgstr "sehr gro"
+msgstr "sehr groß"
 
 msgid "volume"
-msgstr "Lautstrke"
+msgstr "Lautstärke"
 
 msgid "waiting for EPG..."
 msgstr "warte auf EPG..."
