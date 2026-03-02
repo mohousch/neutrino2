@@ -53,7 +53,7 @@ static bool isEplayer = false;
 //
 int dvbsub_init() 
 {
-	printf("dvbsub_init: starting... tid %ld\n", syscall(__NR_gettid));
+	printf("[subtitle] dvbsub_init: starting... tid %ld\n", syscall(__NR_gettid));
 	
 	int trc;
 
@@ -66,7 +66,7 @@ int dvbsub_init()
 	
 	if (trc) 
 	{
-		fprintf(stderr, "[dvb-sub] failed to create reader-thread (rc=%d)\n", trc);
+		fprintf(stderr, "[subtitle] failed to create reader-thread (rc=%d)\n", trc);
 		reader_running = false;
 		return -1;
 	}
@@ -78,7 +78,7 @@ int dvbsub_init()
 
 	if (trc) 
 	{
-		fprintf(stderr, "[dvb-sub] failed to create dvbsub-thread (rc=%d)\n", trc);
+		fprintf(stderr, "[subtitle] failed to create dvbsub-thread (rc=%d)\n", trc);
 		dvbsub_running = false;
 		return -1;
 	}
@@ -95,7 +95,7 @@ int dvbsub_pause()
 		if(dvbSubtitleConverter)
 			dvbSubtitleConverter->Pause(true);
 
-		printf("[dvb-sub] paused\n");
+		printf("[subtitle] paused\n");
 	}
 
 	return 0;
@@ -127,7 +127,7 @@ int dvbsub_start(int pid, bool _isEplayer)
 		pid_change_req = 1;
 	}
 	
-	printf("[dvb-sub] start, stopped %d pid %x\n", dvbsub_stopped, dvbsub_pid);
+	printf("[subtitle] start, stopped %d pid %x\n", dvbsub_stopped, dvbsub_pid);
 
 	if(dvbsub_pid > -1) 
 	{
@@ -141,7 +141,7 @@ int dvbsub_start(int pid, bool _isEplayer)
 		pthread_cond_broadcast(&readerCond);
 		pthread_mutex_unlock(&readerMutex);
 		
-		printf("[dvb-sub] started with pid 0x%x\n", pid);
+		printf("[subtitle] started with pid 0x%x\n", pid);
 	}
 
 	return 1;
@@ -216,7 +216,7 @@ int dvbsub_close()
 		pthread_join(threadDvbsub, NULL);
 		threadDvbsub = 0;
 	}
-	printf("[dvb-sub] stopped\n");
+	printf("[subtitle] stopped\n");
 
 	return 0;
 }
@@ -304,7 +304,7 @@ void dvbsub_write(AVSubtitle *sub, int64_t pts)
 
 static void* reader_thread(void * /*arg*/)
 {
-	printf("reader_thread\n");
+	printf("[subtitle] reader_thread\n");
 	
 	uint8_t tmp[16];  /* actually 6 should be enough */
 	int count;
@@ -409,7 +409,7 @@ static void* reader_thread(void * /*arg*/)
 
 static void* dvbsub_thread(void* /*arg*/)
 {
-	printf("dvbsub_thread\n");
+	printf("[subtitle] dvbsub_thread\n");
 	
 	struct timespec restartWait;
 	struct timeval now;
@@ -490,8 +490,6 @@ static void* dvbsub_thread(void* /*arg*/)
 			{
 				dvbSubtitleConverter->Convert(&packet[dataoffset + 2], packlen - (dataoffset + 2), pts);
 			} 
-		
-//			timeout = dvbSubtitleConverter->Action();
 
 next_round:
 			if (packet)

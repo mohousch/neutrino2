@@ -34,14 +34,11 @@ extern "C" {
 //// cDvbSubtitleBitmaps
 cDvbSubtitleBitmaps::cDvbSubtitleBitmaps(int64_t pPts)
 {
-//	printf("cDvbSubtitleBitmaps::new: PTS: %lld\n", pts);
 	pts = pPts;
 }
 
 cDvbSubtitleBitmaps::~cDvbSubtitleBitmaps()
 {
-//	printf("cDvbSubtitleBitmaps::delete: PTS: %lld rects %d\n", pts, Count());
-	
 	avsubtitle_free(&sub);
 }
 
@@ -54,8 +51,6 @@ void cDvbSubtitleBitmaps::Draw(int &min_x, int &min_y, int &max_x, int &max_y)
 	int xstart = CFrameBuffer::getInstance()->getScreenX();
 	int yend = CFrameBuffer::getInstance()->getScreenY() + CFrameBuffer::getInstance()->getScreenHeight();
 	int ystart = CFrameBuffer::getInstance()->getScreenY();
-
-	//printf("cDvbSubtitleBitmaps::Draw: %d bitmaps, x= %d, width= %d yend=%d stride %d\n", Count(), xstart, wd, yend, stride);
 
 	int sw = CFrameBuffer::getInstance()->getScreenWidth(true);
 	int sh = CFrameBuffer::getInstance()->getScreenHeight(true);
@@ -186,8 +181,6 @@ void cDvbSubtitleConverter::Unlock(void)
 
 void cDvbSubtitleConverter::Pause(bool pause)
 {
-	//printf("cDvbSubtitleConverter::Pause: %s\n", pause ? "pause" : "resume");
-
 	if(pause) 
 	{
 		if(!running)
@@ -205,8 +198,6 @@ void cDvbSubtitleConverter::Pause(bool pause)
 
 void cDvbSubtitleConverter::Clear(void)
 {
-	//printf("cDvbSubtitleConverter::Clear: x=% d y= %d, w= %d, h= %d\n", min_x, min_y, max_x - min_x, max_y - min_y);
-
 	if(running && (max_x - min_x > 0) && (max_y - min_y > 0)) 
 	{
 		CFrameBuffer::getInstance()->paintBackgroundBoxRel (min_x, min_y, max_x - min_x, max_y-min_y);
@@ -217,8 +208,6 @@ void cDvbSubtitleConverter::Clear(void)
 
 void cDvbSubtitleConverter::Reset(void)
 {
-	//printf("Converter reset\n");
-	
 	Lock();
 	bitmaps->Clear();
 	Unlock();
@@ -230,6 +219,7 @@ int cDvbSubtitleConverter::Convert(AVSubtitle *sub, int64_t pts)
 	cDvbSubtitleBitmaps *Bitmaps = new cDvbSubtitleBitmaps(pts);
 	Bitmaps->SetSub(sub);
 	bitmaps->Add(Bitmaps);
+	
 	return 0;
 }
 
@@ -255,15 +245,11 @@ int cDvbSubtitleConverter::Convert(const uint8_t *Data, int Length, int64_t pts)
 	avpkt.data = (uint8_t*) Data;
 	avpkt.size = Length;
 
-	//printf("cDvbSubtitleConverter::Convert: sub %x pkt %x pts %lld\n", sub, &avpkt, pts);
-
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)
 	avcodec_decode_subtitle2(avctx, sub, &got_subtitle, &avpkt);
 #else	
 	avcodec_decode_subtitle(avctx, sub, &got_subtitle, avpkt.data, avpkt.size);
 #endif
-
-	//printf("cDvbSubtitleConverter::Convert: pts %lld subs ? %s, %d bitmaps\n", pts, got_subtitle? "yes" : "no", sub->num_rects);
 
 	if(got_subtitle) 
 	{
@@ -311,14 +297,10 @@ int cDvbSubtitleConverter::Action(void)
 		Delta = LimitTo32Bit(sb->Pts()) - LimitTo32Bit(STC);
 		Delta /= 90; // STC and PTS are in 1/90000s
 		
-		//printf("cDvbSubtitleConverter::Action: PTS: %lld  STC: %lld (%lld) timeout: %d\n", sb->Pts(), STC, Delta, sb->Timeout());
-		
 		if (Delta <= MAXDELTA) 
 		{
 			if (Delta <= SHOW_DELTA) 
 			{
-				//printf("cDvbSubtitleConverter::Action: Got %d bitmaps, showing #%d\n", bitmaps->Count(), sb->Index() + 1);
-
 				if (running) 
 				{
 					Clear();
@@ -330,6 +312,7 @@ int cDvbSubtitleConverter::Action(void)
 				
 				if(sb->Count())
 					WaitMs = MIN_DISPLAY_TIME;
+					
 				bitmaps->Del(sb, true);				
 			}
 			else if (Delta < WaitMs)

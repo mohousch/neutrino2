@@ -1417,7 +1417,7 @@ int CMenuForwarder::exec(CTarget *target)
 	// exec
 	if(jumpTarget)
 	{
-		ret = jumpTarget->exec(target? target : parent->parent, actionKey);
+		ret = jumpTarget->exec(target, actionKey);
 		
 		setOption(jumpTarget->getValueString().c_str());
 		jumpTarget->clearValueString();

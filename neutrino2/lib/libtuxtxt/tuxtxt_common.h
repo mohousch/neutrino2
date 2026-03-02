@@ -59,7 +59,7 @@ void tuxtxt_compress_page(int p, int sp, unsigned char* buffer)
 	
 	if (!pg)
 	{
-		printf("tuxtxt: trying to compress a not allocated page!!\n");
+		printf("[tuxtxt] trying to compress a not allocated page!!\n");
 		pthread_mutex_unlock(&tuxtxt_cache_lock);
 		
 		return;
@@ -125,7 +125,7 @@ void tuxtxt_decompress_page(int p, int sp, unsigned char* buffer)
 	
 	if (!pg)
 	{
-		printf("tuxtxt: trying to decompress a not allocated page!!\n");
+		printf("[tuxtxt] trying to decompress a not allocated page!!\n");
 		pthread_mutex_unlock(&tuxtxt_cache_lock);
 		
 		return;
@@ -271,7 +271,7 @@ void tuxtxt_decode_btt()
 
 		if (b1 == 0xFF || b2 == 0xFF || b3 == 0xFF)
 		{
-			printf("TuxTxt <Biterror in btt/plt index %d>\n", i);
+			printf("[tuxtxt] <Biterror in btt/plt index %d>\n", i);
 			btt[799] = ' '; /* mark btt as not received */
 			return;
 		}
@@ -309,7 +309,7 @@ void tuxtxt_decode_adip() /* additional information table */
 
 			if (b1 == 0xFF || b2 == 0xFF || b3 == 0xFF)
 			{
-				printf("TuxTxt <Biterror in ait %03x %d %02x %02x %02x %02x %02x %02x>\n", p, j,
+				printf("[tuxtxt] <Biterror in ait %03x %d %02x %02x %02x %02x %02x %02x>\n", p, j,
 						 padip[20*j+0],
 						 padip[20*j+1],
 						 padip[20*j+2],
@@ -375,7 +375,7 @@ int tuxtxt_GetSubPage(int page, int subpage, int offset)
 //
 void tuxtxt_clear_cache()
 {
-	printf("tuxtxt_clear_cache\n");
+	printf("[tuxtxt] tuxtxt_clear_cache\n");
 	
 	pthread_mutex_lock(&tuxtxt_cache_lock);
 	
@@ -457,7 +457,7 @@ int tuxtxt_init_demuxer()
 	{
 		dmx = new cDemux();
 		
-		printf("TuxTxt: tuxtxt_init_demuxer\n");
+		printf("[tuxtxt] tuxtxt_init_demuxer\n");
 		
 		dmx->Open(DMX_PES_CHANNEL, 2* 3008 * 62, CZapit::getInstance()->getCurrentFrontend());		
 	}
@@ -673,7 +673,7 @@ static int stop_cache = 0;
 
 void * tuxtxt_CacheThread(void * /*arg*/)
 {
-	printf("tuxtxt_CacheThread: starting... tid %ld\n", syscall(__NR_gettid));
+	printf("[tuxtxt] tuxtxt_CacheThread: starting... tid %ld\n", syscall(__NR_gettid));
 	
 	const unsigned char rev_lut[32] = {
 		0x00,0x08,0x04,0x0c, /*  upper nibble */
@@ -1138,7 +1138,7 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 //
 int tuxtxt_start_thread()
 {
-	printf("tuxtxt_start_thread: starting... tid %ld\n", syscall(__NR_gettid));
+	printf("[tuxtxt] tuxtxt_start_thread: starting... tid %ld\n", syscall(__NR_gettid));
 	
 	if (tuxtxt_cache.vtxtpid == -1) 
 		return 0;
@@ -1172,7 +1172,7 @@ int tuxtxt_start_thread()
 //
 int tuxtxt_stop_thread()
 {
-	printf("tuxtxt_stop_thread\n");
+	printf("[tuxtxt] tuxtxt_stop_thread\n");
 	
 	// stop decode-thread 
 	if (tuxtxt_cache.thread_id != 0)

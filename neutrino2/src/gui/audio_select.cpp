@@ -290,14 +290,17 @@ int CAPIDChangeExec::exec(CTarget */*parent*/, const std::string & actionKey)
 }
 
 //// txt/dvb subtitle
-int CSubtitleChangeExec::exec(CTarget *, const std::string & actionKey)
+int CSubtitleChangeExec::exec(CTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_INFO, "CSubtitleChangeExec::exec: action %s\n", actionKey.c_str());
+	
+	if (parent)
+		parent->hide();
 	
 	if(actionKey == "off") 
 	{
 		// tuxtxt stop
-		tuxtx_stop_subtitle(); //this kill subthread
+		tuxtx_stop_subtitle(); //this kill tuxtxt subthread
 		
 		// dvbsub stop
 		dvbsub_stop();

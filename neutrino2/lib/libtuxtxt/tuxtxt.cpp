@@ -99,7 +99,7 @@ int getIndexOfPageInHotlist()
 
 void gethotlist()
 {
-	printf("gethotlist\n");
+	printf("[tuxtxt] gethotlist\n");
 	
 	FILE *hl;
 	char line[100];
@@ -108,7 +108,7 @@ void gethotlist()
 	maxhotlist = -1;
 	sprintf(line, CONFIGDIR "/tuxtxt/hotlist%d.conf", tuxtxt_cache.vtxtpid);
 	
-	dprintf(DEBUG_INFO, "TuxTxt <gethotlist %s\n", line);
+	dprintf(DEBUG_INFO, "[tuxtxt] <gethotlist %s\n", line);
 
 	if ((hl = fopen(line, "rb")) != 0)
 	{
@@ -145,7 +145,7 @@ void savehotlist()
 	hotlistchanged = 0;
 	sprintf(line, CONFIGDIR "/tuxtxt/hotlist%d.conf", tuxtxt_cache.vtxtpid);
 	
-	dprintf(DEBUG_DEBUG, "TuxTxt <savehotlist %s", line);
+	dprintf(DEBUG_DEBUG, "[tuxtxt] <savehotlist %s", line);
 
 	if (maxhotlist != 1 || hotlist[0] != 0x100 || hotlist[1] != 0x303)
 	{
@@ -332,7 +332,6 @@ void dump_page()
 		printf("\n");
 	}
 }
-
 
 /* get object data */
 /* in: absolute triplet number (0..506, start at packet 3 byte 1) */
@@ -1129,7 +1128,7 @@ void eval_l25()
 //// subtitle reader thread
 static void * reader_thread(void * /*arg*/)
 {
-	dprintf(DEBUG_NORMAL, "TuxTxt subtitle thread started\n");
+	dprintf(DEBUG_NORMAL, "[tuxtxt] subtitle thread started\n");
 	
 	reader_running = 1;
 	
@@ -1152,7 +1151,7 @@ static void * reader_thread(void * /*arg*/)
 
 	tuxtxt_close();
 	
-	dprintf(DEBUG_NORMAL, "TuxTxt subtitle thread stopped\n");
+	dprintf(DEBUG_NORMAL, "[tuxtxt] subtitle thread stopped\n");
 	
 	pthread_exit(NULL);
 }
@@ -1162,7 +1161,7 @@ void tuxtx_pause_subtitle(bool pause, bool isEplayer)
 {
 	if(!pause) 
 	{
-		dprintf(DEBUG_NORMAL, "TuxTxt subtitle unpause, running %d pid 0x%x page %d\n", reader_running, sub_pid, sub_page);
+		dprintf(DEBUG_NORMAL, "[tuxtxt] subtitle unpause, running %d pid 0x%x page %d\n", reader_running, sub_pid, sub_page);
 		
 		ttx_paused = 0;
 		
@@ -1176,19 +1175,19 @@ void tuxtx_pause_subtitle(bool pause, bool isEplayer)
 		if(!reader_running)
 			return;
 		
-		dprintf(DEBUG_NORMAL, "TuxTxt subtitle asking to pause...\n");
+		dprintf(DEBUG_NORMAL, "[tuxtxt] subtitle asking to pause...\n");
 		ttx_req_pause = 1;
 		
 		while(!ttx_paused)
 			usleep(10);
 		
-		dprintf(DEBUG_NORMAL, "TuxTxt subtitle paused\n");
+		dprintf(DEBUG_NORMAL, "[tuxtxt] subtitle paused\n");
 	}
 }
 
 void tuxtx_stop_subtitle()
 {
-	dprintf(DEBUG_NORMAL, "TuxTxt stopping subtitle thread ...\n");
+	dprintf(DEBUG_NORMAL, "[tuxtxt] stopping subtitle thread ...\n");
 	
 	reader_running = 0;
 	
@@ -1209,7 +1208,7 @@ void tuxtx_set_pid(int pid, int page, const char * cc)
 	sub_page = page;
 	cfg_national_subset = GetNationalSubset(cc);
 	
-	dprintf(DEBUG_NORMAL, "tuxtx_set_pid: pid 0x%x page 0x%x lang %s (%d)\n", sub_pid, sub_page, cc, cfg_national_subset);
+	dprintf(DEBUG_NORMAL, "[tuxtxt] tuxtx_set_pid: pid 0x%x page 0x%x lang %s (%d)\n", sub_pid, sub_page, cc, cfg_national_subset);
 }
 
 int tuxtx_subtitle_running(int *pid, int *page, int *running)
@@ -1232,7 +1231,7 @@ int tuxtx_subtitle_running(int *pid, int *page, int *running)
 //// main loop
 int tuxtx_main(int pid, int page, bool isEplayer)
 {
-	dprintf(DEBUG_NORMAL, "tuxtx_main: pid:0x%x page:0x%x isEplayer:%s\n", pid, page, isEplayer? "true" : "false");
+	dprintf(DEBUG_NORMAL, "[tuxtxt] tuxtx_main: pid:0x%x page:0x%x isEplayer:%s\n", pid, page, isEplayer? "true" : "false");
 	
 	use_gui = 1;
 	boxed = 0;
@@ -1280,7 +1279,7 @@ int tuxtx_main(int pid, int page, bool isEplayer)
 	sy = s_y;
 	ey = s_y + s_h;
 	
-	dprintf(DEBUG_DEBUG, "Tuxtxt stride=%d sx=%d ex=%d sy=%d ey=%d\n", CFrameBuffer::getInstance()->getStride(), sx, ex, sy, ey);
+	dprintf(DEBUG_DEBUG, "[tuxtxt] stride=%d sx=%d ex=%d sy=%d ey=%d\n", CFrameBuffer::getInstance()->getStride(), sx, ex, sy, ey);
 
 	//initialisations
 	transpmode = 0;
@@ -1447,7 +1446,7 @@ int tuxtx_main(int pid, int page, bool isEplayer)
 	if ( initialized )
 		tuxtxt_close();
 
- 	dprintf(DEBUG_NORMAL, "Tuxtxt: ended\n");
+ 	dprintf(DEBUG_NORMAL, "[tuxtxt] ended\n");
 
 	return 1;
 }
@@ -1465,7 +1464,7 @@ FT_Error MyFaceRequester(FTC_FaceID face_id, FT_Library _library, FT_Pointer /*r
 //// Init
 int Init(bool isEplayer, int page)
 {
-	printf("Init: isEplayer:%s page:%d\n", isEplayer? "true" : "false", page);
+	printf("[tuxtxt] Init: isEplayer:%s page:%d\n", isEplayer? "true" : "false", page);
 	
 	int error, i;
 	unsigned char magazine;
@@ -1522,7 +1521,7 @@ int Init(bool isEplayer, int page)
 	// load config
 	if ((conf = fopen(TUXTXTCONF, "rt")) == 0)
 	{ 
-	        dprintf(DEBUG_NORMAL, "failed to open %s\n", TUXTXTCONF);
+	        dprintf(DEBUG_NORMAL, "[tuxtxt] failed to open %s\n", TUXTXTCONF);
 	}
 	else
 	{
@@ -1597,14 +1596,14 @@ int Init(bool isEplayer, int page)
 	// init fontlibrary
 	if ((error = FT_Init_FreeType(&library)))
 	{
-		dprintf(DEBUG_NORMAL, "TuxTxt <FT_Init_FreeType: 0x%.2X>", error);
+		dprintf(DEBUG_NORMAL, "[tuxtxt]  <FT_Init_FreeType: 0x%.2X>", error);
 		return 0;
 	}
 
 	if ((error = FTC_Manager_New(library, 7, 2, 0, &MyFaceRequester, NULL, &manager)))
 	{
 		FT_Done_FreeType(library);
-		dprintf(DEBUG_NORMAL, "TuxTxt <FTC_Manager_New: 0x%.2X>\n", error);
+		dprintf(DEBUG_NORMAL, "[tuxtxt]  <FTC_Manager_New: 0x%.2X>\n", error);
 		return 0;
 	}
 
@@ -1612,7 +1611,7 @@ int Init(bool isEplayer, int page)
 	{
 		FTC_Manager_Done(manager);
 		FT_Done_FreeType(library);
-		dprintf(DEBUG_NORMAL, "TuxTxt <FTC_SBitCache_New: 0x%.2X>\n", error);
+		dprintf(DEBUG_NORMAL, "[tuxtxt]  <FTC_SBitCache_New: 0x%.2X>\n", error);
 		return 0;
 	}
 
@@ -1663,11 +1662,11 @@ int Init(bool isEplayer, int page)
 		else 
 			typettf.face_id = (FTC_FaceID) TUXTXTOTB;
 
-		dprintf(DEBUG_NORMAL, "font %s\n", (char*) typettf.face_id);
+		dprintf(DEBUG_NORMAL, "[tuxtxt] font %s\n", (char*) typettf.face_id);
 
 		if ((error = FTC_Manager_LookupFace(manager, typettf.face_id, &face)))
 		{
-			dprintf(DEBUG_NORMAL, "TuxTxt <FTC_Manager_LookupFace failed with Errorcode 0x%.2X>\n", error);
+			dprintf(DEBUG_NORMAL, "[tuxtxt] <FTC_Manager_LookupFace failed with Errorcode 0x%.2X>\n", error);
 			FTC_Manager_Done(manager);
 			FT_Done_FreeType(library);
 			return 0;
@@ -1703,7 +1702,7 @@ int Init(bool isEplayer, int page)
 		if(auto_national && cfg_national_subset)
 			national_subset = cfg_national_subset;
 		
-		dprintf(DEBUG_NORMAL, "Tuxtxt: national_subset %d (cfg %d)\n", national_subset, cfg_national_subset);
+		dprintf(DEBUG_NORMAL, "[tuxtxt] national_subset %d (cfg %d)\n", national_subset, cfg_national_subset);
 	}
 	else
 	{
@@ -1741,7 +1740,7 @@ int Init(bool isEplayer, int page)
 			if(auto_national && cfg_national_subset)
 				national_subset = cfg_national_subset;
 			
-			dprintf(DEBUG_NORMAL, "Tuxtxt: national_subset %d (cfg %d)\n", national_subset, cfg_national_subset);
+			dprintf(DEBUG_NORMAL, "[tuxtxt] national_subset %d (cfg %d)\n", national_subset, cfg_national_subset);
 		}
 	}
 
@@ -1754,7 +1753,7 @@ int Init(bool isEplayer, int page)
 	
 	prevscreenmode = screenmode;
 	
-	dprintf(DEBUG_NORMAL, "TuxTxt: init ok\n");
+	dprintf(DEBUG_NORMAL, "[tuxtxt] init ok\n");
 
 	return 1;
 }
@@ -1788,7 +1787,7 @@ void CleanUp()
 		}
 		else
 		{
-			dprintf(DEBUG_NORMAL, "TuxTxt <saving config>\n");
+			dprintf(DEBUG_NORMAL, "[tuxtxt] <saving config>\n");
 			
 			fprintf(conf, "ScreenMode16x9Normal %d\n", screen_mode1);
 			fprintf(conf, "ScreenMode16x9Divided %d\n", screen_mode2);
@@ -1818,7 +1817,7 @@ void CleanUp()
 //// GetTeletextPIDs
 int GetTeletextPIDs()
 {
-	printf("GetTeletextPIDs:\n");
+	printf("[tuxtxt] GetTeletextPIDs:\n");
 		
 	int pat_scan, pmt_scan, sdt_scan, desc_scan, pid_test, byte, diff, first_sdt_sec;
 
@@ -1849,7 +1848,7 @@ int GetTeletextPIDs()
 	
 	if(res <= 0) 
 	{
-		dprintf(DEBUG_NORMAL, "TuxTxt <read PAT> failed\n");
+		dprintf(DEBUG_NORMAL, "[tuxtxt] <read PAT> failed\n");
 		delete dmx;
 		return 0;
 	}
@@ -1923,7 +1922,7 @@ skip_pid:
 	// check for teletext
 	if (pids_found == 0)
 	{
-		dprintf(DEBUG_NORMAL, "TuxTxt <no Teletext on TS found>\n");
+		dprintf(DEBUG_NORMAL, "[tuxtxt] <no Teletext on TS found>\n");
 
 		RenderMessage(NoServicesFound);
 		sleep(3);
@@ -2974,7 +2973,7 @@ void GetNextPageOne(int up)
 //// GetNextSubPage
 void GetNextSubPage(int offset)
 {
-	printf("GetNextSubPage: offset:%d\n", offset);
+	printf("[tuxtxt] GetNextSubPage: offset:%d\n", offset);
 	
 	int loop;
 
@@ -3004,7 +3003,7 @@ void GetNextSubPage(int offset)
 			hintmode = 0;
 			tuxtxt_cache.pageupdate = 1;
 			
-			printf("GetNextSubPage: page:%d\n", loop);
+			printf("[tuxtxt] GetNextSubPage: page:%d\n", loop);
 
 			return;
 		}
@@ -3312,18 +3311,18 @@ void SwitchScreenMode(int newscreenmode)
 	if(use_gui)
 		ClearBB(clearbbcolor);
 
-	dprintf(DEBUG_NORMAL, "SwitchScreenMode: screenmode %d\n", screenmode); 
+	dprintf(DEBUG_NORMAL, "[tuxtxt] SwitchScreenMode: screenmode %d\n", screenmode); 
 
 	// set mode
 	if (screenmode)								 // split
 	{
-		dprintf(DEBUG_NORMAL, "SwitchScreenMode: Slit Mode (1.)\n");
+		dprintf(DEBUG_NORMAL, "[tuxtxt] SwitchScreenMode: Slit Mode (1.)\n");
 		
 		ClearFB(clearbbcolor);
 
 		int fw, fh, tx, ty, tw, th;
 
-		dprintf(DEBUG_NORMAL, "SwitchScreenMode: Settup video picture\n");
+		dprintf(DEBUG_NORMAL, "[tuxtxt] SwitchScreenMode: Settup video picture\n");
 		
 		// ugly hack
 		// dont calculate rate when we have HD until to fix this
@@ -3363,7 +3362,7 @@ void SwitchScreenMode(int newscreenmode)
 	}
 	else // not split
 	{
-		dprintf(DEBUG_NORMAL, "SwitchScreenMode Full txt Screen (2).\n"); 
+		dprintf(DEBUG_NORMAL, "[tuxtxt] SwitchScreenMode Full txt Screen (2).\n"); 
 
 		// set pig	
 		videoDecoder->Pig(-1, -1, -1, -1);
@@ -4426,7 +4425,7 @@ void DoFlashing(int startrow)
 //// RenderPage
 void RenderPage()
 {
-//	printf("tuxtxt: RenderPage\n");
+//	printf("[tuxtxt] RenderPage\n");
 	
 	int row, col, byte, startrow = 0;;
 	int national_subset_bak = national_subset;
@@ -4923,7 +4922,7 @@ void DecodePage()
 	{
 		if (pageinfo->function == FUNC_MOT) /* magazine organization table */
 		{
-			dprintf(DEBUG_NORMAL, "TuxTxt <decoding MOT %03x/%02x %d>\n", tuxtxt_cache.page, tuxtxt_cache.subpage, pageinfo->function);
+			dprintf(DEBUG_NORMAL, "[tuxtxt] <decoding MOT %03x/%02x %d>\n", tuxtxt_cache.page, tuxtxt_cache.subpage, pageinfo->function);
 			
 			ClearBB(black);
 			
@@ -4936,7 +4935,7 @@ void DecodePage()
 		}
 		else if (pageinfo->function == FUNC_GPOP || pageinfo->function == FUNC_POP) /* object definitions */
 		{
-			dprintf(DEBUG_NORMAL, "TuxTxt <decoding *POP %03x/%02x %d>\n", tuxtxt_cache.page, tuxtxt_cache.subpage, pageinfo->function);
+			dprintf(DEBUG_NORMAL, "[tuxtxt] <decoding *POP %03x/%02x %d>\n", tuxtxt_cache.page, tuxtxt_cache.subpage, pageinfo->function);
 			
 			ClearBB(black);
 			
@@ -5001,7 +5000,7 @@ void DecodePage()
 				DRCSZOOMY * 10
 			};
 			
-			dprintf(DEBUG_NORMAL, "TuxTxt <decoding *DRCS %03x/%02x %d>\n", tuxtxt_cache.page, tuxtxt_cache.subpage, pageinfo->function);
+			dprintf(DEBUG_NORMAL, "[tuxtxt] <decoding *DRCS %03x/%02x %d>\n", tuxtxt_cache.page, tuxtxt_cache.subpage, pageinfo->function);
 			
 			ClearBB(black);
 			

@@ -60,7 +60,7 @@ class cDvbSubtitleBitmaps : public cListObject
 		}
 };
 
-class cDvbSubtitleConverter  /*: public cThread */
+class cDvbSubtitleConverter
 {
 	private:
 		bool running;
