@@ -22,8 +22,6 @@
 
 
 //// defines
-//FIXME: make this global
-#undef _
 #define _(string) dgettext("movieplayer", string)
 
 //// globals

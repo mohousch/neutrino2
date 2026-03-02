@@ -48,7 +48,6 @@
 #include <gui/infoviewer.h>
 
 #include <gui/widget/icons.h>
-//#include <gui/widget/widget_helpers.h>
 #include <gui/widget/messagebox.h>
 #include <gui/widget/hintbox.h>
 #include <gui/widget/stringinput.h>
@@ -69,8 +68,6 @@ extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
 
 //// defines
-//FIXME: make this global
-#undef _
 #define _(string) dgettext("upnp", string)
 //
 #define UPNP_ICON_SMALL PLUGINDIR "/upnp/upnp_small.png"

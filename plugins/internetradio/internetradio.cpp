@@ -35,8 +35,6 @@ extern "C" void plugin_del(void);
 
 
 //// defines
-//FIXME: make this global
-#undef _
 #define _(string) dgettext("internetradio", string)
 //
 #define SHOW_FILE_LOAD_LIMIT 50

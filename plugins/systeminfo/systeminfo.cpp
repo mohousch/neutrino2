@@ -26,8 +26,6 @@ extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
 
 //// defines
-//FIXME: make this global
-#undef _
 #define _(string) dgettext("systeminfo", string)
 
 bool refreshIt = true;

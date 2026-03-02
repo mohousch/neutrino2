@@ -46,7 +46,6 @@
 
 
 //// defines
-//FIXME: make this global
 #define _(string) dgettext("moviebrowser", string)
 //
 #define MAX_NUMBER_OF_BOOKMARK_ITEMS 		MI_MOVIE_BOOK_USER_MAX

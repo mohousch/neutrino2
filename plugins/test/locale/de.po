@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 4.8\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-08-31 14:29+0200\n"
+"POT-Creation-Date: 2026-03-02 17:27+0100\n"
 "PO-Revision-Date: 2023-09-21 23:10+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -27,25 +27,25 @@ msgid "CWidget(CFrameBox/ClistBox)"
 msgstr "Hauptmenü"
 
 msgid "Date:"
-msgstr ""
+msgstr "Datum:"
 
 msgid "Date: "
-msgstr ""
+msgstr "Datum:"
 
 msgid "EPG is not available"
-msgstr ""
+msgstr "Kein EPG gefunden"
 
 msgid "Error"
 msgstr "Fehler"
 
 msgid "Focus"
-msgstr ""
+msgstr "Fokus"
 
 msgid "Genre: "
 msgstr ""
 
 msgid "Help"
-msgstr ""
+msgstr "Hilfe"
 
 msgid "IP:"
 msgstr ""
@@ -57,19 +57,19 @@ msgid "Information"
 msgstr "Informationen"
 
 msgid "Length (Min)"
-msgstr ""
+msgstr "Dauer (Min)"
 
 msgid "Menu"
-msgstr ""
+msgstr "Menü"
 
 msgid "Mute"
 msgstr ""
 
 msgid "New Movies"
-msgstr ""
+msgstr "Filme laden"
 
 msgid "Next Page"
-msgstr ""
+msgstr "Nächste Seite"
 
 msgid "PSI Setup"
 msgstr ""
@@ -78,13 +78,13 @@ msgid "Play"
 msgstr ""
 
 msgid "Prev Page"
-msgstr ""
+msgstr "Vorherige Seite"
 
 msgid "Scan for Movies ..."
 msgstr "Scannen nach Media Dateien"
 
 msgid "Search"
-msgstr ""
+msgstr "Suche"
 
 msgid "Test"
 msgstr ""
@@ -96,7 +96,7 @@ msgid "TestMenu"
 msgstr ""
 
 msgid "Time:"
-msgstr ""
+msgstr "Zeit:"
 
 msgid "Title: "
 msgstr ""
