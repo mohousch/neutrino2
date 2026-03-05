@@ -335,7 +335,7 @@ void CTestMenu::loadAudioPlaylist()
 	fileFilter.addFilter("mpa");
 	fileFilter.addFilter("mp2");
 	fileFilter.addFilter("ogg");
-//	fileFilter.addFilter("wav");
+	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("aac");
 	fileFilter.addFilter("dts");
@@ -417,7 +417,7 @@ void CTestMenu::openAudioFileBrowser()
 	fileFilter.addFilter("mpa");
 	fileFilter.addFilter("mp2");
 	fileFilter.addFilter("ogg");
-//	fileFilter.addFilter("wav");
+	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("aac");
 	fileFilter.addFilter("dts");
@@ -520,7 +520,7 @@ void CTestMenu::loadMoviePlaylist()
 	fileFilter.addFilter("vdr");
 	fileFilter.addFilter("mts");
 	fileFilter.addFilter("wmv");
-//	fileFilter.addFilter("wav");
+	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("mp3");
 	fileFilter.addFilter("wma");
@@ -586,7 +586,7 @@ void CTestMenu::openMovieFileBrowser()
 	fileFilter.addFilter("vdr");
 	fileFilter.addFilter("mts");
 	fileFilter.addFilter("wmv");
-//	fileFilter.addFilter("wav");
+	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("mp3");
 	fileFilter.addFilter("wma");
@@ -1638,8 +1638,6 @@ void CTestMenu::testCIcon()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCIcon: icon:%s iw:%d ih:%d\n", testIcon.iconName.c_str(), testIcon.width, testIcon.height);
 	
 	testIcon.setPosition(150 + BORDER_LEFT, 150, testIcon.width, testIcon.height);
-	
-	testIcon.enableRepaint();
 
 	// loop
 	testIcon.setExecutable();
@@ -1662,9 +1660,8 @@ void CTestMenu::testCImage()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCImage: image:%s iw:%d ih:%d\n", testImage.imageName.c_str(), testImage.iWidth, testImage.iHeight);
 	
 	testImage.setPosition(150 + BORDER_LEFT, 150, testImage.iWidth, testImage.iHeight);
-	testImage.enableRepaint();
-	
 	testImage.setExecutable();
+	
 	testImage.exec(this);
 	
 	hide();
@@ -1687,9 +1684,8 @@ void CTestMenu::testCCLabel()
 		
 	CTextBox.setColor(COL_RED_PLUS_0);
 	CTextBox.setHAlign(CComponent::CC_ALIGN_CENTER);
-	CTextBox.enableRepaint(); // refresh
-	
 	CTextBox.setExecutable();	
+	
 	CTextBox.exec(this);
 	
 	hide();
@@ -1717,9 +1713,8 @@ void CTestMenu::testCCText()
 		
 	CTextBox.setColor(COL_YELLOW_PLUS_0);
 	CTextBox.setHAlign(CComponent::CC_ALIGN_CENTER);
-	CTextBox.enableRepaint();
-	
 	CTextBox.setExecutable();	
+	
 	CTextBox.exec(this);
 	
 	hide();
@@ -1736,11 +1731,9 @@ void CTestMenu::testCCTime()
 		
 	CCTime timer(g_settings.screen_StartX + 100, g_settings.screen_StartY + 100, /*timestr_len*/500, g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getHeight());
 	
-	//timer.setFont();
 	timer.setFormat(format);
-	//timer.enableRepaint();
-	
 	timer.setExecutable();
+	
 	timer.exec(this);
 	
 	hide();
@@ -3257,7 +3250,7 @@ void CTestMenu::testPlayMovieURL()
 	fileFilter.addFilter("vdr");
 	fileFilter.addFilter("mts");
 	fileFilter.addFilter("wmv");
-//	fileFilter.addFilter("wav");
+	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("mp3");
 	fileFilter.addFilter("wma");
@@ -3312,7 +3305,7 @@ void CTestMenu::testPlayAudioURL()
 	fileFilter.addFilter("mpa");
 	fileFilter.addFilter("mp2");
 	fileFilter.addFilter("ogg");
-//	fileFilter.addFilter("wav");
+	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("aac");
 	fileFilter.addFilter("dts");
@@ -3431,7 +3424,7 @@ void CTestMenu::testPlayMovieFolder()
 	fileFilter.addFilter("vdr");
 	fileFilter.addFilter("mts");
 	fileFilter.addFilter("wmv");
-//	fileFilter.addFilter("wav");
+	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("mp3");
 	fileFilter.addFilter("wma");
@@ -3487,7 +3480,7 @@ void CTestMenu::testPlayAudioFolder()
 	fileFilter.addFilter("mpa");
 	fileFilter.addFilter("mp2");
 	fileFilter.addFilter("ogg");
-//	fileFilter.addFilter("wav");
+	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("aac");
 	fileFilter.addFilter("dts");
@@ -3838,7 +3831,7 @@ void CTestMenu::testPlayMovieDir()
 	fileFilter.addFilter("vdr");
 	fileFilter.addFilter("mts");
 	fileFilter.addFilter("wmv");
-//	fileFilter.addFilter("wav");
+	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("mp3");
 	fileFilter.addFilter("wma");
@@ -3871,7 +3864,7 @@ void CTestMenu::testPlayAudioDir()
 	fileFilter.addFilter("mpa");
 	fileFilter.addFilter("mp2");
 	fileFilter.addFilter("ogg");
-//	fileFilter.addFilter("wav");
+	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("aac");
 	fileFilter.addFilter("dts");
