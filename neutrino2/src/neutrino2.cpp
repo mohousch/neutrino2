@@ -2749,7 +2749,7 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 		frameBuffer->setActive(false);
 
 		// cec
-#if !defined (__sh__)	
+#ifdef ENABLE_CEC	
 		hdmi_cec::getInstance()->setCECAutoStandby(g_settings.hdmi_cec_standby == 1);
 		hdmi_cec::getInstance()->getAudioDestination();
 		hdmi_cec::getInstance()->setCECMode((VIDEO_HDMI_CEC_MODE)g_settings.hdmi_cec_mode);
@@ -2758,7 +2758,7 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 	else 
 	{
 		// cec
-#if !defined (__sh__)
+#ifdef ENABLE_CEC
 		hdmi_cec::getInstance()->setCECAutoStandby(g_settings.hdmi_cec_standby == 1);
 		hdmi_cec::getInstance()->getAudioDestination();
 		hdmi_cec::getInstance()->setCECMode((VIDEO_HDMI_CEC_MODE)g_settings.hdmi_cec_mode);
@@ -3213,7 +3213,7 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		}
 		
 		// cec
-#if !defined (__sh__)
+#ifdef ENABLE_CEC
 		hdmi_cec::getInstance()->setCECAutoStandby(g_settings.hdmi_cec_standby == 1);
 		hdmi_cec::getInstance()->getAudioDestination();
 		hdmi_cec::getInstance()->setCECMode((VIDEO_HDMI_CEC_MODE)g_settings.hdmi_cec_mode);
@@ -4609,7 +4609,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	}
 	
 	// cec
-#if !defined (__sh__)
+#ifdef ENABLE_CEC
 	hdmi_cec::getInstance()->setCECAutoStandby(g_settings.hdmi_cec_standby == 1);
 	hdmi_cec::getInstance()->getAudioDestination();
 	hdmi_cec::getInstance()->setCECMode((VIDEO_HDMI_CEC_MODE)g_settings.hdmi_cec_mode);

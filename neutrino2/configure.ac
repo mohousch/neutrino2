@@ -174,6 +174,16 @@ if test "$enable_4k" = "yes"; then
 AC_DEFINE(ENABLE_4K,1,[include 4k support])
 fi
 
+# hdmi cec
+AC_ARG_ENABLE(cec,
+	AS_HELP_STRING(--enable-hdmi-cec,have HDMI CEC),
+	,[enable_cec=no])
+AM_CONDITIONAL(ENABLE_CEC,test "$enable_cec" = "yes")
+
+if test "$enable_cec" = "yes"; then
+AC_DEFINE(ENABLE_CEC,1,[include HDMI CEC support])
+fi
+
 # function keys
 AC_ARG_ENABLE(functionkeys,
 	AS_HELP_STRING(--enable-functionkeys,include RC functions keys support),
@@ -243,6 +253,8 @@ Python			: $enable_python
 Lua			: $enable_lua
 Testing      		: $enable_testing
 LIRC			: $enable_lirc
+HDMI-CEC		: $enable_cec
+4K			: $enable_4k
 ])
 
 AC_OUTPUT([

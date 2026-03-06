@@ -177,7 +177,7 @@ void CMainSettingsMenu::showMenu(void)
 		//mainSettings->addItem( new CMenuForwarder(_("PSI settings"), true, NULL, chPSISetup, NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_PSISETTINGS));
 		
 		// cec setup 
-#if !defined (__sh__)
+#ifdef ENABLE_CEC
 		mainSettings->addItem(new CMenuForwarder(_("CEC settings"), true, NULL, new CCECSetup(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SETTINGS));
 #endif
 	

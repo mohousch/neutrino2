@@ -42,33 +42,7 @@ libneutrino2_driver_a_SOURCES = \
 	movieinfo.cpp \
 	lcdd.cpp
 
-if !BOXTYPE_DGS 
-if !BOXTYPE_FULAN 
-if !BOXTYPE_KATHREIN 
-if !BOXTYPE_IPBOX
-if !BOXTYPE_HL101 
-if !BOXTYPE_TOPFIELD 
-if !BOXTYPE_FORTIS_HDBOX 
-if !BOXMODEL_OCTAGON1008 
-if !BOXTYPE_ATEVIO 
-if !BOXTYPE_ADB_BOX 
-if !BOXTYPE_WHITEBOX 
-if !BOXTYPE_VIP 
-if !BOXTYPE_HOMECAST 
-if !BOXTYPE_TECHNOMATE
+if ENABLE_CEC
 libneutrino2_driver_a_SOURCES += hdmi_cec.cpp
-endif
-endif
-endif
-endif
-endif
-endif
-endif
-endif
-endif
-endif
-endif
-endif
-endif
 endif
 

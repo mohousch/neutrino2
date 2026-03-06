@@ -46,8 +46,8 @@ class CCECSetup : public CTarget, CChangeObserver
 		CCECSetup();
 		virtual ~CCECSetup(){};
 
-		int exec(CTarget* parent, const std::string & actionKey);
-		bool changeNotify(const std::string& OptionName, void * data);
+		int exec(CTarget* parent, const std::string& actionKey);
+		bool changeNotify(const std::string& OptionName, void* data);
 };
 
 #endif

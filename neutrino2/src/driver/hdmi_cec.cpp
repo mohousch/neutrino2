@@ -147,7 +147,7 @@ bool hdmi_cec::setCECMode(VIDEO_HDMI_CEC_MODE _deviceType)
 				 */
 				laddrs.cec_version = CEC_OP_CEC_VERSION_2_0;
 
-				strcpy(laddrs.osd_name, "NeutrinoNG");
+				strcpy(laddrs.osd_name, "Neutrino2");
 				laddrs.vendor_id = CEC_VENDOR_ID_NONE;
 
 				switch (deviceType)
