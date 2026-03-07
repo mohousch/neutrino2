@@ -330,7 +330,7 @@ CTarget* CNeutrinoApp::convertTarget(const std::string& name)
 	{
 		parent = new CScanSetup();
 	}
-#ifndef __sh__
+#ifdef ENABLE_CEC
 	else if (name == "cecsetup")
 	{
 		parent = new CCECSetup();
