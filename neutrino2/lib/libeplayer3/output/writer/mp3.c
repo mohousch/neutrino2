@@ -187,4 +187,3 @@ struct Writer_s WriterAudioVORBIS = {
     	&capsVORBIS
 };
 
-

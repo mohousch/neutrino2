@@ -330,4 +330,3 @@ struct Writer_s WriterAudioFLAC = {
 	&caps_ipcm
 };
 
-
