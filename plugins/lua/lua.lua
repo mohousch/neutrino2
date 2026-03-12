@@ -309,6 +309,7 @@ end
 
 -- CFrameBox
 function testCFrameBox()
+	local ret = neutrino2.CTarget_RETURN_REPAINT
 	local box = neutrino2.CBox()
 	local fb = neutrino2.CFrameBuffer_getInstance()
 
@@ -353,27 +354,33 @@ function testCFrameBox()
 	frame4:setBorderMode()
 	frameBox:addFrame(frame4)
 
-	frameBox:exec(self)
+::RETRY::
+	ret = frameBox:exec(self)
 	
 	if frameBox:getExitPressed() == true then
 		return neutrino2.CTarget_RETURN_EXIT
+	end
+	if ret == neutrino2.CTarget_RETURN_NONE then
+		return 0
 	end
 
 	local actionKey = frameBox:getActionKey()
 
 	if actionKey == "moviePlayer" then
-		--print("testCFrameBox: actionKey: moviePlayer")
 		moviePlayer()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "audioPlayer" then
 		audioPlayer()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "pictureViewer" then
 		pictureViewer()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "exit" then
 		return neutrino2.CTarget_RETURN_EXIT
 	end
 
-	if frameBox:getExitPressed() ~= true then
-		testCFrameBox()
+	if ret == neutrino2.CTarget_RETURN_REPAINT then
+		goto RETRY
 	end
 end
 
