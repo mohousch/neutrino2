@@ -384,6 +384,7 @@ int CComponent::exec(CTarget *target)
 					break;
 				case (CRCInput::RC_timeout):
 					exit_pressed = true;
+					retval = CTarget::RETURN_NONE;
 					break;
 
 				default:
