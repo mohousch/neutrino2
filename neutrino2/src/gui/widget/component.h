@@ -308,8 +308,8 @@ class CComponent
 		virtual void scrollLineUp(const int lines = 1){};
 		virtual void scrollPageDown(const int pages = 1){};
 		virtual void scrollPageUp(const int pages = 1){};
-		virtual int swipLeft(CTarget *target){return 0;};
-		virtual int swipRight(CTarget *target){return 0;};
+		virtual int swipLeft(CTarget *target){return CTarget::RETURN_NONE;};
+		virtual int swipRight(CTarget *target){return CTarget::RETURN_NONE;};
 		////
 		virtual void setInFocus(bool focus = true){ if (isSelectable()) inFocus = focus;else inFocus = false; };
 		virtual void setSelected(unsigned int _new) {};

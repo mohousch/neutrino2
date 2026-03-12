@@ -131,16 +131,16 @@ class CWidget : public CTarget
 		void setBorderGradient(int gr){borderGradient = gr;};
 		void setTitle(const char * title, const char *icon = NULL);
 		//// events
-		virtual void onOKKeyPressed(CTarget *target);
+		virtual int onOKKeyPressed(CTarget *target);
 		virtual void onHomeKeyPressed();
 		virtual void onUpKeyPressed();
 		virtual void onDownKeyPressed();
-		virtual void onRightKeyPressed(CTarget *target);
-		virtual void onLeftKeyPressed(CTarget *target);
+		virtual int onRightKeyPressed(CTarget *target);
+		virtual int onLeftKeyPressed(CTarget *target);
 		virtual void onPageUpKeyPressed();
 		virtual void onPageDownKeyPressed();
 		virtual void onYellowKeyPressed();
-		virtual void onDirectKeyPressed(neutrino_msg_t _msg, CTarget *target);
+		virtual int onDirectKeyPressed(neutrino_msg_t _msg, CTarget *target);
 		
 		//
 		void setSelected(unsigned int _new) {selected = _new; if (selected < 0) selected = 0;};

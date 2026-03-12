@@ -4381,7 +4381,7 @@ void CTestMenu::testCMenuOptionStringChooser()
 ////
 void CTestMenu::testClistBoxValue()
 {
-	ClistBox *testBox = new ClistBox(100, 100, 500, 500);
+	ClistBox *testBox = new ClistBox(390, 110, 500, 500);
 	
 	testBox->addItem(new CMenuForwarder("Item1", true, "    show HintBox"));
 	testBox->addItem(new CMenuForwarder("Item2", true, "    show MessageBox"));

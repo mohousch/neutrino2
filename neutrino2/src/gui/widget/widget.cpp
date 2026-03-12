@@ -540,6 +540,8 @@ void CWidget::onHomeKeyPressed()
 	}
 
 	selected = -1;
+	actionKey.clear(); 
+	actionKey = "";
 }
 
 void CWidget::onYellowKeyPressed()
@@ -610,7 +612,7 @@ void CWidget::onPageDownKeyPressed()
 	}
 }
 
-void CWidget::onOKKeyPressed(CTarget *target)
+int CWidget::onOKKeyPressed(CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "CWidget::onOKKeyPressed:\n");
 	
@@ -618,12 +620,12 @@ void CWidget::onOKKeyPressed(CTarget *target)
 	{
 		if (CCItems[selected]->hasItem() && CCItems[selected]->isSelectable())
 		{
-			int rv = CCItems[selected]->oKKeyPressed(target);
+			retval = CCItems[selected]->oKKeyPressed(target);
 
 			actionKey = CCItems[selected]->getActionKey();	// for lua
 
 			//
-			switch ( rv ) 
+			switch ( retval ) 
 			{
 				case CTarget::RETURN_EXIT_ALL:
 					retval = CTarget::RETURN_EXIT_ALL; //fall through
@@ -636,20 +638,22 @@ void CWidget::onOKKeyPressed(CTarget *target)
 			}
 		}
 	}
+	
+	return retval;
 }
 
-void CWidget::onRightKeyPressed(CTarget *target)
+int CWidget::onRightKeyPressed(CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "CWidget::onRightKeyPressed\n");
 	
 	if(hasCCItem() && selected >= 0)
 	{
-		int rv = CCItems[selected]->swipRight(target);
+		retval = CCItems[selected]->swipRight(target);
 		
 		actionKey = CCItems[selected]->getActionKey();	// lua
 
 		//
-		switch ( rv ) 
+		switch ( retval ) 
 		{
 			case CTarget::RETURN_EXIT_ALL:
 				retval = CTarget::RETURN_EXIT_ALL; //fall through
@@ -661,20 +665,22 @@ void CWidget::onRightKeyPressed(CTarget *target)
 				break;
 		}
 	}
+	
+	return retval;
 }
 
-void CWidget::onLeftKeyPressed(CTarget *target)
+int CWidget::onLeftKeyPressed(CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "CWidget::onLeftKeyPressed\n");
 	
 	if(hasCCItem() && selected >= 0)
 	{
-		int rv = CCItems[selected]->swipLeft(target);
+		retval = CCItems[selected]->swipLeft(target);
 		
 		actionKey = CCItems[selected]->getActionKey();	// lua
 
 		//
-		switch ( rv ) 
+		switch ( retval ) 
 		{
 			case CTarget::RETURN_EXIT_ALL:
 				retval = CTarget::RETURN_EXIT_ALL; //fall through
@@ -686,21 +692,23 @@ void CWidget::onLeftKeyPressed(CTarget *target)
 				break;
 		}
 	}
+	
+	return retval;
 }
 
 //
-void CWidget::onDirectKeyPressed(neutrino_msg_t _msg, CTarget *target)
+int CWidget::onDirectKeyPressed(neutrino_msg_t _msg, CTarget *target)
 {
 	dprintf(DEBUG_DEBUG, "CWidget::onDirectKeyPressed: msg:0x%x\n", _msg);
 	
 	if(hasCCItem() && selected >= 0)
 	{
-		int rv = CCItems[selected]->directKeyPressed(_msg, target);
+		retval = CCItems[selected]->directKeyPressed(_msg, target);
 
 //		actionKey = CCItems[selected]->getActionKey();	// lua
 
 		//
-		switch ( rv ) 
+		switch ( retval ) 
 		{
 			case CTarget::RETURN_EXIT_ALL:
 				retval = CTarget::RETURN_EXIT_ALL; //fall through
@@ -712,6 +720,8 @@ void CWidget::onDirectKeyPressed(neutrino_msg_t _msg, CTarget *target)
 				break;
 		}
 	}
+	
+	return retval;
 }
 
 //
