@@ -4383,12 +4383,14 @@ void CTestMenu::testClistBoxValue()
 {
 	ClistBox *testBox = new ClistBox(390, 110, 500, 500);
 	
+	testBox->enableShrinkMenu();
+	testBox->setMode(ClistBox::MODE_MENU);
+	
 	testBox->addItem(new CMenuForwarder("Item1", true, "    show HintBox"));
 	testBox->addItem(new CMenuForwarder("Item2", true, "    show MessageBox"));
 	testBox->addItem(new CMenuForwarder("Item3", true, "    play File"));
 	testBox->addItem(new CMenuForwarder("Item4"));
 	testBox->addItem(new CMenuForwarder("Item5", true, "    show InfoBox", NULL, "actionkey"));
-	
 	
 	testBox->addKey(CRCInput::RC_info, NULL, "actionkey2");
 	
@@ -5995,7 +5997,7 @@ void CTestMenu::showMenu()
 	mainMenu->enablePaintHead();
 	mainMenu->setTitle(_("Test Menu"), NEUTRINO_ICON_BUTTON_SETUP);
 	mainMenu->setMode(ClistBox::MODE_MENU);
-	mainMenu->enableShrinkMenu(),
+	mainMenu->enableShrinkMenu();
 	mainMenu->enablePaintDate();
 	mainMenu->enablePaintFoot();
 			
@@ -6134,15 +6136,13 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("Bitmap", true, NULL, this, "bitmap"));
 	mainMenu->addItem(new CMenuForwarder("DumpLCD", true, NULL, this, "dumplcd"));
 	mainMenu->addItem(new CMenuForwarder("ShowLCD", true, NULL, this, "showlcd"));
+	mainMenu->addItem(new CMenuForwarder("test", true, NULL, this, "test"));
 	
 	// CMenuItem
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CMenuItem") );
 	mainMenu->addItem(new CMenuForwarder("CMenuOptionChooser", true, NULL, this, "menuoptionchooser"));
 	mainMenu->addItem(new CMenuForwarder("CMenuOptionStringChooser", true, NULL, this, "menuoptionstringchooser"));
 	mainMenu->addItem(new CMenuForwarder("CMenuOptionNumberChooser", true, NULL, this, "menuoptionnumberchooser"));
-	
-	////
-	mainMenu->addItem(new CMenuForwarder("test", true, NULL, this, "test"));
 	
 //	mWidget->exec(this, "");
 //	
