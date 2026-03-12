@@ -51,7 +51,6 @@ class CWidget : public CTarget
 		neutrino_msg_data_t data;
 		int selected;
 		bool exit_pressed;
-		int retval;
 		int pos;
 		struct keyAction 
 		{ 
