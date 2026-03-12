@@ -244,7 +244,7 @@ int CComponent::exec(CTarget *target)
 		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
 		
 		int handled = false;
-		
+
 		if ( msg <= CRCInput::RC_MaxRC ) 
 		{
 			timeoutEnd = CRCInput::calcTimeoutEnd(timeout == 0 ? 0xFFFF : timeout);
@@ -257,10 +257,10 @@ int CComponent::exec(CTarget *target)
 
 				if (it->second.target != NULL)
 				{
-					int rv = it->second.target->exec(target, it->second.action);
+					retval = it->second.target->exec(target, it->second.action);
 
 					//
-					switch ( rv ) 
+					switch ( retval ) 
 					{
 						case CTarget::RETURN_EXIT_ALL:
 							retval = CTarget::RETURN_EXIT_ALL;
@@ -283,9 +283,9 @@ int CComponent::exec(CTarget *target)
 			}
 			
 			//
-			int rv = directKeyPressed(msg, target);
+			retval = directKeyPressed(msg, target);
 
-			switch ( rv ) 
+			switch ( retval ) 
 			{
 				case CTarget::RETURN_EXIT_ALL:
 					retval = CTarget::RETURN_EXIT_ALL; //fall through
@@ -297,7 +297,7 @@ int CComponent::exec(CTarget *target)
 					break;
 			}
 		}
-		
+
 		if (!handled)
 		{
 			if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
@@ -358,9 +358,9 @@ int CComponent::exec(CTarget *target)
 				
 				case CRCInput::RC_ok:
 					{
-						int rv = oKKeyPressed(target);
+						retval = oKKeyPressed(target);
 					
-						switch ( rv ) 
+						switch ( retval ) 
 						{
 							case CTarget::RETURN_EXIT_ALL:
 								retval = CTarget::RETURN_EXIT_ALL;
@@ -379,6 +379,7 @@ int CComponent::exec(CTarget *target)
 						homeKeyPressed();
 						exit_pressed = true;
 						msg = CRCInput::RC_timeout;
+						retval = CTarget::RETURN_NONE;
 					}
 					break;
 				case (CRCInput::RC_timeout):
@@ -395,7 +396,6 @@ int CComponent::exec(CTarget *target)
 			
 			if ( msg <= CRCInput::RC_MaxRC )
 			{
-				// recalculate timeout for RC-Tasten
 				timeoutEnd = CRCInput::calcTimeoutEnd(timeout == 0 ? 0xFFFF : timeout);
 			}
 		}

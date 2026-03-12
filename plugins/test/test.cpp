@@ -218,6 +218,8 @@ class CTestMenu : public CTarget
 		void testCMenuOptionChooser();
 		void testCMenuOptionNumberChooser();
 		void testCMenuOptionStringChooser();
+		////
+		void testClistBoxValue();
 		
 		////
 		void showMenu();
@@ -259,7 +261,7 @@ CTestMenu::CTestMenu()
 {
 	frameBuffer = CFrameBuffer::getInstance();
 
-	selected = 0;
+	selected = -1;
 
 	//
 	webTVchannelList = NULL;
@@ -4376,6 +4378,127 @@ void CTestMenu::testCMenuOptionStringChooser()
 	printf("CTestMenu::testCMenuOptionStringChooser: optionName:%s optionValue:%d\n", optionStringValue.c_str(), optionValue);
 }
 
+////
+void CTestMenu::testClistBoxValue()
+{
+	ClistBox *testBox = new ClistBox(100, 100, 500, 500);
+	
+	testBox->addItem(new CMenuForwarder("Item1", true, "    show HintBox"));
+	testBox->addItem(new CMenuForwarder("Item2", true, "    show MessageBox"));
+	testBox->addItem(new CMenuForwarder("Item3", true, "    play File"));
+	testBox->addItem(new CMenuForwarder("Item4"));
+	testBox->addItem(new CMenuForwarder("Item5", true, "    show InfoBox", NULL, "actionkey"));
+	
+	
+	testBox->addKey(CRCInput::RC_info, NULL, "actionkey2");
+	
+RETRY:
+	int rv = testBox->exec(this);
+	
+	printf("CTestMenu::testClistBoxValue: return value:%d\n", rv);
+	
+	////NOTE: The Best way is to handle first getActionKey() than getSelected()
+	std::string actionKey = testBox->getActionKey();
+	selected = testBox->getSelected();
+	printf("CTestMenu::testClistBoxValue: actionKey:%s (selected:%d)\n", actionKey.c_str(), selected);
+	
+	if (actionKey == "actionkey" || actionKey == "actionkey2")
+	{
+		InfoBox("testClistBoxValue", "this show getActionKey() method\n");
+	
+		rv = RETURN_REPAINT;	
+	}
+	else if (selected == 0)
+	{
+		HintBox("testClistBoxValue", "this show getSelected() method\n");
+		
+		rv = RETURN_REPAINT;
+	}
+	else if (selected == 1)
+	{
+		MessageBox("testClistBoxValue", "this show getSelected() method\n");
+		
+		rv = RETURN_REPAINT;
+	}
+	else if (selected == 2)
+	{
+		CFileBrowser * fileBrowser;
+	
+		fileBrowser = new CFileBrowser();
+
+		fileFilter.clear();
+		
+		fileFilter.addFilter("ts");
+		fileFilter.addFilter("mpg");
+		fileFilter.addFilter("mpeg");
+		fileFilter.addFilter("divx");
+		fileFilter.addFilter("avi");
+		fileFilter.addFilter("mkv");
+		fileFilter.addFilter("asf");
+		fileFilter.addFilter("aiff");
+		fileFilter.addFilter("m2p");
+		fileFilter.addFilter("mpv");
+		fileFilter.addFilter("m2ts");
+		fileFilter.addFilter("vob");
+		fileFilter.addFilter("mp4");
+		fileFilter.addFilter("mov");	
+		fileFilter.addFilter("flv");	
+		fileFilter.addFilter("dat");
+		fileFilter.addFilter("trp");
+		fileFilter.addFilter("vdr");
+		fileFilter.addFilter("mts");
+		fileFilter.addFilter("wmv");
+		fileFilter.addFilter("wav");
+		fileFilter.addFilter("flac");
+		fileFilter.addFilter("mp3");
+		fileFilter.addFilter("wma");
+		fileFilter.addFilter("ogg");
+
+		fileBrowser->Multi_Select    = false;
+		fileBrowser->Dirs_Selectable = false;
+		fileBrowser->Filter = &fileFilter;
+	
+		std::string Path_local = g_settings.network_nfs_recordingdir;
+
+		if (fileBrowser->exec(Path_local.c_str()))
+		{
+			Path_local = fileBrowser->getCurrentDir();
+			
+			CFile * file;
+			
+			if ((file = fileBrowser->getSelectedFile()) != NULL) 
+			{		
+				tmpMoviePlayerGui.addToPlaylist(*file);
+				tmpMoviePlayerGui.exec(NULL, "");
+			}
+		}
+		
+		rv = RETURN_REPAINT;
+	}
+	
+	printf("\n\n");
+	////
+	
+	switch ( rv ) 
+	{
+		case CTarget::RETURN_NONE:
+			break;
+		case CTarget::RETURN_EXIT_ALL:
+			break;
+		case CTarget::RETURN_EXIT:
+			break;
+		case CTarget::RETURN_REPAINT:
+			goto RETRY;
+			break;
+	}
+	
+	if (testBox)
+	{
+		delete testBox;
+		testBox = NULL;
+	}
+}
+
 // exec
 int CTestMenu::exec(CTarget *parent, const std::string &actionKey)
 {
@@ -5835,6 +5958,11 @@ int CTestMenu::exec(CTarget *parent, const std::string &actionKey)
 		
 		return RETURN_REPAINT;
 	}
+	else if (actionKey == "test")
+	{
+		testClistBoxValue();
+		return RETURN_REPAINT;
+	}
 
 	showMenu();
 	
@@ -6012,6 +6140,9 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CMenuOptionChooser", true, NULL, this, "menuoptionchooser"));
 	mainMenu->addItem(new CMenuForwarder("CMenuOptionStringChooser", true, NULL, this, "menuoptionstringchooser"));
 	mainMenu->addItem(new CMenuForwarder("CMenuOptionNumberChooser", true, NULL, this, "menuoptionnumberchooser"));
+	
+	////
+	mainMenu->addItem(new CMenuForwarder("test", true, NULL, this, "test"));
 	
 //	mWidget->exec(this, "");
 //	

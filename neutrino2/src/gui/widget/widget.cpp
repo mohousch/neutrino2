@@ -458,6 +458,7 @@ int CWidget::exec(CTarget *parent, const std::string &)
 				case (CRCInput::RC_home):
 				case (CRCInput::RC_setup):
 					onHomeKeyPressed();
+					retval = CTarget::RETURN_NONE;
 					break;
 
 				case (CRCInput::RC_ok):

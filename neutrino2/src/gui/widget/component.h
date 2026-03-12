@@ -315,7 +315,7 @@ class CComponent
 		virtual void setSelected(unsigned int _new) {};
 		////
 		virtual int oKKeyPressed(CTarget *target, neutrino_msg_t _msg = CRCInput::RC_ok){return CTarget::RETURN_EXIT;};
-		virtual void homeKeyPressed(){exit_pressed = true;};
+		virtual void homeKeyPressed(){exit_pressed = true;actionKey.clear(); actionKey = "";};
 		virtual int directKeyPressed(neutrino_msg_t, CTarget *target){return CTarget::RETURN_NONE;};
 		////
 		virtual void setParent(CWidget *p){parent = p;};

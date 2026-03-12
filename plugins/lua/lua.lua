@@ -200,6 +200,8 @@ end
 
 -- ClistBox
 function testClistBox()
+	local ret = neutrino2.CTarget_RETURN_REPAINT
+	
 	local listBox = neutrino2.ClistBox(340, 60, 600,600)
 	listBox:enablePaintHead()
 	listBox:setTitle("lua: ClistBox", neutrino2.NEUTRINO_ICON_MOVIE)
@@ -263,35 +265,45 @@ function testClistBox()
 	listBox:addItem(item8)
 	
 	listBox:addKey(neutrino2.CRCInput_RC_info, self, "infoBox")
+
+::RETRY::	
+	ret = listBox:exec(self)
 	
-	listBox:exec(self)
-	
-	if listBox:getExitPressed() == true then
-		return neutrino2.CTarget_RETURN_EXIT
+	if ret == neutrino2.CTarget_RETURN_NONE then
+		return 0
 	end
 	
 	local actionKey = listBox:getActionKey()
+	selectd = listBox:getSelected()
 	
 	if actionKey == "msgBox" then
 		messageBox()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "helpBox" then
 		helpBox()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "hintBox" then
 		hintBox()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "cStringInput" then
 		stringInput()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "audioPlayer" then
 		audioPlayer()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "pictureViewer" then
 		pictureViewer()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "moviePlayer" then
 		moviePlayer()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "infoBox" then
 		infoBox()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	end
-	
-	if listBox:getExitPressed() ~= true then
-		testClistBox()
+
+	if ret == neutrino2.CTarget_RETURN_REPAINT then
+		goto RETRY
 	end
 end
 
@@ -350,7 +362,7 @@ function testCFrameBox()
 	local actionKey = frameBox:getActionKey()
 
 	if actionKey == "moviePlayer" then
-		print("testCFrameBox: actionKey: moviePlayer")
+		--print("testCFrameBox: actionKey: moviePlayer")
 		moviePlayer()
 	elseif actionKey == "audioPlayer" then
 		audioPlayer()
@@ -367,8 +379,9 @@ end
 
 -- CWidget
 function testCWidget()
-	local testWidget = neutrino2.CWidget(340, 60, 600,600)
+	local ret = neutrino2.CTarget_RETURN_REPAINT
 	
+	local testWidget = neutrino2.CWidget(340, 60, 600,600)
 	local listBox = neutrino2.ClistBox(340, 60, 600,600)
 
 	listBox:setTitle("lua: CWidget")
@@ -451,55 +464,60 @@ function testCWidget()
 	listBox:addItem(item9)
 	listBox:addItem(item10)
 
-	if selected < 0 then
-		selected = 0
-	end
-
-	listBox:setSelected(selected)
-
 	testWidget:addCCItem(listBox)
 	testWidget:addKey(neutrino2.CRCInput_RC_info, null, "info")
 
-	testWidget:exec(self, "")
+::RETRY::
+	ret = testWidget:exec(self, "")
 	
-	if testWidget:getExitPressed() == true then
-		return neutrino2.CTarget_RETURN_EXIT
+	if ret == neutrino2.CTarget_RETURN_NONE then
+		return 0
 	end
-
+	
 	selected = listBox:getSelected()
 	local key = testWidget:getKey()
 	local actionKey = testWidget:getActionKey()
 		
 	if actionKey == "msgBox" then
 		messageBox()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "helpBox" then
 		helpBox()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "hintBox" then
 		hintBox()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "cStringInput" then
 		stringInput()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "audioPlayer" then
 		audioPlayer()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "pictureViewer" then
 		pictureViewer()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "moviePlayer" then
 		moviePlayer()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "infoBox" then
 		infoBox()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "listbox" then
 		testClistBox()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "framebox" then
 		testCFrameBox()
-	elseif actionKey == "frameboxrandom" then
-		testCFrameBoxRandom()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif key == neutrino2.CRCInput_RC_info then
 		infoBox()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "info" then
 		infoBox()
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	end
-	
-	if testWidget:getExitPressed() ~= true then
-		testCWidget()
+
+	if ret == neutrino2.CTarget_RETURN_REPAINT then
+		goto RETRY
 	end
 end
 

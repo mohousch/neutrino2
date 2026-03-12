@@ -67,11 +67,12 @@ neutrinoLua::neutrinoLua()
 
 neutrinoLua::~neutrinoLua()
 {
-	if (lua != NULL)
-	{
-		lua_close(lua);
-		lua = NULL;
-	}
+
+	//if (lua != NULL)
+	//{
+	//	lua_close(lua);
+	//	lua = NULL;
+	//}
 }
 
 int neutrinoLua::execFile(const char *fileName)
