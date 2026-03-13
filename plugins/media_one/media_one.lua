@@ -21,17 +21,13 @@
 ]]
 
 --dependencies:  feedparser http://feedparser.luaforge.net/ ,libexpat,  lua-expat
+
 rssReaderVersion="Lua RSS READER v0.77"
 local hasgumbo,gumbo = pcall(require,"gumbo")
 local glob = {}
-local conf = {}
 feedentries = {} --don't make local
-local addon = nil
 local nothing,hva,hvb,hvc,hvd,hve="nichts",nil,nil,nil,nil,nil
-local vPlay = nil
-local epgtext = nil
-local epgtitle = nil
-local LinksBrowser = "/links.so"
+local vPlay = neutrino2.CMoviePlayerGui()
 local picdir = "/tmp/rssPics"
 
 function _(string)
@@ -40,15 +36,15 @@ end
 
 feedentries = {
     { name = "Krimi",                                   exec = "https://mediathekviewweb.de/feed?query=%23Krimi&everywhere=true"},
-    { name = "Spielfilm",                                exec = "https://mediathekviewweb.de/feed?query=%23spielfilm&everywhere=true"},
-    { name = "Arte Film",                                exec = "https://mediathekviewweb.de/feed?query=!Arte.de%20Film&everywhere=true&page=2"},
+    { name = "Spielfilm",                               exec = "https://mediathekviewweb.de/feed?query=%23spielfilm&everywhere=true"},
+    { name = "Arte Film",                               exec = "https://mediathekviewweb.de/feed?query=!Arte.de%20Film&everywhere=true&page=2"},
     { name = "Tatort",                                  exec = "https://mediathekviewweb.de/feed?query=%23tatort&everywhere=true"},
-    { name = "Polizeiruf",                               exec = "https://mediathekviewweb.de/feed?query=%23polizeiruf&everywhere=true"},
+    { name = "Polizeiruf",                              exec = "https://mediathekviewweb.de/feed?query=%23polizeiruf&everywhere=true"},
     { name = "Wunderschön",                             exec = "https://mediathekviewweb.de/feed?query=%23wundersch%C3%B6n&everywhere=true"},
     { name = "Traumreisen",                             exec = "https://mediathekviewweb.de/feed?query=Traumorte&everywhere=true"},
     { name = "Städtetripp",                             exec = "https://mediathekviewweb.de/feed?query=st%C3%A4dtetrip&everywhere=true"}, 
-    { name = "Sagenhaft",                                exec = "https://mediathekviewweb.de/feed?query=%23Sagenhaft"},
-    { name = "Eisenbahn Romantik",                                exec = "https://mediathekviewweb.de/feed?query=%23Eisenbahn-&everywhere=true"},
+    { name = "Sagenhaft",                               exec = "https://mediathekviewweb.de/feed?query=%23Sagenhaft"},
+    { name = "Eisenbahn Romantik",                      exec = "https://mediathekviewweb.de/feed?query=%23Eisenbahn-&everywhere=true"},
     { name = "Handwerkskunst",                          exec = "https://mediathekviewweb.de/feed?query=%23Handwerkskunst!&everywhere=true"},
     { name = "Geschichte Jahrhundert",                  exec = "https://mediathekviewweb.de/feed?query=%23geschichte"},
     { name = "MDR Zeitreise",                           exec = "https://mediathekviewweb.de/feed?query=%23Zeitreise&everywhere=true"},
@@ -64,16 +60,7 @@ feedentries = {
     { name = "Rockpalast",                              exec = "https://mediathekviewweb.de/feed?query=%23rockpalast&everywhere=true"},		
 }
 
-function __LINE__() return debug.getinfo(2, 'l').currentline end
-
-function pop(cmd)
-       local f = assert(io.popen(cmd, 'r'))
-       local s = assert(f:read('*a'))
-       f:close()
-       return s
-end
-
-function getdata(Url, outputfile)
+function getdata(Url)
 	if Url == nil then return nil end
 
 	if Url:sub(1, 2) == '//' then
@@ -186,6 +173,7 @@ function gum(data)
 	for i, unlikely in ipairs(unlikelyCandidates) do
 		removeElemetsbyTagName(document,unlikely)
 	end
+	
 	local class ={ {"div","style"},{"ul","style"},{"section","style"},{"a","onclick"}}
 	for i,unlikely  in pairs(class) do
 		removeElemetsbyTagName2(document,unlikely[1],unlikely[2])
@@ -195,6 +183,7 @@ function gum(data)
 	for i,unlikely  in ipairs(myCandidates) do
 		removeElemetsbyTagName(document,unlikely)
 	end
+	
 	local div = document:getElementsByTagName("div")
 	for i, element in ipairs(div) do
 		local class = element:getAttribute("class")
@@ -214,6 +203,7 @@ function gum(data)
  			element:remove()
 		end
 	end
+	
 	local div = document:getElementsByTagName("ul")
 	for i, element in ipairs(div) do
 		local id = element:getAttribute("class")
@@ -233,6 +223,7 @@ function gum(data)
 			end
 		end
 	end
+	
 	local div = document:getElementsByTagName("div")
 	for i, element in ipairs(div) do
 		local id = element:getAttribute("id")
@@ -294,9 +285,11 @@ end
 function checkdomain(feed,url)
 	if not url then return url end
 	local a,b=url:find("src=.http:")
+	
 	if a and b then
 		url=url:sub(b-4,#url)
 	end
+	
 	if not url:find("//") then
 		local domain = nil
 		if fp.feed.link then
@@ -306,28 +299,33 @@ function checkdomain(feed,url)
 			url =  domain .. "/" .. url
 		end
 	end
+	
 	return url
 end
 
 function getMediUrls(idNr)
 	print("getMediUrls:")
 
-	local UrlVideo,UrlAudio, UrlExtra = nil,nil,nil
-	local picUrl = nil -- {}
+	local UrlVideo, UrlAudio, UrlExtra = nil,nil,nil
+	local picUrl = nil
 	local feed = fp.entries[idNr]
+	
 	for i, link in ipairs(feed.enclosures) do
-		local urlType =link.type
+		local urlType = link.type
 		local mediaUrlFound = false
+		
 		if link.url and urlType == "image/jpeg" then
 			--picUrl[#picUrl+1] =  link.url
 			picUrl = link.url
 			mediaUrlFound = true
 		end
+		
 		if urlType == 'video/mp4' or  urlType == 'video/mpeg' or
 		   urlType == 'video/x-m4v' or  urlType == 'video/quicktime' then
 			UrlVideo =  link.url
 			mediaUrlFound = true
 		end
+		
 		if urlType == 'audio/mp3' or urlType == 'audio/mpeg' then
 			UrlAudio =  link.url
 			mediaUrlFound = true
@@ -335,23 +333,25 @@ function getMediUrls(idNr)
 
 		if mediaUrlFound == false and link.url then
 			local purl = link.url:match ('(http.-%.[JjGgPp][PpIiNn][Ee]?[GgFf])')
-				if purl and #purl>4 then
-					purl = checkdomain(feed,url)
-					if purl ~= picUrl[#picUrl] then
-						picUrl[#picUrl+1] =  purl
-					end
+			if purl and #purl>4 then
+				purl = checkdomain(feed,url)
+				if purl ~= picUrl[#picUrl] then
+					picUrl[#picUrl+1] =  purl
 				end
+			end
 		end
 	end
+	
 	if not UrlVideo and feed.summary then
 		UrlVideo = feed.summary:match('<source%s+src%s?=%s?"(.-)"%s+type="video/mp4">')
 	end
-	--[[if #picUrl == 0 then
+	
+	if picUrl == nil then
 		local urls = {feed.summary, feed.content}
 		for i,v in ipairs(urls) do
 			if type(v) == "string" then
-				v=v:gsub('src=""','')
-				v=v:gsub("src=''",'')
+				v = v:gsub('src=""','')
+				v = v:gsub("src=''",'')
 				for url in v:gmatch ('[%-%s]?src%s?=%s?[%"\']?(.-%.[JjGgPp][PpIiNn][Ee]?[GgFf])[%"\'%s%?]') do
 					if url and #url > 4 then
 						local a,b = url:find("http[%w%p]+$")
@@ -362,13 +362,14 @@ function getMediUrls(idNr)
 							end
 						end
 						url = checkdomain(feed,url)
-						if url ~= picUrl[#picUrl] then
-							if check_if_double(picUrl,url) then
-								picUrl[#picUrl+1] =  url
-							end
+						if url ~= picUrl then
+							--if check_if_double(picUrl,url) then
+								picUrl =  url
+							--end
 						end
 					end
 				end
+				
 				for url in v:gmatch ('[%-%s]?<a href%s?=%s?[%"\']?(.-%.[JjGgPp][PpIiNn][Ee]?[GgFf])[%"\'%s%?]') do
 					if url and #url > 4 then
 						local a,b = url:find("http[%w%p]+$")
@@ -379,10 +380,10 @@ function getMediUrls(idNr)
 							end
 						end
 						url = checkdomain(feed,url)
-						if url ~= picUrl[#picUrl] then
-							if check_if_double(picUrl,url) then
-								picUrl[#picUrl+1] =  url
-							end
+						if url ~= picUrl then
+							--if check_if_double(picUrl,url) then
+								picUrl =  url
+							--end
 						end
 					end
 				end
@@ -393,262 +394,91 @@ function getMediUrls(idNr)
 			end
 		end
 	end
-	]]
+	
 	if not UrlVideo and not UrlAudio and not UrlExtra and fp.entries[idNr].link:find("www.youtube.com")then
 		UrlExtra = fp.entries[idNr].link
 	end
-	glob.urlPicUrls = picUrl
 
-	--
-	print(picUrl)
-	--
-
-	return UrlVideo , UrlAudio , UrlExtra
+	return UrlVideo , UrlAudio , UrlExtra, picUrl
 end
 
-function html2text(viewer,text)
-	if text == nil then 
-		return nil 
-	end
-	local tmp_filename = os.tmpname()
- 	local fileout = io.open(tmp_filename, 'w+')
-	if fileout then
-		text = text:gsub("<[sS][cC][rR][iI][pP][tT][^%w%-].-</[sS][cC][rR][iI][pP][tT]%s*>", "")
-		fileout:write(text .. "\n")
-		fileout:close()
-		collectgarbage()
-	end
-	local cmd = viewer .. " " .. tmp_filename
-	text = pop(cmd)
-	os.remove(tmp_filename)
-	return text
-end
-
-function checkHaveViewer()
-	if hva == conf.htmlviewer then
-		return true
-	elseif hvb == conf.htmlviewer then
-		return true
-	elseif hvc == conf.htmlviewer then
-		return true
-	elseif hvd == conf.htmlviewer then
-		return true
-	elseif hve == conf.htmlviewer then
-		return true
-	elseif nothing == conf.htmlviewer then
-		return false
-	end
-		return false
-end
-
-function showWithHtmlViewer(data)
-	local txt = nil
-	local viewer = nil
-	if hve == conf.htmlviewer then
-		viewer = conf.linksbrowserdir .. LinksBrowser .. " -dump"
-		txt=html2text(viewer,data)
-	elseif hvb == conf.htmlviewer then
-		viewer= conf.bindir .. "/html2text -nobs -utf8"
-		txt=html2text(viewer,data)
-	elseif hvc == conf.htmlviewer then
-		viewer= conf.bindir .. "/w3m -dump"
-		txt=html2text(viewer,data)
-	elseif hvd == conf.htmlviewer then
-		txt = gum(data)
-	elseif nothing == conf.htmlviewer then
-		return nil
-	end
-
-	return txt
-end
-
-function showMenuItem(id)
-	print("showMenuItem:")
-
-	local nr = id
-	local stop = false
-	local selected = paintMenuItem(nr)
-end
-
-function paintMenuItem(idNr)
-	print("paintMenuItem:")
-
-	glob.urlPicUrls  = nil --{}
-	local title    = fp.entries[idNr].title
+function play(idNr)
+	local title = fp.entries[idNr].title
+	
 	if title then
 		title = title:gsub("\n", " ")
 	end
-	local text    = fp.entries[idNr].summary
+	
+	local text = fp.entries[idNr].summary
 	local UrlLink = fp.entries[idNr].link
-	local fpic = nil
-	local UrlVideo,UrlAudio,UrlExtra = getMediUrls(idNr)
-
-	if addon and UrlLink then
-		local hasaddon,a = pcall(require, addon)
-		if hasaddon then
-			a.getAddonMedia(UrlLink,UrlExtra)
-			if a.VideoUrl then
-				UrlVideo = a.VideoUrl
-				a.VideoUrl = nil
-			end
-			if a.AudioUrl then
-				UrlAudio = a.AudioUrl
-				a.AudioUrl = nil
-			end
-			--[[if a.PicUrl then
-				if type(a.PicUrl) == 'table' then
-					for i=1,#a.PicUrl do
-						if check_if_double(glob.urlPicUrls,a.PicUrl[i]) then
-							glob.urlPicUrls[#glob.urlPicUrls+1] = a.PicUrl[i]
-						end
-					end
-				else
-					if check_if_double(glob.urlPicUrls,a.PicUrl) then
-						glob.urlPicUrls[#glob.urlPicUrls+1] = a.PicUrl
-					end
-				end
-				a.PicUrl = nil
-			end]]
-			if a.addText then
-				if text == nil then
-					text=""
-				end
-				text = text .. a.addText
-				a.addText = nil
-			end
-			if a.newText then
-				text = a.newText
-				a.newText = nil
-			end
-		else
-			local errMsg = _(".lua not found in directory: ") .. conf.addonsdir
-			info( addon .. errMsg ,"ADDON: Error")
-		end
-	end
-
-	if  not vPlay  and (UrlVideo or UrlAudio) then
-		vPlay = neutrino2.CMoviePlayerGui()
-	end
-	if  vPlay and text and #text > 1 then
-		epgtext = text
-		epgtitle = title
-	end
+	local UrlVideo,UrlAudio,UrlExtra, UrlPic = getMediUrls(idNr)
 
 	if UrlVideo == UrlLink then
 		UrlLink = nil
 	end
+	
 	if UrlAudio == UrlLink then
 		UrlLink = nil
 	end
+	
 	if UrlLink and UrlLink:sub(1, 4) ~= 'http' then
 		UrlLink = nil
 	end
 
-	--if #glob.urlPicUrls > 0 then
-		fpic = downloadPic(idNr,1)
-	--end
+	local fpic = neutrino2.DATADIR .. "/icons/nopreview.jpg"
+	if UrlPic ~= nil then
+		fpic = downloadPic(UrlPic, title)
+	end
 
 	if text == nil and fp.entries[idNr].content then
 		text = fp.entries[idNr].content
 	end
+	
 	if UrlVideo and UrlVideo:sub(1, 2) == '//' then
 		UrlVideo =  'http:' .. UrlVideo
 	end
+	
 	if UrlAudio and UrlAudio:sub(1, 2) == '//' then
 		UrlAudio =  'http:' .. UrlAudio
 	end
 
-	if text == nil then
-		if vPlay and UrlVideo then
-			vPlay:addToPlaylist(UrlVideo, title, text)
-		elseif vPlay and UrlAudio then
-			vPlay:addToPlaylist(UrlAudio, title, text)
-		end
-		vPlay:exec(null, "")
-		collectgarbage()
+	if UrlVideo then
+		vPlay:addToPlaylist(UrlVideo, title, text, "", fpic)
+	elseif UrlAudio then
+		vPlay:addToPlaylist(UrlAudio, title, text, "", fpic)
 	end
 
-	if vPlay and UrlVideo then
-		vPlay:addToPlaylist(UrlVideo, title, text)
-		vPlay:exec(null, "")
-
-	elseif checkHaveViewer() and UrlLink then
-		if hva == conf.htmlviewer and UrlLink then
-			os.execute(conf.linksbrowserdir .. LinksBrowser .. " -g " .. UrlLink)
-		else
-			local data = getdata(UrlLink)
-			if data then
-				local txt = showWithHtmlViewer(data)
-				data = nil
-				if txt then
-					show_textWindow(title,txt)
-				end
-			end
-		end
-
-	elseif UrlAudio and vPlay then
-		vPlay:addToPlaylis(UrlAudio, title, text)
+	if UrlAudio or UrlVideo then
 		vPlay:exec(null, "")
 	end
-
-	epgtext = nil
-	epgtitle = nil
-	
-	--[[if #glob.urlPicUrls > 0 and conf.picdir == picdir then
-		neutrino2.CFileHelpers():removeDir(picdir)
-		neutrino2.CFileHelpers():createDir(picdir)
-		glob.urlPicUrls = nil
-	end]]
-	collectgarbage()
-	return selected
 end
 
-function downloadPic(idNr,nr)
+function downloadPic(url, picname)
 	print("downloadPic:")
-
 	local fpic = nil
-	if not glob.urlPicUrls then 
-		return nil 
-	end
-	local picname = string.find(glob.urlPicUrls, "/[^/]*$")
-	if picname then
-		picname = string.sub(glob.urlPicUrls,picname+1,#glob.urlPicUrls)
-		local t = nil
-		if fp.entries[idNr].updated_parsed then
-		      t = os.date("%d%m%H%M%S_",fp.entries[idNr].updated_parsed)
-		end
-		local id2 = nil
-		if t then
-			id2 = t
-		else
-			id2 = idNr
-		end
-		fpic = conf.picdir .. "/" .. id2 .. picname
-		if neutrino2.file_exists(fpic) == false then
-			if nr > 1 then
-
-			end
-			local UrlPic = glob.urlPicUrls
-			
-			local ok = neutrino2.downloadUrl(UrlPic, fpic)
-			if not ok then
-				fpic = nil
-			end
+	
+	fpic = picdir .. "/" .. picname
+	
+	if neutrino2.file_exists(fpic) == false then
+		local ok = neutrino2.downloadUrl(url, fpic)
+		if not ok then
+			fpic = nil
 		end
 	end
 	
-	print(fpic)
 	return fpic
 end
 
-local selected = 0
+--local selected = 0
 function rssurlmenu(url)
-	print("rssurlmenu:")
 	glob.feedpersed = getFeedDataFromUrl(url)
+	
 	if glob.feedpersed == nil then 
 		return 
 	end
 
+	local selected = 0
+	local ret = neutrino2.CTarget_RETURN_REPAINT
 	local m = neutrino2.ClistBox(40, 40, 1200, 640)
 	m:enablePaintHead()
 	m:enablePaintDate()
@@ -661,6 +491,7 @@ function rssurlmenu(url)
 		if fp.entries[i].updated_parsed then
 		      title = os.date("%d.%m %H:%M",fp.entries[i].updated_parsed)
 		end
+		
 		if glob.feedpersed.entries[i].title then
 			title = title .. " "..glob.feedpersed.entries[i].title:gsub("\n", " ")
 			title = xml_entities(title)
@@ -669,34 +500,32 @@ function rssurlmenu(url)
 		else
 			title = title .. " "
 		end
+		
 		item = neutrino2.CMenuForwarder(title)
 
 		m:addItem(item)
 	end
-	
-	if selected < 0 then
-		selected = 0
-	end
-	
-	m:setSelected(selected)
 
-	m:exec(self)
+::RETRY::
+	ret = m:exec(self)
 	
-	if m:getExitPressed() == true then
+	if m:getExitPressed() == true or ret == neutrino2.CTarget_RETURN_NONE then
 		return neutrino2.CTarget_RETURN_EXIT
 	end
 
 	selected = m:getSelected()
 
 	if selected >= 0 then
-		showMenuItem(selected + 1)
+		play(selected + 1)
+--		vPlay:exec(null, "")
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	end
 
-	if m:getExitPressed() ~= true then
-		rssurlmenu(url)
+	if ret == neutrino2.CTarget_RETURN_REPAINT then
+		goto RETRY
 	end
 
-	glob.feedpersed = nil
+--	glob.feedpersed = nil
 	collectgarbage()
 end
 
@@ -713,15 +542,17 @@ function exec_urlsub(id)
 end
 
 function execUrl(id)
-	nr = id
-	addon = feedentries[nr].addon
-	rssurlmenu(feedentries[nr].exec)
+--	nr = id
+--	addon = feedentries[id].addon
+	rssurlmenu(feedentries[id].exec)
 end
 
 local s_selected = 0
 function start()
 	local submenus = {}
 	local grupmenus = {}
+	
+	local ret = neutrino2.CTarget_RETURN_REPAINT
 
 	local sm = neutrino2.ClistBox(340, 60, 600,600)
 	sm:enablePaintHead()
@@ -735,40 +566,28 @@ function start()
 			sm:addItem(neutrino2.CMenuForwarder(w.name))
 		end
 	end
-
-	if s_selected < 0 then
-		s_selected = 0
-	end
 	
-	sm:setSelected(s_selected)
+::RETRY::	
+	ret = sm:exec(self)
 	
-	sm:exec(self)
-	
-	if sm:getExitPressed() == true then
+	if sm:getExitPressed() == true or ret == neutrino2.CTarget_RETURN_NONE then
 		return neutrino2.CTarget_RETURN_EXIT
 	end
 
 	s_selected = sm:getSelected()
 
 	if s_selected >= 0 then
-		exec_url(s_selected + 1)	
+		exec_url(s_selected + 1)
+		ret = neutrino2.CTarget_RETURN_REPAINT	
 	end
 
-	if sm:getExitPressed() ~= true then
-		start()
+	if ret == neutrino2.CTarget_RETURN_REPAINT then
+		goto RETRY
 	end
 end
 
-function main()
-	local config = neutrino2.PLUGINDIR .. "/media_one/media_one.conf"
-	
+function main()	
 	neutrino2.CFileHelpers():createDir(picdir)
-
-	if next(feedentries) == nil then
-		print("DEBUG ".. __LINE__())
-		print("failed while loading " .. config)
-		return
-	end
 
 	start()
 
