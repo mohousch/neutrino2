@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 5.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-08-31 14:29+0200\n"
+"POT-Creation-Date: 2026-03-14 17:08+0100\n"
 "PO-Revision-Date: 2025-01-08 16:21+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -19,9 +19,6 @@ msgstr ""
 msgid " Categories"
 msgstr ""
 
-msgid "Error"
-msgstr ""
-
 msgid "Highlight"
 msgstr ""
 
@@ -29,12 +26,6 @@ msgid "New"
 msgstr ""
 
 msgid "Next Page"
-msgstr ""
-
-msgid "No Categorie found!"
-msgstr ""
-
-msgid "No Stream found!"
 msgstr ""
 
 msgid "loading categories ..."

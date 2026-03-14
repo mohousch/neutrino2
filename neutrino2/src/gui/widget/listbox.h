@@ -508,11 +508,8 @@ class ClistBox : public CComponent
 		int widgetMode;
 		
 		// mainframe
-		fb_pixel_t bgcolor;
-		int radius;
-		int corner;
+		fb_pixel_t bgcolor;;
 		bool scrollbar;
-		int gradient;
 		fb_pixel_t *background;
 		void saveScreen();
 		void restoreScreen();
@@ -610,8 +607,6 @@ class ClistBox : public CComponent
 		void selectItemByName(const char *name);
 		////
 		void initFrames();
-		void paintHead();
-		void paintFoot();
 		void paintItemInfo(int pos);
 		void hideItemInfo();
 		void paint(bool _selected = false);
@@ -622,9 +617,7 @@ class ClistBox : public CComponent
 		//// main properties
 		void enableShrinkMenu(){shrinkMenu = true;};
 		void setColor(fb_pixel_t col){bgcolor = col;};
-		void setCorner(int ra, int co){radius = ra; corner = co;};
 		void paintScrollBar(bool sb){scrollbar = sb;};
-		void setGradient(int grad){ gradient = grad;};
 		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
 		void setBorderColor(uint32_t col){borderColor = col;};
 		void setBorderGradient(int gr) {borderGradient = gr;};
@@ -666,6 +659,7 @@ class ClistBox : public CComponent
 		
 		//// head properties
 		void enablePaintHead(){paint_Head = true; has_Title = true;};
+		void paintHead();
 		void enablePaintDate(void){paintDate = true;};
 		void setTitleHAlign(const int m){thalign = m;};
 		void setHeadButtons(const struct button_label *_hbutton_label, const int _hbutton_count = 1);
@@ -677,6 +671,7 @@ class ClistBox : public CComponent
 		
 		//// foot properties
 		void enablePaintFoot(){paint_Foot = true;};
+		void paintFoot();
 		void setFootButtons(const struct button_label *_fbutton_label, const int _fbutton_count = 1, const int _fbutton_width = 0);
 		void setFootColor(fb_pixel_t col) {footColor = col;};
 		void setFootCorner(int ra, int co = CORNER_BOTTOM){footRadius = ra; footCorner = co;};

@@ -168,12 +168,11 @@ function get_cat()
 end
 
 function cat_menu(_id)
-	neutrino2.CFileHelpers():createDir("/tmp/plutotv")
+--	neutrino2.CFileHelpers():createDir("/tmp/plutotv")
 	
 	local ret = neutrino2.CTarget.RETURN_REPAINT
 	local cm = neutrino2.ClistBox(40, 40, 1200, 640)
 
-	cm:setItemsPerPage(6, 2)
 	cm:enablePaintHead()
 	cm:setTitle(catlist[tonumber(_id)], neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	cm:enablePaintDate()
@@ -229,7 +228,7 @@ function cat_menu(_id)
 				}
 					
 				item = neutrino2.CMenuForwarder(conv_utf8(item_detail.name))
-				--item:setHintIcon(tfile)
+				item:setHintIcon(tfile)
 				item:setOption(item_detail.desc)
 				item:set2lines(true)
 				item:setHint(item_detail.desc)
@@ -251,7 +250,7 @@ function cat_menu(_id)
 	ret = cm:exec(self)
 	
 	if cm:getExitPressed() == true then
-		neutrino2.CFileHelpers():removeDir("/tmp/plutotv")
+--		neutrino2.CFileHelpers():removeDir("/tmp/plutotv")
 		return neutrino2.CTarget_RETURN_EXIT
 	end
 	
@@ -354,7 +353,7 @@ function season_menu(_id)
 end
 
 function episode_menu(s)
-	neutrino2.CFileHelpers():createDir("/tmp/plutotv")
+--	neutrino2.CFileHelpers():createDir("/tmp/plutotv")
 	
 	local ret = neutrino2.CTarget_RETURN_REPAINT
 	local em = neutrino2.ClistBox(40, 40, 1200, 640)
@@ -415,7 +414,7 @@ function episode_menu(s)
 				}
 				
 				item = neutrino2.CMenuForwarder(episode_detail.name)
-				--item:setHintIcon(tfile)
+				item:setHintIcon(tfile)
 				item:setOption(episode_detail.desc)
 				item:setActionKey(null, "play")
 				item:set2lines(true)
@@ -432,7 +431,7 @@ function episode_menu(s)
 	ret = em:exec(self)
 	
 	if em:getExitPressed() == true then
-		neutrino2.CFileHelpers():removeDir("/tmp/plutotv")
+--		neutrino2.CFileHelpers():removeDir("/tmp/plutotv")
 		return neutrino2.CTarget_RETURN_EXIT
 	end
 	

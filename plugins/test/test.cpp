@@ -4394,13 +4394,16 @@ void CTestMenu::testClistBoxValue()
 	
 	testBox->addKey(CRCInput::RC_info, NULL, "actionkey2");
 	
+	testBox->setItemBorderMode();
+	testBox->setBorderMode();
+	
 RETRY:
 	int ret = testBox->exec(this);
 	
 	////NOTE: The Best way is to handle first getActionKey() than getSelected()
 	std::string actionKey = testBox->getActionKey();
 	selected = testBox->getSelected();
-	uint64_t key = testBox->getKey();
+	neutrino_msg_t key = testBox->getKey();
 	
 	printf("CTestMenu::testClistBoxValue: (ret:%d) actionKey:%s (selected:%d) (key:0x%x)\n", ret, actionKey.c_str(), selected, key);
 	

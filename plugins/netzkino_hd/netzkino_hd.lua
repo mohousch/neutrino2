@@ -202,9 +202,9 @@ function categories_menu()
 	end
 
 ::RETRY::	
-	m_categories:exec(self)
+	ret = m_categories:exec(self)
 	
-	if m_categories:getExitPressed() == true or ret == neutrino2.CTarget_RETURN_NONE then
+	if m_categories:getExitPressed() == true then
 		return neutrino2.CTarget_RETURN_NONE
 	end
 
@@ -212,10 +212,10 @@ function categories_menu()
 		
 	if selected >= 0 then
 		movies_menu(selected + 1);
-		ret = neutrino2.CTarget_RETURN_REPAINT
+--		ret = neutrino2.CTarget_RETURN_REPAINT
 	end
 		
-	if ret == neutrino2.CTarget_RETURN_REPAINT then
+	if m_categories:getExitPressed() ~= true then
 		goto RETRY
 	end
 end
@@ -324,8 +324,8 @@ function movies_menu(_id)
 	m_movies:setTitle(menu_title, netzkino_png)
 	m_movies:enablePaintFoot()
 	
-	m_movies:setLayout(neutrino2.ClistBox_LAYOUT_FRAME)
-	m_movies:enablePaintItemInfo()
+--	m_movies:setLayout(neutrino2.ClistBox_LAYOUT_FRAME)
+--	m_movies:enablePaintItemInfo()
 
 	m_movies:setFootButtons(yellow)
 	m_movies:setFootButtons(blue)
@@ -352,7 +352,7 @@ function movies_menu(_id)
 ::RETRY::	
 	ret = m_movies:exec(self)
 	
-	if m_movies:getExitPressed() == true or ret == neutrino2.CTarget_RETURN_NONE then
+	if m_movies:getExitPressed() == true then
 		neutrino2.CFileHelpers():removeDir("/tmp/netzkino")
 		return neutrino2.CTarget_RETURN_EXIT
 	end
@@ -363,10 +363,10 @@ function movies_menu(_id)
 
 	if actionKey == "play" then
 		play_stream(selected + 1)
-		ret = neutrino2.CTarget_RETURN_REPAINT
+--		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "record" then
 		download_stream(selected + 1)
-		ret = neutrino2.CTarget_RETURN_REPAINT
+--		ret = neutrino2.CTarget_RETURN_REPAINT
 	--elseif actionKey == "nextpage" then
 	--	 page = page + 1
 	--	 get_movies(_id)
@@ -377,7 +377,7 @@ function movies_menu(_id)
 	--	 get_movies(9692)
 	end
 	
-	if ret == neutrino2.CTarget_RETURN_REPAINT then
+	if m_movies:getExitPressed() ~= true then
 		goto RETRY
 	end
 end

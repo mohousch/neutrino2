@@ -37,7 +37,7 @@ function helpBox()
 	hbox:addLine("neutrino: lua")
 	hbox:addLine("first test")
 	hbox:addLine("testing CHelpBox ;-)\n")
-	hbox:show("lua: CHelpBox")
+	hbox:exec()
 end
 
 -- CHintBox
@@ -214,7 +214,7 @@ function testClistBox()
 	item1:setHint("testing CMessageBox")
 
 	-- CHelpBox
-	item2 = neutrino2.CMenuForwarder("CHelpBox", false)
+	item2 = neutrino2.CMenuForwarder("CHelpBox", true)
 	item2:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item2:setHint("testing CHelpBox")
 	item2:setActionKey(null, "helpBox")

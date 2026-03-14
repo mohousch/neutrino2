@@ -2071,8 +2071,6 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	hbutton_count	= 0;
 	hbutton_labels.clear();
 	paintDate = false;
-//	l_name = "";
-//	iconfile = "";
 	thalign = CC_ALIGN_LEFT;
 	headColor = COL_MENUHEAD_PLUS_0;
 	headRadius = g_settings.Head_radius;
@@ -2128,7 +2126,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 
 	//
 	itemsPerX = 6;
-	itemsPerY = 3;
+	itemsPerY = 2;
 	maxItemsPerPage = itemsPerX*itemsPerY;
 
 	//
@@ -2138,10 +2136,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	background = NULL;
 	
 	bgcolor = COL_MENUCONTENT_PLUS_0;
-	radius = NO_RADIUS;
-	corner = CORNER_NONE;
-	scrollbar = true;
-	gradient = NOGRADIENT;
+	scrollbar = true;;
 	borderMode = CComponent::BORDER_NO;
 	borderColor = COL_MENUCONTENT_PLUS_6;
 	borderGradient = NOGRADIENT;
@@ -2190,8 +2185,6 @@ ClistBox::ClistBox(const CBox* position)
 	fbutton_labels.clear();
 	fbutton_width = itemBox.iWidth - 20;
 	paintDate = false;
-//	l_name = "";
-//	iconfile = "";
 	thalign = CC_ALIGN_LEFT;
 	headColor = COL_MENUHEAD_PLUS_0;
 	headRadius = g_settings.Head_radius;
@@ -2248,15 +2241,12 @@ ClistBox::ClistBox(const CBox* position)
 
 	//
 	itemsPerX = 6;
-	itemsPerY = 3;
+	itemsPerY = 2;
 	maxItemsPerPage = itemsPerX*itemsPerY;
 	//
 	background = NULL;
 	bgcolor = COL_MENUCONTENT_PLUS_0;
-	radius = NO_RADIUS;
-	corner = CORNER_NONE;
 	scrollbar = true;
-	gradient = NOGRADIENT;
 	borderMode = CComponent::BORDER_NO;
 	borderColor = COL_MENUCONTENT_PLUS_0;
 	borderGradient = NOGRADIENT;
@@ -2347,7 +2337,7 @@ void ClistBox::initFrames()
 	if(itemBox.iWidth > (int)frameBuffer->getScreenWidth(true))
 		itemBox.iWidth = frameBuffer->getScreenWidth(true);
 
-	// widgetlayout forwarded to item 
+	// widgetlayout forwarded to item
 	for (unsigned int count = 0; count < items.size(); count++) 
 	{
 		CMenuItem * item = items[count];
@@ -2361,7 +2351,6 @@ void ClistBox::initFrames()
 		if (itemBorderColor) item->setBorderColor(itemBorderColor);
 		if (itemGradient) item->setGradient(itemGradient);
 		if (item2Lines) item->set2lines(item2Lines);
-
 	} 
 
 	// head
@@ -2497,24 +2486,29 @@ void ClistBox::paint(bool _selected)
 	// paint mainFrame
 	if (paintframe)
 	{
-		if (paint_Head && widgetLayout != LAYOUT_FRAME)
-		{
-			radius |= g_settings.Head_radius;
-			corner |= g_settings.Head_corner;
-		}
-		
-		if (paint_Foot && widgetLayout != LAYOUT_FRAME)
-		{
-			radius |= g_settings.Foot_radius;
-			corner |= g_settings.Foot_corner;
-		}
-		
 		// border
 		if (borderMode != CComponent::BORDER_NO)
+		{
+			int radius = NO_RADIUS;
+			int corner = CORNER_NONE;
+
+			if (paint_Head && widgetLayout != LAYOUT_FRAME)
+			{
+				radius |= g_settings.Head_radius;
+				corner |= g_settings.Head_corner;
+			}
+			
+			if (paint_Foot && widgetLayout != LAYOUT_FRAME)
+			{
+				radius |= g_settings.Foot_radius;
+				corner |= g_settings.Foot_corner;
+			}
+		
 			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, borderColor, radius, corner, borderGradient);
+		}
 		
 		// mainframe
-		frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), itemBox.iHeight - (borderMode? 4 : 0), bgcolor, radius, corner, gradient);
+		frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), itemBox.iHeight - (borderMode? 4 : 0), bgcolor);
 	}
 	else
 	{
@@ -2597,7 +2591,9 @@ void ClistBox::paintItems()
 
 		// items background
 		if (paintframe)
-			frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + hheight, items_width, items_height + cFrameFootInfoHeight + 20, bgcolor, radius, corner, gradient);
+		{
+			frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + hheight, items_width, items_height + cFrameFootInfoHeight + 20, bgcolor);
+		}
 		else
 		{
 			restoreScreen();
@@ -2667,7 +2663,7 @@ void ClistBox::paintItems()
 		// paint items background
 		if (paintframe)
 		{
-			frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + hheight + (borderMode? 2 : 0), items_width, items_height, bgcolor, radius, corner, gradient);
+			frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + hheight + (borderMode? 2 : 0), items_width, items_height, bgcolor);
 		}
 		else
 		{

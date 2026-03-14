@@ -1277,9 +1277,6 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	unsigned int paintframe = 1;
 	unsigned int savescreen = 0;
 	char* color = NULL;
-	//char * gradient = NULL;
-	//char *corner = NULL;
-	//char * radius = NULL;
 	
 	char * listboxlayout = NULL;
 	char * listboxmode = NULL;
@@ -1340,9 +1337,6 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);
 	savescreen = xmlGetSignedNumericAttribute(node, "savescreen", 0);
 	color = xmlGetAttribute(node, (char*)"color");
-	//gradient = xmlGetAttribute(node, (char *)"gradient");
-	//corner = xmlGetAttribute(node, (char *)"corner");
-	//radius = xmlGetAttribute(node, (char *)"radius");
 	listboxlayout = xmlGetAttribute(node, (char *)"layout");
 	listboxmode = xmlGetAttribute(node, (char *)"mode");
 	scrollbar = xmlGetSignedNumericAttribute(node, "scrollbar", 0);
