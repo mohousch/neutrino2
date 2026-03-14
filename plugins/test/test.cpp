@@ -4396,6 +4396,9 @@ void CTestMenu::testClistBoxValue()
 	
 	testBox->setItemBorderMode();
 	testBox->setBorderMode();
+	testBox->enablePaintHead();
+	testBox->enablePaintFoot();
+	testBox->enablePaintItemInfo();
 	
 RETRY:
 	int ret = testBox->exec(this);

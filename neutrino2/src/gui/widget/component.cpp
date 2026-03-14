@@ -2254,11 +2254,11 @@ void CCWindow::saveScreen()
 		background = NULL;
 	}
 
-	background = new fb_pixel_t[borderMode? (itemBox.iWidth)*(itemBox.iHeight) : itemBox.iWidth*itemBox.iHeight];
+	background = new fb_pixel_t[(itemBox.iWidth + (borderMode? 4 : 0))*(itemBox.iHeight + (borderMode? 4 : 0))];
 		
 	if(background)
 	{
-		frameBuffer->saveScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
+		frameBuffer->saveScreen(itemBox.iX - (borderMode? 2 : 0), itemBox.iY - (borderMode? 2 : 0), itemBox.iWidth + (borderMode? 4 : 0), itemBox.iHeight + (borderMode? 4 : 0), background);
 	}
 }
 
@@ -2268,7 +2268,7 @@ void CCWindow::restoreScreen()
 	
 	if(background) 
 	{
-		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
+		frameBuffer->restoreScreen(itemBox.iX - (borderMode? 2 : 0), itemBox.iY - (borderMode? 2 : 0), itemBox.iWidth + (borderMode? 4 : 0), itemBox.iHeight + (borderMode? 4 : 0), background);
 	}
 }
 
@@ -2289,15 +2289,15 @@ void CCWindow::paintPage(void)
 		}
 		else if (borderMode == BORDER_ALL)
 		{
-			frameBuffer->paintBoxRel(itemBox.iX + 2, itemBox.iY + 2, itemBox.iWidth - 4, itemBox.iHeight - 4, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
+			frameBuffer->paintBoxRel(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + 4, itemBox.iHeight + 4, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 		}
 		else if (borderMode == BORDER_LEFTRIGHT)
 		{
-			frameBuffer->paintBoxRel(itemBox.iX + 2, itemBox.iY, itemBox.iWidth - 4, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
+			frameBuffer->paintBoxRel(itemBox.iX - 2, itemBox.iY, itemBox.iWidth + 4, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 		}
 		else if (borderMode == BORDER_TOPBOTTOM)
 		{
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + 2, itemBox.iWidth, itemBox.iHeight - 4, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY - 2, itemBox.iWidth, itemBox.iHeight + 4, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 		}
 	}
 }

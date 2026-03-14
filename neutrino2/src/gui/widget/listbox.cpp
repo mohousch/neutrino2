@@ -2462,24 +2462,24 @@ void ClistBox::paint(bool _selected)
 	// calculate items_width / items_height
 	if(widgetLayout == LAYOUT_FRAME)
 	{
-		items_height = itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight - 20 - (borderMode? 4 : 0);
-		items_width = itemBox.iWidth - (borderMode? 4 : 0);
+		items_height = itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight - 20;
+		items_width = itemBox.iWidth;
 	}
 	else
 	{
-		items_height = itemBox.iHeight - hheight - fheight - (borderMode? 4 : 0); 
+		items_height = itemBox.iHeight - hheight - fheight; 
 
 		sb_width = 0;
 		
 		if(total_pages > 1)
 			sb_width = scrollbar? SCROLLBAR_WIDTH : 0;
 
-		items_width = itemBox.iWidth - sb_width - (borderMode? 4 : 0);
+		items_width = itemBox.iWidth - sb_width;
 
 		// extended
 		if(widgetLayout == LAYOUT_EXTENDED)
 		{
-			items_width = 2*(itemBox.iWidth/3) - sb_width - (borderMode? 4 : 0);			
+			items_width = 2*(itemBox.iWidth/3) - sb_width;			
 		}
 	}
 	
@@ -2504,18 +2504,18 @@ void ClistBox::paint(bool _selected)
 				corner |= g_settings.Foot_corner;
 			}
 		
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, borderColor, radius, corner, borderGradient);
+			frameBuffer->paintBoxRel(itemBox.iX - (borderMode? 2 : 0), itemBox.iY - (borderMode? 2 : 0), itemBox.iWidth + (borderMode? 4 : 0), itemBox.iHeight + (borderMode? 4 : 0), borderColor, radius, corner, borderGradient);
 		}
 		
 		// mainframe
-		frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), itemBox.iHeight - (borderMode? 4 : 0), bgcolor);
+		frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, items_width, items_height, bgcolor);
 	}
 	else
 	{
 		saveScreen();
 	}
 	
-	//
+	//// itemInfo stuff
 	if (widgetLayout == LAYOUT_EXTENDED)
 	{
 		itemInfo.setPosition(itemBox.iX + items_width + (itemBox.iWidth - items_width - ITEM_ICON_W)/2, itemBox.iY + (itemBox.iHeight - ITEM_ICON_H)/2, ITEM_ICON_W, ITEM_ICON_H);
@@ -2592,7 +2592,7 @@ void ClistBox::paintItems()
 		// items background
 		if (paintframe)
 		{
-			frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + hheight, items_width, items_height + cFrameFootInfoHeight + 20, bgcolor);
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, items_width, items_height + cFrameFootInfoHeight + 20, bgcolor);
 		}
 		else
 		{
@@ -2648,7 +2648,7 @@ void ClistBox::paintItems()
 	}
 	else //
 	{
-		item_start_y = itemBox.iY + hheight + (borderMode? 2 : 0);
+		item_start_y = itemBox.iY + hheight;
 
 		// item not currently on screen
 		if (selected >= 0)
@@ -2663,7 +2663,7 @@ void ClistBox::paintItems()
 		// paint items background
 		if (paintframe)
 		{
-			frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + hheight + (borderMode? 2 : 0), items_width, items_height, bgcolor);
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, items_width, items_height, bgcolor);
 		}
 		else
 		{
@@ -2673,7 +2673,7 @@ void ClistBox::paintItems()
 		//
 		if(widgetLayout == LAYOUT_EXTENDED)
 		{
-			CCVline line(itemBox.iX + items_width + sb_width + (borderMode? 2 : 0), item_start_y + 2, 2, items_height - 4);
+			CCVline line(itemBox.iX + items_width + sb_width, item_start_y + 2, 2, items_height - 4);
 				
 			line.setColor(COL_MENUCONTENT_PLUS_6);
 			line.paint(); 
@@ -2686,15 +2686,15 @@ void ClistBox::paintItems()
 			if (scrollbar)
 			{
 				if(widgetLayout == LAYOUT_EXTENDED)
-					scrollBar.paint(itemBox.iX + items_width + (borderMode? 2 : 0), itemBox.iY + hheight + (borderMode? 2 : 0), items_height, total_pages, current_page);
+					scrollBar.paint(itemBox.iX + items_width, itemBox.iY + hheight, items_height, total_pages, current_page);
 				else
-					scrollBar.paint(itemBox.iX + (borderMode? 2 : 0) + items_width, itemBox.iY + hheight + (borderMode? 2 : 0), items_height, total_pages, current_page);
+					scrollBar.paint(itemBox.iX + items_width, itemBox.iY + hheight, items_height, total_pages, current_page);
 			}
 		}
 
 		// paint items
-		int ypos = itemBox.iY + hheight + (borderMode? 2 : 0);
-		int xpos = itemBox.iX + (borderMode? 2 : 0);
+		int ypos = itemBox.iY + hheight;
+		int xpos = itemBox.iX;
 	
 		for (unsigned int count = 0; count < items.size(); count++) 
 		{
@@ -2739,11 +2739,11 @@ void ClistBox::paintHead()
 		{
 			// box
 			if (paintframe)
-				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), hheight, COL_MENUCONTENT_PLUS_0);
+				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, hheight, COL_MENUCONTENT_PLUS_0);
 
 			// line
 			if (head_line)
-				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + hheight - 2 + (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight - 2, itemBox.iWidth, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 			// icon
 			int i_w = 0;
@@ -2822,11 +2822,11 @@ void ClistBox::paintHead()
 		{		
 			// box
 			if (paintframe)
-				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), hheight, headColor, headRadius, headCorner, headGradient, headGradient_direction, headGradient_intensity, headGradient_type);
+				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, hheight, headColor, headRadius, headCorner, headGradient, headGradient_direction, headGradient_intensity, headGradient_type);
 			
 			// line
 			if (head_line)
-				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + hheight - 2 + (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight - 2, itemBox.iWidth, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 		
 			//paint icon (left)
 			int i_w = 0;
@@ -2841,11 +2841,11 @@ void ClistBox::paintHead()
 				i_w = i_h*1.67;
 			}
 
-			CFrameBuffer::getInstance()->paintIcon(hicon, itemBox.iX + BORDER_LEFT + (borderMode? 2 : 0), itemBox.iY + (hheight - i_h)/2 + (borderMode? 2 : 0), 0, i_w, i_h);
+			CFrameBuffer::getInstance()->paintIcon(hicon, itemBox.iX + BORDER_LEFT, itemBox.iY + (hheight - i_h)/2, 0, i_w, i_h);
 
 			// Buttons
 			int iw[hbutton_count], ih[hbutton_count];
-			int xstartPos = itemBox.iX + itemBox.iWidth - BORDER_RIGHT - (borderMode? 4 : 0);
+			int xstartPos = itemBox.iX + itemBox.iWidth - BORDER_RIGHT;
 			int buttonWidth = 0; //FIXME
 
 			if (hbutton_count)
@@ -2914,11 +2914,11 @@ void ClistBox::paintFoot()
 		{
 			// box
 			if (paintframe)
-				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + itemBox.iHeight - fheight + (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), fheight, COL_MENUCONTENT_PLUS_0);
+				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - fheight, itemBox.iWidth, fheight, COL_MENUCONTENT_PLUS_0);
 
 			// line
 			if (foot_line)
-				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + itemBox.iHeight - fheight - (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - fheight, itemBox.iWidth, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 			// buttons
 			int buttonWidth = 0;
@@ -2954,11 +2954,11 @@ void ClistBox::paintFoot()
 		{
 			// box
 			if (paintframe)
-				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + itemBox.iHeight - fheight - (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), fheight, footColor, footRadius, footCorner, footGradient, footGradient_direction, footGradient_intensity, footGradient_type);
+				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - fheight, itemBox.iWidth, fheight, footColor, footRadius, footCorner, footGradient, footGradient_direction, footGradient_intensity, footGradient_type);
 			
 			// line
 			if (foot_line)
-				frameBuffer->paintBoxRel(itemBox.iX + (borderMode? 2 : 0), itemBox.iY + itemBox.iHeight - fheight - (borderMode? 2 : 0), itemBox.iWidth - (borderMode? 4 : 0), 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - fheight, itemBox.iWidth, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 			// buttons
 			int buttonWidth = 0;
@@ -3292,11 +3292,11 @@ void ClistBox::saveScreen()
 		background = NULL;
 	}
 
-	background = new fb_pixel_t[items_width*items_height];
+	background = new fb_pixel_t[itemBox.iWidth*itemBox.iHeight];
 	
 	if(background)
 	{
-		frameBuffer->saveScreen(itemBox.iX, itemBox.iY + hheight, items_width, items_height, background);
+		frameBuffer->saveScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
 	}
 }
 
@@ -3306,7 +3306,7 @@ void ClistBox::restoreScreen()
 	
 	if(background) 
 	{
-		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY + hheight, items_width, items_height, background);
+		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
 	}
 }
 
