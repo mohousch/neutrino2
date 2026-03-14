@@ -372,7 +372,7 @@ int CMenuOptionChooser::exec(CTarget *target)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionChooser::exec: (%s)\n", itemName.c_str());
 	
-	int ret = CTarget::RETURN_REPAINT; // FIXME
+	int ret = CTarget::RETURN_NONE;
 	bool wantsRepaint = false;
 	
 	//
@@ -734,7 +734,7 @@ int CMenuOptionNumberChooser::exec(CTarget *target)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionNumberChooser::exec: (%s)\n", itemName.c_str());
 	
-	int ret = CTarget::RETURN_REPAINT; // FIXME
+	int ret = CTarget::RETURN_NONE;
 	bool wantsRepaint = false;
 	
 	//
@@ -895,7 +895,7 @@ int CMenuOptionStringChooser::exec(CTarget *target)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionStringChooser::exec: (%s) options:%d\n", itemName.c_str(), (int)options.size());
 	
-	int ret = CTarget::RETURN_REPAINT; // FIXME
+	int ret = CTarget::RETURN_NONE;
 	bool wantsRepaint = false;
 	
 	//
@@ -3292,11 +3292,11 @@ void ClistBox::saveScreen()
 		background = NULL;
 	}
 
-	background = new fb_pixel_t[itemBox.iWidth*itemBox.iHeight];
+	background = new fb_pixel_t[(itemBox.iWidth + (borderMode? 4 : 0))*(itemBox.iHeight + (borderMode? 4 : 0))];
 	
 	if(background)
 	{
-		frameBuffer->saveScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
+		frameBuffer->saveScreen(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + (borderMode? 4 : 0), itemBox.iHeight + (borderMode? 4 : 0), background);
 	}
 }
 
@@ -3306,7 +3306,7 @@ void ClistBox::restoreScreen()
 	
 	if(background) 
 	{
-		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
+		frameBuffer->restoreScreen(itemBox.iX - (borderMode? 2 : 0), itemBox.iY - (borderMode? 2 : 0), itemBox.iWidth + (borderMode? 4 : 0), itemBox.iHeight + (borderMode? 4 : 0), background);
 	}
 }
 
@@ -3315,7 +3315,7 @@ void ClistBox::hide()
 	dprintf(DEBUG_NORMAL, "ClistBox::hide: (%s)\n", htitle.c_str());
 
 	if (paintframe)
-		frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
+		frameBuffer->paintBackgroundBoxRel(itemBox.iX - (borderMode? 2 : 0) , itemBox.iY - (borderMode? 2 : 0), itemBox.iWidth + (borderMode? 4 : 0), itemBox.iHeight + (borderMode? 4 : 0));
 	else
 		restoreScreen();
 		

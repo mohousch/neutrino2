@@ -2323,12 +2323,12 @@ void CCWindow::hide()
 {
 	dprintf(DEBUG_INFO, "CCWindow::%s\n", __FUNCTION__);
 	
-	if(!paintframe)
-		restoreScreen();
-	else
+	if(paintframe)
 	{
-		frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
+		frameBuffer->paintBackgroundBoxRel(itemBox.iX - (borderMode? 2 : 0), itemBox.iY - (borderMode? 2 : 0), itemBox.iWidth + (borderMode? 4 : 0), itemBox.iHeight + (borderMode? 4 : 0));
 	}
+	else 
+		restoreScreen();
 		
 	CFrameBuffer::getInstance()->blit();
 }
