@@ -22,13 +22,12 @@
 
 --dependencies:  feedparser http://feedparser.luaforge.net/ ,libexpat,  lua-expat
 
-rssReaderVersion="Lua RSS READER v0.77"
 local hasgumbo,gumbo = pcall(require,"gumbo")
-local glob = {}
-feedentries = {} --don't make local
-local nothing,hva,hvb,hvc,hvd,hve="nichts",nil,nil,nil,nil,nil
+local feedentries = {}
 local vPlay = neutrino2.CMoviePlayerGui()
 local picdir = "/tmp/rssPics"
+local feedparser = require "feedparser"
+local fp = {}
 
 function _(string)
 	return dgettext("media_one", string)
@@ -51,8 +50,8 @@ feedentries = {
     { name = "Zwischen Spessart und Karwendel",         exec = "https://mediathekviewweb.de/feed?query=%23spessart&everywhere=true"},
     { name = "Planet Wissen",                           exec = "http://podcast.wdr.de/planetwissen.xml"},
     { name = "Quarks & Co",                             exec = "http://podcast.wdr.de/quarks.xml"},  	
-    { name = "Wer weiß denn sowas",                     exec= "https://mediathekviewweb.de/feed?query=wer%20wei%C3%9F%20den%20sowas&everywhere=true"},
-    { name = "Gefragt – Gejagt",                        exec= "https://mediathekviewweb.de/feed?query=gefragt%20gejagt&everywhere=true"},      
+    { name = "Wer weiß denn sowas",                     exec = "https://mediathekviewweb.de/feed?query=wer%20wei%C3%9F%20den%20sowas&everywhere=true"},
+    { name = "Gefragt – Gejagt",                        exec = "https://mediathekviewweb.de/feed?query=gefragt%20gejagt&everywhere=true"},      
     { name = "Monitor",                                 exec = "http://podcast.wdr.de/monitor.xml"},
     { name = "Hart aber Fair",                          exec = "https://mediathekviewweb.de/feed?query=%23Hart%20aber%20fair&everywhere=true"},
     { name = "Tierisch tierisch",                       exec = "https://mediathekviewweb.de/feed?query=%23Tierisch&everywhere=true"},				
@@ -75,7 +74,7 @@ function getdata(Url)
 end
 
 function getFeedDataFromUrl(url)
-	print("getFeedDataFromUrl:")
+	print("getFeedDataFromUrl:" .. url)
 
 	local data = getdata(url)
 	if data then
@@ -88,10 +87,9 @@ function getFeedDataFromUrl(url)
 		print("data:NULL")
 		return nil
 	end
-
-	local error = nil
-	local feedparser = require "feedparser"
-	fp,error = feedparser.parse(data)
+	
+	fp, error = feedparser.parse(data)
+	
 	if error then
 		print("DEBUG ".. __LINE__())
 		print(data) --  DEBUG
@@ -100,6 +98,7 @@ function getFeedDataFromUrl(url)
 		window:exec(self)
 	end
 	data = nil
+	
 	return fp
 end
 
@@ -469,31 +468,31 @@ function downloadPic(url, picname)
 	return fpic
 end
 
---local selected = 0
 function rssurlmenu(url)
-	glob.feedpersed = getFeedDataFromUrl(url)
+	local feedparsed = getFeedDataFromUrl(url)
 	
-	if glob.feedpersed == nil then 
+	if feedparsed == nil then 
 		return 
 	end
 
 	local selected = 0
 	local ret = neutrino2.CTarget_RETURN_REPAINT
 	local m = neutrino2.ClistBox(40, 40, 1200, 640)
+	
 	m:enablePaintHead()
 	m:enablePaintDate()
-	m:setTitle(glob.feedpersed.feed.title, neutrino2.NEUTRINO_ICON_MOVIE)
+	m:setTitle(feedparsed.feed.title, neutrino2.NEUTRINO_ICON_MOVIE)
 	m:enablePaintFoot()
 
 	local item = nil
-	for i = 1, #glob.feedpersed.entries do
+	for i = 1, #feedparsed.entries do
 		local title = ""
 		if fp.entries[i].updated_parsed then
 		      title = os.date("%d.%m %H:%M",fp.entries[i].updated_parsed)
 		end
 		
-		if glob.feedpersed.entries[i].title then
-			title = title .. " "..glob.feedpersed.entries[i].title:gsub("\n", " ")
+		if feedparsed.entries[i].title then
+			title = title .. " "..feedparsed.entries[i].title:gsub("\n", " ")
 			title = xml_entities(title)
 			title = title:gsub("</i>", " ")
 			title = title:gsub("<i>", " ")
@@ -517,43 +516,17 @@ function rssurlmenu(url)
 
 	if selected >= 0 then
 		play(selected + 1)
---		vPlay:exec(null, "")
 		ret = neutrino2.CTarget_RETURN_REPAINT
 	end
 
 	if ret == neutrino2.CTarget_RETURN_REPAINT then
 		goto RETRY
 	end
-
---	glob.feedpersed = nil
-	collectgarbage()
 end
 
-function exec_url(id)
-	execUrl(id)
-end
-
-function exec_url2(id)
-	execUrl(id)
-end
-
-function exec_urlsub(id)
-	execUrl(id)
-end
-
-function execUrl(id)
---	nr = id
---	addon = feedentries[id].addon
-	rssurlmenu(feedentries[id].exec)
-end
-
-local s_selected = 0
 function start()
-	local submenus = {}
-	local grupmenus = {}
-	
+	local selected = 0	
 	local ret = neutrino2.CTarget_RETURN_REPAINT
-
 	local sm = neutrino2.ClistBox(340, 60, 600,600)
 	sm:enablePaintHead()
 	sm:enablePaintDate()
@@ -562,9 +535,7 @@ function start()
 	sm:enableShrinkMenu()
 
 	for v, w in ipairs(feedentries) do
-		if not w.submenu and not w.grup then
-			sm:addItem(neutrino2.CMenuForwarder(w.name))
-		end
+		sm:addItem(neutrino2.CMenuForwarder(w.name))
 	end
 	
 ::RETRY::	
@@ -574,10 +545,10 @@ function start()
 		return neutrino2.CTarget_RETURN_EXIT
 	end
 
-	s_selected = sm:getSelected()
+	selected = sm:getSelected()
 
-	if s_selected >= 0 then
-		exec_url(s_selected + 1)
+	if selected >= 0 then
+		rssurlmenu(feedentries[selected + 1].exec)
 		ret = neutrino2.CTarget_RETURN_REPAINT	
 	end
 

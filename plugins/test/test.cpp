@@ -4389,38 +4389,39 @@ void CTestMenu::testClistBoxValue()
 	testBox->addItem(new CMenuForwarder("Item1", true, "    show HintBox"));
 	testBox->addItem(new CMenuForwarder("Item2", true, "    show MessageBox"));
 	testBox->addItem(new CMenuForwarder("Item3", true, "    play File"));
-	testBox->addItem(new CMenuForwarder("Item4"));
+	testBox->addItem(new CMenuForwarder("Item4", true, "    back", NULL, "exit"));
 	testBox->addItem(new CMenuForwarder("Item5", true, "    show InfoBox", NULL, "actionkey"));
 	
 	testBox->addKey(CRCInput::RC_info, NULL, "actionkey2");
 	
 RETRY:
-	int rv = testBox->exec(this);
-	
-	printf("CTestMenu::testClistBoxValue: return value:%d\n", rv);
+	int ret = testBox->exec(this);
 	
 	////NOTE: The Best way is to handle first getActionKey() than getSelected()
 	std::string actionKey = testBox->getActionKey();
 	selected = testBox->getSelected();
-	printf("CTestMenu::testClistBoxValue: actionKey:%s (selected:%d)\n", actionKey.c_str(), selected);
+	uint64_t key = testBox->getKey();
+	
+	printf("CTestMenu::testClistBoxValue: (ret:%d) actionKey:%s (selected:%d) (key:0x%x)\n", ret, actionKey.c_str(), selected, key);
+	
+	if ( testBox->getExitPressed() )
+		goto END;
 	
 	if (actionKey == "actionkey" || actionKey == "actionkey2")
 	{
-		InfoBox("testClistBoxValue", "this show getActionKey() method\n");
-	
-		rv = RETURN_REPAINT;	
+		InfoBox("testClistBoxValue", "this show getActionKey() method\n");	
+	}
+	else if (actionKey == "exit")
+	{
+		goto END;
 	}
 	else if (selected == 0)
 	{
 		HintBox("testClistBoxValue", "this show getSelected() method\n");
-		
-		rv = RETURN_REPAINT;
 	}
 	else if (selected == 1)
 	{
 		MessageBox("testClistBoxValue", "this show getSelected() method\n");
-		
-		rv = RETURN_REPAINT;
 	}
 	else if (selected == 2)
 	{
@@ -4474,26 +4475,15 @@ RETRY:
 				tmpMoviePlayerGui.exec(NULL, "");
 			}
 		}
-		
-		rv = RETURN_REPAINT;
 	}
 	
 	printf("\n\n");
 	////
 	
-	switch ( rv ) 
-	{
-		case CTarget::RETURN_NONE:
-			break;
-		case CTarget::RETURN_EXIT_ALL:
-			break;
-		case CTarget::RETURN_EXIT:
-			break;
-		case CTarget::RETURN_REPAINT:
-			goto RETRY;
-			break;
-	}
+	if (testBox->getExitPressed() == false)
+		goto RETRY;
 	
+END:	
 	if (testBox)
 	{
 		delete testBox;

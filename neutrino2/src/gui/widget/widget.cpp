@@ -458,7 +458,7 @@ int CWidget::exec(CTarget *parent, const std::string &)
 				case (CRCInput::RC_home):
 				case (CRCInput::RC_setup):
 					onHomeKeyPressed();
-					retval = CTarget::RETURN_NONE;
+					retval = CTarget::RETURN_EXIT;
 					break;
 
 				case (CRCInput::RC_ok):
@@ -469,7 +469,7 @@ int CWidget::exec(CTarget *parent, const std::string &)
 				case (CRCInput::RC_timeout):
 					exit_pressed = true;
 					selected = -1;
-					retval = CTarget::RETURN_NONE;
+					retval = CTarget::RETURN_EXIT;
 					break;
 
 				default:
@@ -527,7 +527,7 @@ void CWidget::refresh(bool show)
 //// events
 void CWidget::onHomeKeyPressed()
 {
-	dprintf(DEBUG_INFO, "CWidget::onHomeKeyPressed\n");
+	dprintf(DEBUG_NORMAL, "CWidget::onHomeKeyPressed\n");
 	
 	exit_pressed = true;
 	msg = CRCInput::RC_timeout;
@@ -617,7 +617,7 @@ int CWidget::onOKKeyPressed(CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "CWidget::onOKKeyPressed:\n");
 	
-	int ret = CTarget::RETURN_REPAINT;
+	int ret = CTarget::RETURN_EXIT;
 	
 	if(hasCCItem() && selected >= 0)
 	{
@@ -706,7 +706,7 @@ int CWidget::onLeftKeyPressed(CTarget *target)
 //
 int CWidget::onDirectKeyPressed(neutrino_msg_t _msg, CTarget *target)
 {
-	dprintf(DEBUG_DEBUG, "CWidget::onDirectKeyPressed: msg:0x%x\n", _msg);
+	dprintf(DEBUG_NORMAL, "CWidget::onDirectKeyPressed: msg:0x%x\n", _msg);
 	
 	int ret = CTarget::RETURN_REPAINT;
 	

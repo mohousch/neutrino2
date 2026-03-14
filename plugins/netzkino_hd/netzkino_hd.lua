@@ -27,13 +27,13 @@
 	SOFTWARE.
 ]]
 
+categories = {}
+movies = {};
+page = 1
+
 caption = "Netzkino HD"
 local json = require "json"
 local base_url = "http://api.netzkino.de.simplecache.net/capi-2.0a/"
-
-ret = nil -- global return value
-local selected_category = 0
-local selected_movie = 0
 
 function _(string)
 	return dgettext("netzkino_hd", string)
@@ -75,12 +75,47 @@ function decodeImage(b64Image)
 	return retImg
 end
 
+-- UTF8 in Umlaute wandeln
+function conv_utf8(_string)
+	if _string ~= nil then
+		_string = string.gsub(_string,"\\u0026","&");
+		_string = string.gsub(_string,"\\u00a0"," ");
+		_string = string.gsub(_string,"\\u00b4","´");
+		_string = string.gsub(_string,"\\u00c4","Ä");
+		_string = string.gsub(_string,"\\u00d6","Ö");
+		_string = string.gsub(_string,"\\u00dc","Ü");
+		_string = string.gsub(_string,"\\u00df","ß");
+		_string = string.gsub(_string,"\\u00e1","á");
+		_string = string.gsub(_string,"\\u00e4","ä");
+		_string = string.gsub(_string,"\\u00e8","è");
+		_string = string.gsub(_string,"\\u00e9","é");
+		_string = string.gsub(_string,"\\u00f4","ô");
+		_string = string.gsub(_string,"\\u00f6","ö");
+		_string = string.gsub(_string,"\\u00fb","û");
+		_string = string.gsub(_string,"\\u00fc","ü");
+		_string = string.gsub(_string,"\\u2013","–");
+		_string = string.gsub(_string,"\\u201c","“");
+		_string = string.gsub(_string,"\\u201e","„");
+		_string = string.gsub(_string,"\\u2026","…");
+		_string = string.gsub(_string,"&#038;","&");
+		_string = string.gsub(_string,"&#8211;","–");
+		_string = string.gsub(_string,"&#8212;","—");
+		_string = string.gsub(_string,"&#8216;","‘");
+		_string = string.gsub(_string,"&#8217;","’");
+		_string = string.gsub(_string,"&#8230;","…");
+		_string = string.gsub(_string,"&#8243;","″");
+		_string = string.gsub(_string,"<[^>]*>","");
+		_string = string.gsub(_string,"\\/","/");
+		_string = string.gsub(_string,"\\n","");
+	end
+
+	return _string
+end
+
 function init()
 	-- set collectgarbage() interval from 200 (default) to 50
 	collectgarbage('setpause', 50)
 
-	categories = {}
-	movies = {};
 	page = 1;
 	max_page = 1;
 
@@ -94,11 +129,8 @@ function init()
 	netzkino_png = decodeImage("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAAAA3NCSVQICAjb4U/gAAAAYnpUWHRSYXcgcHJvZmlsZSB0eXBlIEFQUDEAAHicVcixDYAwDADB3lN4hHccHDIOQgFFQoCyf0EBDVee7O1so696j2vrRxNVVVXPkmuuaQFmXgZuGAkoXy38TEQNDyseBiAPSLYUyXpQ8HMAAAL2SURBVDiNrZU7b1xVEMf/c869d++192FlN944rGPHdiIFCSmKeBQgREFBRUNDxQegoEWiT0FHg0QBVdpIfACqNJESKWmiBCSkOGZtL3i9jvZ57z2PGYrdldeLnUTCo1Odx+/M/GfmHPr67t84D1PnQnkzEJGA/geIFKmAvTfDbiypsPdQryAGp7oAqLyzI91dMQNL8Yc310jcwOqWKXZUVQGAvA5EypvUNh+BlLpwNazUAyZZIq8K3H9ZyffCQesg3kKYQPjs0Ii8Se2L+yitxJsfRUsrBIiwkMo98qCcV98ehlXae+iyAYjOBoFs8xGW1pNL18Q769lT8MnlET3/rRG97OcyzKwtrqbFNbf7WE4GNwMilXd2QCq5dI2dKxbUZzdKn9Y7P3331e1vvxl0WsZjZCS3NlnehC6Yw23Q8fFjjYiUdHdVdVOYveDWevmLd+Lx0vWNK14wsmK9EEHYqeoGH/xO9S3xPOcROZOKGYXlOoSJ0O7l3//4yw8/36ldrA37XevYeJnIIhJVlsVbmx4rNQUR2IwQLRJBmJXw0/1h8/Lnyx98uVK/sNfuOu8hLDwZYEZUFDM6Pf3eO2cysB/fO8zS0UCTCABh50yqxGNck6TZu1m5pyCBChPNJogWAB6XG4noKJl4rqMwLtL4DgIp7ThXYfzfrEkQL5AumN4/AAECyFyCITKeB2B6bZAKkzKmm47zJ8xUafDRNimNVxqpwHe2qdKQmeKeqSPhqLYOl2XtF6QmIROh1/5zrNGUorNOE6Yf1a7OdskJsYkQvHXL/fUgI4praxruj/3B7V93xJsOl+WQlQ6zo6YcPAtW3yOlzwRBJExKuPK+232c9lu6utFVF+/tJ84gSgI/bJujbeS9YPXdcLEifKJp57tfhIOkpDc/NofPfeuJ32dEJe+t8TkAqjSixk1Seo5yCmgMI0JheYvq123aE5sqEQqTcKFCwiI894CcDZrgWISDeBHx4mSG3fxr9kagqXev2TC1c/tF/gU5kpOQwApURgAAAABJRU5ErkJggg==");
 end
 
---Kategorien anzeigen
 function get_categories()
 	print("getCategories:")
-
-	local fname = "/tmp/netzkino/netzkino_categories.txt";
 
 	local h = neutrino2.CHintBox(caption, _("loading categories ..."), neutrino2.HINTBOX_WIDTH, netzkino_png)
 	h:paint();
@@ -107,7 +139,6 @@ function get_categories()
 
 	if fp == nil then
 		h:hide();
-		error("Error opening file '" .. fname .. "'.")
 	else
 		local s = fp
 
@@ -144,25 +175,17 @@ function get_categories()
 		end
 
 		h:hide();
-
-		page = 1;
-		if j > 1 then
-			get_categories_menu();
-		else
-			local mBox = neutrino2.CMessageBox(_("Error"), _("No Categorie found!"))
-			mBox:exec()
-		end
 	end
 end
 
--- Erstellen des Kategorien-Menü
-function get_categories_menu()
-	print("getCategories_menu:")
+function categories_menu()
+	print("categories_menu:")
 	
-	local m_categories = nil
-	local item = nil
-
-	m_categories = neutrino2.ClistBox(340, 60, 600, 600)
+	get_categories()
+	
+	local ret = neutrino2.CTarget.RETURN_REPAINT
+	local m_categories = neutrino2.ClistBox(340, 60, 600, 600)
+	
 	m_categories:enablePaintHead()
 	m_categories:setTitle("" .. caption.._(" Categories"), netzkino_png)
 	m_categories:enablePaintDate()
@@ -170,7 +193,7 @@ function get_categories_menu()
 	m_categories:enableShrinkMenu()
 
 	for index, category_detail in pairs(categories) do
-		local count = "(" .. category_detail.post_count .. ")"
+		count = "(" .. category_detail.post_count .. ")"
 		item = neutrino2.CMenuForwarder(category_detail.title)
 		item:setOptionInfo(count)
 		item:setIconName(netzkino_png)
@@ -178,34 +201,30 @@ function get_categories_menu()
 		m_categories:addItem(item)
 	end
 
-	if selected_category < 0 then
-		selected_category = 0
-	end
-
-	m_categories:setSelected(selected_category)
-
+::RETRY::	
 	m_categories:exec(self)
 	
-	if m_categories:getExitPressed() == true then
-		return neutrino2.CTarget_RETURN_EXIT
+	if m_categories:getExitPressed() == true or ret == neutrino2.CTarget_RETURN_NONE then
+		return neutrino2.CTarget_RETURN_NONE
 	end
 
-	selected_category = m_categories:getSelected()
+	local selected = m_categories:getSelected()
 		
-	if selected_category >= 0 then
-		get_movies(selected_category + 1);
+	if selected >= 0 then
+		movies_menu(selected + 1);
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	end
 		
-	if m_categories:getExitPressed() ~= true then
-		get_categories_menu()
+	if ret == neutrino2.CTarget_RETURN_REPAINT then
+		goto RETRY
 	end
 end
 
--- Filme zur Kategorie laden (variabel Pro Seite)
 function get_movies(_id)
 	print("get_movies:")
+	
+	neutrino2.CFileHelpers():createDir("/tmp/netzkino")
 
-	local fname = "/tmp/netzkino/netzkino_movies.txt";
 	local page_nr = page
 	movies = {};
 
@@ -246,25 +265,19 @@ function get_movies(_id)
 				j_content = posts[i].content
 				j_cover = posts[i].thumbnail
 
-				--[[
-				local j_cover = "";
 				local tfile = neutrino2.DATADIR .. "/icons/nopreview.jpg"
-				local thumbnail = posts[i].thumbnail
-				if thumbnail then
-					j_cover = thumbnail
-
+				if j_cover then
 					tfile = "/tmp/netzkino/" .. conv_utf8(j_title) .. ".jpg"
 					neutrino2.downloadUrl(conv_utf8(j_cover), tfile, "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 4 Build/LMY48M)", 90)
 				end
-				]]
 
 				movies[j] =
 				{
 					id      = j;
 					title   = j_title;
 					content = j_content;
-					--cover     = tfile;
-					cover = j_cover;
+					cover     = tfile;
+					--cover = j_cover;
 					stream  = j_streaming;
 				};
 
@@ -272,20 +285,14 @@ function get_movies(_id)
 			end
 		end
 		h:hide();
-
-		if j > 1 then
-			get_movies_menu(_id);
-		else
-			local mBox = neutrino2.CMessageBox(_("Error"), _("No Stream found!"))
-			mBox:exec()
-
-			get_categories();
-		end
 	end
 end
 
 --Auswahlmenü der Filme anzeigen
-function get_movies_menu(_id)
+function movies_menu(_id)
+	print("movies_menu")
+	get_movies(_id);
+	
 	local ret = neutrino2.CTarget_RETURN_REPAINT
 	local menu_title = caption .. ": " .. categories[_id].title;
 
@@ -311,26 +318,30 @@ function get_movies_menu(_id)
 	local rec = neutrino2.button_label_struct()
 	rec.button = neutrino2.NEUTRINO_ICON_REC
 	
-	m_movies = neutrino2.ClistBox(90, 60, 1100, 600)
+	local m_movies = neutrino2.ClistBox(90, 60, 1100, 600)
+	
 	m_movies:enablePaintHead()
 	m_movies:setTitle(menu_title, netzkino_png)
 	m_movies:enablePaintFoot()
+	
+	m_movies:setLayout(neutrino2.ClistBox_LAYOUT_FRAME)
+	m_movies:enablePaintItemInfo()
 
 	m_movies:setFootButtons(yellow)
 	m_movies:setFootButtons(blue)
 	m_movies:setHeadButtons(info)
 	m_movies:setHeadButtons(rec)
 	
-	m_movies:addKey(neutrino2.CRCInput_RC_info, null, "info")
+--	m_movies:addKey(neutrino2.CRCInput_RC_info, null, "info")
 	m_movies:addKey(neutrino2.CRCInput_RC_record, null, "record")
 	m_movies:addKey(neutrino2.CRCInput_RC_yellow, null, "new")
 	m_movies:addKey(neutrino2.CRCInput_RC_blue, null, "highlight")
 	
-	local item = nil
-	for _id, movie_detail in pairs(movies) do
+	for index, movie_detail in pairs(movies) do
 		item = neutrino2.CMenuForwarder(conv_utf8(movie_detail.title))
 		item:setHintIcon(movie_detail.cover)
 		item:setOption(conv_utf8(movie_detail.content))
+		item:setHint(conv_utf8(movie_detail.content))
 		item:setActionKey(null, "play")
 		
 		item:set2lines(true)
@@ -338,28 +349,24 @@ function get_movies_menu(_id)
 		m_movies:addItem(item)
 	end
 
-	if selected_movie < 0 then
-		selected_movie = 0
-	end
-
-	m_movies:setSelected(selected_movie)
+::RETRY::	
+	ret = m_movies:exec(self)
 	
-	m_movies:exec(self)
-	
-	if m_movies:getExitPressed() == true then
+	if m_movies:getExitPressed() == true or ret == neutrino2.CTarget_RETURN_NONE then
+		neutrino2.CFileHelpers():removeDir("/tmp/netzkino")
 		return neutrino2.CTarget_RETURN_EXIT
 	end
 	
-	selected_movie = m_movies:getSelected()
+	local selected = m_movies:getSelected()
 	local key = m_movies:getKey()
 	local actionKey = m_movies:getActionKey()
 
 	if actionKey == "play" then
-		play_stream(selected_movie + 1)
-	elseif actionKey == "info" then
-		play_stream(selected_movie + 1)
+		play_stream(selected + 1)
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	elseif actionKey == "record" then
-		download_stream(selected_movie + 1)
+		download_stream(selected + 1)
+		ret = neutrino2.CTarget_RETURN_REPAINT
 	--elseif actionKey == "nextpage" then
 	--	 page = page + 1
 	--	 get_movies(_id)
@@ -370,10 +377,9 @@ function get_movies_menu(_id)
 	--	 get_movies(9692)
 	end
 	
-	if m_movies:getExitPressed() ~= true then
-		get_movies_menu(_id)
+	if ret == neutrino2.CTarget_RETURN_REPAINT then
+		goto RETRY
 	end
-
 end
 
 -- play / show stream
@@ -400,7 +406,6 @@ function play_stream(_id)
 	movieWidget:exec(self, "")
 end
 
---Stream downloaden
 function download_stream(_id)
 	httpTool = neutrino2.CHTTPTool()
 	httpTool:setTitle(caption)
@@ -428,51 +433,16 @@ function download_stream(_id)
 	end
 end
 
--- UTF8 in Umlaute wandeln
-function conv_utf8(_string)
-	if _string ~= nil then
-		_string = string.gsub(_string,"\\u0026","&");
-		_string = string.gsub(_string,"\\u00a0"," ");
-		_string = string.gsub(_string,"\\u00b4","´");
-		_string = string.gsub(_string,"\\u00c4","Ä");
-		_string = string.gsub(_string,"\\u00d6","Ö");
-		_string = string.gsub(_string,"\\u00dc","Ü");
-		_string = string.gsub(_string,"\\u00df","ß");
-		_string = string.gsub(_string,"\\u00e1","á");
-		_string = string.gsub(_string,"\\u00e4","ä");
-		_string = string.gsub(_string,"\\u00e8","è");
-		_string = string.gsub(_string,"\\u00e9","é");
-		_string = string.gsub(_string,"\\u00f4","ô");
-		_string = string.gsub(_string,"\\u00f6","ö");
-		_string = string.gsub(_string,"\\u00fb","û");
-		_string = string.gsub(_string,"\\u00fc","ü");
-		_string = string.gsub(_string,"\\u2013","–");
-		_string = string.gsub(_string,"\\u201c","“");
-		_string = string.gsub(_string,"\\u201e","„");
-		_string = string.gsub(_string,"\\u2026","…");
-		_string = string.gsub(_string,"&#038;","&");
-		_string = string.gsub(_string,"&#8211;","–");
-		_string = string.gsub(_string,"&#8212;","—");
-		_string = string.gsub(_string,"&#8216;","‘");
-		_string = string.gsub(_string,"&#8217;","’");
-		_string = string.gsub(_string,"&#8230;","…");
-		_string = string.gsub(_string,"&#8243;","″");
-		_string = string.gsub(_string,"<[^>]*>","");
-		_string = string.gsub(_string,"\\/","/");
-		_string = string.gsub(_string,"\\n","");
-	end
-
-	return _string
-end
-
 function main()
 	init();
-	get_categories();
-	os.remove("/tmp/netzkino")
+
+	categories_menu()
+	
+	neutrino2.CFileHelpers():removeDir("/tmp/netzkino")
+	
 	os.remove("/tmp/lua*")
 	collectgarbage();
 end
 
 main()
-
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.8\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-12-31 19:15+0100\n"
+"POT-Creation-Date: 2026-03-14 14:05+0100\n"
 "PO-Revision-Date: 2023-09-22 10:51+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1318,22 +1318,22 @@ msgid "Medicine / Physiology / Psychology"
 msgstr "Medizin / Physiologie / Psychologie"
 
 msgid "Menu"
-msgstr "Men"
+msgstr "Menü"
 
 msgid "Menu Info"
-msgstr "Men Info"
+msgstr "Menü Info"
 
 msgid "Menu Text"
 msgstr "Mentext"
 
 msgid "Menu Title"
-msgstr "Mentitel"
+msgstr "Menütitel"
 
 msgid "Menu Title large"
-msgstr "Mentitel"
+msgstr "Menütitel"
 
 msgid "Menu mode"
-msgstr "Menmodus"
+msgstr "Menümodus"
 
 msgid "Message"
 msgstr "Nachricht"

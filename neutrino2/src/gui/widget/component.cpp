@@ -248,7 +248,8 @@ int CComponent::exec(CTarget *target)
 		if ( msg <= CRCInput::RC_MaxRC ) 
 		{
 			timeoutEnd = CRCInput::calcTimeoutEnd(timeout == 0 ? 0xFFFF : timeout);
-			
+
+			//			
 			std::map<neutrino_msg_t, keyAction>::iterator it = keyActionMap.find(msg);
 						
 			if (it != keyActionMap.end()) 
@@ -263,7 +264,6 @@ int CComponent::exec(CTarget *target)
 					switch ( retval ) 
 					{
 						case CTarget::RETURN_EXIT_ALL:
-							retval = CTarget::RETURN_EXIT_ALL;
 						case CTarget::RETURN_EXIT:
 							msg = CRCInput::RC_timeout;
 							break;
@@ -288,7 +288,6 @@ int CComponent::exec(CTarget *target)
 			switch ( retval ) 
 			{
 				case CTarget::RETURN_EXIT_ALL:
-					retval = CTarget::RETURN_EXIT_ALL; //fall through
 				case CTarget::RETURN_EXIT:
 					msg = CRCInput::RC_timeout;
 					break;
@@ -363,7 +362,6 @@ int CComponent::exec(CTarget *target)
 						switch ( retval ) 
 						{
 							case CTarget::RETURN_EXIT_ALL:
-								retval = CTarget::RETURN_EXIT_ALL;
 							case CTarget::RETURN_EXIT:
 								msg = CRCInput::RC_timeout;
 								break;
@@ -379,12 +377,12 @@ int CComponent::exec(CTarget *target)
 						homeKeyPressed();
 						exit_pressed = true;
 						msg = CRCInput::RC_timeout;
-						retval = CTarget::RETURN_NONE;
+						retval = CTarget::RETURN_EXIT;
 					}
 					break;
 				case (CRCInput::RC_timeout):
 					exit_pressed = true;
-					retval = CTarget::RETURN_NONE;
+					retval = CTarget::RETURN_EXIT;
 					break;
 
 				default:

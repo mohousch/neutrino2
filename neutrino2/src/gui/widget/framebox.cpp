@@ -770,7 +770,7 @@ void CFrameBox::scrollLineUp(const int lines)
 
 int CFrameBox::oKKeyPressed(CTarget *target, neutrino_msg_t _msg)
 {
-	dprintf(DEBUG_INFO, "CFrameBox::okKeyPressed:\n");
+	dprintf(DEBUG_NORMAL, "CFrameBox::okKeyPressed:\n");
 	
 	int ret = CTarget::RETURN_EXIT;
 

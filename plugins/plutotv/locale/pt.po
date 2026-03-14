@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 5.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2025-08-31 14:29+0200\n"
+"POT-Creation-Date: 2026-03-14 14:21+0100\n"
 "PO-Revision-Date: 2025-01-04 15:44+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -26,9 +26,6 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-msgid "Info"
-msgstr ""
-
 msgid "No Catgeries found!"
 msgstr ""
 
@@ -36,6 +33,9 @@ msgid "Play"
 msgstr ""
 
 msgid "Pluto TV Channels downlaoding please wait ..."
+msgstr ""
+
+msgid "Pluto TV VOD downlaoding..."
 msgstr ""
 
 msgid "Search ..."

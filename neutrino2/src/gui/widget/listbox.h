@@ -629,7 +629,7 @@ class ClistBox : public CComponent
 		void setBorderColor(uint32_t col){borderColor = col;};
 		void setBorderGradient(int gr) {borderGradient = gr;};
 		// frame method
-		void setItemsPerPage(int itemsX = 6, int itemsY = 3){itemsPerX = itemsX; itemsPerY = itemsY; maxItemsPerPage = itemsPerX*itemsPerY;};
+		void setItemsPerPage(int itemsX = 6, int itemsY = 2){itemsPerX = itemsX; itemsPerY = itemsY; maxItemsPerPage = itemsPerX*itemsPerY;};
 		//
 		void setLayout(int type){widgetLayout = type; initFrames();};
 		void setMode(int mode){widgetMode = mode;};
@@ -692,7 +692,7 @@ class ClistBox : public CComponent
 		int swipRight(CTarget *target);
 		//
 		int oKKeyPressed(CTarget* target, neutrino_msg_t _msg = CRCInput::RC_ok);
-		void homeKeyPressed(){printf("ClistBox::HomeKeyPressed\n"); selected = -1; actionKey.clear(); actionKey = "";};
+		void homeKeyPressed(){dprintf(DEBUG_NORMAL, "ClistBox::homeKeyPressed\n"); selected = -1; actionKey.clear(); actionKey = "";};
 		int directKeyPressed(neutrino_msg_t _msg, CTarget *target);
 
 		//// get methods

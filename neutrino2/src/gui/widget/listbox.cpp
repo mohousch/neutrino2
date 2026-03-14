@@ -372,7 +372,7 @@ int CMenuOptionChooser::exec(CTarget *target)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionChooser::exec: (%s)\n", itemName.c_str());
 	
-	int ret = CTarget::RETURN_NONE; // FIXME
+	int ret = CTarget::RETURN_REPAINT; // FIXME
 	bool wantsRepaint = false;
 	
 	//
@@ -734,7 +734,7 @@ int CMenuOptionNumberChooser::exec(CTarget *target)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionNumberChooser::exec: (%s)\n", itemName.c_str());
 	
-	int ret = CTarget::RETURN_NONE; // FIXME
+	int ret = CTarget::RETURN_REPAINT; // FIXME
 	bool wantsRepaint = false;
 	
 	//
@@ -895,7 +895,7 @@ int CMenuOptionStringChooser::exec(CTarget *target)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionStringChooser::exec: (%s) options:%d\n", itemName.c_str(), (int)options.size());
 	
-	int ret = CTarget::RETURN_NONE; // FIXME
+	int ret = CTarget::RETURN_REPAINT; // FIXME
 	bool wantsRepaint = false;
 	
 	//
@@ -2046,6 +2046,8 @@ void CMenuItemInfo::enableSaveScreen()
 //// ClistBox
 ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 {
+	dprintf(DEBUG_NORMAL, "ClistBox:: new\n");
+	
 	frameBuffer = CFrameBuffer::getInstance();
 
 	selected = -1;
@@ -2164,6 +2166,8 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 
 ClistBox::ClistBox(const CBox* position)
 {
+	dprintf(DEBUG_NORMAL, "ClistBox:: new\n");
+	
 	frameBuffer = CFrameBuffer::getInstance();
 
 	selected = -1;
@@ -2277,7 +2281,7 @@ ClistBox::ClistBox(const CBox* position)
 
 ClistBox::~ClistBox()
 {
-	dprintf(DEBUG_INFO, "ClistBox:: del (%s)\n", htitle.c_str());
+	dprintf(DEBUG_NORMAL, "ClistBox:: del (%s)\n", htitle.c_str());
 
 	//
 	if (background)
@@ -2298,7 +2302,7 @@ ClistBox::~ClistBox()
 	hbutton_labels.clear();
 	fbutton_labels.clear();
 	
-	//
+	//	
 	for (unsigned int count = 0; count < items.size(); count++)
 	{
 		CMenuItem *item = items[count];
@@ -2461,7 +2465,7 @@ void ClistBox::initFrames()
 
 void ClistBox::paint(bool _selected)
 {
-	dprintf(DEBUG_INFO, "ClistBox::paint: (%s)\n", htitle.c_str());
+	dprintf(DEBUG_NORMAL, "ClistBox::paint: (%s)\n", htitle.c_str());
 
 	//
 	initFrames();
@@ -3312,7 +3316,7 @@ void ClistBox::restoreScreen()
 
 void ClistBox::hide()
 {
-	dprintf(DEBUG_INFO, "ClistBox::hide: (%s)\n", htitle.c_str());
+	dprintf(DEBUG_NORMAL, "ClistBox::hide: (%s)\n", htitle.c_str());
 
 	if (paintframe)
 		frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
@@ -3792,7 +3796,7 @@ int ClistBox::oKKeyPressed(CTarget *target, neutrino_msg_t _msg)
 //
 int ClistBox::directKeyPressed(neutrino_msg_t _msg, CTarget *target)
 {
-	dprintf(DEBUG_DEBUG, "ClistBox::directKeyPressed: msg:0x%x\n", _msg);
+	dprintf(DEBUG_NORMAL, "ClistBox::directKeyPressed: msg:0x%x\n", _msg);
 	
 	int ret = CTarget::RETURN_NONE;
 	

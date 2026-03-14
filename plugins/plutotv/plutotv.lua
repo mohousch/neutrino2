@@ -14,13 +14,10 @@ plugin_title = "Pluto TV VOD"
 json = require "json"
 
 catlist = {}
-
 itemlist = {}
 itemlist_details = {}
-
 episodelist = {}
 episodelist_details = {}
-
 playback_details = {}
 
 function convert(s)
@@ -97,7 +94,7 @@ function getVideoData(url) -- Generate stream address and evaluate it according 
 	http = "http://service-stitcher-ipv4.clusters.pluto.tv/stitch/hls/episode/"
 	token = "?advertisingId=&appName=web&appVersion=unknown&appStoreUrl=&architecture=&buildVersion=&clientTime=0&deviceDNT=0&deviceId=" .. gen_ids() .. "&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&sid=" .. gen_ids() .. "&userId=&serverSideAds=true"
 
-	local data = neutrino2.getUrlAnswer(http .. url .."/master.m3u8" ..token, "Mozilla/5.0") -- Calling the generated master.m3u8
+	local data = neutrino2.getUrlAnswer(http .. url .. "/master.m3u8" .. token, "Mozilla/5.0") -- Calling the generated master.m3u8
 	local count = 0
 	
 	if data then
@@ -106,7 +103,7 @@ function getVideoData(url) -- Generate stream address and evaluate it according 
 			if band and url2 then
 				local nr = tonumber(band)
 				if nr > res then
-					res=nr
+					res = nr
 					re_url = http .. url .. "/" .. url2 .. token 
 				end
 			end
@@ -170,10 +167,10 @@ function get_cat()
 	end
 end
 
-cm_selected = 0
 function cat_menu(_id)
 	neutrino2.CFileHelpers():createDir("/tmp/plutotv")
-
+	
+	local ret = neutrino2.CTarget.RETURN_REPAINT
 	local cm = neutrino2.ClistBox(40, 40, 1200, 640)
 
 	cm:setItemsPerPage(6, 2)
@@ -189,13 +186,18 @@ function cat_menu(_id)
 
 	local green = neutrino2.button_label_struct()
 	green.button = neutrino2.NEUTRINO_ICON_BUTTON_GREEN
-	green.localename = _("Info")
+	green.localename = _("Play")
 	
 	cm:setFootButtons(red)
 	cm:setFootButtons(green)
 	
 	cm:addKey(neutrino2.CRCInput_RC_red, null, "rec")
 	cm:addKey(neutrino2.CRCInput_RC_green, null, "play")
+--	cm:addKey(neutrino2.CRCInput_RC_info, null, "info")
+
+--TEST
+	cm:setLayout(neutrino2.ClistBox_LAYOUT_FRAME)
+	cm:enablePaintItemInfo()
 	
 	local hint = neutrino2.CHintBox(plugin_title, _("loading..."), neutrino2.HINTBOX_WIDTH, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	hint:paint()
@@ -245,41 +247,38 @@ function cat_menu(_id)
 	
 	hint:hide()
 	
-	if cm_selected < 0 then
-		cm_selected = 0
-	end
-	
-	cm:setSelected(cm_selected)
-	
-	cm:exec(self)
+::RETRY::	
+	ret = cm:exec(self)
 	
 	if cm:getExitPressed() == true then
+		neutrino2.CFileHelpers():removeDir("/tmp/plutotv")
 		return neutrino2.CTarget_RETURN_EXIT
 	end
 	
-	cm_selected = cm:getSelected()
-	
+	local selected = cm:getSelected()	
 	local actionKey = cm:getActionKey()
 	
 	if actionKey == "play" then
-		playStream(cm_selected + 1)
-	end
-	if actionKey == "season_menu" then
-		season_menu(playback_details[cm_selected + 1].uuid)
-	end
-	if actionKey == "rec" then
-		recStream(cm_selected + 1)
+		playStream(selected + 1)
+--		ret = neutrino2.CTarget_RETURN_REPAINT
+	elseif actionKey == "season_menu" then
+		season_menu(playback_details[selected + 1].uuid)
+--		ret = neutrino2.CTarget_RETURN_REPAINT
+	elseif actionKey == "rec" then
+		recStream(selected + 1)
+--		 ret = neutrino2.CTarget_RETURN_REPAINT
+--	elseif actionKey == "info" then
+--		infoStream(selected + 1)
+--		ret = neutrino2.CTarget_RETURN_REPAINT
 	end
 	
 	if cm:getExitPressed() ~= true then
-		cat_menu(_id)
+		goto RETRY
 	end
-	
-	os.remove("/tmp/plutotv")
 end
 
-sm_selected = 0
 function season_menu(_id)
+	local ret = neutrino2.CTarget_RETURN_REPAINT
 	local sm = nil
 	local h = neutrino2.CHintBox(plugin_title, _("Search ..."))
 	h:paint()
@@ -334,34 +333,30 @@ function season_menu(_id)
 	
 	h:hide()
 	
-	if sm_selected < 0 then
-		sm_selected = 0
-	end
-	
-	sm:setSelected(sm_selected)
-	
-	sm:exec(self)
+::RETRY::	
+	ret = sm:exec(self)
 	
 	if sm:getExitPressed() == true then
 		return neutrino2.CTarget_RETURN_EXIT
 	end
 	
-	sm_selected = sm:getSelected()
+	local selected = sm:getSelected()
 	local actionKey = sm:getActionKey()
 	
 	if actionKey == "episode_menu" then
-		episode_menu(sm_selected + 1)
+		episode_menu(selected + 1)
+--		ret = neutrino2.CTarget_RETURN_REPAINT
 	end
 	
 	if sm:getExitPressed() ~= true then
-		season_menu(_id)
+		goto RETRY
 	end
 end
 
-em_selected = 0
 function episode_menu(s)
 	neutrino2.CFileHelpers():createDir("/tmp/plutotv")
 	
+	local ret = neutrino2.CTarget_RETURN_REPAINT
 	local em = neutrino2.ClistBox(40, 40, 1200, 640)
 	
 	em:enablePaintHead()
@@ -382,6 +377,11 @@ function episode_menu(s)
 	
 	em:addKey(neutrino2.CRCInput_RC_red, null, "rec")
 	em:addKey(neutrino2.CRCInput_RC_green, null, "play")
+--	em:addKey(neutrino2.CRCInput_RC_info, null, "info")
+
+--TEST
+	em:setLayout(neutrino2.ClistBox_LAYOUT_FRAME)
+	em:enablePaintItemInfo()
 	
 	local hint = neutrino2.CHintBox(plugin_title, _("loading..."), neutrino2.HINTBOX_WIDTH, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	hint:paint()
@@ -428,33 +428,31 @@ function episode_menu(s)
 	
 	hint:hide()
 	
-	if em_selected < 0 then
-		em_selected = 0
-	end
-	
-	em:setSelected(em_selected)
-	
-	em:exec(self)
+::RETRY::	
+	ret = em:exec(self)
 	
 	if em:getExitPressed() == true then
+		neutrino2.CFileHelpers():removeDir("/tmp/plutotv")
 		return neutrino2.CTarget_RETURN_EXIT
 	end
 	
-	em_selected = em:getSelected()
+	local selected = em:getSelected()
 	local actionKey = em:getActionKey()
 	
 	if actionKey == "play" then
-		playStream(em_selected + 1)
-	end
-	if actionKey == "rec" then
-		recStream(em_selected + 1)
+		playStream(selected + 1)
+--		ret = neutrino2.CTarget_RETURN_REPAINT
+	elseif actionKey == "rec" then
+		recStream(selected + 1)
+--		ret = neutrino2.CTarget_RETURN_REPAINT
+--	elseif actionKey == "info" then
+--		infoStream(selected + 1)
+--		ret = neutrino2.CTarget_RETURN_REPAINT
 	end
 	
 	if em:getExitPressed() ~= true then
-		episode_menu(s)
+		goto RETRY
 	end
-	
-	neutrino2.CFileHelpers():removeDir("/tmp/plutotv")
 end
 
 function playStream(id)
@@ -481,9 +479,31 @@ function playStream(id)
 	movieWidget:exec(null, "")
 end
 
+function infoStream(id)
+	title = playback_details[id].name
+	info1 = playback_details[id].desc
+	cover = playback_details[id].cover	
+	
+	tfile = neutrino2.DATADIR .. "/icons/nopreview.jpg"
+					
+	if cover ~= nil then
+		tfile = "/tmp/plutotv/" .. conv_utf8(title) .. ".jpg"
+					
+		if neutrino2.file_exists(tfile) ~= true then
+			neutrino2.downloadUrl(conv_utf8(cover) .. "?h=640&w=480", tfile, "Mozilla/5.0")
+		end
+	end
+		
+	infoBox = neutrino2.CInfoBox()
+	infoBox:setTitle(title)
+	infoBox:setText(info1, tfile)
+	
+	infoBox:exec()
+end
+
 function recStream(id)
 	httpTool = neutrino2.CHTTPTool()
-	httpTool:setTitle("Pluto TV VOD downlaoding...")
+	httpTool:setTitle(_("Pluto TV VOD downlaoding..."))
 		
 	local rec_file = getVideoData(playback_details[id].uuid)
 		
@@ -492,20 +512,29 @@ function recStream(id)
 	config:loadConfig(neutrino2.CONFIGDIR .. "/neutrino2.conf")
 
 	local target = config:getString("network_nfs_recordingdir") .. "/" .. conv_utf8(playback_details[id].name) .. ".mp4"
+	
+	-- save cover
+	tfile = nil
+	cover = playback_details[id].cover
+					
+	if cover ~= nil then
+		tfile = "/tmp/plutotv/" .. conv_utf8(playback_details[id].name) .. ".jpg"
 		
-	if httpTool:downloadFile(rec_file, target, 100) == true then
-		-- save .xml
-		neutrino2.CMovieInfo():saveMovieInfo(target, conv_utf8(playback_details[id].name), conv_utf8(playback_details[id].desc), "");
-		
-		-- save thumbnail		
-		neutrino2.CFileHelpers():copyFile(playback_details[id].cover, config:getString("network_nfs_recordingdir") .. "/" .. playback_details[id].name .. ".jpg");
+		if tfile ~= nil then		
+			neutrino2.CFileHelpers():copyFile(tfile, config:getString("network_nfs_recordingdir") .. "/" .. playback_details[id].name .. ".jpg");
+		end
 	end
+	
+	-- save .xml
+	neutrino2.CMovieInfo():saveMovieInfo(target, conv_utf8(playback_details[id].name), conv_utf8(playback_details[id].desc), "");
+	
+	-- save file	
+	httpTool:downloadFile(rec_file, target, 100)
 end
 
 -- mainMenu
-m_selected = 0
-
 function categories_menu()
+	local ret = neutrino2.CTarget_RETURN_REPAINT
 	local m = neutrino2.ClistBox(340, 60, 600,600)
 	m:enablePaintHead()
 	m:setTitle(plugin_title, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
@@ -528,39 +557,37 @@ function categories_menu()
 		m:addItem(item)
 	end
 	
-	if m_selected < 0 then
-		m_selected = 0
-	end
-	
-	m:setSelected(m_selected)
-	
-	m:exec(self)
+::RETRY::
+	ret = m:exec(self)
 	
 	if m:getExitPressed() == true then
 		return neutrino2.CTarget_RETURN_EXIT
 	end
 	
-	m_selected = m:getSelected()
+	local selected = m:getSelected()
 	local actionKey = m:getActionKey()
-	
-	if actionKey == "cat_menu" then
-		cat_menu(m_selected + 1)
-	end
 
-	if actionKey == "update" then
+	if actionKey == "cat_menu" then
+		cat_menu(selected + 1)
+--		ret = neutrino2.CTarget_RETURN_REPAINT
+	elseif actionKey == "update" then
 		get_channels()
+--		ret = neutrino2.CTarget_RETURN_REPAINT
 	end
 	
 	if m:getExitPressed() ~= true then
-		categories_menu()
+		goto RETRY
 	end
 end
 
 function main()
+	neutrino2.CFileHelpers():createDir("/tmp/plutotv")
+	
 	get_cat()
+	
 	os.remove("/tmp/lua*")
-	os.remove("/tmp/plutotv")
-	collectgarbage();
+	
+	neutrino2.CFileHelpers():removeDir("/tmp/plutotv")
 end
 
 main()

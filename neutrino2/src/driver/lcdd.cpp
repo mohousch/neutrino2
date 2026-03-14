@@ -607,7 +607,7 @@ void CLCD::setlcdparameter(void)
 	if(!has_lcd) 
 		return;
 		
-	dprintf(DEBUG_DEBUG, "CLCD::setlcdparameter:\n");
+	dprintf(DEBUG_INFO, "CLCD::setlcdparameter:\n");
 
 	last_toggle_state_power = g_settings.lcd_power;
 	int dim_time = atoi(g_settings.lcd_setting_dim_time);
@@ -676,7 +676,7 @@ void CLCD::showTextScreen(const std::string &big, const std::string &small, cons
 	if(!has_lcd) 
 		return;
 		
-	dprintf(DEBUG_NORMAL, "CLCD::showTextScreen: big:%s small:%s showmode:0x%x wakeup:%s centered:%s\n", big.empty()? "null" : big.c_str(), small.empty()? "null" : small.c_str(), showmode, perform_wakeup? "true" : "false", centered? "centered" : "not centered");
+	dprintf(DEBUG_INFO, "CLCD::showTextScreen: big:%s small:%s showmode:0x%x wakeup:%s centered:%s\n", big.empty()? "null" : big.c_str(), small.empty()? "null" : small.c_str(), showmode, perform_wakeup? "true" : "false", centered? "centered" : "not centered");
 	
 	//
 	bool big_utf8 = false;
@@ -956,7 +956,7 @@ void CLCD::showServicename(const std::string &name, const bool perform_wakeup, i
 	if (!has_lcd)
 		return;
 		
-	dprintf(DEBUG_NORMAL, "CLCD::showServicename: name:%s\n", name.empty()? "null" : name.c_str());
+	dprintf(DEBUG_INFO, "CLCD::showServicename: name:%s\n", name.empty()? "null" : name.c_str());
 
 	int showmode = g_settings.lcd_epgmode;
 
@@ -1042,7 +1042,7 @@ void CLCD::setEPGTitle(const std::string title)
 	if (!has_lcd)
 		return;
 
-	dprintf(DEBUG_NORMAL, "CLCD::setEPGTitle: %s\n", title.c_str());
+	dprintf(DEBUG_INFO, "CLCD::setEPGTitle: %s\n", title.c_str());
 	
 #if defined (ENABLE_LCD) || defined (ENABLE_TFTLCD) || defined (ENABLE_GRAPHLCD)
 	epg_title.clear();
@@ -1053,7 +1053,7 @@ void CLCD::setEPGTitle(const std::string title)
 
 void CLCD::showMovieInfo(const PLAYMODES playmode, const std::string big, const std::string small, const bool centered)
 {
-	dprintf(DEBUG_NORMAL, "CLCD::showMovieInfo: playmode:%d big:%s small:%s centered:%s\n", playmode, big.empty()? "null" : big.c_str(), small.empty()? "null" : small.c_str(), centered? "centered" : "not centered");
+	dprintf(DEBUG_INFO, "CLCD::showMovieInfo: playmode:%d big:%s small:%s centered:%s\n", playmode, big.empty()? "null" : big.c_str(), small.empty()? "null" : small.c_str(), centered? "centered" : "not centered");
 	
 	int showmode = g_settings.lcd_epgmode;
 
@@ -1394,7 +1394,7 @@ void CLCD::showMenuText(const int position, const char * text, const int selecte
 	if(!has_lcd) 
 		return;
 		
-	dprintf(DEBUG_NORMAL, "CLCD::showMenuText: position:%d text:%s highlight:%d\n", position, text? text : "null", selected);
+	dprintf(DEBUG_INFO, "CLCD::showMenuText: position:%d text:%s highlight:%d\n", position, text? text : "null", selected);
 	
 	if (mode != MODE_MENU_UTF8)
 		return;
@@ -1424,7 +1424,7 @@ void CLCD::showAudioTrack(const std::string &artist, const std::string &title, c
 	if(!has_lcd) 
 		return;
 		
-	dprintf(DEBUG_NORMAL, "CLCD::showAudioTrack: artist:%s title:%s album:%s pos:%d\n", artist.empty()? "null" : artist.c_str(), title.empty()? "null" : title.c_str(), album.empty()? "null" : album.c_str(), pos);
+	dprintf(DEBUG_INFO, "CLCD::showAudioTrack: artist:%s title:%s album:%s pos:%d\n", artist.empty()? "null" : artist.c_str(), title.empty()? "null" : title.c_str(), album.empty()? "null" : album.c_str(), pos);
 	
 	if (mode != MODE_AUDIO) 
 		return;
@@ -1903,7 +1903,7 @@ int CLCD::getContrast()
 
 void CLCD::setPower(int power)
 {
-	dprintf(DEBUG_NORMAL, "CLCD::setPower\n");
+	dprintf(DEBUG_INFO, "CLCD::setPower\n");
 	
 	if (!has_lcd)
 		return;
@@ -1964,7 +1964,7 @@ void CLCD::setLED(int value, int option)
 	if (!has_lcd)
 		return;
 		
-	dprintf(DEBUG_NORMAL, "CLCD::setLED: %d\n", value);
+	dprintf(DEBUG_INFO, "CLCD::setLED: %d\n", value);
 
 	g_settings.lcd_led = value;
 	
@@ -1981,7 +1981,7 @@ void CLCD::setLED(int value, int option)
 		"LEDCOLOR_PURPLE"
 	};
 	
-	dprintf(DEBUG_NORMAL, "CLCD::setLED: %s\n", LED[value]);
+	dprintf(DEBUG_INFO, "CLCD::setLED: %s\n", LED[value]);
 	  
 	FILE * f;
 	if((f = fopen("/proc/stb/fp/led0_pattern", "w")) == NULL) 
@@ -2011,7 +2011,7 @@ void CLCD::setMiniTV(int value)
 		"OSD / MINITV"
 	};
 	
-	dprintf(DEBUG_NORMAL, "CLCD::setMiniTV: %s\n", LCDMINITV[value]);
+	dprintf(DEBUG_INFO, "CLCD::setMiniTV: %s\n", LCDMINITV[value]);
 
 	proc_put("/proc/stb/lcd/mode", value);
 #endif
@@ -2398,7 +2398,7 @@ void CLCD::showWeather()
 	current_wtemp = CWeather::getInstance()->getCurrentTemperature();
 	current_wicon = CWeather::getInstance()->getCurrentIcon();
 	
-	dprintf(DEBUG_NORMAL, "CLCD::showWeather %s %s %s\n", current_wcity.c_str(), current_wtemp.c_str(), current_wicon.c_str());
+	dprintf(DEBUG_INFO, "CLCD::showWeather %s %s %s\n", current_wcity.c_str(), current_wtemp.c_str(), current_wicon.c_str());
 
 	// current icon
 	if (current_wicon != "")
