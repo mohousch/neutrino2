@@ -132,7 +132,7 @@ end
 function get_categories()
 	print("getCategories:")
 
-	local h = neutrino2.CHintBox(caption, _("loading categories ..."), neutrino2.HINTBOX_WIDTH, netzkino_png)
+	local h = neutrino2.CHintBox(caption, _("loading categories please wait ..."), neutrino2.HINTBOX_WIDTH, netzkino_png)
 	h:paint();
 
 	local fp = neutrino2.getUrlAnswer(base_url .. "index.json?d=www", 'Mozilla/5.0;', 90)
@@ -228,7 +228,7 @@ function get_movies(_id)
 	local page_nr = page
 	movies = {};
 
-	local h = neutrino2.CHintBox(caption, "Movies wird geladen ...", neutrino2.HINTBOX_WIDTH, netzkino_png)
+	local h = neutrino2.CHintBox(caption, _("loading movies please wait ..."), neutrino2.HINTBOX_WIDTH, netzkino_png)
 	h:paint();
 	
 	local url = base_url .. "categories/" .. categories[_id].category_id .. ".json?d=www" .. "&count=25" .. "d&page=" ..  page_nr .."&custom_fields=Streaming"
