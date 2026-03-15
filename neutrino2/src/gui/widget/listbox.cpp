@@ -1020,7 +1020,6 @@ int CMenuOptionStringChooser::exec(CTarget *target)
 
 			menu->setMode(ClistBox::MODE_SETUP);
 			menu->paintMainFrame(true);
-			menu->setBorderMode();
 			menu->enablePaintHead();
 			menu->setTitle(itemName.c_str());
 			menu->enablePaintFoot();
@@ -1039,8 +1038,7 @@ int CMenuOptionStringChooser::exec(CTarget *target)
 
 			menu->addItem(new CMenuForwarder(_(options[count].c_str())), selected);
 		}
-
-		widget->setBorderMode();		
+		
 		ret = widget->exec(NULL, "");
 
 		select = menu->getSelected();
