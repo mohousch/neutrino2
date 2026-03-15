@@ -511,7 +511,7 @@ int CHelpBox::exec(int timeout)
 	{
 		g_RCInput->getMsgAbsoluteTimeout( &msg, &data, &timeoutEnd );
 
-		if (((msg == CRCInput::RC_timeout) || (msg == CRCInput::RC_home)))
+		if ((msg == CRCInput::RC_timeout) || (msg == CRCInput::RC_home) || (msg == CRCInput::RC_ok))
 		{
 			loop   = false;
 		}
@@ -521,6 +521,11 @@ int CHelpBox::exec(int timeout)
 				scroll_up();
 			else
 				scroll_down();
+		}
+		else if((msg == CRCInput::RC_mode) || (msg == CRCInput::RC_next) || (msg == CRCInput::RC_prev)) 
+		{
+			loop = false;
+			g_RCInput->postMsg(msg, data);
 		}
 		else if (CNeutrinoApp::getInstance()->handleMsg(msg, data) & messages_return::cancel_all)
 		{
