@@ -61,7 +61,7 @@ Drawable::DType Drawable::getType(void)
 	return Drawable::DTYPE_DRAWABLE;
 }
 
-// DText
+//// DText
 DText::DText(std::string& text) 
 {
 	m_text = text;
@@ -98,7 +98,7 @@ Drawable::DType DText::getType(void)
 	return Drawable::DTYPE_TEXT;
 }
 
-// DIcon
+//// DIcon
 DIcon::DIcon(std::string& icon)
 {
 	m_icon = icon;
@@ -128,7 +128,7 @@ Drawable::DType DIcon::getType(void)
 	return Drawable::DTYPE_ICON;
 }
 
-// DSeparator
+//// DSeparator
 DSeparator::DSeparator()
 {
 	m_height = 10;
@@ -150,7 +150,7 @@ Drawable::DType DSeparator::getType(void)
 	return Drawable::DTYPE_SEPARATOR;
 }
 
-// DPageBreak
+//// DPageBreak
 DPagebreak::DPagebreak()
 {
 	m_height = 0;
@@ -366,14 +366,14 @@ void CHelpBox::paint(void)
 	
 	// 
 	widget->setPosition(&cFrameBox);
-//	widget->setBorderMode(borderMode);
-//	widget->setBorderColor(borderColor);
+	widget->setBorderMode(borderMode);
+	widget->setBorderColor(borderColor);
 	widget->enableSaveScreen();
 
 	// title
 	if (headers)
 	{
-		headers->setPosition(borderMode? cFrameBox.iX + 2 : cFrameBox.iX, borderMode? cFrameBox.iY + 2 : cFrameBox.iY, borderMode? m_width - 4 : m_width, m_theight);
+		headers->setPosition(cFrameBox.iX, cFrameBox.iY, m_width, m_theight);
 	
 		headers->setTitle(m_caption.c_str(), m_iconfile.c_str());
 	}

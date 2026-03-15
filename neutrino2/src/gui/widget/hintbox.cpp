@@ -177,9 +177,9 @@ void CHintBox::paint(void)
 	dprintf(DEBUG_NORMAL, "CHintBox::paint: (%s)\n", caption.c_str());
 	
 	// title
-	cFrameBoxTitle.iX = borderMode? cFrameBox.iX + 2 : cFrameBox.iX;
-	cFrameBoxTitle.iY = borderMode? cFrameBox.iY + 2 : cFrameBox.iY;
-	cFrameBoxTitle.iWidth = borderMode? cFrameBox.iWidth - 4 : cFrameBox.iWidth;
+	cFrameBoxTitle.iX = cFrameBox.iX;
+	cFrameBoxTitle.iY = cFrameBox.iY;
+	cFrameBoxTitle.iWidth = cFrameBox.iWidth;
 
 	if (headers)
 	{
@@ -338,7 +338,7 @@ int HintBox(const char * const Caption, const char * const Text, const int Width
 	int res = messages_return::none;
 
  	CHintBox * hintBox = new CHintBox(Caption, Text, Width, Icon);
-//	hintBox->setBorderMode(border);
+	hintBox->setBorderMode(border);
 
 	res = hintBox->exec(timeout);
 		

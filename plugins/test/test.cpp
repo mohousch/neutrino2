@@ -3070,13 +3070,13 @@ void CTestMenu::testCInfoBox()
 	infoBox = NULL;
 }
 
-// CMessageBox
+//// CMessageBox
 void CTestMenu::testCMessageBox()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCMessageBox\n");
 
 	CMessageBox * messageBox = new CMessageBox(_("Information"), "testing CMessageBox"/*, 600, NEUTRINO_ICON_INFO, CMessageBox::mbrYes, CMessageBox::mbNone*/);
-	
+	messageBox->setBorderMode();
 	int res = messageBox->exec();
 
 	printf("res:%d messageBox->result:%d\n", res, messageBox->result);
@@ -3110,6 +3110,7 @@ void CTestMenu::testCHintBox()
 
 	CHintBox * hintBox = new CHintBox(_("Information"), "testing CHintBox");
 	
+	hintBox->setBorderMode();
 	hintBox->exec(10);
 
 	delete hintBox;
@@ -3123,7 +3124,7 @@ void CTestMenu::testCHintBoxInfo()
 	
 	std::string Text = "This program is free software;\n you can redistribute it and/or modify it under the terms of the GNU General Public License\n as published by the Free Software Foundation;\n either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful,\n but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License\n along with this program; if not, write to the Free Software Foundation,\n Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n";
 
-	HintBox(_("Information"), Text.c_str(), HINTBOX_WIDTH, 10, NEUTRINO_ICON_INFO);
+	HintBox(_("Information"), Text.c_str(), HINTBOX_WIDTH, 10, NEUTRINO_ICON_INFO, CComponent::BORDER_ALL);
 }
 
 // CHelpBox
@@ -3132,6 +3133,8 @@ void CTestMenu::testCHelpBox()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCHelpBox\n");
 
 	CHelpBox * helpBox = new CHelpBox("CTestMenu::testCHelpBox", HELPBOX_WIDTH, NEUTRINO_ICON_INFO);
+	
+	helpBox->setBorderMode();
 	
 	// text
 	helpBox->addLine("helpBox");

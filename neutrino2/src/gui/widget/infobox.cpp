@@ -510,6 +510,7 @@ void CInfoBox::paint(void)
 	// foot
 	refreshFoot();
 	
+	widget->setBorderMode(borderMode);
 	widget->paint();
 }
 
