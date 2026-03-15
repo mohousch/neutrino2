@@ -1416,6 +1416,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	{
 		listBox->enablePaintHead();
 
+		// icon
 		std::string filename = "";
 		if (icon != NULL)
 		{
@@ -1427,12 +1428,16 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 			if (!file_exists(filename.c_str()))
 				filename = icon;
 		}
-		listBox->setTitle(_(title), filename.c_str());
 		
+		// title
+		listBox->setTitle(_(title), filename.c_str());
+		listBox->setTitleHAlign(halign);
+		
+		// date
 		if (paintdate) listBox->enablePaintDate();
 		//if (format) listBox->setFormat(format); //FIXME:
-		listBox->setTitleHAlign(halign);
-		//
+
+		// line
 		listBox->setHeadLine(head_line, head_line_gradient);
 	}
 				
@@ -1779,7 +1784,7 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 			hicon = icon;
 	}
 	
-	head->setTitle(htitle.c_str(), hicon.c_str());
+	head->setTitle(_(htitle.c_str()), hicon.c_str());
 	head->setHAlign(halign);
 	
 	// color

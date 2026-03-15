@@ -229,7 +229,7 @@ void CWidget::paint()
 	// paint mainFrame	
 	if (paintframe)
 	{
-		// border
+//		// border
 		if (borderMode != CComponent::BORDER_NO)
 			frameBuffer->paintBoxRel(mainFrameBox.iX - 2, mainFrameBox.iY - 2, mainFrameBox.iWidth + 4, mainFrameBox.iHeight + 4, borderColor, radius, corner, borderGradient);
 			
@@ -366,8 +366,8 @@ int CWidget::exec(CTarget *parent, const std::string &)
 			timeoutEnd = CRCInput::calcTimeoutEnd(timeout == 0 ? 0xFFFF : timeout);
 			
 			needToBlit = true;
-
-			// handle keymap
+			
+			// keyMap
 			std::map<neutrino_msg_t, keyAction>::iterator it = keyActionMap.find(msg);
 			
 			if (it != keyActionMap.end()) 
@@ -402,8 +402,21 @@ int CWidget::exec(CTarget *parent, const std::string &)
 				continue;
 			}
 			
-			// handle directKey
+			// directKey
+			#if 1
 			retval = onDirectKeyPressed(msg, parent);
+			
+			switch ( retval ) 
+			{
+				case CTarget::RETURN_EXIT_ALL:
+				case CTarget::RETURN_EXIT:
+					msg = CRCInput::RC_timeout;
+					break;
+				case CTarget::RETURN_REPAINT:
+					paint();
+					break;
+			}
+			#endif
 		}
 
 		if (!handled) 
@@ -437,10 +450,32 @@ int CWidget::exec(CTarget *parent, const std::string &)
 
 				case (CRCInput::RC_right):
 					retval = onRightKeyPressed(parent);
+					
+					switch ( retval ) 
+					{
+						case CTarget::RETURN_EXIT_ALL:
+						case CTarget::RETURN_EXIT:
+							msg = CRCInput::RC_timeout;
+							break;
+						case CTarget::RETURN_REPAINT:
+							paint();
+							break;
+					}
 					break;
 
 				case (CRCInput::RC_left):
 					retval = onLeftKeyPressed(parent);
+					
+					switch ( retval ) 
+					{
+						case CTarget::RETURN_EXIT_ALL:
+						case CTarget::RETURN_EXIT:
+							msg = CRCInput::RC_timeout;
+							break;
+						case CTarget::RETURN_REPAINT:
+							paint();
+							break;
+					}
 					break;
 
 				case (CRCInput::RC_page_up):
@@ -458,18 +493,29 @@ int CWidget::exec(CTarget *parent, const std::string &)
 				case (CRCInput::RC_home):
 				case (CRCInput::RC_setup):
 					onHomeKeyPressed();
-					retval = CTarget::RETURN_EXIT;
+//					retval = CTarget::RETURN_EXIT;
 					break;
 
 				case (CRCInput::RC_ok):
 					retval = onOKKeyPressed(parent);
+					
+					switch ( retval ) 
+					{
+						case CTarget::RETURN_EXIT_ALL:
+						case CTarget::RETURN_EXIT:
+							msg = CRCInput::RC_timeout;
+							break;
+						case CTarget::RETURN_REPAINT:
+							paint();
+							break;
+					}
 					break;
 				
 				//	
 				case (CRCInput::RC_timeout):
 					exit_pressed = true;
 					selected = -1;
-					retval = CTarget::RETURN_EXIT;
+//					retval = CTarget::RETURN_EXIT;
 					break;
 
 				default:
@@ -482,7 +528,6 @@ int CWidget::exec(CTarget *parent, const std::string &)
 
 			if ( msg <= CRCInput::RC_MaxRC )
 			{
-				// recalculate timeout for RC-Tasten
 				timeoutEnd = CRCInput::calcTimeoutEnd(timeout == 0 ? 0xFFFF : timeout);
 			}
 		}
@@ -495,7 +540,7 @@ int CWidget::exec(CTarget *parent, const std::string &)
 	}
 	while ( msg != CRCInput::RC_timeout );
 
-	dprintf(DEBUG_INFO, "CWidget: retval: (%d) selected:%d\n", retval, selected);
+	dprintf(DEBUG_NORMAL, "CWidget: retval: (%d) selected:%d\n", retval, selected);
 	
 	hide();
 
@@ -617,7 +662,7 @@ int CWidget::onOKKeyPressed(CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "CWidget::onOKKeyPressed:\n");
 	
-	int ret = CTarget::RETURN_EXIT;
+	int ret = CTarget::RETURN_REPAINT;
 	
 	if(hasCCItem() && selected >= 0)
 	{
@@ -625,20 +670,7 @@ int CWidget::onOKKeyPressed(CTarget *target)
 		{
 			ret = CCItems[selected]->oKKeyPressed(target);
 
-			actionKey = CCItems[selected]->getActionKey();	// for lua
-
-			//
-			switch ( ret ) 
-			{
-				case CTarget::RETURN_EXIT_ALL:
-					ret = CTarget::RETURN_EXIT_ALL; //fall through
-				case CTarget::RETURN_EXIT:
-					msg = CRCInput::RC_timeout;
-					break;
-				case CTarget::RETURN_REPAINT:
-					paint();
-					break;
-			}
+			actionKey = CCItems[selected]->getActionKey();	// for lua	
 		}
 	}
 	
@@ -656,19 +688,6 @@ int CWidget::onRightKeyPressed(CTarget *target)
 		ret = CCItems[selected]->swipRight(target);
 		
 		actionKey = CCItems[selected]->getActionKey();	// lua
-
-		//
-		switch ( ret ) 
-		{
-			case CTarget::RETURN_EXIT_ALL:
-				ret = CTarget::RETURN_EXIT_ALL; //fall through
-			case CTarget::RETURN_EXIT:
-				msg = CRCInput::RC_timeout;
-				break;
-			case CTarget::RETURN_REPAINT:
-				paint();
-				break;
-		}
 	}
 	
 	return ret;
@@ -685,19 +704,6 @@ int CWidget::onLeftKeyPressed(CTarget *target)
 		ret = CCItems[selected]->swipLeft(target);
 		
 		actionKey = CCItems[selected]->getActionKey();	// lua
-
-		//
-		switch ( ret ) 
-		{
-			case CTarget::RETURN_EXIT_ALL:
-				ret = CTarget::RETURN_EXIT_ALL; //fall through
-			case CTarget::RETURN_EXIT:
-				msg = CRCInput::RC_timeout;
-				break;
-			case CTarget::RETURN_REPAINT:
-				paint();
-				break;
-		}
 	}
 	
 	return ret;
@@ -713,21 +719,6 @@ int CWidget::onDirectKeyPressed(neutrino_msg_t _msg, CTarget *target)
 	if(hasCCItem() && selected >= 0)
 	{
 		ret = CCItems[selected]->directKeyPressed(_msg, target);
-
-//		actionKey = CCItems[selected]->getActionKey();	// lua
-
-		//
-		switch ( ret ) 
-		{
-			case CTarget::RETURN_EXIT_ALL:
-				ret = CTarget::RETURN_EXIT_ALL; //fall through
-			case CTarget::RETURN_EXIT:
-				msg = CRCInput::RC_timeout;
-				break;
-			case CTarget::RETURN_REPAINT:
-				paint();
-				break;
-		}
 	}
 	
 	return ret;

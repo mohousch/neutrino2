@@ -425,15 +425,11 @@ int CMenuOptionChooser::exec(CTarget *target)
 
 			menu->setMode(ClistBox::MODE_SETUP);
 			menu->paintMainFrame(true);
+			menu->setBorderMode();
 			menu->enablePaintHead();
-			//if (parent) menu->setHeadColor(COL_MENUCONTENT_PLUS_0);
-			//if (parent) menu->setHeadGradient(NOGRADIENT);
 			menu->setTitle(itemName.c_str());
 			menu->enablePaintFoot();
-			//if (parent) menu->setFootColor(COL_MENUCONTENT_PLUS_0);
-			//if (parent) menu->setFootGradient(NOGRADIENT);
 			menu->setFootButtons(&btn);
-			if (parent) menu->setBorderMode();
 			
 			//
 			widget->addCCItem(menu);
@@ -454,6 +450,7 @@ int CMenuOptionChooser::exec(CTarget *target)
 			menu->addItem(new CMenuForwarder(_(l_option)), selected);
 		}
 		
+		widget->setBorderMode();
 		ret = widget->exec(NULL, "");
 
 		select = menu->getSelected();
@@ -573,7 +570,7 @@ int CMenuOptionChooser::exec(CTarget *target)
 		
 	paint(true, true);
 
-	return ret;
+	return CTarget::RETURN_REPAINT;
 }
 
 int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
@@ -775,7 +772,7 @@ int CMenuOptionNumberChooser::exec(CTarget *target)
 		
 	paint(true);
 
-	return ret;
+	return CTarget::RETURN_REPAINT;
 }
 
 int CMenuOptionNumberChooser::paint(bool selected, bool /*AfterPulldown*/)
@@ -950,15 +947,11 @@ int CMenuOptionStringChooser::exec(CTarget *target)
 
 			menu->setMode(ClistBox::MODE_SETUP);
 			menu->paintMainFrame(true);
+			menu->setBorderMode();
 			menu->enablePaintHead();
-			//if (parent) menu->setHeadColor(COL_MENUCONTENT_PLUS_0);
-			//if (parent) menu->setHeadGradient(NOGRADIENT);
 			menu->setTitle(itemName.c_str());
 			menu->enablePaintFoot();
-			//if (parent) menu->setFootColor(COL_MENUCONTENT_PLUS_0);
-			//if (parent) menu->setFootGradient(NOGRADIENT);
 			menu->setFootButtons(&btn);
-			if (parent) menu->setBorderMode();
 			
 			//
 			widget->addCCItem(menu);
@@ -973,7 +966,8 @@ int CMenuOptionStringChooser::exec(CTarget *target)
 
 			menu->addItem(new CMenuForwarder(_(options[count].c_str())), selected);
 		}
-		
+
+		widget->setBorderMode();		
 		ret = widget->exec(NULL, "");
 
 		select = menu->getSelected();
@@ -1026,11 +1020,11 @@ int CMenuOptionStringChooser::exec(CTarget *target)
 
 			menu->setMode(ClistBox::MODE_SETUP);
 			menu->paintMainFrame(true);
+			menu->setBorderMode();
 			menu->enablePaintHead();
 			menu->setTitle(itemName.c_str());
 			menu->enablePaintFoot();
 			menu->setFootButtons(&btn);
-			menu->setBorderMode();
 			
 			//
 			widget->addCCItem(menu);
@@ -1045,7 +1039,8 @@ int CMenuOptionStringChooser::exec(CTarget *target)
 
 			menu->addItem(new CMenuForwarder(_(options[count].c_str())), selected);
 		}
-		
+
+		widget->setBorderMode();		
 		ret = widget->exec(NULL, "");
 
 		select = menu->getSelected();
@@ -1090,7 +1085,7 @@ int CMenuOptionStringChooser::exec(CTarget *target)
 		
 	paint(true, true);
 
-	return ret;
+	return CTarget::RETURN_REPAINT;
 }
 
 int CMenuOptionStringChooser::paint( bool selected, bool afterPulldown)
@@ -3775,7 +3770,7 @@ int ClistBox::oKKeyPressed(CTarget *target, neutrino_msg_t _msg)
 {
 	dprintf(DEBUG_NORMAL, "ClistBox::okKeyPressed: msg:0x%x\n", _msg);
 	
-	int ret = CTarget::RETURN_EXIT;
+	int ret = CTarget::RETURN_REPAINT;
 
 	if (hasItem() && selected >= 0 && items[selected]->isSelectable())
 	{
@@ -3794,7 +3789,7 @@ int ClistBox::directKeyPressed(neutrino_msg_t _msg, CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "ClistBox::directKeyPressed: msg:0x%x\n", _msg);
 	
-	int ret = CTarget::RETURN_NONE;
+	int ret = CTarget::RETURN_REPAINT;
 	
 	// 
 	for (unsigned int i = 0; i < items.size(); i++) 

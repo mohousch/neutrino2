@@ -125,7 +125,7 @@ CComponent::CComponent()
 	paint_Head = false;
 	paint_Foot = false;
 	has_Title = false;
-	htitle = "";
+	htitle = " ";
 	hicon = "";
 	//
 	halign = CC_ALIGN_LEFT;
@@ -219,7 +219,7 @@ void CComponent::addKey(neutrino_msg_t key, CTarget *target, const std::string &
 //
 int CComponent::exec(CTarget *target)
 {
-	dprintf(DEBUG_NORMAL, "CComponent::exec:\n");
+	dprintf(DEBUG_NORMAL, "CComponent::exec: (%s)\n", cc_name.c_str());
 	
 	bool show = true;
 	exit_pressed = false;
@@ -249,7 +249,7 @@ int CComponent::exec(CTarget *target)
 		{
 			timeoutEnd = CRCInput::calcTimeoutEnd(timeout == 0 ? 0xFFFF : timeout);
 
-			//			
+			// keyMap			
 			std::map<neutrino_msg_t, keyAction>::iterator it = keyActionMap.find(msg);
 						
 			if (it != keyActionMap.end()) 
@@ -282,7 +282,8 @@ int CComponent::exec(CTarget *target)
 				continue;
 			}
 			
-			//
+			#if 1
+			// directKey
 			retval = directKeyPressed(msg, target);
 
 			switch ( retval ) 
@@ -295,6 +296,7 @@ int CComponent::exec(CTarget *target)
 					paint();
 					break;
 			}
+			#endif			
 		}
 
 		if (!handled)
@@ -377,12 +379,10 @@ int CComponent::exec(CTarget *target)
 						homeKeyPressed();
 						exit_pressed = true;
 						msg = CRCInput::RC_timeout;
-						retval = CTarget::RETURN_EXIT;
 					}
 					break;
 				case (CRCInput::RC_timeout):
 					exit_pressed = true;
-					retval = CTarget::RETURN_EXIT;
 					break;
 
 				default:
@@ -402,6 +402,8 @@ int CComponent::exec(CTarget *target)
 		CFrameBuffer::getInstance()->blit();
 		
 	} while ( msg != CRCInput::RC_timeout );
+	
+	dprintf(DEBUG_NORMAL, "CComponent: retval: %d\n", retval);
 
 	hide();	
 	
@@ -2254,11 +2256,11 @@ void CCWindow::saveScreen()
 		background = NULL;
 	}
 
-	background = new fb_pixel_t[(itemBox.iWidth + (borderMode? 4 : 0))*(itemBox.iHeight + (borderMode? 4 : 0))];
+	background = new fb_pixel_t[(itemBox.iWidth)*(itemBox.iHeight)];
 		
 	if(background)
 	{
-		frameBuffer->saveScreen(itemBox.iX - (borderMode? 2 : 0), itemBox.iY - (borderMode? 2 : 0), itemBox.iWidth + (borderMode? 4 : 0), itemBox.iHeight + (borderMode? 4 : 0), background);
+		frameBuffer->saveScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
 	}
 }
 
@@ -2268,7 +2270,7 @@ void CCWindow::restoreScreen()
 	
 	if(background) 
 	{
-		frameBuffer->restoreScreen(itemBox.iX - (borderMode? 2 : 0), itemBox.iY - (borderMode? 2 : 0), itemBox.iWidth + (borderMode? 4 : 0), itemBox.iHeight + (borderMode? 4 : 0), background);
+		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
 	}
 }
 
@@ -2289,15 +2291,15 @@ void CCWindow::paintPage(void)
 		}
 		else if (borderMode == BORDER_ALL)
 		{
-			frameBuffer->paintBoxRel(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + 4, itemBox.iHeight + 4, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
+			frameBuffer->paintBoxRel(itemBox.iX + 2, itemBox.iY + 2, itemBox.iWidth - 4, itemBox.iHeight - 4, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 		}
 		else if (borderMode == BORDER_LEFTRIGHT)
 		{
-			frameBuffer->paintBoxRel(itemBox.iX - 2, itemBox.iY, itemBox.iWidth + 4, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
+			frameBuffer->paintBoxRel(itemBox.iX + 2, itemBox.iY, itemBox.iWidth - 4, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 		}
 		else if (borderMode == BORDER_TOPBOTTOM)
 		{
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY - 2, itemBox.iWidth, itemBox.iHeight + 4, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + 2, itemBox.iWidth, itemBox.iHeight - 4, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 		}
 	}
 }
