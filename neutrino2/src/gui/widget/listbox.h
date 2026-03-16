@@ -148,7 +148,7 @@ class CMenuItem
 		virtual void paintItemBox(fb_pixel_t col);
 		virtual void refreshItemBox(fb_pixel_t col);
 		virtual void paintItemSlider(const bool select_mode, const int &item_height, const int &optionvalue, const int &factor, const char *left_text = NULL, const char *right_text = NULL);
-		virtual int paint(bool selected = false, bool AfterPulldown = false) = 0;
+		virtual int paint(bool selected = false) = 0;
 		
 		//
 		virtual int getHeight(void) const = 0;
@@ -244,7 +244,7 @@ class CMenuOptionChooser : public CMenuItem
 		//
 		void addOption(const char *optionname, const int optionvalue);
 
-		int paint(bool selected, bool AfterPulldown = false);
+		int paint(bool selected);
 
 		int exec(CTarget *target);
 };
@@ -279,7 +279,7 @@ class CMenuOptionNumberChooser : public CMenuItem
 
 		virtual ~CMenuOptionNumberChooser(){};
 		
-		int paint(bool selected, bool AfterPulldown = false);
+		int paint(bool selected);
 
 		int exec(CTarget *target);
 };
@@ -297,7 +297,7 @@ class CMenuOptionStringChooser : public CMenuItem
 
 		void addOption(const char * optionname, const int optionvalue = 0);
 
-		int paint(bool selected, bool AfterPulldown = false);
+		int paint(bool selected);
 		int getHeight(void) const {if (hidden) return 0; else return height;}
 
 		bool isSelectable(void) const {return (active && !hidden);}
@@ -328,7 +328,7 @@ class CMenuSeparator : public CMenuItem
 		virtual ~CMenuSeparator(){};
 
 		//
-		int paint(bool selected = false, bool AfterPulldown = false);
+		int paint(bool selected = false);
 		int getHeight(void) const;
 		int getWidth(void) const;
 		
@@ -353,7 +353,7 @@ class CMenuForwarder : public CMenuItem
 		
 		void addOption(const char * optionname, const int optionvalue = 0){option = optionname? optionname : "";};
 		
-		int paint(bool selected = false, bool AfterPulldown = false);
+		int paint(bool selected = false);
 		int getHeight(void) const;
 		int getWidth(void) const;
 

@@ -568,12 +568,12 @@ int CMenuOptionChooser::exec(CTarget *target)
 	if (wantsRepaint || !paintFrame)
 		ret = CTarget::RETURN_REPAINT;
 		
-	paint(true, true);
+	paint(true);
 
 	return CTarget::RETURN_REPAINT;
 }
 
-int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
+int CMenuOptionChooser::paint(bool selected)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionChooser::paint\n");
 	
@@ -692,7 +692,7 @@ int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
 		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposOption, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_LEFT - (stringstartposOption - x), _(l_option.c_str()), color, 0, true); // FIXME: i18n
 
 	// vfd
-	if (selected && !AfterPulldown)
+	if (selected)
 	{ 
 		char str[256];
 		snprintf(str, 255, "%s %s", l_name, l_option.c_str());
@@ -775,7 +775,7 @@ int CMenuOptionNumberChooser::exec(CTarget *target)
 	return CTarget::RETURN_REPAINT;
 }
 
-int CMenuOptionNumberChooser::paint(bool selected, bool /*AfterPulldown*/)
+int CMenuOptionNumberChooser::paint(bool selected)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionNumberChooser::paint\n");
 	
@@ -1081,12 +1081,12 @@ int CMenuOptionStringChooser::exec(CTarget *target)
 	if (wantsRepaint || !paintFrame)
 		ret = CTarget::RETURN_REPAINT;
 		
-	paint(true, true);
+	paint(true);
 
 	return CTarget::RETURN_REPAINT;
 }
 
-int CMenuOptionStringChooser::paint( bool selected, bool afterPulldown)
+int CMenuOptionStringChooser::paint( bool selected)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionStringChooser::paint\n");
 	
@@ -1174,7 +1174,7 @@ int CMenuOptionStringChooser::paint( bool selected, bool afterPulldown)
 	
 	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposOption, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_RIGHT - (stringstartposOption - x), _(optionString), color, 0, true);
 	
-	if (selected && !afterPulldown)
+	if (selected)
 	{
 		char str[256];
 		snprintf(str, 255, "%s %s", l_name, optionString);
@@ -1217,7 +1217,7 @@ const char * CMenuSeparator::getString(void)
 	return itemName.c_str();
 }
 
-int CMenuSeparator::paint(bool /*selected*/, bool /*AfterPulldown*/)
+int CMenuSeparator::paint(bool /*selected*/)
 {
 	dprintf(DEBUG_DEBUG, "CMenuSeparator::paint:\n");
 	
@@ -1436,7 +1436,7 @@ const char * CMenuForwarder::getOption(void)
 		return NULL;
 }
 
-int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
+int CMenuForwarder::paint(bool selected)
 {
 	dprintf(DEBUG_DEBUG, "CMenuForwarder::paint:\n");
 
