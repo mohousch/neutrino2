@@ -15,8 +15,8 @@
 #define STOP    '\0' 
 #define ESCAPE  '\1' 
 
-#define TABLE1_FILENAME CONFIGDIR "/freesat.t1"
-#define TABLE2_FILENAME CONFIGDIR "/freesat.t2"
+#define TABLE1_FILENAME		CONFIGDIR "/freesat.t1"
+#define TABLE2_FILENAME 	CONFIGDIR "/freesat.t2"
 
 class huffTableEntry 
 {

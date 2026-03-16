@@ -1101,11 +1101,14 @@ void CCLabel::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCLabel::paint\n");
 	
-	////
+	//
 	initFrames();
 	
 	//
-	saveScreen();
+	if (update())
+		saveScreen();
+	else
+		restoreScreen();
 	
 	//
 	int stringWidth = itemBox.iWidth;
@@ -1297,7 +1300,10 @@ void CCText::paint(bool _selected)
 	initFrames();
 	
 	//
-	saveScreen();
+	if (update())
+		saveScreen();
+	else
+		restoreScreen();
 
 	// recalculate
 	medlineheight = g_Font[font]->getHeight();
@@ -1428,9 +1434,6 @@ void CCTime::hide()
 {
 	dprintf(DEBUG_DEBUG, "CCTime::hide\n");
 	
-	//
-	restoreScreen();
-	
 	if (background)
 	{
 		delete [] background; 
@@ -1544,9 +1547,6 @@ void CCCounter::refresh(bool show)
 void CCCounter::hide()
 {
 	dprintf(DEBUG_DEBUG, "CCCounter::hide\n");
-	
-	//
-	restoreScreen();
 
 	if (background)
 	{

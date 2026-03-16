@@ -48,8 +48,10 @@ void freesatHuffmanDecoder::loadTables()
 	if (! m_tablesLoaded )
 	{
 		fprintf(stderr, "[FREESAT] Load tables\n");
+		
 		loadFile(1, TABLE1_FILENAME);
 		loadFile(2, TABLE2_FILENAME);
+		
 		m_tablesLoaded = true;
 	}
 }
@@ -129,7 +131,7 @@ bool freesatHuffmanDecoder::loadFile(int tableid, const char *filename)
 
 	if ( ( fp = fopen(filename,"r") ) != NULL )
 	{
-		fprintf(stderr, "[FREESAT] Loading table %d Filename <%s>\n",tableid + 1, filename);
+		fprintf(stderr, "[FREESAT] Loading table %d Filename <%s>\n", tableid + 1, filename);
 
 		while ( fgets(buf,sizeof(buf),fp) != NULL )
 		{
@@ -151,9 +153,10 @@ bool freesatHuffmanDecoder::loadFile(int tableid, const char *filename)
 				}
 				*pCurrent = new huffTableEntry(bin, bin_len, to_char, NULL);
 			}
-			free(from);
-			free(to);
-			free(binary);
+			
+//			free(from);
+//			free(to);
+//			free(binary);
 		}
 		fclose(fp);
 		return true;

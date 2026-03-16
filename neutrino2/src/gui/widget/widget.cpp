@@ -222,7 +222,7 @@ void CWidget::paintCCItems()
 
 void CWidget::paint()
 {
-	dprintf(DEBUG_NORMAL, "CWidget::paint (%s)\n", name.c_str());
+	dprintf(DEBUG_NORMAL, "CWidget::paint: (%s)\n", name.c_str());
 	
 	initFrames();
 	
@@ -231,7 +231,7 @@ void CWidget::paint()
 	// paint mainFrame	
 	if (paintframe)
 	{
-//		// border
+		// border
 		if (borderMode != CComponent::BORDER_NO)
 			frameBuffer->paintBoxRel(mainFrameBox.iX - 2, mainFrameBox.iY - 2, mainFrameBox.iWidth + 4, mainFrameBox.iHeight + 4, borderColor, radius, corner, borderGradient);
 			
@@ -245,10 +245,10 @@ void CWidget::paint()
 
 void CWidget::saveScreen()
 {
-	dprintf(DEBUG_INFO, "CWidget::saveScreen\n");
-	
 	if(!savescreen)
 		return;
+		
+	dprintf(DEBUG_NORMAL, "CWidget::saveScreen\n");
 
 	if(background)
 	{
@@ -266,20 +266,12 @@ void CWidget::saveScreen()
 
 void CWidget::restoreScreen()
 {
-	dprintf(DEBUG_INFO, "CWidget::restoreScreen\n");
+	dprintf(DEBUG_NORMAL, "CWidget::restoreScreen\n");
 	
 	if(savescreen && background) 
 	{
 		frameBuffer->restoreScreen((borderMode != CComponent::BORDER_NO)? mainFrameBox.iX - 2 : mainFrameBox.iX, (borderMode != CComponent::BORDER_NO)? mainFrameBox.iY - 2 : mainFrameBox.iY, (borderMode != CComponent::BORDER_NO)? mainFrameBox.iWidth + 4 : mainFrameBox.iWidth, (borderMode != CComponent::BORDER_NO)? mainFrameBox.iHeight + 4 : mainFrameBox.iHeight, background);
 	}
-}
-
-//
-void CWidget::enableSaveScreen()
-{
-	savescreen = true;
-	
-//	saveScreen();
 }
 
 void CWidget::hide()
@@ -300,6 +292,7 @@ void CWidget::hide()
 		}
 	}	
 
+	//
 	if( savescreen && background)
 	{
 		restoreScreen();
@@ -347,7 +340,6 @@ int CWidget::exec(CTarget *parent, const std::string &)
 		}
 	}
 
-	initFrames();
 	paint();
 	CFrameBuffer::getInstance()->blit();
 
@@ -404,7 +396,6 @@ int CWidget::exec(CTarget *parent, const std::string &)
 			}
 			
 			// directKey
-			#if 1
 			retval = onDirectKeyPressed(msg, parent);
 			
 			switch ( retval ) 
@@ -417,7 +408,6 @@ int CWidget::exec(CTarget *parent, const std::string &)
 					paint();
 					break;
 			}
-			#endif
 		}
 
 		if (!handled) 
@@ -663,7 +653,7 @@ int CWidget::onOKKeyPressed(CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "CWidget::onOKKeyPressed:\n");
 	
-	int ret = CTarget::RETURN_REPAINT;
+	int ret = CTarget::RETURN_NONE;
 	
 	if(hasCCItem() && selected >= 0)
 	{
@@ -682,7 +672,7 @@ int CWidget::onRightKeyPressed(CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "CWidget::onRightKeyPressed\n");
 	
-	int ret = CTarget::RETURN_REPAINT;
+	int ret = CTarget::RETURN_NONE;
 	
 	if(hasCCItem() && selected >= 0)
 	{
@@ -698,7 +688,7 @@ int CWidget::onLeftKeyPressed(CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "CWidget::onLeftKeyPressed\n");
 	
-	int ret = CTarget::RETURN_REPAINT;
+	int ret = CTarget::RETURN_NONE;
 	
 	if(hasCCItem() && selected >= 0)
 	{
@@ -715,7 +705,7 @@ int CWidget::onDirectKeyPressed(neutrino_msg_t _msg, CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "CWidget::onDirectKeyPressed: msg:0x%x\n", _msg);
 	
-	int ret = CTarget::RETURN_REPAINT;
+	int ret = CTarget::RETURN_NONE;
 	
 	if(hasCCItem() && selected >= 0)
 	{

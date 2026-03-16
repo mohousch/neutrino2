@@ -2460,8 +2460,9 @@ void ClistBox::paint(bool _selected)
 	if (paintframe)
 	{
 		// border
-		if (borderMode != CComponent::BORDER_NO)
+		if (borderMode)
 		{
+			printf("TEST:paintBorder\n\n");
 			int radius = NO_RADIUS;
 			int corner = CORNER_NONE;
 
@@ -2480,13 +2481,9 @@ void ClistBox::paint(bool _selected)
 			frameBuffer->paintBoxRel(itemBox.iX - (borderMode? 2 : 0), itemBox.iY - (borderMode? 2 : 0), itemBox.iWidth + (borderMode? 4 : 0), itemBox.iHeight + (borderMode? 4 : 0), borderColor, radius, corner, borderGradient);
 		}
 		
-		// mainframe //???
+		// mainframe
 		frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, items_width, items_height, bgcolor);
 	}
-//	else
-//	{
-//		saveScreen();
-//	}
 	
 	// itemInfo stuff
 	// itemInfoBox1
@@ -2540,6 +2537,7 @@ void ClistBox::paint(bool _selected)
 		label.enableSaveScreen();
 	}
 	
+	//
 	paintItems();
 	
 	//
@@ -3259,10 +3257,10 @@ void ClistBox::hideItemInfo()
 
 void ClistBox::saveScreen()
 {
-	dprintf(DEBUG_INFO, "ClistBox::saveScreen:\n");
-	
 	if (!savescreen)
 		return;
+		
+	dprintf(DEBUG_NORMAL, "ClistBox::saveScreen:\n");
 
 	if(background)
 	{
@@ -3280,7 +3278,7 @@ void ClistBox::saveScreen()
 
 void ClistBox::restoreScreen()
 {
-	dprintf(DEBUG_INFO, "ClistBox::restoreScreen:\n");
+	dprintf(DEBUG_NORMAL, "ClistBox::restoreScreen:\n");
 	
 	if(savescreen && background) 
 	{
@@ -3758,7 +3756,7 @@ int ClistBox::oKKeyPressed(CTarget *target, neutrino_msg_t _msg)
 {
 	dprintf(DEBUG_NORMAL, "ClistBox::okKeyPressed: msg:0x%x\n", _msg);
 	
-	int ret = CTarget::RETURN_REPAINT;
+	int ret = CTarget::RETURN_NONE;
 
 	if (hasItem() && selected >= 0 && items[selected]->isSelectable())
 	{
@@ -3777,7 +3775,7 @@ int ClistBox::directKeyPressed(neutrino_msg_t _msg, CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "ClistBox::directKeyPressed: msg:0x%x\n", _msg);
 	
-	int ret = CTarget::RETURN_REPAINT;
+	int ret = CTarget::RETURN_NONE;
 	
 	// 
 	for (unsigned int i = 0; i < items.size(); i++) 

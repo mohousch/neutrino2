@@ -425,7 +425,7 @@ class CMenuItemInfo
 			initFrames();
 		};
 		
-		virtual void paintMainFrame(bool p){paintframe = p; if (!paintframe) enableSaveScreen();};
+		virtual void paintMainFrame(bool p){paintframe = p;};
 		virtual void setHAlign(int h){halign = h;};
 		
 		//
@@ -511,8 +511,6 @@ class ClistBox : public CComponent
 		fb_pixel_t bgcolor;;
 		bool scrollbar;
 		fb_pixel_t *background;
-		void saveScreen();
-		void restoreScreen();
 		int borderMode;
 		uint32_t borderColor;
 		int borderGradient;
@@ -576,6 +574,8 @@ class ClistBox : public CComponent
 
 		// methods
 		virtual void paintItems();
+		void saveScreen();
+		void restoreScreen();
 		
 	public:
 		ClistBox(const int x = 0, int const y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);
@@ -615,6 +615,8 @@ class ClistBox : public CComponent
 		bool update() const {return paintDate;};
 		inline bool isPainted(void){return painted;};
 		//// main properties
+		void enableSaveScreen(){ savescreen = true; };
+		void paintMainFrame(bool p){paintframe = p; if (!paintframe) enableSaveScreen();};
 		void enableShrinkMenu(){shrinkMenu = true;};
 		void setColor(fb_pixel_t col){bgcolor = col;};
 		void paintScrollBar(bool sb){scrollbar = sb;};

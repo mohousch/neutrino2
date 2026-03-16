@@ -92,7 +92,7 @@ void CMediaPortal::showMenu(void)
 
 	mediaPortal->setMode(ClistBox::MODE_LISTBOX);
 	mediaPortal->setLayout(ClistBox::LAYOUT_FRAME);
-	mediaPortal->paintMainFrame(true);
+	mediaPortal->paintMainFrame(false);
 	mediaPortal->enablePaintItemInfo();
 	mediaPortal->setItemsPerPage(6, 3);
 

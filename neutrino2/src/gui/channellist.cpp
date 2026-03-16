@@ -498,19 +498,15 @@ int CChannelList::show(bool customMode)
 		
 				if (ret) 
 				{
-					////test
-					CZapit::getInstance()->saveBouquets();
 					res = -4;
-//					loop = false;
-					//
-					paint(customMode); // repaint
+					loop = false;
 				} 
 				else 
 				{
 					old_b_id = -1;
-
-//					paint(customMode);
 				}
+				
+//				paint(customMode);
 			}
 		}
 		else if (msg == (neutrino_msg_t) g_settings.key_list_start) 
@@ -1783,15 +1779,9 @@ int CChannelList::doChannelMenu(void)
 	mWidget->paintMainFrame(true);
 	mWidget->enableSaveScreen();
 	mWidget->setBorderMode();
-
 	mWidget->exec(NULL, "");
 	
-	if (mWidget->getExitPressed())
-		return 0;
-	
 	select = menu->getSelected();
-	
-	printf("SELECT= %d\n", select);
 	
 	if (widget)
 	{
