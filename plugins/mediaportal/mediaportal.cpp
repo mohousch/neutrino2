@@ -85,16 +85,16 @@ int CMediaPortal::exec(CTarget * parent, const std::string & actionKey)
 void CMediaPortal::showMenu(void)
 {
 	//
-	widget = new CWidget(frameBuffer->getScreenX(), frameBuffer->getScreenY(), frameBuffer->getScreenWidth(), frameBuffer->getScreenHeight());
+//	widget = new CWidget(frameBuffer->getScreenX(), frameBuffer->getScreenY(), frameBuffer->getScreenWidth(), frameBuffer->getScreenHeight());
 	
 	//
-	mediaPortal = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+	mediaPortal = new ClistBox(frameBuffer->getScreenX(), frameBuffer->getScreenY(), frameBuffer->getScreenWidth(), frameBuffer->getScreenHeight());
 
 	mediaPortal->setMode(ClistBox::MODE_LISTBOX);
 	mediaPortal->setLayout(ClistBox::LAYOUT_FRAME);
-	
-	mediaPortal->paintMainFrame(false);
+	mediaPortal->paintMainFrame(true);
 	mediaPortal->enablePaintItemInfo();
+	mediaPortal->setItemsPerPage(6, 3);
 
 	// youtube
 	if (g_PluginList->plugin_exists("youtube"))
@@ -184,6 +184,15 @@ void CMediaPortal::showMenu(void)
 		mediaPortal->addItem(item);
 	}
 	
+	mediaPortal->exec(this);
+	
+	if (mediaPortal)
+	{
+		delete mediaPortal;
+		mediaPortal = NULL;
+	}
+	
+	/*
 	widget->addCCItem(mediaPortal);
 
 	widget->exec(this, "");
@@ -193,17 +202,10 @@ void CMediaPortal::showMenu(void)
 		delete widget;
 		widget = NULL;
 	}
+	*/
 }
 
 //plugin API
-void plugin_init(void)
-{
-}
-
-void plugin_del(void)
-{
-}
-
 void plugin_exec(void)
 {
 	CMediaPortal * mpHandler = new CMediaPortal();

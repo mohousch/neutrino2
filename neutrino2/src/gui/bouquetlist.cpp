@@ -205,12 +205,12 @@ void CBouquetList::activateBouquet(int id)
 // -3 = mode chnage fav / prov / sat / all
 // -4 = setup
 // or selected bouquet pos
-int CBouquetList::exec(bool bShowChannelList, bool customMode)
+int CBouquetList::exec(bool bShowChannelList, bool customMode, bool skipWebTV)
 {
 	dprintf(DEBUG_NORMAL, "CBouquetList::exec: showChannelList:%s, zap:%s\n", bShowChannelList? "yes" : "no", customMode? "no" : "eys");
 
 	// select bouquet to show
-	int res = show(customMode);
+	int res = show(customMode, skipWebTV);
 
 	dprintf(DEBUG_NORMAL, "CBouquetList::exec: res:%d\n", res);
 
@@ -236,7 +236,7 @@ int CBouquetList::exec(bool bShowChannelList, bool customMode)
 // -3 = mode chnage fav / prov / sat / all
 // -4 = setup
 // or selected bouquet pos
-int CBouquetList::show(bool customMode)
+int CBouquetList::show(bool customMode, bool skipWebTV)
 {
 	dprintf(DEBUG_NORMAL, "CBouquetList::show: zap:%s\n", customMode? "no" : "yes");
 
@@ -249,7 +249,7 @@ int CBouquetList::show(bool customMode)
 	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, name.c_str());
 	
 	//
-	paint();
+	paint(skipWebTV);
 	CFrameBuffer::getInstance()->blit();
 
 	int zapOnExit = false;
@@ -429,7 +429,7 @@ const struct button_label CBouquetListButtons[4] =
         { NEUTRINO_ICON_BUTTON_BLUE, _("All Services"), 0}
 };
 
-void CBouquetList::paint()
+void CBouquetList::paint(bool skipWebTV)
 {
 	dprintf(DEBUG_NORMAL, "CBouquetList::paint\n");
 	
@@ -466,6 +466,9 @@ void CBouquetList::paint()
 
 	for (unsigned int count = 0; count < Bouquets.size(); count++)
 	{
+//		if (skipWebTV && Bouquets[count]->zapitBouquet->bWebTV)
+//			continue;
+			
 		item = new CMenuForwarder(_(Bouquets[count]->channelList->getName()));
 
 		item->setNumber(count + 1);

@@ -511,6 +511,7 @@ void CInfoBox::paint(void)
 	refreshFoot();
 	
 	widget->setBorderMode(borderMode);
+	widget->enableSaveScreen();
 	widget->paint();
 }
 

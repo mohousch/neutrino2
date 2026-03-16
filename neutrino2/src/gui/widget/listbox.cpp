@@ -1763,27 +1763,6 @@ int CMenuForwarder::paint(bool selected)
 			}
 			else
 			{
-				#if 0 // FIXME:
-				// local
-				if(l_text != NULL)
-				{
-					g_Font[nameFont]->RenderString(l_startPosX, y + g_Font[nameFont]->getHeight() + (height - g_Font[nameFont]->getHeight())/2, l_text_width, _(l_text), color, 0, true); // UTF-8
-				}
-
-				// option
-				if(option_text != NULL)
-				{
-					if (option_width > dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width - l_text_width)
-						option_width = dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width - l_text_width;
-						
-					if (optionHAlign == CComponent::CC_ALIGN_LEFT)
-						option_startPosX = l_startPosX + l_text_width + ICON_OFFSET;
-					else
-						option_startPosX = dx - BORDER_RIGHT - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width - option_width;
-						
-					g_Font[optionFont]->RenderString(option_startPosX, y + g_Font[optionFont]->getHeight() + (height - g_Font[optionFont]->getHeight())/2, option_width, _(option_text), (selected || !active)? color : optionFontColor, 0, true);
-				}
-				#else
 				// local
 				if(l_text != NULL)
 				{
@@ -1793,14 +1772,13 @@ int CMenuForwarder::paint(bool selected)
 				// option
 				if(option_text != NULL)
 				{
-					if(option_width > dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width)
+					if (option_width > dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width)
 						option_width = dx - BORDER_RIGHT - BORDER_LEFT - number_width - number_offset - pb_width - pb_offset - icon_w - icon_offset - icon1_w - icon1_offset - icon2_w - icon2_offset - optionInfo_width;
 			
 					option_startPosX = l_startPosX;
 						
 					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(option_startPosX, y + height, option_width, _(option_text), (selected || !active)? color : optionFontColor, 0, true);
 				}
-				#endif
 			}
 		}
 		else // standard / extended
@@ -2452,6 +2430,8 @@ void ClistBox::paint(bool _selected)
 	//
 	initFrames();
 	
+	saveScreen();
+	
 	// calculate items_width / items_height
 	if(widgetLayout == LAYOUT_FRAME)
 	{
@@ -2500,15 +2480,16 @@ void ClistBox::paint(bool _selected)
 			frameBuffer->paintBoxRel(itemBox.iX - (borderMode? 2 : 0), itemBox.iY - (borderMode? 2 : 0), itemBox.iWidth + (borderMode? 4 : 0), itemBox.iHeight + (borderMode? 4 : 0), borderColor, radius, corner, borderGradient);
 		}
 		
-		// mainframe
+		// mainframe //???
 		frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, items_width, items_height, bgcolor);
 	}
-	else
-	{
-		saveScreen();
-	}
+//	else
+//	{
+//		saveScreen();
+//	}
 	
-	//// itemInfo stuff
+	// itemInfo stuff
+	// itemInfoBox1
 	if (widgetLayout == LAYOUT_EXTENDED)
 	{
 		itemInfo.setPosition(itemBox.iX + items_width + (itemBox.iWidth - items_width - ITEM_ICON_W)/2, itemBox.iY + (itemBox.iHeight - ITEM_ICON_H)/2, ITEM_ICON_W, ITEM_ICON_H);
@@ -2520,13 +2501,14 @@ void ClistBox::paint(bool _selected)
 		if (iteminfosavescreen) itemInfo.enableSaveScreen();
 	}
 	
-	// FIXME:						
+	// itemInfoBox2 / label						
 	if (paint_ItemInfo && itemInfoBox2.iWidth != 0)
 	{
 		label.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
 		label.enableSaveScreen();
 	}
 	
+	// label1 / label2
 	if (widgetLayout == LAYOUT_FRAME)
 	{
 		if (paint_ItemInfo)
@@ -2547,7 +2529,7 @@ void ClistBox::paint(bool _selected)
 	paintHead();
 	paintFoot();
 
-	//	
+	// label	
 	if (paint_ItemInfo && paint_Foot && widgetLayout != LAYOUT_FRAME)
 	{
 		int iw, ih;
@@ -2779,7 +2761,7 @@ void ClistBox::paintHead()
 				}
 			}
 
-			// paint time/date
+			// time / date
 			int timestr_len = 0;
 			if(paintDate)
 			{
@@ -2821,7 +2803,7 @@ void ClistBox::paintHead()
 			if (head_line)
 				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight - 2, itemBox.iWidth, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 		
-			//paint icon (left)
+			// icon (left)
 			int i_w = 0;
 			int i_h = 0;
 			
@@ -2863,7 +2845,7 @@ void ClistBox::paintHead()
 				}
 			}
 
-			// paint time/date
+			// time / date
 			int timestr_len = 0;
 			if(paintDate)
 			{
@@ -2885,7 +2867,7 @@ void ClistBox::paintHead()
 				timer->paint();
 			}
 		
-			// head title
+			// title
 			int startPosX = itemBox.iX + BORDER_LEFT + i_w + ICON_OFFSET;
 			int stringWidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getRenderWidth(_(htitle.c_str()));
 			
@@ -2978,7 +2960,7 @@ void ClistBox::paintFoot()
 					int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
 		
 					CFrameBuffer::getInstance()->paintIcon(fbutton_labels[i].button, itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + itemBox.iHeight - fheight + (fheight - ih[i])/2, 0, iw[i], ih[i]);
-					// FIXME: i18n
+
 					g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, itemBox.iY + itemBox.iHeight - fheight + f_h + (fheight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(fbutton_labels[i].localename.c_str()), COL_MENUFOOT_TEXT_PLUS_0, 0, true); // UTF-8
 				}
 			}
@@ -3038,7 +3020,7 @@ void ClistBox::paintItemInfo(int pos)
 				int iw, ih;
 				frameBuffer->getIconSize(NEUTRINO_ICON_INFO, &iw, &ih);
 								
-				// paint horizontal line buttom
+				// horizontal line buttom
 				if (g_settings.Foot_line)
 					frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - fheight, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, g_settings.Foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 				
@@ -3063,7 +3045,7 @@ void ClistBox::paintItemInfo(int pos)
 				label.paint();
 			}
 			
-			////
+			//
 			if (itemInfoMode == CMenuItemInfo::ITEMINFO_HINTITEM && (itemInfoBox.iWidth != 0 && itemInfoBox.iHeight != 0))
 			{
 				// detailslines box
@@ -3278,6 +3260,9 @@ void ClistBox::hideItemInfo()
 void ClistBox::saveScreen()
 {
 	dprintf(DEBUG_INFO, "ClistBox::saveScreen:\n");
+	
+	if (!savescreen)
+		return;
 
 	if(background)
 	{
@@ -3297,7 +3282,7 @@ void ClistBox::restoreScreen()
 {
 	dprintf(DEBUG_INFO, "ClistBox::restoreScreen:\n");
 	
-	if(background) 
+	if(savescreen && background) 
 	{
 		frameBuffer->restoreScreen(itemBox.iX - (borderMode? 2 : 0), itemBox.iY - (borderMode? 2 : 0), itemBox.iWidth + (borderMode? 4 : 0), itemBox.iHeight + (borderMode? 4 : 0), background);
 	}
@@ -3308,7 +3293,12 @@ void ClistBox::hide()
 	dprintf(DEBUG_NORMAL, "ClistBox::hide: (%s)\n", htitle.c_str());
 
 	if (paintframe)
-		frameBuffer->paintBackgroundBoxRel(itemBox.iX - (borderMode? 2 : 0) , itemBox.iY - (borderMode? 2 : 0), itemBox.iWidth + (borderMode? 4 : 0), itemBox.iHeight + (borderMode? 4 : 0));
+	{
+		if( savescreen && background)
+			restoreScreen();
+		else
+			frameBuffer->paintBackgroundBoxRel(itemBox.iX - (borderMode? 2 : 0) , itemBox.iY - (borderMode? 2 : 0), itemBox.iWidth + (borderMode? 4 : 0), itemBox.iHeight + (borderMode? 4 : 0));
+	}
 	else
 		restoreScreen();
 		

@@ -4306,6 +4306,8 @@ void CZapit::saveScanBouquets(const CZapit::bouquetMode bouquetMode, const char 
 //
 void CZapit::addChannelToBouquet(const unsigned int bouquet, const t_channel_id channel_id)
 {
+	dprintf(DEBUG_NORMAL, "CZapit::addChannelToBouquet: (%d) (0x%llx)\n", bouquet, channel_id);
+	
 	CZapitChannel * chan = findChannelByChannelID(channel_id);
 
 	if (chan != NULL)
@@ -4317,15 +4319,21 @@ void CZapit::addChannelToBouquet(const unsigned int bouquet, const t_channel_id 
 	}
 	else
 		printf("channel_id not found in channellist\n");
+	
+	//	
+	g_RCInput->postMsg(NeutrinoMessages::EVT_SERVICESCHANGED);
 }
 
 //
 void CZapit::removeChannelFromBouquet(const unsigned int bouquet, const t_channel_id channel_id)
 {
+	dprintf(DEBUG_NORMAL, "CZapit::removeChannelToBouquet: (%d) (0x%llx)\n", bouquet, channel_id);
+	
 	if (bouquet < Bouquets.size())
 		Bouquets[bouquet]->removeService(channel_id);
 
 	bool status = 0;
+	
 	for (unsigned int i = 0; i < Bouquets.size(); i++) 
 	{
 		status = existsChannelInBouquet(i, channel_id);
@@ -4340,6 +4348,7 @@ void CZapit::removeChannelFromBouquet(const unsigned int bouquet, const t_channe
 		g_list_changed = 1;
 	}
 	
+	//
 	g_RCInput->postMsg(NeutrinoMessages::EVT_SERVICESCHANGED);
 }
 

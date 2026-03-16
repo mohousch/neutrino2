@@ -225,6 +225,8 @@ void CWidget::paint()
 	dprintf(DEBUG_NORMAL, "CWidget::paint (%s)\n", name.c_str());
 	
 	initFrames();
+	
+	saveScreen();
 
 	// paint mainFrame	
 	if (paintframe)
@@ -277,7 +279,7 @@ void CWidget::enableSaveScreen()
 {
 	savescreen = true;
 	
-	saveScreen();
+//	saveScreen();
 }
 
 void CWidget::hide()
@@ -346,7 +348,6 @@ int CWidget::exec(CTarget *parent, const std::string &)
 	}
 
 	initFrames();
-	saveScreen();
 	paint();
 	CFrameBuffer::getInstance()->blit();
 

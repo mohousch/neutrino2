@@ -85,7 +85,7 @@ class CBouquetList
 		uint32_t sec_timer_id;
 		int selected;
 		//
-		void paint();
+		void paint(bool skipWebTV = false);
 		void hide();
 
 		std::string name;
@@ -105,8 +105,8 @@ class CBouquetList
 		void activateBouquet(int id);
 		void adjustToChannelID(t_channel_id channel_id);
 		int showChannelList(int nBouquet = -1, bool customMode = false);
-		int show(bool customMode = false);
-		int exec(bool bShowChannelList = true, bool custonMode = false);
+		int show(bool customMode = false, bool skipWebTV = false);
+		int exec(bool bShowChannelList = true, bool custonMode = false, bool skipWebTV = false);
 };
 
 #endif

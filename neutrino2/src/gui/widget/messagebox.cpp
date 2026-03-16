@@ -268,7 +268,7 @@ void CMessageBox::refreshPage()
 		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(cFrameBox.iX + BORDER_LEFT, (ypos += g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight()), m_width - 20, *it, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); 
 	}
 
-	// scrollBar #TODO
+	// scrollBar
 	if (entries_per_page < m_lines.size())
 	{
 		int ypos  = cFrameBox.iY + m_theight;

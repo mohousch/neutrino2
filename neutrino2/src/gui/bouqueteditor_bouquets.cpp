@@ -38,7 +38,7 @@
 #include <gui/widget/icons.h>
 #include <gui/widget/hintbox.h>
 #include <gui/widget/messagebox.h>
-#include <gui/widget/stringinput.h>
+#include <gui/widget/keyboard_input.h>
 
 //
 #include <system/debug.h>
@@ -493,6 +493,7 @@ void CBEBouquetWidget::deleteBouquet()
 void CBEBouquetWidget::addBouquet()
 {
 	std::string newName = inputName("", _("Name of bouquets"));
+	
 	if (!(newName.empty()))
 	{
 		CZapit::getInstance()->addBouquet(newName, true);
@@ -615,7 +616,7 @@ std::string CBEBouquetWidget::inputName(const char * const defaultName, const ch
 
 	strncpy(Name, defaultName, MAX_INPUT_CHARS + 1);
 
-	CStringInputSMS *nameInput = new CStringInputSMS(caption, Name);
+	CKeyboardInput *nameInput = new CKeyboardInput(caption, Name);
 	nameInput->exec(this, "");
 	delete nameInput;
 

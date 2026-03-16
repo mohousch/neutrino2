@@ -134,6 +134,7 @@ class CTestMenu : public CTarget
 		void testCCText();
 		void testCImage();
 		void testCCTime();
+		void testCCCounter();
 		void testCProgressBar();
 		void testCButtons();
 		void testCHButtons();
@@ -1643,6 +1644,8 @@ void CTestMenu::testCIcon()
 
 	// loop
 	testIcon.setExecutable();
+	testIcon.enableRepaint();
+	
 	testIcon.exec(this);
 	
 	hide();
@@ -1663,6 +1666,7 @@ void CTestMenu::testCImage()
 	
 	testImage.setPosition(150 + BORDER_LEFT, 150, testImage.iWidth, testImage.iHeight);
 	testImage.setExecutable();
+	testImage.enableRepaint();
 	
 	testImage.exec(this);
 	
@@ -1673,22 +1677,21 @@ void CTestMenu::testCCLabel()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCCLabel\n");
 	
-	// mainBox
 	CBox box;
 	box.iX = CFrameBuffer::getInstance()->getScreenX() + 40;
 	box.iY = CFrameBuffer::getInstance()->getScreenY() + 40;
 	box.iWidth = CFrameBuffer::getInstance()->getScreenWidth() - 80;
 	box.iHeight = CFrameBuffer::getInstance()->getScreenHeight() - 80;
 	
-	CCLabel CTextBox(box.iX, box.iY, box.iWidth, box.iHeight);
+	CCLabel label(box.iX, box.iY, box.iWidth, box.iHeight);
 	
-	CTextBox.setText("neutrinoNG is rocking ...!");
-		
-	CTextBox.setColor(COL_RED_PLUS_0);
-	CTextBox.setHAlign(CComponent::CC_ALIGN_CENTER);
-	CTextBox.setExecutable();	
+	label.setText("neutrinoNG is rocking ...!");
+	label.setColor(COL_RED_PLUS_0);
+	label.setHAlign(CComponent::CC_ALIGN_CENTER);
+	label.setExecutable();
+	label.enableRepaint();	
 	
-	CTextBox.exec(this);
+	label.exec(this);
 	
 	hide();
 }
@@ -1697,27 +1700,24 @@ void CTestMenu::testCCText()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCCText\n");
 	
-	// mainBox
 	CBox box;
 	box.iX = CFrameBuffer::getInstance()->getScreenX() + 40;
 	box.iY = CFrameBuffer::getInstance()->getScreenY() + 40;
 	box.iWidth = CFrameBuffer::getInstance()->getScreenWidth() - 80;
 	box.iHeight = CFrameBuffer::getInstance()->getScreenHeight() - 80;
 	
-	loadMoviePlaylist();
-	
 	//
 	std::string buffer = "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.";
 	
-	CCText CTextBox(box.iX, box.iY, box.iWidth, box.iHeight);
+	CCText text(box.iX, box.iY, box.iWidth, box.iHeight);
 	
-	CTextBox.setText(buffer.c_str());
-		
-	CTextBox.setColor(COL_YELLOW_PLUS_0);
-	CTextBox.setHAlign(CComponent::CC_ALIGN_CENTER);
-	CTextBox.setExecutable();	
+	text.setText(buffer.c_str());	
+	text.setColor(COL_YELLOW_PLUS_0);
+	text.setHAlign(CComponent::CC_ALIGN_CENTER);
+	text.setExecutable();	
+	text.enableRepaint();
 	
-	CTextBox.exec(this);
+	text.exec(this);
 	
 	hide();
 }
@@ -1734,6 +1734,29 @@ void CTestMenu::testCCTime()
 	CCTime timer(g_settings.screen_StartX + 100, g_settings.screen_StartY + 100, /*timestr_len*/500, g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getHeight());
 	
 	timer.setFormat(format);
+	timer.setExecutable();
+	
+	timer.exec(this);
+	
+	hide();
+}
+
+void CTestMenu::testCCCounter()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCCCounter:\n");
+	
+	char* format = "%d.%m.%Y %H:%M:%S";
+	std::string timestr = getNowTimeStr(format);
+		
+	int timestr_len = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth(timestr.c_str(), true); // UTF-8
+		
+	CCCounter timer(g_settings.screen_StartX + 100, g_settings.screen_StartY + 100, timestr_len + 1, g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getHeight());
+	
+	time_t totalTime(NULL);
+	time_t playTime(NULL);
+	
+	timer.setTotalTime(totalTime);
+	timer.setPlayTime(playTime);
 	timer.setExecutable();
 	
 	timer.exec(this);
@@ -4402,6 +4425,8 @@ void CTestMenu::testClistBoxValue()
 	testBox->enablePaintHead();
 	testBox->enablePaintFoot();
 	testBox->enablePaintItemInfo();
+	testBox->enableSaveScreen();
+	testBox->paintMainFrame(true);
 	
 RETRY:
 	int ret = testBox->exec(this);
@@ -4569,6 +4594,12 @@ int CTestMenu::exec(CTarget *parent, const std::string &actionKey)
 	else if (actionKey == "cctime")
 	{
 		testCCTime();
+		
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "cccounter")
+	{
+		testCCCounter();
 		
 		return RETURN_REPAINT;
 	}
@@ -6015,6 +6046,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CCLabel", true, NULL, this, "cclabel"));
 	mainMenu->addItem(new CMenuForwarder("CCText", true, NULL, this, "cctext"));
 	mainMenu->addItem(new CMenuForwarder("CCTime", true, NULL, this, "cctime"));
+	mainMenu->addItem(new CMenuForwarder("CCCounter", true, NULL, this, "cccounter"));
 	mainMenu->addItem(new CMenuForwarder("CCButtons (foot)", true, NULL, this, "buttons"));
 	mainMenu->addItem(new CMenuForwarder("CCButtons (head)", true, NULL, this, "hbuttons"));
 	mainMenu->addItem(new CMenuForwarder("CCSpinner", true, NULL, this, "spinner"));

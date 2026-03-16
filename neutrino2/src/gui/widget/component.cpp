@@ -282,7 +282,6 @@ int CComponent::exec(CTarget *target)
 				continue;
 			}
 			
-			#if 1
 			// directKey
 			retval = directKeyPressed(msg, target);
 
@@ -295,8 +294,7 @@ int CComponent::exec(CTarget *target)
 				case CTarget::RETURN_REPAINT:
 					paint();
 					break;
-			}
-			#endif			
+			}		
 		}
 
 		if (!handled)
@@ -456,6 +454,9 @@ void CCIcon::setIcon(const char* const icon)
 
 void CCIcon::saveScreen(void)
 {
+	if (!savescreen)
+		return;
+
 	if(background)
 	{
 		delete[] background;
@@ -472,7 +473,7 @@ void CCIcon::saveScreen(void)
 
 void CCIcon::restoreScreen(void)
 {
-	if(background) 
+	if (savescreen && background) 
 	{
 		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
 	}
@@ -483,15 +484,13 @@ void CCIcon::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCIcon::paint\n");
 	
-	////
+	//
 	initFrames();
 	
 	//
-	if (savescreen || rePaint)
-	{
-		saveScreen();
-	}
+	saveScreen();
 	
+	// 
 	if (!iconName.empty()) frameBuffer->paintIcon(iconName.c_str(), itemBox.iX + (itemBox.iWidth - width)/2, itemBox.iY + (itemBox.iHeight - height)/2);
 };
 
@@ -499,9 +498,14 @@ void CCIcon::hide()
 {
 	dprintf(DEBUG_DEBUG, "CCIcon::hide\n");
 	
-	if (savescreen || rePaint)
+	//
+	restoreScreen();
+	
+	//
+	if (savescreen && background)
 	{
-		restoreScreen();
+		delete [] background;
+		background = NULL;
 	}
 }
 
@@ -551,6 +555,9 @@ void CCImage::setImage(const char* const image)
 
 void CCImage::saveScreen(void)
 {
+	if (!savescreen)
+		return;
+		
 	if(background)
 	{
 		delete[] background;
@@ -567,7 +574,7 @@ void CCImage::saveScreen(void)
 
 void CCImage::restoreScreen(void)
 {
-	if(background) 
+	if(savescreen && background) 
 	{
 		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
 	}
@@ -578,7 +585,7 @@ void CCImage::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCImage::paint\n");
 	
-	////
+	//
 	initFrames();
 	
 	if (iWidth > itemBox.iWidth && itemBox.iWidth != 0) 
@@ -587,11 +594,9 @@ void CCImage::paint(bool _selected)
 		iHeight = itemBox.iHeight;
 		
 	//
-	if (rePaint)
-	{
-		saveScreen();
-	}
-			
+	saveScreen();
+	
+	//		
 	int startPosX = itemBox.iX + (itemBox.iWidth - iWidth)/2;
 			
 	if (scale)
@@ -613,6 +618,13 @@ void CCImage::hide()
 	dprintf(DEBUG_DEBUG, "CCImage::hide\n");
 	
 	restoreScreen();
+	
+	//
+	if (savescreen && background)
+	{
+		delete [] background;
+		background = NULL;
+	}
 }
 
 void CCImage::refresh(bool show)
@@ -1050,18 +1062,18 @@ CCLabel::CCLabel(const int x, const int y, const int dx, const int dy)
 
 CCLabel::~CCLabel()
 {
-	if (savescreen)
+	if (savescreen && background)
 	{
-		if (background)
-		{
-			delete [] background;
-			background = NULL;
-		}
+		delete [] background;
+		background = NULL;
 	}
 }
 
 void CCLabel::saveScreen(void)
 {
+	if (!savescreen)
+		return;
+
 	if (background)
 	{
 		delete [] background;
@@ -1085,13 +1097,6 @@ void CCLabel::restoreScreen(void)
 	}
 }
 
-void CCLabel::enableSaveScreen()
-{
-	savescreen = true;
-	
-	saveScreen();
-}
-
 void CCLabel::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCLabel::paint\n");
@@ -1100,10 +1105,7 @@ void CCLabel::paint(bool _selected)
 	initFrames();
 	
 	//
-	if (rePaint)
-		saveScreen();
-	else
-		restoreScreen();
+	saveScreen();
 	
 	//
 	int stringWidth = itemBox.iWidth;
@@ -1130,18 +1132,12 @@ void CCLabel::paint(bool _selected)
 
 void CCLabel::hide()
 {
-	if (rePaint)
-		restoreScreen();
-	else
+	restoreScreen();
+
+	if (savescreen && background)
 	{
-		if (savescreen)
-		{
-			if (background)
-			{
-				delete [] background;
-				background = NULL;
-			}
-		}
+		delete [] background;
+		background = NULL;
 	}
 }
 
@@ -1185,6 +1181,9 @@ CCText::CCText(const int x, const int y, const int dx, const int dy)
 
 void CCText::saveScreen(void)
 {
+	if (!savescreen)
+		return;
+		
 	if (background)
 	{
 		delete [] background;
@@ -1207,22 +1206,12 @@ void CCText::restoreScreen(void)
 	}
 }
 
-void CCText::enableSaveScreen()
-{
-	savescreen = true;
-	
-	saveScreen();
-}
-
 CCText::~CCText()
 {
-	if (savescreen)
+	if (savescreen && background)
 	{
-		if (background)
-		{
-			delete [] background;
-			background = NULL;
-		}
+		delete [] background;
+		background = NULL;
 	}
 }
 
@@ -1308,10 +1297,7 @@ void CCText::paint(bool _selected)
 	initFrames();
 	
 	//
-	if (rePaint)
-		saveScreen();
-	else
-		restoreScreen();
+	saveScreen();
 
 	// recalculate
 	medlineheight = g_Font[font]->getHeight();
@@ -1338,18 +1324,12 @@ void CCText::paint(bool _selected)
 
 void CCText::hide()
 {
-	if (rePaint)
-		restoreScreen();
-	else
+	restoreScreen();
+	
+	if (savescreen && background)
 	{
-		if (savescreen)
-		{
-			if (background)
-			{
-				delete [] background;
-				background = NULL;
-			}
-		}
+		delete [] background;
+		background = NULL;
 	}
 }
 
@@ -1424,7 +1404,7 @@ void CCTime::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCTime::paint: x:%d y:%d dx:%d dy:%d\n", itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
 	
-	////
+	//
 	initFrames();
 	
 	//
@@ -1447,6 +1427,9 @@ void CCTime::refresh(bool show)
 void CCTime::hide()
 {
 	dprintf(DEBUG_DEBUG, "CCTime::hide\n");
+	
+	//
+	restoreScreen();
 	
 	if (background)
 	{
@@ -1539,7 +1522,7 @@ void CCCounter::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCCounter::paint\n");
 	
-	////
+	//
 	initFrames();
 	
 	//
@@ -1561,6 +1544,9 @@ void CCCounter::refresh(bool show)
 void CCCounter::hide()
 {
 	dprintf(DEBUG_DEBUG, "CCCounter::hide\n");
+	
+	//
+	restoreScreen();
 
 	if (background)
 	{
@@ -1642,7 +1628,7 @@ void CCSpinner::paint(bool _selected)
 {
 	dprintf(DEBUG_DEBUG, "CCSpinner::paint\n");
 	
-	////
+	//
 	initFrames();
 	
 	//
@@ -1657,12 +1643,7 @@ void CCSpinner::hide()
 {
 	dprintf(DEBUG_DEBUG, "CCSpinner::hide\n");
 	
-	if(background) 
-	{
-		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
-	}
-	else //FIXME:
-		frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
+	restoreScreen();
 }
 
 //
@@ -1993,167 +1974,6 @@ void CCProgressBar::reset()
 {
   	percent = 255;
 }
-
-//// CItemInfo
-/*
-CCItemInfo::CCItemInfo()
-{
-	frameBuffer = CFrameBuffer::getInstance();
-	
-	oldPosition = itemBox;
-	
-	//
-	mode = ITEMINFO_HINTITEM; 
-	hint = "";
-	icon = "";
-	
-	paintframe = false;
-	background = NULL;
-	
-	// hintitem / hinticon
-	tFont = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
-	borderMode = g_settings.Hint_border;
-	borderColor = COL_MENUCONTENT_PLUS_6;
-	savescreen = false;
-	color = COL_MENUCONTENT_PLUS_0;
-	scale = false;
-	radius = g_settings.Hint_radius;
-	corner = g_settings.Hint_corner;
-	gradient = NOGRADIENT;
-	
-	cc_type = CC_ITEMINFO;
-}
-
-CCItemInfo::~CCItemInfo()
-{
-	hint.clear();
-	icon.clear();
-	
-	if (savescreen)
-	{
-		if (background)
-		{
-			delete [] background;
-			background = NULL;
-		}
-	}
-}
-
-void CCItemInfo::paint(bool _selected)
-{
-	dprintf(DEBUG_DEBUG, "CCItemInfo::paint:\n");
-	
-	// frame
-	if (paintframe)
-	{
-		if (borderMode) 
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, borderColor, g_settings.Hint_radius, g_settings.Hint_corner);
-				
-		// infoBox
-		frameBuffer->paintBoxRel(borderMode? itemBox.iX + 2 : itemBox.iX, borderMode? itemBox.iY + 2 : itemBox.iY, borderMode? itemBox.iWidth - 4 : itemBox.iWidth, borderMode? itemBox.iHeight - 4 : itemBox.iHeight, color, radius, corner, gradient);
-	}
-	else
-		restoreScreen();
-	
-	//
-	if (mode == ITEMINFO_HINTITEM)
-	{
-		// icon (top)
-		int iw = 0;
-		int ih = 0;
-		
-		if (!icon.empty())
-		{
-			::scaleImage(icon, &iw, &ih);
-			
-			if (iw > itemBox.iWidth && itemBox.iWidth != 0)
-				iw = itemBox.iWidth - 4;
-				
-			if (ih > (itemBox.iHeight - 4) && itemBox.iHeight != 0)
-				ih = (itemBox.iHeight - 4)/2;
-		
-			CCImage DImage(itemBox.iX + 2, itemBox.iY + 2, itemBox.iWidth - 4, ih - 4);
-			DImage.setImage(icon.c_str());
-			DImage.setScaling(scale);
-			//DImage.setColor(color);
-			DImage.paint();
-		}
-		
-		// hint
-		CCText Dline(itemBox.iX + 10, itemBox.iY + ih + 10, itemBox.iWidth - 20, itemBox.iHeight - ih - 20);
-		Dline.setFont(tFont);
-		Dline.setText(hint.c_str());		
-		Dline.paint();
-		
-	}
-	else if (mode == ITEMINFO_ICONONLY)	
-	{
-		CCImage DImage(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
-		DImage.setImage(icon.c_str());
-		DImage.setScaling(scale);
-		//DImage.setColor(color);
-		DImage.paint();
-	}
-	else if (mode == ITEMINFO_HINTONLY)
-	{
-		CCText Dline(itemBox.iX + 10, itemBox.iY + 10, itemBox.iWidth - 20, itemBox.iHeight - 20);
-		Dline.setFont(tFont);
-		Dline.setText(hint.c_str());		
-		Dline.paint();
-	}
-}
-
-//
-void CCItemInfo::hide()
-{
-	if(background) 
-	{
-		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
-	}
-	else //FIXME:
-		frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
-}
-
-//
-void CCItemInfo::saveScreen(void)
-{
-	dprintf(DEBUG_DEBUG, "CCItemInfo::saveScreen\n");
-	
-	if (background)
-	{
-		delete [] background;
-		background = NULL;
-	}
-		
-	background = new fb_pixel_t[itemBox.iWidth*itemBox.iHeight];
-		
-	if (background)
-	{
-		frameBuffer->saveScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
-	}
-}
-
-void CCItemInfo::restoreScreen(void)
-{
-	dprintf(DEBUG_DEBUG, "CCItemInfo::restoreScreen\n");
-	
-	//
-	if (savescreen && background)
-	{
-		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
-	}
-}
-
-//
-void CCItemInfo::enableSaveScreen()
-{
-	dprintf(DEBUG_DEBUG, "CCItemInfo::enableSaveScreen\n");
-	
-	savescreen = true;
-	
-	saveScreen();
-}
-*/
 
 ////
 CCWindow::CCWindow(const int x, const int y, const int dx, const int dy)

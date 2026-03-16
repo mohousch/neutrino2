@@ -580,9 +580,6 @@ void CTextBox::paint(bool _selected)
 	dprintf(DEBUG_INFO, "CTextBox::paint:\n");
 	
 	//
-//	initFrames();
-	
-	//
 	if (!paintframe)
 		saveScreen();
 	

@@ -3416,7 +3416,7 @@ _repeat:
 		
 		return messages_return::handled;
 	}	
-	else if( msg == NeutrinoMessages::EVT_SERVICESCHANGED ) //reinitChannels / bqedit
+	else if( msg == NeutrinoMessages::EVT_SERVICESCHANGED ) // reinitChannels / bqedit
 	{
 		channelsInit();
 

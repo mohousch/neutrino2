@@ -425,7 +425,7 @@ class CMenuItemInfo
 			initFrames();
 		};
 		
-		virtual void paintMainFrame(bool p){paintframe = p;};
+		virtual void paintMainFrame(bool p){paintframe = p; if (!paintframe) enableSaveScreen();};
 		virtual void setHAlign(int h){halign = h;};
 		
 		//

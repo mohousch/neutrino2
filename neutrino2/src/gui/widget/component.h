@@ -366,6 +366,7 @@ class CCIcon : public CComponent
 		void hide();
 		void refresh(bool show = false);
 		//
+		void enableRepaint(){rePaint = true; enableSaveScreen();};
 		void saveScreen(void);
 		void restoreScreen(void);
 };
@@ -404,6 +405,7 @@ class CCImage : public CComponent
 		void hide();
 		void refresh(bool show = false);
 		//
+		void enableRepaint(){rePaint = true; enableSaveScreen();};
 		void saveScreen(void);
 		void restoreScreen(void);
 };
@@ -565,7 +567,7 @@ class CCLabel : public CComponent
 		//
 		void saveScreen(void);
 		void restoreScreen(void);
-		void enableSaveScreen();
+//		void enableSaveScreen();
 		//
 		void paint(bool _selected = false);
 		void hide();
@@ -604,7 +606,7 @@ class CCText : public CComponent
 		void setColor(uint32_t col){color = col;};
 		void setText(const char *const text){processTextToArray(text);};
 		//
-		void enableSaveScreen();
+//		void enableSaveScreen();
 		void saveScreen(void);
 		void restoreScreen(void);
 		//
@@ -769,65 +771,6 @@ class CCProgressBar : public CComponent
 		//
 		void setColor(uint32_t c){rgb = c;};
 };
-
-//// CCItemInfo
-/*
-class CCItemInfo : public CComponent
-{
-	public:
-		enum 
-		{
-			ITEMINFO_HINTITEM,
-			ITEMINFO_ICONONLY,
-			ITEMINFO_HINTONLY
-		};
-
-		//
-		CFrameBuffer* frameBuffer;
-		
-		//
-		std::string hint;
-		std::string icon;
-		int mode;
-		
-		// custom mode
-		unsigned int tFont;
-		int borderMode;
-		uint32_t color;
-		bool scale;
-		int radius;
-		int corner;
-		int gradient;
-		uint32_t borderColor;
-		
-		//
-		fb_pixel_t *background;
-		
-		//
-		CCItemInfo();
-		virtual ~CCItemInfo();
-		
-		//
-		void paint(bool _selected = false);
-		void hide();
-		//
-		void setMode(int m){mode = m;};
-		void setHint(const char* const Text){if (Text) hint =  Text;};
-		void setIcon(const char* const ic){if (ic) icon = ic;};
-		// custom mode
-		void setFont(unsigned int f){tFont = f;};
-		void setBorderMode(int m = CComponent::BORDER_ALL){borderMode = m;};
-		void setBorderColor(fb_pixel_t col){borderColor = col;};
-		void setColor(uint32_t col){color = col;};
-		void setScaling(bool s){scale = s;};
-		void setCorner(int ra, int co){radius = ra; corner = co;};
-		void setGradient(int grad){gradient = grad;};
-		//
-		void saveScreen(void);
-		void restoreScreen(void);
-		void enableSaveScreen();
-};
-*/
 
 //// window
 class CCWindow : public CComponent
