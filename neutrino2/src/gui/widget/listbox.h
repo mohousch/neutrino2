@@ -516,10 +516,11 @@ class ClistBox : public CComponent
 		// mainframe
 		fb_pixel_t bgcolor;;
 		bool scrollbar;
-		fb_pixel_t *background;
 		int borderMode;
 		uint32_t borderColor;
 		int borderGradient;
+		fb_pixel_t *background;
+		fb_pixel_t *itemsBackground;
 
 		// item
 		int itemBorderMode;
@@ -581,6 +582,8 @@ class ClistBox : public CComponent
 
 		// methods
 		virtual void paintItems();
+		void saveItemsBackground();
+		void restoreItemsBackground();
 		void saveScreen();
 		void restoreScreen();
 		

@@ -2145,7 +2145,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	widgetMode = MODE_LISTBOX;
 
 	background = NULL;
-	
+	itemsBackground = NULL;
 	bgcolor = COL_MENUCONTENT_PLUS_0;
 	scrollbar = true;;
 	borderMode = CComponent::BORDER_NO;
@@ -2256,6 +2256,7 @@ ClistBox::ClistBox(const CBox* position)
 	maxItemsPerPage = itemsPerX*itemsPerY;
 	//
 	background = NULL;
+	itemsBackground = NULL;
 	bgcolor = COL_MENUCONTENT_PLUS_0;
 	scrollbar = true;
 	borderMode = CComponent::BORDER_NO;
@@ -2289,6 +2290,12 @@ ClistBox::~ClistBox()
 	{
 		delete [] background;
 		background = NULL;
+	}
+	
+	if (itemsBackground)
+	{
+		delete itemsBackground;
+		itemsBackground = NULL;
 	}
 	
 	//
@@ -2523,6 +2530,10 @@ void ClistBox::paint(bool _selected)
 		// mainframe
 		frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner);
 	}
+	else
+	{
+		saveItemsBackground();
+	}
 
 	// itemInfo1
 	if (paint_ItemInfo && paint_Foot && widgetLayout != LAYOUT_FRAME)
@@ -2675,7 +2686,8 @@ void ClistBox::paintItems()
 		}
 		else
 		{
-			restoreScreen();
+//			restoreScreen();
+			restoreItemsBackground();
 		}
 		
 		//
@@ -3318,6 +3330,34 @@ void ClistBox::restoreScreen()
 	if(savescreen && background) 
 	{
 		frameBuffer->restoreScreen(itemBox.iX - (borderMode? 2 : 0), itemBox.iY - (borderMode? 2 : 0), itemBox.iWidth + (borderMode? 4 : 0), itemBox.iHeight + (borderMode? 4 : 0), background);
+	}
+}
+
+void ClistBox::saveItemsBackground()
+{	
+	dprintf(DEBUG_NORMAL, "ClistBox::saveItemsBackground:\n");
+
+	if(itemsBackground)
+	{
+		delete[] itemsBackground;
+		itemsBackground = NULL;
+	}
+
+	itemsBackground = new fb_pixel_t[items_width*items_height];
+	
+	if(itemsBackground)
+	{
+		frameBuffer->saveScreen(itemBox.iX, itemBox.iY + hheight, items_width, items_height, itemsBackground);
+	}
+}
+
+void ClistBox::restoreItemsBackground()
+{
+	dprintf(DEBUG_NORMAL, "ClistBox::restoreItemsBackground:\n");
+	
+	if(itemsBackground) 
+	{
+		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY + hheight, items_width, items_height, itemsBackground);
 	}
 }
 
