@@ -535,8 +535,6 @@ class ClistBox : public CComponent
 		CBox itemInfoBox2;
 		CMenuItemInfo itemInfo1;
 		CMenuItemInfo itemInfo2;
-		CCLabel label1;
-		CCLabel label2;
 		int itemInfoMode;
 		bool iteminfoborder;
 		bool iteminfosavescreen;

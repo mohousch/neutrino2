@@ -1113,9 +1113,7 @@ void COSDDiverses::showMenu()
 	}
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Misc settings"));
+	setLCDMode(_("Misc settings"));
 	
 	// intros
 	osdDiverseSettings->addItem(new CMenuForwarder(_("back")));
@@ -1152,7 +1150,7 @@ void COSDDiverses::showMenu()
 	osdDiverseSettings->addItem(new CMenuOptionChooser("Show weather", &g_settings.show_weather, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
 	
 	// item info
-	if (g_settings.preferred_skin == "standard")
+	if (g_settings.preferred_skin == "standard" || g_settings.preferred_skin == "neutrino2" || g_settings.preferred_skin == "elgato")
 	{
 		//
 		osdDiverseSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
@@ -1171,7 +1169,7 @@ void COSDDiverses::showMenu()
 	}
 	
 	//
-	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+	resetLCDMode();
 }
 
 //// skinManager
@@ -1227,9 +1225,7 @@ int CSkinManager::showMenu()
 	}
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Skin Select"));
+	setLCDMode(_("Skin Select"));
 	
 	//
 	std::string skinPath = CONFIGDIR "/skins";
@@ -1315,7 +1311,7 @@ int CSkinManager::showMenu()
 	}
 	
 	//
-	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+	resetLCDMode();
 	
 	return res;
 }
@@ -1408,9 +1404,7 @@ int CSkinSettings::showMenu()
 	}
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Themes"));
+	setLCDMode(_("Themes"));
 	
 	// intros
 	skinSettings->addItem(new CMenuForwarder(_("back")));
@@ -1472,7 +1466,7 @@ int CSkinSettings::showMenu()
 	}
 	
 	//
-	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+	resetLCDMode();
 	
 	return res;
 }
@@ -1636,9 +1630,7 @@ int CPersonalisation::showMenu(void)
 	}
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Personalisation"));
+	setLCDMode(_("Personalisation"));
 	
 	// intros
 	personalizeSettings->addItem(new CMenuForwarder(_("back")));
@@ -1735,7 +1727,7 @@ int CPersonalisation::showMenu(void)
 	}
 	
 	//
-	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+	resetLCDMode();
 	
 	return res;
 }
