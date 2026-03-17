@@ -7,7 +7,6 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/src/zapit/include/zapit \
 	-I$(top_srcdir)/lib/connection \
 	-I$(top_srcdir)/lib/libconfigfile \
-	-I$(top_srcdir)/lib/libeventserver \
 	@FREETYPE_CFLAGS@
 
 AM_CPPFLAGS += -fno-rtti -fno-exceptions

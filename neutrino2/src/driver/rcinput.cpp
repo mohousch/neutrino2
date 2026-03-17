@@ -1463,7 +1463,6 @@ int CRCInput::translate(uint64_t code)
 #ifdef ENABLE_LIRC
 uint32_t CRCInput::translateKey(const char *name)
 {
-// FIXME:
 	if (!strcmp(name, "KEY_OK")) return RC_ok;
 	else if (!strcmp(name, "KEY_EXIT")) return RC_home;
 	else if (!strcmp(name, "KEY_DOWN")) return RC_down;
@@ -1476,7 +1475,7 @@ uint32_t CRCInput::translateKey(const char *name)
 	else if (!strcmp(name, "KEY_BLUE")) return RC_blue;
 	else if (!strcmp(name, "KEY_INFO")) return RC_info;
 	else if (!strcmp(name, "KEY_EPG")) return RC_epg;
-	else if (!strcmp(name, "KEY_MODE")) return RC_setup; //FIXME:
+	else if (!strcmp(name, "KEY_MODE")) return RC_setup; // FIXME:
 	else if (!strcmp(name, "KEY_RECORD")) return RC_record;
 	else if (!strcmp(name, "KEY_PLAY")) return RC_play;
 	else if (!strcmp(name, "KEY_STOP")) return RC_stop;
