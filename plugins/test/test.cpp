@@ -2591,7 +2591,7 @@ void CTestMenu::testClistBox6()
 	// footinfo
 	rightWidget->enablePaintItemInfo();
 	rightWidget->setItemInfoMode(CMenuItemInfo::ITEMINFO_HINTITEM);
-	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
+	rightWidget->setItemInfoPos1(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 
 	//
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
@@ -2664,7 +2664,7 @@ void CTestMenu::testClistBox7()
 	// footinfo
 	rightWidget->enablePaintItemInfo();
 	rightWidget->setItemInfoMode(CMenuItemInfo::ITEMINFO_ICONONLY);
-	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
+	rightWidget->setItemInfoPos1(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 
 	//
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
@@ -2737,7 +2737,7 @@ void CTestMenu::testClistBox9()
 	// itemInfo
 	rightWidget->enablePaintItemInfo();
 	rightWidget->setItemInfoMode(CMenuItemInfo::ITEMINFO_HINTONLY);
-	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
+	rightWidget->setItemInfoPos1(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 	rightWidget->paintItemInfoBorder(CComponent::BORDER_ALL);
 	rightWidget->enableItemInfoSaveScreen();
 	rightWidget->setItemInfoFont(SNeutrinoSettings::FONT_TYPE_PLUGINLIST_ITEMLARGE);

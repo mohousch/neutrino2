@@ -158,7 +158,7 @@ class CMenuItem
 		}
 
 		virtual bool isSelectable(void) const {return false;}
-		virtual int exec(CTarget *) {return 0;}
+		virtual int exec(CTarget *) {return CTarget::RETURN_NONE;}
 		//
 		virtual void setActive(const bool Active);
 		virtual void setMarked(const bool Marked);
@@ -369,7 +369,9 @@ class CMenuItemInfo
 		{
 			ITEMINFO_HINTITEM,
 			ITEMINFO_ICONONLY,
-			ITEMINFO_HINTONLY
+			ITEMINFO_HINTONLY,
+			ITEMINFO_ONELABEL,
+			ITEMINFO_TWOLABEL
 		};
 
 		//
@@ -387,6 +389,8 @@ class CMenuItemInfo
 		//
 		std::string hint;
 		std::string icon;
+		std::string label1;
+		std::string label2;
 		int mode;
 		
 		// custom mode
@@ -435,6 +439,8 @@ class CMenuItemInfo
 		void setMode(int m){mode = m;};
 		void setHint(const char* const Text){if (Text) hint =  Text;};
 		void setIcon(const char* const ic){if (ic) icon = ic;};
+		void setLabel1(const char* const c){ if (c) label1 = c; };
+		void setLabel2(const char* const c){ if (c) label2 = c; };
 		// custom mode
 		void setFont(unsigned int f){tFont = f;};
 		void setBorderMode(int m = CComponent::BORDER_ALL){borderMode = m;};
@@ -524,10 +530,11 @@ class ClistBox : public CComponent
 		
 		// itemInfo
 		bool paint_ItemInfo;
-		CBox itemInfoBox;
+		CBox itemInfoBox1;
 		CBox itemInfoBox2;
-		CMenuItemInfo itemInfo;
-		CCLabel label;
+		CMenuItemInfo itemInfo1;
+		CMenuItemInfo itemInfo2;
+		CCLabel label1;
 		CCLabel label2;
 		int itemInfoMode;
 		bool iteminfoborder;
@@ -639,12 +646,12 @@ class ClistBox : public CComponent
 		//// itemInfo properties
 		void enablePaintItemInfo(){paint_ItemInfo = true;};
 		void setItemInfoMode(int mode){itemInfoMode = mode;};
-		void setItemInfoPos(int x, int y, int dx, int dy)
+		void setItemInfoPos1(int x, int y, int dx, int dy)
 		{
-			itemInfoBox.iX = x; 
-			itemInfoBox.iY = y; 
-			itemInfoBox.iWidth = dx; 
-			itemInfoBox.iHeight = dy; 
+			itemInfoBox1.iX = x; 
+			itemInfoBox1.iY = y; 
+			itemInfoBox1.iWidth = dx; 
+			itemInfoBox1.iHeight = dy; 
 		};
 		void setItemInfoPos2(int x, int y, int dx, int dy)
 		{

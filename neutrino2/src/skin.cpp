@@ -1465,7 +1465,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		int iimode = CMenuItemInfo::ITEMINFO_HINTITEM;
 		if (iteminfomode) iimode = convertItemInfoMode(iteminfomode);
 		listBox->setItemInfoMode(iimode);		
-		listBox->setItemInfoPos(iteminfo_posx, iteminfo_posy, iteminfo_width, iteminfo_height);
+		listBox->setItemInfoPos1(iteminfo_posx, iteminfo_posy, iteminfo_width, iteminfo_height);
 		if (iteminfo_color) listBox->setItemInfoColor(hintColor);
 		
 		////
