@@ -2568,16 +2568,16 @@ void ClistBox::paint(bool _selected)
 	// 
 	if(paint_ItemInfo && itemInfoBox1.iWidth != 0)
 	{
+		itemInfo1.setMode(CMenuItemInfo::ITEMINFO_ONELABEL);
 		itemInfo1.setPosition(itemInfoBox1.iX, itemInfoBox1.iY, itemInfoBox1.iWidth, itemInfoBox1.iHeight);
-		if (iteminfosavescreen) itemInfo1.enableSaveScreen();
+		itemInfo1.enableSaveScreen();	
 	}
 	
 	// itemInfo2
 	if (paint_ItemInfo && itemInfoBox2.iWidth != 0)
 	{
-		itemInfo2.setMode(CMenuItemInfo::ITEMINFO_ONELABEL);
 		itemInfo2.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
-		itemInfo2.enableSaveScreen();
+		if (iteminfosavescreen) itemInfo2.enableSaveScreen();
 	}
 	
 	//
@@ -3082,26 +3082,25 @@ void ClistBox::paintItemInfo(int pos)
 				
 				itemInfo1.paint();
 			}
-			else if (widgetMode == MODE_MENU && itemInfoBox2.iWidth != 0)
+			else if (widgetMode == MODE_MENU && itemInfoBox1.iWidth != 0)
 			{
-				itemInfo2.setLabel1(_(item->itemHint.c_str()));
-				itemInfo2.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
-				itemInfo2.setColor(COL_MENUFOOT_TEXT_PLUS_0);
+				itemInfo1.setLabel1(_(item->itemHint.c_str()));
+				itemInfo1.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
+				itemInfo1.setColor(COL_MENUFOOT_TEXT_PLUS_0);
 				
-				itemInfo2.paint();
+				itemInfo1.paint();
 			}
 			
-			//
-			if (itemInfoMode == CMenuItemInfo::ITEMINFO_HINTITEM && (itemInfoBox1.iWidth != 0 && itemInfoBox1.iHeight != 0))
+			// other side
+			if (itemInfoMode == CMenuItemInfo::ITEMINFO_HINTITEM && (itemInfoBox2.iWidth != 0 && itemInfoBox2.iHeight != 0))
 			{
-				// detailslines box
-				itemInfo1.setPosition(itemInfoBox1.iX, itemInfoBox1.iY, itemInfoBox1.iWidth, itemInfoBox1.iHeight);
-				itemInfo1.setMode(CMenuItemInfo::ITEMINFO_HINTITEM);
-				itemInfo1.setBorderMode(iteminfobordermode);
-				itemInfo1.setColor(iteminfocolor);
-				itemInfo1.setFont(iteminfofont);
-				itemInfo1.setScaling(iteminfoscale);
-				itemInfo1.setHint(item->itemHint.c_str());
+				itemInfo2.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
+				itemInfo2.setMode(CMenuItemInfo::ITEMINFO_HINTITEM);
+				itemInfo2.setBorderMode(iteminfobordermode);
+				itemInfo2.setColor(iteminfocolor);
+				itemInfo2.setFont(iteminfofont);
+				itemInfo2.setScaling(iteminfoscale);
+				itemInfo2.setHint(item->itemHint.c_str());
 				//
 				std::string fname = item->itemIcon;
 						
@@ -3113,18 +3112,18 @@ void ClistBox::paintItemInfo(int pos)
 						fname = CFrameBuffer::getInstance()->getHintBasePath() + item->itemIcon.c_str() + ".png";
 				}
 				
-				itemInfo1.setIcon(fname.c_str());
-				itemInfo1.paintMainFrame(true);
+				itemInfo2.setIcon(fname.c_str());
+				itemInfo2.paintMainFrame(true);
 						
-				itemInfo1.paint();
+				itemInfo2.paint();
 			}
-			else if (itemInfoMode == CMenuItemInfo::ITEMINFO_ICONONLY && (itemInfoBox1.iWidth != 0 && itemInfoBox1.iHeight != 0))
+			else if (itemInfoMode == CMenuItemInfo::ITEMINFO_ICONONLY && (itemInfoBox2.iWidth != 0 && itemInfoBox2.iHeight != 0))
 			{
-				itemInfo1.setPosition(itemInfoBox1.iX, itemInfoBox1.iY, itemInfoBox1.iWidth, itemInfoBox1.iHeight);
-				itemInfo1.setMode(CMenuItemInfo::ITEMINFO_ICONONLY);
-				itemInfo1.setBorderMode(iteminfobordermode);
-				itemInfo1.setColor(iteminfocolor);
-				itemInfo1.setScaling(iteminfoscale);
+				itemInfo2.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
+				itemInfo2.setMode(CMenuItemInfo::ITEMINFO_ICONONLY);
+				itemInfo2.setBorderMode(iteminfobordermode);
+				itemInfo2.setColor(iteminfocolor);
+				itemInfo2.setScaling(iteminfoscale);
 				//
 				std::string fname = item->itemIcon;
 						
@@ -3136,24 +3135,24 @@ void ClistBox::paintItemInfo(int pos)
 						fname = CFrameBuffer::getInstance()->getHintBasePath() + item->itemIcon.c_str() + ".png";
 				}
 				
-				itemInfo1.setIcon(fname.c_str());
-				itemInfo1.paintMainFrame(true); // FIXME
+				itemInfo2.setIcon(fname.c_str());
+				itemInfo2.paintMainFrame(true); // FIXME
 						
-				itemInfo1.paint();
+				itemInfo2.paint();
 			}
-			else if (itemInfoMode == CMenuItemInfo::ITEMINFO_HINTONLY && (itemInfoBox1.iWidth != 0 && itemInfoBox1.iHeight != 0))
+			else if (itemInfoMode == CMenuItemInfo::ITEMINFO_HINTONLY && (itemInfoBox2.iWidth != 0 && itemInfoBox2.iHeight != 0))
 			{
 				// detailslines box
-				itemInfo1.setPosition(itemInfoBox1.iX, itemInfoBox1.iY, itemInfoBox1.iWidth, itemInfoBox1.iHeight);
-				itemInfo1.setMode(CMenuItemInfo::ITEMINFO_HINTONLY);
-				itemInfo1.setBorderMode(iteminfobordermode);
-				itemInfo1.setColor(iteminfocolor);
-				itemInfo1.setFont(iteminfofont);
-				itemInfo1.setScaling(iteminfoscale);
-				itemInfo1.setHint(_(item->itemHint.c_str()));
-				itemInfo1.paintMainFrame(true); //FIXME:
+				itemInfo2.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
+				itemInfo2.setMode(CMenuItemInfo::ITEMINFO_HINTONLY);
+				itemInfo2.setBorderMode(iteminfobordermode);
+				itemInfo2.setColor(iteminfocolor);
+				itemInfo2.setFont(iteminfofont);
+				itemInfo2.setScaling(iteminfoscale);
+				itemInfo2.setHint(_(item->itemHint.c_str()));
+				itemInfo2.paintMainFrame(true); //FIXME:
 						
-				itemInfo1.paint();
+				itemInfo2.paint();
 			}
 		}
 	}	
