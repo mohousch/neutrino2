@@ -369,9 +369,9 @@ int CWidget::exec(CTarget *parent, const std::string &)
 
 				if (it->second.target != NULL)
 				{
-					retval = it->second.target->exec(parent, it->second.action);
+					int ret = it->second.target->exec(parent, it->second.action);
 
-					switch ( retval ) 
+					switch ( ret ) 
 					{
 						case CTarget::RETURN_EXIT_ALL:
 							retval = CTarget::RETURN_EXIT_ALL;
@@ -396,11 +396,12 @@ int CWidget::exec(CTarget *parent, const std::string &)
 			}
 			
 			// directKey
-			retval = onDirectKeyPressed(msg, parent);
+			int ret = onDirectKeyPressed(msg, parent);
 			
-			switch ( retval ) 
+			switch ( ret ) 
 			{
 				case CTarget::RETURN_EXIT_ALL:
+					retval = RETURN_EXIT_ALL;
 				case CTarget::RETURN_EXIT:
 					msg = CRCInput::RC_timeout;
 					break;
@@ -440,11 +441,13 @@ int CWidget::exec(CTarget *parent, const std::string &)
 					break;
 
 				case (CRCInput::RC_right):
-					retval = onRightKeyPressed(parent);
+					{
+					int ret = onRightKeyPressed(parent);
 					
-					switch ( retval ) 
+					switch ( ret ) 
 					{
 						case CTarget::RETURN_EXIT_ALL:
+							retval = RETURN_EXIT_ALL;
 						case CTarget::RETURN_EXIT:
 							msg = CRCInput::RC_timeout;
 							break;
@@ -452,20 +455,24 @@ int CWidget::exec(CTarget *parent, const std::string &)
 							paint();
 							break;
 					}
+					}
 					break;
 
 				case (CRCInput::RC_left):
-					retval = onLeftKeyPressed(parent);
+					{
+					int ret = onLeftKeyPressed(parent);
 					
-					switch ( retval ) 
+					switch ( ret ) 
 					{
 						case CTarget::RETURN_EXIT_ALL:
+							retval = RETURN_EXIT_ALL;
 						case CTarget::RETURN_EXIT:
 							msg = CRCInput::RC_timeout;
 							break;
 						case CTarget::RETURN_REPAINT:
 							paint();
 							break;
+					}
 					}
 					break;
 
@@ -484,15 +491,16 @@ int CWidget::exec(CTarget *parent, const std::string &)
 				case (CRCInput::RC_home):
 				case (CRCInput::RC_setup):
 					onHomeKeyPressed();
-//					retval = CTarget::RETURN_EXIT;
 					break;
 
 				case (CRCInput::RC_ok):
-					retval = onOKKeyPressed(parent);
+					{
+					int ret = onOKKeyPressed(parent);
 					
-					switch ( retval ) 
+					switch ( ret ) 
 					{
 						case CTarget::RETURN_EXIT_ALL:
+							retval = RETURN_EXIT_ALL;
 						case CTarget::RETURN_EXIT:
 							msg = CRCInput::RC_timeout;
 							break;
@@ -500,13 +508,13 @@ int CWidget::exec(CTarget *parent, const std::string &)
 							paint();
 							break;
 					}
+					}
 					break;
 				
 				//	
 				case (CRCInput::RC_timeout):
 					exit_pressed = true;
 					selected = -1;
-//					retval = CTarget::RETURN_EXIT;
 					break;
 
 				default:

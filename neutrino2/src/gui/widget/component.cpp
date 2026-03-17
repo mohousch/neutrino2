@@ -258,12 +258,12 @@ int CComponent::exec(CTarget *target)
 
 				if (it->second.target != NULL)
 				{
-					retval = it->second.target->exec(target, it->second.action);
+					int ret = it->second.target->exec(target, it->second.action);
 
-					//
-					switch ( retval ) 
+					switch ( ret ) 
 					{
 						case CTarget::RETURN_EXIT_ALL:
+							retval = CTarget::RETURN_EXIT_ALL;
 						case CTarget::RETURN_EXIT:
 							msg = CRCInput::RC_timeout;
 							break;
@@ -283,11 +283,12 @@ int CComponent::exec(CTarget *target)
 			}
 			
 			// directKey
-			retval = directKeyPressed(msg, target);
+			int ret = directKeyPressed(msg, target);
 
-			switch ( retval ) 
+			switch ( ret ) 
 			{
 				case CTarget::RETURN_EXIT_ALL:
+					retval = CTarget::RETURN_EXIT_ALL;
 				case CTarget::RETURN_EXIT:
 					msg = CRCInput::RC_timeout;
 					break;
@@ -357,11 +358,12 @@ int CComponent::exec(CTarget *target)
 				
 				case CRCInput::RC_ok:
 					{
-						retval = oKKeyPressed(target);
+						int ret = oKKeyPressed(target);
 					
-						switch ( retval ) 
+						switch ( ret ) 
 						{
 							case CTarget::RETURN_EXIT_ALL:
+								retval = CTarget::RETURN_EXIT_ALL;
 							case CTarget::RETURN_EXIT:
 								msg = CRCInput::RC_timeout;
 								break;
