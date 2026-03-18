@@ -2528,7 +2528,7 @@ void ClistBox::paint(bool _selected)
 		}
 		
 		// mainframe
-		frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner);
+//		frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner);
 	}
 	else
 	{
@@ -2552,7 +2552,7 @@ void ClistBox::paint(bool _selected)
 		itemInfo1.setMode(CMenuItemInfo::ITEMINFO_TWOLABEL);
 		itemInfo1.setPosition(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - fheight - cFrameFootInfoHeight + 3, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, (cFrameFootInfoHeight - 3));
 			
-		if (!paintframe)
+//		if (!paintframe)
 		{
 			itemInfo1.enableSaveScreen();
 		}
@@ -2577,7 +2577,8 @@ void ClistBox::paint(bool _selected)
 	if (paint_ItemInfo && itemInfoBox2.iWidth != 0)
 	{
 		itemInfo2.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
-		if (iteminfosavescreen) itemInfo2.enableSaveScreen();
+//		if (iteminfosavescreen) 
+		itemInfo2.enableSaveScreen();
 	}
 	
 	//
