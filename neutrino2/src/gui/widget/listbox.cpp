@@ -2528,15 +2528,18 @@ void ClistBox::paint(bool _selected)
 		}
 		
 		// mainframe
-//		frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner);
+		frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, itemBox.iWidth, items_height + (widgetLayout == LAYOUT_FRAME? cFrameFootInfoHeight + 20 : 0), bgcolor);
 	}
 	else
 	{
 		saveItemsBackground();
 	}
+	
+	//
+	paintFoot();
 
 	// itemInfo1
-	if (paint_ItemInfo && paint_Foot && widgetLayout != LAYOUT_FRAME)
+	if (paint_ItemInfo && paint_Foot && (widgetLayout == LAYOUT_FRAME || widgetLayout == LAYOUT_CLASSIC || widgetLayout == LAYOUT_EXTENDED))
 	{
 		// footbar
 		int iw, ih;
@@ -2547,25 +2550,25 @@ void ClistBox::paint(bool _selected)
 			
 		itemInfo1.enableSaveScreen();
 	}
-	else if (paint_ItemInfo && widgetLayout == LAYOUT_FRAME)
+	
+	// 
+	if (paint_ItemInfo && widgetLayout == LAYOUT_FRAME)
 	{
 		itemInfo1.setMode(CMenuItemInfo::ITEMINFO_TWOLABEL);
 		itemInfo1.setPosition(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - fheight - cFrameFootInfoHeight + 3, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, (cFrameFootInfoHeight - 3));
 			
-//		if (!paintframe)
-		{
-			itemInfo1.enableSaveScreen();
-		}
+		itemInfo1.enableSaveScreen();
 	}
-
+	
 	// extended layout right side
 	if (widgetLayout == LAYOUT_EXTENDED)
 	{
 		itemInfo2.setPosition(itemBox.iX + items_width + (itemBox.iWidth - items_width - ITEM_ICON_W)/2, itemBox.iY + (itemBox.iHeight - ITEM_ICON_H)/2, ITEM_ICON_W, ITEM_ICON_H);
 		itemInfo2.enableSaveScreen();
+		itemInfo2.setScaling(true);
 	}
 	
-	// 
+	// itemInfo1 / itemInfoBox1
 	if(paint_ItemInfo && itemInfoBox1.iWidth != 0)
 	{
 		itemInfo1.setMode(CMenuItemInfo::ITEMINFO_ONELABEL);
@@ -2573,16 +2576,15 @@ void ClistBox::paint(bool _selected)
 		itemInfo1.enableSaveScreen();	
 	}
 	
-	// itemInfo2
+	// itemInfo2 / itemInfoBox2
 	if (paint_ItemInfo && itemInfoBox2.iWidth != 0)
 	{
 		itemInfo2.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
-//		if (iteminfosavescreen) 
 		itemInfo2.enableSaveScreen();
 	}
 	
 	//
-	paintFoot();
+//	paintFoot();
 	paintItems();
 	paintHead();
 	
@@ -3163,40 +3165,19 @@ void ClistBox::paintItemInfo(int pos)
 		
 		// right side
 		if (widgetMode == MODE_LISTBOX)
-		{
-			// scale pic
-			int p_w = 0;
-			int p_h = 0;
-
-			std::string fname = item->itemIcon;
-
-			::scaleImage(fname, &p_w, &p_h);
-					
-			//
-			itemInfo2.setPosition(itemBox.iX + 2*(itemBox.iWidth/3) + 2, itemBox.iY + hheight, (itemBox.iWidth/3) - 2, items_height);
-			itemInfo2.setCorner(NO_RADIUS, CORNER_ALL);
-			itemInfo2.setGradient(NOGRADIENT);
-					
-			if (paintframe)
-			{
-				itemInfo2.paintMainFrame(true);
-				itemInfo2.setBorderMode(CComponent::BORDER_NO);
-			}
-					
+		{		
 			itemInfo2.setMode(CMenuItemInfo::ITEMINFO_HINTITEM);		
 			itemInfo2.setHint(_(item->itemHint.c_str()));
-			itemInfo2.setIcon(fname.c_str());
+			itemInfo2.setIcon(item->itemIcon.c_str());
 					
 			itemInfo2.paint();
 		}
-		else //if (widgetMode == MODE_MENU)
+		else if (widgetMode == MODE_MENU)
 		{
-			itemInfo2.setPosition(itemBox.iX + items_width + (itemBox.iWidth - items_width - ITEM_ICON_W)/2, itemBox.iY + (itemBox.iHeight - ITEM_ICON_H)/2, ITEM_ICON_W, ITEM_ICON_H);
-			
 			// item icon (right) check for minimum hight
 			if(itemBox.iHeight - hheight - fheight >= ITEM_ICON_H)
 			{ 
-				itemInfo1.setMode(CMenuItemInfo::ITEMINFO_ICONONLY);
+				itemInfo2.setMode(CMenuItemInfo::ITEMINFO_ICONONLY);
 					
 				std::string fname = item->itemIcon;
 						
@@ -3208,6 +3189,7 @@ void ClistBox::paintItemInfo(int pos)
 					
 				itemInfo2.setIcon(fname.c_str());
 				itemInfo2.setScaling(true);
+				
 				itemInfo2.paint();
 			}
 		}
