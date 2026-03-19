@@ -6008,7 +6008,7 @@ void CTestMenu::showMenu()
 	
 	setLCDMode(_("TestMenu"));
 
-	CWidget* mWidget = NULL;
+//	CWidget* mWidget = NULL;
 	ClistBox* mainMenu = NULL;
 	
 	//
@@ -6171,17 +6171,43 @@ void CTestMenu::showMenu()
 	
 	// CMenuItem
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CMenuItem") );
-	mainMenu->addItem(new CMenuForwarder("CMenuOptionChooser", true, NULL, this, "menuoptionchooser"));
-	mainMenu->addItem(new CMenuForwarder("CMenuOptionStringChooser", true, NULL, this, "menuoptionstringchooser"));
-	mainMenu->addItem(new CMenuForwarder("CMenuOptionNumberChooser", true, NULL, this, "menuoptionnumberchooser"));
 	
-//	mWidget->exec(this, "");
-//	
-//	if (mWidget)
-//	{
-//		delete mWidget;
-//		mWidget = NULL;
-//	}
+	mainMenu->setMode(ClistBox::MODE_SETUP);
+
+	int optionValue = 0;
+	CMenuItem *item = new CMenuOptionChooser("CMenuOptionChooser", &optionValue);
+	
+	item->addOption("Option 1", 1);
+	item->addOption("Option 2", 2);
+	item->addOption("Option 3", 3);
+	item->addOption("Option 4", 4);
+	
+	mainMenu->addItem(item);
+	
+	int value = 0;
+	item = new CMenuOptionNumberChooser("CMenuOptionNumberChooser", &value, true, 0, 100);
+
+	mainMenu->addItem(item);
+	
+	std::string optionStringValue = " ";
+	item = new CMenuOptionStringChooser("CMenuOptionStringChooser", (char *)optionStringValue.c_str());
+	
+	item->addOption("Option 1", 1);
+	item->addOption("Option 2", 2);
+	item->addOption("Option 3", 3);
+	item->addOption("Option 4", 4);
+	
+	mainMenu->addItem(item);
+
+/*	
+	mWidget->exec(this, "");
+	
+	if (mWidget)
+	{
+		delete mWidget;
+		mWidget = NULL;
+	}
+*/	
 
 	mainMenu->exec(this);
 	

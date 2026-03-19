@@ -296,10 +296,14 @@ void CZapit::initFrontend()
 	fe = new CFrontend(0, 1); // adapter_num = 1
 
 	fe->info.type = FE_QPSK;
-	strcpy(fe->info.name, "Sat Fake Tuner");
-	fe->forcedDelSys = CFrontend::DVB_S | CFrontend::DVB_S2 | CFrontend::DVB_S2X;
-	fe->deliverySystemMask = CFrontend::DVB_S | CFrontend::DVB_S2 | CFrontend::DVB_S2X;
+	strcpy(fe->info.name, "Multi Fake Tuner");
+	fe->forcedDelSys = CFrontend::DVB_C /*| CFrontend::DVB_T | CFrontend::DVB_T2 | CFrontend::DVB_S | CFrontend::DVB_S2 | CFrontend::DVB_S2X*/;
+	fe->deliverySystemMask = CFrontend::DVB_C | CFrontend::DVB_T | CFrontend::DVB_T2 | CFrontend::DVB_S | CFrontend::DVB_S2 | CFrontend::DVB_S2X;
+	fe->hybrid = true;
+	
+	have_c = true;
 	have_s = true;
+	have_t = true;
 
 	index++;
 	femap.insert(std::pair <unsigned short, CFrontend*> (index, fe));
@@ -2867,17 +2871,6 @@ int CZapit::getChannelNumber(const t_channel_id channel_id)
 		number = it->second.number;
 		
 	return number;
-}
-
-int CZapit::getChannelIndex(const t_channel_id channel_id)
-{
-	int index = 0;
-	
-	tallchans_iterator it = allchans.find(channel_id);
-	if (it != allchans.end())
-		index = it->second.index;
-		
-	return index;
 }
 
 int CZapit::getChannelSatellitePosition(const t_channel_id channel_id)

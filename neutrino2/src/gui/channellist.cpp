@@ -166,11 +166,8 @@ void CChannelList::setSize(int newsize)
 	chanlist.reserve(newsize);
 }
 
-void CChannelList::addChannel(CZapitChannel * channel, unsigned int i)
-{
-	if (channel && i > 0)
-		channel->setIndex(i);
-				
+void CChannelList::addChannel(CZapitChannel * channel)
+{			
 	chanlist.push_back(channel);
 }
 
@@ -758,7 +755,7 @@ bool CChannelList::showInfo(int pos, int epgpos, bool fromNumZap)
 		return false;
 	
 	// channel infobar
-	g_InfoViewer->showTitle(chanlist[pos]->getIndex(), chanlist[pos]->name, chanlist[pos]->getSatellitePosition(), chanlist[pos]->channel_id, fromNumZap, epgpos);
+	g_InfoViewer->showTitle(chanlist[pos]->getNumber(), chanlist[pos]->name, chanlist[pos]->getSatellitePosition(), chanlist[pos]->channel_id, fromNumZap, epgpos);
 	
 	return true;
 }
@@ -1484,10 +1481,9 @@ void CChannelList::paint(bool customMode)
 			}
 
 			// channel number
-			//if (g_settings.channellist_number > CHANNEL_NUMBER_NONE)
+			if (g_settings.channellist_number > CHANNEL_NUMBER_NONE)
 			{ 
-				//item->setNumber( (g_settings.channellist_number == CHANNEL_NUMBER_LIST_ORDER)? i + 1 : chanlist[i]->getNumber());
-				item->setNumber(chanlist[i]->getIndex());
+				item->setNumber( (g_settings.channellist_number == CHANNEL_NUMBER_LIST_ORDER)? i + 1 : chanlist[i]->getNumber());
 			}
 			
 			// timescale
@@ -1714,6 +1710,15 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 
 // 0 = exit
 // 1 = edited
+
+#define CHANNELLIST_NUMBER_OPTION_COUNT	3
+const keyval CHANNELLIST_NUMBER_OPTIONS[CHANNELLIST_NUMBER_OPTION_COUNT]
+{
+	{ CChannelList::CHANNEL_NUMBER_NONE, _("None") },
+	{ CChannelList::CHANNEL_NUMBER_LIST_ORDER, _("List Order") },
+	{ CChannelList::CHANNEL_NUMBER_REALNUMBER, _("Real Channel Number") }
+};
+
 int CChannelList::doChannelMenu(void)
 {
 	int i = 0;
@@ -1741,7 +1746,7 @@ int CChannelList::doChannelMenu(void)
 		//
 		CBox box;
 		box.iWidth = 500;
-		box.iHeight = 250;
+		box.iHeight = 400;
 		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
 		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
 		
@@ -1768,11 +1773,15 @@ int CChannelList::doChannelMenu(void)
 		mWidget->addCCItem(menu);
 	}
 	
+//	menu->setMode(ClistBox::MODE_SETUP);
+	
 	//
 	menu->addItem(new CMenuForwarder(_("delete")), old_selected == i++);
 	menu->addItem(new CMenuForwarder(_("Move")), old_selected == i++);
 	menu->addItem(new CMenuForwarder(_("Add to Bouquets")), old_selected == i++);
 	menu->addItem(new CMenuForwarder(_("add channel to my favorites")), old_selected == i++);
+//	menu->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
+//	menu->addItem(new CMenuOptionChooser(_("Channel number"), &g_settings.channellist_number, CHANNELLIST_NUMBER_OPTIONS, CHANNELLIST_NUMBER_OPTION_COUNT, true));
 	
 	//
 	mWidget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);

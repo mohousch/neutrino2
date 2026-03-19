@@ -177,32 +177,26 @@ class CZapitChannel
 			CHANNEL_VIDEO_CAVS	= 3
 		};
 
-		// channel name
+		////
 		std::string name;
-
 		bool bAlwaysLocked;
-
-		int number; // fixed
-		int index;  // to used in channellist
+		int number;
 		CChannelEvent currentEvent, nextEvent;
+		uint64_t last_unlocked_EPGid;
+		time_t last_unlocked_time;
 		int videoType;
 		t_channel_id channel_id;
 		t_channel_id epgid;
 		t_channel_id logoid;
 		unsigned char scrambled;
 		char * pname; //makeRemainingChannelsBouquet
-
-		// webtv
+		//// webtv
 		std::string url;
 		std::string description;
 		bool isWebTV;
 		std::string logourl;
 		std::string epgurl;
-		std::string epgidXMLTV; // XMLTV epgid
-		
-		//
-		uint64_t last_unlocked_EPGid;
-		time_t last_unlocked_time;
+		std::string epgidXMLTV; // XMLTV epgid		
 
 		// constructor, desctructor
 		CZapitChannel(const std::string& p_name, t_service_id p_sid, t_transport_stream_id p_tsid, t_original_network_id p_onid, unsigned char p_service_type, t_satellite_position p_satellite_position = 0, freq_id_t p_freq = 0);
@@ -228,7 +222,6 @@ class CZapitChannel
 		//// get methods - read and write variables
 		const std::string&	getName(void)			const { return name; }
 		const int 		getNumber(void)			const { return number;}
-		const int		getIndex(void)			const { return index;}
 		t_satellite_position	getSatellitePosition(void)	const { return satellitePosition; }
 		unsigned char 		getAudioChannelCount(void)	{ return audioChannels.size(); }
 		unsigned short		getPcrPid(void)			{ return pcrPid; }
@@ -271,7 +264,6 @@ class CZapitChannel
 		void setCaPmt(CCaPmt * pCaPmt);
 		void setaitPid(unsigned short aitPID)			{ aitPid = aitPID; };
 		void setNumber(unsigned int num)			{ number = num; };
-		void setIndex (unsigned int i)				{ index = i;};
 		//
 		void setLogoUrl(const std::string l)			{ logourl = l; };
 		void setEPGUrl(const std::string l)			{ epgurl = l; };

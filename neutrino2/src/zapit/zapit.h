@@ -464,7 +464,6 @@ class CZapit
 		CZapitChannel* findChannelByName(std::string name, const t_service_id sid);
 		std::string getChannelName(const t_channel_id channel_id);
 		int getChannelNumber(const t_channel_id channel_id);
-		int getChannelIndex(const t_channel_id channel_id);
 		int getChannelSatellitePosition(const t_channel_id channel_id);
 		std::string getChannelURL(const t_channel_id channel_id);
 		std::string getChannelDescription(const t_channel_id channel_id);

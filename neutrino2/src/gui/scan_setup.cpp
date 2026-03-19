@@ -533,12 +533,12 @@ int CScanSetup::showScanService()
 	if (fe->isHybrid())
 	{
 		// 
-		if (fe->getDeliverySystem() & CFrontend::DVB_C)
-			fe->forcedDelSys = CFrontend::DVB_C;
-		else if (fe->getDeliverySystem() & CFrontend::DVB_T)
-			fe->forcedDelSys = CFrontend::DVB_T;
-		else if (fe->getDeliverySystem() & CFrontend::DVB_T2)
-			fe->forcedDelSys = CFrontend::DVB_T2;
+//		if (fe->getDeliverySystem() & CFrontend::DVB_C)
+//			fe->forcedDelSys = CFrontend::DVB_C;
+//		else if (fe->getDeliverySystem() & CFrontend::DVB_T)
+//			fe->forcedDelSys = CFrontend::DVB_T;
+//		else if (fe->getDeliverySystem() & CFrontend::DVB_T2)
+//			fe->forcedDelSys = CFrontend::DVB_T2;
 		//
 		CMenuOptionChooser *tunerType = new CMenuOptionChooser(_("Tuner type"),  (int *)&fe->forcedDelSys);
 		
@@ -548,6 +548,12 @@ int CScanSetup::showScanService()
 			tunerType->addOption("DVBT", CFrontend::DVB_T);
 		if (fe->getDeliverySystem() & CFrontend::DVB_T2)
 			tunerType->addOption("DVBT2", CFrontend::DVB_T2);
+		if (fe->getDeliverySystem() & CFrontend::DVB_S)
+			tunerType->addOption("DVBS", CFrontend::DVB_S);
+		if (fe->getDeliverySystem() & CFrontend::DVB_S2)
+			tunerType->addOption("DVBS2", CFrontend::DVB_S2);
+		if (fe->getDeliverySystem() & CFrontend::DVB_S2X)
+			tunerType->addOption("DVBS2X", CFrontend::DVB_S2X);
 			
 		tunerType->setChangeObserver(feDelSysNotifier);
 		tunerType->setActive(true);

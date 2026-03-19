@@ -330,7 +330,7 @@ CMenuOptionChooser::CMenuOptionChooser(const char * const Name, int* const Optio
 {
 	height = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 6;
 
-	itemName = Name? Name : "";
+	itemName = Name? Name : " ";
 	
 	//
 	if (Number_Of_Options)
@@ -708,7 +708,7 @@ CMenuOptionNumberChooser::CMenuOptionNumberChooser(const char * const Name, int 
 {
 	height = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 6;
 
-	itemName  = Name;
+	itemName  = Name? Name : " ";
 	
 	active = Active;
 	optionValue = OptionValue;
@@ -861,7 +861,7 @@ CMenuOptionStringChooser::CMenuOptionStringChooser(const char * const Name, char
 {
 	height = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 6;
 
-	itemName = Name? Name : "";
+	itemName = Name? Name : " ";
 	active = Active;
 	option = OptionValue;
 	optionString = OptionValue;

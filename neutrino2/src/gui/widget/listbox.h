@@ -237,7 +237,7 @@ class CMenuOptionChooser : public CMenuItem
 		bool onofficon;
 
 	public:
-		CMenuOptionChooser(const char* const Name, int * const OptionValue, const struct keyval * const Options = NULL, const unsigned Number_Of_Options = 0, const bool Active = false, CChangeObserver * const Observ = NULL, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const char *const IconName = NULL, bool Pulldown = false, const bool useOnOffIcon = false);
+		CMenuOptionChooser(const char* const Name, int * const OptionValue, const struct keyval * const Options = NULL, const unsigned Number_Of_Options = 0, const bool Active = true, CChangeObserver * const Observ = NULL, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const char *const IconName = NULL, bool Pulldown = false, const bool useOnOffIcon = false);
 
 		virtual ~CMenuOptionChooser(){options.clear();};
 
@@ -291,7 +291,7 @@ class CMenuOptionStringChooser : public CMenuItem
 	std::vector<std::string> options;
 
 	public:
-		CMenuOptionStringChooser(const char* const Name, char *OptionValue, bool Active = false, CChangeObserver* Observ = NULL, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const char *const IconName = NULL, bool Pulldown = false);
+		CMenuOptionStringChooser(const char* const Name, char *OptionValue, bool Active = true, CChangeObserver* Observ = NULL, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const char *const IconName = NULL, bool Pulldown = false);
 		
 		virtual ~CMenuOptionStringChooser();
 

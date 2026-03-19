@@ -84,36 +84,30 @@ class CChannelList
 		//
 		uint32_t sec_timer_id;
 		int selected;
-		//
-		void paint(bool customMode = false);
-		void hide();
-		void paintCurrentNextEvent(int _selected);
-
-		//
 		t_channel_id tuned_chid;
 		std::string name;
 		ZapitChannelList chanlist;
 		CChannelEventList events;
-
 		bool historyMode;
 		bool displayNext;
-
 		SMSKeyInput c_SMSKeyInput;
+		
+		////
+		void paint(bool customMode = false);
+		void hide();
+		void paintCurrentNextEvent(int _selected);
 
 	public:
 		CChannelList(const char * const Name, bool _historyMode = false);
 		~CChannelList();
 		
-		void addChannel(CZapitChannel* chan, unsigned int i = 0);
-		
+		void addChannel(CZapitChannel* chan);		
 		CZapitChannel * getChannel(int number);
 		CZapitChannel * getChannel(t_channel_id channel_id);
 		CZapitChannel * getChannelFromIndex( uint32_t index) { if (chanlist.size() > index) return chanlist[index]; else return NULL;};
 		CZapitChannel * operator[]( uint32_t index) { if (chanlist.size() > index) return chanlist[index]; else return NULL;};
 		int getKey(int);
-
 		const char* getName(void) const { return name.c_str(); };
-		////
 		const std::string&   getActiveChannelName(void) const; // UTF-8
 		t_satellite_position getActiveSatellitePosition(void) const;
 		int                  getActiveChannelNumber(void) const;
