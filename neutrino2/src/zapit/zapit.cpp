@@ -295,9 +295,9 @@ void CZapit::initFrontend()
 #ifdef ENABLE_TESTING
 	fe = new CFrontend(0, 1); // adapter_num = 1
 
-	fe->info.type = FE_QPSK;
+	fe->info.type = FE_QAM;
 	strcpy(fe->info.name, "Multi Fake Tuner");
-	fe->forcedDelSys = CFrontend::DVB_C /*| CFrontend::DVB_T | CFrontend::DVB_T2 | CFrontend::DVB_S | CFrontend::DVB_S2 | CFrontend::DVB_S2X*/;
+	fe->forcedDelSys = CFrontend::DVB_C;
 	fe->deliverySystemMask = CFrontend::DVB_C | CFrontend::DVB_T | CFrontend::DVB_T2 | CFrontend::DVB_S | CFrontend::DVB_S2 | CFrontend::DVB_S2X;
 	fe->hybrid = true;
 	

@@ -2617,7 +2617,7 @@ void ClistBox::paintItems()
 		}
 		else
 		{
-			restoreScreen();
+			restoreItemsBackground();
 		}
 
 		// init items
@@ -2688,7 +2688,6 @@ void ClistBox::paintItems()
 		}
 		else
 		{
-//			restoreScreen();
 			restoreItemsBackground();
 		}
 		
@@ -3050,7 +3049,7 @@ void ClistBox::setFootButtons(const struct button_label* _fbutton_labels, const 
 
 void ClistBox::paintItemInfo(int pos)
 {
-	dprintf(DEBUG_INFO, "ClistBox::paintItemInfo: %d\n", pos); 
+	dprintf(DEBUG_NORMAL, "ClistBox::paintItemInfo: %d\n", pos); 
 	
 	if( (widgetLayout == LAYOUT_STANDARD) || (widgetLayout == LAYOUT_CLASSIC) )
 	{
@@ -3079,6 +3078,7 @@ void ClistBox::paintItemInfo(int pos)
 				infoIcon.paint();
 
 				// Hint
+				itemInfo1.setMode(CMenuItemInfo::ITEMINFO_ONELABEL);
 				itemInfo1.setLabel1(_(item->itemHint.c_str()));
 				itemInfo1.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
 				itemInfo1.setColor(COL_MENUFOOT_TEXT_PLUS_0);
@@ -3087,6 +3087,7 @@ void ClistBox::paintItemInfo(int pos)
 			}
 			else if (widgetMode == MODE_MENU && itemInfoBox1.iWidth != 0)
 			{
+				itemInfo1.setMode(CMenuItemInfo::ITEMINFO_ONELABEL);
 				itemInfo1.setLabel1(_(item->itemHint.c_str()));
 				itemInfo1.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
 				itemInfo1.setColor(COL_MENUFOOT_TEXT_PLUS_0);
@@ -3094,10 +3095,10 @@ void ClistBox::paintItemInfo(int pos)
 				itemInfo1.paint();
 			}
 			
-			// other side
+			// itemInfo2
 			if (itemInfoMode == CMenuItemInfo::ITEMINFO_HINTITEM && (itemInfoBox2.iWidth != 0 && itemInfoBox2.iHeight != 0))
 			{
-				itemInfo2.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
+//				itemInfo2.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
 				itemInfo2.setMode(CMenuItemInfo::ITEMINFO_HINTITEM);
 				itemInfo2.setBorderMode(iteminfobordermode);
 				itemInfo2.setColor(iteminfocolor);
@@ -3116,13 +3117,13 @@ void ClistBox::paintItemInfo(int pos)
 				}
 				
 				itemInfo2.setIcon(fname.c_str());
-				itemInfo2.paintMainFrame(true);
+//				itemInfo2.paintMainFrame(true);
 						
 				itemInfo2.paint();
 			}
 			else if (itemInfoMode == CMenuItemInfo::ITEMINFO_ICONONLY && (itemInfoBox2.iWidth != 0 && itemInfoBox2.iHeight != 0))
 			{
-				itemInfo2.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
+//				itemInfo2.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
 				itemInfo2.setMode(CMenuItemInfo::ITEMINFO_ICONONLY);
 				itemInfo2.setBorderMode(iteminfobordermode);
 				itemInfo2.setColor(iteminfocolor);
@@ -3139,21 +3140,21 @@ void ClistBox::paintItemInfo(int pos)
 				}
 				
 				itemInfo2.setIcon(fname.c_str());
-				itemInfo2.paintMainFrame(true); // FIXME
+//				itemInfo2.paintMainFrame(true); // FIXME
 						
 				itemInfo2.paint();
 			}
 			else if (itemInfoMode == CMenuItemInfo::ITEMINFO_HINTONLY && (itemInfoBox2.iWidth != 0 && itemInfoBox2.iHeight != 0))
 			{
 				// detailslines box
-				itemInfo2.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
+//				itemInfo2.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
 				itemInfo2.setMode(CMenuItemInfo::ITEMINFO_HINTONLY);
 				itemInfo2.setBorderMode(iteminfobordermode);
 				itemInfo2.setColor(iteminfocolor);
 				itemInfo2.setFont(iteminfofont);
 				itemInfo2.setScaling(iteminfoscale);
 				itemInfo2.setHint(_(item->itemHint.c_str()));
-				itemInfo2.paintMainFrame(true); //FIXME:
+//				itemInfo2.paintMainFrame(true); //FIXME:
 						
 				itemInfo2.paint();
 			}
@@ -3218,6 +3219,7 @@ void ClistBox::paintItemInfo(int pos)
 				infoIcon.paint();
 
 				// Hint
+				itemInfo1.setMode(CMenuItemInfo::ITEMINFO_ONELABEL);
 				itemInfo1.setLabel1(_(item->itemHint.c_str()));
 				itemInfo1.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
 				itemInfo1.setColor(COL_MENUFOOT_TEXT_PLUS_0);
@@ -3238,6 +3240,8 @@ void ClistBox::paintItemInfo(int pos)
 			frameBuffer->paintHLineRel(itemBox.iX + BORDER_LEFT, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, itemBox.iY + itemBox.iHeight - fheight - cFrameFootInfoHeight + 2, COL_MENUCONTENT_PLUS_5);
 
 			//
+			itemInfo1.setMode(CMenuItemInfo::ITEMINFO_TWOLABEL);
+			
 			if(items.size() > 0)
 			{
 				CMenuItem* item = items[pos];
