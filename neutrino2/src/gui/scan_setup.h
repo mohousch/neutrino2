@@ -120,12 +120,12 @@ class CScanSetupDelSysNotifier : public CChangeObserver
 {
 	private:
 		CFrontend * fe;
-		CMenuItem *item;
+		CMenuItem *item1, *item2, *item3, *item4, *item5, *item6;
 	public:
 		CScanSetupDelSysNotifier(CFrontend* f);
 		virtual ~CScanSetupDelSysNotifier(){};
 		
-		void addItem(CMenuItem *m);
+		void addItem(CMenuItem *m1, CMenuItem *m2, CMenuItem *m3, CMenuItem *m4, CMenuItem *m5, CMenuItem *m6);
 		bool changeNotify(const std::string&, void *Data);
 };
 

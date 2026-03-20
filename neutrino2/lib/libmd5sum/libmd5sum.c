@@ -85,3 +85,4 @@ int md5_file (const char *filename, int binary, unsigned char *md5_result)
 
   return 0;
 }
+

@@ -280,6 +280,17 @@ const keyval FRONTEND_MODE_OPTIONS[FRONTEND_MODE_TWIN_OPTION_COUNT] =
 	{ CFrontend::FE_LOOP, _("loop") },
 };
 
+#define FRONTEND_DELIVERYSYSTEM_OPTION_COUNT	6
+const keyval FRONTEND_DELIVERYSYSTEM_OPTIONS[FRONTEND_DELIVERYSYSTEM_OPTION_COUNT] =
+{
+	{ CFrontend::DVB_C, "DVBC" },
+	{ CFrontend::DVB_T, "DVBT" },
+	{ CFrontend::DVB_T2, "DVBT2" },
+	{ CFrontend::DVB_S, "DVBS" },
+	{ CFrontend::DVB_S2, "DVBS2" },
+	{ CFrontend::DVB_S2X, "DVBS2X" }
+};
+
 //
 CScanSetup::CScanSetup(CFrontend *f)
 {
@@ -539,7 +550,7 @@ int CScanSetup::showScanService()
 //			fe->forcedDelSys = CFrontend::DVB_T;
 //		else if (fe->getDeliverySystem() & CFrontend::DVB_T2)
 //			fe->forcedDelSys = CFrontend::DVB_T2;
-		//
+		/*
 		CMenuOptionChooser *tunerType = new CMenuOptionChooser(_("Tuner type"),  (int *)&fe->forcedDelSys);
 		
 		if (fe->getDeliverySystem() & CFrontend::DVB_C)
@@ -554,6 +565,8 @@ int CScanSetup::showScanService()
 			tunerType->addOption("DVBS2", CFrontend::DVB_S2);
 		if (fe->getDeliverySystem() & CFrontend::DVB_S2X)
 			tunerType->addOption("DVBS2X", CFrontend::DVB_S2X);
+		*/
+		CMenuOptionChooser *tunerType = new CMenuOptionChooser(_("Tuner type"),  (int *)&fe->forcedDelSys, FRONTEND_DELIVERYSYSTEM_OPTIONS, FRONTEND_DELIVERYSYSTEM_OPTION_COUNT, true, feDelSysNotifier);
 			
 		tunerType->setChangeObserver(feDelSysNotifier);
 		tunerType->setActive(true);
@@ -564,30 +577,16 @@ int CScanSetup::showScanService()
 	}
 	
 	// voltage
-	bool hidden = true;
-	
-#if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2)
-#else
-	if(fe->getInfo()->type == FE_OFDM)
-#endif
-	{
-		hidden = false;
-	}
+//	bool hidden = true;
 	
 	CMenuOptionChooser *ojVoltage = new CMenuOptionChooser(_("5 Volt"), (int *)&fe->powered, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
-	ojVoltage->setHidden(hidden);
-	feDelSysNotifier->addItem(ojVoltage);
+	ojVoltage->setHidden((fe->getForcedDelSys() != CFrontend::DVB_T && fe->getForcedDelSys() != CFrontend::DVB_T2));
+//	feDelSysNotifier->addItem(ojVoltage);
 	scansetup->addItem(ojVoltage);
 	
-	// separartor
-	if (fe->mode == CFrontend::FE_NOTCONNECTED)
-		hidden = true;
-	else
-		hidden = false;
-		
+	// separartor	
 	CMenuItem *item = new CMenuSeparator(CMenuSeparator::LINE);
-	item->setHidden(hidden);
+	item->setHidden(fe->mode == CFrontend::FE_NOTCONNECTED);
 	feModeNotifier->addItem(0, item);
 	scansetup->addItem(item);
 
@@ -608,52 +607,55 @@ int CScanSetup::showScanService()
 		
 	// separator
 	item = new CMenuSeparator(CMenuSeparator::LINE);
-	item->setHidden(hidden);
+	item->setHidden(fe->mode == CFrontend::FE_NOTCONNECTED);
 	feModeNotifier->addItem(0, item);
 	scansetup->addItem(item);
 	
 	// DVB_S / DVB_S2
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
+//	if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 #else
-	if(fe->getInfo()->type == FE_QPSK)
+//	if(fe->getInfo()->type == FE_QPSK)
 #endif
-	{
+//	{
 		// diseqc
 		CMenuOptionChooser *ojDiseqc = new CMenuOptionChooser(_("DiSEqC"), (int *)&fe->diseqcType, SATSETUP_DISEQC_OPTIONS, SATSETUP_DISEQC_OPTION_COUNT, true, satNotify, CRCInput::RC_nokey, "", true);
 		feModeNotifier->addItem(1, ojDiseqc);
+		ojDiseqc->setHidden((fe->getForcedDelSys() != CFrontend::DVB_S && fe->getForcedDelSys() != CFrontend::DVB_S2 && fe->getForcedDelSys() != CFrontend::DVB_S2X));
 		
 		// diseqc repeat
 		CMenuOptionNumberChooser *ojDiseqcRepeats = new CMenuOptionNumberChooser(_("DiSEqC-repeats"), &fe->diseqcRepeats, true, 0, 2, NULL);
-		ojDiseqcRepeats->setHidden((dmode == CFrontend::NO_DISEQC) || (dmode > CFrontend::DISEQC_ADVANCED) || (fe->mode == CFrontend::FE_NOTCONNECTED) || (fe->mode == CFrontend::FE_LOOP));
+		ojDiseqcRepeats->setHidden((fe->getForcedDelSys()== CFrontend::DVB_C || fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2) || ((dmode == CFrontend::NO_DISEQC) || (dmode > CFrontend::DISEQC_ADVANCED) || (fe->mode == CFrontend::FE_NOTCONNECTED) || (fe->mode == CFrontend::FE_LOOP)));
 		satNotify->addItem(4, ojDiseqcRepeats);
 		feModeNotifier->addItem(4, ojDiseqcRepeats);
 
 		// unicablesetup
 		CMenuForwarder *uniSetup = new CMenuForwarder(_("Unicable Setup"), true, NULL, this, "unisetup");
-		uniSetup->setHidden((dmode > CFrontend::DISEQC_ADVANCED ? false : true));
+		uniSetup->setHidden((fe->getForcedDelSys()== CFrontend::DVB_C || fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2) || (dmode != CFrontend::DISEQC_UNICABLE && dmode != CFrontend::DISEQC_UNICABLE2));
 		satNotify->addItem(3, uniSetup);
 		feModeNotifier->addItem(3, uniSetup);
 
 		// lnbsetup
 		CMenuForwarder *lnbSetup = new CMenuForwarder(_("Setup satellites input / LNB"), true, NULL, this, "lnbsetup");
-		lnbSetup->setHidden((fe->mode == CFrontend::FE_NOTCONNECTED) || (fe->mode == CFrontend::FE_LOOP));
+		lnbSetup->setHidden((fe->getForcedDelSys() == CFrontend::DVB_C || fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2) || ((fe->mode == CFrontend::FE_NOTCONNECTED) || (fe->mode == CFrontend::FE_LOOP)));
 		feModeNotifier->addItem(1, lnbSetup);
 		
 		// motorsetup
 		CMenuForwarder *motorSetup = new CMenuForwarder(_("Motor settings"), true, NULL, this, "motorsetup");
-		motorSetup->setHidden((fe->mode == CFrontend::FE_NOTCONNECTED) || (fe->mode == CFrontend::FE_LOOP));
+		motorSetup->setHidden((fe->getForcedDelSys() == CFrontend::DVB_C || fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2) || ((fe->mode == CFrontend::FE_NOTCONNECTED) || (fe->mode == CFrontend::FE_LOOP)));
 		feModeNotifier->addItem(1, motorSetup);
+		
+		feDelSysNotifier->addItem(ojVoltage ,ojDiseqc ,ojDiseqcRepeats ,uniSetup ,lnbSetup, motorSetup);
 		
 		scansetup->addItem(ojDiseqc);		// diseqc
 		scansetup->addItem(ojDiseqcRepeats);	// diseqcrepeat
 		scansetup->addItem(uniSetup);		// unicablesetup
 		scansetup->addItem(lnbSetup);		// lnbsetup
 		scansetup->addItem(motorSetup); 	// motorsetup
-	}
+//	}
 	
 	// manual scan	
-	CMenuForwarder * manScan = new CMenuForwarder(_("Manual frequency scan / Test signal"), (fe->mode != CFrontend::FE_NOTCONNECTED) && (fe->mode != CFrontend::FE_LOOP), NULL, this, "manualscan", CRCInput::RC_green, NEUTRINO_ICON_BUTTON_GREEN);
+	CMenuForwarder * manScan = new CMenuForwarder(_("Manual frequency scan / Test signal"), (fe->mode != 	CFrontend::FE_NOTCONNECTED) && (fe->mode != CFrontend::FE_LOOP), NULL, this, "manualscan", CRCInput::RC_green, NEUTRINO_ICON_BUTTON_GREEN);
 	feModeNotifier->addItem(0, manScan);
 	
 	scansetup->addItem(manScan);
@@ -2306,14 +2308,24 @@ bool CScanSetupFEModeNotifier::changeNotify(const std::string&, void * Data)
 CScanSetupDelSysNotifier::CScanSetupDelSysNotifier(CFrontend *f)
 {
 	fe = f;
-	item = NULL;
+	item1 = NULL;
+	item2 = NULL;
+	item3 = NULL;
+	item4 = NULL;
+	item5 = NULL;
+	item6 = NULL;
 	
 	dprintf(DEBUG_NORMAL, "CScanSetupDelSysNotifier::CScanSetupDelSysNotifier: fe(%d:%d)\n", fe->feadapter, fe->fenumber);
 }
 
-void CScanSetupDelSysNotifier::addItem(CMenuItem *m)
+void CScanSetupDelSysNotifier::addItem(CMenuItem *m1, CMenuItem *m2, CMenuItem *m3, CMenuItem *m4, CMenuItem *m5, CMenuItem *m6)
 {
-	item = m;
+	item1 = m1;
+	item2 = m2;
+	item3 = m3;
+	item4 = m4;
+	item5 = m5;
+	item6 = m6;
 }
 
 bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
@@ -2322,13 +2334,31 @@ bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 	
 	if (delsys == CFrontend::DVB_T || delsys == CFrontend::DVB_T2)
 	{
-		if (item)
-			item->setHidden(false);
+		item1->setHidden(false);
+		item2->setHidden(true);
+		item3->setHidden(true);
+		item4->setHidden(true);
+		item5->setHidden(true);
+		item6->setHidden(true);
 	}
-	else
+	else if (delsys == CFrontend::DVB_C)
 	{
-		if (item)
-			item->setHidden(true);
+		item1->setHidden(true);
+		item2->setHidden(true);
+		item3->setHidden(true);
+		item4->setHidden(true);
+		item5->setHidden(true);
+		item6->setHidden(true);
+	}
+	else if (delsys == CFrontend::DVB_S || delsys == CFrontend::DVB_S2 || delsys == CFrontend::DVB_S2X)
+	{
+		item1->setHidden(true);
+		item2->setHidden(false);
+		if (dmode != CFrontend::NO_DISEQC) item3->setHidden(false);
+		if (dmode > CFrontend::DISEQC_ADVANCED) item4->setHidden(false);
+//		if (dmode > CFrontend::NO_DISEQC && dmode < CFrontend::DISEQC_ADVANCED) item4->setHidden(false);
+		item5->setHidden(false);
+		item6->setHidden(false);
 	}
 	
 	return true;
