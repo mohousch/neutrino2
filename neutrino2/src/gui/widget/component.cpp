@@ -889,7 +889,7 @@ CCHline::CCHline(const int x, const int y, const int dx, const int dy)
 		itemBox.iHeight = 2;
 	
 	color = COL_MENUCONTENT_PLUS_5;
-	gradient = g_settings.sep_gradient;
+	gradient = g_settings.sep_gradient? DARK2LIGHT2DARK : NOGRADIENT;
 	 
 	cc_type = CC_HLINE;
 }
@@ -926,7 +926,7 @@ CCVline::CCVline(const int x, const int y, const int dx, const int dy)
 		itemBox.iWidth = 2;
 	
 	color = COL_MENUCONTENT_PLUS_5;
-	gradient = g_settings.sep_gradient;
+	gradient = g_settings.sep_gradient? DARK2LIGHT2DARK : NOGRADIENT;
 	
 	cc_type = CC_VLINE;
 }

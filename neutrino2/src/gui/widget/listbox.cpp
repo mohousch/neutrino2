@@ -2393,10 +2393,10 @@ void ClistBox::initFrames()
 		}
 		
 		//	
-		if(fbutton_count == 0) // ???
-		{
-			fheight = 0;
-		}
+//		if(fbutton_count == 0) // ???
+//		{
+//			fheight = 0;
+//		}
 
 		//
 		page_start.clear();
@@ -2538,8 +2538,8 @@ void ClistBox::paint(bool _selected)
 	//
 	paintFoot();
 
-	// itemInfo1
-	if (paint_ItemInfo && paint_Foot && (widgetLayout == LAYOUT_FRAME || widgetLayout == LAYOUT_CLASSIC || widgetLayout == LAYOUT_EXTENDED))
+	// footbar
+	if (paint_ItemInfo && paint_Foot && widgetLayout != LAYOUT_FRAME)
 	{
 		// footbar
 		int iw, ih;
@@ -2550,9 +2550,7 @@ void ClistBox::paint(bool _selected)
 			
 		itemInfo1.enableSaveScreen();
 	}
-	
-	// 
-	if (paint_ItemInfo && widgetLayout == LAYOUT_FRAME)
+	else if (paint_ItemInfo && widgetLayout == LAYOUT_FRAME)
 	{
 		itemInfo1.setMode(CMenuItemInfo::ITEMINFO_TWOLABEL);
 		itemInfo1.setPosition(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - fheight - cFrameFootInfoHeight + 3, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, (cFrameFootInfoHeight - 3));
@@ -2563,9 +2561,17 @@ void ClistBox::paint(bool _selected)
 	// extended layout right side
 	if (widgetLayout == LAYOUT_EXTENDED)
 	{
-		itemInfo2.setPosition(itemBox.iX + items_width + (itemBox.iWidth - items_width - ITEM_ICON_W)/2, itemBox.iY + (itemBox.iHeight - ITEM_ICON_H)/2, ITEM_ICON_W, ITEM_ICON_H);
-		itemInfo2.enableSaveScreen();
-		itemInfo2.setScaling(true);
+		if (widgetMode == MODE_MENU)
+		{
+			itemInfo2.setPosition(itemBox.iX + items_width + (itemBox.iWidth - items_width - ITEM_ICON_W)/2, itemBox.iY + (itemBox.iHeight - ITEM_ICON_H)/2, ITEM_ICON_W, ITEM_ICON_H);
+			itemInfo2.enableSaveScreen();
+			itemInfo2.setScaling(true);
+		}
+		else if (widgetMode == MODE_LISTBOX)
+		{
+			itemInfo2.setPosition(itemBox.iX + items_width + 2, itemBox.iY + hheight, itemBox.iWidth - items_width - 2, items_height);
+			itemInfo2.enableSaveScreen();
+		}
 	}
 	
 	// itemInfo1 / itemInfoBox1
@@ -2946,7 +2952,7 @@ void ClistBox::paintFoot()
 			int iw[fbutton_count];
 			int ih[fbutton_count];
 
-			buttonWidth = (fbutton_width)/fbutton_count;
+			if (fbutton_count) buttonWidth = (fbutton_width)/fbutton_count;
 	
 			for (int i = 0; i < (int)fbutton_count; i++)
 			{
@@ -2986,8 +2992,7 @@ void ClistBox::paintFoot()
 			int iw[fbutton_count];
 			int ih[fbutton_count];
 
-			if (fbutton_count)
-				buttonWidth = (fbutton_width)/fbutton_count;
+			if (fbutton_count) buttonWidth = (fbutton_width)/fbutton_count;
 	
 			for (int i = 0; i < (int)fbutton_count; i++)
 			{
@@ -3098,7 +3103,6 @@ void ClistBox::paintItemInfo(int pos)
 			// itemInfo2
 			if (itemInfoMode == CMenuItemInfo::ITEMINFO_HINTITEM && (itemInfoBox2.iWidth != 0 && itemInfoBox2.iHeight != 0))
 			{
-//				itemInfo2.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
 				itemInfo2.setMode(CMenuItemInfo::ITEMINFO_HINTITEM);
 				itemInfo2.setBorderMode(iteminfobordermode);
 				itemInfo2.setColor(iteminfocolor);
@@ -3117,13 +3121,11 @@ void ClistBox::paintItemInfo(int pos)
 				}
 				
 				itemInfo2.setIcon(fname.c_str());
-//				itemInfo2.paintMainFrame(true);
 						
 				itemInfo2.paint();
 			}
 			else if (itemInfoMode == CMenuItemInfo::ITEMINFO_ICONONLY && (itemInfoBox2.iWidth != 0 && itemInfoBox2.iHeight != 0))
 			{
-//				itemInfo2.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
 				itemInfo2.setMode(CMenuItemInfo::ITEMINFO_ICONONLY);
 				itemInfo2.setBorderMode(iteminfobordermode);
 				itemInfo2.setColor(iteminfocolor);
@@ -3140,21 +3142,17 @@ void ClistBox::paintItemInfo(int pos)
 				}
 				
 				itemInfo2.setIcon(fname.c_str());
-//				itemInfo2.paintMainFrame(true); // FIXME
 						
 				itemInfo2.paint();
 			}
 			else if (itemInfoMode == CMenuItemInfo::ITEMINFO_HINTONLY && (itemInfoBox2.iWidth != 0 && itemInfoBox2.iHeight != 0))
 			{
-				// detailslines box
-//				itemInfo2.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
 				itemInfo2.setMode(CMenuItemInfo::ITEMINFO_HINTONLY);
 				itemInfo2.setBorderMode(iteminfobordermode);
 				itemInfo2.setColor(iteminfocolor);
 				itemInfo2.setFont(iteminfofont);
 				itemInfo2.setScaling(iteminfoscale);
 				itemInfo2.setHint(_(item->itemHint.c_str()));
-//				itemInfo2.paintMainFrame(true); //FIXME:
 						
 				itemInfo2.paint();
 			}
@@ -3166,10 +3164,15 @@ void ClistBox::paintItemInfo(int pos)
 		
 		// right side
 		if (widgetMode == MODE_LISTBOX)
-		{		
+		{
+			std::string fname = item->itemIcon;
+				
+			if (!::file_exists(fname.c_str()))
+				fname = CFrameBuffer::getInstance()->getHintBasePath() + item->itemIcon.c_str() + ".png";
+							
 			itemInfo2.setMode(CMenuItemInfo::ITEMINFO_HINTITEM);		
 			itemInfo2.setHint(_(item->itemHint.c_str()));
-			itemInfo2.setIcon(item->itemIcon.c_str());
+			itemInfo2.setIcon(fname.c_str());
 					
 			itemInfo2.paint();
 		}
@@ -3182,8 +3185,8 @@ void ClistBox::paintItemInfo(int pos)
 					
 				std::string fname = item->itemIcon;
 						
-				if (item->isPlugin)
-					fname = item->itemIcon;
+//				if (item->isPlugin)
+//					fname = item->itemIcon;
 				
 				if (!::file_exists(fname.c_str()))
 					fname = CFrameBuffer::getInstance()->getHintBasePath() + item->itemIcon.c_str() + ".png";
@@ -3232,12 +3235,8 @@ void ClistBox::paintItemInfo(int pos)
 	{
 		if (paint_ItemInfo)
 		{	
-			// refresh
-			if (paintframe)
-				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - fheight - cFrameFootInfoHeight, itemBox.iWidth, cFrameFootInfoHeight, COL_MENUCONTENT_PLUS_0);
-
 			// horizontal line buttom
-			frameBuffer->paintHLineRel(itemBox.iX + BORDER_LEFT, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, itemBox.iY + itemBox.iHeight - fheight - cFrameFootInfoHeight + 2, COL_MENUCONTENT_PLUS_5);
+			frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - fheight - cFrameFootInfoHeight + 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, g_settings.sep_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 			//
 			itemInfo1.setMode(CMenuItemInfo::ITEMINFO_TWOLABEL);
@@ -3274,10 +3273,8 @@ void ClistBox::hideItemInfo()
 	
 	if (paint_ItemInfo)
 	{
-	    	if(widgetLayout == LAYOUT_STANDARD || widgetLayout == LAYOUT_CLASSIC)
-		{
-			itemInfo1.hide();
-		} 
+		itemInfo1.hide();
+		itemInfo2.hide();
 	}	 
 }
 
