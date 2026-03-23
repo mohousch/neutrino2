@@ -3273,8 +3273,11 @@ void ClistBox::hideItemInfo()
 	
 	if (paint_ItemInfo)
 	{
-		itemInfo1.hide();
-		itemInfo2.hide();
+		if (itemInfoBox1.iHeight != 0)
+			itemInfo1.hide();
+			
+		if (itemInfoBox2.iHeight != 0)
+			itemInfo2.hide();
 	}	 
 }
 
