@@ -4407,26 +4407,26 @@ void CTestMenu::testCMenuOptionStringChooser()
 ////
 void CTestMenu::testClistBoxValue()
 {
-	ClistBox *testBox = new ClistBox(390, 110, 500, 500);
+	ClistBox *testBox = new ClistBox(290, 110, 600, 500);
 	
-	testBox->enableShrinkMenu();
 	testBox->setMode(ClistBox::MODE_MENU);
-	
-	testBox->addItem(new CMenuForwarder("Item1", true, "    show HintBox"));
-	testBox->addItem(new CMenuForwarder("Item2", true, "    show MessageBox"));
-	testBox->addItem(new CMenuForwarder("Item3", true, "    play File"));
-	testBox->addItem(new CMenuForwarder("Item4", true, "    back", NULL, "exit"));
-	testBox->addItem(new CMenuForwarder("Item5", true, "    show InfoBox", NULL, "actionkey"));
-	
-	testBox->addKey(CRCInput::RC_info, NULL, "actionkey2");
-	
+	testBox->setLayout(ClistBox::LAYOUT_STANDARD);
 	testBox->setItemBorderMode();
 	testBox->setBorderMode();
 	testBox->enablePaintHead();
+	testBox->setTitle("Test ClistBox", NEUTRINO_ICON_INFO);
 	testBox->enablePaintFoot();
 	testBox->enablePaintItemInfo();
 	testBox->enableSaveScreen();
 	testBox->paintMainFrame(true);
+	
+	testBox->addItem(new CMenuForwarder("Item1", true, "    show HintBox", NULL, NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_TV, "show HintBox"));
+	testBox->addItem(new CMenuForwarder("Item2", true, "    show MessageBox", NULL, NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_RADIO, "show messageBox"));
+	testBox->addItem(new CMenuForwarder("Item3", true, "    play File", NULL, NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_MEDIAPLAYER, "play movie file"));
+	testBox->addItem(new CMenuForwarder("Item4", true, "    back", NULL, "exit", CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCART, "exit"));
+	testBox->addItem(new CMenuForwarder("Item5", true, "    show InfoBox", NULL, "actionkey", CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO, "show infoBox"));
+	
+	testBox->addKey(CRCInput::RC_info, NULL, "actionkey2");
 	
 RETRY:
 	int ret = testBox->exec(this);
