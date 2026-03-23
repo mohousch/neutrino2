@@ -4407,10 +4407,10 @@ void CTestMenu::testCMenuOptionStringChooser()
 ////
 void CTestMenu::testClistBoxValue()
 {
-	ClistBox *testBox = new ClistBox(290, 110, 600, 500);
+	ClistBox *testBox = new ClistBox(CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - 600) / 2, CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - 500) / 2, 600, 500);
 	
 	testBox->setMode(ClistBox::MODE_MENU);
-	testBox->setLayout(ClistBox::LAYOUT_STANDARD);
+	testBox->setLayout(ClistBox::LAYOUT_FRAME);
 	testBox->setItemBorderMode();
 	testBox->setBorderMode();
 	testBox->enablePaintHead();
@@ -4419,6 +4419,7 @@ void CTestMenu::testClistBoxValue()
 	testBox->enablePaintItemInfo();
 	testBox->enableSaveScreen();
 	testBox->paintMainFrame(true);
+	testBox->setItemsPerPage(6, 3);
 	
 	testBox->addItem(new CMenuForwarder("Item1", true, "    show HintBox", NULL, NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_TV, "show HintBox"));
 	testBox->addItem(new CMenuForwarder("Item2", true, "    show MessageBox", NULL, NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_RADIO, "show messageBox"));

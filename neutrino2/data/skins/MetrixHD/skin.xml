@@ -8,8 +8,8 @@
 	<skininfo author="mohousch" version="1.0" info="OpenATV MetrixHD alike skin"/>
 	
 	<widget name="mainmenu" posx="0" posy="0" width="1280" height="720">
+		<window posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
-		<!--<listbox posx="640" posy="60" width="540" height="500" layout="LAYOUT_STANDARD" mode="MODE_MENU" paintframe="0" savescreen="1" itemlines="1" paintiteminfo="1" iteminfomode="ITEMINFO_ICONONLY" iteminfopos2x="300" iteminfopos2y="50" iteminfo2width="300" iteminfo2height="300" iteminfocolor="COL_MENUCONTENTSELECTED_PLUS_0">-->
 		<listbox posx="640" posy="60" width="540" height="500" layout="LAYOUT_STANDARD" mode="MODE_MENU" paintframe="0" savescreen="1" itemlines="1" paintiteminfo="1" iteminfomode="ITEMINFO_ICONONLY" iteminfo2posx="300" iteminfo2posy="50" iteminfo2width="300" iteminfo2height="300" iteminfocolor="COL_MENUCONTENTSELECTED_PLUS_0">
 			<item id="FORWARDER" localename="TV / Radio" itemicon="hint_tvmode" target="neutrino" actionkey="tvradioswitch"/>
 			<item id="FORWARDER" localename="EPG / Timer" itemicon="hint_timers" target="epgtimer"/>
