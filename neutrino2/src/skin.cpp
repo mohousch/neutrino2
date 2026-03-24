@@ -1300,18 +1300,19 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	unsigned int foot_line_gradient = 0;
 				
 	// iteminfo
-	unsigned int paintiteminfo = 0;
-	char * iteminfomode = NULL;		
+	unsigned int paintiteminfo = 0;		
 	unsigned int iteminfo_posx = 0;
 	unsigned int iteminfo_posy = 0;
 	unsigned int iteminfo_width = 0;
 	unsigned int iteminfo_height = 0;
-	const char* iteminfo_color = NULL;
+	unsigned int iteminfosavescreen1 = 0;
 	unsigned int iteminfo2_posx = 0;
 	unsigned int iteminfo2_posy = 0;
 	unsigned int iteminfo2_width = 0;
 	unsigned int iteminfo2_height = 0;
-	unsigned int iteminfosavescreen = 0;
+	unsigned int iteminfosavescreen2 = 0;
+	char * iteminfomode2 = NULL;
+	const char* iteminfo2_color = NULL;
 	
 	// item
 	unsigned int itemborder = 0;
@@ -1363,21 +1364,22 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 				
 	// iteminfo
 	paintiteminfo = xmlGetSignedNumericAttribute(node, "paintiteminfo", 0);
-	iteminfomode = xmlGetAttribute(node, (char *)"iteminfomode");
-	iteminfo_posx = xmlGetSignedNumericAttribute(node, "iteminfoposx", 0);
-	iteminfo_posy = xmlGetSignedNumericAttribute(node, "iteminfoposy", 0);
-	iteminfo_width = xmlGetSignedNumericAttribute(node, "iteminfowidth", 0);
-	iteminfo_height = xmlGetSignedNumericAttribute(node, "iteminfoheight", 0);
+	iteminfo_posx = xmlGetSignedNumericAttribute(node, "iteminfo1posx", 0);
+	iteminfo_posy = xmlGetSignedNumericAttribute(node, "iteminfo1posy", 0);
+	iteminfo_width = xmlGetSignedNumericAttribute(node, "iteminfo1width", 0);
+	iteminfo_height = xmlGetSignedNumericAttribute(node, "iteminfo1height", 0);
+	iteminfosavescreen1 = xmlGetSignedNumericAttribute(node, "iteminfo1savescreen", 0);
 	iteminfo2_posx = xmlGetSignedNumericAttribute(node, "iteminfo2posx", 0);
 	iteminfo2_posy = xmlGetSignedNumericAttribute(node, "iteminfo2posy", 0);
 	iteminfo2_width = xmlGetSignedNumericAttribute(node, "iteminfo2width", 0);
 	iteminfo2_height = xmlGetSignedNumericAttribute(node, "iteminfo2height", 0);
-	iteminfosavescreen = xmlGetSignedNumericAttribute(node, "iteminfosavescreen", 0);
-
-	iteminfo_color = xmlGetAttribute(node, (char*)"iteminfocolor");
-	uint32_t hintColor = COL_MENUCONTENT_PLUS_0;
+	iteminfomode2 = xmlGetAttribute(node, (char *)"iteminfo2mode");
+	iteminfosavescreen2 = xmlGetSignedNumericAttribute(node, "iteminfo2savescreen", 0);
+	iteminfo2_color = xmlGetAttribute(node, (char*)"iteminfo2color");
+	
+	uint32_t hintColor2 = COL_MENUCONTENT_PLUS_0;
 				
-	if (iteminfo_color) hintColor = convertColor(iteminfo_color);
+	if (iteminfo2_color) hintColor2 = convertColor(iteminfo2_color);
 		
 	// recalculate posx / posy
 	int x = posx;
@@ -1451,7 +1453,9 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	// iteminfo
 	if (paintiteminfo)
 	{
-		////
+		listBox->enablePaintItemInfo();
+		
+		// itemInfo1
 		iteminfo_posx = widget->getWindowsPos().iX + iteminfo_posx;
 		iteminfo_posy = widget->getWindowsPos().iY + iteminfo_posy;
 				
@@ -1461,14 +1465,10 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		if (iteminfo_height > widget->getWindowsPos().iHeight)
 			iteminfo_height = widget->getWindowsPos().iHeight;
 			
-		listBox->enablePaintItemInfo();
-		int iimode = CMenuItemInfo::ITEMINFO_HINTITEM;
-		if (iteminfomode) iimode = convertItemInfoMode(iteminfomode);
-		listBox->setItemInfoMode(iimode);		
-		listBox->setItemInfoPos1(iteminfo_posx, iteminfo_posy, iteminfo_width, iteminfo_height);
-		if (iteminfo_color) listBox->setItemInfoColor(hintColor);
+		listBox->setItemInfo1Pos(iteminfo_posx, iteminfo_posy, iteminfo_width, iteminfo_height);
+		if (iteminfosavescreen1) listBox->enableItemInfo1SaveScreen();
 		
-		////
+		// itemInfo2
 		iteminfo2_posx = widget->getWindowsPos().iX + iteminfo2_posx;
 		iteminfo2_posy = widget->getWindowsPos().iY + iteminfo2_posy;
 				
@@ -1478,9 +1478,13 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		if (iteminfo2_height > widget->getWindowsPos().iHeight)
 			iteminfo2_height = widget->getWindowsPos().iHeight;
 			
-		listBox->setItemInfoPos2(iteminfo2_posx, iteminfo2_posy, iteminfo2_width, iteminfo2_height);
+		listBox->setItemInfo2Pos(iteminfo2_posx, iteminfo2_posy, iteminfo2_width, iteminfo2_height);
+		if (iteminfosavescreen2) listBox->enableItemInfo2SaveScreen();
 		
-		if (iteminfosavescreen) listBox->enableItemInfoSaveScreen();
+		int iimode = CMenuItemInfo::ITEMINFO_HINTITEM;
+		if (iteminfomode2) iimode = convertItemInfoMode(iteminfomode2);
+		listBox->setItemInfo2Mode(iimode);		
+		if (iteminfo2_color) listBox->setItemInfo2Color(hintColor2);
 	}
 		
 	// item

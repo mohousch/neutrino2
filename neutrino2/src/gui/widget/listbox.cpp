@@ -2115,21 +2115,27 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	// iteminfo
 	paint_ItemInfo = false;
 	cFrameFootInfoHeight = 0;
-	itemInfoMode = CMenuItemInfo::ITEMINFO_HINTITEM;
 	itemInfoBox1.iX = 0;
 	itemInfoBox1.iY = 0;
 	itemInfoBox1.iWidth = 0;
 	itemInfoBox1.iHeight = 0;
-	iteminfoborder = false;
-	iteminfosavescreen = false;
-	iteminfobordermode = CComponent::BORDER_NO;
-	iteminfofont = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
-	iteminfocolor = COL_MENUCONTENT_PLUS_0;
-	iteminfoscale = false;
+	itemInfoMode1 = CMenuItemInfo::ITEMINFO_HINTITEM;
+	iteminfoborder1 = false;
+	iteminfosavescreen1 = false;
+	iteminfobordermode1 = CComponent::BORDER_NO;
+	iteminfofont1 = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
+	iteminfocolor1 = COL_MENUCONTENT_PLUS_0;
+	iteminfoscale1 = false;
 	itemInfoBox2.iX = 0;
 	itemInfoBox2.iY = 0;
 	itemInfoBox2.iWidth = 0;
 	itemInfoBox2.iHeight = 0;
+	itemInfoMode2 = CMenuItemInfo::ITEMINFO_HINTITEM;
+	iteminfoborder2 = false;
+	iteminfosavescreen2 = false;
+	iteminfobordermode2 = CComponent::BORDER_NO;
+	iteminfofont2 = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
+	iteminfocolor2 = COL_MENUCONTENT_PLUS_0;
 	
 	//
 	inFocus = true;
@@ -2226,21 +2232,27 @@ ClistBox::ClistBox(const CBox* position)
 	// itemInfo
 	paint_ItemInfo = false;
 	cFrameFootInfoHeight = 0;
-	itemInfoMode = CMenuItemInfo::ITEMINFO_HINTITEM;
 	itemInfoBox1.iX = 0;
 	itemInfoBox1.iY = 0;
 	itemInfoBox1.iWidth = 0;
 	itemInfoBox1.iHeight = 0;
-	iteminfoborder = false;
-	iteminfosavescreen = false;
-	iteminfobordermode = CComponent::BORDER_NO;
-	iteminfofont = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
-	iteminfocolor = COL_MENUCONTENT_PLUS_0;
-	iteminfoscale = false;
+	itemInfoMode1 = CMenuItemInfo::ITEMINFO_HINTITEM;
+	iteminfoborder1 = false;
+	iteminfosavescreen1 = false;
+	iteminfobordermode1 = CComponent::BORDER_NO;
+	iteminfofont1 = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
+	iteminfocolor1 = COL_MENUCONTENT_PLUS_0;
+	iteminfoscale1 = false;
 	itemInfoBox2.iX = 0;
 	itemInfoBox2.iY = 0;
 	itemInfoBox2.iWidth = 0;
 	itemInfoBox2.iHeight = 0;
+	itemInfoMode2 = CMenuItemInfo::ITEMINFO_HINTITEM;
+	iteminfoborder2 = false;
+	iteminfosavescreen2 = false;
+	iteminfobordermode2 = CComponent::BORDER_NO;
+	iteminfofont2 = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
+	iteminfocolor2 = COL_MENUCONTENT_PLUS_0;
 
 	//
 	widgetLayout = LAYOUT_STANDARD;
@@ -2580,14 +2592,14 @@ void ClistBox::paint(bool _selected)
 	{
 		itemInfo1.setMode(CMenuItemInfo::ITEMINFO_ONELABEL);
 		itemInfo1.setPosition(itemInfoBox1.iX, itemInfoBox1.iY, itemInfoBox1.iWidth, itemInfoBox1.iHeight);
-		if (iteminfosavescreen) itemInfo1.enableSaveScreen();	
+		if (iteminfosavescreen1) itemInfo1.enableSaveScreen();	
 	}
 	
 	// itemInfo2 / itemInfoBox2
 	if (paint_ItemInfo && itemInfoBox2.iWidth != 0)
 	{
 		itemInfo2.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
-		if (iteminfosavescreen) itemInfo2.enableSaveScreen();
+		if (iteminfosavescreen2) itemInfo2.enableSaveScreen();
 	}
 	
 	//
@@ -3102,13 +3114,13 @@ void ClistBox::paintItemInfo(int pos)
 			}
 			
 			// itemInfo2
-			if (itemInfoMode == CMenuItemInfo::ITEMINFO_HINTITEM && (itemInfoBox2.iWidth != 0 && itemInfoBox2.iHeight != 0))
+			if (itemInfoMode2 == CMenuItemInfo::ITEMINFO_HINTITEM && (itemInfoBox2.iWidth != 0 && itemInfoBox2.iHeight != 0))
 			{
 				itemInfo2.setMode(CMenuItemInfo::ITEMINFO_HINTITEM);
-				itemInfo2.setBorderMode(iteminfobordermode);
-				itemInfo2.setColor(iteminfocolor);
-				itemInfo2.setFont(iteminfofont);
-				itemInfo2.setScaling(iteminfoscale);
+				itemInfo2.setBorderMode(iteminfobordermode2);
+				itemInfo2.setColor(iteminfocolor2);
+				itemInfo2.setFont(iteminfofont2);
+				itemInfo2.setScaling(iteminfoscale2);
 				itemInfo2.setHint(item->itemHint.c_str());
 				//
 				std::string fname = item->itemIcon;
@@ -3125,12 +3137,12 @@ void ClistBox::paintItemInfo(int pos)
 						
 				itemInfo2.paint();
 			}
-			else if (itemInfoMode == CMenuItemInfo::ITEMINFO_ICONONLY && (itemInfoBox2.iWidth != 0 && itemInfoBox2.iHeight != 0))
+			else if (itemInfoMode2 == CMenuItemInfo::ITEMINFO_ICONONLY && (itemInfoBox2.iWidth != 0 && itemInfoBox2.iHeight != 0))
 			{
 				itemInfo2.setMode(CMenuItemInfo::ITEMINFO_ICONONLY);
-				itemInfo2.setBorderMode(iteminfobordermode);
-				itemInfo2.setColor(iteminfocolor);
-				itemInfo2.setScaling(iteminfoscale);
+				itemInfo2.setBorderMode(iteminfobordermode2);
+				itemInfo2.setColor(iteminfocolor2);
+				itemInfo2.setScaling(iteminfoscale2);
 				//
 				std::string fname = item->itemIcon;
 						
@@ -3146,13 +3158,13 @@ void ClistBox::paintItemInfo(int pos)
 						
 				itemInfo2.paint();
 			}
-			else if (itemInfoMode == CMenuItemInfo::ITEMINFO_HINTONLY && (itemInfoBox2.iWidth != 0 && itemInfoBox2.iHeight != 0))
+			else if (itemInfoMode2 == CMenuItemInfo::ITEMINFO_HINTONLY && (itemInfoBox2.iWidth != 0 && itemInfoBox2.iHeight != 0))
 			{
 				itemInfo2.setMode(CMenuItemInfo::ITEMINFO_HINTONLY);
-				itemInfo2.setBorderMode(iteminfobordermode);
-				itemInfo2.setColor(iteminfocolor);
-				itemInfo2.setFont(iteminfofont);
-				itemInfo2.setScaling(iteminfoscale);
+				itemInfo2.setBorderMode(iteminfobordermode2);
+				itemInfo2.setColor(iteminfocolor2);
+				itemInfo2.setFont(iteminfofont2);
+				itemInfo2.setScaling(iteminfoscale2);
 				itemInfo2.setHint(_(item->itemHint.c_str()));
 						
 				itemInfo2.paint();

@@ -535,13 +535,13 @@ class ClistBox : public CComponent
 		CBox itemInfoBox2;
 		CMenuItemInfo itemInfo1;
 		CMenuItemInfo itemInfo2;
-		int itemInfoMode;
-		bool iteminfoborder;
-		bool iteminfosavescreen;
-		int iteminfobordermode;
-		unsigned int iteminfofont;
-		uint32_t iteminfocolor;
-		bool iteminfoscale;
+		int itemInfoMode1, itemInfoMode2;
+		bool iteminfoborder1, iteminfoborder2;
+		bool iteminfosavescreen1, iteminfosavescreen2;
+		int iteminfobordermode1, iteminfobordermode2;
+		unsigned int iteminfofont1, iteminfofont2;
+		uint32_t iteminfocolor1, iteminfocolor2;
+		bool iteminfoscale1, iteminfoscale2;
 
 		// head
 		bool paint_Head;
@@ -646,26 +646,32 @@ class ClistBox : public CComponent
 		
 		//// itemInfo properties
 		void enablePaintItemInfo(){paint_ItemInfo = true;};
-		void setItemInfoMode(int mode){itemInfoMode = mode;};
-		void setItemInfoPos1(int x, int y, int dx, int dy)
+		void setItemInfo1Pos(int x, int y, int dx, int dy)
 		{
 			itemInfoBox1.iX = x; 
 			itemInfoBox1.iY = y; 
 			itemInfoBox1.iWidth = dx; 
 			itemInfoBox1.iHeight = dy; 
 		};
-		void setItemInfoPos2(int x, int y, int dx, int dy)
+		void setItemInfo2Pos(int x, int y, int dx, int dy)
 		{
 			itemInfoBox2.iX = x;
 			itemInfoBox2.iY = y;
 			itemInfoBox2.iWidth = dx;
 			itemInfoBox2.iHeight = dy;
 		}
-		void paintItemInfoBorder(int m){iteminfoborder = true; iteminfobordermode = m;};
-		void enableItemInfoSaveScreen(){iteminfosavescreen = true;};
-		void setItemInfoFont(unsigned int f){iteminfofont = f;};
-		void setItemInfoColor(uint32_t col){iteminfocolor = col;};
-		void setItemInfoScaling(bool s){iteminfoscale = s;};
+		void setItemInfo1Mode(int mode){itemInfoMode1 = mode;};
+		void setItemInfo2Mode(int mode){itemInfoMode2 = mode;};
+		void paintItemInfo1Border(int m){iteminfoborder1 = true; iteminfobordermode1 = m;};
+		void paintItemInfo2Border(int m){iteminfoborder2 = true; iteminfobordermode2 = m;};
+		void enableItemInfo1SaveScreen(){iteminfosavescreen1 = true;};
+		void enableItemInfo2SaveScreen(){iteminfosavescreen2 = true;};
+		void setItemInfo1Font(unsigned int f){iteminfofont1 = f;};
+		void setItemInfo2Font(unsigned int f){iteminfofont2 = f;};
+		void setItemInfo1Color(uint32_t col){iteminfocolor1 = col;};
+		void setItemInfo2Color(uint32_t col){iteminfocolor2 = col;};
+		void setItemInfo1Scaling(bool s){iteminfoscale1 = s;};
+		void setItemInfo2Scaling(bool s){iteminfoscale2 = s;};
 		
 		//// head properties
 		void enablePaintHead(){paint_Head = true; has_Title = true;};
