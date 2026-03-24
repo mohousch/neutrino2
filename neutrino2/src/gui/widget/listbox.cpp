@@ -2136,6 +2136,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	iteminfobordermode2 = CComponent::BORDER_NO;
 	iteminfofont2 = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
 	iteminfocolor2 = COL_MENUCONTENT_PLUS_0;
+	iteminfoscale2 = false;
 	
 	//
 	inFocus = true;
@@ -2253,6 +2254,7 @@ ClistBox::ClistBox(const CBox* position)
 	iteminfobordermode2 = CComponent::BORDER_NO;
 	iteminfofont2 = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
 	iteminfocolor2 = COL_MENUCONTENT_PLUS_0;
+	iteminfoscale2 = false;
 
 	//
 	widgetLayout = LAYOUT_STANDARD;
@@ -2578,7 +2580,6 @@ void ClistBox::paint(bool _selected)
 		{
 			itemInfo2.setPosition(itemBox.iX + items_width + (itemBox.iWidth - items_width - ITEM_ICON_W)/2, itemBox.iY + (itemBox.iHeight - ITEM_ICON_H)/2, ITEM_ICON_W, ITEM_ICON_H);
 			itemInfo2.enableSaveScreen();
-			itemInfo2.setScaling(true);
 		}
 		else if (widgetMode == MODE_LISTBOX)
 		{

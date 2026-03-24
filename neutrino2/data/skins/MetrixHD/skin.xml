@@ -721,7 +721,7 @@
 		<time name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"></time>
 		<time name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="FONT_TYPE_EVENTLIST_ITEMLARGE"></time>
 		<window posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1" paintiteminfo="1" iteminfomode="ITEMINFO_ICONONLY" iteminfoframe="0" iteminfocolor="COL_MENUCONTENTSELECTED_PLUS_0" iteminfo2posx="795" iteminfo2posy="150" iteminfo2width="425" iteminfo2height="275"/>
+		<listbox posx="60" posy="60" width="715" height="600" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1" paintiteminfo="1" iteminfo2mode="ITEMINFO_ICONONLY" iteminfo2color="COL_MENUCONTENTSELECTED_PLUS_0" iteminfo2posx="795" iteminfo2posy="150" iteminfo2width="425" iteminfo2height="275"/>
 	</widget>
 	
 	<widget name="menusetup" posx="0" posy="0" width="1280" height="720">
