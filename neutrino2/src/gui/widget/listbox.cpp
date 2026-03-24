@@ -466,8 +466,8 @@ int CMenuOptionChooser::exec(CTarget *target)
 	}
 	else if(msg == CRCInput::RC_ok) 
 	{
-		if (parent && parent->parent)
-			parent->parent->hide();
+		if (parent)
+			parent->hide();
 			
 		int select = -1;
 
@@ -985,8 +985,8 @@ int CMenuOptionStringChooser::exec(CTarget *target)
 	{
 		int select = -1;
 		
-		if (parent && parent->parent)
-			parent->parent->hide();
+		if (parent)
+			parent->hide();
 		
 		//
 		CWidget* widget = NULL;
