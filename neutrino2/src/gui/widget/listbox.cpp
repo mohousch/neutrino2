@@ -2580,14 +2580,14 @@ void ClistBox::paint(bool _selected)
 	{
 		itemInfo1.setMode(CMenuItemInfo::ITEMINFO_ONELABEL);
 		itemInfo1.setPosition(itemInfoBox1.iX, itemInfoBox1.iY, itemInfoBox1.iWidth, itemInfoBox1.iHeight);
-		/*if (iteminfosavescreen)*/ itemInfo1.enableSaveScreen();	
+		if (iteminfosavescreen) itemInfo1.enableSaveScreen();	
 	}
 	
 	// itemInfo2 / itemInfoBox2
 	if (paint_ItemInfo && itemInfoBox2.iWidth != 0)
 	{
 		itemInfo2.setPosition(itemInfoBox2.iX, itemInfoBox2.iY, itemInfoBox2.iWidth, itemInfoBox2.iHeight);
-		/*if (iteminfosavescreen)*/ itemInfo2.enableSaveScreen();
+		if (iteminfosavescreen) itemInfo2.enableSaveScreen();
 	}
 	
 	//

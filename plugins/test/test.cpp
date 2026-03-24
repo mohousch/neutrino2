@@ -4409,8 +4409,8 @@ void CTestMenu::testClistBoxValue()
 {
 	ClistBox *testBox = new ClistBox(CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - 600) / 2, CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - 500) / 2, 600, 500);
 	
-	testBox->setMode(ClistBox::MODE_MENU);
-	testBox->setLayout(ClistBox::LAYOUT_FRAME);
+	testBox->setMode(ClistBox::MODE_LISTBOX);
+	testBox->setLayout(ClistBox::LAYOUT_CLASSIC);
 	testBox->setItemBorderMode();
 	testBox->setBorderMode();
 	testBox->enablePaintHead();
@@ -4422,7 +4422,7 @@ void CTestMenu::testClistBoxValue()
 	testBox->setItemsPerPage(6, 3);
 	
 	testBox->addItem(new CMenuForwarder("Item1", true, "    show HintBox", NULL, NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_TV, "show HintBox"));
-	testBox->addItem(new CMenuForwarder("Item2", true, "    show MessageBox", NULL, NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_RADIO, "show messageBox"));
+	testBox->addItem(new CMenuForwarder("Item2", true, "    show MessageBox", NULL, NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSD, "show messageBox"));
 	testBox->addItem(new CMenuForwarder("Item3", true, "    play File", NULL, NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_MEDIAPLAYER, "play movie file"));
 	testBox->addItem(new CMenuForwarder("Item4", true, "    back", NULL, "exit", CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCART, "exit"));
 	testBox->addItem(new CMenuForwarder("Item5", true, "    show InfoBox", NULL, "actionkey", CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO, "show infoBox"));

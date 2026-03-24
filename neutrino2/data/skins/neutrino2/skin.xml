@@ -8,16 +8,16 @@
 	<skininfo author="mohousch" version="1.0" info="Neutrino2 skin"/>
 	
 	<widget name="mainmenu" posx="340" posy="60" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
-		<listbox posx="370" posy="90" width="540" height="540" paintframe="0" layout="LAYOUT_CLASSIC" mode="MODE_MENU" itemborder="1" painthead="1" title="Main Menu" icon="mainmenu" paintdate="1" headline="1" headlinegradient="1" paintfoot="1" footline="1" footlinegradient="1" >
-			<item id="FORWARDER" localename="TV / Radio" itemicon="hint_tvmode" target="neutrino" actionkey="tvradioswitch"/>
-			<item id="FORWARDER" localename="EPG / Timer" itemicon="hint_timers" target="epgtimer"/>
-			<item id="FORWARDER" localename="Features" itemicon="hint_features" target="neutrino" actionkey="features"/>
-			<item id="FORWARDER" localename="Service" itemicon="hint_service" target="service"/>
-			<item id="FORWARDER" localename="Settings" itemicon="hint_settings" target="settings"/>
-			<item id="FORWARDER" localename="OSD" itemicon="hint_osd" target="osd"/>
-			<item id="FORWARDER" localename="Information" itemicon="hint_dboxinfo" target="information"/>
-			<item id="FORWARDER" localename="Power Menu" itemicon="hint_shutdown" target="powermenu"/>
-			<item id="FORWARDER" localename="Media Player" itemicon="hint_media" target="mediaplayer"/>
+		<listbox posx="370" posy="90" width="540" height="540" paintframe="0" layout="LAYOUT_CLASSIC" mode="MODE_MENU" itemborder="1" painthead="1" title="Main Menu" icon="mainmenu" paintdate="1" headline="1" headlinegradient="1" paintfoot="1" footline="1" footlinegradient="1" paintiteminfo="1">
+			<item id="FORWARDER" localename="TV / Radio" itemicon="hint_tvmode" target="neutrino" actionkey="tvradioswitch" hint="Here you can switch into TV / Radio mode"/>
+			<item id="FORWARDER" localename="EPG / Timer" itemicon="hint_timers" target="epgtimer" hint="Here you can set Timers and show EPG"/>
+			<item id="FORWARDER" localename="Features" itemicon="hint_features" target="neutrino" actionkey="features" hint="Here you can choose plugins"/>
+			<item id="FORWARDER" localename="Service" itemicon="hint_service" target="service" hint="Here you can set channel scan and more"/>
+			<item id="FORWARDER" localename="Settings" itemicon="hint_settings" target="settings" hint="Here you can setup your box"/>
+			<item id="FORWARDER" localename="OSD" itemicon="hint_osd" target="osd" hint="Here you can setup OSD"/>
+			<item id="FORWARDER" localename="Information" itemicon="hint_dboxinfo" target="information" hint="Here you can get device Info"/>
+			<item id="FORWARDER" localename="Power Menu" itemicon="hint_shutdown" target="powermenu" hint="Here you can power off or standby your device"/>
+			<item id="FORWARDER" localename="Media Player" itemicon="hint_media" target="mediaplayer" hint="Here you can play / show  music / movies / pics"/>
 			<foot_button_label name="information"/>
 		</listbox>
 	</widget>

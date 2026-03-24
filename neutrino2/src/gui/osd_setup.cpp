@@ -1150,7 +1150,7 @@ void COSDDiverses::showMenu()
 	osdDiverseSettings->addItem(new CMenuOptionChooser("Show weather", &g_settings.show_weather, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
 	
 	// item info
-	if (g_settings.preferred_skin == "standard" || g_settings.preferred_skin == "neutrino2" || g_settings.preferred_skin == "elgato")
+	if (g_settings.preferred_skin == "standard")
 	{
 		//
 		osdDiverseSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
