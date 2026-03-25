@@ -58,5 +58,6 @@ install_DATA = \
 	hint_lcd.png \
 	hint_video.png \
 	hint_avinputmode.png \
-	hint_infobarcolors.png
+	hint_infobarcolors.png \
+	hint_epgsetup.png
 
