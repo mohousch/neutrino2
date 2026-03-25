@@ -1884,8 +1884,8 @@ void CMoviePlayerGui::show(std::string Title, std::string Info, short Percent, c
 	{
 		CCHline hline(cFrameBoxButton.iX, cFrameBoxButton.iY, cFrameBoxButton.iWidth, cFrameBoxButton.iHeight);
 		
-		hline.setColor(COL_INFOBAR_SHADOW_PLUS_1);
-		hline.setGradient(3);
+		hline.setColor(COL_MENUCONTENT_PLUS_5);
+		hline.setGradient(g_settings.infobar_buttonline_gradient? DARK2LIGHT2DARK : NOGRADIENT);
 		hline.paint();
 	}
 	
