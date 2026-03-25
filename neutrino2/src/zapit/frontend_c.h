@@ -211,10 +211,11 @@ class CFrontend
 
 		// current Transponderdata
 		transponder currentTransponder;
-		
+
+		//		
 		FrontendParameters curfe;
-		uint32_t getDiseqcReply(const int timeout_ms) const;
-		FrontendParameters getFrontend(void) const;
+		
+		//
 		fe_delivery_system_t getFEDeliverySystem(uint32_t sys);
 
 		//

@@ -566,14 +566,6 @@ fe_status_t CFrontend::getStatus(void) const
 	return (fe_status_t) (status & FE_HAS_LOCK);
 }
 
-FrontendParameters CFrontend::getFrontend(void) const
-{
-	FrontendParameters feparams;
-	
-	return feparams;
-	
-}
-
 uint32_t CFrontend::getBitErrorRate(void) const
 {
 	uint32_t ber = 0;
@@ -1271,11 +1263,6 @@ void CFrontend::sendDiseqcCommand(const struct dvb_diseqc_master_cmd *cmd, const
 		usleep(1000 * ms);
 }
 
-uint32_t CFrontend::getDiseqcReply(const int /*timeout_ms*/) const
-{
-	return 0;
-}
-
 void CFrontend::sendToneBurst(const fe_sec_mini_cmd_t burst, const uint32_t ms)
 {
 	if ( slave || info.type != FE_QPSK) 
@@ -1507,7 +1494,7 @@ int CFrontend::tuneFrequency(FrontendParameters * feparams)
 	// save feparams im TP struct
 	memcpy(&TP.feparams, feparams, sizeof(FrontendParameters));
 
-	//FIXME:pol für Sat TEST
+	//FIXME:pol für Sat
 	if(info.type == FE_QPSK)
 		TP.feparams.polarization = feparams->polarization;
 
@@ -1719,7 +1706,7 @@ bool CFrontend::setDiseqcSimple(int sat_no, const uint8_t pol, const uint32_t fr
 
 		//for monoblock - needed ??
 		secSetVoltage(v, 15);
-		//secSetVoltage(SEC_VOLTAGE_13, 15);//FIXME for test
+		//secSetVoltage(SEC_VOLTAGE_13, 15);//FIXME
 		secSetTone(SEC_TONE_OFF, 20);
 
 		sendDiseqcCommand(&cmd, 100);
@@ -1741,7 +1728,7 @@ void CFrontend::setDiseqc(int sat_no, const uint8_t pol, const uint32_t frequenc
 	fe_sec_mini_cmd_t b = (sat_no & 1) ? SEC_MINI_B : SEC_MINI_A;
 	int delay = 0;
 	
-	//test
+	//
 	if (info.type != FE_QPSK) 
 		return;
 
@@ -1750,8 +1737,7 @@ void CFrontend::setDiseqc(int sat_no, const uint8_t pol, const uint32_t frequenc
 
 	//secSetVoltage(polarity, 15);	/* first of all set the "polarization" */
 	//secSetTone(tone, 1);		/* set the "band" */
-
-	//secSetVoltage(SEC_VOLTAGE_13, 15);//FIXME for test
+	//secSetVoltage(SEC_VOLTAGE_13, 15);//FIXME
 	secSetTone(SEC_TONE_OFF, 20);
 
 	for (loop = 0; loop <= diseqcRepeats; loop++) 
@@ -1938,7 +1924,7 @@ int CFrontend::driveToSatellitePosition(t_satellite_position satellitePosition, 
 	int new_position = 0, old_position = 0;
 	bool use_usals = 0;
 
-	if(diseqcType == DISEQC_ADVANCED) //FIXME testing
+	if(diseqcType == DISEQC_ADVANCED) //FIXME
 	{
 		dprintf(DEBUG_INFO, "CFrontend::driveToSatellitePosition fe(%d:%d) SatellitePosition %d -> %d\n", feadapter, fenumber, currentSatellitePosition, satellitePosition);
 		
