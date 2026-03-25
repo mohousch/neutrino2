@@ -146,7 +146,8 @@ class CFrontend
 		int gotoXXLoDirection;
 		int repeatUsals;
 		int motorRotationSpeed;
-		
+
+		//		
 		int32_t lastSatellitePosition;
 		
 		// how often to repeat DiSEqC 1.1 commands

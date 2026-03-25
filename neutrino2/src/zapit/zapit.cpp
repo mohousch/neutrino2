@@ -625,7 +625,7 @@ void CZapit::loadFrontendConfig()
 		fe->powered = getConfigValue(fe, "powered", 0);
 		
 		// delsys
-		fe->forcedDelSys = getConfigValue(fe, "delsys", fe->getDeliverySystem());
+		fe->forcedDelSys = getConfigValue(fe, "delsys", fe->getForcedDelSys());
 		
 		// sat
 		if(fe->getInfo()->type == FE_QPSK)
