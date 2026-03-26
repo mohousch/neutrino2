@@ -658,85 +658,8 @@ uint32_t CFrontend::getUncorrectedBlocks(void) const
 	return blocks;
 }
 
-void CFrontend::getDelSys(int f, int m, char *&fec, char *&sys, char *&mod)
+void CFrontend::getTransponderInfo(int f, int m, char *&fec)
 {
-	// sys/mod
-	if (info.type == FE_QPSK) 
-	{
-		if (f < FEC_S2_QPSK_1_2) 
-		{
-			sys = (char *)"DVB-S";
-			mod = (char *)"QPSK";
-		}		
-		else if (f < FEC_S2_8PSK_1_2) 
-		{
-			sys = (char *)"DVB-S2";
-			mod = (char *)"QPSK";
-		}		
-		else 
-		{
-			sys = (char *)"DVB-S2";
-			mod = (char *)"8PSK";
-		}
-	} 
-	else if (info.type == FE_QAM || info.type == FE_OFDM || info.type == FE_ATSC) 
-	{
-#if HAVE_DVB_API_VERSION >= 5
-		switch (forcedDelSys)
-		{	
-			case DVB_C:
-				sys = (char *)"DVB-C";
-				break;
-				
-			case DVB_T:
-				sys = (char *)"DVB-T";
-				break;
-				
-			case DVB_T2:
-				sys = (char *)"DVB-T2";
-				break;
-				
-			case DVB_DTMB:
-				sys = (char *)"DVB-DTMB";
-				break;
-			
-			case DVB_A:
-				sys = (char *)"DVB-A";
-				break;	
-		}
-#else
-		if ( info.type == FE_QAM )
-			sys = (char *)"DVB-C";
-		else if (info.type == FE_OFDM ) 
-			sys = (char *)"DVB-T";
-		else if (info.type == FE_ATSC)
-        		sys = (char *)"DVB_A";
-#endif
-
-		switch (m) 
-		{
-			case QAM_16:
-				mod = (char *)"QAM_16";
-				break;
-			case QAM_32:
-				mod = (char *)"QAM_32";
-				break;
-			case QAM_64:
-				mod = (char *)"QAM_64";
-				break;
-			case QAM_128:
-				mod = (char *)"QAM_128";
-				break;
-			case QAM_256:
-				mod = (char *)"QAM_256";
-				break;
-			case QAM_AUTO:
-			default:
-				mod = (char *)"QAM_AUTO";
-				break;
-		}
-	}
-
 	// fec
 	switch (f) 
 	{
@@ -802,7 +725,7 @@ void CFrontend::getDelSys(int f, int m, char *&fec, char *&sys, char *&mod)
 			break;			
 			
 		default:
-			dprintf(DEBUG_INFO, "fe(%d:%d) getDelSys: unknown FEC: %d !!!\n", feadapter, fenumber, f);
+			dprintf(DEBUG_INFO, "fe(%d:%d) getTransponderInfo: unknown FEC: %d !!!\n", feadapter, fenumber, f);
 		
 		case FEC_AUTO:
 			fec = (char *)"AUTO";

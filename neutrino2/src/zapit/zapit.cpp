@@ -264,7 +264,7 @@ void CZapit::initFrontend()
 					have_s = true;
 				if (fe->getDeliverySystem() & CFrontend::DVB_C)
 					have_c = true;
-				if (fe->getDeliverySystem() & CFrontend::DVB_T || fe->getDeliverySystem() & CFrontend::DVB_T2)
+				if (fe->getDeliverySystem() & CFrontend::DVB_T || fe->getDeliverySystem() & CFrontend::DVB_T2 || fe->getForcedDelSys() == CFrontend::DVB_DTMB)
 					have_t = true;
 				if (fe->getDeliverySystem() & CFrontend::DVB_A)
 					have_a = true;
@@ -295,7 +295,7 @@ void CZapit::initFrontend()
 #ifdef ENABLE_TESTING
 	fe = new CFrontend(0, 1); // adapter_num = 1
 
-	fe->info.type = FE_QAM;
+	fe->info.type = FE_QPSK;
 	strcpy(fe->info.name, "Multi Fake Tuner");
 //	fe->forcedDelSys = CFrontend::DVB_C;
 	fe->deliverySystemMask = CFrontend::DVB_C | CFrontend::DVB_T | CFrontend::DVB_T2 | CFrontend::DVB_S | CFrontend::DVB_S2 | CFrontend::DVB_S2X | CFrontend::DVB_DTMB | CFrontend::DVB_A;
@@ -3706,7 +3706,7 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
 		feparams.delsys = CFrontend::DVB_C;
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2 || fe->getForcedDelSys() == CFrontend::DVB_DTMB)
 #else
 	else if (fe->getInfo()->type == FE_OFDM) 
 #endif
@@ -4063,7 +4063,7 @@ void * CZapit::scanThread(void * data)
 		scanInputParser = parseXmlFile(CABLES_XML);
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2 || fe->getForcedDelSys() == CFrontend::DVB_DTMB)
 #else
 	else if (fe->getInfo()->type == FE_OFDM) 
 #endif
@@ -4101,7 +4101,7 @@ void * CZapit::scanThread(void * data)
 			t_satellite_position position = xmlGetSignedNumericAttribute(search, "position", 10);
 		
 #if HAVE_DVB_API_VERSION >= 5
-    			if ( (fe->getForcedDelSys() == CFrontend::DVB_C) || (fe->getForcedDelSys() == CFrontend::DVB_T) || (fe->getForcedDelSys() == CFrontend::DVB_T2) || (fe->getForcedDelSys() == CFrontend::DVB_A) )
+    			if ( (fe->getForcedDelSys() == CFrontend::DVB_C) || (fe->getForcedDelSys() == CFrontend::DVB_T) || (fe->getForcedDelSys() == CFrontend::DVB_T2) || (fe->getForcedDelSys() == CFrontend::DVB_A) || (fe->getForcedDelSys() == CFrontend::DVB_DTMB) )
 #else
 			if( (fe->getInfo()->type == FE_QAM) || (fe->getInfo()->type == FE_OFDM) || (fe->getInfo()->type == FE_ATSC) )
 #endif

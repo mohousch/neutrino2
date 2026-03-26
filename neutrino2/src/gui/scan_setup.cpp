@@ -546,29 +546,6 @@ int CScanSetup::showScanService()
 	// tunertype (forceddelsys)
 	if (fe->isHybrid())
 	{
-		// 
-//		if (fe->getDeliverySystem() & CFrontend::DVB_C)
-//			fe->forcedDelSys = CFrontend::DVB_C;
-//		else if (fe->getDeliverySystem() & CFrontend::DVB_T)
-//			fe->forcedDelSys = CFrontend::DVB_T;
-//		else if (fe->getDeliverySystem() & CFrontend::DVB_T2)
-//			fe->forcedDelSys = CFrontend::DVB_T2;
-		/*
-		CMenuOptionChooser *tunerType = new CMenuOptionChooser(_("Tuner type"),  (int *)&fe->forcedDelSys);
-		
-		if (fe->getDeliverySystem() & CFrontend::DVB_C)
-			tunerType->addOption("DVBC", CFrontend::DVB_C);
-		if (fe->getDeliverySystem() & CFrontend::DVB_T)
-			tunerType->addOption("DVBT", CFrontend::DVB_T);
-		if (fe->getDeliverySystem() & CFrontend::DVB_T2)
-			tunerType->addOption("DVBT2", CFrontend::DVB_T2);
-		if (fe->getDeliverySystem() & CFrontend::DVB_S)
-			tunerType->addOption("DVBS", CFrontend::DVB_S);
-		if (fe->getDeliverySystem() & CFrontend::DVB_S2)
-			tunerType->addOption("DVBS2", CFrontend::DVB_S2);
-		if (fe->getDeliverySystem() & CFrontend::DVB_S2X)
-			tunerType->addOption("DVBS2X", CFrontend::DVB_S2X);
-		*/
 		CMenuOptionChooser *tunerType = new CMenuOptionChooser(_("Tuner type"),  (int *)&fe->forcedDelSys, FRONTEND_DELIVERYSYSTEM_OPTIONS, FRONTEND_DELIVERYSYSTEM_OPTION_COUNT, true, feDelSysNotifier);
 			
 		tunerType->setChangeObserver(feDelSysNotifier);
@@ -579,12 +556,9 @@ int CScanSetup::showScanService()
 		scansetup->addItem(tunerType);
 	}
 	
-	// voltage
-//	bool hidden = true;
-	
+	// voltage	
 	CMenuOptionChooser *ojVoltage = new CMenuOptionChooser(_("5 Volt"), (int *)&fe->powered, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
 	ojVoltage->setHidden((fe->getForcedDelSys() != CFrontend::DVB_T && fe->getForcedDelSys() != CFrontend::DVB_T2));
-//	feDelSysNotifier->addItem(ojVoltage);
 	scansetup->addItem(ojVoltage);
 	
 	// separartor	
@@ -1188,7 +1162,7 @@ int CScanSetup::showManualScanSetup()
 		}
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2 || fe->getForcedDelSys() == CFrontend::DVB_DTMB)
 #else
 	else if (fe->getInfo()->type == FE_OFDM) 
 #endif
@@ -1248,7 +1222,7 @@ int CScanSetup::showManualScanSetup()
 		freq_length = 8;
 	else if (fe->getForcedDelSys() == CFrontend::DVB_C)
 		freq_length = 6;
-	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2 || fe->getForcedDelSys() == CFrontend::DVB_A)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2 || fe->getForcedDelSys() == CFrontend::DVB_A || fe->getForcedDelSys() == CFrontend::DVB_DTMB)
 		freq_length = 9;
 #else
 	switch (fe->getInfo()->type)
@@ -1296,7 +1270,7 @@ int CScanSetup::showManualScanSetup()
 		mod_pol = new CMenuOptionChooser(_("Modulation"), (int *)&scanSettings->TP_mod, CABLETERRESTRIALSETUP_SCANTP_MOD, CABLETERRESTRIALSETUP_SCANTP_MOD_COUNT, true);
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2 || fe->getForcedDelSys() == CFrontend::DVB_DTMB)
 #else
 	else if (fe->getInfo()->type == FE_OFDM) 
 #endif
@@ -1326,7 +1300,7 @@ int CScanSetup::showManualScanSetup()
 	CMenuOptionChooser * fec = new CMenuOptionChooser(_("FEC"), (int *)&scanSettings->TP_fec, SATSETUP_SCANTP_FEC, fec_count, true);
 	
 #if HAVE_DVB_API_VERSION >= 5
-	if (fe->getForcedDelSys() != CFrontend::DVB_T && fe->getForcedDelSys() != CFrontend::DVB_T2 && fe->getForcedDelSys() != CFrontend::DVB_A)
+	if (fe->getForcedDelSys() != CFrontend::DVB_T && fe->getForcedDelSys() != CFrontend::DVB_T2 && fe->getForcedDelSys() != CFrontend::DVB_A && fe->getForcedDelSys() != CFrontend::DVB_DTMB)
 #else	
 	if(fe->getInfo()->type != FE_OFDM && fe->getInfo()->type != FE_ATSC)
 #endif
@@ -1472,7 +1446,7 @@ int CScanSetup::showAutoScanSetup()
 		}
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2)
+	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2 || fe->getForcedDelSys() == CFrontend::DVB_DTMB)
 #else
 	else if (fe->getInfo()->type == FE_OFDM) 
 #endif
@@ -1694,65 +1668,65 @@ int CScanSetup::showTPSelect()
 			continue;
 
 		char buf[128];
-		char * f, *s, *m;
+		char * f;
 		
 #if HAVE_DVB_API_VERSION >= 5
 	if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 	{
-		fe->getDelSys(tI->second.feparams.fec_inner, dvbs_get_modulation(tI->second.feparams.fec_inner),  f, s, m);
+		fe->getTransponderInfo(tI->second.feparams.fec_inner, dvbs_get_modulation(tI->second.feparams.fec_inner),  f);
 
-		snprintf(buf, sizeof(buf), "%d %c %d %s %s %s ", tI->second.feparams.frequency, tI->second.feparams.polarization ? 'V' : 'H', tI->second.feparams.symbol_rate, f, s, m);
+		snprintf(buf, sizeof(buf), "%d %c %d %s ", tI->second.feparams.frequency, tI->second.feparams.polarization ? 'V' : 'H', tI->second.feparams.symbol_rate, f);
 	}
 	else if (fe->getForcedDelSys() == CFrontend::DVB_C)
 	{
-		fe->getDelSys(tI->second.feparams.fec_inner, tI->second.feparams.modulation, f, s, m);
+		fe->getTransponderInfo(tI->second.feparams.fec_inner, tI->second.feparams.modulation, f);
 
-		snprintf(buf, sizeof(buf), "%d %d %s %s %s ", tI->second.feparams.frequency, tI->second.feparams.symbol_rate, f, s, m);
+		snprintf(buf, sizeof(buf), "%d %d %s ", tI->second.feparams.frequency, tI->second.feparams.symbol_rate, f);
 	}
 	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2 || fe->getForcedDelSys() == CFrontend::DVB_DTMB)
 	{
-		fe->getDelSys(tI->second.feparams.code_rate_HP, tI->second.feparams.modulation, f, s, m);
+		fe->getTransponderInfo(tI->second.feparams.code_rate_HP, tI->second.feparams.modulation, f);
 
-		snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency, f, s, m);
+		snprintf(buf, sizeof(buf), "%d %s ", tI->second.feparams.frequency, f);
 	}
 	else if (fe->getForcedDelSys() == CFrontend::DVB_A)
 	{
-		fe->getDelSys(FEC_NONE, tI->second.feparams.modulation, f, s, m);
+		fe->getTransponderInfo(FEC_NONE, tI->second.feparams.modulation, f);
 
-		snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency, f, s, m);
+		snprintf(buf, sizeof(buf), "%d %s ", tI->second.feparams.frequency, f);
 	}
 #else
 		switch(fe->getInfo()->type) 
 		{
 			case FE_QPSK:
 			{
-				fe->getDelSys(tI->second.feparams.fec_inner, dvbs_get_modulation(tI->second.feparams.fec_inner),  f, s, m);
+				fe->getTransponderInfo(tI->second.feparams.fec_inner, dvbs_get_modulation(tI->second.feparams.fec_inner),  f);
 
-				snprintf(buf, sizeof(buf), "%d %c %d %s %s %s ", tI->second.feparams.frequency, tI->second.polarization ? 'V' : 'H', tI->second.feparams.symbol_rate, f, s, m);
+				snprintf(buf, sizeof(buf), "%d %c %d %s ", tI->second.feparams.frequency, tI->second.polarization ? 'V' : 'H', tI->second.feparams.symbol_rate, f);
 			}
 			break;
 
 			case FE_QAM:
 			{
-				fe->getDelSys(tI->second.feparams.fec_inner, tI->second.feparams.modulation, f, s, m);
+				fe->getTransponderInfo(tI->second.feparams.fec_inner, tI->second.feparams.modulation, f);
 
-				snprintf(buf, sizeof(buf), "%d %d %s %s %s ", tI->second.feparams.frequency, tI->second.feparams.symbol_rate, f, s, m);
+				snprintf(buf, sizeof(buf), "%d %d %s ", tI->second.feparams.frequency, tI->second.feparams.symbol_rate, f);
 			}
 			break;
 
 			case FE_OFDM:
 			{
-				fe->getDelSys(tI->second.feparams.code_rate_HP, tI->second.feparams.modulation, f, s, m);
+				fe->getTransponderInfo(tI->second.feparams.code_rate_HP, tI->second.feparams.modulation, f);
 
-				snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency, f, s, m);
+				snprintf(buf, sizeof(buf), "%d %s ", tI->second.feparams.frequency, f);
 			}
 			break;
 				
 			case FE_ATSC:
             		{
-				fe->getDelSys(FEC_NONE, tI->second.feparams.modulation, f, s, m);
+				fe->getTransponderInfo(FEC_NONE, tI->second.feparams.modulation, f);
 
-				snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency, f, s, m);
+				snprintf(buf, sizeof(buf), "%d %s ", tI->second.feparams.frequency, f);
 			}
 			break;
 		}
@@ -2335,7 +2309,7 @@ bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 {
 	uint32_t delsys = *((uint32_t*) Data);
 	
-	if (delsys == CFrontend::DVB_T || delsys == CFrontend::DVB_T2)
+	if (delsys == CFrontend::DVB_T || delsys == CFrontend::DVB_T2 || delsys == CFrontend::DVB_DTMB)
 	{
 		item1->setHidden(false);
 		item2->setHidden(true);
@@ -2345,6 +2319,15 @@ bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 		item6->setHidden(true);
 	}
 	else if (delsys == CFrontend::DVB_C)
+	{
+		item1->setHidden(true);
+		item2->setHidden(true);
+		item3->setHidden(true);
+		item4->setHidden(true);
+		item5->setHidden(true);
+		item6->setHidden(true);
+	}
+	else if (delsys == CFrontend::DVB_A)
 	{
 		item1->setHidden(true);
 		item2->setHidden(true);

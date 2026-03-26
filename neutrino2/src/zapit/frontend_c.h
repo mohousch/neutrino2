@@ -271,7 +271,7 @@ class CFrontend
 		uint16_t getSignalStrength(void) const;
 		fe_status_t getStatus(void) const;
 		uint32_t getUncorrectedBlocks(void) const;
-		void getDelSys(int f, int m, char * &fec, char * &sys, char * &mod);
+		void getTransponderInfo(int f, int m, char * &fec);
 		fe_code_rate_t getCFEC ();
 		uint32_t getRate();
 		//

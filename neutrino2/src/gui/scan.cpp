@@ -103,7 +103,7 @@ int CScanTs::exec(CTarget * parent, const std::string & actionKey)
 	if(parent)
 		parent->hide();
 		
-	////
+	//
 	scanSettings->saveSettings(NEUTRINO_SCAN_SETTINGS_FILE);
 	CZapit::getInstance()->saveFrontendConfig();
 	
@@ -284,7 +284,7 @@ int CScanTs::exec(CTarget * parent, const std::string & actionKey)
 	{
 		int w = x + width - xpos2;
 		char buffer[128];
-		char *f, *s, *m;
+		char *f;
 
 #if HAVE_DVB_API_VERSION >= 5
 		if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
@@ -292,9 +292,9 @@ int CScanTs::exec(CTarget * parent, const std::string & actionKey)
 		if(fe->getInfo()->type == FE_QPSK)
 #endif
 		{
-			fe->getDelSys(scanSettings->TP_fec, dvbs_get_modulation((fe_code_rate_t)scanSettings->TP_fec), f, s, m);
+			fe->getTransponderInfo(scanSettings->TP_fec, dvbs_get_modulation((fe_code_rate_t)scanSettings->TP_fec), f);
 
-			sprintf(buffer, "%u %c %d %s %s %s", atoi(scanSettings->TP_freq), scanSettings->TP_pol == 0 ? 'H' : 'V', atoi(scanSettings->TP_rate), f, s, m);
+			sprintf(buffer, "%u %c %d %s ", atoi(scanSettings->TP_freq), scanSettings->TP_pol == 0 ? 'H' : 'V', atoi(scanSettings->TP_rate), f);
 		} 
 #if HAVE_DVB_API_VERSION >= 5 
 		else if (fe->getForcedDelSys() == CFrontend::DVB_C)
@@ -302,9 +302,9 @@ int CScanTs::exec(CTarget * parent, const std::string & actionKey)
 		else if ( fe->getInfo()->type == FE_QAM )
 #endif
 		{
-			fe->getDelSys(scanSettings->TP_fec, scanSettings->TP_mod, f, s, m);
+			fe->getTransponderInfo(scanSettings->TP_fec, scanSettings->TP_mod, f);
 
-			sprintf(buffer, "%u %d %s %s %s", atoi(scanSettings->TP_freq), atoi(scanSettings->TP_rate), f, s, m);
+			sprintf(buffer, "%u %d %s ", atoi(scanSettings->TP_freq), atoi(scanSettings->TP_rate), f);
 		}
 #if HAVE_DVB_API_VERSION >= 5
 		else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2 || fe->getForcedDelSys() == CFrontend::DVB_DTMB)
@@ -312,9 +312,9 @@ int CScanTs::exec(CTarget * parent, const std::string & actionKey)
 		else if (fe->getInfo()->type == FE_OFDM) 
 #endif
 		{
-			fe->getDelSys(scanSettings->TP_HP, scanSettings->TP_mod, f, s, m);
+			fe->getTransponderInfo(scanSettings->TP_HP, scanSettings->TP_mod, f);
 
-			sprintf(buffer, "%u %s %s %s", atoi(scanSettings->TP_freq), f, s, m);
+			sprintf(buffer, "%u %s", atoi(scanSettings->TP_freq), f);
 		}
 #if HAVE_DVB_API_VERSION >= 5
 		else if (fe->getForcedDelSys() == CFrontend::DVB_A)
@@ -322,9 +322,9 @@ int CScanTs::exec(CTarget * parent, const std::string & actionKey)
 		else if(fe->getInfo()->type == FE_ATSC)
 #endif
 		{
-			fe->getDelSys(FEC_NONE, scanSettings->TP_mod, f, s, m);
+			fe->getTransponderInfo(FEC_NONE, scanSettings->TP_mod, f);
 
-			sprintf(buffer, "%u %s %s %s", atoi(scanSettings->TP_freq), f, s, m);
+			sprintf(buffer, "%u %s ", atoi(scanSettings->TP_freq), f);
 		}
 
 		paintLine(xpos2, ypos_cur_satellite, w - 95, scanSettings->satNameNoDiseqc);
@@ -477,9 +477,9 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 				if(fe->getInfo()->type == FE_QPSK)
 #endif
 				{
-					fe->getDelSys(feparams->fec_inner, dvbs_get_modulation(feparams->fec_inner),  f, s, m);
+					fe->getTransponderInfo(feparams->fec_inner, dvbs_get_modulation(feparams->fec_inner),  f);
 
-					snprintf(buffer, sizeof(buffer), "%d %c %d %s %s %s ", feparams->frequency, feparams->polarization ? 'V' : 'H', feparams->symbol_rate, f, s, m);
+					snprintf(buffer, sizeof(buffer), "%d %c %d %s ", feparams->frequency, feparams->polarization ? 'V' : 'H', feparams->symbol_rate, f);
 				} 
 #if HAVE_DVB_API_VERSION >= 5 
 				else if (fe->getForcedDelSys() == CFrontend::DVB_C)
@@ -487,9 +487,9 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 				else if ( fe->getInfo()->type == FE_QAM )
 #endif
 				{
-					fe->getDelSys(feparams->fec_inner, feparams->modulation, f, s, m);
+					fe->getTransponderInfo(feparams->fec_inner, feparams->modulation, f);
 
-					snprintf(buffer, sizeof(buffer), "%d %d %s %s %s ", feparams->frequency, feparams->symbol_rate, f, s, m);
+					snprintf(buffer, sizeof(buffer), "%d %d %s ", feparams->frequency, feparams->symbol_rate, f);
 				}
 #if HAVE_DVB_API_VERSION >= 5
 				else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2 || fe->getForcedDelSys() == CFrontend::DVB_DTMB)
@@ -497,9 +497,9 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 				else if (fe->getInfo()->type == FE_OFDM) 
 #endif
 				{
-					fe->getDelSys(feparams->code_rate_HP, feparams->modulation, f, s, m);
+					fe->getTransponderInfo(feparams->code_rate_HP, feparams->modulation, f);
 
-					snprintf(buffer, sizeof(buffer), "%d %s %s %s ", feparams->frequency, f, s, m);
+					snprintf(buffer, sizeof(buffer), "%d %s ", feparams->frequency, f);
 				}
 #if HAVE_DVB_API_VERSION >= 5
 				else if (fe->getForcedDelSys() == CFrontend::DVB_A)
@@ -507,9 +507,9 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 				else if(fe->getInfo()->type == FE_ATSC)
 #endif
 				{
-					fe->getDelSys(FEC_NONE, feparams->modulation, f, s, m);
+					fe->getTransponderInfo(FEC_NONE, feparams->modulation, f);
 
-					snprintf(buffer, sizeof(buffer), "%d %s %s %s ", feparams->frequency, f, s, m);
+					snprintf(buffer, sizeof(buffer), "%d %s ", feparams->frequency, f);
 				}
 				
 				paintLine(xpos2, ypos_frequency, w - 80, buffer);
