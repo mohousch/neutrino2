@@ -290,7 +290,7 @@ int LinuxDvbPlay(Context_t  *context, char * type)
 		{
 			linuxdvb_err("cannot found writer for encoding %s using default\n", Encoding);
 			
-			if (ioctl( audiofd, AUDIO_SET_BYPASS_MODE, (AUDIO_FORMAT)AUDIO_STREAMTYPE_MPEG) == -1)
+			if (ioctl( audiofd, /*AUDIO_SET_BYPASS_MODE*/AUDIO_SET_STREAMTYPE, (AUDIO_FORMAT)AUDIO_STREAMTYPE_MPEG) == -1)
 			{
 				linuxdvb_err("ioctl failed with errno %d\n", errno);
 				linuxdvb_err("AUDIO_SET_ENCODING: %s\n", strerror(errno));
@@ -301,7 +301,7 @@ int LinuxDvbPlay(Context_t  *context, char * type)
 		{
 			linuxdvb_printf(20, "found writer %s for encoding %s\n", writer->caps->name, Encoding);
 			
-			if (ioctl( audiofd, AUDIO_SET_BYPASS_MODE, (AUDIO_FORMAT) writer->caps->dvbEncoding) == -1)
+			if (ioctl( audiofd, /*AUDIO_SET_BYPASS_MODE*/AUDIO_SET_STREAMTYPE, (AUDIO_FORMAT) writer->caps->dvbEncoding) == -1)
 			{
 				linuxdvb_err("ioctl failed with errno %d\n", errno);
 				linuxdvb_err("AUDIO_SET_ENCODING: %s\n", strerror(errno));
@@ -955,7 +955,7 @@ int LinuxDvbSwitch(Context_t  *context, char * type)
 				{
 					linuxdvb_err("cannot found writer for encoding %s using default\n", Encoding);
 					
-					if (ioctl( audiofd, AUDIO_SET_BYPASS_MODE, (AUDIO_FORMAT) AUDIO_STREAMTYPE_MPEG) == -1)
+					if (ioctl(audiofd, /*AUDIO_SET_BYPASS_MODE*/AUDIO_SET_STREAMTYPE, (AUDIO_FORMAT) AUDIO_STREAMTYPE_MPEG) == -1)
 					{
 						linuxdvb_err("ioctl failed with errno %d\n", errno);
 						linuxdvb_err("AUDIO_SET_ENCODING: %s\n", strerror(errno));
@@ -965,7 +965,7 @@ int LinuxDvbSwitch(Context_t  *context, char * type)
 				{
 					linuxdvb_printf(10, "found writer %s for encoding %s\n", writer->caps->name, Encoding);
 					
-					if (ioctl( audiofd, AUDIO_SET_BYPASS_MODE, (AUDIO_FORMAT) writer->caps->dvbEncoding) == -1)
+					if (ioctl(audiofd, /*AUDIO_SET_BYPASS_MODE*/AUDIO_SET_STREAMTYPE, (AUDIO_FORMAT) writer->caps->dvbEncoding) == -1)
 					{
 						linuxdvb_err("ioctl failed with errno %d\n", errno);
 						linuxdvb_err("AUDIO_SET_ENCODING: %s\n", strerror(errno));
@@ -1025,7 +1025,7 @@ int LinuxDvbSwitch(Context_t  *context, char * type)
 				{
 					linuxdvb_printf(10, "found writer %s for encoding %s\n", writer->caps->name, Encoding);
 
-					if (ioctl( videofd, VIDEO_SET_STREAMTYPE, (VIDEO_FORMAT) writer->caps->dvbEncoding) == -1)
+					if (ioctl(videofd, VIDEO_SET_STREAMTYPE, (VIDEO_FORMAT) writer->caps->dvbEncoding) == -1)
 					{
 						linuxdvb_err("ioctl failed with errno %d\n", errno);
 						linuxdvb_err("VIDEO_SET_ENCODING: %s\n", strerror(errno));

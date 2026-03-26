@@ -727,7 +727,7 @@ std::string CRecord::getMovieInfoString(const t_channel_id channel_id, const eve
 			if(epgdata.contentClassification.size() > 0 )
 				g_movieInfo->genreMajor = epgdata.contentClassification[0];
 				
-			g_movieInfo->length = epgdata.epg_times.duration	/ 60;
+			g_movieInfo->length = epgdata.epg_times.duration / 60;
 				
 			dprintf(DEBUG_INFO, ANSI_YELLOW "CRecord::getMovieInfoString: fsk:%d, Genre:%d, Duration: %d min\r\n",g_movieInfo->parentalLockAge,g_movieInfo->genreMajor,g_movieInfo->length);	
 		}
@@ -915,7 +915,7 @@ stream2file_error_msg_t CRecord::startRecording(const char * const filename, con
 	// rip rec_filename
 	sprintf(rec_filename, "%s", filename);
 
-	// saveXML/cover
+	// saveXML / cover
 	sprintf(buf, "%s.xml", filename);
 
 	char * dir = strdup(buf);
@@ -1034,72 +1034,6 @@ void CRecord::Close()
 	bsfc = NULL;
 }
 
-void CRecord::FillMovieInfo(CZapitChannel *channel, APIDList &apid_list)
-{
-	g_movieInfo->VideoType = 0;
-
-	for (unsigned i = 0; i < ofcx->nb_streams; i++)
-	{
-		AVStream *st = ofcx->streams[i];
-#if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(57,25,101)
-		AVCodecContext *codec = st->codec;
-#else
-		AVCodecParameters *codec = st->codecpar;
-#endif
-
-		if (codec->codec_type == AVMEDIA_TYPE_AUDIO)
-		{
-			EPG_AUDIO_PIDS audio_pids;
-			AVDictionaryEntry *lang = av_dict_get(st->metadata, "language", NULL, 0);
-			AVDictionaryEntry *title = av_dict_get(st->metadata, "title", NULL, 0);
-
-			std::string desc;
-			if (lang)
-				desc += lang->value;
-
-			if (title)
-			{
-				if (desc.length() != 0)
-					desc += " ";
-				desc += title->value;
-			}
-			
-			switch (codec->codec_id)
-			{
-				case AV_CODEC_ID_AC3:
-					audio_pids.atype = CZapitAudioChannel::AC3;
-					break;
-					
-				case AV_CODEC_ID_AAC:
-					audio_pids.atype = CZapitAudioChannel::AAC;
-					break;
-					
-				case AV_CODEC_ID_EAC3:
-					audio_pids.atype = CZapitAudioChannel::EAC3;
-					break;
-					
-				case AV_CODEC_ID_MP2:
-				default:
-					audio_pids.atype = CZapitAudioChannel::MPEG;
-					break;
-			}
-
-			audio_pids.selected = 0;
-			audio_pids.epgAudioPidName = desc;
-			audio_pids.epgAudioPid = st->id;
-			g_movieInfo->audioPids.push_back(audio_pids);
-
-		}
-		else if (codec->codec_type == AVMEDIA_TYPE_VIDEO)
-		{
-			g_movieInfo->epgVideoPid = st->id;
-			
-			if (codec->codec_id == AV_CODEC_ID_H264)
-				g_movieInfo->VideoType = 1;
-		}
-	}
-}
-
 bool CRecord::saveXML(const char *const filename, const char *const info)
 {
 	int fd;
@@ -1174,8 +1108,6 @@ void CRecord::stopWebTVRecording()
 	// rewrite length (recorded time not the length from epg)
 	g_movieInfo->length = (int) round((double)(end_time - time_started) / (double) 60);
 
-//	SaveXml();
-
 	// close
 	Close();
 
@@ -1194,7 +1126,7 @@ void CRecord::stopWebTVRecording()
 
 stream2file_error_msg_t CRecord::startWebTVRecording(const char *const filename, const event_id_t epgid, const std::string &epgTitle, const time_t epg_time)
 {
-	APIDList apid_list;
+	APIDList apid_list; // FIXME:
 
 	CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(channel_id);
 	
@@ -1215,8 +1147,6 @@ stream2file_error_msg_t CRecord::startWebTVRecording(const char *const filename,
 	}
 	
 	// save xml
-//	FillMovieInfo(channel, apid_list); //FIXME:
-
 	saveXML(filename, getMovieInfoString(channel_id, epgid, epgTitle, apid_list, epg_time).c_str());
 
 	return STREAM2FILE_OK;

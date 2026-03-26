@@ -152,14 +152,13 @@ class CRecord : public OpenThreads::Thread
 
 		//
 		bool saveXML(const char *const filename, const char *const info);
-		void FillMovieInfo(CZapitChannel *channel, APIDList &apid_list);
-		void WriteHeader(uint32_t duration);
 		
 		//
 		bool Start();
 		void Close();
 		bool Open(CZapitChannel *channel, const char *const filename);
 		void run();
+		void WriteHeader(uint32_t duration);
 		
 		//
 		stream2file_error_msg_t startWebTVRecording(const char *const filename, const event_id_t epgid, const std::string  &epgTitle, const time_t epg_time);

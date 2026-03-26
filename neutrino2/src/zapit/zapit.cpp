@@ -297,13 +297,14 @@ void CZapit::initFrontend()
 
 	fe->info.type = FE_QAM;
 	strcpy(fe->info.name, "Multi Fake Tuner");
-	fe->forcedDelSys = CFrontend::DVB_C;
-	fe->deliverySystemMask = CFrontend::DVB_C | CFrontend::DVB_T | CFrontend::DVB_T2 | CFrontend::DVB_S | CFrontend::DVB_S2 | CFrontend::DVB_S2X;
+//	fe->forcedDelSys = CFrontend::DVB_C;
+	fe->deliverySystemMask = CFrontend::DVB_C | CFrontend::DVB_T | CFrontend::DVB_T2 | CFrontend::DVB_S | CFrontend::DVB_S2 | CFrontend::DVB_S2X | CFrontend::DVB_DTMB | CFrontend::DVB_A;
 	fe->hybrid = true;
 	
 	have_c = true;
 	have_s = true;
 	have_t = true;
+	have_a = true;
 
 	index++;
 	femap.insert(std::pair <unsigned short, CFrontend*> (index, fe));
