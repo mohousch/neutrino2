@@ -261,13 +261,25 @@ void CZapit::initFrontend()
 #if HAVE_DVB_API_VERSION >= 5
 				//
 				if (fe->getDeliverySystem() & CFrontend::DVB_S || fe->getDeliverySystem() & CFrontend::DVB_S2 || fe->getDeliverySystem() & CFrontend::DVB_S2X)
+				{
 					have_s = true;
+					fe->forcedDelSys = CFrontend::DVB_S;
+				}
 				if (fe->getDeliverySystem() & CFrontend::DVB_C)
+				{
 					have_c = true;
+					fe->forcedDelSys = CFrontend::DVB_C;
+				}
 				if (fe->getDeliverySystem() & CFrontend::DVB_T || fe->getDeliverySystem() & CFrontend::DVB_T2 || fe->getForcedDelSys() == CFrontend::DVB_DTMB)
+				{
 					have_t = true;
+					fe->forcedDelSys = CFrontend::DVB_T;
+				}
 				if (fe->getDeliverySystem() & CFrontend::DVB_A)
+				{
 					have_a = true;
+					fe->forcedDelSys = CFrontend::DVB_A;
+				}
 #else
 				if (fe->info.type == FE_QPSK)
 				{
