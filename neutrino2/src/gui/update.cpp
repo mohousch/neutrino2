@@ -1,25 +1,25 @@
-/*
-	Neutrino-GUI  -   DBoxII-Project
-
-	Copyright (C) 2001 Steffen Hehn 'McClean'
-	Homepage: http://dbox.cyberphoria.org/
-
-	License: GPL
-
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-*/
+//
+//	Neutrino-GUI  -   DBoxII-Project
+//
+//	Copyright (C) 2001 Steffen Hehn 'McClean'
+//	Homepage: http://dbox.cyberphoria.org/
+//
+//	License: GPL
+//
+//	This program is free software; you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation; either version 2 of the License, or
+//	(at your option) any later version.
+//
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program; if not, write to the Free Software
+//	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -42,6 +42,7 @@
 #include <gui/widget/messagebox.h>
 #include <gui/widget/hintbox.h>
 #include <gui/widget/stringinput.h>
+#include <gui/widget/keyboard_input.h>
 #include <gui/widget/infobox.h>
 
 #include <system/flashtool.h>
@@ -893,7 +894,7 @@ int CFlashExpert::exec(CTarget *parent, const std::string &actionKey)
 	return CTarget::RETURN_REPAINT;
 }
 
-//
+////
 int CUpdateSettings::exec(CTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CUpdateSettings::exec: actionKey:%s\n", actionKey.c_str());
@@ -905,9 +906,6 @@ int CUpdateSettings::exec(CTarget* parent, const std::string& actionKey)
 	
 	if (actionKey == "update_dir")
 	{
-		if(parent)
-			parent->hide();
-		
 		CFileBrowser fileBrowser;
 		fileBrowser.Dir_Mode = true;
 		
@@ -1055,9 +1053,7 @@ int CUpdateSettings::showMenu()
 	}
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Software update"));
+	setLCDMode(_("Software update"));
 		
 	// intros
 	updateSettings->addItem(new CMenuForwarder(_("back")));
@@ -1078,7 +1074,7 @@ int CUpdateSettings::showMenu()
 	updateSettings->addItem( new CMenuForwarder(_("Directory for updates"), true, g_settings.update_dir , this, "update_dir") );
 	
 	// url
-	CStringInputSMS * updateSettings_url_file = new CStringInputSMS(_("Software update URL"), g_settings.softupdate_url_file);
+	CKeyboardInput * updateSettings_url_file = new CKeyboardInput(_("Software update URL"), g_settings.softupdate_url_file);
 	updateSettings->addItem(new CMenuForwarder(_("Software update URL"), true, g_settings.softupdate_url_file, updateSettings_url_file));
 
 	// show current version
@@ -1148,7 +1144,7 @@ int CUpdateSettings::showMenu()
 	}
 	
 	//
-        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+        resetLCDMode();
 	
 	return res;
 }
