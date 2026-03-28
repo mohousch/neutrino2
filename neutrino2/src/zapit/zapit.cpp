@@ -1356,16 +1356,16 @@ int CZapit::zapToRecordID(const t_channel_id channel_id)
 	record_fe = fe;
 	
 	//
-	if(record_fe == live_fe)
-	{
-		if( (rec_channel_id != live_channel_id) && !SAME_TRANSPONDER(live_channel_id, rec_channel_id) )
-		{
-			// zap to record channel
-			zapToChannelID(rec_channel_id, false);
-			return 0;
-		}
-	}
-	else 
+//	if(record_fe == live_fe)
+//	{
+//		if( (rec_channel_id != live_channel_id) && !SAME_TRANSPONDER(live_channel_id, rec_channel_id) )
+//		{
+//			// zap to record channel
+//			zapToChannelID(rec_channel_id, false);
+//			return 0;
+//		}
+//	}
+//	else 
 	{
 		// just tune
 		if(!tuneToChannel(record_fe, rec_channel, transponder_change))

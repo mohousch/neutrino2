@@ -321,7 +321,8 @@ CFrontend *CStreamManager::FindFrontend(CZapitChannel *channel)
 		return CZapit::getInstance()->getCurrentFrontend();
 
 	// lock live frontend
-	CZapit::getInstance()->lockFrontend(CZapit::getInstance()->getCurrentFrontend());
+	if (!CZapit::getInstance()->isStandbyActive())
+		CZapit::getInstance()->lockFrontend(CZapit::getInstance()->getCurrentFrontend());
 
 	// lock running instance frontend
 	for (streammap_iterator_t it = streams.begin(); it != streams.end(); ++it)
