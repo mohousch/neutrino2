@@ -258,7 +258,7 @@ class CZapit
 		CZapitChannel * rec_channel;
 		////
 		bool standby;
-		bool retune;
+		bool retuneAfterScan;
 		int currentMode;
 		bool playbackStopForced;
 		bool avDecoderOpen;

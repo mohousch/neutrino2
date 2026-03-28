@@ -187,7 +187,7 @@ CZapit::CZapit()
 	rec_channel = NULL;
 	//
 	standby = true;
-	retune = false;
+	retuneAfterScan = false;
 	//
 	currentMode = TV_MODE;
 	playbackStopForced = false;
@@ -1047,7 +1047,7 @@ bool CZapit::tuneToChannel(CFrontend * frontend, CZapitChannel * thischannel, bo
 		  
 	transponder_change = frontend->setInput(thischannel, current_is_nvod);
 	
-	if(retune)
+	if(retuneAfterScan)
 		transponder_change = true;
 	
 	// drive rotor
@@ -1072,8 +1072,8 @@ bool CZapit::tuneToChannel(CFrontend * frontend, CZapitChannel * thischannel, bo
 	if (transponder_change || current_is_nvod ) 
 	{
 		//
-		if(retune)
-			retune = false;
+		if(retuneAfterScan)
+			retuneAfterScan = false;
 		
 		if ( frontend->tuneChannel(thischannel, current_is_nvod) == false) 
 		{
@@ -3898,7 +3898,7 @@ bool CZapit::tuneTP(transponder TP, CFrontend *fe)
 	ret = tuneFrequency(&TP.feparams, satellitePosition, fe);
 			
 	// set retune flag
-	retune = true;
+	retuneAfterScan = true;
 	
 	return ret;
 }
@@ -3926,7 +3926,7 @@ bool CZapit::scanTP(scanTP_t &msg)
 		ret = false;
 	} 
 			
-	retune = true;
+	retuneAfterScan = true;
 	
 	return ret;
 }
@@ -3954,7 +3954,7 @@ bool CZapit::startScan(scanProvider_t &msg)
 		ret = false;
 	}
 			
-	retune = true;
+	retuneAfterScan = true;
 	
 	return ret;
 }
