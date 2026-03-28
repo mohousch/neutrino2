@@ -334,7 +334,6 @@ CFrontend *CStreamManager::FindFrontend(CZapitChannel *channel)
 
 	if (frontend) 
 	{
-
 		bool ret = false;
 
 		ret = (CZapit::getInstance()->zapToRecordID(chid) == 0);
@@ -422,7 +421,7 @@ bool CStreamManager::Parse(int fd, stream_pids_t &pids, t_channel_id &chid, CFro
 	t_channel_id tmpid;
 	bp = &cbuf[5];
 	
-	if (sscanf(bp, "id=%" SCNx64, &tmpid) == 1)
+	if (sscanf(bp, "id=%llx", &tmpid) == 1)
 	{
 		channel = CZapit::getInstance()->findChannelByChannelID(tmpid);
 		chid = tmpid;
@@ -649,6 +648,7 @@ void CStreamManager::run()
 				perror("CStreamManager::run(): poll");
 			continue;
 		}
+		
 		for (int i = poll_cnt - 1; i >= 0; i--)
 		{
 			if (pfd[i].revents & (POLLIN | POLLPRI | POLLHUP | POLLRDHUP))
@@ -663,6 +663,7 @@ void CStreamManager::run()
 						perror("CStreamManager::run(): accept");
 						continue;
 					}
+					
 					g_RCInput->postMsg(NeutrinoMessages::EVT_STREAM_START, (const neutrino_msg_data_t)connfd);
 					poll_timeout = 1000;
 				}
@@ -672,6 +673,7 @@ void CStreamManager::run()
 					{
 						printf("CStreamManager::run(): POLLHUP, fd %d\n", pfd[i].fd);
 						RemoveClient(pfd[i].fd);
+						
 						if (streams.empty())
 						{
 							poll_timeout = 2000;

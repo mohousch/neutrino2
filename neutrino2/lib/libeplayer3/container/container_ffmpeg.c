@@ -878,7 +878,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	
 	if (strncmp(filename, "http://", 7) == 0 || strncmp(filename, "https://", 8) == 0)
 	{
-		av_dict_set(&options, "timeout", "20000000", 0); //20sec
+		av_dict_set(&options, "timeout", "5000000", 0); //20sec
 		av_dict_set(&options, "reconnect", "1", 0);
 		av_dict_set(&options, "seekable", "0", 0);
 		av_dict_set(&options, "reconnect_streamed", "1", 0);

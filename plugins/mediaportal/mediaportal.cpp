@@ -30,7 +30,6 @@ class CMediaPortal : public CTarget
 {
 	private:
 		CFrameBuffer* frameBuffer;
-		CWidget* widget;
 		ClistBox* mediaPortal;
 		CMenuItem* item;
 		
@@ -51,7 +50,6 @@ CMediaPortal::CMediaPortal()
 	
 	frameBuffer = CFrameBuffer::getInstance();
 
-	widget = NULL;
 	mediaPortal = NULL;
 	item = NULL;
 	
@@ -84,9 +82,6 @@ int CMediaPortal::exec(CTarget * parent, const std::string & actionKey)
 
 void CMediaPortal::showMenu(void)
 {
-	//
-//	widget = new CWidget(frameBuffer->getScreenX(), frameBuffer->getScreenY(), frameBuffer->getScreenWidth(), frameBuffer->getScreenHeight());
-	
 	//
 	mediaPortal = new ClistBox(frameBuffer->getScreenX(), frameBuffer->getScreenY(), frameBuffer->getScreenWidth(), frameBuffer->getScreenHeight());
 
@@ -191,18 +186,6 @@ void CMediaPortal::showMenu(void)
 		delete mediaPortal;
 		mediaPortal = NULL;
 	}
-	
-	/*
-	widget->addCCItem(mediaPortal);
-
-	widget->exec(this, "");
-	
-	if (widget)
-	{
-		delete widget;
-		widget = NULL;
-	}
-	*/
 }
 
 //plugin API
