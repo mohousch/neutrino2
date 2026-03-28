@@ -59,15 +59,5 @@ class CSubtitleChangeExec : public CTarget
 		int exec(CTarget* parent, const std::string& actionKey);
 };
 
-//// tuxtxt
-class CTuxtxtChangeExec : public CTarget
-{
-	public:
-		CTuxtxtChangeExec(){};
-		~CTuxtxtChangeExec(){};
-		
-		int exec(CTarget* parent, const std::string& actionKey);
-};
-
 #endif
 

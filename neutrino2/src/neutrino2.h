@@ -67,6 +67,16 @@ class CNVODChangeExec : public CTarget
 		int exec(CTarget *parent, const std::string &actionKey);
 };
 
+//// tuxtxt
+class CTuxtxtChangeExec : public CTarget
+{
+	public:
+		CTuxtxtChangeExec(){};
+		~CTuxtxtChangeExec(){};
+		
+		int exec(CTarget* parent, const std::string& actionKey);
+};
+
 ////
 typedef struct neutrino_font_descr
 {

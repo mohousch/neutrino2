@@ -340,27 +340,3 @@ int CSubtitleChangeExec::exec(CTarget *parent, const std::string &actionKey)
         return RETURN_EXIT;
 }
 
-//// tuxtxt
-int CTuxtxtChangeExec::exec(CTarget *parent, const std::string &actionKey)
-{
-	dprintf(DEBUG_INFO, "CTuxtxtChangeExec exec: %s\n", actionKey.c_str());
-
-	if(parent)
-		parent->hide();
-	
-	if (!IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
-	{
-
-		CNeutrinoApp::getInstance()->stopSubtitles();
-				
-		tuxtx_stop_subtitle();
-		tuxtx_main(g_RemoteControl->current_PIDs.otherPIDs.vtxtpid, 0, false);
-				
-		CNeutrinoApp::getInstance()->audioMute(current_muted, true);
-
-		CNeutrinoApp::getInstance()->startSubtitles();
-	}
-
-	return RETURN_REPAINT;
-}
-

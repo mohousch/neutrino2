@@ -58,6 +58,15 @@
 #include <driver/encoding.h>
 
 
+// tuxtxt
+extern void tuxtx_stop_subtitle();
+extern void tuxtx_set_pid(int pid, int page, const char * cc);
+extern int tuxtx_main(int pid, int page, bool isEplayer);
+extern void tuxtx_pause_subtitle(bool pause, bool isEplayer);
+extern int tuxtx_subtitle_running(int * pid, int * page, int * running);
+//
+extern int current_muted;
+
 // mainmenu
 void CNeutrinoApp::mainMenu(void)
 {
@@ -815,5 +824,29 @@ void CNeutrinoApp::showSubChan()
 		CFrameBuffer::getInstance()->restoreScreen(x - 5, y - 5, dx + 10, dy + 10, pixbuf);
 		CFrameBuffer::getInstance()->blit();
 	}
+}
+
+//// tuxtxt
+int CTuxtxtChangeExec::exec(CTarget *parent, const std::string &actionKey)
+{
+	dprintf(DEBUG_INFO, "CTuxtxtChangeExec exec: %s\n", actionKey.c_str());
+
+	if(parent)
+		parent->hide();
+	
+	if (!IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
+	{
+
+		CNeutrinoApp::getInstance()->stopSubtitles();
+				
+		tuxtx_stop_subtitle();
+		tuxtx_main(g_RemoteControl->current_PIDs.otherPIDs.vtxtpid, 0, false);
+				
+		CNeutrinoApp::getInstance()->audioMute(current_muted, true);
+
+		CNeutrinoApp::getInstance()->startSubtitles();
+	}
+
+	return RETURN_REPAINT;
 }
 
