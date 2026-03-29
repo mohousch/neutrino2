@@ -216,7 +216,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			processZapProtection(NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100);
 			
 		// sectionsd
-		CSectionsd::getInstance()->setServiceChanged( current_channel_id, false );
+		CSectionsd::getInstance()->setServiceChanged(current_channel_id, false );
 			
 		// pids
 		CZapit::getInstance()->getCurrentPIDS(current_PIDs );
@@ -685,7 +685,7 @@ const std::string & CRemoteControl::setSubChannel(const int numSub, const bool f
 	CZapit::getInstance()->zapToSubServiceIDNOWAIT( current_sub_channel_id );
 	
 	// Houdini: to restart reading the private EPG when switching to a new option
-	CSectionsd::getInstance()->setServiceChanged( current_sub_channel_id , true );
+	CSectionsd::getInstance()->setServiceChanged( current_sub_channel_id, true );
 
 	return subChannels[numSub].subservice_name;
 }

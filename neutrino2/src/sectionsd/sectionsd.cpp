@@ -1483,7 +1483,7 @@ void CSectionsd::setServiceChanged(t_channel_id channel_id, bool requestEvent)
 	}
 
 	// current
-	if (messaging_current_servicekey != channel_id)
+//	if (messaging_current_servicekey != channel_id)
 	{
 		writeLockEvents();
 
@@ -1975,14 +1975,13 @@ void *CSectionsd::insertEventsfromXMLTV(void* data)
 
 void *CSectionsd::insertEventsfromLocalTV(void *data)
 {
-	dprintf(DEBUG_INFO, "CSectionsd::insertEventsfromLocalTV: chid: 0x%llx\n", (t_channel_id)data);
+	dprintf(DEBUG_NORMAL, "CSectionsd::insertEventsfromLocalTV: chid: 0x%llx\n", (t_channel_id)data);
 	
 	//
 	t_channel_id chid = (t_channel_id)data;
 	t_channel_id epgid = 0;
 	CZapitChannel *chan = NULL;
 	t_satellite_position  satellitePosition = 0;
-	
 	t_original_network_id _onid = GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(chid);
 	t_transport_stream_id _tsid = GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(chid);
 	t_service_id _sid = GET_SERVICE_ID_FROM_CHANNEL_ID(chid);
@@ -1993,9 +1992,13 @@ void *CSectionsd::insertEventsfromLocalTV(void *data)
 	{
 		satellitePosition = chan->getSatellitePosition();
 		epgid = chan->getEPGID();
+		
+		_onid = GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(epgid);
+		_tsid = GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(epgid);
+		_sid = GET_SERVICE_ID_FROM_CHANNEL_ID(epgid);
 	}
 	
-	dprintf(DEBUG_INFO, "CSectionsd::insertEventsfromLocalTV:epgid: 0x%llx\n", epgid);
+	dprintf(DEBUG_NORMAL, "CSectionsd::insertEventsfromLocalTV:epgid: 0x%llx\n", epgid);
 	
 	// localtv
 	std::string evUrl;
@@ -2189,7 +2192,7 @@ void *CSectionsd::insertEventsfromLocalTV(void *data)
 					node = node->xmlNextNode;
 				}
 
-				//info2 (descriptionextended)
+				// info2 (descriptionextended)
 				while(xmlGetNextOccurence(node, "info2") != NULL)
 				{
 					descriptionextended = xmlGetData(node);
