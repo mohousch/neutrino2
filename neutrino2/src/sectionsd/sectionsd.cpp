@@ -1483,7 +1483,7 @@ void CSectionsd::setServiceChanged(t_channel_id channel_id, bool requestEvent)
 	}
 
 	// current
-//	if (messaging_current_servicekey != channel_id)
+	if (messaging_current_servicekey != channel_id)
 	{
 		writeLockEvents();
 
