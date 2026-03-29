@@ -57,6 +57,7 @@
 #include <driver/genpsi.h>
 #include <system/set_threadname.h>
 #include <gui/movieplayer.h>
+#include <system/debug.h>
 
 
 #if (LIBAVCODEC_VERSION_MAJOR > 55)
@@ -73,13 +74,13 @@
  */
 #define ENABLE_MULTI_CHANNEL
 
-#define TS_SIZE 188
+#define TS_SIZE 	188
 #define DMX_BUFFER_SIZE (5*2048*TS_SIZE)
-#define IN_SIZE (250*TS_SIZE)
+#define IN_SIZE 	(250*TS_SIZE)
 
 CStreamInstance::CStreamInstance(int clientfd, t_channel_id chid, stream_pids_t &_pids)
 {
-	printf("CStreamInstance:: new channel %" PRIx64 " fd %d\n", chid, clientfd);
+	printf("CStreamInstance:: new channel %llx fd %d\n", chid, clientfd);
 	
 	fds.insert(clientfd);
 	pids = _pids;
@@ -109,7 +110,7 @@ bool CStreamInstance::Start()
 	}
 	running = true;
 	
-	printf("CStreamInstance::Start: %" PRIx64 "\n", channel_id);
+	printf("CStreamInstance::Start: %llx\n", channel_id);
 	
 	return (OpenThreads::Thread::start() == 0);
 }
@@ -119,7 +120,7 @@ bool CStreamInstance::Stop()
 	if (!running)
 		return false;
 
-	printf("CStreamInstance::Stop: %" PRIx64 "\n", channel_id);
+	printf("CStreamInstance::Stop: %llx\n", channel_id);
 	
 	running = false;
 	
@@ -195,7 +196,7 @@ bool CStreamInstance::Open()
 void CStreamInstance::run()
 {
 	set_threadname("CStreamInstance::run");
-	printf("CStreamInstance::run: %" PRIx64 "\n", channel_id);
+	printf("CStreamInstance::run: %llx\n", channel_id);
 	set_threadname("n:streaminstance");
 
 	// pids here cannot be empty
@@ -221,7 +222,7 @@ void CStreamInstance::run()
 			Send(r);
 	}
 
-	printf("CStreamInstance::run: exiting %" PRIx64 " (%d fds)\n", channel_id, (int)fds.size());
+	printf("CStreamInstance::run: exiting %llx (%d fds)\n", channel_id, (int)fds.size());
 
 	Close();
 	delete dmx;
@@ -387,7 +388,7 @@ bool CStreamManager::Parse(int fd, stream_pids_t &pids, t_channel_id &chid, CFro
 	}
 	*bp = 0;
 
-	printf("CStreamManager::Parse: got %d bytes '%s'", (int)(bp - &cbuf[0]), cbuf);
+	dprintf(DEBUG_NORMAL, ANSI_BGREEN"CStreamManager::Parse: got %d bytes '%s'", (int)(bp - &cbuf[0]), cbuf);
 	bp = &cbuf[0];
 
 	// send response to http client
@@ -437,7 +438,7 @@ bool CStreamManager::Parse(int fd, stream_pids_t &pids, t_channel_id &chid, CFro
 		return false;
 	}
 
-	printf("CStreamManager::Parse: channel_id %" PRIx64 " [%s]\n", chid, channel->getName().c_str());
+	dprintf(DEBUG_NORMAL, ANSI_BGREEN"CStreamManager::Parse: channel_id %llx [%s]\n", chid, channel->getName().c_str());
 	
 	if (IS_WEBTV(chid))
 		return true;
@@ -463,7 +464,7 @@ void CStreamManager::AddPids(int fd, CZapitChannel *channel, stream_pids_t &pids
 	
 	if (pids.empty())
 	{
-		printf("CStreamManager::AddPids: no pids in url, using channel %" PRIx64 " pids\n", channel->getChannelID());
+		printf("CStreamManager::AddPids: no pids in url, using channel %llx pids\n", channel->getChannelID());
 		
 		if (channel->getVideoPid())
 			pids.insert(channel->getVideoPid());
