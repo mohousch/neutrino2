@@ -2745,8 +2745,11 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 		}
 
 		// stop sectionsd
-		CSectionsd::getInstance()->setServiceChanged(0, false);
-		CSectionsd::getInstance()->pauseScanning(true);
+		if (!CStreamManager::getInstance()->StreamStatus())
+		{
+			CSectionsd::getInstance()->setServiceChanged(0, false);
+			CSectionsd::getInstance()->pauseScanning(true);
+		}
 
 		//save epg
 		if(!recordingstatus && !timeshiftstatus)
