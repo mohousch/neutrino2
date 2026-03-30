@@ -72,6 +72,8 @@ unsigned short extspids[10];
 unsigned short extnumpids = 0;
 int currentextspid = -1;
 std::string subtitle_file;
+extern void tuxtx_stop_subtitle();
+extern int tuxtx_main(int pid, int page, bool isEplayer);
 //
 extern cPlayback *playback;		// libdvbapi (playback_cs.cpp)
 extern cAudio * audioDecoder;		// libdvbapi (audio_cs.cpp)
@@ -203,6 +205,8 @@ int CAVPIDSelectWidget::exec(CTarget * parent, const std::string & actionKey)
 
 	if (parent) 
 		parent->hide();
+		
+	CFrameBuffer::getInstance()->clearFrameBuffer();
 		
 #ifndef ENABLE_GSTREAMER
 	if(actionKey == "add_subtitle")

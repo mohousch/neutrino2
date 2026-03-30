@@ -1251,7 +1251,7 @@ int tuxtx_main(int pid, int page, bool isEplayer)
 		tuxtxt_cache.page = 0x100;
 	
 	// set subtitle pid / page and flag to start sub thread.
-	if(page /*|| isEplayer*/) 
+	if(page) 
 	{
 		sub_page = tuxtxt_cache.page = page;
 		sub_pid = pid;
@@ -4499,8 +4499,8 @@ void RenderPage()
 		switch(screenmode)
 		{
 			case 0:	setfontwidth(fontwidth_normal)     ; displaywidth= (ex             -sx);break;
-			case 1:  setfontwidth(fontwidth_topmenumain); displaywidth= (TV43STARTX     -sx);break;
-			case 2:  setfontwidth(fontwidth_small)      ; displaywidth= (TV169FULLSTARTX-sx);break;
+			case 1: setfontwidth(fontwidth_topmenumain); displaywidth= (TV43STARTX     -sx);break;
+			case 2: setfontwidth(fontwidth_small)      ; displaywidth= (TV169FULLSTARTX-sx);break;
 		}
 		
 		// fill border / clear BB

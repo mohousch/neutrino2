@@ -37,6 +37,7 @@
 #include "common.h"
 #include "output.h"
 #include "writer.h"
+#include "misc.h"
 
 #include <config.h>
 
@@ -181,6 +182,9 @@ static int Write(void* _context, void *data)
 #endif
 		{
 			subtitle_err("error decoding subtitle\n");
+			//
+			clearFrameBuffer();
+			
 			return cERR_SUBTITLE_ERROR;
 		} 
 		else
@@ -191,6 +195,7 @@ static int Write(void* _context, void *data)
 			subtitle_printf(100, "start_display_time %d\n", sub.start_display_time);
 			subtitle_printf(100, "end_display_time %d\n", sub.end_display_time);
 			subtitle_printf(100, "num_rects %d\n", sub.num_rects);
+
 			
 			//
 			if (got_sub_ptr && sub.num_rects > 0)
@@ -283,6 +288,32 @@ static int Write(void* _context, void *data)
 				     				fb.Height        = nh;
 				     				fb.x             = xoff;
 				     				fb.y             = yoff;
+
+				     				writer->writeData(&fb);
+
+								free(newdata);
+							}
+							else if (sub.rects[i]->nb_colors == 40) // VTXT
+							{
+								//FIXME: 		
+								int xoff = screen_x + (screen_width - sub.rects[i]->w)/2;
+								int yoff = screen_y + screen_height - 80;
+								int nw = sub.rects[i]->w; 
+								int nh = 30;
+
+								// resize color to 32 bit
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
+								uint32_t* newdata = simple_resize32(sub.rects[i]->pict.data[0], (uint32_t*)sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, sub.rects[i]->w, sub.rects[i]->h, screen_width, screen_height);
+#else
+								uint32_t* newdata = simple_resize32(sub.rects[i]->data[0], (uint32_t*)sub.rects[i]->data[1], sub.rects[i]->nb_colors, sub.rects[i]->w, sub.rects[i]->h, screen_width, screen_height);
+#endif
+										
+								// writeData
+				     				fb.data          = (uint8_t*)newdata;
+				     				fb.Width         = screen_width;
+				     				fb.Height        = screen_height;
+				     				fb.x             = screen_x;
+				     				fb.y             = screen_y;
 
 				     				writer->writeData(&fb);
 

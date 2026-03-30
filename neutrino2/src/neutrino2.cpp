@@ -2989,6 +2989,8 @@ void CNeutrinoApp::stopSubtitles()
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::stopSubtitles\n");
 	
+	CFrameBuffer::getInstance()->clearFrameBuffer();
+	
 	if (IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 	{
 		if(playback)

@@ -2133,11 +2133,13 @@ uint64_t cTimeMs::Elapsed(void)
 void blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp, uint32_t yp, bool transp)
 {
 	CFrameBuffer::getInstance()->blitBox2FB(fbbuff, width, height, xoff, yoff, xp, yp, transp);
+	CFrameBuffer::getInstance()->blit();
 }
 
 void clearFrameBuffer(void)
 {
 	CFrameBuffer::getInstance()->clearFrameBuffer();
+	CFrameBuffer::getInstance()->blit();
 }
 
 void writeLabel(uint8_t* text, int x, int y, int w, int h)
@@ -2152,6 +2154,7 @@ void writeLabel(uint8_t* text, int x, int y, int w, int h)
 	textLabel.setPosition(x, y, w, h);
 	
 	textLabel.paint();
+	CFrameBuffer::getInstance()->blit();
 }
 
 void writeText(uint8_t* text, int x, int y, int w, int h)
@@ -2166,6 +2169,7 @@ void writeText(uint8_t* text, int x, int y, int w, int h)
 	textLabel->setPosition(x, y, w, h);
 	
 	textLabel->paint();
+	CFrameBuffer::getInstance()->blit();
 	
 	delete textLabel;
 	textLabel = NULL;
