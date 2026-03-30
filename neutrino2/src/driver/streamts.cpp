@@ -451,6 +451,9 @@ bool CStreamManager::Parse(int fd, stream_pids_t &pids, t_channel_id &chid, CFro
 		printf("CStreamManager::Parse: no free frontend\n");
 		return false;
 	}
+	
+	//
+	CSectionsd::getInstance()->setServiceChanged(chid);
 
 	// add pids
 	AddPids(fd, channel, pids);
