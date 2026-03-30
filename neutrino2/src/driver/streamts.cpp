@@ -453,7 +453,7 @@ bool CStreamManager::Parse(int fd, stream_pids_t &pids, t_channel_id &chid, CFro
 	}
 	
 	//
-	CSectionsd::getInstance()->setServiceChanged(chid);
+	CSectionsd::getInstance()->setServiceChanged(chid, true);
 
 	// add pids
 	AddPids(fd, channel, pids);
