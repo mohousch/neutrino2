@@ -330,8 +330,8 @@ CFrontend *CStreamManager::FindFrontend(CZapitChannel *channel)
 		CZapit::getInstance()->lockFrontend(CZapit::getInstance()->getCurrentFrontend());
 
 	// lock running instance frontend
-//	for (std::set<CFrontend *>::iterator ft = frontends.begin(); ft != frontends.end(); ++ft)
-//		CZapit::getInstance()->lockFrontend(*ft);
+	for (std::set<CFrontend *>::iterator ft = frontends.begin(); ft != frontends.end(); ++ft)
+		CZapit::getInstance()->lockFrontend(*ft);
 
 	frontend = CZapit::getInstance()->getFrontend(channel);
 
@@ -348,8 +348,8 @@ CFrontend *CStreamManager::FindFrontend(CZapitChannel *channel)
 	}
 
 	// unlock running instance frontend
-//	for (std::set<CFrontend *>::iterator ft = frontends.begin(); ft != frontends.end(); ++ft)
-//		CZapit::getInstance()->unlockFrontend(*ft);
+	for (std::set<CFrontend *>::iterator ft = frontends.begin(); ft != frontends.end(); ++ft)
+		CZapit::getInstance()->unlockFrontend(*ft);
 
 	// unlock live frontend
 	CZapit::getInstance()->unlockFrontend(CZapit::getInstance()->getCurrentFrontend());
