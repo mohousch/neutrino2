@@ -243,6 +243,12 @@ extern int dvbsub_start(int pid, bool isEplayer);
 extern int dvbsub_pause();
 extern int dvbsub_getpid();
 extern void dvbsub_setpid(int pid);
+//
+extern unsigned int ac3state;
+extern unsigned int currentapid;
+extern int currentspid;
+extern bool isEXtSub;
+extern int currentextspid;
 
 // init globals
 static void initGlobals(void)
@@ -2958,44 +2964,62 @@ void CNeutrinoApp::startSubtitles(bool show)
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::startSubtitles\n");
 	
-	if(!show || IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
+	if(!show)
 		return;
 	
-	//start dvbsub
-	dvbsub_start(dvbsub_getpid(), false);
-	
-	// start tuxtxt
-	tuxtx_pause_subtitle( false, false);
+	if ( IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()) )
+	{
+		if(playback)
+		{
+			playback->SetSubPid(currentspid);
+		}
+	}
+	else
+	{
+		//start dvbsub
+		dvbsub_start(dvbsub_getpid(), false);
+		
+		// start tuxtxt
+		tuxtx_pause_subtitle( false, false);
+	}
 }
 
 // stop subtitle
 void CNeutrinoApp::stopSubtitles()
 {
-	if (IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
-		return;
-	
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::stopSubtitles\n");
 	
-	int ttx, ttxpid, ttxpage;
-
-	// dvbsub
-	int dvbpid = dvbsub_getpid();
-	
-	if(dvbpid)
+	if (IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
 	{
-		dvbsub_pause();
+		if(playback)
+		{
+			playback->SetSubPid(-1);
+			playback->SetExtSubPid(-1);
+		}
 	}
-	
-	// tuxtxt
-	tuxtx_subtitle_running(&ttxpid, &ttxpage, &ttx);
-	
-	if(ttx) 
+	else
 	{
-		tuxtx_pause_subtitle(true, false);
+		int ttx, ttxpid, ttxpage;
+
+		// dvbsub
+		int dvbpid = dvbsub_getpid();
 		
-		// clear framebuffer
-		frameBuffer->paintBackground();
-		frameBuffer->blit();
+		if(dvbpid)
+		{
+			dvbsub_pause();
+		}
+		
+		// tuxtxt
+		tuxtx_subtitle_running(&ttxpid, &ttxpage, &ttx);
+		
+		if(ttx) 
+		{
+			tuxtx_pause_subtitle(true, false);
+			
+			// clear framebuffer
+			frameBuffer->paintBackground();
+			frameBuffer->blit();
+		}
 	}
 }
 

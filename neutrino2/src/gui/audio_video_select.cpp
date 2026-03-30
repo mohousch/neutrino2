@@ -66,7 +66,7 @@ unsigned int ac3state = CInfoViewer::NO_AC3;
 unsigned short spids[10];
 unsigned short numpids = 0;
 int currentspid = -1;
-////
+//
 bool isEXtSub = false;
 unsigned short extspids[10];
 unsigned short extnumpids = 0;
@@ -92,7 +92,7 @@ const keyval AC3_OPTIONS[AC3_OPTION_COUNT] =
 };
 
 ////
-int CAVPIDChangeExec::exec(CTarget*, const std::string & actionKey)
+int CAVPIDChangeExec::exec(CTarget*, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CAVPIDSelectWidget::exec: %s (currentapid:%d)\n", actionKey.c_str(), currentapid);
 	
@@ -287,9 +287,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 	}
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("AV Select"));
+	setLCDMode(_("AV Select"));
 	
 	// audio pids
 	CAVPIDChangeExec AVPIDChanger;
@@ -416,7 +414,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 	}
 	
 	//
-        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+        resetLCDMode();
         
         return res;
 }

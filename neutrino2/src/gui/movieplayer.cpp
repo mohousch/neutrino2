@@ -1,29 +1,30 @@
-/*
-  Neutrino-GUI  -   DBoxII-Project
-  
-  $Id: movieplayer.cpp 24.12.2018 mohousch Exp $
+//
+//  Neutrino-GUI  -   DBoxII-Project
+//  
+//  $Id: movieplayer.cpp 24.12.2018 mohousch Exp $
+//
+//  Movieplayer (c) 2003, 2004 by gagga
+//  Based on code by Dirch, obi and the Metzler Bros. Thanks.
+//
+//  Homepage: http://www.giggo.de/dbox2/movieplayer.html
+//
+//  License: GPL
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program; if not, write to the Free Software
+//  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
-  Movieplayer (c) 2003, 2004 by gagga
-  Based on code by Dirch, obi and the Metzler Bros. Thanks.
-
-  Homepage: http://www.giggo.de/dbox2/movieplayer.html
-
-  License: GPL
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2 of the License, or
-  (at your option) any later version.
-
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-*/
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -104,22 +105,10 @@
 ////
 extern unsigned int ac3state;
 extern unsigned int currentapid;
-//
 extern int currentspid;
 extern bool isEXtSub;
 extern int currentextspid;
-//
-extern int dvbsub_stop();
-extern int dvbsub_start(int pid, bool isEplayer);
-extern int dvbsub_pause();
-//
-extern int  tuxtxt_stop();
-extern void tuxtxt_close();
-extern void tuxtx_pause_subtitle(bool pause, bool isEplayer);
 extern void tuxtx_stop_subtitle();
-extern void tuxtxt_start(int tpid);
-extern void tuxtx_set_pid(int pid, int page, const char * cc);
-extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
 extern int tuxtx_main(int pid, int page, bool isEplayer);
 
 //// movieplayer
@@ -343,7 +332,8 @@ void CMoviePlayerGui::startSubtitles(bool show)
 		else
 			playback->SetSubPid(currentspid);
 	}
-	
+
+	// tuxtxt	
 #ifndef ENABLE_GSTREAMER	
 	if (currentspid >= 0)
 	{
