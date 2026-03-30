@@ -3551,14 +3551,6 @@ _repeat:
 	}
 	else if (msg == NeutrinoMessages::EVT_STREAM_STOP) 
 	{
-		//
-		bool alive = recordingstatus || CStreamManager::getInstance()->StreamStatus();
-		
-		if ((mode == mode_standby) && !alive) 
-		{
-			CSectionsd::getInstance()->pauseScanning(true);
-		}
-	
 		return messages_return::handled;
 	}
 	else if( msg == NeutrinoMessages::ZAPTO ) 
