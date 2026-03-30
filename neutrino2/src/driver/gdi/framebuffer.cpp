@@ -1482,6 +1482,7 @@ void CFrameBuffer::restoreScreen(int x, int y, int dx, int dy, fb_pixel_t * cons
 void CFrameBuffer::clearFrameBuffer()
 {
 	paintBackground();
+	blit();
 }
 
 // blitRoundedBox2FB
