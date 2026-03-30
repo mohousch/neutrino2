@@ -2735,14 +2735,13 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 			videoDecoder->SetInput(STANDBY_ON);		
 		
 		// zapit standby
-		if(!recordingstatus && !timeshiftstatus && !CStreamManager::getInstance()->StreamStatus())
+		if(recordingstatus || timeshiftstatus)
 		{
-			CZapit::getInstance()->setStandby(true);
+			CZapit::getInstance()->stopPlayBack();
 		} 
 		else
 		{
-			//zapit stop playback
-			CZapit::getInstance()->stopPlayBack();
+			CZapit::getInstance()->setStandby(true);
 		}
 
 		// stop sectionsd
@@ -2791,13 +2790,11 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 		// setmode?tv/radio
 		mode = mode_unknown;
 
-		// zapit startplayback
-		CZapit::getInstance()->setStandby(false);
-
 		// this is buggy don't respect parentallock
-		if(!recordingstatus && !timeshiftstatus)
+		if(recordingstatus || timeshiftstatus)
 			CZapit::getInstance()->startPlayBack(CZapit::getInstance()->getCurrentChannel());
-
+		else
+			CZapit::getInstance()->setStandby(false);
 
 		CSectionsd::getInstance()->pauseScanning(false);
 		CSectionsd::getInstance()->setServiceChanged(CZapit::getInstance()->getCurrentChannelID(), true );
@@ -3540,14 +3537,6 @@ _repeat:
 	else if (msg == NeutrinoMessages::EVT_STREAM_START) 
 	{
 		int fd = (int) data;
-
-		//// FIXME: do we need really this ?
-		bool alive = recordingstatus || CStreamManager::getInstance()->StreamStatus();
-		
-		if ((mode == mode_standby) && !alive) 
-		{
-			CZapit::getInstance()->setStandby(false);
-		}
 		
 		if (g_Radiotext)
 			g_Radiotext->setPid(0);
@@ -3567,9 +3556,7 @@ _repeat:
 		
 		if ((mode == mode_standby) && !alive) 
 		{
-			CZapit::getInstance()->setStandby(true);
 			CSectionsd::getInstance()->pauseScanning(true);
-
 		}
 	
 		return messages_return::handled;
