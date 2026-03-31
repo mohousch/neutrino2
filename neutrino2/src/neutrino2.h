@@ -134,6 +134,8 @@ class CNeutrinoApp : public CTarget
 		fb_pixel_t * vol_pixbuf;
 		CCIcon *muteIcon;
 		////
+		CChannelList* TVchannelList;
+		CChannelList* RADIOchannelList;
 		CChannelList* channelList;
 		CLastChannel _lastChList;
 

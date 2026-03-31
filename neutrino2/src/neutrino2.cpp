@@ -189,8 +189,6 @@ static CCProgressBar * g_volscale;
 int prev_video_Mode;
 int current_volume;
 int current_muted;
-// bouquets lists
-CBouquetList* bouquetList; 				//current bqt list
 //
 CBouquetList* TVbouquetList;
 CBouquetList* TVsatList;
@@ -202,8 +200,7 @@ CBouquetList* RADIOsatList;
 CBouquetList* RADIOfavList;
 CBouquetList* RADIOallList;
 //
-CChannelList* TVchannelList;
-CChannelList* RADIOchannelList;
+CBouquetList* bouquetList; 
 //
 #if defined (ENABLE_CI)
 CCAMMenuHandler* g_CamHandler;
@@ -1691,6 +1688,12 @@ void CNeutrinoApp::setChannelMode(int newmode, int nMode)
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::setChannelMode: ChannelsMode: %s nMode: %d\n", aLISTMODE[newmode], nMode);
 
 	chmode = nMode;
+	
+	// channelList // FIXME:
+	if(nMode == mode_radio)
+		channelList = RADIOchannelList;
+	else if(nMode == mode_tv)
+		channelList = TVchannelList;
 
 	// bouquetList
 	switch(newmode) 
@@ -1740,12 +1743,6 @@ void CNeutrinoApp::setChannelMode(int newmode, int nMode)
 			}
 			break;
 	}
-	
-	// channelList // FIXME:
-	if(nMode == mode_radio)
-		channelList = RADIOchannelList;
-	else if(nMode == mode_tv)
-		channelList = TVchannelList;
 
 	g_settings.channel_mode = newmode;
 }
@@ -2202,22 +2199,19 @@ void CNeutrinoApp::initZapper()
 	epgUpdateTimer = g_RCInput->addTimer( 60 * 1000 * 1000, false );
 
 	// zap / epg / autorecord / infoviewer
-	if (channelList)
+	if (channelList && channelList->getSize())
 	{
-		if (channelList->getSize() && CZapit::getInstance()->getCurrentChannelID() != 0)
-		{
-			// channellist adjust to channeliD
-			channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
-					
-			// permenant timeshift
-			if(g_settings.auto_timeshift)
-				startAutoRecord(true);
-			
-			//
-			selectSubtitles();
-			startSubtitles();
-		}
+		// channellist adjust to channeliD
+		channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
 	}
+	
+	// permenant timeshift
+	if(g_settings.auto_timeshift)
+		startAutoRecord(true);
+			
+	//
+	selectSubtitles();
+	startSubtitles();
 }
 
 // quickZap
@@ -3313,23 +3307,22 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 			// pre-selected channel-num/bouquet-num/channel-mode
 			int nNewChannel = -1;
 			int old_num = 0;
-			int old_b = bouquetList? bouquetList->getActiveBouquetNumber() : 0;
+			int old_b = bouquetList->getActiveBouquetNumber();
 			int old_mode = g_settings.channel_mode;
 
-			if(bouquetList->Bouquets.size()) 
+			if(!bouquetList->Bouquets.empty()) 
 			{
-				old_num = bouquetList? bouquetList->Bouquets[old_b]->channelList->getActiveChannelNumber() : 0;
+				old_num = bouquetList->Bouquets[old_b]->channelList->getSelectedChannelIndex();
 			}
 			
-			dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: ZAP START: bouquet: %d channel: %d\n", old_b, old_num);
+			dprintf(DEBUG_NORMAL, "\n\nCNeutrinoApp::handleMsg: ZAP START: bouquet: %d\n", old_b);
 
 			if( msg == CRCInput::RC_ok ) 
 			{
-				if (bouquetList->Bouquets.size() && bouquetList->Bouquets[old_b]->channelList->getSize() > 0)
+				if (!bouquetList->Bouquets.empty() && bouquetList->Bouquets[old_b]->channelList->getSize() > 0)
 					nNewChannel = bouquetList->Bouquets[old_b]->channelList->exec();
 				else
 					nNewChannel = bouquetList->exec();
-				//	nNewChannel = channelList->exec();
 			}
 			else if (msg == CRCInput::RC_sat) 
 			{
@@ -3350,8 +3343,8 @@ _repeat:
 				setChannelMode(old_mode, mode);
 				bouquetList->activateBouquet(old_b);
 				
-				if (bouquetList->Bouquets.size())
-					bouquetList->Bouquets[old_b]->channelList->setSelected(old_num - 1);
+				if (!bouquetList->Bouquets.empty())
+					bouquetList->Bouquets[old_b]->channelList->setSelected(old_num);
 				
 				startSubtitles(mode == mode_tv);
 			}

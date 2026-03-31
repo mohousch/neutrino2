@@ -147,12 +147,6 @@ CChannelList::~CChannelList()
 {
 	chanlist.clear();
 	events.clear();
-	
-	if (widget)
-	{
-		delete widget;
-		widget = NULL;
-	}
 }
 
 void CChannelList::ClearList(void)
@@ -767,41 +761,36 @@ bool CChannelList::adjustToChannelID(const t_channel_id channel_id, bool bToo)
 
 	dprintf(DEBUG_NORMAL, "CChannelList::adjustToChannelID: channel_id 0x%llx\n", channel_id);
 	
-	if (!chanlist.empty())
+	tuned_chid = channel_id;
+		
+	// adjust to bouquets
+	for (i = 0; i < chanlist.size(); i++) 
 	{
-		// adjust to bouquets
-		for (i = 0; i < chanlist.size(); i++) 
+		if (chanlist[i]->getChannelID() == channel_id) 
 		{
-			if (chanlist[i] != NULL)
-			{
-				if (chanlist[i]->getChannelID() == channel_id) 
-				{
-					selected = i;
-
-					tuned = i;
+			selected = i;
+			tuned = i;
 					
-					if (bToo && (bouquetList != NULL)) 
-					{
-						//FIXME
-						if(CNeutrinoApp::getInstance()->getMode() == CNeutrinoApp::mode_tv) 
-						{
+			if (bToo && (bouquetList != NULL)) 
+			{
+				//FIXME
+				if(CNeutrinoApp::getInstance()->getMode() == CNeutrinoApp::mode_tv) 
+				{
 							TVbouquetList->adjustToChannelID(channel_id);
 							TVsatList->adjustToChannelID(channel_id);
 							TVfavList->adjustToChannelID(channel_id);
 							TVallList->adjustToChannelID(channel_id);
-						} 
-						else if(CNeutrinoApp::getInstance()->getMode() == CNeutrinoApp::mode_radio) 
-						{
+				} 
+				else if(CNeutrinoApp::getInstance()->getMode() == CNeutrinoApp::mode_radio) 
+				{
 							RADIObouquetList->adjustToChannelID(channel_id);
 							RADIOsatList->adjustToChannelID(channel_id);
 							RADIOfavList->adjustToChannelID(channel_id);
 							RADIOallList->adjustToChannelID(channel_id);
-						}
-					}
-					
-					return true;
 				}
 			}
+					
+			return true;
 		}
 	}
 
@@ -853,6 +842,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 		return;
 	}
 
+	//
 	if ( (pos >= (signed int) chanlist.size()) || (pos < 0) ) 
 	{
 		pos = 0;
