@@ -71,7 +71,7 @@
 bool pip_selected = false;
 //
 extern bool autoshift;
-extern int old_b_id;					// defined in neutrino2.cpp
+//extern int old_b_id;					// defined in neutrino2.cpp
 //
 extern CRemoteControl * g_RemoteControl; 		// defined in neutrino2.cpp	
 //
@@ -479,7 +479,7 @@ int CChannelList::show(bool customMode)
 			if (chanlist.size() && !IS_WEBTV(chanlist[selected]->channel_id) && !customMode)
 			{
 				// channellist setup (add/move)
-				old_b_id = bouquetList->getActiveBouquetNumber();
+//				old_b_id = bouquetList->getActiveBouquetNumber();
 				int ret = doChannelMenu();
 		
 				if (ret) 
@@ -489,7 +489,7 @@ int CChannelList::show(bool customMode)
 				} 
 				else 
 				{
-					old_b_id = -1;
+//					old_b_id = -1;
 					paint(customMode);
 				}
 			}
