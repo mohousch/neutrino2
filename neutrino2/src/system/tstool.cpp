@@ -285,6 +285,7 @@ static int get_input(bool * stop)
 	
 	if(msg != CRCInput::RC_timeout)
 		retval |= 1;
+		
 	if (CNeutrinoApp::getInstance()->handleMsg(msg, data) & messages_return::cancel_all)
 		retval |= 2;
 
@@ -325,14 +326,6 @@ off64_t cut_movie(MI_MOVIE_INFO * minfo, CMovieInfo * cmovie)
 		perror("malloc");
 		return 0;
 	}
-
-	CFrameBuffer * frameBuffer = CFrameBuffer::getInstance();
-	
-        int dx = 256;
-        int x = (((g_settings.screen_EndX- g_settings.screen_StartX)- dx) / 2) + g_settings.screen_StartX;
-        int y = g_settings.screen_EndY - 50;
-	
-	frameBuffer->paintBoxRel (x + 40, y + 12, 200, 15, COL_INFOBAR_PLUS_0);
 	
 	int len = minfo->length;
 	off64_t size = minfo->file.Size;
@@ -415,6 +408,7 @@ off64_t cut_movie(MI_MOVIE_INFO * minfo, CMovieInfo * cmovie)
 		*ptr = 0;
 	find_new_part(npart, dpart);
 	tt = time(0);
+	
 	printf("\n********* new file %s expected size %lld, start time %s", dpart, newsize, ctime (&tt));
 	
 	dstfd = open (dpart, O_CREAT|O_WRONLY|O_TRUNC| O_LARGEFILE, 0x644);
@@ -472,10 +466,6 @@ off64_t cut_movie(MI_MOVIE_INFO * minfo, CMovieInfo * cmovie)
 					goto ret_err;
 				}
 				
-				if(msg) 
-				{
-					frameBuffer->paintBoxRel (x + 40, y+12, 200, 15, COL_INFOBAR_PLUS_0);
-				}
 				size_t toread = (until-sdone) > BUF_SIZE ? BUF_SIZE : until - sdone;
 #if REAL_CUT
 				r = read (srcfd, buf, toread);
@@ -622,13 +612,6 @@ off64_t copy_movie(MI_MOVIE_INFO * minfo, CMovieInfo * cmovie, bool onefile)
 	//off64_t secsize = len ? size/len/60 : 511040;
 	printf("copy: len %d minute %lld second %lld\n", len, len ? size/len : 511040*60, secsize);
 
-	CFrameBuffer * frameBuffer = CFrameBuffer::getInstance();
-	
-        int dx = 256;
-        int x = (((g_settings.screen_EndX- g_settings.screen_StartX)- dx) / 2) + g_settings.screen_StartX;
-        int y = g_settings.screen_EndY - 50;
-	frameBuffer->paintBoxRel (x + 40, y+12, 200, 15, COL_INFOBAR_PLUS_0);
-
 	newsize = 0;
 	for(int book_nr = 0; book_nr < MI_MOVIE_BOOK_USER_MAX; book_nr++) 
 	{
@@ -644,7 +627,9 @@ off64_t copy_movie(MI_MOVIE_INFO * minfo, CMovieInfo * cmovie, bool onefile)
 			bcount++;
 		}
 	}
-	if(!bcount) return 0;
+	
+	if(!bcount) 
+		return 0;
 
 	tt = time(0);
 	printf("********* %d boormarks, to %s file(s), expected size to copy %lld, start time %s", bcount, onefile ? "one" : "many", newsize, ctime (&tt));
@@ -731,10 +716,6 @@ next_file:
 				goto ret_err;
 			}
 			
-			if(msg) 
-			{
-				frameBuffer->paintBoxRel (x + 40, y+12, 200, 15, COL_INFOBAR_PLUS_0);
-			}
 #if REAL_CUT
 			r = read (srcfd, buf, toread);
 #else

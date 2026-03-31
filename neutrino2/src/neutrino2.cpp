@@ -176,7 +176,7 @@ int debug = DEBUG_NORMAL;
 cVideo * videoDecoder = NULL;
 cAudio * audioDecoder = NULL;
 // zap
-//int old_b_id = -1;
+int old_b_id = -1;
 // record and timeshift
 bool autoshift = false;
 uint32_t shift_timer = 0;
@@ -3355,8 +3355,8 @@ _repeat:
 			}
 			else if (nNewChannel == -4) // list edited
 			{
-//				if(old_b_id < 0) 
-//					old_b_id = old_b;
+				if(old_b_id < 0) 
+					old_b_id = old_b;
 
 				CZapit::getInstance()->saveBouquets();
 			}
@@ -3453,10 +3453,10 @@ _repeat:
 
 		channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
 		
-//		if(old_b_id >= 0) 
+		if(old_b_id >= 0) 
 		{
-//			bouquetList->activateBouquet(old_b_id);
-//			old_b_id = -1; //bouquetList->getActiveBouquetNumber();
+			bouquetList->activateBouquet(old_b_id);
+			old_b_id = -1; //bouquetList->getActiveBouquetNumber();
 			g_RCInput->postMsg(CRCInput::RC_ok);
 		}
 	}

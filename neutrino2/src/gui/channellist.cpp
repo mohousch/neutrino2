@@ -71,7 +71,7 @@
 bool pip_selected = false;
 //
 extern bool autoshift;
-//extern int old_b_id;					// defined in neutrino2.cpp
+extern int old_b_id;					// defined in neutrino2.cpp
 //
 extern CRemoteControl * g_RemoteControl; 		// defined in neutrino2.cpp	
 //
@@ -482,7 +482,7 @@ int CChannelList::show(bool customMode)
 //				old_b_id = bouquetList->getActiveBouquetNumber();
 				int ret = doChannelMenu();
 		
-				if (ret) 
+				if (ret != 0) 
 				{
 					res = -4;
 					loop = false;
