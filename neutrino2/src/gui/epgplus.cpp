@@ -1144,7 +1144,7 @@ EpgPlus::MenuTargetAddReminder::MenuTargetAddReminder(EpgPlus * _epgPlus)
   	this->epgPlus = _epgPlus;
 }
 
-int EpgPlus::MenuTargetAddReminder::exec(CTarget */*parent*/, const std::string &/*actionKey*/)
+int EpgPlus::MenuTargetAddReminder::exec(CTarget *, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "EpgPlus::MenuTargetAddReminder::exec:\n");
 
@@ -1170,7 +1170,7 @@ EpgPlus::MenuTargetAddRecordTimer::MenuTargetAddRecordTimer (EpgPlus * _epgPlus)
   	this->epgPlus = _epgPlus;
 }
 
-int EpgPlus::MenuTargetAddRecordTimer::exec(CTarget */*parent*/, const std::string &/*actionKey*/)
+int EpgPlus::MenuTargetAddRecordTimer::exec(CTarget *, const std::string &)
 {
 	dprintf(DEBUG_NORMAL, "EpgPlus::MenuTargetAddRecordTimer::exec:\n");
 

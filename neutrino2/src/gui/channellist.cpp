@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$Id: channellist.cpp 11102025 mohousch Exp $
+//	$Id: channellist.cpp 31032026 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -271,11 +271,6 @@ CZapitChannel * CChannelList::getChannel(t_channel_id channel_id)
 	return(NULL);
 }
 
-int CChannelList::getKey(int id)
-{
-	return chanlist[id]->number;
-}
-
 static const std::string empty_string;
 
 const std::string & CChannelList::getActiveChannelName(void) const
@@ -444,7 +439,7 @@ int CChannelList::show(bool customMode)
 				MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);	// UTF-8
 			} 
 			
-			paint(customMode); ////
+			paint(customMode);
 		}
 		else if ( msg == CRCInput::RC_blue && ( bouquetList != NULL ) )
 		{
@@ -495,9 +490,8 @@ int CChannelList::show(bool customMode)
 				else 
 				{
 					old_b_id = -1;
+					paint(customMode);
 				}
-				
-//				paint(customMode);
 			}
 		}
 		else if (msg == (neutrino_msg_t) g_settings.key_list_start) 
@@ -850,8 +844,8 @@ void CChannelList::zapTo(int pos, bool rezap)
 	
 	dprintf(DEBUG_NORMAL, "CChannelList::zapTo (%s) tuned %d id:0x%llx new %d (%s) id: 0x%llx\n", name.c_str(), tuned, tuned_chid, pos, chanlist[pos]->name.c_str(), chanlist[pos]->channel_id);
 	
-	// zap
-//	if ( (pos != tuned) || (chanlist[pos]->channel_id != tuned_chid) || rezap )
+	// zap //TEST
+	if ( (pos != tuned) || (chanlist[pos]->channel_id != tuned_chid) || rezap )
 	{ 
 		// stop radiotext
 		if ((g_settings.radiotext_enable) && ((CNeutrinoApp::getInstance()->getMode()) == CNeutrinoApp::mode_radio) && (g_Radiotext))
@@ -1013,9 +1007,9 @@ int CChannelList::numericZap(int key)
 	// sms numeric zap
 	int sx = 4 * g_Font[SNeutrinoSettings::FONT_TYPE_CHANNEL_NUM_ZAP]->getRenderWidth(widest_number) + 14;
 	int sy = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNEL_NUM_ZAP]->getHeight() + 6;
-
 	int ox = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - sx)/2;
 	int oy = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - sy)/2;
+	
 	char valstr[10];
 	int chn = CRCInput::getNumericValue(key);  // index
 	int pos = 1;
@@ -1041,7 +1035,7 @@ int CChannelList::numericZap(int key)
 			}
 
 			// show infobar
-			this->showInfo(chn - 1); ////
+			this->showInfo(chn - 1);
 			
 			lastchan = chn;
 		}
@@ -1073,7 +1067,7 @@ int CChannelList::numericZap(int key)
 		{
 			if ( ( chn > (signed int) chanlist.size() ) || ( chn == 0 ) ) 
 			{
-				chn = tuned + 1; ////
+				chn = tuned + 1;
 			}
 			break;
 		}
@@ -1131,7 +1125,7 @@ int CChannelList::numericZap(int key)
 	{
 		// zapto selected channel
 		this->zapTo(chn);
-		showInfo(chn, 0, false); ////
+//		showInfo(chn, 0, false);
 	} 
 	else 
 	{
@@ -1260,7 +1254,7 @@ void CChannelList::virtual_zap_mode(bool up)
         	
                 g_InfoViewer->killTitle();
 
-                // Rote Taste zeigt EPG fuer gewaehlten Kanal an
+                //
                 if ( showEPG )
                         g_EventList->show(chanlist[chn]->epgid, chanlist[chn]->name);
         }
@@ -1287,10 +1281,7 @@ void CChannelList::quickZap(int key, bool cycle)
 
 	dprintf(DEBUG_NORMAL, "CChannelList::quickZap: quick zap selected = %d getActiveBouquetNumber %d\n", selected, bouquetList->getActiveBouquetNumber());
 
-	if(cycle)
-		CNeutrinoApp::getInstance()->getChannelList()->zapTo(bouquetList->Bouquets[bouquetList->getActiveBouquetNumber()]->channelList->getKey(selected) - 1);
-	else
-        	zapTo(selected);
+        zapTo(selected);
 
 	g_RCInput->clearRCMsg();
 }
@@ -1495,8 +1486,8 @@ void CChannelList::paint(bool customMode)
 
 				logo = CChannellogo::getInstance()->getLogoName(chanlist[i]->getLogoID());
 				
-				//FIXME:
-				//item->setIconName(logo.c_str());
+				//FIXME:TEST
+				item->setIconName(logo.c_str());
 			}
 			
 			// option font
@@ -1561,7 +1552,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	if (vline) 
 		vline->paint();
 	
-	//// now
+	// now
 	CChannelEvent * p_event = NULL;
 	time_t jetzt = time(NULL);
 	unsigned int runningPercent = 0;
@@ -1641,7 +1632,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	text.setText(description.c_str());
 	text.setHAlign(CComponent::CC_ALIGN_CENTER);
 	
-	//// next					
+	// next					
 	events.clear();
 
 	CSectionsd::getInstance()->getEventsServiceKey(chanlist[_selected]->epgid & 0xFFFFFFFFFFFFULL, events);
@@ -1763,15 +1754,11 @@ int CChannelList::doChannelMenu(void)
 		mWidget->addCCItem(menu);
 	}
 	
-//	menu->setMode(ClistBox::MODE_SETUP);
-	
 	//
 	menu->addItem(new CMenuForwarder(_("delete")), old_selected == i++);
 	menu->addItem(new CMenuForwarder(_("Move")), old_selected == i++);
 	menu->addItem(new CMenuForwarder(_("Add to Bouquets")), old_selected == i++);
 	menu->addItem(new CMenuForwarder(_("add channel to my favorites")), old_selected == i++);
-//	menu->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
-//	menu->addItem(new CMenuOptionChooser(_("Channel number"), &g_settings.channellist_number, CHANNELLIST_NUMBER_OPTIONS, CHANNELLIST_NUMBER_OPTION_COUNT, true));
 	
 	//
 	mWidget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
@@ -1872,7 +1859,8 @@ int CChannelList::doChannelMenu(void)
 				break;
 				
 			case 3: // add to my favorites
-				printf("add to my favorites\n");
+				hide();
+				
 				bouquet_id = CZapit::getInstance()->existsBouquet("Favorites");
 
 				if(bouquet_id == -1) 
@@ -1885,7 +1873,7 @@ int CChannelList::doChannelMenu(void)
 				{
 					CZapit::getInstance()->addChannelToBouquet(bouquet_id, channel_id);
 
-					return 0;
+					return 1;
 				}
 				
 				break;

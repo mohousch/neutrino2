@@ -3456,7 +3456,7 @@ _repeat:
 		if(old_b_id >= 0) 
 		{
 			bouquetList->activateBouquet(old_b_id);
-			old_b_id = -1;
+			old_b_id = bouquetList->getActiveBouquetNumber();
 			g_RCInput->postMsg(CRCInput::RC_ok);
 		}
 	}

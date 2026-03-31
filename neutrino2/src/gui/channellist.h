@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$Id: channellist.h 21122024 mohousch Exp $
+//	$Id: channellist.h 31032026 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -101,12 +101,13 @@ class CChannelList
 		CChannelList(const char * const Name, bool _historyMode = false);
 		~CChannelList();
 		
-		void addChannel(CZapitChannel* chan);		
+		void addChannel(CZapitChannel* chan);
+		////		
 		CZapitChannel * getChannel(int number);
 		CZapitChannel * getChannel(t_channel_id channel_id);
 		CZapitChannel * getChannelFromIndex( uint32_t index) { if (chanlist.size() > index) return chanlist[index]; else return NULL;};
 		CZapitChannel * operator[]( uint32_t index) { if (chanlist.size() > index) return chanlist[index]; else return NULL;};
-		int getKey(int);
+		////
 		const char* getName(void) const { return name.c_str(); };
 		const std::string&   getActiveChannelName(void) const; // UTF-8
 		t_satellite_position getActiveSatellitePosition(void) const;
@@ -114,6 +115,9 @@ class CChannelList
 		t_channel_id         getActiveChannel_ChannelID(void) const;
 		t_channel_id         getActiveChannel_EPGID(void) const;
 		t_channel_id         getActiveChannel_LogoID(void) const;
+		////
+		int getSize() const;
+		int getSelectedChannelIndex() const;
 		////
 		void zapTo(int pos, bool rezap = false);
 		void virtual_zap_mode(bool up);
@@ -125,8 +129,6 @@ class CChannelList
 		void quickZap(int key, bool cycle = false);
 		int hasChannelID(t_channel_id channel_id);
 		void setSelected( int nChannelNr); 	// for adjusting bouquet's channel list after numzap or quickzap
-		int getSize() const;
-		int getSelectedChannelIndex() const;
 		void setSize(int newsize);
 		unsigned int tuned;
 		int doChannelMenu(void);
