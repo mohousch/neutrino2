@@ -202,6 +202,9 @@ CBouquetList* RADIOsatList;
 CBouquetList* RADIOfavList;
 CBouquetList* RADIOallList;
 //
+CChannelList* TVchannelList;
+CChannelList* RADIOchannelList;
+//
 #if defined (ENABLE_CI)
 CCAMMenuHandler* g_CamHandler;
 #endif

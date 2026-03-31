@@ -116,7 +116,6 @@ class CNeutrinoApp : public CTarget
 		
  	private:
 		CFrameBuffer * frameBuffer;
-
 		//// configfile
 		CConfigFile configfile;
 		//// font
@@ -134,13 +133,9 @@ class CNeutrinoApp : public CTarget
 		////
 		fb_pixel_t * vol_pixbuf;
 		CCIcon *muteIcon;
-		
 		////
-		CChannelList* TVchannelList;
-		CChannelList* RADIOchannelList;
 		CChannelList* channelList;
 		CLastChannel _lastChList;
-		////
 
 		////
 		void firstChannel();
@@ -211,12 +206,9 @@ class CNeutrinoApp : public CTarget
 		////
 		void audioMute( int newValue, bool isEvent= false );
 		void setVolume(const neutrino_msg_t key, const bool bDoPaint = true);
-		//// channellist
-		CChannelList *getTVChannelList(){return TVchannelList;};
-		CChannelList *getRADIOChannelList(){return RADIOchannelList;};
+		////
 		CChannelList *getChannelList(){return channelList;};
 		CLastChannel &getlastChList() {return _lastChList;};
-		////
 		void channelsInit();
 		////
 		void readEPG();
