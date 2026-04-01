@@ -40,10 +40,10 @@
 #include <system/debug.h>
 
 
-////
-extern CBouquetList * bouquetList;
+//// globals
 extern tallchans allchans;
 
+////
 CSelectChannelWidget::CSelectChannelWidget()
 {
 	tmpChannelList = NULL;

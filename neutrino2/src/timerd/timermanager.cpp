@@ -270,15 +270,15 @@ int CTimerManager::addEvent(CTimerEvent *evt, bool save)
 	eventID++;						// increase unique event id
 	evt->eventID = eventID;
 	
-	if(evt->eventRepeat == CTimerd::TIMERREPEAT_WEEKDAYS) // Weekdays without weekday specified reduce to once
+	if(evt->eventRepeat == CTimerd::TIMERREPEAT_WEEKDAYS) 	// Weekdays without weekday specified reduce to once
 		evt->eventRepeat = CTimerd::TIMERREPEAT_ONCE;
 		
-	events[eventID] = evt;			// insert into events
+	events[eventID] = evt;					// insert into events
 	m_saveEvents = m_saveEvents || save;
 	
 	pthread_mutex_unlock(&tm_eventsMutex);
 	
-	return eventID;					// return unique id
+	return eventID;						// return unique id
 }
 
 bool CTimerManager::removeEvent(int leventID)
@@ -1173,7 +1173,7 @@ CTimerEvent_Record::CTimerEvent_Record(CConfigFile *config, int iId):
 
 void CTimerEvent_Record::fireEvent()
 {
-	dprintf(DEBUG_NORMAL, "CTimerEvent_Record::fireEvent\n");
+	dprintf(DEBUG_NORMAL, "CTimerEvent_Record::fireEvent (%d)\n", eventID);
 						
 	g_RCInput->postMsg(NeutrinoMessages::RECORD_START, (const neutrino_msg_data_t)&eventInfo, false);
 }
@@ -1189,14 +1189,9 @@ void CTimerEvent_Record::announceEvent()
 
 void CTimerEvent_Record::stopEvent()
 {
-	dprintf(DEBUG_NORMAL, "CTimerEvent_Record::stopEvent\n");
+	dprintf(DEBUG_NORMAL, "CTimerEvent_Record::stopEvent (%d)\n", eventID);
 	
-	CTimerd::RecordingStopInfo stopinfo;
-	
-	// Set EPG-ID if not set
-	stopinfo.eventID = eventID;
-	
-	g_RCInput->postMsg(NeutrinoMessages::RECORD_STOP, (const neutrino_msg_data_t)&stopinfo, false);
+	g_RCInput->postMsg(NeutrinoMessages::RECORD_STOP, (const neutrino_msg_data_t)eventID, false);
 								  
 	// Programmiere shutdown timer, wenn in wakeup state und kein record/zapto timer in 10 min
 	CTimerManager::getInstance()->shutdownOnWakeup(eventID);

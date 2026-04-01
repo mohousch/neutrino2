@@ -335,12 +335,14 @@ void CRecord::Stop()
 {
 	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CRecord::Stop\n");
 	
+	//
 	std::string extMessage = " ";
 	time_t end_time = time(0);
 		
 	g_movieInfo->length = (int) round((double) (end_time - start_time) / (double) 60);
 	g_cMovieInfo->encodeMovieInfoXml(&extMessage, g_movieInfo);	
 	
+	//
 	if (IS_WEBTV(channel_id))
 		stopWebTVRecording();
 	else

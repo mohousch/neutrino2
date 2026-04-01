@@ -73,9 +73,9 @@ class CRecord : public OpenThreads::Thread
 
 		typedef enum CRECORDStates 
 		{
-			CMD_RECORD_UNKNOWN =	0,
-			CMD_RECORD_RECORD	=	1,
-			CMD_RECORD_STOP	=	2
+			CMD_RECORD_UNKNOWN 			= 0,
+			CMD_RECORD_RECORD			= 1,
+			CMD_RECORD_STOP				= 2
 		} CRECORDCommand;
 		
 		typedef struct pvr_file_info

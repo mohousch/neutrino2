@@ -85,11 +85,6 @@ class CTimerd
 			char 		epgTitle[EPG_TITLE_MAXLEN];
 		};
 
-		struct RecordingStopInfo
-		{
-			int eventID;
-		};
-
 		struct timerEvent
 		{		
 			int               eventID;

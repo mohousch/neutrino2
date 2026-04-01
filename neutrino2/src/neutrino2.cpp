@@ -1961,7 +1961,7 @@ int CNeutrinoApp::startAutoRecord(bool addTimer)
 	else if (addTimer) 
 	{
 		time_t now = time(NULL);
-		CNeutrinoApp::getInstance()->recording_id = CTimerd::getInstance()->addImmediateRecordTimerEvent(eventinfo.channel_id, now, now + g_settings.record_hours*60*60, eventinfo.epgID, eventinfo.epg_starttime, eventinfo.apids);
+		recording_id = CTimerd::getInstance()->addImmediateRecordTimerEvent(eventinfo.channel_id, now, now + g_settings.record_hours*60*60, eventinfo.epgID, eventinfo.epg_starttime, eventinfo.apids);
 	}	
 
 	CLCD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, true);
@@ -1979,10 +1979,10 @@ void CNeutrinoApp::stopAutoRecord()
 		CRecord::getInstance()->Stop();
 		autoshift = false;
 		
-		if(CNeutrinoApp::getInstance()->recording_id) 
+		if(recording_id) 
 		{
-			CTimerd::getInstance()->stopTimerEvent(CNeutrinoApp::getInstance()->recording_id);
-			CNeutrinoApp::getInstance()->recording_id = 0;
+			CTimerd::getInstance()->stopTimerEvent(recording_id);
+			recording_id = 0;
 		}
 	} 
 	else if(shift_timer)  
@@ -2067,6 +2067,7 @@ void CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 	else 
 	{
 		CTimerd::getInstance()->stopTimerEvent(recording_id);
+		recording_id = 0;
 			
 		startNextRecording();
 	}
@@ -3133,6 +3134,7 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		{
 			CRecord::getInstance()->Stop();
 			CTimerd::getInstance()->stopTimerEvent(recording_id);
+			recording_id = 0;
 		}
 
 		// stop playback
@@ -3511,7 +3513,7 @@ _repeat:
 	}
 	else if( msg == NeutrinoMessages::RECORD_STOP) 
 	{
-		if(((CTimerd::RecordingStopInfo*)data)->eventID == recording_id)
+		if (data == recording_id)
 		{ 
 			
 			if (CRecord::getInstance()->getDeviceState() == CRecord::CMD_RECORD_RECORD)
@@ -3532,7 +3534,7 @@ _repeat:
 		}
 		else if(nextRecordingInfo != NULL) 
 		{
-			if(((CTimerd::RecordingStopInfo*)data)->eventID == nextRecordingInfo->eventID) 
+			if (data == nextRecordingInfo->eventID)
 			{
 				nextRecordingInfo = NULL;
 			}
@@ -4204,7 +4206,10 @@ void CNeutrinoApp::realRun(void)
 						CRecord::getInstance()->Stop();
 						
 						if (recording_id)
+						{
 							CTimerd::getInstance()->stopTimerEvent(recording_id);
+							recording_id = 0;
+						}
 							
 						recordingstatus = 0;
 						timeshiftstatus = 0;

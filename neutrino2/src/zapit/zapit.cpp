@@ -2909,7 +2909,7 @@ std::string CZapit::getChannelDescription(const t_channel_id channel_id)
 
 t_channel_id CZapit::getChannelEPGID(const t_channel_id channel_id)
 {
-	t_channel_id id = 0;
+	t_channel_id id = channel_id;
 	
 	tallchans_iterator it = allchans.find(channel_id);
 	if (it != allchans.end())
@@ -2920,7 +2920,7 @@ t_channel_id CZapit::getChannelEPGID(const t_channel_id channel_id)
 
 t_channel_id CZapit::getChannelLogoID(const t_channel_id channel_id)
 {
-	t_channel_id id = 0;
+	t_channel_id id = channel_id;
 	
 	tallchans_iterator it = allchans.find(channel_id);
 	if (it != allchans.end())
