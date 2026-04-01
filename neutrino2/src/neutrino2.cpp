@@ -1925,10 +1925,10 @@ int CNeutrinoApp::startAutoRecord(bool addTimer)
 	if(CNeutrinoApp::getInstance()->recordingstatus)
 		return 0;
 
-	eventinfo.channel_id = CZapit::getInstance()->getCurrentChannelID();
+	eventinfo.channel_id = CZapit::getInstance()->getCurrentChannelEPGID();
 	CEPGData epgData;
 	
-	if (CSectionsd::getInstance()->getActualEPGServiceKey(CZapit::getInstance()->getChannelEPGID(CZapit::getInstance()->getCurrentChannelID()) & 0xFFFFFFFFFFFFULL, &epgData ))
+	if (CSectionsd::getInstance()->getActualEPGServiceKey(eventinfo.channel_id & 0xFFFFFFFFFFFFULL, &epgData ))
 	{
 		eventinfo.epgID = epgData.eventID;
 		eventinfo.epg_starttime = epgData.epg_times.starttime;
@@ -2016,7 +2016,7 @@ void CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 		int pre = 0, post = 0;
 
 		// get EPG info
-		eventinfo.channel_id = CZapit::getInstance()->getCurrentChannelID();
+		eventinfo.channel_id = CZapit::getInstance()->getCurrentChannelEPGID();
 
 		CEPGData epgData;
 

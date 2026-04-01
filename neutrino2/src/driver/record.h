@@ -58,32 +58,31 @@ extern "C" {
 #define av_packet_unref	av_free_packet
 #endif
 
-
-enum stream2file_error_msg_t
-{
-	STREAM2FILE_OK                        	=  0,
-	STREAM2FILE_IDLE			=  1,
-	STREAM2FILE_BUSY                      	= -1,
-	STREAM2FILE_INVALID_DIRECTORY         	= -2,
-	STREAM2FILE_INVALID_PID              	= -3,
-	STREAM2FILE_RECORDING_THREADS_FAILED	= -4,
-};
-
-typedef struct pvr_file_info
-{
-	uint32_t  uDuration;      /* Time duration in Ms */
-	uint32_t  uTSPacketSize;
-} PVR_FILE_INFO;
-
 class CRecord : public OpenThreads::Thread
 {
 	public:
+		enum stream2file_error_msg_t
+		{
+			STREAM2FILE_OK                        	=  0,
+			STREAM2FILE_IDLE			=  1,
+			STREAM2FILE_BUSY                      	= -1,
+			STREAM2FILE_INVALID_DIRECTORY         	= -2,
+			STREAM2FILE_INVALID_PID              	= -3,
+			STREAM2FILE_RECORDING_THREADS_FAILED	= -4,
+		};
+
 		typedef enum CRECORDStates 
 		{
 			CMD_RECORD_UNKNOWN =	0,
 			CMD_RECORD_RECORD	=	1,
 			CMD_RECORD_STOP	=	2
 		} CRECORDCommand;
+		
+		typedef struct pvr_file_info
+		{
+			uint32_t  uDuration;      // Time duration in Ms
+			uint32_t  uTSPacketSize;
+		} PVR_FILE_INFO;
 	
 		int last_mode;
 		time_t start_time;
@@ -101,8 +100,6 @@ class CRecord : public OpenThreads::Thread
 			std::string language;
 		} APIDDesc;
 		typedef std::list<APIDDesc> APIDList;
-				
-		virtual void getAPIDs(const t_channel_id channel_id, const unsigned char apids, APIDList & apid_list);
 		
 		bool SwitchToScart;
 		unsigned long long record_EPGid;
@@ -110,7 +107,8 @@ class CRecord : public OpenThreads::Thread
 		CGenPsi psi;
 		
 	private:
-		//
+		////
+		virtual void getAPIDs(const t_channel_id channel_id, const unsigned char apids, APIDList &apid_list);
 		void processAPIDnames();
 
 		bool doRecord(const t_channel_id channel_id = 0, int mode = 1, const event_id_t epgid = 0, const std::string& epgTitle = "", unsigned char apids = 0, const time_t epg_time = 0);
@@ -121,23 +119,8 @@ class CRecord : public OpenThreads::Thread
 					unsigned short * apids,
 					int numpids);			
 		void stopRecording();
-
-	protected:
-		void RestoreNeutrino(void);
-		void CutBackNeutrino(const t_channel_id channel_id, const int mode);
-		std::string getMovieInfoString(const t_channel_id channel_id, const event_id_t epgid, const std::string& epgTitle, APIDList apid_list, const time_t epg_time);
-	
-	public:
-		CRecord();
-		virtual ~CRecord();
-		static CRecord * getInstance();
-
-		inline CRECORDStates getDeviceState(void) const { return deviceState; };
-		bool Record(const CTimerd::EventInfo * const eventinfo);
-		void Stop();
 		
-	//
-	private:
+		////
 		AVFormatContext *ifcx;
 		AVFormatContext *ofcx;
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,48,100)
@@ -147,7 +130,6 @@ class CRecord : public OpenThreads::Thread
 #endif
 		//
 		bool stopped;
-		time_t time_started;
 		int  stream_index;
 
 		//
@@ -163,6 +145,20 @@ class CRecord : public OpenThreads::Thread
 		//
 		stream2file_error_msg_t startWebTVRecording(const char *const filename, const event_id_t epgid, const std::string  &epgTitle, const time_t epg_time);
 		void stopWebTVRecording();
+
+	protected:
+		void RestoreNeutrino(void);
+		void CutBackNeutrino(const t_channel_id channel_id, const int mode);
+		std::string getMovieInfoString(const t_channel_id channel_id, const event_id_t epgid, const std::string& epgTitle, APIDList apid_list, const time_t epg_time);
+	
+	public:
+		CRecord();
+		virtual ~CRecord();
+		static CRecord * getInstance();
+
+		inline CRECORDStates getDeviceState(void) const { return deviceState; };
+		bool Record(const CTimerd::EventInfo * const eventinfo);
+		void Stop();
 };
 
 #endif

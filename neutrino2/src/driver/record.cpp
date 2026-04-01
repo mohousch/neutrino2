@@ -904,7 +904,7 @@ void CRecord::processAPIDnames()
 }
 
 //
-stream2file_error_msg_t CRecord::startRecording(const char * const filename, const char * const info, unsigned short vpid, unsigned short * pids, int numpids)
+CRecord::stream2file_error_msg_t CRecord::startRecording(const char * const filename, const char * const info, unsigned short vpid, unsigned short * pids, int numpids)
 {
 	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CRecord::startRecording: %s\n", filename);
 	
@@ -1083,8 +1083,6 @@ void CRecord::stopWebTVRecording()
 	if (stopped)
 		return;
 
-	time_t end_time = time_monotonic();
-
 	stopped = true;
 	
 	int ret = join();
@@ -1102,11 +1100,8 @@ void CRecord::stopWebTVRecording()
 		
 		g_movieInfo->file.Name = tsfile;
 		
-		g_cMovieInfo->loadMovieInfo(g_movieInfo);//restore user bookmark
+		g_cMovieInfo->loadMovieInfo(g_movieInfo); //restore user bookmark
 	}
-
-	// rewrite length (recorded time not the length from epg)
-	g_movieInfo->length = (int) round((double)(end_time - time_started) / (double) 60);
 
 	// close
 	Close();
@@ -1124,7 +1119,7 @@ void CRecord::stopWebTVRecording()
 	rec_filename[0] = 0;
 }
 
-stream2file_error_msg_t CRecord::startWebTVRecording(const char *const filename, const event_id_t epgid, const std::string &epgTitle, const time_t epg_time)
+CRecord::stream2file_error_msg_t CRecord::startWebTVRecording(const char *const filename, const event_id_t epgid, const std::string &epgTitle, const time_t epg_time)
 {
 	APIDList apid_list; // FIXME:
 
@@ -1309,7 +1304,6 @@ void CRecord::run()
 
 	time_t now = 0;
 	time_t tstart = time_monotonic();
-	time_started = tstart;
 	start_time = time(0);
 	
 	if (avformat_write_header(ofcx, NULL) < 0)
