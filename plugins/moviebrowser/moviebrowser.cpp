@@ -816,13 +816,20 @@ int CMovieBrowser::exec(CTarget *parent, const std::string &actionKey)
 				CHintBox * hintBox = new CHintBox(_("Moviebrowser"), _("Cutting, please wait"));
 				hintBox->paint();
 				sleep(1);
-				hintBox->hide();
-				delete hintBox;
 		
 				off64_t res = ::cut_movie(m_movieSelectionHandler, &m_movieInfo);
+				
+				hintBox->hide();
+				delete hintBox;
 
 				if(res == 0)
 					MessageBox(_("Error"), _("Cut failed, is there jump bookmarks ? Or check free space."), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
+				else
+				{
+					loadMovies();
+					updateMovieSelection();
+					refresh();
+				}
 			}
 		}
 		
@@ -850,6 +857,12 @@ int CMovieBrowser::exec(CTarget *parent, const std::string &actionKey)
 
 					if(res == 0)
 						MessageBox(_("Error"), _("Truncate failed."), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
+					else
+					{
+						loadMovies();
+						updateMovieSelection();
+						refresh();
+					}
 				}
 			}
 		}
@@ -866,13 +879,21 @@ int CMovieBrowser::exec(CTarget *parent, const std::string &actionKey)
 				CHintBox * hintBox = new CHintBox(_("Information"), _("Coping, please wait"));
 				hintBox->paint();
 				sleep(1);
+
+				off64_t res = ::copy_movie(m_movieSelectionHandler, &m_movieInfo, true);
+				
 				hintBox->hide();
 				delete hintBox;
 
-				off64_t res = ::copy_movie(m_movieSelectionHandler, &m_movieInfo, true);
 			
 				if(res == 0)
 					MessageBox(_("Information"), _("Copy failed, is there jump bookmarks ? Or check free space."), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
+				else
+				{
+					loadMovies();
+					updateMovieSelection();
+					refresh();
+				}
 			}
 		}
 		

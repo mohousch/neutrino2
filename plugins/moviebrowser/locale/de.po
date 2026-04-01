@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2026-02-15 10:21+0100\n"
+"POT-Creation-Date: 2026-04-01 11:06+0200\n"
 "PO-Revision-Date: 2023-10-29 18:19+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -30,7 +30,7 @@ msgid "6 years"
 msgstr "6 Jahre"
 
 msgid "Actors"
-msgstr ""
+msgstr "Schauspielern"
 
 msgid "Additional paths"
 msgstr "Zusätzliche Pfade"
@@ -165,7 +165,7 @@ msgid "Lock movies from"
 msgstr "Film sperren ab"
 
 msgid "Main Menu"
-msgstr ""
+msgstr "Hauptmenü"
 
 msgid "Movie Browser"
 msgstr ""
@@ -225,7 +225,7 @@ msgid "Position:"
 msgstr ""
 
 msgid "Prefer TMDB infos ?"
-msgstr ""
+msgstr "TMDB Informationen bevorzügen ?"
 
 msgid "Quality"
 msgstr "Qualität"
@@ -291,16 +291,16 @@ msgid "Title"
 msgstr "Titel"
 
 msgid "Truncate failed."
-msgstr ""
+msgstr "Zusammen fügen "
 
 msgid "Truncate jumps"
-msgstr ""
+msgstr "Zusammen fügen"
 
 msgid "Truncate movie ?"
-msgstr ""
+msgstr "zusammen fügen?"
 
 msgid "Truncating, please wait"
-msgstr ""
+msgstr "Zusammen fügen bitte warten..."
 
 msgid "Use directory"
 msgstr ""
@@ -549,28 +549,28 @@ msgid "team sports (excluding football)"
 msgstr ""
 
 msgid "technology/natural sciences"
-msgstr ""
+msgstr "Technologie/ Natur Wissenschaft"
 
 msgid "tennis/squash"
 msgstr ""
 
 msgid "tourism/travel"
-msgstr ""
+msgstr "Tourismus / Reisen"
 
 msgid "travel & recreation"
 msgstr ""
 
 msgid "unknown"
-msgstr ""
+msgstr "Unbekannt"
 
 msgid "variety show"
 msgstr ""
 
 msgid "water sports"
-msgstr ""
+msgstr "Wasser Sport"
 
 msgid "winter sports"
-msgstr ""
+msgstr "Winter Sport"
 
 msgid "yes"
 msgstr "Ja"
