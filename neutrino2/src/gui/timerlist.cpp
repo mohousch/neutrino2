@@ -494,7 +494,7 @@ int CTimerList::exec(CTarget* parent, const std::string& actionKey)
 			
 			if (timerNew.eventType == CTimerd::TIMER_RECORD)
 			{
-				recinfo.epgID = 0;
+				recinfo.epgID = CZapit::getInstance()->getChannelEPGID(timerNew.channel_id) & 0xFFFFFFFFFFFFULL ;
 				recinfo.epg_starttime = 0;
 				recinfo.channel_id = timerNew.channel_id;
 				recinfo.apids = TIMERD_APIDS_CONF;
@@ -1203,6 +1203,7 @@ bool askUserOnTimerConflict(time_t announceTime, time_t stopTime)
 		timerbuf += CTimerList::convertTimerType2String(it->eventType);
 		timerbuf += " (";
 		timerbuf += CTimerList::convertChannelId2String(it->channel_id); // UTF-8
+		
 		if(it->epgID != 0)
 		{
 			CEPGData epgdata;

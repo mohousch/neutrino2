@@ -1925,10 +1925,10 @@ int CNeutrinoApp::startAutoRecord(bool addTimer)
 	if(CNeutrinoApp::getInstance()->recordingstatus)
 		return 0;
 
-	eventinfo.channel_id = CZapit::getInstance()->getCurrentChannelEPGID();
+	eventinfo.channel_id = CZapit::getInstance()->getCurrentChannelID();
 	CEPGData epgData;
 	
-	if (CSectionsd::getInstance()->getActualEPGServiceKey(eventinfo.channel_id & 0xFFFFFFFFFFFFULL, &epgData ))
+	if (CSectionsd::getInstance()->getActualEPGServiceKey(CZapit::getInstance()->getCurrentChannelEPGID() & 0xFFFFFFFFFFFFULL, &epgData ))
 	{
 		eventinfo.epgID = epgData.eventID;
 		eventinfo.epg_starttime = epgData.epg_times.starttime;
@@ -2016,11 +2016,11 @@ void CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 		int pre = 0, post = 0;
 
 		// get EPG info
-		eventinfo.channel_id = CZapit::getInstance()->getCurrentChannelEPGID();
+		eventinfo.channel_id = CZapit::getInstance()->getCurrentChannelID();
 
 		CEPGData epgData;
 
-		if (CSectionsd::getInstance()->getActualEPGServiceKey(eventinfo.channel_id & 0xFFFFFFFFFFFFULL, &epgData ))
+		if (CSectionsd::getInstance()->getActualEPGServiceKey(CZapit::getInstance()->getCurrentChannelEPGID() & 0xFFFFFFFFFFFFULL, &epgData ))
 		{
 			eventinfo.epgID = epgData.eventID;
 			eventinfo.epg_starttime = epgData.epg_times.starttime;
@@ -2048,16 +2048,20 @@ void CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 		CRecord::getInstance()->Directory = recDir;
 			
 		dprintf(DEBUG_NORMAL, "CNeutrinoApp::doGuiRecord: start record to dir %s\n", recDir);
-
-		// start to record 
-		if(CRecord::getInstance()->Record(&eventinfo) == false )
+		
+		// record
+		bool status = CRecord::getInstance()->Record(&eventinfo);
+		
+		// add timer
+		if (status && addTimer)
+		{
+			recording_id = CTimerd::getInstance()->addImmediateRecordTimerEvent(eventinfo.channel_id, now, record_end, eventinfo.epgID, eventinfo.epg_starttime, eventinfo.apids);
+		}
+		
+		if(status == false )
 		{
 			recordingstatus = 0;
 			timeshiftstatus = 0;
-		}
-		else if (addTimer) // add timer
-		{
-			recording_id = CTimerd::getInstance()->addImmediateRecordTimerEvent(eventinfo.channel_id, now, record_end, eventinfo.epgID, eventinfo.epg_starttime, eventinfo.apids);
 		}
 	} 
 	else 

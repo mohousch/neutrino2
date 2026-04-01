@@ -187,7 +187,7 @@ void CRecord::getAPIDs(const t_channel_id channel_id, const unsigned char ap, AP
         {
                 uint32_t apid_min = UINT_MAX;
                 uint32_t apid_min_idx = 0;
-//                std::string language = "Stream";
+//              std::string language = "Stream";
                 
                 for(unsigned int i = 0; i < allpids.APIDs.size(); i++)
                 {
@@ -195,7 +195,7 @@ void CRecord::getAPIDs(const t_channel_id channel_id, const unsigned char ap, AP
                         {
                                 apid_min = allpids.APIDs[i].pid;
                                 apid_min_idx = i;
-//                                language = allpids.APIDs[i].desc;
+//                              language = allpids.APIDs[i].desc;
                         }
                 }
                 
@@ -386,6 +386,7 @@ bool CRecord::doRecord(const t_channel_id channel_id, int mode, const event_id_t
 	// leave menu (if in any)
 	g_RCInput->postMsg(CRCInput::RC_timeout);
 	
+	// handle last mode
 	last_mode = CNeutrinoApp::getInstance()->getMode();
 
 	if(mode != last_mode) 
@@ -397,7 +398,7 @@ bool CRecord::doRecord(const t_channel_id channel_id, int mode, const event_id_t
 	if(channel_id != 0)	// wenn ein channel angegeben ist
 	{
 		// zap for record
-		CZapit::getInstance()->zapToRecordID(channel_id);			// for recording
+		CZapit::getInstance()->zapToRecordID(channel_id);
 	}
 
 	// set apids
@@ -433,16 +434,14 @@ bool CRecord::doRecord(const t_channel_id channel_id, int mode, const event_id_t
 	}
 
 	deviceState = CMD_RECORD_RECORD;
-	
-	//
-	unsigned short _pids[MAXPIDS];
-	unsigned int numpids = 0;
-	unsigned int pos = 0;
 
 	// cut neutrino
 	CutBackNeutrino(channel_id, mode);
 
 	// genpsi / add pids
+	unsigned short _pids[MAXPIDS];
+	unsigned int numpids = 0;
+	unsigned int pos = 0;
 	 APIDList apid_list;
 	 CZapit::CServiceInfo si;
 	 
@@ -518,7 +517,6 @@ bool CRecord::doRecord(const t_channel_id channel_id, int mode, const event_id_t
 	// generate record file name format
 	char filename[512]; // UTF-8
 
-	// Create filename for recording
 	pos = Directory.size();
 	strcpy(filename, Directory.c_str());
 	
@@ -537,17 +535,14 @@ bool CRecord::doRecord(const t_channel_id channel_id, int mode, const event_id_t
 	{
 		strcpy(&(filename[pos]), UTF8_TO_FILESYSTEM_ENCODING(ext_channel_name.c_str()));
 		char * p_act = &(filename[pos]);
-		
-		if (!IS_WEBTV(channel_id)) //FIXME:
-		{
-			do {
-				p_act += strcspn(p_act, "/ \"%&-\t`'�!,:;");
-				if (*p_act) 
-				{
-					*p_act++ = '_';
-				}
-			} while (*p_act);
-		}
+
+		do {
+			p_act += strcspn(p_act, "/ \"%&-\t`'�!,:;");
+			if (*p_act) 
+			{
+				*p_act++ = '_';
+			}
+		} while (*p_act);
 
 		// save channel name dir
 		if (!autoshift && g_settings.recording_save_in_channeldir)
@@ -605,17 +600,14 @@ bool CRecord::doRecord(const t_channel_id channel_id, int mode, const event_id_t
 					strcpy(&(filename[pos]), epgdata.title.c_str());
 					char * p_act = &(filename[pos]);
 					
-					if (!IS_WEBTV(channel_id)) //FIXME:
-					{
-						do {
-							p_act +=  strcspn(p_act, "/ \"%&-\t`'~<>!,:;?^�$\\=*#@�|");
+					do {
+						p_act +=  strcspn(p_act, "/ \"%&-\t`'~<>!,:;?^�$\\=*#@�|");
 
-							if (*p_act) 
-							{
-								*p_act++ = '_';
-							}
-						} while (*p_act);
-					}
+						if (*p_act) 
+						{
+							*p_act++ = '_';
+						}
+					} while (*p_act);
 				}
 			}
 		} 
@@ -624,16 +616,13 @@ bool CRecord::doRecord(const t_channel_id channel_id, int mode, const event_id_t
 			strcpy(&(filename[pos]), epgTitle.c_str());
 			char * p_act = &(filename[pos]);
 			
-			if (!IS_WEBTV(channel_id))
-			{
-				do {
-					p_act +=  strcspn(p_act, "/ \"%&-\t`'~<>!,:;?^�$\\=*#@�|");
-					if (*p_act) 
-					{
-						*p_act++ = '_';
-					}
-				} while (*p_act);
-			}
+			do {
+				p_act +=  strcspn(p_act, "/ \"%&-\t`'~<>!,:;?^�$\\=*#@�|");
+				if (*p_act) 
+				{
+					*p_act++ = '_';
+				}
+			} while (*p_act);
 		}
 	}
 
