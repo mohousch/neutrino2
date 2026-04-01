@@ -485,19 +485,16 @@ int CChannelList::show(bool customMode)
 			if (chanlist.size() && !IS_WEBTV(chanlist[selected]->channel_id) && !customMode)
 			{
 				// channellist setup (add/move)
-//				old_b_id = bouquetList->getActiveBouquetNumber();
+				old_b_id = bouquetList->getActiveBouquetNumber();
 				int ret = doChannelMenu();
 		
 				if (ret != 0) 
 				{
 					res = -4;
 					loop = false;
-				} 
-				else 
-				{
-//					old_b_id = -1;
-					paint(customMode);
 				}
+				else
+					old_b_id = -1;
 			}
 		}
 		else if (msg == (neutrino_msg_t) g_settings.key_list_start) 

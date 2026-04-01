@@ -3459,7 +3459,7 @@ _repeat:
 		if(old_b_id >= 0) 
 		{
 			bouquetList->activateBouquet(old_b_id);
-			old_b_id = -1; //bouquetList->getActiveBouquetNumber();
+			old_b_id = -1;
 			g_RCInput->postMsg(CRCInput::RC_ok);
 		}
 	}
