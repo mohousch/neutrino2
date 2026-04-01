@@ -1233,7 +1233,7 @@ void CTimerEvent_Record::getEpgId()
 {
 	CChannelEventList evtlist;
 	
-	CSectionsd::getInstance()->getEventsServiceKey(eventInfo.channel_id &0xFFFFFFFFFFFFULL, evtlist);
+	CSectionsd::getInstance()->getEventsServiceKey(CZapit::getInstance()->getChannelEPGID(eventInfo.channel_id) &0xFFFFFFFFFFFFULL, evtlist);
 	// we check for a time in the middle of the recording
 	time_t check_time = alarmTime/2 + stopTime/2;
 	

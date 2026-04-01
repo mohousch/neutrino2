@@ -494,7 +494,7 @@ int CTimerList::exec(CTarget* parent, const std::string& actionKey)
 			
 			if (timerNew.eventType == CTimerd::TIMER_RECORD)
 			{
-				recinfo.epgID = CZapit::getInstance()->getChannelEPGID(timerNew.channel_id) & 0xFFFFFFFFFFFFULL ;
+				recinfo.epgID = 0;
 				recinfo.epg_starttime = 0;
 				recinfo.channel_id = timerNew.channel_id;
 				recinfo.apids = TIMERD_APIDS_CONF;
