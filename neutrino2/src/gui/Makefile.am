@@ -84,9 +84,7 @@ libneutrino2_gui_a_SOURCES = \
 	psisetup.cpp \
 	movieinfo.cpp \
 	usermenu.cpp \
-	bouqueteditor_bouquets.cpp \
-	bouqueteditor_channels.cpp \
-	bouqueteditor_chanselect.cpp
+	bouqueteditor.cpp
 
 if ENABLE_CI
 libneutrino2_gui_a_SOURCES += cam_menu.cpp

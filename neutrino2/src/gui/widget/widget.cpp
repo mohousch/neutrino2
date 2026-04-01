@@ -78,7 +78,7 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 	//
 	CCItems.clear();
 	
-	dprintf(DEBUG_INFO, "CWidget::CWidget: x:%d y:%d w:%d h:%d\n", mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight);
+	dprintf(DEBUG_NORMAL, "CWidget::CWidget: x:%d y:%d w:%d h:%d\n", mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight);
 }
 
 CWidget::CWidget(const CBox *position)
@@ -116,7 +116,7 @@ CWidget::CWidget(const CBox *position)
 	//
 	CCItems.clear();
 	
-	dprintf(DEBUG_INFO, "CWidget::CWidget: x:%d y:%d w:%d h:%d\n", mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight);
+	dprintf(DEBUG_NORMAL, "CWidget::CWidget: x:%d y:%d w:%d h:%d\n", mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight);
 }
 
 CWidget::~CWidget()
@@ -181,7 +181,7 @@ void CWidget::initFrames()
 
 void CWidget::move(const int x, const int y)
 {
-	dprintf(DEBUG_NORMAL, "CWidget::move: x:%d y:%d\n", x, y);
+	dprintf(DEBUG_INFO, "CWidget::move: x:%d y:%d\n", x, y);
 	
 #if 0
 	mainFrameBox.iX = x;
@@ -222,7 +222,7 @@ void CWidget::paintCCItems()
 
 void CWidget::paint()
 {
-	dprintf(DEBUG_NORMAL, "CWidget::paint: (%s)\n", name.c_str());
+	dprintf(DEBUG_INFO, "CWidget::paint: (%s)\n", name.c_str());
 	
 	initFrames();
 	
@@ -248,7 +248,7 @@ void CWidget::saveScreen()
 	if(!savescreen)
 		return;
 		
-	dprintf(DEBUG_NORMAL, "CWidget::saveScreen\n");
+	dprintf(DEBUG_INFO, "CWidget::saveScreen\n");
 
 	if(background)
 	{
@@ -266,7 +266,7 @@ void CWidget::saveScreen()
 
 void CWidget::restoreScreen()
 {
-	dprintf(DEBUG_NORMAL, "CWidget::restoreScreen\n");
+	dprintf(DEBUG_INFO, "CWidget::restoreScreen\n");
 	
 	if(savescreen && background) 
 	{
@@ -276,7 +276,7 @@ void CWidget::restoreScreen()
 
 void CWidget::hide()
 {
-	dprintf(DEBUG_NORMAL, "CWidget::hide (%s)\n", name.c_str());
+	dprintf(DEBUG_INFO, "CWidget::hide (%s)\n", name.c_str());
 
 	//
 	if (hasCCItem())
@@ -539,7 +539,7 @@ int CWidget::exec(CTarget *parent, const std::string &)
 	}
 	while ( msg != CRCInput::RC_timeout );
 
-	dprintf(DEBUG_NORMAL, "CWidget: retval: (%d) selected:%d\n", retval, selected);
+	dprintf(DEBUG_INFO, "CWidget: retval: (%d) selected:%d\n", retval, selected);
 	
 	hide();
 
@@ -571,7 +571,7 @@ void CWidget::refresh(bool show)
 //// events
 void CWidget::onHomeKeyPressed()
 {
-	dprintf(DEBUG_NORMAL, "CWidget::onHomeKeyPressed\n");
+	dprintf(DEBUG_INFO, "CWidget::onHomeKeyPressed\n");
 	
 	exit_pressed = true;
 	msg = CRCInput::RC_timeout;
@@ -659,7 +659,7 @@ void CWidget::onPageDownKeyPressed()
 
 int CWidget::onOKKeyPressed(CTarget *target)
 {
-	dprintf(DEBUG_NORMAL, "CWidget::onOKKeyPressed:\n");
+	dprintf(DEBUG_INFO, "CWidget::onOKKeyPressed:\n");
 	
 	int ret = CTarget::RETURN_NONE;
 	
@@ -678,7 +678,7 @@ int CWidget::onOKKeyPressed(CTarget *target)
 
 int CWidget::onRightKeyPressed(CTarget *target)
 {
-	dprintf(DEBUG_NORMAL, "CWidget::onRightKeyPressed\n");
+	dprintf(DEBUG_INFO, "CWidget::onRightKeyPressed\n");
 	
 	int ret = CTarget::RETURN_NONE;
 	
@@ -694,7 +694,7 @@ int CWidget::onRightKeyPressed(CTarget *target)
 
 int CWidget::onLeftKeyPressed(CTarget *target)
 {
-	dprintf(DEBUG_NORMAL, "CWidget::onLeftKeyPressed\n");
+	dprintf(DEBUG_INFO, "CWidget::onLeftKeyPressed\n");
 	
 	int ret = CTarget::RETURN_NONE;
 	
@@ -711,7 +711,7 @@ int CWidget::onLeftKeyPressed(CTarget *target)
 //
 int CWidget::onDirectKeyPressed(neutrino_msg_t _msg, CTarget *target)
 {
-	dprintf(DEBUG_NORMAL, "CWidget::onDirectKeyPressed: msg:0x%x\n", _msg);
+	dprintf(DEBUG_INFO, "CWidget::onDirectKeyPressed: msg:0x%x\n", _msg);
 	
 	int ret = CTarget::RETURN_NONE;
 	

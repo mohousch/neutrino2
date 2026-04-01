@@ -2487,7 +2487,7 @@ void ClistBox::initFrames()
 
 void ClistBox::paint(bool _selected)
 {
-	dprintf(DEBUG_NORMAL, "ClistBox::paint: (%s)\n", htitle.c_str());
+	dprintf(DEBUG_INFO, "ClistBox::paint: (%s)\n", htitle.c_str());
 
 	//
 	initFrames();
@@ -3068,7 +3068,7 @@ void ClistBox::setFootButtons(const struct button_label* _fbutton_labels, const 
 
 void ClistBox::paintItemInfo(int pos)
 {
-	dprintf(DEBUG_NORMAL, "ClistBox::paintItemInfo: %d\n", pos); 
+	dprintf(DEBUG_INFO, "ClistBox::paintItemInfo: %d\n", pos); 
 	
 	if( (widgetLayout == LAYOUT_STANDARD) || (widgetLayout == LAYOUT_CLASSIC) )
 	{
@@ -3300,7 +3300,7 @@ void ClistBox::saveScreen()
 	if (!savescreen)
 		return;
 		
-	dprintf(DEBUG_NORMAL, "ClistBox::saveScreen:\n");
+	dprintf(DEBUG_INFO, "ClistBox::saveScreen:\n");
 
 	if(background)
 	{
@@ -3318,7 +3318,7 @@ void ClistBox::saveScreen()
 
 void ClistBox::restoreScreen()
 {
-	dprintf(DEBUG_NORMAL, "ClistBox::restoreScreen:\n");
+	dprintf(DEBUG_INFO, "ClistBox::restoreScreen:\n");
 	
 	if(savescreen && background) 
 	{
@@ -3328,7 +3328,7 @@ void ClistBox::restoreScreen()
 
 void ClistBox::saveItemsBackground()
 {	
-	dprintf(DEBUG_NORMAL, "ClistBox::saveItemsBackground:\n");
+	dprintf(DEBUG_INFO, "ClistBox::saveItemsBackground:\n");
 
 	if(itemsBackground)
 	{
@@ -3346,7 +3346,7 @@ void ClistBox::saveItemsBackground()
 
 void ClistBox::restoreItemsBackground()
 {
-	dprintf(DEBUG_NORMAL, "ClistBox::restoreItemsBackground:\n");
+	dprintf(DEBUG_INFO, "ClistBox::restoreItemsBackground:\n");
 	
 	if(itemsBackground) 
 	{
@@ -3356,7 +3356,7 @@ void ClistBox::restoreItemsBackground()
 
 void ClistBox::hide()
 {
-	dprintf(DEBUG_NORMAL, "ClistBox::hide: (%s)\n", htitle.c_str());
+	dprintf(DEBUG_INFO, "ClistBox::hide: (%s)\n", htitle.c_str());
 
 	if (paintframe)
 	{
@@ -3690,7 +3690,7 @@ void ClistBox::scrollPageUp(const int)
 //
 int ClistBox::swipLeft(CTarget *target)
 {
-	dprintf(DEBUG_NORMAL, "ClistBox::swipLeft:\n");
+	dprintf(DEBUG_INFO, "ClistBox::swipLeft:\n");
 	
 	int ret = CTarget::RETURN_NONE;
 
@@ -3757,7 +3757,7 @@ int ClistBox::swipLeft(CTarget *target)
 //
 int ClistBox::swipRight(CTarget *target)
 {
-	dprintf(DEBUG_NORMAL, "ClistBox::swipRight:\n");
+	dprintf(DEBUG_INFO, "ClistBox::swipRight:\n");
 	
 	int ret = CTarget::RETURN_NONE;
 
@@ -3822,7 +3822,7 @@ int ClistBox::swipRight(CTarget *target)
 //
 int ClistBox::oKKeyPressed(CTarget *target, neutrino_msg_t _msg)
 {
-	dprintf(DEBUG_NORMAL, "ClistBox::okKeyPressed: msg:0x%x\n", _msg);
+	dprintf(DEBUG_INFO, "ClistBox::okKeyPressed: msg:0x%x\n", _msg);
 	
 	int ret = CTarget::RETURN_NONE;
 
@@ -3841,7 +3841,7 @@ int ClistBox::oKKeyPressed(CTarget *target, neutrino_msg_t _msg)
 //
 int ClistBox::directKeyPressed(neutrino_msg_t _msg, CTarget *target)
 {
-	dprintf(DEBUG_NORMAL, "ClistBox::directKeyPressed: msg:0x%x\n", _msg);
+	dprintf(DEBUG_INFO, "ClistBox::directKeyPressed: msg:0x%x\n", _msg);
 	
 	int ret = CTarget::RETURN_NONE;
 	
@@ -3956,7 +3956,7 @@ void ClistBox::addPluginItem(const char *const pluginName, const neutrino_msg_t 
 
 void ClistBox::selectItemByName(const char *name)
 {
-	dprintf(DEBUG_NORMAL, "ClistBox::selectItemByName: %s\n", (name != NULL)? name : "NULL");
+	dprintf(DEBUG_INFO, "ClistBox::selectItemByName: %s\n", (name != NULL)? name : "NULL");
 	
 	if (hasItem())
 	{

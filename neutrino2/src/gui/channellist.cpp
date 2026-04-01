@@ -147,6 +147,12 @@ CChannelList::~CChannelList()
 {
 	chanlist.clear();
 	events.clear();
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 void CChannelList::ClearList(void)

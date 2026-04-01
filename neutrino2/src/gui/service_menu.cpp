@@ -50,7 +50,7 @@
 #include <gui/cam_menu.h>
 #include <gui/imageinfo.h>
 
-#include <gui/bouqueteditor_bouquets.h>
+#include <gui/bouqueteditor.h>
 
 
 #if defined (ENABLE_CI)

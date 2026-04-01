@@ -1068,7 +1068,7 @@ bool CZapit::tuneToChannel(CFrontend * frontend, CZapitChannel * thischannel, bo
 		}
 	}
 
-	// tune fe (by TP change, nvod, twin_mode)
+	// tune frequency
 	if (transponder_change || current_is_nvod ) 
 	{
 		//

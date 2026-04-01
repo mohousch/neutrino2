@@ -3357,3 +3357,5 @@
 /graphlcd/
 /neutrino2/data/skins/titan/hints/Makefile
 /neutrino2/data/skins/titan/hints/Makefile.in
+/neutrino2/src/gui/.deps/bouqueteditor.Po
+/neutrino2/src/gui/bouqueteditor.o
