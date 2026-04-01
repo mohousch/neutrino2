@@ -3360,6 +3360,9 @@ _repeat:
 
 				CZapit::getInstance()->saveBouquets();
 			}
+			
+			////test
+			channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
 
 			return messages_return::handled;
 		}

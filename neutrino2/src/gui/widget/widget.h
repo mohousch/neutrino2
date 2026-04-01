@@ -87,7 +87,7 @@ class CWidget : public CTarget
 		CWidget(const CBox *position);		
 		virtual ~CWidget();		
 		
-		//
+		////
 		virtual void setPosition(const int x, const int y, const int dx, const int dy)
 		{
 			mainFrameBox.iX = x;
@@ -99,27 +99,23 @@ class CWidget : public CTarget
 		};
 		virtual void setPosition(const CBox* position){mainFrameBox = *position; initFrames();};
 		virtual void move(const int x, const int y);
-//		virtual void resize(int dx, int dy);		
-
-		// CCITEMS
+		//// CCITEMS
 		virtual void addCCItem(CComponent *CCItem, const bool defaultselected = false);
 		bool hasCCItem(){return !CCItems.empty();};
 		virtual void clearCCItems(){CCItems.clear();};
 		virtual void paintCCItems();
 		virtual void removeCCItem(long pos);
-		//
+		////
 		void initFrames();
 		virtual void paint();
+		virtual void refresh(bool show = false);
 		virtual void hide();
 		virtual int exec(CTarget *parent, const std::string &actionKey);
-		virtual void refresh(bool show = false);
-		virtual void paintItemInfo(CComponent *CCItem){};
-		//
+		////
 		void setTimeOut(uint64_t to = 0){timeout = to;};
 		void setSecTimerInterval(uint64_t sec){sec_timer_interval = sec;};
-		//
 		void addKey(neutrino_msg_t key, CTarget *target = NULL, const std::string &action = "");
-		//
+		////
 		void paintMainFrame(bool p){paintframe = p;};
 		void setColor(fb_pixel_t col) {backgroundColor = col;};
 		void setGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){gradient = grad; grad_direction = direction; grad_intensity = intensity; grad_type = type;};
@@ -129,36 +125,18 @@ class CWidget : public CTarget
 		void setBorderColor(uint32_t col){borderColor = col;};
 		void setBorderGradient(int gr){borderGradient = gr;};
 		void setTitle(const char * title, const char *icon = NULL);
-		//// events
-		virtual int onOKKeyPressed(CTarget *target);
-		virtual void onHomeKeyPressed();
-		virtual void onUpKeyPressed();
-		virtual void onDownKeyPressed();
-		virtual int onRightKeyPressed(CTarget *target);
-		virtual int onLeftKeyPressed(CTarget *target);
-		virtual void onPageUpKeyPressed();
-		virtual void onPageDownKeyPressed();
-		virtual void onYellowKeyPressed();
-		virtual int onDirectKeyPressed(neutrino_msg_t _msg, CTarget *target);
-		
-		//
+		////
 		void setSelected(unsigned int _new) {selected = _new; if (selected < 0) selected = 0;};
-		
 		////
 		std::string getWidgetName(){return name;};
-		//
 		CComponent *getCCItem(const int type, const std::string& name = "");
-		//
 		inline CBox &getWindowsPos(void){return mainFrameBox;};
 		inline CBox &getOldPosition(void){ return oldPosition;};
-		// lua compatibility
 		std::string getActionKey(){return actionKey;};
 		neutrino_msg_t getKey(){return msg;};
 		bool getExitPressed(){return exit_pressed;};
-		//
 		CCITEMLIST getCCItems(){return CCItems;};
 		int getCCItemsCount(){return CCItems.size();};
-		//
 		int getSelected(){return exit_pressed ? -1 : selected;};
 };
 

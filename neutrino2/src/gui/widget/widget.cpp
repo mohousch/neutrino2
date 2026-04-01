@@ -243,6 +243,21 @@ void CWidget::paint()
 	paintCCItems();
 }
 
+void CWidget::refresh(bool show)
+{				
+	// refresh CCItems
+	if (hasCCItem())
+	{
+		for (unsigned int count = 0; count < (unsigned int)CCItems.size(); count++) 
+		{
+			if (CCItems[count]->update())
+			{
+				CCItems[count]->refresh(show);
+			}
+		}
+	}
+}
+
 void CWidget::saveScreen()
 {
 	if(!savescreen)
@@ -396,18 +411,21 @@ int CWidget::exec(CTarget *parent, const std::string &)
 			}
 			
 			// directKey
-			int ret = onDirectKeyPressed(msg, parent);
-			
-			switch ( ret ) 
+			if(hasCCItem() && selected >= 0)
 			{
-				case CTarget::RETURN_EXIT_ALL:
-					retval = RETURN_EXIT_ALL;
-				case CTarget::RETURN_EXIT:
-					msg = CRCInput::RC_timeout;
-					break;
-				case CTarget::RETURN_REPAINT:
-					paint();
-					break;
+				int ret = CCItems[selected]->directKeyPressed(msg, parent);
+				
+				switch ( ret ) 
+				{
+					case CTarget::RETURN_EXIT_ALL:
+						retval = RETURN_EXIT_ALL;
+					case CTarget::RETURN_EXIT:
+						msg = CRCInput::RC_timeout;
+						break;
+					case CTarget::RETURN_REPAINT:
+						paint();
+						break;
+				}
 			}
 		}
 
@@ -431,87 +449,179 @@ int CWidget::exec(CTarget *parent, const std::string &)
 					}
 					break;
 					
-				//
 				case (CRCInput::RC_up):
-					onUpKeyPressed();
+					{
+						dprintf(DEBUG_INFO, "CWidget::onUpKeyPressed\n");
+						
+						if(hasCCItem() && selected >= 0)
+						{
+							CCItems[selected]->scrollLineUp();
+						}
+					}
+
 					break;
 
 				case (CRCInput::RC_down):
-					onDownKeyPressed();
+					{
+						dprintf(DEBUG_INFO, "CWidget::onDownKeyPressed\n");
+						
+						if(hasCCItem() && selected >= 0)
+						{
+							CCItems[selected]->scrollLineDown();
+						}
+					}
 					break;
 
 				case (CRCInput::RC_right):
 					{
-					int ret = onRightKeyPressed(parent);
-					
-					switch ( ret ) 
-					{
-						case CTarget::RETURN_EXIT_ALL:
-							retval = RETURN_EXIT_ALL;
-						case CTarget::RETURN_EXIT:
-							msg = CRCInput::RC_timeout;
-							break;
-						case CTarget::RETURN_REPAINT:
-							paint();
-							break;
-					}
+						dprintf(DEBUG_INFO, "CWidget::onRightKeyPressed\n");
+						
+						if(hasCCItem() && selected >= 0)
+						{
+							actionKey = CCItems[selected]->getActionKey();
+							
+							int ret = CCItems[selected]->swipRight(parent);
+							
+							switch ( ret ) 
+							{
+								case CTarget::RETURN_EXIT_ALL:
+									retval = RETURN_EXIT_ALL;
+								case CTarget::RETURN_EXIT:
+									msg = CRCInput::RC_timeout;
+									break;
+								case CTarget::RETURN_REPAINT:
+									paint();
+									break;
+							}
+						}
 					}
 					break;
 
 				case (CRCInput::RC_left):
 					{
-					int ret = onLeftKeyPressed(parent);
-					
-					switch ( ret ) 
-					{
-						case CTarget::RETURN_EXIT_ALL:
-							retval = RETURN_EXIT_ALL;
-						case CTarget::RETURN_EXIT:
-							msg = CRCInput::RC_timeout;
-							break;
-						case CTarget::RETURN_REPAINT:
-							paint();
-							break;
-					}
+						dprintf(DEBUG_INFO, "CWidget::onLeftKeyPressed\n");
+						
+						if(hasCCItem() && selected >= 0)
+						{
+							actionKey = CCItems[selected]->getActionKey();
+							
+							int ret = CCItems[selected]->swipLeft(parent);
+							
+							switch ( ret ) 
+							{
+								case CTarget::RETURN_EXIT_ALL:
+									retval = RETURN_EXIT_ALL;
+								case CTarget::RETURN_EXIT:
+									msg = CRCInput::RC_timeout;
+									break;
+								case CTarget::RETURN_REPAINT:
+									paint();
+									break;
+							}
+						}
 					}
 					break;
 
 				case (CRCInput::RC_page_up):
-					onPageUpKeyPressed();
+					{
+						dprintf(DEBUG_INFO, "CWidget::onPageUpKeyPressed\n");
+						
+						if(hasCCItem() && selected >= 0)
+						{
+							CCItems[selected]->scrollPageUp();
+						}
+					}
 					break;
 
 				case (CRCInput::RC_page_down):
-					onPageDownKeyPressed();
+					{
+						dprintf(DEBUG_INFO, "CWidget::onPageDownKeyPressed\n");
+						
+						if(hasCCItem() && selected >= 0)
+						{
+							CCItems[selected]->scrollPageDown();
+						}
+					}
 					break;
 
 				case (CRCInput::RC_yellow):
-					onYellowKeyPressed();
+					{
+						dprintf(DEBUG_INFO, "CWidget::onYellowKeyPressed\n");
+						
+						if(hasCCItem())
+						{
+							for (unsigned int count = 1; count < (unsigned int)CCItems.size(); count++) 
+							{
+								pos = (selected + count)%CCItems.size();
+
+								CComponent * item = CCItems[pos];
+
+								if(item->isSelectable() && item->hasItem())
+								{
+									CCItems[selected]->setInFocus(false);
+									CCItems[selected]->paint();
+
+									selected = pos;
+
+									item->setInFocus(true);
+									item->paint();
+
+									break;
+								}
+							}
+						}
+					}
 					break;
 
 				case (CRCInput::RC_home):
 				case (CRCInput::RC_setup):
-					onHomeKeyPressed();
+					{
+						dprintf(DEBUG_INFO, "CWidget::onHomeKeyPressed\n");
+						
+						exit_pressed = true;
+						msg = CRCInput::RC_timeout;
+						
+						if (hasCCItem())
+						{
+							for (unsigned int count = 0; count < (unsigned int)CCItems.size(); count++) 
+							{
+								CCItems[count]->homeKeyPressed();
+							}
+						}
+
+						selected = -1;
+						actionKey.clear(); 
+						actionKey = "";
+					}
 					break;
 
 				case (CRCInput::RC_ok):
 					{
-					int ret = onOKKeyPressed(parent);
-					
-					switch ( ret ) 
-					{
-						case CTarget::RETURN_EXIT_ALL:
-							retval = RETURN_EXIT_ALL;
-						case CTarget::RETURN_EXIT:
-							msg = CRCInput::RC_timeout;
-							break;
-						case CTarget::RETURN_REPAINT:
-							paint();
-							break;
-					}
+						dprintf(DEBUG_INFO, "CWidget::onOKKeyPressed:\n");
+						
+						if(hasCCItem() && selected >= 0)
+						{
+							if (CCItems[selected]->hasItem() && CCItems[selected]->isSelectable())
+							{
+								actionKey = CCItems[selected]->getActionKey();
+								int ret = CCItems[selected]->oKKeyPressed(parent);
+								
+								switch ( ret ) 
+								{
+									case CTarget::RETURN_EXIT_ALL:
+										retval = RETURN_EXIT_ALL;
+									case CTarget::RETURN_EXIT:
+										msg = CRCInput::RC_timeout;
+										break;
+									case CTarget::RETURN_REPAINT:
+										paint();
+										break;
+								}
+							}
+						}
 					}
 					break;
-				
-				//	
+					
 				case (CRCInput::RC_timeout):
 					exit_pressed = true;
 					selected = -1;
@@ -539,7 +649,7 @@ int CWidget::exec(CTarget *parent, const std::string &)
 	}
 	while ( msg != CRCInput::RC_timeout );
 
-	dprintf(DEBUG_INFO, "CWidget: retval: (%d) selected:%d\n", retval, selected);
+	dprintf(DEBUG_NORMAL, "CWidget: retval: (%d) selected:%d\n", retval, selected);
 	
 	hide();
 
@@ -551,176 +661,6 @@ int CWidget::exec(CTarget *parent, const std::string &)
 	}
 	
 	return retval;
-}
-
-void CWidget::refresh(bool show)
-{				
-	// refresh CCItems
-	if (hasCCItem())
-	{
-		for (unsigned int count = 0; count < (unsigned int)CCItems.size(); count++) 
-		{
-			if (CCItems[count]->update())
-			{
-				CCItems[count]->refresh(show);
-			}
-		}
-	}
-}
-
-//// events
-void CWidget::onHomeKeyPressed()
-{
-	dprintf(DEBUG_INFO, "CWidget::onHomeKeyPressed\n");
-	
-	exit_pressed = true;
-	msg = CRCInput::RC_timeout;
-	
-	if (hasCCItem())
-	{
-		for (unsigned int count = 0; count < (unsigned int)CCItems.size(); count++) 
-		{
-			CCItems[count]->homeKeyPressed();
-		}
-	}
-
-	selected = -1;
-	actionKey.clear(); 
-	actionKey = "";
-}
-
-void CWidget::onYellowKeyPressed()
-{
-	dprintf(DEBUG_INFO, "CWidget::onYellowKeyPressed\n");
-	
-	if(hasCCItem())
-	{
-		for (unsigned int count = 1; count < (unsigned int)CCItems.size(); count++) 
-		{
-			pos = (selected + count)%CCItems.size();
-
-			CComponent * item = CCItems[pos];
-
-			if(item->isSelectable() && item->hasItem())
-			{
-				CCItems[selected]->setInFocus(false);
-				CCItems[selected]->paint();
-
-				selected = pos;
-
-				item->setInFocus(true);
-				item->paint();
-
-				break;
-			}
-		}
-	}
-}
-
-void CWidget::onUpKeyPressed()
-{
-	dprintf(DEBUG_INFO, "CWidget::onUpKeyPressed\n");
-	
-	if(hasCCItem() && selected >= 0)
-	{
-		CCItems[selected]->scrollLineUp();
-	}
-}
-
-void CWidget::onDownKeyPressed()
-{
-	dprintf(DEBUG_INFO, "CWidget::onDownKeyPressed\n");
-	
-	if(hasCCItem() && selected >= 0)
-	{
-		CCItems[selected]->scrollLineDown();
-	}
-}
-
-void CWidget::onPageUpKeyPressed()
-{
-	dprintf(DEBUG_INFO, "CWidget::onPageUpKeyPressed\n");
-	
-	if(hasCCItem() && selected >= 0)
-	{
-		CCItems[selected]->scrollPageUp();
-	}
-}
-
-void CWidget::onPageDownKeyPressed()
-{
-	dprintf(DEBUG_INFO, "CWidget::onPageDownKeyPressed\n");
-	
-	if(hasCCItem() && selected >= 0)
-	{
-		CCItems[selected]->scrollPageDown();
-	}
-}
-
-int CWidget::onOKKeyPressed(CTarget *target)
-{
-	dprintf(DEBUG_INFO, "CWidget::onOKKeyPressed:\n");
-	
-	int ret = CTarget::RETURN_NONE;
-	
-	if(hasCCItem() && selected >= 0)
-	{
-		if (CCItems[selected]->hasItem() && CCItems[selected]->isSelectable())
-		{
-			ret = CCItems[selected]->oKKeyPressed(target);
-
-			actionKey = CCItems[selected]->getActionKey();	// for lua	
-		}
-	}
-	
-	return ret;
-}
-
-int CWidget::onRightKeyPressed(CTarget *target)
-{
-	dprintf(DEBUG_INFO, "CWidget::onRightKeyPressed\n");
-	
-	int ret = CTarget::RETURN_NONE;
-	
-	if(hasCCItem() && selected >= 0)
-	{
-		ret = CCItems[selected]->swipRight(target);
-		
-		actionKey = CCItems[selected]->getActionKey();	// lua
-	}
-	
-	return ret;
-}
-
-int CWidget::onLeftKeyPressed(CTarget *target)
-{
-	dprintf(DEBUG_INFO, "CWidget::onLeftKeyPressed\n");
-	
-	int ret = CTarget::RETURN_NONE;
-	
-	if(hasCCItem() && selected >= 0)
-	{
-		ret = CCItems[selected]->swipLeft(target);
-		
-		actionKey = CCItems[selected]->getActionKey();	// lua
-	}
-	
-	return ret;
-}
-
-//
-int CWidget::onDirectKeyPressed(neutrino_msg_t _msg, CTarget *target)
-{
-	dprintf(DEBUG_INFO, "CWidget::onDirectKeyPressed: msg:0x%x\n", _msg);
-	
-	int ret = CTarget::RETURN_NONE;
-	
-	if(hasCCItem() && selected >= 0)
-	{
-		ret = CCItems[selected]->directKeyPressed(_msg, target);
-	}
-	
-	return ret;
 }
 
 //
