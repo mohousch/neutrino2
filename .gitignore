@@ -2202,7 +2202,6 @@
 /neutrino2/src/driver/basedec.o
 /neutrino2/src/driver/ffmpegdec.o
 /neutrino2/src/driver/netfile.o
-/neutrinoNG_build_log.txt
 /neutrino2/src/driver/lcd/.deps/fontrenderer.Po
 /neutrino2/src/driver/lcd/.deps/lcddisplay.Po
 /neutrino2/src/driver/lcd/fontrenderer.o
@@ -3353,7 +3352,7 @@
 /neutrino2/src/driver/gdi/svg.o
 /neutrino2/src/driver/gdi/bitmap.o
 /neutrino2/src/driver/gdi/.deps/bitmap.Po
-/neutrino2_build_log.txt
+/neutrino2_build_*
 /graphlcd/
 /neutrino2/data/skins/titan/hints/Makefile
 /neutrino2/data/skins/titan/hints/Makefile.in

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ ! -z $1 ] ; then
-	LOGFILE=neutrino2_build_log_$(shell date '+%d.%m.%Y-%H.%M').txt
+	LOGFILE=neutrino2_build_log_$(date '+%d.%m.%Y-%H.%M').txt
 
 	echo "--- DISTRIBUTION ---" > $LOGFILE
 	cat /etc/*release >> $LOGFILE
