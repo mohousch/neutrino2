@@ -494,7 +494,10 @@ int CChannelList::show(bool customMode)
 					loop = false;
 				}
 				else
+				{
 					old_b_id = -1;
+					paint(customMode);
+				}
 			}
 		}
 		else if (msg == (neutrino_msg_t) g_settings.key_list_start) 
@@ -847,7 +850,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 	
 	dprintf(DEBUG_NORMAL, "CChannelList::zapTo (%s) tuned %d id:0x%llx new %d (%s) id: 0x%llx\n", name.c_str(), tuned, tuned_chid, pos, chanlist[pos]->name.c_str(), chanlist[pos]->channel_id);
 	
-	// zap //TEST
+	// zap
 	if ( (pos != tuned) || (chanlist[pos]->channel_id != tuned_chid) || rezap )
 	{ 
 		// stop radiotext
@@ -1489,7 +1492,7 @@ void CChannelList::paint(bool customMode)
 
 				logo = CChannellogo::getInstance()->getLogoName(chanlist[i]->getLogoID());
 				
-				//FIXME:TEST
+				//FIXME:
 				item->setIconName(logo.c_str());
 			}
 			
