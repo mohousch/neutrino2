@@ -851,7 +851,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 	dprintf(DEBUG_NORMAL, "CChannelList::zapTo (%s) tuned %d id:0x%llx new %d (%s) id: 0x%llx\n", name.c_str(), tuned, tuned_chid, pos, chanlist[pos]->name.c_str(), chanlist[pos]->channel_id);
 	
 	// zap
-	if ( (pos != tuned) || (chanlist[pos]->channel_id != tuned_chid) || rezap )
+//	if ( (pos != tuned) || (chanlist[pos]->channel_id != tuned_chid) || rezap )
 	{ 
 		// stop radiotext
 		if ((g_settings.radiotext_enable) && ((CNeutrinoApp::getInstance()->getMode()) == CNeutrinoApp::mode_radio) && (g_Radiotext))
@@ -867,10 +867,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 		g_RemoteControl->zapToChannelID(chanlist[pos]->channel_id, !chanlist[pos]->bAlwaysLocked);
 		
 		// adjust to ID
-//		if (bouquetList != NULL) 
-		{
-			this->adjustToChannelID(chanlist[pos]->channel_id);
-		}
+		adjustToChannelID(chanlist[pos]->channel_id);
 	}
 
 	//
