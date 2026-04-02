@@ -26,6 +26,8 @@
 #ifndef __channellist__
 #define __channellist__
 
+#include <remotecontrol.h>
+
 #include <driver/gdi/framebuffer.h>
 
 #include <gui/widget/widget.h>
@@ -42,8 +44,6 @@
 
 #include <string>
 #include <vector>
-
-#include <daemonc/remotecontrol.h>
 
 
 ////

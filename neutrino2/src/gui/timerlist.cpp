@@ -32,12 +32,11 @@
 
 #include <global.h>
 #include <neutrino2.h>
+#include <remotecontrol.h>
 
 #include <gui/timerlist.h>
 #include <gui/pluginlist.h>
 #include <gui/plugins.h>
-
-#include <daemonc/remotecontrol.h>
 
 #include <driver/encoding.h>
 

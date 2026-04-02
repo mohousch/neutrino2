@@ -33,8 +33,7 @@
 
 #include <global.h>
 #include <neutrino2.h>
-
-#include <daemonc/remotecontrol.h>
+#include <remotecontrol.h>
 
 #include <gui/widget/textbox.h>
 #include <gui/mediaplayer.h>
@@ -57,15 +56,6 @@
 
 #include <driver/encoding.h>
 
-
-// tuxtxt
-extern void tuxtx_stop_subtitle();
-extern void tuxtx_set_pid(int pid, int page, const char * cc);
-extern int tuxtx_main(int pid, int page, bool isEplayer);
-extern void tuxtx_pause_subtitle(bool pause, bool isEplayer);
-extern int tuxtx_subtitle_running(int * pid, int * page, int * running);
-//
-extern int current_muted;
 
 // mainmenu
 void CNeutrinoApp::mainMenu(void)
@@ -559,22 +549,6 @@ bool CNeutrinoApp::showUserMenu(int button)
 	return 0;
 }
 
-//// nvod
-int CNVODChangeExec::exec(CTarget *parent, const std::string &actionKey)
-{
-	dprintf(DEBUG_INFO, "CNVODChangeExec exec: %s\n", actionKey.c_str());
-	
-	unsigned int sel = atoi(actionKey.c_str());
-	g_RemoteControl->setSubChannel(sel);
-
-	if(parent)
-		parent->hide();
-	
-	CNeutrinoApp::getInstance()->showSubChan();
-
-	return RETURN_EXIT;
-}
-
 #define OPTIONS_OFF0_ON1_OPTION_COUNT 2
 const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
 {
@@ -824,29 +798,5 @@ void CNeutrinoApp::showSubChan()
 		CFrameBuffer::getInstance()->restoreScreen(x - 5, y - 5, dx + 10, dy + 10, pixbuf);
 		CFrameBuffer::getInstance()->blit();
 	}
-}
-
-//// tuxtxt
-int CTuxtxtChangeExec::exec(CTarget *parent, const std::string &actionKey)
-{
-	dprintf(DEBUG_INFO, "CTuxtxtChangeExec exec: %s\n", actionKey.c_str());
-
-	if(parent)
-		parent->hide();
-	
-	if (!IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
-	{
-
-		CNeutrinoApp::getInstance()->stopSubtitles();
-				
-		tuxtx_stop_subtitle();
-		tuxtx_main(g_RemoteControl->current_PIDs.otherPIDs.vtxtpid, 0, false);
-				
-		CNeutrinoApp::getInstance()->audioMute(current_muted, true);
-
-		CNeutrinoApp::getInstance()->startSubtitles();
-	}
-
-	return RETURN_REPAINT;
 }
 

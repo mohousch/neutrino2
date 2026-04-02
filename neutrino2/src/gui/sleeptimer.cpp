@@ -28,6 +28,7 @@
 #include <stdlib.h>
 
 #include <global.h>
+#include <remotecontrol.h>
 
 #include <gui/sleeptimer.h>
 #include <gui/widget/hintbox.h>
@@ -35,8 +36,6 @@
 #include <gui/widget/stringinput.h>
 
 #include <timerd/timerd.h>
-
-#include <daemonc/remotecontrol.h>
 
 #include <system/debug.h>
 

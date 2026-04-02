@@ -34,6 +34,7 @@
 
 #include <global.h>
 #include <neutrino2.h>
+#include <remotecontrol.h>
 
 #include <system/settings.h>
 #include <system/debug.h>
@@ -48,9 +49,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include <daemonc/remotecontrol.h>
 
-
+//// globals
 extern CRemoteControl * g_RemoteControl;
 
 #if defined (__sh__)

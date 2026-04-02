@@ -48,12 +48,11 @@
 
 #include <global.h>
 #include <neutrino2.h>
+#include <remotecontrol.h>
 
 #include <driver/encoding.h>
 
 #include <gui/widget/messagebox.h>
-
-#include <daemonc/remotecontrol.h>
 
 //
 #include <zapit/zapit.h>

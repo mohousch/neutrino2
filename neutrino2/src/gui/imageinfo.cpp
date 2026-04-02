@@ -28,12 +28,11 @@
 
 #include <global.h>
 #include <neutrino2.h>
+#include <remotecontrol.h>
 
 #include <driver/gdi/fontrenderer.h>
 
 #include <driver/rcinput.h>
-
-#include <daemonc/remotecontrol.h>
 
 #include <system/flashtool.h>
 #include <system/debug.h>

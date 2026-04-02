@@ -50,7 +50,7 @@
 
 #include <driver/radiotext.h>
 
-#include <src/daemonc/remotecontrol.h>
+#include <src/remotecontrol.h>
 
 #include <lib/libdvbapi/playback_cs.h>
 

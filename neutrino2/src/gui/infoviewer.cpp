@@ -46,10 +46,9 @@
 
 #include <gui/widget/hintbox.h>
 
-#include <daemonc/remotecontrol.h>
-
 #include <global.h>
 #include <neutrino2.h>
+#include <remotecontrol.h>
 
 #include <sys/timeb.h>
 #include <time.h>

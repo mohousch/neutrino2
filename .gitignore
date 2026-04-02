@@ -3358,3 +3358,5 @@
 /neutrino2/data/skins/titan/hints/Makefile.in
 /neutrino2/src/gui/.deps/bouqueteditor.Po
 /neutrino2/src/gui/bouqueteditor.o
+/neutrino2/src/.deps/remotecontrol.Po
+/neutrino2/src/remotecontrol.o

@@ -42,11 +42,11 @@
 #include <gui/widget/icons.h>
 
 #include <driver/rcinput.h>
-#include <daemonc/remotecontrol.h>
 #include <system/settings.h>
 
 #include <global.h>
 #include <neutrino2.h>
+#include <remotecontrol.h>
 
 #include <system/debug.h>
 

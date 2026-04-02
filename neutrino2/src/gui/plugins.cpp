@@ -43,8 +43,7 @@
 
 #include <global.h>
 #include <neutrino2.h>
-
-#include <daemonc/remotecontrol.h>
+#include <remotecontrol.h>
 
 #include <system/safe_system.h>
 #include <system/debug.h>

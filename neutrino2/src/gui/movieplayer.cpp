@@ -55,6 +55,7 @@
 
 #include <global.h>
 #include <neutrino2.h>
+#include <remotecontrol.h>
 
 #include <driver/gdi/fontrenderer.h>
 #include <driver/gdi/color.h>
@@ -62,8 +63,6 @@
 #include <driver/rcinput.h>
 #include <driver/record.h>
 #include <driver/file.h>
-
-#include <daemonc/remotecontrol.h>
 
 #include <timerd/timerd.h>
 

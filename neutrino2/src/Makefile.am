@@ -1,4 +1,4 @@
-SUBDIRS = driver system zapit sectionsd timerd nhttpd daemonc gui interfaces
+SUBDIRS = driver system zapit sectionsd timerd nhttpd gui interfaces
 
 AM_CPPFLAGS = \
 	-I$(top_builddir) \
@@ -32,10 +32,9 @@ AM_CPPFLAGS += -fno-rtti -fno-exceptions
 
 bin_PROGRAMS = neutrino2
 
-neutrino2_SOURCES = neutrino2_menue.cpp skin.cpp neutrino2.cpp
+neutrino2_SOURCES = neutrino2_menue.cpp skin.cpp remotecontrol.cpp neutrino2.cpp
 
 neutrino2_LDADD = \
-	daemonc/libneutrino2_daemonc.a \
 	gui/widget/libneutrino2_gui_widget.a \
 	gui/widget/libneutrino2_gui_widget2.a \
 	gui/libneutrino2_gui.a \

@@ -24,10 +24,9 @@
 #include <neutrinoMessages.h>
 #include <global.h>
 #include <neutrino2.h>
+#include <remotecontrol.h>
 
 #include <driver/rcinput.h>
-
-#include <daemonc/remotecontrol.h>
 
 #include <video_cs.h>
 #include <audio_cs.h>

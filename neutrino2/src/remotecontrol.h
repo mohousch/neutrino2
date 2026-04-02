@@ -29,7 +29,9 @@
 #include <vector>
 #include <string>
 
-#include <driver/rcinput.h> 			/* neutrino_msg_t, neutrino_msg_data_t */
+#include <driver/rcinput.h>
+
+#include <gui/widget/component.h>
 
 //
 #include <zapit/zapit.h>
@@ -116,6 +118,26 @@ class CRemoteControl
 		void tvMode();
 		////
 		int handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data);
+};
+
+//// NVOD
+class CNVODChangeExec : public CTarget
+{
+	public:
+		CNVODChangeExec(){};
+		virtual ~CNVODChangeExec(){};
+		
+		int exec(CTarget *parent, const std::string &actionKey);
+};
+
+//// tuxtxt
+class CTuxtxtChangeExec : public CTarget
+{
+	public:
+		CTuxtxtChangeExec(){};
+		~CTuxtxtChangeExec(){};
+		
+		int exec(CTarget* parent, const std::string& actionKey);
 };
 
 #endif

@@ -57,8 +57,6 @@
 #include <global.h>
 #include <neutrino2.h>
 
-#include <daemonc/remotecontrol.h>
-
 #include <driver/encoding.h>
 #include <driver/rcinput.h>
 #include <driver/record.h>
@@ -3367,9 +3365,6 @@ _repeat:
 				CZapit::getInstance()->saveBouquets();
 			}
 			
-			////test
-			channelList->adjustToChannelID(CZapit::getInstance()->getCurrentChannelID());
-
 			return messages_return::handled;
 		}
 	}

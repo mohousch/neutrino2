@@ -27,14 +27,15 @@
 #include <config.h>
 #endif
 
-#include <daemonc/remotecontrol.h>
-
+#include <remotecontrol.h>
 #include <global.h>
 #include <neutrino2.h>
-#include <gui/infoviewer.h>
-#include <driver/record.h>
 
+#include <gui/infoviewer.h>
+
+#include <driver/record.h>
 #include <driver/encoding.h>
+
 #include <system/debug.h>
 #include <system/helpers.h>
 
@@ -44,8 +45,16 @@
 
 //// globals
 extern bool autoshift;					// defined in neutrino2.cpp
-extern uint32_t scrambled_timer;		// defined in neutrino2.cpp
+extern uint32_t scrambled_timer;			// defined in neutrino2.cpp
 extern uint32_t shift_timer;				// defined in neutrino2.cpp
+////
+// tuxtxt
+extern void tuxtx_stop_subtitle();
+extern void tuxtx_set_pid(int pid, int page, const char * cc);
+extern int tuxtx_main(int pid, int page, bool isEplayer);
+extern void tuxtx_pause_subtitle(bool pause, bool isEplayer);
+extern int tuxtx_subtitle_running(int * pid, int * page, int * running);
+extern int current_muted;
 
 //// class CZapProtection
 bool CZapProtection::check()
@@ -206,7 +215,8 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		CLCD::getInstance()->setEPGTitle("");
 		
 		// store channel into lastchannellist
-		CNeutrinoApp::getInstance()->getlastChList().store(CZapit::getInstance()->getCurrentChannelID());
+		CNeutrinoApp::getInstance()->getlastChList().store(current_channel_id);
+		CNeutrinoApp::getInstance()->getChannelList()->adjustToChannelID(current_channel_id);
 		
 		//
 		g_InfoViewer->chanready = 1;
@@ -809,4 +819,45 @@ void CRemoteControl::tvMode()
 	CLCD::getInstance()->ShowIcon(VFD_ICON_RADIO, false);
 	CLCD::getInstance()->ShowIcon(VFD_ICON_TV, true);
 }
+
+//// nvod
+int CNVODChangeExec::exec(CTarget *parent, const std::string &actionKey)
+{
+	dprintf(DEBUG_INFO, "CNVODChangeExec exec: %s\n", actionKey.c_str());
+	
+	unsigned int sel = atoi(actionKey.c_str());
+	g_RemoteControl->setSubChannel(sel);
+
+	if(parent)
+		parent->hide();
+	
+	CNeutrinoApp::getInstance()->showSubChan();
+
+	return RETURN_EXIT;
+}
+
+//// tuxtxt
+int CTuxtxtChangeExec::exec(CTarget *parent, const std::string &actionKey)
+{
+	dprintf(DEBUG_INFO, "CTuxtxtChangeExec exec: %s\n", actionKey.c_str());
+
+	if(parent)
+		parent->hide();
+	
+	if (!IS_WEBTV(CZapit::getInstance()->getCurrentChannelID()))
+	{
+
+		CNeutrinoApp::getInstance()->stopSubtitles();
+				
+		tuxtx_stop_subtitle();
+		tuxtx_main(g_RemoteControl->current_PIDs.otherPIDs.vtxtpid, 0, false);
+				
+		CNeutrinoApp::getInstance()->audioMute(current_muted, true);
+
+		CNeutrinoApp::getInstance()->startSubtitles();
+	}
+
+	return RETURN_REPAINT;
+}
+
 

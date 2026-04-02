@@ -29,6 +29,7 @@
 #include <string>
 
 #include <global.h>
+#include <remotecontrol.h>
 
 #include <configfile.h>
 
@@ -50,32 +51,10 @@
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>
 
-#include <daemonc/remotecontrol.h>    		/* st_rmsg      */
-
 #include <gui/bouquetlist.h>
 
 #include <zapit/zapit.h>
 
-
-//// NVOD
-class CNVODChangeExec : public CTarget
-{
-	public:
-		CNVODChangeExec(){};
-		virtual ~CNVODChangeExec(){};
-		
-		int exec(CTarget *parent, const std::string &actionKey);
-};
-
-//// tuxtxt
-class CTuxtxtChangeExec : public CTarget
-{
-	public:
-		CTuxtxtChangeExec(){};
-		~CTuxtxtChangeExec(){};
-		
-		int exec(CTarget* parent, const std::string& actionKey);
-};
 
 ////
 typedef struct neutrino_font_descr

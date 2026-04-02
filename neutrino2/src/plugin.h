@@ -40,6 +40,7 @@
 
 //
 #include <neutrino2.h>
+#include <remotecontrol.h>
 
 #include <sectionsd/sectionsd.h>
 
@@ -59,8 +60,6 @@
 #include <driver/audioplay.h>
 #include <driver/lcdd.h>
 #include <driver/file.h>
-
-#include <daemonc/remotecontrol.h>
 
 #include <gui/widget/icons.h>
 #include <gui/widget/colorchooser.h>

@@ -32,6 +32,7 @@
 #include <global.h>
 #include <neutrino2.h>
 #include <neutrinoMessages.h>
+#include <remotecontrol.h>
 
 // libconfigfile
 #include <libconfigfile/configfile.h>
@@ -99,9 +100,6 @@
 // timerd
 #include <timerd/timerdtypes.h>
 #include <timerd/timerd.h>
-
-// deamonc
-#include <daemonc/remotecontrol.h>
 %}
 
 %include "typemaps.i"
@@ -188,6 +186,5 @@
 %include <src/timerd/timerdtypes.h>
 %include <src/timerd/timerd.h>
 
-// deamonc
-%include <src/daemonc/remotecontrol.h>
+%include <src/remotecontrol.h>
 

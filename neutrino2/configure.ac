@@ -281,7 +281,6 @@ src/nhttpd/tuxboxapi/Makefile
 src/nhttpd/yhttpd_core/Makefile
 src/nhttpd/yhttpd_mods/Makefile
 src/Makefile
-src/daemonc/Makefile
 src/driver/gdi/Makefile
 src/driver/lcd/Makefile
 src/driver/Makefile

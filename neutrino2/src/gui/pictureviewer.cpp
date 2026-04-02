@@ -30,8 +30,7 @@
 
 #include <global.h>
 #include <neutrino2.h>
-
-#include <daemonc/remotecontrol.h>
+#include <remotecontrol.h>
 
 #include <driver/gdi/fontrenderer.h>
 
