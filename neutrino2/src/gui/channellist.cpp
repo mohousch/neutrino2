@@ -867,7 +867,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 		g_RemoteControl->zapToChannelID(chanlist[pos]->channel_id, !chanlist[pos]->bAlwaysLocked);
 		
 		// adjust to ID
-		if (bouquetList != NULL) 
+//		if (bouquetList != NULL) 
 		{
 			this->adjustToChannelID(chanlist[pos]->channel_id);
 		}
