@@ -41,6 +41,8 @@
 
 CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 {
+	dprintf(DEBUG_NORMAL, "CWidget::CWidget: new\n");
+	
 	frameBuffer = CFrameBuffer::getInstance();
 
 	mainFrameBox.iX = x;
@@ -77,12 +79,12 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 	
 	//
 	CCItems.clear();
-	
-	dprintf(DEBUG_NORMAL, "CWidget::CWidget: x:%d y:%d w:%d h:%d\n", mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight);
 }
 
 CWidget::CWidget(const CBox *position)
 {
+	dprintf(DEBUG_NORMAL, "CWidget::CWidget: new\n");
+	
 	frameBuffer = CFrameBuffer::getInstance();
 	//
 	mainFrameBox = *position;
@@ -115,8 +117,6 @@ CWidget::CWidget(const CBox *position)
 	
 	//
 	CCItems.clear();
-	
-	dprintf(DEBUG_NORMAL, "CWidget::CWidget: x:%d y:%d w:%d h:%d\n", mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight);
 }
 
 CWidget::~CWidget()
@@ -342,7 +342,7 @@ int CWidget::exec(CTarget *parent, const std::string &)
 	if (parent)
 		parent->hide();
 
-	// set in focus
+	// setInFocus
 	if (hasCCItem() && CCItems.size())
 	{
 		for (unsigned int i = 0; i < (unsigned int)CCItems.size(); i++)

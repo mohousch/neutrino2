@@ -61,7 +61,7 @@ class CWidget : public CTarget
 		uint64_t timeout;
 		uint32_t sec_timer_id;
 		uint64_t sec_timer_interval;
-		std::string actionKey; // for lua
+		std::string actionKey;
 		// mainframe		
 		bool paintframe;
 		fb_pixel_t backgroundColor;
@@ -115,6 +115,7 @@ class CWidget : public CTarget
 		void setTimeOut(uint64_t to = 0){timeout = to;};
 		void setSecTimerInterval(uint64_t sec){sec_timer_interval = sec;};
 		void addKey(neutrino_msg_t key, CTarget *target = NULL, const std::string &action = "");
+		void setSelected(unsigned int _new) {selected = _new; if (selected < 0) selected = 0;};
 		////
 		void paintMainFrame(bool p){paintframe = p;};
 		void setColor(fb_pixel_t col) {backgroundColor = col;};
@@ -125,8 +126,6 @@ class CWidget : public CTarget
 		void setBorderColor(uint32_t col){borderColor = col;};
 		void setBorderGradient(int gr){borderGradient = gr;};
 		void setTitle(const char * title, const char *icon = NULL);
-		////
-		void setSelected(unsigned int _new) {selected = _new; if (selected < 0) selected = 0;};
 		////
 		std::string getWidgetName(){return name;};
 		CComponent *getCCItem(const int type, const std::string& name = "");

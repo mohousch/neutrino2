@@ -1,5 +1,5 @@
 --[[
-	neutrinoNG lua sample plugin
+	neutrino2 lua sample plugin
 	mohousch 25112024
 
 	License: GPL

@@ -772,7 +772,7 @@ int CFrameBox::oKKeyPressed(CTarget *target, neutrino_msg_t _msg)
 {
 	dprintf(DEBUG_NORMAL, "CFrameBox::okKeyPressed:\n");
 	
-	int ret = CTarget::RETURN_EXIT;
+	int ret = CTarget::RETURN_NONE; //test
 
 	if (hasItem() && selected >= 0 && frames[selected]->isSelectable())
 	{
