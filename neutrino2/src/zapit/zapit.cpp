@@ -489,11 +489,12 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 	{
 		CFrontend * fe = fe_it->second;
 		
-		dprintf(DEBUG_NORMAL, "CZapit::getFrontend: fe(%d:%d): (delsys:0x%x) (forceddelsys:0x%x) (%s) tuned:%d (locked:%d) fe_TP: 0x%llx chan_TP: 0x%llx\n",
+		dprintf(DEBUG_NORMAL, "CZapit::getFrontend: fe(%d:%d): (delsys:0x%x) (forceddelsys:0x%x) (TP_delsys:0x%x) (%s) tuned:%d (locked:%d) fe_TP: 0x%llx chan_TP: 0x%llx\n",
 				fe->feadapter,
 				fe->fenumber,
 				fe->deliverySystemMask,
 				fe->forcedDelSys,
+				transponder->second.feparams.delsys,
 				FEMODE[fe->mode],
 				fe->tuned,
 				fe->locked,
@@ -524,12 +525,14 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 	//
 	if(free_frontend)
 	{
-		dprintf(DEBUG_NORMAL, "CZapit::getFrontend: Selected fe(%d:%d) (delsys:0x%x)\n", free_frontend->feadapter, free_frontend->fenumber, free_frontend->deliverySystemMask);
+		dprintf(DEBUG_NORMAL, "CZapit::getFrontend: Selected fe(%d:%d) (delsys:0x%x) (forceddelsys:0x%x)\n", free_frontend->feadapter, free_frontend->fenumber, free_frontend->deliverySystemMask, free_frontend->forcedDelSys);
 		
 		if(free_frontend->standby)
 			initTuner(free_frontend);
 		
 	}
+	else 
+		dprintf(DEBUG_NORMAL, "CZapit::getFrontend: no free frontend found\n");
 	
 	return free_frontend;
 }
