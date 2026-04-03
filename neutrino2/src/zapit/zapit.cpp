@@ -4327,7 +4327,7 @@ void * CZapit::scanTransponderThread(void *data)
 }
 
 //// channelManager
-// parse transponder from services.xml
+// parse services transponder from services.xml
 void CZapit::parseTransponders(xmlNodePtr node, t_satellite_position satellitePosition, fe_type_t frontendType)
 {
 	dprintf(DEBUG_INFO, "CZapit::parseTransponders:\n");
@@ -4583,7 +4583,7 @@ void CZapit::findTransponder(xmlNodePtr search)
 			continue;
 		}
 		
-		// parseTP
+		// parseServiceTransponders
 		parseTransponders(search->xmlChildrenNode, satellitePosition, type);
 
 		newfound++;
