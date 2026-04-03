@@ -2310,7 +2310,7 @@ bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 {
 	uint32_t delsys = *((uint32_t*) Data);
 	
-	if (delsys == CFrontend::UNDEFINED)
+	if (delsys == CFrontend::UNDEFINED || delsys == CFrontend::DVB_C | CFrontend::DVB_T || delsys == CFrontend::DVB_C | CFrontend::DVB_T | CFrontend::DVB_T2)
 	{
 		item1->setHidden(true);
 		item2->setHidden(true);
