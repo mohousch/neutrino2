@@ -279,7 +279,7 @@ const keyval FRONTEND_MODE_OPTIONS[FRONTEND_MODE_TWIN_OPTION_COUNT] =
 	{ CFrontend::FE_LOOP, _("loop") },
 };
 
-#define FRONTEND_DELIVERYSYSTEM_OPTION_COUNT	9
+#define FRONTEND_DELIVERYSYSTEM_OPTION_COUNT	11
 const keyval FRONTEND_DELIVERYSYSTEM_OPTIONS[FRONTEND_DELIVERYSYSTEM_OPTION_COUNT] =
 {
 	{ CFrontend::UNDEFINED, "Unknown"},
@@ -290,7 +290,9 @@ const keyval FRONTEND_DELIVERYSYSTEM_OPTIONS[FRONTEND_DELIVERYSYSTEM_OPTION_COUN
 	{ CFrontend::DVB_S2, "DVBS2" },
 	{ CFrontend::DVB_S2X, "DVBS2X" },
 	{ CFrontend::DVB_DTMB, "DTMB" },
-	{ CFrontend::DVB_A, "DVBA" }
+	{ CFrontend::DVB_A, "DVBA" },
+	{ CFrontend::DVB_C | CFrontend::DVB_T | CFrontend::DVB_T2, "DVBC / DVBT / DVBT2" },
+	{ CFrontend::DVB_S | CFrontend::DVB_S2 | CFrontend::DVB_S2X, "DVBS / DVBS2 / DVBS2X" }
 };
 
 //

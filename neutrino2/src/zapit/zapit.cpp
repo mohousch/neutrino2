@@ -489,10 +489,11 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 	{
 		CFrontend * fe = fe_it->second;
 		
-		dprintf(DEBUG_NORMAL, "CZapit::getFrontend: fe(%d:%d): (delsys:0x%x) (%s) tuned:%d (locked:%d) fe_TP: 0x%llx chan_TP: 0x%llx\n",
+		dprintf(DEBUG_NORMAL, "CZapit::getFrontend: fe(%d:%d): (delsys:0x%x) (forceddelsys:0x%x) (%s) tuned:%d (locked:%d) fe_TP: 0x%llx chan_TP: 0x%llx\n",
 				fe->feadapter,
 				fe->fenumber,
 				fe->deliverySystemMask,
+				fe->forcedDelSys,
 				FEMODE[fe->mode],
 				fe->tuned,
 				fe->locked,
@@ -512,7 +513,7 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 		// first zap/record/other frontend type
 		else if (transponder != transponders.end())
 		{	
-			if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == CFrontend::FE_SINGLE || (fe->mode == CFrontend::FE_LOOP && loopCanTune(fe, thischannel)) ) )
+			if ( (/*fe->getDeliverySystem()*/fe->getForcedDelSys() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == CFrontend::FE_SINGLE || (fe->mode == CFrontend::FE_LOOP && loopCanTune(fe, thischannel)) ) )
 			{
 				free_frontend = fe;
 				break;
