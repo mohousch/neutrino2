@@ -3761,10 +3761,15 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
 
 		feparams.fec_inner = (fe_code_rate_t) xml_fec;
 		
-		if (system == 0)
-            		feparams.delsys = CFrontend::DVB_S;
-            	else if (system == 1)
-            		feparams.delsys = CFrontend::DVB_S2;
+		if (xmlGetAttribute(transponder, (char *)"system"))
+		{
+			system = xmlGetNumericAttribute(transponder, "system", 0);
+			
+			if (system == 0)
+		    		feparams.delsys = CFrontend::DVB_S;
+		    	else if (system == 1)
+		    		feparams.delsys = CFrontend::DVB_S2;
+		}
 	}
 #if HAVE_DVB_API_VERSION >= 5
 	else if (fe->getForcedDelSys() == CFrontend::DVB_A)
@@ -3863,9 +3868,6 @@ bool CZapit::tuneTP(transponder TP, CFrontend *fe)
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::tuneTP: fe(%d:%d)\n", fe->feadapter, fe->fenumber);
 	
 	bool ret = false;
-	
-	//		
-//	initTuner(fe);
 			
 	// satname
 	const char *name = scanProviders.size() > 0  ? scanProviders.begin()->second.c_str() : "unknown";
@@ -4216,7 +4218,7 @@ void * CZapit::scanThread(void * data)
 	pthread_exit(NULL);
 }
 
-void * CZapit::scanTransponderThread(void * data)
+void * CZapit::scanTransponderThread(void *data)
 {
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CZapit::scanTransponderThread: starting... tid %ld\n", syscall(__NR_gettid));
 	
@@ -4375,12 +4377,7 @@ void CZapit::parseTransponders(xmlNodePtr node, t_satellite_position satellitePo
 			feparams.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(node, "fec", 0);
 			feparams.symbol_rate = xmlGetNumericAttribute(node, "sr", 0);
 			feparams.polarization = xmlGetNumericAttribute(node, "pol", 0);
-			system = (uint32_t) xmlGetNumericAttribute(node, "sys", 0);
-			
-			if (system == 0)
-				feparams.delsys = CFrontend::DVB_S;
-			else 
-				feparams.delsys = CFrontend::DVB_S2;
+			feparams.delsys = (uint32_t) xmlGetNumericAttribute(node, "sys", 0);
 
             		// ???
 			if(feparams.symbol_rate < 50000) 
@@ -4595,7 +4592,7 @@ void CZapit::findTransponder(xmlNodePtr search)
 	}
 }
 
-// parse sat transponder from satellites/cables/terrestrials.xml/atsc.xml
+// parse sat transponder from satellites / cables / terrestrials.xml / atsc.xml
 void CZapit::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_satellite_position satellitePosition)
 {
 	dprintf(DEBUG_DEBUG, "CZapit::parseSatTransponders:\n");
@@ -4657,6 +4654,7 @@ void CZapit::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_s
             		}
             		else
             		{
+            			// FIXME:
             			feparams.delsys = CFrontend::DVB_T2;
             			feparams.plp_id = (unsigned int) xmlGetNumericAttribute(tps, "plp_id", 0);
             		}
@@ -4677,10 +4675,15 @@ void CZapit::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_s
 
 			feparams.fec_inner = (fe_code_rate_t)xml_fec;
 
-            		if (system == 0)
-            			feparams.delsys = CFrontend::DVB_S;
-            		else if (system == 1)
-            			feparams.delsys = CFrontend::DVB_S2;
+			if (xmlGetAttribute(tps, (char *)"system"))
+			{
+		    		system = xmlGetNumericAttribute(tps, "system", 0);
+		    		
+		    		if (system == 0)
+		    			feparams.delsys = CFrontend::DVB_S;
+		    		else if (system == 1)
+		    			feparams.delsys = CFrontend::DVB_S2;
+		    	}
 		}
 		else if (frontendType == FE_ATSC)
 		{
@@ -4803,7 +4806,7 @@ void CZapit::initSat(t_satellite_position position)
 	satellitePositions[position].use_usals = 0;
 }
 
-// load transponders from satellites/cables/terrestrial/atsc.xml
+// load transponders from satellites.xml / cables.xml / terrestrial.xml / atsc.xml
 int CZapit::loadTransponders()
 {
 	bool satcleared = 0;
