@@ -3772,6 +3772,7 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
 	else if(fe->getInfo()->type == FE_ATSC)
 #endif
 	{
+		//FIXME:
 	}
 
 	// read network information table
@@ -4334,6 +4335,7 @@ void CZapit::parseTransponders(xmlNodePtr node, t_satellite_position satellitePo
 	FrontendParameters feparams;
 	freq_id_t freq;
 	tcnt = 0;
+	uint32_t system = 0;
 
 	memset(&feparams, 0, sizeof(FrontendParameters));
 
@@ -4373,7 +4375,12 @@ void CZapit::parseTransponders(xmlNodePtr node, t_satellite_position satellitePo
 			feparams.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(node, "fec", 0);
 			feparams.symbol_rate = xmlGetNumericAttribute(node, "sr", 0);
 			feparams.polarization = xmlGetNumericAttribute(node, "pol", 0);
-			feparams.delsys = (uint32_t) xmlGetNumericAttribute(node, "sys", 0);
+			system = (uint32_t) xmlGetNumericAttribute(node, "sys", 0);
+			
+			if (system == 0)
+				feparams.delsys = CFrontend::DVB_S;
+			else 
+				feparams.delsys = CFrontend::DVB_S2;
 
             		// ???
 			if(feparams.symbol_rate < 50000) 
@@ -4689,8 +4696,6 @@ void CZapit::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_s
 			freq = feparams.frequency/100000;
 			
 		transponder_id_t tid = CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid);
-
-//		polarization &= 7;
 		
 		// insert TPs list
 		select_transponders.insert( std::pair<transponder_id_t, transponder> (tid, transponder(fake_tid, fake_nid, feparams)));
