@@ -107,8 +107,8 @@ extern unsigned int currentapid;
 extern int currentspid;
 extern bool isEXtSub;
 extern int currentextspid;
-extern void tuxtx_stop_subtitle();
-extern int tuxtx_main(int pid, int page, bool isEplayer);
+//extern void tuxtx_stop_subtitle();
+//extern int tuxtx_main(int pid, int page, bool isEplayer);
 
 //// movieplayer
 CMoviePlayerGui::CMoviePlayerGui()
@@ -343,7 +343,7 @@ void CMoviePlayerGui::startSubtitles(bool show)
 			txtpage = playlist[selected].vtxtPids[currentspid].page;
 		}
 			
-		tuxtx_main(0, txtpage, true);
+//		tuxtx_main(0, txtpage, true);
 	}
 #endif
 
@@ -360,10 +360,10 @@ void CMoviePlayerGui::stopSubtitles()
 	}
 	
 #ifndef ENABLE_GSTREAMER	
-	if (currentspid >= 0)
-	{
-		tuxtx_stop_subtitle();
-	}
+//	if (currentspid >= 0)
+//	{
+//		tuxtx_stop_subtitle();
+//	}
 #endif
 		
 	usleep(5000);

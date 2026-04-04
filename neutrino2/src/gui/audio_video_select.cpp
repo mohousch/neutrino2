@@ -72,8 +72,9 @@ unsigned short extspids[10];
 unsigned short extnumpids = 0;
 int currentextspid = -1;
 std::string subtitle_file;
-extern void tuxtx_stop_subtitle();
-extern int tuxtx_main(int pid, int page, bool isEplayer);
+//
+//extern void tuxtx_stop_subtitle();
+//extern int tuxtx_main(int pid, int page, bool isEplayer);
 //
 extern cPlayback *playback;		// libdvbapi (playback_cs.cpp)
 extern cAudio * audioDecoder;		// libdvbapi (audio_cs.cpp)
@@ -143,6 +144,8 @@ int CAVSubPIDChangeExec::exec(CTarget */*parent*/, const std::string & actionKey
 #else
 	if (strstr(actionKey.c_str(), "DVB") || strstr(actionKey.c_str(), "PGS") || strstr(actionKey.c_str(), "SUBRIP") || strstr(actionKey.c_str(), "ASS") || strstr(actionKey.c_str(), "SSA") || strstr(actionKey.c_str(), "SRT") || strstr(actionKey.c_str(), "UTF-8") || strstr(actionKey.c_str(), "XSUB"))
 	{
+//		tuxtx_stop_subtitle();
+		
 		isEXtSub = (strstr(actionKey.c_str(), "(EXT)"));
 		
 		char const * pidptr = strchr(actionKey.c_str(), ':');
@@ -188,6 +191,8 @@ int CAVSubPIDChangeExec::exec(CTarget */*parent*/, const std::string & actionKey
 			playback->SetSubPid(-1);
 			playback->SetExtSubPid(-1);
 		}
+		
+//		tuxtx_stop_subtitle();
 			
 		return CTarget::RETURN_EXIT_ALL;
 	}

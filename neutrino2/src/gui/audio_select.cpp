@@ -140,9 +140,7 @@ int CAudioSelectMenuHandler::doMenu()
 	}
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Select language"));
+	setLCDMode(_("Select language"));
 	
 	//
 	unsigned int count;
@@ -260,7 +258,7 @@ int CAudioSelectMenuHandler::doMenu()
         }
         
         //
-        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+        resetLCDMode();
 	
 	return res;
 }

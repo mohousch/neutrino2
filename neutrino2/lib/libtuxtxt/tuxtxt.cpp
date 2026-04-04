@@ -1702,7 +1702,7 @@ int Init(bool isEplayer, int page)
 		if(auto_national && cfg_national_subset)
 			national_subset = cfg_national_subset;
 		
-		dprintf(DEBUG_NORMAL, "[tuxtxt] national_subset %d (cfg %d)\n", national_subset, cfg_national_subset);
+		dprintf(DEBUG_NORMAL, "[tuxtxt] national_subset:%d (cfg:%d)\n", national_subset, cfg_national_subset);
 	}
 	else
 	{
@@ -1740,7 +1740,7 @@ int Init(bool isEplayer, int page)
 			if(auto_national && cfg_national_subset)
 				national_subset = cfg_national_subset;
 			
-			dprintf(DEBUG_NORMAL, "[tuxtxt] national_subset %d (cfg %d)\n", national_subset, cfg_national_subset);
+			dprintf(DEBUG_NORMAL, "[tuxtxt] national_subset:%d (cfg:%d)\n", national_subset, cfg_national_subset);
 		}
 	}
 

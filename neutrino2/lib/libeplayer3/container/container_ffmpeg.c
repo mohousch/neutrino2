@@ -1289,9 +1289,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				avcodec_open2(subctx, avcodec_find_decoder(stream->codecpar->codec_id), NULL);
 				track.ctx = subctx;
 				
-				if (stream->codecpar->codec_id == AV_CODEC_ID_DVB_TELETEXT) 
-					continue;
-				else if (context->manager->subtitle)
+				if (context->manager->subtitle)
 				{
 					if (context->manager->subtitle->Command(context, MANAGER_ADD, &track) < 0) 
 					{
