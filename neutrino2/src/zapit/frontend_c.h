@@ -264,14 +264,14 @@ class CFrontend
 		uint8_t getPolarization(void) const;
 		uint32_t getFEBandwidth(fe_bandwidth_t bandwidth);
 		const struct dvb_frontend_info *getInfo(void) const { return &info; };
-		const FrontendParameters * getfeparams(void) const {return &curfe;}
+		const FrontendParameters *getfeparams(void) const {return &curfe;}
 		//
 		uint32_t getBitErrorRate(void) const;
 		uint16_t getSignalNoiseRatio(void) const;
 		uint16_t getSignalStrength(void) const;
 		fe_status_t getStatus(void) const;
 		uint32_t getUncorrectedBlocks(void) const;
-		void getTransponderInfo(int f, int m, char * &fec);
+		void getTransponderInfo(int f, char * &fec);
 		fe_code_rate_t getCFEC ();
 		uint32_t getRate();
 		//
@@ -287,24 +287,17 @@ class CFrontend
 		bool changeDelSys(uint32_t delsys);
 		uint32_t getForcedDelSys(void){return forcedDelSys;};
 
-		//
+		////
 		void setDiseqcRepeats(const uint8_t repeats)	{ diseqcRepeats = repeats; }
 		void setDiseqcType(const diseqc_t type);
 		void setCurrentSatellitePosition(int32_t satellitePosition) {currentSatellitePosition = satellitePosition; }
-
 		void positionMotor(uint8_t motorPosition);
 		void sendMotorCommand(uint8_t cmdtype, uint8_t address, uint8_t command, uint8_t num_parameters, uint8_t parameter1, uint8_t parameter2, int repeat = 0);
 		void gotoXX(t_satellite_position pos);
-
-		//
 		bool sameTsidOnid(transponder_id_t tpid){ return (currentTransponder.TP_id == 0) || (tpid == currentTransponder.TP_id);}				
-		
-		//
 		bool tuneChannel(CZapitChannel *channel, bool nvod);
 		int setParameters(transponder *TP);
 		int tuneFrequency (FrontendParameters * feparams);
-		
-		//
 		bool sendUncommittedSwitchesCommand(int input);
 		bool setInput(CZapitChannel *channel, bool nvod);
 		void setInput(t_satellite_position satellitePosition, uint32_t frequency, uint8_t polarization);

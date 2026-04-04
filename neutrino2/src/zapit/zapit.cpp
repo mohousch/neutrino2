@@ -123,7 +123,6 @@ transponder_list_t scanedtransponders;				// global TP list for current scan
 transponder_list_t nittransponders;
 BouquetList scanBouquets;
 extern std::map <t_channel_id, uint8_t> service_types;
-////
 extern uint32_t failed_transponders;					// defined in descriptors.cpp
 extern uint32_t  found_tv_chans;					// defined in descriptors.cpp
 extern uint32_t  found_radio_chans;					// defined in descriptors.cpp

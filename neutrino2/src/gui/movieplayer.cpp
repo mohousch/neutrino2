@@ -359,6 +359,9 @@ void CMoviePlayerGui::stopSubtitles()
 		playback->SetExtSubPid(-1);
 	}
 	
+	currentspid = -1;
+	currentextspid = -1;
+	
 #ifndef ENABLE_GSTREAMER	
 //	if (currentspid >= 0)
 //	{
@@ -594,6 +597,8 @@ void CMoviePlayerGui::stop()
 			
 	if(m_multiselect)
 		m_multiselect = false;
+		
+	stopSubtitles();
 			
 	exit = true;
 }
@@ -1629,7 +1634,9 @@ void CMoviePlayerGui::PlayFile(void)
 	{
 		g_RCInput->killTimer(timer_id);
 		timer_id = 0;
-	}	
+	}
+	
+	stopSubtitles();
 
 	CLCD::getInstance()->ShowIcon(VFD_ICON_PLAY, false);
 	CLCD::getInstance()->ShowIcon(VFD_ICON_PAUSE, false);

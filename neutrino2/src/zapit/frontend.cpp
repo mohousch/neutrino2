@@ -395,14 +395,7 @@ void CFrontend::setMasterSlave()
 
 fe_code_rate_t CFrontend::getCFEC()
 {
-	if (info.type == FE_QPSK) 
-	{
-		 return curfe.fec_inner;
-	} 
-	else 
-	{
-		return curfe.fec_inner;
-	}
+	return curfe.fec_inner;
 }
 
 /* satellites.xml
@@ -436,7 +429,7 @@ typedef enum dvb_fec
 fe_code_rate_t CFrontend::getCodeRate(const uint8_t fec_inner, int system)
 {
 	dvb_fec_t f = (dvb_fec_t) fec_inner;
-    fe_code_rate_t fec = FEC_NONE;
+    	fe_code_rate_t fec = FEC_NONE;
 
 	if (system == 0) 
 	{
@@ -444,27 +437,27 @@ fe_code_rate_t CFrontend::getCodeRate(const uint8_t fec_inner, int system)
 		{
 			case fNone:
 				fec = FEC_NONE;
-                break;
+                		break;
 			case f1_2:
 				fec = FEC_1_2;
-                break;
+               			 break;
 			case f2_3:
 				fec = FEC_2_3;
-                break;
+               			break;
 			case f3_4:
 				fec = FEC_3_4;
-                break;
+               			 break;
 			case f5_6:
 				fec = FEC_5_6;
-                break;
+		        	break;
 			case f7_8:
 				fec = FEC_7_8;
-                break;
+                		break;
 			default:
 				dprintf(DEBUG_INFO, "no valid fec for DVB-S set FEC_AUTO\n");
 			case fAuto:
 				fec = FEC_AUTO;
-                break;
+                		break;
 		}
 	} 
 	else if(system == 1)
@@ -473,36 +466,36 @@ fe_code_rate_t CFrontend::getCodeRate(const uint8_t fec_inner, int system)
 		{
 			case f1_2:
 				fec = FEC_S2_QPSK_1_2;	//1+9
-                break;
+                		break;
 			case f2_3:
 				fec = FEC_S2_QPSK_2_3; //2+9
-                break;
+                		break;
 			case f3_4:
 				fec = FEC_S2_QPSK_3_4; //3+9
-                break;
+                		break;
 			case f3_5:
 				fec = FEC_S2_QPSK_3_5; //4+9
-                break;
+                		break;
 			case f4_5:
 				fec = FEC_S2_QPSK_4_5; //5+9
-                break;
+                		break;
 			case f5_6:
 				fec = FEC_S2_QPSK_5_6; //6+9
-                break;
+                		break;
 			case f7_8:
 				fec = FEC_S2_QPSK_7_8; //7+9
-                break;
+                		break;
 			case f8_9:
 				fec = FEC_S2_QPSK_8_9; //8+9
-                break;
+                		break;
 			case f9_10:
 				fec = FEC_S2_QPSK_9_10; //9+9
-                break;
+                		break;
 			default:
 				dprintf(DEBUG_INFO, "no valid fec for DVB-S2 set...\n");
 			case fAuto:
 				fec = FEC_AUTO;
-                break;
+                		break;
 		}
 	}
 	
@@ -658,7 +651,7 @@ uint32_t CFrontend::getUncorrectedBlocks(void) const
 	return blocks;
 }
 
-void CFrontend::getTransponderInfo(int f, int m, char *&fec)
+void CFrontend::getTransponderInfo(int f, char *&fec)
 {
 	// fec
 	switch (f) 

@@ -292,7 +292,7 @@ int CScanTs::exec(CTarget * parent, const std::string & actionKey)
 		if(fe->getInfo()->type == FE_QPSK)
 #endif
 		{
-			fe->getTransponderInfo(scanSettings->TP_fec, dvbs_get_modulation((fe_code_rate_t)scanSettings->TP_fec), f);
+			fe->getTransponderInfo(scanSettings->TP_fec, f);
 
 			sprintf(buffer, "%u %c %d %s ", atoi(scanSettings->TP_freq), scanSettings->TP_pol == 0 ? 'H' : 'V', atoi(scanSettings->TP_rate), f);
 		} 
@@ -302,7 +302,7 @@ int CScanTs::exec(CTarget * parent, const std::string & actionKey)
 		else if ( fe->getInfo()->type == FE_QAM )
 #endif
 		{
-			fe->getTransponderInfo(scanSettings->TP_fec, scanSettings->TP_mod, f);
+			fe->getTransponderInfo(scanSettings->TP_fec, f);
 
 			sprintf(buffer, "%u %d %s ", atoi(scanSettings->TP_freq), atoi(scanSettings->TP_rate), f);
 		}
@@ -312,7 +312,7 @@ int CScanTs::exec(CTarget * parent, const std::string & actionKey)
 		else if (fe->getInfo()->type == FE_OFDM) 
 #endif
 		{
-			fe->getTransponderInfo(scanSettings->TP_HP, scanSettings->TP_mod, f);
+			fe->getTransponderInfo(scanSettings->TP_HP, f);
 
 			sprintf(buffer, "%u %s", atoi(scanSettings->TP_freq), f);
 		}
@@ -322,7 +322,7 @@ int CScanTs::exec(CTarget * parent, const std::string & actionKey)
 		else if(fe->getInfo()->type == FE_ATSC)
 #endif
 		{
-			fe->getTransponderInfo(FEC_NONE, scanSettings->TP_mod, f);
+			fe->getTransponderInfo(FEC_NONE, f);
 
 			sprintf(buffer, "%u %s ", atoi(scanSettings->TP_freq), f);
 		}
@@ -477,7 +477,7 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 				if(fe->getInfo()->type == FE_QPSK)
 #endif
 				{
-					fe->getTransponderInfo(feparams->fec_inner, dvbs_get_modulation(feparams->fec_inner),  f);
+					fe->getTransponderInfo(feparams->fec_inner,  f);
 
 					snprintf(buffer, sizeof(buffer), "%d %c %d %s ", feparams->frequency, feparams->polarization ? 'V' : 'H', feparams->symbol_rate, f);
 				} 
@@ -487,7 +487,7 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 				else if ( fe->getInfo()->type == FE_QAM )
 #endif
 				{
-					fe->getTransponderInfo(feparams->fec_inner, feparams->modulation, f);
+					fe->getTransponderInfo(feparams->fec_inner, f);
 
 					snprintf(buffer, sizeof(buffer), "%d %d %s ", feparams->frequency, feparams->symbol_rate, f);
 				}
@@ -497,7 +497,7 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 				else if (fe->getInfo()->type == FE_OFDM) 
 #endif
 				{
-					fe->getTransponderInfo(feparams->code_rate_HP, feparams->modulation, f);
+					fe->getTransponderInfo(feparams->code_rate_HP, f);
 
 					snprintf(buffer, sizeof(buffer), "%d %s ", feparams->frequency, f);
 				}
@@ -507,7 +507,7 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 				else if(fe->getInfo()->type == FE_ATSC)
 #endif
 				{
-					fe->getTransponderInfo(FEC_NONE, feparams->modulation, f);
+					fe->getTransponderInfo(FEC_NONE, f);
 
 					snprintf(buffer, sizeof(buffer), "%d %s ", feparams->frequency, f);
 				}

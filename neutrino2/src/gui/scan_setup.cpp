@@ -1673,25 +1673,25 @@ int CScanSetup::showTPSelect()
 #if HAVE_DVB_API_VERSION >= 5
 	if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 	{
-		fe->getTransponderInfo(tI->second.feparams.fec_inner, dvbs_get_modulation(tI->second.feparams.fec_inner),  f);
+		fe->getTransponderInfo(tI->second.feparams.fec_inner,  f);
 
 		snprintf(buf, sizeof(buf), "%d %c %d %s ", tI->second.feparams.frequency, tI->second.feparams.polarization ? 'V' : 'H', tI->second.feparams.symbol_rate, f);
 	}
 	else if (fe->getForcedDelSys() == CFrontend::DVB_C)
 	{
-		fe->getTransponderInfo(tI->second.feparams.fec_inner, tI->second.feparams.modulation, f);
+		fe->getTransponderInfo(tI->second.feparams.fec_inner, f);
 
 		snprintf(buf, sizeof(buf), "%d %d %s ", tI->second.feparams.frequency, tI->second.feparams.symbol_rate, f);
 	}
 	else if (fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2 || fe->getForcedDelSys() == CFrontend::DVB_DTMB)
 	{
-		fe->getTransponderInfo(tI->second.feparams.code_rate_HP, tI->second.feparams.modulation, f);
+		fe->getTransponderInfo(tI->second.feparams.code_rate_HP, f);
 
 		snprintf(buf, sizeof(buf), "%d %s ", tI->second.feparams.frequency, f);
 	}
 	else if (fe->getForcedDelSys() == CFrontend::DVB_A)
 	{
-		fe->getTransponderInfo(FEC_NONE, tI->second.feparams.modulation, f);
+		fe->getTransponderInfo(FEC_NONE, f);
 
 		snprintf(buf, sizeof(buf), "%d %s ", tI->second.feparams.frequency, f);
 	}
@@ -1700,7 +1700,7 @@ int CScanSetup::showTPSelect()
 		{
 			case FE_QPSK:
 			{
-				fe->getTransponderInfo(tI->second.feparams.fec_inner, dvbs_get_modulation(tI->second.feparams.fec_inner),  f);
+				fe->getTransponderInfo(tI->second.feparams.fec_inner,  f);
 
 				snprintf(buf, sizeof(buf), "%d %c %d %s ", tI->second.feparams.frequency, tI->second.polarization ? 'V' : 'H', tI->second.feparams.symbol_rate, f);
 			}
@@ -1708,7 +1708,7 @@ int CScanSetup::showTPSelect()
 
 			case FE_QAM:
 			{
-				fe->getTransponderInfo(tI->second.feparams.fec_inner, tI->second.feparams.modulation, f);
+				fe->getTransponderInfo(tI->second.feparams.fec_inner, f);
 
 				snprintf(buf, sizeof(buf), "%d %d %s ", tI->second.feparams.frequency, tI->second.feparams.symbol_rate, f);
 			}
@@ -1716,7 +1716,7 @@ int CScanSetup::showTPSelect()
 
 			case FE_OFDM:
 			{
-				fe->getTransponderInfo(tI->second.feparams.code_rate_HP, tI->second.feparams.modulation, f);
+				fe->getTransponderInfo(tI->second.feparams.code_rate_HP, f);
 
 				snprintf(buf, sizeof(buf), "%d %s ", tI->second.feparams.frequency, f);
 			}
@@ -1724,7 +1724,7 @@ int CScanSetup::showTPSelect()
 				
 			case FE_ATSC:
             		{
-				fe->getTransponderInfo(FEC_NONE, tI->second.feparams.modulation, f);
+				fe->getTransponderInfo(FEC_NONE, f);
 
 				snprintf(buf, sizeof(buf), "%d %s ", tI->second.feparams.frequency, f);
 			}

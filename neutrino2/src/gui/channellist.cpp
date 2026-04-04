@@ -85,6 +85,10 @@ extern CBouquetList   * RADIOsatList;
 extern CBouquetList   * RADIOfavList;
 extern CBouquetList   * RADIOallList;
 
+extern int currentspid;
+extern bool isEXtSub;
+extern int currentextspid;
+
 #define CHANNEL_SMSKEY_TIMEOUT 800
 
 #define NUM_LIST_BUTTONS 4
@@ -858,7 +862,11 @@ void CChannelList::zapTo(int pos, bool rezap)
 		{
 			// stop radiotext PES decoding before zapping
 			g_Radiotext->radiotext_stop();
-		}		
+		}
+		
+		//
+		currentspid = -1;
+		currentextspid = -1;	
 		
 		// zap
 		tuned = pos;

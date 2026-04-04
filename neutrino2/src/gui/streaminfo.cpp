@@ -657,36 +657,6 @@ void CStreamInfo::paint_techinfo(int xpos, int ypos)
 	}
 	g_Font[font_info]->RenderString (xpos+spaceoffset, ypos, width*2/3 - 10, buf, COL_MENUCONTENT_TEXT_PLUS_0, 0, true);	// UTF-8
 
-	// audiotype
-#if 0
-	ypos += iheight;
-	int type, layer, freq, mode, bitrate;
-	audioDecoder->getAudioInfo(type, layer, freq, bitrate, mode);
-
-	const char *layernames[4] = { "res", "III", "II", "I" };
-	const char *sampfreqnames[4] = { "44,1k", "48k", "32k", "res" };
-	const char *modenames[4] = { "stereo", "joint_st", "dual_ch", "single_ch" };
-
-	sprintf ((char *) buf, "%s: %s (%s/%s) %s", _("Audiotype"), modenames[stereo], sampfreqnames[sampfreq], layernames[layer], copy ? "c" : "");
-  }
-
-	const char *mpegmodes[4] = { "stereo", "joint_st", "dual_ch", "single_ch" };
-	const char *ddmodes[8] = { "CH1/CH2", "C", "L/R", "L/C/R", "L/R/S", "L/C/R/S", "L/R/SL/SR", "L/C/R/SL/SR" };
-
-	sprintf ((char *) buf, "%s:", _("Audiotype"));
-	g_Font[font_info]->RenderString (xpos, ypos, width*2/3 - 10, buf, COL_MENUCONTENT_TEXT_PLUS_0, 0, true);	// UTF-8
-
-	if(type == 0) 
-	{
-		sprintf ((char *) buf, "MPEG %s (%d)", mpegmodes[mode], freq);
-	} 
-	else 
-	{
-		sprintf ((char *) buf, "DD %s (%d)", ddmodes[mode], freq);
-	}
-	g_Font[font_info]->RenderString (xpos+spaceoffset, ypos, width*2/3 - 10, buf, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
-#endif
-
 	// satellite
 	ypos += iheight;
 	sprintf ((char *) buf, "%s:", _("Satellite"));//swiped locale
@@ -712,7 +682,7 @@ void CStreamInfo::paint_techinfo(int xpos, int ypos)
 	CChannelList *channelList = CNeutrinoApp::getInstance()->getChannelList();
 
 	ypos += iheight;
-	sprintf ((char *) buf, "%s:", _("Channel"));//swiped locale
+	sprintf ((char *) buf, "%s:", _("Channel"));
 	g_Font[font_info]->RenderString(xpos, ypos, width*2/3-10, buf , COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 	sprintf((char*) buf, "%s" ,channelList->getActiveChannelName().c_str());
 	g_Font[font_info]->RenderString (xpos + spaceoffset, ypos, width*2/3 - 10, buf, COL_MENUCONTENT_TEXT_PLUS_0, 0, true);	// UTF-8
@@ -729,7 +699,7 @@ void CStreamInfo::paint_techinfo(int xpos, int ypos)
 		{
 			if(CZapit::getInstance()->getCurrentFrontend()->getInfo()->type == FE_QPSK) 
 			{
-				CZapit::getInstance()->getCurrentFrontend()->getTransponderInfo((fe_code_rate_t)si.fec, dvbs_get_modulation((fe_code_rate_t)si.fec), f);
+				CZapit::getInstance()->getCurrentFrontend()->getTransponderInfo((fe_code_rate_t)si.fec, f);
 				sprintf ((char *) buf,"%d.%d (%c) %d %s", si.tsfrequency / 1000, si.tsfrequency % 1000, si.polarisation ? 'V' : 'H', si.rate / 1000,f);
 				g_Font[font_info]->RenderString(xpos, ypos, width*2/3-10, "Tp. Freq.:" , COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 				g_Font[font_info]->RenderString(xpos + spaceoffset, ypos, width*2/3-10, buf, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8	
