@@ -522,17 +522,16 @@ int CScanSetup::showScanService()
 	}
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Scan transponder"));
+	setLCDMode(_("Scan transponder"));
 	
 	// intros
 	scansetup->addItem(new CMenuForwarder(_("back")));
 	scansetup->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
-	//save settings
+	// save settings
 	scansetup->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
-	scansetup->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+	
+	scansetup->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Tuner Setup")));
 	
 	// tuner mode
 	bool have_twin = false;
@@ -549,7 +548,7 @@ int CScanSetup::showScanService()
 	{
 		CMenuOptionChooser *tunerType = new CMenuOptionChooser(_("Tuner type"),  (int *)&fe->forcedDelSys, FRONTEND_DELIVERYSYSTEM_OPTIONS, FRONTEND_DELIVERYSYSTEM_OPTION_COUNT, true, feDelSysNotifier);
 			
-		tunerType->setChangeObserver(feDelSysNotifier);
+//		tunerType->setChangeObserver(feDelSysNotifier);
 		tunerType->setActive(true);
 		
 		feModeNotifier->addItem(0, tunerType);
@@ -563,7 +562,7 @@ int CScanSetup::showScanService()
 	scansetup->addItem(ojVoltage);
 	
 	// separartor	
-	CMenuItem *item = new CMenuSeparator(CMenuSeparator::LINE);
+	CMenuItem *item = new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Scan Setup"));
 	item->setHidden(fe->mode == CFrontend::FE_NOTCONNECTED);
 	feModeNotifier->addItem(0, item);
 	scansetup->addItem(item);
@@ -2310,16 +2309,10 @@ bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 {
 	uint32_t delsys = *((uint32_t*) Data);
 	
-	if (delsys == CFrontend::UNDEFINED || delsys == CFrontend::DVB_C | CFrontend::DVB_T || delsys == CFrontend::DVB_C | CFrontend::DVB_T | CFrontend::DVB_T2)
-	{
-		item1->setHidden(true);
-		item2->setHidden(true);
-		item3->setHidden(true);
-		item4->setHidden(true);
-		item5->setHidden(true);
-		item6->setHidden(true);
-	}
-	else if (delsys == CFrontend::DVB_T || delsys == CFrontend::DVB_T2 || delsys == CFrontend::DVB_DTMB)
+	dprintf(DEBUG_NORMAL, "CScanSetupDelSysNotifier::changeNotify: delsys=%d\n", delsys);
+	
+	
+	if (delsys == CFrontend::DVB_T || delsys == CFrontend::DVB_T2 || delsys == CFrontend::DVB_DTMB)
 	{
 		item1->setHidden(false);
 		item2->setHidden(true);
@@ -2346,7 +2339,7 @@ bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 		item5->setHidden(true);
 		item6->setHidden(true);
 	}
-	else if (delsys == CFrontend::DVB_S || delsys == CFrontend::DVB_S2 || delsys == CFrontend::DVB_S2X)
+	else if (delsys == CFrontend::DVB_S || delsys == CFrontend::DVB_S2 || delsys == CFrontend::DVB_S2X || delsys == (CFrontend::DVB_S | CFrontend::DVB_S2 | CFrontend::DVB_S2X))
 	{
 		item1->setHidden(true);
 		item2->setHidden(false);
@@ -2355,6 +2348,15 @@ bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 //		if (dmode > CFrontend::NO_DISEQC && dmode < CFrontend::DISEQC_ADVANCED) item4->setHidden(false);
 		item5->setHidden(false);
 		item6->setHidden(false);
+	}
+	else if ( (delsys == CFrontend::UNDEFINED) || (delsys == CFrontend::DVB_C | CFrontend::DVB_T) || (delsys == CFrontend::DVB_C | CFrontend::DVB_T | CFrontend::DVB_T2))
+	{
+		item1->setHidden(true);
+		item2->setHidden(true);
+		item3->setHidden(true);
+		item4->setHidden(true);
+		item5->setHidden(true);
+		item6->setHidden(true);
 	}
 	
 	return true;

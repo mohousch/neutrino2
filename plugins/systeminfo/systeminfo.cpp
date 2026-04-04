@@ -122,9 +122,7 @@ void CSysInfoWidget::paintHead()
 		sprintf((char *) buf, "%s", _("Process-List:"));
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();	
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, buf);
+	setLCDMode(buf);
 	
 	// title
 	CCHeaders headers(&cFrameBoxTitle, buf, NEUTRINO_ICON_INFO);
@@ -160,16 +158,9 @@ void CSysInfoWidget::paintFoot()
 // hide
 void CSysInfoWidget::hide()
 {
-//	frameBuffer->paintBackgroundBoxRel(cFrameBox.iX, cFrameBox.iY, cFrameBox.iWidth, cFrameBox.iHeight);
 	widget->hide();
 	
 	frameBuffer->blit();
-
-	//if(textBox != NULL)
-	{
-	//	delete textBox;
-	//	textBox = NULL;
-	}
 	
 	//
 	CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
