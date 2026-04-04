@@ -246,7 +246,7 @@ static int Write(void* _context, void *data)
 						break;
 					}
 					
-					case SUBTITLE_BITMAP: // 1: DVB / PGS
+					case SUBTITLE_BITMAP: // 1: DVB / PGS / VTXT
 					{
 						for (i = 0; i < sub.num_rects; i++)
 						{
@@ -298,11 +298,6 @@ static int Write(void* _context, void *data)
 							else if (sub.rects[i]->nb_colors == 40) // VTXT
 							{
 								//FIXME: 		
-								int xoff = screen_x + (screen_width - sub.rects[i]->w)/2;
-								int yoff = screen_y + screen_height - 80;
-								int nw = sub.rects[i]->w; 
-								int nh = 30;
-
 								// resize color to 32 bit
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
 								uint32_t* newdata = simple_resize32(sub.rects[i]->pict.data[0], (uint32_t*)sub.rects[i]->pict.data[1], sub.rects[i]->nb_colors, sub.rects[i]->w, sub.rects[i]->h, screen_width, screen_height);
