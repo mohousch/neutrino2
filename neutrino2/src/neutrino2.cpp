@@ -1554,9 +1554,13 @@ void CNeutrinoApp::channelsInit()
 
 		if (tmp1->channelList->getSize() == 0)
 			TVsatList->deleteBouquet(tmp1);
+		else 
+			tmp1->channelList->SortAlpha();
 
 		if(tmp2->channelList->getSize() == 0)
 			RADIOsatList->deleteBouquet(tmp2);
+		else
+			tmp2->channelList->SortAlpha();
 	}
 
 	// tv favorites

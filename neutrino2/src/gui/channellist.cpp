@@ -1673,11 +1673,13 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 		
 		if ( events[count].eventID != 0 && events[count].startTime > jetzt)
 		{	
-			char tmpstr[256];
+			char tmpstr[1024];
 			struct tm *tmStartZeit = localtime(&events[count].startTime);
 
-			strftime(tmpstr, sizeof(tmpstr), " %H:%M ", tmStartZeit );
-			datetime1_str = tmpstr;
+			strftime(tmpstr, sizeof(tmpstr), "%H:%M", tmStartZeit );
+			datetime1_str = " "; 
+			datetime1_str += tmpstr;
+			datetime1_str += " ";
 			
 			evtItem = new CMenuForwarder(datetime1_str.c_str(), true, events[count].description.c_str());
 

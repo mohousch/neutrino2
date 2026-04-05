@@ -55,7 +55,7 @@ typedef enum {
 typedef struct
 {
 	//
-	unsigned char*         	data;
+	uint8_t         	*data;
 	unsigned int           	len;
 
 	uint8_t         	*extradata;
