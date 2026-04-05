@@ -41,3 +41,4 @@ std::string timeString(time_t time);
 bool write_to_file(std::string filename, std::string content);
 
 #endif /* __yhttpd_helper_h__ */
+

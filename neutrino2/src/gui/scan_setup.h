@@ -1,28 +1,27 @@
-/*
-	$Id: scan_setup.h 05102024 mohousch Exp $
-
-	Copyright (C) 2009 Thilo Graf (dbt)
-	http://www.dbox2-tuning.de
-
-	Neutrino-GUI  -   DBoxII-Project
-
-	License: GPL
-
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
-*/
+//
+//	$Id: scan_setup.h 05042026 mohousch Exp $
+//
+//	Copyright (C) 2009 Thilo Graf (dbt)
+//	http://www.dbox2-tuning.de
+//
+//	Neutrino-GUI  -   DBoxII-Project
+//
+//	License: GPL
+//
+//	This program is free software; you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation; either version 2 of the License, or
+//	(at your option) any later version.
+//
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program; if not, write to the Free Software
+//	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #ifndef __scan_setup__
 #define __scan_setup__
@@ -120,12 +119,13 @@ class CScanSetupDelSysNotifier : public CChangeObserver
 {
 	private:
 		CFrontend * fe;
-		CMenuItem *item1, *item2, *item3, *item4, *item5, *item6;
+		CMenuItem *item1;
+		
 	public:
 		CScanSetupDelSysNotifier(CFrontend* f);
 		virtual ~CScanSetupDelSysNotifier(){};
 		
-		void addItem(CMenuItem *m1, CMenuItem *m2, CMenuItem *m3, CMenuItem *m4, CMenuItem *m5, CMenuItem *m6);
+		void addItem(CMenuItem *m1);
 		bool changeNotify(const std::string&, void *Data);
 };
 
@@ -145,6 +145,7 @@ class CScanSetup : public CTarget
 		int freq_length;
 
 		////
+		int showTunerSetup();
 		int showScanService();
 		int showUnicableSetup();
 		int showManualScanSetup();

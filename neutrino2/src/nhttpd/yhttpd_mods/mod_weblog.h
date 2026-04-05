@@ -23,21 +23,21 @@ class CmWebLog : public Cyhook
 	static int 		RefCounter;	// Count Instances
 	static std::string	LogFormat;
 
-public:
-	CmWebLog();
-	~CmWebLog();
+	public:
+		CmWebLog();
+		~CmWebLog();
 
-	bool 		OpenLogFile();
-	void 		CloseLogFile();
-	void 		AddLogEntry_CLF(CyhookHandler *hh);
-	void 		AddLogEntry_ELF(CyhookHandler *hh);
-	bool 		printf(const char *fmt, ...);
+		bool 		OpenLogFile();
+		void 		CloseLogFile();
+		void 		AddLogEntry_CLF(CyhookHandler *hh);
+		void 		AddLogEntry_ELF(CyhookHandler *hh);
+		bool 		printf(const char *fmt, ...);
 
-	// Hooks
-	virtual THandleStatus 	Hook_EndConnection(CyhookHandler *hh);
-	virtual std::string 	getHookName(void) {return std::string("mod_weblog");}
-	virtual std::string 	getHookVersion(void) {return std::string("$Revision: 428 $");}
-	virtual THandleStatus 	Hook_ReadConfig(CConfigFile *Config, CStringList &ConfigList);
+		// Hooks
+		virtual THandleStatus 	Hook_EndConnection(CyhookHandler *hh);
+		virtual std::string 	getHookName(void) {return std::string("mod_weblog");}
+		virtual std::string 	getHookVersion(void) {return std::string("$Revision: 428 $");}
+		virtual THandleStatus 	Hook_ReadConfig(CConfigFile *Config, CStringList &ConfigList);
 };
 #endif // __yhttpd_mod_weblog_h__
 

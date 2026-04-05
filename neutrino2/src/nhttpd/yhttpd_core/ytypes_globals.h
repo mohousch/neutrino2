@@ -154,4 +154,5 @@ static const TMimePair MimeFileExtensions[] = {
 
 };
 
-#endif // __yhttpd_types_globals_h__
+#endif // __yhttpd_types_globals_h_
+

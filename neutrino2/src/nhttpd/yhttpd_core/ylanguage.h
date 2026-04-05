@@ -42,3 +42,4 @@ class CLanguage
 };
 
 #endif /* __yttpd_language_h__ */
+

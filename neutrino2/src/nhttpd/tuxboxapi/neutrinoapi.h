@@ -74,16 +74,18 @@ class CNeutrinoAPI
 	std::string getAudioInfoAsString(void);
 	std::string getCryptInfoAsString(void);
 	std::string getLogoFile(std::string _logoURL, t_channel_id channelId);
-public:
-	CNeutrinoAPI();
-	~CNeutrinoAPI(void);
+	
+	public:
+		CNeutrinoAPI();
+		~CNeutrinoAPI(void);
 
-	CChannelEventList	eList;
-	CNeutrinoYParser	*NeutrinoYParser;
-	CControlAPI		*ControlAPI;
+		CChannelEventList	eList;
+		CNeutrinoYParser	*NeutrinoYParser;
+		CControlAPI		*ControlAPI;
 
-	friend class CNeutrinoYParser; // Backreference
-	friend class CControlAPI;
+		friend class CNeutrinoYParser; // Backreference
+		friend class CControlAPI;
 };
 
 #endif /*__nhttpd_neutrinoapi_h__*/
+

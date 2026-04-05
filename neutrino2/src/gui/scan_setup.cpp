@@ -1,5 +1,5 @@
 //
-//	$Id: scan_setup.cpp 10082024 mohousch Exp $
+//	$Id: scan_setup.cpp 05042026 mohousch Exp $
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
@@ -390,6 +390,10 @@ int CScanSetup::exec(CTarget * parent, const std::string &actionKey)
 		
 		return CTarget::RETURN_REPAINT;
 	}
+	else if (actionKey == "scansetup")
+	{
+		return showScanService();
+	}
 	else if(actionKey == "unisetup") 
 	{
 		return showUnicableSetup();
@@ -449,14 +453,130 @@ int CScanSetup::exec(CTarget * parent, const std::string &actionKey)
 		return RETURN_EXIT;
 	}
 	
-	res = showScanService();
+	res = showTunerSetup();
+	
+	return res;
+}
+
+int CScanSetup::showTunerSetup()
+{
+	dprintf(DEBUG_NORMAL, "showTunerSetup: Tuner: %d:%d\n", fe->feadapter, fe->fenumber);
+	
+	int res = CTarget::RETURN_REPAINT;
+	
+	if(!fe)
+		return res;
+		
+	//
+	CWidget* widget = NULL;
+	ClistBox* tunersetup = NULL;
+	CMenuItem *item = NULL;
+	
+	//
+	widget = CNeutrinoApp::getInstance()->getWidget("frontendsetup");
+	
+	if (widget)
+	{
+		tunersetup = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
+	}
+	else
+	{
+		//
+		CBox box;
+		box.iWidth = MENU_WIDTH;
+		box.iHeight = MENU_HEIGHT;
+		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+		
+		widget = new CWidget(&box);
+		widget->name = "frontendsetup";
+		
+		//
+		tunersetup = new ClistBox(&box);
+
+		tunersetup->setMode(ClistBox::MODE_SETUP);
+		
+		// head
+		tunersetup->enablePaintHead();
+		tunersetup->setTitle(_("Frontend Setup"), NEUTRINO_ICON_SCAN);
+
+		// foot
+		tunersetup->enablePaintFoot();	
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };	
+		tunersetup->setFootButtons(&btn);
+		
+		//
+		widget->addCCItem(tunersetup);
+	}
+	
+	//
+	setLCDMode(_("Tuner Setup"));
+	
+	// intros
+	tunersetup->addItem(new CMenuForwarder(_("back")));
+	tunersetup->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+	
+	// save settings
+	tunersetup->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
+	tunersetup->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+	
+	// tuner mode
+	bool have_twin = false;
+	
+	if(fe->getInfo()->type == FE_QPSK || fe->getInfo()->type == FE_OFDM)
+	{
+		have_twin = CZapit::getInstance()->FrontendIsTwin(fe);
+	}
+	
+	tunersetup->addItem(new CMenuOptionChooser(_("Tuner mode"),  (int *)&fe->mode, FRONTEND_MODE_OPTIONS, have_twin? FRONTEND_MODE_TWIN_OPTION_COUNT:FRONTEND_MODE_SINGLE_OPTION_COUNT, true, feModeNotifier));
+	
+	// tunertype (forceddelsys)
+	if (fe->isHybrid())
+	{
+		CMenuOptionChooser *tunerType = new CMenuOptionChooser(_("Tuner type"),  (int *)&fe->forcedDelSys, FRONTEND_DELIVERYSYSTEM_OPTIONS, FRONTEND_DELIVERYSYSTEM_OPTION_COUNT, true, feDelSysNotifier);
+			
+		tunerType->setActive(true);
+		
+		feModeNotifier->addItem(0, tunerType);
+		
+		tunersetup->addItem(tunerType);
+	}
+	
+	// voltage	
+	CMenuOptionChooser *ojVoltage = new CMenuOptionChooser(_("5 Volt"), (int *)&fe->powered, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
+	ojVoltage->setHidden((fe->getForcedDelSys() != CFrontend::DVB_T && fe->getForcedDelSys() != CFrontend::DVB_T2));
+	feModeNotifier->addItem(0, ojVoltage);
+	feDelSysNotifier->addItem(ojVoltage);
+	tunersetup->addItem(ojVoltage);
+	
+	// scanSetup
+	item = new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Scan Setup"));
+	item->setHidden(false);
+	feModeNotifier->addItem(0, item);
+	tunersetup->addItem(item);
+	
+	item = new CMenuForwarder(_("Scan Setup"), true, NULL, this, "scansetup");
+	item->setHidden(false);
+	feModeNotifier->addItem(0, item);
+	tunersetup->addItem(item);
+	
+	res = widget->exec(this, "");
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
+	
+	//
+        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
 	
 	return res;
 }
 
 int CScanSetup::showScanService()
 {
-	dprintf(DEBUG_NORMAL, "Tuner: %d:%d\n", fe->feadapter, fe->fenumber);
+	dprintf(DEBUG_NORMAL, "CScanSetup::showScanService: Tuner: %d:%d\n", fe->feadapter, fe->fenumber);
 	
 	int res = CTarget::RETURN_REPAINT;
 	
@@ -483,6 +603,7 @@ int CScanSetup::showScanService()
 	//
 	CWidget* widget = NULL;
 	ClistBox* scansetup = NULL;
+	CMenuItem *item = NULL;
 	
 	//
 	widget = CNeutrinoApp::getInstance()->getWidget("scansetup");
@@ -530,116 +651,66 @@ int CScanSetup::showScanService()
 	
 	// save settings
 	scansetup->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
-	
-	scansetup->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Tuner Setup")));
-	
-	// tuner mode
-	bool have_twin = false;
-	
-	if(fe->getInfo()->type == FE_QPSK || fe->getInfo()->type == FE_OFDM)
-	{
-		have_twin = CZapit::getInstance()->FrontendIsTwin(fe);
-	}
-	
-	scansetup->addItem(new CMenuOptionChooser(_("Tuner mode"),  (int *)&fe->mode, FRONTEND_MODE_OPTIONS, have_twin? FRONTEND_MODE_TWIN_OPTION_COUNT:FRONTEND_MODE_SINGLE_OPTION_COUNT, true, feModeNotifier));
-	
-	// tunertype (forceddelsys)
-	if (fe->isHybrid())
-	{
-		CMenuOptionChooser *tunerType = new CMenuOptionChooser(_("Tuner type"),  (int *)&fe->forcedDelSys, FRONTEND_DELIVERYSYSTEM_OPTIONS, FRONTEND_DELIVERYSYSTEM_OPTION_COUNT, true, feDelSysNotifier);
-			
-//		tunerType->setChangeObserver(feDelSysNotifier);
-		tunerType->setActive(true);
-		
-		feModeNotifier->addItem(0, tunerType);
-		
-		scansetup->addItem(tunerType);
-	}
-	
-	// voltage	
-	CMenuOptionChooser *ojVoltage = new CMenuOptionChooser(_("5 Volt"), (int *)&fe->powered, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
-	ojVoltage->setHidden((fe->getForcedDelSys() != CFrontend::DVB_T && fe->getForcedDelSys() != CFrontend::DVB_T2));
-	scansetup->addItem(ojVoltage);
-	
-	// separartor	
-	CMenuItem *item = new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Scan Setup"));
-	item->setHidden(fe->mode == CFrontend::FE_NOTCONNECTED);
-	feModeNotifier->addItem(0, item);
-	scansetup->addItem(item);
+	scansetup->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	// scantype
 	CMenuOptionChooser * ojScantype = new CMenuOptionChooser(_("Scan for services"), (int *)&scanSettings->scanType, SCANTS_ZAPIT_SCANTYPE, SCANTS_ZAPIT_SCANTYPE_COUNT, ((fe->mode != CFrontend::FE_NOTCONNECTED) && (fe->mode != CFrontend::FE_LOOP)));
-	feModeNotifier->addItem(0, ojScantype);
 	scansetup->addItem(ojScantype);
 		
 	// bqtsmode
 	CMenuOptionChooser * ojBouquets = new CMenuOptionChooser(_("Bouquet"), (int *)&scanSettings->bouquetMode, SCANTS_BOUQUET_OPTIONS, SCANTS_BOUQUET_OPTION_COUNT, ((fe->mode != CFrontend::FE_NOTCONNECTED) && (fe->mode != CFrontend::FE_LOOP)));
-	feModeNotifier->addItem(0, ojBouquets);
 	scansetup->addItem(ojBouquets);
 	
 	// scanmode
 	CMenuOptionChooser * useNit = new CMenuOptionChooser(_("Scan Mode"), (int *)&scanSettings->scan_mode, SCANTS_SCANMODE_OPTIONS, SCANTS_SCANMODE_OPTION_COUNT, ( (fe->mode != CFrontend::FE_NOTCONNECTED) && (fe->mode != CFrontend::FE_LOOP) ));
-	feModeNotifier->addItem(0, useNit);
 	scansetup->addItem(useNit);
 		
 	// separator
 	item = new CMenuSeparator(CMenuSeparator::LINE);
-	item->setHidden(fe->mode == CFrontend::FE_NOTCONNECTED);
-	feModeNotifier->addItem(0, item);
 	scansetup->addItem(item);
 	
 	// DVB_S / DVB_S2
 #if HAVE_DVB_API_VERSION >= 5
-//	if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
+	if (fe->getForcedDelSys() & CFrontend::DVB_S || fe->getForcedDelSys() & CFrontend::DVB_S2 || fe->getForcedDelSys() & CFrontend::DVB_S2X)
 #else
-//	if(fe->getInfo()->type == FE_QPSK)
+	if(fe->getInfo()->type == FE_QPSK)
 #endif
-//	{
+	{
 		// diseqc
 		CMenuOptionChooser *ojDiseqc = new CMenuOptionChooser(_("DiSEqC"), (int *)&fe->diseqcType, SATSETUP_DISEQC_OPTIONS, SATSETUP_DISEQC_OPTION_COUNT, true, satNotify, CRCInput::RC_nokey, "", true);
-		feModeNotifier->addItem(1, ojDiseqc);
-		ojDiseqc->setHidden((fe->getForcedDelSys() != CFrontend::DVB_S && fe->getForcedDelSys() != CFrontend::DVB_S2 && fe->getForcedDelSys() != CFrontend::DVB_S2X));
 		
 		// diseqc repeat
 		CMenuOptionNumberChooser *ojDiseqcRepeats = new CMenuOptionNumberChooser(_("DiSEqC-repeats"), &fe->diseqcRepeats, true, 0, 2, NULL);
 		ojDiseqcRepeats->setHidden((fe->getForcedDelSys()== CFrontend::DVB_C || fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2) || ((dmode == CFrontend::NO_DISEQC) || (dmode > CFrontend::DISEQC_ADVANCED) || (fe->mode == CFrontend::FE_NOTCONNECTED) || (fe->mode == CFrontend::FE_LOOP)));
 		satNotify->addItem(4, ojDiseqcRepeats);
-		feModeNotifier->addItem(4, ojDiseqcRepeats);
 
 		// unicablesetup
 		CMenuForwarder *uniSetup = new CMenuForwarder(_("Unicable Setup"), true, NULL, this, "unisetup");
 		uniSetup->setHidden((fe->getForcedDelSys()== CFrontend::DVB_C || fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2) || (dmode != CFrontend::DISEQC_UNICABLE && dmode != CFrontend::DISEQC_UNICABLE2));
 		satNotify->addItem(3, uniSetup);
-		feModeNotifier->addItem(3, uniSetup);
 
 		// lnbsetup
 		CMenuForwarder *lnbSetup = new CMenuForwarder(_("Setup satellites input / LNB"), true, NULL, this, "lnbsetup");
 		lnbSetup->setHidden((fe->getForcedDelSys() == CFrontend::DVB_C || fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2) || ((fe->mode == CFrontend::FE_NOTCONNECTED) || (fe->mode == CFrontend::FE_LOOP)));
-		feModeNotifier->addItem(1, lnbSetup);
 		
 		// motorsetup
 		CMenuForwarder *motorSetup = new CMenuForwarder(_("Motor settings"), true, NULL, this, "motorsetup");
 		motorSetup->setHidden((fe->getForcedDelSys() == CFrontend::DVB_C || fe->getForcedDelSys() == CFrontend::DVB_T || fe->getForcedDelSys() == CFrontend::DVB_T2) || ((fe->mode == CFrontend::FE_NOTCONNECTED) || (fe->mode == CFrontend::FE_LOOP)));
-		feModeNotifier->addItem(1, motorSetup);
-		
-		feDelSysNotifier->addItem(ojVoltage ,ojDiseqc ,ojDiseqcRepeats ,uniSetup ,lnbSetup, motorSetup);
 		
 		scansetup->addItem(ojDiseqc);		// diseqc
 		scansetup->addItem(ojDiseqcRepeats);	// diseqcrepeat
 		scansetup->addItem(uniSetup);		// unicablesetup
 		scansetup->addItem(lnbSetup);		// lnbsetup
 		scansetup->addItem(motorSetup); 	// motorsetup
-//	}
+	}
 	
 	// manual scan	
 	CMenuForwarder * manScan = new CMenuForwarder(_("Manual frequency scan / Test signal"), (fe->mode != 	CFrontend::FE_NOTCONNECTED) && (fe->mode != CFrontend::FE_LOOP), NULL, this, "manualscan", CRCInput::RC_green, NEUTRINO_ICON_BUTTON_GREEN);
-	feModeNotifier->addItem(0, manScan);
 	
 	scansetup->addItem(manScan);
 		
 	// autoscan
 	CMenuForwarder * auScan = new CMenuForwarder(_("Auto-Scan"), (fe->mode != CFrontend::FE_NOTCONNECTED) && (fe->mode != CFrontend::FE_LOOP), NULL, this, "autoscan", CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW);
-	feModeNotifier->addItem(0, auScan);
 	
 	scansetup->addItem(auScan);
 
@@ -653,7 +724,6 @@ int CScanSetup::showScanService()
 		CMenuForwarder *fautoScanAll = new CMenuForwarder(_("Auto-Scan multiple Satellites"), true, NULL, this, "allautoscansetup", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE);
 		fautoScanAll->setHidden(( (dmode == CFrontend::NO_DISEQC) || (fe->mode == CFrontend::FE_NOTCONNECTED) || (fe->mode == CFrontend::FE_LOOP)));
 		satNotify->addItem(2, fautoScanAll);
-		feModeNotifier->addItem(2, fautoScanAll);
 		
 		scansetup->addItem(fautoScanAll);
 	}
@@ -667,7 +737,7 @@ int CScanSetup::showScanService()
 	}
 	
 	//
-        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+        resetLCDMode();
 	
 	return res;
 }
@@ -2285,24 +2355,19 @@ bool CScanSetupFEModeNotifier::changeNotify(const std::string&, void * Data)
 CScanSetupDelSysNotifier::CScanSetupDelSysNotifier(CFrontend *f)
 {
 	fe = f;
-	item1 = NULL;
-	item2 = NULL;
-	item3 = NULL;
-	item4 = NULL;
-	item5 = NULL;
-	item6 = NULL;
+//	item1 = NULL;
+//	item2 = NULL;
+//	item3 = NULL;
+//	item4 = NULL;
+//	item5 = NULL;
+//	item6 = NULL;
 	
 	dprintf(DEBUG_NORMAL, "CScanSetupDelSysNotifier::CScanSetupDelSysNotifier: fe(%d:%d)\n", fe->feadapter, fe->fenumber);
 }
 
-void CScanSetupDelSysNotifier::addItem(CMenuItem *m1, CMenuItem *m2, CMenuItem *m3, CMenuItem *m4, CMenuItem *m5, CMenuItem *m6)
+void CScanSetupDelSysNotifier::addItem(CMenuItem *m1)
 {
-	item1 = m1;
-	item2 = m2;
-	item3 = m3;
-	item4 = m4;
-	item5 = m5;
-	item6 = m6;
+	item1 = m1;	
 }
 
 bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
@@ -2315,48 +2380,10 @@ bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 	if (delsys == CFrontend::DVB_T || delsys == CFrontend::DVB_T2 || delsys == CFrontend::DVB_DTMB)
 	{
 		item1->setHidden(false);
-		item2->setHidden(true);
-		item3->setHidden(true);
-		item4->setHidden(true);
-		item5->setHidden(true);
-		item6->setHidden(true);
 	}
-	else if (delsys == CFrontend::DVB_C)
+	else
 	{
 		item1->setHidden(true);
-		item2->setHidden(true);
-		item3->setHidden(true);
-		item4->setHidden(true);
-		item5->setHidden(true);
-		item6->setHidden(true);
-	}
-	else if (delsys == CFrontend::DVB_A)
-	{
-		item1->setHidden(true);
-		item2->setHidden(true);
-		item3->setHidden(true);
-		item4->setHidden(true);
-		item5->setHidden(true);
-		item6->setHidden(true);
-	}
-	else if (delsys == CFrontend::DVB_S || delsys == CFrontend::DVB_S2 || delsys == CFrontend::DVB_S2X || delsys == (CFrontend::DVB_S | CFrontend::DVB_S2 | CFrontend::DVB_S2X))
-	{
-		item1->setHidden(true);
-		item2->setHidden(false);
-		if (dmode != CFrontend::NO_DISEQC) item3->setHidden(false);
-		if (dmode > CFrontend::DISEQC_ADVANCED) item4->setHidden(false);
-//		if (dmode > CFrontend::NO_DISEQC && dmode < CFrontend::DISEQC_ADVANCED) item4->setHidden(false);
-		item5->setHidden(false);
-		item6->setHidden(false);
-	}
-	else if ( (delsys == CFrontend::UNDEFINED) || (delsys == CFrontend::DVB_C | CFrontend::DVB_T) || (delsys == CFrontend::DVB_C | CFrontend::DVB_T | CFrontend::DVB_T2))
-	{
-		item1->setHidden(true);
-		item2->setHidden(true);
-		item3->setHidden(true);
-		item4->setHidden(true);
-		item5->setHidden(true);
-		item6->setHidden(true);
 	}
 	
 	return true;
