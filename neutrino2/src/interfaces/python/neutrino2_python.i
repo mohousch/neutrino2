@@ -120,6 +120,7 @@
 %include <src/global.h>
 %include <src/neutrino2.h>
 %include <src/neutrinoMessages.h>
+%include <src/remotecontrol.h>
 
 // libconfigfile
 %include <lib/libconfigfile/configfile.h>
@@ -185,6 +186,4 @@
 // timerd
 %include <src/timerd/timerdtypes.h>
 %include <src/timerd/timerd.h>
-
-%include <src/remotecontrol.h>
 

@@ -100,17 +100,13 @@ class CScanSetupFEModeNotifier : public CChangeObserver
 {
 	private:
 		std::vector<CMenuItem*> items1;
-		std::vector<CMenuItem*> items2;
-		std::vector<CMenuItem*> items3;
-		std::vector<CMenuItem*> items4;
-		std::vector<CMenuItem*> items5;
 		
 		CFrontend *fe;
 	public:
 		CScanSetupFEModeNotifier(CFrontend *f);
-		virtual ~CScanSetupFEModeNotifier(){items1.clear(); items2.clear(); items3.clear(); items4.clear(); items5.clear();};
+		virtual ~CScanSetupFEModeNotifier(){items1.clear();};
 		
-		void addItem(int list, CMenuItem *item);
+		void addItem(CMenuItem *item);
 		bool changeNotify(const std::string&, void * Data);
 };
 

@@ -537,7 +537,7 @@ int CScanSetup::showTunerSetup()
 			
 		tunerType->setActive(true);
 		
-		feModeNotifier->addItem(0, tunerType);
+		feModeNotifier->addItem(tunerType);
 		
 		tunersetup->addItem(tunerType);
 	}
@@ -545,19 +545,19 @@ int CScanSetup::showTunerSetup()
 	// voltage	
 	CMenuOptionChooser *ojVoltage = new CMenuOptionChooser(_("5 Volt"), (int *)&fe->powered, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
 	ojVoltage->setHidden((fe->getForcedDelSys() != CFrontend::DVB_T && fe->getForcedDelSys() != CFrontend::DVB_T2));
-	feModeNotifier->addItem(0, ojVoltage);
+	feModeNotifier->addItem(ojVoltage);
 	feDelSysNotifier->addItem(ojVoltage);
 	tunersetup->addItem(ojVoltage);
 	
 	// scanSetup
 	item = new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Scan Setup"));
 	item->setHidden(false);
-	feModeNotifier->addItem(0, item);
+	feModeNotifier->addItem(item);
 	tunersetup->addItem(item);
 	
 	item = new CMenuForwarder(_("Scan Setup"), true, NULL, this, "scansetup");
 	item->setHidden(false);
-	feModeNotifier->addItem(0, item);
+	feModeNotifier->addItem(item);
 	tunersetup->addItem(item);
 	
 	res = widget->exec(this, "");
@@ -2082,11 +2082,11 @@ CSatelliteSetupNotifier::CSatelliteSetupNotifier(CFrontend *f)
 	dprintf(DEBUG_NORMAL, "CSatelliteSetupNotifier: fe(%d:%d)\n", fe->feadapter, fe->fenumber);
 }
 
-// list 0 =
-// list 1 =
-// list 2 =
-// list 3 =
-// list 4 =
+// item1: comm uncomm
+// item2: lnb diseqc input
+// item3: auto scan all
+// item4: unicable
+// item5: diseqc repeats
 void CSatelliteSetupNotifier::addItem(int list, CMenuItem* item)
 {
 	switch(list) 
@@ -2243,40 +2243,11 @@ CScanSetupFEModeNotifier::CScanSetupFEModeNotifier(CFrontend* f)
 	dprintf(DEBUG_NORMAL, "fe(%d:%d)\n", fe->feadapter, fe->fenumber);
 }
 
-// list 0: main
-// list 1: diseqc
-// list 2: unisetup
-// list 3: diseqc rep
-// list 4: ?
-void CScanSetupFEModeNotifier::addItem(int list, CMenuItem *item)
+void CScanSetupFEModeNotifier::addItem(CMenuItem *item)
 {
-	switch(list) 
-	{
-		case 0:
-			items1.push_back(item);
-			break;	
-		case 1:
-			items2.push_back(item);
-			break;
-		case 2:
-			items3.push_back(item);
-			break;
-		case 3:
-			items4.push_back(item);
-			break;
-		case 4:
-			items5.push_back(item);
-			break;
-		default:
-			break;
-	}
+	items1.push_back(item);
 }
 
-// items1: enabled for advanced diseqc settings
-// items2: for diseqc != NO_DISEQC
-// items3: disabled for NO_DISEQC
-// items4:
-// items5:
 bool CScanSetupFEModeNotifier::changeNotify(const std::string&, void * Data)
 {
 	std::vector<CMenuItem*>::iterator it;
@@ -2290,61 +2261,12 @@ bool CScanSetupFEModeNotifier::changeNotify(const std::string&, void * Data)
 		{
 			if (*it) (*it)->setHidden(true);
 		}
-
-		for(it = items2.begin(); it != items2.end(); it++) 
-		{
-			if (*it) (*it)->setHidden(true);
-		}
-
-		for(it = items3.begin(); it != items3.end(); it++) 
-		{
-			if (*it) (*it)->setHidden(true);
-		}
-
-		for(it = items4.begin(); it != items4.end(); it++) 
-		{
-			if (*it) (*it)->setHidden(true);
-		}
-
-		for(it = items5.begin(); it != items5.end(); it++) 
-		{
-			if (*it) (*it)->setHidden(true);
-		}
 	}
 	else
 	{
 		for(it = items1.begin(); it != items1.end(); it++) 
 		{
 			if (*it) (*it)->setHidden(false);
-		}
-
-		for(it = items2.begin(); it != items2.end(); it++) 
-		{
-			if (*it) (*it)->setHidden(false);
-		}
-
-		for(it = items3.begin(); it != items3.end(); it++) 
-		{
-			if (dmode != CFrontend::NO_DISEQC)
-			{
-				if (*it) (*it)->setHidden(false);
-			}
-		}
-
-		for(it = items4.begin(); it != items4.end(); it++) 
-		{
-			if (dmode > CFrontend::DISEQC_ADVANCED)
-			{
-				if (*it) (*it)->setHidden(false);
-			}
-		}
-
-		for(it = items5.begin(); it != items5.end(); it++) 
-		{
-			if (dmode != CFrontend::NO_DISEQC && dmode < CFrontend::DISEQC_ADVANCED)
-			{
-				if (*it) (*it)->setHidden(false);
-			}
 		}
 	}
 
@@ -2355,12 +2277,6 @@ bool CScanSetupFEModeNotifier::changeNotify(const std::string&, void * Data)
 CScanSetupDelSysNotifier::CScanSetupDelSysNotifier(CFrontend *f)
 {
 	fe = f;
-//	item1 = NULL;
-//	item2 = NULL;
-//	item3 = NULL;
-//	item4 = NULL;
-//	item5 = NULL;
-//	item6 = NULL;
 	
 	dprintf(DEBUG_NORMAL, "CScanSetupDelSysNotifier::CScanSetupDelSysNotifier: fe(%d:%d)\n", fe->feadapter, fe->fenumber);
 }

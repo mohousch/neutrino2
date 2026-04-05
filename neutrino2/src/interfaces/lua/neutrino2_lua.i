@@ -166,6 +166,7 @@
 %include <src/global.h>
 %include <src/neutrino2.h>
 %include <src/neutrinoMessages.h>
+%include <src/remotecontrol.h>
 
 // libconfigfile
 %include <lib/libconfigfile/configfile.h>
@@ -240,7 +241,7 @@
 %include <src/gui/rc_lock.h>
 %include <src/gui/movieinfo.h>
 
-//gui/setup
+//gui/setup do we need this really ???
 %include <src/gui/scan_setup.h>
 %include <src/gui/audio_setup.h>
 %include <src/gui/video_setup.h>
@@ -257,7 +258,6 @@
 %include <src/gui/screensetup.h>
 %include <src/gui/zapit_setup.h>
 %include <src/gui/audioplayer_setup.h>
-//
 %include <src/gui/main_setup.h>
 %include <src/gui/epg_menu.h>
 %include <src/gui/power_menu.h>
@@ -278,12 +278,4 @@
 // timerd
 %include <src/timerd/timerdtypes.h>
 %include <src/timerd/timerd.h>
-
-// deamonc
-%include <src/remotecontrol.h>
-
-
-
-
-
 
