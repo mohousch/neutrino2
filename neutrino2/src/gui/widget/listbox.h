@@ -39,7 +39,7 @@
 #include <gui/widget/component.h>
 #include <gui/widget/widget.h>
 
-#include <gui/plugins.h>
+#include <src/plugins.h>
 
 
 ////

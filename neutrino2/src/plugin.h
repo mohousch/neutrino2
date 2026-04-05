@@ -41,6 +41,7 @@
 //
 #include <neutrino2.h>
 #include <remotecontrol.h>
+#include <plugins.h>
 
 #include <sectionsd/sectionsd.h>
 
@@ -90,7 +91,6 @@
 #include <gui/channellist.h>
 #include <gui/screensetup.h>
 #include <gui/pluginlist.h>
-#include <gui/plugins.h>
 #include <gui/infoviewer.h>
 #include <gui/epgview.h>
 #include <gui/update.h>
@@ -191,7 +191,6 @@ extern void tuxtxt_start(int tpid);
 extern void tuxtx_set_pid(int pid, int page, const char * cc);
 extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
 extern int tuxtx_main(int pid, int page, bool isEplayer);
-
 // dvbsub
 extern int dvbsub_init();
 extern int dvbsub_stop();

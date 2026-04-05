@@ -36,7 +36,6 @@
 
 #include <gui/timerlist.h>
 #include <gui/pluginlist.h>
-#include <gui/plugins.h>
 
 #include <driver/encoding.h>
 

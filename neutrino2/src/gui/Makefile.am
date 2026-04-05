@@ -51,7 +51,6 @@ libneutrino2_gui_a_SOURCES = \
 	rc_lock.cpp \
 	streaminfo.cpp \
 	dboxinfo.cpp \
-	plugins.cpp \
 	imageinfo.cpp \
 	audio_select.cpp \
 	scan_setup.cpp \

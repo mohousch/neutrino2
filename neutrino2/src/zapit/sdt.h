@@ -36,8 +36,8 @@ class CSdt
 		virtual ~CSdt(){};
 		
 		//
-		int parse(t_transport_stream_id* , t_original_network_id*, t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe);
-		int parseCurrentSDT( const t_transport_stream_id p_transport_stream_id, const t_original_network_id p_original_network_id,t_satellite_position satellitePosition, freq_id_t freq, CFrontend * fe);
+		int parse(t_transport_stream_id*, t_original_network_id*, t_satellite_position satellitePosition, freq_id_t freq, CFrontend* fe);
+		int parseCurrentSDT( const t_transport_stream_id p_transport_stream_id, const t_original_network_id p_original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend * fe);
 };
 
 #endif /* __zapit_sdt_h__ */

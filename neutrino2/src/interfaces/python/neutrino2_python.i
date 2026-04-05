@@ -33,6 +33,7 @@
 #include <neutrino2.h>
 #include <neutrinoMessages.h>
 #include <remotecontrol.h>
+#include <plugins.h>
 
 // libconfigfile
 #include <libconfigfile/configfile.h>
@@ -85,7 +86,6 @@
 #include <gui/movieplayer.h>
 #include <gui/pictureviewer.h>
 #include <gui/filebrowser.h>
-#include <gui/plugins.h>
 
 // zapit
 #include <zapit/bouquets.h>
@@ -121,6 +121,7 @@
 %include <src/neutrino2.h>
 %include <src/neutrinoMessages.h>
 %include <src/remotecontrol.h>
+%include <src/plugins.h>
 
 // libconfigfile
 %include <lib/libconfigfile/configfile.h>
@@ -171,7 +172,6 @@
 %include <src/gui/movieplayer.h>
 %include <src/gui/pictureviewer.h>
 %include <src/gui/filebrowser.h>
-%include <src/gui/plugins.h>
 
 // zapit
 //%include <src/zapit/bouquets.h>

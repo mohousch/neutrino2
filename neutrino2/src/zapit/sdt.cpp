@@ -190,8 +190,6 @@ int CSdt::parse(t_transport_stream_id *p_transport_stream_id, t_original_network
 }
 
 //
-extern tallchans curchans;	// defined in zapit.cpp
-
 int CSdt::parseCurrentSDT( const t_transport_stream_id p_transport_stream_id, const t_original_network_id p_original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend * fe)
 { 
 	if(!fe)
@@ -220,8 +218,6 @@ int CSdt::parseCurrentSDT( const t_transport_stream_id p_transport_stream_id, co
 
 	unsigned char filter[DMX_FILTER_SIZE];
 	unsigned char mask[DMX_FILTER_SIZE];
-
-	curchans.clear();
 	
 	//
 	filter[0] = 0x42;	// sdt tid

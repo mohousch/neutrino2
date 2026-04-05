@@ -35,7 +35,7 @@
 
 #include <system/localize.h>
 
-#include <gui/plugins.h>
+#include <src/plugins.h>
 
 
 class CPluginList : public CTarget

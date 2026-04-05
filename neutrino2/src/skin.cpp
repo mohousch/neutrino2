@@ -41,7 +41,7 @@
 #include <gui/widget/framebox.h>
 #include <gui/widget/hintbox.h>
 
-#include <gui/plugins.h>
+#include <gui/pluginlist.h>
 //
 #include <gui/main_setup.h>
 #include <gui/epg_menu.h>

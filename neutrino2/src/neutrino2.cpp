@@ -56,6 +56,7 @@
 
 #include <global.h>
 #include <neutrino2.h>
+#include <plugins.h>
 
 #include <driver/encoding.h>
 #include <driver/rcinput.h>
@@ -86,7 +87,6 @@
 #include <gui/channellist.h>
 #include <gui/screensetup.h>
 #include <gui/pluginlist.h>
-#include <gui/plugins.h>
 #include <gui/infoviewer.h>
 #include <gui/epgview.h>
 #include <gui/update.h>

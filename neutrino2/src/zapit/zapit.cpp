@@ -2466,6 +2466,10 @@ void * CZapit::sdtThread(void */*arg*/)
 
 			if(CZapit::getInstance()->getCurrentChannel()) 
 			{
+				//
+				curchans.clear();
+				
+				//
 				if( sdt.parseCurrentSDT(transport_stream_id, original_network_id, satellitePosition, freq, CZapit::getInstance()->getCurrentFrontend()) < 0 )
 					continue;
 			}

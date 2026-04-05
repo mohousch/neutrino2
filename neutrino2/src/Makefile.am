@@ -32,7 +32,7 @@ AM_CPPFLAGS += -fno-rtti -fno-exceptions
 
 bin_PROGRAMS = neutrino2
 
-neutrino2_SOURCES = neutrino2_menue.cpp skin.cpp remotecontrol.cpp neutrino2.cpp
+neutrino2_SOURCES = plugins.cpp neutrino2_menue.cpp skin.cpp remotecontrol.cpp neutrino2.cpp
 
 neutrino2_LDADD = \
 	gui/widget/libneutrino2_gui_widget.a \
