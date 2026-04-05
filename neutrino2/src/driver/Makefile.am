@@ -35,7 +35,6 @@ libneutrino2_driver_a_SOURCES = \
 	shutdown_count.cpp \
 	streamts.cpp \
 	radiotext.cpp \
-	radiotools.cpp \
 	audiofile.cpp \
 	audioplay.cpp \
 	movieinfo.cpp \

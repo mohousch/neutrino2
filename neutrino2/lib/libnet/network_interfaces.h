@@ -33,3 +33,4 @@ bool setStaticAttributes(const std::string name, const bool automatic_start, con
 bool setDhcpAttributes(const std::string name, const bool automatic_start, bool wireless = false);
 
 #endif /* __network_interfaces_h__ */
+

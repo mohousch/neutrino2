@@ -1175,6 +1175,8 @@ CCText::CCText(const int x, const int y, const int dx, const int dy)
 	font = SNeutrinoSettings::FONT_TYPE_EPG_INFO1;
 	color = COL_MENUCONTENT_TEXT_PLUS_0;
 	
+	halign = CC_ALIGN_LEFT;
+	
 	//
 	Text.clear();
 	

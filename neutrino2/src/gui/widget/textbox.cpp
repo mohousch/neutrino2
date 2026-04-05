@@ -105,6 +105,7 @@ void CTextBox::initVar(void)
 	dprintf(DEBUG_DEBUG, "CTextBox::InitVar:\n");
 	
 	m_cText	= "";
+	halign = CC_ALIGN_LEFT;
 	m_tMode = PIC_RIGHT;
 
 	m_pcFontText = SNeutrinoSettings::FONT_TYPE_EPG_INFO1;
@@ -264,6 +265,8 @@ void CTextBox::refreshTextLineArray(void)
 		if (halign == CC_ALIGN_CENTER) // FIXME:
 			lineBreakWidth = m_cFrameTextRel.iWidth - 2*tw - 20;	
 	}
+	
+	// FIXME: need to revixe align to right
 	
 	const int TextChars = m_cText.size();
 	

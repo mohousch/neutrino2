@@ -149,4 +149,3 @@ std::string UTF8ToString(const char*&text)
 	return res;
 }
 
-

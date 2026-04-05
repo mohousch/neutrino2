@@ -84,6 +84,7 @@ int CPlugins::find_plugin(const std::string &filename)
 bool CPlugins::pluginfile_exists(const std::string &filename)
 {
 	FILE *file = fopen(filename.c_str(), "r");
+	
 	if (file != NULL)
 	{
 		fclose(file);
@@ -188,7 +189,6 @@ void CPlugins::loadPlugins()
 {
 	dprintf(DEBUG_NORMAL, "CPlugins::loadPlugins\n");
 	
-	frameBuffer = CFrameBuffer::getInstance();
 	number_of_plugins = 0;
 	plugin_list.clear();
 	
@@ -299,8 +299,7 @@ void CPlugins::startPlugin(const char * const name)
 		dprintf(DEBUG_NORMAL, "CPlugins::startPlugin: could not find %s\n", name);
 		
 		std::string hint = name;
-		hint += " ";
-		hint += _("is not installed please install again.");
+		hint += _(" is not installed please install again.");
 		
 		HintBox(_("Information"), _(hint.c_str()));
 	}
@@ -352,10 +351,6 @@ void CPlugins::startPlugin(int number)
 
 		startScriptPlugin(number);
 		
-		frameBuffer->paintBackground();
-
-		frameBuffer->blit();	
-		
 		g_RCInput->restartInput();
 		g_RCInput->clearRCMsg();
 
@@ -384,11 +379,7 @@ void CPlugins::startPlugin(int number)
 				dlclose(handle);
 			} 
 			else 
-			{
-				frameBuffer->paintBackground();
-
-				frameBuffer->blit();				
-					
+			{	
 				execPlugin();
 				dlclose(handle);
 			}

@@ -111,9 +111,6 @@ class CPlugins
 		};
 
 	private:
-
-		CFrameBuffer	*frameBuffer;
-
 		int number_of_plugins;
 		std::vector<plugin> plugin_list;
 		std::string plugin_dir;

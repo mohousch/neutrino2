@@ -27,6 +27,8 @@
 #ifndef __RADIO_AUDIO_H
 #define __RADIO_AUDIO_H
 
+#include <stdint.h>
+
 #include <driver/gdi/framebuffer.h>
 #include <driver/gdi/fontrenderer.h>
 
@@ -46,7 +48,6 @@ extern char *ReplayFile;
 
 class CRadioText
 {
-
 	public:
 		typedef struct {
 			CRadioText *rt_object;
@@ -182,4 +183,9 @@ struct rtp_classes {
     // to be continue...
 };
 
+////
+unsigned short crc16_ccitt(unsigned char *daten, int len, bool skipfirst);
+char *rtrim(char *text);
+
 #endif //__RADIO_AUDIO_H
+

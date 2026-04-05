@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.8\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2026-04-05 09:18+0200\n"
+"POT-Creation-Date: 2026-04-05 19:09+0200\n"
 "PO-Revision-Date: 2023-09-22 10:51+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -19,6 +19,10 @@ msgstr ""
 
 msgid " install failed"
 msgstr "Die Paketinstallation ist fehlgeschlagen"
+
+#, fuzzy
+msgid " is not installed please install again."
+msgstr "ist nicht installiert, bitte erneut installieren."
 
 msgid " successfull installed"
 msgstr "Paket erfolgreich installiert"
@@ -2962,9 +2966,6 @@ msgstr "inaktiv"
 
 msgid "internet Radio"
 msgstr "Internetradio"
-
-msgid "is not installed please install again."
-msgstr "ist nicht installiert, bitte erneut installieren."
 
 msgid "is reachable (ping)"
 msgstr "ist erreichbar (Ping)"
