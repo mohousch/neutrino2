@@ -596,10 +596,10 @@ uint16_t CFrontend::getSignalStrength(void) const
 				strength = prop[0].u.st.stat[i].uvalue;
 		}
 	}
-#else
+#endif
+
 	if(::ioctl(fd, FE_READ_SIGNAL_STRENGTH, &strength) < 0)
 	      perror("FE_READ_SIGNAL_STRENGHT");
-#endif
 
 	return strength;
 }
@@ -633,10 +633,10 @@ uint16_t CFrontend::getSignalNoiseRatio(void) const
 			}
 		}
 	}
-#else
+#endif
+
 	if(::ioctl(fd, FE_READ_SNR, &snr) < 0)
 		perror("FE_READ_SNR");
-#endif
 
 	return snr;
 }
