@@ -58,13 +58,16 @@ class CGenPsi
 		char           aac_lang[10][3];
 		uint16_t       aacp_pid[10];
 		char           aacp_lang[10][3];
+		uint16_t descriptor_magazine_number;
+		uint16_t page_number;
+		////
 		uint32_t calc_crc32psi(uint8_t *dst, const uint8_t *src, uint32_t len);
 		void build_pat(uint8_t *buffer);
 		void build_pmt(uint8_t *buffer);
 
 	public:
 		CGenPsi();
-		void addPid(uint16_t pid, uint16_t pidtype, short isAC3, const char *data = NULL);
+		void addPid(uint16_t pid, uint16_t pidtype, short isAC3, const char *data = NULL, uint16_t mag = 0, uint16_t page = 0);
 		int genpsi(int fd);
 };
 #endif

@@ -295,6 +295,7 @@ static int Write(void* _context, void *data)
 
 								free(newdata);
 							}
+							#if 0 // FIXME:
 							else if (sub.rects[i]->nb_colors == 40) // VTXT
 							{
 								//FIXME: 		
@@ -316,7 +317,8 @@ static int Write(void* _context, void *data)
 
 								free(newdata);
 							}
-							else // PGS (256 nb_colors)
+							#endif
+							else if (sub.rects[i]->nb_colors == 256)// PGS (256 nb_colors)
 							{		
 								int xoff = screen_x + (screen_width - sub.rects[i]->w)/2;
 								int yoff = screen_y + screen_height - 80;

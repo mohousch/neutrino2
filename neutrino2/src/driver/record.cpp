@@ -490,7 +490,7 @@ bool CRecord::doRecord(const t_channel_id channel_id, int mode, const event_id_t
 					
 					_pids[numpids++] = sd->pId;
 					
-					psi.addPid(sd->pId, EN_TYPE_TELTEX, 0, sd->ISO639_language_code.c_str());
+					psi.addPid(sd->pId, EN_TYPE_TELTEX, 0, sd->ISO639_language_code.c_str(), sd->teletext_magazine_number, sd->teletext_page_number);
 				}
 				
 				//dvbsub

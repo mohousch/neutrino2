@@ -128,7 +128,7 @@ uint32_t CGenPsi::calc_crc32psi(uint8_t *dst, const uint8_t *src, uint32_t len)
 	return crc;
 }
 
-void CGenPsi::addPid(uint16_t pid, uint16_t pidtype, short isAC3, const char *data)
+void CGenPsi::addPid(uint16_t pid, uint16_t pidtype, short isAC3, const char *data, uint16_t mag, uint16_t page)
 {
 	switch (pidtype)
 	{
@@ -166,6 +166,8 @@ void CGenPsi::addPid(uint16_t pid, uint16_t pidtype, short isAC3, const char *da
 				vtxtlang[1] = data[1];
 				vtxtlang[2] = data[2];
 			}
+			descriptor_magazine_number = mag;
+			page_number = page;
 			break;
 		case EN_TYPE_DVBSUB:
 			dvbsubpid[nsub] = pid;
@@ -408,9 +410,9 @@ void CGenPsi::build_pmt(uint8_t *buffer)
 		buffer[off++] = dvbsublang[index][1];
 		buffer[off++] = dvbsublang[index][2];
 		buffer[off++] = 0x20;		//subtitle_stream.subtitling_type
-		buffer[off++] = 0x01 >> 8;		//composition_page_id
+		buffer[off++] = 0x01 >> 8;	//composition_page_id
 		buffer[off++] = 0x01 & 0xff; 	//composition_page_id
-		buffer[off++] = 0x01 >> 8; 		//ancillary_page_id
+		buffer[off++] = 0x01 >> 8; 	//ancillary_page_id
 		buffer[off++] = 0x01 & 0xff;	//ancillary_page_id
 	}
 
@@ -430,8 +432,8 @@ void CGenPsi::build_pmt(uint8_t *buffer)
 		buffer[off++] = vtxtlang[0];	//language code[0]
 		buffer[off++] = vtxtlang[1];	//language code[1]
 		buffer[off++] = vtxtlang[2];	//language code[2]
-		buffer[off++] = (/*descriptor_magazine_number*/ 0x01 & 0x06) | ((/*descriptor_type*/ 0x01 << 3) & 0xF8);
-		buffer[off++] = 0x00 ;		//Teletext_page_number
+		buffer[off++] = (descriptor_magazine_number & 0x06) | ((/*descriptor_type*/ 0x01 << 3) & 0xF8);
+		buffer[off++] = page_number;
 	}
 	off--;
 	buffer[0x07] = off - 3; // update section_length

@@ -521,27 +521,34 @@ void CStreamManager::AddPids(int fd, CZapitChannel *channel, stream_pids_t &pids
 		psi.addPid(channel->getPcrPid(), EN_TYPE_PCR, 0);
 	}
 	
-	//add teletext pid
-	if (channel->getTeletextPid() != 0)
-	{
-		pids.insert(channel->getTeletextPid());
-		psi.addPid(channel->getTeletextPid(), EN_TYPE_TELTEX, 0, channel->getTeletextLang());
-	}
-	
 	//add dvb sub pid
 	if (channel->getSubtitleCount())
 	{
 		for (int i = 0 ; i < (int)channel->getSubtitleCount() ; ++i)
 		{
 			CZapitAbsSub *s = channel->getChannelSub(i);
+			
+			// dvbsub
 			if (s->thisSubType == CZapitAbsSub::DVB)
 			{
 				if (i > 9) //max sub pids
 					break;
 
 				CZapitDVBSub *sd = reinterpret_cast<CZapitDVBSub *>(s);
+				
 				pids.insert(sd->pId);
+				
 				psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0, sd->ISO639_language_code.c_str());
+			}
+			
+			// teletext
+			if (s->thisSubType == CZapitAbsSub::TTX) 
+			{
+				CZapitTTXSub* sd = reinterpret_cast<CZapitTTXSub*>(s);
+					
+				pids.insert(sd->pId);
+					
+				psi.addPid(sd->pId, EN_TYPE_TELTEX, 0, sd->ISO639_language_code.c_str(), sd->teletext_magazine_number, sd->teletext_page_number);
 			}
 		}
 	}

@@ -1283,6 +1283,25 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				
 				ffmpeg_printf(10, "\n", track.height);
 				
+				////test
+				#if 1
+				Hexdump(stream->codecpar->extradata, stream->codecpar->extradata_size);
+				
+				printf("codec: %s\n", avcodec_find_decoder(stream->codecpar->codec_id)->long_name);
+				uint8_t *data = stream->codecpar->extradata;
+				int size = stream->codecpar->extradata_size;
+				
+				if (size > 0 && 2 * size - 1 == (int) strlen(lang? lang->value : ""))
+				{
+					for (int i = 0; i < size; i += 2)
+					{
+						printf("type:0x%x\n", data[i] >> 3);
+						printf("mag:0x%x\n", data[i] & 7);
+						printf("page:0x%x\n", data[i + 1]);
+					}
+				}
+				#endif
+				
 				// init codec
 				subctx = avcodec_alloc_context3(avcodec_find_decoder(stream->codecpar->codec_id));
 
