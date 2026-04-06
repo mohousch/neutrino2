@@ -153,14 +153,14 @@ static int Write(void* _context, void *data)
     	}
     	
     	// teletext
-    	/*
+    	#if 0
 	if (out->stream->codecpar->codec_id == AV_CODEC_ID_DVB_TELETEXT)
     	{
-    		if (out->data && out->len > 1)
-    			teletext_write(0, out->data + 1, out->len + 1);
+//    		if (out->data && out->len > 1)
+//    			teletext_write(0, out->data + 1, out->len + 1);
     	}
     	else
-    	*/ // others
+    	#endif
     	{
     		//
     		AVPacket avpkt;
@@ -176,7 +176,7 @@ static int Write(void* _context, void *data)
 	    		
 	    	int got_sub_ptr = 0;
 	    	
-	    	// decode 	
+	    	// decode	
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)			   
 		if (avcodec_decode_subtitle2(out->ctx, &sub, &got_sub_ptr, &avpkt) < 0)
 #else
@@ -198,7 +198,6 @@ static int Write(void* _context, void *data)
 			subtitle_printf(100, "end_display_time %d\n", sub.end_display_time);
 			subtitle_printf(100, "num_rects %d\n", sub.num_rects);
 
-			
 			//
 			if (got_sub_ptr && sub.num_rects > 0)
 			{
@@ -295,8 +294,7 @@ static int Write(void* _context, void *data)
 
 								free(newdata);
 							}
-							#if 0 // FIXME:
-							else if (sub.rects[i]->nb_colors == 40) // VTXT
+							else if (sub.rects[i]->nb_colors == 40 && out->page == 0x777) // VTXT
 							{
 								//FIXME: 		
 								// resize color to 32 bit
@@ -317,7 +315,6 @@ static int Write(void* _context, void *data)
 
 								free(newdata);
 							}
-							#endif
 							else if (sub.rects[i]->nb_colors == 256)// PGS (256 nb_colors)
 							{		
 								int xoff = screen_x + (screen_width - sub.rects[i]->w)/2;

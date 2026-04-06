@@ -776,6 +776,8 @@ static void FFMPEGThread(Context_t* context)
 		           			//
 		           			data.stream    = subtitleTrack->stream;
 		           			data.ctx 	= subtitleTrack->ctx;
+		           			// 
+		           			data.page	= subtitleTrack->page;
 		           			
 						if (context->output->subtitle->Write(context, &data) < 0) 
 						{
@@ -875,6 +877,8 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	//
 	AVDictionary *options = NULL;
 	av_dict_set(&options, "auth_type", "basic", 0);
+	av_dict_set(&options, "txt_page", "subtitle", 0);
+	av_dict_set(&options, "txt_format", "2", 0);
 	
 	if (strncmp(filename, "http://", 7) == 0 || strncmp(filename, "https://", 8) == 0)
 	{
@@ -1281,13 +1285,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 					track.duration = (double) stream->duration * av_q2d(stream->time_base) * 1000.0;
 				}
 				
-				ffmpeg_printf(10, "\n", track.height);
-				
-				////test
-				#if 1
-				Hexdump(stream->codecpar->extradata, stream->codecpar->extradata_size);
-				
-				printf("codec: %s\n", avcodec_find_decoder(stream->codecpar->codec_id)->long_name);
 				uint8_t *data = stream->codecpar->extradata;
 				int size = stream->codecpar->extradata_size;
 				
@@ -1295,12 +1292,17 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				{
 					for (int i = 0; i < size; i += 2)
 					{
-						printf("type:0x%x\n", data[i] >> 3);
-						printf("mag:0x%x\n", data[i] & 7);
-						printf("page:0x%x\n", data[i + 1]);
+						uint16_t type = data[i] >> 3;
+						uint16_t mag = (data[i] & 7) | type;
+						uint16_t page = data[i + 1];
+						
+						int ttx = ((mag & 0xFF) << 8) | page;
+						
+						ffmpeg_printf(10, "page=0x%x\n", ttx);
+						
+						track.page = ttx;
 					}
 				}
-				#endif
 				
 				// init codec
 				subctx = avcodec_alloc_context3(avcodec_find_decoder(stream->codecpar->codec_id));

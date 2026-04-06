@@ -70,8 +70,8 @@ typedef struct Track_s
 	int                   height;
 
 	// stream from ffmpeg
-	AVStream* 	      stream;
-	AVCodecContext 		*ctx;
+	AVStream	      *stream;
+	AVCodecContext 	      *ctx;
 
 	// codec extra data (header or some other stuff)
 	void* 		      extraData;
@@ -84,6 +84,9 @@ typedef struct Track_s
 
 	//
 	int                   inject_as_pcm;
+	
+	//teletext
+	uint16_t		page;
 } Track_t;
 
 typedef struct Manager_s 

@@ -1161,7 +1161,7 @@ void tuxtx_pause_subtitle(bool pause, bool isEplayer)
 {
 	if(!pause) 
 	{
-		dprintf(DEBUG_NORMAL, "[tuxtxt] subtitle unpause, running %d pid 0x%x page %d\n", reader_running, sub_pid, sub_page);
+		dprintf(DEBUG_NORMAL, "[tuxtxt] subtitle unpause, running %d pid 0x%x page 0x%x\n", reader_running, sub_pid, sub_page);
 		
 		ttx_paused = 0;
 		
@@ -1464,7 +1464,7 @@ FT_Error MyFaceRequester(FTC_FaceID face_id, FT_Library _library, FT_Pointer /*r
 //// Init
 int Init(bool isEplayer, int page)
 {
-	printf("[tuxtxt] Init: isEplayer:%s page:%d\n", isEplayer? "true" : "false", page);
+	printf("[tuxtxt] Init: isEplayer:%s page:0x%x\n", isEplayer? "true" : "false", page);
 	
 	int error, i;
 	unsigned char magazine;

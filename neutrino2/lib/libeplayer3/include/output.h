@@ -21,6 +21,7 @@
 #define OUTPUT_H_
 
 #include <stdio.h>
+#include <stdint.h>
 
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
@@ -99,6 +100,9 @@ typedef struct
     	//
 	AVStream* 		stream;
 	AVCodecContext 		*ctx;
+	
+	//
+	uint16_t 		page;
 } SubtitleData_t;
 
 typedef struct

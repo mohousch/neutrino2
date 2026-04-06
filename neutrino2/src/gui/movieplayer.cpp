@@ -1181,7 +1181,6 @@ void CMoviePlayerGui::PlayFile(void)
 				if (!IsVisible()) 
 				{	
 					time_forced = true;
-					//showMovieInfo();//FIXME:
 				}
 			}
 			
@@ -1217,7 +1216,6 @@ void CMoviePlayerGui::PlayFile(void)
 				if (!IsVisible()) 
 				{	
 					time_forced = true;
-					//showMovieInfo();//FIXME:
 				}
 			}
 			
@@ -1235,7 +1233,6 @@ void CMoviePlayerGui::PlayFile(void)
 				if (!IsVisible()) 
 				{	
 					time_forced = true;
-					//showMovieInfo();//FIXME:
 				}
 			}
 		} 
@@ -1251,7 +1248,6 @@ void CMoviePlayerGui::PlayFile(void)
 				if (!IsVisible()) 
 				{	
 					time_forced = true;
-					//showMovieInfo();//FIXME:
 				}
 			}
 		} 
@@ -1266,7 +1262,6 @@ void CMoviePlayerGui::PlayFile(void)
 				if (!IsVisible()) 
 				{	
 					time_forced = true;
-					//showMovieInfo();//FIXME:
 				}
 			}
 		} 
@@ -1281,7 +1276,6 @@ void CMoviePlayerGui::PlayFile(void)
 				if (!IsVisible()) 
 				{	
 					time_forced = true;
-					//showMovieInfo();//FIXME:
 				}
 			}
 		} 
@@ -1296,7 +1290,6 @@ void CMoviePlayerGui::PlayFile(void)
 				if (!IsVisible()) 
 				{	
 					time_forced = true;
-					//showMovieInfo();//FIXME:
 				}
 			}
 		} 
@@ -1311,7 +1304,6 @@ void CMoviePlayerGui::PlayFile(void)
 				if (!IsVisible()) 
 				{	
 					time_forced = true;
-					//showMovieInfo();//FIXME:
 				}
 			}
 		} 
@@ -1326,7 +1318,6 @@ void CMoviePlayerGui::PlayFile(void)
 				if (!IsVisible()) 
 				{	
 					time_forced = true;
-					//showMovieInfo();//FIXME:
 				}
 			}
 		} 
@@ -1357,7 +1348,6 @@ void CMoviePlayerGui::PlayFile(void)
 				if (!IsVisible()) 
 				{	
 					time_forced = true;
-					//showMovieInfo();//FIXME:
 				}
 			}
 		} 
@@ -1372,7 +1362,6 @@ void CMoviePlayerGui::PlayFile(void)
 				if (!IsVisible()) 
 				{	
 					time_forced = true;
-					//showMovieInfo();//FIXME:
 				}
 			}
 		} 
@@ -1392,7 +1381,6 @@ void CMoviePlayerGui::PlayFile(void)
 				if (!IsVisible()) 
 				{	
 					time_forced = true;
-					//showMovieInfo();//FIXME:
 				}
 			}
 			
@@ -1414,7 +1402,6 @@ void CMoviePlayerGui::PlayFile(void)
 				if (!IsVisible()) 
 				{	
 					time_forced = true;
-					//showMovieInfo();//FIXME:
 				}
 			}
 			
