@@ -1491,6 +1491,7 @@ void CChannelList::paint(bool customMode)
 			}
 			
 			// logo
+			#if 0
 			if (g_settings.logos_show_logo)
 			{
 				std::string logo;
@@ -1500,6 +1501,7 @@ void CChannelList::paint(bool customMode)
 				//FIXME:
 				item->setIconName(logo.c_str());
 			}
+			#endif
 			
 			// option font
 			item->setOptionFont(SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER);
