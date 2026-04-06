@@ -878,7 +878,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	AVDictionary *options = NULL;
 	av_dict_set(&options, "auth_type", "basic", 0);
 	av_dict_set(&options, "txt_page", "subtitle", 0);
-	av_dict_set(&options, "txt_format", "2", 0);
+	av_dict_set(&options, "txt_format", "bitmap", 0);
 	
 	if (strncmp(filename, "http://", 7) == 0 || strncmp(filename, "https://", 8) == 0)
 	{
@@ -1285,23 +1285,26 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 					track.duration = (double) stream->duration * av_q2d(stream->time_base) * 1000.0;
 				}
 				
-				uint8_t *data = stream->codecpar->extradata;
-				int size = stream->codecpar->extradata_size;
-				
-				if (size > 0 && 2 * size - 1 == (int) strlen(lang? lang->value : ""))
+				if (stream->codecpar->codec_id == AV_CODEC_ID_DVB_TELETEXT)
 				{
-					for (int i = 0; i < size; i += 2)
+					if (stream->codecpar->extradata_size > 0)
 					{
-						uint16_t type = data[i] >> 3;
-						uint16_t mag = (data[i] & 7) | type;
-						uint16_t page = data[i + 1];
-						
-						int ttx = ((mag & 0xFF) << 8) | page;
-						
-						ffmpeg_printf(10, "page=0x%x\n", ttx);
-						
-						track.page = ttx;
+						for (int i = 0; i < stream->codecpar->extradata_size; i += 2)
+						{
+							uint16_t type = stream->codecpar->extradata[i] >> 3;
+							uint16_t mag = (stream->codecpar->extradata[i] & 7) | type;
+							uint16_t page = stream->codecpar->extradata[i + 1];
+							
+							int txt_page = ((mag & 0xFF) << 8) | page;
+							
+							ffmpeg_printf(10, "page=0x%x\n", txt_page);
+							
+							track.page = txt_page;
+						}
 					}
+					
+					if (track.page != 0x777)
+						continue;
 				}
 				
 				// init codec

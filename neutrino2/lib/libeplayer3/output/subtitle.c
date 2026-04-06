@@ -294,7 +294,7 @@ static int Write(void* _context, void *data)
 
 								free(newdata);
 							}
-							else if (sub.rects[i]->nb_colors == 40 && out->page == 0x777) // VTXT
+							else if (sub.rects[i]->nb_colors == 40) // VTXT
 							{
 								//FIXME: 		
 								// resize color to 32 bit
