@@ -60,7 +60,7 @@ typedef uint64_t t_channel_id;
 typedef uint64_t transponder_id_t;
 
 //// channel_id
-static inline t_channel_id create_channel_id(t_service_id service_id, t_original_network_id original_network_id, t_transport_stream_id transport_stream_id, t_satellite_position satellitePosition = 0, freq_id_t freq = 0, const char *url = NULL) 
+static inline t_channel_id create_channel_id(t_service_id service_id, t_original_network_id original_network_id, t_transport_stream_id transport_stream_id, freq_id_t freq = 0, const char *url = NULL) 
 {
 	if (url) 
 	{
@@ -72,9 +72,9 @@ static inline t_channel_id create_channel_id(t_service_id service_id, t_original
 		return cid | 0xFFFFFFFF00000000;
 	}
 
-	return ((uint64_t)(satellitePosition + freq*4) << 48) | ((uint64_t) transport_stream_id << 32) | ((uint64_t)original_network_id << 16) | (uint64_t)service_id;
+	return ((uint64_t)(freq) << 48) | ((uint64_t) transport_stream_id << 32) | ((uint64_t)original_network_id << 16) | (uint64_t)service_id;
 }
-#define CREATE_CHANNEL_ID create_channel_id(service_id, original_network_id, transport_stream_id, satellitePosition, freq)
+#define CREATE_CHANNEL_ID create_channel_id(service_id, original_network_id, transport_stream_id, freq)
 
 static inline bool IS_WEBTV(t_channel_id cid)
 {

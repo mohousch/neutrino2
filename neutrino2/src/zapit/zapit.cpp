@@ -3170,23 +3170,18 @@ CZapit::CServiceInfo CZapit::getServiceInfo(t_channel_id chid)
 
 void CZapit::setSubServices( subServiceList& subServices )
 {
-	//
-	t_satellite_position  satellitePosition = 0;
-	freq_id_t freq = 0;
-		
+	//	
 	for (int i = 0; i < subServices.size(); i++)
 	{
 		nvodchannels.insert (
 				std::pair<t_channel_id, CZapitChannel> (
-					create_channel_id(subServices[i].service_id, subServices[i].original_network_id, subServices[i].transport_stream_id, satellitePosition, freq),
+					create_channel_id(subServices[i].service_id, subServices[i].original_network_id, subServices[i].transport_stream_id),
 					CZapitChannel (
 					"NVOD",
 					subServices[i].service_id,
 					subServices[i].transport_stream_id,
 					subServices[i].original_network_id,
-					ST_DIGITAL_TELEVISION_SERVICE,
-					satellitePosition,
-					freq)
+					ST_DIGITAL_TELEVISION_SERVICE)
 				)
 				);
 	}
@@ -5504,8 +5499,7 @@ void CZapit::makeBouquetfromCurrentservices(const xmlNodePtr root)
 	t_service_id          	service_id;		
 	t_original_network_id 	original_network_id;
 	t_transport_stream_id 	transport_stream_id;
-	t_satellite_position  	satellitePosition;
-	freq_id_t 		freq = 0;
+	freq_id_t freq = 0;
 	
 	while (provider) 
 	{	
@@ -5516,11 +5510,10 @@ void CZapit::makeBouquetfromCurrentservices(const xmlNodePtr root)
 			xmlNodePtr channel_node = transponder->xmlChildrenNode;
 			
 			while (xmlGetNextOccurence(channel_node, "channel") != NULL) 
-			{
-				
+			{				
 				if (strncmp(xmlGetAttribute(channel_node, "action"), "remove", 6)) 
 				{
-					GET_ATTR(provider, "position", "%hd", satellitePosition);
+					//GET_ATTR(provider, "position", "%hd", satellitePosition);
 					GET_ATTR(transponder, "onid", "%hx", original_network_id);
 					GET_ATTR(transponder, "id", "%hx", transport_stream_id);
 					GET_ATTR(channel_node, "service_id", "%hx", service_id);
@@ -5597,7 +5590,7 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 						xmltv = xmlGetAttribute(l1, (const char*)"xmltv");
 						logo = xmlGetAttribute(l1, (const char*)"logo");
 
-						id = create_channel_id(0, 0, 0, 0, 0, url);
+						id = create_channel_id(0, 0, 0, 0, url);
 							
 						//std::pair<std::map<t_channel_id, CZapitChannel>::iterator, bool> ret;
 						allchans.insert(std::pair<t_channel_id, CZapitChannel> (id, CZapitChannel(title, id, url, description)));
@@ -5747,7 +5740,7 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 						}
 						
 						//
-						id = create_channel_id(0, 0, 0, 0, 0, url);
+						id = create_channel_id(0, 0, 0, 0, url);
 							
 						//std::pair<std::map<t_channel_id, CZapitChannel>::iterator, bool> ret;
 						allchans.insert(std::pair<t_channel_id, CZapitChannel> (id, CZapitChannel(title, id, url, description)));
