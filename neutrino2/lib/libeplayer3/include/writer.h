@@ -89,35 +89,35 @@ typedef ssize_t (* WriteV_t)(int, const struct iovec *, int);
 typedef struct 
 {
 	//
-	int                    fd;
-	unsigned char*         data;
-	unsigned int           len;
-	unsigned long long int Pts;
-	unsigned char*         private_data;
-	unsigned int           private_size;
-	unsigned int           FrameRate;
-	unsigned int           FrameScale;
-	unsigned int           Width;
-	unsigned int           Height;
-	unsigned char          Version;
-	WriteV_t               WriteV;
+	int fd;
+	uint8_t *data;
+	unsigned int len;
+	uint64_t Pts;
+	uint8_t *private_data;
+	unsigned int private_size;
+	unsigned int FrameRate;
+	unsigned int FrameScale;
+	unsigned int Width;
+	unsigned int Height;
+	uint8_t Version;
+	WriteV_t WriteV;
 } WriterAVCallData_t;
 
 typedef struct 
 {
-	uint8_t*         	data;
-	unsigned int           	x;
-	unsigned int           	y;
-	unsigned int           	Width;
-	unsigned int           	Height;
+	uint8_t *data;
+	unsigned int x;
+	unsigned int y;
+	unsigned int Width;
+	unsigned int Height;
 } WriterFBCallData_t;
 
 typedef struct WriterCaps_s 
 {
-	char*          name;
-	eWriterType_t  type;
-	char*          textEncoding;
-	int            dvbEncoding;
+	char *name;
+	eWriterType_t type;
+	char *textEncoding;
+	int dvbEncoding;
 } WriterCaps_t;
 
 typedef struct Writer_s 

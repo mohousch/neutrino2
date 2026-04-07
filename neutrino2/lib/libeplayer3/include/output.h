@@ -56,28 +56,28 @@ typedef enum {
 typedef struct
 {
 	//
-	uint8_t         	*data;
-	unsigned int           	len;
+	uint8_t *data;
+	unsigned int len;
 
-	uint8_t         	*extradata;
-	unsigned int           	extralen;
+	uint8_t *extradata;
+	unsigned int extralen;
 	
-	uint64_t         	pts;
+	uint64_t pts;
 	
-	float                  	frameRate;
-	unsigned int           	timeScale;
+	float frameRate;
+	unsigned int timeScale;
 	
-	unsigned int           	width;
-	unsigned int           	height;
+	unsigned int width;
+	unsigned int height;
 	
-	char*                  	type;
+	char *type;
 	
 	//
 #ifdef USE_OPENGL	
-	AVStream* 		stream;
-	AVCodecContext 		*ctx;
-	AVFrame*		vframe;
-	AVFrame* 		aframe;
+	AVStream *stream;
+	AVCodecContext *ctx;
+	AVFrame *vframe;
+	AVFrame *aframe;
 #endif
 } AudioVideoOut_t;
 
@@ -85,32 +85,32 @@ typedef struct
 typedef struct
 {
 	//
-	uint8_t 		*data;
-	int            		len;
+	uint8_t *data;
+	int len;
 
-	uint8_t 		*extradata;
-	int            		extralen;
+	uint8_t *extradata;
+	int extralen;
 	
-	int64_t  		pts;
-	float          		duration;
+	uint64_t pts;
+	float duration;
 	
-	int          		width;
-    	int          		height;
+	int width;
+    	int height;
     	
     	//
-	AVStream* 		stream;
-	AVCodecContext 		*ctx;
+	AVStream *stream;
+	AVCodecContext *ctx;
 	
 	//
-	uint16_t 		page;
+	uint16_t page;
 } SubtitleData_t;
 
 typedef struct
 {
-	unsigned int 	screen_x;
-	unsigned int 	screen_y;
-	unsigned int   	screen_width;
-	unsigned int   	screen_height;
+	unsigned int screen_x;
+	unsigned int screen_y;
+	unsigned int screen_width;
+	unsigned int screen_height;
 } SubtitleOutputDef_t;
 
 typedef struct Output_s 

@@ -50,43 +50,43 @@ typedef enum
 
 typedef struct Track_s 
 {
-	char*                 Name;
-	char*                 Encoding;
-	int                   Index;
+	char *Name;
+	char *Encoding;
+	int Index;
 
 	//
-	char*                 language;
+	char *language;
 
 	// length of track
-	int64_t               duration;
-	uint32_t             frame_rate;
-	uint32_t             TimeScale;
-	int                   version;
-	int64_t		      pts;
+	int64_t duration;
+	uint32_t frame_rate;
+	uint32_t TimeScale;
+	int version;
+	uint64_t pts;
 
 	// for later use:
-	eTrackTypeEplayer     type;
-	int                   width;
-	int                   height;
+	eTrackTypeEplayer type;
+	int width;
+	int height;
 
 	// stream from ffmpeg
-	AVStream	      *stream;
-	AVCodecContext 	      *ctx;
+	AVStream *stream;
+	AVCodecContext *ctx;
 
 	// codec extra data (header or some other stuff)
-	void* 		      extraData;
-	int		      extraSize;
+	void *extraData;
+	int extraSize;
 
 	// aac header
-	uint8_t*              aacbuf;
-	unsigned int          aacbuflen;
-	int                   have_aacheader;
+	uint8_t *aacbuf;
+	unsigned int aacbuflen;
+	int have_aacheader;
 
 	//
-	int                   inject_as_pcm;
+	int inject_as_pcm;
 	
 	//teletext
-	uint16_t		page;
+	uint16_t page;
 } Track_t;
 
 typedef struct Manager_s 

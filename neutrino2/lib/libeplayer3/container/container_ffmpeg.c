@@ -118,12 +118,12 @@ static AVCodecContext* subctx = NULL;
 
 static unsigned char isContainerRunning = 0;
 
-static int64_t latestPts = 0;
+static uint64_t latestPts = 0;
 
 /* ***************************** */
 /* Prototypes                    */
 /* ***************************** */
-static int32_t container_ffmpeg_seek_rel(Context_t *context, off_t pos, int64_t pts, float sec);
+static int32_t container_ffmpeg_seek_rel(Context_t *context, off_t pos, uint64_t pts, float sec);
 
 /* ***************************** */
 /* MISC Functions                */
@@ -328,9 +328,9 @@ static char* Codec2Encoding(uint32_t codec_id, int* version)
 	return NULL;
 }
 
-int64_t calcPts(AVStream *stream, AVPacket *packet, AVFormatContext *_avContext)
+uint64_t calcPts(AVStream *stream, AVPacket *packet, AVFormatContext *_avContext)
 {
-	int64_t pts;
+	uint64_t pts;
 
 	if ((stream == NULL) || (packet == NULL) || (_avContext == NULL))
 	{
@@ -363,18 +363,18 @@ float getDurationFromSSALine(unsigned char *line)
 	ptr1 = Text;
 	ptr[0] = Text;
 	
-	for (i=0; i < 3 && *ptr1 != '\0'; ptr1++) 
+	for (i = 0; i < 3 && *ptr1 != '\0'; ptr1++) 
 	{
 		if (*ptr1 == ',') 
 		{
-			ptr[++i]=ptr1+1;
+			ptr[++i] = ptr1+1;
 			*ptr1 = '\0';
 		}
 	}
 
-	sscanf(ptr[2],"%d:%d:%d.%d",&h,&m,&s,&ms);
+	sscanf(ptr[2],"%d:%d:%d.%d", &h, &m, &s, &ms);
 	msec = (ms*10) + (s*1000) + (m*60*1000) + (h*24*60*1000);
-	sscanf(ptr[1],"%d:%d:%d.%d",&h,&m,&s,&ms);
+	sscanf(ptr[1],"%d:%d:%d.%d", &h, &m, &s, &ms);
 	msec -= (ms*10) + (s*1000) + (m*60*1000) + (h*24*60*1000);
 
 	ffmpeg_printf(10, "%s %s %f\n", ptr[2], ptr[1], (float) msec / 1000.0);
@@ -424,9 +424,9 @@ static void FFMPEGThread(Context_t* context)
 {
 	AVPacket   packet;
 	off_t lastSeek = -1;
-	int64_t lastPts = -1;
-	int64_t currentVideoPts = -1;
-	int64_t currentAudioPts = -1;
+	uint64_t lastPts = -1;
+	uint64_t currentVideoPts = -1;
+	uint64_t currentAudioPts = -1;
 	int64_t showtime = 0;
 	int64_t bofcount = 0;
 	int err = 0;
@@ -1396,9 +1396,9 @@ static void FFMPEGSubThread(Context_t* context)
 {
 	AVPacket   subpacket;
 	off_t lastSeek = -1;
-	int64_t lastPts = -1;
-	int64_t showtime = 0;
-	int64_t bofcount = 0;
+	uint64_t lastPts = -1;
+	uint64_t showtime = 0;
+	uint64_t bofcount = 0;
 	int err = 0;
 	int audioMute = 0;	
 
@@ -1890,7 +1890,7 @@ static int container_ffmpeg_seek_bytes(off_t pos)
 }
 
 // seeking relative to a given byteposition N seconds ->for reverse playback needed
-static int container_ffmpeg_seek_rel(Context_t *context, off_t pos, int64_t pts, float sec) 
+static int container_ffmpeg_seek_rel(Context_t *context, off_t pos, uint64_t pts, float sec) 
 {
 	Track_t * videoTrack = NULL;
 	Track_t * audioTrack = NULL;
