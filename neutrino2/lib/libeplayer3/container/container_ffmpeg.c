@@ -878,7 +878,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	AVDictionary *options = NULL;
 	av_dict_set(&options, "auth_type", "basic", 0);
 	av_dict_set(&options, "txt_page", "subtitle", 0);
-	av_dict_set(&options, "txt_format", "bitmap", 0);
+//	av_dict_set(&options, "txt_format", "bitmap", 0);
 	
 	if (strncmp(filename, "http://", 7) == 0 || strncmp(filename, "https://", 8) == 0)
 	{
@@ -1302,9 +1302,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 							track.page = txt_page;
 						}
 					}
-					
-					if (track.page != 0x777)
-						continue;
 				}
 				
 				// init codec

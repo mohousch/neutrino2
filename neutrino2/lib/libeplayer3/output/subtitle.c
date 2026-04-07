@@ -153,14 +153,12 @@ static int Write(void* _context, void *data)
     	}
     	
     	// teletext
-    	#if 0
 	if (out->stream->codecpar->codec_id == AV_CODEC_ID_DVB_TELETEXT)
     	{
-//    		if (out->data && out->len > 1)
-//    			teletext_write(0, out->data + 1, out->len + 1);
+    		if (out->data && out->len > 1)
+   			teletext_write(0, out->data + 1, out->len + 1);
     	}
     	else
-    	#endif
     	{
     		//
     		AVPacket avpkt;

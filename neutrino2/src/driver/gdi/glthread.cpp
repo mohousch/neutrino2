@@ -677,17 +677,18 @@ void GLThreadObj::bltPlayBuffer()
 	//
 	int64_t apts = buf->apts();
 	int64_t vpts = buf->vpts() + 18000;
-	int rate = buf->rate();
 	
 	//		
 	if (apts != last_apts)
 	{		
 		if (apts < vpts)
-			sleep_us = (sleep_us * 2 + (vpts - apts) * 10 / 9) / 2;
+			sleep_us = (sleep_us * 2 + (vpts - apts) * 10 / 9) / 3;
 		else if (sleep_us > 1000)
 			sleep_us -= 1000;
 		
 		last_apts = apts;
+		
+		int rate = buf->rate();
 		
 		//	
 		if (sleep_us > 90000)

@@ -73,8 +73,8 @@ unsigned short extnumpids = 0;
 int currentextspid = -1;
 std::string subtitle_file;
 //
-//extern void tuxtx_stop_subtitle();
-//extern int tuxtx_main(int pid, int page, bool isEplayer);
+extern void tuxtx_stop_subtitle();
+extern int tuxtx_main(int pid, int page, bool isEplayer);
 //
 extern cPlayback *playback;		// libdvbapi (playback_cs.cpp)
 extern cAudio * audioDecoder;		// libdvbapi (audio_cs.cpp)
@@ -179,6 +179,9 @@ int CAVSubPIDChangeExec::exec(CTarget */*parent*/, const std::string & actionKey
 		if(playback)
 			playback->SetSubPid(currentspid);
 			
+		tuxtx_stop_subtitle();
+		tuxtx_main(0, 0x777, true);
+			
 		return CTarget::RETURN_EXIT_ALL;		
 	}
 	else if(actionKey == "off") 
@@ -192,7 +195,7 @@ int CAVSubPIDChangeExec::exec(CTarget */*parent*/, const std::string & actionKey
 			playback->SetExtSubPid(-1);
 		}
 		
-//		tuxtx_stop_subtitle();
+		tuxtx_stop_subtitle();
 			
 		return CTarget::RETURN_EXIT_ALL;
 	}
