@@ -650,10 +650,10 @@ void CZapit::loadFrontendConfig()
 			char cfg_key[81];
 			
 			sprintf(cfg_key, "fe%d%d_gotoXXLatitude", fe->feadapter, fe->fenumber);
-			fe->gotoXXLatitude = strtod(config.getString(cfg_key, "0.0").c_str(), NULL);
+			fe->gotoXXLatitude = strtod(fe_configfile.getString(cfg_key, "0.0").c_str(), NULL);
 			
 			sprintf(cfg_key, "fe%d%d_gotoXXLongitude", fe->feadapter, fe->fenumber);
-			fe->gotoXXLongitude = strtod(config.getString(cfg_key, "0.0").c_str(), NULL);
+			fe->gotoXXLongitude = strtod(fe_configfile.getString(cfg_key, "0.0").c_str(), NULL);
 			
 			fe->gotoXXLaDirection = getConfigValue(fe, "gotoXXLaDirection", 0);
 			fe->gotoXXLoDirection = getConfigValue(fe, "gotoXXLoDirection", 0);
