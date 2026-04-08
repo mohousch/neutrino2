@@ -144,7 +144,7 @@ int CAVSubPIDChangeExec::exec(CTarget */*parent*/, const std::string & actionKey
 #else
 	if (strstr(actionKey.c_str(), "DVB") || strstr(actionKey.c_str(), "PGS") || strstr(actionKey.c_str(), "SUBRIP") || strstr(actionKey.c_str(), "ASS") || strstr(actionKey.c_str(), "SSA") || strstr(actionKey.c_str(), "SRT") || strstr(actionKey.c_str(), "UTF-8") || strstr(actionKey.c_str(), "XSUB"))
 	{
-//		tuxtx_stop_subtitle();
+		tuxtx_stop_subtitle();
 		
 		isEXtSub = (strstr(actionKey.c_str(), "(EXT)"));
 		
