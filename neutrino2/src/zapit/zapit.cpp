@@ -4765,7 +4765,7 @@ void CZapit::saveMotorPositions()
 		return;
 	}
 	
-	fprintf(fd, "# sat position, stored rotor, diseqc, commited, uncommited, low, high, switch, use in full scan, use usals\n");
+	fprintf(fd, "# sat_position, stored_rotor, diseqc, commited, uncommited, low, high, switch, use_in_full_scan, use_usals\n");
 	
 	for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 	{

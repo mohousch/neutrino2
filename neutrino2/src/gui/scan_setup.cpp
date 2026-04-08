@@ -554,7 +554,7 @@ int CScanSetup::showTunerSetup()
 	tunersetup->addItem(ojVoltage);
 	
 	// scanSetup
-	item = new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Scan Setup"));
+	item = new CMenuSeparator(CMenuSeparator::LINE);
 	item->setHidden(false);
 	feModeNotifier->addItem(item);
 	tunersetup->addItem(item);
@@ -968,53 +968,52 @@ int CScanSetup::showLNBSetup()
 	satSetup->addItem(new CMenuForwarder(_("back")));
 	satSetup->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		
-	// tmpSat
-	CWidget* tempsatWidget = NULL;
-	ClistBox* tempsatlistBox = NULL;
-		
-	tempsatWidget = CNeutrinoApp::getInstance()->getWidget("tempsat");
-				
-	if (tempsatWidget)
-	{
-		tempsatlistBox = (ClistBox*)tempsatWidget->getCCItem(CComponent::CC_LISTBOX);
-	}
-	else
-	{
-		//
-		CBox box;
-		box.iWidth = MENU_WIDTH;
-		box.iHeight = MENU_HEIGHT;
-		box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
-		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
-		
-		tempsatWidget = new CWidget(&box);
-		tempsatWidget->name = "tempsat";
-		tempsatWidget->enableSaveScreen();
-		
-		//
-		tempsatlistBox = new ClistBox(&box);
-
-		tempsatlistBox->setMode(ClistBox::MODE_SETUP);
-					
-		//
-		tempsatlistBox->enablePaintHead();
-					
-		//
-		tempsatlistBox->enablePaintFoot();		
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };		
-		tempsatlistBox->setFootButtons(&btn);
-					
-		//
-		tempsatWidget->addCCItem(tempsatlistBox);
-	}
-
+	//
 	for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 	{
 		// satname
 		if(sit->second.system == CFrontend::DVB_S)
-		{	
-			//
-//			if (tempsatlistBox->hasTitle())
+		{
+			// tmpSat
+			CWidget* tempsatWidget = NULL;
+			ClistBox* tempsatlistBox = NULL;
+				
+			tempsatWidget = CNeutrinoApp::getInstance()->getWidget("tempsat");
+						
+			if (tempsatWidget)
+			{
+				tempsatlistBox = (ClistBox*)tempsatWidget->getCCItem(CComponent::CC_LISTBOX);
+			}
+			else
+			{
+				//
+				CBox box;
+				box.iWidth = MENU_WIDTH;
+				box.iHeight = MENU_HEIGHT;
+				box.iX = CFrameBuffer::getInstance()->getScreenX() + (CFrameBuffer::getInstance()->getScreenWidth() - box.iWidth) / 2;
+				box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
+				
+				tempsatWidget = new CWidget(&box);
+				tempsatWidget->name = "tempsat";
+				tempsatWidget->enableSaveScreen();
+				
+				//
+				tempsatlistBox = new ClistBox(&box);
+
+				tempsatlistBox->setMode(ClistBox::MODE_SETUP);
+							
+				//
+				tempsatlistBox->enablePaintHead();
+							
+				//
+				tempsatlistBox->enablePaintFoot();		
+				const struct button_label btn = { NEUTRINO_ICON_INFO, " ", 0 };		
+				tempsatlistBox->setFootButtons(&btn);
+							
+				//
+				tempsatWidget->addCCItem(tempsatlistBox);
+			}
+				
 			tempsatWidget->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_SCAN);
 			tempsatlistBox->setMode(ClistBox::MODE_SETUP);
 				
@@ -1059,19 +1058,19 @@ int CScanSetup::showLNBSetup()
 			tempsatlistBox->addItem(new CMenuForwarder(_("LNB Low Offset"), true, lofL->getValue(), lofL ));
 			tempsatlistBox->addItem(new CMenuForwarder(_("LNB High Offset"), true, lofH->getValue(), lofH ));
 			tempsatlistBox->addItem(new CMenuForwarder(_("LNB switch Offset"), true, lofS->getValue(), lofS));
+			
+			// sat setup
+			satSetup->addItem(new CMenuForwarder(sit->second.name.c_str(), true, NULL, tempsatWidget));
+			
+			//if (tempsatWidget)
+			//{
+			//	delete tempsatWidget;
+			//	tempsatWidget = NULL;
+			//}
 		}
-		
-		// sat setup
-		satSetup->addItem(new CMenuForwarder(sit->second.name.c_str(), true, NULL, tempsatWidget));
 	}
 	
 	ret = satSetupWidget->exec(this, "");
-		
-	if (tempsatWidget)
-	{
-		delete tempsatWidget;
-		tempsatWidget = NULL;
-	}
 	
 	if (satSetupWidget)
 	{
@@ -1141,7 +1140,7 @@ int CScanSetup::showSatOnOffSetup()
 		if(sit->second.system == CFrontend::DVB_S)
 		{
 			// inuse
-			CMenuOptionChooser * inuse = new CMenuOptionChooser(sit->second.name.c_str(),  &sit->second.use_in_scan, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
+			CMenuOptionChooser * inuse = new CMenuOptionChooser(sit->second.name.c_str(), &sit->second.use_in_scan, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
 			
 			satOnOfflistBox->addItem(inuse);
 		}
