@@ -534,6 +534,10 @@ int CScanSetup::showTunerSetup()
 	if (fe->isHybrid())
 	{
 		CMenuOptionChooser *tunerType = new CMenuOptionChooser(_("Tuner type"),  (int *)&fe->forcedDelSys, FRONTEND_DELIVERYSYSTEM_OPTIONS, FRONTEND_DELIVERYSYSTEM_OPTION_COUNT, true, feDelSysNotifier);
+		
+#ifdef ENABLE_TESTING
+		tunerType->addOption("DVBALL", CFrontend::DVB_C | CFrontend::DVB_T | CFrontend::DVB_T2 | CFrontend::DVB_S | CFrontend::DVB_S2 | CFrontend::DVB_S2X | CFrontend::DVB_A | CFrontend::DVB_DTMB);
+#endif
 			
 		tunerType->setActive(true);
 		
