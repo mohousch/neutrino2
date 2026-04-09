@@ -141,14 +141,29 @@ int CAVSubPIDChangeExec::exec(CTarget */*parent*/, const std::string & actionKey
 			
 		return CTarget::RETURN_EXIT_ALL;
 	}
-#else
-	if (strstr(actionKey.c_str(), "DVB") || strstr(actionKey.c_str(), "PGS") || strstr(actionKey.c_str(), "SUBRIP") || strstr(actionKey.c_str(), "ASS") || strstr(actionKey.c_str(), "SSA") || strstr(actionKey.c_str(), "SRT") || strstr(actionKey.c_str(), "UTF-8") || strstr(actionKey.c_str(), "XSUB"))
+#else	
+	if(actionKey == "off") 
+	{
+		currentspid = -1;
+		currentextspid = -1;
+		
+		if(playback)
+		{
+			playback->SetSubPid(-1);
+			playback->SetExtSubPid(-1);
+		}
+		
+		tuxtx_stop_subtitle();
+			
+		return CTarget::RETURN_EXIT_ALL;
+	}
+	else if (!actionKey.empty())
 	{
 		tuxtx_stop_subtitle();
 		
-		isEXtSub = (strstr(actionKey.c_str(), "(EXT)"));
-		
 		char const * pidptr = strchr(actionKey.c_str(), ':');
+		
+		isEXtSub = (strstr(actionKey.c_str(), "(EXT)"));
 		
 		if (isEXtSub)
 		{
@@ -166,36 +181,11 @@ int CAVSubPIDChangeExec::exec(CTarget */*parent*/, const std::string & actionKey
 			if(playback)
 				playback->SetSubPid(currentspid);
 		}
-			
-		return CTarget::RETURN_EXIT_ALL;
-	}
-	else if (strstr(actionKey.c_str(), "TELETEXT"))
-	{
-		char const * pidptr = strchr(actionKey.c_str(), ':');
 		
-		currentspid = atoi(pidptr + 1);
-		currentextspid = -1;
-		
-		if(playback)
-			playback->SetSubPid(currentspid);
-			
-		tuxtx_stop_subtitle();
-		tuxtx_main(0, 0x777, true);
-			
-		return CTarget::RETURN_EXIT_ALL;		
-	}
-	else if(actionKey == "off") 
-	{
-		currentspid = -1;
-		currentextspid = -1;
-		
-		if(playback)
+		if (strstr(actionKey.c_str(), "TELETEXT"))
 		{
-			playback->SetSubPid(-1);
-			playback->SetExtSubPid(-1);
+			tuxtx_main(0, 0x777, true);
 		}
-		
-		tuxtx_stop_subtitle();
 			
 		return CTarget::RETURN_EXIT_ALL;
 	}
