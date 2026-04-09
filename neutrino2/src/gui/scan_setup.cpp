@@ -473,7 +473,7 @@ int CScanSetup::showTunerSetup()
 	CMenuItem *item = NULL;
 	
 	//
-	widget = CNeutrinoApp::getInstance()->getWidget("frontendsetup");
+	widget = CNeutrinoApp::getInstance()->getWidget("tunersetup");
 	
 	if (widget)
 	{
@@ -489,7 +489,7 @@ int CScanSetup::showTunerSetup()
 		box.iY = CFrameBuffer::getInstance()->getScreenY() + (CFrameBuffer::getInstance()->getScreenHeight() - box.iHeight) / 2;
 		
 		widget = new CWidget(&box);
-		widget->name = "frontendsetup";
+		widget->name = "tunersetup";
 		
 		//
 		tunersetup = new ClistBox(&box);
@@ -573,7 +573,7 @@ int CScanSetup::showTunerSetup()
 	}
 	
 	//
-        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+        resetLCDMode();
 	
 	return res;
 }
@@ -792,6 +792,8 @@ int CScanSetup::showMotorSetup()
 		//
 		motorMenuWidget->addCCItem(motorMenu);
 	}
+	
+	setLCDMode(_("Motor settings"));
 		
 	// intros
 	motorMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
@@ -844,6 +846,8 @@ int CScanSetup::showMotorSetup()
 		motorMenuWidget = NULL;
 	}
 	
+	resetLCDMode();
+	
 	return ret;
 }
 
@@ -893,6 +897,8 @@ int CScanSetup::showUnicableSetup()
 		//
 		uniWidget->addCCItem(uni_setup);
 	}
+	
+	setLCDMode(_("Unicable settings"));
 
 	uni_setup->addItem(new CMenuForwarder(_("back")));
 	uni_setup->addItem(new CMenuSeparator(CMenuSeparator::LINE));
@@ -914,6 +920,8 @@ int CScanSetup::showUnicableSetup()
 		delete uniWidget;
 		uniWidget = NULL;
 	}
+	
+	resetLCDMode();
 
 	return ret;
 }
@@ -964,6 +972,8 @@ int CScanSetup::showLNBSetup()
 		//
 		satSetupWidget->addCCItem(satSetup);
 	}
+	
+	setLCDMode(_("Sat settings"));
 		
 	satSetup->addItem(new CMenuForwarder(_("back")));
 	satSetup->addItem(new CMenuSeparator(CMenuSeparator::LINE));
@@ -1078,6 +1088,8 @@ int CScanSetup::showLNBSetup()
 		satSetupWidget = NULL;
 	}
 	
+	resetLCDMode();
+	
 	return ret;
 }
 
@@ -1129,6 +1141,8 @@ int CScanSetup::showSatOnOffSetup()
 		satOnOffWidget->addCCItem(satOnOfflistBox);
 	}
 	
+	setLCDMode(_("Satellite"));
+
 	// intros
 	satOnOfflistBox->addItem(new CMenuForwarder(_("back")));
 	satOnOfflistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
@@ -1153,6 +1167,8 @@ int CScanSetup::showSatOnOffSetup()
 		delete satOnOffWidget;
 		satOnOffWidget = NULL;
 	}
+	
+	resetLCDMode();
 	
 	return ret;
 }
@@ -1206,6 +1222,8 @@ int CScanSetup::showManualScanSetup()
 		//
 		manualScanWidget->addCCItem(manualScanlistBox);
 	}
+	
+	setLCDMode(_("Manual frequency scan / Test signal"));
 
 	// intros
 	manualScanlistBox->addItem(new CMenuForwarder(_("back")));
@@ -1442,6 +1460,8 @@ int CScanSetup::showManualScanSetup()
 		delete manualScanWidget;
 		manualScanWidget = NULL;
 	}
+	
+	resetLCDMode();
 
 	return ret;
 }
@@ -1491,6 +1511,8 @@ int CScanSetup::showAutoScanSetup()
 		//
 		autoScanWidget->addCCItem(autoScanlistBox);
 	}
+	
+	setLCDMode(_("Auto Scan"));
 	
 	// intros
 	autoScanlistBox->addItem(new CMenuForwarder(_("back")));
@@ -1580,6 +1602,8 @@ int CScanSetup::showAutoScanSetup()
 		delete autoScanWidget;
 		autoScanWidget = NULL;
 	}
+	
+	resetLCDMode();
 
 	return ret;
 }
@@ -1630,6 +1654,8 @@ int CScanSetup::showAllAutoScanSetup()
 		//
 		autoScanAllWidget->addCCItem(autoScanAlllistBox);
 	}
+	
+	setLCDMode(_("Auto-Scan multiple Satellites"));
 			
 	// intros
 	autoScanAlllistBox->addItem(new CMenuForwarder(_("back")));
@@ -1652,6 +1678,8 @@ int CScanSetup::showAllAutoScanSetup()
 		delete autoScanAllWidget;
 		autoScanAllWidget = NULL;
 	}
+	
+	resetLCDMode();
 
 	return ret;
 }
@@ -1727,6 +1755,8 @@ int CScanSetup::showTPSelect()
 		//
 		tpWidget->addCCItem(menu);
 	}
+	
+	setLCDMode(_("Select transponder"));
 	
 	//
 	i = 0;
@@ -1903,6 +1933,8 @@ int CScanSetup::showTPSelect()
 	// save scanSettings (scan.conf)
 	if(!scanSettings->saveSettings(NEUTRINO_SCAN_SETTINGS_FILE))
 		dprintf(DEBUG_NORMAL, "CNeutrinoApp::exec: error while saving scan-settings!\n");
+		
+	resetLCDMode();
 
 	return retval;
 }
@@ -2371,6 +2403,8 @@ int CTunerSetup::showMenu()
 		widget->addCCItem(TunerSetup);
 	}
 	
+	setLCDMode(_("Servicescan"));
+	
 	TunerSetup->clearItems();
 		
 	// intros
@@ -2391,6 +2425,8 @@ int CTunerSetup::showMenu()
 	
 	delete widget;
 	widget = NULL;
+	
+	resetLCDMode();
 	
 	return ret;
 }
