@@ -675,6 +675,7 @@ void CNeutrinoApp::selectNVOD()
         resetLCDMode();
 }
 
+////
 void CNeutrinoApp::showSubChan()
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::showSubChan:\n");

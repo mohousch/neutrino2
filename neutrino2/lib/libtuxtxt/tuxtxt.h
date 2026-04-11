@@ -157,7 +157,7 @@ int displaywidth;
 #define RC_PLUS     CRCInput::RC_plus
 #define RC_MINUS    CRCInput::RC_minus
 #define RC_HELP     CRCInput::RC_info
-#define RC_DBOX     CRCInput::RC_setup
+#define RC_SETUP     CRCInput::RC_setup
 #define RC_TEXT     CRCInput::RC_text
 #define RC_HOME     CRCInput::RC_home
 

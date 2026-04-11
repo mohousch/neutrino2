@@ -1331,7 +1331,7 @@ int tuxtx_main(int pid, int page, bool isEplayer)
 					case RC_BLUE:
 					case RC_PLUS:
 					case RC_MINUS:
-					case RC_DBOX:
+					case RC_SETUP:
 					case RC_STANDBY:
 						transpmode = 1; /* switch to normal mode */
 						SwitchTranspMode();
@@ -1429,7 +1429,7 @@ int tuxtx_main(int pid, int page, bool isEplayer)
 					break;
 				case RC_HELP:	 SwitchHintMode();		break;
 
-				//case RC_DBOX:	 ConfigMenu(0);	break;	//FIXME:
+				case RC_SETUP:	 ConfigMenu(0);	break;	//FIXME:
 
 				case RC_HOME:
 					break;
@@ -2829,7 +2829,7 @@ void ConfigMenu(int Init)
 		}
 			
 		CFrameBuffer::getInstance()->blit();		
-	} while ((RCCode != RC_HOME) && (RCCode != RC_DBOX) && (RCCode != RC_MUTE));
+	} while ((RCCode != RC_HOME) && (RCCode != RC_SETUP) && (RCCode != RC_MUTE));
 
 	tuxtxt_cache.pageupdate = 1;
 	RCCode = -1;
@@ -2845,7 +2845,7 @@ void ConfigMenu(int Init)
 //// PageInput
 void PageInput(int Number)
 {
-	printf("PageInput: Number:%d inputcounter:%d\n", Number, inputcounter);
+	printf("tuxtxt[] PageInput: Number:%d inputcounter:%d\n", Number, inputcounter);
 	
 	int zoom = 0;
 
@@ -3097,7 +3097,7 @@ void PageCatching()
 		case RC_BLUE:
 		case RC_PLUS:
 		case RC_MINUS:
-		case RC_DBOX:
+		case RC_SETUP:
 		case RC_HOME:
 		case RC_HELP:
 		case RC_MUTE:
@@ -3383,6 +3383,8 @@ void SwitchScreenMode(int newscreenmode)
 //// SwitchTranspMode
 void SwitchTranspMode()
 {
+	printf("[tuxtxt] SwitchTranspMode:\n");
+	
 	if (screenmode)
 	{
 		prevscreenmode = screenmode;
@@ -3411,6 +3413,8 @@ void SwitchTranspMode()
 //// SwitchHintMode
 void SwitchHintMode()
 {
+	printf("[tuxtxt] SwitchHintMode:\n");
+	
 	/* toggle mode */
 	hintmode ^= 1;
 
