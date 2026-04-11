@@ -2845,6 +2845,8 @@ void ConfigMenu(int Init)
 //// PageInput
 void PageInput(int Number)
 {
+	printf("PageInput: Number:%d inputcounter:%d\n", Number, inputcounter);
+	
 	int zoom = 0;
 
 	// clear temp_page
@@ -2860,10 +2862,13 @@ void PageInput(int Number)
 	}
 	else if (Number == 9 && inputcounter == 2)
 	{
+		return;
+		
+		//FIXME:
 		// set page
-		temp_page = getIndexOfPageInHotlist(); // 9 toggles through hotlist
+		temp_page = getIndexOfPageInHotlist(); 		// 9 toggles through hotlist
 
-		if (temp_page < 0 || temp_page == maxhotlist) // from any (other) page go to first page in hotlist
+		if (temp_page < 0 || temp_page == maxhotlist) 	// from any (other) page go to first page in hotlist
 			temp_page = (maxhotlist >= 0) ? hotlist[0] : 0x100;
 		else
 			temp_page = hotlist[temp_page+1];
