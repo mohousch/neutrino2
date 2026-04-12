@@ -768,7 +768,7 @@ void CFrameBox::scrollLineUp(const int lines)
 	}
 }
 
-int CFrameBox::oKKeyPressed(CTarget *target, neutrino_msg_t _msg)
+int CFrameBox::oKKeyPressed(CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "CFrameBox::okKeyPressed:\n");
 	
@@ -777,10 +777,10 @@ int CFrameBox::oKKeyPressed(CTarget *target, neutrino_msg_t _msg)
 	if (hasItem() && selected >= 0 && frames[selected]->isSelectable())
 	{
 		actionKey = frames[selected]->actionKey;
-		frames[selected]->msg = _msg;
+		frames[selected]->msg = CRCInput::RC_ok; //_msg;
+		
+		ret = frames[selected]->exec(target? target : parent);
 	}
-
-	ret = frames[selected]->exec(target);
 		
 	return ret;
 }

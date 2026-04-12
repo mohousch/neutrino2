@@ -702,7 +702,7 @@ class ClistBox : public CComponent
 		int swipLeft(CTarget *target);
 		int swipRight(CTarget *target);
 		//
-		int oKKeyPressed(CTarget* target, neutrino_msg_t _msg = CRCInput::RC_ok);
+		int oKKeyPressed(CTarget* target);
 		void homeKeyPressed(){dprintf(DEBUG_INFO, "ClistBox::homeKeyPressed\n"); selected = -1; actionKey.clear(); actionKey = "";};
 		int directKeyPressed(neutrino_msg_t _msg, CTarget *target);
 

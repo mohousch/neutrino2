@@ -314,7 +314,7 @@ class CComponent
 		virtual void setInFocus(bool focus = true){ if (isSelectable()) inFocus = focus;else inFocus = false; };
 		virtual void setSelected(unsigned int _new) {};
 		////
-		virtual int oKKeyPressed(CTarget *target, neutrino_msg_t _msg = CRCInput::RC_ok){dprintf(DEBUG_INFO, "CComponent::oKKeyPressed\n"); return CTarget::RETURN_NONE;};
+		virtual int oKKeyPressed(CTarget *target){dprintf(DEBUG_INFO, "CComponent::oKKeyPressed\n"); return CTarget::RETURN_NONE;};
 		virtual void homeKeyPressed(){dprintf(DEBUG_INFO, "CComponent::homeKeyPressed (%d)\n", cc_type); exit_pressed = true;actionKey.clear(); actionKey = "";};
 		virtual int directKeyPressed(neutrino_msg_t, CTarget *target){dprintf(DEBUG_INFO, "CComponent::directKeyPressed\n"); return CTarget::RETURN_NONE;}; //NOTE: return value
 		////

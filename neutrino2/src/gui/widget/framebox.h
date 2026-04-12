@@ -200,7 +200,7 @@ class CFrameBox : public CComponent
 		int swipLeft(CTarget *target);
 		void scrollLineDown(const int lines = 1);
 		void scrollLineUp(const int lines = 1);
-		int oKKeyPressed(CTarget *target, neutrino_msg_t _msg = CRCInput::RC_ok);
+		int oKKeyPressed(CTarget *target);
 		void homeKeyPressed(){dprintf(DEBUG_NORMAL, "CFrameBox::homeKeyPressed:\n"); selected = -1; actionKey.clear(); actionKey = "";};
 		//// get methods
 		int getSelected(){return selected;};

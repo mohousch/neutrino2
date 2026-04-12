@@ -3820,16 +3820,16 @@ int ClistBox::swipRight(CTarget *target)
 }
 
 //
-int ClistBox::oKKeyPressed(CTarget *target, neutrino_msg_t _msg)
+int ClistBox::oKKeyPressed(CTarget *target)
 {
-	dprintf(DEBUG_INFO, "ClistBox::okKeyPressed: msg:0x%x\n", _msg);
+	dprintf(DEBUG_INFO, "ClistBox::okKeyPressed:\n");
 	
 	int ret = CTarget::RETURN_NONE;
 
 	if (hasItem() && selected >= 0 && items[selected]->isSelectable())
 	{
 		CMenuItem * item = items[selected];
-		item->msg = _msg;
+		item->msg = CRCInput::RC_ok; //_msg;
 		actionKey = item->actionKey;
 		
 		ret = item->exec(target? target : parent);
