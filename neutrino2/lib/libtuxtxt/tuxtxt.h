@@ -574,57 +574,57 @@ const char menuatr[Menu_Height*(Menu_Width + 1)] =
 const char configmenu[][Menu_Height * (Menu_Width + 8)] =
 {
 	{
-		/*     0123456789012345678901234567890 */
-		"àááááááááááááááááááááááááááááâè"
-		"ã     Konfigurationsmen}     äé"
-		"åææææææææææææææææææææææææææææçé"
-		"ã1 Favoriten: Seite 111 dazu äé"
-		"ãíîñò                        äé"
-		"ã+-?                         äé"
-		"ã                            äé"
-		"ã2     Teletext-Auswahl      äé"
-		"ãí          suchen          îäé"
-		"ã                            äé"
-		"ã      Bildschirmformat      äé"
-		"ã3  Standard-Modus 16:9      äé"
-		"ã                            äé"
-		"ã4        Helligkeit         äé"
-		"ãí                          îäé"
-		"ã5       Transparenz         äé"
-		"ãí                          îäé"
-		"ã6  nationaler Zeichensatz   äé"
-		"ãautomatische Erkennung      äé"
-		"ãí                          îäé"
-		"ãí Sprache/Language deutsch îäé"
-		"åæ   www.tuxtxt.net  x.xx   æçé"
-		"ëìììììììììììììììììììììììììììììê"
+	       /*0123456789012345678901234567890*/
+		"                               "
+		"      Konfigurationsmenue      "
+		"                               "
+		"   Favoriten: Seite 111 dazu   "
+		"                               "
+		" +-?                           "
+		"                               "
+		"       Teletext-Auswahl        "
+		"            suchen             "
+		"                               "
+		"       Bildschirmformat        "
+		"    Standard-Modus 16:9        "
+		"                               "
+		"          Helligkeit           "
+		"                               "
+		"         Transparenz           "
+		"                               "
+		"    nationaler Zeichensatz     "
+		" automatische Erkennung        "
+		"                               "
+		"   Sprache/Language deutsch    "
+		"     www.tuxtxt.net            "
+		"                               "
 	},
 	/*     0000000000111111111122222222223 */
-	/*     0123456789012345678901234567890 */
+	       /*0123456789012345678901234567890*/
 	{
-		"àááááááááááááááááááááááááááááâè"
-		"ã     Configuration menu     äé"
-		"åææææææææææææææææææææææææææææçé"
-		"ã1 Favorites:  add page 111  äé"
-		"ãíîñò                        äé"
-		"ã+-?                         äé"
-		"ã                            äé"
-		"ã2     Teletext selection    äé"
-		"ãí          search          îäé"
-		"ã                            äé"
-		"ã        Screen format       äé"
-		"ã3 Standard mode 16:9        äé"
-		"ã                            äé"
-		"ã4        Brightness         äé"
-		"ãí                          îäé"
-		"ã5       Transparency        äé"
-		"ãí                          îäé"
-		"ã6   national characterset   äé"
-		"ã automatic recognition      äé"
-		"ãí                          îäé"
-		"ãí Sprache/language english îäé"
-		"åæ   www.tuxtxt.net  x.xx   æçé"
-		"ëìììììììììììììììììììììììììììììê"
+		"                               "
+		"      Configuration menu       "
+		"                               "
+		"   Favorites:  add page 111    "
+		"                               "
+		" +-?                           "
+		"                               "
+		"       Teletext selection      "
+		"            search             "
+		"                               "
+		"         Screen format         "
+		"   Standard mode 16:9          "
+		"                               "
+		"          Brightness           "
+		"                               "
+		"         Transparency          "
+		"                               "
+		"     national characterset     "
+		"  automatic recognition        "
+		"                               "
+		"   Sprache/language english    "
+		"     www.tuxtxt.net            "
+		"                               "
 	},
 	/*     0000000000111111111122222222223 */
 	/*     0123456789012345678901234567890 */
@@ -936,7 +936,7 @@ const char message_3[][39] =
 	{ " Procurar servicos de teletexto " },
 	{ " W&polnqetsq poisk teleteksta " }
 };
-const char message_3_blank[] = "ã                                   äé";
+const char message_3_blank[] = "                                      ";
 //const char message_7[][39] = {};
 //const char message_8[][39] = {};
 const char message_7[][39] =

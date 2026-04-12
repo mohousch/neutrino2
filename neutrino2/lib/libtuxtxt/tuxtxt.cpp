@@ -4220,13 +4220,13 @@ void RenderMessage(int Message)
 	int pagecolumn;
 	const char *msg;
 
-	/* 00000000001111111111222222222233333333334 */
-	/* 01234567890123456789012345678901234567890 */
-	char message_1[] = "������ www.tuxtxt.com        ���������";
-	char message_2[] = "�                                   ��";
-	char message_4[] = "�                                   ��";
-	char message_5[] = "��������������������������������������";
-	char message_6[] = "��������������������������������������";
+	                  /*00000000001111111111222222222233333333334*/
+	                  /*01234567890123456789012345678901234567890*/
+	char message_1[] = "          www.tuxtxt.com                 ";
+	char message_2[] = "                                         ";
+	char message_4[] = "                                         ";
+	char message_5[] = "                                         ";
+	char message_6[] = "                                         ";
 
 //	memcpy(&message_1[24], versioninfo, 4);
 	
