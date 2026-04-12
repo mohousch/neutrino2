@@ -772,12 +772,12 @@ int CFrameBox::oKKeyPressed(CTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "CFrameBox::okKeyPressed:\n");
 	
-	int ret = CTarget::RETURN_NONE; //test
+	int ret = CTarget::RETURN_NONE;
 
 	if (hasItem() && selected >= 0 && frames[selected]->isSelectable())
 	{
 		actionKey = frames[selected]->actionKey;
-		frames[selected]->msg = CRCInput::RC_ok; //_msg;
+		frames[selected]->msg = CRCInput::RC_ok;
 		
 		ret = frames[selected]->exec(target? target : parent);
 	}

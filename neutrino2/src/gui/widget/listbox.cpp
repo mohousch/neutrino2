@@ -3829,7 +3829,8 @@ int ClistBox::oKKeyPressed(CTarget *target)
 	if (hasItem() && selected >= 0 && items[selected]->isSelectable())
 	{
 		CMenuItem * item = items[selected];
-		item->msg = CRCInput::RC_ok; //_msg;
+		
+		item->msg = CRCInput::RC_ok;
 		actionKey = item->actionKey;
 		
 		ret = item->exec(target? target : parent);
