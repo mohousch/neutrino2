@@ -245,7 +245,6 @@ class CComponent
 		uint64_t timeout;
 		uint32_t sec_timer_id;
 		uint64_t sec_timer_interval;
-		CTarget *jumpTarget;
 		std::string actionKey; // for lua
 		bool isExecutable;
 		bool exit_pressed;
@@ -322,7 +321,6 @@ class CComponent
 		virtual void addKey(neutrino_msg_t key, CTarget *target = NULL, const std::string &action = "");
 		virtual void setTimeOut(uint64_t to = 0){timeout = to;};
 		virtual void setSecTimerInterval(uint64_t sec){sec_timer_interval = sec;}; // in sec
-		virtual void setActionKey(CTarget *Target, const char *const ActionKey){jumpTarget = Target; actionKey = ActionKey;};
 		////
 		virtual int exec(CTarget *target = NULL);
 		////

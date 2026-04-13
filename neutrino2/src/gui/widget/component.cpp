@@ -130,7 +130,6 @@ CComponent::CComponent()
 	//
 	halign = CC_ALIGN_LEFT;
 	//
-	jumpTarget = NULL;
 	actionKey = "";
 	isExecutable = false;
 	parent = NULL;
