@@ -3833,7 +3833,7 @@ int ClistBox::oKKeyPressed(CTarget *target)
 		item->msg = CRCInput::RC_ok;
 		actionKey = item->actionKey;
 		
-		ret = item->exec(target? target : parent);
+		ret = item->exec(target);
 	}
 	
 	return ret;

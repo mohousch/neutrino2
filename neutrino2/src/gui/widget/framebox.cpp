@@ -779,7 +779,7 @@ int CFrameBox::oKKeyPressed(CTarget *target)
 		actionKey = frames[selected]->actionKey;
 		frames[selected]->msg = CRCInput::RC_ok;
 		
-		ret = frames[selected]->exec(target? target : parent);
+		ret = frames[selected]->exec(target);
 	}
 		
 	return ret;
