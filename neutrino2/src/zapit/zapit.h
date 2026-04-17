@@ -379,7 +379,7 @@ class CZapit
 		void findTransponder(xmlNodePtr root);
 		void parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_satellite_position satellitePosition);
 		void initSat(t_satellite_position position);
-		int loadTransponders();
+		void loadTransponders();
 		int loadServices(bool only_current);
 		void saveServices(bool tocopy = false);
 		//// scanManager
@@ -535,8 +535,8 @@ class CZapit
 		void restoreBouquets();
 		void addChannelToBouquet(const unsigned int bouquet, const t_channel_id channel_id);
 		void removeChannelFromBouquet(const unsigned int bouquet, const t_channel_id channel_id);
-		//// serviceManager
-		int loadMotorPositions(void);
+		////
+		void loadMotorPositions(void);
 		void saveMotorPositions();
 		//// scanManager
 		int addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, bool fromnit = false, CFrontend* fe = NULL);

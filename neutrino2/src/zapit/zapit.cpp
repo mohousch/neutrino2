@@ -4325,7 +4325,161 @@ void * CZapit::scanTransponderThread(void *data)
 }
 
 //// channelManager
-// parse services transponder from services.xml
+// load services from services.xml
+int CZapit::loadServices(bool only_current)
+{
+	dprintf(DEBUG_INFO, "CZapit::loadServices:\n");
+	
+	xmlDocPtr parser;
+	scnt = 0;
+	t_satellite_position position = 0;
+
+	if(only_current)
+		goto do_current;
+
+	// parse services.xml
+	parser = parseXmlFile(SERVICES_XML);
+
+	if (parser != NULL) 
+	{
+		/*
+		xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode;
+
+		while (search) 
+		{
+			if (!(strcmp(xmlGetName(search), "sat"))) 
+			{
+				// position
+				position = xmlGetSignedNumericAttribute(search, "position", 10);
+				char * name = xmlGetAttribute(search, "name");
+
+				if(satellitePositions.find(position) == satellitePositions.end()) 
+				{
+					initSat(position);
+				}
+                
+                		satellitePositions[position].name = name;
+			}
+
+			// jump to the next node
+			search = search->xmlNextNode;
+		}
+		*/
+
+		findTransponder( xmlDocGetRootElement(parser)->xmlChildrenNode );
+		
+		xmlFreeDoc(parser);
+		parser = NULL;
+	}
+
+	// load motor position
+	for(int i = 0; i < CZapit::getInstance()->getFrontendCount(); i++)
+	{
+		if( CZapit::getInstance()->getFE(i)->getInfo()->type == FE_QPSK)
+		{
+			loadMotorPositions();
+			break;
+		}
+	}
+
+do_current:
+
+	if (CZapit::getInstance()->scanSDT && (parser = parseXmlFile(CURRENTSERVICES_XML))) 
+	{
+		newfound = 0;
+		
+		findTransponder( xmlDocGetRootElement(parser)->xmlChildrenNode );
+		
+		xmlFreeDoc(parser);
+		parser = NULL;
+		
+		unlink(CURRENTSERVICES_XML);
+		
+		if(newfound)
+			saveServices(true);
+	}
+
+	return 0;
+}
+
+void CZapit::findTransponder(xmlNodePtr search)
+{
+	dprintf(DEBUG_INFO, "CZapit::findTransponder:\n");
+
+	t_satellite_position satellitePosition = 0;
+    	fe_type_t type = FE_QPSK;
+	newtpid = 0xC000;
+	
+	while (search) 
+	{
+		if ( !(strcmp(xmlGetName(search), "cable")) && have_c)
+		{
+			type = FE_QAM;
+			
+			for (sat_iterator_t spos_it = satellitePositions.begin(); spos_it != satellitePositions.end(); spos_it++) 
+			{
+				if( !strcmp(spos_it->second.name.c_str(), xmlGetAttribute(search, "name")) ) 
+				{
+					satellitePosition = spos_it->first;
+					break;
+				}
+			}
+			
+			dprintf(DEBUG_INFO, "CZapit::findTransponder: going to parse dvb-%c provider %s\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"));
+		}
+		else if ( !(strcmp(xmlGetName(search), "terrestrial")) && have_t)
+		{
+			type = FE_OFDM;
+			
+			for (sat_iterator_t spos_it = satellitePositions.begin(); spos_it != satellitePositions.end(); spos_it++) 
+			{
+				if( !strcmp(spos_it->second.name.c_str(), xmlGetAttribute(search, "name")) ) 
+				{
+					satellitePosition = spos_it->first;
+					break;
+				}
+			}
+			
+			dprintf(DEBUG_INFO, "CZapit::findTransponder: going to parse dvb-%c provider %s\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"));
+		}
+		else if ( !(strcmp(xmlGetName(search), "atsc")) && have_a)
+		{
+			type = FE_ATSC;
+			
+			for (sat_iterator_t spos_it = satellitePositions.begin(); spos_it != satellitePositions.end(); spos_it++) 
+			{
+				if( !strcmp(spos_it->second.name.c_str(), xmlGetAttribute(search, "name")) ) 
+				{
+					satellitePosition = spos_it->first;
+					break;
+				}
+			}
+			
+			dprintf(DEBUG_INFO, "CZapit::findTransponder: going to parse dvb-%c provider %s\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"));
+		}
+		else if ( !(strcmp(xmlGetName(search), "sat")) && have_s) 
+		{
+			type = FE_QPSK;
+			satellitePosition = xmlGetSignedNumericAttribute(search, "position", 10);
+			
+			dprintf(DEBUG_INFO, "CZapit::findTransponder: going to parse dvb-%c provider %s position %d\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"), satellitePosition);
+		}
+		else // unknow
+		{
+			search = search->xmlNextNode;
+			continue;
+		}
+		
+		// parseServiceTransponders
+		parseTransponders(search->xmlChildrenNode, satellitePosition, type);
+
+		newfound++;
+		
+		search = search->xmlNextNode;
+	}
+}
+
+//
 void CZapit::parseTransponders(xmlNodePtr node, t_satellite_position satellitePosition, fe_type_t frontendType)
 {
 	dprintf(DEBUG_INFO, "CZapit::parseTransponders:\n");
@@ -4418,7 +4572,7 @@ void CZapit::parseChannels(xmlNodePtr node, const t_transport_stream_id transpor
 	dprintf(DEBUG_DEBUG, "CZapit::parseChannels:\n");
 
 	t_service_id service_id;
-	std::string  name;
+	std::string name;
 	uint8_t service_type;
 	unsigned short vpid, apid, pcrpid, pmtpid, txpid, vtype, scrambled;
 	std::string desc = "";
@@ -4508,89 +4662,190 @@ void CZapit::parseChannels(xmlNodePtr node, const t_transport_stream_id transpor
 
 		node = node->xmlNextNode;
 	}
-
-	return;
 }
 
-// scan services.xml
-void CZapit::findTransponder(xmlNodePtr search)
+// load transponders from satellites.xml / cables.xml / terrestrial.xml / atsc.xml
+void CZapit::loadTransponders()
 {
-	dprintf(DEBUG_INFO, "CZapit::findTransponder:\n");
-
-	t_satellite_position satellitePosition = 0;
-    	fe_type_t type = FE_QPSK;
-	newtpid = 0xC000;
+	dprintf(DEBUG_INFO, "CZapit::loadTransponders:\n");
 	
-	while (search) 
+	scnt = 0;	
+	t_satellite_position position = 0; //first position
+	select_transponders.clear();
+	fake_tid = 0;
+    	fake_nid = 0;
+	
+	satellitePositions.clear();
+	
+	xmlDocPtr scanInputParser = NULL;
+		
+	if (have_s)
 	{
-		if ( !(strcmp(xmlGetName(search), "cable")) && have_c)
+		scanInputParser = parseXmlFile(SATELLITES_XML);
+			
+		if ( scanInputParser != NULL ) 
 		{
-			type = FE_QAM;
-			
-			for (sat_iterator_t spos_it = satellitePositions.begin(); spos_it != satellitePositions.end(); spos_it++) 
-			{
-				if( !strcmp(spos_it->second.name.c_str(), xmlGetAttribute(search, "name")) ) 
-				{
-					satellitePosition = spos_it->first;
-					break;
-				}
-			}
-			
-			dprintf(DEBUG_INFO, "CZapit::findTransponder: going to parse dvb-%c provider %s\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"));
-		}
-		else if ( !(strcmp(xmlGetName(search), "terrestrial")) && have_t)
-		{
-			type = FE_OFDM;
-			
-			for (sat_iterator_t spos_it = satellitePositions.begin(); spos_it != satellitePositions.end(); spos_it++) 
-			{
-				if( !strcmp(spos_it->second.name.c_str(), xmlGetAttribute(search, "name")) ) 
-				{
-					satellitePosition = spos_it->first;
-					break;
-				}
-			}
-			
-			dprintf(DEBUG_INFO, "CZapit::findTransponder: going to parse dvb-%c provider %s\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"));
-		}
-		else if ( !(strcmp(xmlGetName(search), "atsc")) && have_a)
-		{
-			type = FE_ATSC;
-			
-			for (sat_iterator_t spos_it = satellitePositions.begin(); spos_it != satellitePositions.end(); spos_it++) 
-			{
-				if( !strcmp(spos_it->second.name.c_str(), xmlGetAttribute(search, "name")) ) 
-				{
-					satellitePosition = spos_it->first;
-					break;
-				}
-			}
-			
-			dprintf(DEBUG_INFO, "CZapit::findTransponder: going to parse dvb-%c provider %s\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"));
-		}
-		else if ( !(strcmp(xmlGetName(search), "sat")) && have_s) 
-		{
-			type = FE_QPSK;
-			satellitePosition = xmlGetSignedNumericAttribute(search, "position", 10);
-			
-			dprintf(DEBUG_INFO, "CZapit::findTransponder: going to parse dvb-%c provider %s position %d\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"), satellitePosition);
-		}
-		else // unknow
-		{
-			search = search->xmlNextNode;
-			continue;
-		}
-		
-		// parseServiceTransponders
-		parseTransponders(search->xmlChildrenNode, satellitePosition, type);
+			xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
 
-		newfound++;
-		
-		search = search->xmlNextNode;
+			while (search) 
+			{
+				if (!(strcmp(xmlGetName(search), "sat"))) 
+				{
+                    			// flags
+
+					// position
+					position = xmlGetSignedNumericAttribute(search, "position", 10);
+					
+					char * name = xmlGetAttribute(search, "name");
+
+					if(satellitePositions.find(position) == satellitePositions.end()) 
+					{
+						initSat(position);
+					}
+
+					// name
+					satellitePositions[position].name = name;
+					
+					// delsys
+					satellitePositions[position].system = CFrontend::DVB_S;
+				}
+				
+				// parse sat TP
+				parseSatTransponders(FE_QPSK, search, position);
+				
+				position++;
+				
+				search = search->xmlNextNode;
+			}
+			
+			xmlFreeDoc(scanInputParser);
+			scanInputParser = NULL;
+		}
 	}
-}
+	
+	if (have_c)
+	{
+		scanInputParser = parseXmlFile(CABLES_XML);
+			
+		if ( scanInputParser != NULL ) 
+		{
+			xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
 
-// parse sat transponder from satellites / cables / terrestrials.xml / atsc.xml
+			while (search) 
+			{
+				if(!(strcmp(xmlGetName(search), "cable"))) 
+				{
+					char * name = xmlGetAttribute(search, "name");
+
+//					if(satellitePositions.find(position) == satellitePositions.end()) 
+//					{
+//						initSat(position);
+//					}
+
+					// name
+					satellitePositions[position].name = name;
+					
+					// delsys
+					satellitePositions[position].system = CFrontend::DVB_C;
+				}
+
+				// parse sat TP
+				parseSatTransponders(FE_QAM, search, position);
+				
+				position++;
+				
+				search = search->xmlNextNode;
+			}
+			
+			xmlFreeDoc(scanInputParser);
+			scanInputParser = NULL;
+		}
+	}
+	
+	if (have_t)
+	{
+		scanInputParser = parseXmlFile(TERRESTRIALS_XML);
+			
+		if ( scanInputParser != NULL ) 
+		{
+			xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
+
+			while (search) 
+			{
+				if(!(strcmp(xmlGetName(search), "terrestrial"))) 
+				{
+                    			// flags
+                    			// countrycode
+
+					char * name = xmlGetAttribute(search, "name");
+
+//					if(satellitePositions.find(position) == satellitePositions.end()) 
+//					{
+//						initSat(position);
+//					}
+
+					// name
+					satellitePositions[position].name = name;
+					
+					// delsys
+					satellitePositions[position].system = CFrontend::DVB_T;
+				}
+
+				// parse sat TP
+				parseSatTransponders(FE_OFDM, search, position);
+				
+				position++;
+				
+				search = search->xmlNextNode;
+			}
+			
+			xmlFreeDoc(scanInputParser);
+			scanInputParser = NULL;
+		}
+	}
+	
+	if (have_a)
+	{
+		scanInputParser = parseXmlFile(ATSC_XML);
+			
+		if ( scanInputParser != NULL ) 
+		{
+			xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
+
+			while (search) 
+			{
+				if(!(strcmp(xmlGetName(search), "atsc"))) 
+				{
+                    			// flags
+
+					char * name = xmlGetAttribute(search, "name");
+
+//					if(satellitePositions.find(position) == satellitePositions.end()) 
+//					{
+//						initSat(position);
+//					}
+
+					// name
+					satellitePositions[position].name = name;
+					
+					// delsys
+					satellitePositions[position].system = CFrontend::DVB_A;
+				}
+
+				// parse sat TP
+				parseSatTransponders(FE_ATSC, search, position);
+				
+				position++;
+				
+				search = search->xmlNextNode;
+			}
+			
+			xmlFreeDoc(scanInputParser);
+			scanInputParser = NULL;
+		}
+	}
+}	
+
 void CZapit::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_satellite_position satellitePosition)
 {
 	dprintf(DEBUG_DEBUG, "CZapit::parseSatTransponders:\n");
@@ -4708,7 +4963,7 @@ void CZapit::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_s
 	}
 }
 
-int CZapit::loadMotorPositions(void)
+void CZapit::loadMotorPositions(void)
 {
 	dprintf(DEBUG_NORMAL, "CZapit::loadMotorPositions:\n");
 
@@ -4747,8 +5002,6 @@ int CZapit::loadMotorPositions(void)
 	}
 	else
 		printf("CZapit::loadMotorPositions: %s not found.\n", SATCONFIG);
-
-	return 0;
 }
 
 void CZapit::saveMotorPositions()
@@ -4804,269 +5057,6 @@ void CZapit::initSat(t_satellite_position position)
 	satellitePositions[position].use_usals = 0;
 }
 
-// load transponders from satellites.xml / cables.xml / terrestrial.xml / atsc.xml
-int CZapit::loadTransponders()
-{
-	bool satcleared = 0;
-	scnt = 0;
-	
-	t_satellite_position position = 0; //first position
-
-	dprintf(DEBUG_INFO, "CZapit::loadTransponders:\n");
-	
-	select_transponders.clear();
-	fake_tid = 0;
-    	fake_nid = 0;
-	
-	if(!satcleared)
-		satellitePositions.clear();
-
-	satcleared = 1;
-	
-	xmlDocPtr scanInputParser = NULL;
-		
-	if (have_s)
-	{
-		scanInputParser = parseXmlFile(SATELLITES_XML);
-			
-		if ( scanInputParser != NULL ) 
-		{
-			xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
-
-			while (search) 
-			{
-				if (!(strcmp(xmlGetName(search), "sat"))) 
-				{
-                    			// flags
-
-					// position
-					position = xmlGetSignedNumericAttribute(search, "position", 10);
-					
-					char * name = xmlGetAttribute(search, "name");
-
-					if(satellitePositions.find(position) == satellitePositions.end()) 
-					{
-						initSat(position);
-					}
-
-					// name
-					satellitePositions[position].name = name;
-					
-					// delsys
-					satellitePositions[position].system = CFrontend::DVB_S;
-				}
-				
-				// parse sat TP
-				parseSatTransponders(FE_QPSK, search, position);
-				
-				position++;
-				
-				search = search->xmlNextNode;
-			}
-			
-			xmlFreeDoc(scanInputParser);
-			scanInputParser = NULL;
-		}
-	}
-	
-	if (have_c)
-	{
-		scanInputParser = parseXmlFile(CABLES_XML);
-			
-		if ( scanInputParser != NULL ) 
-		{
-			xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
-
-			while (search) 
-			{
-				if(!(strcmp(xmlGetName(search), "cable"))) 
-				{
-					char * name = xmlGetAttribute(search, "name");
-
-					if(satellitePositions.find(position) == satellitePositions.end()) 
-					{
-						initSat(position);
-					}
-
-					// name
-					satellitePositions[position].name = name;
-					
-					// delsys
-					satellitePositions[position].system = CFrontend::DVB_C;
-				}
-
-				// parse sat TP
-				parseSatTransponders(FE_QAM, search, position);
-				
-				position++;
-				
-				search = search->xmlNextNode;
-			}
-			
-			xmlFreeDoc(scanInputParser);
-			scanInputParser = NULL;
-		}
-	}
-	
-	if (have_t)
-	{
-		scanInputParser = parseXmlFile(TERRESTRIALS_XML);
-			
-		if ( scanInputParser != NULL ) 
-		{
-			xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
-
-			while (search) 
-			{
-				if(!(strcmp(xmlGetName(search), "terrestrial"))) 
-				{
-                    			// flags
-                    			// countrycode
-
-					char * name = xmlGetAttribute(search, "name");
-
-					if(satellitePositions.find(position) == satellitePositions.end()) 
-					{
-						initSat(position);
-					}
-
-					// name
-					satellitePositions[position].name = name;
-					
-					// delsys
-					satellitePositions[position].system = CFrontend::DVB_T;
-				}
-
-				// parse sat TP
-				parseSatTransponders(FE_OFDM, search, position);
-				
-				position++;
-				
-				search = search->xmlNextNode;
-			}
-			
-			xmlFreeDoc(scanInputParser);
-			scanInputParser = NULL;
-		}
-	}
-	
-	if (have_a)
-	{
-		scanInputParser = parseXmlFile(ATSC_XML);
-			
-		if ( scanInputParser != NULL ) 
-		{
-			xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
-
-			while (search) 
-			{
-				if(!(strcmp(xmlGetName(search), "atsc"))) 
-				{
-                    			// flags
-
-					char * name = xmlGetAttribute(search, "name");
-
-					if(satellitePositions.find(position) == satellitePositions.end()) 
-					{
-						initSat(position);
-					}
-
-					// name
-					satellitePositions[position].name = name;
-					
-					// delsys
-					satellitePositions[position].system = CFrontend::DVB_A;
-				}
-
-				// parse sat TP
-				parseSatTransponders(FE_ATSC, search, position);
-				
-				position++;
-				
-				search = search->xmlNextNode;
-			}
-			
-			xmlFreeDoc(scanInputParser);
-			scanInputParser = NULL;
-		}
-	}
-	
-	return 0;
-}	
-
-// load services
-int CZapit::loadServices(bool only_current)
-{
-	xmlDocPtr parser;
-	scnt = 0;
-
-	dprintf(DEBUG_INFO, "CZapit::loadServices:\n");
-
-	if(only_current)
-		goto do_current;
-
-	// parse services.xml
-	parser = parseXmlFile(SERVICES_XML);
-
-	if (parser != NULL) 
-	{
-		xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode;
-
-		while (search) 
-		{
-			t_satellite_position position;
-			
-			if (!(strcmp(xmlGetName(search), "sat"))) 
-			{
-				// position
-				position = xmlGetSignedNumericAttribute(search, "position", 10);
-				char * name = xmlGetAttribute(search, "name");
-
-				if(satellitePositions.find(position) == satellitePositions.end()) 
-				{
-					initSat(position);
-				}
-                
-                		satellitePositions[position].name = name;
-			}
-
-			// jump to the next node
-			search = search->xmlNextNode;
-		}
-
-		findTransponder( xmlDocGetRootElement(parser)->xmlChildrenNode );
-		
-		xmlFreeDoc(parser);
-	}
-
-	// load motor position
-	for(int i = 0; i < CZapit::getInstance()->getFrontendCount(); i++)
-	{
-		if( CZapit::getInstance()->getFE(i)->getInfo()->type == FE_QPSK)
-		{
-			loadMotorPositions();
-			break;
-		}
-	}
-
-do_current:
-
-	if (CZapit::getInstance()->scanSDT && (parser = parseXmlFile(CURRENTSERVICES_XML))) 
-	{
-		newfound = 0;
-		
-		findTransponder( xmlDocGetRootElement(parser)->xmlChildrenNode );
-		
-		xmlFreeDoc(parser);
-		unlink(CURRENTSERVICES_XML);
-		
-		if(newfound)
-			saveServices(true);
-	}
-
-	return 0;
-}
-
 void CZapit::saveServices(bool tocopy)
 {
 	dprintf(DEBUG_INFO, "CZapit::saveServices:\n");
@@ -5084,8 +5074,6 @@ void CZapit::saveServices(bool tocopy)
 	int processed = 0;
 	sat_iterator_t spos_it;
 	updated = 0;
-
-	dprintf(DEBUG_INFO, "CZapit::saveServices: total channels: %d\n", allchans.size());
 	
 	fd = fopen(SERVICES_TMP, "w");
 	if(!fd) 
