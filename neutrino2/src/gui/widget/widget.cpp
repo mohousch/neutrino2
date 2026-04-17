@@ -365,7 +365,7 @@ int CWidget::exec(CTarget *parent, const std::string &)
 
 	//control loop
 	do {
-		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
+		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd, true);
 		
 		int handled = false;
 
