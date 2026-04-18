@@ -4028,7 +4028,7 @@ void CSectionsd::print_meminfo(void)
 {
 	struct mallinfo meminfo = mallinfo();
 	
-	dprintf(DEBUG_DEBUG, "CSectionsd::print_meminfo: total size of memory occupied by chunks handed out by malloc: %d\n"
+	dprintf(DEBUG_NORMAL, "CSectionsd::print_meminfo: total size of memory occupied by chunks handed out by malloc: %d\n"
 		"total bytes memory allocated with `sbrk' by malloc, in bytes: %d (%dkB)\n",
 		meminfo.uordblks, meminfo.arena, meminfo.arena / 1024);
 }
@@ -4076,7 +4076,7 @@ void *CSectionsd::houseKeepingThread(void *)
 		//
 		if (count == META_HOUSEKEEPING) 
 		{
-			dprintf(DEBUG_DEBUG, "CSectionsd::houseKeepingThread: meta housekeeping - deleting all transponders, services, bouquets.\n");
+			dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: meta housekeeping - deleting all transponders, services, bouquets.\n");
 			CSectionsd::getInstance()->deleteSIexceptEPG();
 			count = 0;
 		}
@@ -4089,28 +4089,29 @@ void *CSectionsd::houseKeepingThread(void *)
 		while (!scanning) 
 		{
 			sleep(1);	// wait for streaming to end...
+			
 			if(sectionsd_stop)
 				break;
 		}
 
-		dprintf(DEBUG_DEBUG, "CSectionsd::houseKeepingThread: housekeeping.\n");
+		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: housekeeping.\n");
 
 		// TODO: maybe we need to stop scanning here?...
 
 		readLockEvents();
 
 		unsigned anzEventsAlt = mySIeventsOrderUniqueKey.size();
-		dprintf(DEBUG_DEBUG, "CSectionsd::houseKeepingThread: before removeoldevents\n");
+		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: before removeoldevents\n");
 		unlockEvents();
 		CSectionsd::getInstance()->removeOldEvents(oldEventsAre); // alte Events
-		dprintf(DEBUG_DEBUG, "CSectionsd::houseKeepingThread: after removeoldevents\n");
+		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: after removeoldevents\n");
 		readLockEvents();
-		dprintf(DEBUG_DEBUG, "CSectionsd::houseKeepingThread: Removed %d old events.\n", anzEventsAlt - mySIeventsOrderUniqueKey.size());
+		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: Removed %d old events.\n", anzEventsAlt - mySIeventsOrderUniqueKey.size());
 		
 		if (mySIeventsOrderUniqueKey.size() != anzEventsAlt)
 		{
 			CSectionsd::getInstance()->print_meminfo();
-			dprintf(DEBUG_DEBUG, "CSectionsd::houseKeepingThread: Removed %d old events.\n", anzEventsAlt - mySIeventsOrderUniqueKey.size());
+			dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: Removed %d old events.\n", anzEventsAlt - mySIeventsOrderUniqueKey.size());
 		}
 		
 		anzEventsAlt = mySIeventsOrderUniqueKey.size();
@@ -4120,25 +4121,25 @@ void *CSectionsd::houseKeepingThread(void *)
 		// removeDups
 		CSectionsd::getInstance()->removeDupEvents();
 		readLockEvents();
-		dprintf(DEBUG_DEBUG, "CSectionsd::houseKeepingThread: Removed %d dup events.\n", anzEventsAlt - mySIeventsOrderUniqueKey.size());
+		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: Removed %d dup events.\n", anzEventsAlt - mySIeventsOrderUniqueKey.size());
 		anzEventsAlt = mySIeventsOrderUniqueKey.size();
 		unlockEvents();
 
-		dprintf(DEBUG_DEBUG, "CSectionsd::houseKeepingThread: before removewasteepg\n");
+		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: before removewasteepg\n");
 
 		readLockEvents();
 		
 		if (mySIeventsOrderUniqueKey.size() != anzEventsAlt)
 		{
 			CSectionsd::getInstance()->print_meminfo();
-			dprintf(DEBUG_DEBUG, "CSectionsd::houseKeepingThread: Removed %d waste events.\n", anzEventsAlt - mySIeventsOrderUniqueKey.size());
+			dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: Removed %d waste events.\n", anzEventsAlt - mySIeventsOrderUniqueKey.size());
 		}
 
-		dprintf(DEBUG_DEBUG, "CSectionsd::houseKeepingThread: Number of sptr events (event-ID): %u\n", mySIeventsOrderUniqueKey.size());
-		dprintf(DEBUG_DEBUG, "CSectionsd::houseKeepingThread: Number of sptr events (service-id, start time, event-id): %u\n", mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.size());
-		dprintf(DEBUG_DEBUG, "CSectionsd::houseKeepingThread: Number of sptr events (end time, service-id, event-id): %u\n", mySIeventsOrderFirstEndTimeServiceIDEventUniqueKey.size());
-		dprintf(DEBUG_DEBUG, "CSectionsd::houseKeepingThread: Number of sptr nvod events (event-ID): %u\n", mySIeventsNVODorderUniqueKey.size());
-		dprintf(DEBUG_DEBUG, "CSectionsd::houseKeepingThread: Number of cached meta-services: %u\n", mySIeventUniqueKeysMetaOrderServiceUniqueKey.size());
+		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: Number of sptr events (event-ID): %u\n", mySIeventsOrderUniqueKey.size());
+		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: Number of sptr events (service-id, start time, event-id): %u\n", mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.size());
+		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: Number of sptr events (end time, service-id, event-id): %u\n", mySIeventsOrderFirstEndTimeServiceIDEventUniqueKey.size());
+		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: Number of sptr nvod events (event-ID): %u\n", mySIeventsNVODorderUniqueKey.size());
+		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: Number of cached meta-services: %u\n", mySIeventUniqueKeysMetaOrderServiceUniqueKey.size());
 
 		unlockEvents();
 
@@ -4147,7 +4148,7 @@ void *CSectionsd::houseKeepingThread(void *)
 		count++;
 
 	} // for endlos
-	dprintf(DEBUG_DEBUG, "CSectionsd::houseKeepingThread: ended.\n");
+	dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: ended.\n");
 
 	pthread_exit(NULL);
 }
@@ -4922,7 +4923,7 @@ void CSectionsd::Start(void)
 		dprintf(DEBUG_NORMAL, "CSectionsd::Start: failed to create time-thread (rc=%d)\n", rc);
 	}
 
-	if(CZapit::getInstance()->getFrontendCount())
+	if (CZapit::getInstance()->getFrontendCount())
 	{
 		// EIT-Thread starten
 		rc = pthread_create(&threadEIT, 0, eitThread, 0);
@@ -4993,7 +4994,6 @@ void CSectionsd::Stop(void)
 	
 	if(CZapit::getInstance()->getFrontendCount())
 	{
-		/*
 		pthread_cancel(threadCN);
 		pthread_join(threadCN, NULL);
 		
@@ -5005,7 +5005,6 @@ void CSectionsd::Stop(void)
 		
 		pthread_cancel(threadVIASATEIT);
 		pthread_join(threadVIASATEIT, NULL);
-		*/
 
 		// close eitdmx
 		dmxEIT.close();
