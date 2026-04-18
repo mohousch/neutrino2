@@ -4135,10 +4135,10 @@ void *CSectionsd::houseKeepingThread(void *)
 			dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: Removed %d waste events.\n", anzEventsAlt - mySIeventsOrderUniqueKey.size());
 		}
 
-		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: Number of sptr events (event-ID): %u\n", mySIeventsOrderUniqueKey.size());
-		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: Number of sptr events (service-id, start time, event-id): %u\n", mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.size());
-		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: Number of sptr events (end time, service-id, event-id): %u\n", mySIeventsOrderFirstEndTimeServiceIDEventUniqueKey.size());
-		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: Number of sptr nvod events (event-ID): %u\n", mySIeventsNVODorderUniqueKey.size());
+		dprintf(DEBUG_INFO, "CSectionsd::houseKeepingThread: Number of sptr events (event-ID): %u\n", mySIeventsOrderUniqueKey.size());
+		dprintf(DEBUG_INFO, "CSectionsd::houseKeepingThread: Number of sptr events (service-id, start time, event-id): %u\n", mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.size());
+		dprintf(DEBUG_INFO, "CSectionsd::houseKeepingThread: Number of sptr events (end time, service-id, event-id): %u\n", mySIeventsOrderFirstEndTimeServiceIDEventUniqueKey.size());
+		dprintf(DEBUG_INFO, "CSectionsd::houseKeepingThread: Number of sptr nvod events (event-ID): %u\n", mySIeventsNVODorderUniqueKey.size());
 		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: Number of cached meta-services: %u\n", mySIeventUniqueKeysMetaOrderServiceUniqueKey.size());
 
 		unlockEvents();
