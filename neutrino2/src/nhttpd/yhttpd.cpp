@@ -474,7 +474,7 @@ void Cyhttpd::ReadLanguage(void)
 //
 void Cyhttpd::Start(void)
 {
-	dprintf(DEBUG_DEBUG, "Cyhttpd::Start:\n");
+	dprintf(DEBUG_NORMAL, "Cyhttpd::Start:\n");
 	
 	// start webserver thread
 	if (pthread_create(&thrWebServer, NULL, webServerThread, (void *) this) != 0 )
@@ -488,7 +488,7 @@ void Cyhttpd::Start(void)
 //
 void Cyhttpd::Stop(void)
 {
-	dprintf(DEBUG_DEBUG, "Cyhttpd::Stop:\n");
+	dprintf(DEBUG_NORMAL, "Cyhttpd::Stop:\n");
 }
 
 
