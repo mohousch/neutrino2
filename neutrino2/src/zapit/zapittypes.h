@@ -271,13 +271,13 @@ struct transponder
 	}
 
 	//
-	transponder(const t_transport_stream_id p_transport_stream_id, const t_original_network_id p_original_network_id, const FrontendParameters p_feparams)
+	transponder(const transponder_id_t p_transponder_id, const t_transport_stream_id p_transport_stream_id, const t_original_network_id p_original_network_id, const FrontendParameters p_feparams)
 	{
 		transport_stream_id = p_transport_stream_id;
 		original_network_id = p_original_network_id;
 		feparams            = p_feparams;
 		updated = 0;
-		TP_id = 0;
+		TP_id = p_transponder_id;
 		diseqc = 255;
 	}
 };

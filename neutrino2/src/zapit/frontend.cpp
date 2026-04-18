@@ -1410,7 +1410,7 @@ int CFrontend::tuneFrequency(FrontendParameters * feparams)
 	// save feparams im TP struct
 	memcpy(&TP.feparams, feparams, sizeof(FrontendParameters));
 
-	//FIXME:pol für Sat
+	//FIXME: pol for Sat
 	if(info.type == FE_QPSK)
 		TP.feparams.polarization = feparams->polarization;
 

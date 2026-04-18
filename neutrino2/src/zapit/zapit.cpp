@@ -3501,15 +3501,15 @@ int CZapit::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, b
 		{
 			if(nittransponders.find(TsidOnid) == nittransponders.end()) 
 			{
-				nittransponders.insert (std::pair <transponder_id_t, transponder> (TsidOnid, transponder ( (TsidOnid >> 16) &0xFFFF, TsidOnid &0xFFFF, *feparams)));
+				nittransponders.insert (std::pair <transponder_id_t, transponder> (TsidOnid, transponder (TsidOnid, (TsidOnid >> 16) &0xFFFF, TsidOnid &0xFFFF, *feparams)));
 			}
 		}
 		else 
 		{
 			found_transponders++;
-			scantransponders.insert (std::pair <transponder_id_t, transponder> (TsidOnid, transponder ( (TsidOnid >> 16) &0xFFFF, TsidOnid &0xFFFF, *feparams)));
+			scantransponders.insert (std::pair <transponder_id_t, transponder> (TsidOnid, transponder (TsidOnid, (TsidOnid >> 16) &0xFFFF, TsidOnid &0xFFFF, *feparams)));
 
-			scanedtransponders.insert (std::pair <transponder_id_t, transponder> ( TsidOnid, transponder ( (TsidOnid >> 16) &0xFFFF, TsidOnid &0xFFFF, *feparams)));
+			scanedtransponders.insert (std::pair <transponder_id_t, transponder> ( TsidOnid, transponder ( TsidOnid, (TsidOnid >> 16) &0xFFFF, TsidOnid &0xFFFF, *feparams)));
 		}
 		
 		return 0;
@@ -3598,7 +3598,7 @@ _repeat:
 
 		stI = transponders.find(TsidOnid);
 		if(stI == transponders.end())
-			transponders.insert (std::pair <transponder_id_t, transponder> (TsidOnid, transponder(tI->second.transport_stream_id, tI->second.original_network_id, tI->second.feparams)));
+			transponders.insert (std::pair <transponder_id_t, transponder> (TsidOnid, transponder(TsidOnid, tI->second.transport_stream_id, tI->second.original_network_id, tI->second.feparams)));
 		else
 			stI->second.feparams.fec_inner = tI->second.feparams.fec_inner;
 		
@@ -4573,7 +4573,7 @@ void CZapit::parseTransponders(xmlNodePtr node, t_satellite_position satellitePo
 
 		std::pair<std::map<transponder_id_t, transponder>::iterator, bool> ret;
 
-		ret = transponders.insert(std::pair<transponder_id_t, transponder> ( tid, transponder(transport_stream_id, original_network_id, feparams)));
+		ret = transponders.insert(std::pair<transponder_id_t, transponder> ( tid, transponder(tid, transport_stream_id, original_network_id, feparams)));
 		
 		if (ret.second == false)
 			printf("CZapit::parseTransponders: duplicate transponder id 0x%llx freq %d\n", tid, feparams.frequency);
@@ -4975,7 +4975,7 @@ void CZapit::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_s
 		transponder_id_t tid = CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid);
 		
 		// insert TPs list
-		select_transponders.insert( std::pair<transponder_id_t, transponder> (tid, transponder(fake_tid, fake_nid, feparams)));
+		select_transponders.insert( std::pair<transponder_id_t, transponder> (tid, transponder(tid, fake_tid, fake_nid, feparams)));
 		
 		fake_nid ++; 
 		fake_tid ++;
