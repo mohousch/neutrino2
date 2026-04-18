@@ -379,7 +379,7 @@ class CZapit
 		void findTransponder(xmlNodePtr root);
 		void parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_satellite_position satellitePosition);
 		void initSat(t_satellite_position position);
-		void loadTransponders();
+		void loadProviders();
 		int loadServices(bool only_current);
 		void saveServices(bool tocopy = false);
 		//// scanManager

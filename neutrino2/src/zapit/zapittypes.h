@@ -256,7 +256,7 @@ struct transponder
 	t_original_network_id original_network_id;
 	FrontendParameters feparams;
 	bool updated;
-	uint64_t TP_id;
+	transponder_id_t TP_id;
 	uint8_t diseqc;
 	
 	//

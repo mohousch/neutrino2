@@ -1693,8 +1693,8 @@ int CZapit::prepareChannels()
 	// load frontend config
 	loadFrontendConfig();
         
-    	// load tps
-    	loadTransponders();
+    	// load providers / tps
+    	loadProviders();
 
 	// load services
 	loadServices(false);
@@ -4342,30 +4342,6 @@ int CZapit::loadServices(bool only_current)
 
 	if (parser != NULL) 
 	{
-		/*
-		xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode;
-
-		while (search) 
-		{
-			if (!(strcmp(xmlGetName(search), "sat"))) 
-			{
-				// position
-				position = xmlGetSignedNumericAttribute(search, "position", 10);
-				char * name = xmlGetAttribute(search, "name");
-
-				if(satellitePositions.find(position) == satellitePositions.end()) 
-				{
-					initSat(position);
-				}
-                
-                		satellitePositions[position].name = name;
-			}
-
-			// jump to the next node
-			search = search->xmlNextNode;
-		}
-		*/
-
 		findTransponder( xmlDocGetRootElement(parser)->xmlChildrenNode );
 		
 		xmlFreeDoc(parser);
@@ -4423,6 +4399,16 @@ void CZapit::findTransponder(xmlNodePtr search)
 					satellitePosition = spos_it->first;
 					break;
 				}
+				else
+				{
+					satellitePosition = 0xF00;
+					satellitePositions[satellitePosition].position = satellitePosition;
+					// name
+					satellitePositions[satellitePosition].name = xmlGetAttribute(search, "name");
+					
+					// delsys
+					satellitePositions[satellitePosition].system = CFrontend::DVB_C;
+				}
 			}
 			
 			dprintf(DEBUG_INFO, "CZapit::findTransponder: going to parse dvb-%c provider %s\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"));
@@ -4437,6 +4423,16 @@ void CZapit::findTransponder(xmlNodePtr search)
 				{
 					satellitePosition = spos_it->first;
 					break;
+				}
+				else
+				{
+					satellitePosition = 0xE00;
+					satellitePositions[satellitePosition].position = satellitePosition;
+					// name
+					satellitePositions[satellitePosition].name = xmlGetAttribute(search, "name");
+					
+					// delsys
+					satellitePositions[satellitePosition].system = CFrontend::DVB_T;
 				}
 			}
 			
@@ -4453,6 +4449,16 @@ void CZapit::findTransponder(xmlNodePtr search)
 					satellitePosition = spos_it->first;
 					break;
 				}
+				else
+				{
+					satellitePosition = 0xFE0;
+					satellitePositions[satellitePosition].position = satellitePosition;
+					// name
+					satellitePositions[satellitePosition].name = xmlGetAttribute(search, "name");
+					
+					// delsys
+					satellitePositions[satellitePosition].system = CFrontend::DVB_A;
+				}
 			}
 			
 			dprintf(DEBUG_INFO, "CZapit::findTransponder: going to parse dvb-%c provider %s\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"));
@@ -4461,6 +4467,21 @@ void CZapit::findTransponder(xmlNodePtr search)
 		{
 			type = FE_QPSK;
 			satellitePosition = xmlGetSignedNumericAttribute(search, "position", 10);
+			
+			//
+			for (sat_iterator_t spos_it = satellitePositions.begin(); spos_it != satellitePositions.end(); spos_it++) 
+			{
+				if( strcmp(spos_it->second.name.c_str(), xmlGetAttribute(search, "name")) ) 
+				{
+					satellitePositions[satellitePosition].position = satellitePosition;
+					
+					// name
+					satellitePositions[satellitePosition].name = xmlGetAttribute(search, "name");
+					
+					// delsys
+					satellitePositions[satellitePosition].system = CFrontend::DVB_S;
+				}
+			}
 			
 			dprintf(DEBUG_INFO, "CZapit::findTransponder: going to parse dvb-%c provider %s position %d\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"), satellitePosition);
 		}
@@ -4664,10 +4685,10 @@ void CZapit::parseChannels(xmlNodePtr node, const t_transport_stream_id transpor
 	}
 }
 
-// load transponders from satellites.xml / cables.xml / terrestrial.xml / atsc.xml
-void CZapit::loadTransponders()
+// load providers / transponders from satellites.xml / cables.xml / terrestrial.xml / atsc.xml
+void CZapit::loadProviders()
 {
-	dprintf(DEBUG_INFO, "CZapit::loadTransponders:\n");
+	dprintf(DEBUG_INFO, "CZapit::loadProviders:\n");
 	
 	scnt = 0;	
 	t_satellite_position position = 0; //first position
