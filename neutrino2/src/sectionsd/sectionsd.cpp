@@ -1845,7 +1845,7 @@ void *CSectionsd::insertEventsfromFile(void *)
 // xmltv thread
 void *CSectionsd::insertEventsfromXMLTV(void* data)
 {
-	dprintf(DEBUG_INFO, "CSectionsd::insertEventsfromXMLTV: tid %ld\n", syscall(__NR_gettid));
+	dprintf(DEBUG_NORMAL, "CSectionsd::insertEventsfromXMLTV: tid %ld\n", syscall(__NR_gettid));
 	
 	//
 	if (!data)
@@ -2736,7 +2736,7 @@ void *CSectionsd::timeThread(void *)
 	UTC_t UTC;
 	time_t tim;
 	unsigned int seconds;
-	bool first_time = true; /* we don't sleep the first time (we try to get a TOT header) */
+	bool first_time = true; 	// we don't sleep the first time (we try to get a TOT header)
 	struct timespec restartWait;
 	struct timeval now;
 	bool time_ntp = false;
@@ -2755,7 +2755,6 @@ void *CSectionsd::timeThread(void *)
 		
 		if (bTimeCorrect == true) 
 		{		
-			// sectionsd started with parameter "-tc"
 			if (first_time == true) 
 			{	
 				// only do this once!
@@ -2816,7 +2815,7 @@ void *CSectionsd::timeThread(void *)
 					actTime = time(NULL);
 					tmTime = localtime(&actTime);
 					
-					//dprintf(DEBUG_NORMAL, "CSectionsd::timeThread: current= %02d.%02d.%04d %02d:%02d:%02d, tim: %s\n", tmTime->tm_mday, tmTime->tm_mon+1, tmTime->tm_year+1900, tmTime->tm_hour, tmTime->tm_min, tmTime->tm_sec, ctime(&tim));
+					dprintf(DEBUG_NORMAL, "CSectionsd::timeThread: current= %02d.%02d.%04d %02d:%02d:%02d, tim: %s\n", tmTime->tm_mday, tmTime->tm_mon+1, tmTime->tm_year+1900, tmTime->tm_hour, tmTime->tm_min, tmTime->tm_sec, ctime(&tim));
 					
 					pthread_mutex_lock(&timeIsSetMutex);
 					timeset = true;
@@ -2840,19 +2839,20 @@ void *CSectionsd::timeThread(void *)
 
 			if(time_ntp) 
 			{
-				dprintf(DEBUG_DEBUG, "CSectionsd::timeThread: [%sThread] Time set via NTP, going to sleep for %d seconds.\n", "time", seconds);
+				dprintf(DEBUG_NORMAL, "CSectionsd::timeThread: [%sThread] Time set via NTP, going to sleep for %d seconds.\n", "time", seconds);
 			}
 			else 
 			{
-				dprintf(DEBUG_DEBUG, "CSectionsd::timeThread: [%sThread] Time %sset via DVB(%s), going to sleep for %d seconds.\n", "time", success?"":"not ", first_time?"TDT":"TOT", seconds);
+				dprintf(DEBUG_NORMAL, "CSectionsd::timeThread: [%sThread] Time %sset via DVB(%s), going to sleep for %d seconds.\n", "time", success?"":"not ", first_time?"TDT":"TOT", seconds);
 			}
+			
 			first_time = false;
 		}
 		else 
 		{
 			if (!first_time) 
 			{
-				/* time was already set, no need to do it again soon when DVB time-blocked channel is tuned */
+				// time was already set, no need to do it again soon when DVB time-blocked channel is tuned
 				seconds = ntprefresh * 60;
 			}
 			else if (!scanning) 
@@ -2866,7 +2866,7 @@ void *CSectionsd::timeThread(void *)
 			
 			if (!dvb_time_update && !first_time) 
 			{
-				dprintf(DEBUG_DEBUG, "CSectionsd::timeThread: [%sThread] Time NOT set via DVB due to blocked channel, going to sleep for %d seconds.\n", "time", seconds);
+				dprintf(DEBUG_NORMAL, "CSectionsd::timeThread: [%sThread] Time NOT set via DVB due to blocked channel, going to sleep for %d seconds.\n", "time", seconds);
 			}
 		}
 
@@ -2877,13 +2877,13 @@ void *CSectionsd::timeThread(void *)
 		int ret = pthread_cond_timedwait( &timeThreadSleepCond, &timeThreadSleepMutex, &restartWait );
 		if (ret == ETIMEDOUT)
 		{
-			dprintf(DEBUG_DEBUG, "CSectionsd::timeThread: TDT-Thread sleeping is over - no signal received\n");
+			dprintf(DEBUG_NORMAL, "CSectionsd::timeThread: TDT-Thread sleeping is over - no signal received\n");
 		}
 		else if (ret == EINTR)
 		{
 			dprintf(DEBUG_DEBUG, "CSectionsd::timeThread: TDT-Thread sleeping interrupted\n");
 		}
-		// else if (ret == 0) //everything is fine :) e.g. timeThreadSleepCond maybe signalled @zap time to get a valid time
+
 		pthread_mutex_unlock( &timeThreadSleepMutex );
 	}
 
@@ -3484,7 +3484,7 @@ void *CSectionsd::eitThread(void *)
 	struct sched_param parm;
 	
 	int rc = pthread_getschedparam(pthread_self(), &policy, &parm);
-	dprintf(DEBUG_NORMAL, "CSectionsd::eitThread: getschedparam: %d pol %d, prio %d\n", rc, policy, parm.sched_priority);
+	dprintf(DEBUG_DEBUG, "CSectionsd::eitThread: getschedparam: %d pol %d, prio %d\n", rc, policy, parm.sched_priority);
 	
 	dprintf(DEBUG_NORMAL, "CSectionsd::eitThread: pid %d start\n", getpid());
 	
@@ -3542,8 +3542,6 @@ void *CSectionsd::eitThread(void *)
 		{
 			readLockServices();
 			MySIservicesOrderUniqueKey::iterator si = mySIservicesOrderUniqueKey.end();
-			
-			//dprintf(DEBUG_DEBUG, "timeoutsDMX %x\n",currentServiceKey);
 
 			if ( messaging_current_servicekey )
 				si = mySIservicesOrderUniqueKey.find( messaging_current_servicekey );
@@ -3711,7 +3709,7 @@ void *CSectionsd::eitThread(void *)
 							writeLockEvents();
 
 							for (SInvodReferences::iterator i = si->second->nvods.begin(); i != si->second->nvods.end(); i++)
-								mySIeventUniqueKeysMetaOrderServiceUniqueKey.insert(std::make_pair(i->uniqueKey(), e->uniqueKey()));
+										mySIeventUniqueKeysMetaOrderServiceUniqueKey.insert(std::make_pair(i->uniqueKey(), e->uniqueKey()));
 
 							unlockEvents();
 							CSectionsd::getInstance()->addNVODevent(*e);
@@ -4877,9 +4875,6 @@ void CSectionsd::Start(void)
 		pthread_create(&threadVIASATEIT, 0, viasateitThread, 0);
 	}
 	
-	// housekeeping-Thread starten
-	pthread_create(&threadHouseKeeping, 0, houseKeepingThread, 0);
-	
 	// readSIfromXMLTV thread
 	if (g_settings.epg_xmltv)
         {
@@ -4888,6 +4883,9 @@ void CSectionsd::Start(void)
 			readSIfromXMLTV(g_settings.xmltv[i].c_str());
 		}
 	}
+	
+	// housekeeping-Thread starten
+	pthread_create(&threadHouseKeeping, 0, houseKeepingThread, 0);
 }
 
 void CSectionsd::Stop(void)
