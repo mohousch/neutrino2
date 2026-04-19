@@ -90,8 +90,8 @@ class CZapit
 		
 		enum zapStatus
 		{
-			ZAP_OK 				= 0x01,
-			ZAP_IS_NVOD 			= 0x02,
+			ZAP_OK 			= 0x01,
+			ZAP_IS_NVOD 		= 0x02,
 			ZAP_INVALID_PARAM 	= 0x04
 		};
 
@@ -209,7 +209,7 @@ class CZapit
 		struct scanSatelliteList_t
 		{
 			char satName[50];
-			t_satellite_position  position;
+			t_satellite_position position;
 		};
 		
 		typedef std::vector<scanSatelliteList_t> ScanSatelliteList;

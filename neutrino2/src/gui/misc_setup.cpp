@@ -60,6 +60,7 @@
 
 
 //// globals
+CSectionsd::epg_config EPGconfig;
 extern cVideo *videoDecoder;
 extern cAudio *audioDecoder;
 extern CZapit::zapit_config zapitCfg;			//defined in zapit_setup.cpp
@@ -723,7 +724,17 @@ int CEPGSettings::exec(CTarget* parent, const std::string& actionKey)
 			else
 			{
 				g_settings.epg_dir = b.getSelectedFile()->Name;
-				CNeutrinoApp::getInstance()->sendSectionsdConfig();
+	
+				EPGconfig.epg_cache                = atoi(g_settings.epg_cache.c_str());
+				EPGconfig.epg_old_events           = atoi(g_settings.epg_old_events.c_str());
+				EPGconfig.epg_max_events           = atoi(g_settings.epg_max_events.c_str());
+				EPGconfig.epg_extendedcache        = atoi(g_settings.epg_extendedcache.c_str());
+				EPGconfig.epg_dir                  = g_settings.epg_dir;
+				EPGconfig.network_ntpserver        = g_settings.network_ntpserver;
+				EPGconfig.network_ntprefresh       = atoi(g_settings.network_ntprefresh.c_str());
+				EPGconfig.network_ntpenable        = g_settings.network_ntpenable;
+				
+				CSectionsd::getInstance()->setConfig(EPGconfig);
 			}
 		}
 		
@@ -734,7 +745,17 @@ int CEPGSettings::exec(CTarget* parent, const std::string& actionKey)
 	else if (actionKey == "savesettings")
 	{
 		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
-		CNeutrinoApp::getInstance()->sendSectionsdConfig();
+
+		EPGconfig.epg_cache                = atoi(g_settings.epg_cache.c_str());
+		EPGconfig.epg_old_events           = atoi(g_settings.epg_old_events.c_str());
+		EPGconfig.epg_max_events           = atoi(g_settings.epg_max_events.c_str());
+		EPGconfig.epg_extendedcache        = atoi(g_settings.epg_extendedcache.c_str());
+		EPGconfig.epg_dir                  = g_settings.epg_dir;
+		EPGconfig.network_ntpserver        = g_settings.network_ntpserver;
+		EPGconfig.network_ntprefresh       = atoi(g_settings.network_ntprefresh.c_str());
+		EPGconfig.network_ntpenable        = g_settings.network_ntpenable;
+				
+		CSectionsd::getInstance()->setConfig(EPGconfig);
 		
 		return RETURN_REPAINT;
 	}
@@ -921,7 +942,16 @@ bool CSectionsdConfigNotifier::changeNotify(const std::string&, void *)
 {
 	dprintf(DEBUG_INFO, "CSectionsdConfigNotifier::changeNotify\n");
 
-        CNeutrinoApp::getInstance()->sendSectionsdConfig();
+	EPGconfig.epg_cache                = atoi(g_settings.epg_cache.c_str());
+	EPGconfig.epg_old_events           = atoi(g_settings.epg_old_events.c_str());
+	EPGconfig.epg_max_events           = atoi(g_settings.epg_max_events.c_str());
+	EPGconfig.epg_extendedcache        = atoi(g_settings.epg_extendedcache.c_str());
+	EPGconfig.epg_dir                  = g_settings.epg_dir;
+	EPGconfig.network_ntpserver        = g_settings.network_ntpserver;
+	EPGconfig.network_ntprefresh       = atoi(g_settings.network_ntprefresh.c_str());
+	EPGconfig.network_ntpenable        = g_settings.network_ntpenable;
+				
+	CSectionsd::getInstance()->setConfig(EPGconfig);
 	
         return true;
 }

@@ -2149,25 +2149,6 @@ void CNeutrinoApp::startNextRecording()
 	}
 }
 
-// send sectionsd config
-void CNeutrinoApp::sendSectionsdConfig(void)
-{
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::sendSectionsdConfig\n");
-
-        CSectionsd::epg_config config;
-	
-        config.epg_cache                = atoi(g_settings.epg_cache.c_str());
-        config.epg_old_events           = atoi(g_settings.epg_old_events.c_str());
-        config.epg_max_events           = atoi(g_settings.epg_max_events.c_str());
-        config.epg_extendedcache        = atoi(g_settings.epg_extendedcache.c_str());
-        config.epg_dir                  = g_settings.epg_dir;
-        config.network_ntpserver        = g_settings.network_ntpserver;
-        config.network_ntprefresh       = atoi(g_settings.network_ntprefresh.c_str());
-        config.network_ntpenable        = g_settings.network_ntpenable;
-	
-        CSectionsd::getInstance()->setConfig(config);
-}
-
 // init zapper
 void CNeutrinoApp::initZapper()
 {

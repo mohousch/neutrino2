@@ -101,7 +101,6 @@
 #define TIME_EIT_SKIPPING 90
 // a little more time for freesat epg
 #define TIME_FSEIT_SKIPPING 240
-static bool sectionsd_ready = false;
 static bool reader_ready = true;
 static unsigned int max_events;
 // sleep 5 minutes
@@ -197,8 +196,6 @@ static DMX dmxCN(0x12, 512, false);
 static DMX dmxFSEIT(3842, 320);
 //viasat
 static DMX dmxVIASAT(0x39, 3000);
-//
-int sectionsd_stop = 0;
 //
 static bool slow_addevent = true;
 ////
@@ -2749,12 +2746,10 @@ void *CSectionsd::timeThread(void *)
 
 	dprintf(DEBUG_NORMAL, "CSectionsd::timeThread: pid %d start\n", getpid());
 
-	while(!sectionsd_stop)
+	while(true)
 	{
 		while (!scanning || !reader_ready) 
 		{
-			if(sectionsd_stop)
-				break;
 			sleep(1);
 		}
 		
@@ -2874,9 +2869,6 @@ void *CSectionsd::timeThread(void *)
 				dprintf(DEBUG_DEBUG, "CSectionsd::timeThread: [%sThread] Time NOT set via DVB due to blocked channel, going to sleep for %d seconds.\n", "time", seconds);
 			}
 		}
-		
-		if(sectionsd_stop)
-			break;
 
 		gettimeofday(&now, NULL);
 		TIMEVAL_TO_TIMESPEC(&now, &restartWait);
@@ -2998,17 +2990,13 @@ void *CSectionsd::fseitThread(void *)
 	waitForTimeset();
 	dmxFSEIT.lastChanged = time_monotonic();
 
-	while(!sectionsd_stop) 
+	while(true) 
 	{
 		while (!scanning) 
 		{
-			if(sectionsd_stop)
-				break;
 			sleep(1);
 		}
 		
-		if(sectionsd_stop)
-			break;
 		time_t zeit = time_monotonic();
 
 		rc = dmxFSEIT.getSection(static_buf, timeoutInMSeconds, timeoutsDMX);
@@ -3097,8 +3085,6 @@ void *CSectionsd::fseitThread(void *)
 		{
 			sendToSleepNow = false;
 
-			if(sectionsd_stop)
-				break;
 			dmxFSEIT.real_pause();
 			pthread_mutex_lock( &dmxFSEIT.start_stop_mutex );
 			writeLockMessaging();
@@ -3251,17 +3237,13 @@ void *CSectionsd::viasateitThread(void *)
 	waitForTimeset();
 	dmxVIASAT.lastChanged = time_monotonic();
 
-	while(!sectionsd_stop) 
+	while(true) 
 	{
 		while (!scanning) 
 		{
-			if(sectionsd_stop)
-				break;
 			sleep(1);
 		}
 		
-		if(sectionsd_stop)
-			break;
 		time_t zeit = time_monotonic();
 
 		rc = dmxVIASAT.getSection(static_buf, timeoutInMSeconds, timeoutsDMX);
@@ -3345,9 +3327,6 @@ void *CSectionsd::viasateitThread(void *)
 		if (sendToSleepNow)
 		{
 			sendToSleepNow = false;
-
-			if(sectionsd_stop)
-				break;
 			
 			dmxVIASAT.real_pause();
 			pthread_mutex_lock( &dmxVIASAT.start_stop_mutex );
@@ -3527,24 +3506,16 @@ void *CSectionsd::eitThread(void *)
 	waitForTimeset();
 	dmxEIT.lastChanged = time_monotonic();
 
-	while (!sectionsd_stop) 
+	while (true) 
 	{
 		while (!scanning) 
 		{
-			if(sectionsd_stop)
-				break;
 			sleep(1);
 		}
-		
-		if(sectionsd_stop)
-			break;
 			
 		time_t zeit = time_monotonic();
 
 		rc = dmxEIT.getSection(static_buf, timeoutInMSeconds, timeoutsDMX);
-		
-		if(sectionsd_stop)
-			break;
 
 		if (timeoutsDMX < 0 && !channel_is_blacklisted)
 		{
@@ -3649,8 +3620,6 @@ void *CSectionsd::eitThread(void *)
 				abs_wait.tv_sec += TIME_EIT_SCHEDULED_PAUSE;
 				
 				dprintf(DEBUG_DEBUG, "CSectionsd::eitThread: going to sleep for %d seconds...\n", TIME_EIT_SCHEDULED_PAUSE);
-				if(sectionsd_stop)
-					break;
 
 				pthread_mutex_lock( &dmxEIT.start_stop_mutex );
 				rs = pthread_cond_timedwait( &dmxEIT.change_cond, &dmxEIT.start_stop_mutex, &abs_wait );
@@ -3702,9 +3671,6 @@ void *CSectionsd::eitThread(void *)
 
 		header = (SI_section_header*)static_buf;
 		unsigned short section_length = header->section_length_hi << 8 | header->section_length_lo;
-
-		if(sectionsd_stop)
-			break;
 			
 		//
 		if (header->current_next_indicator)
@@ -3729,13 +3695,6 @@ void *CSectionsd::eitThread(void *)
 						if ( ( e->times.begin()->starttime < zeit + secondsToCache ) &&
 								( ( e->times.begin()->starttime + (long)e->times.begin()->duration ) > zeit - oldEventsAre ) )
 						{
-							//fprintf(stderr, "%02x ", header.table_id);
-							
-							if(sectionsd_stop)
-								break;
-								
-							//printf("Adding event 0x%llx table %x version %x running %d\n", e->uniqueKey(), header->table_id, header->version_number, e->runningStatus());
-							
 							//
 							CSectionsd::getInstance()->addEvent(*e, zeit);
 						}
@@ -3818,17 +3777,12 @@ void *CSectionsd::cnThread(void *)
 	time_t eit_waiting_since = time_monotonic();
 	dmxCN.lastChanged = eit_waiting_since;
 
-	while(!sectionsd_stop)
+	while(true)
 	{
 		while (!scanning) 
 		{
 			sleep(1);
-			if(sectionsd_stop)
-				break;
 		}
-		
-		if(sectionsd_stop)
-			break;
 
 		rc = dmxCN.getSection(static_buf, timeoutInMSeconds, timeoutsDMX);
 		time_t zeit = time_monotonic();
@@ -4045,7 +3999,7 @@ void *CSectionsd::houseKeepingThread(void *)
 	
 	pthread_setcanceltype (PTHREAD_CANCEL_ASYNCHRONOUS, 0);
 
-	while (!sectionsd_stop)
+	while (true)
 	{
 		//
 		if (CZapit::getInstance()->getFrontendCount())
@@ -4089,9 +4043,6 @@ void *CSectionsd::houseKeepingThread(void *)
 		while (!scanning) 
 		{
 			sleep(1);	// wait for streaming to end...
-			
-			if(sectionsd_stop)
-				break;
 		}
 
 		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: housekeeping.\n");
@@ -4867,22 +4818,15 @@ void CSectionsd::setLanguages(const std::vector<std::string>& newLanguages)
 	SIlanguage::saveLanguages();
 }
 
-bool CSectionsd::isReady(void)
-{
-	return sectionsd_ready;
-}
-
 //
 void CSectionsd::Start(void)
 {
 	dprintf(DEBUG_NORMAL, "CSectionsd::Start:\n");
 
-	int rc;
-
 	// load languages
 	SIlanguage::loadLanguages();
 
-	//NTP-Config laden
+	// NTP-Config laden
 	if (!ntp_config.loadConfig(CONF_FILE))
 	{
 		// set defaults if no configuration file exists
@@ -4900,9 +4844,9 @@ void CSectionsd::Start(void)
 	ntp_system_cmd = ntp_system_cmd_prefix + ntpserver;
 
 	// epg config
-	secondsToCache = (atoi(ntp_config.getString("epg_cache_time", "14").c_str() ) *24*60L*60L); //Tage
-	secondsExtendedTextCache = (atoi(ntp_config.getString("epg_extendedcache_time", "360").c_str() ) *60L*60L); //Stunden
-	oldEventsAre = (atoi(ntp_config.getString("epg_old_events", "1").c_str() ) *60L*60L); //Stunden
+	secondsToCache = (atoi(ntp_config.getString("epg_cache_time", "14").c_str() ) *24*60L*60L); // days
+	secondsExtendedTextCache = (atoi(ntp_config.getString("epg_extendedcache_time", "360").c_str() ) *60L*60L); // hours
+	oldEventsAre = (atoi(ntp_config.getString("epg_old_events", "1").c_str() ) *60L*60L); // hours
 	max_events = atoi(ntp_config.getString("epg_max_events", "50000").c_str() );
 
 	dprintf(DEBUG_NORMAL, "CSectionsd::Start: Caching max %d events\n", max_events);
@@ -4916,57 +4860,27 @@ void CSectionsd::Start(void)
 	readEncodingFile();
 
 	// time-Thread starten
-	rc = pthread_create(&threadTOT, 0, timeThread, 0);
-
-	if (rc)
-	{
-		dprintf(DEBUG_NORMAL, "CSectionsd::Start: failed to create time-thread (rc=%d)\n", rc);
-	}
+	pthread_create(&threadTOT, 0, timeThread, 0);
 
 	if (CZapit::getInstance()->getFrontendCount())
 	{
 		// EIT-Thread starten
-		rc = pthread_create(&threadEIT, 0, eitThread, 0);
-
-		if (rc) 
-		{
-			dprintf(DEBUG_NORMAL, "CSectionsd::Start: failed to create eit-thread (rc=%d)\n", rc);
-		}
+		pthread_create(&threadEIT, 0, eitThread, 0);
 
 		// CN-Thread starten
-		rc = pthread_create(&threadCN, 0, cnThread, 0);
-
-		if (rc) 
-		{
-			dprintf(DEBUG_NORMAL, "CSectionsd::Start: failed to create cn-thread (rc=%d)\n", rc);
-		}
+		pthread_create(&threadCN, 0, cnThread, 0);
 
 		// freesat
-		rc = pthread_create(&threadFSEIT, 0, fseitThread, 0);
-
-		if (rc) 
-		{
-			dprintf(DEBUG_NORMAL, "CSectionsd::Start: failed to create fseit-thread (rc=%d)\n", rc);
-		}
+		pthread_create(&threadFSEIT, 0, fseitThread, 0);
 		
 		// viasat
-		rc = pthread_create(&threadVIASATEIT, 0, viasateitThread, 0);
-
-		if (rc) 
-		{
-			dprintf(DEBUG_NORMAL, "CSectionsd::Start: failed to create viasateit-thread (rc=%d)\n", rc);
-		}
+		pthread_create(&threadVIASATEIT, 0, viasateitThread, 0);
 	}
 	
 	// housekeeping-Thread starten
-	rc = pthread_create(&threadHouseKeeping, 0, houseKeepingThread, 0);
-
-	if (rc) 
-	{
-		dprintf(DEBUG_NORMAL, "CSectionsd::Start: failed to create housekeeping-thread (rc=%d)\n", rc);
-	}
+	pthread_create(&threadHouseKeeping, 0, houseKeepingThread, 0);
 	
-	// readSIfromXMLTV
+	// readSIfromXMLTV thread
 	if (g_settings.epg_xmltv)
         {
         	for (unsigned long i = 0; i < g_settings.xmltv.size(); i++)
@@ -4974,11 +4888,6 @@ void CSectionsd::Start(void)
 			readSIfromXMLTV(g_settings.xmltv[i].c_str());
 		}
 	}
-	
-	sectionsd_ready = true;
-	
-	//
-	eit_update_fd = -1;
 }
 
 void CSectionsd::Stop(void)
@@ -5033,7 +4942,5 @@ void CSectionsd::Stop(void)
 			eitDmx = NULL;
 		}
 	}
-	
-	sectionsd_stop = 1;
 }
 

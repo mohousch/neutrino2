@@ -20,7 +20,6 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-// system headers
 #include <csignal>
 #include <fcntl.h>
 #include <sys/poll.h>

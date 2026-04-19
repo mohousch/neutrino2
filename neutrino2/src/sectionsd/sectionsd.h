@@ -161,7 +161,7 @@ class CSectionsd
 		void write_indexxml_footer(FILE *fd);
 		void readEPGFilter(void);
 		void readDVBTimeFilter(void);
-		bool isReady(void);
+//		bool isReady(void);
 		void print_meminfo(void);
 		
 		//

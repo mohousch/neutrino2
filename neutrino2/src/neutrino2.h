@@ -207,9 +207,7 @@ class CNeutrinoApp : public CTarget
 		void doGuiRecord(char * preselectedDir, bool addTimer = false);
 		void startNextRecording();
 		int startAutoRecord(bool addTimer);
-		void stopAutoRecord();		
-		////
-		void sendSectionsdConfig(void);
+		void stopAutoRecord();
 		////
 		int getChannelMode(void) { return g_settings.channel_mode; };
 		void setChannelMode(int newmode, int nMode);
