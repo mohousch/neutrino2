@@ -5116,7 +5116,7 @@ void CZapit::saveServices(bool tocopy)
 			t_satellite_position satpos = GET_SATELLITEPOSITION_FROM_TRANSPONDER_ID(tI->first) & 0xFFF;
 			tpdone = 0;
 
-			if(GET_SATELLITEPOSITION_FROM_TRANSPONDER_ID(tI->first) & 0xF000)
+			if (GET_SATELLITEPOSITION_FROM_TRANSPONDER_ID(tI->first) & 0xF000)
 				satpos = -satpos;
 
 			if(satpos != spos_it->first) 
