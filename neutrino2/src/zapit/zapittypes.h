@@ -288,7 +288,6 @@ typedef std::map<transponder_id_t, bool> sdt_tp_t; 			// used in zapit.cpp sdtth
 
 //// sat config
 typedef struct sat_config {
-	t_satellite_position position;
 	int diseqc;
 	int commited;
 	int uncommited;

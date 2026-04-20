@@ -4327,7 +4327,7 @@ void * CZapit::scanTransponderThread(void *data)
 // load services from services.xml
 int CZapit::loadServices(bool only_current)
 {
-	dprintf(DEBUG_INFO, "CZapit::loadServices:\n");
+	dprintf(DEBUG_NORMAL, "CZapit::loadServices:\n");
 	
 	xmlDocPtr parser;
 	scnt = 0;
@@ -4401,7 +4401,7 @@ void CZapit::findTransponder(xmlNodePtr search)
 				else
 				{
 					satellitePosition = 0xF00;
-					satellitePositions[satellitePosition].position = satellitePosition;
+
 					// name
 					satellitePositions[satellitePosition].name = xmlGetAttribute(search, "name");
 					
@@ -4426,7 +4426,7 @@ void CZapit::findTransponder(xmlNodePtr search)
 				else
 				{
 					satellitePosition = 0xE00;
-					satellitePositions[satellitePosition].position = satellitePosition;
+
 					// name
 					satellitePositions[satellitePosition].name = xmlGetAttribute(search, "name");
 					
@@ -4451,7 +4451,7 @@ void CZapit::findTransponder(xmlNodePtr search)
 				else
 				{
 					satellitePosition = 0xFE0;
-					satellitePositions[satellitePosition].position = satellitePosition;
+
 					// name
 					satellitePositions[satellitePosition].name = xmlGetAttribute(search, "name");
 					
@@ -4470,10 +4470,8 @@ void CZapit::findTransponder(xmlNodePtr search)
 			//
 			for (sat_iterator_t spos_it = satellitePositions.begin(); spos_it != satellitePositions.end(); spos_it++) 
 			{
-				if( strcmp(spos_it->second.name.c_str(), xmlGetAttribute(search, "name")) ) 
-				{
-					satellitePositions[satellitePosition].position = satellitePosition;
-					
+				if ( strcmp(spos_it->second.name.c_str(), xmlGetAttribute(search, "name")) ) 
+				{					
 					// name
 					satellitePositions[satellitePosition].name = xmlGetAttribute(search, "name");
 					
@@ -4589,7 +4587,7 @@ void CZapit::parseTransponders(xmlNodePtr node, t_satellite_position satellitePo
 
 void CZapit::parseChannels(xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq)
 {
-	dprintf(DEBUG_DEBUG, "CZapit::parseChannels:\n");
+	dprintf(DEBUG_INFO, "CZapit::parseChannels:\n");
 
 	t_service_id service_id;
 	std::string name;
@@ -4687,7 +4685,7 @@ void CZapit::parseChannels(xmlNodePtr node, const t_transport_stream_id transpor
 // load providers / transponders from satellites.xml / cables.xml / terrestrial.xml / atsc.xml
 void CZapit::loadProviders()
 {
-	dprintf(DEBUG_INFO, "CZapit::loadProviders:\n");
+	dprintf(DEBUG_NORMAL, "CZapit::loadProviders:\n");
 	
 	scnt = 0;	
 	t_satellite_position position = 0; //first position
@@ -4718,10 +4716,7 @@ void CZapit::loadProviders()
 					
 					char * name = xmlGetAttribute(search, "name");
 
-					if(satellitePositions.find(position) == satellitePositions.end()) 
-					{
-						initSat(position);
-					}
+					initSat(position);
 
 					// name
 					satellitePositions[position].name = name;
@@ -4730,7 +4725,7 @@ void CZapit::loadProviders()
 					satellitePositions[position].system = CFrontend::DVB_S;
 				}
 				
-				// parse sat TP
+				// parse sat TPs
 				parseSatTransponders(FE_QPSK, search, position);
 				
 				position++;
@@ -4757,11 +4752,6 @@ void CZapit::loadProviders()
 				{
 					char * name = xmlGetAttribute(search, "name");
 
-//					if(satellitePositions.find(position) == satellitePositions.end()) 
-//					{
-//						initSat(position);
-//					}
-
 					// name
 					satellitePositions[position].name = name;
 					
@@ -4769,7 +4759,7 @@ void CZapit::loadProviders()
 					satellitePositions[position].system = CFrontend::DVB_C;
 				}
 
-				// parse sat TP
+				// parse sat TPs
 				parseSatTransponders(FE_QAM, search, position);
 				
 				position++;
@@ -4799,11 +4789,6 @@ void CZapit::loadProviders()
 
 					char * name = xmlGetAttribute(search, "name");
 
-//					if(satellitePositions.find(position) == satellitePositions.end()) 
-//					{
-//						initSat(position);
-//					}
-
 					// name
 					satellitePositions[position].name = name;
 					
@@ -4811,7 +4796,7 @@ void CZapit::loadProviders()
 					satellitePositions[position].system = CFrontend::DVB_T;
 				}
 
-				// parse sat TP
+				// parse sat TPs
 				parseSatTransponders(FE_OFDM, search, position);
 				
 				position++;
@@ -4840,11 +4825,6 @@ void CZapit::loadProviders()
 
 					char * name = xmlGetAttribute(search, "name");
 
-//					if(satellitePositions.find(position) == satellitePositions.end()) 
-//					{
-//						initSat(position);
-//					}
-
 					// name
 					satellitePositions[position].name = name;
 					
@@ -4852,7 +4832,7 @@ void CZapit::loadProviders()
 					satellitePositions[position].system = CFrontend::DVB_A;
 				}
 
-				// parse sat TP
+				// parse sat TPs
 				parseSatTransponders(FE_ATSC, search, position);
 				
 				position++;
@@ -4868,7 +4848,7 @@ void CZapit::loadProviders()
 
 void CZapit::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_satellite_position satellitePosition)
 {
-	dprintf(DEBUG_DEBUG, "CZapit::parseSatTransponders:\n");
+	dprintf(DEBUG_INFO, "CZapit::parseSatTransponders:\n");
 
 	uint8_t system = 0;
 	int xml_fec;
@@ -5004,7 +4984,7 @@ void CZapit::loadMotorPositions(void)
 			satellitePosition = spos;
 			sat_iterator_t sit = satellitePositions.find(satellitePosition);
 
-			if(sit != satellitePositions.end()) 
+			if (sit != satellitePositions.end()) 
 			{
 				sit->second.motor_position = mpos;
 				sit->second.diseqc = diseqc;
@@ -5026,10 +5006,10 @@ void CZapit::loadMotorPositions(void)
 
 void CZapit::saveMotorPositions()
 {
+	dprintf(DEBUG_NORMAL, "CZapit::saveMotorPositions: saving motor positions...\n");
+	
 	FILE * fd;
 	sat_iterator_t sit;
-	
-	dprintf(DEBUG_INFO, "CZapit::saveMotorPositions: saving motor positions...\n");
 
 	fd = fopen(SATCONFIG, "w");
 	if(fd == NULL) 
@@ -5043,7 +5023,7 @@ void CZapit::saveMotorPositions()
 	for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 	{
 		if(sit->second.system == CFrontend::DVB_S)
-			fprintf(fd, "%d %d %d %d %d %d %d %d %d %d\n", 
+			fprintf(fd, "%d %d %d %d %d %d %d %d %d %d\n",
 				sit->first, 
 				sit->second.motor_position,
 				sit->second.diseqc, 
@@ -5054,17 +5034,16 @@ void CZapit::saveMotorPositions()
 				sit->second.lnbSwitch, 
 				sit->second.use_in_scan, 
 				sit->second.use_usals);
-	
 	}
+	
 	fdatasync(fileno(fd));
 	fclose(fd);
 }
 
 void CZapit::initSat(t_satellite_position position)
 {
-	dprintf(DEBUG_DEBUG, "CZapit::initSat:\n");
+	dprintf(DEBUG_INFO, "CZapit::initSat:\n");
 
-	satellitePositions[position].position = 0;
 	satellitePositions[position].diseqc = -1;
 	satellitePositions[position].commited = -1;
 	satellitePositions[position].uncommited = -1;
@@ -5079,7 +5058,7 @@ void CZapit::initSat(t_satellite_position position)
 
 void CZapit::saveServices(bool tocopy)
 {
-	dprintf(DEBUG_INFO, "CZapit::saveServices:\n");
+	dprintf(DEBUG_NORMAL, "CZapit::saveServices:\n");
 	
 	transponder_id_t tpid = 0;
 	FILE * fd = 0;
