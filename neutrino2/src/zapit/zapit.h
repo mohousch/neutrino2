@@ -527,10 +527,9 @@ class CZapit
 		void renameBouquet(const unsigned int bouquet, const char * const newName); // UTF-8 encoded
 		void setBouquetLock(const unsigned int bouquet, const bool lock);
 		void setBouquetHidden(const unsigned int bouquet, const bool hidden);
-		void clearAll();
+		void clearAllBouquets();
 		void parseWebTVBouquet(std::string &filename);
 		void loadWebTVBouquets(const std::string &dirname);
-		void sortBouquets(void);
 		void saveBouquets();
 		void restoreBouquets();
 		void addChannelToBouquet(const unsigned int bouquet, const t_channel_id channel_id);

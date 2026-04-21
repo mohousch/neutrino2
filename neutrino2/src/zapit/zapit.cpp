@@ -1686,7 +1686,7 @@ int CZapit::prepareChannels()
 	
 	// clear all channels/bouquets/TP's lists
 	transponders.clear();
-	clearAll();
+	clearAllBouquets();
 	allchans.clear();
 	
 	// load frontend config
@@ -3970,7 +3970,7 @@ void CZapit::saveScanBouquets(const CZapit::bouquetMode bouquetMode, const char 
 	
 	if (bouquetMode == CZapit::BM_DELETEBOUQUETS)
 	{
-		clearAll();
+		clearAllBouquets();
 		unlink(BOUQUETS_XML);
 	}
 	
@@ -4011,8 +4011,6 @@ void CZapit::saveScanBouquets(const CZapit::bouquetMode bouquetMode, const char 
 				dprintf(DEBUG_NORMAL, "CZapit::saveScanBouquets: adding channel %s\n", scanBouquets[0]->radioChannels[i]->getName().c_str());
 			}
 		}
-
-		sortBouquets();
 			
 		//
 		delete scanBouquets[0];
@@ -4182,7 +4180,7 @@ void * CZapit::scanThread(void * data)
 		CZapit::getInstance()->saveServices(true);
 	        CZapit::getInstance()->saveZapitBouquets();
 	        //
-	        CZapit::getInstance()->clearAll();
+	        CZapit::getInstance()->clearAllBouquets();
 		CZapit::getInstance()->loadBouquets();
 		CZapit::getInstance()->renumServices();
 		CZapit::getInstance()->readEPGMapping();
@@ -4292,7 +4290,7 @@ void * CZapit::scanTransponderThread(void *data)
 		CZapit::getInstance()->saveScanBouquets(CZapit::getInstance()->_bouquetMode, providerName);
 	        CZapit::getInstance()->saveZapitBouquets();
 	        //
-	        CZapit::getInstance()->clearAll();
+	        CZapit::getInstance()->clearAllBouquets();
 		CZapit::getInstance()->loadBouquets();
 		CZapit::getInstance()->renumServices();
 		CZapit::getInstance()->readEPGMapping();
@@ -5384,11 +5382,6 @@ void CZapit::saveZapitUBouquets(void)
 	chmod(UBOUQUETS_XML, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 }
 
-void CZapit::sortBouquets(void)
-{
-	sort(Bouquets.begin(), Bouquets.end(), CmpBouquetByChName());
-}
-
 void CZapit::parseBouquetsXml(const char *fname, bool bUser)
 {
 	dprintf(DEBUG_INFO, "CZapit::parseBouquetsXml %s\n", fname);
@@ -5458,9 +5451,6 @@ void CZapit::parseBouquetsXml(const char *fname, bool bUser)
 
 				channel_node = channel_node->xmlNextNode;
 			}
-
-//			if(!bUser)
-//				newBouquet->sortBouquet();
 				
 			search = search->xmlNextNode;
 		}
@@ -5820,11 +5810,10 @@ void CZapit::loadBouquets(bool loadCurrentBouquet)
 {
 	dprintf(DEBUG_NORMAL, "CZapit::loadBouquets:\n");
 
-	clearAll();
+	clearAllBouquets();
 	
 	// bouquets
 	parseBouquetsXml(BOUQUETS_XML, false);
-//	sortBouquets();
 
 	// ubouquets
 	parseBouquetsXml(UBOUQUETS_XML, true);
@@ -6118,7 +6107,7 @@ void CZapit::restoreBouquets()
 	} 
 	else 
 	{
-		clearAll();
+		clearAllBouquets();
 		loadBouquets();
 	}
 }
@@ -6176,7 +6165,7 @@ void CZapit::removeChannelFromBouquet(const unsigned int bouquet, const t_channe
 	g_RCInput->postMsg(NeutrinoMessages::EVT_SERVICESCHANGED);
 }
 
-void CZapit::clearAll()
+void CZapit::clearAllBouquets()
 {
 	for (unsigned int i = 0; i < Bouquets.size(); i++)
 		delete Bouquets[i];
