@@ -263,7 +263,7 @@ void CWidget::saveScreen()
 		
 	dprintf(DEBUG_INFO, "CWidget::saveScreen\n");
 
-	if(background)
+	if (background)
 	{
 		delete[] background;
 		background = NULL;

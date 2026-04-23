@@ -2612,7 +2612,6 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 	unsigned int paintframe = 0;
 	unsigned int savescreen = 0;
 	unsigned int timeout = 300;
-//	char *position = NULL;
 	
 	//
 	xmlDocPtr parser = NULL;
@@ -2681,7 +2680,6 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 				{
 					timeout = xmlGetSignedNumericAttribute(search, "timeout", 0);
 				}
-				//position = xmlGetAttribute(search, (char *)"position");
 					
 				//
 				widget = new CWidget(x, y, dx, dy);
@@ -2708,7 +2706,6 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 				//if (gradient_direction) gd = convertGradientDirection(gradient_direction);
 				int gi = INT_LIGHT;
 				//if (gradient_intensity) gi = convertGradientIntensity(gradient_intensity);
-				
 				widget->setGradient(gr, gd, gi, gt);
 
 				// corner / radius
