@@ -99,8 +99,6 @@ int CKeyChooser::paint()
 	if (widget)
 	{
 		menu = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
-		
-		widget->setTitle(title.c_str(), NEUTRINO_ICON_KEYBINDING);
 	}
 	else
 	{
@@ -115,7 +113,6 @@ int CKeyChooser::paint()
 		
 		//	
 		menu->enablePaintHead();
-		menu->setTitle(title.c_str(), NEUTRINO_ICON_KEYBINDING);
 			
 		//
 		menu->enablePaintFoot();		
@@ -126,6 +123,7 @@ int CKeyChooser::paint()
 		widget->addCCItem(menu);
 	}
 
+	menu->setTitle(title.c_str(), NEUTRINO_ICON_KEYBINDING);
 	menu->clear();
 	
 	menu->addItem(new CKeyValue(*key));

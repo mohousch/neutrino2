@@ -125,7 +125,6 @@ class CWidget : public CTarget
 		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
 		void setBorderColor(uint32_t col){borderColor = col;};
 		void setBorderGradient(int gr){borderGradient = gr;};
-		void setTitle(const char * title, const char *icon = NULL);
 		////
 		std::string getWidgetName(){return name;};
 		CComponent *getCCItem(const int type, const std::string& name = "");

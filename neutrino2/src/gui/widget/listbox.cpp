@@ -408,8 +408,6 @@ int CMenuOptionChooser::exec(CTarget *target)
 			widget->enableSaveScreen();
 			
 			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
-			
-			widget->setTitle(itemName.c_str());
 		}
 		else
 		{
@@ -426,14 +424,15 @@ int CMenuOptionChooser::exec(CTarget *target)
 			menu->setMode(ClistBox::MODE_SETUP);
 			menu->paintMainFrame(true);
 			menu->setBorderMode();
-			menu->enablePaintHead();
-			menu->setTitle(itemName.c_str());
+			menu->enablePaintHead();;
 			menu->enablePaintFoot();
 			menu->setFootButtons(&btn);
 			
 			//
 			widget->addCCItem(menu);
 		}
+		
+		menu->setTitle(itemName.c_str());
 		
 		//
 		for(unsigned int count = 0; count < number_of_options; count++) 
@@ -480,8 +479,6 @@ int CMenuOptionChooser::exec(CTarget *target)
 		if (widget)
 		{
 			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
-			
-			widget->setTitle(itemName.c_str());
 		}
 		else
 		{
@@ -504,13 +501,14 @@ int CMenuOptionChooser::exec(CTarget *target)
 			menu->setMode(ClistBox::MODE_SETUP);
 			menu->paintMainFrame(true);
 			menu->enablePaintHead();
-			menu->setTitle(itemName.c_str());
 			menu->enablePaintFoot();
 			menu->setFootButtons(&btn);
 			
 			//
 			widget->addCCItem(menu);
 		}
+		
+		menu->setTitle(itemName.c_str());
 
 		//
 		for(unsigned int count = 0; count < number_of_options; count++) 
@@ -928,10 +926,6 @@ int CMenuOptionStringChooser::exec(CTarget *target)
 			//
 			widget->move(parent->getWindowsPos().iX + parent->getWindowsPos().iWidth/2, parent->getWindowsPos().iY + 50);
 			widget->enableSaveScreen();
-			
-			widget->setTitle(itemName.c_str());
-			
-			
 		}
 		else
 		{
@@ -949,13 +943,14 @@ int CMenuOptionStringChooser::exec(CTarget *target)
 			menu->paintMainFrame(true);
 			menu->setBorderMode();
 			menu->enablePaintHead();
-			menu->setTitle(itemName.c_str());
 			menu->enablePaintFoot();
 			menu->setFootButtons(&btn);
 			
 			//
 			widget->addCCItem(menu);
 		}
+		
+		menu->setTitle(itemName.c_str());
 		
 		//
 		for(unsigned int count = 0; count < options.size(); count++) 
@@ -997,8 +992,6 @@ int CMenuOptionStringChooser::exec(CTarget *target)
 		if (widget)
 		{
 			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
-			
-			widget->setTitle(itemName.c_str());
 		}
 		else
 		{
@@ -1021,13 +1014,14 @@ int CMenuOptionStringChooser::exec(CTarget *target)
 			menu->setMode(ClistBox::MODE_SETUP);
 			menu->paintMainFrame(true);
 			menu->enablePaintHead();
-			menu->setTitle(itemName.c_str());
 			menu->enablePaintFoot();
 			menu->setFootButtons(&btn);
 			
 			//
 			widget->addCCItem(menu);
 		}
+		
+		menu->setTitle(itemName.c_str());
 		
 		//
 		for(unsigned int count = 0; count < options.size(); count++) 

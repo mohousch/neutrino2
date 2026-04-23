@@ -1024,7 +1024,7 @@ int CScanSetup::showLNBSetup()
 				tempsatWidget->addCCItem(tempsatlistBox);
 			}
 				
-			tempsatWidget->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_SCAN);
+			tempsatlistBox->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_SCAN);
 			tempsatlistBox->setMode(ClistBox::MODE_SETUP);
 				
 			tempsatlistBox->clear();

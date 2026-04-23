@@ -330,8 +330,6 @@ int CHDDMenuHandler::HDDMenu()
 		if (tempMenuWidget[i] != NULL)
 		{
 			tempMenu[i] = (ClistBox*)tempMenuWidget[i]->getCCItem(CComponent::CC_LISTBOX);
-			
-			tempMenuWidget[i]->setTitle(str, NEUTRINO_ICON_HDD);
 		}
 		else
 		{
@@ -352,7 +350,6 @@ int CHDDMenuHandler::HDDMenu()
 			
 			//
 			tempMenu[i]->enablePaintHead();
-			tempMenu[i]->setTitle(str, NEUTRINO_ICON_HDD);
 			
 			//
 			tempMenu[i]->enablePaintFoot();		
@@ -364,6 +361,7 @@ int CHDDMenuHandler::HDDMenu()
 		}
 		
 		//
+		tempMenu[i]->setTitle(str, NEUTRINO_ICON_HDD);
 		tempMenu[i]->clear();
 
 		
@@ -411,8 +409,6 @@ int CHDDMenuHandler::HDDMenu()
 			if (PartMenuWidget[j] != NULL)
 			{
 				PartMenu[j] = (ClistBox*)PartMenuWidget[j]->getCCItem(CComponent::CC_LISTBOX);
-				
-				PartMenuWidget[j]->setTitle(PART, NEUTRINO_ICON_HDD);
 			}
 			else
 			{
@@ -433,7 +429,6 @@ int CHDDMenuHandler::HDDMenu()
 				
 				//
 				PartMenu[j]->enablePaintHead();
-				PartMenu[j]->setTitle(PART, NEUTRINO_ICON_HDD);
 				
 				//
 				PartMenu[j]->enablePaintFoot();		
@@ -445,6 +440,7 @@ int CHDDMenuHandler::HDDMenu()
 			}
 			
 			//
+			PartMenu[j]->setTitle(PART, NEUTRINO_ICON_HDD);
 			PartMenu[j]->clear();
 
 			//
