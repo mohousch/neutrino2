@@ -995,18 +995,7 @@ void CTestMenu::testCComponentWidget()
 	Box.iY = g_settings.screen_StartY + 50;
 	Box.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 100);
 	Box.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 100);
-	
-	loadMoviePlaylist();
-	
-	std::string buffer;
-	
-	if (!m_vMovieInfo.empty())
-	{
-		buffer = m_vMovieInfo[0].epgInfo1;
-		buffer += "\n";
-		buffer += m_vMovieInfo[0].epgInfo2;
-	}
-	
+
 	//
 	testWidget = new CWidget(&Box);
 	
@@ -1018,9 +1007,13 @@ void CTestMenu::testCComponentWidget()
 	CCHeaders *head = new CCHeaders(Box.iX, Box.iY, Box.iWidth, 40, "CWidget(CCItems)", NEUTRINO_ICON_COLORS);
 	head->enablePaintDate();
 	
+	testWidget->addCCItem(head);
+	
 	// footers
 	CCFooters *foot = new CCFooters(Box.iX, Box.iY + Box.iHeight - 40, Box.iWidth, 40);
 	foot->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
+	
+	testWidget->addCCItem(foot);
 	
 	// icon
 	CCIcon *testIcon = new CCIcon();
@@ -1031,9 +1024,8 @@ void CTestMenu::testCComponentWidget()
 	
 	// image
 	CCImage *testImage = new CCImage();
-	testImage->setPosition(Box.iX + Box.iWidth - 210, Box.iY + 50, 200, 350);
-	if (!m_vMovieInfo.empty())
-		testImage->setImage(m_vMovieInfo[0].tfile.c_str());
+	testImage->setPosition(Box.iX + Box.iWidth - 210, Box.iY + 50, 160, 200);
+	testImage->setImage(DATADIR "/icons/start.jpg");	
 	
 	testWidget->addCCItem(testImage);
 	
@@ -1043,7 +1035,7 @@ void CTestMenu::testCComponentWidget()
 	testLabel->setColor(COL_ORANGE_PLUS_0);
 	testLabel->paintMainFrame(true);
 	testLabel->setText("this is a CComponent label test :-)");
-	testLabel->setPosition(Box.iX + 20, Box.iY + 50, Box.iWidth, g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight());
+	testLabel->setPosition(Box.iX + 20, Box.iY + 50, Box.iWidth, g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight());	
 	
 	testWidget->addCCItem(testLabel);
 	
@@ -1052,13 +1044,13 @@ void CTestMenu::testCComponentWidget()
 	int icon_w, icon_h;
 	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
 	testButton->setPosition(Box.iX + 10, Box.iY + Box.iHeight - 100, Box.iWidth, 40);
-	testButton->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
+	testButton->setButtons(FootButtons, FOOT_BUTTONS_COUNT);	
 	
 	testWidget->addCCItem(testButton);
 	
 	// Hline
 	CCHline *testHline = new CCHline();
-	testHline->setPosition(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 20, 2);
+	testHline->setPosition(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 40, 2);
 	testHline->setGradient(4);
 	
 	testWidget->addCCItem(testHline);
@@ -1077,9 +1069,11 @@ void CTestMenu::testCComponentWidget()
 	testWidget->addCCItem(testFrameLine);
 	
 	// text
+	std::string buffer = "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.";
+	
 	CCText *testText = new CCText();
 	testText->setPosition(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 20, Box.iHeight/4);
-	testText->setColor(COL_RED_PLUS_0);
+	testText->setColor(COL_YELLOW_PLUS_0);
 	testText->setText(buffer.c_str());
 	
 	testWidget->addCCItem(testText);
@@ -1096,9 +1090,6 @@ void CTestMenu::testCComponentWidget()
 	testPig->setPosition(Box.iX + 180 + testIcon->width + 100 + 20 + 200 + 10, Box.iY + 100, 300, 160);
 	
 	testWidget->addCCItem(testPig);
-	
-	testWidget->addCCItem(head);
-	testWidget->addCCItem(foot);
 	
 	testWidget->exec(this, "");
 	
