@@ -191,8 +191,6 @@ void CCAMMenuHandler::doMainMenu()
 			if (tempMenuWidget)
 			{
 				tempMenu = (ClistBox*)tempMenuWidget->getCCItem(CComponent::CC_LISTBOX);
-				
-				tempMenuWidget->setTitle(str, NEUTRINO_ICON_CI);
 			}
 			else
 			{
@@ -214,7 +212,6 @@ void CCAMMenuHandler::doMainMenu()
 				
 				//
 				tempMenu->enablePaintHead();
-				tempMenu->setTitle(str, NEUTRINO_ICON_CI);
 				
 				//
 				tempMenu->enablePaintFoot();		
@@ -226,6 +223,7 @@ void CCAMMenuHandler::doMainMenu()
 			}
 			
 			//
+			tempMenu->setTitle(str, NEUTRINO_ICON_CI);
 			tempMenu->clear();
 
 			//
@@ -388,8 +386,6 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 			if (menuWidget)
 			{
 				menu = (ClistBox*)menuWidget->getCCItem(CComponent::CC_LISTBOX);
-				
-				menuWidget->setTitle(convertDVBUTF8(pMenu->title, strlen(pMenu->title), 0).c_str(), NEUTRINO_ICON_CI);
 			}
 			else
 			{
@@ -411,7 +407,6 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 				
 				//
 				menu->enablePaintHead();
-				menu->setTitle(convertDVBUTF8(pMenu->title, strlen(pMenu->title), 0).c_str(), NEUTRINO_ICON_CI);
 				
 				//
 				menu->enablePaintFoot();		
@@ -421,7 +416,8 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 				//
 				menuWidget->addCCItem(menu);
 			}
-			
+
+			menu->setTitle(convertDVBUTF8(pMenu->title, strlen(pMenu->title), 0).c_str(), NEUTRINO_ICON_CI);			
 			menu->clear();
 
 			int slen = strlen(pMenu->subtitle);
