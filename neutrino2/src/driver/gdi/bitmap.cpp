@@ -178,6 +178,9 @@ void getSize(const std::string &name, int *width, int *height, int *nbpp, int *c
 			channels = 0;
 		}
 	}
+	
+	free(rgbbuff);
+	rgbbuff = NULL;
 
 	return;
 }
