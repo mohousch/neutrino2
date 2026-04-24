@@ -1100,11 +1100,6 @@ void CTestMenu::testCComponentWidget()
 	testWidget->addCCItem(head);
 	testWidget->addCCItem(foot);
 	
-	testWidget->addKey(CRCInput::RC_red, this, "mplay");
-	testWidget->addKey(CRCInput::RC_green, this, "mplay");
-	testWidget->addKey(CRCInput::RC_yellow, this, "mplay");
-	testWidget->addKey(CRCInput::RC_blue, this, "mplay");
-	
 	testWidget->exec(this, "");
 	
 	delete testWidget;
