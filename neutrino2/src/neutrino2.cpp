@@ -748,6 +748,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	
 	// xml
 	g_settings.epg_xmltv = configfile.getBool("epg_xmltv", true);
+	g_settings.epg_show_logo = configfile.getBool("epg_show_logo", false);
 	//
 	
 	// channellist 
@@ -757,6 +758,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.channellist_timescale = configfile.getInt32("channellist_timescale", 1);
 	g_settings.channellist_alt = configfile.getInt32("channellist_alt", 0);
 	g_settings.channellist_number = configfile.getInt32("channellist_number", CChannelList::CHANNEL_NUMBER_LIST_ORDER);
+	g_settings.channellist_show_logo = configfile.getBool("channellist_show_logo", false);
 	
 	// record screenshot
 	g_settings.recording_screenshot = configfile.getInt32("recording_screenshot", 1);
@@ -1245,6 +1247,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	
 	//
 	configfile.setBool("epg_xmltv", g_settings.epg_xmltv);
+	configfile.setBool("epg_show_logo", g_settings.epg_show_logo);
 
 	//filebrowser
 	configfile.setBool  ("filesystem_is_utf8", g_settings.filesystem_is_utf8);
@@ -1259,6 +1262,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setInt32( "rotor_swap", g_settings.rotor_swap);
 	configfile.setInt32( "zap_cycle", g_settings.zap_cycle );
 	configfile.setBool("virtual_zap_mode", g_settings.virtual_zap_mode);
+	configfile.setBool("channellist_show_logo", g_settings.channellist_show_logo);
 	
 	//zapit setup
 	configfile.setInt32("lastChannelMode", g_settings.lastChannelMode);

@@ -362,6 +362,7 @@ struct SNeutrinoSettings
 	int channellist_timescale;
 	int channellist_alt;
 	int channellist_number;
+	int channellist_show_logo;
 
 	// epg
 	int epg_save;
@@ -384,6 +385,7 @@ struct SNeutrinoSettings
 	std::string epg_serverbox_ip;
 	int epg_serverbox_type;
 	int epg_serverbox_gui;
+	int epg_show_logo;
 
 	//filebrowser
 	int filesystem_is_utf8;

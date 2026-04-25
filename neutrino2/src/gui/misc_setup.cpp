@@ -649,7 +649,7 @@ void CChannelListSettings::showMenu()
 	// timescale
 	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("Timescale"), &g_settings.channellist_timescale, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 	
-	// channellist ca
+	// ca
 	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("HD / Crypt Icons"), &g_settings.channellist_ca, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 	
 	// alt
@@ -657,6 +657,9 @@ void CChannelListSettings::showMenu()
 	
 	// number
 	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("Channel number"), &g_settings.channellist_number, CHANNELLIST_NUMBER_OPTIONS, CHANNELLIST_NUMBER_OPTION_COUNT, true));
+	
+	// logos
+	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("Channel logo"), &g_settings.channellist_show_logo, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
@@ -917,6 +920,11 @@ void CEPGSettings::showMenu()
 	miscSettingsEPG->addItem(o1);
 	miscSettingsEPG->addItem(o2);
 	miscSettingsEPG->addItem(o3);
+	
+	// logos
+	miscSettingsEPG->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
+	
+	miscSettingsEPG->addItem(new CMenuOptionChooser(_("Channel logo"), &g_settings.epg_show_logo, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
