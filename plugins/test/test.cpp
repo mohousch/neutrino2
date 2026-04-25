@@ -1025,7 +1025,7 @@ void CTestMenu::testCComponentWidget()
 	// image
 	CCImage *testImage = new CCImage();
 	testImage->setPosition(Box.iX + Box.iWidth - 210, Box.iY + 50, 160, 200);
-	testImage->setImage(DATADIR "/icons/start.jpg");	
+	testImage->setImage(DATADIR "/icons/nopreview.jpg");	
 	
 	testWidget->addCCItem(testImage);
 	
@@ -1112,7 +1112,7 @@ void CTestMenu::testCTextBoxWidget()
 	
 	std::string buffer = "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.";
 	
-	textBoxWidget->setText(buffer.c_str(), DATADIR "/icons/start.jpg", 320, 240, CTextBox::PIC_LEFT, true);
+	textBoxWidget->setText(buffer.c_str(), DATADIR "/icons/nopreview.jpg", 320, 240, CTextBox::PIC_LEFT, true);
 		
 	textBoxWidget->setTextColor(COL_YELLOW_PLUS_0);
 //	textBoxWidget->setHAlign(CComponent::CC_ALIGN_CENTER); // conflicts with pic position
@@ -1448,6 +1448,8 @@ void CTestMenu::testMultiWidget()
 	CBox mainBox(frameBuffer->getScreenX(), frameBuffer->getScreenY(), frameBuffer->getScreenWidth(), frameBuffer->getScreenHeight());
 	
 	testWidget = new CWidget(&mainBox);
+	testWidget->paintMainFrame(true);
+	testWidget->setCorner(RADIUS_MID, CORNER_ALL);
 
 	CBox headBox;
 	headBox.iX = mainBox.iX;
@@ -1525,17 +1527,6 @@ void CTestMenu::testMultiWidget()
 	Box.iX = mainBox.iX + leftBox.iWidth;
 	Box.iY = mainBox.iY + headBox.iHeight;
 	
-/*	loadMoviePlaylist();
-	
-	std::string buffer;
-	
-	if (!m_vMovieInfo.empty())
-	{
-		buffer = m_vMovieInfo[0].epgInfo1;
-		buffer += "\n";
-		buffer += m_vMovieInfo[0].epgInfo2;
-	}
-*/	
 	// CWindow
 	windowWidget = new CCWindow(&Box);
 	windowWidget->setColor(COL_MENUCONTENT_PLUS_0);
@@ -1553,7 +1544,7 @@ void CTestMenu::testMultiWidget()
 	CCImage *testImage = new CCImage();
 
 	testImage->setImage(DATADIR "/icons/nopreview.jpg");
-	testImage->setPosition(Box.iX + Box.iWidth - 210, Box.iY + 50, 200, 350);
+	testImage->setPosition(Box.iX + Box.iWidth - 210, Box.iY + 50, 160, 200);
 	
 	testWidget->addCCItem(testImage);
 	
@@ -1566,14 +1557,6 @@ void CTestMenu::testMultiWidget()
 	testLabel->enableRepaint();
 	
 	testWidget->addCCItem(testLabel);
-	
-	// CButtons
-//	CCButtons *testButton = new CCButtons(Box.iX + 10, Box.iY + Box.iHeight - 100, Box.iWidth, 40);
-//	int icon_w, icon_h;
-//	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
-//	testButton->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	
-//	testWidget->addCCItem(testButton);
 	
 	// Hline
 	CCHline *testHline = new CCHline(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 10, 10);
