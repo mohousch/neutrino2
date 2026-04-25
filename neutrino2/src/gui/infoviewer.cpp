@@ -477,7 +477,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 		g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString( BoxStartX + BORDER_LEFT, BoxStartY + (SAT_INFOBOX_HEIGHT - satNameHeight)/2 + satNameHeight, satNameWidth, "WebTV", COL_INFOBAR_TEXT_PLUS_0 );
 	}
 
-	// channel number/logo/name
+	// channel number/ logo / name
 	if ( (_satellitePosition != 0 && satellitePositions.size()) || (IS_WEBTV(channel_id))) 
 	{
 		// ChannelNumber
