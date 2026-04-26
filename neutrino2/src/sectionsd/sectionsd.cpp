@@ -337,7 +337,7 @@ struct OrderServiceUniqueKeyFirstStartTimeEventUniqueKey
 
 typedef std::set<SIeventPtr, OrderServiceUniqueKeyFirstStartTimeEventUniqueKey> MySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey;
 
-/*static*/ MySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey;
+static MySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey;
 
 struct OrderFirstEndTimeServiceIDEventUniqueKey
 {
@@ -4043,19 +4043,17 @@ void *CSectionsd::houseKeepingThread(void *)
 			sleep(1);	// wait for streaming to end...
 		}
 
-		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: housekeeping.\n");
-
 		// TODO: maybe we need to stop scanning here?...
 
 		readLockEvents();
 
 		unsigned anzEventsAlt = mySIeventsOrderUniqueKey.size();
-		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: before removeoldevents\n");
+		dprintf(DEBUG_INFO, "CSectionsd::houseKeepingThread: before removeoldevents\n");
 		unlockEvents();
 		CSectionsd::getInstance()->removeOldEvents(oldEventsAre); // alte Events
-		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: after removeoldevents\n");
+		dprintf(DEBUG_INFO, "CSectionsd::houseKeepingThread: after removeoldevents\n");
 		readLockEvents();
-		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: Removed %d old events.\n", anzEventsAlt - mySIeventsOrderUniqueKey.size());
+		dprintf(DEBUG_INFO, "CSectionsd::houseKeepingThread: Removed %d old events.\n", anzEventsAlt - mySIeventsOrderUniqueKey.size());
 		
 		if (mySIeventsOrderUniqueKey.size() != anzEventsAlt)
 		{
@@ -4070,11 +4068,11 @@ void *CSectionsd::houseKeepingThread(void *)
 		// removeDups
 		CSectionsd::getInstance()->removeDupEvents();
 		readLockEvents();
-		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: Removed %d dup events.\n", anzEventsAlt - mySIeventsOrderUniqueKey.size());
+		dprintf(DEBUG_INFO, "CSectionsd::houseKeepingThread: Removed %d dup events.\n", anzEventsAlt - mySIeventsOrderUniqueKey.size());
 		anzEventsAlt = mySIeventsOrderUniqueKey.size();
 		unlockEvents();
 
-		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: before removewasteepg\n");
+		dprintf(DEBUG_INFO, "CSectionsd::houseKeepingThread: before removewasteepg\n");
 
 		readLockEvents();
 		
@@ -4088,7 +4086,7 @@ void *CSectionsd::houseKeepingThread(void *)
 		dprintf(DEBUG_INFO, "CSectionsd::houseKeepingThread: Number of sptr events (service-id, start time, event-id): %u\n", mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.size());
 		dprintf(DEBUG_INFO, "CSectionsd::houseKeepingThread: Number of sptr events (end time, service-id, event-id): %u\n", mySIeventsOrderFirstEndTimeServiceIDEventUniqueKey.size());
 		dprintf(DEBUG_INFO, "CSectionsd::houseKeepingThread: Number of sptr nvod events (event-ID): %u\n", mySIeventsNVODorderUniqueKey.size());
-		dprintf(DEBUG_NORMAL, "CSectionsd::houseKeepingThread: Number of cached meta-services: %u\n", mySIeventUniqueKeysMetaOrderServiceUniqueKey.size());
+		dprintf(DEBUG_INFO, "CSectionsd::houseKeepingThread: Number of cached meta-services: %u\n", mySIeventUniqueKeysMetaOrderServiceUniqueKey.size());
 
 		unlockEvents();
 
