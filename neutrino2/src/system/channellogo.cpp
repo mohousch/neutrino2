@@ -162,7 +162,7 @@ std::string CChannellogo::getLogoName(t_channel_id logo_id)
 // display logo
 void CChannellogo::displayLogo(t_channel_id logo_id, int posx, int posy, int width, int height, bool upscale, bool center_x, bool center_y)
 {	
-        std::string logo_name = "";
+        std::string logo_name = DATADIR "/lcd/picon_default.png";
 	bool logo_ok = true;
 	
 	int logo_w = width;
