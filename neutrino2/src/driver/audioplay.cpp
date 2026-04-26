@@ -144,33 +144,6 @@ CAudioPlayer * CAudioPlayer::getInstance()
 
 void * CAudioPlayer::PlayThread( void * /*arg*/)
 {
-	// shoutcast
-/*
-	FILE* fp = NULL;
-	
-	if(getInstance()->m_Audiofile.FileExtension == CFile::EXTENSION_URL)
-	{
-		fp = ::fopen( getInstance()->m_Audiofile.Filename.c_str(), "rc" );
-
-		if ( fp == NULL )
-		{
-			dprintf(DEBUG_INFO, "CAudioPlayer::PlayThread: Error opening file %s.\n", getInstance()->m_Audiofile.Filename.c_str() );
-			
-			return NULL;
-		}
-		else
-		{
-			if ( ::fstatus(fp, ShoutcastCallback) < 0 )
-				fprintf( stderr, "CAudioPlayer::PlayThread: Error adding shoutcast callback: %s\n", err_txt );
-		}
-
-		if ( ::fclose( fp ) == EOF )
-		{
-			fprintf( stderr, "CAudioPlayer::PlayThread: Could not close file %s.\n", getInstance()->m_Audiofile.Filename.c_str() );
-		}
-	}
-*/
-
 	//stop playing if already playing (multiselect)
 	if (playback->playing)
 		playback->Close();
