@@ -362,6 +362,8 @@ bool CAudioPlayer::readMetaData(CAudiofile *const file)
 	bitrate = 0;
 	meta_data_valid = false;
 
+//FIXME:
+#if 0
 	int r = avformat_open_input(&avc, file->Filename.c_str(), NULL, NULL);
 	if (r)
 	{
@@ -521,6 +523,7 @@ bool CAudioPlayer::readMetaData(CAudiofile *const file)
 		avformat_free_context(avc);
 		avc = NULL;
 	}
+#endif	
 
 	return true;
 }
