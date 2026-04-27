@@ -609,17 +609,13 @@
 	</widget>
 	
 	<widget name="optionstringchooser" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1" headline="1" paintfoot="1" footline="1">
-		<!--<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1"/>-->
-		<!--<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">-->
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU" scrollbar="1" painthead="1" paintfoot="1">
 			<foot_button_label name="information"/>
 		</listbox>
 	</widget>
 	
 	<widget name="optionchooser" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1" headline="1" paintfoot="1" footline="1">
-		<!--<head posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1"/>-->
-		<!--<foot posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR"  corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">-->
+		<listbox posx="30" posy="100" width="640" height="520" paintframe="1" layout="LAYOUT_STANDARD" mode="MODE_MENU" scrollbar="1" painthead="1" paintfoot="1">
 			<foot_button_label name="information"/>
 		</listbox>
 	</widget>
