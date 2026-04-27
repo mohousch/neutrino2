@@ -107,41 +107,5 @@ class CAudiofile
 
 typedef std::vector<CAudiofile> CAudioPlayList;
 
-////
-class CFfmpegDec
-{
-	private:
-		bool meta_data_valid;
-		int mChannels;
-		//
-		AVFormatContext *avc;
-#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
-		AVCodec *codec;
-#else
-		const AVCodec *codec;
-#endif
-		//
-		int best_stream;
-		bool init(const char *_in);
-		void deInit(void);
-		void GetMeta(AVDictionary *metadata);
-		//
-		std::string title;
-		std::string artist;
-		std::string date;
-		std::string album;
-		std::string genre;
-		std::string type_info;
-		time_t total_time;
-		int bitrate;
-		int samplerate;
-
-	public:
-		static CFfmpegDec *getInstance();
-		bool GetMetaData(const char *in, CAudioMetaData *m);
-		CFfmpegDec();
-		~CFfmpegDec();
-};
-
 #endif /* __AUDIOFILE_H__ */
 

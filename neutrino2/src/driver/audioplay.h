@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$Id: audioplay.h 21122024 mohousch Exp $
+//	$Id: audioplay.h 27042026 mohousch Exp $
 //
 //	Homepage: http://dbox.cyberphoria.org/
 //
@@ -38,6 +38,17 @@
 #include <driver/audiofile.h>
 #include <string>
 
+extern "C" {
+#include <libavcodec/version.h>
+#include <libavformat/avformat.h>
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59,0,100)
+#include <libavcodec/avcodec.h>
+#endif
+}
+#include <OpenThreads/Thread>
+#include <OpenThreads/Condition>
+#include <OpenThreads/ScopedLock>
+
 
 class CAudioPlayer
 {
@@ -61,6 +72,31 @@ class CAudioPlayer
 		static void *PlayThread(void*);
 		void clearFileData();
 		unsigned int m_SecondsToSkip;
+		
+		////
+		bool meta_data_valid;
+		int mChannels;
+		//
+		AVFormatContext *avc;
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
+		AVCodec *codec;
+#else
+		const AVCodec *codec;
+#endif
+		//
+		int best_stream;
+		bool GetMetaData(const char *_in, CAudioMetaData *m);
+		void GetMeta(AVDictionary *metadata);
+		//
+		std::string title;
+		std::string artist;
+		std::string date;
+		std::string album;
+		std::string genre;
+		std::string type_info;
+		time_t total_time;
+		int bitrate;
+		int samplerate;
 
 	public:
 		////

@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //
-//	$Id: audioplay.cpp 21122024 mohousch Exp $
+//	$Id: audioplay.cpp 27042026 mohousch Exp $
 //
 //	Homepage: http://dbox.cyberphoria.org/
 //
@@ -38,6 +38,15 @@
 #include <fcntl.h>
 #include <sched.h>
 
+extern "C" {
+#include <libavcodec/version.h>
+#include <libavutil/opt.h>
+#include <libavutil/samplefmt.h>
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59,0,100)
+#include <libavcodec/avcodec.h>
+#endif
+}
+
 #include <neutrino2.h>
 
 #include <driver/audioplay.h>
@@ -46,6 +55,8 @@
 
 #include <playback_cs.h>
 
+
+static OpenThreads::Mutex mutex;
 
 void ShoutcastCallback(void *arg)
 {
@@ -239,7 +250,16 @@ void CAudioPlayer::init()
 	state = STOP;	
 	thrPlay = 0;
 
-	CFileHelpers::getInstance()->createDir("/tmp/audioplayer", 0755);	
+	CFileHelpers::getInstance()->createDir("/tmp/audioplayer", 0755);
+	
+	////
+	meta_data_valid = false;
+	avc = NULL;		// avcontext
+	
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
+	avcodec_register_all();
+	av_register_all();
+#endif	
 }
 
 void CAudioPlayer::sc_callback(void *arg)
@@ -329,7 +349,8 @@ bool CAudioPlayer::readMetaData(CAudiofile* const file, const bool nice)
 	}
 	else
 	{
-		Status = CFfmpegDec::getInstance()->GetMetaData(file->Filename.c_str(), &file->MetaData);
+		//FIXME:
+		Status = GetMetaData(file->Filename.c_str(), &file->MetaData);
 			
 		if ( fclose( fp ) == EOF )
 		{
@@ -338,5 +359,243 @@ bool CAudioPlayer::readMetaData(CAudiofile* const file, const bool nice)
 	}
 
 	return Status;
+}
+
+bool CAudioPlayer::GetMetaData(const char *_in, CAudioMetaData *m)
+{
+	dprintf(DEBUG_DEBUG, "CAudioPlayer::GetMetaData\n");
+	
+	//
+	title = "";
+	artist = "";
+	date = "";
+	album = "";
+	genre = "";
+	type_info = "";
+	total_time = 0;
+	bitrate = 0;
+	meta_data_valid = false;
+
+	int r = avformat_open_input(&avc, _in, NULL, NULL);
+	if (r)
+	{
+		if (avc)
+		{
+			avformat_close_input(&avc);
+			avformat_free_context(avc);
+			avc = NULL;
+		}
+		
+		return false;
+	}
+	
+	//
+	avc->probesize = 128 * 1024;
+	av_opt_set_int(avc, "analyzeduration", 1 * AV_TIME_BASE, 0);
+
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
+	avc->flags |= AVFMT_FLAG_CUSTOM_IO | AVFMT_FLAG_KEEP_SIDE_DATA;
+#else
+	avc->flags |= AVFMT_FLAG_CUSTOM_IO;
+#endif
+
+	//	
+	if (!meta_data_valid)
+	{
+		mutex.lock();
+		int ret = avformat_find_stream_info(avc, NULL);
+		if (ret < 0)
+		{
+			mutex.unlock();
+
+			if (avc)
+			{
+				avformat_close_input(&avc);
+				avformat_free_context(avc);
+				avc = NULL;
+			}
+			dprintf(DEBUG_NORMAL, "avformat_find_stream_info error %d\n", ret);
+			
+			return false;
+		}
+		mutex.unlock();
+		
+		//
+		GetMeta(avc->metadata);
+		
+		//	
+		for (unsigned int i = 0; i < avc->nb_streams; i++)
+		{
+#if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(57,25,101)
+			if (avc->streams[i]->codec->codec_type == AVMEDIA_TYPE_AUDIO)
+#else
+			if (avc->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO)
+#endif
+				GetMeta(avc->streams[i]->metadata);
+		}
+
+		codec = NULL;
+		best_stream = av_find_best_stream(avc, AVMEDIA_TYPE_AUDIO, -1, -1, &codec, 0);
+
+		if (best_stream < 0)
+		{
+			if (avc)
+			{
+				avformat_close_input(&avc);
+				avformat_free_context(avc);
+				avc = NULL;
+			}
+
+			return false;
+		}
+		
+#if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(57,25,101)
+		if (!codec)
+			codec = avcodec_find_decoder(avc->streams[best_stream]->codec->codec_id);
+			
+		samplerate = avc->streams[best_stream]->codec->sample_rate;
+		mChannels = av_get_channel_layout_nb_channels(avc->streams[best_stream]->codec->channel_layout);
+#else
+		if (!codec)
+			codec = avcodec_find_decoder(avc->streams[best_stream]->codecpar->codec_id);
+			
+		samplerate = avc->streams[best_stream]->codecpar->sample_rate;
+		mChannels = av_get_channel_layout_nb_channels(avc->streams[best_stream]->codecpar->channel_layout);
+#endif
+		std::stringstream ss;
+
+		if (codec && codec->long_name != NULL)
+			type_info = codec->long_name;
+		else if (codec && codec->name != NULL)
+			type_info = codec->name;
+		else
+			type_info = "unknown";
+		ss << " / " << mChannels << " channel" << (mChannels > 1 ? "s " : " ");
+		type_info += ss.str();
+
+		// bitrate / total_time
+		bitrate = 0;
+		total_time = 0;
+
+		if (avc->duration != int64_t(AV_NOPTS_VALUE))
+			total_time = avc->duration / int64_t(AV_TIME_BASE);
+			
+		// bitrate / cover
+		for (unsigned int i = 0; i < avc->nb_streams; i++)
+		{
+			// bitrate
+#if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(57,25,101)
+			if (avc->streams[i]->codec->bit_rate > 0)
+				bitrate += avc->streams[i]->codec->bit_rate;
+#else
+			if (avc->streams[i]->codecpar->bit_rate > 0)
+				bitrate += avc->streams[i]->codecpar->bit_rate;
+#endif
+			// cover
+			if ((avc->streams[i]->disposition & AV_DISPOSITION_ATTACHED_PIC))
+			{
+				std::string cover("/tmp/audioplayer/");
+				cover += m->title + ".jpg";
+				
+				FILE *f = fopen(cover.c_str(), "wb");
+				
+				if (f)
+				{
+					AVPacket *pkt = &avc->streams[i]->attached_pic;
+					fwrite(pkt->data, pkt->size, 1, f);
+					fclose(f);
+					m->cover = cover;
+				}
+			}
+		}
+		
+		// total_time
+		if (!total_time && m->filesize && bitrate)
+			total_time = 8 * m->filesize / bitrate;
+
+		meta_data_valid = true;
+		m->changed = true;
+	}
+	
+	m->title = title;
+	m->artist = artist;
+	m->date = date;
+	m->album = album;
+	m->genre = genre;
+	m->total_time = total_time;
+	m->type_info = type_info;
+	// make sure bitrate is set to prevent refresh metadata from gui, its a flag
+	m->bitrate = bitrate ? bitrate : 1;
+	m->samplerate = samplerate;
+	
+	//
+	if (avc)
+	{
+		avformat_close_input(&avc);
+		avformat_free_context(avc);
+		avc = NULL;
+	}
+
+	return true;
+}
+
+void CAudioPlayer::GetMeta(AVDictionary *metadata)
+{
+	dprintf(DEBUG_DEBUG, "CAudioPlayer::GetMeta\n");
+	
+	AVDictionaryEntry *tag = NULL;
+	
+	while ((tag = av_dict_get(metadata, "", tag, AV_DICT_IGNORE_SUFFIX)))
+	{
+		if (!strcasecmp(tag->key, "Title"))
+		{
+			if (title.empty())
+			{
+				title = isUTF8(tag->value) ? tag->value : convertLatin1UTF8(tag->value);
+				title = trim(title);
+			}
+			continue;
+		}
+		
+		if (!strcasecmp(tag->key, "Artist"))
+		{
+			if (artist.empty())
+			{
+				artist = isUTF8(tag->value) ? tag->value : convertLatin1UTF8(tag->value);
+				artist = trim(artist);
+			}
+			continue;
+		}
+		
+		if (!strcasecmp(tag->key, "Year"))
+		{
+			if (date.empty())
+			{
+				date = isUTF8(tag->value) ? tag->value : convertLatin1UTF8(tag->value);
+				date = trim(date);
+			}
+			continue;
+		}
+		
+		if (!strcasecmp(tag->key, "Album"))
+		{
+			if (album.empty())
+			{
+				album = isUTF8(tag->value) ? tag->value : convertLatin1UTF8(tag->value);
+				album = trim(album);
+			}
+			continue;
+		}
+		
+		if (!strcasecmp(tag->key, "Genre"))
+		{
+			if (genre.empty())
+			{
+				genre = isUTF8(tag->value) ? tag->value : convertLatin1UTF8(tag->value);
+				genre = trim(genre);
+			}
+			continue;
+		}
+	}
 }
 
