@@ -112,6 +112,8 @@ CIceCast::~CIceCast()
 {
 	playlist.clear();
 	
+	CAudioPlayer::getInstance()->deinit();
+	
 	delete widget;
 	widget = NULL;
 }
@@ -545,7 +547,7 @@ void CIceCast::GetMetaData(CAudiofile &File)
 	bool ret = 1;
 
 	if (CFile::EXTENSION_URL != File.FileExtension)
-		ret = CAudioPlayer::getInstance()->readMetaData(&File, true);
+		ret = CAudioPlayer::getInstance()->readMetaData(&File);
 
 	if (!ret || (File.MetaData.artist.empty() && File.MetaData.title.empty() ))
 	{

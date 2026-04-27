@@ -252,14 +252,28 @@ void CAudioPlayer::init()
 
 	CFileHelpers::getInstance()->createDir("/tmp/audioplayer", 0755);
 	
-	////
+	//
 	meta_data_valid = false;
-	avc = NULL;		// avcontext
+	avc = NULL;
 	
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	avcodec_register_all();
 	av_register_all();
 #endif	
+}
+
+void CAudioPlayer::deinit()
+{
+	dprintf(DEBUG_INFO, "CAudioPlayer::%s\n", __FUNCTION__);
+	
+	if (avc)
+	{
+		avformat_close_input(&avc);
+		avformat_free_context(avc);
+		avc = NULL;
+	}
+	
+	CFileHelpers::getInstance()->removeDir("/tmp/audioplayer");
 }
 
 void CAudioPlayer::sc_callback(void *arg)
@@ -333,37 +347,9 @@ bool CAudioPlayer::hasMetaDataChanged()
 	return m_Audiofile.MetaData.changed;
 }
 
-bool CAudioPlayer::readMetaData(CAudiofile* const file, const bool nice)
+bool CAudioPlayer::readMetaData(CAudiofile *const file)
 {
-	dprintf(DEBUG_DEBUG, "CAudioPlayer::%s\n", __FUNCTION__);
-	
-	bool Status = true;
-	FILE* fp = NULL;
-
-	fp = fopen( file->Filename.c_str(), "r" );
-
-	if ( fp == NULL )
-	{
-		dprintf(DEBUG_DEBUG, "CAudioPlayer::readMetaData: Error opening file %s for meta data reading.\n", file->Filename.c_str() );
-		Status = false;
-	}
-	else
-	{
-		//FIXME:
-		Status = GetMetaData(file->Filename.c_str(), &file->MetaData);
-			
-		if ( fclose( fp ) == EOF )
-		{
-			dprintf(DEBUG_NORMAL, "Could not close file %s.\n", file->Filename.c_str() );
-		}
-	}
-
-	return Status;
-}
-
-bool CAudioPlayer::GetMetaData(const char *_in, CAudioMetaData *m)
-{
-	dprintf(DEBUG_DEBUG, "CAudioPlayer::GetMetaData\n");
+	dprintf(DEBUG_DEBUG, "CAudioPlayer::readMetaData\n");
 	
 	//
 	title = "";
@@ -376,7 +362,7 @@ bool CAudioPlayer::GetMetaData(const char *_in, CAudioMetaData *m)
 	bitrate = 0;
 	meta_data_valid = false;
 
-	int r = avformat_open_input(&avc, _in, NULL, NULL);
+	int r = avformat_open_input(&avc, file->Filename.c_str(), NULL, NULL);
 	if (r)
 	{
 		if (avc)
@@ -495,7 +481,7 @@ bool CAudioPlayer::GetMetaData(const char *_in, CAudioMetaData *m)
 			if ((avc->streams[i]->disposition & AV_DISPOSITION_ATTACHED_PIC))
 			{
 				std::string cover("/tmp/audioplayer/");
-				cover += m->title + ".jpg";
+				cover += file->MetaData.title + ".jpg";
 				
 				FILE *f = fopen(cover.c_str(), "wb");
 				
@@ -504,29 +490,29 @@ bool CAudioPlayer::GetMetaData(const char *_in, CAudioMetaData *m)
 					AVPacket *pkt = &avc->streams[i]->attached_pic;
 					fwrite(pkt->data, pkt->size, 1, f);
 					fclose(f);
-					m->cover = cover;
+					file->MetaData.cover = cover;
 				}
 			}
 		}
 		
 		// total_time
-		if (!total_time && m->filesize && bitrate)
-			total_time = 8 * m->filesize / bitrate;
+		if (!total_time && file->MetaData.filesize && bitrate)
+			total_time = 8 * file->MetaData.filesize / bitrate;
 
 		meta_data_valid = true;
-		m->changed = true;
+		file->MetaData.changed = true;
 	}
 	
-	m->title = title;
-	m->artist = artist;
-	m->date = date;
-	m->album = album;
-	m->genre = genre;
-	m->total_time = total_time;
-	m->type_info = type_info;
+	file->MetaData.title = title;
+	file->MetaData.artist = artist;
+	file->MetaData.date = date;
+	file->MetaData.album = album;
+	file->MetaData.genre = genre;
+	file->MetaData.total_time = total_time;
+	file->MetaData.type_info = type_info;
 	// make sure bitrate is set to prevent refresh metadata from gui, its a flag
-	m->bitrate = bitrate ? bitrate : 1;
-	m->samplerate = samplerate;
+	file->MetaData.bitrate = bitrate ? bitrate : 1;
+	file->MetaData.samplerate = samplerate;
 	
 	//
 	if (avc)

@@ -966,7 +966,7 @@ void CAudioPlayerGui::GetMetaData(CAudiofile& File)
 	bool ret = 1;
 
 	if (CFile::EXTENSION_URL != File.FileExtension)
-		ret = CAudioPlayer::getInstance()->readMetaData(&File, m_state != CAudioPlayerGui::STOP);
+		ret = CAudioPlayer::getInstance()->readMetaData(&File);
 
 	if (!ret || (File.MetaData.artist.empty() && File.MetaData.title.empty() ))
 	{

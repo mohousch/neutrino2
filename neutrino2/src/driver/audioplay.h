@@ -85,7 +85,6 @@ class CAudioPlayer
 #endif
 		//
 		int best_stream;
-		bool GetMetaData(const char *_in, CAudioMetaData *m);
 		void GetMeta(AVDictionary *metadata);
 		//
 		std::string title;
@@ -107,11 +106,12 @@ class CAudioPlayer
 		void stop();
 		void pause();
 		void init();
+		void deinit();
 		void ff(unsigned int seconds = 0);
 		void rev(unsigned int seconds = 0);
 		CAudioMetaData getMetaData();
 		bool hasMetaDataChanged();
-		bool readMetaData(CAudiofile* const, const bool);
+		bool readMetaData(CAudiofile* const);
 		time_t getTimePlayed(){return m_played_time;}
 		time_t getTimeTotal(){return m_Audiofile.MetaData.total_time;}
 		int getScBuffered(){return m_sc_buffered;}

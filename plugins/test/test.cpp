@@ -370,7 +370,7 @@ void CTestMenu::loadAudioPlaylist()
 
 				CAudioPlayer::getInstance()->init();
 
-				int ret = CAudioPlayer::getInstance()->readMetaData(&audiofile, true);
+				int ret = CAudioPlayer::getInstance()->readMetaData(&audiofile);
 
 				if (!ret || (audiofile.MetaData.artist.empty() && audiofile.MetaData.title.empty() ))
 				{
@@ -461,7 +461,7 @@ void CTestMenu::openAudioFileBrowser()
 
 				CAudioPlayer::getInstance()->init();
 
-				int ret = CAudioPlayer::getInstance()->readMetaData(&audiofile, true);
+				int ret = CAudioPlayer::getInstance()->readMetaData(&audiofile);
 
 				if (!ret || (audiofile.MetaData.artist.empty() && audiofile.MetaData.title.empty() ))
 				{
@@ -1373,6 +1373,8 @@ void CTestMenu::testCListFrameWidget()
 
 	delete testWidget;
 	testWidget = NULL;
+	
+	CAudioPlayer::getInstance()->deinit();
 }
 
 void CTestMenu::testClistBoxWidget()
@@ -2207,6 +2209,8 @@ void CTestMenu::testCListFrame()
 	{
 		listFrameLines.lineArray[i].clear();
 	}
+	
+	CAudioPlayer::getInstance()->deinit();
 	
 	delete listFrame;
 	listFrame = NULL;

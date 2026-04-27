@@ -459,19 +459,19 @@
 	</widget>
 	
 	<widget name="optionstringchooser" posx="340" posy="60" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
-		<head posx="370" posy="90" width="540" height="50" paintframe="0" paintdate="1" line="1"/>
-		<listbox posx="370" posy="140" width="540" height="440" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_MENU" itemborder="1" scrollbar="1"/>
-		<foot posx="370" posy="550" width="540" height="50" paintframe="0" line="1">
-			<button_label name="information"/>
-		</foot>
+		<!--<head posx="370" posy="90" width="540" height="50" paintframe="0" paintdate="1" line="1"/>-->
+		<listbox posx="370" posy="140" width="540" height="440" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_MENU" itemborder="1" scrollbar="1" painthead="1" headline="1" paintfoot="1" footline="1">
+		<!--<foot posx="370" posy="550" width="540" height="50" paintframe="0" line="1">-->
+			<foot_button_label name="information"/>
+		</listbox>
 	</widget>
 	
 	<widget name="optionchooser" posx="340" posy="60" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
-		<head posx="370" posy="90" width="540" height="50" paintframe="0" paintdate="1" line="1"/>
-		<listbox posx="370" posy="140" width="540" height="440" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_MENU" itemborder="1" scrollbar="1"/>
-		<foot posx="370" posy="550" width="540" height="50" paintframe="0" line="1">
-			<button_label name="information"/>
-		</foot>
+		<!--<head posx="370" posy="90" width="540" height="50" paintframe="0" paintdate="1" line="1"/>-->
+		<listbox posx="370" posy="140" width="540" height="440" paintframe="0" layout="LAYOUT_STANDARD" mode="MODE_MENU" itemborder="1" scrollbar="1" painthead="1" headline="1" paintfoot="1" footline="1">
+		<!--<foot posx="370" posy="550" width="540" height="50" paintframe="0" line="1">-->
+			<foot_button_label name="information"/>
+		</listbox>
 	</widget>
 	
 	<widget name="keychooser" posx="340" posy="60" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">

@@ -442,7 +442,7 @@ bool CMovieInfo::loadMovieInfo(MI_MOVIE_INFO * movie_info, CFile * file)
 		CAudiofile audiofile(movie_info->file.Name, movie_info->file.getExtension());
 
 		CAudioPlayer::getInstance()->init();
-		int ret = CAudioPlayer::getInstance()->readMetaData(&audiofile, true);
+		int ret = CAudioPlayer::getInstance()->readMetaData(&audiofile);
 
 		if (!ret || (audiofile.MetaData.artist.empty() && audiofile.MetaData.title.empty() ))
 		{
@@ -540,7 +540,7 @@ bool CMovieInfo::loadMovieInfo(MI_MOVIE_INFO * movie_info, CFile * file)
 			{
 				CAudiofile audiofile(movie_info->file.Name, CFile::EXTENSION_MP3);
 
-				CAudioPlayer::getInstance()->readMetaData(&audiofile, true);
+				CAudioPlayer::getInstance()->readMetaData(&audiofile);
 
 				if (!audiofile.MetaData.cover.empty())
 					movie_info->tfile = audiofile.MetaData.cover;
@@ -687,7 +687,7 @@ MI_MOVIE_INFO CMovieInfo::loadMovieInfo(const char *file)
 			CAudiofile audiofile(movie_info.file.Name, movie_info.file.getExtension());
 
 			CAudioPlayer::getInstance()->init();
-			int ret = CAudioPlayer::getInstance()->readMetaData(&audiofile, true);
+			int ret = CAudioPlayer::getInstance()->readMetaData(&audiofile);
 
 			if (!ret || (audiofile.MetaData.artist.empty() && audiofile.MetaData.title.empty() ))
 			{
@@ -786,7 +786,7 @@ MI_MOVIE_INFO CMovieInfo::loadMovieInfo(const char *file)
 					CAudiofile audiofile(movie_info.file.Name, CFile::EXTENSION_MP3);
 
 					CAudioPlayer::getInstance()->init();
-					CAudioPlayer::getInstance()->readMetaData(&audiofile, true);
+					CAudioPlayer::getInstance()->readMetaData(&audiofile);
 
 					if (!audiofile.MetaData.cover.empty())
 						movie_info.tfile = audiofile.MetaData.cover;

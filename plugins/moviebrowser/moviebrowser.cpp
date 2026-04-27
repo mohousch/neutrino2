@@ -2104,7 +2104,6 @@ bool CMovieBrowser::showMenu()
 	CNFSSmallMenu * nfs = new CNFSSmallMenu();
 	CDirMenu dirMenu(&m_dir);
 
-	CWidget *widget = new CWidget(frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - 600)/2, frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - 600)/2, 600, 600);
 	ClistBox mainMenu;
 	
 	mainMenu.setPosition(frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - 600)/2, frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - 600)/2, 600, 600);
@@ -2131,13 +2130,8 @@ bool CMovieBrowser::showMenu()
 	// help
 	mainMenu.addItem( new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu.addItem( new CMenuForwarder(_("Help"), true, NULL, this, "show_help", CRCInput::RC_info, NEUTRINO_ICON_BUTTON_HELP_SMALL));
-    
-	widget->addCCItem(&mainMenu);
-	
-	widget->exec(this, "");
-	
-	delete widget;
-	widget = NULL;
+
+	mainMenu.exec(this);
 
 	// post menu handling
 	if(m_settings.browserFrameHeight < MIN_BROWSER_FRAME_HEIGHT )

@@ -107,6 +107,8 @@ CMP3Player::~CMP3Player()
 	if(CAudioPlayer::getInstance()->getState() != CAudioPlayer::STOP)
 		CAudioPlayer::getInstance()->stop();
 		
+	CAudioPlayer::getInstance()->deinit();
+		
 	delete widget;
 	widget = NULL;
 }
@@ -279,7 +281,7 @@ void CMP3Player::getMetaData(CAudiofile &File)
 	
 	bool ret = 1;
 
-	ret = CAudioPlayer::getInstance()->readMetaData(&File, true);
+	ret = CAudioPlayer::getInstance()->readMetaData(&File);
 
 	if (!ret || (File.MetaData.artist.empty() && File.MetaData.title.empty() ))
 	{
