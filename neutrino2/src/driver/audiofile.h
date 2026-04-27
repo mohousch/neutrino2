@@ -30,16 +30,6 @@
 #include <string>
 #include <vector>
 
-extern "C" {
-#include <libavcodec/version.h>
-#include <libavformat/avformat.h>
-#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59,0,100)
-#include <libavcodec/avcodec.h>
-#endif
-}
-#include <OpenThreads/Thread>
-#include <OpenThreads/Condition>
-
 #include <driver/file.h>
 
 
@@ -92,17 +82,17 @@ class CAudioMetaData
 class CAudiofile
 {
 	public:
-		/* constructors */
 		CAudiofile();
 		CAudiofile( std::string name, CFile::FileExtension extension );
 		CAudiofile( const CAudiofile& src );
 
 		void operator=( const CAudiofile& src );
-		void clear();
 
-		CAudioMetaData MetaData;
 		std::string Filename;
 		CFile::FileExtension FileExtension;
+		CAudioMetaData MetaData;
+		
+		void clear();
 };
 
 typedef std::vector<CAudiofile> CAudioPlayList;

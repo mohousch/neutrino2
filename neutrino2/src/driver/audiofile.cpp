@@ -28,17 +28,6 @@
 #include <config.h>
 #endif
 
-extern "C" {
-#include <libavcodec/version.h>
-#include <libavutil/opt.h>
-#include <libavutil/samplefmt.h>
-#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59,0,100)
-#include <libavcodec/avcodec.h>
-#endif
-}
-
-#include <OpenThreads/ScopedLock>
-
 #include <system/helpers.h>
 #include <system/debug.h>
 
