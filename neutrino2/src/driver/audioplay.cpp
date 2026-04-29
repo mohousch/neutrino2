@@ -58,13 +58,6 @@ extern "C" {
 
 static OpenThreads::Mutex mutex;
 
-void ShoutcastCallback(void *arg)
-{
-	dprintf(DEBUG_NORMAL, "%s\n", __FUNCTION__);
-	
-	CAudioPlayer::getInstance()->sc_callback(arg);
-}
-
 void CAudioPlayer::stop()
 {
 	dprintf(DEBUG_NORMAL, "CAudioPlayer::%s\n", __FUNCTION__);
@@ -274,51 +267,6 @@ void CAudioPlayer::deinit()
 	}
 	
 	CFileHelpers::getInstance()->removeDir("/tmp/audioplayer");
-}
-
-void CAudioPlayer::sc_callback(void *arg)
-{
-	dprintf(DEBUG_NORMAL, "CAudioPlayer::%s\n", __FUNCTION__);
-	
-	bool changed = false;
-	CSTATE *stat = (CSTATE*)arg;
-	
-	const std::string artist = isUTF8(stat->artist)	? stat->artist : convertLatin1UTF8(stat->artist);
-	const std::string title	= isUTF8(stat->title) ? stat->title : convertLatin1UTF8(stat->title);
-	const std::string station = isUTF8(stat->station) ? stat->station : convertLatin1UTF8(stat->station);
-	const std::string genre	= isUTF8(stat->genre) ? stat->artist : convertLatin1UTF8(stat->genre);
-
-	if (m_Audiofile.MetaData.artist != artist)
-	{
-		m_Audiofile.MetaData.artist = artist;
-		changed = true;
-	}
-	
-	if (m_Audiofile.MetaData.title != title)
-	{
-		m_Audiofile.MetaData.title = title;
-		changed = true;
-	}
-	
-	if (m_Audiofile.MetaData.sc_station != station)
-	{
-		m_Audiofile.MetaData.sc_station = station;
-		changed = true;
-	}
-	
-	if (m_Audiofile.MetaData.genre != genre)
-	{
-		m_Audiofile.MetaData.genre = genre;
-		changed = true;
-	}
-	
-	if(changed)
-	{
-		m_played_time = 0;
-	}
-	
-	m_sc_buffered = stat->buffered;
-	m_Audiofile.MetaData.changed = changed;
 }
 
 void CAudioPlayer::clearFileData()

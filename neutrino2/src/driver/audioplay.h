@@ -50,6 +50,7 @@ extern "C" {
 #include <OpenThreads/ScopedLock>
 
 
+////
 class CAudioPlayer
 {
 	public:
@@ -115,7 +116,6 @@ class CAudioPlayer
 		time_t getTimePlayed(){return m_played_time;}
 		time_t getTimeTotal(){return m_Audiofile.MetaData.total_time;}
 		int getScBuffered(){return m_sc_buffered;}
-		void sc_callback(void *arg);
 		State getState(){return state;}
 
 		////

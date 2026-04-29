@@ -4334,7 +4334,6 @@ int CZapit::loadServices(bool only_current)
 	if(only_current)
 		goto do_current;
 
-	// parse services.xml
 	parser = parseXmlFile(SERVICES_XML);
 
 	if (parser != NULL) 
@@ -4396,6 +4395,9 @@ void CZapit::findTransponder(xmlNodePtr search)
 					satellitePosition = spos_it->first;
 					break;
 				}
+				//
+				// provider not found in provider list (edited oder proider list changed)
+				//
 				else
 				{
 					satellitePosition = 0xF00;
@@ -4421,6 +4423,9 @@ void CZapit::findTransponder(xmlNodePtr search)
 					satellitePosition = spos_it->first;
 					break;
 				}
+				//
+				// provider not found in provider list (edited oder proider list changed)
+				//
 				else
 				{
 					satellitePosition = 0xE00;
@@ -4446,6 +4451,9 @@ void CZapit::findTransponder(xmlNodePtr search)
 					satellitePosition = spos_it->first;
 					break;
 				}
+				//
+				// provider not found in provider list (edited oder proider list changed)
+				//
 				else
 				{
 					satellitePosition = 0xFE0;
@@ -4465,6 +4473,8 @@ void CZapit::findTransponder(xmlNodePtr search)
 			type = FE_QPSK;
 			satellitePosition = xmlGetSignedNumericAttribute(search, "position", 10);
 			
+			//
+			// provider not found in provider list (edited oder proider list changed)
 			//
 			for (sat_iterator_t spos_it = satellitePositions.begin(); spos_it != satellitePositions.end(); spos_it++) 
 			{
