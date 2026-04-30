@@ -314,7 +314,7 @@ bool CAudioPlayer::readMetaData(CAudiofile *const file)
 	meta_data_valid = false;
 
 //FIXME:
-#if 1
+#if 0
 	int r = avformat_open_input(&avc, file->Filename.c_str(), NULL, NULL);
 	if (r)
 	{
