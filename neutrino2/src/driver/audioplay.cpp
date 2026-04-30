@@ -248,6 +248,7 @@ void CAudioPlayer::init()
 	//
 	meta_data_valid = false;
 	avc = NULL;
+	codec = NULL;
 	
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	avcodec_register_all();
@@ -265,6 +266,8 @@ void CAudioPlayer::deinit()
 		avformat_free_context(avc);
 		avc = NULL;
 	}
+	
+	codec = NULL;
 	
 	CFileHelpers::getInstance()->removeDir("/tmp/audioplayer");
 }
@@ -311,7 +314,7 @@ bool CAudioPlayer::readMetaData(CAudiofile *const file)
 	meta_data_valid = false;
 
 //FIXME:
-#if 0
+#if 1
 	int r = avformat_open_input(&avc, file->Filename.c_str(), NULL, NULL);
 	if (r)
 	{
@@ -471,6 +474,8 @@ bool CAudioPlayer::readMetaData(CAudiofile *const file)
 		avformat_free_context(avc);
 		avc = NULL;
 	}
+	
+	codec = NULL;
 #endif	
 
 	return true;
