@@ -67,7 +67,6 @@ class CAudioPlayer
 		
 	private:		
 		time_t m_played_time;	
-		int  m_sc_buffered;
 		pthread_t thrPlay;
 		State state;
 		static void *PlayThread(void*);
@@ -115,7 +114,6 @@ class CAudioPlayer
 		bool readMetaData(CAudiofile* const);
 		time_t getTimePlayed(){return m_played_time;}
 		time_t getTimeTotal(){return m_Audiofile.MetaData.total_time;}
-		int getScBuffered(){return m_sc_buffered;}
 		State getState(){return state;}
 
 		////

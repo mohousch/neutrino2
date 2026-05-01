@@ -278,7 +278,6 @@ void CAudioPlayer::clearFileData()
 	
 	m_Audiofile.clear();
 	m_played_time = 0;
-	m_sc_buffered = 0;
 }
 
 CAudioMetaData CAudioPlayer::getMetaData()
