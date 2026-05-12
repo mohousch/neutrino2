@@ -233,7 +233,7 @@ CAudioPlayer::~CAudioPlayer()
 {
 	dprintf(DEBUG_NORMAL, "CAudioPlayer::%s\n", __FUNCTION__);
 	
-	CFileHelpers::getInstance()->removeDir("/tmp/audioplayer");
+	deinit();
 }
 
 void CAudioPlayer::init()
