@@ -5,7 +5,8 @@ installdir = $(CONFIGDIR)/skins/elgato
 install_DATA = \
 	skin.xml \
 	prev.png \
-	elgato.config default.config
+	elgato.config \
+	default.theme
 	
 
 

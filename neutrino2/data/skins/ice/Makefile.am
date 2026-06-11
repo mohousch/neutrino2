@@ -5,7 +5,8 @@ installdir = $(CONFIGDIR)/skins/ice
 install_DATA = \
 	skin.xml \
 	prev.png \
-	ice.config default.config
+	ice.config \
+	default.theme
 	
 
 

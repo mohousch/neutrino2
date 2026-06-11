@@ -1410,12 +1410,12 @@ int CSkinSettings::showMenu()
 	skinSettings->addItem(new CMenuForwarder(_("back")));
 	skinSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
-	// save current skin style
+	// save current skin theme
 	skinSettings->addItem(new CMenuForwarder(_("Save current Skin Theme"), true, NULL, this, "savecurrentstyle", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 
 	skinSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
-	// load config files
+	// load themes files
 	std::string skinPath = CONFIGDIR "/skins/";
 	skinPath += g_settings.preferred_skin.c_str();
 	
@@ -1435,12 +1435,12 @@ int CSkinSettings::showMenu()
 				std::string extension = getFileExt(filename);
 				
 				// file to skip
-				std::string skipFile = g_settings.preferred_skin;
-				skipFile += ".config";
+				//std::string skipFile = g_settings.preferred_skin;
+				//skipFile += ".config";
 				
-				if ( strcasecmp("config", extension.c_str()) == 0)
+				if ( strcasecmp("theme", extension.c_str()) == 0)
 				{
-					if (!filename.empty() && filename != skipFile.c_str())
+					if (!filename.empty() /*&& filename != skipFile.c_str()*/)
 					{
 						item = new CMenuForwarder(removeExtension(filename).c_str());
 				
@@ -1498,7 +1498,7 @@ int CSkinSettings::exec(CTarget* parent, const std::string& actionKey)
 				skinConfig += g_settings.preferred_skin.c_str();
 				skinConfig += "/";
 				skinConfig += nameInput->getValueString().c_str();
-				skinConfig += ".config";
+				skinConfig += ".theme";
 				
 				//
 				std::ifstream input(skinConfig.c_str());
