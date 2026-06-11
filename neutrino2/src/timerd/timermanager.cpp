@@ -745,9 +745,10 @@ bool CTimerManager::shutdown()
 	
 	time_t nextAnnounceTime = 0;
 	bool status = false;
-	
-	pthread_cancel(thrTimer);
-	pthread_join(thrTimer, NULL);
+
+// FIXME:		
+//	pthread_cancel(thrTimer);
+//	pthread_join(thrTimer, NULL);
 
 	if(m_saveEvents)
 	{
