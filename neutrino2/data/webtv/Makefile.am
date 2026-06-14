@@ -4,7 +4,7 @@ install-exec-local:
 installdir = $(CONFIGDIR)/webtv
 
 install_DATA = \
-	webradio_usr.xml
+	webradio_usr.xml webtv_usr.xml
 
 
 
