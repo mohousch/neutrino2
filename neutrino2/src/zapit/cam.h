@@ -115,5 +115,8 @@ class CCam : public CBasicClient
 		bool setCaPmt(CZapitChannel * thischannel, CCaPmt * const caPmt, int demux = 0, int camask = 1, bool update = false);
 };
 
+typedef std::map<t_channel_id, CCam*> cammap_t;
+typedef cammap_t::iterator cammap_iterator_t;
+
 #endif /* __cam_h__ */
 
