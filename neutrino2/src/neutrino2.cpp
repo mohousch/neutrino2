@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$Id: neutrino2.cpp 04092025 mohousch Exp $
+//	$Id: neutrino2.cpp 14062026 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -1602,10 +1602,11 @@ void CNeutrinoApp::channelsInit()
 	
 	for (uint32_t i = 0; i < CZapit::getInstance()->Bouquets.size(); i++) 
 	{	
-		if (!CZapit::getInstance()->Bouquets[i]->bHidden && !CZapit::getInstance()->Bouquets[i]->bWebTV && !CZapit::getInstance()->Bouquets[i]->radioChannels.empty())
+		if (!CZapit::getInstance()->Bouquets[i]->bHidden && !CZapit::getInstance()->Bouquets[i]->radioChannels.empty())
 		{
 			CBouquet * ltmp;
-			if (CZapit::getInstance()->Bouquets[i]->bUser) 
+
+			if (CZapit::getInstance()->Bouquets[i]->bUser || CZapit::getInstance()->Bouquets[i]->bWebTV) 
 			{
 				ltmp = RADIOfavList->addBouquet(CZapit::getInstance()->Bouquets[i]);
 
