@@ -14,7 +14,7 @@
 ## How to build Neutrino2 for PC (x86) ##
 
 ```bash
-$:~ git clone https://github.com/mohousch/neutrino2.git
+$:~ git clone https://github.com/mohousch/neutrino2
 ```
 ```bash
 $:~ cd neutrino2

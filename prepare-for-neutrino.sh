@@ -3,6 +3,8 @@
 # originally created by schischu and konfetti
 # fedora parts prepared by lareq
 # fedora/suse/ubuntu scripts merged by kire pudsje (kpc)
+# maintained distros: debian, ubuntu and linux mint
+# feel free to fix maintain other distros
 
 if [[ $EUID -ne 0 ]]; then
 	echo "This script must be run as root (sudo $0)" 1>&2
