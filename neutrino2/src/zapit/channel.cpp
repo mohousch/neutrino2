@@ -1,5 +1,5 @@
 //
-// $Id: channel.cpp 20.10.2023 mohousch Exp $
+// $Id: channel.cpp 14062026 mohousch Exp $
 //
 // (C) 2002 Steffen Hehn <mcclean@berlios.de>
 // (C) 2002 by Andreas Oberritter <obi@tuxbox.org>
@@ -56,7 +56,7 @@ CZapitChannel::CZapitChannel(const std::string& p_name, t_service_id p_sid, t_tr
 	isWebTV = false;	
 }
 
-CZapitChannel::CZapitChannel(const std::string& p_name, t_channel_id p_chid, const std::string& p_url, const std::string& p_description)
+CZapitChannel::CZapitChannel(const std::string& p_name, t_channel_id p_chid, const std::string& p_url, const std::string& p_description, unsigned char p_service_type)
 {
 	name = p_name;
 	channel_id = p_chid;
@@ -68,7 +68,7 @@ CZapitChannel::CZapitChannel(const std::string& p_name, t_channel_id p_chid, con
 	service_id = 0;
 	transport_stream_id = 0;
 	original_network_id = 0;
-	serviceType = ST_DIGITAL_TELEVISION_SERVICE;
+	serviceType = p_service_type;
 	satellitePosition = 0;
 	freq = 0;
 	caPmt = NULL;

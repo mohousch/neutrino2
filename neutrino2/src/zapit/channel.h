@@ -1,5 +1,5 @@
 //
-// $Id: channel.h 03092025 mohousch Exp $
+// $Id: channel.h 14062026 mohousch Exp $
 //
 // (C) 2002 Steffen Hehn <mcclean@berlios.de>
 // (C) 2002 by Andreas Oberritter <obi@tuxbox.org>
@@ -134,7 +134,7 @@ class CZapitChannel
 		// pids of this channel
 		std::vector <CZapitAbsSub* > channelSubs;
 		std::vector <CZapitAudioChannel *> audioChannels;
-		
+		//
 		unsigned short pcrPid;
 		unsigned short pmtPid;
 		unsigned short teletextPid;
@@ -142,29 +142,22 @@ class CZapitChannel
 		unsigned short audioPid;
 		unsigned short privatePid;
 		unsigned short aitPid;
-
 		// set true when pids are set up
 		bool pidsFlag;
-
 		// last selected audio channel
 		unsigned char currentAudioChannel;
-
 		// chosen subtitle stream
 		unsigned char currentSub;
-
 		// read only properties, set by constructor
 		t_service_id			service_id;
 		t_transport_stream_id		transport_stream_id;
 		t_original_network_id		original_network_id;
 		t_satellite_position		satellitePosition;
 		freq_id_t			freq;
-
 		// read/write properties (write possibility needed by scan)
 		unsigned char serviceType;
-
 		// the conditional access program map table of this channel
 		CCaPmt* caPmt;
-
 		//
 		std::string ttx_language_code;
 
@@ -200,7 +193,7 @@ class CZapitChannel
 
 		// constructor, desctructor
 		CZapitChannel(const std::string& p_name, t_service_id p_sid, t_transport_stream_id p_tsid, t_original_network_id p_onid, unsigned char p_service_type, t_satellite_position p_satellite_position = 0, freq_id_t p_freq = 0);
-		CZapitChannel(const std::string& p_name, t_channel_id p_chid, const std::string& p_url, const std::string& p_description);
+		CZapitChannel(const std::string& p_name, t_channel_id p_chid, const std::string& p_url, const std::string& p_description, unsigned char p_service_type = ST_DIGITAL_TELEVISION_SERVICE);
 
 		~CZapitChannel(void);
 
