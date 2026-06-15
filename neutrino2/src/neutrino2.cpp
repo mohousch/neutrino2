@@ -1529,7 +1529,7 @@ void CNeutrinoApp::channelsInit()
 	*(tmp->channelList) = *RADIOchannelList;
 //	tmp->channelList->SortAlpha();
 
-	//// sat
+	// sat
 	int bnum = 0;
 	tvi = 0;
 	ri = 0;

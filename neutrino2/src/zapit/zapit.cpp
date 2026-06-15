@@ -1,5 +1,5 @@
 //
-// $Id: zapit.cpp 14062026 mohousch Exp $
+// $Id: zapit.cpp 15062026 mohousch Exp $
 //
 // zapit - d-box2 linux project
 //
@@ -5556,7 +5556,7 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 			
 			if (l1) 
 			{
-				while ( ( (xmlGetNextOccurence(l1, "webtv")) || (xmlGetNextOccurence(l1, "station")) || (xmlGetNextOccurence(l1, "webradio")) ) ) 
+				while ( ( (xmlGetNextOccurence(l1, "webtv")) || (xmlGetNextOccurence(l1, "webradio")) ) ) 
 				{
 					t_channel_id id = 0;
 					
@@ -5566,9 +5566,10 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 					const char * xmltv;
 					const char * logo;
 					const char * epgid;
+					bool isWebRadio = xmlGetNextOccurence(l1, "webradio");
 					
 					// 
-					if(xmlGetNextOccurence(l1, "webtv"))
+					if( xmlGetNextOccurence(l1, "webtv") || xmlGetNextOccurence(l1, "webradio") )
 					{
 						title = xmlGetAttribute(l1, (const char *)"title");
 						url = xmlGetAttribute(l1, (const char *)"url");
@@ -5579,65 +5580,7 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 
 						id = create_channel_id(0, 0, 0, 0, url);
 							
-						allchans.insert(std::pair<t_channel_id, CZapitChannel> (id, CZapitChannel(title, id, url, description)));
-						
-						CZapitChannel * chan = findChannelByChannelID(id);
-
-						if (chan != NULL) 
-						{
-							chan->setName(title);
-							chan->setDescription(description);
-							
-							if (xmltv != NULL)
-							{
-								chan->setEPGUrl(xmltv);
-								
-								//
-								g_settings.xmltv.push_back(xmltv);
-							}
-							
-							if (logo != NULL)
-							{
-								chan->setLogoUrl(logo);
-								chan->setLogoID(id);
-							}
-							
-							if (epgid != NULL)
-							{ 
-								chan->setEPGID(strtoull(epgid, NULL, 16));
-							}
-							
-							// grab from list
-							for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
-							{
-								if (chan->getName() == it->second.getName())
-								{
-									if (epgid == NULL)
-										chan->setEPGID(it->second.getEPGID());
-										
-									if (logo == NULL)
-										chan->setLogoID(it->second.getLogoID());
-								}
-							}
-							
-							//
-							newBouquet->addService(chan);
-
-							cnt++;
-						}
-					}
-					else if(xmlGetNextOccurence(l1, "webradio"))
-					{
-						title = xmlGetAttribute(l1, (const char *)"title");
-						url = xmlGetAttribute(l1, (const char *)"url");
-						description = xmlGetAttribute(l1, (const char *)"description");
-						epgid = xmlGetAttribute(l1, (const char*)"epgid");
-						xmltv = xmlGetAttribute(l1, (const char*)"xmltv");
-						logo = xmlGetAttribute(l1, (const char*)"logo");
-
-						id = create_channel_id(0, 0, 0, 0, url);
-							
-						allchans.insert(std::pair<t_channel_id, CZapitChannel> (id, CZapitChannel(title, id, url, description, ST_DIGITAL_RADIO_SOUND_SERVICE)));
+						allchans.insert(std::pair<t_channel_id, CZapitChannel> (id, CZapitChannel(title, id, url, description, isWebRadio? ST_DIGITAL_RADIO_SOUND_SERVICE : ST_DIGITAL_TELEVISION_SERVICE)));
 						
 						CZapitChannel * chan = findChannelByChannelID(id);
 
