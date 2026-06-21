@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$id: plugins.h 08122024 mohousch Exp $
+//	$id: plugins.h 21062026 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean'
 //	Homepage: http://dbox.cyberphoria.org/
@@ -140,12 +140,10 @@ class CPlugins
 		inline int getType(const int number) const { return plugin_list[number].type; }
 		inline int getIntegration(const int number) const { return plugin_list[number].integration; }
 		inline const char* getIcon(const int number) const { return plugin_list[number].icon.c_str();}
-		inline bool isHidden(const int number) {return plugin_list[number].hide;};
+		inline bool isHidden(const int number) const {return plugin_list[number].hide;};
 
 		CPlugins::p_type_t getPluginType(int type);
 		CPlugins::i_type_t getPluginIntegration(int integration);
-
-		inline bool isHidden(const int number) const { return plugin_list[number].hide; }
 
 		//
 		void startPlugin(int number);
