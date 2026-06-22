@@ -1250,17 +1250,23 @@ void CTestMenu::testCFrameBoxWidget()
 
 		//
 		CFrameItem * art1Frame = NULL;
-		for (int i = 1; i < 7; i++)
+		if (m_vMovieInfo.size() >= 7)
 		{
-			art1Frame = new CFrameItem();
-			art1Frame->setMode(CFrameItem::FRAME_PICTURE);
-			art1Frame->setPosition(box.iX + 10 + (i - 1)*((box.iWidth - 20)/6) + 5, box.iY + 40 + h_h + 10 + 250 + 10 + o_h + 10, (box.iWidth - 20)/6 - 10,box.iHeight - 40 - h_h - 10 - 250 - 10 - 40);
-			art1Frame->setIconName(m_vMovieInfo[i].tfile.c_str());
-			//art1Frame->paintMainFrame(false);
-			art1Frame->setActionKey(this, "fireplay");
-			art1Frame->setTitle(m_vMovieInfo[i].epgTitle.c_str());
+			for (int i = 1; i < 7; i++)
+			{
+				if (!m_vMovieInfo[i].tfile.empty() && !m_vMovieInfo[i].epgTitle.empty())
+				{
+					art1Frame = new CFrameItem();
+					art1Frame->setMode(CFrameItem::FRAME_PICTURE);
+					art1Frame->setPosition(box.iX + 10 + (i - 1)*((box.iWidth - 20)/6) + 5, box.iY + 40 + h_h + 10 + 250 + 10 + o_h + 10, (box.iWidth - 20)/6 - 10,box.iHeight - 40 - h_h - 10 - 250 - 10 - 40);
+					art1Frame->setIconName(m_vMovieInfo[i].tfile.c_str());
+					//art1Frame->paintMainFrame(false);
+					art1Frame->setActionKey(this, "fireplay");
+					art1Frame->setTitle(m_vMovieInfo[i].epgTitle.c_str());
 
-			frameBoxWidget->addFrame(art1Frame);
+					frameBoxWidget->addFrame(art1Frame);
+				}
+			}
 		}
 	}
 

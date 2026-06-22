@@ -101,9 +101,9 @@ class CFrameItem
 		virtual void setMode(int m = FRAME_BOX);
 		int getMode(void){return mode;};
 		
-		virtual void setTitle(const char *text){if (text != NULL) caption = text;};
-		virtual void setIconName(const char *icon){ if (icon != NULL) iconName = icon;};
-		virtual void setOption(const char *text){if (text != NULL) option = text;};
+		virtual void setTitle(const char *text){caption = text? text : "";};
+		virtual void setIconName(const char *icon){ iconName = icon? icon : "";};
+		virtual void setOption(const char *text){option = text? text : "";};
 		virtual void setPlugin(const char * const pluginName);
 		virtual void showPluginName(){pluginOrigName = true;};
 		virtual void setHAlign(int h){halign = h;};
