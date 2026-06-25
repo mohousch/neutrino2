@@ -43,9 +43,11 @@ class CHelpBox
 		CWidget *widget;
 		ClistBox *listBox;
 		CMenuItem *item;
+		CCHeaders *headBox;
 		////
 		int m_width;
 		int m_height;
+		int hheight;
 		////
 		std::string m_caption;
 		std::string  m_iconfile;
@@ -54,7 +56,6 @@ class CHelpBox
 		fb_pixel_t borderColor;
 		////
 		void refreshPage();
-		void init();
 		void initFrames(void);
 		void scroll_up(void);
 		void scroll_down(void);
@@ -69,8 +70,7 @@ class CHelpBox
 		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
 		void setBorderColor(fb_pixel_t col){borderColor = col;};
 		
-		void addLine(const char *text);
-		void addLine(const char *icon, const char *text);
+		void addLine(const char *text, const char *icon = NULL, const char *option = NULL);
 		void addSeparator();
 		void addPagebreak();
 

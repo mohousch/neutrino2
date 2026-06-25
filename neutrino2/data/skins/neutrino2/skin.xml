@@ -601,6 +601,10 @@
 		<head posx="110" posy="110" width="1160" height="60" line="1"/>
 	</widget>
 	
+	<widget name="helpbox" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+		<head posx="110" posy="110" width="1160" height="60" line="1"/>
+	</widget>
+	
 	<widget name="infobox" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
 		<textbox posx="110" posy="170" width="1160" height="1060"/>
 		<head posx="110" posy="110" width="1160" height="60" line="1"/>

@@ -45,8 +45,11 @@ CHelpBox::CHelpBox(const char* const Caption, const int Width, const char * cons
 	widget = NULL;
 	listBox = NULL;
 	item = NULL;
+	headBox = NULL;
 	
 	m_width = Width;
+	m_height = HELPBOX_HEIGHT;
+	hheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
 	
 	m_iconfile = Icon? Icon : "";
 	m_caption = Caption? Caption : "";
@@ -56,7 +59,51 @@ CHelpBox::CHelpBox(const char* const Caption, const int Width, const char * cons
 	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
 	
 	//
-	init();
+	initFrames();
+	
+	//
+	widget = CNeutrinoApp::getInstance()->getWidget("helpbox");
+	
+	if (widget)
+	{
+		headBox = (CCHeaders *)widget->getCCItem(CComponent::CC_HEAD);
+		
+		if (headBox == NULL)
+		{
+			headBox = new CCHeaders(cFrameBox.iX, cFrameBox.iY, cFrameBox.iWidth, hheight);
+			
+			widget->addCCItem(headBox);
+		}
+		
+		listBox = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
+		
+		if (listBox == NULL)
+		{
+			listBox = new ClistBox(cFrameBox.iX, cFrameBox.iY + hheight, cFrameBox.iWidth, cFrameBox.iHeight - hheight);
+			
+			widget->addCCItem(listBox);
+		}
+	}
+	else
+	{
+		//
+		widget = new CWidget(&cFrameBox);
+		widget->name = "helpbox";
+		
+		headBox = new CCHeaders(cFrameBox.iX, cFrameBox.iY, cFrameBox.iWidth, hheight);
+			
+		widget->addCCItem(headBox);
+		
+		listBox = new ClistBox(cFrameBox.iX, cFrameBox.iY + hheight, cFrameBox.iWidth, cFrameBox.iHeight - hheight);
+		
+		widget->addCCItem(listBox);
+	}
+
+	listBox->paintMainFrame(false);
+	listBox->setInFocus(false);
+	
+	widget->paintMainFrame(true);
+	widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 }
 
 CHelpBox::~CHelpBox(void)
@@ -72,23 +119,6 @@ CHelpBox::~CHelpBox(void)
 	}
 }
 
-void CHelpBox::init()
-{
-	dprintf(DEBUG_INFO, "CHelpBox::init\n");
-	
-	int nw = 0;
-
-	m_height  = HELPBOX_HEIGHT;
-	
-	int maxWidth = HELPBOX_WIDTH;
-//	int maxOverallHeight = 0;
-
-	m_width = maxWidth;
-	
-	////
-	initFrames();
-}
-
 void CHelpBox::initFrames(void)
 {
 	dprintf(DEBUG_INFO, "CHelpBox::initFrames\n");
@@ -98,37 +128,7 @@ void CHelpBox::initFrames(void)
 	cFrameBox.iX = CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - cFrameBox.iWidth) >> 1);
 	cFrameBox.iY = CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - cFrameBox.iHeight) >> 2);
 	
-	//
-	widget = CNeutrinoApp::getInstance()->getWidget("helpbox");
-	
-	if (widget)
-	{
-		listBox = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
-		
-		if (listBox == NULL)
-		{
-			listBox = new ClistBox(&cFrameBox);
-			
-			widget->addCCItem(listBox);
-		}
-	}
-	else
-	{
-		//
-		widget = new CWidget(&cFrameBox);
-		widget->name = "helpbox";
-		widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
-		
-		listBox = new ClistBox(&cFrameBox);
-		
-		widget->addCCItem(listBox);
-	}
-
-	listBox->paintMainFrame(false);
-	listBox->setInFocus(false);
-	listBox->enablePaintHead();
-	
-	widget->paintMainFrame(true);
+	hheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
 }
 
 void CHelpBox::paint(void)
@@ -141,11 +141,17 @@ void CHelpBox::paint(void)
 	widget->setBorderColor(borderColor);
 	widget->enableSaveScreen();
 	
-	// title / body
+	// title
+	if (headBox)
+	{
+		headBox->setPosition(cFrameBox.iX, cFrameBox.iY, cFrameBox.iWidth, hheight);
+		headBox->setTitle(m_caption.c_str(), m_iconfile.c_str());
+	}
+	
+	// body
 	if (listBox)
 	{
-		listBox->setPosition(cFrameBox.iX, cFrameBox.iY, cFrameBox.iWidth, cFrameBox.iHeight - 20);
-		listBox->setTitle(m_caption.c_str(), m_iconfile.c_str());
+		listBox->setPosition(cFrameBox.iX, cFrameBox.iY + hheight, cFrameBox.iWidth, cFrameBox.iHeight - hheight);
 	}
 
 	refreshPage();
@@ -178,17 +184,16 @@ void CHelpBox::hide(void)
 	widget->hide();
 }
 
-void CHelpBox::addLine(const char* const text)
+void CHelpBox::addLine(const char *text, const char *icon, const char *option)
 {
 	item = new CMenuForwarder(text);
 	
-	listBox->addItem(item);
-}
-
-void CHelpBox::addLine(const char* const icon, const char* const text)
-{
-	item = new CMenuForwarder(text);
-	item->setIconName(icon);
+	if (icon) item->setIconName(icon);
+	if (option)
+	{ 
+		item->setOption(option);
+		item->set2lines(true);
+	}
 	
 	listBox->addItem(item);
 }
@@ -201,7 +206,6 @@ void CHelpBox::addSeparator(void)
 
 void CHelpBox::addPagebreak(void)
 {
-
 }
 
 int CHelpBox::exec(int timeout)

@@ -3140,11 +3140,11 @@ void CTestMenu::testCHelpBox()
 	// text
 	helpBox->addLine("helpBox");
 
-	// icon|text
-	helpBox->addLine(NEUTRINO_ICON_BUTTON_RED, "Huhu :-P");
+	// text / icon / option
+	helpBox->addLine("Huhu :-P", NEUTRINO_ICON_BUTTON_RED, "(Our Neutrino2 API)");
 
 	//
-	helpBox->addLine(NEUTRINO_ICON_BUTTON_GREEN, "Huhu :-)");
+	helpBox->addLine("Huhu :-)", NEUTRINO_ICON_BUTTON_GREEN);
 
 	helpBox->addSeparator();
 
@@ -3156,7 +3156,7 @@ void CTestMenu::testCHelpBox()
 	helpBox->addSeparator();
 
 	// icon
-	helpBox->addLine(NEUTRINO_ICON_BUTTON_YELLOW, "Oh yes ...");
+	helpBox->addLine("Oh yes ...", NEUTRINO_ICON_BUTTON_YELLOW);
 
 	helpBox->addSeparator();
 

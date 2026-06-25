@@ -2839,13 +2839,13 @@ void CMovieBrowser::showHelp(void)
 
 	CHelpBox *helpbox = new CHelpBox(_("Information"));
 
-	helpbox->addLine(NEUTRINO_ICON_BUTTON_RED, _("Change order"));
-	helpbox->addLine(NEUTRINO_ICON_BUTTON_GREEN, _("TMDB"));
-	helpbox->addLine(NEUTRINO_ICON_BUTTON_YELLOW, _("Change focus"));
-	helpbox->addLine(NEUTRINO_ICON_BUTTON_BLUE, _("Reload Movies"));
-	helpbox->addLine(NEUTRINO_ICON_BUTTON_SETUP, _("Main Menu"));
-	helpbox->addLine(NEUTRINO_ICON_BUTTON_HELP, _("Movie Information"));
-	helpbox->addLine(NEUTRINO_ICON_BUTTON_MUTE_SMALL, _("Delete Movie"));
+	helpbox->addLine(_("Change order"), NEUTRINO_ICON_BUTTON_RED);
+	helpbox->addLine(_("TMDB"), NEUTRINO_ICON_BUTTON_GREEN);
+	helpbox->addLine(_("Change focus"), NEUTRINO_ICON_BUTTON_YELLOW);
+	helpbox->addLine(_("Reload Movies"), NEUTRINO_ICON_BUTTON_BLUE);
+	helpbox->addLine(_("Main Menu"), NEUTRINO_ICON_BUTTON_SETUP);
+	helpbox->addLine(_("Movie Information"), NEUTRINO_ICON_BUTTON_HELP);
+	helpbox->addLine(_("Delete Movie"), NEUTRINO_ICON_BUTTON_MUTE_SMALL);
 
 	helpbox->exec();
 	

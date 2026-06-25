@@ -1308,13 +1308,13 @@ void CAudioPlayerGui::showHelp()
 {
 	CHelpBox *helpbox = new CHelpBox(_("Information"), HELPBOX_WIDTH, NEUTRINO_ICON_INFO);
 
-	helpbox->addLine(NEUTRINO_ICON_BUTTON_RED, _("save playlist"));
-	helpbox->addLine(NEUTRINO_ICON_BUTTON_GREEN, _("jump prev"));
-	helpbox->addLine(NEUTRINO_ICON_BUTTON_YELLOW, _("jump ff"));
-	helpbox->addLine(NEUTRINO_ICON_BUTTON_BLUE, _("shuffle playlist"));
+	helpbox->addLine(_("save playlist"), NEUTRINO_ICON_BUTTON_RED);
+	helpbox->addLine(_("jump prev"), NEUTRINO_ICON_BUTTON_GREEN);
+	helpbox->addLine(_("jump ff"), NEUTRINO_ICON_BUTTON_YELLOW);
+	helpbox->addLine(_("shuffle playlist"), NEUTRINO_ICON_BUTTON_BLUE);
 	helpbox->addSeparator();
-	helpbox->addLine(NEUTRINO_ICON_BUTTON_SETUP, _("Audioplayer settings"));
-	helpbox->addLine(NEUTRINO_ICON_BUTTON_OKAY, _("show playlist"));
+	helpbox->addLine(_("Audioplayer settings"), NEUTRINO_ICON_BUTTON_SETUP);
+	helpbox->addLine(_("show playlist"), NEUTRINO_ICON_BUTTON_OKAY);
 
 	helpbox->exec();
 	
