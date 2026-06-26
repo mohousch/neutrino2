@@ -5770,7 +5770,7 @@ int CTestMenu::exec(CTarget *parent, const std::string &actionKey)
 
 		tmdbsearch.clear();
 
-		CStringInputSMS stringInput(_("Search"), tmdbsearch.c_str());
+		CKeyboardInput stringInput(_("Search"), tmdbsearch.c_str());
 		stringInput.exec(NULL, "");
 
 		if(!stringInput.getExitPressed())
@@ -6059,7 +6059,7 @@ void CTestMenu::showMenu()
 	// diverses widget
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("CStringInput", true, NULL, this, "stringinput"));
-	mainMenu->addItem(new CMenuForwarder("CStringInputSMS", true, NULL, this, "stringinputsms"));
+//	mainMenu->addItem(new CMenuForwarder("CStringInputSMS", true, NULL, this, "stringinputsms")); // deprecated
 	mainMenu->addItem(new CMenuForwarder("CPINInput", true, NULL, this, "pininput"));
 	mainMenu->addItem(new CMenuForwarder("CPLPINInput", true, NULL, this, "plpininput"));
 	mainMenu->addItem(new CMenuForwarder("CPINChangeWidget", true, NULL, this, "pinchangewidget"));

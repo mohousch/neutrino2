@@ -55,7 +55,7 @@ class CHintBox
 		unsigned int current_page;
 		unsigned int pages;
 		char * message;
-		std::vector<char *>line;
+		std::vector<char *>lines;
 		
 		////
 		void refreshPage(void);

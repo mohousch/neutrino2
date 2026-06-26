@@ -41,7 +41,7 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 	//
 	widget = NULL;
 	headers = NULL;
-	line.clear();
+	lines.clear();
 
 	caption = Caption;
 	message = strdup(Text);
@@ -50,8 +50,8 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 	cFrameBox.iWidth = Width;
 
 	cFrameBoxTitle.iHeight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight();
-	cFrameBoxItem.iHeight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();			// min 1 line
-	cFrameBox.iHeight = cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight + cFrameBoxTitle.iHeight;	// 
+	cFrameBoxItem.iHeight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();
+	cFrameBox.iHeight = cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight + cFrameBoxTitle.iHeight; 
 
 	//
 	char * begin;
@@ -69,7 +69,7 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 		if (cFrameBox.iHeight > HINTBOX_MAX_HEIGHT)
 			cFrameBox.iHeight -= cFrameBoxItem.iHeight;
 
-		line.push_back(begin);
+		lines.push_back(begin);
 		
 		pos = strchr(begin, '\n');
 		
@@ -84,9 +84,9 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 	
 	entries_per_page = ((cFrameBox.iHeight - 2*cFrameBoxTitle.iHeight ) / cFrameBoxItem.iHeight);
 	current_page = 0;
-	pages = (line.size() + entries_per_page - 1) / entries_per_page;
+	pages = (lines.size() + entries_per_page - 1) / entries_per_page;
 
-	if (entries_per_page < line.size())
+	if (entries_per_page < lines.size())
 		additional_width = BORDER_LEFT + BORDER_RIGHT + SCROLLBAR_WIDTH;
 	else
 		additional_width = BORDER_LEFT + BORDER_RIGHT;
@@ -108,7 +108,7 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 	if (nw > cFrameBox.iWidth)
 		cFrameBox.iWidth = nw;
 
-	for (std::vector<char *>::const_iterator it = line.begin(); it != line.end(); it++)
+	for (std::vector<char *>::const_iterator it = lines.begin(); it != lines.end(); it++)
 	{
 		nw = additional_width + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(*it, true); // UTF-8
 		
@@ -131,6 +131,13 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 	if (widget)
 	{
 		headers = (CCHeaders*)widget->getCCItem(CComponent::CC_HEAD);
+		
+		if (!headers)
+		{
+			headers = new CCHeaders();
+		
+			widget->addCCItem(headers);
+		}
 	}
 	else
 	{
@@ -162,8 +169,12 @@ CHintBox::~CHintBox(void)
 {
 	dprintf(DEBUG_INFO, "CHintBox::del: (%s)\n", caption.c_str());
 
-	free(message);
-	line.clear();
+	if (message != NULL) 
+	{
+		free(message);
+	}
+	
+	lines.clear();
 	
 	if (widget)
 	{
@@ -207,23 +218,23 @@ void CHintBox::refreshPage(void)
 	int count = entries_per_page;
 	int ypos  = cFrameBoxTitle.iY + cFrameBoxTitle.iHeight + (cFrameBoxItem.iHeight >> 1);
 
-	for (std::vector<char *>::const_iterator it = line.begin() + (entries_per_page * current_page); ((it != line.end()) && (count > 0)); it++, count--)
+	for (std::vector<char *>::const_iterator it = lines.begin() + (entries_per_page * current_page); ((it != lines.end()) && (count > 0)); it++, count--)
 	{
 		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(cFrameBox.iX + BORDER_LEFT, (ypos += cFrameBoxItem.iHeight), cFrameBox.iWidth - 20, *it, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); 
 	}
 
-	// scrollBar #TODO
-	if (entries_per_page < line.size())
+	// scrollBar
+	if (entries_per_page < lines.size())
 	{
 		int ypos = cFrameBox.iY + cFrameBoxTitle.iHeight;
 
-		scrollBar.paint(cFrameBox.iX + cFrameBox.iWidth - SCROLLBAR_WIDTH, ypos, entries_per_page*cFrameBoxItem.iHeight, (line.size() + entries_per_page - 1) / entries_per_page, current_page);
+		scrollBar.paint(cFrameBox.iX + cFrameBox.iWidth - SCROLLBAR_WIDTH, ypos, entries_per_page*cFrameBoxItem.iHeight, (lines.size() + entries_per_page - 1) / entries_per_page, current_page);
 	}	
 }
 
 bool CHintBox::has_scrollbar(void)
 {
-	return (entries_per_page < line.size());
+	return (entries_per_page < lines.size());
 }
 
 void CHintBox::scrollPageUp(void)
@@ -237,7 +248,7 @@ void CHintBox::scrollPageUp(void)
 
 void CHintBox::scrollPageDown(void)
 {
-	if ((entries_per_page * (current_page + 1)) <= line.size())
+	if ((entries_per_page * (current_page + 1)) <= lines.size())
 	{
 		current_page++;
 		refreshPage();
@@ -347,6 +358,4 @@ int HintBox(const char * const Caption, const char * const Text, const int Width
 
 	return res;
 }
-
-
 

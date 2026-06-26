@@ -42,11 +42,11 @@ CMessageBox::CMessageBox(const char* const Caption, const char * const Text, con
 	
 	widget = NULL;
 	headers = NULL;
-	m_lines.clear();
+	lines.clear();
 	
 	pages = 1;
 	
-	m_message = strdup(Text);
+	message = strdup(Text);
 	
 	//
 	showbuttons = ShowButtons;
@@ -98,12 +98,12 @@ CMessageBox::~CMessageBox(void)
 {
 	dprintf(DEBUG_INFO, "CMessageBox::del:\n");
 
-	if (m_message != NULL) 
+	if (message != NULL) 
 	{
-		free(m_message);
+		free(message);
 	}
 	
-	m_lines.clear();
+	lines.clear();
 	
 	hide();
 	
@@ -130,7 +130,7 @@ void CMessageBox::init(const char * const Caption, const int Width, const char *
 	char * begin;
 	char * pos;
 	
-	begin = m_message;
+	begin = message;
 	
 	// recalculate height
 	while (true)
@@ -142,7 +142,7 @@ void CMessageBox::init(const char * const Caption, const int Width, const char *
 			m_height -= m_iheight;
 		}
 		
-		m_lines.push_back(begin);
+		lines.push_back(begin);
 		
 		pos = strchr(begin, '\n');
 		
@@ -159,12 +159,12 @@ void CMessageBox::init(const char * const Caption, const int Width, const char *
 	pages = 1;
 	entries_per_page = ((m_height - m_theight - m_fheight ) / m_iheight);
 	current_page = 0;
-	pages = (m_lines.size() + entries_per_page - 1) / entries_per_page;
+	pages = (lines.size() + entries_per_page - 1) / entries_per_page;
 	
 	//
 	unsigned int additional_width = 0;
 
-	if (entries_per_page < m_lines.size())
+	if (entries_per_page < lines.size())
 		additional_width = BORDER_LEFT + BORDER_RIGHT + SCROLLBAR_WIDTH;
 	else
 		additional_width = BORDER_LEFT + BORDER_RIGHT;
@@ -186,7 +186,7 @@ void CMessageBox::init(const char * const Caption, const int Width, const char *
 		m_width = nw;
 		
 	//
-	for (std::vector<char *>::const_iterator it = m_lines.begin(); it != m_lines.end(); it++)
+	for (std::vector<char *>::const_iterator it = lines.begin(); it != lines.end(); it++)
 	{
 		nw = additional_width + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(*it, true); // UTF-8
 		
@@ -215,6 +215,13 @@ void CMessageBox::initFrames(void)
 	if (widget)
 	{
 		headers = (CCHeaders*)widget->getCCItem(CComponent::CC_HEAD);
+		
+		if (!headers)
+		{
+			headers = new CCHeaders();
+		
+			widget->addCCItem(headers);
+		}
 	}
 	else
 	{
@@ -259,26 +266,27 @@ void CMessageBox::refreshPage()
 	//
 	widget->paint();
 
-	//
+	// body text
 	int count = entries_per_page;
 	int ypos  = cFrameBox.iY + m_theight;
 	
-	for (std::vector<char *>::const_iterator it = m_lines.begin() + (entries_per_page * current_page); ((it != m_lines.end()) && (count > 0)); it++, count--)
+	for (std::vector<char *>::const_iterator it = lines.begin() + (entries_per_page * current_page); ((it != lines.end()) && (count > 0)); it++, count--)
 	{
 		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(cFrameBox.iX + BORDER_LEFT, (ypos += g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight()), m_width - 20, *it, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); 
 	}
 
 	// scrollBar
-	if (entries_per_page < m_lines.size())
+	if (entries_per_page < lines.size())
 	{
 		int ypos  = cFrameBox.iY + m_theight;
+		
 		scrollBar.paint(cFrameBox.iX + cFrameBox.iWidth - SCROLLBAR_WIDTH, ypos, m_height - m_theight - m_fheight, pages, current_page);
 	}
 }
 
 bool CMessageBox::has_scrollbar(void)
 {
-	return (entries_per_page < m_lines.size());
+	return (entries_per_page < lines.size());
 }
 
 void CMessageBox::scroll_up(void)
@@ -292,7 +300,7 @@ void CMessageBox::scroll_up(void)
 
 void CMessageBox::scroll_down(void)
 {
-	if ((entries_per_page * (current_page + 1)) <= m_lines.size())
+	if ((entries_per_page * (current_page + 1)) <= lines.size())
 	{
 		current_page++;
 		refreshPage();

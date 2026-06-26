@@ -77,8 +77,8 @@ class CMessageBox
 		std::string  m_iconfile;
 		std::string m_caption;
 		////
-		char * m_message;
-		std::vector<char *> m_lines;
+		char *message;
+		std::vector<char *> lines;
 		unsigned int entries_per_page;
 		unsigned int current_page;
 		unsigned int pages;
