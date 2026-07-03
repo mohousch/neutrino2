@@ -67,8 +67,8 @@ run-gdb:
 run-valgrind:
 	valgrind --leak-check=full --track-origins=yes --error-limit=no --log-file="logfile.out" -v $(DEST)/bin/neutrino2
 	
-# init	
-init:
+# config	
+config:
 # opengl
 	@echo -e "\nopengl:"
 	@echo -e "   \033[01;32m1) yes\033[00m"
@@ -76,9 +76,9 @@ init:
 	@read -p "opengl (1-2)?" OPENGL; \
 	OPENGL=$${OPENGL}; \
 	case "$$OPENGL" in \
-		1) echo "OPENGL=opengl" > config.local;; \
-		2) echo "OPENGL=" > config.local;; \
-		*) echo "OPENGL=opengl" > config.local;; \
+		1) echo "OPENGL=opengl" > .config;; \
+		2) echo "OPENGL=" > .config;; \
+		*) echo "OPENGL=opengl" > .config;; \
 	esac; \
 	echo ""
 # lirc
@@ -88,8 +88,8 @@ init:
 	@read -p "lirc (1-2)?" LIRC; \
 	LIRC=$${LIRC}; \
 	case "$$LIRC" in \
-		1) echo "LIRC=lirc" >> config.local;; \
-		2|*) echo "LIRC=" >> config.local;; \
+		1) echo "LIRC=lirc" >> .config;; \
+		2|*) echo "LIRC=" >> .config;; \
 	esac; \
 	echo ""
 # Media framework
@@ -99,9 +99,9 @@ init:
 	@read -p "Select media framework (1-2)?" MEDIAFW; \
 	MEDIAFW=$${MEDIAFW}; \
 	case "$$MEDIAFW" in \
-		1) echo "MEDIAFW=buildinplayer" >> config.local;; \
-		2) echo "MEDIAFW=gstreamer" >> config.local;; \
-		*) echo "MEDIAFW=buildinplayer" >> config.local;; \
+		1) echo "MEDIAFW=buildinplayer" >> .config;; \
+		2) echo "MEDIAFW=gstreamer" >> .config;; \
+		*) echo "MEDIAFW=buildinplayer" >> .config;; \
 	esac; \
 	echo ""
 # gstreamer opengl overlay
@@ -111,8 +111,8 @@ init:
 	@read -p "Select overlay (1-2)?" OVERLAY; \
 	OVERLAY=$${OVERLAY}; \
 	case "$$OVERLAY" in \
-		1) echo "OVERLAY=overlay" >> config.local;; \
-		2|*) echo "OVERLAY=" >> config.local;; \
+		1) echo "OVERLAY=overlay" >> .config;; \
+		2|*) echo "OVERLAY=" >> .config;; \
 	esac; \
 	echo ""
 # lua
@@ -122,9 +122,9 @@ init:
 	@read -p "Select lua support (1-2)?" LUA; \
 	LUA=$${LUA}; \
 	case "$$LUA" in \
-		1) echo "LUA=lua" >> config.local;; \
-		2) echo "LUA=" >> config.local;; \
-		*) echo "LUA=lua" >> config.local;; \
+		1) echo "LUA=lua" >> .config;; \
+		2) echo "LUA=" >> .config;; \
+		*) echo "LUA=lua" >> .config;; \
 	esac; \
 	echo ""
 # python
@@ -134,8 +134,8 @@ init:
 	@read -p "Select python support (1-2)?" PYTHON; \
 	PYTHON=$${PYTHON}; \
 	case "$$PYTHON" in \
-		1) echo "PYTHON=python" >> config.local;; \
-		2|*) echo "PYTHON=" >> config.local;; \
+		1) echo "PYTHON=python" >> .config;; \
+		2|*) echo "PYTHON=" >> .config;; \
 	esac; \
 	echo ""
 # cicam
@@ -145,9 +145,9 @@ init:
 	@read -p "Select CI-CAM support (1-2)?" CICAM; \
 	CICAM=$${CICAM}; \
 	case "$$CICAM" in \
-		1) echo "CICAM=" >> config.local;; \
-		2) echo "CICAM=cicam" >> config.local;; \
-		*) echo "CICAM=" >> config.local;; \
+		1) echo "CICAM=" >> .config;; \
+		2) echo "CICAM=cicam" >> .config;; \
+		*) echo "CICAM=" >> .config;; \
 	esac; \
 	echo ""
 # 4digits / vfd / lcd / tftlcd
@@ -160,12 +160,12 @@ init:
 	@read -p "Select LCD support (1-5)?" LCD; \
 	LCD=$${LCD}; \
 	case "$$LCD" in \
-		1) echo "LCD=" >> config.local;; \
-		2) echo "LCD=4-digits" >> config.local;; \
-		3) echo "LCD=vfd" >> config.local;; \
-		4) echo "LCD=lcd" >> config.local;; \
-		5) echo "LCD=tftlcd" >> config.local;; \
-		*) echo "LCD=" >> config.local;; \
+		1) echo "LCD=" >> .config;; \
+		2) echo "LCD=4-digits" >> .config;; \
+		3) echo "LCD=vfd" >> .config;; \
+		4) echo "LCD=lcd" >> .config;; \
+		5) echo "LCD=tftlcd" >> .config;; \
+		*) echo "LCD=" >> .config;; \
 	esac; \
 	echo ""
 # graphlcd
@@ -175,8 +175,8 @@ init:
 	@read -p "Select NGLCD support (1-2)?" NGLCD; \
 	NGLCD=$${NGLCD}; \
 	case "$$NGLCD" in \
-		1) echo "NGLCD=nglcd" >> config.local;; \
-		2|*) echo "NGLCD=" >> config.local;; \
+		1) echo "NGLCD=nglcd" >> .config;; \
+		2|*) echo "NGLCD=" >> .config;; \
 	esac; \
 	echo ""
 # scart
@@ -186,8 +186,8 @@ init:
 	@read -p "Select SCART support (1-2)?" SCART; \
 	SCART=$${SCART}; \
 	case "$$SCART" in \
-		1) echo "SCART=scart" >> config.local;; \
-		2|*) echo "SCART=" >> config.local;; \
+		1) echo "SCART=scart" >> .config;; \
+		2|*) echo "SCART=" >> .config;; \
 	esac; \
 	echo ""
 # FKEYS
@@ -197,8 +197,8 @@ init:
 	@read -p "Select FKEYS support (1-2)?" FKEYS; \
 	FKEYS=$${FKEYS}; \
 	case "$$FKEYS" in \
-		1) echo "FKEYS=fkeys" >> config.local;; \
-		2|*) echo "FKEYS=" >> config.local;; \
+		1) echo "FKEYS=fkeys" >> .config;; \
+		2|*) echo "FKEYS=" >> .config;; \
 	esac; \
 	echo ""		
 # testing
@@ -208,18 +208,18 @@ init:
 	@read -p "Select TESTING support (1-2)?" TESTING; \
 	TESTING=$${TESTING}; \
 	case "$$TESTING" in \
-		1) echo "TESTING=testing" >> config.local;; \
-		2|*) echo "TESTING=" >> config.local;; \
+		1) echo "TESTING=testing" >> .config;; \
+		2|*) echo "TESTING=" >> .config;; \
 	esac; \
 	echo ""
 #	
 	@echo ""
 	@make printenv		
 
-init-clean:
-	rm -f config.local
+config-clean:
+	rm -f .config
 	
--include config.local
+-include .config
 
 # opengl
 OPENGL ?= opengl

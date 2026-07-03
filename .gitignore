@@ -1034,7 +1034,7 @@
 /neutrino2/lib/libeplayer3/manager/audio.o
 /neutrino2/lib/libeplayer3/manager/.dirstamp
 /neutrino2/lib/libeplayer3/manager/.deps/.dirstamp
-/config.local
+/.config
 /neutrino2/COPYING
 /neutrino2/INSTALL
 /neutrino2/Makefile
