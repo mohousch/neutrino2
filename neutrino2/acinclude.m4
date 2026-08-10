@@ -326,7 +326,7 @@ AC_ARG_WITH(boxtype,
 
 AC_ARG_WITH(boxmodel,
 	[  --with-boxmodel	valid for dgs: cuberevo,cuberevo_mini,cuberevo_mini2,cuberevo_mini_fta,cuberevo_250hd,cuberevo_2000hd,cuberevo_9500hd
-				valid for gigablue: gbsolo,gb800se,gb800ue,gb800seplus,gb800ueplus,gbquad,gbue4k,gbultraue
+				valid for gigablue: gbsolo,gb800se,gb800ue,gb800seplus,gb800ueplus,gbquad,gbue4k,gbultraue, gbtrio4k, gbtrio4kpro, gbip4k
 				valid for dreambox: dm500, dm500plus, dm600pvr, dm56x0, dm7000, dm7020, dm7025, dm500hd, dm7020hd, dm8000, dm800, dm800se, dm520, dm900, dm920, dm7080, dm8000
 				valid for xtrend: et4x00,et5x00,et6x00,et7x00, et8000,et8500,et9x00, et10000
 				valid for fulan: spark, spark7162
@@ -974,6 +974,12 @@ elif test "$BOXMODEL" = "gbue4k"; then
 	AC_DEFINE(BOXMODEL_GBUE4K, 1, [building for gigablue ue 4k])
 elif test "$BOXMODEL" = "gbultraue"; then
 	AC_DEFINE(BOXMODEL_GBULTRAUE, 1, [building for gigablue ultra ue])
+elif test "$BOXMODEL" = "gbtrio4k"; then
+	AC_DEFINE(BOXMODEL_GBTRIO4K, 1, [building for gigablue trio 4k])
+elif test "$BOXMODEL" = "gbtrio4kpro"; then
+	AC_DEFINE(BOXMODEL_GBTRIO4kPRO, 1, [building for gigablue trio 4k pro])
+elif test "$BOXMODEL" = "gbip4k"; then
+	AC_DEFINE(BOXMODEL_GBIP4K, 1, [building for gigablue ip 4k])
 
 elif test "$BOXMODEL" = "dm500"; then
 	AC_DEFINE(BOXMODEL_DM500, 1, [building for dreambox 500])

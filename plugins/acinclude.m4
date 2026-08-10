@@ -326,8 +326,8 @@ AC_ARG_WITH(boxtype,
 
 AC_ARG_WITH(boxmodel,
 	[  --with-boxmodel	valid for dgs: cuberevo,cuberevo_mini,cuberevo_mini2,cuberevo_mini_fta,cuberevo_250hd,cuberevo_2000hd,cuberevo_9500hd
-				valid for gigablue: gbsolo,gb800se,gb800ue,gb800seplus,gb800ueplus,gbquad,gbue4k,gbultraue
-				valid for dreambox: dm500, dm500plus, dm600pvr, dm56x0, dm7000, dm7020, dm7025, dm500hd, dm7020hd, dm8000, dm800, dm800se, dm520, dm900, dm920
+				valid for gigablue: gbsolo,gb800se,gb800ue,gb800seplus,gb800ueplus,gbquad,gbue4k,gbultraue, gbtrio4k, gbtrio4kpro, gbip4k
+				valid for dreambox: dm500, dm500plus, dm600pvr, dm56x0, dm7000, dm7020, dm7025, dm500hd, dm7020hd, dm8000, dm800, dm800se, dm520, dm900, dm920, dm7080, dm8000
 				valid for xtrend: et4x00,et5x00,et6x00,et7x00, et8000,et8500,et9x00, et10000
 				valid for fulan: spark, spark7162
 				valid for kathrein: ufs910, ufs922, ufs912, ufs913, ufc960
@@ -336,7 +336,7 @@ AC_ARG_WITH(boxmodel,
 				valid for atevio: atevio700,atevio7000,atevio7500,atevio7600
 				valid for octagon: octagon1008 sf4008 sf8008 sf8008m sfx6008 sx88v2 sx998
 				valid for topfield: tf7700
-				valid for vuplus: vusolo,vuduo,vuuno,vuultimo,vuduo2,vusolo2,vusolo4k,vusolose,vuzero,vuduo4k
+				valid for vuplus: vusolo,vuduo,vuuno,vuultimo,vuduo2,vusolo2,vusolose,vuzero,vusolo4k,vuduo4k, vuultimo4k,vuuno4k, vuuno4kse
 				valid for azbox: azboxhd,azboxme,azboxminime
 				valid for technomate: tmtwin,tm2t,tmsingle,tmnano
 				valid for venton: ventonhde,ventonhdx,inihde,inihdp
@@ -381,7 +381,7 @@ AC_ARG_WITH(boxmodel,
 				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
 			fi
 			;;
-		dm500|dm500plus|dm600pvr|dm56x0|dm7000|dm7020|dm7025|dm500hd|dm7020hd|dm8000|dm800|dm800se|dm520|dm900|dm920)
+		dm500|dm500plus|dm600pvr|dm56x0|dm7000|dm7020|dm7025|dm500hd|dm7020hd|dm800|dm800se|dm520|dm900|dm920|dm7080|dm8000)
 			if test "$BOXTYPE" = "dreambox"; then
 				BOXMODEL="$withval"
 			else
@@ -437,7 +437,7 @@ AC_ARG_WITH(boxmodel,
 				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
 			fi
 			;;
-		vusolo2|vuduo2|vusolo|vuduo|vuuno|vuultimo|vusolose|vusolo4k|vuzero|vuduo4k)
+		vusolo2|vuduo2|vusolo|vuduo|vuuno|vuultimo|vusolose|vuzero|vusolo4k|vuduo4k|vuultimo4k|vuuno4k|vuuno4kse)
 			if test "$BOXTYPE" = "vuplus"; then
 				BOXMODEL="$withval"
 			else
@@ -710,6 +710,7 @@ AM_CONDITIONAL(BOXMODEL_DM8000HD,test "$BOXMODEL" = "dm8000")
 AM_CONDITIONAL(BOXMODEL_DM520,test "$BOXMODEL" = "dm520")
 AM_CONDITIONAL(BOXMODEL_DM900,test "$BOXMODEL" = "dm900")
 AM_CONDITIONAL(BOXMODEL_DM920,test "$BOXMODEL" = "dm920")
+AM_CONDITIONAL(BOXMODEL_DM7080,test "$BOXMODEL" = "dm7080")
 
 AM_CONDITIONAL(BOXMODEL_ET4X00,test "$BOXMODEL" = "et4x00")
 AM_CONDITIONAL(BOXMODEL_ET5X00,test "$BOXMODEL" = "et5x00")
@@ -758,6 +759,9 @@ AM_CONDITIONAL(BOXMODEL_VUSOLOSE, test "$BOXMODEL" = "vusolose")
 AM_CONDITIONAL(BOXMODEL_VUSOLO4K, test "$BOXMODEL" = "vusolo4k")
 AM_CONDITIONAL(BOXMODEL_VUZERO, test "$BOXMODEL" = "vuzero")
 AM_CONDITIONAL(BOXMODEL_VUDUO4K, test "$BOXMODEL" = "vuduo4k")
+AM_CONDITIONAL(BOXMODEL_VUULTIMO4K, test "$BOXMODEL" = "vuultimo4k")
+AM_CONDITIONAL(BOXMODEL_VUUNO4K, test "$BOXMODEL" = "vuuno4k")
+AM_CONDITIONAL(BOXMODEL_VUNO4KSE, test "$BOXMODEL" = "vuno4kse")
 
 AM_CONDITIONAL(BOXMODEL_AZBOXHD, test "$BOXMODEL" = "azboxhd")
 AM_CONDITIONAL(BOXMODEL_AZBOXME, test "$BOXMODEL" = "azboxme")
@@ -970,6 +974,12 @@ elif test "$BOXMODEL" = "gbue4k"; then
 	AC_DEFINE(BOXMODEL_GBUE4K, 1, [building for gigablue ue 4k])
 elif test "$BOXMODEL" = "gbultraue"; then
 	AC_DEFINE(BOXMODEL_GBULTRAUE, 1, [building for gigablue ultra ue])
+elif test "$BOXMODEL" = "gbtrio4k"; then
+	AC_DEFINE(BOXMODEL_GBTRIO4K, 1, [building for gigablue trio 4k])
+elif test "$BOXMODEL" = "gbtrio4kpro"; then
+	AC_DEFINE(BOXMODEL_GBTRIO4kPRO, 1, [building for gigablue trio 4k pro])
+elif test "$BOXMODEL" = "gbip4k"; then
+	AC_DEFINE(BOXMODEL_GBIP4K, 1, [building for gigablue ip 4k])
 
 elif test "$BOXMODEL" = "dm500"; then
 	AC_DEFINE(BOXMODEL_DM500, 1, [building for dreambox 500])
@@ -1085,6 +1095,12 @@ elif test "$BOXMODEL" = "vuzero"; then
 	AC_DEFINE(BOXMODEL_VUZERO, 1, [building for vuplus zero])
 elif test "$BOXMODEL" = "vuduo4k"; then
 	AC_DEFINE(BOXMODEL_VUDUO4K, 1, [building for vuplus duo4k])
+elif test "$BOXMODEL" = "vuultimo4k"; then
+	AC_DEFINE(BOXMODEL_VULTIMO4K, 1, [building for vuplus ultimo4k])
+elif test "$BOXMODEL" = "vuuno4k"; then
+	AC_DEFINE(BOXMODEL_VUUNO4K, 1, [building for vuplus uno4k])
+elif test "$BOXMODEL" = "vuuno4kse"; then
+	AC_DEFINE(BOXMODEL_VUUNO4KSE, 1, [building for vuplus uno4kse])
 
 elif test "$BOXMODEL" = "azboxhd"; then
 	AC_DEFINE(BOXMODEL_AZBOXHD, 1, [building for azbox hd])
