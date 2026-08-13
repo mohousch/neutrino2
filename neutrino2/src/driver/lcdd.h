@@ -43,7 +43,7 @@
 
 
 #if defined (__sh__)
-# include <lcdd_sh4.h>
+# include <driver/lcdd_sh4.h>
 #endif
 
 
