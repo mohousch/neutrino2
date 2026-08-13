@@ -2,7 +2,6 @@ AM_CPPFLAGS = \
 	-I$(top_builddir) \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/src \
-	-I$(top_srcdir)/src/driver \
 	-I$(top_srcdir)/src/gui/widget \
 	-I$(top_srcdir)/src/system \
 	-I$(top_srcdir)/lib \
