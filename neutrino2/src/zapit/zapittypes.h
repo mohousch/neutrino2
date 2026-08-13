@@ -51,6 +51,71 @@ extern "C" {
 #define SYS_DTMB		SYS_DMBTH
 #endif
 
+// ???
+#ifndef SYS_DVBT2
+#define SYS_DVBT2		(fe_delivery_system)16
+#endif
+
+#ifndef FE_CAN_MULTISTREAM
+#define FE_CAN_MULTISTREAM	0x4000000
+#endif
+
+#ifndef BANDWIDTH_5_MHZ
+#define BANDWIDTH_5_MHZ		4
+#endif
+
+#ifndef BANDWIDTH_10_MHZ
+#define BANDWIDTH_10_MHZ	5
+#endif
+
+#ifndef BANDWIDTH_1_712_MHZ
+#define BANDWIDTH_1_712_MHZ	6
+#endif
+
+#ifndef TRANSMISSION_MODE_1K
+#define TRANSMISSION_MODE_1K	4
+#endif
+
+#ifndef TRANSMISSION_MODE_16K
+#define TRANSMISSION_MODE_16K	5
+#endif
+
+#ifndef TRANSMISSION_MODE_32K
+#define TRANSMISSION_MODE_32K	6
+#endif
+
+#ifndef TRANSMISSION_MODE_C1
+#define TRANSMISSION_MODE_C1	7
+#endif
+
+#ifndef TRANSMISSION_MODE_C3780
+#define TRANSMISSION_MODE_C3780	8
+#endif
+
+#ifndef GUARD_INTERVAL_1_128
+#define GUARD_INTERVAL_1_128	5
+#endif
+
+#ifndef GUARD_INTERVAL_19_128
+#define GUARD_INTERVAL_19_128	6
+#endif
+
+#ifndef GUARD_INTERVAL_19_256
+#define GUARD_INTERVAL_19_256	7
+#endif
+
+#ifndef GUARD_INTERVAL_PN420
+#define GUARD_INTERVAL_PN420	8
+#endif
+
+#ifndef GUARD_INTERVAL_PN595 
+#define GUARD_INTERVAL_PN595	9
+#endif
+
+#ifndef GUARD_INTERVAL_PN945
+#define GUARD_INTERVAL_PN945	10
+#endif
+
 typedef uint16_t t_service_id;
 typedef uint16_t t_original_network_id;
 typedef uint16_t t_transport_stream_id;
