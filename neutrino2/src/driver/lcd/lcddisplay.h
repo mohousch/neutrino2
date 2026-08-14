@@ -1,7 +1,7 @@
 //
 //	LCD-Daemon  -   DBoxII-Project
 //	
-//	$Id: lcddisplay.h 04092025 mohousch Exp $
+//	$Id: lcddisplay.h 13082026 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean'
 //		baseroutines by Shadow_

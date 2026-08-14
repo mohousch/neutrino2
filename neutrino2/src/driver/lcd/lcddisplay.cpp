@@ -1,7 +1,7 @@
 //
 //	LCD-Daemon  -   DBoxII-Project
 //	
-//	$Id: lcddisplay.cpp 04092025 mohousch Exp $
+//	$Id: lcddisplay.cpp 14082026 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean'
 //      baseroutines by Shadow_
@@ -97,16 +97,16 @@ CLCDDisplay::CLCDDisplay()
 	//
 	xres = 220;
 	yres = 176;
-#if defined (BOXMODEL_VUDUO4K) || defined (BOXMODEL_VUULTIMO4K)
+#if defined (ENABLE_LCD480)
         xres = 480;
         yres = 320;
-#elif defined (BOXMODEL_VUUNO4KSE)
+#elif defined (ENABLE_LCD400)
         xres = 400;
         yres = 240;
-#elif defined (BOXMODEL_DM7080) || defined (BOXMODEL_DM8000HD)
+#elif defined (ENABLE_LCD128)
         xres = 128;
         yres = 64;
-#elif defined (BOXMODEL_DM800SE) || defined (BOXMODEL_DM900) || defined (BOXMODEL_DM920)
+#elif defined (ENABLE_LCD96)
         xres = 96;
         yres = 64;
 #endif

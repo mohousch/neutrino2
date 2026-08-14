@@ -1,5 +1,5 @@
 //
-//	$Id: lcdd.cpp 04092025 mohousch Exp $
+//	$Id: lcdd.cpp 14082026 mohousch Exp $
 //
 //	LCD-Daemon  -   DBoxII-Project
 //
@@ -169,16 +169,16 @@ CLCD::CLCD()
 	fd = -1;
 	lcd_width = 220;
 	lcd_height = 176;
-#if defined (BOXMODEL_VUDUO4K) || defined (BOXMODEL_VUULTIMO4K)
+#if defined (ENABLE_LCD480)
         lcd_width = 480;
         lcd_height = 320;
-#elif defined (BOXMODEL_VUUNO4KSE)
+#elif defined (ENABLE_LCD400)
         lcd_width = 400;
         lcd_height = 240;
-#elif defined (BOXMODEL_DM7080) || defined (BOXMODEL_DM8000HD)
+#elif defined (ENABLE_LCD128)
         lcd_width = 128;
         lcd_height = 64;
-#elif defined (BOXMODEL_DM800SE) || defined (BOXMODEL_DM900) || defined (BOXMODEL_DM920)
+#elif defined (ENABLE_LCD96)
         lcd_width = 96;
         lcd_height = 64;
 #endif
