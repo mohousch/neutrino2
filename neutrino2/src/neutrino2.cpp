@@ -181,7 +181,7 @@ int gfxfd = -1;
 #define DFBCHECK(x...)                                                \
 	err = x;                                                      \
 	if (err != DFB_OK) {                                          \
-		fprintf(stderr, "init_td.cpp:%d:\n\t", __LINE__);     \
+		fprintf(stderr, "neutrino2.cpp:%d:\n\t", __LINE__);     \
 		DirectFBErrorFatal(#x, err );                         \
 	}
 #endif
@@ -4548,6 +4548,8 @@ int CNeutrinoApp::run(int argc, char **argv)
         global_argv[argc] = NULL;
         
 #ifdef USE_DIRECTFB
+	argc = 0;
+	
 	DFBResult err;
 	DFBSurfaceDescription dsc;
 	DFBSurfacePixelFormat pixelformat;
@@ -4555,20 +4557,13 @@ int CNeutrinoApp::run(int argc, char **argv)
 
 	DFBCHECK(DirectFBInit(&argc, NULL));
 	
-	// neutrino does its own VT handling
+	//
 	DirectFBSetOption("no-vt-switch", NULL);
 	DirectFBSetOption("no-vt", NULL);
-	
-	// signal handling seems to interfere with neutrino
 	DirectFBSetOption("no-sighandler", NULL);
-	
-	/* if DirectFB grabs the remote, neutrino does not get events */
-	/* now we handle the input via a DFB thread and push it to
-	 * neutrino via uinput, so reenable tdremote module
-	DirectFBSetOption("disable-module", "tdremote");
-	 */
 	DirectFBSetOption("disable-module", "keyboard");
 	DirectFBSetOption("disable-module", "linux_input");
+	
 	DFBCHECK(DirectFBCreate(&dfb));
 
 	err = dfb->SetCooperativeLevel(dfb, DFSCL_FULLSCREEN);
