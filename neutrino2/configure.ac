@@ -47,6 +47,17 @@ PKG_CHECK_MODULES(GL, gl)
 PKG_CHECK_MODULES(GLEW, glew)
 fi
 
+# directfb
+AC_ARG_ENABLE(directfb,
+	AS_HELP_STRING(--enable-directfb,include directfb framebuffer support for x86),
+	,[enable_directfb=no])
+AM_CONDITIONAL(USE_DIRECTFB,test "$enable_directfb" = "yes")
+
+if test "$enable_directfb" = "yes"; then
+AC_DEFINE(USE_DIRECTFB,1,[include directfb engine])
+PKG_CHECK_MODULES(DIRECTFB, directfb)
+fi
+
 # gstreamer
 AC_ARG_ENABLE(gstreamer,
 	AS_HELP_STRING(--enable-gstreamer,include gstreamer as player engine support),

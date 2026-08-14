@@ -167,6 +167,25 @@
 #include <ao/ao.h>
 #endif
 
+#ifdef USE_DIRECTFB
+#include <directfb.h>
+
+//
+IDirectFB *dfb;
+//
+static IDirectFBSurface *primary;
+IDirectFBSurface *dfbdest;
+static IDirectFBDisplayLayer *layer;
+int gfxfd = -1;
+
+#define DFBCHECK(x...)                                                \
+	err = x;                                                      \
+	if (err != DFB_OK) {                                          \
+		fprintf(stderr, "init_td.cpp:%d:\n\t", __LINE__);     \
+		DirectFBErrorFatal(#x, err );                         \
+	}
+#endif
+
 
 //// globals
 int debug = DEBUG_NORMAL;
@@ -3256,6 +3275,13 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		ao_shutdown();
 #endif
 
+#ifdef USE_DIRECTFB
+		dfbdest->Release(dfbdest);
+		primary->Release(primary);
+		layer->Release(layer);
+		dfb->Release(dfb);
+#endif
+
 		dprintf(DEBUG_NORMAL, ">>> CNeutrinoApp::exitRun: Good bye (retcode: %d) <<<\n", retcode);
 		
 		//
@@ -4521,6 +4547,58 @@ int CNeutrinoApp::run(int argc, char **argv)
 	
         global_argv[argc] = NULL;
         
+#ifdef USE_DIRECTFB
+	DFBResult err;
+	DFBSurfaceDescription dsc;
+	DFBSurfacePixelFormat pixelformat;
+	int SW, SH;
+
+	DFBCHECK(DirectFBInit(&argc, NULL));
+	
+	// neutrino does its own VT handling
+	DirectFBSetOption("no-vt-switch", NULL);
+	DirectFBSetOption("no-vt", NULL);
+	
+	// signal handling seems to interfere with neutrino
+	DirectFBSetOption("no-sighandler", NULL);
+	
+	/* if DirectFB grabs the remote, neutrino does not get events */
+	/* now we handle the input via a DFB thread and push it to
+	 * neutrino via uinput, so reenable tdremote module
+	DirectFBSetOption("disable-module", "tdremote");
+	 */
+	DirectFBSetOption("disable-module", "keyboard");
+	DirectFBSetOption("disable-module", "linux_input");
+	DFBCHECK(DirectFBCreate(&dfb));
+
+	err = dfb->SetCooperativeLevel(dfb, DFSCL_FULLSCREEN);
+	if (err)
+		DirectFBError("Failed to get exclusive access", err);
+
+	dsc.flags = DSDESC_CAPS;
+	dsc.caps = DSCAPS_PRIMARY;
+
+	DFBCHECK(dfb->CreateSurface( dfb, &dsc, &primary ));
+	// set pixel alpha mode
+	dfb->GetDisplayLayer(dfb, DLID_PRIMARY, &layer);
+	DFBCHECK(layer->SetCooperativeLevel(layer, DLSCL_EXCLUSIVE));
+	DFBDisplayLayerConfig conf;
+	DFBCHECK(layer->GetConfiguration(layer, &conf));
+	conf.flags   = DLCONF_OPTIONS;
+	conf.options = (DFBDisplayLayerOptions)((conf.options & ~DLOP_OPACITY) | DLOP_ALPHACHANNEL);
+	DFBCHECK(layer->SetConfiguration(layer, &conf));
+
+	primary->GetPixelFormat(primary, &pixelformat);
+	primary->GetSize(primary, &SW, &SH);
+	primary->Clear(primary, 0, 0, 0, 0);
+	primary->GetSubSurface(primary, NULL, &dfbdest);
+	dfbdest->Clear(dfbdest, 0, 0, 0, 0);
+#endif
+
+#ifdef USE_OPENGL
+	ao_initialize();
+#endif
+        
         //
         setupFrameBuffer();
 	
@@ -4923,10 +5001,6 @@ int main(int argc, char *argv[])
 
 #if ENABLE_GSTREAMER
 	gst_init(NULL, NULL);
-#endif
-
-#ifdef USE_OPENGL
-	ao_initialize();
 #endif
 
 	// set python path

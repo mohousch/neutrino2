@@ -28,6 +28,10 @@ if ENABLE_LUA
 AM_CPPFLAGS += @LUA_INCLUDE@
 endif
 
+if USE_DIRECTFB
+AM_CPPFLAGS += @DIRECTFB_CFLAGS@
+endif
+
 AM_CPPFLAGS += -fno-rtti -fno-exceptions
 
 bin_PROGRAMS = neutrino2
@@ -110,6 +114,10 @@ endif
 if USE_OPENGL
 neutrino2_LDADD += \
 	-lglut -lGL -lGLU -lGLEW -lao
+endif
+
+if USE_DIRECTFB
+neutrino2_LDADD += @DIRECTFB_LIBS@
 endif
 
 if ENABLE_PYTHON
