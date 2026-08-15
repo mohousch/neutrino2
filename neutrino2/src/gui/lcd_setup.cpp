@@ -412,7 +412,7 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuOptionChooser(_("LCD Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTIONS_COUNT, true, this, CRCInput::RC_nokey, NULL, false, true));
 	
 	// led_color
-#if defined (PLATFORM_GIGABLUE)	
+#if defined (ENABLE_LED_COLOR)	
 	lcdSettings->addItem(new CMenuOptionChooser(_("LED Color"), &g_settings.lcd_led, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, this));
 #endif
 #endif

@@ -182,6 +182,16 @@ if test "$enable_4digits" = "yes"; then
 AC_DEFINE(ENABLE_4DIGITS,1,[include 5 segment lcd support])
 fi
 
+# led color
+AC_ARG_ENABLE(led_color,
+	AS_HELP_STRING(--enable-led_color,include led_color support),
+	,[enable_led_color=no])
+AM_CONDITIONAL(ENABLE_LED_COLOR,test "$enable_led_color" = "yes")
+
+if test "$enable_led_color" = "yes"; then
+AC_DEFINE(ENABLE_LED_COLOR,1,[include led color support])
+fi
+
 # graphlcd
 AC_ARG_ENABLE(graphlcd,
 	AS_HELP_STRING(--enable-graphlcd,include graphlcd support),

@@ -1972,7 +1972,7 @@ void CLCD::setLED(int value, int option)
 	display->setLED(value, option);
 #endif
 
-#if defined (PLATFORM_GIGABLUE)
+#if defined (ENABLE_LED_COLOR)
 	const char *LED[] = 
 	{
 		"LEDCOLOR_OFF",
