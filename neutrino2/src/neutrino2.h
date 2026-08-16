@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$Id: neutrino2.h 25012026 mohousch Exp $
+//	$Id: neutrino2.h 16082026 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -224,6 +224,10 @@ class CNeutrinoApp : public CTarget
 		void unlockPlayBack(void);
 		////
 		void exitRun(int retcode = SHUTDOWN, bool save = true);
+		////
+		void init_HAL(void);
+		void deinit_HAL(void);
 };
 
 #endif
+

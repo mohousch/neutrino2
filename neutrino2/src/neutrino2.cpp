@@ -1,7 +1,7 @@
 //
 //	Neutrino-GUI  -   DBoxII-Project
 //	
-//	$Id: neutrino2.cpp 14062026 mohousch Exp $
+//	$Id: neutrino2.cpp 16082026 mohousch Exp $
 //
 //	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 //	Homepage: http://dbox.cyberphoria.org/
@@ -3271,16 +3271,8 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 			muteIcon = NULL;
 		}
 		
-#ifdef USE_OPENGL
-		ao_shutdown();
-#endif
-
-#ifdef USE_DIRECTFB
-		dfbdest->Release(dfbdest);
-		primary->Release(primary);
-		layer->Release(layer);
-		dfb->Release(dfb);
-#endif
+		// deinit_HAL
+		deinit_HAL();
 
 		dprintf(DEBUG_NORMAL, ">>> CNeutrinoApp::exitRun: Good bye (retcode: %d) <<<\n", retcode);
 		
@@ -4547,52 +4539,8 @@ int CNeutrinoApp::run(int argc, char **argv)
 	
         global_argv[argc] = NULL;
         
-#ifdef USE_DIRECTFB
-	argc = 0;
-	
-	DFBResult err;
-	DFBSurfaceDescription dsc;
-	DFBSurfacePixelFormat pixelformat;
-	int SW, SH;
-
-	DFBCHECK(DirectFBInit(&argc, NULL));
-	
-	//
-	DirectFBSetOption("no-vt-switch", NULL);
-	DirectFBSetOption("no-vt", NULL);
-	DirectFBSetOption("no-sighandler", NULL);
-	DirectFBSetOption("disable-module", "keyboard");
-	DirectFBSetOption("disable-module", "linux_input");
-	
-	DFBCHECK(DirectFBCreate(&dfb));
-
-	err = dfb->SetCooperativeLevel(dfb, DFSCL_FULLSCREEN);
-	if (err)
-		DirectFBError("Failed to get exclusive access", err);
-
-	dsc.flags = DSDESC_CAPS;
-	dsc.caps = DSCAPS_PRIMARY;
-
-	DFBCHECK(dfb->CreateSurface( dfb, &dsc, &primary ));
-	// set pixel alpha mode
-	dfb->GetDisplayLayer(dfb, DLID_PRIMARY, &layer);
-	DFBCHECK(layer->SetCooperativeLevel(layer, DLSCL_EXCLUSIVE));
-	DFBDisplayLayerConfig conf;
-	DFBCHECK(layer->GetConfiguration(layer, &conf));
-	conf.flags   = DLCONF_OPTIONS;
-	conf.options = (DFBDisplayLayerOptions)((conf.options & ~DLOP_OPACITY) | DLOP_ALPHACHANNEL);
-	DFBCHECK(layer->SetConfiguration(layer, &conf));
-
-	primary->GetPixelFormat(primary, &pixelformat);
-	primary->GetSize(primary, &SW, &SH);
-	primary->Clear(primary, 0, 0, 0, 0);
-	primary->GetSubSurface(primary, NULL, &dfbdest);
-	dfbdest->Clear(dfbdest, 0, 0, 0, 0);
-#endif
-
-#ifdef USE_OPENGL
-	ao_initialize();
-#endif
+	// init_HAL
+	init_HAL();
         
         //
         setupFrameBuffer();
@@ -4967,6 +4915,74 @@ void sighandler(int signum)
 		  default:
 			break;
         }
+}
+
+void CNeutrinoApp::init_HAL(void)
+{
+	printf("CNeutrinoApp::init_HAL\n");
+	
+#ifdef USE_DIRECTFB
+	int argc = 0;
+	
+	DFBResult err;
+	DFBSurfaceDescription dsc;
+	DFBSurfacePixelFormat pixelformat;
+	int SW, SH;
+
+	DFBCHECK(DirectFBInit(&argc, NULL));
+	
+	//
+	DirectFBSetOption("no-vt-switch", NULL);
+	DirectFBSetOption("no-vt", NULL);
+	DirectFBSetOption("no-sighandler", NULL);
+	DirectFBSetOption("disable-module", "keyboard");
+	DirectFBSetOption("disable-module", "linux_input");
+	
+	DFBCHECK(DirectFBCreate(&dfb));
+
+	err = dfb->SetCooperativeLevel(dfb, DFSCL_FULLSCREEN);
+	if (err)
+		DirectFBError("Failed to get exclusive access", err);
+
+	dsc.flags = DSDESC_CAPS;
+	dsc.caps = DSCAPS_PRIMARY;
+
+	DFBCHECK(dfb->CreateSurface( dfb, &dsc, &primary ));
+	// set pixel alpha mode
+	dfb->GetDisplayLayer(dfb, DLID_PRIMARY, &layer);
+	DFBCHECK(layer->SetCooperativeLevel(layer, DLSCL_EXCLUSIVE));
+	DFBDisplayLayerConfig conf;
+	DFBCHECK(layer->GetConfiguration(layer, &conf));
+	conf.flags   = DLCONF_OPTIONS;
+	conf.options = (DFBDisplayLayerOptions)((conf.options & ~DLOP_OPACITY) | DLOP_ALPHACHANNEL);
+	DFBCHECK(layer->SetConfiguration(layer, &conf));
+
+	primary->GetPixelFormat(primary, &pixelformat);
+	primary->GetSize(primary, &SW, &SH);
+	primary->Clear(primary, 0, 0, 0, 0);
+	primary->GetSubSurface(primary, NULL, &dfbdest);
+	dfbdest->Clear(dfbdest, 0, 0, 0, 0);
+#endif
+
+#ifdef USE_OPENGL
+	ao_initialize();
+#endif
+}
+
+void CNeutrinoApp::deinit_HAL(void)
+{
+	printf("CNeutrinoApp::deinit_HAL\n");
+	
+#ifdef USE_OPENGL
+	ao_shutdown();
+#endif
+
+#ifdef USE_DIRECTFB
+	dfbdest->Release(dfbdest);
+	primary->Release(primary);
+	layer->Release(layer);
+	dfb->Release(dfb);
+#endif
 }
 
 //// main function
