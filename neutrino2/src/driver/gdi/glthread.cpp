@@ -37,8 +37,8 @@
 #include <inttypes.h>
 
 #include <unistd.h>
-#include "glthread.h"
-#include <GL/glx.h>
+
+#include <driver/gdi/glthread.h>
 
 #include <system/debug.h>
 
