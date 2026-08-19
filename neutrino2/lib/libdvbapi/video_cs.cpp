@@ -112,7 +112,7 @@ bool cVideo::Open(CFrontend * fe)
 {
 	printf("cVideo::Open\n");
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if(fe)
 		video_adapter = 0; //fe->feadapter; //FIXME:
 	
@@ -145,7 +145,7 @@ bool cVideo::Close()
 { 
 	printf("cVideo::Close\n");
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if(video_fd < 0)
 		return false;	
 	
@@ -163,7 +163,7 @@ int cVideo::getAspectRatio(void)
 {  
 	int ratio = ASPECTRATIO_43; // 0 = 4:3, 1 = 16:9
  
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	unsigned char buffer[2];
 	int n, fd;
 
@@ -226,7 +226,7 @@ int cVideo::setAspectRatio(int ratio, int format)
 { 
 	printf("cVideo::setAspectRatio\n");
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	const char * sRatio[] =
 	{
 	   	"4:3",
@@ -273,7 +273,7 @@ int cVideo::setAspectRatio(int ratio, int format)
 	}
 	
 	printf("cVideo::setAspectRatio: (aspect=%d format=%d) set %s %s\n", ratio, format, sRatio[ratio], sFormat[format]);
-#endif	
+#endif	// HAVE_NO_AV_DECODER
 
     	return 0; 
 }
@@ -285,6 +285,7 @@ void cVideo::getPictureInfo(int &width, int &height, int &rate)
 	height = dec_h;
 	rate = dec_r;
 #else
+#ifndef HAVE_NO_AV_DECODER
 	rate = 25;
 	height = 576;
 	width = 720;
@@ -338,6 +339,7 @@ void cVideo::getPictureInfo(int &width, int &height, int &rate)
 			sscanf((const char*) buffer, "%X", &height);
 		}
 	}
+#endif // HAVE_NO_AV_DECODER
 #endif	
 }
 
@@ -355,6 +357,7 @@ int cVideo::Start(void)
 		
 	playstate = VIDEO_PLAYING;
 #else
+#ifndef HAVE_NO_AV_DECODER
 	if(video_fd < 0)
 		return -1;
 
@@ -367,7 +370,8 @@ int cVideo::Start(void)
 	ret = ::ioctl(video_fd, VIDEO_PLAY);
 	
 	if (ret < 0)
-		perror("VIDEO_PLAY");	
+		perror("VIDEO_PLAY");
+#endif	// HAVE_NO_AV_DECODER
 #endif
 
 	return ret;
@@ -388,6 +392,7 @@ int cVideo::Stop(bool blank)
 	
 	playstate = blank ? VIDEO_STOPPED : VIDEO_FREEZED;
 #else
+#ifndef HAVE_NO_AV_DECODER
 	if(video_fd < 0)
 		return -1;
 		
@@ -396,7 +401,8 @@ int cVideo::Stop(bool blank)
 	ret = ::ioctl(video_fd, VIDEO_STOP, blank ? 1 : 0);
 	
 	if (ret < 0) 
-		perror("VIDEO_STOP");	
+		perror("VIDEO_STOP");
+#endif // HAVE_NO_AV_DECODER	
 #endif
 
 	return ret;
@@ -406,7 +412,7 @@ bool cVideo::Pause(void)
 { 
 	printf("cVideo::Pause\n");
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if(video_fd < 0)
 		return false;
 		
@@ -423,7 +429,7 @@ bool cVideo::Resume(void)
 {
 	printf("cVideo::Resume\n");	
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if(video_fd < 0)
 		return false;
 		
@@ -442,7 +448,7 @@ int cVideo::Flush(void)
 	
 	int ret = -1;
 	
-#ifndef USE_OPENGL 
+#ifndef HAVE_NO_AV_DECODER
 	if(video_fd < 0)
 		return -1;
 
@@ -465,7 +471,7 @@ int cVideo::setSlowMotion(int repeat)
 	
 	int ret = -1;
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if(video_fd < 0)
 		return -1;
 		
@@ -483,7 +489,7 @@ int cVideo::setFastForward(int skip)
 	
 	int ret = -1;
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if(video_fd < 0)
 		return -1;
 		
@@ -537,7 +543,7 @@ int cVideo::SetVideoSystem(int video_system)
 
 	printf("cVideo::setVideoSystem: video_system=%s\n", aVideoSystems[video_system][0]);	
 
-#if !defined (USE_OPENGL)	
+#ifndef HAVE_NO_AV_DECODER	
 	int fd = ::open("/proc/stb/video/videomode", O_RDWR);
 	
 	if(fd > 0)
@@ -571,7 +577,7 @@ int cVideo::SetSpaceColour(int colour_space)
 	
 	printf("cVideo::SetSpaceColour: mode=%s\n", aCOLORSPACE[colour_space]);	
 
-#if !defined (USE_OPENGL)
+#ifndef HAVE_NO_AV_DECODER
 #if defined (__sh__)
 	int fd = ::open("/proc/stb/avs/0/colorformat", O_RDWR);
 #else
@@ -611,7 +617,7 @@ void cVideo::SetStreamType(VIDEO_FORMAT type)
 
 	printf("cVideo::SetStreamType: type=%s\n", aVIDEOFORMAT[type]);
 	
-#if !defined USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if(video_fd < 0)
 		return;
 
@@ -643,7 +649,7 @@ void cVideo::SetSyncMode(int mode)
       	
 	printf("cVideo::setSyncMode: mode=%s\n", aAVSYNCTYPE[mode]);	
 
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 #if defined (__sh__)
         int clock = 0;	
 
@@ -673,7 +679,7 @@ void cVideo::SetSyncMode(int mode)
 	   	::close(fd);
         }
 #endif
-#endif	
+#endif	// HAVE_NO_AV_DECODER
 }
 
 // setInput
@@ -683,7 +689,7 @@ void cVideo::SetInput(int val)
 	
 	printf("cVideo::SetInput: %s\n", input[val]);	
 
-#if !defined (USE_OPENGL)
+#ifndef HAVE_NO_AV_DECODER
 	// avs input
 	int fd_avs_input = ::open("/proc/stb/avs/0/input", O_RDWR);
 
@@ -702,7 +708,7 @@ void cVideo::SetStandby(int val)
 	
 	printf("cVideo::SetStandby: %s\n", sb[val]);	
 
-#if !defined (USE_OPENGL)
+#ifndef HAVE_NO_AV_DECODER
 	// standby
 	int fd_sb = ::open("/proc/stb/avs/0/standby", O_RDWR);
 	
@@ -729,6 +735,7 @@ void cVideo::Pig(int x, int y, int w, int h, int osd_w, int osd_h, int num)
 	pig_h = h;
 	pig_changed = true;
 #else
+#ifndef HAVE_NO_AV_DECODER
 	
 	int _x, _y, _w, _h;
 	/* the target "coordinates" seem to be in a PAL sized plane
@@ -817,6 +824,7 @@ void cVideo::Pig(int x, int y, int w, int h, int osd_w, int osd_h, int num)
 		fprintf(fd, "%x", 1);
 		fclose(fd);
 	}
+#endif // HAVE_NO_AV_DECODER
 #endif	
 }
 
@@ -861,7 +869,7 @@ void cVideo::SetWideScreen(int val) // 0 = auto, 1 = auto(4:3_off)
 	
 	printf("cVideo::SetWideScreen: mode=%s\n", wss[val]);
 
-#if !defined (USE_OPENGL)	
+#ifndef HAVE_NO_AV_DECODER	
 	int fd = ::open("/proc/stb/denc/0/wss", O_RDWR);
 	
 	if(fd > 0)
@@ -897,7 +905,7 @@ void cVideo::SetAnalogMode(int mode)
 	
 	printf("cVideo::SetAnalogMode: mode=%s\n", aANALOGMODE[mode]);	
 	
-#if !defined (USE_OPENGL)	
+#ifndef HAVE_NO_AV_DECODER	
 	int fd = ::open("/proc/stb/avs/0/colorformat", O_RDWR);
 	
 	if(fd > 0)
@@ -913,7 +921,7 @@ int cVideo::getBlank(void)
 { 
 	printf("cVideo::getBlank\n");	
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if(video_fd < 0)
 		return -1;
 
@@ -933,7 +941,7 @@ int cVideo::setBlank(int enable)
 { 
 	printf("cVideo::setBlank\n");	
 	 
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if(video_fd < 0)
 		return -1;
 
@@ -948,7 +956,7 @@ int cVideo::getPlayState(void)
 { 
 	printf("cVideo::getPlayState:\n");	
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if(video_fd < 0)
 		return -1;
 #endif
@@ -967,7 +975,7 @@ int cVideo::setSource(int source)
 		
 	printf("cVideo::setSource: source=%s\n", aVIDEOSTREAMSOURCE[source]);	
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if(video_fd < 0)
 		return -1;
 	
@@ -989,6 +997,7 @@ int64_t cVideo::GetPTS(void)
 	
 	return pts;
 #else
+#ifndef HAVE_NO_AV_DECODER
 	if(video_fd < 0)
 		return -1;
 	
@@ -997,6 +1006,7 @@ int64_t cVideo::GetPTS(void)
 		perror("GET_PTS failed");
 	
 	return pts;
+#endif // HAVE_NO_AV_DECODER
 #endif
 }
 
@@ -1006,7 +1016,7 @@ int cVideo::showSinglePic(const char *filename)
 	
 	printf("cVideo::showSinglePic %s\n", filename);
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	int f = ::open(filename, O_RDONLY);
 	
 	if (f >= 0)
@@ -1074,7 +1084,7 @@ void cVideo::finishShowSinglePic()
 {
 	printf("cVideo::finishShowSinglePic:\n");
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if (video_fd >= 0)
 	{
 		// stop playing
@@ -1090,7 +1100,7 @@ void cVideo::setContrast(int Contrast)
 {
 	printf("cVideo::setContrast: (%d)\n", Contrast);
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	FILE *fd;
 #if defined (__sh__)
 	fd = fopen("/proc/stb/video/plane/psi_contrast", "w");
@@ -1102,14 +1112,14 @@ void cVideo::setContrast(int Contrast)
 		fprintf(fd, "%d", Contrast);
 		fclose(fd);
 	}
-#endif
+#endif // HAVE_NO_AV_DECODER
 }
 
 void cVideo::setSaturation(int Saturation)
 {
 	printf("cVideo::setSaturation: (%d)\n", Saturation);
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	FILE *fd;
 #if defined (__sh__)
 	fd = fopen("/proc/stb/video/plane/psi_saturation", "w");
@@ -1121,14 +1131,14 @@ void cVideo::setSaturation(int Saturation)
 		fprintf(fd, "%d", Saturation);
 		fclose(fd);
 	}
-#endif
+#endif // HAVE_NO_AV_DECODER
 }
 
 void cVideo::setBrightness(int Brightness)
 {
 	printf("cVideo::setBrightness: (%d)\n", Brightness);
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	FILE *fd;
 #if defined (__sh__)
 	fd = fopen("/proc/stb/video/plane/psi_brightness", "w");
@@ -1140,14 +1150,14 @@ void cVideo::setBrightness(int Brightness)
 		fprintf(fd, "%d", Brightness);
 		fclose(fd);
 	}
-#endif
+#endif // HAVE_NO_AV_DECODER
 }
 
 void cVideo::setTint(int Tint)
 {
 	printf("cVideo::setTint: (%d)\n", Tint);
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	FILE *fd;
 #if defined (__sh__)
 	fd = fopen("/proc/stb/video/plane/psi_tint", "w");
@@ -1159,14 +1169,14 @@ void cVideo::setTint(int Tint)
 		fprintf(fd, "%d", Tint);
 		fclose(fd);
 	}
-#endif
+#endif // HAVE_NO_AV_DECODER
 }
 
 bool cVideo::getvideo2(unsigned char *video, int xres, int yres)
 {
 	bool ret = false;
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if (video ==  NULL)
 		return ret;
 	
@@ -1176,6 +1186,7 @@ bool cVideo::getvideo2(unsigned char *video, int xres, int yres)
 		ret = true;
 	}
 #else
+#ifdef USE_OPENGL
 	SWFramebuffer vid;
 	
 	buf_m.lock();
@@ -1183,6 +1194,7 @@ bool cVideo::getvideo2(unsigned char *video, int xres, int yres)
 	
 	video = &video[0];
 	buf_m.unlock();
+#endif
 #endif
 	
 	return ret;

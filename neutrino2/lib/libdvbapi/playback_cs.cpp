@@ -124,8 +124,8 @@ int buf_out = 0;
 int buf_num = 0;
 
 OpenThreads::Mutex buf_m;
-#endif
-#endif
+#endif // USE_OPENGL
+#endif // ENABLE_GSTREAMER
 
 #if defined ENABLE_GSTREAMER
 #if GST_VERSION_MAJOR < 1

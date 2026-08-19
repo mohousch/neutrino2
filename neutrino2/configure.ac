@@ -34,6 +34,16 @@ PKG_CHECK_MODULES(AVFORMAT,libavformat)
 PKG_CHECK_MODULES([SWRESAMPLE], [libswresample])
 PKG_CHECK_MODULES([SWSCALE], [libswscale])
 
+# no_av_decode
+AC_ARG_ENABLE(no_av_decode,
+	AS_HELP_STRING(--enable-no-av-decoder, include support for devices without AV decoder),
+	,[enable_no_av_decoder=no])
+AM_CONDITIONAL(HAVE_NO_AV_DECODER, test "$enable_no_av_decoder" = "yes")
+
+if test "$enable_no_av_decoder" = "yes"; then
+AC_DEFINE(HAVE_NO_AV_DECODER,1,[include support for devices without AV decoder])
+fi
+
 # opengl framebuffer (x86)
 AC_ARG_ENABLE(opengl,
 	AS_HELP_STRING(--enable-opengl,include opengl framebuffer support for x86),
@@ -42,6 +52,7 @@ AM_CONDITIONAL(USE_OPENGL,test "$enable_opengl" = "yes")
 
 if test "$enable_opengl" = "yes"; then
 AC_DEFINE(USE_OPENGL,1,[include opengl engine])
+AC_DEFINE(HAVE_NO_AV_DECODER,1,[include support for devices without AV decoder])
 PKG_CHECK_MODULES(GL, gl)
 PKG_CHECK_MODULES(GLEW, glew)
 fi

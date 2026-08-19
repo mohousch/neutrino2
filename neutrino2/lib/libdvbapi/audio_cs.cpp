@@ -122,7 +122,7 @@ cAudio::~cAudio(void)
 
 bool cAudio::Open(CFrontend * fe)
 { 
-#if !defined USE_OPENGL 
+#if !defined HAVE_NO_AV_DECODER
 	if(fe)
 		audio_adapter = 0; //fe->feadapter; //FIXME:
 	
@@ -154,7 +154,7 @@ bool cAudio::Close()
 { 
 	printf("cAudio::Close\n");
 	
-#if !defined USE_OPENGL 
+#if !defined HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return false;
 	 
@@ -177,7 +177,7 @@ int cAudio::SetMute(int enable)
 	
 	int ret = 0;	
 	
-#if !defined USE_OPENGL
+#if !defined HAVE_NO_AV_DECODER
 #if !defined (__sh__)
 	if (audio_fd > 0)
 	{
@@ -198,7 +198,7 @@ int cAudio::SetMute(int enable)
 		write(fd, sMuted, strlen(sMuted));
 		::close(fd);
 	}
-#endif
+#endif // HAVE_NO_AV_DECODER
 
 	return ret;
 }
@@ -212,7 +212,7 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 	
 	volume = (left + right)/2;
 	
-#if !defined USE_OPENGL
+#if !defined HAVE_NO_AV_DECODER
 	// map volume
 	if (volume < 0)
 		volume = 0;
@@ -239,14 +239,14 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 	}
 #endif	
 
-#if !defined (PLATFORM_HYPERCUBE)
+//#if !defined (PLATFORM_HYPERCUBE)
 	char sVolume[4];
 
-#if defined (BOXMODEL_GB800SE) || defined (BOXMODEL_GBULTRAUE)
+//#if defined (BOXMODEL_GB800SE) || defined (BOXMODEL_GBULTRAUE)
 	sprintf(sVolume, "%d", volume);
-#else
+//#else
 	sprintf(sVolume, "%d", _left);
-#endif
+//#endif
 
 	int fd = ::open("/proc/stb/avs/0/volume", O_RDWR);
 	
@@ -255,8 +255,8 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 		write(fd, sVolume, strlen(sVolume));
 		::close(fd);
 	}
-#endif	// PLATFORM_HYPERCUBE 
-#endif	// USE_OPENGL
+//#endif	// PLATFORM_HYPERCUBE 
+#endif	// HAVE_NO_AV_DECODER
 	
 	return ret;
 }
@@ -274,13 +274,15 @@ int cAudio::Start(void)
 		ret = OpenThreads::Thread::start();
 	}
 #else
+#ifndef HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return -1;
 	
 	ret = ::ioctl(audio_fd, AUDIO_PLAY);
 	
 	if(ret < 0)
-		perror("AUDIO_PLAY");	
+		perror("AUDIO_PLAY");
+#endif // HAVE_NO_AV_DECODER
 #endif
 
 	playstate = AUDIO_PLAYING;
@@ -301,13 +303,15 @@ int cAudio::Stop(void)
 		ret = OpenThreads::Thread::join();
 	}
 #else
+#ifndef HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return -1;
 		
 	ret = ::ioctl(audio_fd, AUDIO_STOP);
 	
 	if(ret < 0)
-		perror("AUDIO_STOP");	
+		perror("AUDIO_STOP");
+#endif // HAVE_NO_AV_DECODER
 #endif
 
 	playstate = AUDIO_STOPPED;
@@ -319,7 +323,7 @@ bool cAudio::Pause()
 {
 	printf("cAudio::Pause\n");
 	 
-#if !defined USE_OPENGL
+#if !defined HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return false;
 	
@@ -339,7 +343,7 @@ bool cAudio::Resume()
 { 
 	printf("cAudio::Resume\n");
 	
-#if !defined USE_OPENGL
+#if !defined HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return false;	
 
@@ -374,10 +378,8 @@ void cAudio::SetStreamType(AUDIO_FORMAT type)
 		"AUDIO_STREAMTYPE_AMR",
 		"AUDIO_STREAMTYPE_RAW"
 	};
-
-//	printf("cAudio::SetStreamType - type=%s\n", aAUDIOFORMAT[type]);
 	
-#if !defined USE_OPENGL
+#if !defined HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return;
 	
@@ -395,7 +397,7 @@ void cAudio::SetSyncMode(int Mode)
 {
 	printf("cAudio::SetSyncMode\n");	
 	
-#if !defined USE_OPENGL
+#if !defined HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return;
 	
@@ -413,7 +415,7 @@ int cAudio::Flush(void)
 	
 	int ret = -1;
 
-#if !defined USE_OPENGL	
+#if !defined HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return -1;
 
@@ -425,12 +427,12 @@ int cAudio::Flush(void)
 
 	if(ret < 0)
 		perror("AUDIO_FLUSH");	
-#endif
+#endif // HAVE_NO_AV_DECODER
 	
 	return ret;
 }
 
-/* select channels */
+// select channels
 int cAudio::setChannel(int channel)
 {
 	const char * aAUDIOCHANNEL[] = {
@@ -438,12 +440,10 @@ int cAudio::setChannel(int channel)
 		"MONOLEFT",
 		"MONORIGHT",
 	};
-	 
-	printf("cAudio::setChannel: %s\n", aAUDIOCHANNEL[channel]);
 	
 	int ret = -1;
 
-#if !defined (USE_OPENGL)
+#if !defined (HAVE_NO_AV_DECODER)
 	if (audio_fd < 0)
 		return -1;
 
@@ -459,11 +459,9 @@ void cAudio::SetHdmiDD(int ac3)
 	const char *aHDMIDD[] = {
 		"downmix",
 		"passthrough"
-	};
-	
-	printf("cAudio::SetHdmiDD: %s\n", aHDMIDD[ac3]);	
+	};	
 
-#if !defined (USE_OPENGL)
+#if !defined (HAVE_NO_AV_DECODER)
 #if defined (__sh__)
 	const char *aHDMIDDSOURCE[] = {
 		"pcm",
@@ -488,10 +486,10 @@ void cAudio::SetHdmiDD(int ac3)
 		write(fd_ac3, aHDMIDD[ac3], strlen(aHDMIDD[ac3]));
 		::close(fd_ac3);
 	}
-#endif	
+#endif // HAVE_NO_AV_DECODER
 }
 
-/* set source */
+// set source
 int cAudio::setSource(int source)
 { 
 	int ret = -1;
@@ -501,10 +499,8 @@ int cAudio::setSource(int source)
 		"AUDIO_SOURCE_MEMORY",
 		"AUDIO_SOURCE_HDMI"
 	};
-		
-	printf("cAudio::setSource: - source=%s\n", aAUDIOSTREAMSOURCE[source]);
 	
-#if !defined USE_OPENGL	
+#if !defined HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return -1;
 
@@ -518,7 +514,7 @@ int cAudio::setHwPCMDelay(int delay)
 {  
 	printf("cAudio::setHwPCMDelay: delay=%d\n", delay);
 	
-#if !defined (USE_OPENGL)	
+#if !defined (HAVE_NO_AV_DECODER)	
 	if (delay != m_pcm_delay )
 	{
 		FILE *fp = fopen("/proc/stb/audio/audio_delay_pcm", "w");
@@ -539,7 +535,7 @@ int cAudio::setHwAC3Delay(int delay)
 {
 	printf("cAudio::setHwAC3Delay: delay=%d\n", delay);
 	
-#if !defined (USE_OPENGL)	
+#if !defined (HAVE_NO_AV_DECODER)	
 	if ( delay != m_ac3_delay )
 	{
 		FILE *fp = fopen("/proc/stb/audio/audio_delay_bitstream", "w");
@@ -811,5 +807,4 @@ out:
 	printf("cAudio::run: END\n");
 }
 #endif
-
 
