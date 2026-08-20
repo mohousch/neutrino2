@@ -34,8 +34,8 @@ PKG_CHECK_MODULES(AVFORMAT,libavformat)
 PKG_CHECK_MODULES([SWRESAMPLE], [libswresample])
 PKG_CHECK_MODULES([SWSCALE], [libswscale])
 
-# no_av_decode
-AC_ARG_ENABLE(no_av_decode,
+# no_av_decoder
+AC_ARG_ENABLE(no_av_decoder,
 	AS_HELP_STRING(--enable-no-av-decoder, include support for devices without AV decoder),
 	,[enable_no_av_decoder=no])
 AM_CONDITIONAL(HAVE_NO_AV_DECODER, test "$enable_no_av_decoder" = "yes")
