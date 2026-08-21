@@ -32,6 +32,10 @@ if USE_DIRECTFB
 AM_CPPFLAGS += @DIRECTFB_CFLAGS@
 endif
 
+if USE_SDL
+AM_CPPFLAGS += @SDL_CFLAGS@
+endif
+
 AM_CPPFLAGS += -fno-rtti -fno-exceptions
 
 bin_PROGRAMS = neutrino2
@@ -118,6 +122,10 @@ endif
 
 if USE_DIRECTFB
 neutrino2_LDADD += @DIRECTFB_LIBS@
+endif
+
+if USE_SDL
+neutrino2_LDADD += @SDL_LIBS@
 endif
 
 if ENABLE_PYTHON

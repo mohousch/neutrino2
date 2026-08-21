@@ -186,6 +186,12 @@ int gfxfd = -1;
 	}
 #endif
 
+#ifdef USE_SDL
+#include <SDL/SDL.h>
+
+SDL_Surface *m_screen;
+#endif
+
 
 //// globals
 int debug = DEBUG_NORMAL;
@@ -4964,6 +4970,22 @@ void CNeutrinoApp::init_HAL(void)
 	dfbdest->Clear(dfbdest, 0, 0, 0, 0);
 #endif
 
+#ifdef USE_SDL
+	// init SDL
+	if (SDL_Init(SDL_INIT_VIDEO) < 0) 
+	{
+		dprintf(DEBUG_NORMAL, "NeutrinoApp::init_HAL: Could not initialize SDL: %s", SDL_GetError());
+	}
+	
+	// set video mode
+	m_screen = SDL_SetVideoMode(DEFAULT_XRES, DEFAULT_YRES, DEFAULT_BPP, SDL_HWSURFACE);
+	
+	if (!m_screen) 
+	{
+		ng_err("CNeutrinoApp::init_HAL: Could not create SDL surface: %s", SDL_GetError());
+	}
+#endif
+
 #ifdef USE_OPENGL
 	ao_initialize();
 #endif
@@ -4982,6 +5004,10 @@ void CNeutrinoApp::deinit_HAL(void)
 	primary->Release(primary);
 	layer->Release(layer);
 	dfb->Release(dfb);
+#endif
+
+#ifdef USE_SDL
+	SDL_Quit();
 #endif
 }
 
