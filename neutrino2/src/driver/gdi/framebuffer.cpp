@@ -56,6 +56,12 @@
 #include <driver/gdi/glthread.h>
 #endif
 
+////
+#ifdef USE_SDL
+#include <SDL/SDL.h>
+extern SDL_Surface *m_screen;
+#endif
+
 
 #define BACKGROUNDIMAGEWIDTH 	DEFAULT_XRES
 #define BACKGROUNDIMAGEHEIGHT	DEFAULT_YRES
@@ -154,6 +160,17 @@ void CFrameBuffer::init(const char * const fbDevice)
 		perror("mmap");
 		goto nolfb;
 	}
+#elif defined (USE_SDL)
+	////
+	screeninfo.bits_per_pixel = DEFAULT_BPP;
+	screeninfo.xres = DEFAULT_XRES;
+	screeninfo.xres_virtual = screeninfo.xres;
+	screeninfo.yres = DEFAULT_YRES;
+	screeninfo.yres_virtual = screeninfo.yres;
+		
+	lfb = (uint32_t *)m_screen->pixels;
+	available = sizeof(lfb);
+	////	
 #else	
 
 	fd = open(fbDevice, O_RDWR);
@@ -453,6 +470,16 @@ int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
 	yRes = y;
 	bpp = _bpp;
 	stride = xRes * sizeof(fb_pixel_t);
+#elif defined (USE_SDL)
+	////
+	xRes = m_screen->w;
+	yRes = m_screen->h;
+	bpp = m_screen->format->BitsPerPixel;
+	//m_surface.bypp = m_screen->format->BytesPerPixel;
+	stride = m_screen->pitch;
+	
+	SDL_EnableUNICODE(1);
+	////
 #else
 	setFrameBufferMode(x, y, _bpp);
 #endif	
@@ -1616,6 +1643,8 @@ void CFrameBuffer::blit(int mode3d)
 {
 #if defined USE_OPENGL  
 	mpGLThreadObj->blit();
+#elif defined (USE_SDL)
+	SDL_BlitSurface(m_screen, NULL, NULL, NULL);
 #elif defined (__sh__)
 	STMFBIO_BLT_DATA  bltData; 
 	memset(&bltData, 0, sizeof(STMFBIO_BLT_DATA)); 
