@@ -83,13 +83,13 @@ config:
 	echo ""
 # lirc
 	@echo -e "\nlirc:"
-	@echo "   1) yes"
-	@echo -e "   \033[01;32m2) no\033[00m"
+	@echo "   1) no"
+	@echo -e "   \033[01;32m2) yes\033[00m"
 	@read -p "lirc (1-2)?" LIRC; \
 	LIRC=$${LIRC}; \
 	case "$$LIRC" in \
-		1) echo "LIRC=lirc" >> .config;; \
-		2|*) echo "LIRC=" >> .config;; \
+		1) echo "LIRC=" >> .config;; \
+		2|*) echo "LIRC=lirc" >> .config;; \
 	esac; \
 	echo ""
 # Media framework

@@ -144,7 +144,7 @@ AC_ARG_ENABLE(lcd96,
 	AS_HELP_STRING(--enable-lcd96,include lcd 96x64 16 bit support),
 	,[enable_lcd96=no])
 AM_CONDITIONAL(ENABLE_LCD96,test "$enable_lcd96" = "yes")
-AM_CONDITIONAL(ENABLE_LCD,test "$enable_lcd96" = "yes")
+AM_CONDITIONAL(ENABLE_LCD,test "$enable_lcd96" = "yes" -o "$enable_lcd" = "yes")
 
 if test "$enable_lcd96" = "yes"; then
 AC_DEFINE(ENABLE_LCD,1,[include lcd support])
@@ -156,7 +156,7 @@ AC_ARG_ENABLE(lcd128,
 	AS_HELP_STRING(--enable-lcd128,include lcd 128x64 16 bit support),
 	,[enable_lcd128=no])
 AM_CONDITIONAL(ENABLE_LCD128,test "$enable_lcd128" = "yes")
-AM_CONDITIONAL(ENABLE_LCD,test "$enable_lcd128" = "yes")
+AM_CONDITIONAL(ENABLE_LCD,test "$enable_lcd128" = "yes" -o "$enable_lcd" = "yes")
 
 if test "$enable_lcd128" = "yes"; then
 AC_DEFINE(ENABLE_LCD,1,[include lcd support])
@@ -168,7 +168,7 @@ AC_ARG_ENABLE(lcd400,
 	AS_HELP_STRING(--enable-lcd400,include lcd 400x240 16 bit support),
 	,[enable_lcd400=no])
 AM_CONDITIONAL(ENABLE_LCD400,test "$enable_lcd400" = "yes")
-AM_CONDITIONAL(ENABLE_LCD,test "$enable_lcd400" = "yes")
+AM_CONDITIONAL(ENABLE_LCD,test "$enable_lcd400" = "yes" -o "$enable_lcd" = "yes")
 
 if test "$enable_lcd400" = "yes"; then
 AC_DEFINE(ENABLE_LCD,1,[include lcd support])
@@ -180,7 +180,7 @@ AC_ARG_ENABLE(lcd480,
 	AS_HELP_STRING(--enable-lcd480,include lcd 480x320 16 bit support),
 	,[enable_lcd480=no])
 AM_CONDITIONAL(ENABLE_LCD480,test "$enable_lcd480" = "yes")
-AM_CONDITIONAL(ENABLE_LCD,test "$enable_lcd480" = "yes")
+AM_CONDITIONAL(ENABLE_LCD,test "$enable_lcd480" = "yes" -o "$enable_lcd" = "yes")
 
 if test "$enable_lcd480" = "yes"; then
 AC_DEFINE(ENABLE_LCD,1,[include lcd support])
