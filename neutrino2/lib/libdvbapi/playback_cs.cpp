@@ -116,16 +116,18 @@ extern "C" {
 #include <OpenThreads/Thread>
 #include <OpenThreads/Mutex>
 
+OpenThreads::Mutex buf_m;
+#endif // USE_OPENGL
+#endif // ENABLE_GSTREAMER
+
+#ifdef HAVE_NO_AV_DECODER
 extern Data_t data[64];
 extern uint64_t sCURRENT_APTS;
 
 int buf_in = 0;
 int buf_out = 0;
 int buf_num = 0;
-
-OpenThreads::Mutex buf_m;
-#endif // USE_OPENGL
-#endif // ENABLE_GSTREAMER
+#endif
 
 #if defined ENABLE_GSTREAMER
 #if GST_VERSION_MAJOR < 1
@@ -1122,7 +1124,7 @@ bool cPlayback::GetPosition(int &position, int &duration)
 		gint64 pts;
 		position = 0;
 		
-#if defined (USE_OPENGL)
+#ifdef USE_OPENGL
 #if GST_VERSION_MAJOR < 1
 		gst_element_query_position(m_gst_playbin, &fmt, &pts);
 #else

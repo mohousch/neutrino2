@@ -49,10 +49,13 @@
 #endif
 
 //// opengl
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 #include <libswscale/swscale.h>
 #include <libavutil/imgutils.h>
 #include <libswresample/swresample.h>
+#endif
+
+#ifdef USE_LIBAO
 #include <ao/ao.h>
 #endif
 
@@ -100,15 +103,18 @@ static int audiofd 	= -1;
 
 uint64_t sCURRENT_PTS = 0;
 
-#ifdef USE_OPENGL
-static ao_device *adevice = NULL;
-static ao_sample_format sformat;
+#ifdef HAVE_NO_AV_DECODER
 extern int buf_num;
 extern int buf_in;
 extern int buf_out;
 bool stillpicture = false;
 Data_t data[64] = {0};
 uint64_t sCURRENT_APTS = 0;
+#endif
+
+#ifdef USE_LIBAO
+static ao_device *adevice = NULL;
+static ao_sample_format sformat;
 #endif
 
 //
@@ -147,7 +153,7 @@ int LinuxDvbOpen(Context_t  *context, char * type)
 
 	linuxdvb_printf(10, "v%d a%d\n", video, audio);
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if (audio && audiofd == -1) 
 	{
 		audiofd = open(AUDIODEV, O_RDWR);
@@ -240,7 +246,7 @@ int LinuxDvbClose(Context_t  *context, char * type)
 
 	getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 	
-#ifdef USE_OPENGL
+#ifdef USE_LIBAO
 	if (adevice)
 		ao_close(adevice);
 		
@@ -276,7 +282,7 @@ int LinuxDvbPlay(Context_t  *context, char * type)
 
 	linuxdvb_printf(10, "v%d a%d\n", video, audio);
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if (audio && audiofd != -1) 
 	{
 		char * Encoding = NULL;
@@ -375,7 +381,7 @@ int LinuxDvbStop(Context_t  *context, char * type)
 
 	linuxdvb_printf(10, "v%d a%d\n", video, audio);
 
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 	
 	if (audio && audiofd != -1) 
@@ -433,7 +439,7 @@ int LinuxDvbPause(Context_t  *context, char * type)
 
 	linuxdvb_printf(10, "v%d a%d\n", video, audio);
 
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 	
 	if (audio && audiofd != -1) 
@@ -471,7 +477,7 @@ int LinuxDvbContinue(Context_t  *context, char * type)
 
 	linuxdvb_printf(10, "v%d a%d\n", video, audio);
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if (audio && audiofd != -1) 
 	{
 		if (ioctl(audiofd, AUDIO_CONTINUE, NULL) == -1)
@@ -501,7 +507,7 @@ int LinuxDvbReverseDiscontinuity(Context_t  *context, int* surplus)
 {
 	int ret = cERR_LINUXDVB_NO_ERROR;
 
-#ifndef USE_OPENGL	
+#ifndef HAVE_NO_AV_DECODER	
 #if defined (__sh__)
 	int dis_type = VIDEO_DISCONTINUITY_CONTINUOUS_REVERSE | *surplus;
     
@@ -525,7 +531,7 @@ int LinuxDvbAudioMute(Context_t* context, char* flag)
 
 	linuxdvb_printf(10, "\n");
 
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if (audiofd != -1) 
 	{
 		if(*flag == '1')
@@ -578,7 +584,7 @@ int LinuxDvbFlush(Context_t  *context, char * type)
 
 	linuxdvb_printf(10, "v%d a%d\n", video, audio);
 
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if ( (video && videofd != -1) || (audio && audiofd != -1) ) 
 	{
 		getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
@@ -638,7 +644,7 @@ int LinuxDvbFastForward(Context_t  *context, char * type)
 
 	linuxdvb_printf(10, "v%d a%d speed %d\n", video, audio, context->playback->Speed);
 
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if (video && videofd != -1) 
 	{
 		getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
@@ -728,7 +734,7 @@ int LinuxDvbSlowMotion(Context_t  *context, char * type)
 
 	linuxdvb_printf(10, "v%d a%d\n", video, audio);
 
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if ( (video && videofd != -1) || (audio && audiofd != -1) ) 
 	{
 		getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
@@ -754,7 +760,7 @@ int LinuxDvbAVSync(Context_t  *context, char * type)
 {
 	int ret = cERR_LINUXDVB_NO_ERROR;
 	
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if (audiofd != -1) 
 	{
 		getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
@@ -782,7 +788,7 @@ int LinuxDvbClear(Context_t  *context, char * type)
 
 	linuxdvb_printf(10, "v%d a%d\n", video, audio);
 
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if ( (video && videofd != -1) || (audio && audiofd != -1) ) 
 	{
 		getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
@@ -829,7 +835,7 @@ int LinuxDvbPts(Context_t  *context, unsigned long long int* pts)
     
 	linuxdvb_printf(50, "\n");
 
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if (videofd != -1)
 	{
 		if (ioctl(videofd, VIDEO_GET_PTS, (void*)&sCURRENT_PTS) == -1)
@@ -865,7 +871,7 @@ int LinuxDvbGetFrameCount(Context_t  *context, unsigned long long int* frameCoun
 {
 	int ret = cERR_LINUXDVB_NO_ERROR;
 
-#ifndef USE_OPENGL	
+#ifndef HAVE_NO_AV_DECODER	
 #if defined (__sh__)
 	dvb_play_info_t playInfo;  //???
 
@@ -919,7 +925,7 @@ int LinuxDvbSwitch(Context_t  *context, char * type)
 
 	linuxdvb_printf(10, "v%d a%d\n", video, audio);
 
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 	if ( (video && videofd != -1) || (audio && audiofd != -1) ) 
 	{
 		getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
@@ -1085,7 +1091,7 @@ static int Write(void* _context, void* _out)
 
 		linuxdvb_printf(20, "%s::%s Encoding = %s\n", FILENAME, __FUNCTION__, Encoding);
 
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 		writer = getWriter(Encoding);
 
 		if (writer == NULL)
@@ -1125,6 +1131,7 @@ static int Write(void* _context, void* _out)
 			}
 		}
 #else
+#ifdef USE_LIBAO
 		int got_frame = 0;
 		SwrContext *swr = NULL;
 		uint8_t *obuf = NULL;
@@ -1246,6 +1253,7 @@ static int Write(void* _context, void* _out)
 		
 		ret = cERR_LINUXDVB_ERROR;
 #endif
+#endif
 
 		free(Encoding);
 	}
@@ -1256,7 +1264,7 @@ static int Write(void* _context, void* _out)
 
 		linuxdvb_printf(20, "%s::%s Encoding = %s\n", FILENAME, __FUNCTION__, Encoding);
 
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 		writer = getWriter(Encoding);
 
 		if (writer == NULL)
@@ -1298,6 +1306,7 @@ static int Write(void* _context, void* _out)
 			}
 		}
 #else
+//#ifdef USE_OPENGL
 		struct SwsContext *convert = NULL;
 		
 		//

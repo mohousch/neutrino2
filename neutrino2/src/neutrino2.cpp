@@ -163,7 +163,7 @@
 
 #include <nhttpd/yhttpd.h>
 
-#ifdef USE_OPENGL
+#ifdef USE_LIBAO
 #include <ao/ao.h>
 #endif
 
@@ -4986,7 +4986,7 @@ void CNeutrinoApp::init_HAL(void)
 	}
 #endif
 
-#ifdef USE_OPENGL
+#ifdef USE_LIBAO
 	ao_initialize();
 #endif
 }
@@ -4995,7 +4995,7 @@ void CNeutrinoApp::deinit_HAL(void)
 {
 	printf("CNeutrinoApp::deinit_HAL\n");
 	
-#ifdef USE_OPENGL
+#ifdef USE_LIBAO
 	ao_shutdown();
 #endif
 

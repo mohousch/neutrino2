@@ -432,7 +432,7 @@ static void FFMPEGThread(Context_t* context)
 	int err = 0;
 	int audioMute = 0;
 	AudioVideoOut_t avOut;
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 	AVFrame *vframe = NULL;
 	AVFrame *aframe = NULL;
 	
@@ -566,7 +566,7 @@ static void FFMPEGThread(Context_t* context)
 					avOut.height     = videoTrack->height;
 					avOut.type       = "video";
 					
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 					avOut.stream 	 = videoTrack->stream;
 					avOut.ctx 	 = videoTrack->ctx;
 					avOut.vframe 	 = vframe;
@@ -706,7 +706,7 @@ static void FFMPEGThread(Context_t* context)
 						avOut.type       = "audio";
 					}
 
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 					avOut.stream 	 = audioTrack->stream;
 					avOut.ctx 	 = audioTrack->ctx;
 					avOut.vframe 	 = NULL;
@@ -813,7 +813,7 @@ static void FFMPEGThread(Context_t* context)
 	}
 	
 	//
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 	if (vframe)
 	{
 		av_frame_free(&vframe);
@@ -1009,7 +1009,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				
 				avcodec_open2(vctx, avcodec_find_decoder(stream->codecpar->codec_id), NULL);
 				
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 				track.ctx = vctx;
 #endif
 
@@ -1081,7 +1081,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 
 				avcodec_open2(actx, avcodec_find_decoder(stream->codecpar->codec_id), NULL);
 				
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 				track.ctx = actx;
 #else
 				// ipcm

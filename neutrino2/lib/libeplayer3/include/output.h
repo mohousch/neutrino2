@@ -73,7 +73,7 @@ typedef struct
 	char *type;
 	
 	//
-#ifdef USE_OPENGL	
+#ifdef HAVE_NO_AV_DECODER	
 	AVStream *stream;
 	AVCodecContext *ctx;
 	AVFrame *vframe;

@@ -117,7 +117,11 @@ endif
 
 if USE_OPENGL
 neutrino2_LDADD += \
-	-lglut -lGL -lGLU -lGLEW -lao
+	-lglut -lGL -lGLU -lGLEW
+endif
+
+if USE_LIBAO
+neutrino2_LDADD += -lao
 endif
 
 if USE_DIRECTFB

@@ -38,7 +38,7 @@
 #define AUDIO_FLUSH                     _IO('o',  71)
 #endif
 
-#ifdef USE_OPENGL
+#ifdef USE_LIBAO
 #include <OpenThreads/Thread>
 
 #include "dmx_cs.h"
@@ -93,7 +93,7 @@ cAudio::cAudio(int num)
 	setVolume(100, 100);
 #endif
 
-#ifdef USE_OPENGL
+#ifdef LIBAO
 	thread_running = false;
 	dmxbuf = (uint8_t *)malloc(DMX_BUF_SZ);
 	bufpos = 0;
@@ -110,7 +110,7 @@ cAudio::~cAudio(void)
 
 	Close();
 	
-#ifdef USE_OPENGL
+#ifdef LIBAO
 	free(dmxbuf);
 	
 	if (adevice)
@@ -268,7 +268,7 @@ int cAudio::Start(void)
 	
 	int ret = -1;
 	
-#ifdef USE_OPENGL
+#ifdef LIBAO
 	if (!thread_running)
 	{
 		ret = OpenThreads::Thread::start();
@@ -296,7 +296,7 @@ int cAudio::Stop(void)
 	
 	int ret = -1;
 	
-#ifdef USE_OPENGL
+#ifdef USE_LIBAO
 	if (thread_running)
 	{
 		thread_running = false;
@@ -552,7 +552,7 @@ int cAudio::setHwAC3Delay(int delay)
 	return -1;
 }
 
-#ifdef USE_OPENGL
+#ifdef USE_LIBAO
 static int my_read(void *, uint8_t *buf, int buf_size)
 {
 	int tmp = 0;

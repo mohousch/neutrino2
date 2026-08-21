@@ -26,7 +26,7 @@
 
 #include <config.h>
 
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 extern "C" {
 #include <libavutil/rational.h>
 }
