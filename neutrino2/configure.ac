@@ -68,6 +68,17 @@ AC_DEFINE(USE_DIRECTFB,1,[include directfb engine])
 PKG_CHECK_MODULES(DIRECTFB, directfb)
 fi
 
+# sdl
+AC_ARG_ENABLE(sdl,
+	AS_HELP_STRING(--enable-sdl,include sdl framebuffer support for x86),
+	,[enable_sdl=no])
+AM_CONDITIONAL(USE_SDL,test "$enable_sdl" = "yes")
+
+if test "$enable_sdl" = "yes"; then
+AC_DEFINE(USE_SDL,1,[include sdl engine])
+PKG_CHECK_MODULES(SDL, sdl)
+fi
+
 # gstreamer
 AC_ARG_ENABLE(gstreamer,
 	AS_HELP_STRING(--enable-gstreamer,include gstreamer as player engine support),
