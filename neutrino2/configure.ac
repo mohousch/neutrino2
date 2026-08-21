@@ -60,6 +60,7 @@ AC_ARG_ENABLE(opengl,
 	AS_HELP_STRING(--enable-opengl,include opengl framebuffer support for x86),
 	,[enable_opengl=no])
 AM_CONDITIONAL(USE_OPENGL,test "$enable_opengl" = "yes")
+AM_CONDITIONAL(USE_LIBAO, test "$enable_opengl" = "yes")
 
 if test "$enable_opengl" = "yes"; then
 AC_DEFINE(USE_OPENGL,1,[include opengl engine])
