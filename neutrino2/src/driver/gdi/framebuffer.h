@@ -184,6 +184,7 @@ class CFrameBuffer
 		void init(const char * const fbDevice = "/dev/fb0");		
 		void setFrameBufferMode(unsigned int xRes, unsigned int yRes, unsigned int bpp);
 		int setMode(unsigned int x = DEFAULT_XRES, unsigned int y = DEFAULT_YRES, unsigned int _bpp = DEFAULT_BPP);
+		int showConsole(int state);
 
 		int getFileHandle() const; 		    	//only used for plugins (games) !!
 		t_fb_var_screeninfo *getScreenInfo();

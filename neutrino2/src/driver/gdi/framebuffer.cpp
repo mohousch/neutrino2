@@ -224,6 +224,9 @@ void CFrameBuffer::init(const char * const fbDevice)
 #endif /*sh*/ 
 #endif /* USE_OPENGL */
 
+	//
+	showConsole(0);
+
 	dprintf(DEBUG_NORMAL, "CFrameBuffer::init %dk video mem\n", available/1024);
 	
 	// set colors
@@ -281,6 +284,9 @@ CFrameBuffer::~CFrameBuffer()
 
 	if (lfb)
 		munmap(lfb, available);
+		
+	//
+	showConsole(1);
 		
 	// deinit libngpng
 	deinit_handlers();
@@ -487,6 +493,23 @@ int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
 	// clear frameBuffer
 	memset(lfb, 0, screeninfo.xres * screeninfo.yres * sizeof(fb_pixel_t));
 
+	return 0;
+}
+
+int CFrameBuffer::showConsole(int state)
+{
+	int fd=open("/dev/tty1", O_RDWR);
+	
+	if(fd >= 0)
+	{
+		if(ioctl(fd, KDSETMODE, state? KD_TEXT : KD_GRAPHICS) < 0)
+		{
+			perror("CFrameBuffer::showConsole: setting /dev/tty0 status failed.");
+		}
+		
+		close(fd);
+	}
+	
 	return 0;
 }
 
