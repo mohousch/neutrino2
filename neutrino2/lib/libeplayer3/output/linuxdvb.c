@@ -1306,7 +1306,6 @@ static int Write(void* _context, void* _out)
 			}
 		}
 #else
-//#ifdef USE_OPENGL
 		struct SwsContext *convert = NULL;
 		
 		//
