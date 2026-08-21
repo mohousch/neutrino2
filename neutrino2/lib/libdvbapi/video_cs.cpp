@@ -46,7 +46,7 @@
 #define AUDIO_FLUSH                     _IO('o',  71)
 #endif
 
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 #include "dmx_cs.h"
 
 extern "C" {
@@ -79,7 +79,7 @@ cVideo::cVideo(int num)
 	playstate = VIDEO_STOPPED;
 	StreamType = VIDEO_STREAMTYPE_MPEG2;
 	
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	av_register_all();
 #endif
@@ -349,7 +349,7 @@ int cVideo::Start(void)
 	
 	int ret = -1;
 	
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 	if (!thread_running)
 	{
 		ret = OpenThreads::Thread::start();
@@ -357,7 +357,7 @@ int cVideo::Start(void)
 		
 	playstate = VIDEO_PLAYING;
 #else
-#ifndef HAVE_NO_AV_DECODER
+//#ifndef HAVE_NO_AV_DECODER
 	if(video_fd < 0)
 		return -1;
 
@@ -371,7 +371,7 @@ int cVideo::Start(void)
 	
 	if (ret < 0)
 		perror("VIDEO_PLAY");
-#endif	// HAVE_NO_AV_DECODER
+//#endif	// HAVE_NO_AV_DECODER
 #endif
 
 	return ret;
@@ -383,7 +383,7 @@ int cVideo::Stop(bool blank)
 	
 	int ret = -1;
 	
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 	if (thread_running)
 	{
 		thread_running = false;
@@ -392,7 +392,7 @@ int cVideo::Stop(bool blank)
 	
 	playstate = blank ? VIDEO_STOPPED : VIDEO_FREEZED;
 #else
-#ifndef HAVE_NO_AV_DECODER
+//#ifndef HAVE_NO_AV_DECODER
 	if(video_fd < 0)
 		return -1;
 		
@@ -402,7 +402,7 @@ int cVideo::Stop(bool blank)
 	
 	if (ret < 0) 
 		perror("VIDEO_STOP");
-#endif // HAVE_NO_AV_DECODER	
+//#endif // HAVE_NO_AV_DECODER	
 #endif
 
 	return ret;
@@ -987,7 +987,7 @@ int cVideo::setSource(int source)
 
 int64_t cVideo::GetPTS(void)
 {
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 	int64_t pts = 0;
 	
 	buf_m.lock();
@@ -997,7 +997,7 @@ int64_t cVideo::GetPTS(void)
 	
 	return pts;
 #else
-#ifndef HAVE_NO_AV_DECODER
+//#ifndef HAVE_NO_AV_DECODER
 	if(video_fd < 0)
 		return -1;
 	
@@ -1006,7 +1006,7 @@ int64_t cVideo::GetPTS(void)
 		perror("GET_PTS failed");
 	
 	return pts;
-#endif // HAVE_NO_AV_DECODER
+//#endif // HAVE_NO_AV_DECODER
 #endif
 }
 
@@ -1186,7 +1186,6 @@ bool cVideo::getvideo2(unsigned char *video, int xres, int yres)
 		ret = true;
 	}
 #else
-#ifdef USE_OPENGL
 	SWFramebuffer vid;
 	
 	buf_m.lock();
@@ -1195,12 +1194,11 @@ bool cVideo::getvideo2(unsigned char *video, int xres, int yres)
 	video = &video[0];
 	buf_m.unlock();
 #endif
-#endif
 	
 	return ret;
 }
 
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 cVideo::SWFramebuffer *cVideo::getDecBuf(void)
 {
 	buf_m.lock();

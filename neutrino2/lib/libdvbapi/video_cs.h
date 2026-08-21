@@ -32,7 +32,7 @@
 #include <OpenThreads/Thread>
 #include <OpenThreads/Mutex>
 
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 extern "C" {
 #include <libavutil/rational.h>
 }
@@ -197,19 +197,15 @@ enum {
 	WSS_149_FULL
 };
 
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 #define VDEC_MAXBUFS 0x40
 #endif
 
 class cVideo 
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 : public OpenThreads::Thread
 #endif
-{
-#ifdef USE_OPENGL
-	friend class GLThreadObj;
-#endif
-	
+{	
 	private:
 		int video_fd;
 		int video_num;
@@ -218,7 +214,8 @@ class cVideo
 		video_play_state_t playstate;
 		VIDEO_FORMAT StreamType;
 		
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
+	public:
 		class SWFramebuffer : public std::vector<unsigned char>
 		{
 			public:
@@ -273,13 +270,15 @@ class cVideo
 		OpenThreads::Mutex still_m;
 		bool stillpicture;
 		bool w_h_changed;
-		////
+#endif
+
+#ifdef USE_OPENGL
 		int pig_x;
 		int pig_y;
 		int pig_w;
 		int pig_h;
 		bool pig_changed;
-#endif	
+#endif
 
 	public:
 		cVideo(int num = 0);
@@ -346,7 +345,7 @@ class cVideo
 		//
 		bool getvideo2(unsigned char *video, int xres, int yres);
 		
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 		SWFramebuffer *getDecBuf(void);
 #endif
 };

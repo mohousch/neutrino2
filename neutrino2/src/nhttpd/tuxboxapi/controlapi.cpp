@@ -1426,7 +1426,6 @@ void CControlAPI::ScreenshotCGI(CyhookHandler *hh)
 		filename = hh->ParamList["name"];
 
 	if (CScreenshot::getInstance()->dumpFile("/tmp/" + filename + ".png", CScreenshot::FORMAT_PNG, enableOSD, enableVideo))
-//	if (CFrameBuffer::getInstance()->savePNG("/tmp/" + filename + ".png"))
 		hh->SendOk();
 	else
 		hh->SendError();

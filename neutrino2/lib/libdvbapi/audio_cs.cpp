@@ -212,7 +212,6 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 	
 	volume = (left + right)/2;
 	
-#if !defined HAVE_NO_AV_DECODER
 	// map volume
 	if (volume < 0)
 		volume = 0;
@@ -223,7 +222,8 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 	int _left = 63 - volume * 0.63;
 	int _right = 63 - volume * 0.63;
 	//now range is 63..0, where 0 is loudest
-	
+
+#ifndef HAVE_NO_AV_DECODER	
 #if !defined (__sh__)
 	audio_mixer_t mixer;
 
@@ -255,7 +255,20 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 		write(fd, sVolume, strlen(sVolume));
 		::close(fd);
 	}
-//#endif	// PLATFORM_HYPERCUBE 
+//#endif	// PLATFORM_HYPERCUBE
+#else
+	audio_mixer_t mixer;
+
+	mixer.volume_left = _left;
+	mixer.volume_right = _right;
+	
+	if (audio_fd > 0)
+	{
+		ret = ::ioctl(audio_fd, AUDIO_SET_MIXER, &mixer);
+	
+		if(ret < 0)
+			perror("AUDIO_SET_MIXER");
+	}
 #endif	// HAVE_NO_AV_DECODER
 	
 	return ret;

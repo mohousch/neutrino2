@@ -96,7 +96,7 @@ gchar * uri = NULL;
 GstBus * bus = NULL;
 bool end_eof = false;
 #define HTTP_TIMEOUT 30
-#else
+#else // libeplayer3
 #include <common.h>
 
 extern OutputHandler_t		OutputHandler;
@@ -106,7 +106,7 @@ extern ManagerHandler_t		ManagerHandler;
 
 static Context_t * player = NULL;
 
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
@@ -117,7 +117,7 @@ extern "C" {
 #include <OpenThreads/Mutex>
 
 OpenThreads::Mutex buf_m;
-#endif // USE_OPENGL
+#endif // HAVE_NO_AV_DECODER
 #endif // ENABLE_GSTREAMER
 
 #ifdef HAVE_NO_AV_DECODER
@@ -542,7 +542,7 @@ bool cPlayback::Open()
 	if(player && player->playback)
 		player->playback->Command(player, PLAYBACK_INIT, (void*)&out);
 		
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 	buf_num = 0;
 	buf_out = 0;
 	buf_in = 0;
@@ -617,7 +617,7 @@ void cPlayback::Close(void)
 	if(player != NULL)
 		player = NULL;
 		
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 	buf_num = 0;
 	buf_out = 0;
 	buf_in = 0;
@@ -1520,7 +1520,7 @@ void cPlayback::AddSubtitleFile(const char* const file)
 }
 
 ////
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 #ifndef ENABLE_GSTREAMER
 cPlayback::SWFramebuffer* cPlayback::getDecBuf(void)
 {

@@ -41,7 +41,7 @@ class cPlayback
 		int mSubStream;
 		int mExtSubStream;
 		
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 	public:
 		////
 		class SWFramebuffer : public std::vector<unsigned char>
@@ -151,7 +151,7 @@ class cPlayback
 		cPlayback(int num = 0);
 		~cPlayback(){};	
 		
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 #ifndef ENABLE_GSTREAMER
 		cPlayback::SWFramebuffer* getDecBuf(void);
 #endif

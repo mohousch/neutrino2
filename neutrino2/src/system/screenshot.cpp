@@ -38,6 +38,8 @@
 #include <system/screenshot.h>
 #include <system/debug.h>
 
+#include <driver/gdi/color.h>
+
 #include <libdvbapi/video_cs.h>
 
 extern "C" {
@@ -118,11 +120,11 @@ bool CScreenshot::getData()
 		return false;
 
 	// get videobuffer
-#if 0
+#if 1
 	if (get_video)
 	{
-		const int grab_w = 1920;
-		const int grab_h = 1080;
+		const int grab_w = 1280;
+		const int grab_h = 720;
 		
 		uint8_t *video_src = (uint8_t *)malloc(grab_w * grab_h * 3);
 		
@@ -193,9 +195,9 @@ bool CScreenshot::getData()
 		// alpha blend osd onto pixel_data (video). TODO: maybe libavcodec can do this?
 		::blendAlpha((uint8_t *)osd_data, (uint8_t *)pixel_data, xres, yres);
 	}
-	else
+//	else
 #endif
-	if (get_osd) // only get_osd, pixel_data is not yet populated 
+//	if (get_osd) // only get_osd, pixel_data is not yet populated 
 	{
 		memcpy(pixel_data, osd_data, xres * yres * sizeof(uint32_t));
 	}

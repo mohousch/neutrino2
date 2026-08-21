@@ -568,7 +568,11 @@ void GLThreadObj::bltDisplayBuffer()
 	if (!videoDecoder)
 		return;
 	
-	cVideo::SWFramebuffer* buf = videoDecoder->getDecBuf();
+	cVideo::SWFramebuffer* buf = NULL;
+	
+#ifdef HAVE_NO_AV_DECODER
+	buf = videoDecoder->getDecBuf();
+#endif
 	
 	if (!buf)
 	{		
@@ -645,7 +649,11 @@ void GLThreadObj::bltPlayBuffer()
 		return;
 	
 #ifndef ENABLE_GSTREAMER
-	cPlayback::SWFramebuffer* buf = playback->getDecBuf();
+	cPlayback::SWFramebuffer* buf = NULL;
+	
+#ifdef HAVE_NO_AV_DECODER
+	buf = playback->getDecBuf();
+#endif
 	
 	//
 	if (buf == NULL)
