@@ -1644,7 +1644,14 @@ void CFrameBuffer::blit(int mode3d)
 #if defined USE_OPENGL  
 	mpGLThreadObj->blit();
 #elif defined (USE_SDL)
-	SDL_BlitSurface(m_screen, NULL, NULL, NULL);
+	SDL_Rect rect;
+	
+	rect.x = 0;
+	rect.y = 0;
+	rect.w = xRes;
+	rect.h = yRes;
+	
+	SDL_BlitSurface(m_screen, &rect, m_screen, &rect);
 #elif defined (__sh__)
 	STMFBIO_BLT_DATA  bltData; 
 	memset(&bltData, 0, sizeof(STMFBIO_BLT_DATA)); 

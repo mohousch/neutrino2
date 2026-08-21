@@ -443,7 +443,7 @@ int cAudio::setChannel(int channel)
 	
 	int ret = -1;
 
-#if !defined (HAVE_NO_AV_DECODER)
+#ifndef HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return -1;
 
@@ -461,7 +461,7 @@ void cAudio::SetHdmiDD(int ac3)
 		"passthrough"
 	};	
 
-#if !defined (HAVE_NO_AV_DECODER)
+#ifndef HAVE_NO_AV_DECODER
 #if defined (__sh__)
 	const char *aHDMIDDSOURCE[] = {
 		"pcm",
@@ -514,7 +514,7 @@ int cAudio::setHwPCMDelay(int delay)
 {  
 	printf("cAudio::setHwPCMDelay: delay=%d\n", delay);
 	
-#if !defined (HAVE_NO_AV_DECODER)	
+#ifndef HAVE_NO_AV_DECODER	
 	if (delay != m_pcm_delay )
 	{
 		FILE *fp = fopen("/proc/stb/audio/audio_delay_pcm", "w");
@@ -535,7 +535,7 @@ int cAudio::setHwAC3Delay(int delay)
 {
 	printf("cAudio::setHwAC3Delay: delay=%d\n", delay);
 	
-#if !defined (HAVE_NO_AV_DECODER)	
+#ifndef HAVE_NO_AV_DECODER	
 	if ( delay != m_ac3_delay )
 	{
 		FILE *fp = fopen("/proc/stb/audio/audio_delay_bitstream", "w");
