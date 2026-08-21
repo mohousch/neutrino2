@@ -121,7 +121,7 @@ neutrino2_LDADD += \
 endif
 
 if USE_LIBAO
-neutrino2_LDADD += -lao
+neutrino2_LDADD += @LIBAO_LIBS@
 endif
 
 if USE_DIRECTFB
