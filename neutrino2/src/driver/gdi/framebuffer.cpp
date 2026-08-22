@@ -67,6 +67,18 @@ extern SDL_Surface *m_screen;
 #define BACKGROUNDIMAGEHEIGHT	DEFAULT_YRES
 
 ////
+CFrameBuffer* CFrameBuffer::getInstance()
+{
+	static CFrameBuffer * frameBuffer = NULL;
+
+	if(!frameBuffer) 
+	{
+		frameBuffer = new CFrameBuffer();
+	} 
+
+	return frameBuffer;
+}
+
 CFrameBuffer::CFrameBuffer()
 : active ( true )
 {
@@ -115,16 +127,38 @@ CFrameBuffer::CFrameBuffer()
 	lfb = NULL;
 }
 
-CFrameBuffer* CFrameBuffer::getInstance()
+CFrameBuffer::~CFrameBuffer()
 {
-	static CFrameBuffer * frameBuffer = NULL;
-
-	if(!frameBuffer) 
+	dprintf(DEBUG_NORMAL, "~CFrameBuffer()\n");
+	
+	if (background) 
 	{
-		frameBuffer = new CFrameBuffer();
-	} 
+		free(background);
+		background = NULL;
+	}
 
-	return frameBuffer;
+	if (backupBackground) 
+	{
+		delete[] backupBackground;
+		backupBackground = NULL;
+	}
+
+	if (lfb)
+		munmap(lfb, available);
+		
+	//
+	showConsole(1);
+		
+	// deinit libngpng
+	deinit_handlers();
+	
+#if defined (USE_OPENGL)
+	active = false;
+	mpGLThreadObj->shutDown();
+	mpGLThreadObj->join();
+#else	
+	close(fd);
+#endif	
 }
 
 void CFrameBuffer::init(const char * const fbDevice)
@@ -265,39 +299,129 @@ nolfb:
 	lfb = 0;
 }
 
-
-CFrameBuffer::~CFrameBuffer()
+int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
 {
-	dprintf(DEBUG_NORMAL, "~CFrameBuffer()\n");
+	if (!available && !active)
+		return -1;
 	
-	if (background) 
-	{
-		free(background);
-		background = NULL;
-	}
+	dprintf(DEBUG_NORMAL, "CFrameBuffer::setMode: FB: %dx%d (%d bit)\n", x, y, _bpp);
 
-	if (backupBackground) 
-	{
-		delete[] backupBackground;
-		backupBackground = NULL;
-	}
-
-	if (lfb)
-		munmap(lfb, available);
-		
-	//
-	showConsole(1);
-		
-	// deinit libngpng
-	deinit_handlers();
+#if defined (__sh__) || defined (USE_OPENGL)
+	xRes = x;
+	yRes = y;
+	bpp = _bpp;
+	stride = xRes * sizeof(fb_pixel_t);
+#elif defined (USE_SDL)
+	////
+	xRes = m_screen->w;
+	yRes = m_screen->h;
+	bpp = m_screen->format->BitsPerPixel;
+	//m_surface.bypp = m_screen->format->BytesPerPixel;
+	stride = m_screen->pitch;
 	
-#if defined (USE_OPENGL)
-	active = false;
-	mpGLThreadObj->shutDown();
-	mpGLThreadObj->join();
-#else	
-	close(fd);
+	SDL_EnableUNICODE(1);
+	////
+#else
+	setFrameBufferMode(x, y, _bpp);
 #endif	
+
+	// clear frameBuffer
+	memset(lfb, 0, screeninfo.xres * screeninfo.yres * sizeof(fb_pixel_t));
+
+	return 0;
+}
+
+void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, unsigned int nbpp)
+{
+	screeninfo.xres_virtual = screeninfo.xres = nxRes;
+	screeninfo.yres_virtual = (screeninfo.yres = nyRes)*2;
+	screeninfo.height = 0;
+	screeninfo.width = 0;
+	screeninfo.xoffset = screeninfo.yoffset = 0;
+	screeninfo.bits_per_pixel = nbpp;
+
+	switch (nbpp) 
+	{
+		case 16:
+			// ARGB 1555
+			screeninfo.transp.offset = 15;
+			screeninfo.transp.length = 1;
+			screeninfo.red.offset = 10;
+			screeninfo.red.length = 5;
+			screeninfo.green.offset = 5;
+			screeninfo.green.length = 5;
+			screeninfo.blue.offset = 0;
+			screeninfo.blue.length = 5;
+			break;
+			
+		case 32:
+			// ARGB 8888
+			screeninfo.transp.offset = 24;
+			screeninfo.transp.length = 8;
+			screeninfo.red.offset = 16;
+			screeninfo.red.length = 8;
+			screeninfo.green.offset = 8;
+			screeninfo.green.length = 8;
+			screeninfo.blue.offset = 0;
+			screeninfo.blue.length = 8;
+			break;
+	}
+	
+	// num of pages
+	m_number_of_pages = screeninfo.yres_virtual / nyRes;
+	
+	if (ioctl(fd, FBIOPUT_VSCREENINFO, &screeninfo) < 0)
+	{
+		// try single buffering
+		screeninfo.yres_virtual = screeninfo.yres = nyRes;
+
+		if (ioctl(fd, FBIOPUT_VSCREENINFO, &screeninfo) < 0)
+		{
+			perror("FBIOPUT_VSCREENINFO");
+		}
+		
+		printf("CFrameBuffer::setVideoMode: double buffering not available.\n");
+	} 
+	else
+		printf("CFrameBuffer::setVideoMode: double buffering available!\n");
+	
+	ioctl(fd, FBIOGET_VSCREENINFO, &screeninfo);
+
+	if ((screeninfo.xres != nxRes) && (screeninfo.yres != nyRes) && (screeninfo.bits_per_pixel != nbpp))
+	{
+		printf("CFrameBuffer::setVideoMode: failed: wanted: %dx%dx%d, got %dx%dx%d\n", nxRes, nyRes, nbpp, screeninfo.xres, screeninfo.yres, screeninfo.bits_per_pixel);
+	}
+	
+	xRes = screeninfo.xres;
+	yRes = screeninfo.yres;
+	bpp  = screeninfo.bits_per_pixel;
+	
+	// stride
+	fb_fix_screeninfo fix;
+
+	if (ioctl(fd, FBIOGET_FSCREENINFO, &fix)<0)
+	{
+		perror("FBIOGET_FSCREENINFO");
+	}
+
+	stride = fix.line_length;
+}
+
+int CFrameBuffer::showConsole(int state)
+{
+	int fd=open("/dev/tty1", O_RDWR);
+	
+	if(fd >= 0)
+	{
+		if(ioctl(fd, KDSETMODE, state? KD_TEXT : KD_GRAPHICS) < 0)
+		{
+			perror("CFrameBuffer::showConsole: setting /dev/tty0 status failed.");
+		}
+		
+		close(fd);
+	}
+	
+	return 0;
 }
 
 int CFrameBuffer::getFileHandle() const
@@ -386,131 +510,6 @@ void CFrameBuffer::setActive(bool enable)
 t_fb_var_screeninfo *CFrameBuffer::getScreenInfo()
 {
 	return &screeninfo;
-}
-
-void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, unsigned int nbpp)
-{
-	screeninfo.xres_virtual = screeninfo.xres = nxRes;
-	screeninfo.yres_virtual = (screeninfo.yres = nyRes)*2;
-	screeninfo.height = 0;
-	screeninfo.width = 0;
-	screeninfo.xoffset = screeninfo.yoffset = 0;
-	screeninfo.bits_per_pixel = nbpp;
-
-	switch (nbpp) 
-	{
-		case 16:
-			// ARGB 1555
-			screeninfo.transp.offset = 15;
-			screeninfo.transp.length = 1;
-			screeninfo.red.offset = 10;
-			screeninfo.red.length = 5;
-			screeninfo.green.offset = 5;
-			screeninfo.green.length = 5;
-			screeninfo.blue.offset = 0;
-			screeninfo.blue.length = 5;
-			break;
-			
-		case 32:
-			// ARGB 8888
-			screeninfo.transp.offset = 24;
-			screeninfo.transp.length = 8;
-			screeninfo.red.offset = 16;
-			screeninfo.red.length = 8;
-			screeninfo.green.offset = 8;
-			screeninfo.green.length = 8;
-			screeninfo.blue.offset = 0;
-			screeninfo.blue.length = 8;
-			break;
-	}
-	
-	// num of pages
-	m_number_of_pages = screeninfo.yres_virtual / nyRes;
-	
-	if (ioctl(fd, FBIOPUT_VSCREENINFO, &screeninfo) < 0)
-	{
-		// try single buffering
-		screeninfo.yres_virtual = screeninfo.yres = nyRes;
-
-		if (ioctl(fd, FBIOPUT_VSCREENINFO, &screeninfo) < 0)
-		{
-			perror("FBIOPUT_VSCREENINFO");
-		}
-		
-		printf("CFrameBuffer::setVideoMode: double buffering not available.\n");
-	} 
-	else
-		printf("CFrameBuffer::setVideoMode: double buffering available!\n");
-	
-	ioctl(fd, FBIOGET_VSCREENINFO, &screeninfo);
-
-	if ((screeninfo.xres != nxRes) && (screeninfo.yres != nyRes) && (screeninfo.bits_per_pixel != nbpp))
-	{
-		printf("CFrameBuffer::setVideoMode: failed: wanted: %dx%dx%d, got %dx%dx%d\n", nxRes, nyRes, nbpp, screeninfo.xres, screeninfo.yres, screeninfo.bits_per_pixel);
-	}
-	
-	xRes = screeninfo.xres;
-	yRes = screeninfo.yres;
-	bpp  = screeninfo.bits_per_pixel;
-	
-	// stride
-	fb_fix_screeninfo fix;
-
-	if (ioctl(fd, FBIOGET_FSCREENINFO, &fix)<0)
-	{
-		perror("FBIOGET_FSCREENINFO");
-	}
-
-	stride = fix.line_length;
-}
-
-int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
-{
-	if (!available && !active)
-		return -1;
-	
-	dprintf(DEBUG_NORMAL, "CFrameBuffer::setMode: FB: %dx%d (%d bit)\n", x, y, _bpp);
-
-#if defined (__sh__) || defined (USE_OPENGL)
-	xRes = x;
-	yRes = y;
-	bpp = _bpp;
-	stride = xRes * sizeof(fb_pixel_t);
-#elif defined (USE_SDL)
-	////
-	xRes = m_screen->w;
-	yRes = m_screen->h;
-	bpp = m_screen->format->BitsPerPixel;
-	//m_surface.bypp = m_screen->format->BytesPerPixel;
-	stride = m_screen->pitch;
-	
-	SDL_EnableUNICODE(1);
-	////
-#else
-	setFrameBufferMode(x, y, _bpp);
-#endif	
-
-	// clear frameBuffer
-	memset(lfb, 0, screeninfo.xres * screeninfo.yres * sizeof(fb_pixel_t));
-
-	return 0;
-}
-
-int CFrameBuffer::showConsole(int state)
-{
-	int fd=open("/dev/tty1", O_RDWR);
-	
-	if(fd >= 0)
-	{
-		if(ioctl(fd, KDSETMODE, state? KD_TEXT : KD_GRAPHICS) < 0)
-		{
-			perror("CFrameBuffer::showConsole: setting /dev/tty0 status failed.");
-		}
-		
-		close(fd);
-	}
-	
-	return 0;
 }
 
 // blend mode: 0=non-premultiplied alpha | 1=premultiplied alpha

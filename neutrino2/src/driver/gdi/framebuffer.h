@@ -186,6 +186,7 @@ class CFrameBuffer
 		int setMode(unsigned int x = DEFAULT_XRES, unsigned int y = DEFAULT_YRES, unsigned int _bpp = DEFAULT_BPP);
 		int showConsole(int state);
 
+		////
 		int getFileHandle() const; 		    	//only used for plugins (games) !!
 		t_fb_var_screeninfo *getScreenInfo();
 
@@ -200,6 +201,7 @@ class CFrameBuffer
 		bool getActive() const;                    // is framebuffer active?
 		void setActive(bool enable);               // is framebuffer active?
 
+		////
 		void setBlendMode(uint8_t mode);
 		void setBlendLevel(int blev);
 
