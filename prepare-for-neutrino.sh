@@ -150,6 +150,8 @@ PACKAGES="\
     	${UBUNTU:+libass-dev}					     						      \
     	${UBUNTU:+libglew-dev}					     ${FEDORA:+glew-devel} 			      \
     	${UBUNTU:+freeglut3-dev}				     ${FEDORA:+freeglut-devel}			      \
+    	${UBUNTU:+libdirectfb-dev}                                                                                    \
+    	${UBUNTU:+libsdl1.2-dev}                                                                                      \
     	${UBUNTU:+libao-dev}											      \
     	${UBUNTU:+libtool-bin} 											      \
 	${UBUNTU:+gtk-doc-tools}
