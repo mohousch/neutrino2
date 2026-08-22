@@ -1131,7 +1131,6 @@ static int Write(void* _context, void* _out)
 			}
 		}
 #else
-#ifdef USE_LIBAO
 		int got_frame = 0;
 		SwrContext *swr = NULL;
 		uint8_t *obuf = NULL;
@@ -1140,8 +1139,11 @@ static int Write(void* _context, void* _out)
 		int o_ch = 2;
 		int o_sr = 48000; 				// output channels and sample rate
 		uint64_t o_layout = AV_CH_LAYOUT_STEREO; 	// output channels layout
+		
+#ifdef USE_LIBAO
 		int driver = -1;
 		ao_info *ai = NULL;
+#endif
 		
 		//
 		AVPacket avpkt;
@@ -1156,17 +1158,22 @@ static int Write(void* _context, void* _out)
 		o_sr = out->ctx->sample_rate;      		// 48000
 		o_layout = out->ctx->channel_layout;   		// AV_CH_LAYOUT_STEREO
 	
-		if (sformat.channels != o_ch || sformat.rate != o_sr || sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16 || adevice == NULL)
+		if (sformat.channels != o_ch || sformat.rate != o_sr || sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16)
 		{
-			driver = ao_default_driver_id();
 			sformat.bits = 16;
 			sformat.channels = out->ctx->channels;
 			sformat.rate = out->ctx->sample_rate;
 			sformat.byte_format = AO_FMT_NATIVE;
 			sformat.matrix = 0;
-				
-			adevice = ao_open_live(driver, &sformat, NULL);
-			ai = ao_driver_info(driver);
+			
+#ifdef USE_LIBAO
+			if (adevice == NULL)
+			{
+				driver = ao_default_driver_id();	
+				adevice = ao_open_live(driver, &sformat, NULL);
+				ai = ao_driver_info(driver);
+			}
+#endif
 		}
 
 		//
@@ -1232,9 +1239,12 @@ static int Write(void* _context, void* _out)
 #endif
 
 			int o_buf_size = av_samples_get_buffer_size(&out_linesize, out->stream->codecpar->channels, obuf_size, AV_SAMPLE_FMT_S16, 1);
-							
+			
+			// play
+#ifdef USE_LIBAO				
 			if (o_buf_size > 0)
 				res = ao_play(adevice, (char *)obuf, o_buf_size);
+#endif
 				
 			if (res <= 0)
 			{
@@ -1252,7 +1262,6 @@ static int Write(void* _context, void* _out)
 			av_frame_unref(out->aframe);
 		
 		ret = cERR_LINUXDVB_ERROR;
-#endif
 #endif
 
 		free(Encoding);

@@ -38,7 +38,7 @@
 #define AUDIO_FLUSH                     _IO('o',  71)
 #endif
 
-#ifdef USE_LIBAO
+#ifdef HAVE_NO_AV_DECODER
 #include <OpenThreads/Thread>
 
 #include "dmx_cs.h"
@@ -49,15 +49,20 @@ extern "C" {
 #include <libavutil/opt.h>
 #include <libavutil/samplefmt.h>
 #include <libswresample/swresample.h>
+
+#ifdef USE_LIBAO
 #include <ao/ao.h>
+#endif
 }
 /* ffmpeg buf 2k */
 #define INBUF_SIZE 0x0800
 /* my own buf 16k */
 #define DMX_BUF_SZ 0x4000
 
+#ifdef USE_LIBAO
 static ao_device *adevice = NULL;
 static ao_sample_format sformat;
+#endif
 //
 static AVCodecContext *c = NULL;
 static AVCodecParameters *p = NULL;
@@ -93,7 +98,7 @@ cAudio::cAudio(int num)
 	setVolume(100, 100);
 #endif
 
-#ifdef LIBAO
+#ifdef HAVE_NO_AV_DECODER
 	thread_running = false;
 	dmxbuf = (uint8_t *)malloc(DMX_BUF_SZ);
 	bufpos = 0;
@@ -110,13 +115,15 @@ cAudio::~cAudio(void)
 
 	Close();
 	
-#ifdef LIBAO
+#ifdef HAVE_NO_AV_DECODER
 	free(dmxbuf);
 	
+#ifdef USE_LIBAO
 	if (adevice)
 		ao_close(adevice);
 		
 	adevice = NULL;
+#endif
 #endif
 }
 
@@ -281,13 +288,13 @@ int cAudio::Start(void)
 	
 	int ret = -1;
 	
-#ifdef LIBAO
+#ifdef HAVE_NO_AV_DECODER
 	if (!thread_running)
 	{
 		ret = OpenThreads::Thread::start();
 	}
 #else
-#ifndef HAVE_NO_AV_DECODER
+//#ifndef HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return -1;
 	
@@ -295,7 +302,7 @@ int cAudio::Start(void)
 	
 	if(ret < 0)
 		perror("AUDIO_PLAY");
-#endif // HAVE_NO_AV_DECODER
+//#endif // HAVE_NO_AV_DECODER
 #endif
 
 	playstate = AUDIO_PLAYING;
@@ -309,14 +316,14 @@ int cAudio::Stop(void)
 	
 	int ret = -1;
 	
-#ifdef USE_LIBAO
+#ifdef HAVE_NO_AV_DECODER
 	if (thread_running)
 	{
 		thread_running = false;
 		ret = OpenThreads::Thread::join();
 	}
 #else
-#ifndef HAVE_NO_AV_DECODER
+//#ifndef HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return -1;
 		
@@ -324,7 +331,7 @@ int cAudio::Stop(void)
 	
 	if(ret < 0)
 		perror("AUDIO_STOP");
-#endif // HAVE_NO_AV_DECODER
+//#endif // HAVE_NO_AV_DECODER
 #endif
 
 	playstate = AUDIO_STOPPED;
@@ -565,7 +572,7 @@ int cAudio::setHwAC3Delay(int delay)
 	return -1;
 }
 
-#ifdef USE_LIBAO
+#ifdef HAVE_NO_AV_DECODER
 static int my_read(void *, uint8_t *buf, int buf_size)
 {
 	int tmp = 0;
@@ -616,10 +623,13 @@ void cAudio::run()
 	AVFrame *frame;
 	uint8_t *inbuf = (uint8_t *)av_malloc(INBUF_SIZE);
 	AVPacket avpkt;
-	int ret, driver;
+	int ret;
 	int av_ret = 0;
+#ifdef USE_LIBAO
 	// libao
 	ao_info *ai;
+	int driver;
+#endif
 	// resample
 	SwrContext *swr = NULL;
 	uint8_t *obuf = NULL;
@@ -705,19 +715,24 @@ void cAudio::run()
 	o_sr = p->sample_rate;      	// 48000
 	o_layout = p->channel_layout;   // AV_CH_LAYOUT_STEREO
 	
-	if (sformat.channels != o_ch || sformat.rate != o_sr || sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16 || adevice == NULL)
+	if (sformat.channels != o_ch || sformat.rate != o_sr || sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16)
 	{
-		driver = ao_default_driver_id();
 		sformat.bits = 16;
 		sformat.channels = o_ch;
 		sformat.rate = o_sr;
 		sformat.byte_format = AO_FMT_NATIVE;
 		sformat.matrix = 0;
-			
-		adevice = ao_open_live(driver, &sformat, NULL);
-		ai = ao_driver_info(driver);
+		
+#ifdef USE_LIBAO
+		if (adevice == NULL)
+		{
+			driver = ao_default_driver_id();	
+			adevice = ao_open_live(driver, &sformat, NULL);
+			ai = ao_driver_info(driver);
+		}
 		
 		printf("cAudio::run: changed params ch %d srate %d bits %d adevice %p\n", o_ch, o_sr, 16, adevice);
+#endif
 	}
 	
 	printf("cAudio::run: decoding %s (sample_fmt %d sample_rate %d channels %d)\n", avcodec_get_name(p->codec_id), c->sample_fmt, p->sample_rate, p->channels);
@@ -727,7 +742,7 @@ void cAudio::run()
 	        p->channel_layout, c->sample_fmt, p->sample_rate,  	// input
 	        0, NULL);
 	        
-	if (! swr)
+	if (!swr)
 	{
 		printf("cAudio::run: could not alloc resample context\n");
 		goto out3;
@@ -795,15 +810,18 @@ void cAudio::run()
 			curr_pts = frame->best_effort_timestamp;
 #endif
 			int o_buf_sz = av_samples_get_buffer_size(&out_linesize, o_ch, obuf_sz, AV_SAMPLE_FMT_S16, 1);
-			
+		
+			// play	
+#ifdef USE_LIBAO
 			if (o_buf_sz > 0)
 				ao_play(adevice, (char *)obuf, o_buf_sz);
+#endif
 		}
 		
 		av_packet_unref(&avpkt);
 	}
 	
-	// ao_close(adevice); // can take long :-(
+	//
 	av_free(obuf);
 	swr_free(&swr);
 out3:

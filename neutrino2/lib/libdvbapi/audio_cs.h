@@ -71,7 +71,7 @@ enum {
 
 
 class cAudio
-#ifdef USE_LIBAO
+#ifdef HAVE_NO_AV_DECODER
 : public OpenThreads::Thread
 #endif
 {
@@ -90,7 +90,7 @@ class cAudio
 		
 		audio_play_state_t playstate;
 		
-#ifdef USE_LIBAO
+#ifdef HAVE_NO_AV_DECODER
 		bool thread_running;
 		int64_t curr_pts;
 		void run();
@@ -136,7 +136,7 @@ class cAudio
 		int setHwPCMDelay(int delay);
 		int setHwAC3Delay(int delay);
 		
-#ifdef USE_LIBAO
+#ifdef HAVE_NO_AV_DECODER
 		int64_t getPts()
 		{
 			return curr_pts;
