@@ -1158,6 +1158,7 @@ static int Write(void* _context, void* _out)
 		o_sr = out->ctx->sample_rate;      		// 48000
 		o_layout = out->ctx->channel_layout;   		// AV_CH_LAYOUT_STEREO
 	
+#ifdef USE_LIBAO
 		if (sformat.channels != o_ch || sformat.rate != o_sr || sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16)
 		{
 			sformat.bits = 16;
@@ -1166,15 +1167,14 @@ static int Write(void* _context, void* _out)
 			sformat.byte_format = AO_FMT_NATIVE;
 			sformat.matrix = 0;
 			
-#ifdef USE_LIBAO
 			if (adevice == NULL)
 			{
 				driver = ao_default_driver_id();	
 				adevice = ao_open_live(driver, &sformat, NULL);
 				ai = ao_driver_info(driver);
 			}
-#endif
 		}
+#endif
 
 		//
 		swr = swr_alloc_set_opts(swr, o_layout, AV_SAMPLE_FMT_S16, o_sr, out->ctx->channel_layout, out->ctx->sample_fmt, out->ctx->sample_rate, 0, NULL);

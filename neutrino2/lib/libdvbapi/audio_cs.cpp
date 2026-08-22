@@ -715,6 +715,7 @@ void cAudio::run()
 	o_sr = p->sample_rate;      	// 48000
 	o_layout = p->channel_layout;   // AV_CH_LAYOUT_STEREO
 	
+#ifdef USE_LIBAO
 	if (sformat.channels != o_ch || sformat.rate != o_sr || sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16)
 	{
 		sformat.bits = 16;
@@ -723,7 +724,6 @@ void cAudio::run()
 		sformat.byte_format = AO_FMT_NATIVE;
 		sformat.matrix = 0;
 		
-#ifdef USE_LIBAO
 		if (adevice == NULL)
 		{
 			driver = ao_default_driver_id();	
@@ -732,8 +732,8 @@ void cAudio::run()
 		}
 		
 		printf("cAudio::run: changed params ch %d srate %d bits %d adevice %p\n", o_ch, o_sr, 16, adevice);
-#endif
 	}
+#endif
 	
 	printf("cAudio::run: decoding %s (sample_fmt %d sample_rate %d channels %d)\n", avcodec_get_name(p->codec_id), c->sample_fmt, p->sample_rate, p->channels);
 	

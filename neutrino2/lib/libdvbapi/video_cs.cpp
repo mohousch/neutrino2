@@ -1193,8 +1193,10 @@ bool cVideo::getvideo2(unsigned char *video, int xres, int yres)
 	buf_m.lock();
 	vid = buffers[buf_out];
 	
-	video = &video[0];
+	video = &vid[0];
 	buf_m.unlock();
+	
+	ret = true;
 #endif
 	
 	return ret;

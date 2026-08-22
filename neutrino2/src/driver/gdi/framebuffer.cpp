@@ -195,7 +195,6 @@ void CFrameBuffer::init(const char * const fbDevice)
 		goto nolfb;
 	}
 #elif defined (USE_SDL)
-	////
 	screeninfo.bits_per_pixel = DEFAULT_BPP;
 	screeninfo.xres = DEFAULT_XRES;
 	screeninfo.xres_virtual = screeninfo.xres;
@@ -204,9 +203,13 @@ void CFrameBuffer::init(const char * const fbDevice)
 		
 	lfb = (uint32_t *)m_screen->pixels;
 	available = sizeof(lfb);
-	////	
-#else	
-
+	
+	if (!lfb) 
+	{
+		perror("mmap");
+		goto nolfb;
+	}
+#else
 	fd = open(fbDevice, O_RDWR);
 
 	if(!fd) 
@@ -255,8 +258,8 @@ void CFrameBuffer::init(const char * const fbDevice)
 	}
 #else
 	enableManualBlit();
-#endif /*sh*/ 
-#endif /* USE_OPENGL */
+#endif // sh
+#endif // USE_OPENGL
 
 	//
 	showConsole(0);
@@ -312,15 +315,12 @@ int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
 	bpp = _bpp;
 	stride = xRes * sizeof(fb_pixel_t);
 #elif defined (USE_SDL)
-	////
 	xRes = m_screen->w;
 	yRes = m_screen->h;
 	bpp = m_screen->format->BitsPerPixel;
-	//m_surface.bypp = m_screen->format->BytesPerPixel;
 	stride = m_screen->pitch;
 	
 	SDL_EnableUNICODE(1);
-	////
 #else
 	setFrameBufferMode(x, y, _bpp);
 #endif	
@@ -1541,14 +1541,13 @@ void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const 
 	uint32_t yc = (height > yRes) ? (uint32_t)yRes : height;
 	
 #ifdef USE_SDL
-	SDL_Rect rect;
+	SDL_Surface *surface;
 	
-	rect.x = xoff;
-	rect.y = yoff;
-	rect.w = xc;
-	rect.h = yc;
+	surface->w = xc;
+	surface->h = yc;
+	surface->pixels = (uint32_t *)boxBuf;
 	
-	SDL_BlitSurface(m_screen, NULL, m_screen, &rect);
+	SDL_BlitSurface(surface, NULL, m_screen, NULL);
 #else
 	
 	uint32_t swidth = stride / sizeof(fb_pixel_t);
@@ -1586,14 +1585,13 @@ void CFrameBuffer::blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, ui
 	int yc = (height > yRes) ? yRes : height;
 	
 #ifdef USE_SDL
-	SDL_Rect rect;
+	SDL_Surface *surface;
 	
-	rect.x = xoff;
-	rect.y = yoff;
-	rect.w = xc;
-	rect.h = yc;
+	surface->w = xc;
+	surface->h = yc;
+	surface->pixels = (uint32_t *)fbbuff;
 	
-	SDL_BlitSurface(m_screen, NULL, m_screen, &rect);
+	SDL_BlitSurface(surface, NULL, m_screen, NULL);
 #else
 	
 	fb_pixel_t *data = (fb_pixel_t *) fbbuff;
@@ -1689,7 +1687,6 @@ void CFrameBuffer::blit(int mode3d)
 {
 #if defined USE_OPENGL  
 	mpGLThreadObj->blit();
-#elif defined (USE_SDL)
 #elif defined (__sh__)
 	STMFBIO_BLT_DATA  bltData; 
 	memset(&bltData, 0, sizeof(STMFBIO_BLT_DATA)); 
