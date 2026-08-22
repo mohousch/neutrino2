@@ -96,8 +96,10 @@ cVideo::cVideo(int num)
 	stillpicture = false;
 	w_h_changed = false;
 	////
+#ifdef USE_OPENGL
 	pig_x = pig_y = pig_w = pig_h = 0;
 	pig_changed = false;
+#endif
 #endif
 }
 
