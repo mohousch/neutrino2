@@ -1541,6 +1541,17 @@ void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const 
 	uint32_t xc = (width > xRes) ? (uint32_t)xRes : width;
 	uint32_t yc = (height > yRes) ? (uint32_t)yRes : height;
 	
+#ifdef USE_SDL
+	SDL_Rect rect;
+	
+	rect.x = xoff;
+	rect.y = yoff;
+	rect.w = xc;
+	rect.h = yc;
+	
+	SDL_BlitSurface(m_screen, NULL, m_screen, &rect);
+#else
+	
 	uint32_t swidth = stride / sizeof(fb_pixel_t);
 
 	fb_pixel_t *data = (fb_pixel_t *)boxBuf;
@@ -1566,6 +1577,7 @@ void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const 
 		}
 		fbp += swidth;
 	}
+#endif
 }
 
 // blitBox2FB
@@ -1573,6 +1585,17 @@ void CFrameBuffer::blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, ui
 {
 	int xc = (width > xRes) ? xRes : width;
 	int yc = (height > yRes) ? yRes : height;
+	
+#ifdef USE_SDL
+	SDL_Rect rect;
+	
+	rect.x = xoff;
+	rect.y = yoff;
+	rect.w = xc;
+	rect.h = yc;
+	
+	SDL_BlitSurface(m_screen, NULL, m_screen, &rect);
+#else
 	
 	fb_pixel_t *data = (fb_pixel_t *) fbbuff;
 	uint8_t *d = ((uint8_t *)lfb) + xoff * sizeof(fb_pixel_t) + stride * yoff;
@@ -1617,7 +1640,8 @@ void CFrameBuffer::blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, ui
 			pixpos++;
 		}
 		d += stride;
-	}	
+	}
+#endif	
 }
 
 //
@@ -1667,14 +1691,6 @@ void CFrameBuffer::blit(int mode3d)
 #if defined USE_OPENGL  
 	mpGLThreadObj->blit();
 #elif defined (USE_SDL)
-	SDL_Rect rect;
-	
-	rect.x = 0;
-	rect.y = 0;
-	rect.w = xRes;
-	rect.h = yRes;
-	
-	SDL_BlitSurface(m_screen, &rect, m_screen, &rect);
 #elif defined (__sh__)
 	STMFBIO_BLT_DATA  bltData; 
 	memset(&bltData, 0, sizeof(STMFBIO_BLT_DATA)); 

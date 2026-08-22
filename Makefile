@@ -70,15 +70,17 @@ run-valgrind:
 # config	
 config:
 # opengl
-	@echo -e "\nopengl:"
-	@echo -e "   \033[01;32m1) yes\033[00m"
-	@echo "   2) no"
-	@read -p "opengl (1-2)?" OPENGL; \
-	OPENGL=$${OPENGL}; \
-	case "$$OPENGL" in \
-		1) echo "OPENGL=opengl" > .config;; \
-		2) echo "OPENGL=" > .config;; \
-		*) echo "OPENGL=opengl" > .config;; \
+	@echo -e "\nFrameBuffer:"
+	@echo -e "   \033[01;32m1) opengl\033[00m"
+	@echo "   2) sdl"
+	@echo "   3) directfb"
+	@read -p "FrameBuffer (1-3)?" FRAMEBUFFER; \
+	FRAMEBUFFER=$${FRAMEBUFFER}; \
+	case "$$FRAMEBUFFER" in \
+		1) echo "FRAMEBUFFER=opengl" > .config;; \
+		2) echo "FRAMEBUFFER=sdl" > .config;; \
+		3) echo "FRAMEBUFFER=directfb" > .config;; \
+		*) echo "FRAMEBUFFER=opengl" > .config;; \
 	esac; \
 	echo ""
 # lirc
@@ -221,11 +223,20 @@ config-clean:
 	
 -include .config
 
-# opengl
-OPENGL ?= opengl
-ifeq ($(OPENGL), opengl)
+# framebuffer
+#FRAMEBUFFER ?= opengl
+ifeq ($(FRAMEBUFFER), opengl)
 N2_OPTS += --enable-opengl
 endif
+
+ifeq ($(FRAMEBUFFER), sdl)
+N2_OPTS += --enable-sdl
+endif
+
+ifeq ($(FRAMEBUFFER), directfb)
+N2_OPTS += --enable-directfb
+endif
+N2_OPTS += --enable-no-av-decoder --enable-libao
 
 # lirc
 ifeq ($(LIRC), lirc)
