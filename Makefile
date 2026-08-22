@@ -74,12 +74,14 @@ config:
 	@echo -e "   \033[01;32m1) opengl\033[00m"
 	@echo "   2) sdl"
 	@echo "   3) directfb"
-	@read -p "FrameBuffer (1-3)?" FRAMEBUFFER; \
+	@echo "   4) linux framebuffer"
+	@read -p "FrameBuffer (1-4)?" FRAMEBUFFER; \
 	FRAMEBUFFER=$${FRAMEBUFFER}; \
 	case "$$FRAMEBUFFER" in \
 		1) echo "FRAMEBUFFER=opengl" > .config;; \
 		2) echo "FRAMEBUFFER=sdl" > .config;; \
 		3) echo "FRAMEBUFFER=directfb" > .config;; \
+		4) echo "FRAMEBUFFER=" > .config;; \
 		*) echo "FRAMEBUFFER=opengl" > .config;; \
 	esac; \
 	echo ""
