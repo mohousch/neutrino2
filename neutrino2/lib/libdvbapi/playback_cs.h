@@ -152,9 +152,7 @@ class cPlayback
 		~cPlayback(){};	
 		
 #ifdef HAVE_NO_AV_DECODER
-#ifndef ENABLE_GSTREAMER
 		cPlayback::SWFramebuffer* getDecBuf(void);
-#endif
 #endif
 };
 

@@ -642,13 +642,13 @@ void GLThreadObj::bltDisplayBuffer()
 //
 void GLThreadObj::bltPlayBuffer()
 {
+#if 1
 	if (!playback)
 		return;
 		 
 	if (!playback->playing)
 		return;
 	
-#ifndef ENABLE_GSTREAMER
 	cPlayback::SWFramebuffer* buf = NULL;
 	
 #ifdef HAVE_NO_AV_DECODER
@@ -658,12 +658,14 @@ void GLThreadObj::bltPlayBuffer()
 	//
 	if (buf == NULL)
 	{		
-		//
+		/*
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
 		glBufferData(GL_PIXEL_UNPACK_BUFFER, mOSDBuffer.size(), &mOSDBuffer[0], GL_STREAM_DRAW_ARB);
 		glBindTexture(GL_TEXTURE_2D, mState.displaytex);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+		*/
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		return;
 	}
@@ -677,7 +679,7 @@ void GLThreadObj::bltPlayBuffer()
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
 	glBufferData(GL_PIXEL_UNPACK_BUFFER, buf->size(), &(*buf)[0], GL_STREAM_DRAW_ARB);
 
-	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
+//	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
 
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);

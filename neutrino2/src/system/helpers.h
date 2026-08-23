@@ -238,6 +238,8 @@ class cTimeMs
 };
 
 //// wrapers functions for C
+extern "C" unsigned int getScreenWidth(bool real = false);
+extern "C" unsigned int getScreenHeight(bool real = false); 
 extern "C" void blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp = 0, uint32_t yp = 0, bool transp = false);
 extern "C" void clearFrameBuffer(void);
 extern "C" void writeLabel(uint8_t* text, int x, int y, int w, int h);

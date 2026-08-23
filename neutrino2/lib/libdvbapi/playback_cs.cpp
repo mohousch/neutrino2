@@ -1519,9 +1519,9 @@ void cPlayback::AddSubtitleFile(const char* const file)
 
 ////
 #ifdef HAVE_NO_AV_DECODER
-#ifndef ENABLE_GSTREAMER
 cPlayback::SWFramebuffer* cPlayback::getDecBuf(void)
 {
+#ifndef ENABLE_GSTREAMER
 	buf_m.lock();
 	
 	if (buf_num == 0)
@@ -1548,7 +1548,7 @@ cPlayback::SWFramebuffer* cPlayback::getDecBuf(void)
 	buf_m.unlock();
 
 	return p;
-}
 #endif
+}
 #endif
 

@@ -2130,6 +2130,16 @@ uint64_t cTimeMs::Elapsed(void)
 }
 
 //// wrappers function for C
+unsigned int getScreenWidth(bool real)
+{
+	return CFrameBuffer::getInstance()->getScreenWidth(real);
+}
+
+unsigned int getScreenHeight(bool real)
+{
+	return CFrameBuffer::getInstance()->getScreenHeight(real);
+}
+
 void blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp, uint32_t yp, bool transp)
 {
 	CFrameBuffer::getInstance()->blitBox2FB(fbbuff, width, height, xoff, yoff, xp, yp, transp);

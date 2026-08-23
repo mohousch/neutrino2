@@ -280,6 +280,7 @@ inline void blendAlpha(uint8_t *fg, uint8_t *bg, int xres, int yres)
 	}
 }
 
+////
 inline static uint8_t make8color(uint8_t r, uint8_t g, uint8_t b)
 {
 	return ((((r >> 5) & 7) << 5) | (((g >> 5) & 7) << 2) | ((b >> 6) & 3));
