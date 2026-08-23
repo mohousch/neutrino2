@@ -142,9 +142,12 @@
 #include <zapit/channel.h>
 #include <zapit/bouquets.h>
 
+#include <nhttpd/yhttpd.h>
+
 //
 #include <video_cs.h>
 #include <audio_cs.h>
+#include <playback_cs.h>
 
 #if defined (ENABLE_CI)
 #include <libdvbci/dvb-ci.h>
@@ -155,13 +158,9 @@
 #include <gst/pbutils/missing-plugins.h>
 #endif
 
-#include <playback_cs.h>
-
 #if ENABLE_LUA
 #include <interfaces/lua/neutrino2_lua.h>
 #endif
-
-#include <nhttpd/yhttpd.h>
 
 #if USE_OPENGL
 #include <X11/Xlib.h>
