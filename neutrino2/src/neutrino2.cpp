@@ -181,11 +181,11 @@ IDirectFBSurface *dfbdest;
 static IDirectFBDisplayLayer *layer;
 int gfxfd = -1;
 
-#define DFBCHECK(x...)                                                \
-	err = x;                                                      \
-	if (err != DFB_OK) {                                          \
+#define DFBCHECK(x...)                                        		\
+	err = x;                                                      	\
+	if (err != DFB_OK) {                                          	\
 		fprintf(stderr, "neutrino2.cpp:%d:\n\t", __LINE__);     \
-		DirectFBErrorFatal(#x, err );                         \
+		                         	\
 	}
 #endif
 
