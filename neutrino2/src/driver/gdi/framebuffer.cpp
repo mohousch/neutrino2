@@ -60,6 +60,9 @@
 #ifdef USE_SDL
 #include <SDL/SDL.h>
 extern SDL_Surface *m_screen;
+SDL_Surface *surface = NULL;
+SDL_Rect m_Rect;
+SDL_Rect surf;
 #endif
 
 
@@ -319,6 +322,11 @@ int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
 	yRes = m_screen->h;
 	bpp = m_screen->format->BitsPerPixel;
 	stride = m_screen->pitch;
+	
+	m_Rect.x = 0;
+	m_Rect.y = 0;
+	m_Rect.w = xRes;
+	m_Rect.h = yRes;
 	
 	SDL_EnableUNICODE(1);
 #else
@@ -1541,13 +1549,15 @@ void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const 
 	uint32_t yc = (height > yRes) ? (uint32_t)yRes : height;
 	
 #ifdef USE_SDL
-	SDL_Surface *surface;
-	
-	surface->w = xc;
-	surface->h = yc;
+	surface = SDL_CreateRGBSurface(SDL_HWSURFACE|SDL_SRCALPHA, xc, yc, 32, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
 	surface->pixels = (uint32_t *)boxBuf;
 	
-	SDL_BlitSurface(surface, NULL, m_screen, NULL);
+	surf.x = xoff;
+	surf.y = yoff;
+	surf.w = xc;
+	surf.h = yc;
+	
+	SDL_BlitSurface(surface, &surf, m_screen, &m_Rect);
 #else
 	
 	uint32_t swidth = stride / sizeof(fb_pixel_t);
@@ -1585,13 +1595,15 @@ void CFrameBuffer::blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, ui
 	int yc = (height > yRes) ? yRes : height;
 	
 #ifdef USE_SDL
-	SDL_Surface *surface;
-	
-	surface->w = xc;
-	surface->h = yc;
+	surface = SDL_CreateRGBSurface(SDL_HWSURFACE|SDL_SRCALPHA, xc, yc, 32, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
 	surface->pixels = (uint32_t *)fbbuff;
 	
-	SDL_BlitSurface(surface, NULL, m_screen, NULL);
+	surf.x = xoff;
+	surf.y = yoff;
+	surf.w = xc;
+	surf.h = yc;
+	
+	SDL_BlitSurface(surface, &surf, m_screen, &m_Rect);
 #else
 	
 	fb_pixel_t *data = (fb_pixel_t *) fbbuff;

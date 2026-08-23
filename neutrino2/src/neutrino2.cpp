@@ -163,6 +163,10 @@
 
 #include <nhttpd/yhttpd.h>
 
+#if USE_OPENGL
+#include <X11/Xlib.h>
+#endif
+
 #ifdef USE_LIBAO
 #include <ao/ao.h>
 #endif
@@ -4926,6 +4930,20 @@ void sighandler(int signum)
 void CNeutrinoApp::init_HAL(void)
 {
 	printf("CNeutrinoApp::init_HAL\n");
+	
+#ifdef USE_OPENGL
+	// assume that X11 is running
+	Display *d = XOpenDisplay(NULL);
+	
+	if (d)
+	{
+		XCloseDisplay(d);
+		
+		dprintf(DEBUG_NORMAL, "CNeutrinoApp::init_HAL: X Server running!\n");
+	}
+	else
+		dprintf(DEBUG_NORMAL, "CNeutrinoApp::init_HAL: X Server not running!\n");
+#endif
 	
 #ifdef USE_DIRECTFB
 	int argc = 0;
