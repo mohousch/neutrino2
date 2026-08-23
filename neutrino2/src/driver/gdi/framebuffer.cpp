@@ -417,7 +417,7 @@ void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, un
 
 int CFrameBuffer::showConsole(int state)
 {
-	int fd=open("/dev/tty1", O_RDWR);
+	int fd = open("/dev/tty1", O_RDWR);
 	
 	if(fd >= 0)
 	{
