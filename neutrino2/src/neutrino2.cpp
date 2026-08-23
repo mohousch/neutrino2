@@ -4988,11 +4988,24 @@ void CNeutrinoApp::init_HAL(void)
 #endif
 
 #ifdef USE_SDL
+	//
+	setenv("SDL_MOUSEDRV", "dummy", 1);
+	setenv("SDL_NOMOUSE", "1", 1); 
+
 	// init SDL
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) 
 	{
 		dprintf(DEBUG_NORMAL, "NeutrinoApp::init_HAL: Could not initialize SDL: %s\n", SDL_GetError());
 	}
+	
+	// disable mouse
+	SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);
+	SDL_EventState(SDL_MOUSEBUTTONDOWN, SDL_IGNORE);
+	SDL_EventState(SDL_MOUSEBUTTONUP, SDL_IGNORE);
+	
+	// hide mouse
+	SDL_ShowCursor(SDL_DISABLE);
+
 	
 	// set video mode
 	m_screen = SDL_SetVideoMode(DEFAULT_XRES, DEFAULT_YRES, DEFAULT_BPP, SDL_HWSURFACE);
