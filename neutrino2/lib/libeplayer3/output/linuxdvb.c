@@ -1416,6 +1416,11 @@ static int Write(void* _context, void* _out)
 					buf_num--;
 				}
 				
+#ifdef USE_DIRECTFB
+				// yuv420 to rgb
+				// blit into fbdev
+#endif				
+				
 				releaseLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 			}
 		}

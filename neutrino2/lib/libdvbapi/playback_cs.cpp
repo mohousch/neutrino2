@@ -105,6 +105,7 @@ extern ContainerHandler_t	ContainerHandler;
 extern ManagerHandler_t		ManagerHandler;
 
 static Context_t * player = NULL;
+#endif // ENABLE_GSTREAMER
 
 #ifdef HAVE_NO_AV_DECODER
 extern "C" {
@@ -117,10 +118,7 @@ extern "C" {
 #include <OpenThreads/Mutex>
 
 OpenThreads::Mutex buf_m;
-#endif // HAVE_NO_AV_DECODER
-#endif // ENABLE_GSTREAMER
 
-#ifdef HAVE_NO_AV_DECODER
 extern Data_t data[64];
 extern uint64_t sCURRENT_APTS;
 
