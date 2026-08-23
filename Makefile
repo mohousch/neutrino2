@@ -81,7 +81,7 @@ config:
 		1) echo "FRAMEBUFFER=opengl" > .config;; \
 		2) echo "FRAMEBUFFER=sdl" > .config;; \
 		3) echo "FRAMEBUFFER=directfb" > .config;; \
-		4) echo "FRAMEBUFFER=" > .config;; \
+		4) echo "FRAMEBUFFER=fbdev" > .config;; \
 		*) echo "FRAMEBUFFER=opengl" > .config;; \
 	esac; \
 	echo ""
@@ -317,7 +317,7 @@ endif
 printenv:
 	@echo
 	@echo '================================================================================'
-	@echo "OPENGL			: $(OPENGL)"
+	@echo "FRAMEBUFFER		: $(FRAMEBUFFER)"
 	@echo "LIRC			: $(LIRC)"
 	@echo "MEDIAFW			: $(MEDIAFW)"
 	@echo "PYTHON			: $(PYTHON)"
