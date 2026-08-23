@@ -4991,7 +4991,7 @@ void CNeutrinoApp::init_HAL(void)
 	// init SDL
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) 
 	{
-		dprintf(DEBUG_NORMAL, "NeutrinoApp::init_HAL: Could not initialize SDL: %s", SDL_GetError());
+		dprintf(DEBUG_NORMAL, "NeutrinoApp::init_HAL: Could not initialize SDL: %s\n", SDL_GetError());
 	}
 	
 	// set video mode
@@ -4999,7 +4999,7 @@ void CNeutrinoApp::init_HAL(void)
 	
 	if (!m_screen) 
 	{
-		ng_err("CNeutrinoApp::init_HAL: Could not create SDL surface: %s", SDL_GetError());
+		ng_err("CNeutrinoApp::init_HAL: Could not create SDL surface: %s\n", SDL_GetError());
 	}
 #endif
 
