@@ -378,6 +378,7 @@ void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, un
 	// num of pages
 	m_number_of_pages = screeninfo.yres_virtual / nyRes;
 	
+#ifndef USE_DIRECTFB
 	if (ioctl(fd, FBIOPUT_VSCREENINFO, &screeninfo) < 0)
 	{
 		// try single buffering
@@ -392,6 +393,7 @@ void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, un
 	} 
 	else
 		printf("CFrameBuffer::setVideoMode: double buffering available!\n");
+#endif
 	
 	ioctl(fd, FBIOGET_VSCREENINFO, &screeninfo);
 
@@ -1665,7 +1667,7 @@ void CFrameBuffer::blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, ui
 
 void CFrameBuffer::enableManualBlit()
 {
-#if !defined USE_OPENGL  
+#if !defined USE_OPENGL  && !defined (USE_DIRECTFB)
 	unsigned char tmp = 1;
 	
 	if (ioctl(fd, FBIO_SET_MANUAL_BLIT, &tmp) < 0) 
@@ -1681,7 +1683,7 @@ void CFrameBuffer::enableManualBlit()
 
 void CFrameBuffer::disableManualBlit()
 {
-#if !defined USE_OPENGL  
+#if !defined USE_OPENGL && !defined (USE_DIRECTFB) 
 	unsigned char tmp = 0;
 	
 	if (ioctl(fd,FBIO_SET_MANUAL_BLIT, &tmp) < 0) 
