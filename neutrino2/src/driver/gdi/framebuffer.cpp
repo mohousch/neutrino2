@@ -378,7 +378,6 @@ void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, un
 	// num of pages
 	m_number_of_pages = screeninfo.yres_virtual / nyRes;
 	
-#ifndef USE_DIRECTFB
 	if (ioctl(fd, FBIOPUT_VSCREENINFO, &screeninfo) < 0)
 	{
 		// try single buffering
@@ -393,8 +392,8 @@ void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, un
 	} 
 	else
 		printf("CFrameBuffer::setVideoMode: double buffering available!\n");
-#endif
 	
+	//
 	ioctl(fd, FBIOGET_VSCREENINFO, &screeninfo);
 
 	if ((screeninfo.xres != nxRes) && (screeninfo.yres != nyRes) && (screeninfo.bits_per_pixel != nbpp))
