@@ -2171,6 +2171,11 @@ uint32_t *getFrameBufferPointer(void)
 	return CFrameBuffer::getInstance()->getFrameBufferPointer();
 }
 
+unsigned int getStride(void)
+{
+	return CFrameBuffer::getInstance()->getStride();
+}
+
 void clearFrameBuffer(void)
 {
 	CFrameBuffer::getInstance()->clearFrameBuffer();

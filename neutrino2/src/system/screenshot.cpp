@@ -195,9 +195,9 @@ bool CScreenshot::getData()
 		// alpha blend osd onto pixel_data (video). TODO: maybe libavcodec can do this?
 		::blendAlpha((uint8_t *)osd_data, (uint8_t *)pixel_data, xres, yres);
 	}
-//	else
+	else
 #endif
-//	if (get_osd) // only get_osd, pixel_data is not yet populated 
+	if (get_osd) // only get_osd, pixel_data is not yet populated 
 	{
 		memcpy(pixel_data, osd_data, xres * yres * sizeof(uint32_t));
 	}

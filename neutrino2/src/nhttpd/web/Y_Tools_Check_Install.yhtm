@@ -70,7 +70,7 @@ function do_check(){
 		sLog_addRow(sLog_body, "yellow", "WebServer: Authentication is on. "+y_url("Help-Settings-Webserver"), "notice");
 	=}
 
-	{=if-equal:{=ini-get:/var/tuxbox/config/nhttpd.conf;WebsiteMain.port;80=}~80~~
+	{=if-equal:{=ini-get:/var/tuxbox/config/nhttpd.conf;WebsiteMain.port;8080=}~8080~~
 		sLog_addRow(sLog_body, "yellow",
 		"WebServer: not set to Standard-Port. Actual: {=ini-get:/var/tuxbox/config/nhttpd.conf;WebsiteMain.port;80=} "+wiki_url("Neutrino:yWeb#Webserver"), "notice");
 	=}

@@ -245,6 +245,7 @@ extern "C" void blit();
 extern "C" uint8_t *resizeBuffer(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode type = SCALE_COLOR, bool alpha = false);
 extern "C" int getFileHande(void);
 extern "C" uint32_t *getFrameBufferPointer(void);
+extern "C" unsigned int getStride(void);
 extern "C" void blitRGB32(void *rgbBuff, int dx, int dy);
 extern "C" void clearFrameBuffer(void);
 extern "C" void writeLabel(uint8_t* text, int x, int y, int w, int h);
