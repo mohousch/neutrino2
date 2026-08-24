@@ -296,7 +296,7 @@ void GLThreadObj::specialcb(int key, int, int)
 	}
 }
   
-int sleep_us = 30000;
+int sleep_us = 33333;
 void GLThreadObj::render() 
 {
 	if(mShutDown)
@@ -642,7 +642,6 @@ void GLThreadObj::bltDisplayBuffer()
 //
 void GLThreadObj::bltPlayBuffer()
 {
-#if 1
 	if (!playback)
 		return;
 		 
@@ -679,7 +678,7 @@ void GLThreadObj::bltPlayBuffer()
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
 	glBufferData(GL_PIXEL_UNPACK_BUFFER, buf->size(), &(*buf)[0], GL_STREAM_DRAW_ARB);
 
-//	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
+	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
 
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
@@ -706,6 +705,5 @@ void GLThreadObj::bltPlayBuffer()
 		else if (sleep_us < 1)
 			sleep_us = 30000;
 	}
-#endif
 }
 

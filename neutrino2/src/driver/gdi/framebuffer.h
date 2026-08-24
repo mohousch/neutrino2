@@ -270,6 +270,7 @@ class CFrameBuffer
 
 		void paintBackground();
 		bool loadBackgroundPic(const std::string& filename, bool show = true);
+		void paintBackgoundRGB32(void *rgbBuff, int dx, int dy);
 
 		//
 		void saveScreen(int x, int y, int dx, int dy, fb_pixel_t * const memp);

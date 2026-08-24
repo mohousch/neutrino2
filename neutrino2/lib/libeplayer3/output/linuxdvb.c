@@ -48,7 +48,7 @@
 #include <linux/dvb/stm_ioctls.h>
 #endif
 
-//// opengl
+////
 #ifdef HAVE_NO_AV_DECODER
 #include <libswscale/swscale.h>
 #include <libavutil/imgutils.h>
@@ -110,21 +110,6 @@ extern int buf_out;
 bool stillpicture = false;
 Data_t data[64] = {0};
 uint64_t sCURRENT_APTS = 0;
-
-extern void blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp, uint32_t yp, bool transp);
-
-#ifdef USE_OPENGL
-#include <GL/gl.h>
-#include <GL/glx.h>
-
-struct {
-	int width;		/* width and height, fixed for a framebuffer instance */
-	int height;
-	GLuint displaytex;
-	GLuint displaypbo;
-	bool blit;
-} mState;
-#endif
 #endif
 
 #ifdef USE_LIBAO
@@ -244,32 +229,6 @@ int LinuxDvbOpen(Context_t  *context, char * type)
 			linuxdvb_err("VIDEO_SELECT_SOURCE: %s\n", strerror(errno));
 		}        
 	}
-#else
-#ifdef USE_OPENGL
-	mState.height = getScreenHeight();
-	mState.width = getScreenWidth();
-	
-	glGenTextures(1, &mState.displaytex);
-	
-	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-	
-	glGenBuffers(1, &mState.displaypbo);
-	
-	glGenTextures(1, &mState.displaypbo);
-	glBindTexture(GL_TEXTURE_2D, mState.displaypbo);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mState.width, mState.height, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-	
-	//
-	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
-	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
-#endif
 #endif
 	
 	return cERR_LINUXDVB_NO_ERROR;
@@ -585,11 +544,7 @@ int LinuxDvbAudioMute(Context_t* context, char* flag)
 #endif
 			{
 				linuxdvb_err("ioctl failed with errno %d\n", errno);
-#if defined (__sh__)
-				linuxdvb_err("AUDIO_STOP: %s\n", strerror(errno));
-#else
-				linuxdvb_err("AUDIO_SET_MUTE: %s\n", strerror(errno));
-#endif
+
 				ret = cERR_LINUXDVB_ERROR;
 			}
 		}
@@ -603,11 +558,7 @@ int LinuxDvbAudioMute(Context_t* context, char* flag)
 #endif
 			{
 				linuxdvb_err("ioctl failed with errno %d\n", errno);
-#if defined (__sh__)
-				linuxdvb_err("AUDIO_PLAY: %s\n", strerror(errno));
-#else
-				linuxdvb_err("AUDIO_SET_MUTE: %s\n", strerror(errno));
-#endif
+
 				ret = cERR_LINUXDVB_ERROR;
 			}
 		}
@@ -1424,7 +1375,7 @@ static int Write(void* _context, void* _out)
 				if (data[buf_in].size < need)
 					data[buf_in].size = need;
 					
-				// swsscale FIXME:
+				// swsscale YUV420 to RGB32:
 				uint8_t *dest[4] = { data[buf_in].buffer, NULL, NULL, NULL };
 	    			int dest_linesize[4] = { out->ctx->width*4, 0, 0, 0 }; // sufficient ?
 	    			
@@ -1457,65 +1408,11 @@ static int Write(void* _context, void* _out)
 					buf_num--;
 				}
 				
-#if 0
-				//
-				AVFrame *dst = av_frame_alloc();
-				
-				//swscale(&data[buf_out], dst, out->ctx->width, out->ctx->height, getScreenWidth(), getScreenHeight(), AV_PIX_FMT_YUV420P, AV_PIX_FMT_RGB32);
-				
-				// blit into fbdev
-				blitBox2FB((uint8_t *)dst, out->ctx->width, out->ctx->height, 0, 0, 0, 0, true);
-				
-				if (dst)
-				{
-					av_frame_free(&dst);
-					dst = NULL;
-				}
-#endif
-#if USE_OPENGL
-				////
-				int mX = out->ctx->width;
-				int mY = out->ctx->height;
-				mState.width = getScreenWidth();
-				mState.height = getScreenHeight();
-				
-				glViewport(0, 0, mX, mY);
-				glMatrixMode(GL_PROJECTION);
-				glLoadIdentity();
-				
-				float aspect = (mX)/mY;
-				float osdaspect = 1.0/((mState.width)/mState.height);
-				
-				glOrtho(aspect*-osdaspect, aspect*osdaspect, -1.0, 1.0, -1.0, 1.0 );
-				glClearColor(0.0, 0.0, 0.0, 1.0);
-				
-				glMatrixMode(GL_MODELVIEW);
-				glLoadIdentity();
-				glEnable(GL_BLEND);
-				glEnable(GL_TEXTURE_2D);
-				glDisable(GL_DEPTH_TEST);
-				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-				////
-	
-				glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
-				glBufferData(GL_PIXEL_UNPACK_BUFFER, need, dest[0], GL_STREAM_DRAW_ARB);
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, out->ctx->width, out->ctx->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
-				glBindTexture(GL_TEXTURE_2D, mState.displaytex);
-				glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
-				
-				////
-				glEnable(GL_TEXTURE_2D);
-				glBindTexture(GL_TEXTURE_2D, mState.displaypbo);
-				glBegin(GL_QUADS);
-				glTexCoord2d(0,0); glVertex2i(0, 0);
-				glTexCoord2d(1,0); glVertex2i(out->ctx->width, 0);
-				glTexCoord2d(1,1); glVertex2i(out->ctx->width, out->ctx->height);
-				glTexCoord2d(0,1); glVertex2i(0, out->ctx->height);
-				glEnd();
-				glDisable(GL_TEXTURE_2D);
-				////
-#endif				
+#ifndef USE_OPENGL
+				// FIXME:
+//				if (&dest[0] != NULL)
+//					blitRGB32(&dest[0], data[buf_out].width, data[buf_out].height);
+#endif					
 				
 				releaseLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 			}

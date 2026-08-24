@@ -66,9 +66,6 @@ SDL_Rect surf;
 #endif
 
 
-#define BACKGROUNDIMAGEWIDTH 	DEFAULT_XRES
-#define BACKGROUNDIMAGEHEIGHT	DEFAULT_YRES
-
 ////
 CFrameBuffer* CFrameBuffer::getInstance()
 {
@@ -418,7 +415,7 @@ void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, un
 
 int CFrameBuffer::showConsole(int state)
 {
-	int fd = open("/dev/tty1", O_RDWR);
+	int fd = open("/dev/tty4", O_RDWR);
 	
 	if(fd >= 0)
 	{
@@ -1396,10 +1393,10 @@ bool CFrameBuffer::loadBackgroundPic(const std::string &filename, bool show)
 		free(background);
 	
 	// get bg image
-	background = (fb_pixel_t *)getARGB32Image(iconBasePath + filename, BACKGROUNDIMAGEWIDTH, BACKGROUNDIMAGEHEIGHT);
+	background = (fb_pixel_t *)getARGB32Image(iconBasePath + filename, xRes, yRes);
 	
 	if(!background) 
-		background = (fb_pixel_t *)getARGB32Image(filename, BACKGROUNDIMAGEWIDTH, BACKGROUNDIMAGEHEIGHT);
+		background = (fb_pixel_t *)getARGB32Image(filename, xRes, yRes);
 
 	// if not found
 	if (background == NULL) 
@@ -1417,6 +1414,28 @@ bool CFrameBuffer::loadBackgroundPic(const std::string &filename, bool show)
 	}
 	
 	return true;
+}
+
+void CFrameBuffer::paintBackgoundRGB32(void *rgbBuff, int dx, int dy)
+{
+	dprintf(DEBUG_NORMAL, "CFrameBuffer::paintBackgoundRGB32:\n");
+	
+	if (!getActive() || rgbBuff == NULL)
+		return;
+	
+	uint8_t *buffer = (uint8_t *)rgbBuff;
+	
+	// resize to display
+	if( (dx != 0 && dy != 0) && (dx != xRes || dy != yRes) )
+	{
+		buffer = ::resize((uint8_t *)buffer, dx, dy, xRes, yRes, SCALE_SIMPLE, false);
+	}
+	
+	// display
+	for (int i = 0; i < yRes; i++)
+		memcpy(((uint8_t *)lfb) + i * stride, (buffer + i * xRes), xRes * sizeof(fb_pixel_t));
+		
+//	free(buffer);
 }
 
 void CFrameBuffer::useBackground(bool ub)
@@ -1474,13 +1493,13 @@ void CFrameBuffer::paintBackgroundBoxRel(int x, int y, int dx, int dy)
 	{
 		uint8_t * fbpos = ((uint8_t *)lfb) + x * sizeof(fb_pixel_t) + stride * y;
 
-		fb_pixel_t * bkpos = background + x + BACKGROUNDIMAGEWIDTH * y;
+		fb_pixel_t * bkpos = background + x + xRes * y;
 
 		for(int count = 0; count < dy; count++)
 		{
 			memcpy(fbpos, bkpos, dx * sizeof(fb_pixel_t));
 			fbpos += stride;
-			bkpos += BACKGROUNDIMAGEWIDTH;
+			bkpos += xRes;
 		}
 	}
 }
@@ -1492,8 +1511,8 @@ void CFrameBuffer::paintBackground()
 
 	if (useBackgroundPaint && (background != NULL))
 	{
-		for (int i = 0; i < BACKGROUNDIMAGEHEIGHT; i++)
-			memcpy(((uint8_t *)lfb) + i * stride, (background + i * BACKGROUNDIMAGEWIDTH), BACKGROUNDIMAGEWIDTH * sizeof(fb_pixel_t));
+		for (int i = 0; i < yRes; i++)
+			memcpy(((uint8_t *)lfb) + i * stride, (background + i * xRes), xRes * sizeof(fb_pixel_t));
 	}
 	else
 	{

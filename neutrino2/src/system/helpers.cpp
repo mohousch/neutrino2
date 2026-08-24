@@ -2146,6 +2146,31 @@ void blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, u
 	CFrameBuffer::getInstance()->blit();
 }
 
+uint8_t *resizeBuffer(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode type, bool alpha)
+{
+	return resize(origin, ox, oy, dx, dy, type, alpha);
+}
+
+void blitRGB32(void *rgbBuff, int dx, int dy)
+{
+	CFrameBuffer::getInstance()->paintBackgoundRGB32(rgbBuff, dx, dy);
+}
+
+void blit()
+{
+	CFrameBuffer::getInstance()->blit();
+}
+
+int getFileHande(void)
+{
+	return CFrameBuffer::getInstance()->getFileHandle();
+}
+
+uint32_t *getFrameBufferPointer(void)
+{
+	return CFrameBuffer::getInstance()->getFrameBufferPointer();
+}
+
 void clearFrameBuffer(void)
 {
 	CFrameBuffer::getInstance()->clearFrameBuffer();
