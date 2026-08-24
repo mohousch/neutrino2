@@ -246,14 +246,13 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 	}
 #endif	
 
-//#if !defined (PLATFORM_HYPERCUBE)
 	char sVolume[4];
 
-//#if defined (BOXMODEL_GB800SE) || defined (BOXMODEL_GBULTRAUE)
+#ifdef PLATFORM_GIGABLUE
 	sprintf(sVolume, "%d", volume);
-//#else
+#else
 	sprintf(sVolume, "%d", _left);
-//#endif
+#endif
 
 	int fd = ::open("/proc/stb/avs/0/volume", O_RDWR);
 	
@@ -261,20 +260,6 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 	{
 		write(fd, sVolume, strlen(sVolume));
 		::close(fd);
-	}
-//#endif	// PLATFORM_HYPERCUBE
-#else
-	audio_mixer_t mixer;
-
-	mixer.volume_left = _left;
-	mixer.volume_right = _right;
-	
-	if (audio_fd > 0)
-	{
-		ret = ::ioctl(audio_fd, AUDIO_SET_MIXER, &mixer);
-	
-		if(ret < 0)
-			perror("AUDIO_SET_MIXER");
 	}
 #endif	// HAVE_NO_AV_DECODER
 	
