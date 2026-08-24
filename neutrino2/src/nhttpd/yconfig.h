@@ -87,11 +87,7 @@
 //js:text/plain
 #undef HTTPD_NAME
 #define HTTPD_NAME 					"nhttpd"
-#if defined (USE_OPENGL)
 #define HTTPD_STANDARD_PORT				8080
-#else
-#define HTTPD_STANDARD_PORT				80
-#endif
 #define HTTPD_MAX_CONNECTIONS				10
 #define HTTPD_REQUEST_LOG 				"/tmp/httpd_log"
 #define HTTPD_CONFIGDIR					CONFIGDIR

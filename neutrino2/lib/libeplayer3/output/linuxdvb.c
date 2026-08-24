@@ -1408,7 +1408,7 @@ static int Write(void* _context, void* _out)
 					buf_num--;
 				}
 				
-#ifndef USE_OPENGL
+#if 0//ndef USE_OPENGL
 				// FIXME:
 //				if (&dest[0] != NULL)
 //					blitRGB32(&dest[0], data[buf_out].width, data[buf_out].height);
