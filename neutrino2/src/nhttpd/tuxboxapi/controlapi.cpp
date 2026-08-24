@@ -1413,7 +1413,7 @@ void CControlAPI::StartPluginCGI(CyhookHandler *hh)
 void CControlAPI::ScreenshotCGI(CyhookHandler *hh)
 {
 	bool enableOSD = true;
-	bool enableVideo = true;
+	bool enableVideo = false;
 	std::string filename = "screenshot";
 
 	if (hh->ParamList["osd"] == "0")
