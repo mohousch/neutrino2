@@ -1362,8 +1362,12 @@ static int Write(void* _context, void* _out)
 					
 		// setup swsscaler
 		if (got_frame)
-		{				
+		{
+#ifdef USE_OPENGL				
 			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
+#else
+			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_BGRA, SWS_BILINEAR, NULL, NULL, NULL);
+#endif
 								
 			if (convert)
 			{
@@ -1371,15 +1375,23 @@ static int Write(void* _context, void* _out)
 				getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 				
 				int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, out->ctx->width, out->ctx->height, 1);
-				
+
 				if (data[buf_in].size < need)
 					data[buf_in].size = need;
 					
 				// swsscale YUV420 to RGB32:
+#ifdef USE_OPENGL
 				uint8_t *dest[4] = { data[buf_in].buffer, NULL, NULL, NULL };
-	    			int dest_linesize[4] = { out->ctx->width*4, 0, 0, 0 }; // sufficient ?
+	    			int dest_linesize[4] = { out->ctx->width*4, 0, 0, 0 };
 	    			
 				sws_scale(convert, out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);
+#else
+				uint8_t *dest[4] = { (uint8_t *)getFrameBufferPointer(), NULL, NULL, NULL };
+	    			int dest_linesize[4] = { getStride(), 0, 0, 0 };
+	    			
+//	    			if (out->vframe->data != NULL)
+//					sws_scale(convert, out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);
+#endif				
 					
 				//
 				data[buf_in].width = out->ctx->width;

@@ -149,7 +149,7 @@ void GLThreadObj::run()
 
 	if(err == GLEW_OK)
 	{
-		if((!GLEW_VERSION_1_5)||(!GLEW_EXT_pixel_buffer_object)||(!GLEW_ARB_texture_non_power_of_two))
+		if((!GLEW_VERSION_1_5) || (!GLEW_EXT_pixel_buffer_object) || (!GLEW_ARB_texture_non_power_of_two))
 		{
 			dprintf(DEBUG_NORMAL, "GLThreadObj::run: Sorry, your graphics card is not supported. Needs at least OpenGL 1.5, pixel buffer objects and NPOT textures.\n");
 			perror("incompatible graphics card");
@@ -191,7 +191,9 @@ void GLThreadObj::setupCtx()
 {
 	int argc = 1;
 	char const *argv[2] = { "neutrino2", 0 };
+	
 	dprintf(DEBUG_NORMAL, "GLThreadObj::setupCtx: GL thread starting\n");
+	
 	glutInit(&argc, const_cast<char **>(argv));
 	glutInitWindowSize(*mX, *mY);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
@@ -218,27 +220,31 @@ void GLThreadObj::setupOSDBuffer()
 
 void GLThreadObj::setupGLObjects()
 {
-	glGenTextures(1, &mState.osdtex);
-	glGenTextures(1, &mState.displaytex);
-	
 	//
-	glBindTexture(GL_TEXTURE_2D, mState.osdtex);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mState.width, mState.height, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-	
-	// 
+	glGenTextures(1, &mState.displaytex);
 	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 
-	glGenBuffers(1, &mState.osdpbo);
-	glGenBuffers(1, &mState.displaypbo);
-	
 	//
+	glGenBuffers(1, &mState.displaypbo);
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
+	glBindTexture(GL_TEXTURE_2D, mState.displaypbo);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+
+	//
+	glGenTextures(1, &mState.osdtex);
+	glBindTexture(GL_TEXTURE_2D, mState.osdtex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mState.width, mState.height, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+
+	//
+	glGenBuffers(1, &mState.osdpbo);
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.osdpbo);
 	glBufferData(GL_PIXEL_UNPACK_BUFFER, mOSDBuffer.size(), &mOSDBuffer[0], GL_STREAM_DRAW_ARB);
 	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
@@ -342,6 +348,7 @@ void GLThreadObj::render()
 		glViewport(xoff, yoff, *mX, *mY);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
+		
 		float aspect = static_cast<float>(*mX) / *mY;
 		float osdaspect = static_cast<float>(mOA.den) / mOA.num;
 		
@@ -423,6 +430,8 @@ void GLThreadObj::render()
 	//
 	glBindTexture(GL_TEXTURE_2D, mState.osdtex);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	//
 	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
 	drawSquare(zoom, xscale);
 	
@@ -531,7 +540,6 @@ void GLThreadObj::drawSquare(float size, float x_factor)
 	glPopMatrix();
 }
 
-
 void GLThreadObj::initDone()
 {
 	mInitDone = true;
@@ -576,7 +584,6 @@ void GLThreadObj::bltDisplayBuffer()
 	
 	if (!buf)
 	{		
-		//
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
 		glBufferData(GL_PIXEL_UNPACK_BUFFER, mOSDBuffer.size(), &mOSDBuffer[0], GL_STREAM_DRAW_ARB);
 		glBindTexture(GL_TEXTURE_2D, mState.displaytex);
@@ -656,15 +663,12 @@ void GLThreadObj::bltPlayBuffer()
 	
 	//
 	if (buf == NULL)
-	{		
-		/*
+	{
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
 		glBufferData(GL_PIXEL_UNPACK_BUFFER, mOSDBuffer.size(), &mOSDBuffer[0], GL_STREAM_DRAW_ARB);
 		glBindTexture(GL_TEXTURE_2D, mState.displaytex);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
-		*/
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		return;
 	}
