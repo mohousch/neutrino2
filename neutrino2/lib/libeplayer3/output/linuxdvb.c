@@ -59,6 +59,10 @@
 #include <ao/ao.h>
 #endif
 
+#ifdef USE_OPENGL
+#include <GL/gl.h>
+#endif
+
 
 /* ***************************** */
 /* Makros/Constants              */
@@ -110,11 +114,11 @@ extern int buf_out;
 bool stillpicture = false;
 Data_t data[64] = {0};
 uint64_t sCURRENT_APTS = 0;
-#endif
 
 #ifdef USE_LIBAO
 static ao_device *adevice = NULL;
 static ao_sample_format sformat;
+#endif
 #endif
 
 //
@@ -245,13 +249,14 @@ int LinuxDvbClose(Context_t  *context, char * type)
 	LinuxDvbStop(context, type);
 
 	getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
-	
+
+#ifdef HAVE_NO_AV_DECODER	
 #ifdef USE_LIBAO
 	if (adevice)
 		ao_close(adevice);
 		
 	adevice = NULL;
-	
+#endif
 #else	
 	if (audio && audiofd != -1) 
 	{
@@ -1362,12 +1367,8 @@ static int Write(void* _context, void* _out)
 					
 		// setup swsscaler
 		if (got_frame)
-		{
-#ifdef USE_OPENGL				
+		{				
 			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
-#else
-			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_BGRA, SWS_BILINEAR, NULL, NULL, NULL);
-#endif
 								
 			if (convert)
 			{
@@ -1380,18 +1381,10 @@ static int Write(void* _context, void* _out)
 					data[buf_in].size = need;
 					
 				// swsscale YUV420 to RGB32:
-#ifdef USE_OPENGL
 				uint8_t *dest[4] = { data[buf_in].buffer, NULL, NULL, NULL };
 	    			int dest_linesize[4] = { out->ctx->width*4, 0, 0, 0 };
 	    			
 				sws_scale(convert, out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);
-#else
-				uint8_t *dest[4] = { (uint8_t *)getFrameBufferPointer(), NULL, NULL, NULL };
-	    			int dest_linesize[4] = { getStride(), 0, 0, 0 };
-	    			
-//	    			if (out->vframe->data != NULL)
-//					sws_scale(convert, out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);
-#endif				
 					
 				//
 				data[buf_in].width = out->ctx->width;
@@ -1420,11 +1413,18 @@ static int Write(void* _context, void* _out)
 					buf_num--;
 				}
 				
-#if 0//ndef USE_OPENGL
-				// FIXME:
-//				if (&dest[0] != NULL)
-//					blitRGB32(&dest[0], data[buf_out].width, data[buf_out].height);
-#endif					
+#ifdef USE_OPENGL
+				if (buf_num != 0)
+				{
+					glBindBuffer(GL_PIXEL_UNPACK_BUFFER, getDisplayPBO());
+					glBufferData(GL_PIXEL_UNPACK_BUFFER, 8294400, dest[0], GL_STREAM_DRAW_ARB);
+
+					glBindTexture(GL_TEXTURE_2D, getDisplayTEX());
+					glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, out->ctx->width, out->ctx->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+
+					glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+				}
+#endif									
 				
 				releaseLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 			}

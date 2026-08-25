@@ -301,8 +301,6 @@ uint8_t *resize(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode ty
 		}
 	}
 	
-	free(origin);
-	
 	return(cr);
 }
 
@@ -487,7 +485,7 @@ uint32_t * getARGB32Image(const std::string &name, int width, int height, int tr
 				buffer = resize(buffer, x, y, width, height, scaletype, (channels == 4)? true : false);
 			}
 
-			// convert
+			// convert rgba to argb
 			if( name.find(".png") == (name.length() - 4) )
 			{
 				ret = (uint32_t *)convertRGBA2ARGB32(buffer, width, height, (channels == 4)?true : false, transp, TM_BLACK); // TM_BLACK
@@ -510,7 +508,7 @@ uint32_t * getARGB32Image(const std::string &name, int width, int height, int tr
 	return ret;
 }
 
-// get abgr image
+// get abgr image (LCD uses ABGR)
 uint32_t * getABGR32Image(const std::string &name, int width, int height, int transp, ScalingMode scaletype)
 {
 	int x = 0;
@@ -553,7 +551,7 @@ uint32_t * getABGR32Image(const std::string &name, int width, int height, int tr
 				buffer = resize(buffer, x, y, width, height, scaletype, (channels == 4)? true : false);
 			}
 			
-			// convert
+			// convert rgba to abgr
 			ret = convertRGBA2ABGR32(buffer, width, height, (channels == 4)? true : false, transp, TM_NONE);
 			
 			free(buffer);

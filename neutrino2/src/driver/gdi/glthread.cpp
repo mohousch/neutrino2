@@ -427,15 +427,15 @@ void GLThreadObj::render()
 		}
 	}
 	
-	//
+	// clear
 	glBindTexture(GL_TEXTURE_2D, mState.osdtex);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	//
+	// display
 	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
 	drawSquare(zoom, xscale);
 	
-	// OSD
+	// osd
 	glBindTexture(GL_TEXTURE_2D, mState.osdtex);
 	drawSquare(1.0, -100);
 

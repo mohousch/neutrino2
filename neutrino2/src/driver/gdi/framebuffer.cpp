@@ -57,6 +57,12 @@
 #endif
 
 ////
+#ifdef USE_OPENGL
+class GLThreadObj;
+
+GLThreadObj *mpGLThreadObj; // the thread object
+#endif
+
 #ifdef USE_SDL
 #include <SDL/SDL.h>
 extern SDL_Surface *m_screen;
@@ -1414,28 +1420,6 @@ bool CFrameBuffer::loadBackgroundPic(const std::string &filename, bool show)
 	}
 	
 	return true;
-}
-
-void CFrameBuffer::paintBackgoundRGB32(void *rgbBuff, int dx, int dy)
-{
-	dprintf(DEBUG_NORMAL, "CFrameBuffer::paintBackgoundRGB32:\n");
-	
-	if (!getActive() || rgbBuff == NULL)
-		return;
-	
-	uint8_t *buffer = (uint8_t *)rgbBuff;
-	
-	// resize to display
-	if( (dx != 0 && dy != 0) && (dx != xRes || dy != yRes) )
-	{
-		buffer = ::resize((uint8_t *)buffer, dx, dy, xRes, yRes, SCALE_SIMPLE, false);
-	}
-	
-	// display
-	for (int i = 0; i < yRes; i++)
-		memcpy(((uint8_t *)lfb) + i * stride, (buffer + i * xRes), xRes * sizeof(fb_pixel_t));
-		
-//	free(buffer);
 }
 
 void CFrameBuffer::useBackground(bool ub)

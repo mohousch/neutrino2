@@ -70,6 +70,12 @@
 #include <libnet/libnet.h>
 
 
+#ifdef USE_OPENGL
+class GLThreadObj;
+
+extern GLThreadObj *mpGLThreadObj; // the thread object
+#endif
+
 ////
 off_t file_size(const char *filename)
 {
@@ -2140,27 +2146,6 @@ unsigned int getScreenHeight(bool real)
 	return CFrameBuffer::getInstance()->getScreenHeight(real);
 }
 
-void blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp, uint32_t yp, bool transp)
-{
-	CFrameBuffer::getInstance()->blitBox2FB(fbbuff, width, height, xoff, yoff, xp, yp, transp);
-	CFrameBuffer::getInstance()->blit();
-}
-
-uint8_t *resizeBuffer(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode type, bool alpha)
-{
-	return resize(origin, ox, oy, dx, dy, type, alpha);
-}
-
-void blitRGB32(void *rgbBuff, int dx, int dy)
-{
-	CFrameBuffer::getInstance()->paintBackgoundRGB32(rgbBuff, dx, dy);
-}
-
-void blit()
-{
-	CFrameBuffer::getInstance()->blit();
-}
-
 int getFileHande(void)
 {
 	return CFrameBuffer::getInstance()->getFileHandle();
@@ -2174,6 +2159,27 @@ uint32_t *getFrameBufferPointer(void)
 unsigned int getStride(void)
 {
 	return CFrameBuffer::getInstance()->getStride();
+}
+
+void blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp, uint32_t yp, bool transp)
+{
+	CFrameBuffer::getInstance()->blitBox2FB(fbbuff, width, height, xoff, yoff, xp, yp, transp);
+	CFrameBuffer::getInstance()->blit();
+}
+
+uint8_t *resizeBuffer(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode type, bool alpha)
+{
+	return resize(origin, ox, oy, dx, dy, type, alpha);
+}
+
+bool swscaleBuffer(uint8_t *src, uint8_t *dst, int sw, int sh, int dw, int dh, AVPixelFormat srcfmt, AVPixelFormat dstfmt)
+{
+	return swscale(src, dst, sw, sh, dw, dh, srcfmt, dstfmt);
+}
+
+void blit()
+{
+	CFrameBuffer::getInstance()->blit();
 }
 
 void clearFrameBuffer(void)
@@ -2214,4 +2220,16 @@ void writeText(uint8_t* text, int x, int y, int w, int h)
 	delete textLabel;
 	textLabel = NULL;
 }
+
+#ifdef USE_OPENGL
+GLuint getDisplayTEX(void)
+{
+	return mpGLThreadObj->getDisplayTEX();
+}
+
+GLuint getDisplayPBO(void)
+{
+	return mpGLThreadObj->getDisplayPBO();
+}
+#endif
 

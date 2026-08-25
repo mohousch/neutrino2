@@ -52,6 +52,19 @@
 
 #include <OpenThreads/Thread>
 
+#ifdef USE_OPENGL
+#include <driver/gdi/glthread.h>
+#endif
+
+extern "C"
+{
+#include <libavformat/avformat.h>
+#include <libavcodec/version.h>
+#include <libavcodec/avcodec.h>
+#include <libswscale/swscale.h>
+#include <libavutil/imgutils.h>
+}
+
 
 //// misc
 int my_system(const char * cmd);
@@ -239,17 +252,23 @@ class cTimeMs
 
 //// wrapers functions for C
 extern "C" unsigned int getScreenWidth(bool real = false);
-extern "C" unsigned int getScreenHeight(bool real = false); 
-extern "C" void blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp = 0, uint32_t yp = 0, bool transp = false);
-extern "C" void blit();
-extern "C" uint8_t *resizeBuffer(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode type = SCALE_COLOR, bool alpha = false);
+extern "C" unsigned int getScreenHeight(bool real = false);
 extern "C" int getFileHande(void);
 extern "C" uint32_t *getFrameBufferPointer(void);
 extern "C" unsigned int getStride(void);
-extern "C" void blitRGB32(void *rgbBuff, int dx, int dy);
+extern "C" void blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp = 0, uint32_t yp = 0, bool transp = false);
+extern "C" void blit();
+extern "C" uint8_t *resizeBuffer(uint8_t * origin, int ox, int oy, int dx, int dy, ScalingMode type = SCALE_COLOR, bool alpha = false);
+extern "C" bool swscaleBuffer(uint8_t *src, uint8_t *dst, int sw, int sh, int dw, int dh, AVPixelFormat srcfmt = AV_PIX_FMT_RGB32, AVPixelFormat dstfmt = AV_PIX_FMT_RGB32);
 extern "C" void clearFrameBuffer(void);
+////
 extern "C" void writeLabel(uint8_t* text, int x, int y, int w, int h);
 extern "C" void writeText(uint8_t* text, int x, int y, int w, int h);
+////
+#ifdef USE_OPENGL
+extern "C" GLuint getDisplayTEX(void);
+extern "C" GLuint getDisplayPBO(void);
+#endif
 
 #endif
 

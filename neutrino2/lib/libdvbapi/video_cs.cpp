@@ -39,6 +39,7 @@
 #include <linux/fb.h>
 
 #include <system/debug.h>
+#include <system/helpers.h>
 
 
 #if defined (__sh__)
@@ -55,6 +56,10 @@ extern "C" {
 #include <libavutil/imgutils.h>
 #include <libswscale/swscale.h>
 }
+
+#ifdef USE_OPENGL
+#include <GL/gl.h>
+#endif
 
 /* ffmpeg buf 32k */
 #define INBUF_SIZE 0x8000
@@ -1482,6 +1487,19 @@ void cVideo::run(void)
 				
 				if (c->time_base.num && c->ticks_per_frame)
 					dec_r = c->time_base.den / (c->time_base.num * c->ticks_per_frame);
+					
+#ifdef USE_OPENGL
+				if (buf_num != 0)
+				{
+					glBindBuffer(GL_PIXEL_UNPACK_BUFFER, getDisplayPBO());
+					glBufferData(GL_PIXEL_UNPACK_BUFFER, 8294400, dest[0], GL_STREAM_DRAW_ARB);
+
+					glBindTexture(GL_TEXTURE_2D, getDisplayTEX());
+					glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, c->width, c->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+
+					glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+				}
+#endif						
 				
 				buf_m.unlock();
 			}

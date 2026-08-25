@@ -46,29 +46,41 @@ typedef enum
 	DISPLAY_AR_MODE_NONE
 } DISPLAY_AR_MODE;
 
-
 class GLThreadObj : public OpenThreads::Thread
 {
 	public:
+		struct {
+			int width;		/* width and height, fixed for a framebuffer instance */
+			int height;
+			GLuint osdtex;		/* holds the OSD texture */
+			GLuint osdpbo;		/* PBO we use for transfer to texture */
+			GLuint displaytex;	/* holds the display texture */
+			GLuint displaypbo;
+			bool blit;
+		} mState;
+
+		////
 		GLThreadObj(int x, int y);
 		~GLThreadObj(){};
 
-		//
+		////
 		void run();
 		void Start() { OpenThreads::Thread::start(); }
 		void waitInit();					/* wait until things are set up */
 		void shutDown() { mShutDown = true; }			/* shut down event loop (causes thread to exit) */
 		void join() { OpenThreads::Thread::join(); }
 		unsigned char *getOSDBuffer() { return &mOSDBuffer[0]; } 	/* gets pointer to OSD bounce buffer */
-		//
+		////
 		int getOSDBufferSize() { return OSDBufferSize; };
 		int getOSDWidth() { return mState.width; }
-		int getOSDHeight() { return mState.height; }
-		//
+		int getOSDHeight() { return mState.height; };
+		GLuint getDisplayTEX() { return mState.displaytex; };
+		GLuint getDisplayPBO() { return mState.displaypbo; };
+		////
 		void clear();
 		void blit() { mState.blit = true; }
 		
-		//
+		////
 		int64_t last_apts;
 		AVRational mOA;         	/* output window aspect ratio */
 		AVRational mVA;         	/* video aspect ratio */
@@ -85,7 +97,7 @@ class GLThreadObj : public OpenThreads::Thread
 		int *mY;
 		int _mX[2];         		/* output window size */
 		int _mY[2];         		/* [0] = normal, [1] = fullscreen */
-		//
+		////
 		bool mReInit;			/* setup things for GL */
 		bool mShutDown;			/* if set main loop is left */
 		bool mInitDone;			/* condition predicate */
@@ -102,7 +114,7 @@ class GLThreadObj : public OpenThreads::Thread
 		void render();			/* actual render function */
 		static void keyboardcb(unsigned char key, int x, int y);
 		static void specialcb(int key, int x, int y);
-
+		////
 		void initKeys();		/* setup key bindings for window */
 		void setupCtx();		/* create the window and make the context current */
 		void setupOSDBuffer();		/* create the OSD buffer */
@@ -110,17 +122,7 @@ class GLThreadObj : public OpenThreads::Thread
 		void releaseGLObjects();
 		void drawSquare(float size, float x_factor);	/* do not be square */
 		void initDone();		/* "things are now set up", called by this */
-
-		struct {
-			int width;		/* width and height, fixed for a framebuffer instance */
-			int height;
-			GLuint osdtex;		/* holds the OSD texture */
-			GLuint osdpbo;		/* PBO we use for transfer to texture */
-			GLuint displaytex;	/* holds the display texture */
-			GLuint displaypbo;
-			bool blit;
-		} mState;
-
+		////
 		void bltOSDBuffer();
 		void bltDisplayBuffer();
 		void bltPlayBuffer();

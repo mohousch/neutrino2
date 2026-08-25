@@ -45,10 +45,6 @@
 #include <driver/gdi/bitmap.h>
 
 
-#ifdef USE_OPENGL
-class GLThreadObj;
-#endif
-
 #define fb_pixel_t uint32_t
 
 typedef struct fb_var_screeninfo t_fb_var_screeninfo;
@@ -157,9 +153,9 @@ class CFrameBuffer
 		int m_number_of_pages;
 		int m_manual_blit;
 		
-#ifdef USE_OPENGL
-		GLThreadObj *mpGLThreadObj; // the thread object
-#endif	
+//#ifdef USE_OPENGL
+//		GLThreadObj *mpGLThreadObj; // the thread object
+//#endif	
 
 		//
 		int  limitRadius(const int& dx, const int& dy, int& radius);
@@ -270,12 +266,12 @@ class CFrameBuffer
 
 		void paintBackground();
 		bool loadBackgroundPic(const std::string& filename, bool show = true);
-		void paintBackgoundRGB32(void *rgbBuff, int dx, int dy);
 
 		//
 		void saveScreen(int x, int y, int dx, int dy, fb_pixel_t * const memp);
 		void restoreScreen(int x, int y, int dx, int dy, fb_pixel_t * const memp);
 
+		//
 		void clearFrameBuffer();
 
 		//
