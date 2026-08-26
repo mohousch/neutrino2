@@ -55,6 +55,17 @@ AC_DEFINE(USE_LIBAO,1,[include libao support for devices without AV decoder])
 PKG_CHECK_MODULES(LIBAO, ao)
 fi
 
+# libdrm
+AC_ARG_ENABLE(libdrm,
+	AS_HELP_STRING(--enable-libdrm, include libdrm support for devices without AV decoder),
+	,[enable_libdrm=no])
+AM_CONDITIONAL(USE_LIBDRM, test "$enable_libdrm" = "yes")
+
+if test "$enable_libdrm" = "yes"; then
+AC_DEFINE(USE_LIBDRM,1,[include libdrm support for devices without AV decoder])
+PKG_CHECK_MODULES(LIBDRM, libdrm)
+fi
+
 # opengl framebuffer (x86)
 AC_ARG_ENABLE(opengl,
 	AS_HELP_STRING(--enable-opengl,include opengl framebuffer support for x86),

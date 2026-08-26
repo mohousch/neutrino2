@@ -120,8 +120,12 @@ neutrino2_LDADD += \
 	-lglut -lGL -lGLU -lGLEW -lX11
 endif
 
+if USE_LIBDRM
+neutrino2_LDADD += -ldrm
+endif
+
 if USE_LIBAO
-neutrino2_LDADD += @LIBAO_LIBS@
+neutrino2_LDADD += @LIBAO_LIBS@ -lasound
 endif
 
 if USE_DIRECTFB

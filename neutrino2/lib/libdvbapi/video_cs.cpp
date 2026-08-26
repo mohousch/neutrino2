@@ -1429,6 +1429,8 @@ void cVideo::run(void)
 #endif
 		// setup sws scaler
 		still_m.lock();
+		
+#ifdef USE_OPENGL
 		if (got_frame && ! stillpicture)
 		{
 			int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, c->width, c->height, 1);
@@ -1486,24 +1488,12 @@ void cVideo::run(void)
 				}
 				
 				if (c->time_base.num && c->ticks_per_frame)
-					dec_r = c->time_base.den / (c->time_base.num * c->ticks_per_frame);
-					
-#ifdef USE_OPENGL
-				if (buf_num != 0)
-				{
-					glBindBuffer(GL_PIXEL_UNPACK_BUFFER, getDisplayPBO());
-					glBufferData(GL_PIXEL_UNPACK_BUFFER, 8294400, dest[0], GL_STREAM_DRAW_ARB);
-
-					glBindTexture(GL_TEXTURE_2D, getDisplayTEX());
-					glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, c->width, c->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
-
-					glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
-				}
-#endif						
+					dec_r = c->time_base.den / (c->time_base.num * c->ticks_per_frame);					
 				
 				buf_m.unlock();
 			}
 		}
+#endif
 		
 		still_m.unlock();
 		av_packet_unref(&avpkt);

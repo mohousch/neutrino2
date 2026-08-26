@@ -195,6 +195,20 @@ int gfxfd = -1;
 SDL_Surface *m_screen;
 #endif
 
+#ifdef USE_LIBDRM
+#include <libdrm/drm.h>
+#include <libdrm/drm_mode.h>
+#include <xf86drm.h>
+#include <xf86drmMode.h>
+#include <sys/mman.h>
+
+int drm_fd = -1;
+uint32_t conn_id, crtc_id, fb_id;
+drmModeModeInfo mode;
+uint8_t *fb_ptr = NULL;
+struct drm_mode_create_dumb creq={0};
+#endif
+
 
 //// globals
 int debug = DEBUG_NORMAL;
@@ -5019,6 +5033,65 @@ void CNeutrinoApp::init_HAL(void)
 #ifdef USE_LIBAO
 	ao_initialize();
 #endif
+
+#ifdef USE_LIBDRM
+	drm_fd = open("/dev/dri/card0", O_RDWR | O_CLOEXEC);
+	
+	if (drm_fd < 0) 
+	{
+        	ng_err("CNeutrinoApp::init_HAL: can't open DRM device\n");
+    	}
+    	
+    	dprintf(DEBUG_NORMAL, "CNeutrinoApp::init_HAL: DRM device (FD: %d).\n", drm_fd);
+	
+	drmModeRes *res = drmModeGetResources(drm_fd);
+
+	// found DRM mode connector
+	drmModeConnector *conn = NULL;
+	
+    	for(int i = 0; i< res->count_connectors; i++)
+    	{
+        	conn = drmModeGetConnector(drm_fd, res->connectors[i]);
+        	if(conn->connection == DRM_MODE_CONNECTED && conn->count_modes > 0) 
+        		break;
+        	
+        	drmModeFreeConnector(conn); 
+        	conn = NULL;
+        }
+        
+        if(conn)
+        {
+        	dprintf(DEBUG_NORMAL, "CNeutrinoApp::init_HAL: Found connector\n");
+        	
+		drmModeModeInfo mode = conn->modes[0];
+		
+		dprintf(DEBUG_NORMAL, "CNeutrinoApp::init_HAL: DRM Mode: %dx%d\n", mode.hdisplay, mode.vdisplay);
+		
+    		conn_id = conn->connector_id;
+    		drmModeEncoder *enc = drmModeGetEncoder(drm_fd, conn->encoder_id);
+    		crtc_id = enc->crtc_id;
+    		
+		// alloc dumb buffer = display memory
+	 	creq.width = mode.hdisplay; 
+	 	creq.height = mode.vdisplay; 
+	 	creq.bpp = 32;
+	 	
+	 	ioctl(drm_fd, DRM_IOCTL_MODE_CREATE_DUMB, &creq);
+
+	 	// make FB
+	 	drmModeAddFB(drm_fd, creq.width, creq.height, 24, 32, creq.pitch, creq.handle, &fb_id);
+	 	drmModeSetCrtc(drm_fd, crtc_id, fb_id, 0, 0, &conn_id, 1, &mode);
+
+	 	// mmap it
+	 	struct drm_mode_map_dumb mreq = {0}; 
+	 	mreq.handle = creq.handle;
+	 	
+	 	ioctl(drm_fd, DRM_IOCTL_MODE_MAP_DUMB, &mreq);
+	 	fb_ptr = (uint8_t *)mmap(0, creq.size, PROT_READ|PROT_WRITE, MAP_SHARED, drm_fd, mreq.offset);
+ 	}
+ 	else
+ 		printf("No connector found\n");
+#endif
 }
 
 void CNeutrinoApp::deinit_HAL(void)
@@ -5038,6 +5111,11 @@ void CNeutrinoApp::deinit_HAL(void)
 
 #ifdef USE_SDL
 	SDL_Quit();
+#endif
+
+#ifdef USE_LIBDRM
+ 	munmap(fb_ptr, creq.size);
+    	drmModeSetCrtc(drm_fd, crtc_id, 0, 0, 0, NULL, 0, NULL);
 #endif
 }
 

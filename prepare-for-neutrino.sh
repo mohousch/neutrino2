@@ -153,6 +153,8 @@ PACKAGES="\
     	${UBUNTU:+libdirectfb-dev}                                                                                    \
     	${UBUNTU:+libsdl1.2-dev}                                                                                      \
     	${UBUNTU:+libao-dev}											      \
+    	${UBUNTU:+libasound2-dev}                                                                                     \
+    	${UBUNTU:+libdrm-dev}                                                                                         \
     	${UBUNTU:+libtool-bin} 											      \
 	${UBUNTU:+gtk-doc-tools}
 	";

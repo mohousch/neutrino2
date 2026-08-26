@@ -28,6 +28,8 @@
 
 #include <config.h>
 
+#include <alsa/asoundlib.h>
+
 #include <linux/dvb/audio.h>
 
 #include "audio_cs.h"
@@ -87,7 +89,7 @@ cAudio::cAudio(int num)
 		
 	StreamType = AUDIO_STREAMTYPE_MPEG;
 
-	volume = 0;
+	volume = 25;
 	
 	m_pcm_delay = -1,
 	m_ac3_delay = -1;
@@ -184,7 +186,7 @@ int cAudio::SetMute(int enable)
 	
 	int ret = 0;	
 	
-#if !defined HAVE_NO_AV_DECODER
+#ifndef HAVE_NO_AV_DECODER
 #if !defined (__sh__)
 	if (audio_fd > 0)
 	{
@@ -205,6 +207,10 @@ int cAudio::SetMute(int enable)
 		write(fd, sMuted, strlen(sMuted));
 		::close(fd);
 	}
+#else
+	unsigned int lastVolume = volume;
+	
+	setVolume(enable? 0: lastVolume, enable? 0 : lastVolume);
 #endif // HAVE_NO_AV_DECODER
 
 	return ret;
@@ -261,6 +267,27 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 		write(fd, sVolume, strlen(sVolume));
 		::close(fd);
 	}
+#else
+    	long min, max;
+	snd_mixer_t *handle;
+	snd_mixer_selem_id_t *sid;
+	const char *card = "default";
+	const char *selem_name = "Master";
+
+	snd_mixer_open(&handle, 0);
+	snd_mixer_attach(handle, card);
+	snd_mixer_selem_register(handle, NULL, NULL);
+	snd_mixer_load(handle);
+
+	snd_mixer_selem_id_alloca(&sid);
+	snd_mixer_selem_id_set_index(sid, 0);
+	snd_mixer_selem_id_set_name(sid, selem_name);
+	snd_mixer_elem_t* elem = snd_mixer_find_selem(handle, sid);
+
+	snd_mixer_selem_get_playback_volume_range(elem, &min, &max);
+	snd_mixer_selem_set_playback_volume_all(elem, volume * max / 100);
+
+	snd_mixer_close(handle);
 #endif	// HAVE_NO_AV_DECODER
 	
 	return ret;

@@ -59,8 +59,15 @@
 #include <ao/ao.h>
 #endif
 
-#ifdef USE_OPENGL
-#include <GL/gl.h>
+#ifdef USE_LIBDRM
+#include <libdrm/drm.h>
+#include <libdrm/drm_mode.h>
+#include <xf86drm.h>
+#include <xf86drmMode.h>
+#include <sys/mman.h>
+
+#include <libavutil/hwcontext.h>
+#include <libavutil/hwcontext_drm.h>
 #endif
 
 
@@ -76,7 +83,7 @@
 #endif
 #endif
 
-//#define LINUXDVB_DEBUG
+#define LINUXDVB_DEBUG
 #define LINUXDVB_SILENT
 
 static short debug_level = 10;
@@ -118,6 +125,14 @@ uint64_t sCURRENT_APTS = 0;
 #ifdef USE_LIBAO
 static ao_device *adevice = NULL;
 static ao_sample_format sformat;
+#endif
+
+#ifdef USE_LIBDRM
+extern int drm_fd;
+//extern uint32_t conn_id, crtc_id, fb_id;
+//extern drmModeModeInfo mode;
+extern uint8_t *fb_ptr;
+extern struct drm_mode_create_dumb creq;
 #endif
 #endif
 
@@ -1367,14 +1382,14 @@ static int Write(void* _context, void* _out)
 					
 		// setup swsscaler
 		if (got_frame)
-		{				
+		{
+			getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
+			
+#if 0//def USE_OPENGL				
 			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
 								
 			if (convert)
 			{
-				//
-				getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
-				
 				int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, out->ctx->width, out->ctx->height, 1);
 
 				if (data[buf_in].size < need)
@@ -1411,23 +1426,54 @@ static int Write(void* _context, void* _out)
 					buf_out++;
 					buf_out %= 64;
 					buf_num--;
-				}
-				
-#ifdef USE_OPENGL
-				if (buf_num != 0)
-				{
-					glBindBuffer(GL_PIXEL_UNPACK_BUFFER, getDisplayPBO());
-					glBufferData(GL_PIXEL_UNPACK_BUFFER, 8294400, dest[0], GL_STREAM_DRAW_ARB);
-
-					glBindTexture(GL_TEXTURE_2D, getDisplayTEX());
-					glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, out->ctx->width, out->ctx->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
-
-					glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
-				}
-#endif									
-				
-				releaseLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
+				}								
 			}
+#endif
+#ifdef USE_LIBDRM
+#define DIRECT_WRITE
+
+#ifdef DIRECT_WRITE
+			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_BGRA, SWS_BILINEAR, NULL, NULL, NULL);
+								
+			if (convert)
+			{
+				// swsscale YUV420 to RGB32:
+				uint8_t *dest[4] = { fb_ptr, NULL, NULL, NULL };
+	    			int dest_linesize[4] = { creq.pitch, 0, 0, 0 };
+	    			
+				sws_scale(convert, out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);
+			}
+#else
+			// Prüfen, ob der Frame im DRM_PRIME Format vorliegt
+                    	if (out->vframe->format == AV_PIX_FMT_DRM_PRIME) 
+                    	{
+                        	// Das 'data[0]' Array enthält bei DRM_PRIME die AVDRMFrameDescriptor Struktur
+                        	AVDRMFrameDescriptor *desc = (AVDRMFrameDescriptor *)out->vframe->data[0];
+                        
+                        	linuxdvb_printf(10, "[DRM PRIME] Frame dekodiert! Layer-Anzahl: %d, Objekte (Fds): %d\n", desc->nb_layers, desc->nb_objects);
+
+                        	// HIER findet die Übergabe an libdrm statt:
+                        	// desc->objects[0].fd ist der DMA-Buf Dateideskriptor.
+                        	// Mittels drmPrimeFDToHandle() wandelt man diesen in ein DRM-Handle um.
+                        	// Danach erzeugt man mit drmModeAddFB2() ein Framebuffer für den Bildschirm.
+                        
+                        	uint32_t gem_handle;
+                        	
+                        	if (drmPrimeFDToHandle(drm_fd, desc->objects[0].fd, &gem_handle) == 0) 
+                        	{
+                            		linuxdvb_printf(10, "  -> DMA-Buf FD %d erfolgreich in DRM Handle %u konvertiert.\n", desc->objects[0].fd, gem_handle);
+                            
+                            		// HINWEIS: Für ein echtes Rendering müsste hier drmModePageFlip() 
+                            		// oder ein DRM-Atomic-Commit auf einen CRTC/Plane folgen.
+                        	}
+                    	} 
+                    	else 
+                    	{
+                        	linuxdvb_printf(10, "[CPU] Frame im Software-Format (%d) dekodiert (Kein DRM_PRIME).\n", out->vframe->format);
+                    	}
+#endif
+#endif
+			releaseLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 		}
 		
 		//
