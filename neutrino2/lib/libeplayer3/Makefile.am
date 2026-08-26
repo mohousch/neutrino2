@@ -17,6 +17,10 @@ if USE_DIRECTFB
 AM_CPPFLAGS += @DIRECTFB_CFLAGS@
 endif
 
+if USE_LIBDRM
+AM_CPPFLAGS += @LIBDRM_CFLAGS@
+endif
+
 libeplayer3_a_SOURCES =  \
 	container/container.c container/container_ffmpeg.c \
 	manager/manager.c manager/audio.c manager/video.c manager/subtitle.c manager/extsubtitle.c \

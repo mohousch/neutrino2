@@ -32,6 +32,10 @@ if USE_DIRECTFB
 AM_CPPFLAGS += @DIRECTFB_CFLAGS@
 endif
 
+if USE_LIBDRM
+AM_CPPFLAGS += @LIBDRM_CFLAGS@
+endif
+
 AM_CPPFLAGS += -fno-rtti -fno-exceptions
 
 bin_PROGRAMS = neutrino2
