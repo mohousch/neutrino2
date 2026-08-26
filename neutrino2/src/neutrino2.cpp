@@ -3285,6 +3285,9 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 			muteIcon = NULL;
 		}
 		
+		//
+		delete CFrameBuffer::getInstance();
+		
 		// deinit_HAL
 		deinit_HAL();
 
@@ -4923,6 +4926,8 @@ void sighandler(int signum)
 
 			// zapit stop	
 			CZapit::getInstance()->Stop();
+			
+			delete CFrameBuffer::getInstance();
 			
 			_exit(0);
 			
