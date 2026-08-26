@@ -12,6 +12,10 @@ AM_CPPFLAGS = \
 	-I$(srcdir)/include \
 	-I$(top_srcdir)/lib/libdvbapi \
 	@FREETYPE_CFLAGS@
+	
+if USE_DIRECTFB
+AM_CPPFLAGS += @DIRECTFB_CFLAGS@
+endif
 
 libeplayer3_a_SOURCES =  \
 	container/container.c container/container_ffmpeg.c \

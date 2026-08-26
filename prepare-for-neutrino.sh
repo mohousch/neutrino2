@@ -151,6 +151,7 @@ PACKAGES="\
     	${UBUNTU:+libglew-dev}					     ${FEDORA:+glew-devel} 			      \
     	${UBUNTU:+freeglut3-dev}				     ${FEDORA:+freeglut-devel}			      \
     	${UBUNTU:+libdirectfb-dev}                                                                                    \
+    	${UBUNTU:+libdirectfb-extra}                                                                                  \
     	${UBUNTU:+libsdl1.2-dev}                                                                                      \
     	${UBUNTU:+libao-dev}											      \
     	${UBUNTU:+libasound2-dev}                                                                                     \

@@ -129,11 +129,16 @@ static ao_sample_format sformat;
 
 #ifdef USE_LIBDRM
 extern int drm_fd;
-//extern uint32_t conn_id, crtc_id, fb_id;
-//extern drmModeModeInfo mode;
 extern uint8_t *fb_ptr;
 extern struct drm_mode_create_dumb creq;
 #endif
+#endif
+
+#ifdef USE_DIRECTFB
+#include "directfb.h"
+
+extern IDirectFB *dfb;
+extern IDirectFBSurface *primary;
 #endif
 
 //
@@ -1472,6 +1477,24 @@ static int Write(void* _context, void* _out)
                         	linuxdvb_printf(10, "[CPU] Frame im Software-Format (%d) dekodiert (Kein DRM_PRIME).\n", out->vframe->format);
                     	}
 #endif
+#endif
+#ifdef USE_DIRECTFB
+			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
+								
+			if (convert)
+			{
+				void *ptr; int pitch;
+	   			primary->Lock(primary, DSLF_WRITE, &ptr, &pitch);
+
+	   			uint8_t *dest[1] = {ptr}; 
+	   			int dest_linesize[1] = {pitch};
+	   			
+	   			//sws_scale(sws, f->data, f->linesize, 0, cc->height, dst, stride);
+	   			sws_scale(convert, out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);
+
+	   			primary->Unlock(primary);
+	   			primary->Flip(primary, NULL, DSFLIP_WAITFORSYNC);
+   			}
 #endif
 			releaseLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 		}

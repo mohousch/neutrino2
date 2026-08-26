@@ -72,16 +72,14 @@ config:
 # opengl
 	@echo -e "\nFrameBuffer:"
 	@echo -e "   \033[01;32m1) opengl\033[00m"
-	@echo "   2) sdl"
-	@echo "   3) directfb"
-	@echo "   4) linux framebuffer"
-	@read -p "FrameBuffer (1-4)?" FRAMEBUFFER; \
+	@echo "   2) directfb"
+	@echo "   3) linux framebuffer"
+	@read -p "FrameBuffer (1-3)?" FRAMEBUFFER; \
 	FRAMEBUFFER=$${FRAMEBUFFER}; \
 	case "$$FRAMEBUFFER" in \
 		1) echo "FRAMEBUFFER=opengl" > .config;; \
-		2) echo "FRAMEBUFFER=sdl" > .config;; \
-		3) echo "FRAMEBUFFER=directfb" > .config;; \
-		4) echo "FRAMEBUFFER=fbdev" > .config;; \
+		2) echo "FRAMEBUFFER=directfb" > .config;; \
+		3) echo "FRAMEBUFFER=fbdev" > .config;; \
 		*) echo "FRAMEBUFFER=opengl" > .config;; \
 	esac; \
 	echo ""
@@ -229,10 +227,6 @@ config-clean:
 #FRAMEBUFFER ?= opengl
 ifeq ($(FRAMEBUFFER), opengl)
 N2_OPTS += --enable-opengl
-endif
-
-ifeq ($(FRAMEBUFFER), sdl)
-N2_OPTS += --enable-sdl
 endif
 
 ifeq ($(FRAMEBUFFER), directfb)

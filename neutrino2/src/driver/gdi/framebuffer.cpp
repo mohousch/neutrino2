@@ -63,15 +63,6 @@ class GLThreadObj;
 GLThreadObj *mpGLThreadObj; // the thread object
 #endif
 
-#ifdef USE_SDL
-#include <SDL/SDL.h>
-extern SDL_Surface *m_screen;
-SDL_Surface *surface = NULL;
-SDL_Rect m_Rect;
-SDL_Rect surf;
-#endif
-
-
 ////
 CFrameBuffer* CFrameBuffer::getInstance()
 {
@@ -200,21 +191,6 @@ void CFrameBuffer::init(const char * const fbDevice)
 		perror("mmap");
 		goto nolfb;
 	}
-#elif defined (USE_SDL)
-	screeninfo.bits_per_pixel = DEFAULT_BPP;
-	screeninfo.xres = DEFAULT_XRES;
-	screeninfo.xres_virtual = screeninfo.xres;
-	screeninfo.yres = DEFAULT_YRES;
-	screeninfo.yres_virtual = screeninfo.yres;
-		
-	lfb = (uint32_t *)m_screen->pixels;
-	available = sizeof(lfb);
-	
-	if (!lfb) 
-	{
-		perror("mmap");
-		goto nolfb;
-	}
 #else
 	fd = open(fbDevice, O_RDWR);
 
@@ -320,18 +296,6 @@ int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
 	yRes = y;
 	bpp = _bpp;
 	stride = xRes * sizeof(fb_pixel_t);
-#elif defined (USE_SDL)
-	xRes = m_screen->w;
-	yRes = m_screen->h;
-	bpp = m_screen->format->BitsPerPixel;
-	stride = m_screen->pitch;
-	
-	m_Rect.x = 0;
-	m_Rect.y = 0;
-	m_Rect.w = xRes;
-	m_Rect.h = yRes;
-	
-	SDL_EnableUNICODE(1);
 #else
 	setFrameBufferMode(x, y, _bpp);
 #endif	
@@ -1552,18 +1516,6 @@ void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const 
 	uint32_t xc = (width > xRes) ? (uint32_t)xRes : width;
 	uint32_t yc = (height > yRes) ? (uint32_t)yRes : height;
 	
-#ifdef USE_SDL
-	surface = SDL_CreateRGBSurface(SDL_HWSURFACE|SDL_SRCALPHA, xc, yc, 32, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
-	surface->pixels = (uint32_t *)boxBuf;
-	
-	surf.x = xoff;
-	surf.y = yoff;
-	surf.w = xc;
-	surf.h = yc;
-	
-	SDL_BlitSurface(surface, &surf, m_screen, &m_Rect);
-#else
-	
 	uint32_t swidth = stride / sizeof(fb_pixel_t);
 
 	fb_pixel_t *data = (fb_pixel_t *)boxBuf;
@@ -1589,7 +1541,6 @@ void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const 
 		}
 		fbp += swidth;
 	}
-#endif
 }
 
 // blitBox2FB
@@ -1597,18 +1548,6 @@ void CFrameBuffer::blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, ui
 {
 	int xc = (width > xRes) ? xRes : width;
 	int yc = (height > yRes) ? yRes : height;
-	
-#ifdef USE_SDL
-	surface = SDL_CreateRGBSurface(SDL_HWSURFACE|SDL_SRCALPHA, xc, yc, 32, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
-	surface->pixels = (uint32_t *)fbbuff;
-	
-	surf.x = xoff;
-	surf.y = yoff;
-	surf.w = xc;
-	surf.h = yc;
-	
-	SDL_BlitSurface(surface, &surf, m_screen, &m_Rect);
-#else
 	
 	fb_pixel_t *data = (fb_pixel_t *) fbbuff;
 	uint8_t *d = ((uint8_t *)lfb) + xoff * sizeof(fb_pixel_t) + stride * yoff;
@@ -1653,8 +1592,7 @@ void CFrameBuffer::blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, ui
 			pixpos++;
 		}
 		d += stride;
-	}
-#endif	
+	}	
 }
 
 //
