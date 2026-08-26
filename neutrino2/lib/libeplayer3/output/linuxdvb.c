@@ -1385,7 +1385,7 @@ static int Write(void* _context, void* _out)
 		{
 			getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 			
-#if 0//def USE_OPENGL				
+#ifdef USE_OPENGL				
 			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
 								
 			if (convert)
