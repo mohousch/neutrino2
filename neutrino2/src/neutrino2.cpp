@@ -174,9 +174,11 @@
 #include <directfb.h>
 
 IDirectFB *dfb;
-IDirectFBSurface *primary;
-IDirectFBSurface *dfbdest;
-IDirectFBDisplayLayer *layer;
+IDirectFBSurface *primary_surf;
+IDirectFBSurface *video_surf;
+IDirectFBDisplayLayer *primary;
+IDirectFBDisplayLayer *overlay;
+//IDirectFBSurface *primary_surf, *video_surf;
 int gfxfd = -1;
 
 #define DFBCHECK(x...)                                        		\
@@ -4962,7 +4964,27 @@ void CNeutrinoApp::init_HAL(void)
 	err = dfb->SetCooperativeLevel(dfb, DFSCL_FULLSCREEN);
 	if (err)
 		DirectFBError("Failed to get exclusive access", err);
+	
+	////
+	// Layer 0 - UI
+    	dfb->GetDisplayLayer(dfb, DLID_PRIMARY, &primary);
+    	primary->SetCooperativeLevel(primary, DLSCL_EXCLUSIVE);
+    	DFBDisplayLayerConfig cfg;// = {.flags=DLCONF_WIDTH|DLCONF_HEIGHT,.width=1920,.height=1080};
+ //   	cfg.flags = (DFBDisplayLayerConfigFlags)DLCONF_WIDTH|DLCONF_HEIGHT;
+    	cfg.width = 1920;
+    	cfg.height = 1080;
+    	primary->SetConfiguration(primary, &cfg);
+    	primary->GetSurface(primary, &primary_surf);
+    	
+    	// Layer 2 - VIDEO OVERLAY - hw plane
+    	dfb->GetDisplayLayer(dfb, DLID_PRIMARY, &overlay);
+    	if (!overlay) dfb->GetDisplayLayer(dfb, DLID_PRIMARY, &overlay);
+    	overlay->SetCooperativeLevel(overlay, DLSCL_EXCLUSIVE);
+    	overlay->SetConfiguration(overlay, &cfg);
+    	overlay->GetSurface(overlay, &video_surf);
+	////
 
+/*
 	dsc.flags = DSDESC_CAPS;
 	dsc.caps = DSCAPS_PRIMARY;
 
@@ -4981,6 +5003,7 @@ void CNeutrinoApp::init_HAL(void)
 	primary->Clear(primary, 0, 0, 0, 0);
 	primary->GetSubSurface(primary, NULL, &dfbdest);
 	dfbdest->Clear(dfbdest, 0, 0, 0, 0);
+*/
 #endif
 
 #ifdef USE_LIBAO
@@ -4997,9 +5020,11 @@ void CNeutrinoApp::deinit_HAL(void)
 #endif
 
 #ifdef USE_DIRECTFB
-	dfbdest->Release(dfbdest);
+	video_surf->Release(video_surf);
+	primary_surf->Release(primary_surf);
 	primary->Release(primary);
-	layer->Release(layer);
+	overlay->Release(overlay);
+	
 	dfb->Release(dfb);
 #endif
 }

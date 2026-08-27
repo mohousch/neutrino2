@@ -152,9 +152,10 @@ struct gbm_device *gbm = NULL;
 #endif
 
 #ifdef USE_DIRECTFB
-extern IDirectFB *dfb;
-extern IDirectFBSurface *primary;
-extern IDirectFBDisplayLayer *layer;
+//extern IDirectFB *dfb;
+//extern IDirectFBSurface *primary;
+//extern IDirectFBDisplayLayer *layer;
+extern IDirectFBSurface *video_surf;
 #endif
 #endif
 
@@ -1699,7 +1700,7 @@ static int Write(void* _context, void* _out)
 			if (convert)
 			{
 				void *ptr; int pitch;
-	   			//layer->Lock(layer, DSLF_WRITE, &ptr, &pitch);
+	   			video_surf->Lock(video_surf, DSLF_WRITE, &ptr, &pitch);
 
 	   			uint8_t *dest[1] = {ptr}; 
 	   			int dest_linesize[1] = {pitch};
@@ -1707,8 +1708,8 @@ static int Write(void* _context, void* _out)
 	   			//
 	   			sws_scale(convert, out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);
 
-	   			//layer->Unlock(layer);
-	   			//layer->Flip(layer, NULL, DSFLIP_WAITFORSYNC);
+	   			video_surf->Unlock(video_surf);
+	   			video_surf->Flip(video_surf, NULL, DSFLIP_WAITFORSYNC);
    			}
 #endif
 			releaseLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
