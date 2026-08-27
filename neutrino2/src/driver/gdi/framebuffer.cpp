@@ -54,11 +54,7 @@
 #include <GL/glew.h>
 #include <driver/rcinput.h>
 #include <driver/gdi/glthread.h>
-#endif
 
-
-////
-#ifdef USE_OPENGL
 class GLThreadObj;
 
 GLThreadObj *mpGLThreadObj; // the thread object
@@ -179,6 +175,8 @@ CFrameBuffer::~CFrameBuffer()
 
 #ifdef USE_LIBDRM
     	drmModeSetCrtc(drm_fd, crtc_id, 0, 0, 0, NULL, 0, NULL);
+    	clode(drm_fd);
+    	drm_fd = -1;
 #endif
 }
 
@@ -218,11 +216,18 @@ void CFrameBuffer::init(const char * const fbDevice)
 #elif defined (USE_LIBDRM)
 	fd = -1;
 	
-	drm_fd = open("/dev/dri/card0", O_RDWR | O_CLOEXEC);
+	drm_fd = open("/dev/dri/card1", O_RDWR | O_CLOEXEC);
 	
 	if (drm_fd < 0) 
 	{
-        	ng_err("CFrameBuffer::init: can't open DRM device\n");
+		drm_fd = open("/dev/dri/card1", O_RDWR | O_CLOEXEC);
+		
+		if (drm_fd < 0)
+		{
+        		ng_err("CFrameBuffer::init: can't open DRM device\n");
+        		
+        		goto nolfb;
+        	}
     	}
     	
     	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
@@ -291,8 +296,11 @@ void CFrameBuffer::init(const char * const fbDevice)
 		screeninfo.yres_virtual = screeninfo.yres;
  	}
  	else
+ 	{
  		printf("CFrameBuffer::init: No connector found\n");
-#else
+ 		goto nolfb;
+ 	}
+#else // legacy linux frameBuffer
 	fd = open(fbDevice, O_RDWR);
 
 	if(!fd) 
@@ -403,25 +411,14 @@ int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
 	bpp = 32;
 	stride = creq.pitch;	
 #else
-	setFrameBufferMode(x, y, _bpp);
-#endif	
-
-	// clear frameBuffer
-	memset(lfb, 0, screeninfo.xres * screeninfo.yres * sizeof(fb_pixel_t));
-
-	return 0;
-}
-
-void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, unsigned int nbpp)
-{
-	screeninfo.xres_virtual = screeninfo.xres = nxRes;
-	screeninfo.yres_virtual = (screeninfo.yres = nyRes)*2;
+	screeninfo.xres_virtual = screeninfo.xres = x;
+	screeninfo.yres_virtual = (screeninfo.yres = y)*2; // double buffering
 	screeninfo.height = 0;
 	screeninfo.width = 0;
 	screeninfo.xoffset = screeninfo.yoffset = 0;
-	screeninfo.bits_per_pixel = nbpp;
+	screeninfo.bits_per_pixel = _bpp;
 
-	switch (nbpp) 
+	switch (_bpp) 
 	{
 		case 16:
 			// ARGB 1555
@@ -449,12 +446,12 @@ void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, un
 	}
 	
 	// num of pages
-	m_number_of_pages = screeninfo.yres_virtual / nyRes;
+	m_number_of_pages = screeninfo.yres_virtual / y;
 	
 	if (ioctl(fd, FBIOPUT_VSCREENINFO, &screeninfo) < 0)
 	{
 		// try single buffering
-		screeninfo.yres_virtual = screeninfo.yres = nyRes;
+		screeninfo.yres_virtual = screeninfo.yres = y;
 
 		if (ioctl(fd, FBIOPUT_VSCREENINFO, &screeninfo) < 0)
 		{
@@ -469,9 +466,9 @@ void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, un
 	//
 	ioctl(fd, FBIOGET_VSCREENINFO, &screeninfo);
 
-	if ((screeninfo.xres != nxRes) && (screeninfo.yres != nyRes) && (screeninfo.bits_per_pixel != nbpp))
+	if ((screeninfo.xres != x) && (screeninfo.yres != y) && (screeninfo.bits_per_pixel != _bpp))
 	{
-		printf("CFrameBuffer::setVideoMode: failed: wanted: %dx%dx%d, got %dx%dx%d\n", nxRes, nyRes, nbpp, screeninfo.xres, screeninfo.yres, screeninfo.bits_per_pixel);
+		printf("CFrameBuffer::setVideoMode: failed: wanted: %dx%dx%d, got %dx%dx%d\n", x, y, _bpp, screeninfo.xres, screeninfo.yres, screeninfo.bits_per_pixel);
 	}
 	
 	xRes = screeninfo.xres;
@@ -487,6 +484,12 @@ void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, un
 	}
 
 	stride = fix.line_length;
+#endif	
+
+	// clear frameBuffer
+	memset(lfb, 0, screeninfo.xres * screeninfo.yres * sizeof(fb_pixel_t));
+
+	return 0;
 }
 
 int CFrameBuffer::showConsole(int state)

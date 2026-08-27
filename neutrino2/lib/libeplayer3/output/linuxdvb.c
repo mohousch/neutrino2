@@ -343,8 +343,11 @@ int LinuxDvbOpen(Context_t  *context, char * type)
     	
     	if (gbm_fd < 0)
     	{
-		gbm_fd = open("/dev/dri/renderD128", O_RDWR); // no permission issue
-		gbm = gbm_create_device(gbm_fd);
+//		gbm_fd = open("/dev/dri/renderD128", O_RDWR); // no permission issue
+//		gbm = gbm_create_device(gbm_fd);
+		setenv("GBM_BACKEND", "dri", 1);
+		
+		gbm = gbm_create_device(drm_fd);
 		
 		if (gbm == NULL)
 		{

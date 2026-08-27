@@ -151,11 +151,7 @@ class CFrameBuffer
 		bool active;
 		
 		int m_number_of_pages;
-		int m_manual_blit;
-		
-//#ifdef USE_OPENGL
-//		GLThreadObj *mpGLThreadObj; // the thread object
-//#endif	
+		int m_manual_blit;	
 
 		//
 		int  limitRadius(const int& dx, const int& dy, int& radius);
@@ -178,7 +174,6 @@ class CFrameBuffer
 		static CFrameBuffer * getInstance();
 
 		void init(const char * const fbDevice = "/dev/fb0");		
-		void setFrameBufferMode(unsigned int xRes, unsigned int yRes, unsigned int bpp);
 		int setMode(unsigned int x = DEFAULT_XRES, unsigned int y = DEFAULT_YRES, unsigned int _bpp = DEFAULT_BPP);
 		int showConsole(int state);
 
