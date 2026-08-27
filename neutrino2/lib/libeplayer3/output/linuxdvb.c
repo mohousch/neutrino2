@@ -154,6 +154,7 @@ struct gbm_device *gbm = NULL;
 #ifdef USE_DIRECTFB
 extern IDirectFB *dfb;
 extern IDirectFBSurface *primary;
+extern IDirectFBDisplayLayer *layer;
 #endif
 #endif
 
@@ -343,11 +344,8 @@ int LinuxDvbOpen(Context_t  *context, char * type)
     	
     	if (gbm_fd < 0)
     	{
-//		gbm_fd = open("/dev/dri/renderD128", O_RDWR); // no permission issue
-//		gbm = gbm_create_device(gbm_fd);
-		setenv("GBM_BACKEND", "dri", 1);
-		
-		gbm = gbm_create_device(drm_fd);
+		gbm_fd = open("/dev/dri/renderD128", O_RDWR); // no permission issue
+		gbm = gbm_create_device(gbm_fd);
 		
 		if (gbm == NULL)
 		{
@@ -1547,6 +1545,7 @@ static int Write(void* _context, void* _out)
 #endif
 #if defined (USE_LIBDRM)
 			////
+			#if 0
 			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, /*out->ctx->pix_fmt*/AV_PIX_FMT_YUV420P, out->ctx->width, out->ctx->height, AV_PIX_FMT_NV12, SWS_BILINEAR, NULL, NULL, NULL);
 			
 			if (convert)
@@ -1584,8 +1583,10 @@ static int Write(void* _context, void* _out)
 		    			gbm_bo_destroy(bo);
             			}
 			}
+			#endif
 			////
 			#if 0
+			////
 			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_NV12, SWS_BILINEAR, NULL, NULL, NULL);
 			
 			if (convert)
@@ -1635,7 +1636,10 @@ static int Write(void* _context, void* _out)
             			last_fb=fb;
             			//usleep(40000);
 			}
-			//#else
+			#endif
+			////
+			////
+			#if 1
 			// Prüfen, ob der Frame im DRM_PRIME Format vorliegt
                     	if (out->vframe->format == AV_PIX_FMT_DRM_PRIME) 
                     	{
@@ -1644,23 +1648,6 @@ static int Write(void* _context, void* _out)
                         
                         	linuxdvb_printf(10, "[DRM PRIME] Frame dekodiert! Layer-Anzahl: %d, Objekte (Fds): %d\n", desc->nb_layers, desc->nb_objects);
 
-				#if 0
-                        	// HIER findet die Übergabe an libdrm statt:
-                        	// desc->objects[0].fd ist der DMA-Buf Dateideskriptor.
-                        	// Mittels drmPrimeFDToHandle() wandelt man diesen in ein DRM-Handle um.
-                        	// Danach erzeugt man mit drmModeAddFB2() ein Framebuffer für den Bildschirm.
-                        
-                        	uint32_t gem_handle;
-                        	
-                        	if (drmPrimeFDToHandle(drm_fd, desc->objects[0].fd, &gem_handle) == 0) 
-                        	{
-                            		linuxdvb_printf(10, "  -> DMA-Buf FD %d erfolgreich in DRM Handle %u konvertiert.\n", desc->objects[0].fd, gem_handle);
-                            
-                            		// HINWEIS: Für ein echtes Rendering müsste hier drmModePageFlip() 
-                            		// oder ein DRM-Atomic-Commit auf einen CRTC/Plane folgen.
-                        	}
-                        	#endif
-                        	////
                         	// import dma-buf to GEM
                         	uint32_t handles[4]={0}, pitches[4]={0}, offsets[4]={0};
             			uint64_t mods[4]={0};
@@ -1704,6 +1691,7 @@ static int Write(void* _context, void* _out)
                     	{
                         	linuxdvb_printf(10, "[CPU] Frame im Software-Format (%d) dekodiert (Kein DRM_PRIME).\n", out->vframe->format);
                     	}
+                    	////
                     	#endif
 #elif defined (USE_DIRECTFB)
 			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_BGRA, SWS_BILINEAR, NULL, NULL, NULL);
@@ -1711,16 +1699,16 @@ static int Write(void* _context, void* _out)
 			if (convert)
 			{
 				void *ptr; int pitch;
-	   			primary->Lock(primary, DSLF_WRITE, &ptr, &pitch);
+	   			//layer->Lock(layer, DSLF_WRITE, &ptr, &pitch);
 
 	   			uint8_t *dest[1] = {ptr}; 
 	   			int dest_linesize[1] = {pitch};
 	   			
-	   			//sws_scale(sws, f->data, f->linesize, 0, cc->height, dst, stride);
+	   			//
 	   			sws_scale(convert, out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);
 
-	   			primary->Unlock(primary);
-	   			primary->Flip(primary, NULL, DSFLIP_WAITFORSYNC);
+	   			//layer->Unlock(layer);
+	   			//layer->Flip(layer, NULL, DSFLIP_WAITFORSYNC);
    			}
 #endif
 			releaseLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);

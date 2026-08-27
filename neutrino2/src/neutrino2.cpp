@@ -176,7 +176,7 @@
 IDirectFB *dfb;
 IDirectFBSurface *primary;
 IDirectFBSurface *dfbdest;
-static IDirectFBDisplayLayer *layer;
+IDirectFBDisplayLayer *layer;
 int gfxfd = -1;
 
 #define DFBCHECK(x...)                                        		\
