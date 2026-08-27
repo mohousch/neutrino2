@@ -175,7 +175,7 @@ CFrameBuffer::~CFrameBuffer()
 
 #ifdef USE_LIBDRM
     	drmModeSetCrtc(drm_fd, crtc_id, 0, 0, 0, NULL, 0, NULL);
-    	clode(drm_fd);
+    	close(drm_fd);
     	drm_fd = -1;
 #endif
 }
@@ -219,87 +219,87 @@ void CFrameBuffer::init(const char * const fbDevice)
 	drm_fd = open("/dev/dri/card1", O_RDWR | O_CLOEXEC);
 	
 	if (drm_fd < 0) 
+		drm_fd = open("/dev/dri/card0", O_RDWR | O_CLOEXEC);
+		
+	if (drm_fd >= 0)
 	{
-		drm_fd = open("/dev/dri/card1", O_RDWR | O_CLOEXEC);
+	    	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+	    	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 0);
+	    	
+	    	dprintf(DEBUG_NORMAL, "CFrameBuffer::init: DRM device (FD: %d).\n", drm_fd);
 		
-		if (drm_fd < 0)
-		{
-        		ng_err("CFrameBuffer::init: can't open DRM device\n");
-        		
-        		goto nolfb;
-        	}
-    	}
-    	
-    	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
-    	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 0);
-    	
-    	dprintf(DEBUG_NORMAL, "CFrameBuffer::init: DRM device (FD: %d).\n", drm_fd);
-	
-	// setup DRM
-	drmModeRes *res = drmModeGetResources(drm_fd);
-	
-	drmModeConnector *conn = NULL;
-	
-	for(int i = 0; i< res->count_connectors; i++)
-    	{
-        	conn = drmModeGetConnector(drm_fd, res->connectors[i]);
-        	if(conn->connection == DRM_MODE_CONNECTED && conn->count_modes > 0) 
-        		break;
-        	
-        	drmModeFreeConnector(conn); 
-        	conn = NULL;
-        }
-        
-        if(conn)
-        {
-        	dprintf(DEBUG_NORMAL, "CFrameBuffer::init: Found connector\n");
-        	
-		drmModeModeInfo mode = conn->modes[0];
+		// setup DRM
+		drmModeRes *res = drmModeGetResources(drm_fd);
 		
-		dprintf(DEBUG_NORMAL, "CFrameBuffer::init: DRM Mode: %dx%d\n", mode.hdisplay, mode.vdisplay);
+		drmModeConnector *conn = NULL;
 		
-    		conn_id = conn->connector_id;
-    		drmModeEncoder *enc = drmModeGetEncoder(drm_fd, conn->encoder_id);
-    		crtc_id = enc->crtc_id;
-    	
-		// alloc dumb buffer = display memory
-	 	scr_w = creq.width = mode.hdisplay; 
-	 	scr_h = creq.height = mode.vdisplay; 
-	 	creq.bpp = 32;
-	 	
-	 	ioctl(drm_fd, DRM_IOCTL_MODE_CREATE_DUMB, &creq);
-
-	 	// make FB
-	 	drmModeAddFB(drm_fd, creq.width, creq.height, 24, 32, creq.pitch, creq.handle, &fb_id);
-	 	drmModeSetCrtc(drm_fd, crtc_id, fb_id, 0, 0, &conn_id, 1, &mode);
-
-	 	// mmap it
-	 	struct drm_mode_map_dumb mreq = {0}; 
-	 	mreq.handle = creq.handle;
-	 	
-	 	ioctl(drm_fd, DRM_IOCTL_MODE_MAP_DUMB, &mreq);
-	 	lfb = (uint32_t *)mmap(0, creq.size, PROT_READ|PROT_WRITE, MAP_SHARED, drm_fd, mreq.offset);
-	 	
-	 	available = creq.size;
-	
-		if (!lfb) 
-		{
-			perror("mmap");
-			goto nolfb;
+		for(int i = 0; i< res->count_connectors; i++)
+	    	{
+			conn = drmModeGetConnector(drm_fd, res->connectors[i]);
+			if(conn->connection == DRM_MODE_CONNECTED && conn->count_modes > 0) 
+				break;
+			
+			drmModeFreeConnector(conn); 
+			conn = NULL;
 		}
 		
-		// fill screeninfo structure
-		screeninfo.bits_per_pixel = 32;
-		screeninfo.xres = mode.hdisplay;
-		screeninfo.xres_virtual = screeninfo.xres;
-		screeninfo.yres = mode.vdisplay;
-		screeninfo.yres_virtual = screeninfo.yres;
- 	}
- 	else
- 	{
- 		printf("CFrameBuffer::init: No connector found\n");
- 		goto nolfb;
- 	}
+		if(conn)
+		{
+			dprintf(DEBUG_NORMAL, "CFrameBuffer::init: Found connector\n");
+			
+			drmModeModeInfo mode = conn->modes[0];
+			
+			dprintf(DEBUG_NORMAL, "CFrameBuffer::init: DRM Mode: %dx%d\n", mode.hdisplay, mode.vdisplay);
+			
+	    		conn_id = conn->connector_id;
+	    		drmModeEncoder *enc = drmModeGetEncoder(drm_fd, conn->encoder_id);
+	    		crtc_id = enc->crtc_id;
+	    	
+			// alloc dumb buffer = display memory
+		 	scr_w = creq.width = mode.hdisplay; 
+		 	scr_h = creq.height = mode.vdisplay; 
+		 	creq.bpp = 32;
+		 	
+		 	ioctl(drm_fd, DRM_IOCTL_MODE_CREATE_DUMB, &creq);
+
+		 	// make FB
+		 	drmModeAddFB(drm_fd, creq.width, creq.height, 24, 32, creq.pitch, creq.handle, &fb_id);
+		 	drmModeSetCrtc(drm_fd, crtc_id, fb_id, 0, 0, &conn_id, 1, &mode);
+
+		 	// mmap it
+		 	struct drm_mode_map_dumb mreq = {0}; 
+		 	mreq.handle = creq.handle;
+		 	
+		 	ioctl(drm_fd, DRM_IOCTL_MODE_MAP_DUMB, &mreq);
+		 	lfb = (uint32_t *)mmap(0, creq.size, PROT_READ|PROT_WRITE, MAP_SHARED, drm_fd, mreq.offset);
+		 	
+		 	available = creq.size;
+		
+			if (!lfb) 
+			{
+				perror("mmap");
+				goto nolfb;
+			}
+			
+			// fill screeninfo structure
+			screeninfo.bits_per_pixel = 32;
+			screeninfo.xres = mode.hdisplay;
+			screeninfo.xres_virtual = screeninfo.xres;
+			screeninfo.yres = mode.vdisplay;
+			screeninfo.yres_virtual = screeninfo.yres;
+	 	}
+	 	else
+	 	{
+	 		printf("CFrameBuffer::init: No connector found\n");
+	 		goto nolfb;
+	 	}
+	 }
+	 else
+	 {
+	 	ng_err("CFrameBuffer::init: can't open DRM device\n");
+	 	
+	 	goto nolfb;
+	 }
 #else // legacy linux frameBuffer
 	fd = open(fbDevice, O_RDWR);
 
