@@ -121,7 +121,7 @@ neutrino2_LDADD += \
 endif
 
 if USE_LIBDRM
-neutrino2_LDADD += -ldrm
+neutrino2_LDADD += -ldrm -lgbm
 endif
 
 if USE_LIBAO

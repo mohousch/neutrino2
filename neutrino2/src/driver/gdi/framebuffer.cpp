@@ -56,11 +56,31 @@
 #include <driver/gdi/glthread.h>
 #endif
 
+
 ////
 #ifdef USE_OPENGL
 class GLThreadObj;
 
 GLThreadObj *mpGLThreadObj; // the thread object
+#endif
+
+#ifdef USE_LIBDRM
+#include <libdrm/drm.h>
+#include <libdrm/drm_mode.h>
+#include <libdrm/drm_fourcc.h>
+#include <xf86drm.h>
+#include <xf86drmMode.h>
+#include <sys/mman.h>
+
+int drm_fd = -1;
+uint32_t conn_id, crtc_id, fb_id;
+drmModeModeInfo mode;
+uint8_t *fb_ptr = NULL;
+struct drm_mode_create_dumb creq={0};
+
+uint32_t ov_id=0;
+int scr_w = 1280;
+int scr_h = 720;
 #endif
 
 ////
@@ -155,7 +175,11 @@ CFrameBuffer::~CFrameBuffer()
 	mpGLThreadObj->join();
 #else	
 	close(fd);
-#endif	
+#endif
+
+#ifdef USE_LIBDRM
+    	drmModeSetCrtc(drm_fd, crtc_id, 0, 0, 0, NULL, 0, NULL);
+#endif
 }
 
 void CFrameBuffer::init(const char * const fbDevice)
@@ -191,6 +215,83 @@ void CFrameBuffer::init(const char * const fbDevice)
 		perror("mmap");
 		goto nolfb;
 	}
+#elif defined (USE_LIBDRM)
+	fd = -1;
+	
+	drm_fd = open("/dev/dri/card0", O_RDWR | O_CLOEXEC);
+	
+	if (drm_fd < 0) 
+	{
+        	ng_err("CFrameBuffer::init: can't open DRM device\n");
+    	}
+    	
+    	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+    	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 0);
+    	
+    	dprintf(DEBUG_NORMAL, "CFrameBuffer::init: DRM device (FD: %d).\n", drm_fd);
+	
+	// setup DRM
+	drmModeRes *res = drmModeGetResources(drm_fd);
+	
+	drmModeConnector *conn = NULL;
+	
+	for(int i = 0; i< res->count_connectors; i++)
+    	{
+        	conn = drmModeGetConnector(drm_fd, res->connectors[i]);
+        	if(conn->connection == DRM_MODE_CONNECTED && conn->count_modes > 0) 
+        		break;
+        	
+        	drmModeFreeConnector(conn); 
+        	conn = NULL;
+        }
+        
+        if(conn)
+        {
+        	dprintf(DEBUG_NORMAL, "CFrameBuffer::init: Found connector\n");
+        	
+		drmModeModeInfo mode = conn->modes[0];
+		
+		dprintf(DEBUG_NORMAL, "CFrameBuffer::init: DRM Mode: %dx%d\n", mode.hdisplay, mode.vdisplay);
+		
+    		conn_id = conn->connector_id;
+    		drmModeEncoder *enc = drmModeGetEncoder(drm_fd, conn->encoder_id);
+    		crtc_id = enc->crtc_id;
+    	
+		// alloc dumb buffer = display memory
+	 	scr_w = creq.width = mode.hdisplay; 
+	 	scr_h = creq.height = mode.vdisplay; 
+	 	creq.bpp = 32;
+	 	
+	 	ioctl(drm_fd, DRM_IOCTL_MODE_CREATE_DUMB, &creq);
+
+	 	// make FB
+	 	drmModeAddFB(drm_fd, creq.width, creq.height, 24, 32, creq.pitch, creq.handle, &fb_id);
+	 	drmModeSetCrtc(drm_fd, crtc_id, fb_id, 0, 0, &conn_id, 1, &mode);
+
+	 	// mmap it
+	 	struct drm_mode_map_dumb mreq = {0}; 
+	 	mreq.handle = creq.handle;
+	 	
+	 	ioctl(drm_fd, DRM_IOCTL_MODE_MAP_DUMB, &mreq);
+	 	lfb = (uint32_t *)mmap(0, creq.size, PROT_READ|PROT_WRITE, MAP_SHARED, drm_fd, mreq.offset);
+	 	
+	 	available = creq.size;
+	
+		if (!lfb) 
+		{
+			perror("mmap");
+			goto nolfb;
+		}
+		
+		// fill screeninfo structure
+		screeninfo.bits_per_pixel = 32;
+		screeninfo.xres = mode.hdisplay;
+		screeninfo.xres_virtual = screeninfo.xres;
+		screeninfo.yres = mode.vdisplay;
+		screeninfo.yres_virtual = screeninfo.yres;
+ 	}
+ 	else
+ 		printf("CFrameBuffer::init: No connector found\n");
 #else
 	fd = open(fbDevice, O_RDWR);
 
@@ -296,6 +397,11 @@ int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
 	yRes = y;
 	bpp = _bpp;
 	stride = xRes * sizeof(fb_pixel_t);
+#elif defined (USE_LIBDRM)
+	xRes = scr_w;
+	yRes = scr_h;
+	bpp = 32;
+	stride = creq.pitch;	
 #else
 	setFrameBufferMode(x, y, _bpp);
 #endif	
@@ -1623,7 +1729,7 @@ void CFrameBuffer::enableManualBlit()
 
 void CFrameBuffer::disableManualBlit()
 {
-#if !defined USE_OPENGL && !defined (USE_DIRECTFB) 
+#if !defined USE_OPENGL && !defined (USE_DIRECTFB)
 	unsigned char tmp = 0;
 	
 	if (ioctl(fd,FBIO_SET_MANUAL_BLIT, &tmp) < 0) 

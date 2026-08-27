@@ -60,6 +60,7 @@
 #endif
 
 #ifdef USE_LIBDRM
+#include <libdrm/drm_fourcc.h>
 #include <libdrm/drm.h>
 #include <libdrm/drm_mode.h>
 #include <xf86drm.h>
@@ -68,6 +69,8 @@
 
 #include <libavutil/hwcontext.h>
 #include <libavutil/hwcontext_drm.h>
+
+#include <gbm.h>
 #endif
 
 #ifdef USE_DIRECTFB
@@ -135,6 +138,17 @@ static ao_sample_format sformat;
 extern int drm_fd;
 extern uint8_t *fb_ptr;
 extern struct drm_mode_create_dumb creq;
+extern uint32_t crtc_id;
+extern uint32_t conn_id;
+extern uint32_t ov_id;
+extern int scr_w;
+extern int scr_h;
+
+uint32_t last_fb=0;
+AVFrame *nv12= NULL;
+
+int gbm_fd = -1;
+struct gbm_device *gbm = NULL;
 #endif
 
 #ifdef USE_DIRECTFB
@@ -255,6 +269,91 @@ int LinuxDvbOpen(Context_t  *context, char * type)
 			linuxdvb_err("VIDEO_SELECT_SOURCE: %s\n", strerror(errno));
 		}        
 	}
+#else
+#ifdef USE_LIBDRM
+//	AVBufferRef *hw_dev=NULL;
+//  	av_hwdevice_ctx_create(&hw_dev, AV_HWDEVICE_TYPE_DRM, "/dev/dri/card0", NULL, 0);
+    	// fallback to VAAPI if no DRM hwaccel (Intel)
+//    	if(!hw_dev) av_hwdevice_ctx_create(&hw_dev, AV_HWDEVICE_TYPE_VAAPI, "/dev/dri/renderD128", NULL, 0);
+    	
+    	/////
+//    	if (drm_fd < 0)
+//    	{
+//    	drm_fd = open("/dev/dri/card1", O_RDWR);
+//    	if(drm_fd<0) drm_fd=open("/dev/dri/card0", O_RDWR);
+//    	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES,1);
+
+/*
+    	drmModeRes *res = drmModeGetResources(drm_fd);
+    	drmModeConnector *conn = drmModeGetConnector(drm_fd, res->connectors[0]);
+    	crtc_id=res->crtcs[0];
+    	drmModeModeInfo *mode=&conn->modes[0];
+  	scr_w=mode->hdisplay, scr_h=mode->vdisplay;
+*/
+	// setup DRM
+	/*
+	drmModeRes *res = drmModeGetResources(drm_fd);
+	
+	drmModeConnector *conn = NULL;
+	
+	for(int i = 0; i< res->count_connectors; i++)
+    	{
+        	conn = drmModeGetConnector(drm_fd, res->connectors[i]);
+        	if(conn->connection == DRM_MODE_CONNECTED && conn->count_modes > 0) 
+        		break;
+        	
+        	drmModeFreeConnector(conn); 
+        	conn = NULL;
+        }
+        
+        if(conn)
+        {
+        	linuxdvb_printf(10, "Found connector\n");
+        	
+		drmModeModeInfo mode = conn->modes[0];
+		
+		scr_w = mode.hdisplay;
+		scr_h = mode.vdisplay;
+		
+		linuxdvb_printf(10, "DRM : %s Mode: %dx%d\n", mode.name, mode.hdisplay, mode.vdisplay);
+		
+    		conn_id = conn->connector_id;
+    		drmModeEncoder *enc = drmModeGetEncoder(drm_fd, conn->encoder_id);
+    		crtc_id = enc->crtc_id;
+    	}
+    	*/
+
+    	// find overlay plane
+    	ov_id = 0;
+    	drmModePlaneRes *pr = drmModeGetPlaneResources(drm_fd);
+    	
+    	for(uint32_t i = 0; i < pr->count_planes; i++)
+    	{
+        	drmModePlane *pl = drmModeGetPlane(drm_fd, pr->planes[i]);
+        	
+        	if(pl->possible_crtcs & (1<<0))
+        	{ 
+        		ov_id=pl->plane_id; 
+        		drmModeFreePlane(pl); 
+        		break; 
+        	}
+        	
+        	drmModeFreePlane(pl);
+    	}
+    	
+    	if (gbm_fd < 0)
+    	{
+		gbm_fd = open("/dev/dri/renderD128", O_RDWR); // no permission issue
+		gbm = gbm_create_device(gbm_fd);
+		
+		if (gbm == NULL)
+		{
+			linuxdvb_printf(10, "failed to create gbm device\n");
+		}
+		else
+			linuxdvb_printf(10, "gbm device created:%p\n", gbm);
+	}
+#endif
 #endif
 	
 	return cERR_LINUXDVB_NO_ERROR;
@@ -278,6 +377,13 @@ int LinuxDvbClose(Context_t  *context, char * type)
 		ao_close(adevice);
 		
 	adevice = NULL;
+	
+#ifdef USE_LIBDRM
+//	drmModeSetCrtc(drm_fd, crtc_id, 0, 0, 0, NULL, 0, NULL);
+//	close(drm_fd);
+	close(gbm_fd);
+	gbm_fd = -1;
+#endif	
 #endif
 #else	
 	if (audio && audiofd != -1) 
@@ -1393,11 +1499,11 @@ static int Write(void* _context, void* _out)
 			getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 			
 #ifdef USE_OPENGL				
-			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
+			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_BGRA, SWS_BILINEAR, NULL, NULL, NULL);
 								
 			if (convert)
 			{
-				int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, out->ctx->width, out->ctx->height, 1);
+				int need = av_image_get_buffer_size(AV_PIX_FMT_BGRA, out->ctx->width, out->ctx->height, 1);
 
 				if (data[buf_in].size < need)
 					data[buf_in].size = need;
@@ -1435,21 +1541,98 @@ static int Write(void* _context, void* _out)
 					buf_num--;
 				}								
 			}
-#elif defined (USE_LIBDRM)
-#define DIRECT_WRITE
-
-#ifdef DIRECT_WRITE
-			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_BGRA, SWS_BILINEAR, NULL, NULL, NULL);
-								
+#endif
+#if defined (USE_LIBDRM)
+			////
+			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, /*out->ctx->pix_fmt*/AV_PIX_FMT_YUV420P, out->ctx->width, out->ctx->height, AV_PIX_FMT_NV12, SWS_BILINEAR, NULL, NULL, NULL);
+			
 			if (convert)
 			{
-				// swsscale YUV420 to RGB32:
-				uint8_t *dest[4] = { fb_ptr, NULL, NULL, NULL };
-	    			int dest_linesize[4] = { creq.pitch, 0, 0, 0 };
-	    			
-				sws_scale(convert, out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);
+				// create scanout BO
+				if (gbm)
+				{
+					struct gbm_bo *bo = gbm_bo_create(gbm, out->ctx->width, out->ctx->height, GBM_FORMAT_NV12, GBM_BO_USE_SCANOUT | GBM_BO_USE_LINEAR);
+					
+					uint32_t stride;
+					void *map_data;
+					
+					uint8_t *mapped = gbm_bo_map(bo, 0, 0, out->ctx->width, out->ctx->height, GBM_BO_TRANSFER_WRITE, &stride, &map_data);
+					
+					// use sws into it
+					uint8_t *dest[2] = { mapped, mapped + stride* out->ctx->height };
+		    			int dest_linesize[2] = { (int)stride, (int)stride };
+
+		    			sws_scale(convert, (const uint8_t* const*)out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);
+		    			
+		    			// export to PRIME -> DRM FB
+		    			int dma_fd = gbm_bo_get_fd(bo);
+		    			uint32_t handle;
+		    			
+		    			drmPrimeFDToHandle(drm_fd, dma_fd, &handle);
+		    			
+		    			uint32_t pitches[2] = {stride, stride};
+		    			uint32_t offsets[2] = {0, stride*out->ctx->height};
+		    			uint32_t fb;
+		    			drmModeAddFB2(drm_fd, out->ctx->width, out->ctx->height, DRM_FORMAT_NV12, (uint32_t[]){handle, handle}, pitches, offsets, &fb, 0);
+		    			drmModeSetPlane(drm_fd, ov_id, crtc_id, fb, 0, 0, 0, 1920, 1080, 0, 0, out->ctx->width<<16, out->ctx->height<<16);
+		    			
+		    			// cleanup.
+		    			close(dma_fd);
+		    			gbm_bo_destroy(bo);
+            			}
 			}
-#else
+			////
+			#if 0
+			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_NV12, SWS_BILINEAR, NULL, NULL, NULL);
+			
+			if (convert)
+			{
+				// create DRM NV12 dumb
+            			struct drm_mode_create_dumb cre={0}; 
+            			cre.width=out->vframe->width; 
+            			cre.height=out->vframe->height*3/2; 
+            			cre.bpp=8;
+            			
+            			drmIoctl(drm_fd, DRM_IOCTL_MODE_CREATE_DUMB, &cre);
+            			struct drm_mode_map_dumb mp={0}; 
+            			mp.handle=cre.handle;
+            			drmIoctl(drm_fd, DRM_IOCTL_MODE_MAP_DUMB, &mp);
+            			uint8_t *fb_ptr = mmap(0, cre.size, PROT_READ|PROT_WRITE, MAP_SHARED, drm_fd, mp.offset);
+
+            			// wrap ptr as AVFrame for sws
+            			/*nv12->data[0]=ptr;
+            			nv12->linesize[0]=vw;
+            			nv12->data[1]=ptr+vw*vh;
+            			nv12->linesize[1]=vw;
+            			*/
+            			uint8_t *dest[4] = { fb_ptr, fb_ptr+out->ctx->width*out->ctx->height, NULL, NULL };
+	    			int dest_linesize[4] = { out->ctx->width, out->ctx->height, 0, 0 };
+
+            			sws_scale(convert, (const uint8_t* const*)out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);
+
+            			uint32_t hdl[4]={cre.handle,cre.handle};
+            			uint32_t pitch[4]={(uint32_t)cre.pitch,(uint32_t)cre.pitch};
+            			uint32_t off[4]={0,(uint32_t)(out->ctx->width*out->ctx->height)};
+            			
+            			uint32_t fb; 
+            			drmModeAddFB2(drm_fd, out->ctx->width, out->ctx->height, DRM_FORMAT_NV12, hdl,pitch,off,&fb,0);
+
+            			drmModeSetPlane(drm_fd, ov_id, crtc_id, fb, 0, 0,0,scr_w,scr_h, 0,0,out->ctx->width<<16,out->ctx->height<<16);
+            			
+            			if(last_fb)
+            			{ 
+            				drmModeRmFB(drm_fd, last_fb); 
+            			}
+            			
+            			// free old dumb
+            			struct drm_mode_destroy_dumb des={0}; 
+            			des.handle=cre.handle; // we keep handle? need keep before rmFB, leak for demo simplicity
+            			// keep for 2 frames then unmap
+            			munmap(fb_ptr, cre.size);
+            			last_fb=fb;
+            			//usleep(40000);
+			}
+			//#else
 			// Prüfen, ob der Frame im DRM_PRIME Format vorliegt
                     	if (out->vframe->format == AV_PIX_FMT_DRM_PRIME) 
                     	{
@@ -1458,6 +1641,7 @@ static int Write(void* _context, void* _out)
                         
                         	linuxdvb_printf(10, "[DRM PRIME] Frame dekodiert! Layer-Anzahl: %d, Objekte (Fds): %d\n", desc->nb_layers, desc->nb_objects);
 
+				#if 0
                         	// HIER findet die Übergabe an libdrm statt:
                         	// desc->objects[0].fd ist der DMA-Buf Dateideskriptor.
                         	// Mittels drmPrimeFDToHandle() wandelt man diesen in ein DRM-Handle um.
@@ -1472,14 +1656,54 @@ static int Write(void* _context, void* _out)
                             		// HINWEIS: Für ein echtes Rendering müsste hier drmModePageFlip() 
                             		// oder ein DRM-Atomic-Commit auf einen CRTC/Plane folgen.
                         	}
+                        	#endif
+                        	////
+                        	// import dma-buf to GEM
+                        	uint32_t handles[4]={0}, pitches[4]={0}, offsets[4]={0};
+            			uint64_t mods[4]={0};
+            			
+            			 for(int i=0;i<desc->nb_layers;i++)
+            			 {
+            			 	AVDRMLayerDescriptor *layer = &desc->layers[i];
+            			 	
+		                	for(int j=0;j<layer->nb_planes;j++)
+		                	{
+		            			int idx = layer->planes[j].object_index;
+		            			int fd_prime = desc->objects[idx].fd;
+		            			uint32_t gem_handle;
+		            			drmPrimeFDToHandle(drm_fd, fd_prime, &gem_handle);
+		            			handles[j]=gem_handle;
+		            			pitches[j]=layer->planes[j].pitch;
+		            			offsets[j]=layer->planes[j].offset;
+		            			mods[j]=desc->objects[idx].format_modifier;
+		        		}
+		        		uint32_t fb_id;
+		        		// try with modifiers first (KODI does this)
+		        		if(drmModeAddFB2WithModifiers(drm_fd, out->vframe->width, out->vframe->height, layer->format, handles, pitches, offsets, mods, &fb_id, DRM_MODE_FB_MODIFIERS)!=0)
+		        		{
+		            			drmModeAddFB2(drm_fd, out->vframe->width, out->vframe->height, layer->format, handles, pitches, offsets, &fb_id, 0);
+		        		}
+		        		
+		        		if(last_fb) drmModeRmFB(drm_fd, last_fb);
+		        		last_fb=fb_id;
+
+		        		// show fullscreen, HW scaler does it
+		        		drmModeSetPlane(drm_fd, ov_id, crtc_id, fb_id, 0,
+		            			0,0, scr_w, scr_h,
+		            			0,0, out->vframe->width<<16, out->vframe->height<<16);
+		        		break; // only first layer for NV12
+		        	}
+		        	// simple sync - wait 1 vsync
+            			drmVBlank vbl={0}; vbl.request.type=DRM_VBLANK_RELATIVE; vbl.request.sequence=1;
+            			drmIoctl(drm_fd, DRM_IOCTL_WAIT_VBLANK, &vbl);
                     	} 
                     	else 
                     	{
                         	linuxdvb_printf(10, "[CPU] Frame im Software-Format (%d) dekodiert (Kein DRM_PRIME).\n", out->vframe->format);
                     	}
-#endif
+                    	#endif
 #elif defined (USE_DIRECTFB)
-			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
+			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_BGRA, SWS_BILINEAR, NULL, NULL, NULL);
 								
 			if (convert)
 			{

@@ -74,12 +74,14 @@ config:
 	@echo -e "   \033[01;32m1) opengl\033[00m"
 	@echo "   2) directfb"
 	@echo "   3) linux framebuffer"
-	@read -p "FrameBuffer (1-3)?" FRAMEBUFFER; \
+	@echo "   4  DRM"
+	@read -p "FrameBuffer (1-4)?" FRAMEBUFFER; \
 	FRAMEBUFFER=$${FRAMEBUFFER}; \
 	case "$$FRAMEBUFFER" in \
 		1) echo "FRAMEBUFFER=opengl" > .config;; \
 		2) echo "FRAMEBUFFER=directfb" > .config;; \
 		3) echo "FRAMEBUFFER=fbdev" > .config;; \
+		4) echo "FRAMEBUFFER=drm" > .config;; \
 		*) echo "FRAMEBUFFER=opengl" > .config;; \
 	esac; \
 	echo ""
@@ -232,7 +234,11 @@ endif
 ifeq ($(FRAMEBUFFER), directfb)
 N2_OPTS += --enable-directfb
 endif
-N2_OPTS += --enable-no-av-decoder --enable-libao
+
+ifeq ($(FRAMEBUFFER), drm)
+N2_OPTS += --enable-libdrm
+endif
+N2_OPTS += --enable-no-av-decoder --enable-libao --enable-libdrm
 
 # lirc
 ifeq ($(LIRC), lirc)
@@ -393,6 +399,9 @@ update:
 
 clean: neutrino2-clean plugins-clean
 distclean: neutrino2-distclean plugins-distclean
+
+buildlogs-clean:
+	rm -rf neutrino2_build_log*
 
 #
 # debian package
