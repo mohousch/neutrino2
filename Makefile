@@ -238,7 +238,7 @@ endif
 ifeq ($(FRAMEBUFFER), drm)
 N2_OPTS += --enable-libdrm
 endif
-N2_OPTS += --enable-no-av-decoder --enable-libao --enable-libdrm
+N2_OPTS += --enable-no-av-decoder --enable-libao
 
 # lirc
 ifeq ($(LIRC), lirc)
