@@ -71,8 +71,10 @@ GLThreadObj *mpGLThreadObj; // the thread object
 int drm_fd = -1;
 uint32_t conn_id, crtc_id, fb_id;
 drmModeModeInfo mode;
-uint8_t *fb_ptr = NULL;
+//uint8_t *fb_ptr = NULL;
 struct drm_mode_create_dumb creq={0};
+struct drm_mode_map_dumb mreq = {0};
+//uint32_t handle;
 
 uint32_t ov_id=0;
 int scr_w = 1280;
@@ -262,8 +264,8 @@ void CFrameBuffer::init(const char * const fbDevice)
 		 	drmModeAddFB(drm_fd, creq.width, creq.height, 24, 32, creq.pitch, creq.handle, &fb_id);
 		 	drmModeSetCrtc(drm_fd, crtc_id, fb_id, 0, 0, &conn_id, 1, &mode);
 
-		 	// mmap it
-		 	struct drm_mode_map_dumb mreq = {0}; 
+			/*
+		 	// mmap it 
 		 	mreq.handle = creq.handle;
 		 	
 		 	ioctl(drm_fd, DRM_IOCTL_MODE_MAP_DUMB, &mreq);
@@ -283,6 +285,7 @@ void CFrameBuffer::init(const char * const fbDevice)
 			screeninfo.xres_virtual = screeninfo.xres;
 			screeninfo.yres = mode.vdisplay;
 			screeninfo.yres_virtual = screeninfo.yres;
+			*/
 	 	}
 	 	else
 	 	{
@@ -402,10 +405,47 @@ int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
 	bpp = _bpp;
 	stride = xRes * sizeof(fb_pixel_t);
 #elif defined (USE_LIBDRM)
+/*
 	xRes = scr_w;
 	yRes = scr_h;
 	bpp = 32;
-	stride = creq.pitch;	
+	stride = creq.pitch;
+*/
+	// 1. cleanup old
+    	if (fb_id) 
+    	{
+        	drmModeRmFB(drm_fd, fb_id);
+        	struct drm_mode_destroy_dumb dreq = {.handle = /**handle*/creq.handle};
+        	drmIoctl(fd, DRM_IOCTL_MODE_DESTROY_DUMB, &dreq);
+        	fb_id = 0;
+    	}
+    	
+    	// 2. create new dumb buffer
+    	xRes = creq.width = x;
+    	yRes = creq.height = y;
+    	creq.bpp = _bpp;
+    	
+    	drmIoctl(fd, DRM_IOCTL_MODE_CREATE_DUMB, &creq);
+
+	stride = creq.pitch;
+
+	// 3. create fb
+    	drmModeAddFB(drm_fd, x, y, 24, _bpp, creq.pitch, creq.handle, &fb_id);
+
+    	// 4. mmap for CPU drawing
+    	mreq.handle = creq.handle;
+    	drmIoctl(drm_fd, DRM_IOCTL_MODE_MAP_DUMB, &mreq);
+    	lfb = (uint32_t *)mmap(0, creq.size, PROT_READ|PROT_WRITE, MAP_SHARED, drm_fd, mreq.offset);
+    	
+    	//
+    	drmModeSetCrtc(drm_fd, crtc_id, fb_id, 0, 0, &conn_id, 1, &mode);
+    	
+    	// fill screeninfo structure
+	screeninfo.bits_per_pixel = 32;
+	screeninfo.xres = mode.hdisplay;
+	screeninfo.xres_virtual = screeninfo.xres;
+	screeninfo.yres = mode.vdisplay;
+	screeninfo.yres_virtual = screeninfo.yres;
 #else
 	screeninfo.xres_virtual = screeninfo.xres = x;
 	screeninfo.yres_virtual = (screeninfo.yres = y)*2; // double buffering

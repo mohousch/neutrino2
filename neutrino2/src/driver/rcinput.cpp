@@ -1528,44 +1528,44 @@ uint32_t CRCInput::translateKBKey(char code)
 	switch(code)
 	{
 		case 27: // <- Esc
-			trkey = KEY_HOME;
+			trkey = RC_home;
 			break;
 		case 10: // <- Return
 		case 'o':
-			trkey = KEY_OK;
+			trkey = RC_ok;
 			break;
 		case 'p':
-			trkey = KEY_POWER;
+			trkey = RC_standby;
 			break;
 		case 's':
-			trkey = KEY_SETUP;
+			trkey = RC_setup;
 			break;
 		case 'h':
-			trkey = KEY_HELP;
+			trkey = RC_help;
 			break;
 		case 'i':
-			trkey = KEY_UP;
+			trkey = RC_up;
 			break;
 		case 'm':
-			trkey = KEY_DOWN;
+			trkey = RC_down;
 			break;
 		case 'j':
-			trkey = KEY_LEFT;
+			trkey = RC_left;
 			break;
 		case 'k':
-			trkey = KEY_RIGHT;
+			trkey = RC_right;
 			break;
 		case 'r':
-			trkey = KEY_RED;
+			trkey = RC_red;
 			break;
 		case 'g':
-			trkey = KEY_GREEN;
+			trkey = RC_green;
 			break;
 		case 'y':
-			trkey = KEY_YELLOW;
+			trkey = RC_yellow;
 			break;
 		case 'b':
-			trkey = KEY_BLUE;
+			trkey = RC_blue;
 			break;
 		case '0':
 			trkey = RC_0;
@@ -1602,18 +1602,6 @@ uint32_t CRCInput::translateKBKey(char code)
 			break;
 		case '-':
 			trkey = RC_minus;
-			break;
-		case 'a':
-			trkey = KEY_A;
-			break;
-		case 'u':
-			trkey = KEY_U;
-			break;
-		case '/':
-			trkey = KEY_SLASH;
-			break;
-		case '\\':
-			trkey = KEY_BACKSLASH;
 			break;
 		default:
 			trkey = RC_nokey;
