@@ -42,6 +42,10 @@
 #include <audio_cs.h>
 #include <video_cs.h>
 
+#ifdef HAVE_NO_AV_DECODER
+#include <alsa/asoundlib.h>
+#endif
+
 
 extern cVideo * videoDecoder;		// libdvbapi (video_cs.cpp)
 extern cAudio * audioDecoder;		// libdvbapi (audio_cs.cpp)
@@ -188,9 +192,56 @@ void CAudioSettings::showMenu()
 	audioSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	audioSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE, NULL, true) );
 
+	// audio output	
+#ifdef HAVE_NO_AV_DECODER
+	std::string output;
+	CMenuOptionStringChooser *item = new CMenuOptionStringChooser(_("Audio Output:"), (char *)output.c_str());	
+	
+	int card = -1;
+    	if (snd_card_next(&card) < 0) return;
+    
+    	while (card >= 0) 
+    	{
+        	char *name;
+        	snd_card_get_name(card, &name);
+        
+        	printf("card %d\n", card);
+
+        	snd_ctl_t *ctl;
+        	char ctl_id[32];
+        	sprintf(ctl_id, "hw:%d", card);
+        
+        	if (snd_ctl_open(&ctl, ctl_id, 0)==0) 
+        	{
+            		int dev = -1;
+            		while (1) 
+            		{
+                		if (snd_ctl_pcm_next_device(ctl, &dev)<0) break;
+                		if (dev <0) break;
+                
+                		snd_pcm_info_t *info;
+                		snd_pcm_info_alloca(&info);
+                		snd_pcm_info_set_device(info, dev);
+                		snd_pcm_info_set_stream(info, SND_PCM_STREAM_PLAYBACK);
+                
+                		if (snd_ctl_pcm_info(ctl, info)>=0) 
+                		{
+                    			printf(" device %d: %s [%s]\n", dev, snd_pcm_info_get_id(info), snd_pcm_info_get_name(info));
+                    			item->addOption(snd_pcm_info_get_id(info));
+                		}
+            		}
+            		snd_ctl_close(ctl);
+        	}
+        	if (snd_card_next(&card)<0) break;
+    	}
+    	
+    	audioSettings->addItem(item);
+#endif	
+
 	// analog output
 	audioSettings->addItem(new CMenuOptionChooser(_("Analog Output"), &g_settings.audio_AnalogMode, AUDIOMENU_ANALOGOUT_OPTIONS, AUDIOMENU_ANALOGOUT_OPTION_COUNT, true, audioSetupNotifier));
 	
+#ifndef HAVE_NO_AV_DECODER	
 	// hdmi-dd
 	audioSettings->addItem(new CMenuOptionChooser(_("Dolby Digital"), &g_settings.hdmi_dd, AC3_OPTIONS, AC3_OPTION_COUNT, true, audioSetupNotifier));		
 
@@ -201,7 +252,8 @@ void CAudioSettings::showMenu()
 	audioSettings->addItem(new CMenuOptionChooser(_("AC3 Delay"), &g_settings.ac3_delay, AUDIODELAY_OPTIONS, AUDIODELAY_OPTION_COUNT, true, audioSetupNotifier));
 	
 	// pcm delay
-	audioSettings->addItem(new CMenuOptionChooser(_("PCM Delay"), &g_settings.pcm_delay, AUDIODELAY_OPTIONS, AUDIODELAY_OPTION_COUNT, true, audioSetupNotifier));	
+	audioSettings->addItem(new CMenuOptionChooser(_("PCM Delay"), &g_settings.pcm_delay, AUDIODELAY_OPTIONS, AUDIODELAY_OPTION_COUNT, true, audioSetupNotifier));
+#endif	
 	
 	// pref lang
 	audioSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Audio language preferences"), true));

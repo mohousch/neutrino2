@@ -1247,6 +1247,10 @@ static int Write(void* _context, void* _out)
 			
 			if (adevice == NULL)
 			{
+				//ao_option *opts = NULL;
+				//ao_append_option(&opts, "dev", "hw:1,0");
+				//adevice = ao_open_live(driver, &sformat, opts);
+				//
 				driver = ao_default_driver_id();	
 				adevice = ao_open_live(driver, &sformat, NULL);
 				ai = ao_driver_info(driver);

@@ -261,6 +261,7 @@ void CVideoSettings::showMenu()
 	videoSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	videoSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE, NULL, true) );
 
+#ifndef HAVE_NO_AV_DECODER
 	// video aspect ratio 4:3/16:9
 	videoSettings->addItem(new CMenuOptionChooser(_("TV-System"), &g_settings.video_Ratio, VIDEOMENU_VIDEORATIO_OPTIONS, VIDEOMENU_VIDEORATIO_OPTION_COUNT, true, this));
 	
@@ -295,6 +296,19 @@ void CVideoSettings::showMenu()
 	
 	CPSISetup * chPSISetup = new CPSISetup(_("PSI settings"), &g_settings.contrast, &g_settings.saturation, &g_settings.brightness, &g_settings.tint);
 	videoSettings->addItem( new CMenuForwarder(_("PSI settings"), true, NULL, chPSISetup));
+#endif
+#else
+	// Monitor
+	std::string monitor;
+	CMenuItem *item = new CMenuOptionStringChooser(_("Display"), (char *)monitor.c_str(), false);
+	videoSettings->addItem(item);
+	
+	// display
+	std::string display;
+	item = new CMenuOptionStringChooser(_("Video Resolution"), (char *)display.c_str());
+	item->addOption("1920x1080");
+	item->addOption("1280x720");
+	videoSettings->addItem(item);
 #endif
 	
 	//

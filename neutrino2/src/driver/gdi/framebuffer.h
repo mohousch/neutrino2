@@ -174,7 +174,7 @@ class CFrameBuffer
 		static CFrameBuffer * getInstance();
 
 		void init(const char * const fbDevice = "/dev/fb0");		
-		int setMode(unsigned int x = DEFAULT_XRES, unsigned int y = DEFAULT_YRES, unsigned int _bpp = DEFAULT_BPP);
+		int setMode(unsigned int dx = DEFAULT_XRES, unsigned int dy = DEFAULT_YRES, unsigned int nbpp = DEFAULT_BPP);
 		int showConsole(int state);
 
 		////

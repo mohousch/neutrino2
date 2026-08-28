@@ -74,7 +74,7 @@ drmModeModeInfo mode;
 //uint8_t *fb_ptr = NULL;
 struct drm_mode_create_dumb creq={0};
 struct drm_mode_map_dumb mreq = {0};
-//uint32_t handle;
+uint32_t handle;
 
 uint32_t ov_id=0;
 int scr_w = 1280;
@@ -252,20 +252,22 @@ void CFrameBuffer::init(const char * const fbDevice)
 	    		conn_id = conn->connector_id;
 	    		drmModeEncoder *enc = drmModeGetEncoder(drm_fd, conn->encoder_id);
 	    		crtc_id = enc->crtc_id;
+	    		
+	    		scr_w = mode.hdisplay; 
+		 	scr_h = mode.vdisplay; 
 	    	
 			// alloc dumb buffer = display memory
-		 	scr_w = creq.width = mode.hdisplay; 
-		 	scr_h = creq.height = mode.vdisplay; 
-		 	creq.bpp = 32;
+		 	creq.width = mode.hdisplay; 
+		 	creq.height = mode.vdisplay; 
+		 	creq.bpp = DEFAULT_BPP;
 		 	
 		 	ioctl(drm_fd, DRM_IOCTL_MODE_CREATE_DUMB, &creq);
 
 		 	// make FB
-		 	drmModeAddFB(drm_fd, creq.width, creq.height, 24, 32, creq.pitch, creq.handle, &fb_id);
+		 	drmModeAddFB(drm_fd, creq.width, creq.height, 24, creq.bpp, creq.pitch, creq.handle, &fb_id);
 		 	drmModeSetCrtc(drm_fd, crtc_id, fb_id, 0, 0, &conn_id, 1, &mode);
 
-			/*
-		 	// mmap it 
+		 	// mmap it
 		 	mreq.handle = creq.handle;
 		 	
 		 	ioctl(drm_fd, DRM_IOCTL_MODE_MAP_DUMB, &mreq);
@@ -285,7 +287,6 @@ void CFrameBuffer::init(const char * const fbDevice)
 			screeninfo.xres_virtual = screeninfo.xres;
 			screeninfo.yres = mode.vdisplay;
 			screeninfo.yres_virtual = screeninfo.yres;
-			*/
 	 	}
 	 	else
 	 	{
@@ -392,69 +393,87 @@ nolfb:
 	lfb = 0;
 }
 
-int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
+int CFrameBuffer::setMode(unsigned int dx, unsigned int dy, unsigned int nbpp)
 {
 	if (!available && !active)
 		return -1;
 	
-	dprintf(DEBUG_NORMAL, "CFrameBuffer::setMode: FB: %dx%d (%d bit)\n", x, y, _bpp);
+	dprintf(DEBUG_NORMAL, "CFrameBuffer::setMode: FB: %dx%d (%d bit)\n", dx, dy, nbpp);
 
 #if defined (__sh__) || defined (USE_OPENGL)
-	xRes = x;
-	yRes = y;
-	bpp = _bpp;
+	xRes = dx;
+	yRes = dy;
+	bpp = nbpp;
 	stride = xRes * sizeof(fb_pixel_t);
 #elif defined (USE_LIBDRM)
-/*
-	xRes = scr_w;
-	yRes = scr_h;
-	bpp = 32;
-	stride = creq.pitch;
-*/
-	// 1. cleanup old
-    	if (fb_id) 
-    	{
-        	drmModeRmFB(drm_fd, fb_id);
-        	struct drm_mode_destroy_dumb dreq = {.handle = /**handle*/creq.handle};
-        	drmIoctl(fd, DRM_IOCTL_MODE_DESTROY_DUMB, &dreq);
-        	fb_id = 0;
-    	}
-    	
-    	// 2. create new dumb buffer
-    	xRes = creq.width = x;
-    	yRes = creq.height = y;
-    	creq.bpp = _bpp;
-    	
-    	drmIoctl(fd, DRM_IOCTL_MODE_CREATE_DUMB, &creq);
+//	xRes = creq.width;
+//	yRes = creq.height;
+//	bpp = creq.bpp;
+//	stride = creq.pitch;
 
-	stride = creq.pitch;
+	//if (dx != creq.width || dy != creq.height)
+	if (false)
+	{
+		if (lfb)
+			munmap(lfb, available);
+			
+		// 1. cleanup old
+	    	if (fb_id) 
+	    	{
+			drmModeRmFB(drm_fd, fb_id);
+			struct drm_mode_destroy_dumb dreq;
+			
+			dreq.handle = handle;
+			drmIoctl(fd, DRM_IOCTL_MODE_DESTROY_DUMB, &dreq);
+			fb_id = 0;
+	    	}
+	    	
+	    	// 2. create new dumb buffer
+	    	creq.width = dx;
+	    	creq.height = dy;
+	    	creq.bpp = nbpp;
+	    	
+	    	drmIoctl(drm_fd, DRM_IOCTL_MODE_CREATE_DUMB, &creq);
 
-	// 3. create fb
-    	drmModeAddFB(drm_fd, x, y, 24, _bpp, creq.pitch, creq.handle, &fb_id);
+		// 3. create fb
+	    	drmModeAddFB(drm_fd, dx, dy, 24, nbpp, creq.pitch, creq.handle, &fb_id);
 
-    	// 4. mmap for CPU drawing
-    	mreq.handle = creq.handle;
-    	drmIoctl(drm_fd, DRM_IOCTL_MODE_MAP_DUMB, &mreq);
-    	lfb = (uint32_t *)mmap(0, creq.size, PROT_READ|PROT_WRITE, MAP_SHARED, drm_fd, mreq.offset);
-    	
-    	//
-    	drmModeSetCrtc(drm_fd, crtc_id, fb_id, 0, 0, &conn_id, 1, &mode);
-    	
-    	// fill screeninfo structure
-	screeninfo.bits_per_pixel = 32;
-	screeninfo.xres = mode.hdisplay;
-	screeninfo.xres_virtual = screeninfo.xres;
-	screeninfo.yres = mode.vdisplay;
-	screeninfo.yres_virtual = screeninfo.yres;
+	    	// 4. mmap for CPU drawing
+	    	mreq.handle = creq.handle;
+	    	drmIoctl(drm_fd, DRM_IOCTL_MODE_MAP_DUMB, &mreq);
+	    	lfb = (uint32_t *)mmap(0, creq.size, PROT_READ|PROT_WRITE, MAP_SHARED, drm_fd, mreq.offset);
+	    	
+	    	//
+	    	drmModeSetCrtc(drm_fd, crtc_id, fb_id, 0, 0, &conn_id, 1, &mode);
+	    	
+	    	// fill screeninfo structure
+		screeninfo.bits_per_pixel = 32;
+		screeninfo.xres = mode.hdisplay;
+		screeninfo.xres_virtual = screeninfo.xres;
+		screeninfo.yres = mode.vdisplay;
+		screeninfo.yres_virtual = screeninfo.yres;
+		
+		xRes = creq.width;
+		yRes = creq.height;
+		bpp = creq.bpp;
+		stride = creq.pitch;
+	}
+	else
+	{
+		xRes = creq.width;
+		yRes = creq.height;
+		bpp = creq.bpp;
+		stride = creq.pitch;
+	}
 #else
-	screeninfo.xres_virtual = screeninfo.xres = x;
-	screeninfo.yres_virtual = (screeninfo.yres = y)*2; // double buffering
+	screeninfo.xres_virtual = screeninfo.xres = dx;
+	screeninfo.yres_virtual = (screeninfo.yres = dy)*2; // double buffering
 	screeninfo.height = 0;
 	screeninfo.width = 0;
 	screeninfo.xoffset = screeninfo.yoffset = 0;
-	screeninfo.bits_per_pixel = _bpp;
+	screeninfo.bits_per_pixel = nbpp;
 
-	switch (_bpp) 
+	switch (nbpp) 
 	{
 		case 16:
 			// ARGB 1555
@@ -482,12 +501,12 @@ int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
 	}
 	
 	// num of pages
-	m_number_of_pages = screeninfo.yres_virtual / y;
+	m_number_of_pages = screeninfo.yres_virtual / dy;
 	
 	if (ioctl(fd, FBIOPUT_VSCREENINFO, &screeninfo) < 0)
 	{
 		// try single buffering
-		screeninfo.yres_virtual = screeninfo.yres = y;
+		screeninfo.yres_virtual = screeninfo.yres = dy;
 
 		if (ioctl(fd, FBIOPUT_VSCREENINFO, &screeninfo) < 0)
 		{
@@ -502,9 +521,9 @@ int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
 	//
 	ioctl(fd, FBIOGET_VSCREENINFO, &screeninfo);
 
-	if ((screeninfo.xres != x) && (screeninfo.yres != y) && (screeninfo.bits_per_pixel != _bpp))
+	if ((screeninfo.xres != dx) && (screeninfo.yres != dy) && (screeninfo.bits_per_pixel != nbpp))
 	{
-		printf("CFrameBuffer::setVideoMode: failed: wanted: %dx%dx%d, got %dx%dx%d\n", x, y, _bpp, screeninfo.xres, screeninfo.yres, screeninfo.bits_per_pixel);
+		printf("CFrameBuffer::setVideoMode: failed: wanted: %dx%dx%d, got %dx%dx%d\n", dx, dy, nbpp, screeninfo.xres, screeninfo.yres, screeninfo.bits_per_pixel);
 	}
 	
 	xRes = screeninfo.xres;
