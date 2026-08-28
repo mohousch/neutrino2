@@ -1541,7 +1541,13 @@ uint32_t CRCInput::translateKBKey(char code)
 			trkey = RC_setup;
 			break;
 		case 'h':
-			trkey = RC_help;
+			trkey = RC_info;
+			break;
+		case 'e':
+			trkey = RC_epg;
+			break;
+		case 'a':
+			trkey = RC_audio;
 			break;
 		case 'i':
 			trkey = RC_up;
