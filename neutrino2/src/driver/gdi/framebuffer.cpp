@@ -115,7 +115,7 @@ CFrameBuffer::CFrameBuffer()
 	background = NULL;
 	backupBackground = NULL;
 	backgroundFilename = "";
-	fd  = 0;
+	fd  = -1;
 	m_manual_blit = -1;
 	
 	// 
@@ -184,9 +184,7 @@ void CFrameBuffer::init(const char * const fbDevice)
 {
 	dprintf(DEBUG_NORMAL, "CFrameBuffer::init\n");
 	
-#if defined (USE_OPENGL)
-	fd = -1;
-	
+#if defined (USE_OPENGL)	
 	if(!mpGLThreadObj)
 	{
 		screeninfo.bits_per_pixel = DEFAULT_BPP;
@@ -213,9 +211,7 @@ void CFrameBuffer::init(const char * const fbDevice)
 		perror("mmap");
 		goto nolfb;
 	}
-#elif defined (USE_LIBDRM)
-	fd = -1;
-	
+#elif defined (USE_LIBDRM)	
 	drm_fd = open("/dev/dri/card1", O_RDWR | O_CLOEXEC);
 	
 	if (drm_fd < 0) 

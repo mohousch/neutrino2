@@ -48,34 +48,6 @@
 #include <linux/dvb/stm_ioctls.h>
 #endif
 
-////
-#ifdef HAVE_NO_AV_DECODER
-#include <libswscale/swscale.h>
-#include <libavutil/imgutils.h>
-#include <libswresample/swresample.h>
-#endif
-
-#ifdef USE_LIBAO
-#include <ao/ao.h>
-#endif
-
-#ifdef USE_LIBDRM
-#include <libdrm/drm_fourcc.h>
-#include <libdrm/drm.h>
-#include <libdrm/drm_mode.h>
-#include <xf86drm.h>
-#include <xf86drmMode.h>
-#include <sys/mman.h>
-
-#include <libavutil/hwcontext.h>
-#include <libavutil/hwcontext_drm.h>
-
-#include <gbm.h>
-#endif
-
-#ifdef USE_DIRECTFB
-#include <directfb.h>
-#endif
 
 
 /* ***************************** */
@@ -122,6 +94,10 @@ static int audiofd 	= -1;
 uint64_t sCURRENT_PTS = 0;
 
 #ifdef HAVE_NO_AV_DECODER
+#include <libswscale/swscale.h>
+#include <libavutil/imgutils.h>
+#include <libswresample/swresample.h>
+
 extern int buf_num;
 extern int buf_in;
 extern int buf_out;
@@ -130,11 +106,25 @@ Data_t data[64] = {0};
 uint64_t sCURRENT_APTS = 0;
 
 #ifdef USE_LIBAO
+#include <ao/ao.h>
+
 static ao_device *adevice = NULL;
 static ao_sample_format sformat;
 #endif
 
 #ifdef USE_LIBDRM
+#include <libdrm/drm_fourcc.h>
+#include <libdrm/drm.h>
+#include <libdrm/drm_mode.h>
+#include <xf86drm.h>
+#include <xf86drmMode.h>
+#include <sys/mman.h>
+
+#include <libavutil/hwcontext.h>
+#include <libavutil/hwcontext_drm.h>
+
+#include <gbm.h>
+
 extern int drm_fd;
 extern uint8_t *fb_ptr;
 extern struct drm_mode_create_dumb creq;
@@ -152,12 +142,14 @@ struct gbm_device *gbm = NULL;
 #endif
 
 #ifdef USE_DIRECTFB
+#include <directfb.h>
+
 //extern IDirectFB *dfb;
 //extern IDirectFBSurface *primary;
 //extern IDirectFBDisplayLayer *layer;
 extern IDirectFBSurface *video_surf;
 #endif
-#endif
+#endif // HAVE_NO_AV_DECODER
 
 //
 pthread_mutex_t LinuxDVBmutex;
@@ -285,46 +277,6 @@ int LinuxDvbOpen(Context_t  *context, char * type)
 //    	if(drm_fd<0) drm_fd=open("/dev/dri/card0", O_RDWR);
 //    	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES,1);
 
-/*
-    	drmModeRes *res = drmModeGetResources(drm_fd);
-    	drmModeConnector *conn = drmModeGetConnector(drm_fd, res->connectors[0]);
-    	crtc_id=res->crtcs[0];
-    	drmModeModeInfo *mode=&conn->modes[0];
-  	scr_w=mode->hdisplay, scr_h=mode->vdisplay;
-*/
-	// setup DRM
-	/*
-	drmModeRes *res = drmModeGetResources(drm_fd);
-	
-	drmModeConnector *conn = NULL;
-	
-	for(int i = 0; i< res->count_connectors; i++)
-    	{
-        	conn = drmModeGetConnector(drm_fd, res->connectors[i]);
-        	if(conn->connection == DRM_MODE_CONNECTED && conn->count_modes > 0) 
-        		break;
-        	
-        	drmModeFreeConnector(conn); 
-        	conn = NULL;
-        }
-        
-        if(conn)
-        {
-        	linuxdvb_printf(10, "Found connector\n");
-        	
-		drmModeModeInfo mode = conn->modes[0];
-		
-		scr_w = mode.hdisplay;
-		scr_h = mode.vdisplay;
-		
-		linuxdvb_printf(10, "DRM : %s Mode: %dx%d\n", mode.name, mode.hdisplay, mode.vdisplay);
-		
-    		conn_id = conn->connector_id;
-    		drmModeEncoder *enc = drmModeGetEncoder(drm_fd, conn->encoder_id);
-    		crtc_id = enc->crtc_id;
-    	}
-    	*/
-
     	// find overlay plane
     	ov_id = 0;
     	drmModePlaneRes *pr = drmModeGetPlaneResources(drm_fd);
@@ -335,7 +287,7 @@ int LinuxDvbOpen(Context_t  *context, char * type)
         	
         	if(pl->possible_crtcs & (1<<0))
         	{ 
-        		ov_id=pl->plane_id; 
+        		ov_id = pl->plane_id; 
         		drmModeFreePlane(pl); 
         		break; 
         	}
@@ -343,6 +295,7 @@ int LinuxDvbOpen(Context_t  *context, char * type)
         	drmModeFreePlane(pl);
     	}
     	
+    	// init gbm
     	if (gbm_fd < 0)
     	{
 		gbm_fd = open("/dev/dri/renderD128", O_RDWR); // no permission issue
@@ -379,14 +332,12 @@ int LinuxDvbClose(Context_t  *context, char * type)
 		ao_close(adevice);
 		
 	adevice = NULL;
+#endif
 	
 #ifdef USE_LIBDRM
-//	drmModeSetCrtc(drm_fd, crtc_id, 0, 0, 0, NULL, 0, NULL);
-//	close(drm_fd);
 	close(gbm_fd);
 	gbm_fd = -1;
 #endif	
-#endif
 #else	
 	if (audio && audiofd != -1) 
 	{
@@ -1605,11 +1556,6 @@ static int Write(void* _context, void* _out)
             			uint8_t *fb_ptr = mmap(0, cre.size, PROT_READ|PROT_WRITE, MAP_SHARED, drm_fd, mp.offset);
 
             			// wrap ptr as AVFrame for sws
-            			/*nv12->data[0]=ptr;
-            			nv12->linesize[0]=vw;
-            			nv12->data[1]=ptr+vw*vh;
-            			nv12->linesize[1]=vw;
-            			*/
             			uint8_t *dest[4] = { fb_ptr, fb_ptr+out->ctx->width*out->ctx->height, NULL, NULL };
 	    			int dest_linesize[4] = { out->ctx->width, out->ctx->height, 0, 0 };
 
