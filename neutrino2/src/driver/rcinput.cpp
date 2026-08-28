@@ -875,113 +875,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			
 			read(fd_keyb, &key, sizeof(key));
 			
-			printf("RCInput: KEY: %c\n", key);
-
-			switch(key)
-			{
-				case 27: // <- Esc
-					trkey = KEY_HOME;
-					break;
-				case 10: // <- Return
-				case 'o':
-					trkey = KEY_OK;
-					break;
-				case 'p':
-					trkey = KEY_POWER;
-					break;
-				case 's':
-					trkey = KEY_SETUP;
-					break;
-				case 'h':
-					trkey = KEY_HELP;
-					break;
-				case 'i':
-					trkey = KEY_UP;
-					break;
-				case 'm':
-					trkey = KEY_DOWN;
-					break;
-				case 'j':
-					trkey = KEY_LEFT;
-					break;
-				case 'k':
-					trkey = KEY_RIGHT;
-					break;
-				case 'r':
-					trkey = KEY_RED;
-					break;
-				case 'g':
-					trkey = KEY_GREEN;
-					break;
-				case 'y':
-					trkey = KEY_YELLOW;
-					break;
-				case 'b':
-					trkey = KEY_BLUE;
-					break;
-				case '0':
-					trkey = RC_0;
-					break;
-				case '1':
-					trkey = RC_1;
-					break;
-				case '2':
-					trkey = RC_2;
-					break;
-				case '3':
-					trkey = RC_3;
-					break;
-				case '4':
-					trkey = RC_4;
-					break;
-				case '5':
-					trkey = RC_5;
-					break;
-				case '6':
-					trkey = RC_6;
-					break;
-				case '7':
-					trkey = RC_7;
-					break;
-				case '8':
-					trkey = RC_8;
-					break;
-				case '9':
-					trkey = RC_9;
-					break;
-				case '+':
-					trkey = RC_plus;
-					break;
-				case '-':
-					trkey = RC_minus;
-					break;
-				case 'A':
-					trkey = RC_up;
-					break;
-				case 'B':
-					trkey = RC_down;
-					break;
-				case 'C':
-					trkey = RC_right;
-					break;
-				case 'D':
-					trkey = RC_left;
-					break;
-				case 'a':
-					trkey = KEY_A;
-					break;
-				case 'u':
-					trkey = KEY_U;
-					break;
-				case '/':
-					trkey = KEY_SLASH;
-					break;
-				case '\\':
-					trkey = KEY_BACKSLASH;
-					break;
-				default:
-					trkey = RC_nokey;
-			}
+			trkey = translateKBKey(key);
 			
 			if (trkey != RC_nokey)
 			{
@@ -1623,6 +1517,109 @@ int CRCInput::translate(uint64_t code)
 	else if (code == key_vfddown) return RC_down;
 	else if (code == key_vfdup) return RC_up;	
 	else return RC_nokey;
+}
+
+uint32_t CRCInput::translateKBKey(char code)
+{
+	printf("CRCInput::translateKBKey: code: %c\n", code);
+	
+	uint64_t trkey = RC_nokey;
+
+	switch(code)
+	{
+		case 27: // <- Esc
+			trkey = KEY_HOME;
+			break;
+		case 10: // <- Return
+		case 'o':
+			trkey = KEY_OK;
+			break;
+		case 'p':
+			trkey = KEY_POWER;
+			break;
+		case 's':
+			trkey = KEY_SETUP;
+			break;
+		case 'h':
+			trkey = KEY_HELP;
+			break;
+		case 'i':
+			trkey = KEY_UP;
+			break;
+		case 'm':
+			trkey = KEY_DOWN;
+			break;
+		case 'j':
+			trkey = KEY_LEFT;
+			break;
+		case 'k':
+			trkey = KEY_RIGHT;
+			break;
+		case 'r':
+			trkey = KEY_RED;
+			break;
+		case 'g':
+			trkey = KEY_GREEN;
+			break;
+		case 'y':
+			trkey = KEY_YELLOW;
+			break;
+		case 'b':
+			trkey = KEY_BLUE;
+			break;
+		case '0':
+			trkey = RC_0;
+			break;
+		case '1':
+			trkey = RC_1;
+			break;
+		case '2':
+			trkey = RC_2;
+			break;
+		case '3':
+			trkey = RC_3;
+			break;
+		case '4':
+			trkey = RC_4;
+			break;
+		case '5':
+			trkey = RC_5;
+			break;
+		case '6':
+			trkey = RC_6;
+			break;
+		case '7':
+			trkey = RC_7;
+			break;
+		case '8':
+			trkey = RC_8;
+			break;
+		case '9':
+			trkey = RC_9;
+			break;
+		case '+':
+			trkey = RC_plus;
+			break;
+		case '-':
+			trkey = RC_minus;
+			break;
+		case 'a':
+			trkey = KEY_A;
+			break;
+		case 'u':
+			trkey = KEY_U;
+			break;
+		case '/':
+			trkey = KEY_SLASH;
+			break;
+		case '\\':
+			trkey = KEY_BACKSLASH;
+			break;
+		default:
+			trkey = RC_nokey;
+	}
+	
+	return trkey;
 }
 
 #ifdef ENABLE_LIRC
