@@ -112,6 +112,8 @@ uint64_t sCURRENT_APTS = 0;
 
 static ao_device *adevice = NULL;
 static ao_sample_format sformat;
+ao_option *opts = NULL;
+extern char output[32];
 #endif
 
 #ifdef USE_LIBDRM
@@ -1222,7 +1224,6 @@ static int Write(void* _context, void* _out)
 		
 #ifdef USE_LIBAO
 		int driver = -1;
-		ao_info *ai = NULL;
 #endif
 		
 		//
@@ -1239,7 +1240,7 @@ static int Write(void* _context, void* _out)
 		o_layout = out->ctx->channel_layout;   		// AV_CH_LAYOUT_STEREO
 	
 #ifdef USE_LIBAO
-		/*
+		//
 		if (sformat.channels != o_ch || sformat.rate != o_sr || sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16)
 		{
 			sformat.bits = 16;
@@ -1250,22 +1251,21 @@ static int Write(void* _context, void* _out)
 			
 			if (adevice == NULL)
 			{
-				//ao_option *opts = NULL;
-				//ao_append_option(&opts, "dev", "hw:1,0");
-				//adevice = ao_open_live(driver, &sformat, opts);
-				//
-				driver = ao_default_driver_id();	
-				adevice = ao_open_live(driver, &sformat, NULL);
-				ai = ao_driver_info(driver);
+				ao_append_option(&opts, "dev", output);
+				
+				driver = ao_default_driver_id();
+				adevice = ao_open_live(driver, &sformat, opts);
 			}
 		}
-		*/
+		
 		// 2. ALSA open - YOUR analog card
+		/*
     		snd_pcm_t *pcm;
     		snd_pcm_open(&pcm, "hw:1,0", SND_PCM_STREAM_PLAYBACK, 0);
     		snd_pcm_set_params(pcm, SND_PCM_FORMAT_S16,
                        SND_PCM_ACCESS_RW_INTERLEAVED,
                        out->ctx->channels, out->ctx->sample_rate, 1, 500000);
+                */
 #endif
 
 		//
@@ -1304,6 +1304,8 @@ static int Write(void* _context, void* _out)
 
 		if (got_frame)
 		{
+			//
+#ifdef USE_LIBAO			
 			int out_linesize;
 			
 			//
@@ -1332,14 +1334,47 @@ static int Write(void* _context, void* _out)
 
 			int o_buf_size = av_samples_get_buffer_size(&out_linesize, out->stream->codecpar->channels, obuf_size, AV_SAMPLE_FMT_S16, 1);
 			
-			// play
-#ifdef USE_LIBAO
-			/*				
+			//
 			if (o_buf_size > 0)
 				res = ao_play(adevice, (char *)obuf, o_buf_size);
-			*/
-			snd_pcm_writei(pcm, obuf, out->aframe->nb_samples);
-#endif
+#endif				
+
+			/*
+			// libasound
+			if (swr) 
+			{
+                		//av_samples_alloc(&out, NULL, out->ctx->channels, out->aframe->nb_samples, AV_SAMPLE_FMT_S16, 0);
+                		//av_samples_alloc(&obuf, NULL, out->ctx->channels, out->aframe->nb_samples, AV_SAMPLE_FMT_S16, 0);
+                		//uint8_t *in = out->aframe->data[0];
+                		
+                		//swr_convert(swr, &obuf, out->aframe->nb_samples, (const uint8_t**)&in, out->aframe->nb_samples);
+                		int out_linesize;
+                		
+                		//obuf_size = av_rescale_rnd(out->aframe->nb_samples, out->ctx->sample_rate, out->ctx->sample_rate, AV_ROUND_UP);
+
+				//if (obuf_size > obuf_size_max)
+				{
+					//av_free(obuf);
+									
+					if (av_samples_alloc(&obuf, NULL, out->ctx->channels, out->aframe->nb_samples, AV_SAMPLE_FMT_S16, 0) < 0)
+					{
+						av_packet_unref(&avpkt);
+						ret = cERR_LINUXDVB_ERROR;
+					}
+									
+					obuf_size_max = obuf_size;
+				}
+								
+				obuf_size = swr_convert(swr, &obuf, obuf_size, (const uint8_t **)out->aframe->extended_data, out->aframe->nb_samples);
+				
+                		snd_pcm_writei(pcm, obuf, out->aframe->nb_samples);
+                		av_freep(&obuf);
+            		} 
+            		else 
+            		{
+                		snd_pcm_writei(pcm, out->aframe->data[0], out->aframe->nb_samples);
+            		}
+            		*/
 				
 			if (res <= 0)
 			{
@@ -1357,8 +1392,8 @@ static int Write(void* _context, void* _out)
 			av_frame_unref(out->aframe);
 			
 		////
-		snd_pcm_drain(pcm);
-    		snd_pcm_close(pcm);
+		//snd_pcm_drain(pcm);
+    		//snd_pcm_close(pcm);
 		////
 		
 		ret = cERR_LINUXDVB_ERROR;

@@ -44,6 +44,11 @@
 
 #ifdef HAVE_NO_AV_DECODER
 #include <alsa/asoundlib.h>
+#include <ao/ao.h>
+
+int card_id = -1;
+int device_id = -1;
+char output[32] = "hw:1,0";
 #endif
 
 
@@ -180,9 +185,7 @@ void CAudioSettings::showMenu()
 	}
 	
 	//
-	oldLcdMode = CLCD::getInstance()->getMode();
-	oldLcdMenutitle = CLCD::getInstance()->getMenutitle();
-	CLCD::getInstance()->setMode(CLCD::MODE_MENU_UTF8, _("Audio settings"));
+	setLCDMode(_("Audio settings"));
 	
 	// intros
 	audioSettings->addItem(new CMenuForwarder(_("back")));
@@ -194,44 +197,44 @@ void CAudioSettings::showMenu()
 
 	// audio output	
 #ifdef HAVE_NO_AV_DECODER
-	CMenuOptionStringChooser *item = new CMenuOptionStringChooser(_("Audio Output:"), (char *)g_settings.audio_output.c_str());	
+	CMenuOptionStringChooser *item = new CMenuOptionStringChooser(_("Audio Output"), (char *)g_settings.audio_output.c_str(), true, audioSetupNotifier, CRCInput::RC_nokey, NULL, true);	
 	
-	int card = -1;
-    	if (snd_card_next(&card) < 0) return;
+	//
+    	if (snd_card_next(&card_id) < 0) return;
     
-    	while (card >= 0) 
+    	while (card_id >= 0) 
     	{
         	char *name;
-        	snd_card_get_name(card, &name);
+        	snd_card_get_name(card_id, &name);
         
-        	printf("card %d\n", card);
+        	dprintf(DEBUG_NORMAL, "card_id: %d\n", card_id);
 
         	snd_ctl_t *ctl;
         	char ctl_id[32];
-        	sprintf(ctl_id, "hw:%d", card);
+        	sprintf(ctl_id, "hw:%d", card_id);
         
         	if (snd_ctl_open(&ctl, ctl_id, 0)==0) 
         	{
-            		int dev = -1;
             		while (1) 
             		{
-                		if (snd_ctl_pcm_next_device(ctl, &dev)<0) break;
-                		if (dev <0) break;
+                		if (snd_ctl_pcm_next_device(ctl, &device_id)<0) break;
+                		if (device_id <0) break;
                 
                 		snd_pcm_info_t *info;
                 		snd_pcm_info_alloca(&info);
-                		snd_pcm_info_set_device(info, dev);
+                		snd_pcm_info_set_device(info, device_id);
                 		snd_pcm_info_set_stream(info, SND_PCM_STREAM_PLAYBACK);
                 
-                		if (snd_ctl_pcm_info(ctl, info)>=0) 
+                		if (snd_ctl_pcm_info(ctl, info) >= 0) 
                 		{
-                    			printf(" device %d: %s [%s]\n", dev, snd_pcm_info_get_id(info), snd_pcm_info_get_name(info));
-                    			item->addOption(snd_pcm_info_get_id(info));
+                    			dprintf(DEBUG_NORMAL, " device_id: %d: %s [%s]\n", device_id, snd_pcm_info_get_id(info), snd_pcm_info_get_name(info));
+                    			
+                    			item->addOption(snd_pcm_info_get_id(info), card_id);
                 		}
             		}
             		snd_ctl_close(ctl);
         	}
-        	if (snd_card_next(&card)<0) break;
+        	if (snd_card_next(&card_id)<0) break;
     	}
     	
     	audioSettings->addItem(item);
@@ -323,12 +326,12 @@ void CAudioSettings::showMenu()
 	delete autoAudioNotifier;
 	
 	//
-        CLCD::getInstance()->setMode(oldLcdMode, oldLcdMenutitle.c_str());
+        resetLCDMode();
 }
 
 bool CAudioSetupNotifier::changeNotify(const std::string& OptionName, void *)
 {
-	dprintf(DEBUG_NORMAL, "CAudioSetupNotifier::changeNotify\n");
+	dprintf(DEBUG_NORMAL, "CAudioSetupNotifier::changeNotify\n");	
 
 	if (OptionName == _("Analog Output")) 
 	{
@@ -357,7 +360,14 @@ bool CAudioSetupNotifier::changeNotify(const std::string& OptionName, void *)
 	{
 		if(audioDecoder)
 			audioDecoder->setHwPCMDelay(g_settings.pcm_delay);
-	}	
+	}
+#ifdef HAVE_NO_AV_DECODER
+	else if (OptionName == _("Audio Output"))
+	{
+		//sprintf(output, "hw:%d,%d", card_id, device_id);
+		sprintf(output, "hw:1,0");
+	}
+#endif		
 
 	return true;
 }

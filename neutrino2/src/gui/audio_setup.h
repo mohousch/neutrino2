@@ -33,12 +33,14 @@
 #include <string>
 
 
+//
 class CAudioSetupNotifier : public CChangeObserver
 {
 	public:
 		bool changeNotify(const std::string& OptionName, void *);
 };
 
+////
 class CAudioSettings : public CTarget
 {
 	private:
