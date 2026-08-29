@@ -2856,7 +2856,7 @@ int CNeutrinoApp::exec(CTarget * parent, const std::string &actionKey)
 	{
 		exitRun(SHUTDOWN);
 		
-#ifdef BOXTYPE_GENERIC
+#ifdef PLATFORM_GENERIC
 		system("poweroff -f");
 #endif		
 	}
@@ -2864,7 +2864,7 @@ int CNeutrinoApp::exec(CTarget * parent, const std::string &actionKey)
 	{
 		exitRun(REBOOT);
 		
-#ifdef BOXTYPE_GENERIC
+#ifdef PLATFORM_GENERIC
 		//system("reboot -f");
 		::reboot(RB_AUTOBOOT);
 #endif		
