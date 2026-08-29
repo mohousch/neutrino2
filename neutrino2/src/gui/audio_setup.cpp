@@ -194,8 +194,7 @@ void CAudioSettings::showMenu()
 
 	// audio output	
 #ifdef HAVE_NO_AV_DECODER
-	std::string output;
-	CMenuOptionStringChooser *item = new CMenuOptionStringChooser(_("Audio Output:"), (char *)output.c_str());	
+	CMenuOptionStringChooser *item = new CMenuOptionStringChooser(_("Audio Output:"), (char *)g_settings.audio_output.c_str());	
 	
 	int card = -1;
     	if (snd_card_next(&card) < 0) return;

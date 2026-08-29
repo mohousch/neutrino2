@@ -64,6 +64,9 @@ struct SNeutrinoSettings
 	int avsync;
 	int ac3_delay;
 	int pcm_delay;
+#ifdef HAVE_NO_AV_DECODER
+	std::string audio_output;
+#endif	
 	//
 	
 	// subs

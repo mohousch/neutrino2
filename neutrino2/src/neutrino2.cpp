@@ -450,6 +450,10 @@ int CNeutrinoApp::loadSetup(const char * fname)
 		sprintf(cfg_key, "pref_subs_%d", i);
 		strncpy(g_settings.pref_subs[i], configfile.getString(cfg_key, "German").c_str(), 30);
 	}
+	
+#ifdef HAVE_NO_AV_DECODER
+	g_settings.audio_output = configfile.getString("audio_output", "default");
+#endif
 	// end audio
 
 	// parentallock
@@ -1001,6 +1005,9 @@ void CNeutrinoApp::saveSetup(const char * fname)
 		sprintf(cfg_key, "pref_subs_%d", i);
 		configfile.setString(cfg_key, g_settings.pref_subs[i]);
 	}
+#ifdef HAVE_NO_AV_DECODER
+	configfile.setString("audio_output", g_settings.audio_output);
+#endif
 	// END AUDIO
 
 	// PARENTALLOCK
@@ -2848,10 +2855,19 @@ int CNeutrinoApp::exec(CTarget * parent, const std::string &actionKey)
 	if(actionKey == "shutdown") 
 	{
 		exitRun(SHUTDOWN);
+		
+#ifdef BOXTYPE_GENERIC
+		system("poweroff -f");
+#endif		
 	}
 	else if(actionKey == "reboot")
 	{
 		exitRun(REBOOT);
+		
+#ifdef BOXTYPE_GENERIC
+		//system("reboot -f");
+		::reboot(RB_AUTOBOOT);
+#endif		
 	}
 	else if(actionKey == "restart") 
 	{		

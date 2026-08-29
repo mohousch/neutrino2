@@ -496,6 +496,8 @@ int CDataResetNotifier::exec(CTarget *parent, const std::string& actionKey)
 				dprintf(DEBUG_NORMAL, "CDataResetNotifier::exec: executing %s\n", fname);
 				
 				system(fname);
+				
+				::sync();
 			} 
 			else
 				MessageBox(_("Error"), _("Backup failed"), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_ERROR);
@@ -521,6 +523,8 @@ int CDataResetNotifier::exec(CTarget *parent, const std::string& actionKey)
 				dprintf(DEBUG_NORMAL, "CDataResetNotifier::exec: executing %s\n", fname);
 				
 				system(fname);
+				
+				::sync();
 				
 				sleep(2);
 				
