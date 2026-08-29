@@ -1549,6 +1549,12 @@ uint32_t CRCInput::translateKBKey(char code)
 		case 'a':
 			trkey = RC_audio;
 			break;
+		case 't':
+			trkey = RC_text;
+			break;
+		case 'd':
+			trkey = RC_dvbsub;
+			break;
 		case 'i':
 			trkey = RC_up;
 			break;
