@@ -3306,7 +3306,9 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 			execvp(global_argv[0], global_argv); // no return if successful
 		}		
 		
-		_exit(retcode);	
+#ifndef PLATFORM_GENERIC
+		_exit(retcode);
+#endif		
 	}
 }
 
