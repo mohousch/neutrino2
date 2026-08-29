@@ -783,7 +783,7 @@ bool CTimerManager::shutdown()
 	{
 		int minutes = ((nextAnnounceTime - time(NULL))/60);
 
-#ifndef USE_OPENGL
+#ifndef HAVE_NO_AV_DECODER
 		//Set WakeUp Time
 		char WakeupTime[11];
 		WakeupTime[11] = '\0';

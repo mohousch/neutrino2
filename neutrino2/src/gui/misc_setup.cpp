@@ -491,10 +491,7 @@ int CDataResetNotifier::exec(CTarget *parent, const std::string& actionKey)
 
 			if(ret == 0 && s.f_type != 0x72b6L/*jffs2*/ && s.f_type != 0x5941ff53L /*yaffs2*/)
 			{ 
-				//const char backup_sh[];  = "backup.sh";
-				//sprintf(fname, "%s %s", backup_sh, fileBrowser.getSelectedFile()->Name.c_str());
-				
-				sprintf(fname, "cd %s && tar -cf %s/settings.tar --exclude=skins * 2>&1 >/dev/null", CONFIGDIR, fileBrowser.getSelectedFile()->Name.c_str());
+				sprintf(fname, "cd %s && tar -cf %s/settings_%s.tar --exclude=skins * 2>&1 >/dev/null", CONFIGDIR, fileBrowser.getSelectedFile()->Name.c_str(), getNowTimeStr("%Y-%d-%m_%H-%M").c_str());
 				
 				dprintf(DEBUG_NORMAL, "CDataResetNotifier::exec: executing %s\n", fname);
 				
@@ -518,15 +515,14 @@ int CDataResetNotifier::exec(CTarget *parent, const std::string& actionKey)
 			if(result == CMessageBox::mbrYes) 
 			{
 				char  fname[256];
-				
-				//const char restore_sh[] = "restore.sh";
-				//sprintf(fname, "%s %s", restore_sh, fileBrowser.getSelectedFile()->Name.c_str());
-				
+					
 				sprintf(fname, "cd %s && tar xf %s", CONFIGDIR, fileBrowser.getSelectedFile()->Name.c_str());
 				
 				dprintf(DEBUG_NORMAL, "CDataResetNotifier::exec: executing %s\n", fname);
 				
 				system(fname);
+				
+				sleep(2);
 				
 				if (MessageBox(_("Information"), _("this need GUI restart\ndo you really want to restart?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == CMessageBox::mbrYes) 
 				{

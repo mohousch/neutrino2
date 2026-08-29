@@ -3273,7 +3273,9 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		}
 		
 		//
+#ifndef USE_OPENGL
 		delete CFrameBuffer::getInstance();
+#endif
 		
 		// deinit_HAL
 		deinit_HAL();

@@ -665,7 +665,7 @@ void CTimerd::Start(void)
 void CTimerd::Stop(void)
 {
 	dprintf(DEBUG_NORMAL, "CTimerd::Stop:\n");
-	
+
 	CTimerManager::getInstance()->shutdown();
 }
 
