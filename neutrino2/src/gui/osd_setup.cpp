@@ -1434,13 +1434,9 @@ int CSkinSettings::showMenu()
 				
 				std::string extension = getFileExt(filename);
 				
-				// file to skip
-				//std::string skipFile = g_settings.preferred_skin;
-				//skipFile += ".config";
-				
 				if ( strcasecmp("theme", extension.c_str()) == 0)
 				{
-					if (!filename.empty() /*&& filename != skipFile.c_str()*/)
+					if (!filename.empty())
 					{
 						item = new CMenuForwarder(removeExtension(filename).c_str());
 				
