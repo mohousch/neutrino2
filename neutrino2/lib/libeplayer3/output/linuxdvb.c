@@ -1594,7 +1594,7 @@ static int Write(void* _context, void* _out)
 			}
 			#endif
 			////
-			#if 0
+			#if 1
 			////
 			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_NV12, SWS_BILINEAR, NULL, NULL, NULL);
 			
@@ -1643,7 +1643,7 @@ static int Write(void* _context, void* _out)
 			#endif
 			////
 			////
-			#if 1
+			#if 0
 			// Prüfen, ob der Frame im DRM_PRIME Format vorliegt
                     	if (out->vframe->format == AV_PIX_FMT_DRM_PRIME) 
                     	{

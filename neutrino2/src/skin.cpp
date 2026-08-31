@@ -2816,15 +2816,15 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 	skinPath += skinName.c_str();
 	
 	// 
-	std::string skinFile = skinPath.c_str();
-	skinFile += "skin.xml";
+//	std::string skinFile = skinPath.c_str();
+//	skinFile += "skin.xml";
 	
-	if ( !file_exists(skinFile.c_str()) )
-	{
-		g_settings.preferred_skin = "standard";
+//	if ( !file_exists(skinFile.c_str()) )
+//	{
+//		g_settings.preferred_skin = "standard";
 		
-		skinPath = CONFIGDIR "skins/standard";
-	}
+//		skinPath = CONFIGDIR "skins/standard";
+//	}
 	
 	// read skin config
 	std::string skinConfigFile = skinPath.c_str();

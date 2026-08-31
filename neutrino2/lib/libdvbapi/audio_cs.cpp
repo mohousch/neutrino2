@@ -64,6 +64,8 @@ extern "C" {
 #ifdef USE_LIBAO
 static ao_device *adevice = NULL;
 static ao_sample_format sformat;
+ao_option *ao_opts = NULL;
+extern char output[32];
 #endif
 //
 static AVCodecContext *c = NULL;
@@ -638,9 +640,7 @@ void cAudio::run()
 	int ret;
 	int av_ret = 0;
 #ifdef USE_LIBAO
-	// libao
-	ao_info *ai;
-	int driver;
+	int driver = -1;
 #endif
 	// resample
 	SwrContext *swr = NULL;
@@ -738,9 +738,10 @@ void cAudio::run()
 		
 		if (adevice == NULL)
 		{
-			driver = ao_default_driver_id();	
-			adevice = ao_open_live(driver, &sformat, NULL);
-			ai = ao_driver_info(driver);
+			ao_append_option(&ao_opts, "dev", output);
+				
+			driver = ao_default_driver_id();
+			adevice = ao_open_live(driver, &sformat, ao_opts);
 		}
 		
 		printf("cAudio::run: changed params ch %d srate %d bits %d adevice %p\n", o_ch, o_sr, 16, adevice);

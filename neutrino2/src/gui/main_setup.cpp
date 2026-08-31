@@ -125,7 +125,9 @@ void CMainSettingsMenu::showMenu(void)
 		widget->addCCItem(mainSettings);
 
 		// video settings
+#ifndef HAVE_NO_AV_DECODER
 		mainSettings->addItem(new CMenuForwarder(_("Video settings"), true, NULL, new CVideoSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_VIDEOSETTINGS));
+#endif
 
 		// audio settings
 		mainSettings->addItem(new CMenuForwarder(_("Audio settings"), true, NULL, new CAudioSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_AUDIOSETTINGS));

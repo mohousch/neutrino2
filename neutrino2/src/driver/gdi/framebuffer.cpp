@@ -231,7 +231,7 @@ void CFrameBuffer::init(const char * const fbDevice)
 		
 		drmModeConnector *conn = NULL;
 		
-		for(int i = 0; i< res->count_connectors; i++)
+		for(int i = 0; i < res->count_connectors; i++)
 	    	{
 			conn = drmModeGetConnector(drm_fd, res->connectors[i]);
 			if(conn->connection == DRM_MODE_CONNECTED && conn->count_modes > 0) 
@@ -245,7 +245,16 @@ void CFrameBuffer::init(const char * const fbDevice)
 		{
 			dprintf(DEBUG_NORMAL, "CFrameBuffer::init: Found connector\n");
 			
-			drmModeModeInfo mode = conn->modes[0];
+			drmModeModeInfo mode;
+			
+			// get 1280x720
+			for (int i = 0; i < conn->count_modes; i++)
+			{
+				mode = conn->modes[i];
+				
+				if (mode.hdisplay == DEFAULT_XRES && mode.vdisplay == DEFAULT_YRES)
+					break;
+			}
 			
 			dprintf(DEBUG_NORMAL, "CFrameBuffer::init: DRM Mode: %dx%d\n", mode.hdisplay, mode.vdisplay);
 			
@@ -406,13 +415,7 @@ int CFrameBuffer::setMode(unsigned int dx, unsigned int dy, unsigned int nbpp)
 	bpp = nbpp;
 	stride = xRes * sizeof(fb_pixel_t);
 #elif defined (USE_LIBDRM)
-//	xRes = creq.width;
-//	yRes = creq.height;
-//	bpp = creq.bpp;
-//	stride = creq.pitch;
-
-	//if (dx != creq.width || dy != creq.height)
-	if (false)
+	if (dx != creq.width || dy != creq.height)
 	{
 		if (lfb)
 			munmap(lfb, available);
@@ -421,10 +424,12 @@ int CFrameBuffer::setMode(unsigned int dx, unsigned int dy, unsigned int nbpp)
 	    	if (fb_id) 
 	    	{
 			drmModeRmFB(drm_fd, fb_id);
+			
+			//
 			struct drm_mode_destroy_dumb dreq;
 			
-			dreq.handle = handle;
-			drmIoctl(fd, DRM_IOCTL_MODE_DESTROY_DUMB, &dreq);
+			dreq.handle = creq.handle;
+			drmIoctl(drm_fd, DRM_IOCTL_MODE_DESTROY_DUMB, &dreq);
 			fb_id = 0;
 	    	}
 	    	
@@ -437,14 +442,12 @@ int CFrameBuffer::setMode(unsigned int dx, unsigned int dy, unsigned int nbpp)
 
 		// 3. create fb
 	    	drmModeAddFB(drm_fd, dx, dy, 24, nbpp, creq.pitch, creq.handle, &fb_id);
+	    	drmModeSetCrtc(drm_fd, crtc_id, fb_id, 0, 0, &conn_id, 1, &mode);
 
 	    	// 4. mmap for CPU drawing
 	    	mreq.handle = creq.handle;
 	    	drmIoctl(drm_fd, DRM_IOCTL_MODE_MAP_DUMB, &mreq);
 	    	lfb = (uint32_t *)mmap(0, creq.size, PROT_READ|PROT_WRITE, MAP_SHARED, drm_fd, mreq.offset);
-	    	
-	    	//
-	    	drmModeSetCrtc(drm_fd, crtc_id, fb_id, 0, 0, &conn_id, 1, &mode);
 	    	
 	    	// fill screeninfo structure
 		screeninfo.bits_per_pixel = 32;
