@@ -115,6 +115,10 @@ else
 neutrino2_LDADD += $(top_builddir)/lib/libeplayer3/libeplayer3.a
 endif
 
+if HAVE_NO_AV_DECODER
+neutrino2_LDADD += -lao -lasound
+endif
+
 if USE_OPENGL
 neutrino2_LDADD += \
 	-lglut -lGL -lGLU -lGLEW -lX11
@@ -122,10 +126,6 @@ endif
 
 if USE_LIBDRM
 neutrino2_LDADD += -ldrm -lgbm
-endif
-
-if USE_LIBAO
-neutrino2_LDADD += @LIBAO_LIBS@ -lasound
 endif
 
 if USE_DIRECTFB
@@ -145,5 +145,4 @@ endif
 if ENABLE_GRAPHLCD
 neutrino2_LDADD += -lglcddrivers -lglcdgraphics -lusb
 endif
-
 

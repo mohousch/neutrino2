@@ -52,21 +52,18 @@ extern "C" {
 #include <libavutil/samplefmt.h>
 #include <libswresample/swresample.h>
 
-#ifdef USE_LIBAO
 #include <ao/ao.h>
-#endif
 }
 /* ffmpeg buf 2k */
 #define INBUF_SIZE 0x0800
 /* my own buf 16k */
 #define DMX_BUF_SZ 0x4000
 
-#ifdef USE_LIBAO
+// libao
 static ao_device *adevice = NULL;
 static ao_sample_format sformat;
 ao_option *ao_opts = NULL;
 extern char output[32];
-#endif
 //
 static AVCodecContext *c = NULL;
 static AVCodecParameters *p = NULL;
@@ -122,12 +119,11 @@ cAudio::~cAudio(void)
 #ifdef HAVE_NO_AV_DECODER
 	free(dmxbuf);
 	
-#ifdef USE_LIBAO
+	// libao
 	if (adevice)
 		ao_close(adevice);
 		
 	adevice = NULL;
-#endif
 #endif
 }
 
@@ -639,9 +635,7 @@ void cAudio::run()
 	AVPacket avpkt;
 	int ret;
 	int av_ret = 0;
-#ifdef USE_LIBAO
 	int driver = -1;
-#endif
 	// resample
 	SwrContext *swr = NULL;
 	uint8_t *obuf = NULL;
@@ -727,7 +721,7 @@ void cAudio::run()
 	o_sr = p->sample_rate;      	// 48000
 	o_layout = p->channel_layout;   // AV_CH_LAYOUT_STEREO
 	
-#ifdef USE_LIBAO
+	// libao
 	if (sformat.channels != o_ch || sformat.rate != o_sr || sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16)
 	{
 		sformat.bits = 16;
@@ -746,7 +740,6 @@ void cAudio::run()
 		
 		printf("cAudio::run: changed params ch %d srate %d bits %d adevice %p\n", o_ch, o_sr, 16, adevice);
 	}
-#endif
 	
 	printf("cAudio::run: decoding %s (sample_fmt %d sample_rate %d channels %d)\n", avcodec_get_name(p->codec_id), c->sample_fmt, p->sample_rate, p->channels);
 	
@@ -824,11 +817,9 @@ void cAudio::run()
 #endif
 			int o_buf_sz = av_samples_get_buffer_size(&out_linesize, o_ch, obuf_sz, AV_SAMPLE_FMT_S16, 1);
 		
-			// play	
-#ifdef USE_LIBAO
+			// play	libao
 			if (o_buf_sz > 0)
 				ao_play(adevice, (char *)obuf, o_buf_sz);
-#endif
 		}
 		
 		av_packet_unref(&avpkt);

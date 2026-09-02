@@ -166,9 +166,7 @@
 #include <X11/Xlib.h>
 #endif
 
-#ifdef USE_LIBAO
 #include <ao/ao.h>
-#endif
 
 #ifdef USE_DIRECTFB
 #include <directfb.h>
@@ -5026,18 +5024,16 @@ void CNeutrinoApp::init_HAL(void)
 */
 #endif
 
-#ifdef USE_LIBAO
+	// libao
 	ao_initialize();
-#endif
 }
 
 void CNeutrinoApp::deinit_HAL(void)
 {
 	printf("CNeutrinoApp::deinit_HAL\n");
 	
-#ifdef USE_LIBAO
+	// libao
 	ao_shutdown();
-#endif
 
 #ifdef USE_DIRECTFB
 	video_surf->Release(video_surf);

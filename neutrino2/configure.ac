@@ -44,17 +44,6 @@ if test "$enable_no_av_decoder" = "yes"; then
 AC_DEFINE(HAVE_NO_AV_DECODER,1,[include support for devices without AV decoder])
 fi
 
-# libao
-AC_ARG_ENABLE(libao,
-	AS_HELP_STRING(--enable-libao, include libao support for devices without AV decoder),
-	,[enable_libao=no])
-AM_CONDITIONAL(USE_LIBAO, test "$enable_libao" = "yes")
-
-if test "$enable_libao" = "yes"; then
-AC_DEFINE(USE_LIBAO,1,[include libao support for devices without AV decoder])
-PKG_CHECK_MODULES(LIBAO, ao)
-fi
-
 # libdrm
 AC_ARG_ENABLE(libdrm,
 	AS_HELP_STRING(--enable-libdrm, include libdrm support for devices without AV decoder),
@@ -71,15 +60,12 @@ AC_ARG_ENABLE(opengl,
 	AS_HELP_STRING(--enable-opengl,include opengl framebuffer support for x86),
 	,[enable_opengl=no])
 AM_CONDITIONAL(USE_OPENGL,test "$enable_opengl" = "yes")
-AM_CONDITIONAL(USE_LIBAO, test "$enable_opengl" = "yes" -o "$enable_libao" = "yes")
 
 if test "$enable_opengl" = "yes"; then
 AC_DEFINE(USE_OPENGL,1,[include opengl engine])
 AC_DEFINE(HAVE_NO_AV_DECODER,1,[include support for devices without AV decoder])
-AC_DEFINE(USE_LIBAO,1,[include libao support for devices without AV decoder])
 PKG_CHECK_MODULES(GL, gl)
 PKG_CHECK_MODULES(GLEW, glew)
-PKG_CHECK_MODULES(LIBAO, ao)
 fi
 
 # directfb
@@ -87,12 +73,10 @@ AC_ARG_ENABLE(directfb,
 	AS_HELP_STRING(--enable-directfb,include directfb framebuffer support for x86),
 	,[enable_directfb=no])
 AM_CONDITIONAL(USE_DIRECTFB,test "$enable_directfb" = "yes")
-AM_CONDITIONAL(USE_LIBAO, test "$enable_directfb" = "yes" -o "$enable_libao" = "yes")
 
 if test "$enable_directfb" = "yes"; then
 AC_DEFINE(USE_DIRECTFB,1,[include directfb engine])
 AC_DEFINE(HAVE_NO_AV_DECODER,1,[include support for devices without AV decoder])
-AC_DEFINE(USE_LIBAO,1,[include libao support for devices without AV decoder])
 PKG_CHECK_MODULES(DIRECTFB, directfb)
 fi
 

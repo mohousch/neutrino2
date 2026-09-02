@@ -107,14 +107,13 @@ bool stillpicture = false;
 Data_t data[64] = {0};
 uint64_t sCURRENT_APTS = 0;
 
-#ifdef USE_LIBAO
+// libao
 #include <ao/ao.h>
 
 static ao_device *adevice = NULL;
 static ao_sample_format sformat;
 ao_option *opts = NULL;
 extern char output[32];
-#endif
 
 #ifdef USE_LIBDRM
 #include <libdrm/drm_fourcc.h>
@@ -331,12 +330,11 @@ int LinuxDvbClose(Context_t  *context, char * type)
 	getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 
 #ifdef HAVE_NO_AV_DECODER	
-#ifdef USE_LIBAO
+	// libao
 	if (adevice)
 		ao_close(adevice);
 		
 	adevice = NULL;
-#endif
 	
 #ifdef USE_LIBDRM
 	close(gbm_fd);
@@ -1221,10 +1219,7 @@ static int Write(void* _context, void* _out)
 		int o_ch = 2;
 		int o_sr = 48000; 				// output channels and sample rate
 		uint64_t o_layout = AV_CH_LAYOUT_STEREO; 	// output channels layout
-		
-#ifdef USE_LIBAO
 		int driver = -1;
-#endif
 		
 		//
 		AVPacket avpkt;
@@ -1239,8 +1234,7 @@ static int Write(void* _context, void* _out)
 		o_sr = out->ctx->sample_rate;      		// 48000
 		o_layout = out->ctx->channel_layout;   		// AV_CH_LAYOUT_STEREO
 	
-#ifdef USE_LIBAO
-		//
+		// libao
 		if (sformat.channels != o_ch || sformat.rate != o_sr || sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16)
 		{
 			sformat.bits = 16;
@@ -1266,7 +1260,6 @@ static int Write(void* _context, void* _out)
                        SND_PCM_ACCESS_RW_INTERLEAVED,
                        out->ctx->channels, out->ctx->sample_rate, 1, 500000);
                 */
-#endif
 
 		//
 		swr = swr_alloc_set_opts(swr, o_layout, AV_SAMPLE_FMT_S16, o_sr, out->ctx->channel_layout, out->ctx->sample_fmt, out->ctx->sample_rate, 0, NULL);
@@ -1304,8 +1297,7 @@ static int Write(void* _context, void* _out)
 
 		if (got_frame)
 		{
-			//
-#ifdef USE_LIBAO			
+			// libao			
 			int out_linesize;
 			
 			//
@@ -1336,8 +1328,7 @@ static int Write(void* _context, void* _out)
 			
 			//
 			if (o_buf_size > 0)
-				res = ao_play(adevice, (char *)obuf, o_buf_size);
-#endif				
+				res = ao_play(adevice, (char *)obuf, o_buf_size);				
 
 			/*
 			// libasound
