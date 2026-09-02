@@ -626,7 +626,7 @@ struct SNeutrinoSettings
 #define INTER_FRAME_SPACE 			5 
 
 // widget
-#define MENU_WIDTH				0.507*DEFAULT_XRES 	//650
+#define MENU_WIDTH				0.390*DEFAULT_XRES 	//650
 #define MENU_HEIGHT				0.833*DEFAULT_YRES	//600
 
 // parentallock
