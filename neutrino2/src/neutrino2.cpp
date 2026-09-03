@@ -5027,7 +5027,9 @@ void CNeutrinoApp::init_HAL(void)
 #endif
 
 	// libao
+#ifdef HAVE_NO_AV_DECODER
 	ao_initialize();
+#endif
 }
 
 void CNeutrinoApp::deinit_HAL(void)
@@ -5035,7 +5037,9 @@ void CNeutrinoApp::deinit_HAL(void)
 	printf("CNeutrinoApp::deinit_HAL\n");
 	
 	// libao
+#ifdef HAVE_NO_AV_DECODER
 	ao_shutdown();
+#endif
 
 #ifdef USE_DIRECTFB
 	video_surf->Release(video_surf);
