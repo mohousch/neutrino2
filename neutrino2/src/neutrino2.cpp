@@ -166,7 +166,9 @@
 #include <X11/Xlib.h>
 #endif
 
+#ifdef HAVE_NO_AV_DECODER
 #include <ao/ao.h>
+#endif
 
 #ifdef USE_DIRECTFB
 #include <directfb.h>
