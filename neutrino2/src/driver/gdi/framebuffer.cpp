@@ -1678,7 +1678,7 @@ void CFrameBuffer::clearFrameBuffer()
 }
 
 // blitRoundedBox2FB
-void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const uint32_t &height, const uint32_t &xoff, const uint32_t &yoff)
+void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t width, const uint32_t height, const uint32_t xoff, const uint32_t yoff)
 {
 	uint32_t xc = (width > xRes) ? (uint32_t)xRes : width;
 	uint32_t yc = (height > yRes) ? (uint32_t)yRes : height;
@@ -1686,7 +1686,7 @@ void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const 
 	uint32_t swidth = stride / sizeof(fb_pixel_t);
 
 	fb_pixel_t *data = (fb_pixel_t *)boxBuf;
-	fb_pixel_t *fbp = (fb_pixel_t *)lfb + (swidth * yoff);
+	fb_pixel_t *d = (fb_pixel_t *)lfb + (swidth * yoff);
 	fb_pixel_t *d2;
 	
 	if (!data)
@@ -1698,7 +1698,7 @@ void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const 
 		
 		for (uint32_t pos = xoff; pos < xoff + xc; pos++) 
 		{
-			d2 = (fb_pixel_t *) fbp + pos;
+			d2 = (fb_pixel_t *) d + pos;
 			
 			if ( (*pixpos) )
 				*d2 = *(pixpos);
@@ -1706,17 +1706,17 @@ void CFrameBuffer::blitRoundedBox2FB(void *boxBuf, const uint32_t &width, const 
 			d2++;
 			pixpos++;
 		}
-		fbp += swidth;
+		d += swidth;
 	}
 }
 
 // blitBox2FB
-void CFrameBuffer::blitBox2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp, uint32_t yp, bool transp )
+void CFrameBuffer::blitBox2FB(void * boxBuf, const uint32_t width, const uint32_t height, const uint32_t xoff, const uint32_t yoff, const uint32_t xp, const uint32_t yp, bool transp )
 {
 	int xc = (width > xRes) ? xRes : width;
 	int yc = (height > yRes) ? yRes : height;
 	
-	fb_pixel_t *data = (fb_pixel_t *) fbbuff;
+	fb_pixel_t *data = (fb_pixel_t *) boxBuf;
 	uint8_t *d = ((uint8_t *)lfb) + xoff * sizeof(fb_pixel_t) + stride * yoff;
 	fb_pixel_t *d2;
 	
