@@ -129,7 +129,7 @@ cAudio::~cAudio(void)
 
 bool cAudio::Open(CFrontend * fe)
 { 
-#if !defined HAVE_NO_AV_DECODER
+#ifndef HAVE_NO_AV_DECODER
 	if(fe)
 		audio_adapter = 0; //fe->feadapter; //FIXME:
 	
@@ -161,7 +161,7 @@ bool cAudio::Close()
 { 
 	printf("cAudio::Close\n");
 	
-#if !defined HAVE_NO_AV_DECODER
+#ifndef HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return false;
 	 
@@ -304,7 +304,6 @@ int cAudio::Start(void)
 		ret = OpenThreads::Thread::start();
 	}
 #else
-//#ifndef HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return -1;
 	
@@ -312,7 +311,6 @@ int cAudio::Start(void)
 	
 	if(ret < 0)
 		perror("AUDIO_PLAY");
-//#endif // HAVE_NO_AV_DECODER
 #endif
 
 	playstate = AUDIO_PLAYING;
@@ -333,7 +331,6 @@ int cAudio::Stop(void)
 		ret = OpenThreads::Thread::join();
 	}
 #else
-//#ifndef HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return -1;
 		
@@ -341,7 +338,6 @@ int cAudio::Stop(void)
 	
 	if(ret < 0)
 		perror("AUDIO_STOP");
-//#endif // HAVE_NO_AV_DECODER
 #endif
 
 	playstate = AUDIO_STOPPED;
@@ -353,7 +349,7 @@ bool cAudio::Pause()
 {
 	printf("cAudio::Pause\n");
 	 
-#if !defined HAVE_NO_AV_DECODER
+#ifndef HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return false;
 	
@@ -373,7 +369,7 @@ bool cAudio::Resume()
 { 
 	printf("cAudio::Resume\n");
 	
-#if !defined HAVE_NO_AV_DECODER
+#ifndef HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return false;	
 
@@ -409,7 +405,7 @@ void cAudio::SetStreamType(AUDIO_FORMAT type)
 		"AUDIO_STREAMTYPE_RAW"
 	};
 	
-#if !defined HAVE_NO_AV_DECODER
+#ifndef HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return;
 	
@@ -427,7 +423,7 @@ void cAudio::SetSyncMode(int Mode)
 {
 	printf("cAudio::SetSyncMode\n");	
 	
-#if !defined HAVE_NO_AV_DECODER
+#ifndef HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return;
 	
@@ -445,7 +441,7 @@ int cAudio::Flush(void)
 	
 	int ret = -1;
 
-#if !defined HAVE_NO_AV_DECODER
+#ifndef HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return -1;
 
@@ -530,7 +526,7 @@ int cAudio::setSource(int source)
 		"AUDIO_SOURCE_HDMI"
 	};
 	
-#if !defined HAVE_NO_AV_DECODER
+#ifndef HAVE_NO_AV_DECODER
 	if (audio_fd < 0)
 		return -1;
 

@@ -994,27 +994,22 @@ int cVideo::setSource(int source)
 
 int64_t cVideo::GetPTS(void)
 {
-#ifdef HAVE_NO_AV_DECODER
 	int64_t pts = 0;
 	
+#ifdef HAVE_NO_AV_DECODER
 	buf_m.lock();
 	if (buf_num != 0)
 		pts = buffers[buf_out].pts();
 	buf_m.unlock();
-	
-	return pts;
 #else
-//#ifndef HAVE_NO_AV_DECODER
 	if(video_fd < 0)
 		return -1;
-	
-	int64_t pts = 0;
+
 	if (::ioctl(video_fd, VIDEO_GET_PTS, &pts) < 0)
 		perror("GET_PTS failed");
-	
-	return pts;
-//#endif // HAVE_NO_AV_DECODER
 #endif
+
+	return pts;
 }
 
 // show mpeg still (used by RASS)

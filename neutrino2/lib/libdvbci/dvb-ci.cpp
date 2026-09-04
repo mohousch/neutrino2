@@ -937,7 +937,7 @@ cDvbCi::cDvbCi(int Slots)
 		{
 			if (fd < 0)
 			{
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 				sprintf(filename, "/dev/dvb/adapter%d/ca%d", j, i);
 #else
 				sprintf(filename, "/dev/dvb/adapter%d/ci%d", j, i);
@@ -1068,7 +1068,7 @@ void cDvbCi::reset(int slot)
 		if (::ioctl((*it)->fd, CA_RESET, (*it)->slot) < 0)
 			printf("IOCTL CA_RESET failed for slot %d\n", slot);
 #else
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 		if (::ioctl((*it)->fd, CA_RESET, (*it)->slot) < 0)
 			printf("IOCTL CA_RESET failed for slot %d\n", slot);
 #else
