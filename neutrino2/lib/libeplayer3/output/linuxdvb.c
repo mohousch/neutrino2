@@ -1531,7 +1531,8 @@ static int Write(void* _context, void* _out)
 	    			
 #if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(5, 3, 100)	    			
 				sws_scale(convert, out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);
-#else				
+#else		
+				sws_scale(convert, (const uint8_t * const*)out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);		
 #endif				
 					
 				//

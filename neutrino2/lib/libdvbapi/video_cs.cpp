@@ -1425,9 +1425,9 @@ void cVideo::run(void)
 		// setup sws scaler
 		still_m.lock();
 		
-#ifdef USE_OPENGL
 		if (got_frame && ! stillpicture)
 		{
+#ifdef USE_OPENGL		
 			int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, c->width, c->height, 1);
 
 			convert = sws_getCachedContext(convert, c->width, c->height, c->pix_fmt, c->width, c->height, AV_PIX_FMT_RGB32, SWS_BICUBIC, 0, 0, 0);
@@ -1487,8 +1487,8 @@ void cVideo::run(void)
 				
 				buf_m.unlock();
 			}
+#endif			
 		}
-#endif
 		
 		still_m.unlock();
 		av_packet_unref(&avpkt);
