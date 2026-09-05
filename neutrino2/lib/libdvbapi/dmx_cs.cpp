@@ -474,28 +474,12 @@ void cDemux::removePid(unsigned short Pid)
 void cDemux::getSTC(int64_t *STC)
 { 
 	printf("cDemux::getSTC: dmx(%d,%d) type=%s STC=\n", demux_adapter, demux_num, aDMXCHANNELTYPE[type]);	
-
-/*	
+	
 	int64_t pts = 0;
 	
 	if (videoDecoder)
 		pts = videoDecoder->GetPTS();
 		
 	*STC = pts;
-*/
-	if (demux_fd < 0)
-		return;
-
-	struct dmx_stc stc = {};
-	stc.num = demux_num;
-	stc.base = 1;
-
-	if (::ioctl(demux_fd, DMX_GET_STC, &stc) < 0)
-	{
-		::close(demux_fd);
-		return;
-	}
-
-	*STC = stc.stc;
 }
 

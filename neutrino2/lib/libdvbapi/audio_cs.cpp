@@ -713,7 +713,7 @@ void cAudio::run()
 	}
 	
 	// output sample rate, channels, layout could be set here if necessary
-#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(4, 5, 100)	
+#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(5, 3, 100)	
 	o_ch = p->channels;     	// 2
 	o_sr = p->sample_rate;      	// 48000
 	o_layout = p->channel_layout;   // AV_CH_LAYOUT_STEREO
@@ -738,7 +738,7 @@ void cAudio::run()
 		}
 	}
 	
-#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(4, 5, 100)
+#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(5, 3, 100)
 	swr = swr_alloc_set_opts(swr,
 	        o_layout, AV_SAMPLE_FMT_S16, o_sr,         		// output
 	        p->channel_layout, c->sample_fmt, p->sample_rate,  	// input
