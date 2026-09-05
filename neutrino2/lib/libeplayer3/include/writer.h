@@ -129,6 +129,7 @@ typedef struct Writer_s
 } Writer_t;
 
 // audio
+#ifndef HAVE_NO_AV_DECODER
 extern Writer_t WriterAudioPCM;
 extern Writer_t WriterAudioIPCM;
 extern Writer_t WriterAudioLPCM;
@@ -163,12 +164,14 @@ extern Writer_t WriterVideoAVS2;
 extern Writer_t WriterVideoVP6;
 extern Writer_t WriterVideoVP8;
 extern Writer_t WriterVideoVP9;
+#endif
 // subtitle
 extern Writer_t WriterFramebuffer;
 
 //
 static Writer_t * AvailableWriter[] = 
 {
+#ifndef HAVE_NO_AV_DECODER
 	&WriterAudioPCM,
 	&WriterAudioIPCM,
 	&WriterAudioLPCM,
@@ -202,6 +205,7 @@ static Writer_t * AvailableWriter[] =
 	&WriterVideoVP6,
 	&WriterVideoVP8,
 	&WriterVideoVP9,
+#endif	
 	//   
 	&WriterFramebuffer,   
 	NULL
