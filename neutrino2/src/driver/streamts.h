@@ -54,7 +54,7 @@ class CStreamInstance : public OpenThreads::Thread
 		stream_pids_t pids;
 		stream_fds_t fds;
 
-		virtual bool Send(ssize_t r, unsigned char *_buf = NULL);
+		virtual bool Send(ssize_t r, const unsigned char *_buf = NULL);
 		virtual void Close();
 		virtual void run();
 		friend class CStreamManager;
@@ -104,7 +104,11 @@ class CStreamStream : public CStreamInstance
 		bool Stop();
 
 		static int Interrupt(void *data);
-		static int write_packet(void *opaque, uint8_t *buf, int buf_size);
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(61, 0, 0)
+		static int write_packet(void *opaque, const uint8_t *buffer, int buf_size);
+#else
+		static int write_packet(void *opaque, uint8_t *buffer, int buf_size);
+#endif
 };
 
 typedef std::pair<t_channel_id, CStreamInstance *> streammap_pair_t;

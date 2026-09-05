@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <unistd.h>
 
 #include "writer.h"
 
@@ -55,6 +56,7 @@ if (debug_level >= level) printf(x); } while (0)
 /* ***************************** */
 /* Types                         */
 /* ***************************** */
+extern int8_t PlaybackDieNow(int8_t val);
 
 /* ***************************** */
 /* Varaibles                     */

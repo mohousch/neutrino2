@@ -127,7 +127,7 @@ bool CStreamInstance::Stop()
 	return (OpenThreads::Thread::join() == 0);
 }
 
-bool CStreamInstance::Send(ssize_t r, unsigned char *_buf)
+bool CStreamInstance::Send(ssize_t r, const unsigned char *_buf)
 {
 	stream_fds_t cfds;
 	mutex.lock();
@@ -140,7 +140,7 @@ bool CStreamInstance::Send(ssize_t r, unsigned char *_buf)
 	for (stream_fds_t::iterator it = cfds.begin(); it != cfds.end(); ++it)
 	{
 		int i = 10;
-		unsigned char *b = _buf ? _buf : buf;
+		const unsigned char *b = _buf ? _buf : buf;
 		ssize_t count = r;
 		do
 		{
@@ -836,7 +836,11 @@ CStreamStream::~CStreamStream()
 	Close();
 }
 
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(61, 0, 0)
+int CStreamStream::write_packet(void *opaque, const uint8_t *buffer, int buf_size)
+#else
 int CStreamStream::write_packet(void *opaque, uint8_t *buffer, int buf_size)
+#endif
 {
 	CStreamStream *st = (CStreamStream *) opaque;
 	st->Send(buf_size, buffer);

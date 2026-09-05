@@ -25,11 +25,13 @@ libeplayer3_a_SOURCES =  \
 	container/container.c container/container_ffmpeg.c \
 	manager/manager.c manager/audio.c manager/video.c manager/subtitle.c manager/extsubtitle.c \
 	output/linuxdvb.c output/subtitle.c output/output.c \
+ifneq HAVE_NO_AV_DECODER	
 	output/writer/writer.c output/writer/misc.c \
 	output/writer/aac.c output/writer/ac3.c output/writer/dts.c output/writer/wma.c output/writer/mp3.c \
 	output/writer/pcm.c output/writer/amr.c output/writer/lpcm.c \
 	output/writer/mpeg2.c output/writer/divx3.c output/writer/mjpeg.c output/writer/vp.c output/writer/wmv.c  \
 	output/writer/divx.c  output/writer/h264.c output/writer/vc1.c output/writer/h265.c \
+endif	
 	output/writer/framebuffer.c \
 	playback/playback.c
 
