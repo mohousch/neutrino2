@@ -1230,16 +1230,22 @@ static int Write(void* _context, void* _out)
     		avpkt.pts  = out->pts;
 		
 		// output sample rate, channels, layout could be set here if necessary
+#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(4, 5, 100)		
 		o_ch = out->ctx->channels;     			// 2
 		o_sr = out->ctx->sample_rate;      		// 48000
 		o_layout = out->ctx->channel_layout;   		// AV_CH_LAYOUT_STEREO
+#else		
+#endif		
 	
 		// libao
 		if (sformat.channels != o_ch || sformat.rate != o_sr || sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16)
 		{
 			sformat.bits = 16;
+#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(4, 5, 100)			
 			sformat.channels = out->ctx->channels;
 			sformat.rate = out->ctx->sample_rate;
+#else			
+#endif			
 			sformat.byte_format = AO_FMT_NATIVE;
 			sformat.matrix = 0;
 			
@@ -1262,7 +1268,10 @@ static int Write(void* _context, void* _out)
                 */
 
 		//
+#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(4, 5, 100)		
 		swr = swr_alloc_set_opts(swr, o_layout, AV_SAMPLE_FMT_S16, o_sr, out->ctx->channel_layout, out->ctx->sample_fmt, out->ctx->sample_rate, 0, NULL);
+#else		
+#endif
 	        
 		if (!swr)
 		{
@@ -1306,12 +1315,15 @@ static int Write(void* _context, void* _out)
 			if (obuf_size > obuf_size_max)
 			{
 				av_free(obuf);
-								
+				
+#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(4, 5, 100)								
 				if (av_samples_alloc(&obuf, &out_linesize, out->ctx->channels, out->aframe->nb_samples, AV_SAMPLE_FMT_S16, 1) < 0)
 				{
 					av_packet_unref(&avpkt);
 					ret = cERR_LINUXDVB_ERROR;
 				}
+#else				
+#endif				
 								
 				obuf_size_max = obuf_size;
 			}
@@ -1324,7 +1336,11 @@ static int Write(void* _context, void* _out)
 			sCURRENT_APTS = sCURRENT_PTS = out->aframe->best_effort_timestamp;
 #endif
 
-			int o_buf_size = av_samples_get_buffer_size(&out_linesize, out->stream->codecpar->channels, obuf_size, AV_SAMPLE_FMT_S16, 1);
+			int o_buf_size = 0;
+#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(4, 5, 100)
+			o_buf_size = av_samples_get_buffer_size(&out_linesize, out->stream->codecpar->channels, obuf_size, AV_SAMPLE_FMT_S16, 1);
+#else			
+#endif			
 			
 			//
 			if (o_buf_size > 0)
@@ -1513,7 +1529,10 @@ static int Write(void* _context, void* _out)
 				uint8_t *dest[4] = { data[buf_in].buffer, NULL, NULL, NULL };
 	    			int dest_linesize[4] = { out->ctx->width*4, 0, 0, 0 };
 	    			
+#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(4, 5, 100)	    			
 				sws_scale(convert, out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);
+#else				
+#endif				
 					
 				//
 				data[buf_in].width = out->ctx->width;

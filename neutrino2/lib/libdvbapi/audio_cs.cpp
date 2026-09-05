@@ -712,10 +712,13 @@ void cAudio::run()
 		goto out2;
 	}
 	
-	// output sample rate, channels, layout could be set here if necessary 
+	// output sample rate, channels, layout could be set here if necessary
+#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(4, 5, 100)	
 	o_ch = p->channels;     	// 2
 	o_sr = p->sample_rate;      	// 48000
 	o_layout = p->channel_layout;   // AV_CH_LAYOUT_STEREO
+#else	
+#endif
 	
 	// libao
 	if (sformat.channels != o_ch || sformat.rate != o_sr || sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16)
@@ -733,16 +736,15 @@ void cAudio::run()
 			driver = ao_default_driver_id();
 			adevice = ao_open_live(driver, &sformat, ao_opts);
 		}
-		
-		printf("cAudio::run: changed params ch %d srate %d bits %d adevice %p\n", o_ch, o_sr, 16, adevice);
 	}
 	
-	printf("cAudio::run: decoding %s (sample_fmt %d sample_rate %d channels %d)\n", avcodec_get_name(p->codec_id), c->sample_fmt, p->sample_rate, p->channels);
-	
+#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(4, 5, 100)
 	swr = swr_alloc_set_opts(swr,
 	        o_layout, AV_SAMPLE_FMT_S16, o_sr,         		// output
 	        p->channel_layout, c->sample_fmt, p->sample_rate,  	// input
 	        0, NULL);
+#else
+#endif	      
 	        
 	if (!swr)
 	{
