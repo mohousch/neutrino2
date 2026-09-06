@@ -97,6 +97,9 @@ uint64_t sCURRENT_PTS = 0;
 #include <libswscale/swscale.h>
 #include <libavutil/imgutils.h>
 #include <libswresample/swresample.h>
+#if LIBSWRESAMPLE_VERSION_INT >= AV_VERSION_INT(5, 3, 100)
+#include <libavutil/channel_layout.h>
+#endif
 
 #include <alsa/asoundlib.h>
 
@@ -1217,8 +1220,12 @@ static int Write(void* _context, void* _out)
 		int obuf_size = 0; 				// in samples
 		int obuf_size_max = 0;
 		int o_ch = 2;
-		int o_sr = 48000; 				// output channels and sample rate
+		int o_sr = 48000;				// output sample rate
+#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(5, 3, 100)
 		uint64_t o_layout = AV_CH_LAYOUT_STEREO; 	// output channels layout
+#else
+		AVChannelLayout o_layout = AV_CHANNEL_LAYOUT_STEREO;
+#endif		
 		int driver = -1;
 		
 		//
@@ -1234,7 +1241,10 @@ static int Write(void* _context, void* _out)
 		o_ch = out->ctx->channels;     			// 2
 		o_sr = out->ctx->sample_rate;      		// 48000
 		o_layout = out->ctx->channel_layout;   		// AV_CH_LAYOUT_STEREO
-#else		
+#else
+		o_ch = 2;     		// 2
+		o_sr = out->ctx->sample_rate;      		// 48000	
+		av_channel_layout_default(&o_layout, 2);	// AV_CH_LAYOUT_STEREO
 #endif		
 	
 		// libao
@@ -1244,7 +1254,9 @@ static int Write(void* _context, void* _out)
 #if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(5, 3, 100)			
 			sformat.channels = out->ctx->channels;
 			sformat.rate = out->ctx->sample_rate;
-#else			
+#else
+			sformat.channels = 2;
+			sformat.rate = out->ctx->sample_rate;		
 #endif			
 			sformat.byte_format = AO_FMT_NATIVE;
 			sformat.matrix = 0;
@@ -1257,20 +1269,12 @@ static int Write(void* _context, void* _out)
 				adevice = ao_open_live(driver, &sformat, opts);
 			}
 		}
-		
-		// 2. ALSA open - YOUR analog card
-		/*
-    		snd_pcm_t *pcm;
-    		snd_pcm_open(&pcm, "hw:1,0", SND_PCM_STREAM_PLAYBACK, 0);
-    		snd_pcm_set_params(pcm, SND_PCM_FORMAT_S16,
-                       SND_PCM_ACCESS_RW_INTERLEAVED,
-                       out->ctx->channels, out->ctx->sample_rate, 1, 500000);
-                */
 
 		//
 #if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(5, 3, 100)		
 		swr = swr_alloc_set_opts(swr, o_layout, AV_SAMPLE_FMT_S16, o_sr, out->ctx->channel_layout, out->ctx->sample_fmt, out->ctx->sample_rate, 0, NULL);
-#else		
+#else
+		ret = swr_alloc_set_opts2(&swr, &o_layout, AV_SAMPLE_FMT_S16, o_sr, &out->ctx->ch_layout, out->ctx->sample_fmt, out->ctx->sample_rate, 0, NULL);
 #endif
 	        
 		if (!swr)
@@ -1306,8 +1310,10 @@ static int Write(void* _context, void* _out)
 
 		if (got_frame)
 		{
-			// libao			
-			int out_linesize;
+			int o_buf_size = 0;
+			
+#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(5, 3, 100)
+			int out_linesize;			
 			
 			//
 			obuf_size = av_rescale_rnd(out->aframe->nb_samples, out->ctx->sample_rate, out->ctx->sample_rate, AV_ROUND_UP);
@@ -1315,73 +1321,68 @@ static int Write(void* _context, void* _out)
 			if (obuf_size > obuf_size_max)
 			{
 				av_free(obuf);
-				
-#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(5, 3, 100)								
+												
 				if (av_samples_alloc(&obuf, &out_linesize, out->ctx->channels, out->aframe->nb_samples, AV_SAMPLE_FMT_S16, 1) < 0)
 				{
 					av_packet_unref(&avpkt);
 					ret = cERR_LINUXDVB_ERROR;
-				}
-#else				
-#endif				
+				}						
+								
+				obuf_size_max = obuf_size;
+			}			
+							
+			obuf_size = swr_convert(swr, &obuf, obuf_size, (const uint8_t **)out->aframe->extended_data, out->aframe->nb_samples);
+			
+			o_buf_size = av_samples_get_buffer_size(&out_linesize, out->stream->codecpar->channels, obuf_size, AV_SAMPLE_FMT_S16, 1);			
+			
+			//
+			if (o_buf_size > 0)
+				res = ao_play(adevice, (char *)obuf, o_buf_size);
+#else
+			/*
+			AVFrame *dest = av_frame_alloc();
+			av_frame_get_buffer(dest, 0);
+			
+			if (swr_convert_frame(swr, dest, out->aframe) == 0)
+			{
+				o_buf_size = out->aframe->nb_samples*2*2;
+				
+				if (o_buf_size > 0)
+					res = ao_play(adevice, (char *)dest->data[0], o_buf_size);
+			}
+			*/
+			int out_linesize;			
+			
+			//
+			obuf_size = av_rescale_rnd(out->aframe->nb_samples, out->ctx->sample_rate, out->ctx->sample_rate, AV_ROUND_UP);
+
+			if (obuf_size > obuf_size_max)
+			{
+				av_free(obuf);
+												
+				if (av_samples_alloc(&obuf, &out_linesize, 2, out->aframe->nb_samples, AV_SAMPLE_FMT_S16, 1) < 0)
+				{
+					av_packet_unref(&avpkt);
+					ret = cERR_LINUXDVB_ERROR;
+				}						
 								
 				obuf_size_max = obuf_size;
 			}
-							
+			
 			obuf_size = swr_convert(swr, &obuf, obuf_size, (const uint8_t **)out->aframe->extended_data, out->aframe->nb_samples);
-							
+			
+			o_buf_size = av_samples_get_buffer_size(&out_linesize, 2, obuf_size, AV_SAMPLE_FMT_S16, 1);			
+			
+			//
+			if (obuf_size > 0)
+				res = ao_play(adevice, (char *)obuf, o_buf_size);
+#endif								
+            		
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
 			sCURRENT_APTS = sCURRENT_PTS = av_frame_get_best_effort_timestamp(out->aframe);
 #else
 			sCURRENT_APTS = sCURRENT_PTS = out->aframe->best_effort_timestamp;
-#endif
-
-			int o_buf_size = 0;
-#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(5, 3, 100)
-			o_buf_size = av_samples_get_buffer_size(&out_linesize, out->stream->codecpar->channels, obuf_size, AV_SAMPLE_FMT_S16, 1);
-#else			
-#endif			
-			
-			//
-			if (o_buf_size > 0)
-				res = ao_play(adevice, (char *)obuf, o_buf_size);				
-
-			/*
-			// libasound
-			if (swr) 
-			{
-                		//av_samples_alloc(&out, NULL, out->ctx->channels, out->aframe->nb_samples, AV_SAMPLE_FMT_S16, 0);
-                		//av_samples_alloc(&obuf, NULL, out->ctx->channels, out->aframe->nb_samples, AV_SAMPLE_FMT_S16, 0);
-                		//uint8_t *in = out->aframe->data[0];
-                		
-                		//swr_convert(swr, &obuf, out->aframe->nb_samples, (const uint8_t**)&in, out->aframe->nb_samples);
-                		int out_linesize;
-                		
-                		//obuf_size = av_rescale_rnd(out->aframe->nb_samples, out->ctx->sample_rate, out->ctx->sample_rate, AV_ROUND_UP);
-
-				//if (obuf_size > obuf_size_max)
-				{
-					//av_free(obuf);
-									
-					if (av_samples_alloc(&obuf, NULL, out->ctx->channels, out->aframe->nb_samples, AV_SAMPLE_FMT_S16, 0) < 0)
-					{
-						av_packet_unref(&avpkt);
-						ret = cERR_LINUXDVB_ERROR;
-					}
-									
-					obuf_size_max = obuf_size;
-				}
-								
-				obuf_size = swr_convert(swr, &obuf, obuf_size, (const uint8_t **)out->aframe->extended_data, out->aframe->nb_samples);
-				
-                		snd_pcm_writei(pcm, obuf, out->aframe->nb_samples);
-                		av_freep(&obuf);
-            		} 
-            		else 
-            		{
-                		snd_pcm_writei(pcm, out->aframe->data[0], out->aframe->nb_samples);
-            		}
-            		*/
+#endif            		
 				
 			if (res <= 0)
 			{
@@ -1397,11 +1398,6 @@ static int Write(void* _context, void* _out)
 		////
 		if (out->aframe)
 			av_frame_unref(out->aframe);
-			
-		////
-		//snd_pcm_drain(pcm);
-    		//snd_pcm_close(pcm);
-		////
 		
 		ret = cERR_LINUXDVB_ERROR;
 #endif
