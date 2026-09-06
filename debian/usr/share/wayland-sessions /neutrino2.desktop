@@ -1,0 +1,6 @@
+Name=Neutrino2
+Comment=Show TV and play movies and music
+Exec=neutrino2
+TryExec=neutrino2
+Type=Application
+DesktopNames=Neutrino2
