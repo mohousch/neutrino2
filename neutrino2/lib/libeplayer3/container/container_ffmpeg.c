@@ -1005,11 +1005,11 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				ffmpeg_printf(10, "\n");
 				
 				// init codec
+#ifdef HAVE_NO_AV_DECODER				
 				vctx = avcodec_alloc_context3(avcodec_find_decoder(stream->codecpar->codec_id));
 				
 				avcodec_open2(vctx, avcodec_find_decoder(stream->codecpar->codec_id), NULL);
 				
-#ifdef HAVE_NO_AV_DECODER
 				track.ctx = vctx;
 #endif
 
@@ -1077,11 +1077,11 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				}
 
 				// init codec
+#ifdef HAVE_NO_AV_DECODER				
 				actx = avcodec_alloc_context3(avcodec_find_decoder(stream->codecpar->codec_id));
 
 				avcodec_open2(actx, avcodec_find_decoder(stream->codecpar->codec_id), NULL);
 				
-#ifdef HAVE_NO_AV_DECODER
 				track.ctx = actx;
 #else
 				// ipcm
