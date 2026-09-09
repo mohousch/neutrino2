@@ -1277,18 +1277,13 @@ static int Write(void* _context, void* _out)
 		ret = swr_alloc_set_opts2(&swr, &o_layout, AV_SAMPLE_FMT_S16, 44100, &out->ctx->ch_layout, out->ctx->sample_fmt, out->ctx->sample_rate, 0, NULL);
 #endif
 	        
-		if (ret < 0 || !swr)
+		if (!swr)
 		{
 			linuxdvb_printf(10, "can't initialize Resampler\n");
 			return cERR_LINUXDVB_ERROR;
 		}
 	
-		if (swr_init(swr) < 0)
-		{
-			swr_free(&swr);
-			swr = NULL;
-			return cERR_LINUXDVB_ERROR;
-		}
+		swr_init(swr);
 						
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
 		res = avcodec_decode_audio4(out->ctx, out->aframe, &got_frame, &avpkt);
@@ -1316,7 +1311,6 @@ static int Write(void* _context, void* _out)
 
 		if (got_frame)
 		{
-			printf("GOTFRAME\n");
 			int o_buf_size = 0;
 			
 #if LIBSWRESAMPLE_VERSION_MAJOR < 5

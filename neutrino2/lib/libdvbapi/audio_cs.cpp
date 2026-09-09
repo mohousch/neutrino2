@@ -759,18 +759,13 @@ void cAudio::run()
 	ret = swr_alloc_set_opts2(&swr, &o_layout, AV_SAMPLE_FMT_S16, 44100, &c->ch_layout, c->sample_fmt, c->sample_rate, 0, NULL);
 #endif	      
 	        
-	if (ret < 0 || !swr)
+	if (!swr)
 	{
 		printf("cAudio::run: could not alloc resample context\n");
 		goto out3;
 	}
 	
-	if (swr_init(swr) < 0)
-	{
-		swr_free(&swr);
-		swr = NULL;
-		goto out3;
-	}
+	swr_init(swr);
 	
 	while (thread_running)
 	{
