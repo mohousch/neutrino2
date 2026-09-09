@@ -1,4 +1,4 @@
-installdir = $(CONFIGDIR)/skins/ice/buttons
+installdir = $(CONFIGDIR)/skins/neutrino2/buttons
 
 install_DATA = \
 	0.png \

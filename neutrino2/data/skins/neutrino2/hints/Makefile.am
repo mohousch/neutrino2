@@ -1,4 +1,4 @@
-installdir = $(CONFIGDIR)/skins/ice/hints
+installdir = $(CONFIGDIR)/skins/neutrino2/hints
 
 install_DATA = \
 	hint_adzap.png \

@@ -1,4 +1,4 @@
-installdir = $(CONFIGDIR)/skins/ice/icons
+installdir = $(CONFIGDIR)/skins/neutrino2/icons
 
 install_DATA = \
 	16_9_gray.png \
