@@ -62,7 +62,7 @@
 #endif
 #endif
 
-//#define LINUXDVB_DEBUG
+#define LINUXDVB_DEBUG
 #define LINUXDVB_SILENT
 
 static short debug_level = 10;
@@ -97,7 +97,7 @@ uint64_t sCURRENT_PTS = 0;
 #include <libswscale/swscale.h>
 #include <libavutil/imgutils.h>
 #include <libswresample/swresample.h>
-#if LIBSWRESAMPLE_VERSION_INT >= AV_VERSION_INT(5, 3, 100)
+#if LIBAVUTIL_VERSION_INT >= AV_VERSION_INT(57, 28, 100)
 #include <libavutil/channel_layout.h>
 #endif
 
@@ -1221,7 +1221,7 @@ static int Write(void* _context, void* _out)
 		int obuf_size_max = 0;
 		int o_ch = 2;
 		int o_sr = 48000;				// output sample rate
-#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(5, 3, 100)
+#if LIBSWRESAMPLE_VERSION_MAJOR < 5
 		uint64_t o_layout = AV_CH_LAYOUT_STEREO; 	// output channels layout
 #else
 		AVChannelLayout o_layout = AV_CHANNEL_LAYOUT_STEREO;
@@ -1237,12 +1237,12 @@ static int Write(void* _context, void* _out)
     		avpkt.pts  = out->pts;
 		
 		// output sample rate, channels, layout could be set here if necessary
-#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(5, 3, 100)		
+#if LIBSWRESAMPLE_VERSION_MAJOR < 5
 		o_ch = out->ctx->channels;     			// 2
 		o_sr = out->ctx->sample_rate;      		// 48000
 		o_layout = out->ctx->channel_layout;   		// AV_CH_LAYOUT_STEREO
 #else
-		o_ch = 2;     		// 2
+		o_ch = out->ctx->ch_layout.nb_channels;;     	// 2
 		o_sr = out->ctx->sample_rate;      		// 48000	
 		av_channel_layout_default(&o_layout, 2);	// AV_CH_LAYOUT_STEREO
 #endif		
@@ -1251,11 +1251,11 @@ static int Write(void* _context, void* _out)
 		if (sformat.channels != o_ch || sformat.rate != o_sr || sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16)
 		{
 			sformat.bits = 16;
-#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(5, 3, 100)			
+#if LIBSWRESAMPLE_VERSION_MAJOR < 5
 			sformat.channels = out->ctx->channels;
 			sformat.rate = out->ctx->sample_rate;
 #else
-			sformat.channels = 2;
+			sformat.channels = out->ctx->ch_layout.nb_channels;;
 			sformat.rate = out->ctx->sample_rate;		
 #endif			
 			sformat.byte_format = AO_FMT_NATIVE;
@@ -1271,18 +1271,24 @@ static int Write(void* _context, void* _out)
 		}
 
 		//
-#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(5, 3, 100)		
+#if LIBSWRESAMPLE_VERSION_MAJOR < 5
 		swr = swr_alloc_set_opts(swr, o_layout, AV_SAMPLE_FMT_S16, o_sr, out->ctx->channel_layout, out->ctx->sample_fmt, out->ctx->sample_rate, 0, NULL);
 #else
-		ret = swr_alloc_set_opts2(&swr, &o_layout, AV_SAMPLE_FMT_S16, o_sr, &out->ctx->ch_layout, out->ctx->sample_fmt, out->ctx->sample_rate, 0, NULL);
+		ret = swr_alloc_set_opts2(&swr, &o_layout, AV_SAMPLE_FMT_S16, 44100, &out->ctx->ch_layout, out->ctx->sample_fmt, out->ctx->sample_rate, 0, NULL);
 #endif
 	        
-		if (!swr)
+		if (ret < 0 || !swr)
 		{
+			linuxdvb_printf(10, "can't initialize Resampler\n");
 			return cERR_LINUXDVB_ERROR;
 		}
 	
-		swr_init(swr);
+		if (swr_init(swr) < 0)
+		{
+			swr_free(&swr);
+			swr = NULL;
+			return cERR_LINUXDVB_ERROR;
+		}
 						
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
 		res = avcodec_decode_audio4(out->ctx, out->aframe, &got_frame, &avpkt);
@@ -1310,9 +1316,10 @@ static int Write(void* _context, void* _out)
 
 		if (got_frame)
 		{
+			printf("GOTFRAME\n");
 			int o_buf_size = 0;
 			
-#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(5, 3, 100)
+#if LIBSWRESAMPLE_VERSION_MAJOR < 5
 			int out_linesize;			
 			
 			//
@@ -1343,7 +1350,7 @@ static int Write(void* _context, void* _out)
 			AVFrame *dest = av_frame_alloc();
 			av_frame_get_buffer(dest, 0);
 			
-			if (swr_convert_frame(swr, dest, out->aframe) == 0)
+			if (swr_convert_frame(swr, dest, out->aframe))
 			{
 				o_buf_size = out->aframe->nb_samples*2*2;
 				
@@ -1351,6 +1358,7 @@ static int Write(void* _context, void* _out)
 					res = ao_play(adevice, (char *)dest->data[0], o_buf_size);
 			}
 			*/
+			//
 			int out_linesize;			
 			
 			//
@@ -1360,7 +1368,7 @@ static int Write(void* _context, void* _out)
 			{
 				av_free(obuf);
 												
-				if (av_samples_alloc(&obuf, &out_linesize, 2, out->aframe->nb_samples, AV_SAMPLE_FMT_S16, 1) < 0)
+				if (av_samples_alloc(&obuf, &out_linesize, out->ctx->ch_layout.nb_channels, out->aframe->nb_samples, AV_SAMPLE_FMT_S16, 1) < 0)
 				{
 					av_packet_unref(&avpkt);
 					ret = cERR_LINUXDVB_ERROR;
@@ -1371,11 +1379,12 @@ static int Write(void* _context, void* _out)
 			
 			obuf_size = swr_convert(swr, &obuf, obuf_size, (const uint8_t **)out->aframe->extended_data, out->aframe->nb_samples);
 			
-			o_buf_size = av_samples_get_buffer_size(&out_linesize, 2, obuf_size, AV_SAMPLE_FMT_S16, 1);			
+			o_buf_size = av_samples_get_buffer_size(&out_linesize, out->ctx->ch_layout.nb_channels, obuf_size, AV_SAMPLE_FMT_S16, 1);			
 			
 			//
 			if (obuf_size > 0)
 				res = ao_play(adevice, (char *)obuf, o_buf_size);
+			//
 #endif								
             		
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
@@ -1524,12 +1533,8 @@ static int Write(void* _context, void* _out)
 				// swsscale YUV420 to RGB32:
 				uint8_t *dest[4] = { data[buf_in].buffer, NULL, NULL, NULL };
 	    			int dest_linesize[4] = { out->ctx->width*4, 0, 0, 0 };
-	    			
-#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(5, 3, 100)	    			
-				sws_scale(convert, out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);
-#else		
-				sws_scale(convert, (const uint8_t * const*)out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);		
-#endif				
+	    				
+				sws_scale(convert, (const uint8_t * const*)out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);					
 					
 				//
 				data[buf_in].width = out->ctx->width;

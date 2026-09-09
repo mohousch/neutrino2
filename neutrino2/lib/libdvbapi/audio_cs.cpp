@@ -638,7 +638,11 @@ void cAudio::run()
 	int obuf_sz = 0; 	// in samples
 	int obuf_sz_max = 0;
 	int o_ch, o_sr; 	// output channels and sample rate
-	uint64_t o_layout; 	// output channels layout
+#if LIBSWRESAMPLE_VERSION_MAJOR < 5
+	uint64_t o_layout = AV_CH_LAYOUT_STEREO; 	// output channels layout
+#else
+	AVChannelLayout o_layout = AV_CHANNEL_LAYOUT_STEREO;
+#endif
 
 	curr_pts = 0;
 	
@@ -713,19 +717,27 @@ void cAudio::run()
 	}
 	
 	// output sample rate, channels, layout could be set here if necessary
-#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(5, 3, 100)	
+#if LIBSWRESAMPLE_VERSION_INT < 5
 	o_ch = p->channels;     	// 2
 	o_sr = p->sample_rate;      	// 48000
 	o_layout = p->channel_layout;   // AV_CH_LAYOUT_STEREO
-#else	
+#else
+	o_ch = c->ch_layout.nb_channels;;     	// 2
+	o_sr = c->sample_rate;      		// 48000	
+	av_channel_layout_default(&o_layout, 2);	// AV_CH_LAYOUT_STEREO	
 #endif
 	
 	// libao
 	if (sformat.channels != o_ch || sformat.rate != o_sr || sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16)
 	{
 		sformat.bits = 16;
-		sformat.channels = o_ch;
-		sformat.rate = o_sr;
+#if LIBSWRESAMPLE_VERSION_MAJOR < 5
+		sformat.channels = c->channels;
+		sformat.rate = c->sample_rate;
+#else
+		sformat.channels = c->ch_layout.nb_channels;;
+		sformat.rate = c->sample_rate;		
+#endif			
 		sformat.byte_format = AO_FMT_NATIVE;
 		sformat.matrix = 0;
 		
@@ -738,21 +750,27 @@ void cAudio::run()
 		}
 	}
 	
-#if LIBSWRESAMPLE_VERSION_INT < AV_VERSION_INT(5, 3, 100)
+#if LIBSWRESAMPLE_VERSION_INT < 5
 	swr = swr_alloc_set_opts(swr,
 	        o_layout, AV_SAMPLE_FMT_S16, o_sr,         		// output
 	        p->channel_layout, c->sample_fmt, p->sample_rate,  	// input
 	        0, NULL);
 #else
+	ret = swr_alloc_set_opts2(&swr, &o_layout, AV_SAMPLE_FMT_S16, 44100, &c->ch_layout, c->sample_fmt, c->sample_rate, 0, NULL);
 #endif	      
 	        
-	if (!swr)
+	if (ret < 0 || !swr)
 	{
 		printf("cAudio::run: could not alloc resample context\n");
 		goto out3;
 	}
 	
-	swr_init(swr);
+	if (swr_init(swr) < 0)
+	{
+		swr_free(&swr);
+		swr = NULL;
+		goto out3;
+	}
 	
 	while (thread_running)
 	{
@@ -792,6 +810,8 @@ void cAudio::run()
 		if (gotframe)
 		{
 			int out_linesize;
+			
+#if LIBSWRESAMPLE_VERSION_MAJOR < 5
 			obuf_sz = av_rescale_rnd(frame->nb_samples, o_sr, p->sample_rate, AV_ROUND_UP);
 
 			if (obuf_sz > obuf_sz_max)
@@ -818,6 +838,18 @@ void cAudio::run()
 			// play	libao
 			if (o_buf_sz > 0)
 				ao_play(adevice, (char *)obuf, o_buf_sz);
+#else
+			AVFrame *dest = av_frame_alloc();
+			av_frame_get_buffer(dest, 0);
+			
+			if (swr_convert_frame(swr, dest, frame))
+			{
+				int o_buf_size = frame->nb_samples*4;
+				
+				if (o_buf_size > 0)
+					ao_play(adevice, (char *)dest->data[0], o_buf_size);
+			}
+#endif
 		}
 		
 		av_packet_unref(&avpkt);
