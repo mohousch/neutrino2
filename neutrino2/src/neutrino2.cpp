@@ -2857,7 +2857,9 @@ int CNeutrinoApp::exec(CTarget * parent, const std::string &actionKey)
 		exitRun(SHUTDOWN);
 		
 #ifdef PLATFORM_GENERIC
+#ifndef USE_OPENGL
 		system("poweroff -f");
+#endif
 #endif		
 	}
 	else if(actionKey == "reboot")
@@ -2865,8 +2867,9 @@ int CNeutrinoApp::exec(CTarget * parent, const std::string &actionKey)
 		exitRun(REBOOT);
 		
 #ifdef PLATFORM_GENERIC
-		//system("reboot -f");
+#ifndef USE_OPENGL
 		::reboot(RB_AUTOBOOT);
+#endif
 #endif		
 	}
 	else if(actionKey == "restart") 
