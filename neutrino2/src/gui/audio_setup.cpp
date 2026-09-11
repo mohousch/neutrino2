@@ -364,6 +364,7 @@ bool CAudioSetupNotifier::changeNotify(const std::string& OptionName, void *)
 #ifdef HAVE_NO_AV_DECODER
 	else if (OptionName == _("Audio Output"))
 	{
+		// FIXME:
 		//sprintf(output, "hw:%d,%d", card_id, device_id);
 		sprintf(output, "hw:1,0");
 	}

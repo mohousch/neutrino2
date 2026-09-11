@@ -65,6 +65,7 @@
 #include <system/weather.h>
 
 
+//// globals
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
 extern CRemoteControl * g_RemoteControl;		// neutrino.cpp
 extern cVideo * videoDecoder;				// libdvbapi
@@ -72,11 +73,6 @@ extern bool autoshift;
 extern uint32_t shift_timer;				// defined in neutrino2.cpp
 extern std::string ext_channel_name;			// defined in vcrcontrol.cpp
 extern bool timeset;					// defined in sectionsd.cpp
-
-#define borderwidth 		5 			//for subchannels Box
-
-// in us
-#define LCD_UPDATE_TIME_TV_MODE (60 * 1000 * 1000)
 
 //
 #define RED_BAR 		40
@@ -111,7 +107,7 @@ extern bool timeset;					// defined in sectionsd.cpp
 #define BOXHEIGHT_CHANNELINFO	140
 #define BOXHEIGHT_MOVIEINFO	100
 
-#define CHANINFO_HEIGHT	24
+#define CHANINFO_HEIGHT		24
 
 static bool sortByDateTime(const CChannelEvent& a, const CChannelEvent& b)
 {
@@ -528,7 +524,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string &_ChannelName,
 	// bottonbar
 	if (g_settings.infobar_buttonbar)
 	{
-		frameBuffer->paintBoxRel(g_settings.infobar_border? buttonBarStartX + 2 : buttonBarStartX, buttonBarStartY, g_settings.infobar_border? BoxWidth - 4 : BoxWidth, g_settings.infobar_border? buttonBarHeight - 2 : buttonBarHeight, COL_INFOBAR_SHADOW_PLUS_1, g_settings.infobar_radius, g_settings.infobar_radius? CORNER_BOTTOM : CORNER_NONE);
+		frameBuffer->paintBoxRel(g_settings.infobar_border? buttonBarStartX + 2 : buttonBarStartX, buttonBarStartY, g_settings.infobar_border? BoxWidth - 4 : BoxWidth, g_settings.infobar_border? buttonBarHeight - 2 : buttonBarHeight, COL_INFOBAR_SHADOW_PLUS_1, g_settings.infobar_radius, g_settings.infobar_corner & CORNER_BOTTOM? CORNER_BOTTOM : CORNER_NONE);
 	}
 	
 	// botton line

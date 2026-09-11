@@ -302,6 +302,7 @@ int LinuxDvbOpen(Context_t  *context, char * type)
     	}
     	
     	// init gbm
+    	/*
     	if (gbm_fd < 0)
     	{
 		gbm_fd = open("/dev/dri/renderD128", O_RDWR); // no permission issue
@@ -314,6 +315,7 @@ int LinuxDvbOpen(Context_t  *context, char * type)
 		else
 			linuxdvb_printf(10, "gbm device created:%p\n", gbm);
 	}
+	*/
 #endif
 #endif
 	
@@ -340,6 +342,8 @@ int LinuxDvbClose(Context_t  *context, char * type)
 	adevice = NULL;
 	
 #ifdef USE_LIBDRM
+	drmModeSetPlane(drm_fd, ov_id, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+	
 	close(gbm_fd);
 	gbm_fd = -1;
 #endif	
@@ -1263,7 +1267,8 @@ static int Write(void* _context, void* _out)
 			
 			if (adevice == NULL)
 			{
-				ao_append_option(&opts, "dev", output);
+				// FIXME:
+//				ao_append_option(&opts, "dev", output);
 				
 				driver = ao_default_driver_id();
 				adevice = ao_open_live(driver, &sformat, opts);
@@ -1607,31 +1612,33 @@ static int Write(void* _context, void* _out)
 			if (convert)
 			{
 				// create DRM NV12 dumb
-            			struct drm_mode_create_dumb cre={0}; 
-            			cre.width=out->vframe->width; 
-            			cre.height=out->vframe->height*3/2; 
-            			cre.bpp=8;
+				/*
+            			struct drm_mode_create_dumb cre = {0}; 
+            			cre.width = out->vframe->width; 
+            			cre.height = out->vframe->height*3/2; 
+            			cre.bpp = 8;
             			
             			drmIoctl(drm_fd, DRM_IOCTL_MODE_CREATE_DUMB, &cre);
-            			struct drm_mode_map_dumb mp={0}; 
-            			mp.handle=cre.handle;
+            			struct drm_mode_map_dumb mp = {0}; 
+            			mp.handle = cre.handle;
             			drmIoctl(drm_fd, DRM_IOCTL_MODE_MAP_DUMB, &mp);
             			uint8_t *fb_ptr = mmap(0, cre.size, PROT_READ|PROT_WRITE, MAP_SHARED, drm_fd, mp.offset);
 
             			// wrap ptr as AVFrame for sws
-            			uint8_t *dest[4] = { fb_ptr, fb_ptr+out->ctx->width*out->ctx->height, NULL, NULL };
+            			uint8_t *dest[4] = { fb_ptr, fb_ptr + out->ctx->width*out->ctx->height, NULL, NULL };
 	    			int dest_linesize[4] = { out->ctx->width, out->ctx->height, 0, 0 };
 
             			sws_scale(convert, (const uint8_t* const*)out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);
+            			*/
 
-            			uint32_t hdl[4]={cre.handle,cre.handle};
-            			uint32_t pitch[4]={(uint32_t)cre.pitch,(uint32_t)cre.pitch};
-            			uint32_t off[4]={0,(uint32_t)(out->ctx->width*out->ctx->height)};
+            			uint32_t hdl[4] = {creq.handle, creq.handle};
+            			uint32_t pitch[4] = {(uint32_t)creq.pitch, (uint32_t)creq.pitch};
+            			uint32_t off[4] = {0, (uint32_t)(out->ctx->width*out->ctx->height)};
             			
             			uint32_t fb; 
-            			drmModeAddFB2(drm_fd, out->ctx->width, out->ctx->height, DRM_FORMAT_NV12, hdl,pitch,off,&fb,0);
+            			drmModeAddFB2(drm_fd, out->ctx->width, out->ctx->height, DRM_FORMAT_NV12, hdl, pitch, off, &fb, 0);
 
-            			drmModeSetPlane(drm_fd, ov_id, crtc_id, fb, 0, 0,0,scr_w,scr_h, 0,0,out->ctx->width<<16,out->ctx->height<<16);
+            			drmModeSetPlane(drm_fd, ov_id, crtc_id, fb, 0, 0, 0, scr_w, scr_h, 0, 0, out->ctx->width<<16, out->ctx->height<<16);
             			
             			if(last_fb)
             			{ 
@@ -1639,11 +1646,11 @@ static int Write(void* _context, void* _out)
             			}
             			
             			// free old dumb
-            			struct drm_mode_destroy_dumb des={0}; 
-            			des.handle=cre.handle; // we keep handle? need keep before rmFB, leak for demo simplicity
+            			struct drm_mode_destroy_dumb des = {0}; 
+            			des.handle = creq.handle; // we keep handle? need keep before rmFB, leak for demo simplicity
             			// keep for 2 frames then unmap
-            			munmap(fb_ptr, cre.size);
-            			last_fb=fb;
+            			//munmap(fb_ptr, creq.size);
+            			last_fb = fb;
             			//usleep(40000);
 			}
 			#endif

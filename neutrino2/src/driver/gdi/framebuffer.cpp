@@ -71,14 +71,13 @@ GLThreadObj *mpGLThreadObj; // the thread object
 int drm_fd = -1;
 uint32_t conn_id, crtc_id, fb_id;
 drmModeModeInfo mode;
-//uint8_t *fb_ptr = NULL;
 struct drm_mode_create_dumb creq={0};
 struct drm_mode_map_dumb mreq = {0};
 uint32_t handle;
 
 uint32_t ov_id=0;
-int scr_w = 1280;
-int scr_h = 720;
+int scr_w = DEFAULT_XRES;
+int scr_h = DEFAULT_YRES;
 #endif
 
 ////
@@ -247,7 +246,7 @@ void CFrameBuffer::init(const char * const fbDevice)
 			
 			drmModeModeInfo mode;
 			
-			// get 1280x720
+			// get 720p
 			for (int i = 0; i < conn->count_modes; i++)
 			{
 				mode = conn->modes[i];
@@ -277,7 +276,7 @@ void CFrameBuffer::init(const char * const fbDevice)
 		 	drmModeSetCrtc(drm_fd, crtc_id, fb_id, 0, 0, &conn_id, 1, &mode);
 
 		 	// mmap it
-		 	mreq.handle = creq.handle;
+		 	handle = mreq.handle = creq.handle;
 		 	
 		 	ioctl(drm_fd, DRM_IOCTL_MODE_MAP_DUMB, &mreq);
 		 	lfb = (uint32_t *)mmap(0, creq.size, PROT_READ|PROT_WRITE, MAP_SHARED, drm_fd, mreq.offset);

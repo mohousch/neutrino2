@@ -743,7 +743,8 @@ void cAudio::run()
 		
 		if (adevice == NULL)
 		{
-			ao_append_option(&ao_opts, "dev", output);
+			// FIXME:
+//			ao_append_option(&ao_opts, "dev", output);
 				
 			driver = ao_default_driver_id();
 			adevice = ao_open_live(driver, &sformat, ao_opts);
