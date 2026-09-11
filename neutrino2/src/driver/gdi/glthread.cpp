@@ -576,11 +576,10 @@ void GLThreadObj::bltDisplayBuffer()
 	if (!videoDecoder)
 		return;
 	
+#ifdef HAVE_NO_AV_DECODER
 	cVideo::SWFramebuffer* buf = NULL;
 	
-#ifdef HAVE_NO_AV_DECODER
 	buf = videoDecoder->getDecBuf();
-#endif
 	
 	if (!buf)
 	{		
@@ -644,6 +643,7 @@ void GLThreadObj::bltDisplayBuffer()
 		else if (sleep_us < 1)
 			sleep_us = 30000;
 	}
+#endif
 }
 
 //
@@ -655,11 +655,10 @@ void GLThreadObj::bltPlayBuffer()
 	if (!playback->playing)
 		return;
 	
+#ifdef HAVE_NO_AV_DECODER
 	cPlayback::SWFramebuffer* buf = NULL;
 	
-#ifdef HAVE_NO_AV_DECODER
 	buf = playback->getDecBuf();
-#endif
 	
 	//
 	if (buf == NULL)
@@ -709,5 +708,6 @@ void GLThreadObj::bltPlayBuffer()
 		else if (sleep_us < 1)
 			sleep_us = 30000;
 	}
+#endif
 }
 

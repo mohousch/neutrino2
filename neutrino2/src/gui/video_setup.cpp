@@ -41,6 +41,10 @@
 #include <system/debug.h>
 #include <system/helpers.h>
 
+#if USE_OPENGL
+#include <driver/gdi/glthread.h>
+#endif
+
 #include <video_cs.h>
 
 
@@ -116,6 +120,14 @@ const keyval VIDEOMENU_VIDEOFORMAT_OPTIONS[VIDEOMENU_VIDEOFORMAT_OPTION_COUNT] =
 	{ VIDEOFORMAT_PANSCAN, "panscan" },
 	{ VIDEOFORMAT_FULLSCREEN, _("fullscreen") },
 	{ VIDEOFORMAT_PANSCAN2, "bestfit" }
+};
+#elif defined USE_OPENGL
+#define VIDEOMENU_VIDEOFORMAT_OPTION_COUNT 3
+const keyval VIDEOMENU_VIDEOFORMAT_OPTIONS[VIDEOMENU_VIDEOFORMAT_OPTION_COUNT] = 
+{
+	{ DISPLAY_AR_MODE_PANSCAN, "panscan" },
+	{ DISPLAY_AR_MODE_LETTERBOX, "letterbox" },
+	{ DISPLAY_AR_MODE_NONE, _("none") }
 };
 #else
 #define VIDEOMENU_VIDEOFORMAT_OPTION_COUNT 4
@@ -261,6 +273,12 @@ void CVideoSettings::showMenu()
 	videoSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	videoSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE, NULL, true) );
 
+#ifdef HAVE_NO_AV_DECODER
+#ifdef USE_OPENGL
+	// video format bestfit/letterbox/panscan/non
+	videoSettings->addItem(new CMenuOptionChooser(_("Video Format"), &g_settings.video_Format, VIDEOMENU_VIDEOFORMAT_OPTIONS, VIDEOMENU_VIDEOFORMAT_OPTION_COUNT, true, this));
+#endif
+#else
 	// video aspect ratio 4:3/16:9
 	videoSettings->addItem(new CMenuOptionChooser(_("TV-System"), &g_settings.video_Ratio, VIDEOMENU_VIDEORATIO_OPTIONS, VIDEOMENU_VIDEORATIO_OPTION_COUNT, true, this));
 	
@@ -296,6 +314,7 @@ void CVideoSettings::showMenu()
 	CPSISetup * chPSISetup = new CPSISetup(_("PSI settings"), &g_settings.contrast, &g_settings.saturation, &g_settings.brightness, &g_settings.tint);
 	videoSettings->addItem( new CMenuForwarder(_("PSI settings"), true, NULL, chPSISetup));
 #endif
+#endif // HAVE_NO_AV_DECODER
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
