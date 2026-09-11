@@ -718,12 +718,12 @@ void cAudio::run()
 	
 	// output sample rate, channels, layout could be set here if necessary
 #if LIBSWRESAMPLE_VERSION_MAJOR < 5
-	o_ch = p->channels;     	// 2
-	o_sr = p->sample_rate;      	// 48000
-	o_layout = p->channel_layout;   // AV_CH_LAYOUT_STEREO
+	o_ch = p->channels;     			// 2
+	o_sr = p->sample_rate;      			// 48000
+	o_layout = p->channel_layout;   		// AV_CH_LAYOUT_STEREO
 #else
-	o_ch = c->ch_layout.nb_channels;;     	// 2
-	o_sr = c->sample_rate;      		// 48000	
+	o_ch = c->ch_layout.nb_channels;;     		// 2
+	o_sr = c->sample_rate;      			// 48000	
 	av_channel_layout_default(&o_layout, 2);	// AV_CH_LAYOUT_STEREO	
 #endif
 	
@@ -732,8 +732,8 @@ void cAudio::run()
 	{
 		sformat.bits = 16;
 #if LIBSWRESAMPLE_VERSION_MAJOR < 5
-		sformat.channels = c->channels;
-		sformat.rate = c->sample_rate;
+		sformat.channels = o_ch;
+		sformat.rate = o_sr;
 #else
 		sformat.channels = c->ch_layout.nb_channels;;
 		sformat.rate = c->sample_rate;		
@@ -752,8 +752,8 @@ void cAudio::run()
 	
 #if LIBSWRESAMPLE_VERSION_MAJOR < 5
 	swr = swr_alloc_set_opts(swr,
-	        o_layout, AV_SAMPLE_FMT_S16, o_sr,         		// output
-	        p->channel_layout, c->sample_fmt, p->sample_rate,  	// input
+	        o_layout, AV_SAMPLE_FMT_S16, o_sr,
+	        p->channel_layout, c->sample_fmt, p->sample_rate,
 	        0, NULL);
 #else
 	ret = swr_alloc_set_opts2(&swr, &o_layout, AV_SAMPLE_FMT_S16, 44100, &c->ch_layout, c->sample_fmt, c->sample_rate, 0, NULL);
