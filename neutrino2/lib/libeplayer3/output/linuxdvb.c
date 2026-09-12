@@ -146,15 +146,6 @@ AVFrame *nv12= NULL;
 int gbm_fd = -1;
 struct gbm_device *gbm = NULL;
 #endif
-
-#ifdef USE_DIRECTFB
-#include <directfb.h>
-
-//extern IDirectFB *dfb;
-//extern IDirectFBSurface *primary;
-//extern IDirectFBDisplayLayer *layer;
-extern IDirectFBSurface *video_surf;
-#endif
 #endif // HAVE_NO_AV_DECODER
 
 //
@@ -1710,40 +1701,6 @@ static int Write(void* _context, void* _out)
                     	}
                     	////
                     	#endif
-#elif defined (USE_DIRECTFB)
-			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_BGRA, SWS_BILINEAR, NULL, NULL, NULL);
-								
-			if (convert)
-			{
-				void *ptr; int pitch;
-	   			video_surf->Lock(video_surf, DSLF_WRITE, &ptr, &pitch);
-
-	   			uint8_t *dest[1] = {ptr}; 
-	   			int dest_linesize[1] = {pitch};
-	   			
-	   			//
-	   			sws_scale(convert, out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);
-
-	   			video_surf->Unlock(video_surf);
-	   			video_surf->Flip(video_surf, NULL, DSFLIP_WAITFORSYNC);
-   			}
-#endif
-			releaseLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
-		}
-		
-		//
-		av_packet_unref(&avpkt);
-		
-		if (convert)
-		{
-			sws_freeContext(convert);
-			convert = NULL;
-		}
-		
-		if (out->vframe)
-			av_frame_unref(out->vframe);
-		
-		ret = cERR_LINUXDVB_ERROR;
 #endif
 
 		free(Encoding);

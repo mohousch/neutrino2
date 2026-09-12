@@ -170,23 +170,6 @@
 #include <ao/ao.h>
 #endif
 
-#ifdef USE_DIRECTFB
-#include <directfb.h>
-
-IDirectFB *dfb;
-IDirectFBSurface *primary_surf;
-IDirectFBSurface *video_surf;
-IDirectFBDisplayLayer *primary;
-IDirectFBDisplayLayer *overlay;
-//IDirectFBSurface *primary_surf, *video_surf;
-int gfxfd = -1;
-
-#define DFBCHECK(x...)                                        		\
-	err = x;                                                      	\
-	if (err != DFB_OK) {                                          	\
-		fprintf(stderr, "neutrino2.cpp:%d:\n\t", __LINE__);     \
-	}
-#endif
 
 //// globals
 int debug = DEBUG_NORMAL;
@@ -4964,70 +4947,6 @@ void CNeutrinoApp::init_HAL(void)
 	else
 		dprintf(DEBUG_NORMAL, "CNeutrinoApp::init_HAL: X Server not running!\n");
 #endif
-	
-#ifdef USE_DIRECTFB
-	int argc = 0;
-	
-	DFBResult err;
-	DFBSurfaceDescription dsc;
-	DFBSurfacePixelFormat pixelformat;
-	int SW, SH;
-
-	DFBCHECK(DirectFBInit(&argc, NULL));
-	
-	//
-	DirectFBSetOption("no-vt-switch", NULL);
-	DirectFBSetOption("no-vt", NULL);
-	DirectFBSetOption("no-sighandler", NULL);
-	DirectFBSetOption("disable-module", "keyboard");
-	DirectFBSetOption("disable-module", "linux_input");
-	
-	DFBCHECK(DirectFBCreate(&dfb));
-
-	err = dfb->SetCooperativeLevel(dfb, DFSCL_FULLSCREEN);
-	if (err)
-		DirectFBError("Failed to get exclusive access", err);
-	
-	////
-	// Layer 0 - UI
-    	dfb->GetDisplayLayer(dfb, DLID_PRIMARY, &primary);
-    	primary->SetCooperativeLevel(primary, DLSCL_EXCLUSIVE);
-    	DFBDisplayLayerConfig cfg;// = {.flags=DLCONF_WIDTH|DLCONF_HEIGHT,.width=1920,.height=1080};
- //   	cfg.flags = (DFBDisplayLayerConfigFlags)DLCONF_WIDTH|DLCONF_HEIGHT;
-    	cfg.width = 1920;
-    	cfg.height = 1080;
-    	primary->SetConfiguration(primary, &cfg);
-    	primary->GetSurface(primary, &primary_surf);
-    	
-    	// Layer 2 - VIDEO OVERLAY - hw plane
-    	dfb->GetDisplayLayer(dfb, DLID_PRIMARY, &overlay);
-    	if (!overlay) dfb->GetDisplayLayer(dfb, DLID_PRIMARY, &overlay);
-    	overlay->SetCooperativeLevel(overlay, DLSCL_EXCLUSIVE);
-    	overlay->SetConfiguration(overlay, &cfg);
-    	overlay->GetSurface(overlay, &video_surf);
-	////
-
-/*
-	dsc.flags = DSDESC_CAPS;
-	dsc.caps = DSCAPS_PRIMARY;
-
-	DFBCHECK(dfb->CreateSurface( dfb, &dsc, &primary ));
-	// set pixel alpha mode
-	dfb->GetDisplayLayer(dfb, DLID_PRIMARY, &layer);
-	DFBCHECK(layer->SetCooperativeLevel(layer, DLSCL_EXCLUSIVE));
-	DFBDisplayLayerConfig conf;
-	DFBCHECK(layer->GetConfiguration(layer, &conf));
-	conf.flags   = DLCONF_OPTIONS;
-	conf.options = (DFBDisplayLayerOptions)((conf.options & ~DLOP_OPACITY) | DLOP_ALPHACHANNEL);
-	DFBCHECK(layer->SetConfiguration(layer, &conf));
-
-	primary->GetPixelFormat(primary, &pixelformat);
-	primary->GetSize(primary, &SW, &SH);
-	primary->Clear(primary, 0, 0, 0, 0);
-	primary->GetSubSurface(primary, NULL, &dfbdest);
-	dfbdest->Clear(dfbdest, 0, 0, 0, 0);
-*/
-#endif
 
 	// libao
 #ifdef HAVE_NO_AV_DECODER
@@ -5042,15 +4961,6 @@ void CNeutrinoApp::deinit_HAL(void)
 	// libao
 #ifdef HAVE_NO_AV_DECODER
 	ao_shutdown();
-#endif
-
-#ifdef USE_DIRECTFB
-	video_surf->Release(video_surf);
-	primary_surf->Release(primary_surf);
-	primary->Release(primary);
-	overlay->Release(overlay);
-	
-	dfb->Release(dfb);
 #endif
 }
 

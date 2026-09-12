@@ -12,10 +12,6 @@ AM_CPPFLAGS = \
 	-I$(srcdir)/include \
 	-I$(top_srcdir)/lib/libdvbapi \
 	@FREETYPE_CFLAGS@
-	
-if USE_DIRECTFB
-AM_CPPFLAGS += @DIRECTFB_CFLAGS@
-endif
 
 if USE_LIBDRM
 AM_CPPFLAGS += @LIBDRM_CFLAGS@

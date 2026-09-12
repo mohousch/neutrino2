@@ -28,10 +28,6 @@ if ENABLE_LUA
 AM_CPPFLAGS += @LUA_INCLUDE@
 endif
 
-if USE_DIRECTFB
-AM_CPPFLAGS += @DIRECTFB_CFLAGS@
-endif
-
 if USE_LIBDRM
 AM_CPPFLAGS += @LIBDRM_CFLAGS@
 endif
@@ -126,10 +122,6 @@ endif
 
 if USE_LIBDRM
 neutrino2_LDADD += -ldrm -lgbm
-endif
-
-if USE_DIRECTFB
-neutrino2_LDADD += @DIRECTFB_LIBS@
 endif
 
 if ENABLE_PYTHON

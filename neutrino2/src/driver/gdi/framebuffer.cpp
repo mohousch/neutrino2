@@ -1773,7 +1773,7 @@ void CFrameBuffer::blitBox2FB(void * boxBuf, const uint32_t width, const uint32_
 
 void CFrameBuffer::enableManualBlit()
 {
-#if !defined USE_OPENGL  && !defined (USE_DIRECTFB)
+#if !defined USE_OPENGL
 	unsigned char tmp = 1;
 	
 	if (ioctl(fd, FBIO_SET_MANUAL_BLIT, &tmp) < 0) 
@@ -1789,7 +1789,7 @@ void CFrameBuffer::enableManualBlit()
 
 void CFrameBuffer::disableManualBlit()
 {
-#if !defined USE_OPENGL && !defined (USE_DIRECTFB)
+#if !defined USE_OPENGL
 	unsigned char tmp = 0;
 	
 	if (ioctl(fd,FBIO_SET_MANUAL_BLIT, &tmp) < 0) 
