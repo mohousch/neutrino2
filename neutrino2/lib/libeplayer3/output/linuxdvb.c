@@ -145,7 +145,7 @@ AVFrame *nv12= NULL;
 
 int gbm_fd = -1;
 struct gbm_device *gbm = NULL;
-#endif
+#endif // USE_LIBDRM
 #endif // HAVE_NO_AV_DECODER
 
 //
@@ -307,8 +307,8 @@ int LinuxDvbOpen(Context_t  *context, char * type)
 			linuxdvb_printf(10, "gbm device created:%p\n", gbm);
 	}
 	*/
-#endif
-#endif
+#endif // USE_LIBDRM
+#endif // HAVE_NO_AV_DECODER
 	
 	return cERR_LINUXDVB_NO_ERROR;
 }
@@ -1553,7 +1553,7 @@ static int Write(void* _context, void* _out)
 					buf_num--;
 				}								
 			}
-#endif
+#endif // USE_OPENGL
 #if defined (USE_LIBDRM)
 			////
 			#if 0
@@ -1701,7 +1701,25 @@ static int Write(void* _context, void* _out)
                     	}
                     	////
                     	#endif
-#endif
+#endif                    	
+                    	
+                    	releaseLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
+		} // got_frame        
+		
+		//
+		av_packet_unref(&avpkt);
+		
+		if (convert)
+		{
+			sws_freeContext(convert);
+			convert = NULL;
+		}
+		
+		if (out->vframe)
+			av_frame_unref(out->vframe);
+		
+		ret = cERR_LINUXDVB_ERROR;
+#endif // HAVE_NO_AV_DECODER
 
 		free(Encoding);
 	} 
