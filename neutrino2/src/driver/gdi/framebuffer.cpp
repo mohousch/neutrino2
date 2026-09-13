@@ -408,68 +408,14 @@ int CFrameBuffer::setMode(unsigned int dx, unsigned int dy, unsigned int nbpp)
 	
 	dprintf(DEBUG_NORMAL, "CFrameBuffer::setMode: FB: %dx%d (%d bit)\n", dx, dy, nbpp);
 
-#if defined (__sh__) || defined (USE_OPENGL)
+#if defined (__sh__) || defined (USE_OPENGL) || defined (USE_LIBDRM)
 	xRes = dx;
 	yRes = dy;
 	bpp = nbpp;
 	stride = xRes * sizeof(fb_pixel_t);
-#elif defined (USE_LIBDRM)
-	if (dx != creq.width || dy != creq.height)
-	{
-		if (lfb)
-			munmap(lfb, available);
-			
-		// 1. cleanup old
-	    	if (fb_id) 
-	    	{
-			drmModeRmFB(drm_fd, fb_id);
-			
-			//
-			struct drm_mode_destroy_dumb dreq;
-			
-			dreq.handle = creq.handle;
-			drmIoctl(drm_fd, DRM_IOCTL_MODE_DESTROY_DUMB, &dreq);
-			fb_id = 0;
-	    	}
-	    	
-	    	// 2. create new dumb buffer
-	    	creq.width = dx;
-	    	creq.height = dy;
-	    	creq.bpp = nbpp;
-	    	
-	    	drmIoctl(drm_fd, DRM_IOCTL_MODE_CREATE_DUMB, &creq);
-
-		// 3. create fb
-	    	drmModeAddFB(drm_fd, dx, dy, 24, nbpp, creq.pitch, creq.handle, &fb_id);
-	    	drmModeSetCrtc(drm_fd, crtc_id, fb_id, 0, 0, &conn_id, 1, &mode);
-
-	    	// 4. mmap for CPU drawing
-	    	mreq.handle = creq.handle;
-	    	drmIoctl(drm_fd, DRM_IOCTL_MODE_MAP_DUMB, &mreq);
-	    	lfb = (uint32_t *)mmap(0, creq.size, PROT_READ|PROT_WRITE, MAP_SHARED, drm_fd, mreq.offset);
-	    	
-	    	// fill screeninfo structure
-		screeninfo.bits_per_pixel = 32;
-		screeninfo.xres = mode.hdisplay;
-		screeninfo.xres_virtual = screeninfo.xres;
-		screeninfo.yres = mode.vdisplay;
-		screeninfo.yres_virtual = screeninfo.yres;
-		
-		xRes = creq.width;
-		yRes = creq.height;
-		bpp = creq.bpp;
-		stride = creq.pitch;
-	}
-	else
-	{
-		xRes = creq.width;
-		yRes = creq.height;
-		bpp = creq.bpp;
-		stride = creq.pitch;
-	}
 #else
 	screeninfo.xres_virtual = screeninfo.xres = dx;
-	screeninfo.yres_virtual = (screeninfo.yres = dy)*2; // double buffering
+	screeninfo.yres_virtual = screeninfo.yres = dy;
 	screeninfo.height = 0;
 	screeninfo.width = 0;
 	screeninfo.xoffset = screeninfo.yoffset = 0;
@@ -501,24 +447,11 @@ int CFrameBuffer::setMode(unsigned int dx, unsigned int dy, unsigned int nbpp)
 			screeninfo.blue.length = 8;
 			break;
 	}
-	
-	// num of pages
-	m_number_of_pages = screeninfo.yres_virtual / dy;
-	
+
 	if (ioctl(fd, FBIOPUT_VSCREENINFO, &screeninfo) < 0)
 	{
-		// try single buffering
-		screeninfo.yres_virtual = screeninfo.yres = dy;
-
-		if (ioctl(fd, FBIOPUT_VSCREENINFO, &screeninfo) < 0)
-		{
-			perror("FBIOPUT_VSCREENINFO");
-		}
-		
-		printf("CFrameBuffer::setVideoMode: double buffering not available.\n");
-	} 
-	else
-		printf("CFrameBuffer::setVideoMode: double buffering available!\n");
+		perror("FBIOPUT_VSCREENINFO");
+	}
 	
 	//
 	ioctl(fd, FBIOGET_VSCREENINFO, &screeninfo);

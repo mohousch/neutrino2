@@ -149,8 +149,6 @@ class CFrameBuffer
 		__u16 red[256], green[256], blue[256], trans[256];
 
 		bool active;
-		
-		int m_number_of_pages;
 		int m_manual_blit;	
 
 		//
