@@ -129,10 +129,7 @@ extern char output[32];
 #include <libavutil/hwcontext.h>
 #include <libavutil/hwcontext_drm.h>
 
-#include <gbm.h>
-
 extern int drm_fd;
-extern uint8_t *fb_ptr;
 extern struct drm_mode_create_dumb creq;
 extern uint32_t crtc_id;
 extern uint32_t conn_id;
@@ -141,10 +138,6 @@ extern int scr_w;
 extern int scr_h;
 
 uint32_t last_fb=0;
-AVFrame *nv12= NULL;
-
-int gbm_fd = -1;
-struct gbm_device *gbm = NULL;
 #endif // USE_LIBDRM
 #endif // HAVE_NO_AV_DECODER
 
@@ -267,13 +260,6 @@ int LinuxDvbOpen(Context_t  *context, char * type)
     	// fallback to VAAPI if no DRM hwaccel (Intel)
 //    	if(!hw_dev) av_hwdevice_ctx_create(&hw_dev, AV_HWDEVICE_TYPE_VAAPI, "/dev/dri/renderD128", NULL, 0);
     	
-    	/////
-//    	if (drm_fd < 0)
-//    	{
-//    	drm_fd = open("/dev/dri/card1", O_RDWR);
-//    	if(drm_fd<0) drm_fd=open("/dev/dri/card0", O_RDWR);
-//    	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES,1);
-
     	// find overlay plane
     	ov_id = 0;
     	drmModePlaneRes *pr = drmModeGetPlaneResources(drm_fd);
@@ -291,22 +277,6 @@ int LinuxDvbOpen(Context_t  *context, char * type)
         	
         	drmModeFreePlane(pl);
     	}
-    	
-    	// init gbm
-    	/*
-    	if (gbm_fd < 0)
-    	{
-		gbm_fd = open("/dev/dri/renderD128", O_RDWR); // no permission issue
-		gbm = gbm_create_device(gbm_fd);
-		
-		if (gbm == NULL)
-		{
-			linuxdvb_printf(10, "failed to create gbm device\n");
-		}
-		else
-			linuxdvb_printf(10, "gbm device created:%p\n", gbm);
-	}
-	*/
 #endif // USE_LIBDRM
 #endif // HAVE_NO_AV_DECODER
 	
@@ -334,9 +304,6 @@ int LinuxDvbClose(Context_t  *context, char * type)
 	
 #ifdef USE_LIBDRM
 	drmModeSetPlane(drm_fd, ov_id, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-	
-	close(gbm_fd);
-	gbm_fd = -1;
 #endif	
 #else	
 	if (audio && audiofd != -1) 
@@ -1555,55 +1522,11 @@ static int Write(void* _context, void* _out)
 			}
 #endif // USE_OPENGL
 #if defined (USE_LIBDRM)
-			////
-			#if 0
-			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, /*out->ctx->pix_fmt*/AV_PIX_FMT_YUV420P, out->ctx->width, out->ctx->height, AV_PIX_FMT_NV12, SWS_BILINEAR, NULL, NULL, NULL);
-			
-			if (convert)
-			{
-				// create scanout BO
-				if (gbm)
-				{
-					struct gbm_bo *bo = gbm_bo_create(gbm, out->ctx->width, out->ctx->height, GBM_FORMAT_NV12, GBM_BO_USE_SCANOUT | GBM_BO_USE_LINEAR);
-					
-					uint32_t stride;
-					void *map_data;
-					
-					uint8_t *mapped = gbm_bo_map(bo, 0, 0, out->ctx->width, out->ctx->height, GBM_BO_TRANSFER_WRITE, &stride, &map_data);
-					
-					// use sws into it
-					uint8_t *dest[2] = { mapped, mapped + stride* out->ctx->height };
-		    			int dest_linesize[2] = { (int)stride, (int)stride };
-
-		    			sws_scale(convert, (const uint8_t* const*)out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);
-		    			
-		    			// export to PRIME -> DRM FB
-		    			int dma_fd = gbm_bo_get_fd(bo);
-		    			uint32_t handle;
-		    			
-		    			drmPrimeFDToHandle(drm_fd, dma_fd, &handle);
-		    			
-		    			uint32_t pitches[2] = {stride, stride};
-		    			uint32_t offsets[2] = {0, stride*out->ctx->height};
-		    			uint32_t fb;
-		    			drmModeAddFB2(drm_fd, out->ctx->width, out->ctx->height, DRM_FORMAT_NV12, (uint32_t[]){handle, handle}, pitches, offsets, &fb, 0);
-		    			drmModeSetPlane(drm_fd, ov_id, crtc_id, fb, 0, 0, 0, 1920, 1080, 0, 0, out->ctx->width<<16, out->ctx->height<<16);
-		    			
-		    			// cleanup.
-		    			close(dma_fd);
-		    			gbm_bo_destroy(bo);
-            			}
-			}
-			#endif
-			////
-			#if 1
-			////
 			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_NV12, SWS_BILINEAR, NULL, NULL, NULL);
 			
 			if (convert)
 			{
 				// create DRM NV12 dumb
-				/*
             			struct drm_mode_create_dumb cre = {0}; 
             			cre.width = out->vframe->width; 
             			cre.height = out->vframe->height*3/2; 
@@ -1613,6 +1536,7 @@ static int Write(void* _context, void* _out)
             			struct drm_mode_map_dumb mp = {0}; 
             			mp.handle = cre.handle;
             			drmIoctl(drm_fd, DRM_IOCTL_MODE_MAP_DUMB, &mp);
+            			
             			uint8_t *fb_ptr = mmap(0, cre.size, PROT_READ|PROT_WRITE, MAP_SHARED, drm_fd, mp.offset);
 
             			// wrap ptr as AVFrame for sws
@@ -1620,7 +1544,6 @@ static int Write(void* _context, void* _out)
 	    			int dest_linesize[4] = { out->ctx->width, out->ctx->height, 0, 0 };
 
             			sws_scale(convert, (const uint8_t* const*)out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);
-            			*/
 
             			uint32_t hdl[4] = {creq.handle, creq.handle};
             			uint32_t pitch[4] = {(uint32_t)creq.pitch, (uint32_t)creq.pitch};
@@ -1640,67 +1563,9 @@ static int Write(void* _context, void* _out)
             			struct drm_mode_destroy_dumb des = {0}; 
             			des.handle = creq.handle; // we keep handle? need keep before rmFB, leak for demo simplicity
             			// keep for 2 frames then unmap
-            			//munmap(fb_ptr, creq.size);
+            			munmap(fb_ptr, creq.size);
             			last_fb = fb;
-            			//usleep(40000);
 			}
-			#endif
-			////
-			////
-			#if 0
-			// Prüfen, ob der Frame im DRM_PRIME Format vorliegt
-                    	if (out->vframe->format == AV_PIX_FMT_DRM_PRIME) 
-                    	{
-                        	// Das 'data[0]' Array enthält bei DRM_PRIME die AVDRMFrameDescriptor Struktur
-                        	AVDRMFrameDescriptor *desc = (AVDRMFrameDescriptor *)out->vframe->data[0];
-                        
-                        	linuxdvb_printf(10, "[DRM PRIME] Frame dekodiert! Layer-Anzahl: %d, Objekte (Fds): %d\n", desc->nb_layers, desc->nb_objects);
-
-                        	// import dma-buf to GEM
-                        	uint32_t handles[4]={0}, pitches[4]={0}, offsets[4]={0};
-            			uint64_t mods[4]={0};
-            			
-            			 for(int i=0;i<desc->nb_layers;i++)
-            			 {
-            			 	AVDRMLayerDescriptor *layer = &desc->layers[i];
-            			 	
-		                	for(int j=0;j<layer->nb_planes;j++)
-		                	{
-		            			int idx = layer->planes[j].object_index;
-		            			int fd_prime = desc->objects[idx].fd;
-		            			uint32_t gem_handle;
-		            			drmPrimeFDToHandle(drm_fd, fd_prime, &gem_handle);
-		            			handles[j]=gem_handle;
-		            			pitches[j]=layer->planes[j].pitch;
-		            			offsets[j]=layer->planes[j].offset;
-		            			mods[j]=desc->objects[idx].format_modifier;
-		        		}
-		        		uint32_t fb_id;
-		        		// try with modifiers first (KODI does this)
-		        		if(drmModeAddFB2WithModifiers(drm_fd, out->vframe->width, out->vframe->height, layer->format, handles, pitches, offsets, mods, &fb_id, DRM_MODE_FB_MODIFIERS)!=0)
-		        		{
-		            			drmModeAddFB2(drm_fd, out->vframe->width, out->vframe->height, layer->format, handles, pitches, offsets, &fb_id, 0);
-		        		}
-		        		
-		        		if(last_fb) drmModeRmFB(drm_fd, last_fb);
-		        		last_fb=fb_id;
-
-		        		// show fullscreen, HW scaler does it
-		        		drmModeSetPlane(drm_fd, ov_id, crtc_id, fb_id, 0,
-		            			0,0, scr_w, scr_h,
-		            			0,0, out->vframe->width<<16, out->vframe->height<<16);
-		        		break; // only first layer for NV12
-		        	}
-		        	// simple sync - wait 1 vsync
-            			drmVBlank vbl={0}; vbl.request.type=DRM_VBLANK_RELATIVE; vbl.request.sequence=1;
-            			drmIoctl(drm_fd, DRM_IOCTL_WAIT_VBLANK, &vbl);
-                    	} 
-                    	else 
-                    	{
-                        	linuxdvb_printf(10, "[CPU] Frame im Software-Format (%d) dekodiert (Kein DRM_PRIME).\n", out->vframe->format);
-                    	}
-                    	////
-                    	#endif
 #endif                    	
                     	
                     	releaseLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
