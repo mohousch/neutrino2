@@ -46,9 +46,7 @@ static int ttx_req_pause;
 static int sub_pid, sub_page;
 static bool use_gui;
 static int cfg_national_subset;
-////
 extern cVideo * videoDecoder;
-////
 bool isTtxEplayer = false;
 extern void tuxtxt_clear_cache();
 
@@ -64,8 +62,10 @@ void FillRect(int x, int y, int w, int h, int color)
 		for (int count = 0; count < h; count++) 
 		{
 			unsigned int * dest0 = (unsigned int *)p;
+			
 			for (int i = 0; i < w; i++)
 				*(dest0++) = col;
+				
 			p += CFrameBuffer::getInstance()->getStride();
 		}
 	}
@@ -4065,7 +4065,6 @@ void RenderChar(int Char, tstPageAttr *Attribute, int zoom, int yoffset)
 		return;
 	}
 
-
 	if (!(glyph = FT_Get_Char_Index(face, Char)))
 	{
 		FillRect(PosX, PosY + yoffset, curfontwidth, factor*fontheight, bgcolor);
@@ -4227,8 +4226,6 @@ void RenderMessage(int Message)
 	char message_4[] = "                                         ";
 	char message_5[] = "                                         ";
 	char message_6[] = "                                         ";
-
-//	memcpy(&message_1[24], versioninfo, 4);
 	
 	// reset zoom
 	zoommode = 0;
@@ -4292,25 +4289,32 @@ void RenderMessage(int Message)
 	RenderCharFB(msg[0], &atrtable[_menuatr + 0]);
 	for (byte = 1; byte < 36; byte++)
 		RenderCharFB(msg[byte], &atrtable[_menuatr + 3]);
+
 	RenderCharFB(msg[36], &atrtable[_menuatr + 0]);
 	RenderCharFB(msg[37], &atrtable[_menuatr + 2]);
 
 	PosX = StartX + fontwidth + 5;
 	PosY = StartY + fontheight*19;
+	
 	RenderCharFB(message_4[0], &atrtable[_menuatr + 0]);
+	
 	for (byte = 1; byte < 36; byte++)
 		RenderCharFB(message_4[byte], &atrtable[_menuatr + 3]);
+		
 	RenderCharFB(message_4[36], &atrtable[_menuatr + 0]);
 	RenderCharFB(message_4[37], &atrtable[_menuatr + 2]);
 
 	PosX = StartX + fontwidth+5;
 	PosY = StartY + fontheight*20;
+	
 	for (byte = 0; byte < 37; byte++)
 		RenderCharFB(message_5[byte], &atrtable[_menuatr + 0]);
+		
 	RenderCharFB(message_5[37], &atrtable[_menuatr + 2]);
 
 	PosX = StartX + fontwidth+5;
 	PosY = StartY + fontheight*21;
+	
 	for (byte = 0; byte < 38; byte++)
 		RenderCharFB(message_6[byte], &atrtable[_menuatr + 2]);
 	
