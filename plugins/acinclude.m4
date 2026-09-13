@@ -156,7 +156,7 @@ AC_DEFUN([AC_PROG_EGREP],
 AC_DEFUN([TUXBOX_BOXTYPE],[
 
 AC_ARG_WITH(boxtype,
-	[  --with-boxtype          valid values: generic,dgs,gigablue,dreambox,xtrend,fulan,kathrein,ipbox,topfield,fortis_hdbox,octagon,atevio,adb_box,whitebox,vip,homecast,vuplus,azbox,technomate,hypercube,venton,xp1000,odin,ixuss,iqonios,ebox5000,wetek,edision,hd,gi,xpeedc,formuler,miraclebox,spycat,xsarius,zgemma,wwio,axas,abcom, maxytec,protek,uclan],
+	[  --with-boxtype          valid values: generic,dgs,gigablue,dreambox,xtrend,fulan,kathrein,ipbox,topfield,fortis_hdbox,octagon,atevio,adb_box,whitebox,vip,homecast,vuplus,azbox,technomate,hypercube,venton,xp1000,odin,ixuss,iqonios,ebox5000,wetek,edision,hd,gi,xpeedc,formuler,miraclebox,spycat,xsarius,zgemma,wwio,axas,abcom, maxytec,protek,uclan. allwinner],
 	[case "${withval}" in
 		generic|dgs|gigablue|dreambox|xtrend|fulan|kathrein|ipbox|hl101|topfield|fortis_hdbox|octagon|atevio|adb_box|whitebox|vip|homecast|vuplus|azbox|technomate|hypercube|venton|xp1000|odin|ixuss|iqonios|ebox5000|wetek|edision|hd|gi|xpeedc|formuler|miraclebox|spycat|xsarius|zgemma|wwio|axas|abcom|maxytec|protek|uclan)
 			BOXTYPE="$withval"
@@ -319,6 +319,11 @@ AC_ARG_WITH(boxtype,
 			BOXMODEL="$withval"
 			;;
 			
+		mxq*)
+			BOXTYPE="Allwinner"
+			BOXMODEL="$withval"
+			;;
+			
 		*)
 			AC_MSG_ERROR([unsupported value $withval for --with-boxtype])
 			;;
@@ -358,7 +363,8 @@ AC_ARG_WITH(boxmodel,
 				valid for abcom: pulse4k pulse4kmini
 				valid for maxytec: multibox multiboxse
 				valid for protek: protek4k
-				valid for uclan: ustym4kpro ustym4ks2ottx],
+				valid for uclan: ustym4kpro ustym4ks2ottx]
+				valid for Allwinner: mxq4k,
 	[case "${withval}" in
 		cuberevo|cuberevo_mini|cuberevo_mini2|cuberevo_mini_fta|cuberevo_250hd|cuberevo_2000hd|cuberevo_9500hd)
 			if test "$BOXTYPE" = "dgs"; then
@@ -619,6 +625,13 @@ AC_ARG_WITH(boxmodel,
 				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
 			fi
 			;;
+		mxq4k)
+			if test "$BOXTYPE" = "allwinner"; then
+				BOXMODEL="$withval"
+			else
+				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
+			fi
+			;;
 		qemu*)
 			if test "$BOXTYPE" = "generic"; then
 				BOXMODEL="$withval"
@@ -677,6 +690,7 @@ AM_CONDITIONAL(BOXTYPE_ABCOM, test "$BOXTYPE" = "abcom")
 AM_CONDITIONAL(BOXTYPE_MAXYTEC, test "$BOXTYPE" = "maxytec")
 AM_CONDITIONAL(BOXTYPE_PROTEK, test "$BOXTYPE" = "protek")
 AM_CONDITIONAL(BOXTYPE_UCLAN, test "$BOXTYPE" = "uclan")
+AM_CONDITIONAL(BOXTYPE_ALLWINNER, test "BOXTYPE" = "allwinner")
 
 AM_CONDITIONAL(BOXMODEL_CUBEREVO, test "$BOXMODEL" = "cuberevo")
 AM_CONDITIONAL(BOXMODEL_CUBEREVO_MINI, test "$BOXMODEL" = "cuberevo_mini")
@@ -853,6 +867,8 @@ AM_CONDITIONAL(BOXMODE_PROTEK4K, test "$BOXMODEL" = "protek4k")
 AM_CONDITIONAL(BOXMODE_USTYM4KPRO, test "$BOXMODEL" = "ustym4kpro")
 AM_CONDITIONAL(BOXMODE_USTYM4KS2OTTX, test "$BOXMODEL" = "ustym4ks2ottx")
 
+AM_CONDITIONAL(BOXMODEL_MXQ4K, test "$BOXMODEL" = "mxq4k")
+
 if test "$BOXTYPE" = "generic"; then
 	AC_DEFINE(PLATFORM_GENERIC, 1, [building for generic])
 elif test "$BOXTYPE" = "dgs"; then
@@ -941,6 +957,8 @@ elif test "$BOXTYPE" = "protek"; then
 	AC_DEFINE(PLATFORM_PROTEK, 1, [building for protek])
 elif test "$BOXTYPE" = "uclan"; then
 	AC_DEFINE(PLATFORM_PROTEK, 1, [building for uclan])
+elif test "$BOXTYPE" = "allwinner"; then
+	AC_DEFINE(PLATFORM_ALLWIINER, 1, [building for Allwinner])
 fi
 
 if test "$BOXMODEL" = "cuberevo"; then
@@ -1259,6 +1277,8 @@ elif test "$BOXMODEL" = "ustym4kpro"; then
 	AC_DEFINE(BOXMODEL_USTYM4KPRO, 1, [building for ustym4kpro])
 elif test "$BOXMODEL" = "ustym4s2ottx"; then
 	AC_DEFINE(BOXMODEL_USTYM4KS2OTTX, 1, [building for ustym4ks2ottx])
+elif test "$BOXMODEL" = "mxq4k"; then
+	AC_DEFINE(BOXMODEL_MXQ4K, 1, [building for mxq4k])
 fi
 ])
 
