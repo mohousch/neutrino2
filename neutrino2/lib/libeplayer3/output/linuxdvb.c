@@ -137,7 +137,7 @@ extern uint32_t ov_id;
 extern int scr_w;
 extern int scr_h;
 
-uint32_t last_fb=0;
+uint32_t last_fb = 0;
 #endif // USE_LIBDRM
 #endif // HAVE_NO_AV_DECODER
 
@@ -1554,6 +1554,7 @@ static int Write(void* _context, void* _out)
 
             			drmModeSetPlane(drm_fd, ov_id, crtc_id, fb, 0, 0, 0, scr_w, scr_h, 0, 0, out->ctx->width<<16, out->ctx->height<<16);
             			
+            			/*
             			if(last_fb)
             			{ 
             				drmModeRmFB(drm_fd, last_fb); 
@@ -1565,6 +1566,7 @@ static int Write(void* _context, void* _out)
             			// keep for 2 frames then unmap
             			munmap(fb_ptr, creq.size);
             			last_fb = fb;
+            			*/
 			}
 #endif                    	
                     	
