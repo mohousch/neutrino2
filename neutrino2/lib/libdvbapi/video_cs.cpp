@@ -1224,6 +1224,7 @@ cVideo::SWFramebuffer *cVideo::getDecBuf(void)
 	return p;
 }
 
+//
 static int my_read(void *, uint8_t *buf, int buf_size)
 {
 	int tmp = 0;
@@ -1332,14 +1333,16 @@ void cVideo::run(void)
 			
 		av_packet_unref(&avpkt);
 		
-		if (! thread_running)
+		if (!thread_running)
 			goto out;
 	}
 
 	p = avfc->streams[0]->codecpar;
 	
 	if (p->codec_type != AVMEDIA_TYPE_VIDEO)
+	{
 		printf("cVideo::run: no video codec? 0x%x\n", p->codec_type);
+	}
 
 	codec = avcodec_find_decoder(p->codec_id);
 	

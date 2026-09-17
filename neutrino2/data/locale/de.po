@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.8\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2026-04-27 13:08+0200\n"
+"POT-Creation-Date: 2026-09-17 14:22+0200\n"
 "PO-Revision-Date: 2023-09-22 10:51+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -157,6 +157,10 @@ msgstr "Atsc:"
 
 msgid "Audio"
 msgstr "Tonwahl"
+
+#, fuzzy
+msgid "Audio Output"
+msgstr "Analogausgang"
 
 msgid "Audio PIDs"
 msgstr "Audio-PIDs"
@@ -3089,6 +3093,9 @@ msgstr "keine EPG gefunden"
 
 msgid "no gradient"
 msgstr "Keine"
+
+msgid "none"
+msgstr ""
 
 msgid "normaly 50000, 0 to disable limit"
 msgstr "normalerweise 50000, 0 zum Deaktivieren des Grenzwerts"
