@@ -94,6 +94,17 @@ config:
 		2|*) echo "LIRC=lirc" >> .config;; \
 	esac; \
 	echo ""
+# keyboard
+	@echo -e "\nkeyboard:"
+	@echo "   1) yes"
+	@echo -e "   \033[01;32m2) no\033[00m"
+	@read -p "keyboard (1-2)?" KEYBOARD; \
+	KEYBOARD=$${KEYBOARD}; \
+	case "$$KEYBOARD" in \
+		1) echo "KEYBOARD=yes" >> .config;; \
+		2|*) echo "KEYBOARD=no" >> .config;; \
+	esac; \
+	echo ""
 # Media framework
 	@echo -e "\nMedia Framework:"
 	@echo -e "   \033[01;32m1) buildinplayer\033[00m"
@@ -235,8 +246,13 @@ endif
 N2_OPTS += --enable-no-av-decoder
 
 # lirc
-ifeq ($(LIRC), lirc)
+ifeq ($(LIRC), yes)
 N2_OPTS += --enable-lirc
+endif
+
+# keybpard
+ifeq ($(KEYBOARD), keyboard)
+N2_OPTS += --enable-keyboard
 endif
 
 # MEDIAFW
@@ -313,6 +329,7 @@ printenv:
 	@echo '================================================================================'
 	@echo "FRAMEBUFFER		: $(FRAMEBUFFER)"
 	@echo "LIRC			: $(LIRC)"
+	@echo "KEYBOARD                 : $(KEYBOARD)"
 	@echo "MEDIAFW			: $(MEDIAFW)"
 	@echo "PYTHON			: $(PYTHON)"
 	@echo "LUA			: $(LUA)"

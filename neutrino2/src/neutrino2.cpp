@@ -153,11 +153,6 @@
 #include <libdvbci/dvb-ci.h>
 #endif
 
-#if defined ENABLE_GSTREAMER
-#include <gst/gst.h>
-#include <gst/pbutils/missing-plugins.h>
-#endif
-
 #if ENABLE_LUA
 #include <interfaces/lua/neutrino2_lua.h>
 #endif
@@ -4988,10 +4983,6 @@ int main(int argc, char *argv[])
 	
 	// init globals
 	initGlobals();
-
-#if ENABLE_GSTREAMER
-	gst_init(NULL, NULL);
-#endif
 
 	// set python path
 #if ENABLE_PYTHON

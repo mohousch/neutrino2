@@ -46,7 +46,9 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
+#ifdef ENABLE_KEYBOARD
 #include <termio.h>
+#endif
 
 #ifdef ENABLE_LIRC
 #include <linux/lirc.h>
@@ -67,8 +69,10 @@ const char * const RC_EVENT_DEVICE[NUMBER_OF_EVENT_DEVICES] = {
 
 typedef struct input_event t_input_event;
 
+#ifdef ENABLE_KEYBOARD
 static struct termio orig_termio;
 static bool saved_orig_termio = false;
+#endif
 
 #ifdef ENABLE_LIRC
 __u64 lastScanCode = 0;
@@ -467,7 +471,7 @@ void CRCInput::open()
 {
 	close();
 
-	// 
+	// input
 	for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++)
 	{
 		if ((fd_rc[i] = ::open(RC_EVENT_DEVICE[i], O_RDONLY)) == -1)
@@ -480,7 +484,8 @@ void CRCInput::open()
 		dprintf(DEBUG_INFO, "CRCInput::open: %s fd %d\n", RC_EVENT_DEVICE[i], fd_rc[i]);		
 	}
 	
-	////
+	// kb
+#ifdef ENABLE_KEYBOARD
 	fd_keyb = STDIN_FILENO;
 	
 	::fcntl(fd_keyb, F_SETFL, O_NONBLOCK);
@@ -498,7 +503,7 @@ void CRCInput::open()
 	new_termio.c_cc[VTIME] = 0;
 
 	::ioctl(STDIN_FILENO, TCSETA, &new_termio);
-	////
+#endif
 	
 	calculateMaxFd();
 }
@@ -515,14 +520,15 @@ void CRCInput::close()
 		}
 	}
 	
-	////
+	// kb
+#ifdef ENABLE_KEYBOARD
 	if (saved_orig_termio)
 	{
 		::ioctl(STDIN_FILENO, TCSETA, &orig_termio);
 				
 		dprintf(DEBUG_DEBUG, "CRCInput::close:Original terminal settings restored.\n");	
 	}
-	////
+#endif
 
 	calculateMaxFd();
 }
@@ -807,9 +813,10 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 				FD_SET(fd_rc[i], &rfds);
 		}
 		
-		////
+		// kb
+#ifdef ENABLE_KEYBOARD		
 		FD_SET(fd_keyb, &rfds);
-		////
+#endif
 		
 		//
 		FD_SET(fd_pipe_high_priority[0], &rfds);
@@ -867,7 +874,8 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			return;
 		}
 		
-		////
+		// kb
+#ifdef ENABLE_KEYBOARD
 		if (FD_ISSET(fd_keyb, &rfds))
 		{
 			int trkey;
@@ -884,7 +892,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 				return;
 			}
 		}
-		////
+#endif
 
 		// fd_rc
 		for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++) 
@@ -1041,7 +1049,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 				dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us: got event from LIRC:keyName:%s <\n", keyName);
 				
 				// translate keyName to RC_key
-				*msg = translateKey(keyName);
+				*msg = translateLIRCKey(keyName);
 			}
 			
 			return;
@@ -1519,6 +1527,7 @@ int CRCInput::translate(uint64_t code)
 	else return RC_nokey;
 }
 
+#ifdef ENABLE_KEYBOARD
 uint32_t CRCInput::translateKBKey(char code)
 {
 	printf("CRCInput::translateKBKey: code: %c\n", code);
@@ -1621,9 +1630,10 @@ uint32_t CRCInput::translateKBKey(char code)
 	
 	return trkey;
 }
+#endif
 
 #ifdef ENABLE_LIRC
-uint32_t CRCInput::translateKey(const char *name)
+uint32_t CRCInput::translateLIRCKey(const char *name)
 {
 	if (!strcmp(name, "KEY_OK")) return RC_ok;
 	else if (!strcmp(name, "KEY_EXIT")) return RC_home;

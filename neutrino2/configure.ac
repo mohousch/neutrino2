@@ -223,6 +223,16 @@ AC_DEFINE(ENABLE_LIRC,1,[include lirc support])
 #AC_DEFINE(HAVE_KERNEL_LIRC,1,[include lirc kernel api support])
 fi
 
+# keyboard
+AC_ARG_ENABLE(keyboard,
+	AS_HELP_STRING(--enable-keyboard,include keyboard support),
+	,[enable_keyboard=no])
+AM_CONDITIONAL(ENABLE_KEYBOARD,test "$enable_keyboard" = "yes")
+
+if test "$enable_keyboard" = "yes"; then
+AC_DEFINE(ENABLE_KEYBOARD,1,[include keyboard support])
+fi
+
 # scart output
 AC_ARG_ENABLE(scart,
 	AS_HELP_STRING(--enable-scart,enable scart output),

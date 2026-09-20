@@ -166,8 +166,8 @@ class CRCInput
 		int fd_pipe_low_priority[2];
 
 #define NUMBER_OF_EVENT_DEVICES 	4
-		int fd_rc[NUMBER_OF_EVENT_DEVICES];
-		int fd_keyb;
+		int fd_rc[NUMBER_OF_EVENT_DEVICES];		
+		int fd_keyb;		
 		int fd_lirc;
 		int fd_max;
 		
@@ -176,9 +176,11 @@ class CRCInput
 		void open();
 		void close();
 		int translate(uint64_t code);
+#ifdef ENABLE_KEYBOARD		
 		uint32_t translateKBKey(char code);
+#endif
 #ifdef ENABLE_LIRC
-		uint32_t translateKey(const char *name);
+		uint32_t translateLIRCKey(const char *name);
 #endif		
 		void calculateMaxFd(void);
 		uint32_t checkTimers();

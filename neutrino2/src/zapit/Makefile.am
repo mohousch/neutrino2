@@ -8,11 +8,8 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/libxmltree \
 	-I$(top_srcdir)/lib/libdvbapi \
 	-I$(top_srcdir)/lib/libdvbci \
+	-I$(top_srcdir)/lib/libeplayer3/include \
 	@FREETYPE_CFLAGS@
-
-if !ENABLE_GSTREAMER
-AM_CPPFLAGS += -I$(top_srcdir)/lib/libeplayer3/include
-endif
 
 noinst_LIBRARIES = libzapit.a
 

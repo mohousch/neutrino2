@@ -15,14 +15,9 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/libmd5sum \
 	-I$(top_srcdir)/lib/libdvbapi \
 	-I$(top_srcdir)/lib/libdvbci \
+	-I$(top_srcdir)/lib/libeplayer3/include \
 	@FREETYPE_CFLAGS@ \
 	@FRIBIDI_CFLAGS@
-
-if ENABLE_GSTREAMER
-AM_CPPFLAGS += @GSTREAMER_CFLAGS@
-else
-AM_CPPFLAGS += -I$(top_srcdir)/lib/libeplayer3/include
-endif
 
 if ENABLE_LUA
 AM_CPPFLAGS += @LUA_INCLUDE@
@@ -91,6 +86,7 @@ neutrino2_LDADD = \
 	$(top_builddir)/lib/libiw/libiw.a \
 	$(top_builddir)/lib/libdvbapi/libdvbapi.a \
 	$(top_builddir)/lib/libdvbci/libdvbci.a \
+	$(top_builddir)/lib/libeplayer3/libeplayer3.a \
 	@CURL_LIBS@ \
 	@FREETYPE_LIBS@ \
 	@PNG_LIBS@ \
@@ -104,12 +100,6 @@ neutrino2_LDADD = \
 	-ljpeg -lrt -lblkid -ldl -lgif -lpthread -lOpenThreads -lcrypto -lssl
 
 neutrino2_LDFLAGS = -Wl,--export-dynamic
-
-if ENABLE_GSTREAMER
-neutrino2_LDADD += @GSTREAMER_LIBS@
-else
-neutrino2_LDADD += $(top_builddir)/lib/libeplayer3/libeplayer3.a
-endif
 
 if HAVE_NO_AV_DECODER
 neutrino2_LDADD += -lao -lasound

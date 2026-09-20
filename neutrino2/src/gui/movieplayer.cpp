@@ -332,8 +332,7 @@ void CMoviePlayerGui::startSubtitles(bool show)
 			playback->SetSubPid(currentspid);
 	}
 
-	// tuxtxt	
-#ifndef ENABLE_GSTREAMER	
+	// tuxtxt		
 	if (currentspid >= 0)
 	{
 		int txtpage = 0;
@@ -345,8 +344,6 @@ void CMoviePlayerGui::startSubtitles(bool show)
 			
 //		tuxtx_main(0, txtpage, true);
 	}
-#endif
-
 }
 
 void CMoviePlayerGui::stopSubtitles()
@@ -358,13 +355,11 @@ void CMoviePlayerGui::stopSubtitles()
 		playback->SetSubPid(-1);
 		playback->SetExtSubPid(-1);
 	}
-	
-#ifndef ENABLE_GSTREAMER	
+		
 //	if (currentspid >= 0)
 //	{
 //		tuxtx_stop_subtitle();
 //	}
-#endif
 		
 	usleep(5000);
 		

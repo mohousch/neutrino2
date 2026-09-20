@@ -11,14 +11,9 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/connection \
 	-I$(top_srcdir)/lib/libxmltree \
 	-I$(top_srcdir)/lib/libdvbapi \
+	-I$(top_srcdir)/lib/libeplayer3/include \
 	@FREETYPE_CFLAGS@ \
 	@FRIBIDI_CFLAGS@
-
-if ENABLE_GSTREAMER
-AM_CPPFLAGS += @GSTREAMER_CFLAGS@
-else
-AM_CPPFLAGS += -I$(top_srcdir)/lib/libeplayer3/include
-endif
 
 AM_CXXFLAGS = -fno-rtti -fno-exceptions
 

@@ -120,28 +120,6 @@ int CAVSubPIDChangeExec::exec(CTarget */*parent*/, const std::string & actionKey
 {
 	dprintf(DEBUG_NORMAL, "CAVSubPIDSelectWidget::exec: %s (currentspid:%d)\n", actionKey.c_str(), currentspid);
 	
-#ifdef ENABLE_GSTREAMER
-	unsigned int sel = atoi(actionKey.c_str());
-	
-	if (currentspid != spids[sel]) 
-	{
-		currentspid = spids[sel];
-		
-		if(playback)
-			playback->SetSubPid(currentspid);
-			
-		return CTarget::RETURN_EXIT_ALL;
-	}
-	else if(actionKey == "off") 
-	{
-		currentspid = -1;
-		
-		if(playback)
-			playback->SetSubPid(-1);
-			
-		return CTarget::RETURN_EXIT_ALL;
-	}
-#else	
 	if(actionKey == "off") 
 	{
 		currentspid = -1;
@@ -189,7 +167,6 @@ int CAVSubPIDChangeExec::exec(CTarget */*parent*/, const std::string & actionKey
 			
 		return CTarget::RETURN_EXIT_ALL;
 	}
-#endif
 
 	return CTarget::RETURN_EXIT_ALL;
 }
@@ -206,7 +183,6 @@ int CAVPIDSelectWidget::exec(CTarget * parent, const std::string & actionKey)
 		
 	CFrameBuffer::getInstance()->clearFrameBuffer();
 		
-#ifndef ENABLE_GSTREAMER
 	if(actionKey == "add_subtitle")
 	{
 		CFileBrowser fileBrowser;
@@ -233,7 +209,6 @@ int CAVPIDSelectWidget::exec(CTarget * parent, const std::string & actionKey)
 		
 		return CTarget::RETURN_EXIT_ALL;
 	}
-#endif
 
 	res = showAudioDialog();
 
@@ -353,11 +328,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 				spidtitle = language[count];
 			}
 			
-#ifdef ENABLE_GSTREAMER
-			sprintf(spidnumber, "%d", count);
-#else
 			sprintf(spidnumber, "%s:%d", spidtitle.c_str(), count); // dont change this
-#endif
 
 			AVPIDSelector->addItem(new CMenuForwarder(spidtitle.c_str(), currentspid == count? false : true, NULL, &AVSubPIDChanger, spidnumber, CRCInput::convertDigitToKey(count + 1)));
 		}
@@ -366,7 +337,6 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 	// add subtitle file
 	extnumpids = 0;
 	
-#ifndef ENABLE_GSTREAMER
 	if (CNeutrinoApp::getInstance()->getMode() == CNeutrinoApp::mode_ts)
 	{	
 		AVPIDSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
@@ -403,7 +373,6 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 		AVPIDSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		AVPIDSelector->addItem(new CMenuForwarder(_("Stop subtitles"), true, NULL, &AVSubPIDChanger, "off", CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW));
 	}
-#endif
 
 	//	
 	widget->setTimeOut(g_settings.timing_menu);

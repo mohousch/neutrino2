@@ -13,7 +13,8 @@ AM_CPPFLAGS += -fno-rtti -fno-exceptions
 
 noinst_LIBRARIES = libdvbci.a
 
-libdvbci_a_SOURCES = dvb-ci.cpp \
+libdvbci_a_SOURCES = \
+		dvb-ci.cpp \
 		dvbci_session.cpp \
 		dvbci_mmi.cpp \
 		dvbci_camgr.cpp \

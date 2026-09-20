@@ -132,11 +132,7 @@ class cPlayback
 		bool Stop(void);
 		bool SetAPid(unsigned short pid);
 		bool SetSubPid(short pid);
-		bool SetExtSubPid(short pid);
-
-#if ENABLE_GSTREAMER
-		void trickSeek(double ratio);
-#endif		
+		bool SetExtSubPid(short pid);		
 		bool SetSpeed(int speed);
 		bool SetSlow(int slow);
 		bool GetSpeed(int &speed) const;

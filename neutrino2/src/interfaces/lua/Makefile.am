@@ -14,13 +14,10 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/libmd5sum \
 	-I$(top_srcdir)/lib/libdvbapi \
 	-I$(top_srcdir)/lib/libdvbci \
+	-I$(top_srcdir)/lib/libeplayer3/include \
 	@FREETYPE_CFLAGS@ \
 	@FRIBIDI_CFLAGS@ \
 	@LUA_INCLUDE@
-
-if !ENABLE_GSTREAMER
-AM_CPPFLAGS += -I$(top_srcdir)/lib/libeplayer3/include
-endif
 
 AM_CPPFLAGS += -fno-rtti -fno-exceptions -D__KERNEL_STRICT_NAMES
 

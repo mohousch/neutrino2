@@ -13,11 +13,8 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/libupnpclient \
 	-I$(top_srcdir)/lib/jsoncpp/include \
 	-I$(top_srcdir)/lib/libdvbapi \
+	-I$(top_srcdir)/lib/libeplayer3/include \
 	@FREETYPE_CFLAGS@
-
-if !ENABLE_GSTREAMER
-AM_CPPFLAGS += -I$(top_srcdir)/lib/libeplayer3/include
-endif
 
 AM_CXXFLAGS = -fno-rtti -fno-exceptions -std=c++98
 

@@ -15,12 +15,9 @@ AM_CPPFLAGS += \
 	-I$(top_srcdir)/lib/connection \
 	-I$(top_srcdir)/lib/libdvbapi \
 	-I$(top_srcdir)/lib/libdvbci \
+	-I$(top_srcdir)/lib/libeplayer3/include \
 	@CURL_CFLAGS@ \
 	@FREETYPE_CFLAGS@
-
-if !ENABLE_GSTREAMER
-AM_CPPFLAGS += -I$(top_srcdir)/lib/libeplayer3/include
-endif
 
 if ENABLE_LUA
 AM_CPPFLAGS += @LUA_INCLUDE@
