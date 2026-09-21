@@ -144,7 +144,7 @@ void releaseMutex(const char *filename, const char *function, int line)
 	ffmpeg_printf(100, "::%d released mutex\n", line);
 }
 
-static char* Codec2Encoding(uint32_t codec_id, int* version)
+static char *Codec2Encoding(uint32_t codec_id, int *version)
 {
 	switch (codec_id)
 	{
@@ -420,7 +420,7 @@ static char* searchMeta(AVDictionary * metadata, char* ourTag)
 }
 
 //// play thread
-static void FFMPEGThread(Context_t* context) 
+static void FFMPEGThread(Context_t *context) 
 {
 	AVPacket   packet;
 	off_t lastSeek = -1;
@@ -836,7 +836,7 @@ static void FFMPEGThread(Context_t* context)
 }
 
 //// init
-int container_ffmpeg_init(Context_t *context, char * filename)
+int container_ffmpeg_init(Context_t *context, char *filename)
 {
 	int n, err;
 
@@ -1392,7 +1392,7 @@ static int container_ffmpeg_play(Context_t *context)
 }
 
 ////
-static void FFMPEGSubThread(Context_t* context) 
+static void FFMPEGSubThread(Context_t *context) 
 {
 	AVPacket   subpacket;
 	off_t lastSeek = -1;
@@ -1554,7 +1554,7 @@ static void FFMPEGSubThread(Context_t* context)
 }
 
 //
-int container_ffmpeg_init_sub(Context_t *context, char * filename)
+int container_ffmpeg_init_sub(Context_t *context, char *filename)
 {
 	int err;
 	int n = 0;
@@ -2093,7 +2093,7 @@ static int container_ffmpeg_seek(Context_t *context, float sec)
 	return cERR_CONTAINER_FFMPEG_NO_ERROR;
 }
 
-static int container_ffmpeg_get_length(Context_t *context, double * length) 
+static int container_ffmpeg_get_length(Context_t *context, double *length) 
 {
 	ffmpeg_printf(50, "\n");
 	
@@ -2144,7 +2144,7 @@ static int container_ffmpeg_get_length(Context_t *context, double * length)
 	return cERR_CONTAINER_FFMPEG_NO_ERROR;
 }
 
-static int container_ffmpeg_get_info(Context_t* context, char ** infoString)
+static int container_ffmpeg_get_info(Context_t *context, char **infoString)
 {
 	Track_t * videoTrack = NULL;
 	Track_t * audioTrack = NULL;
@@ -2201,7 +2201,7 @@ static int container_ffmpeg_get_info(Context_t* context, char ** infoString)
 	return cERR_CONTAINER_FFMPEG_NO_ERROR;
 }
 
-static int Command(void* _context, ContainerCmd_t command, void* argument)
+static int Command(void *_context, ContainerCmd_t command, void *argument)
 {
 	Context_t* context = (Context_t*) _context;
 	int ret = cERR_CONTAINER_FFMPEG_NO_ERROR;
