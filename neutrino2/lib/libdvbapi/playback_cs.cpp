@@ -87,7 +87,7 @@ bool cPlayback::Open()
 	//
 	player = (Context_t*)malloc(sizeof(Context_t));
 
-	//init player
+	// init player
 	if(player) 
 	{
 		player->playback	= &PlaybackHandler;
@@ -188,7 +188,7 @@ bool cPlayback::Start(char *filename)
 	
 	file.append(filename);
 
-	//open file
+	// open file
 	if(player && player->playback && player->playback->Command(player, PLAYBACK_OPEN, (char *)file.c_str()) >= 0) 
 	{
 		// open suburi

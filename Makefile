@@ -9,8 +9,8 @@
 #  --with-boxtype 
 #  --with-boxmodel	       
 #  --enable-opengl         include opengl framebuffer support for x86
-#  --enable-gstreamer      include gstreamer as player engine support
-#  --with-gstversion       use gstreamer version (major.minor)
+#  --enable-keyboard       include keyboard support
+#  --enable-lirc           include LIRC support
 #  --enable-lcd            include lcd support
 #  --enable_tftlcd	   include tft lcd support
 #  --enable-4digits        include 4 segment lcd support
@@ -90,8 +90,8 @@ config:
 	@read -p "lirc (1-2)?" LIRC; \
 	LIRC=$${LIRC}; \
 	case "$$LIRC" in \
-		1) echo "LIRC=" >> .config;; \
-		2|*) echo "LIRC=lirc" >> .config;; \
+		1) echo "LIRC=no" >> .config;; \
+		2|*) echo "LIRC=yes" >> .config;; \
 	esac; \
 	echo ""
 # keyboard
@@ -105,29 +105,6 @@ config:
 		2|*) echo "KEYBOARD=no" >> .config;; \
 	esac; \
 	echo ""
-# Media framework
-	@echo -e "\nMedia Framework:"
-	@echo -e "   \033[01;32m1) buildinplayer\033[00m"
-	@echo "   2) gstreamer"
-	@read -p "Select media framework (1-2)?" MEDIAFW; \
-	MEDIAFW=$${MEDIAFW}; \
-	case "$$MEDIAFW" in \
-		1) echo "MEDIAFW=buildinplayer" >> .config;; \
-		2) echo "MEDIAFW=gstreamer" >> .config;; \
-		*) echo "MEDIAFW=buildinplayer" >> .config;; \
-	esac; \
-	echo ""
-# gstreamer opengl overlay
-	@echo -e "\ngstreamer overlay:"
-	@echo "   1) yes"
-	@echo -e "   \033[01;32m2) no\033[00m"
-	@read -p "Select overlay (1-2)?" OVERLAY; \
-	OVERLAY=$${OVERLAY}; \
-	case "$$OVERLAY" in \
-		1) echo "OVERLAY=overlay" >> .config;; \
-		2|*) echo "OVERLAY=" >> .config;; \
-	esac; \
-	echo ""
 # lua
 	@echo -e "\nlua support ?:"
 	@echo -e "   \033[01;32m1) yes\033[00m"
@@ -135,9 +112,9 @@ config:
 	@read -p "Select lua support (1-2)?" LUA; \
 	LUA=$${LUA}; \
 	case "$$LUA" in \
-		1) echo "LUA=lua" >> .config;; \
-		2) echo "LUA=" >> .config;; \
-		*) echo "LUA=lua" >> .config;; \
+		1) echo "LUA=yes" >> .config;; \
+		2) echo "LUA=no" >> .config;; \
+		*) echo "LUA=yes" >> .config;; \
 	esac; \
 	echo ""
 # python
@@ -147,8 +124,8 @@ config:
 	@read -p "Select python support (1-2)?" PYTHON; \
 	PYTHON=$${PYTHON}; \
 	case "$$PYTHON" in \
-		1) echo "PYTHON=python" >> .config;; \
-		2|*) echo "PYTHON=" >> .config;; \
+		1) echo "PYTHON=yes" >> .config;; \
+		2|*) echo "PYTHON=no" >> .config;; \
 	esac; \
 	echo ""
 # cicam
@@ -158,9 +135,9 @@ config:
 	@read -p "Select CI-CAM support (1-2)?" CICAM; \
 	CICAM=$${CICAM}; \
 	case "$$CICAM" in \
-		1) echo "CICAM=" >> .config;; \
-		2) echo "CICAM=cicam" >> .config;; \
-		*) echo "CICAM=" >> .config;; \
+		1) echo "CICAM=no" >> .config;; \
+		2) echo "CICAM=yes" >> .config;; \
+		*) echo "CICAM=no" >> .config;; \
 	esac; \
 	echo ""
 # 4digits / vfd / lcd / tftlcd
@@ -173,12 +150,12 @@ config:
 	@read -p "Select LCD support (1-5)?" LCD; \
 	LCD=$${LCD}; \
 	case "$$LCD" in \
-		1) echo "LCD=" >> .config;; \
+		1) echo "LCD=None" >> .config;; \
 		2) echo "LCD=4-digits" >> .config;; \
 		3) echo "LCD=vfd" >> .config;; \
 		4) echo "LCD=lcd" >> .config;; \
 		5) echo "LCD=tftlcd" >> .config;; \
-		*) echo "LCD=" >> .config;; \
+		*) echo "LCD=None" >> .config;; \
 	esac; \
 	echo ""
 # graphlcd
@@ -188,8 +165,8 @@ config:
 	@read -p "Select NGLCD support (1-2)?" NGLCD; \
 	NGLCD=$${NGLCD}; \
 	case "$$NGLCD" in \
-		1) echo "NGLCD=nglcd" >> .config;; \
-		2|*) echo "NGLCD=" >> .config;; \
+		1) echo "NGLCD=yes" >> .config;; \
+		2|*) echo "NGLCD=no" >> .config;; \
 	esac; \
 	echo ""
 # scart
@@ -199,8 +176,8 @@ config:
 	@read -p "Select SCART support (1-2)?" SCART; \
 	SCART=$${SCART}; \
 	case "$$SCART" in \
-		1) echo "SCART=scart" >> .config;; \
-		2|*) echo "SCART=" >> .config;; \
+		1) echo "SCART=yes" >> .config;; \
+		2|*) echo "SCART=no" >> .config;; \
 	esac; \
 	echo ""
 # FKEYS
@@ -210,8 +187,8 @@ config:
 	@read -p "Select FKEYS support (1-2)?" FKEYS; \
 	FKEYS=$${FKEYS}; \
 	case "$$FKEYS" in \
-		1) echo "FKEYS=fkeys" >> .config;; \
-		2|*) echo "FKEYS=" >> .config;; \
+		1) echo "FKEYS=yes" >> .config;; \
+		2|*) echo "FKEYS=no" >> .config;; \
 	esac; \
 	echo ""		
 # testing
@@ -221,8 +198,8 @@ config:
 	@read -p "Select TESTING support (1-2)?" TESTING; \
 	TESTING=$${TESTING}; \
 	case "$$TESTING" in \
-		1) echo "TESTING=testing" >> .config;; \
-		2|*) echo "TESTING=" >> .config;; \
+		1) echo "TESTING=yes" >> .config;; \
+		2|*) echo "TESTING=no" >> .config;; \
 	esac; \
 	echo ""
 #	
@@ -235,7 +212,7 @@ config-clean:
 -include .config
 
 # framebuffer
-#FRAMEBUFFER ?= opengl
+FRAMEBUFFER ?= opengl
 ifeq ($(FRAMEBUFFER), opengl)
 N2_OPTS += --enable-opengl
 endif
@@ -251,41 +228,29 @@ N2_OPTS += --enable-lirc
 endif
 
 # keybpard
-ifeq ($(KEYBOARD), keyboard)
+ifeq ($(KEYBOARD), yes)
 N2_OPTS += --enable-keyboard
 endif
 
-# MEDIAFW
-MEDIAFW ?= buildinplayer
-
-ifeq ($(MEDIAFW), gstreamer)
-N2_OPTS += --enable-gstreamer --with-gstversion=1.0
-endif
-
-# OVERLAY
-ifeq ($(OVERLAY), overlay)
-N2_OPTS += --enable-overlay
-endif
-
 # python
-ifeq ($(PYTHON), python)
+ifeq ($(PYTHON), yes)
 N2_OPTS += --enable-python
 endif
 
 # lua
 LUA ?= lua
 
-ifeq ($(LUA), lua)
+ifeq ($(LUA), yes)
 N2_OPTS += --enable-lua
 endif
 
 # CICAM
-ifeq ($(CICAM), cicam)
+ifeq ($(CICAM), yes)
 N2_OPTS += --enable-ci
 endif
 
 # SCART
-ifeq ($(SCART), scart)
+ifeq ($(SCART), yes)
 N2_OPTS += --enable-scart
 endif
 
@@ -307,17 +272,17 @@ N2_OPTS += --enable-tftlcd
 endif
 
 # NGLCD
-ifeq ($(NGLCD), nglcd)
+ifeq ($(NGLCD), yes)
 N2_OPTS += --enable-graphlcd
 endif
 
 # FKEYS
-ifeq ($(FKEYS), fkeys)
+ifeq ($(FKEYS), yes)
 N2_OPTS += --enable-functionkeys
 endif
 
 # test plugins
-ifeq ($(TESTING), testing)
+ifeq ($(TESTING), yes)
 N2_OPTS += --enable-testing
 endif
 
@@ -330,7 +295,6 @@ printenv:
 	@echo "FRAMEBUFFER		: $(FRAMEBUFFER)"
 	@echo "LIRC			: $(LIRC)"
 	@echo "KEYBOARD                 : $(KEYBOARD)"
-	@echo "MEDIAFW			: $(MEDIAFW)"
 	@echo "PYTHON			: $(PYTHON)"
 	@echo "LUA			: $(LUA)"
 	@echo "CICAM			: $(CICAM)"

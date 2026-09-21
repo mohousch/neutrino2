@@ -1477,50 +1477,6 @@ static int Write(void* _context, void* _out)
 		{
 			getLinuxDVBMutex(FILENAME, __FUNCTION__,__LINE__);
 			
-#ifdef USE_OPENGL				
-			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_BGRA, SWS_BILINEAR, NULL, NULL, NULL);
-								
-			if (convert)
-			{
-				int need = av_image_get_buffer_size(AV_PIX_FMT_BGRA, out->ctx->width, out->ctx->height, 1);
-
-				if (data[buf_in].size < need)
-					data[buf_in].size = need;
-					
-				// swsscale YUV420 to RGB32:
-				uint8_t *dest[4] = { data[buf_in].buffer, NULL, NULL, NULL };
-	    			int dest_linesize[4] = { out->ctx->width*4, 0, 0, 0 };
-	    				
-				sws_scale(convert, (const uint8_t * const*)out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);					
-					
-				//
-				data[buf_in].width = out->ctx->width;
-				data[buf_in].height = out->ctx->height;
-					
-				//
-#if (LIBAVUTIL_VERSION_MAJOR < 54)
-				data[buf_in].vpts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(out->vframe);
-#else
-				data[buf_in].vpts = sCURRENT_PTS = out->vframe->best_effort_timestamp;
-#endif
-					
-				//
-				if (out->ctx->time_base.num && out->ctx->ticks_per_frame)
-					data[buf_in].rate = out->ctx->time_base.den / (out->ctx->time_base.num * out->ctx->ticks_per_frame);
-
-				//
-				buf_in++;
-				buf_in %= 64;
-				buf_num++;
-					
-				if (buf_num > (64 - 1))
-				{
-					buf_out++;
-					buf_out %= 64;
-					buf_num--;
-				}								
-			}
-#endif // USE_OPENGL
 #if defined (USE_LIBDRM)
 			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_NV12, SWS_BILINEAR, NULL, NULL, NULL);
 			
@@ -1567,6 +1523,49 @@ static int Write(void* _context, void* _out)
             			munmap(fb_ptr, creq.size);
             			last_fb = fb;
             			*/
+			}
+#else
+			convert = sws_getCachedContext(convert, out->ctx->width, out->ctx->height, out->ctx->pix_fmt, out->ctx->width, out->ctx->height, AV_PIX_FMT_BGRA, SWS_BILINEAR, NULL, NULL, NULL);
+								
+			if (convert)
+			{
+				int need = av_image_get_buffer_size(AV_PIX_FMT_BGRA, out->ctx->width, out->ctx->height, 1);
+
+				if (data[buf_in].size < need)
+					data[buf_in].size = need;
+					
+				// swsscale YUV420 to RGB32:
+				uint8_t *dest[4] = { data[buf_in].buffer, NULL, NULL, NULL };
+	    			int dest_linesize[4] = { out->ctx->width*4, 0, 0, 0 };
+	    				
+				sws_scale(convert, (const uint8_t * const*)out->vframe->data, out->vframe->linesize, 0, out->ctx->height, dest, dest_linesize);					
+					
+				//
+				data[buf_in].width = out->ctx->width;
+				data[buf_in].height = out->ctx->height;
+					
+				//
+#if (LIBAVUTIL_VERSION_MAJOR < 54)
+				data[buf_in].vpts = sCURRENT_PTS = av_frame_get_best_effort_timestamp(out->vframe);
+#else
+				data[buf_in].vpts = sCURRENT_PTS = out->vframe->best_effort_timestamp;
+#endif
+					
+				//
+				if (out->ctx->time_base.num && out->ctx->ticks_per_frame)
+					data[buf_in].rate = out->ctx->time_base.den / (out->ctx->time_base.num * out->ctx->ticks_per_frame);
+
+				//
+				buf_in++;
+				buf_in %= 64;
+				buf_num++;
+					
+				if (buf_num > (64 - 1))
+				{
+					buf_out++;
+					buf_out %= 64;
+					buf_num--;
+				}								
 			}
 #endif                    	
                     	

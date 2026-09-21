@@ -270,9 +270,8 @@ class cVideo
 		OpenThreads::Mutex still_m;
 		bool stillpicture;
 		bool w_h_changed;
-#endif
-
-#ifdef USE_OPENGL
+		
+		//
 		int pig_x;
 		int pig_y;
 		int pig_w;

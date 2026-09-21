@@ -57,10 +57,6 @@ extern "C" {
 #include <libswscale/swscale.h>
 }
 
-#ifdef USE_OPENGL
-#include <GL/gl.h>
-#endif
-
 /* ffmpeg buf 32k */
 #define INBUF_SIZE 0x8000
 /* my own buf 256k */
@@ -101,10 +97,8 @@ cVideo::cVideo(int num)
 	stillpicture = false;
 	w_h_changed = false;
 	////
-#ifdef USE_OPENGL
 	pig_x = pig_y = pig_w = pig_h = 0;
 	pig_changed = false;
-#endif
 #endif
 }
 
@@ -287,12 +281,11 @@ int cVideo::setAspectRatio(int ratio, int format)
 
 void cVideo::getPictureInfo(int &width, int &height, int &rate) 
 {
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 	width = dec_w;
 	height = dec_h;
 	rate = dec_r;
 #else
-#ifndef HAVE_NO_AV_DECODER
 	rate = 25;
 	height = 576;
 	width = 720;
@@ -346,8 +339,7 @@ void cVideo::getPictureInfo(int &width, int &height, int &rate)
 			sscanf((const char*) buffer, "%X", &height);
 		}
 	}
-#endif // HAVE_NO_AV_DECODER
-#endif	
+#endif // HAVE_NO_AV_DECODER	
 }
 
 int cVideo::Start(void)
@@ -735,14 +727,13 @@ void cVideo::Pig(int x, int y, int w, int h, int osd_w, int osd_h, int num)
 	//ugly we just resize the video display
 	printf("cVideo::Pig: - x=%d y=%d w=%d h=%d (video_num=%d)\n", x, y, w, h, num);
 	
-#ifdef USE_OPENGL
+#ifdef HAVE_NO_AV_DECODER
 	pig_x = x;
 	pig_y = y;
 	pig_w = w;
 	pig_h = h;
 	pig_changed = true;
 #else
-#ifndef HAVE_NO_AV_DECODER
 	
 	int _x, _y, _w, _h;
 	/* the target "coordinates" seem to be in a PAL sized plane
@@ -832,7 +823,6 @@ void cVideo::Pig(int x, int y, int w, int h, int osd_w, int osd_h, int num)
 		fclose(fd);
 	}
 #endif // HAVE_NO_AV_DECODER
-#endif	
 }
 
 /* set wss */
@@ -1430,7 +1420,8 @@ void cVideo::run(void)
 		
 		if (got_frame && ! stillpicture)
 		{
-#ifdef USE_OPENGL		
+#ifdef USE_LIBDRM
+#else
 			int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, c->width, c->height, 1);
 
 			convert = sws_getCachedContext(convert, c->width, c->height, c->pix_fmt, c->width, c->height, AV_PIX_FMT_RGB32, SWS_BICUBIC, 0, 0, 0);
