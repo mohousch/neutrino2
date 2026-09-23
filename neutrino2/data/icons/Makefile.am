@@ -1,3 +1,3 @@
-SUBDIRS = buttons filetypes headers hints spinner locale movieplayer radar slider status various weather lcd
+SUBDIRS = buttons hints icons spinner lcd
 
 
