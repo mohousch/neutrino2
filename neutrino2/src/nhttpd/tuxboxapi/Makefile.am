@@ -10,13 +10,10 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/libconfigfile \
 	-I$(top_srcdir)/lib/xmltree \
 	-I$(top_srcdir)/lib/libdvbapi \
+	-I$(top_srcdir)/lib/libeplayer3/include \
 	@FREETYPE_CFLAGS@
 
 AM_CPPFLAGS += -fno-rtti -fno-exceptions -D_FILE_OFFSET_BITS=64
-
-if !ENABLE_GSTREAMER
-AM_CPPFLAGS += -I$(top_srcdir)/lib/libeplayer3/include
-endif
 
 noinst_LIBRARIES = libnhttpd_tuxboxapi.a
 
