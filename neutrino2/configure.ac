@@ -136,6 +136,18 @@ AC_DEFINE(ENABLE_LCD,1,[include lcd support])
 AC_DEFINE(ENABLE_LCD480,1,[include lcd 480x320 16 bit support])
 fi
 
+# lcd800
+AC_ARG_ENABLE(lcd800,
+	AS_HELP_STRING(--enable-lcd800,include lcd 800x480 16 bit support),
+	,[enable_lcd800=no])
+AM_CONDITIONAL(ENABLE_LCD800,test "$enable_lcd800" = "yes")
+AM_CONDITIONAL(ENABLE_LCD,test "$enable_lcd800" = "yes" -o "$enable_lcd" = "yes")
+
+if test "$enable_lcd800" = "yes"; then
+AC_DEFINE(ENABLE_LCD,1,[include lcd support])
+AC_DEFINE(ENABLE_LCD800,1,[include lcd 800x480 16 bit support])
+fi
+
 # LCD_COLOR_BITORDER_RGB565
 AC_ARG_ENABLE(lcd_color_bitorder_rgb565,
 	AS_HELP_STRING(--enable-lcd-color-bitorder-rgb565,include lcd color bitorder rgb565 support),

@@ -169,7 +169,10 @@ CLCD::CLCD()
 	fd = -1;
 	lcd_width = 220;
 	lcd_height = 176;
-#if defined (ENABLE_LCD480)
+#if defined (ENABLE_LCD800)
+	lcd_width = 800;
+        lcd_height = 480;
+#elif defined (ENABLE_LCD480)
         lcd_width = 480;
         lcd_height = 320;
 #elif defined (ENABLE_LCD400)

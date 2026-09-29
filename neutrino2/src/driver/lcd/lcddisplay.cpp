@@ -97,7 +97,10 @@ CLCDDisplay::CLCDDisplay()
 	//
 	xres = 220;
 	yres = 176;
-#if defined (ENABLE_LCD480)
+#if defined (ENABLE_LCD800)
+	xres = 800;
+        yres = 480;
+#elif defined (ENABLE_LCD480)
         xres = 480;
         yres = 320;
 #elif defined (ENABLE_LCD400)
