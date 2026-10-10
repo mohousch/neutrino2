@@ -2225,8 +2225,10 @@ bool CFrontend::changeDelSys(uint32_t delsys)
 	
 	if ( !(deliverySystemMask & delsys) )
 		return true;
-	
+	bool legacy = true;
+		
 #if HAVE_DVB_API_VERSION >= 5
+#ifdef DTV_ENUM_DELSYS
 	struct dtv_property p[2];
 	memset(p, 0, sizeof(p));
 	struct dtv_properties cmdseq;
@@ -2279,40 +2281,43 @@ bool CFrontend::changeDelSys(uint32_t delsys)
 	if (::ioctl(fd, FE_SET_PROPERTY, &cmdseq) < 0)
 	{
 		perror("FE_SET_PROPERTY");
-		return false;
-	}
-#else
-	std::string dest = "/proc/stb/frontend/";
-	dest += fenumber;
-	dest += "/mode";
-	
-	switch (delsys)
-	{
-		case DVB_S:
-		case DVB_S2:
-		case DVB_S2X:
-			proc_put(dest.c_str(), "2");
-			break;
-			
-		case DVB_T:
-		case DVB_T2:
-		case DVB_DTMB:
-			proc_put(dest.c_str(), "1");
-			break;
-			
-		case DVB_C:
-			secSetVoltage(SEC_VOLTAGE_OFF, 0);
-			proc_put(dest.c_str(), "0");
-			break;
-			
-		case DVB_A:
-			proc_put(dest.c_str(), "3");
-			break;
-		
-		default:
-			break;
+		legacy = false;
 	}
 #endif
+#endif
+	if (legacy)
+	{
+		std::string dest = "/proc/stb/frontend/";
+		dest += fenumber;
+		dest += "/mode";
+		
+		switch (delsys)
+		{
+			case DVB_S:
+			case DVB_S2:
+			case DVB_S2X:
+				proc_put(dest.c_str(), "2");
+				break;
+				
+			case DVB_T:
+			case DVB_T2:
+			case DVB_DTMB:
+				proc_put(dest.c_str(), "1");
+				break;
+				
+			case DVB_C:
+				secSetVoltage(SEC_VOLTAGE_OFF, 0);
+				proc_put(dest.c_str(), "0");
+				break;
+				
+			case DVB_A:
+				proc_put(dest.c_str(), "3");
+				break;
+			
+			default:
+				break;
+		}
+	}
 
 	forcedDelSys = delsys;
 	

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2026-09-17 14:22+0200\n"
+"POT-Creation-Date: 2026-10-10 15:52+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -2565,14 +2565,15 @@ msgid "Tuesday"
 msgstr "Среда"
 
 #, fuzzy
+msgid "Tuner Scantype"
+msgstr "Тип тюнера"
+
+#, fuzzy
 msgid "Tuner Setup"
 msgstr "Тип тюнера"
 
 msgid "Tuner mode"
 msgstr "Режим тюнера"
-
-msgid "Tuner type"
-msgstr "Тип тюнера"
 
 msgid "Type"
 msgstr "Тип:"
