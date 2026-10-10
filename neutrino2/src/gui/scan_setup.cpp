@@ -2315,7 +2315,7 @@ bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 		item1->setHidden(true);
 	}
 	
-#if 0 // testing
+#ifdef PLATFORM_SPARK7162
 	fe->changeDelSys(delsys);
 #endif
 	
