@@ -358,7 +358,7 @@ class CFrontend
 		//
 		uint32_t getDeliverySystem(){return deliverySystemMask;};
 		bool isHybrid(void){ return hybrid;};
-		bool changeDelSys(uint32_t delsys);
+		void changeDelSys(uint32_t delsys);
 		uint32_t getForcedDelSys(void){return forcedDelSys;};
 
 		////

@@ -293,6 +293,7 @@ void CFrontend::getFEInfo(void)
 				if (info.caps & FE_CAN_MULTISTREAM)
 					deliverySystemMask |= DVB_S2X;
 				break;
+				
 			case FE_OFDM:
 				deliverySystemMask |= DVB_T;
 #ifdef SYS_DVBT2
@@ -300,9 +301,11 @@ void CFrontend::getFEInfo(void)
 					deliverySystemMask |= DVB_T2;
 #endif
 				break;
+				
 			case FE_QAM:
 				deliverySystemMask |= DVB_C;
 				break;
+				
 			default:
 				ng_err("CFrontend::getFEInfo ERROR: unknown frontend type %d on frontend (%d:%d)\n", info.type, feadapter, fenumber);
 		}
@@ -2219,13 +2222,12 @@ fe_delivery_system_t CFrontend::getFEDeliverySystem(uint32_t sys)
 }
 
 //
-bool CFrontend::changeDelSys(uint32_t delsys)
+void CFrontend::changeDelSys(uint32_t delsys)
 {
 	dprintf(DEBUG_NORMAL, "CFrontend::changeDelSys: fe(%d:%d) to delsys:0x%x\n", feadapter, fenumber, delsys);
 	
 	if ( !(deliverySystemMask & delsys) )
-		return true;
-	bool legacy = true;
+		return;
 		
 #if HAVE_DVB_API_VERSION >= 5
 #ifdef DTV_ENUM_DELSYS
@@ -2281,46 +2283,41 @@ bool CFrontend::changeDelSys(uint32_t delsys)
 	if (::ioctl(fd, FE_SET_PROPERTY, &cmdseq) < 0)
 	{
 		perror("FE_SET_PROPERTY");
-		legacy = false;
 	}
-#endif
-#endif
-	if (legacy)
-	{
-		std::string dest = "/proc/stb/frontend/";
-		dest += fenumber;
-		dest += "/mode";
+#else
+	std::string dest = "/proc/stb/frontend/";
+	dest += fenumber;
+	dest += "/mode";
 		
-		switch (delsys)
-		{
-			case DVB_S:
-			case DVB_S2:
-			case DVB_S2X:
-				proc_put(dest.c_str(), "2");
-				break;
+	switch (delsys)
+	{
+		case DVB_S:
+		case DVB_S2:
+		case DVB_S2X:
+			proc_put(dest.c_str(), "2");
+			break;
 				
-			case DVB_T:
-			case DVB_T2:
-			case DVB_DTMB:
-				proc_put(dest.c_str(), "1");
-				break;
+		case DVB_T:
+		case DVB_T2:
+		case DVB_DTMB:
+			proc_put(dest.c_str(), "1");
+			break;
 				
-			case DVB_C:
-				secSetVoltage(SEC_VOLTAGE_OFF, 0);
-				proc_put(dest.c_str(), "0");
-				break;
+		case DVB_C:
+			secSetVoltage(SEC_VOLTAGE_OFF, 0);
+			proc_put(dest.c_str(), "0");
+			break;
 				
-			case DVB_A:
-				proc_put(dest.c_str(), "3");
-				break;
+		case DVB_A:
+			proc_put(dest.c_str(), "3");
+			break;
 			
-			default:
-				break;
-		}
+		default:
+			break;
 	}
+#endif
+#endif
 
 	forcedDelSys = delsys;
-	
-	return true;
 }
 

@@ -512,7 +512,7 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 		// first zap/record/other frontend type
 		else if (transponder != transponders.end())
 		{	
-			if ( (/*fe->getDeliverySystem()*/fe->getForcedDelSys() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == CFrontend::FE_SINGLE || (fe->mode == CFrontend::FE_LOOP && loopCanTune(fe, thischannel)) ) )
+			if ( (fe->getDeliverySystem() /*fe->getForcedDelSys()*/ & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == CFrontend::FE_SINGLE || (fe->mode == CFrontend::FE_LOOP && loopCanTune(fe, thischannel)) ) )
 			{
 				free_frontend = fe;
 				break;
