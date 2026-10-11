@@ -2231,6 +2231,8 @@ void CFrontend::changeDelSys(uint32_t delsys)
 		
 #if HAVE_DVB_API_VERSION >= 5
 #ifdef DTV_ENUM_DELSYS
+	// FIXME: there is no need to REALLY force tuner mode.
+	/*
 	struct dtv_property p[2];
 	memset(p, 0, sizeof(p));
 	struct dtv_properties cmdseq;
@@ -2284,6 +2286,7 @@ void CFrontend::changeDelSys(uint32_t delsys)
 	{
 		perror("FE_SET_PROPERTY");
 	}
+	*/
 #else
 	std::string dest = "/proc/stb/frontend/";
 	dest += fenumber;
