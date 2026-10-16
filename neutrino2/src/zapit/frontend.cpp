@@ -296,7 +296,7 @@ void CFrontend::getFEInfo(void)
 				
 			case FE_OFDM:
 				deliverySystemMask |= DVB_T;
-#ifdef SYS_DVBT2
+#if (DVB_API_VERSION >= 5 && DVB_API_VERSION_MINOR >= 3)
 				if (info.caps & FE_CAN_2G_MODULATION)
 					deliverySystemMask |= DVB_T2;
 #endif
@@ -749,6 +749,7 @@ uint32_t CFrontend::getFEBandwidth(fe_bandwidth_t bandwidth)
 			bandwidth_hz = 6000000;
 			break;
 
+#if (DVB_API_VERSION >= 5 && DVB_API_VERSION_MINOR >= 3)
 		case BANDWIDTH_5_MHZ:
 			bandwidth_hz = 5000000;
 			break;
@@ -760,6 +761,7 @@ uint32_t CFrontend::getFEBandwidth(fe_bandwidth_t bandwidth)
 		case BANDWIDTH_10_MHZ:
 			bandwidth_hz = 10000000;
 			break;
+#endif
 
 		case BANDWIDTH_AUTO:
 			bandwidth_hz = 0;
@@ -2197,9 +2199,11 @@ fe_delivery_system_t CFrontend::getFEDeliverySystem(uint32_t sys)
 			delsys = SYS_DVBT;
 			break;
 
+#if (DVB_API_VERSION >= 5) && (DVB_API_VERSION_MINOR >= 3)
 		case DVB_T2:
 			delsys = SYS_DVBT2;
 			break;
+#endif
 
 		case DVB_C:
 #ifdef SYS_DVBC_ANNEX_A
