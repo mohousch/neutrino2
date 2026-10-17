@@ -958,7 +958,7 @@ elif test "$BOXTYPE" = "protek"; then
 elif test "$BOXTYPE" = "uclan"; then
 	AC_DEFINE(PLATFORM_PROTEK, 1, [building for uclan])
 elif test "$BOXTYPE" = "allwinner"; then
-	AC_DEFINE(PLATFORM_ALLWIINER, 1, [building for Allwinner])
+	AC_DEFINE(PLATFORM_ALLWINNER, 1, [building for Allwinner])
 fi
 
 if test "$BOXMODEL" = "cuberevo"; then
