@@ -1845,58 +1845,57 @@ int CFrontend::driveToSatellitePosition(t_satellite_position satellitePosition, 
 	int new_position = 0, old_position = 0;
 	bool use_usals = 0;
 
-//	if(diseqcType == DISEQC_ADVANCED) //FIXME
+	dprintf(DEBUG_INFO, "CFrontend::driveToSatellitePosition fe(%d:%d) SatellitePosition %d -> %d\n", feadapter, fenumber, currentSatellitePosition, satellitePosition);
+		
+	bool moved = false;
+
+	sat_iterator_t sit = satellitePositions.find(satellitePosition);
+	
+	if (sit == satellitePositions.end()) 
 	{
-		dprintf(DEBUG_INFO, "CFrontend::driveToSatellitePosition fe(%d:%d) SatellitePosition %d -> %d\n", feadapter, fenumber, currentSatellitePosition, satellitePosition);
-		
-		bool moved = false;
-
-		sat_iterator_t sit = satellitePositions.find(satellitePosition);
-		if (sit == satellitePositions.end()) 
-		{
-			dprintf(DEBUG_INFO, "CFrontend::driveToSatellitePosition: fe(%d:%d) satellite position %d not found!\n", feadapter, fenumber, satellitePosition);
+		dprintf(DEBUG_INFO, "CFrontend::driveToSatellitePosition: fe(%d:%d) satellite position %d not found!\n", feadapter, fenumber, satellitePosition);
 			
-			return 0;
-		} 
-		else 
-		{
-			new_position = sit->second.motor_position;
-			use_usals = sit->second.use_usals;
-		}
+		return 0;
+	} 
+	else 
+	{
+		new_position = sit->second.motor_position;
+		use_usals = sit->second.use_usals;
+	}
 		
-		sit = satellitePositions.find(currentSatellitePosition);
-		if (sit != satellitePositions.end())
-			old_position = sit->second.motor_position;
+	sit = satellitePositions.find(currentSatellitePosition);
+	
+	if (sit != satellitePositions.end())
+		old_position = sit->second.motor_position;
 
-		dprintf(DEBUG_INFO, "CFrontend::driveToSatellitePosition fe(%d:%d) motorPosition %d -> %d usals %s\n", feadapter, fenumber, old_position, new_position, use_usals ? "on" : "off");
+	dprintf(DEBUG_INFO, "CFrontend::driveToSatellitePosition fe(%d:%d) motorPosition %d -> %d usals %s\n", feadapter, fenumber, old_position, new_position, use_usals ? "on" : "off");
 
-		if (currentSatellitePosition == satellitePosition)
-			return 0;
+	if (currentSatellitePosition == satellitePosition)
+		return 0;
 
-		if (use_usals) 
+	if (use_usals) 
+	{
+		gotoXX(satellitePosition);
+		moved = true;
+	} 
+	else 
+	{
+		if (new_position > 0) 
 		{
-			gotoXX(satellitePosition);
+			positionMotor(new_position);
 			moved = true;
-		} 
-		else 
-		{
-			if (new_position > 0) 
-			{
-				positionMotor(new_position);
-				moved = true;
-			}
 		}
+	}
 
-		if (from_scan || (new_position > 0 && old_position > 0)) 
-		{
-			waitForMotor = motorRotationSpeed ? 2 + abs(satellitePosition - currentSatellitePosition) / motorRotationSpeed : 0;
-		}
+	if (from_scan || (new_position > 0 && old_position > 0)) 
+	{
+		waitForMotor = motorRotationSpeed ? 2 + abs(satellitePosition - currentSatellitePosition) / motorRotationSpeed : 0;
+	}
 
-		if (moved) 
-		{
-			waitForMotor = motorRotationSpeed ? 2 + abs(satellitePosition - currentSatellitePosition) / motorRotationSpeed : 0;
-			currentSatellitePosition = satellitePosition;
-		}
+	if (moved) 
+	{
+		waitForMotor = motorRotationSpeed ? 2 + abs(satellitePosition - currentSatellitePosition) / motorRotationSpeed : 0;
+		currentSatellitePosition = satellitePosition;
 	}
 
 	return waitForMotor;
