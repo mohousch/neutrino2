@@ -1845,7 +1845,7 @@ int CFrontend::driveToSatellitePosition(t_satellite_position satellitePosition, 
 	int new_position = 0, old_position = 0;
 	bool use_usals = 0;
 
-	if(diseqcType == DISEQC_ADVANCED) //FIXME
+//	if(diseqcType == DISEQC_ADVANCED) //FIXME
 	{
 		dprintf(DEBUG_INFO, "CFrontend::driveToSatellitePosition fe(%d:%d) SatellitePosition %d -> %d\n", feadapter, fenumber, currentSatellitePosition, satellitePosition);
 		
